@@ -1,0 +1,41 @@
+env_id: ReplicaCAD_SceneManipulation-v1
+robot_uids: fetch
+obs_mode: state
+control_mode: pd_joint_vel
+render_mode: human
+
+control:
+  dt: 0.0333333333
+  max_steps: 420
+  waypoint_tolerance: 0.07
+  goal_tolerance: 0.10
+  nominal_kp: 1.8
+  nominal_max_qdot: 0.75
+  command_max_qdot: 0.90
+  command_max_accel: 3.20
+  command_lowpass_alpha: 0.30
+
+residual:
+  enabled: true
+  influence_distance: 0.52
+  safety_distance: 0.17
+  link_radius: 0.055
+  cartesian_gain: 1.10
+  tangential_gain: 0.35
+  vertical_gain: 0.30
+  damping: 0.04
+  max_residual_qdot: 0.90
+  lowpass_alpha: 0.25
+
+obstacle:
+  radius: 0.105
+  spawn_time: 1.4
+  start: [-0.54, -0.34, 1.48]
+  velocity: [0.0, 0.36, 0.0]
+  hidden: [0.0, 0.0, -10.0]
+
+recording:
+  fps: 10
+  width: 960
+  height: 540
+  stride: 3

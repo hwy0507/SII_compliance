@@ -1,0 +1,102 @@
+﻿Whole-Body Motion Planning and Mobile Grasping Resource Map
+This document separates the planning libraries, mobile grasping stack, and simulation environments so people can quickly find the right resource without reading repository internals first.
+
+
+At-a-glance architecture
+* Fetch motion planning: use the Fetch VAMP fork for non-holonomic whole-body planning.
+* Autolife motion planning: use Autolife Planning for IK, OMPL/VAMP planning, constraints, costs, and trajectory timing.
+* Mobile grasping: use the Visibility-Aware Mobile Grasping repo for Fetch grasping, schedulers, perception clients, benchmarks, and ManiSkill integration.
+* Simulation: use PyBullet for planner-level debugging, RLS Digital Twin for Fetch Gazebo/ROS testing, and ManiSkill + ReplicaCAD/YCB for benchmark-scale mobile grasping.
+
+
+1. Motion planning resources
+Fetch whole-body planner
+Resource: Fetch VAMP fork
+Purpose: Whole-body motion planning for Fetch, including a non-holonomic base model and Fetch-specific collision resources.
+Key implementation points:
+* Hybrid A* and Reeds-Shepp support non-holonomic base planning.
+* Multi-layer RRT-Connect supports whole-body planning over base, torso, and arm layers.
+* Fetch and Fetch extended robot resources support collision checking and validation.
+* Whole-body validation, simplification, Python bindings, pointcloud collision, and PyBullet helpers are included.
+* Note: I verified this fork as a vendored dependency inside the mobile grasping repo. If there is a private standalone AdaComp fork, this label can be re-linked later.
+
+
+Autolife planner
+Resource: Autolife Planning
+Purpose: Planning library for the Autolife robot, covering IK, motion planning, collision checking, and trajectory timing through one Python API.
+Key implementation points:
+* TRAC-IK and Pink QP support unconstrained and constrained IK.
+* OMPL planners use VAMP SIMD collision checking for full-body and subgroup planning.
+* CasADi-compiled constraints and costs support task-space manifold and cost-aware planning.
+* TOPP-RA converts geometric paths into executable trajectories.
+* Autolife robot assets, RLS pointcloud assets, and the Autolife PyBullet environment are included for simulation and debugging.
+
+
+2. Mobile grasping and receding-horizon control
+Visibility-aware mobile grasping stack
+Resource: Visibility-Aware Mobile Grasping repo
+Purpose: Fetch mobile grasping in cluttered, dynamic environments. The stack combines base placement, arm planning, active perception, and grasp prediction.
+Package naming:
+* Repository: Visibility-Awared-Mobile-Grasping
+* Python package: grasp_anywhere
+* Project/environment name: mobile_grasping_in_dynamic
+Main components:
+* Schedulers include default, sequential, nav-manip, nav-prepose, and closed-loop variants.
+* The closed-loop baseline repeatedly runs prepose -> look-at-object -> grasp and resamples the prepose on failure.
+* The ManiSkill MPC environment wrapper follows whole-body waypoint streams with velocity control and a small lookahead controller.
+* Stage planners cover grasp, prepose, move, place, point, confirm, and static pointing stages.
+* Perception and grasp services include GraspNet, OWL-ViT, SAM, and the perception services submodule.
+* Evaluation tools include the ManiSkill benchmark runner, benchmark configs, trigger-distance sweeps, and visualization tools.
+
+
+3. Simulation environments
+PyBullet planning environments
+* Fetch: use the PyBullet helpers in the Fetch VAMP fork for lightweight planner visualization and tests.
+* Autolife: use the Autolife PyBullet environment with the packaged Autolife robot assets.
+* Best use: quick IK/planning debugging without ROS or Gazebo.
+
+
+Fetch Gazebo digital twin
+Resource: RLS Digital Twin
+Purpose: Gazebo/ROS Noetic digital twin of the Robot Living Studio with an integrated Fetch robot. Topics and control commands are intended to match the real robot.
+Key launch/resources:
+* RLS environment launch file starts the Gazebo scene.
+* Fetch driver workspace contains the robot drivers and control interfaces.
+* Digital twin install guide covers the expected Ubuntu 20.04 and ROS Noetic setup.
+
+
+ManiSkill + ReplicaCAD/YCB
+Resource: ManiSkill benchmark stack
+Purpose: GPU simulation and benchmarking for Fetch mobile grasping in ReplicaCAD/YCB scenes.
+Key files/resources:
+* ManiSkill MPC environment wrapper
+* Default ManiSkill config
+* Closed-loop ManiSkill config
+* ManiSkill benchmark runner
+* ReplicaCAD and YCB assets via the ManiSkill asset downloader
+
+
+4. Recommended onboarding order
+* Start with the mobile grasping README to set up the Fetch grasping stack and download required resources.
+* Set up Autolife Planning separately when working on the Autolife robot or whole-body/subgroup planner API.
+* Use the Fetch VAMP fork only when modifying Fetch non-holonomic whole-body planning internals.
+* Use RLS Digital Twin for ROS/Gazebo Fetch testing, ManiSkill for dynamic grasping benchmarks, and PyBullet for planner-level debugging.
+
+
+5. Open clean-up items
+* Confirm whether the Fetch VAMP fork should be linked as a private standalone repo or kept as the vendored dependency link.
+* Decide whether user-facing docs should preserve the repository spelling "Visibility-Awared" or use the paper title spelling "Visibility-Aware".
+* Add owners/contact points for each resource if this becomes an onboarding document.
+* Add a minimal "what to run first" command block after the repositories settle.
+
+
+Sources and links
+* Visibility-Aware Mobile Grasping repo
+* Fetch VAMP fork
+* Autolife Planning repo
+* Autolife Planning docs
+* RLS Digital Twin repo
+* Digital twin install guide
+* KavrakiLab VAMP upstream
+* Autolife VAMP submodule fork
+*
