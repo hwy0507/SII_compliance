@@ -74,3 +74,12 @@ def test_rod_height_is_an_explicit_recorded_fixture_variable():
     assert 'parser.add_argument(\n        "--rod-height"' in source
     assert '"height_m": rod_height_m' in source
     assert 'rod_height_m: float = 0.540' in source
+
+
+def test_explicit_rotational_carriage_is_a_ball_joint_child_of_translation_body():
+    """The physical 6D prototype must share the translational carriage pose."""
+    source = MODULE_PATH.read_text()
+    assert '<body name="explicit_rotation_carriage"' in source
+    assert 'name="explicit_carriage_ball" type="ball"' in source
+    assert 'explicit_rotation_carriage_body_id' in source
+    assert 'peak_explicit_rotational_spring_moment_nm' in source

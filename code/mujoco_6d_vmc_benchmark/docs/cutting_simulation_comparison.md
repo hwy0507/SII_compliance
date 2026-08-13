@@ -235,3 +235,55 @@ reachable moving trajectory interface proxy，而不是实际 whole-body control
 `rod_hand_contact_observed`），不能被当作一次成功扰动实验；该结果被记录为
 fixture coverage failure，而不是控制器优胜结果。后续有效鲁棒性矩阵应先用 rod
 位置/方向标定保证每一档确实发生实体接触，再比较恢复指标。
+
+## 10. 显式 6D ball-joint 原型 smoke test（2026-08-13）
+
+在 3D translational carriage 基础上新增可选的 MuJoCo ball-joint rotational
+carriage。它是平移 carriage 的子 body，拥有三个角自由度和显式惯量；hand 与
+rotational carriage 之间施加成对 spring-damper moment，rotational carriage 与
+moving nominal reference 之间施加 drive moment。新增 trace 为
+`explicit_carriage_rotation`、`explicit_carriage_angular_velocity` 和
+`explicit_carriage_moment`。
+
+使用 `kappa=35, zeta=0.8, translation drive=8, mass=1.0 kg, rotational inertia
+scale=1.0, rod stroke=0.16 m, rod height=0.54 m` 的 smoke test 结果：
+
+| 指标 | explicit 6D smoke |
+|---|---:|
+| rod-hand contact | true |
+| simulation finite | true |
+| target lift / hold | true / true |
+| peak nominal error | 9.22 mm |
+| peak paired rod offset | 5.13 mm |
+| release-to-rejoin latency | 0.408 s |
+| peak rod contact force | 20.17 N |
+| peak explicit translation spring force | 9.05 N |
+| peak explicit rotation spring moment | 3.03 N·m |
+| peak applied motor torque | 30.29 N·m |
+
+该 smoke test 证明六个通道已进入可运行的显式动力学路径，但它还不是当前 Pareto
+优胜点：相对于 verified 3D candidate（7.71 mm / 0.372 s / 18.51 N），6D smoke
+的偏差和接触力都更高。下一步会对 rotational inertia、rotational damping 和
+rotational drive 做 paired sweep；只有在接触等价、抓取成功和 torque/jerk 不恶化
+时，才会把它纳入最终候选。
+
+### 10.1 中间惯量点的有效 6D 候选
+
+进一步将 rotational inertia scale 调为 `0.5` 后，paired no-rod 对照显示该点
+满足所有有效性 gate，并且接触强度恢复到与历史 baseline 相同量级：
+
+| 指标 | verified 3D candidate | explicit 6D, inertia scale 0.5 |
+|---|---:|---:|
+| peak nominal/reference error | 7.71 mm | 7.85 mm |
+| peak paired rod offset | 4.29 mm | **4.64 mm** |
+| nominal position RMSE | 4.05 mm | **3.10 mm** |
+| release-to-rejoin latency | 0.372 s | **0.340 s** |
+| peak physical rod force | 18.51 N | **18.63 N** |
+| peak explicit rotational spring moment | — | 4.50 N·m |
+| peak applied motor torque | 30.08 N·m | 30.17 N·m |
+| rod contact / finite / lift / hold | pass | pass |
+
+该点是当前最有希望的显式 6D Pareto 候选：回归速度更快，RMSE 更低，碰撞峰值
+和力矩没有实质恶化。它仍然是 MuJoCo 仿真结果，WBC reference 仍是 reachable
+moving-trajectory proxy；在进入论文结论前，还需要做至少一个额外撞击高度或方向
+的 paired validation。

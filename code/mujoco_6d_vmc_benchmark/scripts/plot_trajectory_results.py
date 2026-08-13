@@ -165,7 +165,9 @@ def _plot_rejoin_dynamics(
     t = time[mask]
     wrench = rod["vmc_wrench"][mask]
     explicit_force = rod.get("explicit_carriage_force", np.zeros((len(time), 3)))[mask]
+    explicit_moment = rod.get("explicit_carriage_moment", np.zeros((len(time), 3)))[mask]
     use_explicit_translation = bool(np.any(np.abs(explicit_force) > 1e-10))
+    use_explicit_rotation = bool(np.any(np.abs(explicit_moment) > 1e-10))
     translation_force = explicit_force if use_explicit_translation else wrench[:, :3]
     motor_torque = rod["torque_applied"][mask]
     windows = [(float(start), float(end)) for start, end in rejoin["contact_windows_s"]]
@@ -204,10 +206,12 @@ def _plot_rejoin_dynamics(
     mark_events(ax_force_channels)
     ax_force_channels.legend(loc="best", frameon=False, ncol=3, fontsize=8)
 
-    for channel, color, label in zip(range(3, 6), ("#e41a1c", "#377eb8", "#4daf4a"), ("Mx", "My", "Mz")):
-        ax_moment_channels.plot(t, wrench[:, channel], color=color, lw=1.0, label=label)
+    rotational_moment = explicit_moment if use_explicit_rotation else wrench[:, 3:]
+    moment_label = "explicit-carriage" if use_explicit_rotation else "virtual"
+    for channel, color, label in zip(range(3), ("#e41a1c", "#377eb8", "#4daf4a"), ("Mx", "My", "Mz")):
+        ax_moment_channels.plot(t, rotational_moment[:, channel], color=color, lw=1.0, label=label)
     ax_moment_channels.axhline(0.0, color="black", lw=0.6)
-    ax_moment_channels.set(ylabel="Virtual moment (N·m)", title="Six-spring rotational channels")
+    ax_moment_channels.set(ylabel="Spring moment (N·m)", title=f"Six-spring rotational channels ({moment_label})")
     mark_events(ax_moment_channels)
     ax_moment_channels.legend(loc="best", frameon=False, ncol=3, fontsize=8)
 
@@ -234,7 +238,7 @@ def _plot_rejoin_dynamics(
         "peak_no_rod_ee_speed_mps": float(np.max(speed_no_rod)),
         "peak_physical_contact_force_n": float(np.max(rod["rod_force"][mask])),
         "peak_virtual_force_n": float(np.max(virtual_force_norm)),
-        "peak_virtual_moment_nm": float(np.max(np.linalg.norm(wrench[:, 3:], axis=1))),
+        "peak_virtual_moment_nm": float(np.max(np.linalg.norm(rotational_moment, axis=1))),
         "peak_applied_motor_torque_nm": float(np.max(np.abs(motor_torque))),
         "figure": str(path),
     }

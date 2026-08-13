@@ -496,3 +496,20 @@ The summary now stores
 `peak_explicit_translational_spring_force_n` separately from
 `peak_virtual_force_n`; the latter is the controller wrench and is intentionally
 zero in the explicit translation channels.
+
+The optional complete explicit-6D prototype is enabled with:
+
+```bash
+--explicit-translational-carriage --explicit-rotational-carriage \
+--carriage-mass-kg 1.0 --rotational-carriage-inertia-scale 0.5
+```
+
+The rotational carriage is a MuJoCo ball-joint child of the translational carriage.
+Its action-reaction spring moment is logged as
+`explicit_carriage_moment` and plotted in the rotational-channel panel.  The
+best current paired result (`kappa=35`, `zeta=0.8`, rod stroke `0.16 m`) has
+`7.85 mm` peak nominal error, `4.64 mm` paired rod offset, `0.340 s`
+release-to-rejoin latency, `18.63 N` peak rod force, `4.50 N·m` peak explicit
+rotational spring moment, and `30.17 N·m` peak applied motor torque, with all
+task validity gates passing.  This is still a simulation benchmark with a WBC
+interface proxy, not a live-WBC or real-hardware result.
