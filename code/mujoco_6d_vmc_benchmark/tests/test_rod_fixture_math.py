@@ -83,3 +83,10 @@ def test_explicit_rotational_carriage_is_a_ball_joint_child_of_translation_body(
     assert 'name="explicit_carriage_ball" type="ball"' in source
     assert 'explicit_rotation_carriage_body_id' in source
     assert 'peak_explicit_rotational_spring_moment_nm' in source
+
+
+def test_rotational_damping_override_reaches_the_episode_interface():
+    """CLI-only tuning knobs are invalid unless run_episode accepts them."""
+    source = MODULE_PATH.read_text()
+    assert 'rotational_damping_ratio: float | None = None,\n) -> dict[str, Any]:' in source
+    assert 'rotational_damping_ratio=args.rotational_damping_ratio' in source

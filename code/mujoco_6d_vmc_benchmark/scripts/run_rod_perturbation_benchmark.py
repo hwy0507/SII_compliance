@@ -122,7 +122,6 @@ def _rod_scene_xml(
     carriage_mass_kg: float = 0.35,
     explicit_rotational_carriage: bool = False,
     rotational_carriage_inertia_scale: float = 1.0,
-    rotational_damping_ratio: float | None = None,
 ) -> str:
     """Official Panda plus physical table/block and a dynamic slide-mounted rod."""
 
@@ -352,6 +351,7 @@ def run_episode(
     rod_height_m: float = 0.540,
     explicit_rotational_carriage: bool = False,
     rotational_carriage_inertia_scale: float = 1.0,
+    rotational_damping_ratio: float | None = None,
 ) -> dict[str, Any]:
     if explicit_rotational_carriage and not explicit_translational_carriage:
         raise ValueError("an explicit rotational carriage requires the explicit translational carriage parent")
