@@ -152,6 +152,90 @@ def _plot_rejoin_trajectory(
     }
 
 
+def _plot_rejoin_dynamics(
+    rod: dict[str, np.ndarray],
+    no_rod: dict[str, np.ndarray],
+    args: argparse.Namespace,
+    output_dir: Path,
+    rejoin: dict[str, object],
+) -> dict[str, object]:
+    """Plot velocity, physical contact, virtual wrench, and motor torque together."""
+    time = rod["time"]
+    mask = _window(time, args.time_start, args.time_end)
+    t = time[mask]
+    wrench = rod["vmc_wrench"][mask]
+    motor_torque = rod["torque_applied"][mask]
+    windows = [(float(start), float(end)) for start, end in rejoin["contact_windows_s"]]
+    rejoin_times = rejoin["rejoin_times_s"]
+
+    def mark_events(axis: plt.Axes, include_legend: bool = False) -> None:
+        for index, (start, end) in enumerate(windows):
+            axis.axvspan(start, end, color="#ef476f", alpha=0.10, label="physical rod contact" if include_legend and index == 0 else None)
+            axis.axvline(end, color="#2ca02c", ls=":", lw=0.9, label="contact release" if include_legend and index == 0 else None)
+        for index, stamp in enumerate(rejoin_times):
+            if stamp is not None:
+                axis.axvline(float(stamp), color="#1f77b4", ls="--", lw=0.9, label="rejoined reference tube" if include_legend and index == 0 else None)
+
+    fig, axes = plt.subplots(3, 2, figsize=(13.0, 10.2), sharex=True, constrained_layout=True)
+    ax_speed, ax_force_norm, ax_force_channels, ax_moment_channels, ax_joint_1_4, ax_joint_5_7 = axes.flat
+    speed = rod["ee_speed"][mask]
+    speed_no_rod = no_rod["ee_speed"][mask]
+    ax_speed.plot(t, speed, color="#d81b60", lw=1.3, label="rod + VMC")
+    ax_speed.plot(t, speed_no_rod, color="#377eb8", lw=1.0, ls="--", label="no-rod control")
+    ax_speed.set(ylabel="EE speed (m/s)", title="End-effector speed: check for surge")
+    mark_events(ax_speed, include_legend=True)
+    ax_speed.legend(loc="best", frameon=False, fontsize=8)
+
+    virtual_force_norm = np.linalg.norm(wrench[:, :3], axis=1)
+    ax_force_norm.plot(t, rod["rod_force"][mask], color="#2ca02c", lw=1.3, label="physical rod–hand force")
+    ax_force_norm.plot(t, virtual_force_norm, color="#9467bd", lw=1.1, label="‖virtual spring force‖")
+    ax_force_norm.set(ylabel="Force (N)", title="Physical contact and virtual restoring force")
+    mark_events(ax_force_norm, include_legend=True)
+    ax_force_norm.legend(loc="best", frameon=False, fontsize=8)
+
+    for channel, color, label in zip(range(3), ("#e41a1c", "#377eb8", "#4daf4a"), ("Fx", "Fy", "Fz")):
+        ax_force_channels.plot(t, wrench[:, channel], color=color, lw=1.0, label=label)
+    ax_force_channels.axhline(0.0, color="black", lw=0.6)
+    ax_force_channels.set(ylabel="Virtual force (N)", title="Six-spring translational channels")
+    mark_events(ax_force_channels)
+    ax_force_channels.legend(loc="best", frameon=False, ncol=3, fontsize=8)
+
+    for channel, color, label in zip(range(3, 6), ("#e41a1c", "#377eb8", "#4daf4a"), ("Mx", "My", "Mz")):
+        ax_moment_channels.plot(t, wrench[:, channel], color=color, lw=1.0, label=label)
+    ax_moment_channels.axhline(0.0, color="black", lw=0.6)
+    ax_moment_channels.set(ylabel="Virtual moment (N·m)", title="Six-spring rotational channels")
+    mark_events(ax_moment_channels)
+    ax_moment_channels.legend(loc="best", frameon=False, ncol=3, fontsize=8)
+
+    for joint in range(4):
+        ax_joint_1_4.plot(t, motor_torque[:, joint], lw=0.9, label=f"J{joint + 1}")
+    ax_joint_1_4.set(ylabel="Motor torque (N·m)", title="Applied motor torque: proximal joints")
+    mark_events(ax_joint_1_4)
+    ax_joint_1_4.legend(loc="best", frameon=False, ncol=2, fontsize=8)
+
+    for joint in range(4, 7):
+        ax_joint_5_7.plot(t, motor_torque[:, joint], lw=0.9, label=f"J{joint + 1}")
+    ax_joint_5_7.set(ylabel="Motor torque (N·m)", title="Applied motor torque: distal joints")
+    mark_events(ax_joint_5_7)
+    ax_joint_5_7.legend(loc="best", frameon=False, ncol=3, fontsize=8)
+
+    for axis in axes.flat:
+        _style(axis)
+    fig.suptitle("Dynamic response during WBC-reference departure and rejoin", fontsize=14)
+    path = output_dir / "wbc_rejoin_dynamics_results.png"
+    fig.savefig(path, dpi=220)
+    plt.close(fig)
+    return {
+        "peak_ee_speed_mps": float(np.max(speed)),
+        "peak_no_rod_ee_speed_mps": float(np.max(speed_no_rod)),
+        "peak_physical_contact_force_n": float(np.max(rod["rod_force"][mask])),
+        "peak_virtual_force_n": float(np.max(virtual_force_norm)),
+        "peak_virtual_moment_nm": float(np.max(np.linalg.norm(wrench[:, 3:], axis=1))),
+        "peak_applied_motor_torque_nm": float(np.max(np.abs(motor_torque))),
+        "figure": str(path),
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--rod-trace", type=Path, required=True)
@@ -262,6 +346,7 @@ def main() -> None:
     }
     rejoin_metrics = _plot_rejoin_trajectory(rod, no_rod, args, args.output_dir)
     metrics["rejoin"] = rejoin_metrics
+    metrics["dynamic_response"] = _plot_rejoin_dynamics(rod, no_rod, args, args.output_dir, rejoin_metrics)
     (args.output_dir / "trajectory_error_metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
     print(json.dumps(metrics, indent=2))
 

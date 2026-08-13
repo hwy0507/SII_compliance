@@ -452,3 +452,16 @@ than judged from a screenshot.  Change it with `--rejoin-threshold-mm` and
 contact window, rejoin time, and release-to-rejoin latency.  With a future live
 WBC trace, the same figure becomes the direct actual-versus-WBC trajectory
 comparison requested for the final WBC+VMC experiment.
+
+The same command also writes `wbc_rejoin_dynamics_results.png`.  This companion
+figure uses a shared time axis and shows: EE speed with no-rod comparison;
+physical rod--hand contact force versus the norm of the virtual spring force;
+the three translational virtual-force channels; the three rotational
+virtual-moment channels; and the seven applied motor torques split into
+proximal/distal joints.  Thus a shorter rejoin time can be checked against
+speed surge, contact-force peak, spring wrench, and motor-torque peak rather
+than being treated as a trajectory-only result.  For the current `kappa=6`
+single-press run, the corresponding peaks are `0.099 m/s` EE speed,
+`18.62 N` physical contact force, `5.19 N` virtual-force norm, `0.503 N·m`
+virtual-moment norm, and `30.40 N·m` applied motor torque; no hard torque-limit
+frame occurred.
