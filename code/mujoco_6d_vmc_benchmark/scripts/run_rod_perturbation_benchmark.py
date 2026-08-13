@@ -59,6 +59,9 @@ ROD_PEAK_TIME_S = 1.28
 ROD_RETRACT_TIME_S = 1.52
 ROD_END_TIME_S = 1.72
 DEFAULT_CONTACT_TIME_CONSTANT_S = 0.015
+PATH_MARKER_COUNT = 13
+ACTUAL_TRAIL_COUNT = 12
+CAMERA_VIEWS = ("overview", "hand-closeup")
 
 
 def rod_motion(time_s: float, stroke_m: float) -> tuple[float, float]:
@@ -96,7 +99,7 @@ def _rod_scene_xml(menagerie: Path, contact_time_constant_s: float) -> str:
     # actuator drives the support slide; the finite-mass rod/contact response
     # remains part of MuJoCo dynamics rather than a mocap teleport.
     injected = f"""
-      <camera name="rod_track" pos="1.20 -1.55 0.95"
+      <camera name="rod_track" pos="1.18 -1.42 0.86"
         xyaxes="0.79 0.61 0  -0.17 0.22 0.96"/>
       <geom name="table" type="box" pos="0.54 0 0.38" size="0.20 0.20 0.02"
         contype="2" conaffinity="2" rgba="0.31 0.22 0.13 1" friction="1.2 0.02 0.002"/>
@@ -114,8 +117,13 @@ def _rod_scene_xml(menagerie: Path, contact_time_constant_s: float) -> str:
           solimp="0.85 0.95 0.002 0.5 2"/>
       </body>
       <body name="nominal_marker" mocap="true" pos="0 0 1">
-        <geom type="sphere" size="0.022" contype="0" conaffinity="0" rgba="0.22 0.42 1.0 0.58"/>
+        <geom type="sphere" size="0.025" contype="0" conaffinity="0" rgba="0.10 0.35 1.0 0.95"/>
       </body>
+      <body name="actual_marker" mocap="true" pos="0 0 1">
+        <geom type="sphere" size="0.024" contype="0" conaffinity="0" rgba="1.0 0.05 0.68 0.98"/>
+      </body>
+      {''.join(f'<body name="nominal_path_{index}" mocap="true" pos="0 0 1"><geom type="sphere" size="0.010" contype="0" conaffinity="0" rgba="0.22 0.52 1.0 0.62"/></body>' for index in range(PATH_MARKER_COUNT))}
+      {''.join(f'<body name="actual_trail_{index}" mocap="true" pos="0 0 -2"><geom type="sphere" size="0.008" contype="0" conaffinity="0" rgba="1.0 0.10 0.62 {0.20 + 0.60 * (index + 1) / ACTUAL_TRAIL_COUNT:.3f}"/></body>' for index in range(ACTUAL_TRAIL_COUNT))}
       <geom name="rod_guide" type="box" pos="0.55 -0.10 0.435" size="0.18 0.13 0.008"
         contype="0" conaffinity="0" rgba="0.10 0.12 0.15 0.70"/>
     """
@@ -163,6 +171,30 @@ def rod_contact_diagnostics(
     return touching_hand, peak_force, peak_penetration
 
 
+def make_render_camera(view: str, nominal_position: np.ndarray) -> str | mujoco.MjvCamera:
+    """Return either the contextual scene camera or a hand-centred close-up.
+
+    The close-up is a rendering-only free camera, locked to the nominal pose
+    rather than the actual hand.  This preserves an externally induced hand
+    departure in image space: an actual-hand-following camera would incorrectly
+    hide exactly the 20--30 mm motion the benchmark intends to demonstrate.
+    It never affects model state, contacts, controller inputs, or metrics.
+    """
+
+    if view == "overview":
+        return "rod_track"
+    if view != "hand-closeup":
+        raise ValueError(f"unknown camera view: {view}")
+    camera = mujoco.MjvCamera()
+    mujoco.mjv_defaultCamera(camera)
+    camera.type = mujoco.mjtCamera.mjCAMERA_FREE
+    camera.lookat[:] = nominal_position
+    camera.distance = 0.44
+    camera.azimuth = 142.0
+    camera.elevation = -20.0
+    return camera
+
+
 def run_episode(
     menagerie: Path,
     kappa: float,
@@ -172,7 +204,13 @@ def run_episode(
     rod_stroke_m: float,
     contact_time_constant_s: float,
     rod_enabled: bool = True,
+    playback_speed: float = 1.0,
+    camera_view: str = "overview",
+    render_start_time_s: float = 0.0,
+    render_end_time_s: float = SIM_TIME_S,
 ) -> dict[str, Any]:
+    if not 0.0 <= render_start_time_s < render_end_time_s <= SIM_TIME_S:
+        raise ValueError("render window must satisfy 0 <= start < end <= simulation time")
     model, data = make_rod_model(menagerie, contact_time_constant_s)
     objects = {
         "hand": (mujoco.mjtObj.mjOBJ_BODY, "hand"),
@@ -184,6 +222,7 @@ def run_episode(
         "moving_obstacle": (mujoco.mjtObj.mjOBJ_BODY, "moving_obstacle"),
         "virtual_carriage": (mujoco.mjtObj.mjOBJ_BODY, "virtual_carriage"),
         "nominal_marker": (mujoco.mjtObj.mjOBJ_BODY, "nominal_marker"),
+        "actual_marker": (mujoco.mjtObj.mjOBJ_BODY, "actual_marker"),
     }
     ids = {label: mujoco.mj_name2id(model, obj, name) for label, (obj, name) in objects.items()}
     if min(ids.values()) < 0:
@@ -193,6 +232,19 @@ def run_episode(
     obstacle_mocap = model.body_mocapid[ids["moving_obstacle"]]
     carriage_mocap = model.body_mocapid[ids["virtual_carriage"]]
     nominal_marker_mocap = model.body_mocapid[ids["nominal_marker"]]
+    actual_marker_mocap = model.body_mocapid[ids["actual_marker"]]
+    path_marker_mocaps = np.array([
+        model.body_mocapid[mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, f"nominal_path_{index}")]
+        for index in range(PATH_MARKER_COUNT)
+    ])
+    actual_trail_mocaps = np.array([
+        model.body_mocapid[mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, f"actual_trail_{index}")]
+        for index in range(ACTUAL_TRAIL_COUNT)
+    ])
+    if np.any(path_marker_mocaps < 0):
+        raise RuntimeError("nominal trajectory marker mocap IDs were not resolved")
+    if np.any(actual_trail_mocaps < 0):
+        raise RuntimeError("actual end-effector trail mocap IDs were not resolved")
     rod_ctrl_index = ARM_DOF + 1
     if model.nu != rod_ctrl_index + 1:
         raise RuntimeError("expected seven torque motors, gripper, and rod driver")
@@ -201,10 +253,18 @@ def run_episode(
     mujoco.mj_forward(model, data)
 
     reference = PickLiftCarryReference(model, data, ids["hand"])
+    # The dotted blue curve makes the target moving trajectory visible in the
+    # GIF; it is a visual aid only and never contributes collision/contact.
+    for index, marker_mocap in enumerate(path_marker_mocaps):
+        path_time = index * min(SIM_TIME_S, 6.20) / (PATH_MARKER_COUNT - 1)
+        path_position, _, _, _ = reference.sample(path_time)
+        data.mocap_pos[marker_mocap] = path_position
+        data.mocap_quat[marker_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
     controller = SixDVirtualCarriage(
         config, kappa, data.xpos[ids["hand"]].copy(), data.xmat[ids["hand"]].reshape(3, 3).copy()
     )
     renderer: mujoco.Renderer | None = mujoco.Renderer(model, height=480, width=640) if render_gif else None
+    render_camera: str | mujoco.MjvCamera | None = None
     frames: list[np.ndarray] = []
     render_stride = max(1, round(1.0 / (RENDER_FPS * CONTROL_DT)))
     log: dict[str, list[Any]] = {key: [] for key in (
@@ -216,6 +276,7 @@ def run_episode(
     previous_twist = np.zeros(6)
     previous_acceleration = np.zeros(6)
     previous_torque = data.qfrc_bias[:ARM_DOF].copy()
+    actual_position_history: list[np.ndarray] = []
     rod_hand_observed = False
     steps = int(SIM_TIME_S / CONTROL_DT)
 
@@ -235,6 +296,16 @@ def run_episode(
         ee_position = data.xpos[ids["hand"]].copy()
         ee_rotation = data.xmat[ids["hand"]].reshape(3, 3).copy()
         ee_twist = body_twist(model, data, ids["hand"])
+        data.mocap_pos[actual_marker_mocap] = ee_position
+        data.mocap_quat[actual_marker_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
+        actual_position_history.append(ee_position.copy())
+        trail_stride = max(1, round(0.04 / CONTROL_DT))
+        for index, marker_mocap in enumerate(actual_trail_mocaps):
+            history_index = len(actual_position_history) - 1 - (ACTUAL_TRAIL_COUNT - index) * trail_stride
+            data.mocap_pos[marker_mocap] = (
+                actual_position_history[history_index] if history_index >= 0 else np.array([0.0, 0.0, -2.0])
+            )
+            data.mocap_quat[marker_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
         wrench, carriage_displacement = controller.wrench(ee_position, ee_rotation, ee_twist)
         wrench_torque = body_jacobian(model, data, ids["hand"]).T @ wrench
         bias = data.qfrc_bias[:ARM_DOF].copy()
@@ -282,14 +353,20 @@ def run_episode(
         previous_twist = ee_twist
         previous_acceleration = acceleration
         previous_torque = applied
-        if renderer is not None and step % render_stride == 0:
-            renderer.update_scene(data, camera="rod_track")
+        if renderer is not None and step % render_stride == 0 and render_start_time_s <= time_s <= render_end_time_s:
+            # The close-up follows the nominal trajectory, not the actual
+            # hand, so a physical departure remains visually observable.
+            if camera_view == "hand-closeup":
+                render_camera = make_render_camera(camera_view, nominal_position)
+            elif render_camera is None:
+                render_camera = make_render_camera(camera_view, nominal_position)
+            renderer.update_scene(data, camera=render_camera)
             frames.append(renderer.render().copy())
 
     if renderer is not None:
         renderer.close()
         gif_path = output_dir / f"rod_perturbation_kappa_{kappa:.2f}.gif"
-        iio.imwrite(gif_path, np.stack(frames), duration=1.0 / RENDER_FPS, loop=0)
+        iio.imwrite(gif_path, np.stack(frames), duration=1.0 / (RENDER_FPS * playback_speed), loop=0)
     else:
         gif_path = None
     arrays = {key: np.asarray(values) for key, values in log.items()}
@@ -316,6 +393,16 @@ def run_episode(
             "retract_time_s": ROD_RETRACT_TIME_S,
             "end_time_s": ROD_END_TIME_S,
             "stroke_m": rod_stroke_m,
+        },
+        "visualization": {
+            "nominal_marker": "bright blue sphere",
+            "actual_marker": "magenta sphere",
+            "actual_trail": "magenta 0.48 s end-effector history (exact, no visual scaling)",
+            "virtual_carriage_marker": "cyan sphere",
+            "nominal_path": "faint blue dotted curve",
+            "playback_speed": playback_speed,
+            "camera_view": camera_view,
+            "render_window_s": [render_start_time_s, render_end_time_s],
         },
         "grasp_time_s": GRASP_TIME_S,
         "contact_time_constant_s": contact_time_constant_s,
@@ -380,13 +467,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--contact-time-constant", type=float, default=DEFAULT_CONTACT_TIME_CONSTANT_S)
     parser.add_argument("--rod-stroke", type=float, default=0.16)
     parser.add_argument("--disable-rod", action="store_true", help="Paired no-perturbation grasp reference run.")
+    parser.add_argument("--playback-speed", type=float, default=1.0, help="GIF-only playback multiplier; simulation dynamics are unchanged.")
+    parser.add_argument(
+        "--camera-view", choices=CAMERA_VIEWS, default="overview",
+        help="GIF-only view: full task context or hand-centred close-up.",
+    )
+    parser.add_argument("--render-start-time", type=float, default=0.0, help="GIF-only simulation-time start, in seconds.")
+    parser.add_argument("--render-end-time", type=float, default=SIM_TIME_S, help="GIF-only simulation-time end, in seconds.")
     parser.add_argument("--render-gif", action="store_true")
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant) <= 0 or args.rod_stroke < 0:
+    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed) <= 0 or args.rod_stroke < 0:
         raise ValueError("all physical and controller scales must be positive")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     config = replace(
@@ -400,6 +494,8 @@ def main() -> None:
         run_episode(
             args.menagerie, kappa, args.output_dir, args.render_gif, config,
             args.rod_stroke, args.contact_time_constant, rod_enabled=not args.disable_rod,
+            playback_speed=args.playback_speed, camera_view=args.camera_view,
+            render_start_time_s=args.render_start_time, render_end_time_s=args.render_end_time,
         )
         for kappa in args.kappas
     ]

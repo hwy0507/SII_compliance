@@ -254,3 +254,56 @@ python scripts/run_rod_perturbation_benchmark.py \
   --carriage-drive-scale 1.60 --carriage-drive-damping-ratio 2.0 \
   --contact-time-constant 0.015 --rod-stroke 0.16 --disable-rod
 ```
+
+### Readable perturbation-and-rejoin rendering
+
+The full tabletop camera is useful for showing the overall pick-and-lift task,
+but it makes a real 20--30 mm external-push displacement hard to see.  For a
+presentation GIF, use the **rendering-only** `hand-closeup` camera and render
+the short pre-grasp window.  This camera follows the **nominal** pose rather
+than the measured hand, so it cannot hide actual departure by following it.
+The blue nominal marker, magenta measured-end-effector marker, cyan carriage,
+and magenta 0.48 s measured trajectory tail are drawn at their unscaled,
+physical coordinates.
+
+The following is a deliberately soft visibility/trade-off case, not the
+recommended final stiffness: it makes the compliance response especially
+readable, while the stiffer `kappa = 1.60` case above remains the current
+rejoin-quality baseline.  Always compare it with its matched no-rod control.
+
+```bash
+export MUJOCO_GL=egl
+python scripts/run_rod_perturbation_benchmark.py \
+  --menagerie ~/vmc_mujoco_runtime/mujoco_menagerie \
+  --output-dir outputs/rod_soft_demo \
+  --kappas 0.20 --damping-ratio 1.8 \
+  --carriage-drive-scale 0.50 --carriage-drive-damping-ratio 2.0 \
+  --contact-time-constant 0.015 --rod-stroke 0.16 \
+  --camera-view hand-closeup --render-start-time 0.90 --render-end-time 2.40 \
+  --playback-speed 0.5 --render-gif
+
+python scripts/run_rod_perturbation_benchmark.py \
+  --menagerie ~/vmc_mujoco_runtime/mujoco_menagerie \
+  --output-dir outputs/rod_soft_demo_no_rod \
+  --kappas 0.20 --damping-ratio 1.8 \
+  --carriage-drive-scale 0.50 --carriage-drive-damping-ratio 2.0 \
+  --contact-time-constant 0.015 --rod-stroke 0.16 --disable-rod \
+  --camera-view hand-closeup --render-start-time 0.90 --render-end-time 2.40 \
+  --playback-speed 0.5 --render-gif
+
+python scripts/render_rod_comparison.py \
+  --perturbed-gif outputs/rod_soft_demo/rod_perturbation_kappa_0.20.gif \
+  --perturbed-trace outputs/rod_soft_demo/rod_perturbation_kappa_0.20_trace.npz \
+  --reference-gif outputs/rod_soft_demo_no_rod/rod_perturbation_kappa_0.20.gif \
+  --reference-trace outputs/rod_soft_demo_no_rod/rod_perturbation_kappa_0.20_trace.npz \
+  --time-start 0.90 --time-end 2.40 \
+  --output outputs/rod_soft_demo/rod_vs_no_rod_recovery_kappa_0.20.gif
+```
+
+For this paired `kappa = 0.20` trial, the rod touches the hand from `1.260 s`
+to `1.332 s`; the true peak difference from the no-rod end-effector trajectory
+is `23.0 mm`.  The trial subsequently lifts and retains the free block, with a
+2.03 mm maximum rod--hand contact penetration and no hard torque-limit frame.
+The 26.9 mm pre-grasp nominal error makes its safety--rejoin trade-off explicit;
+it is evidence of a visible compliant departure, **not** a tuned final
+controller.
