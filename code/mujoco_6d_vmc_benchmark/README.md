@@ -513,3 +513,12 @@ release-to-rejoin latency, `18.63 N` peak rod force, `4.50 N·m` peak explicit
 rotational spring moment, and `30.17 N·m` peak applied motor torque, with all
 task validity gates passing.  This is still a simulation benchmark with a WBC
 interface proxy, not a live-WBC or real-hardware result.
+
+The rotational damping sweep is intentionally reported as a trade-off rather
+than a single winner.  `rotational-damping-ratio=0.8` gives the strongest
+trajectory metrics but visible high-frequency moment chatter; `1.2` is smoother
+while retaining a comparable `19.68 N` physical contact peak; `2.0` reduces jerk
+but lowers the contact peak to `17.19 N` and is therefore rejected for collision
+non-equivalence.  The current stage-level primary result remains the stable
+explicit 3D candidate, while the explicit 6D branch is ready for rotational
+drive and solver-time-scale tuning.

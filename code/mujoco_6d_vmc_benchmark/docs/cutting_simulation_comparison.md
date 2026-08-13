@@ -287,3 +287,24 @@ rotational drive 做 paired sweep；只有在接触等价、抓取成功和 torq
 和力矩没有实质恶化。它仍然是 MuJoCo 仿真结果，WBC reference 仍是 reachable
 moving-trajectory proxy；在进入论文结论前，还需要做至少一个额外撞击高度或方向
 的 paired validation。
+
+### 10.2 独立旋转阻尼验证
+
+为处理 `inertia scale=0.5` 点在旋转 moment 图中的高频 chatter，新增
+`--rotational-damping-ratio` 并复现了三个阻尼点。所有三个点均为有限仿真、检测到
+rod-hand 接触、目标 lift/hold 成功且没有硬力矩限幅；但碰撞等价性和轨迹指标的
+权衡如下：
+
+| rotational ζ | peak error | peak rod force | peak torque | peak jerk | 结论 |
+|---:|---:|---:|---:|---:|---|
+| 0.8 | 7.85 mm | 18.63 N | 30.17 N·m | 1072 m/s³ | 轨迹最强，但 chatter 明显 |
+| 1.2 | 8.55 mm | 19.68 N | 30.21 N·m | 992 m/s³ | 接触等价、略平滑，但不支配 3D 主候选 |
+| 2.0 | 6.48 mm | 17.19 N | 30.12 N·m | 884 m/s³ | 接触峰值偏低，碰撞等价性不足 |
+
+因此当前阶段不把任意一个显式 6D 阻尼点宣称为全面最优：
+
+- **阶段主结果**：显式 3D candidate（`7.71 mm / 0.372 s / 18.51 N`），动态行为最稳；
+- **6D 研究结果**：显式 6D 已经跑通并显示 `ζ_rot=0.8` 可达到 `3.10 mm` nominal
+  RMSE、`0.340 s` 回归时间和 `18.63 N` 接触峰值，但旋转 chatter 仍需处理；
+- **下一步**：将旋转 drive stiffness、ball-joint damping 与接触求解器时间尺度
+  作为独立变量，优先降低高频 moment 交替，同时保持 rod impulse 在基准范围内。
