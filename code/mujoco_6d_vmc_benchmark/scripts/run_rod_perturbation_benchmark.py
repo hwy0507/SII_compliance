@@ -254,6 +254,15 @@ def _saturated_translation_spring(
     return maximum_force * np.tanh(stiffness * np.asarray(displacement, dtype=float) / maximum_force)
 
 
+def _saturate_vector_norm(vector: np.ndarray, maximum_norm: float) -> np.ndarray:
+    """Bound a vector norm while preserving direction."""
+    vector = np.asarray(vector, dtype=float)
+    norm = float(np.linalg.norm(vector))
+    if norm <= maximum_norm or norm <= EPS:
+        return vector
+    return vector * (maximum_norm / norm)
+
+
 def make_render_camera(view: str, nominal_position: np.ndarray) -> str | mujoco.MjvCamera:
     """Return either the contextual scene camera or a hand-centred close-up.
 
@@ -386,6 +395,7 @@ def run_episode(
         "carriage_displacement", "vmc_wrench", "ee_position", "nominal_position", "carriage_position",
         "object_position", "object_hand_distance", "rod_displacement", "rod_command_velocity", "active_kappa", "active_drive_scale",
         "explicit_carriage_position", "explicit_carriage_velocity", "explicit_carriage_force",
+        "simulation_finite",
     )}
     previous_twist = np.zeros(6)
     previous_acceleration = np.zeros(6)
@@ -455,6 +465,12 @@ def run_episode(
             drive_k = config.carriage_drive_k_translation * active_drive_scale
             drive_d = 2.0 * config.carriage_drive_zeta * np.sqrt(carriage_mass_kg * drive_k)
             drive_force = drive_k * (nominal_position - explicit_position) + drive_d * (nominal_twist[:3] - explicit_velocity)
+            # Explicit virtual masses need a bounded total coupling force.  The
+            # cutting reference uses per-channel max-force saturation; this
+            # norm cap prevents low-mass/high-drive combinations from injecting
+            # an unresolved impulse into the 4 ms Panda simulation.
+            explicit_force = _saturate_vector_norm(explicit_force, 1.5 * config.max_force)
+            drive_force = _saturate_vector_norm(drive_force, 1.5 * config.max_force)
             data.qfrc_applied[:] = 0.0
             _apply_body_force(model, data, explicit_carriage_body_id, drive_force - explicit_force)
             _apply_body_force(model, data, ids["hand"], explicit_force)
@@ -507,6 +523,7 @@ def run_episode(
             "explicit_carriage_position": explicit_position.tolist(),
             "explicit_carriage_velocity": explicit_velocity.tolist(),
             "explicit_carriage_force": explicit_force.tolist(),
+            "simulation_finite": bool(np.isfinite(data.qpos).all() and np.isfinite(data.qvel).all()),
         }
         for key, value in values.items():
             log[key].append(value)
@@ -538,6 +555,7 @@ def run_episode(
     rod_contact_mask = arrays["rod_contact"].astype(bool)
     peak_displacement = np.max(np.abs(arrays["carriage_displacement"]), axis=0)
     peak_wrench = np.max(np.abs(arrays["vmc_wrench"]), axis=0)
+    explicit_force_norm = np.linalg.norm(arrays["explicit_carriage_force"], axis=1)
     peak_trajectory_deviation = _safe_scalar(np.max(arrays["track_position"][perturbation_mask]))
     pregrasp_error = _safe_scalar(arrays["track_position"][np.flatnonzero(arrays["time"] < grasp_time_s)[-1]])
     release_index = int(np.flatnonzero(arrays["time"] >= ROD_END_TIME_S)[0])
@@ -553,6 +571,7 @@ def run_episode(
             "explicit_translational_carriage": explicit_translational_carriage,
             "explicit_translational_carriage_mass_kg": carriage_mass_kg if explicit_translational_carriage else None,
             "rotation_channels": "existing controller-integrated SO(3) virtual carriage",
+            "explicit_force_norm_cap_n": 1.5 * config.max_force if explicit_translational_carriage else None,
         },
         "rod_motion": {
             "enabled": rod_enabled,
@@ -583,6 +602,7 @@ def run_episode(
         "grasp_time_s": grasp_time_s,
         "contact_time_constant_s": contact_time_constant_s,
         "task_validity": {
+            "simulation_finite": bool(np.all(arrays["simulation_finite"])),
             "physical_gripper_actuated": True,
             "rod_hand_contact_observed": rod_hand_observed,
             "target_lifted_after_recovery": target_lifted,
@@ -595,6 +615,11 @@ def run_episode(
             "peak_rotational_displacement_rad": _safe_scalar(np.linalg.norm(peak_displacement[3:])),
             "peak_virtual_wrench": peak_wrench.tolist(),
             "peak_virtual_force_n": _safe_scalar(np.linalg.norm(peak_wrench[:3])),
+            # In explicit mode the translational spring is applied directly
+            # through MuJoCo and is intentionally absent from vmc_wrench.
+            # Keep a separate metric so summaries cannot report a misleading
+            # zero translational force for the physical carriage.
+            "peak_explicit_translational_spring_force_n": _safe_scalar(np.max(explicit_force_norm)),
             "peak_virtual_moment_nm": _safe_scalar(np.linalg.norm(peak_wrench[3:])),
             "peak_end_effector_nominal_deviation_m": peak_trajectory_deviation,
             "pregrasp_rejoin_error_m": pregrasp_error,

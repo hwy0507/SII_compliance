@@ -193,3 +193,45 @@ drive scale `4.0`、recovery ramp `0.08 s`、rod stroke `0.16 m`、grasp time
 damping 做小型 Pareto 扫描，同时要求 task lift/hold gate、无 hard torque limit，
 再根据 peak error / rejoin time / peak contact force / peak torque 选择候选。之后
 才加入三个显式 rotational state 或多点姿态弹簧。
+
+## 9. 当前 Pareto 候选与有效性筛选（2026-08-13）
+
+在服务器 MuJoCo 3.11 环境中，使用同一 Panda、同一实体 rod、同一抓取阶段和同一
+无 rod paired reference 完成了显式平移 carriage 的扫描。候选参数为：
+
+```text
+mass = 1.0 kg, translation drive scale = 8.0,
+kappa = 35, damping ratio zeta = 0.8,
+recovery ramp = 0.08 s, rod stroke = 0.16 m
+```
+
+回归判据仍为位置误差不超过 5 mm 且连续保持 80 ms；同时要求仿真有限、目标被
+抬起并在末端保持、实体 rod-hand 接触存在，且不触碰硬力矩限幅。
+
+相对于此前的 Python-controller baseline（`kappa=6, zeta=1.8, mass=0.35 kg`
+的历史候选），该点的结果为：
+
+| 指标 | Python baseline | explicit candidate | 变化 |
+|---|---:|---:|---:|
+| peak nominal/reference error | 10.84 mm | 7.71 mm | -28.8% |
+| peak paired rod-induced offset | 5.92 mm | 4.29 mm | -27.5% |
+| position RMSE | 6.62 mm | 4.05 mm | -38.8% |
+| release-to-rejoin latency | 0.760 s | 0.372 s | -51.1% |
+| peak physical rod force | 18.62 N | 18.51 N | comparable |
+| peak applied motor torque | 30.40 N·m | 30.08 N·m | -1.1% |
+| recovery speed p95 | not retained in old baseline | 0.0114 m/s | report candidate |
+| task lift / hold | true / true | true / true | pass |
+
+这是一组同任务、同碰撞夹具、同回归定义下的多指标改进，当前可以称为“有效
+Pareto 候选”，但还不能称为真机结论或 live WBC 结果。这里的 reference 仍是
+reachable moving trajectory interface proxy，而不是实际 whole-body controller。
+
+阻尼细扫显示：`zeta=0.8--1.2` 的结果稳定且接触力约 18.51 N；`zeta>=1.8` 会
+引入更高峰值力矩和 jerk（例如 `zeta=1.8` 为 34.31 N·m / 2913 m/s³），因此被
+排除。高 `kappa=50` 虽然表面上回归更快，但接触力降至约 11.6 N、jerk 升至约
+3018 m/s³，也被判定为碰撞等价性破坏而排除。
+
+行程鲁棒性检查还发现，`rod stroke=0.12 m` 在当前几何下没有接触（0 N、无
+`rod_hand_contact_observed`），不能被当作一次成功扰动实验；该结果被记录为
+fixture coverage failure，而不是控制器优胜结果。后续有效鲁棒性矩阵应先用 rod
+位置/方向标定保证每一档确实发生实体接触，再比较恢复指标。

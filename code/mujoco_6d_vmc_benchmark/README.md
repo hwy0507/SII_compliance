@@ -465,3 +465,34 @@ single-press run, the corresponding peaks are `0.099 m/s` EE speed,
 `18.62 N` physical contact force, `5.19 N` virtual-force norm, `0.503 N·m`
 virtual-moment norm, and `30.40 N·m` applied motor torque; no hard torque-limit
 frame occurred.
+
+### Explicit translational carriage candidate (server result)
+
+The benchmark now also supports a physical MuJoCo translational carriage.  It
+is one shared 3D body with three orthogonal slide joints; the translational
+spring force is applied to the Panda hand and the equal-and-opposite force to
+the carriage.  The three rotational channels remain controller-integrated
+SO(3) virtual channels, so this is a hybrid prototype rather than a complete
+physical 6D mechanism.
+
+The current valid Pareto candidate is:
+
+```text
+--explicit-translational-carriage --carriage-mass-kg 1.0
+--kappas 35 --damping-ratio 0.8 --carriage-drive-scale 8.0
+--recovery-carriage-drive-scale 8.0 --recovery-kappa 35 --recovery-ramp 0.08
+--rod-stroke 0.16
+```
+
+On the same physical rod fixture and paired no-rod reference, it achieved
+`7.71 mm` peak nominal error, `4.29 mm` peak paired rod offset, `4.05 mm`
+nominal position RMSE, and `0.372 s` release-to-rejoin latency, while retaining
+`18.51 N` peak rod contact, `30.08 N·m` peak applied torque, and successful
+target lift/hold.  These figures are MuJoCo benchmark results only: the WBC
+reference is still a reachable moving trajectory interface proxy, not a live
+whole-body controller, and no real-robot claim follows from them.
+
+The summary now stores
+`peak_explicit_translational_spring_force_n` separately from
+`peak_virtual_force_n`; the latter is the controller wrench and is intentionally
+zero in the explicit translation channels.
