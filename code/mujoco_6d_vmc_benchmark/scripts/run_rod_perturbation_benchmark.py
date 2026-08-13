@@ -310,6 +310,7 @@ def run_episode(
     response_only: bool = False,
     explicit_translational_carriage: bool = False,
     carriage_mass_kg: float = 0.35,
+    rod_height_m: float = 0.540,
 ) -> dict[str, Any]:
     if not 0.0 <= render_start_time_s < render_end_time_s <= SIM_TIME_S:
         raise ValueError("render window must satisfy 0 <= start < end <= simulation time")
@@ -320,7 +321,7 @@ def run_episode(
     # response fixture the arm stays at the lower pre-grasp pose, so align the
     # same physical rod to that fixed interaction plane instead.
     model, data = make_rod_model(
-        menagerie, contact_time_constant_s, 0.520 if response_only else 0.540,
+        menagerie, contact_time_constant_s, 0.520 if response_only else rod_height_m,
         explicit_translational_carriage, carriage_mass_kg,
     )
     objects = {
@@ -581,6 +582,7 @@ def run_episode(
             "cycle_period_s": rod_cycle_period_s,
             "final_end_time_s": rod_start_time_s + (rod_cycles - 1) * rod_cycle_period_s + (ROD_END_TIME_S - ROD_START_TIME_S),
             "stroke_m": rod_stroke_m,
+            "height_m": rod_height_m,
         },
         "stiffness_schedule": {
             "shared_six_channel_contact_kappa": kappa,
@@ -671,6 +673,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--contact-time-constant", type=float, default=DEFAULT_CONTACT_TIME_CONSTANT_S)
     parser.add_argument("--rod-stroke", type=float, default=0.16)
     parser.add_argument(
+        "--rod-height", type=float, default=0.540,
+        help="World z height of the rod axis; use this to test impact geometry while keeping the same rod profile.",
+    )
+    parser.add_argument(
         "--recovery-kappa", type=float, default=None,
         help="Shared six-channel stiffness after rod retraction; default keeps constant stiffness.",
     )
@@ -700,7 +706,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed, args.rod_cycle_period, args.carriage_mass_kg) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or args.rod_cycles < 1 or args.rod_cycle_period < ROD_END_TIME_S - ROD_START_TIME_S or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0):
+    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed, args.rod_cycle_period, args.carriage_mass_kg, args.rod_height) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or args.rod_cycles < 1 or args.rod_cycle_period < ROD_END_TIME_S - ROD_START_TIME_S or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0):
         raise ValueError("all physical and controller scales must be positive")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     config = replace(
@@ -727,6 +733,7 @@ def main() -> None:
             rod_cycle_period_s=args.rod_cycle_period, response_only=args.response_only,
             explicit_translational_carriage=args.explicit_translational_carriage,
             carriage_mass_kg=args.carriage_mass_kg,
+            rod_height_m=args.rod_height,
         )
         for kappa in args.kappas
     ]

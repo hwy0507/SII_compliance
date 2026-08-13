@@ -66,3 +66,11 @@ def test_explicit_carriage_uses_one_shared_three_axis_body():
     assert 'name="explicit_carriage_y_slide"' in source
     assert 'name="explicit_carriage_z_slide"' in source
     assert 'explicit_carriage_body_id' in source
+
+
+def test_rod_height_is_an_explicit_recorded_fixture_variable():
+    """Geometry changes must be traceable rather than hidden in scene XML."""
+    source = MODULE_PATH.read_text()
+    assert 'parser.add_argument(\n        "--rod-height"' in source
+    assert '"height_m": rod_height_m' in source
+    assert 'rod_height_m: float = 0.540' in source
