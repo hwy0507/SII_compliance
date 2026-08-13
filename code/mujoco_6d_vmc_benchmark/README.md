@@ -318,3 +318,45 @@ window.  The run subsequently lifts and retains the free block, with 2.03 mm
 maximum rod--hand contact penetration and no hard torque-limit frame.  This is
 a first phase-scheduled VMC benchmark candidate, not yet the requested future
 WBC+VMC or a real-robot deployment.
+
+### Paper-style trajectory and error figures
+
+`scripts/plot_trajectory_results.py` produces two PNG figures in the style of
+the cited paper's component-wise trajectory/force plots.  The first figure has
+the nominal WBC-reference interface, perturbed trajectory, and no-rod control
+for X/Y/Z; component-wise deviations; and the norm error, paired disturbance
+offset, speed and contact force.  The second figure reports the six virtual
+wrench channels and three translational carriage deflections.  Shaded pink is
+the commanded rod-interaction interval, the red dashed line is complete rod
+retraction, and the green dotted line is closure.
+
+At the current first-pass **low-error** candidate (`kappa = 6.00`, all six
+directions shared; carriage drive scale `4.00`), the paired run gives:
+
+| Quantity | Result |
+| --- | ---: |
+| Peak \(\lVert p_{EE}-p_{\mathrm{WBC-ref}}\rVert\) | 10.84 mm |
+| Peak rod-induced offset versus matched no-rod run | 5.92 mm |
+| Position RMSE versus WBC-reference interface | 6.62 mm |
+| Paired rod-induced offset RMSE | 2.62 mm |
+| Error at rod release \(t=1.72\,s\) | 8.73 mm |
+| Error immediately before closure \(t=2.30\,s\) | 3.87 mm |
+| Maximum rod--hand contact force | 18.62 N |
+| Hard torque-limit fraction | 0 |
+
+Generate the figures from a paired trace using:
+
+```bash
+export MPLBACKEND=Agg
+python scripts/plot_trajectory_results.py \
+  --rod-trace outputs/rod_opt_k600/rod_perturbation_kappa_6.00_trace.npz \
+  --no-rod-trace outputs/rod_opt_k600_no_rod/rod_perturbation_kappa_6.00_trace.npz \
+  --output-dir outputs/rod_opt_k600/figures \
+  --rod-start 1.08 --rod-end 1.72 --grasp-time 2.30 \
+  --time-start 0.90 --time-end 2.55
+```
+
+The label “WBC reference” presently means the benchmark's reachable
+moving-trajectory **WBC interface proxy**, not a live whole-body controller.
+When WBC is integrated, replace `nominal_position`/`nominal_twist` in the trace
+with actual WBC outputs and the metrics and plotting protocol remain unchanged.

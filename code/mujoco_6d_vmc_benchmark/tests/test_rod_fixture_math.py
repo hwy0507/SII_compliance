@@ -40,3 +40,8 @@ def test_shared_six_channel_stiffness_ramps_after_rod_release():
     midpoint = MODULE.stiffness_schedule(MODULE.ROD_END_TIME_S + ramp / 2.0, contact, recovery, ramp)
     assert contact < midpoint < recovery
     assert MODULE.stiffness_schedule(MODULE.ROD_END_TIME_S + ramp, contact, recovery, ramp) == recovery
+
+
+def test_stiffness_schedule_preserves_a_single_shared_scalar_without_a_phase_change():
+    assert MODULE.stiffness_schedule(0.5, 1.25, 1.25, 0.08) == 1.25
+    assert MODULE.stiffness_schedule(3.0, 1.25, 1.25, 0.08) == 1.25
