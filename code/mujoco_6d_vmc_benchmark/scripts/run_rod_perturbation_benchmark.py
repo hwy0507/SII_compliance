@@ -122,6 +122,7 @@ def _rod_scene_xml(
     carriage_mass_kg: float = 0.35,
     explicit_rotational_carriage: bool = False,
     rotational_carriage_inertia_scale: float = 1.0,
+    rotational_damping_ratio: float | None = None,
 ) -> str:
     """Official Panda plus physical table/block and a dynamic slide-mounted rod."""
 
@@ -354,7 +355,7 @@ def run_episode(
 ) -> dict[str, Any]:
     if explicit_rotational_carriage and not explicit_translational_carriage:
         raise ValueError("an explicit rotational carriage requires the explicit translational carriage parent")
-    if rotational_carriage_inertia_scale <= 0.0:
+    if rotational_carriage_inertia_scale <= 0.0 or (rotational_damping_ratio is not None and rotational_damping_ratio <= 0.0):
         raise ValueError("rotational carriage inertia scale must be positive")
     if not 0.0 <= render_start_time_s < render_end_time_s <= SIM_TIME_S:
         raise ValueError("render window must satisfy 0 <= start < end <= simulation time")
@@ -545,7 +546,8 @@ def run_episode(
                 carriage_displacement[3:] = so3_log(explicit_rotation @ ee_rotation.T)
                 spring_k_rotation = active_kappa * config.k_rotation_base
                 virtual_inertia = config.virtual_inertia * rotational_carriage_inertia_scale
-                spring_d_rotation = 2.0 * config.zeta * np.sqrt(virtual_inertia * spring_k_rotation)
+                rotational_zeta = config.zeta if rotational_damping_ratio is None else rotational_damping_ratio
+                spring_d_rotation = 2.0 * rotational_zeta * np.sqrt(virtual_inertia * spring_k_rotation)
                 explicit_moment = (
                     config.max_moment * np.tanh(spring_k_rotation * carriage_displacement[3:] / config.max_moment)
                     + spring_d_rotation * (explicit_angular_velocity - ee_twist[3:])
@@ -662,6 +664,7 @@ def run_episode(
             "explicit_translational_carriage_mass_kg": carriage_mass_kg if explicit_translational_carriage else None,
             "explicit_rotational_carriage": explicit_rotational_carriage,
             "explicit_rotational_carriage_inertia_scale": rotational_carriage_inertia_scale if explicit_rotational_carriage else None,
+            "explicit_rotational_damping_ratio": rotational_damping_ratio if explicit_rotational_carriage else None,
             "rotation_channels": "MuJoCo ball-joint physical virtual carriage" if explicit_rotational_carriage else "existing controller-integrated SO(3) virtual carriage",
             "explicit_force_norm_cap_n": 1.5 * config.max_force if explicit_translational_carriage else None,
         },
@@ -792,6 +795,10 @@ def parse_args() -> argparse.Namespace:
         "--rotational-carriage-inertia-scale", type=float, default=1.0,
         help="Multiplier on the rotational virtual inertia (base 0.08 kg m^2 per axis).",
     )
+    parser.add_argument(
+        "--rotational-damping-ratio", type=float, default=None,
+        help="Optional damping ratio for the explicit rotational spring; default shares the six-channel zeta.",
+    )
     parser.add_argument("--disable-rod", action="store_true", help="Paired no-perturbation grasp reference run.")
     parser.add_argument("--playback-speed", type=float, default=1.0, help="GIF-only playback multiplier; simulation dynamics are unchanged.")
     parser.add_argument(
@@ -806,7 +813,10 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed, args.rod_cycle_period, args.carriage_mass_kg, args.rod_height, args.rotational_carriage_inertia_scale) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or args.rod_cycles < 1 or args.rod_cycle_period < ROD_END_TIME_S - ROD_START_TIME_S or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0) or (args.explicit_rotational_carriage and not args.explicit_translational_carriage):
+    positive_scales = [args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed, args.rod_cycle_period, args.carriage_mass_kg, args.rod_height, args.rotational_carriage_inertia_scale]
+    if args.rotational_damping_ratio is not None:
+        positive_scales.append(args.rotational_damping_ratio)
+    if min(positive_scales) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or args.rod_cycles < 1 or args.rod_cycle_period < ROD_END_TIME_S - ROD_START_TIME_S or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0) or (args.explicit_rotational_carriage and not args.explicit_translational_carriage):
         raise ValueError("all physical and controller scales must be positive")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     config = replace(
@@ -836,6 +846,7 @@ def main() -> None:
             rod_height_m=args.rod_height,
             explicit_rotational_carriage=args.explicit_rotational_carriage,
             rotational_carriage_inertia_scale=args.rotational_carriage_inertia_scale,
+            rotational_damping_ratio=args.rotational_damping_ratio,
         )
         for kappa in args.kappas
     ]
