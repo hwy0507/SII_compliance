@@ -104,28 +104,28 @@ def _plot_rejoin_trajectory(
     windows = [(start, end) for start, end in windows_all if end >= args.time_start and start <= (args.time_end or time[-1])]
     rejoin_all = _rejoin_times(time, np.linalg.norm(rod["ee_position"] - rod["nominal_position"], axis=1) * 1000.0, windows, args.rejoin_threshold_mm, args.rejoin_hold_s)
 
-    fig = plt.figure(figsize=(13.0, 8.0), constrained_layout=True)
-    grid = fig.add_gridspec(2, 2, width_ratios=(1.05, 1.0))
-    ax3d = fig.add_subplot(grid[:, 0], projection="3d")
-    axxy = fig.add_subplot(grid[0, 1])
-    axerr = fig.add_subplot(grid[1, 1])
-    ax3d.plot(nominal[:, 0], nominal[:, 1], nominal[:, 2], color="black", lw=2.0, label="WBC reference (proxy)")
-    ax3d.plot(actual[:, 0], actual[:, 1], actual[:, 2], color="#d81b60", lw=1.5, label="actual EE: rod + VMC")
-    ax3d.plot(baseline[:, 0], baseline[:, 1], baseline[:, 2], color="#377eb8", ls="--", lw=1.0, label="no-rod control")
-    ax3d.set(xlabel="X (m)", ylabel="Y (m)", zlabel="Z (m)", title="3D WBC-reference versus actual trajectory")
-    ax3d.legend(loc="best", frameon=False, fontsize=8)
+    fig, (axtraj, axerr) = plt.subplots(1, 2, figsize=(13.0, 5.8), gridspec_kw={"width_ratios": (1.15, 1.0)}, constrained_layout=True)
+    # A 2D X-Z projection is easier to read than a 3D perspective for this
+    # benchmark: X captures the approach direction and Z captures the grasp
+    # descent.  The two trajectories are deliberately drawn in the same axes.
+    axtraj.plot(nominal[:, 0], nominal[:, 2], color="black", lw=2.2, label="WBC reference (proxy)")
+    axtraj.plot(actual[:, 0], actual[:, 2], color="#d81b60", lw=1.6, label="actual EE: rod + VMC")
+    axtraj.plot(baseline[:, 0], baseline[:, 2], color="#377eb8", ls="--", lw=1.0, label="no-rod control")
+    axtraj.set(xlabel="X (m)", ylabel="Z (m)", title="2D X–Z trajectory: departure and rejoin")
+    axtraj.grid(True, alpha=0.25)
+    axtraj.set_aspect("equal", adjustable="datalim")
+    axtraj.legend(loc="best", frameon=False, fontsize=8)
     for cycle, (start, end) in enumerate(windows):
         onset = int(np.argmin(np.abs(t - start)))
         release = int(np.argmin(np.abs(t - end)))
-        ax3d.scatter(actual[onset, 0], actual[onset, 1], actual[onset, 2], c="#ff7f0e", s=28, label="contact onset" if cycle == 0 else None)
-        ax3d.scatter(actual[release, 0], actual[release, 1], actual[release, 2], c="#2ca02c", s=28, marker="x", label="contact release" if cycle == 0 else None)
-
-    axxy.plot(nominal[:, 0], nominal[:, 1], color="black", lw=1.8, label="WBC reference (proxy)")
-    axxy.plot(actual[:, 0], actual[:, 1], color="#d81b60", lw=1.3, label="actual EE")
-    axxy.set(xlabel="X (m)", ylabel="Y (m)", title="XY projection: departure and rejoin")
-    axxy.grid(True, alpha=0.25)
-    for start, end in windows:
-        axxy.axvline(nominal[np.argmin(np.abs(t - start)), 0], color="#ff7f0e", ls=":", lw=0.8)
+        axtraj.scatter(actual[onset, 0], actual[onset, 2], c="#ff7f0e", s=34, zorder=5, label="contact onset" if cycle == 0 else None)
+        axtraj.scatter(actual[release, 0], actual[release, 2], c="#2ca02c", s=38, marker="x", zorder=5, label="contact release" if cycle == 0 else None)
+    for cycle, rejoin in enumerate(rejoin_all, start=1):
+        if rejoin is None:
+            continue
+        index = int(np.argmin(np.abs(t - rejoin)))
+        axtraj.scatter(actual[index, 0], actual[index, 2], facecolors="white", edgecolors="#1f77b4", s=48, zorder=6)
+        axtraj.annotate(f"R{cycle}", (actual[index, 0], actual[index, 2]), xytext=(4, 4), textcoords="offset points", fontsize=8, color="#1f77b4")
 
     axerr.plot(t, error_mm, color="#d81b60", lw=1.5, label="‖actual EE − WBC reference‖")
     axerr.axhline(args.rejoin_threshold_mm, color="black", ls="--", lw=1.0, label=f"rejoin tube ({args.rejoin_threshold_mm:.1f} mm)")
@@ -138,7 +138,7 @@ def _plot_rejoin_trajectory(
     axerr.set(xlabel="Time (s)", ylabel="Position error (mm)", title="Time to return to WBC reference tube")
     axerr.legend(loc="best", frameon=False, fontsize=8)
     axerr.grid(True, alpha=0.25)
-    fig.suptitle("End-effector departure and rejoin relative to WBC-reference interface", fontsize=14)
+    fig.suptitle("2D end-effector trajectory departure and rejoin relative to WBC-reference interface", fontsize=14)
     path = output_dir / "wbc_rejoin_trajectory_results.png"
     fig.savefig(path, dpi=220)
     plt.close(fig)

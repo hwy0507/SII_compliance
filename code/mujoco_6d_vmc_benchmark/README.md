@@ -437,12 +437,13 @@ five-contact protocol.
 
 For the question “after each impact, how long until the actual hand returns to
 the WBC path?”, the plotting script also writes
-`wbc_rejoin_trajectory_results.png`.  Its left panel overlays the 3D
-`WBC reference (proxy)` path, the actual rod+VMC end-effector path, and the
-matched no-rod path.  The upper-right panel is the XY projection, and the
-lower-right panel plots the Euclidean reference error.  Orange markers denote
-contact onset, green markers/lines denote release, and blue dashed markers
-denote the first time the error remains within the configured rejoin tube.
+`wbc_rejoin_trajectory_results.png`.  Its left panel overlays the 2D X--Z
+projection of the `WBC reference (proxy)` path, the actual rod+VMC
+end-effector path, and the matched no-rod path in the same axes.  X captures
+the approach direction while Z captures the grasp descent.  The right panel
+plots the Euclidean reference error.  Orange markers denote contact onset,
+green markers/lines denote release, and blue dashed markers denote the first
+time the error remains within the configured rejoin tube.
 
 The default rejoin definition is a 5 mm Euclidean position tube maintained for
 80 ms.  It is intentionally explicit so the recovery time is measurable rather
