@@ -432,3 +432,22 @@ proxy described above; it is not a live WBC output, and the experiment is not
 a real-robot deployment.  Once the real WBC supplies pose/twist traces, the
 same paired metrics and plotting script can be reused without changing the
 five-contact protocol.
+
+### Direct WBC-reference rejoin plot
+
+For the question “after each impact, how long until the actual hand returns to
+the WBC path?”, the plotting script also writes
+`wbc_rejoin_trajectory_results.png`.  Its left panel overlays the 3D
+`WBC reference (proxy)` path, the actual rod+VMC end-effector path, and the
+matched no-rod path.  The upper-right panel is the XY projection, and the
+lower-right panel plots the Euclidean reference error.  Orange markers denote
+contact onset, green markers/lines denote release, and blue dashed markers
+denote the first time the error remains within the configured rejoin tube.
+
+The default rejoin definition is a 5 mm Euclidean position tube maintained for
+80 ms.  It is intentionally explicit so the recovery time is measurable rather
+than judged from a screenshot.  Change it with `--rejoin-threshold-mm` and
+`--rejoin-hold-s`; the resulting `trajectory_error_metrics.json` records every
+contact window, rejoin time, and release-to-rejoin latency.  With a future live
+WBC trace, the same figure becomes the direct actual-versus-WBC trajectory
+comparison requested for the final WBC+VMC experiment.

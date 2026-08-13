@@ -55,6 +55,103 @@ def _style(ax: plt.Axes, xlabel: str = "Time (s)") -> None:
     ax.spines["right"].set_visible(False)
 
 
+def _contact_windows(time: np.ndarray, contact: np.ndarray) -> list[tuple[float, float]]:
+    """Return contiguous physical-contact windows from the recorded trace."""
+    active = np.asarray(contact, dtype=bool)
+    starts = np.flatnonzero(active & ~np.r_[False, active[:-1]])
+    ends = np.flatnonzero(active & ~np.r_[active[1:], False])
+    return [(float(time[start]), float(time[end])) for start, end in zip(starts, ends)]
+
+
+def _rejoin_times(
+    time: np.ndarray,
+    error_mm: np.ndarray,
+    windows: list[tuple[float, float]],
+    threshold_mm: float,
+    hold_s: float,
+) -> list[float | None]:
+    """Find the first sustained post-release return inside the error tube."""
+    result: list[float | None] = []
+    dt = float(np.median(np.diff(time)))
+    hold_samples = max(1, int(np.ceil(hold_s / dt)))
+    for _, release in windows:
+        candidates = np.flatnonzero(time >= release)
+        found = None
+        for index in candidates:
+            end = min(len(error_mm), index + hold_samples)
+            if end - index == hold_samples and np.all(error_mm[index:end] <= threshold_mm):
+                found = float(time[index])
+                break
+        result.append(found)
+    return result
+
+
+def _plot_rejoin_trajectory(
+    rod: dict[str, np.ndarray],
+    no_rod: dict[str, np.ndarray],
+    args: argparse.Namespace,
+    output_dir: Path,
+) -> dict[str, object]:
+    """Write a direct WBC-reference/actual trajectory and recovery-time figure."""
+    time = rod["time"]
+    mask = _window(time, args.time_start, args.time_end)
+    t = time[mask]
+    nominal = rod["nominal_position"][mask]
+    actual = rod["ee_position"][mask]
+    baseline = no_rod["ee_position"][mask]
+    error_mm = np.linalg.norm(actual - nominal, axis=1) * 1000.0
+    windows_all = _contact_windows(time, rod["rod_contact"])
+    windows = [(start, end) for start, end in windows_all if end >= args.time_start and start <= (args.time_end or time[-1])]
+    rejoin_all = _rejoin_times(time, np.linalg.norm(rod["ee_position"] - rod["nominal_position"], axis=1) * 1000.0, windows, args.rejoin_threshold_mm, args.rejoin_hold_s)
+
+    fig = plt.figure(figsize=(13.0, 8.0), constrained_layout=True)
+    grid = fig.add_gridspec(2, 2, width_ratios=(1.05, 1.0))
+    ax3d = fig.add_subplot(grid[:, 0], projection="3d")
+    axxy = fig.add_subplot(grid[0, 1])
+    axerr = fig.add_subplot(grid[1, 1])
+    ax3d.plot(nominal[:, 0], nominal[:, 1], nominal[:, 2], color="black", lw=2.0, label="WBC reference (proxy)")
+    ax3d.plot(actual[:, 0], actual[:, 1], actual[:, 2], color="#d81b60", lw=1.5, label="actual EE: rod + VMC")
+    ax3d.plot(baseline[:, 0], baseline[:, 1], baseline[:, 2], color="#377eb8", ls="--", lw=1.0, label="no-rod control")
+    ax3d.set(xlabel="X (m)", ylabel="Y (m)", zlabel="Z (m)", title="3D WBC-reference versus actual trajectory")
+    ax3d.legend(loc="best", frameon=False, fontsize=8)
+    for cycle, (start, end) in enumerate(windows):
+        onset = int(np.argmin(np.abs(t - start)))
+        release = int(np.argmin(np.abs(t - end)))
+        ax3d.scatter(actual[onset, 0], actual[onset, 1], actual[onset, 2], c="#ff7f0e", s=28, label="contact onset" if cycle == 0 else None)
+        ax3d.scatter(actual[release, 0], actual[release, 1], actual[release, 2], c="#2ca02c", s=28, marker="x", label="contact release" if cycle == 0 else None)
+
+    axxy.plot(nominal[:, 0], nominal[:, 1], color="black", lw=1.8, label="WBC reference (proxy)")
+    axxy.plot(actual[:, 0], actual[:, 1], color="#d81b60", lw=1.3, label="actual EE")
+    axxy.set(xlabel="X (m)", ylabel="Y (m)", title="XY projection: departure and rejoin")
+    axxy.grid(True, alpha=0.25)
+    for start, end in windows:
+        axxy.axvline(nominal[np.argmin(np.abs(t - start)), 0], color="#ff7f0e", ls=":", lw=0.8)
+
+    axerr.plot(t, error_mm, color="#d81b60", lw=1.5, label="‖actual EE − WBC reference‖")
+    axerr.axhline(args.rejoin_threshold_mm, color="black", ls="--", lw=1.0, label=f"rejoin tube ({args.rejoin_threshold_mm:.1f} mm)")
+    for cycle, ((start, end), rejoin) in enumerate(zip(windows, rejoin_all), start=1):
+        axerr.axvspan(start, end, color="#ef476f", alpha=0.10)
+        axerr.axvline(end, color="#2ca02c", ls=":", lw=0.9)
+        if rejoin is not None:
+            axerr.axvline(rejoin, color="#1f77b4", ls="--", lw=0.9)
+            axerr.annotate(f"R{cycle}: {rejoin - end:.2f}s", (rejoin, args.rejoin_threshold_mm), xytext=(3, 8), textcoords="offset points", fontsize=7, color="#1f77b4")
+    axerr.set(xlabel="Time (s)", ylabel="Position error (mm)", title="Time to return to WBC reference tube")
+    axerr.legend(loc="best", frameon=False, fontsize=8)
+    axerr.grid(True, alpha=0.25)
+    fig.suptitle("End-effector departure and rejoin relative to WBC-reference interface", fontsize=14)
+    path = output_dir / "wbc_rejoin_trajectory_results.png"
+    fig.savefig(path, dpi=220)
+    plt.close(fig)
+    return {
+        "rejoin_threshold_mm": args.rejoin_threshold_mm,
+        "rejoin_hold_s": args.rejoin_hold_s,
+        "contact_windows_s": [[start, end] for start, end in windows],
+        "rejoin_times_s": rejoin_all,
+        "rejoin_latency_s": [None if value is None else value - end for value, (_, end) in zip(rejoin_all, windows)],
+        "figure": str(path),
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--rod-trace", type=Path, required=True)
@@ -67,6 +164,8 @@ def main() -> None:
     parser.add_argument("--time-end", type=float, default=None)
     parser.add_argument("--rod-cycles", type=int, default=1)
     parser.add_argument("--rod-cycle-period", type=float, default=0.80)
+    parser.add_argument("--rejoin-threshold-mm", type=float, default=5.0, help="Distance tube used to declare return to WBC reference.")
+    parser.add_argument("--rejoin-hold-s", type=float, default=0.08, help="Time the error must remain inside the rejoin tube.")
     args = parser.parse_args()
 
     rod = _load(args.rod_trace)
@@ -161,6 +260,8 @@ def main() -> None:
         "nominal_position_rmse_mm": float(np.sqrt(np.mean(nominal_error**2))),
         "paired_offset_rmse_mm": float(np.sqrt(np.mean(paired_offset**2))),
     }
+    rejoin_metrics = _plot_rejoin_trajectory(rod, no_rod, args, args.output_dir)
+    metrics["rejoin"] = rejoin_metrics
     (args.output_dir / "trajectory_error_metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
     print(json.dumps(metrics, indent=2))
 
