@@ -197,3 +197,60 @@ The current reference generator is a repeatable reaching proxy.  Replacing
 `PickLiftCarryReference` with the real fixed WBC output is the next interface
 step; the controller, safety limits, logging schema and metrics remain
 unchanged.
+
+## Rod perturbation: departure and return of the six-spring system
+
+`scripts/run_rod_perturbation_benchmark.py` is the primary fixture for the
+intended compliance demonstration.  A green cylindrical rod is mounted on a
+finite-mass, position-driven physical slide.  During the open-gripper descent
+it moves laterally into the Panda `hand_collision` geometry, holds briefly,
+then retracts smoothly.  The benchmark logs all of the quantities needed to
+show the six-spring mechanism rather than merely reporting a collision:
+
+- `carriage_displacement[0:3]` and `[3:6]`: the three translational and three
+  rotational virtual-spring deflections;
+- `vmc_wrench[0:3]` and `[3:6]`: their corresponding virtual force/moment;
+- actual end-effector, blue nominal marker, and cyan virtual carriage in the
+  rendered scene; and
+- peak deviation from nominal, rejoin error before gripper closure, contact
+  force/impulse/penetration, velocity/jerk, and applied torque ratio.
+
+This finite pick trajectory is a **moving attractor / trajectory tube**, not a
+mathematical limit cycle.  For the exact phrase “depart from and return to a
+limit cycle,” use a separate periodic nominal pose and phase variable.  The
+rod fixture nevertheless tests the same desired VMC behavior for the grasp
+task: departure from the moving nominal tube under an external physical push,
+then a bounded return sufficiently close to complete the grasp.
+
+The current paired baseline uses `kappa = 1.60`, VMC damping ratio `1.8`,
+virtual-carriage drive scale `1.60`, rod stroke `0.16 m`, and fixed contact
+time constant `0.015 s`.  The rod physically contacts the hand from about
+`1.260 s` to `1.344 s`; it is commanded in from `1.08 s`, held, and smoothly
+retracted by `1.72 s`, before gripper closure at `2.10 s`.  The perturbed run
+passes all task gates (physical rod--hand contact, later target lift, target
+still held, and zero hard torque-limit frames), with 3.40 mm maximum contact
+penetration.  Its six-spring response has 8.70 mm peak translation and 8.64
+mrad peak rotation of carriage-to-hand deflection, 4.66 N peak virtual force,
+0.318 Nm peak virtual moment, 18.1 mm peak end-effector deviation from nominal
+and 11.4 mm error immediately before closure.  The matched `--disable-rod`
+control must accompany every reported rod trial, because a fixed nominal
+reference has nonzero tracking error even without a perturbation.
+
+Run the rod fixture and its paired no-rod control as follows:
+
+```bash
+export MUJOCO_GL=egl
+python scripts/run_rod_perturbation_benchmark.py \
+  --menagerie ~/vmc_mujoco_runtime/mujoco_menagerie \
+  --output-dir outputs/rod_k160 \
+  --kappas 1.60 --damping-ratio 1.8 \
+  --carriage-drive-scale 1.60 --carriage-drive-damping-ratio 2.0 \
+  --contact-time-constant 0.015 --rod-stroke 0.16 --render-gif
+
+python scripts/run_rod_perturbation_benchmark.py \
+  --menagerie ~/vmc_mujoco_runtime/mujoco_menagerie \
+  --output-dir outputs/rod_k160_no_rod \
+  --kappas 1.60 --damping-ratio 1.8 \
+  --carriage-drive-scale 1.60 --carriage-drive-damping-ratio 2.0 \
+  --contact-time-constant 0.015 --rod-stroke 0.16 --disable-rod
+```

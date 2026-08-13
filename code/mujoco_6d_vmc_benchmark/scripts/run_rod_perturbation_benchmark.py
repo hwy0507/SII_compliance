@@ -1,0 +1,413 @@
+#!/usr/bin/env python3
+"""Benchmark six-spring compliant recovery after a physical rod perturbation.
+
+Panda follows a nominal tabletop grasp approach.  While the gripper is still
+open, a finite-mass cylindrical rod, position-driven through a physical slide
+joint, presses across the hand. The end effector departs from its moving
+nominal trajectory tube, the six virtual springs and virtual carriage generate
+a bounded restoring wrench, the hand re-joins the nominal tube, and the
+gripper then completes a physical grasp and lift.
+
+The finite grasp trajectory is a moving attractor/trajectory tube, *not* a
+mathematical limit cycle.  A strict limit-cycle study should instead supply a
+periodic nominal pose with a phase variable; this benchmark exposes the same
+six-dimensional departure-and-return mechanism for the user task.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+from dataclasses import asdict, replace
+from pathlib import Path
+from typing import Any
+
+import imageio.v3 as iio
+import mujoco
+import numpy as np
+
+from run_benchmark import (
+    ARM_DOF,
+    CONTROL_DT,
+    EPS,
+    RENDER_FPS,
+    SIM_TIME_S,
+    TORQUE_LIMITS,
+    SixDVirtualCarriage,
+    VMCConfig,
+    _safe_scalar,
+    _torque_actuated_xml,
+    body_jacobian,
+    body_twist,
+    rate_limit_torque,
+    so3_log,
+    torque_feasible_scale,
+)
+from run_grasp_impact_benchmark import (
+    GRASP_TIME_S,
+    LIFT_COMPLETE_TIME_S,
+    TABLE_TOP_Z,
+    TARGET_START_Z,
+    PickLiftCarryReference,
+    smoothstep,
+)
+
+
+ROD_START_TIME_S = 1.08
+ROD_PEAK_TIME_S = 1.28
+ROD_RETRACT_TIME_S = 1.52
+ROD_END_TIME_S = 1.72
+DEFAULT_CONTACT_TIME_CONSTANT_S = 0.015
+
+
+def rod_motion(time_s: float, stroke_m: float) -> tuple[float, float]:
+    """Smooth inward press followed by smooth retraction along the slide axis."""
+
+    if time_s <= ROD_START_TIME_S or time_s >= ROD_END_TIME_S:
+        return 0.0, 0.0
+    if time_s < ROD_PEAK_TIME_S:
+        blend, derivative = smoothstep((time_s - ROD_START_TIME_S) / (ROD_PEAK_TIME_S - ROD_START_TIME_S))
+        displacement = stroke_m * blend
+        velocity = stroke_m * derivative / (ROD_PEAK_TIME_S - ROD_START_TIME_S)
+        return float(displacement), float(velocity)
+    if time_s <= ROD_RETRACT_TIME_S:
+        return stroke_m, 0.0
+    blend, derivative = smoothstep((time_s - ROD_RETRACT_TIME_S) / (ROD_END_TIME_S - ROD_RETRACT_TIME_S))
+    displacement = stroke_m * (1.0 - blend)
+    velocity = -stroke_m * derivative / (ROD_END_TIME_S - ROD_RETRACT_TIME_S)
+    return float(displacement), float(velocity)
+
+
+def _rod_scene_xml(menagerie: Path, contact_time_constant_s: float) -> str:
+    """Official Panda plus physical table/block and a dynamic slide-mounted rod."""
+
+    text = _torque_actuated_xml(menagerie, contact_time_constant_s)
+    anchor = "</actuator>\n\n  <keyframe>"
+    gripper = (
+        '<position name="gripper" tendon="split" kp="250" '
+        'ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-100 100"/>\n'
+    )
+    if anchor not in text:
+        raise RuntimeError("could not add the physical gripper actuator")
+    text = text.replace(anchor, gripper + anchor, 1)
+    # The rod's cylinder axis is local z. Rotate it so its long axis is world
+    # x, then slide it along world y into and back out of the hand. A position
+    # actuator drives the support slide; the finite-mass rod/contact response
+    # remains part of MuJoCo dynamics rather than a mocap teleport.
+    injected = f"""
+      <camera name="rod_track" pos="1.20 -1.55 0.95"
+        xyaxes="0.79 0.61 0  -0.17 0.22 0.96"/>
+      <geom name="table" type="box" pos="0.54 0 0.38" size="0.20 0.20 0.02"
+        contype="2" conaffinity="2" rgba="0.31 0.22 0.13 1" friction="1.2 0.02 0.002"/>
+      <body name="target_object" pos="0.54 0 {TARGET_START_Z:.3f}">
+        <freejoint name="target_freejoint"/>
+        <geom name="target_object_geom" type="box" size="0.025 0.025 0.025" mass="0.08"
+          contype="6" conaffinity="7" rgba="0.96 0.65 0.10 1" friction="1.5 0.02 0.002"
+          solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
+      </body>
+      <body name="rod_support" pos="0.55 -0.20 0.540">
+        <joint name="rod_slide" type="slide" axis="0 1 0" range="0 0.20" damping="2.0"/>
+        <geom name="rod_geom" type="cylinder" size="0.014 0.15" quat="0.7071068 0 0.7071068 0"
+          mass="0.30" contype="8" conaffinity="4" rgba="0.18 0.70 0.25 1"
+          friction="0.8 0.02 0.002" solref="{contact_time_constant_s:.5f} 1"
+          solimp="0.85 0.95 0.002 0.5 2"/>
+      </body>
+      <body name="nominal_marker" mocap="true" pos="0 0 1">
+        <geom type="sphere" size="0.022" contype="0" conaffinity="0" rgba="0.22 0.42 1.0 0.58"/>
+      </body>
+      <geom name="rod_guide" type="box" pos="0.55 -0.10 0.435" size="0.18 0.13 0.008"
+        contype="0" conaffinity="0" rgba="0.10 0.12 0.15 0.70"/>
+    """
+    text = text.replace("  </worldbody>", injected + "  </worldbody>", 1)
+    rod_driver = (
+        '<position name="rod_driver" joint="rod_slide" kp="5000" '
+        'ctrllimited="true" ctrlrange="0 0.20" forcelimited="true" forcerange="-300 300"/>\n'
+    )
+    if anchor not in text:
+        raise RuntimeError("could not add the physical rod driver actuator")
+    text = text.replace(anchor, rod_driver + anchor, 1)
+    return text
+
+
+def make_rod_model(menagerie: Path, contact_time_constant_s: float) -> tuple[mujoco.MjModel, mujoco.MjData]:
+    xml = _rod_scene_xml(menagerie, contact_time_constant_s)
+    assets_dir = menagerie / "franka_emika_panda" / "assets"
+    assets = {str(path.relative_to(assets_dir)): path.read_bytes() for path in assets_dir.rglob("*") if path.is_file()}
+    model = mujoco.MjModel.from_xml_string(xml, assets=assets)
+    model.opt.timestep = CONTROL_DT
+    data = mujoco.MjData(model)
+    mujoco.mj_resetDataKeyframe(model, data, 0)
+    mujoco.mj_forward(model, data)
+    return model, data
+
+
+def rod_contact_diagnostics(
+    model: mujoco.MjModel,
+    data: mujoco.MjData,
+    rod_geom_id: int,
+    hand_geom_id: int,
+) -> tuple[bool, float, float]:
+    touching_hand = False
+    peak_force = 0.0
+    peak_penetration = 0.0
+    wrench = np.zeros(6)
+    for index in range(data.ncon):
+        contact = data.contact[index]
+        if {contact.geom1, contact.geom2} != {rod_geom_id, hand_geom_id}:
+            continue
+        touching_hand = True
+        mujoco.mj_contactForce(model, data, index, wrench)
+        peak_force = max(peak_force, float(np.linalg.norm(wrench[:3])))
+        peak_penetration = max(peak_penetration, max(0.0, -float(contact.dist)))
+    return touching_hand, peak_force, peak_penetration
+
+
+def run_episode(
+    menagerie: Path,
+    kappa: float,
+    output_dir: Path,
+    render_gif: bool,
+    config: VMCConfig,
+    rod_stroke_m: float,
+    contact_time_constant_s: float,
+    rod_enabled: bool = True,
+) -> dict[str, Any]:
+    model, data = make_rod_model(menagerie, contact_time_constant_s)
+    objects = {
+        "hand": (mujoco.mjtObj.mjOBJ_BODY, "hand"),
+        "hand_geom": (mujoco.mjtObj.mjOBJ_GEOM, "hand_collision"),
+        "target_body": (mujoco.mjtObj.mjOBJ_BODY, "target_object"),
+        "target_freejoint": (mujoco.mjtObj.mjOBJ_JOINT, "target_freejoint"),
+        "rod_geom": (mujoco.mjtObj.mjOBJ_GEOM, "rod_geom"),
+        "rod_joint": (mujoco.mjtObj.mjOBJ_JOINT, "rod_slide"),
+        "moving_obstacle": (mujoco.mjtObj.mjOBJ_BODY, "moving_obstacle"),
+        "virtual_carriage": (mujoco.mjtObj.mjOBJ_BODY, "virtual_carriage"),
+        "nominal_marker": (mujoco.mjtObj.mjOBJ_BODY, "nominal_marker"),
+    }
+    ids = {label: mujoco.mj_name2id(model, obj, name) for label, (obj, name) in objects.items()}
+    if min(ids.values()) < 0:
+        raise RuntimeError("rod perturbation scene IDs were not resolved")
+    target_qpos = model.jnt_qposadr[ids["target_freejoint"]]
+    target_dof = model.jnt_dofadr[ids["target_freejoint"]]
+    obstacle_mocap = model.body_mocapid[ids["moving_obstacle"]]
+    carriage_mocap = model.body_mocapid[ids["virtual_carriage"]]
+    nominal_marker_mocap = model.body_mocapid[ids["nominal_marker"]]
+    rod_ctrl_index = ARM_DOF + 1
+    if model.nu != rod_ctrl_index + 1:
+        raise RuntimeError("expected seven torque motors, gripper, and rod driver")
+    data.qpos[target_qpos:target_qpos + 7] = [0.54, 0.0, TARGET_START_Z, 1.0, 0.0, 0.0, 0.0]
+    data.qvel[target_dof:target_dof + 6] = 0.0
+    mujoco.mj_forward(model, data)
+
+    reference = PickLiftCarryReference(model, data, ids["hand"])
+    controller = SixDVirtualCarriage(
+        config, kappa, data.xpos[ids["hand"]].copy(), data.xmat[ids["hand"]].reshape(3, 3).copy()
+    )
+    renderer: mujoco.Renderer | None = mujoco.Renderer(model, height=480, width=640) if render_gif else None
+    frames: list[np.ndarray] = []
+    render_stride = max(1, round(1.0 / (RENDER_FPS * CONTROL_DT)))
+    log: dict[str, list[Any]] = {key: [] for key in (
+        "time", "track_position", "track_orientation", "ee_speed", "surge", "acceleration", "jerk",
+        "torque_applied", "torque_ratio", "rod_contact", "rod_force", "rod_penetration",
+        "carriage_displacement", "vmc_wrench", "ee_position", "nominal_position", "carriage_position",
+        "object_position", "object_hand_distance", "rod_displacement", "rod_command_velocity",
+    )}
+    previous_twist = np.zeros(6)
+    previous_acceleration = np.zeros(6)
+    previous_torque = data.qfrc_bias[:ARM_DOF].copy()
+    rod_hand_observed = False
+    steps = int(SIM_TIME_S / CONTROL_DT)
+
+    for step in range(steps):
+        time_s = step * CONTROL_DT
+        nominal_position, nominal_rotation, nominal_linear, nominal_angular = reference.sample(time_s)
+        nominal_twist = np.concatenate([nominal_linear, nominal_angular])
+        rod_displacement, rod_velocity = rod_motion(time_s, rod_stroke_m) if rod_enabled else (0.0, 0.0)
+        # The rod receives a position command, not a qpos teleport.
+        data.mocap_pos[obstacle_mocap] = np.array([3.0, 3.0, 3.0])
+        data.mocap_quat[obstacle_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
+        data.mocap_pos[carriage_mocap] = controller.position
+        data.mocap_quat[carriage_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
+        data.mocap_pos[nominal_marker_mocap] = nominal_position
+        data.mocap_quat[nominal_marker_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
+
+        ee_position = data.xpos[ids["hand"]].copy()
+        ee_rotation = data.xmat[ids["hand"]].reshape(3, 3).copy()
+        ee_twist = body_twist(model, data, ids["hand"])
+        wrench, carriage_displacement = controller.wrench(ee_position, ee_rotation, ee_twist)
+        wrench_torque = body_jacobian(model, data, ids["hand"]).T @ wrench
+        bias = data.qfrc_bias[:ARM_DOF].copy()
+        scale = torque_feasible_scale(bias, wrench_torque)
+        desired = bias + scale * wrench_torque
+        applied = np.clip(rate_limit_torque(previous_torque, desired, CONTROL_DT, config), -TORQUE_LIMITS, TORQUE_LIMITS)
+        data.ctrl[:ARM_DOF] = applied
+        data.ctrl[ARM_DOF] = reference.gripper_target(time_s)
+        data.ctrl[rod_ctrl_index] = rod_displacement
+        controller.advance(CONTROL_DT, nominal_position, nominal_rotation, nominal_twist, wrench)
+        mujoco.mj_step(model, data)
+
+        rod_contact, rod_force, rod_penetration = rod_contact_diagnostics(model, data, ids["rod_geom"], ids["hand_geom"])
+        rod_hand_observed = rod_hand_observed or rod_contact
+        acceleration = (ee_twist - previous_twist) / CONTROL_DT
+        jerk = (acceleration - previous_acceleration) / CONTROL_DT
+        direction = nominal_linear / (np.linalg.norm(nominal_linear) + EPS)
+        surge = max(0.0, float(np.dot(ee_twist[:3], direction) - np.linalg.norm(nominal_linear)))
+        target_position = data.xpos[ids["target_body"]].copy()
+        values = {
+            "time": time_s,
+            "track_position": float(np.linalg.norm(ee_position - nominal_position)),
+            "track_orientation": float(np.linalg.norm(so3_log(nominal_rotation @ ee_rotation.T))),
+            "ee_speed": float(np.linalg.norm(ee_twist[:3])),
+            "surge": surge,
+            "acceleration": float(np.linalg.norm(acceleration[:3])),
+            "jerk": float(np.linalg.norm(jerk[:3])),
+            "torque_applied": applied.tolist(),
+            "torque_ratio": float(np.max(np.abs(applied) / TORQUE_LIMITS)),
+            "rod_contact": rod_contact,
+            "rod_force": rod_force,
+            "rod_penetration": rod_penetration,
+            "carriage_displacement": carriage_displacement.tolist(),
+            "vmc_wrench": wrench.tolist(),
+            "ee_position": ee_position.tolist(),
+            "nominal_position": nominal_position.tolist(),
+            "carriage_position": controller.position.tolist(),
+            "object_position": target_position.tolist(),
+            "object_hand_distance": float(np.linalg.norm(target_position - ee_position)),
+            "rod_displacement": rod_displacement,
+            "rod_command_velocity": rod_velocity,
+        }
+        for key, value in values.items():
+            log[key].append(value)
+        previous_twist = ee_twist
+        previous_acceleration = acceleration
+        previous_torque = applied
+        if renderer is not None and step % render_stride == 0:
+            renderer.update_scene(data, camera="rod_track")
+            frames.append(renderer.render().copy())
+
+    if renderer is not None:
+        renderer.close()
+        gif_path = output_dir / f"rod_perturbation_kappa_{kappa:.2f}.gif"
+        iio.imwrite(gif_path, np.stack(frames), duration=1.0 / RENDER_FPS, loop=0)
+    else:
+        gif_path = None
+    arrays = {key: np.asarray(values) for key, values in log.items()}
+    perturbation_mask = (arrays["time"] >= ROD_START_TIME_S) & (arrays["time"] <= ROD_END_TIME_S)
+    recovery_mask = (arrays["time"] > ROD_END_TIME_S) & (arrays["time"] < GRASP_TIME_S)
+    object_position = arrays["object_position"]
+    target_lifted = bool(np.max(object_position[:, 2]) > TABLE_TOP_Z + 0.12)
+    target_held = bool(object_position[-1, 2] > TABLE_TOP_Z + 0.08 and arrays["object_hand_distance"][-1] < 0.16)
+    rod_contact_mask = arrays["rod_contact"].astype(bool)
+    peak_displacement = np.max(np.abs(arrays["carriage_displacement"]), axis=0)
+    peak_wrench = np.max(np.abs(arrays["vmc_wrench"]), axis=0)
+    peak_trajectory_deviation = _safe_scalar(np.max(arrays["track_position"][perturbation_mask]))
+    pregrasp_error = _safe_scalar(arrays["track_position"][np.flatnonzero(arrays["time"] < GRASP_TIME_S)[-1]])
+    contact_times = arrays["time"][rod_contact_mask]
+    summary = {
+        "kappa": kappa,
+        "config": asdict(config),
+        "scenario": "physical rod perturbation during open-gripper grasp approach; compliant return to moving nominal trajectory tube",
+        "reference": "finite grasp trajectory (moving attractor, not a mathematical limit cycle); replace with fixed WBC pose/twist for WBC+VMC",
+        "rod_motion": {
+            "enabled": rod_enabled,
+            "start_time_s": ROD_START_TIME_S,
+            "peak_time_s": ROD_PEAK_TIME_S,
+            "retract_time_s": ROD_RETRACT_TIME_S,
+            "end_time_s": ROD_END_TIME_S,
+            "stroke_m": rod_stroke_m,
+        },
+        "grasp_time_s": GRASP_TIME_S,
+        "contact_time_constant_s": contact_time_constant_s,
+        "task_validity": {
+            "physical_gripper_actuated": True,
+            "rod_hand_contact_observed": rod_hand_observed,
+            "target_lifted_after_recovery": target_lifted,
+            "target_held_at_end": target_held,
+            "max_rod_penetration_m": _safe_scalar(np.max(arrays["rod_penetration"])),
+        },
+        "six_spring_response": {
+            "peak_carriage_displacement": peak_displacement.tolist(),
+            "peak_translational_displacement_m": _safe_scalar(np.linalg.norm(peak_displacement[:3])),
+            "peak_rotational_displacement_rad": _safe_scalar(np.linalg.norm(peak_displacement[3:])),
+            "peak_virtual_wrench": peak_wrench.tolist(),
+            "peak_virtual_force_n": _safe_scalar(np.linalg.norm(peak_wrench[:3])),
+            "peak_virtual_moment_nm": _safe_scalar(np.linalg.norm(peak_wrench[3:])),
+            "peak_end_effector_nominal_deviation_m": peak_trajectory_deviation,
+            "pregrasp_rejoin_error_m": pregrasp_error,
+            "rejoin_fraction": pregrasp_error / max(peak_trajectory_deviation, EPS),
+        },
+        "tracking": {
+            "perturbation_position_rmse_m": _safe_scalar(np.sqrt(np.mean(arrays["track_position"][perturbation_mask] ** 2))),
+            "recovery_position_rmse_m": _safe_scalar(np.sqrt(np.mean(arrays["track_position"][recovery_mask] ** 2))),
+            "pregrasp_position_error_m": pregrasp_error,
+            "final_position_error_m": _safe_scalar(arrays["track_position"][-1]),
+        },
+        "motion": {
+            "recovery_speed_p95_mps": _safe_scalar(np.quantile(arrays["ee_speed"][recovery_mask], 0.95)),
+            "forward_surge_max_mps": _safe_scalar(np.max(arrays["surge"][perturbation_mask | recovery_mask])),
+            "acceleration_peak_mps2": _safe_scalar(np.max(arrays["acceleration"][perturbation_mask | recovery_mask])),
+            "jerk_peak_mps3": _safe_scalar(np.max(arrays["jerk"][perturbation_mask | recovery_mask])),
+        },
+        "torque": {
+            "applied_peak_nm": _safe_scalar(np.max(np.abs(arrays["torque_applied"]))),
+            "applied_peak_ratio": _safe_scalar(np.max(arrays["torque_ratio"])),
+            "hard_limit_fraction": _safe_scalar(np.mean(np.isclose(np.abs(arrays["torque_applied"]), TORQUE_LIMITS[None, :], atol=1e-5))),
+        },
+        "rod_diagnostics": {
+            "contact_start_time_s": _safe_scalar(contact_times[0]) if len(contact_times) else None,
+            "contact_end_time_s": _safe_scalar(contact_times[-1]) if len(contact_times) else None,
+            "contact_duration_s": _safe_scalar(np.sum(rod_contact_mask) * CONTROL_DT),
+            "peak_contact_force_n": _safe_scalar(np.max(arrays["rod_force"])),
+            "contact_impulse_ns": _safe_scalar(np.sum(arrays["rod_force"]) * CONTROL_DT),
+            "max_penetration_m": _safe_scalar(np.max(arrays["rod_penetration"])),
+        },
+        "gif": str(gif_path) if gif_path else None,
+    }
+    np.savez_compressed(output_dir / f"rod_perturbation_kappa_{kappa:.2f}_trace.npz", **arrays)
+    (output_dir / f"rod_perturbation_kappa_{kappa:.2f}_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    return summary
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--menagerie", type=Path, required=True)
+    parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--kappas", type=float, nargs="+", default=[1.0])
+    parser.add_argument("--damping-ratio", type=float, default=1.8)
+    parser.add_argument("--carriage-drive-scale", type=float, default=0.75)
+    parser.add_argument("--carriage-drive-damping-ratio", type=float, default=2.0)
+    parser.add_argument("--contact-time-constant", type=float, default=DEFAULT_CONTACT_TIME_CONSTANT_S)
+    parser.add_argument("--rod-stroke", type=float, default=0.16)
+    parser.add_argument("--disable-rod", action="store_true", help="Paired no-perturbation grasp reference run.")
+    parser.add_argument("--render-gif", action="store_true")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant) <= 0 or args.rod_stroke < 0:
+        raise ValueError("all physical and controller scales must be positive")
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    config = replace(
+        VMCConfig(),
+        zeta=args.damping_ratio,
+        carriage_drive_k_translation=VMCConfig().carriage_drive_k_translation * args.carriage_drive_scale,
+        carriage_drive_k_rotation=VMCConfig().carriage_drive_k_rotation * args.carriage_drive_scale,
+        carriage_drive_zeta=args.carriage_drive_damping_ratio,
+    )
+    runs = [
+        run_episode(
+            args.menagerie, kappa, args.output_dir, args.render_gif, config,
+            args.rod_stroke, args.contact_time_constant, rod_enabled=not args.disable_rod,
+        )
+        for kappa in args.kappas
+    ]
+    matrix = {"protocol": {key: value for key, value in vars(args).items() if key not in {"menagerie", "output_dir"}}, "runs": runs}
+    (args.output_dir / "evaluation_matrix.json").write_text(json.dumps(matrix, indent=2) + "\n")
+    print(json.dumps(matrix, indent=2))
+
+
+if __name__ == "__main__":
+    os.environ.setdefault("MUJOCO_GL", "egl")
+    main()
