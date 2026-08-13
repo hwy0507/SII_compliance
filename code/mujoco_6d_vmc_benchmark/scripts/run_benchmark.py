@@ -150,7 +150,27 @@ class SixDVirtualCarriage:
         self.saturation = np.array([config.max_force] * 3 + [config.max_moment] * 3)
 
         self.drive_stiffness = np.array([config.carriage_drive_k_translation] * 3 + [config.carriage_drive_k_rotation] * 3)
+        self._base_drive_stiffness = self.drive_stiffness.copy()
         self.drive_damping = 2.0 * config.carriage_drive_zeta * np.sqrt(self.mass * self.drive_stiffness)
+
+    def set_kappa(self, kappa: float) -> None:
+        """Update all six spring channels with one shared stiffness multiplier."""
+
+        if kappa <= 0.0:
+            raise ValueError("kappa must be positive")
+        self.kappa = float(kappa)
+        self.stiffness = self.kappa * np.array(
+            [self.config.k_translation_base] * 3 + [self.config.k_rotation_base] * 3
+        )
+        self.damping = 2.0 * self.config.zeta * np.sqrt(self.mass * self.stiffness)
+
+    def set_carriage_drive_scale(self, scale: float) -> None:
+        """Scale all six virtual-carriage return channels together."""
+
+        if scale <= 0.0:
+            raise ValueError("carriage drive scale must be positive")
+        self.drive_stiffness = float(scale) * self._base_drive_stiffness
+        self.drive_damping = 2.0 * self.config.carriage_drive_zeta * np.sqrt(self.mass * self.drive_stiffness)
 
     def wrench(self, ee_position: np.ndarray, ee_rotation: np.ndarray, ee_twist: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         # MuJoCo's spatial Jacobian and angular velocity are expressed in the

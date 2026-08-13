@@ -30,3 +30,13 @@ def test_rod_holds_peak_stroke_before_smooth_retraction():
 
 def test_rod_retracts_before_gripper_closure():
     assert MODULE.ROD_END_TIME_S < MODULE.GRASP_TIME_S
+
+
+def test_shared_six_channel_stiffness_ramps_after_rod_release():
+    contact = 0.20
+    recovery = 1.60
+    ramp = 0.16
+    assert MODULE.stiffness_schedule(MODULE.ROD_END_TIME_S, contact, recovery, ramp) == contact
+    midpoint = MODULE.stiffness_schedule(MODULE.ROD_END_TIME_S + ramp / 2.0, contact, recovery, ramp)
+    assert contact < midpoint < recovery
+    assert MODULE.stiffness_schedule(MODULE.ROD_END_TIME_S + ramp, contact, recovery, ramp) == recovery

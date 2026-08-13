@@ -266,44 +266,55 @@ The blue nominal marker, magenta measured-end-effector marker, cyan carriage,
 and magenta 0.48 s measured trajectory tail are drawn at their unscaled,
 physical coordinates.
 
-The following is a deliberately soft visibility/trade-off case, not the
-recommended final stiffness: it makes the compliance response especially
-readable, while the stiffer `kappa = 1.60` case above remains the current
-rejoin-quality baseline.  Always compare it with its matched no-rod control.
+The original constant-softness case (`kappa = 0.20`) is deliberately retained
+as a **failure/trade-off baseline**: it yields visibly, but does not regain
+enough pose before the old `2.10 s` closure deadline.  It must not be presented
+as a successful recovery demonstration.
+
+The recovery candidate below still uses one shared scalar for all six springs.
+It uses `kappa = 0.20` while the rod is present, then smoothly switches all six
+to `kappa = 4.00` after the rod has retracted; the six virtual-carriage return
+channels are scaled together from `0.50` to `4.00`.  Closure is delayed to
+`2.30 s` while the same reachable pre-grasp pose is held.  This creates an
+observable and measurable sequence: yield first, then rejoin, then grasp.
 
 ```bash
 export MUJOCO_GL=egl
 python scripts/run_rod_perturbation_benchmark.py \
   --menagerie ~/vmc_mujoco_runtime/mujoco_menagerie \
-  --output-dir outputs/rod_soft_demo \
-  --kappas 0.20 --damping-ratio 1.8 \
-  --carriage-drive-scale 0.50 --carriage-drive-damping-ratio 2.0 \
+  --output-dir outputs/rod_rejoin_demo \
+  --kappas 0.20 --recovery-kappa 4.00 --recovery-ramp 0.08 \
+  --damping-ratio 1.8 --carriage-drive-scale 0.50 \
+  --recovery-carriage-drive-scale 4.00 --carriage-drive-damping-ratio 2.0 \
   --contact-time-constant 0.015 --rod-stroke 0.16 \
-  --camera-view hand-closeup --render-start-time 0.90 --render-end-time 2.40 \
+  --grasp-time 2.30 --camera-view hand-closeup --render-start-time 0.90 --render-end-time 2.55 \
   --playback-speed 0.5 --render-gif
 
 python scripts/run_rod_perturbation_benchmark.py \
   --menagerie ~/vmc_mujoco_runtime/mujoco_menagerie \
-  --output-dir outputs/rod_soft_demo_no_rod \
-  --kappas 0.20 --damping-ratio 1.8 \
-  --carriage-drive-scale 0.50 --carriage-drive-damping-ratio 2.0 \
+  --output-dir outputs/rod_rejoin_demo_no_rod \
+  --kappas 0.20 --recovery-kappa 4.00 --recovery-ramp 0.08 \
+  --damping-ratio 1.8 --carriage-drive-scale 0.50 \
+  --recovery-carriage-drive-scale 4.00 --carriage-drive-damping-ratio 2.0 \
   --contact-time-constant 0.015 --rod-stroke 0.16 --disable-rod \
-  --camera-view hand-closeup --render-start-time 0.90 --render-end-time 2.40 \
+  --grasp-time 2.30 --camera-view hand-closeup --render-start-time 0.90 --render-end-time 2.55 \
   --playback-speed 0.5 --render-gif
 
 python scripts/render_rod_comparison.py \
-  --perturbed-gif outputs/rod_soft_demo/rod_perturbation_kappa_0.20.gif \
-  --perturbed-trace outputs/rod_soft_demo/rod_perturbation_kappa_0.20_trace.npz \
-  --reference-gif outputs/rod_soft_demo_no_rod/rod_perturbation_kappa_0.20.gif \
-  --reference-trace outputs/rod_soft_demo_no_rod/rod_perturbation_kappa_0.20_trace.npz \
-  --time-start 0.90 --time-end 2.40 \
-  --output outputs/rod_soft_demo/rod_vs_no_rod_recovery_kappa_0.20.gif
+  --perturbed-gif outputs/rod_rejoin_demo/rod_perturbation_kappa_0.20.gif \
+  --perturbed-trace outputs/rod_rejoin_demo/rod_perturbation_kappa_0.20_trace.npz \
+  --reference-gif outputs/rod_rejoin_demo_no_rod/rod_perturbation_kappa_0.20.gif \
+  --reference-trace outputs/rod_rejoin_demo_no_rod/rod_perturbation_kappa_0.20_trace.npz \
+  --time-start 0.90 --time-end 2.55 \
+  --output outputs/rod_rejoin_demo/rod_vs_no_rod_rejoin_kappa_0.20.gif
 ```
 
-For this paired `kappa = 0.20` trial, the rod touches the hand from `1.260 s`
-to `1.332 s`; the true peak difference from the no-rod end-effector trajectory
-is `23.0 mm`.  The trial subsequently lifts and retains the free block, with a
-2.03 mm maximum rod--hand contact penetration and no hard torque-limit frame.
-The 26.9 mm pre-grasp nominal error makes its safety--rejoin trade-off explicit;
-it is evidence of a visible compliant departure, **not** a tuned final
-controller.
+For the paired two-stage trial, the rod touches the hand from `1.260 s` to
+`1.332 s` and is fully retracted at `1.72 s`.  The paired end-effector
+difference peaks near `23 mm`; it then falls to about `8 mm` by `2.55 s`.
+Against the nominal trajectory, error falls from `33.7 mm` at rod release to
+`10.2 mm` immediately before the delayed closure: a `69.6%` recovery over that
+window.  The run subsequently lifts and retains the free block, with 2.03 mm
+maximum rod--hand contact penetration and no hard torque-limit frame.  This is
+a first phase-scheduled VMC benchmark candidate, not yet the requested future
+WBC+VMC or a real-robot deployment.

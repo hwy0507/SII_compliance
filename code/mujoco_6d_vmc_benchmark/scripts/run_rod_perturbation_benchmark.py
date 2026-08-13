@@ -82,6 +82,24 @@ def rod_motion(time_s: float, stroke_m: float) -> tuple[float, float]:
     return float(displacement), float(velocity)
 
 
+def stiffness_schedule(
+    time_s: float,
+    contact_kappa: float,
+    recovery_kappa: float,
+    recovery_ramp_s: float,
+) -> float:
+    """One scalar for all six springs: low while yielding, high after release."""
+
+    if contact_kappa <= 0.0 or recovery_kappa <= 0.0 or recovery_ramp_s < 0.0:
+        raise ValueError("stiffness schedule arguments must be positive")
+    if time_s <= ROD_END_TIME_S:
+        return float(contact_kappa)
+    if recovery_ramp_s == 0.0 or time_s >= ROD_END_TIME_S + recovery_ramp_s:
+        return float(recovery_kappa)
+    blend, _ = smoothstep((time_s - ROD_END_TIME_S) / recovery_ramp_s)
+    return float((1.0 - blend) * contact_kappa + blend * recovery_kappa)
+
+
 def _rod_scene_xml(menagerie: Path, contact_time_constant_s: float) -> str:
     """Official Panda plus physical table/block and a dynamic slide-mounted rod."""
 
@@ -208,9 +226,16 @@ def run_episode(
     camera_view: str = "overview",
     render_start_time_s: float = 0.0,
     render_end_time_s: float = SIM_TIME_S,
+    recovery_kappa: float | None = None,
+    recovery_ramp_s: float = 0.16,
+    recovery_drive_scale_factor: float = 1.0,
+    grasp_time_s: float = GRASP_TIME_S,
 ) -> dict[str, Any]:
     if not 0.0 <= render_start_time_s < render_end_time_s <= SIM_TIME_S:
         raise ValueError("render window must satisfy 0 <= start < end <= simulation time")
+    recovery_kappa = kappa if recovery_kappa is None else recovery_kappa
+    if recovery_kappa <= 0.0 or recovery_ramp_s < 0.0 or recovery_drive_scale_factor <= 0.0 or not ROD_END_TIME_S < grasp_time_s < LIFT_COMPLETE_TIME_S:
+        raise ValueError("recovery stiffness and ramp must be non-negative / positive")
     model, data = make_rod_model(menagerie, contact_time_constant_s)
     objects = {
         "hand": (mujoco.mjtObj.mjOBJ_BODY, "hand"),
@@ -271,7 +296,7 @@ def run_episode(
         "time", "track_position", "track_orientation", "ee_speed", "surge", "acceleration", "jerk",
         "torque_applied", "torque_ratio", "rod_contact", "rod_force", "rod_penetration",
         "carriage_displacement", "vmc_wrench", "ee_position", "nominal_position", "carriage_position",
-        "object_position", "object_hand_distance", "rod_displacement", "rod_command_velocity",
+        "object_position", "object_hand_distance", "rod_displacement", "rod_command_velocity", "active_kappa", "active_drive_scale",
     )}
     previous_twist = np.zeros(6)
     previous_acceleration = np.zeros(6)
@@ -284,6 +309,10 @@ def run_episode(
         time_s = step * CONTROL_DT
         nominal_position, nominal_rotation, nominal_linear, nominal_angular = reference.sample(time_s)
         nominal_twist = np.concatenate([nominal_linear, nominal_angular])
+        active_kappa = stiffness_schedule(time_s, kappa, recovery_kappa, recovery_ramp_s)
+        active_drive_scale = stiffness_schedule(time_s, 1.0, recovery_drive_scale_factor, recovery_ramp_s)
+        controller.set_kappa(active_kappa)
+        controller.set_carriage_drive_scale(active_drive_scale)
         rod_displacement, rod_velocity = rod_motion(time_s, rod_stroke_m) if rod_enabled else (0.0, 0.0)
         # The rod receives a position command, not a qpos teleport.
         data.mocap_pos[obstacle_mocap] = np.array([3.0, 3.0, 3.0])
@@ -313,7 +342,10 @@ def run_episode(
         desired = bias + scale * wrench_torque
         applied = np.clip(rate_limit_torque(previous_torque, desired, CONTROL_DT, config), -TORQUE_LIMITS, TORQUE_LIMITS)
         data.ctrl[:ARM_DOF] = applied
-        data.ctrl[ARM_DOF] = reference.gripper_target(time_s)
+        # The reference holds the reachable pre-grasp pose until 2.70 s.  A
+        # short optional delay therefore gives the released spring system time
+        # to rejoin before closure, without changing the arm path itself.
+        data.ctrl[ARM_DOF] = reference.gripper_target(time_s - (grasp_time_s - GRASP_TIME_S))
         data.ctrl[rod_ctrl_index] = rod_displacement
         controller.advance(CONTROL_DT, nominal_position, nominal_rotation, nominal_twist, wrench)
         mujoco.mj_step(model, data)
@@ -347,6 +379,8 @@ def run_episode(
             "object_hand_distance": float(np.linalg.norm(target_position - ee_position)),
             "rod_displacement": rod_displacement,
             "rod_command_velocity": rod_velocity,
+            "active_kappa": active_kappa,
+            "active_drive_scale": active_drive_scale,
         }
         for key, value in values.items():
             log[key].append(value)
@@ -371,7 +405,7 @@ def run_episode(
         gif_path = None
     arrays = {key: np.asarray(values) for key, values in log.items()}
     perturbation_mask = (arrays["time"] >= ROD_START_TIME_S) & (arrays["time"] <= ROD_END_TIME_S)
-    recovery_mask = (arrays["time"] > ROD_END_TIME_S) & (arrays["time"] < GRASP_TIME_S)
+    recovery_mask = (arrays["time"] > ROD_END_TIME_S) & (arrays["time"] < grasp_time_s)
     object_position = arrays["object_position"]
     target_lifted = bool(np.max(object_position[:, 2]) > TABLE_TOP_Z + 0.12)
     target_held = bool(object_position[-1, 2] > TABLE_TOP_Z + 0.08 and arrays["object_hand_distance"][-1] < 0.16)
@@ -379,7 +413,10 @@ def run_episode(
     peak_displacement = np.max(np.abs(arrays["carriage_displacement"]), axis=0)
     peak_wrench = np.max(np.abs(arrays["vmc_wrench"]), axis=0)
     peak_trajectory_deviation = _safe_scalar(np.max(arrays["track_position"][perturbation_mask]))
-    pregrasp_error = _safe_scalar(arrays["track_position"][np.flatnonzero(arrays["time"] < GRASP_TIME_S)[-1]])
+    pregrasp_error = _safe_scalar(arrays["track_position"][np.flatnonzero(arrays["time"] < grasp_time_s)[-1]])
+    release_index = int(np.flatnonzero(arrays["time"] >= ROD_END_TIME_S)[0])
+    release_error = _safe_scalar(arrays["track_position"][release_index])
+    recovery_drop = _safe_scalar(release_error - pregrasp_error)
     contact_times = arrays["time"][rod_contact_mask]
     summary = {
         "kappa": kappa,
@@ -394,6 +431,13 @@ def run_episode(
             "end_time_s": ROD_END_TIME_S,
             "stroke_m": rod_stroke_m,
         },
+        "stiffness_schedule": {
+            "shared_six_channel_contact_kappa": kappa,
+            "shared_six_channel_recovery_kappa": recovery_kappa,
+            "recovery_ramp_start_s": ROD_END_TIME_S,
+            "recovery_ramp_duration_s": recovery_ramp_s,
+            "recovery_carriage_drive_scale_factor": recovery_drive_scale_factor,
+        },
         "visualization": {
             "nominal_marker": "bright blue sphere",
             "actual_marker": "magenta sphere",
@@ -404,7 +448,7 @@ def run_episode(
             "camera_view": camera_view,
             "render_window_s": [render_start_time_s, render_end_time_s],
         },
-        "grasp_time_s": GRASP_TIME_S,
+        "grasp_time_s": grasp_time_s,
         "contact_time_constant_s": contact_time_constant_s,
         "task_validity": {
             "physical_gripper_actuated": True,
@@ -423,6 +467,9 @@ def run_episode(
             "peak_end_effector_nominal_deviation_m": peak_trajectory_deviation,
             "pregrasp_rejoin_error_m": pregrasp_error,
             "rejoin_fraction": pregrasp_error / max(peak_trajectory_deviation, EPS),
+            "error_at_rod_release_m": release_error,
+            "release_to_pregrasp_error_drop_m": recovery_drop,
+            "release_to_pregrasp_error_drop_fraction": recovery_drop / max(release_error, EPS),
         },
         "tracking": {
             "perturbation_position_rmse_m": _safe_scalar(np.sqrt(np.mean(arrays["track_position"][perturbation_mask] ** 2))),
@@ -466,6 +513,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--carriage-drive-damping-ratio", type=float, default=2.0)
     parser.add_argument("--contact-time-constant", type=float, default=DEFAULT_CONTACT_TIME_CONSTANT_S)
     parser.add_argument("--rod-stroke", type=float, default=0.16)
+    parser.add_argument(
+        "--recovery-kappa", type=float, default=None,
+        help="Shared six-channel stiffness after rod retraction; default keeps constant stiffness.",
+    )
+    parser.add_argument("--recovery-ramp", type=float, default=0.16, help="Seconds to smoothly ramp from contact to recovery stiffness.")
+    parser.add_argument(
+        "--recovery-carriage-drive-scale", type=float, default=None,
+        help="Absolute carriage-drive scale after release; default keeps the contact-stage scale.",
+    )
+    parser.add_argument("--grasp-time", type=float, default=GRASP_TIME_S, help="Delay gripper closure until recovery has started.")
     parser.add_argument("--disable-rod", action="store_true", help="Paired no-perturbation grasp reference run.")
     parser.add_argument("--playback-speed", type=float, default=1.0, help="GIF-only playback multiplier; simulation dynamics are unchanged.")
     parser.add_argument(
@@ -480,7 +537,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed) <= 0 or args.rod_stroke < 0:
+    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0):
         raise ValueError("all physical and controller scales must be positive")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     config = replace(
@@ -490,12 +547,19 @@ def main() -> None:
         carriage_drive_k_rotation=VMCConfig().carriage_drive_k_rotation * args.carriage_drive_scale,
         carriage_drive_zeta=args.carriage_drive_damping_ratio,
     )
+    recovery_drive_scale_factor = (
+        1.0 if args.recovery_carriage_drive_scale is None
+        else args.recovery_carriage_drive_scale / args.carriage_drive_scale
+    )
     runs = [
         run_episode(
             args.menagerie, kappa, args.output_dir, args.render_gif, config,
             args.rod_stroke, args.contact_time_constant, rod_enabled=not args.disable_rod,
             playback_speed=args.playback_speed, camera_view=args.camera_view,
             render_start_time_s=args.render_start_time, render_end_time_s=args.render_end_time,
+            recovery_kappa=args.recovery_kappa, recovery_ramp_s=args.recovery_ramp,
+            recovery_drive_scale_factor=recovery_drive_scale_factor,
+            grasp_time_s=args.grasp_time,
         )
         for kappa in args.kappas
     ]
