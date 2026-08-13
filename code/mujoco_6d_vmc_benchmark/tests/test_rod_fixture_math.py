@@ -56,3 +56,13 @@ def test_shared_six_channel_stiffness_ramps_after_rod_release():
 def test_stiffness_schedule_preserves_a_single_shared_scalar_without_a_phase_change():
     assert MODULE.stiffness_schedule(0.5, 1.25, 1.25, 0.08) == 1.25
     assert MODULE.stiffness_schedule(3.0, 1.25, 1.25, 0.08) == 1.25
+
+
+def test_explicit_carriage_uses_one_shared_three_axis_body():
+    """The physical prototype must be one 3D mass, not three unrelated masses."""
+    source = MODULE_PATH.read_text()
+    assert '<body name="explicit_carriage"' in source
+    assert 'name="explicit_carriage_x_slide"' in source
+    assert 'name="explicit_carriage_y_slide"' in source
+    assert 'name="explicit_carriage_z_slide"' in source
+    assert 'explicit_carriage_body_id' in source

@@ -123,3 +123,73 @@ export MUJOCO_GL=egl MPLBACKEND=Agg
 > 显式 virtual masses + 多点空间弹簧 + 反向力守恒 + phase/state machine + 分通道 trace。
 
 这组改动会直接提升我们 benchmark 对“偏离极限环/参考轨迹后回归”的物理可解释性，但在接入前仍需用 paired experiments 证明它确实降低回归时间和峰值偏差。
+
+## 8. 已实现的最小显式-carriage A/B 原型
+
+根据上面的迁移建议，当前 benchmark 已实现一个最小但真实的 A/B 路径。它不是
+完整 6D physical mechanism：仅把**三条平移通道**从 Python 内部 carriage 升级为
+MuJoCo 显式状态，三条 SO(3) rotational channel 暂时保留在原有控制器中。
+
+显式版本的结构为：
+
+```text
+moving WBC-reference proxy
+       │  drive spring-damper
+       ▼
+one MuJoCo body: 3 orthogonal slide joints + one 0.35 kg mass
+       │  nonlinear spring-damper, equal and opposite forces
+       ▼
+Panda hand  +  existing 3 rotational VMC channels
+```
+
+运行开关：
+
+```bash
+python scripts/run_rod_perturbation_benchmark.py ... \
+  --explicit-translational-carriage --carriage-mass-kg 0.35
+```
+
+注意这里是一块带质量的 **3D carriage body**，而不是三个互不相干的单轴质量。
+每步通过 `mj_applyFT` 对 carriage 和 Panda hand 施加作用力/反作用力；因而该
+carriage 的三维位置和速度进入 MuJoCo `qpos/qvel` 与质量矩阵。其额外 trace 为
+`explicit_carriage_position`、`explicit_carriage_velocity`、
+`explicit_carriage_force`。
+
+### 8.1 严格 paired 初始对比（尚未调参）
+
+两种模型均使用同一 rod fixture、同一 `kappa=6`、`zeta=1.8`、translation
+drive scale `4.0`、recovery ramp `0.08 s`、rod stroke `0.16 m`、grasp time
+`2.30 s`，并且各自有 matched no-rod baseline。回归判据均为 5 mm 位置管连续
+80 ms。
+
+| 指标 | 原 Python 6D carriage | 显式 3D translation carriage (0.35 kg) | 解释 |
+|---|---:|---:|---|
+| 实际 rod-hand 接触 | 1.260--1.344 s | 1.260--1.344 s | fixture 一致 |
+| 接触后回归时间 | 0.760 s | **0.732 s** | 显式版快 28 ms |
+| 峰值 nominal/reference error | **10.84 mm** | 11.56 mm | 显式版增大 0.72 mm |
+| paired rod-induced offset peak | **5.92 mm** | 6.46 mm | 显式版增大 0.54 mm |
+| 释放时误差 | 8.73 mm | 9.05 mm | 显式版略大 |
+| 闭合前误差 | 3.87 mm | **3.60 mm** | 显式版略小 |
+| peak physical contact force | 18.62 N | **18.10 N** | 显式版略低 |
+| peak translation spring force | 5.19 N | 3.63 N | 显式质量承担一部分动态响应 |
+| peak applied motor torque | 30.40 N·m | **30.38 N·m** | 基本相同 |
+| lift / hold | true / true | true / true | task gate 均通过 |
+
+服务器输出：
+
+```text
+/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/explicit_k600/
+/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/explicit_k600_no_rod/
+```
+
+### 8.2 诚实结论
+
+这个 0.35 kg 初始点证明“显式虚拟质量 + 作用力/反作用力”已经可以在同一任务上
+稳定运行并改变回归形状；但它没有支配性地优于旧版。它稍微缩短回归时间并降低
+接触力，却增大峰值偏差。因此不能据此声称作者式显式机构天然更好，也不能把它
+作为最终参数。
+
+下一步应该对 `carriage_mass_kg`、translation stiffness、drive stiffness 和
+damping 做小型 Pareto 扫描，同时要求 task lift/hold gate、无 hard torque limit，
+再根据 peak error / rejoin time / peak contact force / peak torque 选择候选。之后
+才加入三个显式 rotational state 或多点姿态弹簧。

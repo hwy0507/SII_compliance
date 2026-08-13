@@ -114,7 +114,13 @@ def stiffness_schedule(
     return float((1.0 - blend) * contact_kappa + blend * recovery_kappa)
 
 
-def _rod_scene_xml(menagerie: Path, contact_time_constant_s: float, rod_height_m: float = 0.540) -> str:
+def _rod_scene_xml(
+    menagerie: Path,
+    contact_time_constant_s: float,
+    rod_height_m: float = 0.540,
+    explicit_translational_carriage: bool = False,
+    carriage_mass_kg: float = 0.35,
+) -> str:
     """Official Panda plus physical table/block and a dynamic slide-mounted rod."""
 
     text = _torque_actuated_xml(menagerie, contact_time_constant_s)
@@ -130,6 +136,18 @@ def _rod_scene_xml(menagerie: Path, contact_time_constant_s: float, rod_height_m
     # x, then slide it along world y into and back out of the hand. A position
     # actuator drives the support slide; the finite-mass rod/contact response
     # remains part of MuJoCo dynamics rather than a mocap teleport.
+    explicit_carriage_xml = ""
+    if explicit_translational_carriage:
+        explicit_carriage_xml = f"""
+      <!-- One physical 3D carriage: three orthogonal slide states share one mass. -->
+      <body name="explicit_carriage" pos="0 0 0" gravcomp="1">
+        <joint name="explicit_carriage_x_slide" type="slide" axis="1 0 0" damping="1.0"/>
+        <joint name="explicit_carriage_y_slide" type="slide" axis="0 1 0" damping="1.0"/>
+        <joint name="explicit_carriage_z_slide" type="slide" axis="0 0 1" damping="1.0"/>
+        <inertial pos="0 0 0" mass="{carriage_mass_kg:.6g}" diaginertia="1e-6 1e-6 1e-6"/>
+        <geom type="sphere" size="0.018" contype="0" conaffinity="0" rgba="0.05 0.85 0.95 0.45"/>
+      </body>
+      """
     injected = f"""
       <camera name="rod_track" pos="1.18 -1.42 0.86"
         xyaxes="0.79 0.61 0  -0.17 0.22 0.96"/>
@@ -158,6 +176,7 @@ def _rod_scene_xml(menagerie: Path, contact_time_constant_s: float, rod_height_m
       {''.join(f'<body name="actual_trail_{index}" mocap="true" pos="0 0 -2"><geom type="sphere" size="0.008" contype="0" conaffinity="0" rgba="1.0 0.10 0.62 {0.20 + 0.60 * (index + 1) / ACTUAL_TRAIL_COUNT:.3f}"/></body>' for index in range(ACTUAL_TRAIL_COUNT))}
       <geom name="rod_guide" type="box" pos="0.55 -0.10 0.435" size="0.18 0.13 0.008"
         contype="0" conaffinity="0" rgba="0.10 0.12 0.15 0.70"/>
+      {explicit_carriage_xml}
     """
     text = text.replace("  </worldbody>", injected + "  </worldbody>", 1)
     rod_driver = (
@@ -174,8 +193,13 @@ def make_rod_model(
     menagerie: Path,
     contact_time_constant_s: float,
     rod_height_m: float = 0.540,
+    explicit_translational_carriage: bool = False,
+    carriage_mass_kg: float = 0.35,
 ) -> tuple[mujoco.MjModel, mujoco.MjData]:
-    xml = _rod_scene_xml(menagerie, contact_time_constant_s, rod_height_m)
+    xml = _rod_scene_xml(
+        menagerie, contact_time_constant_s, rod_height_m,
+        explicit_translational_carriage, carriage_mass_kg,
+    )
     assets_dir = menagerie / "franka_emika_panda" / "assets"
     assets = {str(path.relative_to(assets_dir)): path.read_bytes() for path in assets_dir.rglob("*") if path.is_file()}
     model = mujoco.MjModel.from_xml_string(xml, assets=assets)
@@ -205,6 +229,29 @@ def rod_contact_diagnostics(
         peak_force = max(peak_force, float(np.linalg.norm(wrench[:3])))
         peak_penetration = max(peak_penetration, max(0.0, -float(contact.dist)))
     return touching_hand, peak_force, peak_penetration
+
+
+def _apply_body_force(
+    model: mujoco.MjModel,
+    data: mujoco.MjData,
+    body_id: int,
+    force: np.ndarray,
+) -> None:
+    """Accumulate a world-frame point force at a body's origin into qfrc_applied."""
+    generalized = np.zeros(model.nv, dtype=float)
+    mujoco.mj_applyFT(
+        model, data, np.asarray(force, dtype=float), np.zeros(3), data.xpos[body_id], body_id, generalized
+    )
+    data.qfrc_applied[:] += generalized
+
+
+def _saturated_translation_spring(
+    stiffness: float,
+    maximum_force: float,
+    displacement: np.ndarray,
+) -> np.ndarray:
+    """Per-axis nonlinear force law matching the existing VMC saturation convention."""
+    return maximum_force * np.tanh(stiffness * np.asarray(displacement, dtype=float) / maximum_force)
 
 
 def make_render_camera(view: str, nominal_position: np.ndarray) -> str | mujoco.MjvCamera:
@@ -252,6 +299,8 @@ def run_episode(
     rod_cycles: int = 1,
     rod_cycle_period_s: float = 0.80,
     response_only: bool = False,
+    explicit_translational_carriage: bool = False,
+    carriage_mass_kg: float = 0.35,
 ) -> dict[str, Any]:
     if not 0.0 <= render_start_time_s < render_end_time_s <= SIM_TIME_S:
         raise ValueError("render window must satisfy 0 <= start < end <= simulation time")
@@ -261,7 +310,10 @@ def run_episode(
     # The default height intersects the descending hand.  In the repeated
     # response fixture the arm stays at the lower pre-grasp pose, so align the
     # same physical rod to that fixed interaction plane instead.
-    model, data = make_rod_model(menagerie, contact_time_constant_s, 0.520 if response_only else 0.540)
+    model, data = make_rod_model(
+        menagerie, contact_time_constant_s, 0.520 if response_only else 0.540,
+        explicit_translational_carriage, carriage_mass_kg,
+    )
     objects = {
         "hand": (mujoco.mjtObj.mjOBJ_BODY, "hand"),
         "hand_geom": (mujoco.mjtObj.mjOBJ_GEOM, "hand_collision"),
@@ -274,6 +326,8 @@ def run_episode(
         "nominal_marker": (mujoco.mjtObj.mjOBJ_BODY, "nominal_marker"),
         "actual_marker": (mujoco.mjtObj.mjOBJ_BODY, "actual_marker"),
     }
+    if explicit_translational_carriage:
+        objects["explicit_carriage"] = (mujoco.mjtObj.mjOBJ_BODY, "explicit_carriage")
     ids = {label: mujoco.mj_name2id(model, obj, name) for label, (obj, name) in objects.items()}
     if min(ids.values()) < 0:
         raise RuntimeError("rod perturbation scene IDs were not resolved")
@@ -283,6 +337,15 @@ def run_episode(
     carriage_mocap = model.body_mocapid[ids["virtual_carriage"]]
     nominal_marker_mocap = model.body_mocapid[ids["nominal_marker"]]
     actual_marker_mocap = model.body_mocapid[ids["actual_marker"]]
+    explicit_carriage_body_id = ids["explicit_carriage"] if explicit_translational_carriage else -1
+    explicit_carriage_qpos_indices = np.array([
+        model.jnt_qposadr[mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, f"explicit_carriage_{axis}_slide")]
+        for axis in "xyz"
+    ], dtype=int) if explicit_translational_carriage else np.zeros(0, dtype=int)
+    explicit_carriage_dof_indices = np.array([
+        model.jnt_dofadr[mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, f"explicit_carriage_{axis}_slide")]
+        for axis in "xyz"
+    ], dtype=int) if explicit_translational_carriage else np.zeros(0, dtype=int)
     path_marker_mocaps = np.array([
         model.body_mocapid[mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, f"nominal_path_{index}")]
         for index in range(PATH_MARKER_COUNT)
@@ -322,6 +385,7 @@ def run_episode(
         "torque_applied", "torque_ratio", "rod_contact", "rod_force", "rod_penetration",
         "carriage_displacement", "vmc_wrench", "ee_position", "nominal_position", "carriage_position",
         "object_position", "object_hand_distance", "rod_displacement", "rod_command_velocity", "active_kappa", "active_drive_scale",
+        "explicit_carriage_position", "explicit_carriage_velocity", "explicit_carriage_force",
     )}
     previous_twist = np.zeros(6)
     previous_acceleration = np.zeros(6)
@@ -335,6 +399,10 @@ def run_episode(
         reference_time_s = 1.70 if response_only else time_s
         nominal_position, nominal_rotation, nominal_linear, nominal_angular = reference.sample(reference_time_s)
         nominal_twist = np.concatenate([nominal_linear, nominal_angular])
+        if explicit_translational_carriage and step == 0:
+            data.qpos[explicit_carriage_qpos_indices] = nominal_position
+            data.qvel[explicit_carriage_dof_indices] = nominal_twist[:3]
+            mujoco.mj_forward(model, data)
         active_kappa = stiffness_schedule(time_s, kappa, recovery_kappa, recovery_ramp_s)
         active_drive_scale = stiffness_schedule(time_s, 1.0, recovery_drive_scale_factor, recovery_ramp_s)
         controller.set_kappa(active_kappa)
@@ -345,7 +413,17 @@ def run_episode(
         # The rod receives a position command, not a qpos teleport.
         data.mocap_pos[obstacle_mocap] = np.array([3.0, 3.0, 3.0])
         data.mocap_quat[obstacle_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
-        data.mocap_pos[carriage_mocap] = controller.position
+        explicit_position = (
+            data.qpos[explicit_carriage_qpos_indices].copy()
+            if explicit_translational_carriage else controller.position[:3].copy()
+        )
+        explicit_velocity = (
+            data.qvel[explicit_carriage_dof_indices].copy()
+            if explicit_translational_carriage else controller.linear_velocity.copy()
+        )
+        data.mocap_pos[carriage_mocap] = (
+            explicit_position if explicit_translational_carriage else controller.position
+        )
         data.mocap_quat[carriage_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
         data.mocap_pos[nominal_marker_mocap] = nominal_position
         data.mocap_quat[nominal_marker_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
@@ -364,6 +442,23 @@ def run_episode(
             )
             data.mocap_quat[marker_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
         wrench, carriage_displacement = controller.wrench(ee_position, ee_rotation, ee_twist)
+        explicit_force = np.zeros(3, dtype=float)
+        if explicit_translational_carriage:
+            # The physical carriage replaces only the translational Python
+            # carriage channels; SO(3) channels remain in the existing VMC.
+            carriage_displacement[:3] = explicit_position - ee_position
+            spring_k = active_kappa * config.k_translation_base
+            spring_d = 2.0 * config.zeta * np.sqrt(carriage_mass_kg * spring_k)
+            explicit_force = _saturated_translation_spring(
+                spring_k, config.max_force, explicit_position - ee_position
+            ) + spring_d * (explicit_velocity - ee_twist[:3])
+            drive_k = config.carriage_drive_k_translation * active_drive_scale
+            drive_d = 2.0 * config.carriage_drive_zeta * np.sqrt(carriage_mass_kg * drive_k)
+            drive_force = drive_k * (nominal_position - explicit_position) + drive_d * (nominal_twist[:3] - explicit_velocity)
+            data.qfrc_applied[:] = 0.0
+            _apply_body_force(model, data, explicit_carriage_body_id, drive_force - explicit_force)
+            _apply_body_force(model, data, ids["hand"], explicit_force)
+            wrench[:3] = 0.0
         wrench_torque = body_jacobian(model, data, ids["hand"]).T @ wrench
         bias = data.qfrc_bias[:ARM_DOF].copy()
         scale = torque_feasible_scale(bias, wrench_torque)
@@ -409,6 +504,9 @@ def run_episode(
             "rod_command_velocity": rod_velocity,
             "active_kappa": active_kappa,
             "active_drive_scale": active_drive_scale,
+            "explicit_carriage_position": explicit_position.tolist(),
+            "explicit_carriage_velocity": explicit_velocity.tolist(),
+            "explicit_carriage_force": explicit_force.tolist(),
         }
         for key, value in values.items():
             log[key].append(value)
@@ -451,6 +549,11 @@ def run_episode(
         "config": asdict(config),
         "scenario": "physical rod perturbation during open-gripper grasp approach; compliant return to moving nominal trajectory tube",
         "reference": "finite grasp trajectory (moving attractor, not a mathematical limit cycle); replace with fixed WBC pose/twist for WBC+VMC",
+        "virtual_mechanism": {
+            "explicit_translational_carriage": explicit_translational_carriage,
+            "explicit_translational_carriage_mass_kg": carriage_mass_kg if explicit_translational_carriage else None,
+            "rotation_channels": "existing controller-integrated SO(3) virtual carriage",
+        },
         "rod_motion": {
             "enabled": rod_enabled,
             "start_time_s": rod_start_time_s,
@@ -556,6 +659,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--rod-cycles", type=int, default=1, help="Repeated physical press--hold--retract profiles.")
     parser.add_argument("--rod-cycle-period", type=float, default=0.80, help="Seconds from one rod pulse start to the next.")
     parser.add_argument("--response-only", action="store_true", help="Hold the nominal pre-grasp pose and leave the gripper open for repeated-excitation plots.")
+    parser.add_argument("--explicit-translational-carriage", action="store_true", help="Use three explicit MuJoCo translation carriage masses; keep rotational channels in the controller.")
+    parser.add_argument("--carriage-mass-kg", type=float, default=0.35, help="Mass per physical translation carriage axis.")
     parser.add_argument("--disable-rod", action="store_true", help="Paired no-perturbation grasp reference run.")
     parser.add_argument("--playback-speed", type=float, default=1.0, help="GIF-only playback multiplier; simulation dynamics are unchanged.")
     parser.add_argument(
@@ -570,7 +675,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed, args.rod_cycle_period) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or args.rod_cycles < 1 or args.rod_cycle_period < ROD_END_TIME_S - ROD_START_TIME_S or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0):
+    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed, args.rod_cycle_period, args.carriage_mass_kg) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or args.rod_cycles < 1 or args.rod_cycle_period < ROD_END_TIME_S - ROD_START_TIME_S or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0):
         raise ValueError("all physical and controller scales must be positive")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     config = replace(
@@ -595,6 +700,8 @@ def main() -> None:
             grasp_time_s=args.grasp_time,
             rod_start_time_s=args.rod_start_time, rod_cycles=args.rod_cycles,
             rod_cycle_period_s=args.rod_cycle_period, response_only=args.response_only,
+            explicit_translational_carriage=args.explicit_translational_carriage,
+            carriage_mass_kg=args.carriage_mass_kg,
         )
         for kappa in args.kappas
     ]

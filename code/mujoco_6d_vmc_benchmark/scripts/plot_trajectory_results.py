@@ -164,6 +164,9 @@ def _plot_rejoin_dynamics(
     mask = _window(time, args.time_start, args.time_end)
     t = time[mask]
     wrench = rod["vmc_wrench"][mask]
+    explicit_force = rod.get("explicit_carriage_force", np.zeros((len(time), 3)))[mask]
+    use_explicit_translation = bool(np.any(np.abs(explicit_force) > 1e-10))
+    translation_force = explicit_force if use_explicit_translation else wrench[:, :3]
     motor_torque = rod["torque_applied"][mask]
     windows = [(float(start), float(end)) for start, end in rejoin["contact_windows_s"]]
     rejoin_times = rejoin["rejoin_times_s"]
@@ -186,17 +189,18 @@ def _plot_rejoin_dynamics(
     mark_events(ax_speed, include_legend=True)
     ax_speed.legend(loc="best", frameon=False, fontsize=8)
 
-    virtual_force_norm = np.linalg.norm(wrench[:, :3], axis=1)
+    virtual_force_norm = np.linalg.norm(translation_force, axis=1)
     ax_force_norm.plot(t, rod["rod_force"][mask], color="#2ca02c", lw=1.3, label="physical rod–hand force")
     ax_force_norm.plot(t, virtual_force_norm, color="#9467bd", lw=1.1, label="‖virtual spring force‖")
     ax_force_norm.set(ylabel="Force (N)", title="Physical contact and virtual restoring force")
     mark_events(ax_force_norm, include_legend=True)
     ax_force_norm.legend(loc="best", frameon=False, fontsize=8)
 
+    force_label = "explicit-carriage" if use_explicit_translation else "virtual"
     for channel, color, label in zip(range(3), ("#e41a1c", "#377eb8", "#4daf4a"), ("Fx", "Fy", "Fz")):
-        ax_force_channels.plot(t, wrench[:, channel], color=color, lw=1.0, label=label)
+        ax_force_channels.plot(t, translation_force[:, channel], color=color, lw=1.0, label=label)
     ax_force_channels.axhline(0.0, color="black", lw=0.6)
-    ax_force_channels.set(ylabel="Virtual force (N)", title="Six-spring translational channels")
+    ax_force_channels.set(ylabel="Spring force (N)", title=f"Translational channels ({force_label})")
     mark_events(ax_force_channels)
     ax_force_channels.legend(loc="best", frameon=False, ncol=3, fontsize=8)
 
