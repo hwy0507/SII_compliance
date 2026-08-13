@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Run a physical pick--lift--carry VMC benchmark with a rail-launched impactor.
+"""Run a physical approach-impact-recovery-grasp VMC benchmark.
 
 This is intentionally a manipulation scene rather than the earlier free-space
-reaching fixture: Panda approaches a block on a table, physically closes its
-parallel gripper, lifts/carries the block, then a finite-mass ball on a linear
-rail strikes the held object/hand.  The impactor is a dynamic constrained body
-with an initial launch velocity; it is never teleported through the robot.
+reaching fixture: Panda descends toward a block on a table, a finite-mass ball
+strikes its *open hand during the approach*, VMC yields and re-joins the
+nominal approach, then Panda physically closes its parallel gripper and lifts
+the block.  The impactor is a dynamic constrained body with an initial launch
+velocity; it is never teleported through the robot.
 """
 
 from __future__ import annotations
@@ -42,7 +43,9 @@ from run_benchmark import (
 
 GRASP_TIME_S = 2.10
 LIFT_COMPLETE_TIME_S = 4.10
-IMPACT_TIME_S = 4.80
+# This is deliberately before GRASP_TIME_S: the manipulation task is recovery
+# from a perturbation while reaching, followed by successful physical grasp.
+IMPACT_TIME_S = 1.35
 TABLE_TOP_Z = 0.400
 TARGET_START_Z = 0.445
 DEFAULT_CONTACT_TIME_CONSTANT_S = 0.025
@@ -135,7 +138,7 @@ def _grasp_scene_xml(menagerie: Path, contact_time_constant_s: float) -> str:
           contype="6" conaffinity="7" rgba="0.96 0.65 0.10 1" friction="1.5 0.02 0.002"
           solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
       </body>
-      <body name="rail_impactor" pos="0.55 -0.34 0.585">
+      <body name="rail_impactor" pos="0.55 -0.34 0.540">
         <inertial pos="0 0 0" mass="0.16" diaginertia="0.00012 0.00012 0.00012"/>
         <joint name="impactor_slide" type="slide" axis="0 1 0" range="0 0.72" damping="0.05" frictionloss="0.01"/>
         <geom name="impactor_geom" type="sphere" size="0.035" mass="0" contype="8" conaffinity="6"
@@ -165,11 +168,13 @@ def contact_summary(
     model: mujoco.MjModel,
     data: mujoco.MjData,
     impactor_geom_id: int,
+    hand_geom_id: int,
     target_geom_id: int,
-) -> tuple[bool, bool, float, float]:
-    """Return impact contact, impact-to-target contact, force and penetration."""
+) -> tuple[bool, bool, bool, float, float]:
+    """Return impact, impact-to-hand, impact-to-target, force and penetration."""
 
     impact_contact = False
+    impact_hand_contact = False
     impact_target_contact = False
     peak_force = 0.0
     peak_penetration = 0.0
@@ -180,11 +185,12 @@ def contact_summary(
         if impactor_geom_id not in ids:
             continue
         impact_contact = True
+        impact_hand_contact = impact_hand_contact or hand_geom_id in ids
         impact_target_contact = impact_target_contact or target_geom_id in ids
         mujoco.mj_contactForce(model, data, index, wrench)
         peak_force = max(peak_force, float(np.linalg.norm(wrench[:3])))
         peak_penetration = max(peak_penetration, max(0.0, -float(contact.dist)))
-    return impact_contact, impact_target_contact, peak_force, peak_penetration
+    return impact_contact, impact_hand_contact, impact_target_contact, peak_force, peak_penetration
 
 
 def run_episode(
@@ -200,6 +206,7 @@ def run_episode(
     model, data = make_grasp_model(menagerie, contact_time_constant_s)
     object_ids = {
         "hand": (mujoco.mjtObj.mjOBJ_BODY, "hand"),
+        "hand_geom": (mujoco.mjtObj.mjOBJ_GEOM, "hand_collision"),
         "target_body": (mujoco.mjtObj.mjOBJ_BODY, "target_object"),
         "target_geom": (mujoco.mjtObj.mjOBJ_GEOM, "target_object_geom"),
         "impactor_geom": (mujoco.mjtObj.mjOBJ_GEOM, "impactor_geom"),
@@ -233,7 +240,7 @@ def run_episode(
     render_stride = max(1, round(1.0 / (RENDER_FPS * CONTROL_DT)))
     log: dict[str, list[Any]] = {key: [] for key in (
         "time", "track_position", "track_orientation", "ee_speed", "surge", "acceleration", "jerk",
-        "torque_applied", "torque_ratio", "impact_contact", "impact_target_contact", "impact_force",
+        "torque_applied", "torque_ratio", "impact_contact", "impact_hand_contact", "impact_target_contact", "impact_force",
         "impact_penetration", "object_position", "object_hand_distance", "gripper_target",
     )}
     previous_twist = np.zeros(6)
@@ -241,6 +248,7 @@ def run_episode(
     previous_torque = data.qfrc_bias[:ARM_DOF].copy()
     launched = False
     impact_observed = False
+    impact_hand_observed = False
     impact_target_observed = False
     steps = int(SIM_TIME_S / CONTROL_DT)
 
@@ -275,10 +283,11 @@ def run_episode(
         controller.advance(CONTROL_DT, nominal_position, nominal_rotation, nominal_twist, wrench)
         mujoco.mj_step(model, data)
 
-        impact_contact, impact_target, force, penetration = contact_summary(
-            model, data, ids["impactor_geom"], ids["target_geom"]
+        impact_contact, impact_hand, impact_target, force, penetration = contact_summary(
+            model, data, ids["impactor_geom"], ids["hand_geom"], ids["target_geom"]
         )
         impact_observed = impact_observed or impact_contact
+        impact_hand_observed = impact_hand_observed or impact_hand
         impact_target_observed = impact_target_observed or impact_target
         acceleration = (ee_twist - previous_twist) / CONTROL_DT
         jerk = (acceleration - previous_acceleration) / CONTROL_DT
@@ -297,6 +306,7 @@ def run_episode(
             "torque_applied": applied_torque.tolist(),
             "torque_ratio": float(np.max(np.abs(applied_torque) / TORQUE_LIMITS)),
             "impact_contact": impact_contact,
+            "impact_hand_contact": impact_hand,
             "impact_target_contact": impact_target,
             "impact_force": force,
             "impact_penetration": penetration,
@@ -319,7 +329,7 @@ def run_episode(
     else:
         gif_path = None
     arrays = {key: np.asarray(values) for key, values in log.items()}
-    post_mask = arrays["time"] >= IMPACT_TIME_S
+    approach_recovery_mask = (arrays["time"] >= IMPACT_TIME_S) & (arrays["time"] < GRASP_TIME_S)
     object_position = arrays["object_position"]
     target_lifted = bool(np.max(object_position[:, 2]) > TABLE_TOP_Z + 0.12)
     final_object_held = bool(
@@ -329,7 +339,7 @@ def run_episode(
     summary = {
         "kappa": kappa,
         "config": asdict(config),
-        "scenario": "physical tabletop pick-lift-carry; rail-launched finite-mass impactor",
+        "scenario": "physical tabletop approach-impact-recovery-grasp; rail-launched finite-mass impactor",
         "reference": "deterministic fixed end-effector proxy; replace with fixed WBC pose/twist for WBC+VMC evaluation",
         "grasp_time_s": GRASP_TIME_S,
         "impact_time_s": IMPACT_TIME_S if impact_enabled else None,
@@ -341,19 +351,21 @@ def run_episode(
             "target_lifted": target_lifted,
             "target_held_at_end": final_object_held,
             "impactor_contact_observed": impact_observed,
+            "impactor_hand_contact_observed": impact_hand_observed,
             "impactor_target_contact_observed": impact_target_observed,
             "max_impactor_penetration_m": _safe_scalar(np.max(arrays["impact_penetration"])),
         },
         "tracking": {
-            "post_impact_position_rmse_m": _safe_scalar(np.sqrt(np.mean(arrays["track_position"][post_mask] ** 2))),
+            "approach_recovery_position_rmse_m": _safe_scalar(np.sqrt(np.mean(arrays["track_position"][approach_recovery_mask] ** 2))),
+            "pregrasp_position_error_m": _safe_scalar(arrays["track_position"][np.flatnonzero(arrays["time"] < GRASP_TIME_S)[-1]]),
             "final_position_error_m": _safe_scalar(arrays["track_position"][-1]),
-            "post_impact_orientation_rmse_rad": _safe_scalar(np.sqrt(np.mean(arrays["track_orientation"][post_mask] ** 2))),
+            "approach_recovery_orientation_rmse_rad": _safe_scalar(np.sqrt(np.mean(arrays["track_orientation"][approach_recovery_mask] ** 2))),
         },
         "motion": {
-            "post_impact_speed_p95_mps": _safe_scalar(np.quantile(arrays["ee_speed"][post_mask], 0.95)),
-            "forward_surge_max_mps": _safe_scalar(np.max(arrays["surge"][post_mask])),
-            "acceleration_peak_mps2": _safe_scalar(np.max(arrays["acceleration"][post_mask])),
-            "jerk_peak_mps3": _safe_scalar(np.max(arrays["jerk"][post_mask])),
+            "approach_recovery_speed_p95_mps": _safe_scalar(np.quantile(arrays["ee_speed"][approach_recovery_mask], 0.95)),
+            "forward_surge_max_mps": _safe_scalar(np.max(arrays["surge"][approach_recovery_mask])),
+            "acceleration_peak_mps2": _safe_scalar(np.max(arrays["acceleration"][approach_recovery_mask])),
+            "jerk_peak_mps3": _safe_scalar(np.max(arrays["jerk"][approach_recovery_mask])),
         },
         "torque": {
             "applied_peak_nm": _safe_scalar(np.max(np.abs(arrays["torque_applied"]))),

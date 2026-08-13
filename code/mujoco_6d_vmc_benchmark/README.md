@@ -9,10 +9,11 @@ reference into arm torques.
 
 The original free-space reaching script remains useful for controller
 calibration, but it is **not** the task-level benchmark.  The task-level entry
-point is `scripts/run_grasp_impact_benchmark.py`: Panda physically picks up a
-free object from a table, lifts/carries it, and is struck during the carrying
-phase.  Results from the retired free-space diagnostic GIFs must not be used
-as evidence for the manipulation task.
+point is `scripts/run_grasp_impact_benchmark.py`: Panda descends toward a free
+object, receives an impact during that open-gripper approach, recovers toward
+its nominal approach, and then physically grasps and lifts the object. Results
+from the retired free-space diagnostic GIFs and the retired post-grasp impact
+fixture must not be used as evidence for the manipulation task.
 
 ## Model
 
@@ -97,43 +98,48 @@ raises contact impulse (`4.51 N s` versus `4.38 N s`).  These numbers are
 deterministic MuJoCo results for the stated fixture, **not** real-robot or
 full-WBC results.
 
-## Physical grasp-and-impact benchmark
+## Physical approach-impact-recovery-grasp benchmark
 
 `run_grasp_impact_benchmark.py` provides the benchmark that matches the
-intended task: **grasp first, then receive an impact while carrying the
-object**.
+intended task: **receive an impact while descending to grasp, yield/recover,
+then still complete the physical grasp**.
 
 - The yellow target is a free MuJoCo rigid body resting on a physical table.
   It is neither welded to the hand nor kinematically attached.
 - Panda's existing coupled finger tendon has a physical position actuator.  It
   opens for approach and closes after the end effector reaches the target;
   lifting is sustained by fingertip contact and friction.
-- The red impactor has finite mass and moves on a one-dimensional rail.  At
-  the scheduled time it receives one initial velocity; after that its pose is
-  produced only by the MuJoCo equations of motion and contact solver.  It is
-  not a mocap object and is never teleported through the robot.
-- The impact rail is aligned with the held object.  The validity check records
-  the actual `impactor_geom`--`target_object_geom` contact pair, not merely a
-  proximity or a contact with some arbitrary arm link.
+- The red impactor has finite mass and moves on a one-dimensional rail.  It is
+  launched during the open-gripper descent, before `GRASP_TIME_S`; after its
+  one initial velocity it evolves only through the MuJoCo equations of motion
+  and contact solver.  It is not a mocap object and is never teleported.
+- The impact rail is aligned with the approaching hand.  The validity check
+  records the actual `impactor_geom`--`hand_collision` contact pair, rather
+  than a proximity test or a contact with some arbitrary arm link.
 
 Every manipulation run is invalid unless all of the following hold:
 
-1. `target_lifted`: the free target leaves the tabletop by at least 120 mm;
-2. `target_held_at_end`: it remains elevated and within the hand/object
+1. `impactor_hand_contact_observed`: the collision occurs during the open
+   approach and actually contacts the hand;
+2. `target_lifted`: after recovery, the free target leaves the tabletop by at
+   least 120 mm;
+3. `target_held_at_end`: it remains elevated and within the hand/object
    distance gate at the end of the episode;
-3. `impactor_target_contact_observed`: the impactor actually contacts the
-   held target (when impact is enabled);
 4. `hard_limit_fraction = 0`; and
 5. contact penetration remains within the predeclared fixture tolerance.
 
 The current first valid manipulation fixture uses a 0.08 kg target, 0.16 kg
-rail impactor, 0.8 m/s launch speed, and a 0.015 s contact time constant.  For
-`kappa = 1.30`, it passes all task-validity gates: the object is lifted and
-still held at the end, the impactor contacts the target, maximum penetration
-is 3.59 mm, post-impact position RMSE is 17.5 mm, peak jerk is 302 m/s^3, and
-the peak applied arm-torque ratio is 0.367 with no hard-limit frames.  This
-only establishes a deterministic **MuJoCo baseline**.  It is not an assertion
-of real-hardware safety or a complete WBC+VMC result.
+rail impactor, 0.8 m/s launch speed, and a 0.015 s contact time constant.  The
+impact happens at 1.35 s and gripper closure begins at 2.10 s.  In the first
+valid `kappa = 1.30` approach-impact trial, the impactor actually contacts the
+hand, the block is subsequently lifted and still held at the end, and maximum
+penetration is 3.23 mm.  The approach-recovery position RMSE is 13.9 mm, the
+pre-grasp position error is 12.7 mm, peak jerk is 780 m/s^3, and the peak
+applied arm-torque ratio is 0.367 with no hard-limit frames.  This only
+establishes a deterministic **MuJoCo VMC baseline**.  VMC provides compliant
+yield/rejoin around a fixed nominal path; active obstacle avoidance requires
+the next WBC/ESN layer to alter that nominal path from contact or perception.
+It is not an assertion of real-hardware safety or a complete WBC+VMC result.
 
 ## Server setup and run
 
@@ -178,7 +184,7 @@ To run the physical grasp-and-impact baseline instead, use:
 export MUJOCO_GL=egl
 python scripts/run_grasp_impact_benchmark.py \
   --menagerie ~/vmc_mujoco_runtime/mujoco_menagerie \
-  --output-dir outputs/grasp_k130_demo \
+  --output-dir outputs/approach_impact_k130_demo \
   --kappas 1.30 --damping-ratio 1.8 \
   --carriage-drive-scale 0.75 --carriage-drive-damping-ratio 2.0 \
   --contact-time-constant 0.015 --impact-speed 0.80 --render-gif
