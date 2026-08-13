@@ -64,19 +64,33 @@ ACTUAL_TRAIL_COUNT = 12
 CAMERA_VIEWS = ("overview", "hand-closeup")
 
 
-def rod_motion(time_s: float, stroke_m: float) -> tuple[float, float]:
-    """Smooth inward press followed by smooth retraction along the slide axis."""
+def rod_motion(
+    time_s: float,
+    stroke_m: float,
+    start_time_s: float = ROD_START_TIME_S,
+    cycles: int = 1,
+    cycle_period_s: float = 0.80,
+) -> tuple[float, float]:
+    """One or more physical rod press--hold--retract pulses on a slide joint."""
 
-    if time_s <= ROD_START_TIME_S or time_s >= ROD_END_TIME_S:
+    profile_duration = ROD_END_TIME_S - ROD_START_TIME_S
+    if cycles < 1 or cycle_period_s < profile_duration:
+        raise ValueError("rod cycles must be positive and spaced by one complete rod profile")
+    elapsed = time_s - start_time_s
+    cycle_index = int(np.floor(elapsed / cycle_period_s)) if elapsed >= 0.0 else -1
+    if cycle_index < 0 or cycle_index >= cycles:
         return 0.0, 0.0
-    if time_s < ROD_PEAK_TIME_S:
-        blend, derivative = smoothstep((time_s - ROD_START_TIME_S) / (ROD_PEAK_TIME_S - ROD_START_TIME_S))
+    local_time = ROD_START_TIME_S + elapsed - cycle_index * cycle_period_s
+    if local_time <= ROD_START_TIME_S or local_time >= ROD_END_TIME_S:
+        return 0.0, 0.0
+    if local_time < ROD_PEAK_TIME_S:
+        blend, derivative = smoothstep((local_time - ROD_START_TIME_S) / (ROD_PEAK_TIME_S - ROD_START_TIME_S))
         displacement = stroke_m * blend
         velocity = stroke_m * derivative / (ROD_PEAK_TIME_S - ROD_START_TIME_S)
         return float(displacement), float(velocity)
-    if time_s <= ROD_RETRACT_TIME_S:
+    if local_time <= ROD_RETRACT_TIME_S:
         return stroke_m, 0.0
-    blend, derivative = smoothstep((time_s - ROD_RETRACT_TIME_S) / (ROD_END_TIME_S - ROD_RETRACT_TIME_S))
+    blend, derivative = smoothstep((local_time - ROD_RETRACT_TIME_S) / (ROD_END_TIME_S - ROD_RETRACT_TIME_S))
     displacement = stroke_m * (1.0 - blend)
     velocity = -stroke_m * derivative / (ROD_END_TIME_S - ROD_RETRACT_TIME_S)
     return float(displacement), float(velocity)
@@ -100,7 +114,7 @@ def stiffness_schedule(
     return float((1.0 - blend) * contact_kappa + blend * recovery_kappa)
 
 
-def _rod_scene_xml(menagerie: Path, contact_time_constant_s: float) -> str:
+def _rod_scene_xml(menagerie: Path, contact_time_constant_s: float, rod_height_m: float = 0.540) -> str:
     """Official Panda plus physical table/block and a dynamic slide-mounted rod."""
 
     text = _torque_actuated_xml(menagerie, contact_time_constant_s)
@@ -127,7 +141,7 @@ def _rod_scene_xml(menagerie: Path, contact_time_constant_s: float) -> str:
           contype="6" conaffinity="7" rgba="0.96 0.65 0.10 1" friction="1.5 0.02 0.002"
           solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
       </body>
-      <body name="rod_support" pos="0.55 -0.20 0.540">
+      <body name="rod_support" pos="0.55 -0.20 {rod_height_m:.3f}">
         <joint name="rod_slide" type="slide" axis="0 1 0" range="0 0.20" damping="2.0"/>
         <geom name="rod_geom" type="cylinder" size="0.014 0.15" quat="0.7071068 0 0.7071068 0"
           mass="0.30" contype="8" conaffinity="4" rgba="0.18 0.70 0.25 1"
@@ -156,8 +170,12 @@ def _rod_scene_xml(menagerie: Path, contact_time_constant_s: float) -> str:
     return text
 
 
-def make_rod_model(menagerie: Path, contact_time_constant_s: float) -> tuple[mujoco.MjModel, mujoco.MjData]:
-    xml = _rod_scene_xml(menagerie, contact_time_constant_s)
+def make_rod_model(
+    menagerie: Path,
+    contact_time_constant_s: float,
+    rod_height_m: float = 0.540,
+) -> tuple[mujoco.MjModel, mujoco.MjData]:
+    xml = _rod_scene_xml(menagerie, contact_time_constant_s, rod_height_m)
     assets_dir = menagerie / "franka_emika_panda" / "assets"
     assets = {str(path.relative_to(assets_dir)): path.read_bytes() for path in assets_dir.rglob("*") if path.is_file()}
     model = mujoco.MjModel.from_xml_string(xml, assets=assets)
@@ -230,13 +248,20 @@ def run_episode(
     recovery_ramp_s: float = 0.16,
     recovery_drive_scale_factor: float = 1.0,
     grasp_time_s: float = GRASP_TIME_S,
+    rod_start_time_s: float = ROD_START_TIME_S,
+    rod_cycles: int = 1,
+    rod_cycle_period_s: float = 0.80,
+    response_only: bool = False,
 ) -> dict[str, Any]:
     if not 0.0 <= render_start_time_s < render_end_time_s <= SIM_TIME_S:
         raise ValueError("render window must satisfy 0 <= start < end <= simulation time")
     recovery_kappa = kappa if recovery_kappa is None else recovery_kappa
-    if recovery_kappa <= 0.0 or recovery_ramp_s < 0.0 or recovery_drive_scale_factor <= 0.0 or not ROD_END_TIME_S < grasp_time_s < LIFT_COMPLETE_TIME_S:
+    if recovery_kappa <= 0.0 or recovery_ramp_s < 0.0 or recovery_drive_scale_factor <= 0.0 or not ROD_END_TIME_S < grasp_time_s < LIFT_COMPLETE_TIME_S or rod_cycles < 1 or rod_cycle_period_s < ROD_END_TIME_S - ROD_START_TIME_S:
         raise ValueError("recovery stiffness and ramp must be non-negative / positive")
-    model, data = make_rod_model(menagerie, contact_time_constant_s)
+    # The default height intersects the descending hand.  In the repeated
+    # response fixture the arm stays at the lower pre-grasp pose, so align the
+    # same physical rod to that fixed interaction plane instead.
+    model, data = make_rod_model(menagerie, contact_time_constant_s, 0.520 if response_only else 0.540)
     objects = {
         "hand": (mujoco.mjtObj.mjOBJ_BODY, "hand"),
         "hand_geom": (mujoco.mjtObj.mjOBJ_GEOM, "hand_collision"),
@@ -307,13 +332,16 @@ def run_episode(
 
     for step in range(steps):
         time_s = step * CONTROL_DT
-        nominal_position, nominal_rotation, nominal_linear, nominal_angular = reference.sample(time_s)
+        reference_time_s = 1.70 if response_only else time_s
+        nominal_position, nominal_rotation, nominal_linear, nominal_angular = reference.sample(reference_time_s)
         nominal_twist = np.concatenate([nominal_linear, nominal_angular])
         active_kappa = stiffness_schedule(time_s, kappa, recovery_kappa, recovery_ramp_s)
         active_drive_scale = stiffness_schedule(time_s, 1.0, recovery_drive_scale_factor, recovery_ramp_s)
         controller.set_kappa(active_kappa)
         controller.set_carriage_drive_scale(active_drive_scale)
-        rod_displacement, rod_velocity = rod_motion(time_s, rod_stroke_m) if rod_enabled else (0.0, 0.0)
+        rod_displacement, rod_velocity = rod_motion(
+            time_s, rod_stroke_m, rod_start_time_s, rod_cycles, rod_cycle_period_s
+        ) if rod_enabled else (0.0, 0.0)
         # The rod receives a position command, not a qpos teleport.
         data.mocap_pos[obstacle_mocap] = np.array([3.0, 3.0, 3.0])
         data.mocap_quat[obstacle_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
@@ -345,7 +373,7 @@ def run_episode(
         # The reference holds the reachable pre-grasp pose until 2.70 s.  A
         # short optional delay therefore gives the released spring system time
         # to rejoin before closure, without changing the arm path itself.
-        data.ctrl[ARM_DOF] = reference.gripper_target(time_s - (grasp_time_s - GRASP_TIME_S))
+        data.ctrl[ARM_DOF] = 0.040 if response_only else reference.gripper_target(time_s - (grasp_time_s - GRASP_TIME_S))
         data.ctrl[rod_ctrl_index] = rod_displacement
         controller.advance(CONTROL_DT, nominal_position, nominal_rotation, nominal_twist, wrench)
         mujoco.mj_step(model, data)
@@ -425,10 +453,11 @@ def run_episode(
         "reference": "finite grasp trajectory (moving attractor, not a mathematical limit cycle); replace with fixed WBC pose/twist for WBC+VMC",
         "rod_motion": {
             "enabled": rod_enabled,
-            "start_time_s": ROD_START_TIME_S,
-            "peak_time_s": ROD_PEAK_TIME_S,
-            "retract_time_s": ROD_RETRACT_TIME_S,
-            "end_time_s": ROD_END_TIME_S,
+            "start_time_s": rod_start_time_s,
+            "profile_duration_s": ROD_END_TIME_S - ROD_START_TIME_S,
+            "cycles": rod_cycles,
+            "cycle_period_s": rod_cycle_period_s,
+            "final_end_time_s": rod_start_time_s + (rod_cycles - 1) * rod_cycle_period_s + (ROD_END_TIME_S - ROD_START_TIME_S),
             "stroke_m": rod_stroke_m,
         },
         "stiffness_schedule": {
@@ -523,6 +552,10 @@ def parse_args() -> argparse.Namespace:
         help="Absolute carriage-drive scale after release; default keeps the contact-stage scale.",
     )
     parser.add_argument("--grasp-time", type=float, default=GRASP_TIME_S, help="Delay gripper closure until recovery has started.")
+    parser.add_argument("--rod-start-time", type=float, default=ROD_START_TIME_S)
+    parser.add_argument("--rod-cycles", type=int, default=1, help="Repeated physical press--hold--retract profiles.")
+    parser.add_argument("--rod-cycle-period", type=float, default=0.80, help="Seconds from one rod pulse start to the next.")
+    parser.add_argument("--response-only", action="store_true", help="Hold the nominal pre-grasp pose and leave the gripper open for repeated-excitation plots.")
     parser.add_argument("--disable-rod", action="store_true", help="Paired no-perturbation grasp reference run.")
     parser.add_argument("--playback-speed", type=float, default=1.0, help="GIF-only playback multiplier; simulation dynamics are unchanged.")
     parser.add_argument(
@@ -537,7 +570,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0):
+    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed, args.rod_cycle_period) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or args.rod_cycles < 1 or args.rod_cycle_period < ROD_END_TIME_S - ROD_START_TIME_S or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0):
         raise ValueError("all physical and controller scales must be positive")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     config = replace(
@@ -560,6 +593,8 @@ def main() -> None:
             recovery_kappa=args.recovery_kappa, recovery_ramp_s=args.recovery_ramp,
             recovery_drive_scale_factor=recovery_drive_scale_factor,
             grasp_time_s=args.grasp_time,
+            rod_start_time_s=args.rod_start_time, rod_cycles=args.rod_cycles,
+            rod_cycle_period_s=args.rod_cycle_period, response_only=args.response_only,
         )
         for kappa in args.kappas
     ]

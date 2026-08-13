@@ -32,6 +32,17 @@ def test_rod_retracts_before_gripper_closure():
     assert MODULE.ROD_END_TIME_S < MODULE.GRASP_TIME_S
 
 
+def test_repeated_rod_motion_has_separate_full_profiles():
+    start = 0.80
+    period = 1.20
+    first_peak, _ = MODULE.rod_motion(start + 0.30, 0.16, start, cycles=5, cycle_period_s=period)
+    third_peak, _ = MODULE.rod_motion(start + 2 * period + 0.30, 0.16, start, cycles=5, cycle_period_s=period)
+    between, _ = MODULE.rod_motion(start + 0.90, 0.16, start, cycles=5, cycle_period_s=period)
+    np.testing.assert_allclose(first_peak, 0.16)
+    np.testing.assert_allclose(third_peak, 0.16)
+    np.testing.assert_allclose(between, 0.0)
+
+
 def test_shared_six_channel_stiffness_ramps_after_rod_release():
     contact = 0.20
     recovery = 1.60

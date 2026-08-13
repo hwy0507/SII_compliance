@@ -360,3 +360,75 @@ The label “WBC reference” presently means the benchmark's reachable
 moving-trajectory **WBC interface proxy**, not a live whole-body controller.
 When WBC is integrated, replace `nominal_position`/`nominal_twist` in the trace
 with actual WBC outputs and the metrics and plotting protocol remain unchanged.
+
+### Repeated physical rod-excitation response benchmark
+
+A single manipulation trial contains one rod-intervention interval, so its
+error and contact-force trace naturally has one transient peak.  It must not be
+turned into a four- or five-peak figure by copying or time-warping samples.  To
+obtain a paper-style repeated-response figure, the benchmark now provides a
+separate `--response-only` protocol: the Panda holds a fixed reachable
+pre-grasp end-effector pose, the gripper remains open, and one physical MuJoCo
+rod performs five independent press--hold--retract motions.  The rod is a
+massive rigid body on a slide joint and the hand--rod interaction is counted
+from MuJoCo contact data, rather than from the command signal alone.
+
+The reference pose in this response-only fixture is intentionally fixed so
+that the repeated peaks show the six virtual-spring response clearly.  Its
+slightly lower rod-support height is a fixture change for this diagnostic
+experiment only; the single-press grasp benchmark retains its original
+geometry and lift/hold success gate.  Therefore `target_lifted_after_recovery`
+and `target_held_at_end` are not applicable to response-only runs and must not
+be reported as a grasp failure.
+
+The reproducible five-contact run used for the current figure is:
+
+```bash
+export MUJOCO_GL=egl
+python scripts/run_rod_perturbation_benchmark.py \
+  --menagerie mujoco_menagerie \
+  --output-dir outputs/repeated_rod_k600_fixedh \
+  --kappa 6.0 --recovery-kappa 6.0 --damping-ratio 1.8 \
+  --carriage-drive-scale 4.0 --recovery-carriage-drive-scale 4.0 \
+  --response-only --rod-start-time 0.80 --rod-cycles 5 \
+  --rod-cycle-period 1.20 --rod-stroke 0.16
+
+python scripts/run_rod_perturbation_benchmark.py \
+  --menagerie mujoco_menagerie \
+  --output-dir outputs/repeated_rod_k600_fixedh_no_rod \
+  --kappa 6.0 --recovery-kappa 6.0 --damping-ratio 1.8 \
+  --carriage-drive-scale 4.0 --recovery-carriage-drive-scale 4.0 \
+  --response-only --disable-rod --rod-start-time 0.80 --rod-cycles 5 \
+  --rod-cycle-period 1.20 --rod-stroke 0.16
+```
+
+Plot the paired traces with five event windows:
+
+```bash
+export MPLBACKEND=Agg
+python scripts/plot_trajectory_results.py \
+  --rod-trace outputs/repeated_rod_k600_fixedh/rod_perturbation_kappa_6.00_trace.npz \
+  --no-rod-trace outputs/repeated_rod_k600_fixedh_no_rod/rod_perturbation_kappa_6.00_trace.npz \
+  --output-dir outputs/repeated_rod_k600_fixedh/figures \
+  --rod-start 0.80 --rod-end 1.44 --grasp-time 6.80 \
+  --rod-cycles 5 --rod-cycle-period 1.20 --time-start 0.70 --time-end 6.40
+```
+
+For this run, contact-trace segmentation gives five separated hand--rod
+windows: `[0.98, 1.08]`, `[2.18, 2.288]`, `[3.38, 3.484]`,
+`[4.58, 4.684]`, and `[5.78, 5.884] s`; the peak physical contact force is
+`17.13 N`.  The plotted Y position, paired rod-induced deviation, and contact
+force therefore each contain five measured peaks.  Over the displayed
+`0.70--6.40 s` window, the current shared-stiffness candidate gives peak
+nominal/reference error `13.06 mm`, peak paired offset `7.83 mm`, nominal
+position RMSE `5.03 mm`, paired-offset RMSE `3.54 mm`, and `6.33 -> 1.47 mm`
+error reduction from the final rod release to the pre-closure sample.  These
+are response-only diagnostics; the task-level lift/hold result is still
+reported by the separate single-press grasp benchmark.
+
+This repeated experiment is still an end-effector 6D virtual-carriage VMC
+benchmark.  “WBC reference” in the plots remains the reachable trajectory
+proxy described above; it is not a live WBC output, and the experiment is not
+a real-robot deployment.  Once the real WBC supplies pose/twist traces, the
+same paired metrics and plotting script can be reused without changing the
+five-contact protocol.

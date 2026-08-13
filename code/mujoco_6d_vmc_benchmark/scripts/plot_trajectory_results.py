@@ -31,9 +31,20 @@ def _window(time: np.ndarray, start: float | None, end: float | None) -> np.ndar
     return mask
 
 
-def _shade_events(ax: plt.Axes, rod_start: float, rod_end: float, grasp_time: float) -> None:
-    ax.axvspan(rod_start, rod_end, color="#ef476f", alpha=0.10, label="rod contact window")
-    ax.axvline(rod_end, color="#d62728", ls="--", lw=0.9, label="rod retracted")
+def _shade_events(
+    ax: plt.Axes,
+    rod_start: float,
+    rod_end: float,
+    grasp_time: float,
+    rod_cycles: int = 1,
+    rod_cycle_period: float = 0.80,
+) -> None:
+    profile_duration = rod_end - rod_start
+    for cycle in range(rod_cycles):
+        start = rod_start + cycle * rod_cycle_period
+        end = start + profile_duration
+        ax.axvspan(start, end, color="#ef476f", alpha=0.10, label="rod contact window" if cycle == 0 else None)
+        ax.axvline(end, color="#d62728", ls="--", lw=0.9, label="rod retracted" if cycle == 0 else None)
     ax.axvline(grasp_time, color="#2ca02c", ls=":", lw=1.0, label="gripper closure")
 
 
@@ -54,6 +65,8 @@ def main() -> None:
     parser.add_argument("--grasp-time", type=float, default=2.30)
     parser.add_argument("--time-start", type=float, default=0.0)
     parser.add_argument("--time-end", type=float, default=None)
+    parser.add_argument("--rod-cycles", type=int, default=1)
+    parser.add_argument("--rod-cycle-period", type=float, default=0.80)
     args = parser.parse_args()
 
     rod = _load(args.rod_trace)
@@ -79,7 +92,7 @@ def main() -> None:
         axis.plot(t, actual[:, index], color="#d81b60", lw=1.0, label="rod + VMC")
         axis.plot(t, baseline[:, index], color="#377eb8", lw=0.9, ls="--", label="no-rod control")
         axis.set_title(f"{name} position (m)")
-        _shade_events(axis, args.rod_start, args.rod_end, args.grasp_time)
+        _shade_events(axis, args.rod_start, args.rod_end, args.grasp_time, args.rod_cycles, args.rod_cycle_period)
         _style(axis)
     axes[0, 0].legend(loc="best", frameon=False)
 
@@ -88,22 +101,22 @@ def main() -> None:
         axis.plot(t, paired_axis[:, index], color="#377eb8", lw=0.9, ls="--", label="rod − no-rod")
         axis.axhline(0.0, color="black", lw=0.6)
         axis.set_title(f"{name} deviation (mm)")
-        _shade_events(axis, args.rod_start, args.rod_end, args.grasp_time)
+        _shade_events(axis, args.rod_start, args.rod_end, args.grasp_time, args.rod_cycles, args.rod_cycle_period)
         _style(axis)
     axes[1, 0].legend(loc="best", frameon=False)
 
     axes[2, 0].plot(t, nominal_error, color="#d81b60", lw=1.2)
     axes[2, 0].set_title("‖EE − WBC reference‖ (mm)")
-    _shade_events(axes[2, 0], args.rod_start, args.rod_end, args.grasp_time)
+    _shade_events(axes[2, 0], args.rod_start, args.rod_end, args.grasp_time, args.rod_cycles, args.rod_cycle_period)
     _style(axes[2, 0])
     axes[2, 1].plot(t, paired_offset, color="#377eb8", lw=1.2)
     axes[2, 1].set_title("‖rod EE − no-rod EE‖ (mm)")
-    _shade_events(axes[2, 1], args.rod_start, args.rod_end, args.grasp_time)
+    _shade_events(axes[2, 1], args.rod_start, args.rod_end, args.grasp_time, args.rod_cycles, args.rod_cycle_period)
     _style(axes[2, 1])
     axes[2, 2].plot(t, rod["ee_speed"][mask], color="#ff7f0e", lw=1.0, label="EE speed")
     axes[2, 2].plot(t, rod["rod_force"][mask], color="#2ca02c", lw=1.0, label="rod contact force (N)")
     axes[2, 2].set_title("Motion and contact force")
-    _shade_events(axes[2, 2], args.rod_start, args.rod_end, args.grasp_time)
+    _shade_events(axes[2, 2], args.rod_start, args.rod_end, args.grasp_time, args.rod_cycles, args.rod_cycle_period)
     axes[2, 2].legend(loc="best", frameon=False)
     _style(axes[2, 2])
     fig.suptitle("End-effector trajectory and disturbance error: phase-scheduled 6D VMC", fontsize=13)
@@ -116,17 +129,17 @@ def main() -> None:
     for index, name in enumerate(["Fx", "Fy", "Fz"]):
         axes[0, index].plot(t, wrench[:, index], color="#2ca02c", lw=1.0)
         axes[0, index].set_title(f"{name} (N)")
-        _shade_events(axes[0, index], args.rod_start, args.rod_end, args.grasp_time)
+        _shade_events(axes[0, index], args.rod_start, args.rod_end, args.grasp_time, args.rod_cycles, args.rod_cycle_period)
         _style(axes[0, index])
     for index, name in enumerate(["Mx", "My", "Mz"]):
         axes[1, index].plot(t, wrench[:, index + 3], color="#9467bd", lw=1.0)
         axes[1, index].set_title(f"{name} (N·m)")
-        _shade_events(axes[1, index], args.rod_start, args.rod_end, args.grasp_time)
+        _shade_events(axes[1, index], args.rod_start, args.rod_end, args.grasp_time, args.rod_cycles, args.rod_cycle_period)
         _style(axes[1, index])
     for index, name in enumerate(["Δx", "Δy", "Δz"]):
         axes[2, index].plot(t, carriage[:, index] * 1000.0, color="#17becf", lw=1.0)
         axes[2, index].set_title(f"virtual carriage {name} (mm)")
-        _shade_events(axes[2, index], args.rod_start, args.rod_end, args.grasp_time)
+        _shade_events(axes[2, index], args.rod_start, args.rod_end, args.grasp_time, args.rod_cycles, args.rod_cycle_period)
         _style(axes[2, index])
     fig.suptitle("Six-spring virtual wrench and carriage response", fontsize=13)
     fig.savefig(args.output_dir / "six_spring_response_results.png", dpi=220)
@@ -136,7 +149,8 @@ def main() -> None:
     before_close = int(np.flatnonzero(time < args.grasp_time)[-1])
     plotted_indices = np.flatnonzero(mask)
     release_local = int(np.flatnonzero(plotted_indices == release)[0])
-    before_close_local = int(np.flatnonzero(plotted_indices == before_close)[0])
+    before_close_matches = np.flatnonzero(plotted_indices == before_close)
+    before_close_local = int(before_close_matches[0]) if len(before_close_matches) else len(plotted_indices) - 1
     metrics = {
         "reference_label": "WBC reference interface (reachable moving-trajectory proxy in this benchmark)",
         "peak_nominal_error_mm": float(np.max(nominal_error)),
