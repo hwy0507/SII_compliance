@@ -116,8 +116,9 @@ def stiffness_schedule(
     contact_kappa: float | np.ndarray,
     recovery_kappa: float | np.ndarray,
     recovery_ramp_s: float,
+    release_time_s: float = ROD_END_TIME_S,
 ) -> float | np.ndarray:
-    """Interpolate shared or six-dimensional stiffness schedules."""
+    """Interpolate shared or six-dimensional stiffness schedules after release."""
 
     contact = np.asarray(contact_kappa, dtype=float)
     recovery = np.asarray(recovery_kappa, dtype=float)
@@ -126,13 +127,13 @@ def stiffness_schedule(
         contact = np.full(6, float(contact))
     if recovery.ndim == 0:
         recovery = np.full(6, float(recovery))
-    if contact.shape != (6,) or recovery.shape != (6,) or not np.all(np.isfinite(contact)) or not np.all(np.isfinite(recovery)) or np.any(contact <= 0.0) or np.any(recovery <= 0.0) or recovery_ramp_s < 0.0:
+    if contact.shape != (6,) or recovery.shape != (6,) or not np.all(np.isfinite(contact)) or not np.all(np.isfinite(recovery)) or np.any(contact <= 0.0) or np.any(recovery <= 0.0) or recovery_ramp_s < 0.0 or not np.isfinite(release_time_s):
         raise ValueError("stiffness schedule arguments must be positive")
-    if time_s <= ROD_END_TIME_S:
+    if time_s <= release_time_s:
         return float(contact[0]) if scalar_schedule else contact.copy()
-    if recovery_ramp_s == 0.0 or time_s >= ROD_END_TIME_S + recovery_ramp_s:
+    if recovery_ramp_s == 0.0 or time_s >= release_time_s + recovery_ramp_s:
         return float(recovery[0]) if scalar_schedule else recovery.copy()
-    blend, _ = smoothstep((time_s - ROD_END_TIME_S) / recovery_ramp_s)
+    blend, _ = smoothstep((time_s - release_time_s) / recovery_ramp_s)
     result = (1.0 - blend) * contact + blend * recovery
     return float(result[0]) if scalar_schedule else result
 
@@ -501,7 +502,8 @@ def run_episode(
     recovery_kappa_vector = np.asarray(recovery_kappa, dtype=float)
     if recovery_kappa_vector.ndim == 0:
         recovery_kappa_vector = np.full(6, float(recovery_kappa_vector))
-    if kappa_vector.shape != (6,) or recovery_kappa_vector.shape != (6,) or not np.all(np.isfinite(kappa_vector)) or not np.all(np.isfinite(recovery_kappa_vector)) or np.any(kappa_vector <= 0.0) or np.any(recovery_kappa_vector <= 0.0) or recovery_ramp_s < 0.0 or recovery_drive_scale_factor <= 0.0 or not ROD_END_TIME_S < grasp_time_s < LIFT_COMPLETE_TIME_S or rod_cycles < 1 or rod_cycle_period_s < ROD_END_TIME_S - ROD_START_TIME_S:
+    rod_final_release_s = rod_start_time_s + (rod_cycles - 1) * rod_cycle_period_s + (ROD_END_TIME_S - ROD_START_TIME_S)
+    if kappa_vector.shape != (6,) or recovery_kappa_vector.shape != (6,) or not np.all(np.isfinite(kappa_vector)) or not np.all(np.isfinite(recovery_kappa_vector)) or np.any(kappa_vector <= 0.0) or np.any(recovery_kappa_vector <= 0.0) or recovery_ramp_s < 0.0 or recovery_drive_scale_factor <= 0.0 or not rod_final_release_s < grasp_time_s < LIFT_COMPLETE_TIME_S or rod_cycles < 1 or rod_cycle_period_s < ROD_END_TIME_S - ROD_START_TIME_S:
         raise ValueError("recovery stiffness and ramp must be non-negative / positive")
     # The default height intersects the descending hand.  In the repeated
     # response fixture the arm stays at the lower pre-grasp pose, so align the
@@ -625,8 +627,8 @@ def run_episode(
                 data.qpos[explicit_rotation_qpos_indices] = _rotation_to_quaternion(nominal_rotation)
                 data.qvel[explicit_rotation_dof_indices] = nominal_twist[3:]
             mujoco.mj_forward(model, data)
-        active_kappa = stiffness_schedule(time_s, kappa_vector, recovery_kappa_vector, recovery_ramp_s)
-        active_drive_scale = stiffness_schedule(time_s, 1.0, recovery_drive_scale_factor, recovery_ramp_s)
+        active_kappa = stiffness_schedule(time_s, kappa_vector, recovery_kappa_vector, recovery_ramp_s, rod_final_release_s)
+        active_drive_scale = stiffness_schedule(time_s, 1.0, recovery_drive_scale_factor, recovery_ramp_s, rod_final_release_s)
         controller.set_kappa(active_kappa)
         controller.set_carriage_drive_scale(active_drive_scale)
         rod_displacement, rod_velocity = rod_motion(
@@ -818,8 +820,8 @@ def run_episode(
     arrays = {key: np.asarray(values) for key, values in log.items()}
     phase, phase_summary = _phase_analysis(arrays["time"], arrays["rod_contact"], arrays["track_position"], grasp_time_s)
     arrays["phase"] = phase
-    perturbation_mask = (arrays["time"] >= ROD_START_TIME_S) & (arrays["time"] <= ROD_END_TIME_S)
-    recovery_mask = (arrays["time"] > ROD_END_TIME_S) & (arrays["time"] < grasp_time_s)
+    perturbation_mask = (arrays["time"] >= rod_start_time_s) & (arrays["time"] <= rod_final_release_s)
+    recovery_mask = (arrays["time"] > rod_final_release_s) & (arrays["time"] < grasp_time_s)
     object_position = arrays["object_position"]
     target_lifted = bool(np.max(object_position[:, 2]) > TABLE_TOP_Z + 0.12)
     target_held = bool(object_position[-1, 2] > TABLE_TOP_Z + 0.08 and arrays["object_hand_distance"][-1] < 0.16)
@@ -830,7 +832,7 @@ def run_episode(
     explicit_moment_norm = np.linalg.norm(arrays["explicit_carriage_moment"], axis=1)
     peak_trajectory_deviation = _safe_scalar(np.max(arrays["track_position"][perturbation_mask]))
     pregrasp_error = _safe_scalar(arrays["track_position"][np.flatnonzero(arrays["time"] < grasp_time_s)[-1]])
-    release_index = int(np.flatnonzero(arrays["time"] >= ROD_END_TIME_S)[0])
+    release_index = int(np.flatnonzero(arrays["time"] >= rod_final_release_s)[0])
     release_error = _safe_scalar(arrays["track_position"][release_index])
     recovery_drop = _safe_scalar(release_error - pregrasp_error)
     contact_times = arrays["time"][rod_contact_mask]
@@ -863,7 +865,7 @@ def run_episode(
             "profile_duration_s": ROD_END_TIME_S - ROD_START_TIME_S,
             "cycles": rod_cycles,
             "cycle_period_s": rod_cycle_period_s,
-            "final_end_time_s": rod_start_time_s + (rod_cycles - 1) * rod_cycle_period_s + (ROD_END_TIME_S - ROD_START_TIME_S),
+            "final_end_time_s": rod_final_release_s,
             "stroke_m": rod_stroke_m,
             "height_m": rod_height_m,
         },
@@ -872,7 +874,7 @@ def run_episode(
             "recovery_kappa_vector": recovery_kappa_vector.tolist(),
             "shared_six_channel_contact_kappa": float(kappa_vector[0]) if np.allclose(kappa_vector, kappa_vector[0]) else None,
             "shared_six_channel_recovery_kappa": float(recovery_kappa_vector[0]) if np.allclose(recovery_kappa_vector, recovery_kappa_vector[0]) else None,
-            "recovery_ramp_start_s": ROD_END_TIME_S,
+            "recovery_ramp_start_s": rod_final_release_s,
             "recovery_ramp_duration_s": recovery_ramp_s,
             "recovery_carriage_drive_scale_factor": recovery_drive_scale_factor,
         },

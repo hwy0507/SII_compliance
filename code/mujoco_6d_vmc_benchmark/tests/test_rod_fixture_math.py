@@ -66,6 +66,13 @@ def test_stiffness_schedule_independently_ramps_all_six_channels():
     np.testing.assert_allclose(midpoint, 1.5 * contact)
 
 
+def test_stiffness_schedule_uses_the_sample_specific_rod_release_time():
+    release = MODULE.ROD_END_TIME_S + 0.08
+    assert MODULE.stiffness_schedule(MODULE.ROD_END_TIME_S + 0.04, 1.0, 2.0, 0.16, release) == 1.0
+    midpoint = MODULE.stiffness_schedule(release + 0.08, 1.0, 2.0, 0.16, release)
+    np.testing.assert_allclose(midpoint, 1.5)
+
+
 def test_explicit_carriage_uses_one_shared_three_axis_body():
     """The physical prototype must be one 3D mass, not three unrelated masses."""
     source = MODULE_PATH.read_text()
