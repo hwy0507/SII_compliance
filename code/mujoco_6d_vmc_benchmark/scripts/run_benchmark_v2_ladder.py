@@ -19,6 +19,13 @@ from run_rod_perturbation_benchmark import run_episode
 
 KAPPA_6D = [27.579838, 52.550787, 48.699427, 35.859580, 40.719830, 34.766858]
 CONTROLLERS = ("rigid", "impedance", "vmc_isotropic", "vmc_6d", "vmc_gated", "vmc_taper")
+METRICS = (
+    "peak_paired_offset_mm", "paired_offset_rmse_mm", "recovery_rmse_mm",
+    "recovery_iae_mm_s", "rejoin_latency_s", "yield_peak_error_mm",
+    "rebound_ratio", "post_contact_speed_p95_mps", "post_contact_jerk_p95_mps3",
+    "peak_jerk_mps3", "peak_torque_nm", "torque_p95_nm", "torque_rms_nm",
+    "torque_rate_peak_nmps", "peak_contact_force_n", "contact_impulse_ns",
+)
 
 
 def _trace(path: Path) -> dict[str, np.ndarray]:
@@ -105,33 +112,86 @@ def _run_fixture(menagerie: Path, root: Path, fixture: dict[str, Any], controlle
     }
 
 
-def _aggregate(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    metrics = ("peak_paired_offset_mm", "paired_offset_rmse_mm", "recovery_rmse_mm", "recovery_iae_mm_s", "rejoin_latency_s", "yield_peak_error_mm", "post_contact_speed_p95_mps", "post_contact_jerk_p95_mps3", "peak_jerk_mps3", "peak_torque_nm", "torque_p95_nm", "torque_rms_nm", "torque_rate_peak_nmps")
+def _aggregate(
+    rows: list[dict[str, Any]], controllers: tuple[str, ...], fixture_ids: set[str] | None = None,
+) -> list[dict[str, Any]]:
+    """Aggregate only valid rows, optionally on an explicitly paired fixture set."""
     result = []
-    for controller in CONTROLLERS:
-        subset = [row for row in rows if row["controller"] == controller]
+    for controller in controllers:
+        subset = [row for row in rows if row["controller"] == controller and (fixture_ids is None or row["fixture_id"] in fixture_ids)]
         valid = [row for row in subset if row["valid"]]
-        summary: dict[str, Any] = {"controller": controller, "fixture_count": len(subset), "valid_count": len(valid), "task_success_count": sum(row["task_success"] for row in subset), "no_rod_task_success_count": sum(row["no_rod_task_success"] for row in subset)}
-        for metric in metrics:
+        summary: dict[str, Any] = {
+            "controller": controller,
+            "fixture_count": len(subset),
+            "valid_count": len(valid),
+            "task_success_count": sum(row["task_success"] for row in subset),
+            "no_rod_task_success_count": sum(row["no_rod_task_success"] for row in subset),
+        }
+        for metric in METRICS:
             values = [row[metric] for row in valid if row[metric] is not None]
             summary[metric] = None if not values else {"mean": float(np.mean(values)), "std": float(np.std(values)), "count": len(values)}
         result.append(summary)
     return result
 
 
-def _plot(rows: list[dict[str, Any]], output: Path) -> None:
-    aggregate = _aggregate(rows)
+def _common_valid_fixture_ids(rows: list[dict[str, Any]], controllers: tuple[str, ...]) -> list[str]:
+    """Return the intersection of fixtures that pass every controller's gates.
+
+    The fixed manifest defines what must be attempted; this intersection defines
+    the only sample set on which direct numeric controller comparisons are fair.
+    Individual validity rates are retained separately and are not hidden.
+    """
+    by_controller = {
+        controller: {row["fixture_id"] for row in rows if row["controller"] == controller and row["valid"]}
+        for controller in controllers
+    }
+    if not by_controller:
+        return []
+    return sorted(set.intersection(*by_controller.values()))
+
+
+def _stratified_aggregate(
+    rows: list[dict[str, Any]], controllers: tuple[str, ...], fixture_ids: set[str], field: str,
+) -> dict[str, list[dict[str, Any]]]:
+    values = sorted({row[field] for row in rows if row["fixture_id"] in fixture_ids})
+    return {
+        value: _aggregate(
+            [row for row in rows if row[field] == value], controllers, fixture_ids,
+        )
+        for value in values
+    }
+
+
+def _plot(
+    all_aggregate: list[dict[str, Any]], common_aggregate: list[dict[str, Any]],
+    common_fixture_count: int, output: Path,
+) -> None:
     fig, axes = plt.subplots(1, 2, figsize=(11, 4.4), constrained_layout=True)
-    for row in aggregate:
-        if row["valid_count"] == 0:
+    all_by_name = {row["controller"]: row for row in all_aggregate}
+    display_name = {
+        "rigid": "Rigid", "impedance": "Impedance", "vmc_isotropic": "VMC-iso",
+        "vmc_6d": "VMC-6D", "vmc_gated": "VMC-gated", "vmc_taper": "VMC-taper",
+    }
+    label_offsets = {
+        "rigid": (4, 4), "impedance": (4, 4), "vmc_isotropic": (-96, 12),
+        "vmc_6d": (-82, -13), "vmc_gated": (5, 8), "vmc_taper": (-84, -12),
+    }
+    for row in common_aggregate:
+        if row["valid_count"] == 0 or row["recovery_rmse_mm"] is None:
             continue
         x = row["recovery_rmse_mm"]["mean"]
         axes[0].scatter(x, row["peak_torque_nm"]["mean"], s=70, label=row["controller"])
         axes[1].scatter(x, row["post_contact_jerk_p95_mps3"]["mean"], s=70, label=row["controller"])
         for axis, y in ((axes[0], row["peak_torque_nm"]["mean"]), (axes[1], row["post_contact_jerk_p95_mps3"]["mean"])):
-            axis.annotate(row["controller"], (x, y), xytext=(4, 4), textcoords="offset points", fontsize=8)
-    axes[0].set(xlabel="Recovery RMSE (mm)", ylabel="Peak torque (Nm)", title="Accuracy–torque Pareto")
-    axes[1].set(xlabel="Recovery RMSE (mm)", ylabel="Post-contact jerk P95 (m/s³)", title="Accuracy–smoothness Pareto")
+            valid_count = all_by_name[row["controller"]]["valid_count"]
+            fixture_count = all_by_name[row["controller"]]["fixture_count"]
+            axis.annotate(
+                f"{display_name[row['controller']]} ({valid_count}/{fixture_count})", (x, y),
+                xytext=label_offsets[row["controller"]], textcoords="offset points", fontsize=8,
+            )
+    title_suffix = f"common-valid subset n={common_fixture_count}"
+    axes[0].set(xlabel="Recovery RMSE (mm)", ylabel="Peak torque (Nm)", title=f"Accuracy–torque Pareto ({title_suffix})")
+    axes[1].set(xlabel="Recovery RMSE (mm)", ylabel="Post-contact jerk P95 (m/s³)", title=f"Accuracy–smoothness Pareto ({title_suffix})")
     for axis in axes:
         axis.grid(alpha=0.25)
         axis.spines[["top", "right"]].set_visible(False)
@@ -145,22 +205,52 @@ def main() -> None:
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--controllers", choices=CONTROLLERS, nargs="+", default=list(CONTROLLERS))
+    parser.add_argument(
+        "--existing-results", type=Path,
+        help="Re-render the Pareto figure from a completed ladder JSON without rerunning MuJoCo episodes.",
+    )
     args = parser.parse_args()
+    if args.existing_results is not None:
+        payload = json.loads(args.existing_results.read_text())
+        _plot(
+            payload["aggregate"], payload["aggregate_common_valid_all_controllers"],
+            len(payload["common_valid_fixture_ids_all_controllers"]),
+            args.output_dir / "benchmark_v2_pareto.png",
+        )
+        print(f"Re-rendered {args.output_dir / 'benchmark_v2_pareto.png'} from {args.existing_results}")
+        return
     manifest = json.loads(args.manifest.read_text())
     fixtures = manifest["splits"]["test"]
     if not fixtures:
         raise RuntimeError("V2 manifest has no physically valid test fixtures")
-    rows = [_run_fixture(args.menagerie, args.output_dir / "episodes", fixture, controller) for fixture in fixtures for controller in args.controllers]
-    aggregate = _aggregate(rows)
+    controllers = tuple(args.controllers)
+    rows = [_run_fixture(args.menagerie, args.output_dir / "episodes", fixture, controller) for fixture in fixtures for controller in controllers]
+    aggregate = _aggregate(rows, controllers)
+    common_ids = _common_valid_fixture_ids(rows, controllers)
+    common_aggregate = _aggregate(rows, controllers, set(common_ids))
+    common_set = set(common_ids)
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    payload = {"protocol": {"manifest": str(args.manifest), "controllers": args.controllers, "validity": "finite + effective physical collision + stable rejoin + lift + hold + no hard torque limit + valid matched no-rod"}, "rows": rows, "aggregate": aggregate}
+    payload = {
+        "protocol": {
+            "manifest": str(args.manifest), "controllers": list(controllers),
+            "validity": "finite + effective physical collision + stable rejoin + lift + hold + no hard torque limit + valid matched no-rod",
+            "comparison_rule": "numeric cross-controller comparisons use only the common-valid fixture intersection; per-controller validity is reported separately",
+        },
+        "rows": rows,
+        "aggregate": aggregate,
+        "common_valid_fixture_ids_all_controllers": common_ids,
+        "aggregate_common_valid_all_controllers": common_aggregate,
+        "aggregate_common_valid_by_approach_side": _stratified_aggregate(rows, controllers, common_set, "approach_side"),
+        "aggregate_common_valid_by_timing_bin": _stratified_aggregate(rows, controllers, common_set, "timing_bin"),
+        "aggregate_common_valid_by_impulse_bin": _stratified_aggregate(rows, controllers, common_set, "impulse_bin"),
+    }
     (args.output_dir / "benchmark_v2_ladder.json").write_text(json.dumps(payload, indent=2) + "\n")
     with (args.output_dir / "benchmark_v2_ladder.csv").open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
-    _plot(rows, args.output_dir / "benchmark_v2_pareto.png")
-    print(json.dumps(payload["aggregate"], indent=2))
+    _plot(aggregate, common_aggregate, len(common_ids), args.output_dir / "benchmark_v2_pareto.png")
+    print(json.dumps({"per_controller": aggregate, "common_valid_fixture_count": len(common_ids), "common_valid": common_aggregate}, indent=2))
 
 
 if __name__ == "__main__":
