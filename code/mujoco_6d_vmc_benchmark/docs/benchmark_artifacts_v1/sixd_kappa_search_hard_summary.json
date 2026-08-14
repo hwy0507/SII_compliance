@@ -1,0 +1,195 @@
+{
+  "protocol": {
+    "scenario": "hard",
+    "fixture": {
+      "rod_stroke": 0.18,
+      "rod_height": 0.54,
+      "rod_start": 1.08,
+      "grasp_time": 2.4
+    },
+    "controller": "VMC with explicit translational virtual carriage; independent [x,y,z,roll,pitch,yaw] stiffness multipliers",
+    "fairness": "Every candidate receives the identical rod, reference, torque limits, task gate, and matched no-rod run. Rigid/impedance are not modified or handicapped.",
+    "validity_gate": "finite + physical rod-hand contact + stable rejoin + lift + hold + no hard torque limit + valid matched no-rod task"
+  },
+  "candidates": [
+    {
+      "candidate": "isotropic_35",
+      "kappa_vector": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ],
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_rod_offset_mm": 33.0033093932435,
+      "recovery_rmse_mm": 2.435948514589734,
+      "rejoin_latency_s": 0.3839999999999999,
+      "peak_torque_nm": 30.338114146859713,
+      "speed_p95_mps": 0.017962523385137905,
+      "peak_contact_force_n": 76.7149258459802,
+      "contact_impulse_ns": 3.98246697964985,
+      "screening_score": 18.762365671424508
+    },
+    {
+      "candidate": "isotropic_20",
+      "kappa_vector": [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+      ],
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_rod_offset_mm": 33.954616606501766,
+      "recovery_rmse_mm": 2.3450353105281527,
+      "rejoin_latency_s": 0.3599999999999999,
+      "peak_torque_nm": 30.2980155659406,
+      "speed_p95_mps": 0.015649038748197813,
+      "peak_contact_force_n": 75.85981018225391,
+      "contact_impulse_ns": 3.847569392440265,
+      "screening_score": 19.059935321532134
+    },
+    {
+      "candidate": "isotropic_50",
+      "kappa_vector": [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+      ],
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_rod_offset_mm": 32.67175474771528,
+      "recovery_rmse_mm": 2.459508522232085,
+      "rejoin_latency_s": 0.3919999999999999,
+      "peak_torque_nm": 30.3516889215104,
+      "speed_p95_mps": 0.018836668539500025,
+      "peak_contact_force_n": 77.21697302916205,
+      "contact_impulse_ns": 4.0475553377139795,
+      "screening_score": 18.65435306589048
+    },
+    {
+      "candidate": "y_soft",
+      "kappa_vector": [
+        35,
+        16,
+        35,
+        35,
+        24,
+        35
+      ],
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_rod_offset_mm": 34.865944747986525,
+      "recovery_rmse_mm": 2.1622950581809706,
+      "rejoin_latency_s": 0.34799999999999986,
+      "peak_torque_nm": 30.336279541377433,
+      "speed_p95_mps": 0.013785942309929373,
+      "peak_contact_force_n": 75.66890643106227,
+      "contact_impulse_ns": 3.806940349531506,
+      "screening_score": 19.359428166719127
+    },
+    {
+      "candidate": "y_soft_pitch",
+      "kappa_vector": [
+        42,
+        14,
+        42,
+        32,
+        16,
+        30
+      ],
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_rod_offset_mm": 35.38152361372715,
+      "recovery_rmse_mm": 2.1104244299260353,
+      "rejoin_latency_s": 0.34799999999999986,
+      "peak_torque_nm": 30.291279275868387,
+      "speed_p95_mps": 0.01308054474410051,
+      "peak_contact_force_n": 75.48363755485013,
+      "contact_impulse_ns": 3.7759853026091466,
+      "screening_score": 19.57082230386798
+    },
+    {
+      "candidate": "supported_y_soft",
+      "kappa_vector": [
+        55,
+        18,
+        55,
+        38,
+        20,
+        34
+      ],
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_rod_offset_mm": 34.37257747481701,
+      "recovery_rmse_mm": 2.1874074868066087,
+      "rejoin_latency_s": 0.35199999999999987,
+      "peak_torque_nm": 30.314025897300283,
+      "speed_p95_mps": 0.01425946745695001,
+      "peak_contact_force_n": 75.84990093202663,
+      "contact_impulse_ns": 3.8361902216240775,
+      "screening_score": 19.161231619152062
+    },
+    {
+      "candidate": "very_y_soft",
+      "kappa_vector": [
+        48,
+        10,
+        48,
+        28,
+        12,
+        26
+      ],
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_rod_offset_mm": 37.079639880666235,
+      "recovery_rmse_mm": 1.9903379566744202,
+      "rejoin_latency_s": 0.3440000000000001,
+      "peak_torque_nm": 30.303197496187774,
+      "speed_p95_mps": 0.012322136889342304,
+      "peak_contact_force_n": 75.03486833462125,
+      "contact_impulse_ns": 3.701635075080322,
+      "screening_score": 20.277312747012044
+    },
+    {
+      "candidate": "balanced_anisotropic",
+      "kappa_vector": [
+        45,
+        22,
+        48,
+        34,
+        22,
+        32
+      ],
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_rod_offset_mm": 33.75729138434347,
+      "recovery_rmse_mm": 2.234429435009356,
+      "rejoin_latency_s": 0.35599999999999987,
+      "peak_torque_nm": 30.299309927658665,
+      "speed_p95_mps": 0.015452068864498018,
+      "peak_contact_force_n": 76.08048098048565,
+      "contact_impulse_ns": 3.8763633303598137,
+      "screening_score": 18.91643254225012
+    }
+  ],
+  "pareto_candidates": [
+    "isotropic_35",
+    "isotropic_20",
+    "isotropic_50",
+    "y_soft",
+    "y_soft_pitch",
+    "supported_y_soft",
+    "very_y_soft",
+    "balanced_anisotropic"
+  ],
+  "screening_best": "isotropic_50"
+}
