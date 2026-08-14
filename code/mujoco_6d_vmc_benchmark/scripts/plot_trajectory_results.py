@@ -238,7 +238,10 @@ def _plot_compliance_phase_zoom(
     for left, right in zip(indices[:-1], indices[1:]):
         label = _phase_label(phase[left])
         ax_phase.axvspan(t[left], t[right - 1], color=colors[label], alpha=0.95)
-        if right - left > 2:
+        # Solver-scale contact toggles can create very short phase fragments.
+        # Keep their color for auditability, but label only human-readable
+        # intervals so repeated-contact ribbons do not become a text block.
+        if (t[right - 1] - t[left]) >= 0.12:
             ax_phase.text((t[left] + t[right - 1]) / 2, 0.5, label, ha="center", va="center", fontsize=8)
     ax_phase.set_ylim(0, 1)
     ax_phase.set_yticks([])
