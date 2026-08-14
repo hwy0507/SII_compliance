@@ -68,6 +68,10 @@
       "max_log_rate_per_s": 1.6
     },
     "validity_gate": "finite + rod-hand contact + stable rejoin + lift + hold + no hard torque limit + valid matched no-rod task",
+    "effective_collision_gate": {
+      "minimum_peak_contact_force_n": 15.0,
+      "minimum_contact_impulse_ns": 0.45
+    },
     "objective": "Constrained Pareto: minimize paired offset, recovery RMSE and rejoin latency subject to task success, no hard torque limit, torque/jerk safety budgets."
   },
   "randomization": {

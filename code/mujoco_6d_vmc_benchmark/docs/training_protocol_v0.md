@@ -85,6 +85,11 @@ An episode is invalid if any of the following is false:
 5. no arm joint reaches a hard torque limit; and
 6. the matched no-rod episode passes the same task gate.
 
+For training eligibility, a geometrical contact is not enough: retain only an
+**effective collision** with peak rod--hand force at least `15 N` and impulse
+at least `0.45 Ns`. This prevents the optimizer from obtaining a deceptively
+small tracking error by selecting grazing or near-miss geometry.
+
 For valid runs, do not collapse research conclusions to a single scalar
 reward. Preserve a Pareto front minimizing paired rod offset, recovery RMSE,
 rejoin latency, torque burden and jerk. A temporary scalar screening score may

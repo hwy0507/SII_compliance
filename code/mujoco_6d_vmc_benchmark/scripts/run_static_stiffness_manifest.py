@@ -73,8 +73,10 @@ def main() -> None:
     parser.add_argument("--damping-ratio", type=float, default=0.8)
     parser.add_argument("--carriage-drive-scale", type=float, default=8.0)
     parser.add_argument("--carriage-mass-kg", type=float, default=1.0)
+    parser.add_argument("--minimum-peak-contact-force-n", type=float, default=15.0)
+    parser.add_argument("--minimum-contact-impulse-ns", type=float, default=0.45)
     args = parser.parse_args()
-    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_mass_kg) <= 0.0:
+    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_mass_kg, args.minimum_peak_contact_force_n, args.minimum_contact_impulse_ns) <= 0.0:
         raise ValueError("controller scales must be positive")
     manifest = _load(args.manifest)
     samples = [sample for split in args.splits for sample in manifest["splits"][split]]
@@ -107,6 +109,13 @@ def main() -> None:
             _run([sys.executable, str(RUNNER), "--output-dir", str(no_rod_dir), *common, "--disable-rod"])
         rod_summary, no_rod_summary = _load(rod_dir / summary_name), _load(no_rod_dir / summary_name)
         valid, failures = _valid(rod_summary, require_contact=True)
+        diagnostics = rod_summary["rod_diagnostics"]
+        if diagnostics["peak_contact_force_n"] < args.minimum_peak_contact_force_n:
+            valid = False
+            failures.append("ineffective_collision:peak_force")
+        if diagnostics["contact_impulse_ns"] < args.minimum_contact_impulse_ns:
+            valid = False
+            failures.append("ineffective_collision:impulse")
         paired_valid, paired_failures = _valid(no_rod_summary, require_contact=False)
         if not paired_valid:
             valid = False
@@ -121,12 +130,18 @@ def main() -> None:
             "peak_torque_nm": rod_summary["torque"]["applied_peak_nm"],
             "jerk_peak_mps3": rod_summary["motion"]["jerk_peak_mps3"],
             "peak_contact_force_n": rod_summary["rod_diagnostics"]["peak_contact_force_n"],
+            "contact_impulse_ns": diagnostics["contact_impulse_ns"],
         }
         records.append(record)
     report = {
         "manifest": str(args.manifest), "requested_splits": args.splits, "sample_count": len(records),
         "valid_count": sum(record["valid"] for record in records),
-        "validity_gate": manifest["training_contract"]["validity_gate"], "records": records,
+        "validity_gate": manifest["training_contract"]["validity_gate"],
+        "effective_collision_gate": {
+            "minimum_peak_contact_force_n": args.minimum_peak_contact_force_n,
+            "minimum_contact_impulse_ns": args.minimum_contact_impulse_ns,
+        },
+        "records": records,
     }
     (args.output_dir / "static_stiffness_manifest_results.json").write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({key: value for key, value in report.items() if key != "records"}, indent=2))

@@ -35,6 +35,10 @@ PRIVILEGED_DIAGNOSTICS = (
     "future_collision_phase",
     "obstacle_geometry_or_pose",
 )
+EFFECTIVE_COLLISION_GATE = {
+    "minimum_peak_contact_force_n": 15.0,
+    "minimum_contact_impulse_ns": 0.45,
+}
 
 
 @dataclass(frozen=True)
@@ -183,5 +187,6 @@ def training_contract(action_config: StiffnessActionConfig = StiffnessActionConf
             **asdict(action_config),
         },
         "validity_gate": "finite + rod-hand contact + stable rejoin + lift + hold + no hard torque limit + valid matched no-rod task",
+        "effective_collision_gate": EFFECTIVE_COLLISION_GATE,
         "objective": "Constrained Pareto: minimize paired offset, recovery RMSE and rejoin latency subject to task success, no hard torque limit, torque/jerk safety budgets.",
     }
