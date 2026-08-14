@@ -13,6 +13,7 @@ from typing import Any
 import matplotlib.pyplot as plt
 import numpy as np
 
+from energy_safety import EnergySafetyConfig
 from run_benchmark import VMCConfig
 from run_rod_perturbation_benchmark import run_episode
 
@@ -69,7 +70,27 @@ def _spec(name: str) -> tuple[str, float | np.ndarray]:
     raise ValueError(name)
 
 
-def _run_fixture(menagerie: Path, root: Path, fixture: dict[str, Any], controller: str) -> dict[str, Any]:
+def _load_energy_safety_config(path: Path | None) -> EnergySafetyConfig | None:
+    """Load an explicitly frozen safety configuration for a holdout run.
+
+    The runner accepts only fields belonging to :class:`EnergySafetyConfig`.
+    Selection metadata such as ``label`` can live in the same JSON artifact,
+    but it cannot silently change the controller parameters.
+    """
+    if path is None:
+        return None
+    payload = json.loads(path.read_text())
+    fields = set(EnergySafetyConfig.__dataclass_fields__)
+    missing = sorted(fields - set(payload))
+    if missing:
+        raise ValueError(f"energy safety configuration is missing fields: {missing}")
+    return EnergySafetyConfig(**{field: payload[field] for field in fields})
+
+
+def _run_fixture(
+    menagerie: Path, root: Path, fixture: dict[str, Any], controller: str,
+    energy_safety_config: EnergySafetyConfig | None = None,
+) -> dict[str, Any]:
     mode, kappa = _spec(controller)
     uses_virtual_carriage = mode.startswith("vmc")
     config = replace(
@@ -86,6 +107,10 @@ def _run_fixture(menagerie: Path, root: Path, fixture: dict[str, Any], controlle
         rod_height_m=fixture["rod_height_m"], controller_mode=mode,
         rod_approach_side=fixture["rod_approach_side"], recovery_gate_hold_s=0.28,
         recovery_gate_taper_s=0.04,
+        # The configuration is only meaningful for this controller.  Keeping
+        # it absent for all baselines guards against accidental cross-method
+        # leakage in a mixed ladder.
+        energy_safety_config=energy_safety_config if controller == "vmc_energy" else None,
     )
     run_dir = root / controller / fixture["fixture_id"]
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -208,6 +233,10 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--controllers", choices=CONTROLLERS, nargs="+", default=list(CONTROLLERS))
     parser.add_argument(
+        "--energy-safety-config-json", type=Path,
+        help="Frozen JSON configuration injected only into vmc_energy; use for no-tuning holdout evaluation.",
+    )
+    parser.add_argument(
         "--existing-results", type=Path,
         help="Re-render the Pareto figure from a completed ladder JSON without rerunning MuJoCo episodes.",
     )
@@ -226,7 +255,13 @@ def main() -> None:
     if not fixtures:
         raise RuntimeError("V2 manifest has no physically valid test fixtures")
     controllers = tuple(args.controllers)
-    rows = [_run_fixture(args.menagerie, args.output_dir / "episodes", fixture, controller) for fixture in fixtures for controller in controllers]
+    energy_safety_config = _load_energy_safety_config(args.energy_safety_config_json)
+    if energy_safety_config is not None and "vmc_energy" not in controllers:
+        raise ValueError("--energy-safety-config-json requires vmc_energy in --controllers")
+    rows = [
+        _run_fixture(args.menagerie, args.output_dir / "episodes", fixture, controller, energy_safety_config)
+        for fixture in fixtures for controller in controllers
+    ]
     aggregate = _aggregate(rows, controllers)
     common_ids = _common_valid_fixture_ids(rows, controllers)
     common_aggregate = _aggregate(rows, controllers, set(common_ids))
@@ -235,6 +270,10 @@ def main() -> None:
     payload = {
         "protocol": {
             "manifest": str(args.manifest), "controllers": list(controllers),
+            "energy_safety_config_json": None if args.energy_safety_config_json is None else str(args.energy_safety_config_json),
+            "energy_safety_config": None if energy_safety_config is None else {
+                field: getattr(energy_safety_config, field) for field in EnergySafetyConfig.__dataclass_fields__
+            },
             "validity": "finite + effective physical collision + stable rejoin + lift + hold + no hard torque limit + valid matched no-rod",
             "comparison_rule": "numeric cross-controller comparisons use only the common-valid fixture intersection; per-controller validity is reported separately",
         },

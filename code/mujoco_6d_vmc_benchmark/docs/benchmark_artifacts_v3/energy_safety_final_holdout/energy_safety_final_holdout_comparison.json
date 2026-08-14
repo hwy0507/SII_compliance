@@ -1,0 +1,210 @@
+{
+  "protocol": {
+    "selection": "configuration frozen by separate validation scan before V2/V3 evaluation",
+    "comparison_rule": "V2/V3 values use each frozen suite's common-valid fixture set; no post-hoc tuning",
+    "selected_config": {
+      "minimum_direction_scale": 0.3,
+      "initial_energy_j": 0.8,
+      "direction_transition_speed_mps": 0.08,
+      "minimum_energy_j": 0.08,
+      "damping_recharge_efficiency": 0.6,
+      "smoothing_time_constant_s": 0.08,
+      "maximum_energy_j": 1.2
+    },
+    "selected_config_label": "slow_smoothing"
+  },
+  "splits": {
+    "V2": {
+      "fixture_count": 16,
+      "fixture_ids": [
+        "v2_negative_y_t0_s0",
+        "v2_negative_y_t0_s1",
+        "v2_negative_y_t0_s2",
+        "v2_negative_y_t1_s0",
+        "v2_negative_y_t1_s1",
+        "v2_negative_y_t1_s2",
+        "v2_negative_y_t2_s1",
+        "v2_negative_y_t2_s2",
+        "v2_positive_y_t0_s0",
+        "v2_positive_y_t0_s1",
+        "v2_positive_y_t0_s2",
+        "v2_positive_y_t1_s0",
+        "v2_positive_y_t1_s1",
+        "v2_positive_y_t1_s2",
+        "v2_positive_y_t2_s1",
+        "v2_positive_y_t2_s2"
+      ],
+      "methods": {
+        "rigid": {
+          "recovery_rmse_mm": 0.29027538853522816,
+          "recovery_iae_mm_s": 0.19770421208056485,
+          "rejoin_latency_s": 0.0,
+          "post_contact_jerk_p95_mps3": 684.6857838266224,
+          "peak_torque_nm": 35.761881651996006,
+          "torque_rate_peak_nmps": 669.6558382084384
+        },
+        "impedance": {
+          "recovery_rmse_mm": 1.5990216888290143,
+          "recovery_iae_mm_s": 1.0543808023788324,
+          "rejoin_latency_s": 0.262,
+          "post_contact_jerk_p95_mps3": 307.1545841817109,
+          "peak_torque_nm": 31.883991667026017,
+          "torque_rate_peak_nmps": 370.20914974093216
+        },
+        "vmc_gated": {
+          "recovery_rmse_mm": 1.673547845634956,
+          "recovery_iae_mm_s": 1.1181444134929395,
+          "rejoin_latency_s": 0.26,
+          "post_contact_jerk_p95_mps3": 436.4441373591112,
+          "peak_torque_nm": 30.26039717419877,
+          "torque_rate_peak_nmps": 96.7744705574272
+        },
+        "vmc_energy_default": {
+          "recovery_rmse_mm": 1.9331486023348765,
+          "recovery_iae_mm_s": 1.267131667979616,
+          "rejoin_latency_s": 0.28750000000000003,
+          "post_contact_jerk_p95_mps3": 367.51216582238766,
+          "peak_torque_nm": 30.210933560955056,
+          "torque_rate_peak_nmps": 91.1262399671254
+        },
+        "vmc_energy_selected": {
+          "recovery_rmse_mm": 1.9113111839036956,
+          "recovery_iae_mm_s": 1.2567210813644578,
+          "rejoin_latency_s": 0.28225,
+          "post_contact_jerk_p95_mps3": 365.96831602131556,
+          "peak_torque_nm": 30.224358296049623,
+          "torque_rate_peak_nmps": 92.12777560244906
+        }
+      },
+      "selected_relative_change_percent": {
+        "rigid": {
+          "recovery_rmse_mm": 558.4475499450538,
+          "recovery_iae_mm_s": 535.6572114165891,
+          "rejoin_latency_s": null,
+          "post_contact_jerk_p95_mps3": -46.54945017611365,
+          "peak_torque_nm": -15.484429510261277,
+          "torque_rate_peak_nmps": -86.24251886626975
+        },
+        "impedance": {
+          "recovery_rmse_mm": 19.53003497428325,
+          "recovery_iae_mm_s": 19.19043656040751,
+          "rejoin_latency_s": 7.729007633587792,
+          "post_contact_jerk_p95_mps3": 19.14792578996991,
+          "peak_torque_nm": -5.205224578868406,
+          "torque_rate_peak_nmps": -75.11466810938656
+        },
+        "vmc_gated": {
+          "recovery_rmse_mm": 14.207143159300028,
+          "recovery_iae_mm_s": 12.393449915706567,
+          "rejoin_latency_s": 8.5576923076923,
+          "post_contact_jerk_p95_mps3": -16.14773009994801,
+          "peak_torque_nm": -0.11909585304410442,
+          "torque_rate_peak_nmps": -4.801571042665353
+        },
+        "vmc_energy_default": {
+          "recovery_rmse_mm": -1.1296295796818456,
+          "recovery_iae_mm_s": -0.8215868072934729,
+          "rejoin_latency_s": -1.8260869565217552,
+          "post_contact_jerk_p95_mps3": -0.4200812774775464,
+          "peak_torque_nm": 0.0444366774283278,
+          "torque_rate_peak_nmps": 1.0990639311848849
+        }
+      }
+    },
+    "V3": {
+      "fixture_count": 14,
+      "fixture_ids": [
+        "v3_negative_y_t0_s0_h0",
+        "v3_negative_y_t0_s0_h1",
+        "v3_negative_y_t0_s1_h0",
+        "v3_negative_y_t0_s1_h1",
+        "v3_negative_y_t1_s0_h0",
+        "v3_negative_y_t1_s1_h0",
+        "v3_negative_y_t1_s1_h1",
+        "v3_positive_y_t0_s0_h0",
+        "v3_positive_y_t0_s0_h1",
+        "v3_positive_y_t0_s1_h0",
+        "v3_positive_y_t0_s1_h1",
+        "v3_positive_y_t1_s0_h0",
+        "v3_positive_y_t1_s1_h0",
+        "v3_positive_y_t1_s1_h1"
+      ],
+      "methods": {
+        "rigid": {
+          "recovery_rmse_mm": 0.28896048946661684,
+          "recovery_iae_mm_s": 0.20155267792658033,
+          "rejoin_latency_s": 0.013142857142857154,
+          "post_contact_jerk_p95_mps3": 483.08927779039357,
+          "peak_torque_nm": 36.02329091644765,
+          "torque_rate_peak_nmps": 672.6297663839365
+        },
+        "impedance": {
+          "recovery_rmse_mm": 1.9642425012995879,
+          "recovery_iae_mm_s": 1.2638520500699635,
+          "rejoin_latency_s": 0.32685714285714296,
+          "post_contact_jerk_p95_mps3": 283.4951088477268,
+          "peak_torque_nm": 31.872245584587784,
+          "torque_rate_peak_nmps": 366.13801656545
+        },
+        "vmc_gated": {
+          "recovery_rmse_mm": 1.947074710482036,
+          "recovery_iae_mm_s": 1.2927905552821297,
+          "rejoin_latency_s": 0.3088571428571429,
+          "post_contact_jerk_p95_mps3": 304.95523204327566,
+          "peak_torque_nm": 30.288457422961155,
+          "torque_rate_peak_nmps": 122.67247249942936
+        },
+        "vmc_energy_default": {
+          "recovery_rmse_mm": 2.293725371208566,
+          "recovery_iae_mm_s": 1.4865967666749544,
+          "rejoin_latency_s": 0.3488571428571429,
+          "post_contact_jerk_p95_mps3": 289.9409332956524,
+          "peak_torque_nm": 30.277628989745413,
+          "torque_rate_peak_nmps": 122.02982206780312
+        },
+        "vmc_energy_selected": {
+          "recovery_rmse_mm": 2.266317758127433,
+          "recovery_iae_mm_s": 1.473783798219936,
+          "rejoin_latency_s": 0.3437142857142858,
+          "post_contact_jerk_p95_mps3": 284.3439028570855,
+          "peak_torque_nm": 30.274391517778174,
+          "torque_rate_peak_nmps": 121.98195949646689
+        }
+      },
+      "selected_relative_change_percent": {
+        "rigid": {
+          "recovery_rmse_mm": 684.3002212208175,
+          "recovery_iae_mm_s": 631.2151906792286,
+          "rejoin_latency_s": 2515.217391304346,
+          "post_contact_jerk_p95_mps3": -41.14050633505081,
+          "peak_torque_nm": -15.958840107094774,
+          "torque_rate_peak_nmps": -81.86491802879272
+        },
+        "impedance": {
+          "recovery_rmse_mm": 15.378715032791801,
+          "recovery_iae_mm_s": 16.61046861761637,
+          "rejoin_latency_s": 5.157342657342645,
+          "post_contact_jerk_p95_mps3": 0.2994034051623018,
+          "peak_torque_nm": -5.013308718925891,
+          "torque_rate_peak_nmps": -66.68415898444087
+        },
+        "vmc_gated": {
+          "recovery_rmse_mm": 16.39603482736225,
+          "recovery_iae_mm_s": 14.000198423348431,
+          "rejoin_latency_s": 11.285846438482917,
+          "post_contact_jerk_p95_mps3": -6.7588049065724025,
+          "peak_torque_nm": -0.046439820247556884,
+          "torque_rate_peak_nmps": -0.5628915671897716
+        },
+        "vmc_energy_default": {
+          "recovery_rmse_mm": -1.1948951441685285,
+          "recovery_iae_mm_s": -0.8618993894139115,
+          "rejoin_latency_s": -1.4742014742014642,
+          "post_contact_jerk_p95_mps3": -1.9304036773792332,
+          "peak_torque_nm": -0.010692620509800133,
+          "torque_rate_peak_nmps": -0.039222028292107414
+        }
+      }
+    }
+  }
+}
