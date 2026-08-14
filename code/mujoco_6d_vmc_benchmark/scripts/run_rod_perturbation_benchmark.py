@@ -27,6 +27,7 @@ import imageio.v3 as iio
 import mujoco
 import numpy as np
 
+from energy_safety import EnergyBudgetSafety, EnergySafetyConfig
 from run_benchmark import (
     ARM_DOF,
     CONTROL_DT,
@@ -62,8 +63,8 @@ DEFAULT_CONTACT_TIME_CONSTANT_S = 0.015
 PATH_MARKER_COUNT = 13
 ACTUAL_TRAIL_COUNT = 12
 CAMERA_VIEWS = ("overview", "hand-closeup")
-CONTROLLER_MODES = ("rigid", "impedance", "vmc", "vmc_gated", "vmc_taper")
-VMC_MODES = ("vmc", "vmc_gated", "vmc_taper")
+CONTROLLER_MODES = ("rigid", "impedance", "vmc", "vmc_gated", "vmc_taper", "vmc_energy")
+VMC_MODES = ("vmc", "vmc_gated", "vmc_taper", "vmc_energy")
 ROD_APPROACH_SIDES = ("negative_y", "positive_y")
 PHASE_LABELS = ("approach", "contact", "unloading", "rejoined", "task")
 REJOIN_THRESHOLD_M = 0.005
@@ -497,6 +498,7 @@ def run_episode(
     rod_approach_side: str = "negative_y",
     recovery_gate_hold_s: float = 0.28,
     recovery_gate_taper_s: float = 0.04,
+    energy_safety_config: EnergySafetyConfig | None = None,
 ) -> dict[str, Any]:
     if controller_mode not in CONTROLLER_MODES:
         raise ValueError(f"unknown controller mode: {controller_mode}")
@@ -613,6 +615,7 @@ def run_episode(
         # consumed by the eventual deployed policy.
         "ee_rotation", "nominal_rotation", "ee_twist", "nominal_twist", "joint_position", "joint_velocity",
         "object_position", "object_hand_distance", "rod_displacement", "rod_command_velocity", "active_kappa", "active_drive_scale", "recovery_gate",
+        "energy_tank_j", "energy_direction_scale", "energy_scale", "energy_requested_boost_n", "energy_applied_boost_n",
         "explicit_carriage_position", "explicit_carriage_velocity", "explicit_carriage_force",
         "explicit_carriage_rotation", "explicit_carriage_angular_velocity", "explicit_carriage_moment",
         "simulation_finite",
@@ -623,6 +626,7 @@ def run_episode(
     actual_position_history: list[np.ndarray] = []
     rod_hand_observed = False
     recovery_gate_remaining_s = 0.0
+    energy_safety = EnergyBudgetSafety(energy_safety_config) if controller_mode == "vmc_energy" else None
     steps = int(SIM_TIME_S / CONTROL_DT)
 
     for step in range(steps):
@@ -666,7 +670,7 @@ def run_episode(
         ee_position = data.xpos[ids["hand"]].copy()
         ee_rotation = data.xmat[ids["hand"]].reshape(3, 3).copy()
         ee_twist = body_twist(model, data, ids["hand"])
-        if controller_mode in ("vmc_gated", "vmc_taper"):
+        if controller_mode in ("vmc_gated", "vmc_taper", "vmc_energy"):
             position_error = float(np.linalg.norm(nominal_position - ee_position))
             instant_phase = np.clip((position_error - 0.003) / 0.009, 0.0, 1.0)
             instant_gate = float(instant_phase * instant_phase * (3.0 - 2.0 * instant_phase))
@@ -674,7 +678,7 @@ def run_episode(
                 recovery_gate_remaining_s = recovery_gate_hold_s
             else:
                 recovery_gate_remaining_s = max(0.0, recovery_gate_remaining_s - CONTROL_DT)
-            if controller_mode == "vmc_taper" and recovery_gate_taper_s > 0.0:
+            if controller_mode in ("vmc_taper", "vmc_energy") and recovery_gate_taper_s > 0.0:
                 taper_phase = np.clip(recovery_gate_remaining_s / recovery_gate_taper_s, 0.0, 1.0)
                 held_gate = float(taper_phase * taper_phase * (3.0 - 2.0 * taper_phase))
             else:
@@ -720,6 +724,9 @@ def run_episode(
             )
         explicit_force = np.zeros(3, dtype=float)
         explicit_moment = np.zeros(3, dtype=float)
+        energy_tank_j = energy_safety.energy_j if energy_safety is not None else 0.0
+        energy_direction_scale = energy_scale = 1.0
+        energy_requested_boost_n = energy_applied_boost_n = 0.0
         explicit_rotation = controller.rotation.copy()
         explicit_angular_velocity = controller.angular_velocity.copy()
         if explicit_translational_carriage:
@@ -733,7 +740,22 @@ def run_episode(
             ) + spring_d * (explicit_velocity - ee_twist[:3])
             drive_k = config.carriage_drive_k_translation * active_drive_scale
             drive_d = 2.0 * config.carriage_drive_zeta * np.sqrt(carriage_mass_kg * drive_k)
-            drive_force = drive_k * (nominal_position - explicit_position) + drive_d * (nominal_twist[:3] - explicit_velocity)
+            drive_position_error = nominal_position - explicit_position
+            drive_velocity_error = nominal_twist[:3] - explicit_velocity
+            drive_force = drive_k * drive_position_error + drive_d * drive_velocity_error
+            if energy_safety is not None:
+                base_k = config.carriage_drive_k_translation
+                base_d = 2.0 * config.carriage_drive_zeta * np.sqrt(carriage_mass_kg * base_k)
+                base_drive_force = base_k * drive_position_error + base_d * drive_velocity_error
+                drive_force, energy = energy_safety.filter_increment(
+                    base_drive_force, drive_force, drive_position_error, drive_velocity_error,
+                    explicit_velocity, drive_d, CONTROL_DT,
+                )
+                energy_tank_j = energy.tank_energy_j
+                energy_direction_scale = energy.direction_scale
+                energy_scale = energy.energy_scale
+                energy_requested_boost_n = energy.requested_boost_norm_n
+                energy_applied_boost_n = energy.applied_boost_norm_n
             # Explicit virtual masses need a bounded total coupling force.  The
             # cutting reference uses per-channel max-force saturation; this
             # norm cap prevents low-mass/high-drive combinations from injecting
@@ -820,6 +842,11 @@ def run_episode(
             "active_kappa": active_kappa,
             "active_drive_scale": active_drive_scale,
             "recovery_gate": recovery_gate,
+            "energy_tank_j": energy_tank_j,
+            "energy_direction_scale": energy_direction_scale,
+            "energy_scale": energy_scale,
+            "energy_requested_boost_n": energy_requested_boost_n,
+            "energy_applied_boost_n": energy_applied_boost_n,
             "explicit_carriage_position": explicit_position.tolist(),
             "explicit_carriage_velocity": explicit_velocity.tolist(),
             "explicit_carriage_force": explicit_force.tolist(),
@@ -897,6 +924,7 @@ def run_episode(
                 "vmc": "virtual-mechanism compliant controller; optional explicit MuJoCo virtual carriage",
                 "vmc_gated": "six-spring VMC with a causal measured-error held return-drive gate",
                 "vmc_taper": "six-spring VMC with a causal measured-error gate and smooth terminal taper",
+                "vmc_energy": "six-spring VMC with causal error gate, direction smoothing, and an energy-budget safety filter on recovery-drive increment",
             }[controller_mode],
         },
         "virtual_mechanism": {
@@ -928,11 +956,21 @@ def run_episode(
             "recovery_ramp_duration_s": recovery_ramp_s,
             "recovery_carriage_drive_scale_factor": recovery_drive_scale_factor,
             "causal_recovery_gate": {
-                "enabled": controller_mode in ("vmc_gated", "vmc_taper"),
-                "hold_s": recovery_gate_hold_s if controller_mode in ("vmc_gated", "vmc_taper") else None,
-                "taper_s": recovery_gate_taper_s if controller_mode == "vmc_taper" else None,
+                "enabled": controller_mode in ("vmc_gated", "vmc_taper", "vmc_energy"),
+                "hold_s": recovery_gate_hold_s if controller_mode in ("vmc_gated", "vmc_taper", "vmc_energy") else None,
+                "taper_s": recovery_gate_taper_s if controller_mode in ("vmc_taper", "vmc_energy") else None,
                 "mean_gate": _safe_scalar(np.mean(arrays["recovery_gate"])),
                 "uses_contact_or_future_release": False,
+            },
+            "energy_budget_safety": {
+                "enabled": energy_safety is not None,
+                "configuration": None if energy_safety is None else asdict(energy_safety.config),
+                "mean_tank_energy_j": _safe_scalar(np.mean(arrays["energy_tank_j"])) if energy_safety is not None else None,
+                "minimum_tank_energy_j": _safe_scalar(np.min(arrays["energy_tank_j"])) if energy_safety is not None else None,
+                "mean_direction_scale": _safe_scalar(np.mean(arrays["energy_direction_scale"])) if energy_safety is not None else None,
+                "mean_energy_scale": _safe_scalar(np.mean(arrays["energy_scale"])) if energy_safety is not None else None,
+                "uses_contact_or_future_release": False,
+                "claim": "energy-budget / passivity-inspired constraint on the incremental return drive; not a global passivity proof for the moving-reference robot",
             },
         },
         "visualization": {

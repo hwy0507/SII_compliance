@@ -18,7 +18,7 @@ from run_rod_perturbation_benchmark import run_episode
 
 
 KAPPA_6D = [27.579838, 52.550787, 48.699427, 35.859580, 40.719830, 34.766858]
-CONTROLLERS = ("rigid", "impedance", "vmc_isotropic", "vmc_6d", "vmc_gated", "vmc_taper")
+CONTROLLERS = ("rigid", "impedance", "vmc_isotropic", "vmc_6d", "vmc_gated", "vmc_taper", "vmc_energy")
 METRICS = (
     "peak_paired_offset_mm", "paired_offset_rmse_mm", "recovery_rmse_mm",
     "recovery_iae_mm_s", "rejoin_latency_s", "yield_peak_error_mm",
@@ -64,6 +64,8 @@ def _spec(name: str) -> tuple[str, float | np.ndarray]:
         return "vmc_gated", np.asarray(KAPPA_6D)
     if name == "vmc_taper":
         return "vmc_taper", np.asarray(KAPPA_6D)
+    if name == "vmc_energy":
+        return "vmc_energy", np.asarray(KAPPA_6D)
     raise ValueError(name)
 
 
@@ -170,11 +172,11 @@ def _plot(
     all_by_name = {row["controller"]: row for row in all_aggregate}
     display_name = {
         "rigid": "Rigid", "impedance": "Impedance", "vmc_isotropic": "VMC-iso",
-        "vmc_6d": "VMC-6D", "vmc_gated": "VMC-gated", "vmc_taper": "VMC-taper",
+        "vmc_6d": "VMC-6D", "vmc_gated": "VMC-gated", "vmc_taper": "VMC-taper", "vmc_energy": "VMC-energy",
     }
     label_offsets = {
         "rigid": (4, 4), "impedance": (4, 4), "vmc_isotropic": (-96, 12),
-        "vmc_6d": (-82, -13), "vmc_gated": (5, 8), "vmc_taper": (-84, -12),
+        "vmc_6d": (-82, -13), "vmc_gated": (5, 8), "vmc_taper": (-84, -12), "vmc_energy": (5, -14),
     }
     for row in common_aggregate:
         if row["valid_count"] == 0 or row["recovery_rmse_mm"] is None:

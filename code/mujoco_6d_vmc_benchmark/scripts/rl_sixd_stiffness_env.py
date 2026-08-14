@@ -16,6 +16,7 @@ import gymnasium as gym
 import mujoco
 import numpy as np
 
+from energy_safety import EnergyBudgetSafety, EnergySafetyConfig
 from run_benchmark import (
     ARM_DOF,
     CONTROL_DT,
@@ -117,6 +118,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         fixtures: tuple[Fixture, ...] | None = None,
         rod_enabled: bool = True,
         enable_drive_residual: bool = False,
+        enable_energy_safety: bool = False,
         recovery_gate_hold_s: float = 0.0,
         recovery_gate_taper_s: float = 0.0,
         recovery_error_weight: float = 0.075,
@@ -133,6 +135,9 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.fixtures = fixtures or default_fixtures()
         self.rod_enabled = bool(rod_enabled)
         self.enable_drive_residual = bool(enable_drive_residual)
+        self.enable_energy_safety = bool(enable_energy_safety)
+        if self.enable_energy_safety and not self.enable_drive_residual:
+            raise ValueError("energy safety protects a return-drive residual and requires --enable-drive-residual")
         if recovery_gate_hold_s < 0.0 or recovery_gate_taper_s < 0.0 or recovery_error_weight < 0.0 or recovery_progress_reward < 0.0 or action_change_penalty < 0.0 or recovery_jerk_weight < 0.0 or jerk_reference_mps3 <= 0.0 or kappa_max_log_rate_per_s <= 0.0 or drive_max_log_rate_per_s <= 0.0:
             raise ValueError("recovery-gate and reward scales must be non-negative")
         self.recovery_gate_hold_s = float(recovery_gate_hold_s)
@@ -180,6 +185,12 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.cumulative_log_drive_deviation = 0.0
         self.recovery_gate_remaining_s = 0.0
         self.current_residual_gate = 0.0
+        self.energy_safety = EnergyBudgetSafety(EnergySafetyConfig()) if self.enable_energy_safety else None
+        self.current_tank_energy_j = 0.0
+        self.current_direction_scale = 1.0
+        self.current_energy_scale = 1.0
+        self.cumulative_energy_scale = 0.0
+        self.energy_safety_step_count = 0
         self._explicit_qpos = np.zeros(3, dtype=int)
         self._explicit_dof = np.zeros(3, dtype=int)
         self._target_qpos = 0
@@ -296,6 +307,13 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.cumulative_log_drive_deviation = 0.0
         self.recovery_gate_remaining_s = 0.0
         self.current_residual_gate = 0.0
+        if self.energy_safety is not None:
+            self.energy_safety.reset()
+            self.current_tank_energy_j = self.energy_safety.energy_j
+        self.current_direction_scale = 1.0
+        self.current_energy_scale = 1.0
+        self.cumulative_energy_scale = 0.0
+        self.energy_safety_step_count = 0
         self._build_scene()
         assert self.data is not None
         self.previous_torque = self.data.qfrc_bias[:ARM_DOF].copy()
@@ -335,7 +353,22 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         active_drive_scale = CONTACT_CARRIAGE_DRIVE_SCALE + drive_gate * (self.current_recovery_drive_scale - CONTACT_CARRIAGE_DRIVE_SCALE)
         drive_k = 75.0 * active_drive_scale
         drive_d = 2.0 * self.config.carriage_drive_zeta * np.sqrt(CARRIAGE_MASS_KG * drive_k)
-        drive_force = drive_k * (nominal_position - carriage_position) + drive_d * (nominal_twist[:3] - carriage_velocity)
+        drive_position_error = nominal_position - carriage_position
+        drive_velocity_error = nominal_twist[:3] - carriage_velocity
+        drive_force = drive_k * drive_position_error + drive_d * drive_velocity_error
+        if self.energy_safety is not None:
+            base_k = 75.0 * CONTACT_CARRIAGE_DRIVE_SCALE
+            base_d = 2.0 * self.config.carriage_drive_zeta * np.sqrt(CARRIAGE_MASS_KG * base_k)
+            base_drive_force = base_k * drive_position_error + base_d * drive_velocity_error
+            drive_force, safety = self.energy_safety.filter_increment(
+                base_drive_force, drive_force, drive_position_error, drive_velocity_error,
+                carriage_velocity, drive_d, CONTROL_DT,
+            )
+            self.current_tank_energy_j = safety.tank_energy_j
+            self.current_direction_scale = safety.direction_scale
+            self.current_energy_scale = safety.energy_scale
+            self.cumulative_energy_scale += safety.energy_scale
+            self.energy_safety_step_count += 1
         spring_force = _saturate_vector_norm(spring_force, 1.5 * self.config.max_force)
         drive_force = _saturate_vector_norm(drive_force, 1.5 * self.config.max_force)
         # Applied external forces are reconstructed every 4 ms; this preserves
@@ -397,6 +430,13 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             "mean_log_kappa_deviation": self.cumulative_log_kappa_deviation / max(1, self.step_count),
             "mean_log_drive_deviation": self.cumulative_log_drive_deviation / max(1, self.step_count),
             "mean_residual_gate": self.cumulative_residual_gate / max(1, self.step_count),
+            "energy_budget_safety": {
+                "enabled": self.energy_safety is not None,
+                "mean_energy_scale": None if self.energy_safety is None else self.cumulative_energy_scale / max(1, self.energy_safety_step_count),
+                "final_tank_energy_j": None if self.energy_safety is None else self.current_tank_energy_j,
+                "uses_contact_or_obstacle_information": False,
+                "claim": "incremental return-drive energy budget, not a global passivity proof for the moving-reference robot",
+            },
             "fixture": self.fixture.__dict__.copy(),
         }
 
@@ -426,6 +466,9 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             "kappa": self.current_kappa.copy(),
             "applied_torque": self.previous_torque.copy(),
             "recovery_drive_scale": self.current_recovery_drive_scale,
+            "energy_tank_j": self.current_tank_energy_j,
+            "energy_direction_scale": self.current_direction_scale,
+            "energy_scale": self.current_energy_scale,
         }
 
     def _deployable_residual_gate(self, time_s: float) -> float:

@@ -17,10 +17,10 @@ from rl_sixd_stiffness_env import PandaSixDStiffnessEnv, default_fixtures
 from stiffness_training_core import DRIVE_RESIDUAL_OBSERVATION_FIELDS, DriveResidualActionConfig, StiffnessActionConfig, training_contract
 
 
-def make_env(menagerie: Path, rank: int, seed: int, enable_drive_residual: bool, recovery_gate_hold_s: float, recovery_gate_taper_s: float, recovery_error_weight: float, recovery_progress_reward: float, action_change_penalty: float, recovery_jerk_weight: float, jerk_reference_mps3: float, kappa_max_log_rate_per_s: float, drive_max_log_rate_per_s: float):
+def make_env(menagerie: Path, rank: int, seed: int, enable_drive_residual: bool, enable_energy_safety: bool, recovery_gate_hold_s: float, recovery_gate_taper_s: float, recovery_error_weight: float, recovery_progress_reward: float, action_change_penalty: float, recovery_jerk_weight: float, jerk_reference_mps3: float, kappa_max_log_rate_per_s: float, drive_max_log_rate_per_s: float):
     def _factory() -> PandaSixDStiffnessEnv:
         return PandaSixDStiffnessEnv(
-            menagerie=menagerie, fixtures=default_fixtures(), enable_drive_residual=enable_drive_residual,
+            menagerie=menagerie, fixtures=default_fixtures(), enable_drive_residual=enable_drive_residual, enable_energy_safety=enable_energy_safety,
             recovery_gate_hold_s=recovery_gate_hold_s, recovery_gate_taper_s=recovery_gate_taper_s, recovery_error_weight=recovery_error_weight,
             recovery_progress_reward=recovery_progress_reward, action_change_penalty=action_change_penalty,
             recovery_jerk_weight=recovery_jerk_weight, jerk_reference_mps3=jerk_reference_mps3,
@@ -70,6 +70,10 @@ def main() -> None:
         "--enable-drive-residual", action="store_true",
         help="Use a seventh policy action for virtual-carriage return drive; springs remain six channels.",
     )
+    parser.add_argument(
+        "--enable-energy-safety", action="store_true",
+        help="Apply the causal energy-budget/direction-smoothing shield to the learned return-drive residual.",
+    )
     parser.add_argument("--recovery-gate-hold-s", type=float, default=0.0, help="Causal error-triggered residual-hold duration.")
     parser.add_argument("--recovery-gate-taper-s", type=float, default=0.0, help="Optional causal smooth taper at the end of the held recovery gate; zero preserves the binary hold.")
     parser.add_argument("--recovery-error-weight", type=float, default=0.075)
@@ -83,11 +87,13 @@ def main() -> None:
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs < 1:
         raise ValueError("timesteps and n-envs must be positive")
+    if args.enable_energy_safety and not args.enable_drive_residual:
+        raise ValueError("--enable-energy-safety requires --enable-drive-residual")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     os.environ.setdefault("MUJOCO_GL", "egl")
     torch.set_num_threads(1)
     env = SubprocVecEnv(
-        [make_env(args.menagerie, rank, args.seed, args.enable_drive_residual, args.recovery_gate_hold_s, args.recovery_gate_taper_s, args.recovery_error_weight, args.recovery_progress_reward, args.action_change_penalty, args.recovery_jerk_weight, args.jerk_reference_mps3, args.kappa_max_log_rate_per_s, args.drive_max_log_rate_per_s) for rank in range(args.n_envs)], start_method="spawn",
+        [make_env(args.menagerie, rank, args.seed, args.enable_drive_residual, args.enable_energy_safety, args.recovery_gate_hold_s, args.recovery_gate_taper_s, args.recovery_error_weight, args.recovery_progress_reward, args.action_change_penalty, args.recovery_jerk_weight, args.jerk_reference_mps3, args.kappa_max_log_rate_per_s, args.drive_max_log_rate_per_s) for rank in range(args.n_envs)], start_method="spawn",
     )
     env = VecMonitor(env, filename=str(args.output_dir / "monitor.csv"))
     env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.0)
@@ -114,6 +120,12 @@ def main() -> None:
         "policy_observation_contract": DRIVE_RESIDUAL_OBSERVATION_FIELDS if args.enable_drive_residual else training_contract()["observation_fields"],
         "policy_observation_dimension": 52 if args.enable_drive_residual else 51,
         "enable_drive_residual": args.enable_drive_residual,
+        "energy_budget_safety": {
+            "enabled": args.enable_energy_safety,
+            "placement": "after PPO's 25 Hz low-frequency residual action and before the 250 Hz virtual-carriage force application",
+            "uses_contact_or_obstacle_information": False,
+            "claim": "incremental return-drive energy budget and direction smoothing; not a global passivity proof for the moving-reference robot",
+        },
         "recovery_gate": {
             "hold_s": args.recovery_gate_hold_s,
             "taper_s": args.recovery_gate_taper_s,
