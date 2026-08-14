@@ -477,12 +477,12 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         release_time_s = self.fixture.rod_start_time_s + ROD_PROFILE_DURATION_S
         action_start_error = self.previous_position_error
         final_position_error = 0.0
-        mean_step_jerk = 0.0
+        peak_step_jerk = 0.0
         for _ in range(PHYSICS_STEPS_PER_ACTION):
             time_s = self.step_count * RL_DT + _ * CONTROL_DT
             position_error, orientation_error, twist_error, torque_ratio, jerk_norm = self._physics_step(time_s)
             final_position_error = position_error
-            mean_step_jerk += jerk_norm / PHYSICS_STEPS_PER_ACTION
+            peak_step_jerk = max(peak_step_jerk, jerk_norm)
             # The actor receives no contact/phase variable.  This internal
             # reward schedule uses the predeclared physical rod release only
             # to distinguish "yield safely" from "rejoin quickly"; it cannot
@@ -513,7 +513,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             accumulated_reward -= self.recovery_error_weight * residual_gate * normalized_error
             recovery_progress = np.clip((action_start_error - final_position_error) / 0.004, -1.0, 1.0)
             accumulated_reward += self.recovery_progress_reward * residual_gate * float(recovery_progress)
-            normalized_jerk = min((mean_step_jerk / self.jerk_reference_mps3) ** 2, 4.0)
+            normalized_jerk = min((peak_step_jerk / self.jerk_reference_mps3) ** 2, 4.0)
             accumulated_reward -= self.recovery_jerk_weight * residual_gate * normalized_jerk
         elif self.rod_enabled and self.step_count * RL_DT > release_time_s:
             recovery_progress = np.clip((action_start_error - final_position_error) / 0.004, -1.0, 1.0)
