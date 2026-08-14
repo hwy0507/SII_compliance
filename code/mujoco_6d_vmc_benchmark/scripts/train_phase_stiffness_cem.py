@@ -143,6 +143,10 @@ def main() -> None:
     parser.add_argument("--carriage-drive-scale", type=float, default=8.0)
     parser.add_argument("--carriage-mass-kg", type=float, default=1.0)
     parser.add_argument("--recovery-ramp", type=float, default=0.08)
+    parser.add_argument(
+        "--recovery-only-tighten", action="store_true",
+        help="Constrain every recovery stiffness channel to be at least its contact-stage value.",
+    )
     args = parser.parse_args()
     if args.population < 2 or not 1 <= args.elites < args.population or args.generations < 1 or args.scenes < 1:
         raise ValueError("invalid CEM population settings")
@@ -178,6 +182,8 @@ def main() -> None:
             latent = mean + sigma * rng.standard_normal(12)
             contact = np.clip(BASE_KAPPA * np.exp(latent[:6]), 8.0, 70.0)
             recovery = np.clip(BASE_KAPPA * np.exp(latent[6:]), 8.0, 70.0)
+            if args.recovery_only_tighten:
+                recovery = np.maximum(recovery, contact)
             candidates.append(_evaluate(f"generation_{generation:02d}_candidate_{population_index:02d}", contact, recovery, scenes, args))
         candidates.sort(key=lambda candidate: (candidate["valid_count"] != candidate["scene_count"], candidate["mean_score"]))
         elite = candidates[:args.elites]
@@ -191,6 +197,7 @@ def main() -> None:
     winner = history[-1]["candidates"][0]
     report = {
         "method": "cross-entropy method over a two-phase 12-D stiffness schedule; warm-start only, not state-feedback RL",
+        "recovery_only_tighten": args.recovery_only_tighten,
         "scene_selection": scene_selection,
         "scenes": [{key: sample[key] for key in ("sample_id", "rod_stroke_m", "rod_height_m", "rod_start_time_s", "grasp_time_s")} for sample in scenes],
         "effective_collision_gate": {"minimum_peak_contact_force_n": 15.0, "minimum_contact_impulse_ns": 0.45},
