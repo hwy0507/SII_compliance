@@ -123,6 +123,8 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         action_change_penalty: float = 0.003,
         recovery_jerk_weight: float = 0.0,
         jerk_reference_mps3: float = 1200.0,
+        kappa_max_log_rate_per_s: float = 1.6,
+        drive_max_log_rate_per_s: float = 1.0,
         seed: int | None = None,
     ) -> None:
         super().__init__()
@@ -130,7 +132,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.fixtures = fixtures or default_fixtures()
         self.rod_enabled = bool(rod_enabled)
         self.enable_drive_residual = bool(enable_drive_residual)
-        if recovery_gate_hold_s < 0.0 or recovery_error_weight < 0.0 or recovery_progress_reward < 0.0 or action_change_penalty < 0.0 or recovery_jerk_weight < 0.0 or jerk_reference_mps3 <= 0.0:
+        if recovery_gate_hold_s < 0.0 or recovery_error_weight < 0.0 or recovery_progress_reward < 0.0 or action_change_penalty < 0.0 or recovery_jerk_weight < 0.0 or jerk_reference_mps3 <= 0.0 or kappa_max_log_rate_per_s <= 0.0 or drive_max_log_rate_per_s <= 0.0:
             raise ValueError("recovery-gate and reward scales must be non-negative")
         self.recovery_gate_hold_s = float(recovery_gate_hold_s)
         self.recovery_error_weight = float(recovery_error_weight)
@@ -138,10 +140,12 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.action_change_penalty = float(action_change_penalty)
         self.recovery_jerk_weight = float(recovery_jerk_weight)
         self.jerk_reference_mps3 = float(jerk_reference_mps3)
+        self.kappa_max_log_rate_per_s = float(kappa_max_log_rate_per_s)
+        self.drive_max_log_rate_per_s = float(drive_max_log_rate_per_s)
         if not self.fixtures:
             raise ValueError("at least one physical fixture is required")
-        self.action_config = StiffnessActionConfig(base_kappa=WARM_START_KAPPA)
-        self.drive_action_config = DriveResidualActionConfig(base_recovery_drive_scale=RECOVERY_CARRIAGE_DRIVE_SCALE)
+        self.action_config = StiffnessActionConfig(base_kappa=WARM_START_KAPPA, max_log_rate_per_s=self.kappa_max_log_rate_per_s)
+        self.drive_action_config = DriveResidualActionConfig(base_recovery_drive_scale=RECOVERY_CARRIAGE_DRIVE_SCALE, max_log_rate_per_s=self.drive_max_log_rate_per_s)
         self.config = VMCConfig(zeta=0.8, carriage_drive_k_translation=75.0 * CONTACT_CARRIAGE_DRIVE_SCALE)
         action_dimension = 7 if self.enable_drive_residual else 6
         observation_dimension = 52 if self.enable_drive_residual else 51

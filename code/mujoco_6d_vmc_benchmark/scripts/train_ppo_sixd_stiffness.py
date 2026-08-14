@@ -17,13 +17,14 @@ from rl_sixd_stiffness_env import PandaSixDStiffnessEnv, default_fixtures
 from stiffness_training_core import DRIVE_RESIDUAL_OBSERVATION_FIELDS, DriveResidualActionConfig, StiffnessActionConfig, training_contract
 
 
-def make_env(menagerie: Path, rank: int, seed: int, enable_drive_residual: bool, recovery_gate_hold_s: float, recovery_error_weight: float, recovery_progress_reward: float, action_change_penalty: float, recovery_jerk_weight: float, jerk_reference_mps3: float):
+def make_env(menagerie: Path, rank: int, seed: int, enable_drive_residual: bool, recovery_gate_hold_s: float, recovery_error_weight: float, recovery_progress_reward: float, action_change_penalty: float, recovery_jerk_weight: float, jerk_reference_mps3: float, kappa_max_log_rate_per_s: float, drive_max_log_rate_per_s: float):
     def _factory() -> PandaSixDStiffnessEnv:
         return PandaSixDStiffnessEnv(
             menagerie=menagerie, fixtures=default_fixtures(), enable_drive_residual=enable_drive_residual,
             recovery_gate_hold_s=recovery_gate_hold_s, recovery_error_weight=recovery_error_weight,
             recovery_progress_reward=recovery_progress_reward, action_change_penalty=action_change_penalty,
-            recovery_jerk_weight=recovery_jerk_weight, jerk_reference_mps3=jerk_reference_mps3, seed=seed + rank,
+            recovery_jerk_weight=recovery_jerk_weight, jerk_reference_mps3=jerk_reference_mps3,
+            kappa_max_log_rate_per_s=kappa_max_log_rate_per_s, drive_max_log_rate_per_s=drive_max_log_rate_per_s, seed=seed + rank,
         )
     return _factory
 
@@ -75,6 +76,8 @@ def main() -> None:
     parser.add_argument("--action-change-penalty", type=float, default=0.003)
     parser.add_argument("--recovery-jerk-weight", type=float, default=0.0)
     parser.add_argument("--jerk-reference-mps3", type=float, default=1200.0)
+    parser.add_argument("--kappa-max-log-rate-per-s", type=float, default=1.6)
+    parser.add_argument("--drive-max-log-rate-per-s", type=float, default=1.0)
     parser.add_argument("--resume", type=Path, default=None, help="Optional PPO zip checkpoint.")
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs < 1:
@@ -83,7 +86,7 @@ def main() -> None:
     os.environ.setdefault("MUJOCO_GL", "egl")
     torch.set_num_threads(1)
     env = SubprocVecEnv(
-        [make_env(args.menagerie, rank, args.seed, args.enable_drive_residual, args.recovery_gate_hold_s, args.recovery_error_weight, args.recovery_progress_reward, args.action_change_penalty, args.recovery_jerk_weight, args.jerk_reference_mps3) for rank in range(args.n_envs)], start_method="spawn",
+        [make_env(args.menagerie, rank, args.seed, args.enable_drive_residual, args.recovery_gate_hold_s, args.recovery_error_weight, args.recovery_progress_reward, args.action_change_penalty, args.recovery_jerk_weight, args.jerk_reference_mps3, args.kappa_max_log_rate_per_s, args.drive_max_log_rate_per_s) for rank in range(args.n_envs)], start_method="spawn",
     )
     env = VecMonitor(env, filename=str(args.output_dir / "monitor.csv"))
     env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.0)
@@ -121,6 +124,8 @@ def main() -> None:
             "action_change_penalty": args.action_change_penalty,
             "recovery_jerk_weight": args.recovery_jerk_weight,
             "jerk_reference_mps3": args.jerk_reference_mps3,
+            "kappa_max_log_rate_per_s": args.kappa_max_log_rate_per_s,
+            "drive_max_log_rate_per_s": args.drive_max_log_rate_per_s,
         },
         "drive_residual_action": None if not args.enable_drive_residual else {
             "dimension": 1,
