@@ -91,6 +91,22 @@ rigid 在杆释放时已经位于 `5 mm` tube 内，所以其 latency 是 `0 s`�
 
 完整的速度、物理接触力、六通道虚拟力/力矩和关节电机力矩图见：[VMC dynamics](benchmark_artifacts_v1/vmc_wbc_rejoin_dynamics_results.png)。
 
+### 4.1 汇报用的柔顺相位放大图
+
+上一张全周期图适合审计完整日志，但不适合直观看“让位—卸载—回归”：本 fixture 的杆沿世界 `y` 方向推手，而早期的 `X–Z` 投影会把主要偏移隐藏；同时实际接触窗口只有约 `84 ms`，放在完整抓取周期中会被压缩。因此汇报主图使用局部 `1.10–1.90 s` 窗口，并自动选择 paired rod/no-rod 偏移最大的 Cartesian 轴。当前 VMC 行自动识别为 `Y`，所以轨迹面为 `Y–Z`。
+
+![VMC compliance phase zoom](benchmark_artifacts_v1/vmc_compliance_phase_zoom_results.png)
+
+读图顺序如下：
+
+1. 上图的红线是带杆的实际末端轨迹，蓝虚线是完全匹配的 no-rod 实际轨迹，黑线是名义 `WBC reference` 接口代理；红线向 `+Y` 偏移后沿回归方向收拢。
+2. 第二行的主指标是 `ΔY = rod − no-rod`，它剔除了 no-rod 本身的名义跟踪误差；本行峰值约 `4.12 mm`。紫色点线才是相对于 reference proxy 的总 Y 误差，不能把二者混为一谈。
+3. 第三行把真实杆–手接触力和虚拟弹簧 `F_Y` 放在同一时间轴上，显示“物理撞击 → 虚拟反力”的因果顺序；红色阴影是合并后的物理接触窗口，绿色虚线是接触释放。
+4. 第四行把虚拟小车位移和末端速度分成左右两个纵轴，避免毫米级弹簧让位被速度曲线压扁。当前小车 `Y` 向峰值位移约 `0.67 mm`；这解释了为什么主 ladder 是可量化的中等顺应，而不是夸张的演示工况。
+5. 最底部 phase ribbon 明确标出 `approach → contact → unloading → rejoined`。蓝色虚线 `rejoin` 仍使用全三维位置误差小于 `5 mm` 且持续 `80 ms` 的严格门控；当前释放到回归为 `0.372 s`。
+
+这张图是对主 benchmark 的更合适的可视化，不改变任何物理数据、接触门控或 controller ranking；它也不把 fixed-reference proxy 写成真实在线 WBC。
+
 ## 5. 碰撞几何矩阵
 
 在 VMC 主配置下扫描 `height ∈ {0.53, 0.54, 0.55} m`、`stroke ∈ {0.14, 0.16, 0.18} m`。这是一个 **height × disturbance-strength** 矩阵；杆的世界 `y` 方向保持固定，尚不是多方向鲁棒性声明。

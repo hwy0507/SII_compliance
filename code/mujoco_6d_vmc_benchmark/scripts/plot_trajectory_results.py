@@ -99,6 +99,186 @@ def _rejoin_times(
     return result
 
 
+def _dominant_paired_axis(rod: dict[str, np.ndarray], no_rod: dict[str, np.ndarray]) -> int:
+    """Return the Cartesian axis carrying the largest rod-induced offset."""
+    delta = np.asarray(rod["ee_position"]) - np.asarray(no_rod["ee_position"])
+    return int(np.argmax(np.max(np.abs(delta), axis=0)))
+
+
+def _phase_label(value: int) -> str:
+    return {
+        0: "approach",
+        1: "contact",
+        2: "unloading",
+        3: "rejoined",
+        4: "task / hold",
+    }.get(int(value), "unknown")
+
+
+def _phase_colors() -> dict[str, str]:
+    return {
+        "approach": "#d9eaf7",
+        "contact": "#f8c8d4",
+        "unloading": "#fce5b5",
+        "rejoined": "#c9e7d2",
+        "task / hold": "#e5e5e5",
+        "unknown": "#eeeeee",
+    }
+
+
+def _plot_compliance_phase_zoom(
+    rod: dict[str, np.ndarray],
+    no_rod: dict[str, np.ndarray],
+    args: argparse.Namespace,
+    output_dir: Path,
+    rejoin: dict[str, object],
+) -> dict[str, object]:
+    """Make a local, causal view of yielding and recovery.
+
+    This figure intentionally uses the axis that actually separates the rod and
+    no-rod trials.  It is a presentation view; the full-episode plots remain
+    available for audit and metric reproduction.
+    """
+    time = rod["time"]
+    start = args.compliance_zoom_start
+    end = args.compliance_zoom_end
+    mask = _window(time, start, end)
+    t = time[mask]
+    nominal = rod["nominal_position"][mask]
+    actual = rod["ee_position"][mask]
+    no_rod_position = no_rod["ee_position"][mask]
+    paired = (actual - no_rod_position) * 1000.0
+    nominal_delta = (actual - nominal) * 1000.0
+    dominant = _dominant_paired_axis(rod, no_rod)
+    lateral = dominant
+    # Use Z as the second coordinate when the collision is lateral; otherwise
+    # choose the largest remaining nominal-motion axis for a readable path.
+    vertical = 2 if lateral != 2 else int(np.argmax(np.ptp(nominal, axis=0) * (np.arange(3) != lateral)))
+    names = ["X", "Y", "Z"]
+    windows = [(float(a), float(b)) for a, b in rejoin["contact_windows_s"]]
+    rejoin_times = rejoin["rejoin_times_s"]
+
+    explicit_force = rod.get("explicit_carriage_force", np.zeros((len(time), 3)))[mask]
+    wrench = rod["vmc_wrench"][mask]
+    spring_force = explicit_force if np.any(np.abs(explicit_force) > 1e-10) else wrench[:, :3]
+    carriage = rod.get("carriage_displacement", np.zeros((len(time), 6)))[mask] * 1000.0
+    force = rod["rod_force"][mask]
+    speed = rod["ee_speed"][mask]
+    colors = _phase_colors()
+
+    fig, axes = plt.subplots(
+        5, 1, figsize=(11.5, 13.0), sharex=False,
+        gridspec_kw={"height_ratios": (2.0, 1.35, 1.35, 1.35, 0.34)},
+        constrained_layout=True,
+    )
+    ax_path, ax_delta, ax_force, ax_motion, ax_phase = axes
+
+    # 2-D path: the no-rod paired trial is the nominal closed-loop behavior,
+    # while the black curve is the moving WBC-reference interface.
+    ax_path.plot(nominal[:, lateral], nominal[:, vertical], color="black", lw=2.0, label="WBC reference (proxy)")
+    ax_path.plot(no_rod_position[:, lateral], no_rod_position[:, vertical], color="#377eb8", ls="--", lw=1.5, label="no-rod control")
+    ax_path.plot(actual[:, lateral], actual[:, vertical], color="#d81b60", lw=2.0, label="rod-perturbed control")
+    ax_path.scatter(actual[0, lateral], actual[0, vertical], color="#555555", s=22, zorder=5, label="zoom start")
+    ax_path.scatter(actual[-1, lateral], actual[-1, vertical], facecolors="white", edgecolors="#1f77b4", s=42, zorder=5, label="zoom end")
+    for index, (contact_start, contact_end) in enumerate(windows):
+        if contact_end < start or contact_start > end:
+            continue
+        onset = int(np.argmin(np.abs(t - contact_start)))
+        release = int(np.argmin(np.abs(t - contact_end)))
+        ax_path.scatter(actual[onset, lateral], actual[onset, vertical], color="#e45756", s=34, zorder=6, label="contact onset" if index == 0 else None)
+        ax_path.scatter(actual[release, lateral], actual[release, vertical], color="#2a9d8f", marker="x", s=48, zorder=6, label="contact release" if index == 0 else None)
+    for index, stamp in enumerate(rejoin_times):
+        if stamp is None or not (start <= float(stamp) <= end):
+            continue
+        rejoin_index = int(np.argmin(np.abs(t - float(stamp))))
+        ax_path.scatter(actual[rejoin_index, lateral], actual[rejoin_index, vertical], facecolors="white", edgecolors="#1f77b4", s=50, zorder=7, label="rejoined tube" if index == 0 else None)
+    ax_path.set_xlabel(f"{names[lateral]} (m)")
+    ax_path.set_ylabel(f"{names[vertical]} (m)")
+    ax_path.set_title(f"2-D local trajectory ({names[lateral]}–{names[vertical]}): yielding and recovery")
+    ax_path.grid(True, alpha=0.25)
+    ax_path.legend(loc="best", frameon=False, ncol=2, fontsize=8)
+
+    # The paired difference is the collision-induced displacement, separated
+    # from nominal tracking error.
+    ax_delta.plot(t, paired[:, lateral], color="#d81b60", lw=2.0, label=f"Δ{names[lateral]} = rod − no-rod")
+    ax_delta.plot(t, nominal_delta[:, lateral], color="#9467bd", lw=1.1, ls=":", label=f"{names[lateral]} error to WBC proxy")
+    ax_delta.axhline(0.0, color="black", lw=0.7)
+    ax_delta.set_ylabel(f"Δ{names[lateral]} (mm)")
+    ax_delta.set_title("Collision-induced lateral offset (paired rod − no-rod) and reference error")
+    ax_delta.legend(loc="best", frameon=False, ncol=2, fontsize=8)
+
+    ax_force.plot(t, force, color="#e45756", lw=1.8, label="physical rod–hand force")
+    ax_force.plot(t, spring_force[:, lateral], color="#2a9d8f", lw=1.4, label=f"virtual spring F{names[lateral]}")
+    ax_force.axhline(0.0, color="black", lw=0.7)
+    ax_force.set_ylabel("Force (N)")
+    ax_force.set_title("Causal link 1: physical impact force → virtual spring reaction")
+    ax_force.legend(loc="best", frameon=False, ncol=2, fontsize=8)
+
+    carriage_line = ax_motion.plot(t, carriage[:, lateral], color="#17becf", lw=2.0, label=f"virtual carriage Δ{names[lateral]}")
+    ax_motion.axhline(0.0, color="black", lw=0.7)
+    ax_motion.set_ylabel("carriage displacement (mm)", color="#17becf")
+    ax_motion.tick_params(axis="y", labelcolor="#17becf")
+    speed_axis = ax_motion.twinx()
+    speed_line = speed_axis.plot(t, speed * 1000.0, color="#ff9f1c", lw=1.2, label="EE speed")
+    speed_axis.set_ylabel("EE speed (mm/s)", color="#ff9f1c")
+    speed_axis.tick_params(axis="y", labelcolor="#ff9f1c")
+    speed_axis.spines["top"].set_visible(False)
+    ax_motion.set_title("Causal link 2: spring/carriage yielding → end-effector motion")
+    ax_motion.legend(carriage_line + speed_line, [line.get_label() for line in carriage_line + speed_line], loc="best", frameon=False, ncol=2, fontsize=8)
+
+    # Phase ribbon gives the reader the event order without hiding short phases.
+    phase = rod.get("phase")
+    if phase is None:
+        phase = np.zeros(len(time), dtype=np.int8)
+        for a, b in windows:
+            phase[(time >= a) & (time <= b)] = 1
+    phase = np.asarray(phase)[mask]
+    boundaries = np.flatnonzero(phase[1:] != phase[:-1]) + 1
+    indices = np.r_[0, boundaries, len(phase)]
+    for left, right in zip(indices[:-1], indices[1:]):
+        label = _phase_label(phase[left])
+        ax_phase.axvspan(t[left], t[right - 1], color=colors[label], alpha=0.95)
+        if right - left > 2:
+            ax_phase.text((t[left] + t[right - 1]) / 2, 0.5, label, ha="center", va="center", fontsize=8)
+    ax_phase.set_ylim(0, 1)
+    ax_phase.set_yticks([])
+    ax_phase.set_xlabel("Time (s)")
+    ax_phase.set_title("phase sequence", fontsize=9, loc="left")
+
+    # Only the time-series panels share the event window.  The trajectory
+    # panel must retain its own Cartesian x-axis; sharing it with time would
+    # collapse the path into a misleading vertical line.
+    ax_path.set_aspect("auto")
+    for axis in axes[1:]:
+        axis.set_xlim(start, end)
+
+    for axis in axes[1:4]:
+        for a, b in windows:
+            if b >= start and a <= end:
+                axis.axvspan(max(a, start), min(b, end), color="#ef476f", alpha=0.10, zorder=0)
+                axis.axvline(b, color="#2ca02c", ls=":", lw=1.0)
+        for stamp in rejoin_times:
+            if stamp is not None and start <= float(stamp) <= end:
+                axis.axvline(float(stamp), color="#1f77b4", ls="--", lw=1.0)
+                axis.annotate("rejoin", (float(stamp), 0.96), xycoords=("data", "axes fraction"), rotation=90, va="top", fontsize=8, color="#1f77b4")
+        _style(axis)
+    fig.suptitle(
+        f"Compliance phase zoom: dominant {names[lateral]}-axis | contact → unloading → rejoin",
+        fontsize=14,
+    )
+    path = output_dir / "compliance_phase_zoom_results.png"
+    fig.savefig(path, dpi=240)
+    plt.close(fig)
+    return {
+        "figure": str(path),
+        "zoom_window_s": [float(start), float(end)],
+        "dominant_paired_axis": names[lateral],
+        "secondary_path_axis": names[vertical],
+        "peak_paired_axis_offset_mm": float(np.max(np.abs(paired[:, lateral]))),
+        "peak_spring_force_n": float(np.max(np.abs(spring_force[:, lateral]))),
+    }
+
+
 def _plot_rejoin_trajectory(
     rod: dict[str, np.ndarray],
     no_rod: dict[str, np.ndarray],
@@ -271,6 +451,8 @@ def main() -> None:
     parser.add_argument("--rod-cycle-period", type=float, default=0.80)
     parser.add_argument("--rejoin-threshold-mm", type=float, default=5.0, help="Distance tube used to declare return to WBC reference.")
     parser.add_argument("--rejoin-hold-s", type=float, default=0.08, help="Time the error must remain inside the rejoin tube.")
+    parser.add_argument("--compliance-zoom-start", type=float, default=1.10, help="Start of the local yielding/recovery presentation view.")
+    parser.add_argument("--compliance-zoom-end", type=float, default=1.90, help="End of the local yielding/recovery presentation view.")
     args = parser.parse_args()
 
     rod = _load(args.rod_trace)
@@ -368,6 +550,7 @@ def main() -> None:
     rejoin_metrics = _plot_rejoin_trajectory(rod, no_rod, args, args.output_dir)
     metrics["rejoin"] = rejoin_metrics
     metrics["dynamic_response"] = _plot_rejoin_dynamics(rod, no_rod, args, args.output_dir, rejoin_metrics)
+    metrics["compliance_phase_zoom"] = _plot_compliance_phase_zoom(rod, no_rod, args, args.output_dir, rejoin_metrics)
     (args.output_dir / "trajectory_error_metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
     print(json.dumps(metrics, indent=2))
 
