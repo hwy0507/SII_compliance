@@ -23,6 +23,14 @@ def make_env(menagerie: Path, rank: int, seed: int):
     return _factory
 
 
+def linear_learning_rate(initial: float, final: float):
+    """SB3 schedule from a conservative early rate to a stable late rate."""
+
+    def schedule(progress_remaining: float) -> float:
+        return final + (initial - final) * progress_remaining
+    return schedule
+
+
 class PairedPolicyCheckpointCallback(BaseCallback):
     """Save PPO weights and matching observation-normalization state together."""
 
@@ -68,8 +76,9 @@ def main() -> None:
     else:
         model = PPO(
             "MlpPolicy", env, verbose=1, seed=args.seed, device=args.device,
-            n_steps=512, batch_size=batch_size, n_epochs=10, learning_rate=3e-4,
-            gamma=0.995, gae_lambda=0.95, clip_range=0.20, ent_coef=0.002,
+            n_steps=512, batch_size=batch_size, n_epochs=5,
+            learning_rate=linear_learning_rate(2e-4, 5e-5),
+            gamma=0.995, gae_lambda=0.95, clip_range=0.15, target_kl=0.015, ent_coef=0.003,
             vf_coef=0.5, max_grad_norm=0.5,
             policy_kwargs={"net_arch": [256, 256]},
             tensorboard_log=str(args.output_dir / "tensorboard"),
@@ -84,6 +93,13 @@ def main() -> None:
         "policy_observation_contract": training_contract()["observation_fields"],
         "privileged_quantities_excluded": training_contract()["excluded_privileged_diagnostics"],
         "fixtures": [fixture.__dict__ for fixture in default_fixtures()],
+        "optimization_changes_vs_run_003": {
+            "n_epochs": "10 -> 5",
+            "learning_rate": "constant 3e-4 -> linear 2e-4 to 5e-5",
+            "clip_range": "0.20 -> 0.15",
+            "target_kl": 0.015,
+            "reward": "loading/recovery-aware internal reward; no privileged policy observation",
+        },
     }
     (args.output_dir / "training_metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
     try:

@@ -57,6 +57,7 @@ SIM_TIME_S = 6.20
 GRASP_TIME_S = 2.40
 CONTACT_TIME_CONSTANT_S = 0.015
 CARRIAGE_MASS_KG = 1.0
+ROD_PROFILE_DURATION_S = 0.64
 
 # CEM is used only to choose a conservative initial operating point.  PPO
 # still learns state feedback; no collision phase or timed recovery schedule
@@ -140,6 +141,9 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.peak_jerk = 0.0
         self.hard_limit_seen = False
         self.rod_hand_observed = False
+        self.previous_position_error = 0.0
+        self.cumulative_log_kappa_deviation = 0.0
+        self.post_release_step_count = 0
         self._explicit_qpos = np.zeros(3, dtype=int)
         self._explicit_dof = np.zeros(3, dtype=int)
         self._target_qpos = 0
@@ -241,6 +245,9 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.step_count = 0
         self.peak_force = self.contact_impulse = self.peak_torque = self.peak_jerk = 0.0
         self.hard_limit_seen = self.rod_hand_observed = False
+        self.previous_position_error = 0.0
+        self.cumulative_log_kappa_deviation = 0.0
+        self.post_release_step_count = 0
         self._build_scene()
         assert self.data is not None
         self.previous_torque = self.data.qfrc_bias[:ARM_DOF].copy()
@@ -333,6 +340,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             "peak_torque_nm": self.peak_torque,
             "peak_jerk_mps3": self.peak_jerk,
             "hard_torque_limit": self.hard_limit_seen,
+            "mean_log_kappa_deviation": self.cumulative_log_kappa_deviation / max(1, self.step_count),
             "fixture": self.fixture.__dict__.copy(),
         }
 
@@ -370,20 +378,39 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         action = np.clip(action, -1.0, 1.0)
         self.current_kappa = action_to_kappa(action, self.current_kappa, self.action_config)
         accumulated_reward = 0.0
+        release_time_s = self.fixture.rod_start_time_s + ROD_PROFILE_DURATION_S
+        action_start_error = self.previous_position_error
+        final_position_error = 0.0
         for _ in range(PHYSICS_STEPS_PER_ACTION):
             time_s = self.step_count * RL_DT + _ * CONTROL_DT
             position_error, orientation_error, twist_error, torque_ratio = self._physics_step(time_s)
-            # Dense reward uses only errors/effort that are available from the
-            # deployed proprioceptive state.  No contact force or collision
-            # phase term is used to shape actions.
+            final_position_error = position_error
+            # The actor receives no contact/phase variable.  This internal
+            # reward schedule uses the predeclared physical rod release only
+            # to distinguish "yield safely" from "rejoin quickly"; it cannot
+            # be used as a policy observation or deployment-time clock.
+            is_recovery = self.rod_enabled and release_time_s < time_s < self.fixture.grasp_time_s
+            is_loading = self.rod_enabled and self.fixture.rod_start_time_s <= time_s <= release_time_s
+            position_weight = 0.018 if is_loading else 0.035
             accumulated_reward += (
-                -0.055 * min(position_error / 0.06, 3.0)
-                -0.018 * min(orientation_error / 0.20, 3.0)
-                -0.006 * min(twist_error / 2.2, 3.0)
+                -position_weight * min(position_error / 0.06, 3.0)
+                -0.014 * min(orientation_error / 0.20, 3.0)
+                -0.004 * min(twist_error / 2.2, 3.0)
                 -0.004 * torque_ratio**2
             ) / PHYSICS_STEPS_PER_ACTION
+            if is_recovery:
+                # Make the scientific objective explicit: after the external
+                # rod releases, shrink the departure tube without a force or
+                # phase observation entering the actor.
+                accumulated_reward -= 0.075 * min((position_error / 0.012) ** 2, 4.0) / PHYSICS_STEPS_PER_ACTION
+                self.post_release_step_count += 1
         action_delta = float(np.mean((action - self.previous_action) ** 2))
-        accumulated_reward -= 0.002 * action_delta
+        accumulated_reward -= 0.003 * action_delta
+        if self.rod_enabled and self.step_count * RL_DT > release_time_s:
+            recovery_progress = np.clip((action_start_error - final_position_error) / 0.004, -1.0, 1.0)
+            accumulated_reward += 0.040 * float(recovery_progress)
+        self.previous_position_error = final_position_error
+        self.cumulative_log_kappa_deviation += float(np.mean(np.abs(np.log(self.current_kappa / np.asarray(WARM_START_KAPPA)))))
         self.previous_action = action.copy()
         self.step_count += 1
         terminated = self.step_count >= int(round(SIM_TIME_S / RL_DT))
