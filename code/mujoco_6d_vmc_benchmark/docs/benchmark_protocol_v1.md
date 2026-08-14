@@ -107,6 +107,19 @@ rigid 在杆释放时已经位于 `5 mm` tube 内，所以其 latency 是 `0 s`�
 
 这张图是对主 benchmark 的更合适的可视化，不改变任何物理数据、接触门控或 controller ranking；它也不把 fixed-reference proxy 写成真实在线 WBC。
 
+### 4.2 论文式六维时域结果图
+
+为便于和虚拟机构论文中常用的时域结果图直接对照，另归档一张统一时间轴的 `4 × 3` 面板图：
+
+![VMC paper-style 6D time series](benchmark_artifacts_v1/vmc_paper_style_6d_time_series_results.png)
+
+- 第一行：`X/Y/Z` 位置。实线为真实带杆 EE，虚线为 fixed `WBC reference` 接口代理，点线为 matched no-rod EE；因此轨迹拟合、碰撞偏离和回归均可直接读出。
+- 第二行：`rod − reference`（彩色实线）与 `rod − no-rod`（黑色虚线）三轴偏差。后者是应优先报告的碰撞诱发偏移，而不是把固定名义跟踪误差误当作碰撞效果。
+- 第三行：虚拟机构的 `F_X/F_Y/F_Z`。`F_Y` 面板额外叠加 MuJoCo 实测的无符号物理 rod–hand force（黑色虚线）；这个标量力不能伪装成带方向的三维外力，因此只作为碰撞时序和强度的证据。
+- 第四行：虚拟机构的 `M_X/M_Y/M_Z`。当前主 fixture 没有显式的旋转小车，故这是 VMC 内部旋转通道的虚拟力矩响应，而不是六轴腕力传感器读数。
+
+粉色阴影、绿色点线和蓝色虚线在所有面板中共享，分别表示真实接触、接触释放和通过三维 `5 mm / 80 ms` rejoin 门控。该图使用 `0.0–2.1 s` 的 pre-grasp 时间段，避免抓取/抬升阶段稀释碰撞响应。
+
 ## 5. 碰撞几何矩阵
 
 在 VMC 主配置下扫描 `height ∈ {0.53, 0.54, 0.55} m`、`stroke ∈ {0.14, 0.16, 0.18} m`。这是一个 **height × disturbance-strength** 矩阵；杆的世界 `y` 方向保持固定，尚不是多方向鲁棒性声明。

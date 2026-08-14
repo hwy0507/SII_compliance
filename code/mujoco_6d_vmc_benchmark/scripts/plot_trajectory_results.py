@@ -279,6 +279,100 @@ def _plot_compliance_phase_zoom(
     }
 
 
+def _plot_paper_style_time_series(
+    rod: dict[str, np.ndarray],
+    no_rod: dict[str, np.ndarray],
+    args: argparse.Namespace,
+    output_dir: Path,
+    rejoin: dict[str, object],
+) -> dict[str, object]:
+    """Write a paper-style time-series panel similar to the reference figure.
+
+    The first row compares actual EE position with the moving WBC-reference
+    proxy and the matched no-rod trial.  The following rows expose paired
+    displacement and the six virtual-wrench channels.  This is intentionally a
+    time-domain figure rather than a spatial projection.
+    """
+    time = rod["time"]
+    mask = _window(time, args.paper_time_start, args.paper_time_end)
+    t = time[mask]
+    actual = rod["ee_position"][mask]
+    nominal = rod["nominal_position"][mask]
+    baseline = no_rod["ee_position"][mask]
+    paired = (actual - baseline) * 1000.0
+    reference_error = (actual - nominal) * 1000.0
+    wrench = rod["vmc_wrench"][mask]
+    explicit_force = rod.get("explicit_carriage_force", np.zeros((len(time), 3)))[mask]
+    explicit_moment = rod.get("explicit_carriage_moment", np.zeros((len(time), 3)))[mask]
+    spring_force = explicit_force if np.any(np.abs(explicit_force) > 1e-10) else wrench[:, :3]
+    spring_moment = explicit_moment if np.any(np.abs(explicit_moment) > 1e-10) else wrench[:, 3:]
+    windows = [(float(a), float(b)) for a, b in rejoin["contact_windows_s"]]
+    rejoin_times = rejoin["rejoin_times_s"]
+    names = ["X", "Y", "Z"]
+    axis_colors = ["#d62728", "#1f77b4", "#2ca02c"]
+
+    fig, axes = plt.subplots(4, 3, figsize=(13.5, 11.0), sharex=True, constrained_layout=True)
+    for index, name in enumerate(names):
+        axis = axes[0, index]
+        axis.plot(t, actual[:, index], color="#111111", lw=1.2, label="actual EE: rod")
+        axis.plot(t, nominal[:, index], color="#111111", ls="--", lw=1.0, label="WBC reference (proxy)")
+        axis.plot(t, baseline[:, index], color="#377eb8", ls=":", lw=1.0, label="actual EE: no rod")
+        axis.set_title(f"{name} position (m)")
+        axis.set_ylabel("m")
+        if index == 0:
+            axis.legend(loc="best", frameon=False, fontsize=7)
+
+        axes[1, index].plot(t, reference_error[:, index], color=axis_colors[index], lw=1.1, label="rod − WBC proxy")
+        axes[1, index].plot(t, paired[:, index], color="#111111", ls="--", lw=1.0, label="rod − no rod")
+        axes[1, index].axhline(0.0, color="black", lw=0.6)
+        axes[1, index].set_title(f"{name} deviation (mm)")
+        axes[1, index].set_ylabel("mm")
+        if index == 0:
+            axes[1, index].legend(loc="best", frameon=False, fontsize=7)
+
+        axes[2, index].plot(t, spring_force[:, index], color=axis_colors[index], lw=1.1, label=f"virtual F{name}")
+        if index == 1:
+            axes[2, index].plot(t, rod["rod_force"][mask], color="#111111", ls="--", lw=0.9, label="physical rod force")
+        axes[2, index].axhline(0.0, color="black", lw=0.6)
+        axes[2, index].set_title(f"F{name} (N)")
+        axes[2, index].set_ylabel("N")
+        if index == 0:
+            axes[2, index].legend(loc="best", frameon=False, fontsize=7)
+
+        axes[3, index].plot(t, spring_moment[:, index], color=axis_colors[index], lw=1.1, label=f"virtual M{name}")
+        axes[3, index].axhline(0.0, color="black", lw=0.6)
+        axes[3, index].set_title(f"M{name} (N·m)")
+        axes[3, index].set_ylabel("N·m")
+        axes[3, index].set_xlabel("Time (s)")
+
+    # The same event markers are applied to every time-series panel so the
+    # reader can align tracking departure, force response, and recovery.
+    for axis in axes.flat:
+        for start, end in windows:
+            if end >= (args.paper_time_start or time[0]) and start <= (args.paper_time_end or time[-1]):
+                axis.axvspan(max(start, args.paper_time_start or time[0]), min(end, args.paper_time_end or time[-1]), color="#ef476f", alpha=0.12, zorder=0)
+                axis.axvline(end, color="#2ca02c", ls=":", lw=0.8)
+        for stamp in rejoin_times:
+            if stamp is not None and (args.paper_time_start or time[0]) <= float(stamp) <= (args.paper_time_end or time[-1]):
+                axis.axvline(float(stamp), color="#1f77b4", ls="--", lw=0.8)
+        _style(axis)
+    fig.suptitle(
+        "End-effector tracking and six-dimensional virtual-wrench response "
+        "(solid: actual, dashed: WBC-reference proxy, dotted: no-rod)",
+        fontsize=14,
+    )
+    path = output_dir / "paper_style_6d_time_series_results.png"
+    fig.savefig(path, dpi=240)
+    plt.close(fig)
+    return {
+        "figure": str(path),
+        "time_window_s": [float(t[0]), float(t[-1])],
+        "peak_paired_offset_mm": float(np.max(np.linalg.norm(paired, axis=1))),
+        "peak_spring_force_n": float(np.max(np.linalg.norm(spring_force, axis=1))),
+        "peak_spring_moment_nm": float(np.max(np.linalg.norm(spring_moment, axis=1))),
+    }
+
+
 def _plot_rejoin_trajectory(
     rod: dict[str, np.ndarray],
     no_rod: dict[str, np.ndarray],
@@ -453,6 +547,8 @@ def main() -> None:
     parser.add_argument("--rejoin-hold-s", type=float, default=0.08, help="Time the error must remain inside the rejoin tube.")
     parser.add_argument("--compliance-zoom-start", type=float, default=1.10, help="Start of the local yielding/recovery presentation view.")
     parser.add_argument("--compliance-zoom-end", type=float, default=1.90, help="End of the local yielding/recovery presentation view.")
+    parser.add_argument("--paper-time-start", type=float, default=0.0, help="Start of the paper-style time-series figure.")
+    parser.add_argument("--paper-time-end", type=float, default=None, help="End of the paper-style time-series figure.")
     args = parser.parse_args()
 
     rod = _load(args.rod_trace)
@@ -551,6 +647,7 @@ def main() -> None:
     metrics["rejoin"] = rejoin_metrics
     metrics["dynamic_response"] = _plot_rejoin_dynamics(rod, no_rod, args, args.output_dir, rejoin_metrics)
     metrics["compliance_phase_zoom"] = _plot_compliance_phase_zoom(rod, no_rod, args, args.output_dir, rejoin_metrics)
+    metrics["paper_style_time_series"] = _plot_paper_style_time_series(rod, no_rod, args, args.output_dir, rejoin_metrics)
     (args.output_dir / "trajectory_error_metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
     print(json.dumps(metrics, indent=2))
 
