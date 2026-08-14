@@ -69,6 +69,16 @@ REJOIN_HOLD_S = 0.080
 CONTACT_WINDOW_MERGE_S = 0.020
 
 
+def kappa_filename_tag(kappa: float | np.ndarray) -> str:
+    """Stable file stem for legacy scalar and independent six-kappa runs."""
+    values = np.asarray(kappa, dtype=float)
+    if values.ndim == 0:
+        return f"kappa_{float(values):.2f}"
+    if values.shape != (6,):
+        raise ValueError("kappa filename tag expects a scalar or six-vector")
+    return "kvec_" + "_".join(f"{value:.3g}" for value in values)
+
+
 def rod_motion(
     time_s: float,
     stroke_m: float,
@@ -103,20 +113,28 @@ def rod_motion(
 
 def stiffness_schedule(
     time_s: float,
-    contact_kappa: float,
-    recovery_kappa: float,
+    contact_kappa: float | np.ndarray,
+    recovery_kappa: float | np.ndarray,
     recovery_ramp_s: float,
-) -> float:
-    """One scalar for all six springs: low while yielding, high after release."""
+) -> float | np.ndarray:
+    """Interpolate shared or six-dimensional stiffness schedules."""
 
-    if contact_kappa <= 0.0 or recovery_kappa <= 0.0 or recovery_ramp_s < 0.0:
+    contact = np.asarray(contact_kappa, dtype=float)
+    recovery = np.asarray(recovery_kappa, dtype=float)
+    scalar_schedule = contact.ndim == 0 and recovery.ndim == 0
+    if contact.ndim == 0:
+        contact = np.full(6, float(contact))
+    if recovery.ndim == 0:
+        recovery = np.full(6, float(recovery))
+    if contact.shape != (6,) or recovery.shape != (6,) or not np.all(np.isfinite(contact)) or not np.all(np.isfinite(recovery)) or np.any(contact <= 0.0) or np.any(recovery <= 0.0) or recovery_ramp_s < 0.0:
         raise ValueError("stiffness schedule arguments must be positive")
     if time_s <= ROD_END_TIME_S:
-        return float(contact_kappa)
+        return float(contact[0]) if scalar_schedule else contact.copy()
     if recovery_ramp_s == 0.0 or time_s >= ROD_END_TIME_S + recovery_ramp_s:
-        return float(recovery_kappa)
+        return float(recovery[0]) if scalar_schedule else recovery.copy()
     blend, _ = smoothstep((time_s - ROD_END_TIME_S) / recovery_ramp_s)
-    return float((1.0 - blend) * contact_kappa + blend * recovery_kappa)
+    result = (1.0 - blend) * contact + blend * recovery
+    return float(result[0]) if scalar_schedule else result
 
 
 def _direct_cartesian_wrench(
@@ -386,12 +404,15 @@ def _apply_body_torque(
 
 
 def _saturated_translation_spring(
-    stiffness: float,
+    stiffness: float | np.ndarray,
     maximum_force: float,
     displacement: np.ndarray,
 ) -> np.ndarray:
     """Per-axis nonlinear force law matching the existing VMC saturation convention."""
-    return maximum_force * np.tanh(stiffness * np.asarray(displacement, dtype=float) / maximum_force)
+    stiffness_array = np.asarray(stiffness, dtype=float)
+    if stiffness_array.ndim == 0:
+        stiffness_array = np.full(np.asarray(displacement).shape, float(stiffness_array))
+    return maximum_force * np.tanh(stiffness_array * np.asarray(displacement, dtype=float) / maximum_force)
 
 
 def _saturate_vector_norm(vector: np.ndarray, maximum_norm: float) -> np.ndarray:
@@ -436,7 +457,7 @@ def make_render_camera(view: str, nominal_position: np.ndarray) -> str | mujoco.
 
 def run_episode(
     menagerie: Path,
-    kappa: float,
+    kappa: float | np.ndarray,
     output_dir: Path,
     render_gif: bool,
     config: VMCConfig,
@@ -447,7 +468,7 @@ def run_episode(
     camera_view: str = "overview",
     render_start_time_s: float = 0.0,
     render_end_time_s: float = SIM_TIME_S,
-    recovery_kappa: float | None = None,
+    recovery_kappa: float | np.ndarray | None = None,
     recovery_ramp_s: float = 0.16,
     recovery_drive_scale_factor: float = 1.0,
     grasp_time_s: float = GRASP_TIME_S,
@@ -473,8 +494,14 @@ def run_episode(
         raise ValueError("rotational carriage inertia scale must be positive")
     if not 0.0 <= render_start_time_s < render_end_time_s <= SIM_TIME_S:
         raise ValueError("render window must satisfy 0 <= start < end <= simulation time")
+    kappa_vector = np.asarray(kappa, dtype=float)
+    if kappa_vector.ndim == 0:
+        kappa_vector = np.full(6, float(kappa_vector))
     recovery_kappa = kappa if recovery_kappa is None else recovery_kappa
-    if recovery_kappa <= 0.0 or recovery_ramp_s < 0.0 or recovery_drive_scale_factor <= 0.0 or not ROD_END_TIME_S < grasp_time_s < LIFT_COMPLETE_TIME_S or rod_cycles < 1 or rod_cycle_period_s < ROD_END_TIME_S - ROD_START_TIME_S:
+    recovery_kappa_vector = np.asarray(recovery_kappa, dtype=float)
+    if recovery_kappa_vector.ndim == 0:
+        recovery_kappa_vector = np.full(6, float(recovery_kappa_vector))
+    if kappa_vector.shape != (6,) or recovery_kappa_vector.shape != (6,) or not np.all(np.isfinite(kappa_vector)) or not np.all(np.isfinite(recovery_kappa_vector)) or np.any(kappa_vector <= 0.0) or np.any(recovery_kappa_vector <= 0.0) or recovery_ramp_s < 0.0 or recovery_drive_scale_factor <= 0.0 or not ROD_END_TIME_S < grasp_time_s < LIFT_COMPLETE_TIME_S or rod_cycles < 1 or rod_cycle_period_s < ROD_END_TIME_S - ROD_START_TIME_S:
         raise ValueError("recovery stiffness and ramp must be non-negative / positive")
     # The default height intersects the descending hand.  In the repeated
     # response fixture the arm stays at the lower pre-grasp pose, so align the
@@ -555,7 +582,7 @@ def run_episode(
         data.mocap_pos[marker_mocap] = path_position
         data.mocap_quat[marker_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
     controller = SixDVirtualCarriage(
-        config, kappa, data.xpos[ids["hand"]].copy(), data.xmat[ids["hand"]].reshape(3, 3).copy()
+        config, kappa_vector, data.xpos[ids["hand"]].copy(), data.xmat[ids["hand"]].reshape(3, 3).copy()
     )
     renderer: mujoco.Renderer | None = mujoco.Renderer(model, height=480, width=640) if render_gif else None
     render_camera: str | mujoco.MjvCamera | None = None
@@ -593,7 +620,7 @@ def run_episode(
                 data.qpos[explicit_rotation_qpos_indices] = _rotation_to_quaternion(nominal_rotation)
                 data.qvel[explicit_rotation_dof_indices] = nominal_twist[3:]
             mujoco.mj_forward(model, data)
-        active_kappa = stiffness_schedule(time_s, kappa, recovery_kappa, recovery_ramp_s)
+        active_kappa = stiffness_schedule(time_s, kappa_vector, recovery_kappa_vector, recovery_ramp_s)
         active_drive_scale = stiffness_schedule(time_s, 1.0, recovery_drive_scale_factor, recovery_ramp_s)
         controller.set_kappa(active_kappa)
         controller.set_carriage_drive_scale(active_drive_scale)
@@ -661,7 +688,7 @@ def run_episode(
             # The physical carriage replaces only the translational Python
             # carriage channels; SO(3) channels remain in the existing VMC.
             carriage_displacement[:3] = explicit_position - ee_position
-            spring_k = active_kappa * config.k_translation_base
+            spring_k = active_kappa[:3] * config.k_translation_base
             spring_d = 2.0 * config.zeta * np.sqrt(carriage_mass_kg * spring_k)
             explicit_force = _saturated_translation_spring(
                 spring_k, config.max_force, explicit_position - ee_position
@@ -683,7 +710,7 @@ def run_episode(
                 explicit_rotation = data.xmat[explicit_rotation_carriage_body_id].reshape(3, 3).copy()
                 explicit_angular_velocity = body_twist(model, data, explicit_rotation_carriage_body_id)[3:]
                 carriage_displacement[3:] = so3_log(explicit_rotation @ ee_rotation.T)
-                spring_k_rotation = active_kappa * config.k_rotation_base
+                spring_k_rotation = active_kappa[3:] * config.k_rotation_base
                 virtual_inertia = config.virtual_inertia * rotational_carriage_inertia_scale
                 rotational_zeta = config.zeta if rotational_damping_ratio is None else rotational_damping_ratio
                 spring_d_rotation = 2.0 * rotational_zeta * np.sqrt(virtual_inertia * spring_k_rotation)
@@ -797,7 +824,8 @@ def run_episode(
     recovery_drop = _safe_scalar(release_error - pregrasp_error)
     contact_times = arrays["time"][rod_contact_mask]
     summary = {
-        "kappa": kappa,
+        "kappa": float(kappa_vector[0]) if np.allclose(kappa_vector, kappa_vector[0]) else None,
+        "kappa_vector": kappa_vector.tolist(),
         "config": asdict(config),
         "scenario": "physical rod perturbation during open-gripper grasp approach; compliant return to moving nominal trajectory tube",
         "reference": "finite grasp trajectory (moving attractor, not a mathematical limit cycle); replace with fixed WBC pose/twist for WBC+VMC",
@@ -829,8 +857,10 @@ def run_episode(
             "height_m": rod_height_m,
         },
         "stiffness_schedule": {
-            "shared_six_channel_contact_kappa": kappa,
-            "shared_six_channel_recovery_kappa": recovery_kappa,
+            "contact_kappa_vector": kappa_vector.tolist(),
+            "recovery_kappa_vector": recovery_kappa_vector.tolist(),
+            "shared_six_channel_contact_kappa": float(kappa_vector[0]) if np.allclose(kappa_vector, kappa_vector[0]) else None,
+            "shared_six_channel_recovery_kappa": float(recovery_kappa_vector[0]) if np.allclose(recovery_kappa_vector, recovery_kappa_vector[0]) else None,
             "recovery_ramp_start_s": ROD_END_TIME_S,
             "recovery_ramp_duration_s": recovery_ramp_s,
             "recovery_carriage_drive_scale_factor": recovery_drive_scale_factor,
@@ -903,8 +933,11 @@ def run_episode(
         "phase_analysis": phase_summary,
         "gif": str(gif_path) if gif_path else None,
     }
-    np.savez_compressed(output_dir / f"rod_perturbation_kappa_{kappa:.2f}_trace.npz", **arrays)
-    (output_dir / f"rod_perturbation_kappa_{kappa:.2f}_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    # Preserve the legacy scalar filename so baseline_ladder and existing
+    # figures remain reproducible; vector runs receive an explicit kvec stem.
+    file_tag = kappa_filename_tag(kappa if np.asarray(kappa).ndim == 0 else kappa_vector)
+    np.savez_compressed(output_dir / f"rod_perturbation_{file_tag}_trace.npz", **arrays)
+    (output_dir / f"rod_perturbation_{file_tag}_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     return summary
 
 
@@ -917,6 +950,10 @@ def parse_args() -> argparse.Namespace:
         help="Low-level baseline: direct rigid tracking, fixed Cartesian impedance, or virtual-mechanism VMC.",
     )
     parser.add_argument("--kappas", type=float, nargs="+", default=[1.0])
+    parser.add_argument(
+        "--kappa-vector", type=float, nargs=6, default=None, metavar=("KX", "KY", "KZ", "KROLL", "KPITCH", "KYAW"),
+        help="Independent contact-stage stiffness multipliers [x y z roll pitch yaw]. Overrides --kappas.",
+    )
     parser.add_argument("--damping-ratio", type=float, default=1.8)
     parser.add_argument("--carriage-drive-scale", type=float, default=0.75)
     parser.add_argument("--carriage-drive-damping-ratio", type=float, default=2.0)
@@ -929,6 +966,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--recovery-kappa", type=float, default=None,
         help="Shared six-channel stiffness after rod retraction; default keeps constant stiffness.",
+    )
+    parser.add_argument(
+        "--recovery-kappa-vector", type=float, nargs=6, default=None, metavar=("KX", "KY", "KZ", "KROLL", "KPITCH", "KYAW"),
+        help="Independent recovery-stage stiffness multipliers; default keeps the contact vector.",
     )
     parser.add_argument("--recovery-ramp", type=float, default=0.16, help="Seconds to smoothly ramp from contact to recovery stiffness.")
     parser.add_argument(
@@ -971,7 +1012,7 @@ def main() -> None:
     positive_scales = [args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed, args.rod_cycle_period, args.carriage_mass_kg, args.rod_height, args.rotational_carriage_inertia_scale]
     if args.rotational_damping_ratio is not None:
         positive_scales.append(args.rotational_damping_ratio)
-    if min(positive_scales) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or args.rod_cycles < 1 or args.rod_cycle_period < ROD_END_TIME_S - ROD_START_TIME_S or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0) or (args.explicit_rotational_carriage and not args.explicit_translational_carriage):
+    if min(positive_scales) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or args.rod_cycles < 1 or args.rod_cycle_period < ROD_END_TIME_S - ROD_START_TIME_S or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.kappa_vector is not None and (not np.all(np.isfinite(args.kappa_vector)) or min(args.kappa_vector) <= 0)) or (args.recovery_kappa_vector is not None and (not np.all(np.isfinite(args.recovery_kappa_vector)) or min(args.recovery_kappa_vector) <= 0)) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0) or (args.explicit_rotational_carriage and not args.explicit_translational_carriage):
         raise ValueError("all physical and controller scales must be positive")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     config = replace(
@@ -985,13 +1026,15 @@ def main() -> None:
         1.0 if args.recovery_carriage_drive_scale is None
         else args.recovery_carriage_drive_scale / args.carriage_drive_scale
     )
+    contact_runs = [np.asarray(args.kappa_vector, dtype=float)] if args.kappa_vector is not None else args.kappas
+    recovery_kappa = np.asarray(args.recovery_kappa_vector, dtype=float) if args.recovery_kappa_vector is not None else args.recovery_kappa
     runs = [
         run_episode(
             args.menagerie, kappa, args.output_dir, args.render_gif, config,
             args.rod_stroke, args.contact_time_constant, rod_enabled=not args.disable_rod,
             playback_speed=args.playback_speed, camera_view=args.camera_view,
             render_start_time_s=args.render_start_time, render_end_time_s=args.render_end_time,
-            recovery_kappa=args.recovery_kappa, recovery_ramp_s=args.recovery_ramp,
+            recovery_kappa=recovery_kappa, recovery_ramp_s=args.recovery_ramp,
             recovery_drive_scale_factor=recovery_drive_scale_factor,
             grasp_time_s=args.grasp_time,
             rod_start_time_s=args.rod_start_time, rod_cycles=args.rod_cycles,
@@ -1004,7 +1047,7 @@ def main() -> None:
             rotational_damping_ratio=args.rotational_damping_ratio,
             controller_mode=args.controller_mode,
         )
-        for kappa in args.kappas
+        for kappa in contact_runs
     ]
     matrix = {"protocol": {key: value for key, value in vars(args).items() if key not in {"menagerie", "output_dir"}}, "runs": runs}
     (args.output_dir / "evaluation_matrix.json").write_text(json.dumps(matrix, indent=2) + "\n")

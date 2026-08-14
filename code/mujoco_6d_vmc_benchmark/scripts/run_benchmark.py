@@ -134,35 +134,52 @@ class NominalReference:
 class SixDVirtualCarriage:
     """Six nonlinear virtual springs coupled through the physical arm."""
 
-    def __init__(self, config: VMCConfig, kappa: float, position: np.ndarray, rotation: np.ndarray) -> None:
-        if kappa <= 0.0:
-            raise ValueError("kappa must be positive")
+    def __init__(self, config: VMCConfig, kappa: float | np.ndarray, position: np.ndarray, rotation: np.ndarray) -> None:
         self.config = config
-        self.kappa = float(kappa)
         self.position = position.copy()
         self.rotation = rotation.copy()
         self.linear_velocity = np.zeros(3)
         self.angular_velocity = np.zeros(3)
 
         self.mass = np.array([config.virtual_mass] * 3 + [config.virtual_inertia] * 3)
-        self.stiffness = self.kappa * np.array([config.k_translation_base] * 3 + [config.k_rotation_base] * 3)
-        self.damping = 2.0 * config.zeta * np.sqrt(self.mass * self.stiffness)
         self.saturation = np.array([config.max_force] * 3 + [config.max_moment] * 3)
+
+        self.kappa_vector = np.ones(6, dtype=float)
+        self.kappa = 1.0  # Backward-compatible scalar summary for old callers.
+        self.stiffness = np.zeros(6, dtype=float)
+        self.damping = np.zeros(6, dtype=float)
+        self.set_kappas(kappa)
 
         self.drive_stiffness = np.array([config.carriage_drive_k_translation] * 3 + [config.carriage_drive_k_rotation] * 3)
         self._base_drive_stiffness = self.drive_stiffness.copy()
         self.drive_damping = 2.0 * config.carriage_drive_zeta * np.sqrt(self.mass * self.drive_stiffness)
 
-    def set_kappa(self, kappa: float) -> None:
-        """Update all six spring channels with one shared stiffness multiplier."""
+    def set_kappas(self, kappas: float | np.ndarray) -> None:
+        """Set six independent stiffness multipliers.
 
-        if kappa <= 0.0:
-            raise ValueError("kappa must be positive")
-        self.kappa = float(kappa)
-        self.stiffness = self.kappa * np.array(
+        A scalar is broadcast to all channels for compatibility with the
+        original shared-kappa benchmark.  A six-vector is interpreted as
+        ``[x, y, z, roll, pitch, yaw]`` and is the preferred interface for
+        parameter tuning.
+        """
+
+        values = np.asarray(kappas, dtype=float)
+        if values.ndim == 0:
+            values = np.full(6, float(values))
+        if values.shape != (6,) or not np.all(np.isfinite(values)) or np.any(values <= 0.0):
+            raise ValueError("kappa must be a positive scalar or a finite six-vector")
+        self.kappa_vector = values.copy()
+        self.kappa = float(np.mean(values))
+        base_stiffness = np.array(
             [self.config.k_translation_base] * 3 + [self.config.k_rotation_base] * 3
         )
+        self.stiffness = self.kappa_vector * base_stiffness
         self.damping = 2.0 * self.config.zeta * np.sqrt(self.mass * self.stiffness)
+
+    def set_kappa(self, kappa: float | np.ndarray) -> None:
+        """Backward-compatible alias for :meth:`set_kappas`."""
+
+        self.set_kappas(kappa)
 
     def set_carriage_drive_scale(self, scale: float) -> None:
         """Scale all six virtual-carriage return channels together."""
