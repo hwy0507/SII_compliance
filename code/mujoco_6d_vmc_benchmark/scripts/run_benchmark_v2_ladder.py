@@ -62,6 +62,7 @@ def _spec(name: str) -> tuple[str, float | np.ndarray]:
 
 def _run_fixture(menagerie: Path, root: Path, fixture: dict[str, Any], controller: str) -> dict[str, Any]:
     mode, kappa = _spec(controller)
+    uses_virtual_carriage = mode.startswith("vmc")
     config = replace(
         VMCConfig(zeta=0.8),
         carriage_drive_k_translation=VMCConfig().carriage_drive_k_translation * 8.0,
@@ -72,7 +73,7 @@ def _run_fixture(menagerie: Path, root: Path, fixture: dict[str, Any], controlle
         rod_stroke_m=fixture["rod_stroke_m"], contact_time_constant_s=0.015,
         recovery_kappa=kappa, recovery_ramp_s=0.08, recovery_drive_scale_factor=14.0 / 8.0,
         grasp_time_s=fixture["grasp_time_s"], rod_start_time_s=fixture["rod_start_time_s"],
-        explicit_translational_carriage=True, carriage_mass_kg=1.0,
+        explicit_translational_carriage=uses_virtual_carriage, carriage_mass_kg=1.0,
         rod_height_m=fixture["rod_height_m"], controller_mode=mode,
         rod_approach_side=fixture["rod_approach_side"], recovery_gate_hold_s=0.28,
         recovery_gate_taper_s=0.04,
