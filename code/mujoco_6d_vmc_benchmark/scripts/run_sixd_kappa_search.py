@@ -44,7 +44,7 @@ SCENARIOS = {
     "nominal": {"rod_stroke": 0.16, "rod_height": 0.54, "rod_start": 1.08, "grasp_time": 2.10},
     # Same model and contact law, simply a larger common physical excursion
     # and a later closure so every controller has equal time to recover.
-    "hard": {"rod_stroke": 0.20, "rod_height": 0.54, "rod_start": 1.08, "grasp_time": 2.28},
+    "hard": {"rod_stroke": 0.18, "rod_height": 0.54, "rod_start": 1.08, "grasp_time": 2.40},
 }
 
 
@@ -143,7 +143,7 @@ def main() -> None:
             "valid": valid,
             "invalid_reasons": failures,
             "peak_paired_rod_offset_mm": paired["peak_paired_rod_offset_mm"],
-            "recovery_rmse_mm": response["tracking"]["recovery_position_rmse_m"] * 1000.0 if "tracking" in response else rod_summary["tracking"]["recovery_position_rmse_m"] * 1000.0,
+            "recovery_rmse_mm": rod_summary["tracking"]["recovery_position_rmse_m"] * 1000.0,
             "rejoin_latency_s": rod_summary["phase_analysis"]["release_to_rejoin_latency_s"],
             "peak_torque_nm": rod_summary["torque"]["applied_peak_nm"],
             "speed_p95_mps": rod_summary["motion"]["recovery_speed_p95_mps"],
