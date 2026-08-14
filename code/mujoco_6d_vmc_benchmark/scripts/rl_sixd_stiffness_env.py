@@ -82,10 +82,15 @@ def default_fixtures() -> tuple[Fixture, ...]:
     gate, so grazing contact cannot improve the learning objective.
     """
 
+    # A frozen-policy physical screening run accepted indices 1--4 below:
+    # each has a matched no-rod success, task success under the rod, and meets
+    # both the 15 N / 0.45 Ns effective-contact thresholds.  The softer 0.155
+    # m case was rejected for ineffective contact; the 0.180 m case was
+    # rejected because the same task gate failed.  Keeping either would make
+    # a terminal penalty depend on an exogenous fixture rather than the action.
     return (
-        Fixture(0.155, 0.538, 1.040), Fixture(0.160, 0.539, 1.055),
-        Fixture(0.165, 0.540, 1.070), Fixture(0.170, 0.541, 1.085),
-        Fixture(0.175, 0.542, 1.100), Fixture(0.180, 0.540, 1.115),
+        Fixture(0.160, 0.539, 1.055), Fixture(0.165, 0.540, 1.070),
+        Fixture(0.170, 0.541, 1.085), Fixture(0.175, 0.542, 1.100),
     )
 
 
@@ -104,11 +109,13 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self,
         menagerie: str | Path,
         fixtures: tuple[Fixture, ...] | None = None,
+        rod_enabled: bool = True,
         seed: int | None = None,
     ) -> None:
         super().__init__()
         self.menagerie = Path(menagerie)
         self.fixtures = fixtures or default_fixtures()
+        self.rod_enabled = bool(rod_enabled)
         if not self.fixtures:
             raise ValueError("at least one physical fixture is required")
         self.action_config = StiffnessActionConfig(base_kappa=WARM_START_KAPPA)
@@ -246,7 +253,10 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         model, data = self.model, self.data
         nominal_position, nominal_rotation, nominal_linear, nominal_angular = self.reference.sample(time_s)
         nominal_twist = np.concatenate([nominal_linear, nominal_angular])
-        rod_displacement, _ = rod_motion(time_s, self.fixture.rod_stroke_m, self.fixture.rod_start_time_s)
+        rod_displacement, _ = (
+            rod_motion(time_s, self.fixture.rod_stroke_m, self.fixture.rod_start_time_s)
+            if self.rod_enabled else (0.0, 0.0)
+        )
         data.mocap_pos[self._obstacle_mocap] = np.array([3.0, 3.0, 3.0])
         data.mocap_quat[self._obstacle_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
         carriage_position = data.qpos[self._explicit_qpos].copy()
@@ -308,7 +318,8 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         lifted = bool(target_position[2] > TABLE_TOP_Z + 0.12)
         held = bool(target_position[2] > TABLE_TOP_Z + 0.08 and np.linalg.norm(target_position - hand_position) < 0.16)
         effective = bool(
-            self.rod_hand_observed
+            self.rod_enabled
+            and self.rod_hand_observed
             and self.peak_force >= EFFECTIVE_COLLISION_GATE["minimum_peak_contact_force_n"]
             and self.contact_impulse >= EFFECTIVE_COLLISION_GATE["minimum_contact_impulse_ns"]
         )
@@ -323,6 +334,33 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             "peak_jerk_mps3": self.peak_jerk,
             "hard_torque_limit": self.hard_limit_seen,
             "fixture": self.fixture.__dict__.copy(),
+        }
+
+    def diagnostics(self) -> dict[str, Any]:
+        """Current state for frozen-policy offline evaluation only.
+
+        This method is intentionally outside the policy observation path.  It
+        permits a benchmark harness to form matched rod/no-rod trajectories
+        and safety metrics after training without giving those diagnostics to
+        the deployed actor.
+        """
+
+        assert self.data is not None and self.reference is not None
+        time_s = min(self.step_count * RL_DT, SIM_TIME_S)
+        nominal_position, nominal_rotation, nominal_linear, nominal_angular = self.reference.sample(time_s)
+        ee_position = self.data.xpos[self._hand_id].copy()
+        ee_rotation = self.data.xmat[self._hand_id].reshape(3, 3).copy()
+        ee_twist = body_twist(self.model, self.data, self._hand_id)
+        return {
+            "time_s": time_s,
+            "ee_position": ee_position,
+            "ee_rotation": ee_rotation,
+            "ee_twist": ee_twist,
+            "nominal_position": nominal_position,
+            "nominal_rotation": nominal_rotation,
+            "nominal_twist": np.concatenate([nominal_linear, nominal_angular]),
+            "kappa": self.current_kappa.copy(),
+            "applied_torque": self.previous_torque.copy(),
         }
 
     def step(self, action: np.ndarray) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
@@ -365,4 +403,3 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
     def close(self) -> None:
         self.model = None
         self.data = None
-
