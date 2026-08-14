@@ -128,6 +128,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--menagerie", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
+    parser.add_argument(
+        "--static-results", type=Path, default=None,
+        help="Completed static-manifest results used to select effective, non-grazing train scenes.",
+    )
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--scenes", type=int, default=4, help="Deterministically selected high-stroke training scenes per candidate.")
     parser.add_argument("--population", type=int, default=6)
@@ -143,9 +147,26 @@ def main() -> None:
     if args.population < 2 or not 1 <= args.elites < args.population or args.generations < 1 or args.scenes < 1:
         raise ValueError("invalid CEM population settings")
     manifest = _load(args.manifest)
-    train_samples = sorted(manifest["splits"]["train"], key=lambda sample: sample["rod_stroke_m"], reverse=True)
-    scene_indices = np.linspace(0, len(train_samples) - 1, min(args.scenes, len(train_samples)), dtype=int)
-    scenes = [train_samples[index] for index in scene_indices]
+    train_by_id = {sample["sample_id"]: sample for sample in manifest["splits"]["train"]}
+    scene_selection = "highest-stroke manifest samples (no static result file provided)"
+    if args.static_results is not None:
+        static_records = _load(args.static_results)["records"]
+        effective = [
+            record for record in static_records
+            if record["split"] == "train" and record["valid"] and record["peak_contact_force_n"] >= 15.0
+        ]
+        if len(effective) < args.scenes:
+            raise RuntimeError("not enough effective static training scenes for the requested CEM scene count")
+        # Start with genuinely energetic collisions. A later robustness stage
+        # deliberately adds medium-strength held-out scenes after warm-start.
+        train_samples = [train_by_id[record["sample_id"]] for record in sorted(
+            effective, key=lambda record: record["peak_contact_force_n"], reverse=True
+        )]
+        scenes = train_samples[:args.scenes]
+        scene_selection = "top peak-force train scenes passing the static effective-collision gate"
+    else:
+        train_samples = sorted(train_by_id.values(), key=lambda sample: sample["rod_stroke_m"], reverse=True)
+        scenes = train_samples[:args.scenes]
     args.output_dir.mkdir(parents=True, exist_ok=True)
     rng = np.random.default_rng(args.seed)
     mean = np.concatenate([np.zeros(6), np.log(np.full(6, 50.0 / 35.0))])
@@ -170,6 +191,7 @@ def main() -> None:
     winner = history[-1]["candidates"][0]
     report = {
         "method": "cross-entropy method over a two-phase 12-D stiffness schedule; warm-start only, not state-feedback RL",
+        "scene_selection": scene_selection,
         "scenes": [{key: sample[key] for key in ("sample_id", "rod_stroke_m", "rod_height_m", "rod_start_time_s", "grasp_time_s")} for sample in scenes],
         "effective_collision_gate": {"minimum_peak_contact_force_n": 15.0, "minimum_contact_impulse_ns": 0.45},
         "winner": winner, "history": history,
