@@ -107,6 +107,7 @@ def main() -> None:
                 "peak_contact_force_n": float(rod_terminal["peak_contact_force_n"]),
                 "contact_impulse_ns": float(rod_terminal["contact_impulse_ns"]),
                 "mean_log_kappa_deviation": float(rod_terminal.get("mean_log_kappa_deviation", np.mean(np.abs(np.log(rod["kappa"] / rod["kappa"][0]))))),
+                "mean_log_drive_deviation": float(rod_terminal.get("mean_log_drive_deviation", 0.0)),
                 "mean_residual_gate": float(rod_terminal.get("mean_residual_gate", 0.0)),
             }
             records.append(record)
