@@ -121,6 +121,8 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         recovery_error_weight: float = 0.075,
         recovery_progress_reward: float = 0.040,
         action_change_penalty: float = 0.003,
+        recovery_jerk_weight: float = 0.0,
+        jerk_reference_mps3: float = 1200.0,
         seed: int | None = None,
     ) -> None:
         super().__init__()
@@ -128,12 +130,14 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.fixtures = fixtures or default_fixtures()
         self.rod_enabled = bool(rod_enabled)
         self.enable_drive_residual = bool(enable_drive_residual)
-        if recovery_gate_hold_s < 0.0 or recovery_error_weight < 0.0 or recovery_progress_reward < 0.0 or action_change_penalty < 0.0:
+        if recovery_gate_hold_s < 0.0 or recovery_error_weight < 0.0 or recovery_progress_reward < 0.0 or action_change_penalty < 0.0 or recovery_jerk_weight < 0.0 or jerk_reference_mps3 <= 0.0:
             raise ValueError("recovery-gate and reward scales must be non-negative")
         self.recovery_gate_hold_s = float(recovery_gate_hold_s)
         self.recovery_error_weight = float(recovery_error_weight)
         self.recovery_progress_reward = float(recovery_progress_reward)
         self.action_change_penalty = float(action_change_penalty)
+        self.recovery_jerk_weight = float(recovery_jerk_weight)
+        self.jerk_reference_mps3 = float(jerk_reference_mps3)
         if not self.fixtures:
             raise ValueError("at least one physical fixture is required")
         self.action_config = StiffnessActionConfig(base_kappa=WARM_START_KAPPA)
@@ -293,7 +297,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.previous_acceleration[:] = 0.0
         return self._observation(0.0), {"fixture_index": index % len(self.fixtures)}
 
-    def _physics_step(self, time_s: float) -> tuple[float, float, float, float]:
+    def _physics_step(self, time_s: float) -> tuple[float, float, float, float, float]:
         assert self.model is not None and self.data is not None and self.controller is not None and self.reference is not None
         model, data = self.model, self.data
         nominal_position, nominal_rotation, nominal_linear, nominal_angular = self.reference.sample(time_s)
@@ -360,7 +364,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.previous_twist = ee_twist
         self.previous_acceleration = acceleration
         self.previous_torque = applied
-        return position_error, orientation_error, twist_error, torque_ratio
+        return position_error, orientation_error, twist_error, torque_ratio, jerk_norm
 
     def _terminal_info(self) -> dict[str, Any]:
         assert self.data is not None
@@ -473,10 +477,12 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         release_time_s = self.fixture.rod_start_time_s + ROD_PROFILE_DURATION_S
         action_start_error = self.previous_position_error
         final_position_error = 0.0
+        mean_step_jerk = 0.0
         for _ in range(PHYSICS_STEPS_PER_ACTION):
             time_s = self.step_count * RL_DT + _ * CONTROL_DT
-            position_error, orientation_error, twist_error, torque_ratio = self._physics_step(time_s)
+            position_error, orientation_error, twist_error, torque_ratio, jerk_norm = self._physics_step(time_s)
             final_position_error = position_error
+            mean_step_jerk += jerk_norm / PHYSICS_STEPS_PER_ACTION
             # The actor receives no contact/phase variable.  This internal
             # reward schedule uses the predeclared physical rod release only
             # to distinguish "yield safely" from "rejoin quickly"; it cannot
@@ -507,6 +513,8 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             accumulated_reward -= self.recovery_error_weight * residual_gate * normalized_error
             recovery_progress = np.clip((action_start_error - final_position_error) / 0.004, -1.0, 1.0)
             accumulated_reward += self.recovery_progress_reward * residual_gate * float(recovery_progress)
+            normalized_jerk = min((mean_step_jerk / self.jerk_reference_mps3) ** 2, 4.0)
+            accumulated_reward -= self.recovery_jerk_weight * residual_gate * normalized_jerk
         elif self.rod_enabled and self.step_count * RL_DT > release_time_s:
             recovery_progress = np.clip((action_start_error - final_position_error) / 0.004, -1.0, 1.0)
             accumulated_reward += 0.040 * float(recovery_progress)
