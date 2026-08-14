@@ -104,6 +104,7 @@ def main() -> None:
                 "peak_jerk_mps3": float(rod_terminal["peak_jerk_mps3"]),
                 "peak_contact_force_n": float(rod_terminal["peak_contact_force_n"]),
                 "contact_impulse_ns": float(rod_terminal["contact_impulse_ns"]),
+                "mean_log_kappa_deviation": float(rod_terminal.get("mean_log_kappa_deviation", np.mean(np.abs(np.log(rod["kappa"] / rod["kappa"][0]))))),
             }
             records.append(record)
             np.savez_compressed(args.output_dir / f"fixture_{index:02d}_paired_trace.npz", rod_time=rod["time"], rod_ee_position=rod["ee_position"], no_rod_ee_position=no_rod["ee_position"], nominal_position=rod["nominal_position"], rod_kappa=rod["kappa"], no_rod_kappa=no_rod["kappa"], rod_torque=rod["torque"])
