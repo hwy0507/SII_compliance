@@ -62,7 +62,9 @@ DEFAULT_CONTACT_TIME_CONSTANT_S = 0.015
 PATH_MARKER_COUNT = 13
 ACTUAL_TRAIL_COUNT = 12
 CAMERA_VIEWS = ("overview", "hand-closeup")
-CONTROLLER_MODES = ("rigid", "impedance", "vmc")
+CONTROLLER_MODES = ("rigid", "impedance", "vmc", "vmc_gated", "vmc_taper")
+VMC_MODES = ("vmc", "vmc_gated", "vmc_taper")
+ROD_APPROACH_SIDES = ("negative_y", "positive_y")
 PHASE_LABELS = ("approach", "contact", "unloading", "rejoined", "task")
 REJOIN_THRESHOLD_M = 0.005
 REJOIN_HOLD_S = 0.080
@@ -250,6 +252,7 @@ def _rod_scene_xml(
     carriage_mass_kg: float = 0.35,
     explicit_rotational_carriage: bool = False,
     rotational_carriage_inertia_scale: float = 1.0,
+    rod_approach_side: str = "negative_y",
 ) -> str:
     """Official Panda plus physical table/block and a dynamic slide-mounted rod."""
 
@@ -263,9 +266,15 @@ def _rod_scene_xml(
         raise RuntimeError("could not add the physical gripper actuator")
     text = text.replace(anchor, gripper + anchor, 1)
     # The rod's cylinder axis is local z. Rotate it so its long axis is world
-    # x, then slide it along world y into and back out of the hand. A position
-    # actuator drives the support slide; the finite-mass rod/contact response
-    # remains part of MuJoCo dynamics rather than a mocap teleport.
+    # x, then slide it along world y into and back out of the hand.  V2 uses
+    # the two physically mirrored approach sides, not a post-hoc coordinate
+    # sign flip. A position actuator drives the support slide; the finite-mass
+    # rod/contact response remains part of MuJoCo dynamics rather than a mocap
+    # teleport.
+    if rod_approach_side not in ROD_APPROACH_SIDES:
+        raise ValueError(f"unknown rod approach side: {rod_approach_side}")
+    support_y = -0.20 if rod_approach_side == "negative_y" else 0.20
+    slide_axis_y = 1.0 if rod_approach_side == "negative_y" else -1.0
     explicit_carriage_xml = ""
     if explicit_translational_carriage:
         rotational_child_xml = ""
@@ -301,8 +310,8 @@ def _rod_scene_xml(
           contype="6" conaffinity="7" rgba="0.96 0.65 0.10 1" friction="1.5 0.02 0.002"
           solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
       </body>
-      <body name="rod_support" pos="0.55 -0.20 {rod_height_m:.3f}">
-        <joint name="rod_slide" type="slide" axis="0 1 0" range="0 0.20" damping="2.0"/>
+      <body name="rod_support" pos="0.55 {support_y:.3f} {rod_height_m:.3f}">
+        <joint name="rod_slide" type="slide" axis="0 {slide_axis_y:.1f} 0" range="0 0.20" damping="2.0"/>
         <geom name="rod_geom" type="cylinder" size="0.014 0.15" quat="0.7071068 0 0.7071068 0"
           mass="0.30" contype="8" conaffinity="4" rgba="0.18 0.70 0.25 1"
           friction="0.8 0.02 0.002" solref="{contact_time_constant_s:.5f} 1"
@@ -316,7 +325,7 @@ def _rod_scene_xml(
       </body>
       {''.join(f'<body name="nominal_path_{index}" mocap="true" pos="0 0 1"><geom type="sphere" size="0.010" contype="0" conaffinity="0" rgba="0.22 0.52 1.0 0.62"/></body>' for index in range(PATH_MARKER_COUNT))}
       {''.join(f'<body name="actual_trail_{index}" mocap="true" pos="0 0 -2"><geom type="sphere" size="0.008" contype="0" conaffinity="0" rgba="1.0 0.10 0.62 {0.20 + 0.60 * (index + 1) / ACTUAL_TRAIL_COUNT:.3f}"/></body>' for index in range(ACTUAL_TRAIL_COUNT))}
-      <geom name="rod_guide" type="box" pos="0.55 -0.10 0.435" size="0.18 0.13 0.008"
+      <geom name="rod_guide" type="box" pos="0.55 {0.5 * support_y:.3f} 0.435" size="0.18 0.13 0.008"
         contype="0" conaffinity="0" rgba="0.10 0.12 0.15 0.70"/>
       {explicit_carriage_xml}
     """
@@ -339,11 +348,12 @@ def make_rod_model(
     carriage_mass_kg: float = 0.35,
     explicit_rotational_carriage: bool = False,
     rotational_carriage_inertia_scale: float = 1.0,
+    rod_approach_side: str = "negative_y",
 ) -> tuple[mujoco.MjModel, mujoco.MjData]:
     xml = _rod_scene_xml(
         menagerie, contact_time_constant_s, rod_height_m,
         explicit_translational_carriage, carriage_mass_kg,
-        explicit_rotational_carriage, rotational_carriage_inertia_scale,
+        explicit_rotational_carriage, rotational_carriage_inertia_scale, rod_approach_side,
     )
     assets_dir = menagerie / "franka_emika_panda" / "assets"
     assets = {str(path.relative_to(assets_dir)): path.read_bytes() for path in assets_dir.rglob("*") if path.is_file()}
@@ -484,14 +494,17 @@ def run_episode(
     rotational_carriage_inertia_scale: float = 1.0,
     rotational_damping_ratio: float | None = None,
     controller_mode: str = "vmc",
+    rod_approach_side: str = "negative_y",
+    recovery_gate_hold_s: float = 0.28,
+    recovery_gate_taper_s: float = 0.04,
 ) -> dict[str, Any]:
     if controller_mode not in CONTROLLER_MODES:
         raise ValueError(f"unknown controller mode: {controller_mode}")
-    if controller_mode != "vmc" and (explicit_translational_carriage or explicit_rotational_carriage):
-        raise ValueError("explicit virtual carriages are available only for controller_mode='vmc'")
+    if controller_mode not in VMC_MODES and (explicit_translational_carriage or explicit_rotational_carriage):
+        raise ValueError("explicit virtual carriages are available only for VMC controller modes")
     if explicit_rotational_carriage and not explicit_translational_carriage:
         raise ValueError("an explicit rotational carriage requires the explicit translational carriage parent")
-    if rotational_carriage_inertia_scale <= 0.0 or (rotational_damping_ratio is not None and rotational_damping_ratio <= 0.0):
+    if rod_approach_side not in ROD_APPROACH_SIDES or recovery_gate_hold_s < 0.0 or recovery_gate_taper_s < 0.0 or rotational_carriage_inertia_scale <= 0.0 or (rotational_damping_ratio is not None and rotational_damping_ratio <= 0.0):
         raise ValueError("rotational carriage inertia scale must be positive")
     if not 0.0 <= render_start_time_s < render_end_time_s <= SIM_TIME_S:
         raise ValueError("render window must satisfy 0 <= start < end <= simulation time")
@@ -511,7 +524,7 @@ def run_episode(
     model, data = make_rod_model(
         menagerie, contact_time_constant_s, 0.520 if response_only else rod_height_m,
         explicit_translational_carriage, carriage_mass_kg,
-        explicit_rotational_carriage, rotational_carriage_inertia_scale,
+        explicit_rotational_carriage, rotational_carriage_inertia_scale, rod_approach_side,
     )
     objects = {
         "hand": (mujoco.mjtObj.mjOBJ_BODY, "hand"),
@@ -599,7 +612,7 @@ def run_episode(
         # rod state, and contact force remain diagnostics only and must not be
         # consumed by the eventual deployed policy.
         "ee_rotation", "nominal_rotation", "ee_twist", "nominal_twist", "joint_position", "joint_velocity",
-        "object_position", "object_hand_distance", "rod_displacement", "rod_command_velocity", "active_kappa", "active_drive_scale",
+        "object_position", "object_hand_distance", "rod_displacement", "rod_command_velocity", "active_kappa", "active_drive_scale", "recovery_gate",
         "explicit_carriage_position", "explicit_carriage_velocity", "explicit_carriage_force",
         "explicit_carriage_rotation", "explicit_carriage_angular_velocity", "explicit_carriage_moment",
         "simulation_finite",
@@ -609,6 +622,7 @@ def run_episode(
     previous_torque = data.qfrc_bias[:ARM_DOF].copy()
     actual_position_history: list[np.ndarray] = []
     rod_hand_observed = False
+    recovery_gate_remaining_s = 0.0
     steps = int(SIM_TIME_S / CONTROL_DT)
 
     for step in range(steps):
@@ -628,9 +642,6 @@ def run_episode(
                 data.qvel[explicit_rotation_dof_indices] = nominal_twist[3:]
             mujoco.mj_forward(model, data)
         active_kappa = stiffness_schedule(time_s, kappa_vector, recovery_kappa_vector, recovery_ramp_s, rod_final_release_s)
-        active_drive_scale = stiffness_schedule(time_s, 1.0, recovery_drive_scale_factor, recovery_ramp_s, rod_final_release_s)
-        controller.set_kappa(active_kappa)
-        controller.set_carriage_drive_scale(active_drive_scale)
         rod_displacement, rod_velocity = rod_motion(
             time_s, rod_stroke_m, rod_start_time_s, rod_cycles, rod_cycle_period_s
         ) if rod_enabled else (0.0, 0.0)
@@ -655,6 +666,26 @@ def run_episode(
         ee_position = data.xpos[ids["hand"]].copy()
         ee_rotation = data.xmat[ids["hand"]].reshape(3, 3).copy()
         ee_twist = body_twist(model, data, ids["hand"])
+        if controller_mode in ("vmc_gated", "vmc_taper"):
+            position_error = float(np.linalg.norm(nominal_position - ee_position))
+            instant_phase = np.clip((position_error - 0.003) / 0.009, 0.0, 1.0)
+            instant_gate = float(instant_phase * instant_phase * (3.0 - 2.0 * instant_phase))
+            if instant_gate >= 0.05:
+                recovery_gate_remaining_s = recovery_gate_hold_s
+            else:
+                recovery_gate_remaining_s = max(0.0, recovery_gate_remaining_s - CONTROL_DT)
+            if controller_mode == "vmc_taper" and recovery_gate_taper_s > 0.0:
+                taper_phase = np.clip(recovery_gate_remaining_s / recovery_gate_taper_s, 0.0, 1.0)
+                held_gate = float(taper_phase * taper_phase * (3.0 - 2.0 * taper_phase))
+            else:
+                held_gate = float(recovery_gate_remaining_s > 0.0)
+            recovery_gate = max(instant_gate, held_gate)
+            active_drive_scale = 1.0 + recovery_gate * (recovery_drive_scale_factor - 1.0)
+        else:
+            recovery_gate = 0.0
+            active_drive_scale = stiffness_schedule(time_s, 1.0, recovery_drive_scale_factor, recovery_ramp_s, rod_final_release_s)
+        controller.set_kappa(active_kappa)
+        controller.set_carriage_drive_scale(active_drive_scale)
         data.mocap_pos[actual_marker_mocap] = ee_position
         data.mocap_quat[actual_marker_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
         actual_position_history.append(ee_position.copy())
@@ -665,7 +696,7 @@ def run_episode(
                 actual_position_history[history_index] if history_index >= 0 else np.array([0.0, 0.0, -2.0])
             )
             data.mocap_quat[marker_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
-        if controller_mode == "vmc":
+        if controller_mode in VMC_MODES:
             wrench, carriage_displacement = controller.wrench(ee_position, ee_rotation, ee_twist)
         elif controller_mode == "impedance":
             wrench, carriage_displacement = _direct_cartesian_wrench(
@@ -747,7 +778,7 @@ def run_episode(
         # to rejoin before closure, without changing the arm path itself.
         data.ctrl[ARM_DOF] = 0.040 if response_only else reference.gripper_target(time_s - (grasp_time_s - GRASP_TIME_S))
         data.ctrl[rod_ctrl_index] = rod_displacement
-        if controller_mode == "vmc":
+        if controller_mode in VMC_MODES:
             controller.advance(CONTROL_DT, nominal_position, nominal_rotation, nominal_twist, wrench)
         mujoco.mj_step(model, data)
 
@@ -788,6 +819,7 @@ def run_episode(
             "rod_command_velocity": rod_velocity,
             "active_kappa": active_kappa,
             "active_drive_scale": active_drive_scale,
+            "recovery_gate": recovery_gate,
             "explicit_carriage_position": explicit_position.tolist(),
             "explicit_carriage_velocity": explicit_velocity.tolist(),
             "explicit_carriage_force": explicit_force.tolist(),
@@ -836,6 +868,21 @@ def run_episode(
     release_error = _safe_scalar(arrays["track_position"][release_index])
     recovery_drop = _safe_scalar(release_error - pregrasp_error)
     contact_times = arrays["time"][rod_contact_mask]
+    contact_start_s = phase_summary["primary_contact_start_s"]
+    contact_release_s = phase_summary["primary_contact_release_s"]
+    rejoin_s = phase_summary["rejoin_time_s"]
+    post_contact_end_s = grasp_time_s if rejoin_s is None else min(float(rejoin_s), grasp_time_s)
+    post_contact_mask = (
+        np.zeros_like(arrays["time"], dtype=bool)
+        if contact_start_s is None
+        else (arrays["time"] >= float(contact_start_s)) & (arrays["time"] <= post_contact_end_s)
+    )
+    if not np.any(post_contact_mask):
+        post_contact_mask = perturbation_mask | recovery_mask
+    recovery_iae = _safe_scalar(np.trapezoid(arrays["track_position"][recovery_mask], arrays["time"][recovery_mask]))
+    post_release_peak_error = _safe_scalar(np.max(arrays["track_position"][recovery_mask]))
+    torque_abs = np.abs(arrays["torque_applied"])
+    torque_rate = np.diff(arrays["torque_applied"], axis=0) / CONTROL_DT
     summary = {
         "kappa": float(kappa_vector[0]) if np.allclose(kappa_vector, kappa_vector[0]) else None,
         "kappa_vector": kappa_vector.tolist(),
@@ -848,6 +895,8 @@ def run_episode(
                 "rigid": "direct high-stiffness bounded Cartesian tracking of the nominal reference",
                 "impedance": "fixed bounded Cartesian spring-damper tracking of the nominal reference",
                 "vmc": "virtual-mechanism compliant controller; optional explicit MuJoCo virtual carriage",
+                "vmc_gated": "six-spring VMC with a causal measured-error held return-drive gate",
+                "vmc_taper": "six-spring VMC with a causal measured-error gate and smooth terminal taper",
             }[controller_mode],
         },
         "virtual_mechanism": {
@@ -868,6 +917,7 @@ def run_episode(
             "final_end_time_s": rod_final_release_s,
             "stroke_m": rod_stroke_m,
             "height_m": rod_height_m,
+            "approach_side": rod_approach_side,
         },
         "stiffness_schedule": {
             "contact_kappa_vector": kappa_vector.tolist(),
@@ -877,6 +927,13 @@ def run_episode(
             "recovery_ramp_start_s": rod_final_release_s,
             "recovery_ramp_duration_s": recovery_ramp_s,
             "recovery_carriage_drive_scale_factor": recovery_drive_scale_factor,
+            "causal_recovery_gate": {
+                "enabled": controller_mode in ("vmc_gated", "vmc_taper"),
+                "hold_s": recovery_gate_hold_s if controller_mode in ("vmc_gated", "vmc_taper") else None,
+                "taper_s": recovery_gate_taper_s if controller_mode == "vmc_taper" else None,
+                "mean_gate": _safe_scalar(np.mean(arrays["recovery_gate"])),
+                "uses_contact_or_future_release": False,
+            },
         },
         "visualization": {
             "nominal_marker": "bright blue sphere",
@@ -921,18 +978,27 @@ def run_episode(
         "tracking": {
             "perturbation_position_rmse_m": _safe_scalar(np.sqrt(np.mean(arrays["track_position"][perturbation_mask] ** 2))),
             "recovery_position_rmse_m": _safe_scalar(np.sqrt(np.mean(arrays["track_position"][recovery_mask] ** 2))),
+            "recovery_iae_m_s": recovery_iae,
+            "post_release_peak_error_m": post_release_peak_error,
+            "post_release_rebound_ratio": post_release_peak_error / max(release_error, EPS),
             "pregrasp_position_error_m": pregrasp_error,
             "final_position_error_m": _safe_scalar(arrays["track_position"][-1]),
         },
         "motion": {
             "recovery_speed_p95_mps": _safe_scalar(np.quantile(arrays["ee_speed"][recovery_mask], 0.95)),
+            "post_contact_speed_peak_mps": _safe_scalar(np.max(arrays["ee_speed"][post_contact_mask])),
+            "post_contact_speed_p95_mps": _safe_scalar(np.quantile(arrays["ee_speed"][post_contact_mask], 0.95)),
             "forward_surge_max_mps": _safe_scalar(np.max(arrays["surge"][perturbation_mask | recovery_mask])),
             "acceleration_peak_mps2": _safe_scalar(np.max(arrays["acceleration"][perturbation_mask | recovery_mask])),
             "jerk_peak_mps3": _safe_scalar(np.max(arrays["jerk"][perturbation_mask | recovery_mask])),
+            "post_contact_jerk_p95_mps3": _safe_scalar(np.quantile(arrays["jerk"][post_contact_mask], 0.95)),
         },
         "torque": {
             "applied_peak_nm": _safe_scalar(np.max(np.abs(arrays["torque_applied"]))),
             "applied_peak_ratio": _safe_scalar(np.max(arrays["torque_ratio"])),
+            "applied_rms_nm": _safe_scalar(np.sqrt(np.mean(torque_abs**2))),
+            "applied_p95_nm": _safe_scalar(np.quantile(torque_abs, 0.95)),
+            "torque_rate_peak_nmps": _safe_scalar(np.max(np.abs(torque_rate))),
             "hard_limit_fraction": _safe_scalar(np.mean(np.isclose(np.abs(arrays["torque_applied"]), TORQUE_LIMITS[None, :], atol=1e-5))),
         },
         "rod_diagnostics": {
@@ -977,6 +1043,10 @@ def parse_args() -> argparse.Namespace:
         help="World z height of the rod axis; use this to test impact geometry while keeping the same rod profile.",
     )
     parser.add_argument(
+        "--rod-approach-side", choices=ROD_APPROACH_SIDES, default="negative_y",
+        help="Physical side from which the finite-mass rod slides into the hand.",
+    )
+    parser.add_argument(
         "--recovery-kappa", type=float, default=None,
         help="Shared six-channel stiffness after rod retraction; default keeps constant stiffness.",
     )
@@ -985,6 +1055,8 @@ def parse_args() -> argparse.Namespace:
         help="Independent recovery-stage stiffness multipliers; default keeps the contact vector.",
     )
     parser.add_argument("--recovery-ramp", type=float, default=0.16, help="Seconds to smoothly ramp from contact to recovery stiffness.")
+    parser.add_argument("--recovery-gate-hold-s", type=float, default=0.28, help="Causal measured-error hold duration for vmc_gated/vmc_taper.")
+    parser.add_argument("--recovery-gate-taper-s", type=float, default=0.04, help="Smooth terminal held-gate taper for vmc_taper.")
     parser.add_argument(
         "--recovery-carriage-drive-scale", type=float, default=None,
         help="Absolute carriage-drive scale after release; default keeps the contact-stage scale.",
@@ -1025,7 +1097,7 @@ def main() -> None:
     positive_scales = [args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed, args.rod_cycle_period, args.carriage_mass_kg, args.rod_height, args.rotational_carriage_inertia_scale]
     if args.rotational_damping_ratio is not None:
         positive_scales.append(args.rotational_damping_ratio)
-    if min(positive_scales) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or args.rod_cycles < 1 or args.rod_cycle_period < ROD_END_TIME_S - ROD_START_TIME_S or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.kappa_vector is not None and (not np.all(np.isfinite(args.kappa_vector)) or min(args.kappa_vector) <= 0)) or (args.recovery_kappa_vector is not None and (not np.all(np.isfinite(args.recovery_kappa_vector)) or min(args.recovery_kappa_vector) <= 0)) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0) or (args.explicit_rotational_carriage and not args.explicit_translational_carriage):
+    if min(positive_scales) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or args.recovery_gate_hold_s < 0 or args.recovery_gate_taper_s < 0 or args.rod_cycles < 1 or args.rod_cycle_period < ROD_END_TIME_S - ROD_START_TIME_S or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.kappa_vector is not None and (not np.all(np.isfinite(args.kappa_vector)) or min(args.kappa_vector) <= 0)) or (args.recovery_kappa_vector is not None and (not np.all(np.isfinite(args.recovery_kappa_vector)) or min(args.recovery_kappa_vector) <= 0)) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0) or (args.explicit_rotational_carriage and not args.explicit_translational_carriage):
         raise ValueError("all physical and controller scales must be positive")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     config = replace(
@@ -1059,6 +1131,9 @@ def main() -> None:
             rotational_carriage_inertia_scale=args.rotational_carriage_inertia_scale,
             rotational_damping_ratio=args.rotational_damping_ratio,
             controller_mode=args.controller_mode,
+            rod_approach_side=args.rod_approach_side,
+            recovery_gate_hold_s=args.recovery_gate_hold_s,
+            recovery_gate_taper_s=args.recovery_gate_taper_s,
         )
         for kappa in contact_runs
     ]
