@@ -10,7 +10,7 @@ from pathlib import Path
 
 import torch
 from stable_baselines3 import PPO
-from stable_baselines3.common.callbacks import CheckpointCallback
+from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.vec_env import SubprocVecEnv, VecMonitor, VecNormalize
 
 from rl_sixd_stiffness_env import PandaSixDStiffnessEnv, default_fixtures
@@ -21,6 +21,27 @@ def make_env(menagerie: Path, rank: int, seed: int):
     def _factory() -> PandaSixDStiffnessEnv:
         return PandaSixDStiffnessEnv(menagerie=menagerie, fixtures=default_fixtures(), seed=seed + rank)
     return _factory
+
+
+class PairedPolicyCheckpointCallback(BaseCallback):
+    """Save PPO weights and matching observation-normalization state together."""
+
+    def __init__(self, save_freq: int, save_dir: Path) -> None:
+        super().__init__()
+        self.save_freq = save_freq
+        self.save_dir = save_dir
+
+    def _on_step(self) -> bool:
+        if self.n_calls % self.save_freq != 0:
+            return True
+        self.save_dir.mkdir(parents=True, exist_ok=True)
+        step = self.num_timesteps
+        self.model.save(self.save_dir / f"ppo_sixd_{step}_steps")
+        environment = self.model.get_env()
+        if not isinstance(environment, VecNormalize):
+            raise RuntimeError("PPO checkpoint environment is expected to be VecNormalize")
+        environment.save(self.save_dir / f"ppo_sixd_{step}_steps_vecnormalize.pkl")
+        return True
 
 
 def main() -> None:
@@ -53,7 +74,7 @@ def main() -> None:
             policy_kwargs={"net_arch": [256, 256]},
             tensorboard_log=str(args.output_dir / "tensorboard"),
         )
-    checkpoint = CheckpointCallback(save_freq=max(1, 100_000 // args.n_envs), save_path=str(args.output_dir / "checkpoints"), name_prefix="ppo_sixd")
+    checkpoint = PairedPolicyCheckpointCallback(save_freq=max(1, 100_000 // args.n_envs), save_dir=args.output_dir / "checkpoints")
     metadata = {
         "algorithm": "PPO state-feedback; not CEM or a timed schedule",
         "total_timesteps_requested": args.total_timesteps,
