@@ -144,6 +144,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.previous_position_error = 0.0
         self.cumulative_log_kappa_deviation = 0.0
         self.post_release_step_count = 0
+        self.cumulative_residual_gate = 0.0
         self._explicit_qpos = np.zeros(3, dtype=int)
         self._explicit_dof = np.zeros(3, dtype=int)
         self._target_qpos = 0
@@ -248,6 +249,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.previous_position_error = 0.0
         self.cumulative_log_kappa_deviation = 0.0
         self.post_release_step_count = 0
+        self.cumulative_residual_gate = 0.0
         self._build_scene()
         assert self.data is not None
         self.previous_torque = self.data.qfrc_bias[:ARM_DOF].copy()
@@ -341,6 +343,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             "peak_jerk_mps3": self.peak_jerk,
             "hard_torque_limit": self.hard_limit_seen,
             "mean_log_kappa_deviation": self.cumulative_log_kappa_deviation / max(1, self.step_count),
+            "mean_residual_gate": self.cumulative_residual_gate / max(1, self.step_count),
             "fixture": self.fixture.__dict__.copy(),
         }
 
@@ -371,12 +374,31 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             "applied_torque": self.previous_torque.copy(),
         }
 
+    def _deployable_residual_gate(self, time_s: float) -> float:
+        """Smoothly enable stiffness residuals only when observable error grows.
+
+        This is a deployment-time proprioceptive shield, not a collision
+        detector: it uses only nominal-vs-measured end-effector position,
+        exactly as the 51-D actor observation does.  The gate prevents the
+        learned residual from drifting the nominal task before an impact while
+        preserving state-feedback adaptation during a visible departure.
+        """
+
+        assert self.data is not None and self.reference is not None
+        nominal_position, _, _, _ = self.reference.sample(time_s)
+        position_error = float(np.linalg.norm(nominal_position - self.data.xpos[self._hand_id]))
+        phase = np.clip((position_error - 0.003) / 0.009, 0.0, 1.0)
+        return float(phase * phase * (3.0 - 2.0 * phase))
+
     def step(self, action: np.ndarray) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
         action = np.asarray(action, dtype=float)
         if action.shape != (6,) or not np.all(np.isfinite(action)):
             raise ValueError("action must be a finite six-vector")
         action = np.clip(action, -1.0, 1.0)
-        self.current_kappa = action_to_kappa(action, self.current_kappa, self.action_config)
+        residual_gate = self._deployable_residual_gate(self.step_count * RL_DT)
+        applied_action = residual_gate * action
+        self.current_kappa = action_to_kappa(applied_action, self.current_kappa, self.action_config)
+        self.cumulative_residual_gate += residual_gate
         accumulated_reward = 0.0
         release_time_s = self.fixture.rod_start_time_s + ROD_PROFILE_DURATION_S
         action_start_error = self.previous_position_error
@@ -404,14 +426,14 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
                 # phase observation entering the actor.
                 accumulated_reward -= 0.075 * min((position_error / 0.012) ** 2, 4.0) / PHYSICS_STEPS_PER_ACTION
                 self.post_release_step_count += 1
-        action_delta = float(np.mean((action - self.previous_action) ** 2))
+        action_delta = float(np.mean((applied_action - self.previous_action) ** 2))
         accumulated_reward -= 0.003 * action_delta
         if self.rod_enabled and self.step_count * RL_DT > release_time_s:
             recovery_progress = np.clip((action_start_error - final_position_error) / 0.004, -1.0, 1.0)
             accumulated_reward += 0.040 * float(recovery_progress)
         self.previous_position_error = final_position_error
         self.cumulative_log_kappa_deviation += float(np.mean(np.abs(np.log(self.current_kappa / np.asarray(WARM_START_KAPPA)))))
-        self.previous_action = action.copy()
+        self.previous_action = applied_action.copy()
         self.step_count += 1
         terminated = self.step_count >= int(round(SIM_TIME_S / RL_DT))
         info: dict[str, Any] = {}

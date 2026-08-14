@@ -99,6 +99,7 @@ def main() -> None:
             "clip_range": "0.20 -> 0.15",
             "target_kl": 0.015,
             "reward": "loading/recovery-aware internal reward; no privileged policy observation",
+            "residual_gate": "smooth deployable position-error gate: 0 below 3 mm, full by 12 mm",
         },
     }
     (args.output_dir / "training_metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
