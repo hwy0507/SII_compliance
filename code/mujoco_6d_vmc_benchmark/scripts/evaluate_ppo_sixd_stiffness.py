@@ -69,18 +69,23 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--max-fixtures", type=int, default=None)
     parser.add_argument("--enable-drive-residual", action="store_true")
+    parser.add_argument("--recovery-gate-hold-s", type=float, default=0.0)
+    parser.add_argument("--recovery-error-weight", type=float, default=0.075)
+    parser.add_argument("--recovery-progress-reward", type=float, default=0.040)
+    parser.add_argument("--action-change-penalty", type=float, default=0.003)
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     fixtures = default_fixtures()
     if args.max_fixtures is not None:
         fixtures = fixtures[:args.max_fixtures]
-    template = DummyVecEnv([lambda: PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, enable_drive_residual=args.enable_drive_residual, seed=0)])
+    env_kwargs = dict(enable_drive_residual=args.enable_drive_residual, recovery_gate_hold_s=args.recovery_gate_hold_s, recovery_error_weight=args.recovery_error_weight, recovery_progress_reward=args.recovery_progress_reward, action_change_penalty=args.action_change_penalty)
+    template = DummyVecEnv([lambda: PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, seed=0, **env_kwargs)])
     normalizer = VecNormalize.load(str(args.vecnormalize), template)
     normalizer.training = False
     normalizer.norm_reward = False
     model = PPO.load(args.model, device="cpu")
-    rod_env = PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, rod_enabled=True, enable_drive_residual=args.enable_drive_residual, seed=1)
-    no_rod_env = PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, rod_enabled=False, enable_drive_residual=args.enable_drive_residual, seed=1)
+    rod_env = PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, rod_enabled=True, seed=1, **env_kwargs)
+    no_rod_env = PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, rod_enabled=False, seed=1, **env_kwargs)
     records: list[dict[str, Any]] = []
     try:
         for index, fixture in enumerate(fixtures):
@@ -119,6 +124,7 @@ def main() -> None:
     report = {
         "protocol": "frozen deterministic PPO; matched rod/no-rod physics rollouts; offline diagnostics only",
         "enable_drive_residual": args.enable_drive_residual,
+        "recovery_gate_hold_s": args.recovery_gate_hold_s,
         "model": str(args.model),
         "vecnormalize": str(args.vecnormalize),
         "summary": _summary(records),

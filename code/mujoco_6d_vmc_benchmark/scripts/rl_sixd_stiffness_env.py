@@ -117,6 +117,10 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         fixtures: tuple[Fixture, ...] | None = None,
         rod_enabled: bool = True,
         enable_drive_residual: bool = False,
+        recovery_gate_hold_s: float = 0.0,
+        recovery_error_weight: float = 0.075,
+        recovery_progress_reward: float = 0.040,
+        action_change_penalty: float = 0.003,
         seed: int | None = None,
     ) -> None:
         super().__init__()
@@ -124,6 +128,12 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.fixtures = fixtures or default_fixtures()
         self.rod_enabled = bool(rod_enabled)
         self.enable_drive_residual = bool(enable_drive_residual)
+        if recovery_gate_hold_s < 0.0 or recovery_error_weight < 0.0 or recovery_progress_reward < 0.0 or action_change_penalty < 0.0:
+            raise ValueError("recovery-gate and reward scales must be non-negative")
+        self.recovery_gate_hold_s = float(recovery_gate_hold_s)
+        self.recovery_error_weight = float(recovery_error_weight)
+        self.recovery_progress_reward = float(recovery_progress_reward)
+        self.action_change_penalty = float(action_change_penalty)
         if not self.fixtures:
             raise ValueError("at least one physical fixture is required")
         self.action_config = StiffnessActionConfig(base_kappa=WARM_START_KAPPA)
@@ -158,6 +168,8 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.post_release_step_count = 0
         self.cumulative_residual_gate = 0.0
         self.cumulative_log_drive_deviation = 0.0
+        self.recovery_gate_remaining_s = 0.0
+        self.current_residual_gate = 0.0
         self._explicit_qpos = np.zeros(3, dtype=int)
         self._explicit_dof = np.zeros(3, dtype=int)
         self._target_qpos = 0
@@ -272,6 +284,8 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.post_release_step_count = 0
         self.cumulative_residual_gate = 0.0
         self.cumulative_log_drive_deviation = 0.0
+        self.recovery_gate_remaining_s = 0.0
+        self.current_residual_gate = 0.0
         self._build_scene()
         assert self.data is not None
         self.previous_torque = self.data.qfrc_bias[:ARM_DOF].copy()
@@ -307,7 +321,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         # departure, not rod contact, rod force, obstacle pose, or a timed
         # collision phase.  The scalar residual selects the boosted target;
         # it is not a seventh virtual spring.
-        drive_gate = self._deployable_residual_gate(time_s) if self.enable_drive_residual else 0.0
+        drive_gate = self.current_residual_gate if self.enable_drive_residual else 0.0
         active_drive_scale = CONTACT_CARRIAGE_DRIVE_SCALE + drive_gate * (self.current_recovery_drive_scale - CONTACT_CARRIAGE_DRIVE_SCALE)
         drive_k = 75.0 * active_drive_scale
         drive_d = 2.0 * self.config.carriage_drive_zeta * np.sqrt(CARRIAGE_MASS_KG * drive_k)
@@ -420,13 +434,31 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         phase = np.clip((position_error - 0.003) / 0.009, 0.0, 1.0)
         return float(phase * phase * (3.0 - 2.0 * phase))
 
+    def _recovery_gate(self, time_s: float) -> float:
+        """Causal, deployable residual gate with optional post-deviation hold.
+
+        The hold begins only after a measured tracking departure has crossed
+        the smooth gate's modest activation threshold.  It contains no rod
+        contact, force, obstacle, or predeclared collision-release signal.
+        """
+
+        instant = self._deployable_residual_gate(time_s)
+        if self.recovery_gate_hold_s <= 0.0:
+            return instant
+        if instant >= 0.05:
+            self.recovery_gate_remaining_s = self.recovery_gate_hold_s
+        else:
+            self.recovery_gate_remaining_s = max(0.0, self.recovery_gate_remaining_s - RL_DT)
+        return max(instant, float(self.recovery_gate_remaining_s > 0.0))
+
     def step(self, action: np.ndarray) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
         action = np.asarray(action, dtype=float)
         expected_action_shape = (7,) if self.enable_drive_residual else (6,)
         if action.shape != expected_action_shape or not np.all(np.isfinite(action)):
             raise ValueError(f"action must be a finite {expected_action_shape[0]}-vector")
         action = np.clip(action, -1.0, 1.0)
-        residual_gate = self._deployable_residual_gate(self.step_count * RL_DT)
+        residual_gate = self._recovery_gate(self.step_count * RL_DT)
+        self.current_residual_gate = residual_gate
         stiffness_action = action[:6]
         applied_action = residual_gate * stiffness_action
         self.current_kappa = action_to_kappa(applied_action, self.current_kappa, self.action_config)
@@ -458,15 +490,24 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
                 -0.004 * min(twist_error / 2.2, 3.0)
                 -0.004 * torque_ratio**2
             ) / PHYSICS_STEPS_PER_ACTION
-            if is_recovery:
+            if is_recovery and self.recovery_gate_hold_s <= 0.0:
                 # Make the scientific objective explicit: after the external
                 # rod releases, shrink the departure tube without a force or
                 # phase observation entering the actor.
                 accumulated_reward -= 0.075 * min((position_error / 0.012) ** 2, 4.0) / PHYSICS_STEPS_PER_ACTION
                 self.post_release_step_count += 1
         action_delta = float(np.mean((applied_action - self.previous_action) ** 2) + (applied_drive_action - self.previous_drive_action) ** 2)
-        accumulated_reward -= 0.003 * action_delta
-        if self.rod_enabled and self.step_count * RL_DT > release_time_s:
+        accumulated_reward -= self.action_change_penalty * action_delta
+        if self.recovery_gate_hold_s > 0.0:
+            # This recovery objective is triggered only by the causal,
+            # deployable error gate, not the known rod time.  It gives the
+            # residual enough signal to improve return behavior over the
+            # static mechanism instead of merely preserving task success.
+            normalized_error = min((final_position_error / 0.012) ** 2, 4.0)
+            accumulated_reward -= self.recovery_error_weight * residual_gate * normalized_error
+            recovery_progress = np.clip((action_start_error - final_position_error) / 0.004, -1.0, 1.0)
+            accumulated_reward += self.recovery_progress_reward * residual_gate * float(recovery_progress)
+        elif self.rod_enabled and self.step_count * RL_DT > release_time_s:
             recovery_progress = np.clip((action_start_error - final_position_error) / 0.004, -1.0, 1.0)
             accumulated_reward += 0.040 * float(recovery_progress)
         self.previous_position_error = final_position_error
