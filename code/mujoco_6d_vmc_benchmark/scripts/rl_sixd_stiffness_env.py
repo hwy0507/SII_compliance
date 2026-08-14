@@ -44,10 +44,13 @@ from run_rod_perturbation_benchmark import (
     rod_motion,
 )
 from stiffness_training_core import (
+    DriveResidualActionConfig,
     EFFECTIVE_COLLISION_GATE,
     StiffnessActionConfig,
+    action_to_recovery_drive,
     action_to_kappa,
     deployment_observation,
+    deployment_observation_with_drive_residual,
 )
 
 
@@ -63,6 +66,8 @@ ROD_PROFILE_DURATION_S = 0.64
 # still learns state feedback; no collision phase or timed recovery schedule
 # is exposed to the policy.
 WARM_START_KAPPA = (27.579838, 52.550787, 48.699427, 35.859580, 40.719830, 34.766858)
+CONTACT_CARRIAGE_DRIVE_SCALE = 8.0
+RECOVERY_CARRIAGE_DRIVE_SCALE = 14.0
 
 
 @dataclass(frozen=True)
@@ -111,18 +116,23 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         menagerie: str | Path,
         fixtures: tuple[Fixture, ...] | None = None,
         rod_enabled: bool = True,
+        enable_drive_residual: bool = False,
         seed: int | None = None,
     ) -> None:
         super().__init__()
         self.menagerie = Path(menagerie)
         self.fixtures = fixtures or default_fixtures()
         self.rod_enabled = bool(rod_enabled)
+        self.enable_drive_residual = bool(enable_drive_residual)
         if not self.fixtures:
             raise ValueError("at least one physical fixture is required")
         self.action_config = StiffnessActionConfig(base_kappa=WARM_START_KAPPA)
-        self.config = VMCConfig(zeta=0.8, carriage_drive_k_translation=75.0 * 8.0)
-        self.action_space = gym.spaces.Box(-1.0, 1.0, shape=(6,), dtype=np.float32)
-        self.observation_space = gym.spaces.Box(-10.0, 10.0, shape=(51,), dtype=np.float32)
+        self.drive_action_config = DriveResidualActionConfig(base_recovery_drive_scale=RECOVERY_CARRIAGE_DRIVE_SCALE)
+        self.config = VMCConfig(zeta=0.8, carriage_drive_k_translation=75.0 * CONTACT_CARRIAGE_DRIVE_SCALE)
+        action_dimension = 7 if self.enable_drive_residual else 6
+        observation_dimension = 52 if self.enable_drive_residual else 51
+        self.action_space = gym.spaces.Box(-1.0, 1.0, shape=(action_dimension,), dtype=np.float32)
+        self.observation_space = gym.spaces.Box(-10.0, 10.0, shape=(observation_dimension,), dtype=np.float32)
         self.model: mujoco.MjModel | None = None
         self.data: mujoco.MjData | None = None
         self.ids: dict[str, int] = {}
@@ -131,7 +141,9 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.fixture = self.fixtures[0]
         self.step_count = 0
         self.previous_action = np.zeros(6, dtype=float)
+        self.previous_drive_action = 0.0
         self.current_kappa = np.asarray(WARM_START_KAPPA, dtype=float)
+        self.current_recovery_drive_scale = RECOVERY_CARRIAGE_DRIVE_SCALE
         self.previous_torque = np.zeros(ARM_DOF, dtype=float)
         self.previous_twist = np.zeros(6, dtype=float)
         self.previous_acceleration = np.zeros(6, dtype=float)
@@ -145,6 +157,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.cumulative_log_kappa_deviation = 0.0
         self.post_release_step_count = 0
         self.cumulative_residual_gate = 0.0
+        self.cumulative_log_drive_deviation = 0.0
         self._explicit_qpos = np.zeros(3, dtype=int)
         self._explicit_dof = np.zeros(3, dtype=int)
         self._target_qpos = 0
@@ -223,16 +236,22 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         carriage_velocity = self.data.qvel[self._explicit_dof].copy()
         angular_displacement = so3_log(self.controller.rotation @ ee_rotation.T) if self.controller is not None else np.zeros(3)
         angular_velocity = self.controller.angular_velocity.copy() if self.controller is not None else np.zeros(3)
-        observation = deployment_observation(
-            position_error_world=nominal_position - ee_position,
-            orientation_error_world=so3_log(nominal_rotation @ ee_rotation.T),
-            twist_error_world=np.concatenate([nominal_linear, nominal_angular]) - ee_twist,
-            joint_position=self.data.qpos[:ARM_DOF].copy(),
-            joint_velocity=self.data.qvel[:ARM_DOF].copy(),
-            carriage_displacement=np.concatenate([carriage_position - ee_position, angular_displacement]),
-            carriage_velocity=np.concatenate([carriage_velocity, angular_velocity]),
-            applied_torque_ratio=np.abs(self.previous_torque) / TORQUE_LIMITS,
-            previous_action=self.previous_action,
+        fields = {
+            "position_error_world": nominal_position - ee_position,
+            "orientation_error_world": so3_log(nominal_rotation @ ee_rotation.T),
+            "twist_error_world": np.concatenate([nominal_linear, nominal_angular]) - ee_twist,
+            "joint_position": self.data.qpos[:ARM_DOF].copy(),
+            "joint_velocity": self.data.qvel[:ARM_DOF].copy(),
+            "carriage_displacement": np.concatenate([carriage_position - ee_position, angular_displacement]),
+            "carriage_velocity": np.concatenate([carriage_velocity, angular_velocity]),
+            "applied_torque_ratio": np.abs(self.previous_torque) / TORQUE_LIMITS,
+        }
+        observation = (
+            deployment_observation_with_drive_residual(
+                **fields, previous_stiffness_action=self.previous_action, previous_drive_action=self.previous_drive_action,
+            )
+            if self.enable_drive_residual
+            else deployment_observation(**fields, previous_action=self.previous_action)
         )
         return observation.astype(np.float32)
 
@@ -243,6 +262,8 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.fixture = self.fixtures[index % len(self.fixtures)]
         self.current_kappa = np.asarray(WARM_START_KAPPA, dtype=float)
         self.previous_action[:] = 0.0
+        self.previous_drive_action = 0.0
+        self.current_recovery_drive_scale = RECOVERY_CARRIAGE_DRIVE_SCALE
         self.step_count = 0
         self.peak_force = self.contact_impulse = self.peak_torque = self.peak_jerk = 0.0
         self.hard_limit_seen = self.rod_hand_observed = False
@@ -250,6 +271,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.cumulative_log_kappa_deviation = 0.0
         self.post_release_step_count = 0
         self.cumulative_residual_gate = 0.0
+        self.cumulative_log_drive_deviation = 0.0
         self._build_scene()
         assert self.data is not None
         self.previous_torque = self.data.qfrc_bias[:ARM_DOF].copy()
@@ -281,7 +303,13 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         spring_d = 2.0 * self.config.zeta * np.sqrt(CARRIAGE_MASS_KG * spring_k)
         spring_force = _saturated_translation_spring(spring_k, self.config.max_force, carriage_position - ee_position)
         spring_force += spring_d * (carriage_velocity - ee_twist[:3])
-        drive_k = self.config.carriage_drive_k_translation
+        # The return-drive boost is based solely on the measured tracking
+        # departure, not rod contact, rod force, obstacle pose, or a timed
+        # collision phase.  The scalar residual selects the boosted target;
+        # it is not a seventh virtual spring.
+        drive_gate = self._deployable_residual_gate(time_s) if self.enable_drive_residual else 0.0
+        active_drive_scale = CONTACT_CARRIAGE_DRIVE_SCALE + drive_gate * (self.current_recovery_drive_scale - CONTACT_CARRIAGE_DRIVE_SCALE)
+        drive_k = 75.0 * active_drive_scale
         drive_d = 2.0 * self.config.carriage_drive_zeta * np.sqrt(CARRIAGE_MASS_KG * drive_k)
         drive_force = drive_k * (nominal_position - carriage_position) + drive_d * (nominal_twist[:3] - carriage_velocity)
         spring_force = _saturate_vector_norm(spring_force, 1.5 * self.config.max_force)
@@ -343,6 +371,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             "peak_jerk_mps3": self.peak_jerk,
             "hard_torque_limit": self.hard_limit_seen,
             "mean_log_kappa_deviation": self.cumulative_log_kappa_deviation / max(1, self.step_count),
+            "mean_log_drive_deviation": self.cumulative_log_drive_deviation / max(1, self.step_count),
             "mean_residual_gate": self.cumulative_residual_gate / max(1, self.step_count),
             "fixture": self.fixture.__dict__.copy(),
         }
@@ -372,6 +401,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             "nominal_twist": np.concatenate([nominal_linear, nominal_angular]),
             "kappa": self.current_kappa.copy(),
             "applied_torque": self.previous_torque.copy(),
+            "recovery_drive_scale": self.current_recovery_drive_scale,
         }
 
     def _deployable_residual_gate(self, time_s: float) -> float:
@@ -392,12 +422,20 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
 
     def step(self, action: np.ndarray) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
         action = np.asarray(action, dtype=float)
-        if action.shape != (6,) or not np.all(np.isfinite(action)):
-            raise ValueError("action must be a finite six-vector")
+        expected_action_shape = (7,) if self.enable_drive_residual else (6,)
+        if action.shape != expected_action_shape or not np.all(np.isfinite(action)):
+            raise ValueError(f"action must be a finite {expected_action_shape[0]}-vector")
         action = np.clip(action, -1.0, 1.0)
         residual_gate = self._deployable_residual_gate(self.step_count * RL_DT)
-        applied_action = residual_gate * action
+        stiffness_action = action[:6]
+        applied_action = residual_gate * stiffness_action
         self.current_kappa = action_to_kappa(applied_action, self.current_kappa, self.action_config)
+        drive_action = 0.0 if not self.enable_drive_residual else float(action[6])
+        applied_drive_action = residual_gate * drive_action
+        if self.enable_drive_residual:
+            self.current_recovery_drive_scale = action_to_recovery_drive(
+                applied_drive_action, self.current_recovery_drive_scale, self.drive_action_config,
+            )
         self.cumulative_residual_gate += residual_gate
         accumulated_reward = 0.0
         release_time_s = self.fixture.rod_start_time_s + ROD_PROFILE_DURATION_S
@@ -426,14 +464,16 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
                 # phase observation entering the actor.
                 accumulated_reward -= 0.075 * min((position_error / 0.012) ** 2, 4.0) / PHYSICS_STEPS_PER_ACTION
                 self.post_release_step_count += 1
-        action_delta = float(np.mean((applied_action - self.previous_action) ** 2))
+        action_delta = float(np.mean((applied_action - self.previous_action) ** 2) + (applied_drive_action - self.previous_drive_action) ** 2)
         accumulated_reward -= 0.003 * action_delta
         if self.rod_enabled and self.step_count * RL_DT > release_time_s:
             recovery_progress = np.clip((action_start_error - final_position_error) / 0.004, -1.0, 1.0)
             accumulated_reward += 0.040 * float(recovery_progress)
         self.previous_position_error = final_position_error
         self.cumulative_log_kappa_deviation += float(np.mean(np.abs(np.log(self.current_kappa / np.asarray(WARM_START_KAPPA)))))
+        self.cumulative_log_drive_deviation += abs(float(np.log(self.current_recovery_drive_scale / RECOVERY_CARRIAGE_DRIVE_SCALE)))
         self.previous_action = applied_action.copy()
+        self.previous_drive_action = applied_drive_action
         self.step_count += 1
         terminated = self.step_count >= int(round(SIM_TIME_S / RL_DT))
         info: dict[str, Any] = {}

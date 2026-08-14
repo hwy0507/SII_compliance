@@ -17,7 +17,7 @@ from rl_sixd_stiffness_env import PandaSixDStiffnessEnv, RL_DT, default_fixtures
 
 def _run_episode(env: PandaSixDStiffnessEnv, model: PPO, normalizer: VecNormalize, fixture_index: int) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
     observation, _ = env.reset(options={"fixture_index": fixture_index})
-    trace: dict[str, list[np.ndarray | float]] = {key: [] for key in ("time", "ee_position", "nominal_position", "kappa", "torque")}
+    trace: dict[str, list[np.ndarray | float]] = {key: [] for key in ("time", "ee_position", "nominal_position", "kappa", "torque", "recovery_drive_scale")}
     terminal: dict[str, Any] = {}
     while True:
         normalized = normalizer.normalize_obs(observation[None, :])[0]
@@ -29,6 +29,7 @@ def _run_episode(env: PandaSixDStiffnessEnv, model: PPO, normalizer: VecNormaliz
         trace["nominal_position"].append(np.asarray(state["nominal_position"], dtype=float))
         trace["kappa"].append(np.asarray(state["kappa"], dtype=float))
         trace["torque"].append(np.asarray(state["applied_torque"], dtype=float))
+        trace["recovery_drive_scale"].append(float(state["recovery_drive_scale"]))
         if terminated or truncated:
             terminal = info
             break
@@ -67,18 +68,19 @@ def main() -> None:
     parser.add_argument("--vecnormalize", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--max-fixtures", type=int, default=None)
+    parser.add_argument("--enable-drive-residual", action="store_true")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     fixtures = default_fixtures()
     if args.max_fixtures is not None:
         fixtures = fixtures[:args.max_fixtures]
-    template = DummyVecEnv([lambda: PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, seed=0)])
+    template = DummyVecEnv([lambda: PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, enable_drive_residual=args.enable_drive_residual, seed=0)])
     normalizer = VecNormalize.load(str(args.vecnormalize), template)
     normalizer.training = False
     normalizer.norm_reward = False
     model = PPO.load(args.model, device="cpu")
-    rod_env = PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, rod_enabled=True, seed=1)
-    no_rod_env = PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, rod_enabled=False, seed=1)
+    rod_env = PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, rod_enabled=True, enable_drive_residual=args.enable_drive_residual, seed=1)
+    no_rod_env = PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, rod_enabled=False, enable_drive_residual=args.enable_drive_residual, seed=1)
     records: list[dict[str, Any]] = []
     try:
         for index, fixture in enumerate(fixtures):
@@ -108,13 +110,14 @@ def main() -> None:
                 "mean_residual_gate": float(rod_terminal.get("mean_residual_gate", 0.0)),
             }
             records.append(record)
-            np.savez_compressed(args.output_dir / f"fixture_{index:02d}_paired_trace.npz", rod_time=rod["time"], rod_ee_position=rod["ee_position"], no_rod_ee_position=no_rod["ee_position"], nominal_position=rod["nominal_position"], rod_kappa=rod["kappa"], no_rod_kappa=no_rod["kappa"], rod_torque=rod["torque"])
+            np.savez_compressed(args.output_dir / f"fixture_{index:02d}_paired_trace.npz", rod_time=rod["time"], rod_ee_position=rod["ee_position"], no_rod_ee_position=no_rod["ee_position"], nominal_position=rod["nominal_position"], rod_kappa=rod["kappa"], no_rod_kappa=no_rod["kappa"], rod_torque=rod["torque"], rod_recovery_drive_scale=rod["recovery_drive_scale"], no_rod_recovery_drive_scale=no_rod["recovery_drive_scale"])
     finally:
         rod_env.close()
         no_rod_env.close()
         template.close()
     report = {
         "protocol": "frozen deterministic PPO; matched rod/no-rod physics rollouts; offline diagnostics only",
+        "enable_drive_residual": args.enable_drive_residual,
         "model": str(args.model),
         "vecnormalize": str(args.vecnormalize),
         "summary": _summary(records),

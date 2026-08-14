@@ -14,12 +14,14 @@ from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.vec_env import SubprocVecEnv, VecMonitor, VecNormalize
 
 from rl_sixd_stiffness_env import PandaSixDStiffnessEnv, default_fixtures
-from stiffness_training_core import StiffnessActionConfig, training_contract
+from stiffness_training_core import DRIVE_RESIDUAL_OBSERVATION_FIELDS, DriveResidualActionConfig, StiffnessActionConfig, training_contract
 
 
-def make_env(menagerie: Path, rank: int, seed: int):
+def make_env(menagerie: Path, rank: int, seed: int, enable_drive_residual: bool):
     def _factory() -> PandaSixDStiffnessEnv:
-        return PandaSixDStiffnessEnv(menagerie=menagerie, fixtures=default_fixtures(), seed=seed + rank)
+        return PandaSixDStiffnessEnv(
+            menagerie=menagerie, fixtures=default_fixtures(), enable_drive_residual=enable_drive_residual, seed=seed + rank,
+        )
     return _factory
 
 
@@ -60,6 +62,10 @@ def main() -> None:
     parser.add_argument("--n-envs", type=int, default=8)
     parser.add_argument("--seed", type=int, default=20260814)
     parser.add_argument("--device", default="auto")
+    parser.add_argument(
+        "--enable-drive-residual", action="store_true",
+        help="Use a seventh policy action for virtual-carriage return drive; springs remain six channels.",
+    )
     parser.add_argument("--resume", type=Path, default=None, help="Optional PPO zip checkpoint.")
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs < 1:
@@ -67,7 +73,9 @@ def main() -> None:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     os.environ.setdefault("MUJOCO_GL", "egl")
     torch.set_num_threads(1)
-    env = SubprocVecEnv([make_env(args.menagerie, rank, args.seed) for rank in range(args.n_envs)], start_method="spawn")
+    env = SubprocVecEnv(
+        [make_env(args.menagerie, rank, args.seed, args.enable_drive_residual) for rank in range(args.n_envs)], start_method="spawn",
+    )
     env = VecMonitor(env, filename=str(args.output_dir / "monitor.csv"))
     env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.0)
     batch_size = 256
@@ -90,7 +98,15 @@ def main() -> None:
         "n_envs": args.n_envs,
         "seed": args.seed,
         "action_config": training_contract(StiffnessActionConfig(base_kappa=(27.579838, 52.550787, 48.699427, 35.859580, 40.719830, 34.766858)))["action"],
-        "policy_observation_contract": training_contract()["observation_fields"],
+        "policy_observation_contract": DRIVE_RESIDUAL_OBSERVATION_FIELDS if args.enable_drive_residual else training_contract()["observation_fields"],
+        "policy_observation_dimension": 52 if args.enable_drive_residual else 51,
+        "enable_drive_residual": args.enable_drive_residual,
+        "drive_residual_action": None if not args.enable_drive_residual else {
+            "dimension": 1,
+            "meaning": "virtual-carriage return-drive residual; not a seventh spring",
+            **DriveResidualActionConfig().__dict__,
+            "activation": "smooth measured end-effector tracking-error gate; no contact, force, obstacle, or future-phase input",
+        },
         "privileged_quantities_excluded": training_contract()["excluded_privileged_diagnostics"],
         "fixtures": [fixture.__dict__ for fixture in default_fixtures()],
         "optimization_changes_vs_run_003": {

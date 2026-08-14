@@ -26,6 +26,18 @@ OBSERVATION_FIELDS = (
     "applied_torque_ratio_7",
     "previous_action_6",
 )
+DRIVE_RESIDUAL_OBSERVATION_FIELDS = (
+    "position_error_world_3",
+    "orientation_error_world_3",
+    "twist_error_world_6",
+    "joint_position_7",
+    "joint_velocity_7",
+    "carriage_displacement_6",
+    "carriage_velocity_6",
+    "applied_torque_ratio_7",
+    "previous_stiffness_action_6",
+    "previous_drive_action_1",
+)
 PRIVILEGED_DIAGNOSTICS = (
     "rod_contact",
     "rod_force",
@@ -51,6 +63,18 @@ class StiffnessActionConfig:
     action_log_span: float = 0.8
     update_hz: float = 25.0
     max_log_rate_per_s: float = 1.6
+
+
+@dataclass(frozen=True)
+class DriveResidualActionConfig:
+    """Safety envelope for a return-drive residual, not a seventh spring."""
+
+    base_recovery_drive_scale: float = 14.0
+    minimum_recovery_drive_scale: float = 8.0
+    maximum_recovery_drive_scale: float = 20.0
+    action_log_span: float = 0.35
+    update_hz: float = 25.0
+    max_log_rate_per_s: float = 1.0
 
 
 def _vector(values: np.ndarray | tuple[float, ...] | list[float], size: int, label: str) -> np.ndarray:
@@ -103,6 +127,32 @@ def action_to_kappa(
     return np.clip(np.exp(log_next), minimum, maximum)
 
 
+def action_to_recovery_drive(
+    action: float | np.ndarray,
+    previous_drive_scale: float,
+    config: DriveResidualActionConfig = DriveResidualActionConfig(),
+) -> float:
+    """Map a scalar policy residual to a positive, rate-limited return drive."""
+
+    value = float(np.asarray(action, dtype=float))
+    if not np.isfinite(value) or not np.isfinite(previous_drive_scale):
+        raise ValueError("drive action and previous scale must be finite")
+    if min(config.base_recovery_drive_scale, config.minimum_recovery_drive_scale, config.maximum_recovery_drive_scale, config.update_hz, config.max_log_rate_per_s) <= 0.0 or config.maximum_recovery_drive_scale < config.minimum_recovery_drive_scale:
+        raise ValueError("invalid recovery-drive safety envelope")
+    target = float(np.clip(
+        config.base_recovery_drive_scale * np.exp(np.clip(value, -1.0, 1.0) * config.action_log_span),
+        config.minimum_recovery_drive_scale,
+        config.maximum_recovery_drive_scale,
+    ))
+    max_delta = config.max_log_rate_per_s / config.update_hz
+    bounded_previous = float(np.clip(previous_drive_scale, config.minimum_recovery_drive_scale, config.maximum_recovery_drive_scale))
+    return float(np.clip(
+        np.exp(np.clip(np.log(target), np.log(bounded_previous) - max_delta, np.log(bounded_previous) + max_delta)),
+        config.minimum_recovery_drive_scale,
+        config.maximum_recovery_drive_scale,
+    ))
+
+
 def deployment_observation(
     *,
     position_error_world: np.ndarray | list[float],
@@ -137,6 +187,41 @@ def deployment_observation(
     observation = np.concatenate(normalized)
     if observation.shape != (51,):
         raise AssertionError("unexpected policy observation dimension")
+    return observation
+
+
+def deployment_observation_with_drive_residual(
+    *,
+    position_error_world: np.ndarray | list[float],
+    orientation_error_world: np.ndarray | list[float],
+    twist_error_world: np.ndarray | list[float],
+    joint_position: np.ndarray | list[float],
+    joint_velocity: np.ndarray | list[float],
+    carriage_displacement: np.ndarray | list[float],
+    carriage_velocity: np.ndarray | list[float],
+    applied_torque_ratio: np.ndarray | list[float],
+    previous_stiffness_action: np.ndarray | list[float],
+    previous_drive_action: float,
+) -> np.ndarray:
+    """52-D deployable observation for six springs plus one return-drive residual."""
+
+    base = deployment_observation(
+        position_error_world=position_error_world,
+        orientation_error_world=orientation_error_world,
+        twist_error_world=twist_error_world,
+        joint_position=joint_position,
+        joint_velocity=joint_velocity,
+        carriage_displacement=carriage_displacement,
+        carriage_velocity=carriage_velocity,
+        applied_torque_ratio=applied_torque_ratio,
+        previous_action=previous_stiffness_action,
+    )
+    drive = float(previous_drive_action)
+    if not np.isfinite(drive):
+        raise ValueError("previous_drive_action must be finite")
+    observation = np.concatenate([base, np.array([np.clip(drive, -1.0, 1.0)])])
+    if observation.shape != (52,):
+        raise AssertionError("unexpected drive-residual policy observation dimension")
     return observation
 
 
