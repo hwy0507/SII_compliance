@@ -33,6 +33,14 @@ def test_single_kappa_scales_translation_and_rotation_blocks():
     np.testing.assert_allclose(controller.stiffness[3:], 2.0 * MODULE.VMCConfig().k_rotation_base)
 
 
+def test_independent_kappa_scales_each_of_the_six_channels():
+    multipliers = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
+    controller = MODULE.SixDVirtualCarriage(MODULE.VMCConfig(), multipliers, np.zeros(3), np.eye(3))
+    expected_base = np.array([MODULE.VMCConfig().k_translation_base] * 3 + [MODULE.VMCConfig().k_rotation_base] * 3)
+    np.testing.assert_allclose(controller.kappa_vector, multipliers)
+    np.testing.assert_allclose(controller.stiffness, multipliers * expected_base)
+
+
 def test_torque_feasible_scale_respects_each_joint_limit():
     bias = np.zeros(MODULE.ARM_DOF)
     contribution = np.ones(MODULE.ARM_DOF) * 2.0 * MODULE.TORQUE_LIMITS

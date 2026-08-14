@@ -58,6 +58,14 @@ def test_stiffness_schedule_preserves_a_single_shared_scalar_without_a_phase_cha
     assert MODULE.stiffness_schedule(3.0, 1.25, 1.25, 0.08) == 1.25
 
 
+def test_stiffness_schedule_independently_ramps_all_six_channels():
+    contact = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
+    recovery = 2.0 * contact
+    ramp = 0.16
+    midpoint = MODULE.stiffness_schedule(MODULE.ROD_END_TIME_S + ramp / 2.0, contact, recovery, ramp)
+    np.testing.assert_allclose(midpoint, 1.5 * contact)
+
+
 def test_explicit_carriage_uses_one_shared_three_axis_body():
     """The physical prototype must be one 3D mass, not three unrelated masses."""
     source = MODULE_PATH.read_text()

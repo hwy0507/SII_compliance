@@ -592,6 +592,11 @@ def run_episode(
         "time", "track_position", "track_orientation", "ee_speed", "surge", "acceleration", "jerk",
         "torque_applied", "torque_ratio", "rod_contact", "rod_force", "rod_penetration",
         "carriage_displacement", "vmc_wrench", "ee_position", "nominal_position", "carriage_position",
+        # These proprioceptive signals are sufficient to reconstruct a
+        # deployable stiffness-policy observation offline.  Contact flags,
+        # rod state, and contact force remain diagnostics only and must not be
+        # consumed by the eventual deployed policy.
+        "ee_rotation", "nominal_rotation", "ee_twist", "nominal_twist", "joint_position", "joint_velocity",
         "object_position", "object_hand_distance", "rod_displacement", "rod_command_velocity", "active_kappa", "active_drive_scale",
         "explicit_carriage_position", "explicit_carriage_velocity", "explicit_carriage_force",
         "explicit_carriage_rotation", "explicit_carriage_angular_velocity", "explicit_carriage_moment",
@@ -769,6 +774,12 @@ def run_episode(
             "ee_position": ee_position.tolist(),
             "nominal_position": nominal_position.tolist(),
             "carriage_position": controller.position.tolist(),
+            "ee_rotation": ee_rotation.tolist(),
+            "nominal_rotation": nominal_rotation.tolist(),
+            "ee_twist": ee_twist.tolist(),
+            "nominal_twist": nominal_twist.tolist(),
+            "joint_position": data.qpos[:ARM_DOF].copy().tolist(),
+            "joint_velocity": data.qvel[:ARM_DOF].copy().tolist(),
             "object_position": target_position.tolist(),
             "object_hand_distance": float(np.linalg.norm(target_position - ee_position)),
             "rod_displacement": rod_displacement,

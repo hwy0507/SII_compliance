@@ -549,3 +549,24 @@ but lowers the contact peak to `17.19 N` and is therefore rejected for collision
 non-equivalence.  The current stage-level primary result remains the stable
 explicit 3D candidate, while the explicit 6D branch is ready for rotational
 drive and solver-time-scale tuning.
+
+## Training preparation: static search before RL
+
+The current preparation uses independent stiffness multipliers in channel
+order `[x, y, z, roll, pitch, yaw]`. It first generates a deterministic
+Latin-hypercube experiment manifest around calibrated valid-contact geometry,
+then evaluates static candidates with the same paired task and safety gates as
+the benchmark. Only after that gate may a learned 25 Hz policy adjust the six
+log-stiffness multipliers. The policy contract excludes MuJoCo-only rod/contact
+truth and applies a fixed action-rate safety shield.
+
+```bash
+python scripts/prepare_stiffness_training.py \
+  --output-dir outputs/training_prep_v0 \
+  --train-samples 32 --validation-samples 8 --test-samples 8 \
+  --seed 20260814
+```
+
+See [training protocol v0](docs/training_protocol_v0.md) for the 51-D
+deployable observation, action mapping, randomized fixture ranges, validity
+gate, and the separation between static search and later RL.
