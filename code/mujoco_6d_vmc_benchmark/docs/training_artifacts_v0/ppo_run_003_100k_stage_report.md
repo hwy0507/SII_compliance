@@ -50,3 +50,22 @@
 1. 继续 run_003 至 1M steps，并保存每 100k checkpoint 的 paired normalizer。
 2. 选取 validation/test 的独立有效碰撞 fixture，冻结后评测 static `[35]^6`、CEM schedule 和 PPO。
 3. 仅在统一的有效碰撞率、任务率、paired offset、recovery RMSE、rejoin latency、peak torque、jerk、force/impulse 表上给出 Pareto 结论和图。
+
+## Run_003 提前停止记录（100k--500k）
+
+该 run 原计划训练到 1M steps，但在 500k 时提前停止并保留所有 checkpoint。理由是每 100k 的冻结 paired evaluation 已显示核心指标平台化，而不是为了只保留表现最好的 checkpoint：
+
+| checkpoint | task/effective/no-rod | peak paired offset (mm) | recovery RMSE (mm) | peak torque (Nm) | PPO KL / clip fraction |
+|---|---|---:|---:|---:|---:|
+| 100k | 4/4, 4/4, 4/4 | 17.17 | 2.240 | 30.312 | — |
+| 300k | 4/4, 4/4, 4/4 | 17.09 | 2.229 | 30.298 | — |
+| 400k | 4/4, 4/4, 4/4 | 17.17 | 2.193 | 30.306 | 0.034 / 0.315 |
+| 500k | 4/4, 4/4, 4/4 | 17.11 | 2.186 | 30.293 | >0.036 / >0.32 near end |
+
+因此最小的 recovery-RMSE 改善约为 0.054 mm（100k 到 500k），而峰值偏移、力矩、jerk 与 rejoin latency 基本不变；继续相同的 fixed-LR PPO run 预计不能形成有意义的科研增益。下一轮应改为带 `target_kl` / learning-rate schedule 的 PPO，并增加有物理意义的 post-contact recovery objective；该修改会作为新 run，与本 run 分开报告。
+
+后续 checkpoint 结果：
+
+- [300k paired evaluation](ppo_run_003_300k/ppo_paired_evaluation.json)
+- [400k paired evaluation](ppo_run_003_400k/ppo_paired_evaluation.json)
+- [500k paired evaluation](ppo_run_003_500k/ppo_paired_evaluation.json)
