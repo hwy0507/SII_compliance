@@ -104,7 +104,9 @@ def _run_fixture(
         recovery_kappa=kappa, recovery_ramp_s=0.08, recovery_drive_scale_factor=14.0 / 8.0,
         grasp_time_s=fixture["grasp_time_s"], rod_start_time_s=fixture["rod_start_time_s"],
         explicit_translational_carriage=uses_virtual_carriage, carriage_mass_kg=1.0,
-        rod_height_m=fixture["rod_height_m"], controller_mode=mode,
+        rod_height_m=fixture["rod_height_m"],
+        rod_center_x_m=fixture.get("rod_center_x_m", 0.55), rod_center_y_m=fixture.get("rod_center_y_m", 0.0),
+        controller_mode=mode,
         rod_approach_side=fixture["rod_approach_side"], recovery_gate_hold_s=0.28,
         recovery_gate_taper_s=0.04,
         # The configuration is only meaningful for this controller.  Keeping

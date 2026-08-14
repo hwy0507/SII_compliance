@@ -19,7 +19,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
-from dataclasses import asdict, replace
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 from typing import Any
 
@@ -65,11 +65,52 @@ ACTUAL_TRAIL_COUNT = 12
 CAMERA_VIEWS = ("overview", "hand-closeup")
 CONTROLLER_MODES = ("rigid", "impedance", "vmc", "vmc_gated", "vmc_taper", "vmc_energy")
 VMC_MODES = ("vmc", "vmc_gated", "vmc_taper", "vmc_energy")
-ROD_APPROACH_SIDES = ("negative_y", "positive_y")
+ROD_APPROACH_SIDES = ("negative_x", "positive_x", "negative_y", "positive_y", "negative_z", "positive_z")
 PHASE_LABELS = ("approach", "contact", "unloading", "rejoined", "task")
 REJOIN_THRESHOLD_M = 0.005
 REJOIN_HOLD_S = 0.080
 CONTACT_WINDOW_MERGE_S = 0.020
+
+
+@dataclass(frozen=True)
+class RodApproachGeometry:
+    """Physical support, slide, and cylinder orientation for one approach side."""
+
+    approach_side: str
+    support_position_m: tuple[float, float, float]
+    slide_axis_world: tuple[float, float, float]
+    rod_long_axis_world: tuple[float, float, float]
+    cylinder_quaternion_wxyz: tuple[float, float, float, float]
+
+
+def rod_approach_geometry(
+    approach_side: str,
+    rod_height_m: float,
+    rod_center_x_m: float = 0.55,
+    rod_center_y_m: float = 0.0,
+) -> RodApproachGeometry:
+    """Return a non-degenerate, axis-aligned physical rod geometry.
+
+    The cylinder's long axis is always orthogonal to the commanded slide axis.
+    ``rod_height_m`` remains the interaction-plane height for horizontal
+    approaches.  For vertical approaches it is the central height around
+    which mirrored supports start 0.14 m below/above the hand plane.
+    """
+    if approach_side not in ROD_APPROACH_SIDES:
+        raise ValueError(f"unknown rod approach side: {approach_side}")
+    if not np.all(np.isfinite((rod_height_m, rod_center_x_m, rod_center_y_m))):
+        raise ValueError("rod approach geometry requires finite coordinates")
+    if approach_side == "negative_y":
+        return RodApproachGeometry(approach_side, (rod_center_x_m, -0.20, rod_height_m), (0.0, 1.0, 0.0), (1.0, 0.0, 0.0), (0.7071068, 0.0, 0.7071068, 0.0))
+    if approach_side == "positive_y":
+        return RodApproachGeometry(approach_side, (rod_center_x_m, 0.20, rod_height_m), (0.0, -1.0, 0.0), (1.0, 0.0, 0.0), (0.7071068, 0.0, 0.7071068, 0.0))
+    if approach_side == "negative_x":
+        return RodApproachGeometry(approach_side, (rod_center_x_m - 0.20, rod_center_y_m, rod_height_m), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.7071068, -0.7071068, 0.0, 0.0))
+    if approach_side == "positive_x":
+        return RodApproachGeometry(approach_side, (rod_center_x_m + 0.20, rod_center_y_m, rod_height_m), (-1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.7071068, -0.7071068, 0.0, 0.0))
+    if approach_side == "negative_z":
+        return RodApproachGeometry(approach_side, (rod_center_x_m, rod_center_y_m, rod_height_m - 0.14), (0.0, 0.0, 1.0), (0.0, 1.0, 0.0), (0.7071068, -0.7071068, 0.0, 0.0))
+    return RodApproachGeometry(approach_side, (rod_center_x_m, rod_center_y_m, rod_height_m + 0.14), (0.0, 0.0, -1.0), (0.0, 1.0, 0.0), (0.7071068, -0.7071068, 0.0, 0.0))
 
 
 def kappa_filename_tag(kappa: float | np.ndarray) -> str:
@@ -249,6 +290,8 @@ def _rod_scene_xml(
     menagerie: Path,
     contact_time_constant_s: float,
     rod_height_m: float = 0.540,
+    rod_center_x_m: float = 0.55,
+    rod_center_y_m: float = 0.0,
     explicit_translational_carriage: bool = False,
     carriage_mass_kg: float = 0.35,
     explicit_rotational_carriage: bool = False,
@@ -266,16 +309,18 @@ def _rod_scene_xml(
     if anchor not in text:
         raise RuntimeError("could not add the physical gripper actuator")
     text = text.replace(anchor, gripper + anchor, 1)
-    # The rod's cylinder axis is local z. Rotate it so its long axis is world
-    # x, then slide it along world y into and back out of the hand.  V2 uses
-    # the two physically mirrored approach sides, not a post-hoc coordinate
-    # sign flip. A position actuator drives the support slide; the finite-mass
-    # rod/contact response remains part of MuJoCo dynamics rather than a mocap
-    # teleport.
-    if rod_approach_side not in ROD_APPROACH_SIDES:
-        raise ValueError(f"unknown rod approach side: {rod_approach_side}")
-    support_y = -0.20 if rod_approach_side == "negative_y" else 0.20
-    slide_axis_y = 1.0 if rod_approach_side == "negative_y" else -1.0
+    # The rod is a finite-mass, position-driven body on a physical MuJoCo
+    # slide.  Its support location, slide axis, and long-axis orientation are
+    # constructed from the requested approach side instead of relabelling a
+    # single y-axis collision after the fact.
+    approach = rod_approach_geometry(rod_approach_side, rod_height_m, rod_center_x_m, rod_center_y_m)
+    rod_guide_xml = ""
+    if rod_approach_side.endswith("_y"):
+        rod_guide_xml = (
+            f'<geom name="rod_guide" type="box" pos="{rod_center_x_m:.3f} '
+            f'{0.5 * approach.support_position_m[1]:.3f} 0.435" size="0.18 0.13 0.008" '
+            'contype="0" conaffinity="0" rgba="0.10 0.12 0.15 0.70"/>'
+        )
     explicit_carriage_xml = ""
     if explicit_translational_carriage:
         rotational_child_xml = ""
@@ -311,9 +356,9 @@ def _rod_scene_xml(
           contype="6" conaffinity="7" rgba="0.96 0.65 0.10 1" friction="1.5 0.02 0.002"
           solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
       </body>
-      <body name="rod_support" pos="0.55 {support_y:.3f} {rod_height_m:.3f}">
-        <joint name="rod_slide" type="slide" axis="0 {slide_axis_y:.1f} 0" range="0 0.20" damping="2.0"/>
-        <geom name="rod_geom" type="cylinder" size="0.014 0.15" quat="0.7071068 0 0.7071068 0"
+      <body name="rod_support" pos="{approach.support_position_m[0]:.3f} {approach.support_position_m[1]:.3f} {approach.support_position_m[2]:.3f}">
+        <joint name="rod_slide" type="slide" axis="{approach.slide_axis_world[0]:.1f} {approach.slide_axis_world[1]:.1f} {approach.slide_axis_world[2]:.1f}" range="0 0.20" damping="2.0"/>
+        <geom name="rod_geom" type="cylinder" size="0.014 0.15" quat="{approach.cylinder_quaternion_wxyz[0]:.7f} {approach.cylinder_quaternion_wxyz[1]:.7f} {approach.cylinder_quaternion_wxyz[2]:.7f} {approach.cylinder_quaternion_wxyz[3]:.7f}"
           mass="0.30" contype="8" conaffinity="4" rgba="0.18 0.70 0.25 1"
           friction="0.8 0.02 0.002" solref="{contact_time_constant_s:.5f} 1"
           solimp="0.85 0.95 0.002 0.5 2"/>
@@ -326,8 +371,7 @@ def _rod_scene_xml(
       </body>
       {''.join(f'<body name="nominal_path_{index}" mocap="true" pos="0 0 1"><geom type="sphere" size="0.010" contype="0" conaffinity="0" rgba="0.22 0.52 1.0 0.62"/></body>' for index in range(PATH_MARKER_COUNT))}
       {''.join(f'<body name="actual_trail_{index}" mocap="true" pos="0 0 -2"><geom type="sphere" size="0.008" contype="0" conaffinity="0" rgba="1.0 0.10 0.62 {0.20 + 0.60 * (index + 1) / ACTUAL_TRAIL_COUNT:.3f}"/></body>' for index in range(ACTUAL_TRAIL_COUNT))}
-      <geom name="rod_guide" type="box" pos="0.55 {0.5 * support_y:.3f} 0.435" size="0.18 0.13 0.008"
-        contype="0" conaffinity="0" rgba="0.10 0.12 0.15 0.70"/>
+      {rod_guide_xml}
       {explicit_carriage_xml}
     """
     text = text.replace("  </worldbody>", injected + "  </worldbody>", 1)
@@ -350,11 +394,15 @@ def make_rod_model(
     explicit_rotational_carriage: bool = False,
     rotational_carriage_inertia_scale: float = 1.0,
     rod_approach_side: str = "negative_y",
+    rod_center_x_m: float = 0.55,
+    rod_center_y_m: float = 0.0,
 ) -> tuple[mujoco.MjModel, mujoco.MjData]:
     xml = _rod_scene_xml(
-        menagerie, contact_time_constant_s, rod_height_m,
-        explicit_translational_carriage, carriage_mass_kg,
-        explicit_rotational_carriage, rotational_carriage_inertia_scale, rod_approach_side,
+        menagerie=menagerie, contact_time_constant_s=contact_time_constant_s, rod_height_m=rod_height_m,
+        rod_center_x_m=rod_center_x_m, rod_center_y_m=rod_center_y_m,
+        explicit_translational_carriage=explicit_translational_carriage, carriage_mass_kg=carriage_mass_kg,
+        explicit_rotational_carriage=explicit_rotational_carriage,
+        rotational_carriage_inertia_scale=rotational_carriage_inertia_scale, rod_approach_side=rod_approach_side,
     )
     assets_dir = menagerie / "franka_emika_panda" / "assets"
     assets = {str(path.relative_to(assets_dir)): path.read_bytes() for path in assets_dir.rglob("*") if path.is_file()}
@@ -476,6 +524,7 @@ def run_episode(
     rod_stroke_m: float,
     contact_time_constant_s: float,
     rod_enabled: bool = True,
+    remove_rod_when_disabled: bool = False,
     playback_speed: float = 1.0,
     camera_view: str = "overview",
     render_start_time_s: float = 0.0,
@@ -491,6 +540,8 @@ def run_episode(
     explicit_translational_carriage: bool = False,
     carriage_mass_kg: float = 0.35,
     rod_height_m: float = 0.540,
+    rod_center_x_m: float = 0.55,
+    rod_center_y_m: float = 0.0,
     explicit_rotational_carriage: bool = False,
     rotational_carriage_inertia_scale: float = 1.0,
     rotational_damping_ratio: float | None = None,
@@ -506,7 +557,7 @@ def run_episode(
         raise ValueError("explicit virtual carriages are available only for VMC controller modes")
     if explicit_rotational_carriage and not explicit_translational_carriage:
         raise ValueError("an explicit rotational carriage requires the explicit translational carriage parent")
-    if rod_approach_side not in ROD_APPROACH_SIDES or recovery_gate_hold_s < 0.0 or recovery_gate_taper_s < 0.0 or rotational_carriage_inertia_scale <= 0.0 or (rotational_damping_ratio is not None and rotational_damping_ratio <= 0.0):
+    if rod_approach_side not in ROD_APPROACH_SIDES or not np.all(np.isfinite((rod_height_m, rod_center_x_m, rod_center_y_m))) or recovery_gate_hold_s < 0.0 or recovery_gate_taper_s < 0.0 or rotational_carriage_inertia_scale <= 0.0 or (rotational_damping_ratio is not None and rotational_damping_ratio <= 0.0):
         raise ValueError("rotational carriage inertia scale must be positive")
     if not 0.0 <= render_start_time_s < render_end_time_s <= SIM_TIME_S:
         raise ValueError("render window must satisfy 0 <= start < end <= simulation time")
@@ -527,6 +578,10 @@ def run_episode(
         menagerie, contact_time_constant_s, 0.520 if response_only else rod_height_m,
         explicit_translational_carriage, carriage_mass_kg,
         explicit_rotational_carriage, rotational_carriage_inertia_scale, rod_approach_side,
+        rod_center_x_m, rod_center_y_m,
+    )
+    approach_geometry = rod_approach_geometry(
+        rod_approach_side, 0.520 if response_only else rod_height_m, rod_center_x_m, rod_center_y_m,
     )
     objects = {
         "hand": (mujoco.mjtObj.mjOBJ_BODY, "hand"),
@@ -547,6 +602,13 @@ def run_episode(
     ids = {label: mujoco.mj_name2id(model, obj, name) for label, (obj, name) in objects.items()}
     if min(ids.values()) < 0:
         raise RuntimeError("rod perturbation scene IDs were not resolved")
+    if not rod_enabled and remove_rod_when_disabled:
+        # A vertical or fore-aft support can otherwise remain in the workspace
+        # at zero slide displacement and corrupt the matched no-rod reference.
+        # This explicitly removes only collision participation of the physical
+        # rod for the reference episode; V2/V3 retain their legacy default.
+        model.geom_contype[ids["rod_geom"]] = 0
+        model.geom_conaffinity[ids["rod_geom"]] = 0
     target_qpos = model.jnt_qposadr[ids["target_freejoint"]]
     target_dof = model.jnt_dofadr[ids["target_freejoint"]]
     obstacle_mocap = model.body_mocapid[ids["moving_obstacle"]]
@@ -938,6 +1000,7 @@ def run_episode(
         },
         "rod_motion": {
             "enabled": rod_enabled,
+            "collision_removed_when_disabled": bool(not rod_enabled and remove_rod_when_disabled),
             "start_time_s": rod_start_time_s,
             "profile_duration_s": ROD_END_TIME_S - ROD_START_TIME_S,
             "cycles": rod_cycles,
@@ -945,7 +1008,14 @@ def run_episode(
             "final_end_time_s": rod_final_release_s,
             "stroke_m": rod_stroke_m,
             "height_m": rod_height_m,
+            "center_x_m": rod_center_x_m,
+            "center_y_m": rod_center_y_m,
             "approach_side": rod_approach_side,
+            "support_position_m": list(approach_geometry.support_position_m),
+            "slide_axis_world": list(approach_geometry.slide_axis_world),
+            "rod_long_axis_world": list(approach_geometry.rod_long_axis_world),
+            "cylinder_quaternion_wxyz": list(approach_geometry.cylinder_quaternion_wxyz),
+            "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport",
         },
         "stiffness_schedule": {
             "contact_kappa_vector": kappa_vector.tolist(),
@@ -1080,6 +1150,8 @@ def parse_args() -> argparse.Namespace:
         "--rod-height", type=float, default=0.540,
         help="World z height of the rod axis; use this to test impact geometry while keeping the same rod profile.",
     )
+    parser.add_argument("--rod-center-x", type=float, default=0.55, help="World x coordinate of the rod interaction plane for y/z approaches.")
+    parser.add_argument("--rod-center-y", type=float, default=0.0, help="World y coordinate of the rod interaction plane for x/z approaches.")
     parser.add_argument(
         "--rod-approach-side", choices=ROD_APPROACH_SIDES, default="negative_y",
         help="Physical side from which the finite-mass rod slides into the hand.",
@@ -1119,6 +1191,7 @@ def parse_args() -> argparse.Namespace:
         help="Optional damping ratio for the explicit rotational spring; default shares the six-channel zeta.",
     )
     parser.add_argument("--disable-rod", action="store_true", help="Paired no-perturbation grasp reference run.")
+    parser.add_argument("--remove-rod-when-disabled", action="store_true", help="When --disable-rod, remove rod collision geometry for a clean no-rod reference.")
     parser.add_argument("--playback-speed", type=float, default=1.0, help="GIF-only playback multiplier; simulation dynamics are unchanged.")
     parser.add_argument(
         "--camera-view", choices=CAMERA_VIEWS, default="overview",
@@ -1135,7 +1208,7 @@ def main() -> None:
     positive_scales = [args.damping_ratio, args.carriage_drive_scale, args.carriage_drive_damping_ratio, args.contact_time_constant, args.playback_speed, args.rod_cycle_period, args.carriage_mass_kg, args.rod_height, args.rotational_carriage_inertia_scale]
     if args.rotational_damping_ratio is not None:
         positive_scales.append(args.rotational_damping_ratio)
-    if min(positive_scales) <= 0 or args.rod_stroke < 0 or args.recovery_ramp < 0 or args.recovery_gate_hold_s < 0 or args.recovery_gate_taper_s < 0 or args.rod_cycles < 1 or args.rod_cycle_period < ROD_END_TIME_S - ROD_START_TIME_S or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.kappa_vector is not None and (not np.all(np.isfinite(args.kappa_vector)) or min(args.kappa_vector) <= 0)) or (args.recovery_kappa_vector is not None and (not np.all(np.isfinite(args.recovery_kappa_vector)) or min(args.recovery_kappa_vector) <= 0)) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0) or (args.explicit_rotational_carriage and not args.explicit_translational_carriage):
+    if min(positive_scales) <= 0 or not np.all(np.isfinite((args.rod_center_x, args.rod_center_y))) or args.rod_stroke < 0 or args.recovery_ramp < 0 or args.recovery_gate_hold_s < 0 or args.recovery_gate_taper_s < 0 or args.rod_cycles < 1 or args.rod_cycle_period < ROD_END_TIME_S - ROD_START_TIME_S or not ROD_END_TIME_S < args.grasp_time < LIFT_COMPLETE_TIME_S or (args.recovery_kappa is not None and args.recovery_kappa <= 0) or (args.kappa_vector is not None and (not np.all(np.isfinite(args.kappa_vector)) or min(args.kappa_vector) <= 0)) or (args.recovery_kappa_vector is not None and (not np.all(np.isfinite(args.recovery_kappa_vector)) or min(args.recovery_kappa_vector) <= 0)) or (args.recovery_carriage_drive_scale is not None and args.recovery_carriage_drive_scale <= 0) or (args.explicit_rotational_carriage and not args.explicit_translational_carriage):
         raise ValueError("all physical and controller scales must be positive")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     config = replace(
@@ -1155,6 +1228,7 @@ def main() -> None:
         run_episode(
             args.menagerie, kappa, args.output_dir, args.render_gif, config,
             args.rod_stroke, args.contact_time_constant, rod_enabled=not args.disable_rod,
+            remove_rod_when_disabled=args.remove_rod_when_disabled,
             playback_speed=args.playback_speed, camera_view=args.camera_view,
             render_start_time_s=args.render_start_time, render_end_time_s=args.render_end_time,
             recovery_kappa=recovery_kappa, recovery_ramp_s=args.recovery_ramp,
@@ -1165,6 +1239,8 @@ def main() -> None:
             explicit_translational_carriage=args.explicit_translational_carriage,
             carriage_mass_kg=args.carriage_mass_kg,
             rod_height_m=args.rod_height,
+            rod_center_x_m=args.rod_center_x,
+            rod_center_y_m=args.rod_center_y,
             explicit_rotational_carriage=args.explicit_rotational_carriage,
             rotational_carriage_inertia_scale=args.rotational_carriage_inertia_scale,
             rotational_damping_ratio=args.rotational_damping_ratio,
