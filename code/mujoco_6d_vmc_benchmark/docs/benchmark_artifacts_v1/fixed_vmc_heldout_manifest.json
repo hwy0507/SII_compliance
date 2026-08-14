@@ -23,6 +23,78 @@
     "minimum_contact_impulse_ns": 0.45
   },
   "validity_gate": "finite + physical rod contact + stable rejoin + lift + hold + no hard torque limit + valid matched no-rod task",
+  "training_contract": {
+    "channels": [
+      "x",
+      "y",
+      "z",
+      "roll",
+      "pitch",
+      "yaw"
+    ],
+    "observation_dimension": 51,
+    "observation_fields": [
+      "position_error_world_3",
+      "orientation_error_world_3",
+      "twist_error_world_6",
+      "joint_position_7",
+      "joint_velocity_7",
+      "carriage_displacement_6",
+      "carriage_velocity_6",
+      "applied_torque_ratio_7",
+      "previous_action_6"
+    ],
+    "excluded_privileged_diagnostics": [
+      "rod_contact",
+      "rod_force",
+      "rod_penetration",
+      "rod_displacement",
+      "rod_command_velocity",
+      "future_collision_phase",
+      "obstacle_geometry_or_pose"
+    ],
+    "action": {
+      "dimension": 6,
+      "range": [
+        -1.0,
+        1.0
+      ],
+      "mapping": "kappa = clip(base * exp(action_log_span * action)); log-space rate-limited",
+      "base_kappa": [
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0
+      ],
+      "minimum_kappa": [
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0
+      ],
+      "maximum_kappa": [
+        70.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0
+      ],
+      "action_log_span": 0.8,
+      "update_hz": 25.0,
+      "max_log_rate_per_s": 1.6
+    },
+    "validity_gate": "finite + rod-hand contact + stable rejoin + lift + hold + no hard torque limit + valid matched no-rod task",
+    "effective_collision_gate": {
+      "minimum_peak_contact_force_n": 15.0,
+      "minimum_contact_impulse_ns": 0.45
+    },
+    "objective": "Constrained Pareto: minimize paired offset, recovery RMSE and rejoin latency subject to task success, no hard torque limit, torque/jerk safety budgets."
+  },
   "splits": {
     "train": [],
     "validation": [],
