@@ -11,6 +11,7 @@ from typing import Any
 import numpy as np
 
 from evaluate_ppo_sixd_stiffness import _rejoin_latency, _summary
+from evaluate_ppo_sixd_stiffness import load_fixtures
 from rl_sixd_stiffness_env import PandaSixDStiffnessEnv, RL_DT, default_fixtures
 
 
@@ -35,13 +36,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--menagerie", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--fixture-manifest", type=Path, default=None)
     parser.add_argument("--recovery-gate-hold-s", type=float, default=0.0)
     parser.add_argument("--recovery-error-weight", type=float, default=0.075)
     parser.add_argument("--recovery-progress-reward", type=float, default=0.040)
     parser.add_argument("--action-change-penalty", type=float, default=0.003)
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    fixtures = default_fixtures()
+    fixtures = load_fixtures(args.fixture_manifest)
     env_kwargs = dict(enable_drive_residual=True, recovery_gate_hold_s=args.recovery_gate_hold_s, recovery_error_weight=args.recovery_error_weight, recovery_progress_reward=args.recovery_progress_reward, action_change_penalty=args.action_change_penalty)
     rod_env = PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, rod_enabled=True, seed=1, **env_kwargs)
     no_rod_env = PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, rod_enabled=False, seed=1, **env_kwargs)

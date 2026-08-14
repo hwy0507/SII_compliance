@@ -12,7 +12,20 @@ import numpy as np
 from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 
-from rl_sixd_stiffness_env import PandaSixDStiffnessEnv, RL_DT, default_fixtures
+from rl_sixd_stiffness_env import Fixture, PandaSixDStiffnessEnv, RL_DT, default_fixtures
+
+
+def load_fixtures(path: Path | None) -> tuple[Fixture, ...]:
+    if path is None:
+        return default_fixtures()
+    manifest = json.loads(path.read_text())
+    samples = manifest["splits"]["test"]
+    return tuple(Fixture(
+        rod_stroke_m=float(sample["rod_stroke_m"]),
+        rod_height_m=float(sample["rod_height_m"]),
+        rod_start_time_s=float(sample["rod_start_time_s"]),
+        grasp_time_s=float(sample.get("grasp_time_s", 2.40)),
+    ) for sample in samples)
 
 
 def _run_episode(env: PandaSixDStiffnessEnv, model: PPO, normalizer: VecNormalize, fixture_index: int) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
@@ -68,6 +81,7 @@ def main() -> None:
     parser.add_argument("--vecnormalize", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--max-fixtures", type=int, default=None)
+    parser.add_argument("--fixture-manifest", type=Path, default=None, help="Optional held-out manifest whose test split replaces the default four fixtures.")
     parser.add_argument("--enable-drive-residual", action="store_true")
     parser.add_argument("--recovery-gate-hold-s", type=float, default=0.0)
     parser.add_argument("--recovery-error-weight", type=float, default=0.075)
@@ -75,7 +89,7 @@ def main() -> None:
     parser.add_argument("--action-change-penalty", type=float, default=0.003)
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    fixtures = default_fixtures()
+    fixtures = load_fixtures(args.fixture_manifest)
     if args.max_fixtures is not None:
         fixtures = fixtures[:args.max_fixtures]
     env_kwargs = dict(enable_drive_residual=args.enable_drive_residual, recovery_gate_hold_s=args.recovery_gate_hold_s, recovery_error_weight=args.recovery_error_weight, recovery_progress_reward=args.recovery_progress_reward, action_change_penalty=args.action_change_penalty)
