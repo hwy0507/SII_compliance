@@ -84,6 +84,7 @@ def main() -> None:
     parser.add_argument("--fixture-manifest", type=Path, default=None, help="Optional held-out manifest whose test split replaces the default four fixtures.")
     parser.add_argument("--enable-drive-residual", action="store_true")
     parser.add_argument("--recovery-gate-hold-s", type=float, default=0.0)
+    parser.add_argument("--recovery-gate-taper-s", type=float, default=0.0)
     parser.add_argument("--recovery-error-weight", type=float, default=0.075)
     parser.add_argument("--recovery-progress-reward", type=float, default=0.040)
     parser.add_argument("--action-change-penalty", type=float, default=0.003)
@@ -94,7 +95,7 @@ def main() -> None:
     fixtures = load_fixtures(args.fixture_manifest)
     if args.max_fixtures is not None:
         fixtures = fixtures[:args.max_fixtures]
-    env_kwargs = dict(enable_drive_residual=args.enable_drive_residual, recovery_gate_hold_s=args.recovery_gate_hold_s, recovery_error_weight=args.recovery_error_weight, recovery_progress_reward=args.recovery_progress_reward, action_change_penalty=args.action_change_penalty, kappa_max_log_rate_per_s=args.kappa_max_log_rate_per_s, drive_max_log_rate_per_s=args.drive_max_log_rate_per_s)
+    env_kwargs = dict(enable_drive_residual=args.enable_drive_residual, recovery_gate_hold_s=args.recovery_gate_hold_s, recovery_gate_taper_s=args.recovery_gate_taper_s, recovery_error_weight=args.recovery_error_weight, recovery_progress_reward=args.recovery_progress_reward, action_change_penalty=args.action_change_penalty, kappa_max_log_rate_per_s=args.kappa_max_log_rate_per_s, drive_max_log_rate_per_s=args.drive_max_log_rate_per_s)
     template = DummyVecEnv([lambda: PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, seed=0, **env_kwargs)])
     normalizer = VecNormalize.load(str(args.vecnormalize), template)
     normalizer.training = False
@@ -141,6 +142,7 @@ def main() -> None:
         "protocol": "frozen deterministic PPO; matched rod/no-rod physics rollouts; offline diagnostics only",
         "enable_drive_residual": args.enable_drive_residual,
         "recovery_gate_hold_s": args.recovery_gate_hold_s,
+        "recovery_gate_taper_s": args.recovery_gate_taper_s,
         "rate_limits": {"kappa_max_log_rate_per_s": args.kappa_max_log_rate_per_s, "drive_max_log_rate_per_s": args.drive_max_log_rate_per_s},
         "model": str(args.model),
         "vecnormalize": str(args.vecnormalize),

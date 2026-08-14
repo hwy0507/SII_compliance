@@ -118,6 +118,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         rod_enabled: bool = True,
         enable_drive_residual: bool = False,
         recovery_gate_hold_s: float = 0.0,
+        recovery_gate_taper_s: float = 0.0,
         recovery_error_weight: float = 0.075,
         recovery_progress_reward: float = 0.040,
         action_change_penalty: float = 0.003,
@@ -132,9 +133,10 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.fixtures = fixtures or default_fixtures()
         self.rod_enabled = bool(rod_enabled)
         self.enable_drive_residual = bool(enable_drive_residual)
-        if recovery_gate_hold_s < 0.0 or recovery_error_weight < 0.0 or recovery_progress_reward < 0.0 or action_change_penalty < 0.0 or recovery_jerk_weight < 0.0 or jerk_reference_mps3 <= 0.0 or kappa_max_log_rate_per_s <= 0.0 or drive_max_log_rate_per_s <= 0.0:
+        if recovery_gate_hold_s < 0.0 or recovery_gate_taper_s < 0.0 or recovery_error_weight < 0.0 or recovery_progress_reward < 0.0 or action_change_penalty < 0.0 or recovery_jerk_weight < 0.0 or jerk_reference_mps3 <= 0.0 or kappa_max_log_rate_per_s <= 0.0 or drive_max_log_rate_per_s <= 0.0:
             raise ValueError("recovery-gate and reward scales must be non-negative")
         self.recovery_gate_hold_s = float(recovery_gate_hold_s)
+        self.recovery_gate_taper_s = float(recovery_gate_taper_s)
         self.recovery_error_weight = float(recovery_error_weight)
         self.recovery_progress_reward = float(recovery_progress_reward)
         self.action_change_penalty = float(action_change_penalty)
@@ -443,7 +445,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         return float(phase * phase * (3.0 - 2.0 * phase))
 
     def _recovery_gate(self, time_s: float) -> float:
-        """Causal, deployable residual gate with optional post-deviation hold.
+        """Causal, deployable residual gate with an optional tapered hold.
 
         The hold begins only after a measured tracking departure has crossed
         the smooth gate's modest activation threshold.  It contains no rod
@@ -457,7 +459,20 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             self.recovery_gate_remaining_s = self.recovery_gate_hold_s
         else:
             self.recovery_gate_remaining_s = max(0.0, self.recovery_gate_remaining_s - RL_DT)
-        return max(instant, float(self.recovery_gate_remaining_s > 0.0))
+        if self.recovery_gate_taper_s <= 0.0:
+            # Legacy binary held gate.  Retaining this path makes all prior
+            # experiments exactly reproducible.
+            held = float(self.recovery_gate_remaining_s > 0.0)
+        else:
+            # Once the measured departure has receded, smoothly remove the
+            # residual authority instead of switching its target abruptly.
+            # This is a controller-side shield driven only by the same
+            # proprioceptive error already available to the actor.  A taper
+            # no longer than the hold starts decaying immediately; a shorter
+            # taper preserves an initial full-authority portion of the hold.
+            phase = np.clip(self.recovery_gate_remaining_s / self.recovery_gate_taper_s, 0.0, 1.0)
+            held = float(phase * phase * (3.0 - 2.0 * phase))
+        return max(instant, held)
 
     def step(self, action: np.ndarray) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
         action = np.asarray(action, dtype=float)
