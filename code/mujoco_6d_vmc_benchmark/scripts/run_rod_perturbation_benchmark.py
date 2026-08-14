@@ -579,7 +579,11 @@ def run_episode(
 
     for step in range(steps):
         time_s = step * CONTROL_DT
-        reference_time_s = 1.70 if response_only else time_s
+        # For repeated-excitation visualizations, first follow the nominal
+        # approach until the pre-grasp pose is reached, then hold that pose.
+        # Starting at the held reference from t=0 would create an artificial
+        # tracking jump that could be mistaken for a collision response.
+        reference_time_s = min(time_s, 1.70) if response_only else time_s
         nominal_position, nominal_rotation, nominal_linear, nominal_angular = reference.sample(reference_time_s)
         nominal_twist = np.concatenate([nominal_linear, nominal_angular])
         if explicit_translational_carriage and step == 0:

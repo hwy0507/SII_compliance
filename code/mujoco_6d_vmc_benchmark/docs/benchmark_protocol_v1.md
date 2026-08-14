@@ -120,6 +120,26 @@ rigid 在杆释放时已经位于 `5 mm` tube 内，所以其 latency 是 `0 s`�
 
 粉色阴影、绿色点线和蓝色虚线在所有面板中共享，分别表示真实接触、接触释放和通过三维 `5 mm / 80 ms` rejoin 门控。该图使用 `0.0–2.1 s` 的 pre-grasp 时间段，避免抓取/抬升阶段稀释碰撞响应。
 
+### 4.3 多周期真实碰撞可视化演示（不进入主排名）
+
+为展示多个“撞击 → 让位 → 回归”过程，另外运行了一组专门的视觉演示。该演示仍使用 MuJoCo 的有限质量物理杆和完全匹配的 `--disable-rod` 对照；它不是把单个周期复制三遍，也不把任务成功或控制器排名结论扩展到多周期场景。为了让重复扰动发生在同一个末端位置，演示在 `1.70 s` 到达 pre-grasp pose 后保持名义参考，并把抓取时间延后到 `4.0 s`，因此该组实验的 `target_lifted_after_recovery=false` 是预期设置，不能当作抓取成功率结果。
+
+演示参数为 `kappa=35`、阻尼比 `0.8`、显式平移小车质量 `1.0 kg`、杆高 `0.54 m`、杆行程 `0.16 m`、`3` 个周期、周期长度 `1.0 s`。由真实接触信号识别出三个独立接触窗口：
+
+| 周期 | 接触窗口 (s) | 释放后状态 |
+|---|---:|---|
+| 1 | `1.264–1.528` | `1.812 s` 进入 `5 mm / 80 ms` reference tube |
+| 2 | `2.260–2.532` | 释放时已在 tube 内，随后保持回归 |
+| 3 | `3.260–3.532` | 释放时已在 tube 内，随后保持回归 |
+
+三个窗口的峰值杆–手接触力约 `22.84 N`，不是无接触或重复绘图伪影；带杆相对 matched no-rod 的最大三维偏移约 `6.59 mm`。其中第 2、3 次释放时已经满足回归管判据，所以图中的回归虚线与释放时刻重合，这表示“没有重新离开 5 mm 管”，不是漏检。
+
+![VMC multi-cycle paper-style demonstration](benchmark_artifacts_v1/vmc_paper_style_multicycle_demo_results.png)
+
+这张 `4 × 3` 图沿用上一节的含义：第一行是 `X/Y/Z` 位置，第二行是相对 reference proxy 和 matched no-rod 的偏差，第三行是虚拟平移力并叠加无方向的杆–手标量接触力，第四行是 VMC 内部旋转通道虚拟力矩。粉色阴影对应三个真实接触窗口；绿色点线是接触释放；蓝色虚线是通过回归管判据的时刻。它适合作为汇报中的“多周期响应”主图，但不能替代主 benchmark 的单次有效碰撞 ranking。
+
+![VMC multi-cycle phase zoom](benchmark_artifacts_v1/vmc_multicycle_phase_zoom_demo_results.png)
+
 ## 5. 碰撞几何矩阵
 
 在 VMC 主配置下扫描 `height ∈ {0.53, 0.54, 0.55} m`、`stroke ∈ {0.14, 0.16, 0.18} m`。这是一个 **height × disturbance-strength** 矩阵；杆的世界 `y` 方向保持固定，尚不是多方向鲁棒性声明。
@@ -166,6 +186,26 @@ export MUJOCO_GL=egl MPLBACKEND=Agg
   --ladder-json outputs/benchmark_ladder_v1/baseline_ladder_summary.json \
   --geometry-json outputs/geometry_matrix_v1/geometry_matrix_summary.json \
   --output-dir outputs/benchmark_summary_v1
+
+# 多周期真实碰撞视觉演示（仅用于展示，不进入主排名）
+/home/arm1/vmc_mujoco_runtime/.venv/bin/python scripts/run_rod_perturbation_benchmark.py \
+  --menagerie /home/arm1/vmc_mujoco_runtime/mujoco_menagerie \
+  --output-dir outputs/vmc_visual_multicycle_v4/rod --controller-mode vmc \
+  --kappas 35 --damping-ratio 0.8 --carriage-drive-scale 8 \
+  --explicit-translational-carriage --carriage-mass-kg 1.0 \
+  --rod-height 0.54 --rod-stroke 0.16 --rod-cycles 3 \
+  --rod-cycle-period 1.0 --response-only --grasp-time 4.0 \
+  --recovery-kappa 35 --recovery-ramp 0.01 \
+  --recovery-carriage-drive-scale 8
+
+# 对同一参考和时间轴生成 matched no-rod 对照后，再调用：
+/home/arm1/vmc_mujoco_runtime/.venv/bin/python scripts/plot_trajectory_results.py \
+  --rod-trace outputs/vmc_visual_multicycle_v4/rod/rod_perturbation_kappa_35.00_trace.npz \
+  --no-rod-trace outputs/vmc_visual_multicycle_v4/no_rod/rod_perturbation_kappa_35.00_trace.npz \
+  --output-dir outputs/vmc_visual_multicycle_v4/figures \
+  --grasp-time 4.0 --rod-cycles 3 --rod-cycle-period 1.0 \
+  --paper-time-start 0.0 --paper-time-end 4.3 \
+  --compliance-zoom-start 1.0 --compliance-zoom-end 4.3
 ```
 
 脚本具有 resume 行为：已有 rod/no-rod summaries 时不会重新仿真；不过总会刷新当前图和汇总文件。因此重新画图或修改报告不会无意改变物理试验。
