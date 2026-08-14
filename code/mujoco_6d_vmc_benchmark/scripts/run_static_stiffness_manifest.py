@@ -72,11 +72,21 @@ def main() -> None:
     parser.add_argument("--max-samples", type=int, default=None, help="Optional pilot limit across requested splits.")
     parser.add_argument("--damping-ratio", type=float, default=0.8)
     parser.add_argument("--carriage-drive-scale", type=float, default=8.0)
+    parser.add_argument(
+        "--recovery-carriage-drive-scale", type=float, default=None,
+        help="Absolute carriage drive after rod release; default keeps the contact-stage scale.",
+    )
     parser.add_argument("--carriage-mass-kg", type=float, default=1.0)
+    parser.add_argument(
+        "--kappa-vector", type=float, nargs=6, default=None,
+        metavar=("KX", "KY", "KZ", "KROLL", "KPITCH", "KYAW"),
+        help="Optional fixed six-spring baseline overriding each manifest sample's initial vector.",
+    )
     parser.add_argument("--minimum-peak-contact-force-n", type=float, default=15.0)
     parser.add_argument("--minimum-contact-impulse-ns", type=float, default=0.45)
     args = parser.parse_args()
-    if min(args.damping_ratio, args.carriage_drive_scale, args.carriage_mass_kg, args.minimum_peak_contact_force_n, args.minimum_contact_impulse_ns) <= 0.0:
+    recovery_drive = args.carriage_drive_scale if args.recovery_carriage_drive_scale is None else args.recovery_carriage_drive_scale
+    if min(args.damping_ratio, args.carriage_drive_scale, recovery_drive, args.carriage_mass_kg, args.minimum_peak_contact_force_n, args.minimum_contact_impulse_ns) <= 0.0:
         raise ValueError("controller scales must be positive")
     manifest = _load(args.manifest)
     samples = [sample for split in args.splits for sample in manifest["splits"][split]]
@@ -87,7 +97,7 @@ def main() -> None:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     records: list[dict[str, Any]] = []
     for sample in samples:
-        vector = sample["initial_kappa_vector"]
+        vector = args.kappa_vector if args.kappa_vector is not None else sample["initial_kappa_vector"]
         tag = kappa_filename_tag(np.asarray(vector, dtype=float))
         summary_name = f"rod_perturbation_{tag}_summary.json"
         trace_name = f"rod_perturbation_{tag}_trace.npz"
@@ -97,7 +107,7 @@ def main() -> None:
             "--menagerie", str(args.menagerie), "--controller-mode", "vmc",
             "--kappa-vector", *(str(value) for value in vector),
             "--damping-ratio", str(args.damping_ratio), "--carriage-drive-scale", str(args.carriage_drive_scale),
-            "--recovery-carriage-drive-scale", str(args.carriage_drive_scale), "--recovery-ramp", "0.08",
+            "--recovery-carriage-drive-scale", str(recovery_drive), "--recovery-ramp", "0.08",
             "--contact-time-constant", "0.015", "--rod-stroke", str(sample["rod_stroke_m"]),
             "--rod-height", str(sample["rod_height_m"]), "--rod-start-time", str(sample["rod_start_time_s"]),
             "--grasp-time", str(sample["grasp_time_s"]), "--explicit-translational-carriage",
@@ -136,6 +146,11 @@ def main() -> None:
     report = {
         "manifest": str(args.manifest), "requested_splits": args.splits, "sample_count": len(records),
         "valid_count": sum(record["valid"] for record in records),
+        "controller_override": {
+            "kappa_vector": None if args.kappa_vector is None else list(args.kappa_vector),
+            "carriage_drive_scale": args.carriage_drive_scale,
+            "recovery_carriage_drive_scale": recovery_drive,
+        },
         "validity_gate": manifest["training_contract"]["validity_gate"],
         "effective_collision_gate": {
             "minimum_peak_contact_force_n": args.minimum_peak_contact_force_n,

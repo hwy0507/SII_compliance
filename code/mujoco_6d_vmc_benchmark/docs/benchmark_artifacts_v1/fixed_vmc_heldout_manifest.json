@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "stage": "held-out static baseline validation before RL",
+  "source_manifest": "docs/training_artifacts_v0/stiffness_training_manifest.json",
+  "source_split": "test",
+  "frozen_controller": {
+    "kappa_vector": [
+      27.579838,
+      52.550787,
+      48.699427,
+      35.85958,
+      40.71983,
+      34.766858
+    ],
+    "contact_carriage_drive_scale": 8.0,
+    "recovery_carriage_drive_scale": 14.0,
+    "recovery_ramp_s": 0.08,
+    "damping_ratio": 0.8,
+    "explicit_translational_carriage_mass_kg": 1.0
+  },
+  "effective_collision_gate": {
+    "minimum_peak_contact_force_n": 15.0,
+    "minimum_contact_impulse_ns": 0.45
+  },
+  "validity_gate": "finite + physical rod contact + stable rejoin + lift + hold + no hard torque limit + valid matched no-rod task",
+  "splits": {
+    "train": [],
+    "validation": [],
+    "test": [
+      {
+        "sample_id": "fixed_vmc_test_000",
+        "split": "held_out",
+        "rod_stroke_m": 0.1785610836865832,
+        "rod_height_m": 0.5383281273149843,
+        "rod_start_time_s": 1.0535300287689722,
+        "grasp_time_s": 2.4,
+        "initial_kappa_vector": [
+          27.579838,
+          52.550787,
+          48.699427,
+          35.85958,
+          40.71983,
+          34.766858
+        ]
+      },
+      {
+        "sample_id": "fixed_vmc_test_001",
+        "split": "held_out",
+        "rod_stroke_m": 0.16896119697796863,
+        "rod_height_m": 0.5404310651259578,
+        "rod_start_time_s": 1.0781610928318661,
+        "grasp_time_s": 2.4,
+        "initial_kappa_vector": [
+          27.579838,
+          52.550787,
+          48.699427,
+          35.85958,
+          40.71983,
+          34.766858
+        ]
+      },
+      {
+        "sample_id": "fixed_vmc_test_002",
+        "split": "held_out",
+        "rod_stroke_m": 0.15935977081260744,
+        "rod_height_m": 0.5417843285770743,
+        "rod_start_time_s": 1.0954695590692798,
+        "grasp_time_s": 2.4,
+        "initial_kappa_vector": [
+          27.579838,
+          52.550787,
+          48.699427,
+          35.85958,
+          40.71983,
+          34.766858
+        ]
+      },
+      {
+        "sample_id": "fixed_vmc_test_003",
+        "split": "held_out",
+        "rod_stroke_m": 0.15633998323013806,
+        "rod_height_m": 0.5386565238634262,
+        "rod_start_time_s": 1.111581734716849,
+        "grasp_time_s": 2.4,
+        "initial_kappa_vector": [
+          27.579838,
+          52.550787,
+          48.699427,
+          35.85958,
+          40.71983,
+          34.766858
+        ]
+      },
+      {
+        "sample_id": "fixed_vmc_test_004",
+        "split": "held_out",
+        "rod_stroke_m": 0.17525828109413694,
+        "rod_height_m": 0.539270283521371,
+        "rod_start_time_s": 1.0863016782046457,
+        "grasp_time_s": 2.4,
+        "initial_kappa_vector": [
+          27.579838,
+          52.550787,
+          48.699427,
+          35.85958,
+          40.71983,
+          34.766858
+        ]
+      },
+      {
+        "sample_id": "fixed_vmc_test_005",
+        "split": "held_out",
+        "rod_stroke_m": 0.16693858937790668,
+        "rod_height_m": 0.5396542843637897,
+        "rod_start_time_s": 1.0629702374023486,
+        "grasp_time_s": 2.4,
+        "initial_kappa_vector": [
+          27.579838,
+          52.550787,
+          48.699427,
+          35.85958,
+          40.71983,
+          34.766858
+        ]
+      },
+      {
+        "sample_id": "fixed_vmc_test_006",
+        "split": "held_out",
+        "rod_stroke_m": 0.17342209049030866,
+        "rod_height_m": 0.5406517271909853,
+        "rod_start_time_s": 1.0423509355133431,
+        "grasp_time_s": 2.4,
+        "initial_kappa_vector": [
+          27.579838,
+          52.550787,
+          48.699427,
+          35.85958,
+          40.71983,
+          34.766858
+        ]
+      },
+      {
+        "sample_id": "fixed_vmc_test_007",
+        "split": "held_out",
+        "rod_stroke_m": 0.16141477109255253,
+        "rod_height_m": 0.5414606053830127,
+        "rod_start_time_s": 1.107206213053218,
+        "grasp_time_s": 2.4,
+        "initial_kappa_vector": [
+          27.579838,
+          52.550787,
+          48.699427,
+          35.85958,
+          40.71983,
+          34.766858
+        ]
+      }
+    ]
+  }
+}
