@@ -17,6 +17,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+CONTACT_WINDOW_MERGE_S = 0.020
+
+
 def _load(path: Path) -> dict[str, np.ndarray]:
     with np.load(path) as data:
         return {key: np.asarray(data[key]) for key in data.files}
@@ -56,11 +59,21 @@ def _style(ax: plt.Axes, xlabel: str = "Time (s)") -> None:
 
 
 def _contact_windows(time: np.ndarray, contact: np.ndarray) -> list[tuple[float, float]]:
-    """Return contiguous physical-contact windows from the recorded trace."""
+    """Return physical-contact windows, merging solver-scale gaps (<=20 ms)."""
     active = np.asarray(contact, dtype=bool)
     starts = np.flatnonzero(active & ~np.r_[False, active[:-1]])
     ends = np.flatnonzero(active & ~np.r_[active[1:], False])
-    return [(float(time[start]), float(time[end])) for start, end in zip(starts, ends)]
+    raw = [(float(time[start]), float(time[end])) for start, end in zip(starts, ends)]
+    if not raw:
+        return []
+    merged = [raw[0]]
+    for start, end in raw[1:]:
+        previous_start, previous_end = merged[-1]
+        if start - previous_end <= CONTACT_WINDOW_MERGE_S:
+            merged[-1] = (previous_start, end)
+        else:
+            merged.append((start, end))
+    return merged
 
 
 def _rejoin_times(
@@ -109,7 +122,7 @@ def _plot_rejoin_trajectory(
     # benchmark: X captures the approach direction and Z captures the grasp
     # descent.  The two trajectories are deliberately drawn in the same axes.
     axtraj.plot(nominal[:, 0], nominal[:, 2], color="black", lw=2.2, label="WBC reference (proxy)")
-    axtraj.plot(actual[:, 0], actual[:, 2], color="#d81b60", lw=1.6, label="actual EE: rod + VMC")
+    axtraj.plot(actual[:, 0], actual[:, 2], color="#d81b60", lw=1.6, label="actual EE: rod-perturbed control")
     axtraj.plot(baseline[:, 0], baseline[:, 2], color="#377eb8", ls="--", lw=1.0, label="no-rod control")
     axtraj.set(xlabel="X (m)", ylabel="Z (m)", title="2D X–Z trajectory: departure and rejoin")
     axtraj.grid(True, alpha=0.25)
@@ -185,7 +198,7 @@ def _plot_rejoin_dynamics(
     ax_speed, ax_force_norm, ax_force_channels, ax_moment_channels, ax_joint_1_4, ax_joint_5_7 = axes.flat
     speed = rod["ee_speed"][mask]
     speed_no_rod = no_rod["ee_speed"][mask]
-    ax_speed.plot(t, speed, color="#d81b60", lw=1.3, label="rod + VMC")
+    ax_speed.plot(t, speed, color="#d81b60", lw=1.3, label="rod-perturbed control")
     ax_speed.plot(t, speed_no_rod, color="#377eb8", lw=1.0, ls="--", label="no-rod control")
     ax_speed.set(ylabel="EE speed (m/s)", title="End-effector speed: check for surge")
     mark_events(ax_speed, include_legend=True)

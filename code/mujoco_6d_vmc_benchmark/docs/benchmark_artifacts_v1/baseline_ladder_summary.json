@@ -1,0 +1,73 @@
+{
+  "protocol": {
+    "controllers": [
+      "rigid",
+      "impedance",
+      "vmc"
+    ],
+    "kappa": 35.0,
+    "damping_ratio": 0.8,
+    "carriage_drive_scale": 8.0,
+    "rod_stroke_m": 0.16,
+    "rod_height_m": 0.54,
+    "grasp_time_s": 2.1,
+    "explicit_vmc": true,
+    "validity_definition": "finite + physical rod-hand contact + stable rejoin + lift + hold + no hard torque limit + valid paired no-rod task"
+  },
+  "rows": [
+    {
+      "controller": "rigid",
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_nominal_error_mm": 1.4375781077608942,
+      "peak_paired_rod_offset_mm": 0.9185766400882079,
+      "nominal_position_rmse_mm": 0.3035762232523818,
+      "release_to_rejoin_latency_s": 0.0,
+      "peak_contact_force_n": 16.753365297405725,
+      "contact_impulse_ns": 0.6953776277966421,
+      "peak_torque_nm": 31.66631211997672,
+      "peak_torque_ratio": 0.3639805990801922,
+      "speed_p95_mps": 0.001251198604534431,
+      "jerk_peak_mps3": 825.9379360854433,
+      "secondary_contact_count": 0,
+      "target_lifted": true,
+      "target_held": true
+    },
+    {
+      "controller": "impedance",
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_nominal_error_mm": 6.480012028204873,
+      "peak_paired_rod_offset_mm": 3.823581101823346,
+      "nominal_position_rmse_mm": 2.104010604506317,
+      "release_to_rejoin_latency_s": 0.21199999999999997,
+      "peak_contact_force_n": 18.383822425379027,
+      "contact_impulse_ns": 0.7095207458964423,
+      "peak_torque_nm": 31.502489986268735,
+      "peak_torque_ratio": 0.36209758604906594,
+      "speed_p95_mps": 0.009324276168505527,
+      "jerk_peak_mps3": 932.8188781301567,
+      "secondary_contact_count": 0,
+      "target_lifted": true,
+      "target_held": true
+    },
+    {
+      "controller": "vmc",
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_nominal_error_mm": 7.712765159766861,
+      "peak_paired_rod_offset_mm": 4.289548786563916,
+      "nominal_position_rmse_mm": 3.131573697761522,
+      "release_to_rejoin_latency_s": 0.3719999999999999,
+      "peak_contact_force_n": 18.5098518819993,
+      "contact_impulse_ns": 0.723234802595166,
+      "peak_torque_nm": 30.07743583969575,
+      "peak_torque_ratio": 0.34571765332983617,
+      "speed_p95_mps": 0.012084254500499391,
+      "jerk_peak_mps3": 938.6019457202535,
+      "secondary_contact_count": 0,
+      "target_lifted": true,
+      "target_held": true
+    }
+  ]
+}

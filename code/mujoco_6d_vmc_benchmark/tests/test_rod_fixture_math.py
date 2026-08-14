@@ -88,5 +88,44 @@ def test_explicit_rotational_carriage_is_a_ball_joint_child_of_translation_body(
 def test_rotational_damping_override_reaches_the_episode_interface():
     """CLI-only tuning knobs are invalid unless run_episode accepts them."""
     source = MODULE_PATH.read_text()
-    assert 'rotational_damping_ratio: float | None = None,\n) -> dict[str, Any]:' in source
+    # Do not freeze the entire signature: other independently valid controls
+    # (for example controller_mode) may follow this argument.
+    assert 'rotational_damping_ratio: float | None = None,' in source
     assert 'rotational_damping_ratio=args.rotational_damping_ratio' in source
+
+
+def test_phase_analysis_marks_rejoin_after_contact_release_and_hold_window():
+    time = np.arange(120, dtype=float) * 0.004
+    contact = np.zeros(len(time), dtype=bool)
+    contact[10:15] = True
+    error = np.full(len(time), 0.010)
+    error[15:] = 0.001
+    phase, summary = MODULE._phase_analysis(time, contact, error, grasp_time_s=0.40)
+    assert summary["primary_contact_start_s"] == time[10]
+    assert summary["primary_contact_release_s"] == time[14]
+    assert summary["rejoin_time_s"] == time[15]
+    assert summary["secondary_contact_count"] == 0
+    assert phase[10] == 1
+    assert phase[15] == 3
+
+
+def test_phase_analysis_records_secondary_contact_windows():
+    time = np.arange(140, dtype=float) * 0.004
+    contact = np.zeros(len(time), dtype=bool)
+    contact[10:14] = True
+    contact[50:54] = True
+    error = np.full(len(time), 0.001)
+    _, summary = MODULE._phase_analysis(time, contact, error, grasp_time_s=0.40)
+    assert summary["secondary_contact_count"] == 1
+    assert summary["secondary_contact_windows_s"] == [[time[50], time[53]]]
+
+
+def test_phase_analysis_merges_solver_scale_contact_gaps_before_counting_secondary_contact():
+    time = np.arange(140, dtype=float) * 0.004
+    contact = np.zeros(len(time), dtype=bool)
+    contact[10:14] = True
+    contact[16:20] = True  # 12 ms gap: one physical collision episode.
+    error = np.full(len(time), 0.001)
+    _, summary = MODULE._phase_analysis(time, contact, error, grasp_time_s=0.40)
+    assert summary["secondary_contact_count"] == 0
+    assert summary["contact_windows_s"] == [[time[10], time[19]]]

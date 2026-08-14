@@ -198,6 +198,33 @@ The current reference generator is a repeatable reaching proxy.  Replacing
 step; the controller, safety limits, logging schema and metrics remain
 unchanged.
 
+## V1 validity-gated benchmark ladder
+
+The current benchmark foundation is the paired physical rod fixture, its
+contact–unloading–rejoin phase analysis, and a fair `rigid → impedance → VMC`
+ladder.  It deliberately distinguishes no-contact, grazing, nominal-contact,
+and high-impact geometry cases so a nearly missed rod cannot become a
+misleadingly good compliance result.  Run it with:
+
+```bash
+export MUJOCO_GL=egl MPLBACKEND=Agg
+python scripts/run_baseline_ladder.py \
+  --menagerie ~/vmc_mujoco_runtime/mujoco_menagerie \
+  --output-dir outputs/benchmark_ladder_v1 --explicit-vmc \
+  --kappa 35 --damping-ratio 0.8 --carriage-drive-scale 8 \
+  --rod-stroke 0.16 --rod-height 0.54 --grasp-time 2.1
+
+python scripts/run_geometry_matrix.py \
+  --menagerie ~/vmc_mujoco_runtime/mujoco_menagerie \
+  --output-dir outputs/geometry_matrix_v1 \
+  --heights 0.53 0.54 0.55 --strokes 0.14 0.16 0.18
+```
+
+See [the V1 protocol and results](docs/benchmark_protocol_v1.md) for the
+definitions, validity gates, exact results, and limitations.  It is a
+simulation-only fixed-reference benchmark; it is not a claim of a live WBC,
+real-robot, or ESN result.
+
 ## Rod perturbation: departure and return of the six-spring system
 
 `scripts/run_rod_perturbation_benchmark.py` is the primary fixture for the

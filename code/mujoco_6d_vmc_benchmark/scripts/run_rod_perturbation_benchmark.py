@@ -62,6 +62,11 @@ DEFAULT_CONTACT_TIME_CONSTANT_S = 0.015
 PATH_MARKER_COUNT = 13
 ACTUAL_TRAIL_COUNT = 12
 CAMERA_VIEWS = ("overview", "hand-closeup")
+CONTROLLER_MODES = ("rigid", "impedance", "vmc")
+PHASE_LABELS = ("approach", "contact", "unloading", "rejoined", "task")
+REJOIN_THRESHOLD_M = 0.005
+REJOIN_HOLD_S = 0.080
+CONTACT_WINDOW_MERGE_S = 0.020
 
 
 def rod_motion(
@@ -112,6 +117,110 @@ def stiffness_schedule(
         return float(recovery_kappa)
     blend, _ = smoothstep((time_s - ROD_END_TIME_S) / recovery_ramp_s)
     return float((1.0 - blend) * contact_kappa + blend * recovery_kappa)
+
+
+def _direct_cartesian_wrench(
+    nominal_position: np.ndarray,
+    nominal_rotation: np.ndarray,
+    nominal_twist: np.ndarray,
+    ee_position: np.ndarray,
+    ee_rotation: np.ndarray,
+    ee_twist: np.ndarray,
+    translation_stiffness: float,
+    rotation_stiffness: float,
+    damping_ratio: float,
+    maximum_force: float,
+    maximum_moment: float,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Bounded direct Cartesian PD wrench for rigid/impedance baselines."""
+    position_error = nominal_position - ee_position
+    rotation_error = so3_log(nominal_rotation @ ee_rotation.T)
+    velocity_error = nominal_twist - ee_twist
+    translation_damping = 2.0 * damping_ratio * np.sqrt(VMCConfig().virtual_mass * translation_stiffness)
+    rotation_damping = 2.0 * damping_ratio * np.sqrt(VMCConfig().virtual_inertia * rotation_stiffness)
+    force = _saturated_translation_spring(translation_stiffness, maximum_force, position_error)
+    force += translation_damping * velocity_error[:3]
+    moment = maximum_moment * np.tanh(rotation_stiffness * rotation_error / maximum_moment)
+    moment += rotation_damping * velocity_error[3:]
+    return np.concatenate([
+        _saturate_vector_norm(force, maximum_force),
+        _saturate_vector_norm(moment, maximum_moment),
+    ]), np.concatenate([position_error, rotation_error])
+
+
+def _contact_windows(time: np.ndarray, contact: np.ndarray) -> list[tuple[int, int]]:
+    """Return inclusive physical contact windows, merging solver-scale gaps."""
+    mask = np.asarray(contact, dtype=bool)
+    edges = np.diff(np.concatenate([[False], mask, [False]]).astype(int))
+    starts = np.flatnonzero(edges == 1)
+    ends = np.flatnonzero(edges == -1) - 1
+    raw = list(zip(starts.tolist(), ends.tolist()))
+    if not raw:
+        return []
+    merged = [raw[0]]
+    for start, end in raw[1:]:
+        previous_start, previous_end = merged[-1]
+        if float(time[start] - time[previous_end]) <= CONTACT_WINDOW_MERGE_S:
+            merged[-1] = (previous_start, end)
+        else:
+            merged.append((start, end))
+    return merged
+
+
+def _phase_analysis(
+    time: np.ndarray,
+    contact: np.ndarray,
+    position_error: np.ndarray,
+    grasp_time_s: float,
+) -> tuple[np.ndarray, dict[str, Any]]:
+    """Label approach/contact/unloading/rejoin phases from measured signals."""
+    phase = np.full(len(time), 4, dtype=np.int8)
+    windows = _contact_windows(time, contact)
+    if not windows:
+        phase[time < grasp_time_s] = 0
+        return phase, {
+            "labels": list(PHASE_LABELS),
+            "contact_windows_s": [],
+            "primary_contact_start_s": None,
+            "primary_contact_release_s": None,
+            "rejoin_time_s": None,
+            "release_to_rejoin_latency_s": None,
+            "secondary_contact_count": 0,
+            "secondary_contact_windows_s": [],
+            "phase_durations_s": {"approach": float(min(grasp_time_s, time[-1])), "contact": 0.0, "unloading": 0.0, "rejoined": 0.0, "task": float(max(0.0, time[-1] - grasp_time_s))},
+        }
+
+    primary_start, primary_end = windows[0]
+    phase[time < time[primary_start]] = 0
+    phase[np.asarray(contact, dtype=bool)] = 1
+    release_time = float(time[primary_end])
+    rejoin_index: int | None = None
+    hold_steps = max(1, int(np.ceil(REJOIN_HOLD_S / max(time[1] - time[0], EPS))))
+    eligible = np.flatnonzero(time >= release_time)
+    within = position_error <= REJOIN_THRESHOLD_M
+    for index in eligible:
+        stop = index + hold_steps
+        if stop <= len(time) and bool(np.all(within[index:stop])):
+            rejoin_index = int(index)
+            break
+    non_contact_pregrasp = (~np.asarray(contact, dtype=bool)) & (time >= release_time) & (time < grasp_time_s)
+    phase[non_contact_pregrasp] = 2
+    if rejoin_index is not None:
+        phase[(time >= time[rejoin_index]) & (time < grasp_time_s) & (~np.asarray(contact, dtype=bool))] = 3
+    phase[time >= grasp_time_s] = 4
+    durations = {label: float(np.sum(phase == index) * (time[1] - time[0])) for index, label in enumerate(PHASE_LABELS)}
+    contact_windows_s = [[float(time[start]), float(time[end])] for start, end in windows]
+    return phase, {
+        "labels": list(PHASE_LABELS),
+        "contact_windows_s": contact_windows_s,
+        "primary_contact_start_s": float(time[primary_start]),
+        "primary_contact_release_s": release_time,
+        "rejoin_time_s": None if rejoin_index is None else float(time[rejoin_index]),
+        "release_to_rejoin_latency_s": None if rejoin_index is None else float(time[rejoin_index] - release_time),
+        "secondary_contact_count": max(0, len(windows) - 1),
+        "secondary_contact_windows_s": contact_windows_s[1:],
+        "phase_durations_s": durations,
+    }
 
 
 def _rod_scene_xml(
@@ -352,7 +461,12 @@ def run_episode(
     explicit_rotational_carriage: bool = False,
     rotational_carriage_inertia_scale: float = 1.0,
     rotational_damping_ratio: float | None = None,
+    controller_mode: str = "vmc",
 ) -> dict[str, Any]:
+    if controller_mode not in CONTROLLER_MODES:
+        raise ValueError(f"unknown controller mode: {controller_mode}")
+    if controller_mode != "vmc" and (explicit_translational_carriage or explicit_rotational_carriage):
+        raise ValueError("explicit virtual carriages are available only for controller_mode='vmc'")
     if explicit_rotational_carriage and not explicit_translational_carriage:
         raise ValueError("an explicit rotational carriage requires the explicit translational carriage parent")
     if rotational_carriage_inertia_scale <= 0.0 or (rotational_damping_ratio is not None and rotational_damping_ratio <= 0.0):
@@ -513,7 +627,28 @@ def run_episode(
                 actual_position_history[history_index] if history_index >= 0 else np.array([0.0, 0.0, -2.0])
             )
             data.mocap_quat[marker_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
-        wrench, carriage_displacement = controller.wrench(ee_position, ee_rotation, ee_twist)
+        if controller_mode == "vmc":
+            wrench, carriage_displacement = controller.wrench(ee_position, ee_rotation, ee_twist)
+        elif controller_mode == "impedance":
+            wrench, carriage_displacement = _direct_cartesian_wrench(
+                nominal_position, nominal_rotation, nominal_twist,
+                ee_position, ee_rotation, ee_twist,
+                translation_stiffness=900.0,
+                rotation_stiffness=45.0,
+                damping_ratio=1.2,
+                maximum_force=config.max_force,
+                maximum_moment=config.max_moment,
+            )
+        else:
+            wrench, carriage_displacement = _direct_cartesian_wrench(
+                nominal_position, nominal_rotation, nominal_twist,
+                ee_position, ee_rotation, ee_twist,
+                translation_stiffness=8_000.0,
+                rotation_stiffness=360.0,
+                damping_ratio=1.5,
+                maximum_force=90.0,
+                maximum_moment=12.0,
+            )
         explicit_force = np.zeros(3, dtype=float)
         explicit_moment = np.zeros(3, dtype=float)
         explicit_rotation = controller.rotation.copy()
@@ -574,7 +709,8 @@ def run_episode(
         # to rejoin before closure, without changing the arm path itself.
         data.ctrl[ARM_DOF] = 0.040 if response_only else reference.gripper_target(time_s - (grasp_time_s - GRASP_TIME_S))
         data.ctrl[rod_ctrl_index] = rod_displacement
-        controller.advance(CONTROL_DT, nominal_position, nominal_rotation, nominal_twist, wrench)
+        if controller_mode == "vmc":
+            controller.advance(CONTROL_DT, nominal_position, nominal_rotation, nominal_twist, wrench)
         mujoco.mj_step(model, data)
 
         rod_contact, rod_force, rod_penetration = rod_contact_diagnostics(model, data, ids["rod_geom"], ids["hand_geom"])
@@ -638,6 +774,8 @@ def run_episode(
     else:
         gif_path = None
     arrays = {key: np.asarray(values) for key, values in log.items()}
+    phase, phase_summary = _phase_analysis(arrays["time"], arrays["rod_contact"], arrays["track_position"], grasp_time_s)
+    arrays["phase"] = phase
     perturbation_mask = (arrays["time"] >= ROD_START_TIME_S) & (arrays["time"] <= ROD_END_TIME_S)
     recovery_mask = (arrays["time"] > ROD_END_TIME_S) & (arrays["time"] < grasp_time_s)
     object_position = arrays["object_position"]
@@ -659,6 +797,14 @@ def run_episode(
         "config": asdict(config),
         "scenario": "physical rod perturbation during open-gripper grasp approach; compliant return to moving nominal trajectory tube",
         "reference": "finite grasp trajectory (moving attractor, not a mathematical limit cycle); replace with fixed WBC pose/twist for WBC+VMC",
+        "controller": {
+            "mode": controller_mode,
+            "description": {
+                "rigid": "direct high-stiffness bounded Cartesian tracking of the nominal reference",
+                "impedance": "fixed bounded Cartesian spring-damper tracking of the nominal reference",
+                "vmc": "virtual-mechanism compliant controller; optional explicit MuJoCo virtual carriage",
+            }[controller_mode],
+        },
         "virtual_mechanism": {
             "explicit_translational_carriage": explicit_translational_carriage,
             "explicit_translational_carriage_mass_kg": carriage_mass_kg if explicit_translational_carriage else None,
@@ -750,6 +896,7 @@ def run_episode(
             "contact_impulse_ns": _safe_scalar(np.sum(arrays["rod_force"]) * CONTROL_DT),
             "max_penetration_m": _safe_scalar(np.max(arrays["rod_penetration"])),
         },
+        "phase_analysis": phase_summary,
         "gif": str(gif_path) if gif_path else None,
     }
     np.savez_compressed(output_dir / f"rod_perturbation_kappa_{kappa:.2f}_trace.npz", **arrays)
@@ -761,6 +908,10 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--menagerie", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--controller-mode", choices=CONTROLLER_MODES, default="vmc",
+        help="Low-level baseline: direct rigid tracking, fixed Cartesian impedance, or virtual-mechanism VMC.",
+    )
     parser.add_argument("--kappas", type=float, nargs="+", default=[1.0])
     parser.add_argument("--damping-ratio", type=float, default=1.8)
     parser.add_argument("--carriage-drive-scale", type=float, default=0.75)
@@ -847,6 +998,7 @@ def main() -> None:
             explicit_rotational_carriage=args.explicit_rotational_carriage,
             rotational_carriage_inertia_scale=args.rotational_carriage_inertia_scale,
             rotational_damping_ratio=args.rotational_damping_ratio,
+            controller_mode=args.controller_mode,
         )
         for kappa in args.kappas
     ]
