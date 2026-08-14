@@ -83,6 +83,7 @@ def main() -> None:
             for stroke_index, stroke in enumerate(args.strokes):
                 fixture_id = f"v2_{side}_t{timing_index}_s{stroke_index}"
                 fixture_dir = args.output_dir / fixture_id
+                fixture_dir.mkdir(parents=True, exist_ok=True)
                 common = dict(
                     menagerie=args.menagerie, kappa=np.asarray(WARM_START_KAPPA), output_dir=fixture_dir,
                     render_gif=False, config=config, rod_stroke_m=float(stroke), contact_time_constant_s=0.015,
@@ -93,7 +94,9 @@ def main() -> None:
                     recovery_gate_hold_s=0.28, recovery_gate_taper_s=0.04,
                 )
                 rod = run_episode(rod_enabled=True, **common)
-                no_rod = run_episode(output_dir=fixture_dir / "no_rod", rod_enabled=False, **{key: value for key, value in common.items() if key != "output_dir"})
+                no_rod_dir = fixture_dir / "no_rod"
+                no_rod_dir.mkdir(parents=True, exist_ok=True)
+                no_rod = run_episode(output_dir=no_rod_dir, rod_enabled=False, **{key: value for key, value in common.items() if key != "output_dir"})
                 rod_valid, rod_failures = _valid(rod, require_contact=True)
                 no_rod_valid, no_rod_failures = _valid(no_rod, require_contact=False)
                 candidates.append({

@@ -79,8 +79,10 @@ def _run_fixture(menagerie: Path, root: Path, fixture: dict[str, Any], controlle
         recovery_gate_taper_s=0.04,
     )
     run_dir = root / controller / fixture["fixture_id"]
+    run_dir.mkdir(parents=True, exist_ok=True)
     rod = run_episode(output_dir=run_dir, rod_enabled=True, **common)
     no_rod_dir = run_dir / "no_rod"
+    no_rod_dir.mkdir(parents=True, exist_ok=True)
     no_rod = run_episode(output_dir=no_rod_dir, rod_enabled=False, **common)
     rod_trace, no_rod_trace = _trace(run_dir), _trace(no_rod_dir)
     paired = np.linalg.norm(rod_trace["ee_position"] - no_rod_trace["ee_position"], axis=1)
