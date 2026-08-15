@@ -13,18 +13,36 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.vec_env import SubprocVecEnv, VecMonitor, VecNormalize
 
-from rl_sixd_stiffness_env import PandaSixDStiffnessEnv, default_fixtures
+from rl_sixd_stiffness_env import Fixture, PandaSixDStiffnessEnv, default_fixtures
 from stiffness_training_core import DRIVE_RESIDUAL_OBSERVATION_FIELDS, DriveResidualActionConfig, StiffnessActionConfig, training_contract
 
 
-def make_env(menagerie: Path, rank: int, seed: int, enable_drive_residual: bool, enable_energy_safety: bool, recovery_gate_hold_s: float, recovery_gate_taper_s: float, recovery_error_weight: float, recovery_progress_reward: float, action_change_penalty: float, recovery_jerk_weight: float, jerk_reference_mps3: float, kappa_max_log_rate_per_s: float, drive_max_log_rate_per_s: float):
+def load_fixture_manifest(path: Path, split: str) -> tuple[Fixture, ...]:
+    """Load only a declared development split; V4 final manifests are rejected."""
+
+    manifest = json.loads(path.read_text())
+    if manifest.get("reference_source") != "fixed_panda_wbc" or "post_v4_development" not in path.as_posix():
+        raise ValueError("Fan Ye RL requires the isolated post-V4 fixed_panda_wbc development manifest")
+    rows = manifest.get("splits", {}).get(split, [])
+    if split not in ("train", "validation") or not rows:
+        raise ValueError("RL fixture split must be a non-empty development train or validation split")
+    return tuple(Fixture(
+        rod_stroke_m=float(row["rod_stroke_m"]), rod_height_m=float(row["rod_height_m"]), rod_start_time_s=float(row["rod_start_time_s"]),
+        grasp_time_s=float(row["grasp_time_s"]), rod_approach_side=row["rod_approach_side"],
+        rod_center_x_m=float(row["rod_center_x_m"]), rod_center_y_m=float(row["rod_center_y_m"]),
+    ) for row in rows)
+
+
+def make_env(menagerie: Path, fixtures: tuple[Fixture, ...], rank: int, seed: int, enable_drive_residual: bool, enable_energy_safety: bool, recovery_gate_hold_s: float, recovery_gate_taper_s: float, recovery_error_weight: float, recovery_progress_reward: float, action_change_penalty: float, recovery_jerk_weight: float, jerk_reference_mps3: float, kappa_max_log_rate_per_s: float, drive_max_log_rate_per_s: float, reference_source: str, fan_ye_model_npz: Path | None, fan_ye_train_summary_json: Path | None):
     def _factory() -> PandaSixDStiffnessEnv:
         return PandaSixDStiffnessEnv(
-            menagerie=menagerie, fixtures=default_fixtures(), enable_drive_residual=enable_drive_residual, enable_energy_safety=enable_energy_safety,
+            menagerie=menagerie, fixtures=fixtures, enable_drive_residual=enable_drive_residual, enable_energy_safety=enable_energy_safety,
             recovery_gate_hold_s=recovery_gate_hold_s, recovery_gate_taper_s=recovery_gate_taper_s, recovery_error_weight=recovery_error_weight,
             recovery_progress_reward=recovery_progress_reward, action_change_penalty=action_change_penalty,
             recovery_jerk_weight=recovery_jerk_weight, jerk_reference_mps3=jerk_reference_mps3,
-            kappa_max_log_rate_per_s=kappa_max_log_rate_per_s, drive_max_log_rate_per_s=drive_max_log_rate_per_s, seed=seed + rank,
+            kappa_max_log_rate_per_s=kappa_max_log_rate_per_s, drive_max_log_rate_per_s=drive_max_log_rate_per_s,
+            reference_source=reference_source, fan_ye_model_npz=fan_ye_model_npz,
+            fan_ye_train_summary_json=fan_ye_train_summary_json, seed=seed + rank,
         )
     return _factory
 
@@ -84,16 +102,25 @@ def main() -> None:
     parser.add_argument("--kappa-max-log-rate-per-s", type=float, default=1.6)
     parser.add_argument("--drive-max-log-rate-per-s", type=float, default=1.0)
     parser.add_argument("--resume", type=Path, default=None, help="Optional PPO zip checkpoint.")
+    parser.add_argument("--fixture-manifest", type=Path, default=None, help="Isolated post-V4 WBC development manifest for Fan Ye RL.")
+    parser.add_argument("--fixture-split", choices=("train", "validation"), default="train")
+    parser.add_argument("--fan-ye-model-npz", type=Path, default=None)
+    parser.add_argument("--fan-ye-train-summary-json", type=Path, default=None)
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs < 1:
         raise ValueError("timesteps and n-envs must be positive")
     if args.enable_energy_safety and not args.enable_drive_residual:
         raise ValueError("--enable-energy-safety requires --enable-drive-residual")
+    fan_ye_enabled = args.fan_ye_model_npz is not None or args.fan_ye_train_summary_json is not None
+    if fan_ye_enabled and (args.fan_ye_model_npz is None or args.fan_ye_train_summary_json is None or args.fixture_manifest is None or not args.enable_drive_residual):
+        raise ValueError("Fan Ye WBC RL requires model, summary, post-V4 fixture manifest, and 7-D drive residual actions")
+    fixtures = load_fixture_manifest(args.fixture_manifest, args.fixture_split) if args.fixture_manifest is not None else default_fixtures()
+    reference_source = "fixed_panda_wbc" if fan_ye_enabled else "proxy"
     args.output_dir.mkdir(parents=True, exist_ok=True)
     os.environ.setdefault("MUJOCO_GL", "egl")
     torch.set_num_threads(1)
     env = SubprocVecEnv(
-        [make_env(args.menagerie, rank, args.seed, args.enable_drive_residual, args.enable_energy_safety, args.recovery_gate_hold_s, args.recovery_gate_taper_s, args.recovery_error_weight, args.recovery_progress_reward, args.action_change_penalty, args.recovery_jerk_weight, args.jerk_reference_mps3, args.kappa_max_log_rate_per_s, args.drive_max_log_rate_per_s) for rank in range(args.n_envs)], start_method="spawn",
+        [make_env(args.menagerie, fixtures, rank, args.seed, args.enable_drive_residual, args.enable_energy_safety, args.recovery_gate_hold_s, args.recovery_gate_taper_s, args.recovery_error_weight, args.recovery_progress_reward, args.action_change_penalty, args.recovery_jerk_weight, args.jerk_reference_mps3, args.kappa_max_log_rate_per_s, args.drive_max_log_rate_per_s, reference_source, args.fan_ye_model_npz, args.fan_ye_train_summary_json) for rank in range(args.n_envs)], start_method="spawn",
     )
     env = VecMonitor(env, filename=str(args.output_dir / "monitor.csv"))
     env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.0)
@@ -117,8 +144,10 @@ def main() -> None:
         "n_envs": args.n_envs,
         "seed": args.seed,
         "action_config": training_contract(StiffnessActionConfig(base_kappa=(27.579838, 52.550787, 48.699427, 35.859580, 40.719830, 34.766858)))["action"],
-        "policy_observation_contract": DRIVE_RESIDUAL_OBSERVATION_FIELDS if args.enable_drive_residual else training_contract()["observation_fields"],
-        "policy_observation_dimension": 52 if args.enable_drive_residual else 51,
+        "policy_observation_contract": "Fan Ye normalized q/qdot/WBC twist (20) + fixed reservoir state (64)" if fan_ye_enabled else (DRIVE_RESIDUAL_OBSERVATION_FIELDS if args.enable_drive_residual else training_contract()["observation_fields"]),
+        "policy_observation_dimension": 84 if fan_ye_enabled else (52 if args.enable_drive_residual else 51),
+        "reference_source": reference_source,
+        "fan_ye_fixed_reservoir": None if not fan_ye_enabled else {"model_npz": str(args.fan_ye_model_npz), "train_summary_json": str(args.fan_ye_train_summary_json), "reservoir_state_dimension": 64, "student_input": ["q(7)", "qdot(7)", "wbc_task_twist(6)"]},
         "enable_drive_residual": args.enable_drive_residual,
         "energy_budget_safety": {
             "enabled": args.enable_energy_safety,
@@ -148,7 +177,9 @@ def main() -> None:
             "activation": "smooth measured end-effector tracking-error gate; no contact, force, obstacle, or future-phase input",
         },
         "privileged_quantities_excluded": training_contract()["excluded_privileged_diagnostics"],
-        "fixtures": [fixture.__dict__ for fixture in default_fixtures()],
+        "fixtures": [fixture.__dict__ for fixture in fixtures],
+        "fixture_manifest": None if args.fixture_manifest is None else str(args.fixture_manifest),
+        "fixture_split": args.fixture_split if args.fixture_manifest is not None else None,
         "optimization_changes_vs_run_003": {
             "n_epochs": "10 -> 5",
             "learning_rate": "constant 3e-4 -> linear 2e-4 to 5e-5",
