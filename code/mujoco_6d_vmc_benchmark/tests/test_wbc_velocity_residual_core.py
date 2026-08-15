@@ -6,6 +6,7 @@ from wbc_velocity_residual_core import (
     TORQUE_LIMITS_NM,
     VelocityResidualActionFilter,
     VelocityResidualSafetyConfig,
+    deployable_authority_gate,
     safe_joint_velocity_command,
     safe_velocity_tracking_torque,
 )
@@ -35,6 +36,16 @@ def test_action_filter_enforces_amplitude_and_slew() -> None:
     assert filtered.wbc_scale >= config.minimum_wbc_scale
     assert np.max(np.abs(filtered.cartesian_yield_twist[:3])) <= config.maximum_linear_yield_rate_mps2 * 0.04 + 1e-12
     assert np.max(np.abs(filtered.cartesian_yield_twist[3:])) <= config.maximum_angular_yield_rate_radps2 * 0.04 + 1e-12
+
+
+def test_deployable_authority_gate_is_smooth_and_bounded() -> None:
+    config = VelocityResidualSafetyConfig()
+    assert deployable_authority_gate(0.0, config) == 0.0
+    assert deployable_authority_gate(config.authority_gate_start_error_m, config) == 0.0
+    midpoint = 0.5 * (config.authority_gate_start_error_m + config.authority_gate_full_error_m)
+    assert np.isclose(deployable_authority_gate(midpoint, config), 0.5)
+    assert deployable_authority_gate(config.authority_gate_full_error_m, config) == 1.0
+    assert deployable_authority_gate(1.0, config) == 1.0
 
 
 def test_joint_velocity_and_torque_safety_are_hard_bounded() -> None:

@@ -109,6 +109,38 @@ Before an overnight run is accepted, both MLP and ESN lanes must pass:
 6. identical paired configurations except observation memory mode;
 7. no access to the frozen V4 final holdout.
 
-The next smoke stage is a paired 100k-step run with identical seed and balanced
-reward, followed by validation and targeted reward-profile checks.  Only after
-these gates pass should multi-seed, multi-profile overnight training start.
+## Authority-gated 25k paired smoke
+
+The first 100k smoke without an authority gate was rejected: both learned
+actors could spend residual authority before contact and reduce the measured
+collision below the effective-collision gate.  The corrected safety layer
+smoothly opens residual authority from 0 to 1 as the measured WBC Cartesian
+tracking departure grows from 4 mm to 12 mm.  The gate is a deployable safety
+filter, not a collision or phase oracle, and is applied identically to MLP and
+ESN.
+
+With the same seed (20260831), reward, eight-environment budget, and train
+fixtures, the 25k paired smoke produced:
+
+| Metric | Neutral WBC | Current MLP | Fan Ye ESN |
+|---|---:|---:|---:|
+| rod task success | 9/9 | 9/9 | 9/9 |
+| matched no-rod success | 9/9 | 9/9 | 9/9 |
+| effective collision | 8/9 | 8/9 | 8/9 |
+| recovery RMSE | 8.570 mm | 7.775 mm | **5.973 mm** |
+| rejoin latency | 0.619 s | 0.623 s | **0.406 s** |
+| contact impulse | 3.081 N s | 3.038 N s | **2.969 N s** |
+| peak jerk | 950.3 m/s^3 | 951.9 m/s^3 | 972.2 m/s^3 |
+| peak torque | 31.41 Nm | 31.64 Nm | 32.46 Nm |
+| torque hard limit | 0/9 | 0/9 | 0/9 |
+
+The ESN improvement over neutral WBC is 30.3% lower recovery RMSE, 34.5%
+shorter rejoin latency, and 3.7% lower impulse.  Relative to the matched MLP,
+the ESN is 23.2% lower in recovery RMSE and 34.9% faster to rejoin.  Jerk and
+peak torque are slightly higher, so this is a Pareto improvement in recovery
+and impulse, not an all-metric domination claim.  The complete JSON artifacts
+are kept next to this protocol note.
+
+The next smoke stage is a paired 100k-step run with the authority gate and
+identical seed, followed by at least five independent seeds.  Only after those
+gates pass should multi-profile overnight training start.

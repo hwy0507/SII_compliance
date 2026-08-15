@@ -30,6 +30,8 @@ class VelocityResidualSafetyConfig:
     pseudoinverse_damping: float = 0.04
     maximum_joint_speed_radps: float = 1.25
     maximum_joint_acceleration_radps2: float = 8.0
+    authority_gate_start_error_m: float = 0.004
+    authority_gate_full_error_m: float = 0.012
     velocity_gain_nm_per_radps: np.ndarray = field(
         default_factory=lambda: np.array([42.0, 42.0, 36.0, 32.0, 9.0, 8.0, 6.0])
     )
@@ -48,6 +50,8 @@ class VelocityResidualSafetyConfig:
             self.pseudoinverse_damping,
             self.maximum_joint_speed_radps,
             self.maximum_joint_acceleration_radps2,
+            self.authority_gate_start_error_m,
+            self.authority_gate_full_error_m,
         ])
         gains = np.asarray(self.velocity_gain_nm_per_radps, dtype=float)
         rates = np.asarray(self.maximum_torque_rate_nmps, dtype=float)
@@ -55,6 +59,8 @@ class VelocityResidualSafetyConfig:
             raise ValueError("velocity-residual safety scalars must be finite and positive")
         if self.minimum_wbc_scale >= 1.0:
             raise ValueError("minimum_wbc_scale must be below one")
+        if self.authority_gate_full_error_m <= self.authority_gate_start_error_m:
+            raise ValueError("authority gate full-error threshold must exceed its start threshold")
         if gains.shape != (ARM_DOF,) or rates.shape != (ARM_DOF,):
             raise ValueError("velocity gains and torque rates must be seven-vectors")
         if not np.all(np.isfinite(gains)) or not np.all(np.isfinite(rates)) or np.any(gains <= 0.0) or np.any(rates <= 0.0):
@@ -148,6 +154,22 @@ def damped_pseudoinverse(jacobian: np.ndarray, damping: float) -> np.ndarray:
         raise ValueError("pseudoinverse damping must be finite and positive")
     gram = matrix @ matrix.T + damping**2 * np.eye(6)
     return matrix.T @ np.linalg.solve(gram, np.eye(6))
+
+
+def deployable_authority_gate(
+    tracking_error_m: float, config: VelocityResidualSafetyConfig,
+) -> float:
+    """Smooth residual authority from the WBC's measured Cartesian departure."""
+
+    if not np.isfinite(tracking_error_m) or tracking_error_m < 0.0:
+        raise ValueError("tracking error must be finite and non-negative")
+    phase = np.clip(
+        (tracking_error_m - config.authority_gate_start_error_m)
+        / (config.authority_gate_full_error_m - config.authority_gate_start_error_m),
+        0.0,
+        1.0,
+    )
+    return float(phase * phase * (3.0 - 2.0 * phase))
 
 
 def safe_joint_velocity_command(

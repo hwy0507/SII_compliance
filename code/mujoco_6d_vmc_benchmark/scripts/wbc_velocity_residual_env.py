@@ -30,6 +30,7 @@ from wbc_velocity_residual_core import (
     VelocityResidualSafetyConfig,
     safe_joint_velocity_command,
     safe_velocity_tracking_torque,
+    deployable_authority_gate,
 )
 
 
@@ -73,6 +74,7 @@ class VelocityResidualRewardConfig:
     slowdown_weight: float = 0.006
     yield_magnitude_weight: float = 0.004
     action_change_weight: float = 0.003
+    raw_policy_action_weight: float = 0.010
     contact_impulse_weight: float = 0.050
     post_release_error_weight: float = 0.100
     recovery_progress_weight: float = 0.050
@@ -157,6 +159,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.saturated_policy_actions = 0
         self.cumulative_wbc_slowdown = 0.0
         self.cumulative_yield_norm = 0.0
+        self.current_authority_gate = 0.0
+        self.cumulative_authority_gate = 0.0
         self.reset(seed=seed)
 
     def _build_scene(self) -> None:
@@ -241,6 +245,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.hard_limit_seen = self.rod_hand_observed = False
         self.slew_limited_actions = self.saturated_policy_actions = 0
         self.cumulative_wbc_slowdown = self.cumulative_yield_norm = 0.0
+        self.current_authority_gate = self.cumulative_authority_gate = 0.0
         self.action_filter.reset()
         self.applied_action = FilteredVelocityResidualAction(1.0, np.zeros(6), np.zeros(7), False, False)
         self.feature_adapter.reset()
@@ -345,6 +350,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "minimum_torque_feasible_scale": self.minimum_torque_feasible_scale,
             "mean_wbc_slowdown": self.cumulative_wbc_slowdown / count,
             "mean_yield_twist_norm": self.cumulative_yield_norm / count,
+            "mean_authority_gate": self.cumulative_authority_gate / count,
             "action_slew_limited_fraction": self.slew_limited_actions / count,
             "policy_action_saturation_fraction": self.saturated_policy_actions / count,
             "fixture": asdict(self.fixture),
@@ -368,6 +374,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "nominal_rotation": command.target_rotation.copy(),
             "nominal_twist": command.task_twist_world.copy(),
             "wbc_scale": self.applied_action.wbc_scale,
+            "authority_gate": self.current_authority_gate,
             "cartesian_yield_twist": self.applied_action.cartesian_yield_twist.copy(),
             "joint_velocity_command": self.previous_joint_velocity_command.copy(),
             "raw_joint_velocity_command": self.raw_joint_velocity_command.copy(),
@@ -378,11 +385,20 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         action = np.asarray(action, dtype=float)
         if action.shape != (7,) or not np.all(np.isfinite(action)):
             raise ValueError("direct WBC residual action must be a finite seven-vector")
-        self.applied_action = self.action_filter.filter(action, RL_DT)
+        raw_policy_action = np.clip(action, -1.0, 1.0)
+        command = self._wbc_command(self.step_count * RL_DT)
+        assert self.data is not None
+        tracking_error = float(np.linalg.norm(command.target_position_m - self.data.xpos[self._hand_id]))
+        self.current_authority_gate = deployable_authority_gate(tracking_error, self.safety_config)
+        gated_action = raw_policy_action.copy()
+        gated_action[0] *= self.current_authority_gate
+        gated_action[1:] *= self.current_authority_gate
+        self.applied_action = self.action_filter.filter(gated_action, RL_DT)
         self.slew_limited_actions += int(self.applied_action.slew_limited)
-        self.saturated_policy_actions += int(np.any(np.abs(self.applied_action.raw_action_clipped) >= 0.98))
+        self.saturated_policy_actions += int(np.any(np.abs(raw_policy_action) >= 0.98))
         self.cumulative_wbc_slowdown += 1.0 - self.applied_action.wbc_scale
         self.cumulative_yield_norm += float(np.linalg.norm(self.applied_action.cartesian_yield_twist))
+        self.cumulative_authority_gate += self.current_authority_gate
         impulse_before = self.contact_impulse
         action_start_error = self.previous_position_error
         final_position_error = 0.0
@@ -409,10 +425,11 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             self.applied_action.cartesian_yield_twist[:3] / self.safety_config.maximum_linear_yield_mps,
             self.applied_action.cartesian_yield_twist[3:] / self.safety_config.maximum_angular_yield_radps,
         ))
-        action_change = float(np.mean((self.applied_action.raw_action_clipped - self.previous_policy_action) ** 2))
+        action_change = float(np.mean((raw_policy_action - self.previous_policy_action) ** 2))
         reward -= self.reward_config.slowdown_weight * slowdown**2
         reward -= self.reward_config.yield_magnitude_weight * float(np.mean(normalized_yield**2))
         reward -= self.reward_config.action_change_weight * action_change
+        reward -= self.reward_config.raw_policy_action_weight * float(np.mean(raw_policy_action**2))
         reward -= self.reward_config.contact_impulse_weight * max(0.0, self.contact_impulse - impulse_before)
         if self.rod_enabled and release_time_s < self.step_count * RL_DT < self.fixture.grasp_time_s:
             progress = float(np.clip((action_start_error - final_position_error) / 0.004, -1.0, 1.0))
@@ -420,7 +437,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             normalized_jerk = min((peak_step_jerk / self.reward_config.jerk_reference_mps3) ** 2, 4.0)
             reward -= self.reward_config.recovery_jerk_weight * normalized_jerk
         self.previous_position_error = final_position_error
-        self.previous_policy_action = self.applied_action.raw_action_clipped.copy()
+        self.previous_policy_action = raw_policy_action.copy()
         self.step_count += 1
         terminated = self.step_count >= int(round(SIM_TIME_S / RL_DT))
         info: dict[str, Any] = {}

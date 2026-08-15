@@ -27,7 +27,7 @@ def _run_episode(
     observation, _ = env.reset(options={"fixture_index": fixture_index})
     trace: dict[str, list[np.ndarray | float]] = {key: [] for key in (
         "time", "ee_position", "nominal_position", "ee_twist", "nominal_twist",
-        "wbc_scale", "yield_twist", "joint_velocity_command", "torque", "policy_action",
+        "wbc_scale", "authority_gate", "yield_twist", "joint_velocity_command", "torque", "policy_action",
     )}
     terminal: dict[str, Any] = {}
     while True:
@@ -46,6 +46,7 @@ def _run_episode(
         trace["ee_twist"].append(state["ee_twist"])
         trace["nominal_twist"].append(state["nominal_twist"])
         trace["wbc_scale"].append(float(state["wbc_scale"]))
+        trace["authority_gate"].append(float(state["authority_gate"]))
         trace["yield_twist"].append(state["cartesian_yield_twist"])
         trace["joint_velocity_command"].append(state["joint_velocity_command"])
         trace["torque"].append(state["applied_torque"])
@@ -86,7 +87,7 @@ def _summary(records: list[dict[str, Any]]) -> dict[str, Any]:
         "peak_paired_offset_mm", "paired_offset_rmse_mm", "recovery_rmse_mm",
         "peak_torque_nm", "peak_jerk_mps3", "peak_contact_force_n", "contact_impulse_ns",
         "mean_wbc_slowdown", "mean_yield_twist_norm", "action_slew_limited_fraction",
-        "policy_action_saturation_fraction",
+        "policy_action_saturation_fraction", "mean_authority_gate",
     ):
         result[key] = _distribution([float(record[key]) for record in records])
     latencies = [float(record["rejoin_latency_s"]) for record in records if record["rejoin_latency_s"] is not None]
@@ -172,6 +173,7 @@ def main() -> None:
                 "contact_impulse_ns": float(rod_terminal["contact_impulse_ns"]),
                 "mean_wbc_slowdown": float(rod_terminal["mean_wbc_slowdown"]),
                 "mean_yield_twist_norm": float(rod_terminal["mean_yield_twist_norm"]),
+                "mean_authority_gate": float(rod_terminal["mean_authority_gate"]),
                 "action_slew_limited_fraction": float(rod_terminal["action_slew_limited_fraction"]),
                 "policy_action_saturation_fraction": float(rod_terminal["policy_action_saturation_fraction"]),
             }
@@ -185,6 +187,7 @@ def main() -> None:
                 rod_ee_twist=rod["ee_twist"],
                 rod_nominal_twist=rod["nominal_twist"],
                 rod_wbc_scale=rod["wbc_scale"],
+                rod_authority_gate=rod["authority_gate"],
                 rod_yield_twist=rod["yield_twist"],
                 rod_joint_velocity_command=rod["joint_velocity_command"],
                 rod_torque=rod["torque"],
