@@ -123,6 +123,9 @@ def test_fan_ye_rl_adapter_uses_only_fixed_reservoir_wbc_features(tmp_path: Path
     summary = tmp_path / "summary.json"
     summary.write_text(__import__("json").dumps({"config": config.__dict__}))
     adapter = FanYeESNRLObservationAdapter(npz, summary)
+    normalized = adapter.normalized_input(ESNObservation(np.zeros(7), np.zeros(7), np.zeros(6)))
+    assert normalized.shape == (20,)
+    assert np.all(np.isfinite(normalized))
     feature = adapter.observe(ESNObservation(np.zeros(7), np.zeros(7), np.zeros(6)))
     assert feature.shape == (20 + config.reservoir_size,)
     assert np.all(np.isfinite(feature))

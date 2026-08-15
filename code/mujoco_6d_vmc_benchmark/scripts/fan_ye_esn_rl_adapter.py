@@ -1,10 +1,10 @@
-"""Deployable Fan Ye ESN state adapter for a future WBC-aware residual actor.
+"""Deployable Fan Ye state adapter for a WBC-aware actor.
 
 The adapter deliberately exposes no collision diagnostics.  It turns the same
-20-D observation used by the frozen ESN policy into a 20-D normalized input
-concatenated with the fixed 64-D Fan Ye reservoir state.  A later RL actor may
-map this 84-D state to the already bounded seven-dimensional spring/drive
-residual, but must not alter the reservoir's CR/ESPI-selected dynamics.
+20-D observation used by the frozen ESN policy into either a matched 20-D
+current-state feature for the MLP baseline or that input concatenated with the
+fixed 64-D Fan Ye reservoir state for the ESN actor.  The actor's downstream
+action space is defined by its controller and is not coupled to this adapter.
 """
 
 from __future__ import annotations
@@ -36,10 +36,18 @@ class FanYeESNRLObservationAdapter:
         self.reservoir.reset()
 
     def observe(self, observation: ESNObservation) -> np.ndarray:
-        raw = encode_student_observation(observation)
-        normalized = self.normalizer.transform(raw[None, :])[0]
+        normalized = self.normalized_input(observation)
         self.reservoir.advance(normalized)
         feature = np.concatenate((normalized, self.reservoir.state))
         if feature.shape != (self.feature_dimension,) or not np.all(np.isfinite(feature)):
             raise RuntimeError("Fan Ye RL adapter produced an invalid feature")
         return feature.astype(np.float32)
+
+    def normalized_input(self, observation: ESNObservation) -> np.ndarray:
+        """Return the matched 20-D current input without reservoir memory."""
+
+        raw = encode_student_observation(observation)
+        normalized = self.normalizer.transform(raw[None, :])[0]
+        if normalized.shape != (20,) or not np.all(np.isfinite(normalized)):
+            raise RuntimeError("Fan Ye normalized input adapter produced an invalid feature")
+        return normalized.astype(np.float32)
