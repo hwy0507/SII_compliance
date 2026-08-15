@@ -109,6 +109,10 @@ def _run_fixture(
         controller_mode=mode,
         rod_approach_side=fixture["rod_approach_side"], recovery_gate_hold_s=0.28,
         recovery_gate_taper_s=0.04,
+        # V4 vertical/fore-aft geometries can leave a static support inside the
+        # work volume.  A fixture may explicitly remove it for its matched
+        # no-rod reference; absent metadata preserves frozen V2/V3 behavior.
+        remove_rod_when_disabled=bool(fixture.get("remove_rod_when_disabled", False)),
         # The configuration is only meaningful for this controller.  Keeping
         # it absent for all baselines guards against accidental cross-method
         # leakage in a mixed ladder.
