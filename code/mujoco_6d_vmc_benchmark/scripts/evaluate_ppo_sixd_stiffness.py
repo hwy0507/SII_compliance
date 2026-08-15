@@ -31,13 +31,25 @@ def load_fixtures(path: Path | None, split: str) -> tuple[Fixture, ...]:
     ) for sample in samples)
 
 
-def _run_episode(env: PandaSixDStiffnessEnv, model: PPO, normalizer: VecNormalize, fixture_index: int) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
+def _run_episode(
+    env: PandaSixDStiffnessEnv,
+    model: PPO | None,
+    normalizer: VecNormalize | None,
+    fixture_index: int,
+    *,
+    zero_residual: bool,
+) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
     observation, _ = env.reset(options={"fixture_index": fixture_index})
     trace: dict[str, list[np.ndarray | float]] = {key: [] for key in ("time", "ee_position", "nominal_position", "kappa", "torque", "recovery_drive_scale")}
     terminal: dict[str, Any] = {}
     while True:
-        normalized = normalizer.normalize_obs(observation[None, :])[0]
-        action, _ = model.predict(normalized, deterministic=True)
+        if zero_residual:
+            action = np.zeros(env.action_space.shape, dtype=np.float32)
+        else:
+            if model is None or normalizer is None:
+                raise RuntimeError("a PPO model and VecNormalize statistics are required unless --zero-residual is set")
+            normalized = normalizer.normalize_obs(observation[None, :])[0]
+            action, _ = model.predict(normalized, deterministic=True)
         observation, _, terminated, truncated, info = env.step(action)
         state = env.diagnostics()
         trace["time"].append(float(state["time_s"]))
@@ -80,8 +92,9 @@ def _summary(records: list[dict[str, Any]]) -> dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--menagerie", type=Path, required=True)
-    parser.add_argument("--model", type=Path, required=True, help="PPO .zip model path")
-    parser.add_argument("--vecnormalize", type=Path, required=True)
+    parser.add_argument("--model", type=Path, default=None, help="PPO .zip model path")
+    parser.add_argument("--vecnormalize", type=Path, default=None)
+    parser.add_argument("--zero-residual", action="store_true", help="Evaluate the matched analytic zero-residual policy instead of a learned PPO actor.")
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--max-fixtures", type=int, default=None)
     parser.add_argument("--fixture-manifest", type=Path, default=None, help="Optional held-out manifest whose test split replaces the default four fixtures.")
@@ -100,6 +113,10 @@ def main() -> None:
     parser.add_argument("--drive-max-log-rate-per-s", type=float, default=1.0)
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
+    if not args.zero_residual and (args.model is None or args.vecnormalize is None):
+        parser.error("--model and --vecnormalize are required unless --zero-residual is set")
+    if args.zero_residual and (args.model is not None or args.vecnormalize is not None):
+        parser.error("--zero-residual cannot be combined with --model or --vecnormalize")
     fixtures = load_fixtures(args.fixture_manifest, args.fixture_split)
     if args.max_fixtures is not None:
         fixtures = fixtures[:args.max_fixtures]
@@ -109,18 +126,22 @@ def main() -> None:
     if fan_ye_enabled and (args.fan_ye_model_npz is None or args.fan_ye_train_summary_json is None or args.reference_source != "fixed_panda_wbc" or args.fixture_split == "test"):
         raise ValueError("Fan Ye development evaluation requires model, summary, fixed_panda_wbc, and train/validation split")
     env_kwargs = dict(enable_drive_residual=args.enable_drive_residual, enable_energy_safety=args.enable_energy_safety, recovery_gate_hold_s=args.recovery_gate_hold_s, recovery_gate_taper_s=args.recovery_gate_taper_s, recovery_error_weight=args.recovery_error_weight, recovery_progress_reward=args.recovery_progress_reward, action_change_penalty=args.action_change_penalty, kappa_max_log_rate_per_s=args.kappa_max_log_rate_per_s, drive_max_log_rate_per_s=args.drive_max_log_rate_per_s, reference_source=args.reference_source, fan_ye_model_npz=args.fan_ye_model_npz, fan_ye_train_summary_json=args.fan_ye_train_summary_json)
-    template = DummyVecEnv([lambda: PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, seed=0, **env_kwargs)])
-    normalizer = VecNormalize.load(str(args.vecnormalize), template)
-    normalizer.training = False
-    normalizer.norm_reward = False
-    model = PPO.load(args.model, device="cpu")
+    template = None
+    normalizer = None
+    model = None
+    if not args.zero_residual:
+        template = DummyVecEnv([lambda: PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, seed=0, **env_kwargs)])
+        normalizer = VecNormalize.load(str(args.vecnormalize), template)
+        normalizer.training = False
+        normalizer.norm_reward = False
+        model = PPO.load(args.model, device="cpu")
     rod_env = PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, rod_enabled=True, seed=1, **env_kwargs)
     no_rod_env = PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, rod_enabled=False, seed=1, **env_kwargs)
     records: list[dict[str, Any]] = []
     try:
         for index, fixture in enumerate(fixtures):
-            rod, rod_terminal = _run_episode(rod_env, model, normalizer, index)
-            no_rod, no_rod_terminal = _run_episode(no_rod_env, model, normalizer, index)
+            rod, rod_terminal = _run_episode(rod_env, model, normalizer, index, zero_residual=args.zero_residual)
+            no_rod, no_rod_terminal = _run_episode(no_rod_env, model, normalizer, index, zero_residual=args.zero_residual)
             if rod["time"].shape != no_rod["time"].shape or not np.allclose(rod["time"], no_rod["time"]):
                 raise RuntimeError("matched rollouts do not share a control grid")
             paired_offset = np.linalg.norm(rod["ee_position"] - no_rod["ee_position"], axis=1)
@@ -150,16 +171,18 @@ def main() -> None:
     finally:
         rod_env.close()
         no_rod_env.close()
-        template.close()
+        if template is not None:
+            template.close()
     report = {
-        "protocol": "frozen deterministic PPO; matched rod/no-rod physics rollouts; offline diagnostics only",
+        "protocol": "matched zero-residual analytic policy; rod/no-rod physics rollouts; offline diagnostics only" if args.zero_residual else "frozen deterministic PPO; matched rod/no-rod physics rollouts; offline diagnostics only",
         "enable_drive_residual": args.enable_drive_residual,
         "enable_energy_safety": args.enable_energy_safety,
         "recovery_gate_hold_s": args.recovery_gate_hold_s,
         "recovery_gate_taper_s": args.recovery_gate_taper_s,
         "rate_limits": {"kappa_max_log_rate_per_s": args.kappa_max_log_rate_per_s, "drive_max_log_rate_per_s": args.drive_max_log_rate_per_s},
-        "model": str(args.model),
-        "vecnormalize": str(args.vecnormalize),
+        "model": None if args.model is None else str(args.model),
+        "vecnormalize": None if args.vecnormalize is None else str(args.vecnormalize),
+        "zero_residual": args.zero_residual,
         "reference_source": args.reference_source,
         "fixture_split": args.fixture_split,
         "fan_ye_actor": fan_ye_enabled,

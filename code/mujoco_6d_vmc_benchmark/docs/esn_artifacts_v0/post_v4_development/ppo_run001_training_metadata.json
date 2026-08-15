@@ -1,0 +1,189 @@
+{
+  "algorithm": "PPO state-feedback; not CEM or a timed schedule",
+  "total_timesteps_requested": 400000,
+  "n_envs": 8,
+  "seed": 20260815,
+  "action_config": {
+    "dimension": 6,
+    "range": [
+      -1.0,
+      1.0
+    ],
+    "mapping": "kappa = clip(base * exp(action_log_span * action)); log-space rate-limited",
+    "base_kappa": [
+      27.579838,
+      52.550787,
+      48.699427,
+      35.85958,
+      40.71983,
+      34.766858
+    ],
+    "minimum_kappa": [
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0
+    ],
+    "maximum_kappa": [
+      70.0,
+      70.0,
+      70.0,
+      70.0,
+      70.0,
+      70.0
+    ],
+    "action_log_span": 0.8,
+    "update_hz": 25.0,
+    "max_log_rate_per_s": 1.6
+  },
+  "policy_observation_contract": "Fan Ye normalized q/qdot/WBC twist (20) + fixed reservoir state (64)",
+  "policy_observation_dimension": 84,
+  "reference_source": "fixed_panda_wbc",
+  "fan_ye_fixed_reservoir": {
+    "model_npz": "/tmp/esn_fan_ye_v4_final_input_20260815/fan_ye_esn_warmstart.npz",
+    "train_summary_json": "/tmp/esn_fan_ye_v4_final_input_20260815/fan_ye_esn_readout_train_summary.json",
+    "reservoir_state_dimension": 64,
+    "student_input": [
+      "q(7)",
+      "qdot(7)",
+      "wbc_task_twist(6)"
+    ]
+  },
+  "enable_drive_residual": true,
+  "energy_budget_safety": {
+    "enabled": true,
+    "placement": "after PPO's 25 Hz low-frequency residual action and before the 250 Hz virtual-carriage force application",
+    "uses_contact_or_obstacle_information": false,
+    "claim": "incremental return-drive energy budget and direction smoothing; not a global passivity proof for the moving-reference robot"
+  },
+  "recovery_gate": {
+    "hold_s": 0.28,
+    "taper_s": 0.04,
+    "activation": "causal measured end-effector tracking-error gate, with optional held recovery window",
+    "uses_contact_or_obstacle_information": false
+  },
+  "reward_scales": {
+    "recovery_error_weight": 0.075,
+    "recovery_progress_reward": 0.04,
+    "action_change_penalty": 0.003,
+    "recovery_jerk_weight": 0.02,
+    "jerk_reference_mps3": 600.0,
+    "kappa_max_log_rate_per_s": 1.6,
+    "drive_max_log_rate_per_s": 1.0
+  },
+  "drive_residual_action": {
+    "dimension": 1,
+    "meaning": "virtual-carriage return-drive residual; not a seventh spring",
+    "base_recovery_drive_scale": 14.0,
+    "minimum_recovery_drive_scale": 8.0,
+    "maximum_recovery_drive_scale": 20.0,
+    "action_log_span": 0.35,
+    "update_hz": 25.0,
+    "max_log_rate_per_s": 1.0,
+    "activation": "smooth measured end-effector tracking-error gate; no contact, force, obstacle, or future-phase input"
+  },
+  "privileged_quantities_excluded": [
+    "rod_contact",
+    "rod_force",
+    "rod_penetration",
+    "rod_displacement",
+    "rod_command_velocity",
+    "future_collision_phase",
+    "obstacle_geometry_or_pose"
+  ],
+  "fixtures": [
+    {
+      "rod_stroke_m": 0.08,
+      "rod_height_m": 0.54,
+      "rod_start_time_s": 0.965,
+      "grasp_time_s": 2.4,
+      "rod_approach_side": "negative_x",
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0
+    },
+    {
+      "rod_stroke_m": 0.08,
+      "rod_height_m": 0.54,
+      "rod_start_time_s": 1.165,
+      "grasp_time_s": 2.4,
+      "rod_approach_side": "negative_x",
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0
+    },
+    {
+      "rod_stroke_m": 0.13,
+      "rod_height_m": 0.54,
+      "rod_start_time_s": 0.965,
+      "grasp_time_s": 2.4,
+      "rod_approach_side": "positive_x",
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0
+    },
+    {
+      "rod_stroke_m": 0.17,
+      "rod_height_m": 0.54,
+      "rod_start_time_s": 0.965,
+      "grasp_time_s": 2.4,
+      "rod_approach_side": "negative_y",
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0
+    },
+    {
+      "rod_stroke_m": 0.17,
+      "rod_height_m": 0.54,
+      "rod_start_time_s": 1.165,
+      "grasp_time_s": 2.4,
+      "rod_approach_side": "negative_y",
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0
+    },
+    {
+      "rod_stroke_m": 0.17,
+      "rod_height_m": 0.54,
+      "rod_start_time_s": 0.965,
+      "grasp_time_s": 2.4,
+      "rod_approach_side": "positive_y",
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0
+    },
+    {
+      "rod_stroke_m": 0.17,
+      "rod_height_m": 0.54,
+      "rod_start_time_s": 1.165,
+      "grasp_time_s": 2.4,
+      "rod_approach_side": "positive_y",
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0
+    },
+    {
+      "rod_stroke_m": 0.05,
+      "rod_height_m": 0.54,
+      "rod_start_time_s": 0.965,
+      "grasp_time_s": 2.4,
+      "rod_approach_side": "negative_z",
+      "rod_center_x_m": 0.6,
+      "rod_center_y_m": 0.0
+    },
+    {
+      "rod_stroke_m": 0.05,
+      "rod_height_m": 0.54,
+      "rod_start_time_s": 1.165,
+      "grasp_time_s": 2.4,
+      "rod_approach_side": "negative_z",
+      "rod_center_x_m": 0.6,
+      "rod_center_y_m": 0.0
+    }
+  ],
+  "fixture_manifest": "/tmp/esn_post_v4_devpool_20260815/esn_post_v4_development_manifest.json",
+  "fixture_split": "train",
+  "optimization_changes_vs_run_003": {
+    "n_epochs": "10 -> 5",
+    "learning_rate": "constant 3e-4 -> linear 2e-4 to 5e-5",
+    "clip_range": "0.20 -> 0.15",
+    "target_kl": 0.015,
+    "reward": "loading/recovery-aware internal reward; no privileged policy observation",
+    "residual_gate": "smooth deployable position-error gate: 0 below 3 mm, full by 12 mm"
+  }
+}
