@@ -77,8 +77,9 @@ def _per_side(rows_by_method: dict[str, list[dict[str, Any]]], fixture_ids: set[
     }
 
 
-def _plot(methods: dict[str, dict[str, Any]], fixture_count: int, output: Path) -> None:
-    fig, axes = plt.subplots(1, 2, figsize=(12.0, 4.7), constrained_layout=True)
+def _plot(methods: dict[str, dict[str, Any]], fixture_count: int, output: Path, title_prefix: str) -> None:
+    fig, axes = plt.subplots(1, 2, figsize=(12.8, 4.9), constrained_layout=True)
+    fig.suptitle(title_prefix, fontsize=15)
     panels = (
         ("peak_torque_nm", "Peak torque (N·m)", "Accuracy–torque"),
         ("post_contact_jerk_p95_mps3", "Post-contact jerk P95 (m/s³)", "Accuracy–smoothness"),
@@ -104,7 +105,7 @@ def _plot(methods: dict[str, dict[str, Any]], fixture_count: int, output: Path) 
                 DISPLAY[method], (point["recovery_rmse_mm"], point[metric]),
                 xytext=label_offsets[method], textcoords="offset points", fontsize=8,
             )
-        axis.set(xlabel="Recovery RMSE (mm)", ylabel=y_label, title=f"V4 five-side holdout: {title} (common-valid n={fixture_count})")
+        axis.set(xlabel="Recovery RMSE (mm)", ylabel=y_label, title=f"{title} (common-valid n={fixture_count})")
         axis.grid(alpha=0.25)
         axis.spines[["top", "right"]].set_visible(False)
     fig.savefig(output, dpi=240)
@@ -117,9 +118,18 @@ def main() -> None:
     parser.add_argument("--selected-ladder", type=Path, required=True)
     parser.add_argument("--selected-config", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--expected-reference-source",
+        help="Require both ladders to record this source, preventing accidental proxy/WBC result mixing.",
+    )
+    parser.add_argument("--title-prefix", default="V4 five-side holdout")
     args = parser.parse_args()
 
     default, selected, config = _load(args.default_ladder), _load(args.selected_ladder), _load(args.selected_config)
+    if args.expected_reference_source is not None:
+        for label, payload in (("default", default), ("selected", selected)):
+            if payload["protocol"].get("reference_source") != args.expected_reference_source:
+                raise ValueError(f"{label} ladder does not use the expected reference source")
     config_fields = {
         "initial_energy_j", "minimum_energy_j", "maximum_energy_j", "damping_recharge_efficiency",
         "minimum_direction_scale", "direction_transition_speed_mps", "smoothing_time_constant_s",
@@ -153,6 +163,7 @@ def main() -> None:
             "scope": "V4 frozen five-side axis-aligned physical collision holdout; positive_z excluded; not sign-complete or arbitrary continuous 3-D impact",
             "comparison_rule": "all numerical controller comparisons use the valid-fixture intersection across rigid, impedance, VMC-gated, default VMC-energy, and frozen selected VMC-energy",
             "selected_config_label": config.get("label"), "selected_config": frozen_config,
+            "reference_source": default["protocol"].get("reference_source"),
         },
         "valid_fixture_ids_by_method": {method: sorted(ids) for method, ids in fixture_sets.items()},
         "common_valid_fixture_ids": common_ids,
@@ -168,7 +179,7 @@ def main() -> None:
         writer.writeheader()
         for method, values in methods.items():
             writer.writerow({"common_valid_fixture_count": len(common_ids), "controller": method, **{metric: values[metric] for metric in METRICS}})
-    _plot(methods, len(common_ids), args.output_dir / "v4_final_holdout_pareto.png")
+    _plot(methods, len(common_ids), args.output_dir / "v4_final_holdout_pareto.png", args.title_prefix)
     print(json.dumps(comparison, indent=2))
 
 
