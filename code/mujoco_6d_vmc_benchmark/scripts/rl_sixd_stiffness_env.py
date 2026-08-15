@@ -130,6 +130,9 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         recovery_error_weight: float = 0.075,
         recovery_progress_reward: float = 0.040,
         action_change_penalty: float = 0.003,
+        residual_magnitude_penalty: float = 0.0,
+        recovery_tube_time_penalty: float = 0.0,
+        recovery_tube_radius_m: float = 0.005,
         recovery_jerk_weight: float = 0.0,
         jerk_reference_mps3: float = 1200.0,
         kappa_max_log_rate_per_s: float = 1.6,
@@ -147,13 +150,16 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.enable_energy_safety = bool(enable_energy_safety)
         if self.enable_energy_safety and not self.enable_drive_residual:
             raise ValueError("energy safety protects a return-drive residual and requires --enable-drive-residual")
-        if recovery_gate_hold_s < 0.0 or recovery_gate_taper_s < 0.0 or recovery_error_weight < 0.0 or recovery_progress_reward < 0.0 or action_change_penalty < 0.0 or recovery_jerk_weight < 0.0 or jerk_reference_mps3 <= 0.0 or kappa_max_log_rate_per_s <= 0.0 or drive_max_log_rate_per_s <= 0.0:
+        if recovery_gate_hold_s < 0.0 or recovery_gate_taper_s < 0.0 or recovery_error_weight < 0.0 or recovery_progress_reward < 0.0 or action_change_penalty < 0.0 or residual_magnitude_penalty < 0.0 or recovery_tube_time_penalty < 0.0 or recovery_tube_radius_m <= 0.0 or recovery_jerk_weight < 0.0 or jerk_reference_mps3 <= 0.0 or kappa_max_log_rate_per_s <= 0.0 or drive_max_log_rate_per_s <= 0.0:
             raise ValueError("recovery-gate and reward scales must be non-negative")
         self.recovery_gate_hold_s = float(recovery_gate_hold_s)
         self.recovery_gate_taper_s = float(recovery_gate_taper_s)
         self.recovery_error_weight = float(recovery_error_weight)
         self.recovery_progress_reward = float(recovery_progress_reward)
         self.action_change_penalty = float(action_change_penalty)
+        self.residual_magnitude_penalty = float(residual_magnitude_penalty)
+        self.recovery_tube_time_penalty = float(recovery_tube_time_penalty)
+        self.recovery_tube_radius_m = float(recovery_tube_radius_m)
         self.recovery_jerk_weight = float(recovery_jerk_weight)
         self.jerk_reference_mps3 = float(jerk_reference_mps3)
         self.kappa_max_log_rate_per_s = float(kappa_max_log_rate_per_s)
@@ -600,6 +606,11 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
                 self.post_release_step_count += 1
         action_delta = float(np.mean((applied_action - self.previous_action) ** 2) + (applied_drive_action - self.previous_drive_action) ** 2)
         accumulated_reward -= self.action_change_penalty * action_delta
+        # This regularizer is independent of contact diagnostics: it makes a
+        # learned residual earn its authority rather than holding a large
+        # stiffness/return-drive offset after it has done useful work.
+        residual_magnitude = float(np.mean(applied_action**2) + applied_drive_action**2)
+        accumulated_reward -= self.residual_magnitude_penalty * residual_magnitude
         if self.recovery_gate_hold_s > 0.0:
             # This recovery objective is triggered only by the causal,
             # deployable error gate, not the known rod time.  It gives the
@@ -609,6 +620,13 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             accumulated_reward -= self.recovery_error_weight * residual_gate * normalized_error
             recovery_progress = np.clip((action_start_error - final_position_error) / 0.004, -1.0, 1.0)
             accumulated_reward += self.recovery_progress_reward * residual_gate * float(recovery_progress)
+            # Unlike squared error, this bounded term explicitly charges the
+            # duration outside the 5-mm rejoin tube.  Rod-release time is an
+            # offline training/reward label only; the actor has no phase or
+            # obstacle input and deploys solely from its causal observation.
+            if self.rod_enabled and release_time_s < self.step_count * RL_DT < self.fixture.grasp_time_s:
+                outside_rejoin_tube = float(final_position_error > self.recovery_tube_radius_m)
+                accumulated_reward -= self.recovery_tube_time_penalty * residual_gate * outside_rejoin_tube
             normalized_jerk = min((peak_step_jerk / self.jerk_reference_mps3) ** 2, 4.0)
             accumulated_reward -= self.recovery_jerk_weight * residual_gate * normalized_jerk
         elif self.rod_enabled and self.step_count * RL_DT > release_time_s:

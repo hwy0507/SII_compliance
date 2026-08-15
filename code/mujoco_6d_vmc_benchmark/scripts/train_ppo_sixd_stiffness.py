@@ -33,12 +33,14 @@ def load_fixture_manifest(path: Path, split: str) -> tuple[Fixture, ...]:
     ) for row in rows)
 
 
-def make_env(menagerie: Path, fixtures: tuple[Fixture, ...], rank: int, seed: int, enable_drive_residual: bool, enable_energy_safety: bool, recovery_gate_hold_s: float, recovery_gate_taper_s: float, recovery_error_weight: float, recovery_progress_reward: float, action_change_penalty: float, recovery_jerk_weight: float, jerk_reference_mps3: float, kappa_max_log_rate_per_s: float, drive_max_log_rate_per_s: float, reference_source: str, fan_ye_model_npz: Path | None, fan_ye_train_summary_json: Path | None):
+def make_env(menagerie: Path, fixtures: tuple[Fixture, ...], rank: int, seed: int, enable_drive_residual: bool, enable_energy_safety: bool, recovery_gate_hold_s: float, recovery_gate_taper_s: float, recovery_error_weight: float, recovery_progress_reward: float, action_change_penalty: float, residual_magnitude_penalty: float, recovery_tube_time_penalty: float, recovery_tube_radius_m: float, recovery_jerk_weight: float, jerk_reference_mps3: float, kappa_max_log_rate_per_s: float, drive_max_log_rate_per_s: float, reference_source: str, fan_ye_model_npz: Path | None, fan_ye_train_summary_json: Path | None):
     def _factory() -> PandaSixDStiffnessEnv:
         return PandaSixDStiffnessEnv(
             menagerie=menagerie, fixtures=fixtures, enable_drive_residual=enable_drive_residual, enable_energy_safety=enable_energy_safety,
             recovery_gate_hold_s=recovery_gate_hold_s, recovery_gate_taper_s=recovery_gate_taper_s, recovery_error_weight=recovery_error_weight,
             recovery_progress_reward=recovery_progress_reward, action_change_penalty=action_change_penalty,
+            residual_magnitude_penalty=residual_magnitude_penalty, recovery_tube_time_penalty=recovery_tube_time_penalty,
+            recovery_tube_radius_m=recovery_tube_radius_m,
             recovery_jerk_weight=recovery_jerk_weight, jerk_reference_mps3=jerk_reference_mps3,
             kappa_max_log_rate_per_s=kappa_max_log_rate_per_s, drive_max_log_rate_per_s=drive_max_log_rate_per_s,
             reference_source=reference_source, fan_ye_model_npz=fan_ye_model_npz,
@@ -97,6 +99,9 @@ def main() -> None:
     parser.add_argument("--recovery-error-weight", type=float, default=0.075)
     parser.add_argument("--recovery-progress-reward", type=float, default=0.040)
     parser.add_argument("--action-change-penalty", type=float, default=0.003)
+    parser.add_argument("--residual-magnitude-penalty", type=float, default=0.0, help="Penalty on gated residual magnitude; default preserves prior protocol.")
+    parser.add_argument("--recovery-tube-time-penalty", type=float, default=0.0, help="Post-release gated penalty per control step outside the rejoin tube.")
+    parser.add_argument("--recovery-tube-radius-m", type=float, default=0.005)
     parser.add_argument("--recovery-jerk-weight", type=float, default=0.0)
     parser.add_argument("--jerk-reference-mps3", type=float, default=1200.0)
     parser.add_argument("--kappa-max-log-rate-per-s", type=float, default=1.6)
@@ -120,7 +125,7 @@ def main() -> None:
     os.environ.setdefault("MUJOCO_GL", "egl")
     torch.set_num_threads(1)
     env = SubprocVecEnv(
-        [make_env(args.menagerie, fixtures, rank, args.seed, args.enable_drive_residual, args.enable_energy_safety, args.recovery_gate_hold_s, args.recovery_gate_taper_s, args.recovery_error_weight, args.recovery_progress_reward, args.action_change_penalty, args.recovery_jerk_weight, args.jerk_reference_mps3, args.kappa_max_log_rate_per_s, args.drive_max_log_rate_per_s, reference_source, args.fan_ye_model_npz, args.fan_ye_train_summary_json) for rank in range(args.n_envs)], start_method="spawn",
+        [make_env(args.menagerie, fixtures, rank, args.seed, args.enable_drive_residual, args.enable_energy_safety, args.recovery_gate_hold_s, args.recovery_gate_taper_s, args.recovery_error_weight, args.recovery_progress_reward, args.action_change_penalty, args.residual_magnitude_penalty, args.recovery_tube_time_penalty, args.recovery_tube_radius_m, args.recovery_jerk_weight, args.jerk_reference_mps3, args.kappa_max_log_rate_per_s, args.drive_max_log_rate_per_s, reference_source, args.fan_ye_model_npz, args.fan_ye_train_summary_json) for rank in range(args.n_envs)], start_method="spawn",
     )
     env = VecMonitor(env, filename=str(args.output_dir / "monitor.csv"))
     env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.0)
@@ -165,6 +170,9 @@ def main() -> None:
             "recovery_error_weight": args.recovery_error_weight,
             "recovery_progress_reward": args.recovery_progress_reward,
             "action_change_penalty": args.action_change_penalty,
+            "residual_magnitude_penalty": args.residual_magnitude_penalty,
+            "recovery_tube_time_penalty": args.recovery_tube_time_penalty,
+            "recovery_tube_radius_m": args.recovery_tube_radius_m,
             "recovery_jerk_weight": args.recovery_jerk_weight,
             "jerk_reference_mps3": args.jerk_reference_mps3,
             "kappa_max_log_rate_per_s": args.kappa_max_log_rate_per_s,
