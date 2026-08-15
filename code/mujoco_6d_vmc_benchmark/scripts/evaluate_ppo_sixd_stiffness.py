@@ -15,16 +15,19 @@ from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 from rl_sixd_stiffness_env import Fixture, PandaSixDStiffnessEnv, RL_DT, default_fixtures
 
 
-def load_fixtures(path: Path | None) -> tuple[Fixture, ...]:
+def load_fixtures(path: Path | None, split: str) -> tuple[Fixture, ...]:
     if path is None:
         return default_fixtures()
     manifest = json.loads(path.read_text())
-    samples = manifest["splits"]["test"]
+    samples = manifest["splits"][split]
     return tuple(Fixture(
         rod_stroke_m=float(sample["rod_stroke_m"]),
         rod_height_m=float(sample["rod_height_m"]),
         rod_start_time_s=float(sample["rod_start_time_s"]),
         grasp_time_s=float(sample.get("grasp_time_s", 2.40)),
+        rod_approach_side=sample.get("rod_approach_side", "negative_y"),
+        rod_center_x_m=float(sample.get("rod_center_x_m", 0.55)),
+        rod_center_y_m=float(sample.get("rod_center_y_m", 0.0)),
     ) for sample in samples)
 
 
@@ -82,6 +85,10 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--max-fixtures", type=int, default=None)
     parser.add_argument("--fixture-manifest", type=Path, default=None, help="Optional held-out manifest whose test split replaces the default four fixtures.")
+    parser.add_argument("--fixture-split", choices=("train", "validation", "test"), default="test")
+    parser.add_argument("--reference-source", choices=("proxy", "fixed_panda_wbc"), default="proxy")
+    parser.add_argument("--fan-ye-model-npz", type=Path, default=None)
+    parser.add_argument("--fan-ye-train-summary-json", type=Path, default=None)
     parser.add_argument("--enable-drive-residual", action="store_true")
     parser.add_argument("--enable-energy-safety", action="store_true")
     parser.add_argument("--recovery-gate-hold-s", type=float, default=0.0)
@@ -93,12 +100,15 @@ def main() -> None:
     parser.add_argument("--drive-max-log-rate-per-s", type=float, default=1.0)
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    fixtures = load_fixtures(args.fixture_manifest)
+    fixtures = load_fixtures(args.fixture_manifest, args.fixture_split)
     if args.max_fixtures is not None:
         fixtures = fixtures[:args.max_fixtures]
     if args.enable_energy_safety and not args.enable_drive_residual:
         raise ValueError("--enable-energy-safety requires --enable-drive-residual")
-    env_kwargs = dict(enable_drive_residual=args.enable_drive_residual, enable_energy_safety=args.enable_energy_safety, recovery_gate_hold_s=args.recovery_gate_hold_s, recovery_gate_taper_s=args.recovery_gate_taper_s, recovery_error_weight=args.recovery_error_weight, recovery_progress_reward=args.recovery_progress_reward, action_change_penalty=args.action_change_penalty, kappa_max_log_rate_per_s=args.kappa_max_log_rate_per_s, drive_max_log_rate_per_s=args.drive_max_log_rate_per_s)
+    fan_ye_enabled = args.fan_ye_model_npz is not None or args.fan_ye_train_summary_json is not None
+    if fan_ye_enabled and (args.fan_ye_model_npz is None or args.fan_ye_train_summary_json is None or args.reference_source != "fixed_panda_wbc" or args.fixture_split == "test"):
+        raise ValueError("Fan Ye development evaluation requires model, summary, fixed_panda_wbc, and train/validation split")
+    env_kwargs = dict(enable_drive_residual=args.enable_drive_residual, enable_energy_safety=args.enable_energy_safety, recovery_gate_hold_s=args.recovery_gate_hold_s, recovery_gate_taper_s=args.recovery_gate_taper_s, recovery_error_weight=args.recovery_error_weight, recovery_progress_reward=args.recovery_progress_reward, action_change_penalty=args.action_change_penalty, kappa_max_log_rate_per_s=args.kappa_max_log_rate_per_s, drive_max_log_rate_per_s=args.drive_max_log_rate_per_s, reference_source=args.reference_source, fan_ye_model_npz=args.fan_ye_model_npz, fan_ye_train_summary_json=args.fan_ye_train_summary_json)
     template = DummyVecEnv([lambda: PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, seed=0, **env_kwargs)])
     normalizer = VecNormalize.load(str(args.vecnormalize), template)
     normalizer.training = False
@@ -150,6 +160,9 @@ def main() -> None:
         "rate_limits": {"kappa_max_log_rate_per_s": args.kappa_max_log_rate_per_s, "drive_max_log_rate_per_s": args.drive_max_log_rate_per_s},
         "model": str(args.model),
         "vecnormalize": str(args.vecnormalize),
+        "reference_source": args.reference_source,
+        "fixture_split": args.fixture_split,
+        "fan_ye_actor": fan_ye_enabled,
         "summary": _summary(records),
         "records": records,
     }
