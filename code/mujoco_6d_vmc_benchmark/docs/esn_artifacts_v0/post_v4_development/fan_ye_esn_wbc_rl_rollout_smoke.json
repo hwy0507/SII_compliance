@@ -1,0 +1,96 @@
+{
+  "stage": "zero-residual WBC-aware Fan Ye ESN Gym interface smoke; no RL optimization",
+  "reference_source": "fixed_panda_wbc",
+  "actor_observation": "normalized q/qdot/WBC twist plus fixed Fan Ye reservoir state",
+  "feature_dimension": 84,
+  "split": "train",
+  "records": [
+    {
+      "fixture": {
+        "rod_stroke_m": 0.08,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 0.965,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "negative_x",
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      "actor_feature_dimension": 84,
+      "finite": true,
+      "return": 11.198170199034351,
+      "terminal": {
+        "task_success": true,
+        "effective_collision": true,
+        "rod_hand_contact": true,
+        "peak_contact_force_n": 16.93755325092948,
+        "contact_impulse_ns": 2.2661739374977823,
+        "peak_torque_nm": 31.094110031162568,
+        "peak_jerk_mps3": 534.6502522529064,
+        "hard_torque_limit": false,
+        "mean_log_kappa_deviation": 1.6653345369377348e-16,
+        "mean_log_drive_deviation": 2.2204460492503136e-16,
+        "mean_residual_gate": 0.18771464665843612,
+        "energy_budget_safety": {
+          "enabled": false,
+          "mean_energy_scale": null,
+          "final_tank_energy_j": null,
+          "uses_contact_or_obstacle_information": false,
+          "claim": "incremental return-drive energy budget, not a global passivity proof for the moving-reference robot"
+        },
+        "fixture": {
+          "rod_stroke_m": 0.08,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 0.965,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_x",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0
+        }
+      }
+    },
+    {
+      "fixture": {
+        "rod_stroke_m": 0.08,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 1.165,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "negative_x",
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      "actor_feature_dimension": 84,
+      "finite": true,
+      "return": 11.18548307596711,
+      "terminal": {
+        "task_success": true,
+        "effective_collision": true,
+        "rod_hand_contact": true,
+        "peak_contact_force_n": 19.06643798157914,
+        "contact_impulse_ns": 2.695481189464932,
+        "peak_torque_nm": 31.048154717200426,
+        "peak_jerk_mps3": 459.8772916517591,
+        "hard_torque_limit": false,
+        "mean_log_kappa_deviation": 1.6653345369377348e-16,
+        "mean_log_drive_deviation": 2.2204460492503136e-16,
+        "mean_residual_gate": 0.19434755216590544,
+        "energy_budget_safety": {
+          "enabled": false,
+          "mean_energy_scale": null,
+          "final_tank_energy_j": null,
+          "uses_contact_or_obstacle_information": false,
+          "claim": "incremental return-drive energy budget, not a global passivity proof for the moving-reference robot"
+        },
+        "fixture": {
+          "rod_stroke_m": 0.08,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 1.165,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_x",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0
+        }
+      }
+    }
+  ],
+  "warning": "This validates the online Gym interface and safety path only. A zero action is not a trained RL policy."
+}
