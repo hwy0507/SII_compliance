@@ -133,6 +133,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         residual_magnitude_penalty: float = 0.0,
         recovery_tube_time_penalty: float = 0.0,
         recovery_tube_radius_m: float = 0.005,
+        contact_impulse_penalty: float = 0.0,
         recovery_jerk_weight: float = 0.0,
         jerk_reference_mps3: float = 1200.0,
         kappa_max_log_rate_per_s: float = 1.6,
@@ -150,7 +151,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.enable_energy_safety = bool(enable_energy_safety)
         if self.enable_energy_safety and not self.enable_drive_residual:
             raise ValueError("energy safety protects a return-drive residual and requires --enable-drive-residual")
-        if recovery_gate_hold_s < 0.0 or recovery_gate_taper_s < 0.0 or recovery_error_weight < 0.0 or recovery_progress_reward < 0.0 or action_change_penalty < 0.0 or residual_magnitude_penalty < 0.0 or recovery_tube_time_penalty < 0.0 or recovery_tube_radius_m <= 0.0 or recovery_jerk_weight < 0.0 or jerk_reference_mps3 <= 0.0 or kappa_max_log_rate_per_s <= 0.0 or drive_max_log_rate_per_s <= 0.0:
+        if recovery_gate_hold_s < 0.0 or recovery_gate_taper_s < 0.0 or recovery_error_weight < 0.0 or recovery_progress_reward < 0.0 or action_change_penalty < 0.0 or residual_magnitude_penalty < 0.0 or recovery_tube_time_penalty < 0.0 or recovery_tube_radius_m <= 0.0 or contact_impulse_penalty < 0.0 or recovery_jerk_weight < 0.0 or jerk_reference_mps3 <= 0.0 or kappa_max_log_rate_per_s <= 0.0 or drive_max_log_rate_per_s <= 0.0:
             raise ValueError("recovery-gate and reward scales must be non-negative")
         self.recovery_gate_hold_s = float(recovery_gate_hold_s)
         self.recovery_gate_taper_s = float(recovery_gate_taper_s)
@@ -160,6 +161,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.residual_magnitude_penalty = float(residual_magnitude_penalty)
         self.recovery_tube_time_penalty = float(recovery_tube_time_penalty)
         self.recovery_tube_radius_m = float(recovery_tube_radius_m)
+        self.contact_impulse_penalty = float(contact_impulse_penalty)
         self.recovery_jerk_weight = float(recovery_jerk_weight)
         self.jerk_reference_mps3 = float(jerk_reference_mps3)
         self.kappa_max_log_rate_per_s = float(kappa_max_log_rate_per_s)
@@ -580,6 +582,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         action_start_error = self.previous_position_error
         final_position_error = 0.0
         peak_step_jerk = 0.0
+        impulse_before_action = self.contact_impulse
         for _ in range(PHYSICS_STEPS_PER_ACTION):
             time_s = self.step_count * RL_DT + _ * CONTROL_DT
             position_error, orientation_error, twist_error, torque_ratio, jerk_norm = self._physics_step(time_s)
@@ -611,6 +614,9 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         # stiffness/return-drive offset after it has done useful work.
         residual_magnitude = float(np.mean(applied_action**2) + applied_drive_action**2)
         accumulated_reward -= self.residual_magnitude_penalty * residual_magnitude
+        # Training-only contact cost: the actor never receives force/contact
+        # data, but PPO can be scored on the physical impulse it induces.
+        accumulated_reward -= self.contact_impulse_penalty * max(0.0, self.contact_impulse - impulse_before_action)
         if self.recovery_gate_hold_s > 0.0:
             # This recovery objective is triggered only by the causal,
             # deployable error gate, not the known rod time.  It gives the
