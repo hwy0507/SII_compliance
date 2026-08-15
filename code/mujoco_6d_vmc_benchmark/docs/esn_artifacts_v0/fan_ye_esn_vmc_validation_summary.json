@@ -1,0 +1,171 @@
+{
+  "stage": "WBC-aware ESN-VMC development validation fixture; not V4 final test",
+  "fixture": {
+    "rod_approach_side": "negative_y",
+    "rod_start_time_s": 0.955,
+    "rod_stroke_m": 0.17
+  },
+  "baseline_vmc_gated": {
+    "tracking": {
+      "perturbation_position_rmse_m": 0.010222987318551839,
+      "recovery_position_rmse_m": 0.001839536600642886,
+      "recovery_iae_m_s": 0.0013672288468219592,
+      "post_release_peak_error_m": 0.003731237593096605,
+      "post_release_rebound_ratio": 1.0,
+      "pregrasp_position_error_m": 0.0013061601574304387,
+      "final_position_error_m": 0.001025683707195439
+    },
+    "motion": {
+      "recovery_speed_p95_mps": 0.02536660543994773,
+      "post_contact_speed_peak_mps": 0.2648390505489256,
+      "post_contact_speed_p95_mps": 0.24606367987413533,
+      "forward_surge_max_mps": 0.03135952077758316,
+      "acceleration_peak_mps2": 7.613533409458746,
+      "jerk_peak_mps3": 1891.8514537300666,
+      "post_contact_jerk_p95_mps3": 573.3608030129828
+    },
+    "torque": {
+      "applied_peak_nm": 30.097136023305698,
+      "applied_peak_ratio": 0.3459440922219046,
+      "applied_rms_nm": 13.398342896132146,
+      "applied_p95_nm": 29.513159663111168,
+      "torque_rate_peak_nmps": 174.60606234520702,
+      "hard_limit_fraction": 0.0
+    },
+    "rod_diagnostics": {
+      "contact_start_time_s": 1.12,
+      "contact_end_time_s": 1.412,
+      "contact_duration_s": 0.216,
+      "peak_contact_force_n": 47.827641999847536,
+      "contact_impulse_ns": 4.285149866995229,
+      "max_penetration_m": 0.003849002350726125
+    },
+    "phase_analysis": {
+      "labels": [
+        "approach",
+        "contact",
+        "unloading",
+        "rejoined",
+        "task"
+      ],
+      "contact_windows_s": [
+        [
+          1.12,
+          1.212
+        ],
+        [
+          1.288,
+          1.412
+        ]
+      ],
+      "primary_contact_start_s": 1.12,
+      "primary_contact_release_s": 1.212,
+      "rejoin_time_s": 1.548,
+      "release_to_rejoin_latency_s": 0.3360000000000001,
+      "secondary_contact_count": 1,
+      "secondary_contact_windows_s": [
+        [
+          1.288,
+          1.412
+        ]
+      ],
+      "phase_durations_s": {
+        "approach": 1.12,
+        "contact": 0.216,
+        "unloading": 0.212,
+        "rejoined": 0.852,
+        "task": 4.6000000000000005
+      }
+    },
+    "task_validity": {
+      "simulation_finite": true,
+      "physical_gripper_actuated": true,
+      "rod_hand_contact_observed": true,
+      "target_lifted_after_recovery": true,
+      "target_held_at_end": true,
+      "max_rod_penetration_m": 0.003849002350726125
+    }
+  },
+  "fan_ye_esn_vmc": {
+    "tracking": {
+      "perturbation_position_rmse_m": 0.00990660127841231,
+      "recovery_position_rmse_m": 0.001726770534836986,
+      "recovery_iae_m_s": 0.0012955695520969175,
+      "post_release_peak_error_m": 0.0034571710065462104,
+      "post_release_rebound_ratio": 1.0,
+      "pregrasp_position_error_m": 0.0012988158947356862,
+      "final_position_error_m": 0.0010250602939210532
+    },
+    "motion": {
+      "recovery_speed_p95_mps": 0.019799535266634416,
+      "post_contact_speed_peak_mps": 0.2649705468628592,
+      "post_contact_speed_p95_mps": 0.2482749543187658,
+      "forward_surge_max_mps": 0.034036313275776386,
+      "acceleration_peak_mps2": 7.614131471300366,
+      "jerk_peak_mps3": 1892.008984824356,
+      "post_contact_jerk_p95_mps3": 655.6894368554553
+    },
+    "torque": {
+      "applied_peak_nm": 30.10326762858471,
+      "applied_peak_ratio": 0.3460145704435024,
+      "applied_rms_nm": 13.398110686637827,
+      "applied_p95_nm": 29.500464707763726,
+      "torque_rate_peak_nmps": 173.55011079549953,
+      "hard_limit_fraction": 0.0
+    },
+    "rod_diagnostics": {
+      "contact_start_time_s": 1.12,
+      "contact_end_time_s": 1.412,
+      "contact_duration_s": 0.22,
+      "peak_contact_force_n": 47.81288998134322,
+      "contact_impulse_ns": 4.411190279409674,
+      "max_penetration_m": 0.003849265774500036
+    },
+    "phase_analysis": {
+      "labels": [
+        "approach",
+        "contact",
+        "unloading",
+        "rejoined",
+        "task"
+      ],
+      "contact_windows_s": [
+        [
+          1.12,
+          1.212
+        ],
+        [
+          1.28,
+          1.412
+        ]
+      ],
+      "primary_contact_start_s": 1.12,
+      "primary_contact_release_s": 1.212,
+      "rejoin_time_s": 1.532,
+      "release_to_rejoin_latency_s": 0.32000000000000006,
+      "secondary_contact_count": 1,
+      "secondary_contact_windows_s": [
+        [
+          1.28,
+          1.412
+        ]
+      ],
+      "phase_durations_s": {
+        "approach": 1.12,
+        "contact": 0.22,
+        "unloading": 0.192,
+        "rejoined": 0.868,
+        "task": 4.6000000000000005
+      }
+    },
+    "task_validity": {
+      "simulation_finite": true,
+      "physical_gripper_actuated": true,
+      "rod_hand_contact_observed": true,
+      "target_lifted_after_recovery": true,
+      "target_held_at_end": true,
+      "max_rod_penetration_m": 0.003849265774500036
+    }
+  },
+  "policy_trace_contract": "trace records raw ESN action, bounded action, projected kappa and projected recovery drive; policy input remains q/qdot/wbc_task_twist only"
+}

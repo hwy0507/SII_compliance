@@ -110,7 +110,10 @@ class FanYeInputNormalizer:
         return cls(np.maximum(np.median(np.abs(data), axis=0), floor))
 
     def transform(self, trace: np.ndarray) -> np.ndarray:
-        return np.clip(_finite_matrix(trace, STUDENT_INPUT_DIMENSION, "trace") / self.scales, -10.0, 10.0)
+        array = np.asarray(trace, dtype=float)
+        if array.ndim != 2 or array.shape[1] != STUDENT_INPUT_DIMENSION or len(array) < 1 or not np.all(np.isfinite(array)):
+            raise ValueError("trace must be a finite T x 20 array with T >= 1")
+        return np.clip(array / self.scales, -10.0, 10.0)
 
 
 def deployable_trace_from_arrays(
@@ -164,6 +167,20 @@ class FanYeAlignedESN:
     @property
     def feature_dimension(self) -> int:
         return self._readout.shape[1]
+
+    @property
+    def readout(self) -> np.ndarray:
+        """Return a copy of the fitted linear Fan-Ye readout matrix."""
+
+        return self._readout.copy()
+
+    def set_readout(self, readout: np.ndarray) -> None:
+        """Load a serialized ridge readout after validating its dimensions."""
+
+        matrix = np.asarray(readout, dtype=float)
+        if matrix.shape != self._readout.shape or not np.all(np.isfinite(matrix)):
+            raise ValueError("readout has invalid shape or non-finite values")
+        self._readout = matrix.copy()
 
     def reset(self, state: np.ndarray | None = None) -> None:
         if state is None:

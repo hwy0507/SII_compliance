@@ -1,0 +1,257 @@
+{
+  "kappa": null,
+  "kappa_vector": [
+    27.579838,
+    52.550787,
+    48.699427,
+    35.85958,
+    40.71983,
+    34.766858
+  ],
+  "config": {
+    "k_translation_base": 220.0,
+    "k_rotation_base": 18.0,
+    "zeta": 0.8,
+    "virtual_mass": 1.25,
+    "virtual_inertia": 0.08,
+    "carriage_drive_k_translation": 600.0,
+    "carriage_drive_k_rotation": 56.0,
+    "carriage_drive_zeta": 1.15,
+    "max_force": 24.0,
+    "max_moment": 3.0,
+    "max_carriage_speed": 0.55,
+    "max_carriage_angular_speed": 1.25,
+    "max_torque_rate_proximal": 700.0,
+    "max_torque_rate_distal": 160.0
+  },
+  "scenario": "physical rod perturbation during open-gripper grasp approach; compliant return to moving nominal trajectory tube",
+  "reference": "fixed-base Panda WBC output is supplied to the low-level compliance layer",
+  "wbc_interface": {
+    "source": "fixed_base_panda_resolved_rate_wbc_v1",
+    "fixed_wbc": true,
+    "contract": "per-tick planned SE(3) target -> bounded WBC pose target/task twist/joint velocity -> low-level compliance torque layer",
+    "wbc_may_not_read": "rod state, contact flag, contact force, obstacle state, or future release time",
+    "compliance_may_not_modify": "WBC target generation or high-level task plan"
+  },
+  "controller": {
+    "mode": "vmc_gated",
+    "description": "six-spring VMC with a causal measured-error held return-drive gate"
+  },
+  "esn_compliance_policy": {
+    "enabled": true,
+    "update_hz": 25.0,
+    "contact_drive_scale": 8.0,
+    "input_contract": "q(7), qdot(7), wbc_task_twist(6) only",
+    "may_not_read": "rod/contact/force/obstacle/future-release diagnostics"
+  },
+  "virtual_mechanism": {
+    "explicit_translational_carriage": true,
+    "explicit_translational_carriage_mass_kg": 1.0,
+    "explicit_rotational_carriage": false,
+    "explicit_rotational_carriage_inertia_scale": null,
+    "explicit_rotational_damping_ratio": null,
+    "rotation_channels": "existing controller-integrated SO(3) virtual carriage",
+    "explicit_force_norm_cap_n": 36.0
+  },
+  "rod_motion": {
+    "enabled": true,
+    "collision_removed_when_disabled": false,
+    "start_time_s": 0.955,
+    "profile_duration_s": 0.6399999999999999,
+    "cycles": 1,
+    "cycle_period_s": 0.8,
+    "final_end_time_s": 1.5949999999999998,
+    "stroke_m": 0.17,
+    "height_m": 0.54,
+    "center_x_m": 0.55,
+    "center_y_m": 0.0,
+    "approach_side": "negative_y",
+    "support_position_m": [
+      0.55,
+      -0.2,
+      0.54
+    ],
+    "slide_axis_world": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "rod_long_axis_world": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "cylinder_quaternion_wxyz": [
+      0.7071068,
+      0.0,
+      0.7071068,
+      0.0
+    ],
+    "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+  },
+  "stiffness_schedule": {
+    "contact_kappa_vector": [
+      27.579838,
+      52.550787,
+      48.699427,
+      35.85958,
+      40.71983,
+      34.766858
+    ],
+    "recovery_kappa_vector": [
+      27.579838,
+      52.550787,
+      48.699427,
+      35.85958,
+      40.71983,
+      34.766858
+    ],
+    "shared_six_channel_contact_kappa": null,
+    "shared_six_channel_recovery_kappa": null,
+    "recovery_ramp_start_s": 1.5949999999999998,
+    "recovery_ramp_duration_s": 0.08,
+    "recovery_carriage_drive_scale_factor": 1.75,
+    "causal_recovery_gate": {
+      "enabled": true,
+      "hold_s": 0.28,
+      "taper_s": null,
+      "mean_gate": 0.15371031632709115,
+      "uses_contact_or_future_release": false
+    },
+    "energy_budget_safety": {
+      "enabled": false,
+      "configuration": null,
+      "mean_tank_energy_j": null,
+      "minimum_tank_energy_j": null,
+      "mean_direction_scale": null,
+      "mean_energy_scale": null,
+      "uses_contact_or_future_release": false,
+      "claim": "energy-budget / passivity-inspired constraint on the incremental return drive; not a global passivity proof for the moving-reference robot"
+    }
+  },
+  "visualization": {
+    "nominal_marker": "bright blue sphere",
+    "actual_marker": "magenta sphere",
+    "actual_trail": "magenta 0.48 s end-effector history (exact, no visual scaling)",
+    "virtual_carriage_marker": "cyan sphere",
+    "nominal_path": "faint blue dotted curve",
+    "playback_speed": 1.0,
+    "camera_view": "overview",
+    "render_window_s": [
+      0.0,
+      7.0
+    ]
+  },
+  "grasp_time_s": 2.4,
+  "contact_time_constant_s": 0.015,
+  "task_validity": {
+    "simulation_finite": true,
+    "physical_gripper_actuated": true,
+    "rod_hand_contact_observed": true,
+    "target_lifted_after_recovery": true,
+    "target_held_at_end": true,
+    "max_rod_penetration_m": 0.003849265774500036
+  },
+  "six_spring_response": {
+    "peak_carriage_displacement": [
+      0.001025948473387439,
+      0.00365371051042241,
+      0.0010515337849783535,
+      0.0024503661085640603,
+      0.0011636331999677345,
+      0.001359749088670582
+    ],
+    "peak_translational_displacement_m": 0.0039380063566439435,
+    "peak_rotational_displacement_rad": 0.0030343457077609015,
+    "peak_virtual_wrench": [
+      0.0,
+      0.0,
+      0.0,
+      1.5767510898161277,
+      0.8190614483995429,
+      0.9274102229856975
+    ],
+    "peak_virtual_force_n": 0.0,
+    "peak_explicit_translational_spring_force_n": 27.301246670048357,
+    "peak_explicit_rotational_spring_moment_nm": 0.0,
+    "peak_virtual_moment_nm": 2.004269287593133,
+    "peak_end_effector_nominal_deviation_m": 0.018784205345514417,
+    "pregrasp_rejoin_error_m": 0.0012988158947356862,
+    "rejoin_fraction": 0.06914404260629729,
+    "error_at_rod_release_m": 0.0034571710065462104,
+    "release_to_pregrasp_error_drop_m": 0.002158355111810524,
+    "release_to_pregrasp_error_drop_fraction": 0.6243125109297871
+  },
+  "tracking": {
+    "perturbation_position_rmse_m": 0.00990660127841231,
+    "recovery_position_rmse_m": 0.001726770534836986,
+    "recovery_iae_m_s": 0.0012955695520969175,
+    "post_release_peak_error_m": 0.0034571710065462104,
+    "post_release_rebound_ratio": 1.0,
+    "pregrasp_position_error_m": 0.0012988158947356862,
+    "final_position_error_m": 0.0010250602939210532
+  },
+  "motion": {
+    "recovery_speed_p95_mps": 0.019799535266634416,
+    "post_contact_speed_peak_mps": 0.2649705468628592,
+    "post_contact_speed_p95_mps": 0.2482749543187658,
+    "forward_surge_max_mps": 0.034036313275776386,
+    "acceleration_peak_mps2": 7.614131471300366,
+    "jerk_peak_mps3": 1892.008984824356,
+    "post_contact_jerk_p95_mps3": 655.6894368554553
+  },
+  "torque": {
+    "applied_peak_nm": 30.10326762858471,
+    "applied_peak_ratio": 0.3460145704435024,
+    "applied_rms_nm": 13.398110686637827,
+    "applied_p95_nm": 29.500464707763726,
+    "torque_rate_peak_nmps": 173.55011079549953,
+    "hard_limit_fraction": 0.0
+  },
+  "rod_diagnostics": {
+    "contact_start_time_s": 1.12,
+    "contact_end_time_s": 1.412,
+    "contact_duration_s": 0.22,
+    "peak_contact_force_n": 47.81288998134322,
+    "contact_impulse_ns": 4.411190279409674,
+    "max_penetration_m": 0.003849265774500036
+  },
+  "phase_analysis": {
+    "labels": [
+      "approach",
+      "contact",
+      "unloading",
+      "rejoined",
+      "task"
+    ],
+    "contact_windows_s": [
+      [
+        1.12,
+        1.212
+      ],
+      [
+        1.28,
+        1.412
+      ]
+    ],
+    "primary_contact_start_s": 1.12,
+    "primary_contact_release_s": 1.212,
+    "rejoin_time_s": 1.532,
+    "release_to_rejoin_latency_s": 0.32000000000000006,
+    "secondary_contact_count": 1,
+    "secondary_contact_windows_s": [
+      [
+        1.28,
+        1.412
+      ]
+    ],
+    "phase_durations_s": {
+      "approach": 1.12,
+      "contact": 0.22,
+      "unloading": 0.192,
+      "rejoined": 0.868,
+      "task": 4.6000000000000005
+    }
+  },
+  "gif": null
+}

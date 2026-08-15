@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "stage": "held-out analytic-teacher readout generalization only",
+  "student_input": [
+    "joint_position",
+    "joint_velocity",
+    "wbc_task_twist"
+  ],
+  "student_excludes": [
+    "rod_contact",
+    "rod_force",
+    "rod_penetration",
+    "rod_state",
+    "obstacle_pose_or_geometry",
+    "future_release",
+    "fixture_id",
+    "recovery_gate"
+  ],
+  "candidate_index": 22,
+  "training_teacher_mse": 0.0036359673399386167,
+  "validation_teacher_mse": 0.004039473287053823,
+  "episodes": [
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_validation_negative_x_c0_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150,
+      "teacher_mse": 0.003547936133451441,
+      "prediction_abs_max": 0.759471647126656
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_validation_negative_x_c0_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150,
+      "teacher_mse": 0.003666827450255458,
+      "prediction_abs_max": 0.6962888800776319
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_validation_negative_y_c2_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150,
+      "teacher_mse": 0.006344008897863032,
+      "prediction_abs_max": 1.015357469509135
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_validation_negative_y_c2_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150,
+      "teacher_mse": 0.0033567425100960438,
+      "prediction_abs_max": 0.7791990791870942
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_validation_negative_z_c4_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150,
+      "teacher_mse": 0.0037588535916373684,
+      "prediction_abs_max": 0.8564580894129667
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_validation_negative_z_c4_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150,
+      "teacher_mse": 0.004359926332234386,
+      "prediction_abs_max": 1.0599934468662298
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_validation_positive_x_c1_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150,
+      "teacher_mse": 0.003496640749087728,
+      "prediction_abs_max": 0.9018515541122645
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_validation_positive_y_c3_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150,
+      "teacher_mse": 0.005153799598340092,
+      "prediction_abs_max": 1.013723292095739
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_validation_positive_y_c3_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150,
+      "teacher_mse": 0.003982745586156288,
+      "prediction_abs_max": 0.9032216447911543
+    },
+    {
+      "path": "/tmp/esn_wbc_positive_x_early_probe_20260815/runs/esn_wbc_validation_positive_x_c1_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150,
+      "teacher_mse": 0.0033091361258067273,
+      "prediction_abs_max": 0.79590005153339
+    },
+    {
+      "path": "/tmp/esn_wbc_positive_x_early_probe_20260815/runs/esn_wbc_validation_positive_x_c1_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150,
+      "teacher_mse": 0.0034575891826634873,
+      "prediction_abs_max": 0.889384313498613
+    }
+  ],
+  "warning": "This is teacher-action MSE on held-out traces, not a closed-loop task, collision, torque, or tracking benchmark."
+}

@@ -21,13 +21,14 @@ import json
 import os
 from dataclasses import asdict, dataclass, replace
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 import imageio.v3 as iio
 import mujoco
 import numpy as np
 
 from energy_safety import EnergyBudgetSafety, EnergySafetyConfig
+from esn_compliance import ESNObservation, ProjectedComplianceAction
 from fixed_panda_wbc import FixedBasePandaWBC
 from run_benchmark import (
     ARM_DOF,
@@ -553,11 +554,16 @@ def run_episode(
     recovery_gate_taper_s: float = 0.04,
     energy_safety_config: EnergySafetyConfig | None = None,
     reference_source: str = "proxy",
+    compliance_policy: Callable[[ESNObservation], ProjectedComplianceAction] | None = None,
+    policy_update_hz: float = 25.0,
+    policy_contact_drive_scale: float = 8.0,
 ) -> dict[str, Any]:
     if controller_mode not in CONTROLLER_MODES:
         raise ValueError(f"unknown controller mode: {controller_mode}")
     if reference_source not in REFERENCE_SOURCES:
         raise ValueError(f"unknown reference source: {reference_source}")
+    if compliance_policy is not None and (controller_mode not in VMC_MODES or policy_update_hz <= 0.0 or policy_contact_drive_scale <= 0.0):
+        raise ValueError("an ESN compliance policy requires a VMC mode and positive policy scales")
     if controller_mode not in VMC_MODES and (explicit_translational_carriage or explicit_rotational_carriage):
         raise ValueError("explicit virtual carriages are available only for VMC controller modes")
     if explicit_rotational_carriage and not explicit_translational_carriage:
@@ -690,6 +696,7 @@ def run_episode(
         "energy_tank_j", "energy_direction_scale", "energy_scale", "energy_requested_boost_n", "energy_applied_boost_n",
         "explicit_carriage_position", "explicit_carriage_velocity", "explicit_carriage_force",
         "explicit_carriage_rotation", "explicit_carriage_angular_velocity", "explicit_carriage_moment",
+        "esn_raw_action", "esn_bounded_action", "esn_projected_kappa", "esn_projected_recovery_drive_scale", "esn_policy_active",
         "simulation_finite",
     )}
     previous_twist = np.zeros(6)
@@ -699,6 +706,8 @@ def run_episode(
     rod_hand_observed = False
     recovery_gate_remaining_s = 0.0
     energy_safety = EnergyBudgetSafety(energy_safety_config) if controller_mode == "vmc_energy" else None
+    policy_update_stride = max(1, round(1.0 / (policy_update_hz * CONTROL_DT)))
+    policy_action: ProjectedComplianceAction | None = None
     steps = int(SIM_TIME_S / CONTROL_DT)
 
     for step in range(steps):
@@ -727,6 +736,12 @@ def run_episode(
             wbc_joint_velocity = wbc_command.joint_velocity_radps
             wbc_position_error = wbc_command.position_error_m
             wbc_orientation_error = wbc_command.orientation_error_rad
+        if compliance_policy is not None and step % policy_update_stride == 0:
+            # The callback receives exactly the deployed student observation.
+            # No rod/contact/force/obstacle/future diagnostic is in scope.
+            policy_action = compliance_policy(ESNObservation(
+                data.qpos[:ARM_DOF].copy(), data.qvel[:ARM_DOF].copy(), wbc_task_twist.copy(),
+            ))
         if explicit_translational_carriage and step == 0:
             data.qpos[explicit_carriage_qpos_indices] = nominal_position
             data.qvel[explicit_carriage_dof_indices] = nominal_twist[:3]
@@ -735,6 +750,8 @@ def run_episode(
                 data.qvel[explicit_rotation_dof_indices] = nominal_twist[3:]
             mujoco.mj_forward(model, data)
         active_kappa = stiffness_schedule(time_s, kappa_vector, recovery_kappa_vector, recovery_ramp_s, rod_final_release_s)
+        if policy_action is not None:
+            active_kappa = policy_action.kappa.copy()
         rod_displacement, rod_velocity = rod_motion(
             time_s, rod_stroke_m, rod_start_time_s, rod_cycles, rod_cycle_period_s
         ) if rod_enabled else (0.0, 0.0)
@@ -770,7 +787,11 @@ def run_episode(
             else:
                 held_gate = float(recovery_gate_remaining_s > 0.0)
             recovery_gate = max(instant_gate, held_gate)
-            active_drive_scale = 1.0 + recovery_gate * (recovery_drive_scale_factor - 1.0)
+            policy_recovery_factor = (
+                recovery_drive_scale_factor if policy_action is None
+                else policy_action.recovery_drive_scale / policy_contact_drive_scale
+            )
+            active_drive_scale = 1.0 + recovery_gate * (policy_recovery_factor - 1.0)
         else:
             recovery_gate = 0.0
             active_drive_scale = stiffness_schedule(time_s, 1.0, recovery_drive_scale_factor, recovery_ramp_s, rod_final_release_s)
@@ -944,6 +965,11 @@ def run_episode(
             "explicit_carriage_rotation": explicit_rotation.tolist(),
             "explicit_carriage_angular_velocity": explicit_angular_velocity.tolist(),
             "explicit_carriage_moment": explicit_moment.tolist(),
+            "esn_raw_action": np.zeros(7).tolist() if policy_action is None else policy_action.raw_action.tolist(),
+            "esn_bounded_action": np.zeros(7).tolist() if policy_action is None else policy_action.bounded_action.tolist(),
+            "esn_projected_kappa": active_kappa.tolist() if policy_action is None else policy_action.kappa.tolist(),
+            "esn_projected_recovery_drive_scale": 0.0 if policy_action is None else policy_action.recovery_drive_scale,
+            "esn_policy_active": compliance_policy is not None,
             "simulation_finite": bool(np.isfinite(data.qpos).all() and np.isfinite(data.qvel).all()),
         }
         for key, value in values.items():
@@ -1025,6 +1051,13 @@ def run_episode(
                 "vmc_taper": "six-spring VMC with a causal measured-error gate and smooth terminal taper",
                 "vmc_energy": "six-spring VMC with causal error gate, direction smoothing, and an energy-budget safety filter on recovery-drive increment",
             }[controller_mode],
+        },
+        "esn_compliance_policy": {
+            "enabled": compliance_policy is not None,
+            "update_hz": policy_update_hz if compliance_policy is not None else None,
+            "contact_drive_scale": policy_contact_drive_scale if compliance_policy is not None else None,
+            "input_contract": "q(7), qdot(7), wbc_task_twist(6) only" if compliance_policy is not None else None,
+            "may_not_read": "rod/contact/force/obstacle/future-release diagnostics" if compliance_policy is not None else None,
         },
         "virtual_mechanism": {
             "explicit_translational_carriage": explicit_translational_carriage,

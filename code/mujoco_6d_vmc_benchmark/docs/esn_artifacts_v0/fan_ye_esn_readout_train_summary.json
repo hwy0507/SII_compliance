@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "stage": "Fan Ye-aligned ESN ridge readout warm-start from causal analytic VMC teacher",
+  "candidate_index": 22,
+  "config": {
+    "reservoir_size": 64,
+    "spectral_radius": 1.8663904393867368,
+    "input_scale": 1.6012499165987573,
+    "time_constant_s": 0.0514884550621249,
+    "connection_probability": 0.1609480434868163,
+    "bias_scale": 0.6479039152241401,
+    "ridge_lambda": 0.007569141281025282,
+    "dt_s": 0.04,
+    "seed": 20260838
+  },
+  "student_input": [
+    "joint_position",
+    "joint_velocity",
+    "wbc_task_twist"
+  ],
+  "student_excludes": [
+    "rod_contact",
+    "rod_force",
+    "rod_penetration",
+    "rod_state",
+    "obstacle_pose_or_geometry",
+    "future_release",
+    "fixture_id",
+    "recovery_gate"
+  ],
+  "teacher": {
+    "type": "causal analytic VMC recovery-gate template",
+    "config": {
+      "translation_log_kappa_softening": -0.55,
+      "rotation_log_kappa_softening": -0.25,
+      "recovery_drive_boost": 0.65
+    },
+    "source": "existing VMC tracking-error recovery_gate only"
+  },
+  "sample_stride": 10,
+  "washout_steps": 25,
+  "episodes": [
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_negative_x_c0_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_negative_x_c0_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_negative_y_c2_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_negative_y_c2_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_negative_z_c4_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_negative_z_c4_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_positive_x_c1_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_positive_y_c3_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150
+    },
+    {
+      "path": "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_positive_y_c3_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150
+    },
+    {
+      "path": "/tmp/esn_wbc_positive_x_early_probe_20260815/runs/esn_wbc_train_positive_x_c1_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150
+    },
+    {
+      "path": "/tmp/esn_wbc_positive_x_early_probe_20260815/runs/esn_wbc_train_positive_x_c1_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+      "samples_after_washout": 150
+    }
+  ],
+  "training_samples": 1650,
+  "readout_training_mse": 0.0036359673399386167,
+  "model_npz": "/tmp/esn_fan_ye_readout_20260815/fan_ye_esn_candidate22_warmstart.npz",
+  "warning": "Training MSE is teacher-imitation fit only. It is not a closed-loop performance metric and must not be compared to VMC baselines."
+}
