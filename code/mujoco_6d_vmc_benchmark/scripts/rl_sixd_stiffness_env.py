@@ -44,6 +44,9 @@ from run_rod_perturbation_benchmark import (
     rod_contact_diagnostics,
     rod_motion,
 )
+from fixed_panda_wbc import FixedBasePandaWBC
+from fan_ye_esn_rl_adapter import FanYeESNRLObservationAdapter
+from esn_compliance import ESNObservation
 from stiffness_training_core import (
     DriveResidualActionConfig,
     EFFECTIVE_COLLISION_GATE,
@@ -79,6 +82,9 @@ class Fixture:
     rod_height_m: float
     rod_start_time_s: float
     grasp_time_s: float = GRASP_TIME_S
+    rod_approach_side: str = "negative_y"
+    rod_center_x_m: float = 0.55
+    rod_center_y_m: float = 0.0
 
 
 def default_fixtures() -> tuple[Fixture, ...]:
@@ -128,6 +134,9 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         jerk_reference_mps3: float = 1200.0,
         kappa_max_log_rate_per_s: float = 1.6,
         drive_max_log_rate_per_s: float = 1.0,
+        reference_source: str = "proxy",
+        fan_ye_model_npz: str | Path | None = None,
+        fan_ye_train_summary_json: str | Path | None = None,
         seed: int | None = None,
     ) -> None:
         super().__init__()
@@ -149,13 +158,19 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.jerk_reference_mps3 = float(jerk_reference_mps3)
         self.kappa_max_log_rate_per_s = float(kappa_max_log_rate_per_s)
         self.drive_max_log_rate_per_s = float(drive_max_log_rate_per_s)
+        if reference_source not in ("proxy", "fixed_panda_wbc"):
+            raise ValueError("reference_source must be proxy or fixed_panda_wbc")
+        if (fan_ye_model_npz is None) != (fan_ye_train_summary_json is None):
+            raise ValueError("Fan Ye ESN actor requires both model and training summary")
+        self.reference_source = reference_source
+        self.fan_ye_adapter = None if fan_ye_model_npz is None else FanYeESNRLObservationAdapter(Path(fan_ye_model_npz), Path(fan_ye_train_summary_json))
         if not self.fixtures:
             raise ValueError("at least one physical fixture is required")
         self.action_config = StiffnessActionConfig(base_kappa=WARM_START_KAPPA, max_log_rate_per_s=self.kappa_max_log_rate_per_s)
         self.drive_action_config = DriveResidualActionConfig(base_recovery_drive_scale=RECOVERY_CARRIAGE_DRIVE_SCALE, max_log_rate_per_s=self.drive_max_log_rate_per_s)
         self.config = VMCConfig(zeta=0.8, carriage_drive_k_translation=75.0 * CONTACT_CARRIAGE_DRIVE_SCALE)
         action_dimension = 7 if self.enable_drive_residual else 6
-        observation_dimension = 52 if self.enable_drive_residual else 51
+        observation_dimension = self.fan_ye_adapter.feature_dimension if self.fan_ye_adapter is not None else (52 if self.enable_drive_residual else 51)
         self.action_space = gym.spaces.Box(-1.0, 1.0, shape=(action_dimension,), dtype=np.float32)
         self.observation_space = gym.spaces.Box(-10.0, 10.0, shape=(observation_dimension,), dtype=np.float32)
         self.model: mujoco.MjModel | None = None
@@ -163,6 +178,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.ids: dict[str, int] = {}
         self.controller: SixDVirtualCarriage | None = None
         self.reference: PickLiftCarryReference | None = None
+        self.fixed_wbc: FixedBasePandaWBC | None = None
         self.fixture = self.fixtures[0]
         self.step_count = 0
         self.previous_action = np.zeros(6, dtype=float)
@@ -211,6 +227,9 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             self.fixture.rod_height_m,
             explicit_translational_carriage=True,
             carriage_mass_kg=CARRIAGE_MASS_KG,
+            rod_approach_side=self.fixture.rod_approach_side,
+            rod_center_x_m=self.fixture.rod_center_x_m,
+            rod_center_y_m=self.fixture.rod_center_y_m,
         )
         model, data = self.model, self.data
         object_ids = {
@@ -251,17 +270,29 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         data.qvel[self._target_dof:self._target_dof + 6] = 0.0
         mujoco.mj_forward(model, data)
         self.reference = PickLiftCarryReference(model, data, self._hand_id)
-        nominal_position, nominal_rotation, nominal_linear, _ = self.reference.sample(0.0)
+        self.fixed_wbc = FixedBasePandaWBC(model, self._hand_id, data.qpos[:ARM_DOF]) if self.reference_source == "fixed_panda_wbc" else None
+        nominal_position, nominal_rotation, nominal_twist = self._reference_command(0.0)
         data.qpos[self._explicit_qpos] = nominal_position
-        data.qvel[self._explicit_dof] = nominal_linear
+        data.qvel[self._explicit_dof] = nominal_twist[:3]
         mujoco.mj_forward(model, data)
         self.controller = SixDVirtualCarriage(
             self.config, self.current_kappa, data.xpos[self._hand_id].copy(), data.xmat[self._hand_id].reshape(3, 3).copy()
         )
 
+    def _reference_command(self, time_s: float) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """Return the fixed planned target after optional causal WBC resolution."""
+
+        assert self.data is not None and self.reference is not None
+        position, rotation, linear, angular = self.reference.sample(time_s)
+        planned_twist = np.concatenate([linear, angular])
+        if self.fixed_wbc is None:
+            return position, rotation, planned_twist
+        command = self.fixed_wbc.command(self.data, position, rotation, planned_twist)
+        return command.target_position_m, command.target_rotation, command.task_twist_world
+
     def _observation(self, time_s: float) -> np.ndarray:
         assert self.data is not None and self.reference is not None
-        nominal_position, nominal_rotation, nominal_linear, nominal_angular = self.reference.sample(time_s)
+        nominal_position, nominal_rotation, nominal_twist = self._reference_command(time_s)
         ee_position = self.data.xpos[self._hand_id].copy()
         ee_rotation = self.data.xmat[self._hand_id].reshape(3, 3).copy()
         ee_twist = body_twist(self.model, self.data, self._hand_id)
@@ -272,13 +303,15 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         fields = {
             "position_error_world": nominal_position - ee_position,
             "orientation_error_world": so3_log(nominal_rotation @ ee_rotation.T),
-            "twist_error_world": np.concatenate([nominal_linear, nominal_angular]) - ee_twist,
+            "twist_error_world": nominal_twist - ee_twist,
             "joint_position": self.data.qpos[:ARM_DOF].copy(),
             "joint_velocity": self.data.qvel[:ARM_DOF].copy(),
             "carriage_displacement": np.concatenate([carriage_position - ee_position, angular_displacement]),
             "carriage_velocity": np.concatenate([carriage_velocity, angular_velocity]),
             "applied_torque_ratio": np.abs(self.previous_torque) / TORQUE_LIMITS,
         }
+        if self.fan_ye_adapter is not None:
+            return self.fan_ye_adapter.observe(ESNObservation(self.data.qpos[:ARM_DOF].copy(), self.data.qvel[:ARM_DOF].copy(), nominal_twist.copy()))
         observation = (
             deployment_observation_with_drive_residual(
                 **fields, previous_stiffness_action=self.previous_action, previous_drive_action=self.previous_drive_action,
@@ -315,6 +348,8 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         self.cumulative_energy_scale = 0.0
         self.energy_safety_step_count = 0
         self._build_scene()
+        if self.fan_ye_adapter is not None:
+            self.fan_ye_adapter.reset()
         assert self.data is not None
         self.previous_torque = self.data.qfrc_bias[:ARM_DOF].copy()
         self.previous_twist[:] = 0.0
@@ -324,8 +359,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
     def _physics_step(self, time_s: float) -> tuple[float, float, float, float, float]:
         assert self.model is not None and self.data is not None and self.controller is not None and self.reference is not None
         model, data = self.model, self.data
-        nominal_position, nominal_rotation, nominal_linear, nominal_angular = self.reference.sample(time_s)
-        nominal_twist = np.concatenate([nominal_linear, nominal_angular])
+        nominal_position, nominal_rotation, nominal_twist = self._reference_command(time_s)
         rod_displacement, _ = (
             rod_motion(time_s, self.fixture.rod_stroke_m, self.fixture.rod_start_time_s)
             if self.rod_enabled else (0.0, 0.0)
@@ -451,7 +485,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
 
         assert self.data is not None and self.reference is not None
         time_s = min(self.step_count * RL_DT, SIM_TIME_S)
-        nominal_position, nominal_rotation, nominal_linear, nominal_angular = self.reference.sample(time_s)
+        nominal_position, nominal_rotation, nominal_twist = self._reference_command(time_s)
         ee_position = self.data.xpos[self._hand_id].copy()
         ee_rotation = self.data.xmat[self._hand_id].reshape(3, 3).copy()
         ee_twist = body_twist(self.model, self.data, self._hand_id)
@@ -462,7 +496,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
             "ee_twist": ee_twist,
             "nominal_position": nominal_position,
             "nominal_rotation": nominal_rotation,
-            "nominal_twist": np.concatenate([nominal_linear, nominal_angular]),
+            "nominal_twist": nominal_twist,
             "kappa": self.current_kappa.copy(),
             "applied_torque": self.previous_torque.copy(),
             "recovery_drive_scale": self.current_recovery_drive_scale,
@@ -482,7 +516,7 @@ class PandaSixDStiffnessEnv(gym.Env[np.ndarray, np.ndarray]):
         """
 
         assert self.data is not None and self.reference is not None
-        nominal_position, _, _, _ = self.reference.sample(time_s)
+        nominal_position, _, _ = self._reference_command(time_s)
         position_error = float(np.linalg.norm(nominal_position - self.data.xpos[self._hand_id]))
         phase = np.clip((position_error - 0.003) / 0.009, 0.0, 1.0)
         return float(phase * phase * (3.0 - 2.0 * phase))
