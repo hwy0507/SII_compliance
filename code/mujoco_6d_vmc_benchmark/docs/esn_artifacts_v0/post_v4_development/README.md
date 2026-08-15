@@ -58,3 +58,4 @@ fixtures before being called an improvement.
 ## Artifact
 
 - [screening manifest](/Users/hwy/Desktop/个人/科研/SII科研/compliance/0709/code/mujoco_6d_vmc_benchmark/docs/esn_artifacts_v0/post_v4_development/esn_post_v4_development_manifest.json)
+- [Fan Ye ESN 84-D WBC actor-interface smoke](/Users/hwy/Desktop/个人/科研/SII科研/compliance/0709/code/mujoco_6d_vmc_benchmark/docs/esn_artifacts_v0/post_v4_development/fan_ye_esn_rl_interface_smoke.json)

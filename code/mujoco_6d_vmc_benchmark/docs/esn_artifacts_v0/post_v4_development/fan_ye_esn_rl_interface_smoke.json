@@ -1,0 +1,41 @@
+{
+  "stage": "Fan Ye ESN WBC-aware RL-interface smoke only; no RL optimization",
+  "actor_input": [
+    "joint_position_7",
+    "joint_velocity_7",
+    "wbc_task_twist_6"
+  ],
+  "actor_excludes": [
+    "rod_contact",
+    "rod_force",
+    "rod_penetration",
+    "rod_state",
+    "obstacle_pose_or_geometry",
+    "future_release",
+    "fixture_id",
+    "recovery_gate"
+  ],
+  "feature_dimension": 84,
+  "reservoir_state_dimension": 64,
+  "train": {
+    "trace_count": 9,
+    "samples": 1575,
+    "feature_shape": [
+      1575,
+      84
+    ],
+    "finite": true,
+    "feature_abs_max": 10.0
+  },
+  "validation": {
+    "trace_count": 9,
+    "samples": 1575,
+    "feature_shape": [
+      1575,
+      84
+    ],
+    "finite": true,
+    "feature_abs_max": 10.0
+  },
+  "warning": "This verifies the deployable ESN actor feature interface on physical traces. It is not an RL training, reward, or performance claim."
+}
