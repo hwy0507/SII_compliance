@@ -28,6 +28,7 @@ import mujoco
 import numpy as np
 
 from energy_safety import EnergyBudgetSafety, EnergySafetyConfig
+from fixed_panda_wbc import FixedBasePandaWBC
 from run_benchmark import (
     ARM_DOF,
     CONTROL_DT,
@@ -63,6 +64,7 @@ DEFAULT_CONTACT_TIME_CONSTANT_S = 0.015
 PATH_MARKER_COUNT = 13
 ACTUAL_TRAIL_COUNT = 12
 CAMERA_VIEWS = ("overview", "hand-closeup")
+REFERENCE_SOURCES = ("proxy", "fixed_panda_wbc")
 CONTROLLER_MODES = ("rigid", "impedance", "vmc", "vmc_gated", "vmc_taper", "vmc_energy")
 VMC_MODES = ("vmc", "vmc_gated", "vmc_taper", "vmc_energy")
 ROD_APPROACH_SIDES = ("negative_x", "positive_x", "negative_y", "positive_y", "negative_z", "positive_z")
@@ -550,9 +552,12 @@ def run_episode(
     recovery_gate_hold_s: float = 0.28,
     recovery_gate_taper_s: float = 0.04,
     energy_safety_config: EnergySafetyConfig | None = None,
+    reference_source: str = "proxy",
 ) -> dict[str, Any]:
     if controller_mode not in CONTROLLER_MODES:
         raise ValueError(f"unknown controller mode: {controller_mode}")
+    if reference_source not in REFERENCE_SOURCES:
+        raise ValueError(f"unknown reference source: {reference_source}")
     if controller_mode not in VMC_MODES and (explicit_translational_carriage or explicit_rotational_carriage):
         raise ValueError("explicit virtual carriages are available only for VMC controller modes")
     if explicit_rotational_carriage and not explicit_translational_carriage:
@@ -653,6 +658,10 @@ def run_episode(
     mujoco.mj_forward(model, data)
 
     reference = PickLiftCarryReference(model, data, ids["hand"])
+    fixed_wbc = (
+        FixedBasePandaWBC(model, ids["hand"], data.qpos[:ARM_DOF])
+        if reference_source == "fixed_panda_wbc" else None
+    )
     # The dotted blue curve makes the target moving trajectory visible in the
     # GIF; it is a visual aid only and never contributes collision/contact.
     for index, marker_mocap in enumerate(path_marker_mocaps):
@@ -676,6 +685,7 @@ def run_episode(
         # rod state, and contact force remain diagnostics only and must not be
         # consumed by the eventual deployed policy.
         "ee_rotation", "nominal_rotation", "ee_twist", "nominal_twist", "joint_position", "joint_velocity",
+        "wbc_task_twist", "wbc_joint_velocity", "wbc_position_error", "wbc_orientation_error",
         "object_position", "object_hand_distance", "rod_displacement", "rod_command_velocity", "active_kappa", "active_drive_scale", "recovery_gate",
         "energy_tank_j", "energy_direction_scale", "energy_scale", "energy_requested_boost_n", "energy_applied_boost_n",
         "explicit_carriage_position", "explicit_carriage_velocity", "explicit_carriage_force",
@@ -698,8 +708,25 @@ def run_episode(
         # Starting at the held reference from t=0 would create an artificial
         # tracking jump that could be mistaken for a collision response.
         reference_time_s = min(time_s, 1.70) if response_only else time_s
-        nominal_position, nominal_rotation, nominal_linear, nominal_angular = reference.sample(reference_time_s)
-        nominal_twist = np.concatenate([nominal_linear, nominal_angular])
+        planned_position, planned_rotation, planned_linear, planned_angular = reference.sample(reference_time_s)
+        planned_twist = np.concatenate([planned_linear, planned_angular])
+        ee_position = data.xpos[ids["hand"]].copy()
+        ee_rotation = data.xmat[ids["hand"]].reshape(3, 3).copy()
+        ee_twist = body_twist(model, data, ids["hand"])
+        if fixed_wbc is None:
+            nominal_position, nominal_rotation, nominal_twist = planned_position, planned_rotation, planned_twist
+            wbc_task_twist = nominal_twist.copy()
+            wbc_joint_velocity = np.zeros(ARM_DOF)
+            wbc_position_error = np.zeros(3)
+            wbc_orientation_error = np.zeros(3)
+        else:
+            wbc_command = fixed_wbc.command(data, planned_position, planned_rotation, planned_twist)
+            nominal_position, nominal_rotation = wbc_command.target_position_m, wbc_command.target_rotation
+            nominal_twist = wbc_command.task_twist_world
+            wbc_task_twist = wbc_command.task_twist_world
+            wbc_joint_velocity = wbc_command.joint_velocity_radps
+            wbc_position_error = wbc_command.position_error_m
+            wbc_orientation_error = wbc_command.orientation_error_rad
         if explicit_translational_carriage and step == 0:
             data.qpos[explicit_carriage_qpos_indices] = nominal_position
             data.qvel[explicit_carriage_dof_indices] = nominal_twist[:3]
@@ -729,9 +756,6 @@ def run_episode(
         data.mocap_pos[nominal_marker_mocap] = nominal_position
         data.mocap_quat[nominal_marker_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
 
-        ee_position = data.xpos[ids["hand"]].copy()
-        ee_rotation = data.xmat[ids["hand"]].reshape(3, 3).copy()
-        ee_twist = body_twist(model, data, ids["hand"])
         if controller_mode in ("vmc_gated", "vmc_taper", "vmc_energy"):
             position_error = float(np.linalg.norm(nominal_position - ee_position))
             instant_phase = np.clip((position_error - 0.003) / 0.009, 0.0, 1.0)
@@ -870,6 +894,7 @@ def run_episode(
         rod_hand_observed = rod_hand_observed or rod_contact
         acceleration = (ee_twist - previous_twist) / CONTROL_DT
         jerk = (acceleration - previous_acceleration) / CONTROL_DT
+        nominal_linear = nominal_twist[:3]
         direction = nominal_linear / (np.linalg.norm(nominal_linear) + EPS)
         surge = max(0.0, float(np.dot(ee_twist[:3], direction) - np.linalg.norm(nominal_linear)))
         target_position = data.xpos[ids["target_body"]].copy()
@@ -897,6 +922,10 @@ def run_episode(
             "nominal_twist": nominal_twist.tolist(),
             "joint_position": data.qpos[:ARM_DOF].copy().tolist(),
             "joint_velocity": data.qvel[:ARM_DOF].copy().tolist(),
+            "wbc_task_twist": wbc_task_twist.tolist(),
+            "wbc_joint_velocity": wbc_joint_velocity.tolist(),
+            "wbc_position_error": wbc_position_error.tolist(),
+            "wbc_orientation_error": wbc_orientation_error.tolist(),
             "object_position": target_position.tolist(),
             "object_hand_distance": float(np.linalg.norm(target_position - ee_position)),
             "rod_displacement": rod_displacement,
@@ -934,7 +963,8 @@ def run_episode(
 
     if renderer is not None:
         renderer.close()
-        gif_path = output_dir / f"rod_perturbation_kappa_{kappa:.2f}.gif"
+        render_file_tag = kappa_filename_tag(kappa if np.asarray(kappa).ndim == 0 else kappa_vector)
+        gif_path = output_dir / f"rod_perturbation_{render_file_tag}.gif"
         iio.imwrite(gif_path, np.stack(frames), duration=1.0 / (RENDER_FPS * playback_speed), loop=0)
     else:
         gif_path = None
@@ -977,7 +1007,14 @@ def run_episode(
         "kappa_vector": kappa_vector.tolist(),
         "config": asdict(config),
         "scenario": "physical rod perturbation during open-gripper grasp approach; compliant return to moving nominal trajectory tube",
-        "reference": "finite grasp trajectory (moving attractor, not a mathematical limit cycle); replace with fixed WBC pose/twist for WBC+VMC",
+        "reference": "fixed-base Panda WBC output is supplied to the low-level compliance layer" if fixed_wbc is not None else "finite grasp trajectory proxy (moving attractor, not a mathematical limit cycle); replace with fixed WBC pose/twist for WBC+VMC",
+        "wbc_interface": {
+            "source": "fixed_base_panda_resolved_rate_wbc_v1" if fixed_wbc is not None else "trajectory_proxy",
+            "fixed_wbc": fixed_wbc is not None,
+            "contract": "per-tick planned SE(3) target -> bounded WBC pose target/task twist/joint velocity -> low-level compliance torque layer",
+            "wbc_may_not_read": "rod state, contact flag, contact force, obstacle state, or future release time",
+            "compliance_may_not_modify": "WBC target generation or high-level task plan",
+        },
         "controller": {
             "mode": controller_mode,
             "description": {
@@ -1133,6 +1170,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--menagerie", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument(
+        "--reference-source", choices=REFERENCE_SOURCES, default="proxy",
+        help="Reference provider: legacy trajectory proxy or the fixed-base Panda WBC command adapter.",
+    )
+    parser.add_argument(
         "--controller-mode", choices=CONTROLLER_MODES, default="vmc",
         help="Low-level baseline: direct rigid tracking, fixed Cartesian impedance, or virtual-mechanism VMC.",
     )
@@ -1248,6 +1289,7 @@ def main() -> None:
             rod_approach_side=args.rod_approach_side,
             recovery_gate_hold_s=args.recovery_gate_hold_s,
             recovery_gate_taper_s=args.recovery_gate_taper_s,
+            reference_source=args.reference_source,
         )
         for kappa in contact_runs
     ]

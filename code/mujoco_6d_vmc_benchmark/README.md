@@ -193,10 +193,31 @@ python scripts/run_grasp_impact_benchmark.py \
 For a paired manipulation control trial, use the same command with
 `--disable-impact`; it must still pass the target-lifted and target-held gates.
 
-The current reference generator is a repeatable reaching proxy.  Replacing
-`PickLiftCarryReference` with the real fixed WBC output is the next interface
-step; the controller, safety limits, logging schema and metrics remain
-unchanged.
+The default reference generator remains a repeatable reaching proxy so frozen
+benchmark artifacts are reproducible.  The opt-in `fixed_panda_wbc` source
+now puts a live fixed-base Panda WBC command adapter between that task target
+generator and the low-level compliance layer; a future external WBC can replace
+that adapter while retaining the same pose/twist/joint-velocity contract.
+
+### Fixed-base Panda WBC adapter demo
+
+The repository now supplies a Panda-side WBC command boundary for the MuJoCo
+demo.  `FixedBasePandaWBC` converts a fixed SE(3) pick/lift target into a
+bounded resolved-rate task command and null-space posture command at each
+control tick; VMC only executes that command compliantly and does not alter
+the high-level task target.  This is a fixed-base Panda adapter, not a direct
+reuse of the separate Fetch/ManiSkill mobile whole-body stack.
+
+```bash
+export MUJOCO_GL=egl
+python scripts/run_fixed_wbc_vmc_demo.py \
+  --menagerie ~/vmc_mujoco_runtime/mujoco_menagerie \
+  --output-dir outputs/fixed_wbc_vmc_demo
+```
+
+The command writes a paired physical-rod/no-rod GIF, WBC command traces and a
+machine-readable summary.  See [the WBC interface and demo note](docs/wbc_integration_demo/fixed_panda_wbc_interface_and_demo.md)
+for scope, information boundaries and the validated physical result.
 
 ## V1 validity-gated benchmark ladder
 

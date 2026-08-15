@@ -15,7 +15,7 @@ import numpy as np
 
 from energy_safety import EnergySafetyConfig
 from run_benchmark import VMCConfig
-from run_rod_perturbation_benchmark import run_episode
+from run_rod_perturbation_benchmark import REFERENCE_SOURCES, run_episode
 
 
 KAPPA_6D = [27.579838, 52.550787, 48.699427, 35.859580, 40.719830, 34.766858]
@@ -89,7 +89,7 @@ def _load_energy_safety_config(path: Path | None) -> EnergySafetyConfig | None:
 
 def _run_fixture(
     menagerie: Path, root: Path, fixture: dict[str, Any], controller: str,
-    energy_safety_config: EnergySafetyConfig | None = None,
+    energy_safety_config: EnergySafetyConfig | None = None, reference_source: str = "proxy",
 ) -> dict[str, Any]:
     mode, kappa = _spec(controller)
     uses_virtual_carriage = mode.startswith("vmc")
@@ -117,6 +117,7 @@ def _run_fixture(
         # it absent for all baselines guards against accidental cross-method
         # leakage in a mixed ladder.
         energy_safety_config=energy_safety_config if controller == "vmc_energy" else None,
+        reference_source=reference_source,
     )
     run_dir = root / controller / fixture["fixture_id"]
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -243,6 +244,10 @@ def main() -> None:
         help="Frozen JSON configuration injected only into vmc_energy; use for no-tuning holdout evaluation.",
     )
     parser.add_argument(
+        "--reference-source", choices=REFERENCE_SOURCES, default="proxy",
+        help="Fixed nominal provider used identically by every ladder method; default preserves frozen V2/V3/V4 results.",
+    )
+    parser.add_argument(
         "--existing-results", type=Path,
         help="Re-render the Pareto figure from a completed ladder JSON without rerunning MuJoCo episodes.",
     )
@@ -265,7 +270,10 @@ def main() -> None:
     if energy_safety_config is not None and "vmc_energy" not in controllers:
         raise ValueError("--energy-safety-config-json requires vmc_energy in --controllers")
     rows = [
-        _run_fixture(args.menagerie, args.output_dir / "episodes", fixture, controller, energy_safety_config)
+        _run_fixture(
+            args.menagerie, args.output_dir / "episodes", fixture, controller,
+            energy_safety_config, args.reference_source,
+        )
         for fixture in fixtures for controller in controllers
     ]
     aggregate = _aggregate(rows, controllers)
@@ -276,6 +284,7 @@ def main() -> None:
     payload = {
         "protocol": {
             "manifest": str(args.manifest), "controllers": list(controllers),
+            "reference_source": args.reference_source,
             "energy_safety_config_json": None if args.energy_safety_config_json is None else str(args.energy_safety_config_json),
             "energy_safety_config": None if energy_safety_config is None else {
                 field: getattr(energy_safety_config, field) for field in EnergySafetyConfig.__dataclass_fields__
