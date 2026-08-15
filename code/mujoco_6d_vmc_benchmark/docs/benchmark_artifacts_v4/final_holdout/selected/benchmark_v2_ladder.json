@@ -1,0 +1,1378 @@
+{
+  "protocol": {
+    "manifest": "outputs/v4_holdout_screen_20260815/benchmark_v4_holdout_manifest.json",
+    "controllers": [
+      "vmc_energy"
+    ],
+    "energy_safety_config_json": "docs/benchmark_artifacts_v3/energy_safety_scan_expanded/selected_energy_safety_config.json",
+    "energy_safety_config": {
+      "initial_energy_j": 0.8,
+      "minimum_energy_j": 0.08,
+      "maximum_energy_j": 1.2,
+      "damping_recharge_efficiency": 0.6,
+      "minimum_direction_scale": 0.3,
+      "direction_transition_speed_mps": 0.08,
+      "smoothing_time_constant_s": 0.08
+    },
+    "validity": "finite + effective physical collision + stable rejoin + lift + hold + no hard torque limit + valid matched no-rod",
+    "comparison_rule": "numeric cross-controller comparisons use only the common-valid fixture intersection; per-controller validity is reported separately"
+  },
+  "rows": [
+    {
+      "controller": "vmc_energy",
+      "fixture_id": "v4holdout_negative_x_c0_t0",
+      "approach_side": "negative_x",
+      "timing_bin": "early_holdout",
+      "impulse_bin": "low",
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_offset_mm": 5.164429614437187,
+      "paired_offset_rmse_mm": 1.0362434018167903,
+      "recovery_rmse_mm": 2.6426002719634476,
+      "recovery_iae_mm_s": 1.7021682835974206,
+      "rejoin_latency_s": 0.28800000000000003,
+      "yield_peak_error_mm": 10.168708220444623,
+      "rebound_ratio": 1.0,
+      "post_contact_speed_p95_mps": 0.06882169713541401,
+      "post_contact_jerk_p95_mps3": 155.47857106595714,
+      "peak_jerk_mps3": 513.7121213734652,
+      "peak_torque_nm": 31.464914895565336,
+      "torque_p95_nm": 29.48655529453672,
+      "torque_rms_nm": 13.419043684998007,
+      "torque_rate_peak_nmps": 73.54854338363437,
+      "peak_contact_force_n": 17.891664361064866,
+      "contact_impulse_ns": 1.916306314168793,
+      "task_success": true,
+      "no_rod_task_success": true
+    },
+    {
+      "controller": "vmc_energy",
+      "fixture_id": "v4holdout_negative_x_c0_t1",
+      "approach_side": "negative_x",
+      "timing_bin": "late_holdout",
+      "impulse_bin": "low",
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_offset_mm": 5.377200666413736,
+      "paired_offset_rmse_mm": 1.0434821207359053,
+      "recovery_rmse_mm": 2.135282041558291,
+      "recovery_iae_mm_s": 1.2355262868120285,
+      "rejoin_latency_s": 0.29600000000000004,
+      "yield_peak_error_mm": 10.679299405305843,
+      "rebound_ratio": 0.9783250681041118,
+      "post_contact_speed_p95_mps": 0.0605922177292626,
+      "post_contact_jerk_p95_mps3": 108.70471006837302,
+      "peak_jerk_mps3": 443.8133185119412,
+      "peak_torque_nm": 31.540464832769423,
+      "torque_p95_nm": 29.47710525529292,
+      "torque_rms_nm": 13.419100581783365,
+      "torque_rate_peak_nmps": 69.8300380299397,
+      "peak_contact_force_n": 17.561930652153666,
+      "contact_impulse_ns": 1.8541597622080066,
+      "task_success": true,
+      "no_rod_task_success": true
+    },
+    {
+      "controller": "vmc_energy",
+      "fixture_id": "v4holdout_positive_x_c1_t0",
+      "approach_side": "positive_x",
+      "timing_bin": "early_holdout",
+      "impulse_bin": "high",
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_offset_mm": 16.07187166719322,
+      "paired_offset_rmse_mm": 3.1404326756735568,
+      "recovery_rmse_mm": 1.8755839677612478,
+      "recovery_iae_mm_s": 1.2805571230025827,
+      "rejoin_latency_s": 0.248,
+      "yield_peak_error_mm": 13.912333040414744,
+      "rebound_ratio": 1.564134679353967,
+      "post_contact_speed_p95_mps": 0.19164736874034485,
+      "post_contact_jerk_p95_mps3": 237.00505633715795,
+      "peak_jerk_mps3": 736.8983939998975,
+      "peak_torque_nm": 32.037979860281474,
+      "torque_p95_nm": 29.414172322336846,
+      "torque_rms_nm": 13.385551970381556,
+      "torque_rate_peak_nmps": 144.08533818606804,
+      "peak_contact_force_n": 68.71273254456857,
+      "contact_impulse_ns": 4.3719831770224395,
+      "task_success": true,
+      "no_rod_task_success": true
+    },
+    {
+      "controller": "vmc_energy",
+      "fixture_id": "v4holdout_positive_x_c1_t1",
+      "approach_side": "positive_x",
+      "timing_bin": "late_holdout",
+      "impulse_bin": "low",
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_offset_mm": 3.7769620682303713,
+      "paired_offset_rmse_mm": 0.7329357822166023,
+      "recovery_rmse_mm": 1.8689025879340853,
+      "recovery_iae_mm_s": 1.1919766882406237,
+      "rejoin_latency_s": 0.0,
+      "yield_peak_error_mm": 4.799756043791589,
+      "rebound_ratio": 0.997593751090983,
+      "post_contact_speed_p95_mps": 0.10794097917654447,
+      "post_contact_jerk_p95_mps3": 1953.6025592655974,
+      "peak_jerk_mps3": 2246.2091647581246,
+      "peak_torque_nm": 31.146129994060807,
+      "torque_p95_nm": 29.468954769866794,
+      "torque_rms_nm": 13.395821702766604,
+      "torque_rate_peak_nmps": 380.29928676454716,
+      "peak_contact_force_n": 40.36913224757166,
+      "contact_impulse_ns": 1.1353409470586935,
+      "task_success": true,
+      "no_rod_task_success": true
+    },
+    {
+      "controller": "vmc_energy",
+      "fixture_id": "v4holdout_negative_y_c2_t0",
+      "approach_side": "negative_y",
+      "timing_bin": "early_holdout",
+      "impulse_bin": "medium",
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_offset_mm": 19.138918693055576,
+      "paired_offset_rmse_mm": 2.8353139139935095,
+      "recovery_rmse_mm": 2.2833097830879114,
+      "recovery_iae_mm_s": 1.6100083901966107,
+      "rejoin_latency_s": 0.3520000000000001,
+      "yield_peak_error_mm": 20.054043978112823,
+      "rebound_ratio": 1.0,
+      "post_contact_speed_p95_mps": 0.2488380019264143,
+      "post_contact_jerk_p95_mps3": 590.4766758793774,
+      "peak_jerk_mps3": 1648.254403375237,
+      "peak_torque_nm": 30.100145232755978,
+      "torque_p95_nm": 29.53454125679509,
+      "torque_rms_nm": 13.403193728567272,
+      "torque_rate_peak_nmps": 131.98234485530503,
+      "peak_contact_force_n": 47.89165624427867,
+      "contact_impulse_ns": 2.874313240165441,
+      "task_success": true,
+      "no_rod_task_success": true
+    },
+    {
+      "controller": "vmc_energy",
+      "fixture_id": "v4holdout_negative_y_c2_t1",
+      "approach_side": "negative_y",
+      "timing_bin": "late_holdout",
+      "impulse_bin": "medium",
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_offset_mm": 16.899794727910315,
+      "paired_offset_rmse_mm": 2.404512023195952,
+      "recovery_rmse_mm": 1.7432447836010068,
+      "recovery_iae_mm_s": 1.1132782399769003,
+      "rejoin_latency_s": 0.22799999999999998,
+      "yield_peak_error_mm": 17.70546390477442,
+      "rebound_ratio": 0.9906031591849235,
+      "post_contact_speed_p95_mps": 0.2424060802736925,
+      "post_contact_jerk_p95_mps3": 351.86462876298964,
+      "peak_jerk_mps3": 1254.301109611988,
+      "peak_torque_nm": 30.2166986043563,
+      "torque_p95_nm": 29.52166083800752,
+      "torque_rms_nm": 13.403845331634656,
+      "torque_rate_peak_nmps": 77.26540489033742,
+      "peak_contact_force_n": 45.60600262126227,
+      "contact_impulse_ns": 2.2812420924777626,
+      "task_success": true,
+      "no_rod_task_success": true
+    },
+    {
+      "controller": "vmc_energy",
+      "fixture_id": "v4holdout_positive_y_c3_t0",
+      "approach_side": "positive_y",
+      "timing_bin": "early_holdout",
+      "impulse_bin": "high",
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_offset_mm": 19.05198001577493,
+      "paired_offset_rmse_mm": 2.8215215370136626,
+      "recovery_rmse_mm": 2.290962274362651,
+      "recovery_iae_mm_s": 1.6055050383351104,
+      "rejoin_latency_s": 0.3600000000000001,
+      "yield_peak_error_mm": 19.938293124374848,
+      "rebound_ratio": 1.0,
+      "post_contact_speed_p95_mps": 0.2473533642651551,
+      "post_contact_jerk_p95_mps3": 484.0712504921961,
+      "peak_jerk_mps3": 1708.4299680271502,
+      "peak_torque_nm": 30.100145232755978,
+      "torque_p95_nm": 29.53181047729388,
+      "torque_rms_nm": 13.403907921853627,
+      "torque_rate_peak_nmps": 138.96374747680528,
+      "peak_contact_force_n": 47.692123202282986,
+      "contact_impulse_ns": 3.191171085857509,
+      "task_success": true,
+      "no_rod_task_success": true
+    },
+    {
+      "controller": "vmc_energy",
+      "fixture_id": "v4holdout_positive_y_c3_t1",
+      "approach_side": "positive_y",
+      "timing_bin": "late_holdout",
+      "impulse_bin": "low",
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_offset_mm": 16.90626516190643,
+      "paired_offset_rmse_mm": 2.4023957746128524,
+      "recovery_rmse_mm": 1.7486988358878657,
+      "recovery_iae_mm_s": 1.1135684378066937,
+      "rejoin_latency_s": 0.236,
+      "yield_peak_error_mm": 17.6244464492275,
+      "rebound_ratio": 0.9884921740280315,
+      "post_contact_speed_p95_mps": 0.24230538217923211,
+      "post_contact_jerk_p95_mps3": 348.53429728668374,
+      "peak_jerk_mps3": 1274.7635549347035,
+      "peak_torque_nm": 30.20026804043028,
+      "torque_p95_nm": 29.52066621723408,
+      "torque_rms_nm": 13.40424005707388,
+      "torque_rate_peak_nmps": 87.3102631366442,
+      "peak_contact_force_n": 45.661565592141926,
+      "contact_impulse_ns": 2.289097236403336,
+      "task_success": true,
+      "no_rod_task_success": true
+    },
+    {
+      "controller": "vmc_energy",
+      "fixture_id": "v4holdout_negative_z_c4_t0",
+      "approach_side": "negative_z",
+      "timing_bin": "early_holdout",
+      "impulse_bin": "medium",
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_offset_mm": 11.480170954912689,
+      "paired_offset_rmse_mm": 1.9445014624217258,
+      "recovery_rmse_mm": 3.9547286877420302,
+      "recovery_iae_mm_s": 2.4566013675227953,
+      "rejoin_latency_s": 0.3360000000000001,
+      "yield_peak_error_mm": 16.245246188406313,
+      "rebound_ratio": 1.0,
+      "post_contact_speed_p95_mps": 0.0877376005034099,
+      "post_contact_jerk_p95_mps3": 93.35741648152766,
+      "peak_jerk_mps3": 213.48438822380768,
+      "peak_torque_nm": 30.546674549958393,
+      "torque_p95_nm": 29.460985951378245,
+      "torque_rms_nm": 13.384400029583116,
+      "torque_rate_peak_nmps": 87.8652341894573,
+      "peak_contact_force_n": 16.626326840495363,
+      "contact_impulse_ns": 3.1528152742317412,
+      "task_success": true,
+      "no_rod_task_success": true
+    },
+    {
+      "controller": "vmc_energy",
+      "fixture_id": "v4holdout_negative_z_c4_t1",
+      "approach_side": "negative_z",
+      "timing_bin": "late_holdout",
+      "impulse_bin": "high",
+      "valid": true,
+      "invalid_reasons": [],
+      "peak_paired_offset_mm": 16.181997570389463,
+      "paired_offset_rmse_mm": 2.9259802031285287,
+      "recovery_rmse_mm": 3.942948853443506,
+      "recovery_iae_mm_s": 2.135173707216518,
+      "rejoin_latency_s": 0.30800000000000005,
+      "yield_peak_error_mm": 20.082322974319656,
+      "rebound_ratio": 0.977895690117282,
+      "post_contact_speed_p95_mps": 0.09494782298755473,
+      "post_contact_jerk_p95_mps3": 100.51565216341338,
+      "peak_jerk_mps3": 462.6359015803671,
+      "peak_torque_nm": 30.663889123249625,
+      "torque_p95_nm": 29.441747881095864,
+      "torque_rms_nm": 13.375919692271317,
+      "torque_rate_peak_nmps": 95.44297947171736,
+      "peak_contact_force_n": 20.389956318048117,
+      "contact_impulse_ns": 4.936869506410815,
+      "task_success": true,
+      "no_rod_task_success": true
+    }
+  ],
+  "aggregate": [
+    {
+      "controller": "vmc_energy",
+      "fixture_count": 10,
+      "valid_count": 10,
+      "task_success_count": 10,
+      "no_rod_task_success_count": 10,
+      "peak_paired_offset_mm": {
+        "mean": 13.004959114022393,
+        "std": 5.755161955846089,
+        "count": 10
+      },
+      "paired_offset_rmse_mm": {
+        "mean": 2.1287318894809086,
+        "std": 0.84515036479998,
+        "count": 10
+      },
+      "recovery_rmse_mm": {
+        "mean": 2.4486262087342046,
+        "std": 0.7963203471906742,
+        "count": 10
+      },
+      "recovery_iae_mm_s": {
+        "mean": 1.5444363562707284,
+        "std": 0.4329843004976058,
+        "count": 10
+      },
+      "rejoin_latency_s": {
+        "mean": 0.2652,
+        "std": 0.09884209629505035,
+        "count": 10
+      },
+      "yield_peak_error_mm": {
+        "mean": 15.120991332917233,
+        "std": 4.8847665199864245,
+        "count": 10
+      },
+      "rebound_ratio": {
+        "mean": 1.04970445218793,
+        "std": 0.171676304327237,
+        "count": 10
+      },
+      "post_contact_speed_p95_mps": {
+        "mean": 0.15925905149170244,
+        "std": 0.07774508125350621,
+        "count": 10
+      },
+      "post_contact_jerk_p95_mps3": {
+        "mean": 442.36108178032725,
+        "std": 529.0541509924893,
+        "count": 10
+      },
+      "peak_jerk_mps3": {
+        "mean": 1050.250232439668,
+        "std": 641.28513492603,
+        "count": 10
+      },
+      "peak_torque_nm": {
+        "mean": 30.80173103661836,
+        "std": 0.6637004155228756,
+        "count": 10
+      },
+      "torque_p95_nm": {
+        "mean": 29.485820026383795,
+        "std": 0.038782862402089065,
+        "count": 10
+      },
+      "torque_rms_nm": {
+        "mean": 13.39950247009134,
+        "std": 0.013537648401231589,
+        "count": 10
+      },
+      "torque_rate_peak_nmps": {
+        "mean": 128.6593180384456,
+        "std": 87.91729208496004,
+        "count": 10
+      },
+      "peak_contact_force_n": {
+        "mean": 36.840309062386815,
+        "std": 16.830853393451093,
+        "count": 10
+      },
+      "contact_impulse_ns": {
+        "mean": 2.800329863600454,
+        "std": 1.1089232007126295,
+        "count": 10
+      }
+    }
+  ],
+  "common_valid_fixture_ids_all_controllers": [
+    "v4holdout_negative_x_c0_t0",
+    "v4holdout_negative_x_c0_t1",
+    "v4holdout_negative_y_c2_t0",
+    "v4holdout_negative_y_c2_t1",
+    "v4holdout_negative_z_c4_t0",
+    "v4holdout_negative_z_c4_t1",
+    "v4holdout_positive_x_c1_t0",
+    "v4holdout_positive_x_c1_t1",
+    "v4holdout_positive_y_c3_t0",
+    "v4holdout_positive_y_c3_t1"
+  ],
+  "aggregate_common_valid_all_controllers": [
+    {
+      "controller": "vmc_energy",
+      "fixture_count": 10,
+      "valid_count": 10,
+      "task_success_count": 10,
+      "no_rod_task_success_count": 10,
+      "peak_paired_offset_mm": {
+        "mean": 13.004959114022393,
+        "std": 5.755161955846089,
+        "count": 10
+      },
+      "paired_offset_rmse_mm": {
+        "mean": 2.1287318894809086,
+        "std": 0.84515036479998,
+        "count": 10
+      },
+      "recovery_rmse_mm": {
+        "mean": 2.4486262087342046,
+        "std": 0.7963203471906742,
+        "count": 10
+      },
+      "recovery_iae_mm_s": {
+        "mean": 1.5444363562707284,
+        "std": 0.4329843004976058,
+        "count": 10
+      },
+      "rejoin_latency_s": {
+        "mean": 0.2652,
+        "std": 0.09884209629505035,
+        "count": 10
+      },
+      "yield_peak_error_mm": {
+        "mean": 15.120991332917233,
+        "std": 4.8847665199864245,
+        "count": 10
+      },
+      "rebound_ratio": {
+        "mean": 1.04970445218793,
+        "std": 0.171676304327237,
+        "count": 10
+      },
+      "post_contact_speed_p95_mps": {
+        "mean": 0.15925905149170244,
+        "std": 0.07774508125350621,
+        "count": 10
+      },
+      "post_contact_jerk_p95_mps3": {
+        "mean": 442.36108178032725,
+        "std": 529.0541509924893,
+        "count": 10
+      },
+      "peak_jerk_mps3": {
+        "mean": 1050.250232439668,
+        "std": 641.28513492603,
+        "count": 10
+      },
+      "peak_torque_nm": {
+        "mean": 30.80173103661836,
+        "std": 0.6637004155228756,
+        "count": 10
+      },
+      "torque_p95_nm": {
+        "mean": 29.485820026383795,
+        "std": 0.038782862402089065,
+        "count": 10
+      },
+      "torque_rms_nm": {
+        "mean": 13.39950247009134,
+        "std": 0.013537648401231589,
+        "count": 10
+      },
+      "torque_rate_peak_nmps": {
+        "mean": 128.6593180384456,
+        "std": 87.91729208496004,
+        "count": 10
+      },
+      "peak_contact_force_n": {
+        "mean": 36.840309062386815,
+        "std": 16.830853393451093,
+        "count": 10
+      },
+      "contact_impulse_ns": {
+        "mean": 2.800329863600454,
+        "std": 1.1089232007126295,
+        "count": 10
+      }
+    }
+  ],
+  "aggregate_common_valid_by_approach_side": {
+    "negative_x": [
+      {
+        "controller": "vmc_energy",
+        "fixture_count": 2,
+        "valid_count": 2,
+        "task_success_count": 2,
+        "no_rod_task_success_count": 2,
+        "peak_paired_offset_mm": {
+          "mean": 5.270815140425461,
+          "std": 0.10638552598827467,
+          "count": 2
+        },
+        "paired_offset_rmse_mm": {
+          "mean": 1.0398627612763478,
+          "std": 0.003619359459557492,
+          "count": 2
+        },
+        "recovery_rmse_mm": {
+          "mean": 2.388941156760869,
+          "std": 0.2536591152025782,
+          "count": 2
+        },
+        "recovery_iae_mm_s": {
+          "mean": 1.4688472852047245,
+          "std": 0.23332099839269604,
+          "count": 2
+        },
+        "rejoin_latency_s": {
+          "mean": 0.29200000000000004,
+          "std": 0.0040000000000000036,
+          "count": 2
+        },
+        "yield_peak_error_mm": {
+          "mean": 10.424003812875233,
+          "std": 0.25529559243060973,
+          "count": 2
+        },
+        "rebound_ratio": {
+          "mean": 0.9891625340520559,
+          "std": 0.010837465947944103,
+          "count": 2
+        },
+        "post_contact_speed_p95_mps": {
+          "mean": 0.06470695743233831,
+          "std": 0.004114739703075708,
+          "count": 2
+        },
+        "post_contact_jerk_p95_mps3": {
+          "mean": 132.0916405671651,
+          "std": 23.38693049879206,
+          "count": 2
+        },
+        "peak_jerk_mps3": {
+          "mean": 478.76271994270314,
+          "std": 34.94940143076198,
+          "count": 2
+        },
+        "peak_torque_nm": {
+          "mean": 31.50268986416738,
+          "std": 0.03777496860204366,
+          "count": 2
+        },
+        "torque_p95_nm": {
+          "mean": 29.48183027491482,
+          "std": 0.004725019621901083,
+          "count": 2
+        },
+        "torque_rms_nm": {
+          "mean": 13.419072133390685,
+          "std": 2.8448392678903645e-05,
+          "count": 2
+        },
+        "torque_rate_peak_nmps": {
+          "mean": 71.68929070678703,
+          "std": 1.8592526768473334,
+          "count": 2
+        },
+        "peak_contact_force_n": {
+          "mean": 17.726797506609266,
+          "std": 0.16486685445559957,
+          "count": 2
+        },
+        "contact_impulse_ns": {
+          "mean": 1.8852330381884,
+          "std": 0.031073275980393222,
+          "count": 2
+        }
+      }
+    ],
+    "negative_y": [
+      {
+        "controller": "vmc_energy",
+        "fixture_count": 2,
+        "valid_count": 2,
+        "task_success_count": 2,
+        "no_rod_task_success_count": 2,
+        "peak_paired_offset_mm": {
+          "mean": 18.019356710482946,
+          "std": 1.1195619825726304,
+          "count": 2
+        },
+        "paired_offset_rmse_mm": {
+          "mean": 2.619912968594731,
+          "std": 0.21540094539877885,
+          "count": 2
+        },
+        "recovery_rmse_mm": {
+          "mean": 2.013277283344459,
+          "std": 0.27003249974345234,
+          "count": 2
+        },
+        "recovery_iae_mm_s": {
+          "mean": 1.3616433150867555,
+          "std": 0.24836507510985517,
+          "count": 2
+        },
+        "rejoin_latency_s": {
+          "mean": 0.29000000000000004,
+          "std": 0.062000000000000055,
+          "count": 2
+        },
+        "yield_peak_error_mm": {
+          "mean": 18.87975394144362,
+          "std": 1.174290036669202,
+          "count": 2
+        },
+        "rebound_ratio": {
+          "mean": 0.9953015795924618,
+          "std": 0.004698420407538262,
+          "count": 2
+        },
+        "post_contact_speed_p95_mps": {
+          "mean": 0.24562204110005342,
+          "std": 0.0032159608263609,
+          "count": 2
+        },
+        "post_contact_jerk_p95_mps3": {
+          "mean": 471.1706523211835,
+          "std": 119.30602355819386,
+          "count": 2
+        },
+        "peak_jerk_mps3": {
+          "mean": 1451.2777564936125,
+          "std": 196.97664688162445,
+          "count": 2
+        },
+        "peak_torque_nm": {
+          "mean": 30.158421918556137,
+          "std": 0.05827668580016088,
+          "count": 2
+        },
+        "torque_p95_nm": {
+          "mean": 29.528101047401307,
+          "std": 0.006440209393785423,
+          "count": 2
+        },
+        "torque_rms_nm": {
+          "mean": 13.403519530100965,
+          "std": 0.00032580153369199394,
+          "count": 2
+        },
+        "torque_rate_peak_nmps": {
+          "mean": 104.62387487282123,
+          "std": 27.358469982483804,
+          "count": 2
+        },
+        "peak_contact_force_n": {
+          "mean": 46.74882943277047,
+          "std": 1.1428268115082005,
+          "count": 2
+        },
+        "contact_impulse_ns": {
+          "mean": 2.5777776663216017,
+          "std": 0.29653557384383933,
+          "count": 2
+        }
+      }
+    ],
+    "negative_z": [
+      {
+        "controller": "vmc_energy",
+        "fixture_count": 2,
+        "valid_count": 2,
+        "task_success_count": 2,
+        "no_rod_task_success_count": 2,
+        "peak_paired_offset_mm": {
+          "mean": 13.831084262651075,
+          "std": 2.350913307738387,
+          "count": 2
+        },
+        "paired_offset_rmse_mm": {
+          "mean": 2.4352408327751274,
+          "std": 0.4907393703534014,
+          "count": 2
+        },
+        "recovery_rmse_mm": {
+          "mean": 3.948838770592768,
+          "std": 0.005889917149262125,
+          "count": 2
+        },
+        "recovery_iae_mm_s": {
+          "mean": 2.295887537369657,
+          "std": 0.16071383015313878,
+          "count": 2
+        },
+        "rejoin_latency_s": {
+          "mean": 0.32200000000000006,
+          "std": 0.014000000000000012,
+          "count": 2
+        },
+        "yield_peak_error_mm": {
+          "mean": 18.163784581362982,
+          "std": 1.9185383929566715,
+          "count": 2
+        },
+        "rebound_ratio": {
+          "mean": 0.988947845058641,
+          "std": 0.011052154941359027,
+          "count": 2
+        },
+        "post_contact_speed_p95_mps": {
+          "mean": 0.09134271174548231,
+          "std": 0.003605111242072419,
+          "count": 2
+        },
+        "post_contact_jerk_p95_mps3": {
+          "mean": 96.93653432247052,
+          "std": 3.579117840942857,
+          "count": 2
+        },
+        "peak_jerk_mps3": {
+          "mean": 338.06014490208736,
+          "std": 124.5757566782797,
+          "count": 2
+        },
+        "peak_torque_nm": {
+          "mean": 30.605281836604007,
+          "std": 0.058607286645615986,
+          "count": 2
+        },
+        "torque_p95_nm": {
+          "mean": 29.451366916237056,
+          "std": 0.009619035141190224,
+          "count": 2
+        },
+        "torque_rms_nm": {
+          "mean": 13.380159860927217,
+          "std": 0.004240168655899268,
+          "count": 2
+        },
+        "torque_rate_peak_nmps": {
+          "mean": 91.65410683058732,
+          "std": 3.788872641130034,
+          "count": 2
+        },
+        "peak_contact_force_n": {
+          "mean": 18.50814157927174,
+          "std": 1.8818147387763773,
+          "count": 2
+        },
+        "contact_impulse_ns": {
+          "mean": 4.0448423903212785,
+          "std": 0.892027116089537,
+          "count": 2
+        }
+      }
+    ],
+    "positive_x": [
+      {
+        "controller": "vmc_energy",
+        "fixture_count": 2,
+        "valid_count": 2,
+        "task_success_count": 2,
+        "no_rod_task_success_count": 2,
+        "peak_paired_offset_mm": {
+          "mean": 9.924416867711797,
+          "std": 6.147454799481425,
+          "count": 2
+        },
+        "paired_offset_rmse_mm": {
+          "mean": 1.9366842289450794,
+          "std": 1.2037484467284774,
+          "count": 2
+        },
+        "recovery_rmse_mm": {
+          "mean": 1.8722432778476665,
+          "std": 0.003340689913581274,
+          "count": 2
+        },
+        "recovery_iae_mm_s": {
+          "mean": 1.2362669056216031,
+          "std": 0.04429021738097949,
+          "count": 2
+        },
+        "rejoin_latency_s": {
+          "mean": 0.124,
+          "std": 0.124,
+          "count": 2
+        },
+        "yield_peak_error_mm": {
+          "mean": 9.356044542103167,
+          "std": 4.556288498311577,
+          "count": 2
+        },
+        "rebound_ratio": {
+          "mean": 1.280864215222475,
+          "std": 0.283270464131492,
+          "count": 2
+        },
+        "post_contact_speed_p95_mps": {
+          "mean": 0.14979417395844466,
+          "std": 0.041853194781900194,
+          "count": 2
+        },
+        "post_contact_jerk_p95_mps3": {
+          "mean": 1095.3038078013776,
+          "std": 858.2987514642198,
+          "count": 2
+        },
+        "peak_jerk_mps3": {
+          "mean": 1491.553779379011,
+          "std": 754.6553853791136,
+          "count": 2
+        },
+        "peak_torque_nm": {
+          "mean": 31.59205492717114,
+          "std": 0.44592493311033365,
+          "count": 2
+        },
+        "torque_p95_nm": {
+          "mean": 29.44156354610182,
+          "std": 0.02739122376497427,
+          "count": 2
+        },
+        "torque_rms_nm": {
+          "mean": 13.39068683657408,
+          "std": 0.005134866192523901,
+          "count": 2
+        },
+        "torque_rate_peak_nmps": {
+          "mean": 262.19231247530763,
+          "std": 118.10697428923956,
+          "count": 2
+        },
+        "peak_contact_force_n": {
+          "mean": 54.54093239607012,
+          "std": 14.171800148498452,
+          "count": 2
+        },
+        "contact_impulse_ns": {
+          "mean": 2.7536620620405667,
+          "std": 1.618321114981873,
+          "count": 2
+        }
+      }
+    ],
+    "positive_y": [
+      {
+        "controller": "vmc_energy",
+        "fixture_count": 2,
+        "valid_count": 2,
+        "task_success_count": 2,
+        "no_rod_task_success_count": 2,
+        "peak_paired_offset_mm": {
+          "mean": 17.97912258884068,
+          "std": 1.0728574269342506,
+          "count": 2
+        },
+        "paired_offset_rmse_mm": {
+          "mean": 2.6119586558132575,
+          "std": 0.20956288120040512,
+          "count": 2
+        },
+        "recovery_rmse_mm": {
+          "mean": 2.0198305551252584,
+          "std": 0.27113171923739277,
+          "count": 2
+        },
+        "recovery_iae_mm_s": {
+          "mean": 1.359536738070902,
+          "std": 0.24596830026420835,
+          "count": 2
+        },
+        "rejoin_latency_s": {
+          "mean": 0.29800000000000004,
+          "std": 0.062000000000000055,
+          "count": 2
+        },
+        "yield_peak_error_mm": {
+          "mean": 18.78136978680117,
+          "std": 1.1569233375736747,
+          "count": 2
+        },
+        "rebound_ratio": {
+          "mean": 0.9942460870140157,
+          "std": 0.005753912985984266,
+          "count": 2
+        },
+        "post_contact_speed_p95_mps": {
+          "mean": 0.2448293732221936,
+          "std": 0.0025239910429614987,
+          "count": 2
+        },
+        "post_contact_jerk_p95_mps3": {
+          "mean": 416.3027738894399,
+          "std": 67.76847660275618,
+          "count": 2
+        },
+        "peak_jerk_mps3": {
+          "mean": 1491.596761480927,
+          "std": 216.83320654622332,
+          "count": 2
+        },
+        "peak_torque_nm": {
+          "mean": 30.15020663659313,
+          "std": 0.05006140383715163,
+          "count": 2
+        },
+        "torque_p95_nm": {
+          "mean": 29.52623834726398,
+          "std": 0.005572130029900535,
+          "count": 2
+        },
+        "torque_rms_nm": {
+          "mean": 13.404073989463754,
+          "std": 0.00016606761012649685,
+          "count": 2
+        },
+        "torque_rate_peak_nmps": {
+          "mean": 113.13700530672475,
+          "std": 25.826742170080543,
+          "count": 2
+        },
+        "peak_contact_force_n": {
+          "mean": 46.676844397212456,
+          "std": 1.0152788050705297,
+          "count": 2
+        },
+        "contact_impulse_ns": {
+          "mean": 2.740134161130422,
+          "std": 0.45103692472708645,
+          "count": 2
+        }
+      }
+    ]
+  },
+  "aggregate_common_valid_by_timing_bin": {
+    "early_holdout": [
+      {
+        "controller": "vmc_energy",
+        "fixture_count": 5,
+        "valid_count": 5,
+        "task_success_count": 5,
+        "no_rod_task_success_count": 5,
+        "peak_paired_offset_mm": {
+          "mean": 14.18147418907472,
+          "std": 5.300487103411194,
+          "count": 5
+        },
+        "paired_offset_rmse_mm": {
+          "mean": 2.3556025981838493,
+          "std": 0.7710868287646826,
+          "count": 5
+        },
+        "recovery_rmse_mm": {
+          "mean": 2.609436996983457,
+          "std": 0.7151552157569351,
+          "count": 5
+        },
+        "recovery_iae_mm_s": {
+          "mean": 1.7309680405309038,
+          "std": 0.3900295752371682,
+          "count": 5
+        },
+        "rejoin_latency_s": {
+          "mean": 0.3168000000000001,
+          "std": 0.04251305681787659,
+          "count": 5
+        },
+        "yield_peak_error_mm": {
+          "mean": 16.06372491035067,
+          "std": 3.7509354522400655,
+          "count": 5
+        },
+        "rebound_ratio": {
+          "mean": 1.1128269358707934,
+          "std": 0.2256538717415868,
+          "count": 5
+        },
+        "post_contact_speed_p95_mps": {
+          "mean": 0.16887960651414763,
+          "std": 0.07702656297401088,
+          "count": 5
+        },
+        "post_contact_jerk_p95_mps3": {
+          "mean": 312.07779405124325,
+          "std": 192.3982965690619,
+          "count": 5
+        },
+        "peak_jerk_mps3": {
+          "mean": 964.1558549999114,
+          "std": 606.6280476514424,
+          "count": 5
+        },
+        "peak_torque_nm": {
+          "mean": 30.84997195426343,
+          "std": 0.775369221190759,
+          "count": 5
+        },
+        "torque_p95_nm": {
+          "mean": 29.485613060468154,
+          "std": 0.045253355873547445,
+          "count": 5
+        },
+        "torque_rms_nm": {
+          "mean": 13.399219467076716,
+          "std": 0.012939800402790018,
+          "count": 5
+        },
+        "torque_rate_peak_nmps": {
+          "mean": 115.289041618254,
+          "std": 28.853835700788792,
+          "count": 5
+        },
+        "peak_contact_force_n": {
+          "mean": 39.76290063853809,
+          "std": 19.90323606335421,
+          "count": 5
+        },
+        "contact_impulse_ns": {
+          "mean": 3.1013178182891847,
+          "std": 0.7849967382012213,
+          "count": 5
+        }
+      }
+    ],
+    "late_holdout": [
+      {
+        "controller": "vmc_energy",
+        "fixture_count": 5,
+        "valid_count": 5,
+        "task_success_count": 5,
+        "no_rod_task_success_count": 5,
+        "peak_paired_offset_mm": {
+          "mean": 11.828444038970064,
+          "std": 5.948129058700493,
+          "count": 5
+        },
+        "paired_offset_rmse_mm": {
+          "mean": 1.9018611807779682,
+          "std": 0.8550103764364234,
+          "count": 5
+        },
+        "recovery_rmse_mm": {
+          "mean": 2.287815420484951,
+          "std": 0.8396933897802883,
+          "count": 5
+        },
+        "recovery_iae_mm_s": {
+          "mean": 1.3579046720105528,
+          "std": 0.39145830037085744,
+          "count": 5
+        },
+        "rejoin_latency_s": {
+          "mean": 0.2136,
+          "std": 0.11138689330437403,
+          "count": 5
+        },
+        "yield_peak_error_mm": {
+          "mean": 14.178257755483802,
+          "std": 5.6457840860812505,
+          "count": 5
+        },
+        "rebound_ratio": {
+          "mean": 0.9865819685050663,
+          "std": 0.007545939991871231,
+          "count": 5
+        },
+        "post_contact_speed_p95_mps": {
+          "mean": 0.14963849646925728,
+          "std": 0.07726832311341766,
+          "count": 5
+        },
+        "post_contact_jerk_p95_mps3": {
+          "mean": 572.6443695094115,
+          "std": 699.1652270522984,
+          "count": 5
+        },
+        "peak_jerk_mps3": {
+          "mean": 1136.344609879425,
+          "std": 663.0770518599733,
+          "count": 5
+        },
+        "peak_torque_nm": {
+          "mean": 30.753490118973286,
+          "std": 0.5245423545244311,
+          "count": 5
+        },
+        "torque_p95_nm": {
+          "mean": 29.486026992299436,
+          "std": 0.03098820654055901,
+          "count": 5
+        },
+        "torque_rms_nm": {
+          "mean": 13.399785473105965,
+          "std": 0.014104511072494455,
+          "count": 5
+        },
+        "torque_rate_peak_nmps": {
+          "mean": 142.02959445863718,
+          "std": 119.45219996865515,
+          "count": 5
+        },
+        "peak_contact_force_n": {
+          "mean": 33.91771748623553,
+          "std": 12.38278494798742,
+          "count": 5
+        },
+        "contact_impulse_ns": {
+          "mean": 2.499341908911723,
+          "std": 1.2891912012713698,
+          "count": 5
+        }
+      }
+    ]
+  },
+  "aggregate_common_valid_by_impulse_bin": {
+    "high": [
+      {
+        "controller": "vmc_energy",
+        "fixture_count": 3,
+        "valid_count": 3,
+        "task_success_count": 3,
+        "no_rod_task_success_count": 3,
+        "peak_paired_offset_mm": {
+          "mean": 17.101949751119204,
+          "std": 1.379612373928188,
+          "count": 3
+        },
+        "paired_offset_rmse_mm": {
+          "mean": 2.962644805271916,
+          "std": 0.1327511415596547,
+          "count": 3
+        },
+        "recovery_rmse_mm": {
+          "mean": 2.703165031855802,
+          "std": 0.8929101214947754,
+          "count": 3
+        },
+        "recovery_iae_mm_s": {
+          "mean": 1.6737452895180702,
+          "std": 0.35221671871591465,
+          "count": 3
+        },
+        "rejoin_latency_s": {
+          "mean": 0.3053333333333334,
+          "std": 0.04576267280461475,
+          "count": 3
+        },
+        "yield_peak_error_mm": {
+          "mean": 17.977649713036413,
+          "std": 2.8752142976296087,
+          "count": 3
+        },
+        "rebound_ratio": {
+          "mean": 1.1806767898237496,
+          "std": 0.2712957978677813,
+          "count": 3
+        },
+        "post_contact_speed_p95_mps": {
+          "mean": 0.1779828519976849,
+          "std": 0.06296507770919482,
+          "count": 3
+        },
+        "post_contact_jerk_p95_mps3": {
+          "mean": 273.8639863309225,
+          "std": 158.74016461406683,
+          "count": 3
+        },
+        "peak_jerk_mps3": {
+          "mean": 969.3214212024717,
+          "std": 534.4879553859683,
+          "count": 3
+        },
+        "peak_torque_nm": {
+          "mean": 30.934004738762358,
+          "std": 0.8138478953781179,
+          "count": 3
+        },
+        "torque_p95_nm": {
+          "mean": 29.46257689357553,
+          "std": 0.050233253900063835,
+          "count": 3
+        },
+        "torque_rms_nm": {
+          "mean": 13.388459861502165,
+          "std": 0.011609683368206265,
+          "count": 3
+        },
+        "torque_rate_peak_nmps": {
+          "mean": 126.16402171153022,
+          "std": 21.823450690691676,
+          "count": 3
+        },
+        "peak_contact_force_n": {
+          "mean": 45.59827068829989,
+          "std": 19.783171962088172,
+          "count": 3
+        },
+        "contact_impulse_ns": {
+          "mean": 4.166674589763588,
+          "std": 0.7273144463858101,
+          "count": 3
+        }
+      }
+    ],
+    "low": [
+      {
+        "controller": "vmc_energy",
+        "fixture_count": 4,
+        "valid_count": 4,
+        "task_success_count": 4,
+        "no_rod_task_success_count": 4,
+        "peak_paired_offset_mm": {
+          "mean": 7.806214377746931,
+          "std": 5.289729028823844,
+          "count": 4
+        },
+        "paired_offset_rmse_mm": {
+          "mean": 1.3037642698455376,
+          "std": 0.6465583031583492,
+          "count": 4
+        },
+        "recovery_rmse_mm": {
+          "mean": 2.098870934335922,
+          "std": 0.3436834663627045,
+          "count": 4
+        },
+        "recovery_iae_mm_s": {
+          "mean": 1.3108099241141917,
+          "std": 0.23013829182245066,
+          "count": 4
+        },
+        "rejoin_latency_s": {
+          "mean": 0.20500000000000002,
+          "std": 0.12057777573002416,
+          "count": 4
+        },
+        "yield_peak_error_mm": {
+          "mean": 10.818052529692388,
+          "std": 4.554881755917762,
+          "count": 4
+        },
+        "rebound_ratio": {
+          "mean": 0.9911027483057816,
+          "std": 0.008534905012118765,
+          "count": 4
+        },
+        "post_contact_speed_p95_mps": {
+          "mean": 0.1199150690551133,
+          "std": 0.07289118759938268,
+          "count": 4
+        },
+        "post_contact_jerk_p95_mps3": {
+          "mean": 641.5800344216528,
+          "std": 762.8121744132068,
+          "count": 4
+        },
+        "peak_jerk_mps3": {
+          "mean": 1119.6245398945587,
+          "std": 727.5148962102691,
+          "count": 4
+        },
+        "peak_torque_nm": {
+          "mean": 31.08794444070646,
+          "std": 0.5334408072353841,
+          "count": 4
+        },
+        "torque_p95_nm": {
+          "mean": 29.48832038423263,
+          "std": 0.019686128308360223,
+          "count": 4
+        },
+        "torque_rms_nm": {
+          "mean": 13.409551506655463,
+          "std": 0.009975035049677927,
+          "count": 4
+        },
+        "torque_rate_peak_nmps": {
+          "mean": 152.74703282869135,
+          "std": 131.53861396549422,
+          "count": 4
+        },
+        "peak_contact_force_n": {
+          "mean": 30.371073213233032,
+          "std": 12.78250875310887,
+          "count": 4
+        },
+        "contact_impulse_ns": {
+          "mean": 1.7987260649597072,
+          "std": 0.41756487826151806,
+          "count": 4
+        }
+      }
+    ],
+    "medium": [
+      {
+        "controller": "vmc_energy",
+        "fixture_count": 3,
+        "valid_count": 3,
+        "task_success_count": 3,
+        "no_rod_task_success_count": 3,
+        "peak_paired_offset_mm": {
+          "mean": 15.83962812529286,
+          "std": 3.215283206614546,
+          "count": 3
+        },
+        "paired_offset_rmse_mm": {
+          "mean": 2.394775799870396,
+          "std": 0.3637378190421563,
+          "count": 3
+        },
+        "recovery_rmse_mm": {
+          "mean": 2.6604277514769827,
+          "std": 0.9413921379638177,
+          "count": 3
+        },
+        "recovery_iae_mm_s": {
+          "mean": 1.7266293325654356,
+          "std": 0.5545746654864824,
+          "count": 3
+        },
+        "rejoin_latency_s": {
+          "mean": 0.3053333333333334,
+          "std": 0.055071670474835736,
+          "count": 3
+        },
+        "yield_peak_error_mm": {
+          "mean": 18.001584690431184,
+          "std": 1.5689701060444683,
+          "count": 3
+        },
+        "rebound_ratio": {
+          "mean": 0.9968677197283079,
+          "std": 0.004429713241380757,
+          "count": 3
+        },
+        "post_contact_speed_p95_mps": {
+          "mean": 0.1929938942345056,
+          "std": 0.07447374450789891,
+          "count": 3
+        },
+        "post_contact_jerk_p95_mps3": {
+          "mean": 345.23290704129823,
+          "std": 203.0022566636672,
+          "count": 3
+        },
+        "peak_jerk_mps3": {
+          "mean": 1038.6799670703442,
+          "std": 605.2606088441744,
+          "count": 3
+        },
+        "peak_torque_nm": {
+          "mean": 30.28783946235689,
+          "std": 0.18910821247477855,
+          "count": 3
+        },
+        "torque_p95_nm": {
+          "mean": 29.505729348726955,
+          "std": 0.03207236610920195,
+          "count": 3
+        },
+        "torque_rms_nm": {
+          "mean": 13.397146363261683,
+          "std": 0.009016943803135577,
+          "count": 3
+        },
+        "torque_rate_peak_nmps": {
+          "mean": 99.03766131169992,
+          "std": 23.69392644587545,
+          "count": 3
+        },
+        "peak_contact_force_n": {
+          "mean": 36.707995235345436,
+          "std": 14.230509647974483,
+          "count": 3
+        },
+        "contact_impulse_ns": {
+          "mean": 2.769456868958315,
+          "std": 0.36346122830845246,
+          "count": 3
+        }
+      }
+    ]
+  }
+}
