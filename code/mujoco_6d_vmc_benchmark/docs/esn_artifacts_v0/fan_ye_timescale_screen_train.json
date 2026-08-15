@@ -1,0 +1,2394 @@
+{
+  "schema_version": 1,
+  "method": "Fan Ye et al.-inspired robot-reservoir timescale alignment before readout training",
+  "citation": "Fan Ye et al., Reservoir controllers design through robot-reservoir timescale alignment, Communications Engineering 4:81 (2025), doi:10.1038/s44172-025-00418-1",
+  "adaptation": "Robot spectral probe is the WBC-aware 20-D deployable proprioceptive trace [q, qdot, wbc_task_twist], detrended to measure dynamics rather than static Panda posture. Candidate reservoir receives the same normalized trace. CR is compared by frequency containment and ESPI by post-washout state MSE across random initial states.",
+  "information_boundary": {
+    "read_trace_keys": [
+      "joint_position",
+      "joint_velocity",
+      "wbc_task_twist"
+    ],
+    "excluded": [
+      "rod_contact",
+      "rod_force",
+      "rod_penetration",
+      "rod_state",
+      "obstacle_pose_or_geometry",
+      "contact_normal",
+      "future_release",
+      "fixture_id"
+    ]
+  },
+  "input_trace_count": 11,
+  "input_trace_paths": [
+    "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_negative_x_c0_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+    "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_negative_x_c0_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+    "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_negative_y_c2_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+    "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_negative_y_c2_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+    "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_negative_z_c4_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+    "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_negative_z_c4_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+    "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_positive_x_c1_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+    "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_positive_y_c3_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+    "/tmp/esn_wbc_screen_20260815/runs/esn_wbc_train_positive_y_c3_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+    "/tmp/esn_wbc_positive_x_early_probe_20260815/runs/esn_wbc_train_positive_x_c1_t0/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz",
+    "/tmp/esn_wbc_positive_x_early_probe_20260815/runs/esn_wbc_train_positive_x_c1_t1/rod_perturbation_kvec_27.6_52.6_48.7_35.9_40.7_34.8_trace.npz"
+  ],
+  "normalizer_absolute_median_scales": [
+    0.001,
+    0.0030796714556332815,
+    0.001,
+    0.5236118086654504,
+    0.001,
+    0.5242192717470429,
+    0.26177734004929654,
+    0.001,
+    0.005100803652429947,
+    0.001,
+    0.006610121302451328,
+    0.001,
+    0.0025158406197639247,
+    0.001,
+    0.020080911359441084,
+    0.001,
+    0.05678499594833238,
+    0.001,
+    0.031620128396289915,
+    0.001
+  ],
+  "sampling": {
+    "dt_s": 0.04,
+    "sample_stride": 10,
+    "washout_steps": 25,
+    "max_frequency_hz": 10.0
+  },
+  "candidate_count": 128,
+  "pareto_frontier_count": 1,
+  "candidates": [
+    {
+      "candidate_index": 0,
+      "containment_ratio": 0.7188125994181431,
+      "echo_state_property_index": 2.317666381730927e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.935064935064935,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.4833875618070378,
+        "input_scale": 0.8194658029986479,
+        "time_constant_s": 0.25691276152017695,
+        "connection_probability": 0.03550981472629133,
+        "bias_scale": 0.9815555348481014,
+        "ridge_lambda": 9.120765452481126e-08,
+        "dt_s": 0.04,
+        "seed": 20260816
+      }
+    },
+    {
+      "candidate_index": 1,
+      "containment_ratio": 0.6846864796108935,
+      "echo_state_property_index": 3.446762741465012e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.3376623376623376,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.0388331477888368,
+        "input_scale": 0.40311959165781175,
+        "time_constant_s": 0.26958172111472145,
+        "connection_probability": 0.31313892809892957,
+        "bias_scale": 0.35678549906854257,
+        "ridge_lambda": 1.4833844128709877e-05,
+        "dt_s": 0.04,
+        "seed": 20260817
+      }
+    },
+    {
+      "candidate_index": 2,
+      "containment_ratio": 0.6307245062177806,
+      "echo_state_property_index": 5.9408306050493455e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.1818181818181817,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.61977885592742,
+        "input_scale": 0.15531343144123522,
+        "time_constant_s": 0.24591764553678525,
+        "connection_probability": 0.2995041861918889,
+        "bias_scale": 0.9632453451644991,
+        "ridge_lambda": 1.5948635492899372e-05,
+        "dt_s": 0.04,
+        "seed": 20260818
+      }
+    },
+    {
+      "candidate_index": 3,
+      "containment_ratio": 0.8649156910884771,
+      "echo_state_property_index": 1.05435655595688e-09,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.181818181818181,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.6824372690200564,
+        "input_scale": 1.2633214443699468,
+        "time_constant_s": 0.12908791702306185,
+        "connection_probability": 0.08136609908871464,
+        "bias_scale": 0.77607955126265,
+        "ridge_lambda": 1.3365761373672539e-05,
+        "dt_s": 0.04,
+        "seed": 20260819
+      }
+    },
+    {
+      "candidate_index": 4,
+      "containment_ratio": 0.8990465492066622,
+      "echo_state_property_index": 7.39503022654396e-12,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.142857142857142,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.596923898835126,
+        "input_scale": 1.2133686236876409,
+        "time_constant_s": 0.11862396816286197,
+        "connection_probability": 0.13344739421055218,
+        "bias_scale": 0.1693425130583699,
+        "ridge_lambda": 1.781426065571232e-06,
+        "dt_s": 0.04,
+        "seed": 20260820
+      }
+    },
+    {
+      "candidate_index": 5,
+      "containment_ratio": 0.7276006775013208,
+      "echo_state_property_index": 1.1927347956430235e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.7532467532467533,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 0.5214231224442332,
+        "input_scale": 1.217764387823765,
+        "time_constant_s": 0.2530571039581558,
+        "connection_probability": 0.35331569232490184,
+        "bias_scale": 0.04172097759015891,
+        "ridge_lambda": 1.2791858537650768e-06,
+        "dt_s": 0.04,
+        "seed": 20260821
+      }
+    },
+    {
+      "candidate_index": 6,
+      "containment_ratio": 0.7075645087960404,
+      "echo_state_property_index": 3.0894682614747e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.805194805194805,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.9980141016889188,
+        "input_scale": 1.2781549961043395,
+        "time_constant_s": 0.2808744079468457,
+        "connection_probability": 0.041348986128566724,
+        "bias_scale": 0.7723577376254519,
+        "ridge_lambda": 3.5025632019011925e-07,
+        "dt_s": 0.04,
+        "seed": 20260822
+      }
+    },
+    {
+      "candidate_index": 7,
+      "containment_ratio": 0.8585202804604019,
+      "echo_state_property_index": 5.194919096365534e-10,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.831168831168831,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.5097201125810785,
+        "input_scale": 0.8087942252656098,
+        "time_constant_s": 0.1396460805280092,
+        "connection_probability": 0.10866111164970299,
+        "bias_scale": 0.28135232940040933,
+        "ridge_lambda": 0.0028732233098989098,
+        "dt_s": 0.04,
+        "seed": 20260823
+      }
+    },
+    {
+      "candidate_index": 8,
+      "containment_ratio": 0.6372283936394325,
+      "echo_state_property_index": 0.00033226659594883315,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.0649350649350646,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.803505003339522,
+        "input_scale": 0.3894911365599889,
+        "time_constant_s": 0.3198724496645647,
+        "connection_probability": 0.3879421178159959,
+        "bias_scale": 0.8257949131100187,
+        "ridge_lambda": 0.00014517991838132054,
+        "dt_s": 0.04,
+        "seed": 20260824
+      }
+    },
+    {
+      "candidate_index": 9,
+      "containment_ratio": 0.7076015158265103,
+      "echo_state_property_index": 7.348725270643668e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.727272727272727,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.1190698794151095,
+        "input_scale": 1.4317832421652943,
+        "time_constant_s": 0.2907480104774902,
+        "connection_probability": 0.18041805959971355,
+        "bias_scale": 0.13582359057302704,
+        "ridge_lambda": 0.0012662063763443294,
+        "dt_s": 0.04,
+        "seed": 20260825
+      }
+    },
+    {
+      "candidate_index": 10,
+      "containment_ratio": 0.9615594900031376,
+      "echo_state_property_index": 2.3990212246540226e-16,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 5.116883116883116,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 0.811996825602038,
+        "input_scale": 1.8957871215675584,
+        "time_constant_s": 0.0857609946040335,
+        "connection_probability": 0.08539113719301981,
+        "bias_scale": 0.20619137017669004,
+        "ridge_lambda": 0.0002941738962998532,
+        "dt_s": 0.04,
+        "seed": 20260826
+      }
+    },
+    {
+      "candidate_index": 11,
+      "containment_ratio": 0.9081508059874754,
+      "echo_state_property_index": 3.550907971948337e-08,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.285714285714286,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.5099960008025497,
+        "input_scale": 0.36628990480103096,
+        "time_constant_s": 0.08977967685566829,
+        "connection_probability": 0.3061896951072494,
+        "bias_scale": 0.7437064423414674,
+        "ridge_lambda": 3.030742496608837e-07,
+        "dt_s": 0.04,
+        "seed": 20260827
+      }
+    },
+    {
+      "candidate_index": 12,
+      "containment_ratio": 0.7025353181996712,
+      "echo_state_property_index": 3.277165975005323e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.4285714285714284,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.6370421686291436,
+        "input_scale": 0.8608743831304918,
+        "time_constant_s": 0.2714477767126307,
+        "connection_probability": 0.2447189138811571,
+        "bias_scale": 0.7876270931543745,
+        "ridge_lambda": 1.678626706756944e-07,
+        "dt_s": 0.04,
+        "seed": 20260828
+      }
+    },
+    {
+      "candidate_index": 13,
+      "containment_ratio": 0.794267074864652,
+      "echo_state_property_index": 9.385918405641538e-08,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.0779220779220777,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 0.6502658451569426,
+        "input_scale": 1.8558388622664914,
+        "time_constant_s": 0.20020144997020345,
+        "connection_probability": 0.08412129086453328,
+        "bias_scale": 0.978671449997161,
+        "ridge_lambda": 3.3289298820902545e-06,
+        "dt_s": 0.04,
+        "seed": 20260829
+      }
+    },
+    {
+      "candidate_index": 14,
+      "containment_ratio": 0.6983671182199183,
+      "echo_state_property_index": 8.869782706413328e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.6753246753246747,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.4980074896533735,
+        "input_scale": 1.5403088581886584,
+        "time_constant_s": 0.2862126581779946,
+        "connection_probability": 0.1708860298370889,
+        "bias_scale": 0.7315315312909065,
+        "ridge_lambda": 0.0032957844134142798,
+        "dt_s": 0.04,
+        "seed": 20260830
+      }
+    },
+    {
+      "candidate_index": 15,
+      "containment_ratio": 0.9695534701125638,
+      "echo_state_property_index": 3.9992514830841475e-16,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 5.83116883116883,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 0.8848694633529564,
+        "input_scale": 1.3934768008862486,
+        "time_constant_s": 0.07038488604529522,
+        "connection_probability": 0.04845615560188705,
+        "bias_scale": 0.1331469325268379,
+        "ridge_lambda": 2.1132411018789128e-07,
+        "dt_s": 0.04,
+        "seed": 20260831
+      }
+    },
+    {
+      "candidate_index": 16,
+      "containment_ratio": 0.6435907700448248,
+      "echo_state_property_index": 0.0005042840169704961,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.1948051948051943,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.4932261922005705,
+        "input_scale": 0.25204075456344177,
+        "time_constant_s": 0.2509545050172009,
+        "connection_probability": 0.10528903482172525,
+        "bias_scale": 0.09569165492438557,
+        "ridge_lambda": 0.001246987023012443,
+        "dt_s": 0.04,
+        "seed": 20260832
+      }
+    },
+    {
+      "candidate_index": 17,
+      "containment_ratio": 0.7895875905934837,
+      "echo_state_property_index": 1.7755627267886598e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.285714285714285,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.7056997883209268,
+        "input_scale": 1.6810632222465867,
+        "time_constant_s": 0.1971696336574128,
+        "connection_probability": 0.5863552526925321,
+        "bias_scale": 0.8213240784959743,
+        "ridge_lambda": 6.328932535938309e-08,
+        "dt_s": 0.04,
+        "seed": 20260833
+      }
+    },
+    {
+      "candidate_index": 18,
+      "containment_ratio": 0.7710589404719151,
+      "echo_state_property_index": 2.5587272578475147e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.506493506493506,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.9085346462631378,
+        "input_scale": 0.7702123184179693,
+        "time_constant_s": 0.17158346641646607,
+        "connection_probability": 0.7436533592587177,
+        "bias_scale": 0.40920982988933013,
+        "ridge_lambda": 3.488691413985343e-05,
+        "dt_s": 0.04,
+        "seed": 20260834
+      }
+    },
+    {
+      "candidate_index": 19,
+      "containment_ratio": 0.8496347602364213,
+      "echo_state_property_index": 1.4109982447661009e-12,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.831168831168831,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.5216658490574688,
+        "input_scale": 0.15785680392648005,
+        "time_constant_s": 0.08742866855510636,
+        "connection_probability": 0.2434025943385578,
+        "bias_scale": 0.9979337799881756,
+        "ridge_lambda": 2.6371057644581727e-06,
+        "dt_s": 0.04,
+        "seed": 20260835
+      }
+    },
+    {
+      "candidate_index": 20,
+      "containment_ratio": 0.786889493064507,
+      "echo_state_property_index": 2.0786196177040585e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.428571428571429,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 0.690398255874467,
+        "input_scale": 1.4456693302334491,
+        "time_constant_s": 0.208282053516163,
+        "connection_probability": 0.06733557837434007,
+        "bias_scale": 0.3389699934712036,
+        "ridge_lambda": 2.9663422920266093e-05,
+        "dt_s": 0.04,
+        "seed": 20260836
+      }
+    },
+    {
+      "candidate_index": 21,
+      "containment_ratio": 0.8336718143697793,
+      "echo_state_property_index": 3.4410331327205166e-08,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.4155844155844153,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.0779942024509068,
+        "input_scale": 0.9587927578008182,
+        "time_constant_s": 0.1441507197295783,
+        "connection_probability": 0.27317797005197686,
+        "bias_scale": 0.11884580484536864,
+        "ridge_lambda": 0.007290840215917048,
+        "dt_s": 0.04,
+        "seed": 20260837
+      }
+    },
+    {
+      "candidate_index": 22,
+      "containment_ratio": 0.9975943742010688,
+      "echo_state_property_index": 2.4552735127900653e-24,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 9.272727272727273,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.8663904393867368,
+        "input_scale": 1.6012499165987573,
+        "time_constant_s": 0.0514884550621249,
+        "connection_probability": 0.1609480434868163,
+        "bias_scale": 0.6479039152241401,
+        "ridge_lambda": 0.007569141281025282,
+        "dt_s": 0.04,
+        "seed": 20260838
+      }
+    },
+    {
+      "candidate_index": 23,
+      "containment_ratio": 0.8159515118809254,
+      "echo_state_property_index": 6.873806861324253e-09,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.4545454545454537,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.5807459404965177,
+        "input_scale": 1.8628294914295647,
+        "time_constant_s": 0.1709202461708802,
+        "connection_probability": 0.3490820760445521,
+        "bias_scale": 0.27011238753211064,
+        "ridge_lambda": 1.8470348435944023e-08,
+        "dt_s": 0.04,
+        "seed": 20260839
+      }
+    },
+    {
+      "candidate_index": 24,
+      "containment_ratio": 0.7486220327376727,
+      "echo_state_property_index": 5.796690343219132e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.9610389610389607,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.6112730768977357,
+        "input_scale": 1.2768770019770483,
+        "time_constant_s": 0.20191848499919418,
+        "connection_probability": 0.1452627343551925,
+        "bias_scale": 0.2975485403885777,
+        "ridge_lambda": 0.00048476990342601495,
+        "dt_s": 0.04,
+        "seed": 20260840
+      }
+    },
+    {
+      "candidate_index": 25,
+      "containment_ratio": 0.7339052781291332,
+      "echo_state_property_index": 3.971723339939935e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.0259740259740258,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.4710461559452803,
+        "input_scale": 0.4160446029415321,
+        "time_constant_s": 0.17667554749695044,
+        "connection_probability": 0.21441703961282377,
+        "bias_scale": 0.7734248690292735,
+        "ridge_lambda": 3.471480093070448e-06,
+        "dt_s": 0.04,
+        "seed": 20260841
+      }
+    },
+    {
+      "candidate_index": 26,
+      "containment_ratio": 0.9358837403688696,
+      "echo_state_property_index": 4.172948156062068e-12,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.5064935064935066,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.1249988241484183,
+        "input_scale": 1.9137149013312527,
+        "time_constant_s": 0.11067786931551199,
+        "connection_probability": 0.07361086372670761,
+        "bias_scale": 0.5438219372912356,
+        "ridge_lambda": 1.15694677228232e-08,
+        "dt_s": 0.04,
+        "seed": 20260842
+      }
+    },
+    {
+      "candidate_index": 27,
+      "containment_ratio": 0.7318242039681496,
+      "echo_state_property_index": 4.635317458163446e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.8961038961038956,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.168341939564605,
+        "input_scale": 1.68626899369313,
+        "time_constant_s": 0.20885593318963128,
+        "connection_probability": 0.2462486260886444,
+        "bias_scale": 0.7559881688245996,
+        "ridge_lambda": 2.870950622810256e-07,
+        "dt_s": 0.04,
+        "seed": 20260843
+      }
+    },
+    {
+      "candidate_index": 28,
+      "containment_ratio": 0.8075912206132084,
+      "echo_state_property_index": 5.086234334515424e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.4545454545454546,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.3140929972240167,
+        "input_scale": 0.40561269296884217,
+        "time_constant_s": 0.1464802478002605,
+        "connection_probability": 0.05146708152906821,
+        "bias_scale": 0.7631666319964915,
+        "ridge_lambda": 0.0054480093525338565,
+        "dt_s": 0.04,
+        "seed": 20260844
+      }
+    },
+    {
+      "candidate_index": 29,
+      "containment_ratio": 0.7380242531524007,
+      "echo_state_property_index": 5.876157326242342e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.8051948051948057,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.6738049992274852,
+        "input_scale": 0.5364243293959255,
+        "time_constant_s": 0.21506095178129167,
+        "connection_probability": 0.30199992150228183,
+        "bias_scale": 0.8740663689030322,
+        "ridge_lambda": 2.9102653113773536e-06,
+        "dt_s": 0.04,
+        "seed": 20260845
+      }
+    },
+    {
+      "candidate_index": 30,
+      "containment_ratio": 0.6623507626770375,
+      "echo_state_property_index": 2.618963219415974e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.3116883116883113,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.1163244708963007,
+        "input_scale": 0.3945342090743459,
+        "time_constant_s": 0.2738735906316086,
+        "connection_probability": 0.5700385920903672,
+        "bias_scale": 0.9925693558705047,
+        "ridge_lambda": 1.912697727558466e-06,
+        "dt_s": 0.04,
+        "seed": 20260846
+      }
+    },
+    {
+      "candidate_index": 31,
+      "containment_ratio": 0.7768059361017147,
+      "echo_state_property_index": 8.369138464225192e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.3116883116883113,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.9136176308629014,
+        "input_scale": 0.4490996239522438,
+        "time_constant_s": 0.1356850811644993,
+        "connection_probability": 0.3387170818905209,
+        "bias_scale": 0.1567588743711986,
+        "ridge_lambda": 4.420524473013181e-05,
+        "dt_s": 0.04,
+        "seed": 20260847
+      }
+    },
+    {
+      "candidate_index": 32,
+      "containment_ratio": 0.7902696718733317,
+      "echo_state_property_index": 8.079087598134785e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.3246753246753245,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.4353459220984381,
+        "input_scale": 0.32697055695437166,
+        "time_constant_s": 0.14473825404416701,
+        "connection_probability": 0.3024487565017467,
+        "bias_scale": 0.4535831545597314,
+        "ridge_lambda": 5.636721366481797e-05,
+        "dt_s": 0.04,
+        "seed": 20260848
+      }
+    },
+    {
+      "candidate_index": 33,
+      "containment_ratio": 0.9290241565301843,
+      "echo_state_property_index": 4.821995546230586e-12,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.376623376623376,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.767296648236379,
+        "input_scale": 1.9314668304296272,
+        "time_constant_s": 0.11547665280724032,
+        "connection_probability": 0.11298232057294536,
+        "bias_scale": 0.2302408311532159,
+        "ridge_lambda": 1.4625703500400964e-06,
+        "dt_s": 0.04,
+        "seed": 20260849
+      }
+    },
+    {
+      "candidate_index": 34,
+      "containment_ratio": 0.7255803601057512,
+      "echo_state_property_index": 3.712283633096894e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.792207792207792,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.1805647761298756,
+        "input_scale": 1.0684541370013798,
+        "time_constant_s": 0.2597228647224686,
+        "connection_probability": 0.7936970619662225,
+        "bias_scale": 0.2670956963964563,
+        "ridge_lambda": 7.07254362666901e-07,
+        "dt_s": 0.04,
+        "seed": 20260850
+      }
+    },
+    {
+      "candidate_index": 35,
+      "containment_ratio": 0.7523253560403057,
+      "echo_state_property_index": 0.00024222727120017253,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.8701298701298694,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.9588334186658867,
+        "input_scale": 0.5677672758046092,
+        "time_constant_s": 0.22467284571242557,
+        "connection_probability": 0.21773322118150068,
+        "bias_scale": 0.14324057543644278,
+        "ridge_lambda": 9.713296653681871e-06,
+        "dt_s": 0.04,
+        "seed": 20260851
+      }
+    },
+    {
+      "candidate_index": 36,
+      "containment_ratio": 0.6828785553009485,
+      "echo_state_property_index": 7.9035295547093e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.4155844155844153,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 0.8144224221490384,
+        "input_scale": 1.0468366489850822,
+        "time_constant_s": 0.28624868513747576,
+        "connection_probability": 0.1331855491201757,
+        "bias_scale": 0.22658496387654697,
+        "ridge_lambda": 1.3957365333764685e-05,
+        "dt_s": 0.04,
+        "seed": 20260852
+      }
+    },
+    {
+      "candidate_index": 37,
+      "containment_ratio": 0.8385117668058136,
+      "echo_state_property_index": 9.237762421023124e-10,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.8181818181818183,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.5838530732728024,
+        "input_scale": 1.6804707113294801,
+        "time_constant_s": 0.15097469255983345,
+        "connection_probability": 0.05237524002623426,
+        "bias_scale": 0.34334724189699883,
+        "ridge_lambda": 7.639455887003361e-05,
+        "dt_s": 0.04,
+        "seed": 20260853
+      }
+    },
+    {
+      "candidate_index": 38,
+      "containment_ratio": 0.9604131239552882,
+      "echo_state_property_index": 3.344592395192482e-20,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 6.363636363636363,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 0.5400480072837643,
+        "input_scale": 1.1608744004035583,
+        "time_constant_s": 0.06600252782115279,
+        "connection_probability": 0.5836278876384834,
+        "bias_scale": 0.7960699504688878,
+        "ridge_lambda": 2.8133684158434905e-05,
+        "dt_s": 0.04,
+        "seed": 20260854
+      }
+    },
+    {
+      "candidate_index": 39,
+      "containment_ratio": 0.6874720593694333,
+      "echo_state_property_index": 8.761762669080342e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.48051948051948,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.2515032630618463,
+        "input_scale": 1.387310691086364,
+        "time_constant_s": 0.2997329872394,
+        "connection_probability": 0.11989633897605678,
+        "bias_scale": 0.8450454972113846,
+        "ridge_lambda": 0.006304922260392047,
+        "dt_s": 0.04,
+        "seed": 20260855
+      }
+    },
+    {
+      "candidate_index": 40,
+      "containment_ratio": 0.8412688868836695,
+      "echo_state_property_index": 2.75259261828812e-11,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.9740259740259734,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.6475966946048768,
+        "input_scale": 0.6329588145358744,
+        "time_constant_s": 0.1188808798552698,
+        "connection_probability": 0.6102024369268092,
+        "bias_scale": 0.9082358586068042,
+        "ridge_lambda": 1.1640086146215008e-07,
+        "dt_s": 0.04,
+        "seed": 20260856
+      }
+    },
+    {
+      "candidate_index": 41,
+      "containment_ratio": 0.8134153057033231,
+      "echo_state_property_index": 6.297528713407296e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.506493506493507,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.6732766216494754,
+        "input_scale": 0.5791789923833787,
+        "time_constant_s": 0.17041599634158705,
+        "connection_probability": 0.12870505973631685,
+        "bias_scale": 0.28314694597149864,
+        "ridge_lambda": 2.1706603582845443e-05,
+        "dt_s": 0.04,
+        "seed": 20260857
+      }
+    },
+    {
+      "candidate_index": 42,
+      "containment_ratio": 0.777549175161658,
+      "echo_state_property_index": 2.198343501032815e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.935064935064935,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.7686486156906656,
+        "input_scale": 0.9248883219909733,
+        "time_constant_s": 0.19941630518059814,
+        "connection_probability": 0.2953696511478173,
+        "bias_scale": 0.33510372672203903,
+        "ridge_lambda": 8.021604585759382e-08,
+        "dt_s": 0.04,
+        "seed": 20260858
+      }
+    },
+    {
+      "candidate_index": 43,
+      "containment_ratio": 0.6896216273553614,
+      "echo_state_property_index": 1.318763502041022e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.35064935064935,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 0.7963715438162178,
+        "input_scale": 0.8766737709388097,
+        "time_constant_s": 0.3166201756026076,
+        "connection_probability": 0.1798739675499275,
+        "bias_scale": 0.9061656232082336,
+        "ridge_lambda": 0.0006249246812531,
+        "dt_s": 0.04,
+        "seed": 20260859
+      }
+    },
+    {
+      "candidate_index": 44,
+      "containment_ratio": 0.9468093780499175,
+      "echo_state_property_index": 1.0620123125439891e-15,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.8181818181818175,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.037399966695908,
+        "input_scale": 1.0096570584657811,
+        "time_constant_s": 0.0819409856198079,
+        "connection_probability": 0.38822968969840843,
+        "bias_scale": 0.6701232031782707,
+        "ridge_lambda": 1.6073292569949097e-06,
+        "dt_s": 0.04,
+        "seed": 20260860
+      }
+    },
+    {
+      "candidate_index": 45,
+      "containment_ratio": 0.7598525452230109,
+      "echo_state_property_index": 3.61321717493058e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.883116883116883,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.9911047825560744,
+        "input_scale": 1.3998530379849219,
+        "time_constant_s": 0.21539660581304237,
+        "connection_probability": 0.06433511852067289,
+        "bias_scale": 0.8887749453948866,
+        "ridge_lambda": 0.00010960818985852052,
+        "dt_s": 0.04,
+        "seed": 20260861
+      }
+    },
+    {
+      "candidate_index": 46,
+      "containment_ratio": 0.9144922424575881,
+      "echo_state_property_index": 2.9559765676049896e-13,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.532467532467533,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.7911290105162134,
+        "input_scale": 1.6594547911506154,
+        "time_constant_s": 0.10519986043734217,
+        "connection_probability": 0.17111596154434347,
+        "bias_scale": 0.3300080139654418,
+        "ridge_lambda": 3.370511357356318e-08,
+        "dt_s": 0.04,
+        "seed": 20260862
+      }
+    },
+    {
+      "candidate_index": 47,
+      "containment_ratio": 0.7948126833635701,
+      "echo_state_property_index": 1.0502549973545994e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.3636363636363638,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.9644830859774711,
+        "input_scale": 0.22949709709773483,
+        "time_constant_s": 0.1129590503230248,
+        "connection_probability": 0.323943149249462,
+        "bias_scale": 0.14862539085705823,
+        "ridge_lambda": 1.1852799792867389e-06,
+        "dt_s": 0.04,
+        "seed": 20260863
+      }
+    },
+    {
+      "candidate_index": 48,
+      "containment_ratio": 0.8600885635813753,
+      "echo_state_property_index": 7.824327652980204e-11,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.7532467532467533,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 0.5184833356432423,
+        "input_scale": 1.7055710516481213,
+        "time_constant_s": 0.13577923008684323,
+        "connection_probability": 0.11399193016799276,
+        "bias_scale": 0.3263970155663777,
+        "ridge_lambda": 0.005200448447132512,
+        "dt_s": 0.04,
+        "seed": 20260864
+      }
+    },
+    {
+      "candidate_index": 49,
+      "containment_ratio": 0.7620087161275346,
+      "echo_state_property_index": 7.853457833063945e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.1948051948051943,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.077839695966688,
+        "input_scale": 0.343399289635791,
+        "time_constant_s": 0.14829687747041376,
+        "connection_probability": 0.5079409590869369,
+        "bias_scale": 0.31318715317101725,
+        "ridge_lambda": 1.0600908549980303e-08,
+        "dt_s": 0.04,
+        "seed": 20260865
+      }
+    },
+    {
+      "candidate_index": 50,
+      "containment_ratio": 0.8376157357193681,
+      "echo_state_property_index": 2.3077221316083642e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.7012987012987013,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.8769387566289997,
+        "input_scale": 1.3461784711477633,
+        "time_constant_s": 0.17051213651265737,
+        "connection_probability": 0.19523750062824954,
+        "bias_scale": 0.2032188346460193,
+        "ridge_lambda": 3.578204185231492e-07,
+        "dt_s": 0.04,
+        "seed": 20260866
+      }
+    },
+    {
+      "candidate_index": 51,
+      "containment_ratio": 0.7490831553553652,
+      "echo_state_property_index": 4.307556309408835e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.051948051948052,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 0.6337828290157019,
+        "input_scale": 1.2542001341869662,
+        "time_constant_s": 0.21891111098867228,
+        "connection_probability": 0.21218170863572028,
+        "bias_scale": 0.6066885915662978,
+        "ridge_lambda": 0.001423546761795762,
+        "dt_s": 0.04,
+        "seed": 20260867
+      }
+    },
+    {
+      "candidate_index": 52,
+      "containment_ratio": 0.8094866246422292,
+      "echo_state_property_index": 3.880239763465586e-09,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.5974025974025965,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 0.7640789670864809,
+        "input_scale": 1.6425164208056733,
+        "time_constant_s": 0.15845595777676322,
+        "connection_probability": 0.5298034716845057,
+        "bias_scale": 0.31497644757100557,
+        "ridge_lambda": 0.00010952563811229145,
+        "dt_s": 0.04,
+        "seed": 20260868
+      }
+    },
+    {
+      "candidate_index": 53,
+      "containment_ratio": 0.9897637109778331,
+      "echo_state_property_index": 8.466562552368881e-18,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 6.831168831168832,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.7957673454145541,
+        "input_scale": 1.7428965336515119,
+        "time_constant_s": 0.07329543044493278,
+        "connection_probability": 0.1841952526278914,
+        "bias_scale": 0.9380600006558064,
+        "ridge_lambda": 2.12361184377064e-05,
+        "dt_s": 0.04,
+        "seed": 20260869
+      }
+    },
+    {
+      "candidate_index": 54,
+      "containment_ratio": 0.7310588422562376,
+      "echo_state_property_index": 1.0769999772803428e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.8181818181818183,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.7571896865484602,
+        "input_scale": 1.5426599739656013,
+        "time_constant_s": 0.22413447760847144,
+        "connection_probability": 0.5732554398698531,
+        "bias_scale": 0.8076703033382401,
+        "ridge_lambda": 2.8678867526441292e-08,
+        "dt_s": 0.04,
+        "seed": 20260870
+      }
+    },
+    {
+      "candidate_index": 55,
+      "containment_ratio": 0.9932788233171322,
+      "echo_state_property_index": 4.194238112085012e-24,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 7.2727272727272725,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.6125861727212529,
+        "input_scale": 1.9858501091972196,
+        "time_constant_s": 0.06271506957250456,
+        "connection_probability": 0.3616534243484768,
+        "bias_scale": 0.7799490736183396,
+        "ridge_lambda": 0.004698797552133175,
+        "dt_s": 0.04,
+        "seed": 20260871
+      }
+    },
+    {
+      "candidate_index": 56,
+      "containment_ratio": 0.718922870305144,
+      "echo_state_property_index": 2.915244487623027e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.7272727272727266,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.8447441483299905,
+        "input_scale": 0.4239327553653983,
+        "time_constant_s": 0.21893207241377388,
+        "connection_probability": 0.311184282050015,
+        "bias_scale": 0.9039484396059744,
+        "ridge_lambda": 1.1881139487342998e-07,
+        "dt_s": 0.04,
+        "seed": 20260872
+      }
+    },
+    {
+      "candidate_index": 57,
+      "containment_ratio": 0.6993892551007345,
+      "echo_state_property_index": 7.346236526040118e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.35064935064935,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.524695716967155,
+        "input_scale": 0.5684623104211183,
+        "time_constant_s": 0.22461319714968134,
+        "connection_probability": 0.350095673522032,
+        "bias_scale": 0.5173690561948595,
+        "ridge_lambda": 0.0009234407716870707,
+        "dt_s": 0.04,
+        "seed": 20260873
+      }
+    },
+    {
+      "candidate_index": 58,
+      "containment_ratio": 0.8125047357519928,
+      "echo_state_property_index": 8.412242711131656e-08,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.415584415584416,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.0096449505816911,
+        "input_scale": 1.7990970645081223,
+        "time_constant_s": 0.1973439420203784,
+        "connection_probability": 0.08803769641145487,
+        "bias_scale": 0.8333386271588661,
+        "ridge_lambda": 4.9672156856273335e-06,
+        "dt_s": 0.04,
+        "seed": 20260874
+      }
+    },
+    {
+      "candidate_index": 59,
+      "containment_ratio": 0.976133973669976,
+      "echo_state_property_index": 1.1966792142859801e-14,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 5.766233766233765,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.2301280475537921,
+        "input_scale": 1.0797077126815808,
+        "time_constant_s": 0.07212591564182536,
+        "connection_probability": 0.14320871783930295,
+        "bias_scale": 0.4052372703042549,
+        "ridge_lambda": 0.00010525869032688893,
+        "dt_s": 0.04,
+        "seed": 20260875
+      }
+    },
+    {
+      "candidate_index": 60,
+      "containment_ratio": 0.9417552174183222,
+      "echo_state_property_index": 1.9047512901804003e-12,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.649350649350649,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.1197743684261983,
+        "input_scale": 1.979003520187148,
+        "time_constant_s": 0.10811653029835078,
+        "connection_probability": 0.0707048728769499,
+        "bias_scale": 0.5655655408152996,
+        "ridge_lambda": 1.4285554045837906e-08,
+        "dt_s": 0.04,
+        "seed": 20260876
+      }
+    },
+    {
+      "candidate_index": 61,
+      "containment_ratio": 0.989858080920094,
+      "echo_state_property_index": 1.3066172273810524e-20,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 7.818181818181817,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.0407785485972876,
+        "input_scale": 0.8804448588467236,
+        "time_constant_s": 0.05149344967883844,
+        "connection_probability": 0.3412004144741742,
+        "bias_scale": 0.31462267101472674,
+        "ridge_lambda": 5.999112559651353e-05,
+        "dt_s": 0.04,
+        "seed": 20260877
+      }
+    },
+    {
+      "candidate_index": 62,
+      "containment_ratio": 0.8661951519497136,
+      "echo_state_property_index": 2.303449880630451e-08,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.129870129870129,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.826791651267202,
+        "input_scale": 0.8492421810463908,
+        "time_constant_s": 0.11591823740591387,
+        "connection_probability": 0.336215194358619,
+        "bias_scale": 0.20099147829475028,
+        "ridge_lambda": 9.645808374224059e-06,
+        "dt_s": 0.04,
+        "seed": 20260878
+      }
+    },
+    {
+      "candidate_index": 63,
+      "containment_ratio": 0.728850696981554,
+      "echo_state_property_index": 7.209565170382887e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.558441558441558,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.1840790798666951,
+        "input_scale": 0.7746571777463052,
+        "time_constant_s": 0.2535349776031628,
+        "connection_probability": 0.04498994759211253,
+        "bias_scale": 0.5282820755501968,
+        "ridge_lambda": 5.629458480145571e-07,
+        "dt_s": 0.04,
+        "seed": 20260879
+      }
+    },
+    {
+      "candidate_index": 64,
+      "containment_ratio": 0.725984843571159,
+      "echo_state_property_index": 1.9597102059085789e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.727272727272727,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.5020436102019951,
+        "input_scale": 0.6070386351188958,
+        "time_constant_s": 0.20507666650378786,
+        "connection_probability": 0.2621075261173989,
+        "bias_scale": 0.5781705200035229,
+        "ridge_lambda": 0.006482022457707618,
+        "dt_s": 0.04,
+        "seed": 20260880
+      }
+    },
+    {
+      "candidate_index": 65,
+      "containment_ratio": 0.9463026741759856,
+      "echo_state_property_index": 2.2087878186621895e-14,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 5.0,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.4642476041939623,
+        "input_scale": 1.4601669926350542,
+        "time_constant_s": 0.08490426493637902,
+        "connection_probability": 0.29526501451549614,
+        "bias_scale": 0.48681890596256533,
+        "ridge_lambda": 1.4776205172786215e-08,
+        "dt_s": 0.04,
+        "seed": 20260881
+      }
+    },
+    {
+      "candidate_index": 66,
+      "containment_ratio": 0.7403610294946158,
+      "echo_state_property_index": 6.207675464205203e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.818181818181818,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.8569523259375006,
+        "input_scale": 1.8291186639702282,
+        "time_constant_s": 0.2942408228227334,
+        "connection_probability": 0.5514779907249444,
+        "bias_scale": 0.8531759766583309,
+        "ridge_lambda": 7.988811458138888e-06,
+        "dt_s": 0.04,
+        "seed": 20260882
+      }
+    },
+    {
+      "candidate_index": 67,
+      "containment_ratio": 0.7561092963419795,
+      "echo_state_property_index": 7.153407485608531e-09,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.207792207792207,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.5162290839799213,
+        "input_scale": 0.2409511619141934,
+        "time_constant_s": 0.1433479701187584,
+        "connection_probability": 0.49215458764121356,
+        "bias_scale": 0.6355790746539198,
+        "ridge_lambda": 6.908519232821812e-07,
+        "dt_s": 0.04,
+        "seed": 20260883
+      }
+    },
+    {
+      "candidate_index": 68,
+      "containment_ratio": 0.7217983259600746,
+      "echo_state_property_index": 1.000267518252746e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.792207792207792,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.628077763452322,
+        "input_scale": 0.7670840141824888,
+        "time_constant_s": 0.22151790670062207,
+        "connection_probability": 0.3876382326121339,
+        "bias_scale": 0.9435348944512454,
+        "ridge_lambda": 3.8859499033229706e-08,
+        "dt_s": 0.04,
+        "seed": 20260884
+      }
+    },
+    {
+      "candidate_index": 69,
+      "containment_ratio": 0.9910636589681318,
+      "echo_state_property_index": 1.1705492187267941e-18,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 6.7012987012987,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 0.9701719650402008,
+        "input_scale": 0.5549987157273671,
+        "time_constant_s": 0.057323783768566755,
+        "connection_probability": 0.2473673753543586,
+        "bias_scale": 0.9681462365580277,
+        "ridge_lambda": 1.775790603508927e-06,
+        "dt_s": 0.04,
+        "seed": 20260885
+      }
+    },
+    {
+      "candidate_index": 70,
+      "containment_ratio": 0.7033018941785444,
+      "echo_state_property_index": 1.335295570794839e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.7272727272727266,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.3339618903906554,
+        "input_scale": 1.7672155833262455,
+        "time_constant_s": 0.31923437917302994,
+        "connection_probability": 0.6118928630865283,
+        "bias_scale": 0.7691475892762751,
+        "ridge_lambda": 2.3056613196200616e-07,
+        "dt_s": 0.04,
+        "seed": 20260886
+      }
+    },
+    {
+      "candidate_index": 71,
+      "containment_ratio": 0.7498191675853001,
+      "echo_state_property_index": 2.8403780410538e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.1168831168831166,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.9885547499629745,
+        "input_scale": 1.5947327442356256,
+        "time_constant_s": 0.24348999479335223,
+        "connection_probability": 0.41252094188688654,
+        "bias_scale": 0.7566037219343755,
+        "ridge_lambda": 9.554736211078301e-08,
+        "dt_s": 0.04,
+        "seed": 20260887
+      }
+    },
+    {
+      "candidate_index": 72,
+      "containment_ratio": 0.9372936063727085,
+      "echo_state_property_index": 1.8814130483467253e-10,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.753246753246754,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.6349611864820361,
+        "input_scale": 0.43277230632747565,
+        "time_constant_s": 0.07644733436666885,
+        "connection_probability": 0.19166569824713747,
+        "bias_scale": 0.290759696234162,
+        "ridge_lambda": 1.1647269481503499e-08,
+        "dt_s": 0.04,
+        "seed": 20260888
+      }
+    },
+    {
+      "candidate_index": 73,
+      "containment_ratio": 0.9809294036302056,
+      "echo_state_property_index": 5.641397431295017e-10,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 5.532467532467532,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.7701321902116862,
+        "input_scale": 0.4898973590419369,
+        "time_constant_s": 0.06407342813568338,
+        "connection_probability": 0.1396541322831736,
+        "bias_scale": 0.5192139623460985,
+        "ridge_lambda": 0.004855551020135706,
+        "dt_s": 0.04,
+        "seed": 20260889
+      }
+    },
+    {
+      "candidate_index": 74,
+      "containment_ratio": 0.8899418154560604,
+      "echo_state_property_index": 2.452092279064972e-11,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.0,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 0.5272606436611434,
+        "input_scale": 1.5100638734896874,
+        "time_constant_s": 0.12645072924565806,
+        "connection_probability": 0.6238528426262601,
+        "bias_scale": 0.09285217064596804,
+        "ridge_lambda": 0.00013586245212380998,
+        "dt_s": 0.04,
+        "seed": 20260890
+      }
+    },
+    {
+      "candidate_index": 75,
+      "containment_ratio": 0.6956496486242645,
+      "echo_state_property_index": 1.3213690701832533e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.35064935064935,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.7224958321324937,
+        "input_scale": 1.6520534977861148,
+        "time_constant_s": 0.31611429518731066,
+        "connection_probability": 0.1415672798627717,
+        "bias_scale": 0.8537134898223842,
+        "ridge_lambda": 3.469112676047687e-08,
+        "dt_s": 0.04,
+        "seed": 20260891
+      }
+    },
+    {
+      "candidate_index": 76,
+      "containment_ratio": 0.7166185040417923,
+      "echo_state_property_index": 1.3813169137466102e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.766233766233766,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.9674388524293542,
+        "input_scale": 0.27581728647073067,
+        "time_constant_s": 0.19189629494629257,
+        "connection_probability": 0.5219181604861379,
+        "bias_scale": 0.8868455665842971,
+        "ridge_lambda": 4.761211333234884e-05,
+        "dt_s": 0.04,
+        "seed": 20260892
+      }
+    },
+    {
+      "candidate_index": 77,
+      "containment_ratio": 0.8075537026446942,
+      "echo_state_property_index": 1.5767500021008552e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.649350649350649,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.6266162949537146,
+        "input_scale": 0.7492270757618146,
+        "time_constant_s": 0.13136299111391675,
+        "connection_probability": 0.7095883054849582,
+        "bias_scale": 0.013714256089905383,
+        "ridge_lambda": 2.27006551003336e-06,
+        "dt_s": 0.04,
+        "seed": 20260893
+      }
+    },
+    {
+      "candidate_index": 78,
+      "containment_ratio": 0.8784901514029951,
+      "echo_state_property_index": 2.458653795645738e-10,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.064935064935065,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.8424201997989614,
+        "input_scale": 0.8774869855068571,
+        "time_constant_s": 0.12236739301311952,
+        "connection_probability": 0.36375730209135265,
+        "bias_scale": 0.21910401744562358,
+        "ridge_lambda": 5.050929401580266e-05,
+        "dt_s": 0.04,
+        "seed": 20260894
+      }
+    },
+    {
+      "candidate_index": 79,
+      "containment_ratio": 0.8242285632368035,
+      "echo_state_property_index": 2.657315581085915e-08,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.493506493506493,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 0.8751441006815803,
+        "input_scale": 1.8225806742233397,
+        "time_constant_s": 0.17373156163301656,
+        "connection_probability": 0.6648163522274584,
+        "bias_scale": 0.7446932570729399,
+        "ridge_lambda": 6.168613093097991e-07,
+        "dt_s": 0.04,
+        "seed": 20260895
+      }
+    },
+    {
+      "candidate_index": 80,
+      "containment_ratio": 0.7053657579686163,
+      "echo_state_property_index": 6.115944569835035e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.4415584415584415,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.760221894460418,
+        "input_scale": 0.5994317106835473,
+        "time_constant_s": 0.25818072938459014,
+        "connection_probability": 0.2638522237779373,
+        "bias_scale": 0.47090400916629227,
+        "ridge_lambda": 0.00756847989202779,
+        "dt_s": 0.04,
+        "seed": 20260896
+      }
+    },
+    {
+      "candidate_index": 81,
+      "containment_ratio": 0.9892630533485629,
+      "echo_state_property_index": 3.9185591273876095e-15,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 5.974025974025975,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.7407435778862577,
+        "input_scale": 1.9260893291476984,
+        "time_constant_s": 0.07936085557983293,
+        "connection_probability": 0.23226910615980442,
+        "bias_scale": 0.8703960895051518,
+        "ridge_lambda": 0.009165760529386679,
+        "dt_s": 0.04,
+        "seed": 20260897
+      }
+    },
+    {
+      "candidate_index": 82,
+      "containment_ratio": 0.8019362927033789,
+      "echo_state_property_index": 1.59668747690716e-08,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.4415584415584415,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.511381162651608,
+        "input_scale": 1.9844765664965403,
+        "time_constant_s": 0.1807078893255921,
+        "connection_probability": 0.42491338903419795,
+        "bias_scale": 0.5359333043895765,
+        "ridge_lambda": 0.0033583219535097413,
+        "dt_s": 0.04,
+        "seed": 20260898
+      }
+    },
+    {
+      "candidate_index": 83,
+      "containment_ratio": 0.9021324176986105,
+      "echo_state_property_index": 8.101167399714881e-12,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.337662337662338,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.3458691656149993,
+        "input_scale": 1.6437557492248756,
+        "time_constant_s": 0.10526858282613419,
+        "connection_probability": 0.5963490690703344,
+        "bias_scale": 0.7862175501938783,
+        "ridge_lambda": 4.63372289103786e-08,
+        "dt_s": 0.04,
+        "seed": 20260899
+      }
+    },
+    {
+      "candidate_index": 84,
+      "containment_ratio": 0.6763698516471399,
+      "echo_state_property_index": 2.5320696653059e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.2987012987012987,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.1085563187633578,
+        "input_scale": 0.5650400928713385,
+        "time_constant_s": 0.2722373484616073,
+        "connection_probability": 0.18900818379912562,
+        "bias_scale": 0.20691176441718984,
+        "ridge_lambda": 0.0001239167023048191,
+        "dt_s": 0.04,
+        "seed": 20260900
+      }
+    },
+    {
+      "candidate_index": 85,
+      "containment_ratio": 0.7851891259209665,
+      "echo_state_property_index": 6.394748153474878e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.1168831168831166,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.7017064613548634,
+        "input_scale": 1.6937188702177421,
+        "time_constant_s": 0.21252003533743152,
+        "connection_probability": 0.18054537376385388,
+        "bias_scale": 0.769929972047393,
+        "ridge_lambda": 4.072022741172421e-06,
+        "dt_s": 0.04,
+        "seed": 20260901
+      }
+    },
+    {
+      "candidate_index": 86,
+      "containment_ratio": 0.6751817075755459,
+      "echo_state_property_index": 1.1212546137802971e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.376623376623376,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 0.8290689354790766,
+        "input_scale": 0.15718418579807428,
+        "time_constant_s": 0.19199915686479024,
+        "connection_probability": 0.20411995624997753,
+        "bias_scale": 0.2408890323258521,
+        "ridge_lambda": 3.0352701168232223e-07,
+        "dt_s": 0.04,
+        "seed": 20260902
+      }
+    },
+    {
+      "candidate_index": 87,
+      "containment_ratio": 0.5630001063224599,
+      "echo_state_property_index": 4.519122360031305e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 1.753246753246753,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 0.6053285286900234,
+        "input_scale": 0.1022679893727361,
+        "time_constant_s": 0.285910704303101,
+        "connection_probability": 0.15658511424616786,
+        "bias_scale": 0.5821972455390759,
+        "ridge_lambda": 0.008096207745016713,
+        "dt_s": 0.04,
+        "seed": 20260903
+      }
+    },
+    {
+      "candidate_index": 88,
+      "containment_ratio": 0.7436979765262677,
+      "echo_state_property_index": 4.958756770319057e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.909090909090909,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.5392473318788027,
+        "input_scale": 0.9260269110392337,
+        "time_constant_s": 0.21661734826698348,
+        "connection_probability": 0.05321641372231566,
+        "bias_scale": 0.2931562449121263,
+        "ridge_lambda": 2.4595177857965535e-05,
+        "dt_s": 0.04,
+        "seed": 20260904
+      }
+    },
+    {
+      "candidate_index": 89,
+      "containment_ratio": 0.9657191905529061,
+      "echo_state_property_index": 1.5489530212128223e-13,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 5.363636363636363,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.9092198885481264,
+        "input_scale": 1.8366760207583388,
+        "time_constant_s": 0.08661706572459205,
+        "connection_probability": 0.3091004433291863,
+        "bias_scale": 0.7211106033667807,
+        "ridge_lambda": 4.400213739813609e-07,
+        "dt_s": 0.04,
+        "seed": 20260905
+      }
+    },
+    {
+      "candidate_index": 90,
+      "containment_ratio": 0.7083461711401128,
+      "echo_state_property_index": 1.4546520881973958e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.7792207792207795,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.6722331371270545,
+        "input_scale": 1.4801942696336445,
+        "time_constant_s": 0.25103647883168195,
+        "connection_probability": 0.5678075908353755,
+        "bias_scale": 0.24661615205714305,
+        "ridge_lambda": 8.722898390766121e-05,
+        "dt_s": 0.04,
+        "seed": 20260906
+      }
+    },
+    {
+      "candidate_index": 91,
+      "containment_ratio": 0.7706848714787633,
+      "echo_state_property_index": 6.479072201762931e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.4415584415584415,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.6575440890004665,
+        "input_scale": 1.1195942601977107,
+        "time_constant_s": 0.16557441207003676,
+        "connection_probability": 0.6557317841042786,
+        "bias_scale": 0.7158771019295612,
+        "ridge_lambda": 0.00010131509061988172,
+        "dt_s": 0.04,
+        "seed": 20260907
+      }
+    },
+    {
+      "candidate_index": 92,
+      "containment_ratio": 0.8220405969024281,
+      "echo_state_property_index": 4.0678775069802905e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.5974025974025974,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.202553482428463,
+        "input_scale": 0.3742454908400623,
+        "time_constant_s": 0.15606509952680678,
+        "connection_probability": 0.11143733998854591,
+        "bias_scale": 0.4633588275300146,
+        "ridge_lambda": 1.6502602582020095e-07,
+        "dt_s": 0.04,
+        "seed": 20260908
+      }
+    },
+    {
+      "candidate_index": 93,
+      "containment_ratio": 0.8459960333795196,
+      "echo_state_property_index": 8.049255629811152e-10,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.8571428571428568,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.8544855460472509,
+        "input_scale": 1.9725141559872392,
+        "time_constant_s": 0.1476692150641662,
+        "connection_probability": 0.39108438118919214,
+        "bias_scale": 0.881401239856295,
+        "ridge_lambda": 7.841032417146675e-08,
+        "dt_s": 0.04,
+        "seed": 20260909
+      }
+    },
+    {
+      "candidate_index": 94,
+      "containment_ratio": 0.8305080085095375,
+      "echo_state_property_index": 3.513871435803635e-08,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.714285714285714,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.2984814830399323,
+        "input_scale": 1.734581727828973,
+        "time_constant_s": 0.15996470354040762,
+        "connection_probability": 0.05645228835667262,
+        "bias_scale": 0.908367554014092,
+        "ridge_lambda": 1.7508841394519292e-07,
+        "dt_s": 0.04,
+        "seed": 20260910
+      }
+    },
+    {
+      "candidate_index": 95,
+      "containment_ratio": 0.6198185050898589,
+      "echo_state_property_index": 0.00021911511453781874,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.012987012987013,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 1.5013646996574503,
+        "input_scale": 0.16736549019779168,
+        "time_constant_s": 0.2163281691458528,
+        "connection_probability": 0.354495893622707,
+        "bias_scale": 0.9804515748291617,
+        "ridge_lambda": 5.643836267720018e-08,
+        "dt_s": 0.04,
+        "seed": 20260911
+      }
+    },
+    {
+      "candidate_index": 96,
+      "containment_ratio": 0.6457849803711437,
+      "echo_state_property_index": 1.2761988393378255e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.103896103896104,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.812561972175941,
+        "input_scale": 0.8490070816761086,
+        "time_constant_s": 0.3161377650473652,
+        "connection_probability": 0.36193401865170494,
+        "bias_scale": 0.2881162194265341,
+        "ridge_lambda": 3.6815444756517374e-07,
+        "dt_s": 0.04,
+        "seed": 20260912
+      }
+    },
+    {
+      "candidate_index": 97,
+      "containment_ratio": 0.7684835078091695,
+      "echo_state_property_index": 1.482692310605651e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.0129870129870127,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 0.6792251866844233,
+        "input_scale": 0.4883813230734101,
+        "time_constant_s": 0.17759244685690703,
+        "connection_probability": 0.14376926083167915,
+        "bias_scale": 0.6790178203100646,
+        "ridge_lambda": 0.0004081795887378334,
+        "dt_s": 0.04,
+        "seed": 20260913
+      }
+    },
+    {
+      "candidate_index": 98,
+      "containment_ratio": 0.9705104912334843,
+      "echo_state_property_index": 1.9206244120779566e-13,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 5.0519480519480515,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.4223073136506215,
+        "input_scale": 1.1866763560709725,
+        "time_constant_s": 0.08302482823526064,
+        "connection_probability": 0.2976657923428837,
+        "bias_scale": 0.7413748092810601,
+        "ridge_lambda": 0.0036340214243458908,
+        "dt_s": 0.04,
+        "seed": 20260914
+      }
+    },
+    {
+      "candidate_index": 99,
+      "containment_ratio": 0.845450310934345,
+      "echo_state_property_index": 1.3016468046276117e-08,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.7012987012987013,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 0.6124155237409779,
+        "input_scale": 1.7413011845215067,
+        "time_constant_s": 0.16813872848932257,
+        "connection_probability": 0.7080695884864562,
+        "bias_scale": 0.38439070657721247,
+        "ridge_lambda": 5.70955292417546e-06,
+        "dt_s": 0.04,
+        "seed": 20260915
+      }
+    },
+    {
+      "candidate_index": 100,
+      "containment_ratio": 0.7306787359483345,
+      "echo_state_property_index": 9.73265246639906e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.9610389610389607,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.3971018750856532,
+        "input_scale": 0.6251961073489803,
+        "time_constant_s": 0.22053252617672078,
+        "connection_probability": 0.5126792532603743,
+        "bias_scale": 0.1782932025842026,
+        "ridge_lambda": 9.864077387285592e-05,
+        "dt_s": 0.04,
+        "seed": 20260916
+      }
+    },
+    {
+      "candidate_index": 101,
+      "containment_ratio": 0.9476967637169887,
+      "echo_state_property_index": 1.360406565060793e-16,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 5.363636363636363,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.5825840784268521,
+        "input_scale": 1.3833810716089492,
+        "time_constant_s": 0.07795649599919277,
+        "connection_probability": 0.211325286280823,
+        "bias_scale": 0.49298982692099524,
+        "ridge_lambda": 1.139747414934555e-06,
+        "dt_s": 0.04,
+        "seed": 20260917
+      }
+    },
+    {
+      "candidate_index": 102,
+      "containment_ratio": 0.7179537736041752,
+      "echo_state_property_index": 0.0004217987554949096,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.48051948051948,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.8529930493136637,
+        "input_scale": 0.5056886918822883,
+        "time_constant_s": 0.2395169105744957,
+        "connection_probability": 0.22671429647171606,
+        "bias_scale": 0.2065220699564893,
+        "ridge_lambda": 0.0005700493776683126,
+        "dt_s": 0.04,
+        "seed": 20260918
+      }
+    },
+    {
+      "candidate_index": 103,
+      "containment_ratio": 0.8213090823966561,
+      "echo_state_property_index": 2.19325525324029e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.4675324675324677,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.562640490786763,
+        "input_scale": 0.30637673023025747,
+        "time_constant_s": 0.1139019068455672,
+        "connection_probability": 0.31164659535065115,
+        "bias_scale": 0.8505216855691056,
+        "ridge_lambda": 0.0027009765726281674,
+        "dt_s": 0.04,
+        "seed": 20260919
+      }
+    },
+    {
+      "candidate_index": 104,
+      "containment_ratio": 0.8958706048318136,
+      "echo_state_property_index": 1.8574401238318044e-09,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 4.064935064935065,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.9983600551899785,
+        "input_scale": 1.780813196847221,
+        "time_constant_s": 0.1311333954570656,
+        "connection_probability": 0.282335111038316,
+        "bias_scale": 0.25747383054404505,
+        "ridge_lambda": 0.00017168150910671452,
+        "dt_s": 0.04,
+        "seed": 20260920
+      }
+    },
+    {
+      "candidate_index": 105,
+      "containment_ratio": 0.9908414004702444,
+      "echo_state_property_index": 5.657682491598352e-24,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 7.974025974025974,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.075206720122864,
+        "input_scale": 1.440516289315096,
+        "time_constant_s": 0.05226607670511547,
+        "connection_probability": 0.23249769832385567,
+        "bias_scale": 0.5998736977746942,
+        "ridge_lambda": 3.4040033135387784e-05,
+        "dt_s": 0.04,
+        "seed": 20260921
+      }
+    },
+    {
+      "candidate_index": 106,
+      "containment_ratio": 0.7140335150444584,
+      "echo_state_property_index": 0.00013241475356982988,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.805194805194805,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.8718075601825235,
+        "input_scale": 0.6557552677626949,
+        "time_constant_s": 0.284077577776796,
+        "connection_probability": 0.1905079704005731,
+        "bias_scale": 0.5155756725155121,
+        "ridge_lambda": 1.9364603405174476e-05,
+        "dt_s": 0.04,
+        "seed": 20260922
+      }
+    },
+    {
+      "candidate_index": 107,
+      "containment_ratio": 0.8184872428320236,
+      "echo_state_property_index": 7.790203827593226e-09,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.571428571428571,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.7073088917568646,
+        "input_scale": 0.6927866193716833,
+        "time_constant_s": 0.1498817817102303,
+        "connection_probability": 0.2652519579236195,
+        "bias_scale": 0.7405051351693592,
+        "ridge_lambda": 2.7804161184867634e-08,
+        "dt_s": 0.04,
+        "seed": 20260923
+      }
+    },
+    {
+      "candidate_index": 108,
+      "containment_ratio": 0.6658850888792567,
+      "echo_state_property_index": 0.00015630495299371304,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.3246753246753245,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.6115663771622937,
+        "input_scale": 0.5984771692284512,
+        "time_constant_s": 0.30046760203951733,
+        "connection_probability": 0.11539904617542121,
+        "bias_scale": 0.9490098669141219,
+        "ridge_lambda": 7.452603009921519e-05,
+        "dt_s": 0.04,
+        "seed": 20260924
+      }
+    },
+    {
+      "candidate_index": 109,
+      "containment_ratio": 0.9775657027752991,
+      "echo_state_property_index": 1.661739171470432e-20,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 6.337662337662337,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.7036741951442903,
+        "input_scale": 1.518475518060423,
+        "time_constant_s": 0.0680816423663374,
+        "connection_probability": 0.2754059127132276,
+        "bias_scale": 0.11625730414010699,
+        "ridge_lambda": 0.002995687181921724,
+        "dt_s": 0.04,
+        "seed": 20260925
+      }
+    },
+    {
+      "candidate_index": 110,
+      "containment_ratio": 0.9820091943481365,
+      "echo_state_property_index": 7.535055532587451e-22,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 8.974025974025974,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.8400491765689182,
+        "input_scale": 1.7348154780248388,
+        "time_constant_s": 0.048810078091758274,
+        "connection_probability": 0.1287266063066544,
+        "bias_scale": 0.07364513180833633,
+        "ridge_lambda": 1.2247638851781351e-06,
+        "dt_s": 0.04,
+        "seed": 20260926
+      }
+    },
+    {
+      "candidate_index": 111,
+      "containment_ratio": 0.7370156051650659,
+      "echo_state_property_index": 3.1209653249293652e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.857142857142857,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.7839210233479101,
+        "input_scale": 1.6585854391852217,
+        "time_constant_s": 0.2423717187694167,
+        "connection_probability": 0.24405245269929915,
+        "bias_scale": 0.09772283090815445,
+        "ridge_lambda": 0.005975976544969967,
+        "dt_s": 0.04,
+        "seed": 20260927
+      }
+    },
+    {
+      "candidate_index": 112,
+      "containment_ratio": 0.6903578247683679,
+      "echo_state_property_index": 5.62372309322661e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.4025974025974026,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 1.065424828919995,
+        "input_scale": 1.5131672552468254,
+        "time_constant_s": 0.2866779092194602,
+        "connection_probability": 0.050421838458122085,
+        "bias_scale": 0.20075938836085522,
+        "ridge_lambda": 4.2624184144246576e-06,
+        "dt_s": 0.04,
+        "seed": 20260928
+      }
+    },
+    {
+      "candidate_index": 113,
+      "containment_ratio": 0.7486366523425395,
+      "echo_state_property_index": 1.7773358902545735e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.831168831168831,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 0.7932954525912708,
+        "input_scale": 1.0034864991515624,
+        "time_constant_s": 0.20367659090862916,
+        "connection_probability": 0.13352318682412895,
+        "bias_scale": 0.43371649510195814,
+        "ridge_lambda": 1.0641438611674284e-05,
+        "dt_s": 0.04,
+        "seed": 20260929
+      }
+    },
+    {
+      "candidate_index": 114,
+      "containment_ratio": 0.7165338354892568,
+      "echo_state_property_index": 5.23786882198623e-06,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.714285714285714,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.7926041294955116,
+        "input_scale": 0.7409272618119133,
+        "time_constant_s": 0.257613932999997,
+        "connection_probability": 0.604505756114345,
+        "bias_scale": 0.3513875000369945,
+        "ridge_lambda": 4.204229857978518e-08,
+        "dt_s": 0.04,
+        "seed": 20260930
+      }
+    },
+    {
+      "candidate_index": 115,
+      "containment_ratio": 0.9510988278933611,
+      "echo_state_property_index": 3.0228742389051285e-17,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 5.155844155844156,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.100423632232327,
+        "input_scale": 0.4795624420354615,
+        "time_constant_s": 0.06824330524311802,
+        "connection_probability": 0.112743376731424,
+        "bias_scale": 0.23133851113024703,
+        "ridge_lambda": 0.00021260642609438317,
+        "dt_s": 0.04,
+        "seed": 20260931
+      }
+    },
+    {
+      "candidate_index": 116,
+      "containment_ratio": 0.9815170968121136,
+      "echo_state_property_index": 6.1940625695055076e-21,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 6.675324675324675,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.6043756161753551,
+        "input_scale": 1.7514722206880091,
+        "time_constant_s": 0.06810843454232243,
+        "connection_probability": 0.4730638062059613,
+        "bias_scale": 0.7009583238126792,
+        "ridge_lambda": 3.099604720959917e-05,
+        "dt_s": 0.04,
+        "seed": 20260932
+      }
+    },
+    {
+      "candidate_index": 117,
+      "containment_ratio": 0.718136329286411,
+      "echo_state_property_index": 7.789931127258835e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.831168831168831,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.6772086735928065,
+        "input_scale": 0.284574598781526,
+        "time_constant_s": 0.18678103126831727,
+        "connection_probability": 0.1653736290520883,
+        "bias_scale": 0.44452862199842025,
+        "ridge_lambda": 0.00037495817485475643,
+        "dt_s": 0.04,
+        "seed": 20260933
+      }
+    },
+    {
+      "candidate_index": 118,
+      "containment_ratio": 0.6843184439419087,
+      "echo_state_property_index": 1.0023123359881716e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.402597402597402,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 0.5680649394021845,
+        "input_scale": 0.9310436062240509,
+        "time_constant_s": 0.3125540724938535,
+        "connection_probability": 0.13603377037128556,
+        "bias_scale": 0.5913722106643842,
+        "ridge_lambda": 6.177651157809383e-06,
+        "dt_s": 0.04,
+        "seed": 20260934
+      }
+    },
+    {
+      "candidate_index": 119,
+      "containment_ratio": 0.7217538308705446,
+      "echo_state_property_index": 2.354385556289568e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.7402597402597397,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.954808482820364,
+        "input_scale": 1.2666188146290907,
+        "time_constant_s": 0.26854960367819325,
+        "connection_probability": 0.11566608637641616,
+        "bias_scale": 0.21112005317397697,
+        "ridge_lambda": 1.1552916469823413e-08,
+        "dt_s": 0.04,
+        "seed": 20260935
+      }
+    },
+    {
+      "candidate_index": 120,
+      "containment_ratio": 0.8220357360753248,
+      "echo_state_property_index": 8.230672353808937e-09,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.506493506493506,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 0.8887114310888289,
+        "input_scale": 1.7648551373810168,
+        "time_constant_s": 0.16607985894445407,
+        "connection_probability": 0.3423764810920829,
+        "bias_scale": 0.8755564159829224,
+        "ridge_lambda": 5.9326273909914095e-08,
+        "dt_s": 0.04,
+        "seed": 20260936
+      }
+    },
+    {
+      "candidate_index": 121,
+      "containment_ratio": 0.7425913055391717,
+      "echo_state_property_index": 5.599518091453537e-08,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.1948051948051943,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 0.5074394805280849,
+        "input_scale": 1.6717182393097234,
+        "time_constant_s": 0.1980018039018951,
+        "connection_probability": 0.4121116559942608,
+        "bias_scale": 0.5035033361183967,
+        "ridge_lambda": 0.0017067769175253898,
+        "dt_s": 0.04,
+        "seed": 20260937
+      }
+    },
+    {
+      "candidate_index": 122,
+      "containment_ratio": 0.8538511353320167,
+      "echo_state_property_index": 5.125713091946809e-10,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.805194805194805,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.6458519736442925,
+        "input_scale": 0.6264438789191087,
+        "time_constant_s": 0.13899572237849175,
+        "connection_probability": 0.5682545806698841,
+        "bias_scale": 0.8214810621705791,
+        "ridge_lambda": 0.001916816604822648,
+        "dt_s": 0.04,
+        "seed": 20260938
+      }
+    },
+    {
+      "candidate_index": 123,
+      "containment_ratio": 0.7706364296461636,
+      "echo_state_property_index": 2.77333801883561e-07,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.1948051948051943,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 1.5766299369361785,
+        "input_scale": 1.234508028332999,
+        "time_constant_s": 0.19051891995620993,
+        "connection_probability": 0.5569924845831968,
+        "bias_scale": 0.983693531316662,
+        "ridge_lambda": 2.720010752850858e-07,
+        "dt_s": 0.04,
+        "seed": 20260939
+      }
+    },
+    {
+      "candidate_index": 124,
+      "containment_ratio": 0.7909390053345724,
+      "echo_state_property_index": 3.01020529196658e-08,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.402597402597402,
+      "config": {
+        "reservoir_size": 24,
+        "spectral_radius": 0.8926851708303478,
+        "input_scale": 1.831588210449359,
+        "time_constant_s": 0.18189903192621926,
+        "connection_probability": 0.4426903168127283,
+        "bias_scale": 0.9808465609201976,
+        "ridge_lambda": 0.00011731977970481496,
+        "dt_s": 0.04,
+        "seed": 20260940
+      }
+    },
+    {
+      "candidate_index": 125,
+      "containment_ratio": 0.7226086384793253,
+      "echo_state_property_index": 3.389164684912012e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.714285714285714,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.1758029772079266,
+        "input_scale": 0.3432586395490935,
+        "time_constant_s": 0.20656577611495056,
+        "connection_probability": 0.046008921198452866,
+        "bias_scale": 0.7237365491927287,
+        "ridge_lambda": 0.0014332192190756354,
+        "dt_s": 0.04,
+        "seed": 20260941
+      }
+    },
+    {
+      "candidate_index": 126,
+      "containment_ratio": 0.8243545212475667,
+      "echo_state_property_index": 6.2340209536615145e-18,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 3.9220779220779223,
+      "config": {
+        "reservoir_size": 32,
+        "spectral_radius": 0.573932324825994,
+        "input_scale": 0.10771174636705501,
+        "time_constant_s": 0.05668106462748858,
+        "connection_probability": 0.5010602214006823,
+        "bias_scale": 0.7754958508424641,
+        "ridge_lambda": 1.964862270308749e-08,
+        "dt_s": 0.04,
+        "seed": 20260942
+      }
+    },
+    {
+      "candidate_index": 127,
+      "containment_ratio": 0.6787007646760751,
+      "echo_state_property_index": 2.0914460066078878e-05,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 2.558441558441558,
+      "config": {
+        "reservoir_size": 48,
+        "spectral_radius": 0.813963046071208,
+        "input_scale": 0.23896639241074122,
+        "time_constant_s": 0.24100935787357766,
+        "connection_probability": 0.33457199593758946,
+        "bias_scale": 0.07031714977340146,
+        "ridge_lambda": 0.004410018757738138,
+        "dt_s": 0.04,
+        "seed": 20260943
+      }
+    }
+  ],
+  "pareto_frontier_ranked": [
+    {
+      "candidate_index": 22,
+      "containment_ratio": 0.9975943742010688,
+      "echo_state_property_index": 2.4552735127900653e-24,
+      "robot_bandwidth_hz": 4.909090909090909,
+      "reservoir_bandwidth_hz": 9.272727272727273,
+      "config": {
+        "reservoir_size": 64,
+        "spectral_radius": 1.8663904393867368,
+        "input_scale": 1.6012499165987573,
+        "time_constant_s": 0.0514884550621249,
+        "connection_probability": 0.1609480434868163,
+        "bias_scale": 0.6479039152241401,
+        "ridge_lambda": 0.007569141281025282,
+        "dt_s": 0.04,
+        "seed": 20260838
+      }
+    }
+  ],
+  "selection_rule": "Do not train a readout until reservoir preselection is frozen. Choose among CR-high/ESPI-low Pareto candidates using only the ESN validation split; do not reuse the WBC-aware V4 final test."
+}
