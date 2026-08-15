@@ -1,0 +1,1735 @@
+{
+  "schema_version": 1,
+  "stage": "WBC-aware ESN train/validation physical fixture screening",
+  "scope": "new impact-timing realizations over five physically validated axis-aligned rod geometries; not sign-complete because positive_z remains excluded; not arbitrary continuous 3-D impact coverage",
+  "data_boundary": "V2/V3/V4 artifacts are frozen. This manifest is the only allowable pool for ESN readout/hyperparameter/safety selection. The frozen WBC-aware V4 ladder remains a later one-shot test and must not be used for selection.",
+  "reference_source": "fixed_panda_wbc",
+  "selection_controller": {
+    "name": "fixed six-dimensional VMC-gated selector",
+    "kappa_vector": [
+      27.579838,
+      52.550787,
+      48.699427,
+      35.85958,
+      40.71983,
+      34.766858
+    ],
+    "contact_drive_scale": 8.0,
+    "recovery_drive_scale": 14.0,
+    "purpose": "fixture validity screening only; never an ESN teacher, ranking method or tuning target"
+  },
+  "effective_collision_gate": {
+    "minimum_peak_contact_force_n": 15.0,
+    "minimum_contact_impulse_ns": 0.45
+  },
+  "validity_gate": "finite + rod-hand contact + effective collision + stable 5 mm/80 ms rejoin + lift + hold + no hard torque limit + valid matched no-rod task",
+  "candidate_design": {
+    "cases": [
+      {
+        "rod_approach_side": "negative_x",
+        "rod_stroke_m": 0.08,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      {
+        "rod_approach_side": "positive_x",
+        "rod_stroke_m": 0.13,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      {
+        "rod_approach_side": "negative_y",
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      {
+        "rod_approach_side": "positive_y",
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      {
+        "rod_approach_side": "negative_z",
+        "rod_stroke_m": 0.05,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.6,
+        "rod_center_y_m": 0.0
+      }
+    ],
+    "train_start_times_s": [
+      0.93,
+      1.18
+    ],
+    "validation_start_times_s": [
+      0.955,
+      1.205
+    ],
+    "excluded_recorded_v2_v3_v4_ppo_start_times_s": [
+      0.98,
+      0.995,
+      1.02,
+      1.04,
+      1.0423509355133431,
+      1.0535300287689722,
+      1.055,
+      1.06,
+      1.0629702374023486,
+      1.07,
+      1.0781610928318661,
+      1.085,
+      1.0863016782046457,
+      1.0954695590692798,
+      1.1,
+      1.107206213053218,
+      1.111581734716849,
+      1.115,
+      1.12,
+      1.14,
+      1.16
+    ]
+  },
+  "candidates": [
+    {
+      "fixture_id": "esn_wbc_train_negative_x_c0_t0",
+      "split": "train",
+      "rod_approach_side": "negative_x",
+      "rod_stroke_m": 0.08,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "x",
+      "approach_polarity": "negative",
+      "timing_bin": "train_0",
+      "rod_start_time_s": 0.93,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.35000000000000003,
+          0.0,
+          0.54
+        ],
+        "slide_axis_world": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          -0.7071068,
+          0.0,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 18.34666534045721,
+      "selector_contact_impulse_ns": 2.197255139669322,
+      "selector_rejoin_latency_s": 0.22799999999999998,
+      "realized_impulse_bin": "medium"
+    },
+    {
+      "fixture_id": "esn_wbc_train_negative_x_c0_t1",
+      "split": "train",
+      "rod_approach_side": "negative_x",
+      "rod_stroke_m": 0.08,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "x",
+      "approach_polarity": "negative",
+      "timing_bin": "train_1",
+      "rod_start_time_s": 1.18,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.35000000000000003,
+          0.0,
+          0.54
+        ],
+        "slide_axis_world": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          -0.7071068,
+          0.0,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 19.039208140565623,
+      "selector_contact_impulse_ns": 2.1570785520890148,
+      "selector_rejoin_latency_s": 0.1319999999999999,
+      "realized_impulse_bin": "low"
+    },
+    {
+      "fixture_id": "esn_wbc_train_positive_x_c1_t0",
+      "split": "train",
+      "rod_approach_side": "positive_x",
+      "rod_stroke_m": 0.13,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "x",
+      "approach_polarity": "positive",
+      "timing_bin": "train_0",
+      "rod_start_time_s": 0.93,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.75,
+          0.0,
+          0.54
+        ],
+        "slide_axis_world": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          -0.7071068,
+          0.0,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 83.13644493203257,
+      "selector_contact_impulse_ns": 5.895006806596052,
+      "selector_rejoin_latency_s": 0.528,
+      "realized_impulse_bin": "high"
+    },
+    {
+      "fixture_id": "esn_wbc_train_positive_x_c1_t1",
+      "split": "train",
+      "rod_approach_side": "positive_x",
+      "rod_stroke_m": 0.13,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "x",
+      "approach_polarity": "positive",
+      "timing_bin": "train_1",
+      "rod_start_time_s": 1.18,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.75,
+          0.0,
+          0.54
+        ],
+        "slide_axis_world": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          -0.7071068,
+          0.0,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": false,
+      "selector_invalid_reasons": [
+        "missing_rod_hand_contact",
+        "below_effective_force",
+        "below_effective_impulse",
+        "no_stable_rejoin"
+      ],
+      "selector_peak_contact_force_n": 0.0,
+      "selector_contact_impulse_ns": 0.0,
+      "selector_rejoin_latency_s": null,
+      "realized_impulse_bin": null
+    },
+    {
+      "fixture_id": "esn_wbc_train_negative_y_c2_t0",
+      "split": "train",
+      "rod_approach_side": "negative_y",
+      "rod_stroke_m": 0.17,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "y",
+      "approach_polarity": "negative",
+      "timing_bin": "train_0",
+      "rod_start_time_s": 0.93,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.55,
+          -0.2,
+          0.54
+        ],
+        "slide_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          0.0,
+          0.7071068,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 47.119381604169426,
+      "selector_contact_impulse_ns": 4.975871340693432,
+      "selector_rejoin_latency_s": 0.3640000000000001,
+      "realized_impulse_bin": "high"
+    },
+    {
+      "fixture_id": "esn_wbc_train_negative_y_c2_t1",
+      "split": "train",
+      "rod_approach_side": "negative_y",
+      "rod_stroke_m": 0.17,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "y",
+      "approach_polarity": "negative",
+      "timing_bin": "train_1",
+      "rod_start_time_s": 1.18,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.55,
+          -0.2,
+          0.54
+        ],
+        "slide_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          0.0,
+          0.7071068,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 35.03841699238068,
+      "selector_contact_impulse_ns": 1.3816772752096693,
+      "selector_rejoin_latency_s": 0.16000000000000014,
+      "realized_impulse_bin": "low"
+    },
+    {
+      "fixture_id": "esn_wbc_train_positive_y_c3_t0",
+      "split": "train",
+      "rod_approach_side": "positive_y",
+      "rod_stroke_m": 0.17,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "y",
+      "approach_polarity": "positive",
+      "timing_bin": "train_0",
+      "rod_start_time_s": 0.93,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.55,
+          0.2,
+          0.54
+        ],
+        "slide_axis_world": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          0.0,
+          0.7071068,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 46.62345454543435,
+      "selector_contact_impulse_ns": 4.994514312090283,
+      "selector_rejoin_latency_s": 0.3680000000000001,
+      "realized_impulse_bin": "high"
+    },
+    {
+      "fixture_id": "esn_wbc_train_positive_y_c3_t1",
+      "split": "train",
+      "rod_approach_side": "positive_y",
+      "rod_stroke_m": 0.17,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "y",
+      "approach_polarity": "positive",
+      "timing_bin": "train_1",
+      "rod_start_time_s": 1.18,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.55,
+          0.2,
+          0.54
+        ],
+        "slide_axis_world": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          0.0,
+          0.7071068,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 36.04645712938394,
+      "selector_contact_impulse_ns": 1.9108463004898564,
+      "selector_rejoin_latency_s": 0.16800000000000015,
+      "realized_impulse_bin": "low"
+    },
+    {
+      "fixture_id": "esn_wbc_train_negative_z_c4_t0",
+      "split": "train",
+      "rod_approach_side": "negative_z",
+      "rod_stroke_m": 0.05,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.6,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "z",
+      "approach_polarity": "negative",
+      "timing_bin": "train_0",
+      "rod_start_time_s": 0.93,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.6,
+          0.0,
+          0.4
+        ],
+        "slide_axis_world": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "rod_long_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          -0.7071068,
+          0.0,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 15.512135057783123,
+      "selector_contact_impulse_ns": 2.2636644470661933,
+      "selector_rejoin_latency_s": 0.256,
+      "realized_impulse_bin": "medium"
+    },
+    {
+      "fixture_id": "esn_wbc_train_negative_z_c4_t1",
+      "split": "train",
+      "rod_approach_side": "negative_z",
+      "rod_stroke_m": 0.05,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.6,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "z",
+      "approach_polarity": "negative",
+      "timing_bin": "train_1",
+      "rod_start_time_s": 1.18,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.6,
+          0.0,
+          0.4
+        ],
+        "slide_axis_world": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "rod_long_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          -0.7071068,
+          0.0,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 34.75681292502785,
+      "selector_contact_impulse_ns": 6.870399783913187,
+      "selector_rejoin_latency_s": 0.18800000000000017,
+      "realized_impulse_bin": "high"
+    },
+    {
+      "fixture_id": "esn_wbc_validation_negative_x_c0_t0",
+      "split": "validation",
+      "rod_approach_side": "negative_x",
+      "rod_stroke_m": 0.08,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "x",
+      "approach_polarity": "negative",
+      "timing_bin": "validation_0",
+      "rod_start_time_s": 0.955,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.35000000000000003,
+          0.0,
+          0.54
+        ],
+        "slide_axis_world": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          -0.7071068,
+          0.0,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 19.086693039473253,
+      "selector_contact_impulse_ns": 2.1850248449890817,
+      "selector_rejoin_latency_s": 0.20800000000000018,
+      "realized_impulse_bin": "medium"
+    },
+    {
+      "fixture_id": "esn_wbc_validation_negative_x_c0_t1",
+      "split": "validation",
+      "rod_approach_side": "negative_x",
+      "rod_stroke_m": 0.08,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "x",
+      "approach_polarity": "negative",
+      "timing_bin": "validation_1",
+      "rod_start_time_s": 1.205,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.35000000000000003,
+          0.0,
+          0.54
+        ],
+        "slide_axis_world": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          -0.7071068,
+          0.0,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 19.607818855574344,
+      "selector_contact_impulse_ns": 2.154401861672117,
+      "selector_rejoin_latency_s": 0.11999999999999988,
+      "realized_impulse_bin": "low"
+    },
+    {
+      "fixture_id": "esn_wbc_validation_positive_x_c1_t0",
+      "split": "validation",
+      "rod_approach_side": "positive_x",
+      "rod_stroke_m": 0.13,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "x",
+      "approach_polarity": "positive",
+      "timing_bin": "validation_0",
+      "rod_start_time_s": 0.955,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.75,
+          0.0,
+          0.54
+        ],
+        "slide_axis_world": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          -0.7071068,
+          0.0,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 79.50873627733952,
+      "selector_contact_impulse_ns": 5.356497391498118,
+      "selector_rejoin_latency_s": 0.528,
+      "realized_impulse_bin": "high"
+    },
+    {
+      "fixture_id": "esn_wbc_validation_positive_x_c1_t1",
+      "split": "validation",
+      "rod_approach_side": "positive_x",
+      "rod_stroke_m": 0.13,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "x",
+      "approach_polarity": "positive",
+      "timing_bin": "validation_1",
+      "rod_start_time_s": 1.205,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.75,
+          0.0,
+          0.54
+        ],
+        "slide_axis_world": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          -0.7071068,
+          0.0,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": false,
+      "selector_invalid_reasons": [
+        "missing_rod_hand_contact",
+        "below_effective_force",
+        "below_effective_impulse",
+        "no_stable_rejoin"
+      ],
+      "selector_peak_contact_force_n": 0.0,
+      "selector_contact_impulse_ns": 0.0,
+      "selector_rejoin_latency_s": null,
+      "realized_impulse_bin": null
+    },
+    {
+      "fixture_id": "esn_wbc_validation_negative_y_c2_t0",
+      "split": "validation",
+      "rod_approach_side": "negative_y",
+      "rod_stroke_m": 0.17,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "y",
+      "approach_polarity": "negative",
+      "timing_bin": "validation_0",
+      "rod_start_time_s": 0.955,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.55,
+          -0.2,
+          0.54
+        ],
+        "slide_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          0.0,
+          0.7071068,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 47.827641999847536,
+      "selector_contact_impulse_ns": 4.285149866995229,
+      "selector_rejoin_latency_s": 0.3360000000000001,
+      "realized_impulse_bin": "medium"
+    },
+    {
+      "fixture_id": "esn_wbc_validation_negative_y_c2_t1",
+      "split": "validation",
+      "rod_approach_side": "negative_y",
+      "rod_stroke_m": 0.17,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "y",
+      "approach_polarity": "negative",
+      "timing_bin": "validation_1",
+      "rod_start_time_s": 1.205,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.55,
+          -0.2,
+          0.54
+        ],
+        "slide_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          0.0,
+          0.7071068,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 23.273085515965008,
+      "selector_contact_impulse_ns": 0.8671815737284082,
+      "selector_rejoin_latency_s": 0.16400000000000015,
+      "realized_impulse_bin": "low"
+    },
+    {
+      "fixture_id": "esn_wbc_validation_positive_y_c3_t0",
+      "split": "validation",
+      "rod_approach_side": "positive_y",
+      "rod_stroke_m": 0.17,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "y",
+      "approach_polarity": "positive",
+      "timing_bin": "validation_0",
+      "rod_start_time_s": 0.955,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.55,
+          0.2,
+          0.54
+        ],
+        "slide_axis_world": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          0.0,
+          0.7071068,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 47.56654525828724,
+      "selector_contact_impulse_ns": 4.430471830707453,
+      "selector_rejoin_latency_s": 0.3400000000000001,
+      "realized_impulse_bin": "medium"
+    },
+    {
+      "fixture_id": "esn_wbc_validation_positive_y_c3_t1",
+      "split": "validation",
+      "rod_approach_side": "positive_y",
+      "rod_stroke_m": 0.17,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.55,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "y",
+      "approach_polarity": "positive",
+      "timing_bin": "validation_1",
+      "rod_start_time_s": 1.205,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.55,
+          0.2,
+          0.54
+        ],
+        "slide_axis_world": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "rod_long_axis_world": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          0.0,
+          0.7071068,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 30.2403860244037,
+      "selector_contact_impulse_ns": 1.691867796335789,
+      "selector_rejoin_latency_s": 0.16000000000000014,
+      "realized_impulse_bin": "low"
+    },
+    {
+      "fixture_id": "esn_wbc_validation_negative_z_c4_t0",
+      "split": "validation",
+      "rod_approach_side": "negative_z",
+      "rod_stroke_m": 0.05,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.6,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "z",
+      "approach_polarity": "negative",
+      "timing_bin": "validation_0",
+      "rod_start_time_s": 0.955,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.6,
+          0.0,
+          0.4
+        ],
+        "slide_axis_world": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "rod_long_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          -0.7071068,
+          0.0,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 16.909615486718216,
+      "selector_contact_impulse_ns": 2.7260489744822647,
+      "selector_rejoin_latency_s": 0.252,
+      "realized_impulse_bin": "medium"
+    },
+    {
+      "fixture_id": "esn_wbc_validation_negative_z_c4_t1",
+      "split": "validation",
+      "rod_approach_side": "negative_z",
+      "rod_stroke_m": 0.05,
+      "rod_height_m": 0.54,
+      "rod_center_x_m": 0.6,
+      "rod_center_y_m": 0.0,
+      "approach_axis": "z",
+      "approach_polarity": "negative",
+      "timing_bin": "validation_1",
+      "rod_start_time_s": 1.205,
+      "grasp_time_s": 2.4,
+      "remove_rod_when_disabled": true,
+      "physical_geometry": {
+        "support_position_m": [
+          0.6,
+          0.0,
+          0.4
+        ],
+        "slide_axis_world": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "rod_long_axis_world": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "cylinder_quaternion_wxyz": [
+          0.7071068,
+          -0.7071068,
+          0.0,
+          0.0
+        ],
+        "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+      },
+      "selector_valid": true,
+      "selector_invalid_reasons": [],
+      "selector_peak_contact_force_n": 38.35325950759114,
+      "selector_contact_impulse_ns": 7.177314233446604,
+      "selector_rejoin_latency_s": 0.17600000000000016,
+      "realized_impulse_bin": "high"
+    }
+  ],
+  "splits": {
+    "train": [
+      {
+        "fixture_id": "esn_wbc_train_negative_x_c0_t0",
+        "split": "train",
+        "rod_approach_side": "negative_x",
+        "approach_axis": "x",
+        "approach_polarity": "negative",
+        "timing_bin": "train_0",
+        "realized_impulse_bin": "medium",
+        "rod_start_time_s": 0.93,
+        "rod_stroke_m": 0.08,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.35000000000000003,
+            0.0,
+            0.54
+          ],
+          "slide_axis_world": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            -0.7071068,
+            0.0,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_train_negative_x_c0_t1",
+        "split": "train",
+        "rod_approach_side": "negative_x",
+        "approach_axis": "x",
+        "approach_polarity": "negative",
+        "timing_bin": "train_1",
+        "realized_impulse_bin": "low",
+        "rod_start_time_s": 1.18,
+        "rod_stroke_m": 0.08,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.35000000000000003,
+            0.0,
+            0.54
+          ],
+          "slide_axis_world": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            -0.7071068,
+            0.0,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_train_positive_x_c1_t0",
+        "split": "train",
+        "rod_approach_side": "positive_x",
+        "approach_axis": "x",
+        "approach_polarity": "positive",
+        "timing_bin": "train_0",
+        "realized_impulse_bin": "high",
+        "rod_start_time_s": 0.93,
+        "rod_stroke_m": 0.13,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.75,
+            0.0,
+            0.54
+          ],
+          "slide_axis_world": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            -0.7071068,
+            0.0,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_train_negative_y_c2_t0",
+        "split": "train",
+        "rod_approach_side": "negative_y",
+        "approach_axis": "y",
+        "approach_polarity": "negative",
+        "timing_bin": "train_0",
+        "realized_impulse_bin": "high",
+        "rod_start_time_s": 0.93,
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.55,
+            -0.2,
+            0.54
+          ],
+          "slide_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            0.0,
+            0.7071068,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_train_negative_y_c2_t1",
+        "split": "train",
+        "rod_approach_side": "negative_y",
+        "approach_axis": "y",
+        "approach_polarity": "negative",
+        "timing_bin": "train_1",
+        "realized_impulse_bin": "low",
+        "rod_start_time_s": 1.18,
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.55,
+            -0.2,
+            0.54
+          ],
+          "slide_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            0.0,
+            0.7071068,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_train_positive_y_c3_t0",
+        "split": "train",
+        "rod_approach_side": "positive_y",
+        "approach_axis": "y",
+        "approach_polarity": "positive",
+        "timing_bin": "train_0",
+        "realized_impulse_bin": "high",
+        "rod_start_time_s": 0.93,
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.55,
+            0.2,
+            0.54
+          ],
+          "slide_axis_world": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            0.0,
+            0.7071068,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_train_positive_y_c3_t1",
+        "split": "train",
+        "rod_approach_side": "positive_y",
+        "approach_axis": "y",
+        "approach_polarity": "positive",
+        "timing_bin": "train_1",
+        "realized_impulse_bin": "low",
+        "rod_start_time_s": 1.18,
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.55,
+            0.2,
+            0.54
+          ],
+          "slide_axis_world": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            0.0,
+            0.7071068,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_train_negative_z_c4_t0",
+        "split": "train",
+        "rod_approach_side": "negative_z",
+        "approach_axis": "z",
+        "approach_polarity": "negative",
+        "timing_bin": "train_0",
+        "realized_impulse_bin": "medium",
+        "rod_start_time_s": 0.93,
+        "rod_stroke_m": 0.05,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.6,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.6,
+            0.0,
+            0.4
+          ],
+          "slide_axis_world": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "rod_long_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            -0.7071068,
+            0.0,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_train_negative_z_c4_t1",
+        "split": "train",
+        "rod_approach_side": "negative_z",
+        "approach_axis": "z",
+        "approach_polarity": "negative",
+        "timing_bin": "train_1",
+        "realized_impulse_bin": "high",
+        "rod_start_time_s": 1.18,
+        "rod_stroke_m": 0.05,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.6,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.6,
+            0.0,
+            0.4
+          ],
+          "slide_axis_world": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "rod_long_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            -0.7071068,
+            0.0,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      }
+    ],
+    "validation": [
+      {
+        "fixture_id": "esn_wbc_validation_negative_x_c0_t0",
+        "split": "validation",
+        "rod_approach_side": "negative_x",
+        "approach_axis": "x",
+        "approach_polarity": "negative",
+        "timing_bin": "validation_0",
+        "realized_impulse_bin": "medium",
+        "rod_start_time_s": 0.955,
+        "rod_stroke_m": 0.08,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.35000000000000003,
+            0.0,
+            0.54
+          ],
+          "slide_axis_world": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            -0.7071068,
+            0.0,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_validation_negative_x_c0_t1",
+        "split": "validation",
+        "rod_approach_side": "negative_x",
+        "approach_axis": "x",
+        "approach_polarity": "negative",
+        "timing_bin": "validation_1",
+        "realized_impulse_bin": "low",
+        "rod_start_time_s": 1.205,
+        "rod_stroke_m": 0.08,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.35000000000000003,
+            0.0,
+            0.54
+          ],
+          "slide_axis_world": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            -0.7071068,
+            0.0,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_validation_positive_x_c1_t0",
+        "split": "validation",
+        "rod_approach_side": "positive_x",
+        "approach_axis": "x",
+        "approach_polarity": "positive",
+        "timing_bin": "validation_0",
+        "realized_impulse_bin": "high",
+        "rod_start_time_s": 0.955,
+        "rod_stroke_m": 0.13,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.75,
+            0.0,
+            0.54
+          ],
+          "slide_axis_world": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            -0.7071068,
+            0.0,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_validation_negative_y_c2_t0",
+        "split": "validation",
+        "rod_approach_side": "negative_y",
+        "approach_axis": "y",
+        "approach_polarity": "negative",
+        "timing_bin": "validation_0",
+        "realized_impulse_bin": "medium",
+        "rod_start_time_s": 0.955,
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.55,
+            -0.2,
+            0.54
+          ],
+          "slide_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            0.0,
+            0.7071068,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_validation_negative_y_c2_t1",
+        "split": "validation",
+        "rod_approach_side": "negative_y",
+        "approach_axis": "y",
+        "approach_polarity": "negative",
+        "timing_bin": "validation_1",
+        "realized_impulse_bin": "low",
+        "rod_start_time_s": 1.205,
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.55,
+            -0.2,
+            0.54
+          ],
+          "slide_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            0.0,
+            0.7071068,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_validation_positive_y_c3_t0",
+        "split": "validation",
+        "rod_approach_side": "positive_y",
+        "approach_axis": "y",
+        "approach_polarity": "positive",
+        "timing_bin": "validation_0",
+        "realized_impulse_bin": "medium",
+        "rod_start_time_s": 0.955,
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.55,
+            0.2,
+            0.54
+          ],
+          "slide_axis_world": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            0.0,
+            0.7071068,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_validation_positive_y_c3_t1",
+        "split": "validation",
+        "rod_approach_side": "positive_y",
+        "approach_axis": "y",
+        "approach_polarity": "positive",
+        "timing_bin": "validation_1",
+        "realized_impulse_bin": "low",
+        "rod_start_time_s": 1.205,
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.55,
+            0.2,
+            0.54
+          ],
+          "slide_axis_world": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "rod_long_axis_world": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            0.0,
+            0.7071068,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_validation_negative_z_c4_t0",
+        "split": "validation",
+        "rod_approach_side": "negative_z",
+        "approach_axis": "z",
+        "approach_polarity": "negative",
+        "timing_bin": "validation_0",
+        "realized_impulse_bin": "medium",
+        "rod_start_time_s": 0.955,
+        "rod_stroke_m": 0.05,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.6,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.6,
+            0.0,
+            0.4
+          ],
+          "slide_axis_world": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "rod_long_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            -0.7071068,
+            0.0,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      },
+      {
+        "fixture_id": "esn_wbc_validation_negative_z_c4_t1",
+        "split": "validation",
+        "rod_approach_side": "negative_z",
+        "approach_axis": "z",
+        "approach_polarity": "negative",
+        "timing_bin": "validation_1",
+        "realized_impulse_bin": "high",
+        "rod_start_time_s": 1.205,
+        "rod_stroke_m": 0.05,
+        "rod_height_m": 0.54,
+        "rod_center_x_m": 0.6,
+        "rod_center_y_m": 0.0,
+        "grasp_time_s": 2.4,
+        "remove_rod_when_disabled": true,
+        "physical_geometry": {
+          "support_position_m": [
+            0.6,
+            0.0,
+            0.4
+          ],
+          "slide_axis_world": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "rod_long_axis_world": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "cylinder_quaternion_wxyz": [
+            0.7071068,
+            -0.7071068,
+            0.0,
+            0.0
+          ],
+          "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport"
+        }
+      }
+    ],
+    "test": []
+  }
+}
