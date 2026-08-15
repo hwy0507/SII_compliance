@@ -144,3 +144,21 @@ are kept next to this protocol note.
 The next smoke stage is a paired 100k-step run with the authority gate and
 identical seed, followed by at least five independent seeds.  Only after those
 gates pass should multi-profile overnight training start.
+
+## Resumable overnight campaign
+
+`scripts/run_independent_esn_overnight.py` launches a paired current-MLP and
+Fan-Ye-ESN lane, each using eight environments and a dedicated ten-CPU set.  It
+records an immutable artifact-hash manifest before training, pairs every seed
+and reward profile, saves model/normalizer checkpoints every 100k steps, runs
+the matched validation after each pair, and resumes safely by skipping only
+fully evaluated pairs.
+
+The planned first overnight pass is six seeds × three reward profiles × two
+million PPO steps per lane.  The measured server throughput (about 0.85--0.90k
+vector steps/s per lane) yields roughly 12 hours of paired training plus short
+validation intervals.  Each result is accepted only when both controllers
+retain all task/no-rod successes, at least eight valid collisions under the
+predeclared fixture gate, and zero torque hard-limit events.  Pareto selection
+then uses recovery RMSE, rejoin latency, impulse, jerk, and torque; no single
+late checkpoint is assumed to be universally best.
