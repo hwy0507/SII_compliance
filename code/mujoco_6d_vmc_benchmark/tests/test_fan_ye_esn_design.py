@@ -19,6 +19,8 @@ from fan_ye_esn_design import (  # noqa: E402
 )
 from train_fan_ye_esn_readout import GatedVMCTeacherConfig, teacher_actions_from_gate  # noqa: E402
 from fan_ye_esn_policy import FanYeVMCPolicyConfig  # noqa: E402
+from fan_ye_esn_rl_adapter import FanYeESNRLObservationAdapter  # noqa: E402
+from esn_compliance import ESNObservation  # noqa: E402
 
 
 def _trace(rows: int = 80) -> np.ndarray:
@@ -111,3 +113,18 @@ def test_fan_ye_vmc_policy_envelope_matches_common_vmc_boundary():
     assert len(config.base_kappa) == 6
     assert config.contact_drive_scale == 8.0
     assert config.minimum_recovery_drive_scale <= config.base_recovery_drive_scale <= config.maximum_recovery_drive_scale
+
+
+def test_fan_ye_rl_adapter_uses_only_fixed_reservoir_wbc_features(tmp_path: Path):
+    config = _config()
+    model = FanYeAlignedESN(config)
+    npz = tmp_path / "model.npz"
+    np.savez_compressed(npz, input_normalizer_scales=np.ones(20), readout=model.readout)
+    summary = tmp_path / "summary.json"
+    summary.write_text(__import__("json").dumps({"config": config.__dict__}))
+    adapter = FanYeESNRLObservationAdapter(npz, summary)
+    feature = adapter.observe(ESNObservation(np.zeros(7), np.zeros(7), np.zeros(6)))
+    assert feature.shape == (20 + config.reservoir_size,)
+    assert np.all(np.isfinite(feature))
+    adapter.reset()
+    np.testing.assert_allclose(feature, adapter.observe(ESNObservation(np.zeros(7), np.zeros(7), np.zeros(6))))
