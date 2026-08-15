@@ -38,12 +38,15 @@ def _run_episode(
     fixture_index: int,
     *,
     zero_residual: bool,
+    fixed_action: np.ndarray | None,
 ) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
     observation, _ = env.reset(options={"fixture_index": fixture_index})
     trace: dict[str, list[np.ndarray | float]] = {key: [] for key in ("time", "ee_position", "nominal_position", "kappa", "torque", "recovery_drive_scale")}
     terminal: dict[str, Any] = {}
     while True:
-        if zero_residual:
+        if fixed_action is not None:
+            action = fixed_action
+        elif zero_residual:
             action = np.zeros(env.action_space.shape, dtype=np.float32)
         else:
             if model is None or normalizer is None:
@@ -95,6 +98,7 @@ def main() -> None:
     parser.add_argument("--model", type=Path, default=None, help="PPO .zip model path")
     parser.add_argument("--vecnormalize", type=Path, default=None)
     parser.add_argument("--zero-residual", action="store_true", help="Evaluate the matched analytic zero-residual policy instead of a learned PPO actor.")
+    parser.add_argument("--fixed-action", type=str, default=None, help="Comma-separated fixed residual action for execution-layer authority analysis.")
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--max-fixtures", type=int, default=None)
     parser.add_argument("--fixture-manifest", type=Path, default=None, help="Optional held-out manifest whose test split replaces the default four fixtures.")
@@ -113,10 +117,12 @@ def main() -> None:
     parser.add_argument("--drive-max-log-rate-per-s", type=float, default=1.0)
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    if not args.zero_residual and (args.model is None or args.vecnormalize is None):
+    fixed_action = None if args.fixed_action is None else np.asarray([float(value) for value in args.fixed_action.split(",")], dtype=np.float32)
+    fixed_policy = args.zero_residual or fixed_action is not None
+    if not fixed_policy and (args.model is None or args.vecnormalize is None):
         parser.error("--model and --vecnormalize are required unless --zero-residual is set")
-    if args.zero_residual and (args.model is not None or args.vecnormalize is not None):
-        parser.error("--zero-residual cannot be combined with --model or --vecnormalize")
+    if fixed_policy and (args.model is not None or args.vecnormalize is not None):
+        parser.error("--zero-residual/--fixed-action cannot be combined with --model or --vecnormalize")
     fixtures = load_fixtures(args.fixture_manifest, args.fixture_split)
     if args.max_fixtures is not None:
         fixtures = fixtures[:args.max_fixtures]
@@ -129,7 +135,7 @@ def main() -> None:
     template = None
     normalizer = None
     model = None
-    if not args.zero_residual:
+    if not fixed_policy:
         template = DummyVecEnv([lambda: PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, seed=0, **env_kwargs)])
         normalizer = VecNormalize.load(str(args.vecnormalize), template)
         normalizer.training = False
@@ -139,9 +145,11 @@ def main() -> None:
     no_rod_env = PandaSixDStiffnessEnv(args.menagerie, fixtures=fixtures, rod_enabled=False, seed=1, **env_kwargs)
     records: list[dict[str, Any]] = []
     try:
+        if fixed_action is not None and fixed_action.shape != rod_env.action_space.shape:
+            raise ValueError(f"--fixed-action must have shape {rod_env.action_space.shape}")
         for index, fixture in enumerate(fixtures):
-            rod, rod_terminal = _run_episode(rod_env, model, normalizer, index, zero_residual=args.zero_residual)
-            no_rod, no_rod_terminal = _run_episode(no_rod_env, model, normalizer, index, zero_residual=args.zero_residual)
+            rod, rod_terminal = _run_episode(rod_env, model, normalizer, index, zero_residual=args.zero_residual, fixed_action=fixed_action)
+            no_rod, no_rod_terminal = _run_episode(no_rod_env, model, normalizer, index, zero_residual=args.zero_residual, fixed_action=fixed_action)
             if rod["time"].shape != no_rod["time"].shape or not np.allclose(rod["time"], no_rod["time"]):
                 raise RuntimeError("matched rollouts do not share a control grid")
             paired_offset = np.linalg.norm(rod["ee_position"] - no_rod["ee_position"], axis=1)
@@ -174,7 +182,7 @@ def main() -> None:
         if template is not None:
             template.close()
     report = {
-        "protocol": "matched zero-residual analytic policy; rod/no-rod physics rollouts; offline diagnostics only" if args.zero_residual else "frozen deterministic PPO; matched rod/no-rod physics rollouts; offline diagnostics only",
+        "protocol": "matched zero-residual analytic policy; rod/no-rod physics rollouts; offline diagnostics only" if args.zero_residual else ("fixed residual execution-layer authority analysis; matched rod/no-rod physics rollouts; offline diagnostics only" if fixed_action is not None else "frozen deterministic PPO; matched rod/no-rod physics rollouts; offline diagnostics only"),
         "enable_drive_residual": args.enable_drive_residual,
         "enable_energy_safety": args.enable_energy_safety,
         "recovery_gate_hold_s": args.recovery_gate_hold_s,
@@ -183,6 +191,7 @@ def main() -> None:
         "model": None if args.model is None else str(args.model),
         "vecnormalize": None if args.vecnormalize is None else str(args.vecnormalize),
         "zero_residual": args.zero_residual,
+        "fixed_action": None if fixed_action is None else fixed_action.tolist(),
         "reference_source": args.reference_source,
         "fixture_split": args.fixture_split,
         "fan_ye_actor": fan_ye_enabled,
