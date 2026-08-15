@@ -1,0 +1,306 @@
+{
+  "protocol": "frozen deterministic PPO; matched rod/no-rod physics rollouts; offline diagnostics only",
+  "enable_drive_residual": true,
+  "enable_energy_safety": true,
+  "recovery_gate_hold_s": 0.28,
+  "recovery_gate_taper_s": 0.04,
+  "rate_limits": {
+    "kappa_max_log_rate_per_s": 1.6,
+    "drive_max_log_rate_per_s": 1.0
+  },
+  "model": "/tmp/esn_wbc_fan_ye_ppo_dev_run003_seed20260817/ppo_sixd_final.zip",
+  "vecnormalize": "/tmp/esn_wbc_fan_ye_ppo_dev_run003_seed20260817/vecnormalize.pkl",
+  "zero_residual": false,
+  "reference_source": "fixed_panda_wbc",
+  "fixture_split": "validation",
+  "fan_ye_actor": true,
+  "summary": {
+    "episode_count": 9,
+    "task_success_count": 9,
+    "effective_collision_count": 9,
+    "matched_no_rod_task_success_count": 9,
+    "peak_paired_offset_mm": {
+      "mean": 12.861747420922722,
+      "std": 5.031449082779858,
+      "min": 4.966199373666219,
+      "max": 19.50790300493668
+    },
+    "paired_offset_rmse_mm": {
+      "mean": 2.1974320582444378,
+      "std": 0.8119008701705216,
+      "min": 1.2122618359708375,
+      "max": 3.425130285662446
+    },
+    "recovery_rmse_mm": {
+      "mean": 1.6806049837666879,
+      "std": 0.4143578280692774,
+      "min": 1.216301204649063,
+      "max": 2.546537922547066
+    },
+    "peak_torque_nm": {
+      "mean": 30.52417738046465,
+      "std": 0.45342089920308715,
+      "min": 30.127036208803887,
+      "max": 31.34924289156337
+    },
+    "peak_jerk_mps3": {
+      "mean": 957.4174078336774,
+      "std": 498.61282445487643,
+      "min": 301.60477700510006,
+      "max": 1707.5502367608033
+    },
+    "peak_contact_force_n": {
+      "mean": 35.81046400070696,
+      "std": 17.342944762241284,
+      "min": 16.26542297256576,
+      "max": 73.67830285483122
+    },
+    "contact_impulse_ns": {
+      "mean": 3.2531881627783283,
+      "std": 1.4265452214062904,
+      "min": 1.407969067134823,
+      "max": 6.186040213423901
+    },
+    "rejoin_latency_s": {
+      "mean": 0.03666666666666685,
+      "std": 0.02603416558635549,
+      "count": 9
+    }
+  },
+  "records": [
+    {
+      "fixture_index": 0,
+      "fixture": {
+        "rod_stroke_m": 0.08,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 0.97,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "negative_x",
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      "task_success": true,
+      "effective_collision": true,
+      "no_rod_task_success": true,
+      "peak_paired_offset_mm": 4.966199373666219,
+      "paired_offset_rmse_mm": 1.2122618359708375,
+      "recovery_rmse_mm": 2.546537922547066,
+      "rejoin_latency_s": 0.1100000000000001,
+      "peak_torque_nm": 31.0463151289168,
+      "peak_jerk_mps3": 519.7623819911261,
+      "peak_contact_force_n": 17.241970762905957,
+      "contact_impulse_ns": 2.1720524073310306,
+      "mean_log_kappa_deviation": 0.03489689102063322,
+      "mean_log_drive_deviation": 0.018485959850881056,
+      "mean_residual_gate": 0.1940021055586758
+    },
+    {
+      "fixture_index": 1,
+      "fixture": {
+        "rod_stroke_m": 0.08,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 1.175,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "negative_x",
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      "task_success": true,
+      "effective_collision": true,
+      "no_rod_task_success": true,
+      "peak_paired_offset_mm": 6.579715348367196,
+      "paired_offset_rmse_mm": 1.4693846705453695,
+      "recovery_rmse_mm": 2.193800382061746,
+      "rejoin_latency_s": 0.025000000000000133,
+      "peak_torque_nm": 31.056985073272262,
+      "peak_jerk_mps3": 498.61819502076884,
+      "peak_contact_force_n": 18.5193151812535,
+      "contact_impulse_ns": 2.634532615621914,
+      "mean_log_kappa_deviation": 0.03571921070532525,
+      "mean_log_drive_deviation": 0.019537985720707435,
+      "mean_residual_gate": 0.2070971963864221
+    },
+    {
+      "fixture_index": 2,
+      "fixture": {
+        "rod_stroke_m": 0.13,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 0.97,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "positive_x",
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      "task_success": true,
+      "effective_collision": true,
+      "no_rod_task_success": true,
+      "peak_paired_offset_mm": 19.50790300493668,
+      "paired_offset_rmse_mm": 3.425130285662446,
+      "recovery_rmse_mm": 1.4531873506753912,
+      "rejoin_latency_s": 0.03000000000000025,
+      "peak_torque_nm": 31.34924289156337,
+      "peak_jerk_mps3": 749.9177629927608,
+      "peak_contact_force_n": 73.67830285483122,
+      "contact_impulse_ns": 4.664125609230891,
+      "mean_log_kappa_deviation": 0.023321778890336653,
+      "mean_log_drive_deviation": 0.01663881072537681,
+      "mean_residual_gate": 0.17479262631652584
+    },
+    {
+      "fixture_index": 3,
+      "fixture": {
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 0.97,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "negative_y",
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      "task_success": true,
+      "effective_collision": true,
+      "no_rod_task_success": true,
+      "peak_paired_offset_mm": 18.178449181847128,
+      "paired_offset_rmse_mm": 2.955941976587097,
+      "recovery_rmse_mm": 1.628848525975474,
+      "rejoin_latency_s": 0.03000000000000025,
+      "peak_torque_nm": 30.294684116668,
+      "peak_jerk_mps3": 1643.9374192334944,
+      "peak_contact_force_n": 46.947645117770506,
+      "contact_impulse_ns": 3.6776075338547134,
+      "mean_log_kappa_deviation": 0.02667212571852195,
+      "mean_log_drive_deviation": 0.019339131692515003,
+      "mean_residual_gate": 0.17471723284046525
+    },
+    {
+      "fixture_index": 4,
+      "fixture": {
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 1.175,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "negative_y",
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      "task_success": true,
+      "effective_collision": true,
+      "no_rod_task_success": true,
+      "peak_paired_offset_mm": 11.545076329698665,
+      "paired_offset_rmse_mm": 1.6641897113113215,
+      "recovery_rmse_mm": 1.2995598358166291,
+      "rejoin_latency_s": 0.025000000000000133,
+      "peak_torque_nm": 30.241281561426465,
+      "peak_jerk_mps3": 1283.7608787835848,
+      "peak_contact_force_n": 34.7461570057811,
+      "contact_impulse_ns": 1.407969067134823,
+      "mean_log_kappa_deviation": 0.026171807145779928,
+      "mean_log_drive_deviation": 0.0161722604467077,
+      "mean_residual_gate": 0.16196941870011622
+    },
+    {
+      "fixture_index": 5,
+      "fixture": {
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 0.97,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "positive_y",
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      "task_success": true,
+      "effective_collision": true,
+      "no_rod_task_success": true,
+      "peak_paired_offset_mm": 18.280650034560086,
+      "paired_offset_rmse_mm": 2.8867795909302365,
+      "recovery_rmse_mm": 1.723743001344824,
+      "rejoin_latency_s": 0.03000000000000025,
+      "peak_torque_nm": 30.22060918751544,
+      "peak_jerk_mps3": 1707.5502367608033,
+      "peak_contact_force_n": 46.580141892531856,
+      "contact_impulse_ns": 3.941540636581649,
+      "mean_log_kappa_deviation": 0.021459174400706653,
+      "mean_log_drive_deviation": 0.01506137394995838,
+      "mean_residual_gate": 0.1682561070658489
+    },
+    {
+      "fixture_index": 6,
+      "fixture": {
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 1.175,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "positive_y",
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      "task_success": true,
+      "effective_collision": true,
+      "no_rod_task_success": true,
+      "peak_paired_offset_mm": 11.89870130616829,
+      "paired_offset_rmse_mm": 1.690156284331128,
+      "recovery_rmse_mm": 1.3437639493400713,
+      "rejoin_latency_s": 0.025000000000000133,
+      "peak_torque_nm": 30.254406047211763,
+      "peak_jerk_mps3": 1288.844192784146,
+      "peak_contact_force_n": 34.716901564381764,
+      "contact_impulse_ns": 1.9195776508228344,
+      "mean_log_kappa_deviation": 0.02128804133201161,
+      "mean_log_drive_deviation": 0.014128569372744633,
+      "mean_residual_gate": 0.1619619331569991
+    },
+    {
+      "fixture_index": 7,
+      "fixture": {
+        "rod_stroke_m": 0.05,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 0.97,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "negative_z",
+        "rod_center_x_m": 0.6,
+        "rod_center_y_m": 0.0
+      },
+      "task_success": true,
+      "effective_collision": true,
+      "no_rod_task_success": true,
+      "peak_paired_offset_mm": 9.148046470090568,
+      "paired_offset_rmse_mm": 1.4211934957756276,
+      "recovery_rmse_mm": 1.7197026814899259,
+      "rejoin_latency_s": 0.03000000000000025,
+      "peak_torque_nm": 30.127036208803887,
+      "peak_jerk_mps3": 301.60477700510006,
+      "peak_contact_force_n": 16.26542297256576,
+      "contact_impulse_ns": 2.6752477310032,
+      "mean_log_kappa_deviation": 0.028006392045568283,
+      "mean_log_drive_deviation": 0.017958373613387382,
+      "mean_residual_gate": 0.1747166506136543
+    },
+    {
+      "fixture_index": 8,
+      "fixture": {
+        "rod_stroke_m": 0.05,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 1.175,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "negative_z",
+        "rod_center_x_m": 0.6,
+        "rod_center_y_m": 0.0
+      },
+      "task_success": true,
+      "effective_collision": true,
+      "no_rod_task_success": true,
+      "peak_paired_offset_mm": 15.650985738969663,
+      "paired_offset_rmse_mm": 3.051850673085877,
+      "recovery_rmse_mm": 1.216301204649063,
+      "rejoin_latency_s": 0.025000000000000133,
+      "peak_torque_nm": 30.127036208803887,
+      "peak_jerk_mps3": 622.7608259313125,
+      "peak_contact_force_n": 33.59831865434093,
+      "contact_impulse_ns": 6.186040213423901,
+      "mean_log_kappa_deviation": 0.032416317435501704,
+      "mean_log_drive_deviation": 0.02099099937675703,
+      "mean_residual_gate": 0.19427463692602898
+    }
+  ]
+}
