@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "stage": "validation-only analytic-teacher envelope selection for fixed Fan Ye ESN-VMC",
+  "selection_data_boundary": "Only ESN train traces fit readouts and only the independent ESN validation pool ranks envelopes. Frozen WBC-aware V4 final test is excluded.",
+  "fixed_components": [
+    "Fan Ye reservoir candidate #22",
+    "fixed_panda_wbc reference",
+    "physical fixture pool",
+    "vmc_gated backend",
+    "bounded ESN action projection",
+    "torque feasibility and slew safeguards"
+  ],
+  "baseline_ladder_json": "/tmp/esn_fan_ye_validation_ladder_20260815/fan_ye_esn_validation_ladder.json",
+  "baseline_metrics": {
+    "recovery_rmse_mm": 2.2399867355304823,
+    "release_to_rejoin_s": 0.30436363636363645,
+    "jerk_p95_mps3": 274.1254942214886,
+    "peak_torque_nm": 31.220925991386707,
+    "torque_rate_peak_nmps": 130.44297231085113,
+    "peak_contact_force_n": 44.498743481100696,
+    "contact_impulse_ns": 3.868521767038973
+  },
+  "fixture_count": 11,
+  "candidate_index": 22,
+  "selection_constraints": {
+    "all_validation_fixtures_must_be_valid": true,
+    "peak_torque_relative_tolerance": 0.02,
+    "peak_contact_force_relative_tolerance": 0.02,
+    "preference": "jerk P95 and contact impulse no worse than fixed VMC-gated, then recovery RMSE and rejoin latency no worse"
+  },
+  "runs": [
+    {
+      "name": "soft035_drive040",
+      "teacher_config": {
+        "translation_log_kappa_softening": -0.35,
+        "rotation_log_kappa_softening": -0.2,
+        "recovery_drive_boost": 0.4
+      },
+      "model_npz": "/tmp/esn_fan_ye_teacher_phase2_20260815/soft035_drive040/results/soft035_drive040/fan_ye_esn_warmstart.npz",
+      "train_summary_json": "/tmp/esn_fan_ye_teacher_phase2_20260815/soft035_drive040/results/soft035_drive040/fan_ye_esn_readout_train_summary.json",
+      "readout_training_mse": 0.0015514259325273426,
+      "valid_count": 11,
+      "fixture_count": 11,
+      "aggregate_common_valid": {
+        "recovery_rmse_mm": 2.211570991804424,
+        "release_to_rejoin_s": 0.29454545454545467,
+        "jerk_p95_mps3": 281.5231406648891,
+        "peak_torque_nm": 31.258865840887413,
+        "torque_rate_peak_nmps": 129.74175979415503,
+        "peak_contact_force_n": 44.565434272208726,
+        "contact_impulse_ns": 3.939244696519131
+      },
+      "selection": {
+        "relative_to_vmc_gated": {
+          "recovery_rmse_mm": 0.987314325002318,
+          "release_to_rejoin_s": 0.9677419354838711,
+          "jerk_p95_mps3": 1.0269863496804983,
+          "peak_torque_nm": 1.001215205772922,
+          "torque_rate_peak_nmps": 0.9946243748952218,
+          "peak_contact_force_n": 1.0014987117812968,
+          "contact_impulse_ns": 1.0182816418619483
+        },
+        "safety_eligible": true,
+        "smoothness_eligible": false,
+        "recovery_noninferior": true,
+        "constrained_rank_score": 2.7295376827126123
+      },
+      "rows": [
+        {
+          "fixture_id": "esn_wbc_train_validation_manifest__esn_wbc_validation_negative_x_c0_t0",
+          "baseline_vmc_gated_valid": true,
+          "fan_ye_esn_vmc_valid": true,
+          "fan_ye_esn_vmc": {
+            "recovery_rmse_mm": 1.849500468425632,
+            "release_to_rejoin_s": 0.19200000000000017,
+            "jerk_p95_mps3": 208.85131802680223,
+            "peak_torque_nm": 31.62259542992234,
+            "torque_rate_peak_nmps": 87.4568824944153,
+            "peak_contact_force_n": 19.08189731726985,
+            "contact_impulse_ns": 2.2105943881771286
+          }
+        },
+        {
+          "fixture_id": "esn_wbc_train_validation_manifest__esn_wbc_validation_negative_x_c0_t1",
+          "baseline_vmc_gated_valid": true,
+          "fan_ye_esn_vmc_valid": true,
+          "fan_ye_esn_vmc": {
+            "recovery_rmse_mm": 1.4041587988358113,
+            "release_to_rejoin_s": 0.10000000000000009,
+            "jerk_p95_mps3": 175.96966914036489,
+            "peak_torque_nm": 32.09171284774581,
+            "torque_rate_peak_nmps": 67.64228781876547,
+            "peak_contact_force_n": 19.681148647344553,
+            "contact_impulse_ns": 2.19776167893559
+          }
+        },
+        {
+          "fixture_id": "esn_wbc_train_validation_manifest__esn_wbc_validation_positive_x_c1_t0",
+          "baseline_vmc_gated_valid": true,
+          "fan_ye_esn_vmc_valid": true,
+          "fan_ye_esn_vmc": {
+            "recovery_rmse_mm": 3.161736422512327,
+            "release_to_rejoin_s": 0.528,
+            "jerk_p95_mps3": 218.69133152368542,
+            "peak_torque_nm": 32.25971989289705,
+            "torque_rate_peak_nmps": 167.70867307735315,
+            "peak_contact_force_n": 79.4626416774434,
+            "contact_impulse_ns": 5.356575993478135
+          }
+        },
+        {
+          "fixture_id": "esn_wbc_train_validation_manifest__esn_wbc_validation_negative_y_c2_t0",
+          "baseline_vmc_gated_valid": true,
+          "fan_ye_esn_vmc_valid": true,
+          "fan_ye_esn_vmc": {
+            "recovery_rmse_mm": 1.7614876260149714,
+            "release_to_rejoin_s": 0.32800000000000007,
+            "jerk_p95_mps3": 618.3828061847635,
+            "peak_torque_nm": 30.100729370141227,
+            "torque_rate_peak_nmps": 173.7412151690467,
+            "peak_contact_force_n": 47.818035698139376,
+            "contact_impulse_ns": 4.403309370374632
+          }
+        },
+        {
+          "fixture_id": "esn_wbc_train_validation_manifest__esn_wbc_validation_negative_y_c2_t1",
+          "baseline_vmc_gated_valid": true,
+          "fan_ye_esn_vmc_valid": true,
+          "fan_ye_esn_vmc": {
+            "recovery_rmse_mm": 1.3149753259412311,
+            "release_to_rejoin_s": 0.15600000000000014,
+            "jerk_p95_mps3": 288.13012884413956,
+            "peak_torque_nm": 30.432059781011645,
+            "torque_rate_peak_nmps": 76.42762853268273,
+            "peak_contact_force_n": 23.26956783718521,
+            "contact_impulse_ns": 0.8792069156442625
+          }
+        },
+        {
+          "fixture_id": "esn_wbc_train_validation_manifest__esn_wbc_validation_positive_y_c3_t0",
+          "baseline_vmc_gated_valid": true,
+          "fan_ye_esn_vmc_valid": true,
+          "fan_ye_esn_vmc": {
+            "recovery_rmse_mm": 1.7400601626618855,
+            "release_to_rejoin_s": 0.32800000000000007,
+            "jerk_p95_mps3": 599.3457573197971,
+            "peak_torque_nm": 30.188186262261745,
+            "torque_rate_peak_nmps": 173.10580427954835,
+            "peak_contact_force_n": 47.55617050788062,
+            "contact_impulse_ns": 4.618933085936271
+          }
+        },
+        {
+          "fixture_id": "esn_wbc_train_validation_manifest__esn_wbc_validation_positive_y_c3_t1",
+          "baseline_vmc_gated_valid": true,
+          "fan_ye_esn_vmc_valid": true,
+          "fan_ye_esn_vmc": {
+            "recovery_rmse_mm": 1.3241247187552179,
+            "release_to_rejoin_s": 0.14800000000000013,
+            "jerk_p95_mps3": 265.4152551833574,
+            "peak_torque_nm": 30.330361998870856,
+            "torque_rate_peak_nmps": 79.80967691759116,
+            "peak_contact_force_n": 30.18461217393723,
+            "contact_impulse_ns": 1.739179738689621
+          }
+        },
+        {
+          "fixture_id": "esn_wbc_train_validation_manifest__esn_wbc_validation_negative_z_c4_t0",
+          "baseline_vmc_gated_valid": true,
+          "fan_ye_esn_vmc_valid": true,
+          "fan_ye_esn_vmc": {
+            "recovery_rmse_mm": 2.7443896345090164,
+            "release_to_rejoin_s": 0.244,
+            "jerk_p95_mps3": 109.83112747629328,
+            "peak_torque_nm": 30.506575491554912,
+            "torque_rate_peak_nmps": 103.93726357572946,
+            "peak_contact_force_n": 17.673200483148044,
+            "contact_impulse_ns": 2.7955244982916065
+          }
+        },
+        {
+          "fixture_id": "esn_wbc_train_validation_manifest__esn_wbc_validation_negative_z_c4_t1",
+          "baseline_vmc_gated_valid": true,
+          "fan_ye_esn_vmc_valid": true,
+          "fan_ye_esn_vmc": {
+            "recovery_rmse_mm": 2.415237241348305,
+            "release_to_rejoin_s": 0.16400000000000015,
+            "jerk_p95_mps3": 182.821750278573,
+            "peak_torque_nm": 30.9106393453771,
+            "torque_rate_peak_nmps": 133.6445696135612,
+            "peak_contact_force_n": 38.45799398602164,
+            "contact_impulse_ns": 7.449573202476604
+          }
+        },
+        {
+          "fixture_id": "esn_wbc_positive_x_early_probe_manifest__esn_wbc_validation_positive_x_c1_t0",
+          "baseline_vmc_gated_valid": true,
+          "fan_ye_esn_vmc_valid": true,
+          "fan_ye_esn_vmc": {
+            "recovery_rmse_mm": 3.457390036051403,
+            "release_to_rejoin_s": 0.532,
+            "jerk_p95_mps3": 245.63418315739955,
+            "peak_torque_nm": 32.90187585628947,
+            "torque_rate_peak_nmps": 184.22100581794254,
+            "peak_contact_force_n": 87.16564927397599,
+            "contact_impulse_ns": 6.110629740033752
+          }
+        },
+        {
+          "fixture_id": "esn_wbc_positive_x_early_probe_manifest__esn_wbc_validation_positive_x_c1_t1",
+          "baseline_vmc_gated_valid": true,
+          "fan_ye_esn_vmc_valid": true,
+          "fan_ye_esn_vmc": {
+            "recovery_rmse_mm": 3.154220474792866,
+            "release_to_rejoin_s": 0.52,
+            "jerk_p95_mps3": 183.68122017860424,
+            "peak_torque_nm": 32.50306797368938,
+            "torque_rate_peak_nmps": 179.46435043906916,
+            "peak_contact_force_n": 79.86885939195015,
+            "contact_impulse_ns": 5.57040304967283
+          }
+        }
+      ]
+    }
+  ],
+  "provisional_validation_selection": "soft035_drive040",
+  "warning": "The provisional selection is validation-only. It is not a final benchmark result and must be frozen before one-shot evaluation on WBC-aware V4."
+}

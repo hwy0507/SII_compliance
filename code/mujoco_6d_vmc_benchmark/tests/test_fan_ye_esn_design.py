@@ -75,6 +75,26 @@ def test_causal_gate_teacher_is_bounded_and_has_no_contact_input():
     assert actions[-1, 6] > 0.0
 
 
+def test_teacher_envelope_changes_only_teacher_action_magnitudes():
+    gate = np.array([0.0, 1.0])
+    gentle = teacher_actions_from_gate(gate, GatedVMCTeacherConfig(-0.35, -0.10, 0.25))
+    assert gentle.shape == (2, 7)
+    np.testing.assert_allclose(gentle[0], 0.0)
+    np.testing.assert_allclose(gentle[-1, :3], -0.35)
+    np.testing.assert_allclose(gentle[-1, 3:6], -0.10)
+    assert gentle[-1, 6] == 0.25
+
+
+def test_teacher_gate_filter_is_causal_and_default_preserves_legacy_actions():
+    gate = np.array([0.0, 1.0, 0.0])
+    legacy = teacher_actions_from_gate(gate)
+    unfiltered = teacher_actions_from_gate(gate, GatedVMCTeacherConfig(gate_filter_time_constant_s=0.0))
+    filtered = teacher_actions_from_gate(gate, GatedVMCTeacherConfig(gate_filter_time_constant_s=0.04), sample_period_s=0.04)
+    np.testing.assert_allclose(legacy, unfiltered)
+    assert filtered[1, 6] < legacy[1, 6]
+    assert filtered[2, 6] > 0.0
+
+
 def test_fitted_readout_serialization_has_a_valid_shape():
     trace = _trace()
     normalized = FanYeInputNormalizer.from_actuation_traces([trace]).transform(trace)

@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 
 from fan_ye_esn_design import FanYeAlignedESN, FanYeESNConfig, FanYeInputNormalizer
-from train_fan_ye_esn_readout import load_episode
+from train_fan_ye_esn_readout import GatedVMCTeacherConfig, load_episode
 
 
 def main() -> None:
@@ -24,13 +24,14 @@ def main() -> None:
     args = parser.parse_args()
     summary = json.loads(args.train_summary_json.read_text())
     config = FanYeESNConfig(**summary["config"])
+    teacher_config = GatedVMCTeacherConfig(**summary["teacher"]["config"])
     with np.load(args.model_npz) as archive:
         normalizer = FanYeInputNormalizer(archive["input_normalizer_scales"])
         readout = archive["readout"]
     episodes = []
     all_error = []
     for path in args.traces:
-        trace, teacher = load_episode(path, sample_stride=args.sample_stride)
+        trace, teacher = load_episode(path, sample_stride=args.sample_stride, teacher_config=teacher_config)
         model = FanYeAlignedESN(config)
         model.set_readout(readout)
         normalized = normalizer.transform(trace)
@@ -46,6 +47,7 @@ def main() -> None:
         "student_input": summary["student_input"],
         "student_excludes": summary["student_excludes"],
         "candidate_index": summary["candidate_index"],
+        "teacher_config": summary["teacher"]["config"],
         "training_teacher_mse": summary["readout_training_mse"],
         "validation_teacher_mse": float(np.mean(merged ** 2)),
         "episodes": episodes,
