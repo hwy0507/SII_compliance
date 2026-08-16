@@ -82,20 +82,24 @@ class FixedBasePandaWBC:
         target_position_m: np.ndarray,
         target_rotation: np.ndarray,
         feedforward_twist_world: np.ndarray,
+        *,
+        feedback_scale: float = 1.0,
     ) -> WBCCommand:
         target_position = np.asarray(target_position_m, dtype=float)
         target_rotation = np.asarray(target_rotation, dtype=float)
         feedforward = np.asarray(feedforward_twist_world, dtype=float)
         if target_position.shape != (3,) or target_rotation.shape != (3, 3) or feedforward.shape != (6,):
             raise ValueError("Panda WBC requires target position (3,), rotation (3,3), and twist (6,)")
+        if not np.isfinite(feedback_scale) or not 0.0 < feedback_scale <= 1.0:
+            raise ValueError("WBC feedback scale must be finite and in (0, 1]")
 
         current_position = data.xpos[self.hand_id].copy()
         current_rotation = data.xmat[self.hand_id].reshape(3, 3).copy()
         position_error = target_position - current_position
         orientation_error = so3_log(target_rotation @ current_rotation.T)
         desired_twist = feedforward.copy()
-        desired_twist[:3] += self.config.position_feedback_gain * position_error
-        desired_twist[3:] += self.config.orientation_feedback_gain * orientation_error
+        desired_twist[:3] += feedback_scale * self.config.position_feedback_gain * position_error
+        desired_twist[3:] += feedback_scale * self.config.orientation_feedback_gain * orientation_error
         desired_twist[:3] = _clip_norm(desired_twist[:3], self.config.max_linear_speed_mps)
         desired_twist[3:] = _clip_norm(desired_twist[3:], self.config.max_angular_speed_radps)
 

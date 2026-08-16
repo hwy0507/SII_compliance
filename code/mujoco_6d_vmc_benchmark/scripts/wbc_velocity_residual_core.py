@@ -254,6 +254,41 @@ def predictive_authority_multiplier(
     return float(np.clip(multiplier, config.predictive_authority_min_multiplier, config.predictive_authority_max_multiplier))
 
 
+def predictive_wbc_feedback_scale(
+    pose_error: np.ndarray,
+    predicted_delta_pose_error: np.ndarray,
+    *,
+    minimum_feedback_scale: float = 0.60,
+    growth_deadband: float = 0.05,
+) -> float:
+    """Causally soften WBC feedback only for predicted outward departure.
+
+    Both inputs are normalized six-dimensional WBC pose-error coordinates.
+    Feedforward motion is untouched: this function only reduces the fixed WBC
+    feedback correction while the ESN predicts the measured tracking departure
+    will continue to grow.  Once predicted radial growth subsides, the scale
+    returns smoothly to one and the fixed WBC regains nominal tracking gains.
+    """
+
+    error = np.asarray(pose_error, dtype=float)
+    delta = np.asarray(predicted_delta_pose_error, dtype=float)
+    if error.shape != (6,) or delta.shape != (6,) or not np.all(np.isfinite(error)) or not np.all(np.isfinite(delta)):
+        raise ValueError("predictive WBC feedback inputs must be finite six-vectors")
+    if not np.isfinite(minimum_feedback_scale) or not 0.0 < minimum_feedback_scale <= 1.0:
+        raise ValueError("minimum WBC feedback scale must be in (0, 1]")
+    if not np.isfinite(growth_deadband) or not 0.0 <= growth_deadband < 1.0:
+        raise ValueError("WBC feedback growth deadband must be in [0, 1)")
+    norm = float(np.linalg.norm(error))
+    if norm <= 1.0e-9:
+        return 1.0
+    radial_growth_fraction = max(0.0, float(np.dot(error, delta) / (norm * norm)))
+    normalized_growth = np.clip(
+        (radial_growth_fraction - growth_deadband) / max(1.0 - growth_deadband, 1.0e-9),
+        0.0, 1.0,
+    )
+    return float(1.0 - (1.0 - minimum_feedback_scale) * normalized_growth)
+
+
 def project_yield_action_to_error_phase(
     action: np.ndarray, pose_error: np.ndarray, twist_error: np.ndarray, config: VelocityResidualSafetyConfig,
 ) -> np.ndarray:

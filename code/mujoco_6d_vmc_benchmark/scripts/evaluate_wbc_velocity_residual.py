@@ -120,12 +120,14 @@ def main() -> None:
     parser.add_argument("--max-fixtures", type=int, default=None)
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC from gripper-close onward.")
     parser.add_argument("--directional-phase-projection", action="store_true", help="Constrain yield/rejoin velocity to the causal WBC-error half-space.")
-    parser.add_argument("--forecast-model-npz", type=Path, default=None, help="Fitted forecast readout required by fan_ye_forecast_esn.")
+    parser.add_argument("--forecast-model-npz", type=Path, default=None, help="Fitted forecast readout required by forecast ESN modes.")
     parser.add_argument("--predictive-authority-min-multiplier", type=float, default=0.35, help="Lowest residual-authority fraction allowed when the ESN forecasts rejoin.")
     parser.add_argument("--predictive-authority-recovery-deadband", type=float, default=0.05, help="Normalized predicted radial-recovery deadband.")
     parser.add_argument("--predictive-authority-release-gain", type=float, default=1.0, help="Predicted radial-recovery authority-release gain.")
     parser.add_argument("--predictive-authority-require-kinematic-agreement", action="store_true", help="Release authority only when ESN and current-twist forecasts both predict rejoin.")
     parser.add_argument("--predictive-authority-require-measured-recovery", action="store_true", help="Release authority only after measured WBC error has begun to rejoin.")
+    parser.add_argument("--predictive-wbc-min-feedback-scale", type=float, default=0.60, help="Lowest fixed-WBC feedback gain under ESN-predicted outward WBC error growth.")
+    parser.add_argument("--predictive-wbc-growth-deadband", type=float, default=0.05, help="Normalized predicted radial-growth fraction below which fixed WBC gains stay nominal.")
     args = parser.parse_args()
     fixed_action = None
     if args.neutral_wbc:
@@ -138,7 +140,7 @@ def main() -> None:
         parser.error("learned evaluation requires --model and --vecnormalize")
     if fixed_action is not None and (args.model is not None or args.vecnormalize is not None):
         parser.error("fixed/neutral evaluation cannot be combined with learned model paths")
-    if args.observation_mode in ("fan_ye_forecast_esn", "fan_ye_forecast_authority_esn") and args.forecast_model_npz is None:
+    if args.observation_mode in ("fan_ye_forecast_esn", "fan_ye_forecast_authority_esn", "fan_ye_forecast_wbc_esn") and args.forecast_model_npz is None:
         parser.error(f"{args.observation_mode} requires --forecast-model-npz")
     fixtures = load_development_fixtures(args.fixture_manifest, args.fixture_split)
     if args.max_fixtures is not None:
@@ -162,6 +164,8 @@ def main() -> None:
         ),
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
         "forecast_model_npz": args.forecast_model_npz,
+        "predictive_wbc_min_feedback_scale": args.predictive_wbc_min_feedback_scale,
+        "predictive_wbc_growth_deadband": args.predictive_wbc_growth_deadband,
     }
     template = None
     normalizer = None
@@ -204,6 +208,7 @@ def main() -> None:
                 "mean_yield_twist_norm": float(rod_terminal["mean_yield_twist_norm"]),
                 "mean_authority_gate": float(rod_terminal["mean_authority_gate"]),
                 "mean_predictive_authority_multiplier": float(rod_terminal["mean_predictive_authority_multiplier"]),
+                "mean_predictive_wbc_feedback_scale": float(rod_terminal["mean_predictive_wbc_feedback_scale"]),
                 "action_slew_limited_fraction": float(rod_terminal["action_slew_limited_fraction"]),
                 "policy_action_saturation_fraction": float(rod_terminal["policy_action_saturation_fraction"]),
             }
@@ -247,6 +252,10 @@ def main() -> None:
         "fixture_manifest": str(args.fixture_manifest),
         "fixture_split": args.fixture_split,
         "forecast_model_npz": None if args.forecast_model_npz is None else str(args.forecast_model_npz),
+        "predictive_wbc": {
+            "minimum_feedback_scale": args.predictive_wbc_min_feedback_scale,
+            "growth_deadband": args.predictive_wbc_growth_deadband,
+        },
         "summary": _summary(records),
         "records": records,
     }

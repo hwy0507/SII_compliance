@@ -39,6 +39,7 @@ from wbc_velocity_residual_core import (
     safe_velocity_tracking_torque,
     deployable_authority_gate,
     predictive_authority_multiplier,
+    predictive_wbc_feedback_scale,
     project_yield_action_to_error_phase,
 )
 
@@ -103,7 +104,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
     """Panda pick task controlled by WBC plus an independent learned residual."""
 
     metadata = {"render_modes": []}
-    observation_modes = ("current_mlp", "kinematic_forecast_mlp", "fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_esn", "fan_ye_forecast_authority_esn")
+    observation_modes = ("current_mlp", "kinematic_forecast_mlp", "fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_esn", "fan_ye_forecast_authority_esn", "fan_ye_forecast_wbc_esn")
 
     def __init__(
         self,
@@ -117,6 +118,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         reward_config: VelocityResidualRewardConfig | None = None,
         residual_window_end_at_grasp: bool = False,
         forecast_model_npz: str | Path | None = None,
+        predictive_wbc_min_feedback_scale: float = 0.60,
+        predictive_wbc_growth_deadband: float = 0.05,
         seed: int | None = None,
     ) -> None:
         super().__init__()
@@ -131,6 +134,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.safety_config = safety_config or VelocityResidualSafetyConfig()
         self.reward_config = reward_config or VelocityResidualRewardConfig()
         self.residual_window_end_at_grasp = bool(residual_window_end_at_grasp)
+        self.predictive_wbc_min_feedback_scale = float(predictive_wbc_min_feedback_scale)
+        self.predictive_wbc_growth_deadband = float(predictive_wbc_growth_deadband)
+        if not 0.0 < self.predictive_wbc_min_feedback_scale <= 1.0 or not 0.0 <= self.predictive_wbc_growth_deadband < 1.0:
+            raise ValueError("predictive WBC feedback bounds are invalid")
         self.feature_adapter = FanYeESNRLObservationAdapter(
             Path(fan_ye_model_npz), Path(fan_ye_train_summary_json),
             None if forecast_model_npz is None else Path(forecast_model_npz),
@@ -143,6 +150,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "fan_ye_closed_loop_esn": self.feature_adapter.closed_loop_feature_dimension,
             "fan_ye_forecast_esn": CURRENT_WBC_FEATURE_DIMENSION + 6,
             "fan_ye_forecast_authority_esn": CURRENT_WBC_FEATURE_DIMENSION,
+            "fan_ye_forecast_wbc_esn": CURRENT_WBC_FEATURE_DIMENSION,
         }[observation_mode]
         self.action_space = gym.spaces.Box(-1.0, 1.0, shape=(7,), dtype=np.float32)
         self.observation_space = gym.spaces.Box(-10.0, 10.0, shape=(observation_dimension,), dtype=np.float32)
@@ -185,6 +193,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.current_predictive_authority_multiplier = 1.0
         self.cumulative_predictive_authority_multiplier = 0.0
         self.predicted_delta_pose_error = np.zeros(6, dtype=float)
+        self.current_predictive_wbc_feedback_scale = 1.0
+        self.cumulative_predictive_wbc_feedback_scale = 0.0
         self.reset(seed=seed)
 
     def _build_scene(self) -> None:
@@ -231,8 +241,21 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
     def _wbc_command(self, time_s: float) -> WBCCommand:
         assert self.data is not None and self.reference is not None and self.fixed_wbc is not None
         position, rotation, linear, angular = self.reference.sample(time_s)
+        if self.observation_mode == "fan_ye_forecast_wbc_esn":
+            pose_error = np.concatenate((
+                position - self.data.xpos[self._hand_id],
+                so3_log(rotation @ self.data.xmat[self._hand_id].reshape(3, 3).T),
+            ))
+            self.current_predictive_wbc_feedback_scale = predictive_wbc_feedback_scale(
+                pose_error / WBC_POSE_ERROR_SCALE, self.predicted_delta_pose_error,
+                minimum_feedback_scale=self.predictive_wbc_min_feedback_scale,
+                growth_deadband=self.predictive_wbc_growth_deadband,
+            )
+        else:
+            self.current_predictive_wbc_feedback_scale = 1.0
         return self.fixed_wbc.command(
-            self.data, position, rotation, np.concatenate((linear, angular))
+            self.data, position, rotation, np.concatenate((linear, angular)),
+            feedback_scale=self.current_predictive_wbc_feedback_scale,
         )
 
     def _observation(self, time_s: float) -> np.ndarray:
@@ -260,7 +283,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             return self.feature_adapter.observe_multiscale(student, pose_error, twist_error)
         if self.observation_mode == "fan_ye_forecast_esn":
             return self.feature_adapter.observe_forecast(student, pose_error, twist_error)
-        if self.observation_mode == "fan_ye_forecast_authority_esn":
+        if self.observation_mode in ("fan_ye_forecast_authority_esn", "fan_ye_forecast_wbc_esn"):
             forecast_feature = self.feature_adapter.observe_forecast(student, pose_error, twist_error)
             self.predicted_delta_pose_error = np.asarray(forecast_feature[-6:], dtype=float)
             return forecast_feature[:CURRENT_WBC_FEATURE_DIMENSION].astype(np.float32)
@@ -298,6 +321,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.current_predictive_authority_multiplier = 1.0
         self.cumulative_predictive_authority_multiplier = 0.0
         self.predicted_delta_pose_error[:] = 0.0
+        self.current_predictive_wbc_feedback_scale = 1.0
+        self.cumulative_predictive_wbc_feedback_scale = 0.0
         self.action_filter.reset()
         self.applied_action = FilteredVelocityResidualAction(1.0, np.zeros(6), np.zeros(7), False, False)
         self.feature_adapter.reset()
@@ -404,6 +429,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "mean_yield_twist_norm": self.cumulative_yield_norm / count,
             "mean_authority_gate": self.cumulative_authority_gate / count,
             "mean_predictive_authority_multiplier": self.cumulative_predictive_authority_multiplier / count,
+            "mean_predictive_wbc_feedback_scale": self.cumulative_predictive_wbc_feedback_scale / count,
             "action_slew_limited_fraction": self.slew_limited_actions / count,
             "policy_action_saturation_fraction": self.saturated_policy_actions / count,
             "fixture": asdict(self.fixture),
@@ -436,6 +462,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "authority_gate": self.current_authority_gate,
             "predictive_authority_multiplier": self.current_predictive_authority_multiplier,
             "predicted_delta_pose_error": self.predicted_delta_pose_error.copy(),
+            "predictive_wbc_feedback_scale": self.current_predictive_wbc_feedback_scale,
             "cartesian_yield_twist": self.applied_action.cartesian_yield_twist.copy(),
             "joint_velocity_command": self.previous_joint_velocity_command.copy(),
             "raw_joint_velocity_command": self.raw_joint_velocity_command.copy(),
@@ -488,6 +515,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.cumulative_yield_norm += float(np.linalg.norm(self.applied_action.cartesian_yield_twist))
         self.cumulative_authority_gate += self.current_authority_gate
         self.cumulative_predictive_authority_multiplier += self.current_predictive_authority_multiplier
+        self.cumulative_predictive_wbc_feedback_scale += self.current_predictive_wbc_feedback_scale
         impulse_before = self.contact_impulse
         action_start_error = self.previous_position_error
         final_position_error = 0.0
