@@ -1,0 +1,102 @@
+{
+  "generated_unix_s": 1786879430.089368,
+  "phase": "smoke_only",
+  "formal_not_started": true,
+  "formal_dry_run": {
+    "run_count": 6,
+    "all_entries_dry_run": true,
+    "steps": 3000000,
+    "n_envs": 8,
+    "seeds": [
+      20261110,
+      20261111,
+      20261112,
+      20261113,
+      20261114,
+      20261115
+    ]
+  },
+  "lanes": {
+    "stable_phase_v22": {
+      "artifacts_present": true,
+      "evaluation_report_present": true,
+      "episode_count": 2,
+      "task_success_count": 2,
+      "matched_no_rod_task_success_count": 2,
+      "effective_collision_count": 2,
+      "hard_torque_limit_count": 0,
+      "metrics": {
+        "recovery_rmse_mm": 5.9413892862211535,
+        "peak_torque_nm": 32.645115131843056,
+        "peak_recovery_jerk_mps3": 111.44771339728317,
+        "contact_impulse_ns": 3.2916120399011137,
+        "rejoin_latency_s": 0.24750000000000016
+      },
+      "gate": {
+        "task_success_all": true,
+        "no_rod_success_all": true,
+        "effective_collision_at_least_one": true,
+        "hard_torque_limit_zero": true,
+        "passed": true
+      }
+    },
+    "phase_predictive_v4": {
+      "artifacts_present": true,
+      "evaluation_report_present": true,
+      "episode_count": 2,
+      "task_success_count": 2,
+      "matched_no_rod_task_success_count": 2,
+      "effective_collision_count": 2,
+      "hard_torque_limit_count": 0,
+      "metrics": {
+        "recovery_rmse_mm": 18.073996473066643,
+        "peak_torque_nm": 34.13594230001684,
+        "peak_recovery_jerk_mps3": 103.82990497439091,
+        "contact_impulse_ns": 2.393051196639693,
+        "rejoin_latency_s": 1.1275
+      },
+      "gate": {
+        "task_success_all": true,
+        "no_rod_success_all": true,
+        "effective_collision_at_least_one": true,
+        "hard_torque_limit_zero": true,
+        "passed": true
+      }
+    },
+    "current_mlp": {
+      "artifacts_present": true,
+      "evaluation_report_present": true,
+      "episode_count": 2,
+      "task_success_count": 2,
+      "matched_no_rod_task_success_count": 2,
+      "effective_collision_count": 2,
+      "hard_torque_limit_count": 0,
+      "metrics": {
+        "recovery_rmse_mm": 5.352193355907966,
+        "peak_torque_nm": 32.52101542486575,
+        "peak_recovery_jerk_mps3": 25.6576698269011,
+        "contact_impulse_ns": 3.372044962465299,
+        "rejoin_latency_s": 0.34750000000000014
+      },
+      "gate": {
+        "task_success_all": true,
+        "no_rod_success_all": true,
+        "effective_collision_at_least_one": true,
+        "hard_torque_limit_zero": true,
+        "passed": true
+      }
+    }
+  },
+  "phase_predictive_archive_smoke": {
+    "candidate_count": 4,
+    "gate_pass_count": 3,
+    "pareto_frontier": [
+      "step_10000",
+      "step_30000",
+      "final"
+    ],
+    "representative": "step_10000"
+  },
+  "overall_smoke_gate": true,
+  "note": "Smoke gate validates launch, phase-predictive observation wiring, safety checks, validation-only checkpoint archive, and formal dry-run. It is not a claim of final algorithmic superiority; 30k-step metrics are early training diagnostics."
+}
