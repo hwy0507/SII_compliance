@@ -96,6 +96,7 @@ def _summary(records: list[dict[str, Any]]) -> dict[str, Any]:
         "peak_torque_nm", "peak_jerk_mps3", "peak_recovery_jerk_mps3", "peak_contact_force_n", "contact_impulse_ns",
         "mean_wbc_slowdown", "mean_yield_twist_norm", "action_slew_limited_fraction",
         "policy_action_saturation_fraction", "mean_authority_gate", "mean_predictive_authority_multiplier",
+        "mean_phase_memory_score", "mean_phase_memory_gate",
     ):
         result[key] = _distribution([float(record[key]) for record in records])
     latencies = [float(record["rejoin_latency_s"]) for record in records if record["rejoin_latency_s"] is not None]
@@ -210,6 +211,8 @@ def main() -> None:
                 "mean_authority_gate": float(rod_terminal["mean_authority_gate"]),
                 "mean_predictive_authority_multiplier": float(rod_terminal["mean_predictive_authority_multiplier"]),
                 "mean_predictive_wbc_feedback_scale": float(rod_terminal["mean_predictive_wbc_feedback_scale"]),
+                "mean_phase_memory_score": float(rod_terminal["mean_phase_memory_score"]),
+                "mean_phase_memory_gate": float(rod_terminal["mean_phase_memory_gate"]),
                 "action_slew_limited_fraction": float(rod_terminal["action_slew_limited_fraction"]),
                 "policy_action_saturation_fraction": float(rod_terminal["policy_action_saturation_fraction"]),
             }
