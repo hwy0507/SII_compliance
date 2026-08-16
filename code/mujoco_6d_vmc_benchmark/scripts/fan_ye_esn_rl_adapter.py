@@ -229,6 +229,7 @@ class FanYeESNRLObservationAdapter:
         self.multiscale_reservoirs = tuple(FanYeAlignedESN(config) for config in MULTISCALE_RESERVOIR_CONFIGS)
         self.closed_loop_reservoirs = tuple(FanYeAlignedESN(config) for config in CLOSED_LOOP_RESERVOIR_CONFIGS)
         self.error_forecaster = None if forecast_model_npz is None else FixedErrorForecaster.from_npz(forecast_model_npz)
+        self.phase_memory_hold = 0.0
         self.feature_dimension = CURRENT_WBC_FEATURE_DIMENSION + self.reservoir.config.reservoir_size
         self.multiscale_feature_dimension = CURRENT_WBC_FEATURE_DIMENSION + sum(
             item.config.reservoir_size for item in self.multiscale_reservoirs
@@ -246,6 +247,7 @@ class FanYeESNRLObservationAdapter:
             reservoir.reset()
         if self.error_forecaster is not None:
             self.error_forecaster.reset()
+        self.phase_memory_hold = 0.0
 
     def observe(
         self, observation: ESNObservation, pose_error: np.ndarray, twist_error: np.ndarray,
@@ -274,6 +276,30 @@ class FanYeESNRLObservationAdapter:
         if feature.shape != (self.multiscale_feature_dimension,) or not np.all(np.isfinite(feature)):
             raise RuntimeError("Fan Ye multiscale adapter produced an invalid feature")
         return feature.astype(np.float32)
+
+    def observe_phase_memory(
+        self, observation: ESNObservation, pose_error: np.ndarray, twist_error: np.ndarray,
+    ) -> np.ndarray:
+        """Update a causal fast/slow disagreement memory and return the state."""
+
+        feature = self.observe_multiscale(observation, pose_error, twist_error)
+        fast, slow = self.multiscale_reservoirs
+        fast_state = np.asarray(fast.state, dtype=float)
+        slow_state = np.asarray(slow.state, dtype=float)
+        fast_norm = float(np.linalg.norm(fast_state))
+        slow_norm = float(np.linalg.norm(slow_state))
+        if fast_norm <= 1.0e-9 or slow_norm <= 1.0e-9:
+            disagreement = 0.0
+        else:
+            cosine = float(np.dot(fast_state, slow_state) / (fast_norm * slow_norm))
+            disagreement = float(np.clip(0.5 * (1.0 - cosine), 0.0, 1.0))
+        self.phase_memory_hold = max(disagreement, 0.92 * self.phase_memory_hold)
+        return feature
+
+    def phase_memory_score(self) -> float:
+        """Return the bounded causal fast/slow disagreement memory."""
+
+        return float(np.clip(self.phase_memory_hold, 0.0, 1.0))
 
     def observe_closed_loop(
         self, observation: ESNObservation, pose_error: np.ndarray, twist_error: np.ndarray,

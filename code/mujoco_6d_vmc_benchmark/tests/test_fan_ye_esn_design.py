@@ -148,6 +148,12 @@ def test_fan_ye_rl_adapter_uses_only_fixed_reservoir_wbc_features(tmp_path: Path
     assert np.all(np.isfinite(multiscale))
     adapter.reset()
     np.testing.assert_allclose(multiscale, adapter.observe_multiscale(observation, np.zeros(6), np.zeros(6)))
+    adapter.reset()
+    phase = adapter.observe_phase_memory(observation, np.zeros(6), np.zeros(6))
+    assert phase.shape == (CURRENT_WBC_FEATURE_DIMENSION + 128,)
+    assert 0.0 <= adapter.phase_memory_score() <= 1.0
+    adapter.reset()
+    np.testing.assert_allclose(phase, adapter.observe_phase_memory(observation, np.zeros(6), np.zeros(6)))
     context = encode_applied_residual_context(0.8, np.array([0.016, 0.0, 0.0, 0.0, 0.0, 0.0]))
     assert context.shape == (APPLIED_RESIDUAL_CONTEXT_DIMENSION,)
     adapter.reset()
