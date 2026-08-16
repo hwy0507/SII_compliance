@@ -42,6 +42,9 @@ class VelocityResidualSafetyConfig:
     directional_phase_projection: bool = False
     directional_phase_minimum_error_m: float = 0.004
     directional_phase_rate_deadband_m2ps: float = 2.0e-5
+    rejoin_velocity_envelope: bool = False
+    rejoin_linear_velocity_per_m: float = 5.0
+    rejoin_angular_velocity_per_rad: float = 4.0
     phase_memory_floor_maximum: float = 0.55
     phase_memory_floor_error_start_m: float = 0.003
     phase_memory_floor_error_full_m: float = 0.008
@@ -69,6 +72,8 @@ class VelocityResidualSafetyConfig:
             self.authority_gate_full_error_m,
             self.directional_phase_minimum_error_m,
             self.directional_phase_rate_deadband_m2ps,
+            self.rejoin_linear_velocity_per_m,
+            self.rejoin_angular_velocity_per_rad,
             self.phase_memory_floor_maximum,
             self.phase_memory_floor_error_start_m,
             self.phase_memory_floor_error_full_m,
@@ -377,6 +382,43 @@ def project_yield_action_to_error_phase(
         elif radial_rate < 0.0 and component < 0.0:
             projected[action_slice] -= component * direction
     return projected
+
+
+def apply_rejoin_velocity_envelope(
+    action: np.ndarray, pose_error: np.ndarray, twist_error: np.ndarray,
+    config: VelocityResidualSafetyConfig,
+) -> np.ndarray:
+    """Cap inward residual velocity by remaining proprioceptive WBC error.
+
+    The cap is active only during measured rejoin and only on the component
+    directed toward the nominal target. It uses no contact, force, fixture, or
+    future-phase signal, so it can be deployed with the same observation
+    contract as the independent ESN actor.
+    """
+    values = np.asarray(action, dtype=float)
+    error = np.asarray(pose_error, dtype=float)
+    derivative = np.asarray(twist_error, dtype=float)
+    if values.shape != (7,) or error.shape != (6,) or derivative.shape != (6,):
+        raise ValueError("rejoin velocity envelope requires 7-D action and two 6-D errors")
+    if not np.all(np.isfinite(values)) or not np.all(np.isfinite(error)) or not np.all(np.isfinite(derivative)):
+        raise ValueError("rejoin velocity envelope inputs must be finite")
+    if not config.rejoin_velocity_envelope:
+        return values.copy()
+    bounded = values.copy()
+    for action_slice, error_slice, derivative_slice, gain, scale in (
+        (slice(1, 4), slice(0, 3), slice(0, 3), config.rejoin_linear_velocity_per_m, config.maximum_linear_yield_mps),
+        (slice(4, 7), slice(3, 6), slice(3, 6), config.rejoin_angular_velocity_per_rad, config.maximum_angular_yield_radps),
+    ):
+        local_error = error[error_slice]
+        error_norm = float(np.linalg.norm(local_error))
+        if error_norm <= 1.0e-9 or float(np.dot(local_error, derivative[derivative_slice])) >= 0.0:
+            continue
+        direction = local_error / error_norm
+        inward_component = float(np.dot(bounded[action_slice], direction))
+        maximum_inward_action = float(gain * error_norm / scale)
+        if inward_component > maximum_inward_action:
+            bounded[action_slice] -= (inward_component - maximum_inward_action) * direction
+    return bounded
 
 
 def safe_joint_velocity_command(

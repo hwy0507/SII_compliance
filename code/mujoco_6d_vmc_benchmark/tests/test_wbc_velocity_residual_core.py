@@ -13,6 +13,7 @@ from wbc_velocity_residual_core import (
     safe_joint_velocity_command,
     safe_velocity_tracking_torque,
     stable_phase_memory_floor,
+    apply_rejoin_velocity_envelope,
 )
 
 
@@ -131,6 +132,21 @@ def test_directional_phase_projection_only_keeps_causal_yield_or_rejoin_componen
     assert np.isclose(recovery[2], -action[2])
     disabled = project_yield_action_to_error_phase(action, np.ones(6), np.ones(6), VelocityResidualSafetyConfig())
     np.testing.assert_allclose(disabled, action)
+
+
+def test_rejoin_velocity_envelope_caps_only_inward_speed_near_target() -> None:
+    config = VelocityResidualSafetyConfig(
+        rejoin_velocity_envelope=True,
+        rejoin_linear_velocity_per_m=2.0,
+        rejoin_angular_velocity_per_rad=2.0,
+    )
+    action = np.array([0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    error = np.array([0.01, 0.0, 0.0, 0.0, 0.0, 0.0])
+    recovering = np.array([-0.1, 0.0, 0.0, 0.0, 0.0, 0.0])
+    bounded = apply_rejoin_velocity_envelope(action, error, recovering, config)
+    assert np.isclose(bounded[1], 0.125)
+    departing = apply_rejoin_velocity_envelope(action, error, -recovering, config)
+    np.testing.assert_allclose(departing, action)
 
 
 def test_joint_velocity_and_torque_safety_are_hard_bounded() -> None:

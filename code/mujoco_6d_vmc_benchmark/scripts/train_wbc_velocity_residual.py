@@ -107,6 +107,7 @@ def make_env(
     no_rod_every: int,
     residual_window_end_at_grasp: bool,
     directional_phase_projection: bool,
+    rejoin_velocity_envelope: bool,
     forecast_model_npz: Path | None,
     predictive_authority_min_multiplier: float,
     predictive_authority_recovery_deadband: float,
@@ -125,6 +126,7 @@ def make_env(
             rod_enabled=rod_enabled,
             safety_config=VelocityResidualSafetyConfig(
                 directional_phase_projection=directional_phase_projection,
+                rejoin_velocity_envelope=rejoin_velocity_envelope,
                 predictive_authority_enabled=observation_mode == "fan_ye_forecast_authority_esn",
                 predictive_authority_min_multiplier=predictive_authority_min_multiplier,
                 predictive_authority_recovery_deadband=predictive_authority_recovery_deadband,
@@ -185,6 +187,7 @@ def main() -> None:
     parser.add_argument("--checkpoint-interval", type=int, default=100_000)
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC from gripper-close onward.")
     parser.add_argument("--directional-phase-projection", action="store_true", help="Constrain yield/rejoin velocity to the causal WBC-error half-space.")
+    parser.add_argument("--rejoin-velocity-envelope", action="store_true", help="Apply a causal error-proportional cap to inward residual velocity near WBC rejoin.")
     parser.add_argument("--forecast-model-npz", type=Path, default=None, help="Fitted development-train ESN forecast readout required by fan_ye_forecast_esn.")
     parser.add_argument("--predictive-authority-min-multiplier", type=float, default=0.35, help="Lowest residual-authority fraction allowed when the ESN forecasts WBC-error rejoin.")
     parser.add_argument("--predictive-authority-recovery-deadband", type=float, default=0.05, help="Normalized predicted radial-recovery fraction below which authority is unchanged.")
@@ -216,6 +219,7 @@ def main() -> None:
         no_rod_every=args.no_rod_every,
         residual_window_end_at_grasp=args.residual_window_end_at_grasp,
         directional_phase_projection=args.directional_phase_projection,
+        rejoin_velocity_envelope=args.rejoin_velocity_envelope,
         forecast_model_npz=args.forecast_model_npz,
         predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
         predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
@@ -269,6 +273,7 @@ def main() -> None:
             "physical_action": "WBC velocity scale in [0.2,1.0] plus bounded world-frame Cartesian yield twist",
             "shared_safety": asdict(VelocityResidualSafetyConfig(
                 directional_phase_projection=args.directional_phase_projection,
+                rejoin_velocity_envelope=args.rejoin_velocity_envelope,
                 predictive_authority_enabled=args.observation_mode == "fan_ye_forecast_authority_esn",
                 predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
                 predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
@@ -296,6 +301,7 @@ def main() -> None:
         "fairness_contract": "Compared modes use the same deployable current state/errors, action, safety layer, PPO network, reward, fixtures, seed, and step budget; ESN variants differ only by fixed reservoir memory.",
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
         "directional_phase_projection": args.directional_phase_projection,
+        "rejoin_velocity_envelope": args.rejoin_velocity_envelope,
         "reward_profile": args.reward_profile,
         "reward_config": asdict(rewards),
         "total_timesteps_requested": args.total_timesteps,

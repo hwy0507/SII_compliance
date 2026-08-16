@@ -42,6 +42,7 @@ from wbc_velocity_residual_core import (
     predictive_authority_multiplier,
     predictive_wbc_feedback_scale,
     project_yield_action_to_error_phase,
+    apply_rejoin_velocity_envelope,
     stable_phase_memory_floor,
 )
 
@@ -557,6 +558,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.current_authority_gate *= self.current_predictive_authority_multiplier
         phase_projected_action = project_yield_action_to_error_phase(
             raw_policy_action, pose_error, twist_error, self.safety_config,
+        )
+        phase_projected_action = apply_rejoin_velocity_envelope(
+            phase_projected_action, pose_error, twist_error, self.safety_config,
         )
         gated_action = phase_projected_action.copy()
         gated_action[0] *= self.current_authority_gate
