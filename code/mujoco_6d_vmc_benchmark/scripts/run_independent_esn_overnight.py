@@ -106,7 +106,8 @@ def _evaluation_command(
     repo: Path,
     *,
     output_dir: Path,
-    run_dir: Path,
+    model: Path,
+    vecnormalize: Path,
     menagerie: Path,
     manifest: Path,
     model_npz: Path,
@@ -132,8 +133,8 @@ def _evaluation_command(
         "--fan-ye-train-summary-json", str(summary_json),
         "--observation-mode", observation_mode,
         "--reward-profile", reward_profile,
-        "--model", str(run_dir / "ppo_wbc_residual_final.zip"),
-        "--vecnormalize", str(run_dir / "vecnormalize.pkl"),
+        "--model", str(model),
+        "--vecnormalize", str(vecnormalize),
     ]
     if residual_window_end_at_grasp:
         command.append("--residual-window-end-at-grasp")
@@ -173,6 +174,52 @@ def _validation_gate(report_path: Path) -> dict[str, Any]:
         "checks": checks,
         "summary": summary,
     }
+
+
+def _archive_command(
+    python: str,
+    repo: Path,
+    *,
+    output_dir: Path,
+    run_dir: Path,
+    menagerie: Path,
+    manifest: Path,
+    model_npz: Path,
+    summary_json: Path,
+    observation_mode: str,
+    reward_profile: str,
+    residual_window_end_at_grasp: bool,
+    directional_phase_projection: bool,
+) -> list[str]:
+    command = [
+        python, str(repo / "scripts" / "evaluate_wbc_velocity_residual_checkpoints.py"),
+        "--run-dir", str(run_dir),
+        "--output-dir", str(output_dir),
+        "--menagerie", str(menagerie),
+        "--fixture-manifest", str(manifest),
+        "--fan-ye-model-npz", str(model_npz),
+        "--fan-ye-train-summary-json", str(summary_json),
+        "--observation-mode", observation_mode,
+        "--reward-profile", reward_profile,
+        "--python", python,
+    ]
+    if residual_window_end_at_grasp:
+        command.append("--residual-window-end-at-grasp")
+    if directional_phase_projection:
+        command.append("--directional-phase-projection")
+    return command
+
+
+def _representative_from_archive(path: Path) -> tuple[Path, Path] | None:
+    if not path.is_file():
+        return None
+    archive = json.loads(path.read_text())
+    representative = archive.get("representative")
+    if representative is None:
+        return None
+    if not representative.get("gate", {}).get("passed", False):
+        return None
+    return Path(representative["model"]), Path(representative["vecnormalize"])
 
 
 def _launch_pair(
@@ -242,6 +289,53 @@ def _evaluate_pair(
     }
 
 
+def _archive_pair(
+    *,
+    repo: Path,
+    environment: dict[str, str],
+    mlp_command: list[str],
+    esn_command: list[str],
+    mlp_dir: Path,
+    esn_dir: Path,
+) -> dict[str, Any]:
+    """Evaluate paired checkpoint archives concurrently on validation only."""
+    started = time.time()
+    with (mlp_dir / "checkpoint_archive.log").open("w") as mlp_log, (esn_dir / "checkpoint_archive.log").open("w") as esn_log:
+        mlp = subprocess.Popen(
+            ["taskset", "-c", "0-9", *mlp_command], cwd=repo, env=environment,
+            stdout=mlp_log, stderr=subprocess.STDOUT,
+        )
+        esn = subprocess.Popen(
+            ["taskset", "-c", "10-19", *esn_command], cwd=repo, env=environment,
+            stdout=esn_log, stderr=subprocess.STDOUT,
+        )
+        mlp_exit = mlp.wait()
+        esn_exit = esn.wait()
+    mlp_archive = mlp_dir / "validation_archive" / "wbc_velocity_residual_checkpoint_archive.json"
+    esn_archive = esn_dir / "validation_archive" / "wbc_velocity_residual_checkpoint_archive.json"
+    mlp_representative = _representative_from_archive(mlp_archive)
+    esn_representative = _representative_from_archive(esn_archive)
+    return {
+        "mlp_exit": mlp_exit,
+        "esn_exit": esn_exit,
+        "elapsed_s": time.time() - started,
+        "mlp_archive": str(mlp_archive),
+        "esn_archive": str(esn_archive),
+        "mlp_representative": None if mlp_representative is None else {
+            "model": str(mlp_representative[0]), "vecnormalize": str(mlp_representative[1]),
+        },
+        "esn_representative": None if esn_representative is None else {
+            "model": str(esn_representative[0]), "vecnormalize": str(esn_representative[1]),
+        },
+        "mlp_gate": _validation_gate(
+            Path(json.loads(mlp_archive.read_text())["representative"]["evaluation_report"])
+        ) if mlp_representative is not None else {"passed": False, "reason": "no gated archive representative"},
+        "esn_gate": _validation_gate(
+            Path(json.loads(esn_archive.read_text())["representative"]["evaluation_report"])
+        ) if esn_representative is not None else {"passed": False, "reason": "no gated archive representative"},
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, required=True)
@@ -273,6 +367,7 @@ def main() -> None:
     required = [
         repo / "scripts" / "train_wbc_velocity_residual.py",
         repo / "scripts" / "evaluate_wbc_velocity_residual.py",
+        repo / "scripts" / "evaluate_wbc_velocity_residual_checkpoints.py",
         args.menagerie, args.fixture_manifest, args.fan_ye_model_npz, args.fan_ye_train_summary_json,
     ]
     missing = [str(path) for path in required if not path.exists()]
@@ -305,6 +400,7 @@ def main() -> None:
         "fixture_manifest": str(args.fixture_manifest),
         "artifact_hashes": {str(path): _sha256(path) for path in required if path.is_file()},
         "fairness_contract": "matched seeds/profiles/steps/fixtures/PPO/safety/action; reservoir memory is the only MLP-vs-ESN difference",
+        "checkpoint_selection": "validation-only gate then Pareto archive; equal-rank representative selection is fixed before the campaign",
         "v4_final_policy": "frozen and excluded",
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
         "directional_phase_projection": args.directional_phase_projection,
@@ -334,8 +430,8 @@ def main() -> None:
             mlp_dir = args.output_root / run_id / "current_mlp"
             esn_dir = args.output_root / run_id / "fan_ye_esn"
             complete = (
-                (mlp_dir / "validation" / "wbc_velocity_residual_paired_evaluation.json").exists()
-                and (esn_dir / "validation" / "wbc_velocity_residual_paired_evaluation.json").exists()
+                (mlp_dir / "validation_archive" / "wbc_velocity_residual_checkpoint_archive.json").exists()
+                and (esn_dir / "validation_archive" / "wbc_velocity_residual_checkpoint_archive.json").exists()
             )
             if complete:
                 status["runs"].setdefault(run_id, {})["skipped_existing"] = True
@@ -385,40 +481,28 @@ def main() -> None:
                 entry["finished_unix_s"] = time.time()
                 _write_json(status_path, status)
                 continue
-            entry["status"] = "evaluating"
+            entry["status"] = "building_validation_checkpoint_archives"
             _write_json(status_path, status)
-            mlp_eval = _evaluation_command(
-                args.python, repo, output_dir=mlp_dir / "validation", run_dir=mlp_dir, menagerie=args.menagerie,
-                manifest=args.fixture_manifest, model_npz=args.fan_ye_model_npz,
-                summary_json=args.fan_ye_train_summary_json, observation_mode=baseline_mode, reward_profile=profile,
+            mlp_archive = _archive_command(
+                args.python, repo, output_dir=mlp_dir / "validation_archive", run_dir=mlp_dir, menagerie=args.menagerie,
+                manifest=args.fixture_manifest, model_npz=args.fan_ye_model_npz, summary_json=args.fan_ye_train_summary_json,
+                observation_mode=baseline_mode, reward_profile=profile,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
                 directional_phase_projection=args.directional_phase_projection,
-                forecast_model_npz=None,
-                predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
-                predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
-                predictive_authority_release_gain=args.predictive_authority_release_gain,
-                predictive_authority_require_kinematic_agreement=args.predictive_authority_require_kinematic_agreement,
-                predictive_authority_require_measured_recovery=args.predictive_authority_require_measured_recovery,
             )
-            esn_eval = _evaluation_command(
-                args.python, repo, output_dir=esn_dir / "validation", run_dir=esn_dir, menagerie=args.menagerie,
-                manifest=args.fixture_manifest, model_npz=args.fan_ye_model_npz,
-                summary_json=args.fan_ye_train_summary_json, observation_mode=args.esn_observation_mode, reward_profile=profile,
+            esn_archive = _archive_command(
+                args.python, repo, output_dir=esn_dir / "validation_archive", run_dir=esn_dir, menagerie=args.menagerie,
+                manifest=args.fixture_manifest, model_npz=args.fan_ye_model_npz, summary_json=args.fan_ye_train_summary_json,
+                observation_mode=args.esn_observation_mode, reward_profile=profile,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
                 directional_phase_projection=args.directional_phase_projection,
-                forecast_model_npz=args.forecast_model_npz,
-                predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
-                predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
-                predictive_authority_release_gain=args.predictive_authority_release_gain,
-                predictive_authority_require_kinematic_agreement=args.predictive_authority_require_kinematic_agreement,
-                predictive_authority_require_measured_recovery=args.predictive_authority_require_measured_recovery,
             )
-            entry["evaluation"] = _evaluate_pair(
-                repo=repo, environment=environment, mlp_command=mlp_eval, esn_command=esn_eval,
+            entry["checkpoint_archive"] = _archive_pair(
+                repo=repo, environment=environment, mlp_command=mlp_archive, esn_command=esn_archive,
                 mlp_dir=mlp_dir, esn_dir=esn_dir,
             )
             entry["status"] = "passed_validation_gate" if (
-                entry["evaluation"]["mlp_gate"]["passed"] and entry["evaluation"]["esn_gate"]["passed"]
+                entry["checkpoint_archive"]["mlp_gate"]["passed"] and entry["checkpoint_archive"]["esn_gate"]["passed"]
             ) else "completed_with_gate_failure"
             entry["finished_unix_s"] = time.time()
             _write_json(status_path, status)
