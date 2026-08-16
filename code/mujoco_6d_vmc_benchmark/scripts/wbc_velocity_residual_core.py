@@ -37,6 +37,7 @@ class VelocityResidualSafetyConfig:
     predictive_authority_max_multiplier: float = 1.0
     predictive_authority_recovery_deadband: float = 0.05
     predictive_authority_release_gain: float = 1.0
+    predictive_authority_require_kinematic_agreement: bool = False
     directional_phase_projection: bool = False
     directional_phase_minimum_error_m: float = 0.004
     directional_phase_rate_deadband_m2ps: float = 2.0e-5
@@ -194,6 +195,7 @@ def predictive_authority_multiplier(
     pose_error: np.ndarray,
     predicted_delta_pose_error: np.ndarray,
     config: VelocityResidualSafetyConfig,
+    kinematic_delta_pose_error: np.ndarray | None = None,
 ) -> float:
     """Reduce residual authority when a causal forecast predicts rejoin.
 
@@ -219,6 +221,16 @@ def predictive_authority_multiplier(
     radial_change = float(np.dot(error, delta) / error_norm)
     recovery_fraction = max(0.0, -radial_change / error_norm)
     deadband = config.predictive_authority_recovery_deadband
+    if config.predictive_authority_require_kinematic_agreement:
+        if kinematic_delta_pose_error is None:
+            raise ValueError("predictive authority agreement requires a kinematic forecast")
+        kinematic = np.asarray(kinematic_delta_pose_error, dtype=float)
+        if kinematic.shape != (6,) or not np.all(np.isfinite(kinematic)):
+            raise ValueError("kinematic forecast must be a finite six-vector")
+        kinematic_radial_change = float(np.dot(error, kinematic) / error_norm)
+        kinematic_recovery_fraction = max(0.0, -kinematic_radial_change / error_norm)
+        if kinematic_recovery_fraction <= deadband:
+            return 1.0
     normalized_recovery = np.clip(
         (recovery_fraction - deadband) / max(1.0 - deadband, 1.0e-9), 0.0, 1.0
     )

@@ -459,8 +459,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         tracking_error = float(np.linalg.norm(pose_error[:3]))
         self.current_authority_gate = deployable_authority_gate(tracking_error, self.safety_config)
         if self.observation_mode == "fan_ye_forecast_authority_esn":
+            kinematic_delta = encode_kinematic_pose_forecast(pose_error, twist_error)
             self.current_predictive_authority_multiplier = predictive_authority_multiplier(
-                pose_error / WBC_POSE_ERROR_SCALE, self.predicted_delta_pose_error, self.safety_config
+                pose_error / WBC_POSE_ERROR_SCALE, self.predicted_delta_pose_error, self.safety_config,
+                kinematic_delta_pose_error=kinematic_delta,
             )
         else:
             self.current_predictive_authority_multiplier = 1.0
