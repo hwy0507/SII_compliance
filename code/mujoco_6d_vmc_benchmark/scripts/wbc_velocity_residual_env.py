@@ -25,6 +25,7 @@ from fan_ye_esn_rl_adapter import (
     encode_kinematic_pose_forecast,
     encode_wbc_current_feature,
     WBC_POSE_ERROR_SCALE,
+    WBC_TWIST_ERROR_SCALE,
 )
 from fixed_panda_wbc import FixedBasePandaWBC, WBCCommand
 from run_benchmark import ARM_DOF, CONTROL_DT, TORQUE_LIMITS, body_jacobian, body_twist, so3_log
