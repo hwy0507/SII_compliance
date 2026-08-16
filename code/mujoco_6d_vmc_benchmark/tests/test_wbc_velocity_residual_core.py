@@ -80,6 +80,20 @@ def test_predictive_authority_can_require_kinematic_rejoin_agreement() -> None:
     assert predictive_authority_multiplier(error, recovery, config, recovery) < 1.0
 
 
+def test_predictive_authority_can_require_measured_recovery_confirmation() -> None:
+    config = VelocityResidualSafetyConfig(
+        predictive_authority_enabled=True,
+        predictive_authority_require_measured_recovery=True,
+        predictive_authority_min_multiplier=0.25,
+    )
+    error = np.array([0.01, 0.0, 0.0, 0.0, 0.0, 0.0])
+    recovery = np.array([-0.002, 0.0, 0.0, 0.0, 0.0, 0.0])
+    growth_rate = np.array([0.10, 0.0, 0.0, 0.0, 0.0, 0.0])
+    recovery_rate = -growth_rate
+    assert predictive_authority_multiplier(error, recovery, config, measured_pose_error_rate=growth_rate) == 1.0
+    assert predictive_authority_multiplier(error, recovery, config, measured_pose_error_rate=recovery_rate) < 1.0
+
+
 def test_directional_phase_projection_only_keeps_causal_yield_or_rejoin_component() -> None:
     enabled = VelocityResidualSafetyConfig(directional_phase_projection=True)
     action = np.array([0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0])

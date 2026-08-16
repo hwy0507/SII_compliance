@@ -463,6 +463,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             self.current_predictive_authority_multiplier = predictive_authority_multiplier(
                 pose_error / WBC_POSE_ERROR_SCALE, self.predicted_delta_pose_error, self.safety_config,
                 kinematic_delta_pose_error=kinematic_delta,
+                measured_pose_error_rate=twist_error / WBC_POSE_ERROR_SCALE,
             )
         else:
             self.current_predictive_authority_multiplier = 1.0

@@ -65,6 +65,7 @@ def _train_command(
     predictive_authority_recovery_deadband: float,
     predictive_authority_release_gain: float,
     predictive_authority_require_kinematic_agreement: bool,
+    predictive_authority_require_measured_recovery: bool,
 ) -> list[str]:
     command = [
         python, str(repo / "scripts" / "train_wbc_velocity_residual.py"),
@@ -95,6 +96,8 @@ def _train_command(
     ])
     if predictive_authority_require_kinematic_agreement:
         command.append("--predictive-authority-require-kinematic-agreement")
+    if predictive_authority_require_measured_recovery:
+        command.append("--predictive-authority-require-measured-recovery")
     return command
 
 
@@ -117,6 +120,7 @@ def _evaluation_command(
     predictive_authority_recovery_deadband: float,
     predictive_authority_release_gain: float,
     predictive_authority_require_kinematic_agreement: bool,
+    predictive_authority_require_measured_recovery: bool,
 ) -> list[str]:
     command = [
         python, str(repo / "scripts" / "evaluate_wbc_velocity_residual.py"),
@@ -144,6 +148,8 @@ def _evaluation_command(
     ])
     if predictive_authority_require_kinematic_agreement:
         command.append("--predictive-authority-require-kinematic-agreement")
+    if predictive_authority_require_measured_recovery:
+        command.append("--predictive-authority-require-measured-recovery")
     return command
 
 
@@ -258,6 +264,7 @@ def main() -> None:
     parser.add_argument("--predictive-authority-recovery-deadband", type=float, default=0.05)
     parser.add_argument("--predictive-authority-release-gain", type=float, default=1.0)
     parser.add_argument("--predictive-authority-require-kinematic-agreement", action="store_true")
+    parser.add_argument("--predictive-authority-require-measured-recovery", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs != 8 or args.checkpoint_interval < 1:
@@ -307,6 +314,7 @@ def main() -> None:
             "recovery_deadband": args.predictive_authority_recovery_deadband,
             "release_gain": args.predictive_authority_release_gain,
             "require_kinematic_agreement": args.predictive_authority_require_kinematic_agreement,
+            "require_measured_recovery": args.predictive_authority_require_measured_recovery,
         },
     }
     if manifest_path.exists() and json.loads(manifest_path.read_text()) != manifest:
@@ -348,6 +356,7 @@ def main() -> None:
                 predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
                 predictive_authority_release_gain=args.predictive_authority_release_gain,
                 predictive_authority_require_kinematic_agreement=args.predictive_authority_require_kinematic_agreement,
+                predictive_authority_require_measured_recovery=args.predictive_authority_require_measured_recovery,
             )
             esn_train = _train_command(
                 args.python, repo, output_dir=esn_dir, menagerie=args.menagerie, manifest=args.fixture_manifest,
@@ -361,6 +370,7 @@ def main() -> None:
                 predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
                 predictive_authority_release_gain=args.predictive_authority_release_gain,
                 predictive_authority_require_kinematic_agreement=args.predictive_authority_require_kinematic_agreement,
+                predictive_authority_require_measured_recovery=args.predictive_authority_require_measured_recovery,
             )
             entry["training"] = _launch_pair(
                 repo=repo, environment=environment, mlp_command=mlp_train, esn_command=esn_train,
@@ -388,6 +398,7 @@ def main() -> None:
                 predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
                 predictive_authority_release_gain=args.predictive_authority_release_gain,
                 predictive_authority_require_kinematic_agreement=args.predictive_authority_require_kinematic_agreement,
+                predictive_authority_require_measured_recovery=args.predictive_authority_require_measured_recovery,
             )
             esn_eval = _evaluation_command(
                 args.python, repo, output_dir=esn_dir / "validation", run_dir=esn_dir, menagerie=args.menagerie,
@@ -400,6 +411,7 @@ def main() -> None:
                 predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
                 predictive_authority_release_gain=args.predictive_authority_release_gain,
                 predictive_authority_require_kinematic_agreement=args.predictive_authority_require_kinematic_agreement,
+                predictive_authority_require_measured_recovery=args.predictive_authority_require_measured_recovery,
             )
             entry["evaluation"] = _evaluate_pair(
                 repo=repo, environment=environment, mlp_command=mlp_eval, esn_command=esn_eval,

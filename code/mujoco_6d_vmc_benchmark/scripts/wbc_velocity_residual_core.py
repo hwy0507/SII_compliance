@@ -38,6 +38,7 @@ class VelocityResidualSafetyConfig:
     predictive_authority_recovery_deadband: float = 0.05
     predictive_authority_release_gain: float = 1.0
     predictive_authority_require_kinematic_agreement: bool = False
+    predictive_authority_require_measured_recovery: bool = False
     directional_phase_projection: bool = False
     directional_phase_minimum_error_m: float = 0.004
     directional_phase_rate_deadband_m2ps: float = 2.0e-5
@@ -196,6 +197,7 @@ def predictive_authority_multiplier(
     predicted_delta_pose_error: np.ndarray,
     config: VelocityResidualSafetyConfig,
     kinematic_delta_pose_error: np.ndarray | None = None,
+    measured_pose_error_rate: np.ndarray | None = None,
 ) -> float:
     """Reduce residual authority when a causal forecast predicts rejoin.
 
@@ -230,6 +232,17 @@ def predictive_authority_multiplier(
         kinematic_radial_change = float(np.dot(error, kinematic) / error_norm)
         kinematic_recovery_fraction = max(0.0, -kinematic_radial_change / error_norm)
         if kinematic_recovery_fraction <= deadband:
+            return 1.0
+    if config.predictive_authority_require_measured_recovery:
+        if measured_pose_error_rate is None:
+            raise ValueError("predictive authority confirmation requires measured WBC error rate")
+        measured_rate = np.asarray(measured_pose_error_rate, dtype=float)
+        if measured_rate.shape != (6,) or not np.all(np.isfinite(measured_rate)):
+            raise ValueError("measured WBC error rate must be a finite six-vector")
+        # The measured WBC twist error is the causal time derivative of the
+        # target-minus-measured pose error to first order.  A prediction alone
+        # must not suppress authority until the physical state confirms rejoin.
+        if float(np.dot(error, measured_rate)) >= 0.0:
             return 1.0
     normalized_recovery = np.clip(
         (recovery_fraction - deadband) / max(1.0 - deadband, 1.0e-9), 0.0, 1.0

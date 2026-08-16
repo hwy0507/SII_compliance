@@ -125,6 +125,7 @@ def main() -> None:
     parser.add_argument("--predictive-authority-recovery-deadband", type=float, default=0.05, help="Normalized predicted radial-recovery deadband.")
     parser.add_argument("--predictive-authority-release-gain", type=float, default=1.0, help="Predicted radial-recovery authority-release gain.")
     parser.add_argument("--predictive-authority-require-kinematic-agreement", action="store_true", help="Release authority only when ESN and current-twist forecasts both predict rejoin.")
+    parser.add_argument("--predictive-authority-require-measured-recovery", action="store_true", help="Release authority only after measured WBC error has begun to rejoin.")
     args = parser.parse_args()
     fixed_action = None
     if args.neutral_wbc:
@@ -157,6 +158,7 @@ def main() -> None:
             predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
             predictive_authority_release_gain=args.predictive_authority_release_gain,
             predictive_authority_require_kinematic_agreement=args.predictive_authority_require_kinematic_agreement,
+            predictive_authority_require_measured_recovery=args.predictive_authority_require_measured_recovery,
         ),
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
         "forecast_model_npz": args.forecast_model_npz,

@@ -98,6 +98,7 @@ def make_env(
     predictive_authority_recovery_deadband: float,
     predictive_authority_release_gain: float,
     predictive_authority_require_kinematic_agreement: bool,
+    predictive_authority_require_measured_recovery: bool,
 ):
     def factory() -> PandaWBCVelocityResidualEnv:
         rod_enabled = no_rod_every <= 0 or rank % no_rod_every != 0
@@ -115,6 +116,7 @@ def make_env(
                 predictive_authority_recovery_deadband=predictive_authority_recovery_deadband,
                 predictive_authority_release_gain=predictive_authority_release_gain,
                 predictive_authority_require_kinematic_agreement=predictive_authority_require_kinematic_agreement,
+                predictive_authority_require_measured_recovery=predictive_authority_require_measured_recovery,
             ),
             reward_config=reward_config,
             residual_window_end_at_grasp=residual_window_end_at_grasp,
@@ -174,6 +176,7 @@ def main() -> None:
     parser.add_argument("--predictive-authority-recovery-deadband", type=float, default=0.05, help="Normalized predicted radial-recovery fraction below which authority is unchanged.")
     parser.add_argument("--predictive-authority-release-gain", type=float, default=1.0, help="Gain mapping predicted radial recovery to authority release.")
     parser.add_argument("--predictive-authority-require-kinematic-agreement", action="store_true", help="Release authority only when ESN and current-twist forecasts both predict WBC-error rejoin.")
+    parser.add_argument("--predictive-authority-require-measured-recovery", action="store_true", help="Release authority only after measured WBC error has begun to rejoin.")
     parser.add_argument("--resume", type=Path, default=None)
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs < 1 or args.checkpoint_interval < 1:
@@ -204,6 +207,7 @@ def main() -> None:
         predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
         predictive_authority_release_gain=args.predictive_authority_release_gain,
         predictive_authority_require_kinematic_agreement=args.predictive_authority_require_kinematic_agreement,
+        predictive_authority_require_measured_recovery=args.predictive_authority_require_measured_recovery,
     ) for rank in range(args.n_envs)]
     env = SubprocVecEnv(factories, start_method="spawn")
     env = VecMonitor(env, filename=str(args.output_dir / "monitor.csv"))
@@ -254,6 +258,7 @@ def main() -> None:
                 predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
                 predictive_authority_release_gain=args.predictive_authority_release_gain,
                 predictive_authority_require_kinematic_agreement=args.predictive_authority_require_kinematic_agreement,
+                predictive_authority_require_measured_recovery=args.predictive_authority_require_measured_recovery,
             )),
         },
         "observation_contract": {
