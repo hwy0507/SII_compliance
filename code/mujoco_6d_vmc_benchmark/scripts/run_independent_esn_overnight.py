@@ -60,6 +60,7 @@ def _train_command(
     checkpoint_interval: int,
     residual_window_end_at_grasp: bool,
     directional_phase_projection: bool,
+    forecast_model_npz: Path | None,
 ) -> list[str]:
     command = [
         python, str(repo / "scripts" / "train_wbc_velocity_residual.py"),
@@ -81,6 +82,8 @@ def _train_command(
         command.append("--residual-window-end-at-grasp")
     if directional_phase_projection:
         command.append("--directional-phase-projection")
+    if forecast_model_npz is not None:
+        command.extend(["--forecast-model-npz", str(forecast_model_npz)])
     return command
 
 
@@ -98,6 +101,7 @@ def _evaluation_command(
     reward_profile: str,
     residual_window_end_at_grasp: bool,
     directional_phase_projection: bool,
+    forecast_model_npz: Path | None,
 ) -> list[str]:
     command = [
         python, str(repo / "scripts" / "evaluate_wbc_velocity_residual.py"),
@@ -116,6 +120,8 @@ def _evaluation_command(
         command.append("--residual-window-end-at-grasp")
     if directional_phase_projection:
         command.append("--directional-phase-projection")
+    if forecast_model_npz is not None:
+        command.extend(["--forecast-model-npz", str(forecast_model_npz)])
     return command
 
 
@@ -222,9 +228,10 @@ def main() -> None:
     parser.add_argument("--total-timesteps", type=int, default=2_000_000)
     parser.add_argument("--n-envs", type=int, default=8)
     parser.add_argument("--checkpoint-interval", type=int, default=100_000)
-    parser.add_argument("--esn-observation-mode", choices=("fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_closed_loop_esn"), default="fan_ye_esn", help="Frozen v1, v2 fast/slow, or action-aware closed-loop ESN reservoir.")
+    parser.add_argument("--esn-observation-mode", choices=("fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_esn"), default="fan_ye_esn", help="Frozen v1, v2 fast/slow, action-aware, or predictive ESN.")
     parser.add_argument("--directional-phase-projection", action="store_true", help="Use the same deployable WBC-error yield/rejoin projection in both lanes.")
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC at gripper-close; retain learned yielding only for approach/recovery.")
+    parser.add_argument("--forecast-model-npz", type=Path, default=None, help="Development-train ESN forecast model for predictive observation mode.")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs != 8 or args.checkpoint_interval < 1:
@@ -240,6 +247,10 @@ def main() -> None:
         raise FileNotFoundError("missing required campaign paths: " + ", ".join(missing))
     if "post_v4_development" not in args.fixture_manifest.as_posix():
         raise ValueError("overnight campaign must use the isolated post-V4 development manifest")
+    if args.esn_observation_mode == "fan_ye_forecast_esn" and args.forecast_model_npz is None:
+        raise ValueError("fan_ye_forecast_esn requires --forecast-model-npz")
+    if args.forecast_model_npz is not None and not args.forecast_model_npz.is_file():
+        raise FileNotFoundError(f"forecast model is missing: {args.forecast_model_npz}")
     seeds = tuple(int(value) for value in _parse_csv(args.seeds))
     profiles = _parse_csv(args.profiles)
     allowed_profiles = {"balanced", "contact_safe", "recovery_priority", "impulse_constrained"}
@@ -264,6 +275,7 @@ def main() -> None:
         "v4_final_policy": "frozen and excluded",
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
         "directional_phase_projection": args.directional_phase_projection,
+        "forecast_model_npz": None if args.forecast_model_npz is None else str(args.forecast_model_npz),
     }
     if manifest_path.exists() and json.loads(manifest_path.read_text()) != manifest:
         raise RuntimeError("existing campaign manifest differs; choose a new output root rather than silently mixing runs")
@@ -274,6 +286,7 @@ def main() -> None:
     for profile in profiles:
         for seed in seeds:
             run_id = f"{profile}_seed{seed}"
+            baseline_mode = "kinematic_forecast_mlp" if args.esn_observation_mode == "fan_ye_forecast_esn" else "current_mlp"
             mlp_dir = args.output_root / run_id / "current_mlp"
             esn_dir = args.output_root / run_id / "fan_ye_esn"
             complete = (
@@ -290,10 +303,11 @@ def main() -> None:
             mlp_train = _train_command(
                 args.python, repo, output_dir=mlp_dir, menagerie=args.menagerie, manifest=args.fixture_manifest,
                 model_npz=args.fan_ye_model_npz, summary_json=args.fan_ye_train_summary_json,
-                observation_mode="current_mlp", reward_profile=profile, seed=seed,
+                observation_mode=baseline_mode, reward_profile=profile, seed=seed,
                 total_timesteps=args.total_timesteps, n_envs=args.n_envs, checkpoint_interval=args.checkpoint_interval,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
                 directional_phase_projection=args.directional_phase_projection,
+                forecast_model_npz=None,
             )
             esn_train = _train_command(
                 args.python, repo, output_dir=esn_dir, menagerie=args.menagerie, manifest=args.fixture_manifest,
@@ -302,6 +316,7 @@ def main() -> None:
                 total_timesteps=args.total_timesteps, n_envs=args.n_envs, checkpoint_interval=args.checkpoint_interval,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
                 directional_phase_projection=args.directional_phase_projection,
+                forecast_model_npz=args.forecast_model_npz,
             )
             entry["training"] = _launch_pair(
                 repo=repo, environment=environment, mlp_command=mlp_train, esn_command=esn_train,
@@ -321,9 +336,10 @@ def main() -> None:
             mlp_eval = _evaluation_command(
                 args.python, repo, output_dir=mlp_dir / "validation", run_dir=mlp_dir, menagerie=args.menagerie,
                 manifest=args.fixture_manifest, model_npz=args.fan_ye_model_npz,
-                summary_json=args.fan_ye_train_summary_json, observation_mode="current_mlp", reward_profile=profile,
+                summary_json=args.fan_ye_train_summary_json, observation_mode=baseline_mode, reward_profile=profile,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
                 directional_phase_projection=args.directional_phase_projection,
+                forecast_model_npz=None,
             )
             esn_eval = _evaluation_command(
                 args.python, repo, output_dir=esn_dir / "validation", run_dir=esn_dir, menagerie=args.menagerie,
@@ -331,6 +347,7 @@ def main() -> None:
                 summary_json=args.fan_ye_train_summary_json, observation_mode=args.esn_observation_mode, reward_profile=profile,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
                 directional_phase_projection=args.directional_phase_projection,
+                forecast_model_npz=args.forecast_model_npz,
             )
             entry["evaluation"] = _evaluate_pair(
                 repo=repo, environment=environment, mlp_command=mlp_eval, esn_command=esn_eval,
