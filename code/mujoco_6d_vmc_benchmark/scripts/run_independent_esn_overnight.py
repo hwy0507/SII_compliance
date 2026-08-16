@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run a resumable, paired MLP-vs-ESN overnight campaign on one server.
+"""Run a resumable, paired baseline-vs-proposed ESN campaign on one server.
 
 Each unit starts exactly two CPU-affined jobs concurrently: the current-state
 MLP baseline and a selected Fan Ye ESN controller.  Their environment,
@@ -66,6 +66,8 @@ def _train_command(
     predictive_authority_release_gain: float,
     predictive_authority_require_kinematic_agreement: bool,
     predictive_authority_require_measured_recovery: bool,
+    predictive_wbc_min_feedback_scale: float,
+    predictive_wbc_growth_deadband: float,
 ) -> list[str]:
     command = [
         python, str(repo / "scripts" / "train_wbc_velocity_residual.py"),
@@ -90,6 +92,8 @@ def _train_command(
     if forecast_model_npz is not None:
         command.extend(["--forecast-model-npz", str(forecast_model_npz)])
     command.extend([
+        "--predictive-wbc-min-feedback-scale", str(predictive_wbc_min_feedback_scale),
+        "--predictive-wbc-growth-deadband", str(predictive_wbc_growth_deadband),
         "--predictive-authority-min-multiplier", str(predictive_authority_min_multiplier),
         "--predictive-authority-recovery-deadband", str(predictive_authority_recovery_deadband),
         "--predictive-authority-release-gain", str(predictive_authority_release_gain),
@@ -122,6 +126,8 @@ def _evaluation_command(
     predictive_authority_release_gain: float,
     predictive_authority_require_kinematic_agreement: bool,
     predictive_authority_require_measured_recovery: bool,
+    predictive_wbc_min_feedback_scale: float,
+    predictive_wbc_growth_deadband: float,
 ) -> list[str]:
     command = [
         python, str(repo / "scripts" / "evaluate_wbc_velocity_residual.py"),
@@ -143,6 +149,8 @@ def _evaluation_command(
     if forecast_model_npz is not None:
         command.extend(["--forecast-model-npz", str(forecast_model_npz)])
     command.extend([
+        "--predictive-wbc-min-feedback-scale", str(predictive_wbc_min_feedback_scale),
+        "--predictive-wbc-growth-deadband", str(predictive_wbc_growth_deadband),
         "--predictive-authority-min-multiplier", str(predictive_authority_min_multiplier),
         "--predictive-authority-recovery-deadband", str(predictive_authority_recovery_deadband),
         "--predictive-authority-release-gain", str(predictive_authority_release_gain),
@@ -190,6 +198,9 @@ def _archive_command(
     reward_profile: str,
     residual_window_end_at_grasp: bool,
     directional_phase_projection: bool,
+    forecast_model_npz: Path | None,
+    predictive_wbc_min_feedback_scale: float,
+    predictive_wbc_growth_deadband: float,
 ) -> list[str]:
     command = [
         python, str(repo / "scripts" / "evaluate_wbc_velocity_residual_checkpoints.py"),
@@ -207,6 +218,12 @@ def _archive_command(
         command.append("--residual-window-end-at-grasp")
     if directional_phase_projection:
         command.append("--directional-phase-projection")
+    if forecast_model_npz is not None:
+        command.extend(["--forecast-model-npz", str(forecast_model_npz)])
+    command.extend([
+        "--predictive-wbc-min-feedback-scale", str(predictive_wbc_min_feedback_scale),
+        "--predictive-wbc-growth-deadband", str(predictive_wbc_growth_deadband),
+    ])
     return command
 
 
@@ -350,7 +367,8 @@ def main() -> None:
     parser.add_argument("--total-timesteps", type=int, default=2_000_000)
     parser.add_argument("--n-envs", type=int, default=8)
     parser.add_argument("--checkpoint-interval", type=int, default=100_000)
-    parser.add_argument("--esn-observation-mode", choices=("fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_phase_esn", "fan_ye_stable_phase_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_esn", "fan_ye_forecast_authority_esn"), default="fan_ye_esn", help="Frozen v1, v2 fast/slow, phase-memory, stable phase-memory, action-aware, predictive, or predictive-authority ESN.")
+    parser.add_argument("--esn-observation-mode", choices=("fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_phase_esn", "fan_ye_stable_phase_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_esn", "fan_ye_forecast_authority_esn", "fan_ye_forecast_wbc_esn", "fan_ye_phase_predictive_wbc_esn"), default="fan_ye_esn", help="Frozen v1, v2 fast/slow, phase-memory, stable phase-memory, action-aware, predictive, predictive-WBC, or phase-predictive-WBC ESN.")
+    parser.add_argument("--baseline-observation-mode", choices=("current_mlp", "fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_phase_esn", "fan_ye_stable_phase_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_authority_esn"), default=None, help="Matched baseline mode; defaults to current_mlp except direct forecast-observation mode.")
     parser.add_argument("--directional-phase-projection", action="store_true", help="Use the same deployable WBC-error yield/rejoin projection in both lanes.")
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC at gripper-close; retain learned yielding only for approach/recovery.")
     parser.add_argument("--forecast-model-npz", type=Path, default=None, help="Development-train ESN forecast model for predictive observation mode.")
@@ -359,6 +377,8 @@ def main() -> None:
     parser.add_argument("--predictive-authority-release-gain", type=float, default=1.0)
     parser.add_argument("--predictive-authority-require-kinematic-agreement", action="store_true")
     parser.add_argument("--predictive-authority-require-measured-recovery", action="store_true")
+    parser.add_argument("--predictive-wbc-min-feedback-scale", type=float, default=0.90)
+    parser.add_argument("--predictive-wbc-growth-deadband", type=float, default=0.05)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs != 8 or args.checkpoint_interval < 1:
@@ -375,7 +395,8 @@ def main() -> None:
         raise FileNotFoundError("missing required campaign paths: " + ", ".join(missing))
     if "post_v4_development" not in args.fixture_manifest.as_posix():
         raise ValueError("overnight campaign must use the isolated post-V4 development manifest")
-    if args.esn_observation_mode in ("fan_ye_forecast_esn", "fan_ye_forecast_authority_esn") and args.forecast_model_npz is None:
+    forecast_modes = ("fan_ye_forecast_esn", "fan_ye_forecast_authority_esn", "fan_ye_forecast_wbc_esn", "fan_ye_phase_predictive_wbc_esn")
+    if args.esn_observation_mode in forecast_modes and args.forecast_model_npz is None:
         raise ValueError(f"{args.esn_observation_mode} requires --forecast-model-npz")
     if args.forecast_model_npz is not None and not args.forecast_model_npz.is_file():
         raise FileNotFoundError(f"forecast model is missing: {args.forecast_model_npz}")
@@ -390,16 +411,17 @@ def main() -> None:
     manifest = {
         "controller_family": "independent_wbc_velocity_residual",
         "uses_vmc": False,
-        "campaign_type": "paired_current_mlp_vs_fan_ye_esn",
+        "campaign_type": "paired_baseline_vs_proposed_esn",
+        "baseline_observation_mode": args.baseline_observation_mode,
         "esn_observation_mode": args.esn_observation_mode,
         "seeds": list(seeds),
         "profiles": list(profiles),
         "total_timesteps": args.total_timesteps,
         "n_envs_per_lane": args.n_envs,
-        "cpu_affinity": {"current_mlp": "0-9", "fan_ye_esn": "10-19"},
+        "cpu_affinity": {"baseline": "0-9", "proposed": "10-19"},
         "fixture_manifest": str(args.fixture_manifest),
         "artifact_hashes": {str(path): _sha256(path) for path in required if path.is_file()},
-        "fairness_contract": "matched seeds/profiles/steps/fixtures/PPO/safety/action; reservoir memory is the only MLP-vs-ESN difference",
+        "fairness_contract": "matched seeds/profiles/steps/fixtures/PPO/safety/action; any controller-mode difference is declared in the manifest",
         "checkpoint_selection": "validation-only gate then Pareto archive; equal-rank representative selection is fixed before the campaign",
         "v4_final_policy": "frozen and excluded",
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
@@ -426,9 +448,9 @@ def main() -> None:
             # observation; its matched baseline is therefore the same 32-D
             # current-state MLP.  Only the direct forecast-observation variant
             # uses the 38-D kinematic forecast MLP baseline.
-            baseline_mode = "kinematic_forecast_mlp" if args.esn_observation_mode == "fan_ye_forecast_esn" else "current_mlp"
-            mlp_dir = args.output_root / run_id / "current_mlp"
-            esn_dir = args.output_root / run_id / "fan_ye_esn"
+            baseline_mode = args.baseline_observation_mode or ("kinematic_forecast_mlp" if args.esn_observation_mode == "fan_ye_forecast_esn" else "current_mlp")
+            mlp_dir = args.output_root / run_id / f"baseline_{baseline_mode}"
+            esn_dir = args.output_root / run_id / f"proposed_{args.esn_observation_mode}"
             complete = (
                 (mlp_dir / "validation_archive" / "wbc_velocity_residual_checkpoint_archive.json").exists()
                 and (esn_dir / "validation_archive" / "wbc_velocity_residual_checkpoint_archive.json").exists()
@@ -453,6 +475,8 @@ def main() -> None:
                 predictive_authority_release_gain=args.predictive_authority_release_gain,
                 predictive_authority_require_kinematic_agreement=args.predictive_authority_require_kinematic_agreement,
                 predictive_authority_require_measured_recovery=args.predictive_authority_require_measured_recovery,
+                predictive_wbc_min_feedback_scale=args.predictive_wbc_min_feedback_scale,
+                predictive_wbc_growth_deadband=args.predictive_wbc_growth_deadband,
             )
             esn_train = _train_command(
                 args.python, repo, output_dir=esn_dir, menagerie=args.menagerie, manifest=args.fixture_manifest,
@@ -467,6 +491,8 @@ def main() -> None:
                 predictive_authority_release_gain=args.predictive_authority_release_gain,
                 predictive_authority_require_kinematic_agreement=args.predictive_authority_require_kinematic_agreement,
                 predictive_authority_require_measured_recovery=args.predictive_authority_require_measured_recovery,
+                predictive_wbc_min_feedback_scale=args.predictive_wbc_min_feedback_scale,
+                predictive_wbc_growth_deadband=args.predictive_wbc_growth_deadband,
             )
             entry["training"] = _launch_pair(
                 repo=repo, environment=environment, mlp_command=mlp_train, esn_command=esn_train,
@@ -489,6 +515,9 @@ def main() -> None:
                 observation_mode=baseline_mode, reward_profile=profile,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
                 directional_phase_projection=args.directional_phase_projection,
+                forecast_model_npz=None,
+                predictive_wbc_min_feedback_scale=args.predictive_wbc_min_feedback_scale,
+                predictive_wbc_growth_deadband=args.predictive_wbc_growth_deadband,
             )
             esn_archive = _archive_command(
                 args.python, repo, output_dir=esn_dir / "validation_archive", run_dir=esn_dir, menagerie=args.menagerie,
@@ -496,6 +525,9 @@ def main() -> None:
                 observation_mode=args.esn_observation_mode, reward_profile=profile,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
                 directional_phase_projection=args.directional_phase_projection,
+                forecast_model_npz=args.forecast_model_npz,
+                predictive_wbc_min_feedback_scale=args.predictive_wbc_min_feedback_scale,
+                predictive_wbc_growth_deadband=args.predictive_wbc_growth_deadband,
             )
             entry["checkpoint_archive"] = _archive_pair(
                 repo=repo, environment=environment, mlp_command=mlp_archive, esn_command=esn_archive,

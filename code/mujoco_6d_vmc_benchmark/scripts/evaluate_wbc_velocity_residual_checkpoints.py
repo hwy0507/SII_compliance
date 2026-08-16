@@ -149,6 +149,12 @@ def _evaluation_command(args: argparse.Namespace, candidate: dict[str, Any], out
         command.append("--residual-window-end-at-grasp")
     if args.directional_phase_projection:
         command.append("--directional-phase-projection")
+    if args.forecast_model_npz is not None:
+        command.extend(["--forecast-model-npz", str(args.forecast_model_npz)])
+    command.extend([
+        "--predictive-wbc-min-feedback-scale", str(args.predictive_wbc_min_feedback_scale),
+        "--predictive-wbc-growth-deadband", str(args.predictive_wbc_growth_deadband),
+    ])
     return command
 
 
@@ -166,10 +172,18 @@ def main() -> None:
     parser.add_argument("--evaluator", type=Path, default=Path(__file__).with_name("evaluate_wbc_velocity_residual.py"))
     parser.add_argument("--residual-window-end-at-grasp", action="store_true")
     parser.add_argument("--directional-phase-projection", action="store_true")
+    parser.add_argument("--forecast-model-npz", type=Path, default=None, help="Development-train forecast readout for forecast / phase-predictive ESN modes.")
+    parser.add_argument("--predictive-wbc-min-feedback-scale", type=float, default=0.60)
+    parser.add_argument("--predictive-wbc-growth-deadband", type=float, default=0.05)
     parser.add_argument("--exclude-final", action="store_true")
     args = parser.parse_args()
     if "post_v4_development" not in args.fixture_manifest.as_posix():
         raise ValueError("checkpoint archive must use the isolated post-V4 development manifest")
+    forecast_modes = {"fan_ye_forecast_esn", "fan_ye_forecast_authority_esn", "fan_ye_forecast_wbc_esn", "fan_ye_phase_predictive_wbc_esn"}
+    if args.observation_mode in forecast_modes and args.forecast_model_npz is None:
+        raise ValueError(f"{args.observation_mode} requires --forecast-model-npz")
+    if args.forecast_model_npz is not None and not args.forecast_model_npz.is_file():
+        raise FileNotFoundError(f"forecast model is missing: {args.forecast_model_npz}")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     candidates = discover_candidates(args.run_dir, include_final=not args.exclude_final)
     for candidate in candidates:
