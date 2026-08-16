@@ -56,24 +56,40 @@ MULTISCALE_RESERVOIR_CONFIGS = (
     ),
 )
 
-# Closed-loop reservoirs are deliberately a separate, development-split-only
-# design family.  Their numerical values are frozen after the action-aware
-# CR/ESPI screen, never inferred from a final evaluation.
-CLOSED_LOOP_RESERVOIR_CONFIGS = tuple(
+# Closed-loop candidates #107 (fast loading) and #24 (slow recovery) are
+# frozen after a 160-candidate CR/ESPI screen on the new post-V4 development
+# *train* probe traces.  No PPO return, validation reward, or final holdout is
+# involved.  The 39-D robust scales below are part of that frozen design: using
+# different online scaling would make the deployed reservoir differ from the
+# screened one.
+CLOSED_LOOP_RESERVOIR_CONFIGS = (
     FanYeESNConfig(
-        reservoir_size=config.reservoir_size,
-        spectral_radius=config.spectral_radius,
-        input_scale=config.input_scale,
-        time_constant_s=config.time_constant_s,
-        connection_probability=config.connection_probability,
-        bias_scale=config.bias_scale,
-        ridge_lambda=config.ridge_lambda,
-        dt_s=config.dt_s,
-        seed=config.seed + 200,
+        reservoir_size=64, spectral_radius=1.724510757157626,
+        input_scale=0.9569744552122891, time_constant_s=0.048321880926077046,
+        connection_probability=0.1493301790242772, bias_scale=0.8567456405674412,
+        ridge_lambda=1.77634882463859e-05, dt_s=0.04, seed=20261068,
         input_dimension=CLOSED_LOOP_ESN_INPUT_DIMENSION,
-    )
-    for config in MULTISCALE_RESERVOIR_CONFIGS
+    ),
+    FanYeESNConfig(
+        reservoir_size=64, spectral_radius=0.6482510374809771,
+        input_scale=1.5687862441893154, time_constant_s=0.12635851180063093,
+        connection_probability=0.03133930952221364, bias_scale=0.29275318007721074,
+        ridge_lambda=1.1436672886070185e-07, dt_s=0.04, seed=20260985,
+        input_dimension=CLOSED_LOOP_ESN_INPUT_DIMENSION,
+    ),
 )
+CLOSED_LOOP_INPUT_NORMALIZER = FanYeInputNormalizer(np.array([
+    0.001, 0.0019346113549545407, 0.0010674077784642577, 0.5395164489746094,
+    0.001, 0.5253284573554993, 0.26176950335502625, 0.0011447283904999495,
+    0.0042251660488545895, 0.0012022806331515312, 0.015776079148054123, 0.001,
+    0.0014003021642565727, 0.001, 0.028656626120209694, 0.02179226651787758,
+    0.16923697292804718, 0.001580705866217613, 0.10238812118768692, 0.007849977351725101,
+    0.04264411702752113, 0.04767336696386337, 0.27775225043296814, 0.00446879118680954,
+    0.24344322085380554, 0.021393440663814545, 0.014425558969378471, 0.014958151616156101,
+    0.1096409484744072, 0.001427232753485441, 0.059435877948999405, 0.004488341975957155,
+    0.550000011920929, 0.010268226265907288, 0.01105387881398201, 0.06853578239679337,
+    0.001, 0.021286968141794205, 0.0018348857993260026,
+], dtype=float))
 
 
 def encode_wbc_current_feature(
@@ -198,9 +214,10 @@ class FanYeESNRLObservationAdapter:
         if context.shape != (APPLIED_RESIDUAL_CONTEXT_DIMENSION,) or not np.all(np.isfinite(context)):
             raise ValueError("closed-loop ESN context must be a finite normalized seven-vector")
         reservoir_input = np.concatenate((current, np.clip(context, -1.0, 1.0)))
+        normalized_input = CLOSED_LOOP_INPUT_NORMALIZER.transform(reservoir_input[None, :])[0]
         states = []
         for reservoir in self.closed_loop_reservoirs:
-            reservoir.advance(reservoir_input)
+            reservoir.advance(normalized_input)
             states.append(reservoir.state)
         feature = np.concatenate((current, *states))
         if feature.shape != (self.closed_loop_feature_dimension,) or not np.all(np.isfinite(feature)):

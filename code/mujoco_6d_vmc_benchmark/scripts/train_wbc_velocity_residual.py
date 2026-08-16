@@ -224,7 +224,10 @@ def main() -> None:
             "dimension": {"current_mlp": 32, "fan_ye_esn": 96, "fan_ye_multiscale_esn": 160, "fan_ye_closed_loop_esn": 160}[args.observation_mode],
             "current_input": ["q(7)", "qdot(7)", "fixed_WBC_task_twist(6)", "measured_WBC_pose_error(6)", "measured_WBC_twist_error(6)"],
             "reservoir_state_dimension": {"current_mlp": 0, "fan_ye_esn": 64, "fan_ye_multiscale_esn": 128, "fan_ye_closed_loop_esn": 128}[args.observation_mode],
-            "reservoir_time_constants_s": None if args.observation_mode not in ("fan_ye_multiscale_esn", "fan_ye_closed_loop_esn") else [0.04253725603074088, 0.14001593770536352],
+            "reservoir_time_constants_s": (
+                None if args.observation_mode not in ("fan_ye_multiscale_esn", "fan_ye_closed_loop_esn")
+                else ([0.04253725603074088, 0.14001593770536352] if args.observation_mode == "fan_ye_multiscale_esn" else [0.048321880926077046, 0.12635851180063093])
+            ),
             "reservoir_recurrence_extra": None if args.observation_mode != "fan_ye_closed_loop_esn" else "prior shared-safety-filtered 7-D applied residual command; not exposed directly to PPO",
             "excluded": ["contact", "force", "rod state", "obstacle geometry", "future release", "fixture id"],
         },
