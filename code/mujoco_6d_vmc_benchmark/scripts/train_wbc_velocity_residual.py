@@ -188,7 +188,11 @@ def main() -> None:
     else:
         model = PPO.load(args.resume, env=env, device=args.device)
     metadata = {
-        "algorithm": "PPO readout over current WBC state" if args.observation_mode == "current_mlp" else "PPO readout over fixed Fan Ye reservoir state",
+        "algorithm": {
+            "current_mlp": "PPO readout over deployable current WBC state and tracking errors",
+            "fan_ye_esn": "PPO readout over deployable current WBC state/errors plus frozen Fan Ye v1 reservoir state",
+            "fan_ye_multiscale_esn": "PPO readout over deployable current WBC state/errors plus fixed fast/slow Fan Ye reservoir states",
+        }[args.observation_mode],
         "controller_family": "independent_wbc_velocity_residual",
         "uses_vmc": False,
         "action_contract": {
@@ -199,12 +203,13 @@ def main() -> None:
         },
         "observation_contract": {
             "mode": args.observation_mode,
-            "dimension": 20 if args.observation_mode == "current_mlp" else 84,
-            "current_input": ["q(7)", "qdot(7)", "fixed_WBC_task_twist(6)"],
-            "reservoir_state_dimension": 0 if args.observation_mode == "current_mlp" else 64,
+            "dimension": {"current_mlp": 32, "fan_ye_esn": 96, "fan_ye_multiscale_esn": 160}[args.observation_mode],
+            "current_input": ["q(7)", "qdot(7)", "fixed_WBC_task_twist(6)", "measured_WBC_pose_error(6)", "measured_WBC_twist_error(6)"],
+            "reservoir_state_dimension": {"current_mlp": 0, "fan_ye_esn": 64, "fan_ye_multiscale_esn": 128}[args.observation_mode],
+            "reservoir_time_constants_s": None if args.observation_mode != "fan_ye_multiscale_esn" else [0.040, 0.20596],
             "excluded": ["contact", "force", "rod state", "obstacle geometry", "future release", "fixture id"],
         },
-        "fairness_contract": "MLP and ESN use the same action, safety layer, PPO network, reward, fixtures, seed, and step budget; only the fixed reservoir memory differs.",
+        "fairness_contract": "Compared modes use the same deployable current state/errors, action, safety layer, PPO network, reward, fixtures, seed, and step budget; ESN variants differ only by fixed reservoir memory.",
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
         "reward_profile": args.reward_profile,
         "reward_config": asdict(rewards),

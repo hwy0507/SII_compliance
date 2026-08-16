@@ -18,7 +18,11 @@ import mujoco
 import numpy as np
 
 from esn_compliance import ESNObservation
-from fan_ye_esn_rl_adapter import FanYeESNRLObservationAdapter
+from fan_ye_esn_rl_adapter import (
+    CURRENT_WBC_FEATURE_DIMENSION,
+    FanYeESNRLObservationAdapter,
+    encode_wbc_current_feature,
+)
 from fixed_panda_wbc import FixedBasePandaWBC, WBCCommand
 from run_benchmark import ARM_DOF, CONTROL_DT, TORQUE_LIMITS, body_jacobian, body_twist, so3_log
 from run_grasp_impact_benchmark import TABLE_TOP_Z, TARGET_START_Z, PickLiftCarryReference
@@ -94,7 +98,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
     """Panda pick task controlled by WBC plus an independent learned residual."""
 
     metadata = {"render_modes": []}
-    observation_modes = ("current_mlp", "fan_ye_esn")
+    observation_modes = ("current_mlp", "fan_ye_esn", "fan_ye_multiscale_esn")
 
     def __init__(
         self,
@@ -124,7 +128,11 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.feature_adapter = FanYeESNRLObservationAdapter(
             Path(fan_ye_model_npz), Path(fan_ye_train_summary_json)
         )
-        observation_dimension = 20 if observation_mode == "current_mlp" else self.feature_adapter.feature_dimension
+        observation_dimension = {
+            "current_mlp": CURRENT_WBC_FEATURE_DIMENSION,
+            "fan_ye_esn": self.feature_adapter.feature_dimension,
+            "fan_ye_multiscale_esn": self.feature_adapter.multiscale_feature_dimension,
+        }[observation_mode]
         self.action_space = gym.spaces.Box(-1.0, 1.0, shape=(7,), dtype=np.float32)
         self.observation_space = gym.spaces.Box(-10.0, 10.0, shape=(observation_dimension,), dtype=np.float32)
         self.action_filter = VelocityResidualActionFilter(self.safety_config)
@@ -216,14 +224,20 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
     def _observation(self, time_s: float) -> np.ndarray:
         assert self.data is not None
         command = self._wbc_command(time_s)
+        position_error = command.target_position_m - self.data.xpos[self._hand_id]
+        rotation_error = so3_log(command.target_rotation @ self.data.xmat[self._hand_id].reshape(3, 3).T)
+        pose_error = np.concatenate((position_error, rotation_error))
+        twist_error = command.task_twist_world - body_twist(self.model, self.data, self._hand_id)
         student = ESNObservation(
             self.data.qpos[:ARM_DOF].copy(),
             self.data.qvel[:ARM_DOF].copy(),
             command.task_twist_world.copy(),
         )
         if self.observation_mode == "current_mlp":
-            return self.feature_adapter.normalized_input(student)
-        return self.feature_adapter.observe(student)
+            return encode_wbc_current_feature(student, pose_error, twist_error)
+        if self.observation_mode == "fan_ye_esn":
+            return self.feature_adapter.observe(student, pose_error, twist_error)
+        return self.feature_adapter.observe_multiscale(student, pose_error, twist_error)
 
     def reset(
         self, *, seed: int | None = None, options: dict[str, Any] | None = None,
@@ -376,12 +390,19 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "nominal_position": command.target_position_m.copy(),
             "nominal_rotation": command.target_rotation.copy(),
             "nominal_twist": command.task_twist_world.copy(),
+            "wbc_pose_error": np.concatenate((
+                command.target_position_m - self.data.xpos[self._hand_id],
+                so3_log(command.target_rotation @ self.data.xmat[self._hand_id].reshape(3, 3).T),
+            )),
+            "wbc_twist_error": command.task_twist_world - body_twist(self.model, self.data, self._hand_id),
             "wbc_scale": self.applied_action.wbc_scale,
             "authority_gate": self.current_authority_gate,
             "cartesian_yield_twist": self.applied_action.cartesian_yield_twist.copy(),
             "joint_velocity_command": self.previous_joint_velocity_command.copy(),
             "raw_joint_velocity_command": self.raw_joint_velocity_command.copy(),
             "applied_torque": self.previous_torque.copy(),
+            "joint_position": self.data.qpos[:ARM_DOF].copy(),
+            "joint_velocity": self.data.qvel[:ARM_DOF].copy(),
         }
 
     def step(self, action: np.ndarray) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:

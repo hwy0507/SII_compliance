@@ -19,7 +19,11 @@ from fan_ye_esn_design import (  # noqa: E402
 )
 from train_fan_ye_esn_readout import GatedVMCTeacherConfig, teacher_actions_from_gate  # noqa: E402
 from fan_ye_esn_policy import FanYeVMCPolicyConfig  # noqa: E402
-from fan_ye_esn_rl_adapter import FanYeESNRLObservationAdapter  # noqa: E402
+from fan_ye_esn_rl_adapter import (  # noqa: E402
+    CURRENT_WBC_FEATURE_DIMENSION,
+    FanYeESNRLObservationAdapter,
+    encode_wbc_current_feature,
+)
 from esn_compliance import ESNObservation  # noqa: E402
 
 
@@ -123,11 +127,31 @@ def test_fan_ye_rl_adapter_uses_only_fixed_reservoir_wbc_features(tmp_path: Path
     summary = tmp_path / "summary.json"
     summary.write_text(__import__("json").dumps({"config": config.__dict__}))
     adapter = FanYeESNRLObservationAdapter(npz, summary)
-    normalized = adapter.normalized_input(ESNObservation(np.zeros(7), np.zeros(7), np.zeros(6)))
+    observation = ESNObservation(np.zeros(7), np.zeros(7), np.zeros(6))
+    normalized = adapter.normalized_input(observation)
     assert normalized.shape == (20,)
     assert np.all(np.isfinite(normalized))
-    feature = adapter.observe(ESNObservation(np.zeros(7), np.zeros(7), np.zeros(6)))
-    assert feature.shape == (20 + config.reservoir_size,)
+    current = encode_wbc_current_feature(observation, np.zeros(6), np.zeros(6))
+    assert current.shape == (CURRENT_WBC_FEATURE_DIMENSION,)
+    feature = adapter.observe(observation, np.zeros(6), np.zeros(6))
+    assert feature.shape == (CURRENT_WBC_FEATURE_DIMENSION + config.reservoir_size,)
     assert np.all(np.isfinite(feature))
     adapter.reset()
-    np.testing.assert_allclose(feature, adapter.observe(ESNObservation(np.zeros(7), np.zeros(7), np.zeros(6))))
+    np.testing.assert_allclose(feature, adapter.observe(observation, np.zeros(6), np.zeros(6)))
+    adapter.reset()
+    multiscale = adapter.observe_multiscale(observation, np.zeros(6), np.zeros(6))
+    assert multiscale.shape == (CURRENT_WBC_FEATURE_DIMENSION + 128,)
+    assert np.all(np.isfinite(multiscale))
+    adapter.reset()
+    np.testing.assert_allclose(multiscale, adapter.observe_multiscale(observation, np.zeros(6), np.zeros(6)))
+
+
+def test_wbc_error_feature_is_directional_and_rejects_non_six_vectors() -> None:
+    observation = ESNObservation(np.zeros(7), np.zeros(7), np.zeros(6))
+    feature = encode_wbc_current_feature(
+        observation, np.array([0.006, 0.0, 0.0, 0.0, 0.0, 0.0]), np.zeros(6),
+    )
+    assert feature.shape == (CURRENT_WBC_FEATURE_DIMENSION,)
+    assert feature[20] > 0.0
+    with np.testing.assert_raises(ValueError):
+        encode_wbc_current_feature(observation, np.zeros(5), np.zeros(6))

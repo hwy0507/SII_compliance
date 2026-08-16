@@ -27,6 +27,7 @@ def _run_episode(
     observation, _ = env.reset(options={"fixture_index": fixture_index})
     trace: dict[str, list[np.ndarray | float]] = {key: [] for key in (
         "time", "ee_position", "nominal_position", "ee_twist", "nominal_twist",
+        "joint_position", "joint_velocity", "wbc_pose_error", "wbc_twist_error",
         "wbc_scale", "authority_gate", "yield_twist", "joint_velocity_command", "torque", "policy_action",
     )}
     terminal: dict[str, Any] = {}
@@ -45,6 +46,10 @@ def _run_episode(
         trace["nominal_position"].append(state["nominal_position"])
         trace["ee_twist"].append(state["ee_twist"])
         trace["nominal_twist"].append(state["nominal_twist"])
+        trace["joint_position"].append(state["joint_position"])
+        trace["joint_velocity"].append(state["joint_velocity"])
+        trace["wbc_pose_error"].append(state["wbc_pose_error"])
+        trace["wbc_twist_error"].append(state["wbc_twist_error"])
         trace["wbc_scale"].append(float(state["wbc_scale"]))
         trace["authority_gate"].append(float(state["authority_gate"]))
         trace["yield_twist"].append(state["cartesian_yield_twist"])
@@ -188,6 +193,10 @@ def main() -> None:
                 nominal_position=rod["nominal_position"],
                 rod_ee_twist=rod["ee_twist"],
                 rod_nominal_twist=rod["nominal_twist"],
+                rod_joint_position=rod["joint_position"],
+                rod_joint_velocity=rod["joint_velocity"],
+                rod_wbc_pose_error=rod["wbc_pose_error"],
+                rod_wbc_twist_error=rod["wbc_twist_error"],
                 rod_wbc_scale=rod["wbc_scale"],
                 rod_authority_gate=rod["authority_gate"],
                 rod_yield_twist=rod["yield_twist"],

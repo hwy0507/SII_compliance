@@ -2,7 +2,7 @@
 """Run a resumable, paired MLP-vs-ESN overnight campaign on one server.
 
 Each unit starts exactly two CPU-affined jobs concurrently: the current-state
-MLP baseline and the Fan Ye ESN proposed controller.  Their environment,
+MLP baseline and a selected Fan Ye ESN controller.  Their environment,
 reward, seed, PPO budget, safety adapter, and physical fixtures are identical.
 The only difference is the fixed 64-state reservoir appended to the ESN input.
 No VMC script, stiffness action, virtual spring, or virtual-carriage state is
@@ -216,6 +216,7 @@ def main() -> None:
     parser.add_argument("--total-timesteps", type=int, default=2_000_000)
     parser.add_argument("--n-envs", type=int, default=8)
     parser.add_argument("--checkpoint-interval", type=int, default=100_000)
+    parser.add_argument("--esn-observation-mode", choices=("fan_ye_esn", "fan_ye_multiscale_esn"), default="fan_ye_esn", help="Frozen v1 reservoir or the v2 fast/slow error-aware reservoir.")
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC at gripper-close; retain learned yielding only for approach/recovery.")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
@@ -244,6 +245,7 @@ def main() -> None:
         "controller_family": "independent_wbc_velocity_residual",
         "uses_vmc": False,
         "campaign_type": "paired_current_mlp_vs_fan_ye_esn",
+        "esn_observation_mode": args.esn_observation_mode,
         "seeds": list(seeds),
         "profiles": list(profiles),
         "total_timesteps": args.total_timesteps,
@@ -287,7 +289,7 @@ def main() -> None:
             esn_train = _train_command(
                 args.python, repo, output_dir=esn_dir, menagerie=args.menagerie, manifest=args.fixture_manifest,
                 model_npz=args.fan_ye_model_npz, summary_json=args.fan_ye_train_summary_json,
-                observation_mode="fan_ye_esn", reward_profile=profile, seed=seed,
+                observation_mode=args.esn_observation_mode, reward_profile=profile, seed=seed,
                 total_timesteps=args.total_timesteps, n_envs=args.n_envs, checkpoint_interval=args.checkpoint_interval,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
             )
@@ -315,7 +317,7 @@ def main() -> None:
             esn_eval = _evaluation_command(
                 args.python, repo, output_dir=esn_dir / "validation", run_dir=esn_dir, menagerie=args.menagerie,
                 manifest=args.fixture_manifest, model_npz=args.fan_ye_model_npz,
-                summary_json=args.fan_ye_train_summary_json, observation_mode="fan_ye_esn", reward_profile=profile,
+                summary_json=args.fan_ye_train_summary_json, observation_mode=args.esn_observation_mode, reward_profile=profile,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
             )
             entry["evaluation"] = _evaluate_pair(

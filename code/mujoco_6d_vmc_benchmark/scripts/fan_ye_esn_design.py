@@ -46,10 +46,13 @@ class FanYeESNConfig:
     ridge_lambda: float
     dt_s: float = 0.040
     seed: int = 0
+    input_dimension: int = STUDENT_INPUT_DIMENSION
 
     def __post_init__(self) -> None:
-        if self.reservoir_size < STUDENT_INPUT_DIMENSION:
-            raise ValueError("reservoir_size must be at least the 20-D deployable input dimension")
+        if self.input_dimension < 1:
+            raise ValueError("input_dimension must be positive")
+        if self.reservoir_size < self.input_dimension:
+            raise ValueError("reservoir_size must be at least the deployable input dimension")
         if not 0.0 < self.spectral_radius <= 2.0 or not 0.0 < self.input_scale <= 2.0:
             raise ValueError("spectral_radius and input_scale must be in (0, 2]")
         if not 0.0 < self.connection_probability <= 1.0 or not 0.0 <= self.bias_scale <= 1.0:
@@ -101,18 +104,22 @@ class FanYeInputNormalizer:
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "scales", np.asarray(self.scales, dtype=float))
-        if self.scales.shape != (STUDENT_INPUT_DIMENSION,) or not np.all(np.isfinite(self.scales)) or np.any(self.scales <= 0.0):
-            raise ValueError("scales must be a positive finite 20-vector")
+        if self.scales.ndim != 1 or len(self.scales) < 1 or not np.all(np.isfinite(self.scales)) or np.any(self.scales <= 0.0):
+            raise ValueError("scales must be a non-empty positive finite vector")
 
     @classmethod
     def from_actuation_traces(cls, traces: Iterable[np.ndarray], *, floor: float = 1.0e-3) -> "FanYeInputNormalizer":
-        data = np.concatenate([_finite_matrix(trace, STUDENT_INPUT_DIMENSION, "actuation trace") for trace in traces], axis=0)
+        rows = [np.asarray(trace, dtype=float) for trace in traces]
+        if not rows or rows[0].ndim != 2 or rows[0].shape[1] < 1:
+            raise ValueError("at least one non-empty two-dimensional actuation trace is required")
+        columns = rows[0].shape[1]
+        data = np.concatenate([_finite_matrix(trace, columns, "actuation trace") for trace in rows], axis=0)
         return cls(np.maximum(np.median(np.abs(data), axis=0), floor))
 
     def transform(self, trace: np.ndarray) -> np.ndarray:
         array = np.asarray(trace, dtype=float)
-        if array.ndim != 2 or array.shape[1] != STUDENT_INPUT_DIMENSION or len(array) < 1 or not np.all(np.isfinite(array)):
-            raise ValueError("trace must be a finite T x 20 array with T >= 1")
+        if array.ndim != 2 or array.shape[1] != len(self.scales) or len(array) < 1 or not np.all(np.isfinite(array)):
+            raise ValueError(f"trace must be a finite T x {len(self.scales)} array with T >= 1")
         return np.clip(array / self.scales, -10.0, 10.0)
 
 
@@ -155,10 +162,10 @@ class FanYeAlignedESN:
             recurrent = np.roll(np.eye(config.reservoir_size), shift=1, axis=1)
             radius = 1.0
         self._recurrent = recurrent * (config.spectral_radius / radius)
-        self._input = rng.uniform(-config.input_scale, config.input_scale, (config.reservoir_size, STUDENT_INPUT_DIMENSION))
+        self._input = rng.uniform(-config.input_scale, config.input_scale, (config.reservoir_size, config.input_dimension))
         self._bias = rng.uniform(-config.bias_scale, config.bias_scale, config.reservoir_size)
         self._state = np.zeros(config.reservoir_size, dtype=float)
-        self._readout = np.zeros((ACTION_DIMENSION, 1 + STUDENT_INPUT_DIMENSION + config.reservoir_size), dtype=float)
+        self._readout = np.zeros((ACTION_DIMENSION, 1 + config.input_dimension + config.reservoir_size), dtype=float)
 
     @property
     def state(self) -> np.ndarray:
@@ -193,8 +200,8 @@ class FanYeAlignedESN:
 
     def advance(self, encoded_input: np.ndarray) -> np.ndarray:
         input_array = np.asarray(encoded_input, dtype=float)
-        if input_array.shape != (STUDENT_INPUT_DIMENSION,) or not np.all(np.isfinite(input_array)):
-            raise ValueError("encoded input must be finite and 20-dimensional")
+        if input_array.shape != (self.config.input_dimension,) or not np.all(np.isfinite(input_array)):
+            raise ValueError(f"encoded input must be finite and {self.config.input_dimension}-dimensional")
         proposal = np.tanh(self._input @ input_array + self._recurrent @ self._state + self._bias)
         self._state = (1.0 - self.config.leak) * self._state + self.config.leak * proposal
         if not np.all(np.isfinite(self._state)):
@@ -202,7 +209,7 @@ class FanYeAlignedESN:
         return np.concatenate((np.array([1.0]), input_array, self._state))
 
     def features(self, inputs: np.ndarray, *, washout_steps: int = 0) -> np.ndarray:
-        trace = _finite_matrix(inputs, STUDENT_INPUT_DIMENSION, "input trace")
+        trace = _finite_matrix(inputs, self.config.input_dimension, "input trace")
         if not 0 <= washout_steps < len(trace):
             raise ValueError("washout_steps must be non-negative and smaller than trace length")
         self.reset()
@@ -210,7 +217,7 @@ class FanYeAlignedESN:
         return np.asarray(output[washout_steps:], dtype=float)
 
     def states(self, inputs: np.ndarray, *, initial_state: np.ndarray | None = None) -> np.ndarray:
-        trace = _finite_matrix(inputs, STUDENT_INPUT_DIMENSION, "input trace")
+        trace = _finite_matrix(inputs, self.config.input_dimension, "input trace")
         self.reset(initial_state)
         output = []
         for row in trace:
@@ -271,7 +278,7 @@ def frequency_containment_ratio(robot_signals: np.ndarray, reservoir_states: np.
 def echo_state_property_index(reservoir: FanYeAlignedESN, inputs: np.ndarray, *, washout_steps: int, initializations: int = 10, seed: int = 0) -> float:
     """Fan Ye's ESPI: post-washout state MSE over multiple initial states."""
 
-    trace = _finite_matrix(inputs, STUDENT_INPUT_DIMENSION, "input trace")
+    trace = _finite_matrix(inputs, reservoir.config.input_dimension, "input trace")
     if not 0 <= washout_steps < len(trace) or initializations < 1:
         raise ValueError("invalid washout or initialization count")
     baseline = reservoir.states(trace)
@@ -294,7 +301,7 @@ def evaluate_fan_ye_candidate(
 ) -> FanYeReservoirMetrics:
     """Evaluate a reservoir without fitting a control readout or reading labels."""
 
-    trace = _finite_matrix(normalized_robot_trace, STUDENT_INPUT_DIMENSION, "normalized robot trace")
+    trace = _finite_matrix(normalized_robot_trace, config.input_dimension, "normalized robot trace")
     reservoir = FanYeAlignedESN(config)
     states = reservoir.states(trace)
     cr, robot_bandwidth, reservoir_bandwidth = frequency_containment_ratio(trace, states, dt_s=config.dt_s, max_frequency_hz=max_frequency_hz)
@@ -307,6 +314,7 @@ def random_fan_ye_configs(
     *,
     dt_s: float,
     seed: int,
+    input_dimension: int = STUDENT_INPUT_DIMENSION,
 ) -> list[FanYeESNConfig]:
     """Generate the paper-informed random design family before filtering."""
 
@@ -326,6 +334,7 @@ def random_fan_ye_configs(
             ridge_lambda=float(10.0 ** rng.uniform(-8.0, -2.0)),
             dt_s=dt_s,
             seed=seed + index + 1,
+            input_dimension=input_dimension,
         ))
     return configs
 

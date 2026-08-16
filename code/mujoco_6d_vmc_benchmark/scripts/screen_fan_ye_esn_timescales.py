@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Pre-select WBC-aware ESNs by Fan Ye-style timescale alignment.
 
-This script reads only ``joint_position``, ``joint_velocity`` and
-``wbc_task_twist`` from supplied MuJoCo traces.  It does not load contact,
-rod, force, obstacle or fixture-ID arrays into a candidate ESN.
+This script reads only deployable robot/WBC state from supplied MuJoCo traces.
+The v2 input mode additionally reads measured WBC pose/twist error.  It never
+loads contact, rod, force, obstacle or fixture-ID arrays into a candidate ESN.
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ from pathlib import Path
 
 import numpy as np
 
+from esn_compliance import ESNObservation
 from fan_ye_esn_design import (
     FAN_YE_REFERENCE,
     FanYeInputNormalizer,
@@ -22,25 +23,44 @@ from fan_ye_esn_design import (
     pareto_frontier,
     random_fan_ye_configs,
 )
+from fan_ye_esn_rl_adapter import encode_wbc_current_feature
 
 
 DEPLOYABLE_TRACE_KEYS = ("joint_position", "joint_velocity", "wbc_task_twist")
+WBC_ERROR_TRACE_KEYS = (
+    "joint_position", "joint_velocity", "wbc_task_twist",
+    "wbc_pose_error", "wbc_twist_error",
+)
 
 
-def load_trace(path: Path, *, sample_stride: int) -> np.ndarray:
+def load_trace(path: Path, *, sample_stride: int, input_mode: str) -> np.ndarray:
     if sample_stride < 1:
         raise ValueError("sample_stride must be positive")
     with np.load(path) as archive:
-        missing = set(DEPLOYABLE_TRACE_KEYS) - set(archive.files)
+        keys = DEPLOYABLE_TRACE_KEYS if input_mode == "legacy20" else WBC_ERROR_TRACE_KEYS
+        missing = set(keys) - set(archive.files)
         if missing:
             raise ValueError(f"{path}: missing deployable trace keys {sorted(missing)}")
         # Explicit key access is an information-flow guard: diagnostics stored
         # beside these arrays are never read by this ESN design procedure.
-        return deployable_trace_from_arrays(
+        legacy = deployable_trace_from_arrays(
             archive["joint_position"][::sample_stride],
             archive["joint_velocity"][::sample_stride],
             archive["wbc_task_twist"][::sample_stride],
         )
+        if input_mode == "legacy20":
+            return legacy
+        pose_error = archive["wbc_pose_error"][::sample_stride]
+        twist_error = archive["wbc_twist_error"][::sample_stride]
+        if pose_error.shape != (len(legacy), 6) or twist_error.shape != (len(legacy), 6):
+            raise ValueError(f"{path}: invalid WBC error trace shape")
+        return np.asarray([
+            encode_wbc_current_feature(
+                ESNObservation(row[:7] * 3.0, row[7:14] * 3.0, row[14:20] * np.array([0.60] * 3 + [2.0] * 3)),
+                pose, twist,
+            )
+            for row, pose, twist in zip(legacy, pose_error, twist_error, strict=True)
+        ], dtype=float)
 
 
 def main() -> None:
@@ -53,14 +73,17 @@ def main() -> None:
     parser.add_argument("--washout-steps", type=int, default=25)
     parser.add_argument("--max-frequency-hz", type=float, default=10.0)
     parser.add_argument("--seed", type=int, default=20260815)
+    parser.add_argument("--input-mode", choices=("legacy20", "wbc_error32"), default="legacy20")
     args = parser.parse_args()
     if args.candidate_count < 1 or args.dt_s <= 0.0 or args.max_frequency_hz <= 0.0:
         raise ValueError("candidate-count, dt-s and max-frequency-hz must be positive")
-    raw_traces = [load_trace(path, sample_stride=args.sample_stride) for path in args.traces]
+    raw_traces = [load_trace(path, sample_stride=args.sample_stride, input_mode=args.input_mode) for path in args.traces]
     normalizer = FanYeInputNormalizer.from_actuation_traces(raw_traces)
     normalized = [normalizer.transform(trace) for trace in raw_traces]
     metrics = []
-    for index, config in enumerate(random_fan_ye_configs(args.candidate_count, dt_s=args.dt_s, seed=args.seed)):
+    for index, config in enumerate(random_fan_ye_configs(
+        args.candidate_count, dt_s=args.dt_s, seed=args.seed, input_dimension=raw_traces[0].shape[1],
+    )):
         # Average per-episode dynamics scores. This prevents an episode
         # boundary from becoming an artificial high-frequency transition.
         episode_metrics = [evaluate_fan_ye_candidate(config, trace, candidate_index=index, washout_steps=args.washout_steps, max_frequency_hz=args.max_frequency_hz) for trace in normalized]
@@ -76,9 +99,10 @@ def main() -> None:
         "schema_version": 1,
         "method": "Fan Ye et al.-inspired robot-reservoir timescale alignment before readout training",
         "citation": FAN_YE_REFERENCE,
-        "adaptation": "Robot spectral probe is the WBC-aware 20-D deployable proprioceptive trace [q, qdot, wbc_task_twist], detrended to measure dynamics rather than static Panda posture. Candidate reservoir receives the same normalized trace. CR is compared by frequency containment and ESPI by post-washout state MSE across random initial states.",
+        "adaptation": "Robot spectral probe is the WBC-aware deployable trace, detrended to measure dynamics rather than static Panda posture. The v2 mode is [q, qdot, wbc_task_twist, measured WBC pose error, measured WBC twist error]. Candidate reservoir receives the same normalized trace. CR is compared by frequency containment and ESPI by post-washout state MSE across random initial states.",
         "information_boundary": {
-            "read_trace_keys": list(DEPLOYABLE_TRACE_KEYS),
+            "input_mode": args.input_mode,
+            "read_trace_keys": list(DEPLOYABLE_TRACE_KEYS if args.input_mode == "legacy20" else WBC_ERROR_TRACE_KEYS),
             "excluded": ["rod_contact", "rod_force", "rod_penetration", "rod_state", "obstacle_pose_or_geometry", "contact_normal", "future_release", "fixture_id"],
         },
         "input_trace_count": len(normalized),
