@@ -13,6 +13,7 @@ from wbc_velocity_residual_core import (
     safe_joint_velocity_command,
     safe_velocity_tracking_torque,
     stable_phase_memory_floor,
+    ResidualEnergyTank,
     apply_rejoin_velocity_envelope,
 )
 
@@ -147,6 +148,22 @@ def test_rejoin_velocity_envelope_caps_only_inward_speed_near_target() -> None:
     assert np.isclose(bounded[1], 0.125)
     departing = apply_rejoin_velocity_envelope(action, error, -recovering, config)
     np.testing.assert_allclose(departing, action)
+
+
+def test_residual_energy_tank_is_continuous_bounded_and_recharges_near_nominal() -> None:
+    tank = ResidualEnergyTank(enabled=True, initial=0.5, capacity=1.0, reserve=0.2)
+    action = np.array([0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    error = np.array([0.02, 0.0, 0.0, 0.0, 0.0, 0.0])
+    twist = np.array([-0.2, 0.0, 0.0, 0.0, 0.0, 0.0])
+    _, first_multiplier, first_energy = tank.apply(action, error, twist, 0.04)
+    _, second_multiplier, second_energy = tank.apply(action, error, twist, 0.04)
+    assert 0.25 <= first_multiplier <= 1.0
+    assert 0.25 <= second_multiplier <= 1.0
+    assert 0.0 <= first_energy <= 1.0
+    assert 0.0 <= second_energy <= 1.0
+    assert abs(second_multiplier - first_multiplier) <= 3.0 * 0.04 + 1e-12
+    _, _, recharged = tank.apply(np.zeros(7), np.zeros(6), np.zeros(6), 0.04)
+    assert recharged >= second_energy
 
 
 def test_joint_velocity_and_torque_safety_are_hard_bounded() -> None:

@@ -115,6 +115,99 @@ class FilteredVelocityResidualAction:
     slew_limited: bool
 
 
+@dataclass
+class ResidualEnergyTank:
+    """Continuous authority budget for a learned WBC residual.
+
+    The tank is deliberately stateful but non-privileged: it sees only the
+    proposed residual action and measured WBC pose/twist errors.  It spends
+    budget on residual work and fast action changes, recharges near the nominal
+    path, and returns a continuously slew-limited authority multiplier.
+    """
+
+    enabled: bool = False
+    capacity: float = 1.0
+    initial: float = 1.0
+    reserve: float = 0.20
+    spend_rate: float = 0.55
+    action_change_rate: float = 0.18
+    recharge_rate: float = 0.20
+    minimum_multiplier: float = 0.25
+    multiplier_slew_per_s: float = 3.0
+    stable_error_threshold: float = 0.40
+    previous_action: np.ndarray = field(default_factory=lambda: np.zeros(7, dtype=float))
+    energy: float = field(init=False)
+    multiplier: float = field(init=False)
+
+    def __post_init__(self) -> None:
+        values = np.asarray([
+            self.capacity, self.initial, self.reserve, self.spend_rate,
+            self.action_change_rate, self.recharge_rate, self.minimum_multiplier,
+            self.multiplier_slew_per_s, self.stable_error_threshold,
+        ], dtype=float)
+        if not np.all(np.isfinite(values)) or np.any(values <= 0.0):
+            raise ValueError("energy-tank parameters must be finite and positive")
+        if self.initial > self.capacity or self.reserve > self.capacity:
+            raise ValueError("energy-tank initial/reserve must not exceed capacity")
+        if self.minimum_multiplier > 1.0:
+            raise ValueError("energy-tank minimum multiplier must not exceed one")
+        self.reset()
+
+    def reset(self) -> None:
+        self.energy = float(np.clip(self.initial, 0.0, self.capacity))
+        self.multiplier = 1.0
+        self.previous_action = np.zeros(7, dtype=float)
+
+    def apply(
+        self, action: np.ndarray, pose_error: np.ndarray, twist_error: np.ndarray,
+        dt: float,
+    ) -> tuple[np.ndarray, float, float]:
+        values = np.asarray(action, dtype=float)
+        error = np.asarray(pose_error, dtype=float)
+        twist = np.asarray(twist_error, dtype=float)
+        if values.shape != (7,) or error.shape != (6,) or twist.shape != (6,):
+            raise ValueError("energy-tank inputs must be action-7 and error/twist-6")
+        if not np.all(np.isfinite(values)) or not np.all(np.isfinite(error)) or not np.all(np.isfinite(twist)):
+            raise ValueError("energy-tank inputs must be finite")
+        if not np.isfinite(dt) or dt <= 0.0:
+            raise ValueError("energy-tank dt must be finite and positive")
+        clipped = np.clip(values, -1.0, 1.0)
+        if not self.enabled:
+            self.previous_action = clipped.copy()
+            return values.copy(), 1.0, self.energy
+
+        # Normalize translation and orientation in the same causal task-space
+        # units used by the ESN feature adapter.  The error radial rate is a
+        # measured phase signal: positive means departure, negative means
+        # rejoin.
+        scaled_error = np.concatenate((error[:3] / 0.012, error[3:] / 0.20))
+        scaled_twist = np.concatenate((twist[:3] / 0.40, twist[3:] / 1.20))
+        error_norm = float(np.linalg.norm(scaled_error))
+        radial_rate = float(np.dot(scaled_error, scaled_twist))
+        residual_norm_sq = float(np.mean(clipped[1:] ** 2))
+        action_change_sq = float(np.mean((clipped - self.previous_action) ** 2))
+        rejoin_factor = float(np.clip(-radial_rate, 0.0, 2.0))
+        spend = dt * (
+            self.spend_rate * residual_norm_sq * (1.0 + 0.35 * rejoin_factor)
+            + self.action_change_rate * action_change_sq
+        )
+        stable_factor = float(np.clip(1.0 - error_norm / self.stable_error_threshold, 0.0, 1.0))
+        recharge = dt * self.recharge_rate * stable_factor * (1.0 - residual_norm_sq)
+        self.energy = float(np.clip(self.energy + recharge - spend, 0.0, self.capacity))
+        available = float(np.clip(self.energy / max(self.reserve, 1.0e-9), 0.0, 1.0))
+        desired_multiplier = self.minimum_multiplier + (1.0 - self.minimum_multiplier) * available
+        delta = self.multiplier_slew_per_s * dt
+        self.multiplier = float(np.clip(
+            self.multiplier + np.clip(desired_multiplier - self.multiplier, -delta, delta),
+            self.minimum_multiplier, 1.0,
+        ))
+        output = clipped.copy()
+        output[0] *= self.multiplier
+        output[1:] *= self.multiplier
+        self.previous_action = clipped.copy()
+        return output, self.multiplier, self.energy
+
+
 class VelocityResidualActionFilter:
     """Convert a neutral-zero policy action into a bounded physical command.
 

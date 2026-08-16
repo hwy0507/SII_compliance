@@ -43,6 +43,7 @@ from wbc_velocity_residual_core import (
     predictive_wbc_feedback_scale,
     project_yield_action_to_error_phase,
     apply_rejoin_velocity_envelope,
+    ResidualEnergyTank,
     stable_phase_memory_floor,
 )
 
@@ -121,6 +122,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         safety_config: VelocityResidualSafetyConfig | None = None,
         reward_config: VelocityResidualRewardConfig | None = None,
         residual_window_end_at_grasp: bool = False,
+        residual_energy_tank: bool = False,
         forecast_model_npz: str | Path | None = None,
         predictive_wbc_min_feedback_scale: float = 0.60,
         predictive_wbc_growth_deadband: float = 0.05,
@@ -138,6 +140,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.safety_config = safety_config or VelocityResidualSafetyConfig()
         self.reward_config = reward_config or VelocityResidualRewardConfig()
         self.residual_window_end_at_grasp = bool(residual_window_end_at_grasp)
+        self.residual_energy_tank_enabled = bool(residual_energy_tank)
+        self.energy_tank = ResidualEnergyTank(enabled=self.residual_energy_tank_enabled)
         self.predictive_wbc_min_feedback_scale = float(predictive_wbc_min_feedback_scale)
         self.predictive_wbc_growth_deadband = float(predictive_wbc_growth_deadband)
         if not 0.0 < self.predictive_wbc_min_feedback_scale <= 1.0 or not 0.0 <= self.predictive_wbc_growth_deadband < 1.0:
@@ -208,6 +212,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.cumulative_phase_memory_gate = 0.0
         self.stable_phase_memory_floor = 0.0
         self.cumulative_stable_phase_memory_floor = 0.0
+        self.current_energy_tank_multiplier = 1.0
+        self.current_energy_tank_value = self.energy_tank.energy
+        self.cumulative_energy_tank_multiplier = 0.0
+        self.minimum_energy_tank_value = self.energy_tank.energy
         self.reset(seed=seed)
 
     def _build_scene(self) -> None:
@@ -347,6 +355,11 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.cumulative_phase_memory_gate = 0.0
         self.stable_phase_memory_floor = 0.0
         self.cumulative_stable_phase_memory_floor = 0.0
+        self.energy_tank.reset()
+        self.current_energy_tank_multiplier = 1.0
+        self.current_energy_tank_value = self.energy_tank.energy
+        self.cumulative_energy_tank_multiplier = 0.0
+        self.minimum_energy_tank_value = self.energy_tank.energy
         self.action_filter.reset()
         self.applied_action = FilteredVelocityResidualAction(1.0, np.zeros(6), np.zeros(7), False, False)
         self.feature_adapter.reset()
@@ -461,6 +474,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "mean_phase_memory_score": self.cumulative_phase_memory_score / count,
             "mean_phase_memory_gate": self.cumulative_phase_memory_gate / count,
             "mean_stable_phase_memory_floor": self.cumulative_stable_phase_memory_floor / count,
+            "mean_energy_tank_multiplier": self.cumulative_energy_tank_multiplier / count,
+            "minimum_energy_tank_value": self.minimum_energy_tank_value,
             "action_slew_limited_fraction": self.slew_limited_actions / count,
             "policy_action_saturation_fraction": self.saturated_policy_actions / count,
             "fixture": asdict(self.fixture),
@@ -497,6 +512,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "phase_memory_score": self.phase_memory_score,
             "phase_memory_gate": self.phase_memory_gate,
             "stable_phase_memory_floor": self.stable_phase_memory_floor,
+            "energy_tank_multiplier": self.current_energy_tank_multiplier,
+            "energy_tank_value": self.current_energy_tank_value,
             "cartesian_yield_twist": self.applied_action.cartesian_yield_twist.copy(),
             "joint_velocity_command": self.previous_joint_velocity_command.copy(),
             "raw_joint_velocity_command": self.raw_joint_velocity_command.copy(),
@@ -562,6 +579,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         phase_projected_action = apply_rejoin_velocity_envelope(
             phase_projected_action, pose_error, twist_error, self.safety_config,
         )
+        phase_projected_action, self.current_energy_tank_multiplier, self.current_energy_tank_value = self.energy_tank.apply(
+            phase_projected_action, pose_error, twist_error, RL_DT,
+        )
         gated_action = phase_projected_action.copy()
         gated_action[0] *= self.current_authority_gate
         gated_action[1:] *= self.current_authority_gate
@@ -576,6 +596,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.cumulative_phase_memory_score += self.phase_memory_score
         self.cumulative_phase_memory_gate += self.phase_memory_gate
         self.cumulative_stable_phase_memory_floor += self.stable_phase_memory_floor
+        self.cumulative_energy_tank_multiplier += self.current_energy_tank_multiplier
+        self.minimum_energy_tank_value = min(self.minimum_energy_tank_value, self.current_energy_tank_value)
         impulse_before = self.contact_impulse
         action_start_error = self.previous_position_error
         final_position_error = 0.0
