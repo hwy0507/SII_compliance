@@ -75,3 +75,17 @@ Two deterministic confirmation gates were implemented and smoke tested: require 
 The ESN forecast remains technically useful: its development validation translation RMSE is `0.790 mm`, compared with `6.066 mm` for the matched constant-twist forecast. However, the current policy-independent authority modulation does **not** yet provide a stable, multi-seed control improvement and must not be reported as the proposed controller result.
 
 The positive fixed-action and single-seed signals justify continued research, but the next branch should change the forecast's control role rather than continue unstructured gate-parameter sweeps. The most defensible next branch is bounded WBC reference retiming or task-gain scheduling driven by predicted error dynamics, benchmarked separately from the PPO residual actor.
+
+## Predictive WBC Feedback Ablation
+
+Remote artifacts: `/home/arm1/vmc_mujoco_runtime/outputs/predictive_wbc_feedback_smoke_20260816`
+
+To separate ESN prediction from PPO stochasticity, a zero-residual deterministic benchmark compared fixed WBC with an ESN that scales only the WBC position and orientation feedback terms. The planned feedforward task twist and all downstream safety bounds stayed fixed.
+
+| Controller | Task/no-rod success | Effective collision | Recovery RMSE | Rejoin latency | Peak torque | Peak jerk |
+|---|---:|---:|---:|---:|---:|---:|
+| Fixed WBC | `9/9` | `8/9` | `8.570 mm` | `618.9 ms` | `31.409 Nm` | `950.3 m/s^3` |
+| ESN-WBC, minimum feedback `1.0` | `9/9` | `8/9` | `8.570 mm` | `618.9 ms` | `31.409 Nm` | `950.3 m/s^3` |
+| ESN-WBC, minimum feedback `0.60` | `9/9` | `8/9` | `8.728 mm` | `627.8 ms` | `31.402 Nm` | `960.4 m/s^3` |
+
+The `1.0` row is exactly identical to fixed WBC, confirming the forecast mode and evaluation interface are mechanically equivalent when no gain modulation is allowed. The `0.60` controller is safe but worsens recovery RMSE by `0.158 mm`, rejoin by `8.9 ms`, and peak jerk by `10.2 m/s^3`; its small torque and impulse reductions do not compensate. Direct ESN modulation of fixed WBC feedback is therefore a negative ablation and will not receive more training budget.
