@@ -181,6 +181,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.contact_impulse = 0.0
         self.peak_torque = 0.0
         self.peak_jerk = 0.0
+        self.peak_recovery_jerk = 0.0
         self.minimum_torque_feasible_scale = 1.0
         self.hard_limit_seen = False
         self.rod_hand_observed = False
@@ -312,7 +313,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.previous_acceleration[:] = 0.0
         self.previous_position_error = 0.0
         self.raw_joint_velocity_command[:] = 0.0
-        self.peak_force = self.contact_impulse = self.peak_torque = self.peak_jerk = 0.0
+        self.peak_force = self.contact_impulse = self.peak_torque = self.peak_jerk = self.peak_recovery_jerk = 0.0
         self.minimum_torque_feasible_scale = 1.0
         self.hard_limit_seen = self.rod_hand_observed = False
         self.slew_limited_actions = self.saturated_policy_actions = 0
@@ -380,6 +381,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         jerk = (acceleration - self.previous_acceleration) / CONTROL_DT
         jerk_norm = float(np.linalg.norm(jerk[:3]))
         self.peak_jerk = max(self.peak_jerk, jerk_norm)
+        release_time_s = self.fixture.rod_start_time_s + ROD_PROFILE_DURATION_S
+        if self.rod_enabled and release_time_s < time_s < self.fixture.grasp_time_s:
+            self.peak_recovery_jerk = max(self.peak_recovery_jerk, jerk_norm)
         self.peak_torque = max(self.peak_torque, float(np.max(np.abs(applied_torque))))
         self.minimum_torque_feasible_scale = min(self.minimum_torque_feasible_scale, feasible_scale)
         self.hard_limit_seen = self.hard_limit_seen or bool(
@@ -422,6 +426,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "contact_impulse_ns": self.contact_impulse,
             "peak_torque_nm": self.peak_torque,
             "peak_jerk_mps3": self.peak_jerk,
+            "peak_recovery_jerk_mps3": self.peak_recovery_jerk,
             "hard_torque_limit": self.hard_limit_seen,
             "finite_state": finite,
             "minimum_torque_feasible_scale": self.minimum_torque_feasible_scale,

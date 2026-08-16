@@ -13,7 +13,7 @@ import numpy as np
 
 REPORT_NAME = "wbc_velocity_residual_paired_evaluation.json"
 METRICS = (
-    "recovery_rmse_mm", "contact_impulse_ns", "peak_jerk_mps3", "peak_torque_nm",
+    "recovery_rmse_mm", "contact_impulse_ns", "peak_jerk_mps3", "peak_recovery_jerk_mps3", "peak_torque_nm",
     "paired_offset_rmse_mm", "peak_paired_offset_mm", "mean_wbc_slowdown", "mean_yield_twist_norm",
 )
 

@@ -93,7 +93,7 @@ def _summary(records: list[dict[str, Any]]) -> dict[str, Any]:
     }
     for key in (
         "peak_paired_offset_mm", "paired_offset_rmse_mm", "recovery_rmse_mm",
-        "peak_torque_nm", "peak_jerk_mps3", "peak_contact_force_n", "contact_impulse_ns",
+        "peak_torque_nm", "peak_jerk_mps3", "peak_recovery_jerk_mps3", "peak_contact_force_n", "contact_impulse_ns",
         "mean_wbc_slowdown", "mean_yield_twist_norm", "action_slew_limited_fraction",
         "policy_action_saturation_fraction", "mean_authority_gate", "mean_predictive_authority_multiplier",
     ):
@@ -112,7 +112,7 @@ def main() -> None:
     parser.add_argument("--fan-ye-model-npz", type=Path, required=True)
     parser.add_argument("--fan-ye-train-summary-json", type=Path, required=True)
     parser.add_argument("--observation-mode", choices=PandaWBCVelocityResidualEnv.observation_modes, required=True)
-    parser.add_argument("--reward-profile", choices=("balanced", "contact_safe", "recovery_priority", "impulse_constrained"), default="balanced")
+    parser.add_argument("--reward-profile", choices=("balanced", "contact_safe", "recovery_priority", "impulse_constrained", "smooth_recovery"), default="balanced")
     parser.add_argument("--model", type=Path, default=None)
     parser.add_argument("--vecnormalize", type=Path, default=None)
     parser.add_argument("--neutral-wbc", action="store_true", help="Evaluate all-zero action, exactly the fixed-WBC velocity controller.")
@@ -202,6 +202,7 @@ def main() -> None:
                 "rejoin_latency_s": _rejoin_latency(rod["time"], position_error, release),
                 "peak_torque_nm": float(rod_terminal["peak_torque_nm"]),
                 "peak_jerk_mps3": float(rod_terminal["peak_jerk_mps3"]),
+                "peak_recovery_jerk_mps3": float(rod_terminal["peak_recovery_jerk_mps3"]),
                 "peak_contact_force_n": float(rod_terminal["peak_contact_force_n"]),
                 "contact_impulse_ns": float(rod_terminal["contact_impulse_ns"]),
                 "mean_wbc_slowdown": float(rod_terminal["mean_wbc_slowdown"]),

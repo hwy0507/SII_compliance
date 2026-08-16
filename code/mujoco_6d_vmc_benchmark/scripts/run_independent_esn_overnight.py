@@ -286,7 +286,7 @@ def main() -> None:
         raise FileNotFoundError(f"forecast model is missing: {args.forecast_model_npz}")
     seeds = tuple(int(value) for value in _parse_csv(args.seeds))
     profiles = _parse_csv(args.profiles)
-    allowed_profiles = {"balanced", "contact_safe", "recovery_priority", "impulse_constrained"}
+    allowed_profiles = {"balanced", "contact_safe", "recovery_priority", "impulse_constrained", "smooth_recovery"}
     if not set(profiles) <= allowed_profiles:
         raise ValueError(f"profiles must be a subset of {sorted(allowed_profiles)}")
     args.output_root.mkdir(parents=True, exist_ok=True)

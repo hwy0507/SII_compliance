@@ -77,6 +77,19 @@ def reward_profile(name: str) -> VelocityResidualRewardConfig:
             slowdown_weight=0.004,
             yield_magnitude_weight=0.003,
         )
+    if name == "smooth_recovery":
+        return replace(
+            base,
+            post_release_error_weight=0.140,
+            recovery_progress_weight=0.090,
+            recovery_jerk_weight=0.012,
+            jerk_reference_mps3=500.0,
+            action_change_weight=0.012,
+            raw_policy_action_weight=0.012,
+            contact_impulse_weight=0.060,
+            slowdown_weight=0.004,
+            yield_magnitude_weight=0.003,
+        )
     raise ValueError(f"unknown reward profile: {name}")
 
 
@@ -162,7 +175,7 @@ def main() -> None:
     parser.add_argument("--fan-ye-model-npz", type=Path, required=True)
     parser.add_argument("--fan-ye-train-summary-json", type=Path, required=True)
     parser.add_argument("--observation-mode", choices=PandaWBCVelocityResidualEnv.observation_modes, required=True)
-    parser.add_argument("--reward-profile", choices=("balanced", "contact_safe", "recovery_priority", "impulse_constrained"), default="balanced")
+    parser.add_argument("--reward-profile", choices=("balanced", "contact_safe", "recovery_priority", "impulse_constrained", "smooth_recovery"), default="balanced")
     parser.add_argument("--total-timesteps", type=int, default=1_000_000)
     parser.add_argument("--n-envs", type=int, default=8)
     parser.add_argument("--seed", type=int, default=20260820)
