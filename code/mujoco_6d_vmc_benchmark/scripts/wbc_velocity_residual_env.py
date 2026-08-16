@@ -24,6 +24,7 @@ from fan_ye_esn_rl_adapter import (
     encode_applied_residual_context,
     encode_kinematic_pose_forecast,
     encode_wbc_current_feature,
+    WBC_POSE_ERROR_SCALE,
 )
 from fixed_panda_wbc import FixedBasePandaWBC, WBCCommand
 from run_benchmark import ARM_DOF, CONTROL_DT, TORQUE_LIMITS, body_jacobian, body_twist, so3_log
@@ -37,6 +38,7 @@ from wbc_velocity_residual_core import (
     safe_joint_velocity_command,
     safe_velocity_tracking_torque,
     deployable_authority_gate,
+    predictive_authority_multiplier,
     project_yield_action_to_error_phase,
 )
 
@@ -101,7 +103,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
     """Panda pick task controlled by WBC plus an independent learned residual."""
 
     metadata = {"render_modes": []}
-    observation_modes = ("current_mlp", "kinematic_forecast_mlp", "fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_esn")
+    observation_modes = ("current_mlp", "kinematic_forecast_mlp", "fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_esn", "fan_ye_forecast_authority_esn")
 
     def __init__(
         self,
@@ -140,6 +142,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "fan_ye_multiscale_esn": self.feature_adapter.multiscale_feature_dimension,
             "fan_ye_closed_loop_esn": self.feature_adapter.closed_loop_feature_dimension,
             "fan_ye_forecast_esn": CURRENT_WBC_FEATURE_DIMENSION + 6,
+            "fan_ye_forecast_authority_esn": CURRENT_WBC_FEATURE_DIMENSION,
         }[observation_mode]
         self.action_space = gym.spaces.Box(-1.0, 1.0, shape=(7,), dtype=np.float32)
         self.observation_space = gym.spaces.Box(-10.0, 10.0, shape=(observation_dimension,), dtype=np.float32)
@@ -179,6 +182,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.cumulative_yield_norm = 0.0
         self.current_authority_gate = 0.0
         self.cumulative_authority_gate = 0.0
+        self.current_predictive_authority_multiplier = 1.0
+        self.cumulative_predictive_authority_multiplier = 0.0
+        self.predicted_delta_pose_error = np.zeros(6, dtype=float)
         self.reset(seed=seed)
 
     def _build_scene(self) -> None:
@@ -254,6 +260,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             return self.feature_adapter.observe_multiscale(student, pose_error, twist_error)
         if self.observation_mode == "fan_ye_forecast_esn":
             return self.feature_adapter.observe_forecast(student, pose_error, twist_error)
+        if self.observation_mode == "fan_ye_forecast_authority_esn":
+            forecast_feature = self.feature_adapter.observe_forecast(student, pose_error, twist_error)
+            self.predicted_delta_pose_error = np.asarray(forecast_feature[-6:], dtype=float)
+            return forecast_feature[:CURRENT_WBC_FEATURE_DIMENSION].astype(np.float32)
         context = encode_applied_residual_context(
             self.applied_action.wbc_scale, self.applied_action.cartesian_yield_twist,
             minimum_wbc_scale=self.safety_config.minimum_wbc_scale,
@@ -285,6 +295,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.slew_limited_actions = self.saturated_policy_actions = 0
         self.cumulative_wbc_slowdown = self.cumulative_yield_norm = 0.0
         self.current_authority_gate = self.cumulative_authority_gate = 0.0
+        self.current_predictive_authority_multiplier = 1.0
+        self.cumulative_predictive_authority_multiplier = 0.0
+        self.predicted_delta_pose_error[:] = 0.0
         self.action_filter.reset()
         self.applied_action = FilteredVelocityResidualAction(1.0, np.zeros(6), np.zeros(7), False, False)
         self.feature_adapter.reset()
@@ -390,6 +403,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "mean_wbc_slowdown": self.cumulative_wbc_slowdown / count,
             "mean_yield_twist_norm": self.cumulative_yield_norm / count,
             "mean_authority_gate": self.cumulative_authority_gate / count,
+            "mean_predictive_authority_multiplier": self.cumulative_predictive_authority_multiplier / count,
             "action_slew_limited_fraction": self.slew_limited_actions / count,
             "policy_action_saturation_fraction": self.saturated_policy_actions / count,
             "fixture": asdict(self.fixture),
@@ -420,6 +434,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "wbc_twist_error": command.task_twist_world - body_twist(self.model, self.data, self._hand_id),
             "wbc_scale": self.applied_action.wbc_scale,
             "authority_gate": self.current_authority_gate,
+            "predictive_authority_multiplier": self.current_predictive_authority_multiplier,
+            "predicted_delta_pose_error": self.predicted_delta_pose_error.copy(),
             "cartesian_yield_twist": self.applied_action.cartesian_yield_twist.copy(),
             "joint_velocity_command": self.previous_joint_velocity_command.copy(),
             "raw_joint_velocity_command": self.raw_joint_velocity_command.copy(),
@@ -442,6 +458,12 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         twist_error = command.task_twist_world - body_twist(self.model, self.data, self._hand_id)
         tracking_error = float(np.linalg.norm(pose_error[:3]))
         self.current_authority_gate = deployable_authority_gate(tracking_error, self.safety_config)
+        if self.observation_mode == "fan_ye_forecast_authority_esn":
+            self.current_predictive_authority_multiplier = predictive_authority_multiplier(
+                pose_error / WBC_POSE_ERROR_SCALE, self.predicted_delta_pose_error, self.safety_config
+            )
+        else:
+            self.current_predictive_authority_multiplier = 1.0
         # The benchmark's perturbation is defined during the fixed WBC approach
         # and rejoin window.  Once the preplanned gripper-close phase begins,
         # residual authority smoothly exits through the same action filter and
@@ -449,6 +471,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         # a contact, force, rod, obstacle, or future-release signal.
         if self.residual_window_end_at_grasp and self.step_count * RL_DT >= self.fixture.grasp_time_s:
             self.current_authority_gate = 0.0
+        self.current_authority_gate *= self.current_predictive_authority_multiplier
         phase_projected_action = project_yield_action_to_error_phase(
             raw_policy_action, pose_error, twist_error, self.safety_config,
         )
@@ -461,6 +484,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.cumulative_wbc_slowdown += 1.0 - self.applied_action.wbc_scale
         self.cumulative_yield_norm += float(np.linalg.norm(self.applied_action.cartesian_yield_twist))
         self.cumulative_authority_gate += self.current_authority_gate
+        self.cumulative_predictive_authority_multiplier += self.current_predictive_authority_multiplier
         impulse_before = self.contact_impulse
         action_start_error = self.previous_position_error
         final_position_error = 0.0

@@ -104,7 +104,10 @@ def make_env(
             observation_mode=observation_mode,
             fixtures=fixtures,
             rod_enabled=rod_enabled,
-            safety_config=VelocityResidualSafetyConfig(directional_phase_projection=directional_phase_projection),
+            safety_config=VelocityResidualSafetyConfig(
+                directional_phase_projection=directional_phase_projection,
+                predictive_authority_enabled=observation_mode == "fan_ye_forecast_authority_esn",
+            ),
             reward_config=reward_config,
             residual_window_end_at_grasp=residual_window_end_at_grasp,
             forecast_model_npz=forecast_model_npz,
@@ -163,8 +166,8 @@ def main() -> None:
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs < 1 or args.checkpoint_interval < 1:
         raise ValueError("timesteps, n-envs, and checkpoint interval must be positive")
-    if args.observation_mode == "fan_ye_forecast_esn" and args.forecast_model_npz is None:
-        raise ValueError("fan_ye_forecast_esn requires --forecast-model-npz")
+    if args.observation_mode in ("fan_ye_forecast_esn", "fan_ye_forecast_authority_esn") and args.forecast_model_npz is None:
+        raise ValueError(f"{args.observation_mode} requires --forecast-model-npz")
     if args.forecast_model_npz is not None and not args.forecast_model_npz.is_file():
         raise FileNotFoundError(f"forecast model is missing: {args.forecast_model_npz}")
     fixtures = load_development_fixtures(args.fixture_manifest, args.fixture_split)
@@ -220,6 +223,7 @@ def main() -> None:
             "fan_ye_multiscale_esn": "PPO readout over deployable current WBC state/errors plus fixed fast/slow Fan Ye reservoir states",
             "fan_ye_closed_loop_esn": "PPO readout over deployable current WBC state/errors plus fixed fast/slow Fan Ye reservoir states with a prior safety-filtered residual command in the reservoir recurrence only",
             "fan_ye_forecast_esn": "PPO readout over current WBC state/errors plus a fixed-reservoir ridge prediction of 120-ms WBC pose-error change",
+            "fan_ye_forecast_authority_esn": "PPO readout over current WBC state/errors; fixed ESN error-change forecast deterministically modulates residual authority before shared safety",
         }[args.observation_mode],
         "controller_family": "independent_wbc_velocity_residual",
         "uses_vmc": False,
@@ -227,19 +231,22 @@ def main() -> None:
             "policy_dimension": 7,
             "policy_action": "neutral-zero slowdown request plus normalized 6-D Cartesian yield velocity",
             "physical_action": "WBC velocity scale in [0.2,1.0] plus bounded world-frame Cartesian yield twist",
-            "shared_safety": asdict(VelocityResidualSafetyConfig()),
+            "shared_safety": asdict(VelocityResidualSafetyConfig(
+                directional_phase_projection=args.directional_phase_projection,
+                predictive_authority_enabled=args.observation_mode == "fan_ye_forecast_authority_esn",
+            )),
         },
         "observation_contract": {
             "mode": args.observation_mode,
-            "dimension": {"current_mlp": 32, "kinematic_forecast_mlp": 38, "fan_ye_esn": 96, "fan_ye_multiscale_esn": 160, "fan_ye_closed_loop_esn": 160, "fan_ye_forecast_esn": 38}[args.observation_mode],
+            "dimension": {"current_mlp": 32, "kinematic_forecast_mlp": 38, "fan_ye_esn": 96, "fan_ye_multiscale_esn": 160, "fan_ye_closed_loop_esn": 160, "fan_ye_forecast_esn": 38, "fan_ye_forecast_authority_esn": 32}[args.observation_mode],
             "current_input": ["q(7)", "qdot(7)", "fixed_WBC_task_twist(6)", "measured_WBC_pose_error(6)", "measured_WBC_twist_error(6)"],
-            "reservoir_state_dimension": {"current_mlp": 0, "kinematic_forecast_mlp": 0, "fan_ye_esn": 64, "fan_ye_multiscale_esn": 128, "fan_ye_closed_loop_esn": 128, "fan_ye_forecast_esn": 128}[args.observation_mode],
+            "reservoir_state_dimension": {"current_mlp": 0, "kinematic_forecast_mlp": 0, "fan_ye_esn": 64, "fan_ye_multiscale_esn": 128, "fan_ye_closed_loop_esn": 128, "fan_ye_forecast_esn": 128, "fan_ye_forecast_authority_esn": 128}[args.observation_mode],
             "reservoir_time_constants_s": (
                 None if args.observation_mode not in ("fan_ye_multiscale_esn", "fan_ye_closed_loop_esn")
                 else ([0.04253725603074088, 0.14001593770536352] if args.observation_mode == "fan_ye_multiscale_esn" else [0.048321880926077046, 0.12635851180063093])
             ),
             "reservoir_recurrence_extra": None if args.observation_mode != "fan_ye_closed_loop_esn" else "prior shared-safety-filtered 7-D applied residual command; not exposed directly to PPO",
-            "forecast": None if args.observation_mode not in ("kinematic_forecast_mlp", "fan_ye_forecast_esn") else (
+            "forecast": None if args.observation_mode not in ("kinematic_forecast_mlp", "fan_ye_forecast_esn", "fan_ye_forecast_authority_esn") else (
                 "constant-twist current-error-change extrapolation, 120 ms" if args.observation_mode == "kinematic_forecast_mlp"
                 else {"model": str(args.forecast_model_npz), "horizon_s": 0.120, "output": "normalized WBC pose-error change 120 ms ahead"}
             ),

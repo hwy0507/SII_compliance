@@ -7,6 +7,7 @@ from wbc_velocity_residual_core import (
     VelocityResidualActionFilter,
     VelocityResidualSafetyConfig,
     deployable_authority_gate,
+    predictive_authority_multiplier,
     project_yield_action_to_error_phase,
     safe_joint_velocity_command,
     safe_velocity_tracking_torque,
@@ -47,6 +48,23 @@ def test_deployable_authority_gate_is_smooth_and_bounded() -> None:
     assert np.isclose(deployable_authority_gate(midpoint, config), 0.5)
     assert deployable_authority_gate(config.authority_gate_full_error_m, config) == 1.0
     assert deployable_authority_gate(1.0, config) == 1.0
+
+
+def test_predictive_authority_releases_only_on_causal_radial_recovery() -> None:
+    config = VelocityResidualSafetyConfig(
+        predictive_authority_enabled=True,
+        predictive_authority_min_multiplier=0.25,
+        predictive_authority_recovery_deadband=0.05,
+    )
+    error = np.array([0.01, 0.0, 0.0, 0.0, 0.0, 0.0])
+    growth = np.array([0.002, 0.0, 0.0, 0.0, 0.0, 0.0])
+    recovery = np.array([-0.002, 0.0, 0.0, 0.0, 0.0, 0.0])
+    assert predictive_authority_multiplier(error, growth, config) == 1.0
+    assert predictive_authority_multiplier(error, recovery, config) < 1.0
+    assert predictive_authority_multiplier(error, recovery, config) >= config.predictive_authority_min_multiplier
+    assert predictive_authority_multiplier(error, np.zeros(6), config) == 1.0
+    disabled = VelocityResidualSafetyConfig()
+    assert predictive_authority_multiplier(error, recovery, disabled) == 1.0
 
 
 def test_directional_phase_projection_only_keeps_causal_yield_or_rejoin_component() -> None:

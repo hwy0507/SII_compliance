@@ -228,7 +228,7 @@ def main() -> None:
     parser.add_argument("--total-timesteps", type=int, default=2_000_000)
     parser.add_argument("--n-envs", type=int, default=8)
     parser.add_argument("--checkpoint-interval", type=int, default=100_000)
-    parser.add_argument("--esn-observation-mode", choices=("fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_esn"), default="fan_ye_esn", help="Frozen v1, v2 fast/slow, action-aware, or predictive ESN.")
+    parser.add_argument("--esn-observation-mode", choices=("fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_esn", "fan_ye_forecast_authority_esn"), default="fan_ye_esn", help="Frozen v1, v2 fast/slow, action-aware, predictive, or predictive-authority ESN.")
     parser.add_argument("--directional-phase-projection", action="store_true", help="Use the same deployable WBC-error yield/rejoin projection in both lanes.")
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC at gripper-close; retain learned yielding only for approach/recovery.")
     parser.add_argument("--forecast-model-npz", type=Path, default=None, help="Development-train ESN forecast model for predictive observation mode.")
@@ -247,8 +247,8 @@ def main() -> None:
         raise FileNotFoundError("missing required campaign paths: " + ", ".join(missing))
     if "post_v4_development" not in args.fixture_manifest.as_posix():
         raise ValueError("overnight campaign must use the isolated post-V4 development manifest")
-    if args.esn_observation_mode == "fan_ye_forecast_esn" and args.forecast_model_npz is None:
-        raise ValueError("fan_ye_forecast_esn requires --forecast-model-npz")
+    if args.esn_observation_mode in ("fan_ye_forecast_esn", "fan_ye_forecast_authority_esn") and args.forecast_model_npz is None:
+        raise ValueError(f"{args.esn_observation_mode} requires --forecast-model-npz")
     if args.forecast_model_npz is not None and not args.forecast_model_npz.is_file():
         raise FileNotFoundError(f"forecast model is missing: {args.forecast_model_npz}")
     seeds = tuple(int(value) for value in _parse_csv(args.seeds))
@@ -286,6 +286,10 @@ def main() -> None:
     for profile in profiles:
         for seed in seeds:
             run_id = f"{profile}_seed{seed}"
+            # The authority variant keeps the ESN forecast out of the PPO
+            # observation; its matched baseline is therefore the same 32-D
+            # current-state MLP.  Only the direct forecast-observation variant
+            # uses the 38-D kinematic forecast MLP baseline.
             baseline_mode = "kinematic_forecast_mlp" if args.esn_observation_mode == "fan_ye_forecast_esn" else "current_mlp"
             mlp_dir = args.output_root / run_id / "current_mlp"
             esn_dir = args.output_root / run_id / "fan_ye_esn"

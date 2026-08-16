@@ -29,7 +29,7 @@ def _run_episode(
     trace: dict[str, list[np.ndarray | float]] = {key: [] for key in (
         "time", "ee_position", "nominal_position", "ee_twist", "nominal_twist",
         "joint_position", "joint_velocity", "wbc_pose_error", "wbc_twist_error",
-        "wbc_scale", "authority_gate", "yield_twist", "joint_velocity_command", "torque", "policy_action",
+        "wbc_scale", "authority_gate", "predictive_authority_multiplier", "predicted_delta_pose_error", "yield_twist", "joint_velocity_command", "torque", "policy_action",
     )}
     terminal: dict[str, Any] = {}
     while True:
@@ -53,6 +53,8 @@ def _run_episode(
         trace["wbc_twist_error"].append(state["wbc_twist_error"])
         trace["wbc_scale"].append(float(state["wbc_scale"]))
         trace["authority_gate"].append(float(state["authority_gate"]))
+        trace["predictive_authority_multiplier"].append(float(state["predictive_authority_multiplier"]))
+        trace["predicted_delta_pose_error"].append(state["predicted_delta_pose_error"])
         trace["yield_twist"].append(state["cartesian_yield_twist"])
         trace["joint_velocity_command"].append(state["joint_velocity_command"])
         trace["torque"].append(state["applied_torque"])
@@ -93,7 +95,7 @@ def _summary(records: list[dict[str, Any]]) -> dict[str, Any]:
         "peak_paired_offset_mm", "paired_offset_rmse_mm", "recovery_rmse_mm",
         "peak_torque_nm", "peak_jerk_mps3", "peak_contact_force_n", "contact_impulse_ns",
         "mean_wbc_slowdown", "mean_yield_twist_norm", "action_slew_limited_fraction",
-        "policy_action_saturation_fraction", "mean_authority_gate",
+        "policy_action_saturation_fraction", "mean_authority_gate", "mean_predictive_authority_multiplier",
     ):
         result[key] = _distribution([float(record[key]) for record in records])
     latencies = [float(record["rejoin_latency_s"]) for record in records if record["rejoin_latency_s"] is not None]
@@ -131,8 +133,8 @@ def main() -> None:
         parser.error("learned evaluation requires --model and --vecnormalize")
     if fixed_action is not None and (args.model is not None or args.vecnormalize is not None):
         parser.error("fixed/neutral evaluation cannot be combined with learned model paths")
-    if args.observation_mode == "fan_ye_forecast_esn" and args.forecast_model_npz is None:
-        parser.error("fan_ye_forecast_esn requires --forecast-model-npz")
+    if args.observation_mode in ("fan_ye_forecast_esn", "fan_ye_forecast_authority_esn") and args.forecast_model_npz is None:
+        parser.error(f"{args.observation_mode} requires --forecast-model-npz")
     fixtures = load_development_fixtures(args.fixture_manifest, args.fixture_split)
     if args.max_fixtures is not None:
         fixtures = fixtures[:args.max_fixtures]
@@ -144,7 +146,10 @@ def main() -> None:
         "observation_mode": args.observation_mode,
         "fixtures": fixtures,
         "reward_config": reward_profile(args.reward_profile),
-        "safety_config": VelocityResidualSafetyConfig(directional_phase_projection=args.directional_phase_projection),
+        "safety_config": VelocityResidualSafetyConfig(
+            directional_phase_projection=args.directional_phase_projection,
+            predictive_authority_enabled=args.observation_mode == "fan_ye_forecast_authority_esn",
+        ),
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
         "forecast_model_npz": args.forecast_model_npz,
     }
@@ -188,6 +193,7 @@ def main() -> None:
                 "mean_wbc_slowdown": float(rod_terminal["mean_wbc_slowdown"]),
                 "mean_yield_twist_norm": float(rod_terminal["mean_yield_twist_norm"]),
                 "mean_authority_gate": float(rod_terminal["mean_authority_gate"]),
+                "mean_predictive_authority_multiplier": float(rod_terminal["mean_predictive_authority_multiplier"]),
                 "action_slew_limited_fraction": float(rod_terminal["action_slew_limited_fraction"]),
                 "policy_action_saturation_fraction": float(rod_terminal["policy_action_saturation_fraction"]),
             }
@@ -206,6 +212,8 @@ def main() -> None:
                 rod_wbc_twist_error=rod["wbc_twist_error"],
                 rod_wbc_scale=rod["wbc_scale"],
                 rod_authority_gate=rod["authority_gate"],
+                rod_predictive_authority_multiplier=rod["predictive_authority_multiplier"],
+                rod_predicted_delta_pose_error=rod["predicted_delta_pose_error"],
                 rod_yield_twist=rod["yield_twist"],
                 rod_joint_velocity_command=rod["joint_velocity_command"],
                 rod_torque=rod["torque"],

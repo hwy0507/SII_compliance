@@ -32,6 +32,11 @@ class VelocityResidualSafetyConfig:
     maximum_joint_acceleration_radps2: float = 8.0
     authority_gate_start_error_m: float = 0.004
     authority_gate_full_error_m: float = 0.012
+    predictive_authority_enabled: bool = False
+    predictive_authority_min_multiplier: float = 0.35
+    predictive_authority_max_multiplier: float = 1.0
+    predictive_authority_recovery_deadband: float = 0.05
+    predictive_authority_release_gain: float = 1.0
     directional_phase_projection: bool = False
     directional_phase_minimum_error_m: float = 0.004
     directional_phase_rate_deadband_m2ps: float = 2.0e-5
@@ -57,6 +62,10 @@ class VelocityResidualSafetyConfig:
             self.authority_gate_full_error_m,
             self.directional_phase_minimum_error_m,
             self.directional_phase_rate_deadband_m2ps,
+            self.predictive_authority_min_multiplier,
+            self.predictive_authority_max_multiplier,
+            self.predictive_authority_recovery_deadband,
+            self.predictive_authority_release_gain,
         ])
         gains = np.asarray(self.velocity_gain_nm_per_radps, dtype=float)
         rates = np.asarray(self.maximum_torque_rate_nmps, dtype=float)
@@ -66,6 +75,10 @@ class VelocityResidualSafetyConfig:
             raise ValueError("minimum_wbc_scale must be below one")
         if self.authority_gate_full_error_m <= self.authority_gate_start_error_m:
             raise ValueError("authority gate full-error threshold must exceed its start threshold")
+        if self.predictive_authority_min_multiplier > self.predictive_authority_max_multiplier:
+            raise ValueError("predictive authority minimum must not exceed maximum")
+        if self.predictive_authority_max_multiplier > 1.0:
+            raise ValueError("predictive authority maximum cannot amplify policy authority")
         if gains.shape != (ARM_DOF,) or rates.shape != (ARM_DOF,):
             raise ValueError("velocity gains and torque rates must be seven-vectors")
         if not np.all(np.isfinite(gains)) or not np.all(np.isfinite(rates)) or np.any(gains <= 0.0) or np.any(rates <= 0.0):
@@ -175,6 +188,45 @@ def deployable_authority_gate(
         1.0,
     )
     return float(phase * phase * (3.0 - 2.0 * phase))
+
+
+def predictive_authority_multiplier(
+    pose_error: np.ndarray,
+    predicted_delta_pose_error: np.ndarray,
+    config: VelocityResidualSafetyConfig,
+) -> float:
+    """Reduce residual authority when a causal forecast predicts rejoin.
+
+    Both vectors use the normalized coordinates of the fixed ESN forecaster
+    (translation and rotation are scaled before entering the reservoir).  The
+    radial projection is therefore dimensionless and combines all six
+    task-space channels without reading
+    force, contact, rod state, obstacle geometry, reward, or future phase.
+    Positive radial change means the WBC error is predicted to grow, so the
+    base authority is retained.  Negative radial change means predicted
+    rejoin, so authority is smoothly released.
+    """
+
+    error = np.asarray(pose_error, dtype=float)
+    delta = np.asarray(predicted_delta_pose_error, dtype=float)
+    if error.shape != (6,) or delta.shape != (6,) or not np.all(np.isfinite(error)) or not np.all(np.isfinite(delta)):
+        raise ValueError("predictive authority inputs must be finite six-vectors")
+    if not config.predictive_authority_enabled:
+        return 1.0
+    error_norm = float(np.linalg.norm(error))
+    if error_norm <= 1.0e-9:
+        return 1.0
+    radial_change = float(np.dot(error, delta) / error_norm)
+    recovery_fraction = max(0.0, -radial_change / error_norm)
+    deadband = config.predictive_authority_recovery_deadband
+    normalized_recovery = np.clip(
+        (recovery_fraction - deadband) / max(1.0 - deadband, 1.0e-9), 0.0, 1.0
+    )
+    release = config.predictive_authority_release_gain * normalized_recovery
+    multiplier = config.predictive_authority_max_multiplier - (
+        config.predictive_authority_max_multiplier - config.predictive_authority_min_multiplier
+    ) * np.clip(release, 0.0, 1.0)
+    return float(np.clip(multiplier, config.predictive_authority_min_multiplier, config.predictive_authority_max_multiplier))
 
 
 def project_yield_action_to_error_phase(
