@@ -58,8 +58,9 @@ def _train_command(
     total_timesteps: int,
     n_envs: int,
     checkpoint_interval: int,
+    residual_window_end_at_grasp: bool,
 ) -> list[str]:
-    return [
+    command = [
         python, str(repo / "scripts" / "train_wbc_velocity_residual.py"),
         "--menagerie", str(menagerie),
         "--output-dir", str(output_dir),
@@ -75,6 +76,9 @@ def _train_command(
         "--checkpoint-interval", str(checkpoint_interval),
         "--device", "cpu",
     ]
+    if residual_window_end_at_grasp:
+        command.append("--residual-window-end-at-grasp")
+    return command
 
 
 def _evaluation_command(
@@ -89,8 +93,9 @@ def _evaluation_command(
     summary_json: Path,
     observation_mode: str,
     reward_profile: str,
+    residual_window_end_at_grasp: bool,
 ) -> list[str]:
-    return [
+    command = [
         python, str(repo / "scripts" / "evaluate_wbc_velocity_residual.py"),
         "--menagerie", str(menagerie),
         "--output-dir", str(output_dir),
@@ -103,6 +108,9 @@ def _evaluation_command(
         "--model", str(run_dir / "ppo_wbc_residual_final.zip"),
         "--vecnormalize", str(run_dir / "vecnormalize.pkl"),
     ]
+    if residual_window_end_at_grasp:
+        command.append("--residual-window-end-at-grasp")
+    return command
 
 
 def _validation_gate(report_path: Path) -> dict[str, Any]:
@@ -208,6 +216,7 @@ def main() -> None:
     parser.add_argument("--total-timesteps", type=int, default=2_000_000)
     parser.add_argument("--n-envs", type=int, default=8)
     parser.add_argument("--checkpoint-interval", type=int, default=100_000)
+    parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC at gripper-close; retain learned yielding only for approach/recovery.")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs != 8 or args.checkpoint_interval < 1:
@@ -244,6 +253,7 @@ def main() -> None:
         "artifact_hashes": {str(path): _sha256(path) for path in required if path.is_file()},
         "fairness_contract": "matched seeds/profiles/steps/fixtures/PPO/safety/action; reservoir memory is the only MLP-vs-ESN difference",
         "v4_final_policy": "frozen and excluded",
+        "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
     }
     if manifest_path.exists() and json.loads(manifest_path.read_text()) != manifest:
         raise RuntimeError("existing campaign manifest differs; choose a new output root rather than silently mixing runs")
@@ -272,12 +282,14 @@ def main() -> None:
                 model_npz=args.fan_ye_model_npz, summary_json=args.fan_ye_train_summary_json,
                 observation_mode="current_mlp", reward_profile=profile, seed=seed,
                 total_timesteps=args.total_timesteps, n_envs=args.n_envs, checkpoint_interval=args.checkpoint_interval,
+                residual_window_end_at_grasp=args.residual_window_end_at_grasp,
             )
             esn_train = _train_command(
                 args.python, repo, output_dir=esn_dir, menagerie=args.menagerie, manifest=args.fixture_manifest,
                 model_npz=args.fan_ye_model_npz, summary_json=args.fan_ye_train_summary_json,
                 observation_mode="fan_ye_esn", reward_profile=profile, seed=seed,
                 total_timesteps=args.total_timesteps, n_envs=args.n_envs, checkpoint_interval=args.checkpoint_interval,
+                residual_window_end_at_grasp=args.residual_window_end_at_grasp,
             )
             entry["training"] = _launch_pair(
                 repo=repo, environment=environment, mlp_command=mlp_train, esn_command=esn_train,
@@ -298,11 +310,13 @@ def main() -> None:
                 args.python, repo, output_dir=mlp_dir / "validation", run_dir=mlp_dir, menagerie=args.menagerie,
                 manifest=args.fixture_manifest, model_npz=args.fan_ye_model_npz,
                 summary_json=args.fan_ye_train_summary_json, observation_mode="current_mlp", reward_profile=profile,
+                residual_window_end_at_grasp=args.residual_window_end_at_grasp,
             )
             esn_eval = _evaluation_command(
                 args.python, repo, output_dir=esn_dir / "validation", run_dir=esn_dir, menagerie=args.menagerie,
                 manifest=args.fixture_manifest, model_npz=args.fan_ye_model_npz,
                 summary_json=args.fan_ye_train_summary_json, observation_mode="fan_ye_esn", reward_profile=profile,
+                residual_window_end_at_grasp=args.residual_window_end_at_grasp,
             )
             entry["evaluation"] = _evaluate_pair(
                 repo=repo, environment=environment, mlp_command=mlp_eval, esn_command=esn_eval,

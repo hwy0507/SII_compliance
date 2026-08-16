@@ -110,6 +110,7 @@ def main() -> None:
     parser.add_argument("--neutral-wbc", action="store_true", help="Evaluate all-zero action, exactly the fixed-WBC velocity controller.")
     parser.add_argument("--fixed-action", type=str, default=None, help="Comma-separated seven-vector for bounded authority smoke tests.")
     parser.add_argument("--max-fixtures", type=int, default=None)
+    parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC from gripper-close onward.")
     args = parser.parse_args()
     fixed_action = None
     if args.neutral_wbc:
@@ -133,6 +134,7 @@ def main() -> None:
         "observation_mode": args.observation_mode,
         "fixtures": fixtures,
         "reward_config": reward_profile(args.reward_profile),
+        "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
     }
     template = None
     normalizer = None
@@ -202,6 +204,7 @@ def main() -> None:
         "protocol": "frozen deterministic policy; matched rod/no-rod MuJoCo physics; offline diagnostics only",
         "controller_family": "independent_wbc_velocity_residual",
         "uses_vmc": False,
+        "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
         "observation_mode": args.observation_mode,
         "neutral_wbc": args.neutral_wbc,
         "fixed_action": None if fixed_action is None else fixed_action.tolist(),

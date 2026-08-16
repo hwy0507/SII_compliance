@@ -106,6 +106,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         rod_enabled: bool = True,
         safety_config: VelocityResidualSafetyConfig | None = None,
         reward_config: VelocityResidualRewardConfig | None = None,
+        residual_window_end_at_grasp: bool = False,
         seed: int | None = None,
     ) -> None:
         super().__init__()
@@ -119,6 +120,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.rod_enabled = bool(rod_enabled)
         self.safety_config = safety_config or VelocityResidualSafetyConfig()
         self.reward_config = reward_config or VelocityResidualRewardConfig()
+        self.residual_window_end_at_grasp = bool(residual_window_end_at_grasp)
         self.feature_adapter = FanYeESNRLObservationAdapter(
             Path(fan_ye_model_npz), Path(fan_ye_train_summary_json)
         )
@@ -357,6 +359,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "controller_family": "wbc_velocity_residual",
             "observation_mode": self.observation_mode,
             "uses_vmc": False,
+            "residual_window_end_at_grasp": self.residual_window_end_at_grasp,
         }
 
     def diagnostics(self) -> dict[str, Any]:
@@ -390,6 +393,13 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         assert self.data is not None
         tracking_error = float(np.linalg.norm(command.target_position_m - self.data.xpos[self._hand_id]))
         self.current_authority_gate = deployable_authority_gate(tracking_error, self.safety_config)
+        # The benchmark's perturbation is defined during the fixed WBC approach
+        # and rejoin window.  Once the preplanned gripper-close phase begins,
+        # residual authority smoothly exits through the same action filter and
+        # the fixed WBC owns lift/carry.  This uses only the WBC task phase, not
+        # a contact, force, rod, obstacle, or future-release signal.
+        if self.residual_window_end_at_grasp and self.step_count * RL_DT >= self.fixture.grasp_time_s:
+            self.current_authority_gate = 0.0
         gated_action = raw_policy_action.copy()
         gated_action[0] *= self.current_authority_gate
         gated_action[1:] *= self.current_authority_gate

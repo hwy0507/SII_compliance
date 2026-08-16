@@ -77,6 +77,7 @@ def make_env(
     rank: int,
     seed: int,
     no_rod_every: int,
+    residual_window_end_at_grasp: bool,
 ):
     def factory() -> PandaWBCVelocityResidualEnv:
         rod_enabled = no_rod_every <= 0 or rank % no_rod_every != 0
@@ -89,6 +90,7 @@ def make_env(
             rod_enabled=rod_enabled,
             safety_config=VelocityResidualSafetyConfig(),
             reward_config=reward_config,
+            residual_window_end_at_grasp=residual_window_end_at_grasp,
             seed=seed + rank,
         )
     return factory
@@ -137,6 +139,7 @@ def main() -> None:
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--no-rod-every", type=int, default=4, help="Make every Nth environment a matched no-rod task; <=0 disables.")
     parser.add_argument("--checkpoint-interval", type=int, default=100_000)
+    parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC from gripper-close onward.")
     parser.add_argument("--resume", type=Path, default=None)
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs < 1 or args.checkpoint_interval < 1:
@@ -156,6 +159,7 @@ def main() -> None:
         rank=rank,
         seed=args.seed,
         no_rod_every=args.no_rod_every,
+        residual_window_end_at_grasp=args.residual_window_end_at_grasp,
     ) for rank in range(args.n_envs)]
     env = SubprocVecEnv(factories, start_method="spawn")
     env = VecMonitor(env, filename=str(args.output_dir / "monitor.csv"))
@@ -201,6 +205,7 @@ def main() -> None:
             "excluded": ["contact", "force", "rod state", "obstacle geometry", "future release", "fixture id"],
         },
         "fairness_contract": "MLP and ESN use the same action, safety layer, PPO network, reward, fixtures, seed, and step budget; only the fixed reservoir memory differs.",
+        "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
         "reward_profile": args.reward_profile,
         "reward_config": asdict(rewards),
         "total_timesteps_requested": args.total_timesteps,
