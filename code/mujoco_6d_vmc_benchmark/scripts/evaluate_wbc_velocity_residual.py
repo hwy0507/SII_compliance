@@ -160,7 +160,6 @@ def main() -> None:
         "safety_config": VelocityResidualSafetyConfig(
             directional_phase_projection=args.directional_phase_projection,
             rejoin_velocity_envelope=args.rejoin_velocity_envelope,
-            residual_energy_tank=args.residual_energy_tank,
             predictive_authority_enabled=args.observation_mode == "fan_ye_forecast_authority_esn",
             predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
             predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
@@ -169,6 +168,7 @@ def main() -> None:
             predictive_authority_require_measured_recovery=args.predictive_authority_require_measured_recovery,
         ),
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
+        "residual_energy_tank": args.residual_energy_tank,
         "forecast_model_npz": args.forecast_model_npz,
         "predictive_wbc_min_feedback_scale": args.predictive_wbc_min_feedback_scale,
         "predictive_wbc_growth_deadband": args.predictive_wbc_growth_deadband,

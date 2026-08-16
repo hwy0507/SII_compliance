@@ -128,7 +128,6 @@ def make_env(
             safety_config=VelocityResidualSafetyConfig(
                 directional_phase_projection=directional_phase_projection,
                 rejoin_velocity_envelope=rejoin_velocity_envelope,
-                residual_energy_tank=residual_energy_tank,
                 predictive_authority_enabled=observation_mode == "fan_ye_forecast_authority_esn",
                 predictive_authority_min_multiplier=predictive_authority_min_multiplier,
                 predictive_authority_recovery_deadband=predictive_authority_recovery_deadband,
@@ -138,6 +137,7 @@ def make_env(
             ),
             reward_config=reward_config,
             residual_window_end_at_grasp=residual_window_end_at_grasp,
+            residual_energy_tank=residual_energy_tank,
             forecast_model_npz=forecast_model_npz,
             seed=seed + rank,
         )
@@ -278,7 +278,6 @@ def main() -> None:
             "shared_safety": asdict(VelocityResidualSafetyConfig(
                 directional_phase_projection=args.directional_phase_projection,
                 rejoin_velocity_envelope=args.rejoin_velocity_envelope,
-                residual_energy_tank=args.residual_energy_tank,
                 predictive_authority_enabled=args.observation_mode == "fan_ye_forecast_authority_esn",
                 predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
                 predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
@@ -305,6 +304,7 @@ def main() -> None:
         },
         "fairness_contract": "Compared modes use the same deployable current state/errors, action, safety layer, PPO network, reward, fixtures, seed, and step budget; ESN variants differ only by fixed reservoir memory.",
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
+        "residual_energy_tank": args.residual_energy_tank,
         "directional_phase_projection": args.directional_phase_projection,
         "rejoin_velocity_envelope": args.rejoin_velocity_envelope,
         "residual_energy_tank": args.residual_energy_tank,
