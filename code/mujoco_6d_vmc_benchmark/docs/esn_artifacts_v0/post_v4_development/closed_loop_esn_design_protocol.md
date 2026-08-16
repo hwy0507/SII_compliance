@@ -49,3 +49,30 @@ same development manifest.  Both lanes must reach full task/no-rod success, at
 least 8/9 effective collisions, and no hard torque limit.  Recovery RMSE,
 rejoin latency, impulse, jerk, and peak torque are all reported; no single
 metric may be used to claim universal dominance.
+
+## Smoke outcome: rejected as the main ESN method
+
+The predeclared 102,400-step paired smoke (seed `20260961`) passed all gates in
+both lanes: task and matched no-rod success were 9/9, effective collision was
+8/9, and there were no hard torque limits.  Nevertheless, the closed-loop ESN
+is rejected from promotion because its non-safety metrics move in the wrong
+direction relative to the matched current-state MLP:
+
+| ESN-v3 minus MLP | effect |
+|---|---:|
+| recovery RMSE | +0.187 mm |
+| paired-offset RMSE | +1.193 mm |
+| peak paired offset | +1.862 mm |
+| peak torque | +4.207 Nm |
+| peak jerk | +9.1 m/s^3 |
+| contact impulse | -0.294 N s |
+| rejoin latency | -8.9 ms |
+
+The context is causal and the safety gates are intact, so this is not an
+interface failure.  It changes the policy's action distribution too strongly:
+mean filtered yield-twist norm rises from `0.0166` to `0.0602 m/s`, and mean
+slowdown rises from `0.00037` to `0.01046`.  The policy reduces loading impulse
+and rejoins slightly earlier by applying more residual authority, but it pays
+for that with larger trajectory departure, torque, and jerk.  The branch is
+retained as a negative ablation, defaulted off, and must not enter multi-seed
+training or be presented as an ESN-v2 improvement.
