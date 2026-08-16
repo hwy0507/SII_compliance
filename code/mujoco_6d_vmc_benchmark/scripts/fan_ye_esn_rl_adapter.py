@@ -31,6 +31,8 @@ from fan_ye_esn_design import FanYeAlignedESN, FanYeESNConfig, FanYeInputNormali
 
 
 CURRENT_WBC_FEATURE_DIMENSION = 32
+FORECAST_OUTPUT_DIMENSION = 6
+FORECAST_HORIZON_S = 0.120
 APPLIED_RESIDUAL_CONTEXT_DIMENSION = 7
 CLOSED_LOOP_ESN_INPUT_DIMENSION = CURRENT_WBC_FEATURE_DIMENSION + APPLIED_RESIDUAL_CONTEXT_DIMENSION
 WBC_POSE_ERROR_SCALE = np.array([0.060, 0.060, 0.060, 0.20, 0.20, 0.20], dtype=float)
@@ -138,13 +140,80 @@ def encode_applied_residual_context(
     return np.clip(np.concatenate(([slowdown], yield_twist / scales)), -1.0, 1.0).astype(np.float32)
 
 
+def encode_kinematic_pose_forecast(pose_error: np.ndarray, twist_error: np.ndarray) -> np.ndarray:
+    """Constant-twist, causal 120-ms pose-error forecast for the MLP control.
+
+    This is a deliberately simple matched baseline for the ESN forecast.  Both
+    methods receive the same current WBC state and six additional forecast
+    channels; only the method used to predict their future error differs.
+    """
+
+    pose = np.asarray(pose_error, dtype=float)
+    twist = np.asarray(twist_error, dtype=float)
+    if pose.shape != (6,) or twist.shape != (6,) or not np.all(np.isfinite(pose)) or not np.all(np.isfinite(twist)):
+        raise ValueError("kinematic forecast requires finite six-dimensional WBC errors")
+    predicted = pose + FORECAST_HORIZON_S * twist
+    return np.clip(predicted / WBC_POSE_ERROR_SCALE, -10.0, 10.0).astype(np.float32)
+
+
+class FixedErrorForecaster:
+    """Fixed multiscale Fan Ye memory with a ridge future-error readout.
+
+    The reservoirs stay frozen.  Only ``readout`` is fitted from development
+    train trajectories, using current/historical deployable WBC state to
+    predict the pose tracking error 120 ms ahead.  No control reward or
+    privileged collision quantity is a predictor input.
+    """
+
+    def __init__(self, readout: np.ndarray | None = None) -> None:
+        self.reservoirs = tuple(FanYeAlignedESN(config) for config in MULTISCALE_RESERVOIR_CONFIGS)
+        self.design_dimension = 1 + CURRENT_WBC_FEATURE_DIMENSION + sum(
+            reservoir.config.reservoir_size for reservoir in self.reservoirs
+        )
+        self.readout = np.zeros((FORECAST_OUTPUT_DIMENSION, self.design_dimension), dtype=float)
+        if readout is not None:
+            matrix = np.asarray(readout, dtype=float)
+            if matrix.shape != self.readout.shape or not np.all(np.isfinite(matrix)):
+                raise ValueError("forecast readout has invalid shape or non-finite values")
+            self.readout = matrix.copy()
+        self.reset()
+
+    @classmethod
+    def from_npz(cls, path: Path) -> "FixedErrorForecaster":
+        with np.load(path) as archive:
+            horizon = float(archive["forecast_horizon_s"])
+            if not np.isclose(horizon, FORECAST_HORIZON_S):
+                raise ValueError("forecast model horizon does not match the controller contract")
+            return cls(archive["forecast_readout"])
+
+    def reset(self) -> None:
+        for reservoir in self.reservoirs:
+            reservoir.reset()
+
+    def advance(self, current_feature: np.ndarray) -> np.ndarray:
+        current = np.asarray(current_feature, dtype=float)
+        if current.shape != (CURRENT_WBC_FEATURE_DIMENSION,) or not np.all(np.isfinite(current)):
+            raise ValueError("forecaster needs a finite current 32-D WBC feature")
+        states = []
+        for reservoir in self.reservoirs:
+            reservoir.advance(current)
+            states.append(reservoir.state)
+        return np.concatenate((np.array([1.0]), current, *states))
+
+    def forecast(self, current_feature: np.ndarray) -> np.ndarray:
+        prediction = self.readout @ self.advance(current_feature)
+        if not np.all(np.isfinite(prediction)):
+            raise RuntimeError("future-error forecast became non-finite")
+        return np.clip(prediction, -10.0, 10.0).astype(np.float32)
+
+
 class FanYeESNRLObservationAdapter:
     """Stateful, resettable current-state and multi-timescale ESN map."""
 
     student_input_fields = ("joint_position_7", "joint_velocity_7", "wbc_task_twist_6", "wbc_pose_error_6", "wbc_twist_error_6")
     excluded_fields = ("rod_contact", "rod_force", "rod_penetration", "rod_state", "obstacle_pose_or_geometry", "future_release", "fixture_id", "recovery_gate")
 
-    def __init__(self, model_npz: Path, training_summary_json: Path) -> None:
+    def __init__(self, model_npz: Path, training_summary_json: Path, forecast_model_npz: Path | None = None) -> None:
         summary = json.loads(training_summary_json.read_text())
         self.reservoir = FanYeAlignedESN(FanYeESNConfig(**summary["config"]))
         if self.reservoir.config.input_dimension != 20:
@@ -155,6 +224,7 @@ class FanYeESNRLObservationAdapter:
         # loading transient while the slow one preserves release/rejoin context.
         self.multiscale_reservoirs = tuple(FanYeAlignedESN(config) for config in MULTISCALE_RESERVOIR_CONFIGS)
         self.closed_loop_reservoirs = tuple(FanYeAlignedESN(config) for config in CLOSED_LOOP_RESERVOIR_CONFIGS)
+        self.error_forecaster = None if forecast_model_npz is None else FixedErrorForecaster.from_npz(forecast_model_npz)
         self.feature_dimension = CURRENT_WBC_FEATURE_DIMENSION + self.reservoir.config.reservoir_size
         self.multiscale_feature_dimension = CURRENT_WBC_FEATURE_DIMENSION + sum(
             item.config.reservoir_size for item in self.multiscale_reservoirs
@@ -170,6 +240,8 @@ class FanYeESNRLObservationAdapter:
             reservoir.reset()
         for reservoir in self.closed_loop_reservoirs:
             reservoir.reset()
+        if self.error_forecaster is not None:
+            self.error_forecaster.reset()
 
     def observe(
         self, observation: ESNObservation, pose_error: np.ndarray, twist_error: np.ndarray,
@@ -222,6 +294,24 @@ class FanYeESNRLObservationAdapter:
         feature = np.concatenate((current, *states))
         if feature.shape != (self.closed_loop_feature_dimension,) or not np.all(np.isfinite(feature)):
             raise RuntimeError("Fan Ye closed-loop adapter produced an invalid feature")
+        return feature.astype(np.float32)
+
+    def observe_forecast(
+        self, observation: ESNObservation, pose_error: np.ndarray, twist_error: np.ndarray,
+    ) -> np.ndarray:
+        """Return current 32-D state and a causal ESN 120-ms error forecast.
+
+        Unlike the rejected action-context ablation, the predicted value is a
+        dynamic state estimate, not a residual-action history.
+        """
+
+        if self.error_forecaster is None:
+            raise RuntimeError("fan_ye_forecast_esn requires a fitted forecast model")
+        current = encode_wbc_current_feature(observation, pose_error, twist_error)
+        forecast = self.error_forecaster.forecast(current)
+        feature = np.concatenate((current, forecast))
+        if feature.shape != (CURRENT_WBC_FEATURE_DIMENSION + FORECAST_OUTPUT_DIMENSION,) or not np.all(np.isfinite(feature)):
+            raise RuntimeError("Fan Ye forecast adapter produced an invalid feature")
         return feature.astype(np.float32)
 
     def normalized_input(self, observation: ESNObservation) -> np.ndarray:

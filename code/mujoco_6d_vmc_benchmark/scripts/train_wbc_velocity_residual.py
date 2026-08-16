@@ -93,6 +93,7 @@ def make_env(
     no_rod_every: int,
     residual_window_end_at_grasp: bool,
     directional_phase_projection: bool,
+    forecast_model_npz: Path | None,
 ):
     def factory() -> PandaWBCVelocityResidualEnv:
         rod_enabled = no_rod_every <= 0 or rank % no_rod_every != 0
@@ -106,6 +107,7 @@ def make_env(
             safety_config=VelocityResidualSafetyConfig(directional_phase_projection=directional_phase_projection),
             reward_config=reward_config,
             residual_window_end_at_grasp=residual_window_end_at_grasp,
+            forecast_model_npz=forecast_model_npz,
             seed=seed + rank,
         )
     return factory
@@ -156,10 +158,15 @@ def main() -> None:
     parser.add_argument("--checkpoint-interval", type=int, default=100_000)
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC from gripper-close onward.")
     parser.add_argument("--directional-phase-projection", action="store_true", help="Constrain yield/rejoin velocity to the causal WBC-error half-space.")
+    parser.add_argument("--forecast-model-npz", type=Path, default=None, help="Fitted development-train ESN forecast readout required by fan_ye_forecast_esn.")
     parser.add_argument("--resume", type=Path, default=None)
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs < 1 or args.checkpoint_interval < 1:
         raise ValueError("timesteps, n-envs, and checkpoint interval must be positive")
+    if args.observation_mode == "fan_ye_forecast_esn" and args.forecast_model_npz is None:
+        raise ValueError("fan_ye_forecast_esn requires --forecast-model-npz")
+    if args.forecast_model_npz is not None and not args.forecast_model_npz.is_file():
+        raise FileNotFoundError(f"forecast model is missing: {args.forecast_model_npz}")
     fixtures = load_development_fixtures(args.fixture_manifest, args.fixture_split)
     rewards = reward_profile(args.reward_profile)
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -177,6 +184,7 @@ def main() -> None:
         no_rod_every=args.no_rod_every,
         residual_window_end_at_grasp=args.residual_window_end_at_grasp,
         directional_phase_projection=args.directional_phase_projection,
+        forecast_model_npz=args.forecast_model_npz,
     ) for rank in range(args.n_envs)]
     env = SubprocVecEnv(factories, start_method="spawn")
     env = VecMonitor(env, filename=str(args.output_dir / "monitor.csv"))
@@ -207,9 +215,11 @@ def main() -> None:
     metadata = {
         "algorithm": {
             "current_mlp": "PPO readout over deployable current WBC state and tracking errors",
+            "kinematic_forecast_mlp": "PPO readout over current WBC state/errors plus a causal constant-twist 120-ms pose-error extrapolation",
             "fan_ye_esn": "PPO readout over deployable current WBC state/errors plus frozen Fan Ye v1 reservoir state",
             "fan_ye_multiscale_esn": "PPO readout over deployable current WBC state/errors plus fixed fast/slow Fan Ye reservoir states",
             "fan_ye_closed_loop_esn": "PPO readout over deployable current WBC state/errors plus fixed fast/slow Fan Ye reservoir states with a prior safety-filtered residual command in the reservoir recurrence only",
+            "fan_ye_forecast_esn": "PPO readout over current WBC state/errors plus a fixed-reservoir ridge prediction of 120-ms WBC pose error",
         }[args.observation_mode],
         "controller_family": "independent_wbc_velocity_residual",
         "uses_vmc": False,
@@ -221,14 +231,18 @@ def main() -> None:
         },
         "observation_contract": {
             "mode": args.observation_mode,
-            "dimension": {"current_mlp": 32, "fan_ye_esn": 96, "fan_ye_multiscale_esn": 160, "fan_ye_closed_loop_esn": 160}[args.observation_mode],
+            "dimension": {"current_mlp": 32, "kinematic_forecast_mlp": 38, "fan_ye_esn": 96, "fan_ye_multiscale_esn": 160, "fan_ye_closed_loop_esn": 160, "fan_ye_forecast_esn": 38}[args.observation_mode],
             "current_input": ["q(7)", "qdot(7)", "fixed_WBC_task_twist(6)", "measured_WBC_pose_error(6)", "measured_WBC_twist_error(6)"],
-            "reservoir_state_dimension": {"current_mlp": 0, "fan_ye_esn": 64, "fan_ye_multiscale_esn": 128, "fan_ye_closed_loop_esn": 128}[args.observation_mode],
+            "reservoir_state_dimension": {"current_mlp": 0, "kinematic_forecast_mlp": 0, "fan_ye_esn": 64, "fan_ye_multiscale_esn": 128, "fan_ye_closed_loop_esn": 128, "fan_ye_forecast_esn": 128}[args.observation_mode],
             "reservoir_time_constants_s": (
                 None if args.observation_mode not in ("fan_ye_multiscale_esn", "fan_ye_closed_loop_esn")
                 else ([0.04253725603074088, 0.14001593770536352] if args.observation_mode == "fan_ye_multiscale_esn" else [0.048321880926077046, 0.12635851180063093])
             ),
             "reservoir_recurrence_extra": None if args.observation_mode != "fan_ye_closed_loop_esn" else "prior shared-safety-filtered 7-D applied residual command; not exposed directly to PPO",
+            "forecast": None if args.observation_mode not in ("kinematic_forecast_mlp", "fan_ye_forecast_esn") else (
+                "constant-twist current-error extrapolation, 120 ms" if args.observation_mode == "kinematic_forecast_mlp"
+                else {"model": str(args.forecast_model_npz), "horizon_s": 0.120, "output": "normalized WBC pose error 120 ms ahead"}
+            ),
             "excluded": ["contact", "force", "rod state", "obstacle geometry", "future release", "fixture id"],
         },
         "fairness_contract": "Compared modes use the same deployable current state/errors, action, safety layer, PPO network, reward, fixtures, seed, and step budget; ESN variants differ only by fixed reservoir memory.",
@@ -247,6 +261,7 @@ def main() -> None:
             "model_npz": str(args.fan_ye_model_npz),
             "train_summary_json": str(args.fan_ye_train_summary_json),
         },
+        "forecast_model_npz": None if args.forecast_model_npz is None else str(args.forecast_model_npz),
         "holdout_policy": "V4 final is frozen and excluded from training/model selection.",
     }
     (args.output_dir / "training_metadata.json").write_text(json.dumps(metadata, indent=2, default=lambda value: value.tolist()) + "\n")

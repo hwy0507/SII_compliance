@@ -21,6 +21,8 @@ from train_fan_ye_esn_readout import GatedVMCTeacherConfig, teacher_actions_from
 from fan_ye_esn_policy import FanYeVMCPolicyConfig  # noqa: E402
 from fan_ye_esn_rl_adapter import (  # noqa: E402
     APPLIED_RESIDUAL_CONTEXT_DIMENSION,
+    FORECAST_HORIZON_S,
+    FixedErrorForecaster,
     CURRENT_WBC_FEATURE_DIMENSION,
     FanYeESNRLObservationAdapter,
     encode_applied_residual_context,
@@ -172,3 +174,19 @@ def test_applied_residual_context_is_bounded_and_rejects_invalid_yield() -> None
     np.testing.assert_allclose(context, np.array([1.0, 1.0, -1.0, 0.0, 1.0, -1.0, 0.0]))
     with np.testing.assert_raises(ValueError):
         encode_applied_residual_context(0.5, np.zeros(5))
+
+
+def test_fixed_error_forecaster_is_resettable_and_serializable(tmp_path: Path) -> None:
+    forecaster = FixedErrorForecaster()
+    current = np.zeros(CURRENT_WBC_FEATURE_DIMENSION)
+    design = forecaster.advance(current)
+    readout = np.zeros((6, len(design)))
+    readout[0, 0] = 0.25
+    model_path = tmp_path / "forecaster.npz"
+    np.savez_compressed(model_path, forecast_readout=readout, forecast_horizon_s=np.array(FORECAST_HORIZON_S))
+    restored = FixedErrorForecaster.from_npz(model_path)
+    predicted = restored.forecast(current)
+    assert predicted.shape == (6,)
+    assert np.isclose(predicted[0], 0.25)
+    restored.reset()
+    np.testing.assert_allclose(predicted, restored.forecast(current))

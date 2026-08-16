@@ -118,6 +118,7 @@ def main() -> None:
     parser.add_argument("--max-fixtures", type=int, default=None)
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC from gripper-close onward.")
     parser.add_argument("--directional-phase-projection", action="store_true", help="Constrain yield/rejoin velocity to the causal WBC-error half-space.")
+    parser.add_argument("--forecast-model-npz", type=Path, default=None, help="Fitted forecast readout required by fan_ye_forecast_esn.")
     args = parser.parse_args()
     fixed_action = None
     if args.neutral_wbc:
@@ -130,6 +131,8 @@ def main() -> None:
         parser.error("learned evaluation requires --model and --vecnormalize")
     if fixed_action is not None and (args.model is not None or args.vecnormalize is not None):
         parser.error("fixed/neutral evaluation cannot be combined with learned model paths")
+    if args.observation_mode == "fan_ye_forecast_esn" and args.forecast_model_npz is None:
+        parser.error("fan_ye_forecast_esn requires --forecast-model-npz")
     fixtures = load_development_fixtures(args.fixture_manifest, args.fixture_split)
     if args.max_fixtures is not None:
         fixtures = fixtures[:args.max_fixtures]
@@ -143,6 +146,7 @@ def main() -> None:
         "reward_config": reward_profile(args.reward_profile),
         "safety_config": VelocityResidualSafetyConfig(directional_phase_projection=args.directional_phase_projection),
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
+        "forecast_model_npz": args.forecast_model_npz,
     }
     template = None
     normalizer = None
@@ -224,6 +228,7 @@ def main() -> None:
         "vecnormalize": None if args.vecnormalize is None else str(args.vecnormalize),
         "fixture_manifest": str(args.fixture_manifest),
         "fixture_split": args.fixture_split,
+        "forecast_model_npz": None if args.forecast_model_npz is None else str(args.forecast_model_npz),
         "summary": _summary(records),
         "records": records,
     }

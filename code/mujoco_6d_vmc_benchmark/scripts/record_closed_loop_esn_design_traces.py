@@ -49,9 +49,10 @@ def main() -> None:
     parser.add_argument("--fan-ye-model-npz", type=Path, required=True)
     parser.add_argument("--fan-ye-train-summary-json", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--split", choices=("train", "validation"), default="train")
     parser.add_argument("--max-fixtures", type=int, default=None)
     args = parser.parse_args()
-    fixtures = load_development_fixtures(args.fixture_manifest, "train")
+    fixtures = load_development_fixtures(args.fixture_manifest, args.split)
     if args.max_fixtures is not None:
         fixtures = fixtures[:args.max_fixtures]
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -84,7 +85,7 @@ def main() -> None:
                 if terminated or truncated:
                     break
             np.savez_compressed(
-                args.output_dir / f"train_fixture_{fixture_index:02d}_closed_loop_probe.npz",
+                args.output_dir / f"{args.split}_fixture_{fixture_index:02d}_closed_loop_probe.npz",
                 **{key: np.asarray(value) for key, value in trace.items()},
             )
     finally:
