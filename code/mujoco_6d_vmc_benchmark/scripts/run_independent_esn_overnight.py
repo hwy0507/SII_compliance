@@ -61,6 +61,9 @@ def _train_command(
     residual_window_end_at_grasp: bool,
     directional_phase_projection: bool,
     forecast_model_npz: Path | None,
+    predictive_authority_min_multiplier: float,
+    predictive_authority_recovery_deadband: float,
+    predictive_authority_release_gain: float,
 ) -> list[str]:
     command = [
         python, str(repo / "scripts" / "train_wbc_velocity_residual.py"),
@@ -84,6 +87,11 @@ def _train_command(
         command.append("--directional-phase-projection")
     if forecast_model_npz is not None:
         command.extend(["--forecast-model-npz", str(forecast_model_npz)])
+    command.extend([
+        "--predictive-authority-min-multiplier", str(predictive_authority_min_multiplier),
+        "--predictive-authority-recovery-deadband", str(predictive_authority_recovery_deadband),
+        "--predictive-authority-release-gain", str(predictive_authority_release_gain),
+    ])
     return command
 
 
@@ -102,6 +110,9 @@ def _evaluation_command(
     residual_window_end_at_grasp: bool,
     directional_phase_projection: bool,
     forecast_model_npz: Path | None,
+    predictive_authority_min_multiplier: float,
+    predictive_authority_recovery_deadband: float,
+    predictive_authority_release_gain: float,
 ) -> list[str]:
     command = [
         python, str(repo / "scripts" / "evaluate_wbc_velocity_residual.py"),
@@ -122,6 +133,11 @@ def _evaluation_command(
         command.append("--directional-phase-projection")
     if forecast_model_npz is not None:
         command.extend(["--forecast-model-npz", str(forecast_model_npz)])
+    command.extend([
+        "--predictive-authority-min-multiplier", str(predictive_authority_min_multiplier),
+        "--predictive-authority-recovery-deadband", str(predictive_authority_recovery_deadband),
+        "--predictive-authority-release-gain", str(predictive_authority_release_gain),
+    ])
     return command
 
 
@@ -232,6 +248,9 @@ def main() -> None:
     parser.add_argument("--directional-phase-projection", action="store_true", help="Use the same deployable WBC-error yield/rejoin projection in both lanes.")
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC at gripper-close; retain learned yielding only for approach/recovery.")
     parser.add_argument("--forecast-model-npz", type=Path, default=None, help="Development-train ESN forecast model for predictive observation mode.")
+    parser.add_argument("--predictive-authority-min-multiplier", type=float, default=0.35)
+    parser.add_argument("--predictive-authority-recovery-deadband", type=float, default=0.05)
+    parser.add_argument("--predictive-authority-release-gain", type=float, default=1.0)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs != 8 or args.checkpoint_interval < 1:
@@ -276,6 +295,11 @@ def main() -> None:
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
         "directional_phase_projection": args.directional_phase_projection,
         "forecast_model_npz": None if args.forecast_model_npz is None else str(args.forecast_model_npz),
+        "predictive_authority": {
+            "minimum_multiplier": args.predictive_authority_min_multiplier,
+            "recovery_deadband": args.predictive_authority_recovery_deadband,
+            "release_gain": args.predictive_authority_release_gain,
+        },
     }
     if manifest_path.exists() and json.loads(manifest_path.read_text()) != manifest:
         raise RuntimeError("existing campaign manifest differs; choose a new output root rather than silently mixing runs")
@@ -312,6 +336,9 @@ def main() -> None:
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
                 directional_phase_projection=args.directional_phase_projection,
                 forecast_model_npz=None,
+                predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
+                predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
+                predictive_authority_release_gain=args.predictive_authority_release_gain,
             )
             esn_train = _train_command(
                 args.python, repo, output_dir=esn_dir, menagerie=args.menagerie, manifest=args.fixture_manifest,
@@ -321,6 +348,9 @@ def main() -> None:
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
                 directional_phase_projection=args.directional_phase_projection,
                 forecast_model_npz=args.forecast_model_npz,
+                predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
+                predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
+                predictive_authority_release_gain=args.predictive_authority_release_gain,
             )
             entry["training"] = _launch_pair(
                 repo=repo, environment=environment, mlp_command=mlp_train, esn_command=esn_train,
@@ -344,6 +374,9 @@ def main() -> None:
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
                 directional_phase_projection=args.directional_phase_projection,
                 forecast_model_npz=None,
+                predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
+                predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
+                predictive_authority_release_gain=args.predictive_authority_release_gain,
             )
             esn_eval = _evaluation_command(
                 args.python, repo, output_dir=esn_dir / "validation", run_dir=esn_dir, menagerie=args.menagerie,
@@ -352,6 +385,9 @@ def main() -> None:
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
                 directional_phase_projection=args.directional_phase_projection,
                 forecast_model_npz=args.forecast_model_npz,
+                predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
+                predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
+                predictive_authority_release_gain=args.predictive_authority_release_gain,
             )
             entry["evaluation"] = _evaluate_pair(
                 repo=repo, environment=environment, mlp_command=mlp_eval, esn_command=esn_eval,

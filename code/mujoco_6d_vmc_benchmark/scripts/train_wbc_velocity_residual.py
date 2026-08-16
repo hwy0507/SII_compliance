@@ -94,6 +94,9 @@ def make_env(
     residual_window_end_at_grasp: bool,
     directional_phase_projection: bool,
     forecast_model_npz: Path | None,
+    predictive_authority_min_multiplier: float,
+    predictive_authority_recovery_deadband: float,
+    predictive_authority_release_gain: float,
 ):
     def factory() -> PandaWBCVelocityResidualEnv:
         rod_enabled = no_rod_every <= 0 or rank % no_rod_every != 0
@@ -107,6 +110,9 @@ def make_env(
             safety_config=VelocityResidualSafetyConfig(
                 directional_phase_projection=directional_phase_projection,
                 predictive_authority_enabled=observation_mode == "fan_ye_forecast_authority_esn",
+                predictive_authority_min_multiplier=predictive_authority_min_multiplier,
+                predictive_authority_recovery_deadband=predictive_authority_recovery_deadband,
+                predictive_authority_release_gain=predictive_authority_release_gain,
             ),
             reward_config=reward_config,
             residual_window_end_at_grasp=residual_window_end_at_grasp,
@@ -162,6 +168,9 @@ def main() -> None:
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC from gripper-close onward.")
     parser.add_argument("--directional-phase-projection", action="store_true", help="Constrain yield/rejoin velocity to the causal WBC-error half-space.")
     parser.add_argument("--forecast-model-npz", type=Path, default=None, help="Fitted development-train ESN forecast readout required by fan_ye_forecast_esn.")
+    parser.add_argument("--predictive-authority-min-multiplier", type=float, default=0.35, help="Lowest residual-authority fraction allowed when the ESN forecasts WBC-error rejoin.")
+    parser.add_argument("--predictive-authority-recovery-deadband", type=float, default=0.05, help="Normalized predicted radial-recovery fraction below which authority is unchanged.")
+    parser.add_argument("--predictive-authority-release-gain", type=float, default=1.0, help="Gain mapping predicted radial recovery to authority release.")
     parser.add_argument("--resume", type=Path, default=None)
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs < 1 or args.checkpoint_interval < 1:
@@ -188,6 +197,9 @@ def main() -> None:
         residual_window_end_at_grasp=args.residual_window_end_at_grasp,
         directional_phase_projection=args.directional_phase_projection,
         forecast_model_npz=args.forecast_model_npz,
+        predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
+        predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
+        predictive_authority_release_gain=args.predictive_authority_release_gain,
     ) for rank in range(args.n_envs)]
     env = SubprocVecEnv(factories, start_method="spawn")
     env = VecMonitor(env, filename=str(args.output_dir / "monitor.csv"))
@@ -234,6 +246,9 @@ def main() -> None:
             "shared_safety": asdict(VelocityResidualSafetyConfig(
                 directional_phase_projection=args.directional_phase_projection,
                 predictive_authority_enabled=args.observation_mode == "fan_ye_forecast_authority_esn",
+                predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
+                predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
+                predictive_authority_release_gain=args.predictive_authority_release_gain,
             )),
         },
         "observation_contract": {
