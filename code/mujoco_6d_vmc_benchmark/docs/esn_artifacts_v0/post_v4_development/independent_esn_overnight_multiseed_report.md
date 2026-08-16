@@ -65,6 +65,12 @@ the examined seed while reducing ESN peak torque from 35.12 Nm to 32.48 Nm.
 Across all six balanced seeds, this task-window evaluation preserves the 6/6
 recovery-RMSE win rate while removing the systematic peak-torque disadvantage.
 
+This wrapper has not yet been accepted as a training-time constraint.  A first
+100k retraining smoke had 9/9 MLP task success but 8/9 ESN task success on one
+positive-Y rod fixture (matched no-rod success remained 9/9).  The training
+version therefore requires a separate multi-seed pilot before it can replace the
+original full-horizon balanced protocol.
+
 ## Next experiment
 
 The next campaign trains both MLP and ESN with the same task-window constraint
