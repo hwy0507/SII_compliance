@@ -215,11 +215,11 @@ def main() -> None:
     metadata = {
         "algorithm": {
             "current_mlp": "PPO readout over deployable current WBC state and tracking errors",
-            "kinematic_forecast_mlp": "PPO readout over current WBC state/errors plus a causal constant-twist 120-ms pose-error extrapolation",
+            "kinematic_forecast_mlp": "PPO readout over current WBC state/errors plus a causal constant-twist 120-ms pose-error-change extrapolation",
             "fan_ye_esn": "PPO readout over deployable current WBC state/errors plus frozen Fan Ye v1 reservoir state",
             "fan_ye_multiscale_esn": "PPO readout over deployable current WBC state/errors plus fixed fast/slow Fan Ye reservoir states",
             "fan_ye_closed_loop_esn": "PPO readout over deployable current WBC state/errors plus fixed fast/slow Fan Ye reservoir states with a prior safety-filtered residual command in the reservoir recurrence only",
-            "fan_ye_forecast_esn": "PPO readout over current WBC state/errors plus a fixed-reservoir ridge prediction of 120-ms WBC pose error",
+            "fan_ye_forecast_esn": "PPO readout over current WBC state/errors plus a fixed-reservoir ridge prediction of 120-ms WBC pose-error change",
         }[args.observation_mode],
         "controller_family": "independent_wbc_velocity_residual",
         "uses_vmc": False,
@@ -240,8 +240,8 @@ def main() -> None:
             ),
             "reservoir_recurrence_extra": None if args.observation_mode != "fan_ye_closed_loop_esn" else "prior shared-safety-filtered 7-D applied residual command; not exposed directly to PPO",
             "forecast": None if args.observation_mode not in ("kinematic_forecast_mlp", "fan_ye_forecast_esn") else (
-                "constant-twist current-error extrapolation, 120 ms" if args.observation_mode == "kinematic_forecast_mlp"
-                else {"model": str(args.forecast_model_npz), "horizon_s": 0.120, "output": "normalized WBC pose error 120 ms ahead"}
+                "constant-twist current-error-change extrapolation, 120 ms" if args.observation_mode == "kinematic_forecast_mlp"
+                else {"model": str(args.forecast_model_npz), "horizon_s": 0.120, "output": "normalized WBC pose-error change 120 ms ahead"}
             ),
             "excluded": ["contact", "force", "rod state", "obstacle geometry", "future release", "fixture id"],
         },

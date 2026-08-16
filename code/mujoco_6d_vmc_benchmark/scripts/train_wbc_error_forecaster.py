@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Fit and validate a causal Fan Ye ESN future WBC-error predictor.
+"""Fit and validate a causal Fan Ye ESN WBC-error-change predictor.
 
-The predictor maps the 32-D deployable state at time t to the normalized WBC
-pose error at t + 120 ms.  Its targets are used only while fitting/evaluating
+The predictor maps the 32-D deployable state at time t to the normalized change
+in WBC pose error at t + 120 ms.  Its targets are used only while fitting/evaluating
 the forecast model on the isolated post-V4 development splits.  At deployment
 the actor receives the ESN prediction, never future simulator state.
 """
@@ -37,7 +37,7 @@ def _finite(array: np.ndarray, columns: int, label: str) -> np.ndarray:
 
 
 def load_current_and_target(path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Load only policy-legal present signals and future pose-error labels."""
+    """Load policy-legal present signals and offline future-error-change labels."""
 
     with np.load(path) as archive:
         required = (
@@ -58,7 +58,7 @@ def load_current_and_target(path: Path) -> tuple[np.ndarray, np.ndarray, np.ndar
         encode_wbc_current_feature(ESNObservation(qi, qdoti, command), error, derivative)
         for qi, qdoti, command, error, derivative in zip(q, qdot, task_twist, pose, twist, strict=True)
     ], dtype=float)
-    targets = pose[FORECAST_STEPS:] / WBC_POSE_ERROR_SCALE
+    targets = (pose[FORECAST_STEPS:] - pose[:-FORECAST_STEPS]) / WBC_POSE_ERROR_SCALE
     kinematic = np.asarray([
         encode_kinematic_pose_forecast(error, derivative)
         for error, derivative in zip(pose[:-FORECAST_STEPS], twist[:-FORECAST_STEPS], strict=True)
@@ -109,7 +109,7 @@ def main() -> None:
     validation_design, validation_targets, validation_kinematic = design_and_targets(args.validation_traces)
     validation_esn = validation_design @ readout.T
     report = {
-        "stage": "development-only fixed-reservoir 120-ms WBC pose-error forecast",
+        "stage": "development-only fixed-reservoir 120-ms WBC pose-error-change forecast",
         "horizon_s": FORECAST_HORIZON_S,
         "horizon_control_steps": FORECAST_STEPS,
         "readout": "ridge regression on fixed fast/slow Fan Ye reservoir features",
@@ -125,7 +125,7 @@ def main() -> None:
             _metrics(validation_esn, validation_targets)["translation_rmse_mm"]
             / max(_metrics(validation_kinematic, validation_targets)["translation_rmse_mm"], 1.0e-12)
         ),
-        "selection_policy": "Promote only if forecast is finite and development-validation error is informative versus the matched causal kinematic baseline. Do not use V4 final.",
+        "selection_policy": "Promote only if the forecast change is finite and development-validation error is informative versus the matched causal kinematic baseline. Do not use V4 final.",
     }
     args.output_model_npz.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(

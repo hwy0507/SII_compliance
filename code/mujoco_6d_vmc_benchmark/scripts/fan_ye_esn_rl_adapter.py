@@ -141,7 +141,7 @@ def encode_applied_residual_context(
 
 
 def encode_kinematic_pose_forecast(pose_error: np.ndarray, twist_error: np.ndarray) -> np.ndarray:
-    """Constant-twist, causal 120-ms pose-error forecast for the MLP control.
+    """Causal 120-ms *change* in pose error for the MLP control.
 
     This is a deliberately simple matched baseline for the ESN forecast.  Both
     methods receive the same current WBC state and six additional forecast
@@ -152,8 +152,12 @@ def encode_kinematic_pose_forecast(pose_error: np.ndarray, twist_error: np.ndarr
     twist = np.asarray(twist_error, dtype=float)
     if pose.shape != (6,) or twist.shape != (6,) or not np.all(np.isfinite(pose)) or not np.all(np.isfinite(twist)):
         raise ValueError("kinematic forecast requires finite six-dimensional WBC errors")
-    predicted = pose + FORECAST_HORIZON_S * twist
-    return np.clip(predicted / WBC_POSE_ERROR_SCALE, -10.0, 10.0).astype(np.float32)
+    # The current pose error is already present in the 32-D state.  Supplying
+    # its future absolute value repeats that state and obscures whether the
+    # error is expected to grow or recover.  The matched baseline therefore
+    # receives only the constant-twist prediction of its change.
+    del pose
+    return np.clip(FORECAST_HORIZON_S * twist / WBC_POSE_ERROR_SCALE, -10.0, 10.0).astype(np.float32)
 
 
 class FixedErrorForecaster:
@@ -161,7 +165,7 @@ class FixedErrorForecaster:
 
     The reservoirs stay frozen.  Only ``readout`` is fitted from development
     train trajectories, using current/historical deployable WBC state to
-    predict the pose tracking error 120 ms ahead.  No control reward or
+    predict the *change* in pose tracking error 120 ms ahead.  No control reward or
     privileged collision quantity is a predictor input.
     """
 
