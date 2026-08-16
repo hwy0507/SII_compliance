@@ -39,6 +39,7 @@ def load_development_fixtures(path: Path, split: str) -> tuple[VelocityResidualF
         rod_approach_side=row.get("rod_approach_side", "negative_y"),
         rod_center_x_m=float(row.get("rod_center_x_m", 0.55)),
         rod_center_y_m=float(row.get("rod_center_y_m", 0.0)),
+        impactor_type=row.get("impactor_type", "rod"),
     ) for row in rows)
 
 

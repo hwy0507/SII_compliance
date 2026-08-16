@@ -1,0 +1,316 @@
+{
+  "stage": "frozen stable-phase ESN cross-geometry transfer; inference only; not V4 final holdout",
+  "controller_contract": "independent WBC velocity residual; ESN and VMC are separate algorithms",
+  "policy_input": "Panda proprioception, WBC command/error history, and fixed reservoir state only; no contact/force/impactor/future-release input",
+  "campaign_root": "/home/arm1/vmc_mujoco_runtime/outputs/esnv2_stable_phase_repro3_20260816",
+  "seed_id": "impulse_constrained_seed20260995",
+  "fixture_manifest": "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/docs/esn_artifacts_v0/post_v4_development/impactor_matrix_transfer_manifest.json",
+  "representatives": {
+    "mlp": {
+      "candidate_id": "step_102400",
+      "model": "/home/arm1/vmc_mujoco_runtime/outputs/esnv2_stable_phase_repro3_20260816/impulse_constrained_seed20260995/current_mlp/checkpoints/ppo_wbc_residual_102400_steps.zip",
+      "vecnormalize": "/home/arm1/vmc_mujoco_runtime/outputs/esnv2_stable_phase_repro3_20260816/impulse_constrained_seed20260995/current_mlp/checkpoints/ppo_wbc_residual_102400_steps_vecnormalize.pkl"
+    },
+    "stable_phase_esn": {
+      "candidate_id": "step_102400",
+      "model": "/home/arm1/vmc_mujoco_runtime/outputs/esnv2_stable_phase_repro3_20260816/impulse_constrained_seed20260995/fan_ye_esn/checkpoints/ppo_wbc_residual_102400_steps.zip",
+      "vecnormalize": "/home/arm1/vmc_mujoco_runtime/outputs/esnv2_stable_phase_repro3_20260816/impulse_constrained_seed20260995/fan_ye_esn/checkpoints/ppo_wbc_residual_102400_steps_vecnormalize.pkl"
+    }
+  },
+  "lanes": {
+    "mlp": [
+      {
+        "fixture_index": 0,
+        "impactor_type": "rod",
+        "fixture": {
+          "rod_stroke_m": 0.17,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 0.955,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_y",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0,
+          "impactor_type": "rod"
+        },
+        "valid": true,
+        "recovery_rmse_mm": 5.804739628451334,
+        "rejoin_latency_s": 0.405,
+        "peak_recovery_jerk_mps3": 88.8260975447194,
+        "contact_impulse_ns": 2.385999526730509,
+        "peak_torque_nm": 31.37251533612427,
+        "paired_offset_rmse_mm": 4.851306646893278
+      },
+      {
+        "fixture_index": 1,
+        "impactor_type": "ball",
+        "fixture": {
+          "rod_stroke_m": 0.145,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 0.955,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_y",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0,
+          "impactor_type": "ball"
+        },
+        "valid": true,
+        "recovery_rmse_mm": 5.791949410838418,
+        "rejoin_latency_s": 0.405,
+        "peak_recovery_jerk_mps3": 107.7861587859607,
+        "contact_impulse_ns": 2.3505576627197615,
+        "peak_torque_nm": 31.387383012474338,
+        "paired_offset_rmse_mm": 4.903839851211583
+      },
+      {
+        "fixture_index": 2,
+        "impactor_type": "hand_proxy",
+        "fixture": {
+          "rod_stroke_m": 0.145,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 0.955,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_y",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0,
+          "impactor_type": "hand_proxy"
+        },
+        "valid": true,
+        "recovery_rmse_mm": 4.478793083778871,
+        "rejoin_latency_s": 0.2450000000000001,
+        "peak_recovery_jerk_mps3": 62.392692785872775,
+        "contact_impulse_ns": 1.664098198265249,
+        "peak_torque_nm": 31.41479189776668,
+        "paired_offset_rmse_mm": 3.2960438301592028
+      }
+    ],
+    "stable_phase_esn": [
+      {
+        "fixture_index": 0,
+        "impactor_type": "rod",
+        "fixture": {
+          "rod_stroke_m": 0.17,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 0.955,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_y",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0,
+          "impactor_type": "rod"
+        },
+        "valid": true,
+        "recovery_rmse_mm": 3.454750298510792,
+        "rejoin_latency_s": 0.0050000000000001155,
+        "peak_recovery_jerk_mps3": 69.63308770193863,
+        "contact_impulse_ns": 2.3836763308917184,
+        "peak_torque_nm": 31.397531605551965,
+        "paired_offset_rmse_mm": 4.2026741423378855
+      },
+      {
+        "fixture_index": 1,
+        "impactor_type": "ball",
+        "fixture": {
+          "rod_stroke_m": 0.145,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 0.955,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_y",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0,
+          "impactor_type": "ball"
+        },
+        "valid": true,
+        "recovery_rmse_mm": 3.544138604005125,
+        "rejoin_latency_s": 0.0050000000000001155,
+        "peak_recovery_jerk_mps3": 73.28314242673177,
+        "contact_impulse_ns": 2.423921546049722,
+        "peak_torque_nm": 31.40756989883194,
+        "paired_offset_rmse_mm": 4.264205883815218
+      },
+      {
+        "fixture_index": 2,
+        "impactor_type": "hand_proxy",
+        "fixture": {
+          "rod_stroke_m": 0.145,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 0.955,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_y",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0,
+          "impactor_type": "hand_proxy"
+        },
+        "valid": true,
+        "recovery_rmse_mm": 3.5702031546055846,
+        "rejoin_latency_s": 0.0050000000000001155,
+        "peak_recovery_jerk_mps3": 18.381496214360336,
+        "contact_impulse_ns": 1.9090478509122062,
+        "peak_torque_nm": 31.395535721178657,
+        "paired_offset_rmse_mm": 2.933596121127011
+      }
+    ]
+  },
+  "paired": [
+    {
+      "impactor_type": "rod",
+      "both_valid": true,
+      "mlp": {
+        "fixture_index": 0,
+        "impactor_type": "rod",
+        "fixture": {
+          "rod_stroke_m": 0.17,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 0.955,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_y",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0,
+          "impactor_type": "rod"
+        },
+        "valid": true,
+        "recovery_rmse_mm": 5.804739628451334,
+        "rejoin_latency_s": 0.405,
+        "peak_recovery_jerk_mps3": 88.8260975447194,
+        "contact_impulse_ns": 2.385999526730509,
+        "peak_torque_nm": 31.37251533612427,
+        "paired_offset_rmse_mm": 4.851306646893278
+      },
+      "stable_phase_esn": {
+        "fixture_index": 0,
+        "impactor_type": "rod",
+        "fixture": {
+          "rod_stroke_m": 0.17,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 0.955,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_y",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0,
+          "impactor_type": "rod"
+        },
+        "valid": true,
+        "recovery_rmse_mm": 3.454750298510792,
+        "rejoin_latency_s": 0.0050000000000001155,
+        "peak_recovery_jerk_mps3": 69.63308770193863,
+        "contact_impulse_ns": 2.3836763308917184,
+        "peak_torque_nm": 31.397531605551965,
+        "paired_offset_rmse_mm": 4.2026741423378855
+      },
+      "delta_esn_minus_mlp": {
+        "recovery_rmse_mm": -2.3499893299405423,
+        "rejoin_latency_s": -0.3999999999999999,
+        "peak_recovery_jerk_mps3": -19.193009842780768,
+        "contact_impulse_ns": -0.0023231958387905927,
+        "peak_torque_nm": 0.025016269427695192,
+        "paired_offset_rmse_mm": -0.6486325045553922
+      }
+    },
+    {
+      "impactor_type": "ball",
+      "both_valid": true,
+      "mlp": {
+        "fixture_index": 1,
+        "impactor_type": "ball",
+        "fixture": {
+          "rod_stroke_m": 0.145,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 0.955,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_y",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0,
+          "impactor_type": "ball"
+        },
+        "valid": true,
+        "recovery_rmse_mm": 5.791949410838418,
+        "rejoin_latency_s": 0.405,
+        "peak_recovery_jerk_mps3": 107.7861587859607,
+        "contact_impulse_ns": 2.3505576627197615,
+        "peak_torque_nm": 31.387383012474338,
+        "paired_offset_rmse_mm": 4.903839851211583
+      },
+      "stable_phase_esn": {
+        "fixture_index": 1,
+        "impactor_type": "ball",
+        "fixture": {
+          "rod_stroke_m": 0.145,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 0.955,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_y",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0,
+          "impactor_type": "ball"
+        },
+        "valid": true,
+        "recovery_rmse_mm": 3.544138604005125,
+        "rejoin_latency_s": 0.0050000000000001155,
+        "peak_recovery_jerk_mps3": 73.28314242673177,
+        "contact_impulse_ns": 2.423921546049722,
+        "peak_torque_nm": 31.40756989883194,
+        "paired_offset_rmse_mm": 4.264205883815218
+      },
+      "delta_esn_minus_mlp": {
+        "recovery_rmse_mm": -2.2478108068332934,
+        "rejoin_latency_s": -0.3999999999999999,
+        "peak_recovery_jerk_mps3": -34.50301635922892,
+        "contact_impulse_ns": 0.07336388332996036,
+        "peak_torque_nm": 0.02018688635760313,
+        "paired_offset_rmse_mm": -0.6396339673963647
+      }
+    },
+    {
+      "impactor_type": "hand_proxy",
+      "both_valid": true,
+      "mlp": {
+        "fixture_index": 2,
+        "impactor_type": "hand_proxy",
+        "fixture": {
+          "rod_stroke_m": 0.145,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 0.955,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_y",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0,
+          "impactor_type": "hand_proxy"
+        },
+        "valid": true,
+        "recovery_rmse_mm": 4.478793083778871,
+        "rejoin_latency_s": 0.2450000000000001,
+        "peak_recovery_jerk_mps3": 62.392692785872775,
+        "contact_impulse_ns": 1.664098198265249,
+        "peak_torque_nm": 31.41479189776668,
+        "paired_offset_rmse_mm": 3.2960438301592028
+      },
+      "stable_phase_esn": {
+        "fixture_index": 2,
+        "impactor_type": "hand_proxy",
+        "fixture": {
+          "rod_stroke_m": 0.145,
+          "rod_height_m": 0.54,
+          "rod_start_time_s": 0.955,
+          "grasp_time_s": 2.4,
+          "rod_approach_side": "negative_y",
+          "rod_center_x_m": 0.55,
+          "rod_center_y_m": 0.0,
+          "impactor_type": "hand_proxy"
+        },
+        "valid": true,
+        "recovery_rmse_mm": 3.5702031546055846,
+        "rejoin_latency_s": 0.0050000000000001155,
+        "peak_recovery_jerk_mps3": 18.381496214360336,
+        "contact_impulse_ns": 1.9090478509122062,
+        "peak_torque_nm": 31.395535721178657,
+        "paired_offset_rmse_mm": 2.933596121127011
+      },
+      "delta_esn_minus_mlp": {
+        "recovery_rmse_mm": -0.9085899291732868,
+        "rejoin_latency_s": -0.24,
+        "peak_recovery_jerk_mps3": -44.01119657151244,
+        "contact_impulse_ns": 0.24494965264695723,
+        "peak_torque_nm": -0.01925617658802281,
+        "paired_offset_rmse_mm": -0.3624477090321916
+      }
+    }
+  ]
+}

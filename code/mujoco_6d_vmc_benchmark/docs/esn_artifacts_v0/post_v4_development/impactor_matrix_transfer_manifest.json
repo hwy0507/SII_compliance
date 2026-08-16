@@ -1,0 +1,43 @@
+{
+  "stage": "post-V4 development cross-geometry transfer evaluation; frozen model inference only",
+  "reference_source": "fixed_panda_wbc",
+  "policy": "The three impactor fixtures are excluded from PPO training, checkpoint Pareto selection, and V4 final holdout. They are used only to evaluate already selected MLP and stable-phase ESN checkpoints.",
+  "splits": {
+    "validation": [
+      {
+        "fixture_id": "rod_calibrated",
+        "impactor_type": "rod",
+        "rod_stroke_m": 0.17,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 0.955,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "negative_y",
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      {
+        "fixture_id": "ball_calibrated",
+        "impactor_type": "ball",
+        "rod_stroke_m": 0.145,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 0.955,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "negative_y",
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      },
+      {
+        "fixture_id": "hand_palm_proxy_calibrated",
+        "impactor_type": "hand_proxy",
+        "rod_stroke_m": 0.145,
+        "rod_height_m": 0.54,
+        "rod_start_time_s": 0.955,
+        "grasp_time_s": 2.4,
+        "rod_approach_side": "negative_y",
+        "rod_center_x_m": 0.55,
+        "rod_center_y_m": 0.0
+      }
+    ]
+  },
+  "hand_proxy_warning": "The hand proxy is a palm-sized ellipsoid contact geometry only; it is not a human biomechanics model or a human safety certification."
+}

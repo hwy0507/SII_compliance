@@ -64,6 +64,7 @@ class VelocityResidualFixture:
     rod_approach_side: str = "negative_y"
     rod_center_x_m: float = 0.55
     rod_center_y_m: float = 0.0
+    impactor_type: str = "rod"
 
 
 def default_velocity_residual_fixtures() -> tuple[VelocityResidualFixture, ...]:
@@ -218,6 +219,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             rod_approach_side=self.fixture.rod_approach_side,
             rod_center_x_m=self.fixture.rod_center_x_m,
             rod_center_y_m=self.fixture.rod_center_y_m,
+            impactor_type=self.fixture.impactor_type,
         )
         model, data = self.model, self.data
         named = {
