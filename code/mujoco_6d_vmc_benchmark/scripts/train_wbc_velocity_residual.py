@@ -109,6 +109,8 @@ def make_env(
     directional_phase_projection: bool,
     rejoin_velocity_envelope: bool,
     residual_energy_tank: bool,
+    predictive_wbc_min_feedback_scale: float,
+    predictive_wbc_growth_deadband: float,
     forecast_model_npz: Path | None,
     predictive_authority_min_multiplier: float,
     predictive_authority_recovery_deadband: float,
@@ -139,6 +141,8 @@ def make_env(
             residual_window_end_at_grasp=residual_window_end_at_grasp,
             residual_energy_tank=residual_energy_tank,
             forecast_model_npz=forecast_model_npz,
+            predictive_wbc_min_feedback_scale=predictive_wbc_min_feedback_scale,
+            predictive_wbc_growth_deadband=predictive_wbc_growth_deadband,
             seed=seed + rank,
         )
     return factory
@@ -191,6 +195,8 @@ def main() -> None:
     parser.add_argument("--directional-phase-projection", action="store_true", help="Constrain yield/rejoin velocity to the causal WBC-error half-space.")
     parser.add_argument("--rejoin-velocity-envelope", action="store_true", help="Apply a causal error-proportional cap to inward residual velocity near WBC rejoin.")
     parser.add_argument("--residual-energy-tank", action="store_true", help="Enable the continuous proprioceptive residual-energy authority budget.")
+    parser.add_argument("--predictive-wbc-min-feedback-scale", type=float, default=0.60, help="Minimum fixed-WBC feedback scale for phase-predictive WBC mode.")
+    parser.add_argument("--predictive-wbc-growth-deadband", type=float, default=0.05, help="Predicted radial-growth deadband for phase-predictive WBC mode.")
     parser.add_argument("--forecast-model-npz", type=Path, default=None, help="Fitted development-train ESN forecast readout required by fan_ye_forecast_esn.")
     parser.add_argument("--predictive-authority-min-multiplier", type=float, default=0.35, help="Lowest residual-authority fraction allowed when the ESN forecasts WBC-error rejoin.")
     parser.add_argument("--predictive-authority-recovery-deadband", type=float, default=0.05, help="Normalized predicted radial-recovery fraction below which authority is unchanged.")
@@ -224,6 +230,8 @@ def main() -> None:
         directional_phase_projection=args.directional_phase_projection,
         rejoin_velocity_envelope=args.rejoin_velocity_envelope,
         residual_energy_tank=args.residual_energy_tank,
+        predictive_wbc_min_feedback_scale=args.predictive_wbc_min_feedback_scale,
+        predictive_wbc_growth_deadband=args.predictive_wbc_growth_deadband,
         forecast_model_npz=args.forecast_model_npz,
         predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
         predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
@@ -307,6 +315,8 @@ def main() -> None:
         "fairness_contract": "Compared modes use the same deployable current state/errors, action, safety layer, PPO network, reward, fixtures, seed, and step budget; ESN variants differ only by fixed reservoir memory.",
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
         "residual_energy_tank": args.residual_energy_tank,
+        "predictive_wbc_min_feedback_scale": args.predictive_wbc_min_feedback_scale,
+        "predictive_wbc_growth_deadband": args.predictive_wbc_growth_deadband,
         "directional_phase_projection": args.directional_phase_projection,
         "rejoin_velocity_envelope": args.rejoin_velocity_envelope,
         "reward_profile": args.reward_profile,
