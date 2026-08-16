@@ -1,0 +1,58 @@
+{
+  "phase": "medium_smoke_only",
+  "formal_not_started": true,
+  "training_steps_per_lane": 100000,
+  "n_envs_per_lane": 2,
+  "lanes": {
+    "stable_phase_v22": {
+      "gate": {
+        "task_success_all": true,
+        "no_rod_success_all": true,
+        "effective_collision_at_least_one": true,
+        "hard_torque_limit_zero": true,
+        "passed": true
+      },
+      "metrics": {
+        "recovery_rmse_mm": 5.7690321528660835,
+        "rejoin_latency_s": 0.1875000000000001,
+        "peak_recovery_jerk_mps3": 133.39196954439345,
+        "contact_impulse_ns": 2.564342866529246,
+        "peak_torque_nm": 33.3745018641427
+      }
+    },
+    "phase_predictive_v4": {
+      "gate": {
+        "task_success_all": true,
+        "no_rod_success_all": true,
+        "effective_collision_at_least_one": true,
+        "hard_torque_limit_zero": true,
+        "passed": true
+      },
+      "metrics": {
+        "recovery_rmse_mm": 10.470541853386614,
+        "rejoin_latency_s": 1.0475000000000003,
+        "peak_recovery_jerk_mps3": 159.7317015853998,
+        "contact_impulse_ns": 3.3007542250604267,
+        "peak_torque_nm": 32.38621058793385
+      }
+    },
+    "current_mlp": {
+      "gate": {
+        "task_success_all": true,
+        "no_rod_success_all": true,
+        "effective_collision_at_least_one": true,
+        "hard_torque_limit_zero": true,
+        "passed": true
+      },
+      "metrics": {
+        "recovery_rmse_mm": 23.672724624490833,
+        "rejoin_latency_s": 2.0475000000000003,
+        "peak_recovery_jerk_mps3": 140.50077924618876,
+        "contact_impulse_ns": 2.3471513997712043,
+        "peak_torque_nm": 38.347505715395606
+      }
+    }
+  },
+  "overall_medium_smoke_gate": true,
+  "note": "Medium smoke is a two-fixture, single-seed integration/stability diagnostic only; it is not a multi-seed algorithm ranking or formal checkpoint-selection result."
+}
