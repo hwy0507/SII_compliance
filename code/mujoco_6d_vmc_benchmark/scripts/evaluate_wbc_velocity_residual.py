@@ -220,6 +220,8 @@ def main() -> None:
                 "mean_phase_memory_score": float(rod_terminal["mean_phase_memory_score"]),
                 "mean_phase_memory_gate": float(rod_terminal["mean_phase_memory_gate"]),
                 "mean_stable_phase_memory_floor": float(rod_terminal["mean_stable_phase_memory_floor"]),
+                "mean_energy_tank_multiplier": float(rod_terminal["mean_energy_tank_multiplier"]),
+                "minimum_energy_tank_value": float(rod_terminal["minimum_energy_tank_value"]),
                 "action_slew_limited_fraction": float(rod_terminal["action_slew_limited_fraction"]),
                 "policy_action_saturation_fraction": float(rod_terminal["policy_action_saturation_fraction"]),
             }
