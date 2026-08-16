@@ -42,6 +42,11 @@ class VelocityResidualSafetyConfig:
     directional_phase_projection: bool = False
     directional_phase_minimum_error_m: float = 0.004
     directional_phase_rate_deadband_m2ps: float = 2.0e-5
+    phase_memory_floor_maximum: float = 0.55
+    phase_memory_floor_error_start_m: float = 0.003
+    phase_memory_floor_error_full_m: float = 0.008
+    phase_memory_floor_rise_per_s: float = 8.0
+    phase_memory_floor_release_per_s: float = 1.20
     velocity_gain_nm_per_radps: np.ndarray = field(
         default_factory=lambda: np.array([42.0, 42.0, 36.0, 32.0, 9.0, 8.0, 6.0])
     )
@@ -64,6 +69,11 @@ class VelocityResidualSafetyConfig:
             self.authority_gate_full_error_m,
             self.directional_phase_minimum_error_m,
             self.directional_phase_rate_deadband_m2ps,
+            self.phase_memory_floor_maximum,
+            self.phase_memory_floor_error_start_m,
+            self.phase_memory_floor_error_full_m,
+            self.phase_memory_floor_rise_per_s,
+            self.phase_memory_floor_release_per_s,
             self.predictive_authority_min_multiplier,
             self.predictive_authority_max_multiplier,
             self.predictive_authority_recovery_deadband,
@@ -77,6 +87,8 @@ class VelocityResidualSafetyConfig:
             raise ValueError("minimum_wbc_scale must be below one")
         if self.authority_gate_full_error_m <= self.authority_gate_start_error_m:
             raise ValueError("authority gate full-error threshold must exceed its start threshold")
+        if self.phase_memory_floor_error_full_m <= self.phase_memory_floor_error_start_m:
+            raise ValueError("phase-memory floor full-error threshold must exceed its start threshold")
         if self.predictive_authority_min_multiplier > self.predictive_authority_max_multiplier:
             raise ValueError("predictive authority minimum must not exceed maximum")
         if self.predictive_authority_max_multiplier > 1.0:
@@ -190,6 +202,42 @@ def deployable_authority_gate(
         1.0,
     )
     return float(phase * phase * (3.0 - 2.0 * phase))
+
+
+def stable_phase_memory_floor(
+    phase_memory_score: float,
+    rejoin_confidence: float,
+    tracking_error_m: float,
+    previous_floor: float,
+    dt: float,
+    config: VelocityResidualSafetyConfig,
+) -> float:
+    """Causally latch phase-memory authority through a noisy rejoin.
+
+    The desired floor requires both fixed-reservoir phase memory and measured
+    inward WBC motion.  It rises quickly when rejoin starts, releases more
+    slowly through short velocity-sign reversals, and vanishes continuously as
+    the translational tracking error approaches the nominal path.
+    """
+
+    values = np.asarray([phase_memory_score, rejoin_confidence, tracking_error_m, previous_floor, dt], dtype=float)
+    if not np.all(np.isfinite(values)) or np.any(values < 0.0) or dt <= 0.0:
+        raise ValueError("phase-memory floor inputs must be finite and non-negative with positive dt")
+    memory = float(np.clip(phase_memory_score, 0.0, 1.0))
+    rejoin = float(np.clip(rejoin_confidence, 0.0, 1.0))
+    error_phase = np.clip(
+        (tracking_error_m - config.phase_memory_floor_error_start_m)
+        / (config.phase_memory_floor_error_full_m - config.phase_memory_floor_error_start_m),
+        0.0, 1.0,
+    )
+    error_envelope = error_phase * error_phase * (3.0 - 2.0 * error_phase)
+    desired = config.phase_memory_floor_maximum * memory * rejoin * error_envelope
+    previous = float(np.clip(previous_floor, 0.0, config.phase_memory_floor_maximum))
+    rate = config.phase_memory_floor_rise_per_s if desired >= previous else config.phase_memory_floor_release_per_s
+    return float(np.clip(
+        previous + np.clip(desired - previous, -rate * dt, rate * dt),
+        0.0, config.phase_memory_floor_maximum,
+    ))
 
 
 def predictive_authority_multiplier(

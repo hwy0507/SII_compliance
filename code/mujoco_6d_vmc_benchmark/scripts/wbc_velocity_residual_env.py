@@ -42,6 +42,7 @@ from wbc_velocity_residual_core import (
     predictive_authority_multiplier,
     predictive_wbc_feedback_scale,
     project_yield_action_to_error_phase,
+    stable_phase_memory_floor,
 )
 
 
@@ -105,7 +106,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
     """Panda pick task controlled by WBC plus an independent learned residual."""
 
     metadata = {"render_modes": []}
-    observation_modes = ("current_mlp", "kinematic_forecast_mlp", "fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_phase_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_esn", "fan_ye_forecast_authority_esn", "fan_ye_forecast_wbc_esn")
+    observation_modes = ("current_mlp", "kinematic_forecast_mlp", "fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_phase_esn", "fan_ye_stable_phase_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_esn", "fan_ye_forecast_authority_esn", "fan_ye_forecast_wbc_esn")
 
     def __init__(
         self,
@@ -149,6 +150,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "fan_ye_esn": self.feature_adapter.feature_dimension,
             "fan_ye_multiscale_esn": self.feature_adapter.multiscale_feature_dimension,
             "fan_ye_phase_esn": self.feature_adapter.multiscale_feature_dimension,
+            "fan_ye_stable_phase_esn": self.feature_adapter.multiscale_feature_dimension,
             "fan_ye_closed_loop_esn": self.feature_adapter.closed_loop_feature_dimension,
             "fan_ye_forecast_esn": CURRENT_WBC_FEATURE_DIMENSION + 6,
             "fan_ye_forecast_authority_esn": CURRENT_WBC_FEATURE_DIMENSION,
@@ -202,6 +204,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.phase_memory_gate = 0.0
         self.cumulative_phase_memory_score = 0.0
         self.cumulative_phase_memory_gate = 0.0
+        self.stable_phase_memory_floor = 0.0
+        self.cumulative_stable_phase_memory_floor = 0.0
         self.reset(seed=seed)
 
     def _build_scene(self) -> None:
@@ -288,7 +292,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             return self.feature_adapter.observe(student, pose_error, twist_error)
         if self.observation_mode == "fan_ye_multiscale_esn":
             return self.feature_adapter.observe_multiscale(student, pose_error, twist_error)
-        if self.observation_mode == "fan_ye_phase_esn":
+        if self.observation_mode in ("fan_ye_phase_esn", "fan_ye_stable_phase_esn"):
             feature = self.feature_adapter.observe_phase_memory(student, pose_error, twist_error)
             self.phase_memory_score = self.feature_adapter.phase_memory_score()
             return feature
@@ -338,6 +342,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.phase_memory_gate = 0.0
         self.cumulative_phase_memory_score = 0.0
         self.cumulative_phase_memory_gate = 0.0
+        self.stable_phase_memory_floor = 0.0
+        self.cumulative_stable_phase_memory_floor = 0.0
         self.action_filter.reset()
         self.applied_action = FilteredVelocityResidualAction(1.0, np.zeros(6), np.zeros(7), False, False)
         self.feature_adapter.reset()
@@ -451,6 +457,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "mean_predictive_wbc_feedback_scale": self.cumulative_predictive_wbc_feedback_scale / count,
             "mean_phase_memory_score": self.cumulative_phase_memory_score / count,
             "mean_phase_memory_gate": self.cumulative_phase_memory_gate / count,
+            "mean_stable_phase_memory_floor": self.cumulative_stable_phase_memory_floor / count,
             "action_slew_limited_fraction": self.slew_limited_actions / count,
             "policy_action_saturation_fraction": self.saturated_policy_actions / count,
             "fixture": asdict(self.fixture),
@@ -486,6 +493,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "predictive_wbc_feedback_scale": self.current_predictive_wbc_feedback_scale,
             "phase_memory_score": self.phase_memory_score,
             "phase_memory_gate": self.phase_memory_gate,
+            "stable_phase_memory_floor": self.stable_phase_memory_floor,
             "cartesian_yield_twist": self.applied_action.cartesian_yield_twist.copy(),
             "joint_velocity_command": self.previous_joint_velocity_command.copy(),
             "raw_joint_velocity_command": self.raw_joint_velocity_command.copy(),
@@ -509,7 +517,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         tracking_error = float(np.linalg.norm(pose_error[:3]))
         self.current_authority_gate = deployable_authority_gate(tracking_error, self.safety_config)
         self.phase_memory_gate = 0.0
-        if self.observation_mode == "fan_ye_phase_esn":
+        if self.observation_mode in ("fan_ye_phase_esn", "fan_ye_stable_phase_esn"):
             scaled_error = pose_error / WBC_POSE_ERROR_SCALE
             scaled_twist = twist_error / WBC_TWIST_ERROR_SCALE
             error_norm = float(np.linalg.norm(scaled_error))
@@ -517,9 +525,16 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             rejoin_confidence = 0.0 if error_norm <= 1.0e-6 or twist_norm <= 1.0e-6 else float(np.clip(
                 -np.dot(scaled_error, scaled_twist) / (error_norm * twist_norm), 0.0, 1.0,
             ))
-            self.phase_memory_gate = float(np.clip(
-                0.55 * self.phase_memory_score * rejoin_confidence, 0.0, 0.55,
-            ))
+            if self.observation_mode == "fan_ye_stable_phase_esn":
+                self.stable_phase_memory_floor = stable_phase_memory_floor(
+                    self.phase_memory_score, rejoin_confidence, tracking_error,
+                    self.stable_phase_memory_floor, RL_DT, self.safety_config,
+                )
+                self.phase_memory_gate = self.stable_phase_memory_floor
+            else:
+                self.phase_memory_gate = float(np.clip(
+                    0.55 * self.phase_memory_score * rejoin_confidence, 0.0, 0.55,
+                ))
             self.current_authority_gate = max(self.current_authority_gate, self.phase_memory_gate)
         if self.observation_mode == "fan_ye_forecast_authority_esn":
             kinematic_delta = encode_kinematic_pose_forecast(pose_error, twist_error)
@@ -554,6 +569,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.cumulative_predictive_wbc_feedback_scale += self.current_predictive_wbc_feedback_scale
         self.cumulative_phase_memory_score += self.phase_memory_score
         self.cumulative_phase_memory_gate += self.phase_memory_gate
+        self.cumulative_stable_phase_memory_floor += self.stable_phase_memory_floor
         impulse_before = self.contact_impulse
         action_start_error = self.previous_position_error
         final_position_error = 0.0

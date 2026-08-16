@@ -255,6 +255,7 @@ def main() -> None:
             "fan_ye_esn": "PPO readout over deployable current WBC state/errors plus frozen Fan Ye v1 reservoir state",
             "fan_ye_multiscale_esn": "PPO readout over deployable current WBC state/errors plus fixed fast/slow Fan Ye reservoir states",
             "fan_ye_phase_esn": "PPO readout over fixed fast/slow Fan Ye state with a causal fast/slow disagreement recovery-authority memory",
+            "fan_ye_stable_phase_esn": "phase-memory ESN with a causal hysteretic recovery-authority floor that fades near the nominal path",
             "fan_ye_closed_loop_esn": "PPO readout over deployable current WBC state/errors plus fixed fast/slow Fan Ye reservoir states with a prior safety-filtered residual command in the reservoir recurrence only",
             "fan_ye_forecast_esn": "PPO readout over current WBC state/errors plus a fixed-reservoir ridge prediction of 120-ms WBC pose-error change",
             "fan_ye_forecast_authority_esn": "PPO readout over current WBC state/errors; fixed ESN error-change forecast deterministically modulates residual authority before shared safety",
@@ -277,9 +278,9 @@ def main() -> None:
         },
         "observation_contract": {
             "mode": args.observation_mode,
-            "dimension": {"current_mlp": 32, "kinematic_forecast_mlp": 38, "fan_ye_esn": 96, "fan_ye_multiscale_esn": 160, "fan_ye_phase_esn": 160, "fan_ye_closed_loop_esn": 160, "fan_ye_forecast_esn": 38, "fan_ye_forecast_authority_esn": 32}[args.observation_mode],
+            "dimension": {"current_mlp": 32, "kinematic_forecast_mlp": 38, "fan_ye_esn": 96, "fan_ye_multiscale_esn": 160, "fan_ye_phase_esn": 160, "fan_ye_stable_phase_esn": 160, "fan_ye_closed_loop_esn": 160, "fan_ye_forecast_esn": 38, "fan_ye_forecast_authority_esn": 32}[args.observation_mode],
             "current_input": ["q(7)", "qdot(7)", "fixed_WBC_task_twist(6)", "measured_WBC_pose_error(6)", "measured_WBC_twist_error(6)"],
-            "reservoir_state_dimension": {"current_mlp": 0, "kinematic_forecast_mlp": 0, "fan_ye_esn": 64, "fan_ye_multiscale_esn": 128, "fan_ye_phase_esn": 128, "fan_ye_closed_loop_esn": 128, "fan_ye_forecast_esn": 128, "fan_ye_forecast_authority_esn": 128}[args.observation_mode],
+            "reservoir_state_dimension": {"current_mlp": 0, "kinematic_forecast_mlp": 0, "fan_ye_esn": 64, "fan_ye_multiscale_esn": 128, "fan_ye_phase_esn": 128, "fan_ye_stable_phase_esn": 128, "fan_ye_closed_loop_esn": 128, "fan_ye_forecast_esn": 128, "fan_ye_forecast_authority_esn": 128}[args.observation_mode],
             "reservoir_time_constants_s": (
                 None if args.observation_mode not in ("fan_ye_multiscale_esn", "fan_ye_closed_loop_esn")
                 else ([0.04253725603074088, 0.14001593770536352] if args.observation_mode == "fan_ye_multiscale_esn" else [0.048321880926077046, 0.12635851180063093])

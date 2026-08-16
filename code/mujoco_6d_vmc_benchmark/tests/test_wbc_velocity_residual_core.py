@@ -12,6 +12,7 @@ from wbc_velocity_residual_core import (
     project_yield_action_to_error_phase,
     safe_joint_velocity_command,
     safe_velocity_tracking_torque,
+    stable_phase_memory_floor,
 )
 
 
@@ -49,6 +50,17 @@ def test_deployable_authority_gate_is_smooth_and_bounded() -> None:
     assert np.isclose(deployable_authority_gate(midpoint, config), 0.5)
     assert deployable_authority_gate(config.authority_gate_full_error_m, config) == 1.0
     assert deployable_authority_gate(1.0, config) == 1.0
+
+
+def test_stable_phase_memory_floor_has_hysteretic_release_and_zero_error_fade() -> None:
+    config = VelocityResidualSafetyConfig()
+    raised = stable_phase_memory_floor(0.8, 1.0, 0.012, 0.0, 0.04, config)
+    assert 0.0 < raised <= config.phase_memory_floor_maximum
+    # A brief loss of inward velocity cannot immediately erase recovery help.
+    released = stable_phase_memory_floor(0.8, 0.0, 0.012, raised, 0.04, config)
+    assert 0.0 < released < raised
+    near_nominal = stable_phase_memory_floor(1.0, 1.0, 0.0, released, 0.04, config)
+    assert near_nominal < released
 
 
 def test_predictive_authority_releases_only_on_causal_radial_recovery() -> None:
