@@ -122,6 +122,7 @@ def main() -> None:
     parser.add_argument("--max-fixtures", type=int, default=None)
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC from gripper-close onward.")
     parser.add_argument("--directional-phase-projection", action="store_true", help="Constrain yield/rejoin velocity to the causal WBC-error half-space.")
+    parser.add_argument("--rejoin-velocity-envelope", action="store_true", help="Apply the causal error-proportional inward residual velocity cap.")
     parser.add_argument("--forecast-model-npz", type=Path, default=None, help="Fitted forecast readout required by forecast ESN modes.")
     parser.add_argument("--predictive-authority-min-multiplier", type=float, default=0.35, help="Lowest residual-authority fraction allowed when the ESN forecasts rejoin.")
     parser.add_argument("--predictive-authority-recovery-deadband", type=float, default=0.05, help="Normalized predicted radial-recovery deadband.")
@@ -157,6 +158,7 @@ def main() -> None:
         "reward_config": reward_profile(args.reward_profile),
         "safety_config": VelocityResidualSafetyConfig(
             directional_phase_projection=args.directional_phase_projection,
+            rejoin_velocity_envelope=args.rejoin_velocity_envelope,
             predictive_authority_enabled=args.observation_mode == "fan_ye_forecast_authority_esn",
             predictive_authority_min_multiplier=args.predictive_authority_min_multiplier,
             predictive_authority_recovery_deadband=args.predictive_authority_recovery_deadband,
