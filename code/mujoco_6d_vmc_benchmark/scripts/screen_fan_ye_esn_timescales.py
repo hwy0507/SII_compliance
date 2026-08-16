@@ -38,20 +38,32 @@ def load_trace(path: Path, *, sample_stride: int, input_mode: str) -> np.ndarray
         raise ValueError("sample_stride must be positive")
     with np.load(path) as archive:
         keys = DEPLOYABLE_TRACE_KEYS if input_mode == "legacy20" else WBC_ERROR_TRACE_KEYS
-        missing = set(keys) - set(archive.files)
+        direct = {
+            "joint_position": "joint_position", "joint_velocity": "joint_velocity",
+            "wbc_task_twist": "wbc_task_twist", "wbc_pose_error": "wbc_pose_error",
+            "wbc_twist_error": "wbc_twist_error",
+        }
+        paired = {
+            "joint_position": "rod_joint_position", "joint_velocity": "rod_joint_velocity",
+            "wbc_task_twist": "rod_nominal_twist", "wbc_pose_error": "rod_wbc_pose_error",
+            "wbc_twist_error": "rod_wbc_twist_error",
+        }
+        mapping = direct if set(direct[key] for key in keys) <= set(archive.files) else paired
+        actual_keys = tuple(mapping[key] for key in keys)
+        missing = set(actual_keys) - set(archive.files)
         if missing:
             raise ValueError(f"{path}: missing deployable trace keys {sorted(missing)}")
         # Explicit key access is an information-flow guard: diagnostics stored
         # beside these arrays are never read by this ESN design procedure.
         legacy = deployable_trace_from_arrays(
-            archive["joint_position"][::sample_stride],
-            archive["joint_velocity"][::sample_stride],
-            archive["wbc_task_twist"][::sample_stride],
+            archive[mapping["joint_position"]][::sample_stride],
+            archive[mapping["joint_velocity"]][::sample_stride],
+            archive[mapping["wbc_task_twist"]][::sample_stride],
         )
         if input_mode == "legacy20":
             return legacy
-        pose_error = archive["wbc_pose_error"][::sample_stride]
-        twist_error = archive["wbc_twist_error"][::sample_stride]
+        pose_error = archive[mapping["wbc_pose_error"]][::sample_stride]
+        twist_error = archive[mapping["wbc_twist_error"]][::sample_stride]
         if pose_error.shape != (len(legacy), 6) or twist_error.shape != (len(legacy), 6):
             raise ValueError(f"{path}: invalid WBC error trace shape")
         return np.asarray([

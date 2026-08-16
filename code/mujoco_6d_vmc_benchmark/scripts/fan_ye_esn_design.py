@@ -320,10 +320,13 @@ def random_fan_ye_configs(
 
     if count < 1 or dt_s <= 0.0:
         raise ValueError("count and dt_s must be positive")
+    sizes = tuple(size for size in (24, 32, 48, 64) if size >= input_dimension)
+    if not sizes:
+        raise ValueError("input_dimension exceeds the available Fan Ye reservoir sizes")
     rng = np.random.default_rng(seed)
     configs = []
     for index in range(count):
-        size = int(rng.choice((24, 32, 48, 64)))
+        size = int(rng.choice(sizes))
         configs.append(FanYeESNConfig(
             reservoir_size=size,
             spectral_radius=float(rng.uniform(0.5, 2.0)),

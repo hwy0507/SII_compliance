@@ -29,6 +29,26 @@ CURRENT_WBC_FEATURE_DIMENSION = 32
 WBC_POSE_ERROR_SCALE = np.array([0.060, 0.060, 0.060, 0.20, 0.20, 0.20], dtype=float)
 WBC_TWIST_ERROR_SCALE = np.array([0.60, 0.60, 0.60, 2.0, 2.0, 2.0], dtype=float)
 
+# Frozen after a 32-D deployment-state-only Fan Ye CR/ESPI screen on the
+# isolated post-V4 development train split.  Candidate #116 is the fast
+# loading memory; #117 is the slower release/rejoin memory.
+MULTISCALE_RESERVOIR_CONFIGS = (
+    FanYeESNConfig(
+        reservoir_size=64, spectral_radius=0.986655955886451,
+        input_scale=0.7963986424712566, time_constant_s=0.04253725603074088,
+        connection_probability=0.27912832622475403, bias_scale=0.6112709785768513,
+        ridge_lambda=1.1544452061983395e-08, dt_s=0.04, seed=20260933,
+        input_dimension=CURRENT_WBC_FEATURE_DIMENSION,
+    ),
+    FanYeESNConfig(
+        reservoir_size=64, spectral_radius=1.8803965096021835,
+        input_scale=0.7699460193264828, time_constant_s=0.14001593770536352,
+        connection_probability=0.11951281209855406, bias_scale=0.6200204813876405,
+        ridge_lambda=0.00013767884053248608, dt_s=0.04, seed=20260934,
+        input_dimension=CURRENT_WBC_FEATURE_DIMENSION,
+    ),
+)
+
 
 def encode_wbc_current_feature(
     observation: ESNObservation, pose_error: np.ndarray, twist_error: np.ndarray,
@@ -64,23 +84,7 @@ class FanYeESNRLObservationAdapter:
             self.normalizer = FanYeInputNormalizer(archive["input_normalizer_scales"])
         # Fixed, causally distinct reservoirs.  The fast reservoir resolves the
         # loading transient while the slow one preserves release/rejoin context.
-        base = self.reservoir.config
-        self.multiscale_reservoirs = (
-            FanYeAlignedESN(FanYeESNConfig(
-                reservoir_size=64, spectral_radius=base.spectral_radius,
-                input_scale=base.input_scale * 0.70, time_constant_s=base.dt_s,
-                connection_probability=base.connection_probability, bias_scale=base.bias_scale,
-                ridge_lambda=base.ridge_lambda, dt_s=base.dt_s, seed=base.seed + 101,
-                input_dimension=CURRENT_WBC_FEATURE_DIMENSION,
-            )),
-            FanYeAlignedESN(FanYeESNConfig(
-                reservoir_size=64, spectral_radius=base.spectral_radius,
-                input_scale=base.input_scale, time_constant_s=min(0.320, base.time_constant_s * 4.0),
-                connection_probability=base.connection_probability, bias_scale=base.bias_scale,
-                ridge_lambda=base.ridge_lambda, dt_s=base.dt_s, seed=base.seed + 202,
-                input_dimension=CURRENT_WBC_FEATURE_DIMENSION,
-            )),
-        )
+        self.multiscale_reservoirs = tuple(FanYeAlignedESN(config) for config in MULTISCALE_RESERVOIR_CONFIGS)
         self.feature_dimension = CURRENT_WBC_FEATURE_DIMENSION + self.reservoir.config.reservoir_size
         self.multiscale_feature_dimension = CURRENT_WBC_FEATURE_DIMENSION + sum(
             item.config.reservoir_size for item in self.multiscale_reservoirs

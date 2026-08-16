@@ -42,12 +42,13 @@ The modes are:
 | `fan_ye_esn` | current 32-D feature + frozen v1 64-D Fan Ye state | isolate the effect of legacy reservoir memory after removing missing error state |
 | `fan_ye_multiscale_esn` | current 32-D feature + 64-D fast state + 64-D slow state | ESN-v2 proposed algorithm |
 
-The v2 reservoirs are fixed random leaky reservoirs.  They use the existing
-Fan Ye-selected spectral-radius/connection family as a **pre-registered initial
-candidate**, with distinct causal time constants: 0.040 s for collision loading
-and 0.206 s for release/rejoin.  The prior CR/ESPI evidence was computed on the
-legacy 20-D input and is not claimed to validate the new 32-D input.  A fresh
-32-D CR/ESPI screen is therefore required before any final multi-seed selection.
+The v2 reservoirs are fixed random leaky reservoirs.  They were selected by a
+fresh 32-D CR/ESPI screen over the isolated development-train trace, before any
+v2 PPO run or validation reward was inspected.  The selected fast candidate
+(`#116`) has 64 nodes, `tau=0.04254 s`, CR `1.0000`, and ESPI
+`6.35e-33`; the slow candidate (`#117`) has 64 nodes, `tau=0.14002 s`, CR
+`0.9552`, and ESPI `4.07e-07`.  The screen reports robot dynamic bandwidth
+`3.69 Hz`, versus `7.19 Hz` and `3.55 Hz` for fast and slow reservoirs.
 The reservoirs are not trained, do not receive action feedback, and are reset at
 every episode boundary.  The PPO actor is the only learned component.
 
@@ -55,8 +56,8 @@ every episode boundary.  The PPO actor is the only learned component.
 
 1. Deterministic MuJoCo neutral-action smoke must match fixed WBC exactly for
    all three observation modes.
-2. A 32-D input-only CR/ESPI screen selects or rejects the pre-registered
-   fast/slow reservoir candidate without using PPO return or validation reward.
+2. The completed 32-D input-only CR/ESPI screen selected fixed fast/slow
+   candidates without using PPO return or validation reward.
 3. A paired 100k-step smoke compares `current_mlp` and ESN-v2 on the isolated
    post-V4 development train/validation manifest.
 4. Promotion requires full task success, matched no-rod success, at least

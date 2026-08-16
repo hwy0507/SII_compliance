@@ -206,7 +206,7 @@ def main() -> None:
             "dimension": {"current_mlp": 32, "fan_ye_esn": 96, "fan_ye_multiscale_esn": 160}[args.observation_mode],
             "current_input": ["q(7)", "qdot(7)", "fixed_WBC_task_twist(6)", "measured_WBC_pose_error(6)", "measured_WBC_twist_error(6)"],
             "reservoir_state_dimension": {"current_mlp": 0, "fan_ye_esn": 64, "fan_ye_multiscale_esn": 128}[args.observation_mode],
-            "reservoir_time_constants_s": None if args.observation_mode != "fan_ye_multiscale_esn" else [0.040, 0.20596],
+            "reservoir_time_constants_s": None if args.observation_mode != "fan_ye_multiscale_esn" else [0.04253725603074088, 0.14001593770536352],
             "excluded": ["contact", "force", "rod state", "obstacle geometry", "future release", "fixture id"],
         },
         "fairness_contract": "Compared modes use the same deployable current state/errors, action, safety layer, PPO network, reward, fixtures, seed, and step budget; ESN variants differ only by fixed reservoir memory.",
