@@ -131,6 +131,7 @@ class ResidualEnergyTank:
     reserve: float = 0.20
     spend_rate: float = 0.55
     action_change_rate: float = 0.18
+    phase_spend_rate: float = 0.25
     recharge_rate: float = 0.20
     minimum_multiplier: float = 0.25
     multiplier_slew_per_s: float = 3.0
@@ -143,6 +144,7 @@ class ResidualEnergyTank:
         values = np.asarray([
             self.capacity, self.initial, self.reserve, self.spend_rate,
             self.action_change_rate, self.recharge_rate, self.minimum_multiplier,
+            self.phase_spend_rate,
             self.multiplier_slew_per_s, self.stable_error_threshold,
         ], dtype=float)
         if not np.all(np.isfinite(values)) or np.any(values <= 0.0):
@@ -160,7 +162,7 @@ class ResidualEnergyTank:
 
     def apply(
         self, action: np.ndarray, pose_error: np.ndarray, twist_error: np.ndarray,
-        dt: float,
+        dt: float, phase_memory_score: float = 0.0,
     ) -> tuple[np.ndarray, float, float]:
         values = np.asarray(action, dtype=float)
         error = np.asarray(pose_error, dtype=float)
@@ -171,6 +173,8 @@ class ResidualEnergyTank:
             raise ValueError("energy-tank inputs must be finite")
         if not np.isfinite(dt) or dt <= 0.0:
             raise ValueError("energy-tank dt must be finite and positive")
+        if not np.isfinite(phase_memory_score) or not 0.0 <= phase_memory_score <= 1.0:
+            raise ValueError("phase-memory score must be finite and in [0, 1]")
         clipped = np.clip(values, -1.0, 1.0)
         if not self.enabled:
             self.previous_action = clipped.copy()
@@ -190,8 +194,10 @@ class ResidualEnergyTank:
         spend = dt * (
             self.spend_rate * residual_norm_sq * (1.0 + 0.35 * rejoin_factor)
             + self.action_change_rate * action_change_sq
+            + self.phase_spend_rate * float(phase_memory_score) * residual_norm_sq
         )
         stable_factor = float(np.clip(1.0 - error_norm / self.stable_error_threshold, 0.0, 1.0))
+        stable_factor *= float(np.clip(1.0 - phase_memory_score, 0.0, 1.0))
         recharge = dt * self.recharge_rate * stable_factor * (1.0 - residual_norm_sq)
         self.energy = float(np.clip(self.energy + recharge - spend, 0.0, self.capacity))
         available = float(np.clip(self.energy / max(self.reserve, 1.0e-9), 0.0, 1.0))

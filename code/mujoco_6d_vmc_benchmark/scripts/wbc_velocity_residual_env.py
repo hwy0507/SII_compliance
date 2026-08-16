@@ -580,7 +580,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             phase_projected_action, pose_error, twist_error, self.safety_config,
         )
         phase_projected_action, self.current_energy_tank_multiplier, self.current_energy_tank_value = self.energy_tank.apply(
-            phase_projected_action, pose_error, twist_error, RL_DT,
+            phase_projected_action, pose_error, twist_error, RL_DT, self.phase_memory_score,
         )
         gated_action = phase_projected_action.copy()
         gated_action[0] *= self.current_authority_gate

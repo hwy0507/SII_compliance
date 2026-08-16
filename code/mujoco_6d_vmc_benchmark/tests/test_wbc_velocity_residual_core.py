@@ -155,14 +155,14 @@ def test_residual_energy_tank_is_continuous_bounded_and_recharges_near_nominal()
     action = np.array([0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     error = np.array([0.02, 0.0, 0.0, 0.0, 0.0, 0.0])
     twist = np.array([-0.2, 0.0, 0.0, 0.0, 0.0, 0.0])
-    _, first_multiplier, first_energy = tank.apply(action, error, twist, 0.04)
-    _, second_multiplier, second_energy = tank.apply(action, error, twist, 0.04)
+    _, first_multiplier, first_energy = tank.apply(action, error, twist, 0.04, 0.8)
+    _, second_multiplier, second_energy = tank.apply(action, error, twist, 0.04, 0.8)
     assert 0.25 <= first_multiplier <= 1.0
     assert 0.25 <= second_multiplier <= 1.0
     assert 0.0 <= first_energy <= 1.0
     assert 0.0 <= second_energy <= 1.0
     assert abs(second_multiplier - first_multiplier) <= 3.0 * 0.04 + 1e-12
-    _, _, recharged = tank.apply(np.zeros(7), np.zeros(6), np.zeros(6), 0.04)
+    _, _, recharged = tank.apply(np.zeros(7), np.zeros(6), np.zeros(6), 0.04, 0.0)
     assert recharged >= second_energy
 
 
