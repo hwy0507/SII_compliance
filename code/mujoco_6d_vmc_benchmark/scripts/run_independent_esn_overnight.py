@@ -222,7 +222,7 @@ def main() -> None:
     parser.add_argument("--total-timesteps", type=int, default=2_000_000)
     parser.add_argument("--n-envs", type=int, default=8)
     parser.add_argument("--checkpoint-interval", type=int, default=100_000)
-    parser.add_argument("--esn-observation-mode", choices=("fan_ye_esn", "fan_ye_multiscale_esn"), default="fan_ye_esn", help="Frozen v1 reservoir or the v2 fast/slow error-aware reservoir.")
+    parser.add_argument("--esn-observation-mode", choices=("fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_closed_loop_esn"), default="fan_ye_esn", help="Frozen v1, v2 fast/slow, or action-aware closed-loop ESN reservoir.")
     parser.add_argument("--directional-phase-projection", action="store_true", help="Use the same deployable WBC-error yield/rejoin projection in both lanes.")
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC at gripper-close; retain learned yielding only for approach/recovery.")
     parser.add_argument("--dry-run", action="store_true")

@@ -21,6 +21,7 @@ from esn_compliance import ESNObservation
 from fan_ye_esn_rl_adapter import (
     CURRENT_WBC_FEATURE_DIMENSION,
     FanYeESNRLObservationAdapter,
+    encode_applied_residual_context,
     encode_wbc_current_feature,
 )
 from fixed_panda_wbc import FixedBasePandaWBC, WBCCommand
@@ -99,7 +100,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
     """Panda pick task controlled by WBC plus an independent learned residual."""
 
     metadata = {"render_modes": []}
-    observation_modes = ("current_mlp", "fan_ye_esn", "fan_ye_multiscale_esn")
+    observation_modes = ("current_mlp", "fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_closed_loop_esn")
 
     def __init__(
         self,
@@ -133,6 +134,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "current_mlp": CURRENT_WBC_FEATURE_DIMENSION,
             "fan_ye_esn": self.feature_adapter.feature_dimension,
             "fan_ye_multiscale_esn": self.feature_adapter.multiscale_feature_dimension,
+            "fan_ye_closed_loop_esn": self.feature_adapter.closed_loop_feature_dimension,
         }[observation_mode]
         self.action_space = gym.spaces.Box(-1.0, 1.0, shape=(7,), dtype=np.float32)
         self.observation_space = gym.spaces.Box(-10.0, 10.0, shape=(observation_dimension,), dtype=np.float32)
@@ -238,7 +240,15 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             return encode_wbc_current_feature(student, pose_error, twist_error)
         if self.observation_mode == "fan_ye_esn":
             return self.feature_adapter.observe(student, pose_error, twist_error)
-        return self.feature_adapter.observe_multiscale(student, pose_error, twist_error)
+        if self.observation_mode == "fan_ye_multiscale_esn":
+            return self.feature_adapter.observe_multiscale(student, pose_error, twist_error)
+        context = encode_applied_residual_context(
+            self.applied_action.wbc_scale, self.applied_action.cartesian_yield_twist,
+            minimum_wbc_scale=self.safety_config.minimum_wbc_scale,
+            maximum_linear_yield_mps=self.safety_config.maximum_linear_yield_mps,
+            maximum_angular_yield_radps=self.safety_config.maximum_angular_yield_radps,
+        )
+        return self.feature_adapter.observe_closed_loop(student, pose_error, twist_error, context)
 
     def reset(
         self, *, seed: int | None = None, options: dict[str, Any] | None = None,

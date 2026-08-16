@@ -20,8 +20,10 @@ from fan_ye_esn_design import (  # noqa: E402
 from train_fan_ye_esn_readout import GatedVMCTeacherConfig, teacher_actions_from_gate  # noqa: E402
 from fan_ye_esn_policy import FanYeVMCPolicyConfig  # noqa: E402
 from fan_ye_esn_rl_adapter import (  # noqa: E402
+    APPLIED_RESIDUAL_CONTEXT_DIMENSION,
     CURRENT_WBC_FEATURE_DIMENSION,
     FanYeESNRLObservationAdapter,
+    encode_applied_residual_context,
     encode_wbc_current_feature,
 )
 from esn_compliance import ESNObservation  # noqa: E402
@@ -144,6 +146,14 @@ def test_fan_ye_rl_adapter_uses_only_fixed_reservoir_wbc_features(tmp_path: Path
     assert np.all(np.isfinite(multiscale))
     adapter.reset()
     np.testing.assert_allclose(multiscale, adapter.observe_multiscale(observation, np.zeros(6), np.zeros(6)))
+    context = encode_applied_residual_context(0.8, np.array([0.016, 0.0, 0.0, 0.0, 0.0, 0.0]))
+    assert context.shape == (APPLIED_RESIDUAL_CONTEXT_DIMENSION,)
+    adapter.reset()
+    closed_loop = adapter.observe_closed_loop(observation, np.zeros(6), np.zeros(6), context)
+    assert closed_loop.shape == (CURRENT_WBC_FEATURE_DIMENSION + 128,)
+    assert np.all(np.isfinite(closed_loop))
+    adapter.reset()
+    np.testing.assert_allclose(closed_loop, adapter.observe_closed_loop(observation, np.zeros(6), np.zeros(6), context))
 
 
 def test_wbc_error_feature_is_directional_and_rejects_non_six_vectors() -> None:
@@ -155,3 +165,10 @@ def test_wbc_error_feature_is_directional_and_rejects_non_six_vectors() -> None:
     assert feature[20] > 0.0
     with np.testing.assert_raises(ValueError):
         encode_wbc_current_feature(observation, np.zeros(5), np.zeros(6))
+
+
+def test_applied_residual_context_is_bounded_and_rejects_invalid_yield() -> None:
+    context = encode_applied_residual_context(0.20, np.array([0.16, -0.16, 0.0, 0.60, -0.60, 0.0]))
+    np.testing.assert_allclose(context, np.array([1.0, 1.0, -1.0, 0.0, 1.0, -1.0, 0.0]))
+    with np.testing.assert_raises(ValueError):
+        encode_applied_residual_context(0.5, np.zeros(5))

@@ -12,6 +12,11 @@ contact, force, rod state, obstacle geometry, future release, and fixture ID.
 comparison.  ``fan_ye_multiscale_esn`` replaces it with fixed fast/slow Fan
 Ye-style reservoirs driven by the 32-D error-aware input, so loading and
 release/rejoin can be represented at separate time constants.
+
+``fan_ye_closed_loop_esn`` additionally gives the reservoir, but not the PPO
+readout directly, the prior residual command after shared safety filtering.
+This lets the fixed memory distinguish a disturbance departure from actuator
+settling caused by its own bounded yield request.
 """
 
 from __future__ import annotations
@@ -26,6 +31,8 @@ from fan_ye_esn_design import FanYeAlignedESN, FanYeESNConfig, FanYeInputNormali
 
 
 CURRENT_WBC_FEATURE_DIMENSION = 32
+APPLIED_RESIDUAL_CONTEXT_DIMENSION = 7
+CLOSED_LOOP_ESN_INPUT_DIMENSION = CURRENT_WBC_FEATURE_DIMENSION + APPLIED_RESIDUAL_CONTEXT_DIMENSION
 WBC_POSE_ERROR_SCALE = np.array([0.060, 0.060, 0.060, 0.20, 0.20, 0.20], dtype=float)
 WBC_TWIST_ERROR_SCALE = np.array([0.60, 0.60, 0.60, 2.0, 2.0, 2.0], dtype=float)
 
@@ -49,6 +56,25 @@ MULTISCALE_RESERVOIR_CONFIGS = (
     ),
 )
 
+# Closed-loop reservoirs are deliberately a separate, development-split-only
+# design family.  Their numerical values are frozen after the action-aware
+# CR/ESPI screen, never inferred from a final evaluation.
+CLOSED_LOOP_RESERVOIR_CONFIGS = tuple(
+    FanYeESNConfig(
+        reservoir_size=config.reservoir_size,
+        spectral_radius=config.spectral_radius,
+        input_scale=config.input_scale,
+        time_constant_s=config.time_constant_s,
+        connection_probability=config.connection_probability,
+        bias_scale=config.bias_scale,
+        ridge_lambda=config.ridge_lambda,
+        dt_s=config.dt_s,
+        seed=config.seed + 200,
+        input_dimension=CLOSED_LOOP_ESN_INPUT_DIMENSION,
+    )
+    for config in MULTISCALE_RESERVOIR_CONFIGS
+)
+
 
 def encode_wbc_current_feature(
     observation: ESNObservation, pose_error: np.ndarray, twist_error: np.ndarray,
@@ -69,6 +95,33 @@ def encode_wbc_current_feature(
     return np.clip(encoded, -10.0, 10.0).astype(np.float32)
 
 
+def encode_applied_residual_context(
+    wbc_scale: float, cartesian_yield_twist: np.ndarray, *,
+    minimum_wbc_scale: float = 0.20, maximum_linear_yield_mps: float = 0.16,
+    maximum_angular_yield_radps: float = 0.60,
+) -> np.ndarray:
+    """Normalize the last actual safety-filtered residual command.
+
+    These values are available causally at every decision point.  They exclude
+    raw proposed actions, contacts, forces, rod state, obstacle geometry, and
+    any release/phase label.
+    """
+
+    yield_twist = np.asarray(cartesian_yield_twist, dtype=float)
+    if (
+        not np.isfinite(wbc_scale) or yield_twist.shape != (6,)
+        or not np.all(np.isfinite(yield_twist)) or not 0.0 < minimum_wbc_scale < 1.0
+        or maximum_linear_yield_mps <= 0.0 or maximum_angular_yield_radps <= 0.0
+    ):
+        raise ValueError("applied residual context must be finite and safety-bounded")
+    slowdown = (1.0 - float(wbc_scale)) / (1.0 - minimum_wbc_scale)
+    scales = np.array([
+        maximum_linear_yield_mps, maximum_linear_yield_mps, maximum_linear_yield_mps,
+        maximum_angular_yield_radps, maximum_angular_yield_radps, maximum_angular_yield_radps,
+    ])
+    return np.clip(np.concatenate(([slowdown], yield_twist / scales)), -1.0, 1.0).astype(np.float32)
+
+
 class FanYeESNRLObservationAdapter:
     """Stateful, resettable current-state and multi-timescale ESN map."""
 
@@ -85,15 +138,21 @@ class FanYeESNRLObservationAdapter:
         # Fixed, causally distinct reservoirs.  The fast reservoir resolves the
         # loading transient while the slow one preserves release/rejoin context.
         self.multiscale_reservoirs = tuple(FanYeAlignedESN(config) for config in MULTISCALE_RESERVOIR_CONFIGS)
+        self.closed_loop_reservoirs = tuple(FanYeAlignedESN(config) for config in CLOSED_LOOP_RESERVOIR_CONFIGS)
         self.feature_dimension = CURRENT_WBC_FEATURE_DIMENSION + self.reservoir.config.reservoir_size
         self.multiscale_feature_dimension = CURRENT_WBC_FEATURE_DIMENSION + sum(
             item.config.reservoir_size for item in self.multiscale_reservoirs
+        )
+        self.closed_loop_feature_dimension = CURRENT_WBC_FEATURE_DIMENSION + sum(
+            item.config.reservoir_size for item in self.closed_loop_reservoirs
         )
         self.reset()
 
     def reset(self) -> None:
         self.reservoir.reset()
         for reservoir in self.multiscale_reservoirs:
+            reservoir.reset()
+        for reservoir in self.closed_loop_reservoirs:
             reservoir.reset()
 
     def observe(
@@ -122,6 +181,30 @@ class FanYeESNRLObservationAdapter:
         feature = np.concatenate((current, *states))
         if feature.shape != (self.multiscale_feature_dimension,) or not np.all(np.isfinite(feature)):
             raise RuntimeError("Fan Ye multiscale adapter produced an invalid feature")
+        return feature.astype(np.float32)
+
+    def observe_closed_loop(
+        self, observation: ESNObservation, pose_error: np.ndarray, twist_error: np.ndarray,
+        applied_residual_context: np.ndarray,
+    ) -> np.ndarray:
+        """Return action-aware fast/slow memory plus current deployable state.
+
+        The 7-D context is prior *physical* residual output from the common
+        safety filter and only affects the reservoir recurrence.
+        """
+
+        current = encode_wbc_current_feature(observation, pose_error, twist_error)
+        context = np.asarray(applied_residual_context, dtype=float)
+        if context.shape != (APPLIED_RESIDUAL_CONTEXT_DIMENSION,) or not np.all(np.isfinite(context)):
+            raise ValueError("closed-loop ESN context must be a finite normalized seven-vector")
+        reservoir_input = np.concatenate((current, np.clip(context, -1.0, 1.0)))
+        states = []
+        for reservoir in self.closed_loop_reservoirs:
+            reservoir.advance(reservoir_input)
+            states.append(reservoir.state)
+        feature = np.concatenate((current, *states))
+        if feature.shape != (self.closed_loop_feature_dimension,) or not np.all(np.isfinite(feature)):
+            raise RuntimeError("Fan Ye closed-loop adapter produced an invalid feature")
         return feature.astype(np.float32)
 
     def normalized_input(self, observation: ESNObservation) -> np.ndarray:

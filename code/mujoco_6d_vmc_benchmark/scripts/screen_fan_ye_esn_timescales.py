@@ -23,7 +23,7 @@ from fan_ye_esn_design import (
     pareto_frontier,
     random_fan_ye_configs,
 )
-from fan_ye_esn_rl_adapter import encode_wbc_current_feature
+from fan_ye_esn_rl_adapter import encode_applied_residual_context, encode_wbc_current_feature
 
 
 DEPLOYABLE_TRACE_KEYS = ("joint_position", "joint_velocity", "wbc_task_twist")
@@ -31,22 +31,27 @@ WBC_ERROR_TRACE_KEYS = (
     "joint_position", "joint_velocity", "wbc_task_twist",
     "wbc_pose_error", "wbc_twist_error",
 )
+WBC_ERROR_ACTION_TRACE_KEYS = WBC_ERROR_TRACE_KEYS + ("wbc_scale", "yield_twist")
 
 
 def load_trace(path: Path, *, sample_stride: int, input_mode: str) -> np.ndarray:
     if sample_stride < 1:
         raise ValueError("sample_stride must be positive")
     with np.load(path) as archive:
-        keys = DEPLOYABLE_TRACE_KEYS if input_mode == "legacy20" else WBC_ERROR_TRACE_KEYS
+        keys = DEPLOYABLE_TRACE_KEYS if input_mode == "legacy20" else (
+            WBC_ERROR_TRACE_KEYS if input_mode == "wbc_error32" else WBC_ERROR_ACTION_TRACE_KEYS
+        )
         direct = {
             "joint_position": "joint_position", "joint_velocity": "joint_velocity",
             "wbc_task_twist": "wbc_task_twist", "wbc_pose_error": "wbc_pose_error",
             "wbc_twist_error": "wbc_twist_error",
+            "wbc_scale": "wbc_scale", "yield_twist": "yield_twist",
         }
         paired = {
             "joint_position": "rod_joint_position", "joint_velocity": "rod_joint_velocity",
             "wbc_task_twist": "rod_nominal_twist", "wbc_pose_error": "rod_wbc_pose_error",
             "wbc_twist_error": "rod_wbc_twist_error",
+            "wbc_scale": "rod_wbc_scale", "yield_twist": "rod_yield_twist",
         }
         mapping = direct if set(direct[key] for key in keys) <= set(archive.files) else paired
         actual_keys = tuple(mapping[key] for key in keys)
@@ -66,13 +71,24 @@ def load_trace(path: Path, *, sample_stride: int, input_mode: str) -> np.ndarray
         twist_error = archive[mapping["wbc_twist_error"]][::sample_stride]
         if pose_error.shape != (len(legacy), 6) or twist_error.shape != (len(legacy), 6):
             raise ValueError(f"{path}: invalid WBC error trace shape")
-        return np.asarray([
+        current = np.asarray([
             encode_wbc_current_feature(
                 ESNObservation(row[:7] * 3.0, row[7:14] * 3.0, row[14:20] * np.array([0.60] * 3 + [2.0] * 3)),
                 pose, twist,
             )
             for row, pose, twist in zip(legacy, pose_error, twist_error, strict=True)
         ], dtype=float)
+        if input_mode == "wbc_error32":
+            return current
+        wbc_scale = archive[mapping["wbc_scale"]][::sample_stride]
+        yield_twist = archive[mapping["yield_twist"]][::sample_stride]
+        if wbc_scale.shape != (len(current),) or yield_twist.shape != (len(current), 6):
+            raise ValueError(f"{path}: invalid applied residual trace shape")
+        context = np.asarray([
+            encode_applied_residual_context(scale, twist)
+            for scale, twist in zip(wbc_scale, yield_twist, strict=True)
+        ], dtype=float)
+        return np.concatenate((current, context), axis=1)
 
 
 def main() -> None:
@@ -85,7 +101,7 @@ def main() -> None:
     parser.add_argument("--washout-steps", type=int, default=25)
     parser.add_argument("--max-frequency-hz", type=float, default=10.0)
     parser.add_argument("--seed", type=int, default=20260815)
-    parser.add_argument("--input-mode", choices=("legacy20", "wbc_error32"), default="legacy20")
+    parser.add_argument("--input-mode", choices=("legacy20", "wbc_error32", "wbc_error_action39"), default="legacy20")
     args = parser.parse_args()
     if args.candidate_count < 1 or args.dt_s <= 0.0 or args.max_frequency_hz <= 0.0:
         raise ValueError("candidate-count, dt-s and max-frequency-hz must be positive")
@@ -111,10 +127,10 @@ def main() -> None:
         "schema_version": 1,
         "method": "Fan Ye et al.-inspired robot-reservoir timescale alignment before readout training",
         "citation": FAN_YE_REFERENCE,
-        "adaptation": "Robot spectral probe is the WBC-aware deployable trace, detrended to measure dynamics rather than static Panda posture. The v2 mode is [q, qdot, wbc_task_twist, measured WBC pose error, measured WBC twist error]. Candidate reservoir receives the same normalized trace. CR is compared by frequency containment and ESPI by post-washout state MSE across random initial states.",
+        "adaptation": "Robot spectral probe is the WBC-aware deployable trace, detrended to measure dynamics rather than static Panda posture. The error-aware mode is [q, qdot, wbc_task_twist, measured WBC pose error, measured WBC twist error]; the closed-loop mode appends only the previous shared-safety-filtered residual command. Candidate reservoir receives the same normalized trace. CR is compared by frequency containment and ESPI by post-washout state MSE across random initial states.",
         "information_boundary": {
             "input_mode": args.input_mode,
-            "read_trace_keys": list(DEPLOYABLE_TRACE_KEYS if args.input_mode == "legacy20" else WBC_ERROR_TRACE_KEYS),
+            "read_trace_keys": list(DEPLOYABLE_TRACE_KEYS if args.input_mode == "legacy20" else (WBC_ERROR_TRACE_KEYS if args.input_mode == "wbc_error32" else WBC_ERROR_ACTION_TRACE_KEYS)),
             "excluded": ["rod_contact", "rod_force", "rod_penetration", "rod_state", "obstacle_pose_or_geometry", "contact_normal", "future_release", "fixture_id"],
         },
         "input_trace_count": len(normalized),
