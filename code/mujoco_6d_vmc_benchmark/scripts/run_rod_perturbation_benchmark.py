@@ -69,6 +69,7 @@ REFERENCE_SOURCES = ("proxy", "fixed_panda_wbc")
 CONTROLLER_MODES = ("rigid", "impedance", "vmc", "vmc_gated", "vmc_taper", "vmc_energy")
 VMC_MODES = ("vmc", "vmc_gated", "vmc_taper", "vmc_energy")
 ROD_APPROACH_SIDES = ("negative_x", "positive_x", "negative_y", "positive_y", "negative_z", "positive_z")
+IMPACTOR_TYPES = ("rod", "ball", "hand_proxy")
 PHASE_LABELS = ("approach", "contact", "unloading", "rejoined", "task")
 REJOIN_THRESHOLD_M = 0.005
 REJOIN_HOLD_S = 0.080
@@ -84,6 +85,38 @@ class RodApproachGeometry:
     slide_axis_world: tuple[float, float, float]
     rod_long_axis_world: tuple[float, float, float]
     cylinder_quaternion_wxyz: tuple[float, float, float, float]
+
+
+def impactor_geometry_spec(impactor_type: str) -> dict[str, str]:
+    """Return the physical MuJoCo geometry for a named contact proxy.
+
+    ``hand_proxy`` intentionally models only a compliant palm-sized contact
+    patch.  It must not be interpreted as a full human-hand biomechanics or
+    injury-safety model.
+    """
+
+    specs = {
+        "rod": {
+            "geom_type": "cylinder", "size": "0.014 0.15", "mass": "0.30",
+            "friction": "0.8 0.02 0.002", "description": "finite-mass cylindrical rod",
+            "rgba": "0.18 0.70 0.25 1",
+        },
+        "ball": {
+            "geom_type": "sphere", "size": "0.040", "mass": "0.16",
+            "friction": "0.9 0.02 0.002", "description": "finite-mass spherical impactor",
+            "rgba": "0.86 0.10 0.10 1",
+        },
+        "hand_proxy": {
+            "geom_type": "ellipsoid", "size": "0.060 0.035 0.025", "mass": "0.18",
+            "friction": "0.65 0.015 0.002",
+            "description": "soft human-hand palm proxy; not a biomechanical hand model",
+            "rgba": "0.95 0.55 0.18 1",
+        },
+    }
+    try:
+        return specs[impactor_type].copy()
+    except KeyError as error:
+        raise ValueError(f"unknown impactor type: {impactor_type}") from error
 
 
 def rod_approach_geometry(
@@ -300,6 +333,7 @@ def _rod_scene_xml(
     explicit_rotational_carriage: bool = False,
     rotational_carriage_inertia_scale: float = 1.0,
     rod_approach_side: str = "negative_y",
+    impactor_type: str = "rod",
 ) -> str:
     """Official Panda plus physical table/block and a dynamic slide-mounted rod."""
 
@@ -317,6 +351,7 @@ def _rod_scene_xml(
     # constructed from the requested approach side instead of relabelling a
     # single y-axis collision after the fact.
     approach = rod_approach_geometry(rod_approach_side, rod_height_m, rod_center_x_m, rod_center_y_m)
+    impactor = impactor_geometry_spec(impactor_type)
     rod_guide_xml = ""
     if rod_approach_side.endswith("_y"):
         rod_guide_xml = (
@@ -361,9 +396,9 @@ def _rod_scene_xml(
       </body>
       <body name="rod_support" pos="{approach.support_position_m[0]:.3f} {approach.support_position_m[1]:.3f} {approach.support_position_m[2]:.3f}">
         <joint name="rod_slide" type="slide" axis="{approach.slide_axis_world[0]:.1f} {approach.slide_axis_world[1]:.1f} {approach.slide_axis_world[2]:.1f}" range="0 0.20" damping="2.0"/>
-        <geom name="rod_geom" type="cylinder" size="0.014 0.15" quat="{approach.cylinder_quaternion_wxyz[0]:.7f} {approach.cylinder_quaternion_wxyz[1]:.7f} {approach.cylinder_quaternion_wxyz[2]:.7f} {approach.cylinder_quaternion_wxyz[3]:.7f}"
-          mass="0.30" contype="8" conaffinity="4" rgba="0.18 0.70 0.25 1"
-          friction="0.8 0.02 0.002" solref="{contact_time_constant_s:.5f} 1"
+        <geom name="rod_geom" type="{impactor['geom_type']}" size="{impactor['size']}" quat="{approach.cylinder_quaternion_wxyz[0]:.7f} {approach.cylinder_quaternion_wxyz[1]:.7f} {approach.cylinder_quaternion_wxyz[2]:.7f} {approach.cylinder_quaternion_wxyz[3]:.7f}"
+          mass="{impactor['mass']}" contype="8" conaffinity="4" rgba="{impactor['rgba']}"
+          friction="{impactor['friction']}" solref="{contact_time_constant_s:.5f} 1"
           solimp="0.85 0.95 0.002 0.5 2"/>
       </body>
       <body name="nominal_marker" mocap="true" pos="0 0 1">
@@ -399,6 +434,7 @@ def make_rod_model(
     rod_approach_side: str = "negative_y",
     rod_center_x_m: float = 0.55,
     rod_center_y_m: float = 0.0,
+    impactor_type: str = "rod",
 ) -> tuple[mujoco.MjModel, mujoco.MjData]:
     xml = _rod_scene_xml(
         menagerie=menagerie, contact_time_constant_s=contact_time_constant_s, rod_height_m=rod_height_m,
@@ -406,6 +442,7 @@ def make_rod_model(
         explicit_translational_carriage=explicit_translational_carriage, carriage_mass_kg=carriage_mass_kg,
         explicit_rotational_carriage=explicit_rotational_carriage,
         rotational_carriage_inertia_scale=rotational_carriage_inertia_scale, rod_approach_side=rod_approach_side,
+        impactor_type=impactor_type,
     )
     assets_dir = menagerie / "franka_emika_panda" / "assets"
     assets = {str(path.relative_to(assets_dir)): path.read_bytes() for path in assets_dir.rglob("*") if path.is_file()}
@@ -557,9 +594,12 @@ def run_episode(
     compliance_policy: Callable[[ESNObservation], ProjectedComplianceAction] | None = None,
     policy_update_hz: float = 25.0,
     policy_contact_drive_scale: float = 8.0,
+    impactor_type: str = "rod",
 ) -> dict[str, Any]:
     if controller_mode not in CONTROLLER_MODES:
         raise ValueError(f"unknown controller mode: {controller_mode}")
+    if impactor_type not in IMPACTOR_TYPES:
+        raise ValueError(f"unknown impactor type: {impactor_type}")
     if reference_source not in REFERENCE_SOURCES:
         raise ValueError(f"unknown reference source: {reference_source}")
     if compliance_policy is not None and (controller_mode not in VMC_MODES or policy_update_hz <= 0.0 or policy_contact_drive_scale <= 0.0):
@@ -590,6 +630,7 @@ def run_episode(
         explicit_translational_carriage, carriage_mass_kg,
         explicit_rotational_carriage, rotational_carriage_inertia_scale, rod_approach_side,
         rod_center_x_m, rod_center_y_m,
+        impactor_type,
     )
     approach_geometry = rod_approach_geometry(
         rod_approach_side, 0.520 if response_only else rod_height_m, rod_center_x_m, rod_center_y_m,
@@ -1086,6 +1127,12 @@ def run_episode(
             "rod_long_axis_world": list(approach_geometry.rod_long_axis_world),
             "cylinder_quaternion_wxyz": list(approach_geometry.cylinder_quaternion_wxyz),
             "physical_geometry": "finite-mass cylinder on a position-actuated MuJoCo slide; no mocap teleport",
+            "impactor_type": impactor_type,
+            "impactor_semantics": {
+                "rod": "rigid cylindrical probe",
+                "ball": "rigid spherical probe with matched slide trajectory",
+                "hand_proxy": "soft human-hand palm proxy geometry; not a human biomechanics model",
+            }[impactor_type],
         },
         "stiffness_schedule": {
             "contact_kappa_vector": kappa_vector.tolist(),
@@ -1231,6 +1278,10 @@ def parse_args() -> argparse.Namespace:
         help="Physical side from which the finite-mass rod slides into the hand.",
     )
     parser.add_argument(
+        "--impactor-type", choices=IMPACTOR_TYPES, default="rod",
+        help="Physical contact geometry: rigid rod, rigid ball, or soft hand-palm proxy.",
+    )
+    parser.add_argument(
         "--recovery-kappa", type=float, default=None,
         help="Shared six-channel stiffness after rod retraction; default keeps constant stiffness.",
     )
@@ -1315,6 +1366,7 @@ def main() -> None:
             rod_height_m=args.rod_height,
             rod_center_x_m=args.rod_center_x,
             rod_center_y_m=args.rod_center_y,
+            impactor_type=args.impactor_type,
             explicit_rotational_carriage=args.explicit_rotational_carriage,
             rotational_carriage_inertia_scale=args.rotational_carriage_inertia_scale,
             rotational_damping_ratio=args.rotational_damping_ratio,

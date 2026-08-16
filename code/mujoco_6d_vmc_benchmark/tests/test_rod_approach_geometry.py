@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import numpy as np
 
-from run_rod_perturbation_benchmark import ROD_APPROACH_SIDES, rod_approach_geometry
+from run_rod_perturbation_benchmark import (
+    IMPACTOR_TYPES,
+    ROD_APPROACH_SIDES,
+    impactor_geometry_spec,
+    rod_approach_geometry,
+)
 
 
 def test_all_axis_aligned_geometries_have_orthogonal_rod_and_motion_axes() -> None:
@@ -32,3 +37,12 @@ def test_vertical_supports_are_physically_mirrored_about_interaction_plane() -> 
     assert positive.slide_axis_world == (0.0, 0.0, -1.0)
     assert negative.rod_long_axis_world == (0.0, 1.0, 0.0)
     assert positive.rod_long_axis_world == (0.0, 1.0, 0.0)
+
+
+def test_impactor_proxies_have_distinct_physical_geometries_and_explicit_hand_limit() -> None:
+    assert IMPACTOR_TYPES == ("rod", "ball", "hand_proxy")
+    assert impactor_geometry_spec("rod")["geom_type"] == "cylinder"
+    assert impactor_geometry_spec("ball")["geom_type"] == "sphere"
+    hand = impactor_geometry_spec("hand_proxy")
+    assert hand["geom_type"] == "ellipsoid"
+    assert "not a biomechanical" in hand["description"]
