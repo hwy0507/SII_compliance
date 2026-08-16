@@ -30,3 +30,9 @@ one-seed matched smoke 必须满足：有效碰撞、抓取成功、no-impact �
 ## ICRA 贡献定位
 
 论文贡献应表述为：一种具有 Fan Ye 多时间尺度记忆和连续残差能量预算的 WBC-aware ESN compliant controller。ESN 学习 phase-conditioned residual policy；energy tank 提供独立、可解释、可证明有界的 authority regulation。必须通过 ESN-only、budget-only、ESN+budget 和 no-memory ablation 证明收益来源。
+
+## 当前 smoke 结论
+
+250k one-seed 训练在 9 个 validation fixtures 上完成了 9/9 task success、9/9 no-impact success、0 hard torque limit；平均 contact impulse 为 3.77 N·s，rejoin latency 为 41 ms。但 effective collision 为 8/9，因此尚未通过正式 gate。当前版本应作为“冲量—碰撞有效性 trade-off” ablation，不得作为最终 proposed controller。
+
+下一版不再单纯增大 energy penalty，而是研究 phase-conditioned predictive WBC feedback：利用 fixed reservoir 对 WBC error growth 的因果预测，在撞击前/偏离早期连续降低反馈注入；energy tank 作为辅助预算而不是唯一安全机制。这样可以在不把 residual authority 压到无碰撞的情况下减少瞬态力和 jerk。

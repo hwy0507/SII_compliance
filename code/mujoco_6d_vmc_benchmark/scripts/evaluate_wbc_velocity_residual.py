@@ -98,6 +98,7 @@ def _summary(records: list[dict[str, Any]]) -> dict[str, Any]:
         "policy_action_saturation_fraction", "mean_authority_gate", "mean_predictive_authority_multiplier",
         "mean_phase_memory_score", "mean_phase_memory_gate",
         "mean_stable_phase_memory_floor",
+        "mean_energy_tank_multiplier", "minimum_energy_tank_value",
     ):
         result[key] = _distribution([float(record[key]) for record in records])
     latencies = [float(record["rejoin_latency_s"]) for record in records if record["rejoin_latency_s"] is not None]
