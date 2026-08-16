@@ -145,7 +145,7 @@ def main() -> None:
         parser.error("learned evaluation requires --model and --vecnormalize")
     if fixed_action is not None and (args.model is not None or args.vecnormalize is not None):
         parser.error("fixed/neutral evaluation cannot be combined with learned model paths")
-    if args.observation_mode in ("fan_ye_forecast_esn", "fan_ye_forecast_authority_esn", "fan_ye_forecast_wbc_esn") and args.forecast_model_npz is None:
+    if args.observation_mode in ("fan_ye_forecast_esn", "fan_ye_forecast_authority_esn", "fan_ye_forecast_wbc_esn", "fan_ye_phase_predictive_wbc_esn") and args.forecast_model_npz is None:
         parser.error(f"{args.observation_mode} requires --forecast-model-npz")
     fixtures = load_development_fixtures(args.fixture_manifest, args.fixture_split)
     if args.max_fixtures is not None:

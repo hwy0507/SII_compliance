@@ -441,6 +441,54 @@ def predictive_wbc_feedback_scale(
     return float(1.0 - (1.0 - minimum_feedback_scale) * normalized_growth)
 
 
+def phase_predictive_wbc_feedback_scale(
+    pose_error: np.ndarray,
+    predicted_delta_pose_error: np.ndarray,
+    phase_memory_score: float,
+    previous_scale: float,
+    dt: float,
+    *,
+    minimum_feedback_scale: float = 0.60,
+    growth_deadband: float = 0.05,
+    phase_start: float = 0.12,
+    phase_full: float = 0.55,
+    engage_per_s: float = 6.0,
+    release_per_s: float = 2.5,
+) -> float:
+    """Causally modulate WBC feedback only during ESN-predicted loading.
+
+    The fixed Fan Ye forecast estimates future WBC-error growth while the
+    independent fast/slow disagreement is a phase-memory confidence.  Both
+    must agree before feedback is softened.  The returned scale is slew
+    limited, so feedback reinjection remains continuous through rejoin.
+    """
+    error = np.asarray(pose_error, dtype=float)
+    delta = np.asarray(predicted_delta_pose_error, dtype=float)
+    values = np.asarray([
+        phase_memory_score, previous_scale, dt, minimum_feedback_scale,
+        growth_deadband, phase_start, phase_full, engage_per_s, release_per_s,
+    ], dtype=float)
+    if error.shape != (6,) or delta.shape != (6,) or not np.all(np.isfinite(error)) or not np.all(np.isfinite(delta)):
+        raise ValueError("phase-predictive WBC inputs must be finite six-vectors")
+    if not np.all(np.isfinite(values)) or not 0.0 <= phase_memory_score <= 1.0 or not 0.0 < previous_scale <= 1.0 or dt <= 0.0:
+        raise ValueError("phase-predictive WBC scalars are invalid")
+    if not 0.0 < minimum_feedback_scale <= 1.0 or not 0.0 <= growth_deadband < 1.0 or not 0.0 <= phase_start < phase_full <= 1.0:
+        raise ValueError("phase-predictive WBC bounds are invalid")
+    norm = float(np.linalg.norm(error))
+    if norm <= 1.0e-9:
+        desired = 1.0
+    else:
+        growth = max(0.0, float(np.dot(error, delta) / (norm * norm)))
+        growth_gate = float(np.clip((growth - growth_deadband) / max(1.0 - growth_deadband, 1.0e-9), 0.0, 1.0))
+        phase_gate = float(np.clip((phase_memory_score - phase_start) / (phase_full - phase_start), 0.0, 1.0))
+        desired = float(1.0 - (1.0 - minimum_feedback_scale) * growth_gate * phase_gate)
+    rate = engage_per_s if desired < previous_scale else release_per_s
+    return float(np.clip(
+        previous_scale + np.clip(desired - previous_scale, -rate * dt, rate * dt),
+        minimum_feedback_scale, 1.0,
+    ))
+
+
 def project_yield_action_to_error_phase(
     action: np.ndarray, pose_error: np.ndarray, twist_error: np.ndarray, config: VelocityResidualSafetyConfig,
 ) -> np.ndarray:

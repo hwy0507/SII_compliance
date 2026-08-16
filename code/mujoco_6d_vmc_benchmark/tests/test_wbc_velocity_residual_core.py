@@ -9,6 +9,7 @@ from wbc_velocity_residual_core import (
     deployable_authority_gate,
     predictive_authority_multiplier,
     predictive_wbc_feedback_scale,
+    phase_predictive_wbc_feedback_scale,
     project_yield_action_to_error_phase,
     safe_joint_velocity_command,
     safe_velocity_tracking_torque,
@@ -116,6 +117,16 @@ def test_predictive_wbc_feedback_scale_only_softens_predicted_outward_departure(
     assert predictive_wbc_feedback_scale(error, recovery, minimum_feedback_scale=0.50) == 1.0
     assert predictive_wbc_feedback_scale(error, growth, minimum_feedback_scale=0.50) == 0.50
     assert predictive_wbc_feedback_scale(np.zeros(6), growth, minimum_feedback_scale=0.50) == 1.0
+
+
+def test_phase_predictive_wbc_feedback_requires_memory_and_is_slew_limited() -> None:
+    error = np.array([1.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    growth = error.copy()
+    no_phase = phase_predictive_wbc_feedback_scale(error, growth, 0.0, 1.0, 0.04, minimum_feedback_scale=0.50)
+    engaged = phase_predictive_wbc_feedback_scale(error, growth, 0.9, 1.0, 0.04, minimum_feedback_scale=0.50)
+    assert no_phase == 1.0
+    assert 0.50 <= engaged < 1.0
+    assert engaged >= 1.0 - 6.0 * 0.04 - 1e-12
 
 
 def test_directional_phase_projection_only_keeps_causal_yield_or_rejoin_component() -> None:
