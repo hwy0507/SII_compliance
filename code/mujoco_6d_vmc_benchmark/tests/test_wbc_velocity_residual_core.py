@@ -7,6 +7,7 @@ from wbc_velocity_residual_core import (
     VelocityResidualActionFilter,
     VelocityResidualSafetyConfig,
     deployable_authority_gate,
+    project_yield_action_to_error_phase,
     safe_joint_velocity_command,
     safe_velocity_tracking_torque,
 )
@@ -46,6 +47,23 @@ def test_deployable_authority_gate_is_smooth_and_bounded() -> None:
     assert np.isclose(deployable_authority_gate(midpoint, config), 0.5)
     assert deployable_authority_gate(config.authority_gate_full_error_m, config) == 1.0
     assert deployable_authority_gate(1.0, config) == 1.0
+
+
+def test_directional_phase_projection_only_keeps_causal_yield_or_rejoin_component() -> None:
+    enabled = VelocityResidualSafetyConfig(directional_phase_projection=True)
+    action = np.array([0.0, 1.0, 0.5, 0.0, 0.0, 0.0, 0.0])
+    # Error e = target - measured is increasing, so positive action along e
+    # would oppose compliant yield and must be removed.
+    loading = project_yield_action_to_error_phase(action, np.array([0.01, 0, 0, 0, 0, 0]), np.array([0.1, 0, 0, 0, 0, 0]), enabled)
+    assert np.isclose(loading[1], 0.0)
+    assert np.isclose(loading[2], action[2])
+    # During rejoin, a negative component along e moves away from the target
+    # and must be removed, preserving only target-directed action.
+    recovery = project_yield_action_to_error_phase(-action, np.array([0.01, 0, 0, 0, 0, 0]), np.array([-0.1, 0, 0, 0, 0, 0]), enabled)
+    assert np.isclose(recovery[1], 0.0)
+    assert np.isclose(recovery[2], -action[2])
+    disabled = project_yield_action_to_error_phase(action, np.ones(6), np.ones(6), VelocityResidualSafetyConfig())
+    np.testing.assert_allclose(disabled, action)
 
 
 def test_joint_velocity_and_torque_safety_are_hard_bounded() -> None:

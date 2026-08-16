@@ -63,6 +63,20 @@ def reward_profile(name: str) -> VelocityResidualRewardConfig:
             recovery_progress_weight=0.080,
             recovery_jerk_weight=0.003,
         )
+    if name == "impulse_constrained":
+        # Preserve the ESN-v2 rejoin objective while making loading impulse a
+        # stronger training cost.  Unlike the earlier contact_safe profile, the
+        # post-release/recovery terms remain active so safety is not obtained by
+        # simply giving up the recovery task.
+        return replace(
+            base,
+            contact_impulse_weight=0.090,
+            post_release_error_weight=0.120,
+            recovery_progress_weight=0.075,
+            recovery_jerk_weight=0.003,
+            slowdown_weight=0.004,
+            yield_magnitude_weight=0.003,
+        )
     raise ValueError(f"unknown reward profile: {name}")
 
 
@@ -78,6 +92,7 @@ def make_env(
     seed: int,
     no_rod_every: int,
     residual_window_end_at_grasp: bool,
+    directional_phase_projection: bool,
 ):
     def factory() -> PandaWBCVelocityResidualEnv:
         rod_enabled = no_rod_every <= 0 or rank % no_rod_every != 0
@@ -88,7 +103,7 @@ def make_env(
             observation_mode=observation_mode,
             fixtures=fixtures,
             rod_enabled=rod_enabled,
-            safety_config=VelocityResidualSafetyConfig(),
+            safety_config=VelocityResidualSafetyConfig(directional_phase_projection=directional_phase_projection),
             reward_config=reward_config,
             residual_window_end_at_grasp=residual_window_end_at_grasp,
             seed=seed + rank,
@@ -132,7 +147,7 @@ def main() -> None:
     parser.add_argument("--fan-ye-model-npz", type=Path, required=True)
     parser.add_argument("--fan-ye-train-summary-json", type=Path, required=True)
     parser.add_argument("--observation-mode", choices=PandaWBCVelocityResidualEnv.observation_modes, required=True)
-    parser.add_argument("--reward-profile", choices=("balanced", "contact_safe", "recovery_priority"), default="balanced")
+    parser.add_argument("--reward-profile", choices=("balanced", "contact_safe", "recovery_priority", "impulse_constrained"), default="balanced")
     parser.add_argument("--total-timesteps", type=int, default=1_000_000)
     parser.add_argument("--n-envs", type=int, default=8)
     parser.add_argument("--seed", type=int, default=20260820)
@@ -140,6 +155,7 @@ def main() -> None:
     parser.add_argument("--no-rod-every", type=int, default=4, help="Make every Nth environment a matched no-rod task; <=0 disables.")
     parser.add_argument("--checkpoint-interval", type=int, default=100_000)
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC from gripper-close onward.")
+    parser.add_argument("--directional-phase-projection", action="store_true", help="Constrain yield/rejoin velocity to the causal WBC-error half-space.")
     parser.add_argument("--resume", type=Path, default=None)
     args = parser.parse_args()
     if args.total_timesteps < 1 or args.n_envs < 1 or args.checkpoint_interval < 1:
@@ -160,6 +176,7 @@ def main() -> None:
         seed=args.seed,
         no_rod_every=args.no_rod_every,
         residual_window_end_at_grasp=args.residual_window_end_at_grasp,
+        directional_phase_projection=args.directional_phase_projection,
     ) for rank in range(args.n_envs)]
     env = SubprocVecEnv(factories, start_method="spawn")
     env = VecMonitor(env, filename=str(args.output_dir / "monitor.csv"))
@@ -211,6 +228,7 @@ def main() -> None:
         },
         "fairness_contract": "Compared modes use the same deployable current state/errors, action, safety layer, PPO network, reward, fixtures, seed, and step budget; ESN variants differ only by fixed reservoir memory.",
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
+        "directional_phase_projection": args.directional_phase_projection,
         "reward_profile": args.reward_profile,
         "reward_config": asdict(rewards),
         "total_timesteps_requested": args.total_timesteps,

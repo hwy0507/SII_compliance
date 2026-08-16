@@ -32,6 +32,9 @@ class VelocityResidualSafetyConfig:
     maximum_joint_acceleration_radps2: float = 8.0
     authority_gate_start_error_m: float = 0.004
     authority_gate_full_error_m: float = 0.012
+    directional_phase_projection: bool = False
+    directional_phase_minimum_error_m: float = 0.004
+    directional_phase_rate_deadband_m2ps: float = 2.0e-5
     velocity_gain_nm_per_radps: np.ndarray = field(
         default_factory=lambda: np.array([42.0, 42.0, 36.0, 32.0, 9.0, 8.0, 6.0])
     )
@@ -52,6 +55,8 @@ class VelocityResidualSafetyConfig:
             self.maximum_joint_acceleration_radps2,
             self.authority_gate_start_error_m,
             self.authority_gate_full_error_m,
+            self.directional_phase_minimum_error_m,
+            self.directional_phase_rate_deadband_m2ps,
         ])
         gains = np.asarray(self.velocity_gain_nm_per_radps, dtype=float)
         rates = np.asarray(self.maximum_torque_rate_nmps, dtype=float)
@@ -170,6 +175,48 @@ def deployable_authority_gate(
         1.0,
     )
     return float(phase * phase * (3.0 - 2.0 * phase))
+
+
+def project_yield_action_to_error_phase(
+    action: np.ndarray, pose_error: np.ndarray, twist_error: np.ndarray, config: VelocityResidualSafetyConfig,
+) -> np.ndarray:
+    """Keep residual velocity in the causal yield/rejoin half-space.
+
+    The WBC tracking error is ``target - measured``.  When its squared norm is
+    increasing, a compliant response may only move further from the nominal
+    target (the yield half-space).  When it is decreasing, the residual may
+    only move toward the nominal target (the rejoin half-space).  The decision
+    depends solely on current WBC target and robot proprioception, never on a
+    contact, force, rod, obstacle, or future-release signal.
+    """
+
+    values = np.asarray(action, dtype=float)
+    error = np.asarray(pose_error, dtype=float)
+    derivative = np.asarray(twist_error, dtype=float)
+    if values.shape != (7,) or error.shape != (6,) or derivative.shape != (6,):
+        raise ValueError("phase projection requires 7-D action and two 6-D WBC errors")
+    if not np.all(np.isfinite(values)) or not np.all(np.isfinite(error)) or not np.all(np.isfinite(derivative)):
+        raise ValueError("phase projection inputs must be finite")
+    if not config.directional_phase_projection:
+        return values.copy()
+    projected = values.copy()
+    for action_slice, error_slice, derivative_slice in ((slice(1, 4), slice(0, 3), slice(0, 3)), (slice(4, 7), slice(3, 6), slice(3, 6))):
+        local_error = error[error_slice]
+        norm = float(np.linalg.norm(local_error))
+        if norm < config.directional_phase_minimum_error_m:
+            continue
+        direction = local_error / norm
+        radial_rate = float(np.dot(local_error, derivative[derivative_slice]))
+        if abs(radial_rate) <= config.directional_phase_rate_deadband_m2ps:
+            continue
+        component = float(np.dot(projected[action_slice], direction))
+        # Increasing error: retain only the outward/yield component.  Decreasing
+        # error: retain only the inward/rejoin component.
+        if radial_rate > 0.0 and component > 0.0:
+            projected[action_slice] -= component * direction
+        elif radial_rate < 0.0 and component < 0.0:
+            projected[action_slice] -= component * direction
+    return projected
 
 
 def safe_joint_velocity_command(

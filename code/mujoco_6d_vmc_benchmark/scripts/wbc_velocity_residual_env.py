@@ -35,6 +35,7 @@ from wbc_velocity_residual_core import (
     safe_joint_velocity_command,
     safe_velocity_tracking_torque,
     deployable_authority_gate,
+    project_yield_action_to_error_phase,
 )
 
 
@@ -412,7 +413,12 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         raw_policy_action = np.clip(action, -1.0, 1.0)
         command = self._wbc_command(self.step_count * RL_DT)
         assert self.data is not None
-        tracking_error = float(np.linalg.norm(command.target_position_m - self.data.xpos[self._hand_id]))
+        pose_error = np.concatenate((
+            command.target_position_m - self.data.xpos[self._hand_id],
+            so3_log(command.target_rotation @ self.data.xmat[self._hand_id].reshape(3, 3).T),
+        ))
+        twist_error = command.task_twist_world - body_twist(self.model, self.data, self._hand_id)
+        tracking_error = float(np.linalg.norm(pose_error[:3]))
         self.current_authority_gate = deployable_authority_gate(tracking_error, self.safety_config)
         # The benchmark's perturbation is defined during the fixed WBC approach
         # and rejoin window.  Once the preplanned gripper-close phase begins,
@@ -421,7 +427,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         # a contact, force, rod, obstacle, or future-release signal.
         if self.residual_window_end_at_grasp and self.step_count * RL_DT >= self.fixture.grasp_time_s:
             self.current_authority_gate = 0.0
-        gated_action = raw_policy_action.copy()
+        phase_projected_action = project_yield_action_to_error_phase(
+            raw_policy_action, pose_error, twist_error, self.safety_config,
+        )
+        gated_action = phase_projected_action.copy()
         gated_action[0] *= self.current_authority_gate
         gated_action[1:] *= self.current_authority_gate
         self.applied_action = self.action_filter.filter(gated_action, RL_DT)
@@ -468,7 +477,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             normalized_jerk = min((peak_step_jerk / self.reward_config.jerk_reference_mps3) ** 2, 4.0)
             reward -= self.reward_config.recovery_jerk_weight * normalized_jerk
         self.previous_position_error = final_position_error
-        self.previous_policy_action = raw_policy_action.copy()
+        self.previous_policy_action = phase_projected_action.copy()
         self.step_count += 1
         terminated = self.step_count >= int(round(SIM_TIME_S / RL_DT))
         info: dict[str, Any] = {}

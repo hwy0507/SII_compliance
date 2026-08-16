@@ -59,6 +59,7 @@ def _train_command(
     n_envs: int,
     checkpoint_interval: int,
     residual_window_end_at_grasp: bool,
+    directional_phase_projection: bool,
 ) -> list[str]:
     command = [
         python, str(repo / "scripts" / "train_wbc_velocity_residual.py"),
@@ -78,6 +79,8 @@ def _train_command(
     ]
     if residual_window_end_at_grasp:
         command.append("--residual-window-end-at-grasp")
+    if directional_phase_projection:
+        command.append("--directional-phase-projection")
     return command
 
 
@@ -94,6 +97,7 @@ def _evaluation_command(
     observation_mode: str,
     reward_profile: str,
     residual_window_end_at_grasp: bool,
+    directional_phase_projection: bool,
 ) -> list[str]:
     command = [
         python, str(repo / "scripts" / "evaluate_wbc_velocity_residual.py"),
@@ -110,6 +114,8 @@ def _evaluation_command(
     ]
     if residual_window_end_at_grasp:
         command.append("--residual-window-end-at-grasp")
+    if directional_phase_projection:
+        command.append("--directional-phase-projection")
     return command
 
 
@@ -217,6 +223,7 @@ def main() -> None:
     parser.add_argument("--n-envs", type=int, default=8)
     parser.add_argument("--checkpoint-interval", type=int, default=100_000)
     parser.add_argument("--esn-observation-mode", choices=("fan_ye_esn", "fan_ye_multiscale_esn"), default="fan_ye_esn", help="Frozen v1 reservoir or the v2 fast/slow error-aware reservoir.")
+    parser.add_argument("--directional-phase-projection", action="store_true", help="Use the same deployable WBC-error yield/rejoin projection in both lanes.")
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC at gripper-close; retain learned yielding only for approach/recovery.")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
@@ -235,7 +242,7 @@ def main() -> None:
         raise ValueError("overnight campaign must use the isolated post-V4 development manifest")
     seeds = tuple(int(value) for value in _parse_csv(args.seeds))
     profiles = _parse_csv(args.profiles)
-    allowed_profiles = {"balanced", "contact_safe", "recovery_priority"}
+    allowed_profiles = {"balanced", "contact_safe", "recovery_priority", "impulse_constrained"}
     if not set(profiles) <= allowed_profiles:
         raise ValueError(f"profiles must be a subset of {sorted(allowed_profiles)}")
     args.output_root.mkdir(parents=True, exist_ok=True)
@@ -256,6 +263,7 @@ def main() -> None:
         "fairness_contract": "matched seeds/profiles/steps/fixtures/PPO/safety/action; reservoir memory is the only MLP-vs-ESN difference",
         "v4_final_policy": "frozen and excluded",
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
+        "directional_phase_projection": args.directional_phase_projection,
     }
     if manifest_path.exists() and json.loads(manifest_path.read_text()) != manifest:
         raise RuntimeError("existing campaign manifest differs; choose a new output root rather than silently mixing runs")
@@ -285,6 +293,7 @@ def main() -> None:
                 observation_mode="current_mlp", reward_profile=profile, seed=seed,
                 total_timesteps=args.total_timesteps, n_envs=args.n_envs, checkpoint_interval=args.checkpoint_interval,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
+                directional_phase_projection=args.directional_phase_projection,
             )
             esn_train = _train_command(
                 args.python, repo, output_dir=esn_dir, menagerie=args.menagerie, manifest=args.fixture_manifest,
@@ -292,6 +301,7 @@ def main() -> None:
                 observation_mode=args.esn_observation_mode, reward_profile=profile, seed=seed,
                 total_timesteps=args.total_timesteps, n_envs=args.n_envs, checkpoint_interval=args.checkpoint_interval,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
+                directional_phase_projection=args.directional_phase_projection,
             )
             entry["training"] = _launch_pair(
                 repo=repo, environment=environment, mlp_command=mlp_train, esn_command=esn_train,
@@ -313,12 +323,14 @@ def main() -> None:
                 manifest=args.fixture_manifest, model_npz=args.fan_ye_model_npz,
                 summary_json=args.fan_ye_train_summary_json, observation_mode="current_mlp", reward_profile=profile,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
+                directional_phase_projection=args.directional_phase_projection,
             )
             esn_eval = _evaluation_command(
                 args.python, repo, output_dir=esn_dir / "validation", run_dir=esn_dir, menagerie=args.menagerie,
                 manifest=args.fixture_manifest, model_npz=args.fan_ye_model_npz,
                 summary_json=args.fan_ye_train_summary_json, observation_mode=args.esn_observation_mode, reward_profile=profile,
                 residual_window_end_at_grasp=args.residual_window_end_at_grasp,
+                directional_phase_projection=args.directional_phase_projection,
             )
             entry["evaluation"] = _evaluate_pair(
                 repo=repo, environment=environment, mlp_command=mlp_eval, esn_command=esn_eval,

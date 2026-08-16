@@ -15,6 +15,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 
 from train_wbc_velocity_residual import load_development_fixtures, reward_profile
 from wbc_velocity_residual_env import PandaWBCVelocityResidualEnv, RL_DT, VelocityResidualFixture
+from wbc_velocity_residual_core import VelocityResidualSafetyConfig
 
 
 def _run_episode(
@@ -109,13 +110,14 @@ def main() -> None:
     parser.add_argument("--fan-ye-model-npz", type=Path, required=True)
     parser.add_argument("--fan-ye-train-summary-json", type=Path, required=True)
     parser.add_argument("--observation-mode", choices=PandaWBCVelocityResidualEnv.observation_modes, required=True)
-    parser.add_argument("--reward-profile", choices=("balanced", "contact_safe", "recovery_priority"), default="balanced")
+    parser.add_argument("--reward-profile", choices=("balanced", "contact_safe", "recovery_priority", "impulse_constrained"), default="balanced")
     parser.add_argument("--model", type=Path, default=None)
     parser.add_argument("--vecnormalize", type=Path, default=None)
     parser.add_argument("--neutral-wbc", action="store_true", help="Evaluate all-zero action, exactly the fixed-WBC velocity controller.")
     parser.add_argument("--fixed-action", type=str, default=None, help="Comma-separated seven-vector for bounded authority smoke tests.")
     parser.add_argument("--max-fixtures", type=int, default=None)
     parser.add_argument("--residual-window-end-at-grasp", action="store_true", help="Return residual authority to fixed WBC from gripper-close onward.")
+    parser.add_argument("--directional-phase-projection", action="store_true", help="Constrain yield/rejoin velocity to the causal WBC-error half-space.")
     args = parser.parse_args()
     fixed_action = None
     if args.neutral_wbc:
@@ -139,6 +141,7 @@ def main() -> None:
         "observation_mode": args.observation_mode,
         "fixtures": fixtures,
         "reward_config": reward_profile(args.reward_profile),
+        "safety_config": VelocityResidualSafetyConfig(directional_phase_projection=args.directional_phase_projection),
         "residual_window_end_at_grasp": args.residual_window_end_at_grasp,
     }
     template = None
