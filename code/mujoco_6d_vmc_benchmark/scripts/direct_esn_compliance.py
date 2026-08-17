@@ -211,13 +211,28 @@ class DirectESNController:
         values = [self.advance(observation) for observation in observations]
         return np.asarray(values[washout_steps:], dtype=float)
 
-    def fit_readout(self, features: np.ndarray, targets: np.ndarray) -> float:
+    def fit_readout(
+        self, features: np.ndarray, targets: np.ndarray, *, prior_readout: np.ndarray | None = None,
+        prior_weight: float = 0.0,
+    ) -> float:
+        """Fit ridge readout, optionally proximal to a trusted parent readout."""
+
         design = _finite_matrix(features, self.feature_dimension, "readout features")
         target_array = _finite_matrix(targets, ACTION_DIMENSION, "teacher actions")
         if len(design) != len(target_array):
             raise ValueError("features and targets must have equal length")
-        gram = design.T @ design + self.config.ridge_lambda * np.eye(self.feature_dimension)
-        self._readout = np.linalg.solve(gram, design.T @ np.clip(target_array, -1.0, 1.0)).T
+        if not np.isfinite(prior_weight) or prior_weight < 0.0:
+            raise ValueError("prior readout weight must be finite and non-negative")
+        right = design.T @ np.clip(target_array, -1.0, 1.0)
+        if prior_readout is not None:
+            prior = _finite_matrix(prior_readout, self.feature_dimension, "prior_readout")
+            if prior.shape != (ACTION_DIMENSION, self.feature_dimension):
+                raise ValueError("prior readout has invalid shape")
+            right += prior_weight * prior.T
+        elif prior_weight > 0.0:
+            raise ValueError("a positive prior weight requires prior_readout")
+        gram = design.T @ design + (self.config.ridge_lambda + prior_weight) * np.eye(self.feature_dimension)
+        self._readout = np.linalg.solve(gram, right).T
         if not np.all(np.isfinite(self._readout)):
             raise RuntimeError("Direct ESN readout became non-finite")
         prediction = np.tanh(design @ self._readout.T)
@@ -291,6 +306,11 @@ class DirectESNController:
         if matrix.shape != (ACTION_DIMENSION, self.feature_dimension):
             raise ValueError("readout has invalid shape")
         self._readout = matrix.copy()
+
+    def readout_copy(self) -> np.ndarray:
+        """Return a copy for conservative offline DAgger refits."""
+
+        return self._readout.copy()
 
     def contract(self) -> dict[str, Any]:
         return {

@@ -240,6 +240,8 @@ def fit_dagger_readout(
     rod_repeat: int,
     counterfactual_zero_repeat: int,
     counterfactual_nonzero_repeat: int,
+    prior_readout: np.ndarray | None = None,
+    prior_readout_weight: float = 0.0,
 ) -> tuple[DirectESNController, dict]:
     """Fit one readout from base demonstrations plus student-visited labels."""
 
@@ -270,8 +272,13 @@ def fit_dagger_readout(
             episodes.append({"path": str(path), "sample_stride": stride, "samples": len(features), "repeat": repeat})
     design = np.concatenate(features_all, axis=0)
     targets = np.concatenate(targets_all, axis=0)
-    mse = model.fit_readout(design, targets)
-    return model, {"training_samples": len(design), "readout_training_mse": mse, "episodes": episodes}
+    mse = model.fit_readout(
+        design, targets, prior_readout=prior_readout, prior_weight=prior_readout_weight,
+    )
+    return model, {
+        "training_samples": len(design), "readout_training_mse": mse, "episodes": episodes,
+        "prior_readout_weight": prior_readout_weight,
+    }
 
 
 def main() -> None:
@@ -292,8 +299,9 @@ def main() -> None:
     parser.add_argument("--counterfactual-zero-repeat", type=int, default=1)
     parser.add_argument("--counterfactual-nonzero-repeat", type=int, default=24)
     parser.add_argument("--counterfactual-label-dilation-steps", type=int, default=0)
+    parser.add_argument("--prior-readout-weight", type=float, default=0.0)
     args = parser.parse_args()
-    if min(args.iterations, args.neutral_repeat, args.rod_repeat, args.counterfactual_zero_repeat, args.counterfactual_nonzero_repeat) < 1 or args.counterfactual_label_dilation_steps < 0:
+    if min(args.iterations, args.neutral_repeat, args.rod_repeat, args.counterfactual_zero_repeat, args.counterfactual_nonzero_repeat) < 1 or args.counterfactual_label_dilation_steps < 0 or args.prior_readout_weight < 0.0:
         raise ValueError("iterations and repeat weights must be positive")
     counterfactual_config = CounterfactualTeacherConfig(horizon_steps=args.counterfactual_horizon_steps)
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -323,6 +331,7 @@ def main() -> None:
             neutral_repeat=args.neutral_repeat, rod_repeat=args.rod_repeat,
             counterfactual_zero_repeat=args.counterfactual_zero_repeat,
             counterfactual_nonzero_repeat=args.counterfactual_nonzero_repeat,
+            prior_readout=parent.readout_copy(), prior_readout_weight=args.prior_readout_weight,
         )
         output_model = args.output_dir / f"direct_esn_dagger_iteration_{iteration:02d}.npz"
         model.save_npz(output_model)
@@ -337,6 +346,7 @@ def main() -> None:
             "zero_repeat": args.counterfactual_zero_repeat,
             "nonzero_repeat": args.counterfactual_nonzero_repeat,
             "dilation_steps": args.counterfactual_label_dilation_steps,
+            "prior_readout_weight": args.prior_readout_weight,
         },
         "student_input": list(DirectESNController.from_npz(current_model).contract()["student_input_fields"]),
         "forbidden_online_inputs": DirectESNController.from_npz(current_model).contract()["forbidden_online_inputs"],

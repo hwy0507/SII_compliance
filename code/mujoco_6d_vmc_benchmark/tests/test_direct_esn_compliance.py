@@ -55,6 +55,15 @@ def test_direct_esn_fit_save_load_and_reset_are_deterministic(tmp_path):
     assert np.all(np.abs(second.yielding_twist[:3]) <= config.maximum_linear_yield_mps + 1e-12)
 
 
+def test_direct_esn_proximal_readout_remains_close_to_parent():
+    controller = DirectESNController(DirectESNConfig(reservoir_size=24, seed=11))
+    parent = np.full((7, controller.feature_dimension), 0.25)
+    features = np.zeros((8, controller.feature_dimension))
+    features[:, 0] = 1.0
+    controller.fit_readout(features, np.zeros((8, 7)), prior_readout=parent, prior_weight=1.0e6)
+    np.testing.assert_allclose(controller.readout_copy(), parent, atol=3.0e-5)
+
+
 def test_direct_esn_aligns_yield_with_measured_wbc_deviation_only():
     controller = DirectESNController(DirectESNConfig(reservoir_size=24, seed=8, error_aligned_yield=True))
     readout = np.zeros((7, controller.feature_dimension))
