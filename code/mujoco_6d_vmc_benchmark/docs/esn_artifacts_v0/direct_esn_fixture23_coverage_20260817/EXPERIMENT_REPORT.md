@@ -275,6 +275,26 @@ baseline 下保持**；SC-VMC force 的 jerk 上界说明 ESN 的 jerk 短板不
 dimensions and executed in the WBC twist layer; the paper's original constant-pull drive is
 included and shown to require the moving-target adaptation for grasp recovery.*
 
+## 最强 baseline 调优协议（v8 增补）
+
+为消除"baseline 未调至最强"的质疑，对两个 spring-carriage 变体施加与 ESN 对称的
+train-only 调优（27 网格：EE 弹簧整体缩放 {0.5,1,2} × drive 弹簧缩放 {0.5,1,2} ×
+ζ_ee {0.8,1.05,1.4}；score = mean dRMSE − 0.5×rejoin 惩罚 − 0.005×mean jerk；
+死区不参与调优——底噪定标，调它即作弊；held-out fx3 与 OOD 只评一次）。
+
+最优配置与完整矩阵（`paper_main_tables_v5_tuned.md`、`tuned_full_eval.json`）：
+
+| | ΔRMSE fx0-3 | rejoin | recjerk | OOD 4 点 |
+|---|---|---|---|---|
+| SC-VMC proprio (tuned: κ×0.5, drive×1.0, ζ0.8) | +0.07/+0.68/+1.53/+1.83 | 0.88/0.84/0.64/0.56（后两快于 FW） | 43/46/96/100 | 3/4 success（corner fail +3.65） |
+| SC-VMC force (tuned: κ×2.0, drive×2.0, ζ0.8) | **+0.01/+0.11/+0.24/+0.29** | ≈FW | **6/12/3/14（=FW）** | 4/4 ≈FW（+0.17~+0.30） |
+| ESN BC 8-seed | **−0.98/−2.60/−3.31/−2.21** | 快于 FW | 64/133/127 | 4/4 大幅改善（−1.7~−3.0） |
+
+最终结论（最强 baseline 协议下）：调优后的 force-VMC 收敛为「透明柔顺」——
+处处与 Fixed WBC 持平（RMSE ±0.3 mm 内、jerk 相同），不改善精度；proprio-VMC
+以精度换 rejoin；**ESN 集成仍是唯一在全部 fixture 上 RMSE 优于 Fixed WBC 且
+rejoin 更快的方法**。冻结参数版（v3）与论文原味恒力驱动（v4）保留为对照行。
+
 ## 服务器路径
 
 - 输出根目录：`/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_fixture23_coverage_20260817/`
