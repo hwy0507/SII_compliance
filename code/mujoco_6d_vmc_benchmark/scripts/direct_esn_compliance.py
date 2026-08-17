@@ -77,6 +77,17 @@ class DirectESNConfig:
     # First-order low-pass on the emitted yielding twist (1.0 disables it).
     # Deployment-side smoothing only: offline readout fitting never sees it.
     yield_smoothing_alpha: float = 1.0
+    # Mirror-equivariant action gating: multiply the learned yield channels by
+    # a soft sign of the matching pose-error channel.  Under the training
+    # distribution (impacts from -y) the soft sign is +1, so the transform is
+    # the identity and existing checkpoints are unaffected; under a mirrored
+    # impact the learned action flips sign exactly, giving structural mirror
+    # generalization instead of data augmentation.  "y" gates only the
+    # lateral/yaw channels; "full" gates all six twist channels.
+    mirror_gate_enabled: bool = False
+    mirror_gate_channels: str = "y"
+    mirror_gate_epsilon_m: float = 0.004
+    mirror_gate_epsilon_rad: float = 0.020
 
     def __post_init__(self) -> None:
         values = np.asarray([
@@ -103,6 +114,8 @@ class DirectESNConfig:
             raise ValueError("rejoin fade maximum cannot exceed one")
         if not 0.0 < self.yield_smoothing_alpha <= 1.0:
             raise ValueError("yield_smoothing_alpha must lie in (0, 1]")
+        if self.mirror_gate_channels not in ("y", "full"):
+            raise ValueError("mirror_gate_channels must be 'y' or 'full'")
 
     @property
     def leak(self) -> float:
@@ -342,6 +355,8 @@ class DirectESNController:
         action = self.action_from_feature(
             feature, activation=activation, pose_error=pose_error, residual_gain=residual_gain,
         )
+        if self.config.mirror_gate_enabled and pose_error is not None:
+            action = self._apply_mirror_gate(action, np.asarray(pose_error, dtype=float))
         if self.config.yield_smoothing_alpha < 1.0:
             # Deployment-side first-order low-pass on the yielding twist.
             # The slowdown channel keeps its direct path; jerk originates in
@@ -363,6 +378,40 @@ class DirectESNController:
                 action.raw_readout, bounded, action.wbc_scale, smoothed,
             )
         return action
+
+    def _apply_mirror_gate(self, action, pose_error: np.ndarray) -> DirectESNAction:
+        """Flip learned yield channels by the soft sign of matching error channels.
+
+        Equivariance: reflecting the world about the x--z plane sends
+        e_y -> -e_y (and e_yaw -> -e_yaw), so the gate sends a_y -> -a_y while
+        leaving every other channel untouched.  On the training distribution
+        (impacts from -y, hence e_y < 0 during contact) the gate evaluates to
+        +1 and the learned action passes through unchanged.
+        """
+
+        error = _finite_vector(pose_error, 6, "pose_error")
+        epsilon = np.asarray(
+            [self.config.mirror_gate_epsilon_m] * 3 + [self.config.mirror_gate_epsilon_rad] * 3)
+        soft_sign = -np.tanh(error / epsilon)
+        if self.config.mirror_gate_channels == "y":
+            gates = np.ones(6)
+            gates[1] = soft_sign[1]   # lateral translation follows e_y
+            gates[5] = soft_sign[5]   # yaw follows e_yaw
+        else:
+            gates = soft_sign
+        bounded = action.bounded_filter_action.copy()
+        bounded[1:] = np.clip(bounded[1:] * gates, -1.0, 1.0)
+        limits = np.array([
+            self.config.maximum_linear_yield_mps,
+            self.config.maximum_linear_yield_mps,
+            self.config.maximum_linear_yield_mps,
+            self.config.maximum_angular_yield_radps,
+            self.config.maximum_angular_yield_radps,
+            self.config.maximum_angular_yield_radps,
+        ])
+        return DirectESNAction(
+            action.raw_readout, bounded, action.wbc_scale, bounded[1:] * limits,
+        )
 
     def set_readout(self, readout: np.ndarray) -> None:
         matrix = _finite_matrix(readout, self.feature_dimension, "readout")

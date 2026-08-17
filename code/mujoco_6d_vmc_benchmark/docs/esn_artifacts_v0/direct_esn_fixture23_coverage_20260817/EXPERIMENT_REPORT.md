@@ -449,6 +449,52 @@ v3 数据上 λ ∈ {10, 30, 100} 全部使 held-out fx3 翻正（+0.24~+0.30；
 **精度-光滑 Pareto（λ_s）目前只对单向数据集成立**，作为单向 ablation 报告；双向
 光滑配置需要方向对称的正则结构（future work）。
 
+## 回到 Fan Ye 定义的算法研究（v13 增补）
+
+依据：Fan Ye et al., Communications Engineering 4:81 (2025)——leaky ESN Eq(7)（τ ṡ = −s +
+tanh(W_in In + W_r s + b)）、线性 readout Eq(8-9)、**containment ratio** Eq(14-16)（机器人
+频谱被 reservoir 频谱包含的比例，CR < CR_T 拒绝）、ESPI（初态敏感性；CR+ESPI 将有效
+reservoir 比例 38%→92%）。
+
+### 尝试 1：镜像等变门控 readout——负结果（结构性不可行）
+
+构造：输出端软符号门 a_y = raw_y·σ(e_y)，σ = −tanh(e_y/ε)。等变性单测通过
+（y/yaw 精确翻转、其余通道不变、训练分布内恒等）；−y 性能无损（−2.20/−2.10）。
+但镜像泛化失败：单向数据+门 +y = **42.36（1/8）**（比无门 21.50 更差），双向数据+门
++y = **51.61（0/8）**（比无门 12.70 差得多）。
+
+根因（有 ablation 价值）：闭环下镜像 rollout 的 **reservoir 特征不镜像**——Panda 7-DOF
+冗余使 IK 在镜像任务下产生非镜像关节轨迹，输出端门的结构假设（raw_y 是 +y 幅值包络）
+在镜像世界不成立；且双向 readout 已对 e_y 条件化，加门反而翻转正确行为。
+**结论：输出端等变不可行，v3 教师数据增广（12.70）仍是正解**；真正等变需要输入/
+特征层对称化，受关节冗余阻碍（记录为 negative ablation）。代码保留：
+`mirror_gate_enabled`（默认关）。
+
+### 尝试 2：CR 频域判据在我们系统的检验——发现「分层控制下设计塌缩」
+
+按 Eq(14-16) 实现（`cr_analysis/`）：机器人频谱 = 闭环任务信号（nominal twist + 跟踪
+误差，真实 expert trace），reservoir 频谱 = 相同输入驱动的节点状态 FFT，7×7 网格
+（sr 0.5-1.3 × tc 0.05-1.0）。结果：
+
+| | CR 范围 | 闭环性能（train mean ΔRMSE） |
+|---|---|---|
+| 高 CR 配置（0.81-0.93） | 扫描超参区间 | −2.29 ~ −2.31 |
+| 低 CR 配置（0.67-0.77，含 tc=1.0、sr=1.3/tc=0.6） | 补测 5 配置 × 3 seeds | **−2.276 ~ −2.282（统计无差）** |
+
+**CR 与性能完全解耦**。解释（半形式化）：Fan Ye 的场景是 reservoir 直接拟合裸机器人
+逆动力学（欠驱动 cart-pole，宽带）——CR 不足则失败；我们的场景中 **WBC 内环把有效
+植物动力学替换为低带宽速度跟踪闭环**，教师柔顺策略是慢变误差函数（接触频谱 ≤10 Hz，
+rod profile ~1.6 Hz），任意合理 leaky reservoir 的动态均覆盖之。由此：
+
+1. 超参不敏感（sr/tc 全网格 <0.02 mm 差异）与 seed 免筛（8/8 无需 CR/ESPI 筛选）
+   是**分层控制的结构必然**，不是运气；
+2. 对 Fan Ye 判据的适用边界给出精化：CR 筛选适用于直接逆动力学控制；内环整形
+   （WBC/阻抗等）后判据自动满足、reservoir 设计自由度塌缩——**分层柔顺控制中
+   "which reservoir" 不再是设计问题，"what data"（coverage）才是**（与本 campaign
+   的全部证据一致：19→44 traces 饱和、增广方向数据带来真实提升）。
+
+论文表述：CR 分析 + 性能解耦表作为「设计理论」小节；镜像门负结果进 ablation。
+
 ## 服务器路径
 
 - 输出根目录：`/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_fixture23_coverage_20260817/`

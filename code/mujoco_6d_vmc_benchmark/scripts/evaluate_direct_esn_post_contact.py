@@ -112,6 +112,8 @@ def main() -> None:
     parser.add_argument("--rod-cycles", type=int, default=None)
     parser.add_argument("--cycle-period-s", type=float, default=None)
     parser.add_argument("--grasp-time-s", type=float, default=None, help="override the indexed fixture grasp time")
+    parser.add_argument("--mirror-gate", action="store_true", help="enable the mirror-equivariant action gate")
+    parser.add_argument("--mirror-gate-channels", type=str, default="y", choices=("y", "full"))
     parser.add_argument("--yield-smoothing-alpha", type=float, default=1.0,
                         help="first-order low-pass on the ESN yielding twist (1.0 disables)")
     args = parser.parse_args()
@@ -130,6 +132,7 @@ def main() -> None:
         args.controller, **common, fixed_wbc=False,
         enable_rejoin_fade=args.enable_rejoin_fade, rejoin_fade_maximum=args.rejoin_fade_maximum,
         override_fixture=override_fixture, yield_smoothing_alpha=args.yield_smoothing_alpha,
+        mirror_gate=args.mirror_gate, mirror_gate_channels=args.mirror_gate_channels,
     )
     thresholds = dict(
         contact_threshold_n=args.contact_threshold_n,
