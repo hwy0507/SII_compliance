@@ -37,6 +37,10 @@ def run_episode(controller_path: Path, *, menagerie: Path, fan_ye_model: Path | 
                 "time_s": diagnostic["time_s"], "wbc_scale": action.wbc_scale,
                 "yielding_twist": action.yielding_twist.copy(), "raw_readout": action.raw_readout.copy(),
                 "bounded_action": action.bounded_filter_action.copy(),
+                "joint_position": diagnostic["joint_position"].copy(),
+                "joint_velocity": diagnostic["joint_velocity"].copy(),
+                "wbc_task_twist": diagnostic["nominal_twist"].copy(),
+                "pose_error": diagnostic["wbc_pose_error"].copy(),
                 "ee_position": diagnostic["ee_position"].copy(), "nominal_position": diagnostic["nominal_position"].copy(),
                 "wbc_pose_error": diagnostic["wbc_pose_error"].copy(), "wbc_twist_error": diagnostic["wbc_twist_error"].copy(),
             })
@@ -72,6 +76,17 @@ def main() -> None:
         yielding_twist=np.asarray([item["yielding_twist"] for item in trace]),
         raw_readout=np.asarray([item["raw_readout"] for item in trace]),
         bounded_action=np.asarray([item["bounded_action"] for item in trace]),
+        joint_position=np.asarray([item["joint_position"] for item in trace]),
+        joint_velocity=np.asarray([item["joint_velocity"] for item in trace]),
+        wbc_task_twist=np.asarray([item["wbc_task_twist"] for item in trace]),
+        pose_error=np.asarray([item["pose_error"] for item in trace]),
+        # The rollout adapter intentionally does not expose contact force to
+        # the student. For no-rod neutral archives this is the exact teacher
+        # value; rod traces should use the dedicated privileged collector.
+        contact_force=np.zeros(len(trace)),
+        contact_normal=np.tile(np.array([0.0, 1.0, 0.0]), (len(trace), 1)),
+        contact_duration_s=np.zeros(len(trace)),
+        signed_distance_m=np.full(len(trace), 0.02),
         ee_position=np.asarray([item["ee_position"] for item in trace]),
         nominal_position=np.asarray([item["nominal_position"] for item in trace]),
         wbc_pose_error=np.asarray([item["wbc_pose_error"] for item in trace]),
