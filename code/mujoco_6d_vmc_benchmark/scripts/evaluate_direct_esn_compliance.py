@@ -21,7 +21,7 @@ from esn_compliance import ESNObservation
 def evaluate(model_path: Path, trace_path: Path, *, washout_steps: int = 0, sample_stride: int = 1) -> dict:
     model = DirectESNController.from_npz(model_path)
     with np.load(trace_path, allow_pickle=False) as archive:
-        required = {"joint_position", "joint_velocity", "wbc_task_twist", "teacher_action"}
+        required = {"joint_position", "joint_velocity", "wbc_task_twist", "pose_error", "wbc_twist_error", "teacher_action"}
         missing = required - set(archive.files)
         if missing:
             raise ValueError(f"{trace_path}: missing required fields {sorted(missing)}")
@@ -29,17 +29,18 @@ def evaluate(model_path: Path, trace_path: Path, *, washout_steps: int = 0, samp
         q = np.asarray(archive["joint_position"], dtype=float)[index]
         qdot = np.asarray(archive["joint_velocity"], dtype=float)[index]
         twist = np.asarray(archive["wbc_task_twist"], dtype=float)[index]
+        pose_error = np.asarray(archive["pose_error"], dtype=float)[index]
+        twist_error = np.asarray(archive["wbc_twist_error"], dtype=float)[index]
         target = np.asarray(archive["teacher_action"], dtype=float)[index]
     if q.shape != (len(q), 7) or qdot.shape != q.shape or twist.shape != (len(q), 6) or target.shape != (len(q), 7):
         raise ValueError("invalid deployable trace dimensions")
-    observations = [ESNObservation(qi, qdoti, twisti) for qi, qdoti, twisti in zip(q, qdot, twist)]
     model.reset()
     predictions = []
     scales = []
     yields = []
     saturation = []
-    for observation in observations:
-        action = model.act(observation.joint_position, observation.joint_velocity, observation.wbc_task_twist)
+    for qi, qdoti, twisti, posei, twisti_error in zip(q, qdot, twist, pose_error, twist_error):
+        action = model.act(qi, qdoti, twisti, pose_error=posei, twist_error=twisti_error)
         predictions.append(action.bounded_filter_action)
         scales.append(action.wbc_scale)
         yields.append(action.yielding_twist)
@@ -82,4 +83,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

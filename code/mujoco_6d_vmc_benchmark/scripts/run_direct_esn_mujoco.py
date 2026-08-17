@@ -52,6 +52,7 @@ def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: 
                 "joint_velocity": diagnostic["joint_velocity"].copy(),
                 "wbc_task_twist": diagnostic["nominal_twist"].copy(),
                 "pose_error": diagnostic["wbc_pose_error"].copy(),
+                "wbc_twist_error": diagnostic["wbc_twist_error"].copy(),
                 "ee_position": diagnostic["ee_position"].copy(), "nominal_position": diagnostic["nominal_position"].copy(),
                 "wbc_pose_error": diagnostic["wbc_pose_error"].copy(), "wbc_twist_error": diagnostic["wbc_twist_error"].copy(),
             })

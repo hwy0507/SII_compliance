@@ -9,13 +9,13 @@ from pathlib import Path
 
 import numpy as np
 
-from direct_esn_compliance import DirectESNConfig, DirectESNController
+from direct_esn_compliance import DirectESNConfig, DirectESNController, DirectESNObservation
 from esn_compliance import ESNObservation
 
 
 def load_episode(path: Path, sample_stride: int = 1) -> tuple[list[ESNObservation], np.ndarray]:
     with np.load(path, allow_pickle=False) as archive:
-        required = {"joint_position", "joint_velocity", "wbc_task_twist", "teacher_action"}
+        required = {"joint_position", "joint_velocity", "wbc_task_twist", "pose_error", "wbc_twist_error", "teacher_action"}
         missing = required - set(archive.files)
         if missing:
             raise ValueError(f"{path}: missing required fields {sorted(missing)}")
@@ -23,10 +23,12 @@ def load_episode(path: Path, sample_stride: int = 1) -> tuple[list[ESNObservatio
         q = np.asarray(archive["joint_position"])[index]
         qdot = np.asarray(archive["joint_velocity"])[index]
         twist = np.asarray(archive["wbc_task_twist"])[index]
+        pose_error = np.asarray(archive["pose_error"])[index]
+        twist_error = np.asarray(archive["wbc_twist_error"])[index]
         target = np.asarray(archive["teacher_action"], dtype=float)[index]
     if not (q.ndim == 2 and q.shape[1] == 7 and qdot.shape == q.shape and twist.shape == (len(q), 6) and target.shape == (len(q), 7)):
         raise ValueError(f"{path}: invalid trace dimensions")
-    observations = [ESNObservation(qi, qdoti, twisti) for qi, qdoti, twisti in zip(q, qdot, twist)]
+    observations = [DirectESNObservation(qi, qdoti, twisti, posei, twisti_error) for qi, qdoti, twisti, posei, twisti_error in zip(q, qdot, twist, pose_error, twist_error)]
     return observations, np.clip(target, -1.0, 1.0)
 
 

@@ -26,8 +26,11 @@ from esn_compliance import ESNObservation, encode_student_observation
 
 
 ACTION_DIMENSION = 7
-DEPLOYABLE_INPUT_DIMENSION = 20
-DEPLOYABLE_INPUT_FIELDS = ("joint_position_7", "joint_velocity_7", "wbc_task_twist_6")
+DEPLOYABLE_INPUT_DIMENSION = 32
+DEPLOYABLE_INPUT_FIELDS = (
+    "joint_position_7", "joint_velocity_7", "wbc_task_twist_6",
+    "wbc_pose_error_6", "wbc_twist_error_6",
+)
 TEACHER_ONLY_FIELDS = (
     "contact_force", "contact_normal", "contact_duration", "signed_distance",
     "obstacle_pose", "obstacle_velocity", "impactor_type", "release_time",
@@ -72,8 +75,8 @@ class DirectESNConfig:
             self.minimum_wbc_scale, self.maximum_linear_yield_mps,
             self.maximum_angular_yield_radps,
         ], dtype=float)
-        if self.reservoir_size < DEPLOYABLE_INPUT_DIMENSION:
-            raise ValueError("reservoir_size must be at least the 20-D input dimension")
+        if self.reservoir_size < 1:
+            raise ValueError("reservoir_size must be positive")
         if not np.all(np.isfinite(values)) or np.any(values <= 0.0):
             raise ValueError("Direct ESN parameters must be finite and positive")
         if self.minimum_wbc_scale >= 1.0:
@@ -103,6 +106,36 @@ class DirectESNAction:
         object.__setattr__(self, "yielding_twist", _finite_vector(self.yielding_twist, 6, "yielding_twist"))
         if not np.isfinite(self.wbc_scale) or not 0.0 < self.wbc_scale <= 1.0:
             raise ValueError("wbc_scale must be finite and in (0, 1]")
+
+
+@dataclass(frozen=True)
+class DirectESNObservation:
+    """Deployable observation including measured WBC tracking deviation."""
+
+    joint_position: np.ndarray
+    joint_velocity: np.ndarray
+    wbc_task_twist: np.ndarray
+    wbc_pose_error: np.ndarray
+    wbc_twist_error: np.ndarray
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "joint_position", _finite_vector(self.joint_position, 7, "joint_position"))
+        object.__setattr__(self, "joint_velocity", _finite_vector(self.joint_velocity, 7, "joint_velocity"))
+        object.__setattr__(self, "wbc_task_twist", _finite_vector(self.wbc_task_twist, 6, "wbc_task_twist"))
+        object.__setattr__(self, "wbc_pose_error", _finite_vector(self.wbc_pose_error, 6, "wbc_pose_error"))
+        object.__setattr__(self, "wbc_twist_error", _finite_vector(self.wbc_twist_error, 6, "wbc_twist_error"))
+
+
+def encode_direct_esn_observation(observation: DirectESNObservation) -> np.ndarray:
+    """Encode proprioception, nominal twist, and measured WBC deviation."""
+
+    base = encode_student_observation(ESNObservation(
+        observation.joint_position, observation.joint_velocity, observation.wbc_task_twist,
+    ))
+    pose_scales = np.array([0.012] * 3 + [0.20] * 3)
+    twist_scales = np.array([0.40] * 3 + [1.20] * 3)
+    errors = np.concatenate((observation.wbc_pose_error / pose_scales, observation.wbc_twist_error / twist_scales))
+    return np.clip(np.concatenate((base, errors)), -10.0, 10.0)
 
 
 class DirectESNController:
@@ -150,12 +183,20 @@ class DirectESNController:
             raise RuntimeError("Direct ESN reservoir state became non-finite")
         return np.concatenate(([1.0], encoded, self._state))
 
-    def advance(self, observation: ESNObservation) -> np.ndarray:
-        """Advance the reservoir using only deployment-available observation."""
+    def advance(self, observation: DirectESNObservation | ESNObservation, pose_error: np.ndarray | None = None, twist_error: np.ndarray | None = None) -> np.ndarray:
+        """Advance using deployment-available state and WBC deviation."""
 
-        return self._advance_encoded(encode_student_observation(observation))
+        if isinstance(observation, DirectESNObservation):
+            encoded = encode_direct_esn_observation(observation)
+        else:
+            pose = np.zeros(6) if pose_error is None else _finite_vector(pose_error, 6, "wbc_pose_error")
+            twist = np.zeros(6) if twist_error is None else _finite_vector(twist_error, 6, "wbc_twist_error")
+            encoded = encode_direct_esn_observation(DirectESNObservation(
+                observation.joint_position, observation.joint_velocity, observation.wbc_task_twist, pose, twist,
+            ))
+        return self._advance_encoded(encoded)
 
-    def features(self, observations: list[ESNObservation], *, washout_steps: int = 0) -> np.ndarray:
+    def features(self, observations: list[DirectESNObservation | ESNObservation], *, washout_steps: int = 0) -> np.ndarray:
         if not observations or not 0 <= washout_steps < len(observations):
             raise ValueError("observations must be non-empty and washout smaller than length")
         self.reset()
@@ -201,18 +242,13 @@ class DirectESNController:
     ) -> DirectESNAction:
         """Return the direct compliance command.
 
-        ``pose_error`` and ``twist_error`` are accepted only for caller-side
-        diagnostics and validation; they are not encoded into the reservoir.
-        This keeps the deployment contract strictly proprioceptive plus WBC
-        nominal twist.
+        Pose and twist errors are measured WBC deviation signals. They are
+        deployable (unlike contact force or obstacle truth) and are the key
+        phase cue that lets the ESN stay neutral on nominal motion.
         """
 
         observation = ESNObservation(joint_position, joint_velocity, wbc_task_twist)
-        if pose_error is not None:
-            _finite_vector(pose_error, 6, "pose_error")
-        if twist_error is not None:
-            _finite_vector(twist_error, 6, "twist_error")
-        return self.action_from_feature(self.advance(observation))
+        return self.action_from_feature(self.advance(observation, pose_error, twist_error))
 
     def set_readout(self, readout: np.ndarray) -> None:
         matrix = _finite_matrix(readout, self.feature_dimension, "readout")
@@ -223,7 +259,7 @@ class DirectESNController:
     def contract(self) -> dict[str, Any]:
         return {
             "method": "direct_esn_compliant_controller",
-            "wbc_role": "fixed nominal trajectory and nominal end-effector twist only",
+            "wbc_role": "fixed nominal trajectory, nominal end-effector twist, and measured tracking error",
             "esn_role": "primary collision-response controller: slowdown, yielding, and rejoin command",
             "ppo_used_in_proposed": False,
             "vmc_used_in_proposed": False,
@@ -349,4 +385,3 @@ def build_privileged_teacher_trace(
         privileged_teacher_action(force, normal, duration, distance, error, config=config)
         for force, normal, duration, distance, error in zip(forces, normals, durations, distances, errors)
     ])
-

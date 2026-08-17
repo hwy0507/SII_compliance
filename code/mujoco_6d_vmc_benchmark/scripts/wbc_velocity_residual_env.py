@@ -18,6 +18,7 @@ import mujoco
 import numpy as np
 
 from esn_compliance import ESNObservation, encode_student_observation
+from direct_esn_compliance import DirectESNObservation, encode_direct_esn_observation
 from fan_ye_esn_rl_adapter import (
     CURRENT_WBC_FEATURE_DIMENSION,
     FanYeESNRLObservationAdapter,
@@ -157,7 +158,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 None if forecast_model_npz is None else Path(forecast_model_npz),
             )
         observation_dimension = {
-            "direct_esn": 20,
+            "direct_esn": 32,
             "current_mlp": CURRENT_WBC_FEATURE_DIMENSION,
             "kinematic_forecast_mlp": CURRENT_WBC_FEATURE_DIMENSION + 6,
             "fan_ye_esn": self.feature_adapter.feature_dimension if self.feature_adapter is not None else 20,
@@ -312,7 +313,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             command.task_twist_world.copy(),
         )
         if self.observation_mode == "direct_esn":
-            return encode_student_observation(student).astype(np.float32)
+            return encode_direct_esn_observation(DirectESNObservation(
+                student.joint_position, student.joint_velocity, student.wbc_task_twist,
+                pose_error, twist_error,
+            )).astype(np.float32)
         if self.observation_mode == "current_mlp":
             return encode_wbc_current_feature(student, pose_error, twist_error)
         if self.observation_mode == "kinematic_forecast_mlp":

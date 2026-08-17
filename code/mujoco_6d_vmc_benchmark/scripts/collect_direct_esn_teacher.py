@@ -19,7 +19,7 @@ from direct_esn_compliance import PrivilegedTeacherConfig, build_privileged_teac
 
 
 REQUIRED = {
-    "joint_position", "joint_velocity", "wbc_task_twist", "pose_error",
+    "joint_position", "joint_velocity", "wbc_task_twist", "pose_error", "wbc_twist_error",
     "contact_force", "contact_normal", "contact_duration_s", "signed_distance_m",
 }
 
@@ -36,6 +36,7 @@ def build_archive(input_path: Path, output_path: Path, *, sample_stride: int = 1
         qdot = np.asarray(source["joint_velocity"])[indices]
         twist = np.asarray(source["wbc_task_twist"])[indices]
         pose_error = np.asarray(source["pose_error"])[indices]
+        wbc_twist_error = np.asarray(source["wbc_twist_error"])[indices]
         contact_force = np.asarray(source["contact_force"], dtype=float)[indices]
         contact_normal = np.asarray(source["contact_normal"], dtype=float)[indices]
         contact_duration_s = np.asarray(source["contact_duration_s"], dtype=float)[indices]
@@ -58,6 +59,7 @@ def build_archive(input_path: Path, output_path: Path, *, sample_stride: int = 1
         joint_velocity=qdot,
         wbc_task_twist=twist,
         pose_error=pose_error,
+        wbc_twist_error=wbc_twist_error,
         teacher_action=target,
         contact_force=contact_force,
         contact_normal=contact_normal,
