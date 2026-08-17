@@ -76,3 +76,16 @@ def test_teacher_trace_has_equal_length_and_bounded_actions():
     assert actions.shape == (n, 7)
     assert np.all(np.isfinite(actions))
     assert np.all(np.abs(actions) <= 1.0)
+
+
+def test_phase_aware_teacher_is_exactly_neutral_before_first_contact():
+    actions = build_privileged_teacher_trace(
+        np.array([0.0, 0.0, 8.0, 0.0]),
+        np.tile([0.0, 1.0, 0.0], (4, 1)),
+        np.array([0.0, 0.0, 0.04, 0.0]),
+        np.array([0.02, 0.02, -0.002, 0.02]),
+        np.tile([0.005, 0.0, 0.0, 0.0, 0.0, 0.0], (4, 1)),
+    )
+    np.testing.assert_allclose(actions[:2], 0.0)
+    assert np.linalg.norm(actions[2]) > 0.0
+    assert actions[3, 1] < 0.0
