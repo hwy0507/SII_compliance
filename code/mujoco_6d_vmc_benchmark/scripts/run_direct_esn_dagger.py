@@ -24,6 +24,7 @@ from direct_esn_compliance import (
     DirectESNObservation,
     build_privileged_teacher_trace,
 )
+from counterfactual_direct_esn_teacher import CounterfactualTeacherConfig, select_counterfactual_action
 from wbc_velocity_residual_env import PandaWBCVelocityResidualEnv
 
 
@@ -47,9 +48,15 @@ def collect_student_visited_archive(
     seed: int,
     output_path: Path,
     iteration: int,
+    teacher_mode: str = "phase",
+    counterfactual_config: CounterfactualTeacherConfig | None = None,
 ) -> dict:
     """Run one student rollout and construct a privileged DAgger archive."""
 
+    if teacher_mode not in ("phase", "counterfactual"):
+        raise ValueError("teacher mode must be 'phase' or 'counterfactual'")
+    if teacher_mode == "counterfactual" and counterfactual_config is None:
+        counterfactual_config = CounterfactualTeacherConfig()
     controller = DirectESNController.from_npz(controller_path)
     env = PandaWBCVelocityResidualEnv(
         menagerie=menagerie,
@@ -72,6 +79,13 @@ def collect_student_visited_archive(
                 diagnostic["joint_position"], diagnostic["joint_velocity"], diagnostic["nominal_twist"],
                 pose_error=diagnostic["wbc_pose_error"], twist_error=diagnostic["wbc_twist_error"],
             )
+            counterfactual = None
+            if teacher_mode == "counterfactual":
+                # Label-side only: this evaluates cloned MjData while the
+                # student rollout below still executes its own online action.
+                counterfactual = select_counterfactual_action(
+                    env, diagnostic["time_s"], env.previous_policy_action, counterfactual_config,
+                )
             _, _, terminated, _, info = env.step(action.bounded_filter_action)
             records.append({
                 "joint_position": diagnostic["joint_position"].copy(),
@@ -85,6 +99,10 @@ def collect_student_visited_archive(
                 "contact_normal": normal.copy(),
                 "contact_duration_s": float(env.dagger_contact_duration_s),
                 "signed_distance_m": -float(env.last_action_contact_penetration) if env.last_action_contact_seen else 0.02,
+                "counterfactual_teacher_action": np.zeros(7, dtype=float) if counterfactual is None else counterfactual.action.copy(),
+                "counterfactual_teacher_cost": 0.0 if counterfactual is None else counterfactual.cost,
+                "counterfactual_predicted_peak_force_n": 0.0 if counterfactual is None else counterfactual.predicted_peak_force_n,
+                "counterfactual_predicted_terminal_error_m": 0.0 if counterfactual is None else counterfactual.predicted_terminal_error_m,
             })
     finally:
         env.close()
@@ -95,7 +113,11 @@ def collect_student_visited_archive(
     duration = np.asarray([row["contact_duration_s"] for row in records], dtype=float)
     distance = np.asarray([row["signed_distance_m"] for row in records], dtype=float)
     pose_error = np.asarray([row["pose_error"] for row in records], dtype=float)
-    teacher_action = build_privileged_teacher_trace(force, normal, duration, distance, pose_error)
+    teacher_action = (
+        build_privileged_teacher_trace(force, normal, duration, distance, pose_error)
+        if teacher_mode == "phase"
+        else np.asarray([row["counterfactual_teacher_action"] for row in records], dtype=float)
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(
         output_path,
@@ -112,12 +134,18 @@ def collect_student_visited_archive(
         signed_distance_m=distance,
         dagger_iteration=np.full(len(records), iteration, dtype=int),
         rod_enabled=np.full(len(records), rod_enabled, dtype=bool),
+        teacher_mode=np.full(len(records), teacher_mode),
+        counterfactual_teacher_cost=np.asarray([row["counterfactual_teacher_cost"] for row in records]),
+        counterfactual_predicted_peak_force_n=np.asarray([row["counterfactual_predicted_peak_force_n"] for row in records]),
+        counterfactual_predicted_terminal_error_m=np.asarray([row["counterfactual_predicted_terminal_error_m"] for row in records]),
     )
     return {
         "archive": str(output_path),
         "samples": len(records),
         "fixture_index": fixture_index,
         "rod_enabled": rod_enabled,
+        "teacher_mode": teacher_mode,
+        "counterfactual_horizon_steps": None if teacher_mode == "phase" else counterfactual_config.horizon_steps,
         "teacher_nonzero_fraction": float(np.mean(np.linalg.norm(teacher_action, axis=1) > 1.0e-5)),
         "student_action_mean_norm": float(np.mean(np.linalg.norm(np.asarray([row["student_action"] for row in records]), axis=1))),
         "terminal": info,
@@ -182,9 +210,12 @@ def main() -> None:
     parser.add_argument("--washout-steps", type=int, default=3)
     parser.add_argument("--neutral-repeat", type=int, default=20)
     parser.add_argument("--rod-repeat", type=int, default=1, help="relative ridge-fit weight for rod-contact teacher traces")
+    parser.add_argument("--teacher-mode", choices=("phase", "counterfactual"), default="phase")
+    parser.add_argument("--counterfactual-horizon-steps", type=int, default=8)
     args = parser.parse_args()
     if args.iterations < 1 or args.neutral_repeat < 1 or args.rod_repeat < 1:
         raise ValueError("iterations and repeat weights must be positive")
+    counterfactual_config = CounterfactualTeacherConfig(horizon_steps=args.counterfactual_horizon_steps)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     current_model = args.initial_model
     all_dagger_specs: list[tuple[Path, int, bool]] = []
@@ -195,10 +226,12 @@ def main() -> None:
         rod = collect_student_visited_archive(
             current_model, menagerie=args.menagerie, fixture_index=args.fixture_index,
             rod_enabled=True, seed=args.seed + iteration * 10, output_path=rod_archive, iteration=iteration,
+            teacher_mode=args.teacher_mode, counterfactual_config=counterfactual_config,
         )
         no_rod = collect_student_visited_archive(
             current_model, menagerie=args.menagerie, fixture_index=args.fixture_index,
             rod_enabled=False, seed=args.seed + iteration * 10 + 1, output_path=no_rod_archive, iteration=iteration,
+            teacher_mode=args.teacher_mode, counterfactual_config=counterfactual_config,
         )
         all_dagger_specs.extend([(rod_archive, 1, False), (no_rod_archive, 1, True)])
         parent = DirectESNController.from_npz(current_model)
@@ -213,7 +246,9 @@ def main() -> None:
         rounds.append({"iteration": iteration, "rod": rod, "no_rod": no_rod, "fit": fit, "model": str(output_model)})
     summary = {
         "schema_version": 1,
-        "method": "direct_esn_dagger_privileged_teacher",
+        "method": f"direct_esn_dagger_{args.teacher_mode}_privileged_teacher",
+        "teacher_mode": args.teacher_mode,
+        "counterfactual_teacher": None if args.teacher_mode == "phase" else asdict(counterfactual_config),
         "student_input": list(DirectESNController.from_npz(current_model).contract()["student_input_fields"]),
         "forbidden_online_inputs": DirectESNController.from_npz(current_model).contract()["forbidden_online_inputs"],
         "base_traces": {"rod": str(args.base_rod_trace), "no_rod": str(args.base_no_rod_trace)},
