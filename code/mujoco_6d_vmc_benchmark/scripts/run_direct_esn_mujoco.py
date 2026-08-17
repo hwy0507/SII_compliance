@@ -29,6 +29,7 @@ def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: 
         info = {}
         while not terminated:
             diagnostic = env.diagnostics()
+            impulse_before = float(env.contact_impulse)
             if controller is None:
                 action_vector = np.zeros(7, dtype=float)
                 wbc_scale = 1.0
@@ -60,6 +61,7 @@ def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: 
                 "contact_force": float(env.last_action_contact_force),
                 "contact_seen": bool(env.last_action_contact_seen),
                 "contact_penetration_m": float(env.last_action_contact_penetration),
+                "contact_impulse_delta_ns": float(env.contact_impulse - impulse_before),
             })
         return info, trace
     finally:
@@ -104,6 +106,7 @@ def main() -> None:
         contact_force=np.asarray([item["contact_force"] for item in trace]),
         contact_seen=np.asarray([item["contact_seen"] for item in trace], dtype=bool),
         contact_penetration_m=np.asarray([item["contact_penetration_m"] for item in trace]),
+        contact_impulse_delta_ns=np.asarray([item["contact_impulse_delta_ns"] for item in trace]),
         contact_normal=np.tile(np.array([0.0, 1.0, 0.0]), (len(trace), 1)),
         contact_duration_s=np.zeros(len(trace)),
         signed_distance_m=np.full(len(trace), 0.02),

@@ -43,6 +43,7 @@ def phase_metrics(
     force_n = np.asarray(trace["contact_force"], dtype=float)
     ee = np.asarray(trace["ee_position"], dtype=float)
     nominal = np.asarray(trace["nominal_position"], dtype=float)
+    impulse_delta_ns = np.asarray(trace["contact_impulse_delta_ns"], dtype=float)
     deviation_m = np.linalg.norm(ee - nominal, axis=1)
     contact = force_n >= contact_threshold_n
     dt = float(np.median(np.diff(time_s))) if len(time_s) > 1 else 0.04
@@ -51,6 +52,7 @@ def phase_metrics(
     last_contact_index = None if len(onset_indices) == 0 else int(onset_indices[-1])
     release_s = None if last_contact_index is None else float(time_s[last_contact_index] + dt)
     grasp_s = float(info["fixture"]["grasp_time_s"])
+    scheduled_release_s = float(info["fixture"]["rod_start_time_s"]) + 0.64
     post_mask = np.zeros(len(time_s), dtype=bool) if release_s is None else (time_s >= release_s) & (time_s < grasp_s)
     rejoin_s = None if release_s is None else _stable_rejoin_time(
         time_s, deviation_m, release_s, rejoin_threshold_m, rejoin_window_steps,
@@ -63,13 +65,15 @@ def phase_metrics(
         "contact_release_s": release_s,
         "contact_duration_s": float(np.sum(contact) * dt),
         "peak_contact_force_n": float(np.max(force_n)) if len(force_n) else 0.0,
-        "contact_impulse_ns": float(np.sum(force_n) * dt),
+        "contact_impulse_ns": float(np.sum(impulse_delta_ns)),
         "peak_deviation_mm": float(1000.0 * np.max(deviation_m)) if len(deviation_m) else 0.0,
         "post_contact_rmse_mm": None if not np.any(post_mask) else float(1000.0 * np.sqrt(np.mean(deviation_m[post_mask] ** 2))),
         "post_contact_iae_mm_s": None if not np.any(post_mask) else float(1000.0 * _trapezoid_area(deviation_m[post_mask], time_s[post_mask])),
         "post_contact_peak_deviation_mm": None if not np.any(post_mask) else float(1000.0 * np.max(deviation_m[post_mask])),
         "rejoin_time_s": rejoin_s,
         "release_to_rejoin_latency_s": None if rejoin_s is None or release_s is None else float(rejoin_s - release_s),
+        "scheduled_impactor_release_s": scheduled_release_s,
+        "scheduled_release_to_rejoin_latency_s": None if rejoin_s is None else float(rejoin_s - scheduled_release_s),
         "peak_torque_nm": float(info["peak_torque_nm"]),
         "peak_jerk_mps3": float(info["peak_jerk_mps3"]),
         "peak_recovery_jerk_mps3": float(info["peak_recovery_jerk_mps3"]),
@@ -83,6 +87,7 @@ def _trace_arrays(trace: list[dict[str, Any]]) -> dict[str, np.ndarray]:
     keys = (
         "time_s", "wbc_scale", "yielding_twist", "raw_readout", "bounded_action", "pose_error",
         "ee_position", "nominal_position", "contact_force", "contact_seen", "contact_penetration_m",
+        "contact_impulse_delta_ns",
     )
     return {key: np.asarray([item[key] for item in trace]) for key in keys}
 
