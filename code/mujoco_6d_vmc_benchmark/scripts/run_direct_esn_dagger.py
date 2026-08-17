@@ -50,6 +50,7 @@ def collect_student_visited_archive(
     iteration: int,
     teacher_mode: str = "phase",
     counterfactual_config: CounterfactualTeacherConfig | None = None,
+    counterfactual_label_dilation_steps: int = 0,
 ) -> dict:
     """Run one student rollout and construct a privileged DAgger archive."""
 
@@ -57,6 +58,8 @@ def collect_student_visited_archive(
         raise ValueError("teacher mode must be 'phase' or 'counterfactual'")
     if teacher_mode == "counterfactual" and counterfactual_config is None:
         counterfactual_config = CounterfactualTeacherConfig()
+    if counterfactual_label_dilation_steps < 0:
+        raise ValueError("counterfactual label dilation must be non-negative")
     controller = DirectESNController.from_npz(controller_path)
     env = PandaWBCVelocityResidualEnv(
         menagerie=menagerie,
@@ -118,6 +121,10 @@ def collect_student_visited_archive(
         if teacher_mode == "phase"
         else np.asarray([row["counterfactual_teacher_action"] for row in records], dtype=float)
     )
+    if teacher_mode == "counterfactual" and rod_enabled and counterfactual_label_dilation_steps:
+        teacher_action = _dilate_counterfactual_labels(
+            teacher_action, radius_steps=counterfactual_label_dilation_steps,
+        )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(
         output_path,
@@ -146,6 +153,7 @@ def collect_student_visited_archive(
         "rod_enabled": rod_enabled,
         "teacher_mode": teacher_mode,
         "counterfactual_horizon_steps": None if teacher_mode == "phase" else counterfactual_config.horizon_steps,
+        "counterfactual_label_dilation_steps": counterfactual_label_dilation_steps,
         "teacher_nonzero_fraction": float(np.mean(np.linalg.norm(teacher_action, axis=1) > 1.0e-5)),
         "student_action_mean_norm": float(np.mean(np.linalg.norm(np.asarray([row["student_action"] for row in records]), axis=1))),
         "terminal": info,
@@ -193,6 +201,33 @@ def _error_aligned_targets(targets: np.ndarray) -> np.ndarray:
     aligned[:, 4] = np.linalg.norm(values[:, 4:7], axis=1)
     aligned[:, 5:7] = 0.0
     return np.clip(aligned, -1.0, 1.0)
+
+
+def _dilate_counterfactual_labels(
+    actions: np.ndarray, *, radius_steps: int, decay: float = 0.72,
+) -> np.ndarray:
+    """Spread sparse contact labels into an offline prepare--yield--release ramp.
+
+    This happens only in the teacher archive. A nonzero counterfactual label
+    is copied to nearby *student-visited* states with exponential attenuation;
+    no-rod archives contain no seeds and remain exactly neutral.
+    """
+
+    values = np.asarray(actions, dtype=float)
+    if values.ndim != 2 or values.shape[1] != 7:
+        raise ValueError("counterfactual labels must be T x 7")
+    if radius_steps < 0 or not 0.0 < decay <= 1.0:
+        raise ValueError("label dilation radius/decay is invalid")
+    output = values.copy()
+    for seed in np.flatnonzero(np.linalg.norm(values, axis=1) > 1.0e-5):
+        for offset in range(-radius_steps, radius_steps + 1):
+            index = int(seed + offset)
+            if not 0 <= index < len(values):
+                continue
+            candidate = values[seed] * decay ** abs(offset)
+            if np.linalg.norm(candidate) > np.linalg.norm(output[index]):
+                output[index] = candidate
+    return np.clip(output, -1.0, 1.0)
 
 
 def fit_dagger_readout(
@@ -254,8 +289,9 @@ def main() -> None:
     parser.add_argument("--counterfactual-horizon-steps", type=int, default=8)
     parser.add_argument("--counterfactual-zero-repeat", type=int, default=1)
     parser.add_argument("--counterfactual-nonzero-repeat", type=int, default=24)
+    parser.add_argument("--counterfactual-label-dilation-steps", type=int, default=4)
     args = parser.parse_args()
-    if min(args.iterations, args.neutral_repeat, args.rod_repeat, args.counterfactual_zero_repeat, args.counterfactual_nonzero_repeat) < 1:
+    if min(args.iterations, args.neutral_repeat, args.rod_repeat, args.counterfactual_zero_repeat, args.counterfactual_nonzero_repeat) < 1 or args.counterfactual_label_dilation_steps < 0:
         raise ValueError("iterations and repeat weights must be positive")
     counterfactual_config = CounterfactualTeacherConfig(horizon_steps=args.counterfactual_horizon_steps)
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -269,11 +305,13 @@ def main() -> None:
             current_model, menagerie=args.menagerie, fixture_index=args.fixture_index,
             rod_enabled=True, seed=args.seed + iteration * 10, output_path=rod_archive, iteration=iteration,
             teacher_mode=args.teacher_mode, counterfactual_config=counterfactual_config,
+            counterfactual_label_dilation_steps=args.counterfactual_label_dilation_steps,
         )
         no_rod = collect_student_visited_archive(
             current_model, menagerie=args.menagerie, fixture_index=args.fixture_index,
             rod_enabled=False, seed=args.seed + iteration * 10 + 1, output_path=no_rod_archive, iteration=iteration,
             teacher_mode=args.teacher_mode, counterfactual_config=counterfactual_config,
+            counterfactual_label_dilation_steps=args.counterfactual_label_dilation_steps,
         )
         all_dagger_specs.extend([(rod_archive, 1, False), (no_rod_archive, 1, True)])
         parent = DirectESNController.from_npz(current_model)
@@ -296,6 +334,7 @@ def main() -> None:
         "counterfactual_label_weighting": None if args.teacher_mode == "phase" else {
             "zero_repeat": args.counterfactual_zero_repeat,
             "nonzero_repeat": args.counterfactual_nonzero_repeat,
+            "dilation_steps": args.counterfactual_label_dilation_steps,
         },
         "student_input": list(DirectESNController.from_npz(current_model).contract()["student_input_fields"]),
         "forbidden_online_inputs": DirectESNController.from_npz(current_model).contract()["forbidden_online_inputs"],
