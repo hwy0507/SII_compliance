@@ -69,7 +69,9 @@ class DirectESNConfig:
     maximum_angular_yield_radps: float = 0.60
     activation_error_start_m: float = 0.004
     activation_error_full_m: float = 0.012
-    error_aligned_yield: bool = True
+    # Experimental opt-in.  The published baseline/proposed checkpoints keep
+    # the original world-frame readout unless this switch is explicitly set.
+    error_aligned_yield: bool = False
 
     def __post_init__(self) -> None:
         values = np.asarray([

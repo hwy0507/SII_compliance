@@ -56,7 +56,7 @@ def test_direct_esn_fit_save_load_and_reset_are_deterministic(tmp_path):
 
 
 def test_direct_esn_aligns_yield_with_measured_wbc_deviation_only():
-    controller = DirectESNController(DirectESNConfig(reservoir_size=24, seed=8))
+    controller = DirectESNController(DirectESNConfig(reservoir_size=24, seed=8, error_aligned_yield=True))
     readout = np.zeros((7, controller.feature_dimension))
     readout[1:4, 0] = [0.35, -0.65, 0.25]
     controller.set_readout(readout)
