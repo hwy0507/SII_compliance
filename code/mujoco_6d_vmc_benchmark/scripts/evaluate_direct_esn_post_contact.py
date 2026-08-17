@@ -27,6 +27,14 @@ def _stable_rejoin_time(time_s: np.ndarray, deviation_m: np.ndarray, start_s: fl
     return None
 
 
+def _trapezoid_area(values: np.ndarray, time_s: np.ndarray) -> float:
+    """Version-independent trapezoid integration for NumPy 2.x runtimes."""
+
+    if len(values) < 2:
+        return 0.0
+    return float(np.sum(0.5 * (values[1:] + values[:-1]) * np.diff(time_s)))
+
+
 def phase_metrics(
     info: dict[str, Any], trace: dict[str, np.ndarray], *, contact_threshold_n: float = 0.20,
     rejoin_threshold_m: float = 0.005, rejoin_window_steps: int = 3,
@@ -58,7 +66,7 @@ def phase_metrics(
         "contact_impulse_ns": float(np.sum(force_n) * dt),
         "peak_deviation_mm": float(1000.0 * np.max(deviation_m)) if len(deviation_m) else 0.0,
         "post_contact_rmse_mm": None if not np.any(post_mask) else float(1000.0 * np.sqrt(np.mean(deviation_m[post_mask] ** 2))),
-        "post_contact_iae_mm_s": None if not np.any(post_mask) else float(1000.0 * np.trapz(deviation_m[post_mask], time_s[post_mask])),
+        "post_contact_iae_mm_s": None if not np.any(post_mask) else float(1000.0 * _trapezoid_area(deviation_m[post_mask], time_s[post_mask])),
         "post_contact_peak_deviation_mm": None if not np.any(post_mask) else float(1000.0 * np.max(deviation_m[post_mask])),
         "rejoin_time_s": rejoin_s,
         "release_to_rejoin_latency_s": None if rejoin_s is None or release_s is None else float(rejoin_s - release_s),
