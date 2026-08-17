@@ -65,6 +65,8 @@ def main() -> None:
     parser.add_argument("--sample-stride", type=int, default=1)
     parser.add_argument("--washout-steps", type=int, default=25)
     parser.add_argument("--neutral-repeat", type=int, default=1)
+    parser.add_argument("--maximum-linear-yield-mps", type=float, default=0.16)
+    parser.add_argument("--maximum-angular-yield-radps", type=float, default=0.60)
     args = parser.parse_args()
     # Trace decimation changes which samples are used for fitting, not the
     # physical controller period. MuJoCo executes the Direct ESN at 40 ms.
@@ -74,6 +76,8 @@ def main() -> None:
         seed=args.seed,
         dt_s=sample_dt,
         time_constant_s=0.12,
+        maximum_linear_yield_mps=args.maximum_linear_yield_mps,
+        maximum_angular_yield_radps=args.maximum_angular_yield_radps,
     )
     model, summary = fit_direct_esn(args.traces, config=config, sample_stride=args.sample_stride, washout_steps=args.washout_steps, neutral_repeat=args.neutral_repeat)
     args.output_model.parent.mkdir(parents=True, exist_ok=True)
