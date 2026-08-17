@@ -55,6 +55,11 @@ def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: 
                 "wbc_twist_error": diagnostic["wbc_twist_error"].copy(),
                 "ee_position": diagnostic["ee_position"].copy(), "nominal_position": diagnostic["nominal_position"].copy(),
                 "wbc_pose_error": diagnostic["wbc_pose_error"].copy(), "wbc_twist_error": diagnostic["wbc_twist_error"].copy(),
+                # These diagnostics are written only to the offline trace;
+                # they are never passed to the Direct ESN observation.
+                "contact_force": float(env.last_action_contact_force),
+                "contact_seen": bool(env.last_action_contact_seen),
+                "contact_penetration_m": float(env.last_action_contact_penetration),
             })
         return info, trace
     finally:
@@ -94,9 +99,11 @@ def main() -> None:
         wbc_task_twist=np.asarray([item["wbc_task_twist"] for item in trace]),
         pose_error=np.asarray([item["pose_error"] for item in trace]),
         # The rollout adapter intentionally does not expose contact force to
-        # the student. For no-rod neutral archives this is the exact teacher
-        # value; rod traces should use the dedicated privileged collector.
-        contact_force=np.zeros(len(trace)),
+        # the student. These values are label-side diagnostics for offline
+        # phase analysis only.
+        contact_force=np.asarray([item["contact_force"] for item in trace]),
+        contact_seen=np.asarray([item["contact_seen"] for item in trace], dtype=bool),
+        contact_penetration_m=np.asarray([item["contact_penetration_m"] for item in trace]),
         contact_normal=np.tile(np.array([0.0, 1.0, 0.0]), (len(trace), 1)),
         contact_duration_s=np.zeros(len(trace)),
         signed_distance_m=np.full(len(trace), 0.02),
