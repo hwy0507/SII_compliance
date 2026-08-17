@@ -73,6 +73,14 @@ class SpringCarriageConfig:
     max_carriage_speed: float = 0.55
     max_carriage_angular_speed: float = 1.25
     drive_source: str = "proprioceptive"
+    # "spring": drive spring--damper pulls the carriage to the WBC nominal
+    #   (repository adaptation, matches the moving-target reading of the
+    #   reaching paper).  "constant_force": the original Eq. (5b) drive of
+    #   Zhang et al. (IROS 2024) -- a constant-magnitude pull along the
+    #   nominal tangent with viscous friction on the absolute carriage
+    #   velocity; the pull vanishes when the nominal twist is zero.
+    carriage_drive: str = "spring"
+    constant_pull_n: float = 1.0
     deadband_m: float = 0.008
     deadband_rad: float = 0.032
     rate_deadband_mps: float = 0.030
@@ -81,13 +89,15 @@ class SpringCarriageConfig:
     def __post_init__(self) -> None:
         if self.drive_source not in ("proprioceptive", "force_feedback"):
             raise ValueError("drive_source must be 'proprioceptive' or 'force_feedback'")
+        if self.carriage_drive not in ("spring", "constant_force"):
+            raise ValueError("carriage_drive must be 'spring' or 'constant_force'")
         if len(self.kappa_6d) != 6 or any(k <= 0.0 for k in self.kappa_6d):
             raise ValueError("kappa_6d must be six positive values")
         values = np.asarray(
             [self.k_translation_base, self.k_rotation_base, self.zeta, self.virtual_mass,
              self.virtual_inertia, self.carriage_drive_k_translation, self.carriage_drive_k_rotation,
              self.carriage_drive_zeta, self.max_force, self.max_moment, self.max_carriage_speed,
-             self.max_carriage_angular_speed, self.deadband_m, self.deadband_rad,
+             self.max_carriage_angular_speed, self.constant_pull_n, self.deadband_m, self.deadband_rad,
              self.rate_deadband_mps, self.rate_deadband_radps], dtype=float,
         )
         if not np.all(np.isfinite(values)) or np.any(values <= 0.0):
@@ -110,6 +120,12 @@ class SpringCarriageVMC:
         self.drive_stiffness = np.asarray(
             [config.carriage_drive_k_translation] * 3 + [config.carriage_drive_k_rotation] * 3)
         self.drive_damping = 2.0 * config.carriage_drive_zeta * np.sqrt(self.mass * self.drive_stiffness)
+        # Viscous friction on the absolute carriage velocity for the original
+        # constant-pull drive (Eq. 5b of Zhang et al., IROS 2024); sized from
+        # the frozen carriage drive damping ratio.
+        self.viscous_friction = 2.0 * config.carriage_drive_zeta * np.sqrt(
+            self.mass * np.asarray([config.carriage_drive_k_translation] * 3
+                                   + [config.carriage_drive_k_rotation] * 3))
         self.speed_limits = np.asarray(
             [config.max_carriage_speed] * 3 + [config.max_carriage_angular_speed] * 3)
         self.offset = np.zeros(6)       # carriage pose relative to WBC nominal
@@ -124,6 +140,7 @@ class SpringCarriageVMC:
         pose_error: np.ndarray,
         twist_error: np.ndarray,
         contact_wrench_world: np.ndarray | None = None,
+        nominal_twist: np.ndarray | None = None,
     ) -> np.ndarray:
         """Advance the carriage one RL step and return the 7-D action."""
 
@@ -131,6 +148,20 @@ class SpringCarriageVMC:
         error_rate = np.asarray(twist_error, dtype=float)
         if error.shape != (6,) or error_rate.shape != (6,):
             raise ValueError("pose/twist errors must be six-dimensional")
+        if self.config.carriage_drive == "constant_force":
+            if nominal_twist is None:
+                raise ValueError("constant_force drive requires the WBC nominal twist")
+            nominal = np.asarray(nominal_twist, dtype=float)
+            if nominal.shape != (6,):
+                raise ValueError("nominal twist must be six-dimensional")
+            # Constant-magnitude pull along the nominal tangent (translation
+            # only, as in the reaching paper); zero when the nominal twist is
+            # at rest, which is the task adaptation that keeps the grasp
+            # phase unperturbed.
+            speed = float(np.linalg.norm(nominal[:3]))
+            pull = np.zeros(6)
+            if speed > 1.0e-9:
+                pull[:3] = self.config.constant_pull_n * nominal[:3] / speed
         if self.config.drive_source == "force_feedback":
             if contact_wrench_world is None:
                 raise ValueError("force_feedback drive requires the measured contact wrench")
@@ -171,7 +202,13 @@ class SpringCarriageVMC:
                 separation_rate = -(gated_rate + self.offset_rate)
                 external = self.saturation * np.tanh(self.ee_stiffness * separation / self.saturation) \
                     + self.ee_damping * separation_rate
-            drive = -self.drive_stiffness * self.offset - self.drive_damping * self.offset_rate
+            if self.config.carriage_drive == "constant_force":
+                # Eq. (5b) of Zhang et al. (IROS 2024): the pull is constant
+                # along the tangent and the friction acts on the ABSOLUTE
+                # carriage velocity (nominal twist + relative offset rate).
+                drive = pull - self.viscous_friction * (nominal + self.offset_rate)
+            else:
+                drive = -self.drive_stiffness * self.offset - self.drive_damping * self.offset_rate
             acceleration = (drive + external) / self.mass
             self.offset_rate = np.clip(
                 self.offset_rate + PHYSICS_DT * acceleration, -self.speed_limits, self.speed_limits)
@@ -243,7 +280,9 @@ class VMCComplianceAdapter:
             raise ValueError("the VMC baseline requires WBC pose/twist tracking errors")
         if self.baseline.config.drive_source == "proprioceptive" and contact_wrench_world is not None:
             raise ValueError("proprioceptive drive must not receive the measured contact wrench")
-        physical = self.baseline.act(pose_error, twist_error, contact_wrench_world)
+        physical = self.baseline.act(
+            pose_error, twist_error, contact_wrench_world,
+            nominal_twist=None if nominal_twist is None else np.asarray(nominal_twist, dtype=float))
         limits = np.asarray(
             [self.linear_yield_limit_mps] * 3 + [self.angular_yield_limit_radps] * 3, dtype=float)
         normalized = np.zeros(7)

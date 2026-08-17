@@ -133,3 +133,48 @@ def test_adapter_normalization():
     assert action.wbc_scale == 1.0
     assert np.all(np.abs(action.bounded_filter_action) <= 1.0)
     assert RL_DT == pytest.approx(0.040)
+
+
+def test_constant_pull_reaches_viscous_equilibrium():
+    controller = SpringCarriageVMC(SpringCarriageConfig(carriage_drive="constant_force", constant_pull_n=1.0))
+    nominal = np.zeros(6)
+    nominal[0] = 0.05
+    for _ in range(3000):
+        controller.act(np.zeros(6), np.zeros(6), nominal_twist=nominal)
+    # Steady state: pull, viscous friction, and the EE-coupling reaction on
+    # the carriage offset balance, so the carriage settles at the nominal
+    # speed with a bounded sub-mm offset (verified analytically: the spring
+    # absorbs b*|v_nominal| - pull).
+    assert controller.offset_rate[0] == pytest.approx(0.0, abs=1e-6)
+    assert abs(controller.offset[0]) < 1.0e-3
+    assert np.all(np.isfinite(controller.offset))
+
+
+def test_constant_pull_vanishes_when_nominal_rests():
+    controller = SpringCarriageVMC(SpringCarriageConfig(carriage_drive="constant_force"))
+    for _ in range(300):
+        action = controller.act(np.zeros(6), np.zeros(6), nominal_twist=np.zeros(6))
+    assert np.allclose(action[1:], 0.0, atol=1e-9)
+    assert np.allclose(controller.offset, 0.0, atol=1e-9)
+
+
+def test_constant_pull_requires_nominal_twist():
+    controller = SpringCarriageVMC(SpringCarriageConfig(carriage_drive="constant_force"))
+    with pytest.raises(ValueError):
+        controller.act(np.zeros(6), np.zeros(6))
+
+
+def test_constant_pull_collision_still_yields():
+    controller = SpringCarriageVMC(SpringCarriageConfig(carriage_drive="constant_force"))
+    nominal = np.zeros(6)
+    nominal[0] = 0.05
+    error = np.zeros(6)
+    error[1] = -0.02
+    peak = 0.0
+    for step in range(300):
+        active = step < 10
+        action = controller.act(error if active else np.zeros(6), np.zeros(6),
+                                nominal_twist=nominal if step < 200 else np.zeros(6))
+        if active:
+            peak = max(peak, float(action[2]))
+    assert peak > 1e-4, "the EE coupling reaction must still yield during contact"

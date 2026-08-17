@@ -238,6 +238,43 @@ baseline 下保持**；SC-VMC force 的 jerk 上界说明 ESN 的 jerk 短板不
 
 
 
+## 论文对照与恒力牵引变体（v7 增补）
+
+### Baseline 与两篇 Forni 组论文的对应关系
+
+复刻的直接依据是仓库冻结实现（`run_benchmark.py::SixDVirtualCarriage` + `VMCConfig` +
+`KAPPA_6D`）；经论文原文核对，仓库实现与论文的对应为：
+
+| 元素 | 论文出处 | 仓库/本实现 | 一致性 |
+|---|---|---|---|
+| Spring-carriage 机构（EE 弹簧连 virtual cart + 机器人反作用 w） | Zhang, Larby, Iida, Forni (IROS 2024) Eq (5a,5b), Fig 1d | `SixDVirtualCarriage` + twist 层 `SpringCarriageVMC` | 结构忠实 |
+| 饱和弹簧 `f = σtanh(k·z/σ)` | Zhang, Iida, Forni (rock-chop) Eq (2) | `saturated_spring`（逐字等价） | 公式级一致 |
+| 力矩映射 τ = ΣJᵢᵀfᵢ | 两文 Eq (1) | 仓库保留；twist 层换为 WBC 速度环 | 仓库层一致，twist 层适配 |
+| Cart 驱动：恒力 f_C + 粘性摩擦 b | IROS 2024 Eq (5b) | 仓库改为 drive 弹簧拉向 nominal（= 同文 Fig 1c moving-target 思想）；本版补恒力变体 | 见下 |
+| 3D→6D、κ 六维、KAPPA_6D 调优 | —（论文为 3D 平移） | 仓库扩展 | 任务适配 |
+| 切换机构（switched references）、能量罐 | rock-chop / passivity 引用 | 仓库 vmc_gated/energy；未进 twist 层 baseline | 未复刻 |
+| force-feedback 变体 | —（两文均无；论文 w 是模型内反作用） | 本项目构造（信息集上界） | 非论文方法 |
+
+### 恒力牵引变体（Eq 5b 原味）结果
+
+`carriage_drive="constant_force"`：恒幅值切向牵引（仅平移，静止段为零的任务适配）+
+粘性摩擦作用于绝对 carriage 速度 + EE 耦合反作用，无位置恢复项。单测验证稳态
+（pull/摩擦/弹簧反作用三方平衡，carriage 与 nominal 同速、亚毫米偏移）。
+
+| 牵引 | fx0-2 ΔRMSE | fx2 rejoin | held-out fx3 |
+|---|---|---|---|
+| 0.5 / 1.0 / 2.0 N | +0.07/+1.07/+1.8（与 spring 版相当） | 0.56–0.60 s | **task fail（三档全失败，ΔRMSE ≈ +3.4）** |
+
+结论：论文原始恒力驱动在 train 碰撞上与 drive 弹簧版等价，但**无位置恢复项使 carriage
+在 held-out 强碰撞后无法精确回归完成抓取**——drive 弹簧（Fig 1c moving-target 思想）是
+本任务的必要适配，而非任意改动。恒力变体进主表 v4 作为「论文原味驱动」对照行
+（`paper_main_tables_v4_constant_pull.md`，含 v3 全表）。
+
+论文建议表述：*VMC baseline implementing the spring–carriage architecture of Zhang et al.
+(IROS 2024) with the saturating virtual springs of Zhang et al. (rock-chop), extended to six
+dimensions and executed in the WBC twist layer; the paper's original constant-pull drive is
+included and shown to require the moving-target adaptation for grasp recovery.*
+
 ## 服务器路径
 
 - 输出根目录：`/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_fixture23_coverage_20260817/`
