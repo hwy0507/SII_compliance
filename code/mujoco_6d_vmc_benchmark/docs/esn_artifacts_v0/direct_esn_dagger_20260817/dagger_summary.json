@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "method": "direct_esn_dagger_privileged_teacher",
+  "student_input": [
+    "joint_position_7",
+    "joint_velocity_7",
+    "wbc_task_twist_6",
+    "wbc_pose_error_6",
+    "wbc_twist_error_6"
+  ],
+  "forbidden_online_inputs": [
+    "contact_force",
+    "contact_normal",
+    "contact_duration",
+    "signed_distance",
+    "obstacle_pose",
+    "obstacle_velocity",
+    "impactor_type",
+    "release_time"
+  ],
+  "base_traces": {
+    "rod": "/home/arm1/vmc_mujoco_runtime/rod_teacher_trace_v3.npz",
+    "no_rod": "/home/arm1/vmc_mujoco_runtime/no_rod_fixed_wbc_teacher_v2.npz"
+  },
+  "iterations": [
+    {
+      "iteration": 1,
+      "rod": {
+        "archive": "/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_dagger_weighted_20260817/iteration_01_rod_student_visited.npz",
+        "samples": 155,
+        "fixture_index": 0,
+        "rod_enabled": true,
+        "teacher_nonzero_fraction": 0.8064516129032258,
+        "student_action_mean_norm": 1.2253702653737746,
+        "terminal": {
+          "task_success": false,
+          "effective_collision": true,
+          "rod_hand_contact": true,
+          "peak_contact_force_n": 19.7151115041826,
+          "contact_impulse_ns": 0.890100966493394,
+          "peak_torque_nm": 51.278803568083134,
+          "peak_jerk_mps3": 1031.1170471639487,
+          "peak_recovery_jerk_mps3": 167.3131736974167,
+          "hard_torque_limit": false,
+          "finite_state": true,
+          "minimum_torque_feasible_scale": 1.0,
+          "mean_wbc_slowdown": 0.1564626520589013,
+          "mean_yield_twist_norm": 0.17059143505497465,
+          "mean_authority_gate": 1.0,
+          "mean_predictive_authority_multiplier": 1.0,
+          "mean_predictive_wbc_feedback_scale": 1.0,
+          "mean_phase_memory_score": 0.0,
+          "mean_phase_memory_gate": 0.0,
+          "mean_stable_phase_memory_floor": 0.0,
+          "mean_energy_tank_multiplier": 1.0,
+          "minimum_energy_tank_value": 1.0,
+          "action_slew_limited_fraction": 0.25806451612903225,
+          "policy_action_saturation_fraction": 0.6387096774193548,
+          "fixture": {
+            "rod_stroke_m": 0.16,
+            "rod_height_m": 0.539,
+            "rod_start_time_s": 1.055,
+            "grasp_time_s": 2.4,
+            "rod_approach_side": "negative_y",
+            "rod_center_x_m": 0.55,
+            "rod_center_y_m": 0.0,
+            "impactor_type": "rod"
+          },
+          "controller_family": "direct_esn",
+          "observation_mode": "direct_esn",
+          "uses_vmc": false,
+          "residual_window_end_at_grasp": false
+        }
+      },
+      "no_rod": {
+        "archive": "/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_dagger_weighted_20260817/iteration_01_no_rod_student_visited.npz",
+        "samples": 155,
+        "fixture_index": 0,
+        "rod_enabled": false,
+        "teacher_nonzero_fraction": 0.0,
+        "student_action_mean_norm": 1.084219435330418,
+        "terminal": {
+          "task_success": false,
+          "effective_collision": false,
+          "rod_hand_contact": false,
+          "peak_contact_force_n": 0.0,
+          "contact_impulse_ns": 0.0,
+          "peak_torque_nm": 48.613339048061874,
+          "peak_jerk_mps3": 405.79756659042863,
+          "peak_recovery_jerk_mps3": 0.0,
+          "hard_torque_limit": false,
+          "finite_state": true,
+          "minimum_torque_feasible_scale": 1.0,
+          "mean_wbc_slowdown": 0.156438835158285,
+          "mean_yield_twist_norm": 0.14486831706180128,
+          "mean_authority_gate": 1.0,
+          "mean_predictive_authority_multiplier": 1.0,
+          "mean_predictive_wbc_feedback_scale": 1.0,
+          "mean_phase_memory_score": 0.0,
+          "mean_phase_memory_gate": 0.0,
+          "mean_stable_phase_memory_floor": 0.0,
+          "mean_energy_tank_multiplier": 1.0,
+          "minimum_energy_tank_value": 1.0,
+          "action_slew_limited_fraction": 0.36129032258064514,
+          "policy_action_saturation_fraction": 0.535483870967742,
+          "fixture": {
+            "rod_stroke_m": 0.16,
+            "rod_height_m": 0.539,
+            "rod_start_time_s": 1.055,
+            "grasp_time_s": 2.4,
+            "rod_approach_side": "negative_y",
+            "rod_center_x_m": 0.55,
+            "rod_center_y_m": 0.0,
+            "impactor_type": "rod"
+          },
+          "controller_family": "direct_esn",
+          "observation_mode": "direct_esn",
+          "uses_vmc": false,
+          "residual_window_end_at_grasp": false
+        }
+      },
+      "fit": {
+        "training_samples": 2208,
+        "readout_training_mse": 0.0007798766356885534,
+        "episodes": [
+          {
+            "path": "/home/arm1/vmc_mujoco_runtime/rod_teacher_trace_v3.npz",
+            "sample_stride": 10,
+            "samples": 172,
+            "neutral_repeat": 4
+          },
+          {
+            "path": "/home/arm1/vmc_mujoco_runtime/no_rod_fixed_wbc_teacher_v2.npz",
+            "sample_stride": 1,
+            "samples": 152,
+            "neutral_repeat": 3
+          },
+          {
+            "path": "/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_dagger_weighted_20260817/iteration_01_rod_student_visited.npz",
+            "sample_stride": 1,
+            "samples": 152,
+            "neutral_repeat": 4
+          },
+          {
+            "path": "/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_dagger_weighted_20260817/iteration_01_no_rod_student_visited.npz",
+            "sample_stride": 1,
+            "samples": 152,
+            "neutral_repeat": 3
+          }
+        ]
+      },
+      "model": "/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_dagger_weighted_20260817/direct_esn_dagger_iteration_01.npz"
+    }
+  ],
+  "final_model": "/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_dagger_weighted_20260817/direct_esn_dagger_iteration_01.npz"
+}
