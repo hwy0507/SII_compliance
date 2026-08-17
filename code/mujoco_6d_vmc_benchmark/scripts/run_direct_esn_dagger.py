@@ -152,7 +152,7 @@ def collect_student_visited_archive(
     }
 
 
-def _load_episode(path: Path, sample_stride: int) -> tuple[list[DirectESNObservation], np.ndarray]:
+def _load_episode(path: Path, sample_stride: int) -> tuple[list[DirectESNObservation], np.ndarray, bool]:
     with np.load(path, allow_pickle=False) as archive:
         required = {"joint_position", "joint_velocity", "wbc_task_twist", "pose_error", "wbc_twist_error", "teacher_action"}
         missing = required - set(archive.files)
@@ -165,10 +165,15 @@ def _load_episode(path: Path, sample_stride: int) -> tuple[list[DirectESNObserva
         pose = np.asarray(archive["pose_error"], dtype=float)[sample]
         twist_error = np.asarray(archive["wbc_twist_error"], dtype=float)[sample]
         target = np.asarray(archive["teacher_action"], dtype=float)[sample]
+        counterfactual = bool(
+            "teacher_mode" in archive.files
+            and len(archive["teacher_mode"])
+            and str(archive["teacher_mode"][0]) == "counterfactual"
+        )
     if not (q.shape == (len(q), 7) and qdot.shape == q.shape and twist.shape == (len(q), 6) and pose.shape == (len(q), 6) and twist_error.shape == (len(q), 6) and target.shape == (len(q), 7)):
         raise ValueError(f"{path}: invalid Direct ESN archive dimensions")
     observations = [DirectESNObservation(qi, qdoti, twisti, posei, twist_error_i) for qi, qdoti, twisti, posei, twist_error_i in zip(q, qdot, twist, pose, twist_error)]
-    return observations, np.clip(target, -1.0, 1.0)
+    return observations, np.clip(target, -1.0, 1.0), counterfactual
 
 
 def fit_dagger_readout(
@@ -177,20 +182,34 @@ def fit_dagger_readout(
     washout_steps: int,
     neutral_repeat: int,
     rod_repeat: int,
+    counterfactual_zero_repeat: int,
+    counterfactual_nonzero_repeat: int,
 ) -> tuple[DirectESNController, dict]:
     """Fit one readout from base demonstrations plus student-visited labels."""
 
     model = DirectESNController(config)
     features_all, targets_all, episodes = [], [], []
     for path, stride, neutral in specs:
-        observations, targets = _load_episode(path, stride)
+        observations, targets, counterfactual = _load_episode(path, stride)
         if washout_steps >= len(observations):
             raise ValueError(f"{path}: washout exceeds episode length")
         features = model.features(observations, washout_steps=washout_steps)
-        repeat = neutral_repeat if neutral else rod_repeat
-        features_all.extend([features] * repeat)
-        targets_all.extend([targets[washout_steps:]] * repeat)
-        episodes.append({"path": str(path), "sample_stride": stride, "samples": len(features), "neutral_repeat": repeat})
+        labels = targets[washout_steps:]
+        if counterfactual:
+            nonzero = np.linalg.norm(labels, axis=1) > 1.0e-5
+            repeats = np.where(nonzero, counterfactual_nonzero_repeat, counterfactual_zero_repeat)
+            features_all.append(np.repeat(features, repeats, axis=0))
+            targets_all.append(np.repeat(labels, repeats, axis=0))
+            episodes.append({
+                "path": str(path), "sample_stride": stride, "samples": len(features),
+                "counterfactual": True, "nonzero_labels": int(np.sum(nonzero)),
+                "zero_repeat": counterfactual_zero_repeat, "nonzero_repeat": counterfactual_nonzero_repeat,
+            })
+        else:
+            repeat = neutral_repeat if neutral else rod_repeat
+            features_all.extend([features] * repeat)
+            targets_all.extend([labels] * repeat)
+            episodes.append({"path": str(path), "sample_stride": stride, "samples": len(features), "repeat": repeat})
     design = np.concatenate(features_all, axis=0)
     targets = np.concatenate(targets_all, axis=0)
     mse = model.fit_readout(design, targets)
@@ -212,8 +231,10 @@ def main() -> None:
     parser.add_argument("--rod-repeat", type=int, default=1, help="relative ridge-fit weight for rod-contact teacher traces")
     parser.add_argument("--teacher-mode", choices=("phase", "counterfactual"), default="phase")
     parser.add_argument("--counterfactual-horizon-steps", type=int, default=8)
+    parser.add_argument("--counterfactual-zero-repeat", type=int, default=1)
+    parser.add_argument("--counterfactual-nonzero-repeat", type=int, default=24)
     args = parser.parse_args()
-    if args.iterations < 1 or args.neutral_repeat < 1 or args.rod_repeat < 1:
+    if min(args.iterations, args.neutral_repeat, args.rod_repeat, args.counterfactual_zero_repeat, args.counterfactual_nonzero_repeat) < 1:
         raise ValueError("iterations and repeat weights must be positive")
     counterfactual_config = CounterfactualTeacherConfig(horizon_steps=args.counterfactual_horizon_steps)
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -239,6 +260,8 @@ def main() -> None:
         model, fit = fit_dagger_readout(
             specs, config=parent.config, washout_steps=args.washout_steps,
             neutral_repeat=args.neutral_repeat, rod_repeat=args.rod_repeat,
+            counterfactual_zero_repeat=args.counterfactual_zero_repeat,
+            counterfactual_nonzero_repeat=args.counterfactual_nonzero_repeat,
         )
         output_model = args.output_dir / f"direct_esn_dagger_iteration_{iteration:02d}.npz"
         model.save_npz(output_model)
@@ -249,6 +272,10 @@ def main() -> None:
         "method": f"direct_esn_dagger_{args.teacher_mode}_privileged_teacher",
         "teacher_mode": args.teacher_mode,
         "counterfactual_teacher": None if args.teacher_mode == "phase" else asdict(counterfactual_config),
+        "counterfactual_label_weighting": None if args.teacher_mode == "phase" else {
+            "zero_repeat": args.counterfactual_zero_repeat,
+            "nonzero_repeat": args.counterfactual_nonzero_repeat,
+        },
         "student_input": list(DirectESNController.from_npz(current_model).contract()["student_input_fields"]),
         "forbidden_online_inputs": DirectESNController.from_npz(current_model).contract()["forbidden_online_inputs"],
         "base_traces": {"rod": str(args.base_rod_trace), "no_rod": str(args.base_no_rod_trace)},
