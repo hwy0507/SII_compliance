@@ -61,7 +61,15 @@ def main() -> None:
     parser.add_argument("--sample-stride", type=int, default=1)
     parser.add_argument("--washout-steps", type=int, default=25)
     args = parser.parse_args()
-    config = DirectESNConfig(reservoir_size=args.reservoir_size, seed=args.seed, dt_s=0.04 * args.sample_stride)
+    sample_dt = 0.04 * args.sample_stride
+    config = DirectESNConfig(
+        reservoir_size=args.reservoir_size,
+        seed=args.seed,
+        dt_s=sample_dt,
+        # Keep the leaky-reservoir time constant physically meaningful after
+        # trace decimation; Fan-Ye alignment requires tau >= one sample.
+        time_constant_s=max(0.12, 3.0 * sample_dt),
+    )
     model, summary = fit_direct_esn(args.traces, config=config, sample_stride=args.sample_stride, washout_steps=args.washout_steps)
     args.output_model.parent.mkdir(parents=True, exist_ok=True)
     args.output_summary.parent.mkdir(parents=True, exist_ok=True)
@@ -73,4 +81,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
