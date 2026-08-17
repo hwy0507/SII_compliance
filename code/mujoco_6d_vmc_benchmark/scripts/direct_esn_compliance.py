@@ -74,6 +74,9 @@ class DirectESNConfig:
     error_aligned_yield: bool = False
     rejoin_fade_enabled: bool = False
     rejoin_fade_maximum: float = 0.85
+    # First-order low-pass on the emitted yielding twist (1.0 disables it).
+    # Deployment-side smoothing only: offline readout fitting never sees it.
+    yield_smoothing_alpha: float = 1.0
 
     def __post_init__(self) -> None:
         values = np.asarray([
@@ -98,6 +101,8 @@ class DirectESNConfig:
             raise ValueError("reservoir probability/radius is out of bounds")
         if self.rejoin_fade_maximum > 1.0:
             raise ValueError("rejoin fade maximum cannot exceed one")
+        if not 0.0 < self.yield_smoothing_alpha <= 1.0:
+            raise ValueError("yield_smoothing_alpha must lie in (0, 1]")
 
     @property
     def leak(self) -> float:
@@ -168,6 +173,7 @@ class DirectESNController:
         self._bias = rng.uniform(-config.bias_scale, config.bias_scale, config.reservoir_size)
         self._state = np.zeros(config.reservoir_size, dtype=float)
         self._readout = np.zeros((ACTION_DIMENSION, self.feature_dimension), dtype=float)
+        self._smoothed_yield_twist = np.zeros(6, dtype=float)
 
     @property
     def feature_dimension(self) -> int:
@@ -182,6 +188,7 @@ class DirectESNController:
         return self._readout.copy()
 
     def reset(self, state: np.ndarray | None = None) -> None:
+        self._smoothed_yield_twist.fill(0.0)
         if state is None:
             self._state.fill(0.0)
             return
@@ -318,9 +325,30 @@ class DirectESNController:
                     -np.dot(scaled_pose, scaled_twist) / (pose_norm * twist_norm), 0.0, 1.0,
                 ))
                 residual_gain = 1.0 - self.config.rejoin_fade_maximum * rejoin_confidence
-        return self.action_from_feature(
+        action = self.action_from_feature(
             feature, activation=activation, pose_error=pose_error, residual_gain=residual_gain,
         )
+        if self.config.yield_smoothing_alpha < 1.0:
+            # Deployment-side first-order low-pass on the yielding twist.
+            # The slowdown channel keeps its direct path; jerk originates in
+            # the fast yield transitions this filter attenuates.
+            alpha = float(self.config.yield_smoothing_alpha)
+            smoothed = alpha * action.yielding_twist + (1.0 - alpha) * self._smoothed_yield_twist
+            self._smoothed_yield_twist = smoothed.copy()
+            bounded = action.bounded_filter_action.copy()
+            scale = np.array([
+                self.config.maximum_linear_yield_mps,
+                self.config.maximum_linear_yield_mps,
+                self.config.maximum_linear_yield_mps,
+                self.config.maximum_angular_yield_radps,
+                self.config.maximum_angular_yield_radps,
+                self.config.maximum_angular_yield_radps,
+            ])
+            bounded[1:] = np.clip(smoothed / scale, -1.0, 1.0)
+            action = DirectESNAction(
+                action.raw_readout, bounded, action.wbc_scale, smoothed,
+            )
+        return action
 
     def set_readout(self, readout: np.ndarray) -> None:
         matrix = _finite_matrix(readout, self.feature_dimension, "readout")

@@ -412,26 +412,28 @@ DAgger**。
 2026-08-17 v2 更新：随机化 proposed 方法已确定为 coverage BC（8/8 seeds 过 gate，统计见
 第 5 节）；随机 pool DAgger 记为失败方向 F。剩余工作按新优先级排列。
 
-### 优先级 1：完善论文主实验（v5 已加入核心 VMC baseline）
+### 优先级 1：完善论文主实验（v6 已完成忠实 VMC baseline + EMA 消融）
 
 已产出（`paper_tables/`，服务器与本地 docs 同步）：
 
-1. Table 1 matched benchmark 全指标（Fixed WBC vs **twist 层 VMC baseline** vs BC 8-seed
-   vs reference）：`paper_main_tables_v2_vmc.md`；
-2. **核心 baseline 已落地**：`scripts/vmc_compliance_baseline.py`——v4 VMC 六维饱和弹簧
-   阻尼律在 twist 层的实现，与 ESN 同 7-D action 接口/同 safety adapter/同 fixtures，
-   本体感受信息集（不读接触力），死区按 no-rod 底噪定标，κ/ζ 只在 train fixtures
-   调优（36 网格，best t08）；单测 8 项全过；
-3. 对比画像（诚实 Pareto）：ESN 胜 rejoin（0.52–0.80 vs 0.96–1.36 s，VMC 全慢于
-   Fixed WBC）、train RMSE、impulse 不变（VMC +2~3%，接触延长）；VMC 胜 recovery
-   jerk（fx0-2 13–18 vs 64–133）与 held-out fx3 偏离（−6.67 含窗口效应，
-   whole-episode peak dev 25.1 vs 27.0 也小幅更好）；
-4. 评价协议发现：控制器会改变接触时长（VMC fx3 release 1.56 vs 1.36 s），
-   post-contact 窗口起点随之移动——fx3 RMSE 对比必须同时报 whole-episode peak
-   deviation。
+1. **主表 v3**（`paper_main_tables_v3_spring_carriage.md`）：Fixed WBC vs
+   SC-VMC proprio / SC-VMC force（忠实 spring-carriage 复刻，冻结参数零调优）vs
+   ESN BC 8-seed；
+2. **忠实复刻**：`vmc_compliance_baseline.py` 为 v4 `SixDVirtualCarriage` 的 twist 层
+   完整复刻（carriage mass 1.25/0.08 + drive 弹簧 75/7 + EE 饱和弹簧 220/18×KAPPA_6D
+   + ζ 1.05/1.15，全部冻结）；proprio 变体与 ESN 信息集完全对齐，force 变体读测量
+   wrench（信息上界）；env 新增 `last_action_contact_wrench_world`（世界系 6D，实测
+   校准符号）；10 单测 + 24 全量测试通过；
+3. v6 结论：零调优 SC-VMC 的 RMSE 不优于 Fixed WBC（+0.1~+1.9），ESN 的
+   RMSE/rejoin 优势在最强 VMC baseline 下保持；SC-VMC force 的 jerk 与 FW 无差
+   （3–15），证明 ESN jerk 短板非柔顺控制必然代价（仍未解决）；
+4. **EMA 负结果**（`ema_scan/`、`ema_full/`）：部署端 yield 低通降 train jerk 但使
+   held-out fx3 ΔRMSE 退 60–71% 且 fx3 jerk 无改善——拒绝作为 jerk 解法，默认
+   alpha=1.0，保留为 ablation；
+5. v5 的调优 admittance 简化版（t08）降级为中间产物，主表以冻结参数版为准。
 
-剩余（可选）：LaTeX 版主表；force-feedback VMC 变体（用接触 wrench 驱动）作为
-信息集上界对照；`evaluate` 的窗口鲁棒指标（fixed-window RMSE）。
+剩余（可选）：LaTeX 版主表；recovery jerk 的非部署端解法（标签端 jerk 代价/
+rejoin 相位正则）；`evaluate` 的窗口鲁棒指标（fixed-window RMSE）。
 
 ### 优先级 2：扩展泛化评估（2026-08-17 v3 已完成核心部分）
 

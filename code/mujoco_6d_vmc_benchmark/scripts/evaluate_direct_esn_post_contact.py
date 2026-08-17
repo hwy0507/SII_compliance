@@ -108,6 +108,8 @@ def main() -> None:
     parser.add_argument("--rod-height-m", type=float, default=None, help="override the indexed fixture rod contact height")
     parser.add_argument("--rod-start-time-s", type=float, default=None, help="override the indexed fixture rod start time")
     parser.add_argument("--grasp-time-s", type=float, default=None, help="override the indexed fixture grasp time")
+    parser.add_argument("--yield-smoothing-alpha", type=float, default=1.0,
+                        help="first-order low-pass on the ESN yielding twist (1.0 disables)")
     args = parser.parse_args()
     if args.rejoin_window_steps < 1 or args.contact_threshold_n <= 0.0 or args.rejoin_threshold_mm <= 0.0:
         raise ValueError("benchmark thresholds must be positive")
@@ -121,7 +123,7 @@ def main() -> None:
     esn_info, esn_trace = run_episode(
         args.controller, **common, fixed_wbc=False,
         enable_rejoin_fade=args.enable_rejoin_fade, rejoin_fade_maximum=args.rejoin_fade_maximum,
-        override_fixture=override_fixture,
+        override_fixture=override_fixture, yield_smoothing_alpha=args.yield_smoothing_alpha,
     )
     thresholds = dict(
         contact_threshold_n=args.contact_threshold_n,

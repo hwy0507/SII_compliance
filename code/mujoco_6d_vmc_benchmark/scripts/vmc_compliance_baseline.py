@@ -1,37 +1,48 @@
 #!/usr/bin/env python3
-"""Twist-layer VMC compliance baseline for the fixed-WBC Direct ESN environment.
+"""Spring--carriage VMC compliance baseline for the fixed-WBC environment.
 
-This is the paper's VMC baseline.  It reuses the six-dimensional saturating
-spring--damper law of the frozen VMC benchmark, but executes it in the same
-twist interface as the Direct ESN policy: the controller consumes only
-proprioceptive signals that the WBC already exposes (pose/twist tracking
-error, nominal twist) and emits the same bounded 7-D action
-``[wbc_slowdown, yield_twist]``.  No contact force, normal, or obstacle
-information is read, so its observation contract matches the Direct ESN
-contract exactly and the comparison isolates the compliance law itself.
+Faithful twist-layer reproduction of the frozen VMC benchmark controller
+(``run_benchmark.py::SixDVirtualCarriage``): a virtual carriage of finite
+mass/inertia tracks the WBC nominal pose through a drive spring--damper, the
+end-effector is coupled to the carriage by the six-dimensional *saturating*
+spring--damper, and the reaction of that coupling pushes the carriage away
+from the nominal path during a collision.  All physical parameters are the
+frozen ``VMCConfig`` values and the tuned six-channel ``KAPPA_6D``; nothing is
+re-tuned here except where the twist-layer execution itself demands it.
 
-Dynamics (per channel i, integrated at the physics substep):
+Execution mapping (torque layer -> twist layer): in the frozen benchmark the
+EE spring wrench becomes joint torques.  Here the WBC already owns arm
+velocities, so the carriage *is* the compliant reference — the emitted
+``yield_twist`` equals the carriage velocity relative to the WBC nominal
+twist, and the WBC speed loop plays the role of the EE spring.  The emitted
+action therefore uses the same bounded 7-D interface and safety adapter as
+the Direct ESN policy.
 
-    M xdd + D xd + sigma_i tanh(K_i x / sigma_i)
-        = sigma_i tanh(K_e dead(e) / sigma_i) + D_e edot
+Two drive variants:
 
-where ``e`` is the WBC pose error with a deadband ``dead(e)`` that suppresses
-the controller's standing tracking error, and ``edot`` is the WBC twist
-error.  The twist term is what actually discriminates a collision: the
-rod impact produces a velocity-mismatch pulse roughly 3.5x larger than the
-largest no-rod transient, while pose errors overlap between the two regimes.
-Both the drive and the return spring saturate at the same channel limits, so
-a persistent error bounds the offset steady state instead of diverging.
-While WBC tracks well the offset relaxes to zero and the emitted action is
-zero, so a no-rod rollout stays close to Fixed WBC.  During a collision the
-drive surge pushes the offset, the emitted ``yield_twist = xd`` lets the
-end-effector yield, and once the rod releases the saturating spring pulls the
-offset back (rejoin).
+- ``proprioceptive`` (default): the carriage is pushed by the reaction of the
+  EE coupling estimated from WBC pose/twist tracking error, mirroring the
+  mechanical coupling of the original.  No contact force is read, matching
+  the Direct ESN observation contract.
+- ``force_feedback``: the carriage is pushed by the measured rod-on-hand
+  wrench (world frame), i.e. the classical admittance reading.  This is the
+  information-set upper bound; it reads a signal the deployed ESN forbids.
+
+Differences from the frozen torque-layer benchmark (documented, not hidden):
+
+1. A hard deadband on the WBC tracking-error channels suppresses the
+   velocity-layer noise floor (the torque-layer proxy tracks at ~0.3 mm and
+   needs none).  Deadbands are calibrated to the no-rod error distribution,
+   not tuned on benchmark outcomes.
+2. The arm no longer receives ``J^T w`` — the WBC velocity loop replaces the
+   EE spring actuation, and the shared safety adapter still bounds yield
+   magnitude and slew.
 """
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+import json
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 
 import numpy as np
@@ -40,57 +51,69 @@ PHYSICS_DT = 0.004
 RL_DT = 0.040
 SUBSTEPS = int(round(RL_DT / PHYSICS_DT))
 
+# Frozen values from scripts/run_benchmark_v2_ladder.py (never re-tuned here).
+KAPPA_6D = (27.579838, 52.550787, 48.699427, 35.859580, 40.719830, 34.766858)
+
 
 @dataclass(frozen=True)
-class VMCComplianceConfig:
-    """Parameters mirror the frozen VMC benchmark where dimensions allow."""
+class SpringCarriageConfig:
+    """Frozen VMCConfig values plus the twist-layer adaptation switches."""
 
-    kappa_translation: float = 1.0
-    kappa_rotation: float = 1.0
-    k_translation_base: float = 1200.0
-    k_rotation_base: float = 60.0
-    zeta: float = 1.0
-    virtual_mass: float = 6.0
-    virtual_inertia: float = 0.12
-    max_force: float = 45.0
-    max_moment: float = 6.0
-    error_drive_scale: float = 1.0
-    drive_deadband_m: float = 0.008
-    drive_deadband_rad: float = 0.032
+    kappa_6d: tuple[float, ...] = KAPPA_6D
+    k_translation_base: float = 220.0
+    k_rotation_base: float = 18.0
+    zeta: float = 1.05
+    virtual_mass: float = 1.25
+    virtual_inertia: float = 0.08
+    carriage_drive_k_translation: float = 75.0
+    carriage_drive_k_rotation: float = 7.0
+    carriage_drive_zeta: float = 1.15
+    max_force: float = 24.0
+    max_moment: float = 3.0
+    max_carriage_speed: float = 0.55
+    max_carriage_angular_speed: float = 1.25
+    drive_source: str = "proprioceptive"
+    deadband_m: float = 0.008
+    deadband_rad: float = 0.032
     rate_deadband_mps: float = 0.030
     rate_deadband_radps: float = 0.100
-    gated_stiffness_scale: float = 1.0
-    gate_error_threshold_m: float = 0.004
-    gate_error_threshold_rad: float = 0.035
-
-    def stiffness(self) -> np.ndarray:
-        return np.asarray(
-            [self.kappa_translation * self.k_translation_base] * 3
-            + [self.kappa_rotation * self.k_rotation_base] * 3,
-            dtype=float,
-        )
 
     def __post_init__(self) -> None:
-        values = np.asarray(list(asdict(self).values()), dtype=float)
+        if self.drive_source not in ("proprioceptive", "force_feedback"):
+            raise ValueError("drive_source must be 'proprioceptive' or 'force_feedback'")
+        if len(self.kappa_6d) != 6 or any(k <= 0.0 for k in self.kappa_6d):
+            raise ValueError("kappa_6d must be six positive values")
+        values = np.asarray(
+            [self.k_translation_base, self.k_rotation_base, self.zeta, self.virtual_mass,
+             self.virtual_inertia, self.carriage_drive_k_translation, self.carriage_drive_k_rotation,
+             self.carriage_drive_zeta, self.max_force, self.max_moment, self.max_carriage_speed,
+             self.max_carriage_angular_speed, self.deadband_m, self.deadband_rad,
+             self.rate_deadband_mps, self.rate_deadband_radps], dtype=float,
+        )
         if not np.all(np.isfinite(values)) or np.any(values <= 0.0):
-            raise ValueError("VMC compliance parameters must be finite and positive")
+            raise ValueError("spring-carriage parameters must be finite and positive")
 
 
-class VMCComplianceBaseline:
-    """Stateful twist-layer VMC compliance law with the ESN action interface."""
+class SpringCarriageVMC:
+    """Stateful spring--carriage compliance law with the ESN action interface."""
 
-    family = "vmc_compliance_baseline"
+    family = "spring_carriage_vmc"
 
-    def __init__(self, config: VMCComplianceConfig) -> None:
+    def __init__(self, config: SpringCarriageConfig) -> None:
         self.config = config
-        self.stiffness = config.stiffness()
+        kappa = np.asarray(config.kappa_6d, dtype=float)
+        base = np.asarray([config.k_translation_base] * 3 + [config.k_rotation_base] * 3)
+        self.ee_stiffness = kappa * base
         self.mass = np.asarray([config.virtual_mass] * 3 + [config.virtual_inertia] * 3)
         self.saturation = np.asarray([config.max_force] * 3 + [config.max_moment] * 3)
-        self.damping = 2.0 * config.zeta * np.sqrt(self.mass * self.stiffness)
-        self.error_gain = config.error_drive_scale * self.stiffness
-        self.error_damping = 2.0 * config.zeta * np.sqrt(self.mass * self.error_gain)
-        self.offset = np.zeros(6)
-        self.offset_rate = np.zeros(6)
+        self.ee_damping = 2.0 * config.zeta * np.sqrt(self.mass * self.ee_stiffness)
+        self.drive_stiffness = np.asarray(
+            [config.carriage_drive_k_translation] * 3 + [config.carriage_drive_k_rotation] * 3)
+        self.drive_damping = 2.0 * config.carriage_drive_zeta * np.sqrt(self.mass * self.drive_stiffness)
+        self.speed_limits = np.asarray(
+            [config.max_carriage_speed] * 3 + [config.max_carriage_angular_speed] * 3)
+        self.offset = np.zeros(6)       # carriage pose relative to WBC nominal
+        self.offset_rate = np.zeros(6)  # carriage twist relative to WBC nominal twist
 
     def reset(self) -> None:
         self.offset = np.zeros(6)
@@ -100,39 +123,58 @@ class VMCComplianceBaseline:
         self,
         pose_error: np.ndarray,
         twist_error: np.ndarray,
+        contact_wrench_world: np.ndarray | None = None,
     ) -> np.ndarray:
-        """Advance the offset dynamics one RL step and return the 7-D action."""
+        """Advance the carriage one RL step and return the 7-D action."""
 
-        error = np.asarray(pose_error, dtype=float).copy()
-        error_rate = np.asarray(twist_error, dtype=float).copy()
+        error = np.asarray(pose_error, dtype=float)
+        error_rate = np.asarray(twist_error, dtype=float)
         if error.shape != (6,) or error_rate.shape != (6,):
             raise ValueError("pose/twist errors must be six-dimensional")
-        deadband = np.asarray(
-            [self.config.drive_deadband_m] * 3 + [self.config.drive_deadband_rad] * 3,
-        )
-        rate_deadband = np.asarray(
-            [self.config.rate_deadband_mps] * 3 + [self.config.rate_deadband_radps] * 3,
-        )
-        # Hard deadbands calibrated to the no-rod WBC noise floor (p95) keep
-        # standing transients silent; collision-sized signals pass through.
-        gated_error = np.sign(error) * np.maximum(np.abs(error) - deadband, 0.0)
-        gated_rate = np.sign(error_rate) * np.maximum(np.abs(error_rate) - rate_deadband, 0.0)
-        drive = self.saturation * np.tanh(self.error_gain * gated_error / self.saturation) \
-            + self.error_damping * gated_rate
-        # Contact-gated softening: relax the return spring while the WBC
-        # tracking error is large (rod pressing), restore it during recovery.
-        soft = np.ones(6)
-        if self.config.gated_stiffness_scale != 1.0:
-            thresholds = np.asarray(
-                [self.config.gate_error_threshold_m] * 3
-                + [self.config.gate_error_threshold_rad] * 3,
-            )
-            active = np.abs(error) > thresholds
-            soft[active] = self.config.gated_stiffness_scale
+        if self.config.drive_source == "force_feedback":
+            if contact_wrench_world is None:
+                raise ValueError("force_feedback drive requires the measured contact wrench")
+            measured = np.asarray(contact_wrench_world, dtype=float)
+            if measured.shape != (6,):
+                raise ValueError("contact wrench must be six-dimensional")
+            # The frozen torque-layer carriage never feels the raw contact
+            # force — only the saturated EE-coupling reaction.  Keep the same
+            # channel saturation here so the variant differs solely in the
+            # drive signal (measured vs estimated), not in force limits.
+            measured_saturated = self.saturation * np.tanh(measured / self.saturation)
+        else:
+            # WBC noise-floor deadbands on the proprioceptive coupling estimate.
+            deadband = np.asarray([self.config.deadband_m] * 3 + [self.config.deadband_rad] * 3)
+            rate_deadband = np.asarray(
+                [self.config.rate_deadband_mps] * 3 + [self.config.rate_deadband_radps] * 3)
+            gated = np.sign(error) * np.maximum(np.abs(error) - deadband, 0.0)
+            gated_rate = np.sign(error_rate) * np.maximum(np.abs(error_rate) - rate_deadband, 0.0)
         for _ in range(SUBSTEPS):
-            spring = self.saturation * np.tanh(self.stiffness * soft * self.offset / self.saturation)
-            acceleration = (drive - spring - self.damping * self.offset_rate) / self.mass
-            self.offset_rate = self.offset_rate + PHYSICS_DT * acceleration
+            if self.config.drive_source == "force_feedback":
+                # Measured wrench replaces the estimated coupling drive, but
+                # the carriage keeps the same EE-coupling self-limiting
+                # reaction on its own offset.  In the frozen torque layer the
+                # carriage only ever feels the EE spring, whose steady state
+                # balances the contact force; without this term the soft drive
+                # spring (75 N/m) alone lets a 24 N force drift the carriage
+                # to ~0.3 m.
+                external = measured_saturated \
+                    - self.saturation * np.tanh(self.ee_stiffness * self.offset / self.saturation) \
+                    - self.ee_damping * self.offset_rate
+            else:
+                # pose_error = nominal - ee, so (gated + offset) is the carriage-to-EE
+                # separation negated; the coupling reaction on the carriage points
+                # away from the rod exactly like the frozen torque-layer coupling.
+                # This reaction depends on the live carriage state and must be
+                # recomputed every substep for numerical stability.
+                separation = -(gated + self.offset)
+                separation_rate = -(gated_rate + self.offset_rate)
+                external = self.saturation * np.tanh(self.ee_stiffness * separation / self.saturation) \
+                    + self.ee_damping * separation_rate
+            drive = -self.drive_stiffness * self.offset - self.drive_damping * self.offset_rate
+            acceleration = (drive + external) / self.mass
+            self.offset_rate = np.clip(
+                self.offset_rate + PHYSICS_DT * acceleration, -self.speed_limits, self.speed_limits)
             self.offset = self.offset + PHYSICS_DT * self.offset_rate
         action = np.zeros(7)
         action[0] = 1.0
@@ -140,8 +182,6 @@ class VMCComplianceBaseline:
         return action
 
     def save_npz(self, path: Path) -> None:
-        import json
-
         np.savez_compressed(
             path,
             controller_family=np.asarray([self.family]),
@@ -149,13 +189,14 @@ class VMCComplianceBaseline:
         )
 
     @classmethod
-    def from_npz(cls, path: Path) -> "VMCComplianceBaseline":
-        import json
-
+    def from_npz(cls, path: Path) -> "SpringCarriageVMC":
         with np.load(path, allow_pickle=False) as archive:
             if str(archive["controller_family"][0]) != cls.family:
                 raise ValueError(f"{path}: not a {cls.family} checkpoint")
-            config = VMCComplianceConfig(**json.loads(str(archive["config_json"][0])))
+            payload = json.loads(str(archive["config_json"][0]))
+            config = SpringCarriageConfig(
+                kappa_6d=tuple(payload["kappa_6d"]),
+                **{k: v for k, v in payload.items() if k != "kappa_6d"})
         return cls(config)
 
 
@@ -170,11 +211,11 @@ class VMCComplianceAction:
 
 
 class VMCComplianceAdapter:
-    """Expose the VMC baseline through the Direct ESN controller interface."""
+    """Expose the spring--carriage VMC through the Direct ESN controller interface."""
 
-    family = "vmc_compliance_baseline"
+    family = "spring_carriage_vmc"
 
-    def __init__(self, baseline: VMCComplianceBaseline) -> None:
+    def __init__(self, baseline: SpringCarriageVMC) -> None:
         self.baseline = baseline
         self.config = baseline.config
         self.linear_yield_limit_mps = 0.16
@@ -196,14 +237,15 @@ class VMCComplianceAdapter:
         nominal_twist: np.ndarray,
         pose_error: np.ndarray | None = None,
         twist_error: np.ndarray | None = None,
+        contact_wrench_world: np.ndarray | None = None,
     ) -> VMCComplianceAction:
         if pose_error is None or twist_error is None:
             raise ValueError("the VMC baseline requires WBC pose/twist tracking errors")
-        physical = self.baseline.act(pose_error, twist_error)
+        if self.baseline.config.drive_source == "proprioceptive" and contact_wrench_world is not None:
+            raise ValueError("proprioceptive drive must not receive the measured contact wrench")
+        physical = self.baseline.act(pose_error, twist_error, contact_wrench_world)
         limits = np.asarray(
-            [self.linear_yield_limit_mps] * 3 + [self.angular_yield_limit_radps] * 3,
-            dtype=float,
-        )
+            [self.linear_yield_limit_mps] * 3 + [self.angular_yield_limit_radps] * 3, dtype=float)
         normalized = np.zeros(7)
         normalized[1:] = np.clip(physical[1:] / limits, -1.0, 1.0)
         return VMCComplianceAction(
@@ -215,15 +257,11 @@ class VMCComplianceAdapter:
 
 
 def load_controller(path: Path):
-    """Load either a Direct ESN checkpoint or the twist-layer VMC baseline.
-
-    Both controller families live behind the same rollout interface, so the
-    matched benchmark treats them identically.
-    """
+    """Load either a Direct ESN checkpoint or the spring--carriage VMC baseline."""
 
     with np.load(path, allow_pickle=False) as archive:
         if "controller_family" in archive.files and str(archive["controller_family"][0]) == VMCComplianceAdapter.family:
-            return VMCComplianceAdapter(VMCComplianceBaseline.from_npz(path))
+            return VMCComplianceAdapter(SpringCarriageVMC.from_npz(path))
     from direct_esn_compliance import DirectESNController
 
     return DirectESNController.from_npz(path)

@@ -191,17 +191,66 @@ recovery jerk 是唯一劣于 Fixed WBC 的指标（126.8±2.9 vs 15.0 m/s³ @fx
    train fixture 误差、接触快速终止；VMC 胜在光滑性与最强碰撞下的偏离控制。
    ESN 的 recovery jerk 短板（vs FW）对手工 VMC 律仍然成立，是后续工作。
 
+## Spring-carriage VMC 忠实复刻与 EMA 消融（v6 增补）
+
+### 忠实复刻（替换 v5 的简化 admittance 版）
+
+`vmc_compliance_baseline.py` 重写为 **spring-carriage 双弹簧-质量结构**，完整复刻
+v4 冻结控制器（`run_benchmark.py::SixDVirtualCarriage`）：
+
+- virtual carriage（mass 1.25 kg / inertia 0.08，drive 弹簧 75/7，ζ 1.15）跟踪 WBC nominal；
+- EE 六维饱和弹簧（base 220/18 × 冻结 KAPPA_6D，饱和 24 N/3 Nm，ζ 1.05）；
+- 执行映射：WBC 速度环取代 `J^⊤w` 力矩通路，输出 yield_twist = carriage 速度，同一
+  7-D action 接口与 safety adapter；**全部物理参数冻结零调优**；
+- 两变体：`proprioceptive`（EE 耦合反作用由 WBC 跟踪误差估计，信息集与 ESN 完全对齐）
+  与 `force_feedback`（测量 rod-on-hand 世界系 wrench 驱动，经相同通道饱和 + carriage
+  自限项——信息集上界，读取 ESN 合同禁止的信号）。
+- 已记录的 twist 层适配（非隐藏差异）：WBC 底噪死区（v4 力矩层 proxy 误差 0.3 mm 不需要）。
+
+实现过程中修复并单测覆盖的三个问题：子步内外力更新缺失导致 ±速度限幅振荡；force
+变体原始接触力直推 1.25 kg carriage（v4 carriage 只受饱和 EE 弹簧力）；force 变体缺
+carriage 自限回归项（稳态 24 N/75 N·m⁻¹ ≈ 0.32 m 漂移）。wrench 世界系符号经 fixture-2
+碰撞事件实证校准（`wbc_velocity_residual_env._rod_hand_wrench_world`）。
+
+### 主表 v3（`paper_main_tables_v3_spring_carriage.md`）
+
+| 方法 | fx0-3 ΔRMSE | rejoin (fx2/fx3) | recjerk (fx0-3) | impulse |
+|---|---|---|---|---|
+| Fixed WBC | 基线 | 0.96 / 1.00 s | 6/10/2.5/15 | 基线 |
+| SC-VMC proprio（冻结） | +0.1/+1.0/+1.7/+1.9 | **0.60 / 0.52 s** | 32/31/118/116 | 略低 |
+| SC-VMC force（冻结） | +0.1/+0.4/+1.0/+0.7 | 1.00 / 1.04 s | **6/11/3/15（≈FW）** | 略低 |
+| ESN BC 8-seed | **−1.0/−2.6/−3.3/−2.2** | 0.52 / 0.68 s | 10/64/133/127 | 一致 |
+
+结论：零调优忠实 SC-VMC 在 RMSE 上不优于 Fixed WBC（+0.1~+1.9 mm），proprio 变体
+rejoin 显著快、force 变体 jerk 与 FW 无差别——**ESN 的 RMSE/rejoin 优势在最强 VMC
+baseline 下保持**；SC-VMC force 的 jerk 上界说明 ESN 的 jerk 短板不是柔顺控制的必然
+代价，仍属未解决问题。v5 的调优 admittance 简化版（t08）降级为中间产物（附录参考），
+主表以冻结参数版本为准。
+
+### ESN yield EMA 消融（负结果）
+
+部署端一阶低通（`yield_smoothing_alpha`）在 seed 251 上呈现理想 trade-off
+（α=0.25：fx1 jerk 75→33、fx2 135→82，RMSE 损 ~16%），但 8-seed 全量验证暴露
+**train/held-out 不对称**：held-out fx3 ΔRMSE 从 −2.207 退到 −0.86（α=0.4）/−0.64
+（α=0.25），且 fx3 jerk 无改善（116–122 vs 127）。EMA 降 train jerk 是靠延迟响应，
+强碰撞 held-out 场景响应延迟直接伤精度。**结论：部署端平滑不是 recovery jerk 的解**，
+默认 alpha=1.0（关闭），扫描数据保留为 ablation（`ema_scan/`、`ema_full/`）。
+
+
+
 ## 服务器路径
 
 - 输出根目录：`/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_fixture23_coverage_20260817/`
   - `expert_traces/`（19 rod + no-rod + manifest.json）
   - `bootstrap/`（8 seeds）、`bootstrap_gate/gate_summary.json`
+  - `spring_carriage/`（v6：两变体 checkpoints + eval + spring_carriage_eval.json）
+  - `ema_scan/`、`ema_full/`（v6：EMA 消融数据）
   - `dagger_seed_{13,42,71,137,251,307,512,1009}/`
   - `iter_train_select/selection_summary.json`（train-only iteration 选择）
   - `iter1_holdout/iter1_holdout_summary.json`（DAgger iter1 held-out）
   - `multiseed_statistics.json`（本表数据源；no-rod yield 统计 v3 已重算）
   - `ood_stroke_scan/`、`ood_geometry_scan/`（v3 泛化扫描）
-  - `paper_tables/`（v4 论文主表：markdown / csv / png；v5 增补 `paper_main_tables_v2_vmc.md`）
+  - `paper_tables/`（v4 主表 csv/png；v5 `paper_main_tables_v2_vmc.md`；v6 主表 `paper_main_tables_v3_spring_carriage.md`）
   - `vmc_baseline/`（v5：baseline checkpoints、tune 网格、smoke 与 eval 产物）
 - **正式随机化候选 checkpoints**：`bootstrap/bootstrap_seed_{13,42,71,137,251,307,512,1009}.npz`
   （8 个独立 reservoir，全部通过 gate）

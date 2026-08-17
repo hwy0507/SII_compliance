@@ -203,6 +203,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         # label the exact states the student visited.
         self.last_action_contact_force = 0.0
         self.last_action_contact_penetration = 0.0
+        self.last_action_contact_wrench_world = np.zeros(6)
         self.last_action_contact_seen = False
         self.dagger_contact_duration_s = 0.0
         self.peak_torque = 0.0
@@ -376,6 +377,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.peak_force = self.contact_impulse = self.peak_torque = self.peak_jerk = self.peak_recovery_jerk = 0.0
         self.last_action_contact_force = 0.0
         self.last_action_contact_penetration = 0.0
+        self.last_action_contact_wrench_world = np.zeros(6)
         self.last_action_contact_seen = False
         self.dagger_contact_duration_s = 0.0
         self.minimum_torque_feasible_scale = 1.0
@@ -450,6 +452,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         rod_contact, rod_force, rod_penetration = rod_contact_diagnostics(
             model, data, self._rod_geom_id, self._hand_geom_id
         )
+        step_wrench = self._rod_hand_wrench_world()
+        if np.linalg.norm(step_wrench) >= np.linalg.norm(self.last_action_contact_wrench_world):
+            self.last_action_contact_wrench_world = step_wrench
         self.rod_hand_observed = self.rod_hand_observed or rod_contact
         self.peak_force = max(self.peak_force, rod_force)
         self.contact_impulse += rod_force * CONTROL_DT
@@ -527,6 +532,39 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "uses_vmc": False,
             "residual_window_end_at_grasp": self.residual_window_end_at_grasp,
         }
+
+    def _rod_hand_wrench_world(self) -> np.ndarray:
+        """Net rod-on-hand wrench in the world frame over the last physics step.
+
+        Label/sensor-side diagnostic only: the Direct ESN observation never
+        reads it.  The force-feedback VMC baseline consumes it explicitly.
+        """
+
+        assert self.data is not None and self.model is not None
+        wrench_world = np.zeros(6)
+        hand_position = self.data.xpos[self._hand_id]
+        local = np.zeros(6)
+        for index in range(self.data.ncon):
+            contact = self.data.contact[index]
+            if {contact.geom1, contact.geom2} != {self._rod_geom_id, self._hand_geom_id}:
+                continue
+            mujoco.mj_contactForce(self.model, self.data, index, local)
+            rotation = np.asarray(contact.frame, dtype=float).reshape(3, 3).T
+            # mj_contactForce wrench acts on geom1 pushing it away from geom2.
+            if contact.geom1 == self._hand_geom_id:
+                force = rotation @ local[:3]
+                torque = rotation @ local[3:]
+            else:
+                force = -(rotation @ local[:3])
+                torque = -(rotation @ local[3:])
+            arm = np.asarray(contact.pos, dtype=float) - hand_position
+            wrench_world[:3] += force
+            wrench_world[3:] += torque + np.cross(arm, force)
+        # Empirically calibrated against the fixture-2 collision: the raw
+        # mj_contactForce summation above yields the wrench pushing the *rod*
+        # away, so negate to report the rod-on-hand wrench (rod approaches
+        # from -y and pushes the hand toward +y there).
+        return -wrench_world
 
     def diagnostics(self) -> dict[str, Any]:
         """Offline state for matched evaluation; never part of actor input."""

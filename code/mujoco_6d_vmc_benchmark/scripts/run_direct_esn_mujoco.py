@@ -41,7 +41,7 @@ def resolve_override_fixture(
     return (fixture,), 0
 
 
-def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: Path | None, fan_ye_summary: Path | None, fixture_index: int, rod_enabled: bool, seed: int, fixed_wbc: bool = False, enable_rejoin_fade: bool = False, rejoin_fade_maximum: float = 0.85, override_fixture: VelocityResidualFixture | None = None) -> tuple[dict, list[dict]]:
+def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: Path | None, fan_ye_summary: Path | None, fixture_index: int, rod_enabled: bool, seed: int, fixed_wbc: bool = False, enable_rejoin_fade: bool = False, rejoin_fade_maximum: float = 0.85, override_fixture: VelocityResidualFixture | None = None, yield_smoothing_alpha: float = 1.0) -> tuple[dict, list[dict]]:
     controller = None if fixed_wbc else load_controller(controller_path)  # type: ignore[arg-type]
     if isinstance(controller, VMCComplianceAdapter) and enable_rejoin_fade:
         raise ValueError("rejoin fade is a Direct-ESN-only ablation; the VMC baseline has no fade knob")
@@ -49,6 +49,8 @@ def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: 
         controller.config = replace(
             controller.config, rejoin_fade_enabled=True, rejoin_fade_maximum=rejoin_fade_maximum,
         )
+    if controller is not None and not isinstance(controller, VMCComplianceAdapter) and yield_smoothing_alpha != 1.0:
+        controller.config = replace(controller.config, yield_smoothing_alpha=yield_smoothing_alpha)
     fixtures = None if override_fixture is None else (override_fixture,)
     env = PandaWBCVelocityResidualEnv(
         menagerie=menagerie, fan_ye_model_npz=fan_ye_model,
@@ -70,11 +72,27 @@ def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: 
         while not terminated:
             diagnostic = env.diagnostics()
             impulse_before = float(env.contact_impulse)
+            contact_wrench = getattr(env, "last_action_contact_wrench_world", None)
+            # Only the force-feedback VMC variant may read the measured wrench;
+            # the proprioceptive variant and the ESN never receive it.
+            vmc_wrench = None
+            if isinstance(controller, VMCComplianceAdapter) and controller.baseline.config.drive_source == "force_feedback":
+                vmc_wrench = None if contact_wrench is None else np.asarray(contact_wrench).copy()
             if controller is None:
                 action_vector = np.zeros(7, dtype=float)
                 wbc_scale = 1.0
                 yielding_twist = np.zeros(6, dtype=float)
                 raw_readout = np.zeros(7, dtype=float)
+            elif isinstance(controller, VMCComplianceAdapter):
+                action = controller.act(
+                    diagnostic["joint_position"], diagnostic["joint_velocity"], diagnostic["nominal_twist"],
+                    pose_error=diagnostic["wbc_pose_error"], twist_error=diagnostic["wbc_twist_error"],
+                    contact_wrench_world=vmc_wrench,
+                )
+                action_vector = action.bounded_filter_action
+                wbc_scale = action.wbc_scale
+                yielding_twist = action.yielding_twist
+                raw_readout = action.raw_readout
             else:
                 action = controller.act(
                     diagnostic["joint_position"], diagnostic["joint_velocity"], diagnostic["nominal_twist"],
@@ -123,6 +141,8 @@ def main() -> None:
     parser.add_argument("--rod-start-time-s", type=float, default=None, help="override the indexed fixture rod start time")
     parser.add_argument("--grasp-time-s", type=float, default=None, help="override the indexed fixture grasp time")
     parser.add_argument("--enable-rejoin-fade", action="store_true")
+    parser.add_argument("--yield-smoothing-alpha", type=float, default=1.0,
+                        help="first-order low-pass on the ESN yielding twist (1.0 disables)")
     parser.add_argument("--rejoin-fade-maximum", type=float, default=0.85)
     parser.add_argument("--output-summary", type=Path, required=True)
     parser.add_argument("--output-trace", type=Path, required=True)
@@ -136,7 +156,7 @@ def main() -> None:
         fan_ye_summary=args.fan_ye_summary, fixture_index=resolved_index,
         rod_enabled=not args.no_rod, seed=args.seed, fixed_wbc=args.fixed_wbc,
         enable_rejoin_fade=args.enable_rejoin_fade, rejoin_fade_maximum=args.rejoin_fade_maximum,
-        override_fixture=override_fixture,
+        override_fixture=override_fixture, yield_smoothing_alpha=args.yield_smoothing_alpha,
     )
     if override_fixture is not None:
         info = dict(info)
