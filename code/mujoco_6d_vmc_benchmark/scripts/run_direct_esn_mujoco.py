@@ -13,8 +13,8 @@ from direct_esn_compliance import DirectESNController
 from wbc_velocity_residual_env import PandaWBCVelocityResidualEnv
 
 
-def run_episode(controller_path: Path, *, menagerie: Path, fan_ye_model: Path | None, fan_ye_summary: Path | None, fixture_index: int, rod_enabled: bool, seed: int) -> tuple[dict, list[dict]]:
-    controller = DirectESNController.from_npz(controller_path)
+def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: Path | None, fan_ye_summary: Path | None, fixture_index: int, rod_enabled: bool, seed: int, fixed_wbc: bool = False) -> tuple[dict, list[dict]]:
+    controller = None if fixed_wbc else DirectESNController.from_npz(controller_path)  # type: ignore[arg-type]
     env = PandaWBCVelocityResidualEnv(
         menagerie=menagerie, fan_ye_model_npz=fan_ye_model,
         fan_ye_train_summary_json=fan_ye_summary, observation_mode="direct_esn",
@@ -22,21 +22,32 @@ def run_episode(controller_path: Path, *, menagerie: Path, fan_ye_model: Path | 
     )
     try:
         env.reset(seed=seed, options={"fixture_index": fixture_index})
-        controller.reset()
+        if controller is not None:
+            controller.reset()
         trace = []
         terminated = False
         info = {}
         while not terminated:
             diagnostic = env.diagnostics()
-            action = controller.act(
-                diagnostic["joint_position"], diagnostic["joint_velocity"], diagnostic["nominal_twist"],
-                pose_error=diagnostic["wbc_pose_error"], twist_error=diagnostic["wbc_twist_error"],
-            )
-            _, _, terminated, _, info = env.step(action.bounded_filter_action)
+            if controller is None:
+                action_vector = np.zeros(7, dtype=float)
+                wbc_scale = 1.0
+                yielding_twist = np.zeros(6, dtype=float)
+                raw_readout = np.zeros(7, dtype=float)
+            else:
+                action = controller.act(
+                    diagnostic["joint_position"], diagnostic["joint_velocity"], diagnostic["nominal_twist"],
+                    pose_error=diagnostic["wbc_pose_error"], twist_error=diagnostic["wbc_twist_error"],
+                )
+                action_vector = action.bounded_filter_action
+                wbc_scale = action.wbc_scale
+                yielding_twist = action.yielding_twist
+                raw_readout = action.raw_readout
+            _, _, terminated, _, info = env.step(action_vector)
             trace.append({
-                "time_s": diagnostic["time_s"], "wbc_scale": action.wbc_scale,
-                "yielding_twist": action.yielding_twist.copy(), "raw_readout": action.raw_readout.copy(),
-                "bounded_action": action.bounded_filter_action.copy(),
+                "time_s": diagnostic["time_s"], "wbc_scale": wbc_scale,
+                "yielding_twist": np.asarray(yielding_twist).copy(), "raw_readout": np.asarray(raw_readout).copy(),
+                "bounded_action": np.asarray(action_vector).copy(),
                 "joint_position": diagnostic["joint_position"].copy(),
                 "joint_velocity": diagnostic["joint_velocity"].copy(),
                 "wbc_task_twist": diagnostic["nominal_twist"].copy(),
@@ -51,20 +62,21 @@ def run_episode(controller_path: Path, *, menagerie: Path, fan_ye_model: Path | 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--controller", type=Path, required=True)
+    parser.add_argument("--controller", type=Path, default=None)
     parser.add_argument("--menagerie", type=Path, required=True)
     parser.add_argument("--fan-ye-model", type=Path, default=None)
     parser.add_argument("--fan-ye-summary", type=Path, default=None)
     parser.add_argument("--fixture-index", type=int, default=0)
     parser.add_argument("--seed", type=int, default=20260817)
     parser.add_argument("--no-rod", action="store_true")
+    parser.add_argument("--fixed-wbc", action="store_true", help="record a zero-action fixed-WBC neutral trace")
     parser.add_argument("--output-summary", type=Path, required=True)
     parser.add_argument("--output-trace", type=Path, required=True)
     args = parser.parse_args()
     info, trace = run_episode(
         args.controller, menagerie=args.menagerie, fan_ye_model=args.fan_ye_model,
         fan_ye_summary=args.fan_ye_summary, fixture_index=args.fixture_index,
-        rod_enabled=not args.no_rod, seed=args.seed,
+        rod_enabled=not args.no_rod, seed=args.seed, fixed_wbc=args.fixed_wbc,
     )
     args.output_summary.parent.mkdir(parents=True, exist_ok=True)
     args.output_trace.parent.mkdir(parents=True, exist_ok=True)
