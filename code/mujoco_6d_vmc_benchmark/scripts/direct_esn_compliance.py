@@ -69,6 +69,7 @@ class DirectESNConfig:
     maximum_angular_yield_radps: float = 0.60
     activation_error_start_m: float = 0.004
     activation_error_full_m: float = 0.012
+    error_aligned_yield: bool = True
 
     def __post_init__(self) -> None:
         values = np.asarray([
@@ -220,10 +221,26 @@ class DirectESNController:
         prediction = np.tanh(design @ self._readout.T)
         return float(np.mean((prediction - np.clip(target_array, -1.0, 1.0)) ** 2))
 
-    def action_from_feature(self, feature: np.ndarray, activation: float = 1.0) -> DirectESNAction:
+    def action_from_feature(
+        self, feature: np.ndarray, activation: float = 1.0, pose_error: np.ndarray | None = None,
+    ) -> DirectESNAction:
         feature_array = _finite_vector(feature, self.feature_dimension, "feature")
         raw = self._readout @ feature_array
         bounded = np.tanh(raw) * float(np.clip(activation, 0.0, 1.0))
+        if self.config.error_aligned_yield and pose_error is not None:
+            error = _finite_vector(pose_error, 6, "pose_error")
+            linear_error_norm = float(np.linalg.norm(error[:3]))
+            if linear_error_norm >= self.config.activation_error_start_m:
+                # The ESN chooses *when* and *how strongly* to yield.  The
+                # world-frame translation direction is the measurable WBC
+                # deviation away from nominal, which removes arbitrary
+                # cross-axis readout components without using contact truth.
+                magnitude = min(1.0, float(np.linalg.norm(bounded[1:4])))
+                bounded[1:4] = -magnitude * error[:3] / linear_error_norm
+            angular_error_norm = float(np.linalg.norm(error[3:]))
+            if angular_error_norm >= 1.0e-3:
+                magnitude = min(1.0, float(np.linalg.norm(bounded[4:7])))
+                bounded[4:7] = -magnitude * error[3:] / angular_error_norm
         slowdown = max(0.0, float(bounded[0]))
         wbc_scale = 1.0 - slowdown * (1.0 - self.config.minimum_wbc_scale)
         max_twist = np.array([
@@ -265,7 +282,7 @@ class DirectESNController:
                 1.0,
             )
             activation = float(phase * phase * (3.0 - 2.0 * phase))
-        return self.action_from_feature(feature, activation=activation)
+        return self.action_from_feature(feature, activation=activation, pose_error=pose_error)
 
     def set_readout(self, readout: np.ndarray) -> None:
         matrix = _finite_matrix(readout, self.feature_dimension, "readout")
@@ -287,7 +304,7 @@ class DirectESNController:
                 "dimension": ACTION_DIMENSION,
                 "channels": ["wbc_slowdown", "yield_vx", "yield_vy", "yield_vz", "yield_wx", "yield_wy", "yield_wz"],
                 "neutral_zero_action": "fixed WBC",
-                "postprocessing": "tanh output followed by bounded Cartesian velocity and safety slew/torque adapter",
+                "postprocessing": "tanh amplitude with deployable WBC-error-aligned yield direction, then bounded Cartesian velocity and safety slew/torque adapter",
             },
             "reservoir": asdict(self.config),
         }

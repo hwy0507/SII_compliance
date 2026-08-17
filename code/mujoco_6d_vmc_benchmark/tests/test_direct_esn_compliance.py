@@ -55,6 +55,22 @@ def test_direct_esn_fit_save_load_and_reset_are_deterministic(tmp_path):
     assert np.all(np.abs(second.yielding_twist[:3]) <= config.maximum_linear_yield_mps + 1e-12)
 
 
+def test_direct_esn_aligns_yield_with_measured_wbc_deviation_only():
+    controller = DirectESNController(DirectESNConfig(reservoir_size=24, seed=8))
+    readout = np.zeros((7, controller.feature_dimension))
+    readout[1:4, 0] = [0.35, -0.65, 0.25]
+    controller.set_readout(readout)
+    feature = np.zeros(controller.feature_dimension)
+    feature[0] = 1.0
+    action = controller.action_from_feature(
+        feature, activation=1.0, pose_error=np.array([0.0, -0.010, 0.0, 0.0, 0.0, 0.0]),
+    )
+    # ``target - measured = -y`` means a physical push toward +y, so the
+    # compliant yielding command must be aligned with +y and have no x/z part.
+    assert action.bounded_filter_action[2] > 0.0
+    np.testing.assert_allclose(action.bounded_filter_action[[1, 3]], 0.0, atol=1e-12)
+
+
 def test_privileged_teacher_yields_away_from_contact_and_rejoins_after_release():
     impact = privileged_teacher_action(10.0, np.array([0.0, 1.0, 0.0]), 0.08, -0.004, np.zeros(6))
     assert impact[0] > 0.0
