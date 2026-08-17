@@ -206,11 +206,13 @@ def _error_aligned_targets(targets: np.ndarray) -> np.ndarray:
 def _dilate_counterfactual_labels(
     actions: np.ndarray, *, radius_steps: int, decay: float = 0.72,
 ) -> np.ndarray:
-    """Spread sparse contact labels into an offline prepare--yield--release ramp.
+    """Spread sparse contact labels into an offline pre-contact ramp.
 
     This happens only in the teacher archive. A nonzero counterfactual label
-    is copied to nearby *student-visited* states with exponential attenuation;
-    no-rod archives contain no seeds and remain exactly neutral.
+    is copied only to *earlier* student-visited states with exponential
+    attenuation.  States after the selected collision response keep their
+    zero label, so WBC—not a persistent residual—owns rejoin.  No-rod archives
+    contain no seeds and remain exactly neutral.
     """
 
     values = np.asarray(actions, dtype=float)
@@ -220,7 +222,7 @@ def _dilate_counterfactual_labels(
         raise ValueError("label dilation radius/decay is invalid")
     output = values.copy()
     for seed in np.flatnonzero(np.linalg.norm(values, axis=1) > 1.0e-5):
-        for offset in range(-radius_steps, radius_steps + 1):
+        for offset in range(-radius_steps, 1):
             index = int(seed + offset)
             if not 0 <= index < len(values):
                 continue
@@ -289,7 +291,7 @@ def main() -> None:
     parser.add_argument("--counterfactual-horizon-steps", type=int, default=8)
     parser.add_argument("--counterfactual-zero-repeat", type=int, default=1)
     parser.add_argument("--counterfactual-nonzero-repeat", type=int, default=24)
-    parser.add_argument("--counterfactual-label-dilation-steps", type=int, default=4)
+    parser.add_argument("--counterfactual-label-dilation-steps", type=int, default=0)
     args = parser.parse_args()
     if min(args.iterations, args.neutral_repeat, args.rod_repeat, args.counterfactual_zero_repeat, args.counterfactual_nonzero_repeat) < 1 or args.counterfactual_label_dilation_steps < 0:
         raise ValueError("iterations and repeat weights must be positive")
