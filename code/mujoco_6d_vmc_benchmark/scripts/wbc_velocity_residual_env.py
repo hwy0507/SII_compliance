@@ -160,15 +160,15 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "direct_esn": 20,
             "current_mlp": CURRENT_WBC_FEATURE_DIMENSION,
             "kinematic_forecast_mlp": CURRENT_WBC_FEATURE_DIMENSION + 6,
-            "fan_ye_esn": self.feature_adapter.feature_dimension,
-            "fan_ye_multiscale_esn": self.feature_adapter.multiscale_feature_dimension,
-            "fan_ye_phase_esn": self.feature_adapter.multiscale_feature_dimension,
-            "fan_ye_stable_phase_esn": self.feature_adapter.multiscale_feature_dimension,
-            "fan_ye_closed_loop_esn": self.feature_adapter.closed_loop_feature_dimension,
+            "fan_ye_esn": self.feature_adapter.feature_dimension if self.feature_adapter is not None else 20,
+            "fan_ye_multiscale_esn": self.feature_adapter.multiscale_feature_dimension if self.feature_adapter is not None else 20,
+            "fan_ye_phase_esn": self.feature_adapter.multiscale_feature_dimension if self.feature_adapter is not None else 20,
+            "fan_ye_stable_phase_esn": self.feature_adapter.multiscale_feature_dimension if self.feature_adapter is not None else 20,
+            "fan_ye_closed_loop_esn": self.feature_adapter.closed_loop_feature_dimension if self.feature_adapter is not None else 20,
             "fan_ye_forecast_esn": CURRENT_WBC_FEATURE_DIMENSION + 6,
             "fan_ye_forecast_authority_esn": CURRENT_WBC_FEATURE_DIMENSION,
             "fan_ye_forecast_wbc_esn": CURRENT_WBC_FEATURE_DIMENSION,
-            "fan_ye_phase_predictive_wbc_esn": self.feature_adapter.multiscale_feature_dimension,
+            "fan_ye_phase_predictive_wbc_esn": self.feature_adapter.multiscale_feature_dimension if self.feature_adapter is not None else 20,
         }[observation_mode]
         self.action_space = gym.spaces.Box(-1.0, 1.0, shape=(7,), dtype=np.float32)
         self.observation_space = gym.spaces.Box(-10.0, 10.0, shape=(observation_dimension,), dtype=np.float32)
