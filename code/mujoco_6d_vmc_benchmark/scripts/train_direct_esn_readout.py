@@ -66,14 +66,14 @@ def main() -> None:
     parser.add_argument("--washout-steps", type=int, default=25)
     parser.add_argument("--neutral-repeat", type=int, default=1)
     args = parser.parse_args()
-    sample_dt = 0.04 * args.sample_stride
+    # Trace decimation changes which samples are used for fitting, not the
+    # physical controller period. MuJoCo executes the Direct ESN at 40 ms.
+    sample_dt = 0.04
     config = DirectESNConfig(
         reservoir_size=args.reservoir_size,
         seed=args.seed,
         dt_s=sample_dt,
-        # Keep the leaky-reservoir time constant physically meaningful after
-        # trace decimation; Fan-Ye alignment requires tau >= one sample.
-        time_constant_s=max(0.12, 3.0 * sample_dt),
+        time_constant_s=0.12,
     )
     model, summary = fit_direct_esn(args.traces, config=config, sample_stride=args.sample_stride, washout_steps=args.washout_steps, neutral_repeat=args.neutral_repeat)
     args.output_model.parent.mkdir(parents=True, exist_ok=True)
