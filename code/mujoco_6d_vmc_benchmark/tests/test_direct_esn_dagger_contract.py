@@ -19,6 +19,7 @@ def test_dagger_rollout_labels_student_visited_states_offline():
     assert "select_counterfactual_action" in source
     assert "--counterfactual-nonzero-repeat" in source
     assert "np.repeat(features, repeats" in source
+    assert "_error_aligned_targets" in source
 
 
 def test_counterfactual_teacher_is_explicitly_label_side_only():

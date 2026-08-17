@@ -176,6 +176,25 @@ def _load_episode(path: Path, sample_stride: int) -> tuple[list[DirectESNObserva
     return observations, np.clip(target, -1.0, 1.0), counterfactual
 
 
+def _error_aligned_targets(targets: np.ndarray) -> np.ndarray:
+    """Encode 6-D yield labels as magnitudes for the aligned ESN interface.
+
+    At deployment, direction comes from the measured WBC pose deviation.  The
+    readout must therefore learn only the timing and strength of the linear and
+    angular compliant response, rather than an accidental world-frame axis.
+    """
+
+    values = np.asarray(targets, dtype=float)
+    if values.ndim != 2 or values.shape[1] != 7:
+        raise ValueError("Direct ESN targets must be T x 7")
+    aligned = values.copy()
+    aligned[:, 1] = np.linalg.norm(values[:, 1:4], axis=1)
+    aligned[:, 2:4] = 0.0
+    aligned[:, 4] = np.linalg.norm(values[:, 4:7], axis=1)
+    aligned[:, 5:7] = 0.0
+    return np.clip(aligned, -1.0, 1.0)
+
+
 def fit_dagger_readout(
     specs: list[tuple[Path, int, bool]], *,
     config: DirectESNConfig,
@@ -195,6 +214,8 @@ def fit_dagger_readout(
             raise ValueError(f"{path}: washout exceeds episode length")
         features = model.features(observations, washout_steps=washout_steps)
         labels = targets[washout_steps:]
+        if config.error_aligned_yield:
+            labels = _error_aligned_targets(labels)
         if counterfactual:
             nonzero = np.linalg.norm(labels, axis=1) > 1.0e-5
             repeats = np.where(nonzero, counterfactual_nonzero_repeat, counterfactual_zero_repeat)
