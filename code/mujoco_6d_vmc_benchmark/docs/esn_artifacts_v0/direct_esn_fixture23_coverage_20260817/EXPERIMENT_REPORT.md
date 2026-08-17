@@ -295,6 +295,36 @@ train-only 调优（27 网格：EE 弹簧整体缩放 {0.5,1,2} × drive 弹簧�
 以精度换 rejoin；**ESN 集成仍是唯一在全部 fixture 上 RMSE 优于 Fixed WBC 且
 rejoin 更快的方法**。冻结参数版（v3）与论文原味恒力驱动（v4）保留为对照行。
 
+## Proposed 方法升级：readout 训练端平滑正则（v9 增补）
+
+针对 recovery jerk 短板（EMA 部署端方案已否决），在 **readout 拟合目标**中加入
+episode 内相邻动作差分惩罚（`fit_readout(..., smoothness_features, smoothness_weight)`，
+Gram 矩阵加 λ_s·ΔXᵀΔX 项；bootstrap CLI `--smoothness-weight`）。与部署端 EMA 的本质
+区别：正则让 readout **本身**学出平滑映射，不引入响应延迟。
+
+λ_s 扫描（8-seed mean，train fixtures）：
+
+| λ_s | fx0-2 ΔRMSE | fx0-2 jerk |
+|---|---|---|
+| 0（基线） | −0.98/−2.60/−3.31 | 10/64/133 |
+| 10 | −0.83/−2.15/−2.49 | 10/36/92 |
+| **100** | **−0.65/−1.32/−1.57** | **7/15/27** |
+| 1000 | −0.42/−0.64/−0.74 | 6/9/8 |
+
+**λ_s=100 的 held-out 与泛化验证（与 EMA 的关键对比）**：
+
+| | fx3 ΔRMSE | fx3 jerk | OOD 4 点 | no-rod yield |
+|---|---|---|---|---|
+| λ=0 基线 | −2.207±0.034 | 127 | 4/4（−1.9~−3.0） | 0.001057 |
+| EMA α=0.4（否决） | −0.862 | 116（未降） | — | — |
+| **λ=100（本方案）** | **−1.118±0.065** | **30±3** | **4/4（−1.06~−1.61）** | 0.00048 |
+
+结论：训练端正则把 recovery jerk 从 127 压到 30（接近最强 force-VMC 的 14 和 FW 的 15），
+同时保持全部 gate 与泛化；精度改善仍为最强 VMC 的 4–5 倍。**Proposed 现在提供精度-
+光滑可调的 Pareto 前沿（λ_s 旋钮），且整个前沿位于 VMC baseline 之上**——论文建议
+双配置报告：λ=0（accuracy-optimal）与 λ=100（smoothness-matched），λ 扫描曲线作
+能力图。数据：`smooth_scan/`。
+
 ## 服务器路径
 
 - 输出根目录：`/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_fixture23_coverage_20260817/`

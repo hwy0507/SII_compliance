@@ -225,9 +225,16 @@ class DirectESNController:
 
     def fit_readout(
         self, features: np.ndarray, targets: np.ndarray, *, prior_readout: np.ndarray | None = None,
-        prior_weight: float = 0.0,
+        prior_weight: float = 0.0, smoothness_features: np.ndarray | None = None,
+        smoothness_weight: float = 0.0,
     ) -> float:
-        """Fit ridge readout, optionally proximal to a trusted parent readout."""
+        """Fit ridge readout, optionally proximal to a trusted parent readout.
+
+        ``smoothness_features`` holds consecutive-feature differences sampled
+        within episodes; a positive ``smoothness_weight`` penalizes the action
+        change they induce.  This trains temporal smoothness into the readout
+        itself, unlike a deployment-side filter (which delays the response).
+        """
 
         design = _finite_matrix(features, self.feature_dimension, "readout features")
         target_array = _finite_matrix(targets, ACTION_DIMENSION, "teacher actions")
@@ -235,6 +242,10 @@ class DirectESNController:
             raise ValueError("features and targets must have equal length")
         if not np.isfinite(prior_weight) or prior_weight < 0.0:
             raise ValueError("prior readout weight must be finite and non-negative")
+        if not np.isfinite(smoothness_weight) or smoothness_weight < 0.0:
+            raise ValueError("smoothness weight must be finite and non-negative")
+        if smoothness_weight > 0.0 and smoothness_features is None:
+            raise ValueError("a positive smoothness weight requires smoothness_features")
         right = design.T @ np.clip(target_array, -1.0, 1.0)
         if prior_readout is not None:
             prior = _finite_matrix(prior_readout, self.feature_dimension, "prior_readout")
@@ -244,6 +255,9 @@ class DirectESNController:
         elif prior_weight > 0.0:
             raise ValueError("a positive prior weight requires prior_readout")
         gram = design.T @ design + (self.config.ridge_lambda + prior_weight) * np.eye(self.feature_dimension)
+        if smoothness_weight > 0.0:
+            delta = _finite_matrix(smoothness_features, self.feature_dimension, "smoothness features")
+            gram += smoothness_weight * (delta.T @ delta)
         self._readout = np.linalg.solve(gram, right).T
         if not np.all(np.isfinite(self._readout)):
             raise RuntimeError("Direct ESN readout became non-finite")

@@ -53,6 +53,8 @@ def main() -> None:
     parser.add_argument("--washout-steps", type=int, default=3)
     parser.add_argument("--rod-repeat", type=int, default=4)
     parser.add_argument("--neutral-repeat", type=int, default=3)
+    parser.add_argument("--smoothness-weight", type=float, default=0.0,
+                        help="ridge penalty on within-episode action change (trains smoothness into the readout)")
     args = parser.parse_args()
     if min(args.reservoir_size, args.washout_steps + 1, args.rod_repeat, args.neutral_repeat) < 1:
         raise ValueError("bootstrap dimensions/weights are invalid")
@@ -63,7 +65,7 @@ def main() -> None:
     config = DirectESNConfig(reservoir_size=args.reservoir_size, seed=args.reservoir_seed, dt_s=0.04)
     model = DirectESNController(config)
     episodes = []
-    features_all, targets_all = [], []
+    features_all, targets_all, deltas_all = [], [], []
     if args.expert_traces is None:
         specs = [
             ("phase_teacher_rod", args.base_rod_trace, 10, args.rod_repeat, "teacher_action"),
@@ -85,10 +87,16 @@ def main() -> None:
         labels = actions[args.washout_steps:]
         features_all.extend([features] * repeat)
         targets_all.extend([labels] * repeat)
+        if args.smoothness_weight > 0.0:
+            # Consecutive-feature differences within this episode only; never
+            # across episode boundaries.
+            deltas_all.extend([np.diff(features, axis=0)] * repeat)
         episodes.append({"name": name, "path": str(path), "samples": len(features), "stride": stride, "repeat": repeat, "label_field": label_field})
     design = np.concatenate(features_all, axis=0)
     targets = np.concatenate(targets_all, axis=0)
-    mse = model.fit_readout(design, targets)
+    smoothness = np.concatenate(deltas_all, axis=0) if deltas_all else None
+    mse = model.fit_readout(design, targets, smoothness_features=smoothness,
+                            smoothness_weight=args.smoothness_weight)
     args.output_model.parent.mkdir(parents=True, exist_ok=True)
     args.output_summary.parent.mkdir(parents=True, exist_ok=True)
     model.save_npz(args.output_model)
@@ -100,6 +108,7 @@ def main() -> None:
         "reservoir": asdict(config),
         "training_samples": len(design),
         "readout_training_mse": mse,
+        "smoothness_weight": args.smoothness_weight,
         "episodes": episodes,
     }
     args.output_summary.write_text(json.dumps(summary, indent=2) + "\n")
