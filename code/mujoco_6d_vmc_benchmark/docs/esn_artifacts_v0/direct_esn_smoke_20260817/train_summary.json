@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "method": "direct_esn_compliant_controller",
+  "contract": {
+    "method": "direct_esn_compliant_controller",
+    "wbc_role": "fixed nominal trajectory and nominal end-effector twist only",
+    "esn_role": "primary collision-response controller: slowdown, yielding, and rejoin command",
+    "ppo_used_in_proposed": false,
+    "vmc_used_in_proposed": false,
+    "student_input_fields": [
+      "joint_position_7",
+      "joint_velocity_7",
+      "wbc_task_twist_6"
+    ],
+    "student_input_dimension": 20,
+    "forbidden_online_inputs": [
+      "contact_force",
+      "contact_normal",
+      "contact_duration",
+      "signed_distance",
+      "obstacle_pose",
+      "obstacle_velocity",
+      "impactor_type",
+      "release_time"
+    ],
+    "action": {
+      "dimension": 7,
+      "channels": [
+        "wbc_slowdown",
+        "yield_vx",
+        "yield_vy",
+        "yield_vz",
+        "yield_wx",
+        "yield_wy",
+        "yield_wz"
+      ],
+      "neutral_zero_action": "fixed WBC",
+      "postprocessing": "tanh output followed by bounded Cartesian velocity and safety slew/torque adapter"
+    },
+    "reservoir": {
+      "reservoir_size": 64,
+      "spectral_radius": 0.9,
+      "input_scale": 0.45,
+      "connection_probability": 0.12,
+      "bias_scale": 0.05,
+      "time_constant_s": 0.12,
+      "dt_s": 0.04,
+      "ridge_lambda": 0.0001,
+      "seed": 20260817,
+      "minimum_wbc_scale": 0.2,
+      "maximum_linear_yield_mps": 0.16,
+      "maximum_angular_yield_radps": 0.6
+    }
+  },
+  "model_npz": "/Users/hwy/Desktop/\u4e2a\u4eba/\u79d1\u7814/SII\u79d1\u7814/compliance/0709/code/mujoco_6d_vmc_benchmark/docs/esn_artifacts_v0/direct_esn_smoke_20260817/direct_esn_model.npz",
+  "training_samples": 1725,
+  "readout_training_mse": 0.00046332374649981744,
+  "episodes": [
+    {
+      "path": "/Users/hwy/Desktop/\u4e2a\u4eba/\u79d1\u7814/SII\u79d1\u7814/compliance/0709/code/mujoco_6d_vmc_benchmark/docs/esn_artifacts_v0/direct_esn_smoke_20260817/direct_teacher_trace.npz",
+      "samples": 1725
+    }
+  ],
+  "config": {
+    "reservoir_size": 64,
+    "spectral_radius": 0.9,
+    "input_scale": 0.45,
+    "connection_probability": 0.12,
+    "bias_scale": 0.05,
+    "time_constant_s": 0.12,
+    "dt_s": 0.04,
+    "ridge_lambda": 0.0001,
+    "seed": 20260817,
+    "minimum_wbc_scale": 0.2,
+    "maximum_linear_yield_mps": 0.16,
+    "maximum_angular_yield_radps": 0.6
+  }
+}
