@@ -381,7 +381,19 @@ def build_privileged_teacher_trace(
         raise ValueError("teacher scalar traces must be finite one-dimensional arrays")
     if not (len(forces) == len(normals) == len(durations) == len(distances) == len(errors)):
         raise ValueError("teacher trace fields must have equal length")
-    return np.asarray([
-        privileged_teacher_action(force, normal, duration, distance, error, config=config)
-        for force, normal, duration, distance, error in zip(forces, normals, durations, distances, errors)
-    ])
+    actions = []
+    contact_seen = False
+    for force, normal, duration, distance, error in zip(forces, normals, durations, distances, errors):
+        current_contact = bool(force >= config.force_onset_N or distance < 0.0)
+        if current_contact:
+            contact_seen = True
+            action = privileged_teacher_action(force, normal, duration, distance, error, config=config)
+        elif contact_seen:
+            # Rejoin is allowed only after the same episode has actually
+            # experienced contact. Before first contact, nominal WBC motion
+            # must remain exactly neutral.
+            action = privileged_teacher_action(force, normal, duration, distance, error, config=config)
+        else:
+            action = np.zeros(ACTION_DIMENSION, dtype=float)
+        actions.append(action)
+    return np.asarray(actions)
