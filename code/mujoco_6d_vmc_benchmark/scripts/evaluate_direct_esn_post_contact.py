@@ -15,7 +15,7 @@ from typing import Any
 
 import numpy as np
 
-from run_direct_esn_mujoco import run_episode
+from run_direct_esn_mujoco import resolve_override_fixture, run_episode
 
 
 def _stable_rejoin_time(time_s: np.ndarray, deviation_m: np.ndarray, start_s: float, threshold_m: float, window: int) -> float | None:
@@ -104,15 +104,24 @@ def main() -> None:
     parser.add_argument("--rejoin-window-steps", type=int, default=3)
     parser.add_argument("--enable-rejoin-fade", action="store_true")
     parser.add_argument("--rejoin-fade-maximum", type=float, default=0.85)
+    parser.add_argument("--rod-stroke-m", type=float, default=None, help="override the indexed fixture rod stroke (OOD benchmarking)")
+    parser.add_argument("--rod-height-m", type=float, default=None, help="override the indexed fixture rod contact height")
+    parser.add_argument("--rod-start-time-s", type=float, default=None, help="override the indexed fixture rod start time")
+    parser.add_argument("--grasp-time-s", type=float, default=None, help="override the indexed fixture grasp time")
     args = parser.parse_args()
     if args.rejoin_window_steps < 1 or args.contact_threshold_n <= 0.0 or args.rejoin_threshold_mm <= 0.0:
         raise ValueError("benchmark thresholds must be positive")
+    fixtures, resolved_index = resolve_override_fixture(
+        args.rod_stroke_m, args.rod_height_m, args.rod_start_time_s, args.grasp_time_s, args.fixture_index,
+    )
+    override_fixture = None if len(fixtures) > 1 else fixtures[0]
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    common = dict(menagerie=args.menagerie, fan_ye_model=None, fan_ye_summary=None, fixture_index=args.fixture_index, rod_enabled=True, seed=args.seed)
-    fixed_info, fixed_trace = run_episode(None, **common, fixed_wbc=True)
+    common = dict(menagerie=args.menagerie, fan_ye_model=None, fan_ye_summary=None, fixture_index=resolved_index, rod_enabled=True, seed=args.seed)
+    fixed_info, fixed_trace = run_episode(None, **common, fixed_wbc=True, override_fixture=override_fixture)
     esn_info, esn_trace = run_episode(
         args.controller, **common, fixed_wbc=False,
         enable_rejoin_fade=args.enable_rejoin_fade, rejoin_fade_maximum=args.rejoin_fade_maximum,
+        override_fixture=override_fixture,
     )
     thresholds = dict(
         contact_threshold_n=args.contact_threshold_n,
@@ -129,6 +138,12 @@ def main() -> None:
         "method": "matched_post_contact_fixed_wbc_vs_direct_esn",
         "fixture_index": args.fixture_index,
         "seed": args.seed,
+        "override_fixture": None if override_fixture is None else {
+            "rod_stroke_m": override_fixture.rod_stroke_m,
+            "rod_height_m": override_fixture.rod_height_m,
+            "rod_start_time_s": override_fixture.rod_start_time_s,
+            "grasp_time_s": override_fixture.grasp_time_s,
+        },
         "thresholds": thresholds,
         "direct_esn_rejoin_fade": {
             "enabled": args.enable_rejoin_fade, "maximum": args.rejoin_fade_maximum,

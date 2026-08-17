@@ -93,6 +93,46 @@ No-rod：BC-only mean yielding twist 0.00100±0.00000 m/s（8/8）；DAgger iter
 3. 论文建议叙事：proposed = Direct ESN coverage BC（8-seed 统计），deterministic
    reference 作为单 reservoir 上界对照，DAgger 负结果写入 ablation。
 
+## OOD 泛化扫描（v3 增补）
+
+### 强度 OOD（stroke 0.178–0.190，reference 失败区；fixture 2 timing/height）
+
+结果：**该区域为任务物理不可行区——Fixed WBC 也全部 task fail**（被撞后无人能完成 grasp）。
+因此「BC 在 reference 失败区仍成功」的强泛化主张不成立；正确表述是退化行为分层：
+
+- 8 个 BC seeds 的 post-contact RMSE 相对 Fixed WBC（24.3 → 31.6 mm）分三档：
+  - bc_71 全程优于 Fixed WBC（0.190 时 27.2 vs 31.6 mm）；bc_251 / bc_512 在 stroke ≥ 0.182–0.186 后仍持平或略优；
+  - bc_42 / bc_137 / bc_1009 温和退化（0.190 时 38–45 mm）；
+  - bc_13 / bc_307 与 deterministic reference 一样剧烈退化（reference 0.190 时 55.1 mm，
+    bc_13/307 peak deviation 130–164 mm）。
+- 数据源：`ood_stroke_scan/ood_scan_summary.json`（9 models × 7 strokes）。
+
+### 几何 OOD（可行域内未见 timing/height；stroke 0.172）
+
+4 个 OOD 点：start 1.130 / 1.150（训练上限 1.108）、height 0.545（训练上限 0.5425）、
+角点 (0.176, 0.5425, 1.130)。结果（8 BC seeds，Fixed WBC 对照全程 task success）：
+
+| OOD 点 | ΔRMSE（8-seed 范围） | rejoin ESN vs FW |
+|---|---|---|
+| start 1.130 | −2.913 ~ −2.993 mm | 0.56 vs 0.96 s |
+| start 1.150 | −1.905 ~ −2.262 mm | 0.60 vs 0.96 s |
+| height 0.545 | −2.351 ~ −2.492 mm | 0.60 vs 0.96 s |
+| 角点 (0.176, 0.5425, 1.130) | −1.695 ~ −2.012 mm | 0.68 vs 1.00 s |
+
+**8/8 seeds 在全部 4 个 OOD 点 task success、无 hard torque、RMSE 大幅优于 Fixed WBC，
+表现与 in-distribution 几乎无衰减，seed 方差极小**；deterministic reference 同点 −2.14 ~ −3.14 mm，
+水平相当。数据源：`ood_geometry_scan/ood_geometry_summary.json`（evaluate 脚本新增
+`--rod-stroke-m/--rod-height-m/--rod-start-time-s/--grasp-time-s` override 后跑出）。
+
+### 泛化结论
+
+1. **几何维度（impact timing / height）泛化强**：超出训练网格的未见组合上 8/8 seeds 保持
+   全部 gate 指标，可直接作为论文泛化主张。
+2. **强度维度泛化边界 = 训练覆盖的物理可行域（stroke ≤ 0.176）**：超出后任务本身不可行，
+   各控制器只剩退化行为比较；方法不提供 task-level 强度外推。
+3. 论文建议：报告 generalization boundary 分析（可行域内几何 OOD 阳性 + 强度不可行区
+   分层退化），而不是笼统的「OOD 鲁棒」。
+
 ## 服务器路径
 
 - 输出根目录：`/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_fixture23_coverage_20260817/`
@@ -102,5 +142,6 @@ No-rod：BC-only mean yielding twist 0.00100±0.00000 m/s（8/8）；DAgger iter
   - `iter_train_select/selection_summary.json`（train-only iteration 选择）
   - `iter1_holdout/iter1_holdout_summary.json`（DAgger iter1 held-out）
   - `multiseed_statistics.json`（本表数据源）
+  - `ood_stroke_scan/`、`ood_geometry_scan/`（v3 泛化扫描）
 - **正式随机化候选 checkpoints**：`bootstrap/bootstrap_seed_{13,42,71,137,251,307,512,1009}.npz`
   （8 个独立 reservoir，全部通过 gate）

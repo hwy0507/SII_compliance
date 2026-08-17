@@ -1,8 +1,8 @@
 # SII Compliance / Direct ESN 项目交接文档
 
-- 最后更新：2026-08-17（v2，多 seed 统计后修正结论）
+- 最后更新：2026-08-17（v3，OOD 泛化扫描后更新）
 - 用途：供后续 Codex/agent 接手固定 WBC + Direct ESN 柔顺控制实验。
-- 当前结论：**随机 reservoir robustness 已解决——正式配方是 stable-reference coverage BC（19+1 expert traces），8/8 reservoir seeds 通过完整 selection gate，held-out fx3 ΔRMSE = −2.207±0.034 mm（deterministic reference 为 −2.397 mm）**。随机 pool counterfactual DAgger 在此设置下是净负贡献（8/8 seeds held-out 恶化至 +1.146±0.390 mm），已记录为失败方向 F。v1 报告中「seed 251 DAgger iter2 通过 gate」是 held-out 扫描的选择偏差产物，已降级为探索性参考。
+- 当前结论：**随机 reservoir robustness 已解决——正式配方是 stable-reference coverage BC（19+1 expert traces），8/8 reservoir seeds 通过完整 selection gate，held-out fx3 ΔRMSE = −2.207±0.034 mm（deterministic reference 为 −2.397 mm）**。泛化边界已测绘：几何 OOD（未见 timing/height，可行域内）8/8 seeds 全过、ΔRMSE −1.7~−3.0 mm；强度 OOD（stroke > 0.176）为任务物理不可行区（Fixed WBC 也 fail），无 task-level 外推。随机 pool counterfactual DAgger 是净负贡献（8/8 seeds held-out 恶化至 +1.146±0.390 mm），已记录为失败方向 F。v1 的「seed 251 DAgger iter2 通过 gate」是 held-out 扫描选择偏差，已降级为探索性参考。
 
 ---
 
@@ -114,6 +114,9 @@ d675200  Add matched post-contact Direct ESN benchmark
 - `run_direct_esn_dagger.py`：`--dagger-fixtures "stroke,height,start;..."` 自定义随机化 rod pool，
   `--fixture-indices` 索引该 pool；summary 写入 `dagger_fixture_pool`，每个 archive 记录
   `rollout_fixture`（避免"seed 变了但物理轨迹相同"的假随机化）。
+- `evaluate_direct_esn_post_contact.py`：同款 `--rod-stroke-m / --rod-height-m /
+  --rod-start-time-s / --grasp-time-s` override，用于 OOD benchmark（结果 JSON 记录
+  `override_fixture`），保证 OOD 指标与正式评估同定义。
 
 ### 服务器
 
@@ -417,14 +420,19 @@ DAgger**。
 3. 确定论文叙事：proposed = Direct ESN coverage BC（8-seed 统计），
    deterministic reference = 单 reservoir 上界对照，DAgger = 负结果 ablation（方向 F）。
 
-### 优先级 2：扩展泛化评估（可选但推荐）
+### 优先级 2：扩展泛化评估（2026-08-17 v3 已完成核心部分）
 
-coverage BC 只在 rod 参数空间（stroke/timing/height）验证过。可以评估：
+已测（结果见 `EXPERIMENT_REPORT.md` v3 节与 `ood_*/` 数据）：
 
-1. OOD rod 强度：stroke 0.178–0.186（reference 失败区）上 BC-only 的表现——若仍 task
-   success 则是强泛化证据；
-2. 其他 impactor 类型 / approach side（`impactor_type`、`rod_approach_side` 字段已存在）；
-3. contact time constant / 摩擦的小范围物理扰动（运动学随机化之外）。
+1. **几何 OOD（阳性）**：可行域内未见 timing（1.130/1.150）/height（0.545）/角点，
+   8/8 BC seeds 全部 task success，ΔRMSE −1.7~−3.0 mm，rejoin 0.56–0.68 s（FW 0.96–1.00 s），
+   与 in-distribution 无衰减——可直接作论文泛化主张。
+2. **强度 OOD（边界清晰）**：stroke 0.178–0.190 为任务物理不可行区（Fixed WBC 也全部
+   task fail）；BC seeds 退化分层（bc_71 全程优于 FW；bc_13/307 与 reference 剧烈退化）。
+   报告为 generalization boundary，不声称强度外推。
+
+仍可扩展（可选）：其他 impactor 类型 / approach side（`impactor_type`、
+`rod_approach_side` 字段已存在）；contact time constant / 摩擦的物理扰动。
 
 ### 优先级 3：recovery jerk 压低（未解决）
 
