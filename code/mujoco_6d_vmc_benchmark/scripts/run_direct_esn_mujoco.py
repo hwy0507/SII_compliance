@@ -11,19 +11,46 @@ from pathlib import Path
 import numpy as np
 
 from direct_esn_compliance import DirectESNController
-from wbc_velocity_residual_env import PandaWBCVelocityResidualEnv
+from wbc_velocity_residual_env import PandaWBCVelocityResidualEnv, VelocityResidualFixture, default_velocity_residual_fixtures
 
 
-def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: Path | None, fan_ye_summary: Path | None, fixture_index: int, rod_enabled: bool, seed: int, fixed_wbc: bool = False, enable_rejoin_fade: bool = False, rejoin_fade_maximum: float = 0.85) -> tuple[dict, list[dict]]:
+def resolve_override_fixture(
+    rod_stroke_m: float | None,
+    rod_height_m: float | None,
+    rod_start_time_s: float | None,
+    grasp_time_s: float | None,
+    fixture_index: int,
+) -> tuple[tuple[VelocityResidualFixture, ...], int]:
+    """Build a single-fixture pool when any physical rod override is supplied.
+
+    Overrides start from the indexed default fixture so that unspecified
+    fields keep that fixture's values; this keeps generated expert traces
+    reproducible while the held-out evaluation fixtures stay untouched.
+    """
+
+    provided = {
+        "rod_stroke_m": rod_stroke_m, "rod_height_m": rod_height_m,
+        "rod_start_time_s": rod_start_time_s, "grasp_time_s": grasp_time_s,
+    }
+    if all(value is None for value in provided.values()):
+        return default_velocity_residual_fixtures(), fixture_index
+    base = default_velocity_residual_fixtures()[fixture_index]
+    overrides = {key: float(value) for key, value in provided.items() if value is not None}
+    fixture = replace(base, **overrides)
+    return (fixture,), 0
+
+
+def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: Path | None, fan_ye_summary: Path | None, fixture_index: int, rod_enabled: bool, seed: int, fixed_wbc: bool = False, enable_rejoin_fade: bool = False, rejoin_fade_maximum: float = 0.85, override_fixture: VelocityResidualFixture | None = None) -> tuple[dict, list[dict]]:
     controller = None if fixed_wbc else DirectESNController.from_npz(controller_path)  # type: ignore[arg-type]
     if controller is not None and enable_rejoin_fade:
         controller.config = replace(
             controller.config, rejoin_fade_enabled=True, rejoin_fade_maximum=rejoin_fade_maximum,
         )
+    fixtures = None if override_fixture is None else (override_fixture,)
     env = PandaWBCVelocityResidualEnv(
         menagerie=menagerie, fan_ye_model_npz=fan_ye_model,
         fan_ye_train_summary_json=fan_ye_summary, observation_mode="direct_esn",
-        rod_enabled=rod_enabled, seed=seed,
+        rod_enabled=rod_enabled, seed=seed, fixtures=fixtures,
     )
     try:
         env.reset(seed=seed, options={"fixture_index": fixture_index})
@@ -83,17 +110,35 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=20260817)
     parser.add_argument("--no-rod", action="store_true")
     parser.add_argument("--fixed-wbc", action="store_true", help="record a zero-action fixed-WBC neutral trace")
+    parser.add_argument("--rod-stroke-m", type=float, default=None, help="override the indexed fixture rod stroke")
+    parser.add_argument("--rod-height-m", type=float, default=None, help="override the indexed fixture rod contact height")
+    parser.add_argument("--rod-start-time-s", type=float, default=None, help="override the indexed fixture rod start time")
+    parser.add_argument("--grasp-time-s", type=float, default=None, help="override the indexed fixture grasp time")
     parser.add_argument("--enable-rejoin-fade", action="store_true")
     parser.add_argument("--rejoin-fade-maximum", type=float, default=0.85)
     parser.add_argument("--output-summary", type=Path, required=True)
     parser.add_argument("--output-trace", type=Path, required=True)
     args = parser.parse_args()
+    fixtures, resolved_index = resolve_override_fixture(
+        args.rod_stroke_m, args.rod_height_m, args.rod_start_time_s, args.grasp_time_s, args.fixture_index,
+    )
+    override_fixture = None if len(fixtures) > 1 else fixtures[0]
     info, trace = run_episode(
         args.controller, menagerie=args.menagerie, fan_ye_model=args.fan_ye_model,
-        fan_ye_summary=args.fan_ye_summary, fixture_index=args.fixture_index,
+        fan_ye_summary=args.fan_ye_summary, fixture_index=resolved_index,
         rod_enabled=not args.no_rod, seed=args.seed, fixed_wbc=args.fixed_wbc,
         enable_rejoin_fade=args.enable_rejoin_fade, rejoin_fade_maximum=args.rejoin_fade_maximum,
+        override_fixture=override_fixture,
     )
+    if override_fixture is not None:
+        info = dict(info)
+        info["override_fixture"] = {
+            "base_fixture_index": args.fixture_index,
+            "rod_stroke_m": override_fixture.rod_stroke_m,
+            "rod_height_m": override_fixture.rod_height_m,
+            "rod_start_time_s": override_fixture.rod_start_time_s,
+            "grasp_time_s": override_fixture.grasp_time_s,
+        }
     args.output_summary.parent.mkdir(parents=True, exist_ok=True)
     args.output_trace.parent.mkdir(parents=True, exist_ok=True)
     args.output_summary.write_text(json.dumps(info, indent=2, default=lambda value: value.tolist() if isinstance(value, np.ndarray) else value) + "\n")

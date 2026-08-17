@@ -25,7 +25,7 @@ from direct_esn_compliance import (
     build_privileged_teacher_trace,
 )
 from counterfactual_direct_esn_teacher import CounterfactualTeacherConfig, select_counterfactual_action
-from wbc_velocity_residual_env import PandaWBCVelocityResidualEnv
+from wbc_velocity_residual_env import PandaWBCVelocityResidualEnv, VelocityResidualFixture
 
 
 def _normal_from_fixture_side(side: str) -> np.ndarray:
@@ -37,6 +37,37 @@ def _normal_from_fixture_side(side: str) -> np.ndarray:
     if side == "positive_y":
         return np.array([0.0, 1.0, 0.0])
     raise ValueError(f"unsupported rod approach side {side!r}")
+
+
+def _parse_dagger_fixtures(value: str | None) -> tuple[VelocityResidualFixture, ...] | None:
+    """Parse an optional randomized rod pool, e.g. ``0.170,0.541,1.085;0.176,...``.
+
+    Each entry encodes ``rod_stroke_m,rod_height_m,rod_start_time_s`` and
+    becomes one pool fixture indexed by ``--fixture-indices``.  The default
+    fixtures stay untouched when the flag is absent so matched evaluation
+    remains exactly reproducible.
+    """
+
+    if value is None:
+        return None
+    fixtures = []
+    for entry in value.split(";"):
+        entry = entry.strip()
+        if not entry:
+            continue
+        parts = [part.strip() for part in entry.split(",")]
+        if len(parts) != 3:
+            raise ValueError("each dagger fixture needs rod_stroke_m,rod_height_m,rod_start_time_s")
+        try:
+            stroke, height, start = (float(part) for part in parts)
+        except ValueError as exc:
+            raise ValueError("dagger fixture fields must be numeric") from exc
+        if min(stroke, height, start) <= 0.0:
+            raise ValueError("dagger fixture fields must be positive")
+        fixtures.append(VelocityResidualFixture(stroke, height, start))
+    if not fixtures:
+        raise ValueError("dagger fixture pool must not be empty")
+    return tuple(fixtures)
 
 
 def _parse_fixture_indices(value: str | None, fallback: int) -> tuple[int, ...]:
@@ -65,6 +96,7 @@ def collect_student_visited_archive(
     teacher_mode: str = "phase",
     counterfactual_config: CounterfactualTeacherConfig | None = None,
     counterfactual_label_dilation_steps: int = 0,
+    fixtures: tuple[VelocityResidualFixture, ...] | None = None,
 ) -> dict:
     """Run one student rollout and construct a privileged DAgger archive."""
 
@@ -74,6 +106,8 @@ def collect_student_visited_archive(
         counterfactual_config = CounterfactualTeacherConfig()
     if counterfactual_label_dilation_steps < 0:
         raise ValueError("counterfactual label dilation must be non-negative")
+    if fixtures is not None and not 0 <= fixture_index < len(fixtures):
+        raise ValueError(f"fixture index {fixture_index} outside the custom pool of {len(fixtures)}")
     controller = DirectESNController.from_npz(controller_path)
     env = PandaWBCVelocityResidualEnv(
         menagerie=menagerie,
@@ -82,6 +116,7 @@ def collect_student_visited_archive(
         observation_mode="direct_esn",
         rod_enabled=rod_enabled,
         seed=seed,
+        fixtures=fixtures,
     )
     records: list[dict[str, np.ndarray | float]] = []
     try:
@@ -164,6 +199,12 @@ def collect_student_visited_archive(
         "archive": str(output_path),
         "samples": len(records),
         "fixture_index": fixture_index,
+        "rollout_fixture": {
+            "rod_stroke_m": env.fixture.rod_stroke_m,
+            "rod_height_m": env.fixture.rod_height_m,
+            "rod_start_time_s": env.fixture.rod_start_time_s,
+            "grasp_time_s": env.fixture.grasp_time_s,
+        },
         "rod_enabled": rod_enabled,
         "teacher_mode": teacher_mode,
         "counterfactual_horizon_steps": None if teacher_mode == "phase" else counterfactual_config.horizon_steps,
@@ -315,11 +356,16 @@ def main() -> None:
     parser.add_argument("--counterfactual-nonzero-repeat", type=int, default=24)
     parser.add_argument("--counterfactual-label-dilation-steps", type=int, default=0)
     parser.add_argument("--prior-readout-weight", type=float, default=0.0)
+    parser.add_argument("--dagger-fixtures", type=str, default=None, help="semicolon list of rod_stroke_m,rod_height_m,rod_start_time_s replacing the default pool")
     args = parser.parse_args()
     if min(args.iterations, args.neutral_repeat, args.rod_repeat, args.counterfactual_zero_repeat, args.counterfactual_nonzero_repeat) < 1 or args.counterfactual_label_dilation_steps < 0 or args.prior_readout_weight < 0.0:
         raise ValueError("iterations and repeat weights must be positive")
     counterfactual_config = CounterfactualTeacherConfig(horizon_steps=args.counterfactual_horizon_steps)
+    dagger_fixtures = _parse_dagger_fixtures(args.dagger_fixtures)
+    pool_size = len(dagger_fixtures) if dagger_fixtures is not None else 4
     fixture_indices = _parse_fixture_indices(args.fixture_indices, args.fixture_index)
+    if dagger_fixtures is not None and any(index >= pool_size for index in fixture_indices):
+        raise ValueError(f"fixture indices {fixture_indices} exceed the custom pool of {pool_size}")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     current_model = args.initial_model
     all_dagger_specs: list[tuple[Path, int, bool]] = []
@@ -337,12 +383,14 @@ def main() -> None:
                 rod_enabled=True, seed=args.seed + iteration * 100 + fixture_offset, output_path=rod_archive, iteration=iteration,
                 teacher_mode=args.teacher_mode, counterfactual_config=counterfactual_config,
                 counterfactual_label_dilation_steps=args.counterfactual_label_dilation_steps,
+                fixtures=dagger_fixtures,
             ))
         no_rod = collect_student_visited_archive(
             current_model, menagerie=args.menagerie, fixture_index=fixture_indices[0],
             rod_enabled=False, seed=args.seed + iteration * 100 + 50, output_path=no_rod_archive, iteration=iteration,
             teacher_mode=args.teacher_mode, counterfactual_config=counterfactual_config,
             counterfactual_label_dilation_steps=args.counterfactual_label_dilation_steps,
+            fixtures=dagger_fixtures,
         )
         all_dagger_specs.extend([(archive, 1, False) for _, archive in rod_archives])
         all_dagger_specs.append((no_rod_archive, 1, True))
@@ -374,6 +422,10 @@ def main() -> None:
         "forbidden_online_inputs": DirectESNController.from_npz(current_model).contract()["forbidden_online_inputs"],
         "base_traces": {"rod": str(args.base_rod_trace), "no_rod": str(args.base_no_rod_trace)},
         "train_fixture_indices": list(fixture_indices),
+        "dagger_fixture_pool": None if dagger_fixtures is None else [
+            {"rod_stroke_m": f.rod_stroke_m, "rod_height_m": f.rod_height_m, "rod_start_time_s": f.rod_start_time_s}
+            for f in dagger_fixtures
+        ],
         "iterations": rounds,
         "final_model": str(current_model),
     }
