@@ -1,8 +1,8 @@
 # SII Compliance / Direct ESN 项目交接文档
 
-最后更新：2026-08-17  
-用途：供后续 Codex/agent 接手固定 WBC + Direct ESN 柔顺控制实验。  
-当前结论：fixture 2/3 强碰撞 teacher coverage + 随机化 DAgger pool 已落地；**随机 reservoir robustness 问题已解决**（seed 251 DAgger iter2 通过完整 selection gate，held-out fx3 RMSE −3.214 mm 优于 deterministic reference 的 −2.397 mm，recovery jerk 约减半）。deterministic reference 与新随机候选并存，均不互相覆盖。
+- 最后更新：2026-08-17（v2，多 seed 统计后修正结论）
+- 用途：供后续 Codex/agent 接手固定 WBC + Direct ESN 柔顺控制实验。
+- 当前结论：**随机 reservoir robustness 已解决——正式配方是 stable-reference coverage BC（19+1 expert traces），8/8 reservoir seeds 通过完整 selection gate，held-out fx3 ΔRMSE = −2.207±0.034 mm（deterministic reference 为 −2.397 mm）**。随机 pool counterfactual DAgger 在此设置下是净负贡献（8/8 seeds held-out 恶化至 +1.146±0.390 mm），已记录为失败方向 F。v1 报告中「seed 251 DAgger iter2 通过 gate」是 held-out 扫描的选择偏差产物，已降级为探索性参考。
 
 ---
 
@@ -303,44 +303,42 @@ No-rod：task success、hard torque false、mean yielding twist 约 `0.00173 m/s
 
 特点：train fixture RMSE / rejoin latency 全面最优；recovery jerk 偏高（fx2 136、fx3 119 m/s³）。
 
-### 随机 reservoir 新候选（2026-08-17 coverage 会话，通过完整 selection gate）
+### 随机 reservoir 正式候选（2026-08-17 coverage 会话，8/8 通过完整 gate）
 
-服务器路径：
+服务器路径（8 个独立 reservoir，全部通过 gate）：
 
 ```text
-/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_fixture23_coverage_20260817/dagger_seed_251/direct_esn_dagger_iteration_02.npz
+/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_fixture23_coverage_20260817/bootstrap/bootstrap_seed_{13,42,71,137,251,307,512,1009}.npz
 ```
 
-完整报告：同目录 `EXPERIMENT_REPORT.md`；gate 数据 `candidate_gate/candidate_gate_summary.json`。
+完整报告：同目录 `EXPERIMENT_REPORT.md`；统计 `multiseed_statistics.json`。
 
-训练方式（修复随机 reservoir robustness 的配方）：
+训练方式（stable-reference coverage BC，仅此一步、无 DAgger）：
 
 1. 用 deterministic reference 在 fixture 2 邻域生成 19 条参数化 expert traces
    （stroke {0.170–0.176} × start {1.062–1.108} × height {0.5395–0.5425}，全部 task success，
    无 fixture 3 exact 组合）+ 1 条 no-rod trace；
-2. behavior cloning bootstrap（reservoir seed 251，readout MSE ≈ 1.3e-5）；
-3. 8-fixture 随机化 DAgger pool（default f0/f1/f2 + 5 个强碰撞/变 timing/变 height override），
-   counterfactual h24 / nonzero-repeat 8 / dilation 0 / prior 100，3 iterations。
+2. behavior cloning bootstrap（`washout 3 / rod-repeat 4 / neutral-repeat 4`，
+   readout MSE ≈ 1.3e-5）。
 
-结果（Fixed WBC → ESN）：
+8-seed 统一协议统计（iteration 不适用；fx3 只报告；Fixed WBC → ESN）：
 
-| Fixture | Split | Δ RMSE | rejoin | recovery jerk |
-|---:|---|---:|---:|---:|
-| 0 | train | −0.253 mm | 880 → 840 ms | 6 → 17 m/s³ |
-| 1 | train | −1.554 mm | 960 → 840 ms | 10 → 47 m/s³ |
-| 2 | train | −2.714 mm | 960 → 760 ms | 2 → **75 m/s³** |
-| 3 | held-out | **−3.214 mm** | 1000 → 800 ms | 15 → **85 m/s³** |
+| 指标 | fx0 (train) | fx1 (train) | fx2 (train) | fx3 (held-out) |
+|---|---:|---:|---:|---:|
+| Δ post-contact RMSE | −0.982±0.011 | −2.600±0.011 | −3.313±0.015 | **−2.207±0.034** |
+| rejoin latency | 0.80±0.00 s | 0.64±0.00 s | 0.52±0.00 s | 0.68±0.00 s |
+| recovery jerk | 10±1 | 64±5 | 133±4 | 127±3 |
 
-No-rod：task success、hard torque false、mean yielding twist `0.00102 m/s`。
+No-rod：8/8 task success、无 hard torque、mean yielding twist 0.00100±0.00000 m/s。
 
-特点：held-out fx3 RMSE 优于 deterministic reference（−3.214 vs −2.397 mm）；
-recovery jerk 在强碰撞 fixture 上几乎减半（75/85 vs 136/119）；train fixture RMSE 改善幅度
-和 rejoin latency 略逊于 deterministic reference。**这是第一个通过完整 selection gate 的随机
-reservoir**；作为 paper 随机化主候选与 deterministic reference 并存，不要互相覆盖。
+特点：与 deterministic reference 水平相当（fx3 −2.207 vs −2.397），但给出跨 reservoir 的
+统计稳健性；这是论文随机化 proposed 线的正式方法。**不要对这批模型再跑随机 pool DAgger**
+（见失败方向 F）。
 
-同会话的 seed 71 / 137 各 iteration 在 held-out fx3 RMSE 恶化（+0.55 ~ +2.16 mm），已按 gate
-记录为 reject（见 `iter_scan/iter_scan_summary.json`）：随机化 DAgger pool 会让部分 reservoir
-seed 过拟合强碰撞区，多 reservoir seed 筛选是必要的。
+探索性参考（不进入正式结果）：seed 251 DAgger iteration 02 曾在 fx3 达到 −3.214 mm、
+recovery jerk 75/85，但该 checkpoint 是对 9 个 (seed,iteration) 组合做 held-out 扫描后挑出
+的最优，属测试集选择偏差；统一协议（train-only iteration 选择）下所有 DAgger 产物均
+不达标。路径 `dagger_seed_251/direct_esn_dagger_iteration_02.npz` 仅作分析用。
 
 ### Repair 后随机 reservoir 输出（不选为最终模型）
 
@@ -388,45 +386,56 @@ seed：`71, 137, 251`。
 
 问题：no-rod mean yield 可升到 `0.04–0.10 m/s`，部分 fixture 无稳定 rejoin。必须先做 stable-reference behavior cloning。
 
+### F. 随机 pool counterfactual DAgger（2026-08-17 coverage 会话确认为净负贡献）
+
+设置：coverage BC bootstrap 之后，在 8-fixture 随机化 rod pool（5/8 为 stroke ≥0.174 强碰撞）
+上跑 counterfactual DAgger（h24 / nonzero-repeat 8 / dilation 0 / prior 100）。
+
+结果：8/8 reservoir seeds 的 DAgger iter1 在 held-out fx3 恶化（mean +1.146±0.390 mm；
+BC-only 对照为 −2.207±0.034 mm）；train fixtures 上亦随 iteration 单调劣化，
+train-only 协议下全部 8 个 seed 的 iteration 选择都落在 iter1 且仍不达标。
+
+机理推测：pool 强碰撞占比高 + nonzero 标签 repeat=8 加权，把 readout 拉向过强 yield，
+破坏 BC 学到的与 teacher 参数化一致的低误差行为；proximal prior 100 不足以约束。
+
+若要复活 DAgger（未验证）：标签权重按碰撞强度归一；pool 强度分布匹配 default fixtures；
+仅对 student 明显偏离 teacher 的状态打标。在验证前，**不要对 coverage BC 产物再跑随机 pool
+DAgger**。
+
 ---
 
 ## 7. 下一位 agent 的优先级
 
-2026-08-17 更新：优先级 1（fixture 2/3 teacher coverage）与优先级 2（随机化训练分布）
-的核心部分已完成，优先级 3 的 gate 已实际执行（must 项 + RMSE/rejoin/jerk 优先项）。
-剩余工作按新优先级排列。
+2026-08-17 v2 更新：随机化 proposed 方法已确定为 coverage BC（8/8 seeds 过 gate，统计见
+第 5 节）；随机 pool DAgger 记为失败方向 F。剩余工作按新优先级排列。
 
-### 优先级 1：扩大随机 reservoir 通过率并做正式多 seed 统计
+### 优先级 1：完善论文主实验
 
-当前配方（coverage BC + 8-fixture 随机化 DAgger pool）下 3 个 reservoir seed 只有 251
-通过 held-out gate（71/137 过拟合强碰撞区）。下一步：
+1. 用 8 个 BC-only checkpoint 做 aggregate 报告（mean±std 已有，补 IAE / impulse / peak
+   deviation 统计，数据在 `bootstrap_gate/` 的 eval JSON 里，无需重跑仿真）；
+2. 与 baseline 阶梯（Fixed WBC / 旧 ESN 线 / VMC 线）在同一 protocol 下对比出图；
+3. 确定论文叙事：proposed = Direct ESN coverage BC（8-seed 统计），
+   deterministic reference = 单 reservoir 上界对照，DAgger = 负结果 ablation（方向 F）。
 
-1. 增加 reservoir seed 数量（≥ 5–8 个），每个都走 bootstrap gate → DAgger → 全 iteration
-   held-out scan，统计通过率；
-2. 分析 seed 71/137 的 readout/activation 差异，寻找可提前预测过拟合的 bootstrap-stage 指标；
-3. 对通过 gate 的 reservoir 做 aggregate 统计（mean ± std），与 deterministic reference 分开报告；
-4. 尝试在 DAgger pool 中加入 contact time constant / 摩擦的小范围扰动（handoff 原优先级 2
-   的物理随机化部分，目前只做了运动学随机化）。
+### 优先级 2：扩展泛化评估（可选但推荐）
 
-### 优先级 2：确定最终 paper checkpoint 与叙事
+coverage BC 只在 rod 参数空间（stroke/timing/height）验证过。可以评估：
 
-deterministic reference（train fixture 最优）与 seed 251 it2（held-out 最优 + recovery jerk
-减半）各有优势，需要决定：
+1. OOD rod 强度：stroke 0.178–0.186（reference 失败区）上 BC-only 的表现——若仍 task
+   success 则是强泛化证据；
+2. 其他 impactor 类型 / approach side（`impactor_type`、`rod_approach_side` 字段已存在）；
+3. contact time constant / 摩擦的小范围物理扰动（运动学随机化之外）。
 
-1. 论文 proposed 用哪个（或两个都报告：deterministic reference + randomized ensemble）；
-2. recovery jerk 的绝对安全上限定值（当前只有相对比较）；
-3. contact impulse 预算的定值（当前 seed 251 it2 各 fixture impulse 差值在 ±0.01 N·s 量级）。
+### 优先级 3：recovery jerk 压低（未解决）
 
-### 优先级 3：recovery jerk 的进一步压低
-
-随机化候选已把 fx2/3 recovery jerk 从 136/119 降到 75/85 m/s³，但仍高于 Fixed WBC（2/15）。
-可选方向：rejoin 相位的 readout 正则、jerk 显式进 counterfactual cost（已有一部分）、或对
-yield 幅度做 rate limit。rejoin fade 仍然无效，不要重复该分支。
+BC-only 的 fx2/3 recovery jerk（133/127）与 reference（136/119）相当，仍高于 Fixed WBC
+（2/15）。可选方向：yield 幅度 rate limit、jerk 显式进 counterfactual cost 的离线标签精修
+（不是 DAgger）、rejoin 相位 readout 正则。rejoin fade 仍无效，不要重复。
 
 ### 已完成（供参考，不要再做）
 
-- fixture 2/3 coverage expert traces（19+1 条，见第 5 节新候选的训练方式）；
-- 随机化 DAgger pool 基础设施（`--dagger-fixtures`、`rollout_fixture` 记录）；
+- fixture 2/3 coverage expert traces（19+1 条）与参数化基础设施；
+- 随机化训练分布（运动学部分）+ 8-reservoir seed 统计；
 - selection gate 的实际执行（must 项 + 优先项 + reject 记录），gate 定义：
 
 ```text
@@ -487,7 +496,7 @@ python bootstrap_direct_esn_multifixture.py \
   --washout-steps 3 --rod-repeat 4 --neutral-repeat 4
 ```
 
-### 随机化 pool DAgger（当前推荐配方）
+### 随机化 pool DAgger（失败方向 F，只用于复现负结果，不要用于出新模型）
 
 ```bash
 POOL="0.160,0.539,1.055;0.165,0.540,1.070;0.170,0.541,1.085;0.176,0.541,1.085;0.176,0.5395,1.062;0.176,0.5425,1.108;0.174,0.541,1.096;0.172,0.5435,1.070"
@@ -509,16 +518,16 @@ python run_direct_esn_dagger.py \
   --prior-readout-weight 100
 ```
 
-注意：pool 中不得出现 held-out fixture 3 的 exact 组合 `0.175,0.542,1.100`。
+8/8 seeds 在此设置下 held-out 恶化（失败方向 F）。正式模型 = bootstrap 产物本身，到此为止。
 
 ### Strict matched evaluation
 
 ```bash
 python evaluate_direct_esn_post_contact.py \
-  --controller dagger_seed_251/direct_esn_dagger_iteration_02.npz \
+  --controller bootstrap/bootstrap_seed_251.npz \
   --menagerie /home/arm1/vmc_mujoco_runtime/mujoco_menagerie \
   --fixture-index 3 \
-  --output-dir dagger_seed_251/eval_fixture_3
+  --output-dir eval_bc_seed_251_fixture_3
 ```
 
 ---
@@ -539,4 +548,4 @@ python evaluate_direct_esn_post_contact.py \
 
 ## 10. 当前交接一句话
 
-**当前最可靠主线是：稳定 reference 行为蒸馏（含 fixture 2 邻域强碰撞 coverage 网格）→ 随机化 rod pool 的 counterfactual/proximal DAgger → 多 reservoir seed 的 selection gate；随机 reservoir robustness 已解决（seed 251 it2 通过完整 gate），下一步是扩大 seed 通过率做正式统计、并确定 deterministic reference 与随机候选的论文叙事分工。不要回到单一 phase teacher，也不要把 VMC 混入 Direct ESN proposed 线。**
+**正式配方 = 稳定 reference 的 fixture 2 邻域 coverage 蒸馏（19+1 expert traces → BC），8/8 随机 reservoir 通过完整 selection gate（held-out −2.207±0.034 mm）；到此为止，不要再叠随机 pool DAgger（失败方向 F）。下一步是论文主实验图表与泛化扩展（OOD 强度 / impactor 变体），以及 recovery jerk 压低。不要回到单一 phase teacher，也不要把 VMC 混入 Direct ESN proposed 线。**
