@@ -420,6 +420,35 @@ error-aligned/方向对称化参数化的动机（失败方向 C 的重新审视
 计算）；`run_direct_esn_mujoco.py`/`evaluate_direct_esn_post_contact.py` 的 override
 新增 `--rod-approach-side`（六方向）与 `--rod-cycles/--cycle-period-s`。
 
+## 方向绑定缺陷修复：教师侧镜像增广（v12 增补）
+
+### 侦察（决定技术路线）
+
+1. 教师在镜像 +y 方向**不翻车**（window RMSE 12.57 vs FW 14.91）——教师有方向泛化，
+   方向绑定是 **BC 蒸馏损失**（学生 21.50）→ 选数据增广路线；
+2. 教师/ESN 的 yield 方向与 −pose_error 夹角很大（mean cos −0.225，仅 11% 步 <45°）——
+   教师策略是复杂侧向让开，**部署端投影到误差反向会严重扭曲行为**（也正是当年
+   error-aligned 失败方向 C 的根因），投影方案放弃。
+
+### 修复：教师在 +y 生成 14 条 traces（fixture 2 邻域，+y 版 fx3 组合不生成）
+
+BC v3 = 19（−y）+ 14（+y）+ 1 no-rod，8 seeds（`coverage_v3_directional/`）：
+
+| 配置 | −y fx0-3 ΔRMSE | **+y 镜像 held-out** | gate |
+|---|---|---|---|
+| 修复前（19 条单向） | −0.98/−2.60/−3.31/−2.21 | **21.50±10.76（5/8 fail）** | 8/8 |
+| **v3 双向 λ=0** | −0.96/−2.61/−3.23/**−2.11** | **12.70±0.36（8/8，优于 FW 14.91，追平教师 12.57）** | 8/8 |
+
+**方向绑定 limitation 已修复**：−y 性能统计无损（fx3 −2.11 vs −2.21），镜像方向从
+比 FW 差 6.6mm 翻转为优于 FW 2.2mm。这是论文 proposed 的最终配置。
+
+### 诚实记录：λ_s 平滑正则在双向数据上失效
+
+v3 数据上 λ ∈ {10, 30, 100} 全部使 held-out fx3 翻正（+0.24~+0.30；单向数据上 λ=100
+曾为 −1.12）。推测：双向覆盖要求 readout 保留方向区分容量，平滑正则挤掉了它。
+**精度-光滑 Pareto（λ_s）目前只对单向数据集成立**，作为单向 ablation 报告；双向
+光滑配置需要方向对称的正则结构（future work）。
+
 ## 服务器路径
 
 - 输出根目录：`/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_fixture23_coverage_20260817/`
