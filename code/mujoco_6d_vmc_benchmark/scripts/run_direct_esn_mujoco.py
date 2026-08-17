@@ -11,6 +11,7 @@ from pathlib import Path
 import numpy as np
 
 from direct_esn_compliance import DirectESNController
+from vmc_compliance_baseline import VMCComplianceAdapter, load_controller
 from wbc_velocity_residual_env import PandaWBCVelocityResidualEnv, VelocityResidualFixture, default_velocity_residual_fixtures
 
 
@@ -41,8 +42,10 @@ def resolve_override_fixture(
 
 
 def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: Path | None, fan_ye_summary: Path | None, fixture_index: int, rod_enabled: bool, seed: int, fixed_wbc: bool = False, enable_rejoin_fade: bool = False, rejoin_fade_maximum: float = 0.85, override_fixture: VelocityResidualFixture | None = None) -> tuple[dict, list[dict]]:
-    controller = None if fixed_wbc else DirectESNController.from_npz(controller_path)  # type: ignore[arg-type]
-    if controller is not None and enable_rejoin_fade:
+    controller = None if fixed_wbc else load_controller(controller_path)  # type: ignore[arg-type]
+    if isinstance(controller, VMCComplianceAdapter) and enable_rejoin_fade:
+        raise ValueError("rejoin fade is a Direct-ESN-only ablation; the VMC baseline has no fade knob")
+    if controller is not None and not isinstance(controller, VMCComplianceAdapter) and enable_rejoin_fade:
         controller.config = replace(
             controller.config, rejoin_fade_enabled=True, rejoin_fade_maximum=rejoin_fade_maximum,
         )
@@ -52,6 +55,11 @@ def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: 
         fan_ye_train_summary_json=fan_ye_summary, observation_mode="direct_esn",
         rod_enabled=rod_enabled, seed=seed, fixtures=fixtures,
     )
+    if isinstance(controller, VMCComplianceAdapter):
+        controller.set_yield_limits(
+            env.safety_config.maximum_linear_yield_mps,
+            env.safety_config.maximum_angular_yield_radps,
+        )
     try:
         env.reset(seed=seed, options={"fixture_index": fixture_index})
         if controller is not None:

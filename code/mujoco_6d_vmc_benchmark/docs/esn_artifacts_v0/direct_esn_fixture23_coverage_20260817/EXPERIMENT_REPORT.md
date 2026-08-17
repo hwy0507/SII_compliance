@@ -152,6 +152,45 @@ force / peak torque 与 Fixed WBC 完全一致（碰撞瞬时由 rod 运动学�
 recovery jerk 是唯一劣于 Fixed WBC 的指标（126.8±2.9 vs 15.0 m/s³ @fx3，与 reference
 119.2 同量级）。no-rod mean yielding twist 0.001057±0.000064 m/s（远低于 0.005 上限）。
 
+## Twist 层 VMC baseline（v5 增补，核心对比方法）
+
+按「VMC 必须进同一 WBC 环境当 baseline」的实验设计，新增
+`scripts/vmc_compliance_baseline.py`：
+
+- **控制律**：六维饱和弹簧阻尼偏移动力学（继承 v4 VMC benchmark 的参数化），
+  `M ẍ + D ẋ + σtanh(Kx/σ) = σtanh(K_e·dead(e)/σ) + D_e·dead(ė)`，在 twist 层执行，
+  输出与 Direct ESN 完全相同的 7-D action（同 safety adapter、同 env）。
+- **信息集与 ESN 对齐**：只读 WBC pose/twist tracking error（本体感受），不读接触力；
+  死区按 no-rod WBC 底噪 p95 定标（pos 8 mm / ori 32 mrad / lin 30 mm/s / ang 100 mrad/s），
+  非调优参数。
+- **调优协议对称**：κ/ζ/drive 网格（36 配置）只在 train fixtures 0-2 上选择
+  （best：κ_t 1.0、κ_r 2.0、ζ 0.8、drive 2.0），fx3 held-out 只评。
+- 单元测试 `tests/test_vmc_compliance_baseline.py`（8 项：零误差静止、死区、有界性、
+  回归、gated 软化、npz 往返）。
+
+结果（`paper_tables/paper_main_tables_v2_vmc.md`，四方法同表）：
+
+| 维度 | VMC (tuned) | Direct ESN BC (8 seeds) | 胜者 |
+|---|---|---|---|
+| fx0/1/2 ΔRMSE | −0.21 / −0.53 / −2.23 | **−0.98 / −2.60 / −3.31** | ESN |
+| fx3 (held-out) ΔRMSE | **−6.67** | −2.21 | VMC（含窗口效应，见下） |
+| fx3 whole-episode peak dev | **25.1 mm** | 27.0 mm | VMC（小幅） |
+| Rejoin latency (fx0-3) | 0.96/1.16/1.36/1.20 s（全慢于 FW） | **0.80/0.64/0.52/0.68 s**（全快于 FW） | ESN |
+| Recovery jerk (fx0-2) | **13–18** | 64–133 | VMC |
+| Contact impulse vs FW | +2~3%（接触延长） | **±0.0%（一致）** | ESN |
+| No-rod yield | 0.00179 m/s ✓ | 0.001057±0.000064 ✓ | 均过 gate |
+
+关键发现：
+
+1. **评价协议注意事项**：VMC 让步慢导致 rod 接触延长（fx3 release 1.56 vs 1.36 s），
+   post-contact 窗口起点后移，其 fx3 RMSE 优势部分来自窗口效应；表中已补
+   whole-episode peak deviation 作为窗口鲁棒指标（VMC 仍小幅更好）。
+2. **ESN 的隐性优势**：快速 yield 使接触尽快结束，impulse 与 Fixed WBC 完全一致；
+   VMC 接触延长使 impulse 增加 2–3%。
+3. 诚实结论：这是 Pareto 对比而非全面碾压——ESN 胜在恢复速度（1.5–2.5×）、
+   train fixture 误差、接触快速终止；VMC 胜在光滑性与最强碰撞下的偏离控制。
+   ESN 的 recovery jerk 短板（vs FW）对手工 VMC 律仍然成立，是后续工作。
+
 ## 服务器路径
 
 - 输出根目录：`/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_fixture23_coverage_20260817/`
@@ -162,6 +201,7 @@ recovery jerk 是唯一劣于 Fixed WBC 的指标（126.8±2.9 vs 15.0 m/s³ @fx
   - `iter1_holdout/iter1_holdout_summary.json`（DAgger iter1 held-out）
   - `multiseed_statistics.json`（本表数据源；no-rod yield 统计 v3 已重算）
   - `ood_stroke_scan/`、`ood_geometry_scan/`（v3 泛化扫描）
-  - `paper_tables/`（v4 论文主表：markdown / csv / png）
+  - `paper_tables/`（v4 论文主表：markdown / csv / png；v5 增补 `paper_main_tables_v2_vmc.md`）
+  - `vmc_baseline/`（v5：baseline checkpoints、tune 网格、smoke 与 eval 产物）
 - **正式随机化候选 checkpoints**：`bootstrap/bootstrap_seed_{13,42,71,137,251,307,512,1009}.npz`
   （8 个独立 reservoir，全部通过 gate）
