@@ -17,7 +17,7 @@ import gymnasium as gym
 import mujoco
 import numpy as np
 
-from esn_compliance import ESNObservation
+from esn_compliance import ESNObservation, encode_student_observation
 from fan_ye_esn_rl_adapter import (
     CURRENT_WBC_FEATURE_DIMENSION,
     FanYeESNRLObservationAdapter,
@@ -110,7 +110,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
     """Panda pick task controlled by WBC plus an independent learned residual."""
 
     metadata = {"render_modes": []}
-    observation_modes = ("current_mlp", "kinematic_forecast_mlp", "fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_phase_esn", "fan_ye_stable_phase_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_esn", "fan_ye_forecast_authority_esn", "fan_ye_forecast_wbc_esn", "fan_ye_phase_predictive_wbc_esn")
+    observation_modes = ("direct_esn", "current_mlp", "kinematic_forecast_mlp", "fan_ye_esn", "fan_ye_multiscale_esn", "fan_ye_phase_esn", "fan_ye_stable_phase_esn", "fan_ye_closed_loop_esn", "fan_ye_forecast_esn", "fan_ye_forecast_authority_esn", "fan_ye_forecast_wbc_esn", "fan_ye_phase_predictive_wbc_esn")
 
     def __init__(
         self,
@@ -152,6 +152,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             None if forecast_model_npz is None else Path(forecast_model_npz),
         )
         observation_dimension = {
+            "direct_esn": 20,
             "current_mlp": CURRENT_WBC_FEATURE_DIMENSION,
             "kinematic_forecast_mlp": CURRENT_WBC_FEATURE_DIMENSION + 6,
             "fan_ye_esn": self.feature_adapter.feature_dimension,
@@ -305,6 +306,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             self.data.qvel[:ARM_DOF].copy(),
             command.task_twist_world.copy(),
         )
+        if self.observation_mode == "direct_esn":
+            return encode_student_observation(student).astype(np.float32)
         if self.observation_mode == "current_mlp":
             return encode_wbc_current_feature(student, pose_error, twist_error)
         if self.observation_mode == "kinematic_forecast_mlp":
@@ -382,7 +385,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         observation = self._observation(0.0)
         return observation, {
             "fixture_index": index % len(self.fixtures),
-            "controller_family": "wbc_velocity_residual",
+            "controller_family": "direct_esn" if self.observation_mode == "direct_esn" else "wbc_velocity_residual",
             "uses_vmc": False,
         }
 
@@ -495,7 +498,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "action_slew_limited_fraction": self.slew_limited_actions / count,
             "policy_action_saturation_fraction": self.saturated_policy_actions / count,
             "fixture": asdict(self.fixture),
-            "controller_family": "wbc_velocity_residual",
+            "controller_family": "direct_esn" if self.observation_mode == "direct_esn" else "wbc_velocity_residual",
             "observation_mode": self.observation_mode,
             "uses_vmc": False,
             "residual_window_end_at_grasp": self.residual_window_end_at_grasp,
@@ -552,6 +555,12 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         twist_error = command.task_twist_world - body_twist(self.model, self.data, self._hand_id)
         tracking_error = float(np.linalg.norm(pose_error[:3]))
         self.current_authority_gate = deployable_authority_gate(tracking_error, self.safety_config)
+        direct_esn_mode = self.observation_mode == "direct_esn"
+        if direct_esn_mode:
+            # Direct ESN is the primary collision-response policy in this
+            # mode. Do not apply the legacy PPO authority gate, phase
+            # projection, predictive WBC gain modulation, or energy tank.
+            self.current_authority_gate = 1.0
         self.phase_memory_gate = 0.0
         if self.observation_mode in ("fan_ye_phase_esn", "fan_ye_stable_phase_esn", "fan_ye_phase_predictive_wbc_esn"):
             scaled_error = pose_error / WBC_POSE_ERROR_SCALE
@@ -589,18 +598,24 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         if self.residual_window_end_at_grasp and self.step_count * RL_DT >= self.fixture.grasp_time_s:
             self.current_authority_gate = 0.0
         self.current_authority_gate *= self.current_predictive_authority_multiplier
-        phase_projected_action = project_yield_action_to_error_phase(
-            raw_policy_action, pose_error, twist_error, self.safety_config,
-        )
-        phase_projected_action = apply_rejoin_velocity_envelope(
-            phase_projected_action, pose_error, twist_error, self.safety_config,
-        )
-        phase_projected_action, self.current_energy_tank_multiplier, self.current_energy_tank_value = self.energy_tank.apply(
-            phase_projected_action, pose_error, twist_error, RL_DT, self.phase_memory_score,
-        )
-        gated_action = phase_projected_action.copy()
-        gated_action[0] *= self.current_authority_gate
-        gated_action[1:] *= self.current_authority_gate
+        if direct_esn_mode:
+            phase_projected_action = raw_policy_action.copy()
+            gated_action = phase_projected_action.copy()
+            self.current_energy_tank_multiplier = 1.0
+            self.current_energy_tank_value = self.energy_tank.energy
+        else:
+            phase_projected_action = project_yield_action_to_error_phase(
+                raw_policy_action, pose_error, twist_error, self.safety_config,
+            )
+            phase_projected_action = apply_rejoin_velocity_envelope(
+                phase_projected_action, pose_error, twist_error, self.safety_config,
+            )
+            phase_projected_action, self.current_energy_tank_multiplier, self.current_energy_tank_value = self.energy_tank.apply(
+                phase_projected_action, pose_error, twist_error, RL_DT, self.phase_memory_score,
+            )
+            gated_action = phase_projected_action.copy()
+            gated_action[0] *= self.current_authority_gate
+            gated_action[1:] *= self.current_authority_gate
         self.applied_action = self.action_filter.filter(gated_action, RL_DT)
         self.slew_limited_actions += int(self.applied_action.slew_limited)
         self.saturated_policy_actions += int(np.any(np.abs(raw_policy_action) >= 0.98))
