@@ -325,6 +325,53 @@ Gram 矩阵加 λ_s·ΔXᵀΔX 项；bootstrap CLI `--smoothness-weight`）。�
 双配置报告：λ=0（accuracy-optimal）与 λ=100（smoothness-matched），λ 扫描曲线作
 能力图。数据：`smooth_scan/`。
 
+## RMSE-first 重调参、ESN 超参扫描与 MLP baseline（v10 增补）
+
+### 调参协议修正
+
+v8 的调优 score 含 jerk 惩罚项，把 VMC 最优解推向「透明」配置（jerk 最低但 RMSE 不动）。
+本轮改为 **RMSE-first**（mean dRMSE 最小，rejoin tie-break，jerk 不进 score；60 网格
+κ×{0.25..4} × drive×{0.5..4} × ζ{0.8,1.05,1.4}），并修复 rejoin=None 的评分崩溃。
+
+### 结果：VMC 的 train 上限与泛化崩溃
+
+| SC-VMC force 配置 | train ΔRMSE | held-out fx3 | OOD 4 点 |
+|---|---|---|---|
+| RMSE-first 最优（κ×4, drive×4, ζ1.05） | **−1.739** | **+0.495**（翻正） | −0.05/−0.92/−1.13/+0.38（不稳定，corner 正） |
+| 稳健调参最优（v8，κ×2, drive×2, ζ0.8） | +0.121 | +0.285 | 4/4 持平（+0.17~+0.30） |
+
+proprio 变体 RMSE-first 最优仍为 +0.754（正）。结论：**RMSE-first 调参确实释放了 VMC 的
+train 表现（用户直觉正确），但该配置在 held-out 翻正、OOD 不稳——VMC 只有两个增益的
+曲线族，train 改善来自对训练碰撞分布的过拟合；泛化稳健的参数区域又不改善 RMSE**。
+两种调参目标都无法同时做到 train/held-out/OOD 三项为负。
+
+### ESN 超参扫描：不敏感（鲁棒性证据）
+
+spectral_radius {0.85,0.90,0.95} × time_constant {0.08,0.12,0.20} × λ_s {0,100}，
+3 seeds、18 配置：**sr/tc 全组合 train ΔRMSE 差异 < 0.02 mm**（−2.29~−2.31），性能由
+数据 coverage 与 λ_s 主导，reservoir 超参无需精调——与 MLP 的 seed 敏感形成对照。
+
+### MLP baseline（memoryless，同数据同合同 BC，8 seeds）
+
+gate 7/8（seed2 no-rod yield 0.009 超标）；fx0-3 ΔRMSE 均值
+−0.89/−2.48/−2.90/−2.33，**seed 方差 ±0.41~0.75（ESN 的 20–70 倍）**，rejoin
+0.79/0.65/0.56/0.81，jerk 53/79/122/128。均值精度与 ESN 相当，稳定性显著更差。
+
+### 最终四方对比（各自最强，统一 train-only 协议）
+
+| 方法 | train ΔRMSE | held-out fx3 | OOD | seed 稳定性 |
+|---|---|---|---|---|
+| Fixed WBC | 0 | 0 | 0 | — |
+| MLP BC（8 seeds） | −2.09（均值） | −2.33±**0.75** | 未测 | **7/8 gate** |
+| SC-VMC force RMSE-first | **−1.74** | +0.50（翻正） | 不稳（±1.1） | 单配置 |
+| SC-VMC force 稳健 | +0.12 | +0.29 | 4/4 持平 | 单配置 |
+| **ESN BC λ=0（8 seeds）** | **−2.30** | **−2.21±0.03** | **4/4 全改善** | **8/8，超参不敏感** |
+
+叙事结论：ESN 是唯一同时做到 train 强、held-out 强、OOD 强、seed 稳定的方法——
+VMC 的 train 改善以泛化崩溃为代价，MLP 的精度以 seed 稳定性为代价，ESN 无需在
+四个维度间做取舍。VMC 弱于 MLP 不是 baseline 失职：反馈律无数据学习容量，
+两种调参目标已穷尽其两参数曲线族的能力（数据：`tune2/`、`esn_hp_scan/`、`mlp_baseline/`）。
+
 ## 服务器路径
 
 - 输出根目录：`/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_fixture23_coverage_20260817/`

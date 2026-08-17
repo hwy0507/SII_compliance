@@ -296,11 +296,17 @@ class VMCComplianceAdapter:
 
 
 def load_controller(path: Path):
-    """Load either a Direct ESN checkpoint or the spring--carriage VMC baseline."""
+    """Load a Direct ESN, spring-carriage VMC, or memoryless MLP checkpoint."""
 
     with np.load(path, allow_pickle=False) as archive:
-        if "controller_family" in archive.files and str(archive["controller_family"][0]) == VMCComplianceAdapter.family:
-            return VMCComplianceAdapter(SpringCarriageVMC.from_npz(path))
+        if "controller_family" in archive.files:
+            family = str(archive["controller_family"][0])
+            if family == VMCComplianceAdapter.family:
+                return VMCComplianceAdapter(SpringCarriageVMC.from_npz(path))
+            if family == "mlp_baseline":
+                from mlp_compliance_baseline import MLPComplianceController
+
+                return MLPComplianceController.from_npz(path)
     from direct_esn_compliance import DirectESNController
 
     return DirectESNController.from_npz(path)

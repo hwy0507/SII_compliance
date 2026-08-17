@@ -53,6 +53,10 @@ def main() -> None:
     parser.add_argument("--washout-steps", type=int, default=3)
     parser.add_argument("--rod-repeat", type=int, default=4)
     parser.add_argument("--neutral-repeat", type=int, default=3)
+    parser.add_argument("--spectral-radius", type=float, default=0.90)
+    parser.add_argument("--time-constant", type=float, default=0.12)
+    parser.add_argument("--input-scale", type=float, default=0.45)
+    parser.add_argument("--ridge-lambda", type=float, default=1.0e-4)
     parser.add_argument("--smoothness-weight", type=float, default=0.0,
                         help="ridge penalty on within-episode action change (trains smoothness into the readout)")
     args = parser.parse_args()
@@ -62,7 +66,9 @@ def main() -> None:
         raise ValueError("legacy rod bootstrap requires --base-no-rod-trace")
     if args.expert_traces is not None and args.no_rod_expert_trace is None:
         raise ValueError("expert bootstrap requires --no-rod-expert-trace")
-    config = DirectESNConfig(reservoir_size=args.reservoir_size, seed=args.reservoir_seed, dt_s=0.04)
+    config = DirectESNConfig(reservoir_size=args.reservoir_size, seed=args.reservoir_seed, dt_s=0.04,
+                             spectral_radius=args.spectral_radius, time_constant_s=args.time_constant,
+                             input_scale=args.input_scale, ridge_lambda=args.ridge_lambda)
     model = DirectESNController(config)
     episodes = []
     features_all, targets_all, deltas_all = [], [], []
