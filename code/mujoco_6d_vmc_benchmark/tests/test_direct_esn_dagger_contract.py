@@ -24,6 +24,8 @@ def test_dagger_rollout_labels_student_visited_states_offline():
     assert "--counterfactual-label-dilation-steps" in source
     assert "--prior-readout-weight" in source
     assert "prior_readout=parent.readout_copy()" in source
+    assert "--fixture-indices" in source
+    assert "_parse_fixture_indices" in source
 
 
 def test_counterfactual_teacher_is_explicitly_label_side_only():

@@ -39,6 +39,20 @@ def _normal_from_fixture_side(side: str) -> np.ndarray:
     raise ValueError(f"unsupported rod approach side {side!r}")
 
 
+def _parse_fixture_indices(value: str | None, fallback: int) -> tuple[int, ...]:
+    """Parse a deterministic train-fixture pool without changing old CLI use."""
+
+    if value is None:
+        return (fallback,)
+    try:
+        indices = tuple(int(part.strip()) for part in value.split(",") if part.strip())
+    except ValueError as exc:
+        raise ValueError("fixture indices must be comma-separated integers") from exc
+    if not indices or len(set(indices)) != len(indices) or any(index < 0 for index in indices):
+        raise ValueError("fixture indices must be unique non-negative integers")
+    return indices
+
+
 def collect_student_visited_archive(
     controller_path: Path,
     *,
@@ -290,6 +304,7 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--iterations", type=int, default=1)
     parser.add_argument("--fixture-index", type=int, default=0)
+    parser.add_argument("--fixture-indices", type=str, default=None, help="comma-separated rod-train fixture pool")
     parser.add_argument("--seed", type=int, default=20260817)
     parser.add_argument("--washout-steps", type=int, default=3)
     parser.add_argument("--neutral-repeat", type=int, default=20)
@@ -304,26 +319,33 @@ def main() -> None:
     if min(args.iterations, args.neutral_repeat, args.rod_repeat, args.counterfactual_zero_repeat, args.counterfactual_nonzero_repeat) < 1 or args.counterfactual_label_dilation_steps < 0 or args.prior_readout_weight < 0.0:
         raise ValueError("iterations and repeat weights must be positive")
     counterfactual_config = CounterfactualTeacherConfig(horizon_steps=args.counterfactual_horizon_steps)
+    fixture_indices = _parse_fixture_indices(args.fixture_indices, args.fixture_index)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     current_model = args.initial_model
     all_dagger_specs: list[tuple[Path, int, bool]] = []
     rounds = []
     for iteration in range(1, args.iterations + 1):
-        rod_archive = args.output_dir / f"iteration_{iteration:02d}_rod_student_visited.npz"
+        rod_archives: list[tuple[int, Path]] = [
+            (fixture_index, args.output_dir / f"iteration_{iteration:02d}_fixture_{fixture_index:02d}_rod_student_visited.npz")
+            for fixture_index in fixture_indices
+        ]
         no_rod_archive = args.output_dir / f"iteration_{iteration:02d}_no_rod_student_visited.npz"
-        rod = collect_student_visited_archive(
-            current_model, menagerie=args.menagerie, fixture_index=args.fixture_index,
-            rod_enabled=True, seed=args.seed + iteration * 10, output_path=rod_archive, iteration=iteration,
-            teacher_mode=args.teacher_mode, counterfactual_config=counterfactual_config,
-            counterfactual_label_dilation_steps=args.counterfactual_label_dilation_steps,
-        )
+        rod = []
+        for fixture_offset, (fixture_index, rod_archive) in enumerate(rod_archives):
+            rod.append(collect_student_visited_archive(
+                current_model, menagerie=args.menagerie, fixture_index=fixture_index,
+                rod_enabled=True, seed=args.seed + iteration * 100 + fixture_offset, output_path=rod_archive, iteration=iteration,
+                teacher_mode=args.teacher_mode, counterfactual_config=counterfactual_config,
+                counterfactual_label_dilation_steps=args.counterfactual_label_dilation_steps,
+            ))
         no_rod = collect_student_visited_archive(
-            current_model, menagerie=args.menagerie, fixture_index=args.fixture_index,
-            rod_enabled=False, seed=args.seed + iteration * 10 + 1, output_path=no_rod_archive, iteration=iteration,
+            current_model, menagerie=args.menagerie, fixture_index=fixture_indices[0],
+            rod_enabled=False, seed=args.seed + iteration * 100 + 50, output_path=no_rod_archive, iteration=iteration,
             teacher_mode=args.teacher_mode, counterfactual_config=counterfactual_config,
             counterfactual_label_dilation_steps=args.counterfactual_label_dilation_steps,
         )
-        all_dagger_specs.extend([(rod_archive, 1, False), (no_rod_archive, 1, True)])
+        all_dagger_specs.extend([(archive, 1, False) for _, archive in rod_archives])
+        all_dagger_specs.append((no_rod_archive, 1, True))
         parent = DirectESNController.from_npz(current_model)
         specs = [(args.base_rod_trace, 10, False), (args.base_no_rod_trace, 1, True), *all_dagger_specs]
         model, fit = fit_dagger_readout(
@@ -351,6 +373,7 @@ def main() -> None:
         "student_input": list(DirectESNController.from_npz(current_model).contract()["student_input_fields"]),
         "forbidden_online_inputs": DirectESNController.from_npz(current_model).contract()["forbidden_online_inputs"],
         "base_traces": {"rod": str(args.base_rod_trace), "no_rod": str(args.base_no_rod_trace)},
+        "train_fixture_indices": list(fixture_indices),
         "iterations": rounds,
         "final_model": str(current_model),
     }
