@@ -14,4 +14,4 @@ def test_dagger_rollout_labels_student_visited_states_offline():
     assert "contact_force" in source
     assert "forbidden_online_inputs" in source
     assert "controller.act(" in source
-
+    assert "--rod-repeat" in source

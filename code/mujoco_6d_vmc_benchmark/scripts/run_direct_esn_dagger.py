@@ -148,6 +148,7 @@ def fit_dagger_readout(
     config: DirectESNConfig,
     washout_steps: int,
     neutral_repeat: int,
+    rod_repeat: int,
 ) -> tuple[DirectESNController, dict]:
     """Fit one readout from base demonstrations plus student-visited labels."""
 
@@ -158,7 +159,7 @@ def fit_dagger_readout(
         if washout_steps >= len(observations):
             raise ValueError(f"{path}: washout exceeds episode length")
         features = model.features(observations, washout_steps=washout_steps)
-        repeat = neutral_repeat if neutral else 1
+        repeat = neutral_repeat if neutral else rod_repeat
         features_all.extend([features] * repeat)
         targets_all.extend([targets[washout_steps:]] * repeat)
         episodes.append({"path": str(path), "sample_stride": stride, "samples": len(features), "neutral_repeat": repeat})
@@ -180,9 +181,10 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=20260817)
     parser.add_argument("--washout-steps", type=int, default=3)
     parser.add_argument("--neutral-repeat", type=int, default=20)
+    parser.add_argument("--rod-repeat", type=int, default=1, help="relative ridge-fit weight for rod-contact teacher traces")
     args = parser.parse_args()
-    if args.iterations < 1 or args.neutral_repeat < 1:
-        raise ValueError("iterations and neutral_repeat must be positive")
+    if args.iterations < 1 or args.neutral_repeat < 1 or args.rod_repeat < 1:
+        raise ValueError("iterations and repeat weights must be positive")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     current_model = args.initial_model
     all_dagger_specs: list[tuple[Path, int, bool]] = []
@@ -203,7 +205,7 @@ def main() -> None:
         specs = [(args.base_rod_trace, 10, False), (args.base_no_rod_trace, 1, True), *all_dagger_specs]
         model, fit = fit_dagger_readout(
             specs, config=parent.config, washout_steps=args.washout_steps,
-            neutral_repeat=args.neutral_repeat,
+            neutral_repeat=args.neutral_repeat, rod_repeat=args.rod_repeat,
         )
         output_model = args.output_dir / f"direct_esn_dagger_iteration_{iteration:02d}.npz"
         model.save_npz(output_model)
@@ -224,4 +226,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
