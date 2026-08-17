@@ -30,11 +30,11 @@ def load_episode(path: Path, sample_stride: int = 1) -> tuple[list[ESNObservatio
     return observations, np.clip(target, -1.0, 1.0)
 
 
-def fit_direct_esn(traces: list[Path], *, config: DirectESNConfig, sample_stride: int, washout_steps: int) -> tuple[DirectESNController, dict]:
+def fit_direct_esn(traces: list[Path], *, config: DirectESNConfig, sample_stride: int, washout_steps: int, neutral_repeat: int = 1) -> tuple[DirectESNController, dict]:
     if not traces:
         raise ValueError("at least one teacher archive is required")
-    if sample_stride < 1 or washout_steps < 0:
-        raise ValueError("sample_stride must be positive and washout non-negative")
+    if sample_stride < 1 or washout_steps < 0 or neutral_repeat < 1:
+        raise ValueError("sample_stride/washout must be valid and neutral_repeat positive")
     model = DirectESNController(config)
     all_features, all_targets, episodes = [], [], []
     for path in traces:
@@ -42,9 +42,11 @@ def fit_direct_esn(traces: list[Path], *, config: DirectESNConfig, sample_stride
         if washout_steps >= len(observations):
             raise ValueError(f"{path}: washout is longer than episode")
         features = model.features(observations, washout_steps=washout_steps)
-        all_features.append(features)
-        all_targets.append(target[washout_steps:])
-        episodes.append({"path": str(path), "samples": len(features)})
+        target_after_washout = target[washout_steps:]
+        repeats = neutral_repeat if any(token in path.stem.lower() for token in ("no_rod", "neutral", "nominal")) else 1
+        all_features.extend([features] * repeats)
+        all_targets.extend([target_after_washout] * repeats)
+        episodes.append({"path": str(path), "samples": len(features), "fit_repeat": repeats})
     design = np.concatenate(all_features, axis=0)
     targets = np.concatenate(all_targets, axis=0)
     mse = model.fit_readout(design, targets)
@@ -60,6 +62,7 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=20260817)
     parser.add_argument("--sample-stride", type=int, default=1)
     parser.add_argument("--washout-steps", type=int, default=25)
+    parser.add_argument("--neutral-repeat", type=int, default=1)
     args = parser.parse_args()
     sample_dt = 0.04 * args.sample_stride
     config = DirectESNConfig(
@@ -70,7 +73,7 @@ def main() -> None:
         # trace decimation; Fan-Ye alignment requires tau >= one sample.
         time_constant_s=max(0.12, 3.0 * sample_dt),
     )
-    model, summary = fit_direct_esn(args.traces, config=config, sample_stride=args.sample_stride, washout_steps=args.washout_steps)
+    model, summary = fit_direct_esn(args.traces, config=config, sample_stride=args.sample_stride, washout_steps=args.washout_steps, neutral_repeat=args.neutral_repeat)
     args.output_model.parent.mkdir(parents=True, exist_ok=True)
     args.output_summary.parent.mkdir(parents=True, exist_ok=True)
     model.save_npz(args.output_model)
