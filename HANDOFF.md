@@ -332,7 +332,7 @@ No-rod：task success、hard torque false、mean yielding twist 约 `0.00173 m/s
 | rejoin latency | 0.80±0.00 s | 0.64±0.00 s | 0.52±0.00 s | 0.68±0.00 s |
 | recovery jerk | 10±1 | 64±5 | 133±4 | 127±3 |
 
-No-rod：8/8 task success、无 hard torque、mean yielding twist 0.00100±0.00000 m/s。
+No-rod：8/8 task success、无 hard torque、mean yielding twist 0.001057±0.000064 m/s。
 
 特点：与 deterministic reference 水平相当（fx3 −2.207 vs −2.397），但给出跨 reservoir 的
 统计稳健性；这是论文随机化 proposed 线的正式方法。**不要对这批模型再跑随机 pool DAgger**
@@ -412,13 +412,20 @@ DAgger**。
 2026-08-17 v2 更新：随机化 proposed 方法已确定为 coverage BC（8/8 seeds 过 gate，统计见
 第 5 节）；随机 pool DAgger 记为失败方向 F。剩余工作按新优先级排列。
 
-### 优先级 1：完善论文主实验
+### 优先级 1：完善论文主实验（2026-08-17 v4 已完成核心部分）
 
-1. 用 8 个 BC-only checkpoint 做 aggregate 报告（mean±std 已有，补 IAE / impulse / peak
-   deviation 统计，数据在 `bootstrap_gate/` 的 eval JSON 里，无需重跑仿真）；
-2. 与 baseline 阶梯（Fixed WBC / 旧 ESN 线 / VMC 线）在同一 protocol 下对比出图；
-3. 确定论文叙事：proposed = Direct ESN coverage BC（8-seed 统计），
-   deterministic reference = 单 reservoir 上界对照，DAgger = 负结果 ablation（方向 F）。
+已产出（`paper_tables/`，服务器与本地 docs 同步）：
+
+1. Table 1 matched benchmark 全指标（Fixed WBC vs BC 8-seed vs reference）；
+   Table 2 no-rod neutrality；Table 3 geometry OOD；Table 4 strength OOD 边界；
+2. `paper_main_statistics.csv`（机器可读 mean/std）；`paper_main_figure.png`
+   （RMSE / rejoin / OOD ΔRMSE 三面板，含 per-seed scatter）；
+3. 要点：BC 8-seed 全面优于 Fixed WBC（held-out fx3 RMSE 17.901→15.694±0.034 mm、
+   rejoin 1.00→0.68 s）；impulse/peak force/peak torque 与 Fixed WBC 一致（接触瞬时由
+   rod 运动学主导）；唯一劣势指标仍是 recovery jerk（126.8±2.9 vs 15.0 m/s³ @fx3）。
+
+剩余（可选）：LaTeX 版主表；VMC / 旧 ESN baseline 若要进主表需在 matched protocol 下
+另行评估（当前 evaluate 脚本只内建 fixed_wbc 对照）。
 
 ### 优先级 2：扩展泛化评估（2026-08-17 v3 已完成核心部分）
 

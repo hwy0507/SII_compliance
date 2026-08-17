@@ -67,7 +67,8 @@ Rejoin latency（s）与 recovery jerk（m/s³）：
 | reference rejoin | 0.80 | 0.60 | 0.48 | 0.64 |
 | reference recjerk | 11 | 86 | 136 | 119 |
 
-No-rod：BC-only mean yielding twist 0.00100±0.00000 m/s（8/8）；DAgger iter1 同为
+No-rod：BC-only mean yielding twist 0.001057±0.000064 m/s（8/8；v2 报告中的 0.00100±0.00000
+为聚合脚本显示精度 bug，已修正）；DAgger iter1 同为
 0.00100 量级（0.00053–0.00068）。
 
 ### Selection gate 判定
@@ -133,6 +134,24 @@ No-rod：BC-only mean yielding twist 0.00100±0.00000 m/s（8/8）；DAgger iter
 3. 论文建议：报告 generalization boundary 分析（可行域内几何 OOD 阳性 + 强度不可行区
    分层退化），而不是笼统的「OOD 鲁棒」。
 
+## 论文主实验表（v4 增补）
+
+`paper_tables/`（服务器与本地 docs 同步）：
+
+- `paper_main_tables.md`：Table 1 matched benchmark 全指标（RMSE/IAE/peak deviation/
+  actual- 与 scheduled-release rejoin/impulse/peak force/peak torque/recovery jerk，
+  Fixed WBC vs BC 8-seed vs reference）；Table 2 no-rod neutrality；Table 3 geometry OOD；
+  Table 4 strength OOD 边界。
+- `paper_main_statistics.csv`：BC 8-seed 各指标 mean/std（机器可读）。
+- `paper_main_figure.png`：三面板图（RMSE、rejoin latency、geometry OOD ΔRMSE with
+  per-seed scatter）。
+
+主表要点：BC 8-seed 在全部 fixture 上 RMSE/IAE/peak deviation/rejoin 全面优于 Fixed WBC
+（held-out fx3：RMSE 17.901 → 15.694±0.034 mm，rejoin 1.00 → 0.68 s）；impulse / peak
+force / peak torque 与 Fixed WBC 完全一致（碰撞瞬时由 rod 运动学主导，ESN 响应在接触后）；
+recovery jerk 是唯一劣于 Fixed WBC 的指标（126.8±2.9 vs 15.0 m/s³ @fx3，与 reference
+119.2 同量级）。no-rod mean yielding twist 0.001057±0.000064 m/s（远低于 0.005 上限）。
+
 ## 服务器路径
 
 - 输出根目录：`/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_fixture23_coverage_20260817/`
@@ -141,7 +160,8 @@ No-rod：BC-only mean yielding twist 0.00100±0.00000 m/s（8/8）；DAgger iter
   - `dagger_seed_{13,42,71,137,251,307,512,1009}/`
   - `iter_train_select/selection_summary.json`（train-only iteration 选择）
   - `iter1_holdout/iter1_holdout_summary.json`（DAgger iter1 held-out）
-  - `multiseed_statistics.json`（本表数据源）
+  - `multiseed_statistics.json`（本表数据源；no-rod yield 统计 v3 已重算）
   - `ood_stroke_scan/`、`ood_geometry_scan/`（v3 泛化扫描）
+  - `paper_tables/`（v4 论文主表：markdown / csv / png）
 - **正式随机化候选 checkpoints**：`bootstrap/bootstrap_seed_{13,42,71,137,251,307,512,1009}.npz`
   （8 个独立 reservoir，全部通过 gate）
