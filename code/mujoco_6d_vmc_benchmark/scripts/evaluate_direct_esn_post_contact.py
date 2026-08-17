@@ -102,13 +102,18 @@ def main() -> None:
     parser.add_argument("--contact-threshold-n", type=float, default=0.20)
     parser.add_argument("--rejoin-threshold-mm", type=float, default=5.0)
     parser.add_argument("--rejoin-window-steps", type=int, default=3)
+    parser.add_argument("--enable-rejoin-fade", action="store_true")
+    parser.add_argument("--rejoin-fade-maximum", type=float, default=0.85)
     args = parser.parse_args()
     if args.rejoin_window_steps < 1 or args.contact_threshold_n <= 0.0 or args.rejoin_threshold_mm <= 0.0:
         raise ValueError("benchmark thresholds must be positive")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     common = dict(menagerie=args.menagerie, fan_ye_model=None, fan_ye_summary=None, fixture_index=args.fixture_index, rod_enabled=True, seed=args.seed)
     fixed_info, fixed_trace = run_episode(None, **common, fixed_wbc=True)
-    esn_info, esn_trace = run_episode(args.controller, **common, fixed_wbc=False)
+    esn_info, esn_trace = run_episode(
+        args.controller, **common, fixed_wbc=False,
+        enable_rejoin_fade=args.enable_rejoin_fade, rejoin_fade_maximum=args.rejoin_fade_maximum,
+    )
     thresholds = dict(
         contact_threshold_n=args.contact_threshold_n,
         rejoin_threshold_mm=args.rejoin_threshold_mm,
@@ -125,6 +130,9 @@ def main() -> None:
         "fixture_index": args.fixture_index,
         "seed": args.seed,
         "thresholds": thresholds,
+        "direct_esn_rejoin_fade": {
+            "enabled": args.enable_rejoin_fade, "maximum": args.rejoin_fade_maximum,
+        },
         "fixed_wbc": phase_metrics(fixed_info, _trace_arrays(fixed_trace), **metric_kwargs),
         "direct_esn": phase_metrics(esn_info, _trace_arrays(esn_trace), **metric_kwargs),
     }

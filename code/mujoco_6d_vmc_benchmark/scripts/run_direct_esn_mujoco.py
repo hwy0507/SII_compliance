@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -13,8 +14,12 @@ from direct_esn_compliance import DirectESNController
 from wbc_velocity_residual_env import PandaWBCVelocityResidualEnv
 
 
-def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: Path | None, fan_ye_summary: Path | None, fixture_index: int, rod_enabled: bool, seed: int, fixed_wbc: bool = False) -> tuple[dict, list[dict]]:
+def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: Path | None, fan_ye_summary: Path | None, fixture_index: int, rod_enabled: bool, seed: int, fixed_wbc: bool = False, enable_rejoin_fade: bool = False, rejoin_fade_maximum: float = 0.85) -> tuple[dict, list[dict]]:
     controller = None if fixed_wbc else DirectESNController.from_npz(controller_path)  # type: ignore[arg-type]
+    if controller is not None and enable_rejoin_fade:
+        controller.config = replace(
+            controller.config, rejoin_fade_enabled=True, rejoin_fade_maximum=rejoin_fade_maximum,
+        )
     env = PandaWBCVelocityResidualEnv(
         menagerie=menagerie, fan_ye_model_npz=fan_ye_model,
         fan_ye_train_summary_json=fan_ye_summary, observation_mode="direct_esn",
@@ -78,6 +83,8 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=20260817)
     parser.add_argument("--no-rod", action="store_true")
     parser.add_argument("--fixed-wbc", action="store_true", help="record a zero-action fixed-WBC neutral trace")
+    parser.add_argument("--enable-rejoin-fade", action="store_true")
+    parser.add_argument("--rejoin-fade-maximum", type=float, default=0.85)
     parser.add_argument("--output-summary", type=Path, required=True)
     parser.add_argument("--output-trace", type=Path, required=True)
     args = parser.parse_args()
@@ -85,6 +92,7 @@ def main() -> None:
         args.controller, menagerie=args.menagerie, fan_ye_model=args.fan_ye_model,
         fan_ye_summary=args.fan_ye_summary, fixture_index=args.fixture_index,
         rod_enabled=not args.no_rod, seed=args.seed, fixed_wbc=args.fixed_wbc,
+        enable_rejoin_fade=args.enable_rejoin_fade, rejoin_fade_maximum=args.rejoin_fade_maximum,
     )
     args.output_summary.parent.mkdir(parents=True, exist_ok=True)
     args.output_trace.parent.mkdir(parents=True, exist_ok=True)

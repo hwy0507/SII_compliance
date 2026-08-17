@@ -80,6 +80,21 @@ def test_direct_esn_aligns_yield_with_measured_wbc_deviation_only():
     np.testing.assert_allclose(action.bounded_filter_action[[1, 3]], 0.0, atol=1e-12)
 
 
+def test_direct_esn_rejoin_fade_uses_deployable_error_derivative_only():
+    config = DirectESNConfig(reservoir_size=24, seed=12, rejoin_fade_enabled=True, rejoin_fade_maximum=0.80)
+    controller = DirectESNController(config)
+    readout = np.zeros((7, controller.feature_dimension))
+    readout[1, 0] = 1.0
+    controller.set_readout(readout)
+    feature = np.zeros(controller.feature_dimension)
+    feature[0] = 1.0
+    faded = controller.action_from_feature(
+        feature, activation=1.0, residual_gain=0.20,
+    )
+    nominal = controller.action_from_feature(feature, activation=1.0)
+    assert np.linalg.norm(faded.yielding_twist) < np.linalg.norm(nominal.yielding_twist)
+
+
 def test_privileged_teacher_yields_away_from_contact_and_rejoins_after_release():
     impact = privileged_teacher_action(10.0, np.array([0.0, 1.0, 0.0]), 0.08, -0.004, np.zeros(6))
     assert impact[0] > 0.0

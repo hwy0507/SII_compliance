@@ -72,6 +72,8 @@ class DirectESNConfig:
     # Experimental opt-in.  The published baseline/proposed checkpoints keep
     # the original world-frame readout unless this switch is explicitly set.
     error_aligned_yield: bool = False
+    rejoin_fade_enabled: bool = False
+    rejoin_fade_maximum: float = 0.85
 
     def __post_init__(self) -> None:
         values = np.asarray([
@@ -80,6 +82,7 @@ class DirectESNConfig:
             self.minimum_wbc_scale, self.maximum_linear_yield_mps,
             self.maximum_angular_yield_radps,
             self.activation_error_start_m, self.activation_error_full_m,
+            self.rejoin_fade_maximum,
         ], dtype=float)
         if self.reservoir_size < 1:
             raise ValueError("reservoir_size must be positive")
@@ -93,6 +96,8 @@ class DirectESNConfig:
             raise ValueError("activation_error_full_m must exceed activation_error_start_m")
         if self.connection_probability > 1.0 or self.spectral_radius > 2.0:
             raise ValueError("reservoir probability/radius is out of bounds")
+        if self.rejoin_fade_maximum > 1.0:
+            raise ValueError("rejoin fade maximum cannot exceed one")
 
     @property
     def leak(self) -> float:
@@ -240,10 +245,11 @@ class DirectESNController:
 
     def action_from_feature(
         self, feature: np.ndarray, activation: float = 1.0, pose_error: np.ndarray | None = None,
+        residual_gain: float = 1.0,
     ) -> DirectESNAction:
         feature_array = _finite_vector(feature, self.feature_dimension, "feature")
         raw = self._readout @ feature_array
-        bounded = np.tanh(raw) * float(np.clip(activation, 0.0, 1.0))
+        bounded = np.tanh(raw) * float(np.clip(activation, 0.0, 1.0)) * float(np.clip(residual_gain, 0.0, 1.0))
         if self.config.error_aligned_yield and pose_error is not None:
             error = _finite_vector(pose_error, 6, "pose_error")
             linear_error_norm = float(np.linalg.norm(error[:3]))
@@ -299,7 +305,22 @@ class DirectESNController:
                 1.0,
             )
             activation = float(phase * phase * (3.0 - 2.0 * phase))
-        return self.action_from_feature(feature, activation=activation, pose_error=pose_error)
+        residual_gain = 1.0
+        if self.config.rejoin_fade_enabled and pose_error is not None and twist_error is not None:
+            pose = _finite_vector(pose_error, 6, "pose_error")
+            twist = _finite_vector(twist_error, 6, "twist_error")
+            scaled_pose = np.concatenate((pose[:3] / 0.012, pose[3:] / 0.20))
+            scaled_twist = np.concatenate((twist[:3] / 0.40, twist[3:] / 1.20))
+            pose_norm = float(np.linalg.norm(scaled_pose))
+            twist_norm = float(np.linalg.norm(scaled_twist))
+            if pose_norm > 1.0e-8 and twist_norm > 1.0e-8:
+                rejoin_confidence = float(np.clip(
+                    -np.dot(scaled_pose, scaled_twist) / (pose_norm * twist_norm), 0.0, 1.0,
+                ))
+                residual_gain = 1.0 - self.config.rejoin_fade_maximum * rejoin_confidence
+        return self.action_from_feature(
+            feature, activation=activation, pose_error=pose_error, residual_gain=residual_gain,
+        )
 
     def set_readout(self, readout: np.ndarray) -> None:
         matrix = _finite_matrix(readout, self.feature_dimension, "readout")
@@ -326,7 +347,7 @@ class DirectESNController:
                 "dimension": ACTION_DIMENSION,
                 "channels": ["wbc_slowdown", "yield_vx", "yield_vy", "yield_vz", "yield_wx", "yield_wy", "yield_wz"],
                 "neutral_zero_action": "fixed WBC",
-                "postprocessing": "tanh amplitude with deployable WBC-error-aligned yield direction, then bounded Cartesian velocity and safety slew/torque adapter",
+                "postprocessing": "tanh output with optional deployable WBC-error rejoin fade, then bounded Cartesian velocity and safety slew/torque adapter",
             },
             "reservoir": asdict(self.config),
         }
