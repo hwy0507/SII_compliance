@@ -67,6 +67,8 @@ class DirectESNConfig:
     minimum_wbc_scale: float = 0.20
     maximum_linear_yield_mps: float = 0.16
     maximum_angular_yield_radps: float = 0.60
+    activation_error_start_m: float = 0.004
+    activation_error_full_m: float = 0.012
 
     def __post_init__(self) -> None:
         values = np.asarray([
@@ -74,6 +76,7 @@ class DirectESNConfig:
             self.bias_scale, self.time_constant_s, self.dt_s, self.ridge_lambda,
             self.minimum_wbc_scale, self.maximum_linear_yield_mps,
             self.maximum_angular_yield_radps,
+            self.activation_error_start_m, self.activation_error_full_m,
         ], dtype=float)
         if self.reservoir_size < 1:
             raise ValueError("reservoir_size must be positive")
@@ -83,6 +86,8 @@ class DirectESNConfig:
             raise ValueError("minimum_wbc_scale must be below one")
         if self.time_constant_s < self.dt_s:
             raise ValueError("time_constant_s must be at least dt_s")
+        if self.activation_error_full_m <= self.activation_error_start_m:
+            raise ValueError("activation_error_full_m must exceed activation_error_start_m")
         if self.connection_probability > 1.0 or self.spectral_radius > 2.0:
             raise ValueError("reservoir probability/radius is out of bounds")
 
@@ -215,10 +220,10 @@ class DirectESNController:
         prediction = np.tanh(design @ self._readout.T)
         return float(np.mean((prediction - np.clip(target_array, -1.0, 1.0)) ** 2))
 
-    def action_from_feature(self, feature: np.ndarray) -> DirectESNAction:
+    def action_from_feature(self, feature: np.ndarray, activation: float = 1.0) -> DirectESNAction:
         feature_array = _finite_vector(feature, self.feature_dimension, "feature")
         raw = self._readout @ feature_array
-        bounded = np.tanh(raw)
+        bounded = np.tanh(raw) * float(np.clip(activation, 0.0, 1.0))
         slowdown = max(0.0, float(bounded[0]))
         wbc_scale = 1.0 - slowdown * (1.0 - self.config.minimum_wbc_scale)
         max_twist = np.array([
@@ -248,7 +253,19 @@ class DirectESNController:
         """
 
         observation = ESNObservation(joint_position, joint_velocity, wbc_task_twist)
-        return self.action_from_feature(self.advance(observation, pose_error, twist_error))
+        feature = self.advance(observation, pose_error, twist_error)
+        if pose_error is None:
+            activation = 0.0
+        else:
+            position_error = float(np.linalg.norm(np.asarray(pose_error, dtype=float)[:3]))
+            phase = np.clip(
+                (position_error - self.config.activation_error_start_m)
+                / (self.config.activation_error_full_m - self.config.activation_error_start_m),
+                0.0,
+                1.0,
+            )
+            activation = float(phase * phase * (3.0 - 2.0 * phase))
+        return self.action_from_feature(feature, activation=activation)
 
     def set_readout(self, readout: np.ndarray) -> None:
         matrix = _finite_matrix(readout, self.feature_dimension, "readout")
