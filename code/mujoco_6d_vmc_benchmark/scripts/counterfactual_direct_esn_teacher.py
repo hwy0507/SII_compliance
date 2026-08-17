@@ -41,6 +41,7 @@ class CounterfactualTeacherConfig:
     tracking_reference_m: float = 0.012
     force_reference_n: float = 10.0
     impulse_reference_ns: float = 0.10
+    activation_force_n: float = 0.20
 
     def __post_init__(self) -> None:
         values = np.asarray(list(asdict(self).values()), dtype=float)
@@ -72,7 +73,7 @@ def _normal_from_fixture_side(side: str) -> np.ndarray:
 
 
 def candidate_actions(approach_normal: np.ndarray) -> np.ndarray:
-    """Return neutral, slowdown, outward-yield, and rejoin candidates.
+    """Return neutral, slowdown, and outward-yield candidates.
 
     The normal is privileged fixture geometry and is intentionally only used
     here.  Keeping the candidates compact makes each DAgger sample affordable
@@ -87,14 +88,10 @@ def candidate_actions(approach_normal: np.ndarray) -> np.ndarray:
     if magnitude <= 1e-9:
         raise ValueError("approach normal must be nonzero")
     away = -normal / magnitude
-    toward = -away
     actions = [np.zeros(7, dtype=float), np.array([0.22, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])]
     for slowdown in (0.22, 0.45):
         for yield_strength in (0.20, 0.45, 0.75):
             actions.append(np.concatenate(([slowdown], yield_strength * away, np.zeros(3))))
-    # A small toward-nominal candidate is useful immediately after retraction:
-    # if there is no longer contact, the tracking term should prefer rejoin.
-    actions.append(np.concatenate(([0.0], 0.25 * toward, np.zeros(3))))
     return np.asarray(actions, dtype=float)
 
 
@@ -198,8 +195,27 @@ def select_counterfactual_action(
     """Select the minimum-cost privileged label without changing the live env."""
 
     teacher_config = config or CounterfactualTeacherConfig()
+    zero_action = np.zeros(7, dtype=float)
+    zero_result = _rollout_candidate(env, zero_action, time_s, previous_action, teacher_config)
+    # Nominal neutrality is a hard teacher-side property.  The deployed ESN
+    # never sees rod existence: this only prevents offline labels from turning
+    # ordinary WBC tracking error into a residual-control target.  During or
+    # immediately before a real collision, the zero-action rollout predicts a
+    # nontrivial contact force and enables outward-yield alternatives.
+    if not env.rod_enabled or zero_result["peak_force_n"] < teacher_config.activation_force_n:
+        return CounterfactualTeacherResult(
+            action=zero_action,
+            cost=float(zero_result["cost"]),
+            candidate_costs=np.asarray([zero_result["cost"]], dtype=float),
+            candidate_actions=np.asarray([zero_action]),
+            predicted_peak_force_n=float(zero_result["peak_force_n"]),
+            predicted_impulse_ns=float(zero_result["impulse_ns"]),
+            predicted_terminal_error_m=float(zero_result["terminal_error_m"]),
+        )
     actions = candidate_actions(_normal_from_fixture_side(env.fixture.rod_approach_side))
-    results = [_rollout_candidate(env, action, time_s, previous_action, teacher_config) for action in actions]
+    results = [zero_result, *[
+        _rollout_candidate(env, action, time_s, previous_action, teacher_config) for action in actions[1:]
+    ]]
     costs = np.asarray([item["cost"] for item in results], dtype=float)
     chosen = int(np.argmin(costs))
     return CounterfactualTeacherResult(
