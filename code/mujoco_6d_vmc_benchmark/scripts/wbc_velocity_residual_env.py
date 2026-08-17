@@ -115,8 +115,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
     def __init__(
         self,
         menagerie: str | Path,
-        fan_ye_model_npz: str | Path,
-        fan_ye_train_summary_json: str | Path,
+        fan_ye_model_npz: str | Path | None,
+        fan_ye_train_summary_json: str | Path | None,
         observation_mode: str,
         fixtures: tuple[VelocityResidualFixture, ...] | None = None,
         rod_enabled: bool = True,
@@ -147,10 +147,15 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.predictive_wbc_growth_deadband = float(predictive_wbc_growth_deadband)
         if not 0.0 < self.predictive_wbc_min_feedback_scale <= 1.0 or not 0.0 <= self.predictive_wbc_growth_deadband < 1.0:
             raise ValueError("predictive WBC feedback bounds are invalid")
-        self.feature_adapter = FanYeESNRLObservationAdapter(
-            Path(fan_ye_model_npz), Path(fan_ye_train_summary_json),
-            None if forecast_model_npz is None else Path(forecast_model_npz),
-        )
+        if observation_mode == "direct_esn" and (fan_ye_model_npz is None or fan_ye_train_summary_json is None):
+            self.feature_adapter = None
+        else:
+            if fan_ye_model_npz is None or fan_ye_train_summary_json is None:
+                raise ValueError("fan-ye model and summary are required for non-direct observation modes")
+            self.feature_adapter = FanYeESNRLObservationAdapter(
+                Path(fan_ye_model_npz), Path(fan_ye_train_summary_json),
+                None if forecast_model_npz is None else Path(forecast_model_npz),
+            )
         observation_dimension = {
             "direct_esn": 20,
             "current_mlp": CURRENT_WBC_FEATURE_DIMENSION,
@@ -381,7 +386,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.minimum_energy_tank_value = self.energy_tank.energy
         self.action_filter.reset()
         self.applied_action = FilteredVelocityResidualAction(1.0, np.zeros(6), np.zeros(7), False, False)
-        self.feature_adapter.reset()
+        if self.feature_adapter is not None:
+            self.feature_adapter.reset()
         observation = self._observation(0.0)
         return observation, {
             "fixture_index": index % len(self.fixtures),

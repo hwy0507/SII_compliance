@@ -13,7 +13,7 @@ from direct_esn_compliance import DirectESNController
 from wbc_velocity_residual_env import PandaWBCVelocityResidualEnv
 
 
-def run_episode(controller_path: Path, *, menagerie: Path, fan_ye_model: Path, fan_ye_summary: Path, fixture_index: int, rod_enabled: bool, seed: int) -> tuple[dict, list[dict]]:
+def run_episode(controller_path: Path, *, menagerie: Path, fan_ye_model: Path | None, fan_ye_summary: Path | None, fixture_index: int, rod_enabled: bool, seed: int) -> tuple[dict, list[dict]]:
     controller = DirectESNController.from_npz(controller_path)
     env = PandaWBCVelocityResidualEnv(
         menagerie=menagerie, fan_ye_model_npz=fan_ye_model,
@@ -49,8 +49,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--controller", type=Path, required=True)
     parser.add_argument("--menagerie", type=Path, required=True)
-    parser.add_argument("--fan-ye-model", type=Path, required=True)
-    parser.add_argument("--fan-ye-summary", type=Path, required=True)
+    parser.add_argument("--fan-ye-model", type=Path, default=None)
+    parser.add_argument("--fan-ye-summary", type=Path, default=None)
     parser.add_argument("--fixture-index", type=int, default=0)
     parser.add_argument("--seed", type=int, default=20260817)
     parser.add_argument("--no-rod", action="store_true")
@@ -82,4 +82,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
