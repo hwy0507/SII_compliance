@@ -69,6 +69,10 @@ class VelocityResidualFixture:
     rod_center_x_m: float = 0.55
     rod_center_y_m: float = 0.0
     impactor_type: str = "rod"
+    # Multi-cycle impacts: the rod repeats its press--hold--retract profile
+    # this many times, spaced by cycle_period_s (see rod_motion).
+    rod_cycles: int = 1
+    cycle_period_s: float = 0.80
 
 
 def default_velocity_residual_fixtures() -> tuple[VelocityResidualFixture, ...]:
@@ -417,7 +421,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         model, data = self.model, self.data
         command = self._wbc_command(time_s)
         rod_displacement, _ = (
-            rod_motion(time_s, self.fixture.rod_stroke_m, self.fixture.rod_start_time_s)
+            rod_motion(
+                time_s, self.fixture.rod_stroke_m, self.fixture.rod_start_time_s,
+                cycles=self.fixture.rod_cycles, cycle_period_s=self.fixture.cycle_period_s,
+            )
             if self.rod_enabled else (0.0, 0.0)
         )
         data.mocap_pos[self._obstacle_mocap] = np.array([3.0, 3.0, 3.0])
@@ -465,7 +472,11 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         jerk = (acceleration - self.previous_acceleration) / CONTROL_DT
         jerk_norm = float(np.linalg.norm(jerk[:3]))
         self.peak_jerk = max(self.peak_jerk, jerk_norm)
-        release_time_s = self.fixture.rod_start_time_s + ROD_PROFILE_DURATION_S
+        release_time_s = (
+            self.fixture.rod_start_time_s
+            + (self.fixture.rod_cycles - 1) * self.fixture.cycle_period_s
+            + ROD_PROFILE_DURATION_S
+        )
         if self.rod_enabled and release_time_s < time_s < self.fixture.grasp_time_s:
             self.peak_recovery_jerk = max(self.peak_recovery_jerk, jerk_norm)
         self.peak_torque = max(self.peak_torque, float(np.max(np.abs(applied_torque))))
@@ -699,7 +710,11 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         final_position_error = 0.0
         peak_step_jerk = 0.0
         reward = 0.0
-        release_time_s = self.fixture.rod_start_time_s + ROD_PROFILE_DURATION_S
+        release_time_s = (
+            self.fixture.rod_start_time_s
+            + (self.fixture.rod_cycles - 1) * self.fixture.cycle_period_s
+            + ROD_PROFILE_DURATION_S
+        )
         for substep in range(PHYSICS_STEPS_PER_ACTION):
             time_s = self.step_count * RL_DT + substep * CONTROL_DT
             position_error, orientation_error, twist_error, torque_ratio, jerk_norm = self._physics_step(time_s)

@@ -107,6 +107,10 @@ def main() -> None:
     parser.add_argument("--rod-stroke-m", type=float, default=None, help="override the indexed fixture rod stroke (OOD benchmarking)")
     parser.add_argument("--rod-height-m", type=float, default=None, help="override the indexed fixture rod contact height")
     parser.add_argument("--rod-start-time-s", type=float, default=None, help="override the indexed fixture rod start time")
+    parser.add_argument("--rod-approach-side", type=str, default=None,
+                        choices=("negative_x", "positive_x", "negative_y", "positive_y", "negative_z", "positive_z"))
+    parser.add_argument("--rod-cycles", type=int, default=None)
+    parser.add_argument("--cycle-period-s", type=float, default=None)
     parser.add_argument("--grasp-time-s", type=float, default=None, help="override the indexed fixture grasp time")
     parser.add_argument("--yield-smoothing-alpha", type=float, default=1.0,
                         help="first-order low-pass on the ESN yielding twist (1.0 disables)")
@@ -115,6 +119,8 @@ def main() -> None:
         raise ValueError("benchmark thresholds must be positive")
     fixtures, resolved_index = resolve_override_fixture(
         args.rod_stroke_m, args.rod_height_m, args.rod_start_time_s, args.grasp_time_s, args.fixture_index,
+        rod_approach_side=args.rod_approach_side, rod_cycles=args.rod_cycles,
+        cycle_period_s=args.cycle_period_s,
     )
     override_fixture = None if len(fixtures) > 1 else fixtures[0]
     args.output_dir.mkdir(parents=True, exist_ok=True)

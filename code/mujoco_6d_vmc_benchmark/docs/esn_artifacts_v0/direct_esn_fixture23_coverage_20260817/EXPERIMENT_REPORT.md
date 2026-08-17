@@ -372,6 +372,54 @@ VMC 的 train 改善以泛化崩溃为代价，MLP 的精度以 seed 稳定性�
 四个维度间做取舍。VMC 弱于 MLP 不是 baseline 失职：反馈律无数据学习容量，
 两种调参目标已穷尽其两参数曲线族的能力（数据：`tune2/`、`esn_hp_scan/`、`mlp_baseline/`）。
 
+## 三个高收益方向实验（v11 增补）
+
+### 方向 1：教师侧 coverage 扩展——假设证伪，性能饱和确认
+
+fx0/1 邻域新增 25 条 expert traces（全部成功，`expert_traces_v2/`），合并为 44+1 条重新
+BC（8 seeds × λ {0,100}，`coverage_v2/`）。结果：fx0 ΔRMSE −0.942±0.014（19 条版
+−0.982），held-out fx3 −2.220±0.039（19 条版 −2.207）——**统计持平**。结合教师 fx0
+也只有 −1.04：fx0 弱改善是弱碰撞的物理属性（impulse 0.9 → 误差基数 8.8mm → 改善
+天花板低），ΔRMSE 与 impulse 单调相关。**结论：19 条 coverage 已饱和，方法数据高效**
+（同等数据下 MLP seed 不稳）。
+
+### 方向 2：multi-cycle 连撞（环境新增 rod_cycles/cycle_period_s）
+
+两次撞击（cycle_period 0.80/1.00），所有方法均 zero-shot（训练数据只有单撞），
+onset→grasp 全窗口 RMSE（mm）：
+
+| 方法 | p=0.80 | p=1.00 | task success |
+|---|---|---|---|
+| Fixed WBC | 15.02 | 15.00 | 1/1 |
+| **ESN BC（8 seeds）** | **12.02±0.01** | **11.93±0.01** | 8/8 |
+| MLP（8 seeds） | 12.40±0.45 | 12.31±0.45 | 8/8 |
+| VMC force | 15.25 | 15.23 | 1/1 |
+
+MLP 未崩（其 error-based activation gate 在第二撞仍触发），ESN 均值最优且方差小 45 倍
+——连撞场景仍是稳定性优势而非记忆碾压。数据 `multicycle/`。
+
+### 方向 3：方向泛化矩阵（环境新增 --rod-approach-side）
+
+zero-shot 到未见方向（window RMSE mm，`sides_matrix/`）：
+
+| 方向 | FW | ESN | MLP | VMC force | 判定 |
+|---|---|---|---|---|---|
+| −y（训练） | 14.99 | **11.93±0.01** | 12.31±0.45 | 15.22 | ESN 最优 |
+| **+y（镜像）** | 14.91 | **21.50±10.76（5/8 fail）** | 15.32±2.11 | 15.14 | **ESN 方向绑定缺陷** |
+| +x（弱撞） | 5.94 | 6.94±1.42 | 8.12±4.63 | 6.45 | 均可行 |
+| −x / −z | fail | fail | fail / 2/8 | fail | 任务物理不可行（FW 也 fail） |
+
+**诚实 limitation**：ESN readout 的 yield 方向 world-frame 绑定——镜像撞击时把 EE 推向
+rod（比 FW 差 6.6mm 且 3/8 seed task fail）；MLP 从 pose-error 符号结构获得部分方向
+泛化。−x/−z 为任务不可行方向（Fixed WBC 亦失败，不计入方法对比）。该结果直接复活
+error-aligned/方向对称化参数化的动机（失败方向 C 的重新审视列为 future work）。
+
+### 代码变更
+
+`VelocityResidualFixture` 新增 `rod_cycles`/`cycle_period_s`（release 时刻按最后 cycle
+计算）；`run_direct_esn_mujoco.py`/`evaluate_direct_esn_post_contact.py` 的 override
+新增 `--rod-approach-side`（六方向）与 `--rod-cycles/--cycle-period-s`。
+
 ## 服务器路径
 
 - 输出根目录：`/home/arm1/vmc_mujoco_runtime/outputs/direct_esn_fixture23_coverage_20260817/`

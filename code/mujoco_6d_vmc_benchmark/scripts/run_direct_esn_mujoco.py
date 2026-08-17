@@ -21,6 +21,9 @@ def resolve_override_fixture(
     rod_start_time_s: float | None,
     grasp_time_s: float | None,
     fixture_index: int,
+    rod_approach_side: str | None = None,
+    rod_cycles: int | None = None,
+    cycle_period_s: float | None = None,
 ) -> tuple[tuple[VelocityResidualFixture, ...], int]:
     """Build a single-fixture pool when any physical rod override is supplied.
 
@@ -32,12 +35,16 @@ def resolve_override_fixture(
     provided = {
         "rod_stroke_m": rod_stroke_m, "rod_height_m": rod_height_m,
         "rod_start_time_s": rod_start_time_s, "grasp_time_s": grasp_time_s,
+        "rod_approach_side": rod_approach_side, "rod_cycles": rod_cycles,
+        "cycle_period_s": cycle_period_s,
     }
     if all(value is None for value in provided.values()):
         return default_velocity_residual_fixtures(), fixture_index
     base = default_velocity_residual_fixtures()[fixture_index]
-    overrides = {key: float(value) for key, value in provided.items() if value is not None}
+    overrides = {key: value for key, value in provided.items() if value is not None}
     fixture = replace(base, **overrides)
+    if fixture.rod_cycles < 1:
+        raise ValueError("rod_cycles must be at least one")
     return (fixture,), 0
 
 
@@ -139,6 +146,10 @@ def main() -> None:
     parser.add_argument("--rod-stroke-m", type=float, default=None, help="override the indexed fixture rod stroke")
     parser.add_argument("--rod-height-m", type=float, default=None, help="override the indexed fixture rod contact height")
     parser.add_argument("--rod-start-time-s", type=float, default=None, help="override the indexed fixture rod start time")
+    parser.add_argument("--rod-approach-side", type=str, default=None,
+                        choices=("negative_x", "positive_x", "negative_y", "positive_y", "negative_z", "positive_z"))
+    parser.add_argument("--rod-cycles", type=int, default=None)
+    parser.add_argument("--cycle-period-s", type=float, default=None)
     parser.add_argument("--grasp-time-s", type=float, default=None, help="override the indexed fixture grasp time")
     parser.add_argument("--enable-rejoin-fade", action="store_true")
     parser.add_argument("--yield-smoothing-alpha", type=float, default=1.0,
@@ -149,6 +160,8 @@ def main() -> None:
     args = parser.parse_args()
     fixtures, resolved_index = resolve_override_fixture(
         args.rod_stroke_m, args.rod_height_m, args.rod_start_time_s, args.grasp_time_s, args.fixture_index,
+        rod_approach_side=args.rod_approach_side, rod_cycles=args.rod_cycles,
+        cycle_period_s=args.cycle_period_s,
     )
     override_fixture = None if len(fixtures) > 1 else fixtures[0]
     info, trace = run_episode(
