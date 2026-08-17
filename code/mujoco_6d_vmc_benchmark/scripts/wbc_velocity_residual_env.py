@@ -198,6 +198,13 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.raw_joint_velocity_command = np.zeros(ARM_DOF, dtype=float)
         self.peak_force = 0.0
         self.contact_impulse = 0.0
+        # Privileged training diagnostics. These are never exposed through
+        # the direct-ESN observation, but allow an offline DAgger teacher to
+        # label the exact states the student visited.
+        self.last_action_contact_force = 0.0
+        self.last_action_contact_penetration = 0.0
+        self.last_action_contact_seen = False
+        self.dagger_contact_duration_s = 0.0
         self.peak_torque = 0.0
         self.peak_jerk = 0.0
         self.peak_recovery_jerk = 0.0
@@ -367,6 +374,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.previous_position_error = 0.0
         self.raw_joint_velocity_command[:] = 0.0
         self.peak_force = self.contact_impulse = self.peak_torque = self.peak_jerk = self.peak_recovery_jerk = 0.0
+        self.last_action_contact_force = 0.0
+        self.last_action_contact_penetration = 0.0
+        self.last_action_contact_seen = False
+        self.dagger_contact_duration_s = 0.0
         self.minimum_torque_feasible_scale = 1.0
         self.hard_limit_seen = self.rod_hand_observed = False
         self.slew_limited_actions = self.saturated_policy_actions = 0
@@ -436,12 +447,15 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         ee_rotation = data.xmat[self._hand_id].reshape(3, 3).copy()
         ee_twist = body_twist(model, data, self._hand_id)
         mujoco.mj_step(model, data)
-        rod_contact, rod_force, _ = rod_contact_diagnostics(
+        rod_contact, rod_force, rod_penetration = rod_contact_diagnostics(
             model, data, self._rod_geom_id, self._hand_geom_id
         )
         self.rod_hand_observed = self.rod_hand_observed or rod_contact
         self.peak_force = max(self.peak_force, rod_force)
         self.contact_impulse += rod_force * CONTROL_DT
+        self.last_action_contact_seen = self.last_action_contact_seen or rod_contact
+        self.last_action_contact_force = max(self.last_action_contact_force, rod_force)
+        self.last_action_contact_penetration = max(self.last_action_contact_penetration, rod_penetration)
         acceleration = (ee_twist - self.previous_twist) / CONTROL_DT
         jerk = (acceleration - self.previous_acceleration) / CONTROL_DT
         jerk_norm = float(np.linalg.norm(jerk[:3]))
@@ -556,6 +570,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         if action.shape != (7,) or not np.all(np.isfinite(action)):
             raise ValueError("direct WBC residual action must be a finite seven-vector")
         raw_policy_action = np.clip(action, -1.0, 1.0)
+        self.last_action_contact_force = 0.0
+        self.last_action_contact_penetration = 0.0
+        self.last_action_contact_seen = False
         command = self._wbc_command(self.step_count * RL_DT)
         assert self.data is not None
         pose_error = np.concatenate((
@@ -660,6 +677,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 reward -= self.reward_config.post_release_error_weight * min(
                     (position_error / 0.012) ** 2, 4.0
                 ) / PHYSICS_STEPS_PER_ACTION
+        if self.last_action_contact_seen:
+            self.dagger_contact_duration_s += RL_DT
+        else:
+            self.dagger_contact_duration_s = 0.0
         slowdown = 1.0 - self.applied_action.wbc_scale
         normalized_yield = np.concatenate((
             self.applied_action.cartesian_yield_twist[:3] / self.safety_config.maximum_linear_yield_mps,
