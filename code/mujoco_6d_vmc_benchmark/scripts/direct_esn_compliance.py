@@ -239,7 +239,8 @@ class DirectESNController:
     def fit_readout(
         self, features: np.ndarray, targets: np.ndarray, *, prior_readout: np.ndarray | None = None,
         prior_weight: float = 0.0, smoothness_features: np.ndarray | None = None,
-        smoothness_weight: float = 0.0,
+        smoothness_weight: float = 0.0, smoothness_targets: np.ndarray | None = None,
+        smoothness_channel_scales: np.ndarray | None = None,
     ) -> float:
         """Fit ridge readout, optionally proximal to a trusted parent readout.
 
@@ -247,6 +248,13 @@ class DirectESNController:
         within episodes; a positive ``smoothness_weight`` penalizes the action
         change they induce.  This trains temporal smoothness into the readout
         itself, unlike a deployment-side filter (which delays the response).
+
+        ``smoothness_targets`` (derivative matching) supervises the action
+        differences toward the TEACHER's differences instead of zero: the
+        student may move exactly as fast as the teacher's necessary response,
+        but no faster.  ``smoothness_channel_scales`` weights the penalty per
+        action channel (e.g. relieving the direction-bearing lateral/yaw
+        channels whose fast switching is task-necessary).
         """
 
         design = _finite_matrix(features, self.feature_dimension, "readout features")
@@ -259,6 +267,10 @@ class DirectESNController:
             raise ValueError("smoothness weight must be finite and non-negative")
         if smoothness_weight > 0.0 and smoothness_features is None:
             raise ValueError("a positive smoothness weight requires smoothness_features")
+        if smoothness_channel_scales is not None:
+            scales = _finite_vector(smoothness_channel_scales, ACTION_DIMENSION, "channel scales")
+            if np.any(scales < 0.0):
+                raise ValueError("channel scales must be non-negative")
         right = design.T @ np.clip(target_array, -1.0, 1.0)
         if prior_readout is not None:
             prior = _finite_matrix(prior_readout, self.feature_dimension, "prior_readout")
@@ -270,8 +282,33 @@ class DirectESNController:
         gram = design.T @ design + (self.config.ridge_lambda + prior_weight) * np.eye(self.feature_dimension)
         if smoothness_weight > 0.0:
             delta = _finite_matrix(smoothness_features, self.feature_dimension, "smoothness features")
-            gram += smoothness_weight * (delta.T @ delta)
-        self._readout = np.linalg.solve(gram, right).T
+            scales = np.ones(ACTION_DIMENSION) if smoothness_channel_scales is None else scales
+            if smoothness_targets is not None:
+                delta_targets = _finite_matrix(smoothness_targets, ACTION_DIMENSION, "smoothness targets")
+                if len(delta) != len(delta_targets):
+                    raise ValueError("smoothness features and targets must have equal length")
+                delta_targets = np.clip(delta_targets, -2.0, 2.0)
+            else:
+                delta_targets = np.zeros((len(delta), ACTION_DIMENSION))
+            if np.allclose(scales, scales[0]):
+                # Uniform channel scaling: one shared solve.
+                gram += smoothness_weight * scales[0] * (delta.T @ delta)
+                right += smoothness_weight * (delta.T @ (delta_targets * scales[None, :]))
+                self._readout = np.linalg.solve(gram, right).T
+            else:
+                # Exact per-channel solves: each output row has its own
+                # regularizer strength, so solve the normal equations once
+                # per action channel.
+                base_right = right.copy()
+                rows = []
+                for channel in range(ACTION_DIMENSION):
+                    channel_gram = gram + smoothness_weight * scales[channel] * (delta.T @ delta)
+                    channel_right = base_right[:, channel] + smoothness_weight * scales[channel] * (
+                        delta.T @ delta_targets[:, channel])
+                    rows.append(np.linalg.solve(channel_gram, channel_right))
+                self._readout = np.asarray(rows)
+        else:
+            self._readout = np.linalg.solve(gram, right).T
         if not np.all(np.isfinite(self._readout)):
             raise RuntimeError("Direct ESN readout became non-finite")
         prediction = np.tanh(design @ self._readout.T)

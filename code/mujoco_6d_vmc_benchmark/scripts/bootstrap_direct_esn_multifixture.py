@@ -57,6 +57,12 @@ def main() -> None:
     parser.add_argument("--time-constant", type=float, default=0.12)
     parser.add_argument("--input-scale", type=float, default=0.45)
     parser.add_argument("--ridge-lambda", type=float, default=1.0e-4)
+    parser.add_argument("--derivative-match", action="store_true",
+                        help="supervise action differences toward the teacher's differences instead of zero")
+    parser.add_argument("--derivative-lowpass", type=float, default=1.0,
+                        help="EMA coefficient on the teacher-difference target (1.0 = pure derivative matching)")
+    parser.add_argument("--relieve-direction-channels", action="store_true",
+                        help="reduce the smoothness penalty on the lateral/yaw action channels")
     parser.add_argument("--smoothness-weight", type=float, default=0.0,
                         help="ridge penalty on within-episode action change (trains smoothness into the readout)")
     args = parser.parse_args()
@@ -71,7 +77,7 @@ def main() -> None:
                              input_scale=args.input_scale, ridge_lambda=args.ridge_lambda)
     model = DirectESNController(config)
     episodes = []
-    features_all, targets_all, deltas_all = [], [], []
+    features_all, targets_all, deltas_all, delta_targets_all = [], [], [], []
     if args.expert_traces is None:
         specs = [
             ("phase_teacher_rod", args.base_rod_trace, 10, args.rod_repeat, "teacher_action"),
@@ -97,12 +103,35 @@ def main() -> None:
             # Consecutive-feature differences within this episode only; never
             # across episode boundaries.
             deltas_all.extend([np.diff(features, axis=0)] * repeat)
+            if args.derivative_match:
+                # Teacher-side action differences for derivative matching,
+                # optionally low-passed: alpha=1 keeps the teacher's slopes
+                # exactly, smaller alpha strips the teacher's own high-
+                # frequency chatter while preserving the necessary ramps.
+                diff = np.diff(np.clip(labels, -1.0, 1.0), axis=0)
+                alpha = float(np.clip(args.derivative_lowpass, 1.0e-3, 1.0))
+                if alpha < 1.0:
+                    smoothed = np.empty_like(diff)
+                    state = np.zeros(diff.shape[1])
+                    for index in range(len(diff)):
+                        state = alpha * diff[index] + (1.0 - alpha) * state
+                        smoothed[index] = state
+                    diff = smoothed
+                delta_targets_all.extend([diff] * repeat)
         episodes.append({"name": name, "path": str(path), "samples": len(features), "stride": stride, "repeat": repeat, "label_field": label_field})
     design = np.concatenate(features_all, axis=0)
     targets = np.concatenate(targets_all, axis=0)
     smoothness = np.concatenate(deltas_all, axis=0) if deltas_all else None
+    delta_targets = np.concatenate(delta_targets_all, axis=0) if delta_targets_all else None
+    channel_scales = None
+    if args.relieve_direction_channels:
+        # The lateral (index 2) and yaw (index 6) channels carry the
+        # direction-switching signal whose fast change is task-necessary.
+        channel_scales = np.array([1.0, 1.0, 0.1, 1.0, 1.0, 1.0, 0.1])
     mse = model.fit_readout(design, targets, smoothness_features=smoothness,
-                            smoothness_weight=args.smoothness_weight)
+                            smoothness_weight=args.smoothness_weight,
+                            smoothness_targets=delta_targets,
+                            smoothness_channel_scales=channel_scales)
     args.output_model.parent.mkdir(parents=True, exist_ok=True)
     args.output_summary.parent.mkdir(parents=True, exist_ok=True)
     model.save_npz(args.output_model)
@@ -115,6 +144,8 @@ def main() -> None:
         "training_samples": len(design),
         "readout_training_mse": mse,
         "smoothness_weight": args.smoothness_weight,
+        "derivative_match": args.derivative_match,
+        "relieve_direction_channels": args.relieve_direction_channels,
         "episodes": episodes,
     }
     args.output_summary.write_text(json.dumps(summary, indent=2) + "\n")
