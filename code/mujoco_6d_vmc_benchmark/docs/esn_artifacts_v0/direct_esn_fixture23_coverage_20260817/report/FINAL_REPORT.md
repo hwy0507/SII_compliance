@@ -154,6 +154,9 @@ ESN 比最强学习方法 MLP 好 **85%**，比手工调参的 VMC 好 **105%**�
 ### ESN-Torque（Proposed，学习的柔顺策略）
 ![ESN](esn_torque.gif)
 
+### MLP-Torque（无记忆神经网络基线）
+![MLP](mlp_torque.gif)
+
 ---
 
 ## 9. 结论
@@ -181,5 +184,6 @@ ESN 比最强学习方法 MLP 好 **85%**，比手工调参的 VMC 好 **105%**�
 | `ranking_summary.png` | 方法排名柱状图 |
 | `fixed_wbc.gif` | Fixed WBC 任务动图 |
 | `vmc_torque.gif` | VMC 力矩版任务动图 |
+| `mlp_torque.gif` | MLP 力矩版任务动图 |
 | `esn_torque.gif` | ESN (Proposed) 任务动图 |
 | `vmc_fixed_eval/` | 修复后 VMC (k=2.2, 3%) 全 fixture 评估 JSON |
