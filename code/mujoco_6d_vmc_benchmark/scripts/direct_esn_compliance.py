@@ -84,6 +84,16 @@ class DirectESNConfig:
     # impact the learned action flips sign exactly, giving structural mirror
     # generalization instead of data augmentation.  "y" gates only the
     # lateral/yaw channels; "full" gates all six twist channels.
+    # Memoryless ablation control: zeroing the recurrent weights turns the
+    # reservoir into a stateless random-feature map at identical input scale,
+    # dimension, and readout training (an ESN-vs-random-features control).
+    disable_recurrence: bool = False
+    # Partial-observation ablation: zero the twist-error channels in BOTH
+    # training features and deployment, forcing any contact/phase inference
+    # to come from motion history (reservoir memory) rather than the
+    # velocity-error signal.
+    zero_twist_error: bool = False
+    zero_joint_velocity: bool = False
     mirror_gate_enabled: bool = False
     mirror_gate_channels: str = "y"
     mirror_gate_epsilon_m: float = 0.004
@@ -182,6 +192,8 @@ class DirectESNController:
             recurrent = np.roll(np.eye(config.reservoir_size), shift=1, axis=1)
             radius = 1.0
         self._recurrent = recurrent * (config.spectral_radius / radius)
+        if config.disable_recurrence:
+            self._recurrent = np.zeros_like(self._recurrent)
         self._input = rng.uniform(-config.input_scale, config.input_scale, (config.reservoir_size, DEPLOYABLE_INPUT_DIMENSION))
         self._bias = rng.uniform(-config.bias_scale, config.bias_scale, config.reservoir_size)
         self._state = np.zeros(config.reservoir_size, dtype=float)
@@ -219,6 +231,19 @@ class DirectESNController:
     def advance(self, observation: DirectESNObservation | ESNObservation, pose_error: np.ndarray | None = None, twist_error: np.ndarray | None = None) -> np.ndarray:
         """Advance using deployment-available state and WBC deviation."""
 
+        if self.config.zero_twist_error or self.config.zero_joint_velocity:
+            # Partial-observation ablations apply identically in training
+            # features and deployment, so both see the same information set.
+            from dataclasses import replace as _replace
+            if isinstance(observation, DirectESNObservation):
+                fields = {}
+                if self.config.zero_twist_error:
+                    fields["wbc_twist_error"] = np.zeros(6)
+                if self.config.zero_joint_velocity:
+                    fields["joint_velocity"] = np.zeros(7)
+                observation = _replace(observation, **fields)
+            if twist_error is not None and self.config.zero_twist_error:
+                twist_error = np.zeros(6)
         if isinstance(observation, DirectESNObservation):
             encoded = encode_direct_esn_observation(observation)
         else:

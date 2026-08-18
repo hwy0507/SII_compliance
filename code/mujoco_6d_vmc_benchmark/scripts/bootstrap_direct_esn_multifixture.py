@@ -50,6 +50,12 @@ def main() -> None:
     parser.add_argument("--output-summary", type=Path, required=True)
     parser.add_argument("--reservoir-seed", type=int, required=True)
     parser.add_argument("--reservoir-size", type=int, default=160)
+    parser.add_argument("--zero-joint-velocity", action="store_true",
+                        help="deep ablation: hide joint velocities (memory must infer dynamics)")
+    parser.add_argument("--zero-twist-error", action="store_true",
+                        help="partial-observation ablation: hide the twist-error channels")
+    parser.add_argument("--disable-recurrence", action="store_true",
+                        help="zero the recurrent weights: random-features ablation of the ESN")
     parser.add_argument("--washout-steps", type=int, default=3)
     parser.add_argument("--rod-repeat", type=int, default=4)
     parser.add_argument("--neutral-repeat", type=int, default=3)
@@ -73,6 +79,9 @@ def main() -> None:
     if args.expert_traces is not None and args.no_rod_expert_trace is None:
         raise ValueError("expert bootstrap requires --no-rod-expert-trace")
     config = DirectESNConfig(reservoir_size=args.reservoir_size, seed=args.reservoir_seed, dt_s=0.04,
+                             disable_recurrence=args.disable_recurrence,
+                             zero_twist_error=args.zero_twist_error,
+                             zero_joint_velocity=args.zero_joint_velocity,
                              spectral_radius=args.spectral_radius, time_constant_s=args.time_constant,
                              input_scale=args.input_scale, ridge_lambda=args.ridge_lambda)
     model = DirectESNController(config)
