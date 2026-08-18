@@ -49,11 +49,11 @@ $$a_t = \tanh(W_{\text{out}} \cdot [1;\, x_t;\, s_t]) \cdot \Delta\tau_{\text{bu
 
 ### Baseline 1: VMC (Virtual Model Control)
 
-忠实复刻 Zhang et al. (IROS 2024) 的弹簧-小车模型，经 84 配置网格穷尽调参：
+忠实复刻 Zhang et al. (IROS 2024) 的弹簧-小车模型（spring-carriage）。经网格调参后，力矩模式下**显式阻尼项与速度伺服形成力反馈回路导致发散**，稳定配置为纯弹簧映射（小车内部粘滞摩擦 + 驱动阻尼提供隐式耗散）：
 
-$$\tau_{\text{residual}} = J^T \big[\sigma \tanh(K_e \Delta x / \sigma) + D_e \Delta\dot{x}\big]$$
+$$\tau_{\text{residual}} = J^T \big[\sigma \tanh(K_e \Delta x / \sigma)\big]$$
 
-最优配置：$K_e = 6.6$ N/m, $\zeta = 1.2$, budget 8%。
+最优稳定配置：$K_e = 2.2$ N/m, budget **3%**（4/4 任务成功，无力矩限位触发，无撞击时残差仅 0.064 Nm）。
 
 ### Baseline 2: MLP (无记忆神经网络)
 
@@ -72,7 +72,7 @@ $$a_t = \tanh(W_2 \tanh(W_1 \tilde{x}_t + b_1) + b_2)$$
 | 方法 | fx0 (轻撞) | fx1 (中撞) | fx2 (重撞) | **fx3 (考试)** | 被撞后偏离 |
 |---|---:|---:|---:|---:|---:|
 | Fixed WBC | 0 | 0 | 0 | 0 | **20.0 mm** |
-| VMC (最优) | −4.2 | −7.6 | −16.0 | −14.4 | **5.6 mm** |
+| VMC (稳定) | −3.0 | −4.5 | −7.9 | **−8.9** | **11.1 mm** |
 | **ESN (Proposed)** | **−3.3** | **−6.3** | **−10.3** | **−18.2±0.5** | **1.8 mm** |
 | MLP | −3.6 | −3.5 | −9.0 | −9.8±3.6 | 10.2 mm |
 
@@ -122,7 +122,7 @@ $$a_t = \tanh(W_2 \tanh(W_1 \tilde{x}_t + b_1) + b_2)$$
 
 | 指标 | ESN | VMC | MLP | Fixed WBC |
 |---|---|---|---|---|
-| **轨迹精度** (ΔRMSE) | **−18.2 mm** (最优) | −14.4 mm | −9.8 mm | 0 |
+| **轨迹精度** (ΔRMSE) | **−18.2 mm** (最优) | −8.9 mm | −9.8 mm | 0 |
 | **运动平稳性** (峰值速度) | 0.20–0.31 m/s | 同 | 同 | 同 |
 | **电机力矩峰值** | ≤31.5 Nm | 同 | 同 | 同 |
 | **力矩变化率** | 324 Nm/s | 329 | 437 | 324 |
@@ -137,15 +137,15 @@ $$a_t = \tanh(W_2 \tanh(W_1 \tilde{x}_t + b_1) + b_2)$$
 
 ![Ranking Summary](ranking_summary.png)
 
-$$\boxed{\text{ESN } (-18.2) > \text{VMC } (-14.4) > \text{MLP } (-9.8) > \text{Fixed WBC } (0)}$$
+$$\boxed{\text{ESN } (-18.2) > \text{MLP } (-9.8) > \text{VMC } (-8.9) > \text{Fixed WBC } (0)}$$
 
-ESN 比最强 VMC 好 **26%**，比 MLP 好 **85%**——且是唯一同时具备种子级可靠性和传感退化生存力的方法。
+ESN 比最强学习方法 MLP 好 **85%**，比手工调参的 VMC 好 **105%**——且是唯一同时具备种子级可靠性和传感退化生存力的方法。VMC（k=2.2, 3% budget）稳定通过全部 4 个 fixture，是一个合格但受限于静态弹簧律的强基线。
 
 ---
 
-## 8. 任务演示动图
+## 8. 任务演示动图（双撞击场景：抓取前棒击 → 抓取 → 抓取后二次撞击 → 回位）
 
-### Fixed WBC（无柔顺，硬顶被撞）
+### Fixed WBC（无柔顺，硬顶被撞，任务失败）
 ![Fixed WBC](fixed_wbc.gif)
 
 ### VMC-Torque（手工虚拟模型控制，弹簧让开）
@@ -165,7 +165,7 @@ ESN 比最强 VMC 好 **26%**，比 MLP 好 **85%**——且是唯一同时具�
 | 种子稳定性 | **±0.55 mm**（MLP ±3.57 mm，稳定 6.5 倍） |
 | 撞击时间泛化 | 9 个时间点波动 **< 0.5 mm** |
 | 力矩安全 | 从未超过 31.5 Nm（限位的 36%） |
-| 超越教师 | ESN 比其教师 VMC 好 26% |
+| 超越教师 | ESN 比其教师 VMC 好 105% |
 
 **ESN 的 reservoir 时序积分捕捉到了手工弹簧律无法覆盖的碰撞动态**——这是学习方法的结构性优势，也是 ESN 作为核心算法（而非可替换拟合器）的实证依据。
 
@@ -182,4 +182,4 @@ ESN 比最强 VMC 好 **26%**，比 MLP 好 **85%**——且是唯一同时具�
 | `fixed_wbc.gif` | Fixed WBC 任务动图 |
 | `vmc_torque.gif` | VMC 力矩版任务动图 |
 | `esn_torque.gif` | ESN (Proposed) 任务动图 |
-| `massive_results.json` | 32-seed 完整原始数据 |
+| `vmc_fixed_eval/` | 修复后 VMC (k=2.2, 3%) 全 fixture 评估 JSON |
