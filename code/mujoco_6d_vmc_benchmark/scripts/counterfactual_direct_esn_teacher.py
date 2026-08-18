@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING
 import mujoco
 import numpy as np
 
-from run_benchmark import ARM_DOF, CONTROL_DT, TORQUE_LIMITS, body_jacobian
+from run_benchmark import ARM_DOF, CONTROL_DT, TORQUE_LIMITS, body_jacobian, body_twist
 from run_rod_perturbation_benchmark import rod_contact_diagnostics, rod_motion
 from wbc_velocity_residual_core import (
     VelocityResidualActionFilter,
@@ -42,6 +42,13 @@ class CounterfactualTeacherConfig:
     force_reference_n: float = 10.0
     impulse_reference_ns: float = 0.10
     activation_force_n: float = 0.20
+    # Safety-side objectives (torque slew and uncommanded forward surge) so
+    # the teacher's labels internalize all three headline metrics, not only
+    # tracking accuracy and contact force.
+    torque_rate_weight: float = 0.05
+    torque_rate_reference_nmps: float = 300.0
+    surge_weight: float = 0.10
+    surge_reference_mps: float = 0.05
 
     def __post_init__(self) -> None:
         values = np.asarray(list(asdict(self).values()), dtype=float)
@@ -130,6 +137,9 @@ def _rollout_candidate(
     peak_force = 0.0
     impulse = 0.0
     peak_torque_ratio = 0.0
+    peak_torque_rate = 0.0
+    peak_surge = 0.0
+    previous_twist = body_twist(model, clone, env._hand_id)
     secondary_contacts = 0
     for step in range(config.horizon_steps):
         current_time = time_s + step * CONTROL_DT
@@ -157,6 +167,14 @@ def _rollout_candidate(
         peak_force = max(peak_force, force)
         impulse += force * CONTROL_DT
         peak_torque_ratio = max(peak_torque_ratio, float(np.max(np.abs(torque) / TORQUE_LIMITS)))
+        peak_torque_rate = max(peak_torque_rate, float(np.max(np.abs(torque - previous_torque)) / CONTROL_DT))
+        current_twist = body_twist(model, clone, env._hand_id)
+        nominal_speed = float(np.linalg.norm(command.task_twist_world[:3]))
+        if nominal_speed > 1.0e-9:
+            direction = command.task_twist_world[:3] / nominal_speed
+            surge = float(np.dot(current_twist[:3], direction)) - nominal_speed
+            peak_surge = max(peak_surge, max(0.0, surge))
+        previous_twist = current_twist
         # The rod itself is expected. Any other collision involving the Panda
         # indicates a candidate that exits the intended safe interaction.
         for index in range(clone.ncon):
@@ -177,12 +195,16 @@ def _rollout_candidate(
         + config.action_weight * float(np.mean(np.asarray(action, dtype=float) ** 2))
         + config.action_change_weight * float(np.mean(action_delta**2))
         + config.secondary_contact_weight * secondary_contacts
+        + config.torque_rate_weight * (peak_torque_rate / config.torque_rate_reference_nmps) ** 2
+        + config.surge_weight * (peak_surge / config.surge_reference_mps) ** 2
     )
     return {
         "cost": float(cost),
         "peak_force_n": float(peak_force),
         "impulse_ns": float(impulse),
         "terminal_error_m": terminal_error,
+        "peak_torque_rate_nmps": float(peak_torque_rate),
+        "peak_surge_mps": float(peak_surge),
     }
 
 

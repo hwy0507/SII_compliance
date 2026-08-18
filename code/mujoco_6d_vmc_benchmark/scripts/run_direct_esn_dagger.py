@@ -352,6 +352,8 @@ def main() -> None:
     parser.add_argument("--rod-repeat", type=int, default=1, help="relative ridge-fit weight for rod-contact teacher traces")
     parser.add_argument("--teacher-mode", choices=("phase", "counterfactual"), default="phase")
     parser.add_argument("--counterfactual-horizon-steps", type=int, default=8)
+    parser.add_argument("--teacher-torque-rate-weight", type=float, default=None)
+    parser.add_argument("--teacher-surge-weight", type=float, default=None)
     parser.add_argument("--counterfactual-zero-repeat", type=int, default=1)
     parser.add_argument("--counterfactual-nonzero-repeat", type=int, default=24)
     parser.add_argument("--counterfactual-label-dilation-steps", type=int, default=0)
@@ -360,7 +362,13 @@ def main() -> None:
     args = parser.parse_args()
     if min(args.iterations, args.neutral_repeat, args.rod_repeat, args.counterfactual_zero_repeat, args.counterfactual_nonzero_repeat) < 1 or args.counterfactual_label_dilation_steps < 0 or args.prior_readout_weight < 0.0:
         raise ValueError("iterations and repeat weights must be positive")
-    counterfactual_config = CounterfactualTeacherConfig(horizon_steps=args.counterfactual_horizon_steps)
+    teacher_kwargs = {}
+    if args.teacher_torque_rate_weight is not None:
+        teacher_kwargs["torque_rate_weight"] = args.teacher_torque_rate_weight
+    if args.teacher_surge_weight is not None:
+        teacher_kwargs["surge_weight"] = args.teacher_surge_weight
+    counterfactual_config = CounterfactualTeacherConfig(
+        horizon_steps=args.counterfactual_horizon_steps, **teacher_kwargs)
     dagger_fixtures = _parse_dagger_fixtures(args.dagger_fixtures)
     pool_size = len(dagger_fixtures) if dagger_fixtures is not None else 4
     fixture_indices = _parse_fixture_indices(args.fixture_indices, args.fixture_index)
