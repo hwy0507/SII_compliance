@@ -126,6 +126,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         fixtures: tuple[VelocityResidualFixture, ...] | None = None,
         rod_enabled: bool = True,
         safety_config: VelocityResidualSafetyConfig | None = None,
+        torque_limit_scale: float = 1.0,
         reward_config: VelocityResidualRewardConfig | None = None,
         residual_window_end_at_grasp: bool = False,
         residual_energy_tank: bool = False,
@@ -144,6 +145,13 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.observation_mode = observation_mode
         self.rod_enabled = bool(rod_enabled)
         self.safety_config = safety_config or VelocityResidualSafetyConfig()
+        if not np.isfinite(torque_limit_scale) or torque_limit_scale <= 0.0:
+            raise ValueError("torque_limit_scale must be finite and positive")
+        # Diagnostic relief of the shared torque envelope.  1.0 keeps the
+        # frozen benchmark protocol; larger values expose each controller's
+        # raw torque demand that the shared limiter would otherwise clip.
+        self.torque_limits = TORQUE_LIMITS * float(torque_limit_scale)
+        self.physics_torque_history: list[np.ndarray] = []
         self.reward_config = reward_config or VelocityResidualRewardConfig()
         self.residual_window_end_at_grasp = bool(residual_window_end_at_grasp)
         self.residual_energy_tank_enabled = bool(residual_energy_tank)
@@ -205,6 +213,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         # Privileged training diagnostics. These are never exposed through
         # the direct-ESN observation, but allow an offline DAgger teacher to
         # label the exact states the student visited.
+        self.physics_torque_history = []
         self.last_action_contact_force = 0.0
         self.last_action_contact_penetration = 0.0
         self.last_action_contact_wrench_world = np.zeros(6)
@@ -379,6 +388,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.previous_position_error = 0.0
         self.raw_joint_velocity_command[:] = 0.0
         self.peak_force = self.contact_impulse = self.peak_torque = self.peak_jerk = self.peak_recovery_jerk = 0.0
+        self.physics_torque_history = []
         self.last_action_contact_force = 0.0
         self.last_action_contact_penetration = 0.0
         self.last_action_contact_wrench_world = np.zeros(6)
@@ -446,6 +456,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             self.previous_torque,
             CONTROL_DT,
             self.safety_config,
+            torque_limits=self.torque_limits,
         )
         data.ctrl[:ARM_DOF] = applied_torque
         data.ctrl[ARM_DOF] = self.reference.gripper_target(
@@ -481,8 +492,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             self.peak_recovery_jerk = max(self.peak_recovery_jerk, jerk_norm)
         self.peak_torque = max(self.peak_torque, float(np.max(np.abs(applied_torque))))
         self.minimum_torque_feasible_scale = min(self.minimum_torque_feasible_scale, feasible_scale)
+        self.physics_torque_history.append(applied_torque.copy())
         self.hard_limit_seen = self.hard_limit_seen or bool(
-            np.any(np.isclose(np.abs(applied_torque), TORQUE_LIMITS, atol=1e-5))
+            np.any(np.isclose(np.abs(applied_torque), self.torque_limits, atol=1e-5))
         )
         position_error = float(np.linalg.norm(command.target_position_m - ee_position))
         orientation_error = float(np.linalg.norm(so3_log(command.target_rotation @ ee_rotation.T)))

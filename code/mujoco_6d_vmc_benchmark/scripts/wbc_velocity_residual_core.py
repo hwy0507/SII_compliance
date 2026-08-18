@@ -599,6 +599,7 @@ def safe_velocity_tracking_torque(
     previous_torque: np.ndarray,
     dt: float,
     config: VelocityResidualSafetyConfig,
+    torque_limits: np.ndarray | None = None,
 ) -> tuple[np.ndarray, float]:
     """Velocity-servo torque with analytic box projection and torque slew."""
 
@@ -611,8 +612,11 @@ def safe_velocity_tracking_torque(
     if not all(np.all(np.isfinite(vector)) for vector in (bias, measured, command, previous)):
         raise ValueError("Panda torque adapter inputs must be finite")
     servo = np.asarray(config.velocity_gain_nm_per_radps) * (command - measured)
+    limits = TORQUE_LIMITS_NM if torque_limits is None else np.asarray(torque_limits, dtype=float)
+    if limits.shape != (ARM_DOF,) or np.any(limits <= 0.0):
+        raise ValueError("torque limits must be seven positive values")
     scale = 1.0
-    for gravity, contribution, limit in zip(bias, servo, TORQUE_LIMITS_NM, strict=True):
+    for gravity, contribution, limit in zip(bias, servo, limits, strict=True):
         if contribution > 1e-9:
             scale = min(scale, max(0.0, (limit - gravity) / contribution))
         elif contribution < -1e-9:
@@ -621,4 +625,4 @@ def safe_velocity_tracking_torque(
     desired = bias + scale * servo
     maximum_delta = np.asarray(config.maximum_torque_rate_nmps) * dt
     applied = previous + np.clip(desired - previous, -maximum_delta, maximum_delta)
-    return np.clip(applied, -TORQUE_LIMITS_NM, TORQUE_LIMITS_NM), scale
+    return np.clip(applied, -limits, limits), scale
