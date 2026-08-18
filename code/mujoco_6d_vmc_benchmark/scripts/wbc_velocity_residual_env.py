@@ -127,6 +127,11 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         rod_enabled: bool = True,
         safety_config: VelocityResidualSafetyConfig | None = None,
         torque_limit_scale: float = 1.0,
+        robot: str = "panda",
+        rod_hold_extension_s: float = 0.0,
+        joint_velocity_noise_std: float = 0.0,
+        execution_mode: str = "twist",
+        residual_torque_scale: float = 0.25,
         reward_config: VelocityResidualRewardConfig | None = None,
         residual_window_end_at_grasp: bool = False,
         residual_energy_tank: bool = False,
@@ -145,13 +150,29 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.observation_mode = observation_mode
         self.rod_enabled = bool(rod_enabled)
         self.safety_config = safety_config or VelocityResidualSafetyConfig()
+        self.robot = robot
+        if execution_mode not in ("twist", "torque_residual"):
+            raise ValueError("execution_mode must be 'twist' or 'torque_residual'")
+        if not 0.0 < residual_torque_scale <= 1.0:
+            raise ValueError("residual torque scale must lie in (0, 1]")
+        self.execution_mode = execution_mode
+        self._pending_residual_scale = float(residual_torque_scale)
+        if rod_hold_extension_s < 0.0 or joint_velocity_noise_std < 0.0:
+            raise ValueError("rod hold extension and velocity noise must be non-negative")
+        self.rod_hold_extension_s = float(rod_hold_extension_s)
+        self.rod_profile_duration_s = ROD_PROFILE_DURATION_S + self.rod_hold_extension_s
+        self.joint_velocity_noise_std = float(joint_velocity_noise_std)
         if not np.isfinite(torque_limit_scale) or torque_limit_scale <= 0.0:
             raise ValueError("torque_limit_scale must be finite and positive")
         # Diagnostic relief of the shared torque envelope.  1.0 keeps the
         # frozen benchmark protocol; larger values expose each controller's
         # raw torque demand that the shared limiter would otherwise clip.
         self.torque_limits = TORQUE_LIMITS * float(torque_limit_scale)
+        # Per-joint budget for learned/hand residual torques (fraction of the
+        # hardware limits), applied before the shared final clamp.
+        self.residual_torque_limits = self.torque_limits * self._pending_residual_scale
         self.physics_torque_history: list[np.ndarray] = []
+        self._residual_torque_command = np.zeros(ARM_DOF)
         self.reward_config = reward_config or VelocityResidualRewardConfig()
         self.residual_window_end_at_grasp = bool(residual_window_end_at_grasp)
         self.residual_energy_tank_enabled = bool(residual_energy_tank)
@@ -249,17 +270,32 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.reset(seed=seed)
 
     def _build_scene(self) -> None:
-        self.model, self.data = make_rod_model(
-            self.menagerie,
-            CONTACT_TIME_CONSTANT_S,
-            self.fixture.rod_height_m,
-            explicit_translational_carriage=False,
-            explicit_rotational_carriage=False,
-            rod_approach_side=self.fixture.rod_approach_side,
-            rod_center_x_m=self.fixture.rod_center_x_m,
-            rod_center_y_m=self.fixture.rod_center_y_m,
-            impactor_type=self.fixture.impactor_type,
-        )
+        if self.robot == "fr3":
+            from fr3_scene import make_fr3_hand_model
+
+            self.model, self.data = make_fr3_hand_model(
+                self.menagerie,
+                CONTACT_TIME_CONSTANT_S,
+                rod_height_m=self.fixture.rod_height_m,
+                rod_approach_side=self.fixture.rod_approach_side,
+                rod_center_x_m=self.fixture.rod_center_x_m,
+                rod_center_y_m=self.fixture.rod_center_y_m,
+                impactor_type=self.fixture.impactor_type,
+            )
+        elif self.robot == "panda":
+            self.model, self.data = make_rod_model(
+                self.menagerie,
+                CONTACT_TIME_CONSTANT_S,
+                self.fixture.rod_height_m,
+                explicit_translational_carriage=False,
+                explicit_rotational_carriage=False,
+                rod_approach_side=self.fixture.rod_approach_side,
+                rod_center_x_m=self.fixture.rod_center_x_m,
+                rod_center_y_m=self.fixture.rod_center_y_m,
+                impactor_type=self.fixture.impactor_type,
+            )
+        else:
+            raise ValueError(f"unknown robot {robot!r}")
         model, data = self.model, self.data
         named = {
             "hand": (mujoco.mjtObj.mjOBJ_BODY, "hand"),
@@ -289,6 +325,33 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         mujoco.mj_forward(model, data)
         self.reference = PickLiftCarryReference(model, data, self._hand_id)
         self.fixed_wbc = FixedBasePandaWBC(model, self._hand_id, data.qpos[:ARM_DOF])
+
+    def _extended_hold_profile_time(self, time_s: float) -> float:
+        """Freeze the rod inside the hold window to extend it physically.
+
+        The stock profile presses, holds briefly, and retracts with fixed
+        constants.  Mapping time through this function stretches the hold
+        segment by ``rod_hold_extension_s`` without touching shared code.
+        """
+
+        if self.rod_hold_extension_s <= 0.0:
+            return time_s
+        start = self.fixture.rod_start_time_s
+        elapsed = time_s - start
+        # Stock profile segments (s): press [0, 0.24], hold [0.24, 0.40],
+        # retract [0.40, 0.64]; mirroring run_rod_perturbation_benchmark.
+        press_end, hold_end = 0.24, 0.40
+        extension = self.rod_hold_extension_s
+        crawl_rate = press_end / hold_end
+        if elapsed < press_end:
+            return time_s
+        if elapsed < hold_end + extension:
+            # Slow crawl through the hold window: the rod keeps advancing at
+            # a fraction of the press speed, following the yielding hand and
+            # maintaining the squeeze instead of stopping at full stroke.
+            return start + press_end + crawl_rate * (elapsed - press_end)
+        # After the extended hold, land on the retract phase consistently.
+        return start + press_end + crawl_rate * (hold_end + extension - press_end) + (elapsed - hold_end - extension)
 
     def _wbc_command(self, time_s: float) -> WBCCommand:
         assert self.data is not None and self.reference is not None and self.fixed_wbc is not None
@@ -430,13 +493,14 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         assert self.model is not None and self.data is not None and self.reference is not None
         model, data = self.model, self.data
         command = self._wbc_command(time_s)
-        rod_displacement, _ = (
-            rod_motion(
-                time_s, self.fixture.rod_stroke_m, self.fixture.rod_start_time_s,
+        if self.rod_enabled:
+            profile_time = self._extended_hold_profile_time(time_s)
+            rod_displacement, _ = rod_motion(
+                profile_time, self.fixture.rod_stroke_m, self.fixture.rod_start_time_s,
                 cycles=self.fixture.rod_cycles, cycle_period_s=self.fixture.cycle_period_s,
             )
-            if self.rod_enabled else (0.0, 0.0)
-        )
+        else:
+            rod_displacement = 0.0
         data.mocap_pos[self._obstacle_mocap] = np.array([3.0, 3.0, 3.0])
         data.mocap_quat[self._obstacle_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
         data.qfrc_applied[:] = 0.0
@@ -458,6 +522,17 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             self.safety_config,
             torque_limits=self.torque_limits,
         )
+        if self.execution_mode == "torque_residual":
+            # Impedance-style compliance channel: the policy action is a raw
+            # joint-torque residual (clipped to its own budget and slewed by
+            # the shared clamp) added on top of the WBC velocity servo, so a
+            # collision is softened in the force domain instead of by moving
+            # the reference away from the nominal path.
+            residual = np.clip(
+                np.asarray(self._residual_torque_command, dtype=float),
+                -self.residual_torque_limits, self.residual_torque_limits)
+            applied_torque = np.clip(
+                applied_torque + residual, -self.torque_limits, self.torque_limits)
         data.ctrl[:ARM_DOF] = applied_torque
         data.ctrl[ARM_DOF] = self.reference.gripper_target(
             time_s - (self.fixture.grasp_time_s - 2.10)
@@ -486,7 +561,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         release_time_s = (
             self.fixture.rod_start_time_s
             + (self.fixture.rod_cycles - 1) * self.fixture.cycle_period_s
-            + ROD_PROFILE_DURATION_S
+            + self.rod_profile_duration_s
         )
         if self.rod_enabled and release_time_s < time_s < self.fixture.grasp_time_s:
             self.peak_recovery_jerk = max(self.peak_recovery_jerk, jerk_norm)
@@ -589,6 +664,19 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         # from -y and pushes the hand toward +y there).
         return -wrench_world
 
+    def _noisy_joint_velocity(self) -> np.ndarray:
+        """Sensor-model joint velocity: optional additive Gaussian noise.
+
+        The noise models a low-cost encoder / velocity-estimate channel and
+        applies identically to every controller reading the diagnostic
+        observation (ESN, MLP, and any baseline consuming the same signal).
+        """
+
+        measured = self.data.qvel[:ARM_DOF].copy()
+        if self.joint_velocity_noise_std > 0.0:
+            measured = measured + self.joint_velocity_noise_std * self.np_random.standard_normal(ARM_DOF)
+        return measured
+
     def diagnostics(self) -> dict[str, Any]:
         """Offline state for matched evaluation; never part of actor input."""
 
@@ -598,6 +686,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         return {
             "time_s": time_s,
             "ee_position": self.data.xpos[self._hand_id].copy(),
+            "hand_jacobian": body_jacobian(self.model, self.data, self._hand_id).copy(),
             "ee_rotation": self.data.xmat[self._hand_id].reshape(3, 3).copy(),
             "ee_twist": body_twist(self.model, self.data, self._hand_id),
             "nominal_position": command.target_position_m.copy(),
@@ -623,7 +712,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "raw_joint_velocity_command": self.raw_joint_velocity_command.copy(),
             "applied_torque": self.previous_torque.copy(),
             "joint_position": self.data.qpos[:ARM_DOF].copy(),
-            "joint_velocity": self.data.qvel[:ARM_DOF].copy(),
+            "joint_velocity": self._noisy_joint_velocity(),
         }
 
     def step(self, action: np.ndarray) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
@@ -631,6 +720,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         if action.shape != (7,) or not np.all(np.isfinite(action)):
             raise ValueError("direct WBC residual action must be a finite seven-vector")
         raw_policy_action = np.clip(action, -1.0, 1.0)
+        if self.execution_mode == "torque_residual":
+            # Action contract in this mode: 7-D per-joint residual torque in
+            # units of the per-joint residual budget ([-1, 1] each).
+            self._residual_torque_command = raw_policy_action * self.residual_torque_limits
         self.last_action_contact_force = 0.0
         self.last_action_contact_penetration = 0.0
         self.last_action_contact_seen = False
@@ -725,7 +818,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         release_time_s = (
             self.fixture.rod_start_time_s
             + (self.fixture.rod_cycles - 1) * self.fixture.cycle_period_s
-            + ROD_PROFILE_DURATION_S
+            + self.rod_profile_duration_s
         )
         for substep in range(PHYSICS_STEPS_PER_ACTION):
             time_s = self.step_count * RL_DT + substep * CONTROL_DT

@@ -48,7 +48,7 @@ def resolve_override_fixture(
     return (fixture,), 0
 
 
-def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: Path | None, fan_ye_summary: Path | None, fixture_index: int, rod_enabled: bool, seed: int, fixed_wbc: bool = False, enable_rejoin_fade: bool = False, rejoin_fade_maximum: float = 0.85, override_fixture: VelocityResidualFixture | None = None, yield_smoothing_alpha: float = 1.0, mirror_gate: bool = False, mirror_gate_channels: str = "y") -> tuple[dict, list[dict]]:
+def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: Path | None, fan_ye_summary: Path | None, robot: str = "panda", rod_hold_extension_s: float = 0.0, joint_velocity_noise_std: float = 0.0, torque_limit_scale: float = 1.0, execution_mode: str = "twist", residual_torque_scale: float = 0.25, fixture_index: int, rod_enabled: bool, seed: int, fixed_wbc: bool = False, enable_rejoin_fade: bool = False, rejoin_fade_maximum: float = 0.85, override_fixture: VelocityResidualFixture | None = None, yield_smoothing_alpha: float = 1.0, mirror_gate: bool = False, mirror_gate_channels: str = "y") -> tuple[dict, list[dict]]:
     controller = None if fixed_wbc else load_controller(controller_path)  # type: ignore[arg-type]
     if isinstance(controller, VMCComplianceAdapter) and enable_rejoin_fade:
         raise ValueError("rejoin fade is a Direct-ESN-only ablation; the VMC baseline has no fade knob")
@@ -64,7 +64,11 @@ def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: 
     env = PandaWBCVelocityResidualEnv(
         menagerie=menagerie, fan_ye_model_npz=fan_ye_model,
         fan_ye_train_summary_json=fan_ye_summary, observation_mode="direct_esn",
-        rod_enabled=rod_enabled, seed=seed, fixtures=fixtures,
+        rod_enabled=rod_enabled, seed=seed, fixtures=fixtures, robot=robot,
+        rod_hold_extension_s=rod_hold_extension_s,
+        joint_velocity_noise_std=joint_velocity_noise_std,
+        torque_limit_scale=torque_limit_scale,
+        execution_mode=execution_mode, residual_torque_scale=residual_torque_scale,
     )
     if isinstance(controller, VMCComplianceAdapter):
         controller.set_yield_limits(
@@ -106,6 +110,10 @@ def run_episode(controller_path: Path | None, *, menagerie: Path, fan_ye_model: 
                 action = controller.act(
                     diagnostic["joint_position"], diagnostic["joint_velocity"], diagnostic["nominal_twist"],
                     pose_error=diagnostic["wbc_pose_error"], twist_error=diagnostic["wbc_twist_error"],
+                ) if not hasattr(controller, "residual_torque_limits") else controller.act(
+                    diagnostic["joint_position"], diagnostic["joint_velocity"], diagnostic["nominal_twist"],
+                    hand_jacobian=diagnostic["hand_jacobian"],
+                    pose_error=diagnostic["wbc_pose_error"], twist_error=diagnostic["wbc_twist_error"],
                 )
                 action_vector = action.bounded_filter_action
                 wbc_scale = action.wbc_scale
@@ -142,6 +150,12 @@ def main() -> None:
     parser.add_argument("--fan-ye-model", type=Path, default=None)
     parser.add_argument("--fan-ye-summary", type=Path, default=None)
     parser.add_argument("--fixture-index", type=int, default=0)
+    parser.add_argument("--robot", type=str, default="panda", choices=("panda", "fr3"))
+    parser.add_argument("--rod-hold-extension-s", type=float, default=0.0)
+    parser.add_argument("--joint-velocity-noise-std", type=float, default=0.0)
+    parser.add_argument("--torque-limit-scale", type=float, default=1.0)
+    parser.add_argument("--execution-mode", type=str, default="twist", choices=("twist", "torque_residual"))
+    parser.add_argument("--residual-torque-scale", type=float, default=0.25)
     parser.add_argument("--seed", type=int, default=20260817)
     parser.add_argument("--no-rod", action="store_true")
     parser.add_argument("--fixed-wbc", action="store_true", help="record a zero-action fixed-WBC neutral trace")
@@ -171,7 +185,11 @@ def main() -> None:
     info, trace = run_episode(
         args.controller, menagerie=args.menagerie, fan_ye_model=args.fan_ye_model,
         fan_ye_summary=args.fan_ye_summary, fixture_index=resolved_index,
-        rod_enabled=not args.no_rod, seed=args.seed, fixed_wbc=args.fixed_wbc,
+        rod_enabled=not args.no_rod, seed=args.seed, fixed_wbc=args.fixed_wbc, robot=args.robot,
+        rod_hold_extension_s=args.rod_hold_extension_s,
+        joint_velocity_noise_std=args.joint_velocity_noise_std,
+        torque_limit_scale=args.torque_limit_scale,
+        execution_mode=args.execution_mode, residual_torque_scale=args.residual_torque_scale,
         enable_rejoin_fade=args.enable_rejoin_fade, rejoin_fade_maximum=args.rejoin_fade_maximum,
         override_fixture=override_fixture, yield_smoothing_alpha=args.yield_smoothing_alpha,
         mirror_gate=args.mirror_gate, mirror_gate_channels=args.mirror_gate_channels,

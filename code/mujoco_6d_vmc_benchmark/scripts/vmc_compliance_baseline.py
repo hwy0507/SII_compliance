@@ -303,6 +303,10 @@ def load_controller(path: Path):
             family = str(archive["controller_family"][0])
             if family == VMCComplianceAdapter.family:
                 return VMCComplianceAdapter(SpringCarriageVMC.from_npz(path))
+            if family == "vmc_torque_baseline":
+                from vmc_torque_baseline import VMCTorqueBaseline
+
+                return VMCTorqueBaseline.from_npz(path)
             if family == "mlp_baseline":
                 from mlp_compliance_baseline import MLPComplianceController
 

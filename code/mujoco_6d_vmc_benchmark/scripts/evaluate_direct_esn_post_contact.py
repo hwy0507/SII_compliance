@@ -97,6 +97,11 @@ def main() -> None:
     parser.add_argument("--controller", type=Path, required=True)
     parser.add_argument("--menagerie", type=Path, required=True)
     parser.add_argument("--fixture-index", type=int, default=0)
+    parser.add_argument("--robot", type=str, default="panda", choices=("panda", "fr3"))
+    parser.add_argument("--rod-hold-extension-s", type=float, default=0.0)
+    parser.add_argument("--joint-velocity-noise-std", type=float, default=0.0)
+    parser.add_argument("--execution-mode", type=str, default="twist", choices=("twist", "torque_residual"))
+    parser.add_argument("--residual-torque-scale", type=float, default=0.25)
     parser.add_argument("--seed", type=int, default=20260817)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--contact-threshold-n", type=float, default=0.20)
@@ -126,7 +131,7 @@ def main() -> None:
     )
     override_fixture = None if len(fixtures) > 1 else fixtures[0]
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    common = dict(menagerie=args.menagerie, fan_ye_model=None, fan_ye_summary=None, fixture_index=resolved_index, rod_enabled=True, seed=args.seed)
+    common = dict(menagerie=args.menagerie, fan_ye_model=None, fan_ye_summary=None, fixture_index=resolved_index, rod_enabled=True, seed=args.seed, robot=args.robot, rod_hold_extension_s=args.rod_hold_extension_s, joint_velocity_noise_std=args.joint_velocity_noise_std, execution_mode=args.execution_mode, residual_torque_scale=args.residual_torque_scale)
     fixed_info, fixed_trace = run_episode(None, **common, fixed_wbc=True, override_fixture=override_fixture)
     esn_info, esn_trace = run_episode(
         args.controller, **common, fixed_wbc=False,
