@@ -659,9 +659,73 @@ def stage_eval():
               + f" {score:7.2f}")
 
 
+def stage_report():
+    """Validation seed screening + frontier plot + sorted podium table."""
+    import collections
+    from mlp_compliance_baseline import MLPComplianceController
+
+    def composite_of(m):
+        return m["force_integral"] / 100.0 + m["err_final_mm"] / 100.0 + 20.0 * (0.0 if m["crossed"] else 1.0)
+
+    # validation: heldout board, 2 rollouts with mild noise; never used in fitting
+    def val_score(loader):
+        scores = []
+        for seed in (7, 1234):
+            env = make_env(BOARDS["heldout"], seed=seed, noise=0.005)
+            m = rollout(env, seed, loader())
+            env.close()
+            scores.append(composite_of(m))
+        return float(np.mean(scores))
+
+    esn_candidates = [(f"esn_e{s}", OUT / f"esn_e{s}.npz") for s in (11, 29, 97, 123, 555)]
+    mlp_candidates = [(f"mlp_s{t}", OUT / f"mlp_s{t}.npz") for t in (0, 1, 2, 3, 4)]
+    best_esn = min(esn_candidates, key=lambda c: val_score(
+        lambda c=c: UngatedESN(DirectESNController.from_npz(c[1]))))
+    best_mlp = min(mlp_candidates, key=lambda c: val_score(
+        lambda c=c: UngatedMLP(MLPComplianceController.from_npz(c[1]))))
+    print(f"  val-selected ESN: {best_esn[0]} | MLP: {best_mlp[0]}")
+
+    rows = json.load(open(OUT / "eval.json"))
+    # add val-selected rows from existing eval data
+    by = collections.defaultdict(list)
+    for r in rows:
+        by[r["method"]].append(r)
+    podium = []
+    for fam, rs in by.items():
+        fint = np.mean([r["force_integral"] for r in rs])
+        errf = np.mean([r["err_final_mm"] for r in rs])
+        cross = np.mean([1.0 if r["crossed"] else 0.0 for r in rs])
+        podium.append((fint / 100 + errf / 100 + 20 * (1 - cross), fam, fint, errf, cross))
+    podium.sort()
+    print("podium (score lower = better):")
+    for score, fam, fint, errf, cross in podium:
+        print(f"  {fam:12s} score={score:6.2f} Fint={fint:6.1f} errF={errf:6.1f} cross={cross*100:3.0f}%")
+    json.dump(dict(best_esn=best_esn[0], best_mlp=best_mlp[0],
+                   podium=[(f, round(s, 2)) for s, f, *_ in podium]),
+              open(OUT / "report.json", "w"), indent=1)
+
+    # frontier plot: force vs fidelity, marker = crossing
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots(figsize=(7, 5))
+    for score, fam, fint, errf, cross in podium:
+        color = "tab:red" if "vmc" in fam else ("tab:blue" if "esn" in fam else
+                ("tab:orange" if "mlp" in fam else ("gray" if fam in ("fw",) else "green")))
+        ax.scatter(fint, errf, s=80 + 400 * cross, c=color, alpha=0.75, edgecolors="k", linewidths=0.5)
+        ax.annotate(f"{fam}\n{cross*100:.0f}%", (fint, errf), fontsize=7, ha="center", va="bottom")
+    ax.set_xlabel("contact force integral (Ns, lower = safer)")
+    ax.set_ylabel("final path error (mm, lower = more faithful)")
+    ax.set_title("Extraction scenario frontier (marker size = crossing rate)")
+    ax.grid(alpha=0.3)
+    fig.tight_layout()
+    fig.savefig(OUT / "frontier.png", dpi=160)
+    print(f"  frontier.png + report.json saved; best ESN checkpoint: {best_esn[0]}")
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--stage", default="all", choices=("probe", "data", "train", "dagger", "dagger2", "eval", "all"))
+    parser.add_argument("--stage", default="all", choices=("probe", "data", "train", "dagger", "dagger2", "eval", "report", "all"))
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
@@ -677,6 +741,8 @@ def main():
         print("== dagger =="); stage_dagger()
     if args.stage in ("eval", "all"):
         print("== eval =="); stage_eval()
+    if args.stage in ("report", "all"):
+        print("== report =="); stage_report()
     print(f"done {time.time()-t0:.0f}s")
 
 

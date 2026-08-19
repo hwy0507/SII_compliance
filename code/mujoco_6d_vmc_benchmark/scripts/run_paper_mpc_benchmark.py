@@ -187,7 +187,8 @@ def main() -> None:
     for i, fx in enumerate(base_fixtures):
         scenarios[f"rod_fx{i}"] = ("rod", fx, False)
         scenarios[f"ball_fx{i}"] = ("ball", replace(fx, impactor_type="ball"), False)
-    for i, fx in enumerate(base_fixtures[:1] + base_fixtures[2:3]):
+    for i in (0, 2):
+        fx = base_fixtures[i]
         scenarios[f"board_fx{i}"] = (
             "board", replace(fx, rod_start_time_s=99.0), True)
 

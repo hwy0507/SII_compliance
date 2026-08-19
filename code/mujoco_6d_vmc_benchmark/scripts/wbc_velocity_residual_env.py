@@ -323,8 +323,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 def board_reference(model_, data_, hand_id_):
                     ref = PickLiftCarryReference(model_, data_, hand_id_)
                     knots = ref.q_knots.copy()
-                    knots[3][1] += 0.22   # lifted: lateral arc on joint 2
-                    knots[4][1] += 0.22   # carry: keep the offset
+                    knots[3][1] += 0.34   # lifted: lateral arc on joint 2
+                    knots[4][1] += 0.34   # carry: keep the offset
                     ref.q_knots = knots
                     return ref
 
