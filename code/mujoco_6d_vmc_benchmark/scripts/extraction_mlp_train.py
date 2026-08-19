@@ -13,6 +13,7 @@ import numpy as np
 
 OUT = Path("/home/arm1/vmc_mujoco_runtime/outputs/extraction_esn")
 WASHOUT = 10
+ENGAGED_OVERSAMPLE = 4
 
 
 def main() -> None:
@@ -31,25 +32,29 @@ def main() -> None:
     mean, std = xs.mean(0), xs.std(0) + 1e-8
     xn = torch.tensor((xs - mean) / std, dtype=torch.float32, device=device)
     yn = torch.tensor(ys, dtype=torch.float32, device=device)
-    torch.manual_seed(0)
-    net = torch.nn.Sequential(torch.nn.Linear(32, 64), torch.nn.Tanh(),
-                              torch.nn.Linear(64, 7), torch.nn.Tanh()).to(device)
-    opt = torch.optim.Adam(net.parameters(), lr=1e-3)
-    for epoch in range(6000):
-        idx = torch.randint(0, len(xn), (4096,), device=device)
-        loss = torch.nn.functional.mse_loss(net(xn[idx]), yn[idx])
-        opt.zero_grad(); loss.backward(); opt.step()
-    with torch.no_grad():
-        print(f"mlp final MSE={torch.nn.functional.mse_loss(net(xn), yn).item():.5f}", flush=True)
-    w1, b1, w2, b2 = [p.detach().cpu().numpy().copy() for p in net.parameters()]
     import json
     from dataclasses import asdict
     from mlp_compliance_baseline import MLPBaselineConfig
-    np.savez_compressed(
-        OUT / "mlp.npz", controller_family=np.asarray(["mlp_baseline"]),
-        config_json=np.asarray([json.dumps(asdict(MLPBaselineConfig()))]),
-        input_mean=mean, input_std=std, w1=w1, b1=b1, w2=w2, b2=b2)
-    print("mlp saved", flush=True)
+    for tseed in (0, 1, 2, 3, 4):
+        torch.manual_seed(tseed)
+        net = torch.nn.Sequential(torch.nn.Linear(32, 64), torch.nn.Tanh(),
+                                  torch.nn.Linear(64, 7), torch.nn.Tanh()).to(device)
+        opt = torch.optim.Adam(net.parameters(), lr=1e-3)
+        engaged = torch.tensor(np.any(np.abs(ys) > 0.05, axis=1), dtype=torch.float32, device=device)
+        weights = 1.0 + (ENGAGED_OVERSAMPLE - 1.0) * engaged
+        for epoch in range(6000):
+            idx = torch.multinomial(weights, 4096, replacement=True)
+            loss = torch.nn.functional.mse_loss(net(xn[idx]), yn[idx])
+            opt.zero_grad(); loss.backward(); opt.step()
+        with torch.no_grad():
+            print(f"mlp seed={tseed} MSE={torch.nn.functional.mse_loss(net(xn), yn).item():.5f}", flush=True)
+        w1, b1, w2, b2 = [q.detach().cpu().numpy().copy() for q in net.parameters()]
+        np.savez_compressed(
+            OUT / f"mlp_s{tseed}.npz", controller_family=np.asarray(["mlp_baseline"]),
+            config_json=np.asarray([json.dumps(asdict(MLPBaselineConfig()))]),
+            input_mean=mean, input_std=std, w1=w1, b1=b1, w2=w2, b2=b2)
+
+    print("mlp saved (5 seeds)", flush=True)
 
 
 if __name__ == "__main__":
