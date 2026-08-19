@@ -67,6 +67,10 @@ def record(menagerie: Path, fixture, out: Path, *, k: float, budget: float,
         buf["bounded_action"].append(act.bounded_filter_action)
         _, _, done, _, info = env.step(act.bounded_filter_action)
     arrays = {key: np.asarray(value) for key, value in buf.items()}
+    # Budget provenance: downstream distillation/deployment must match this
+    # value (a mismatched budget silently rescales every student action).
+    arrays["residual_budget_fraction"] = np.asarray(float(budget))
+    arrays["teacher_stiffness"] = np.asarray(float(k))
     np.savez_compressed(out, **arrays)
     env.close()
     return dict(path=str(out), steps=len(arrays["joint_position"]),

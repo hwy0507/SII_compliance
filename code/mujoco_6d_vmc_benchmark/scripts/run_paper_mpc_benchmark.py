@@ -88,9 +88,17 @@ def run_rollout(
     impactor_kind: str,
     controller,
     lift_board: bool = False,
-    residual_scale: float = 0.03,
+    residual_scale: float | None = None,
     verbose_name: str = "",
 ) -> dict:
+    # The residual budget has NO silent default: a student distilled from
+    # traces recorded at one budget and deployed at another silently scales
+    # every action by the ratio (this exact mismatch cost the first ball
+    # sweep: teacher 5%, deploy 3%, all actions shrunk to 0.6x).  Callers
+    # must state the budget explicitly; the trace-recorded budget is stored
+    # in the expert npz field ``residual_budget_fraction``.
+    if residual_scale is None:
+        raise ValueError("residual_scale must be given explicitly (match the teacher-trace budget)")
     kwargs = dict(
         menagerie=menagerie, fan_ye_model_npz=None, fan_ye_train_summary_json=None,
         observation_mode="direct_esn", rod_enabled=True, seed=SEED, robot="fr3",
@@ -180,6 +188,10 @@ def main() -> None:
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--phase", type=str, default="all",
                         choices=("baseline", "students", "vmc", "all"))
+    parser.add_argument("--baseline-budget", type=float, default=0.03,
+                        help="residual budget for the no-compliance baseline rollouts")
+    parser.add_argument("--student-budget", type=float, required=False, default=None,
+                        help="residual budget the students were distilled at (must match the teacher traces; no silent default)")
     args = parser.parse_args()
 
     base_fixtures = default_velocity_residual_fixtures()
@@ -197,7 +209,8 @@ def main() -> None:
     if args.phase in ("baseline", "all"):
         for name, (kind, fx, lift) in scenarios.items():
             r = run_rollout(args.menagerie, fx, impactor_kind=kind, controller=None,
-                            lift_board=lift, verbose_name=f"none/{name}")
+                            lift_board=lift, residual_scale=args.baseline_budget,
+                            verbose_name=f"none/{name}")
             results.append(r)
             print(f"[{time.time()-t0:6.1f}s] {r['name']}: success={r['task_success']} "
                   f"peakT={r['peak_torque_nm']:.1f} force={r['obstacle_force_n']:.1f} "
@@ -206,6 +219,10 @@ def main() -> None:
         print("baseline phase done", flush=True)
 
     if args.phase in ("students", "all"):
+        if (args.esn is not None or args.mlp is not None) and args.student_budget is None:
+            raise SystemExit("--student-budget is required when evaluating students "
+                             "(it must match the teacher-trace budget; the 5%%-train/3%%-deploy "
+                             "mismatch silently scaled actions by 0.6 once already)")
         for tag, path in (("esn", args.esn), ("mlp", args.mlp)):
             if path is None:
                 continue
@@ -213,6 +230,7 @@ def main() -> None:
             for name, (kind, fx, lift) in scenarios.items():
                 r = run_rollout(args.menagerie, fx, impactor_kind=kind,
                                 controller=controller, lift_board=lift,
+                                residual_scale=args.student_budget,
                                 verbose_name=f"{tag}/{name}")
                 results.append(r)
                 print(f"[{time.time()-t0:6.1f}s] {r['name']}: success={r['task_success']} "
