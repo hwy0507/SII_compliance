@@ -1,11 +1,8 @@
 # WBC / VMC / MLP / ESN 机械臂柔顺控制——完整技术文档
 
-> 面向课题组同学的技术交接文档。覆盖：问题定义、四个控制器的数学建模、算法设计、
-> 核心代码、训练管线、评测协议与全部实验结果。所有公式与数字均可溯源到仓库代码
-> （`code/mujoco_6d_vmc_benchmark/scripts/`，行号以 2026-08 版本为准）。
+> 面向课题组同学的技术交接文档。覆盖：问题定义、四个控制器的数学建模、算法设计、核心代码、数据管线、评测协议与全部实验结果。所有公式与数字均可溯源到仓库代码（`code/mujoco_6d_vmc_benchmark/scripts/`，行号以 2026-08 版本为准）。
 >
-> 配套文档：`IMPLEMENTATION_PROOF.md`（逐行验证版）、`ALGORITHM_DETAILS.md`（精简版）、
-> `FINAL_REPORT.md`（汇报版）。本文是最完整的一份。
+> 配套文档：`IMPLEMENTATION_PROOF.md`（逐行验证版）、`ALGORITHM_DETAILS.md`（精简版）、`FINAL_REPORT.md`（汇报版）。本文是最完整的一份。
 
 ---
 
@@ -13,7 +10,7 @@
 
 1. [问题定义与总体架构](#1-问题定义与总体架构)
 2. [物理环境建模](#2-物理环境建模)
-3. [WBC：全身控制器与速度伺服](#3-wbc全身控制器与速度伺服)
+3. [Fixed WBC：规划器、跟踪器与执行器](#3-fixed-wbc规划器跟踪器与执行器)
 4. [VMC：虚拟模型控制基线](#4-vmc虚拟模型控制基线)
 5. [MLP：无记忆网络基线](#5-mlp无记忆网络基线)
 6. [ESN：提出的方法](#6-esn提出的方法)
@@ -29,9 +26,7 @@
 
 ### 1.1 任务
 
-Franka Research 3（FR3）机械臂在 MuJoCo 中执行**桌面抓取-举起-携带**任务。任务进行中，
-一个滑轨棒式撞击器从侧面撞击机械臂末端。目标：**被撞击后尽快回到 WBC 规划轨迹、
-平滑恢复、不超力矩限位、最终仍完成抓取**。
+Franka Research 3（FR3）机械臂在 MuJoCo 中执行**桌面抓取-举起-携带**任务。任务进行中，一个滑轨棒式撞击器从侧面撞击机械臂末端。目标：**被撞击后尽快回到 WBC 规划轨迹、平滑恢复、不超力矩限位、最终仍完成抓取**。
 
 ### 1.2 核心架构：WBC 出速度，柔顺策略出力矩残差
 
@@ -59,56 +54,31 @@ Franka Research 3（FR3）机械臂在 MuJoCo 中执行**桌面抓取-举起-携
 
 **三个关键语义**（组会反复问到的）：
 
-1. **WBC 输出的是速度**（关节速度指令 `q̇_cmd`），速度伺服把速度变成力矩。这一层
-   是"正常控制器"，拥有任务、重力补偿、速度跟踪。
-2. **柔顺策略输出的是力矩残差**——直接加在伺服力矩之上的小修正项，7 维（每个关节
-   一维），不经过任何中间映射。
-3. **"3%/5% 预算"是残差的上限**：`Δτ_budget = 3% × τ_hw`。FR3 硬件限位
-   τ_hw = [87,87,87,87,12,12,12] N·m，所以 3% 档 = 大关节 ±2.61 N·m、腕关节
-   ±0.36 N·m。**不是"总力矩的 3% 来自策略"**——无撞击时策略输出 ≈0.064 N·m
-   （≈0），撞击窗口才打满上限。设置上限的原因是安全：学习出的策略无稳定性保证，
-   有了硬 clip，无论网络输出什么垃圾，机械臂受到的额外扰动都有解析上界，WBC
-   闭环必然兜得住。
+1. **WBC 输出的是速度**（关节速度指令 `q̇_cmd`），速度伺服把速度变成力矩。这一层是"正常控制器"，拥有任务、重力补偿、速度跟踪。
+2. **柔顺策略输出的是力矩残差**——直接加在伺服力矩之上的小修正项，7 维（每个关节一维），不经过任何中间映射。
+3. **"3%/5% 预算"是残差的上限**：`Δτ_budget = 3% × τ_hw`。FR3 硬件限位 τ_hw = [87,87,87,87,12,12,12] N·m，所以 3% 档 = 大关节 ±2.61 N·m、腕关节 ±0.36 N·m。**不是"总力矩的 3% 来自策略"**——无撞击时策略输出 ≈0.064 N·m（≈0），撞击窗口才打满上限。设置上限的原因是安全：学习出的策略无稳定性保证，有了硬 clip，无论网络输出什么垃圾，机械臂受到的额外扰动都有解析上界，WBC 闭环必然兜得住。
 
-**公平性结构保证**：VMC/MLP/ESN 共享同一 WBC 实例、同一伺服、同一安全栈、同一
-观测来源、同一动作接口、同一预算。唯一区别是 7 维动作 `a` 怎么算出来。
+**公平性结构保证**：VMC/MLP/ESN 共享同一 WBC 实例、同一伺服、同一安全栈、同一观测来源、同一动作接口、同一预算。唯一区别是 7 维动作 `a` 怎么算出来。
 
 ### 1.3 控制周期
 
-- MuJoCo 物理步长 4 ms；策略周期 40 ms（`RL_DT=0.04`，每步内部 10 个物理子步）。
-- 所有方法都在 40 ms 周期上出动作。
+MuJoCo 物理步长 4 ms；策略周期 40 ms（`RL_DT=0.04`，每步内部 10 个物理子步）。所有方法都在 40 ms 周期上出动作。
 
 ---
 
 ## 2. 物理环境建模
 
-**文件**：`wbc_velocity_residual_env.py`（874 行）、`fr3_scene.py`、
-`run_grasp_impact_benchmark.py`。
+**文件**：`wbc_velocity_residual_env.py`（874 行）、`fr3_scene.py`、`run_grasp_impact_benchmark.py`。
 
 ### 2.1 场景
 
-- **机器人**：FR3（Menagerie 官方 `fr3.xml`）+ Panda Hand 移植到 `attachment_site`
-  （`fr3_scene.py::build_fr3_hand_scene_xml`）。7 个 `motor` 力矩执行器 + 夹爪
-  `position` 执行器 + 棒子 `position` 执行器。
-- **桌面方块**：5 cm 立方体，0.08 kg，free body（靠接触/摩擦保持，无 weld）。
-- **撞击器**：`rail_impactor`，沿 y 轴滑轨，按 press–hold–retract 剖面推进，可选
-  多周期（`rod_cycles`）与保压爬行（crawl：撞上后继续缓慢推进维持挤压，
-  `env.py:345-354`）。
+- **机器人**：FR3（Menagerie 官方 `fr3.xml`）+ Franka Hand（官方夹爪，模型资产在 panda 包中，挂接变换 (0,0,0.107) 平移 + 绕 z 轴 −45°，与真机法兰一致，`fr3_scene.py:141-143`）。7 个 `motor` 力矩执行器 + 夹爪 `position` 执行器 + 棒子 `position` 执行器。
+- **桌面方块**：5 cm 立方体，0.08 kg，free body（靠接触/摩擦保持，无 weld），初始中心 z=0.445 m，桌面 z=0.400 m，稳定后落于 0.425 m。
+- **撞击器**：`rail_impactor`，沿 y 轴滑轨，按 press–hold–retract 剖面推进，可选多周期（`rod_cycles`）与保压爬行（crawl：撞上后继续缓慢推进维持挤压，`env.py:345-354`）。
 
-### 2.2 参考轨迹（时间参数化）
+### 2.2 参考轨迹（时间参数化，详见 §3.1）
 
-```python
-# run_grasp_impact_benchmark.py:61-109
-self.times    = [0.0, 1.70, 2.70, LIFT_COMPLETE, 6.20]      # 结点时刻
-self.q_knots  = [home, pregrasp, pregrasp, lifted, carry]    # 关节结点
-# 段内 smoothstep 插值；正运动学采样出 (p*, R*, ξ*) 三元组
-def gripper_target(t):     # t ≤ 2.40 开；2.40→2.95 平滑闭合
-    ...
-```
-
-**两个"时间触发"特性决定了任务难度**（见 §10 FAQ）：
-- 夹爪在 **t=2.40 s 固定时刻**开始闭合，与手的实际位置无关；
-- 参考目标由 HOME 位形的 FK 预计算，**不感知方块被撞后的位移**。
+参考目标由 HOME 位形的 FK 预计算，**不感知方块被撞后的位移**；夹爪在固定时刻 t=2.40 s 开始 0.55 s 内闭合——**时间触发，与手的实际位置无关**。这两个"开环"特性决定了任务难度（见 §10.1）。
 
 ### 2.3 四个标准考题（fixtures）
 
@@ -133,66 +103,106 @@ success = 有限状态 ∧ lifted ∧ held ∧ 从未触发硬件力矩限位
 
 ---
 
-## 3. WBC：全身控制器与速度伺服
+## 3. Fixed WBC：规划器、跟踪器与执行器
 
-**文件**：`fixed_panda_wbc.py`（121 行）、`wbc_velocity_residual_core.py`。
+Fixed WBC 不是一个控制器，而是**三层流水线**：规划器（生成开环关节样条）→ 跟踪器（任务优先级 resolved-rate WBC）→ 执行器（速度伺服）。全部固定增益、无学习、无感知反馈回路（规划层），三段合起来构成"不做柔顺"的基线。
 
-### 3.1 数学建模
+```
+[规划器] PickLiftCarryReference        ── q*(t), q̇*(t) (关节样条)
+     └─ FK 采样 ──▶ (p*(t), R*(t), ξ*(t)) + 夹爪开合时刻表
+[跟踪器] FixedBasePandaWBC             ── q̇_cmd ∈ R⁷ (每步即时解算)
+[执行器] safe_velocity_tracking_torque ── τ_servo ∈ R⁷ (重力补偿+速度反馈)
+```
 
-WBC 每步接收 SE(3) 目标与机械臂本体状态，生成有界的关节速度指令：
+### 3.1 规划器：PickLiftCarryReference（`run_grasp_impact_benchmark.py:61-109`）
 
-**第一步：任务空间期望速度**（含位置/姿态反馈）
+**输入**：机械臂模型 + HOME 关节位形。**输出**：任意时刻 t 的参考关节位置 q*(t)、关节速度 q̇*(t)，以及经 FK 得到的末端 SE(3) 参考 (p*, R*, ξ*) 和夹爪指令。
 
-$$\xi_{des} = \xi^* + \begin{bmatrix} 3.0\,e_p \\ 2.5\,e_R \end{bmatrix},\qquad
-\|\xi_{des}^{lin}\| \le 0.35\ \mathrm{m/s},\quad \|\xi_{des}^{ang}\| \le 1.20\ \mathrm{rad/s}$$
+**关节结点表**（5 个关键位形 × 5 个时刻）：
 
-**第二步：阻尼伪逆 + 零空间姿态控制**（6-D 任务 → 7 关节冗余分解）
+| 段 | 时间区间 (s) | 起止位形 | 关节变化 | 语义 |
+|---|---|---|---|---|
+| 1 | [0.00, 1.70] | home → pregrasp | j4: 0 → −1.80 | 接近段：肘关节旋转使指尖下降跨住方块（棒击发生在 t≈1.06–1.10，本段中段） |
+| 2 | [1.70, 2.70] | pregrasp → pregrasp | 无（保持） | 定住等抓取：夹爪在 t=2.40 开始闭合 |
+| 3 | [2.70, 4.10] | pregrasp → lifted | j4: −1.80 → −1.42 | 举起段 |
+| 4 | [4.10, 6.20] | lifted → carry | j0: →0.18, j1: →−0.10 | 携带段 |
 
-$$q̇_{cmd} = \underbrace{J^\top\!\big(JJ^\top + 0.035^2 I\big)^{-1}\xi_{des}}_{\text{任务项}}
-+ \underbrace{\big(I - J^\dagger J\big)\,0.20\,(q_{home}-q)}_{\text{零空间姿态项}}$$
+（home 为场景 keyframe 的 7 关节位形；pregrasp/lifted/carry 均由 home 只改动列出的关节得到——手工设计保证可达且无自碰。）
 
-再 clip 到 ±1.25 rad/s。
+**段内插值：三次 smoothstep**（C¹ 连续、段端点速度为零——机械臂在每个结点处停稳，抓取发生在静止状态，这是抓取可靠性的设计保证）：
 
-**第三步：速度伺服（速度→力矩）**
+$$\varphi = \frac{t - t_k}{t_{k+1} - t_k},\qquad s(\varphi) = 3\varphi^2 - 2\varphi^3,\qquad s'(\varphi) = 6\varphi - 6\varphi^2$$
 
-$$\tau_{servo} = \tau_{bias} + s\odot K_v (q̇_{cmd} - q̇),\qquad
-K_v = [42, 42, 36, 32, 9, 8, 6]\ \mathrm{N\!m/(rad/s)}$$
+$$q^*(t) = q_k + s(\varphi)\,\Delta q_k,\qquad \dot q^*(t) = s'(\varphi)\,\Delta q_k / (t_{k+1}-t_k)$$
 
-τ_bias 是 MuJoCo 的 `qfrc_bias`（重力+科氏）——**重力补偿由伺服承担**；s 是逐关节
-盒投影系数（保证不超硬件限位），随后力矩变化率 slew 限幅（大关节 700、腕 160 N·m/s）。
+**SE(3) 参考的获取**：q*, q̇* 写入一块影子 MjData（`_work`，不触碰真实状态），`mj_forward` 后直接读末端的 `xpos / xmat` 与 body twist——得到 (p*, R*) 和解析前馈速度 ξ*。**不经过 IK**：参考永远运动学可行（它本来就是从关节空间生成的）。
 
-### 3.2 核心代码
+**夹爪时刻表**（静态函数，纯 t 的函数）：
 
 ```python
-# fixed_panda_wbc.py:96-113（节选）
+def gripper_target(t):        # 归一化到 fixture 的 grasp_time_s=2.40
+    if t <= GRASP_TIME: return 0.040          # 张开 4 cm
+    phase = smoothstep((t - GRASP_TIME) / 0.55)
+    return 0.040 * (1 - phase)                # 0.55 s 内平滑闭合到 0
+```
+
+**规划器的三个刻意的"开环"性质**（benchmark 设计，不是缺陷）：时间参数化（撞了不等待）、FK 预计算（不看方块实际位置）、无重规划（WBC 契约禁止柔顺层修改目标生成）。柔顺的价值因此被精确定义为"在截止时刻前回到开环计划的能力"。
+
+### 3.2 跟踪器：FixedBasePandaWBC（`fixed_panda_wbc.py:79-120`）
+
+每个 40 ms 步，WBC 接收 SE(3) 目标与本体状态，解算关节速度指令。它是一个**无状态、非积分**的瞬时 resolved-rate 控制器——唯一的"记忆"是机械臂本身的物理状态。
+
+**第一步：任务空间期望速度**（前馈 + 位置/姿态反馈，限幅）
+
+$$\xi_{des} = \xi^* + \begin{bmatrix} 3.0\,e_p \\ 2.5\,e_R \end{bmatrix},\qquad \|\xi_{des}^{lin}\| \le 0.35\ \mathrm{m/s},\quad \|\xi_{des}^{ang}\| \le 1.20\ \mathrm{rad/s}$$
+
+其中 e_p = p*−p 为位置误差、e_R = log(R* Rᵀ) 为姿态误差（SO(3) 对数映射）。反馈增益 3.0 (1/s) / 2.5 (1/s) 意味着理想（无饱和）下位置误差以时间常数 ≈0.33 s 指数收敛——实测有效时间常数 ~1.4 s，差值来自各级饱和（§10.1）。
+
+**第二步：阻尼最小范数逆 + 零空间姿态控制**（6-D 任务映射到 7 关节，处理冗余）
+
+$$q̇_{cmd} = \underbrace{J^\top\!\big(JJ^\top + 0.035^2 I_6\big)^{-1}\xi_{des}}_{\text{任务项（阻尼伪逆）}} + \underbrace{\big(I_7 - J^\dagger J\big)\,0.20\,(q_{home}-q)}_{\text{零空间姿态项}}$$
+
+- **阻尼伪逆**（DLS）：0.035 的阻尼在奇异位形附近抑制解的爆炸——代价是远离奇异时也有微小任务误差，换来数值鲁棒；
+- **零空间项**：7 关节对 6 维任务是 1 冗余，零空间投影把关节姿态确定性拉向 HOME（增益 0.20），消除自运动不确定性——同一输入永远得到同一 q̇_cmd；
+- 最后 clip 到 ±1.25 rad/s。
+
+**第三步：输出契约**。WBC 返回的 `task_twist_world` 是 **J·q̇_cmd**（限幅后的可达 twist），而非限幅前的期望——下游柔顺层拿到的是"实际会被执行的参考"，不是幻想值（`fixed_panda_wbc.py:114-115` 注释明示）。
+
+### 3.3 执行器：速度伺服（`wbc_velocity_residual_core.py:595-628`）
+
+$$\tau_{servo} = \tau_{bias} + s\odot K_v (q̇_{cmd} - q̇),\qquad K_v = [42, 42, 36, 32, 9, 8, 6]\ \mathrm{N\!m/(rad/s)}$$
+
+τ_bias 是 MuJoCo 的 `qfrc_bias`（重力+科氏）——**重力补偿由伺服承担**，柔顺策略不需要也不允许学习它。s 是逐关节盒投影系数（保证 |τ|≤硬件限位），随后力矩变化率 slew 限幅（大关节 700、腕关节 160 N·m/s）。关节速度指令还有 8 rad/s² 的加速度 slew（`safe_joint_velocity_command`）。
+
+### 3.4 核心代码
+
+```python
+# fixed_panda_wbc.py:96-113（跟踪器核心，节选）
 position_error = target_position - current_position
 orientation_error = so3_log(target_rotation @ current_rotation.T)
 desired_twist = feedforward.copy()
-desired_twist[:3] += feedback_scale * self.config.position_feedback_gain * position_error
-desired_twist[3:] += feedback_scale * self.config.orientation_feedback_gain * orientation_error
-desired_twist[:3] = _clip_norm(desired_twist[:3], self.config.max_linear_speed_mps)
-
+desired_twist[:3] += feedback_scale * 3.0 * position_error
+desired_twist[3:] += feedback_scale * 2.5 * orientation_error
+desired_twist[:3] = _clip_norm(desired_twist[:3], 0.35)     # 速度限幅
 jacobian = body_jacobian(self.model, data, self.hand_id)
 regularized_gram = jacobian @ jacobian.T + 0.035**2 * np.eye(6)
 damped_pinv = jacobian.T @ np.linalg.solve(regularized_gram, np.eye(6))
 qdot_task = damped_pinv @ desired_twist
 nullspace = np.eye(ARM_DOF) - damped_pinv @ jacobian
-qdot = qdot_task + nullspace @ (0.20 * (self.nominal_posture - data.qpos[:ARM_DOF]))
+qdot = np.clip(qdot_task + nullspace @ (0.20 * (self.nominal_posture - data.qpos[:ARM_DOF])),
+               -1.25, 1.25)
 ```
 
 ```python
-# wbc_velocity_residual_core.py:614-627（节选）
+# wbc_velocity_residual_core.py:614-627（伺服核心，节选）
 servo = np.asarray(config.velocity_gain_nm_per_radps) * (command - measured)
-# ... 逐关节盒投影到 torque_limits ...
-desired = bias + scale * servo
+desired = bias + scale * servo                       # scale = 盒投影系数
 maximum_delta = np.asarray(config.maximum_torque_rate_nmps) * dt
 applied = previous + np.clip(desired - previous, -maximum_delta, maximum_delta)
 return np.clip(applied, -limits, limits), scale
 ```
 
-**设计说明**：WBC 是"冻结"的——增益从不随实验重调，且契约禁止柔顺层修改其目标
-生成（文件头注释："never changes its target-generation policy"）。它是所有方法
-共用的、不可优化的基础设施。
+**设计说明**：WBC 是"冻结"的——增益从不随实验重调，且契约禁止柔顺层修改其目标生成（文件头注释："The downstream VMC/ESN layer may comply with that command but never changes its target-generation policy"）。它是所有方法共用的、不可优化的基础设施；"Fixed WBC"基线即三层流水线 + 柔顺策略恒输出零。
 
 ---
 
@@ -202,24 +212,19 @@ return np.clip(applied, -limits, limits), scale
 
 ### 4.1 建模思想
 
-VMC（Virtual Model Control，Zhang et al., IROS 2024 一脉）：想象末端挂了一套
-虚拟弹簧-阻尼机构，算出这套机构会施加多大的**末端力旋量（wrench）**，再经雅可比
-转置换算成关节力矩，让真实电机复现同样的效果。
+VMC（Virtual Model Control，Zhang et al., IROS 2024 一脉）：想象末端挂了一套虚拟弹簧-阻尼机构，算出这套机构会施加多大的**末端力旋量（wrench）**，再经雅可比转置换算成关节力矩，让真实电机复现同样的效果。
 
-**wrench = 6 维广义力 = 3 个平移力 + 3 个旋转力矩**。末端有 6 个自由度，所以柔顺
-机构也是 6 维的：3 根平移弹簧 + 3 根扭簧。
+**wrench = 6 维广义力 = 3 个平移力 + 3 个旋转力矩**。末端有 6 个自由度，所以柔顺机构也是 6 维的：3 根平移弹簧 + 3 根扭簧。
 
 ### 4.2 数学建模
 
-**虚拟小车**（carriage）：一个 6-DOF 虚拟刚体，状态为其相对 WBC 标称的偏移
-`offset, offset_rate ∈ R⁶`，以物理步长 4 ms 积分：
+**虚拟小车**（carriage）：一个 6-DOF 虚拟刚体，状态为其相对 WBC 标称的偏移 `offset, offset_rate ∈ R⁶`，以物理步长 4 ms 积分（每策略步 10 个子步）：
 
-$$M\,\ddot{d} = F_{drive} + F_{ee},\qquad M = \mathrm{diag}(1.25{\times}3,\ 0.08{\times}3)$$
+$$M\,\ddot{d} = F_{drive} + F_{ee},\qquad M = \mathrm{diag}(1.25^{\times3},\ 0.08^{\times3})$$
 
 **EE 耦合弹簧（饱和 tanh 型，6 通道）**——反应力作用在小车上：
 
-$$F_{ee} = \sigma\tanh\!\Big(\frac{K\,d_{sep}}{\sigma}\Big) + D\,\dot d_{sep},\qquad
-K = \kappa_{6D}\odot[220^{\times3}, 18^{\times3}],\ \sigma=[24^{\times3}, 3^{\times3}]$$
+$$F_{ee} = \sigma\tanh\!\Big(\frac{K\,d_{sep}}{\sigma}\Big) + D\,\dot d_{sep},\qquad K = \kappa_{6D}\odot[220^{\times3}, 18^{\times3}],\ \sigma=[24^{\times3}, 3^{\times3}]$$
 
 **驱动弹簧**（把小车拉回标称）：
 
@@ -229,15 +234,11 @@ $$F_{drive} = -K_d\,d - D_d\,\dot d,\qquad D = 2\zeta\sqrt{MK},\ \zeta = 1.05$$
 
 $$\tau_{res} = \mathrm{clip}\Big(J^\top\big[-\sigma\tanh(K\,d/\sigma)\big],\ \pm\Delta\tau_{budget}\Big)$$
 
-**关键调参结论**：刚度缩放 k=2.2、预算 3% 时稳定且有效（fx0–fx3 全部任务成功、
-无硬限位、无撞击残差 0.064 N·m）。
+**关键调参结论**：刚度缩放 k=2.2、预算 3% 时稳定且有效（fx0–fx3 全部任务成功、无硬限位、无撞击残差 0.064 N·m）。
 
 ### 4.3 为什么力矩通道里没有阻尼项（重要调试史）
 
-伺服本身是速度反馈（天然阻尼通道）。力矩层再叠加 D·ė 会形成双重阻尼 → 与伺服
-构成正反馈 → 发散（实测"一撞就飞"）。佐证：VMC 原作者开源的 cutting_simulation
-中，主柔顺弹簧的阻尼比 ζ = d/(2√(km)) = 2.0/(2√(130×5)) ≈ **0.04**——同样几乎
-零阻尼，耗散全部交给末端对地阻尼与关节阻尼。我们的稳定版与这一设计惯例一致。
+伺服本身是速度反馈（天然阻尼通道）。力矩层再叠加 D·ė 会形成双重阻尼 → 与伺服构成正反馈 → 发散（实测"一撞就飞"）。佐证：VMC 原作者开源的 cutting_simulation 中，主柔顺弹簧的阻尼比 ζ = d/(2√(km)) = 2.0/(2√(130×5)) ≈ **0.04**——同样几乎零阻尼，耗散全部交给末端对地阻尼与关节阻尼。我们的稳定版与这一设计惯例一致。
 
 ### 4.4 核心代码
 
@@ -270,11 +271,7 @@ self.offset = self.offset + PHYSICS_DT * self.offset_rate
 
 ### 4.5 与原作者实现的忠实度（诚实声明）
 
-复刻的是**建模语言**（tanh 饱和弹簧 + 虚拟小车 + Jᵀ 映射），有三处明确记录的适配：
-(i) 6-DOF 单小车代替原作者的平面两级链（mocap→5 kg 虚拟质量→软簧→刀）；
-(ii) 部署为 WBC 残差而原作者中 VM 是主控制器；(iii) 去掉力矩通道显式阻尼。
-差异全部写在 `vmc_compliance_baseline.py` 文件头
-"Differences ... (documented, not hidden)"。
+复刻的是**建模语言**（tanh 饱和弹簧 + 虚拟小车 + Jᵀ 映射），有三处明确记录的适配：(i) 6-DOF 单小车代替原作者的平面两级链（mocap→5 kg 虚拟质量→软簧→刀）；(ii) 部署为 WBC 残差而原作者中 VM 是主控制器；(iii) 去掉力矩通道显式阻尼。差异全部写在 `vmc_compliance_baseline.py` 文件头 "Differences ... (documented, not hidden)"。
 
 ---
 
@@ -284,12 +281,9 @@ self.offset = self.offset + PHYSICS_DT * self.offset_rate
 
 ### 5.1 建模与设计意图
 
-这是"为什么需要 ESN"的对照实验：一个普通两层 MLP，**行为克隆完全相同的教师轨迹、
-读完全相同的 32 维输入、过完全相同的激活门与物理限幅**。唯一架构差异：没有
-reservoir——逐帧独立映射，无状态。
+这是"为什么需要 ESN"的对照实验：一个普通两层 MLP，**行为克隆完全相同的教师轨迹、读完全相同的 32 维输入、过完全相同的激活门与物理限幅**。唯一架构差异：没有 reservoir——逐帧独立映射，无状态。
 
-$$a_t = \tanh\Big(W_2\tanh(W_1 \tilde x_t + b_1) + b_2\Big),\quad
-W_1\in\mathbb{R}^{64\times32},\ W_2\in\mathbb{R}^{7\times64}$$
+$$a_t = \tanh\Big(W_2\tanh(W_1 \tilde x_t + b_1) + b_2\Big),\quad W_1\in\mathbb{R}^{64\times32},\ W_2\in\mathbb{R}^{7\times64}$$
 
 ### 5.2 核心代码
 
@@ -308,11 +302,7 @@ bounded = bounded * activation
 
 ### 5.3 训练
 
-- 数据：与 ESN **同一批教师轨迹**（`train_mlp_baseline.py:14` 直接 import ESN 管线的
-  `_load_episode`，逐轨迹复用）；
-- 目标：MSE 行为克隆到教师动作；
-- 优化：Adam，400 epoch，lr 1e-3，weight decay 1e-4，torch.manual_seed 可复现；
-- 导出：w1/b1/w2/b2 + mean/std 存 npz，部署纯 numpy。
+数据：与 ESN **同一批教师轨迹**（`train_mlp_baseline.py:14` 直接 import ESN 管线的 `_load_episode`，逐轨迹复用）；目标：MSE 行为克隆到教师动作；优化：Adam，400 epoch，lr 1e-3，weight decay 1e-4，torch.manual_seed 可复现；导出：w1/b1/w2/b2 + mean/std 存 npz，部署纯 numpy。
 
 ---
 
@@ -322,13 +312,9 @@ bounded = bounded * activation
 
 ### 6.1 Echo State Network 原理（30 秒版）
 
-ESN 是一种储备池计算（reservoir computing）网络：**固定不变的随机循环网络**
-（reservoir）负责把输入历史编码成高维状态，**唯一可训练的部分是一个线性读出**。
-循环连接的谱半径 <1 保证回声态性质（状态由输入历史唯一决定、初值影响衰减），
-从而使线性读出的岭回归有唯一闭式解——**训练是一次线性方程组求解，不是迭代优化**。
+ESN 是一种储备池计算（reservoir computing）网络：**固定不变的随机循环网络**（reservoir）负责把输入历史编码成高维状态，**唯一可训练的部分是一个线性读出**。循环连接的谱半径 <1 保证回声态性质（状态由输入历史唯一决定、初值影响衰减），从而使线性读出的岭回归有唯一闭式解——**训练是一次线性方程组求解，不是迭代优化**。
 
-对控制任务的意义：撞击响应是时序问题（要看"过去几百毫秒发生了什么"），无记忆
-映射做不到；而 ESN 用极低的训练成本（闭式解）获得时序记忆。
+对控制任务的意义：撞击响应是时序问题（要看"过去几百毫秒发生了什么"），无记忆映射做不到；而 ESN 用极低的训练成本（闭式解）获得时序记忆。
 
 ### 6.2 Reservoir 动态（部署时的全部计算）
 
@@ -356,8 +342,7 @@ def _advance_encoded(self, encoded_input):
     return np.concatenate(([1.0], encoded, self._state))
 ```
 
-单步推理 = 一次 160×32 + 一次 160×160 + 一次 7×193 矩阵乘——**计算量与两层
-MLP 同级**，可实时。
+单步推理 = 一次 160×32 + 一次 160×160 + 一次 7×193 矩阵乘——**计算量与两层 MLP 同级**，可实时。
 
 ### 6.3 观测设计（32 维，纯本体感受）
 
@@ -373,20 +358,13 @@ $$x = \Big[\frac{q}{3},\ \frac{\dot q}{3},\ \frac{\xi^*}{[0.6, 2.0]},\ \frac{e_p
 | e_p | 6 | WBC 位姿误差（标称−实际） |
 | ė | 6 | WBC 速度误差 |
 
-**故意不含**（`TEACHER_ONLY_FIELDS`）：接触力、撞击法线、撞击时长、障碍位姿/速度、
-撞击器类型、释放时刻。即 ESN 不知道"有棒子"，只能从运动偏差推断扰动——与部署
-在真机上的信息集一致。归一化常数是物理量级（rad、m、m/s），无测试集统计。
+**故意不含**（`TEACHER_ONLY_FIELDS`）：接触力、撞击法线、撞击时长、障碍位姿/速度、撞击器类型、释放时刻。即 ESN 不知道"有棒子"，只能从运动偏差推断扰动——与部署在真机上的信息集一致。归一化常数是物理量级（rad、m、m/s），无测试集统计。
 
 ### 6.4 读出训练：岭回归 + 导数匹配
 
-$$(W_{out})^\top = \Big(\Phi^\top\Phi + \lambda I + \mu\,\Delta^\top S\,\Delta\Big)^{-1}
-\Big(\Phi^\top Y + \mu\,\Delta^\top S\,Y_\Delta\Big)$$
+$$(W_{out})^\top = \Big(\Phi^\top\Phi + \lambda I + \mu\,\Delta^\top S\,\Delta\Big)^{-1}\Big(\Phi^\top Y + \mu\,\Delta^\top S\,Y_\Delta\Big)$$
 
-- Φ：193×T 特征矩阵（washout 3 步丢弃）；Y：教师动作；
-- 第二项是**导数匹配正则**：Δ 为相邻帧特征差，Y_Δ 为**教师的**动作差——学生
-  "允许和教师一样快地动，但不许更快"。这把时间平滑性训练进读出本身，而不是
-  部署端加滤波（滤波会引入延迟）；
-- S 为逐通道权重，可给承担方向切换的通道（侧向/偏航）减 penalty。
+Φ：193×T 特征矩阵（washout 3 步丢弃）；Y：教师动作。第二项是**导数匹配正则**：Δ 为相邻帧特征差，Y_Δ 为**教师的**动作差——学生"允许和教师一样快地动，但不许更快"。这把时间平滑性训练进读出本身，而不是部署端加滤波（滤波会引入延迟）。S 为逐通道权重，可给承担方向切换的通道（侧向/偏航）减 penalty。
 
 ```python
 # direct_esn_compliance.py:307-336（节选）
@@ -402,14 +380,11 @@ self._readout = np.linalg.solve(gram, right).T     # 闭式解，一次线性求
 
 ## 7. 训练管线：数据采集、标签标定与蒸馏
 
-**文件**：`counterfactual_direct_esn_teacher.py`（训练侧专用）、
-`bootstrap_direct_esn_multifixture.py`、
-`outputs/.../torque_mode/expert_traces/`（数据本体）。
+**文件**：`counterfactual_direct_esn_teacher.py`（训练侧专用）、`bootstrap_direct_esn_multifixture.py`、`outputs/.../torque_mode/expert_traces/`（数据本体）。
 
 ### 7.1 数据从哪来：完全自生成，零外部数据
 
-MLP 和 ESN 需要的 (观测, 动作) 监督数据**全部在同一个 MuJoCo 环境里现场生成**：
-没有真人示教、没有真机录制、没有公开数据集。但"采集"只对了一半——
+MLP 和 ESN 需要的 (观测, 动作) 监督数据**全部在同一个 MuJoCo 环境里现场生成**：没有真人示教、没有真机录制、没有公开数据集。但"采集"只对了一半——
 
 | 数据组成部分 | 来源 | 真机上对应什么 |
 |---|---|---|
@@ -417,15 +392,11 @@ MLP 和 ESN 需要的 (观测, 动作) 监督数据**全部在同一个 MuJoCo �
 | **Y（动作标签）** | ❌ **不是采集的，是教师反事实合成的**（见 7.2） | 真机上不存在任何传感器能直接测出"此刻最优力矩"——这正是需要教师的原因 |
 | 特权诊断字段 | MuJoCo 的完美真值（接触力、法线等） | 真机需腕部 F/T 传感器；**只给教师选标签用，学生的 X 里没有** |
 
-补充：MuJoCo 读出的是完美无噪状态；部署稳健性实验中会给 q̇ 注入噪声
-（`joint_velocity_noise_std`）再测，把"仿真传感"推向"真机传感"。
+补充：MuJoCo 读出的是完美无噪状态；部署稳健性实验中会给 q̇ 注入噪声（`joint_velocity_noise_std`）再测，把"仿真传感"推向"真机传感"。
 
 ### 7.2 标签标定：反事实教师（privileged，只在训练时存在）
 
-问题的本质：柔顺残差的"正确动作"在环境里**不可直接观测**——只录 Fixed WBC
-的数据学到的是"恒零"，录 VMC 的数据只能学到 VMC。要学到更强的策略，标签必须
-来自更强的标注器。教师是**基于模型的短视野搜索**（文件头声明
-"deliberately *training-only*"），每个 40 ms 步执行：
+问题的本质：柔顺残差的"正确动作"在环境里**不可直接观测**——只录 Fixed WBC 的数据学到的是"恒零"，录 VMC 的数据只能学到 VMC。要学到更强的策略，标签必须来自更强的标注器。教师是**基于模型的短视野搜索**（文件头声明 "deliberately *training-only*"），每个 40 ms 步执行：
 
 ```
 克隆当前物理状态（mj_copyData，不污染真实环境）
@@ -441,12 +412,9 @@ MLP 和 ESN 需要的 (观测, 动作) 监督数据**全部在同一个 MuJoCo �
 
 $$\mathcal{J} = w_1\Big(\frac{F_{peak}}{10N}\Big)^2 + w_2\Big(\frac{J_{imp}}{0.1Ns}\Big)^2 + w_3\Big(\frac{e_{term}}{12mm}\Big)^2 + w_4\tau_{ratio}^2 + w_5\|a\|^2 + w_6\|\Delta a\|^2 + w_7 n_{secondary} + w_8\Big(\frac{\dot\tau_{peak}}{300}\Big)^2 + w_9\Big(\frac{v_{surge}}{0.05}\Big)^2$$
 
-（依次：接触力峰 / 接触冲量 / 终端跟踪误差 / 力矩幅值 / 动作幅值 / 动作变化 /
-次生碰撞计数 / 力矩变化率 / 前冲超速。次生碰撞 = 除棒子以外的任何接触，
-惩罚"撞到别的东西"的候选。）
+（依次：接触力峰 / 接触冲量 / 终端跟踪误差 / 力矩幅值 / 动作幅值 / 动作变化 / 次生碰撞计数 / 力矩变化率 / 前冲超速。次生碰撞 = 除棒子以外的任何接触，惩罚"撞到别的东西"的候选。）
 
-**中性硬约束**：无棒或预测接触力 < 0.2 N 时教师必须输出零动作——学生从数据里
-学到的默认行为是"没被撞就别动"。
+**中性硬约束**：无棒或预测接触力 < 0.2 N 时教师必须输出零动作——学生从数据里学到的默认行为是"没被撞就别动"。
 
 ```python
 # counterfactual_direct_esn_teacher.py:231-235（中性约束）
@@ -477,12 +445,9 @@ t=1.40–1.72   F=0（棒已撤）|a|≈0.30      ← 恢复段：持续助推�
 
 ### 7.4 数据集规模与覆盖（实测统计）
 
-- **73 条轨迹**：72 条棒击（t000–t071，撞击时刻/强度扫过一个分布，构成泛化
-  能力的来源）+ 1 条无棒中性；
-- 其中 **63 条含真实接触**；接触占每条轨迹 0–4.5% 的时间步；峰值力中位数
-  31.3 N、最大 73.5 N；
-- 每条约 152 个有效样本（washout 3 步丢弃），repeat=4 过采样 →
-  **44384 个训练样本**（与 checkpoint summary 记录一致）；
+- **73 条轨迹**：72 条棒击（t000–t071，撞击时刻/强度扫过一个分布，构成泛化能力的来源）+ 1 条无棒中性；
+- 其中 **63 条含真实接触**；接触占每条轨迹 0–4.5% 的时间步；峰值力中位数 31.3 N、最大 73.5 N；
+- 每条约 152 个有效样本（washout 3 步丢弃），repeat=4 过采样 → **44384 个训练样本**（与 checkpoint summary 记录一致）；
 - **fx3 fixture 从未出现在任何轨迹里**（held-out）。
 
 ### 7.5 蒸馏流程
@@ -501,33 +466,20 @@ MLP 用**同一批轨迹、同一个 `_load_episode` 加载器**训练（§5.3�
 
 ### 7.6 三个关键性质（组会可能追问）
 
-1. **无泄漏**：教师用特权信息（接触力、法线）**只用来选标签**；学生的 32 维输入
-   里没有任何特权量。信息集分离由代码契约强制（`TEACHER_ONLY_FIELDS` 与
-   `DirectESNController.act` 的输入签名）。
-2. **分布匹配**：轨迹在稳定 WBC 参考下闭环采集，状态分布就是学生部署时遇到的
-   状态分布（DAgger 思想——在策略会去的地方采数据）。
-3. **公平**：MLP 与 ESN 用完全相同的数据集；VMC 和 Fixed WBC 不需要数据
-   （解析控制器 / 零动作）。
+1. **无泄漏**：教师用特权信息（接触力、法线）**只用来选标签**；学生的 32 维输入里没有任何特权量。信息集分离由代码契约强制（`TEACHER_ONLY_FIELDS` 与 `DirectESNController.act` 的输入签名）。
+2. **分布匹配**：轨迹在稳定 WBC 参考下闭环采集，状态分布就是学生部署时遇到的状态分布（DAgger 思想——在策略会去的地方采数据）。
+3. **公平**：MLP 与 ESN 用完全相同的数据集；VMC 和 Fixed WBC 不需要数据（解析控制器 / 零动作）。
 
-**一句话总结**：X 是仿真传感（且限真机可得集合），Y 是教师反事实合成的最优
-动作——"输入可测、标签需造"的组合就是整个蒸馏管线的本质，等价于把一个
-MPC 式标注器蒸馏成静态网络，而这里的学生是 ESN。
+**一句话总结**：X 是仿真传感（且限真机可得集合），Y 是教师反事实合成的最优动作——"输入可测、标签需造"的组合就是整个蒸馏管线的本质，等价于把一个 MPC 式标注器蒸馏成静态网络，而这里的学生是 ESN。
 
 ---
 
 ## 8. 评测协议
 
-- **配对评测**：`evaluate_direct_esn_post_contact.py` 对每个 (checkpoint, fixture)
-  跑两条 rollout——Fixed WBC（零动作）与该 checkpoint——同 seed 同环境，报告
-  ΔRMSE = ESN恢复段RMSE − FW恢复段RMSE。恢复段定义为首次接触释放之后。
-- **种子协议**：ESN/MLP 各 32 个独立训练 seed；VMC 无训练随机性（单配置网格
-  调参记录在案）；FW 确定性。
-- **环境 seed**：20260817 固定。**确定性保证**：同 checkpoint 同 seed 重跑逐位
-  复现（ablation 的对照实验：6.280823669691147 == 6.280823669691147）。
-- **headline 指标**：
-  1. 轨迹跟踪精度（ΔRMSE，恢复段）；
-  2. 运动平稳性（峰值 jerk / recovery jerk）；
-  3. 电机力矩安全（峰值力矩、变化率、硬限位触发）。
+- **配对评测**：`evaluate_direct_esn_post_contact.py` 对每个 (checkpoint, fixture) 跑两条 rollout——Fixed WBC（零动作）与该 checkpoint——同 seed 同环境，报告 ΔRMSE = ESN恢复段RMSE − FW恢复段RMSE。恢复段定义为首次接触释放之后。
+- **种子协议**：ESN/MLP 各 32 个独立训练 seed；VMC 无训练随机性（单配置网格调参记录在案）；FW 确定性。
+- **环境 seed**：20260817 固定。**确定性保证**：同 checkpoint 同 seed 重跑逐位复现（ablation 的对照实验：6.280823669691147 == 6.280823669691147）。
+- **headline 指标**：轨迹跟踪精度（ΔRMSE，恢复段）；运动平稳性（峰值 jerk / recovery jerk）；电机力矩安全（峰值力矩、变化率、硬限位触发）。
 
 ---
 
@@ -546,15 +498,9 @@ MPC 式标注器蒸馏成静态网络，而这里的学生是 ESN。
 
 $$\boxed{\text{ESN}(-18.2) > \text{MLP}(-9.8) > \text{VMC}(-8.9) > \text{Fixed WBC}(0)}$$
 
-- ESN 比最强学习方法 MLP 好 85%，比手工 VMC 好 105%；
-- 种子稳定性：ESN ±0.55 mm vs MLP ±3.57 mm（稳定 6.5 倍）；
-- 力矩安全：全方法峰值 ≤42.5 N·m（硬件限位的 49%），硬限位从未触发。
+ESN 比最强学习方法 MLP 好 85%，比手工 VMC 好 105%；种子稳定性 ESN ±0.55 mm vs MLP ±3.57 mm（稳定 6.5 倍）；力矩安全全方法峰值 ≤42.5 N·m（硬件限位的 49%），硬限位从未触发。
 
-**泛化**（8 seeds）：
-- 撞击时间 0.995–1.150 s 扫描：ESN 均值 10.7 mm、9 个时间点波动 <0.5 mm
-  （FW 20.3 mm、±2.8）；
-- 撞击高度 0.535–0.548 m：ESN 10.7 vs FW 19.2 mm；
-- 冲程 0.140–0.180 m：ESN 8.9–14.6 mm。
+**泛化**（8 seeds）：撞击时间 0.995–1.150 s 扫描 ESN 均值 10.7 mm、9 个时间点波动 <0.5 mm（FW 20.3 mm、±2.8）；撞击高度 0.535–0.548 m：ESN 10.7 vs FW 19.2 mm；冲程 0.140–0.180 m：ESN 8.9–14.6 mm。
 
 ### 9.2 参数 ablation（8 seeds × 18 配置 × 4 fixtures，2026-08-19）
 
@@ -570,10 +516,7 @@ fx3 ΔRMSE（mean±std over 8 seeds）：
 | **160** | **−18.1±0.8** | | | | | | |
 | 250 | −17.6±0.3 | | | | | | |
 
-结论：(1) **τ 是唯一敏感参数**——τ=dt（无记忆）塌到 −14.8，直接验证"性能来自
-reservoir 记忆"假说；(2) N=160 在饱和拐点且方差最小；(3) ρ、ins 在回声态平台内
-不敏感；(4) 默认配置取拐点不取峰值（fx3 峰值在 ins=1.0，未采用）。18 配置全部
-fx3 成功率 100%。
+结论：(1) **τ 是唯一敏感参数**——τ=dt（无记忆）塌到 −14.8，直接验证"性能来自 reservoir 记忆"假说；(2) N=160 在饱和拐点且方差最小；(3) ρ、ins 在回声态平台内不敏感；(4) 默认配置取拐点不取峰值（fx3 峰值在 ins=1.0，未采用）。18 配置全部 fx3 成功率 100%。
 
 ### 9.3 双撞击场景与失败机制诊断（2026-08-19 服务器实测）
 
@@ -585,11 +528,7 @@ fx3 成功率 100%。
 | VMC | 36.4 mm | 10.8 mm | ✅ 抓起（z→0.661） |
 | ESN | 35.8 mm | **6.1 mm** | ✅ 抓起（z→0.674） |
 
-Fixed WBC 失败机制（详见 §10.1）：恢复回路在工作（误差 39.9→14.9 mm 持续衰减），
-但有效时间常数 ~1.4 s，t=2.40 关爪时还剩 20.1 mm——掌心偏 20 mm 超出手指跨
-5 cm 方块的容差，关空。
-
-动图：`fixed_wbc.gif` / `vmc_torque.gif` / `esn_torque.gif` / `mlp_torque.gif`。
+Fixed WBC 失败机制（详见 §10.1）：恢复回路在工作（误差 39.9→14.9 mm 持续衰减），但有效时间常数 ~1.4 s，t=2.40 关爪时还剩 20.1 mm——掌心偏 20 mm 超出手指跨 5 cm 方块的容差，关空。动图：`fixed_wbc.gif` / `vmc_torque.gif` / `esn_torque.gif` / `mlp_torque.gif`。
 
 ---
 
@@ -597,54 +536,23 @@ Fixed WBC 失败机制（详见 §10.1）：恢复回路在工作（误差 39.9�
 
 ### 10.1 "正常控制器都会自动回归，为什么 Fixed WBC 失败？"
 
-它会回归，但没在截止时间前回够。三个环节叠加：
-
-1. **撞击是持续挤压不是脉冲**：棒子撞后有 crawl 保压（到 ~1.4 s），期间伺服峰值
-   34.5 N·m 与棒子硬顶，物理上推不回来；
-2. **恢复受饱和限制**：反馈增益 3.0/s 的理想时间常数 0.33 s，但叠加速度上限
-   0.35 m/s、关节 1.25 rad/s、力矩 slew 700/160 N·m/s 后，实测有效时间常数
-   ~1.4 s；
-3. **抓取是时间触发**：`gripper_target(t)` 在 t=2.40 与手的位置无关；参考目标
-   也不感知方块位移。20 mm 残余误差 → 关空。
-
-柔顺的价值因此被精确定义为：**截止时刻的残余偏差**（ESN 6.1 vs FW 20.1 mm）。
+它会回归，但没在截止时间前回够。三个环节叠加：(1) **撞击是持续挤压不是脉冲**——棒子撞后有 crawl 保压（到 ~1.4 s），期间伺服峰值 34.5 N·m 与棒子硬顶，物理上推不回来；(2) **恢复受饱和限制**——反馈增益 3.0/s 的理想时间常数 0.33 s，但叠加速度上限 0.35 m/s、关节 1.25 rad/s、力矩 slew 700/160 N·m/s 后，实测有效时间常数 ~1.4 s；(3) **抓取是时间触发**——`gripper_target(t)` 在 t=2.40 与手的位置无关；参考目标也不感知方块位移。20 mm 残余误差 → 关空。柔顺的价值因此被精确定义为：**截止时刻的残余偏差**（ESN 6.1 vs FW 20.1 mm）。
 
 ### 10.2 "残差只有 2.6 N·m，为什么影响这么大？"
 
-分母选错了。正确比较对象：
-
-- **撞击角冲量**：接触冲量 3.1 N·s × 力臂 0.2–0.3 m ≈ 0.6–0.9 N·m·s；残差可用
-  冲量 2.6 N·m × 0.3 s ≈ 0.8 N·m·s——**同一量级**；
-- **伺服对慢推天然软**：τ = K_v(q̇_cmd−q̇) 抵抗速度不抵抗位置；棒子慢慢挤压时
-  q̇≈0，伺服只出几个 N·m——与 2.6 N·m 残差同级。误差能长到 40 mm 本身就是证明；
-- **作用在恢复段而非对抗段**：峰值误差只降 10%（39.9→35.8），抓取时刻误差降
-  3 倍（20.1→6.1）——残差做的是"挤压期少存偏移 + 释放后消振 + 恢复期定向助推"
-  （2.6 N·m / ~2 kg·m² ≈ 1 rad/s² 助推，对 1.25 rad/s 速度上限很可观）。
+分母选错了。正确比较对象：(1) **撞击角冲量**——接触冲量 3.1 N·s × 力臂 0.2–0.3 m ≈ 0.6–0.9 N·m·s；残差可用冲量 2.6 N·m × 0.3 s ≈ 0.8 N·m·s，同一量级；(2) **伺服对慢推天然软**——τ = K_v(q̇_cmd−q̇) 抵抗速度不抵抗位置，棒子慢慢挤压时 q̇≈0，伺服只出几个 N·m，与 2.6 N·m 残差同级（误差能长到 40 mm 本身就是证明）；(3) **作用在恢复段而非对抗段**——峰值误差只降 10%（39.9→35.8），抓取时刻误差降 3 倍（20.1→6.1）：残差做的是"挤压期少存偏移 + 释放后消振 + 恢复期定向助推"（2.6 N·m / ~2 kg·m² ≈ 1 rad/s² 助推，对 1.25 rad/s 速度上限很可观）。
 
 ### 10.3 "为什么不让 VMC/ESN 检测到撞击后全局接管？"
 
-四个关卡都过不去：(1) **检测**——无力传感器，proprioception 上撞击与抓取接触
-不可分，误报即灾难；阈值检测延迟 150–200 ms 吃掉关键窗口；(2) **切换瞬态**——
-bumpless transfer 问题，且重力补偿谁出？拼回基础通道就是现在的架构；(3) **任务
-知识**——ESN 的 32 维观测无时间无相位，接管期间无法替代 WBC 的时间参数化计划；
-(4) **安全上界**——满权限 + OOD 输出 = 真机甩臂。
-
-我们的架构是同一思想的**连续光滑版**：无撞击时输出 ≈0（0.064 N·m），撞击窗口
-连续滑到上限——"检测器"被学进网络（泛化实验证明跨时间/高度/速度稳定），无切换
-瞬态、无交还问题。
+四个关卡都过不去：(1) **检测**——无力传感器，proprioception 上撞击与抓取接触不可分，误报即灾难；阈值检测延迟 150–200 ms 吃掉关键窗口；(2) **切换瞬态**——bumpless transfer 问题，且重力补偿谁出？拼回基础通道就是现在的架构；(3) **任务知识**——ESN 的 32 维观测无时间无相位，接管期间无法替代 WBC 的时间参数化计划；(4) **安全上界**——满权限 + OOD 输出 = 真机甩臂。我们的架构是同一思想的**连续光滑版**：无撞击时输出 ≈0（0.064 N·m），撞击窗口连续滑到上限——"检测器"被学进网络（泛化实验证明跨时间/高度/速度稳定），无切换瞬态、无交还问题。
 
 ### 10.4 "VMC 的六个自由度都柔顺吗？"
 
-机制上 6 通道弹簧全部激活（逐通道刚度 κ_6D）；效果上只有被激励的方向（撞击方向）
-出现明显让位——其余通道误差在死区（8 mm / 0.032 rad）内，输出 ≈0。ESN 则无通道
-结构约束，7 个输出通道自由学习（包括利用 7-DOF 冗余）——这是它能超过 VMC 的
-结构性自由度之一。
+机制上 6 通道弹簧全部激活（逐通道刚度 κ_6D）；效果上只有被激励的方向（撞击方向）出现明显让位——其余通道误差在死区（8 mm / 0.032 rad）内，输出 ≈0。ESN 则无通道结构约束，7 个输出通道自由学习（包括利用 7-DOF 冗余）——这是它能超过 VMC 的结构性自由度之一。
 
 ### 10.5 "为什么 N=160 而 Fan Ye 论文用 64？"
 
-160 原是项目早期骨架默认值，ablation（§9.2）补上了正当性：N≤64 时 held-out 掉
-3 mm 且方差 ×4；N∈[100,250] 饱和，160 是饱和区方差最小的点。N=64（论文对齐
-规模）仍有 −15.2±3.5，优于两个基线。如需严格对齐论文规模，可换 N=64 重跑主线。
+160 原是项目早期骨架默认值，ablation（§9.2）补上了正当性：N≤64 时 held-out 掉 3 mm 且方差 ×4；N∈[100,250] 饱和，160 是饱和区方差最小的点。N=64（论文对齐规模）仍有 −15.2±3.5，优于两个基线。如需严格对齐论文规模，可换 N=64 重跑主线。
 
 ---
 
@@ -655,8 +563,8 @@ bumpless transfer 问题，且重力补偿谁出？拼回基础通道就是现�
 | 组件 | 文件 | 行数 |
 |---|---|---|
 | 环境/任务/安全栈 | `wbc_velocity_residual_env.py` / `wbc_velocity_residual_core.py` | 874 / ~700 |
-| WBC | `fixed_panda_wbc.py` | 121 |
-| 参考轨迹+场景 | `run_grasp_impact_benchmark.py` | — |
+| 规划器+场景 | `run_grasp_impact_benchmark.py` | — |
+| WBC 跟踪器 | `fixed_panda_wbc.py` | 121 |
 | FR3 场景 | `fr3_scene.py` | — |
 | VMC | `vmc_compliance_baseline.py` / `vmc_torque_baseline.py` | 317 / 75 |
 | MLP | `mlp_compliance_baseline.py` / `train_mlp_baseline.py` | 110 / ~120 |
@@ -665,9 +573,7 @@ bumpless transfer 问题，且重力补偿谁出？拼回基础通道就是现�
 | 蒸馏 | `bootstrap_direct_esn_multifixture.py` | ~200 |
 | 评测 | `evaluate_direct_esn_post_contact.py` / `run_direct_esn_mujoco.py` | — |
 
-服务器：`arm1@192.168.31.70:/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark`。
-结果：`outputs/direct_esn_fixture23_coverage_20260817/`（checkpoint 在 `torque_mode/`，
-ablation 在 `ablation/`）。
+服务器：`arm1@192.168.31.70:/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark`。结果：`outputs/direct_esn_fixture23_coverage_20260817/`（checkpoint 在 `torque_mode/`，ablation 在 `ablation/`）。
 
 ### 11.2 复现命令
 
@@ -706,10 +612,8 @@ EOF
 1. VMC 为单小车 6-DOF 适配版（非原作者两级链逐行复刻）；
 2. 3%/5% 预算是安全设计参数，未逼近可行性边界；
 3. 教师候选集为 9 个参数化动作（非连续空间），蒸馏上界受教师族限制；
-4. 撞击方向泛化依赖训练分布覆盖（sides_matrix 实验覆盖 ±x/±y）；镜像门控
-   （`mirror_gate`）为可选结构先验，主线 checkpoint 未启用。
+4. 撞击方向泛化依赖训练分布覆盖（sides_matrix 实验覆盖 ±x/±y）；镜像门控（`mirror_gate`）为可选结构先验，主线 checkpoint 未启用。
 
 ---
 
-*文档生成：2026-08-19。所有数字来自服务器实测（诊断脚本日志与评测 JSON 均在
-`outputs/` 与 `/tmp/diag_fwbc.log` 留档），逐条溯源见 `IMPLEMENTATION_PROOF.md`。*
+*文档生成：2026-08-19。所有数字来自服务器实测（诊断脚本日志与评测 JSON 均在 `outputs/` 与 `/tmp/diag_fwbc.log` 留档），逐条溯源见 `IMPLEMENTATION_PROOF.md`。*
