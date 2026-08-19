@@ -37,21 +37,23 @@ def main() -> None:
     from mlp_compliance_baseline import MLPBaselineConfig
     for tseed in (0, 1, 2, 3, 4):
         torch.manual_seed(tseed)
-        net = torch.nn.Sequential(torch.nn.Linear(32, 64), torch.nn.Tanh(),
-                                  torch.nn.Linear(64, 7), torch.nn.Tanh()).to(device)
-        opt = torch.optim.Adam(net.parameters(), lr=1e-3)
+        net = torch.nn.Sequential(torch.nn.Linear(32, 128), torch.nn.Tanh(),
+                                  torch.nn.Linear(128, 7), torch.nn.Tanh()).to(device)
+        opt = torch.optim.Adam(net.parameters(), lr=2e-3)
+        sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=15000)
         engaged = torch.tensor(np.any(np.abs(ys) > 0.05, axis=1), dtype=torch.float32, device=device)
         weights = 1.0 + (ENGAGED_OVERSAMPLE - 1.0) * engaged
-        for epoch in range(6000):
+        for epoch in range(15000):
             idx = torch.multinomial(weights, 4096, replacement=True)
             loss = torch.nn.functional.mse_loss(net(xn[idx]), yn[idx])
             opt.zero_grad(); loss.backward(); opt.step()
+            sched.step()
         with torch.no_grad():
             print(f"mlp seed={tseed} MSE={torch.nn.functional.mse_loss(net(xn), yn).item():.5f}", flush=True)
         w1, b1, w2, b2 = [q.detach().cpu().numpy().copy() for q in net.parameters()]
         np.savez_compressed(
             OUT / f"mlp_s{tseed}.npz", controller_family=np.asarray(["mlp_baseline"]),
-            config_json=np.asarray([json.dumps(asdict(MLPBaselineConfig()))]),
+            config_json=np.asarray([json.dumps(asdict(MLPBaselineConfig(hidden_units=128)))]),
             input_mean=mean, input_std=std, w1=w1, b1=b1, w2=w2, b2=b2)
 
     print("mlp saved (5 seeds)", flush=True)

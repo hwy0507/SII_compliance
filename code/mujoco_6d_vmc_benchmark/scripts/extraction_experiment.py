@@ -192,8 +192,16 @@ class HybridTeacher(VMCScenario):
             r = type("R", (), {})()
             r.bounded_filter_action = np.zeros(7)
             return r
-        return super().act(joint_position, joint_velocity, wbc_task_twist,
-                           pose_error=pose_error, twist_error=twist_error)
+        action = super().act(joint_position, joint_velocity, wbc_task_twist,
+                             pose_error=pose_error, twist_error=twist_error)
+        action = np.asarray(action.bounded_filter_action, dtype=float).copy()
+        # past the far half of the corridor, hand authority back early so the
+        # rejoin completes inside the episode
+        if hand_x < 0.34:
+            action[0] = 0.0
+        r = type("R", (), {})()
+        r.bounded_filter_action = action
+        return r
 
 
 
@@ -301,10 +309,11 @@ def stage_data():
 
 ESN_GRID = [
     dict(spectral_radius=0.90, input_scale=0.45, ridge_lambda=1.0e-4, time_constant_s=0.12),
-    dict(spectral_radius=0.55, input_scale=0.45, ridge_lambda=1.0e-4, time_constant_s=0.12),
-    dict(spectral_radius=0.90, input_scale=0.25, ridge_lambda=1.0e-3, time_constant_s=0.12),
-    dict(spectral_radius=0.90, input_scale=0.45, ridge_lambda=1.0e-3, time_constant_s=0.25),
-    dict(spectral_radius=0.75, input_scale=0.60, ridge_lambda=3.0e-4, time_constant_s=0.25),
+    dict(spectral_radius=0.90, input_scale=0.45, ridge_lambda=1.0e-4, time_constant_s=0.12, reservoir_size=320),
+    dict(spectral_radius=0.95, input_scale=0.90, ridge_lambda=1.0e-4, time_constant_s=0.12, reservoir_size=480),
+    dict(spectral_radius=0.90, input_scale=0.45, ridge_lambda=1.0e-4, time_constant_s=0.05, reservoir_size=320),
+    dict(spectral_radius=0.95, input_scale=0.90, ridge_lambda=3.0e-5, time_constant_s=0.08, reservoir_size=320),
+    dict(spectral_radius=0.90, input_scale=0.90, ridge_lambda=1.0e-3, time_constant_s=0.04, reservoir_size=480),
 ]
 
 
