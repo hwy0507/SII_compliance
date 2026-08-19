@@ -31,9 +31,9 @@ URDF = Path(__file__).resolve().parent.parent / "assets/fr3_pin/fr3.urdf"
 OUT = Path("/home/arm1/vmc_mujoco_runtime/outputs/extraction_esn")
 
 BOARDS = {"low": 0.605, "mid": 0.615, "high": 0.625, "heldout": 0.610}
-CORRIDOR_X_IN = 0.56      # start slowing/dipping before the board edge
-CORRIDOR_X_OUT = 0.26     # release after the far edge
-DIP_CLEARANCE = 0.065     # palm depth below the board underside to hold
+BOARD_X_LO, BOARD_X_HI = 0.44, 0.60   # board column (x)
+BOARD_EDGE_Y = 0.05                    # board's +y edge
+CLEAR_Y = 0.09                         # beyond this the lift is clear
 WBC_SLOW_ACTION = 0.875   # action[0] giving wbc_scale ~= 0.30
 WASHOUT = 10
 
@@ -283,6 +283,132 @@ class VMCScenario:
         return r
 
 
+class HybridTeacher:
+    """Lateral-dodge teacher for the true lift path.
+
+    While the hand is inside the board column below/at the ceiling and has
+    not cleared the +y edge: schedule the WBC feedback down and yield +y.
+    After clearing: full release - the carry pose lies beyond the edge, so
+    the WBC's own pull completes the task.
+    """
+
+    def __init__(self, board_z: float | None) -> None:
+        self.board_z = board_z
+
+    def act(self, joint_position, joint_velocity, wbc_task_twist, *,
+            pose_error=None, twist_error=None, hand_x=None, contact=False,
+            time_s=0.0, hand_y=0.0, hand_z=0.0):
+        action = np.zeros(7)
+        r = type("R", (), {})()
+        if self.board_z is None:
+            r.bounded_filter_action = action
+            return r
+        under = (BOARD_X_LO < hand_x < BOARD_X_HI and hand_y < CLEAR_Y
+                 and hand_z > self.board_z - 0.10)
+        if under:
+            action[0] = 1.0  # WBC feedback authority -> minimum
+            action[2] = float(np.clip((CLEAR_Y - hand_y) / 0.05, 0.0, 1.0))  # +y
+        r.bounded_filter_action = action
+        return r
+
+
+class NeutralPolicy:
+    def reset(self) -> None: ...
+
+    def act(self, *args, **kwargs):
+        class R:
+            bounded_filter_action = np.zeros(7)
+        return R()
+
+
+class UngatedESN:
+    """ESN deployed with activation gating disabled (parity with training)."""
+
+    def __init__(self, model: DirectESNController) -> None:
+        self.model = model
+
+    def reset(self) -> None:
+        self.model.reset()
+
+    def act(self, joint_position, joint_velocity, wbc_task_twist, *,
+            pose_error=None, twist_error=None):
+        from esn_compliance import ESNObservation
+        feature = self.model.advance(
+            ESNObservation(joint_position, joint_velocity, wbc_task_twist),
+            pose_error, twist_error)
+        return self.model.action_from_feature(feature, activation=1.0)
+
+
+class UngatedMLP:
+    """MLPComplianceController inference without the error-activation gate."""
+
+    def __init__(self, inner) -> None:
+        self.inner = inner
+
+    def reset(self) -> None:
+        self.inner.reset()
+
+    def act(self, joint_position, joint_velocity, wbc_task_twist, *,
+            pose_error=None, twist_error=None):
+        observation = np.concatenate([
+            np.asarray(joint_position, dtype=float),
+            np.asarray(joint_velocity, dtype=float),
+            np.asarray(wbc_task_twist, dtype=float),
+            np.asarray(pose_error, dtype=float) if pose_error is not None else np.zeros(6),
+            np.asarray(twist_error, dtype=float) if twist_error is not None else np.zeros(6),
+        ])
+        c = self.inner
+        normalized = (observation - c.mean) / c.std
+        hidden = np.tanh(normalized @ c.w1.T + c.b1)
+        bounded = np.tanh(hidden @ c.w2.T + c.b2)
+
+        class R:
+            pass
+        r = R()
+        r.bounded_filter_action = np.concatenate(
+            [[max(0.0, float(bounded[0]))], np.clip(bounded[1:], -1.0, 1.0)])
+        return r
+
+
+class VMCScenario:
+    """VMC-flavored baseline with the same action channels as the students.
+
+    Spring--damper admittance on the measured WBC pose error (the classical
+    virtual-carriage coupling, deployable signal only), plus feedback-authority
+    scheduling driven by the error magnitude.  No board knowledge, no memory.
+    """
+
+    def __init__(self, k_yield: float = 8.0, k_sched: float = 25.0, damp: float = 0.5) -> None:
+        self.k_yield = k_yield
+        self.k_sched = k_sched
+        self.damp = damp
+
+    def reset(self) -> None: ...
+
+    def act(self, joint_position, joint_velocity, wbc_task_twist, *,
+            pose_error=None, twist_error=None):
+        e = np.asarray(pose_error, dtype=float)
+        de = np.asarray(twist_error, dtype=float)
+        en = float(np.linalg.norm(e[:3]))
+
+        class R:
+            pass
+        r = R()
+        action = np.zeros(7)
+        # schedule WBC feedback authority down as the tracking error grows,
+        # CAPPED at 0.7 (feedback floor 0.3): the traverse keeps full-speed
+        # tracking and the episode has time left to rejoin after the corridor
+        action[0] = float(np.clip(en * self.k_sched, 0.0, 1.0))
+        # yield along the push (admittance: follow the displacement direction)
+        if en > 0.01:
+            v = -self.k_yield * e[:3] / max(en, 1e-9) - self.damp * de[:3]
+            v[0] = min(v[0], 0.0)  # never yield backward (+x): the escape is
+            # forward-under the board; rear-face pin cycles killed mid board
+            action[1:4] = np.clip(v / 0.5, -1.0, 1.0)
+        r.bounded_filter_action = action
+        return r
+
+
 class HybridTeacher(VMCScenario):
     """VMC's continuous admittance while inside the corridor or in contact;
     hard release beyond the far edge so the WBC regains authority and rejoins."""
@@ -344,18 +470,25 @@ def rollout(env, seed: int, policy, *, teacher: Teacher | None = None, collect: 
     observations: list[DirectESNObservation] = []
     actions: list[np.ndarray] = []
     errors, forces, hand_x = [], [], []
+    dodge_y = 0.0
     done, info = False, {}
     while not done:
         d = env.diagnostics()
         hand = env.data.xpos[env._hand_id]
+        if BOARD_X_LO < hand[0] < BOARD_X_HI and d["time_s"] > 2.5:
+            dodge_y = max(dodge_y, float(hand[1]))
         if teacher is not None:
-            action = teacher.act(float(hand[0]), float(hand[2]),
-                                 float(d["nominal_twist"][0]))
+            action = np.asarray(teacher.act(
+                d["joint_position"], d["joint_velocity"], d["nominal_twist"],
+                pose_error=d["wbc_pose_error"], twist_error=d["wbc_twist_error"],
+                hand_x=float(hand[0]), hand_y=float(hand[1]), hand_z=float(hand[2]),
+                contact=board_force(env) > 2.0, time_s=float(d["time_s"]),
+            ).bounded_filter_action, dtype=float)
         elif isinstance(policy, HybridTeacher):
             action = np.asarray(policy.act(
                 d["joint_position"], d["joint_velocity"], d["nominal_twist"],
                 pose_error=d["wbc_pose_error"], twist_error=d["wbc_twist_error"],
-                hand_x=float(hand[0]),
+                hand_x=float(hand[0]), hand_y=float(hand[1]), hand_z=float(hand[2]),
                 contact=board_force(env) > 2.0, time_s=float(d["time_s"]),
             ).bounded_filter_action, dtype=float)
         else:
@@ -374,7 +507,7 @@ def rollout(env, seed: int, policy, *, teacher: Teacher | None = None, collect: 
         _, _, done, _, info = env.step(action)
     e, f, x = np.asarray(errors), np.asarray(forces), np.asarray(hand_x)
     metrics = dict(
-        crossed=bool(x[-1] < CORRIDOR_X_OUT), x_final=float(x[-1]),
+        crossed=bool(dodge_y > CLEAR_Y), x_final=float(x[-1]), dodge_y=float(dodge_y),
         force_peak=float(f.max()), force_integral=float(f.sum() * 0.04),
         contact_s=float((f > 0.5).sum() * 0.04),
         err_final_mm=float(e[-1] * 1000.0), peak_torque=float(info["peak_torque_nm"]),
@@ -612,7 +745,7 @@ def stage_dagger2():
                     hand_x=float(hand[0]), contact=board_force(env) > 2.0,
                     time_s=float(d["time_s"])).bounded_filter_action, dtype=float))
                 vx = 0.0 if prev_x is None else abs(hand[0] - prev_x) / 0.04
-                stalled = (CORRIDOR_X_OUT < hand[0] < CORRIDOR_X_IN) and vx < 0.03
+                stalled = (BOARD_X_LO < hand[0] < BOARD_X_HI and hand[1] < CLEAR_Y) and vx < 0.03
                 weights.append(6.0 if stalled else 1.0)
                 prev_x = float(hand[0])
                 a = student.act(
