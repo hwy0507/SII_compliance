@@ -209,10 +209,15 @@ def build_fr3_hand_scene_xml(
         # x < 0.24.  Bits 4/4 collide with the hand (4/4) and the target
         # object (6/7), not with the table (2/2) or the rod (8/4, offstage).
         thickness = 0.03
+        # Board spans y in [-0.28, +EDGE]; EDGE from env for scenario sweeps.
+        import os as _os
+        edge_y = float(_os.environ.get("BOARD_EDGE_Y", "0.15"))
+        board_center_y = (edge_y - 0.28) / 2.0
+        board_half_y = (edge_y + 0.28) / 2.0
         board_xml = f"""
-      <geom name="extraction_board" type="box" pos="0.52 -0.065 {board_underside_z + 0.5 * thickness:.4f}"
-        size="0.08 0.215 {0.5 * thickness:.4f}" contype="4" conaffinity="4"
-        rgba="0.55 0.40 0.22 1" friction="0.25 0.02 0.002"
+      <geom name="extraction_board" type="box" pos="0.52 {board_center_y:.4f} {board_underside_z + 0.5 * thickness:.4f}"
+        size="0.08 {board_half_y:.4f} {0.5 * thickness:.4f}" contype="4" conaffinity="4"
+        rgba="0.55 0.40 0.22 1" friction="{_os.environ.get("BOARD_FRICTION", "0.25")} 0.02 0.002"
         solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
 """
     lift_board_xml = ""

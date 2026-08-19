@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os as _os
 import time
 from pathlib import Path
 
@@ -28,12 +29,12 @@ from wbc_velocity_residual_env import PandaWBCVelocityResidualEnv
 
 MENAGERIE = Path("/home/arm1/vmc_mujoco_runtime/mujoco_menagerie")
 URDF = Path(__file__).resolve().parent.parent / "assets/fr3_pin/fr3.urdf"
-OUT = Path("/home/arm1/vmc_mujoco_runtime/outputs/extraction_esn")
+OUT = Path(_os.environ.get("EXT_OUT", "/home/arm1/vmc_mujoco_runtime/outputs/extraction_esn"))
 
 BOARDS = {"low": 0.605, "mid": 0.615, "high": 0.625, "heldout": 0.610}
 BOARD_X_LO, BOARD_X_HI = 0.44, 0.60   # board column (x)
-BOARD_EDGE_Y = 0.15                    # board's +y edge (BEYOND the path's y=0.09 end:
-CLEAR_Y = 0.19                         # dodge target: beyond the edge, then RETURN to 0.09
+BOARD_EDGE_Y = float(_os.environ.get("BOARD_EDGE_Y", "0.15"))
+CLEAR_Y = BOARD_EDGE_Y + 0.04          # dodge target: beyond the edge, then RETURN
 WBC_SLOW_ACTION = 0.875   # action[0] giving wbc_scale ~= 0.30
 WASHOUT = 10
 
@@ -498,7 +499,8 @@ def stage_probe():
 
 
 DATA_BOARDS = (0.605, 0.615, 0.625)
-DATA_SEEDS = (7, 11, 13, 29, 97, 123, 555, 20260817)
+_seed_offset = int(_os.environ.get("EXT_SEED_OFFSET", "0"))
+DATA_SEEDS = tuple(s_ + _seed_offset for s_ in (7, 11, 13, 29, 97, 123, 555, 20260817))
 DATA_NOISE = (0.0, 0.005, 0.010)
 
 
@@ -529,6 +531,7 @@ def stage_data():
     print(f"saved {len(episodes)} episodes")
 
 
+_GRID_VARIANT = _os.environ.get("EXT_GRID", "base")
 ESN_GRID = [
     dict(spectral_radius=0.90, input_scale=0.45, ridge_lambda=1.0e-4, time_constant_s=0.12),
     dict(spectral_radius=0.90, input_scale=0.45, ridge_lambda=1.0e-4, time_constant_s=0.12, reservoir_size=320),
@@ -537,6 +540,18 @@ ESN_GRID = [
     dict(spectral_radius=0.95, input_scale=0.90, ridge_lambda=3.0e-5, time_constant_s=0.08, reservoir_size=320),
     dict(spectral_radius=0.90, input_scale=0.90, ridge_lambda=1.0e-3, time_constant_s=0.04, reservoir_size=480),
 ]
+if _GRID_VARIANT == "big":
+    ESN_GRID = [
+        dict(spectral_radius=0.95, input_scale=0.45, ridge_lambda=1.0e-4, time_constant_s=0.12, reservoir_size=480),
+        dict(spectral_radius=0.90, input_scale=0.45, ridge_lambda=3.0e-5, time_constant_s=0.08, reservoir_size=640),
+        dict(spectral_radius=0.95, input_scale=0.60, ridge_lambda=1.0e-4, time_constant_s=0.25, reservoir_size=480),
+    ]
+elif _GRID_VARIANT == "smooth":
+    ESN_GRID = [
+        dict(spectral_radius=0.90, input_scale=0.45, ridge_lambda=1.0e-4, time_constant_s=0.12),
+        dict(spectral_radius=0.90, input_scale=0.45, ridge_lambda=1.0e-4, time_constant_s=0.25),
+        dict(spectral_radius=0.75, input_scale=0.45, ridge_lambda=3.0e-4, time_constant_s=0.40),
+    ]
 
 
 ENGAGED_OVERSAMPLE = 4
@@ -584,7 +599,7 @@ def _fit_esn(episodes, seed, overrides):
     t_aug = np.concatenate([t_aug, t_at[mask]])
     mse = model.fit_readout(f_aug, t_aug,
                             smoothness_features=np.concatenate(sm_feat),
-                            smoothness_weight=0.05,
+                            smoothness_weight=float(_os.environ.get("EXT_SMOOTH", "0.05")),
                             smoothness_targets=np.concatenate(sm_tgt))
     return model, mse
 
