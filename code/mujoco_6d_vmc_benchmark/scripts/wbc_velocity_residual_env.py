@@ -131,6 +131,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         wbc_backend: str = "fixed",
         wbc_urdf_path: str | Path | None = None,
         rod_hold_extension_s: float = 0.0,
+        table_board_underside_z: float | None = None,
         joint_velocity_noise_std: float = 0.0,
         execution_mode: str = "twist",
         residual_torque_scale: float = 0.25,
@@ -159,6 +160,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             raise ValueError("the vendored Pink-IK WBC backend is wired for robot='fr3'")
         self.wbc_backend = wbc_backend
         self.wbc_urdf_path = wbc_urdf_path
+        if table_board_underside_z is not None and robot != "fr3":
+            raise ValueError("the extraction-board scene is wired for robot='fr3'")
+        self.table_board_underside_z = table_board_underside_z
         if execution_mode not in ("twist", "torque_residual", "torque_takeover", "torque_takeover_gc"):
             raise ValueError(
                 "execution_mode must be 'twist', 'torque_residual', 'torque_takeover', or 'torque_takeover_gc'")
@@ -303,6 +307,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 rod_center_x_m=self.fixture.rod_center_x_m,
                 rod_center_y_m=self.fixture.rod_center_y_m,
                 impactor_type=self.fixture.impactor_type,
+                board_underside_z=self.table_board_underside_z,
             )
         elif self.robot == "panda":
             self.model, self.data = make_rod_model(

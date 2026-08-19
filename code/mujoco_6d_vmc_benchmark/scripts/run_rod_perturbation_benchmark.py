@@ -112,6 +112,19 @@ def impactor_geometry_spec(impactor_type: str) -> dict[str, str]:
             "description": "soft human-hand palm proxy; not a biomechanical hand model",
             "rgba": "0.95 0.55 0.18 1",
         },
+        # Dynamic wooden plank (advisor-suggested obstacle): a flat board on
+        # the standard impactor slide whose face is tilted ~35 deg (Rx), so
+        # sweeping through the workspace shoves the arm along an oblique
+        # direction and the escape path slides along the plank face.  Contact
+        # bits 5/5 collide with the hand (4/4), the FR3 arm links (1/1) and
+        # the target object (6/7): the board strikes the whole arm.
+        "plank": {
+            "geom_type": "box", "size": "0.15 0.008 0.11", "mass": "1.20",
+            "friction": "0.6 0.02 0.002", "description": "tilted dynamic wooden plank",
+            "rgba": "0.62 0.45 0.24 1",
+            "quat": "0.9537 0.3007 0 0",
+            "contype": "5", "conaffinity": "5",
+        },
     }
     try:
         return specs[impactor_type].copy()

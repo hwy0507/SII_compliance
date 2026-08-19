@@ -103,8 +103,16 @@ def build_fr3_hand_scene_xml(
     rod_approach_side: str = "negative_y",
     impactor_type: str = "rod",
     target_start_z: float = 0.455,
+    board_underside_z: float | None = None,
 ) -> str:
-    """Return the FR3+Hand torque-actuated benchmark scene XML text."""
+    """Return the FR3+Hand torque-actuated benchmark scene XML text.
+
+    ``board_underside_z`` optionally adds the under-table extraction board
+    (the Prepose-Sampler style obstacle): a horizontal slab spanning the
+    carry corridor (x in [0.24, 0.50]) so the preplanned lift/carry sweeps
+    into its underside, while the approach/grasp chimney at x ~ 0.54 stays
+    clear and the carry destination (x ~ 0.18) lies beyond the board.
+    """
 
     from run_rod_perturbation_benchmark import impactor_geometry_spec, rod_approach_geometry
 
@@ -190,6 +198,19 @@ def build_fr3_hand_scene_xml(
     # 7. inject the benchmark stage (camera, table, target, rod, markers)
     approach = rod_approach_geometry(rod_approach_side, rod_height_m, rod_center_x_m, rod_center_y_m)
     impactor = impactor_geometry_spec(impactor_type)
+    board_xml = ""
+    if board_underside_z is not None:
+        # Extraction board (Prepose-style): blocks the carry corridor at the
+        # nominal carry height; the arm must dip under it and rejoin beyond
+        # x < 0.24.  Bits 4/4 collide with the hand (4/4) and the target
+        # object (6/7), not with the table (2/2) or the rod (8/4, offstage).
+        thickness = 0.09
+        board_xml = f"""
+      <geom name="extraction_board" type="box" pos="0.37 0 {board_underside_z + 0.5 * thickness:.4f}"
+        size="0.13 0.20 {0.5 * thickness:.4f}" contype="4" conaffinity="4"
+        rgba="0.55 0.40 0.22 1" friction="0.6 0.02 0.002"
+        solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
+"""
     injected = f"""
       <camera name="rod_track" pos="1.18 -1.42 0.86" xyaxes="0.79 0.61 0  -0.17 0.22 0.96"/>
       <geom name="table" type="box" pos="0.54 0 0.38" size="0.20 0.20 0.02"
@@ -202,8 +223,8 @@ def build_fr3_hand_scene_xml(
       </body>
       <body name="rod_support" pos="{approach.support_position_m[0]:.3f} {approach.support_position_m[1]:.3f} {approach.support_position_m[2]:.3f}">
         <joint name="rod_slide" type="slide" axis="{approach.slide_axis_world[0]:.1f} {approach.slide_axis_world[1]:.1f} {approach.slide_axis_world[2]:.1f}" range="0 0.20" damping="2.0"/>
-        <geom name="rod_geom" type="{impactor['geom_type']}" size="{impactor['size']}" quat="{approach.cylinder_quaternion_wxyz[0]:.7f} {approach.cylinder_quaternion_wxyz[1]:.7f} {approach.cylinder_quaternion_wxyz[2]:.7f} {approach.cylinder_quaternion_wxyz[3]:.7f}"
-          mass="{impactor['mass']}" contype="8" conaffinity="4" rgba="{impactor['rgba']}"
+        <geom name="rod_geom" type="{impactor['geom_type']}" size="{impactor['size']}" quat="{impactor.get('quat') or f'{approach.cylinder_quaternion_wxyz[0]:.7f} {approach.cylinder_quaternion_wxyz[1]:.7f} {approach.cylinder_quaternion_wxyz[2]:.7f} {approach.cylinder_quaternion_wxyz[3]:.7f}'}"
+          mass="{impactor['mass']}" contype="{impactor.get('contype','8')}" conaffinity="{impactor.get('conaffinity','4')}" rgba="{impactor['rgba']}"
           friction="{impactor['friction']}" solref="{contact_time_constant_s:.5f} 1"
           solimp="0.85 0.95 0.002 0.5 2"/>
       </body>
@@ -218,7 +239,7 @@ def build_fr3_hand_scene_xml(
       <body name="actual_marker" mocap="true" pos="0 0 1">
         <geom type="sphere" size="0.024" contype="0" conaffinity="0" rgba="1.0 0.05 0.68 0.98"/>
       </body>
-    """
+    """ + board_xml
     text = text.replace("  </worldbody>", injected + "  </worldbody>", 1)
     rod_driver = (
         '<position name="rod_driver" joint="rod_slide" kp="5000" '
@@ -236,13 +257,15 @@ def make_fr3_hand_model(
     rod_center_y_m: float = 0.0,
     rod_approach_side: str = "negative_y",
     impactor_type: str = "rod",
+    board_underside_z: float | None = None,
 ):
     import mujoco
 
     xml = build_fr3_hand_scene_xml(
         menagerie, contact_time_constant_s, rod_height_m=rod_height_m,
         rod_center_x_m=rod_center_x_m, rod_center_y_m=rod_center_y_m,
-        rod_approach_side=rod_approach_side, impactor_type=impactor_type)
+        rod_approach_side=rod_approach_side, impactor_type=impactor_type,
+        board_underside_z=board_underside_z)
     model = mujoco.MjModel.from_xml_string(xml)
     model.opt.timestep = 0.004
     data = mujoco.MjData(model)

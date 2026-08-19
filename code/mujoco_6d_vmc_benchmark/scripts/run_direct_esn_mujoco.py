@@ -24,6 +24,7 @@ def resolve_override_fixture(
     rod_approach_side: str | None = None,
     rod_cycles: int | None = None,
     cycle_period_s: float | None = None,
+    impactor_type: str | None = None,
 ) -> tuple[tuple[VelocityResidualFixture, ...], int]:
     """Build a single-fixture pool when any physical rod override is supplied.
 
@@ -37,6 +38,7 @@ def resolve_override_fixture(
         "rod_start_time_s": rod_start_time_s, "grasp_time_s": grasp_time_s,
         "rod_approach_side": rod_approach_side, "rod_cycles": rod_cycles,
         "cycle_period_s": cycle_period_s,
+        "impactor_type": impactor_type,
     }
     if all(value is None for value in provided.values()):
         return default_velocity_residual_fixtures(), fixture_index
@@ -166,6 +168,7 @@ def main() -> None:
                         choices=("negative_x", "positive_x", "negative_y", "positive_y", "negative_z", "positive_z"))
     parser.add_argument("--rod-cycles", type=int, default=None)
     parser.add_argument("--cycle-period-s", type=float, default=None)
+    parser.add_argument("--rod-impactor-type", type=str, default=None, choices=("rod", "ball"))
     parser.add_argument("--grasp-time-s", type=float, default=None, help="override the indexed fixture grasp time")
     parser.add_argument("--enable-rejoin-fade", action="store_true")
     parser.add_argument("--mirror-gate", action="store_true", help="enable the mirror-equivariant action gate")
@@ -179,7 +182,7 @@ def main() -> None:
     fixtures, resolved_index = resolve_override_fixture(
         args.rod_stroke_m, args.rod_height_m, args.rod_start_time_s, args.grasp_time_s, args.fixture_index,
         rod_approach_side=args.rod_approach_side, rod_cycles=args.rod_cycles,
-        cycle_period_s=args.cycle_period_s,
+        cycle_period_s=args.cycle_period_s, impactor_type=args.rod_impactor_type,
     )
     override_fixture = None if len(fixtures) > 1 else fixtures[0]
     info, trace = run_episode(
