@@ -15,6 +15,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+import numpy as np
+
 # FR3 already defines visual/collision default classes; only the finger and
 # fingertip-pad classes (Panda-hand-specific) are grafted.
 PANDA_HAND_DEFAULTS = """
@@ -104,6 +106,8 @@ def build_fr3_hand_scene_xml(
     impactor_type: str = "rod",
     target_start_z: float = 0.455,
     board_underside_z: float | None = None,
+    lift_board_center_m: tuple[float, float, float] | None = None,
+    lift_board_tilt_deg: float | None = None,
 ) -> str:
     """Return the FR3+Hand torque-actuated benchmark scene XML text.
 
@@ -211,6 +215,25 @@ def build_fr3_hand_scene_xml(
         rgba="0.55 0.40 0.22 1" friction="0.15 0.02 0.002"
         solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
 """
+    lift_board_xml = ""
+    if lift_board_center_m is not None and lift_board_tilt_deg is not None:
+        # Inclined static wooden board across the lift path: the rising arm
+        # strikes the tilted face and must slide along the incline (oblique
+        # contact normal).  Contact bits 5/5 collide with the hand (4/4),
+        # the FR3 arm links (1/1) and the target object (6/7), matching the
+        # dynamic plank impactor bit assignment.
+        tilt = float(np.deg2rad(lift_board_tilt_deg))
+        # Face normal: the box's +z axis tilted ``tilt`` from -z (pointing
+        # down toward the rising arm) about the x axis, so sliding along the
+        # face guides the hand sideways in +y toward the board edge.
+        quat_wxyz = (np.cos(0.5 * tilt), np.sin(0.5 * tilt), 0.0, 0.0)
+        lift_board_xml = f"""
+      <geom name="lift_board" type="box"
+        pos="{lift_board_center_m[0]:.4f} {lift_board_center_m[1]:.4f} {lift_board_center_m[2]:.4f}"
+        size="0.18 0.10 0.008" quat="{quat_wxyz[0]:.6f} {quat_wxyz[1]:.6f} {quat_wxyz[2]:.6f} {quat_wxyz[3]:.6f}"
+        contype="5" conaffinity="5" rgba="0.62 0.45 0.24 1" friction="0.6 0.02 0.002"
+        solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
+"""
     injected = f"""
       <camera name="rod_track" pos="1.18 -1.42 0.86" xyaxes="0.79 0.61 0  -0.17 0.22 0.96"/>
       <geom name="table" type="box" pos="0.54 0 0.38" size="0.20 0.20 0.02"
@@ -239,7 +262,7 @@ def build_fr3_hand_scene_xml(
       <body name="actual_marker" mocap="true" pos="0 0 1">
         <geom type="sphere" size="0.024" contype="0" conaffinity="0" rgba="1.0 0.05 0.68 0.98"/>
       </body>
-    """ + board_xml
+    """ + board_xml + lift_board_xml
     text = text.replace("  </worldbody>", injected + "  </worldbody>", 1)
     rod_driver = (
         '<position name="rod_driver" joint="rod_slide" kp="5000" '
@@ -258,6 +281,8 @@ def make_fr3_hand_model(
     rod_approach_side: str = "negative_y",
     impactor_type: str = "rod",
     board_underside_z: float | None = None,
+    lift_board_center_m: tuple[float, float, float] | None = None,
+    lift_board_tilt_deg: float | None = None,
 ):
     import mujoco
 
@@ -265,7 +290,8 @@ def make_fr3_hand_model(
         menagerie, contact_time_constant_s, rod_height_m=rod_height_m,
         rod_center_x_m=rod_center_x_m, rod_center_y_m=rod_center_y_m,
         rod_approach_side=rod_approach_side, impactor_type=impactor_type,
-        board_underside_z=board_underside_z)
+        board_underside_z=board_underside_z,
+        lift_board_center_m=lift_board_center_m, lift_board_tilt_deg=lift_board_tilt_deg)
     model = mujoco.MjModel.from_xml_string(xml)
     model.opt.timestep = 0.004
     data = mujoco.MjData(model)

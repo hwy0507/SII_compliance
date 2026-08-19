@@ -132,6 +132,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         wbc_urdf_path: str | Path | None = None,
         rod_hold_extension_s: float = 0.0,
         table_board_underside_z: float | None = None,
+        lift_board_tilt_deg: float | None = None,
         joint_velocity_noise_std: float = 0.0,
         execution_mode: str = "twist",
         residual_torque_scale: float = 0.25,
@@ -154,8 +155,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.rod_enabled = bool(rod_enabled)
         self.safety_config = safety_config or VelocityResidualSafetyConfig()
         self.robot = robot
-        if wbc_backend not in ("fixed", "pink"):
-            raise ValueError("wbc_backend must be 'fixed' or 'pink'")
+        if wbc_backend not in ("fixed", "pink", "paper_mpc"):
+            raise ValueError("wbc_backend must be 'fixed', 'pink', or 'paper_mpc'")
         if wbc_backend == "pink" and robot != "fr3":
             raise ValueError("the vendored Pink-IK WBC backend is wired for robot='fr3'")
         self.wbc_backend = wbc_backend
@@ -163,6 +164,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         if table_board_underside_z is not None and robot != "fr3":
             raise ValueError("the extraction-board scene is wired for robot='fr3'")
         self.table_board_underside_z = table_board_underside_z
+        if lift_board_tilt_deg is not None and robot != "fr3":
+            raise ValueError("the inclined lift-board scene is wired for robot='fr3'")
+        self.lift_board_tilt_deg = lift_board_tilt_deg
         if execution_mode not in ("twist", "torque_residual", "torque_takeover", "torque_takeover_gc"):
             raise ValueError(
                 "execution_mode must be 'twist', 'torque_residual', 'torque_takeover', or 'torque_takeover_gc'")
@@ -299,9 +303,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         if self.robot == "fr3":
             from fr3_scene import make_fr3_hand_model
 
-            self.model, self.data = make_fr3_hand_model(
-                self.menagerie,
-                CONTACT_TIME_CONSTANT_S,
+            scene_kwargs = dict(
                 rod_height_m=self.fixture.rod_height_m,
                 rod_approach_side=self.fixture.rod_approach_side,
                 rod_center_x_m=self.fixture.rod_center_x_m,
@@ -309,6 +311,23 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 impactor_type=self.fixture.impactor_type,
                 board_underside_z=self.table_board_underside_z,
             )
+            if self.lift_board_tilt_deg is not None:
+                # Two-pass placement: a throwaway board-free build provides
+                # the lift-path FK, then the real scene is rebuilt with the
+                # inclined static board centered on the mid-lift waypoint so
+                # the rising arm strikes its tilted face.
+                probe_model, probe_data = make_fr3_hand_model(
+                    self.menagerie, CONTACT_TIME_CONSTANT_S, **scene_kwargs)
+                probe_hand = mujoco.mj_name2id(
+                    probe_model, mujoco.mjtObj.mjOBJ_BODY, "hand")
+                probe_ref = PickLiftCarryReference(probe_model, probe_data, probe_hand)
+                p_start = probe_ref.sample(2.70)[0]
+                p_end = probe_ref.sample(4.10)[0]
+                scene_kwargs["lift_board_center_m"] = tuple(
+                    float(v) for v in (0.55 * p_start + 0.45 * p_end))
+                scene_kwargs["lift_board_tilt_deg"] = float(self.lift_board_tilt_deg)
+            self.model, self.data = make_fr3_hand_model(
+                self.menagerie, CONTACT_TIME_CONSTANT_S, **scene_kwargs)
         elif self.robot == "panda":
             self.model, self.data = make_rod_model(
                 self.menagerie,
@@ -358,6 +377,11 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 raise ValueError("wbc_backend='pink' requires wbc_urdf_path (FR3 URDF)")
             self.fixed_wbc = PinkWBCAdapter(
                 model, self._hand_id, data.qpos[:ARM_DOF], self.wbc_urdf_path)
+        elif self.wbc_backend == "paper_mpc":
+            from paper_mpc_wbc import PaperMPCWBC
+
+            self.fixed_wbc = PaperMPCWBC(
+                model, self._hand_id, self.reference, data.qpos[:ARM_DOF])
         else:
             self.fixed_wbc = FixedBasePandaWBC(model, self._hand_id, data.qpos[:ARM_DOF])
 
