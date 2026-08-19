@@ -138,6 +138,21 @@ class PaperMPCWBC:
         q = data.qpos[:ARM_DOF].copy()
         self.last_idx = self._nearest_waypoint(q, float(data.time))
         idx_ref = min(self.last_idx + self.lookahead, len(self.waypoints) - 1)
+        target_time = idx_ref * self.waypoint_period_s
+        # Adaptation: the source system advances stages state-based (behavior
+        # tree); this benchmark grasps at a fixed wall-clock time, so the
+        # waypoint anticipation must not cross a stationary (hold) segment —
+        # otherwise the controller starts the lift early and the gripper
+        # closes high.  Cap the lookahead at the current hold segment's end.
+        ref_times = np.asarray(getattr(self.reference, "times", None), dtype=float)
+        ref_knots = getattr(self.reference, "q_knots", None)
+        if ref_times is not None and ref_knots is not None:
+            seg = int(np.clip(np.searchsorted(ref_times, data.time, side="right") - 1,
+                              0, len(ref_times) - 2))
+            if np.allclose(ref_knots[seg], ref_knots[seg + 1]):
+                target_time = min(target_time, float(ref_times[seg + 1]))
+                idx_ref = min(int(round(target_time / self.waypoint_period_s)),
+                              len(self.waypoints) - 1)
         error = self.waypoints[idx_ref] - q
         # The compliance layer scales only the feedback part of the nominal
         # command (same contract as the previous WBCs).

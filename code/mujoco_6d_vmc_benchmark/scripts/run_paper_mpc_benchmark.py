@@ -98,7 +98,7 @@ def run_rollout(
         wbc_backend="paper_mpc", fixtures=(fixture,),
     )
     if lift_board:
-        kwargs["lift_board_tilt_deg"] = 30.0
+        kwargs["lift_board_tilt_deg"] = 40.0
     env = PandaWBCVelocityResidualEnv(**kwargs)
     import mujoco
 

@@ -44,7 +44,7 @@ def record(menagerie: Path, fixture, out: Path, *, k: float, budget: float,
         wbc_backend="paper_mpc", fixtures=(fx,),
     )
     if lift_board:
-        kwargs["lift_board_tilt_deg"] = 30.0
+        kwargs["lift_board_tilt_deg"] = 40.0
     env = PandaWBCVelocityResidualEnv(**kwargs)
     env.reset(seed=seed, options={"fixture_index": 0})
     expert.reset()

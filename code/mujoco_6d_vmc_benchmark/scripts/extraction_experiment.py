@@ -108,10 +108,10 @@ class VMCScheduled:
     original deployment context, so nothing faithful is being altered).
     """
 
-    def __init__(self, k_sched: float = 8.0, offset_ref: float = 0.05) -> None:
+    def __init__(self, config_overrides: dict | None = None, offset_ref: float = 0.05) -> None:
+        from dataclasses import replace as _r
         from vmc_compliance_baseline import SpringCarriageVMC, SpringCarriageConfig
-        self.inner = SpringCarriageVMC(SpringCarriageConfig())
-        self.k_sched = k_sched
+        self.inner = SpringCarriageVMC(_r(SpringCarriageConfig(), **(config_overrides or {})))
         self.offset_ref = offset_ref
 
     def reset(self) -> None:
@@ -582,6 +582,8 @@ def stage_eval():
                + [("vmc", None, "vmc")]
                + [("vmc_orig", None, "vmc_orig")]
                + [("vmc_orig_s", None, "vmc_orig_s")]
+               + ([("vmc_tuned", None, "vmc_tuned")]
+                  if (OUT / "vmc_tuned_cfg.json").exists() else [])
                + [("teacher", None, "teacher")]
                + [("esn_ens", None, "esn_ens"), ("esn_dens", None, "esn_dens"),
                   ("mlp_ens", None, "mlp_ens")])
@@ -611,6 +613,11 @@ def stage_eval():
                         [UngatedMLP(_M.from_npz(p)) for _, p in mlp_paths]))
                 elif kind == "vmc":
                     m = rollout(env, seed, VMCScenario())
+                elif kind == "vmc_tuned":
+                    cfg = json.load(open(OUT / "vmc_tuned_cfg.json"))
+                    policy = VMCScheduled(cfg["overrides"], offset_ref=cfg["offset_ref"])
+                    policy.reset()
+                    m = rollout(env, seed, policy)
                 elif kind == "vmc_orig_s":
                     policy = VMCScheduled()
                     policy.reset()
@@ -723,9 +730,54 @@ def stage_report():
     print(f"  frontier.png + report.json saved; best ESN checkpoint: {best_esn[0]}")
 
 
+def stage_tune_vmc():
+    """Retune the ORIGINAL controller's config for the strong-WBC scenario.
+
+    The frozen config was tuned in the weak-WBC world: drive stiffness 75 N/m
+    pulls the carriage home in ~0.3 s, so its yield cannot persist against a
+    25/s WBC.  Sweep carriage config (code untouched), select on train boards
+    then the validation board, by composite score.
+    """
+    grid = []
+    for drive_k in (10.0, 30.0, 75.0):
+        for ee_k in (80.0, 220.0):
+            for speed in (0.55, 1.20):
+                for ref in (0.03, 0.06):
+                    grid.append((dict(carriage_drive_k_translation=drive_k,
+                                      k_translation_base=ee_k,
+                                      max_carriage_speed=speed), ref))
+
+    def score_of(overrides, ref, board_z, seed):
+        env = make_env(board_z, seed)
+        env.reset(seed=seed, options={"fixture_index": 0})
+        policy = VMCScheduled(overrides, offset_ref=ref)
+        policy.reset()
+        m = rollout(env, seed, policy)
+        env.close()
+        return (m["force_integral"] / 100.0 + m["err_final_mm"] / 100.0
+                + 20.0 * (0.0 if m["crossed"] else 1.0))
+
+    scored = []
+    for overrides, ref in grid:
+        sc = np.mean([score_of(overrides, ref, b, 7) for b in DATA_BOARDS[:2]])
+        scored.append((sc, overrides, ref))
+    scored.sort(key=lambda x: x[0])
+    print("  top-5 train scores:")
+    for sc, ov, ref in scored[:5]:
+        print(f"    {sc:6.2f}  {ov} offset_ref={ref}")
+    best = None
+    for sc, ov, ref in scored[:4]:
+        val = np.mean([score_of(ov, ref, BOARDS["heldout"], s) for s in (7, 1234)])
+        if best is None or val < best[0]:
+            best = (val, ov, ref)
+    print(f"  selected {best[1]} offset_ref={best[2]} (val {best[0]:.2f})")
+    json.dump(dict(overrides=best[1], offset_ref=best[2]),
+              open(OUT / "vmc_tuned_cfg.json", "w"))
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--stage", default="all", choices=("probe", "data", "train", "dagger", "dagger2", "eval", "report", "all"))
+    parser.add_argument("--stage", default="all", choices=("probe", "data", "train", "dagger", "dagger2", "tune_vmc", "eval", "report", "all"))
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
@@ -741,6 +793,8 @@ def main():
         print("== dagger =="); stage_dagger()
     if args.stage in ("eval", "all"):
         print("== eval =="); stage_eval()
+    if args.stage in ("tune_vmc", "all"):
+        print("== tune_vmc =="); stage_tune_vmc()
     if args.stage in ("report", "all"):
         print("== report =="); stage_report()
     print(f"done {time.time()-t0:.0f}s")
