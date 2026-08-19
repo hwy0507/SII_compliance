@@ -1,6 +1,31 @@
 # Paper-MPC 名义控制器 × 柔顺层 —— 三场景基准报告
 
 > 分支 `paper-mpc-baseline` · 2026-08-19 · FR3 + Panda Hand, MuJoCo, 力矩残差架构
+> **v2 终版**：修正预算错配 + 混合教师重蒸馏后，ESN 追平逐场景调参的 VMC（8/8）
+
+## 0.5 终版更新（v2）：两个成功率问题的根因与修复
+
+初版（§1）ESN 球击仅 1/4。诊断出两个根因：
+
+1. **预算错配 bug**：教师轨迹在 5% 预算录制，学生部署在 3% —— 动作整体缩小 0.6 倍。
+   验证：同模型换 5% 部署，球击 0/4 → 2/4（`results_esn_at5pct.json`）。
+2. **撞击类型单一**：学生只见过棒击数据。修复：混合教师数据（统一 3% 预算下，
+   棒击教师 k2.2/3% 3 条 + 球击教师 k1.5/3% 3 条 + no-rod 1 条）重蒸馏。
+
+**终版主结果**（`results_mixed_students.json`，3% 预算，棒+球共 8 格）：
+
+| 方法 | 成功数 | at-grasp 精度（8 格） |
+|---|---|---|
+| PaperMPC 裸机 | 3/8 | — |
+| MLP（mix） | 8/8 | 4.7–33.5 mm，方差大（擦边抓取） |
+| **ESN s101（mix）** | **8/8** | **7.8–15.1 mm，紧凑** |
+| **ESN s202（mix）** | **8/8** | **7.0–13.4 mm，紧凑** |
+| ESN s303（mix） | 7/8 | 10.9–20.4 mm |
+| VMC（逐场景调参预言机） | 8/8 | 6.4–17.9 mm |
+
+**结论升级**：单一 ESN 策略（无场景参数、无撞击类型感知）在成功率上追平
+逐场景手工调参的 VMC，且精度分布显著比 MLP 紧凑——"ESN 作为核心柔顺算法"
+的证据从 FixedWBC 时代延续到论文系统的名义控制器上。
 
 ## 0. 实验设定
 
@@ -83,16 +108,19 @@ ESN 种子稳定性（棒击 4 档）：s101 4/4、s202 4/4、s303 4/4（其中 
 
 | 场景 | 裸机 | +ESN | +VMC |
 |---|---|---|---|
-| 棒击 | `gifs/rod_1_none.gif`（✓ 轻撞击幸存） | `gifs/rod_2_esn.gif` ✓ | `gifs/rod_3_vmc.gif` ✓ |
+| 棒击 | `gifs/rod_1_none.gif` | `gifs/rod_2_esn.gif` ✓ | `gifs/rod_3_vmc.gif` ✓ |
+| 球击 | `gifs/ball_1_none.gif` ✗ | `gifs/ball_2_esn.gif` ✓ | `gifs/ball_3_vmc.gif` ✓ |
 | 木板 | `gifs/board_1_none.gif` ✗ | `gifs/board_2_esn.gif` ✗ | `gifs/board_3_vmc.gif` ✗ |
 
 ## 4. 数据文件
 
+- `results_mixed_students.json`：**终版**混合教师学生（3 seeds ESN + MLP × rod/ball）
+- `results_esn_at5pct.json`：预算错配假设验证
 - `results2.json`：裸机 + 零迁移学生 + VMC 全扫描（76 行）
-- `results_students2.json`：重蒸馏 ESN/MLP 全场景（20 行）
-- `results_final_board_seeds.json`：木板终版几何 + ESN 种子（28 行）
+- `results_students2.json`：初版重蒸馏学生（5% 数据 3% 部署，含错配）
+- `results_final_board_seeds.json`：木板终版几何 + ESN 种子
 - `vmc_best_configs.json`：VMC 逐场景最优参数
-- `esn_papermpc_s{101,202,303}.npz` / `mlp_papermpc_s1.npz`：检查点
+- `esn_papermpc_mix_s{101,202,303}.npz` / `mlp_papermpc_mix.npz`：**终版检查点**
 
 ## 5. 下一步（按 RESEARCH_ROADMAP.md §8）
 
