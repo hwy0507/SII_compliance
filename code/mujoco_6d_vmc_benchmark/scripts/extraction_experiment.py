@@ -276,6 +276,8 @@ class VMCScenario:
         # yield along the push (admittance: follow the displacement direction)
         if en > 0.01:
             v = -self.k_yield * e[:3] / max(en, 1e-9) - self.damp * de[:3]
+            v[0] = min(v[0], 0.0)  # never yield backward (+x): the escape is
+            # forward-under the board; rear-face pin cycles killed mid board
             action[1:4] = np.clip(v / 0.5, -1.0, 1.0)
         r.bounded_filter_action = action
         return r
