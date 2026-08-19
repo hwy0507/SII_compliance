@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "method": "direct_esn_reservoir_seed_bootstrap",
+  "bootstrap_source": "stable_reference_behavior_cloning",
+  "model": "/home/arm1/vmc_mujoco_runtime/outputs/paper_mpc_bench/esn_papermpc_s1.npz",
+  "reservoir": {
+    "reservoir_size": 160,
+    "spectral_radius": 0.9,
+    "input_scale": 0.45,
+    "connection_probability": 0.12,
+    "bias_scale": 0.05,
+    "time_constant_s": 0.12,
+    "dt_s": 0.04,
+    "ridge_lambda": 0.0001,
+    "seed": 101,
+    "minimum_wbc_scale": 0.2,
+    "maximum_linear_yield_mps": 0.16,
+    "maximum_angular_yield_radps": 0.6,
+    "activation_error_start_m": 0.004,
+    "activation_error_full_m": 0.012,
+    "error_aligned_yield": false,
+    "rejoin_fade_enabled": false,
+    "rejoin_fade_maximum": 0.85,
+    "yield_smoothing_alpha": 1.0,
+    "disable_recurrence": false,
+    "zero_twist_error": false,
+    "zero_joint_velocity": false,
+    "mirror_gate_enabled": false,
+    "mirror_gate_channels": "y",
+    "mirror_gate_epsilon_m": 0.004,
+    "mirror_gate_epsilon_rad": 0.02
+  },
+  "training_samples": 3496,
+  "readout_training_mse": 0.00604671453237652,
+  "smoothness_weight": 0.0,
+  "derivative_match": true,
+  "relieve_direction_channels": false,
+  "episodes": [
+    {
+      "name": "reference_rod_0",
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/paper_mpc_bench/traces/rod_fx0_a.npz",
+      "samples": 152,
+      "stride": 1,
+      "repeat": 4,
+      "label_field": "bounded_action"
+    },
+    {
+      "name": "reference_rod_1",
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/paper_mpc_bench/traces/rod_fx1_a.npz",
+      "samples": 152,
+      "stride": 1,
+      "repeat": 4,
+      "label_field": "bounded_action"
+    },
+    {
+      "name": "reference_rod_2",
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/paper_mpc_bench/traces/rod_fx2_a.npz",
+      "samples": 152,
+      "stride": 1,
+      "repeat": 4,
+      "label_field": "bounded_action"
+    },
+    {
+      "name": "reference_rod_3",
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/paper_mpc_bench/traces/rod_fx1_posx.npz",
+      "samples": 152,
+      "stride": 1,
+      "repeat": 4,
+      "label_field": "bounded_action"
+    },
+    {
+      "name": "reference_rod_4",
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/paper_mpc_bench/traces/rod_fx2_negx.npz",
+      "samples": 152,
+      "stride": 1,
+      "repeat": 4,
+      "label_field": "bounded_action"
+    },
+    {
+      "name": "reference_no_rod",
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/paper_mpc_bench/traces/no_rod.npz",
+      "samples": 152,
+      "stride": 1,
+      "repeat": 3,
+      "label_field": "bounded_action"
+    }
+  ]
+}
