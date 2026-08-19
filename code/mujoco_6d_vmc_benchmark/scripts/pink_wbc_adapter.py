@@ -128,6 +128,20 @@ class PinkWBCAdapter:
         v_ff, w_ff = feedforward[:3], feedforward[3:]
         position_la = target_position + v_ff * self.lookahead_s
         rotation_la = Rotation.from_rotvec(w_ff * self.lookahead_s).as_matrix() @ hand_rotation
+        # FR3 adaptation 5: the compliance layer may scale the WBC FEEDBACK
+        # authority (gain scheduling) while keeping the feedforward intact.
+        # Split the lookahead target into feedforward and error parts and
+        # scale only the error: t' = ee + fb*(ref - ee) + ff*lookahead.
+        if feedback_scale < 1.0:
+            current_position = data.xpos[self.hand_id].copy()
+            current_rotation = data.xmat[self.hand_id].reshape(3, 3).copy()
+            fb_pos = target_position - current_position
+            fb_rot = Rotation.from_rotvec(so3_log(hand_rotation @ current_rotation.T))
+            scaled = current_position + feedback_scale * fb_pos + v_ff * self.lookahead_s
+            rotation_scaled = (fb_rot * feedback_scale).as_matrix() @ current_rotation
+            rotation_scaled = Rotation.from_rotvec(w_ff * self.lookahead_s).as_matrix() @ rotation_scaled
+            position_la = scaled
+            rotation_la = rotation_scaled
         # Hand-frame target -> flange (fr3_link8) target (adaptation 2).
         flange_rotation = rotation_la @ _R_HAND_TO_FLANGE
 

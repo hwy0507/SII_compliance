@@ -204,11 +204,11 @@ def build_fr3_hand_scene_xml(
         # nominal carry height; the arm must dip under it and rejoin beyond
         # x < 0.24.  Bits 4/4 collide with the hand (4/4) and the target
         # object (6/7), not with the table (2/2) or the rod (8/4, offstage).
-        thickness = 0.09
+        thickness = 0.03
         board_xml = f"""
       <geom name="extraction_board" type="box" pos="0.37 0 {board_underside_z + 0.5 * thickness:.4f}"
         size="0.13 0.20 {0.5 * thickness:.4f}" contype="4" conaffinity="4"
-        rgba="0.55 0.40 0.22 1" friction="0.6 0.02 0.002"
+        rgba="0.55 0.40 0.22 1" friction="0.15 0.02 0.002"
         solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
 """
     injected = f"""

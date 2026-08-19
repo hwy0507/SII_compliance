@@ -836,6 +836,11 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.last_action_contact_force = 0.0
         self.last_action_contact_penetration = 0.0
         self.last_action_contact_seen = False
+        # Twist-mode compliance channel: the action's wbc_scale slot doubles
+        # as WBC feedback-authority scheduling (feedforward stays full-rate).
+        if self.execution_mode == "twist" and self.observation_mode == "direct_esn":
+            self.current_predictive_wbc_feedback_scale = float(
+                getattr(self.applied_action, "wbc_scale", 1.0))
         command = self._wbc_command(self.step_count * RL_DT)
         assert self.data is not None
         pose_error = np.concatenate((
