@@ -189,6 +189,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         # Shadow (non-applied) expert channel for DAgger on full-authority
         # students: externally set each step; consumed in takeover modes.
         self.expert_residual_torque: np.ndarray | None = None
+        # Optional substep-rate (250 Hz) residual policy hook for high-rate
+        # compliance experiments: called inside every physics substep with the
+        # live MuJoCo data before torque application.
+        self.substep_policy_hook = None
         self._shadow_torque_components: dict[str, np.ndarray] | None = None
         self._shadow_previous_torque = np.zeros(ARM_DOF)
         self.reward_config = reward_config or VelocityResidualRewardConfig()
@@ -543,6 +547,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             CONTROL_DT,
             self.safety_config,
         )
+        if self.substep_policy_hook is not None and self.execution_mode == "torque_residual":
+            self._residual_torque_command = np.asarray(
+                self.substep_policy_hook(self.data, command), dtype=float)
         if self.execution_mode == "torque_takeover" or self.execution_mode == "torque_takeover_gc":
             # Full-authority learned controller: the policy action is the
             # TOTAL joint torque in units of the hardware limits ([-1, 1] per
