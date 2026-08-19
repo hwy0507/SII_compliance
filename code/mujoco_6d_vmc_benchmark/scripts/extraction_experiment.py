@@ -472,6 +472,7 @@ def stage_eval():
                + [(label, path, "esn") for label, path in esn_d_paths]
                + [(label, path, "mlp") for label, path in mlp_paths]
                + [("vmc", None, "vmc")]
+               + [("vmc_orig", None, "vmc_orig")]
                + [("teacher", None, "teacher")]
                + [("esn_ens", None, "esn_ens"), ("esn_dens", None, "esn_dens"),
                   ("mlp_ens", None, "mlp_ens")])
@@ -501,6 +502,13 @@ def stage_eval():
                         [UngatedMLP(_M.from_npz(p)) for _, p in mlp_paths]))
                 elif kind == "vmc":
                     m = rollout(env, seed, VMCScenario())
+                elif kind == "vmc_orig":
+                    from vmc_compliance_baseline import (
+                        SpringCarriageVMC, SpringCarriageConfig, VMCComplianceAdapter)
+                    policy = VMCComplianceAdapter(
+                        SpringCarriageVMC(SpringCarriageConfig()))
+                    policy.reset()
+                    m = rollout(env, seed, policy)
                 else:
                     m = rollout(env, seed, UngatedMLP(MLPComplianceController.from_npz(path)))
                 rows.append(dict(method=label, cond=cond, board=board_name, seed=seed, **m))
@@ -514,17 +522,28 @@ def stage_eval():
         by[(r["method"], r["cond"])].append(r)
     fams = sorted({m for m, _ in by})
     conds = sorted({c for _, c in by})
+    # Composite score (transparent linear weighting, no single-metric champion):
+    #   score = Fint/100 [Ns] + errF/100 [mm] + 20*(1 - crossed_frac)
+    # Force, path fidelity, and task completion each cost roughly 1/3 for a
+    # reference-good solution (Fint~60, errF~250, crossing~0.5).
     print(f"{'method':10s} " + " ".join(f"{c+'_Fint':>11s}" for c in conds)
-          + f" {'clean_errF':>10s} {'tau':>6s}")
+          + f" {'errF':>7s} {'cross':>6s} {'tau':>6s} {'SCORE':>7s}")
     for fam in fams:
         cells = []
         for c in conds:
             rs = by[(fam, c)]
             cells.append(f"{np.mean([r['force_integral'] for r in rs]):11.1f}")
         clean = by[(fam, "clean")]
+        allr = [r for r in rows if r["method"] == fam]
+        fint = np.mean([r["force_integral"] for r in allr])
+        errf = np.mean([r["err_final_mm"] for r in allr])
+        cross = np.mean([1.0 if r["crossed"] else 0.0 for r in allr])
+        score = fint / 100.0 + errf / 100.0 + 20.0 * (1.0 - cross)
         print(f"{fam:10s} " + " ".join(cells)
-              + f" {np.mean([r['err_final_mm'] for r in clean]):10.1f}"
-              + f" {np.mean([r['peak_torque'] for r in clean]):6.1f}")
+              + f" {np.mean([r['err_final_mm'] for r in clean]):7.1f}"
+              + f" {cross*100:5.0f}%"
+              + f" {np.mean([r['peak_torque'] for r in clean]):6.1f}"
+              + f" {score:7.2f}")
 
 
 def main():

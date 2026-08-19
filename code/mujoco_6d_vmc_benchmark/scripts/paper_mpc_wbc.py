@@ -92,14 +92,11 @@ class PaperMPCWBC:
             self.reference._joint_sample(i * self.waypoint_period_s)[0] for i in range(count)
         ])
         self.last_idx = 0
-        self._elapsed_s = 0.0
-        self.control_dt = 0.04
 
     def reset(self) -> None:
         self.last_idx = 0
-        self._elapsed_s = 0.0
 
-    def _nearest_waypoint(self, q: np.ndarray) -> int:
+    def _nearest_waypoint(self, q: np.ndarray, time_s: float) -> int:
         """Time-anchored forward nearest waypoint.
 
         The source searches forward from the last pointer over its planner
@@ -108,14 +105,14 @@ class PaperMPCWBC:
         line), so an unconstrained joint-space nearest search jumps to the
         retraced segment.  The queue is time-indexed here (waypoint i is the
         reference at i*dt_wp), so the search window is anchored at the
-        current control time: catch up if behind (within 0.5 s), never skip
+        simulation clock: catch up if behind (within 0.5 s), never skip
         more than ~1.7 s ahead.  This preserves the source mechanism (never
         skip waypoints after a perturbation) while disambiguating retrace.
         """
 
-        t_idx = int(self._elapsed_s / self.waypoint_period_s)
-        begin = max(self.last_idx, t_idx - 2)
-        end = min(len(self.waypoints), t_idx + 8 + 1)
+        t_idx = int(time_s / self.waypoint_period_s)
+        begin = max(self.last_idx, t_idx - 3)
+        end = min(len(self.waypoints), t_idx + 3 + 1)
         if end <= begin:
             return min(begin, len(self.waypoints) - 1)
         window = self.waypoints[begin:end]
@@ -139,8 +136,7 @@ class PaperMPCWBC:
             raise ValueError("WBC feedback scale must be finite and in (0, 1]")
 
         q = data.qpos[:ARM_DOF].copy()
-        self._elapsed_s += self.control_dt
-        self.last_idx = self._nearest_waypoint(q)
+        self.last_idx = self._nearest_waypoint(q, float(data.time))
         idx_ref = min(self.last_idx + self.lookahead, len(self.waypoints) - 1)
         error = self.waypoints[idx_ref] - q
         # The compliance layer scales only the feedback part of the nominal
