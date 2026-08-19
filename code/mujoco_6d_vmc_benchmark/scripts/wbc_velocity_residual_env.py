@@ -323,8 +323,13 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 def board_reference(model_, data_, hand_id_):
                     ref = PickLiftCarryReference(model_, data_, hand_id_)
                     knots = ref.q_knots.copy()
-                    knots[3][1] += 0.34   # lifted: lateral arc on joint 2
-                    knots[4][1] += 0.34   # carry: keep the offset
+                    # Lateral arc on joint 1 (base yaw, z-axis): at this
+                    # configuration joint 2's axis is horizontal and moves the
+                    # EE in x-z, NOT laterally -- the first attempt used joint
+                    # 2 and the hand never left y=0 (the board was never
+                    # touched).  Joint 1 swings the EE along +y as required.
+                    knots[3][0] += 0.40   # lifted: lateral arc on joint 1
+                    knots[4][0] += 0.40   # carry: keep the offset
                     ref.q_knots = knots
                     return ref
 
