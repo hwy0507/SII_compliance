@@ -98,6 +98,49 @@ class EnsemblePolicy:
         return r
 
 
+class VMCScheduled:
+    """Vendored SpringCarriageVMC + carriage-driven WBC feedback scheduling.
+
+    The original controller is untouched: its yield channels come through the
+    standard adapter.  The ONLY addition is that the carriage's own offset
+    magnitude drives the feedback-scheduling channel — a platform adaptation
+    for the strong-WBC world (the channel did not exist in the author's
+    original deployment context, so nothing faithful is being altered).
+    """
+
+    def __init__(self, k_sched: float = 8.0, offset_ref: float = 0.05) -> None:
+        from vmc_compliance_baseline import SpringCarriageVMC, SpringCarriageConfig
+        self.inner = SpringCarriageVMC(SpringCarriageConfig())
+        self.k_sched = k_sched
+        self.offset_ref = offset_ref
+
+    def reset(self) -> None:
+        self.inner.reset()
+
+    def act(self, joint_position, joint_velocity, wbc_task_twist, *,
+            pose_error=None, twist_error=None):
+        action = self.inner.act(pose_error, twist_error)
+        offset = float(np.linalg.norm(np.asarray(self.inner.offset[:3])))
+        bounded = np.zeros(7)
+        # Yield channels: normalize the carriage offset RATE by this env's
+        # yield limit (0.5 m/s / 2.0 rad/s in SCENARIO_SAFETY... angular uses
+        # the safety config's 0.60) so the env reproduces the ORIGINAL
+        # physical yield rates exactly.
+        lin_limit, ang_limit = 0.50, 0.60
+        rates = np.asarray(action[1:], dtype=float)
+        bounded[1:4] = np.clip(rates[:3] / lin_limit, -1.0, 1.0)
+        bounded[4:7] = np.clip(rates[3:] / ang_limit, -1.0, 1.0)
+        # Carriage-state scheduling: large carriage offset == the virtual
+        # model has yielded far == the WBC should ease its feedback.
+        bounded[0] = float(np.clip(offset / self.offset_ref, 0.0, 1.0))
+
+        class R:
+            pass
+        r = R()
+        r.bounded_filter_action = bounded
+        return r
+
+
 class NeutralPolicy:
     def reset(self) -> None: ...
 
@@ -360,19 +403,28 @@ def _atanh_targets(actions: np.ndarray, limit: float = 0.995) -> np.ndarray:
 
 def _fit_esn(episodes, seed, overrides):
     model = DirectESNController(DirectESNConfig(seed=seed, **overrides))
-    feats, tgts, sm_feat, sm_tgt = [], [], [], []
+    feats, tgts, sm_feat, sm_tgt, weights = [], [], [], [], []
     for episode in episodes:
         f = model.features(episode["obs"], washout_steps=WASHOUT)
         t = np.clip(np.asarray(episode["actions"][WASHOUT:]), -1.0, 1.0)
         feats.append(f); tgts.append(t)
         sm_feat.append(np.diff(f, axis=0)); sm_tgt.append(np.diff(_atanh_targets(t), axis=0))
+        w = episode.get("weights")
+        weights.append(np.asarray(w[WASHOUT:], dtype=float) if w is not None
+                       else np.ones(len(t)))
     f_all = np.concatenate(feats); t_all = np.concatenate(tgts)
     # engaged-step oversampling: the escape segment is ~1/3 of each episode;
     # without reweighting the ridge readout shrinks those actions and the
     # students lose the decisive dip/release timing.
+    w_all = np.concatenate(weights)
+    t_at = _atanh_targets(t_all)
+    repeats = np.maximum(1.0, w_all).astype(int)  # weight = row duplication
+    f_aug = np.repeat(f_all, repeats, axis=0)
+    t_aug = np.repeat(t_at, repeats, axis=0)
+    # keep the engaged oversampling on top of any custom weights
     mask = _engaged_mask(t_all)
-    f_aug = np.concatenate([f_all] + [f_all[mask]] * (ENGAGED_OVERSAMPLE - 1))
-    t_aug = np.concatenate([_atanh_targets(t_all)] + [_atanh_targets(t_all[mask])] * (ENGAGED_OVERSAMPLE - 1))
+    f_aug = np.concatenate([f_aug, f_all[mask]])
+    t_aug = np.concatenate([t_aug, t_at[mask]])
     mse = model.fit_readout(f_aug, t_aug,
                             smoothness_features=np.concatenate(sm_feat),
                             smoothness_weight=0.05,
@@ -461,18 +513,75 @@ def stage_dagger():
         print(f"  dagger esn seed={seed} MSE={mse:.5f}")
 
 
+def stage_dagger2():
+    """Second DAgger round with stalled-state weighting.
+
+    The students' failure mode is stalling inside the corridor (hand x stuck
+    in (0.26, 0.56) with low velocity): those exact states get extra weight
+    in the refit so the readout learns to keep the dip engaged there.
+    """
+    with np.load(OUT / "teacher_data.npz", allow_pickle=True) as archive:
+        episodes = list(archive["episodes"])
+    cfg = json.load(open(OUT / "esn_selected_cfg.json"))
+    students = [OUT / f"esn_d{s}.npz" for s in (11, 29, 97, 123, 555)]
+    new_episodes = []
+    for board_z in DATA_BOARDS:
+        for seed in (7, 29, 123):
+            env = make_env(board_z, seed)
+            env.reset(seed=seed, options={"fixture_index": 0})
+            teacher = HybridTeacher(board_z)
+            student = UngatedESN(DirectESNController.from_npz(
+                students[len(new_episodes) % len(students)]))
+            obs_list, act_list, weights = [], [], []
+            prev_x = None
+            done = False
+            while not done:
+                d = env.diagnostics()
+                hand = env.data.xpos[env._hand_id]
+                obs_list.append(DirectESNObservation(
+                    d["joint_position"], d["joint_velocity"], d["nominal_twist"],
+                    d["wbc_pose_error"], d["wbc_twist_error"]))
+                act_list.append(np.asarray(teacher.act(
+                    d["joint_position"], d["joint_velocity"], d["nominal_twist"],
+                    pose_error=d["wbc_pose_error"], twist_error=d["wbc_twist_error"],
+                    hand_x=float(hand[0]), contact=board_force(env) > 2.0,
+                    time_s=float(d["time_s"])).bounded_filter_action, dtype=float))
+                vx = 0.0 if prev_x is None else abs(hand[0] - prev_x) / 0.04
+                stalled = (CORRIDOR_X_OUT < hand[0] < CORRIDOR_X_IN) and vx < 0.03
+                weights.append(6.0 if stalled else 1.0)
+                prev_x = float(hand[0])
+                a = student.act(
+                    d["joint_position"], d["joint_velocity"], d["nominal_twist"],
+                    pose_error=d["wbc_pose_error"], twist_error=d["wbc_twist_error"],
+                ).bounded_filter_action
+                _, _, done, _, _ = env.step(np.asarray(a, dtype=float))
+            env.close()
+            new_episodes.append(dict(name=f"dagger2_b{board_z}", seed=seed, noise=0.0,
+                                     obs=obs_list, actions=act_list,
+                                     weights=np.asarray(weights), metrics={}))
+    combined = episodes + new_episodes
+    for seed in (11, 29, 97, 123, 555):
+        model, mse = _fit_esn(combined, seed, cfg)
+        model.save_npz(OUT / f"esn_e{seed}.npz")
+        print(f"  dagger2 esn seed={seed} MSE={mse:.5f}")
+
+
 def stage_eval():
     from mlp_compliance_baseline import MLPComplianceController
     esn_paths = [(f"esn_s{s}", OUT / f"esn_s{s}.npz") for s in (11, 29, 97, 123, 555)]
     mlp_paths = [(f"mlp_s{t}", OUT / f"mlp_s{t}.npz") for t in (0, 1, 2, 3, 4)]
     esn_d_paths = [(f"esn_d{s}", OUT / f"esn_d{s}.npz") for s in (11, 29, 97, 123, 555)
                    if (OUT / f"esn_d{s}.npz").exists()]
+    esn_e_paths = [(f"esn_e{s}", OUT / f"esn_e{s}.npz") for s in (11, 29, 97, 123, 555)
+                   if (OUT / f"esn_e{s}.npz").exists()]
     methods = ([("fw", None, None)]
                + [(label, path, "esn") for label, path in esn_paths]
                + [(label, path, "esn") for label, path in esn_d_paths]
+               + [(label, path, "esn") for label, path in esn_e_paths]
                + [(label, path, "mlp") for label, path in mlp_paths]
                + [("vmc", None, "vmc")]
                + [("vmc_orig", None, "vmc_orig")]
+               + [("vmc_orig_s", None, "vmc_orig_s")]
                + [("teacher", None, "teacher")]
                + [("esn_ens", None, "esn_ens"), ("esn_dens", None, "esn_dens"),
                   ("mlp_ens", None, "mlp_ens")])
@@ -502,6 +611,10 @@ def stage_eval():
                         [UngatedMLP(_M.from_npz(p)) for _, p in mlp_paths]))
                 elif kind == "vmc":
                     m = rollout(env, seed, VMCScenario())
+                elif kind == "vmc_orig_s":
+                    policy = VMCScheduled()
+                    policy.reset()
+                    m = rollout(env, seed, policy)
                 elif kind == "vmc_orig":
                     from vmc_compliance_baseline import (
                         SpringCarriageVMC, SpringCarriageConfig, VMCComplianceAdapter)
@@ -548,7 +661,7 @@ def stage_eval():
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--stage", default="all", choices=("probe", "data", "train", "dagger", "eval", "all"))
+    parser.add_argument("--stage", default="all", choices=("probe", "data", "train", "dagger", "dagger2", "eval", "all"))
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
@@ -558,6 +671,8 @@ def main():
         print("== data =="); stage_data()
     if args.stage in ("train", "all"):
         print("== train =="); stage_train()
+    if args.stage in ("dagger2", "all"):
+        print("== dagger2 =="); stage_dagger2()
     if args.stage in ("dagger", "all"):
         print("== dagger =="); stage_dagger()
     if args.stage in ("eval", "all"):

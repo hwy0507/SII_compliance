@@ -167,6 +167,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         if lift_board_tilt_deg is not None and robot != "fr3":
             raise ValueError("the inclined lift-board scene is wired for robot='fr3'")
         self.lift_board_tilt_deg = lift_board_tilt_deg
+        self._board_reference_factory = None
         if execution_mode not in ("twist", "torque_residual", "torque_takeover", "torque_takeover_gc"):
             raise ValueError(
                 "execution_mode must be 'twist', 'torque_residual', 'torque_takeover', or 'torque_takeover_gc'")
@@ -315,17 +316,32 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 # Two-pass placement: a throwaway board-free build provides
                 # the lift-path FK, then the real scene is rebuilt with the
                 # inclined static board centered on the mid-lift waypoint so
-                # the rising arm strikes its tilted face.
+                # the rising arm strikes its tilted face.  The board scenario
+                # uses a lateral lift arc (joint 2 offset) so the descent
+                # path and the board are geometrically separated — the arm
+                # strikes the board only while moving bottom-up.
+                def board_reference(model_, data_, hand_id_):
+                    ref = PickLiftCarryReference(model_, data_, hand_id_)
+                    knots = ref.q_knots.copy()
+                    knots[3][1] += 0.22   # lifted: lateral arc on joint 2
+                    knots[4][1] += 0.22   # carry: keep the offset
+                    ref.q_knots = knots
+                    return ref
+
                 probe_model, probe_data = make_fr3_hand_model(
                     self.menagerie, CONTACT_TIME_CONSTANT_S, **scene_kwargs)
                 probe_hand = mujoco.mj_name2id(
                     probe_model, mujoco.mjtObj.mjOBJ_BODY, "hand")
-                probe_ref = PickLiftCarryReference(probe_model, probe_data, probe_hand)
+                probe_ref = board_reference(probe_model, probe_data, probe_hand)
                 p_start = probe_ref.sample(2.70)[0]
                 p_end = probe_ref.sample(4.10)[0]
-                scene_kwargs["lift_board_center_m"] = tuple(
-                    float(v) for v in (0.55 * p_start + 0.45 * p_end))
+                center = 0.55 * p_start + 0.45 * p_end
+                center[1] += 0.09  # keep the board clear of the y=0 descent (hand half-width ~5 cm)
+                scene_kwargs["lift_board_center_m"] = tuple(float(v) for v in center)
                 scene_kwargs["lift_board_tilt_deg"] = float(self.lift_board_tilt_deg)
+                self._board_reference_factory = board_reference
+            else:
+                self._board_reference_factory = None
             self.model, self.data = make_fr3_hand_model(
                 self.menagerie, CONTACT_TIME_CONSTANT_S, **scene_kwargs)
         elif self.robot == "panda":
@@ -369,7 +385,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         ]
         data.qvel[self._target_dof:self._target_dof + 6] = 0.0
         mujoco.mj_forward(model, data)
-        self.reference = PickLiftCarryReference(model, data, self._hand_id)
+        if self._board_reference_factory is not None:
+            self.reference = self._board_reference_factory(model, data, self._hand_id)
+        else:
+            self.reference = PickLiftCarryReference(model, data, self._hand_id)
         if self.wbc_backend == "pink":
             from pink_wbc_adapter import PinkWBCAdapter
 
