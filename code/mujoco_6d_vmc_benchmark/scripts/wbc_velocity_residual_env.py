@@ -128,6 +128,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         safety_config: VelocityResidualSafetyConfig | None = None,
         torque_limit_scale: float = 1.0,
         robot: str = "panda",
+        wbc_backend: str = "fixed",
+        wbc_urdf_path: str | Path | None = None,
         rod_hold_extension_s: float = 0.0,
         joint_velocity_noise_std: float = 0.0,
         execution_mode: str = "twist",
@@ -151,8 +153,15 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.rod_enabled = bool(rod_enabled)
         self.safety_config = safety_config or VelocityResidualSafetyConfig()
         self.robot = robot
-        if execution_mode not in ("twist", "torque_residual"):
-            raise ValueError("execution_mode must be 'twist' or 'torque_residual'")
+        if wbc_backend not in ("fixed", "pink"):
+            raise ValueError("wbc_backend must be 'fixed' or 'pink'")
+        if wbc_backend == "pink" and robot != "fr3":
+            raise ValueError("the vendored Pink-IK WBC backend is wired for robot='fr3'")
+        self.wbc_backend = wbc_backend
+        self.wbc_urdf_path = wbc_urdf_path
+        if execution_mode not in ("twist", "torque_residual", "torque_takeover", "torque_takeover_gc"):
+            raise ValueError(
+                "execution_mode must be 'twist', 'torque_residual', 'torque_takeover', or 'torque_takeover_gc'")
         if not 0.0 < residual_torque_scale <= 1.0:
             raise ValueError("residual torque scale must lie in (0, 1]")
         self.execution_mode = execution_mode
@@ -173,6 +182,15 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.residual_torque_limits = self.torque_limits * self._pending_residual_scale
         self.physics_torque_history: list[np.ndarray] = []
         self._residual_torque_command = np.zeros(ARM_DOF)
+        self._takeover_torque_command = np.zeros(ARM_DOF)
+        # Per-step torque decomposition of the LAST physics substep, exposed in
+        # diagnostics for architecture-comparison experiments.
+        self._last_torque_components: dict[str, np.ndarray] | None = None
+        # Shadow (non-applied) expert channel for DAgger on full-authority
+        # students: externally set each step; consumed in takeover modes.
+        self.expert_residual_torque: np.ndarray | None = None
+        self._shadow_torque_components: dict[str, np.ndarray] | None = None
+        self._shadow_previous_torque = np.zeros(ARM_DOF)
         self.reward_config = reward_config or VelocityResidualRewardConfig()
         self.residual_window_end_at_grasp = bool(residual_window_end_at_grasp)
         self.residual_energy_tank_enabled = bool(residual_energy_tank)
@@ -324,7 +342,15 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         data.qvel[self._target_dof:self._target_dof + 6] = 0.0
         mujoco.mj_forward(model, data)
         self.reference = PickLiftCarryReference(model, data, self._hand_id)
-        self.fixed_wbc = FixedBasePandaWBC(model, self._hand_id, data.qpos[:ARM_DOF])
+        if self.wbc_backend == "pink":
+            from pink_wbc_adapter import PinkWBCAdapter
+
+            if self.wbc_urdf_path is None:
+                raise ValueError("wbc_backend='pink' requires wbc_urdf_path (FR3 URDF)")
+            self.fixed_wbc = PinkWBCAdapter(
+                model, self._hand_id, data.qpos[:ARM_DOF], self.wbc_urdf_path)
+        else:
+            self.fixed_wbc = FixedBasePandaWBC(model, self._hand_id, data.qpos[:ARM_DOF])
 
     def _extended_hold_profile_time(self, time_s: float) -> float:
         """Freeze the rod inside the hold window to extend it physically.
@@ -446,6 +472,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.previous_policy_action[:] = 0.0
         self.previous_joint_velocity_command[:] = 0.0
         self.previous_torque = self.data.qfrc_bias[:ARM_DOF].copy()
+        self._shadow_previous_torque = self.data.qfrc_bias[:ARM_DOF].copy()
+        self.expert_residual_torque = None
+        self._last_torque_components = None
+        self._shadow_torque_components = None
         self.previous_twist[:] = 0.0
         self.previous_acceleration[:] = 0.0
         self.previous_position_error = 0.0
@@ -513,26 +543,87 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             CONTROL_DT,
             self.safety_config,
         )
-        applied_torque, feasible_scale = safe_velocity_tracking_torque(
-            data.qfrc_bias[:ARM_DOF].copy(),
-            data.qvel[:ARM_DOF].copy(),
-            qdot_command,
-            self.previous_torque,
-            CONTROL_DT,
-            self.safety_config,
-            torque_limits=self.torque_limits,
-        )
-        if self.execution_mode == "torque_residual":
-            # Impedance-style compliance channel: the policy action is a raw
-            # joint-torque residual (clipped to its own budget and slewed by
-            # the shared clamp) added on top of the WBC velocity servo, so a
-            # collision is softened in the force domain instead of by moving
-            # the reference away from the nominal path.
-            residual = np.clip(
-                np.asarray(self._residual_torque_command, dtype=float),
-                -self.residual_torque_limits, self.residual_torque_limits)
+        if self.execution_mode == "torque_takeover" or self.execution_mode == "torque_takeover_gc":
+            # Full-authority learned controller: the policy action is the
+            # TOTAL joint torque in units of the hardware limits ([-1, 1] per
+            # joint).  No velocity servo runs.  The *_gc variant keeps a pure
+            # gravity-compensation feedthrough so the policy only has to learn
+            # the dynamic part; the plain variant must learn gravity as well.
+            bias_feedthrough = data.qfrc_bias[:ARM_DOF].copy() \
+                if self.execution_mode == "torque_takeover_gc" else np.zeros(ARM_DOF)
+            takeover = np.clip(
+                np.asarray(self._takeover_torque_command, dtype=float),
+                -self.torque_limits, self.torque_limits)
             applied_torque = np.clip(
-                applied_torque + residual, -self.torque_limits, self.torque_limits)
+                bias_feedthrough + takeover, -self.torque_limits, self.torque_limits)
+            feasible_scale = 1.0
+            self._last_torque_components = {
+                "total": applied_torque.copy(),
+                "bias": bias_feedthrough.copy(),
+                "servo": np.zeros(ARM_DOF),
+                "policy": takeover.copy(),
+            }
+            if self.expert_residual_torque is not None:
+                # Shadow expert (never applied): what the nominal architecture
+                # (WBC velocity servo + bounded residual) WOULD have commanded
+                # from this same state.  Provides exact DAgger labels for the
+                # full-authority student's visited states.
+                shadow_servo, _ = safe_velocity_tracking_torque(
+                    data.qfrc_bias[:ARM_DOF].copy(),
+                    data.qvel[:ARM_DOF].copy(),
+                    qdot_command,
+                    self._shadow_previous_torque,
+                    CONTROL_DT,
+                    self.safety_config,
+                    torque_limits=self.torque_limits,
+                )
+                shadow_residual = np.clip(
+                    np.asarray(self.expert_residual_torque, dtype=float),
+                    -self.residual_torque_limits, self.residual_torque_limits)
+                shadow_total = np.clip(
+                    shadow_servo + shadow_residual, -self.torque_limits, self.torque_limits)
+                self._shadow_torque_components = {
+                    "total": shadow_total.copy(),
+                    "bias": data.qfrc_bias[:ARM_DOF].copy(),
+                    "servo": shadow_servo.copy(),
+                    "policy": shadow_residual.copy(),
+                }
+                self._shadow_previous_torque = shadow_total.copy()
+        else:
+            applied_torque, feasible_scale = safe_velocity_tracking_torque(
+                data.qfrc_bias[:ARM_DOF].copy(),
+                data.qvel[:ARM_DOF].copy(),
+                qdot_command,
+                self.previous_torque,
+                CONTROL_DT,
+                self.safety_config,
+                torque_limits=self.torque_limits,
+            )
+            self._shadow_previous_torque = applied_torque.copy()
+            if self.execution_mode == "torque_residual":
+                # Impedance-style compliance channel: the policy action is a raw
+                # joint-torque residual (clipped to its own budget and slewed by
+                # the shared clamp) added on top of the WBC velocity servo, so a
+                # collision is softened in the force domain instead of by moving
+                # the reference away from the nominal path.
+                residual = np.clip(
+                    np.asarray(self._residual_torque_command, dtype=float),
+                    -self.residual_torque_limits, self.residual_torque_limits)
+                applied_torque = np.clip(
+                    applied_torque + residual, -self.torque_limits, self.torque_limits)
+                self._last_torque_components = {
+                    "total": applied_torque.copy(),
+                    "bias": data.qfrc_bias[:ARM_DOF].copy(),
+                    "servo": (applied_torque - residual).copy(),
+                    "policy": residual.copy(),
+                }
+            else:
+                self._last_torque_components = {
+                    "total": applied_torque.copy(),
+                    "bias": data.qfrc_bias[:ARM_DOF].copy(),
+                    "servo": applied_torque.copy(),
+                    "policy": np.zeros(ARM_DOF),
+                }
         data.ctrl[:ARM_DOF] = applied_torque
         data.ctrl[ARM_DOF] = self.reference.gripper_target(
             time_s - (self.fixture.grasp_time_s - 2.10)
@@ -711,6 +802,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "joint_velocity_command": self.previous_joint_velocity_command.copy(),
             "raw_joint_velocity_command": self.raw_joint_velocity_command.copy(),
             "applied_torque": self.previous_torque.copy(),
+            "torque_components": self._last_torque_components,
+            "shadow_torque_components": self._shadow_torque_components,
             "joint_position": self.data.qpos[:ARM_DOF].copy(),
             "joint_velocity": self._noisy_joint_velocity(),
         }
@@ -724,6 +817,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             # Action contract in this mode: 7-D per-joint residual torque in
             # units of the per-joint residual budget ([-1, 1] each).
             self._residual_torque_command = raw_policy_action * self.residual_torque_limits
+        elif self.execution_mode in ("torque_takeover", "torque_takeover_gc"):
+            # Action contract in these modes: 7-D total joint torque in units
+            # of the per-joint HARDWARE torque limits ([-1, 1] each).
+            self._takeover_torque_command = raw_policy_action * TORQUE_LIMITS
         self.last_action_contact_force = 0.0
         self.last_action_contact_penetration = 0.0
         self.last_action_contact_seen = False
