@@ -1,8 +1,8 @@
 # Franka Research 3 Direct ESN Compliance Controller — 最终汇报
 
-## 1. 一句话总结
+## 1. 代码结构
 
-**ESN 控制器在 FR3 机械臂被撞击后仅偏离目标轨迹 1.9 mm（不做柔顺会偏离 20 mm，改善 90%），且 32 次独立训练全部可靠工作。**
+
 
 ---
 
@@ -138,8 +138,6 @@ $$a_t = \tanh(W_2 \tanh(W_1 \tilde{x}_t + b_1) + b_2)$$
 ![Ranking Summary](ranking_summary.png)
 
 $$\boxed{\text{ESN } (-18.2) > \text{MLP } (-9.8) > \text{VMC } (-8.9) > \text{Fixed WBC } (0)}$$
-
-ESN 比最强学习方法 MLP 好 **85%**，比手工调参的 VMC 好 **105%**——且是唯一同时具备种子级可靠性和传感退化生存力的方法。VMC（k=2.2, 3% budget）稳定通过全部 4 个 fixture，是一个合格但受限于静态弹簧律的强基线。
 
 ---
 
