@@ -336,7 +336,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 p_start = probe_ref.sample(2.70)[0]
                 p_end = probe_ref.sample(4.10)[0]
                 center = 0.75 * p_start + 0.25 * p_end
-                center[1] += 0.09  # keep the board clear of the y=0 descent (hand half-width ~5 cm)
+                center[1] += 0.09  # v2b: clear of the y=0 descent incl. open-finger edges (grasp stays clean)
                 scene_kwargs["lift_board_center_m"] = tuple(float(v) for v in center)
                 scene_kwargs["lift_board_tilt_deg"] = float(self.lift_board_tilt_deg)
                 self._board_reference_factory = board_reference

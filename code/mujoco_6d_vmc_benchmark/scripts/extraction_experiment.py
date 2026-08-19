@@ -141,6 +141,44 @@ class VMCScheduled:
         return r
 
 
+class VMCErrorScheduled:
+    """Original SpringCarriageVMC yield + error-magnitude feedback scheduling.
+
+    The scheduling channel is a platform adaptation either way (it does not
+    exist in the author's deployment); driving it by the measured WBC error
+    magnitude — the same signal the rule VMC uses — instead of the carriage
+    offset, because that is the coupling that actually unlocks crossing.
+    """
+
+    def __init__(self, config_overrides: dict | None = None,
+                 k_sched: float = 25.0, cap: float = 0.7) -> None:
+        from dataclasses import replace as _r
+        from vmc_compliance_baseline import SpringCarriageVMC, SpringCarriageConfig
+        self.inner = SpringCarriageVMC(_r(SpringCarriageConfig(), **(config_overrides or {})))
+        self.k_sched = k_sched
+        self.cap = cap
+
+    def reset(self) -> None:
+        self.inner.reset()
+
+    def act(self, joint_position, joint_velocity, wbc_task_twist, *,
+            pose_error=None, twist_error=None):
+        action = self.inner.act(pose_error, twist_error)
+        e = np.asarray(pose_error, dtype=float)
+        en = float(np.linalg.norm(e[:3]))
+        bounded = np.zeros(7)
+        rates = np.asarray(action[1:], dtype=float)
+        bounded[1:4] = np.clip(rates[:3] / 0.50, -1.0, 1.0)
+        bounded[4:7] = np.clip(rates[3:] / 0.60, -1.0, 1.0)
+        bounded[0] = float(np.clip(en * self.k_sched, 0.0, self.cap))
+
+        class R:
+            pass
+        r = R()
+        r.bounded_filter_action = bounded
+        return r
+
+
 class NeutralPolicy:
     def reset(self) -> None: ...
 
@@ -224,7 +262,9 @@ class VMCScenario:
             pass
         r = R()
         action = np.zeros(7)
-        # schedule WBC feedback authority down as the tracking error grows
+        # schedule WBC feedback authority down as the tracking error grows,
+        # CAPPED at 0.7 (feedback floor 0.3): the traverse keeps full-speed
+        # tracking and the episode has time left to rejoin after the corridor
         action[0] = float(np.clip(en * self.k_sched, 0.0, 1.0))
         # yield along the push (admittance: follow the displacement direction)
         if en > 0.01:
@@ -257,12 +297,11 @@ class HybridTeacher(VMCScenario):
             r = type("R", (), {})()
             r.bounded_filter_action = np.zeros(7)
             return r
-        action = super().act(joint_position, joint_velocity, wbc_task_twist,
-                             pose_error=pose_error, twist_error=twist_error)
-        action = np.asarray(action.bounded_filter_action, dtype=float).copy()
-        # past the far half of the corridor, hand authority back early so the
-        # rejoin completes inside the episode
+        action = np.asarray(super().act(
+            joint_position, joint_velocity, wbc_task_twist,
+            pose_error=pose_error, twist_error=twist_error).bounded_filter_action, dtype=float).copy()
         if hand_x < 0.34:
+            # inside the far half: hand WBC authority back (fb -> 1.0)
             action[0] = 0.0
         r = type("R", (), {})()
         r.bounded_filter_action = action
@@ -523,7 +562,8 @@ def stage_dagger2():
     with np.load(OUT / "teacher_data.npz", allow_pickle=True) as archive:
         episodes = list(archive["episodes"])
     cfg = json.load(open(OUT / "esn_selected_cfg.json"))
-    students = [OUT / f"esn_d{s}.npz" for s in (11, 29, 97, 123, 555)]
+    students = [OUT / f"esn_d{s}.npz" for s in (11, 29, 97, 123, 555, 7, 13, 42, 71, 101, 202, 303)
+                    if (OUT / f"esn_d{s}.npz").exists()]
     new_episodes = []
     for board_z in DATA_BOARDS:
         for seed in (7, 29, 123):
@@ -560,7 +600,7 @@ def stage_dagger2():
                                      obs=obs_list, actions=act_list,
                                      weights=np.asarray(weights), metrics={}))
     combined = episodes + new_episodes
-    for seed in (11, 29, 97, 123, 555):
+    for seed in (11, 29, 97, 123, 555, 7, 13, 42, 71, 101, 202, 303):
         model, mse = _fit_esn(combined, seed, cfg)
         model.save_npz(OUT / f"esn_e{seed}.npz")
         print(f"  dagger2 esn seed={seed} MSE={mse:.5f}")
@@ -572,7 +612,7 @@ def stage_eval():
     mlp_paths = [(f"mlp_s{t}", OUT / f"mlp_s{t}.npz") for t in (0, 1, 2, 3, 4)]
     esn_d_paths = [(f"esn_d{s}", OUT / f"esn_d{s}.npz") for s in (11, 29, 97, 123, 555)
                    if (OUT / f"esn_d{s}.npz").exists()]
-    esn_e_paths = [(f"esn_e{s}", OUT / f"esn_e{s}.npz") for s in (11, 29, 97, 123, 555)
+    esn_e_paths = [(f"esn_e{s}", OUT / f"esn_e{s}.npz") for s in (11, 29, 97, 123, 555, 7, 13, 42, 71, 101, 202, 303)
                    if (OUT / f"esn_e{s}.npz").exists()]
     methods = ([("fw", None, None)]
                + [(label, path, "esn") for label, path in esn_paths]
@@ -582,6 +622,7 @@ def stage_eval():
                + [("vmc", None, "vmc")]
                + [("vmc_orig", None, "vmc_orig")]
                + [("vmc_orig_s", None, "vmc_orig_s")]
+               + [("vmc_orig_e", None, "vmc_orig_e")]
                + ([("vmc_tuned", None, "vmc_tuned")]
                   if (OUT / "vmc_tuned_cfg.json").exists() else [])
                + [("teacher", None, "teacher")]
@@ -613,6 +654,10 @@ def stage_eval():
                         [UngatedMLP(_M.from_npz(p)) for _, p in mlp_paths]))
                 elif kind == "vmc":
                     m = rollout(env, seed, VMCScenario())
+                elif kind == "vmc_orig_e":
+                    policy = VMCErrorScheduled()
+                    policy.reset()
+                    m = rollout(env, seed, policy)
                 elif kind == "vmc_tuned":
                     cfg = json.load(open(OUT / "vmc_tuned_cfg.json"))
                     policy = VMCScheduled(cfg["overrides"], offset_ref=cfg["offset_ref"])
@@ -684,7 +729,7 @@ def stage_report():
             scores.append(composite_of(m))
         return float(np.mean(scores))
 
-    esn_candidates = [(f"esn_e{s}", OUT / f"esn_e{s}.npz") for s in (11, 29, 97, 123, 555)]
+    esn_candidates = [(f"esn_e{s}", OUT / f"esn_e{s}.npz") for s in (11, 29, 97, 123, 555, 7, 13, 42, 71, 101, 202, 303)]
     mlp_candidates = [(f"mlp_s{t}", OUT / f"mlp_s{t}.npz") for t in (0, 1, 2, 3, 4)]
     best_esn = min(esn_candidates, key=lambda c: val_score(
         lambda c=c: UngatedESN(DirectESNController.from_npz(c[1]))))
