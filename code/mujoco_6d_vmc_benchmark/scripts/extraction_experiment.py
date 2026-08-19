@@ -32,8 +32,8 @@ OUT = Path("/home/arm1/vmc_mujoco_runtime/outputs/extraction_esn")
 
 BOARDS = {"low": 0.605, "mid": 0.615, "high": 0.625, "heldout": 0.610}
 BOARD_X_LO, BOARD_X_HI = 0.44, 0.60   # board column (x)
-BOARD_EDGE_Y = 0.05                    # board's +y edge
-CLEAR_Y = 0.09                         # beyond this the lift is clear
+BOARD_EDGE_Y = 0.15                    # board's +y edge (BEYOND the path's y=0.09 end:
+CLEAR_Y = 0.19                         # dodge target: beyond the edge, then RETURN to 0.09
 WBC_SLOW_ACTION = 0.875   # action[0] giving wbc_scale ~= 0.30
 WASHOUT = 10
 
@@ -45,7 +45,7 @@ SCENARIO_SAFETY = VelocityResidualSafetyConfig(maximum_linear_yield_mps=0.50, mi
 # with the reference clamped at its final pose the WBC gets ~2 s to converge
 # back, which is what the rejoin-precision metric (hard 300 mm gate) demands.
 import wbc_velocity_residual_env as _wbc_env_module
-_wbc_env_module.SIM_TIME_S = 8.0
+_wbc_env_module.SIM_TIME_S = 10.0
 
 
 def make_env(board_z: float | None, seed: int, noise: float = 0.0):
@@ -303,11 +303,21 @@ class HybridTeacher:
         if self.board_z is None:
             r.bounded_filter_action = action
             return r
-        under = (BOARD_X_LO < hand_x < BOARD_X_HI and hand_y < CLEAR_Y
-                 and hand_z > self.board_z - 0.10)
+        # rising-phase gate: nominal twist's z-component says the lift has
+        # begun (deployable; robust to the ceiling pushing the hand below
+        # any fixed z-band, which stalled the previous z-condition gate)
+        rising = float(np.asarray(wbc_task_twist, dtype=float)[2]) > 0.02
+        under = (BOARD_X_LO < hand_x < BOARD_X_HI and hand_y < CLEAR_Y and rising)
         if under:
             action[0] = 1.0  # WBC feedback authority -> minimum
             action[2] = float(np.clip((CLEAR_Y - hand_y) / 0.05, 0.0, 1.0))  # +y
+        elif hand_y >= CLEAR_Y and pose_error is not None:
+            # cleared the edge: assisted return - bend the reference toward
+            # the nominal pose (+e), tapering as the rejoin converges
+            e = np.asarray(pose_error, dtype=float)[:3]
+            en = float(np.linalg.norm(e))
+            if en > 0.03:
+                action[1:4] = np.clip(e / max(en, 1e-9) * min(en / 0.15, 1.0), -1.0, 1.0)
         r.bounded_filter_action = action
         return r
 
@@ -409,48 +419,6 @@ class VMCScenario:
         return r
 
 
-class HybridTeacher(VMCScenario):
-    """VMC's continuous admittance while inside the corridor or in contact;
-    hard release beyond the far edge so the WBC regains authority and rejoins."""
-
-    def __init__(self, board_z: float | None, **kw) -> None:
-        super().__init__(**kw)
-        self.board_z = board_z
-        self.last_contact_t = -10.0
-
-    def act(self, joint_position, joint_velocity, wbc_task_twist, *,
-            pose_error=None, twist_error=None, hand_x=None, contact=False, time_s=0.0):
-        if self.board_z is None:
-            r = type("R", (), {})()
-            r.bounded_filter_action = np.zeros(7)
-            return r
-        in_corridor = CORRIDOR_X_OUT < hand_x < CORRIDOR_X_IN
-        if contact:
-            self.last_contact_t = time_s
-        engaged = in_corridor or (time_s - self.last_contact_t) < 0.6
-        if not engaged:
-            r = type("R", (), {})()
-            r.bounded_filter_action = np.zeros(7)
-            return r
-        action = np.asarray(super().act(
-            joint_position, joint_velocity, wbc_task_twist,
-            pose_error=pose_error, twist_error=twist_error).bounded_filter_action, dtype=float).copy()
-        if hand_x < 0.34:
-            # inside the far half: hand WBC authority back (fb -> 1.0)
-            action[0] = 0.0
-        if hand_x < CORRIDOR_X_OUT:
-            # beyond the board: assisted return - bend the reference toward
-            # the nominal path (+e) so the rejoin completes inside the episode
-            e = np.asarray(pose_error, dtype=float)
-            en = float(np.linalg.norm(e[:3]))
-            if en > 0.02:
-                action[1:4] = np.clip(e[:3] / max(en, 1e-9), -1.0, 1.0)
-        r = type("R", (), {})()
-        r.bounded_filter_action = action
-        return r
-
-
-
 def board_force(env) -> float:
     bid = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, "extraction_board")
     if bid < 0:
@@ -475,7 +443,8 @@ def rollout(env, seed: int, policy, *, teacher: Teacher | None = None, collect: 
     while not done:
         d = env.diagnostics()
         hand = env.data.xpos[env._hand_id]
-        if BOARD_X_LO < hand[0] < BOARD_X_HI and d["time_s"] > 2.5:
+        if (BOARD_X_LO < hand[0] < BOARD_X_HI and d["time_s"] > 2.5
+                and hand[2] < (env.table_board_underside_z or 1.0)):
             dodge_y = max(dodge_y, float(hand[1]))
         if teacher is not None:
             action = np.asarray(teacher.act(
