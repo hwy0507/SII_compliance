@@ -145,16 +145,16 @@ ESN 比最强学习方法 MLP 好 **85%**，比手工调参的 VMC 好 **105%**�
 
 ## 8. 任务演示动图（双撞击场景：抓取前棒击 → 抓取 → 抓取后二次撞击 → 回位）
 
-### Fixed WBC（无柔顺，硬顶被撞，任务失败）
+### Fixed WBC（无柔顺）
 ![Fixed WBC](fixed_wbc.gif)
 
-### VMC-Torque（手工虚拟模型控制，弹簧让开）
+### VMC-Torque
 ![VMC](vmc_torque.gif)
 
-### ESN-Torque（Proposed，学习的柔顺策略）
+### ESN-Torque（Proposed）
 ![ESN](esn_torque.gif)
 
-### MLP-Torque（无记忆神经网络基线）
+### MLP-Torque（无记忆）
 ![MLP](mlp_torque.gif)
 
 ---
@@ -168,22 +168,8 @@ ESN 比最强学习方法 MLP 好 **85%**，比手工调参的 VMC 好 **105%**�
 | 种子稳定性 | **±0.55 mm**（MLP ±3.57 mm，稳定 6.5 倍） |
 | 撞击时间泛化 | 9 个时间点波动 **< 0.5 mm** |
 | 力矩安全 | 从未超过 31.5 Nm（限位的 36%） |
-| 超越教师 | ESN 比其教师 VMC 好 105% |
+| vs 最强手工基线 | ESN 比稳定 VMC 好 105%（−18.2 vs −8.9 mm） |
+| 蒸馏来源 | 特权反事实教师（仅训练期，用接触力真值标注；部署零力传感） |
 
 **ESN 的 reservoir 时序积分捕捉到了手工弹簧律无法覆盖的碰撞动态**——这是学习方法的结构性优势，也是 ESN 作为核心算法（而非可替换拟合器）的实证依据。
 
----
-
-## 附录
-
-| 文件 | 说明 |
-|---|---|
-| `ALGORITHM_DETAILS.md` | 完整数学建模（所有方法的公式） |
-| `main_benchmark_32seeds.png` | 主实验三面板图（精度/可靠性/方差） |
-| `generalization_32seeds.png` | 泛化三维度图（时间/位置/速度） |
-| `ranking_summary.png` | 方法排名柱状图 |
-| `fixed_wbc.gif` | Fixed WBC 任务动图 |
-| `vmc_torque.gif` | VMC 力矩版任务动图 |
-| `mlp_torque.gif` | MLP 力矩版任务动图 |
-| `esn_torque.gif` | ESN (Proposed) 任务动图 |
-| `vmc_fixed_eval/` | 修复后 VMC (k=2.2, 3%) 全 fixture 评估 JSON |
