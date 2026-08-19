@@ -120,7 +120,7 @@ def train_esn(episodes, time_constant, seed):
         feats.append(model.features(episode["obs"], washout_steps=WASHOUT))
         tgts.append(np.clip(episode["targets"][ARCH][WASHOUT:], -1.0, 1.0))
     mse = model.fit_readout(np.concatenate(feats), np.concatenate(tgts))
-    return TakeoverStudent(model), mse
+    return model, mse
 
 
 def eval_full(controller, mode="torque_takeover_gc", seeds=(7, 20260817)):
@@ -175,9 +175,9 @@ def part_train():
         np.savez(OUT / f"attr_mlp_s{seed}.npz", w1=mlp.w1, b1=mlp.b1, w2=mlp.w2,
                  b2=mlp.b2, mean=mlp.mean, std=mlp.std)
         print(f"mlp_s{seed} mse={mse:.5f}")
-    for tc in (0.12, 0.01):
-        esn, mse = train_esn(episodes, tc, 29)
-        esn.model.save_npz(OUT / f"attr_esn_tau{tc}_s29.npz")
+    for tc in (0.12, 0.04):
+        model, mse = train_esn(episodes, tc, 29)
+        model.save_npz(OUT / f"attr_esn_tau{tc}_s29.npz")
         print(f"esn_tau{tc}_s29 mse={mse:.5f}")
 
 
@@ -197,7 +197,7 @@ def part_eval():
         with np.load(OUT / f"attr_mlp_s{seed}.npz") as a:
             ctrl = MLPStudent(a["w1"], a["b1"], a["w2"], a["b2"], a["mean"], a["std"])
         variants.append((f"mlp_s{seed}", ctrl, float("nan")))
-    for tc in (0.12, 0.01):
+    for tc in (0.12, 0.04):
         variants.append((f"esn_tau{tc}_s29",
                          TakeoverStudent(DirectESNController.from_npz(
                              OUT / f"attr_esn_tau{tc}_s29.npz")), float("nan")))
