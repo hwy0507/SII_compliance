@@ -194,8 +194,12 @@ GIF 生成参考服务器 `/tmp/run_gifs3.sh`（board）/`run_gifs2.sh`（ball�
    手指蹭板、毁掉抓取段）。
 5. **ESN/MLP 接口差异**：VMC 力矩版的 `act()` 要 `hand_jacobian` kwarg，ESN/MLP 不要——
    分发时按 `hasattr(ctrl, "residual_torque_limits")` 判断。
-6. **并行会话会切 git 分支**：本仓库有另一条工作线共用本地仓库，提交前 `git branch --show-current`
-   确认；用 `git push origin main:paper-mpc-baseline` 同步双分支。
+6. **并行会话会切 git 分支**：本仓库有另一条工作线共用本地仓库。**用户已定规则：
+   本支线的所有新工作一律提交在 `paper-mpc-baseline` 上，main 只在结果稳定时合并
+   （`git checkout main && git merge paper-mpc-baseline` 或 PR）**。每次提交前
+   `git branch --show-current` 确认；发现被切到 main 就先
+   `git checkout paper-mpc-baseline` 再提交。工作树里出现的 extraction_*/residual_*/
+   whole-body-motion-control 未提交改动属于并行线，不要动也不要顺手提交。
 7. **服务器长命令用 nohup + 日志文件**，expect 直连会断（exit 255）。
 
 ## 9. 关键文档索引
