@@ -840,7 +840,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         # as WBC feedback-authority scheduling (feedforward stays full-rate).
         if self.execution_mode == "twist" and self.observation_mode == "direct_esn":
             self.current_predictive_wbc_feedback_scale = float(
-                getattr(self.applied_action, "wbc_scale", 1.0))
+                getattr(self, "_last_policy_wbc_scale", 1.0))
         command = self._wbc_command(self.step_count * RL_DT)
         assert self.data is not None
         pose_error = np.concatenate((
@@ -912,6 +912,14 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             gated_action[0] *= self.current_authority_gate
             gated_action[1:] *= self.current_authority_gate
         self.applied_action = self.action_filter.filter(gated_action, RL_DT)
+        if self.execution_mode == "twist" and self.observation_mode == "direct_esn":
+            # The wbc_scale channel is consumed as WBC feedback-authority
+            # scheduling (wired above); applying it multiplicatively on the
+            # composed command as well would double-count the slowdown.
+            from dataclasses import replace as _dc_replace
+            self._last_policy_wbc_scale = float(self.applied_action.wbc_scale)
+            if self.applied_action.wbc_scale != 1.0:
+                self.applied_action = _dc_replace(self.applied_action, wbc_scale=1.0)
         self.slew_limited_actions += int(self.applied_action.slew_limited)
         self.saturated_policy_actions += int(np.any(np.abs(raw_policy_action) >= 0.98))
         self.cumulative_wbc_slowdown += 1.0 - self.applied_action.wbc_scale

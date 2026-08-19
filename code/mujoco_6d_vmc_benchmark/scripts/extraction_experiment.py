@@ -64,10 +64,14 @@ class Teacher:
         # During descent (twist mostly -z) the corridor x-window also matches,
         # and dipping there would drive the fingers into the table/block.
         carrying = nominal_vx < -0.02
-        if carrying and CORRIDOR_X_OUT < hand_x < CORRIDOR_X_IN and hand_z > z_target:
-            depth = hand_z - z_target
+        if carrying and CORRIDOR_X_OUT < hand_x < CORRIDOR_X_IN:
+            # Decouple: feedback stays scheduled low THROUGHOUT the corridor
+            # (otherwise z oscillates between dip and full-gain pull-up and
+            # the forward crawl stalls); the dip itself is continuous P.
             action[0] = 1.0  # WBC feedback authority -> minimum (0.10)
-            action[3] = -float(np.clip(depth / 0.05, 0.0, 1.0))  # P-hold yield
+            depth = hand_z - z_target
+            if depth > 0.0:
+                action[3] = -float(np.clip(depth / 0.05, 0.0, 1.0))  # P-hold yield
         return action
 
 
@@ -219,29 +223,13 @@ def stage_train():
         mse = model.fit_readout(np.concatenate(feats), np.concatenate(tgts))
         model.save_npz(OUT / f"esn_s{seed}.npz")
         print(f"  esn seed={seed} MSE={mse:.5f}")
-    # MLP: same data, two-layer tanh net, torch
-    import torch
-    xs = np.concatenate([np.stack([
-        np.concatenate([o.joint_position, o.joint_velocity, o.wbc_task_twist,
-                        o.wbc_pose_error, o.wbc_twist_error])
-        for o in ep["obs"][WASHOUT:]]) for ep in episodes])
-    ys = np.concatenate([np.asarray(ep["actions"][WASHOUT:]) for ep in episodes])
-    mean, std = xs.mean(0), xs.std(0) + 1e-8
-    xn = torch.tensor((xs - mean) / std, dtype=torch.float32)
-    yn = torch.tensor(ys, dtype=torch.float32)
-    torch.manual_seed(0)
-    net = torch.nn.Sequential(torch.nn.Linear(32, 64), torch.nn.Tanh(),
-                              torch.nn.Linear(64, 7), torch.nn.Tanh())
-    opt = torch.optim.Adam(net.parameters(), lr=1e-3)
-    for epoch in range(3000):
-        idx = torch.randint(0, len(xn), (4096,))
-        loss = torch.nn.functional.mse_loss(net(xn[idx]), yn[idx])
-        opt.zero_grad(); loss.backward(); opt.step()
-    with torch.no_grad():
-        print(f"  mlp final MSE={torch.nn.functional.mse_loss(net(xn), yn).item():.5f}")
-    w1, b1, w2, b2 = [p.detach().numpy().copy() for p in net.parameters()]
-    np.savez_compressed(OUT / "mlp.npz", controller_family=np.asarray(["mlp_baseline"]),
-                        mean=mean, std=std, w1=w1, b1=b1, w2=w2, b2=b2)
+    import subprocess, sys
+    result = subprocess.run([sys.executable, str(Path(__file__).parent / "extraction_mlp_train.py")],
+                            capture_output=True, text=True)
+    print(result.stdout.strip())
+    if result.returncode != 0:
+        print(result.stderr.strip()[-2000:])
+        raise RuntimeError("mlp subprocess failed")
     print("students saved")
 
 
