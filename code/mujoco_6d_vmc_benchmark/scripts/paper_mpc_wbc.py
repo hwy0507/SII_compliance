@@ -58,7 +58,7 @@ class PaperMPCWBC:
         lookahead: int = 2,
         joint_vel_max_radps: float = 7.0,
         search_window: int = 30,
-        waypoint_period_s: float = 0.04,
+        waypoint_period_s: float | None = None,
         horizon_s: float = 8.0,
     ) -> None:
         posture = np.asarray(nominal_posture, dtype=float)
@@ -74,24 +74,50 @@ class PaperMPCWBC:
         self.lookahead = int(lookahead)
         self.joint_vel_max = float(joint_vel_max_radps)
         self.search_window = int(search_window)
+        # Waypoint-queue resolution.  The source controller has no explicit
+        # feedforward: aiming k waypoints ahead IS its feedforward.  Steady
+        # ramp-tracking lag is qdot * (1/g_eff - k*dt_wp), so the queue is
+        # sampled at dt_wp = 1/(g_eff * k), the spacing at which the
+        # lookahead exactly cancels the one-step-solve lag (zero steady-state
+        # error, derived from the source's own gain and lookahead constants;
+        # the source's planner produced roughly this spacing).
+        if waypoint_period_s is None:
+            waypoint_period_s = 1.0 / (self.feedback_gain * self.lookahead)
         self.waypoint_period_s = float(waypoint_period_s)
         # Dense joint-space waypoint queue from the reference (their planner
         # emits a merged trajectory; ours is the reference sampled at the
-        # control rate).
-        count = int(round(horizon_s / waypoint_period_s)) + 1
+        # resolved queue spacing).
+        count = int(round(horizon_s / self.waypoint_period_s)) + 1
         self.waypoints = np.stack([
-            self.reference._joint_sample(i * waypoint_period_s)[0] for i in range(count)
+            self.reference._joint_sample(i * self.waypoint_period_s)[0] for i in range(count)
         ])
         self.last_idx = 0
+        self._elapsed_s = 0.0
+        self.control_dt = 0.04
 
     def reset(self) -> None:
         self.last_idx = 0
+        self._elapsed_s = 0.0
 
     def _nearest_waypoint(self, q: np.ndarray) -> int:
-        """Forward-window nearest waypoint (their _find_nearest index logic)."""
+        """Time-anchored forward nearest waypoint.
 
-        begin = max(0, self.last_idx - 2)
-        end = min(len(self.waypoints), self.last_idx + self.search_window)
+        The source searches forward from the last pointer over its planner
+        queue.  This benchmark's joint-space reference retraces itself (the
+        approach lowers joint 4 and the lift raises it back along the same
+        line), so an unconstrained joint-space nearest search jumps to the
+        retraced segment.  The queue is time-indexed here (waypoint i is the
+        reference at i*dt_wp), so the search window is anchored at the
+        current control time: catch up if behind (within 0.5 s), never skip
+        more than ~1.7 s ahead.  This preserves the source mechanism (never
+        skip waypoints after a perturbation) while disambiguating retrace.
+        """
+
+        t_idx = int(self._elapsed_s / self.waypoint_period_s)
+        begin = max(self.last_idx, t_idx - 2)
+        end = min(len(self.waypoints), t_idx + 8 + 1)
+        if end <= begin:
+            return min(begin, len(self.waypoints) - 1)
         window = self.waypoints[begin:end]
         distances = np.linalg.norm(window - q, axis=1)
         return begin + int(np.argmin(distances))
@@ -113,6 +139,7 @@ class PaperMPCWBC:
             raise ValueError("WBC feedback scale must be finite and in (0, 1]")
 
         q = data.qpos[:ARM_DOF].copy()
+        self._elapsed_s += self.control_dt
         self.last_idx = self._nearest_waypoint(q)
         idx_ref = min(self.last_idx + self.lookahead, len(self.waypoints) - 1)
         error = self.waypoints[idx_ref] - q

@@ -76,6 +76,28 @@ class Teacher:
         return action
 
 
+class EnsemblePolicy:
+    """Average the bounded actions of member policies (each keeps its state)."""
+
+    def __init__(self, members) -> None:
+        self.members = list(members)
+
+    def reset(self) -> None:
+        for member in self.members:
+            if hasattr(member, "reset"):
+                member.reset()
+
+    def act(self, *args, **kwargs):
+        actions = [np.asarray(m.act(*args, **kwargs).bounded_filter_action, dtype=float)
+                   for m in self.members]
+
+        class R:
+            pass
+        r = R()
+        r.bounded_filter_action = np.mean(actions, axis=0)
+        return r
+
+
 class NeutralPolicy:
     def reset(self) -> None: ...
 
@@ -324,6 +346,18 @@ def _engaged_mask(actions: np.ndarray) -> np.ndarray:
     return np.any(np.abs(actions) > 0.05, axis=1)
 
 
+def _atanh_targets(actions: np.ndarray, limit: float = 0.995) -> np.ndarray:
+    """Inverse-tanh target transform.
+
+    fit_readout solves a LINEAR least squares W f ~= y, but deployment emits
+    tanh(W f).  Fitting raw actions therefore systematically shrinks the
+    saturated escape actions (tanh(+-1) = +-0.76).  Fitting atanh(y) instead
+    makes tanh(W f) ~= y at deployment; the clip avoids the singularity at
+    +-1 (tanh(2.646) = 0.99, close enough for the smoothness-regularized fit).
+    """
+    return np.arctanh(np.clip(actions, -limit, limit))
+
+
 def _fit_esn(episodes, seed, overrides):
     model = DirectESNController(DirectESNConfig(seed=seed, **overrides))
     feats, tgts, sm_feat, sm_tgt = [], [], [], []
@@ -331,14 +365,14 @@ def _fit_esn(episodes, seed, overrides):
         f = model.features(episode["obs"], washout_steps=WASHOUT)
         t = np.clip(np.asarray(episode["actions"][WASHOUT:]), -1.0, 1.0)
         feats.append(f); tgts.append(t)
-        sm_feat.append(np.diff(f, axis=0)); sm_tgt.append(np.diff(t, axis=0))
+        sm_feat.append(np.diff(f, axis=0)); sm_tgt.append(np.diff(_atanh_targets(t), axis=0))
     f_all = np.concatenate(feats); t_all = np.concatenate(tgts)
     # engaged-step oversampling: the escape segment is ~1/3 of each episode;
     # without reweighting the ridge readout shrinks those actions and the
     # students lose the decisive dip/release timing.
     mask = _engaged_mask(t_all)
     f_aug = np.concatenate([f_all] + [f_all[mask]] * (ENGAGED_OVERSAMPLE - 1))
-    t_aug = np.concatenate([t_all] + [t_all[mask]] * (ENGAGED_OVERSAMPLE - 1))
+    t_aug = np.concatenate([_atanh_targets(t_all)] + [_atanh_targets(t_all[mask])] * (ENGAGED_OVERSAMPLE - 1))
     mse = model.fit_readout(f_aug, t_aug,
                             smoothness_features=np.concatenate(sm_feat),
                             smoothness_weight=0.05,
@@ -370,6 +404,7 @@ def stage_train():
         if score < best_score:
             best_cfg, best_score, best_mse = cfg, score, float(np.mean(mses))
     print(f"  selected {best_cfg} (val Fint {best_score:.1f})")
+    json.dump(best_cfg, open(OUT / "esn_selected_cfg.json", "w"))
     for seed in (11, 29, 97, 123, 555):
         model, mse = _fit_esn(episodes, seed, best_cfg)
         model.save_npz(OUT / f"esn_s{seed}.npz")
@@ -384,15 +419,62 @@ def stage_train():
     print("students saved")
 
 
+def stage_dagger():
+    """DAgger round: relabel student-visited states with the hybrid teacher."""
+    with np.load(OUT / "teacher_data.npz", allow_pickle=True) as archive:
+        episodes = list(archive["episodes"])
+    cfg = json.load(open(OUT / "esn_selected_cfg.json"))
+    members = [UngatedESN(DirectESNController.from_npz(OUT / f"esn_s{s}.npz"))
+               for s in (11, 29, 97, 123, 555)]
+    new_episodes = []
+    for board_z in DATA_BOARDS:
+        for seed in (7, 29):
+            env = make_env(board_z, seed)
+            env.reset(seed=seed, options={"fixture_index": 0})
+            teacher = HybridTeacher(board_z)
+            member = members[len(new_episodes) % len(members)]
+            obs_list, act_list = [], []
+            done = False
+            while not done:
+                d = env.diagnostics()
+                hand = env.data.xpos[env._hand_id]
+                obs_list.append(DirectESNObservation(
+                    d["joint_position"], d["joint_velocity"], d["nominal_twist"],
+                    d["wbc_pose_error"], d["wbc_twist_error"]))
+                act_list.append(np.asarray(teacher.act(
+                    d["joint_position"], d["joint_velocity"], d["nominal_twist"],
+                    pose_error=d["wbc_pose_error"], twist_error=d["wbc_twist_error"],
+                    hand_x=float(hand[0]), contact=board_force(env) > 2.0,
+                    time_s=float(d["time_s"])).bounded_filter_action, dtype=float))
+                student_action = member.act(
+                    d["joint_position"], d["joint_velocity"], d["nominal_twist"],
+                    pose_error=d["wbc_pose_error"], twist_error=d["wbc_twist_error"]
+                ).bounded_filter_action
+                _, _, done, _, _ = env.step(np.asarray(student_action, dtype=float))
+            env.close()
+            new_episodes.append(dict(name=f"dagger_b{board_z}", seed=seed, noise=0.0,
+                                     obs=obs_list, actions=act_list, metrics={}))
+    combined = episodes + new_episodes
+    for seed in (11, 29, 97, 123, 555):
+        model, mse = _fit_esn(combined, seed, cfg)
+        model.save_npz(OUT / f"esn_d{seed}.npz")
+        print(f"  dagger esn seed={seed} MSE={mse:.5f}")
+
+
 def stage_eval():
     from mlp_compliance_baseline import MLPComplianceController
     esn_paths = [(f"esn_s{s}", OUT / f"esn_s{s}.npz") for s in (11, 29, 97, 123, 555)]
     mlp_paths = [(f"mlp_s{t}", OUT / f"mlp_s{t}.npz") for t in (0, 1, 2, 3, 4)]
+    esn_d_paths = [(f"esn_d{s}", OUT / f"esn_d{s}.npz") for s in (11, 29, 97, 123, 555)
+                   if (OUT / f"esn_d{s}.npz").exists()]
     methods = ([("fw", None, None)]
                + [(label, path, "esn") for label, path in esn_paths]
+               + [(label, path, "esn") for label, path in esn_d_paths]
                + [(label, path, "mlp") for label, path in mlp_paths]
                + [("vmc", None, "vmc")]
-               + [("teacher", None, "teacher")])
+               + [("teacher", None, "teacher")]
+               + [("esn_ens", None, "esn_ens"), ("esn_dens", None, "esn_dens"),
+                  ("mlp_ens", None, "mlp_ens")])
     conditions = [("clean", board, 0.0) for board in ("low", "mid", "high", "heldout")] \
         + [("noisy", "mid", 0.008), ("noisy", "heldout", 0.008),
            ("noisy", "mid", 0.012), ("noisy", "heldout", 0.012)]
@@ -407,6 +489,16 @@ def stage_eval():
                     m = rollout(env, seed, NeutralPolicy())
                 elif kind == "esn":
                     m = rollout(env, seed, UngatedESN(DirectESNController.from_npz(path)))
+                elif kind == "esn_ens":
+                    m = rollout(env, seed, EnsemblePolicy(
+                        [UngatedESN(DirectESNController.from_npz(p)) for _, p in esn_paths]))
+                elif kind == "esn_dens":
+                    m = rollout(env, seed, EnsemblePolicy(
+                        [UngatedESN(DirectESNController.from_npz(p)) for _, p in esn_d_paths]))
+                elif kind == "mlp_ens":
+                    from mlp_compliance_baseline import MLPComplianceController as _M
+                    m = rollout(env, seed, EnsemblePolicy(
+                        [UngatedMLP(_M.from_npz(p)) for _, p in mlp_paths]))
                 elif kind == "vmc":
                     m = rollout(env, seed, VMCScenario())
                 else:
@@ -437,7 +529,7 @@ def stage_eval():
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--stage", default="all", choices=("probe", "data", "train", "eval", "all"))
+    parser.add_argument("--stage", default="all", choices=("probe", "data", "train", "dagger", "eval", "all"))
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
@@ -447,6 +539,8 @@ def main():
         print("== data =="); stage_data()
     if args.stage in ("train", "all"):
         print("== train =="); stage_train()
+    if args.stage in ("dagger", "all"):
+        print("== dagger =="); stage_dagger()
     if args.stage in ("eval", "all"):
         print("== eval =="); stage_eval()
     print(f"done {time.time()-t0:.0f}s")
