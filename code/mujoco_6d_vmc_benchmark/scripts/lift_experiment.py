@@ -69,14 +69,43 @@ EVAL_BOARDS = (("plank_arm", T0_DEFAULT, H_DEFAULT, V0_DEFAULT),
 EVAL_SEEDS = (7, 1234, 999)
 DATA_NOISE = 0.002
 
+# Validation cells for ALL controller tuning: DATA cells only, never the
+# eval boards (keep the final comparison clean).
+VAL_CELLS = (("plank_arm", 3.10, 0.74, 1.10), ("plank_payload", 2.90, 0.64, 0.90),
+             ("static", STATIC_Y, 24.0))
+
 ESN_GRID = (
     dict(),
     dict(reservoir_size=240),
+    dict(reservoir_size=320),
     dict(spectral_radius=1.05),
+    dict(spectral_radius=0.75),
     dict(input_scale=0.65),
     dict(reservoir_size=240, spectral_radius=1.05),
     dict(time_constant_s=0.06),          # fast-decay: fight the post-release echo
     dict(time_constant_s=0.06, reservoir_size=240),
+    dict(time_constant_s=0.06, reservoir_size=320, input_scale=0.65),
+    dict(ridge_lambda=1.0e-5, reservoir_size=240),
+    dict(time_constant_s=0.09, spectral_radius=1.05, reservoir_size=240),
+)
+
+# MLP architecture sweep (subprocess trainer honours MLP_HIDDEN/MLP_EPOCHS)
+MLP_GRID = ((128, 15000), (256, 15000), (256, 30000), (512, 30000))
+
+# VMC platform-adaptation sweep: the author's kappa_6d EE spring stays
+# frozen; only the carriage drive / deadband / speed limits vary.  The
+# untuned carriage never rejoins (errF ~100 mm) -- its drive spring
+# (75 N/m) is far too soft for this WBC's tracking authority.
+VMC_GRID = (
+    {},
+    dict(carriage_drive_k_translation=150.0),
+    dict(carriage_drive_k_translation=250.0, max_carriage_speed=0.8),
+    dict(carriage_drive_k_translation=250.0, max_carriage_speed=0.8,
+         deadband_m=0.004, deadband_rad=0.016),
+    dict(carriage_drive_k_translation=150.0, max_carriage_speed=0.8,
+         deadband_m=0.004, deadband_rad=0.016, carriage_drive_zeta=1.3),
+    dict(carriage_drive_k_translation=400.0, max_carriage_speed=0.9,
+         deadband_m=0.004, deadband_rad=0.016, carriage_drive_k_rotation=15.0),
 )
 
 
@@ -346,11 +375,40 @@ def stage_data() -> None:
     print(f"  saved {len(episodes)} episodes -> {OUT / 'teacher_data.npz'}")
 
 
-def _val_fint(model, entry, seed: int) -> float:
-    env = build_env(*entry, seed=seed)
-    m = rollout(env, seed, UngatedESN(model))
-    env.close()
-    return m["Fint"]
+def _val_score(policy, entries=VAL_CELLS, seed: int = 7) -> float:
+    scores = []
+    for entry in entries:
+        env = build_env(*entry, seed=seed)
+        m = rollout(env, seed, policy)
+        env.close()
+        scores.append(m["score"])
+    return float(np.mean(scores))
+
+
+def stage_tune_vmc() -> None:
+    """Fair-tune the replicated VMC's platform adaptation on validation cells."""
+    print("== tune: VMC carriage adaptation ==")
+    best_cfg, best_score = None, float("inf")
+    for cfg in VMC_GRID:
+        policy = VMCScheduled(config_overrides=cfg)
+        score = _val_score(policy)
+        env = build_env(*VAL_CELLS[2], seed=7)
+        m = rollout(env, 7, VMCScheduled(config_overrides=cfg))
+        env.close()
+        print(f"  vmc {cfg} -> val={score:6.2f} (static errF={m['errF_mm']:.0f}mm "
+              f"ok={int(m['completed'])})")
+        if score < best_score:
+            best_cfg, best_score = cfg, score
+    print(f"  selected vmc {best_cfg} (val {best_score:.2f})")
+    OUT.mkdir(parents=True, exist_ok=True)
+    json.dump({"config_overrides": best_cfg}, open(OUT / "vmc_cfg.json", "w"))
+
+
+def _tuned_vmc():
+    cfg_path = OUT / "vmc_cfg.json"
+    if cfg_path.exists():
+        return VMCScheduled(**json.load(open(cfg_path)))
+    return VMCScheduled()
 
 
 def stage_train() -> None:
@@ -365,9 +423,9 @@ def stage_train() -> None:
         scores = []
         for seed in (11, 29):
             model, mse = _fit_esn(episodes, seed, cfg)
-            scores.append(_val_fint(model, HELDOUT[0], seed))
+            scores.append(_val_score(UngatedESN(model)))
         score = float(np.mean(scores))
-        print(f"  grid {cfg} -> heldout Fint={score:.1f}")
+        print(f"  grid {cfg} -> val suite={score:.2f}")
         if score < best_score:
             best_cfg, best_score = cfg, score
     print(f"  selected {best_cfg} (val Fint {best_score:.1f})")
@@ -376,14 +434,29 @@ def stage_train() -> None:
         model, mse = _fit_esn(episodes, seed, best_cfg)
         model.save_npz(OUT / f"esn_s{seed}.npz")
         print(f"  esn seed={seed} MSE={mse:.5f}")
-    result = subprocess.run([sys.executable, str(Path(__file__).parent / "extraction_mlp_train.py")],
-                            capture_output=True, text=True,
-                            env={**_os.environ, "EXT_OUT": str(OUT)})
-    print(result.stdout.strip())
-    if result.returncode != 0:
-        print(result.stderr.strip()[-2000:])
-        raise RuntimeError("mlp subprocess failed")
-    print("students saved")
+    mlp_best, mlp_best_score = None, float("inf")
+    for hidden, epochs in MLP_GRID:
+        result = subprocess.run([sys.executable, str(Path(__file__).parent / "extraction_mlp_train.py")],
+                                capture_output=True, text=True,
+                                env={**_os.environ, "EXT_OUT": str(OUT),
+                                     "MLP_HIDDEN": str(hidden), "MLP_EPOCHS": str(epochs)})
+        if result.returncode != 0:
+            print(result.stderr.strip()[-1500:])
+            raise RuntimeError("mlp subprocess failed")
+        mlp = _students()[1]
+        score = _val_score(mlp)
+        print(f"  mlp h={hidden} e={epochs} -> val suite={score:.2f}")
+        if score < mlp_best_score:
+            mlp_best, mlp_best_score = (hidden, epochs), score
+    # retrain the winner (last subprocess run may not be it)
+    if mlp_best != MLP_GRID[-1]:
+        subprocess.run([sys.executable, str(Path(__file__).parent / "extraction_mlp_train.py")],
+                       capture_output=True, text=True,
+                       env={**_os.environ, "EXT_OUT": str(OUT),
+                            "MLP_HIDDEN": str(mlp_best[0]), "MLP_EPOCHS": str(mlp_best[1])})
+    json.dump({"hidden": mlp_best[0], "epochs": mlp_best[1]},
+              open(OUT / "mlp_cfg.json", "w"))
+    print(f"  mlp selected {mlp_best} (val {mlp_best_score:.2f}); students saved")
 
 
 def stage_dagger() -> None:
@@ -439,7 +512,7 @@ def _students():
 def stage_eval() -> None:
     print("== eval: FW / author-VMC / MLP / ESN on eval boards x seeds ==")
     esn, mlp = _students()
-    controllers = [("FW", NeutralPolicy()), ("VMC", VMCScheduled())]
+    controllers = [("FW", NeutralPolicy()), ("VMC", _tuned_vmc())]
     if mlp is not None:
         controllers.append(("MLP", mlp))
     controllers.append(("ESN", esn))
@@ -520,10 +593,11 @@ def stage_gif() -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("stage", choices=["probe", "data", "train", "dagger", "eval", "gif", "all"])
+    parser.add_argument("stage", choices=["probe", "data", "train", "dagger", "tunevmc", "eval", "gif", "all"])
     args = parser.parse_args()
     stages = {"probe": stage_probe, "data": stage_data, "train": stage_train,
-              "dagger": stage_dagger, "eval": stage_eval, "gif": stage_gif}
+              "dagger": stage_dagger, "tunevmc": stage_tune_vmc,
+              "eval": stage_eval, "gif": stage_gif}
     todo = stages.values() if args.stage == "all" else [stages[args.stage]]
     for stage in todo:
         stage()
