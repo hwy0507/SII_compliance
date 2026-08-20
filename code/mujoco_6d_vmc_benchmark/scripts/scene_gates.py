@@ -203,7 +203,7 @@ def main() -> None:
     parser.add_argument("--y-off", type=float, default=0.05)
     parser.add_argument("--z-off", type=float, default=0.03)
     parser.add_argument("--hx", type=float, default=0.18)
-    parser.add_argument("--hy", type=float, default=0.05)
+    parser.add_argument("--hy", type=float, default=0.035)
     parser.add_argument("--arc", type=float, default=0.40)
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--skip-c", action="store_true", help="sweeps: skip frame rendering")
