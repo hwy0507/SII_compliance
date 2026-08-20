@@ -46,7 +46,7 @@ SCENARIO_SAFETY = VelocityResidualSafetyConfig(maximum_linear_yield_mps=0.50, mi
 # with the reference clamped at its final pose the WBC gets ~2 s to converge
 # back, which is what the rejoin-precision metric (hard 300 mm gate) demands.
 import wbc_velocity_residual_env as _wbc_env_module
-_wbc_env_module.SIM_TIME_S = 10.0
+_wbc_env_module.SIM_TIME_S = 8.0
 
 
 def make_env(board_z: float | None, seed: int, noise: float = 0.0):
@@ -308,7 +308,16 @@ class HybridTeacher:
         # begun (deployable; robust to the ceiling pushing the hand below
         # any fixed z-band, which stalled the previous z-condition gate)
         rising = float(np.asarray(wbc_task_twist, dtype=float)[2]) > 0.02
-        under = (BOARD_X_LO < hand_x < BOARD_X_HI and hand_y < CLEAR_Y and rising)
+        in_column = BOARD_X_LO < hand_x < BOARD_X_HI and hand_y < CLEAR_Y
+        # LATCH: once the dodge engages (rising inside the column), it stays
+        # engaged until the edge is cleared - the rising signal itself weakens
+        # once scheduling starts (the WBC output twist fades at fb=0.1), which
+        # made the bare rising-gate oscillate off and killed the dodge.
+        if in_column and rising:
+            self._latched = True
+        if hand_y >= CLEAR_Y or hand_x > BOARD_X_HI + 0.05:
+            self._latched = False
+        under = bool(getattr(self, "_latched", False))
         if under:
             action[0] = 1.0  # WBC feedback authority -> minimum
             action[2] = float(np.clip((CLEAR_Y - hand_y) / 0.05, 0.0, 1.0))  # +y
@@ -478,6 +487,7 @@ def rollout(env, seed: int, policy, *, teacher: Teacher | None = None, collect: 
     e, f, x = np.asarray(errors), np.asarray(forces), np.asarray(hand_x)
     metrics = dict(
         crossed=bool(dodge_y > CLEAR_Y), x_final=float(x[-1]), dodge_y=float(dodge_y),
+        task_success=bool(info.get("task_success", False)),
         force_peak=float(f.max()), force_integral=float(f.sum() * 0.04),
         contact_s=float((f > 0.5).sum() * 0.04),
         err_final_mm=float(e[-1] * 1000.0), peak_torque=float(info["peak_torque_nm"]),
