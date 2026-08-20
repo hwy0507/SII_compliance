@@ -245,6 +245,15 @@ def build_fr3_hand_scene_xml(
         contype="5" conaffinity="5" rgba="0.62 0.45 0.24 1" friction="{friction_s} 0.02 0.002"
         solref="{solref_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
 """
+    # LIFT_PLANK_MODE=launch: momentum-limited flying plank -- a velocity
+    # actuator kicks the slide once, then joint damping/friction coast it to
+    # a stop.  The arm's own impedance then decides the impact force (the
+    # servo mode instead shoves with up to 300 N regardless of compliance).
+    import os as _os_mode
+    _launch = _os_mode.environ.get("LIFT_PLANK_MODE", "servo") == "launch"
+    slide_range = _os_mode.environ.get("LIFT_PLANK_RANGE", "0.65") if _launch else "0.20"
+    slide_damping = _os_mode.environ.get("LIFT_PLANK_DAMPING", "0.3") if _launch else "2.0"
+    slide_frictionloss = _os_mode.environ.get("LIFT_PLANK_FRICTIONLOSS", "0.02") if _launch else "0.0"
     injected = f"""
       <camera name="rod_track" pos="1.18 -1.42 0.86" xyaxes="0.79 0.61 0  -0.17 0.22 0.96"/>
       <geom name="table" type="box" pos="0.54 0 0.38" size="0.20 0.20 0.02"
@@ -256,7 +265,7 @@ def build_fr3_hand_scene_xml(
           solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
       </body>
       <body name="rod_support" pos="{approach.support_position_m[0]:.3f} {approach.support_position_m[1]:.3f} {approach.support_position_m[2]:.3f}">
-        <joint name="rod_slide" type="slide" axis="{approach.slide_axis_world[0]:.1f} {approach.slide_axis_world[1]:.1f} {approach.slide_axis_world[2]:.1f}" range="0 0.20" damping="2.0"/>
+        <joint name="rod_slide" type="slide" axis="{approach.slide_axis_world[0]:.1f} {approach.slide_axis_world[1]:.1f} {approach.slide_axis_world[2]:.1f}" range="0 {slide_range}" damping="{slide_damping}" frictionloss="{slide_frictionloss}"/>
         <geom name="rod_geom" type="{impactor['geom_type']}" size="{impactor['size']}" quat="{impactor.get('quat') or f'{approach.cylinder_quaternion_wxyz[0]:.7f} {approach.cylinder_quaternion_wxyz[1]:.7f} {approach.cylinder_quaternion_wxyz[2]:.7f} {approach.cylinder_quaternion_wxyz[3]:.7f}'}"
           mass="{impactor['mass']}" contype="{impactor.get('contype','8')}" conaffinity="{impactor.get('conaffinity','4')}" rgba="{impactor['rgba']}"
           friction="{impactor['friction']}" solref="{contact_time_constant_s:.5f} 1"
@@ -275,10 +284,18 @@ def build_fr3_hand_scene_xml(
       </body>
     """ + board_xml + lift_board_xml
     text = text.replace("  </worldbody>", injected + "  </worldbody>", 1)
-    rod_driver = (
-        '<position name="rod_driver" joint="rod_slide" kp="5000" '
-        'ctrllimited="true" ctrlrange="0 0.20" forcelimited="true" forcerange="-300 300"/>\n'
-    )
+    if _launch:
+        _kv = _os_mode.environ.get("LIFT_PLANK_KV", "25")
+        _fl = _os_mode.environ.get("LIFT_PLANK_FORCE", "40")
+        rod_driver = (
+            f'<velocity name="rod_driver" joint="rod_slide" kv="{_kv}" '
+            f'ctrllimited="true" ctrlrange="-3 3" forcelimited="true" forcerange="-{_fl} {_fl}"/>\n'
+        )
+    else:
+        rod_driver = (
+            '<position name="rod_driver" joint="rod_slide" kp="5000" '
+            'ctrllimited="true" ctrlrange="0 0.20" forcelimited="true" forcerange="-300 300"/>\n'
+        )
     text = text.replace("</actuator>", rod_driver + "</actuator>", 1)
     return text
 

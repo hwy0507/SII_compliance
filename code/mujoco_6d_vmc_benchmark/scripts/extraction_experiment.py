@@ -49,7 +49,18 @@ import wbc_velocity_residual_env as _wbc_env_module
 _wbc_env_module.SIM_TIME_S = 8.0
 
 
-def make_env(board_z: float | None, seed: int, noise: float = 0.0, tilt: float | None = None):
+def make_env(board_z: float | None, seed: int, noise: float = 0.0, tilt: float | None = None,
+             fixture=None):
+    """fixture: optional VelocityResidualFixture enabling the dynamic impactor
+    (rod_enabled=True); None keeps the v3 static-board behavior."""
+    if fixture is not None:
+        return PandaWBCVelocityResidualEnv(
+            menagerie=MENAGERIE, fan_ye_model_npz=None, fan_ye_train_summary_json=None,
+            observation_mode="direct_esn", rod_enabled=True, seed=seed, robot="fr3",
+            execution_mode="twist", wbc_backend="pink", wbc_urdf_path=URDF,
+            fixtures=(fixture,), table_board_underside_z=board_z,
+            safety_config=SCENARIO_SAFETY,
+            joint_velocity_noise_std=noise)
     return PandaWBCVelocityResidualEnv(
         menagerie=MENAGERIE, fan_ye_model_npz=None, fan_ye_train_summary_json=None,
         observation_mode="direct_esn", rod_enabled=False, seed=seed, robot="fr3",
@@ -432,7 +443,7 @@ class VMCScenario:
 
 def board_force(env) -> float:
     total = 0.0
-    for name in ("extraction_board", "lift_board"):
+    for name in ("extraction_board", "lift_board", "rod_geom"):
         bid = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, name)
         if bid < 0:
             continue

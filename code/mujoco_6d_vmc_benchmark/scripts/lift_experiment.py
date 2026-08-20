@@ -35,19 +35,25 @@ from extraction_experiment import (
     SCENARIO_SAFETY, WASHOUT, EnsemblePolicy, NeutralPolicy, UngatedESN,
     UngatedMLP, VMCScheduled, _fit_esn, board_force, make_env)
 
-TILT_DEFAULT = 25.0
-Y_OFF_DEFAULT = 0.05
-Z_OFF_DEFAULT = 0.03   # validated: lower clips the carried block, higher blocks the dodge
-HX, HY, ARC = 0.18, 0.035, 0.40
+# v4: dynamic flying plank (momentum/force-limited, arm-only contact).
+# The static-board family is retired: its FW-failure mechanism required the
+# carried block to graze the board (user-rejected visual), and any static
+# placement that strikes the wrist also intersects the home-pose forearm.
+from wbc_velocity_residual_env import VelocityResidualFixture
+
+T0_DEFAULT, H_DEFAULT, V0_DEFAULT = 3.00, 0.76, 1.0
+WINDOW_DEFAULT, KV_DEFAULT, FORCE_DEFAULT = "1.0", "40", "80"
 FR3_LIMITS = np.asarray([87.0] * 4 + [12.0] * 3)
 OUT = Path(_os.environ.get("EXT_OUT", "/home/arm1/vmc_mujoco_runtime/outputs/lift_esn"))
 DOCS = Path(__file__).resolve().parent.parent / "docs" / "lift_results"
 
-# Scenario-parameter grids: the env itself is deterministic per parameter
-# set, so diversity comes from contact geometry variation, not seeds.
-DATA_GRID = ((0.05, 25.0), (0.03, 25.0), (0.05, 20.0), (0.04, 24.0), (0.06, 24.0))
-HELDOUT = ((0.05, 23.0), (0.05, 22.0))
-EVAL_BOARDS = ((Y_OFF_DEFAULT, TILT_DEFAULT),) + HELDOUT
+# Scenario-parameter grids: (launch time, strike height, launch speed).
+# The env is deterministic per parameter set, so diversity comes from strike
+# timing/geometry variation, not seeds.
+DATA_GRID = ((3.00, 0.76, 1.00), (2.90, 0.74, 1.10), (3.10, 0.78, 0.90),
+             (3.00, 0.76, 1.20), (3.05, 0.74, 1.00))
+HELDOUT = ((2.95, 0.78, 1.05), (3.10, 0.76, 0.95))
+EVAL_BOARDS = ((T0_DEFAULT, H_DEFAULT, V0_DEFAULT),) + HELDOUT
 EVAL_SEEDS = (7, 1234, 999)
 DATA_NOISE = 0.002
 
@@ -62,13 +68,17 @@ ESN_GRID = (
 )
 
 
-def build_env(y_off: float, tilt: float, seed: int, noise: float = 0.0):
-    _os.environ["LIFT_BOARD_Y_OFF"] = f"{y_off}"
-    _os.environ["LIFT_BOARD_Z_OFF"] = f"{Z_OFF_DEFAULT}"
-    _os.environ["LIFT_BOARD_HX"] = f"{HX}"
-    _os.environ["LIFT_BOARD_HY"] = f"{HY}"
-    _os.environ["LIFT_BOARD_ARC"] = f"{ARC}"
-    return make_env(None, seed, noise=noise, tilt=tilt)
+def build_env(t0: float, h: float, v0: float, seed: int = 7, noise: float = 0.0):
+    """v4 plank env: (launch time, strike height, launch speed)."""
+    _os.environ["LIFT_PLANK_MODE"] = "launch"
+    _os.environ["LIFT_PLANK_WINDOW"] = WINDOW_DEFAULT
+    _os.environ["LIFT_PLANK_KV"] = KV_DEFAULT
+    _os.environ["LIFT_PLANK_FORCE"] = FORCE_DEFAULT
+    fx = VelocityResidualFixture(v0, h, t0, impactor_type="plank",
+                                 rod_approach_side="negative_y",
+                                 rod_center_x_m=0.55, rod_center_y_m=0.0,
+                                 rod_cycles=1, cycle_period_s=0.80)
+    return make_env(None, seed, noise=noise, tilt=None, fixture=fx)
 
 
 class LiftTeacher:
@@ -129,6 +139,11 @@ class LiftTeacher:
                 self.engaged = False
                 self.rejoin_s_elapsed = 0.0
         elif contact and self.rejoin_s_elapsed is None and dodge < 0.06:
+            self.engaged = True
+            self.eng_s = 0.0
+        elif contact and self.rejoin_s_elapsed is not None and self.rejoin_s_elapsed > self.rejoin_s:
+            # repeated strikes (dynamic plank): re-arm after the fade completes
+            self.rejoin_s_elapsed = None
             self.engaged = True
             self.eng_s = 0.0
         if self.engaged:
@@ -219,9 +234,9 @@ def rollout(env, seed: int, policy=None, *, teacher: LiftTeacher | None = None,
         dodge_mm=float(max(dodges, default=0.0) * 1000.0),
         max_obj_z=max_obj_z,
         peak_torque=float(info.get("peak_torque_nm", 0.0)))
-    m["score"] = (m["Fint"] / 100.0 + m["peak"] / 100.0 + m["contact_s"]
-                  + m["saturation_s"] + m["errF_mm"] / 100.0
-                  + 10.0 * (1.0 - float(completed)))
+    m["score"] = (m["peak"] / 25.0 + m["Fint"] / 50.0 + 0.5 * m["chatter"]
+                  + m["contact_s"] + m["saturation_s"] + m["errF_mm"] / 100.0
+                  + 5.0 * (1.0 - float(completed)))
     if collect:
         return m, dict(obs=np.asarray(obs, dtype=object), actions=np.asarray(acts),
                        weights=np.asarray(weights))
@@ -238,18 +253,18 @@ def _fmt(m: dict) -> str:
 
 def stage_probe() -> None:
     print("== probe: FW baselines and teacher mini-gate ==")
-    env = build_env(Y_OFF_DEFAULT, TILT_DEFAULT, 7)
+    env = build_env(T0_DEFAULT, H_DEFAULT, V0_DEFAULT)
     fw = rollout(env, 7, NeutralPolicy())
-    print(f"  FW board   : {_fmt(fw)}")
+    print(f"  FW plank   : {_fmt(fw)}")
     env.close()
     env = make_env(None, 7, tilt=None)
     free = rollout(env, 7, NeutralPolicy())
-    print(f"  FW free    : {_fmt(free)} (apex baseline)")
+    print(f"  FW free    : {_fmt(free)} (task baseline)")
     env.close()
     best, best_m = None, None
     for y_yield in (0.65, 0.85, 1.0):
         for pre_t in (2.70, 2.80):
-            env = build_env(Y_OFF_DEFAULT, TILT_DEFAULT, 7)
+            env = build_env(T0_DEFAULT, H_DEFAULT, V0_DEFAULT)
             m = rollout(env, 7, teacher=LiftTeacher(y_yield=y_yield, pre_t=pre_t))
             env.close()
             print(f"  teacher y={y_yield} pre={pre_t}: {_fmt(m)}")
@@ -261,16 +276,21 @@ def stage_probe() -> None:
         raise SystemExit("probe: no teacher variant completes the task -- revise the rule")
     print(f"  selected teacher {best}: {_fmt(best_m)}")
     failures = []
-    if fw["completed"]:
-        failures.append("scene invalid: FW completes -- obstacle does not demand compliance")
     if best_m["held_until_s"] < 7.0:
         failures.append(f"teacher loses the block at {best_m['held_until_s']:.2f}s")
     if best_m["errF_mm"] > 30.0:
         failures.append(f"teacher rejoin error {best_m['errF_mm']:.1f}mm > 30mm")
-    if best_m["peak"] > 1.15 * fw["peak"]:
-        # 1.15x: the first-strike peak is information-limited (no exteroception);
-        # the compliance value here is task completion + rejoin, not the spike.
-        failures.append("teacher peak force far exceeds FW")
+    if best_m["peak"] > 0.90 * fw["peak"]:
+        # v4 force-contrast regime: the compliant controller must soften the
+        # strike (arm-only contact means everyone completes; the contrast IS
+        # the peak-force / impact-harshness axis).
+        failures.append("teacher does not cut peak force by 10% vs FW")
+    if best_m["Fint"] > 1.25 * fw["Fint"]:
+        # yielding smooths the press (longer, lower) -- the integral may rise
+        # modestly; a blowup means the yield is fighting the plank
+        failures.append("teacher force integral blows up vs FW")
+    if best_m["chatter"] > fw["chatter"]:
+        failures.append("teacher contact is rougher (chatter) than FW")
     if failures:
         raise SystemExit("probe MINI-GATE FAILED: " + "; ".join(failures))
     OUT.mkdir(parents=True, exist_ok=True)
@@ -284,20 +304,20 @@ def stage_data() -> None:
     cfg = json.load(open(OUT / "teacher_cfg.json"))
     teacher = LiftTeacher(y_yield=cfg["y_yield"], pre_t=cfg["pre_t"])
     episodes = []
-    for y_off, tilt in DATA_GRID:
-        env = build_env(y_off, tilt, 7, noise=DATA_NOISE)
+    for t0, h, v0 in DATA_GRID:
+        env = build_env(t0, h, v0, 7, noise=DATA_NOISE)
         m, ep = rollout(env, 7, teacher=teacher, collect=True)
         env.close()
         episodes.append(ep)
-        print(f"  ({y_off},{tilt}): {_fmt(m)}")
+        print(f"  ({t0},{h},{v0}): {_fmt(m)}")
     OUT.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(OUT / "teacher_data.npz",
                         episodes=np.asarray(episodes, dtype=object))
     print(f"  saved {len(episodes)} episodes -> {OUT / 'teacher_data.npz'}")
 
 
-def _val_fint(model, y_off: float, tilt: float, seed: int) -> float:
-    env = build_env(y_off, tilt, seed)
+def _val_fint(model, t0: float, h: float, v0: float, seed: int) -> float:
+    env = build_env(t0, h, v0, seed)
     m = rollout(env, seed, UngatedESN(model))
     env.close()
     return m["Fint"]
@@ -347,12 +367,12 @@ def stage_dagger() -> None:
     esn = EnsemblePolicy([UngatedESN(DirectESNController.from_npz(OUT / f"esn_s{s}.npz"))
                           for s in (11, 29, 97)])
     new_episodes = []
-    for y_off, tilt in DATA_GRID + HELDOUT:
-        env = build_env(y_off, tilt, 7, noise=DATA_NOISE)
+    for t0, h, v0 in DATA_GRID + HELDOUT:
+        env = build_env(t0, h, v0, 7, noise=DATA_NOISE)
         m, ep = rollout(env, 7, policy=esn, teacher=teacher, collect=True)
         env.close()
         new_episodes.append(dict(obs=list(ep["obs"]), actions=ep["actions"], weights=ep["weights"]))
-        print(f"  ({y_off},{tilt}): {_fmt(m)}")
+        print(f"  ({t0},{h},{v0}): {_fmt(m)}")
     # classic DAgger: episodes collected under the student policy but
     # labelled by the teacher at every visited state (rollout(teacher=...)
     # already replaces the executed action with the teacher label).
@@ -394,14 +414,14 @@ def stage_eval() -> None:
         controllers.append(("MLP", mlp))
     controllers.append(("ESN", esn))
     results = {name: [] for name, _ in controllers}
-    for y_off, tilt in EVAL_BOARDS:
+    for t0, h, v0 in EVAL_BOARDS:
         for seed in EVAL_SEEDS:
             for name, policy in controllers:
-                env = build_env(y_off, tilt, seed)
+                env = build_env(t0, h, v0, seed)
                 m = rollout(env, seed, policy)
                 env.close()
                 results[name].append(m)
-                print(f"  ({y_off},{tilt}) s{seed} {name:4s}: {_fmt(m)}")
+                print(f"  ({t0},{h},{v0}) s{seed} {name:4s}: {_fmt(m)}")
     print("\n== podium (mean +- std over boards x seeds; lower score better) ==")
     table = {}
     for name, ms in results.items():
@@ -432,7 +452,7 @@ def stage_gif() -> None:
     except ImportError:
         cv2 = None
     for name, policy in controllers:
-        env = build_env(Y_OFF_DEFAULT, TILT_DEFAULT, 7)
+        env = build_env(T0_DEFAULT, H_DEFAULT, V0_DEFAULT)
         env.reset(seed=7, options={"fixture_index": 0})
         env.model.vis.global_.offwidth = 1280
         env.model.vis.global_.offheight = 720

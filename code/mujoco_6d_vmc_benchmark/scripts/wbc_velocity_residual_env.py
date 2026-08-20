@@ -9,6 +9,7 @@ slew limits before applying commands to the physical MuJoCo Panda.
 
 from __future__ import annotations
 
+import os as _os
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -344,6 +345,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 p_start = probe_ref.sample(2.70)[0]
                 p_end = probe_ref.sample(4.10)[0]
                 center = 0.75 * p_start + 0.25 * p_end
+                center[0] += float(_os.environ.get("LIFT_BOARD_X_OFF", "0.0"))  # keep the slab clear of the home-pose forearm arch
                 center[1] += float(_os.environ.get("LIFT_BOARD_Y_OFF", "0.09"))  # clear of the y=0 descent incl. open-finger edges (grasp stays clean)
                 center[2] += float(_os.environ.get("LIFT_BOARD_Z_OFF", "0.0"))  # raise the low -y edge clear of the carried block's swing
                 scene_kwargs["lift_board_center_m"] = tuple(float(v) for v in center)
@@ -584,7 +586,17 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         assert self.model is not None and self.data is not None and self.reference is not None
         model, data = self.model, self.data
         command = self._wbc_command(time_s)
-        if self.rod_enabled:
+        plank_launch = _os.environ.get("LIFT_PLANK_MODE", "servo") == "launch"
+        if self.rod_enabled and plank_launch:
+            # Momentum-limited flying plank: velocity-kick the slide during a
+            # short launch window, then zero drive -- damping + frictionloss
+            # coast it through the arm's column and stop it.  The fixture's
+            # rod_stroke_m is REUSED as the launch speed (m/s) and
+            # rod_start_time_s as the launch time.
+            window = float(_os.environ.get("LIFT_PLANK_WINDOW", "0.25"))
+            elapsed = time_s - self.fixture.rod_start_time_s
+            rod_displacement = self.fixture.rod_stroke_m if 0.0 <= elapsed <= window else 0.0
+        elif self.rod_enabled:
             profile_time = self._extended_hold_profile_time(time_s)
             rod_displacement, _ = rod_motion(
                 profile_time, self.fixture.rod_stroke_m, self.fixture.rod_start_time_s,
