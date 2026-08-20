@@ -6,12 +6,13 @@ stage spawns this file via subprocess.
 """
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
 import numpy as np
 
-OUT = Path("/home/arm1/vmc_mujoco_runtime/outputs/extraction_esn")
+OUT = Path(os.environ.get("EXT_OUT", "/home/arm1/vmc_mujoco_runtime/outputs/extraction_esn"))
 WASHOUT = 10
 ENGAGED_OVERSAMPLE = 4
 

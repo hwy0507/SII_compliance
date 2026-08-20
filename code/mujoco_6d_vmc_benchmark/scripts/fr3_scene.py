@@ -235,12 +235,14 @@ def build_fr3_hand_scene_xml(
         import os as _os
         hx = float(_os.environ.get("LIFT_BOARD_HX", "0.18"))
         hy = float(_os.environ.get("LIFT_BOARD_HY", "0.05"))
+        solref_s = float(_os.environ.get("LIFT_BOARD_SOLREF", str(contact_time_constant_s)))
+        friction_s = _os.environ.get("LIFT_BOARD_FRICTION", "0.15")
         lift_board_xml = f"""
       <geom name="lift_board" type="box"
         pos="{lift_board_center_m[0]:.4f} {lift_board_center_m[1]:.4f} {lift_board_center_m[2]:.4f}"
         size="{hx:.4f} {hy:.4f} 0.008" quat="{quat_wxyz[0]:.6f} {quat_wxyz[1]:.6f} {quat_wxyz[2]:.6f} {quat_wxyz[3]:.6f}"
-        contype="5" conaffinity="5" rgba="0.62 0.45 0.24 1" friction="0.15 0.02 0.002"
-        solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
+        contype="5" conaffinity="5" rgba="0.62 0.45 0.24 1" friction="{friction_s} 0.02 0.002"
+        solref="{solref_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
 """
     injected = f"""
       <camera name="rod_track" pos="1.18 -1.42 0.86" xyaxes="0.79 0.61 0  -0.17 0.22 0.96"/>

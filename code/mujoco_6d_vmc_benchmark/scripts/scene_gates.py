@@ -9,16 +9,18 @@ at x~0.54 and made the grasp itself impossible).
 Gate A: collision-bit matrix for the board vs every arm link/hand/object.
 Gate B1: FW (no compliance) in the BOARD-FREE scene must grasp+lift+hold
         (task_success=True) -- validates the task mechanics alone.
-Gate B2: FW in the BOARD scene must (a) still grasp (hand on block at close,
-        object leaves the table while held), (b) hit the board for real
-        (peak force and duration gates), (c) have its direct path genuinely
-        blocked (final EE error >= 100 mm).  Failing to reach the target is
-        EXPECTED here -- that is the compliance motivation, not a scene bug.
+Gate B2: FW in the BOARD scene must (a) still grasp (hand on block at close),
+        (b) hit the board for real (peak force and duration gates), and
+        (c) FAIL to complete the task (drops the block while grinding) --
+        the scenario genuinely demands compliance.  At the validated
+        placement (z_off 0.03) FW grinds ~3.3 s, saturates its wrist, and
+        knocks the payload out around 5 s; a compliant slide completes.
 Gate C: rendered frames of both rollouts for human inspection.
 
 Usage:
-    python scene_gates.py [--tilt 25] [--y-off 0.09] [--hx 0.18] [--hy 0.05]
-                          [--arc 0.40] [--seed 7] [--out DIR]
+    python scene_gates.py [--tilt 25] [--y-off 0.05] [--z-off 0.03]
+                          [--hx 0.18] [--hy 0.05] [--arc 0.40]
+                          [--seed 7] [--out DIR]
 """
 from __future__ import annotations
 
@@ -81,6 +83,8 @@ def _fw_rollout(env, board_present: bool) -> dict:
     max_obj_z = 0.0
     grasp_dist = 9.9
     held_min = 9.9
+    held_until = 0.0
+    final_obj_hand = 9.9
     peak_f = 0.0
     contact_s = 0.0
     done, step = False, 0
@@ -91,6 +95,9 @@ def _fw_rollout(env, board_present: bool) -> dict:
         obj = env.data.xpos[env._target_body_id]
         max_obj_z = max(max_obj_z, float(obj[2]))
         dist = float(np.linalg.norm(obj - hand))
+        final_obj_hand = dist
+        if dist < 0.16 and obj[2] > 0.45:
+            held_until = t
         if 2.55 <= t <= 2.85:
             grasp_dist = min(grasp_dist, dist)
         if t > 2.7:
@@ -102,9 +109,12 @@ def _fw_rollout(env, board_present: bool) -> dict:
         err_final = float(np.linalg.norm(d["wbc_pose_error"][:3]))
         _, _, done, _, info = env.step(np.zeros(7))
         step += 1
+    completed = bool(info.get("finite_state", True)
+                     and max_obj_z > 0.52 and final_obj_hand < 0.16)
     return {
         "err_final_m": err_final, "max_obj_z": max_obj_z,
         "grasp_dist": grasp_dist, "held_min": held_min,
+        "held_until_s": held_until, "completed": completed,
         "peak_force_n": peak_f, "contact_s": contact_s,
         "task_success": bool(info.get("task_success", False)),
         "hard_limit": bool(info.get("hard_torque_limit", False)),
@@ -123,17 +133,14 @@ def gate_b1(env_free) -> tuple[list[str], dict]:
 
 
 def gate_b2(env_board, baseline: dict) -> tuple[list[str], dict]:
-    print("== Gate B2: FW with board -- grasp ok, contact real, path blocked ==")
+    print("== Gate B2: FW with board -- grasp ok, contact real, task needs compliance ==")
     r = _fw_rollout(env_board, board_present=True)
     lifted = r["max_obj_z"] > TARGET_START_Z + 0.02
-    apex_drop = baseline["max_obj_z"] - r["max_obj_z"]
     print(f"  grasp_dist={r['grasp_dist']*1000:.0f}mm (free baseline "
           f"{baseline['grasp_dist']*1000:.0f}mm) max_obj_z={r['max_obj_z']:.3f} "
-          f"(free {baseline['max_obj_z']:.3f}, apex suppressed {apex_drop*1000:.0f}mm) "
-          f"held_min={r['held_min']*1000:.0f}mm")
+          f"held_until={r['held_until_s']:.2f}s completed={r['completed']}")
     print(f"  board peak={r['peak_force_n']:.1f}N contact={r['contact_s']:.2f}s "
-          f"errF={r['err_final_m']*1000:.0f}mm task_success={r['task_success']} "
-          f"hard_limit={r['hard_limit']}")
+          f"errF={r['err_final_m']*1000:.0f}mm hard_limit={r['hard_limit']}")
     failures = []
     if r["grasp_dist"] > min(GRASP_DIST_M, baseline["grasp_dist"] + GRASP_SLACK_M):
         failures.append("Gate B2: hand NOT on the block at gripper close (descent blocked by board?)")
@@ -141,8 +148,8 @@ def gate_b2(env_board, baseline: dict) -> tuple[list[str], dict]:
         failures.append("Gate B2: block never lifted while held (grasp ruined by board contact)")
     if r["peak_force_n"] < PEAK_FORCE_N or r["contact_s"] < CONTACT_S:
         failures.append("Gate B2: no genuine board contact (obstacle misses the arm)")
-    if apex_drop < APEX_DROP_M:
-        failures.append("Gate B2: lift apex NOT suppressed (nominal path not really blocked)")
+    if r["completed"]:
+        failures.append("Gate B2: FW COMPLETES despite the board (obstacle does not demand compliance)")
     return failures, r
 
 
@@ -193,7 +200,8 @@ def gate_c(env_free, env_board, out: Path, b2: dict) -> list[str]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--tilt", type=float, default=25.0)
-    parser.add_argument("--y-off", type=float, default=0.09)
+    parser.add_argument("--y-off", type=float, default=0.05)
+    parser.add_argument("--z-off", type=float, default=0.03)
     parser.add_argument("--hx", type=float, default=0.18)
     parser.add_argument("--hy", type=float, default=0.05)
     parser.add_argument("--arc", type=float, default=0.40)
@@ -204,6 +212,7 @@ def main() -> None:
 
     os.environ.setdefault("MUJOCO_GL", "osmesa")
     os.environ["LIFT_BOARD_Y_OFF"] = str(args.y_off)
+    os.environ["LIFT_BOARD_Z_OFF"] = str(args.z_off)
     os.environ["LIFT_BOARD_HX"] = str(args.hx)
     os.environ["LIFT_BOARD_HY"] = str(args.hy)
     os.environ["LIFT_BOARD_ARC"] = str(args.arc)
