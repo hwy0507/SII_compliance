@@ -320,6 +320,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 # uses a lateral lift arc (joint 2 offset) so the descent
                 # path and the board are geometrically separated — the arm
                 # strikes the board only while moving bottom-up.
+                import os as _os
+                lateral_arc = float(_os.environ.get("LIFT_BOARD_ARC", "0.40"))
+
                 def board_reference(model_, data_, hand_id_):
                     ref = PickLiftCarryReference(model_, data_, hand_id_)
                     knots = ref.q_knots.copy()
@@ -328,8 +331,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                     # EE in x-z, NOT laterally -- the first attempt used joint
                     # 2 and the hand never left y=0 (the board was never
                     # touched).  Joint 1 swings the EE along +y as required.
-                    knots[3][0] += 0.40   # lifted: lateral arc on joint 1
-                    knots[4][0] += 0.40   # carry: keep the offset
+                    knots[3][0] += lateral_arc   # lifted: lateral arc on joint 1
+                    knots[4][0] += lateral_arc   # carry: keep the offset
                     ref.q_knots = knots
                     return ref
 
@@ -341,7 +344,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 p_start = probe_ref.sample(2.70)[0]
                 p_end = probe_ref.sample(4.10)[0]
                 center = 0.75 * p_start + 0.25 * p_end
-                center[1] += 0.09  # v2b: clear of the y=0 descent incl. open-finger edges (grasp stays clean)
+                center[1] += float(_os.environ.get("LIFT_BOARD_Y_OFF", "0.09"))  # clear of the y=0 descent incl. open-finger edges (grasp stays clean)
                 scene_kwargs["lift_board_center_m"] = tuple(float(v) for v in center)
                 scene_kwargs["lift_board_tilt_deg"] = float(self.lift_board_tilt_deg)
                 self._board_reference_factory = board_reference

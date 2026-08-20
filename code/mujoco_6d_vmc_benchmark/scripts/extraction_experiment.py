@@ -49,12 +49,13 @@ import wbc_velocity_residual_env as _wbc_env_module
 _wbc_env_module.SIM_TIME_S = 8.0
 
 
-def make_env(board_z: float | None, seed: int, noise: float = 0.0):
+def make_env(board_z: float | None, seed: int, noise: float = 0.0, tilt: float | None = None):
     return PandaWBCVelocityResidualEnv(
         menagerie=MENAGERIE, fan_ye_model_npz=None, fan_ye_train_summary_json=None,
         observation_mode="direct_esn", rod_enabled=False, seed=seed, robot="fr3",
         execution_mode="twist", wbc_backend="pink", wbc_urdf_path=URDF,
-        table_board_underside_z=board_z, safety_config=SCENARIO_SAFETY,
+        table_board_underside_z=board_z, lift_board_tilt_deg=tilt,
+        safety_config=SCENARIO_SAFETY,
         joint_velocity_noise_std=noise)
 
 
@@ -430,16 +431,17 @@ class VMCScenario:
 
 
 def board_force(env) -> float:
-    bid = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, "extraction_board")
-    if bid < 0:
-        return 0.0
     total = 0.0
-    for c in range(env.data.ncon):
-        con = env.data.contact[c]
-        if con.geom1 == bid or con.geom2 == bid:
-            wrench = np.zeros(6)
-            mujoco.mj_contactForce(env.model, env.data, c, wrench)
-            total += float(np.linalg.norm(wrench[:3]))
+    for name in ("extraction_board", "lift_board"):
+        bid = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, name)
+        if bid < 0:
+            continue
+        for c in range(env.data.ncon):
+            con = env.data.contact[c]
+            if con.geom1 == bid or con.geom2 == bid:
+                wrench = np.zeros(6)
+                mujoco.mj_contactForce(env.model, env.data, c, wrench)
+                total += float(np.linalg.norm(wrench[:3]))
     return total
 
 

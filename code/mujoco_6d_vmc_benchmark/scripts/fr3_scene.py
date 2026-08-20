@@ -232,10 +232,13 @@ def build_fr3_hand_scene_xml(
         # down toward the rising arm) about the x axis, so sliding along the
         # face guides the hand sideways in +y toward the board edge.
         quat_wxyz = (np.cos(0.5 * tilt), np.sin(0.5 * tilt), 0.0, 0.0)
+        import os as _os
+        hx = float(_os.environ.get("LIFT_BOARD_HX", "0.18"))
+        hy = float(_os.environ.get("LIFT_BOARD_HY", "0.05"))
         lift_board_xml = f"""
       <geom name="lift_board" type="box"
         pos="{lift_board_center_m[0]:.4f} {lift_board_center_m[1]:.4f} {lift_board_center_m[2]:.4f}"
-        size="0.18 0.05 0.008" quat="{quat_wxyz[0]:.6f} {quat_wxyz[1]:.6f} {quat_wxyz[2]:.6f} {quat_wxyz[3]:.6f}"
+        size="{hx:.4f} {hy:.4f} 0.008" quat="{quat_wxyz[0]:.6f} {quat_wxyz[1]:.6f} {quat_wxyz[2]:.6f} {quat_wxyz[3]:.6f}"
         contype="5" conaffinity="5" rgba="0.62 0.45 0.24 1" friction="0.15 0.02 0.002"
         solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
 """
