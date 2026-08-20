@@ -216,8 +216,8 @@ def build_fr3_hand_scene_xml(
         board_half_y = (edge_y + 0.28) / 2.0
         board_xml = f"""
       <geom name="extraction_board" type="box" pos="0.52 {board_center_y:.4f} {board_underside_z + 0.5 * thickness:.4f}"
-        size="0.08 {board_half_y:.4f} {0.5 * thickness:.4f}" contype="4" conaffinity="4"
-        rgba="0.55 0.40 0.22 1" friction="{_os.environ.get("BOARD_FRICTION", "0.25")} 0.02 0.002"
+        size="0.08 {board_half_y:.4f} {0.5 * thickness:.4f}" contype="5" conaffinity="5"
+        rgba="0.55 0.40 0.22 1" friction="{_os.environ.get("BOARD_FRICTION", "0.15")} 0.02 0.002"
         solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
 """
     lift_board_xml = ""
