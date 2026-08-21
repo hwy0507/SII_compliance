@@ -10,6 +10,8 @@
 
 > 同日完成 `σ=0.01 rad/s` 关节速度观测噪声评测，结果见 `docs/paper_mpc_benchmark/SENSOR_NOISE_RESULTS_20260821.md`：ESN 50/50，MLP 49/50，裸机 25/50，VMC 50/50（沿用无噪声选优配置）。
 
+> 随机化冲击工况也已完成，见 `docs/paper_mpc_benchmark/RANDOMIZED_IMPACT_RESULTS_20260821.md`。ESN-101/202/303 均 50/50；ESN-303 棒/球均值 9.30 mm，接近并略优于 VMC 9.40 mm，但三 seed 平均仍不全面超过 VMC。Proposed 定位应写为跨工况免调参 ESN 柔顺层，而不是“全面击败 VMC”。
+
 本文档完整记录这条支线的**动机 → 方法 → 实验 → 当前结果 → 遗留事项**。接手前请通读；
 术语定义在 §1，架构在 §2，所有代码入口在 §3，实验结论在 §5-§7，坑清单在 §8（重要！）。
 
