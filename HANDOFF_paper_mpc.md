@@ -192,6 +192,12 @@ GIF 生成参考服务器 `/tmp/run_gifs3.sh`（board）/`run_gifs2.sh`（ball�
 
 ## 7. 下一步（按优先级）
 
+### 7.0 2026-08-21 物理接触装置难工况已完成
+
+已完成一轮独立的、面向真机接触装置的 MuJoCo confirmatory protocol：有限质量 rod + 阻尼滑轨 + 受力上限 position servo + MuJoCo 接触柔软度，双次 press–hold–retract。协议与物理参数见 `docs/paper_mpc_benchmark/CONTACT_APPARATUS_PROTOCOL_20260821.md`，结果见 `docs/paper_mpc_benchmark/CONTACT_APPARATUS_RESULTS_20260821.md`。
+
+服务器原始输出：`/home/arm1/vmc_mujoco_runtime/outputs/paper_mpc_contact_apparatus_fair_20260821/fair_results.json`。validation 选择 ESN-303/5% 与 VMC k=2.2/5%；held-out test 两者均 20/20 成功，ESN 10.387 mm、VMC 10.257 mm，匹配差 +0.131 mm，95% CI 跨零。因此该困难工况仍只能汇报“ESN 与 VMC 相当、未证明超越”，不能声称 ESN 击败 VMC。测试 seeds `20260926–20260930` 已消耗，禁止据此继续调参。
+
 1. **先冻结本轮结论，不追测同一 held-out test。**公平 budget-selection 结果已经完成且总体
    无显著差异；不能再依据它去挑 ESN seed、预算、VMC 刚度或训练 checkpoint。论文主张应是
    “competitive/configuration-stable”，不是“beat VMC”。

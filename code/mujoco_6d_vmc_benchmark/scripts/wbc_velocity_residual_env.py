@@ -73,6 +73,14 @@ class VelocityResidualFixture:
     # this many times, spaced by cycle_period_s (see rod_motion).
     rod_cycles: int = 1
     cycle_period_s: float = 0.80
+    # Physical external-apparatus/contact parameters.  They are injected only
+    # into MuJoCo scene construction and never into the policy observation.
+    # Defaults reproduce the historical FR3 benchmark exactly.
+    impactor_mass_kg: float | None = None
+    rod_slide_damping: float = 2.0
+    rod_driver_kp: float = 5000.0
+    rod_driver_force_limit_n: float = 300.0
+    contact_time_constant_s: float = CONTACT_TIME_CONSTANT_S
 
 
 def default_velocity_residual_fixtures() -> tuple[VelocityResidualFixture, ...]:
@@ -311,6 +319,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 rod_center_y_m=self.fixture.rod_center_y_m,
                 impactor_type=self.fixture.impactor_type,
                 board_underside_z=self.table_board_underside_z,
+                impactor_mass_kg=self.fixture.impactor_mass_kg,
+                rod_slide_damping=self.fixture.rod_slide_damping,
+                rod_driver_kp=self.fixture.rod_driver_kp,
+                rod_driver_force_limit_n=self.fixture.rod_driver_force_limit_n,
             )
             if self.lift_board_tilt_deg is not None:
                 # Two-pass placement: a throwaway board-free build provides
@@ -334,7 +346,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                     return ref
 
                 probe_model, probe_data = make_fr3_hand_model(
-                    self.menagerie, CONTACT_TIME_CONSTANT_S, **scene_kwargs)
+                    self.menagerie, self.fixture.contact_time_constant_s, **scene_kwargs)
                 probe_hand = mujoco.mj_name2id(
                     probe_model, mujoco.mjtObj.mjOBJ_BODY, "hand")
                 probe_ref = board_reference(probe_model, probe_data, probe_hand)
@@ -348,7 +360,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             else:
                 self._board_reference_factory = None
             self.model, self.data = make_fr3_hand_model(
-                self.menagerie, CONTACT_TIME_CONSTANT_S, **scene_kwargs)
+                self.menagerie, self.fixture.contact_time_constant_s, **scene_kwargs)
         elif self.robot == "panda":
             self.model, self.data = make_rod_model(
                 self.menagerie,
@@ -546,6 +558,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.dagger_contact_duration_s = 0.0
         self.minimum_torque_feasible_scale = 1.0
         self.hard_limit_seen = self.rod_hand_observed = False
+        self.contact_bout_count = 0
+        self._previous_rod_hand_contact = False
         self.slew_limited_actions = self.saturated_policy_actions = 0
         self.cumulative_wbc_slowdown = self.cumulative_yield_norm = 0.0
         self.current_authority_gate = self.cumulative_authority_gate = 0.0
@@ -700,6 +714,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         if np.linalg.norm(step_wrench) >= np.linalg.norm(self.last_action_contact_wrench_world):
             self.last_action_contact_wrench_world = step_wrench
         self.rod_hand_observed = self.rod_hand_observed or rod_contact
+        if rod_contact and not self._previous_rod_hand_contact:
+            self.contact_bout_count += 1
+        self._previous_rod_hand_contact = bool(rod_contact)
         self.peak_force = max(self.peak_force, rod_force)
         self.contact_impulse += rod_force * CONTROL_DT
         self.last_action_contact_seen = self.last_action_contact_seen or rod_contact
@@ -755,6 +772,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "task_success": success,
             "effective_collision": effective,
             "rod_hand_contact": self.rod_hand_observed,
+            "contact_bout_count": self.contact_bout_count,
             "peak_contact_force_n": self.peak_force,
             "contact_impulse_ns": self.contact_impulse,
             "peak_torque_nm": self.peak_torque,

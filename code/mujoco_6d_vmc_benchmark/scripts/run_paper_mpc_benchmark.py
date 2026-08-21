@@ -279,6 +279,7 @@ def run_rollout(
         peak_torque_nm=float(info.get("peak_torque_nm", np.nan)),
         obstacle_force_n=float(board_peak if impactor_kind == "board"
                                else info.get("peak_contact_force_n", np.nan)),
+        contact_bout_count=int(info.get("contact_bout_count", 0)),
         impact_time_s=impact_t,
         recovery_s=recovery_s,
         at_grasp_err_mm=at_grasp * 1000.0,
