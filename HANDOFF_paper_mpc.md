@@ -21,6 +21,14 @@
 > 零，故**不得声称 ESN 总体战胜 VMC**。它在 ball/board 更低、在 rod 更高，且木板接触力更高。
 > 3% 是对称 validation 选择的结果，不是事先强制固定的预算。
 
+> **后续算法改进的最新结论（2026-08-21）：**在单独的 finite-mass contact-apparatus
+> 协议中，BC 初始化 ESN 通过 train-only MuJoCo CEM 优化其七个有界 readout gain 后，在新的
+> validation 中选出 CEM ESN-303/5%，VMC 独立选出 k=2.2/5%。二者在 20 个全新 held-out
+> realization 上均 20/20 成功；ESN `8.887 mm`、VMC `9.634 mm`，ESN−VMC 配对差
+> `−0.747 mm`，fixture- 与 seed-level 95% CI 均不跨零。这个结论只适用于声明的
+> MuJoCo 物理包络和“BC + train-only policy improvement”方法，完整协议/限制见
+> `docs/paper_mpc_benchmark/ESN_CEM_POLICY_IMPROVEMENT_{PROTOCOL,RESULTS}_20260821.md`。
+
 本文档完整记录这条支线的**动机 → 方法 → 实验 → 当前结果 → 遗留事项**。接手前请通读；
 术语定义在 §1，架构在 §2，所有代码入口在 §3，实验结论在 §5-§7，坑清单在 §8（重要！）。
 
@@ -198,12 +206,21 @@ GIF 生成参考服务器 `/tmp/run_gifs3.sh`（board）/`run_gifs2.sh`（ball�
 
 服务器原始输出：`/home/arm1/vmc_mujoco_runtime/outputs/paper_mpc_contact_apparatus_fair_20260821/fair_results.json`。validation 选择 ESN-303/5% 与 VMC k=2.2/5%；held-out test 两者均 20/20 成功，ESN 10.387 mm、VMC 10.257 mm，匹配差 +0.131 mm，95% CI 跨零。因此该困难工况仍只能汇报“ESN 与 VMC 相当、未证明超越”，不能声称 ESN 击败 VMC。测试 seeds `20260926–20260930` 已消耗，禁止据此继续调参。
 
-1. **先冻结本轮结论，不追测同一 held-out test。**公平 budget-selection 结果已经完成且总体
-   无显著差异；不能再依据它去挑 ESN seed、预算、VMC 刚度或训练 checkpoint。论文主张应是
-   “competitive/configuration-stable”，不是“beat VMC”。
-2. **若研究问题必须是“ESN 是否能在更困难 OOD 条件超过 VMC”**，另立一份预注册协议：先固定
-   新的难度轴、候选配置、训练/validation/test seed 和主要指标，再生成此前完全未见的测试集。
-   可考虑多次冲击或 torque-limit scaling，但不可从本轮 held-out 结果反推参数或难度。
+### 7.1 2026-08-21 ESN CEM 读出策略改进已完成
+
+针对“ESN 只是单一 VMC teacher 的 BC，未必能超过独立调优 VMC”的诊断，新增了冻结 reservoir/观测契约、只优化七个有界输出读出增益的 CEM policy-improvement 算法。它在 train-only seeds `20261001–20261004` 上完成优化，随后用全新的 validation seeds `20261011–20261015` 在 BC parent/CEM ESN 与 VMC `k×budget` 候选中各自选一次，最后只在全新 held-out seeds `20261016–20261020` 上测试。协议见 `docs/paper_mpc_benchmark/ESN_CEM_POLICY_IMPROVEMENT_PROTOCOL_20260821.md`，结果见 `docs/paper_mpc_benchmark/ESN_CEM_POLICY_IMPROVEMENT_RESULTS_20260821.md`。
+
+本轮选择了 CEM ESN-303/5% 与 VMC k=2.2/5%。二者测试均 20/20 成功、hard torque-limit 均 0/20；ESN at-grasp error `8.887 ± 1.206 mm`，VMC `9.634 ± 0.887 mm`，配对差 ESN−VMC `−0.747 mm`，fixture-level 95% CI `[-1.220,-0.274]` mm，seed-level 95% CI `[-1.440,-0.054]` mm。该结果支持在声明的 MuJoCo 物理接触装置包络内，经过 train-only 仿真读出策略改进的 ESN 本轮超过 VMC；不得外推为普遍或 sim-to-real 优势。ESN 平均峰值力略高 `0.149 N`，contact bouts 多 `0.20`，但峰值 torque 低 `0.476 N·m`，这些安全维度需如实并列报告。
+
+原始服务器 JSON：`/home/arm1/vmc_mujoco_runtime/outputs/paper_mpc_contact_apparatus_esn_cem_fair_20260821/fair_results.json`；本地归档 JSON SHA-256：`a088437a9a6cb800f102e0c52610cb92c899b6841f6ec3aeccc317003d8dfaba`。上述 held-out seeds 已消耗，禁止继续用它们调 gain、预算、VMC 刚度、checkpoint 或物理范围。
+
+1. **冻结两轮完成的 held-out 结论，不追测同一 test。**基础 BC 公平预算选择的结论仍是
+   “与 VMC 相当”；CEM-ESN 的独立新 split 结论是“在该 physical contact-apparatus envelope
+   中优于 validation-selected VMC”。两者均不能再用于挑 ESN seed/gain/budget、VMC 刚度或
+   checkpoint。论文必须明确区分 pure BC 与 `BC + train-only policy improvement`。
+2. **若需要扩大“ESN 优于 VMC”的适用范围**，另立预注册协议：先固定新的难度轴、候选配置、
+   train/validation/test seed 和主要指标，再生成此前完全未见的测试集。可考虑多次冲击或
+   torque-limit scaling，但不可从任何已消耗 held-out 结果反推参数或难度。
 3. **TOPP-RA 参考源**（接缝①）：vendored `autolife_planning/trajectory/` 已在服务器
    `/tmp/vendor_traj`，把 smoothstep knots 换成时间最优轨迹重验（速度余量≈0 时柔顺层价值）；
 4. **难工况边界扫描 + 力域主指标**：撞击强度/执行器弱化（torque_limit_scale）/多次撞击，
