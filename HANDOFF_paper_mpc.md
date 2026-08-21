@@ -284,6 +284,28 @@ train-only seeds `20261401–04`。训练期的最佳 checkpoint 为 `8/8` succe
 本轮 `20261416–20` test seeds 已消耗。若要建立强 superiority claim，下一步必须使用新的独立
 replication split（同一预注册候选、无需再改 CEM/VMC 超参数），而不能回看本轮结果调参数。
 
+### 7.6 2026-08-21 独立固定策略复现：ESN 在训练覆盖的 hand-proxy 分布内胜出
+
+§7.5 的 CEM ESN 和 VMC 配置（ESN checkpoint/5%，VMC k=1.0/2%）在第一轮 test 后完全冻结，
+并以预注册 commit `22e2609` 启动新 10 seed × 4 fixture 的 independent replication。没有重新
+训练、重选或调节任何参数。新 seeds `20261431–40` 的结果为：ESN `39/40` success、VMC `31/40`；
+at-grasp error 为 `15.778 ± 3.226 mm` 对 `20.979 ± 6.548 mm`。匹配误差差 ESN−VMC=`−5.201 mm`，
+fixture-level 95% CI `[-7.973,-2.429] mm`，seed-level CI `[-8.494,-1.908] mm`；success discordant
+pairs 为 ESN-only `9`、VMC-only `1`，exact two-sided paired binomial `p=0.0215`。这构成了在声明的、
+训练覆盖 `positive_y + finite-mass hand_proxy` MuJoCo 分布中，`multi-contact BC + train-only
+multi-scale ESN CEM readout improvement` 优于 validation-selected VMC 的独立复现证据。
+
+安全维度仍须如实并列：ESN peak contact force 略低 `0.439 N`、本轮 hard limit `0/40`（VMC `1/40`），
+但 ESN peak torque 高 `0.949 N·m`、contact bouts 点估计高 `0.175`。因此绝不能说 ESN 在每个安全指标
+都优于 VMC。与 §7.5 的第一轮 20-fixture test 合并仅作辅助描述，结果为 ESN `58/60`、VMC `48/60`，
+matched error `−4.542 mm`、95% CI `[-6.821,-2.262] mm`；主证据仍是独立 40-fixture replication。
+完整协议/结果见 `docs/paper_mpc_benchmark/ESN_MULTICONTACT_CEM_REPLICATION_{PROTOCOL,RESULTS}_20260821.md`。
+
+这只支持训练覆盖的 hand-proxy contact distribution 内 superiority，**不推翻**此前“冻结 CEM ESN
+对未训练 `positive_y + hand_proxy` 的 OOD transfer 失败”的结论，也不能外推为任意接触几何、真机或
+每个 safety dimension 的普遍优势。`20261431–40` seeds 已消耗；禁止据此重调 gain、budget、VMC k、
+checkpoint 或物理范围。
+
 1. **冻结两轮完成的 held-out 结论，不追测同一 test。**基础 BC 公平预算选择的结论仍是
    “与 VMC 相当”；CEM-ESN 的独立新 split 结论是“在该 physical contact-apparatus envelope
    中优于 validation-selected VMC”。两者均不能再用于挑 ESN seed/gain/budget、VMC 刚度或
