@@ -306,6 +306,40 @@ matched error `−4.542 mm`、95% CI `[-6.821,-2.262] mm`；主证据仍是独�
 每个 safety dimension 的普遍优势。`20261431–40` seeds 已消耗；禁止据此重调 gain、budget、VMC k、
 checkpoint 或物理范围。
 
+### 7.7 2026-08-21 四方法全面独立测试：PaperMPC / VMC / MLP / Proposed ESN
+
+为满足完整可汇报的四方法对照，新增预注册协议
+`docs/paper_mpc_benchmark/FOUR_METHOD_MULTICONTACT_PROTOCOL_20260821.md`。不再搜索 ESN、CEM、
+VMC 或预算：ESN 固定为 §7.6 的 multi-contact BC + train-only CEM fast--slow checkpoint、5% budget；
+VMC 固定为 k=1.0、2% budget；PaperMPC 为 controller=None 的原论文 nominal-only（输出零 residual）。
+MLP 使用严格无记忆的 32-D BC 对照，与 ESN 得到完全相同的 deployable observation，且使用相同 18 条
+successful contact trace + 1 条 neutral trace。此前 MLP trainer 没有处理新的 trace-budget provenance，
+已修为将每条 label 以 `clip(action * trace_budget / target_budget,-1,1)` 换算至统一 5% 部署物理单位；
+这只是动作单位正确性，不提供任何特权观测。
+
+MLP 固定小候选集为 width {64,128} × seed {20261501,20261502}，独立 validation seeds
+`20261511–15`、4 fixture/seed 上四者均为 `0/20` success，依照预注册 success-first/lowest-error
+tie-break 选 h64/s20261502（29.795 mm）。随后只有一次全新的 held-out 10 seed × 4 fixture
+(`20261516–25`) 四方法 test，结果如下（所有 40 trials 均保留，包括失败）：
+
+| 方法 | success | at-grasp error | peak force | peak torque | bouts | hard limit |
+|---|---:|---:|---:|---:|---:|---:|
+| PaperMPC nominal-only | 0/40 | 30.432 ± 1.555 mm | 95.662 ± 24.475 N | 32.282 ± 0.082 N·m | 3.325 | 0/40 |
+| VMC k=1.0, 2% | 31/40 | 19.668 ± 7.642 mm | 96.167 ± 24.777 N | 32.846 ± 0.468 N·m | 2.200 | 1/40 |
+| MLP BC h64/s20261502, 5% | 0/40 | 29.429 ± 1.251 mm | 96.129 ± 24.341 N | 34.442 ± 0.953 N·m | 3.125 | 1/40 |
+| Proposed ESN CEM, 5% | 38/40 | 15.880 ± 2.747 mm | 95.797 ± 24.494 N | 34.036 ± 0.721 N·m | 2.450 | 1/40 |
+
+ESN−VMC 的 matched at-grasp error 为 `−3.788 mm`，fixture CI `[-6.741,-1.086]`、seed CI
+`[-6.458,-1.422]`；success discordance ESN-only 8、VMC-only 1，exact p=`0.0391`。这在新的
+independent cohort 中再次支持 **训练覆盖的 positive_y finite-mass hand_proxy MuJoCo distribution 内**
+proposed ESN 优于冻结 VMC。严谨边界：ESN 对 VMC 的 peak force 差只有 `−0.371 N`，不可称 safety
+force 优势；ESN 的 peak torque 反而高 `+1.189 N·m`、contact bouts 高 `+0.250`，且所有方法为 0--1
+hard-limit 事件。不能声称 every safety metric、OOD contact 或 real robot 全面优越。
+
+结果/原始文件/哈希见 `FOUR_METHOD_MULTICONTACT_RESULTS_20260821.md`；服务器目录是
+`/home/arm1/vmc_mujoco_runtime/outputs/paper_mpc_four_method_mlp_20260821/`。这些 test seeds 已消耗，
+严禁据此继续重调 ESN/VMC/MLP 或物理范围。
+
 1. **冻结两轮完成的 held-out 结论，不追测同一 test。**基础 BC 公平预算选择的结论仍是
    “与 VMC 相当”；CEM-ESN 的独立新 split 结论是“在该 physical contact-apparatus envelope
    中优于 validation-selected VMC”。两者均不能再用于挑 ESN seed/gain/budget、VMC 刚度或

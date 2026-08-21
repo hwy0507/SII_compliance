@@ -27,17 +27,33 @@ def main() -> None:
     parser.add_argument("--weight-decay", type=float, default=1.0e-4)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--washout-steps", type=int, default=3)
+    parser.add_argument("--target-budget", type=float, required=True,
+                        help="deployment residual budget; recorded trace actions are rescaled to this unit")
     args = parser.parse_args()
+    if not 0.0 < args.target_budget <= 1.0:
+        raise ValueError("target-budget must lie in (0, 1]")
 
     import torch
     from torch import nn
 
-    observations, actions = [], []
+    observations, actions, trace_provenance = [], [], []
     for path in [*args.expert_traces, args.no_rod_expert_trace]:
-        obs, act = _load_episode(path, 1, "bounded_action")
+        obs, act, trace_budget = _load_episode(path, 1, "bounded_action")
+        if trace_budget is None:
+            raise ValueError(
+                f"{path}: --target-budget requires residual_budget_fraction provenance")
+        # ``bounded_action`` is normalized by the residual budget used to
+        # record this trace.  A student deployed at another budget must learn
+        # the equivalent physical torque, rather than silently inheriting a
+        # trace-dependent scale.  This is the same conversion used by the
+        # Direct-ESN bootstrap and does not change its observation contract.
+        act = np.clip(act * trace_budget / args.target_budget, -1.0, 1.0)
         observations.append(np.asarray([np.concatenate([o.joint_position, o.joint_velocity, o.wbc_task_twist,
                                                         o.wbc_pose_error, o.wbc_twist_error]) for o in obs]))
         actions.append(np.asarray(act))
+        trace_provenance.append({"path": str(path), "trace_budget": float(trace_budget),
+                                 "target_budget": float(args.target_budget),
+                                 "action_unit_conversion": "clip(action * trace_budget / target_budget, -1, 1)"})
         if args.washout_steps:
             observations[-1] = observations[-1][args.washout_steps:]
             actions[-1] = actions[-1][args.washout_steps:]
@@ -88,6 +104,8 @@ def main() -> None:
         "hidden_units": args.hidden_units, "epochs_run": epoch + 1,
         "best_val_mse": best_val, "train_samples": int(len(train_idx)), "device": device,
         "traces": [str(p) for p in [*args.expert_traces, args.no_rod_expert_trace]],
+        "target_budget": float(args.target_budget),
+        "trace_provenance": trace_provenance,
     }
     args.output_summary.write_text(json.dumps(summary, indent=2) + "\n")
     print(json.dumps(summary))
