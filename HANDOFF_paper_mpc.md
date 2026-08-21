@@ -12,6 +12,8 @@
 
 > 随机化冲击工况也已完成，见 `docs/paper_mpc_benchmark/RANDOMIZED_IMPACT_RESULTS_20260821.md`。ESN-101/202/303 均 50/50；ESN-303 棒/球均值 9.30 mm，接近并略优于 VMC 9.40 mm，但三 seed 平均仍不全面超过 VMC。Proposed 定位应写为跨工况免调参 ESN 柔顺层，而不是“全面击败 VMC”。
 
+> 随机化教师蒸馏消融也已完成，见 `docs/paper_mpc_benchmark/RANDOMIZED_BC_RESULTS_20260821.md`：12 条 rod/ball 随机教师轨迹没有带来一致的误差提升，故正式 proposed 暂保留 stable-reference coverage BC；随机化 BC 作为负结果/消融，不替换主 checkpoint。
+
 本文档完整记录这条支线的**动机 → 方法 → 实验 → 当前结果 → 遗留事项**。接手前请通读；
 术语定义在 §1，架构在 §2，所有代码入口在 §3，实验结论在 §5-§7，坑清单在 §8（重要！）。
 
