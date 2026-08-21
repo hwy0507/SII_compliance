@@ -61,6 +61,13 @@ class DirectESNConfig:
     connection_probability: float = 0.12
     bias_scale: float = 0.05
     time_constant_s: float = 0.12
+    # Optional two-time-scale reservoir.  The same fixed recurrent matrix is
+    # used for all units, but the first ``fast_fraction`` units use the first
+    # leak time constant and the rest use the second.  This preserves the ESN
+    # linear-readout deployment model while letting different state channels
+    # encode impact onset versus unloading/recovery history.
+    multiscale_time_constants_s: tuple[float, float] | None = None
+    fast_fraction: float = 0.50
     dt_s: float = 0.04
     ridge_lambda: float = 1.0e-4
     seed: int = 20260817
@@ -116,6 +123,15 @@ class DirectESNConfig:
             raise ValueError("minimum_wbc_scale must be below one")
         if self.time_constant_s < self.dt_s:
             raise ValueError("time_constant_s must be at least dt_s")
+        if not np.isfinite(self.fast_fraction) or not 0.0 < self.fast_fraction < 1.0:
+            raise ValueError("fast_fraction must lie strictly in (0,1)")
+        if self.multiscale_time_constants_s is not None:
+            scales = tuple(float(item) for item in self.multiscale_time_constants_s)
+            if len(scales) != 2 or not np.all(np.isfinite(scales)) or min(scales) < self.dt_s:
+                raise ValueError("multiscale_time_constants_s must hold two finite values at least dt_s")
+            if not scales[0] < scales[1]:
+                raise ValueError("multiscale time constants must be ordered fast < slow")
+            object.__setattr__(self, "multiscale_time_constants_s", scales)
         if self.activation_error_full_m <= self.activation_error_start_m:
             raise ValueError("activation_error_full_m must exceed activation_error_start_m")
         if self.connection_probability > 1.0 or self.spectral_radius > 2.0:
@@ -130,6 +146,18 @@ class DirectESNConfig:
     @property
     def leak(self) -> float:
         return self.dt_s / self.time_constant_s
+
+    @property
+    def leak_vector(self) -> np.ndarray:
+        if self.multiscale_time_constants_s is None:
+            return np.full(self.reservoir_size, self.leak, dtype=float)
+        fast, slow = self.multiscale_time_constants_s
+        cut = int(round(self.fast_fraction * self.reservoir_size))
+        cut = min(max(cut, 1), self.reservoir_size - 1)
+        return np.concatenate((
+            np.full(cut, self.dt_s / fast, dtype=float),
+            np.full(self.reservoir_size - cut, self.dt_s / slow, dtype=float),
+        ))
 
 
 @dataclass(frozen=True)
@@ -196,6 +224,7 @@ class DirectESNController:
             self._recurrent = np.zeros_like(self._recurrent)
         self._input = rng.uniform(-config.input_scale, config.input_scale, (config.reservoir_size, DEPLOYABLE_INPUT_DIMENSION))
         self._bias = rng.uniform(-config.bias_scale, config.bias_scale, config.reservoir_size)
+        self._leak_vector = config.leak_vector
         self._state = np.zeros(config.reservoir_size, dtype=float)
         self._readout = np.zeros((ACTION_DIMENSION, self.feature_dimension), dtype=float)
         self._smoothed_yield_twist = np.zeros(6, dtype=float)
@@ -223,7 +252,7 @@ class DirectESNController:
     def _advance_encoded(self, encoded_input: np.ndarray) -> np.ndarray:
         encoded = _finite_vector(encoded_input, DEPLOYABLE_INPUT_DIMENSION, "encoded student input")
         proposal = np.tanh(self._input @ encoded + self._recurrent @ self._state + self._bias)
-        self._state = (1.0 - self.config.leak) * self._state + self.config.leak * proposal
+        self._state = (1.0 - self._leak_vector) * self._state + self._leak_vector * proposal
         if not np.all(np.isfinite(self._state)):
             raise RuntimeError("Direct ESN reservoir state became non-finite")
         return np.concatenate(([1.0], encoded, self._state))

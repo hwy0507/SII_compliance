@@ -33,10 +33,11 @@ def _load_episode(path: Path, stride: int, label_field: str) -> tuple[list[Direc
         pose = np.asarray(archive["pose_error"], dtype=float)[sample]
         twist_error = np.asarray(archive["wbc_twist_error"], dtype=float)[sample]
         action = np.asarray(archive[label_field], dtype=float)[sample]
+        trace_budget = float(np.asarray(archive["residual_budget_fraction"])) if "residual_budget_fraction" in archive.files else None
     if not (q.shape == (len(q), 7) and qdot.shape == q.shape and twist.shape == (len(q), 6) and pose.shape == (len(q), 6) and twist_error.shape == (len(q), 6) and action.shape == (len(q), 7)):
         raise ValueError(f"{path}: invalid Direct ESN archive dimensions")
     observations = [DirectESNObservation(qi, qdoti, twisti, posei, twist_error_i) for qi, qdoti, twisti, posei, twist_error_i in zip(q, qdot, twist, pose, twist_error)]
-    return observations, np.clip(action, -1.0, 1.0)
+    return observations, np.clip(action, -1.0, 1.0), trace_budget
 
 
 def main() -> None:
@@ -61,8 +62,15 @@ def main() -> None:
     parser.add_argument("--neutral-repeat", type=int, default=3)
     parser.add_argument("--spectral-radius", type=float, default=0.90)
     parser.add_argument("--time-constant", type=float, default=0.12)
+    parser.add_argument("--fast-time-constant", type=float, default=None,
+                        help="enable two-time-scale ESN with this fast reservoir time constant")
+    parser.add_argument("--slow-time-constant", type=float, default=None,
+                        help="slow reservoir time constant; must exceed --fast-time-constant")
+    parser.add_argument("--fast-fraction", type=float, default=0.50)
     parser.add_argument("--input-scale", type=float, default=0.45)
     parser.add_argument("--ridge-lambda", type=float, default=1.0e-4)
+    parser.add_argument("--target-budget", type=float, default=None,
+                        help="rescale trace actions to this deployment budget using recorded provenance")
     parser.add_argument("--derivative-match", action="store_true",
                         help="supervise action differences toward the teacher's differences instead of zero")
     parser.add_argument("--derivative-lowpass", type=float, default=1.0,
@@ -78,11 +86,17 @@ def main() -> None:
         raise ValueError("legacy rod bootstrap requires --base-no-rod-trace")
     if args.expert_traces is not None and args.no_rod_expert_trace is None:
         raise ValueError("expert bootstrap requires --no-rod-expert-trace")
+    if (args.fast_time_constant is None) != (args.slow_time_constant is None):
+        raise ValueError("fast/slow time constants must be supplied together")
+    if args.target_budget is not None and not 0.0 < args.target_budget <= 1.0:
+        raise ValueError("target-budget must lie in (0,1]")
+    scales = None if args.fast_time_constant is None else (args.fast_time_constant, args.slow_time_constant)
     config = DirectESNConfig(reservoir_size=args.reservoir_size, seed=args.reservoir_seed, dt_s=0.04,
                              disable_recurrence=args.disable_recurrence,
                              zero_twist_error=args.zero_twist_error,
                              zero_joint_velocity=args.zero_joint_velocity,
                              spectral_radius=args.spectral_radius, time_constant_s=args.time_constant,
+                             multiscale_time_constants_s=scales, fast_fraction=args.fast_fraction,
                              input_scale=args.input_scale, ridge_lambda=args.ridge_lambda)
     model = DirectESNController(config)
     episodes = []
@@ -101,7 +115,11 @@ def main() -> None:
         specs.append(("reference_no_rod", args.no_rod_expert_trace, 1, args.neutral_repeat, "bounded_action"))
         bootstrap_source = "stable_reference_behavior_cloning"
     for name, path, stride, repeat, label_field in specs:
-        observations, actions = _load_episode(path, stride, label_field)
+        observations, actions, trace_budget = _load_episode(path, stride, label_field)
+        if args.target_budget is not None:
+            if trace_budget is None:
+                raise ValueError(f"{path}: --target-budget requires residual_budget_fraction provenance")
+            actions = np.clip(actions * trace_budget / args.target_budget, -1.0, 1.0)
         if args.washout_steps >= len(observations):
             raise ValueError(f"{path}: washout exceeds episode length")
         features = model.features(observations, washout_steps=args.washout_steps)
@@ -127,7 +145,7 @@ def main() -> None:
                         smoothed[index] = state
                     diff = smoothed
                 delta_targets_all.extend([diff] * repeat)
-        episodes.append({"name": name, "path": str(path), "samples": len(features), "stride": stride, "repeat": repeat, "label_field": label_field})
+        episodes.append({"name": name, "path": str(path), "samples": len(features), "stride": stride, "repeat": repeat, "label_field": label_field, "trace_budget": trace_budget, "target_budget": args.target_budget})
     design = np.concatenate(features_all, axis=0)
     targets = np.concatenate(targets_all, axis=0)
     smoothness = np.concatenate(deltas_all, axis=0) if deltas_all else None

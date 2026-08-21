@@ -232,6 +232,37 @@ ESN error `35.951 mm`、VMC `20.182 mm`，误差差 `+15.769 mm`，fixture-level
 不能自动迁移到反向掌形接触；不得用这批 test seed 继续调参。协议/结果见
 `docs/paper_mpc_benchmark/CROSS_CONTACT_GENERALIZATION_{PROTOCOL,RESULTS}_20260821.md`。
 
+### 7.3 2026-08-21 镜像等变 gate 负结果已完成
+
+为检验能否只靠 ESN 自身的结构约束恢复反向接触，新增了基于 deployable `pose_error` soft-sign
+的 `yield_vy/yield_wz` mirror-equivariant output gate。该 gate 不读取力、装置参数、方向标签、
+接触时序或 future 信息，但在新 `positive_y + hand_proxy` split 的 validation 上为 `0/20`、
+`44.007 mm`，冻结原始 ESN 为 `0/20`、`37.399 mm`，所以 validation 选择原始 ESN。held-out
+中原始 ESN 为 `0/20`、`36.445 mm`，VMC k=1.0/2% 为 `16/20`、`18.852 mm`。这条思路已
+明确否定，不应继续用同一 test split 调 epsilon、gate channel 或 checkpoint。完整协议/结果见
+`docs/paper_mpc_benchmark/ESN_MIRROR_EQUIVARIANCE_{PROTOCOL,RESULTS}_20260821.md`。
+
+### 7.4 2026-08-21 多时间尺度 ESN × 多接触训练已完成
+
+为从 ESN 自身算法下手，建立了 320-unit fast--slow reservoir：相同固定 recurrent matrix、
+相同 32-D proprioceptive observation、相同 successful-only mixed-contact BC 数据和 readout
+拟合流程，仅将 50% reservoir units 的 leak time constant 设为 0.04 s、其余 50% 设为 0.20 s，
+并与单时间尺度 τ=0.12 s 的严格同条件模型比较。不同 teacher budget 的 trace 通过 provenance
+换算到统一 5% deployment budget，未增加特权输入。
+
+在 `positive_y + hand_proxy` 的新 validation (`20261311–15`) 中，multi-scale ESN 由 success
+优先规则选中：`5/20`, `24.128 mm`，single-scale 为 `3/20`, `25.645 mm`；VMC 独立选中
+`k=1.0, 2%`，`17/20`, `18.118 mm`。held-out (`20261316–20`) 中 multi-scale ESN 为
+`4/20`, `24.150 ± 2.190 mm`，VMC 为 `18/20`, `18.696 ± 5.262 mm`。匹配 fixture 的
+ESN−VMC error 差为 `+5.454 mm`，95% CI `[+2.482,+8.427] mm`；按 seed 聚合 CI 跨零，
+但 success 差距为 `4/20` 对 `18/20`。两者 hard torque-limit 均为 `0/20`，ESN 平均 peak
+force 与 torque 与 VMC 接近，但 contact bouts 多 `0.60`。因此 multi-scale 只改善了 validation
+上的 ESN dynamics，仍未解决跨接触泛化，更不能声称战胜 VMC。完整记录见
+`docs/paper_mpc_benchmark/ESN_MULTISCALE_MULTICONTACT_{PROTOCOL,RESULTS}_20260821.md`。
+
+本轮 test seeds `20261316–20` 已消耗，禁止继续据此调 fast/slow time constants、reservoir size、
+teacher mix、budget、smoothness、CEM 或 checkpoint。
+
 1. **冻结两轮完成的 held-out 结论，不追测同一 test。**基础 BC 公平预算选择的结论仍是
    “与 VMC 相当”；CEM-ESN 的独立新 split 结论是“在该 physical contact-apparatus envelope
    中优于 validation-selected VMC”。两者均不能再用于挑 ESN seed/gain/budget、VMC 刚度或
