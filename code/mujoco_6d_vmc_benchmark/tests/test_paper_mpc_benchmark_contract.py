@@ -38,3 +38,13 @@ def test_paper_mpc_benchmark_exposes_a_reproducible_sensor_noise_knob() -> None:
     assert '"--joint-velocity-noise-std"' in source
     assert "joint_velocity_noise_std=joint_velocity_noise_std" in source
     assert '"joint_velocity_noise_std": float(joint_velocity_noise_std)' in source
+
+
+def test_paper_mpc_benchmark_records_matched_fixture_jitter() -> None:
+    source = SCRIPT.read_text()
+
+    assert '"--rod-stroke-jitter-m"' in source
+    assert '"--rod-height-jitter-m"' in source
+    assert '"--rod-start-jitter-s"' in source
+    assert "np.random.default_rng" in source
+    assert '"fixture_parameters": asdict(fixture)' in source

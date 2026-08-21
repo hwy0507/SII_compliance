@@ -27,7 +27,7 @@ import json
 import sys
 import time
 from collections import defaultdict
-from dataclasses import replace
+from dataclasses import asdict, replace
 from pathlib import Path
 
 import numpy as np
@@ -127,6 +127,35 @@ def write_results(out: Path, results: list[dict], eval_seeds: list[int]) -> None
     summary_path.write_text(json.dumps(summarize_results(results, eval_seeds), indent=1))
 
 
+def perturb_fixture(
+    fixture,
+    *,
+    seed: int,
+    scenario_index: int,
+    rod_stroke_jitter_m: float,
+    rod_height_jitter_m: float,
+    rod_start_jitter_s: float,
+):
+    """Apply a deterministic, manifest-recordable impact-geometry perturbation.
+
+    The board scene parks the rod at 99 s and is intentionally left unchanged.
+    For rod/ball scenes, each seed/scenario pair receives one fixed draw shared
+    by all methods, so controller comparisons use exactly matched physics.
+    """
+
+    if fixture.rod_start_time_s >= 50.0:
+        return fixture
+    if not any((rod_stroke_jitter_m, rod_height_jitter_m, rod_start_jitter_s)):
+        return fixture
+    rng = np.random.default_rng(np.uint64(seed) * np.uint64(1009) + np.uint64(scenario_index + 1))
+    return replace(
+        fixture,
+        rod_stroke_m=float(fixture.rod_stroke_m + rng.uniform(-rod_stroke_jitter_m, rod_stroke_jitter_m)),
+        rod_height_m=float(fixture.rod_height_m + rng.uniform(-rod_height_jitter_m, rod_height_jitter_m)),
+        rod_start_time_s=float(fixture.rod_start_time_s + rng.uniform(-rod_start_jitter_s, rod_start_jitter_s)),
+    )
+
+
 def robot_geom_ids(model) -> set[int]:
     """All geoms belonging to the arm/hand (names carry the robot prefixes)."""
 
@@ -166,6 +195,9 @@ def run_rollout(
     residual_scale: float | None = None,
     seed: int = SEED,
     joint_velocity_noise_std: float = 0.0,
+    rod_stroke_jitter_m: float = 0.0,
+    rod_height_jitter_m: float = 0.0,
+    rod_start_jitter_s: float = 0.0,
     verbose_name: str = "",
 ) -> dict:
     # The residual budget has NO silent default: a student distilled from
@@ -252,6 +284,7 @@ def run_rollout(
         at_grasp_err_mm=at_grasp * 1000.0,
         peak_postimpact_err_mm=(peak_err * 1000.0) if impact_t is not None else None,
         hard_limit=bool(info.get("hard_torque_limit", False)),
+        fixture_parameters=asdict(fixture),
     )
     env.close()
     return result
@@ -275,9 +308,17 @@ def main() -> None:
                         help="comma-separated evaluation seeds (default: %(default)s); raw rows retain each seed and a summary sidecar is written")
     parser.add_argument("--joint-velocity-noise-std", type=float, default=0.0,
                         help="Gaussian std (rad/s) added to measured joint velocity; 0 keeps the deterministic historical protocol")
+    parser.add_argument("--rod-stroke-jitter-m", type=float, default=0.0,
+                        help="uniform +/- jitter of rod stroke per seed/scenario (m); shared across methods")
+    parser.add_argument("--rod-height-jitter-m", type=float, default=0.0,
+                        help="uniform +/- jitter of rod height per seed/scenario (m); shared across methods")
+    parser.add_argument("--rod-start-jitter-s", type=float, default=0.0,
+                        help="uniform +/- jitter of rod start time per seed/scenario (s); shared across methods")
     args = parser.parse_args()
-    if args.joint_velocity_noise_std < 0.0 or not np.isfinite(args.joint_velocity_noise_std):
-        raise SystemExit("--joint-velocity-noise-std must be finite and non-negative")
+    for option_name in ("joint_velocity_noise_std", "rod_stroke_jitter_m", "rod_height_jitter_m", "rod_start_jitter_s"):
+        option_value = getattr(args, option_name)
+        if option_value < 0.0 or not np.isfinite(option_value):
+            raise SystemExit(f"--{option_name.replace('_', '-')} must be finite and non-negative")
     eval_seeds = args.eval_seeds
 
     base_fixtures = default_velocity_residual_fixtures()
@@ -294,10 +335,17 @@ def main() -> None:
     t0 = time.time()
     if args.phase in ("baseline", "all"):
         for seed in eval_seeds:
-            for name, (kind, fx, lift) in scenarios.items():
+            for scenario_index, (name, (kind, fx, lift)) in enumerate(scenarios.items()):
+                fx = perturb_fixture(fx, seed=seed, scenario_index=scenario_index,
+                                     rod_stroke_jitter_m=args.rod_stroke_jitter_m,
+                                     rod_height_jitter_m=args.rod_height_jitter_m,
+                                     rod_start_jitter_s=args.rod_start_jitter_s)
                 r = run_rollout(args.menagerie, fx, impactor_kind=kind, controller=None,
                                 lift_board=lift, residual_scale=args.baseline_budget,
                                 seed=seed, joint_velocity_noise_std=args.joint_velocity_noise_std,
+                                rod_stroke_jitter_m=args.rod_stroke_jitter_m,
+                                rod_height_jitter_m=args.rod_height_jitter_m,
+                                rod_start_jitter_s=args.rod_start_jitter_s,
                                 verbose_name=f"none/{name}")
                 results.append(r)
                 print(f"[{time.time()-t0:6.1f}s] s{seed} {r['name']}: success={r['task_success']} "
@@ -316,11 +364,18 @@ def main() -> None:
                 continue
             controller = load_controller(path)
             for seed in eval_seeds:
-                for name, (kind, fx, lift) in scenarios.items():
+                for scenario_index, (name, (kind, fx, lift)) in enumerate(scenarios.items()):
+                    fx = perturb_fixture(fx, seed=seed, scenario_index=scenario_index,
+                                         rod_stroke_jitter_m=args.rod_stroke_jitter_m,
+                                         rod_height_jitter_m=args.rod_height_jitter_m,
+                                         rod_start_jitter_s=args.rod_start_jitter_s)
                     r = run_rollout(args.menagerie, fx, impactor_kind=kind,
                                     controller=controller, lift_board=lift,
                                     residual_scale=args.student_budget, seed=seed,
                                     joint_velocity_noise_std=args.joint_velocity_noise_std,
+                                    rod_stroke_jitter_m=args.rod_stroke_jitter_m,
+                                    rod_height_jitter_m=args.rod_height_jitter_m,
+                                    rod_start_jitter_s=args.rod_start_jitter_s,
                                     verbose_name=f"{tag}/{name}")
                     results.append(r)
                     print(f"[{time.time()-t0:6.1f}s] s{seed} {r['name']}: success={r['task_success']} "
@@ -343,6 +398,10 @@ def main() -> None:
         best: dict[str, tuple[float, dict]] = {}
         for kind, probe_name in probe.items():
             fx_kind, fx, lift = scenarios[probe_name]
+            fx = perturb_fixture(fx, seed=eval_seeds[0], scenario_index=list(scenarios).index(probe_name),
+                                 rod_stroke_jitter_m=args.rod_stroke_jitter_m,
+                                 rod_height_jitter_m=args.rod_height_jitter_m,
+                                 rod_start_jitter_s=args.rod_start_jitter_s)
             for k in sweep_k:
                 for budget in sweep_budget:
                     cfg = replace(base_cfg, k_translation_base=k,
@@ -352,6 +411,9 @@ def main() -> None:
                                     controller=ctrl, lift_board=lift,
                                     residual_scale=budget, seed=eval_seeds[0],
                                     joint_velocity_noise_std=args.joint_velocity_noise_std,
+                                    rod_stroke_jitter_m=args.rod_stroke_jitter_m,
+                                    rod_height_jitter_m=args.rod_height_jitter_m,
+                                    rod_start_jitter_s=args.rod_start_jitter_s,
                                     verbose_name=f"vmc_k{k}_s{budget}/{probe_name}")
                     results.append(r)
                     score = (1 if r["task_success"] else 0, -(r["at_grasp_err_mm"] or 999))
@@ -363,9 +425,13 @@ def main() -> None:
                           f"rec={r['recovery_s']}", flush=True)
         # Stage 2: best config per scenario across all its fixtures.
         for seed in eval_seeds:
-            for name, (kind, fx, lift) in scenarios.items():
+            for scenario_index, (name, (kind, fx, lift)) in enumerate(scenarios.items()):
                 if kind not in best:
                     continue
+                fx = perturb_fixture(fx, seed=seed, scenario_index=scenario_index,
+                                     rod_stroke_jitter_m=args.rod_stroke_jitter_m,
+                                     rod_height_jitter_m=args.rod_height_jitter_m,
+                                     rod_start_jitter_s=args.rod_start_jitter_s)
                 k, budget = best[kind][1]["k"], best[kind][1]["budget"]
                 cfg = replace(base_cfg, k_translation_base=k,
                               k_rotation_base=base_cfg.k_rotation_base * k / base_cfg.k_translation_base)
@@ -374,6 +440,9 @@ def main() -> None:
                                 controller=ctrl, lift_board=lift,
                                 residual_scale=budget, seed=seed,
                                 joint_velocity_noise_std=args.joint_velocity_noise_std,
+                                rod_stroke_jitter_m=args.rod_stroke_jitter_m,
+                                rod_height_jitter_m=args.rod_height_jitter_m,
+                                rod_start_jitter_s=args.rod_start_jitter_s,
                                 verbose_name=f"vmc_best/{name}")
                 results.append(r)
                 print(f"[{time.time()-t0:6.1f}s] s{seed} {r['name']}: success={r['task_success']} "
