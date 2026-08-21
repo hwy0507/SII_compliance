@@ -297,6 +297,8 @@ def main() -> None:
     parser.add_argument("--mlp", type=Path, default=None)
     parser.add_argument("--vmc-config", type=Path, default=None,
                         help="saved stable VMC npz (base config for the sweep)")
+    parser.add_argument("--vmc-fixed-budget", type=float, default=None,
+                        help="if set, evaluate VMC only at this residual budget; otherwise sweep 0.02/0.03/0.05")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--phase", type=str, default="all",
                         choices=("baseline", "students", "vmc", "all"))
@@ -319,6 +321,8 @@ def main() -> None:
         option_value = getattr(args, option_name)
         if option_value < 0.0 or not np.isfinite(option_value):
             raise SystemExit(f"--{option_name.replace('_', '-')} must be finite and non-negative")
+    if args.vmc_fixed_budget is not None and (not np.isfinite(args.vmc_fixed_budget) or not 0.0 < args.vmc_fixed_budget <= 1.0):
+        raise SystemExit("--vmc-fixed-budget must lie in (0, 1]")
     eval_seeds = args.eval_seeds
 
     base_fixtures = default_velocity_residual_fixtures()
@@ -392,7 +396,8 @@ def main() -> None:
             base_cfg = SpringCarriageConfig(
                 k_translation_base=2.2, k_rotation_base=0.18)
         sweep_k = (1.5, 2.2, 3.2, 4.6)
-        sweep_budget = (0.02, 0.03, 0.05)
+        sweep_budget = ((args.vmc_fixed_budget,) if args.vmc_fixed_budget is not None
+                        else (0.02, 0.03, 0.05))
         # Stage 1: sweep on one mid-severity fixture per scenario.
         probe = {"rod": "rod_fx2", "ball": "ball_fx2", "board": "board_fx2"}
         best: dict[str, tuple[float, dict]] = {}

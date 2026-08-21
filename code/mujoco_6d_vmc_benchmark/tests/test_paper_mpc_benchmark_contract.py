@@ -48,3 +48,11 @@ def test_paper_mpc_benchmark_records_matched_fixture_jitter() -> None:
     assert '"--rod-start-jitter-s"' in source
     assert "np.random.default_rng" in source
     assert '"fixture_parameters": asdict(fixture)' in source
+
+
+def test_vmc_can_be_evaluated_at_a_predeclared_fixed_budget() -> None:
+    source = SCRIPT.read_text()
+
+    assert '"--vmc-fixed-budget"' in source
+    assert "args.vmc_fixed_budget" in source
+    assert "sweep_budget = ((args.vmc_fixed_budget,)" in source
