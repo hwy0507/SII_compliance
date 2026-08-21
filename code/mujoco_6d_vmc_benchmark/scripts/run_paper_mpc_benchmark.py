@@ -26,6 +26,7 @@ import argparse
 import json
 import sys
 import time
+from collections import defaultdict
 from dataclasses import replace
 from pathlib import Path
 
@@ -52,6 +53,80 @@ RECOVERY_THRESHOLD_M = 0.010
 SEED = 20260819
 
 
+def parse_seed_list(value: str) -> list[int]:
+    """Parse a comma-separated, non-empty list of deterministic eval seeds."""
+
+    seeds = [int(token.strip()) for token in value.split(",") if token.strip()]
+    if not seeds:
+        raise argparse.ArgumentTypeError("--eval-seeds must contain at least one integer")
+    # Preserve user order while avoiding accidental duplicate episodes.
+    return list(dict.fromkeys(seeds))
+
+
+def _finite_values(rows: list[dict], key: str) -> list[float]:
+    values = []
+    for row in rows:
+        value = row.get(key)
+        if value is None:
+            continue
+        try:
+            value = float(value)
+        except (TypeError, ValueError):
+            continue
+        if np.isfinite(value):
+            values.append(value)
+    return values
+
+
+def summarize_results(results: list[dict], eval_seeds: list[int]) -> dict:
+    """Return seed-aware aggregate statistics without changing raw JSON output."""
+
+    groups: dict[str, list[dict]] = defaultdict(list)
+    for row in results:
+        groups[str(row["name"])].append(row)
+
+    metric_keys = (
+        "at_grasp_err_mm", "peak_postimpact_err_mm", "peak_torque_nm",
+        "obstacle_force_n", "recovery_s",
+    )
+    aggregates = []
+    for name, rows in sorted(groups.items()):
+        metrics = {}
+        for key in metric_keys:
+            values = _finite_values(rows, key)
+            if values:
+                metrics[key] = {
+                    "mean": float(np.mean(values)),
+                    "std": float(np.std(values)),
+                    "min": float(np.min(values)),
+                    "max": float(np.max(values)),
+                    "count": len(values),
+                }
+        aggregates.append({
+            "name": name,
+            "scenario": rows[0].get("scenario"),
+            "seed_count": len({int(row["seed"]) for row in rows}),
+            "success_count": int(sum(bool(row["task_success"]) for row in rows)),
+            "success_rate": float(np.mean([bool(row["task_success"]) for row in rows])),
+            "hard_limit_count": int(sum(bool(row["hard_limit"]) for row in rows)),
+            "metrics": metrics,
+        })
+    return {
+        "eval_seeds": [int(seed) for seed in eval_seeds],
+        "result_count": len(results),
+        "groups": aggregates,
+    }
+
+
+def write_results(out: Path, results: list[dict], eval_seeds: list[int]) -> None:
+    """Write legacy raw rows plus a companion seed aggregate sidecar."""
+
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(results, indent=1))
+    summary_path = out.with_name(f"{out.stem}_summary.json")
+    summary_path.write_text(json.dumps(summarize_results(results, eval_seeds), indent=1))
+
+
 def robot_geom_ids(model) -> set[int]:
     """All geoms belonging to the arm/hand (names carry the robot prefixes)."""
 
@@ -74,7 +149,7 @@ def contact_peak_force(env, obstacle_geoms: set[int], robot_geoms: set[int]) -> 
     for cid in range(int(env.data.ncon)):
         contact = env.data.contact[cid]
         pair = {int(contact.geom1), int(contact.geom2)}
-        if pair & obstacle_geoms and pair & robot_geobs_cache:
+        if pair & obstacle_geoms and pair & robot_geoms:
             wrench = np.zeros(6)
             mujoco.mj_contactForce(env.model, env.data, cid, wrench)
             peak = max(peak, float(np.linalg.norm(wrench[:3])))
@@ -89,6 +164,7 @@ def run_rollout(
     controller,
     lift_board: bool = False,
     residual_scale: float | None = None,
+    seed: int = SEED,
     verbose_name: str = "",
 ) -> dict:
     # The residual budget has NO silent default: a student distilled from
@@ -101,7 +177,7 @@ def run_rollout(
         raise ValueError("residual_scale must be given explicitly (match the teacher-trace budget)")
     kwargs = dict(
         menagerie=menagerie, fan_ye_model_npz=None, fan_ye_train_summary_json=None,
-        observation_mode="direct_esn", rod_enabled=True, seed=SEED, robot="fr3",
+        observation_mode="direct_esn", rod_enabled=True, seed=seed, robot="fr3",
         execution_mode="torque_residual", residual_torque_scale=residual_scale,
         wbc_backend="paper_mpc", fixtures=(fixture,),
     )
@@ -110,14 +186,13 @@ def run_rollout(
     env = PandaWBCVelocityResidualEnv(**kwargs)
     import mujoco
 
-    global robot_geobs_cache
-    robot_geobs_cache = robot_geom_ids(env.model)
+    robot_geoms = robot_geom_ids(env.model)
     obstacle_geoms = {env._rod_geom_id}
     if lift_board:
         board_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, "lift_board")
         if board_id >= 0:
             obstacle_geoms.add(board_id)
-    env.reset(seed=SEED, options={"fixture_index": 0})
+    env.reset(seed=seed, options={"fixture_index": 0})
     if controller is not None and hasattr(controller, "reset"):
         controller.reset()
 
@@ -131,7 +206,7 @@ def run_rollout(
         d = env.diagnostics()
         t = step * RL_DT
         pos_err = float(np.linalg.norm(d["wbc_pose_error"][:3]))
-        step_force = contact_peak_force(env, obstacle_geoms, robot_geobs_cache)
+        step_force = contact_peak_force(env, obstacle_geoms, robot_geoms)
         board_peak = max(board_peak, step_force)
         if impact_t is None and step_force > 1.0:
             impact_t = t
@@ -163,6 +238,7 @@ def run_rollout(
                 break
     result = dict(
         name=verbose_name,
+        seed=int(seed),
         scenario=impactor_kind,
         task_success=bool(info.get("task_success", False)),
         peak_torque_nm=float(info.get("peak_torque_nm", np.nan)),
@@ -192,7 +268,10 @@ def main() -> None:
                         help="residual budget for the no-compliance baseline rollouts")
     parser.add_argument("--student-budget", type=float, required=False, default=None,
                         help="residual budget the students were distilled at (must match the teacher traces; no silent default)")
+    parser.add_argument("--eval-seeds", type=parse_seed_list, default=[SEED],
+                        help="comma-separated evaluation seeds (default: %(default)s); raw rows retain each seed and a summary sidecar is written")
     args = parser.parse_args()
+    eval_seeds = args.eval_seeds
 
     base_fixtures = default_velocity_residual_fixtures()
     scenarios = {}
@@ -207,15 +286,16 @@ def main() -> None:
     results = []
     t0 = time.time()
     if args.phase in ("baseline", "all"):
-        for name, (kind, fx, lift) in scenarios.items():
-            r = run_rollout(args.menagerie, fx, impactor_kind=kind, controller=None,
-                            lift_board=lift, residual_scale=args.baseline_budget,
-                            verbose_name=f"none/{name}")
-            results.append(r)
-            print(f"[{time.time()-t0:6.1f}s] {r['name']}: success={r['task_success']} "
-                  f"peakT={r['peak_torque_nm']:.1f} force={r['obstacle_force_n']:.1f} "
-                  f"rec={r['recovery_s']}", flush=True)
-        args.out.write_text(json.dumps(results, indent=1))
+        for seed in eval_seeds:
+            for name, (kind, fx, lift) in scenarios.items():
+                r = run_rollout(args.menagerie, fx, impactor_kind=kind, controller=None,
+                                lift_board=lift, residual_scale=args.baseline_budget,
+                                seed=seed, verbose_name=f"none/{name}")
+                results.append(r)
+                print(f"[{time.time()-t0:6.1f}s] s{seed} {r['name']}: success={r['task_success']} "
+                      f"peakT={r['peak_torque_nm']:.1f} force={r['obstacle_force_n']:.1f} "
+                      f"rec={r['recovery_s']}", flush=True)
+        write_results(args.out, results, eval_seeds)
         print("baseline phase done", flush=True)
 
     if args.phase in ("students", "all"):
@@ -227,16 +307,17 @@ def main() -> None:
             if path is None:
                 continue
             controller = load_controller(path)
-            for name, (kind, fx, lift) in scenarios.items():
-                r = run_rollout(args.menagerie, fx, impactor_kind=kind,
-                                controller=controller, lift_board=lift,
-                                residual_scale=args.student_budget,
-                                verbose_name=f"{tag}/{name}")
-                results.append(r)
-                print(f"[{time.time()-t0:6.1f}s] {r['name']}: success={r['task_success']} "
-                      f"peakT={r['peak_torque_nm']:.1f} force={r['obstacle_force_n']:.1f} "
-                      f"rec={r['recovery_s']}", flush=True)
-        args.out.write_text(json.dumps(results, indent=1))
+            for seed in eval_seeds:
+                for name, (kind, fx, lift) in scenarios.items():
+                    r = run_rollout(args.menagerie, fx, impactor_kind=kind,
+                                    controller=controller, lift_board=lift,
+                                    residual_scale=args.student_budget, seed=seed,
+                                    verbose_name=f"{tag}/{name}")
+                    results.append(r)
+                    print(f"[{time.time()-t0:6.1f}s] s{seed} {r['name']}: success={r['task_success']} "
+                          f"peakT={r['peak_torque_nm']:.1f} force={r['obstacle_force_n']:.1f} "
+                          f"rec={r['recovery_s']}", flush=True)
+        write_results(args.out, results, eval_seeds)
         print("students phase done", flush=True)
 
     if args.phase in ("vmc", "all"):
@@ -260,7 +341,7 @@ def main() -> None:
                     ctrl = VMCTorqueBaseline(cfg, TORQUE_LIMITS * budget)
                     r = run_rollout(args.menagerie, fx, impactor_kind=kind,
                                     controller=ctrl, lift_board=lift,
-                                    residual_scale=budget,
+                                    residual_scale=budget, seed=eval_seeds[0],
                                     verbose_name=f"vmc_k{k}_s{budget}/{probe_name}")
                     results.append(r)
                     score = (1 if r["task_success"] else 0, -(r["at_grasp_err_mm"] or 999))
@@ -271,28 +352,26 @@ def main() -> None:
                           f"atGrasp={r['at_grasp_err_mm']:.1f}mm force={r['obstacle_force_n']:.1f} "
                           f"rec={r['recovery_s']}", flush=True)
         # Stage 2: best config per scenario across all its fixtures.
-        for name, (kind, fx, lift) in scenarios.items():
-            if kind not in best:
-                continue
-            k, budget = best[kind][1]["k"], best[kind][1]["budget"]
-            cfg = replace(base_cfg, k_translation_base=k,
-                          k_rotation_base=base_cfg.k_rotation_base * k / base_cfg.k_translation_base)
-            ctrl = VMCTorqueBaseline(cfg, TORQUE_LIMITS * budget)
-            if f"vmc_best/{name}" not in {r["name"] for r in results}:
+        for seed in eval_seeds:
+            for name, (kind, fx, lift) in scenarios.items():
+                if kind not in best:
+                    continue
+                k, budget = best[kind][1]["k"], best[kind][1]["budget"]
+                cfg = replace(base_cfg, k_translation_base=k,
+                              k_rotation_base=base_cfg.k_rotation_base * k / base_cfg.k_translation_base)
+                ctrl = VMCTorqueBaseline(cfg, TORQUE_LIMITS * budget)
                 r = run_rollout(args.menagerie, fx, impactor_kind=kind,
                                 controller=ctrl, lift_board=lift,
-                                residual_scale=budget, verbose_name=f"vmc_best/{name}")
+                                residual_scale=budget, seed=seed,
+                                verbose_name=f"vmc_best/{name}")
                 results.append(r)
-                print(f"[{time.time()-t0:6.1f}s] {r['name']}: success={r['task_success']} "
+                print(f"[{time.time()-t0:6.1f}s] s{seed} {r['name']}: success={r['task_success']} "
                       f"peakT={r['peak_torque_nm']:.1f} force={r['obstacle_force_n']:.1f} "
                       f"rec={r['recovery_s']}", flush=True)
         best_dump = {k: v[1] for k, v in best.items()}
         (args.out.parent / "vmc_best_configs.json").write_text(json.dumps(best_dump, indent=1))
-        args.out.write_text(json.dumps(results, indent=1))
+        write_results(args.out, results, eval_seeds)
         print("vmc phase done; best:", best_dump, flush=True)
-
-
-robot_geobs_cache: set[int] = set()
 
 
 if __name__ == "__main__":

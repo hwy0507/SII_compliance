@@ -4,6 +4,8 @@
 > 服务器：arm1@192.168.31.70（密码 123456），工程在 `/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark`
 > 本地仓库：`/Users/hwy/Desktop/个人/科研/SII科研/compliance/0709`，remote = github.com/hwy0507/SII_compliance
 
+> 续接记录：2026-08-21 已为 `run_paper_mpc_benchmark.py` 加入显式 `--eval-seeds` 多种子评估、逐行 `seed` 溯源和 companion summary sidecar；详见 `docs/paper_mpc_benchmark/MULTISEED_PROTOCOL.md`。MuJoCo 长跑尚未在本地执行，待服务器按该协议补齐 5 个评估种子。
+
 本文档完整记录这条支线的**动机 → 方法 → 实验 → 当前结果 → 遗留事项**。接手前请通读；
 术语定义在 §1，架构在 §2，所有代码入口在 §3，实验结论在 §5-§7，坑清单在 §8（重要！）。
 
