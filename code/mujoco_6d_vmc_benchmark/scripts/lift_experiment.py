@@ -58,27 +58,30 @@ DOCS = Path(__file__).resolve().parent.parent / "docs" / "lift_results"
 # cluster ~3.0 s, hard/fast, payload height) is where memory anticipates
 # and halves the impact peak; statics and the gentle wrist plank keep the
 # suite honest about rejoin and corridor skills.
+# v14 CORRIDOR-CENTRIC suite: the arm's upward path is BLOCKED by the
+# tilted static board; success = detour around it and rejoin with the
+# payload.  The two plank boards keep strike-compliance in the mix.
 DATA_GRID = (
-    ("strike_cue", 2.95, 0.64, 2.0), ("strike_cue", 3.00, 0.64, 2.0),
-    ("strike_cue", 3.05, 0.63, 2.0),
-    ("strike_none", 0.0, 0.0, 0.0),
-    ("static", STATIC_Y, 25.0), ("static", STATIC_Y, 23.0),
+    ("static", STATIC_Y, 25.0), ("static", STATIC_Y, 24.0),
+    ("static", STATIC_Y, 23.0), ("static", STATIC_Y, 22.0),
     ("plank_arm", 3.00, 0.76, 1.0),
+    ("plank_payload", 3.00, H_PAYLOAD, 1.0),
 )
 HELDOUT = (
-    ("strike_cue", 3.00, 0.62, 1.8),
-    ("static", STATIC_Y, 22.0),
+    ("static", STATIC_Y, 21.0),
+    ("plank_arm", 3.10, 0.74, 1.00),
 )
-EVAL_BOARDS = (("strike_cue", 3.00, 0.64, 2.0), ("strike_cue", 2.95, 0.64, 2.0),
-               ("strike_cue", 3.05, 0.63, 2.0),
-               ("strike_none", 0.0, 0.0, 0.0),
-               ("static", STATIC_Y, 25.0), ("plank_arm", 3.00, 0.76, 1.0))
+EVAL_BOARDS = (("static", STATIC_Y, 25.0), ("static", STATIC_Y, 23.0),
+               ("static", STATIC_Y, 22.0),
+               ("plank_arm", 3.00, 0.76, 1.0),
+               ("plank_payload", 3.00, H_PAYLOAD, 1.0),
+               ("plank_arm", 3.10, 0.74, 1.00))
 EVAL_SEEDS = (7, 1234, 999)
 DATA_NOISE = 0.002
 
 # Validation cells for ALL controller tuning: DATA cells only, never the
 # eval boards (keep the final comparison clean).
-VAL_CELLS = (("strike", 3.00, 0.64, 2.0), ("static", STATIC_Y, 23.0),
+VAL_CELLS = (("static", STATIC_Y, 24.0), ("static", STATIC_Y, 22.0),
              ("plank_arm", 3.00, 0.76, 1.0))
 
 ESN_GRID = (
@@ -377,8 +380,8 @@ def stage_probe() -> None:
     # starves the static boards of dodge depth and the students inherit
     # 400 N peaks there -- measured).
     best, best_m = None, None
-    for y_yield in (0.5, 0.6, 0.7):
-        for pre_t in (2.85, 2.90):
+    for y_yield in (0.7, 0.85, 1.0):
+        for pre_t in (2.70, 2.80):
             ms = []
             ok = True
             for entry in EVAL_BOARDS:
@@ -616,7 +619,7 @@ def stage_gif() -> None:
     except ImportError:
         cv2 = None
     for name, policy in controllers:
-        env = build_env("strike_cue", 3.00, 0.64, 2.0)
+        env = build_env("static", STATIC_Y, 25.0)
         env.reset(seed=7, options={"fixture_index": 0})
         env.model.vis.global_.offwidth = 1280
         env.model.vis.global_.offheight = 720

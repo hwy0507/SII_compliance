@@ -330,9 +330,7 @@ def make_fr3_hand_model(
         rod_center_x_m=rod_center_x_m, rod_center_y_m=rod_center_y_m,
         rod_approach_side=rod_approach_side, impactor_type=impactor_type,
         board_underside_z=board_underside_z,
-        lift_board_center_m=lift_board_center_m, lift_board_tilt_deg=lift_board_tilt_deg,
-        impactor_mass_kg=impactor_mass_kg, rod_slide_damping=rod_slide_damping,
-        rod_driver_kp=rod_driver_kp, rod_driver_force_limit_n=rod_driver_force_limit_n)
+        lift_board_center_m=lift_board_center_m, lift_board_tilt_deg=lift_board_tilt_deg)
     model = mujoco.MjModel.from_xml_string(xml)
     model.opt.timestep = 0.004
     data = mujoco.MjData(model)

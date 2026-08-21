@@ -4,6 +4,7 @@ MLP 12.29) on the most visual board: the payload-height plank strike."""
 from __future__ import annotations
 
 import os as _os
+import sys
 from pathlib import Path
 
 _os.environ.setdefault("MUJOCO_GL", "osmesa")
@@ -16,6 +17,8 @@ from direct_esn_compliance import DirectESNController
 
 CHAMP = Path("/home/arm1/vmc_mujoco_runtime/outputs/lift_esn")  # v7 champion (4/6 completed)
 OUTDIR = Path("/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/docs/lift_results")
+BOARD = (("static", 0.05, 25.0) if _os.environ.get("GIF_BOARD", "static") == "static"
+         else ("plank_payload", 3.00, 0.62, 1.0))
 
 
 def main() -> None:
@@ -32,16 +35,16 @@ def main() -> None:
         cv2 = None
     OUTDIR.mkdir(parents=True, exist_ok=True)
     for name, policy in controllers:
-        env = L.build_env("plank_payload", 3.00, 0.62, 1.0, seed=7)
+        env = L.build_env(*BOARD, seed=7)
         m = L.rollout(env, 7, policy)
         env.close()
-        env = L.build_env("plank_payload", 3.00, 0.62, 1.0, seed=7)
+        env = L.build_env(*BOARD, seed=7)
         env.reset(seed=7, options={"fixture_index": 0})
         env.model.vis.global_.offwidth = 1280
         env.model.vis.global_.offheight = 720
         renderer = mujoco.Renderer(env.model, 720, 1280)
         cam = mujoco.MjvCamera()
-        cam.lookat = np.array([0.5, 0.0, 0.62])
+        cam.lookat = np.array([0.52, 0.02, 0.64])
         cam.distance = 1.25
         cam.azimuth = 135
         cam.elevation = -18
@@ -66,7 +69,8 @@ def main() -> None:
         renderer.close()
         env.close()
         import imageio.v3 as iio
-        path = OUTDIR / f"final_{name.lower()}.gif"
+        tag = _os.environ.get("GIF_BOARD", "static")
+        path = OUTDIR / f"final_{tag}_{name.lower()}.gif"
         iio.imwrite(path, frames[::2], duration=40, loop=0)
         print(f"wrote {path}  (peak={m['peak']:.0f}N Fint={m['Fint']:.0f} "
               f"errF={m['errF_mm']:.1f}mm ok={int(m['completed'])})", flush=True)
