@@ -263,6 +263,27 @@ force 与 torque 与 VMC 接近，但 contact bouts 多 `0.60`。因此 multi-sc
 本轮 test seeds `20261316–20` 已消耗，禁止继续据此调 fast/slow time constants、reservoir size、
 teacher mix、budget、smoothness、CEM 或 checkpoint。
 
+### 7.5 2026-08-21 多接触 CEM 读出改进：数值优势，但尚需独立复现
+
+针对 §7.4 的“multi-scale BC 仍落后”结果，新建了完全独立的 `positive_y + finite-mass
+hand_proxy` protocol。multi-scale ESN 的 reservoir、32-D proprioceptive observation、5% residual
+budget 和 FR3 safety envelope 冻结；训练期 CEM 只优化七个 readout row 的有界 log-gain，使用
+train-only seeds `20261401–04`。训练期的最佳 checkpoint 为 `8/8` success、`15.712 mm`，但这只
+是开发记录，不能作为测试声明。
+
+在全新 validation (`20261411–15`) 中，CEM ESN 为 `16/20`, `17.419 mm`，相比 BC parent 的
+`7/20`, `23.625 mm` 被选中；VMC 独立选择 k=1.0/2%，同为 `16/20`, `20.018 mm`。held-out
+(`20261416–20`) 结果为 CEM ESN `19/20`, `16.756 ± 1.792 mm`，VMC `17/20`,
+`19.979 ± 8.723 mm`。匹配 error 差 ESN−VMC=`−3.223 mm`，但 fixture-level 95% CI
+`[-7.534,+1.088] mm`、seed-level CI `[-9.419,+2.973] mm` 都跨零；成功配对为 2 个 ESN-only、
+0 个 VMC-only、17 个共成功、1 个共失败。两者都是 `1/20` hard limit；ESN peak torque 高
+`1.239 N·m`、contact bouts 多 `0.45`。因此只能称“在本 split 数值领先、至少与 VMC 相当，
+但单轮统计不足以断言显著胜出”，不能粉饰为全面安全优势或普遍泛化。完整协议/结果见
+`docs/paper_mpc_benchmark/ESN_MULTICONTACT_CEM_{PROTOCOL,RESULTS}_20260821.md`。
+
+本轮 `20261416–20` test seeds 已消耗。若要建立强 superiority claim，下一步必须使用新的独立
+replication split（同一预注册候选、无需再改 CEM/VMC 超参数），而不能回看本轮结果调参数。
+
 1. **冻结两轮完成的 held-out 结论，不追测同一 test。**基础 BC 公平预算选择的结论仍是
    “与 VMC 相当”；CEM-ESN 的独立新 split 结论是“在该 physical contact-apparatus envelope
    中优于 validation-selected VMC”。两者均不能再用于挑 ESN seed/gain/budget、VMC 刚度或
