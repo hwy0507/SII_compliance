@@ -108,6 +108,10 @@ def build_fr3_hand_scene_xml(
     board_underside_z: float | None = None,
     lift_board_center_m: tuple[float, float, float] | None = None,
     lift_board_tilt_deg: float | None = None,
+    impactor_mass_kg: float | None = None,
+    rod_slide_damping: float | None = None,
+    rod_driver_kp: float | None = None,
+    rod_driver_force_limit_n: float | None = None,
 ) -> str:
     """Return the FR3+Hand torque-actuated benchmark scene XML text.
 
@@ -252,7 +256,8 @@ def build_fr3_hand_scene_xml(
     import os as _os_mode
     _launch = _os_mode.environ.get("LIFT_PLANK_MODE", "servo") == "launch"
     slide_range = _os_mode.environ.get("LIFT_PLANK_RANGE", "0.65") if _launch else "0.20"
-    slide_damping = _os_mode.environ.get("LIFT_PLANK_DAMPING", "0.3") if _launch else "2.0"
+    _dflt_damping = rod_slide_damping if rod_slide_damping is not None else 2.0
+    slide_damping = _os_mode.environ.get("LIFT_PLANK_DAMPING", "0.3") if _launch else str(_dflt_damping)
     slide_frictionloss = _os_mode.environ.get("LIFT_PLANK_FRICTIONLOSS", "0.02") if _launch else "0.0"
     injected = f"""
       <camera name="rod_track" pos="1.18 -1.42 0.86" xyaxes="0.79 0.61 0  -0.17 0.22 0.96"/>
@@ -267,7 +272,7 @@ def build_fr3_hand_scene_xml(
       <body name="rod_support" pos="{approach.support_position_m[0]:.3f} {approach.support_position_m[1]:.3f} {approach.support_position_m[2]:.3f}">
         <joint name="rod_slide" type="slide" axis="{approach.slide_axis_world[0]:.1f} {approach.slide_axis_world[1]:.1f} {approach.slide_axis_world[2]:.1f}" range="0 {slide_range}" damping="{slide_damping}" frictionloss="{slide_frictionloss}"/>
         <geom name="rod_geom" type="{impactor['geom_type']}" size="{impactor['size']}" quat="{impactor.get('quat') or f'{approach.cylinder_quaternion_wxyz[0]:.7f} {approach.cylinder_quaternion_wxyz[1]:.7f} {approach.cylinder_quaternion_wxyz[2]:.7f} {approach.cylinder_quaternion_wxyz[3]:.7f}'}"
-          mass="{impactor['mass']}" contype="{impactor.get('contype','8')}" conaffinity="{impactor.get('conaffinity','4')}" rgba="{impactor['rgba']}"
+          mass="{impactor_mass_kg if impactor_mass_kg is not None else impactor['mass']}" contype="{impactor.get('contype','8')}" conaffinity="{impactor.get('conaffinity','4')}" rgba="{impactor['rgba']}"
           friction="{impactor['friction']}" solref="{contact_time_constant_s:.5f} 1"
           solimp="0.85 0.95 0.002 0.5 2"/>
       </body>
@@ -292,9 +297,11 @@ def build_fr3_hand_scene_xml(
             f'ctrllimited="true" ctrlrange="-3 3" forcelimited="true" forcerange="-{_fl} {_fl}"/>\n'
         )
     else:
+        _kp = rod_driver_kp if rod_driver_kp is not None else 5000.0
+        _fl = rod_driver_force_limit_n if rod_driver_force_limit_n is not None else 300.0
         rod_driver = (
-            '<position name="rod_driver" joint="rod_slide" kp="5000" '
-            'ctrllimited="true" ctrlrange="0 0.20" forcelimited="true" forcerange="-300 300"/>\n'
+            f'<position name="rod_driver" joint="rod_slide" kp="{_kp:g}" '
+            f'ctrllimited="true" ctrlrange="0 0.20" forcelimited="true" forcerange="-{_fl:g} {_fl:g}"/>\n'
         )
     text = text.replace("</actuator>", rod_driver + "</actuator>", 1)
     return text
@@ -311,6 +318,10 @@ def make_fr3_hand_model(
     board_underside_z: float | None = None,
     lift_board_center_m: tuple[float, float, float] | None = None,
     lift_board_tilt_deg: float | None = None,
+    impactor_mass_kg: float | None = None,
+    rod_slide_damping: float | None = None,
+    rod_driver_kp: float | None = None,
+    rod_driver_force_limit_n: float | None = None,
 ):
     import mujoco
 
@@ -319,7 +330,9 @@ def make_fr3_hand_model(
         rod_center_x_m=rod_center_x_m, rod_center_y_m=rod_center_y_m,
         rod_approach_side=rod_approach_side, impactor_type=impactor_type,
         board_underside_z=board_underside_z,
-        lift_board_center_m=lift_board_center_m, lift_board_tilt_deg=lift_board_tilt_deg)
+        lift_board_center_m=lift_board_center_m, lift_board_tilt_deg=lift_board_tilt_deg,
+        impactor_mass_kg=impactor_mass_kg, rod_slide_damping=rod_slide_damping,
+        rod_driver_kp=rod_driver_kp, rod_driver_force_limit_n=rod_driver_force_limit_n)
     model = mujoco.MjModel.from_xml_string(xml)
     model.opt.timestep = 0.004
     data = mujoco.MjData(model)
