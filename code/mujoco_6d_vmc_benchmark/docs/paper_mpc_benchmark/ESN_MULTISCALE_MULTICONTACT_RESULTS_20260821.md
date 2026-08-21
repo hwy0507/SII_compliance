@@ -43,7 +43,7 @@ at-grasp error 的 rollout-level 95% t CI 为：
 - contact bouts：`+0.600`，fixture-level CI `[+0.216, +0.984]`；
 - peak post-impact error：`−65.294 mm`，说明 ESN 的统计定义下 post-impact 峰值误差较低，但它仍未能在 grasp 时刻恢复到 success threshold，不能用该次指标替代 task success。
 
-成功事件的配对方向为：1 个 fixture ESN 成功而 VMC 失败，15 个 fixture VMC 成功而 ESN 失败，4 个 fixture 两者均失败；没有出现两者均成功的 fixture。这与总体 `4/20` 对 `18/20` 一致，说明差距不是由少数离群点造成的。
+成功事件的配对方向为：1 个 fixture ESN 成功而 VMC 失败，15 个 fixture VMC 成功而 ESN 失败，3 个 fixture 两者均成功，1 个 fixture 两者均失败。这与总体 `4/20` 对 `18/20` 一致，说明差距不是由少数离群点造成的。
 
 ## 物理条件与安全性
 
