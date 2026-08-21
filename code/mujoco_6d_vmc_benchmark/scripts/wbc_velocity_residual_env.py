@@ -141,6 +141,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         rod_hold_extension_s: float = 0.0,
         table_board_underside_z: float | None = None,
         lift_board_tilt_deg: float | None = None,
+        lift_board_y_offset_m: float = 0.0,
         joint_velocity_noise_std: float = 0.0,
         execution_mode: str = "twist",
         residual_torque_scale: float = 0.25,
@@ -175,6 +176,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         if lift_board_tilt_deg is not None and robot != "fr3":
             raise ValueError("the inclined lift-board scene is wired for robot='fr3'")
         self.lift_board_tilt_deg = lift_board_tilt_deg
+        if not np.isfinite(lift_board_y_offset_m):
+            raise ValueError("lift_board_y_offset_m must be finite")
+        self.lift_board_y_offset_m = float(lift_board_y_offset_m)
         self._board_reference_factory = None
         if execution_mode not in ("twist", "torque_residual", "torque_takeover", "torque_takeover_gc"):
             raise ValueError(
@@ -258,6 +262,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self._target_qpos = -1
         self._target_dof = -1
         self._rod_ctrl = -1
+        self._lift_board_geom_id = -1
         self._obstacle_mocap = -1
         self.step_count = 0
         self.previous_policy_action = np.zeros(7, dtype=float)
@@ -270,6 +275,12 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.raw_joint_velocity_command = np.zeros(ARM_DOF, dtype=float)
         self.peak_force = 0.0
         self.contact_impulse = 0.0
+        self.lift_board_peak_force = 0.0
+        self.lift_board_contact_impulse = 0.0
+        self.lift_board_contact_duration_s = 0.0
+        self.lift_board_contact_bout_count = 0
+        self.lift_board_first_contact_s = None
+        self._previous_lift_board_contact = False
         # Privileged training diagnostics. These are never exposed through
         # the direct-ESN observation, but allow an offline DAgger teacher to
         # label the exact states the student visited.
@@ -353,7 +364,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 p_start = probe_ref.sample(2.70)[0]
                 p_end = probe_ref.sample(4.10)[0]
                 center = 0.75 * p_start + 0.25 * p_end
-                center[1] += 0.09  # v2b: clear of the y=0 descent incl. open-finger edges (grasp stays clean)
+                center[1] += 0.09 + self.lift_board_y_offset_m  # clear descent; small audit jitter is scene-only
                 scene_kwargs["lift_board_center_m"] = tuple(float(v) for v in center)
                 scene_kwargs["lift_board_tilt_deg"] = float(self.lift_board_tilt_deg)
                 self._board_reference_factory = board_reference
@@ -391,6 +402,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self._hand_geom_id = ids["hand_geom"]
         self._target_body_id = ids["target_body"]
         self._rod_geom_id = ids["rod_geom"]
+        self._lift_board_geom_id = mujoco.mj_name2id(
+            model, mujoco.mjtObj.mjOBJ_GEOM, "lift_board")
         self._target_qpos = int(model.jnt_qposadr[ids["target_freejoint"]])
         self._target_dof = int(model.jnt_dofadr[ids["target_freejoint"]])
         self._obstacle_mocap = int(model.body_mocapid[ids["moving_obstacle"]])
@@ -550,6 +563,12 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.previous_position_error = 0.0
         self.raw_joint_velocity_command[:] = 0.0
         self.peak_force = self.contact_impulse = self.peak_torque = self.peak_jerk = self.peak_recovery_jerk = 0.0
+        self.lift_board_peak_force = 0.0
+        self.lift_board_contact_impulse = 0.0
+        self.lift_board_contact_duration_s = 0.0
+        self.lift_board_contact_bout_count = 0
+        self.lift_board_first_contact_s = None
+        self._previous_lift_board_contact = False
         self.physics_torque_history = []
         self.last_action_contact_force = 0.0
         self.last_action_contact_penetration = 0.0
@@ -707,6 +726,16 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         ee_rotation = data.xmat[self._hand_id].reshape(3, 3).copy()
         ee_twist = body_twist(model, data, self._hand_id)
         mujoco.mj_step(model, data)
+        board_contact, board_force = self._lift_board_contact_diagnostics()
+        if board_contact:
+            self.lift_board_contact_duration_s += CONTROL_DT
+            self.lift_board_contact_impulse += board_force * CONTROL_DT
+            if self.lift_board_first_contact_s is None:
+                self.lift_board_first_contact_s = float(time_s + CONTROL_DT)
+            if not self._previous_lift_board_contact:
+                self.lift_board_contact_bout_count += 1
+        self._previous_lift_board_contact = bool(board_contact)
+        self.lift_board_peak_force = max(self.lift_board_peak_force, board_force)
         rod_contact, rod_force, rod_penetration = rod_contact_diagnostics(
             model, data, self._rod_geom_id, self._hand_geom_id
         )
@@ -770,11 +799,21 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         count = max(1, self.step_count)
         return {
             "task_success": success,
+            "final_target_position_m": target_position.tolist(),
+            "final_hand_position_m": hand_position.tolist(),
+            "final_hand_target_distance_m": float(np.linalg.norm(target_position - hand_position)),
+            "final_target_lift_m": float(target_position[2] - TABLE_TOP_Z),
             "effective_collision": effective,
             "rod_hand_contact": self.rod_hand_observed,
             "contact_bout_count": self.contact_bout_count,
             "peak_contact_force_n": self.peak_force,
             "contact_impulse_ns": self.contact_impulse,
+            "lift_board_contact": bool(self.lift_board_contact_bout_count > 0),
+            "lift_board_first_contact_s": self.lift_board_first_contact_s,
+            "lift_board_peak_force_n": self.lift_board_peak_force,
+            "lift_board_contact_impulse_ns": self.lift_board_contact_impulse,
+            "lift_board_contact_duration_s": self.lift_board_contact_duration_s,
+            "lift_board_contact_bout_count": self.lift_board_contact_bout_count,
             "peak_torque_nm": self.peak_torque,
             "peak_jerk_mps3": self.peak_jerk,
             "peak_recovery_jerk_mps3": self.peak_recovery_jerk,
@@ -832,6 +871,27 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         # away, so negate to report the rod-on-hand wrench (rod approaches
         # from -y and pushes the hand toward +y there).
         return -wrench_world
+
+    def _lift_board_contact_diagnostics(self) -> tuple[bool, float]:
+        """Contact state and force magnitude for the physical inclined board.
+
+        These values are scene-audit / teacher-label metadata and intentionally
+        do not enter the 32-D deployed ESN or MLP input.
+        """
+        if self._lift_board_geom_id < 0:
+            return False, 0.0
+        assert self.data is not None and self.model is not None
+        total = 0.0
+        seen = False
+        local = np.zeros(6)
+        for index in range(self.data.ncon):
+            contact = self.data.contact[index]
+            if self._lift_board_geom_id not in (int(contact.geom1), int(contact.geom2)):
+                continue
+            seen = True
+            mujoco.mj_contactForce(self.model, self.data, index, local)
+            total += float(np.linalg.norm(local[:3]))
+        return seen, total
 
     def _noisy_joint_velocity(self) -> np.ndarray:
         """Sensor-model joint velocity: optional additive Gaussian noise.

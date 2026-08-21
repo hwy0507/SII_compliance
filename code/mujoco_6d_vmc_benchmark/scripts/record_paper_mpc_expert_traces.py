@@ -30,7 +30,8 @@ RL_DT = 0.04
 
 
 def record(menagerie: Path, fixture, out: Path, *, k: float, budget: float,
-           seed: int, side: str | None = None, lift_board: bool = False) -> dict:
+           seed: int, side: str | None = None, lift_board: bool = False,
+           lift_board_tilt_deg: float = 40.0, lift_board_y_offset_m: float = 0.0) -> dict:
     fx = fixture if side is None else replace(fixture, rod_approach_side=side)
     cfg = VMCTorqueBaseline.from_npz(Path("/tmp/vmc_k2.2_s0.03.npz")).config
     from vmc_compliance_baseline import SpringCarriageConfig
@@ -44,7 +45,8 @@ def record(menagerie: Path, fixture, out: Path, *, k: float, budget: float,
         wbc_backend="paper_mpc", fixtures=(fx,),
     )
     if lift_board:
-        kwargs["lift_board_tilt_deg"] = 40.0
+        kwargs["lift_board_tilt_deg"] = float(lift_board_tilt_deg)
+        kwargs["lift_board_y_offset_m"] = float(lift_board_y_offset_m)
     env = PandaWBCVelocityResidualEnv(**kwargs)
     env.reset(seed=seed, options={"fixture_index": 0})
     expert.reset()
@@ -73,8 +75,27 @@ def record(menagerie: Path, fixture, out: Path, *, k: float, budget: float,
     arrays["teacher_stiffness"] = np.asarray(float(k))
     np.savez_compressed(out, **arrays)
     env.close()
-    return dict(path=str(out), steps=len(arrays["joint_position"]),
-                success=bool(info.get("task_success", False)))
+    # Keep the compact rollout diagnostics beside the trace so a failed
+    # teacher rollout is rejected before it enters a training manifest.
+    return dict(
+        path=str(out), steps=len(arrays["joint_position"]),
+        success=bool(info.get("task_success", False)),
+        peak_torque_nm=float(info.get("peak_torque_nm", np.nan)),
+        hard_torque_limit=bool(info.get("hard_torque_limit", False)),
+        finite_state=bool(info.get("finite_state", False)),
+        peak_force_n=float(info.get("peak_contact_force_n", np.nan)),
+        contact_impulse_ns=float(info.get("contact_impulse_ns", np.nan)),
+        object_retained=bool(info.get("task_success", False)),
+        final_target_position_m=info.get("final_target_position_m"),
+        final_hand_position_m=info.get("final_hand_position_m"),
+        final_hand_target_distance_m=float(info.get("final_hand_target_distance_m", np.nan)),
+        final_target_lift_m=float(info.get("final_target_lift_m", np.nan)),
+        lift_board_contact=bool(info.get("lift_board_contact", False)),
+        lift_board_first_contact_s=info.get("lift_board_first_contact_s"),
+        lift_board_peak_force_n=float(info.get("lift_board_peak_force_n", np.nan)),
+        lift_board_contact_impulse_ns=float(info.get("lift_board_contact_impulse_ns", np.nan)),
+        lift_board_contact_duration_s=float(info.get("lift_board_contact_duration_s", np.nan)),
+    )
 
 
 def main() -> None:
