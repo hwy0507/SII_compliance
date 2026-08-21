@@ -154,13 +154,24 @@ def main() -> None:
     vmc_selected = selected["vmc"]
     test_rows.extend(evaluate_vmc(args.menagerie, vmc_selected["k"], vmc_selected["budget"], args.test_seeds, jitter, "selected_vmc"))
     output = {
-        "schema_version": 1,
+        "schema_version": 2,
         "protocol": "shared_budget_validation_selection_then_heldout_test",
+        "selection_rule": [
+            "maximize validation success_rate",
+            "break success-rate ties by minimizing validation mean_at_grasp_err_mm",
+        ],
         "validation_seeds": args.validation_seeds,
         "test_seeds": args.test_seeds,
         "budget_candidates": budgets,
         "vmc_k_candidates": k_values,
         "jitter": {"stroke_m": jitter[0], "height_m": jitter[1], "start_s": jitter[2]},
+        # Keep all candidate summaries in the result artifact.  This is enough
+        # to audit the pre-declared selection decision without duplicating the
+        # much larger per-rollout validation traces.
+        "validation_candidates": [
+            {key: value for key, value in candidate.items() if key != "validation_rows"}
+            for candidate in candidates
+        ],
         "selected": selected,
         "test_summary": {
             "esn": aggregate([row for row in test_rows if row["name"].startswith("selected_esn/")]),

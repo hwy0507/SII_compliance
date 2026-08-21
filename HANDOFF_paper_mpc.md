@@ -1,6 +1,6 @@
 # Handoff — Paper-MPC 名义控制器 × 柔顺层支线（paper-mpc-baseline）
 
-> 更新：2026-08-19 晚 · 分支：`paper-mpc-baseline`（与 main 同步，最新提交 `9c5b85f`）
+> 更新：2026-08-21 · 分支：`paper-mpc-baseline`（最新提交见 `git log --oneline -1`）
 > 服务器：arm1@192.168.31.70（密码 123456），工程在 `/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark`
 > 本地仓库：`/Users/hwy/Desktop/个人/科研/SII科研/compliance/0709`，remote = github.com/hwy0507/SII_compliance
 
@@ -13,6 +13,13 @@
 > 随机化冲击工况也已完成，见 `docs/paper_mpc_benchmark/RANDOMIZED_IMPACT_RESULTS_20260821.md`。ESN-101/202/303 均 50/50；ESN-303 棒/球均值 9.30 mm，接近并略优于 VMC 9.40 mm，但三 seed 平均仍不全面超过 VMC。Proposed 定位应写为跨工况免调参 ESN 柔顺层，而不是“全面击败 VMC”。
 
 > 随机化教师蒸馏消融也已完成，见 `docs/paper_mpc_benchmark/RANDOMIZED_BC_RESULTS_20260821.md`：12 条 rod/ball 随机教师轨迹没有带来一致的误差提升，故正式 proposed 暂保留 stable-reference coverage BC；随机化 BC 作为负结果/消融，不替换主 checkpoint。
+
+> **最新且应优先引用的公平结论（2026-08-21）：**已完成 ESN/VMC 共享预算候选、仅在 validation
+> 选择配置、一次性 held-out test 的协议，完整记录见
+> `docs/paper_mpc_benchmark/FAIR_BUDGET_SELECTION_RESULTS_20260821.md`。两者均为 50/50；
+> ESN-303/3% 的总体误差 `9.229 mm`，VMC k=1.5/3% 为 `9.357 mm`，但五 seed 配对 95% 区间跨
+> 零，故**不得声称 ESN 总体战胜 VMC**。它在 ball/board 更低、在 rod 更高，且木板接触力更高。
+> 3% 是对称 validation 选择的结果，不是事先强制固定的预算。
 
 本文档完整记录这条支线的**动机 → 方法 → 实验 → 当前结果 → 遗留事项**。接手前请通读；
 术语定义在 §1，架构在 §2，所有代码入口在 §3，实验结论在 §5-§7，坑清单在 §8（重要！）。
@@ -179,20 +186,25 @@ GIF 生成参考服务器 `/tmp/run_gifs3.sh`（board）/`run_gifs2.sh`（ball�
 诚实边界：以上均为 FR3 MuJoCo 仿真、单次评估种子（20260819）+ ESN 3 种子；
 零迁移失败证明柔顺学生必须在目标名义控制器上蒸馏（耦合性证据）。
 
-### 5.1 当前推荐主结果（2026-08-21 服务器）
+### 5.1 随机化工况补充结果（2026-08-21 服务器，非最终公平选参）
 
-在五个 seed、匹配的 stroke/height/start 工况扰动下，PaperMPC 裸机为 26/50；ESN-101/202/303 均为 50/50；MLP 为 48/50；VMC 为 50/50。棒/球抓取误差均值分别为：ESN-101 11.04 mm、ESN-202 10.42 mm、ESN-303 9.30 mm、VMC 9.40 mm。这个结果支持 proposed ESN 的跨工况免调参和 reservoir 稳定性，但不支持“ESN 全面击败 VMC”。完整数据见 `docs/paper_mpc_benchmark/RANDOMIZED_IMPACT_RESULTS_20260821.md`。
+在五个 seed、匹配的 stroke/height/start 工况扰动下，PaperMPC 裸机为 26/50；ESN-101/202/303 均为 50/50；MLP 为 48/50；VMC 为 50/50。棒/球抓取误差均值分别为：ESN-101 11.04 mm、ESN-202 10.42 mm、ESN-303 9.30 mm、VMC 9.40 mm。该轮 VMC 使用无噪声阶段选优配置，因而只作为跨工况补充，不能代替后续的公平预算选择测试。完整数据见 `docs/paper_mpc_benchmark/RANDOMIZED_IMPACT_RESULTS_20260821.md`。
 
 ## 7. 下一步（按优先级）
 
-1. **多评估种子**：当前所有数字基于单一评估种子——跑 5 评估种子取均值±方差（脚本改一行循环）；
-2. **TOPP-RA 参考源**（接缝①）：vendored `autolife_planning/trajectory/` 已在服务器
+1. **先冻结本轮结论，不追测同一 held-out test。**公平 budget-selection 结果已经完成且总体
+   无显著差异；不能再依据它去挑 ESN seed、预算、VMC 刚度或训练 checkpoint。论文主张应是
+   “competitive/configuration-stable”，不是“beat VMC”。
+2. **若研究问题必须是“ESN 是否能在更困难 OOD 条件超过 VMC”**，另立一份预注册协议：先固定
+   新的难度轴、候选配置、训练/validation/test seed 和主要指标，再生成此前完全未见的测试集。
+   可考虑多次冲击或 torque-limit scaling，但不可从本轮 held-out 结果反推参数或难度。
+3. **TOPP-RA 参考源**（接缝①）：vendored `autolife_planning/trajectory/` 已在服务器
    `/tmp/vendor_traj`，把 smoothstep knots 换成时间最优轨迹重验（速度余量≈0 时柔顺层价值）；
-3. **难工况边界扫描 + 力域主指标**：撞击强度/执行器弱化（torque_limit_scale）/多次撞击，
+4. **难工况边界扫描 + 力域主指标**：撞击强度/执行器弱化（torque_limit_scale）/多次撞击，
    找裸机成功率跌破 100% 的临界点，柔顺贡献 = 边界外推量；
-4. **全接管 vs 残差对照**：`torque_takeover`/`torque_takeover_gc` 模式已埋入 env 未跑；
-5. **`compliance.py` Protocol Facade**：给 ESN 套论文系统契约外壳 + SHADOW 模式试跑（集成测试）;
-6. 真机 FR3（FCI 力矩流）。
+5. **全接管 vs 残差对照**：`torque_takeover`/`torque_takeover_gc` 模式已埋入 env 未跑；
+6. **`compliance.py` Protocol Facade**：给 ESN 套论文系统契约外壳 + SHADOW 模式试跑（集成测试）;
+7. 真机 FR3（FCI 力矩流）。
 
 ## 8. 坑清单（接手者必读，每个都真实踩过）
 
