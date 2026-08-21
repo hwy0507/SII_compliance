@@ -29,6 +29,13 @@
 > MuJoCo 物理包络和“BC + train-only policy improvement”方法，完整协议/限制见
 > `docs/paper_mpc_benchmark/ESN_CEM_POLICY_IMPROVEMENT_{PROTOCOL,RESULTS}_20260821.md`。
 
+> **跨接触条件验证的边界结果（2026-08-21）：**将上述 CEM-ESN 完全冻结，迁移到新的
+> `positive_y` 反向滑台 + finite-mass ellipsoidal hand-proxy 接触；VMC 只在新 validation
+> 上重新选择。held-out 中 frozen ESN `0/20`，validation-selected VMC k=1.0/2% 为 `14/20`；
+> ESN/VMC at-grasp error `35.951/20.182 mm`。因此上一轮优势不具备自动跨接触不变性，
+> 当前主张必须限定在已声明接触条件内。完整记录见
+> `docs/paper_mpc_benchmark/CROSS_CONTACT_GENERALIZATION_{PROTOCOL,RESULTS}_20260821.md`。
+
 本文档完整记录这条支线的**动机 → 方法 → 实验 → 当前结果 → 遗留事项**。接手前请通读；
 术语定义在 §1，架构在 §2，所有代码入口在 §3，实验结论在 §5-§7，坑清单在 §8（重要！）。
 
@@ -213,6 +220,17 @@ GIF 生成参考服务器 `/tmp/run_gifs3.sh`（board）/`run_gifs2.sh`（ball�
 本轮选择了 CEM ESN-303/5% 与 VMC k=2.2/5%。二者测试均 20/20 成功、hard torque-limit 均 0/20；ESN at-grasp error `8.887 ± 1.206 mm`，VMC `9.634 ± 0.887 mm`，配对差 ESN−VMC `−0.747 mm`，fixture-level 95% CI `[-1.220,-0.274]` mm，seed-level 95% CI `[-1.440,-0.054]` mm。该结果支持在声明的 MuJoCo 物理接触装置包络内，经过 train-only 仿真读出策略改进的 ESN 本轮超过 VMC；不得外推为普遍或 sim-to-real 优势。ESN 平均峰值力略高 `0.149 N`，contact bouts 多 `0.20`，但峰值 torque 低 `0.476 N·m`，这些安全维度需如实并列报告。
 
 原始服务器 JSON：`/home/arm1/vmc_mujoco_runtime/outputs/paper_mpc_contact_apparatus_esn_cem_fair_20260821/fair_results.json`；本地归档 JSON SHA-256：`a088437a9a6cb800f102e0c52610cb92c899b6841f6ec3aeccc317003d8dfaba`。上述 held-out seeds 已消耗，禁止继续用它们调 gain、预算、VMC 刚度、checkpoint 或物理范围。
+
+### 7.2 2026-08-21 跨接触条件验证已完成
+
+新增脚本 `scripts/run_cross_contact_generalization.py`，将上一轮 selected CEM ESN-303/5% 冻结，
+改用 `positive_y` 反向进入的 finite-mass `hand_proxy` 椭球探头。校准 seeds `20261101–03`
+只验证物理接触存在；validation `20261111–15` 只为 VMC 选择 `k×budget`；held-out
+`20261116–20` 只运行冻结 ESN 与选中的 VMC。结果：ESN `0/20`，VMC k=1.0/2% `14/20`；
+ESN error `35.951 mm`、VMC `20.182 mm`，误差差 `+15.769 mm`，fixture-level 95% CI
+`[+13.753,+17.785] mm`。这轮是明确的负泛化结果：CEM-ESN 在上一轮接触条件有效，但
+不能自动迁移到反向掌形接触；不得用这批 test seed 继续调参。协议/结果见
+`docs/paper_mpc_benchmark/CROSS_CONTACT_GENERALIZATION_{PROTOCOL,RESULTS}_20260821.md`。
 
 1. **冻结两轮完成的 held-out 结论，不追测同一 test。**基础 BC 公平预算选择的结论仍是
    “与 VMC 相当”；CEM-ESN 的独立新 split 结论是“在该 physical contact-apparatus envelope

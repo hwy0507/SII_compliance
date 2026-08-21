@@ -1,0 +1,191 @@
+#!/usr/bin/env python3
+"""Frozen-ESN cross-contact generalization versus freshly selected VMC.
+
+This evaluator deliberately does *not* train, select, or change the ESN.
+It transports the CEM-improved checkpoint chosen in the prior apparatus
+protocol to a new physical contact condition: an opposite-y, finite-mass
+ellipsoidal palm probe on the same damped, force-limited MuJoCo slide.  Only
+VMC k and residual budget are selected on this protocol's new validation
+realizations; the ESN keeps its previously declared 5% deployment budget.
+Test seeds are never consulted until both protocol choices are fixed.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+import time
+from dataclasses import replace
+from pathlib import Path
+
+import numpy as np
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from run_benchmark import TORQUE_LIMITS  # noqa: E402
+from run_paper_mpc_benchmark import run_rollout  # noqa: E402
+from vmc_compliance_baseline import SpringCarriageConfig, load_controller  # noqa: E402
+from vmc_torque_baseline import VMCTorqueBaseline  # noqa: E402
+from wbc_velocity_residual_env import VelocityResidualFixture  # noqa: E402
+
+
+def parse_int_list(value: str) -> list[int]:
+    values = list(dict.fromkeys(int(item.strip()) for item in value.split(",") if item.strip()))
+    if not values:
+        raise argparse.ArgumentTypeError("list cannot be empty")
+    return values
+
+
+def parse_float_list(value: str) -> list[float]:
+    values = list(dict.fromkeys(float(item.strip()) for item in value.split(",") if item.strip()))
+    if not values or any(not np.isfinite(item) or item <= 0.0 for item in values):
+        raise argparse.ArgumentTypeError("list must contain positive finite values")
+    return values
+
+
+def cross_contact_fixture(rng: np.random.Generator) -> VelocityResidualFixture:
+    """One OOD, yet mechanically identical-class, physical contact fixture.
+
+    The ESN CEM/BC data used a cylindrical rod entering from negative y.  This
+    condition reverses the slide direction and replaces the contact geometry
+    with a finite-mass ellipsoidal palm proxy.  All sampled dynamic parameters
+    remain in the previously calibrated apparatus envelope; none is exposed to
+    either controller.
+    """
+
+    start = float(rng.uniform(0.90, 1.03))
+    return VelocityResidualFixture(
+        rod_stroke_m=float(rng.uniform(0.160, 0.176)),
+        rod_height_m=float(rng.uniform(0.539, 0.542)),
+        rod_start_time_s=start,
+        rod_approach_side="positive_y",
+        impactor_type="hand_proxy",
+        rod_cycles=2,
+        cycle_period_s=float(rng.uniform(0.66, 0.72)),
+        impactor_mass_kg=float(rng.uniform(0.18, 0.50)),
+        rod_slide_damping=float(rng.uniform(0.6, 4.0)),
+        rod_driver_kp=float(rng.uniform(2500.0, 9000.0)),
+        rod_driver_force_limit_n=float(rng.uniform(150.0, 300.0)),
+        contact_time_constant_s=float(rng.uniform(0.008, 0.025)),
+    )
+
+
+def fixtures_for_seed(seed: int, count: int) -> list[VelocityResidualFixture]:
+    return [cross_contact_fixture(np.random.default_rng(np.uint64(seed) * 2053 + index + 1))
+            for index in range(count)]
+
+
+def aggregate(rows: list[dict]) -> dict:
+    return {
+        "count": len(rows),
+        "success_rate": float(np.mean([bool(row["task_success"]) for row in rows])),
+        "mean_at_grasp_err_mm": float(np.mean([float(row["at_grasp_err_mm"]) for row in rows])),
+        "mean_peak_force_n": float(np.mean([float(row["obstacle_force_n"]) for row in rows])),
+        "mean_peak_torque_nm": float(np.mean([float(row["peak_torque_nm"]) for row in rows])),
+        "mean_contact_bout_count": float(np.mean([int(row["contact_bout_count"]) for row in rows])),
+        "hard_limit_count": int(sum(bool(row["hard_limit"]) for row in rows)),
+    }
+
+
+def score(summary: dict) -> tuple[float, float]:
+    return summary["success_rate"], -summary["mean_at_grasp_err_mm"]
+
+
+def evaluate_esn(menagerie: Path, model_path: Path, budget: float, seeds: list[int],
+                 fixture_count: int, label: str) -> list[dict]:
+    controller = load_controller(model_path)
+    rows: list[dict] = []
+    for seed in seeds:
+        for index, fixture in enumerate(fixtures_for_seed(seed, fixture_count)):
+            row = run_rollout(menagerie, fixture, impactor_kind="cross_contact_hand_proxy",
+                              controller=controller, residual_scale=budget, seed=seed,
+                              verbose_name=f"{label}/fx{index}")
+            row["fixture_index"] = index
+            rows.append(row)
+    return rows
+
+
+def evaluate_vmc(menagerie: Path, k: float, budget: float, seeds: list[int],
+                 fixture_count: int, label: str) -> list[dict]:
+    base = SpringCarriageConfig(k_translation_base=2.2, k_rotation_base=0.18)
+    config = replace(base, k_translation_base=k,
+                     k_rotation_base=base.k_rotation_base * k / base.k_translation_base)
+    rows: list[dict] = []
+    for seed in seeds:
+        for index, fixture in enumerate(fixtures_for_seed(seed, fixture_count)):
+            controller = VMCTorqueBaseline(config, TORQUE_LIMITS * budget)
+            row = run_rollout(menagerie, fixture, impactor_kind="cross_contact_hand_proxy",
+                              controller=controller, residual_scale=budget, seed=seed,
+                              verbose_name=f"{label}/fx{index}")
+            row["fixture_index"] = index
+            rows.append(row)
+    return rows
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--menagerie", type=Path, required=True)
+    parser.add_argument("--frozen-esn", type=Path, required=True)
+    parser.add_argument("--esn-budget", type=float, default=0.05)
+    parser.add_argument("--validation-seeds", type=parse_int_list, required=True)
+    parser.add_argument("--test-seeds", type=parse_int_list, required=True)
+    parser.add_argument("--fixture-count", type=int, default=4)
+    parser.add_argument("--vmc-budgets", type=parse_float_list, default=[0.02, 0.03, 0.05])
+    parser.add_argument("--vmc-k-values", type=parse_float_list, default=[1.0, 1.5, 2.2, 3.2])
+    parser.add_argument("--out", type=Path, required=True)
+    args = parser.parse_args()
+    if not 0.0 < args.esn_budget <= 1.0:
+        raise SystemExit("esn-budget must be in (0,1]")
+    if args.fixture_count < 1 or set(args.validation_seeds) & set(args.test_seeds):
+        raise SystemExit("fixture-count must be positive and validation/test seeds disjoint")
+
+    started = time.time()
+    esn_validation_rows = evaluate_esn(args.menagerie, args.frozen_esn, args.esn_budget,
+                                       args.validation_seeds, args.fixture_count, "frozen_esn_validation")
+    esn_validation = aggregate(esn_validation_rows)
+    print(f"[{time.time() - started:7.1f}s] frozen esn: {esn_validation}", flush=True)
+    vmc_candidates: list[dict] = []
+    for k in args.vmc_k_values:
+        for budget in args.vmc_budgets:
+            rows = evaluate_vmc(args.menagerie, k, budget, args.validation_seeds,
+                                args.fixture_count, f"vmc_k{k:g}_b{budget:g}")
+            summary = aggregate(rows)
+            candidate = {"k": k, "budget": budget, "summary": summary}
+            vmc_candidates.append(candidate)
+            print(f"[{time.time() - started:7.1f}s] vmc k{k:g} b{budget:g}: {summary}", flush=True)
+    selected_vmc = max(vmc_candidates, key=lambda candidate: score(candidate["summary"]))
+    print("selected_vmc", json.dumps(selected_vmc, indent=2), flush=True)
+
+    esn_test_rows = evaluate_esn(args.menagerie, args.frozen_esn, args.esn_budget,
+                                 args.test_seeds, args.fixture_count, "frozen_esn_test")
+    vmc_test_rows = evaluate_vmc(args.menagerie, selected_vmc["k"], selected_vmc["budget"],
+                                 args.test_seeds, args.fixture_count, "selected_vmc_test")
+    output = {
+        "schema_version": 1,
+        "protocol": "frozen_esn_cross_contact_generalization_with_fresh_vmc_validation_selection",
+        "status": "confirmatory_cross_contact",
+        "cross_contact_contract": "positive_y finite-mass ellipsoidal hand_proxy on a damped, force-limited MuJoCo slide; same declared dynamic parameter envelope",
+        "frozen_esn_contract": "the CEM-improved ESN checkpoint and its 5% deployment budget are transported unchanged; no ESN training/selection is performed in this protocol",
+        "observation_contract": "q, qdot, nominal_twist, pose_error, wbc_twist_error only; no force, apparatus, obstacle, timing, or future-release input",
+        "selection_rule": ["VMC only: maximize validation task_success rate", "break ties with minimum validation at-grasp error"],
+        "validation_seeds": args.validation_seeds,
+        "test_seeds": args.test_seeds,
+        "fixture_count_per_seed": args.fixture_count,
+        "fixture_generator": "cross_contact_fixture(seed*2053 + fixture_index + 1)",
+        "esn": {"model": str(args.frozen_esn), "fixed_budget": args.esn_budget,
+                "validation_summary": esn_validation},
+        "vmc_k_candidates": args.vmc_k_values,
+        "vmc_budget_candidates": args.vmc_budgets,
+        "vmc_validation_candidates": vmc_candidates,
+        "selected_vmc": selected_vmc,
+        "test_summary": {"esn": aggregate(esn_test_rows), "vmc": aggregate(vmc_test_rows)},
+        "test_rows": esn_test_rows + vmc_test_rows,
+    }
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(json.dumps(output, indent=2) + "\n")
+    print(json.dumps({"selected_vmc": selected_vmc, "test_summary": output["test_summary"]}, indent=2), flush=True)
+
+
+if __name__ == "__main__":
+    main()
