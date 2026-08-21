@@ -30,3 +30,11 @@ def test_contact_force_uses_the_function_argument_not_process_global_state() -> 
 
     assert "pair & robot_geoms" in source
     assert "robot_geobs_cache" not in source
+
+
+def test_paper_mpc_benchmark_exposes_a_reproducible_sensor_noise_knob() -> None:
+    source = SCRIPT.read_text()
+
+    assert '"--joint-velocity-noise-std"' in source
+    assert "joint_velocity_noise_std=joint_velocity_noise_std" in source
+    assert '"joint_velocity_noise_std": float(joint_velocity_noise_std)' in source

@@ -165,6 +165,7 @@ def run_rollout(
     lift_board: bool = False,
     residual_scale: float | None = None,
     seed: int = SEED,
+    joint_velocity_noise_std: float = 0.0,
     verbose_name: str = "",
 ) -> dict:
     # The residual budget has NO silent default: a student distilled from
@@ -180,6 +181,7 @@ def run_rollout(
         observation_mode="direct_esn", rod_enabled=True, seed=seed, robot="fr3",
         execution_mode="torque_residual", residual_torque_scale=residual_scale,
         wbc_backend="paper_mpc", fixtures=(fixture,),
+        joint_velocity_noise_std=joint_velocity_noise_std,
     )
     if lift_board:
         kwargs["lift_board_tilt_deg"] = 40.0
@@ -239,6 +241,7 @@ def run_rollout(
     result = dict(
         name=verbose_name,
         seed=int(seed),
+        joint_velocity_noise_std=float(joint_velocity_noise_std),
         scenario=impactor_kind,
         task_success=bool(info.get("task_success", False)),
         peak_torque_nm=float(info.get("peak_torque_nm", np.nan)),
@@ -270,7 +273,11 @@ def main() -> None:
                         help="residual budget the students were distilled at (must match the teacher traces; no silent default)")
     parser.add_argument("--eval-seeds", type=parse_seed_list, default=[SEED],
                         help="comma-separated evaluation seeds (default: %(default)s); raw rows retain each seed and a summary sidecar is written")
+    parser.add_argument("--joint-velocity-noise-std", type=float, default=0.0,
+                        help="Gaussian std (rad/s) added to measured joint velocity; 0 keeps the deterministic historical protocol")
     args = parser.parse_args()
+    if args.joint_velocity_noise_std < 0.0 or not np.isfinite(args.joint_velocity_noise_std):
+        raise SystemExit("--joint-velocity-noise-std must be finite and non-negative")
     eval_seeds = args.eval_seeds
 
     base_fixtures = default_velocity_residual_fixtures()
@@ -290,7 +297,8 @@ def main() -> None:
             for name, (kind, fx, lift) in scenarios.items():
                 r = run_rollout(args.menagerie, fx, impactor_kind=kind, controller=None,
                                 lift_board=lift, residual_scale=args.baseline_budget,
-                                seed=seed, verbose_name=f"none/{name}")
+                                seed=seed, joint_velocity_noise_std=args.joint_velocity_noise_std,
+                                verbose_name=f"none/{name}")
                 results.append(r)
                 print(f"[{time.time()-t0:6.1f}s] s{seed} {r['name']}: success={r['task_success']} "
                       f"peakT={r['peak_torque_nm']:.1f} force={r['obstacle_force_n']:.1f} "
@@ -312,6 +320,7 @@ def main() -> None:
                     r = run_rollout(args.menagerie, fx, impactor_kind=kind,
                                     controller=controller, lift_board=lift,
                                     residual_scale=args.student_budget, seed=seed,
+                                    joint_velocity_noise_std=args.joint_velocity_noise_std,
                                     verbose_name=f"{tag}/{name}")
                     results.append(r)
                     print(f"[{time.time()-t0:6.1f}s] s{seed} {r['name']}: success={r['task_success']} "
@@ -342,6 +351,7 @@ def main() -> None:
                     r = run_rollout(args.menagerie, fx, impactor_kind=kind,
                                     controller=ctrl, lift_board=lift,
                                     residual_scale=budget, seed=eval_seeds[0],
+                                    joint_velocity_noise_std=args.joint_velocity_noise_std,
                                     verbose_name=f"vmc_k{k}_s{budget}/{probe_name}")
                     results.append(r)
                     score = (1 if r["task_success"] else 0, -(r["at_grasp_err_mm"] or 999))
@@ -363,6 +373,7 @@ def main() -> None:
                 r = run_rollout(args.menagerie, fx, impactor_kind=kind,
                                 controller=ctrl, lift_board=lift,
                                 residual_scale=budget, seed=seed,
+                                joint_velocity_noise_std=args.joint_velocity_noise_std,
                                 verbose_name=f"vmc_best/{name}")
                 results.append(r)
                 print(f"[{time.time()-t0:6.1f}s] s{seed} {r['name']}: success={r['task_success']} "
