@@ -6,6 +6,8 @@
 
 > 续接记录：2026-08-21 已为 `run_paper_mpc_benchmark.py` 加入显式 `--eval-seeds` 多种子评估、逐行 `seed` 溯源和 companion summary sidecar；详见 `docs/paper_mpc_benchmark/MULTISEED_PROTOCOL.md`。MuJoCo 长跑尚未在本地执行，待服务器按该协议补齐 5 个评估种子。
 
+> 2026-08-21 服务器结果已补齐：`docs/paper_mpc_benchmark/MULTISEED_RESULTS_20260821.md`。当前 5 个 seed 在固定 fixture 下完全复现（每格 std≈0），所以这是可复现性检查，不是随机物理扰动置信区间。
+
 本文档完整记录这条支线的**动机 → 方法 → 实验 → 当前结果 → 遗留事项**。接手前请通读；
 术语定义在 §1，架构在 §2，所有代码入口在 §3，实验结论在 §5-§7，坑清单在 §8（重要！）。
 
