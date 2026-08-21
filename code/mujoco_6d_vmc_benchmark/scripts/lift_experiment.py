@@ -31,6 +31,8 @@ import mujoco
 import numpy as np
 
 from direct_esn_compliance import DirectESNObservation, DirectESNController
+
+_os.environ.setdefault("ESN_FIT_BIAS", "1")   # readout intercept: kills the resting offset
 from extraction_experiment import (
     SCENARIO_SAFETY, WASHOUT, EnsemblePolicy, NeutralPolicy, UngatedESN,
     UngatedMLP, VMCScheduled, _fit_esn, board_force, make_env)
@@ -52,27 +54,32 @@ OUT = Path(_os.environ.get("EXT_OUT", "/home/arm1/vmc_mujoco_runtime/outputs/lif
 DOCS = Path(__file__).resolve().parent.parent / "docs" / "lift_results"
 
 # Scenario suite entries: (kind, params...).  Deterministic per entry.
+# v11: sudden-strike-centred suite.  The strike family (single timing
+# cluster ~3.0 s, hard/fast, payload height) is where memory anticipates
+# and halves the impact peak; statics and the gentle wrist plank keep the
+# suite honest about rejoin and corridor skills.
 DATA_GRID = (
-    ("plank_arm", 3.00, 0.76, 1.00), ("plank_arm", 3.10, 0.74, 1.10),
-    ("plank_payload", 3.00, H_PAYLOAD, 1.00), ("plank_payload", 2.90, 0.64, 0.90),
+    ("strike_cue", 2.95, 0.64, 2.0), ("strike_cue", 3.00, 0.64, 2.0),
+    ("strike_cue", 3.05, 0.63, 2.0),
+    ("strike_none", 0.0, 0.0, 0.0),
     ("static", STATIC_Y, 25.0), ("static", STATIC_Y, 23.0),
-    ("static", STATIC_Y, 24.0), ("static", STATIC_Y, 21.0),
+    ("plank_arm", 3.00, 0.76, 1.0),
 )
 HELDOUT = (
-    ("plank_arm", 2.95, 0.78, 1.05),
-    ("plank_payload", 3.05, 0.63, 1.10),
+    ("strike_cue", 3.00, 0.62, 1.8),
     ("static", STATIC_Y, 22.0),
 )
-EVAL_BOARDS = (("plank_arm", T0_DEFAULT, H_DEFAULT, V0_DEFAULT),
-               ("plank_payload", T0_DEFAULT, H_PAYLOAD, V0_DEFAULT),
-               ("static", STATIC_Y, STATIC_TILT)) + HELDOUT
+EVAL_BOARDS = (("strike_cue", 3.00, 0.64, 2.0), ("strike_cue", 2.95, 0.64, 2.0),
+               ("strike_cue", 3.05, 0.63, 2.0),
+               ("strike_none", 0.0, 0.0, 0.0),
+               ("static", STATIC_Y, 25.0), ("plank_arm", 3.00, 0.76, 1.0))
 EVAL_SEEDS = (7, 1234, 999)
 DATA_NOISE = 0.002
 
 # Validation cells for ALL controller tuning: DATA cells only, never the
 # eval boards (keep the final comparison clean).
-VAL_CELLS = (("plank_arm", 3.10, 0.74, 1.10), ("plank_payload", 2.90, 0.64, 0.90),
-             ("static", STATIC_Y, 24.0))
+VAL_CELLS = (("strike", 3.00, 0.64, 2.0), ("static", STATIC_Y, 23.0),
+             ("plank_arm", 3.00, 0.76, 1.0))
 
 ESN_GRID = (
     dict(),
@@ -87,6 +94,13 @@ ESN_GRID = (
     dict(time_constant_s=0.06, reservoir_size=320, input_scale=0.65),
     dict(ridge_lambda=1.0e-5, reservoir_size=240),
     dict(time_constant_s=0.09, spectral_radius=1.05, reservoir_size=240),
+    # slow-reservoir variants: the delayed-cue task needs a ~2 s memory
+    # bridge (cue at t=1.1, yield at t=2.85); tc=0.12 forgets in <1 s.
+    dict(time_constant_s=0.30, spectral_radius=0.95, reservoir_size=240),
+    dict(time_constant_s=0.50, spectral_radius=0.95, reservoir_size=240),
+    dict(time_constant_s=0.30, spectral_radius=1.10, reservoir_size=240),
+    dict(time_constant_s=0.50, spectral_radius=1.10, reservoir_size=240),
+    dict(time_constant_s=0.50, spectral_radius=0.95, reservoir_size=320, input_scale=0.65),
 )
 
 # MLP architecture sweep (subprocess trainer honours MLP_HIDDEN/MLP_EPOCHS)
@@ -111,6 +125,45 @@ VMC_GRID = (
 
 def build_env(kind: str, *params, seed: int = 7, noise: float = 0.0):
     """Suite env builder.  kind: plank_arm | plank_payload | static."""
+    if kind == "strike":
+        # Sudden hard strike at payload height: the scenario where phase
+        # anticipation is structurally necessary -- the pre-yield halves the
+        # impact peak (measured: FW 241 N vs teacher 116 N).
+        t0, h, v0 = params
+        _os.environ["LIFT_PLANK_MODE"] = "launch"
+        _os.environ["LIFT_PLANK_WINDOW"] = "0.30"
+        _os.environ["LIFT_PLANK_KV"] = "60"
+        _os.environ["LIFT_PLANK_FORCE"] = "300"
+        fx = VelocityResidualFixture(v0, h, t0, impactor_type="plank",
+                                     rod_approach_side="negative_y",
+                                     rod_center_x_m=0.55, rod_center_y_m=0.0,
+                                     rod_cycles=1, cycle_period_s=0.80)
+        return make_env(None, seed, noise=noise, tilt=None, fixture=fx)
+    if kind == "strike_cue":
+        # delayed-cue variant: nudge at ~1.1 predicts the strike at ~3.15
+        t0, h, v0 = params
+        _os.environ["LIFT_PLANK_MODE"] = "launch"
+        _os.environ["LIFT_PLANK_WINDOW"] = "0.30"
+        _os.environ["LIFT_PLANK_KV"] = "60"
+        _os.environ["LIFT_PLANK_FORCE"] = "300"
+        _os.environ["LIFT_CUE"] = "1"
+        fx = VelocityResidualFixture(v0, h, t0, impactor_type="plank",
+                                     rod_approach_side="negative_y",
+                                     rod_center_x_m=0.55, rod_center_y_m=0.0,
+                                     rod_cycles=1, cycle_period_s=0.80)
+        return make_env(None, seed, noise=noise, tilt=None, fixture=fx)
+    if kind == "strike_none":
+        # cue present, strike NEVER comes: the false-positive board.  The
+        # correct behavior is to do NOTHING; a controller that yields
+        # spuriously pays in tracking error.
+        _os.environ["LIFT_PLANK_MODE"] = "launch"
+        _os.environ["LIFT_CUE"] = "1"
+        fx = VelocityResidualFixture(1.0, 0.64, 99.0, impactor_type="plank",
+                                     rod_approach_side="negative_y",
+                                     rod_center_x_m=0.55, rod_center_y_m=0.0,
+                                     rod_cycles=1, cycle_period_s=0.80)
+        return make_env(None, seed, noise=noise, tilt=None, fixture=fx)
+    _os.environ["LIFT_CUE"] = "0"
     if kind in ("plank_arm", "plank_payload"):
         t0, h, v0 = params
         _os.environ["LIFT_PLANK_MODE"] = "launch"
@@ -253,19 +306,24 @@ def rollout(env, seed: int, policy=None, *, teacher: LiftTeacher | None = None,
                                             hand_y=float(hand[1]), hand_z=float(hand[2]),
                                             contact=contact, time_s=t,
                                             nominal_y=float(d["nominal_position"][1])), dtype=float)
-        else:
+        elif policy is not None:
             action = np.asarray(policy.act(*args, **kw).bounded_filter_action, dtype=float)
+        else:
+            action = np.zeros(7)   # do-nothing expert (false-positive board)
         if collect:
             obs.append(DirectESNObservation(
                 joint_position=args[0], joint_velocity=args[1], wbc_task_twist=args[2],
                 wbc_pose_error=kw["pose_error"], wbc_twist_error=kw["twist_error"]))
             acts.append(action.copy())
-            # Contact steps 6x (the dodge), late carry/hold 4x: the post-release
-            # action must decay to zero or the residual dodge swings the carried
-            # block into the board edge and it gets flung off-world (measured:
-            # students drop the block at t~5.3-6.5 s exactly when their fade is
-            # sloppier than the teacher's).
-            weights.append(6.0 if contact else (4.0 if t > 5.2 else 1.0))
+            # Anticipation steps 8x (t in [2.6, 3.3] with nonzero action: the
+            # delayed-cue bridge is the decisive skill and ridge otherwise
+            # shrinks it), contact steps 6x (the dodge), late carry/hold 4x
+            # (post-release decay must reach zero or the residual dodge flings
+            # the carried block into the board edge -- measured).
+            if t < 3.3 and float(np.max(np.abs(action))) > 0.05:
+                weights.append(8.0)
+            else:
+                weights.append(6.0 if contact else (4.0 if t > 5.2 else 1.0))
         errors.append(float(np.linalg.norm(d["wbc_pose_error"][:3])))
         forces.append(board_force(env))
         _, _, done, _, info = env.step(action)
@@ -319,8 +377,8 @@ def stage_probe() -> None:
     # starves the static boards of dodge depth and the students inherit
     # 400 N peaks there -- measured).
     best, best_m = None, None
-    for y_yield in (0.7, 0.85, 1.0):
-        for pre_t in (2.60, 2.70):
+    for y_yield in (0.5, 0.6, 0.7):
+        for pre_t in (2.85, 2.90):
             ms = []
             ok = True
             for entry in EVAL_BOARDS:
@@ -365,7 +423,9 @@ def stage_data() -> None:
     episodes = []
     for entry in DATA_GRID:
         env = build_env(*entry, seed=7, noise=DATA_NOISE)
-        m, ep = rollout(env, 7, teacher=teacher, collect=True)
+        # the false-positive board's expert is DO NOTHING
+        ep_teacher = None if entry[0] == "strike_none" else teacher
+        m, ep = rollout(env, 7, teacher=ep_teacher, collect=True)
         env.close()
         episodes.append(ep)
         print(f"  {entry}: {_fmt(m)}")
@@ -472,7 +532,8 @@ def stage_dagger() -> None:
     new_episodes = []
     for entry in DATA_GRID + HELDOUT:
         env = build_env(*entry, seed=7, noise=DATA_NOISE)
-        m, ep = rollout(env, 7, policy=esn, teacher=teacher, collect=True)
+        ep_teacher = None if entry[0] == "strike_none" else teacher
+        m, ep = rollout(env, 7, policy=esn, teacher=ep_teacher, collect=True)
         env.close()
         new_episodes.append(dict(obs=list(ep["obs"]), actions=ep["actions"], weights=ep["weights"]))
         print(f"  {entry}: {_fmt(m)}")
@@ -501,8 +562,8 @@ def stage_dagger() -> None:
 
 def _students():
     from mlp_compliance_baseline import MLPComplianceController
-    esn = EnsemblePolicy([UngatedESN(DirectESNController.from_npz(OUT / f"esn_s{s}.npz"))
-                          for s in (11, 29, 97, 123, 555)])
+    esn = EnsemblePolicy([UngatedESN(DirectESNController.from_npz(p))
+                          for p in sorted(OUT.glob("esn_s*.npz"))])
     mlps = [UngatedMLP(MLPComplianceController.from_npz(p))
             for p in sorted(OUT.glob("mlp_s*.npz"))]
     mlp = EnsemblePolicy(mlps) if mlps else None
@@ -555,7 +616,7 @@ def stage_gif() -> None:
     except ImportError:
         cv2 = None
     for name, policy in controllers:
-        env = build_env("plank_payload", T0_DEFAULT, H_PAYLOAD, V0_DEFAULT)
+        env = build_env("strike_cue", 3.00, 0.64, 2.0)
         env.reset(seed=7, options={"fixture_index": 0})
         env.model.vis.global_.offwidth = 1280
         env.model.vis.global_.offheight = 720

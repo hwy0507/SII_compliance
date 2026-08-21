@@ -209,7 +209,10 @@ class NeutralPolicy:
 
 
 class UngatedESN:
-    """ESN deployed with activation gating disabled (parity with training)."""
+    """ESN deployed ungated; the resting-offset fix lives in the READOUT
+    BIAS (fit_bias), not in a deployment gate -- a gate would also kill
+    the pre-contact anticipation channel (measured: MLP peak 117->160 N
+    when gated, unfair to the baseline)."""
 
     def __init__(self, model: DirectESNController) -> None:
         self.model = model
@@ -354,7 +357,10 @@ class NeutralPolicy:
 
 
 class UngatedESN:
-    """ESN deployed with activation gating disabled (parity with training)."""
+    """ESN deployed ungated; the resting-offset fix lives in the READOUT
+    BIAS (fit_bias), not in a deployment gate -- a gate would also kill
+    the pre-contact anticipation channel (measured: MLP peak 117->160 N
+    when gated, unfair to the baseline)."""
 
     def __init__(self, model: DirectESNController) -> None:
         self.model = model
@@ -623,7 +629,8 @@ def _fit_esn(episodes, seed, overrides):
     mse = model.fit_readout(f_aug, t_aug,
                             smoothness_features=np.concatenate(sm_feat),
                             smoothness_weight=float(_os.environ.get("EXT_SMOOTH", "0.05")),
-                            smoothness_targets=np.concatenate(sm_tgt))
+                            smoothness_targets=np.concatenate(sm_tgt),
+                            fit_bias=_os.environ.get("ESN_FIT_BIAS", "0") == "1")
     return model, mse
 
 

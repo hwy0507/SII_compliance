@@ -198,6 +198,12 @@ class DirectESNController:
         self._bias = rng.uniform(-config.bias_scale, config.bias_scale, config.reservoir_size)
         self._state = np.zeros(config.reservoir_size, dtype=float)
         self._readout = np.zeros((ACTION_DIMENSION, self.feature_dimension), dtype=float)
+        # Readout intercept.  Without it, a linear W@f readout cannot zero
+        # its output on idle states (no constant column), leaving a resting
+        # action offset (measured: constant ~15 mm final tracking error on
+        # every board).  Enabled per-fit via fit_bias; default zeros keeps
+        # older checkpoints numerically identical.
+        self._readout_bias = np.zeros(ACTION_DIMENSION, dtype=float)
         self._smoothed_yield_twist = np.zeros(6, dtype=float)
 
     @property
@@ -266,6 +272,7 @@ class DirectESNController:
         prior_weight: float = 0.0, smoothness_features: np.ndarray | None = None,
         smoothness_weight: float = 0.0, smoothness_targets: np.ndarray | None = None,
         smoothness_channel_scales: np.ndarray | None = None,
+        fit_bias: bool = False,
     ) -> float:
         """Fit ridge readout, optionally proximal to a trusted parent readout.
 
@@ -296,17 +303,26 @@ class DirectESNController:
             scales = _finite_vector(smoothness_channel_scales, ACTION_DIMENSION, "channel scales")
             if np.any(scales < 0.0):
                 raise ValueError("channel scales must be non-negative")
+        # Optional intercept column: solves [W | b] jointly so idle states
+        # can map to exactly zero action (a pure W@f readout cannot).
+        if fit_bias:
+            design = np.hstack([design, np.ones((len(design), 1))])
+        dimension = design.shape[1]
         right = design.T @ np.clip(target_array, -1.0, 1.0)
         if prior_readout is not None:
             prior = _finite_matrix(prior_readout, self.feature_dimension, "prior_readout")
             if prior.shape != (ACTION_DIMENSION, self.feature_dimension):
                 raise ValueError("prior readout has invalid shape")
+            if fit_bias:
+                prior = np.hstack([prior, np.zeros((ACTION_DIMENSION, 1))])
             right += prior_weight * prior.T
         elif prior_weight > 0.0:
             raise ValueError("a positive prior weight requires prior_readout")
-        gram = design.T @ design + (self.config.ridge_lambda + prior_weight) * np.eye(self.feature_dimension)
+        gram = design.T @ design + (self.config.ridge_lambda + prior_weight) * np.eye(dimension)
         if smoothness_weight > 0.0:
             delta = _finite_matrix(smoothness_features, self.feature_dimension, "smoothness features")
+            if fit_bias:
+                delta = np.hstack([delta, np.zeros((len(delta), 1))])
             scales = np.ones(ACTION_DIMENSION) if smoothness_channel_scales is None else scales
             if smoothness_targets is not None:
                 delta_targets = _finite_matrix(smoothness_targets, ACTION_DIMENSION, "smoothness targets")
@@ -334,9 +350,14 @@ class DirectESNController:
                 self._readout = np.asarray(rows)
         else:
             self._readout = np.linalg.solve(gram, right).T
+        solution = self._readout
+        if fit_bias:
+            self._readout = solution[:, :self.feature_dimension]
+            self._readout_bias = solution[:, self.feature_dimension]
         if not np.all(np.isfinite(self._readout)):
             raise RuntimeError("Direct ESN readout became non-finite")
-        prediction = np.tanh(design @ self._readout.T)
+        design_w = design[:, :self.feature_dimension] if fit_bias else design
+        prediction = np.tanh(design_w @ self._readout.T + self._readout_bias)
         return float(np.mean((prediction - np.clip(target_array, -1.0, 1.0)) ** 2))
 
     def action_from_feature(
@@ -344,7 +365,7 @@ class DirectESNController:
         residual_gain: float = 1.0,
     ) -> DirectESNAction:
         feature_array = _finite_vector(feature, self.feature_dimension, "feature")
-        raw = self._readout @ feature_array
+        raw = self._readout @ feature_array + self._readout_bias
         bounded = np.tanh(raw) * float(np.clip(activation, 0.0, 1.0)) * float(np.clip(residual_gain, 0.0, 1.0))
         if self.config.error_aligned_yield and pose_error is not None:
             error = _finite_vector(pose_error, 6, "pose_error")
@@ -511,6 +532,7 @@ class DirectESNController:
         np.savez_compressed(
             target,
             readout=self._readout,
+            readout_bias=self._readout_bias,
             recurrent=self._recurrent,
             input_matrix=self._input,
             bias=self._bias,
@@ -536,6 +558,9 @@ class DirectESNController:
             controller._input = input_matrix.copy()
             controller._bias = bias.copy()
             controller.set_readout(archive["readout"])
+            if "readout_bias" in archive.files:
+                controller._readout_bias = _finite_vector(
+                    archive["readout_bias"], ACTION_DIMENSION, "readout_bias").copy()
             return controller
 
 

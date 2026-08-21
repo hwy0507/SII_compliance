@@ -607,6 +607,12 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         data.mocap_pos[self._obstacle_mocap] = np.array([3.0, 3.0, 3.0])
         data.mocap_quat[self._obstacle_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
         data.qfrc_applied[:] = 0.0
+        # Delayed cue (LIFT_CUE): a brief observable wrist nudge at t~1.0-1.3
+        # that PREDICTS the strike at ~3.0.  The WBC erases its instantaneous
+        # trace within ~0.5 s -- by strike time only a controller that
+        # INTEGRATED the cue (reservoir memory) can still know to pre-yield.
+        if _os.environ.get("LIFT_CUE", "0") == "1" and 1.0 <= time_s <= 1.3:
+            data.qfrc_applied[4] = 8.0
         jacobian = body_jacobian(model, data, self._hand_id)
         qdot_command, raw_qdot = safe_joint_velocity_command(
             command.joint_velocity_radps,
