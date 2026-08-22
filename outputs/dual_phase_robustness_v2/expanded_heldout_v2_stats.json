@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "input": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_robustness_v2/expanded_heldout_four_method.json",
+  "baseline": "VMC",
+  "paired_condition_count": 12,
+  "bootstrap_replicates": 20000,
+  "unit_of_resampling": "matched pre-registered condition/seed",
+  "comparisons": {
+    "ESN": {
+      "all_pairs_physical_audit_pass": true,
+      "pre_peak_force_n": {
+        "mean_difference_method_minus_baseline": -2.104652179345057,
+        "paired_bootstrap_95ci": [
+          -2.681085595679398,
+          -1.5902279077887431
+        ],
+        "paired_condition_win_rate": 1.0,
+        "direction": "lower"
+      },
+      "pre_impulse_ns": {
+        "mean_difference_method_minus_baseline": -1.3627980927910335,
+        "paired_bootstrap_95ci": [
+          -1.5346062102544518,
+          -1.1879986545416839
+        ],
+        "paired_condition_win_rate": 1.0,
+        "direction": "lower"
+      },
+      "post_peak_force_n": {
+        "mean_difference_method_minus_baseline": -2.0930041838654536,
+        "paired_bootstrap_95ci": [
+          -2.5526759428867045,
+          -1.6057707095798646
+        ],
+        "paired_condition_win_rate": 1.0,
+        "direction": "lower"
+      },
+      "post_impulse_ns": {
+        "mean_difference_method_minus_baseline": 0.12989955720696397,
+        "paired_bootstrap_95ci": [
+          0.03864597014031905,
+          0.21726291373267007
+        ],
+        "paired_condition_win_rate": 0.16666666666666666,
+        "direction": "lower"
+      },
+      "peak_jerk_mps3": {
+        "mean_difference_method_minus_baseline": -152.0911889527417,
+        "paired_bootstrap_95ci": [
+          -201.7143241143159,
+          -104.80472731497427
+        ],
+        "paired_condition_win_rate": 1.0,
+        "direction": "lower"
+      },
+      "final_target_lift_m": {
+        "mean_difference_method_minus_baseline": -0.00455552082798318,
+        "paired_bootstrap_95ci": [
+          -0.005392878276794529,
+          -0.00399962440568801
+        ],
+        "paired_condition_win_rate": 0.0,
+        "direction": "higher"
+      },
+      "five_metric_ratio_to_baseline": {
+        "mean": 0.9731222439445362,
+        "paired_bootstrap_95ci": [
+          0.8757854279177929,
+          1.095073328143316
+        ],
+        "lower_is_better": true
+      }
+    },
+    "PaperMPC": {
+      "all_pairs_physical_audit_pass": true,
+      "pre_peak_force_n": {
+        "mean_difference_method_minus_baseline": -0.2649602414298977,
+        "paired_bootstrap_95ci": [
+          -0.49579506137147644,
+          -0.04153406908762551
+        ],
+        "paired_condition_win_rate": 0.6666666666666666,
+        "direction": "lower"
+      },
+      "pre_impulse_ns": {
+        "mean_difference_method_minus_baseline": -0.7057988285620361,
+        "paired_bootstrap_95ci": [
+          -0.841421394730046,
+          -0.5662639693962479
+        ],
+        "paired_condition_win_rate": 1.0,
+        "direction": "lower"
+      },
+      "post_peak_force_n": {
+        "mean_difference_method_minus_baseline": 0.1161477325548782,
+        "paired_bootstrap_95ci": [
+          -0.10102893623773496,
+          0.34281218381379563
+        ],
+        "paired_condition_win_rate": 0.4166666666666667,
+        "direction": "lower"
+      },
+      "post_impulse_ns": {
+        "mean_difference_method_minus_baseline": 0.2752103068175204,
+        "paired_bootstrap_95ci": [
+          0.23728645411233393,
+          0.31732127038958313
+        ],
+        "paired_condition_win_rate": 0.0,
+        "direction": "lower"
+      },
+      "peak_jerk_mps3": {
+        "mean_difference_method_minus_baseline": 0.31496789090748695,
+        "paired_bootstrap_95ci": [
+          -24.273468245716682,
+          35.67037154402255
+        ],
+        "paired_condition_win_rate": 0.6666666666666666,
+        "direction": "lower"
+      },
+      "final_target_lift_m": {
+        "mean_difference_method_minus_baseline": -0.0036611396174521804,
+        "paired_bootstrap_95ci": [
+          -0.003850831610964514,
+          -0.0034565587866768016
+        ],
+        "paired_condition_win_rate": 0.0,
+        "direction": "higher"
+      },
+      "five_metric_ratio_to_baseline": {
+        "mean": 1.0916378565420113,
+        "paired_bootstrap_95ci": [
+          1.031283732294533,
+          1.160929438353276
+        ],
+        "lower_is_better": true
+      }
+    }
+  }
+}

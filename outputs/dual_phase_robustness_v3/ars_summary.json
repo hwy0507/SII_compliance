@@ -1,0 +1,2497 @@
+{
+  "schema_version": 1,
+  "method": "independent_direct_esn_antithetic_random_search",
+  "status": "development_only_not_confirmatory",
+  "training_source": "own MuJoCo rollout scalar returns only; no VMC checkpoint, trace, action, or parameter was read",
+  "student_observation_contract": [
+    "joint_position_7",
+    "joint_velocity_7",
+    "wbc_task_twist_6",
+    "wbc_pose_error_6",
+    "wbc_twist_error_6"
+  ],
+  "forbidden_online_inputs": [
+    "contact_force",
+    "contact_normal",
+    "contact_duration",
+    "signed_distance",
+    "obstacle_pose",
+    "obstacle_velocity",
+    "impactor_type",
+    "release_time"
+  ],
+  "training_conditions": [
+    {
+      "name": "dev_soft_near",
+      "split": "development",
+      "seed": 20266101,
+      "board_y_offset_m": 0.0015,
+      "board_z_offset_m": -0.0015,
+      "contact_time_constant_s": 0.01,
+      "joint_velocity_noise_std": 0.004,
+      "residual_action_delay_steps": 0
+    },
+    {
+      "name": "dev_stiff_near",
+      "split": "development",
+      "seed": 20266102,
+      "board_y_offset_m": 0.003,
+      "board_z_offset_m": 0.0015,
+      "contact_time_constant_s": 0.02,
+      "joint_velocity_noise_std": 0.004,
+      "residual_action_delay_steps": 0
+    },
+    {
+      "name": "dev_soft_delayed",
+      "split": "development",
+      "seed": 20266103,
+      "board_y_offset_m": 0.0045,
+      "board_z_offset_m": -0.0025,
+      "contact_time_constant_s": 0.01,
+      "joint_velocity_noise_std": 0.008,
+      "residual_action_delay_steps": 1
+    },
+    {
+      "name": "dev_stiff_delayed",
+      "split": "development",
+      "seed": 20266104,
+      "board_y_offset_m": 0.006,
+      "board_z_offset_m": 0.0025,
+      "contact_time_constant_s": 0.022,
+      "joint_velocity_noise_std": 0.008,
+      "residual_action_delay_steps": 1
+    }
+  ],
+  "config": {
+    "reservoir_size": 240,
+    "spectral_radius": 0.94,
+    "input_scale": 0.45,
+    "connection_probability": 0.12,
+    "bias_scale": 0.05,
+    "time_constant_s": 0.08,
+    "multiscale_time_constants_s": null,
+    "fast_fraction": 0.5,
+    "dt_s": 0.04,
+    "ridge_lambda": 0.0001,
+    "seed": 20267001,
+    "minimum_wbc_scale": 0.2,
+    "maximum_linear_yield_mps": 0.16,
+    "maximum_angular_yield_radps": 0.6,
+    "activation_error_start_m": 0.004,
+    "activation_error_full_m": 0.012,
+    "error_aligned_yield": false,
+    "rejoin_fade_enabled": false,
+    "rejoin_fade_maximum": 0.85,
+    "yield_smoothing_alpha": 0.85,
+    "disable_recurrence": false,
+    "zero_twist_error": false,
+    "zero_joint_velocity": false,
+    "mirror_gate_enabled": false,
+    "mirror_gate_channels": "y",
+    "mirror_gate_epsilon_m": 0.004,
+    "mirror_gate_epsilon_rad": 0.02
+  },
+  "ars": {
+    "iterations": 8,
+    "directions": 8,
+    "conditions_per_direction": 2,
+    "basis_dimension": 64,
+    "exploration_sigma": 0.3,
+    "learning_rate": 0.18,
+    "theta_clip": 3.0,
+    "readout_scale": 0.24,
+    "seed": 20267001
+  },
+  "lift_objective": {
+    "target_mm": 196.0,
+    "penalty_weight": 12.0,
+    "hard_floor_mm": 193.5
+  },
+  "initial_return": -5.363568146959075,
+  "initial_physical_audit": [
+    true,
+    true,
+    true,
+    true
+  ],
+  "best_return": 23.45888827254538,
+  "best_physical_audit": [
+    true,
+    true,
+    true,
+    true
+  ],
+  "best_theta": [
+    0.0026593148110694922,
+    0.01731971097864859,
+    0.023068352420785664,
+    0.01004355238310833,
+    0.04048468088708865,
+    0.011790625309341336,
+    -0.01476957395507218,
+    -0.007514176198853341,
+    0.02125877530712348,
+    0.02008506542551737,
+    -0.005634860491533319,
+    -0.03867511207346734,
+    0.043707172968915964,
+    -0.004284878137196153,
+    -0.0006474951481928361,
+    0.01982832495592068,
+    0.006128904516867131,
+    -0.018506666079742495,
+    0.037310525101327374,
+    -0.0209579470930686,
+    0.004609322880678774,
+    0.025426435694103102,
+    0.007772944878703023,
+    -0.0009722497517350324,
+    -0.004782459431349466,
+    -0.025381228957017873,
+    -0.019483640565374515,
+    0.05424713713779576,
+    -0.006982240406040571,
+    -0.010498437475993496,
+    -0.005385350223254582,
+    0.0001675247672007392,
+    0.009735687118206436,
+    -0.02557265831414979,
+    0.001055488260544725,
+    -0.008229687017220206,
+    -0.043148939886846205,
+    0.002329728234305907,
+    -0.007816055776741982,
+    0.010757413184943977,
+    -0.015261006835207003,
+    -0.0038265542182267295,
+    -0.0008543252431176922,
+    -0.012811015165932745,
+    -0.05346725502431339,
+    0.0008037298000811927,
+    0.02200352187622333,
+    -0.010576336263431406,
+    -0.026184378903050403,
+    -0.026847618158874164,
+    -0.006633750985108631,
+    -0.01863898742708472,
+    0.02313723127522157,
+    -0.0200239856863435,
+    -0.010568277001054166,
+    -0.0005080867241171617,
+    -0.025288145729999698,
+    -0.029517289781326957,
+    -0.008716852674049709,
+    0.029243994892078403,
+    0.035348581007835195,
+    -0.02613005264583563,
+    0.005590788330217382,
+    0.002477929854322678
+  ],
+  "model": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_robustness_v3/esn_ars_lift_floor/esn_ars_independent_best.npz",
+  "iterations": [
+    {
+      "iteration": 0,
+      "return_scale": 34.47458091795734,
+      "mean_plus_return": -25.80891110635575,
+      "mean_minus_return": -25.05676398058086,
+      "mean_policy_return": 17.447720156710837,
+      "mean_policy_physical_audit_pass": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "best_return_so_far": 17.447720156710837,
+      "direction_records": [
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 24.20216754910366,
+          "minus_return": -24.981285858563176,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 12.5037870332253,
+          "minus_return": -24.476458100972657,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": -64.47459824190665,
+          "minus_return": -63.25286580190337,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            false,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": -68.51323192450505,
+          "minus_return": -57.37977144654486,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            false,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": -67.94350796315845,
+          "minus_return": 20.444110425467834,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": -23.789879269463817,
+          "minus_return": -16.03005597634848,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 4.662447165238548,
+          "minus_return": -63.41829456195187,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": -23.11847319937953,
+          "minus_return": 28.64050947616969,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "iteration": 1,
+      "return_scale": 21.275984995960695,
+      "mean_plus_return": 15.608862687987779,
+      "mean_minus_return": -0.3357955230342595,
+      "mean_policy_return": 18.938950785248792,
+      "mean_policy_physical_audit_pass": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "best_return_so_far": 18.938950785248792,
+      "direction_records": [
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 23.397157878450514,
+          "minus_return": -16.21835315606723,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 36.19954516768584,
+          "minus_return": -21.15316420541954,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 22.33833584429128,
+          "minus_return": 25.418947093208114,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 5.512588924826872,
+          "minus_return": 15.787498960914192,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 31.372837485047278,
+          "minus_return": 15.791757191369618,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": -34.30731400896846,
+          "minus_return": 14.516276856110437,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 14.346876495336183,
+          "minus_return": -19.013390671006796,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 26.010873717232727,
+          "minus_return": -17.81593625338288,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "return_scale": 18.67038072115072,
+      "mean_plus_return": 10.668242828996432,
+      "mean_minus_return": 24.589605253722546,
+      "mean_policy_return": 23.445572057001534,
+      "mean_policy_physical_audit_pass": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "best_return_so_far": 23.445572057001534,
+      "direction_records": [
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 30.77168267763951,
+          "minus_return": 28.769523342184748,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 26.6665430675045,
+          "minus_return": 29.930260821887288,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 11.150029671985322,
+          "minus_return": 10.670652077488725,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 20.214649146124323,
+          "minus_return": 34.08260288015571,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": -30.81898258255564,
+          "minus_return": 12.295729595587488,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 26.757077810516293,
+          "minus_return": 22.97078117504722,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": -25.185931071566202,
+          "minus_return": 33.11620396379211,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 25.79087391232334,
+          "minus_return": 24.88108817363708,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "return_scale": 22.09294589070655,
+      "mean_plus_return": 12.745244335869497,
+      "mean_minus_return": 19.467823236222088,
+      "mean_policy_return": 23.45888827254538,
+      "mean_policy_physical_audit_pass": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "best_return_so_far": 23.45888827254538,
+      "direction_records": [
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 16.21782039048623,
+          "minus_return": 38.45406375234141,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": -62.31680691028556,
+          "minus_return": 20.553845109895057,
+          "plus_physical_audit_pass": [
+            false,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 11.85714739786188,
+          "minus_return": 10.829391997752722,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 14.913164132420853,
+          "minus_return": 16.603259195706563,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 37.440787478340596,
+          "minus_return": 22.509419086567014,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 28.85100829708901,
+          "minus_return": 24.192229495005115,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 28.92780647524421,
+          "minus_return": 16.71991313486926,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 26.071027425798764,
+          "minus_return": 5.880464117639564,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "iteration": 4,
+      "return_scale": 33.782419095893026,
+      "mean_plus_return": -17.58847731564021,
+      "mean_minus_return": 20.079199149517525,
+      "mean_policy_return": 16.927742169882535,
+      "mean_policy_physical_audit_pass": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "best_return_so_far": 23.45888827254538,
+      "direction_records": [
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 19.621530710700668,
+          "minus_return": 22.63986298428165,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": -56.23203075272552,
+          "minus_return": 23.779173814570576,
+          "plus_physical_audit_pass": [
+            false,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 10.957007060406788,
+          "minus_return": 10.396499600636709,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": -56.47126930731004,
+          "minus_return": 21.25595218576229,
+          "plus_physical_audit_pass": [
+            false,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 38.77291342290601,
+          "minus_return": 25.468978662276967,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": -52.1549777078095,
+          "minus_return": 16.57369261784023,
+          "plus_physical_audit_pass": [
+            true,
+            false
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 14.79991649754303,
+          "minus_return": 18.85837065502089,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": -60.0009084488331,
+          "minus_return": 21.66106267575089,
+          "plus_physical_audit_pass": [
+            true,
+            false
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "iteration": 5,
+      "return_scale": 7.40403947157803,
+      "mean_plus_return": 15.182451594332182,
+      "mean_minus_return": 13.853529706336118,
+      "mean_policy_return": 20.66944791324123,
+      "mean_policy_physical_audit_pass": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "best_return_so_far": 23.45888827254538,
+      "direction_records": [
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 17.677087947417945,
+          "minus_return": 27.11335548139767,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 13.76908520424314,
+          "minus_return": 11.783815830031905,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 20.52332844101344,
+          "minus_return": -4.602676484953179,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 11.484342919497777,
+          "minus_return": 12.692572501014645,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 11.756554155494726,
+          "minus_return": 12.356170678112845,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 6.701818204147251,
+          "minus_return": 13.157700990885417,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 12.738502347343243,
+          "minus_return": 16.554160506473487,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 26.80889353549994,
+          "minus_return": 21.773138147726165,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "iteration": 6,
+      "return_scale": 20.476569670201016,
+      "mean_plus_return": 16.073278892303204,
+      "mean_minus_return": 13.899469763605143,
+      "mean_policy_return": 21.031578631619304,
+      "mean_policy_physical_audit_pass": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "best_return_so_far": 23.45888827254538,
+      "direction_records": [
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 13.131632172040362,
+          "minus_return": 40.402472334456554,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 15.458036722514294,
+          "minus_return": 31.766288788023566,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 15.992588948917025,
+          "minus_return": 30.886968582344423,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 19.92404423263323,
+          "minus_return": 30.12705215321817,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 10.109363531519158,
+          "minus_return": 16.958704273919054,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 15.42610583702752,
+          "minus_return": 9.306404685755489,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 17.665684182748606,
+          "minus_return": 8.34218311919669,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 20.878775511025452,
+          "minus_return": -56.59431582807281,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "iteration": 7,
+      "return_scale": 20.112914147211132,
+      "mean_plus_return": 12.361762536234707,
+      "mean_minus_return": 23.813675949502972,
+      "mean_policy_return": 18.87058109806338,
+      "mean_policy_physical_audit_pass": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "best_return_so_far": 23.45888827254538,
+      "direction_records": [
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 25.088964637532833,
+          "minus_return": 27.846544233975493,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 20.0144967999722,
+          "minus_return": 27.939947959534393,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 32.036789014809194,
+          "minus_return": 23.548091869008942,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            }
+          ],
+          "plus_return": 12.332122914988553,
+          "minus_return": 17.594670975221007,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_delayed",
+              "split": "development",
+              "seed": 20266103,
+              "board_y_offset_m": 0.0045,
+              "board_z_offset_m": -0.0025,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": -55.52664137047876,
+          "minus_return": 17.20038696281135,
+          "plus_physical_audit_pass": [
+            true,
+            false
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 28.453771441995407,
+          "minus_return": 29.16329932065163,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_delayed",
+              "split": "development",
+              "seed": 20266104,
+              "board_y_offset_m": 0.006,
+              "board_z_offset_m": 0.0025,
+              "contact_time_constant_s": 0.022,
+              "joint_velocity_noise_std": 0.008,
+              "residual_action_delay_steps": 1
+            },
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 7.622687246581968,
+          "minus_return": 19.550949707360566,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        },
+        {
+          "conditions": [
+            {
+              "name": "dev_stiff_near",
+              "split": "development",
+              "seed": 20266102,
+              "board_y_offset_m": 0.003,
+              "board_z_offset_m": 0.0015,
+              "contact_time_constant_s": 0.02,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            },
+            {
+              "name": "dev_soft_near",
+              "split": "development",
+              "seed": 20266101,
+              "board_y_offset_m": 0.0015,
+              "board_z_offset_m": -0.0015,
+              "contact_time_constant_s": 0.01,
+              "joint_velocity_noise_std": 0.004,
+              "residual_action_delay_steps": 0
+            }
+          ],
+          "plus_return": 28.871909604476258,
+          "minus_return": 27.665516567460386,
+          "plus_physical_audit_pass": [
+            true,
+            true
+          ],
+          "minus_physical_audit_pass": [
+            true,
+            true
+          ]
+        }
+      ]
+    }
+  ]
+}

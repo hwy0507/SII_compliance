@@ -27,7 +27,10 @@ from direct_esn_compliance import DirectESNConfig, DirectESNController
 from evaluate_dual_phase_robustness import RobustCondition, run_one, selected_conditions
 
 
-def rollout_return(row: dict[str, object]) -> float:
+def rollout_return(
+    row: dict[str, object], *, lift_target_m: float | None = None,
+    lift_penalty_weight: float = 0.0, lift_hard_floor_m: float | None = None,
+) -> float:
     """Scalar training-only return with hard physical validity before softness.
 
     The policy never receives any item used below.  A policy cannot gain by
@@ -45,6 +48,9 @@ def rollout_return(row: dict[str, object]) -> float:
             float(pre["max_penetration_m"]), float(post["max_penetration_m"]),
         )
         return float(-120.0 - 30.0 * missing - min(50.0, 5.0 * penetration_mm))
+    if lift_hard_floor_m is not None and float(row["final_target_lift_m"]) < lift_hard_floor_m:
+        deficit = lift_hard_floor_m - float(row["final_target_lift_m"])
+        return float(-60.0 - 20.0 * deficit / 0.010)
     normalized_cost = (
         float(pre["peak_force_n"]) / 30.0
         + float(pre["contact_impulse_ns"]) / 7.0
@@ -55,7 +61,11 @@ def rollout_return(row: dict[str, object]) -> float:
     # A physical-valid rollout earns 100 before its five declared softness
     # costs.  This scale makes failing the task worse than any plausible
     # improvement in a single contact metric.
-    return float(100.0 - 16.0 * normalized_cost)
+    lift_penalty = 0.0
+    if lift_target_m is not None:
+        lift_deficit = max(0.0, float(lift_target_m) - float(row["final_target_lift_m"]))
+        lift_penalty = float(lift_penalty_weight) * lift_deficit / 0.010
+    return float(100.0 - 16.0 * normalized_cost - lift_penalty)
 
 
 def make_readout_basis(
@@ -85,11 +95,18 @@ def controller_from_theta(
 def evaluate_theta(
     config: DirectESNConfig, basis: np.ndarray, theta: np.ndarray,
     readout_scale: float, conditions: tuple[RobustCondition, ...], budget: float,
-    menagerie: Path, label: str,
+    menagerie: Path, label: str, lift_target_m: float | None, lift_penalty_weight: float,
+    lift_hard_floor_m: float | None,
 ) -> tuple[float, list[dict[str, object]]]:
     controller = controller_from_theta(config, basis, theta, readout_scale)
     rows = [run_one(menagerie, label, controller, condition, budget=budget) for condition in conditions]
-    return float(np.mean([rollout_return(row) for row in rows])), rows
+    return float(np.mean([
+        rollout_return(
+            row, lift_target_m=lift_target_m, lift_penalty_weight=lift_penalty_weight,
+            lift_hard_floor_m=lift_hard_floor_m,
+        )
+        for row in rows
+    ])), rows
 
 
 def choose_conditions(
@@ -120,7 +137,14 @@ def main() -> None:
     parser.add_argument("--input-scale", type=float, default=0.45)
     parser.add_argument("--time-constant", type=float, default=0.08)
     parser.add_argument("--yield-smoothing-alpha", type=float, default=0.85)
+    parser.add_argument("--lift-target-mm", type=float, default=195.0,
+                        help="soft minimum desired final object lift used only in the training return")
+    parser.add_argument("--lift-penalty-weight", type=float, default=8.0,
+                        help="penalty per 10 mm lift deficit; zero reproduces v1 objective")
+    parser.add_argument("--lift-hard-floor-mm", type=float, default=0.0,
+                        help="positive value makes lower-lift physical rollouts lexicographically infeasible")
     parser.add_argument("--seed", type=int, default=20266301)
+    parser.add_argument("--train-split", choices=("development", "v4_development"), default="development")
     args = parser.parse_args()
     if min(args.iterations, args.directions, args.basis_dimension, args.reservoir_size) < 1:
         raise ValueError("iterations, directions, basis dimension and reservoir size must be positive")
@@ -128,8 +152,12 @@ def main() -> None:
         raise ValueError("ARS scales must be positive")
     if not 0.0 < args.budget <= 1.0:
         raise ValueError("budget must lie in (0, 1]")
-    conditions = selected_conditions("development")
-    if not conditions or any(item.split != "development" for item in conditions):
+    if args.lift_target_mm <= 0.0 or args.lift_penalty_weight < 0.0 or args.lift_hard_floor_mm < 0.0:
+        raise ValueError("lift target and penalty must be positive/non-negative")
+    lift_target_m = args.lift_target_mm / 1000.0
+    lift_hard_floor_m = None if args.lift_hard_floor_mm == 0.0 else args.lift_hard_floor_mm / 1000.0
+    conditions = selected_conditions(args.train_split)
+    if not conditions or any(item.split != args.train_split for item in conditions):
         raise RuntimeError("only predeclared development conditions may train the ESN")
     config = DirectESNConfig(
         reservoir_size=args.reservoir_size, spectral_radius=args.spectral_radius,
@@ -142,8 +170,18 @@ def main() -> None:
     args.out_dir.mkdir(parents=True, exist_ok=True)
     initial_return, initial_rows = evaluate_theta(
         config, basis, theta, args.readout_scale, conditions, args.budget, args.menagerie, "ESN_zero_readout",
+        lift_target_m, args.lift_penalty_weight, lift_hard_floor_m,
     )
     best_theta, best_return, best_rows = theta.copy(), initial_return, initial_rows
+    def selection_rank(score: float, rows: list[dict[str, object]]) -> tuple[int, int, float]:
+        physical = sum(bool(row["physical_audit_pass"]) for row in rows)
+        above_floor = sum(
+            bool(row["physical_audit_pass"])
+            and (lift_hard_floor_m is None or float(row["final_target_lift_m"]) >= lift_hard_floor_m)
+            for row in rows
+        )
+        return physical, above_floor, float(score)
+    best_rank = selection_rank(best_return, best_rows)
     records = []
     rng = np.random.default_rng(args.seed + 2)
     for iteration in range(args.iterations):
@@ -162,10 +200,12 @@ def main() -> None:
             plus_score, plus_rows = evaluate_theta(
                 config, basis, plus_theta, args.readout_scale, pair_conditions,
                 args.budget, args.menagerie, f"ESN_ars_{iteration:02d}_{index:02d}_plus",
+                lift_target_m, args.lift_penalty_weight, lift_hard_floor_m,
             )
             minus_score, minus_rows = evaluate_theta(
                 config, basis, minus_theta, args.readout_scale, pair_conditions,
                 args.budget, args.menagerie, f"ESN_ars_{iteration:02d}_{index:02d}_minus",
+                lift_target_m, args.lift_penalty_weight, lift_hard_floor_m,
             )
             plus_returns.append(plus_score)
             minus_returns.append(minus_score)
@@ -185,9 +225,12 @@ def main() -> None:
         current_return, current_rows = evaluate_theta(
             config, basis, theta, args.readout_scale, conditions,
             args.budget, args.menagerie, f"ESN_ars_{iteration:02d}_mean",
+            lift_target_m, args.lift_penalty_weight, lift_hard_floor_m,
         )
-        if current_return > best_return:
+        current_rank = selection_rank(current_return, current_rows)
+        if current_rank > best_rank:
             best_theta, best_return, best_rows = theta.copy(), current_return, current_rows
+            best_rank = current_rank
         record = {
             "iteration": iteration, "return_scale": return_scale,
             "mean_plus_return": float(np.mean(plus_returns)),
@@ -209,15 +252,21 @@ def main() -> None:
         "student_observation_contract": final.contract()["student_input_fields"],
         "forbidden_online_inputs": final.contract()["forbidden_online_inputs"],
         "training_conditions": [asdict(item) for item in conditions],
+        "training_split": args.train_split,
         "config": asdict(config),
         "ars": {key: getattr(args, key) for key in (
             "iterations", "directions", "conditions_per_direction", "basis_dimension",
             "exploration_sigma", "learning_rate", "theta_clip", "readout_scale", "seed",
         )},
+        "lift_objective": {
+            "target_mm": args.lift_target_mm, "penalty_weight": args.lift_penalty_weight,
+            "hard_floor_mm": args.lift_hard_floor_mm,
+        },
         "initial_return": initial_return,
         "initial_physical_audit": [bool(row["physical_audit_pass"]) for row in initial_rows],
         "best_return": best_return,
         "best_physical_audit": [bool(row["physical_audit_pass"]) for row in best_rows],
+        "best_final_lift_mm": [1000.0 * float(row["final_target_lift_m"]) for row in best_rows],
         "best_theta": best_theta.tolist(), "model": str(model_path), "iterations": records,
     }
     summary_path = args.out_dir / "ars_summary.json"

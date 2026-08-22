@@ -66,10 +66,81 @@ CONDITIONS: tuple[RobustCondition, ...] = (
     RobustCondition("held_stiff_delayed", "held_out", 20266204, 0.00475, 0.0030, 0.024, 0.009, 1),
 )
 
+# Supplemental conditions for the second, expanded validation pass.  This
+# table is fixed before running v2 and is never used for ESN updates.
+SUPPLEMENTAL_CONDITIONS: tuple[RobustCondition, ...] = (
+    RobustCondition("sup_soft_low", "supplemental_held_out", 20266501, 0.00075, -0.0005, 0.009, 0.003, 0),
+    RobustCondition("sup_soft_high", "supplemental_held_out", 20266502, 0.00675, 0.0005, 0.011, 0.003, 0),
+    RobustCondition("sup_stiff_low", "supplemental_held_out", 20266503, 0.00125, -0.0035, 0.026, 0.010, 1),
+    RobustCondition("sup_stiff_high", "supplemental_held_out", 20266504, 0.00625, 0.0035, 0.028, 0.010, 1),
+    RobustCondition("sup_mix_one", "supplemental_held_out", 20266505, 0.00750, -0.0015, 0.016, 0.011, 1),
+    RobustCondition("sup_mix_two", "supplemental_held_out", 20266506, 0.00050, 0.0020, 0.021, 0.006, 0),
+    RobustCondition("sup_mix_three", "supplemental_held_out", 20266507, 0.00575, -0.0040, 0.013, 0.007, 1),
+    RobustCondition("sup_mix_four", "supplemental_held_out", 20266508, 0.00275, 0.0040, 0.025, 0.007, 0),
+)
+
+# Final confirmatory split for the lift-constrained v3 ESN.  These conditions
+# were declared after closing v1/v2 development, but before any v3 method was
+# evaluated.  They are never returned by the ESN trainer.
+CONFIRMATORY_CONDITIONS: tuple[RobustCondition, ...] = (
+    RobustCondition("conf_soft_edge_low", "confirmatory_held_out", 20266901, 0.00025, -0.0025, 0.008, 0.002, 0),
+    RobustCondition("conf_soft_edge_high", "confirmatory_held_out", 20266902, 0.00775, 0.0025, 0.010, 0.002, 0),
+    RobustCondition("conf_stiff_edge_low", "confirmatory_held_out", 20266903, 0.00075, -0.0045, 0.030, 0.012, 2),
+    RobustCondition("conf_stiff_edge_high", "confirmatory_held_out", 20266904, 0.00725, 0.0045, 0.028, 0.012, 2),
+    RobustCondition("conf_delay_soft_a", "confirmatory_held_out", 20266905, 0.00200, -0.0030, 0.012, 0.010, 2),
+    RobustCondition("conf_delay_soft_b", "confirmatory_held_out", 20266906, 0.00650, 0.0030, 0.014, 0.010, 2),
+    RobustCondition("conf_delay_stiff_a", "confirmatory_held_out", 20266907, 0.00150, -0.0010, 0.026, 0.008, 1),
+    RobustCondition("conf_delay_stiff_b", "confirmatory_held_out", 20266908, 0.00600, 0.0010, 0.024, 0.008, 1),
+    RobustCondition("conf_mid_a", "confirmatory_held_out", 20266909, 0.00325, -0.0040, 0.017, 0.006, 1),
+    RobustCondition("conf_mid_b", "confirmatory_held_out", 20266910, 0.00475, 0.0040, 0.019, 0.006, 1),
+    RobustCondition("conf_mid_c", "confirmatory_held_out", 20266911, 0.00250, -0.0005, 0.015, 0.004, 0),
+    RobustCondition("conf_mid_d", "confirmatory_held_out", 20266912, 0.00500, 0.0005, 0.023, 0.004, 0),
+)
+
+V4_DEVELOPMENT_CONDITIONS: tuple[RobustCondition, ...] = (
+    RobustCondition("v4dev_low_soft", "v4_development", 20267201, 0.00025, -0.0035, 0.009, 0.004, 0),
+    RobustCondition("v4dev_low_stiff", "v4_development", 20267202, 0.00075, 0.0035, 0.028, 0.010, 2),
+    RobustCondition("v4dev_high_soft", "v4_development", 20267203, 0.00775, -0.0025, 0.011, 0.004, 0),
+    RobustCondition("v4dev_high_stiff", "v4_development", 20267204, 0.00725, 0.0025, 0.027, 0.010, 2),
+    RobustCondition("v4dev_mid_delay_a", "v4_development", 20267205, 0.00200, -0.0040, 0.014, 0.008, 2),
+    RobustCondition("v4dev_mid_delay_b", "v4_development", 20267206, 0.00600, 0.0040, 0.023, 0.008, 2),
+    RobustCondition("v4dev_mid_a", "v4_development", 20267207, 0.00300, -0.0010, 0.017, 0.006, 1),
+    RobustCondition("v4dev_mid_b", "v4_development", 20267208, 0.00500, 0.0010, 0.021, 0.006, 1),
+)
+
+V4_FINAL_CONDITIONS: tuple[RobustCondition, ...] = (
+    RobustCondition("v4final_01", "v4_final_held_out", 20267301, 0.00035, -0.0020, 0.010, 0.003, 0),
+    RobustCondition("v4final_02", "v4_final_held_out", 20267302, 0.00060, 0.0020, 0.029, 0.011, 2),
+    RobustCondition("v4final_03", "v4_final_held_out", 20267303, 0.00110, -0.00425, 0.013, 0.009, 2),
+    RobustCondition("v4final_04", "v4_final_held_out", 20267304, 0.00180, 0.00425, 0.026, 0.009, 1),
+    RobustCondition("v4final_05", "v4_final_held_out", 20267305, 0.00240, -0.0030, 0.016, 0.005, 0),
+    RobustCondition("v4final_06", "v4_final_held_out", 20267306, 0.00290, 0.0030, 0.024, 0.007, 2),
+    RobustCondition("v4final_07", "v4_final_held_out", 20267307, 0.00340, -0.0005, 0.018, 0.004, 1),
+    RobustCondition("v4final_08", "v4_final_held_out", 20267308, 0.00390, 0.0005, 0.022, 0.008, 1),
+    RobustCondition("v4final_09", "v4_final_held_out", 20267309, 0.00430, -0.0015, 0.015, 0.006, 2),
+    RobustCondition("v4final_10", "v4_final_held_out", 20267310, 0.00480, 0.0015, 0.025, 0.010, 0),
+    RobustCondition("v4final_11", "v4_final_held_out", 20267311, 0.00530, -0.00375, 0.012, 0.007, 1),
+    RobustCondition("v4final_12", "v4_final_held_out", 20267312, 0.00580, 0.00375, 0.027, 0.005, 2),
+    RobustCondition("v4final_13", "v4_final_held_out", 20267313, 0.00630, -0.00275, 0.014, 0.011, 2),
+    RobustCondition("v4final_14", "v4_final_held_out", 20267314, 0.00680, 0.00275, 0.023, 0.003, 0),
+    RobustCondition("v4final_15", "v4_final_held_out", 20267315, 0.00720, -0.00125, 0.011, 0.008, 1),
+    RobustCondition("v4final_16", "v4_final_held_out", 20267316, 0.00765, 0.00125, 0.028, 0.006, 2),
+)
+
 
 def selected_conditions(split: str) -> tuple[RobustCondition, ...]:
     if split == "all":
         return CONDITIONS
+    if split == "expanded_held_out":
+        return tuple(item for item in CONDITIONS if item.split == "held_out") + SUPPLEMENTAL_CONDITIONS
+    if split == "supplemental_held_out":
+        return SUPPLEMENTAL_CONDITIONS
+    if split == "confirmatory_held_out":
+        return CONFIRMATORY_CONDITIONS
+    if split == "v4_development":
+        return V4_DEVELOPMENT_CONDITIONS
+    if split == "v4_final_held_out":
+        return V4_FINAL_CONDITIONS
     return tuple(item for item in CONDITIONS if item.split == split)
 
 
@@ -167,7 +238,7 @@ def main() -> None:
     parser.add_argument("--mlp", type=Path)
     parser.add_argument("--budget", type=float, default=0.04)
     parser.add_argument("--vmc-stiffness", type=float, default=0.5)
-    parser.add_argument("--split", choices=("development", "held_out", "all"), default="all")
+    parser.add_argument("--split", choices=("development", "held_out", "expanded_held_out", "supplemental_held_out", "confirmatory_held_out", "v4_development", "v4_final_held_out", "all"), default="all")
     parser.add_argument("--methods", nargs="+", choices=("PaperMPC", "VMC", "MLP", "ESN"),
                         default=("PaperMPC", "VMC", "MLP", "ESN"))
     parser.add_argument("--manifest-only", action="store_true",

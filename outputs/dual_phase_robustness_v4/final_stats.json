@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "input": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_robustness_v4/final_four_method.json",
+  "baseline": "VMC",
+  "paired_condition_count": 16,
+  "bootstrap_replicates": 20000,
+  "unit_of_resampling": "matched pre-registered condition/seed",
+  "comparisons": {
+    "ESN": {
+      "all_pairs_physical_audit_pass": true,
+      "pre_peak_force_n": {
+        "mean_difference_method_minus_baseline": 0.48708053887225655,
+        "paired_bootstrap_95ci": [
+          0.21578175577873837,
+          0.7442468802040031
+        ],
+        "paired_condition_win_rate": 0.25,
+        "direction": "lower"
+      },
+      "pre_impulse_ns": {
+        "mean_difference_method_minus_baseline": -0.11399367182220926,
+        "paired_bootstrap_95ci": [
+          -0.19565457957070254,
+          -0.037277782048651786
+        ],
+        "paired_condition_win_rate": 0.6875,
+        "direction": "lower"
+      },
+      "post_peak_force_n": {
+        "mean_difference_method_minus_baseline": -0.9835326511370864,
+        "paired_bootstrap_95ci": [
+          -1.296130286927623,
+          -0.6317681409224848
+        ],
+        "paired_condition_win_rate": 0.875,
+        "direction": "lower"
+      },
+      "post_impulse_ns": {
+        "mean_difference_method_minus_baseline": 0.14938029300194186,
+        "paired_bootstrap_95ci": [
+          0.07544628503863089,
+          0.21714814136593033
+        ],
+        "paired_condition_win_rate": 0.25,
+        "direction": "lower"
+      },
+      "peak_jerk_mps3": {
+        "mean_difference_method_minus_baseline": -21.20740848183607,
+        "paired_bootstrap_95ci": [
+          -61.12947947031755,
+          13.632637750260901
+        ],
+        "paired_condition_win_rate": 0.375,
+        "direction": "lower"
+      },
+      "final_target_lift_m": {
+        "mean_difference_method_minus_baseline": -0.000516418790865461,
+        "paired_bootstrap_95ci": [
+          -0.0013267641976335114,
+          0.00013755563758992187
+        ],
+        "paired_condition_win_rate": 0.375,
+        "direction": "higher"
+      },
+      "five_metric_ratio_to_baseline": {
+        "mean": 1.1163638655758163,
+        "paired_bootstrap_95ci": [
+          1.007879011599001,
+          1.260456281342204
+        ],
+        "lower_is_better": true
+      }
+    },
+    "PaperMPC": {
+      "all_pairs_physical_audit_pass": true,
+      "pre_peak_force_n": {
+        "mean_difference_method_minus_baseline": -0.37372983324228215,
+        "paired_bootstrap_95ci": [
+          -0.5245004828444733,
+          -0.2071986253732857
+        ],
+        "paired_condition_win_rate": 0.9375,
+        "direction": "lower"
+      },
+      "pre_impulse_ns": {
+        "mean_difference_method_minus_baseline": -0.6240868504248821,
+        "paired_bootstrap_95ci": [
+          -0.7169956888060383,
+          -0.529707311908997
+        ],
+        "paired_condition_win_rate": 1.0,
+        "direction": "lower"
+      },
+      "post_peak_force_n": {
+        "mean_difference_method_minus_baseline": 0.13094889875328708,
+        "paired_bootstrap_95ci": [
+          -0.10239306994232938,
+          0.3895276752254273
+        ],
+        "paired_condition_win_rate": 0.4375,
+        "direction": "lower"
+      },
+      "post_impulse_ns": {
+        "mean_difference_method_minus_baseline": 0.2711214014938549,
+        "paired_bootstrap_95ci": [
+          0.23623153390812351,
+          0.3083582162260126
+        ],
+        "paired_condition_win_rate": 0.0,
+        "direction": "lower"
+      },
+      "peak_jerk_mps3": {
+        "mean_difference_method_minus_baseline": -19.42886786368583,
+        "paired_bootstrap_95ci": [
+          -41.47518364640358,
+          9.750047235662281
+        ],
+        "paired_condition_win_rate": 0.875,
+        "direction": "lower"
+      },
+      "final_target_lift_m": {
+        "mean_difference_method_minus_baseline": -0.0037430872904610155,
+        "paired_bootstrap_95ci": [
+          -0.003918849396530113,
+          -0.0035381290671009772
+        ],
+        "paired_condition_win_rate": 0.0,
+        "direction": "higher"
+      },
+      "five_metric_ratio_to_baseline": {
+        "mean": 1.102870217038553,
+        "paired_bootstrap_95ci": [
+          1.030135105645681,
+          1.1997362752569127
+        ],
+        "lower_is_better": true
+      }
+    }
+  }
+}
