@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "protocol": "dual_phase_longitudinal_cross_physics_robustness_v1",
+  "status": "pre_registered_before_method_scores",
+  "observation_contract": "MLP/ESN: q(7), qdot(7), nominal_twist(6), WBC pose error(6), WBC twist error(6); no board/contact/object truth",
+  "fairness": "same MuJoCo model/reference/condition per method; VMC, MLP and ESN share budget, safety clamps, qdot noise and residual FIFO latency",
+  "physical_variations": "fixed board pose tolerance, MuJoCo contact relaxation time, measured joint-velocity noise, residual action delay",
+  "conditions": [
+    {
+      "name": "dev_soft_near",
+      "split": "development",
+      "seed": 20266101,
+      "board_y_offset_m": 0.0015,
+      "board_z_offset_m": -0.0015,
+      "contact_time_constant_s": 0.01,
+      "joint_velocity_noise_std": 0.004,
+      "residual_action_delay_steps": 0
+    },
+    {
+      "name": "dev_stiff_near",
+      "split": "development",
+      "seed": 20266102,
+      "board_y_offset_m": 0.003,
+      "board_z_offset_m": 0.0015,
+      "contact_time_constant_s": 0.02,
+      "joint_velocity_noise_std": 0.004,
+      "residual_action_delay_steps": 0
+    },
+    {
+      "name": "dev_soft_delayed",
+      "split": "development",
+      "seed": 20266103,
+      "board_y_offset_m": 0.0045,
+      "board_z_offset_m": -0.0025,
+      "contact_time_constant_s": 0.01,
+      "joint_velocity_noise_std": 0.008,
+      "residual_action_delay_steps": 1
+    },
+    {
+      "name": "dev_stiff_delayed",
+      "split": "development",
+      "seed": 20266104,
+      "board_y_offset_m": 0.006,
+      "board_z_offset_m": 0.0025,
+      "contact_time_constant_s": 0.022,
+      "joint_velocity_noise_std": 0.008,
+      "residual_action_delay_steps": 1
+    },
+    {
+      "name": "held_mid_near",
+      "split": "held_out",
+      "seed": 20266201,
+      "board_y_offset_m": 0.00225,
+      "board_z_offset_m": -0.001,
+      "contact_time_constant_s": 0.012,
+      "joint_velocity_noise_std": 0.005,
+      "residual_action_delay_steps": 0
+    },
+    {
+      "name": "held_mid_far",
+      "split": "held_out",
+      "seed": 20266202,
+      "board_y_offset_m": 0.00375,
+      "board_z_offset_m": 0.001,
+      "contact_time_constant_s": 0.018,
+      "joint_velocity_noise_std": 0.005,
+      "residual_action_delay_steps": 0
+    },
+    {
+      "name": "held_soft_delayed",
+      "split": "held_out",
+      "seed": 20266203,
+      "board_y_offset_m": 0.00525,
+      "board_z_offset_m": -0.003,
+      "contact_time_constant_s": 0.014,
+      "joint_velocity_noise_std": 0.009,
+      "residual_action_delay_steps": 1
+    },
+    {
+      "name": "held_stiff_delayed",
+      "split": "held_out",
+      "seed": 20266204,
+      "board_y_offset_m": 0.00475,
+      "board_z_offset_m": 0.003,
+      "contact_time_constant_s": 0.024,
+      "joint_velocity_noise_std": 0.009,
+      "residual_action_delay_steps": 1
+    }
+  ],
+  "budget": 0.04,
+  "vmc_stiffness": 0.5
+}

@@ -1,0 +1,601 @@
+{
+  "schema_version": 1,
+  "protocol": "dual_phase_longitudinal_cross_physics_robustness_v1",
+  "status": "pre_registered_before_method_scores",
+  "observation_contract": "MLP/ESN: q(7), qdot(7), nominal_twist(6), WBC pose error(6), WBC twist error(6); no board/contact/object truth",
+  "fairness": "same MuJoCo model/reference/condition per method; VMC, MLP and ESN share budget, safety clamps, qdot noise and residual FIFO latency",
+  "physical_variations": "fixed board pose tolerance, MuJoCo contact relaxation time, measured joint-velocity noise, residual action delay",
+  "conditions": [
+    {
+      "name": "dev_soft_near",
+      "split": "development",
+      "seed": 20266101,
+      "board_y_offset_m": 0.0015,
+      "board_z_offset_m": -0.0015,
+      "contact_time_constant_s": 0.01,
+      "joint_velocity_noise_std": 0.004,
+      "residual_action_delay_steps": 0
+    },
+    {
+      "name": "dev_stiff_near",
+      "split": "development",
+      "seed": 20266102,
+      "board_y_offset_m": 0.003,
+      "board_z_offset_m": 0.0015,
+      "contact_time_constant_s": 0.02,
+      "joint_velocity_noise_std": 0.004,
+      "residual_action_delay_steps": 0
+    },
+    {
+      "name": "dev_soft_delayed",
+      "split": "development",
+      "seed": 20266103,
+      "board_y_offset_m": 0.0045,
+      "board_z_offset_m": -0.0025,
+      "contact_time_constant_s": 0.01,
+      "joint_velocity_noise_std": 0.008,
+      "residual_action_delay_steps": 1
+    },
+    {
+      "name": "dev_stiff_delayed",
+      "split": "development",
+      "seed": 20266104,
+      "board_y_offset_m": 0.006,
+      "board_z_offset_m": 0.0025,
+      "contact_time_constant_s": 0.022,
+      "joint_velocity_noise_std": 0.008,
+      "residual_action_delay_steps": 1
+    },
+    {
+      "name": "held_mid_near",
+      "split": "held_out",
+      "seed": 20266201,
+      "board_y_offset_m": 0.00225,
+      "board_z_offset_m": -0.001,
+      "contact_time_constant_s": 0.012,
+      "joint_velocity_noise_std": 0.005,
+      "residual_action_delay_steps": 0
+    },
+    {
+      "name": "held_mid_far",
+      "split": "held_out",
+      "seed": 20266202,
+      "board_y_offset_m": 0.00375,
+      "board_z_offset_m": 0.001,
+      "contact_time_constant_s": 0.018,
+      "joint_velocity_noise_std": 0.005,
+      "residual_action_delay_steps": 0
+    },
+    {
+      "name": "held_soft_delayed",
+      "split": "held_out",
+      "seed": 20266203,
+      "board_y_offset_m": 0.00525,
+      "board_z_offset_m": -0.003,
+      "contact_time_constant_s": 0.014,
+      "joint_velocity_noise_std": 0.009,
+      "residual_action_delay_steps": 1
+    },
+    {
+      "name": "held_stiff_delayed",
+      "split": "held_out",
+      "seed": 20266204,
+      "board_y_offset_m": 0.00475,
+      "board_z_offset_m": 0.003,
+      "contact_time_constant_s": 0.024,
+      "joint_velocity_noise_std": 0.009,
+      "residual_action_delay_steps": 1
+    }
+  ],
+  "budget": 0.04,
+  "vmc_stiffness": 0.5,
+  "methods": [
+    "PaperMPC"
+  ],
+  "summary": {
+    "PaperMPC": {
+      "count": 8,
+      "success_count": 8,
+      "success_rate": 1.0,
+      "geometry_valid_rate": 1.0,
+      "mean_pre_peak_force_n": 22.289902584501604,
+      "mean_pre_impulse_ns": 5.614538678220292,
+      "mean_pre_max_penetration_mm": 0.20917397398981566,
+      "mean_post_peak_force_n": 9.56159918256305,
+      "mean_post_impulse_ns": 1.1795465551479696,
+      "mean_post_max_penetration_mm": 0.07981250026481618,
+      "mean_total_board_impulse_ns": 6.7940852333682615,
+      "mean_final_target_lift_mm": 195.31492800056012,
+      "mean_final_hand_target_distance_mm": 126.95341982342323,
+      "mean_peak_jerk_mps3": 1094.5675276770216,
+      "mean_peak_torque_nm": 32.74828425075794,
+      "physical_audit_pass_count": 8,
+      "physical_audit_pass_rate": 1.0,
+      "initial_contact_count": 0,
+      "object_board_contact_count": 0
+    }
+  },
+  "rows": [
+    {
+      "method": "PaperMPC",
+      "condition": {
+        "name": "dev_soft_near",
+        "split": "development",
+        "seed": 20266101,
+        "board_y_offset_m": 0.0015,
+        "board_z_offset_m": -0.0015,
+        "contact_time_constant_s": 0.01,
+        "joint_velocity_noise_std": 0.004,
+        "residual_action_delay_steps": 0
+      },
+      "budget": 0.04,
+      "task_success": true,
+      "dual_phase_geometry_valid": true,
+      "initial_board_contact": false,
+      "finite_state": true,
+      "hard_torque_limit": false,
+      "final_target_lift_m": 0.19609105186756293,
+      "final_hand_target_distance_m": 0.12609887797582256,
+      "peak_torque_nm": 32.64514018080875,
+      "peak_jerk_mps3": 1485.5717349989472,
+      "pregrasp": {
+        "contact": true,
+        "first_contact_s": 1.256,
+        "peak_force_n": 33.39248240373553,
+        "contact_impulse_ns": 5.620476232823945,
+        "contact_duration_s": 1.2320000000000009,
+        "contact_bout_count": 26,
+        "max_penetration_m": 0.0001546206471745556,
+        "hand_collision_contact": true,
+        "link7_collision_contact": true,
+        "hand_body_contact": true,
+        "link7_body_contact": true,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.024718669966871165,
+        "contact_geom_names": [
+          "fr3_link7_collision",
+          "hand_collision"
+        ]
+      },
+      "postgrasp": {
+        "contact": true,
+        "first_contact_s": 4.42,
+        "peak_force_n": 7.7368751106405425,
+        "contact_impulse_ns": 0.5534385838275354,
+        "contact_duration_s": 0.18800000000000014,
+        "contact_bout_count": 20,
+        "max_penetration_m": 3.271777102594437e-05,
+        "hand_collision_contact": true,
+        "link7_collision_contact": false,
+        "hand_body_contact": true,
+        "link7_body_contact": false,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.15766257393350402,
+        "contact_geom_names": [
+          "hand_collision"
+        ]
+      },
+      "physical_audit_pass": true
+    },
+    {
+      "method": "PaperMPC",
+      "condition": {
+        "name": "dev_stiff_near",
+        "split": "development",
+        "seed": 20266102,
+        "board_y_offset_m": 0.003,
+        "board_z_offset_m": 0.0015,
+        "contact_time_constant_s": 0.02,
+        "joint_velocity_noise_std": 0.004,
+        "residual_action_delay_steps": 0
+      },
+      "budget": 0.04,
+      "task_success": true,
+      "dual_phase_geometry_valid": true,
+      "initial_board_contact": false,
+      "finite_state": true,
+      "hard_torque_limit": false,
+      "final_target_lift_m": 0.19217968454719203,
+      "final_hand_target_distance_m": 0.1303060052658805,
+      "peak_torque_nm": 32.57402695601433,
+      "peak_jerk_mps3": 1180.5995713376776,
+      "pregrasp": {
+        "contact": true,
+        "first_contact_s": 1.332,
+        "peak_force_n": 23.063508806092365,
+        "contact_impulse_ns": 6.214847467951994,
+        "contact_duration_s": 1.316000000000001,
+        "contact_bout_count": 16,
+        "max_penetration_m": 0.0002740076180432309,
+        "hand_collision_contact": false,
+        "link7_collision_contact": true,
+        "hand_body_contact": false,
+        "link7_body_contact": true,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.02454449674616943,
+        "contact_geom_names": [
+          "fr3_link7_collision"
+        ]
+      },
+      "postgrasp": {
+        "contact": true,
+        "first_contact_s": 4.26,
+        "peak_force_n": 8.029549991683982,
+        "contact_impulse_ns": 0.9755636675742838,
+        "contact_duration_s": 0.3120000000000002,
+        "contact_bout_count": 34,
+        "max_penetration_m": 8.431932749161953e-05,
+        "hand_collision_contact": true,
+        "link7_collision_contact": false,
+        "hand_body_contact": true,
+        "link7_body_contact": false,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.15350254411560793,
+        "contact_geom_names": [
+          "hand_collision"
+        ]
+      },
+      "physical_audit_pass": true
+    },
+    {
+      "method": "PaperMPC",
+      "condition": {
+        "name": "dev_soft_delayed",
+        "split": "development",
+        "seed": 20266103,
+        "board_y_offset_m": 0.0045,
+        "board_z_offset_m": -0.0025,
+        "contact_time_constant_s": 0.01,
+        "joint_velocity_noise_std": 0.008,
+        "residual_action_delay_steps": 1
+      },
+      "budget": 0.04,
+      "task_success": true,
+      "dual_phase_geometry_valid": true,
+      "initial_board_contact": false,
+      "finite_state": true,
+      "hard_torque_limit": false,
+      "final_target_lift_m": 0.19857466178941552,
+      "final_hand_target_distance_m": 0.12346349962201165,
+      "peak_torque_nm": 32.812999327823476,
+      "peak_jerk_mps3": 767.7434032493721,
+      "pregrasp": {
+        "contact": true,
+        "first_contact_s": 1.46,
+        "peak_force_n": 16.110806985529692,
+        "contact_impulse_ns": 4.6773777151102065,
+        "contact_duration_s": 1.1360000000000008,
+        "contact_bout_count": 30,
+        "max_penetration_m": 8.450890341436148e-05,
+        "hand_collision_contact": false,
+        "link7_collision_contact": true,
+        "hand_body_contact": false,
+        "link7_body_contact": true,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.02438654627203346,
+        "contact_geom_names": [
+          "fr3_link7_collision"
+        ]
+      },
+      "postgrasp": {
+        "contact": true,
+        "first_contact_s": 4.204,
+        "peak_force_n": 11.671226566869812,
+        "contact_impulse_ns": 1.2133995716077932,
+        "contact_duration_s": 0.2800000000000002,
+        "contact_bout_count": 39,
+        "max_penetration_m": 7.462210332182919e-05,
+        "hand_collision_contact": true,
+        "link7_collision_contact": false,
+        "hand_body_contact": true,
+        "link7_body_contact": false,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.15676350969324315,
+        "contact_geom_names": [
+          "hand_collision"
+        ]
+      },
+      "physical_audit_pass": true
+    },
+    {
+      "method": "PaperMPC",
+      "condition": {
+        "name": "dev_stiff_delayed",
+        "split": "development",
+        "seed": 20266104,
+        "board_y_offset_m": 0.006,
+        "board_z_offset_m": 0.0025,
+        "contact_time_constant_s": 0.022,
+        "joint_velocity_noise_std": 0.008,
+        "residual_action_delay_steps": 1
+      },
+      "budget": 0.04,
+      "task_success": true,
+      "dual_phase_geometry_valid": true,
+      "initial_board_contact": false,
+      "finite_state": true,
+      "hard_torque_limit": false,
+      "final_target_lift_m": 0.19418364837176183,
+      "final_hand_target_distance_m": 0.12815747565380237,
+      "peak_torque_nm": 32.96511908484517,
+      "peak_jerk_mps3": 1075.3793003780288,
+      "pregrasp": {
+        "contact": true,
+        "first_contact_s": 1.36,
+        "peak_force_n": 21.61854889996994,
+        "contact_impulse_ns": 6.04719874591731,
+        "contact_duration_s": 1.304000000000001,
+        "contact_bout_count": 14,
+        "max_penetration_m": 0.00028967790029214385,
+        "hand_collision_contact": false,
+        "link7_collision_contact": true,
+        "hand_body_contact": false,
+        "link7_body_contact": true,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.02451002259918078,
+        "contact_geom_names": [
+          "fr3_link7_collision"
+        ]
+      },
+      "postgrasp": {
+        "contact": true,
+        "first_contact_s": 4.119999999999999,
+        "peak_force_n": 10.762540114811145,
+        "contact_impulse_ns": 1.8626070020707024,
+        "contact_duration_s": 0.5800000000000004,
+        "contact_bout_count": 18,
+        "max_penetration_m": 0.00012970655838758513,
+        "hand_collision_contact": true,
+        "link7_collision_contact": false,
+        "hand_body_contact": true,
+        "link7_body_contact": false,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.15242587029643484,
+        "contact_geom_names": [
+          "hand_collision"
+        ]
+      },
+      "physical_audit_pass": true
+    },
+    {
+      "method": "PaperMPC",
+      "condition": {
+        "name": "held_mid_near",
+        "split": "held_out",
+        "seed": 20266201,
+        "board_y_offset_m": 0.00225,
+        "board_z_offset_m": -0.001,
+        "contact_time_constant_s": 0.012,
+        "joint_velocity_noise_std": 0.005,
+        "residual_action_delay_steps": 0
+      },
+      "budget": 0.04,
+      "task_success": true,
+      "dual_phase_geometry_valid": true,
+      "initial_board_contact": false,
+      "finite_state": true,
+      "hard_torque_limit": false,
+      "final_target_lift_m": 0.19583079200714149,
+      "final_hand_target_distance_m": 0.12640466854641053,
+      "peak_torque_nm": 32.65246771138684,
+      "peak_jerk_mps3": 1228.1716183588264,
+      "pregrasp": {
+        "contact": true,
+        "first_contact_s": 1.368,
+        "peak_force_n": 25.708762794728894,
+        "contact_impulse_ns": 5.572976661715533,
+        "contact_duration_s": 1.252000000000001,
+        "contact_bout_count": 25,
+        "max_penetration_m": 0.00021462042172057106,
+        "hand_collision_contact": false,
+        "link7_collision_contact": true,
+        "hand_body_contact": false,
+        "link7_body_contact": true,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.02461394244194759,
+        "contact_geom_names": [
+          "fr3_link7_collision"
+        ]
+      },
+      "postgrasp": {
+        "contact": true,
+        "first_contact_s": 4.356,
+        "peak_force_n": 8.084890512636942,
+        "contact_impulse_ns": 0.7151031004208428,
+        "contact_duration_s": 0.23200000000000018,
+        "contact_bout_count": 23,
+        "max_penetration_m": 5.0215326796036344e-05,
+        "hand_collision_contact": true,
+        "link7_collision_contact": false,
+        "hand_body_contact": true,
+        "link7_body_contact": false,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.15659652805763868,
+        "contact_geom_names": [
+          "hand_collision"
+        ]
+      },
+      "physical_audit_pass": true
+    },
+    {
+      "method": "PaperMPC",
+      "condition": {
+        "name": "held_mid_far",
+        "split": "held_out",
+        "seed": 20266202,
+        "board_y_offset_m": 0.00375,
+        "board_z_offset_m": 0.001,
+        "contact_time_constant_s": 0.018,
+        "joint_velocity_noise_std": 0.005,
+        "residual_action_delay_steps": 0
+      },
+      "budget": 0.04,
+      "task_success": true,
+      "dual_phase_geometry_valid": true,
+      "initial_board_contact": false,
+      "finite_state": true,
+      "hard_torque_limit": false,
+      "final_target_lift_m": 0.19427873125344708,
+      "final_hand_target_distance_m": 0.12810633702936494,
+      "peak_torque_nm": 32.65124421590719,
+      "peak_jerk_mps3": 1175.052848950243,
+      "pregrasp": {
+        "contact": true,
+        "first_contact_s": 1.352,
+        "peak_force_n": 23.02617489264502,
+        "contact_impulse_ns": 5.9459882842196,
+        "contact_duration_s": 1.300000000000001,
+        "contact_bout_count": 17,
+        "max_penetration_m": 0.00021624133897935865,
+        "hand_collision_contact": false,
+        "link7_collision_contact": true,
+        "hand_body_contact": false,
+        "link7_body_contact": true,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.024579433924769523,
+        "contact_geom_names": [
+          "fr3_link7_collision"
+        ]
+      },
+      "postgrasp": {
+        "contact": true,
+        "first_contact_s": 4.223999999999999,
+        "peak_force_n": 9.432416823372174,
+        "contact_impulse_ns": 1.1796954121843826,
+        "contact_duration_s": 0.34000000000000025,
+        "contact_bout_count": 30,
+        "max_penetration_m": 0.00010672308792989611,
+        "hand_collision_contact": true,
+        "link7_collision_contact": false,
+        "hand_body_contact": true,
+        "link7_body_contact": false,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.154417440914827,
+        "contact_geom_names": [
+          "hand_collision"
+        ]
+      },
+      "physical_audit_pass": true
+    },
+    {
+      "method": "PaperMPC",
+      "condition": {
+        "name": "held_soft_delayed",
+        "split": "held_out",
+        "seed": 20266203,
+        "board_y_offset_m": 0.00525,
+        "board_z_offset_m": -0.003,
+        "contact_time_constant_s": 0.014,
+        "joint_velocity_noise_std": 0.009,
+        "residual_action_delay_steps": 1
+      },
+      "budget": 0.04,
+      "task_success": true,
+      "dual_phase_geometry_valid": true,
+      "initial_board_contact": false,
+      "finite_state": true,
+      "hard_torque_limit": false,
+      "final_target_lift_m": 0.19931721728540375,
+      "final_hand_target_distance_m": 0.12269881902755325,
+      "peak_torque_nm": 32.85299320033616,
+      "peak_jerk_mps3": 759.2349074412441,
+      "pregrasp": {
+        "contact": true,
+        "first_contact_s": 1.504,
+        "peak_force_n": 13.833880397728128,
+        "contact_impulse_ns": 4.4543161757230525,
+        "contact_duration_s": 1.1240000000000008,
+        "contact_bout_count": 23,
+        "max_penetration_m": 0.00012556275021026372,
+        "hand_collision_contact": false,
+        "link7_collision_contact": true,
+        "hand_body_contact": false,
+        "link7_body_contact": true,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.024323253509534182,
+        "contact_geom_names": [
+          "fr3_link7_collision"
+        ]
+      },
+      "postgrasp": {
+        "contact": true,
+        "first_contact_s": 4.172,
+        "peak_force_n": 11.636111283973372,
+        "contact_impulse_ns": 1.3801406160142762,
+        "contact_duration_s": 0.3160000000000002,
+        "contact_bout_count": 44,
+        "max_penetration_m": 7.660187835923286e-05,
+        "hand_collision_contact": true,
+        "link7_collision_contact": false,
+        "hand_body_contact": true,
+        "link7_body_contact": false,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.15681020551706104,
+        "contact_geom_names": [
+          "hand_collision"
+        ]
+      },
+      "physical_audit_pass": true
+    },
+    {
+      "method": "PaperMPC",
+      "condition": {
+        "name": "held_stiff_delayed",
+        "split": "held_out",
+        "seed": 20266204,
+        "board_y_offset_m": 0.00475,
+        "board_z_offset_m": 0.003,
+        "contact_time_constant_s": 0.024,
+        "joint_velocity_noise_std": 0.009,
+        "residual_action_delay_steps": 1
+      },
+      "budget": 0.04,
+      "task_success": true,
+      "dual_phase_geometry_valid": true,
+      "initial_board_contact": false,
+      "finite_state": true,
+      "hard_torque_limit": false,
+      "final_target_lift_m": 0.19206363688255634,
+      "final_hand_target_distance_m": 0.1303916754665402,
+      "peak_torque_nm": 32.832283328941614,
+      "peak_jerk_mps3": 1084.7868367018352,
+      "pregrasp": {
+        "contact": true,
+        "first_contact_s": 1.332,
+        "peak_force_n": 21.565055495583263,
+        "contact_impulse_ns": 6.383128142300699,
+        "contact_duration_s": 1.340000000000001,
+        "contact_bout_count": 12,
+        "max_penetration_m": 0.00031415221208404005,
+        "hand_collision_contact": false,
+        "link7_collision_contact": true,
+        "hand_body_contact": false,
+        "link7_body_contact": true,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.024476211321061037,
+        "contact_geom_names": [
+          "fr3_link7_collision"
+        ]
+      },
+      "postgrasp": {
+        "contact": true,
+        "first_contact_s": 4.167999999999999,
+        "peak_force_n": 9.139183056516426,
+        "contact_impulse_ns": 1.5564244874839397,
+        "contact_duration_s": 0.5400000000000004,
+        "contact_bout_count": 17,
+        "max_penetration_m": 8.359394880638582e-05,
+        "hand_collision_contact": true,
+        "link7_collision_contact": false,
+        "hand_body_contact": true,
+        "link7_body_contact": false,
+        "target_object_contact": false,
+        "target_lift_at_first_contact_m": 0.15208574702474387,
+        "contact_geom_names": [
+          "hand_collision"
+        ]
+      },
+      "physical_audit_pass": true
+    }
+  ]
+}

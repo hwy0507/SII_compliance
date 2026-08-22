@@ -1,0 +1,200 @@
+{
+  "input": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_robustness_v1/heldout_four_method.json",
+  "baseline": "VMC",
+  "seed_count": 4,
+  "condition_count": 4,
+  "comparisons": {
+    "ESN": {
+      "pre_peak_force_n": {
+        "mean_difference_method_minus_vmc": -0.661041798801357,
+        "cluster_bootstrap_95ci": [
+          -1.583354848981549,
+          0.25934252434446714
+        ],
+        "paired_condition_win_rate": 0.75,
+        "direction": "lower"
+      },
+      "pre_impulse_ns": {
+        "mean_difference_method_minus_vmc": -1.5191648245604137,
+        "cluster_bootstrap_95ci": [
+          -1.7158833499380637,
+          -1.1519840018083967
+        ],
+        "paired_condition_win_rate": 1.0,
+        "direction": "lower"
+      },
+      "post_peak_force_n": {
+        "mean_difference_method_minus_vmc": -2.7846482032739166,
+        "cluster_bootstrap_95ci": [
+          -3.149636329666097,
+          -2.4196600768817365
+        ],
+        "paired_condition_win_rate": 1.0,
+        "direction": "lower"
+      },
+      "post_impulse_ns": {
+        "mean_difference_method_minus_vmc": 0.047753831015730136,
+        "cluster_bootstrap_95ci": [
+          -0.04394237727824446,
+          0.13945003930970473
+        ],
+        "paired_condition_win_rate": 0.5,
+        "direction": "lower"
+      },
+      "peak_jerk_mps3": {
+        "mean_difference_method_minus_vmc": -37.56264611627651,
+        "cluster_bootstrap_95ci": [
+          -97.08740878131917,
+          19.10990550689644
+        ],
+        "paired_condition_win_rate": 0.75,
+        "direction": "lower"
+      },
+      "final_target_lift_m": {
+        "mean_difference_method_minus_vmc": -0.007662189305938649,
+        "cluster_bootstrap_95ci": [
+          -0.007829885002958309,
+          -0.007460735291487247
+        ],
+        "paired_condition_win_rate": 0.0,
+        "direction": "higher"
+      },
+      "five_metric_ratio_to_vmc": {
+        "mean": 0.8994061615767999,
+        "cluster_bootstrap_95ci": [
+          0.8633569620219419,
+          0.935455361131658
+        ],
+        "lower_is_better": true
+      }
+    },
+    "MLP": {
+      "pre_peak_force_n": {
+        "mean_difference_method_minus_vmc": 6.813893767516288,
+        "cluster_bootstrap_95ci": [
+          1.1643495980793421,
+          12.014909099472042
+        ],
+        "paired_condition_win_rate": 0.25,
+        "direction": "lower"
+      },
+      "pre_impulse_ns": {
+        "mean_difference_method_minus_vmc": -1.4707549863382618,
+        "cluster_bootstrap_95ci": [
+          -2.256192514550097,
+          -0.6853174581264265
+        ],
+        "paired_condition_win_rate": 1.0,
+        "direction": "lower"
+      },
+      "post_peak_force_n": {
+        "mean_difference_method_minus_vmc": 3.2420973755632354,
+        "cluster_bootstrap_95ci": [
+          -0.8918685910103434,
+          10.276340702446184
+        ],
+        "paired_condition_win_rate": 0.25,
+        "direction": "lower"
+      },
+      "post_impulse_ns": {
+        "mean_difference_method_minus_vmc": -0.5351055708518428,
+        "cluster_bootstrap_95ci": [
+          -0.7484096408257612,
+          -0.3218015008779246
+        ],
+        "paired_condition_win_rate": 1.0,
+        "direction": "lower"
+      },
+      "peak_jerk_mps3": {
+        "mean_difference_method_minus_vmc": 320.59949917748304,
+        "cluster_bootstrap_95ci": [
+          -36.95995209821862,
+          572.8458527369562
+        ],
+        "paired_condition_win_rate": 0.25,
+        "direction": "lower"
+      },
+      "final_target_lift_m": {
+        "mean_difference_method_minus_vmc": 0.01249850995991475,
+        "cluster_bootstrap_95ci": [
+          0.007069336153699424,
+          0.017927683766130076
+        ],
+        "paired_condition_win_rate": 1.0,
+        "direction": "higher"
+      },
+      "five_metric_ratio_to_vmc": {
+        "mean": 1.0301444528818782,
+        "cluster_bootstrap_95ci": [
+          0.8038547799817162,
+          1.2592396266567576
+        ],
+        "lower_is_better": true
+      }
+    },
+    "PaperMPC": {
+      "pre_peak_force_n": {
+        "mean_difference_method_minus_vmc": -0.1683590877544794,
+        "cluster_bootstrap_95ci": [
+          -0.4913307485692382,
+          0.13487784119937984
+        ],
+        "paired_condition_win_rate": 0.5,
+        "direction": "lower"
+      },
+      "pre_impulse_ns": {
+        "mean_difference_method_minus_vmc": -0.7973770202189681,
+        "cluster_bootstrap_95ci": [
+          -0.9446009048235922,
+          -0.5067012882740216
+        ],
+        "paired_condition_win_rate": 1.0,
+        "direction": "lower"
+      },
+      "post_peak_force_n": {
+        "mean_difference_method_minus_vmc": 0.0008295813376224537,
+        "cluster_bootstrap_95ci": [
+          -0.29269053963213576,
+          0.29434970230738067
+        ],
+        "paired_condition_win_rate": 0.5,
+        "direction": "lower"
+      },
+      "post_impulse_ns": {
+        "mean_difference_method_minus_vmc": 0.28656074091985145,
+        "cluster_bootstrap_95ci": [
+          0.23360657859657674,
+          0.33968181050161134
+        ],
+        "paired_condition_win_rate": 0.0,
+        "direction": "lower"
+      },
+      "peak_jerk_mps3": {
+        "mean_difference_method_minus_vmc": -6.072094991242977,
+        "cluster_bootstrap_95ci": [
+          -20.561231720477394,
+          4.828762287261213
+        ],
+        "paired_condition_win_rate": 0.5,
+        "direction": "lower"
+      },
+      "final_target_lift_m": {
+        "mean_difference_method_minus_vmc": -0.003810523913437419,
+        "cluster_bootstrap_95ci": [
+          -0.004034160618577726,
+          -0.003629410724827975
+        ],
+        "paired_condition_win_rate": 0.0,
+        "direction": "higher"
+      },
+      "five_metric_ratio_to_vmc": {
+        "mean": 1.0450445404962667,
+        "cluster_bootstrap_95ci": [
+          1.0251459457427754,
+          1.068681896056546
+        ],
+        "lower_is_better": true
+      }
+    }
+  }
+}
