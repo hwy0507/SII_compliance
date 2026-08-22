@@ -44,9 +44,10 @@ class MLPComplianceController:
         self.b1 = np.asarray(b1, dtype=float).copy()
         self.w2 = np.asarray(w2, dtype=float).copy()
         self.b2 = np.asarray(b2, dtype=float).copy()
-        if self.mean.shape != (32,) or self.std.shape != (32,) or np.any(self.std <= 0.0):
-            raise ValueError("normalization statistics must be 32-D with positive std")
-        if self.w1.shape != (config.hidden_units, 32) or self.b1.shape != (config.hidden_units,):
+        dim = self.mean.shape[0] if self.mean.ndim == 1 else 0
+        if self.std.shape != (dim,) or dim == 0 or np.any(self.std <= 0.0):
+            raise ValueError(f"normalization statistics must be a consistent positive-std vector, got {dim}-D")
+        if self.w1.shape != (config.hidden_units, dim) or self.b1.shape != (config.hidden_units,):
             raise ValueError("first-layer weights have invalid shape")
         if self.w2.shape != (ACTION_DIMENSION, config.hidden_units) or self.b2.shape != (ACTION_DIMENSION,):
             raise ValueError("second-layer weights have invalid shape")
@@ -63,8 +64,8 @@ class MLPComplianceController:
             np.asarray(pose_error, dtype=float) if pose_error is not None else np.zeros(6),
             np.asarray(twist_error, dtype=float) if twist_error is not None else np.zeros(6),
         ])
-        if observation.shape != (32,):
-            raise ValueError("MLP baseline observation must be 32-D")
+        if observation.shape != (self.mean.shape[0],):
+            raise ValueError(f"MLP baseline observation must be {self.mean.shape[0]}-D")
         normalized = (observation - self.mean) / self.std
         hidden = np.tanh(normalized @ self.w1.T + self.b1)
         bounded = np.tanh(hidden @ self.w2.T + self.b2)

@@ -12,7 +12,19 @@ from pathlib import Path
 
 import numpy as np
 
+class AugObs:
+    """Picklable attribute-bag for delay-line-augmented MLP observations."""
+    __slots__ = ("joint_position", "joint_velocity", "wbc_task_twist",
+                 "wbc_pose_error", "wbc_twist_error")
+
+    def __init__(self, jp, jv, tw, pe, te):
+        self.joint_position, self.joint_velocity = jp, jv
+        self.wbc_task_twist = tw
+        self.wbc_pose_error, self.wbc_twist_error = pe, te
+
+
 OUT = Path(os.environ.get("EXT_OUT", "/home/arm1/vmc_mujoco_runtime/outputs/extraction_esn"))
+DATA = Path(os.environ.get("DL_DATA", "")) if os.environ.get("DL_DATA") else OUT / "teacher_data.npz"
 WASHOUT = 10
 ENGAGED_OVERSAMPLE = 4
 
@@ -24,7 +36,7 @@ def main() -> None:
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"mlp training on {device}"
           + (f" ({torch.cuda.get_device_name(0)})" if device == "cuda" else ""), flush=True)
-    with np.load(OUT / "teacher_data.npz", allow_pickle=True) as archive:
+    with np.load(DATA, allow_pickle=True) as archive:
         episodes = list(archive["episodes"])
     xs = np.concatenate([np.stack([
         np.concatenate([o.joint_position, o.joint_velocity, o.wbc_task_twist,
@@ -40,7 +52,7 @@ def main() -> None:
     for tseed in (0, 1, 2, 3, 4):
         torch.manual_seed(tseed)
         hidden = int(os.environ.get('MLP_HIDDEN', '128'))
-        net = torch.nn.Sequential(torch.nn.Linear(32, hidden), torch.nn.Tanh(),
+        net = torch.nn.Sequential(torch.nn.Linear(xs.shape[1], hidden), torch.nn.Tanh(),
                                   torch.nn.Linear(hidden, 7), torch.nn.Tanh()).to(device)
         opt = torch.optim.Adam(net.parameters(), lr=2e-3)
         sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=15000)

@@ -185,9 +185,11 @@ def build_fr3_hand_scene_xml(
         for index, limit in enumerate(FR3_TORQUE_LIMITS, start=1)
     )
     import os as _os
+    _gkp = _os.environ.get("GRIPPER_KP", "2000")
+    _gfl = _os.environ.get("GRIPPER_FORCE", "200")
     gripper_actuator = (
-        f'<position name="gripper" tendon="split" kp="{_os.environ.get("GRIPPER_KP", "500")}" '
-        'ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-100 100"/>'
+        f'<position name="gripper" tendon="split" kp="{_gkp}" '
+        f'ctrllimited="true" ctrlrange="0 0.04" forcelimited="true" forcerange="-{_gfl} {_gfl}"/>'
     )
     text = re.sub(
         r"<actuator>.*?</actuator>",
