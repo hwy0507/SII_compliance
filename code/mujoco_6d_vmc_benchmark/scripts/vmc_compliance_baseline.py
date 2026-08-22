@@ -296,7 +296,7 @@ class VMCComplianceAdapter:
 
 
 def load_controller(path: Path):
-    """Load a Direct ESN, spring-carriage VMC, or memoryless MLP checkpoint."""
+    """Load a Direct ESN, multi-head ESN, spring-carriage VMC, or MLP checkpoint."""
 
     with np.load(path, allow_pickle=False) as archive:
         if "controller_family" in archive.files:
@@ -311,6 +311,13 @@ def load_controller(path: Path):
                 from mlp_compliance_baseline import MLPComplianceController
 
                 return MLPComplianceController.from_npz(path)
+    # Multi-head checkpoints intentionally have a distinct serialized field so
+    # they cannot be confused with the single-readout baseline.
+    with np.load(path, allow_pickle=False) as archive:
+        if "readout_heads" in archive.files:
+            from direct_esn_compliance import MultiHeadDirectESNController
+
+            return MultiHeadDirectESNController.from_npz(path)
     from direct_esn_compliance import DirectESNController
 
     return DirectESNController.from_npz(path)

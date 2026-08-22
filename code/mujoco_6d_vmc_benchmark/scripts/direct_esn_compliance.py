@@ -568,6 +568,179 @@ class DirectESNController:
             return controller
 
 
+class MultiHeadDirectESNController:
+    """Independent ESN with phase-specialized direct compliance readouts.
+
+    The recurrent state and the 32-D deployable observation are identical to
+    :class:`DirectESNController`.  Only the linear readout is split into three
+    heads.  A continuous gate is computed from the *nominal WBC vertical
+    twist* already present in the student input: the descending/approach head,
+    the rising/lift head, and a near-zero-twist rejoin head.  This is a
+    reference-phase cue, not a contact label; no board pose, force, object
+    state, or contact timing is available to this class.
+
+    Keeping the gate outside the trained feature vector makes the information
+    contract auditable while allowing one shared reservoir to learn different
+    responses for the two mechanically distinct impacts.
+    """
+
+    family = "direct_esn_multhead"
+    HEAD_NAMES = ("pre_contact", "post_contact", "rejoin")
+
+    def __init__(self, config: DirectESNConfig = DirectESNConfig(), head_count: int = 3) -> None:
+        if head_count != len(self.HEAD_NAMES):
+            raise ValueError("the mult-head controller currently requires three heads")
+        self.config = config
+        self._base = DirectESNController(config)
+        self._readout_heads = np.zeros((head_count, ACTION_DIMENSION, self.feature_dimension), dtype=float)
+
+    @property
+    def feature_dimension(self) -> int:
+        return self._base.feature_dimension
+
+    @property
+    def reservoir_size(self) -> int:
+        return self.config.reservoir_size
+
+    @property
+    def readout_heads(self) -> np.ndarray:
+        return self._readout_heads.copy()
+
+    @property
+    def state(self) -> np.ndarray:
+        return self._base.state
+
+    def reset(self) -> None:
+        self._base.reset()
+
+    def _phase_gates(self, feature: np.ndarray) -> np.ndarray:
+        """Return [approach, lift, rejoin] weights from nominal WBC twist.
+
+        ``feature[16]`` is the normalized nominal z velocity (the first seven
+        entries are q, the next seven qdot, then nominal twist).  The smooth
+        tanh/exp construction avoids a hard phase switch and remains valid
+        when the commanded vertical velocity is small or changes sign.
+        """
+
+        normalized_vertical_twist = float(np.clip(feature[16], -10.0, 10.0))
+        phase = np.tanh(normalized_vertical_twist / 0.22)
+        approach = 0.5 * (1.0 - phase)
+        lift = 0.5 * (1.0 + phase)
+        rejoin = float(np.exp(-abs(normalized_vertical_twist) / 0.16))
+        weights = np.asarray([approach, lift, rejoin], dtype=float)
+        total = float(np.sum(weights))
+        return weights / total if total > 1.0e-12 else np.full(3, 1.0 / 3.0)
+
+    def phase_gates(self, feature: np.ndarray) -> np.ndarray:
+        """Public read-only gate helper for offline audits and unit tests."""
+
+        return self._phase_gates(_finite_vector(feature, self.feature_dimension, "feature"))
+
+    def set_readout_heads(self, readout_heads: np.ndarray) -> None:
+        matrix = np.asarray(readout_heads, dtype=float)
+        if matrix.shape != self._readout_heads.shape or not np.all(np.isfinite(matrix)):
+            raise ValueError(f"readout_heads must have shape {self._readout_heads.shape}")
+        self._readout_heads = matrix.copy()
+
+    def _effective_readout(self, feature: np.ndarray) -> np.ndarray:
+        return np.tensordot(self._phase_gates(feature), self._readout_heads, axes=(0, 0))
+
+    def _activation(self, pose_error: np.ndarray | None) -> float:
+        if pose_error is None:
+            return 0.0
+        error = _finite_vector(pose_error, 6, "pose_error")
+        position_error = float(np.linalg.norm(error[:3]))
+        phase = np.clip(
+            (position_error - self.config.activation_error_start_m)
+            / (self.config.activation_error_full_m - self.config.activation_error_start_m),
+            0.0, 1.0,
+        )
+        return float(phase * phase * (3.0 - 2.0 * phase))
+
+    def act(
+        self,
+        joint_position: np.ndarray,
+        joint_velocity: np.ndarray,
+        wbc_task_twist: np.ndarray,
+        *,
+        pose_error: np.ndarray | None = None,
+        twist_error: np.ndarray | None = None,
+    ) -> DirectESNAction:
+        observation = DirectESNObservation(
+            joint_position, joint_velocity, wbc_task_twist,
+            np.zeros(6) if pose_error is None else pose_error,
+            np.zeros(6) if twist_error is None else twist_error,
+        )
+        feature = self._base.advance(observation)
+        effective = self._effective_readout(feature)
+        previous = self._base._readout
+        self._base._readout = effective
+        try:
+            action = self._base.action_from_feature(
+                feature, activation=self._activation(pose_error), pose_error=pose_error,
+            )
+        finally:
+            self._base._readout = previous
+        if self.config.mirror_gate_enabled and pose_error is not None:
+            action = self._base._apply_mirror_gate(action, np.asarray(pose_error, dtype=float))
+        if self.config.yield_smoothing_alpha < 1.0:
+            alpha = float(self.config.yield_smoothing_alpha)
+            smoothed = alpha * action.yielding_twist + (1.0 - alpha) * self._base._smoothed_yield_twist
+            self._base._smoothed_yield_twist = smoothed.copy()
+            bounded = action.bounded_filter_action.copy()
+            scale = np.asarray([
+                self.config.maximum_linear_yield_mps] * 3
+                + [self.config.maximum_angular_yield_radps] * 3,
+            )
+            bounded[1:] = np.clip(smoothed / scale, -1.0, 1.0)
+            action = DirectESNAction(action.raw_readout, bounded, action.wbc_scale, smoothed)
+        return action
+
+    def contract(self) -> dict[str, Any]:
+        payload = self._base.contract()
+        payload.update({
+            "method": self.family,
+            "readout_heads": list(self.HEAD_NAMES),
+            "phase_gate": {
+                "source": "normalized nominal WBC vertical twist feature[16]",
+                "uses_contact_label": False,
+                "uses_obstacle_or_object_state": False,
+                "formula": "soft tanh approach/lift weights plus exp near-zero rejoin weight",
+            },
+        })
+        return payload
+
+    def save_npz(self, path: str | Path) -> None:
+        target = Path(path)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        np.savez_compressed(
+            target, readout_heads=self._readout_heads,
+            recurrent=self._base._recurrent, input_matrix=self._base._input,
+            bias=self._base._bias, config_json=json.dumps(asdict(self.config)),
+            contract_json=json.dumps(self.contract()),
+        )
+
+    @classmethod
+    def from_npz(cls, path: str | Path) -> "MultiHeadDirectESNController":
+        with np.load(path, allow_pickle=False) as archive:
+            required = {"readout_heads", "recurrent", "input_matrix", "bias", "config_json"}
+            missing = required - set(archive.files)
+            if missing:
+                raise ValueError(f"{path}: missing serialized fields {sorted(missing)}")
+            config = DirectESNConfig(**json.loads(str(archive["config_json"])))
+            controller = cls(config)
+            recurrent = _finite_matrix(archive["recurrent"], config.reservoir_size, "recurrent")
+            input_matrix = _finite_matrix(archive["input_matrix"], DEPLOYABLE_INPUT_DIMENSION, "input_matrix")
+            bias = _finite_vector(archive["bias"], config.reservoir_size, "bias")
+            if recurrent.shape != (config.reservoir_size, config.reservoir_size):
+                raise ValueError("serialized recurrent matrix dimensions do not match config")
+            controller._base._recurrent = recurrent.copy()
+            controller._base._input = input_matrix.copy()
+            controller._base._bias = bias.copy()
+            controller.set_readout_heads(archive["readout_heads"])
+            return controller
+
+
 @dataclass(frozen=True)
 class PrivilegedTeacherConfig:
     """Deterministic label generator; fields are never student observations."""
