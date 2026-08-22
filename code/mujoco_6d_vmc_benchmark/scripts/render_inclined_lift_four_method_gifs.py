@@ -40,14 +40,15 @@ def font(size):
     return ImageFont.truetype(path, size) if Path(path).is_file() else ImageFont.load_default()
 
 
-def render_one(menagerie, seed, tilt, yaw, board_y_offset, label, controller, budget, output, fps, camera_mode="rod_track"):
+def render_one(menagerie, seed, tilt, yaw, board_y_offset, label, controller, budget, output, fps, camera_mode="rod_track", contact_mode="side_slide"):
     import mujoco
     env = PandaWBCVelocityResidualEnv(
         menagerie=menagerie, fan_ye_model_npz=None, fan_ye_train_summary_json=None,
         observation_mode="direct_esn", rod_enabled=False, seed=seed, robot="fr3",
         execution_mode="torque_residual", residual_torque_scale=budget,
         wbc_backend="paper_mpc", fixtures=(fixture(seed),), lift_board_tilt_deg=tilt,
-        lift_board_yaw_deg=yaw, lift_board_y_offset_m=board_y_offset)
+        lift_board_yaw_deg=yaw, lift_board_y_offset_m=board_y_offset,
+        lift_board_contact_mode=contact_mode)
     env.reset(seed=seed, options={"fixture_index": 0})
     if controller is not None and hasattr(controller, "reset"):
         controller.reset()
@@ -109,6 +110,7 @@ def main():
     p.add_argument("--output-dir", type=Path, required=True); p.add_argument("--seed", type=int, default=20262201)
     p.add_argument("--tilt", type=float, default=40.0); p.add_argument("--yaw", type=float, default=0.0)
     p.add_argument("--board-y-offset", type=float, default=0.0)
+    p.add_argument("--contact-mode", choices=["side_slide", "front_face"], default="side_slide")
     p.add_argument("--fps", type=int, default=25)
     p.add_argument("--only", choices=["paper", "vmc", "mlp", "esn"], default=None,
                    help="render one method only; useful for avoiding long-lived renderer resource buildup")
@@ -125,7 +127,8 @@ def main():
                 "board_y_offset_m": a.board_y_offset, "seed": a.seed, "methods": []}
     for label, ctrl, budget, name in methods:
         result = render_one(a.menagerie, a.seed, a.tilt, a.yaw, a.board_y_offset,
-                            label, ctrl, budget, a.output_dir / name, a.fps, a.camera)
+                            label, ctrl, budget, a.output_dir / name, a.fps, a.camera,
+                            a.contact_mode)
         manifest["methods"].append(result); print(json.dumps(result), flush=True)
     a.output_dir.mkdir(parents=True, exist_ok=True)
     (a.output_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

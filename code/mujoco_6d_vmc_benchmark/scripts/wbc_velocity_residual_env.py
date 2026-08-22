@@ -30,7 +30,7 @@ from fan_ye_esn_rl_adapter import (
 )
 from fixed_panda_wbc import FixedBasePandaWBC, WBCCommand
 from run_benchmark import ARM_DOF, CONTROL_DT, TORQUE_LIMITS, body_jacobian, body_twist, so3_log
-from run_grasp_impact_benchmark import TABLE_TOP_Z, TARGET_START_Z, PickLiftCarryReference
+from run_grasp_impact_benchmark import LIFT_COMPLETE_TIME_S, TABLE_TOP_Z, TARGET_START_Z, PickLiftCarryReference
 from run_rod_perturbation_benchmark import make_rod_model, rod_contact_diagnostics, rod_motion
 from stiffness_training_core import EFFECTIVE_COLLISION_GATE
 from wbc_velocity_residual_core import (
@@ -142,7 +142,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         table_board_underside_z: float | None = None,
         lift_board_tilt_deg: float | None = None,
         lift_board_y_offset_m: float = 0.0,
+        lift_board_z_offset_m: float = 0.0,
         lift_board_yaw_deg: float = 0.0,
+        lift_board_contact_mode: str = "side_slide",
         joint_velocity_noise_std: float = 0.0,
         execution_mode: str = "twist",
         residual_torque_scale: float = 0.25,
@@ -177,9 +179,16 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         if lift_board_tilt_deg is not None and robot != "fr3":
             raise ValueError("the inclined lift-board scene is wired for robot='fr3'")
         self.lift_board_tilt_deg = lift_board_tilt_deg
+        if lift_board_contact_mode not in ("side_slide", "front_face"):
+            raise ValueError("lift_board_contact_mode must be 'side_slide' or 'front_face'")
+        self.lift_board_contact_mode = lift_board_contact_mode
+        self._front_face_initial_qpos: np.ndarray | None = None
         if not np.isfinite(lift_board_y_offset_m):
             raise ValueError("lift_board_y_offset_m must be finite")
         self.lift_board_y_offset_m = float(lift_board_y_offset_m)
+        if not np.isfinite(lift_board_z_offset_m):
+            raise ValueError("lift_board_z_offset_m must be finite")
+        self.lift_board_z_offset_m = float(lift_board_z_offset_m)
         if not np.isfinite(lift_board_yaw_deg):
             raise ValueError("lift_board_yaw_deg must be finite")
         self.lift_board_yaw_deg = float(lift_board_yaw_deg)
@@ -347,7 +356,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 # uses a lateral lift arc (joint 2 offset) so the descent
                 # path and the board are geometrically separated — the arm
                 # strikes the board only while moving bottom-up.
-                def board_reference(model_, data_, hand_id_):
+                def side_slide_reference(model_, data_, hand_id_):
                     ref = PickLiftCarryReference(model_, data_, hand_id_)
                     knots = ref.q_knots.copy()
                     # Lateral arc on joint 1 (base yaw, z-axis): at this
@@ -360,34 +369,88 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                     ref.q_knots = knots
                     return ref
 
+                def front_face_reference(model_, data_, hand_id_):
+                    """Move below the overhang, then raise into its face.
+
+                    The arm follows a normal centre-line pick-down motion,
+                    sweeps sideways only after reaching the low pregrasp
+                    height, and performs the vertical lift beneath the fixed
+                    board.  Thus it never crosses the board while descending
+                    from home, and all later contact is standard MuJoCo
+                    contact rather than a pose correction or teleportation.
+                    """
+                    ref = PickLiftCarryReference(model_, data_, hand_id_)
+                    home = ref.q_knots[0].copy()
+                    pregrasp = ref.q_knots[1].copy()
+                    lifted = ref.q_knots[3].copy()
+                    carry = ref.q_knots[4].copy()
+                    under_board_pregrasp = pregrasp.copy()
+                    under_board_lifted = lifted.copy()
+                    under_board_carry = carry.copy()
+                    under_board_pregrasp[0] += 0.80
+                    under_board_lifted[0] += 0.80
+                    under_board_carry[0] += 0.80
+                    ref.times = np.array([0.0, 1.70, 2.70, LIFT_COMPLETE_TIME_S, 6.20])
+                    ref.q_knots = np.stack((
+                        home, pregrasp, under_board_pregrasp, under_board_lifted, under_board_carry,
+                    ))
+                    return ref
+
                 probe_model, probe_data = make_fr3_hand_model(
                     self.menagerie, self.fixture.contact_time_constant_s, **scene_kwargs)
                 probe_hand = mujoco.mj_name2id(
                     probe_model, mujoco.mjtObj.mjOBJ_BODY, "hand")
-                probe_ref = board_reference(probe_model, probe_data, probe_hand)
-                p_start = probe_ref.sample(2.70)[0]
-                p_end = probe_ref.sample(4.10)[0]
-                center = 0.75 * p_start + 0.25 * p_end
-                # Rotating the board around world z changes its projected
-                # lateral span.  Place its near edge above the entire
-                # descent/grasp envelope before adding it to the rising arc;
-                # otherwise yaw=45/90 deg would physically intersect the
-                # hand at t=0 and masquerade as a frontal lift collision.
-                yaw = np.deg2rad(self.lift_board_yaw_deg)
-                projected_half_y = abs(np.sin(yaw)) * 0.18 + abs(np.cos(yaw)) * 0.05
-                # The hand collision geoms extend well beyond the EE point;
-                # a 45 mm gap from the point trajectory was insufficient for
-                # the long projected footprint at yaw=90 deg once the board
-                # jitter was applied.  Keep a conservative 70 mm point
-                # clearance, and compensate only negative jitter so the
-                # entire declared jitter range remains pre-grasp safe.
-                negative_jitter_guard = max(0.0, -self.lift_board_y_offset_m)
-                min_center_y = projected_half_y + 0.07 + negative_jitter_guard
-                center[1] = max(center[1] + 0.09, min_center_y) + self.lift_board_y_offset_m
+                if self.lift_board_contact_mode == "side_slide":
+                    probe_ref = side_slide_reference(probe_model, probe_data, probe_hand)
+                    p_start = probe_ref.sample(2.70)[0]
+                    p_end = probe_ref.sample(4.10)[0]
+                    center = 0.75 * p_start + 0.25 * p_end
+                    # Rotating the board around world z changes its projected
+                    # lateral span.  Place its near edge above the entire
+                    # descent/grasp envelope before adding it to the rising arc;
+                    # otherwise yaw=45/90 deg would physically intersect the
+                    # hand at t=0 and masquerade as a frontal lift collision.
+                    yaw = np.deg2rad(self.lift_board_yaw_deg)
+                    projected_half_y = abs(np.sin(yaw)) * 0.18 + abs(np.cos(yaw)) * 0.05
+                    negative_jitter_guard = max(0.0, -self.lift_board_y_offset_m)
+                    min_center_y = projected_half_y + 0.07 + negative_jitter_guard
+                    center[1] = max(center[1] + 0.09, min_center_y) + self.lift_board_y_offset_m
+                    scene_kwargs["lift_board_size_m"] = (0.18, 0.05, 0.008)
+                    self._board_reference_factory = side_slide_reference
+                else:
+                    # Front-face mode is deliberately a different physical
+                    # setup, not a yaw variation of the edge-slide scene.
+                    # The nominal reference is left unmodified (y=0), and a
+                    # 36 x 28 cm board is centered over the lift corridor.
+                    # Its underside is 60 mm above the t=3.20 EE reference,
+                    # so the arm begins collision-free and then approaches
+                    # the broad lower face from below.  The board stays
+                    # mildly inclined, retaining the intended compliant-slide
+                    # behavior after a genuine frontal impact.
+                    probe_ref = front_face_reference(probe_model, probe_data, probe_hand)
+                    self._front_face_initial_qpos = None
+                    # Place the fixed board over the distal link-7 trajectory
+                    # at the planned impact instant.  The reference is
+                    # evaluated in a board-free probe model, so this is a
+                    # deterministic geometry calculation, not feedback.
+                    probe_ref.sample(3.80)
+                    link7_collision = mujoco.mj_name2id(
+                        probe_model, mujoco.mjtObj.mjOBJ_GEOM, "fr3_link7_collision")
+                    center = probe_ref._work.geom_xpos[link7_collision].copy()
+                    # Align the board in the *MuJoCo collision-geometry*
+                    # frame, not the wrist-body frame.  This is an offline
+                    # scene-construction calculation only; no board pose or
+                    # contact signal is exposed to any controller.
+                    # Leave 35 mm of initial vertical clearance above the
+                    # link-7 collision envelope, then let the rising hand
+                    # make the first contact with the board's underside.
+                    center[2] += 0.035 + self.lift_board_z_offset_m
+                    center[1] += self.lift_board_y_offset_m
+                    scene_kwargs["lift_board_size_m"] = (0.120, 0.120, 0.008)
+                    self._board_reference_factory = front_face_reference
                 scene_kwargs["lift_board_center_m"] = tuple(float(v) for v in center)
                 scene_kwargs["lift_board_tilt_deg"] = float(self.lift_board_tilt_deg)
                 scene_kwargs["lift_board_yaw_deg"] = float(self.lift_board_yaw_deg)
-                self._board_reference_factory = board_reference
             else:
                 self._board_reference_factory = None
             self.model, self.data = make_fr3_hand_model(
@@ -434,6 +497,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             0.54, 0.0, TARGET_START_Z, 1.0, 0.0, 0.0, 0.0,
         ]
         data.qvel[self._target_dof:self._target_dof + 6] = 0.0
+        if self._front_face_initial_qpos is not None:
+            data.qpos[:ARM_DOF] = self._front_face_initial_qpos
+            data.qvel[:ARM_DOF] = 0.0
         mujoco.mj_forward(model, data)
         if self._board_reference_factory is not None:
             self.reference = self._board_reference_factory(model, data, self._hand_id)

@@ -109,6 +109,7 @@ def build_fr3_hand_scene_xml(
     lift_board_center_m: tuple[float, float, float] | None = None,
     lift_board_tilt_deg: float | None = None,
     lift_board_yaw_deg: float = 0.0,
+    lift_board_size_m: tuple[float, float, float] = (0.18, 0.05, 0.008),
     impactor_mass_kg: float | None = None,
     rod_slide_damping: float = 2.0,
     rod_driver_kp: float = 5000.0,
@@ -237,6 +238,8 @@ def build_fr3_hand_scene_xml(
 """
     lift_board_xml = ""
     if lift_board_center_m is not None and lift_board_tilt_deg is not None:
+        if len(lift_board_size_m) != 3 or any(float(value) <= 0.0 for value in lift_board_size_m):
+            raise ValueError("lift_board_size_m must contain three positive half-extents")
         # Inclined static wooden board across the lift path: the rising arm
         # strikes the tilted face and must slide along the incline (oblique
         # contact normal).  Contact bits 5/5 collide with the hand (4/4),
@@ -255,7 +258,7 @@ def build_fr3_hand_scene_xml(
         lift_board_xml = f"""
       <geom name="lift_board" type="box"
         pos="{lift_board_center_m[0]:.4f} {lift_board_center_m[1]:.4f} {lift_board_center_m[2]:.4f}"
-        size="0.18 0.05 0.008" quat="{quat_wxyz[0]:.6f} {quat_wxyz[1]:.6f} {quat_wxyz[2]:.6f} {quat_wxyz[3]:.6f}"
+        size="{lift_board_size_m[0]:.4f} {lift_board_size_m[1]:.4f} {lift_board_size_m[2]:.4f}" quat="{quat_wxyz[0]:.6f} {quat_wxyz[1]:.6f} {quat_wxyz[2]:.6f} {quat_wxyz[3]:.6f}"
         contype="5" conaffinity="5" rgba="0.62 0.45 0.24 1" friction="0.15 0.02 0.002"
         solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
 """
@@ -309,6 +312,7 @@ def make_fr3_hand_model(
     lift_board_center_m: tuple[float, float, float] | None = None,
     lift_board_tilt_deg: float | None = None,
     lift_board_yaw_deg: float = 0.0,
+    lift_board_size_m: tuple[float, float, float] = (0.18, 0.05, 0.008),
     impactor_mass_kg: float | None = None,
     rod_slide_damping: float = 2.0,
     rod_driver_kp: float = 5000.0,
@@ -322,7 +326,7 @@ def make_fr3_hand_model(
         rod_approach_side=rod_approach_side, impactor_type=impactor_type,
         board_underside_z=board_underside_z,
         lift_board_center_m=lift_board_center_m, lift_board_tilt_deg=lift_board_tilt_deg,
-        lift_board_yaw_deg=lift_board_yaw_deg,
+        lift_board_yaw_deg=lift_board_yaw_deg, lift_board_size_m=lift_board_size_m,
         impactor_mass_kg=impactor_mass_kg, rod_slide_damping=rod_slide_damping,
         rod_driver_kp=rod_driver_kp, rod_driver_force_limit_n=rod_driver_force_limit_n)
     model = mujoco.MjModel.from_xml_string(xml)

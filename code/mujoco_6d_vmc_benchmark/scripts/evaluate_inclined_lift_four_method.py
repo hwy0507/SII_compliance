@@ -57,7 +57,8 @@ def board_incidence(env: PandaWBCVelocityResidualEnv, board_id: int,
 
 
 def run_one(menagerie: Path, label: str, controller, *, seed: int, tilt: float,
-            budget: float, board_y_offset_m: float, board_yaw_deg: float) -> dict:
+            budget: float, board_y_offset_m: float, board_yaw_deg: float,
+            contact_mode: str) -> dict:
     fx = fixture(seed)
     env = PandaWBCVelocityResidualEnv(
         menagerie=menagerie, fan_ye_model_npz=None, fan_ye_train_summary_json=None,
@@ -66,6 +67,7 @@ def run_one(menagerie: Path, label: str, controller, *, seed: int, tilt: float,
         wbc_backend="paper_mpc", fixtures=(fx,), lift_board_tilt_deg=float(tilt),
         lift_board_y_offset_m=float(board_y_offset_m),
         lift_board_yaw_deg=float(board_yaw_deg),
+        lift_board_contact_mode=contact_mode,
     )
     env.reset(seed=seed, options={"fixture_index": 0})
     if controller is not None and hasattr(controller, "reset"):
@@ -110,6 +112,7 @@ def run_one(menagerie: Path, label: str, controller, *, seed: int, tilt: float,
         "method": label, "seed": int(seed), "tilt_deg": float(tilt),
         "board_y_offset_m": float(board_y_offset_m),
         "board_yaw_deg": float(board_yaw_deg),
+        "contact_mode": contact_mode,
         "task_success": bool(info.get("task_success", False)),
         "hard_torque_limit": bool(info.get("hard_torque_limit", False)),
         "finite_state": bool(info.get("finite_state", False)),
@@ -147,6 +150,7 @@ def main() -> None:
     parser.add_argument("--tilts", type=float, nargs="+", default=[35.0, 40.0])
     parser.add_argument("--yaws", type=float, nargs="+", default=[0.0],
                         help="board yaw angles about world z; 0 is the original side-contact orientation")
+    parser.add_argument("--contact-mode", choices=("side_slide", "front_face"), default="side_slide")
     parser.add_argument("--esn-budget", type=float, default=0.02)
     parser.add_argument("--mlp-budget", type=float, default=0.02)
     parser.add_argument("--vmc-budget", type=float, default=0.02)
@@ -167,7 +171,7 @@ def main() -> None:
                     offset = float(np.random.default_rng(seed * 1009 + int(round(tilt * 10)) + int(round(yaw * 100))).uniform(-0.008, 0.008))
                     rows.append(run_one(args.menagerie, label, controller, seed=seed,
                                         tilt=tilt, budget=budget, board_y_offset_m=offset,
-                                        board_yaw_deg=yaw))
+                                        board_yaw_deg=yaw, contact_mode=args.contact_mode))
                     print(json.dumps({k: rows[-1][k] for k in rows[-1] if k != "rows"}), flush=True)
     summary = {}
     for label, _, _ in methods:
@@ -191,7 +195,8 @@ def main() -> None:
         "schema_version": 1,
         "protocol": "inclined_lift_physical_contact_heldout",
         "observation_contract": "learned methods: q, qdot, nominal_twist, pose_error, wbc_twist_error (32-D); no board/contact truth",
-        "board_geometry": "MuJoCo lift_board box, 0.18 x 0.05 x 0.008 m, friction 0.15, Rx(tilt) composed with Rz(yaw); tilt/yaw recorded per row",
+        "board_geometry": "MuJoCo lift_board physical box; side_slide uses 0.18 x 0.05 x 0.008 m, front_face uses 0.24 x 0.24 x 0.008 m half-extents configured in the environment",
+        "contact_mode": args.contact_mode,
         "angle_audit": "first-contact normal-speed fraction is |v_hand dot n_board| / ||v_hand||; contact/board quantities are offline only",
         "budgets": {"ESN": args.esn_budget, "MLP": args.mlp_budget, "VMC": args.vmc_budget},
         "summary": summary, "rows": rows,
