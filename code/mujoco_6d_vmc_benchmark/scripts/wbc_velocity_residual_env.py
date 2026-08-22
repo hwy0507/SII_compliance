@@ -384,6 +384,13 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                     pregrasp = ref.q_knots[1].copy()
                     lifted = ref.q_knots[3].copy()
                     carry = ref.q_knots[4].copy()
+                    # The stock FR3 pregrasp wrist frame leaves the distal
+                    # hand mesh about 110 mm above the tabletop object.  Move
+                    # the grasp posture down by 0.18 rad at joint 4 so the
+                    # actual collision mesh, not its wrist origin, encloses
+                    # the free target before the lift begins.
+                    pregrasp[3] -= 0.18
+                    lifted[3] -= 0.18
                     under_board_pregrasp = pregrasp.copy()
                     under_board_lifted = lifted.copy()
                     under_board_carry = carry.copy()
@@ -848,9 +855,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                     "policy": np.zeros(ARM_DOF),
                 }
         data.ctrl[:ARM_DOF] = applied_torque
-        data.ctrl[ARM_DOF] = self.reference.gripper_target(
-            time_s - (self.fixture.grasp_time_s - 2.10)
-        )
+        gripper_time = time_s if self.lift_board_contact_mode == "front_longitudinal" else (
+            time_s - (self.fixture.grasp_time_s - 2.10))
+        data.ctrl[ARM_DOF] = self.reference.gripper_target(gripper_time)
         data.ctrl[self._rod_ctrl] = rod_displacement
         ee_position = data.xpos[self._hand_id].copy()
         ee_rotation = data.xmat[self._hand_id].reshape(3, 3).copy()
