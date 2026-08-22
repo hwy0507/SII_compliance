@@ -150,7 +150,7 @@ def main() -> None:
     parser.add_argument("--tilts", type=float, nargs="+", default=[35.0, 40.0])
     parser.add_argument("--yaws", type=float, nargs="+", default=[0.0],
                         help="board yaw angles about world z; 0 is the original side-contact orientation")
-    parser.add_argument("--contact-mode", choices=("side_slide", "front_face"), default="side_slide")
+    parser.add_argument("--contact-mode", choices=("side_slide", "front_face", "front_longitudinal"), default="side_slide")
     parser.add_argument("--esn-budget", type=float, default=0.02)
     parser.add_argument("--mlp-budget", type=float, default=0.02)
     parser.add_argument("--vmc-budget", type=float, default=0.02)

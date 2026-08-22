@@ -179,8 +179,8 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         if lift_board_tilt_deg is not None and robot != "fr3":
             raise ValueError("the inclined lift-board scene is wired for robot='fr3'")
         self.lift_board_tilt_deg = lift_board_tilt_deg
-        if lift_board_contact_mode not in ("side_slide", "front_face"):
-            raise ValueError("lift_board_contact_mode must be 'side_slide' or 'front_face'")
+        if lift_board_contact_mode not in ("side_slide", "front_face", "front_longitudinal"):
+            raise ValueError("lift_board_contact_mode must be 'side_slide', 'front_face', or 'front_longitudinal'")
         self.lift_board_contact_mode = lift_board_contact_mode
         self._front_face_initial_qpos: np.ndarray | None = None
         if not np.isfinite(lift_board_y_offset_m):
@@ -417,7 +417,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                     center[1] = max(center[1] + 0.09, min_center_y) + self.lift_board_y_offset_m
                     scene_kwargs["lift_board_size_m"] = (0.18, 0.05, 0.008)
                     self._board_reference_factory = side_slide_reference
-                else:
+                elif self.lift_board_contact_mode == "front_face":
                     # Front-face mode is deliberately a different physical
                     # setup, not a yaw variation of the edge-slide scene.
                     # The nominal reference is left unmodified (y=0), and a
@@ -448,9 +448,53 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                     center[1] += self.lift_board_y_offset_m
                     scene_kwargs["lift_board_size_m"] = (0.120, 0.120, 0.008)
                     self._board_reference_factory = front_face_reference
+                else:
+                    # The corrected demo: a near-vertical board faces the
+                    # long axis of the distal hand/link-7 collision geometry.
+                    # The arm rises underneath and the longitudinal side of
+                    # the end-effector sweeps into the board face.
+                    probe_ref = front_face_reference(probe_model, probe_data, probe_hand)
+                    probe_ref.sample(3.80)
+                    hand_collision = mujoco.mj_name2id(
+                        probe_model, mujoco.mjtObj.mjOBJ_GEOM, "hand_collision")
+                    link7_collision = mujoco.mj_name2id(
+                        probe_model, mujoco.mjtObj.mjOBJ_GEOM, "fr3_link7_collision")
+                    hand_axes = probe_ref._work.geom_xmat[hand_collision].reshape(3, 3)
+                    long_axis = hand_axes[:, 2].copy()
+                    long_axis[2] = 0.0
+                    long_axis /= max(float(np.linalg.norm(long_axis)), 1e-12)
+                    # For Rx(90°) followed by Rz(yaw), board +z is
+                    # [sin(yaw), -cos(yaw), 0].
+                    longitudinal_yaw = float(np.rad2deg(np.arctan2(long_axis[0], -long_axis[1])))
+                    center = probe_ref._work.geom_xpos[hand_collision].copy()
+                    center += long_axis * 0.085
+                    # The paper-MPC/WBC tracking of the large base-yaw
+                    # under-board arc settles about 180 mm inward in x/y and
+                    # 120 mm lower in z than the pure FK waypoint.  Apply
+                    # this fixed, board-free calibration so the vertical
+                    # plank meets the longitudinal hand section rather than
+                    # upstream link 5.  It is scene geometry, not an online
+                    # observation supplied to a controller.
+                    center += np.array([0.18, -0.18, -0.12])
+                    board_x = np.array([np.cos(np.deg2rad(longitudinal_yaw)),
+                                        np.sin(np.deg2rad(longitudinal_yaw)), 0.0])
+                    # The first longitudinal contact was at the +local-x
+                    # edge. Shift the finite board along its own long axis so
+                    # the link-6/link-7 contact patch is on the broad face.
+                    center -= board_x * 0.160
+                    center[2] += self.lift_board_z_offset_m
+                    center[1] += self.lift_board_y_offset_m
+                    # Local y becomes world vertical after the 90° tilt.  A
+                    # 120 mm vertical face is sufficient for the longitudinal
+                    # hand section but excludes the upstream link-5 envelope.
+                    scene_kwargs["lift_board_size_m"] = (0.20, 0.04, 0.008)
+                    scene_kwargs["lift_board_tilt_deg"] = 90.0
+                    scene_kwargs["lift_board_yaw_deg"] = longitudinal_yaw
+                    self._board_reference_factory = front_face_reference
                 scene_kwargs["lift_board_center_m"] = tuple(float(v) for v in center)
-                scene_kwargs["lift_board_tilt_deg"] = float(self.lift_board_tilt_deg)
-                scene_kwargs["lift_board_yaw_deg"] = float(self.lift_board_yaw_deg)
+                if self.lift_board_contact_mode != "front_longitudinal":
+                    scene_kwargs["lift_board_tilt_deg"] = float(self.lift_board_tilt_deg)
+                    scene_kwargs["lift_board_yaw_deg"] = float(self.lift_board_yaw_deg)
             else:
                 self._board_reference_factory = None
             self.model, self.data = make_fr3_hand_model(

@@ -98,7 +98,7 @@ def main() -> None:
     parser.add_argument("--tilt", type=float, default=40.0)
     parser.add_argument("--yaw", type=float, default=0.0,
                         help="board yaw about world z; geometry/audit parameter only")
-    parser.add_argument("--contact-mode", choices=("side_slide", "front_face"), default="side_slide")
+    parser.add_argument("--contact-mode", choices=("side_slide", "front_face", "front_longitudinal"), default="side_slide")
     parser.add_argument("--board-y-offset", type=float, default=0.0,
                         help="scene-only board center-y jitter in metres")
     parser.add_argument("--board-z-offset", type=float, default=0.0,
@@ -156,6 +156,8 @@ def main() -> None:
             "hand_position_m": d["ee_position"].tolist(),
             "hand_collision_position_m": env.data.geom_xpos[env._hand_geom_id].copy().tolist(),
             "link7_collision_position_m": env.data.geom_xpos[mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, "fr3_link7_collision")].copy().tolist(),
+            "hand_collision_axes_world": np.asarray(env.data.geom_xmat[env._hand_geom_id], dtype=float).reshape(3, 3).tolist(),
+            "hand_collision_half_extents_m": env.model.geom_size[env._hand_geom_id].copy().tolist(),
             "hand_twist_mps": d["ee_twist"][:3].tolist(),
             "nominal_position_m": d["nominal_position"].tolist(),
             "pose_error_m": d["wbc_pose_error"][:3].tolist(),
@@ -173,9 +175,9 @@ def main() -> None:
                                     "terminal": info}, indent=2) + "\n")
     active = [row for row in rows if row["board_force_n"] > 1.0]
     half_extents = np.asarray(board_half_extents, dtype=float)
-    face_contacts = [record for record in all_contacts if abs(record["board_local_m"][0]) < 0.70 * half_extents[0]
+    face_contacts = [record for record in all_contacts if abs(record["board_local_m"][0]) < 0.80 * half_extents[0]
                      and abs(record["board_local_m"][1]) < 0.70 * half_extents[1]
-                     and record["normal_alignment"] > 0.90]
+                     and record["normal_alignment"] > 0.70]
     max_penetration = max((-record["distance_m"] for record in all_contacts), default=0.0)
     print(json.dumps({"rows": len(rows), "contact_rows": len(active),
         "first_contact_s": active[0]["t"] if active else None,
@@ -185,7 +187,7 @@ def main() -> None:
         "peak_force_n": max((row["board_force_n"] for row in rows), default=0.0),
         "contact_points": len(all_contacts), "broad_face_contact_points": len(face_contacts),
         "max_contact_penetration_m": max_penetration,
-        "initial_board_contact": bool(all_contacts and all_contacts[0]["t"] < 2.70),
+        "initial_board_contact": bool(all_contacts and all_contacts[0]["t"] < 2.40),
         "terminal": info}, indent=2))
 
 

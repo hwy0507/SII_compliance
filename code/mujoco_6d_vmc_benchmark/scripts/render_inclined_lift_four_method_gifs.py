@@ -110,7 +110,7 @@ def main():
     p.add_argument("--output-dir", type=Path, required=True); p.add_argument("--seed", type=int, default=20262201)
     p.add_argument("--tilt", type=float, default=40.0); p.add_argument("--yaw", type=float, default=0.0)
     p.add_argument("--board-y-offset", type=float, default=0.0)
-    p.add_argument("--contact-mode", choices=["side_slide", "front_face"], default="side_slide")
+    p.add_argument("--contact-mode", choices=["side_slide", "front_face", "front_longitudinal"], default="side_slide")
     p.add_argument("--fps", type=int, default=25)
     p.add_argument("--only", choices=["paper", "vmc", "mlp", "esn"], default=None,
                    help="render one method only; useful for avoiding long-lived renderer resource buildup")
