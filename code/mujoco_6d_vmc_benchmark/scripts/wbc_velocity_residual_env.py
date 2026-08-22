@@ -611,8 +611,10 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         # that PREDICTS the strike at ~3.0.  The WBC erases its instantaneous
         # trace within ~0.5 s -- by strike time only a controller that
         # INTEGRATED the cue (reservoir memory) can still know to pre-yield.
-        if _os.environ.get("LIFT_CUE", "0") == "1" and 1.0 <= time_s <= 1.3:
-            data.qfrc_applied[4] = 8.0
+        if _os.environ.get("LIFT_CUE", "0") == "1":
+            t0 = float(_os.environ.get("LIFT_CUE_T0", "1.0"))
+            if t0 <= time_s <= t0 + 0.3:
+                data.qfrc_applied[4] = float(_os.environ.get("LIFT_CUE_NM", "8.0"))
         jacobian = body_jacobian(model, data, self._hand_id)
         qdot_command, raw_qdot = safe_joint_velocity_command(
             command.joint_velocity_radps,

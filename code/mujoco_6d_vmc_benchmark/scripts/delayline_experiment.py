@@ -48,19 +48,43 @@ DL_DIM = RAW_DIM * TAPS                        # 160
 _dec.DEPLOYABLE_INPUT_DIMENSION = DL_DIM       # patch BEFORE any controller
 
 OUT = Path(_os.environ.get("DL_OUT", "/home/arm1/vmc_mujoco_runtime/outputs/dl_esn"))
+# strike_cue tuples carry the strike time in slot 1; the CUE time is set
+# per-board via the 5th slot (cue_t0) -- temporal jitter stresses
+# position-invariant integration (regression must generalize across tap
+# positions; reservoir dynamics are shift-robust by construction).
 DATA_GRID = (
-    ("strike_cue", 2.95, 0.64, 2.0), ("strike_cue", 3.00, 0.64, 2.0),
-    ("strike_cue", 3.05, 0.63, 2.0),
-    ("strike_none", 0.0, 0.0, 0.0),
-    ("plank_arm", 3.00, 0.76, 1.0),
-    ("static", 0.05, 25.0),
+    ("strike_cue", 2.95, 0.64, 2.0, 0.9), ("strike_cue", 3.00, 0.64, 2.0, 1.1),
+    ("strike_cue", 3.05, 0.63, 2.0, 1.3), ("strike_cue", 3.00, 0.63, 2.0, 1.0),
+    ("strike_none", 0.0, 0.0, 0.0, 0.0),
+    ("plank_arm", 3.00, 0.76, 1.0, 0.0),
+    ("static", 0.05, 25.0, 0.0, 0.0),
 )
-HELDOUT = (("strike_cue", 3.00, 0.62, 1.8), ("static", 0.05, 22.0))
-EVAL_BOARDS = DATA_GRID[:5] + (("static", 0.05, 25.0),) + HELDOUT
+HELDOUT = (("strike_cue", 3.00, 0.62, 1.8, 1.25), ("static", 0.05, 22.0, 0.0, 0.0))
+EVAL_BOARDS = DATA_GRID[:6] + HELDOUT
 SEEDS = (11, 29, 97, 123, 555)
 DL_GRID = (dict(), dict(reservoir_size=240), dict(spectral_radius=1.05),
            dict(time_constant_s=0.3, reservoir_size=240),
            dict(input_scale=0.65), dict(ridge_lambda=1e-5, reservoir_size=240))
+
+
+def _mk_env(entry, seed=7, noise=0.0):
+    """Build env for a 5-slot suite entry (slot 5 = cue_t0 -> LIFT_CUE_T0)."""
+    kind = entry[0]
+    _os.environ["LIFT_CUE_T0"] = f"{entry[4] if len(entry) > 4 else 1.0}"
+    if kind == "strike_none":
+        _os.environ["LIFT_CUE_T0"] = "1.0"
+        return L.build_env("strike_none", 0.0, 0.0, 0.0, seed=seed, noise=noise)
+    if kind == "static":
+        return L.build_env("static", entry[1], entry[2], seed=seed, noise=noise)
+    return L.build_env(kind, entry[1], entry[2], entry[3], seed=seed, noise=noise)
+
+
+def _env_for_noise(entry):
+    return _mk_env(entry, seed=7, noise=L.DATA_NOISE)
+
+
+def _env_for(entry):
+    return _mk_env(entry, seed=7)
 
 
 def _expert_for(entry):
@@ -244,7 +268,7 @@ def stage_probe() -> None:
         for pre in (2.80, 2.85, 2.90):
             scores = []
             for b in (target, ("strike_cue", 2.95, 0.64, 2.0), ("strike_cue", 3.05, 0.63, 2.0)):
-                env = L.build_env(*b, seed=7)
+                env = _env_for(b)
                 m = L.rollout(env, 7, teacher=L.LiftTeacher(y_yield=y, pre_t=pre))
                 env.close()
                 scores.append(m["score"])
@@ -261,7 +285,7 @@ def stage_data() -> None:
     print("== data: scenario-aware teacher rollouts ==")
     episodes = []
     for entry in DATA_GRID:
-        env = L.build_env(*entry, seed=7, noise=L.DATA_NOISE)
+        env = _env_for_noise(entry)
         m, ep = L.rollout(env, 7, teacher=_expert_for(entry), collect=True)
         env.close()
         episodes.append(ep)
@@ -288,10 +312,10 @@ def stage_train() -> None:
     _mlp_subprocess(OUT / "mlp_dl", OUT / "teacher_data_dl.npz")
     print("  MLP and MLP-DL trained")
     best_cfg, best_val = None, float("inf")
-    val = ("strike_cue", 3.00, 0.64, 2.0)
+    val = ("strike_cue", 3.00, 0.64, 2.0, 1.0)
     for cfg in DL_GRID:
         ens = DelayLineEnsemble([fit_dl(episodes, s, cfg) for s in (11, 29)])
-        env = L.build_env(*val, seed=7)
+        env = _env_for(val)
         m = L.rollout(env, 7, ens)
         env.close()
         print(f"  grid {cfg} -> val cue peak={m['peak']:.0f} score={m['score']:.2f}")
@@ -314,7 +338,7 @@ def stage_dagger() -> None:
     episodes = _load_episodes()
     ens = _dl_ensemble()
     for entry in DATA_GRID + HELDOUT:
-        env = L.build_env(*entry, seed=7, noise=L.DATA_NOISE)
+        env = _env_for_noise(entry)
         m, ep = L.rollout(env, 7, policy=ens, teacher=_expert_for(entry), collect=True)
         env.close()
         episodes.append(dict(obs=list(ep["obs"]), actions=ep["actions"],
@@ -339,7 +363,7 @@ def stage_eval() -> None:
     results = {n: [] for n, _ in controllers}
     for entry in EVAL_BOARDS:
         for name, policy in controllers:
-            env = L.build_env(*entry, seed=7)
+            env = _env_for(entry)
             m = L.rollout(env, 7, policy)
             env.close()
             results[name].append(m)
