@@ -179,8 +179,13 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         if lift_board_tilt_deg is not None and robot != "fr3":
             raise ValueError("the inclined lift-board scene is wired for robot='fr3'")
         self.lift_board_tilt_deg = lift_board_tilt_deg
-        if lift_board_contact_mode not in ("side_slide", "front_face", "front_longitudinal"):
-            raise ValueError("lift_board_contact_mode must be 'side_slide', 'front_face', or 'front_longitudinal'")
+        if lift_board_contact_mode not in (
+            "side_slide", "front_face", "front_longitudinal", "dual_phase_longitudinal",
+        ):
+            raise ValueError(
+                "lift_board_contact_mode must be 'side_slide', 'front_face', "
+                "'front_longitudinal', or 'dual_phase_longitudinal'"
+            )
         self.lift_board_contact_mode = lift_board_contact_mode
         self._front_face_initial_qpos: np.ndarray | None = None
         if not np.isfinite(lift_board_y_offset_m):
@@ -276,6 +281,14 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self._target_dof = -1
         self._rod_ctrl = -1
         self._lift_board_geom_id = -1
+        # Dual-phase boards are separate fixed MuJoCo geoms.  Their state is
+        # retained only for post-episode auditing; it is never used by the
+        # 32-D direct-ESN observation or the controller action path.
+        self._dual_board_geom_ids: dict[str, int] = {}
+        self.dual_board_metrics: dict[str, dict[str, Any]] = {}
+        # Reset-time board contacts invalidate an episode: a board must be
+        # encountered by the moving robot, never start intersecting it.
+        self.dual_initial_board_contacts: dict[str, list[str]] = {}
         self._obstacle_mocap = -1
         self.step_count = 0
         self.previous_policy_action = np.zeros(7, dtype=float)
@@ -455,7 +468,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                     center[1] += self.lift_board_y_offset_m
                     scene_kwargs["lift_board_size_m"] = (0.120, 0.120, 0.008)
                     self._board_reference_factory = front_face_reference
-                else:
+                elif self.lift_board_contact_mode == "front_longitudinal":
                     # The corrected demo: a near-vertical board faces the
                     # long axis of the distal hand/link-7 collision geometry.
                     # The arm rises underneath and the longitudinal side of
@@ -498,10 +511,76 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                     scene_kwargs["lift_board_tilt_deg"] = 90.0
                     scene_kwargs["lift_board_yaw_deg"] = longitudinal_yaw
                     self._board_reference_factory = front_face_reference
-                scene_kwargs["lift_board_center_m"] = tuple(float(v) for v in center)
-                if self.lift_board_contact_mode != "front_longitudinal":
-                    scene_kwargs["lift_board_tilt_deg"] = float(self.lift_board_tilt_deg)
-                    scene_kwargs["lift_board_yaw_deg"] = float(self.lift_board_yaw_deg)
+                else:
+                    # Unified physical task: two *different*, static wooden
+                    # boards.  Both are constructed from a board-free FK
+                    # probe but remain fixed world geoms throughout rollout.
+                    #
+                    # All methods share this obstacle-agnostic reference.  It
+                    # preserves the previously audited block-centred pregrasp
+                    # and adds only a modest common lateral lift component
+                    # after the close command, so the object is mechanically
+                    # pinched before it encounters the second board.
+                    def dual_phase_reference(model_, data_, hand_id_):
+                        ref = PickLiftCarryReference(model_, data_, hand_id_)
+                        home = ref.q_knots[0].copy()
+                        pregrasp = ref.q_knots[1].copy()
+                        grasp = ref.q_knots[2].copy()
+                        lifted = ref.q_knots[3].copy()
+                        carry = ref.q_knots[4].copy()
+                        lifted[0] -= 0.26
+                        carry[0] -= 0.26
+                        ref.times = np.array([0.0, 1.70, 2.70, 4.20, 6.20])
+                        ref.q_knots = np.stack((home, pregrasp, grasp, lifted, carry))
+                        return ref
+
+                    probe_ref = dual_phase_reference(probe_model, probe_data, probe_hand)
+                    hand_collision = mujoco.mj_name2id(
+                        probe_model, mujoco.mjtObj.mjOBJ_GEOM, "hand_collision")
+                    collision_radius = float(probe_model.geom_rbound[hand_collision])
+
+                    def dual_board_center(time_s: float, normal: np.ndarray) -> np.ndarray:
+                        probe_ref.sample(time_s)
+                        point = probe_ref._work.geom_xpos[hand_collision].copy()
+                        # Put the physical face just ahead of the collision
+                        # mesh along its planned travel direction.  The small
+                        # clearance prevents an artificial initial overlap.
+                        # `geom_rbound` is a conservative enclosing sphere
+                        # for the hand mesh.  A 5-mm clearance avoids a reset
+                        # overlap without placing the finite board so far away
+                        # that the real collision mesh never reaches it.
+                        point += normal * (collision_radius + 0.005)
+                        point[1] += self.lift_board_y_offset_m
+                        point[2] += self.lift_board_z_offset_m
+                        return point
+
+                    # The pre-grasp board is a finite horizontal plank with a
+                    # free edge at y=30 mm.  During descent, the longitudinal
+                    # hand/link-7 collision meshes meet its broad top face and
+                    # can slide over that edge; the fingers and block are not
+                    # enclosed by an infinite shelf.  Its pose was selected by
+                    # a board-free geometry scan with a zero-contact reset gate.
+                    pre = np.array([
+                        0.550,
+                        0.050 + self.lift_board_y_offset_m,
+                        0.540 + self.lift_board_z_offset_m,
+                    ])
+                    # Rz(0) Rx(90) maps board +z to -y for the second,
+                    # vertical plank.  The already-grasped hand rises into its
+                    # broad face and has a finite lateral edge to slide around.
+                    post = dual_board_center(3.35, np.array([0.0, -1.0, 0.0]))
+                    scene_kwargs["dual_board_specs"] = (
+                        ("pregrasp_board", tuple(float(v) for v in pre), 0.0, 0.0,
+                         (0.120, 0.020, 0.008)),
+                        ("postgrasp_board", tuple(float(v) for v in post), 90.0, 0.0,
+                         (0.105, 0.075, 0.008)),
+                    )
+                    self._board_reference_factory = dual_phase_reference
+                if self.lift_board_contact_mode != "dual_phase_longitudinal":
+                    scene_kwargs["lift_board_center_m"] = tuple(float(v) for v in center)
+                    if self.lift_board_contact_mode != "front_longitudinal":
+                        scene_kwargs["lift_board_tilt_deg"] = float(self.lift_board_tilt_deg)
+                        scene_kwargs["lift_board_yaw_deg"] = float(self.lift_board_yaw_deg)
             else:
                 self._board_reference_factory = None
             self.model, self.data = make_fr3_hand_model(
@@ -538,12 +617,28 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self._rod_geom_id = ids["rod_geom"]
         self._lift_board_geom_id = mujoco.mj_name2id(
             model, mujoco.mjtObj.mjOBJ_GEOM, "lift_board")
+        self._dual_board_geom_ids = {
+            name: mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, name)
+            for name in ("pregrasp_board", "postgrasp_board")
+        }
+        if self.lift_board_contact_mode == "dual_phase_longitudinal" and min(
+            self._dual_board_geom_ids.values()
+        ) < 0:
+            raise RuntimeError("dual-phase board scene IDs were not resolved")
         self._target_qpos = int(model.jnt_qposadr[ids["target_freejoint"]])
         self._target_dof = int(model.jnt_dofadr[ids["target_freejoint"]])
         self._obstacle_mocap = int(model.body_mocapid[ids["moving_obstacle"]])
         self._rod_ctrl = ARM_DOF + 1
         if model.nu != ARM_DOF + 2 or self._obstacle_mocap < 0:
             raise RuntimeError("expected Panda torques, gripper, rod driver, and diagnostic mocap")
+        if not self.rod_enabled:
+            # The rail apparatus is intentionally absent from board-only
+            # episodes.  Leaving its inactive collision geom enabled would
+            # let a hidden rod touch a board at reset, which is neither a
+            # robot--board interaction nor a valid task initialization.
+            model.geom_contype[self._rod_geom_id] = 0
+            model.geom_conaffinity[self._rod_geom_id] = 0
+            model.geom_rgba[self._rod_geom_id, 3] = 0.0
         data.qpos[self._target_qpos:self._target_qpos + 7] = [
             0.54, 0.0, TARGET_START_Z, 1.0, 0.0, 0.0, 0.0,
         ]
@@ -552,6 +647,17 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             data.qpos[:ARM_DOF] = self._front_face_initial_qpos
             data.qvel[:ARM_DOF] = 0.0
         mujoco.mj_forward(model, data)
+        self.dual_initial_board_contacts = {}
+        if self.lift_board_contact_mode == "dual_phase_longitudinal":
+            for name, board_id in self._dual_board_geom_ids.items():
+                contact, _, _, _, _, partners = self._board_contact_diagnostics(board_id)
+                if contact:
+                    self.dual_initial_board_contacts[name] = partners
+            if self.dual_initial_board_contacts:
+                raise RuntimeError(
+                    "dual-phase scene has invalid t=0 board contact: "
+                    f"{self.dual_initial_board_contacts}"
+                )
         if self._board_reference_factory is not None:
             self.reference = self._board_reference_factory(model, data, self._hand_id)
         else:
@@ -706,6 +812,20 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         self.lift_board_contact_bout_count = 0
         self.lift_board_first_contact_s = None
         self._previous_lift_board_contact = False
+        self.dual_board_metrics = {
+            name: {
+                "contact": False, "first_contact_s": None, "peak_force_n": 0.0,
+                "contact_impulse_ns": 0.0, "contact_duration_s": 0.0,
+                "contact_bout_count": 0, "max_penetration_m": 0.0,
+                "hand_collision_contact": False, "link7_collision_contact": False,
+                "hand_body_contact": False, "link7_body_contact": False,
+                "target_object_contact": False,
+                "target_lift_at_first_contact_m": None,
+                "contact_geom_names": [],
+                "previous_contact": False,
+            }
+            for name, geom_id in self._dual_board_geom_ids.items() if geom_id >= 0
+        }
         self.physics_torque_history = []
         self.last_action_contact_force = 0.0
         self.last_action_contact_penetration = 0.0
@@ -873,6 +993,42 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 self.lift_board_contact_bout_count += 1
         self._previous_lift_board_contact = bool(board_contact)
         self.lift_board_peak_force = max(self.lift_board_peak_force, board_force)
+        # Audit the two task phases separately.  These values intentionally
+        # remain after `mj_step` and outside `_observation`: a policy can only
+        # infer contact through its permitted proprioceptive/WBC-error history.
+        for name, board_id in self._dual_board_geom_ids.items():
+            if board_id < 0 or name not in self.dual_board_metrics:
+                continue
+            contact, force, penetration, hand_hit, link7_hit, partners = self._board_contact_diagnostics(board_id)
+            metrics = self.dual_board_metrics[name]
+            if contact:
+                metrics["contact"] = True
+                metrics["contact_duration_s"] = float(metrics["contact_duration_s"]) + CONTROL_DT
+                metrics["contact_impulse_ns"] = float(metrics["contact_impulse_ns"]) + force * CONTROL_DT
+                if metrics["first_contact_s"] is None:
+                    metrics["first_contact_s"] = float(time_s + CONTROL_DT)
+                    metrics["target_lift_at_first_contact_m"] = float(
+                        self.data.xpos[self._target_body_id][2] - TABLE_TOP_Z
+                    )
+                if not bool(metrics["previous_contact"]):
+                    metrics["contact_bout_count"] = int(metrics["contact_bout_count"]) + 1
+            metrics["previous_contact"] = bool(contact)
+            metrics["peak_force_n"] = max(float(metrics["peak_force_n"]), force)
+            metrics["max_penetration_m"] = max(float(metrics["max_penetration_m"]), penetration)
+            metrics["hand_collision_contact"] = bool(metrics["hand_collision_contact"]) or hand_hit
+            metrics["link7_collision_contact"] = bool(metrics["link7_collision_contact"]) or link7_hit
+            metrics["hand_body_contact"] = bool(metrics["hand_body_contact"]) or any(
+                partner == "hand_collision" or partner.startswith("hand/") for partner in partners)
+            metrics["link7_body_contact"] = bool(metrics["link7_body_contact"]) or any(
+                partner == "fr3_link7_collision" or partner.startswith("fr3_link7/")
+                for partner in partners
+            )
+            metrics["target_object_contact"] = bool(metrics["target_object_contact"]) or (
+                "target_object_geom" in partners
+            )
+            known_partners = set(metrics["contact_geom_names"])
+            known_partners.update(partners)
+            metrics["contact_geom_names"] = sorted(known_partners)
         rod_contact, rod_force, rod_penetration = rod_contact_diagnostics(
             model, data, self._rod_geom_id, self._hand_geom_id
         )
@@ -932,8 +1088,34 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             and self.contact_impulse >= EFFECTIVE_COLLISION_GATE["minimum_contact_impulse_ns"]
         )
         finite = bool(np.isfinite(self.data.qpos).all() and np.isfinite(self.data.qvel).all())
-        success = bool(finite and lifted and held and not self.hard_limit_seen)
+        base_success = bool(finite and lifted and held and not self.hard_limit_seen)
         count = max(1, self.step_count)
+        dual_metrics = {
+            name: {key: value for key, value in metrics.items() if key != "previous_contact"}
+            for name, metrics in self.dual_board_metrics.items()
+        }
+        pre = dual_metrics.get("pregrasp_board", {})
+        post = dual_metrics.get("postgrasp_board", {})
+        dual_phase_valid = bool(
+            pre.get("contact")
+            and post.get("contact")
+            and pre.get("first_contact_s") is not None
+            and post.get("first_contact_s") is not None
+            and float(pre["first_contact_s"]) < self.fixture.grasp_time_s
+            and float(post["first_contact_s"]) > self.fixture.grasp_time_s
+            and float(pre["first_contact_s"]) < float(post["first_contact_s"])
+            and bool(pre.get("hand_body_contact") or pre.get("link7_body_contact"))
+            and bool(post.get("hand_body_contact") or post.get("link7_body_contact"))
+            and not bool(pre.get("target_object_contact"))
+            and not bool(post.get("target_object_contact"))
+            and float(pre.get("target_lift_at_first_contact_m") or 0.0) < 0.04
+            and float(post.get("target_lift_at_first_contact_m") or 0.0) > 0.08
+            and float(pre.get("max_penetration_m") or 0.0) < 0.002
+            and float(post.get("max_penetration_m") or 0.0) < 0.002
+        )
+        success = bool(base_success and (
+            self.lift_board_contact_mode != "dual_phase_longitudinal" or dual_phase_valid
+        ))
         return {
             "task_success": success,
             "final_target_position_m": target_position.tolist(),
@@ -951,6 +1133,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             "lift_board_contact_impulse_ns": self.lift_board_contact_impulse,
             "lift_board_contact_duration_s": self.lift_board_contact_duration_s,
             "lift_board_contact_bout_count": self.lift_board_contact_bout_count,
+            "dual_board_metrics": dual_metrics,
+            "dual_initial_board_contacts": self.dual_initial_board_contacts,
+            "dual_phase_geometry_valid": dual_phase_valid,
             "peak_torque_nm": self.peak_torque,
             "peak_jerk_mps3": self.peak_jerk,
             "peak_recovery_jerk_mps3": self.peak_recovery_jerk,
@@ -1009,25 +1194,54 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         # from -y and pushes the hand toward +y there).
         return -wrench_world
 
+    def _board_contact_diagnostics(
+        self, board_id: int,
+    ) -> tuple[bool, float, float, bool, bool, list[str]]:
+        """Return contact metadata for one fixed board geom.
+
+        The exact collision partners and non-positive MuJoCo contact distance
+        are retained so a reported recovery can be audited for real body--board
+        contact and bounded numerical penetration.
+        """
+        if board_id < 0:
+            return False, 0.0, 0.0, False, False, []
+        assert self.data is not None and self.model is not None
+        total = 0.0
+        peak_penetration = 0.0
+        seen = hand_hit = link7_hit = False
+        partners: set[str] = set()
+        link7_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, "fr3_link7_collision")
+        local = np.zeros(6)
+        for index in range(self.data.ncon):
+            contact = self.data.contact[index]
+            if board_id not in (int(contact.geom1), int(contact.geom2)):
+                continue
+            seen = True
+            other_id = int(contact.geom2) if int(contact.geom1) == board_id else int(contact.geom1)
+            other_name = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_GEOM, other_id)
+            # Several fingertip collision geoms are intentionally unnamed in
+            # the menagerie XML.  Preserve their numeric identity rather than
+            # silently losing them or failing on a mixed None/string sort.
+            if other_name is None:
+                body_id = int(self.model.geom_bodyid[other_id])
+                body_name = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_BODY, body_id)
+                partners.add(f"{body_name or 'unnamed_body'}/geom_{other_id}")
+            else:
+                partners.add(other_name)
+            hand_hit = hand_hit or other_id == self._hand_geom_id
+            link7_hit = link7_hit or other_id == link7_id
+            peak_penetration = max(peak_penetration, max(0.0, -float(contact.dist)))
+            mujoco.mj_contactForce(self.model, self.data, index, local)
+            total += float(np.linalg.norm(local[:3]))
+        return seen, total, peak_penetration, hand_hit, link7_hit, sorted(partners)
+
     def _lift_board_contact_diagnostics(self) -> tuple[bool, float]:
         """Contact state and force magnitude for the physical inclined board.
 
         These values are scene-audit / teacher-label metadata and intentionally
         do not enter the 32-D deployed ESN or MLP input.
         """
-        if self._lift_board_geom_id < 0:
-            return False, 0.0
-        assert self.data is not None and self.model is not None
-        total = 0.0
-        seen = False
-        local = np.zeros(6)
-        for index in range(self.data.ncon):
-            contact = self.data.contact[index]
-            if self._lift_board_geom_id not in (int(contact.geom1), int(contact.geom2)):
-                continue
-            seen = True
-            mujoco.mj_contactForce(self.model, self.data, index, local)
-            total += float(np.linalg.norm(local[:3]))
+        seen, total, _, _, _, _ = self._board_contact_diagnostics(self._lift_board_geom_id)
         return seen, total
 
     def _noisy_joint_velocity(self) -> np.ndarray:

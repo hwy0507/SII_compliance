@@ -32,7 +32,9 @@ RL_DT = 0.04
 def record(menagerie: Path, fixture, out: Path, *, k: float, budget: float,
            seed: int, side: str | None = None, lift_board: bool = False,
            lift_board_tilt_deg: float = 40.0, lift_board_y_offset_m: float = 0.0,
-           lift_board_yaw_deg: float = 0.0) -> dict:
+           lift_board_yaw_deg: float = 0.0,
+           lift_board_z_offset_m: float = 0.0,
+           lift_board_contact_mode: str = "side_slide") -> dict:
     fx = fixture if side is None else replace(fixture, rod_approach_side=side)
     cfg = VMCTorqueBaseline.from_npz(Path("/tmp/vmc_k2.2_s0.03.npz")).config
     from vmc_compliance_baseline import SpringCarriageConfig
@@ -41,14 +43,18 @@ def record(menagerie: Path, fixture, out: Path, *, k: float, budget: float,
     expert = VMCTorqueBaseline(cfg, TORQUE_LIMITS * budget)
     kwargs = dict(
         menagerie=menagerie, fan_ye_model_npz=None, fan_ye_train_summary_json=None,
-        observation_mode="direct_esn", rod_enabled=True, seed=seed, robot="fr3",
+        observation_mode="direct_esn",
+        rod_enabled=lift_board_contact_mode != "dual_phase_longitudinal",
+        seed=seed, robot="fr3",
         execution_mode="torque_residual", residual_torque_scale=budget,
         wbc_backend="paper_mpc", fixtures=(fx,),
     )
     if lift_board:
         kwargs["lift_board_tilt_deg"] = float(lift_board_tilt_deg)
         kwargs["lift_board_y_offset_m"] = float(lift_board_y_offset_m)
+        kwargs["lift_board_z_offset_m"] = float(lift_board_z_offset_m)
         kwargs["lift_board_yaw_deg"] = float(lift_board_yaw_deg)
+        kwargs["lift_board_contact_mode"] = lift_board_contact_mode
     env = PandaWBCVelocityResidualEnv(**kwargs)
     env.reset(seed=seed, options={"fixture_index": 0})
     expert.reset()
@@ -97,6 +103,8 @@ def record(menagerie: Path, fixture, out: Path, *, k: float, budget: float,
         lift_board_peak_force_n=float(info.get("lift_board_peak_force_n", np.nan)),
         lift_board_contact_impulse_ns=float(info.get("lift_board_contact_impulse_ns", np.nan)),
         lift_board_contact_duration_s=float(info.get("lift_board_contact_duration_s", np.nan)),
+        dual_phase_geometry_valid=bool(info.get("dual_phase_geometry_valid", False)),
+        dual_board_metrics=info.get("dual_board_metrics", {}),
     )
 
 

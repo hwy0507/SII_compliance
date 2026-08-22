@@ -110,6 +110,8 @@ def build_fr3_hand_scene_xml(
     lift_board_tilt_deg: float | None = None,
     lift_board_yaw_deg: float = 0.0,
     lift_board_size_m: tuple[float, float, float] = (0.18, 0.05, 0.008),
+    dual_board_specs: tuple[tuple[str, tuple[float, float, float], float, float,
+                                 tuple[float, float, float]], ...] | None = None,
     impactor_mass_kg: float | None = None,
     rod_slide_damping: float = 2.0,
     rod_driver_kp: float = 5000.0,
@@ -236,32 +238,56 @@ def build_fr3_hand_scene_xml(
         rgba="0.55 0.40 0.22 1" friction="0.25 0.02 0.002"
         solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
 """
+    def board_geom_xml(
+        name: str,
+        center_m: tuple[float, float, float],
+        tilt_deg: float,
+        yaw_deg: float,
+        half_extents_m: tuple[float, float, float],
+        rgba: str,
+    ) -> str:
+        """Generate one fixed, physical wooden-board collision geom.
+
+        This helper is deliberately shared by the legacy one-board fixture and
+        the new dual-phase fixture.  It emits a world-fixed MuJoCo geom rather
+        than a mocap body, so neither board can move, teleport, or be exposed
+        to the controller during an episode.
+        """
+        if len(half_extents_m) != 3 or any(float(value) <= 0.0 for value in half_extents_m):
+            raise ValueError("board half extents must contain three positive values")
+        tilt = float(np.deg2rad(tilt_deg))
+        yaw = float(np.deg2rad(yaw_deg))
+        cy, sy = np.cos(0.5 * yaw), np.sin(0.5 * yaw)
+        cx, sx = np.cos(0.5 * tilt), np.sin(0.5 * tilt)
+        quat_wxyz = (cy * cx, cy * sx, sy * sx, sy * cx)
+        return f'''
+      <geom name="{name}" type="box"
+        pos="{center_m[0]:.4f} {center_m[1]:.4f} {center_m[2]:.4f}"
+        size="{half_extents_m[0]:.4f} {half_extents_m[1]:.4f} {half_extents_m[2]:.4f}" quat="{quat_wxyz[0]:.6f} {quat_wxyz[1]:.6f} {quat_wxyz[2]:.6f} {quat_wxyz[3]:.6f}"
+        contype="5" conaffinity="5" rgba="{rgba}" friction="0.15 0.02 0.002"
+        solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
+'''
+
     lift_board_xml = ""
     if lift_board_center_m is not None and lift_board_tilt_deg is not None:
-        if len(lift_board_size_m) != 3 or any(float(value) <= 0.0 for value in lift_board_size_m):
-            raise ValueError("lift_board_size_m must contain three positive half-extents")
         # Inclined static wooden board across the lift path: the rising arm
         # strikes the tilted face and must slide along the incline (oblique
         # contact normal).  Contact bits 5/5 collide with the hand (4/4),
         # the FR3 arm links (1/1) and the target object (6/7), matching the
         # dynamic plank impactor bit assignment.
-        tilt = float(np.deg2rad(lift_board_tilt_deg))
-        # Face normal: the box's +z axis tilted ``tilt`` from -z (pointing
-        # down toward the rising arm) about the x axis, so sliding along the
-        # face guides the hand sideways in +y toward the board edge.
-        yaw = float(np.deg2rad(lift_board_yaw_deg))
-        # Compose Rz(yaw) Rx(tilt): yaw changes which physical hand face
-        # meets the same inclined plane, while tilt keeps the board slope.
-        cy, sy = np.cos(0.5 * yaw), np.sin(0.5 * yaw)
-        cx, sx = np.cos(0.5 * tilt), np.sin(0.5 * tilt)
-        quat_wxyz = (cy * cx, cy * sx, sy * sx, sy * cx)
-        lift_board_xml = f"""
-      <geom name="lift_board" type="box"
-        pos="{lift_board_center_m[0]:.4f} {lift_board_center_m[1]:.4f} {lift_board_center_m[2]:.4f}"
-        size="{lift_board_size_m[0]:.4f} {lift_board_size_m[1]:.4f} {lift_board_size_m[2]:.4f}" quat="{quat_wxyz[0]:.6f} {quat_wxyz[1]:.6f} {quat_wxyz[2]:.6f} {quat_wxyz[3]:.6f}"
-        contype="5" conaffinity="5" rgba="0.62 0.45 0.24 1" friction="0.15 0.02 0.002"
-        solref="{contact_time_constant_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
-"""
+        lift_board_xml = board_geom_xml(
+            "lift_board", lift_board_center_m, lift_board_tilt_deg,
+            lift_board_yaw_deg, lift_board_size_m, "0.62 0.45 0.24 1")
+    dual_board_xml = ""
+    if dual_board_specs is not None:
+        seen_names: set[str] = set()
+        for name, center_m, tilt_deg, yaw_deg, half_extents_m in dual_board_specs:
+            if name not in ("pregrasp_board", "postgrasp_board") or name in seen_names:
+                raise ValueError("dual boards must be uniquely named pregrasp_board/postgrasp_board")
+            seen_names.add(name)
+            color = "0.27 0.58 0.88 1" if name == "pregrasp_board" else "0.84 0.38 0.20 1"
+            dual_board_xml += board_geom_xml(
+                name, center_m, float(tilt_deg), float(yaw_deg), half_extents_m, color)
     injected = f"""
       <camera name="rod_track" pos="1.18 -1.42 0.86" xyaxes="0.79 0.61 0  -0.17 0.22 0.96"/>
       <geom name="table" type="box" pos="0.54 0 0.38" size="0.20 0.20 0.02"
@@ -290,7 +316,7 @@ def build_fr3_hand_scene_xml(
       <body name="actual_marker" mocap="true" pos="0 0 1">
         <geom type="sphere" size="0.024" contype="0" conaffinity="0" rgba="1.0 0.05 0.68 0.98"/>
       </body>
-    """ + board_xml + lift_board_xml
+    """ + board_xml + lift_board_xml + dual_board_xml
     text = text.replace("  </worldbody>", injected + "  </worldbody>", 1)
     rod_driver = (
         f'<position name="rod_driver" joint="rod_slide" kp="{rod_driver_kp:.8g}" '
@@ -313,6 +339,8 @@ def make_fr3_hand_model(
     lift_board_tilt_deg: float | None = None,
     lift_board_yaw_deg: float = 0.0,
     lift_board_size_m: tuple[float, float, float] = (0.18, 0.05, 0.008),
+    dual_board_specs: tuple[tuple[str, tuple[float, float, float], float, float,
+                                 tuple[float, float, float]], ...] | None = None,
     impactor_mass_kg: float | None = None,
     rod_slide_damping: float = 2.0,
     rod_driver_kp: float = 5000.0,
@@ -327,6 +355,7 @@ def make_fr3_hand_model(
         board_underside_z=board_underside_z,
         lift_board_center_m=lift_board_center_m, lift_board_tilt_deg=lift_board_tilt_deg,
         lift_board_yaw_deg=lift_board_yaw_deg, lift_board_size_m=lift_board_size_m,
+        dual_board_specs=dual_board_specs,
         impactor_mass_kg=impactor_mass_kg, rod_slide_damping=rod_slide_damping,
         rod_driver_kp=rod_driver_kp, rod_driver_force_limit_n=rod_driver_force_limit_n)
     model = mujoco.MjModel.from_xml_string(xml)

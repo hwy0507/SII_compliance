@@ -1,0 +1,1379 @@
+{
+  "schema_version": 1,
+  "split": "development_train_only",
+  "observation_contract": "q(7),qdot(7),nominal_twist(6),pose_error(6),twist_error(6); no board/contact/object truth",
+  "teacher": {
+    "family": "VMC torque residual",
+    "stiffness": 0.5,
+    "residual_budget_fraction": 0.04
+  },
+  "conditions": [
+    [
+      0.0,
+      -0.002
+    ],
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.002
+    ],
+    [
+      0.0015,
+      -0.002
+    ],
+    [
+      0.0015,
+      0.0
+    ],
+    [
+      0.0015,
+      0.002
+    ],
+    [
+      0.003,
+      -0.002
+    ],
+    [
+      0.003,
+      0.0
+    ],
+    [
+      0.003,
+      0.002
+    ]
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "seed": 20265301,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z-0.0020_00.npz",
+      "board_y_offset_m": 0.0,
+      "board_z_offset_m": -0.002,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z-0.0020_00.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.38218739573876,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5358831979344629,
+        -0.06743170930078929,
+        0.5987069764843733
+      ],
+      "final_hand_position_m": [
+        0.5253295069830369,
+        -0.06702581252074405,
+        0.7247689091209508
+      ],
+      "final_hand_target_distance_m": 0.12650358099659972,
+      "final_target_lift_m": 0.1987069764843733,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.1400000000000001,
+          "peak_force_n": 22.91972305548338,
+          "contact_impulse_ns": 6.790243422182485,
+          "contact_duration_s": 1.264000000000001,
+          "contact_bout_count": 15,
+          "max_penetration_m": 0.00014007134718897567,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.024610551430482297,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.771999999999999,
+          "peak_force_n": 2.856579051337191,
+          "contact_impulse_ns": 0.017023570174844342,
+          "contact_duration_s": 0.008,
+          "contact_bout_count": 1,
+          "max_penetration_m": 2.470766486456033e-06,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.16232903960090383,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 1,
+      "seed": 20265302,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z-0.0020_01.npz",
+      "board_y_offset_m": 0.0,
+      "board_z_offset_m": -0.002,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z-0.0020_01.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.38850669024752,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5358961878234074,
+        -0.06740484073383896,
+        0.598836510810471
+      ],
+      "final_hand_position_m": [
+        0.5253297220023863,
+        -0.06702237728920299,
+        0.7247692277287966
+      ],
+      "final_hand_target_distance_m": 0.126375811248294,
+      "final_target_lift_m": 0.19883651081047093,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.1400000000000001,
+          "peak_force_n": 24.193029108530055,
+          "contact_impulse_ns": 6.779756990628533,
+          "contact_duration_s": 1.268000000000001,
+          "contact_bout_count": 10,
+          "max_penetration_m": 0.0001456669616250153,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.02463710123095947,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.771999999999999,
+          "peak_force_n": 3.156728940705763,
+          "contact_impulse_ns": 0.01879901692023913,
+          "contact_duration_s": 0.012,
+          "contact_bout_count": 1,
+          "max_penetration_m": 1.1651666065281233e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.16239005989880817,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 2,
+      "seed": 20265303,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z+0.0000_00.npz",
+      "board_y_offset_m": 0.0,
+      "board_z_offset_m": 0.0,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z+0.0000_00.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.252088385694016,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5365260298042293,
+        -0.06761596868580723,
+        0.5949899459091228
+      ],
+      "final_hand_position_m": [
+        0.5252388847220754,
+        -0.06663153002128018,
+        0.7249585434938811
+      ],
+      "final_hand_target_distance_m": 0.13046150819969332,
+      "final_target_lift_m": 0.19498994590912277,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.104,
+          "peak_force_n": 26.871856215571047,
+          "contact_impulse_ns": 7.547668206867507,
+          "contact_duration_s": 1.296000000000001,
+          "contact_bout_count": 15,
+          "max_penetration_m": 0.0001622185942987685,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.024654796441616833,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.691999999999999,
+          "peak_force_n": 4.227525022363716,
+          "contact_impulse_ns": 0.06968852357004521,
+          "contact_duration_s": 0.024,
+          "contact_bout_count": 3,
+          "max_penetration_m": 8.076390515277893e-06,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.15931818430159128,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 3,
+      "seed": 20265304,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z+0.0000_01.npz",
+      "board_y_offset_m": 0.0,
+      "board_z_offset_m": 0.0,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z+0.0000_01.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.25517483834737,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5365157236842075,
+        -0.06758738147067382,
+        0.5949255121036806
+      ],
+      "final_hand_position_m": [
+        0.525239241440396,
+        -0.06662767904609972,
+        0.724959963207722
+      ],
+      "final_hand_target_distance_m": 0.13052600719576185,
+      "final_target_lift_m": 0.1949255121036806,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.104,
+          "peak_force_n": 25.553066899934368,
+          "contact_impulse_ns": 7.543361033256521,
+          "contact_duration_s": 1.312000000000001,
+          "contact_bout_count": 13,
+          "max_penetration_m": 0.00020503379095507165,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.0246232188306173,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.683999999999999,
+          "peak_force_n": 4.111208260560625,
+          "contact_impulse_ns": 0.08011662670041153,
+          "contact_duration_s": 0.032,
+          "contact_bout_count": 3,
+          "max_penetration_m": 1.3157182879255094e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.15922254898614419,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 4,
+      "seed": 20265305,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z+0.0020_00.npz",
+      "board_y_offset_m": 0.0,
+      "board_z_offset_m": 0.002,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z+0.0020_00.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.18326100297298,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5365906882532345,
+        -0.06734722800938106,
+        0.594417847350407
+      ],
+      "final_hand_position_m": [
+        0.5252075002845051,
+        -0.06637965607316389,
+        0.725069051265151
+      ],
+      "final_hand_target_distance_m": 0.13114972454471716,
+      "final_target_lift_m": 0.194417847350407,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.068,
+          "peak_force_n": 26.962783975177416,
+          "contact_impulse_ns": 8.452181614424484,
+          "contact_duration_s": 1.344000000000001,
+          "contact_bout_count": 13,
+          "max_penetration_m": 0.0002737098507603753,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.02460949560161585,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.588,
+          "peak_force_n": 4.855882468949303,
+          "contact_impulse_ns": 0.1497506517251637,
+          "contact_duration_s": 0.048000000000000015,
+          "contact_bout_count": 8,
+          "max_penetration_m": 1.7402196421786988e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.1581585305719524,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 5,
+      "seed": 20265306,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z+0.0020_01.npz",
+      "board_y_offset_m": 0.0,
+      "board_z_offset_m": 0.002,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z+0.0020_01.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.18261370220261,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5365908011415319,
+        -0.06734778628994079,
+        0.5944233065485826
+      ],
+      "final_hand_position_m": [
+        0.5252071826465856,
+        -0.06638205777529525,
+        0.7250689597710329
+      ],
+      "final_hand_target_distance_m": 0.1311442187346558,
+      "final_target_lift_m": 0.19442330654858253,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.068,
+          "peak_force_n": 26.991159741024024,
+          "contact_impulse_ns": 8.44220265422572,
+          "contact_duration_s": 1.344000000000001,
+          "contact_bout_count": 13,
+          "max_penetration_m": 0.00031304194677255544,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.024610199487689388,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.588,
+          "peak_force_n": 4.892059280578335,
+          "contact_impulse_ns": 0.15017678259895723,
+          "contact_duration_s": 0.048000000000000015,
+          "contact_bout_count": 7,
+          "max_penetration_m": 2.1431438072719496e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.15816389537701403,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 6,
+      "seed": 20265307,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z-0.0020_00.npz",
+      "board_y_offset_m": 0.0015,
+      "board_z_offset_m": -0.002,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z-0.0020_00.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.44719772316172,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5357419370689508,
+        -0.06676601262089017,
+        0.5995540625710041
+      ],
+      "final_hand_position_m": [
+        0.5252386229833994,
+        -0.06620970550781659,
+        0.7250454841643317
+      ],
+      "final_hand_target_distance_m": 0.12593143363711098,
+      "final_target_lift_m": 0.19955406257100405,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.264,
+          "peak_force_n": 28.676439419513116,
+          "contact_impulse_ns": 6.362301448442083,
+          "contact_duration_s": 1.316000000000001,
+          "contact_bout_count": 5,
+          "max_penetration_m": 0.00022862475552654665,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.024633062301191666,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.512,
+          "peak_force_n": 5.802778377274174,
+          "contact_impulse_ns": 0.24774507816209596,
+          "contact_duration_s": 0.07200000000000004,
+          "contact_bout_count": 14,
+          "max_penetration_m": 6.096278988482276e-06,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.16031302886924426,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 7,
+      "seed": 20265308,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z-0.0020_01.npz",
+      "board_y_offset_m": 0.0015,
+      "board_z_offset_m": -0.002,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z-0.0020_01.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.441732996389426,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.535740378748465,
+        -0.06677937178414808,
+        0.5994868469298611
+      ],
+      "final_hand_position_m": [
+        0.5252392589167993,
+        -0.06621216831843199,
+        0.7250452482788923
+      ],
+      "final_hand_target_distance_m": 0.12599804517060936,
+      "final_target_lift_m": 0.19948684692986107,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.264,
+          "peak_force_n": 28.14556065289255,
+          "contact_impulse_ns": 6.382995823698251,
+          "contact_duration_s": 1.316000000000001,
+          "contact_bout_count": 6,
+          "max_penetration_m": 0.00014324690399009933,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.02462128410257175,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.516,
+          "peak_force_n": 5.7129866293895,
+          "contact_impulse_ns": 0.24160377967181498,
+          "contact_duration_s": 0.07200000000000004,
+          "contact_bout_count": 14,
+          "max_penetration_m": 1.5732133499853087e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.1603371845697954,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 8,
+      "seed": 20265309,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z+0.0000_00.npz",
+      "board_y_offset_m": 0.0015,
+      "board_z_offset_m": 0.0,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z+0.0000_00.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.3354668664184,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5361478968420569,
+        -0.06672949948973526,
+        0.5971386129420321
+      ],
+      "final_hand_position_m": [
+        0.525209376362978,
+        -0.06596477645065547,
+        0.7251452310530556
+      ],
+      "final_hand_target_distance_m": 0.1284754074203275,
+      "final_target_lift_m": 0.19713861294203205,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.228,
+          "peak_force_n": 30.065902892174744,
+          "contact_impulse_ns": 7.208056344965086,
+          "contact_duration_s": 1.348000000000001,
+          "contact_bout_count": 7,
+          "max_penetration_m": 0.00019214556271750295,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.02463657457151225,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.4639999999999995,
+          "peak_force_n": 6.878626490171847,
+          "contact_impulse_ns": 0.32198875730936327,
+          "contact_duration_s": 0.08800000000000005,
+          "contact_bout_count": 14,
+          "max_penetration_m": 3.5925968254519e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.15822885727852198,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 9,
+      "seed": 20265310,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z+0.0000_01.npz",
+      "board_y_offset_m": 0.0015,
+      "board_z_offset_m": 0.0,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z+0.0000_01.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.33631842137372,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5361425821013945,
+        -0.06671757150829723,
+        0.5970376429195369
+      ],
+      "final_hand_position_m": [
+        0.525209100916529,
+        -0.06596152342964076,
+        0.7251454901985874
+      ],
+      "final_hand_target_distance_m": 0.1285757875884476,
+      "final_target_lift_m": 0.19703764291953685,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.228,
+          "peak_force_n": 29.371258192764046,
+          "contact_impulse_ns": 7.201630241513035,
+          "contact_duration_s": 1.348000000000001,
+          "contact_bout_count": 7,
+          "max_penetration_m": 0.00021964937992550464,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.024621459999103812,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.4639999999999995,
+          "peak_force_n": 6.714683290802516,
+          "contact_impulse_ns": 0.32604076361593726,
+          "contact_duration_s": 0.09200000000000005,
+          "contact_bout_count": 10,
+          "max_penetration_m": 3.9455509179285955e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.15820854522989403,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 10,
+      "seed": 20265311,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z+0.0020_00.npz",
+      "board_y_offset_m": 0.0015,
+      "board_z_offset_m": 0.002,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z+0.0020_00.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.22541344936993,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5365095886577506,
+        -0.06661520406513263,
+        0.5950302622569081
+      ],
+      "final_hand_position_m": [
+        0.5251237438696277,
+        -0.06556778403932785,
+        0.7253227805362528
+      ],
+      "final_hand_target_distance_m": 0.13079325238644018,
+      "final_target_lift_m": 0.19503026225690812,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.196,
+          "peak_force_n": 30.42508138017402,
+          "contact_impulse_ns": 8.0290838870935,
+          "contact_duration_s": 1.380000000000001,
+          "contact_bout_count": 7,
+          "max_penetration_m": 0.0002866399540488569,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.02463323796200606,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.436,
+          "peak_force_n": 7.092110986003404,
+          "contact_impulse_ns": 0.42239961200306075,
+          "contact_duration_s": 0.12000000000000008,
+          "contact_bout_count": 20,
+          "max_penetration_m": 1.915011613843826e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.15633774420900526,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 11,
+      "seed": 20265312,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z+0.0020_01.npz",
+      "board_y_offset_m": 0.0015,
+      "board_z_offset_m": 0.002,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z+0.0020_01.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.233661321680295,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5365082598454435,
+        -0.06651834201569966,
+        0.595049952002034
+      ],
+      "final_hand_position_m": [
+        0.5251062030326372,
+        -0.06547079621329924,
+        0.7253774868667489
+      ],
+      "final_hand_target_distance_m": 0.1308295478692946,
+      "final_target_lift_m": 0.195049952002034,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.196,
+          "peak_force_n": 29.65495907040628,
+          "contact_impulse_ns": 8.02744085755809,
+          "contact_duration_s": 1.384000000000001,
+          "contact_bout_count": 6,
+          "max_penetration_m": 0.0003192286808543847,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.024616358200640454,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.436,
+          "peak_force_n": 6.934699591014305,
+          "contact_impulse_ns": 0.42267241028811287,
+          "contact_duration_s": 0.12000000000000008,
+          "contact_bout_count": 16,
+          "max_penetration_m": 2.7166202865750376e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.1563302762860943,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 12,
+      "seed": 20265313,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z-0.0020_00.npz",
+      "board_y_offset_m": 0.003,
+      "board_z_offset_m": -0.002,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z-0.0020_00.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.51355437231243,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5354622577562723,
+        -0.06606164645115009,
+        0.600586308091085
+      ],
+      "final_hand_position_m": [
+        0.5251329784178306,
+        -0.06545969879061041,
+        0.7253034385678192
+      ],
+      "final_hand_target_distance_m": 0.12514559116080887,
+      "final_target_lift_m": 0.20058630809108502,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.4000000000000001,
+          "peak_force_n": 18.98675678044194,
+          "contact_impulse_ns": 5.848370069026117,
+          "contact_duration_s": 1.300000000000001,
+          "contact_bout_count": 5,
+          "max_penetration_m": 0.00020999958878348827,
+          "hand_collision_contact": false,
+          "link7_collision_contact": true,
+          "hand_body_contact": false,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.024293649365749737,
+          "contact_geom_names": [
+            "fr3_link7_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.351999999999999,
+          "peak_force_n": 8.163881961440332,
+          "contact_impulse_ns": 0.5783308125450247,
+          "contact_duration_s": 0.1480000000000001,
+          "contact_bout_count": 24,
+          "max_penetration_m": 3.643477898661613e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.15826027365503115,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 13,
+      "seed": 20265314,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z-0.0020_01.npz",
+      "board_y_offset_m": 0.003,
+      "board_z_offset_m": -0.002,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z-0.0020_01.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.51959850337278,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5354621235934407,
+        -0.0660807383896593,
+        0.6005551154056186
+      ],
+      "final_hand_position_m": [
+        0.5251338338864092,
+        -0.06547445798721574,
+        0.725302893165233
+      ],
+      "final_hand_target_distance_m": 0.12517607279412832,
+      "final_target_lift_m": 0.20055511540561854,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.4000000000000001,
+          "peak_force_n": 18.816482617868107,
+          "contact_impulse_ns": 5.853175716367678,
+          "contact_duration_s": 1.304000000000001,
+          "contact_bout_count": 5,
+          "max_penetration_m": 0.0002139926924659087,
+          "hand_collision_contact": false,
+          "link7_collision_contact": true,
+          "hand_body_contact": false,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.02428676650849476,
+          "contact_geom_names": [
+            "fr3_link7_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.351999999999999,
+          "peak_force_n": 8.08097924744195,
+          "contact_impulse_ns": 0.5675629676020721,
+          "contact_duration_s": 0.1440000000000001,
+          "contact_bout_count": 24,
+          "max_penetration_m": 3.614373799498255e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.15825029205483876,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 14,
+      "seed": 20265315,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z+0.0000_00.npz",
+      "board_y_offset_m": 0.003,
+      "board_z_offset_m": 0.0,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z+0.0000_00.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.42161871204997,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5358090030367819,
+        -0.06577990886307525,
+        0.5989723334309401
+      ],
+      "final_hand_position_m": [
+        0.5250455741820198,
+        -0.06510156519166206,
+        0.7254865400082411
+      ],
+      "final_hand_target_distance_m": 0.12697305232501915,
+      "final_target_lift_m": 0.19897233343094012,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.356,
+          "peak_force_n": 25.28254273174861,
+          "contact_impulse_ns": 6.751338510553015,
+          "contact_duration_s": 1.344000000000001,
+          "contact_bout_count": 6,
+          "max_penetration_m": 0.00022644778743736546,
+          "hand_collision_contact": false,
+          "link7_collision_contact": true,
+          "hand_body_contact": false,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.024632886635656326,
+          "contact_geom_names": [
+            "fr3_link7_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.332,
+          "peak_force_n": 8.730178233619617,
+          "contact_impulse_ns": 0.6680527332217805,
+          "contact_duration_s": 0.16800000000000012,
+          "contact_bout_count": 21,
+          "max_penetration_m": 5.609910619455892e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.15651432395856624,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 15,
+      "seed": 20265316,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z+0.0000_01.npz",
+      "board_y_offset_m": 0.003,
+      "board_z_offset_m": 0.0,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z+0.0000_01.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.414507742745805,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5357795683979781,
+        -0.06591622735057877,
+        0.5987880323404082
+      ],
+      "final_hand_position_m": [
+        0.5250445342175065,
+        -0.0650946648749184,
+        0.7254870820638617
+      ],
+      "final_hand_target_distance_m": 0.12715567279749435,
+      "final_target_lift_m": 0.1987880323404082,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.356,
+          "peak_force_n": 24.33176798627644,
+          "contact_impulse_ns": 6.745793322946066,
+          "contact_duration_s": 1.348000000000001,
+          "contact_bout_count": 5,
+          "max_penetration_m": 0.0002364541623358177,
+          "hand_collision_contact": false,
+          "link7_collision_contact": true,
+          "hand_body_contact": false,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.024608967687729244,
+          "contact_geom_names": [
+            "fr3_link7_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.332,
+          "peak_force_n": 8.464986136778279,
+          "contact_impulse_ns": 0.6738024779388802,
+          "contact_duration_s": 0.17600000000000013,
+          "contact_bout_count": 28,
+          "max_penetration_m": 6.159752024957979e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.15647181532817223,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 16,
+      "seed": 20265317,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z+0.0020_00.npz",
+      "board_y_offset_m": 0.003,
+      "board_z_offset_m": 0.002,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z+0.0020_00.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.306565482693344,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5363693021593617,
+        -0.06589182606289759,
+        0.5955768320731558
+      ],
+      "final_hand_position_m": [
+        0.5250240583239254,
+        -0.06485353622721271,
+        0.725583746970508
+      ],
+      "final_hand_target_distance_m": 0.13050513600849495,
+      "final_target_lift_m": 0.1955768320731558,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.32,
+          "peak_force_n": 26.45458062324525,
+          "contact_impulse_ns": 7.535717200261965,
+          "contact_duration_s": 1.376000000000001,
+          "contact_bout_count": 7,
+          "max_penetration_m": 0.00022060974713566814,
+          "hand_collision_contact": false,
+          "link7_collision_contact": true,
+          "hand_body_contact": false,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.02462251532821097,
+          "contact_geom_names": [
+            "fr3_link7_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.316,
+          "peak_force_n": 8.8184036747113,
+          "contact_impulse_ns": 0.7195001424225043,
+          "contact_duration_s": 0.18000000000000013,
+          "contact_bout_count": 26,
+          "max_penetration_m": 5.200767057168946e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.154070751972607,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    },
+    {
+      "index": 17,
+      "seed": 20265318,
+      "trace": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z+0.0020_01.npz",
+      "board_y_offset_m": 0.003,
+      "board_z_offset_m": 0.002,
+      "path": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z+0.0020_01.npz",
+      "steps": 155,
+      "success": true,
+      "peak_torque_nm": 32.30110880477712,
+      "hard_torque_limit": false,
+      "finite_state": true,
+      "peak_force_n": 0.0,
+      "contact_impulse_ns": 0.0,
+      "object_retained": true,
+      "final_target_position_m": [
+        0.5363802324317842,
+        -0.0659046593719061,
+        0.5955895957937268
+      ],
+      "final_hand_position_m": [
+        0.5250249584509893,
+        -0.0648639871241039,
+        0.7255831465548637
+      ],
+      "final_hand_target_distance_m": 0.1304927143000502,
+      "final_target_lift_m": 0.1955895957937268,
+      "lift_board_contact": false,
+      "lift_board_first_contact_s": null,
+      "lift_board_peak_force_n": 0.0,
+      "lift_board_contact_impulse_ns": 0.0,
+      "lift_board_contact_duration_s": 0.0,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.32,
+          "peak_force_n": 26.759962695665664,
+          "contact_impulse_ns": 7.5413256410827625,
+          "contact_duration_s": 1.376000000000001,
+          "contact_bout_count": 7,
+          "max_penetration_m": 0.00021666822880096067,
+          "hand_collision_contact": false,
+          "link7_collision_contact": true,
+          "hand_body_contact": false,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.024629723890541133,
+          "contact_geom_names": [
+            "fr3_link7_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.316,
+          "peak_force_n": 8.88162687654034,
+          "contact_impulse_ns": 0.7110187899931799,
+          "contact_duration_s": 0.17600000000000013,
+          "contact_bout_count": 25,
+          "max_penetration_m": 4.642670434066147e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.15407611960073242,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      }
+    }
+  ],
+  "accepted_traces": [
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z-0.0020_00.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z-0.0020_01.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z+0.0000_00.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z+0.0000_01.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z+0.0020_00.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0000_z+0.0020_01.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z-0.0020_00.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z-0.0020_01.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z+0.0000_00.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z+0.0000_01.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z+0.0020_00.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0015_z+0.0020_01.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z-0.0020_00.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z-0.0020_01.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z+0.0000_00.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z+0.0000_01.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z+0.0020_00.npz",
+    "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_teacher_20260822/dual_y+0.0030_z+0.0020_01.npz"
+  ],
+  "all_accepted": true
+}

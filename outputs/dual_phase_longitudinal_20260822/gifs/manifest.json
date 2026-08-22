@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "purpose": "dual-board MuJoCo full-sequence demo",
+  "camera": "split global rod_track and fixed dual-board close-up",
+  "seed": 20265701,
+  "budget": 0.04,
+  "board_y_offset_m": 0.00075,
+  "board_z_offset_m": -0.001,
+  "methods": [
+    {
+      "method": "PaperMPC (original paper method)",
+      "gif": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_gifs_reportable_20260822/paper_mpc_dual.gif",
+      "seed": 20265701,
+      "task_success": true,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.192,
+          "peak_force_n": 31.309544313187242,
+          "contact_impulse_ns": 5.984118909870501,
+          "contact_duration_s": 1.260000000000001,
+          "contact_bout_count": 19,
+          "max_penetration_m": 0.00017001439157459574,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.02465724258590335,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.484,
+          "peak_force_n": 6.069369404167543,
+          "contact_impulse_ns": 0.4175182633084942,
+          "contact_duration_s": 0.16800000000000012,
+          "contact_bout_count": 15,
+          "max_penetration_m": 2.623228302385667e-05,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.15778843963420297,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      },
+      "final_target_lift_m": 0.19496016664313853
+    },
+    {
+      "method": "VMC physics baseline",
+      "gif": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_gifs_reportable_20260822/vmc_dual.gif",
+      "seed": 20265701,
+      "task_success": true,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.192,
+          "peak_force_n": 31.591575693955875,
+          "contact_impulse_ns": 7.021065086106247,
+          "contact_duration_s": 1.316000000000001,
+          "contact_bout_count": 9,
+          "max_penetration_m": 0.00017395302332953,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.02465724258590335,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.588,
+          "peak_force_n": 5.13478252429223,
+          "contact_impulse_ns": 0.15632048420361216,
+          "contact_duration_s": 0.048000000000000015,
+          "contact_bout_count": 9,
+          "max_penetration_m": 4.60487247923146e-06,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.16035559983113834,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      },
+      "final_target_lift_m": 0.19826990032068048
+    },
+    {
+      "method": "MLP (same 32-D observation)",
+      "gif": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_gifs_reportable_20260822/mlp_dual.gif",
+      "seed": 20265701,
+      "task_success": true,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.196,
+          "peak_force_n": 30.864082566598167,
+          "contact_impulse_ns": 7.07352785773578,
+          "contact_duration_s": 1.308000000000001,
+          "contact_bout_count": 9,
+          "max_penetration_m": 0.00024102020241929294,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.02465724258590335,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.536,
+          "peak_force_n": 5.638336592468489,
+          "contact_impulse_ns": 0.19247944813033088,
+          "contact_duration_s": 0.05200000000000002,
+          "contact_bout_count": 12,
+          "max_penetration_m": 4.360411875368239e-06,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.15902375203832053,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      },
+      "final_target_lift_m": 0.1983073392704381
+    },
+    {
+      "method": "ESN proposed (same 32-D observation)",
+      "gif": "/home/arm1/vmc_mujoco_runtime/outputs/dual_phase_gifs_reportable_20260822/esn_dual.gif",
+      "seed": 20265701,
+      "task_success": true,
+      "dual_phase_geometry_valid": true,
+      "dual_board_metrics": {
+        "pregrasp_board": {
+          "contact": true,
+          "first_contact_s": 1.192,
+          "peak_force_n": 31.51087126678142,
+          "contact_impulse_ns": 7.035680400405935,
+          "contact_duration_s": 1.316000000000001,
+          "contact_bout_count": 9,
+          "max_penetration_m": 0.00014792240102960268,
+          "hand_collision_contact": true,
+          "link7_collision_contact": true,
+          "hand_body_contact": true,
+          "link7_body_contact": true,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.02465724258590335,
+          "contact_geom_names": [
+            "fr3_link7_collision",
+            "hand_collision"
+          ]
+        },
+        "postgrasp_board": {
+          "contact": true,
+          "first_contact_s": 4.6,
+          "peak_force_n": 5.016782559814903,
+          "contact_impulse_ns": 0.14438984764333584,
+          "contact_duration_s": 0.04400000000000001,
+          "contact_bout_count": 9,
+          "max_penetration_m": 4.365859818950779e-06,
+          "hand_collision_contact": true,
+          "link7_collision_contact": false,
+          "hand_body_contact": true,
+          "link7_body_contact": false,
+          "target_object_contact": false,
+          "target_lift_at_first_contact_m": 0.1605754196393404,
+          "contact_geom_names": [
+            "hand_collision"
+          ]
+        }
+      },
+      "final_target_lift_m": 0.19827815093831647
+    }
+  ]
+}
