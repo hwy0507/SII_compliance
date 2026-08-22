@@ -79,9 +79,21 @@ def main() -> None:
                         help="reduce the smoothness penalty on the lateral/yaw action channels")
     parser.add_argument("--smoothness-weight", type=float, default=0.0,
                         help="ridge penalty on within-episode action change (trains smoothness into the readout)")
+    parser.add_argument("--error-aligned-yield", action="store_true",
+                        help="align learned translation/angular yielding with measured WBC pose error")
+    parser.add_argument("--rejoin-fade", action="store_true",
+                        help="fade residual authority when measured pose/twist error indicates rejoining")
+    parser.add_argument("--yield-smoothing-alpha", type=float, default=1.0,
+                        help="deployment-side yielding low-pass coefficient in (0,1]")
+    parser.add_argument("--mirror-gate", action="store_true",
+                        help="apply deployable pose-error mirror gate to lateral/yaw yield channels")
+    parser.add_argument("--target-lead-steps", type=int, default=0,
+                        help="causal deployment-latency compensation: feature at t is fit to teacher action at t+lead")
     args = parser.parse_args()
     if min(args.reservoir_size, args.washout_steps + 1, args.rod_repeat, args.neutral_repeat) < 1:
         raise ValueError("bootstrap dimensions/weights are invalid")
+    if args.target_lead_steps < 0:
+        raise ValueError("target-lead-steps must be non-negative")
     if args.expert_traces is None and args.base_no_rod_trace is None:
         raise ValueError("legacy rod bootstrap requires --base-no-rod-trace")
     if args.expert_traces is not None and args.no_rod_expert_trace is None:
@@ -90,6 +102,8 @@ def main() -> None:
         raise ValueError("fast/slow time constants must be supplied together")
     if args.target_budget is not None and not 0.0 < args.target_budget <= 1.0:
         raise ValueError("target-budget must lie in (0,1]")
+    if not 0.0 < args.yield_smoothing_alpha <= 1.0:
+        raise ValueError("yield-smoothing-alpha must lie in (0,1]")
     scales = None if args.fast_time_constant is None else (args.fast_time_constant, args.slow_time_constant)
     config = DirectESNConfig(reservoir_size=args.reservoir_size, seed=args.reservoir_seed, dt_s=0.04,
                              disable_recurrence=args.disable_recurrence,
@@ -97,7 +111,11 @@ def main() -> None:
                              zero_joint_velocity=args.zero_joint_velocity,
                              spectral_radius=args.spectral_radius, time_constant_s=args.time_constant,
                              multiscale_time_constants_s=scales, fast_fraction=args.fast_fraction,
-                             input_scale=args.input_scale, ridge_lambda=args.ridge_lambda)
+                             input_scale=args.input_scale, ridge_lambda=args.ridge_lambda,
+                             error_aligned_yield=args.error_aligned_yield,
+                             rejoin_fade_enabled=args.rejoin_fade,
+                             yield_smoothing_alpha=args.yield_smoothing_alpha,
+                             mirror_gate_enabled=args.mirror_gate)
     model = DirectESNController(config)
     episodes = []
     features_all, targets_all, deltas_all, delta_targets_all = [], [], [], []
@@ -124,6 +142,12 @@ def main() -> None:
             raise ValueError(f"{path}: washout exceeds episode length")
         features = model.features(observations, washout_steps=args.washout_steps)
         labels = actions[args.washout_steps:]
+        if args.target_lead_steps:
+            lead = args.target_lead_steps
+            if lead >= len(labels):
+                raise ValueError(f"{path}: target lead exceeds usable episode")
+            features = features[:-lead]
+            labels = labels[lead:]
         features_all.extend([features] * repeat)
         targets_all.extend([labels] * repeat)
         if args.smoothness_weight > 0.0:
@@ -172,6 +196,11 @@ def main() -> None:
         "readout_training_mse": mse,
         "smoothness_weight": args.smoothness_weight,
         "derivative_match": args.derivative_match,
+        "target_lead_steps": args.target_lead_steps,
+        "error_aligned_yield": args.error_aligned_yield,
+        "rejoin_fade": args.rejoin_fade,
+        "yield_smoothing_alpha": args.yield_smoothing_alpha,
+        "mirror_gate": args.mirror_gate,
         "relieve_direction_channels": args.relieve_direction_channels,
         "episodes": episodes,
     }

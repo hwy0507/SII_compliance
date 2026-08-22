@@ -46,15 +46,17 @@ def make_fixture(seed: int) -> VelocityResidualFixture:
 
 
 def record_one(menagerie: Path, out: Path, *, seed: int, tilt: float,
-               y_offset_m: float, k: float, budget: float) -> dict:
+               yaw: float, y_offset_m: float, k: float, budget: float) -> dict:
     # The shared recorder writes exactly the deployable 32-D observation
     # fields plus the bounded seven-dimensional teacher action.  ``lift_board``
     # activates the physical inclined board in the current Paper-MPC scene.
     summary = record(
         menagerie, make_fixture(seed), out, k=k, budget=budget, seed=seed,
         lift_board=True, lift_board_tilt_deg=tilt, lift_board_y_offset_m=y_offset_m,
+        lift_board_yaw_deg=yaw,
     )
-    summary.update({"seed": seed, "tilt_deg": tilt, "board_y_offset_m": y_offset_m, "teacher_k": k,
+    summary.update({"seed": seed, "tilt_deg": tilt, "yaw_deg": yaw,
+                    "board_y_offset_m": y_offset_m, "teacher_k": k,
                     "teacher_budget": budget})
     return summary
 
@@ -65,27 +67,30 @@ def main() -> None:
     parser.add_argument("--out-dir", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=20262101)
     parser.add_argument("--tilts", type=float, nargs="+", default=[30.0, 35.0, 40.0])
+    parser.add_argument("--yaws", type=float, nargs="+", default=[0.0],
+                        help="train-time board yaw angles; never exposed to the student")
     parser.add_argument("--y-offsets", type=float, nargs="+", default=[-0.006, -0.002, 0.002, 0.006],
                         help="train-only board center y offsets, relative to the clearance placement")
-    parser.add_argument("--per-tilt", type=int, default=2)
+    parser.add_argument("--per-condition", "--per-tilt", dest="per_condition", type=int, default=2)
     parser.add_argument("--k", type=float, default=1.0)
     parser.add_argument("--budget", type=float, default=0.02)
     args = parser.parse_args()
-    if args.per_tilt < 1 or not args.tilts:
-        raise SystemExit("per-tilt and tilts must be non-empty positive values")
+    if args.per_condition < 1 or not args.tilts or not args.yaws:
+        raise SystemExit("per-condition, tilts, and yaws must be non-empty positive values")
     args.out_dir.mkdir(parents=True, exist_ok=True)
     entries = []
     index = 0
     for tilt in args.tilts:
-        for local in range(args.per_tilt):
-            seed = args.seed + index
-            path = args.out_dir / f"inclined_tilt{tilt:g}_{local:02d}.npz"
-            y_offset = float(args.y_offsets[local % len(args.y_offsets)])
-            summary = record_one(args.menagerie, path, seed=seed, tilt=float(tilt), y_offset_m=y_offset,
-                                 k=args.k, budget=args.budget)
-            entries.append({"index": index, "trace": str(path), **summary})
-            print(json.dumps(entries[-1]), flush=True)
-            index += 1
+        for yaw in args.yaws:
+            for local in range(args.per_condition):
+                seed = args.seed + index
+                path = args.out_dir / f"inclined_tilt{tilt:g}_yaw{yaw:g}_{local:02d}.npz"
+                y_offset = float(args.y_offsets[local % len(args.y_offsets)])
+                summary = record_one(args.menagerie, path, seed=seed, tilt=float(tilt), yaw=float(yaw),
+                                     y_offset_m=y_offset, k=args.k, budget=args.budget)
+                entries.append({"index": index, "trace": str(path), **summary})
+                print(json.dumps(entries[-1]), flush=True)
+                index += 1
     neutral_path = args.out_dir / "neutral_no_board.npz"
     neutral_summary = record(
         args.menagerie, make_fixture(args.seed + index), neutral_path,
@@ -99,6 +104,8 @@ def main() -> None:
         "observation_contract": "q, qdot, nominal_twist, pose_error, wbc_twist_error only",
         "teacher": {"family": "VMC", "k": args.k, "budget": args.budget},
         "board": {"tilts_deg": [float(v) for v in args.tilts],
+                  "yaws_deg": [float(v) for v in args.yaws],
+                  "per_condition": int(args.per_condition),
                   "y_offsets_m": [float(v) for v in args.y_offsets],
                   "geometry_source": "MuJoCo lift_board in fr3_scene.py"},
         "entries": entries,

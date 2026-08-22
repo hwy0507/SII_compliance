@@ -108,6 +108,7 @@ def build_fr3_hand_scene_xml(
     board_underside_z: float | None = None,
     lift_board_center_m: tuple[float, float, float] | None = None,
     lift_board_tilt_deg: float | None = None,
+    lift_board_yaw_deg: float = 0.0,
     impactor_mass_kg: float | None = None,
     rod_slide_damping: float = 2.0,
     rod_driver_kp: float = 5000.0,
@@ -245,7 +246,12 @@ def build_fr3_hand_scene_xml(
         # Face normal: the box's +z axis tilted ``tilt`` from -z (pointing
         # down toward the rising arm) about the x axis, so sliding along the
         # face guides the hand sideways in +y toward the board edge.
-        quat_wxyz = (np.cos(0.5 * tilt), np.sin(0.5 * tilt), 0.0, 0.0)
+        yaw = float(np.deg2rad(lift_board_yaw_deg))
+        # Compose Rz(yaw) Rx(tilt): yaw changes which physical hand face
+        # meets the same inclined plane, while tilt keeps the board slope.
+        cy, sy = np.cos(0.5 * yaw), np.sin(0.5 * yaw)
+        cx, sx = np.cos(0.5 * tilt), np.sin(0.5 * tilt)
+        quat_wxyz = (cy * cx, cy * sx, sy * sx, sy * cx)
         lift_board_xml = f"""
       <geom name="lift_board" type="box"
         pos="{lift_board_center_m[0]:.4f} {lift_board_center_m[1]:.4f} {lift_board_center_m[2]:.4f}"
@@ -302,6 +308,7 @@ def make_fr3_hand_model(
     board_underside_z: float | None = None,
     lift_board_center_m: tuple[float, float, float] | None = None,
     lift_board_tilt_deg: float | None = None,
+    lift_board_yaw_deg: float = 0.0,
     impactor_mass_kg: float | None = None,
     rod_slide_damping: float = 2.0,
     rod_driver_kp: float = 5000.0,
@@ -315,6 +322,7 @@ def make_fr3_hand_model(
         rod_approach_side=rod_approach_side, impactor_type=impactor_type,
         board_underside_z=board_underside_z,
         lift_board_center_m=lift_board_center_m, lift_board_tilt_deg=lift_board_tilt_deg,
+        lift_board_yaw_deg=lift_board_yaw_deg,
         impactor_mass_kg=impactor_mass_kg, rod_slide_damping=rod_slide_damping,
         rod_driver_kp=rod_driver_kp, rod_driver_force_limit_n=rod_driver_force_limit_n)
     model = mujoco.MjModel.from_xml_string(xml)

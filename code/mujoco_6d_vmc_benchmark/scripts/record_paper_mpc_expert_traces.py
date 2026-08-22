@@ -31,7 +31,8 @@ RL_DT = 0.04
 
 def record(menagerie: Path, fixture, out: Path, *, k: float, budget: float,
            seed: int, side: str | None = None, lift_board: bool = False,
-           lift_board_tilt_deg: float = 40.0, lift_board_y_offset_m: float = 0.0) -> dict:
+           lift_board_tilt_deg: float = 40.0, lift_board_y_offset_m: float = 0.0,
+           lift_board_yaw_deg: float = 0.0) -> dict:
     fx = fixture if side is None else replace(fixture, rod_approach_side=side)
     cfg = VMCTorqueBaseline.from_npz(Path("/tmp/vmc_k2.2_s0.03.npz")).config
     from vmc_compliance_baseline import SpringCarriageConfig
@@ -47,6 +48,7 @@ def record(menagerie: Path, fixture, out: Path, *, k: float, budget: float,
     if lift_board:
         kwargs["lift_board_tilt_deg"] = float(lift_board_tilt_deg)
         kwargs["lift_board_y_offset_m"] = float(lift_board_y_offset_m)
+        kwargs["lift_board_yaw_deg"] = float(lift_board_yaw_deg)
     env = PandaWBCVelocityResidualEnv(**kwargs)
     env.reset(seed=seed, options={"fixture_index": 0})
     expert.reset()

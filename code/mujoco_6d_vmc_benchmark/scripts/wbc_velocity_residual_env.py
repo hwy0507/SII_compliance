@@ -142,6 +142,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         table_board_underside_z: float | None = None,
         lift_board_tilt_deg: float | None = None,
         lift_board_y_offset_m: float = 0.0,
+        lift_board_yaw_deg: float = 0.0,
         joint_velocity_noise_std: float = 0.0,
         execution_mode: str = "twist",
         residual_torque_scale: float = 0.25,
@@ -179,6 +180,9 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         if not np.isfinite(lift_board_y_offset_m):
             raise ValueError("lift_board_y_offset_m must be finite")
         self.lift_board_y_offset_m = float(lift_board_y_offset_m)
+        if not np.isfinite(lift_board_yaw_deg):
+            raise ValueError("lift_board_yaw_deg must be finite")
+        self.lift_board_yaw_deg = float(lift_board_yaw_deg)
         self._board_reference_factory = None
         if execution_mode not in ("twist", "torque_residual", "torque_takeover", "torque_takeover_gc"):
             raise ValueError(
@@ -364,9 +368,25 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 p_start = probe_ref.sample(2.70)[0]
                 p_end = probe_ref.sample(4.10)[0]
                 center = 0.75 * p_start + 0.25 * p_end
-                center[1] += 0.09 + self.lift_board_y_offset_m  # clear descent; small audit jitter is scene-only
+                # Rotating the board around world z changes its projected
+                # lateral span.  Place its near edge above the entire
+                # descent/grasp envelope before adding it to the rising arc;
+                # otherwise yaw=45/90 deg would physically intersect the
+                # hand at t=0 and masquerade as a frontal lift collision.
+                yaw = np.deg2rad(self.lift_board_yaw_deg)
+                projected_half_y = abs(np.sin(yaw)) * 0.18 + abs(np.cos(yaw)) * 0.05
+                # The hand collision geoms extend well beyond the EE point;
+                # a 45 mm gap from the point trajectory was insufficient for
+                # the long projected footprint at yaw=90 deg once the board
+                # jitter was applied.  Keep a conservative 70 mm point
+                # clearance, and compensate only negative jitter so the
+                # entire declared jitter range remains pre-grasp safe.
+                negative_jitter_guard = max(0.0, -self.lift_board_y_offset_m)
+                min_center_y = projected_half_y + 0.07 + negative_jitter_guard
+                center[1] = max(center[1] + 0.09, min_center_y) + self.lift_board_y_offset_m
                 scene_kwargs["lift_board_center_m"] = tuple(float(v) for v in center)
                 scene_kwargs["lift_board_tilt_deg"] = float(self.lift_board_tilt_deg)
+                scene_kwargs["lift_board_yaw_deg"] = float(self.lift_board_yaw_deg)
                 self._board_reference_factory = board_reference
             else:
                 self._board_reference_factory = None
