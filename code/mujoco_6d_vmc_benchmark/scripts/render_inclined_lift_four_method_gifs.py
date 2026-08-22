@@ -55,7 +55,7 @@ def render_one(menagerie, seed, tilt, yaw, board_y_offset, label, controller, bu
     board_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, "lift_board")
     renderer = mujoco.Renderer(env.model, height=480, width=640)
     close_camera = None
-    if camera_mode == "close":
+    if camera_mode in ("close", "both"):
         # Free camera centered on the physical board.  This is deliberately
         # scene-derived only for visualization; it never enters control.
         close_camera = mujoco.MjvCamera()
@@ -64,6 +64,7 @@ def render_one(menagerie, seed, tilt, yaw, board_y_offset, label, controller, bu
         close_camera.distance = 0.58
         close_camera.azimuth = 135.0
         close_camera.elevation = -18.0
+    global_camera = "rod_track"
     frames, done, info, step = [], False, {}, 0
     peak_force, peak_slide, first_contact = 0.0, 0.0, None
     stride = max(1, round(1.0 / (fps * .04)))
@@ -76,8 +77,18 @@ def render_one(menagerie, seed, tilt, yaw, board_y_offset, label, controller, bu
         peak_force, peak_slide = max(peak_force, force), max(peak_slide, slide if touching else 0.0)
         if touching and first_contact is None: first_contact = t
         if step % stride == 0:
-            renderer.update_scene(env.data, camera=close_camera if close_camera is not None else camera_mode)
-            image = Image.fromarray(renderer.render()).convert("RGB")
+            renderer.update_scene(env.data, camera=global_camera)
+            global_image = Image.fromarray(renderer.render()).convert("RGB")
+            if camera_mode == "both":
+                renderer.update_scene(env.data, camera=close_camera)
+                close_image = Image.fromarray(renderer.render()).convert("RGB")
+                image = Image.new("RGB", (global_image.width + close_image.width, global_image.height))
+                image.paste(global_image, (0, 0)); image.paste(close_image, (global_image.width, 0))
+            elif camera_mode == "close":
+                renderer.update_scene(env.data, camera=close_camera)
+                image = Image.fromarray(renderer.render()).convert("RGB")
+            else:
+                image = global_image
             draw, title, small = ImageDraw.Draw(image), font(22), font(15)
             draw.rectangle((0, 0, image.width, 86), fill=(12, 17, 27))
             draw.text((12, 7), label, fill="white", font=title)
@@ -114,7 +125,7 @@ def main():
     p.add_argument("--fps", type=int, default=25)
     p.add_argument("--only", choices=["paper", "vmc", "mlp", "esn"], default=None,
                    help="render one method only; useful for avoiding long-lived renderer resource buildup")
-    p.add_argument("--camera", choices=["rod_track", "close"], default="rod_track")
+    p.add_argument("--camera", choices=["rod_track", "close", "both"], default="rod_track")
     a = p.parse_args()
     methods = [("PaperMPC", None, .02, "paper_mpc_inclined.gif"),
                ("VMC", make_vmc(.02), .02, "vmc_inclined.gif"),

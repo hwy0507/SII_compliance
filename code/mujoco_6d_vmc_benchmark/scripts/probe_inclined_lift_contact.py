@@ -159,6 +159,7 @@ def main() -> None:
             "hand_collision_axes_world": np.asarray(env.data.geom_xmat[env._hand_geom_id], dtype=float).reshape(3, 3).tolist(),
             "hand_collision_half_extents_m": env.model.geom_size[env._hand_geom_id].copy().tolist(),
             "hand_twist_mps": d["ee_twist"][:3].tolist(),
+            "target_position_m": env.data.qpos[env._target_qpos:env._target_qpos + 3].copy().tolist(),
             "nominal_position_m": d["nominal_position"].tolist(),
             "pose_error_m": d["wbc_pose_error"][:3].tolist(),
             "action": np.asarray(action).tolist(),
