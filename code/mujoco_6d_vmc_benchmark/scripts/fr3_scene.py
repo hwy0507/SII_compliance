@@ -234,7 +234,8 @@ def build_fr3_hand_scene_xml(
         # contact normal).  Contact bits 5/5 collide with the hand (4/4),
         # the FR3 arm links (1/1) and the target object (6/7), matching the
         # dynamic plank impactor bit assignment.
-        tilt = float(np.deg2rad(lift_board_tilt_deg))
+        tilt_deg = float(_os.environ.get("LIFT_BOARD_TILT_DEG", str(lift_board_tilt_deg)))
+        tilt = float(np.deg2rad(tilt_deg))
         # Face normal: the box's +z axis tilted ``tilt`` from -z (pointing
         # down toward the rising arm) about the x axis, so sliding along the
         # face guides the hand sideways in +y toward the board edge.

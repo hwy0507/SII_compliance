@@ -12,6 +12,9 @@ import numpy as np
 
 import delayline_experiment as D
 import lift_experiment as L
+L.STATIC_HY = 0.06
+L.STATIC_Z = 0.02
+L._os.environ["LIFT_BOARD_TILT_DEG"] = "10.0"
 from extraction_experiment import NeutralPolicy
 from direct_esn_compliance import DirectESNController
 
@@ -32,7 +35,7 @@ def main() -> None:
     except ImportError:
         cv2 = None
     OUTDIR.mkdir(parents=True, exist_ok=True)
-    board = ("strike_cue", 3.00, 0.64, 2.0, 1.1)
+    board = ("static", 0.05, 10.0, 0.0, 0.0)
     for name, policy in controllers:
         env = D._env_for(board)
         m = L.rollout(env, 7, policy)
@@ -68,7 +71,7 @@ def main() -> None:
         renderer.close()
         env.close()
         import imageio.v3 as iio
-        path = OUTDIR / f"cue_{name.replace('-', '').lower()}.gif"
+        path = OUTDIR / f"block_{name.replace('-', '').lower()}.gif"
         iio.imwrite(path, frames[::2], duration=40, loop=0)
         print(f"wrote {path}  (peak={m['peak']:.0f}N Fint={m['Fint']:.0f} "
               f"errF={m['errF_mm']:.1f}mm ok={int(m['completed'])})", flush=True)
