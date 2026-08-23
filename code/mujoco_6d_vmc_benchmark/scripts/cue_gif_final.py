@@ -12,9 +12,11 @@ import numpy as np
 
 import delayline_experiment as D
 import lift_experiment as L
-L.STATIC_HY = 0.06
-L.STATIC_Z = 0.02
-L._os.environ["LIFT_BOARD_TILT_DEG"] = "10.0"
+L.STATIC_HY = 0.03
+L.STATIC_Z = 0.08
+L._os.environ["LIFT_BOARD_TILT_DEG"] = "0.0"
+
+L._os.environ["LIFT_BOARD_HX"] = "0.20"
 from extraction_experiment import NeutralPolicy
 from direct_esn_compliance import DirectESNController
 
@@ -28,31 +30,37 @@ def main() -> None:
          for p in sorted(CHAMP.glob("dl_s*.npz"))])
     mlp = D._load_mlp(CHAMP / "mlp_raw")
     mlpdl = D._load_mlp(CHAMP / "mlp_dl", dl=True)
-    controllers = [("FW", NeutralPolicy()), ("VMC", L._tuned_vmc()),
-                   ("MLP", mlp), ("MLP-DL", mlpdl), ("ESN-DL", esn)]
+    class TeacherWrap:
+        def reset(self): self._t = L.LiftTeacher(y_yield=0.85, pre_t=2.7)
+        def act(self, *args, **kwargs):
+            hand = kwargs.get("hand_y", 0.0)
+            return type("R", (), {"bounded_filter_action": self._t.act(*args, **kwargs)})()
+    controllers = [("FW", NeutralPolicy()), ("TEACHER", "teacher")]
     try:
         import cv2
     except ImportError:
         cv2 = None
     OUTDIR.mkdir(parents=True, exist_ok=True)
-    board = ("static", 0.05, 10.0, 0.0, 0.0)
-    for name, policy in controllers:
-        env = D._env_for(board)
-        m = L.rollout(env, 7, policy)
+    board = ("static", 0.10, 15.0)
+    for azim, elev, tag in ((180, -5, "facing"),):
+     for name, policy in controllers:
+        env = L.build_env(*board) if board[0]=="blocking" else D._env_for(board)
+        m = L.rollout(env, 7, NeutralPolicy())
         env.close()
-        env = D._env_for(board)
+        env = L.build_env(*board) if board[0]=="blocking" else D._env_for(board)
         env.reset(seed=7, options={"fixture_index": 0})
         env.model.vis.global_.offwidth = 1280
         env.model.vis.global_.offheight = 720
         renderer = mujoco.Renderer(env.model, 720, 1280)
         cam = mujoco.MjvCamera()
-        cam.lookat = np.array([0.52, 0.02, 0.64])
-        cam.distance = 1.25
-        cam.azimuth = 135
-        cam.elevation = -18
+        cam.lookat = np.array([0.52, 0.0, 0.63])
+        cam.distance = 0.65
+        cam.azimuth = azim
+        cam.elevation = elev
         frames = []
         done, step = False, 0
-        policy.reset()
+        if policy != "teacher":
+            policy.reset()
         while not done:
             renderer.update_scene(env.data, camera=cam)
             frame = renderer.render()
@@ -65,13 +73,22 @@ def main() -> None:
             d = env.diagnostics()
             args = (d["joint_position"], d["joint_velocity"], d["nominal_twist"])
             kw = dict(pose_error=d["wbc_pose_error"], twist_error=d["wbc_twist_error"])
-            action = np.asarray(policy.act(*args, **kw).bounded_filter_action, dtype=float)
+            if policy == "teacher":
+                from extraction_experiment import board_force
+                hand = env.data.xpos[env._hand_id]
+                action = np.asarray(L.LiftTeacher(y_yield=0.85, pre_t=2.7).act(
+                    *args, **kw, hand_x=float(hand[0]), hand_y=float(hand[1]),
+                    hand_z=float(hand[2]), contact=board_force(env) > 2.0,
+                    time_s=float(d["time_s"]),
+                    nominal_y=float(d["nominal_position"][1])), dtype=float)
+            else:
+                action = np.asarray(policy.act(*args, **kw).bounded_filter_action, dtype=float)
             _, _, done, _, _ = env.step(action)
             step += 1
         renderer.close()
         env.close()
         import imageio.v3 as iio
-        path = OUTDIR / f"block_{name.replace('-', '').lower()}.gif"
+        path = OUTDIR / f"multi_{tag}_{name.lower()}.gif"
         iio.imwrite(path, frames[::2], duration=40, loop=0)
         print(f"wrote {path}  (peak={m['peak']:.0f}N Fint={m['Fint']:.0f} "
               f"errF={m['errF_mm']:.1f}mm ok={int(m['completed'])})", flush=True)

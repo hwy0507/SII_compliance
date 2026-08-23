@@ -167,6 +167,20 @@ def build_env(kind: str, *params, seed: int = 7, noise: float = 0.0):
                                      rod_cycles=1, cycle_period_s=0.80)
         return make_env(None, seed, noise=noise, tilt=None, fixture=fx)
     _os.environ["LIFT_CUE"] = "0"
+    if kind == "blocking":
+        # BLOCKING BOARD: slides in at t=start_time and STOPS as a wall in
+        # the lift path.  Board is thick (15 mm, no clipping), positioned at
+        # gripper height (the block passes underneath freely).  Descent is
+        # clear because the board starts offstage (y=-0.30).
+        h, start = params  # (height, arrival_time)
+        _os.environ["LIFT_PLANK_MODE"] = "blocking"
+        _os.environ["LIFT_CUE"] = "0"
+        _os.environ["BLOCK_BOARD_TARGET"] = str(float(_os.environ.get("BLOCK_BOARD_TARGET_OVERRIDE", "0.28")))
+        fx = VelocityResidualFixture(0.1, h, start, impactor_type="plank",
+                                     rod_approach_side="negative_y",
+                                     rod_center_x_m=0.55, rod_center_y_m=0.0,
+                                     rod_cycles=1, cycle_period_s=0.80)
+        return make_env(None, seed, noise=noise, tilt=None, fixture=fx)
     if kind in ("plank_arm", "plank_payload"):
         t0, h, v0 = params
         _os.environ["LIFT_PLANK_MODE"] = "launch"
@@ -257,7 +271,10 @@ class LiftTeacher:
             self.eng_s = 0.0
         if self.engaged:
             action[0] = self.slow
-            action[2] = self.y_yield   # +y: along the incline, toward the edge
+            action[2] = self.y_yield   # +y: along the incline
+            import math as _m
+            tilt_rad = _m.radians(float(_os.environ.get("LIFT_BOARD_TILT_DEG", "15")))
+            action[3] = self.y_yield * _m.tan(tilt_rad) * 0.5  # +z: up the incline face
         elif self.rejoin_s_elapsed is not None:
             self.rejoin_s_elapsed += 0.04
             fade = 1.0 - min(self.rejoin_s_elapsed / self.rejoin_s, 1.0)

@@ -327,14 +327,18 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                 def board_reference(model_, data_, hand_id_):
                     ref = PickLiftCarryReference(model_, data_, hand_id_)
                     knots = ref.q_knots.copy()
-                    # Lateral arc on joint 1 (base yaw, z-axis): at this
-                    # configuration joint 2's axis is horizontal and moves the
-                    # EE in x-z, NOT laterally -- the first attempt used joint
-                    # 2 and the hand never left y=0 (the board was never
-                    # touched).  Joint 1 swings the EE along +y as required.
-                    knots[3][0] += lateral_arc   # lifted: lateral arc on joint 1
-                    knots[4][0] += lateral_arc   # carry: keep the offset
-                    ref.q_knots = knots
+                    # TWO-PHASE LIFT: straight up FIRST (the gripper hits the
+                    # flat board bottom from directly below), THEN arc laterally
+                    # (slides past the board edge).  The intermediate knot is
+                    # the fully-raised pose WITHOUT the lateral offset.
+                    straight_up = knots[3].copy()   # fully raised, joint1=0
+                    straight_up[0] = 0.0            # no lateral yet
+                    knots[3][0] += lateral_arc      # lifted: add arc
+                    knots[4][0] += lateral_arc      # carry: keep offset
+                    # insert straight_up between pregrasp (t=2.7) and lifted (t=4.1)
+                    ref.q_knots = np.stack([knots[0], knots[1], knots[2],
+                                           straight_up, knots[3], knots[4]])
+                    ref.times = np.array([0.0, 1.70, 2.70, 3.50, 4.60, 6.20])
                     return ref
 
                 probe_model, probe_data = make_fr3_hand_model(
@@ -586,8 +590,13 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
         assert self.model is not None and self.data is not None and self.reference is not None
         model, data = self.model, self.data
         command = self._wbc_command(time_s)
-        plank_launch = _os.environ.get("LIFT_PLANK_MODE", "servo") == "launch"
-        if self.rod_enabled and plank_launch:
+        plank_mode = _os.environ.get("LIFT_PLANK_MODE", "servo")
+        if self.rod_enabled and plank_mode == "blocking":
+            # BLOCKING BOARD: position servo drives the board INTO the lift
+            # path at t=rod_start_time, then HOLDS it there as a wall.
+            target = float(_os.environ.get("BLOCK_BOARD_TARGET", "0.30"))
+            rod_displacement = target if time_s >= self.fixture.rod_start_time_s else 0.0
+        elif self.rod_enabled and plank_mode == "launch":
             # Momentum-limited flying plank: velocity-kick the slide during a
             # short launch window, then zero drive -- damping + frictionloss
             # coast it through the arm's column and stop it.  The fixture's
@@ -596,7 +605,7 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             window = float(_os.environ.get("LIFT_PLANK_WINDOW", "0.25"))
             elapsed = time_s - self.fixture.rod_start_time_s
             rod_displacement = self.fixture.rod_stroke_m if 0.0 <= elapsed <= window else 0.0
-        elif self.rod_enabled:
+        elif self.rod_enabled and plank_mode == "servo":
             profile_time = self._extended_hold_profile_time(time_s)
             rod_displacement, _ = rod_motion(
                 profile_time, self.fixture.rod_stroke_m, self.fixture.rod_start_time_s,
@@ -604,8 +613,14 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             )
         else:
             rod_displacement = 0.0
-        data.mocap_pos[self._obstacle_mocap] = np.array([3.0, 3.0, 3.0])
-        data.mocap_quat[self._obstacle_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
+        if plank_mode == "blocking" and time_s >= self.fixture.rod_start_time_s:
+            # teleport the STATIC mocap board into the lift path at gripper height
+            bh = float(_os.environ.get("BLOCK_BOARD_Z", str(self.fixture.rod_height_m)))
+            data.mocap_pos[self._obstacle_mocap] = np.array([0.52, float(_os.environ.get("BLOCK_BOARD_Y", "0.06")), bh])
+            data.mocap_quat[self._obstacle_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
+        else:
+            data.mocap_pos[self._obstacle_mocap] = np.array([3.0, 3.0, 3.0])
+            data.mocap_quat[self._obstacle_mocap] = np.array([1.0, 0.0, 0.0, 0.0])
         data.qfrc_applied[:] = 0.0
         # Delayed cue (LIFT_CUE): a brief observable wrist nudge at t~1.0-1.3
         # that PREDICTS the strike at ~3.0.  The WBC erases its instantaneous

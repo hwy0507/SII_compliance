@@ -54,10 +54,16 @@ def contact_parts(env, policy=None, teacher=None):
     return who, first
 
 
-esn, mlp = L._students()
-for name, pol, tea in (("FW", NeutralPolicy(), None),
-                       ("teacher", None, L.LiftTeacher(y_yield=0.85, pre_t=2.70)),
-                       ("ESN", esn, None)):
+import itertools
+for z_off, y_off in itertools.product((0.06, 0.08, 0.10), (0.05, 0.07)):
+    L.Z_OFF_DEFAULT = z_off
+    L.Y_OFF_DEFAULT = y_off
+    L.HY = 0.06
+    L.HX = 0.20
+    L._os.environ["LIFT_BOARD_TILT_DEG"] = "15.0"
+    print(f"\n===== z={z_off} y={y_off} =====")
+esn = None
+for name, pol, tea in (("FW", NeutralPolicy(), None),):
     env = L.build_env(L.Y_OFF_DEFAULT, L.TILT_DEFAULT, 7)
     who, first = contact_parts(env, policy=pol, teacher=tea)
     env.close()

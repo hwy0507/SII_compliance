@@ -248,20 +248,20 @@ def build_fr3_hand_scene_xml(
         lift_board_xml = f"""
       <geom name="lift_board" type="box"
         pos="{lift_board_center_m[0]:.4f} {lift_board_center_m[1]:.4f} {lift_board_center_m[2]:.4f}"
-        size="{hx:.4f} {hy:.4f} 0.008" quat="{quat_wxyz[0]:.6f} {quat_wxyz[1]:.6f} {quat_wxyz[2]:.6f} {quat_wxyz[3]:.6f}"
+        size="{hx:.4f} {hy:.4f} 0.015" quat="{quat_wxyz[0]:.6f} {quat_wxyz[1]:.6f} {quat_wxyz[2]:.6f} {quat_wxyz[3]:.6f}"
         contype="5" conaffinity="5" rgba="0.62 0.45 0.24 1" friction="{friction_s} 0.02 0.002"
-        solref="{solref_s:.5f} 1" solimp="0.85 0.95 0.002 0.5 2"/>
+        solref="0.008 1" solimp="0.92 0.99 0.001 0.5 2"/>
 """
     # LIFT_PLANK_MODE=launch: momentum-limited flying plank -- a velocity
     # actuator kicks the slide once, then joint damping/friction coast it to
     # a stop.  The arm's own impedance then decides the impact force (the
     # servo mode instead shoves with up to 300 N regardless of compliance).
     import os as _os_mode
-    _launch = _os_mode.environ.get("LIFT_PLANK_MODE", "servo") == "launch"
+    _launch = _os_mode.environ.get("LIFT_PLANK_MODE", "servo") in ("launch", "blocking")
     slide_range = _os_mode.environ.get("LIFT_PLANK_RANGE", "0.65") if _launch else "0.20"
     _dflt_damping = rod_slide_damping if rod_slide_damping is not None else 2.0
-    slide_damping = _os_mode.environ.get("LIFT_PLANK_DAMPING", "0.3") if _launch else str(_dflt_damping)
-    slide_frictionloss = _os_mode.environ.get("LIFT_PLANK_FRICTIONLOSS", "0.02") if _launch else "0.0"
+    slide_damping = _os_mode.environ.get("LIFT_PLANK_DAMPING", "1.5") if _launch else str(_dflt_damping)
+    slide_frictionloss = _os_mode.environ.get("LIFT_PLANK_FRICTIONLOSS", "0.5") if _launch else "0.0"
     injected = f"""
       <camera name="rod_track" pos="1.18 -1.42 0.86" xyaxes="0.79 0.61 0  -0.17 0.22 0.96"/>
       <geom name="table" type="box" pos="0.54 0 0.38" size="0.20 0.20 0.02"
@@ -279,10 +279,11 @@ def build_fr3_hand_scene_xml(
           friction="{impactor['friction']}" solref="{contact_time_constant_s:.5f} 1"
           solimp="0.85 0.95 0.002 0.5 2"/>
       </body>
-      <body name="moving_obstacle" mocap="true" pos="0 0 1">
-        <geom name="moving_obstacle_geom" type="sphere" size="0.040" mass="0" contype="4" conaffinity="4"
-          rgba="0.85 0.12 0.12 0.92" friction="0.9 0.05 0.02"
-          solref="{contact_time_constant_s:.5f} 1" solimp="0.75 0.90 0.006 0.5 2"/>
+      <body name="moving_obstacle" mocap="true" pos="0 0 3">
+        <geom name="moving_obstacle_geom" type="box" size="0.20 0.008 0.025" mass="0"
+          contype="5" conaffinity="5" quat="0.966 0.259 0 0"
+          rgba="0.62 0.45 0.24 1" friction="0.4 0.02 0.002"
+          solref="0.008 1" solimp="0.92 0.99 0.001 0.5 2"/>
       </body>
       <body name="nominal_marker" mocap="true" pos="0 0 1">
         <geom type="sphere" size="0.025" contype="0" conaffinity="0" rgba="0.10 0.35 1.0 0.95"/>
@@ -291,8 +292,52 @@ def build_fr3_hand_scene_xml(
         <geom type="sphere" size="0.024" contype="0" conaffinity="0" rgba="1.0 0.05 0.68 0.98"/>
       </body>
     """ + board_xml + lift_board_xml
+    # EXTRACTION TABLE: a big table top with legs above the workspace.
+    # The arm reaches UNDER the table to grasp the block, then lifts into
+    # the table's underside.  Enabled by EXTRACTION_TABLE=1 env var.
+    if _os.environ.get("EXTRACTION_TABLE", "0") == "1":
+        _tx = float(_os.environ.get("EXT_TABLE_X", "0.65"))
+        _ty = float(_os.environ.get("EXT_TABLE_Y", "0.0"))
+        _tz = float(_os.environ.get("EXT_TABLE_Z", "0.78"))
+        _thx = float(_os.environ.get("EXT_TABLE_HX", "0.18"))
+        _thy = float(_os.environ.get("EXT_TABLE_HY", "0.15"))
+        table_xml = f"""
+      <body name="extraction_table" pos="{_tx:.3f} {_ty:.3f} {_tz:.3f}">
+        <geom name="table_top" type="box" size="{_thx:.3f} {_thy:.3f} 0.012"
+          contype="5" conaffinity="5" rgba="0.55 0.42 0.25 1"
+          friction="0.15 0.02 0.002" solref="0.008 1" solimp="0.92 0.99 0.001 0.5 2"/>
+      </body>
+"""
+        injected += table_xml
     text = text.replace("  </worldbody>", injected + "  </worldbody>", 1)
-    if _launch:
+    # Low-friction pairs: the arm must SLIDE along the board underside, not
+    # weld to it.  MuJoCo takes the elementwise max of geom frictions, so the
+    # robot's ~1.0 dominates the board's low value.  Explicit <pair> elements
+    # override this for the board-vs-gripper contacts only.
+    if lift_board_tilt_deg is not None:
+        pair_friction = _os.environ.get("LIFT_BOARD_PAIR_FRICTION", "0.02")
+        contact_section = f"""
+  <contact>
+    <pair geom1="lift_board" geom2="hand_collision" friction="{pair_friction} 0.005 0.001"/>
+  </contact>
+"""
+        if "</contact>" in text:
+            text = text.replace("</contact>", contact_section.replace("<contact>\n", "").replace("</contact>", "").strip() + "\n</contact>", 1)
+        elif "</mujoco>" in text:
+            text = text.replace("</mujoco>", contact_section + "</mujoco>", 1)
+    _mode = _os_mode.environ.get("LIFT_PLANK_MODE", "servo")
+    if _mode == "blocking":
+        # BLOCKING BOARD: slides in at t~3.0 (after grasp) and STOPS in the
+        # lift path as a wall.  Position servo drives to a target, then holds.
+        # The board is thick (15 mm) and positioned so ONLY the gripper hits
+        # (the block passes underneath freely).  Descent is clear because the
+        # board starts offstage.
+        _bpos = _os_mode.environ.get("BLOCK_BOARD_TARGET", "0.30")
+        rod_driver = (
+            f'<position name="rod_driver" joint="rod_slide" kp="200" '
+            f'ctrllimited="true" ctrlrange="0 {_bpos}" forcelimited="true" forcerange="-200 200"/>\n'
+        )
+    elif _launch:
         _kv = _os_mode.environ.get("LIFT_PLANK_KV", "25")
         _fl = _os_mode.environ.get("LIFT_PLANK_FORCE", "40")
         rod_driver = (

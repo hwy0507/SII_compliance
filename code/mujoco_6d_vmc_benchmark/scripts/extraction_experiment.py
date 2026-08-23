@@ -39,7 +39,7 @@ WBC_SLOW_ACTION = 0.875   # action[0] giving wbc_scale ~= 0.30
 WASHOUT = 10
 
 
-SCENARIO_SAFETY = VelocityResidualSafetyConfig(maximum_linear_yield_mps=0.38, minimum_wbc_scale=0.10)
+SCENARIO_SAFETY = VelocityResidualSafetyConfig(maximum_linear_yield_mps=0.38, minimum_wbc_scale=0.03)
 
 # Scenario episode budget: 8 s instead of the stock 6.2 s.  The corridor
 # traverse consumes most of the stock episode, leaving no time to rejoin —
