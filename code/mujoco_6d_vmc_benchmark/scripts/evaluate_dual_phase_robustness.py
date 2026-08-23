@@ -127,6 +127,31 @@ V4_FINAL_CONDITIONS: tuple[RobustCondition, ...] = (
     RobustCondition("v4final_16", "v4_final_held_out", 20267316, 0.00765, 0.00125, 0.028, 0.006, 2),
 )
 
+# Fresh confirmatory split for the carry-retention constrained ESN.  This
+# table is deliberately disjoint from v4 development/final seeds and is
+# declared before the corresponding method checkpoint is evaluated.  It
+# varies the same physical factors (board placement, contact relaxation,
+# measured qdot noise, and residual delay) without exposing any of them to a
+# policy.
+V5_CONFIRMATORY_CONDITIONS: tuple[RobustCondition, ...] = (
+    RobustCondition("v5conf_01", "v5_confirmatory", 20267501, 0.00045, -0.00175, 0.0095, 0.0035, 0),
+    RobustCondition("v5conf_02", "v5_confirmatory", 20267502, 0.00085, 0.00175, 0.0285, 0.0105, 2),
+    RobustCondition("v5conf_03", "v5_confirmatory", 20267503, 0.00135, -0.00375, 0.0125, 0.0085, 2),
+    RobustCondition("v5conf_04", "v5_confirmatory", 20267504, 0.00195, 0.00375, 0.0255, 0.0085, 1),
+    RobustCondition("v5conf_05", "v5_confirmatory", 20267505, 0.00255, -0.00275, 0.0155, 0.0055, 0),
+    RobustCondition("v5conf_06", "v5_confirmatory", 20267506, 0.00305, 0.00275, 0.0235, 0.0075, 2),
+    RobustCondition("v5conf_07", "v5_confirmatory", 20267507, 0.00355, -0.00075, 0.0185, 0.0045, 1),
+    RobustCondition("v5conf_08", "v5_confirmatory", 20267508, 0.00405, 0.00075, 0.0215, 0.0075, 1),
+    RobustCondition("v5conf_09", "v5_confirmatory", 20267509, 0.00445, -0.00125, 0.0145, 0.0065, 2),
+    RobustCondition("v5conf_10", "v5_confirmatory", 20267510, 0.00495, 0.00125, 0.0245, 0.0095, 0),
+    RobustCondition("v5conf_11", "v5_confirmatory", 20267511, 0.00545, -0.00350, 0.0115, 0.0065, 1),
+    RobustCondition("v5conf_12", "v5_confirmatory", 20267512, 0.00595, 0.00350, 0.0265, 0.0055, 2),
+    RobustCondition("v5conf_13", "v5_confirmatory", 20267513, 0.00645, -0.00250, 0.0135, 0.0105, 2),
+    RobustCondition("v5conf_14", "v5_confirmatory", 20267514, 0.00695, 0.00250, 0.0225, 0.0035, 0),
+    RobustCondition("v5conf_15", "v5_confirmatory", 20267515, 0.00735, -0.00100, 0.0105, 0.0085, 1),
+    RobustCondition("v5conf_16", "v5_confirmatory", 20267516, 0.00755, 0.00100, 0.0275, 0.0065, 2),
+)
+
 
 def selected_conditions(split: str) -> tuple[RobustCondition, ...]:
     if split == "all":
@@ -141,6 +166,8 @@ def selected_conditions(split: str) -> tuple[RobustCondition, ...]:
         return V4_DEVELOPMENT_CONDITIONS
     if split == "v4_final_held_out":
         return V4_FINAL_CONDITIONS
+    if split == "v5_confirmatory":
+        return V5_CONFIRMATORY_CONDITIONS
     return tuple(item for item in CONDITIONS if item.split == split)
 
 
@@ -238,7 +265,7 @@ def main() -> None:
     parser.add_argument("--mlp", type=Path)
     parser.add_argument("--budget", type=float, default=0.04)
     parser.add_argument("--vmc-stiffness", type=float, default=0.5)
-    parser.add_argument("--split", choices=("development", "held_out", "expanded_held_out", "supplemental_held_out", "confirmatory_held_out", "v4_development", "v4_final_held_out", "all"), default="all")
+    parser.add_argument("--split", choices=("development", "held_out", "expanded_held_out", "supplemental_held_out", "confirmatory_held_out", "v4_development", "v4_final_held_out", "v5_confirmatory", "all"), default="all")
     parser.add_argument("--methods", nargs="+", choices=("PaperMPC", "VMC", "MLP", "ESN"),
                         default=("PaperMPC", "VMC", "MLP", "ESN"))
     parser.add_argument("--manifest-only", action="store_true",

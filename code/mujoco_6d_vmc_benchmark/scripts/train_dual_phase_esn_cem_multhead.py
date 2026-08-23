@@ -4,9 +4,9 @@
 The only trainable object is the readout of a fixed ESN reservoir.  Each
 candidate is evaluated in the same MuJoCo dual-board development conditions;
 no VMC checkpoint, action, trace, or parameter is opened.  The objective is
-lexicographic in the physical audit and lift floor before it considers
-collision softness, preventing a candidate from winning by simply avoiding a
-required board contact.
+lexicographic in physical validity, lift, and carry retention before it
+considers collision softness, preventing a candidate from winning by simply
+avoiding a required board contact or dropping the carried object.
 """
 
 from __future__ import annotations
@@ -41,8 +41,8 @@ def controller_from_theta(
     return model
 
 
-def row_cost(row: dict[str, object], lift_floor_m: float) -> float:
-    """Five-metric softness cost with explicit infeasibility penalties."""
+def row_cost(row: dict[str, object], lift_floor_m: float, carry_distance_limit_m: float) -> float:
+    """Five-metric softness cost with lift/carry infeasibility penalties."""
 
     pre, post = row["pregrasp"], row["postgrasp"]
     assert isinstance(pre, dict) and isinstance(post, dict)
@@ -53,6 +53,11 @@ def row_cost(row: dict[str, object], lift_floor_m: float) -> float:
     lift_deficit = max(0.0, lift_floor_m - float(row["final_target_lift_m"]))
     if lift_deficit > 0.0:
         return 80.0 + 20.0 * lift_deficit / 0.010
+    carry_deficit = max(
+        0.0, float(row["final_hand_target_distance_m"]) - carry_distance_limit_m,
+    )
+    if carry_deficit > 0.0:
+        return 70.0 + 20.0 * carry_deficit / 0.010
     return float(
         float(pre["peak_force_n"]) / 30.0
         + float(pre["contact_impulse_ns"]) / 7.0
@@ -65,8 +70,8 @@ def row_cost(row: dict[str, object], lift_floor_m: float) -> float:
 def evaluate_theta(
     config: DirectESNConfig, basis: np.ndarray, theta: np.ndarray, readout_scale: float,
     conditions: tuple[RobustCondition, ...], budget: float, menagerie: Path, label: str,
-    lift_floor_m: float,
-) -> tuple[tuple[int, int, float, float], list[dict[str, object]]]:
+    lift_floor_m: float, carry_distance_limit_m: float,
+) -> tuple[tuple[int, int, int, float, float], list[dict[str, object]]]:
     controller = controller_from_theta(config, basis, theta, readout_scale)
     rows = [run_one(menagerie, label, controller, condition, budget=budget) for condition in conditions]
     physical_count = int(sum(bool(row["physical_audit_pass"]) for row in rows))
@@ -74,17 +79,26 @@ def evaluate_theta(
         bool(row["physical_audit_pass"]) and float(row["final_target_lift_m"]) >= lift_floor_m
         for row in rows
     ))
-    costs = np.asarray([row_cost(row, lift_floor_m) for row in rows], dtype=float)
+    carry_count = int(sum(
+        bool(row["physical_audit_pass"])
+        and float(row["final_target_lift_m"]) >= lift_floor_m
+        and float(row["final_hand_target_distance_m"]) <= carry_distance_limit_m
+        for row in rows
+    ))
+    costs = np.asarray([row_cost(row, lift_floor_m, carry_distance_limit_m) for row in rows], dtype=float)
     # CVaR-like tail objective: the upper quartile matters after the hard
     # constraints, so one easy condition cannot hide a difficult one.
     cvar = float(np.mean(costs[costs >= np.quantile(costs, 0.75)]))
     mean_cost = float(np.mean(costs))
-    rank = (physical_count, lift_count, -cvar, -mean_cost)
+    rank = (physical_count, lift_count, carry_count, -cvar, -mean_cost)
     return rank, rows
 
 
-def scalar_rank(rank: tuple[int, int, float, float], count: int) -> float:
-    return float(1000.0 * rank[0] + 100.0 * rank[1] + rank[2] + 0.1 * rank[3] - 1000.0 * count)
+def scalar_rank(rank: tuple[int, int, int, float, float], count: int) -> float:
+    return float(
+        1000.0 * rank[0] + 100.0 * rank[1] + 10.0 * rank[2]
+        + rank[3] + 0.1 * rank[4] - 1000.0 * count
+    )
 
 
 def main() -> None:
@@ -105,6 +119,10 @@ def main() -> None:
     parser.add_argument("--time-constant", type=float, default=0.08)
     parser.add_argument("--yield-smoothing-alpha", type=float, default=0.85)
     parser.add_argument("--lift-floor-mm", type=float, default=195.0)
+    parser.add_argument(
+        "--carry-distance-limit-mm", type=float, default=145.0,
+        help="training-only hard carry-retention limit on final hand-target distance",
+    )
     parser.add_argument("--seed", type=int, default=20268401)
     parser.add_argument("--train-split", choices=("v4_development",), default="v4_development")
     args = parser.parse_args()
@@ -112,8 +130,12 @@ def main() -> None:
         raise ValueError("iteration/population/elite/basis/reservoir parameters must be positive")
     if args.elite_count > args.population or args.min_sigma <= 0.0 or args.initial_sigma <= 0.0:
         raise ValueError("elite count and CEM sigmas are invalid")
-    if not 0.0 < args.budget <= 1.0 or args.lift_floor_mm <= 0.0:
-        raise ValueError("budget and lift floor must be positive")
+    if (
+        not 0.0 < args.budget <= 1.0
+        or args.lift_floor_mm <= 0.0
+        or args.carry_distance_limit_mm <= 0.0
+    ):
+        raise ValueError("budget, lift floor and carry distance limit must be positive")
     conditions = selected_conditions(args.train_split)
     if not conditions or any(item.split != args.train_split for item in conditions):
         raise RuntimeError("training is restricted to the predeclared development split")
@@ -129,9 +151,10 @@ def main() -> None:
     rng = np.random.default_rng(args.seed + 2)
     args.out_dir.mkdir(parents=True, exist_ok=True)
     floor_m = args.lift_floor_mm / 1000.0
+    carry_distance_limit_m = args.carry_distance_limit_mm / 1000.0
     best_rank, best_rows = evaluate_theta(
         config, basis, theta, args.readout_scale, conditions, args.budget,
-        args.menagerie, "ESN_cem_multhead_zero", floor_m,
+        args.menagerie, "ESN_cem_multhead_zero", floor_m, carry_distance_limit_m,
     )
     best_theta = theta.copy()
     records: list[dict[str, object]] = []
@@ -140,12 +163,13 @@ def main() -> None:
         candidates = [theta.copy()]
         if args.population > 1:
             candidates.extend(theta + sigma * rng.standard_normal(theta.shape) for _ in range(args.population - 1))
-        evaluations: list[tuple[tuple[int, int, float, float], np.ndarray, list[dict[str, object]]]] = []
+        evaluations: list[tuple[tuple[int, int, int, float, float], np.ndarray, list[dict[str, object]]]] = []
         for index, candidate in enumerate(candidates):
             candidate = np.clip(candidate, -3.0, 3.0)
             rank, rows = evaluate_theta(
                 config, basis, candidate, args.readout_scale, conditions, args.budget,
-                args.menagerie, f"ESN_cem_multhead_{iteration:02d}_{index:02d}", floor_m,
+                args.menagerie, f"ESN_cem_multhead_{iteration:02d}_{index:02d}",
+                floor_m, carry_distance_limit_m,
             )
             evaluations.append((rank, candidate, rows))
         evaluations.sort(key=lambda item: item[0], reverse=True)
@@ -162,6 +186,7 @@ def main() -> None:
             "iteration": iteration, "sigma": sigma, "best_rank": best_rank,
             "generation_best_rank": evaluations[0][0], "elite_ranks": [item[0] for item in elites],
             "best_physical_audit": [bool(row["physical_audit_pass"]) for row in best_rows],
+            "best_carry_distance_mm": [1000.0 * float(row["final_hand_target_distance_m"]) for row in best_rows],
             "best_lift_mm": [1000.0 * float(row["final_target_lift_m"]) for row in best_rows],
         }
         records.append(record)
@@ -184,10 +209,17 @@ def main() -> None:
             "iterations", "population", "elite_count", "basis_dimension",
             "initial_sigma", "min_sigma", "readout_scale", "seed",
         )},
-        "lift_floor_mm": args.lift_floor_mm,
+        "physical_constraints": {
+            "lift_floor_mm": args.lift_floor_mm,
+            "carry_distance_limit_mm": args.carry_distance_limit_mm,
+            "carry_distance_signal": "final hand-target distance from MuJoCo terminal audit; not an online ESN input",
+        },
         "best_rank": best_rank,
         "best_physical_audit": [bool(row["physical_audit_pass"]) for row in best_rows],
         "best_final_lift_mm": [1000.0 * float(row["final_target_lift_m"]) for row in best_rows],
+        "best_final_hand_target_distance_mm": [
+            1000.0 * float(row["final_hand_target_distance_m"]) for row in best_rows
+        ],
         "best_theta": best_theta.tolist(), "model": str(model_path), "iterations": records,
     }
     summary_path = args.out_dir / "cem_summary.json"
