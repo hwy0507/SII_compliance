@@ -188,27 +188,7 @@ def solve_fixed_pose_with_restarts(
         HOME + np.array([0.35, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
         HOME + np.array([-0.35, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
     ]
-    candidates: list[tuple[float, float, float, float, np.ndarray]] = []
-    keyboard_geom_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, "keyboard")
-    root_body_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "base")
-
-    def is_robot_geom(geom_id: int) -> bool:
-        body_id = int(env.model.geom_bodyid[geom_id])
-        while body_id >= 0:
-            if body_id == root_body_id:
-                return True
-            parent_id = int(env.model.body_parentid[body_id])
-            if parent_id == body_id:
-                break
-            body_id = parent_id
-        return False
-
-    robot_collision_geoms = [
-        geom_id
-        for geom_id in range(env.model.ngeom)
-        if is_robot_geom(geom_id)
-        and (env.model.geom_contype[geom_id] != 0 or env.model.geom_conaffinity[geom_id] != 0)
-    ]
+    candidates: list[tuple[float, float, float, np.ndarray]] = []
     for seed in seeds:
         q = solve_pose_ik(
             env,
@@ -227,27 +207,12 @@ def solve_fixed_pose_with_restarts(
             target_quaternion,
         )
         feasible = float(position_error <= 0.008 and rotation_error <= 0.05)
-        keyboard_clearance = float("inf")
-        if keyboard_geom_id >= 0:
-            keyboard_clearance = min(
-                float(mujoco.mj_geomDistance(env.model, env.data, robot_geom_id, keyboard_geom_id, 10.0, np.zeros(6)))
-                for robot_geom_id in robot_collision_geoms
-            )
         # Feasible solutions dominate. Among them, preserve the continuous
-        # elbow/wrist branch by staying close to the previous waypoint, but
-        # reject a branch that sweeps the keyboard at the fixed grasp pose.
-        # This makes the static keyboard audit part of IK branch selection
-        # instead of relying on a post-hoc collision report.
-        score = (
-            -feasible,
-            float(keyboard_clearance < 0.0),
-            -keyboard_clearance,
-            position_error + rotation_error,
-            float(np.linalg.norm(q - preferred_seed)),
-        )
-        candidates.append((score[0], score[1], score[2], score[3], q.copy()))
-    candidates.sort(key=lambda item: (item[0], item[1], item[2], item[3], float(np.linalg.norm(item[4] - preferred_seed))))
-    return candidates[0][4]
+        # elbow/wrist branch by staying close to the previous waypoint.
+        score = (-feasible, position_error + rotation_error, float(np.linalg.norm(q - preferred_seed)))
+        candidates.append((score[0], score[1], score[2], q.copy()))
+    candidates.sort(key=lambda item: (item[0], item[1], item[2]))
+    return candidates[0][3]
 
 
 def solve_position_nullspace_view_ik(
@@ -500,8 +465,6 @@ def build_segments(
         "approach_right": target + np.array([0.06, 0.22, 0.30], dtype=np.float64),
     }
     grasp_quaternion = panda_side_grasp_quaternion()
-    # Keep the validated side-grasp contact height.  Keyboard clearance is
-    # handled by selecting a safer IK branch and auditing the full trajectory.
     pregrasp = target + np.array([0.0, 0.22, 0.0])
     grasp = target + np.array([0.0, 0.105, 0.0])
     lift = grasp + np.array([0.0, 0.0, 0.30])

@@ -158,14 +158,11 @@ independent migration directory and the FR3 Menagerie model.
 The continuation work keeps the validated Panda side-grasp geometry and adds
 three safeguards:
 
-1. Fixed-pose IK scores elbow/wrist branches against the keyboard before
-   selecting a waypoint, so a branch with negative keyboard clearance is not
-   preferred merely because it is close in joint space.
-2. Candidate switching is frozen once the robot commits to pre-grasp,
+1. Candidate switching is frozen once the robot commits to pre-grasp,
    descent, closure, or lift. This prevents an online place-candidate switch
    from replaying an earlier grasp stage and invalidating the latch. Place
    alternatives remain available during the carry corridor.
-3. The predictable crossing obstacle is scheduled for the carry interval
+2. The predictable crossing obstacle is scheduled for the carry interval
    (`enter=10.4 s`, `contact=11.2 s`, `exit=13.0 s`) so RGB-D active-view
    behaviour is exercised while the object is being transported.
 
