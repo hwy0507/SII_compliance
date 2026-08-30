@@ -141,7 +141,16 @@ class FR3SweptVolumeChecker:
                         # positive separation is available.
                         if clearance < -1.0e-8:
                             collision_count += 1
-                        if 0.0 < clearance < near_margin:
+                            if len(events) < max_events:
+                                events.append(
+                                    ClearanceEvent(
+                                        time_s=float(time_s),
+                                        clearance_m=clearance,
+                                        robot_geom=self._geom_name(robot_gid),
+                                        obstacle_geom=self._geom_name(obstacle_gid),
+                                    )
+                                )
+                        elif 0.0 < clearance < near_margin:
                             near_collision_count += 1
                             if len(events) < max_events:
                                 events.append(

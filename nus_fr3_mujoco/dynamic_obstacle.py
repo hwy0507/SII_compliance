@@ -8,6 +8,7 @@ import mujoco
 import numpy as np
 
 from .mujoco_env import FR3MuJoCoEnv
+from .scene_belief import PerceivedObstacleState
 
 
 @dataclass(frozen=True)
@@ -70,6 +71,9 @@ class PredictableCrossingObstacle:
         state = self.state(time_s)
         env.data.mocap_pos[self.mocap_id] = state.position
         env.data.mocap_quat[self.mocap_id] = np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float64)
+        # Mocap poses are inputs to forward kinematics. Refresh x* and camera
+        # geometry before RGB-D rendering or contact evaluation consumes them.
+        mujoco.mj_forward(env.model, env.data)
 
     def contact_summary(self, env: FR3MuJoCoEnv) -> dict[str, float | int]:
         obstacle_geoms = {
@@ -88,3 +92,40 @@ class PredictableCrossingObstacle:
             mujoco.mj_contactForce(env.model, env.data, index, force)
             max_force = max(max_force, float(np.linalg.norm(force[:3])))
         return {"contact_count": count, "max_contact_force_n": max_force}
+
+
+class RGBDObstaclePredictor:
+    """MuJoCo proxy driven by the latest RGB-D track, never by ground truth."""
+
+    def __init__(self, model: mujoco.MjModel, tracker, *, body_name: str = "obstacle_prediction_proxy") -> None:
+        self.body_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, body_name)
+        if self.body_id < 0:
+            raise ValueError(f"MuJoCo model is missing obstacle proxy body: {body_name}")
+        self.mocap_id = int(model.body_mocapid[self.body_id])
+        if self.mocap_id < 0:
+            raise ValueError(f"obstacle proxy body {body_name} must be mocap=true")
+        self.tracker = tracker
+        self.active_confidence_threshold = 0.30
+        self.last_state = PerceivedObstacleState(
+            time_s=0.0,
+            position_world=np.array([0.85, 0.20, 1.20], dtype=np.float64),
+            velocity_world=np.zeros(3, dtype=np.float64),
+            covariance_m2=0.35**2,
+            confidence=0.0,
+            visible=False,
+        )
+
+    def update(self, state: PerceivedObstacleState) -> None:
+        self.last_state = state
+
+    def apply(self, env: FR3MuJoCoEnv, time_s: float) -> None:
+        dt = max(float(time_s) - self.last_state.time_s, 0.0)
+        position = self.last_state.position_world + self.last_state.velocity_world * dt
+        # Unobserved hypotheses are kept outside the workspace after their
+        # confidence decays, preventing a stale detection from blocking all
+        # plans indefinitely.
+        if self.last_state.confidence < self.active_confidence_threshold:
+            position = np.array([0.85, 0.20, 1.20], dtype=np.float64)
+        env.data.mocap_pos[self.mocap_id] = position
+        env.data.mocap_quat[self.mocap_id] = np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float64)
+        mujoco.mj_forward(env.model, env.data)

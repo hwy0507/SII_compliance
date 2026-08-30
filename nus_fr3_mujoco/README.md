@@ -4,6 +4,38 @@ This directory defines a clean fixed-base FR3 benchmark inspired by the
 closed-loop mechanism of the NUS `Visibility-Awared-Mobile-Grasping` project.
 It is not intended to be a line-by-line port of the Fetch/ManiSkill code.
 
+## Latest validated result: v3
+
+The current implementation has been re-run on the MuJoCo office tabletop
+scene with a wrist RGB-D nominal layer, a moving obstacle, and a
+receding-horizon supervisor. The v3 result is:
+
+| Metric | Result |
+| --- | ---: |
+| Two-finger grasp success | `True` |
+| Placement success | `True` |
+| Placement error | 0.0577 m |
+| Dynamic-obstacle contact steps | 0 |
+| Maximum dynamic-obstacle contact force | 0 N |
+| Receding-horizon checks | 93 |
+| Plan switches | 2 |
+| Active-view accepted / rejected | 7 / 0 |
+| Illegal target-contact steps | 0 |
+| Finite-state check | `True` |
+
+The selected route uses three lateral approach candidates and preserves the
+validated Panda side-grasp orientation. Once `PLACE DESCEND` begins, the
+place candidate is locked to prevent release-time oscillation. The complete
+metrics are stored in `fr3_recheck_v3.json`, and the detailed caveats are in
+`EXPERIMENT_REPORT_v3.md`.
+
+This is a deterministic simulation proof-of-concept, not the final planner.
+The offline swept-volume audit still reports static penetration near the
+keyboard (212 negative-clearance samples, minimum clearance -0.0248 m), even
+though the independent dynamic obstacle made zero contact. The next planning
+task is to add a static keyboard-avoidance waypoint or a continuous
+collision-constrained optimizer.
+
 ## Simulator decision
 
 Use native MuJoCo 3.x with the official-style `franka_fr3/fr3.xml` model

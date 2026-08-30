@@ -18,11 +18,12 @@ from .nominal_controller import FR3NominalVelocityServo
 from .grasp_latch import MuJoCoGraspLatch
 from .collision_checker import FR3SweptVolumeChecker
 from .receding_horizon import RecedingHorizonSupervisor
-from .scene_belief import WristSceneBeliefEstimator
+from .scene_belief import RGBDObstacleTracker, WristSceneBeliefEstimator
 from .wrist_camera import WristRGBDCamera, VelocityAwareViewScheduler, depth_preview
 
 
 HOME = np.array([0.0, -0.785, 0.0, -2.356, 0.0, 1.571, 0.785], dtype=np.float64)
+GRASP_CLOSURE_M = 0.017
 
 
 @dataclass(frozen=True)
@@ -61,6 +62,42 @@ def look_at_quaternion(position: np.ndarray, look_at: np.ndarray) -> np.ndarray:
     quaternion = np.zeros(4, dtype=np.float64)
     mujoco.mju_mat2Quat(quaternion, rotation.reshape(-1))
     return quaternion
+
+
+def panda_side_grasp_quaternion() -> np.ndarray:
+    """Orient the Panda jaws for a horizontal side grasp.
+
+    The Panda finger slides are along local +Y and the finger pads extend
+    along local +Z.  Local +Y is therefore aligned with world X (jaw closing
+    direction), while local +Z points toward the target from the wrist.
+    """
+
+    local_x = np.array([0.0, 0.0, -1.0], dtype=np.float64)
+    local_y = np.array([1.0, 0.0, 0.0], dtype=np.float64)
+    local_z = np.array([0.0, -1.0, 0.0], dtype=np.float64)
+    rotation = np.column_stack((local_x, local_y, local_z))
+    quaternion = np.zeros(4, dtype=np.float64)
+    mujoco.mju_mat2Quat(quaternion, rotation.reshape(-1))
+    return quaternion
+
+
+def stabilize_target_on_desk(env: FR3MuJoCoEnv, target_body_id: int) -> np.ndarray:
+    """Place the free target at the static desk contact height before planning."""
+
+    target_joint_id = int(env.model.body_jntadr[target_body_id])
+    target_qposadr = int(env.model.jnt_qposadr[target_joint_id])
+    target_geom_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, "target_object_geom")
+    desk_geom_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, "desk_top")
+    if target_geom_id < 0 or desk_geom_id < 0:
+        raise RuntimeError("scene must contain target_object_geom and desk_top")
+    desk_top_z = float(env.model.geom_pos[desk_geom_id][2] + env.model.geom_size[desk_geom_id][2])
+    target_half_height = float(env.model.geom_size[target_geom_id][1])
+    qpos = env.data.qpos[target_qposadr : target_qposadr + 7]
+    qpos[2] = desk_top_z + target_half_height
+    qpos[3:7] = np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float64)
+    env.data.qvel[int(env.model.jnt_dofadr[target_joint_id]) : int(env.model.jnt_dofadr[target_joint_id]) + 6] = 0.0
+    mujoco.mj_forward(env.model, env.data)
+    return env.data.xpos[target_body_id].copy()
 
 
 def solve_pose_ik(
@@ -108,6 +145,73 @@ def solve_pose_ik(
             dq *= 0.18 / dq_norm
         q = np.clip(q + 0.65 * dq, lower, upper)
     return q
+
+
+def pose_ik_residual(
+    env: FR3MuJoCoEnv,
+    body_id: int,
+    target_position: np.ndarray,
+    target_quaternion: np.ndarray,
+) -> tuple[float, float]:
+    """Return position and rotation residuals for the current model state."""
+
+    position_error = float(np.linalg.norm(np.asarray(target_position) - env.data.xpos[body_id]))
+    target_flat = np.zeros(9, dtype=np.float64)
+    mujoco.mju_quat2Mat(target_flat, target_quaternion)
+    target_rotation = target_flat.reshape(3, 3)
+    current_rotation = env.data.xmat[body_id].reshape(3, 3)
+    relative = target_rotation @ current_rotation.T
+    rotation_error = 0.5 * np.array(
+        [
+            relative[2, 1] - relative[1, 2],
+            relative[0, 2] - relative[2, 0],
+            relative[1, 0] - relative[0, 1],
+        ],
+        dtype=np.float64,
+    )
+    return position_error, float(np.linalg.norm(rotation_error))
+
+
+def solve_fixed_pose_with_restarts(
+    env: FR3MuJoCoEnv,
+    body_id: int,
+    target_position: np.ndarray,
+    target_quaternion: np.ndarray,
+    preferred_seed: np.ndarray,
+) -> np.ndarray:
+    """Solve a fixed hand pose while rejecting non-converged IK branches."""
+
+    seeds = [
+        np.asarray(preferred_seed, dtype=np.float64).copy(),
+        HOME.copy(),
+        HOME + np.array([0.35, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+        HOME + np.array([-0.35, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
+    ]
+    candidates: list[tuple[float, float, float, np.ndarray]] = []
+    for seed in seeds:
+        q = solve_pose_ik(
+            env,
+            body_id,
+            target_position,
+            target_quaternion,
+            seed,
+            orientation_weight=1.0,
+        )
+        env.data.qpos[env.qpos_adrs] = q
+        mujoco.mj_forward(env.model, env.data)
+        position_error, rotation_error = pose_ik_residual(
+            env,
+            body_id,
+            target_position,
+            target_quaternion,
+        )
+        feasible = float(position_error <= 0.008 and rotation_error <= 0.05)
+        # Feasible solutions dominate. Among them, preserve the continuous
+        # elbow/wrist branch by staying close to the previous waypoint.
+        score = (-feasible, position_error + rotation_error, float(np.linalg.norm(q - preferred_seed)))
+        candidates.append((score[0], score[1], score[2], q.copy()))
+    candidates.sort(key=lambda item: (item[0], item[1], item[2]))
+    return candidates[0][3]
 
 
 def solve_position_nullspace_view_ik(
@@ -183,7 +287,7 @@ def _solve_waypoint_specs(
     env: FR3MuJoCoEnv,
     hand_id: int,
     target: np.ndarray,
-    waypoint_specs: list[tuple[str, np.ndarray, np.ndarray, float, float]],
+    waypoint_specs: list[tuple[str, np.ndarray, np.ndarray, float, float, np.ndarray | None]],
 ) -> tuple[list[np.ndarray], list[dict[str, object]]]:
     """Solve one candidate waypoint chain and record position residuals."""
 
@@ -197,7 +301,7 @@ def _solve_waypoint_specs(
     solved_waypoints: list[np.ndarray] = []
     waypoint_diagnostics: list[dict[str, object]] = []
     seed = HOME.copy()
-    for index, (phase_name, position, semantic_target, _, view_gain) in enumerate(waypoint_specs):
+    for index, (phase_name, position, semantic_target, _, view_gain, orientation) in enumerate(waypoint_specs):
         decision = view_scheduler.choose_focus(
             phase_name,
             position,
@@ -209,14 +313,27 @@ def _solve_waypoint_specs(
             f"planned_view_focus candidate_phase={phase_name} focus={decision.focus_name} "
             f"score={decision.score:.3f} risk={decision.risk_weight:.3f}"
         )
-        solved = solve_position_nullspace_view_ik(
-            env,
-            hand_id,
-            position,
-            look_at_quaternion(position, decision.focus_point),
-            seed,
-            view_gain=view_gain,
-        )
+        if orientation is None:
+            solved = solve_position_nullspace_view_ik(
+                env,
+                hand_id,
+                position,
+                look_at_quaternion(position, decision.focus_point),
+                seed,
+                view_gain=view_gain,
+            )
+        else:
+            # Task-space grasp waypoints use full pose IK. The previous
+            # position-priority null-space solver could leave the wrist in a
+            # visually awkward orientation even when the hand position was
+            # close to the target.
+            solved = solve_fixed_pose_with_restarts(
+                env,
+                hand_id,
+                position,
+                orientation,
+                seed,
+            )
         solved_waypoints.append(solved)
         env.data.qpos[env.qpos_adrs] = solved
         mujoco.mj_forward(env.model, env.data)
@@ -226,6 +343,12 @@ def _solve_waypoint_specs(
                 "target_position": np.asarray(position, dtype=np.float64).tolist(),
                 "solved_hand_position": env.data.xpos[hand_id].copy().tolist(),
                 "position_error_m": float(np.linalg.norm(position - env.data.xpos[hand_id])),
+                "hand_quaternion_wxyz": env.data.xquat[hand_id].copy().tolist(),
+                "orientation_error_rad": (
+                    pose_ik_residual(env, hand_id, position, orientation)[1]
+                    if orientation is not None
+                    else None
+                ),
                 "focus_name": decision.focus_name,
                 "focus_point": decision.focus_point.tolist(),
             }
@@ -241,6 +364,7 @@ def _refine_place_and_build_segments(
     solved_waypoints: list[np.ndarray],
     waypoint_diagnostics: list[dict[str, object]],
     desired_object_place: np.ndarray,
+    grasp_quaternion: np.ndarray,
 ) -> list[DemoSegment]:
     """Refine carry/release and add a collision-safe post-release retract."""
 
@@ -250,26 +374,18 @@ def _refine_place_and_build_segments(
     grasp_hand_position = env.data.xpos[hand_id].copy()
     grasp_hand_rotation = env.data.xmat[hand_id].reshape(3, 3).copy()
     grasp_relative_position = grasp_hand_rotation.T @ (target - grasp_hand_position)
-    view_scheduler = VelocityAwareViewScheduler()
-    place_hand_position = np.asarray(desired_object_place, dtype=np.float64).copy() + np.array([0.0, 0.0, 0.075])
+    # The grasp transform is measured from the hand body to the object center.
+    # Therefore the hand must be placed by the inverse of that measured
+    # offset.  Adding a fixed height here lifted the object 7.5 cm above the
+    # desk during release, which made the placement look and behave wrong.
+    place_hand_position = np.asarray(desired_object_place, dtype=np.float64).copy() - grasp_hand_rotation @ grasp_relative_position
     q_place = q_place_hover.copy()
     for _ in range(4):
-        # The target cylinder sits on the tabletop at z=0.72.  Keeping the
-        # hand at roughly target_z + 0.075 lets the captured grasp transform
-        # place the object on the table instead of hovering above it.
-        place_hand_position[2] = max(place_hand_position[2], float(desired_object_place[2]) + 0.075)
-        place_decision = view_scheduler.choose_focus(
-            "CARRY AROUND CLUTTER",
-            place_hand_position,
-            desired_object_place,
-            np.empty((0, 3)),
-            np.empty((0,)),
-        )
         q_place = solve_position_nullspace_view_ik(
             env,
             hand_id,
             place_hand_position,
-            look_at_quaternion(place_hand_position, place_decision.focus_point),
+            grasp_quaternion,
             q_place,
             view_gain=0.65,
         )
@@ -289,16 +405,17 @@ def _refine_place_and_build_segments(
         env,
         hand_id,
         retract_hand_position,
-        look_at_quaternion(retract_hand_position, desired_object_place),
+        grasp_quaternion,
         q_place,
         view_gain=0.25,
     )
     return [
-        DemoSegment(2.0, q_approach, 0.04, "APPROACH ABOVE CLUTTER"),
-        DemoSegment(1.5, q_pregrasp, 0.04, "PRE-GRASP"),
-        DemoSegment(1.2, q_grasp, 0.04, "DESCEND"),
-        DemoSegment(1.0, q_grasp, 0.0, "CLOSE GRIPPER"),
-        DemoSegment(1.8, q_lift, 0.0, "LIFT"),
+        DemoSegment(3.2, q_approach, 0.04, "APPROACH ABOVE CLUTTER"),
+        DemoSegment(1.8, q_pregrasp, 0.04, "PRE-GRASP"),
+        DemoSegment(1.3, q_grasp, 0.04, "DESCEND"),
+        DemoSegment(1.0, q_grasp, 0.04, "SETTLE AT GRASP"),
+        DemoSegment(1.4, q_grasp, 0.0, "CLOSE GRIPPER"),
+        DemoSegment(2.0, q_lift, 0.0, "LIFT"),
         DemoSegment(2.3, q_place_hover, 0.0, "CARRY AROUND CLUTTER"),
         # Give the joint servo enough time to settle before the latch is
         # released; otherwise the object is evaluated while the hand is still
@@ -330,38 +447,50 @@ def build_segments(
 
     env.data.qpos[env.qpos_adrs] = HOME
     mujoco.mj_forward(env.model, env.data)
-    target = env.data.xpos[target_id].copy()
+    target = stabilize_target_on_desk(env, target_id)
 
-    # Candidate Cartesian waypoints are deliberately small perturbations around
-    # the deterministic nominal route. The checker selects among them using
-    # geometry, not obstacle names or hand-tuned collision labels.
+    # Candidate routes are evaluated in joint space, but the grasp itself is a
+    # dedicated horizontal Panda side grasp. The approach point is directly
+    # above the pre-grasp point, so the arm first clears the clutter, descends
+    # vertically, and only then advances along the gripper approach axis.
+    # Keep three small lateral variants around the same side-grasp geometry.
+    # The center-only debugging variant is not robust in the dynamic scene:
+    # it can place the fingers outside the cylinder at closure.  The online
+    # supervisor also needs more than one approach corridor while the robot is
+    # still in APPROACH ABOVE CLUTTER.
     approach_candidates = {
-        "approach_left": np.array([0.06, -0.40, 1.05], dtype=np.float64),
-        "approach_center": np.array([0.10, -0.40, 1.05], dtype=np.float64),
-        "approach_right": np.array([0.14, -0.40, 1.05], dtype=np.float64),
+        "approach_left": target + np.array([-0.06, 0.22, 0.30], dtype=np.float64),
+        "approach_center": target + np.array([0.00, 0.22, 0.30], dtype=np.float64),
+        "approach_right": target + np.array([0.06, 0.22, 0.30], dtype=np.float64),
     }
-    pregrasp = target + np.array([0.0, 0.0, 0.16])
-    grasp = target + np.array([0.0, 0.0, 0.075])
-    lift = target + np.array([0.0, 0.0, 0.30])
+    grasp_quaternion = panda_side_grasp_quaternion()
+    pregrasp = target + np.array([0.0, 0.22, 0.0])
+    grasp = target + np.array([0.0, 0.105, 0.0])
+    lift = grasp + np.array([0.0, 0.0, 0.30])
     place_candidates = {
         "place_left": np.array([0.32, -0.12, 0.78], dtype=np.float64),
         "place_center": np.array([0.40, -0.10, 0.78], dtype=np.float64),
         "place_right": np.array([0.48, -0.10, 0.78], dtype=np.float64),
     }
-    checker = FR3SweptVolumeChecker(env, safety_margin_m=0.015)
+    checker = FR3SweptVolumeChecker(
+        env,
+        safety_margin_m=0.015,
+        excluded_obstacle_bodies=("target_object", "dynamic_obstacle", "obstacle_prediction_proxy"),
+    )
     candidates: list[CandidatePlan] = []
     for approach_name, approach in approach_candidates.items():
         for place_name, desired_object_place in place_candidates.items():
             env.reset(HOME)
+            target = stabilize_target_on_desk(env, target_id)
             waypoint_specs = [
-                ("APPROACH ABOVE CLUTTER", approach, target, 2.0, 0.45),
-                ("PRE-GRASP", pregrasp, target, 1.5, 0.70),
-                ("DESCEND", grasp, target, 1.2, 0.80),
-                ("LIFT", lift, target, 1.8, 0.55),
-                ("CARRY AROUND CLUTTER", desired_object_place + np.array([0.0, 0.0, 0.18]), desired_object_place, 2.3, 0.65),
+                ("APPROACH ABOVE CLUTTER", approach, target, 3.2, 0.00, grasp_quaternion),
+                ("PRE-GRASP", pregrasp, target, 1.8, 0.20, grasp_quaternion),
+                ("DESCEND", grasp, target, 1.3, 0.10, grasp_quaternion),
+                ("LIFT", lift, target, 2.0, 0.10, grasp_quaternion),
+                ("CARRY AROUND CLUTTER", desired_object_place + np.array([0.0, 0.0, 0.18]), desired_object_place, 2.3, 0.10, grasp_quaternion),
             ]
             solved, diagnostics = _solve_waypoint_specs(env, hand_id, target, waypoint_specs)
-            segments = _refine_place_and_build_segments(env, hand_id, target, solved, diagnostics, desired_object_place)
+            segments = _refine_place_and_build_segments(env, hand_id, target, solved, diagnostics, desired_object_place, grasp_quaternion)
             q_sweep, t_sweep = checker.interpolate_segments(segments, HOME, sample_dt_s=0.06)
             report = checker.check_trajectory(q_sweep, t_sweep, max_events=32)
             candidates.append(
@@ -429,18 +558,30 @@ def render_demo(
     fps: int = 20,
     metrics_path: Path | None = None,
     dynamic_obstacle: bool = False,
+    active_view_enabled: bool = True,
+    grasp_closure_m: float = GRASP_CLOSURE_M,
+    gripper_kp: float = 800.0,
 ) -> None:
     env = FR3MuJoCoEnv(model_path, physics_dt_s=0.002, policy_dt_s=0.040, ee_body_name="fr3_link7")
+    if env.model.nu > 7:
+        env.model.actuator_gainprm[7, 0] = float(gripper_kp)
     env.reset(HOME)
     obstacle = None
+    perception_tracker = RGBDObstacleTracker()
+    perception_predictor = None
     if dynamic_obstacle:
-        from .dynamic_obstacle import PredictableCrossingObstacle
+        from .dynamic_obstacle import PredictableCrossingObstacle, RGBDObstaclePredictor
 
         obstacle = PredictableCrossingObstacle(env.model)
         obstacle.apply(env, 0.0)
+        perception_predictor = RGBDObstaclePredictor(env.model, perception_tracker)
     servo = FR3NominalVelocityServo(env, kp=(22.0,) * 7, kv=(10.0,) * 7)
     segments, target, waypoint_diagnostics, _, candidate_records, candidates = build_segments(env)
-    sweep_checker = FR3SweptVolumeChecker(env, safety_margin_m=0.015)
+    sweep_checker = FR3SweptVolumeChecker(
+        env,
+        safety_margin_m=0.015,
+        excluded_obstacle_bodies=("target_object", "dynamic_obstacle", "obstacle_prediction_proxy"),
+    )
     q_sweep, t_sweep = sweep_checker.interpolate_segments(segments, HOME, sample_dt_s=0.02)
     sweep_report = sweep_checker.check_trajectory(q_sweep, t_sweep)
     print(
@@ -457,7 +598,8 @@ def render_demo(
         execution_checker = FR3SweptVolumeChecker(
             env,
             safety_margin_m=0.015,
-            obstacle_state_fn=obstacle.apply,
+            obstacle_state_fn=perception_predictor.apply,
+            excluded_obstacle_bodies=("target_object", "dynamic_obstacle"),
         )
         obstacle.apply(env, 0.0)
     supervisor = RecedingHorizonSupervisor(
@@ -468,6 +610,7 @@ def render_demo(
         horizon_s=0.6,
         check_period_s=0.2,
         sample_dt_s=0.06,
+        switch_cooldown_s=0.4,
     )
     total_time = sum(segment.duration_s for segment in segments)
     total_steps = int(np.ceil(total_time / env.policy_dt_s))
@@ -482,12 +625,14 @@ def render_demo(
     scene_estimator = WristSceneBeliefEstimator(env.model, "wrist_rgbd")
     view_scheduler = VelocityAwareViewScheduler()
     grasp_latch = MuJoCoGraspLatch(env)
+    stabilize_target_on_desk(env, grasp_latch.object_id)
     font_path = Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")
     font = ImageFont.truetype(str(font_path), 20) if font_path.exists() else ImageFont.load_default()
 
     frames: list[np.ndarray] = []
     phase_records: list[dict[str, object]] = []
     observation_records: list[dict[str, object]] = []
+    active_view_records: list[dict[str, object]] = []
     last_phase: str | None = None
     max_grasp_tracking_error = 0.0
     min_target_visibility = 1.0
@@ -499,16 +644,39 @@ def render_demo(
     last_horizon_collision_count = sweep_report.collision_count
     replanning_records: list[dict[str, object]] = []
     q_start = HOME.copy()
+    hand_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "fr3_hand")
+    q_grasp_ref = next(segment.q.copy() for segment in segments if segment.phase == "DESCEND")
+    q_pregrasp_ref = next(segment.q.copy() for segment in segments if segment.phase == "PRE-GRASP")
+    last_active_view_time = -np.inf
+    active_view_accept_count = 0
+    active_view_reject_count = 0
+    grasp_attempted = False
+    grasp_validation_records: list[dict[str, object]] = []
+    illegal_target_contact_steps = 0
+    target_contact_records: list[dict[str, object]] = []
+    grasp_contact_enabled_records: list[dict[str, object]] = []
+    grasp_failed = False
+    grasp_failure_time_s: float | None = None
+    grasp_ever_engaged = False
     for step in range(total_steps + 1):
         t = min(step * env.policy_dt_s, total_time)
         if obstacle is not None:
             obstacle.apply(env, t)
+        # The nominal stack sees only the wrist RGB-D frame. The benchmark
+        # obstacle is moved independently to generate the hidden environment.
         wrist = wrist_camera.render(env.data)
         belief = scene_estimator.estimate(
             wrist,
             target_position_world=env.data.xpos[grasp_latch.object_id].copy(),
             stride=8,
         )
+        perceived_state = perception_tracker.update(
+            wrist,
+            time_s=t,
+            target_position_world=env.data.xpos[grasp_latch.object_id].copy(),
+        )
+        if perception_predictor is not None:
+            perception_predictor.update(perceived_state)
         horizon_decision = supervisor.update(env.q, t)
         if horizon_decision is not None:
             replanning_records.append(
@@ -527,6 +695,101 @@ def render_demo(
             last_horizon_clearance_m = horizon_decision.report.min_clearance_m
             last_horizon_collision_count = horizon_decision.report.collision_count
         q_ref, gripper, phase = supervisor.reference(env.q, t)
+        if grasp_failed:
+            recovery_elapsed = float(t - (grasp_failure_time_s or t))
+            if recovery_elapsed < 0.8:
+                q_ref = q_grasp_ref
+                phase = "GRASP FAILED / OPEN"
+            elif recovery_elapsed < 1.8:
+                q_ref = q_pregrasp_ref
+                phase = "GRASP FAILED / RETREAT"
+            else:
+                q_ref = HOME
+                phase = "GRASP FAILED / HOME"
+            gripper = 0.04
+        hand_position = env.data.xpos[hand_id].copy()
+        q_before_view_ik = env.q.copy()
+        future_hand_positions = []
+        elapsed_plan = 0.0
+        for future_segment in supervisor.plan_segments():
+            elapsed_plan += float(future_segment.duration_s)
+            if elapsed_plan <= t + 0.18:
+                continue
+            env.data.qpos[env.qpos_adrs] = future_segment.q
+            mujoco.mj_forward(env.model, env.data)
+            future_hand_positions.append(env.data.xpos[hand_id].copy())
+        env.data.qpos[env.qpos_adrs] = q_before_view_ik
+        mujoco.mj_forward(env.model, env.data)
+        active_view = view_scheduler.choose_active_focus(
+            phase,
+            hand_position,
+            env.data.xpos[grasp_latch.object_id].copy(),
+            perceived_state,
+            future_positions=np.asarray(future_hand_positions, dtype=np.float64),
+        )
+        if (
+            active_view_enabled
+            and active_view.action_required
+            and phase in {"CARRY AROUND CLUTTER", "RETURN HOME"}
+            and t - last_active_view_time >= 0.32
+        ):
+            q_view = solve_position_nullspace_view_ik(
+                env,
+                hand_id,
+                hand_position,
+                look_at_quaternion(hand_position, active_view.focus_point),
+                env.q,
+                view_gain=0.45,
+            )
+            # Active perception must not submit a wrist reorientation that is
+            # already unsafe under the currently observed RGB-D hypothesis.
+            # The checker sees the RGB-D-driven proxy, never the hidden body.
+            view_gate_q, view_gate_t = execution_checker.interpolate_segments(
+                [DemoSegment(0.32, q_view, 0.0, phase)],
+                env.q,
+                sample_dt_s=0.04,
+            )
+            view_gate_report = execution_checker.check_trajectory(
+                view_gate_q,
+                view_gate_t + float(t),
+                near_collision_margin_m=0.010,
+                max_events=8,
+            )
+            view_accepted = bool(
+                view_gate_report.collision_count == 0
+                and view_gate_report.min_clearance_m >= 0.0
+            )
+            # IK is used to construct a camera-view action. Restore the real
+            # measured configuration before the torque servo advances it.
+            env.data.qpos[env.qpos_adrs] = q_before_view_ik
+            mujoco.mj_forward(env.model, env.data)
+            if view_accepted:
+                q_ref = 0.65 * q_ref + 0.35 * q_view
+                view_action = "ACTIVE_OBSTACLE_VIEW"
+                active_view_accept_count += 1
+                last_active_view_time = t
+            else:
+                view_action = "ACTIVE_VIEW_REJECTED"
+                active_view_reject_count += 1
+        else:
+            view_action = "TASK_VIEW"
+        active_view_records.append(
+            {
+                "time_s": float(t),
+                "phase": phase,
+                "focus_name": active_view.focus_name,
+                "focus_point": active_view.focus_point.tolist(),
+                "action": view_action,
+                "action_required": bool(active_view.action_required),
+                "obstacle_visible": bool(perceived_state.visible),
+                "obstacle_position_world": perceived_state.position_world.tolist(),
+                "obstacle_velocity_world": perceived_state.velocity_world.tolist(),
+                "obstacle_speed_m_s": float(np.linalg.norm(perceived_state.velocity_world)),
+                "prediction_uncertainty_m": float(np.sqrt(perceived_state.covariance_m2)),
+                "tracking_confidence": float(perceived_state.confidence),
+                "safety_gate": view_action != "ACTIVE_VIEW_REJECTED",
+            }
+        )
         if obstacle is not None:
             obstacle.apply(env, t)
         state = env.state()
@@ -539,10 +802,32 @@ def render_demo(
                 grasp_latch.tracking_error_m(),
             )
         command = servo.compute(state, FR3Waypoint(t, tuple(q_ref), phase))
+        if phase == "CLOSE GRIPPER":
+            gripper = float(grasp_closure_m)
+        elif phase in {"LIFT", "CARRY AROUND CLUTTER", "PLACE DESCEND"}:
+            gripper = float(grasp_closure_m) if grasp_latch.engaged else 0.04
         if env.model.nu > 7:
             env.data.ctrl[7] = gripper
-        if phase == "LIFT" and not grasp_latch.engaged:
-            grasp_latch.engage(reference_position=target)
+        # Keep the target physically available to the desk throughout the
+        # reach, but prevent an open finger from grazing it before the grasp
+        # pose has settled. The fingertip-target channel is enabled only for
+        # the closure window and remains enabled after a validated grasp.
+        grasp_contact_enabled = bool(
+            phase == "CLOSE GRIPPER" or grasp_latch.engaged
+        )
+        env.model.geom_conaffinity[grasp_latch.target_geom_id] = 8 if grasp_contact_enabled else 0
+        grasp_contact_enabled_records.append(
+            {"time_s": float(t), "phase": phase, "enabled": grasp_contact_enabled}
+        )
+        if phase == "LIFT" and not grasp_latch.engaged and not grasp_attempted:
+            validation = grasp_latch.validate_grasp()
+            grasp_validation_records.append({"time_s": float(t), **validation})
+            grasp_latch.engage()
+            grasp_attempted = True
+            if not grasp_latch.engaged:
+                grasp_failed = True
+                grasp_failure_time_s = float(t)
+                env.model.geom_conaffinity[grasp_latch.target_geom_id] = 0
         if phase == "RELEASE" and grasp_latch.engaged:
             release_target_position = env.data.xpos[grasp_latch.object_id].copy()
             grasp_latch.release()
@@ -554,6 +839,21 @@ def render_demo(
                 float(obstacle_state["max_contact_force_n"]),
             )
             dynamic_obstacle_contact_steps += int(obstacle_state["contact_count"] > 0)
+        target_contact = grasp_latch.target_contact_summary()
+        illegal_target_contact_steps += int(target_contact["illegal_target_contact_count"] > 0)
+        if target_contact["target_robot_contact_count"]:
+            target_contact_records.append({"time_s": float(t), "phase": phase, **target_contact})
+        # Decide during closure, while the fingers are still in contact. The
+        # previous implementation waited until the first LIFT sample, which
+        # allowed a valid transient grasp to destabilize before validation.
+        if phase == "CLOSE GRIPPER" and not grasp_latch.engaged and not grasp_attempted:
+            closure_validation = grasp_latch.validate_grasp()
+            if closure_validation["left_finger_contact"] or closure_validation["right_finger_contact"]:
+                grasp_validation_records.append({"time_s": float(t), **closure_validation})
+            if bool(closure_validation["valid"]):
+                grasp_latch.engage()
+                grasp_attempted = True
+                grasp_ever_engaged = True
         grasp_latch.update()
         state = env.state()
         target_position_now = env.data.xpos[grasp_latch.object_id].copy()
@@ -620,7 +920,7 @@ def render_demo(
         draw.rectangle((640, 240, 960, 268), fill=(10, 16, 24))
         draw.text((14, 10), "FR3 + wrist RGB-D | velocity-aware active view", fill=(235, 242, 250), font=font)
         grasp_state = "GRASPED" if grasp_latch.engaged else "OPEN"
-        draw.text((14, 40), f"t={t:5.2f}s  {phase}  view={view_mode}  grasp={grasp_state}", fill=(185, 220, 255), font=font)
+        draw.text((14, 40), f"t={t:5.2f}s  {phase}  view={view_action}  grasp={grasp_state}", fill=(185, 220, 255), font=font)
         draw.text((14, 64), f"rgbd points={len(belief.obstacle_points_world):4d}  target visibility={belief.target_visibility:.2f}", fill=(175, 195, 205), font=font)
         clearance_label = "horizon" if obstacle is not None else "planned"
         draw.text((650, 220), f"{clearance_label} clearance={last_horizon_clearance_m:.3f} m", fill=(175, 195, 205), font=font)
@@ -664,8 +964,25 @@ def render_demo(
         "placement_reference_position": placement_reference.tolist(),
         "placement_error_m": placement_error,
         "placement_success": placement_success,
-        "grasp_success": bool(any(record["grasp_engaged"] for record in phase_records)),
+        "grasp_success": bool(grasp_ever_engaged),
+        "grasp_ever_engaged": bool(grasp_ever_engaged),
+        "grasp_attempted": bool(grasp_attempted),
+        "grasp_failed": bool(grasp_failed),
+        "grasp_failure_time_s": grasp_failure_time_s,
+        "grasp_validation_records": grasp_validation_records,
+        "target_contact_records": target_contact_records,
+        "illegal_target_contact_steps": int(illegal_target_contact_steps),
+        "grasp_contact_enabled_records": grasp_contact_enabled_records,
         "observation_records": observation_records,
+        "active_view_records": active_view_records,
+        "active_view_accept_count": int(active_view_accept_count),
+        "active_view_reject_count": int(active_view_reject_count),
+        "perception_contract": {
+            "obstacle_pose_available_to_nominal": False,
+            "obstacle_velocity_available_to_nominal": False,
+            "obstacle_contact_available_to_nominal": False,
+            "obstacle_source": "wrist_rgbd_only",
+        },
         "min_target_visibility": float(min_target_visibility),
         "swept_volume_report": {
             "sampled_steps": sweep_report.sampled_steps,
@@ -692,8 +1009,20 @@ def main() -> None:
     parser.add_argument("--fps", type=int, default=20)
     parser.add_argument("--metrics", type=Path, default=None)
     parser.add_argument("--dynamic-obstacle", action="store_true")
+    parser.add_argument("--disable-active-view", action="store_true")
+    parser.add_argument("--grasp-closure", type=float, default=GRASP_CLOSURE_M)
+    parser.add_argument("--gripper-kp", type=float, default=800.0)
     args = parser.parse_args()
-    render_demo(args.model, args.output, args.fps, args.metrics, args.dynamic_obstacle)
+    render_demo(
+        args.model,
+        args.output,
+        args.fps,
+        args.metrics,
+        args.dynamic_obstacle,
+        not args.disable_active_view,
+        args.grasp_closure,
+        args.gripper_kp,
+    )
 
 
 if __name__ == "__main__":

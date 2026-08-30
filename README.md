@@ -1,5 +1,28 @@
 # Compliance Control for Dynamic Obstacle Recovery
 
+## FR3 NUS-inspired tabletop benchmark (current milestone)
+
+The branch also contains a fixed-base Franka FR3 tabletop benchmark under
+`nus_fr3_mujoco/`. It implements the NUS-inspired nominal layer as a native
+MuJoCo experiment: wrist RGB-D scene belief, task-stage-aware view selection,
+candidate arm trajectories, short-horizon replanning, and Panda two-finger
+grasp validation.
+
+The latest validated v3 run achieved a real two-finger grasp and successful
+placement with zero contact from the independently moved dynamic obstacle:
+
+| Metric | Result |
+| --- | ---: |
+| Grasp / placement | `True / True` |
+| Placement error | 0.0577 m |
+| Dynamic-obstacle contacts | 0 |
+| Maximum dynamic-obstacle force | 0 N |
+| Horizon checks / plan switches | 93 / 2 |
+
+The result is a nominal-layer proof-of-concept. Static keyboard penetration is
+still present in the offline swept-volume audit and is explicitly documented
+in `nus_fr3_mujoco/EXPERIMENT_REPORT_v3.md`.
+
 本项目聚焦一个单独而明确的问题：
 
 ```text

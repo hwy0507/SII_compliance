@@ -249,7 +249,12 @@ class RecedingHorizonSupervisor:
 
         phase = self._phase_at(active.segments, time_s)
         active_approach = active.name.split("+", 1)[0]
-        if phase in {"RELEASE", "RETRACT AFTER RELEASE", "RETURN HOME"}:
+        # Once the hand starts descending into the placement corridor, keep
+        # the already selected place waypoint fixed.  Switching between place
+        # candidates during this short release window changes the measured
+        # hand/object transform and can turn a valid grasp into a placement
+        # miss.  Replanning remains available during carry, before descent.
+        if phase in {"PLACE DESCEND", "RELEASE", "RETRACT AFTER RELEASE", "RETURN HOME"}:
             return [active]
         if phase == "APPROACH ABOVE CLUTTER":
             return list(self.candidates)
