@@ -1,0 +1,46 @@
+{
+  "name": "fr3_office_v5_pose_aware_wrist",
+  "version": "0.5",
+  "robot": "fr3",
+  "base_mode": "fixed",
+  "table_top_z_m": 0.72,
+  "target_body": "target_object",
+  "static_obstacles": [
+    "desk_top",
+    "desk_front_edge",
+    "desk_rear_edge",
+    "drawer_cabinet",
+    "monitor_frame",
+    "keyboard",
+    "mouse",
+    "clutter_notebook_red",
+    "clutter_notebook_blue",
+    "coffee_mug",
+    "pen_holder",
+    "desk_plant",
+    "loose_paper_stack",
+    "pencil",
+    "office_chair"
+  ],
+  "external_observation_cameras": [
+    "office_overview",
+    "office_side"
+  ],
+  "wrist_observation_camera": "wrist_rgbd",
+  "active_view_action": "FR3_hand_pose_waypoint",
+  "student_observation": [
+    "joint_position",
+    "joint_velocity",
+    "commanded_joint_velocity",
+    "tracking_error",
+    "temporal_history"
+  ],
+  "student_forbidden_observation": [
+    "camera_image",
+    "depth_image",
+    "obstacle_pose",
+    "obstacle_velocity",
+    "contact_truth",
+    "contact_force"
+  ]
+}

@@ -1,0 +1,379 @@
+<mujoco model="fr3">
+  <compiler angle="radian" meshdir="/home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_fr3/assets"/>
+
+  <option integrator="implicitfast"/>
+
+  <default>
+    <default class="fr3">
+      <!-- Overwritten in joints 5, 6, and 7. -->
+      <joint damping="0.21" armature="0.195" frictionloss="1.137"/>
+      <position inheritrange="1"/>
+      <default class="visual">
+        <geom type="mesh" group="2" contype="0" conaffinity="0"/>
+      </default>
+      <default class="collision">
+        <geom type="mesh" group="3" mass="0" density="0"/>
+      </default>
+      <site size="0.001" rgba="0.5 0.5 0.5 0.3" group="4"/>
+    </default>
+
+    <default class="fingertip_pad_collision_1">
+      <geom type="box" size="0.0085 0.004 0.0085" pos="0 0.0055 0.0445" contype="4" conaffinity="4"/>
+    </default>
+    <default class="fingertip_pad_collision_2">
+      <geom type="box" size="0.003 0.002 0.003" pos="0.0055 0.002 0.05" contype="4" conaffinity="4"/>
+    </default>
+    <default class="fingertip_pad_collision_3">
+      <geom type="box" size="0.003 0.002 0.003" pos="-0.0055 0.002 0.05" contype="4" conaffinity="4"/>
+    </default>
+    <default class="fingertip_pad_collision_4">
+      <geom type="box" size="0.003 0.002 0.0035" pos="0.0055 0.002 0.0395" contype="4" conaffinity="4"/>
+    </default>
+    <default class="fingertip_pad_collision_5">
+      <geom type="box" size="0.003 0.002 0.0035" pos="-0.0055 0.002 0.0395" contype="4" conaffinity="4"/>
+    </default>
+    <default class="panda_finger">
+      <joint axis="0 1 0" type="slide" range="0 0.04" armature="0.1" damping="1"/>
+    </default>
+  </default>
+
+  <asset>
+    <material name="black" rgba=".2 .2 .2 1"/>
+    <material name="white" rgba="1 1 1 1"/>
+    <material name="red" rgba="1 0.072272 0.039546 1"/>
+    <material name="gray" rgba="0.863156 0.863156 0.863157 1"/>
+    <material name="button_green" rgba="0.102241 0.571125 0.102242 1"/>
+    <material name="button_red" rgba="0.520996 0.008023 0.013702 1"/>
+    <material name="button_blue" rgba="0.024157 0.445201 0.737911 1"/>
+
+    <mesh file="link0_0.obj"/>
+    <mesh file="link0_1.obj"/>
+    <mesh file="link0_2.obj"/>
+    <mesh file="link0_3.obj"/>
+    <mesh file="link0_4.obj"/>
+    <mesh file="link0_5.obj"/>
+    <mesh file="link0_6.obj"/>
+    <mesh file="link1.obj"/>
+    <mesh file="link2.obj"/>
+    <mesh file="link3_0.obj"/>
+    <mesh file="link3_1.obj"/>
+    <mesh file="link4_0.obj"/>
+    <mesh file="link4_1.obj"/>
+    <mesh file="link5_0.obj"/>
+    <mesh file="link5_1.obj"/>
+    <mesh file="link5_2.obj"/>
+    <mesh file="link6_0.obj"/>
+    <mesh file="link6_1.obj"/>
+    <mesh file="link6_2.obj"/>
+    <mesh file="link6_3.obj"/>
+    <mesh file="link6_4.obj"/>
+    <mesh file="link6_5.obj"/>
+    <mesh file="link6_6.obj"/>
+    <mesh file="link6_7.obj"/>
+    <mesh file="link7_0.obj"/>
+    <mesh file="link7_1.obj"/>
+    <mesh file="link7_2.obj"/>
+    <mesh file="link7_3.obj"/>
+
+    <mesh name="link0_coll" file="link0.stl"/>
+    <mesh name="link1_coll" file="link1.stl"/>
+    <mesh name="link2_coll" file="link2.stl"/>
+    <mesh name="link3_coll" file="link3.stl"/>
+    <mesh name="link4_coll" file="link4.stl"/>
+    <mesh name="link5_coll" file="link5.stl"/>
+    <mesh name="link6_coll" file="link6.stl"/>
+    <mesh name="link7_coll" file="link7.stl"/>
+
+    <material name="floor_mat" rgba="0.18 0.20 0.22 1"/>
+    <material name="wall_mat" rgba="0.72 0.74 0.76 1"/>
+    <material name="wood_light" rgba="0.52 0.30 0.14 1"/>
+    <material name="wood_edge" rgba="0.30 0.16 0.08 1"/>
+    <material name="metal_dark" rgba="0.08 0.09 0.10 1"/>
+    <material name="plastic_black" rgba="0.025 0.030 0.035 1"/>
+    <material name="screen_glass" rgba="0.025 0.14 0.20 1"/>
+    <material name="paper_white" rgba="0.90 0.89 0.84 1"/>
+    <material name="book_red" rgba="0.46 0.06 0.045 1"/>
+    <material name="book_blue" rgba="0.06 0.18 0.34 1"/>
+    <material name="target_orange" rgba="0.90 0.25 0.045 1"/>
+    <material name="mug_ceramic" rgba="0.82 0.84 0.82 1"/>
+    <material name="clutter_blue" rgba="0.05 0.27 0.58 1"/>
+    <material name="clutter_green" rgba="0.16 0.40 0.20 1"/>
+    <material name="plant_green" rgba="0.08 0.35 0.12 1"/>
+    <material name="pot_terracotta" rgba="0.60 0.20 0.08 1"/>
+    <material name="chair_fabric" rgba="0.12 0.16 0.20 1"/>
+    <material name="camera_housing" rgba="0.025 0.030 0.035 1"/>
+    <material name="off_white" specular="0.5" shininess="0.25" rgba="0.85 0.85 0.83 1"/>
+    <mesh name="hand_c" file="/home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_emika_panda/assets/hand.stl"/>
+    <mesh name="hand_0" file="/home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_emika_panda/assets/hand_0.obj"/>
+    <mesh name="hand_1" file="/home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_emika_panda/assets/hand_1.obj"/>
+    <mesh name="hand_2" file="/home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_emika_panda/assets/hand_2.obj"/>
+    <mesh name="hand_3" file="/home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_emika_panda/assets/hand_3.obj"/>
+    <mesh name="hand_4" file="/home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_emika_panda/assets/hand_4.obj"/>
+    <mesh name="finger_0" file="/home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_emika_panda/assets/finger_0.obj"/>
+    <mesh name="finger_1" file="/home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_emika_panda/assets/finger_1.obj"/>
+  </asset>
+
+  <worldbody>
+    <body name="base" childclass="fr3" pos="-0.18 0.40 0.75">
+      <body name="fr3_link0">
+        <geom mesh="link0_0" material="black" class="visual"/>
+        <geom mesh="link0_1" material="white" class="visual"/>
+        <geom mesh="link0_2" material="white" class="visual"/>
+        <geom mesh="link0_3" material="white" class="visual"/>
+        <geom mesh="link0_4" material="white" class="visual"/>
+        <geom mesh="link0_5" material="red" class="visual"/>
+        <geom mesh="link0_6" material="black" class="visual"/>
+        <geom name="fr3_link0_collision" mesh="link0_coll" class="collision"/>
+        <body name="fr3_link1" pos="0 0 0.333">
+          <inertial pos="4.128e-07 -0.0181251 -0.0386036" quat="0.998098 -0.0605364 0.00380499 0.0110109" mass="2.92747"
+            diaginertia="0.0239286 0.0227246 0.00610634"/>
+          <joint name="fr3_joint1" axis="0 0 1" range="-2.7437 2.7437" actuatorfrcrange="-87 87"/>
+          <geom name="fr3_link1_collision" class="collision" mesh="link1_coll"/>
+          <geom material="white" mesh="link1" class="visual"/>
+          <body name="fr3_link2" quat="1 -1 0 0">
+            <inertial pos="0.00318289 -0.0743222 0.00881461" quat="0.502599 0.584437 -0.465998 0.434366" mass="2.93554"
+              diaginertia="0.0629567 0.0411924 0.0246371"/>
+            <joint name="fr3_joint2" axis="0 0 1" range="-1.7837 1.7837" actuatorfrcrange="-87 87"/>
+            <geom material="white" mesh="link2" class="visual"/>
+            <geom name="fr3_link2_collision" class="collision" mesh="link2_coll"/>
+            <body name="fr3_link3" pos="0 -0.316 0" quat="1 1 0 0">
+              <inertial pos="0.0407016 -0.00482006 -0.0289731" quat="0.921025 -0.244161 0.155272 0.260745" mass="2.2449"
+                diaginertia="0.0267409 0.0189869 0.0171587"/>
+              <joint name="fr3_joint3" axis="0 0 1" range="-2.9007 2.9007" actuatorfrcrange="-87 87"/>
+              <geom mesh="link3_0" material="white" class="visual"/>
+              <geom mesh="link3_1" material="black" class="visual"/>
+              <geom name="fr3_link3_collision" class="collision" mesh="link3_coll"/>
+              <body name="fr3_link4" pos="0.0825 0 0" quat="1 1 0 0">
+                <inertial pos="-0.0459101 0.0630493 -0.00851879" quat="0.438018 0.803311 0.00937812 0.403414"
+                  mass="2.6156" diaginertia="0.05139 0.0372717 0.0160047"/>
+                <joint name="fr3_joint4" axis="0 0 1" range="-3.0421 -0.1518" actuatorfrcrange="-87 87"/>
+                <geom mesh="link4_0" material="white" class="visual"/>
+                <geom mesh="link4_1" material="black" class="visual"/>
+                <geom name="fr3_link4_collision" class="collision" mesh="link4_coll"/>
+                <body name="fr3_link5" pos="-0.0825 0.384 0" quat="1 -1 0 0">
+                  <inertial pos="-0.00160396 0.0292536 -0.0972966" quat="0.919031 0.125604 0.0751531 -0.366003"
+                    mass="2.32712" diaginertia="0.0579335 0.0449144 0.0130634"/>
+                  <joint name="fr3_joint5" axis="0 0 1" range="-2.8065 2.8065" actuatorfrcrange="-12 12"
+                    armature="0.074" frictionloss="0.763"/>
+                  <geom mesh="link5_0" material="white" class="visual"/>
+                  <geom mesh="link5_1" material="white" class="visual"/>
+                  <geom mesh="link5_2" material="black" class="visual"/>
+                  <geom name="fr3_link5_collision" class="collision" mesh="link5_coll"/>
+                  <body name="fr3_link6" quat="1 1 0 0">
+                    <inertial pos="0.0597131 -0.0410295 -0.0101693" quat="0.621301 0.552665 0.510011 0.220081"
+                      mass="1.81704" diaginertia="0.0175039 0.0161123 0.00193529"/>
+                    <joint name="fr3_joint6" axis="0 0 1" range="0.5445 4.5169" actuatorfrcrange="-12 12"
+                      armature="0.074" frictionloss="0.44"/>
+                    <geom mesh="link6_0" material="button_green" class="visual"/>
+                    <geom mesh="link6_1" material="white" class="visual"/>
+                    <geom mesh="link6_2" material="white" class="visual"/>
+                    <geom mesh="link6_3" material="gray" class="visual"/>
+                    <geom mesh="link6_4" material="button_red" class="visual"/>
+                    <geom mesh="link6_5" material="white" class="visual"/>
+                    <geom mesh="link6_6" material="black" class="visual"/>
+                    <geom mesh="link6_7" material="button_blue" class="visual"/>
+                    <geom name="fr3_link6_collision" class="collision" mesh="link6_coll"/>
+                    <body name="fr3_link7" pos="0.088 0 0" quat="1 1 0 0">
+                      <inertial pos="0.00452258 0.00862619 -0.0161633" quat="0.727579 0.0978688 -0.24906 0.63168"
+                        mass="0.627143" diaginertia="0.000223836 0.000223642 5.64132e-07"/>
+                      <joint name="fr3_joint7" axis="0 0 1" range="-3.0159 3.0159" actuatorfrcrange="-12 12"
+                        armature="0.074" frictionloss="0.248"/>
+                      <geom mesh="link7_0" material="black" class="visual"/>
+                      <geom mesh="link7_1" material="white" class="visual"/>
+                      <geom mesh="link7_2" material="white" class="visual"/>
+                      <geom mesh="link7_3" material="black" class="visual"/>
+                      <geom name="fr3_link7_collision" class="collision" mesh="link7_coll"/>
+                      <site name="attachment_site" pos="0 0 0.107"/>
+
+      <body name="fr3_hand" pos="0 0 0.107" quat="0.9238795 0 0 -0.3826834">
+        <inertial mass="0.73" pos="-0.01 0 0.03" diaginertia="0.001 0.0025 0.0017"/>
+        <geom mesh="hand_0" material="off_white" class="visual"/>
+        <geom mesh="hand_1" material="black" class="visual"/>
+        <geom mesh="hand_2" material="black" class="visual"/>
+        <geom mesh="hand_3" material="white" class="visual"/>
+        <geom mesh="hand_4" material="off_white" class="visual"/>
+        <geom name="fr3_hand_collision" mesh="hand_c" class="collision" contype="4" conaffinity="4"/>
+        <!-- Wrist RGB-D sensor: its pose is controlled by the FR3 hand pose. -->
+        <geom name="wrist_camera_housing" type="box" pos="0 -0.015 0.055" size="0.040 0.022 0.030"
+              material="camera_housing" contype="0" conaffinity="0"/>
+        <geom name="wrist_camera_lens" type="cylinder" pos="0 -0.040 0.055" quat="0.707 0.707 0 0"
+              size="0.012 0.006" material="screen_glass" contype="0" conaffinity="0"/>
+        <!-- MuJoCo cameras look along local -Z. This 180-degree flip makes
+             the sensor face the Panda fingers and the tabletop workspace. -->
+        <camera name="wrist_rgbd" pos="0 0 0.040" quat="0 1 0 0" fovy="82"/>
+        <body name="fr3_left_finger" pos="0 0 0.0584">
+          <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7"/>
+          <joint name="fr3_finger_joint1" class="panda_finger"/>
+          <geom mesh="finger_0" material="off_white" class="visual"/>
+          <geom mesh="finger_1" material="black" class="visual"/>
+          <geom name="fr3_left_finger_collision" mesh="finger_0" class="collision"/>
+          <geom class="fingertip_pad_collision_1"/>
+          <geom class="fingertip_pad_collision_2"/>
+          <geom class="fingertip_pad_collision_3"/>
+          <geom class="fingertip_pad_collision_4"/>
+          <geom class="fingertip_pad_collision_5"/>
+        </body>
+        <body name="fr3_right_finger" pos="0 0 0.0584" quat="0 0 0 1">
+          <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7"/>
+          <joint name="fr3_finger_joint2" class="panda_finger"/>
+          <geom mesh="finger_0" material="off_white" class="visual"/>
+          <geom mesh="finger_1" material="black" class="visual"/>
+          <geom name="fr3_right_finger_collision" mesh="finger_0" class="collision"/>
+          <geom class="fingertip_pad_collision_1"/>
+          <geom class="fingertip_pad_collision_2"/>
+          <geom class="fingertip_pad_collision_3"/>
+          <geom class="fingertip_pad_collision_4"/>
+          <geom class="fingertip_pad_collision_5"/>
+        </body>
+      </body>
+</body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+
+    <!-- NUS-inspired fixed-base tabletop benchmark v0 -->
+    <!-- Office shell and a full-size desk. The top surface is z=0.72 m. -->
+    <geom name="office_floor" type="plane" pos="0 0 0" size="4 4 0.01" material="floor_mat" contype="1" conaffinity="7"/>
+    <geom name="office_back_wall" type="box" pos="0 1.02 1.45" size="2.55 0.035 1.45"
+          material="wall_mat" contype="1" conaffinity="7"/>
+    <geom name="office_side_wall" type="box" pos="-2.25 0 1.45" size="0.035 1.05 1.45"
+          material="wall_mat" contype="1" conaffinity="7"/>
+    <geom name="desk_top" type="box" pos="0 0 0.69" size="1.05 0.72 0.03"
+          material="wood_light" contype="2" conaffinity="7" friction="0.8 0.08 0.01"/>
+    <geom name="desk_front_edge" type="box" pos="0 -0.70 0.675" size="1.05 0.025 0.045"
+          material="wood_edge" contype="2" conaffinity="7"/>
+    <geom name="desk_rear_edge" type="box" pos="0 0.70 0.675" size="1.05 0.025 0.045"
+          material="wood_edge" contype="2" conaffinity="7"/>
+    <geom name="desk_leg_left_front" type="box" pos="-0.88 -0.56 0.34" size="0.065 0.065 0.34" material="metal_dark" contype="2" conaffinity="7"/>
+    <geom name="desk_leg_right_front" type="box" pos="0.88 -0.56 0.34" size="0.065 0.065 0.34" material="metal_dark" contype="2" conaffinity="7"/>
+    <geom name="desk_leg_left_rear" type="box" pos="-0.88 0.56 0.34" size="0.065 0.065 0.34" material="metal_dark" contype="2" conaffinity="7"/>
+    <geom name="desk_leg_right_rear" type="box" pos="0.88 0.56 0.34" size="0.065 0.065 0.34" material="metal_dark" contype="2" conaffinity="7"/>
+    <geom name="desk_rear_beam" type="box" pos="0 0.55 0.43" size="0.88 0.045 0.045" material="metal_dark" contype="2" conaffinity="7"/>
+
+    <!-- FR3 mounting plate at the rear of the desk. -->
+    <geom name="fr3_mount_plate" type="cylinder" pos="-0.18 0.40 0.75" size="0.20 0.035"
+          material="metal_dark" contype="2" conaffinity="7"/>
+    <geom name="fr3_mount_bolt_1" type="cylinder" pos="-0.31 0.40 0.787" size="0.012 0.006" material="plastic_black" contype="0" conaffinity="0"/>
+    <geom name="fr3_mount_bolt_2" type="cylinder" pos="-0.05 0.40 0.787" size="0.012 0.006" material="plastic_black" contype="0" conaffinity="0"/>
+
+    <!-- Left pedestal / drawers. -->
+    <geom name="drawer_cabinet" type="box" pos="-0.78 0.28 0.38" size="0.20 0.34 0.35" material="wood_edge" contype="2" conaffinity="7"/>
+    <geom name="drawer_1" type="box" pos="-0.78 -0.065 0.55" size="0.18 0.012 0.075" material="wood_light" contype="2" conaffinity="7"/>
+    <geom name="drawer_2" type="box" pos="-0.78 -0.065 0.37" size="0.18 0.012 0.075" material="wood_light" contype="2" conaffinity="7"/>
+    <geom name="drawer_handle_1" type="box" pos="-0.78 -0.083 0.55" size="0.055 0.008 0.008" material="metal_dark" contype="0" conaffinity="0"/>
+    <geom name="drawer_handle_2" type="box" pos="-0.78 -0.083 0.37" size="0.055 0.008 0.008" material="metal_dark" contype="0" conaffinity="0"/>
+
+    <!-- Monitor, stand, keyboard and mouse. -->
+    <geom name="monitor_stem" type="cylinder" pos="0.72 0.47 0.89" size="0.025 0.17" material="metal_dark" contype="2" conaffinity="7"/>
+    <geom name="monitor_base" type="box" pos="0.72 0.47 0.735" size="0.18 0.10 0.012" material="metal_dark" contype="2" conaffinity="7"/>
+    <geom name="monitor_frame" type="box" pos="0.72 0.47 1.08" size="0.40 0.035 0.23" material="plastic_black" contype="2" conaffinity="7"/>
+    <geom name="monitor_screen" type="box" pos="0.72 0.425 1.08" size="0.35 0.008 0.18" material="screen_glass" contype="0" conaffinity="0"/>
+    <geom name="keyboard" type="box" pos="0.34 0.12 0.75" size="0.25 0.085 0.012" material="plastic_black" contype="2" conaffinity="7"/>
+    <geom name="keyboard_surface" type="box" pos="0.34 0.115 0.765" size="0.22 0.065 0.006" material="paper_white" contype="0" conaffinity="0"/>
+    <geom name="mouse" type="ellipsoid" pos="0.67 0.12 0.76" size="0.045 0.065 0.022" material="plastic_black" contype="2" conaffinity="7"/>
+
+    <!-- Desk objects provide clutter and occlusion diversity. -->
+    <body name="target_object" pos="0.18 -0.283 0.810">
+      <freejoint/>
+      <geom name="target_object_geom" type="cylinder" size="0.018 0.060"
+            material="target_orange" mass="0.18" contype="4" conaffinity="7"
+            friction="0.8 0.08 0.01"/>
+      <geom name="target_object_cap" type="cylinder" pos="0 0 0.063" size="0.015 0.004" material="metal_dark" contype="0" conaffinity="0"/>
+    </body>
+
+    <body name="clutter_notebook_red" pos="-0.08 -0.40 0.755" quat="0.98 0 0 0.20">
+      <geom type="box" size="0.14 0.10 0.018" material="book_red" mass="0.25" contype="4" conaffinity="7"/>
+      <geom type="box" pos="0 0 0.020" size="0.12 0.085 0.004" material="paper_white" contype="0" conaffinity="0"/>
+    </body>
+    <body name="clutter_notebook_blue" pos="-0.40 -0.16 0.755" quat="0.99 0 0 -0.12">
+      <geom type="box" size="0.12 0.085 0.018" material="book_blue" mass="0.24" contype="4" conaffinity="7"/>
+      <geom type="box" pos="0 0 0.020" size="0.10 0.07 0.004" material="paper_white" contype="0" conaffinity="0"/>
+    </body>
+    <body name="coffee_mug" pos="0.58 -0.28 0.79">
+      <geom type="cylinder" size="0.065 0.085" material="mug_ceramic" mass="0.22" contype="4" conaffinity="7"/>
+      <geom type="capsule" fromto="0.052 0 0.035 0.115 0 0.035" size="0.012" material="mug_ceramic" contype="4" conaffinity="7"/>
+      <geom type="capsule" fromto="0.115 0 0.035 0.115 0 0.085" size="0.012" material="mug_ceramic" contype="4" conaffinity="7"/>
+      <geom type="cylinder" pos="0 0 0.086" size="0.054 0.006" material="plastic_black" contype="0" conaffinity="0"/>
+    </body>
+    <body name="pen_holder" pos="0.80 -0.12 0.82">
+      <geom type="cylinder" size="0.065 0.10" material="clutter_blue" mass="0.20" contype="4" conaffinity="7"/>
+      <geom type="capsule" fromto="0.78 -0.12 0.86 0.76 -0.10 1.02" size="0.008" material="target_orange" contype="0" conaffinity="0"/>
+      <geom type="capsule" fromto="0.82 -0.12 0.86 0.85 -0.10 1.05" size="0.008" material="plant_green" contype="0" conaffinity="0"/>
+    </body>
+    <body name="desk_plant" pos="-0.60 0.42 0.78">
+      <geom type="cylinder" size="0.09 0.10" material="pot_terracotta" mass="0.30" contype="4" conaffinity="7"/>
+      <geom type="capsule" fromto="-0.60 0.42 0.84 -0.68 0.43 1.14" size="0.018" material="plant_green" contype="0" conaffinity="0"/>
+      <geom type="capsule" fromto="-0.60 0.42 0.88 -0.48 0.42 1.10" size="0.018" material="plant_green" contype="0" conaffinity="0"/>
+      <geom type="capsule" fromto="-0.60 0.42 0.92 -0.55 0.34 1.16" size="0.018" material="plant_green" contype="0" conaffinity="0"/>
+    </body>
+
+    <body name="loose_paper_stack" pos="0.05 0.24 0.755" quat="0.99 0 0 0.10">
+      <geom type="box" size="0.13 0.10 0.018" material="paper_white" mass="0.10" contype="4" conaffinity="7"/>
+      <geom type="box" pos="0.02 -0.01 0.022" size="0.11 0.085 0.004" material="paper_white" contype="0" conaffinity="0"/>
+    </body>
+    <geom name="pencil" type="capsule" fromto="0.10 0.43 0.765 0.38 0.38 0.765" size="0.008" material="target_orange" contype="4" conaffinity="7"/>
+
+    <!-- Office chair in front of the desk, included for scene context. -->
+    <body name="office_chair" pos="0 -1.12 0">
+      <geom name="chair_seat" type="box" pos="0 0 0.53" size="0.30 0.27 0.06" material="chair_fabric" contype="2" conaffinity="7"/>
+      <geom name="chair_back" type="box" pos="0 0.22 0.91" size="0.30 0.06 0.38" material="chair_fabric" contype="2" conaffinity="7"/>
+      <geom name="chair_stem" type="cylinder" pos="0 0 0.28" size="0.035 0.25" material="metal_dark" contype="2" conaffinity="7"/>
+      <geom name="chair_base" type="box" pos="0 0 0.04" size="0.36 0.06 0.025" material="metal_dark" contype="2" conaffinity="7"/>
+      <geom name="chair_base_side" type="box" pos="0 0 0.04" size="0.06 0.32 0.025" material="metal_dark" contype="2" conaffinity="7"/>
+      <geom name="chair_wheel_1" type="sphere" pos="-0.31 -0.28 0.03" size="0.045" material="plastic_black" contype="2" conaffinity="7"/>
+      <geom name="chair_wheel_2" type="sphere" pos="0.31 -0.28 0.03" size="0.045" material="plastic_black" contype="2" conaffinity="7"/>
+      <geom name="chair_wheel_3" type="sphere" pos="-0.31 0.28 0.03" size="0.045" material="plastic_black" contype="2" conaffinity="7"/>
+      <geom name="chair_wheel_4" type="sphere" pos="0.31 0.28 0.03" size="0.045" material="plastic_black" contype="2" conaffinity="7"/>
+    </body>
+
+    <!-- A cable tray and rear power strip reinforce the office layout. -->
+    <geom name="cable_tray" type="box" pos="0 0.61 0.57" size="0.72 0.10 0.035" material="plastic_black" contype="2" conaffinity="7"/>
+    <geom name="power_strip" type="box" pos="0.55 0.61 0.76" size="0.23 0.035 0.025" material="plastic_black" contype="2" conaffinity="7"/>
+
+    <!-- External observation interfaces; these are not student observations. -->
+    <camera name="office_overview" pos="2.15 -2.85 1.95" mode="targetbody" target="target_object" fovy="58"/>
+    <camera name="office_side" pos="2.45 1.85 1.55" mode="targetbody" target="target_object" fovy="62"/>
+
+    <!-- Predictable dynamic obstacle: mocap body driven by dynamic_obstacle.py. -->
+    <body name="dynamic_obstacle" mocap="true" pos="0.92 0.72 1.18">
+      <geom name="dynamic_obstacle_geom" type="box" size="0.045 0.045 0.065"
+            rgba="0.86 0.10 0.05 1" contype="8" conaffinity="7" friction="0.7 0.05 0.01"/>
+      <geom name="dynamic_obstacle_marker" type="sphere" pos="0 0 0.10" size="0.018"
+            rgba="1.0 0.75 0.05 1" contype="0" conaffinity="0"/>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor name="fr3_joint1" joint="fr3_joint1" ctrllimited="true" ctrlrange="-87 87"/>
+    <motor name="fr3_joint2" joint="fr3_joint2" ctrllimited="true" ctrlrange="-87 87"/>
+    <motor name="fr3_joint3" joint="fr3_joint3" ctrllimited="true" ctrlrange="-87 87"/>
+    <motor name="fr3_joint4" joint="fr3_joint4" ctrllimited="true" ctrlrange="-87 87"/>
+    <motor name="fr3_joint5" joint="fr3_joint5" ctrllimited="true" ctrlrange="-12 12"/>
+    <motor name="fr3_joint6" joint="fr3_joint6" ctrllimited="true" ctrlrange="-12 12"/>
+    <motor name="fr3_joint7" joint="fr3_joint7" ctrllimited="true" ctrlrange="-12 12"/>
+    <position name="fr3_gripper" tendon="fr3_gripper_tendon" kp="800" ctrlrange="0 0.04"/>  </actuator>
+
+  <contact>
+    <exclude body1="fr3_link0" body2="fr3_link1"/>
+  </contact>
+
+  <keyframe>
+    <key name="home" qpos="0 0 0 -1.57079 0 1.57079 -0.7853" ctrl="0 0 0 -1.57079 0 1.57079 -0.7853"/>
+  </keyframe>
+
+  <tendon>
+    <fixed name="fr3_gripper_tendon">
+      <joint joint="fr3_finger_joint1" coef="0.5"/>
+      <joint joint="fr3_finger_joint2" coef="0.5"/>
+    </fixed>
+  </tendon>
+  <equality>
+    <joint joint1="fr3_finger_joint1" joint2="fr3_finger_joint2" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+    <weld name="target_grasp_weld" body1="fr3_hand" body2="target_object" active="false" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+  </equality>
+</mujoco>

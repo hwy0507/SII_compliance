@@ -1,0 +1,55 @@
+# Fixed-base FR3 tabletop benchmark inspired by the NUS visibility-aware loop.
+# This file is intentionally separate from the historical compliance configs.
+
+simulator:
+  name: mujoco
+  model: /home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_fr3/fr3.xml
+  physics_dt_s: 0.002
+  policy_dt_s: 0.040
+  solver: Newton
+  contact_offset_m: 0.001
+
+robot:
+  name: fr3
+  arm_joint_names: [fr3_joint1, fr3_joint2, fr3_joint3, fr3_joint4, fr3_joint5, fr3_joint6, fr3_joint7]
+  gripper: optional
+  base_mode: fixed
+
+migration:
+  inspiration: visibility_aware_closed_loop_manipulation
+  source_robot: none_at_runtime
+  source_environment: none_at_runtime
+  transfer_space: not_required_for_native_fr3_planner
+  nominal_dt_s: 0.040
+
+environment:
+  type: cluttered_tabletop
+  table_size_m: [1.20, 0.80]
+  table_top_z_m: 0.70
+  target_objects: primitives_first
+  static_clutter_count: [5, 8]
+  dynamic_obstacle: disabled_in_v0
+  camera: wrist_rgbd
+  wrist_camera:
+    mounted_on: fr3_hand
+    rgb_resolution: [320, 240]
+    depth_resolution: [320, 240]
+    active_view_action: hand_pose_waypoint
+
+nominal_controller:
+  type: paper_mpc_velocity_wbc
+  max_joint_speed_rad_s: 1.25
+  max_joint_acceleration_rad_s2: 8.0
+  max_torque_slew_nm_s: 700.0
+
+student:
+  observation: [q, qdot, qdot_cmd, pose_error, twist_error, history]
+  external_perception_input: false
+  contact_truth_input: false
+  action: [joint_velocity_residual_7, compliance_scale]
+  recurrent_core: gru
+  control_rate_hz: 25
+
+evaluation:
+  scenarios: [empty_table, static_clutter, occluded_target, dynamic_obstacle]
+  metrics: [task_success, collision_rate, peak_contact_force, contact_impulse, recovery_time, jerk, latency]
