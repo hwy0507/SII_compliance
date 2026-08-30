@@ -254,7 +254,18 @@ class RecedingHorizonSupervisor:
         # candidates during this short release window changes the measured
         # hand/object transform and can turn a valid grasp into a placement
         # miss.  Replanning remains available during carry, before descent.
-        if phase in {"PLACE DESCEND", "RELEASE", "RETRACT AFTER RELEASE", "RETURN HOME"}:
+        if phase in {
+            "PRE-GRASP HIGH",
+            "PRE-GRASP",
+            "DESCEND",
+            "SETTLE AT GRASP",
+            "CLOSE GRIPPER",
+            "LIFT",
+            "PLACE DESCEND",
+            "RELEASE",
+            "RETRACT AFTER RELEASE",
+            "RETURN HOME",
+        }:
             return [active]
         if phase == "APPROACH ABOVE CLUTTER":
             return list(self.candidates)

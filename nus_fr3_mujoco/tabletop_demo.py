@@ -65,11 +65,12 @@ def look_at_quaternion(position: np.ndarray, look_at: np.ndarray) -> np.ndarray:
 
 
 def panda_side_grasp_quaternion() -> np.ndarray:
-    """Orient the Panda jaws for a horizontal side grasp.
+    """Orient the Panda jaws for a stable horizontal side grasp.
 
-    The Panda finger slides are along local +Y and the finger pads extend
-    along local +Z.  Local +Y is therefore aligned with world X (jaw closing
-    direction), while local +Z points toward the target from the wrist.
+    The finger slides close along world X and the pads advance along world
+    -Y.  This is the collision-tested orientation for the FR3 hand mesh; the
+    wrist stays level with the desk and the two pads remain on opposite sides
+    of the cylinder throughout closure.
     """
 
     local_x = np.array([0.0, 0.0, -1.0], dtype=np.float64)
@@ -187,7 +188,27 @@ def solve_fixed_pose_with_restarts(
         HOME + np.array([0.35, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
         HOME + np.array([-0.35, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
     ]
-    candidates: list[tuple[float, float, float, np.ndarray]] = []
+    candidates: list[tuple[float, float, float, float, np.ndarray]] = []
+    keyboard_geom_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, "keyboard")
+    root_body_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "base")
+
+    def is_robot_geom(geom_id: int) -> bool:
+        body_id = int(env.model.geom_bodyid[geom_id])
+        while body_id >= 0:
+            if body_id == root_body_id:
+                return True
+            parent_id = int(env.model.body_parentid[body_id])
+            if parent_id == body_id:
+                break
+            body_id = parent_id
+        return False
+
+    robot_collision_geoms = [
+        geom_id
+        for geom_id in range(env.model.ngeom)
+        if is_robot_geom(geom_id)
+        and (env.model.geom_contype[geom_id] != 0 or env.model.geom_conaffinity[geom_id] != 0)
+    ]
     for seed in seeds:
         q = solve_pose_ik(
             env,
@@ -206,12 +227,27 @@ def solve_fixed_pose_with_restarts(
             target_quaternion,
         )
         feasible = float(position_error <= 0.008 and rotation_error <= 0.05)
+        keyboard_clearance = float("inf")
+        if keyboard_geom_id >= 0:
+            keyboard_clearance = min(
+                float(mujoco.mj_geomDistance(env.model, env.data, robot_geom_id, keyboard_geom_id, 10.0, np.zeros(6)))
+                for robot_geom_id in robot_collision_geoms
+            )
         # Feasible solutions dominate. Among them, preserve the continuous
-        # elbow/wrist branch by staying close to the previous waypoint.
-        score = (-feasible, position_error + rotation_error, float(np.linalg.norm(q - preferred_seed)))
-        candidates.append((score[0], score[1], score[2], q.copy()))
-    candidates.sort(key=lambda item: (item[0], item[1], item[2]))
-    return candidates[0][3]
+        # elbow/wrist branch by staying close to the previous waypoint, but
+        # reject a branch that sweeps the keyboard at the fixed grasp pose.
+        # This makes the static keyboard audit part of IK branch selection
+        # instead of relying on a post-hoc collision report.
+        score = (
+            -feasible,
+            float(keyboard_clearance < 0.0),
+            -keyboard_clearance,
+            position_error + rotation_error,
+            float(np.linalg.norm(q - preferred_seed)),
+        )
+        candidates.append((score[0], score[1], score[2], score[3], q.copy()))
+    candidates.sort(key=lambda item: (item[0], item[1], item[2], item[3], float(np.linalg.norm(item[4] - preferred_seed))))
+    return candidates[0][4]
 
 
 def solve_position_nullspace_view_ik(
@@ -449,11 +485,11 @@ def build_segments(
     mujoco.mj_forward(env.model, env.data)
     target = stabilize_target_on_desk(env, target_id)
 
-    # Candidate routes are evaluated in joint space, but the grasp itself is a
-    # dedicated horizontal Panda side grasp. The approach point is directly
-    # above the pre-grasp point, so the arm first clears the clutter, descends
-    # vertically, and only then advances along the gripper approach axis.
-    # Keep three small lateral variants around the same side-grasp geometry.
+    # Candidate routes are evaluated in joint space.  The grasp is approached
+    # from the open left side of the desk: the wrist stays to the left of the
+    # keyboard while descending, then advances along the gripper approach
+    # axis.  Keep three small lateral variants around the same side-grasp
+    # geometry so the online supervisor still has alternatives.
     # The center-only debugging variant is not robust in the dynamic scene:
     # it can place the fingers outside the cylinder at closure.  The online
     # supervisor also needs more than one approach corridor while the robot is
@@ -464,6 +500,8 @@ def build_segments(
         "approach_right": target + np.array([0.06, 0.22, 0.30], dtype=np.float64),
     }
     grasp_quaternion = panda_side_grasp_quaternion()
+    # Keep the validated side-grasp contact height.  Keyboard clearance is
+    # handled by selecting a safer IK branch and auditing the full trajectory.
     pregrasp = target + np.array([0.0, 0.22, 0.0])
     grasp = target + np.array([0.0, 0.105, 0.0])
     lift = grasp + np.array([0.0, 0.0, 0.30])
@@ -658,6 +696,7 @@ def render_demo(
     grasp_failed = False
     grasp_failure_time_s: float | None = None
     grasp_ever_engaged = False
+    close_phase_start_time = -np.inf
     for step in range(total_steps + 1):
         t = min(step * env.policy_dt_s, total_time)
         if obstacle is not None:
@@ -695,6 +734,8 @@ def render_demo(
             last_horizon_clearance_m = horizon_decision.report.min_clearance_m
             last_horizon_collision_count = horizon_decision.report.collision_count
         q_ref, gripper, phase = supervisor.reference(env.q, t)
+        if phase == "CLOSE GRIPPER" and last_phase != phase:
+            close_phase_start_time = t
         if grasp_failed:
             recovery_elapsed = float(t - (grasp_failure_time_s or t))
             if recovery_elapsed < 0.8:
@@ -812,8 +853,14 @@ def render_demo(
         # reach, but prevent an open finger from grazing it before the grasp
         # pose has settled. The fingertip-target channel is enabled only for
         # the closure window and remains enabled after a validated grasp.
+        # Keep the target collision channel disabled while the fingers are
+        # still converging.  Enabling it only for the final part of closure
+        # prevents a slightly high pad from tipping the free cylinder while
+        # the wrist settles, yet still gives the latch a physical contact
+        # window before validation in LIFT.
         grasp_contact_enabled = bool(
-            phase == "CLOSE GRIPPER" or grasp_latch.engaged
+            (phase == "CLOSE GRIPPER" and t - close_phase_start_time >= 0.9)
+            or grasp_latch.engaged
         )
         env.model.geom_conaffinity[grasp_latch.target_geom_id] = 8 if grasp_contact_enabled else 0
         grasp_contact_enabled_records.append(

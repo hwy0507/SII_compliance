@@ -32,9 +32,9 @@ class PredictableCrossingObstacle:
         model: mujoco.MjModel,
         *,
         body_name: str = "dynamic_obstacle",
-        enter_time_s: float = 7.0,
-        contact_time_s: float = 7.8,
-        exit_time_s: float = 9.6,
+        enter_time_s: float = 10.4,
+        contact_time_s: float = 11.2,
+        exit_time_s: float = 13.0,
     ) -> None:
         self.body_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, body_name)
         if self.body_id < 0:
