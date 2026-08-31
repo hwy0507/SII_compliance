@@ -247,10 +247,11 @@ class RGBDObstacleTracker:
             # simulator pose. Partial views can bias the reconstructed center
             # downward, so keep a small margin below the nominal box center.
             if (
-                # Reject the red monitor/desk props that otherwise seed a
-                # stale track before the moving box enters.  The benchmark
-                # obstacle is deliberately in the raised front strip.
-                float(center[2]) < 1.16
+                # Reject low tabletop props, but keep the deliberately
+                # lowered crossing obstacle in the robot's carry band.  The
+                # previous 1.16 m cutoff silently discarded the benchmark
+                # obstacle at z=1.05 m, so RGB-D could not trigger avoidance.
+                float(center[2]) < 0.92
                 or not (0.22 <= float(center[0]) <= 1.05)
                 # The wrist camera looks toward world -Y.  Keep the near
                 # front-of-desk strip in view as well as the tabletop band;

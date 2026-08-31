@@ -491,7 +491,10 @@ def _refine_place_and_build_segments(
         DemoSegment(1.3 * scale, q_grasp, 0.04, "DESCEND"),
         DemoSegment(1.0 * scale, q_grasp, 0.04, "SETTLE AT GRASP"),
         DemoSegment(1.4 * scale, q_grasp, 0.0, "CLOSE GRIPPER"),
-        DemoSegment(2.0 * scale, q_lift, 0.0, "LIFT"),
+        # There is intentionally no unconditional LIFT segment.  The normal
+        # task is grasp -> carry -> place; a vertical escape is synthesized at
+        # runtime only if RGB-D prediction says the current carry corridor is
+        # blocked by a moving obstacle.
         DemoSegment(2.3 * scale, q_place_hover, 0.0, "CARRY AROUND CLUTTER"),
         # Give the joint servo enough time to settle before the latch is
         # released; otherwise the object is evaluated while the hand is still
@@ -574,7 +577,10 @@ def build_segments(
                 ("PRE-GRASP", pregrasp, target, 1.8 * time_scale, 0.20, grasp_quaternion),
                 ("DESCEND", grasp, target, 1.3 * time_scale, 0.10, grasp_quaternion),
                 ("LIFT", lift, target, 2.0 * time_scale, 0.10, grasp_quaternion),
-                ("CARRY AROUND CLUTTER", desired_object_place + np.array([0.0, 0.0, 0.18]), desired_object_place, 2.3 * time_scale, 0.10, grasp_quaternion),
+                # Nominal carry stays at the grasp clearance.  Static
+                # collision checking still rejects unsafe candidates; no
+                # arbitrary vertical lift is inserted into the task plan.
+                ("CARRY AROUND CLUTTER", desired_object_place + np.array([0.0, 0.0, 0.14]), desired_object_place, 2.3 * time_scale, 0.10, grasp_quaternion),
             ]
             solved, diagnostics = _solve_waypoint_specs(env, hand_id, target, waypoint_specs)
             segments = _refine_place_and_build_segments(
@@ -695,13 +701,29 @@ def render_demo(
                 # obstacle must challenge the already-raised carry motion;
                 # otherwise a normal task lift is visually indistinguishable
                 # from an avoidance response.
-                enter_time_s=14.8,
-                contact_time_s=16.0,
-                exit_time_s=17.2,
+                # Enter before the carry midpoint so the tracker has two or
+                # more RGB-D frames to estimate velocity before the corridor
+                # becomes blocked.  This avoids both t=0 false positives and
+                # a too-late detection that cannot causally trigger escape.
+                enter_time_s=11.2,
+                contact_time_s=13.2,
+                exit_time_s=14.8,
             )
-            obstacle.before = np.array([0.92, -0.42, 1.32], dtype=np.float64)
-            obstacle.corridor = np.array([0.32, -0.42, 1.32], dtype=np.float64)
-            obstacle.after = np.array([-0.92, -0.42, 1.32], dtype=np.float64)
+            # Cross the actual nominal carry corridor rather than the old
+            # high background line. This makes an ACTIVE OBSTACLE LIFT, when
+            # it occurs, causally attributable to the RGB-D prediction.
+            # The obstacle crosses the actual rod carry band (hand z≈0.89 m)
+            # with a small vertical clearance.  It is high enough to be
+            # visible in all RGB-D streams, but low enough that the nominal
+            # carry corridor is genuinely predicted as blocked.
+            # Start outside the RGB-D workspace gate so the obstacle is not
+            # a static red object visible from t=0.  It enters the same
+            # y/z carry strip horizontally, giving the perception loop a
+            # genuine first-detection event shortly before the predicted
+            # blockage.
+            obstacle.before = np.array([1.20, -0.30, 1.05], dtype=np.float64)
+            obstacle.corridor = np.array([0.18, -0.30, 1.05], dtype=np.float64)
+            obstacle.after = np.array([-0.78, -0.30, 1.05], dtype=np.float64)
         else:
             obstacle = PredictableCrossingObstacle(env.model)
         obstacle.apply(env, 0.0)
@@ -740,7 +762,10 @@ def render_demo(
         execution_checker,
         initial_plan=next(record["name"] for record in candidate_records if record["selected"]),
         initial_q=HOME,
-        horizon_s=0.6,
+        # Give the perception-to-motion shield a full second to see the
+        # predicted crossing and complete its collision-gated escape before
+        # the obstacle reaches the carry corridor.
+        horizon_s=1.0,
         check_period_s=0.2,
         sample_dt_s=0.06,
         switch_cooldown_s=0.4,
@@ -820,6 +845,10 @@ def render_demo(
     dynamic_hold_until = -np.inf
     dynamic_hold_count = 0
     dynamic_hold_records: list[dict[str, object]] = []
+    avoidance_active = False
+    avoidance_q: np.ndarray | None = None
+    avoidance_from_q: np.ndarray | None = None
+    avoidance_started_time_s = -np.inf
     hold_started_this_step = False
     base_first_detection_time_s: float | None = None
     wrist_first_detection_time_s: float | None = None
@@ -879,9 +908,11 @@ def render_demo(
             # scene, while keeping the camera mount completely fixed.
             scan_phase = int(np.floor(t / 1.6)) % 3
             scan_points = (
-                np.array([0.30, -0.30, 0.92], dtype=np.float64),
-                np.array([0.56, 0.18, 1.12], dtype=np.float64),
-                np.array([0.22, 0.48, 1.02], dtype=np.float64),
+                # The crossing obstacle enters from +X. Scan that entry
+                # sector first, then the carry center and left exit sector.
+                np.array([0.82, -0.30, 1.05], dtype=np.float64),
+                np.array([0.32, -0.30, 1.05], dtype=np.float64),
+                np.array([-0.35, -0.30, 1.05], dtype=np.float64),
             )
             active_focus_point = scan_points[scan_phase]
         env.model.cam_quat[active_base_camera_id] = look_at_camera_quaternion(
@@ -966,7 +997,10 @@ def render_demo(
         obstacle_requires_hold = bool(
             perceived_state.visible
             and perceived_state.confidence >= 0.60
-            and phase in {"LIFT", "CARRY AROUND CLUTTER"}
+            # The nominal segment list has no LIFT stage.  Keep the gate
+            # strictly scoped to the actual transport interval so any upward
+            # motion is necessarily an obstacle response.
+            and phase == "CARRY AROUND CLUTTER"
             # A safety pause is permitted only when the RGB-D-driven
             # short-horizon checker says the *current future trajectory* is
             # blocked.  Distance alone is not sufficient: a passing obstacle
@@ -974,34 +1008,80 @@ def render_demo(
             # any arm motion.
             and dynamic_hold_count == 0
             and horizon_is_blocked
-            and perceived_obstacle_distance <= 0.42
+            # Trigger on an imminent predicted blockage, before the obstacle
+            # reaches the hand.  The old 0.42 m gate was too tight for the
+            # 0.6 s horizon: at the first collision prediction the measured
+            # distance was about 0.5 m, so the supervisor missed the only
+            # causally correct escape window and waited until the obstacle had
+            # already crossed the corridor.
+            and perceived_obstacle_distance <= 0.60
             and (
                 float(np.linalg.norm(perceived_state.velocity_world)) >= 0.08
                 or wrist_state.visible
             )
         )
-        if obstacle_requires_hold and t >= dynamic_hold_until - 1.0e-9:
-            dynamic_hold_until = t + 0.48
-            dynamic_hold_count += 1
-            hold_started_this_step = True
-            dynamic_hold_records.append(
-                {
-                    "time_s": float(t),
-                    "phase": phase,
-                    "obstacle_position_world": perceived_state.position_world.tolist(),
-                    "obstacle_velocity_world": perceived_state.velocity_world.tolist(),
-                    "tracking_confidence": float(perceived_state.confidence),
-                    "distance_to_hand_m": perceived_obstacle_distance,
-                    "hold_duration_s": 0.48,
-                }
+        if obstacle_requires_hold and t >= dynamic_hold_until - 1.0e-9 and not avoidance_active:
+            # Synthesize a vertical escape from the *measured current pose*.
+            # This is the only place where an upward motion may be created;
+            # it is causally gated by an RGB-D prediction of a blocked carry
+            # corridor and is not part of the nominal task trajectory.
+            q_before_escape = env.q.copy()
+            current_hand_quat = env.data.xquat[hand_id].copy()
+            escape_position = live_hand_position + np.array([0.0, 0.0, 0.30], dtype=np.float64)
+            q_escape = solve_pose_ik(
+                env,
+                hand_id,
+                escape_position,
+                current_hand_quat,
+                env.q,
+                orientation_weight=0.35,
             )
-        if t < dynamic_hold_until:
-            # NUS-style response: hold the *current continuous reference* and
-            # re-observe. There is deliberately no fixed lift pose here. The
-            # receding-horizon supervisor must select a collision-free
-            # candidate; once the horizon is safe, normal tracking resumes.
-            q_ref = np.asarray(q_ref, dtype=np.float64).copy()
-            phase = "DYNAMIC REPLAN HOLD"
+            env.data.qpos[env.qpos_adrs] = q_before_escape
+            mujoco.mj_forward(env.model, env.data)
+            gate_q, gate_t = execution_checker.interpolate_segments(
+                [DemoSegment(0.60, q_escape, 0.0, "ACTIVE OBSTACLE LIFT")],
+                env.q,
+                sample_dt_s=0.04,
+            )
+            gate_report = execution_checker.check_trajectory(
+                gate_q, gate_t + float(t), near_collision_margin_m=0.010, max_events=8
+            )
+            if gate_report.collision_count == 0 and gate_report.min_clearance_m >= 0.0:
+                avoidance_active = True
+                avoidance_q = q_escape.copy()
+                avoidance_from_q = q_before_escape.copy()
+                avoidance_started_time_s = float(t)
+                dynamic_hold_count += 1
+                hold_started_this_step = True
+                dynamic_hold_records.append(
+                    {
+                        "time_s": float(t),
+                        "phase": phase,
+                        "action": "CONDITIONAL_OBSTACLE_LIFT",
+                        "obstacle_position_world": perceived_state.position_world.tolist(),
+                        "obstacle_velocity_world": perceived_state.velocity_world.tolist(),
+                        "tracking_confidence": float(perceived_state.confidence),
+                        "distance_to_hand_m": perceived_obstacle_distance,
+                        "trigger": "rgbd_predicted_carry_blockage",
+                    }
+                )
+        if avoidance_active and avoidance_q is not None:
+            obstacle_clear = bool(
+                (not perceived_state.visible and t - avoidance_started_time_s >= 0.8)
+                or (perceived_state.visible and perceived_obstacle_distance > 0.55)
+            )
+            if obstacle_clear:
+                avoidance_active = False
+                avoidance_q = None
+                avoidance_from_q = None
+            else:
+                if avoidance_from_q is None:
+                    q_ref = avoidance_q.copy()
+                else:
+                    progress = float(np.clip((t - avoidance_started_time_s) / 0.60, 0.0, 1.0))
+                    smooth = progress * progress * (3.0 - 2.0 * progress)
+                    q_ref = (1.0 - smooth) * avoidance_from_q + smooth * avoidance_q
+                phase = "ACTIVE OBSTACLE LIFT"
         if phase == "CLOSE GRIPPER" and last_phase != phase:
             close_phase_start_time = t
         if grasp_failed:

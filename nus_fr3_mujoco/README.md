@@ -4,30 +4,36 @@ This directory defines a clean fixed-base FR3 benchmark inspired by the
 closed-loop mechanism of the NUS `Visibility-Awared-Mobile-Grasping` project.
 It is not intended to be a line-by-line port of the Fetch/ManiSkill code.
 
-## Latest validated result: v3
+## Latest validated result: conditional active avoidance (2026-08-31)
 
 The current implementation has been re-run on the MuJoCo office tabletop
-scene with a wrist RGB-D nominal layer, a moving obstacle, and a
-receding-horizon supervisor. The v3 result is:
+scene with fixed base RGB-D, root-mounted active-base RGB-D, wrist RGB-D, a
+moving obstacle, and a receding-horizon supervisor. The nominal rod task has
+no unconditional lift; the only escape is created when fused RGB-D predicts a
+blocked carry horizon:
 
 | Metric | Result |
 | --- | ---: |
 | Two-finger grasp success | `True` |
 | Placement success | `True` |
-| Placement error | 0.0577 m |
+| Placement error | 0.0366 m |
 | Dynamic-obstacle contact steps | 0 |
 | Maximum dynamic-obstacle contact force | 0 N |
-| Receding-horizon checks | 93 |
-| Plan switches | 2 |
-| Active-view accepted / rejected | 7 / 0 |
+| Receding-horizon checks | 118 |
+| Plan switches | 0 |
+| Active-view accepted / rejected | 0 / 0 |
 | Illegal target-contact steps | 0 |
 | Finite-state check | `True` |
+| Conditional obstacle lifts | 1 |
+| Three-camera visible steps | 22 |
 
 The selected route uses three lateral approach candidates and preserves the
 validated Panda side-grasp orientation. Once `PLACE DESCEND` begins, the
 place candidate is locked to prevent release-time oscillation. The complete
-metrics are stored in `fr3_recheck_v3.json`, and the detailed caveats are in
-`EXPERIMENT_REPORT_v3.md`.
+metrics are stored on the server at
+`outputs/fr3_rod_active_avoidance_zero_contact_20260831.json`; the matching
+589-frame GIF is next to it. The conditional lift record is explicitly tagged
+`trigger=rgbd_predicted_carry_blockage`.
 
 This is a deterministic simulation proof-of-concept, not the final planner.
 The offline swept-volume audit still reports static penetration near the
