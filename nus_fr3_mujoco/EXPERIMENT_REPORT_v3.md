@@ -6,8 +6,8 @@
 - Scene: `fr3_office_v36_rgbd_proxy.xml`
 - Runner: `nus_fr3_mujoco.tabletop_demo`
 - Mode: wrist RGB-D nominal layer with dynamic obstacle and online horizon supervision
-- Artifacts (server): `outputs/fr3_perfect_recheck_20260901.gif`,
-  `outputs/fr3_perfect_recheck_20260901.json`
+- Artifacts (server): `outputs/fr3_near_obstacle_final_20260901.gif`,
+  `outputs/fr3_near_obstacle_final_20260901.json`
 
 ## Result
 
@@ -34,6 +34,12 @@ front of the keyboard (`+Y=0.18`, `+Z=0.30`), settles at
 `target+[0,0.105,0]`. The target is pinned to its initial desk-rest pose until
 the closure window; this removes pre-contact sliding while preserving normal
 MuJoCo contact dynamics during grasp and lift.
+
+For visual evaluation, the dynamic box now crosses near the carry trajectory
+at approximately `[x=0.78 -> 0.30, y=-0.10, z=1.28]` during `10.4--11.2 s`
+and exits toward `[1.20, 0.80, 1.50]` by `13.0 s`. It is therefore visibly
+close to the arm without remaining in the workspace during placement or
+return-home.
 
 The grasp validation recorded simultaneous left- and right-finger contact,
 with target tilt `1.77 deg`. The selected plan was `approach_left+place_left`;

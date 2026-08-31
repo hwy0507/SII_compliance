@@ -70,8 +70,8 @@ The collision-tested route was then combined with a target-pose hold until the
 closure window and rerun on the server. The final artifacts are:
 
 ```text
-/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_perfect_recheck_20260901.gif
-/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_perfect_recheck_20260901.json
+/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_near_obstacle_final_20260901.gif
+/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_near_obstacle_final_20260901.json
 ```
 
 Final metrics:
@@ -95,6 +95,11 @@ illegal_target_contact_steps      0
 The selected plan is `approach_center+place_left`. The target remains at its
 desk-rest pose until closure (`t < 7.30 s`), then normal contact dynamics are
 enabled for two-finger validation and lift.
+
+The final visual profile places the red obstacle close to the carry path at
+`y=-0.10 m`, `z=1.28 m`, crosses from `x=0.78` to `x=0.30`, and then exits to
+`[1.20, 0.80, 1.50]`. This is the near-obstacle demonstration artifact; the
+earlier `z=1.70 m` run remains available as a conservative baseline.
 
 ## 明天第一步
 

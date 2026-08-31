@@ -47,13 +47,15 @@ class PredictableCrossingObstacle:
         self.exit_time_s = float(exit_time_s)
         if not (0.0 < self.enter_time_s < self.contact_time_s < self.exit_time_s):
             raise ValueError("obstacle times must satisfy 0 < enter < contact < exit")
-        self.before = np.array([0.85, 0.20, 1.20], dtype=np.float64)
-        # Cross the rear edge of the carry corridor.  The obstacle remains
-        # visible and moving during transport, but its centreline is offset
-        # from the nominal hand/object path so the safety supervisor can keep
-        # the object collision-free while it performs active-view updates.
-        self.corridor = np.array([0.68, 0.36, 1.70], dtype=np.float64)
-        self.after = np.array([0.10, 0.36, 1.70], dtype=np.float64)
+        # Cross the carry corridor at roughly the hand height.  The path is
+        # deliberately close to (but offset from) the nominal hand/object
+        # centreline, so the obstacle is obvious in the overview GIF and the
+        # RGB-D supervisor has to look ahead and select a safe corridor.
+        self.before = np.array([0.78, -0.10, 1.28], dtype=np.float64)
+        self.corridor = np.array([0.30, -0.10, 1.28], dtype=np.float64)
+        # Leave the robot workspace immediately after crossing so the same
+        # obstacle cannot interfere with placement or the return-home motion.
+        self.after = np.array([1.20, 0.80, 1.50], dtype=np.float64)
 
     def state(self, time_s: float) -> ObstacleState:
         t = float(time_s)

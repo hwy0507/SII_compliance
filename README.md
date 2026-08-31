@@ -36,8 +36,8 @@ not be presented as a real-robot guarantee.
 The large GIF and JSON remain on the experiment server, as requested:
 
 ```text
-GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_perfect_recheck_20260901.gif
-Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_perfect_recheck_20260901.json
+GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_near_obstacle_final_20260901.gif
+Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_near_obstacle_final_20260901.json
 ```
 
 Run the same validation on the server with:
@@ -48,8 +48,8 @@ export MUJOCO_GL=egl
 export PYTHONPATH=/home/arm1/vmc_mujoco_runtime/nus_fr3_migration
 /home/arm1/vmc_mujoco_runtime/.venv/bin/python -m nus_fr3_mujoco.tabletop_demo \
   --model scenes/fr3_office_v36_rgbd_proxy.xml \
-  --output outputs/fr3_perfect_recheck_20260901.gif \
-  --metrics outputs/fr3_perfect_recheck_20260901.json \
+  --output outputs/fr3_near_obstacle_final_20260901.gif \
+  --metrics outputs/fr3_near_obstacle_final_20260901.json \
   --fps 10 --dynamic-obstacle
 ```
 
@@ -66,6 +66,12 @@ The target is held at its desk-rest pose only until the closure window, which
 prevents pre-contact simulation impulses from sliding the free object away.
 Normal contact dynamics resume during closure and the latch validates both
 finger contacts before lift.
+
+For the final visual demonstration, the red dynamic box crosses in front of
+the carry path at approximately `z=1.28 m`, `y=-0.10 m` during
+`10.4--13.0 s`, then moves to `[1.20, 0.80, 1.50]` outside the robot
+workspace. This makes the obstacle visible near the arm in the overview while
+the safety supervisor keeps the measured contact count at zero.
 
 本项目聚焦一个单独而明确的问题：
 
