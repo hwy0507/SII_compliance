@@ -799,7 +799,6 @@ def render_demo(
     hand_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "fr3_hand")
     q_grasp_ref = next(segment.q.copy() for segment in segments if segment.phase == "DESCEND")
     q_pregrasp_ref = next(segment.q.copy() for segment in segments if segment.phase == "PRE-GRASP")
-    q_lift_ref = next(segment.q.copy() for segment in segments if segment.phase == "LIFT")
     last_active_view_time = -np.inf
     active_view_accept_count = 0
     active_view_reject_count = 0
@@ -816,7 +815,6 @@ def render_demo(
     dynamic_hold_until = -np.inf
     dynamic_hold_count = 0
     dynamic_hold_records: list[dict[str, object]] = []
-    dynamic_hold_q: np.ndarray | None = None
     hold_started_this_step = False
     base_first_detection_time_s: float | None = None
     wrist_first_detection_time_s: float | None = None
@@ -956,16 +954,22 @@ def render_demo(
         perceived_obstacle_distance = float(
             np.linalg.norm(perceived_state.position_world - live_hand_position)
         )
+        horizon_is_blocked = bool(
+            last_horizon_collision_count > 0
+            or (np.isfinite(last_horizon_clearance_m) and last_horizon_clearance_m < 0.0)
+        )
         obstacle_requires_hold = bool(
             perceived_state.visible
             and perceived_state.confidence >= 0.60
             and phase in {"LIFT", "CARRY AROUND CLUTTER"}
-            # Only stop when the *predicted observed obstacle* is actually
-            # close to the current carry corridor.  The previous 0.80 m gate
-            # fired while the box was still far away and then commanded a
-            # fixed lift pose, which looked like a post-event upward fling.
+            # A safety pause is permitted only when the RGB-D-driven
+            # short-horizon checker says the *current future trajectory* is
+            # blocked.  Distance alone is not sufficient: a passing obstacle
+            # that is visible but outside the swept corridor must not trigger
+            # any arm motion.
             and dynamic_hold_count == 0
-            and perceived_obstacle_distance <= 0.36
+            and horizon_is_blocked
+            and perceived_obstacle_distance <= 0.42
             and (
                 float(np.linalg.norm(perceived_state.velocity_world)) >= 0.08
                 or wrist_state.visible
@@ -975,7 +979,6 @@ def render_demo(
             dynamic_hold_until = t + 0.48
             dynamic_hold_count += 1
             hold_started_this_step = True
-            dynamic_hold_q = np.asarray(q_ref, dtype=np.float64).copy()
             dynamic_hold_records.append(
                 {
                     "time_s": float(t),
@@ -988,12 +991,12 @@ def render_demo(
                 }
             )
         if t < dynamic_hold_until:
-            # NUS-style response: stop the current reference and re-observe;
-            # do not inject an unrelated vertical lift motion.  Replanning
-            # remains responsible for selecting a detour if the predicted
-            # obstacle truly blocks the next horizon.
-            q_ref = env.q.copy() if dynamic_hold_q is None else dynamic_hold_q.copy()
-            phase = "DYNAMIC OBSERVE HOLD"
+            # NUS-style response: hold the *current continuous reference* and
+            # re-observe. There is deliberately no fixed lift pose here. The
+            # receding-horizon supervisor must select a collision-free
+            # candidate; once the horizon is safe, normal tracking resumes.
+            q_ref = np.asarray(q_ref, dtype=np.float64).copy()
+            phase = "DYNAMIC REPLAN HOLD"
         if phase == "CLOSE GRIPPER" and last_phase != phase:
             close_phase_start_time = t
         if grasp_failed:
@@ -1025,7 +1028,7 @@ def render_demo(
         # is in effect.  The hold changes the task phase label for the
         # controller, but it must not make the wrist camera fall back to a
         # generic swept-volume view while the obstacle is still in frame.
-        view_phase = "CARRY AROUND CLUTTER" if phase == "DYNAMIC OBSERVE HOLD" else phase
+        view_phase = "CARRY AROUND CLUTTER" if phase == "DYNAMIC REPLAN HOLD" else phase
         active_view = view_scheduler.choose_active_focus(
             view_phase,
             hand_position,
@@ -1044,7 +1047,7 @@ def render_demo(
             and active_view_enabled
             and active_view.action_required
             and (
-                phase in {"CARRY AROUND CLUTTER", "RETURN HOME", "DYNAMIC OBSERVE HOLD"}
+                phase in {"CARRY AROUND CLUTTER", "RETURN HOME", "DYNAMIC REPLAN HOLD"}
                 or lift_handoff_view
             )
             and t - last_active_view_time >= 0.32

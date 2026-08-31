@@ -46,6 +46,14 @@ the safety shield; a single anticipatory hold is allowed, and the wrist pose
 is not reoriented during the grasp approach, so camera coordination cannot
 reintroduce pre-grasp oscillation or a post-event upward fling.
 
+The safety policy no longer contains a fixed `q_lift_ref` response. A visible
+obstacle outside the current predicted swept corridor produces no arm action.
+Only when the RGB-D-driven short-horizon checker reports that the future
+trajectory is blocked may the controller briefly hold the current continuous
+reference while the receding-horizon supervisor rechecks alternative plans.
+This keeps active avoidance causally tied to an actual predicted collision
+risk and removes the previous post-event upward pull.
+
 The latest server GIF is a 622-frame three-camera layout. The final run
 reported `grasp_success=True`, zero dynamic-obstacle contact steps and zero
 force, 17 policy steps with all three cameras seeing the obstacle, and an
