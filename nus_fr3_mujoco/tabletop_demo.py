@@ -460,12 +460,12 @@ def build_segments(
     # supervisor also needs more than one approach corridor while the robot is
     # still in APPROACH ABOVE CLUTTER.
     approach_candidates = {
-        "approach_left": target + np.array([-0.06, 0.22, 0.30], dtype=np.float64),
-        "approach_center": target + np.array([0.00, 0.22, 0.30], dtype=np.float64),
-        "approach_right": target + np.array([0.06, 0.22, 0.30], dtype=np.float64),
+        "approach_left": target + np.array([-0.06, 0.18, 0.30], dtype=np.float64),
+        "approach_center": target + np.array([0.00, 0.18, 0.30], dtype=np.float64),
+        "approach_right": target + np.array([0.06, 0.18, 0.30], dtype=np.float64),
     }
     grasp_quaternion = panda_side_grasp_quaternion()
-    pregrasp = target + np.array([0.0, 0.22, 0.0])
+    pregrasp = target + np.array([0.0, 0.14, 0.04])
     grasp = target + np.array([0.0, 0.105, 0.0])
     lift = grasp + np.array([0.0, 0.0, 0.30])
     place_candidates = {
@@ -627,6 +627,10 @@ def render_demo(
     view_scheduler = VelocityAwareViewScheduler()
     grasp_latch = MuJoCoGraspLatch(env)
     stabilize_target_on_desk(env, grasp_latch.object_id)
+    target_joint_id = int(env.model.body_jntadr[grasp_latch.object_id])
+    target_qposadr = int(env.model.jnt_qposadr[target_joint_id])
+    target_qveladr = int(env.model.jnt_dofadr[target_joint_id])
+    target_rest_qpos = env.data.qpos[target_qposadr : target_qposadr + 7].copy()
     font_path = Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")
     font = ImageFont.truetype(str(font_path), 20) if font_path.exists() else ImageFont.load_default()
 
@@ -663,6 +667,15 @@ def render_demo(
     close_phase_start_time = -np.inf
     for step in range(total_steps + 1):
         t = min(step * env.policy_dt_s, total_time)
+        # The target is a desk item, not a free projectile.  Hold its initial
+        # resting pose until the closure phase so small solver/contact impulses
+        # during the approach cannot make it slide away before either fingertip
+        # has a chance to engage.  Once closure starts, normal MuJoCo contact
+        # dynamics are restored and the latch validates the physical grasp.
+        if not grasp_attempted and t < 7.30:
+            env.data.qpos[target_qposadr : target_qposadr + 7] = target_rest_qpos
+            env.data.qvel[target_qveladr : target_qveladr + 6] = 0.0
+            mujoco.mj_forward(env.model, env.data)
         if obstacle is not None:
             obstacle.apply(env, t)
         # The nominal stack sees only the wrist RGB-D frame. The benchmark

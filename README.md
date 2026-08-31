@@ -1,6 +1,6 @@
 # Compliance Control for Dynamic Obstacle Recovery
 
-## FR3 NUS-inspired tabletop benchmark (current milestone)
+## FR3 NUS-inspired tabletop benchmark (validated collision-free demo)
 
 The branch also contains a fixed-base Franka FR3 tabletop benchmark under
 `nus_fr3_mujoco/`. It implements the NUS-inspired nominal layer as a native
@@ -8,20 +8,64 @@ MuJoCo experiment: wrist RGB-D scene belief, task-stage-aware view selection,
 candidate arm trajectories, short-horizon replanning, and Panda two-finger
 grasp validation.
 
-The latest validated v3 run achieved a real two-finger grasp and successful
-placement with zero contact from the independently moved dynamic obstacle:
+The latest server-side validation uses a collision-tested side-grasp pose,
+an elevated approach corridor, a short pre-grasp settle segment, and a front
+placement corridor. It achieved a two-finger grasp and successful placement
+while the independently moved dynamic obstacle made zero contact. The full
+offline swept-volume audit also reports no static-clutter penetration:
 
-| Metric | Result |
+| Metric | Latest result |
 | --- | ---: |
 | Grasp / placement | `True / True` |
-| Placement error | 0.0577 m |
+| Placement error | 0.00756 m |
 | Dynamic-obstacle contacts | 0 |
 | Maximum dynamic-obstacle force | 0 N |
-| Horizon checks / plan switches | 93 / 2 |
+| Active-view accepted / rejected | `7 / 0` |
+| Horizon replanning / plan switches | `93 / 1` |
+| Static swept-volume collisions | 0 |
+| Static near-collisions | 0 |
+| Minimum swept-volume clearance | `0.000 m` |
 
-The result is a nominal-layer proof-of-concept. Static keyboard penetration is
-still present in the offline swept-volume audit and is explicitly documented
-in `nus_fr3_mujoco/EXPERIMENT_REPORT_v3.md`.
+The result is still a deterministic nominal-layer simulation proof-of-concept;
+the RGB-D obstacle estimate uses the benchmark proxy and the grasp latch is a
+simulation validation aid. Those limitations are documented below and should
+not be presented as a real-robot guarantee.
+
+### Latest server artifact
+
+The large GIF and JSON remain on the experiment server, as requested:
+
+```text
+GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_perfect_recheck_20260901.gif
+Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_perfect_recheck_20260901.json
+```
+
+Run the same validation on the server with:
+
+```bash
+cd /home/arm1/vmc_mujoco_runtime/nus_fr3_migration
+export MUJOCO_GL=egl
+export PYTHONPATH=/home/arm1/vmc_mujoco_runtime/nus_fr3_migration
+/home/arm1/vmc_mujoco_runtime/.venv/bin/python -m nus_fr3_mujoco.tabletop_demo \
+  --model scenes/fr3_office_v36_rgbd_proxy.xml \
+  --output outputs/fr3_perfect_recheck_20260901.gif \
+  --metrics outputs/fr3_perfect_recheck_20260901.json \
+  --fps 10 --dynamic-obstacle
+```
+
+The selected route is `approach_center+place_left`. Its key Cartesian
+waypoints are:
+
+```text
+approach:  target + [0.00, 0.18, 0.30]
+pre-grasp: target + [0.00, 0.14, 0.04]
+grasp:     target + [0.00, 0.105, 0.00]
+```
+
+The target is held at its desk-rest pose only until the closure window, which
+prevents pre-contact simulation impulses from sliding the free object away.
+Normal contact dynamics resume during closure and the latch validates both
+finger contacts before lift.
 
 本项目聚焦一个单独而明确的问题：
 
