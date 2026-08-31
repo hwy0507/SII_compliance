@@ -691,9 +691,13 @@ def render_demo(
         if rod_task:
             obstacle = PredictableCrossingObstacle(
                 env.model,
-                enter_time_s=11.4,
-                contact_time_s=13.4,
-                exit_time_s=17.4,
+                # Start the crossing after the nominal LIFT segment.  The
+                # obstacle must challenge the already-raised carry motion;
+                # otherwise a normal task lift is visually indistinguishable
+                # from an avoidance response.
+                enter_time_s=14.8,
+                contact_time_s=16.0,
+                exit_time_s=17.2,
             )
             obstacle.before = np.array([0.92, -0.42, 1.32], dtype=np.float64)
             obstacle.corridor = np.array([0.32, -0.42, 1.32], dtype=np.float64)

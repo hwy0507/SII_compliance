@@ -54,6 +54,11 @@ reference while the receding-horizon supervisor rechecks alternative plans.
 This keeps active avoidance causally tied to an actual predicted collision
 risk and removes the previous post-event upward pull.
 
+The dynamic-obstacle benchmark timing is also separated from the task lift:
+the nominal `LIFT` runs at approximately `11.76--14.48 s`, while the red box
+crosses only during `CARRY AROUND CLUTTER` at `14.8--17.2 s`. This prevents a
+normal task motion from being misinterpreted as an avoidance response.
+
 Placement also has an explicit `SETTLE AT PLACE` stage. The arm now reaches
 the refined hand pose, holds it briefly, and only then opens the gripper. This
 prevents a GIF frame from showing the rod still suspended near the hand being
