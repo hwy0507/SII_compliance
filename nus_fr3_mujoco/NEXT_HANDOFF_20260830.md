@@ -130,6 +130,41 @@ replanning_count                  93
 swept_volume collision_count      0
 ```
 
+## Dual RGB-D cooperative validation (2026-08-31)
+
+Added a fixed desk-side `base_rgbd` camera in addition to the wrist-mounted
+`wrist_rgbd` camera. Each stream has its own causal RGB-D tracker; the fused
+state uses confidence/visibility weighting and the larger covariance for
+conservative planning. The fixed camera provides global early warning, while
+the wrist camera confirms the local hand/obstacle relationship when the arm
+occludes the desk view.
+
+Server artifacts:
+
+```text
+/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_dual_rgbd_motion_handoff_20260831.gif
+/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_dual_rgbd_motion_handoff_20260831.json
+```
+
+Validated metrics:
+
+```text
+grasp_success                     True
+placement_success                 True
+placement_error_m                 0.03881 m
+base_first_detection_time_s       0.00 s
+wrist_first_detection_time_s      11.04 s
+dual_camera_visible_steps         1
+dynamic_safety_hold_count         2
+dynamic_obstacle_contact_steps    0
+max_dynamic_obstacle_force_n      0.0 N
+dynamic_obstacle_min_clearance_m  0.20036 m
+active_view_accept_count          9
+active_view_reject_count          0
+plan_switch_count                 0
+replanning_count                  93
+```
+
 The final visual profile places the red obstacle close to the carry path at
 `y=-0.45 m`, `z=1.28 m`, and moves continuously leftward from `x=0.78` to
 `x=-0.78` through the crossing. The RGB-D tracker observes it at

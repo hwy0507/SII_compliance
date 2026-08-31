@@ -338,6 +338,10 @@
     <!-- External observation interfaces; these are not student observations. -->
     <camera name="office_overview" pos="2.15 -2.85 1.95" mode="targetbody" target="target_object" fovy="58"/>
     <camera name="office_side" pos="2.45 1.85 1.55" mode="targetbody" target="target_object" fovy="62"/>
+    <!-- Fixed tabletop RGB-D camera mounted near the FR3 base.  Its optical
+         axis covers the desk-wide carry corridor and is independent of wrist
+         motion; local -Z points toward the workspace centre. -->
+    <camera name="base_rgbd" pos="1.25 -1.55 1.55" quat="0.749606 0.567627 0.205509 0.271395" fovy="78"/>
 
     <!-- Predictable dynamic obstacle: mocap body driven by dynamic_obstacle.py. -->
     <body name="dynamic_obstacle" mocap="true" pos="0.92 0.72 1.18">

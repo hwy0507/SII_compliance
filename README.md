@@ -4,9 +4,9 @@
 
 The branch also contains a fixed-base Franka FR3 tabletop benchmark under
 `nus_fr3_mujoco/`. It implements the NUS-inspired nominal layer as a native
-MuJoCo experiment: wrist RGB-D scene belief, task-stage-aware view selection,
-candidate arm trajectories, short-horizon replanning, and Panda two-finger
-grasp validation.
+MuJoCo experiment: cooperative fixed-base and wrist RGB-D scene belief,
+task-stage-aware view selection, candidate arm trajectories, short-horizon
+replanning, and Panda two-finger grasp validation.
 
 The latest server-side validation uses a collision-tested side-grasp pose,
 an elevated approach corridor, a short pre-grasp settle segment, and a front
@@ -17,10 +17,10 @@ offline swept-volume audit also reports no static-clutter penetration:
 | Metric | Latest result |
 | --- | ---: |
 | Grasp / placement | `True / True` |
-| Placement error | 0.04690 m |
+| Placement error | 0.03881 m |
 | Dynamic-obstacle contacts | 0 |
 | Maximum dynamic-obstacle force | 0 N |
-| Active-view accepted / rejected | `8 / 0` |
+| Active-view accepted / rejected | `9 / 0` |
 | Horizon replanning / plan switches | `93 / 0` |
 | Static swept-volume collisions | 0 |
 | Static near-collisions | 0 |
@@ -36,8 +36,8 @@ not be presented as a real-robot guarantee.
 The large GIF and JSON remain on the experiment server, as requested:
 
 ```text
-GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_camera_attention_natural_20260901.gif
-Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_camera_attention_natural_20260901.json
+GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_dual_rgbd_motion_handoff_20260831.gif
+Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_dual_rgbd_motion_handoff_20260831.json
 ```
 
 Run the same validation on the server with:
@@ -48,8 +48,8 @@ export MUJOCO_GL=egl
 export PYTHONPATH=/home/arm1/vmc_mujoco_runtime/nus_fr3_migration
 /home/arm1/vmc_mujoco_runtime/.venv/bin/python -m nus_fr3_mujoco.tabletop_demo \
   --model scenes/fr3_office_v36_rgbd_proxy.xml \
-  --output outputs/fr3_camera_attention_natural_20260901.gif \
-  --metrics outputs/fr3_camera_attention_natural_20260901.json \
+  --output outputs/fr3_dual_rgbd_motion_handoff_20260831.gif \
+  --metrics outputs/fr3_dual_rgbd_motion_handoff_20260831.json \
   --fps 10 --dynamic-obstacle
 ```
 
@@ -82,6 +82,14 @@ active focus is `PREDICTED_OBSTACLE` and the measured focus angle is
 After confidence decays and the obstacle leaves the wrist view, the scheduler
 falls back to `SWEPT_VOLUME_SEARCH`, which is expected rather than a collision
 response.
+
+This validation uses two cooperative RGB-D streams. The fixed `base_rgbd`
+camera detects the obstacle from the desk-wide view at `t=0.00 s`; after the
+FR3 briefly occludes that view, the wrist `wrist_rgbd` camera confirms the
+obstacle at `t=11.04 s`, and the fixed camera reacquires it at `t=11.32 s`.
+The fused tracker drives two observation-based safe holds, with zero rejected
+active-view actions and zero dynamic-obstacle contacts. The GIF displays the
+overview, base RGB/depth, and wrist RGB/depth panels together.
 
 本项目聚焦一个单独而明确的问题：
 

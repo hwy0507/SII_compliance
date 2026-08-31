@@ -222,6 +222,8 @@ def build_scene_xml(model_path: Path, seed: int = 7) -> str:
     <!-- External observation interfaces; these are not student observations. -->
     <camera name="office_overview" pos="2.15 -2.85 1.95" mode="targetbody" target="target_object" fovy="58"/>
     <camera name="office_side" pos="2.45 1.85 1.55" mode="targetbody" target="target_object" fovy="62"/>
+    <!-- Fixed tabletop RGB-D camera near the FR3 base. -->
+    <camera name="base_rgbd" pos="1.25 -1.55 1.55" quat="0.749606 0.567627 0.205509 0.271395" fovy="78"/>
 """
     default_anchor = "  </default>\n\n  <asset>"
     if default_anchor not in text:

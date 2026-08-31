@@ -18,8 +18,12 @@ from .nominal_controller import FR3NominalVelocityServo
 from .grasp_latch import MuJoCoGraspLatch
 from .collision_checker import FR3SweptVolumeChecker
 from .receding_horizon import RecedingHorizonSupervisor
-from .scene_belief import RGBDObstacleTracker, WristSceneBeliefEstimator
-from .wrist_camera import WristRGBDCamera, VelocityAwareViewScheduler, depth_preview
+from .scene_belief import (
+    RGBDObstacleTracker,
+    WristSceneBeliefEstimator,
+    fuse_obstacle_states,
+)
+from .wrist_camera import RGBDCamera, WristRGBDCamera, VelocityAwareViewScheduler, depth_preview
 
 
 HOME = np.array([0.0, -0.785, 0.0, -2.356, 0.0, 1.571, 0.785], dtype=np.float64)
@@ -568,7 +572,9 @@ def render_demo(
         env.model.actuator_gainprm[7, 0] = float(gripper_kp)
     env.reset(HOME)
     obstacle = None
-    perception_tracker = RGBDObstacleTracker()
+    wrist_perception_tracker = RGBDObstacleTracker()
+    base_perception_tracker = RGBDObstacleTracker()
+    perception_tracker = wrist_perception_tracker
     perception_predictor = None
     if dynamic_obstacle:
         from .dynamic_obstacle import PredictableCrossingObstacle, RGBDObstaclePredictor
@@ -623,6 +629,7 @@ def render_demo(
     camera.azimuth = 136.0
     camera.elevation = -18.0
     wrist_camera = WristRGBDCamera(env.model, "wrist_rgbd", width=320, height=240)
+    base_camera = RGBDCamera(env.model, "base_rgbd", width=320, height=240)
     scene_estimator = WristSceneBeliefEstimator(env.model, "wrist_rgbd")
     view_scheduler = VelocityAwareViewScheduler()
     grasp_latch = MuJoCoGraspLatch(env)
@@ -673,6 +680,10 @@ def render_demo(
     dynamic_hold_count = 0
     dynamic_hold_records: list[dict[str, object]] = []
     hold_started_this_step = False
+    base_first_detection_time_s: float | None = None
+    wrist_first_detection_time_s: float | None = None
+    fused_first_detection_time_s: float | None = None
+    dual_camera_visible_steps = 0
     for step in range(total_steps + 1):
         t = min(step * env.policy_dt_s, total_time)
         hold_started_this_step = False
@@ -690,16 +701,30 @@ def render_demo(
         # The nominal stack sees only the wrist RGB-D frame. The benchmark
         # obstacle is moved independently to generate the hidden environment.
         wrist = wrist_camera.render(env.data)
+        base = base_camera.render(env.data)
         belief = scene_estimator.estimate(
             wrist,
             target_position_world=env.data.xpos[grasp_latch.object_id].copy(),
             stride=8,
         )
-        perceived_state = perception_tracker.update(
+        wrist_state = wrist_perception_tracker.update(
             wrist,
             time_s=t,
             target_position_world=env.data.xpos[grasp_latch.object_id].copy(),
         )
+        base_state = base_perception_tracker.update(
+            base,
+            time_s=t,
+            target_position_world=env.data.xpos[grasp_latch.object_id].copy(),
+        )
+        perceived_state = fuse_obstacle_states(wrist_state, base_state)
+        if base_state.visible and base_first_detection_time_s is None:
+            base_first_detection_time_s = float(t)
+        if wrist_state.visible and wrist_first_detection_time_s is None:
+            wrist_first_detection_time_s = float(t)
+        if perceived_state.visible and fused_first_detection_time_s is None:
+            fused_first_detection_time_s = float(t)
+        dual_camera_visible_steps += int(base_state.visible and wrist_state.visible)
         if perception_predictor is not None:
             perception_predictor.update(perceived_state)
         horizon_decision = supervisor.update(env.q, t)
@@ -794,18 +819,28 @@ def render_demo(
             perceived_state,
             future_positions=np.asarray(future_hand_positions, dtype=np.float64),
         )
-        if (
+        lift_handoff_view = bool(
+            phase == "LIFT"
+            and active_view.focus_name == "PREDICTED_OBSTACLE"
+            and base_state.visible
+            and np.linalg.norm(base_state.velocity_world) >= 0.10
+        )
+        regular_active_view_due = bool(
             active_view_enabled
             and active_view.action_required
-            and phase in {"CARRY AROUND CLUTTER", "RETURN HOME", "DYNAMIC SAFE HOLD"}
-            and t - last_active_view_time >= 0.32
-            or (
-                active_view_enabled
-                and hold_started_this_step
-                and active_view.action_required
-                and active_view.focus_name == "PREDICTED_OBSTACLE"
+            and (
+                phase in {"CARRY AROUND CLUTTER", "RETURN HOME", "DYNAMIC SAFE HOLD"}
+                or lift_handoff_view
             )
-        ):
+            and t - last_active_view_time >= 0.32
+        )
+        immediate_hold_view = bool(
+            active_view_enabled
+            and hold_started_this_step
+            and active_view.action_required
+            and active_view.focus_name == "PREDICTED_OBSTACLE"
+        )
+        if regular_active_view_due or immediate_hold_view:
             q_view = solve_position_nullspace_view_ik(
                 env,
                 hand_id,
@@ -881,6 +916,10 @@ def render_demo(
                 "obstacle_speed_m_s": float(np.linalg.norm(perceived_state.velocity_world)),
                 "prediction_uncertainty_m": float(np.sqrt(perceived_state.covariance_m2)),
                 "tracking_confidence": float(perceived_state.confidence),
+                "wrist_tracking_confidence": float(wrist_state.confidence),
+                "base_tracking_confidence": float(base_state.confidence),
+                "wrist_obstacle_visible": bool(wrist_state.visible),
+                "base_obstacle_visible": bool(base_state.visible),
                 "safety_gate": view_action != "ACTIVE_VIEW_REJECTED",
                 "camera_position_world": wrist.camera_position.tolist(),
                 "camera_forward_world": camera_forward.tolist(),
@@ -1023,27 +1062,35 @@ def render_demo(
                     "valid_depth_ratio": float(belief.valid_depth_ratio),
                 }
             )
+        base_rgb = Image.fromarray(base.rgb).convert("RGB")
+        base_depth = Image.fromarray(depth_preview(base.depth_m)).convert("RGB")
         wrist_rgb = Image.fromarray(wrist.rgb).convert("RGB")
         wrist_depth = Image.fromarray(depth_preview(wrist.depth_m)).convert("RGB")
-        frame = Image.new("RGB", (960, 480), (16, 20, 26))
+        frame = Image.new("RGB", (1280, 560), (16, 20, 26))
         frame.paste(overview, (0, 0))
-        frame.paste(wrist_rgb, (640, 0))
-        frame.paste(wrist_depth, (640, 240))
+        frame.paste(base_rgb, (640, 0))
+        frame.paste(wrist_rgb, (960, 0))
+        frame.paste(base_depth, (640, 240))
+        frame.paste(wrist_depth, (960, 240))
         draw = ImageDraw.Draw(frame)
-        draw.rectangle((0, 0, frame.width, 74), fill=(10, 16, 24))
+        draw.rectangle((0, 480, frame.width, 560), fill=(10, 16, 24))
         draw.rectangle((640, 0, 960, 28), fill=(10, 16, 24))
+        draw.rectangle((960, 0, 1280, 28), fill=(10, 16, 24))
         draw.rectangle((640, 240, 960, 268), fill=(10, 16, 24))
-        draw.text((14, 10), "FR3 + wrist RGB-D | velocity-aware active view", fill=(235, 242, 250), font=font)
+        draw.rectangle((960, 240, 1280, 268), fill=(10, 16, 24))
+        draw.text((650, 5), "BASE RGB-D", fill=(235, 242, 250), font=font)
+        draw.text((970, 5), "WRIST RGB-D", fill=(235, 242, 250), font=font)
+        draw.text((650, 245), "BASE DEPTH", fill=(235, 242, 250), font=font)
+        draw.text((970, 245), "WRIST DEPTH", fill=(235, 242, 250), font=font)
         grasp_state = "GRASPED" if grasp_latch.engaged else "OPEN"
-        draw.text((14, 40), f"t={t:5.2f}s  {phase}  view={view_action}  grasp={grasp_state}", fill=(185, 220, 255), font=font)
-        draw.text((14, 64), f"rgbd points={len(belief.obstacle_points_world):4d}  target visibility={belief.target_visibility:.2f}", fill=(175, 195, 205), font=font)
+        draw.text((14, 490), f"t={t:5.2f}s  {phase}  view={view_action}  grasp={grasp_state}", fill=(185, 220, 255), font=font)
+        draw.text((14, 520), f"base_conf={base_state.confidence:.2f} wrist_conf={wrist_state.confidence:.2f} fused_conf={perceived_state.confidence:.2f}  base_visible={base_state.visible} wrist_visible={wrist_state.visible}", fill=(175, 195, 205), font=font)
         clearance_label = "horizon" if obstacle is not None else "planned"
-        draw.text((650, 220), f"{clearance_label} clearance={last_horizon_clearance_m:.3f} m", fill=(175, 195, 205), font=font)
-        draw.text((650, 5), "WRIST RGB", fill=(235, 242, 250), font=font)
-        draw.text((650, 245), "WRIST DEPTH", fill=(235, 242, 250), font=font)
+        draw.text((14, 540), f"{clearance_label} clearance={last_horizon_clearance_m:.3f} m", fill=(175, 195, 205), font=font)
         frames.append(np.asarray(frame))
     renderer.close()
     wrist_camera.close()
+    base_camera.close()
     output_path.parent.mkdir(parents=True, exist_ok=True)
     iio.imwrite(output_path, np.stack(frames), duration=1.0 / fps, loop=0)
     print(f"saved {output_path} ({len(frames)} frames, {total_time:.2f}s)")
@@ -1097,13 +1144,17 @@ def render_demo(
         "active_view_records": active_view_records,
         "active_view_accept_count": int(active_view_accept_count),
         "active_view_reject_count": int(active_view_reject_count),
+        "base_first_detection_time_s": base_first_detection_time_s,
+        "wrist_first_detection_time_s": wrist_first_detection_time_s,
+        "fused_first_detection_time_s": fused_first_detection_time_s,
+        "dual_camera_visible_steps": int(dual_camera_visible_steps),
         "dynamic_safety_hold_count": int(dynamic_hold_count),
         "dynamic_safety_hold_records": dynamic_hold_records,
         "perception_contract": {
             "obstacle_pose_available_to_nominal": False,
             "obstacle_velocity_available_to_nominal": False,
             "obstacle_contact_available_to_nominal": False,
-            "obstacle_source": "wrist_rgbd_only",
+            "obstacle_source": "fused_base_and_wrist_rgbd",
         },
         "min_target_visibility": float(min_target_visibility),
         "swept_volume_report": {

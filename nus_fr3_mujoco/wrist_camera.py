@@ -34,13 +34,13 @@ class ActivePerceptionDecision:
     action_required: bool
 
 
-class WristRGBDCamera:
-    """Render the camera attached to the FR3 Panda hand.
+class RGBDCamera:
+    """Render an RGB-D camera from a MuJoCo camera pose.
 
-    The camera has no independent world pose. MuJoCo updates its pose from
-    the hand body, so the observation is causal with respect to the robot
-    configuration and follows the same viewpoint that a real wrist sensor
-    would have.
+    The same renderer is used for both the wrist-mounted sensor and the fixed
+    tabletop sensor.  A camera attached to a body follows that body, while a
+    worldbody camera remains fixed; the returned observation interface is
+    identical for both.
     """
 
     def __init__(self, model: mujoco.MjModel, camera_name: str = "wrist_rgbd", *, width: int = 320, height: int = 240) -> None:
@@ -78,6 +78,12 @@ class WristRGBDCamera:
         if float(np.nanmax(depth_buffer)) > 1.01:
             return depth_buffer
         return (near * far) / np.maximum(far - depth_buffer * (far - near), 1.0e-6)
+
+
+class WristRGBDCamera(RGBDCamera):
+    """Backward-compatible name for the wrist-mounted RGB-D camera."""
+
+    pass
 
 
 class VelocityAwareViewScheduler:

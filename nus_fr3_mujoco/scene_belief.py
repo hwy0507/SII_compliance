@@ -43,6 +43,48 @@ class PerceivedObstacleState:
     visible: bool
 
 
+def fuse_obstacle_states(
+    wrist_state: PerceivedObstacleState,
+    base_state: PerceivedObstacleState,
+) -> PerceivedObstacleState:
+    """Fuse wrist and fixed-base RGB-D tracks into one conservative state.
+
+    Each camera remains causal and independent.  A visible, high-confidence
+    track receives more weight; when only one camera sees the obstacle we keep
+    that track rather than averaging it with the inactive prior.  Covariance
+    uses the larger value so the planner remains conservative under view
+    disagreement.
+    """
+
+    states = (wrist_state, base_state)
+    credible = [s for s in states if s.confidence >= 0.12 or s.visible]
+    if not credible:
+        return PerceivedObstacleState(
+            time_s=max(wrist_state.time_s, base_state.time_s),
+            position_world=wrist_state.position_world.copy(),
+            velocity_world=np.zeros(3, dtype=np.float64),
+            covariance_m2=max(wrist_state.covariance_m2, base_state.covariance_m2),
+            confidence=0.0,
+            visible=False,
+        )
+    weights = np.asarray(
+        [max(float(s.confidence), 0.05) * (1.25 if s.visible else 1.0) for s in credible],
+        dtype=np.float64,
+    )
+    weights /= max(float(np.sum(weights)), 1.0e-9)
+    position = sum(w * s.position_world for w, s in zip(weights, credible))
+    velocity = sum(w * s.velocity_world for w, s in zip(weights, credible))
+    confidence = 1.0 - float(np.prod([1.0 - np.clip(s.confidence, 0.0, 1.0) for s in credible]))
+    return PerceivedObstacleState(
+        time_s=max(s.time_s for s in credible),
+        position_world=np.asarray(position, dtype=np.float64),
+        velocity_world=np.asarray(velocity, dtype=np.float64),
+        covariance_m2=max(float(s.covariance_m2) for s in credible),
+        confidence=float(np.clip(confidence, 0.0, 1.0)),
+        visible=any(bool(s.visible) for s in credible),
+    )
+
+
 class RGBDObstacleTracker:
     """Track a moving obstacle without reading simulator obstacle state.
 
