@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FR3 长杆预测式主动避障</title>
+  <title>FR3 长杆三相机主动感知避障</title>
   <style>
     body{margin:0;padding:28px;background:#111827;color:#e5e7eb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
     main{max-width:1440px;margin:auto} h1{margin:0 0 8px}.sub{color:#9ca3af;margin-bottom:20px}
@@ -13,20 +13,22 @@
   </style>
 </head>
 <body><main>
-  <h1>FR3 长杆抓取 · 双相机主动感知 · 预测式避障</h1>
-  <div class="sub">服务器实验时间：2026-08-31　|　障碍物通过前开始平滑抬升</div>
-  <div class="viewer"><img src="fr3_rod_predictive_rise_20260831.gif" alt="FR3 长杆预测式主动避障 GIF"></div>
+  <h1>FR3 长杆抓取 · 三相机主动感知 · 条件式避障</h1>
+  <div class="sub">服务器实验时间：2026-08-31　|　只有 RGB-D 预测到搬运走廊阻塞时才抬升</div>
+  <div class="viewer"><img src="fr3_rod_active_avoidance_zero_contact_20260831.gif" alt="FR3 长杆三相机主动感知避障 GIF"></div>
   <div class="grid">
     <div class="metric"><b>抓取 / 放置</b><span>True / True</span></div>
     <div class="metric"><b>动态障碍物接触</b><span>0 steps</span></div>
     <div class="metric"><b>最大动态接触力</b><span>0 N</span></div>
-    <div class="metric"><b>主动视角接受 / 拒绝</b><span>14 / 0</span></div>
-    <div class="metric"><b>双相机同时可见</b><span>23 steps</span></div>
-    <div class="metric"><b>预测式安全响应</b><span>11.76 s</span></div>
+    <div class="metric"><b>条件避障抬升</b><span>1 time</span></div>
+    <div class="metric"><b>三相机同时可见</b><span>22 steps</span></div>
+    <div class="metric"><b>RGB-D 首次触发</b><span>12.20 s</span></div>
     <div class="metric"><b>静态扫掠碰撞</b><span>0</span></div>
     <div class="metric"><b>非法目标接触</b><span>0 steps</span></div>
   </div>
-  <div class="note">固定桌面相机在 <code>0.00 s</code> 发现障碍物，腕部相机在
-  <code>0.36 s</code> 确认。融合速度预测在 <code>11.76 s</code> 触发一次平滑抬升，
-  此时障碍物仍在接近，而不是已经通过后再补救。完整 GIF 原文件保留在服务器。</div>
+  <div class="note">固定 base RGB-D、根部固定但可转向的 active-base RGB-D、以及 wrist RGB-D
+  协同观测。融合轨迹在 <code>11.28 s</code> 首次建立，active-base 在 <code>11.44 s</code>
+  看到障碍物；短时域碰撞预测在 <code>12.20 s</code> 触发一次从当前末端姿态生成的
+  <code>CONDITIONAL_OBSTACLE_LIFT</code>。障碍物通过后恢复正常搬运，动态接触审计为
+  <code>0 steps / 0 N</code>。完整 GIF 和 JSON 原文件保留在服务器。</div>
 </main></body></html>
