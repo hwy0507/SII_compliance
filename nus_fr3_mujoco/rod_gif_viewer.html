@@ -13,23 +13,25 @@
   </style>
 </head>
 <body><main>
-  <h1>FR3 长杆抓取 · 三相机主动感知 · 自适应最小安全避障</h1>
-  <div class="sub">服务器实验时间：2026-08-31　|　避障幅度由在线碰撞检查自动决定</div>
-  <div class="viewer"><img src="fr3_rod_adaptive_fine_v7_20260831.gif" alt="FR3 长杆三相机自适应最小安全避障 GIF"></div>
+  <h1>FR3 长杆抓取 · 连续低位搬运 · 三相机主动避障</h1>
+  <div class="sub">服务器实验时间：2026-08-31　|　已移除隐藏高位 IK 分支，避障方向与幅度在线决定</div>
+  <div class="viewer"><img src="fr3_rod_low_carry_minimal_lateral_v10_20260831.gif" alt="FR3 长杆连续低位搬运与三相机主动避障 GIF"></div>
   <div class="grid">
     <div class="metric"><b>抓取 / 放置</b><span>True / True</span></div>
     <div class="metric"><b>动态障碍物接触</b><span>0 steps</span></div>
     <div class="metric"><b>最大动态接触力</b><span>0 N</span></div>
-    <div class="metric"><b>自适应避障抬升</b><span>1 time · 0.03 m</span></div>
-    <div class="metric"><b>三相机同时可见</b><span>24 steps</span></div>
-    <div class="metric"><b>RGB-D 首次触发</b><span>12.00 s</span></div>
+    <div class="metric"><b>自适应避障</b><span>1 time · 0.082 m lateral</span></div>
+    <div class="metric"><b>三相机同时可见</b><span>30 steps</span></div>
+    <div class="metric"><b>RGB-D 首次触发</b><span>12.20 s</span></div>
+    <div class="metric"><b>名义搬运最高点</b><span>0.930 m</span></div>
     <div class="metric"><b>静态扫掠碰撞</b><span>0</span></div>
     <div class="metric"><b>非法目标接触</b><span>0 steps</span></div>
   </div>
   <div class="note">固定 base RGB-D、根部固定但可转向的 active-base RGB-D、以及 wrist RGB-D
   协同观测。融合轨迹在 <code>11.28 s</code> 首次建立，active-base 在 <code>11.44 s</code>
-  看到障碍物；短时域碰撞预测在 <code>12.00 s</code> 触发一次从当前末端姿态生成的
-  <code>CONDITIONAL_OBSTACLE_LIFT</code>，并由在线候选搜索自动选择 <code>0.03 m</code> 的最小任务可行安全位移。
-  更小的 <code>0.02 m</code> 候选虽然动态接触为零，但完整放置审计失败，因此没有发布。
+  看到障碍物；短时域碰撞预测在 <code>12.20 s</code> 触发一次从当前末端姿态生成的
+  <code>CONDITIONAL_OBSTACLE_AVOIDANCE</code>。系统比较停留、下移、上移、远离和垂直于障碍物轨迹的横移，
+  自动选择约 <code>0.082 m</code> 的最小零碰撞横向位移；Z 分量仅 <code>-0.0005 m</code>，没有主动抬升。
+  原 GIF 中由隐藏 <code>q_lift</code> IK 分支造成的整臂直立姿态已删除，真实名义 carry 最高点为 <code>0.930 m</code>。
   障碍物通过后恢复正常搬运，动态接触审计为 <code>0 steps / 0 N</code>。完整 GIF 和 JSON 原文件保留在服务器。</div>
 </main></body></html>

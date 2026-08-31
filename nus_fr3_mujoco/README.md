@@ -9,14 +9,14 @@ It is not intended to be a line-by-line port of the Fetch/ManiSkill code.
 The current implementation has been re-run on the MuJoCo office tabletop
 scene with fixed base RGB-D, root-mounted active-base RGB-D, wrist RGB-D, a
 moving obstacle, and a receding-horizon supervisor. The nominal rod task has
-no unconditional lift; the only escape is created when fused RGB-D predicts a
+no unconditional lift; the only avoidance action is created when fused RGB-D predicts a
 blocked carry horizon:
 
 | Metric | Result |
 | --- | ---: |
 | Two-finger grasp success | `True` |
 | Placement success | `True` |
-| Placement error | 0.06368 m |
+| Placement error | 0.01601 m |
 | Dynamic-obstacle contact steps | 0 |
 | Maximum dynamic-obstacle contact force | 0 N |
 | Receding-horizon checks | 118 |
@@ -24,19 +24,29 @@ blocked carry horizon:
 | Active-view accepted / rejected | 0 / 0 |
 | Illegal target-contact steps | 0 |
 | Finite-state check | `True` |
-| Conditional obstacle lifts | 1 |
-| Three-camera visible steps | 24 |
+| Conditional obstacle avoidance actions | 1 |
+| Three-camera visible steps | 30 |
+| Nominal carry maximum hand height | 0.92967 m |
+| Selected avoidance | 0.08232 m lateral |
 
 The selected route uses three lateral approach candidates and preserves the
 validated rod-task top-down pinch orientation. Once `PLACE DESCEND` begins, the
 place candidate is locked to prevent release-time oscillation. The complete
 metrics are stored on the server at
-`outputs/fr3_rod_adaptive_fine_v7_20260831.json`; the matching
-589-frame GIF is next to it. The conditional lift record is explicitly tagged
-`trigger=rgbd_predicted_carry_blockage`. The fine-grained online search chose
-the first complete-task-safe vertical offset, `0.03 m`; a `0.02 m` trial had
-zero obstacle contact but failed the final placement audit, so it is not the
-published result.
+`outputs/fr3_rod_low_carry_minimal_lateral_v10_20260831.json`; the matching
+589-frame GIF is next to it. The conditional action record is explicitly tagged
+`trigger=rgbd_predicted_carry_blockage`. The online search compares hold,
+lateral, lower, away, and raise candidates in ascending displacement order.
+It selected `0.08232 m` laterally with a vertical component of only
+`-0.00052 m`; the final dynamic-contact audit remained `0 steps / 0 N`.
+
+Earlier GIFs retained a conspicuous upright pose because carry IK was solved
+from an unused high `q_lift` seed. Although the `LIFT` execution segment had
+been deleted, interpolation to that opposite elbow branch recreated the same
+large Cartesian arc. The current code removes the hidden seed, uses two low
+carry waypoints on the grasp branch, and limits place goals to the continuous
+top-down-pinch workspace. The physical carry maximum is now `0.92967 m`
+instead of roughly `1.40 m` in the previous run.
 
 This is a deterministic simulation proof-of-concept, not the final planner.
 The current static swept-volume audit reports zero collisions and zero

@@ -261,6 +261,11 @@ class RecedingHorizonSupervisor:
             "SETTLE AT GRASP",
             "CLOSE GRIPPER",
             "LIFT",
+            # Carry-level obstacle reactions are synthesized from the current
+            # RGB-D belief by the local collision-gated shield. Switching to
+            # a different precomputed IK branch here caused repeated route
+            # flips and large non-task joint excursions.
+            "CARRY AROUND CLUTTER",
             "PLACE DESCEND",
             "RELEASE",
             "RETRACT AFTER RELEASE",

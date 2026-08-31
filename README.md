@@ -11,8 +11,9 @@ replanning, and Panda two-finger grasp validation.
 The latest server-side validation uses a collision-tested top-down rod grasp,
 an elevated approach corridor, a short pre-grasp settle segment, and a front
 placement corridor. The nominal task contains no unconditional `LIFT` segment:
-it is `grasp -> carry -> place`. A vertical escape is synthesized only when
-the fused RGB-D belief predicts that the current carry horizon is blocked.
+it is `grasp -> low continuous carry -> place`. A task-space avoidance action
+is synthesized only when the fused RGB-D belief predicts that the current
+carry horizon is blocked.
 The final server run completed the full pick/carry/place task with zero dynamic
 obstacle contact; its escape amplitude was selected online from collision-gated
 candidate offsets rather than fixed in advance:
@@ -20,14 +21,16 @@ candidate offsets rather than fixed in advance:
 | Metric | Latest result |
 | --- | ---: |
 | Grasp / placement | `True / True` |
-| Placement error | 0.06368 m |
+| Placement error | 0.01601 m |
 | Dynamic-obstacle contacts | 0 |
 | Maximum dynamic-obstacle force | 0 N |
 | Active-base view | fixed mount, changing pan/tilt |
 | Horizon replanning / plan switches | `118 / 0` |
 | Observation-driven safe holds | `1` |
 | Illegal target-contact steps | `0` |
-| Three-camera visible steps | `24` |
+| Three-camera visible steps | `30` |
+| Nominal carry maximum hand height | `0.930 m` |
+| Selected avoidance | `0.082 m` lateral; `-0.0005 m` vertical |
 | Static swept-volume collisions | 0 |
 | Static near-collisions | 0 |
 | Minimum swept-volume clearance | `0.000 m` |
@@ -52,18 +55,27 @@ reintroduce pre-grasp oscillation or a post-event upward fling.
 The safety policy no longer contains a fixed `q_lift_ref` response. A visible
 obstacle outside the current predicted swept corridor produces no arm action.
 Only when the RGB-D-driven short-horizon checker reports that the future
-trajectory is blocked may the controller synthesize a collision-gated vertical
-escape from the measured current hand pose. It tests candidate offsets in
-ascending order and validates the complete escape-and-recovery transition. In
-the fine-grained adaptive run, active-base first detection was `11.44 s`, the
-conditional escape began at `12.00 s`, and the search selected `0.03 m`; the obstacle
-contact audit remained exactly zero.
+trajectory is blocked may the controller synthesize a collision-gated action
+from the measured current hand pose. It compares holding position, moving
+laterally from the obstacle track, lowering, raising, and moving directly away,
+then tests amplitudes in ascending order including a one-second dwell. In the
+latest run, active-base first detection was `11.44 s`, avoidance began at
+`12.20 s`, and the search selected an `0.082 m` lateral displacement with only
+`-0.0005 m` vertical change; the obstacle contact audit remained exactly zero.
+
+The conspicuous upright carry pose in earlier GIFs was not the small active
+avoidance offset. The carry IK was still seeded from an unused high `q_lift`
+solution, so joint-space interpolation silently recreated the deleted lift.
+The current planner removes that seed, solves two low carry waypoints
+causally from the grasp branch, and restricts place candidates to the same
+continuous top-down-pinch workspace. The measured nominal carry maximum is
+now `0.930 m`; the previous physical run reached roughly `1.40 m`.
 
 The dynamic-obstacle benchmark timing is separated from the nominal task:
 the red box starts outside the RGB-D workspace gate, enters the carry strip
-before the carry midpoint, and exits before placement descent. Therefore the
-only upward motion visible in the final run is the explicitly labeled
-`ACTIVE OBSTACLE LIFT` response.
+before the carry midpoint, and exits before placement descent. The avoidance is
+explicitly labeled `ACTIVE OBSTACLE AVOIDANCE`; the selected response is
+lateral, not an upward lift.
 
 Placement also has an explicit `SETTLE AT PLACE` stage. The arm now reaches
 the refined hand pose, holds it briefly, and only then opens the gripper. This
@@ -72,18 +84,18 @@ mistaken for the final placement result.
 
 The latest server GIF is a 589-frame three-camera layout. The final run
 reported `grasp_success=True`, `placement_success=True`, zero dynamic-obstacle
-contact steps and zero force, 24 policy steps with all three cameras seeing
-the obstacle, and one RGB-D-triggered adaptive escape. Placement uses a 0.10 m XY
+contact steps and zero force, 30 policy steps with all three cameras seeing
+the obstacle, and one RGB-D-triggered adaptive avoidance action. Placement uses a 0.10 m XY
 compliance envelope and a tighter vertical check; the measured release error
-was 0.06368 m.
+was 0.01601 m.
 
 ### Latest server artifact
 
 The large GIF and JSON remain on the experiment server, as requested:
 
 ```text
-GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_adaptive_fine_v7_20260831.gif
-Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_adaptive_fine_v7_20260831.json
+GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_low_carry_minimal_lateral_v10_20260831.gif
+Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_low_carry_minimal_lateral_v10_20260831.json
 ```
 
 Run the same validation on the server with:
@@ -94,8 +106,8 @@ export MUJOCO_GL=osmesa
 export PYTHONPATH=/home/arm1/vmc_mujoco_runtime/nus_fr3_migration
 /home/arm1/vmc_mujoco_runtime/.venv/bin/python -m nus_fr3_mujoco.tabletop_demo \
   --model nus_fr3_mujoco/fr3_office_v36_rgbd_proxy.xml \
-  --output outputs/fr3_rod_adaptive_fine_v7_20260831.gif \
-  --metrics outputs/fr3_rod_adaptive_fine_v7_20260831.json \
+  --output outputs/fr3_rod_low_carry_minimal_lateral_v10_20260831.gif \
+  --metrics outputs/fr3_rod_low_carry_minimal_lateral_v10_20260831.json \
   --fps 6 --dynamic-obstacle --rod-task
 ```
 
@@ -110,12 +122,12 @@ latched, the free-body collision channel is disabled to prevent the broad hand
 mesh from producing a false palm penetration; desk support is restored after
 release.
 
-Final server run (`fr3_rod_adaptive_fine_v7_20260831`):
+Final server run (`fr3_rod_low_carry_minimal_lateral_v10_20260831`):
 
 ```text
 grasp_success                       True
 placement_success                   True
-placement_error_m                   0.06368 m
+placement_error_m                   0.01601 m
 dynamic_obstacle_contact_steps      0
 max_dynamic_obstacle_force_n        0.0 N
 active_view_accept_count            0
@@ -123,28 +135,32 @@ active_view_reject_count            0
 dynamic_safety_hold_count           1
 replanning_count / plan_switches    118 / 0
 illegal_target_contact_steps        0
-triple_camera_visible_steps         24
+triple_camera_visible_steps         30
+max_nominal_carry_hand_z_m          0.92967 m
+selected_avoidance_displacement_m   0.08232 m lateral
 swept_volume_collision_count        0
 ```
 
 The red obstacle enters the RGB-D workspace before the carry midpoint and
 traverses the carry strip leftward. The fused RGB-D state triggers one
-anticipatory, collision-gated escape at `12.00 s`; the online search selects a
-minimum safe vertical offset of `0.03 m`, then returns to carry at `12.52 s`.
+anticipatory, collision-gated action at `12.20 s`; the online search selects a
+minimum safe lateral offset of `0.082 m`, then returns to carry at `13.44 s`.
 Active-base first detection is `11.44 s`, fused first detection is `11.28 s`,
-and all three cameras overlap for `24` policy steps. The
+and all three cameras overlap for `30` policy steps. The
 rod-task camera mount is rotated diagonally so the top-down grasp pose does not
 point the sensor straight into the desk.
 `dynamic_obstacle_min_clearance_m=0.0` is a conservative tangent/degenerate-distance
 report; the authoritative contact audit remains zero contacts and zero measured force.
 
-The selected rod route is `approach_left+place_right`. Its key Cartesian
+The selected rod route is `approach_left+place_left`. Its key Cartesian
 waypoints are:
 
 ```text
-approach:  target + [0.00, 0.18, 0.30]
-pre-grasp: target + [0.00, 0.14, 0.04]
-grasp:     target + [0.00, 0.105, 0.00]
+approach:  target + [-0.06, 0.16, 0.38]
+pre-grasp: target + [0.00, 0.00, 0.18]
+grasp:     target + [0.00, 0.00, 0.105]
+carry mid: [0.23, -0.2665, 0.902]
+place:     [0.28, -0.25, 0.747]
 ```
 
 The target is held at its desk-rest pose only until the closure window, which
@@ -156,15 +172,16 @@ For the final visual demonstration, the red dynamic box starts outside the
 RGB-D workspace gate at `x=1.20 m`, then follows one continuous leftward path
 through `x=0.18 m` to `x=-0.78 m` at `y=-0.30 m`, `z=1.05 m`. The tracker
 estimates its motion from the three RGB-D streams, and the safety shield
-inserts one adaptive `CONDITIONAL_OBSTACLE_LIFT` at `t=12.00 s` with selected
-offset `0.03 m` before the nominal carry route resumes. The authoritative
+inserts one adaptive `CONDITIONAL_OBSTACLE_AVOIDANCE` at `t=12.20 s` with a
+selected `0.082 m` lateral offset and negligible vertical component before
+the nominal carry route resumes. The authoritative
 dynamic contact audit reports
 zero contact steps and zero measured force.
 
 The camera audit records the actual wrist-camera optical axis, not just the
 scheduler label. With the rod-task diagonal wrist-camera mount, the wrist
 stream detects the obstacle from `0.36 s` onward during the initial crossing
-window, and the two cameras overlap for `24` policy steps. During the later
+window, and the two cameras overlap for `30` policy steps. During the later
 confirmed-obstacle window, the active focus remains `PREDICTED_OBSTACLE` and
 the safety gate accepts all requested reorientations.
 After confidence decays and the obstacle leaves the wrist view, the scheduler
@@ -175,7 +192,7 @@ This validation uses three cooperative RGB-D streams. The fixed `base_rgbd`
 camera provides desk-wide early warning, `active_base_rgbd` is fixed near the
 FR3 root and scans by changing only its quaternion, and `wrist_rgbd` confirms
 the local hand/obstacle relationship. The fused tracker drives one
-observation-based conditional lift, with zero rejected active-view actions and
+observation-based conditional lateral avoidance action, with zero rejected active-view actions and
 zero dynamic-obstacle contacts. The GIF displays the overview, base RGB/depth,
 active-base RGB/depth, and wrist RGB/depth panels together.
 

@@ -396,6 +396,21 @@ def _solve_waypoint_specs(
                 seed,
                 view_gain=view_gain,
             )
+        elif phase_name == "CARRY AROUND CLUTTER":
+            # Transport must remain on the currently grasped elbow branch.
+            # A global restart can find a slightly smaller pose residual on
+            # the opposite branch, but joint interpolation to that solution
+            # sends the hand through the large upright posture seen in the
+            # GIF.  Position-priority null-space IK advances causally from the
+            # preceding carry sample and relaxes only wrist orientation.
+            solved = solve_position_nullspace_view_ik(
+                env,
+                hand_id,
+                position,
+                orientation,
+                seed,
+                view_gain=min(float(view_gain), 0.10),
+            )
         else:
             # Task-space grasp waypoints use full pose IK. The previous
             # position-priority null-space solver could leave the wrist in a
@@ -443,7 +458,7 @@ def _refine_place_and_build_segments(
 ) -> list[DemoSegment]:
     """Refine carry/release and add a collision-safe post-release retract."""
 
-    q_approach, q_pregrasp, q_grasp, q_lift, q_place_hover = solved_waypoints
+    q_approach, q_pregrasp, q_grasp, q_carry_mid, q_place_hover = solved_waypoints
     env.data.qpos[env.qpos_adrs] = q_grasp
     mujoco.mj_forward(env.model, env.data)
     grasp_hand_position = env.data.xpos[hand_id].copy()
@@ -495,7 +510,12 @@ def _refine_place_and_build_segments(
         # task is grasp -> carry -> place; a vertical escape is synthesized at
         # runtime only if RGB-D prediction says the current carry corridor is
         # blocked by a moving obstacle.
-        DemoSegment(2.3 * scale, q_place_hover, 0.0, "CARRY AROUND CLUTTER"),
+        # Keep the nominal transport on the same low IK branch as the grasp.
+        # The former implementation solved q_place_hover from an unused high
+        # q_lift seed, then interpolated directly from q_grasp.  That joint
+        # path recreated the deleted lift as a large upright Cartesian arc.
+        DemoSegment(1.15 * scale, q_carry_mid, 0.0, "CARRY AROUND CLUTTER"),
+        DemoSegment(1.15 * scale, q_place_hover, 0.0, "CARRY AROUND CLUTTER"),
         # Give the joint servo enough time to settle before the latch is
         # released; otherwise the object is evaluated while the hand is still
         # catching up to the refined placement pose.
@@ -554,12 +574,15 @@ def build_segments(
     else:
         pregrasp = target + np.array([0.0, 0.14, 0.04], dtype=np.float64)
         grasp = target + np.array([0.0, 0.105, 0.0], dtype=np.float64)
-    lift = grasp + np.array([0.0, 0.0, 0.30])
     place_z = float(target[2])
+    # Keep place goals inside the continuous top-down-pinch workspace.  The
+    # former x=0.40 goal was reachable only by jumping to the opposite elbow
+    # branch; the interpolation, not the task, created the upright pose.  The
+    # new candidates still move the rod 10--14 cm to a distinct desk region.
     place_candidates = {
-        "place_left": np.array([0.20, -0.30, place_z], dtype=np.float64),
-        "place_center": np.array([0.30, -0.30, place_z], dtype=np.float64),
-        "place_right": np.array([0.40, -0.30, place_z], dtype=np.float64),
+        "place_left": np.array([0.28, -0.25, place_z], dtype=np.float64),
+        "place_center": np.array([0.30, -0.25, place_z], dtype=np.float64),
+        "place_right": np.array([0.32, -0.25, place_z], dtype=np.float64),
     }
     checker = FR3SweptVolumeChecker(
         env,
@@ -572,15 +595,19 @@ def build_segments(
             env.reset(HOME)
             target = stabilize_target_on_desk(env, target_id, rod_task=rod_task)
             time_scale = 1.35 if rod_task else 1.0
+            carry_hover = desired_object_place + np.array([0.0, 0.0, 0.14], dtype=np.float64)
+            carry_mid = 0.5 * (grasp + carry_hover)
+            # The object must clear the desk after grasping, but this is a
+            # small transport clearance rather than a fixed high lift pose.
+            # Stay on one continuous top-down-pinch IK branch and cap the
+            # nominal hand corridor near 0.90 m in the rod benchmark.
+            carry_mid[2] = max(float(grasp[2]), float(carry_hover[2])) + 0.015
             waypoint_specs = [
                 ("APPROACH ABOVE CLUTTER", approach, target, 3.2 * time_scale, 0.00, grasp_quaternion),
                 ("PRE-GRASP", pregrasp, target, 1.8 * time_scale, 0.20, grasp_quaternion),
                 ("DESCEND", grasp, target, 1.3 * time_scale, 0.10, grasp_quaternion),
-                ("LIFT", lift, target, 2.0 * time_scale, 0.10, grasp_quaternion),
-                # Nominal carry stays at the grasp clearance.  Static
-                # collision checking still rejects unsafe candidates; no
-                # arbitrary vertical lift is inserted into the task plan.
-                ("CARRY AROUND CLUTTER", desired_object_place + np.array([0.0, 0.0, 0.14]), desired_object_place, 2.3 * time_scale, 0.10, grasp_quaternion),
+                ("CARRY AROUND CLUTTER", carry_mid, desired_object_place, 1.15 * time_scale, 0.10, grasp_quaternion),
+                ("CARRY AROUND CLUTTER", carry_hover, desired_object_place, 1.15 * time_scale, 0.10, grasp_quaternion),
             ]
             solved, diagnostics = _solve_waypoint_specs(env, hand_id, target, waypoint_specs)
             segments = _refine_place_and_build_segments(
@@ -860,6 +887,10 @@ def render_demo(
     q_ref_filter_initialized = False
     max_pregrasp_ee_speed = 0.0
     max_pregrasp_ee_angular_speed = 0.0
+    carry_start_hand_z_m: float | None = None
+    max_nominal_carry_hand_z_m = -np.inf
+    max_active_avoidance_hand_z_m = -np.inf
+    max_nominal_carry_joint_tracking_error_rad = 0.0
     active_base_focus_angle_deg = 0.0
     perceived_state = None
     wrist_focus_point = np.array([0.18, -0.283, 0.90], dtype=np.float64)
@@ -1021,49 +1052,67 @@ def render_demo(
             )
         )
         if obstacle_requires_hold and t >= dynamic_hold_until - 1.0e-9 and not avoidance_active:
-            # Synthesize a vertical escape from the *measured current pose*.
-            # This is the only place where an upward motion may be created;
-            # it is causally gated by an RGB-D prediction of a blocked carry
-            # corridor and is not part of the nominal task trajectory.
+            # Search task-space reactions from the *measured current pose*.
+            # A vertical lift is only one candidate, not a mandatory policy.
+            # Lateral, lower, hold-position, and away-from-track responses are
+            # considered at the same displacement cost.
             q_before_escape = env.q.copy()
             current_hand_quat = env.data.xquat[hand_id].copy()
-            # Do not hard-code one escape amplitude.  Search a small set of
-            # vertical offsets in ascending order and validate the complete
-            # transition (current pose -> candidate escape -> nominal carry
-            # reference) against the RGB-D-driven proxy.  The first candidate
-            # with zero predicted collision is therefore the minimum safe
-            # response for the observed obstacle state.
-            selected_escape_height = None
+            selected_avoidance_offset = None
+            selected_avoidance_action = None
             selected_q_escape = None
             selected_gate_report = None
-            # Start with very small offsets; larger values are only fallback
-            # options if the complete escape-and-recovery gate rejects them.
-            # Refine the search near the nominal carry height.  The previous
-            # lower bound (0.08 m) was collision-free, but still produced a
-            # visibly large upward excursion once the velocity servo tracked
-            # the candidate over 0.50 s.  Start at 3 cm and add 1 cm steps so
-            # the safety gate can select the smallest genuinely safe response;
-            # larger offsets remain available only as fallbacks.
-            escape_candidates = (
-                0.03, 0.04, 0.05, 0.06, 0.07, 0.08,
-                0.10, 0.12, 0.14, 0.18, 0.22, 0.26, 0.30,
+            velocity_xy = np.asarray(perceived_state.velocity_world[:2], dtype=np.float64)
+            lateral_xy = np.array([-velocity_xy[1], velocity_xy[0]], dtype=np.float64)
+            if np.linalg.norm(lateral_xy) < 1.0e-6:
+                lateral_xy = np.array([0.0, 1.0], dtype=np.float64)
+            lateral_xy /= np.linalg.norm(lateral_xy)
+            relative_xy = live_hand_position[:2] - perceived_state.position_world[:2]
+            if float(np.dot(lateral_xy, relative_xy)) < 0.0:
+                lateral_xy *= -1.0
+            away_xy = relative_xy.copy()
+            if np.linalg.norm(away_xy) < 1.0e-6:
+                away_xy = lateral_xy.copy()
+            away_xy /= np.linalg.norm(away_xy)
+            direction_candidates = (
+                ("LATERAL_FROM_TRACK", np.array([lateral_xy[0], lateral_xy[1], 0.0])),
+                ("LOWER_CLEARANCE", np.array([0.0, 0.0, -1.0])),
+                ("AWAY_FROM_OBSTACLE", np.array([away_xy[0], away_xy[1], 0.0])),
+                ("RAISE_CLEARANCE", np.array([0.0, 0.0, 1.0])),
             )
-            escape_candidate_records = []
-            for escape_height in escape_candidates:
-                escape_position = live_hand_position + np.array([0.0, 0.0, escape_height], dtype=np.float64)
-                q_candidate = solve_pose_ik(
-                    env,
-                    hand_id,
-                    escape_position,
-                    current_hand_quat,
-                    env.q,
-                    orientation_weight=0.35,
+            offset_candidates = [("HOLD_POSITION", np.zeros(3, dtype=np.float64))]
+            for magnitude in (
+                0.02, 0.03, 0.04, 0.05, 0.06, 0.08,
+                0.085, 0.09, 0.095, 0.10, 0.12,
+            ):
+                offset_candidates.extend(
+                    (name, magnitude * direction) for name, direction in direction_candidates
                 )
+            escape_candidate_records = []
+            for action_name, avoidance_offset in offset_candidates:
+                if np.linalg.norm(avoidance_offset) < 1.0e-9:
+                    q_candidate = q_before_escape.copy()
+                else:
+                    escape_position = live_hand_position + avoidance_offset
+                    q_candidate = solve_pose_ik(
+                        env,
+                        hand_id,
+                        escape_position,
+                        current_hand_quat,
+                        q_before_escape,
+                        orientation_weight=0.35,
+                    )
+                env.data.qpos[env.qpos_adrs] = q_candidate
+                mujoco.mj_forward(env.model, env.data)
+                actual_offset = env.data.xpos[hand_id].copy() - live_hand_position
                 env.data.qpos[env.qpos_adrs] = q_before_escape
                 mujoco.mj_forward(env.model, env.data)
+                # Validate both the move and a one-second dwell.  Returning
+                # immediately to nominal carry let the arm meet the obstacle
+                # during recovery even when the initial offset was safe.
                 gate_segments = [
-                    DemoSegment(0.50, q_candidate, 0.0, "ACTIVE OBSTACLE LIFT"),
-                    DemoSegment(0.50, np.asarray(q_ref, dtype=np.float64).copy(), 0.0, "ACTIVE OBSTACLE CLEAR"),
+                    DemoSegment(0.40, q_candidate, 0.0, "ACTIVE OBSTACLE AVOIDANCE"),
+                    DemoSegment(1.00, q_candidate, 0.0, "ACTIVE OBSTACLE HOLD"),
                 ]
                 gate_q, gate_t = execution_checker.interpolate_segments(
                     gate_segments, env.q, sample_dt_s=0.04
@@ -1073,13 +1122,17 @@ def render_demo(
                 )
                 escape_candidate_records.append(
                     {
-                        "height_m": float(escape_height),
+                        "action": action_name,
+                        "requested_offset_world_m": avoidance_offset.tolist(),
+                        "actual_offset_world_m": actual_offset.tolist(),
+                        "displacement_m": float(np.linalg.norm(actual_offset)),
                         "collision_count": int(gate_report.collision_count),
                         "min_clearance_m": float(gate_report.min_clearance_m),
                     }
                 )
                 if gate_report.collision_count == 0 and gate_report.min_clearance_m >= 0.0:
-                    selected_escape_height = float(escape_height)
+                    selected_avoidance_offset = actual_offset.copy()
+                    selected_avoidance_action = action_name
                     selected_q_escape = q_candidate.copy()
                     selected_gate_report = gate_report
                     break
@@ -1096,13 +1149,16 @@ def render_demo(
                     {
                         "time_s": float(t),
                         "phase": phase,
-                        "action": "CONDITIONAL_OBSTACLE_LIFT",
+                        "action": "CONDITIONAL_OBSTACLE_AVOIDANCE",
                         "obstacle_position_world": perceived_state.position_world.tolist(),
                         "obstacle_velocity_world": perceived_state.velocity_world.tolist(),
                         "tracking_confidence": float(perceived_state.confidence),
                         "distance_to_hand_m": perceived_obstacle_distance,
                         "trigger": "rgbd_predicted_carry_blockage",
-                        "selected_escape_height_m": selected_escape_height,
+                        "selected_avoidance_action": selected_avoidance_action,
+                        "selected_avoidance_offset_world_m": selected_avoidance_offset.tolist(),
+                        "selected_avoidance_displacement_m": float(np.linalg.norm(selected_avoidance_offset)),
+                        "selected_escape_height_m": float(selected_avoidance_offset[2]),
                         "escape_candidate_records": escape_candidate_records,
                         "gate_min_clearance_m": float(selected_gate_report.min_clearance_m),
                     }
@@ -1147,7 +1203,7 @@ def render_demo(
                     progress = float(np.clip((t - avoidance_started_time_s) / 0.50, 0.0, 1.0))
                     smooth = progress * progress * (3.0 - 2.0 * progress)
                     q_ref = (1.0 - smooth) * avoidance_from_q + smooth * avoidance_q
-                phase = "ACTIVE OBSTACLE LIFT"
+                phase = "ACTIVE OBSTACLE AVOIDANCE"
         if phase == "CLOSE GRIPPER" and last_phase != phase:
             close_phase_start_time = t
         if grasp_failed:
@@ -1500,6 +1556,16 @@ def render_demo(
             # MuJoCo exposes body angular velocity in world coordinates.
             omega[:] = env.data.cvel[hand_id, 3:6]
             max_pregrasp_ee_angular_speed = max(max_pregrasp_ee_angular_speed, float(np.linalg.norm(omega)))
+        if phase == "CARRY AROUND CLUTTER":
+            if carry_start_hand_z_m is None:
+                carry_start_hand_z_m = float(hand_position_now[2])
+            max_nominal_carry_hand_z_m = max(max_nominal_carry_hand_z_m, float(hand_position_now[2]))
+            max_nominal_carry_joint_tracking_error_rad = max(
+                max_nominal_carry_joint_tracking_error_rad,
+                float(np.linalg.norm(command.q_cmd - state.q)),
+            )
+        elif phase in {"ACTIVE OBSTACLE LIFT", "ACTIVE OBSTACLE AVOIDANCE"}:
+            max_active_avoidance_hand_z_m = max(max_active_avoidance_hand_z_m, float(hand_position_now[2]))
         view_mode, speed_score = view_scheduler.select(
             phase,
             state.qdot,
@@ -1632,6 +1698,14 @@ def render_demo(
         "triple_camera_visible_steps": int(triple_camera_visible_steps),
         "max_pregrasp_ee_speed_m_s": float(max_pregrasp_ee_speed),
         "max_pregrasp_ee_angular_speed_rad_s": float(max_pregrasp_ee_angular_speed),
+        "carry_start_hand_z_m": carry_start_hand_z_m,
+        "max_nominal_carry_hand_z_m": (
+            None if not np.isfinite(max_nominal_carry_hand_z_m) else float(max_nominal_carry_hand_z_m)
+        ),
+        "max_active_avoidance_hand_z_m": (
+            None if not np.isfinite(max_active_avoidance_hand_z_m) else float(max_active_avoidance_hand_z_m)
+        ),
+        "max_nominal_carry_joint_tracking_error_rad": float(max_nominal_carry_joint_tracking_error_rad),
         "dynamic_safety_hold_count": int(dynamic_hold_count),
         "dynamic_safety_hold_records": dynamic_hold_records,
         "perception_contract": {
