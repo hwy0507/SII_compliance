@@ -342,6 +342,12 @@
          axis covers the desk-wide carry corridor and is independent of wrist
          motion; local -Z points toward the workspace centre. -->
     <camera name="base_rgbd" pos="1.25 -1.55 1.55" quat="0.749606 0.567627 0.205509 0.271395" fovy="78"/>
+    <!-- Root-mounted active RGB-D camera.  The mount is fixed in space near
+         the FR3 pedestal; only cam_quat is updated by the perception loop,
+         so its changing view is an actual pan/tilt gaze action rather than a
+         second moving wrist sensor.  Its narrow FOV complements the global
+         base_rgbd camera. -->
+    <camera name="active_base_rgbd" pos="-0.18 0.28 1.18" quat="0.7071 0.0 0.7071 0.0" fovy="50"/>
 
     <!-- Predictable dynamic obstacle: mocap body driven by dynamic_obstacle.py. -->
     <body name="dynamic_obstacle" mocap="true" pos="0.92 0.72 1.18">

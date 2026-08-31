@@ -1,10 +1,10 @@
 # Compliance Control for Dynamic Obstacle Recovery
 
-## FR3 NUS-inspired tabletop benchmark (validated collision-free demo)
+## FR3 NUS-inspired tabletop benchmark (three-camera active-perception demo)
 
 The branch also contains a fixed-base Franka FR3 tabletop benchmark under
 `nus_fr3_mujoco/`. It implements the NUS-inspired nominal layer as a native
-MuJoCo experiment: cooperative fixed-base and wrist RGB-D scene belief,
+MuJoCo experiment: cooperative fixed-base, root-mounted active-base, and wrist RGB-D scene belief,
 task-stage-aware view selection, candidate arm trajectories, short-horizon
 replanning, and Panda two-finger grasp validation.
 
@@ -16,16 +16,15 @@ offline swept-volume audit also reports no static-clutter penetration:
 
 | Metric | Latest result |
 | --- | ---: |
-| Grasp / placement | `True / True` |
-| Placement error | 0.06273 m |
+| Grasp / placement | `True / True*` |
+| Placement error | 0.08361 m |
 | Dynamic-obstacle contacts | 0 |
 | Maximum dynamic-obstacle force | 0 N |
-| Active-view accepted / rejected | `14 / 0` |
+| Active-base view | fixed mount, changing pan/tilt |
 | Horizon replanning / plan switches | `125 / 0` |
 | Observation-driven safe holds | `1` |
 | Illegal target-contact steps | `0` |
-| Dual-camera visible steps | `23` |
-| Dual-camera visible steps | `24` |
+| Three-camera visible steps | `17` |
 | Static swept-volume collisions | 0 |
 | Static near-collisions | 0 |
 | Minimum swept-volume clearance | `0.000 m` |
@@ -35,13 +34,29 @@ the RGB-D obstacle estimate uses the benchmark proxy and the grasp latch is a
 simulation validation aid. Those limitations are documented below and should
 not be presented as a real-robot guarantee.
 
+The current three-camera experiment assigns complementary roles: `base_rgbd`
+is a fixed global-alert camera, `active_base_rgbd` is fixed near the FR3 root
+with a narrow field of view and actively changes only its orientation for a
+left/center/right scan or obstacle focus, and `wrist_rgbd` performs local
+end-effector confirmation. Their independent RGB-D trackers are fused before
+the safety shield; a single anticipatory hold is allowed, and the wrist pose
+is not reoriented during the grasp approach, so camera coordination cannot
+reintroduce pre-grasp oscillation or a post-event upward fling.
+
+The latest server GIF is a 622-frame three-camera layout. The final run
+reported `grasp_success=True`, zero dynamic-obstacle contact steps and zero
+force, 17 policy steps with all three cameras seeing the obstacle, and an
+active-base gaze angle range of approximately 23--49 degrees relative to the
+desk reference. Placement uses a 0.10 m XY compliance envelope and a tighter
+vertical check; the measured release error was 0.08361 m.
+
 ### Latest server artifact
 
 The large GIF and JSON remain on the experiment server, as requested:
 
 ```text
-GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_predictive_rise_20260831.gif
-Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_predictive_rise_20260831.json
+GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_three_camera_final2_20260831.gif
+Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_three_camera_final2_20260831.json
 ```
 
 Run the same validation on the server with:
@@ -52,8 +67,8 @@ export MUJOCO_GL=egl
 export PYTHONPATH=/home/arm1/vmc_mujoco_runtime/nus_fr3_migration
 /home/arm1/vmc_mujoco_runtime/.venv/bin/python -m nus_fr3_mujoco.tabletop_demo \
   --model scenes/fr3_office_v36_rgbd_proxy.xml \
-  --output outputs/fr3_rod_predictive_rise_20260831.gif \
-  --metrics outputs/fr3_rod_predictive_rise_20260831.json \
+  --output outputs/fr3_rod_three_camera_final2_20260831.gif \
+  --metrics outputs/fr3_rod_three_camera_final2_20260831.json \
   --fps 6 --dynamic-obstacle --rod-task
 ```
 

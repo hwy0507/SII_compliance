@@ -43,11 +43,8 @@ class PerceivedObstacleState:
     visible: bool
 
 
-def fuse_obstacle_states(
-    wrist_state: PerceivedObstacleState,
-    base_state: PerceivedObstacleState,
-) -> PerceivedObstacleState:
-    """Fuse wrist and fixed-base RGB-D tracks into one conservative state.
+def fuse_obstacle_states(*states: PerceivedObstacleState) -> PerceivedObstacleState:
+    """Fuse independent RGB-D tracks into one conservative state.
 
     Each camera remains causal and independent.  A visible, high-confidence
     track receives more weight; when only one camera sees the obstacle we keep
@@ -56,14 +53,16 @@ def fuse_obstacle_states(
     disagreement.
     """
 
-    states = (wrist_state, base_state)
+    if not states:
+        raise ValueError("at least one RGB-D state is required")
+    states = tuple(states)
     credible = [s for s in states if s.confidence >= 0.12 or s.visible]
     if not credible:
         return PerceivedObstacleState(
-            time_s=max(wrist_state.time_s, base_state.time_s),
-            position_world=wrist_state.position_world.copy(),
+            time_s=max(s.time_s for s in states),
+            position_world=states[0].position_world.copy(),
             velocity_world=np.zeros(3, dtype=np.float64),
-            covariance_m2=max(wrist_state.covariance_m2, base_state.covariance_m2),
+            covariance_m2=max(s.covariance_m2 for s in states),
             confidence=0.0,
             visible=False,
         )
