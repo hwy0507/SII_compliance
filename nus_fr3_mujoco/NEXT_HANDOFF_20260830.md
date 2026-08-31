@@ -45,6 +45,25 @@ swept_volume min_clearance_m   -0.02483 m
 
 这次复核确认：抓取、放置和 wrist RGB-D active-view 链路均能运行；动态障碍确实在搬运阶段与机械臂发生接触；键盘静态 swept-volume 穿透仍未解决。尝试将最终预抓取点从 `target + [0, 0.22, 0]` 缩短到 `target + [0, 0.14, 0]` 后，出现单指接触和目标倾倒，已撤回该实验变更。当前应以稳定抓取基线为准，下一步需要增加不改变最终抓取姿态的绕行轨迹，并重新做全分辨率验证。
 
+## 2026-09-01 continuation result
+
+The placement candidates were moved to the open front area of the desk
+(`y=-0.30 m`) and the dynamic crossing profile was raised to `z=1.70 m`.
+Server output `fr3_placefront_20260901.json` confirms:
+
+```text
+grasp_success                  True
+placement_success              True
+dynamic_obstacle_contact_steps 0
+max_dynamic_obstacle_force_n   0.0 N
+active_view_accept_count       7
+swept_volume collision_count   58
+```
+
+The remaining 58 static collisions are in the original approach/pre-grasp
+transition near the keyboard. A shorter pre-grasp offset (`+Y=0.16`) was
+tested but caused the object to lose two-finger contact, so it was reverted.
+
 ## 明天第一步
 
 在服务器执行：

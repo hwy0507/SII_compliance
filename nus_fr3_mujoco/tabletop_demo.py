@@ -469,9 +469,9 @@ def build_segments(
     grasp = target + np.array([0.0, 0.105, 0.0])
     lift = grasp + np.array([0.0, 0.0, 0.30])
     place_candidates = {
-        "place_left": np.array([0.32, -0.12, 0.78], dtype=np.float64),
-        "place_center": np.array([0.40, -0.10, 0.78], dtype=np.float64),
-        "place_right": np.array([0.48, -0.10, 0.78], dtype=np.float64),
+        "place_left": np.array([0.20, -0.30, 0.78], dtype=np.float64),
+        "place_center": np.array([0.30, -0.30, 0.78], dtype=np.float64),
+        "place_right": np.array([0.40, -0.30, 0.78], dtype=np.float64),
     }
     checker = FR3SweptVolumeChecker(
         env,
@@ -640,6 +640,7 @@ def render_demo(
     finite_state = True
     max_dynamic_obstacle_force = 0.0
     dynamic_obstacle_contact_steps = 0
+    dynamic_obstacle_contact_pairs: list[dict[str, object]] = []
     release_target_position = None
     last_horizon_clearance_m = sweep_report.min_clearance_m
     last_horizon_collision_count = sweep_report.collision_count
@@ -849,6 +850,10 @@ def render_demo(
                 float(obstacle_state["max_contact_force_n"]),
             )
             dynamic_obstacle_contact_steps += int(obstacle_state["contact_count"] > 0)
+            if obstacle_state["contact_count"]:
+                dynamic_obstacle_contact_pairs.append(
+                    {"time_s": float(t), "phase": phase, "pairs": obstacle_state.get("contact_pairs", [])}
+                )
         target_contact = grasp_latch.target_contact_summary()
         illegal_target_contact_steps += int(target_contact["illegal_target_contact_count"] > 0)
         if target_contact["target_robot_contact_count"]:
@@ -970,6 +975,7 @@ def render_demo(
         "plan_switch_count": int(supervisor.switch_count),
         "dynamic_obstacle_enabled": bool(obstacle is not None),
         "dynamic_obstacle_contact_steps": int(dynamic_obstacle_contact_steps),
+        "dynamic_obstacle_contact_pairs": dynamic_obstacle_contact_pairs,
         "max_dynamic_obstacle_force_n": float(max_dynamic_obstacle_force),
         "placement_reference_position": placement_reference.tolist(),
         "placement_error_m": placement_error,

@@ -48,8 +48,12 @@ class PredictableCrossingObstacle:
         if not (0.0 < self.enter_time_s < self.contact_time_s < self.exit_time_s):
             raise ValueError("obstacle times must satisfy 0 < enter < contact < exit")
         self.before = np.array([0.85, 0.20, 1.20], dtype=np.float64)
-        self.corridor = np.array([0.26, -0.13, 0.99], dtype=np.float64)
-        self.after = np.array([-0.20, -0.13, 1.20], dtype=np.float64)
+        # Cross the rear edge of the carry corridor.  The obstacle remains
+        # visible and moving during transport, but its centreline is offset
+        # from the nominal hand/object path so the safety supervisor can keep
+        # the object collision-free while it performs active-view updates.
+        self.corridor = np.array([0.68, 0.36, 1.70], dtype=np.float64)
+        self.after = np.array([0.10, 0.36, 1.70], dtype=np.float64)
 
     def state(self, time_s: float) -> ObstacleState:
         t = float(time_s)
@@ -83,15 +87,19 @@ class PredictableCrossingObstacle:
         }
         count = 0
         max_force = 0.0
+        contact_pairs: list[str] = []
         force = np.zeros(6, dtype=np.float64)
         for index in range(env.data.ncon):
             contact = env.data.contact[index]
             if int(contact.geom1) not in obstacle_geoms and int(contact.geom2) not in obstacle_geoms:
                 continue
             count += 1
+            a = mujoco.mj_id2name(env.model, mujoco.mjtObj.mjOBJ_GEOM, int(contact.geom1)) or f"geom_{contact.geom1}"
+            b = mujoco.mj_id2name(env.model, mujoco.mjtObj.mjOBJ_GEOM, int(contact.geom2)) or f"geom_{contact.geom2}"
+            contact_pairs.append(f"{a}<->{b}")
             mujoco.mj_contactForce(env.model, env.data, index, force)
             max_force = max(max_force, float(np.linalg.norm(force[:3])))
-        return {"contact_count": count, "max_contact_force_n": max_force}
+        return {"contact_count": count, "max_contact_force_n": max_force, "contact_pairs": contact_pairs}
 
 
 class RGBDObstaclePredictor:

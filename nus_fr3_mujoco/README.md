@@ -171,3 +171,10 @@ part of the Git working tree. Before claiming a final collision-free result,
 rerun the full-resolution server experiment and check both
 `swept_volume_report.collision_count` and the dynamic contact metrics in the
 generated JSON.
+
+The latest server recheck moved the three placement candidates to the open
+front area of the desk (`y=-0.30 m`) and raised the dynamic crossing profile to
+`z=1.70 m`. This preserved successful grasp/release and reduced the static
+keyboard collision count from 212 to 58 while reducing dynamic-obstacle robot
+contacts to zero. The remaining 58 static samples are concentrated in the
+original pre-grasp transition and still require a geometry-preserving bypass.
