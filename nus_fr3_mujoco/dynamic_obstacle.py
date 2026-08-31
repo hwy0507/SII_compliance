@@ -175,11 +175,13 @@ class RGBDObstaclePredictor:
     def apply(self, env: FR3MuJoCoEnv, time_s: float) -> None:
         dt = max(float(time_s) - self.last_state.time_s, 0.0)
         # The horizon checker may query several future samples at once.  Keep
-        # RGB-D prediction causal and local: extrapolate for at most one
-        # horizon and only while the track is well confirmed.  This prevents a
-        # missed frame or a noisy velocity estimate from sending the proxy
-        # metres away and silently disabling meaningful replanning.
-        prediction_dt = min(dt, 0.60)
+        # RGB-D prediction is causal and local: extrapolate for at most the
+        # configured one-second execution horizon and only while the track is
+        # well confirmed. The previous 0.60 s cap under-predicted the latter
+        # half of the adaptive escape-and-return transition, so a candidate
+        # could pass the proxy check and still meet the real obstacle while
+        # recovering the nominal carry reference.
+        prediction_dt = min(dt, 1.00)
         velocity = self.last_state.velocity_world.copy()
         if self.last_state.confidence < 0.45:
             velocity[:] = 0.0

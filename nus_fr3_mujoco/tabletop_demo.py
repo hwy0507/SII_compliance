@@ -1027,28 +1027,56 @@ def render_demo(
             # corridor and is not part of the nominal task trajectory.
             q_before_escape = env.q.copy()
             current_hand_quat = env.data.xquat[hand_id].copy()
-            escape_position = live_hand_position + np.array([0.0, 0.0, 0.30], dtype=np.float64)
-            q_escape = solve_pose_ik(
-                env,
-                hand_id,
-                escape_position,
-                current_hand_quat,
-                env.q,
-                orientation_weight=0.35,
-            )
+            # Do not hard-code one escape amplitude.  Search a small set of
+            # vertical offsets in ascending order and validate the complete
+            # transition (current pose -> candidate escape -> nominal carry
+            # reference) against the RGB-D-driven proxy.  The first candidate
+            # with zero predicted collision is therefore the minimum safe
+            # response for the observed obstacle state.
+            selected_escape_height = None
+            selected_q_escape = None
+            selected_gate_report = None
+            escape_candidates = (0.14, 0.18, 0.22, 0.26, 0.30, 0.34)
+            escape_candidate_records = []
+            for escape_height in escape_candidates:
+                escape_position = live_hand_position + np.array([0.0, 0.0, escape_height], dtype=np.float64)
+                q_candidate = solve_pose_ik(
+                    env,
+                    hand_id,
+                    escape_position,
+                    current_hand_quat,
+                    env.q,
+                    orientation_weight=0.35,
+                )
+                env.data.qpos[env.qpos_adrs] = q_before_escape
+                mujoco.mj_forward(env.model, env.data)
+                gate_segments = [
+                    DemoSegment(0.50, q_candidate, 0.0, "ACTIVE OBSTACLE LIFT"),
+                    DemoSegment(0.50, np.asarray(q_ref, dtype=np.float64).copy(), 0.0, "ACTIVE OBSTACLE CLEAR"),
+                ]
+                gate_q, gate_t = execution_checker.interpolate_segments(
+                    gate_segments, env.q, sample_dt_s=0.04
+                )
+                gate_report = execution_checker.check_trajectory(
+                    gate_q, gate_t + float(t), near_collision_margin_m=0.010, max_events=8
+                )
+                escape_candidate_records.append(
+                    {
+                        "height_m": float(escape_height),
+                        "collision_count": int(gate_report.collision_count),
+                        "min_clearance_m": float(gate_report.min_clearance_m),
+                    }
+                )
+                if gate_report.collision_count == 0 and gate_report.min_clearance_m >= 0.0:
+                    selected_escape_height = float(escape_height)
+                    selected_q_escape = q_candidate.copy()
+                    selected_gate_report = gate_report
+                    break
             env.data.qpos[env.qpos_adrs] = q_before_escape
             mujoco.mj_forward(env.model, env.data)
-            gate_q, gate_t = execution_checker.interpolate_segments(
-                [DemoSegment(0.60, q_escape, 0.0, "ACTIVE OBSTACLE LIFT")],
-                env.q,
-                sample_dt_s=0.04,
-            )
-            gate_report = execution_checker.check_trajectory(
-                gate_q, gate_t + float(t), near_collision_margin_m=0.010, max_events=8
-            )
-            if gate_report.collision_count == 0 and gate_report.min_clearance_m >= 0.0:
+            if selected_q_escape is not None and selected_gate_report is not None:
                 avoidance_active = True
-                avoidance_q = q_escape.copy()
+                avoidance_q = selected_q_escape
                 avoidance_from_q = q_before_escape.copy()
                 avoidance_started_time_s = float(t)
                 dynamic_hold_count += 1
@@ -1063,22 +1091,49 @@ def render_demo(
                         "tracking_confidence": float(perceived_state.confidence),
                         "distance_to_hand_m": perceived_obstacle_distance,
                         "trigger": "rgbd_predicted_carry_blockage",
+                        "selected_escape_height_m": selected_escape_height,
+                        "escape_candidate_records": escape_candidate_records,
+                        "gate_min_clearance_m": float(selected_gate_report.min_clearance_m),
                     }
                 )
         if avoidance_active and avoidance_q is not None:
+            avoidance_elapsed = float(t - avoidance_started_time_s)
+            # Never resume nominal carry solely because the obstacle is far
+            # from the hand.  At the previous setting that distance test
+            # released the shield while the box was still crossing the future
+            # carry corridor.  Re-check the actual recovery transition to the
+            # *current* nominal reference and release only if that transition
+            # is collision-free under the RGB-D proxy.
+            nominal_resume_q, _, _ = supervisor.reference(env.q, t)
+            resume_gate_report = None
+            if avoidance_elapsed >= 0.50:
+                resume_q, resume_t = execution_checker.interpolate_segments(
+                    [DemoSegment(0.40, np.asarray(nominal_resume_q, dtype=np.float64).copy(), 0.0, "ACTIVE OBSTACLE CLEAR")],
+                    avoidance_q,
+                    sample_dt_s=0.04,
+                )
+                resume_gate_report = execution_checker.check_trajectory(
+                    resume_q,
+                    resume_t + float(t),
+                    near_collision_margin_m=0.010,
+                    max_events=8,
+                )
             obstacle_clear = bool(
-                (not perceived_state.visible and t - avoidance_started_time_s >= 0.8)
-                or (perceived_state.visible and perceived_obstacle_distance > 0.55)
+                avoidance_elapsed >= 0.50
+                and resume_gate_report is not None
+                and resume_gate_report.collision_count == 0
+                and resume_gate_report.min_clearance_m >= 0.0
             )
             if obstacle_clear:
                 avoidance_active = False
                 avoidance_q = None
                 avoidance_from_q = None
+                q_ref = np.asarray(nominal_resume_q, dtype=np.float64).copy()
             else:
                 if avoidance_from_q is None:
                     q_ref = avoidance_q.copy()
                 else:
-                    progress = float(np.clip((t - avoidance_started_time_s) / 0.60, 0.0, 1.0))
+                    progress = float(np.clip((t - avoidance_started_time_s) / 0.50, 0.0, 1.0))
                     smooth = progress * progress * (3.0 - 2.0 * progress)
                     q_ref = (1.0 - smooth) * avoidance_from_q + smooth * avoidance_q
                 phase = "ACTIVE OBSTACLE LIFT"
