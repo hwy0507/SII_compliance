@@ -6,8 +6,8 @@
 - Scene: `fr3_office_v36_rgbd_proxy.xml`
 - Runner: `nus_fr3_mujoco.tabletop_demo`
 - Mode: wrist RGB-D nominal layer with dynamic obstacle and online horizon supervision
-- Artifacts (server): `outputs/fr3_observed_safe_hold_verified_20260901.gif`,
-  `outputs/fr3_observed_safe_hold_verified_20260901.json`
+- Artifacts (server): `outputs/fr3_observed_safe_hold_smooth_20260901.gif`,
+  `outputs/fr3_observed_safe_hold_smooth_20260901.json`
 
 ## Result
 
@@ -17,7 +17,7 @@
 | Placement success | `True` |
 | Placement error | `0.04403 m` |
 | Receding-horizon checks | `93` |
-| Plan switches | `1` |
+| Plan switches | `0` |
 | Active-view accepted | `7` |
 | Active-view rejected | `0` |
 | Dynamic-obstacle contact steps | `0` |
@@ -28,7 +28,7 @@
 | Swept-volume near-collision count | `0` |
 | Swept-volume minimum clearance | `0.000 m` |
 | Observation-driven safety holds | `1` (`0.48 s`) |
-| Dynamic-obstacle minimum geometric clearance | `0.1762 m` |
+| Dynamic-obstacle minimum geometric clearance | `0.1833 m` |
 
 The selected route is `approach_center+place_left`. The approach is lifted in
 front of the keyboard (`+Y=0.18`, `+Z=0.30`), settles at
@@ -37,13 +37,15 @@ front of the keyboard (`+Y=0.18`, `+Z=0.30`), settles at
 the closure window; this removes pre-contact sliding while preserving normal
 MuJoCo contact dynamics during grasp and lift.
 
-For visual evaluation, the dynamic box now crosses near the carry trajectory
-at approximately `[x=0.78 -> 0.30, y=-0.45, z=1.28]` during `10.4--11.2 s`
-and exits toward `[1.20, 0.80, 1.50]` by `13.0 s`. The RGB-D tracker records
-the obstacle locally at `t=11.04--11.28 s`; the safety shield inserts one
-`0.48 s` hold at `t=11.08 s`. A direct per-cycle geometric audit finds the
-closest robot/obstacle pair at `0.1762 m` for `fr3_right_finger_collision`
-at `t=11.28 s`, while runtime contact remains zero.
+For visual evaluation, the dynamic box now follows one continuous leftward
+trajectory near the carry corridor: `[x=0.78 -> 0.30 -> -0.78, y=-0.45,
+z=1.28]` during `10.4--13.0 s`. Both segments use the same X velocity
+(`-0.60 m/s`), so the red box no longer reverses or jumps diagonally as if it
+had been struck. The RGB-D tracker records the obstacle locally at
+`t=11.04--11.28 s`; the safety shield inserts one `0.48 s` hold at `t=11.08 s`.
+A direct per-cycle geometric audit finds the closest robot/obstacle pair at
+`0.1833 m` for `fr3_right_finger_collision` at `t=11.28 s`, while runtime
+contact remains zero.
 
 The grasp validation recorded simultaneous left- and right-finger contact,
 with target tilt `1.77 deg`. The selected plan was `approach_left+place_left`;

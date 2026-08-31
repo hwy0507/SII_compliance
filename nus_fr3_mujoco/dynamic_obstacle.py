@@ -53,9 +53,14 @@ class PredictableCrossingObstacle:
         # RGB-D supervisor has to look ahead and select a safe corridor.
         self.before = np.array([0.78, -0.45, 1.28], dtype=np.float64)
         self.corridor = np.array([0.30, -0.45, 1.28], dtype=np.float64)
-        # Leave the robot workspace immediately after crossing so the same
-        # obstacle cannot interfere with placement or the return-home motion.
-        self.after = np.array([1.20, 0.80, 1.50], dtype=np.float64)
+        # Continue in the same direction after crossing.  Keeping the exit
+        # point on the same horizontal corridor makes the obstacle motion
+        # physically plausible: it enters from the right, passes leftward
+        # through the carry corridor, and keeps moving left until it leaves
+        # the workspace.  In particular, do not reverse or jump diagonally at
+        # ``contact_time_s``; that made the red block look as if it had been
+        # struck and thrown away.
+        self.after = np.array([-0.78, -0.45, 1.28], dtype=np.float64)
 
     def state(self, time_s: float) -> ObstacleState:
         t = float(time_s)

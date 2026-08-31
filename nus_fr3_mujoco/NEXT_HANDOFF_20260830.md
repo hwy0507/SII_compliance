@@ -96,13 +96,47 @@ The selected plan is `approach_center+place_left`. The target remains at its
 desk-rest pose until closure (`t < 7.30 s`), then normal contact dynamics are
 enabled for two-finger validation and lift.
 
+## Smooth dynamic-obstacle rerun
+
+The red obstacle trajectory was corrected after visual inspection. The old
+profile reversed direction and moved diagonally after `11.2 s`; the new profile
+keeps a constant horizontal direction and height:
+
+```text
+[0.78, -0.45, 1.28] -> [0.30, -0.45, 1.28] -> [-0.78, -0.45, 1.28]
+```
+
+The two segments have the same X velocity (`-0.60 m/s`), so there is no
+velocity discontinuity at the crossing time. Server artifacts:
+
+```text
+/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_observed_safe_hold_smooth_20260901.gif
+/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_observed_safe_hold_smooth_20260901.json
+```
+
+Validated metrics:
+
+```text
+grasp_success                     True
+placement_success                 True
+placement_error_m                 0.04403 m
+dynamic_obstacle_contact_steps    0
+max_dynamic_obstacle_force_n      0.0 N
+dynamic_obstacle_min_clearance_m  0.18331 m
+active_view_accept_count          7
+active_view_reject_count          0
+dynamic_safety_hold_count         1
+replanning_count                  93
+swept_volume collision_count      0
+```
+
 The final visual profile places the red obstacle close to the carry path at
-`y=-0.45 m`, `z=1.28 m`, crosses from `x=0.78` to `x=0.30`, and then exits to
-`[1.20, 0.80, 1.50]`. The RGB-D tracker observes it at t=11.04--11.28 s,
-and the safety shield inserts one 0.48 s hold at t=11.08 s; the measured
-robot-obstacle contact count remains zero. A direct per-cycle geometric audit
-reports a minimum clearance of 0.1762 m at t=11.28 s for
-`fr3_right_finger_collision`.
+`y=-0.45 m`, `z=1.28 m`, and moves continuously leftward from `x=0.78` to
+`x=-0.78` through the crossing. The RGB-D tracker observes it at
+`t=11.04--11.28 s`, and the safety shield inserts one `0.48 s` hold at
+`t=11.08 s`; the measured robot-obstacle contact count remains zero. A direct
+per-cycle geometric audit reports a minimum clearance of `0.1833 m` at
+`t=11.24 s` for `fr3_right_finger_collision`.
 
 ## 明天第一步
 
