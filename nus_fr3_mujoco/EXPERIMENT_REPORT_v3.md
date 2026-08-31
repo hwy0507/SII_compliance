@@ -5,9 +5,10 @@
 - Date: latest server validation (artifact suffix `20260901`)
 - Scene: `fr3_office_v36_rgbd_proxy.xml`
 - Runner: `nus_fr3_mujoco.tabletop_demo`
-- Mode: wrist RGB-D nominal layer with dynamic obstacle and online horizon supervision
-- Artifacts (server): `outputs/fr3_camera_attention_natural_20260901.gif`,
-  `outputs/fr3_camera_attention_natural_20260901.json`
+- Mode: cooperative fixed-base + wrist RGB-D nominal layer with dynamic obstacle
+  and online horizon supervision
+- Artifacts (server): `outputs/fr3_dual_rgbd_motion_handoff_20260831.gif`,
+  `outputs/fr3_dual_rgbd_motion_handoff_20260831.json`
 
 ## Result
 
@@ -15,10 +16,10 @@
 |---|---:|
 | Grasp success | `True` |
 | Placement success | `True` |
-| Placement error | `0.04690 m` |
+| Placement error | `0.03881 m` |
 | Receding-horizon checks | `93` |
 | Plan switches | `0` |
-| Active-view accepted | `8` |
+| Active-view accepted | `9` |
 | Active-view rejected | `0` |
 | Dynamic-obstacle contact steps | `0` |
 | Maximum dynamic-obstacle force | `0 N` |
@@ -27,8 +28,8 @@
 | Swept-volume collision count | `0` |
 | Swept-volume near-collision count | `0` |
 | Swept-volume minimum clearance | `0.000 m` |
-| Observation-driven safety holds | `1` (`0.48 s`) |
-| Dynamic-obstacle minimum geometric clearance | `0.1880 m` |
+| Observation-driven safety holds | `2` (`0.48 s` each) |
+| Dynamic-obstacle minimum geometric clearance | `0.2004 m` |
 
 The selected route is `approach_center+place_left`. The approach is lifted in
 front of the keyboard (`+Y=0.18`, `+Z=0.30`), settles at
@@ -58,6 +59,12 @@ The grasp validation recorded simultaneous left- and right-finger contact,
 with target tilt `1.77 deg`. The selected plan was
 `approach_center+place_left`; the smooth rerun completed without a plan switch,
 then kept the place corridor fixed during `PLACE DESCEND` and release.
+
+The dual-camera handoff is recorded in the metrics file: `base_rgbd` first
+detects the obstacle at `t=0.00 s`, `wrist_rgbd` first detects it at
+`t=11.04 s`, and the base camera reacquires it at `t=11.32 s` after brief arm
+occlusion. The fused state triggers two safe holds while maintaining zero
+contact.
 
 ## Changes from the failed continuation
 
