@@ -55,8 +55,8 @@ vertical check; the measured release error was 0.08361 m.
 The large GIF and JSON remain on the experiment server, as requested:
 
 ```text
-GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_three_camera_final2_20260831.gif
-Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_three_camera_final2_20260831.json
+GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_three_camera_release_20260831.gif
+Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_three_camera_release_20260831.json
 ```
 
 Run the same validation on the server with:
@@ -67,8 +67,8 @@ export MUJOCO_GL=egl
 export PYTHONPATH=/home/arm1/vmc_mujoco_runtime/nus_fr3_migration
 /home/arm1/vmc_mujoco_runtime/.venv/bin/python -m nus_fr3_mujoco.tabletop_demo \
   --model scenes/fr3_office_v36_rgbd_proxy.xml \
-  --output outputs/fr3_rod_three_camera_final2_20260831.gif \
-  --metrics outputs/fr3_rod_three_camera_final2_20260831.json \
+  --output outputs/fr3_rod_three_camera_release_20260831.gif \
+  --metrics outputs/fr3_rod_three_camera_release_20260831.json \
   --fps 6 --dynamic-obstacle --rod-task
 ```
 
