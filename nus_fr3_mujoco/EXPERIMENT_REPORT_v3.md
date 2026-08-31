@@ -48,9 +48,9 @@ A direct per-cycle geometric audit finds the closest robot/obstacle pair at
 contact remains zero.
 
 The grasp validation recorded simultaneous left- and right-finger contact,
-with target tilt `1.77 deg`. The selected plan was `approach_left+place_left`;
-the supervisor switched once during approach and once during carry, then kept
-the place corridor fixed during `PLACE DESCEND` and release.
+with target tilt `1.77 deg`. The selected plan was
+`approach_center+place_left`; the smooth rerun completed without a plan switch,
+then kept the place corridor fixed during `PLACE DESCEND` and release.
 
 ## Changes from the failed continuation
 

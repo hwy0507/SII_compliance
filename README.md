@@ -17,11 +17,11 @@ offline swept-volume audit also reports no static-clutter penetration:
 | Metric | Latest result |
 | --- | ---: |
 | Grasp / placement | `True / True` |
-| Placement error | 0.00756 m |
+| Placement error | 0.04403 m |
 | Dynamic-obstacle contacts | 0 |
 | Maximum dynamic-obstacle force | 0 N |
 | Active-view accepted / rejected | `7 / 0` |
-| Horizon replanning / plan switches | `93 / 1` |
+| Horizon replanning / plan switches | `93 / 0` |
 | Static swept-volume collisions | 0 |
 | Static near-collisions | 0 |
 | Minimum swept-volume clearance | `0.000 m` |
