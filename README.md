@@ -17,10 +17,10 @@ offline swept-volume audit also reports no static-clutter penetration:
 | Metric | Latest result |
 | --- | ---: |
 | Grasp / placement | `True / True` |
-| Placement error | 0.04403 m |
+| Placement error | 0.04690 m |
 | Dynamic-obstacle contacts | 0 |
 | Maximum dynamic-obstacle force | 0 N |
-| Active-view accepted / rejected | `7 / 0` |
+| Active-view accepted / rejected | `8 / 0` |
 | Horizon replanning / plan switches | `93 / 0` |
 | Static swept-volume collisions | 0 |
 | Static near-collisions | 0 |
@@ -36,8 +36,8 @@ not be presented as a real-robot guarantee.
 The large GIF and JSON remain on the experiment server, as requested:
 
 ```text
-GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_observed_safe_hold_smooth_20260901.gif
-Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_observed_safe_hold_smooth_20260901.json
+GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_camera_attention_natural_20260901.gif
+Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_camera_attention_natural_20260901.json
 ```
 
 Run the same validation on the server with:
@@ -48,8 +48,8 @@ export MUJOCO_GL=egl
 export PYTHONPATH=/home/arm1/vmc_mujoco_runtime/nus_fr3_migration
 /home/arm1/vmc_mujoco_runtime/.venv/bin/python -m nus_fr3_mujoco.tabletop_demo \
   --model scenes/fr3_office_v36_rgbd_proxy.xml \
-  --output outputs/fr3_observed_safe_hold_smooth_20260901.gif \
-  --metrics outputs/fr3_observed_safe_hold_smooth_20260901.json \
+  --output outputs/fr3_camera_attention_natural_20260901.gif \
+  --metrics outputs/fr3_camera_attention_natural_20260901.json \
   --fps 10 --dynamic-obstacle
 ```
 
@@ -74,6 +74,14 @@ the obstacle near the wrist, and the observation-driven safety shield inserts
 one `0.48 s` `DYNAMIC SAFE HOLD` at `t=11.08 s` before the nominal carry route
 resumes. A direct geometric audit reports a minimum dynamic-obstacle clearance
 of `0.1833 m`; contact count and maximum contact force are both zero.
+
+The camera audit records the actual wrist-camera optical axis, not just the
+scheduler label. During the confirmed-obstacle window (`11.04--11.48 s`), the
+active focus is `PREDICTED_OBSTACLE` and the measured focus angle is
+`33.6--39.9 deg`; the camera remains on that focus through the safety hold.
+After confidence decays and the obstacle leaves the wrist view, the scheduler
+falls back to `SWEPT_VOLUME_SEARCH`, which is expected rather than a collision
+response.
 
 本项目聚焦一个单独而明确的问题：
 

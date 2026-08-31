@@ -672,8 +672,10 @@ def render_demo(
     dynamic_hold_until = -np.inf
     dynamic_hold_count = 0
     dynamic_hold_records: list[dict[str, object]] = []
+    hold_started_this_step = False
     for step in range(total_steps + 1):
         t = min(step * env.policy_dt_s, total_time)
+        hold_started_this_step = False
         # The target is a desk item, not a free projectile.  Hold its initial
         # resting pose until the closure phase so small solver/contact impulses
         # during the approach cannot make it slide away before either fingertip
@@ -738,6 +740,7 @@ def render_demo(
         if obstacle_requires_hold and t >= dynamic_hold_until - 1.0e-9:
             dynamic_hold_until = t + 0.48
             dynamic_hold_count += 1
+            hold_started_this_step = True
             dynamic_hold_records.append(
                 {
                     "time_s": float(t),
@@ -779,8 +782,13 @@ def render_demo(
             future_hand_positions.append(env.data.xpos[hand_id].copy())
         env.data.qpos[env.qpos_adrs] = q_before_view_ik
         mujoco.mj_forward(env.model, env.data)
+        # Keep the obstacle as the active visual target while the safety hold
+        # is in effect.  The hold changes the task phase label for the
+        # controller, but it must not make the wrist camera fall back to a
+        # generic swept-volume view while the obstacle is still in frame.
+        view_phase = "CARRY AROUND CLUTTER" if phase == "DYNAMIC SAFE HOLD" else phase
         active_view = view_scheduler.choose_active_focus(
-            phase,
+            view_phase,
             hand_position,
             env.data.xpos[grasp_latch.object_id].copy(),
             perceived_state,
@@ -789,8 +797,14 @@ def render_demo(
         if (
             active_view_enabled
             and active_view.action_required
-            and phase in {"CARRY AROUND CLUTTER", "RETURN HOME"}
+            and phase in {"CARRY AROUND CLUTTER", "RETURN HOME", "DYNAMIC SAFE HOLD"}
             and t - last_active_view_time >= 0.32
+            or (
+                active_view_enabled
+                and hold_started_this_step
+                and active_view.action_required
+                and active_view.focus_name == "PREDICTED_OBSTACLE"
+            )
         ):
             q_view = solve_position_nullspace_view_ik(
                 env,
@@ -823,6 +837,9 @@ def render_demo(
             env.data.qpos[env.qpos_adrs] = q_before_view_ik
             mujoco.mj_forward(env.model, env.data)
             if view_accepted:
+                # Keep active-view steering deliberately conservative: the
+                # camera must turn toward the obstacle without bending the
+                # collision-tested carry trajectory into a new unsafe branch.
                 q_ref = 0.65 * q_ref + 0.35 * q_view
                 view_action = "ACTIVE_OBSTACLE_VIEW"
                 active_view_accept_count += 1
@@ -832,6 +849,24 @@ def render_demo(
                 active_view_reject_count += 1
         else:
             view_action = "TASK_VIEW"
+        # Record the actual wrist-camera pose from the rendered RGB-D frame.
+        # This distinguishes a scheduler decision from a physically visible
+        # camera reorientation: MuJoCo cameras look along their local -Z axis,
+        # so the dot product below is the cosine of the angle to the selected
+        # focus point.
+        camera_forward = -np.asarray(wrist.camera_rotation_matrix[:, 2], dtype=np.float64)
+        camera_to_focus = np.asarray(active_view.focus_point, dtype=np.float64) - np.asarray(wrist.camera_position, dtype=np.float64)
+        camera_focus_distance = float(np.linalg.norm(camera_to_focus))
+        if camera_focus_distance > 1.0e-9:
+            camera_focus_alignment = float(
+                np.dot(camera_forward, camera_to_focus / camera_focus_distance)
+            )
+            camera_focus_angle_deg = float(
+                np.degrees(np.arccos(np.clip(camera_focus_alignment, -1.0, 1.0)))
+            )
+        else:
+            camera_focus_alignment = 1.0
+            camera_focus_angle_deg = 0.0
         active_view_records.append(
             {
                 "time_s": float(t),
@@ -847,6 +882,11 @@ def render_demo(
                 "prediction_uncertainty_m": float(np.sqrt(perceived_state.covariance_m2)),
                 "tracking_confidence": float(perceived_state.confidence),
                 "safety_gate": view_action != "ACTIVE_VIEW_REJECTED",
+                "camera_position_world": wrist.camera_position.tolist(),
+                "camera_forward_world": camera_forward.tolist(),
+                "camera_focus_distance_m": camera_focus_distance,
+                "camera_focus_alignment": camera_focus_alignment,
+                "camera_focus_angle_deg": camera_focus_angle_deg,
             }
         )
         if obstacle is not None:

@@ -6,8 +6,8 @@
 - Scene: `fr3_office_v36_rgbd_proxy.xml`
 - Runner: `nus_fr3_mujoco.tabletop_demo`
 - Mode: wrist RGB-D nominal layer with dynamic obstacle and online horizon supervision
-- Artifacts (server): `outputs/fr3_observed_safe_hold_smooth_20260901.gif`,
-  `outputs/fr3_observed_safe_hold_smooth_20260901.json`
+- Artifacts (server): `outputs/fr3_camera_attention_natural_20260901.gif`,
+  `outputs/fr3_camera_attention_natural_20260901.json`
 
 ## Result
 
@@ -15,10 +15,10 @@
 |---|---:|
 | Grasp success | `True` |
 | Placement success | `True` |
-| Placement error | `0.04403 m` |
+| Placement error | `0.04690 m` |
 | Receding-horizon checks | `93` |
 | Plan switches | `0` |
-| Active-view accepted | `7` |
+| Active-view accepted | `8` |
 | Active-view rejected | `0` |
 | Dynamic-obstacle contact steps | `0` |
 | Maximum dynamic-obstacle force | `0 N` |
@@ -28,7 +28,7 @@
 | Swept-volume near-collision count | `0` |
 | Swept-volume minimum clearance | `0.000 m` |
 | Observation-driven safety holds | `1` (`0.48 s`) |
-| Dynamic-obstacle minimum geometric clearance | `0.1833 m` |
+| Dynamic-obstacle minimum geometric clearance | `0.1880 m` |
 
 The selected route is `approach_center+place_left`. The approach is lifted in
 front of the keyboard (`+Y=0.18`, `+Z=0.30`), settles at
@@ -44,8 +44,15 @@ z=1.28]` during `10.4--13.0 s`. Both segments use the same X velocity
 had been struck. The RGB-D tracker records the obstacle locally at
 `t=11.04--11.28 s`; the safety shield inserts one `0.48 s` hold at `t=11.08 s`.
 A direct per-cycle geometric audit finds the closest robot/obstacle pair at
-`0.1833 m` for `fr3_right_finger_collision` at `t=11.28 s`, while runtime
+`0.1880 m` for `fr3_right_finger_collision` at `t=11.28 s`, while runtime
 contact remains zero.
+
+The camera audit is based on the rendered wrist RGB-D pose. At the first
+confirmed detection (`t=11.04 s`) the obstacle is within `39.9 deg` of the
+optical axis; the camera keeps `PREDICTED_OBSTACLE` focus through the
+`DYNAMIC SAFE HOLD`, reaching `33.6 deg` by `t=11.40 s`. Once the obstacle is
+no longer visible and confidence decays, the controller returns to its normal
+search focus.
 
 The grasp validation recorded simultaneous left- and right-finger contact,
 with target tilt `1.77 deg`. The selected plan was
