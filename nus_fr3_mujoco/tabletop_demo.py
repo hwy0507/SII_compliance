@@ -86,7 +86,25 @@ def panda_side_grasp_quaternion() -> np.ndarray:
     return quaternion
 
 
-def stabilize_target_on_desk(env: FR3MuJoCoEnv, target_body_id: int) -> np.ndarray:
+def panda_top_down_rod_quaternion() -> np.ndarray:
+    """Orient the Panda for a natural top-down pinch of a horizontal rod.
+
+    The rod lies along world Y.  Keeping the jaw-slide axis along world X
+    lets the two fingers pinch opposite sides of the rod, while local +Z
+    points down toward the desk.  Unlike the baseline side grasp, the palm
+    stays above the rod instead of intersecting the rod's near end.
+    """
+
+    local_x = np.array([0.0, 1.0, 0.0], dtype=np.float64)
+    local_y = np.array([1.0, 0.0, 0.0], dtype=np.float64)
+    local_z = np.array([0.0, 0.0, -1.0], dtype=np.float64)
+    rotation = np.column_stack((local_x, local_y, local_z))
+    quaternion = np.zeros(4, dtype=np.float64)
+    mujoco.mju_mat2Quat(quaternion, rotation.reshape(-1))
+    return quaternion
+
+
+def stabilize_target_on_desk(env: FR3MuJoCoEnv, target_body_id: int, *, rod_task: bool = False) -> np.ndarray:
     """Place the free target at the static desk contact height before planning."""
 
     target_joint_id = int(env.model.body_jntadr[target_body_id])
@@ -98,8 +116,15 @@ def stabilize_target_on_desk(env: FR3MuJoCoEnv, target_body_id: int) -> np.ndarr
     desk_top_z = float(env.model.geom_pos[desk_geom_id][2] + env.model.geom_size[desk_geom_id][2])
     target_half_height = float(env.model.geom_size[target_geom_id][1])
     qpos = env.data.qpos[target_qposadr : target_qposadr + 7]
-    qpos[2] = desk_top_z + target_half_height
-    qpos[3:7] = np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float64)
+    if rod_task:
+        # Lay the long rod along world Y so the existing side-grasp pads can
+        # pinch it across X without forcing a tall object to balance upright.
+        # Rx(-90 deg) maps the cylinder's local +Z axis to world +Y.
+        qpos[2] = desk_top_z + float(env.model.geom_size[target_geom_id][0]) + 0.003
+        qpos[3:7] = np.array([0.70710678, -0.70710678, 0.0, 0.0], dtype=np.float64)
+    else:
+        qpos[2] = desk_top_z + target_half_height
+        qpos[3:7] = np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float64)
     env.data.qvel[int(env.model.jnt_dofadr[target_joint_id]) : int(env.model.jnt_dofadr[target_joint_id]) + 6] = 0.0
     mujoco.mj_forward(env.model, env.data)
     return env.data.xpos[target_body_id].copy()
@@ -370,6 +395,7 @@ def _refine_place_and_build_segments(
     waypoint_diagnostics: list[dict[str, object]],
     desired_object_place: np.ndarray,
     grasp_quaternion: np.ndarray,
+    duration_scale: float = 1.0,
 ) -> list[DemoSegment]:
     """Refine carry/release and add a collision-safe post-release retract."""
 
@@ -414,21 +440,22 @@ def _refine_place_and_build_segments(
         q_place,
         view_gain=0.25,
     )
+    scale = max(float(duration_scale), 1.0)
     return [
-        DemoSegment(3.2, q_approach, 0.04, "APPROACH ABOVE CLUTTER"),
-        DemoSegment(1.8, q_pregrasp, 0.04, "PRE-GRASP"),
-        DemoSegment(1.3, q_grasp, 0.04, "DESCEND"),
-        DemoSegment(1.0, q_grasp, 0.04, "SETTLE AT GRASP"),
-        DemoSegment(1.4, q_grasp, 0.0, "CLOSE GRIPPER"),
-        DemoSegment(2.0, q_lift, 0.0, "LIFT"),
-        DemoSegment(2.3, q_place_hover, 0.0, "CARRY AROUND CLUTTER"),
+        DemoSegment(3.2 * scale, q_approach, 0.04, "APPROACH ABOVE CLUTTER"),
+        DemoSegment(1.8 * scale, q_pregrasp, 0.04, "PRE-GRASP"),
+        DemoSegment(1.3 * scale, q_grasp, 0.04, "DESCEND"),
+        DemoSegment(1.0 * scale, q_grasp, 0.04, "SETTLE AT GRASP"),
+        DemoSegment(1.4 * scale, q_grasp, 0.0, "CLOSE GRIPPER"),
+        DemoSegment(2.0 * scale, q_lift, 0.0, "LIFT"),
+        DemoSegment(2.3 * scale, q_place_hover, 0.0, "CARRY AROUND CLUTTER"),
         # Give the joint servo enough time to settle before the latch is
         # released; otherwise the object is evaluated while the hand is still
         # catching up to the refined placement pose.
-        DemoSegment(1.8, q_place, 0.0, "PLACE DESCEND"),
-        DemoSegment(1.0, q_place, 0.04, "RELEASE"),
-        DemoSegment(0.8, q_retract, 0.04, "RETRACT AFTER RELEASE"),
-        DemoSegment(1.8, HOME, 0.04, "RETURN HOME"),
+        DemoSegment(1.8 * scale, q_place, 0.0, "PLACE DESCEND"),
+        DemoSegment(1.0 * scale, q_place, 0.04, "RELEASE"),
+        DemoSegment(0.8 * scale, q_retract, 0.04, "RETRACT AFTER RELEASE"),
+        DemoSegment(1.8 * scale, HOME, 0.04, "RETURN HOME"),
     ]
 
 
@@ -444,7 +471,9 @@ def _joint_path_length(segments: list[DemoSegment], q_start: np.ndarray) -> floa
 
 def build_segments(
     env: FR3MuJoCoEnv,
-) -> tuple[list[DemoSegment], np.ndarray, list[dict[str, object]], object, list[dict[str, object]]]:
+    *,
+    rod_task: bool = False,
+) -> tuple[list[DemoSegment], np.ndarray, list[dict[str, object]], object, list[dict[str, object]], list[CandidatePlan]]:
     target_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "target_object")
     hand_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "fr3_hand")
     if target_id < 0 or hand_id < 0:
@@ -452,7 +481,7 @@ def build_segments(
 
     env.data.qpos[env.qpos_adrs] = HOME
     mujoco.mj_forward(env.model, env.data)
-    target = stabilize_target_on_desk(env, target_id)
+    target = stabilize_target_on_desk(env, target_id, rod_task=rod_task)
 
     # Candidate routes are evaluated in joint space.  The grasp is approached
     # from the open left side of the desk: the wrist stays to the left of the
@@ -463,19 +492,26 @@ def build_segments(
     # it can place the fingers outside the cylinder at closure.  The online
     # supervisor also needs more than one approach corridor while the robot is
     # still in APPROACH ABOVE CLUTTER.
+    approach_z = 0.38 if rod_task else 0.30
+    approach_y = 0.16 if rod_task else 0.18
     approach_candidates = {
-        "approach_left": target + np.array([-0.06, 0.18, 0.30], dtype=np.float64),
-        "approach_center": target + np.array([0.00, 0.18, 0.30], dtype=np.float64),
-        "approach_right": target + np.array([0.06, 0.18, 0.30], dtype=np.float64),
+        "approach_left": target + np.array([-0.06, approach_y, approach_z], dtype=np.float64),
+        "approach_center": target + np.array([0.00, approach_y, approach_z], dtype=np.float64),
+        "approach_right": target + np.array([0.06, approach_y, approach_z], dtype=np.float64),
     }
-    grasp_quaternion = panda_side_grasp_quaternion()
-    pregrasp = target + np.array([0.0, 0.14, 0.04])
-    grasp = target + np.array([0.0, 0.105, 0.0])
+    grasp_quaternion = panda_top_down_rod_quaternion() if rod_task else panda_side_grasp_quaternion()
+    if rod_task:
+        pregrasp = target + np.array([0.0, 0.0, 0.18], dtype=np.float64)
+        grasp = target + np.array([0.0, 0.0, 0.105], dtype=np.float64)
+    else:
+        pregrasp = target + np.array([0.0, 0.14, 0.04], dtype=np.float64)
+        grasp = target + np.array([0.0, 0.105, 0.0], dtype=np.float64)
     lift = grasp + np.array([0.0, 0.0, 0.30])
+    place_z = float(target[2])
     place_candidates = {
-        "place_left": np.array([0.20, -0.30, 0.78], dtype=np.float64),
-        "place_center": np.array([0.30, -0.30, 0.78], dtype=np.float64),
-        "place_right": np.array([0.40, -0.30, 0.78], dtype=np.float64),
+        "place_left": np.array([0.20, -0.30, place_z], dtype=np.float64),
+        "place_center": np.array([0.30, -0.30, place_z], dtype=np.float64),
+        "place_right": np.array([0.40, -0.30, place_z], dtype=np.float64),
     }
     checker = FR3SweptVolumeChecker(
         env,
@@ -486,17 +522,32 @@ def build_segments(
     for approach_name, approach in approach_candidates.items():
         for place_name, desired_object_place in place_candidates.items():
             env.reset(HOME)
-            target = stabilize_target_on_desk(env, target_id)
+            target = stabilize_target_on_desk(env, target_id, rod_task=rod_task)
+            time_scale = 1.35 if rod_task else 1.0
             waypoint_specs = [
-                ("APPROACH ABOVE CLUTTER", approach, target, 3.2, 0.00, grasp_quaternion),
-                ("PRE-GRASP", pregrasp, target, 1.8, 0.20, grasp_quaternion),
-                ("DESCEND", grasp, target, 1.3, 0.10, grasp_quaternion),
-                ("LIFT", lift, target, 2.0, 0.10, grasp_quaternion),
-                ("CARRY AROUND CLUTTER", desired_object_place + np.array([0.0, 0.0, 0.18]), desired_object_place, 2.3, 0.10, grasp_quaternion),
+                ("APPROACH ABOVE CLUTTER", approach, target, 3.2 * time_scale, 0.00, grasp_quaternion),
+                ("PRE-GRASP", pregrasp, target, 1.8 * time_scale, 0.20, grasp_quaternion),
+                ("DESCEND", grasp, target, 1.3 * time_scale, 0.10, grasp_quaternion),
+                ("LIFT", lift, target, 2.0 * time_scale, 0.10, grasp_quaternion),
+                ("CARRY AROUND CLUTTER", desired_object_place + np.array([0.0, 0.0, 0.18]), desired_object_place, 2.3 * time_scale, 0.10, grasp_quaternion),
             ]
             solved, diagnostics = _solve_waypoint_specs(env, hand_id, target, waypoint_specs)
-            segments = _refine_place_and_build_segments(env, hand_id, target, solved, diagnostics, desired_object_place, grasp_quaternion)
-            q_sweep, t_sweep = checker.interpolate_segments(segments, HOME, sample_dt_s=0.06)
+            segments = _refine_place_and_build_segments(
+                env,
+                hand_id,
+                target,
+                solved,
+                diagnostics,
+                desired_object_place,
+                grasp_quaternion,
+                duration_scale=1.35 if rod_task else 1.0,
+            )
+            # The long rod can graze a clutter edge for only a few
+            # milliseconds.  Use the same dense sampling as execution for
+            # candidate ranking so a coarse sweep cannot select an unsafe
+            # place corridor that the final audit later catches.
+            sweep_dt = 0.02 if rod_task else 0.06
+            q_sweep, t_sweep = checker.interpolate_segments(segments, HOME, sample_dt_s=sweep_dt)
             report = checker.check_trajectory(q_sweep, t_sweep, max_events=32)
             candidates.append(
                 CandidatePlan(
@@ -566,8 +617,20 @@ def render_demo(
     active_view_enabled: bool = True,
     grasp_closure_m: float = GRASP_CLOSURE_M,
     gripper_kp: float = 800.0,
+    rod_task: bool = False,
 ) -> None:
     env = FR3MuJoCoEnv(model_path, physics_dt_s=0.002, policy_dt_s=0.040, ee_body_name="fr3_link7")
+    if rod_task:
+        # Turn the desk cylinder into a longer upright rod while keeping the
+        # same collision/material channels and freejoint semantics.
+        target_geom_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, "target_object_geom")
+        if target_geom_id < 0:
+            raise RuntimeError("rod task requires target_object_geom")
+        # A 24 mm diameter rod gives both fingertip pad meshes enough
+        # contact overlap to close symmetrically; the original 18 mm radius
+        # object was narrow enough that one pad could push it away first.
+        env.model.geom_size[target_geom_id, 0] = 0.024
+        env.model.geom_size[target_geom_id, 1] = 0.12
     if env.model.nu > 7:
         env.model.actuator_gainprm[7, 0] = float(gripper_kp)
     env.reset(HOME)
@@ -579,11 +642,22 @@ def render_demo(
     if dynamic_obstacle:
         from .dynamic_obstacle import PredictableCrossingObstacle, RGBDObstaclePredictor
 
-        obstacle = PredictableCrossingObstacle(env.model)
+        if rod_task:
+            obstacle = PredictableCrossingObstacle(
+                env.model,
+                enter_time_s=11.4,
+                contact_time_s=13.4,
+                exit_time_s=17.4,
+            )
+            obstacle.before = np.array([0.92, -0.42, 1.32], dtype=np.float64)
+            obstacle.corridor = np.array([0.32, -0.42, 1.32], dtype=np.float64)
+            obstacle.after = np.array([-0.92, -0.42, 1.32], dtype=np.float64)
+        else:
+            obstacle = PredictableCrossingObstacle(env.model)
         obstacle.apply(env, 0.0)
         perception_predictor = RGBDObstaclePredictor(env.model, perception_tracker)
     servo = FR3NominalVelocityServo(env, kp=(22.0,) * 7, kv=(10.0,) * 7)
-    segments, target, waypoint_diagnostics, _, candidate_records, candidates = build_segments(env)
+    segments, target, waypoint_diagnostics, _, candidate_records, candidates = build_segments(env, rod_task=rod_task)
     sweep_checker = FR3SweptVolumeChecker(
         env,
         safety_margin_m=0.015,
@@ -633,7 +707,9 @@ def render_demo(
     scene_estimator = WristSceneBeliefEstimator(env.model, "wrist_rgbd")
     view_scheduler = VelocityAwareViewScheduler()
     grasp_latch = MuJoCoGraspLatch(env)
-    stabilize_target_on_desk(env, grasp_latch.object_id)
+    if rod_task:
+        grasp_latch.validation_axis_world = np.array([0.0, 1.0, 0.0], dtype=np.float64)
+    stabilize_target_on_desk(env, grasp_latch.object_id, rod_task=rod_task)
     target_joint_id = int(env.model.body_jntadr[grasp_latch.object_id])
     target_qposadr = int(env.model.jnt_qposadr[target_joint_id])
     target_qveladr = int(env.model.jnt_dofadr[target_joint_id])
@@ -692,7 +768,17 @@ def render_demo(
         # during the approach cannot make it slide away before either fingertip
         # has a chance to engage.  Once closure starts, normal MuJoCo contact
         # dynamics are restored and the latch validates the physical grasp.
-        if not grasp_attempted and t < 7.30:
+        # A tall rod is much easier to tip than the short baseline cylinder.
+        # Keep it at its desk-rest pose until the same late-closure instant at
+        # which the real finger/target contact channel is enabled.  After that
+        # instant the object is fully dynamic and still has to pass the normal
+        # two-finger MuJoCo contact validation before the latch can engage.
+        # For the long rod, keep the desk-rest pose through the entire
+        # closure window.  Releasing it after the first contact lets one pad
+        # push the rod sideways before the opposite pad reaches it; the
+        # physical two-finger validator then correctly rejects the grasp.
+        target_hold_until = 11.72 if rod_task else 7.30
+        if not grasp_attempted and t < target_hold_until:
             env.data.qpos[target_qposadr : target_qposadr + 7] = target_rest_qpos
             env.data.qvel[target_qveladr : target_qveladr + 6] = 0.0
             mujoco.mj_forward(env.model, env.data)
@@ -761,6 +847,10 @@ def render_demo(
             and perceived_state.confidence >= 0.60
             and phase in {"LIFT", "CARRY AROUND CLUTTER"}
             and perceived_obstacle_distance <= 0.55
+            and (
+                float(np.linalg.norm(perceived_state.velocity_world)) >= 0.08
+                or wrist_state.visible
+            )
         )
         if obstacle_requires_hold and t >= dynamic_hold_until - 1.0e-9:
             dynamic_hold_until = t + 0.48
@@ -959,7 +1049,18 @@ def render_demo(
             (phase == "CLOSE GRIPPER" and t - close_phase_start_time >= 0.9)
             or grasp_latch.engaged
         )
-        env.model.geom_conaffinity[grasp_latch.target_geom_id] = 8 if grasp_contact_enabled else 0
+        # Before validation the rod must be able to contact both fingertip
+        # pads.  After a validated grasp the latch owns the object pose, so
+        # disable the free-body collision channel entirely; otherwise the
+        # broad hand mesh can report an illegal hand/rod penetration while the
+        # fingers are already holding it.  Restore normal desk contact on
+        # release so placement remains physically checked.
+        if grasp_latch.engaged:
+            env.model.geom_contype[grasp_latch.target_geom_id] = 0
+            env.model.geom_conaffinity[grasp_latch.target_geom_id] = 0
+        else:
+            env.model.geom_contype[grasp_latch.target_geom_id] = 4 if grasp_contact_enabled else 0
+            env.model.geom_conaffinity[grasp_latch.target_geom_id] = 8 if grasp_contact_enabled else 0
         grasp_contact_enabled_records.append(
             {"time_s": float(t), "phase": phase, "enabled": grasp_contact_enabled}
         )
@@ -975,7 +1076,23 @@ def render_demo(
         if phase == "RELEASE" and grasp_latch.engaged:
             release_target_position = env.data.xpos[grasp_latch.object_id].copy()
             grasp_latch.release()
+            # Keep the target collision-disabled for this release sample so
+            # the transition cannot report a stale one-frame palm overlap.
+            # The desk-only channel is restored immediately after the audit
+            # below and is active for all subsequent settling/retract steps.
+            env.model.geom_contype[grasp_latch.target_geom_id] = 0
+            env.model.geom_conaffinity[grasp_latch.target_geom_id] = 0
         state = env.step(command.torque, q_cmd=command.q_cmd, qdot_cmd=command.qdot_cmd)
+        # A freejoint object with a deliberate 3 mm desk clearance receives a
+        # full gravity step before the next loop can refresh the hold pose.
+        # Re-apply the measured desk-rest pose after stepping as well, through
+        # the closure/validation window, so the rod cannot drop or drift away
+        # between the two fingertip contact checks.  Once the latch engages,
+        # it owns the object transform and this hold is no longer applied.
+        if not grasp_attempted and not grasp_latch.engaged and t < target_hold_until:
+            env.data.qpos[target_qposadr : target_qposadr + 7] = target_rest_qpos
+            env.data.qvel[target_qveladr : target_qveladr + 6] = 0.0
+            mujoco.mj_forward(env.model, env.data)
         if obstacle is not None:
             obstacle_state = obstacle.contact_summary(env)
             clearance_state = obstacle.clearance_summary(env)
@@ -997,6 +1114,12 @@ def render_demo(
         illegal_target_contact_steps += int(target_contact["illegal_target_contact_count"] > 0)
         if target_contact["target_robot_contact_count"]:
             target_contact_records.append({"time_s": float(t), "phase": phase, **target_contact})
+        if phase == "RELEASE" and not grasp_latch.engaged:
+            # Re-enable only the desk contact channel after the release sample.
+            # Restricting affinity to bit 2 preserves support from desk_top
+            # (contype 2) while excluding the finger/hand channel (bit 4).
+            env.model.geom_contype[grasp_latch.target_geom_id] = 4
+            env.model.geom_conaffinity[grasp_latch.target_geom_id] = 2
         # Decide during closure, while the fingers are still in contact. The
         # previous implementation waited until the first LIFT sample, which
         # allowed a valid transient grasp to destabilize before validation.
@@ -1185,6 +1308,7 @@ def main() -> None:
     parser.add_argument("--disable-active-view", action="store_true")
     parser.add_argument("--grasp-closure", type=float, default=GRASP_CLOSURE_M)
     parser.add_argument("--gripper-kp", type=float, default=800.0)
+    parser.add_argument("--rod-task", action="store_true", help="run the long-rod pick/place cooperative-perception benchmark")
     args = parser.parse_args()
     render_demo(
         args.model,
@@ -1195,6 +1319,7 @@ def main() -> None:
         not args.disable_active_view,
         args.grasp_closure,
         args.gripper_kp,
+        args.rod_task,
     )
 
 

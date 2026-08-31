@@ -8,7 +8,7 @@ MuJoCo experiment: cooperative fixed-base and wrist RGB-D scene belief,
 task-stage-aware view selection, candidate arm trajectories, short-horizon
 replanning, and Panda two-finger grasp validation.
 
-The latest server-side validation uses a collision-tested side-grasp pose,
+The latest server-side validation uses a collision-tested top-down rod grasp,
 an elevated approach corridor, a short pre-grasp settle segment, and a front
 placement corridor. It achieved a two-finger grasp and successful placement
 while the independently moved dynamic obstacle made zero contact. The full
@@ -17,11 +17,13 @@ offline swept-volume audit also reports no static-clutter penetration:
 | Metric | Latest result |
 | --- | ---: |
 | Grasp / placement | `True / True` |
-| Placement error | 0.03881 m |
+| Placement error | 0.05377 m |
 | Dynamic-obstacle contacts | 0 |
 | Maximum dynamic-obstacle force | 0 N |
-| Active-view accepted / rejected | `9 / 0` |
-| Horizon replanning / plan switches | `93 / 0` |
+| Active-view accepted / rejected | `16 / 0` |
+| Horizon replanning / plan switches | `125 / 0` |
+| Observation-driven safe holds | `3` |
+| Illegal target-contact steps | `0` |
 | Static swept-volume collisions | 0 |
 | Static near-collisions | 0 |
 | Minimum swept-volume clearance | `0.000 m` |
@@ -36,8 +38,8 @@ not be presented as a real-robot guarantee.
 The large GIF and JSON remain on the experiment server, as requested:
 
 ```text
-GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_dual_rgbd_motion_handoff_20260831.gif
-Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_dual_rgbd_motion_handoff_20260831.json
+GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_topdown_perfect_20260831.gif
+Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_topdown_perfect_20260831.json
 ```
 
 Run the same validation on the server with:
@@ -48,12 +50,48 @@ export MUJOCO_GL=egl
 export PYTHONPATH=/home/arm1/vmc_mujoco_runtime/nus_fr3_migration
 /home/arm1/vmc_mujoco_runtime/.venv/bin/python -m nus_fr3_mujoco.tabletop_demo \
   --model scenes/fr3_office_v36_rgbd_proxy.xml \
-  --output outputs/fr3_dual_rgbd_motion_handoff_20260831.gif \
-  --metrics outputs/fr3_dual_rgbd_motion_handoff_20260831.json \
-  --fps 10 --dynamic-obstacle
+  --output outputs/fr3_rod_topdown_perfect_20260831.gif \
+  --metrics outputs/fr3_rod_topdown_perfect_20260831.json \
+  --fps 6 --dynamic-obstacle --rod-task
 ```
 
-The selected route is `approach_center+place_left`. Its key Cartesian
+### Long-rod cooperative-perception benchmark
+
+The `--rod-task` mode changes the target into a horizontal 240 mm rod (24 mm
+diameter) and uses a natural top-down pinch: the rod axis is world `+Y`, the
+jaw-slide axis is world `X`, and the wrist approaches from above.  The rod is
+held at its desk-rest pose through the complete closure window, then released
+only after MuJoCo reports simultaneous left- and right-finger contact.  Once
+latched, the free-body collision channel is disabled to prevent the broad hand
+mesh from producing a false palm penetration; desk support is restored after
+release.
+
+Final server run (`fr3_rod_topdown_perfect_20260831`):
+
+```text
+grasp_success                       True
+placement_success                   True
+placement_error_m                   0.05377 m
+dynamic_obstacle_contact_steps      0
+max_dynamic_obstacle_force_n        0.0 N
+active_view_accept_count            16
+active_view_reject_count            0
+dynamic_safety_hold_count           3
+replanning_count / plan_switches    125 / 0
+illegal_target_contact_steps        0
+swept_volume_collision_count        0
+```
+
+The red obstacle traverses a slow continuous leftward path during the lift and
+carry stages.  The fused RGB-D state triggers three short observation-driven
+holds, while the active-view gate accepts all 16 requested wrist reorientations.
+The fixed base camera provides the robust obstacle detection in this run; the
+wrist stream is retained for local confirmation and can be enabled/adjusted
+for a closer obstacle trajectory in follow-up experiments.  `dynamic_obstacle_min_clearance_m=0.0`
+is a conservative tangent/degenerate-distance report; the authoritative
+contact audit remains zero contacts and zero measured force.
+
+The selected rod route is `approach_left+place_left`. Its key Cartesian
 waypoints are:
 
 ```text

@@ -1,14 +1,54 @@
 # FR3 tabletop dynamic grasp benchmark: final collision-free validation
 
+## Long-rod run (2026-08-31)
+
+The latest server artifact is the long-duration rod benchmark:
+
+- GIF: `/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_topdown_perfect_20260831.gif`
+- Metrics: `/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_topdown_perfect_20260831.json`
+
+The target is a horizontal rod with world-axis `+Y`, using a top-down FR3
+pinch.  Its radius is `0.024 m` and half-length is `0.12 m`.  The target is
+held at the desk-rest pose through closure so a single fingertip cannot push it
+away before the opposite fingertip arrives.  The latch engages only after a
+real simultaneous two-finger MuJoCo contact.  During the latched carry, the
+free-body target collision channel is disabled; after release, only desk
+support affinity is restored.
+
+| Metric | rod run |
+|---|---:|
+| Grasp success | `True` |
+| Placement success | `True` |
+| Placement error | `0.05377 m` |
+| Dynamic-obstacle contact steps | `0` |
+| Maximum dynamic-obstacle force | `0 N` |
+| Active-view accepted / rejected | `16 / 0` |
+| Observation-driven safety holds | `3` |
+| Horizon replanning / plan switches | `125 / 0` |
+| Illegal target-contact steps | `0` |
+| Swept-volume collision / near-collision count | `0 / 0` |
+
+The dynamic obstacle follows a slow continuous leftward path.  The base RGB-D
+camera supplies the robust detection in this run, while the wrist stream
+remains available for local confirmation.  The reported dynamic geometric
+minimum is `0.0 m` because MuJoCo's distance query is conservative at a
+tangent/degenerate configuration; the runtime contact and force audits are
+the decisive safety checks and both remain zero.
+
+## Baseline cylindrical run (historical)
+
+The remainder of this file retains the earlier short-cylinder validation for
+comparison.  Its artifacts and metrics are not the latest rod benchmark.
+
 ## Reproducibility
 
-- Date: latest server validation (artifact suffix `20260901`)
+- Date: latest server validation (`2026-08-31`)
 - Scene: `fr3_office_v36_rgbd_proxy.xml`
 - Runner: `nus_fr3_mujoco.tabletop_demo`
 - Mode: cooperative fixed-base + wrist RGB-D nominal layer with dynamic obstacle
   and online horizon supervision
-- Artifacts (server): `outputs/fr3_dual_rgbd_motion_handoff_20260831.gif`,
-  `outputs/fr3_dual_rgbd_motion_handoff_20260831.json`
+- Artifacts (server): `outputs/fr3_rod_topdown_perfect_20260831.gif`,
+  `outputs/fr3_rod_topdown_perfect_20260831.json`
 
 ## Result
 
@@ -16,10 +56,10 @@
 |---|---:|
 | Grasp success | `True` |
 | Placement success | `True` |
-| Placement error | `0.03881 m` |
-| Receding-horizon checks | `93` |
+| Placement error | `0.05377 m` |
+| Receding-horizon checks | `125` |
 | Plan switches | `0` |
-| Active-view accepted | `9` |
+| Active-view accepted | `16` |
 | Active-view rejected | `0` |
 | Dynamic-obstacle contact steps | `0` |
 | Maximum dynamic-obstacle force | `0 N` |
@@ -28,15 +68,14 @@
 | Swept-volume collision count | `0` |
 | Swept-volume near-collision count | `0` |
 | Swept-volume minimum clearance | `0.000 m` |
-| Observation-driven safety holds | `2` (`0.48 s` each) |
-| Dynamic-obstacle minimum geometric clearance | `0.2004 m` |
+| Observation-driven safety holds | `3` (`0.48 s` each) |
+| Dynamic-obstacle minimum geometric clearance | `0.0 m` (conservative tangent report) |
 
-The selected route is `approach_center+place_left`. The approach is lifted in
-front of the keyboard (`+Y=0.18`, `+Z=0.30`), settles at
-`pre-grasp=target+[0,0.14,0.04]`, and closes at the validated side-grasp pose
-`target+[0,0.105,0]`. The target is pinned to its initial desk-rest pose until
-the closure window; this removes pre-contact sliding while preserving normal
-MuJoCo contact dynamics during grasp and lift.
+The rod route is `approach_left+place_left`. The approach is lifted above the
+keyboard, settles over the rod, and closes with the validated top-down pinch.
+The target is pinned to its initial desk-rest pose until the closure window;
+this removes pre-contact gravity drift while preserving real fingertip contact
+validation before lift.
 
 For visual evaluation, the dynamic box now follows one continuous leftward
 trajectory near the carry corridor: `[x=0.78 -> 0.30 -> -0.78, y=-0.45,

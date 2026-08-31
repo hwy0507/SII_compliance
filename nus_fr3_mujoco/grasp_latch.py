@@ -39,6 +39,7 @@ class MuJoCoGraspLatch:
         self.right_finger_geom_id = self._require(mujoco.mjtObj.mjOBJ_GEOM, "fr3_right_finger_collision")
         self.relative_position = np.zeros(3, dtype=np.float64)
         self.relative_quaternion = np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float64)
+        self.validation_axis_world = np.array([0.0, 0.0, 1.0], dtype=np.float64)
         self.engaged = False
         self.last_validation: dict[str, object] = {"valid": False, "reason": "not_checked"}
 
@@ -70,7 +71,9 @@ class MuJoCoGraspLatch:
             )
         )
         object_axis = self.env.data.xmat[self.object_id].reshape(3, 3)[:, 2]
-        tilt_cos = float(np.clip(np.dot(object_axis, np.array([0.0, 0.0, 1.0])), -1.0, 1.0))
+        reference_axis = np.asarray(self.validation_axis_world, dtype=np.float64)
+        reference_axis /= max(float(np.linalg.norm(reference_axis)), 1.0e-9)
+        tilt_cos = float(np.clip(abs(np.dot(object_axis, reference_axis)), -1.0, 1.0))
         target_tilt_deg = float(np.degrees(np.arccos(tilt_cos)))
         left_contact = self._has_body_contact(self.left_finger_body_id, self.target_geom_id)
         right_contact = self._has_body_contact(self.right_finger_body_id, self.target_geom_id)
