@@ -87,6 +87,31 @@ def look_at_camera_quaternion(position: np.ndarray, look_at: np.ndarray) -> np.n
     return quaternion
 
 
+def look_at_camera_rotation(position: np.ndarray, look_at: np.ndarray) -> np.ndarray:
+    """Return a world rotation whose camera -Z axis faces ``look_at``."""
+    quat = look_at_camera_quaternion(position, look_at)
+    rotation = np.zeros(9, dtype=np.float64)
+    mujoco.mju_quat2Mat(rotation, quat)
+    return rotation.reshape(3, 3)
+
+
+def set_attached_camera_focus(
+    model: mujoco.MjModel,
+    data: mujoco.MjData,
+    camera_id: int,
+    parent_body_id: int,
+    focus_point: np.ndarray,
+) -> None:
+    """Aim a body-mounted camera without changing the parent arm pose."""
+    camera_position = np.asarray(data.cam_xpos[camera_id], dtype=np.float64)
+    desired_world_rotation = look_at_camera_rotation(camera_position, focus_point)
+    parent_rotation = np.asarray(data.xmat[parent_body_id], dtype=np.float64).reshape(3, 3)
+    relative_rotation = parent_rotation.T @ desired_world_rotation
+    quat = np.zeros(4, dtype=np.float64)
+    mujoco.mju_mat2Quat(quat, relative_rotation.reshape(-1))
+    model.cam_quat[camera_id] = quat
+
+
 def panda_side_grasp_quaternion() -> np.ndarray:
     """Orient the Panda jaws for a stable horizontal side grasp.
 
@@ -725,13 +750,13 @@ def render_demo(
     camera.azimuth = 136.0
     camera.elevation = -18.0
     wrist_camera = WristRGBDCamera(env.model, "wrist_rgbd", width=320, height=240)
+    wrist_camera_id = wrist_camera.camera_id
     if rod_task:
         # The baseline camera mount points straight down in the top-down rod
         # grasp, so it cannot see the raised crossing obstacle.  Rotate only
         # the sensor mount for this benchmark; the arm trajectory and grasp
         # pose remain unchanged.  This diagonal forward/up view gives the
         # wrist RGB-D stream a real chance to confirm the base-camera track.
-        wrist_camera_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_CAMERA, "wrist_rgbd")
         env.model.cam_quat[wrist_camera_id] = np.array([0.9239, 0.3827, 0.0, 0.0], dtype=np.float64)
         mujoco.mj_forward(env.model, env.data)
     base_camera = RGBDCamera(env.model, "base_rgbd", width=320, height=240)
@@ -791,6 +816,7 @@ def render_demo(
     dynamic_hold_until = -np.inf
     dynamic_hold_count = 0
     dynamic_hold_records: list[dict[str, object]] = []
+    dynamic_hold_q: np.ndarray | None = None
     hold_started_this_step = False
     base_first_detection_time_s: float | None = None
     wrist_first_detection_time_s: float | None = None
@@ -804,6 +830,7 @@ def render_demo(
     max_pregrasp_ee_angular_speed = 0.0
     active_base_focus_angle_deg = 0.0
     perceived_state = None
+    wrist_focus_point = np.array([0.18, -0.283, 0.90], dtype=np.float64)
     for step in range(total_steps + 1):
         t = min(step * env.policy_dt_s, total_time)
         hold_started_this_step = False
@@ -857,6 +884,10 @@ def render_demo(
         env.model.cam_quat[active_base_camera_id] = look_at_camera_quaternion(
             active_base_mount_position, active_focus_point
         )
+        mujoco.mj_forward(env.model, env.data)
+        # Actively steer the wrist sensor in its hand frame. This changes
+        # only camera orientation; the manipulator reference is untouched.
+        set_attached_camera_focus(env.model, env.data, wrist_camera_id, hand_id, wrist_focus_point)
         mujoco.mj_forward(env.model, env.data)
         # The three observations are independent.  The hidden obstacle is
         # moved only by the scenario, never passed directly to these tracks.
@@ -929,13 +960,12 @@ def render_demo(
             perceived_state.visible
             and perceived_state.confidence >= 0.60
             and phase in {"LIFT", "CARRY AROUND CLUTTER"}
-            # Respond once while the obstacle is still approaching.  The
-            # previous 0.55 m gate waited until the box was already beside the
-            # hand, which made the later rise look like a post-event fling.
-            # One anticipatory response avoids repeated holds disturbing the
-            # subsequent placement trajectory.
+            # Only stop when the *predicted observed obstacle* is actually
+            # close to the current carry corridor.  The previous 0.80 m gate
+            # fired while the box was still far away and then commanded a
+            # fixed lift pose, which looked like a post-event upward fling.
             and dynamic_hold_count == 0
-            and perceived_obstacle_distance <= 0.80
+            and perceived_obstacle_distance <= 0.36
             and (
                 float(np.linalg.norm(perceived_state.velocity_world)) >= 0.08
                 or wrist_state.visible
@@ -945,6 +975,7 @@ def render_demo(
             dynamic_hold_until = t + 0.48
             dynamic_hold_count += 1
             hold_started_this_step = True
+            dynamic_hold_q = np.asarray(q_ref, dtype=np.float64).copy()
             dynamic_hold_records.append(
                 {
                     "time_s": float(t),
@@ -957,13 +988,12 @@ def render_demo(
                 }
             )
         if t < dynamic_hold_until:
-            # Use the safety window to enter the already collision-checked
-            # lift pose smoothly instead of freezing and then snapping upward
-            # after the obstacle has gone by.
-            hold_progress = float(np.clip((t - (dynamic_hold_until - 0.48)) / 0.48, 0.0, 1.0))
-            smooth = hold_progress * hold_progress * (3.0 - 2.0 * hold_progress)
-            q_ref = (1.0 - smooth) * env.q + smooth * q_lift_ref
-            phase = "DYNAMIC SAFE HOLD"
+            # NUS-style response: stop the current reference and re-observe;
+            # do not inject an unrelated vertical lift motion.  Replanning
+            # remains responsible for selecting a detour if the predicted
+            # obstacle truly blocks the next horizon.
+            q_ref = env.q.copy() if dynamic_hold_q is None else dynamic_hold_q.copy()
+            phase = "DYNAMIC OBSERVE HOLD"
         if phase == "CLOSE GRIPPER" and last_phase != phase:
             close_phase_start_time = t
         if grasp_failed:
@@ -995,7 +1025,7 @@ def render_demo(
         # is in effect.  The hold changes the task phase label for the
         # controller, but it must not make the wrist camera fall back to a
         # generic swept-volume view while the obstacle is still in frame.
-        view_phase = "CARRY AROUND CLUTTER" if phase == "DYNAMIC SAFE HOLD" else phase
+        view_phase = "CARRY AROUND CLUTTER" if phase == "DYNAMIC OBSERVE HOLD" else phase
         active_view = view_scheduler.choose_active_focus(
             view_phase,
             hand_position,
@@ -1014,7 +1044,7 @@ def render_demo(
             and active_view_enabled
             and active_view.action_required
             and (
-                phase in {"CARRY AROUND CLUTTER", "RETURN HOME", "DYNAMIC SAFE HOLD"}
+                phase in {"CARRY AROUND CLUTTER", "RETURN HOME", "DYNAMIC OBSERVE HOLD"}
                 or lift_handoff_view
             )
             and t - last_active_view_time >= 0.32
@@ -1098,7 +1128,7 @@ def render_demo(
         # so the dot product below is the cosine of the angle to the selected
         # focus point.
         camera_forward = -np.asarray(wrist.camera_rotation_matrix[:, 2], dtype=np.float64)
-        camera_to_focus = np.asarray(active_view.focus_point, dtype=np.float64) - np.asarray(wrist.camera_position, dtype=np.float64)
+        camera_to_focus = np.asarray(wrist_focus_point, dtype=np.float64) - np.asarray(wrist.camera_position, dtype=np.float64)
         camera_focus_distance = float(np.linalg.norm(camera_to_focus))
         if camera_focus_distance > 1.0e-9:
             camera_focus_alignment = float(
@@ -1148,10 +1178,21 @@ def render_demo(
                 "camera_focus_distance_m": camera_focus_distance,
                 "camera_focus_alignment": camera_focus_alignment,
                 "camera_focus_angle_deg": camera_focus_angle_deg,
+                "wrist_focus_point": wrist_focus_point.tolist(),
                 "active_base_focus_point": active_focus_point.tolist(),
                 "active_base_focus_angle_deg": active_base_focus_angle_deg,
             }
         )
+        # Target the next wrist observation using the current fused belief.
+        # Grasp phases keep the camera on the rod; transport phases look at
+        # the predicted crossing point, then fall back to the next swept
+        # waypoint when the obstacle track is absent.
+        if phase in {"PRE-GRASP", "DESCEND", "SETTLE AT GRASP", "CLOSE GRIPPER"}:
+            wrist_focus_point = env.data.xpos[grasp_latch.object_id].copy()
+        elif perceived_state.confidence >= 0.45 and perceived_state.visible:
+            wrist_focus_point = perceived_state.position_world.copy()
+        elif len(future_hand_positions):
+            wrist_focus_point = np.asarray(future_hand_positions[0], dtype=np.float64).copy()
         if obstacle is not None:
             obstacle.apply(env, t)
         state = env.state()

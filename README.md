@@ -38,7 +38,10 @@ The current three-camera experiment assigns complementary roles: `base_rgbd`
 is a fixed global-alert camera, `active_base_rgbd` is fixed near the FR3 root
 with a narrow field of view and actively changes only its orientation for a
 left/center/right scan or obstacle focus, and `wrist_rgbd` performs local
-end-effector confirmation. Their independent RGB-D trackers are fused before
+end-effector confirmation. The wrist camera now has an independent active
+gaze controller: its mount remains attached to the hand, but the local camera
+quaternion is recomputed from the current target/obstacle belief each frame;
+it no longer stares permanently into the gripper. Their independent RGB-D trackers are fused before
 the safety shield; a single anticipatory hold is allowed, and the wrist pose
 is not reoriented during the grasp approach, so camera coordination cannot
 reintroduce pre-grasp oscillation or a post-event upward fling.
