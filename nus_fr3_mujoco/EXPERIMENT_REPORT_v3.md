@@ -2,10 +2,11 @@
 
 ## Long-rod run (2026-08-31)
 
-The latest server artifact is the long-duration rod benchmark:
+The latest server artifact is the long-duration rod benchmark with a diagonal
+wrist-camera mount for genuine two-camera overlap:
 
-- GIF: `/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_topdown_perfect_20260831.gif`
-- Metrics: `/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_topdown_perfect_20260831.json`
+- GIF: `/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_dual_camera_mount_20260831.gif`
+- Metrics: `/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_dual_camera_mount_20260831.json`
 
 The target is a horizontal rod with world-axis `+Y`, using a top-down FR3
 pinch.  Its radius is `0.024 m` and half-length is `0.12 m`.  The target is
@@ -19,21 +20,23 @@ support affinity is restored.
 |---|---:|
 | Grasp success | `True` |
 | Placement success | `True` |
-| Placement error | `0.05377 m` |
+| Placement error | `0.05139 m` |
 | Dynamic-obstacle contact steps | `0` |
 | Maximum dynamic-obstacle force | `0 N` |
-| Active-view accepted / rejected | `16 / 0` |
+| Active-view accepted / rejected | `17 / 0` |
 | Observation-driven safety holds | `3` |
 | Horizon replanning / plan switches | `125 / 0` |
 | Illegal target-contact steps | `0` |
+| Dual-camera visible steps | `24` |
 | Swept-volume collision / near-collision count | `0 / 0` |
 
 The dynamic obstacle follows a slow continuous leftward path.  The base RGB-D
-camera supplies the robust detection in this run, while the wrist stream
-remains available for local confirmation.  The reported dynamic geometric
-minimum is `0.0 m` because MuJoCo's distance query is conservative at a
-tangent/degenerate configuration; the runtime contact and force audits are
-the decisive safety checks and both remain zero.
+camera provides the desk-wide track, while the diagonally mounted wrist RGB-D
+camera detects the same red obstacle from `0.36 s`; both streams are visible
+simultaneously for `24` policy steps.  The reported dynamic geometric minimum
+is `0.0 m` because MuJoCo's distance query is conservative at a
+tangent/degenerate configuration; the runtime contact and force audits are the
+decisive safety checks and both remain zero.
 
 ## Baseline cylindrical run (historical)
 

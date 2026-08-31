@@ -703,6 +703,15 @@ def render_demo(
     camera.azimuth = 136.0
     camera.elevation = -18.0
     wrist_camera = WristRGBDCamera(env.model, "wrist_rgbd", width=320, height=240)
+    if rod_task:
+        # The baseline camera mount points straight down in the top-down rod
+        # grasp, so it cannot see the raised crossing obstacle.  Rotate only
+        # the sensor mount for this benchmark; the arm trajectory and grasp
+        # pose remain unchanged.  This diagonal forward/up view gives the
+        # wrist RGB-D stream a real chance to confirm the base-camera track.
+        wrist_camera_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_CAMERA, "wrist_rgbd")
+        env.model.cam_quat[wrist_camera_id] = np.array([0.9239, 0.3827, 0.0, 0.0], dtype=np.float64)
+        mujoco.mj_forward(env.model, env.data)
     base_camera = RGBDCamera(env.model, "base_rgbd", width=320, height=240)
     scene_estimator = WristSceneBeliefEstimator(env.model, "wrist_rgbd")
     view_scheduler = VelocityAwareViewScheduler()
@@ -962,10 +971,13 @@ def render_demo(
             env.data.qpos[env.qpos_adrs] = q_before_view_ik
             mujoco.mj_forward(env.model, env.data)
             if view_accepted:
-                # Keep active-view steering deliberately conservative: the
-                # camera must turn toward the obstacle without bending the
-                # collision-tested carry trajectory into a new unsafe branch.
-                q_ref = 0.65 * q_ref + 0.35 * q_view
+                # Execute the collision-gated null-space view target directly.
+                # Blending it with the nominal reference left the wrist axis
+                # more than 120 deg away from the obstacle, so the scheduler
+                # accepted a view action that was not actually visible.  The
+                # gate already verifies the full reorientation, while the IK
+                # keeps the hand position on the nominal carry corridor.
+                q_ref = q_view
                 view_action = "ACTIVE_OBSTACLE_VIEW"
                 active_view_accept_count += 1
                 last_active_view_time = t
