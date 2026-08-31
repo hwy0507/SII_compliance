@@ -25,6 +25,26 @@
 - `fr3_carry_pose_test16.json`：拆分高位预抓取和最终抓取后仍未解决目标倾倒；
 - 因此下一次必须重新运行最新 commit，不能把 test15/test16 当作最终性能结果。
 
+## 2026-09-01 基线复核
+
+服务器运行 `fr3_final_recheck_20260901.json` 的结果：
+
+```text
+grasp_success                  True
+placement_success              True
+placement_error_m              0.05968 m
+dynamic_obstacle_contact_steps 11
+max_dynamic_obstacle_force_n   263.80 N
+active_view_accept_count       7
+active_view_reject_count       0
+plan_switch_count              1
+replanning_count               93
+swept_volume collision_count   212
+swept_volume min_clearance_m   -0.02483 m
+```
+
+这次复核确认：抓取、放置和 wrist RGB-D active-view 链路均能运行；动态障碍确实在搬运阶段与机械臂发生接触；键盘静态 swept-volume 穿透仍未解决。尝试将最终预抓取点从 `target + [0, 0.22, 0]` 缩短到 `target + [0, 0.14, 0]` 后，出现单指接触和目标倾倒，已撤回该实验变更。当前应以稳定抓取基线为准，下一步需要增加不改变最终抓取姿态的绕行轨迹，并重新做全分辨率验证。
+
 ## 明天第一步
 
 在服务器执行：
