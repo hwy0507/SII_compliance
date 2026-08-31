@@ -54,6 +54,11 @@ reference while the receding-horizon supervisor rechecks alternative plans.
 This keeps active avoidance causally tied to an actual predicted collision
 risk and removes the previous post-event upward pull.
 
+Placement also has an explicit `SETTLE AT PLACE` stage. The arm now reaches
+the refined hand pose, holds it briefly, and only then opens the gripper. This
+prevents a GIF frame from showing the rod still suspended near the hand being
+mistaken for the final placement result.
+
 The latest server GIF is a 622-frame three-camera layout. The final run
 reported `grasp_success=True`, zero dynamic-obstacle contact steps and zero
 force, 17 policy steps with all three cameras seeing the obstacle, and an

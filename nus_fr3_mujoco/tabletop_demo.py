@@ -496,8 +496,9 @@ def _refine_place_and_build_segments(
         # Give the joint servo enough time to settle before the latch is
         # released; otherwise the object is evaluated while the hand is still
         # catching up to the refined placement pose.
-        DemoSegment(1.8 * scale, q_place, 0.0, "PLACE DESCEND"),
-        DemoSegment(1.0 * scale, q_place, 0.04, "RELEASE"),
+        DemoSegment(2.2 * scale, q_place, 0.0, "PLACE DESCEND"),
+        DemoSegment(0.8 * scale, q_place, 0.0, "SETTLE AT PLACE"),
+        DemoSegment(0.8 * scale, q_place, 0.04, "RELEASE"),
         DemoSegment(0.8 * scale, q_retract, 0.04, "RETRACT AFTER RELEASE"),
         DemoSegment(1.8 * scale, HOME, 0.04, "RETURN HOME"),
     ]
