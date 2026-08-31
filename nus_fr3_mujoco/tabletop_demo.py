@@ -1036,7 +1036,18 @@ def render_demo(
             selected_escape_height = None
             selected_q_escape = None
             selected_gate_report = None
-            escape_candidates = (0.14, 0.18, 0.22, 0.26, 0.30, 0.34)
+            # Start with very small offsets; larger values are only fallback
+            # options if the complete escape-and-recovery gate rejects them.
+            # Refine the search near the nominal carry height.  The previous
+            # lower bound (0.08 m) was collision-free, but still produced a
+            # visibly large upward excursion once the velocity servo tracked
+            # the candidate over 0.50 s.  Start at 3 cm and add 1 cm steps so
+            # the safety gate can select the smallest genuinely safe response;
+            # larger offsets remain available only as fallbacks.
+            escape_candidates = (
+                0.03, 0.04, 0.05, 0.06, 0.07, 0.08,
+                0.10, 0.12, 0.14, 0.18, 0.22, 0.26, 0.30,
+            )
             escape_candidate_records = []
             for escape_height in escape_candidates:
                 escape_position = live_hand_position + np.array([0.0, 0.0, escape_height], dtype=np.float64)

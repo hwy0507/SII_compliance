@@ -16,7 +16,7 @@ blocked carry horizon:
 | --- | ---: |
 | Two-finger grasp success | `True` |
 | Placement success | `True` |
-| Placement error | 0.0366 m |
+| Placement error | 0.06368 m |
 | Dynamic-obstacle contact steps | 0 |
 | Maximum dynamic-obstacle contact force | 0 N |
 | Receding-horizon checks | 118 |
@@ -25,22 +25,23 @@ blocked carry horizon:
 | Illegal target-contact steps | 0 |
 | Finite-state check | `True` |
 | Conditional obstacle lifts | 1 |
-| Three-camera visible steps | 22 |
+| Three-camera visible steps | 24 |
 
 The selected route uses three lateral approach candidates and preserves the
-validated Panda side-grasp orientation. Once `PLACE DESCEND` begins, the
+validated rod-task top-down pinch orientation. Once `PLACE DESCEND` begins, the
 place candidate is locked to prevent release-time oscillation. The complete
 metrics are stored on the server at
-`outputs/fr3_rod_active_avoidance_zero_contact_20260831.json`; the matching
+`outputs/fr3_rod_adaptive_fine_v7_20260831.json`; the matching
 589-frame GIF is next to it. The conditional lift record is explicitly tagged
-`trigger=rgbd_predicted_carry_blockage`.
+`trigger=rgbd_predicted_carry_blockage`. The fine-grained online search chose
+the first complete-task-safe vertical offset, `0.03 m`; a `0.02 m` trial had
+zero obstacle contact but failed the final placement audit, so it is not the
+published result.
 
 This is a deterministic simulation proof-of-concept, not the final planner.
-The offline swept-volume audit still reports static penetration near the
-keyboard (212 negative-clearance samples, minimum clearance -0.0248 m), even
-though the independent dynamic obstacle made zero contact. The next planning
-task is to add a static keyboard-avoidance waypoint or a continuous
-collision-constrained optimizer.
+The current static swept-volume audit reports zero collisions and zero
+near-collisions, while the independent dynamic-obstacle audit reports zero
+contact steps and zero measured force.
 
 ## Simulator decision
 
