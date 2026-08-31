@@ -17,13 +17,14 @@ offline swept-volume audit also reports no static-clutter penetration:
 | Metric | Latest result |
 | --- | ---: |
 | Grasp / placement | `True / True` |
-| Placement error | 0.05139 m |
+| Placement error | 0.06273 m |
 | Dynamic-obstacle contacts | 0 |
 | Maximum dynamic-obstacle force | 0 N |
-| Active-view accepted / rejected | `17 / 0` |
+| Active-view accepted / rejected | `14 / 0` |
 | Horizon replanning / plan switches | `125 / 0` |
-| Observation-driven safe holds | `3` |
+| Observation-driven safe holds | `1` |
 | Illegal target-contact steps | `0` |
+| Dual-camera visible steps | `23` |
 | Dual-camera visible steps | `24` |
 | Static swept-volume collisions | 0 |
 | Static near-collisions | 0 |
@@ -39,8 +40,8 @@ not be presented as a real-robot guarantee.
 The large GIF and JSON remain on the experiment server, as requested:
 
 ```text
-GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_dual_camera_mount_20260831.gif
-Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_dual_camera_mount_20260831.json
+GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_predictive_rise_20260831.gif
+Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_predictive_rise_20260831.json
 ```
 
 Run the same validation on the server with:
@@ -51,8 +52,8 @@ export MUJOCO_GL=egl
 export PYTHONPATH=/home/arm1/vmc_mujoco_runtime/nus_fr3_migration
 /home/arm1/vmc_mujoco_runtime/.venv/bin/python -m nus_fr3_mujoco.tabletop_demo \
   --model scenes/fr3_office_v36_rgbd_proxy.xml \
-  --output outputs/fr3_rod_dual_camera_mount_20260831.gif \
-  --metrics outputs/fr3_rod_dual_camera_mount_20260831.json \
+  --output outputs/fr3_rod_predictive_rise_20260831.gif \
+  --metrics outputs/fr3_rod_predictive_rise_20260831.json \
   --fps 6 --dynamic-obstacle --rod-task
 ```
 
@@ -67,26 +68,29 @@ latched, the free-body collision channel is disabled to prevent the broad hand
 mesh from producing a false palm penetration; desk support is restored after
 release.
 
-Final server run (`fr3_rod_dual_camera_mount_20260831`):
+Final server run (`fr3_rod_predictive_rise_20260831`):
 
 ```text
 grasp_success                       True
 placement_success                   True
-placement_error_m                   0.05139 m
+placement_error_m                   0.06273 m
 dynamic_obstacle_contact_steps      0
 max_dynamic_obstacle_force_n        0.0 N
-active_view_accept_count            17
+active_view_accept_count            14
 active_view_reject_count            0
-dynamic_safety_hold_count           3
+dynamic_safety_hold_count           1
 replanning_count / plan_switches    125 / 0
 illegal_target_contact_steps        0
+dual_camera_visible_steps           23
 dual_camera_visible_steps           24
 swept_volume_collision_count        0
 ```
 
 The red obstacle traverses a slow continuous leftward path during the lift and
-carry stages.  The fused RGB-D state triggers three short observation-driven
-holds, while the active-view gate accepts all 16 requested wrist reorientations.
+carry stages. The fused RGB-D state triggers one anticipatory observation-driven
+rise at `11.76 s`, while the active-view gate accepts all requested wrist
+reorientations. This response starts before the obstacle reaches the hand
+corridor; it no longer freezes first and then snaps upward after the crossing.
 The fixed base camera provides the desk-wide track and the wrist camera now
 confirms the same obstacle: wrist first detection is `0.36 s`, fused first
 detection is `0.00 s`, and both streams are simultaneously visible for `24`

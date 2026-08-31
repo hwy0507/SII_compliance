@@ -749,6 +749,7 @@ def render_demo(
     hand_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "fr3_hand")
     q_grasp_ref = next(segment.q.copy() for segment in segments if segment.phase == "DESCEND")
     q_pregrasp_ref = next(segment.q.copy() for segment in segments if segment.phase == "PRE-GRASP")
+    q_lift_ref = next(segment.q.copy() for segment in segments if segment.phase == "LIFT")
     last_active_view_time = -np.inf
     active_view_accept_count = 0
     active_view_reject_count = 0
@@ -855,7 +856,13 @@ def render_demo(
             perceived_state.visible
             and perceived_state.confidence >= 0.60
             and phase in {"LIFT", "CARRY AROUND CLUTTER"}
-            and perceived_obstacle_distance <= 0.55
+            # Respond once while the obstacle is still approaching.  The
+            # previous 0.55 m gate waited until the box was already beside the
+            # hand, which made the later rise look like a post-event fling.
+            # One anticipatory response avoids repeated holds disturbing the
+            # subsequent placement trajectory.
+            and dynamic_hold_count == 0
+            and perceived_obstacle_distance <= 0.80
             and (
                 float(np.linalg.norm(perceived_state.velocity_world)) >= 0.08
                 or wrist_state.visible
@@ -877,7 +884,12 @@ def render_demo(
                 }
             )
         if t < dynamic_hold_until:
-            q_ref = env.q.copy()
+            # Use the safety window to enter the already collision-checked
+            # lift pose smoothly instead of freezing and then snapping upward
+            # after the obstacle has gone by.
+            hold_progress = float(np.clip((t - (dynamic_hold_until - 0.48)) / 0.48, 0.0, 1.0))
+            smooth = hold_progress * hold_progress * (3.0 - 2.0 * hold_progress)
+            q_ref = (1.0 - smooth) * env.q + smooth * q_lift_ref
             phase = "DYNAMIC SAFE HOLD"
         if phase == "CLOSE GRIPPER" and last_phase != phase:
             close_phase_start_time = t

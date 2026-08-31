@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FR3 长杆预测式主动避障</title>
+  <style>
+    body{margin:0;padding:28px;background:#111827;color:#e5e7eb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    main{max-width:1440px;margin:auto} h1{margin:0 0 8px}.sub{color:#9ca3af;margin-bottom:20px}
+    .viewer{background:#030712;border:1px solid #374151;border-radius:12px;padding:12px}
+    img{display:block;width:100%;height:auto;border-radius:8px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:18px}
+    .metric{background:#1f2937;border-radius:8px;padding:12px}.metric b{display:block;color:#93c5fd;font-size:13px;margin-bottom:5px}.metric span{font-size:20px;font-weight:600}
+    .note{margin-top:18px;color:#cbd5e1;line-height:1.6}code{color:#bfdbfe}
+  </style>
+</head>
+<body><main>
+  <h1>FR3 长杆抓取 · 双相机主动感知 · 预测式避障</h1>
+  <div class="sub">服务器实验时间：2026-08-31　|　障碍物通过前开始平滑抬升</div>
+  <div class="viewer"><img src="fr3_rod_predictive_rise_20260831.gif" alt="FR3 长杆预测式主动避障 GIF"></div>
+  <div class="grid">
+    <div class="metric"><b>抓取 / 放置</b><span>True / True</span></div>
+    <div class="metric"><b>动态障碍物接触</b><span>0 steps</span></div>
+    <div class="metric"><b>最大动态接触力</b><span>0 N</span></div>
+    <div class="metric"><b>主动视角接受 / 拒绝</b><span>14 / 0</span></div>
+    <div class="metric"><b>双相机同时可见</b><span>23 steps</span></div>
+    <div class="metric"><b>预测式安全响应</b><span>11.76 s</span></div>
+    <div class="metric"><b>静态扫掠碰撞</b><span>0</span></div>
+    <div class="metric"><b>非法目标接触</b><span>0 steps</span></div>
+  </div>
+  <div class="note">固定桌面相机在 <code>0.00 s</code> 发现障碍物，腕部相机在
+  <code>0.36 s</code> 确认。融合速度预测在 <code>11.76 s</code> 触发一次平滑抬升，
+  此时障碍物仍在接近，而不是已经通过后再补救。完整 GIF 原文件保留在服务器。</div>
+</main></body></html>
