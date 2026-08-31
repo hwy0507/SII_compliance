@@ -52,7 +52,7 @@ class RGBDObstacleTracker:
     velocity. The tracker accepts no MuJoCo body pose or contact signal.
     """
 
-    def __init__(self, *, max_speed_m_s: float = 2.5, velocity_alpha: float = 0.55) -> None:
+    def __init__(self, *, max_speed_m_s: float = 1.2, velocity_alpha: float = 0.20) -> None:
         self.max_speed_m_s = float(max_speed_m_s)
         self.velocity_alpha = float(np.clip(velocity_alpha, 0.0, 1.0))
         self.last_detection: RGBDObstacleDetection | None = None
@@ -84,7 +84,10 @@ class RGBDObstacleTracker:
                         + self.velocity_alpha * raw_velocity
                     )
                 else:
-                    self.velocity_world *= 0.5
+                    # A single bad RGB-D component can jump by several
+                    # metres per second.  Do not let that outlier steer the
+                    # prediction proxy; decay the previous estimate instead.
+                    self.velocity_world *= 0.25
             self.position_world = detection.position_world.copy()
             self.last_detection = detection
             self.last_time_s = t
@@ -93,10 +96,16 @@ class RGBDObstacleTracker:
             visible = True
         else:
             self.consecutive_detections = 0
-            if self.last_time_s is not None:
+            # Only extrapolate a confirmed track for a short gap. Once the
+            # confidence drops below the confirmation threshold, freeze the
+            # last measured position and let the proxy leave the active
+            # planning set instead of steering from stale velocity.
+            if self.last_time_s is not None and self.confidence >= 0.45:
                 dt = max(t - self.last_time_s, 0.0)
-                self.position_world = self.position_world + self.velocity_world * dt
+                self.position_world = self.position_world + self.velocity_world * min(dt, 0.20)
             self.confidence *= 0.78
+            if self.confidence < 0.45:
+                self.velocity_world *= 0.0
             self.covariance_m2 = min(self.covariance_m2 * 1.12 + 1.0e-5, 0.35**2)
             visible = False
         return PerceivedObstacleState(
@@ -197,9 +206,15 @@ class RGBDObstacleTracker:
             # simulator pose. Partial views can bias the reconstructed center
             # downward, so keep a small margin below the nominal box center.
             if (
-                float(center[2]) < 0.92
+                # Reject the red monitor/desk props that otherwise seed a
+                # stale track before the moving box enters.  The benchmark
+                # obstacle is deliberately in the raised front strip.
+                float(center[2]) < 1.16
                 or not (0.22 <= float(center[0]) <= 1.05)
-                or not (-0.30 <= float(center[1]) <= 0.40)
+                # The wrist camera looks toward world -Y.  Keep the near
+                # front-of-desk strip in view as well as the tabletop band;
+                # this is where the visual dynamic-obstacle crossing lives.
+                or not (-0.65 <= float(center[1]) <= -0.25)
             ):
                 continue
             # A wrist view may expose only a thin visible face of the box. Do

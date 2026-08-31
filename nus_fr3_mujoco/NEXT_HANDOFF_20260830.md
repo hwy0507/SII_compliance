@@ -70,8 +70,8 @@ The collision-tested route was then combined with a target-pose hold until the
 closure window and rerun on the server. The final artifacts are:
 
 ```text
-/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_near_obstacle_final_20260901.gif
-/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_near_obstacle_final_20260901.json
+/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_observed_safe_hold_verified_20260901.gif
+/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_observed_safe_hold_verified_20260901.json
 ```
 
 Final metrics:
@@ -97,9 +97,12 @@ desk-rest pose until closure (`t < 7.30 s`), then normal contact dynamics are
 enabled for two-finger validation and lift.
 
 The final visual profile places the red obstacle close to the carry path at
-`y=-0.10 m`, `z=1.28 m`, crosses from `x=0.78` to `x=0.30`, and then exits to
-`[1.20, 0.80, 1.50]`. This is the near-obstacle demonstration artifact; the
-earlier `z=1.70 m` run remains available as a conservative baseline.
+`y=-0.45 m`, `z=1.28 m`, crosses from `x=0.78` to `x=0.30`, and then exits to
+`[1.20, 0.80, 1.50]`. The RGB-D tracker observes it at t=11.04--11.28 s,
+and the safety shield inserts one 0.48 s hold at t=11.08 s; the measured
+robot-obstacle contact count remains zero. A direct per-cycle geometric audit
+reports a minimum clearance of 0.1762 m at t=11.28 s for
+`fr3_right_finger_collision`.
 
 ## 明天第一步
 

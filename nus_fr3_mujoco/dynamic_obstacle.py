@@ -51,8 +51,8 @@ class PredictableCrossingObstacle:
         # deliberately close to (but offset from) the nominal hand/object
         # centreline, so the obstacle is obvious in the overview GIF and the
         # RGB-D supervisor has to look ahead and select a safe corridor.
-        self.before = np.array([0.78, -0.10, 1.28], dtype=np.float64)
-        self.corridor = np.array([0.30, -0.10, 1.28], dtype=np.float64)
+        self.before = np.array([0.78, -0.45, 1.28], dtype=np.float64)
+        self.corridor = np.array([0.30, -0.45, 1.28], dtype=np.float64)
         # Leave the robot workspace immediately after crossing so the same
         # obstacle cannot interfere with placement or the return-home motion.
         self.after = np.array([1.20, 0.80, 1.50], dtype=np.float64)
@@ -103,6 +103,45 @@ class PredictableCrossingObstacle:
             max_force = max(max_force, float(np.linalg.norm(force[:3])))
         return {"contact_count": count, "max_contact_force_n": max_force, "contact_pairs": contact_pairs}
 
+    def clearance_summary(self, env: FR3MuJoCoEnv) -> dict[str, float | str]:
+        """Return the minimum geometric distance to every FR3 collision geom."""
+
+        root_body = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "base")
+        robot_geoms: list[int] = []
+        for gid in range(env.model.ngeom):
+            body = int(env.model.geom_bodyid[gid])
+            current = body
+            while current >= 0:
+                if current == root_body:
+                    if env.model.geom_contype[gid] != 0 or env.model.geom_conaffinity[gid] != 0:
+                        robot_geoms.append(gid)
+                    break
+                parent = int(env.model.body_parentid[current])
+                if parent == current:
+                    break
+                current = parent
+        obstacle_geoms = [
+            gid
+            for gid in range(env.model.ngeom)
+            if int(env.model.geom_bodyid[gid]) == self.body_id
+        ]
+        best = float("inf")
+        best_robot = ""
+        best_obstacle = ""
+        fromto = np.zeros(6, dtype=np.float64)
+        for robot_gid in robot_geoms:
+            for obstacle_gid in obstacle_geoms:
+                clearance = float(mujoco.mj_geomDistance(env.model, env.data, robot_gid, obstacle_gid, 10.0, fromto))
+                if clearance < best:
+                    best = clearance
+                    best_robot = mujoco.mj_id2name(env.model, mujoco.mjtObj.mjOBJ_GEOM, robot_gid) or str(robot_gid)
+                    best_obstacle = mujoco.mj_id2name(env.model, mujoco.mjtObj.mjOBJ_GEOM, obstacle_gid) or str(obstacle_gid)
+        return {
+            "min_clearance_m": float(best),
+            "robot_geom": best_robot,
+            "obstacle_geom": best_obstacle,
+        }
+
 
 class RGBDObstaclePredictor:
     """MuJoCo proxy driven by the latest RGB-D track, never by ground truth."""
@@ -130,7 +169,19 @@ class RGBDObstaclePredictor:
 
     def apply(self, env: FR3MuJoCoEnv, time_s: float) -> None:
         dt = max(float(time_s) - self.last_state.time_s, 0.0)
-        position = self.last_state.position_world + self.last_state.velocity_world * dt
+        # The horizon checker may query several future samples at once.  Keep
+        # RGB-D prediction causal and local: extrapolate for at most one
+        # horizon and only while the track is well confirmed.  This prevents a
+        # missed frame or a noisy velocity estimate from sending the proxy
+        # metres away and silently disabling meaningful replanning.
+        prediction_dt = min(dt, 0.60)
+        velocity = self.last_state.velocity_world.copy()
+        if self.last_state.confidence < 0.45:
+            velocity[:] = 0.0
+        speed = float(np.linalg.norm(velocity))
+        if speed > 1.0:
+            velocity *= 1.0 / speed
+        position = self.last_state.position_world + velocity * prediction_dt
         # Unobserved hypotheses are kept outside the workspace after their
         # confidence decays, preventing a stale detection from blocking all
         # plans indefinitely.

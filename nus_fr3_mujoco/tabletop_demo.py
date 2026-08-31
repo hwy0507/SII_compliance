@@ -645,6 +645,10 @@ def render_demo(
     max_dynamic_obstacle_force = 0.0
     dynamic_obstacle_contact_steps = 0
     dynamic_obstacle_contact_pairs: list[dict[str, object]] = []
+    dynamic_obstacle_min_clearance_m = float("inf")
+    dynamic_obstacle_min_clearance_time_s = 0.0
+    dynamic_obstacle_min_clearance_robot_geom = ""
+    dynamic_obstacle_min_clearance_obstacle_geom = ""
     release_target_position = None
     last_horizon_clearance_m = sweep_report.min_clearance_m
     last_horizon_collision_count = sweep_report.collision_count
@@ -665,6 +669,9 @@ def render_demo(
     grasp_failure_time_s: float | None = None
     grasp_ever_engaged = False
     close_phase_start_time = -np.inf
+    dynamic_hold_until = -np.inf
+    dynamic_hold_count = 0
+    dynamic_hold_records: list[dict[str, object]] = []
     for step in range(total_steps + 1):
         t = min(step * env.policy_dt_s, total_time)
         # The target is a desk item, not a free projectile.  Hold its initial
@@ -711,6 +718,40 @@ def render_demo(
             last_horizon_clearance_m = horizon_decision.report.min_clearance_m
             last_horizon_collision_count = horizon_decision.report.collision_count
         q_ref, gripper, phase = supervisor.reference(env.q, t)
+        # Observation-driven safety shield: when the wrist RGB-D tracker has
+        # a high-confidence, visible obstacle in the carry corridor, hold the
+        # current end-effector reference long enough for the crossing to pass.
+        # This is deliberately based on perceived state only; it never reads
+        # the hidden MuJoCo obstacle pose or contact state.  The normal
+        # receding-horizon planner continues checking in parallel and resumes
+        # the selected route after the short hold window.
+        live_hand_position = env.data.xpos[hand_id].copy()
+        perceived_obstacle_distance = float(
+            np.linalg.norm(perceived_state.position_world - live_hand_position)
+        )
+        obstacle_requires_hold = bool(
+            perceived_state.visible
+            and perceived_state.confidence >= 0.60
+            and phase in {"LIFT", "CARRY AROUND CLUTTER"}
+            and perceived_obstacle_distance <= 0.55
+        )
+        if obstacle_requires_hold and t >= dynamic_hold_until - 1.0e-9:
+            dynamic_hold_until = t + 0.48
+            dynamic_hold_count += 1
+            dynamic_hold_records.append(
+                {
+                    "time_s": float(t),
+                    "phase": phase,
+                    "obstacle_position_world": perceived_state.position_world.tolist(),
+                    "obstacle_velocity_world": perceived_state.velocity_world.tolist(),
+                    "tracking_confidence": float(perceived_state.confidence),
+                    "distance_to_hand_m": perceived_obstacle_distance,
+                    "hold_duration_s": 0.48,
+                }
+            )
+        if t < dynamic_hold_until:
+            q_ref = env.q.copy()
+            phase = "DYNAMIC SAFE HOLD"
         if phase == "CLOSE GRIPPER" and last_phase != phase:
             close_phase_start_time = t
         if grasp_failed:
@@ -858,6 +899,12 @@ def render_demo(
         state = env.step(command.torque, q_cmd=command.q_cmd, qdot_cmd=command.qdot_cmd)
         if obstacle is not None:
             obstacle_state = obstacle.contact_summary(env)
+            clearance_state = obstacle.clearance_summary(env)
+            if float(clearance_state["min_clearance_m"]) < dynamic_obstacle_min_clearance_m:
+                dynamic_obstacle_min_clearance_m = float(clearance_state["min_clearance_m"])
+                dynamic_obstacle_min_clearance_time_s = float(t)
+                dynamic_obstacle_min_clearance_robot_geom = str(clearance_state["robot_geom"])
+                dynamic_obstacle_min_clearance_obstacle_geom = str(clearance_state["obstacle_geom"])
             max_dynamic_obstacle_force = max(
                 max_dynamic_obstacle_force,
                 float(obstacle_state["max_contact_force_n"]),
@@ -990,6 +1037,10 @@ def render_demo(
         "dynamic_obstacle_contact_steps": int(dynamic_obstacle_contact_steps),
         "dynamic_obstacle_contact_pairs": dynamic_obstacle_contact_pairs,
         "max_dynamic_obstacle_force_n": float(max_dynamic_obstacle_force),
+        "dynamic_obstacle_min_clearance_m": float(dynamic_obstacle_min_clearance_m),
+        "dynamic_obstacle_min_clearance_time_s": float(dynamic_obstacle_min_clearance_time_s),
+        "dynamic_obstacle_min_clearance_robot_geom": dynamic_obstacle_min_clearance_robot_geom,
+        "dynamic_obstacle_min_clearance_obstacle_geom": dynamic_obstacle_min_clearance_obstacle_geom,
         "placement_reference_position": placement_reference.tolist(),
         "placement_error_m": placement_error,
         "placement_success": placement_success,
@@ -1006,6 +1057,8 @@ def render_demo(
         "active_view_records": active_view_records,
         "active_view_accept_count": int(active_view_accept_count),
         "active_view_reject_count": int(active_view_reject_count),
+        "dynamic_safety_hold_count": int(dynamic_hold_count),
+        "dynamic_safety_hold_records": dynamic_hold_records,
         "perception_contract": {
             "obstacle_pose_available_to_nominal": False,
             "obstacle_velocity_available_to_nominal": False,

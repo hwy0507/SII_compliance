@@ -179,7 +179,7 @@ class VelocityAwareViewScheduler:
                 float(dynamic_score),
                 speed,
                 uncertainty,
-                bool(dynamic_score > 0.85),
+                bool(dynamic_score > 0.55),
             )
         # Before an obstacle is confirmed, actively scan the next fast-motion
         # corridor. This is the fixed-base analogue of NUS gaze actions: the
