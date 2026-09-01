@@ -276,12 +276,12 @@ class RecedingHorizonSupervisor:
             # Replanning may change the approach corridor, but it must not
             # silently change the task's destination.  The previous logic
             # ranked all approach/place combinations together; a collision
-            # warning near the base could therefore switch from
-            # ``computer_front_center`` to ``computer_front_left``.  The
-            # arm would still move safely, but the final placement audit was
-            # compared against a different target than the one selected at
-            # task start.  Keep the place suffix fixed for the whole episode
-            # and only vary the pre-grasp approach branch.
+            # warning near the base could therefore switch between different
+            # placement suffixes. The arm would still move safely, but the
+            # final placement audit would be compared against a different
+            # target than the one selected at task start. Keep the place
+            # suffix fixed for the whole episode and only vary the pre-grasp
+            # approach branch.
             active_place = active.name.split("+", 1)[1] if "+" in active.name else None
             if active_place is None:
                 return list(self.candidates)

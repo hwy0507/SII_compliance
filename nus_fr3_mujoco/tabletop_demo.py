@@ -617,10 +617,12 @@ def build_segments(
     # new candidates still move the rod 10--14 cm to a distinct desk region.
     if placement_target is not None:
         place_center = np.asarray(placement_target, dtype=np.float64).copy()
+        # The designated task endpoint is singular.  Alternative approach
+        # corridors remain available before grasp, but replanning must never
+        # turn a request to place beside a scene landmark into a different
+        # final destination.
         place_candidates = {
-            "computer_front_center": place_center,
-            "computer_front_right": place_center + np.array([0.08, 0.0, 0.0]),
-            "computer_front_left": place_center + np.array([-0.08, 0.0, 0.0]),
+            "pen_holder_side": place_center,
         }
     else:
         place_candidates = {
@@ -921,10 +923,24 @@ def render_demo(
             f"position={rod_belief.position_world.tolist()} axis={rod_belief.axis_world.tolist()} "
             f"confidence={rod_belief.confidence:.3f} cameras={rod_belief.visible_camera_count}"
         )
-    placement_target = (
-        np.array([0.62, 0.24, float(target_ground_truth[2])], dtype=np.float64)
-        if rod_task else None
-    )
+    placement_target = None
+    placement_landmark_position: np.ndarray | None = None
+    if rod_task:
+        # Place the rod beside the blue pen holder selected by the user, not
+        # in the generic area in front of the monitor.  Anchor the waypoint
+        # to the scene body's actual pose so XML layout changes cannot leave
+        # an unexplained hard-coded world coordinate behind.  The near-side
+        # diagonal offset is the closest collision-free location on the
+        # continuous top-down-pinch IK branch; a direct point immediately
+        # left of the holder lies outside that branch's reachable workspace.
+        pen_holder_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "pen_holder")
+        if pen_holder_id < 0:
+            raise RuntimeError("rod task requires the blue pen_holder landmark")
+        placement_landmark_position = env.data.xpos[pen_holder_id].copy()
+        placement_target = placement_landmark_position + np.array(
+            [-0.18, 0.20, float(target_ground_truth[2] - placement_landmark_position[2])],
+            dtype=np.float64,
+        )
     # Lower proportional gain and stronger damping remove the small waypoint
     # chatter visible just before closure without slowing the coarse plan.
     servo = FR3NominalVelocityServo(env, kp=(22.0,) * 7, kv=(10.0,) * 7)
@@ -2219,6 +2235,10 @@ def render_demo(
         "placement_error_m": placement_error,
         "placement_success": placement_success,
         "placement_goal_world": placement_goal_world.tolist(),
+        "placement_landmark": "pen_holder" if rod_task else None,
+        "placement_landmark_position": (
+            None if placement_landmark_position is None else placement_landmark_position.tolist()
+        ),
         "place_correction_applied": bool(place_correction_applied),
         "place_correction": place_correction_record,
         "grasp_success": bool(grasp_ever_engaged),
