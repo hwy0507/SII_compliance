@@ -21,16 +21,17 @@ candidate offsets rather than fixed in advance:
 | Metric | Latest result |
 | --- | ---: |
 | Grasp / placement | `True / True` |
-| Placement error | 0.01601 m |
+| Placement error | 0.00267 m |
 | Dynamic-obstacle contacts | 0 |
 | Maximum dynamic-obstacle force | 0 N |
 | Active-base view | fixed mount, changing pan/tilt |
-| Horizon replanning / plan switches | `118 / 0` |
+| Horizon replanning / plan switches | `118 / 4` |
 | Observation-driven safe holds | `1` |
 | Illegal target-contact steps | `0` |
-| Three-camera visible steps | `30` |
-| Nominal carry maximum hand height | `0.930 m` |
-| Selected avoidance | `0.082 m` lateral; `-0.0005 m` vertical |
+| Three-camera visible steps | `23` |
+| Nominal carry maximum hand height | `0.916 m` |
+| Selected avoidance | `0.117 m` lateral; `-0.0006 m` vertical |
+| Prediction-proxy minimum positive clearance | `0.0287 m` |
 | Static swept-volume collisions | 0 |
 | Static near-collisions | 0 |
 | Minimum swept-volume clearance | `0.000 m` |
@@ -89,13 +90,13 @@ the obstacle, and one RGB-D-triggered adaptive avoidance action. Placement uses 
 compliance envelope and a tighter vertical check; the measured release error
 was 0.01601 m.
 
-### Latest server artifact
+### Latest server artifact (v17, 2026-09-01)
 
 The large GIF and JSON remain on the experiment server, as requested:
 
 ```text
-GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_low_carry_minimal_lateral_v10_20260831.gif
-Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_low_carry_minimal_lateral_v10_20260831.json
+GIF:     /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_balanced_clearance_v17_20260901.gif
+Metrics: /home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/fr3_rod_balanced_clearance_v17_20260901.json
 ```
 
 Run the same validation on the server with:
@@ -106,8 +107,8 @@ export MUJOCO_GL=osmesa
 export PYTHONPATH=/home/arm1/vmc_mujoco_runtime/nus_fr3_migration
 /home/arm1/vmc_mujoco_runtime/.venv/bin/python -m nus_fr3_mujoco.tabletop_demo \
   --model nus_fr3_mujoco/fr3_office_v36_rgbd_proxy.xml \
-  --output outputs/fr3_rod_low_carry_minimal_lateral_v10_20260831.gif \
-  --metrics outputs/fr3_rod_low_carry_minimal_lateral_v10_20260831.json \
+  --output outputs/fr3_rod_balanced_clearance_v17_20260901.gif \
+  --metrics outputs/fr3_rod_balanced_clearance_v17_20260901.json \
   --fps 6 --dynamic-obstacle --rod-task
 ```
 
@@ -122,35 +123,37 @@ latched, the free-body collision channel is disabled to prevent the broad hand
 mesh from producing a false palm penetration; desk support is restored after
 release.
 
-Final server run (`fr3_rod_low_carry_minimal_lateral_v10_20260831`):
+Final server run (`fr3_rod_balanced_clearance_v17_20260901`):
 
 ```text
 grasp_success                       True
 placement_success                   True
-placement_error_m                   0.01601 m
+placement_error_m                   0.00267 m
 dynamic_obstacle_contact_steps      0
 max_dynamic_obstacle_force_n        0.0 N
 active_view_accept_count            0
 active_view_reject_count            0
 dynamic_safety_hold_count           1
-replanning_count / plan_switches    118 / 0
+replanning_count / plan_switches    118 / 4
 illegal_target_contact_steps        0
-triple_camera_visible_steps         30
-max_nominal_carry_hand_z_m          0.92967 m
-selected_avoidance_displacement_m   0.08232 m lateral
+triple_camera_visible_steps         23
+max_nominal_carry_hand_z_m          0.91594 m
+selected_avoidance_displacement_m   0.11687 m lateral
+gate_proxy_min_clearance_m           0.02868 m
 swept_volume_collision_count        0
 ```
 
 The red obstacle enters the RGB-D workspace before the carry midpoint and
 traverses the carry strip leftward. The fused RGB-D state triggers one
 anticipatory, collision-gated action at `12.20 s`; the online search selects a
-minimum safe lateral offset of `0.082 m`, then returns to carry at `13.44 s`.
+minimum safe lateral offset of `0.117 m`, then returns to carry at `13.44 s`.
 Active-base first detection is `11.44 s`, fused first detection is `11.28 s`,
 and all three cameras overlap for `30` policy steps. The
 rod-task camera mount is rotated diagonally so the top-down grasp pose does not
 point the sensor straight into the desk.
-`dynamic_obstacle_min_clearance_m=0.0` is a conservative tangent/degenerate-distance
-report; the authoritative contact audit remains zero contacts and zero measured force.
+The aggregate `dynamic_obstacle_min_clearance_m` field can be `0.0` because MuJoCo's distance query returns a degenerate zero for some non-contact scene pairs.
+The authoritative dynamic-obstacle audit is the contact pair/force record, and the
+online proxy-specific gate additionally requires a strictly positive clearance margin.
 
 The selected rod route is `approach_left+place_left`. Its key Cartesian
 waypoints are:

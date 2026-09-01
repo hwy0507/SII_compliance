@@ -4,7 +4,7 @@ This directory defines a clean fixed-base FR3 benchmark inspired by the
 closed-loop mechanism of the NUS `Visibility-Awared-Mobile-Grasping` project.
 It is not intended to be a line-by-line port of the Fetch/ManiSkill code.
 
-## Latest validated result: conditional active avoidance (2026-08-31)
+## Latest validated result: buffered conditional active avoidance (2026-09-01)
 
 The current implementation has been re-run on the MuJoCo office tabletop
 scene with fixed base RGB-D, root-mounted active-base RGB-D, wrist RGB-D, a
@@ -16,29 +16,29 @@ blocked carry horizon:
 | --- | ---: |
 | Two-finger grasp success | `True` |
 | Placement success | `True` |
-| Placement error | 0.01601 m |
+| Placement error | 0.00267 m |
 | Dynamic-obstacle contact steps | 0 |
 | Maximum dynamic-obstacle contact force | 0 N |
 | Receding-horizon checks | 118 |
-| Plan switches | 0 |
+| Plan switches | 4 |
 | Active-view accepted / rejected | 0 / 0 |
 | Illegal target-contact steps | 0 |
 | Finite-state check | `True` |
 | Conditional obstacle avoidance actions | 1 |
-| Three-camera visible steps | 30 |
-| Nominal carry maximum hand height | 0.92967 m |
-| Selected avoidance | 0.08232 m lateral |
+| Three-camera visible steps | 23 |
+| Nominal carry maximum hand height | 0.91594 m |
+| Selected avoidance | 0.11687 m lateral |
 
 The selected route uses three lateral approach candidates and preserves the
 validated rod-task top-down pinch orientation. Once `PLACE DESCEND` begins, the
 place candidate is locked to prevent release-time oscillation. The complete
 metrics are stored on the server at
-`outputs/fr3_rod_low_carry_minimal_lateral_v10_20260831.json`; the matching
+`outputs/fr3_rod_balanced_clearance_v17_20260901.json`; the matching
 589-frame GIF is next to it. The conditional action record is explicitly tagged
 `trigger=rgbd_predicted_carry_blockage`. The online search compares hold,
 lateral, lower, away, and raise candidates in ascending displacement order.
-It selected `0.08232 m` laterally with a vertical component of only
-`-0.00052 m`; the final dynamic-contact audit remained `0 steps / 0 N`.
+It selected `0.11687 m` laterally with a vertical component of only
+`-0.00060 m`; the final dynamic-contact audit remained `0 steps / 0 N`.
 
 Earlier GIFs retained a conspicuous upright pose because carry IK was solved
 from an unused high `q_lift` seed. Although the `LIFT` execution segment had
@@ -195,3 +195,8 @@ front area of the desk (`y=-0.30 m`) and raised the dynamic crossing profile to
 keyboard collision count from 212 to 58 while reducing dynamic-obstacle robot
 contacts to zero. The remaining 58 static samples are concentrated in the
 original pre-grasp transition and still require a geometry-preserving bypass.
+
+
+## Buffered safety-gate validation (v17)
+
+The dynamic-obstacle execution checker now rejects zero-distance proxy or obstacle-boundary candidates. The prediction proxy is inflated by 0.030 m and the selected escape must keep an additional 0.020 m positive proxy clearance. In the 2026-09-01 server run, the RGB-D prediction triggered one `CONDITIONAL_OBSTACLE_AVOIDANCE`, selected a 0.11687 m lateral offset, and retained 0.02868 m proxy clearance; the independent dynamic contact audit remained 0 steps / 0 N.

@@ -48,11 +48,15 @@ class FR3SweptVolumeChecker:
         excluded_obstacle_geoms: Iterable[str] = ("fr3_mount_plate",),
         safety_margin_m: float = 0.015,
         obstacle_state_fn: Callable[[FR3MuJoCoEnv, float], None] | None = None,
+        strict_zero_clearance: bool = False,
+        included_obstacle_geoms: Iterable[str] | None = None,
     ) -> None:
         self.env = env
         self.model = env.model
         self.safety_margin_m = float(safety_margin_m)
         self.obstacle_state_fn = obstacle_state_fn
+        self.strict_zero_clearance = bool(strict_zero_clearance)
+        included = None if included_obstacle_geoms is None else set(included_obstacle_geoms)
         if self.safety_margin_m < 0.0:
             raise ValueError("safety_margin_m must be non-negative")
         root_body = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, robot_root_body)
@@ -72,6 +76,7 @@ class FR3SweptVolumeChecker:
             if not self._is_descendant(int(self.model.geom_bodyid[gid]), int(root_body))
             and self._body_name(gid) not in excluded
             and self._geom_name(gid) not in excluded_geoms
+            and (included is None or self._geom_name(gid) in included)
             and (self.model.geom_contype[gid] != 0 or self.model.geom_conaffinity[gid] != 0)
         )
         if not self.robot_geom_ids:
@@ -136,10 +141,25 @@ class FR3SweptVolumeChecker:
                             min_robot = self._geom_name(robot_gid)
                             min_obstacle = self._geom_name(obstacle_gid)
                         # MuJoCo reports exactly zero for touching/degenerate
-                        # distance queries. Treat only negative distance as
-                        # penetration, and count near-clearance only when a
-                        # positive separation is available.
-                        if clearance < -1.0e-8:
+                        # distance queries.  For the prediction proxy a zero
+                        # gap is not acceptable for an execution candidate:
+                        # even if the simulator does not emit a contact at
+                        # that sample, the rendered trajectory is visually
+                        # tangent and time discretization can turn it into a
+                        # collision.  The proxy-specific strict-zero switch
+                        # below turns that boundary case into a hard
+                        # collision; ordinary scene geoms retain the legacy
+                        # near-clearance semantics.
+                        obstacle_name = self._geom_name(obstacle_gid)
+                        proxy_zero_contact = bool(
+                            self.strict_zero_clearance
+                            and clearance <= 1.0e-6
+                            and obstacle_name in {
+                                "obstacle_prediction_proxy_geom",
+                                "dynamic_obstacle_geom",
+                            }
+                        )
+                        if clearance < -1.0e-8 or proxy_zero_contact:
                             collision_count += 1
                             if len(events) < max_events:
                                 events.append(

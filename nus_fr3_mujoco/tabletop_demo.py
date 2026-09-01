@@ -28,6 +28,13 @@ from .wrist_camera import RGBDCamera, WristRGBDCamera, VelocityAwareViewSchedule
 
 HOME = np.array([0.0, -0.785, 0.0, -2.356, 0.0, 1.571, 0.785], dtype=np.float64)
 GRASP_CLOSURE_M = 0.017
+# The prediction proxy is intentionally inflated so the visual demo preserves
+# a real gap instead of accepting a zero-distance tangent path.
+PERCEPTION_SAFETY_BUFFER_M = 0.030
+# The proxy is already inflated by 3 cm.  Require another 2 cm of positive
+# proxy clearance in candidate gating, giving the rendered red obstacle a
+# visible gap of roughly 5 cm while avoiding unnecessarily large detours.
+PROXY_EXECUTION_MARGIN_M = 0.020
 
 
 @dataclass(frozen=True)
@@ -698,6 +705,12 @@ def render_demo(
     rod_task: bool = False,
 ) -> None:
     env = FR3MuJoCoEnv(model_path, physics_dt_s=0.002, policy_dt_s=0.040, ee_body_name="fr3_link7")
+    if dynamic_obstacle:
+        proxy_geom_id = mujoco.mj_name2id(
+            env.model, mujoco.mjtObj.mjOBJ_GEOM, "obstacle_prediction_proxy_geom"
+        )
+        if proxy_geom_id >= 0:
+            env.model.geom_size[proxy_geom_id, :3] += PERCEPTION_SAFETY_BUFFER_M
     if rod_task:
         # Turn the desk cylinder into a longer upright rod while keeping the
         # same collision/material channels and freejoint semantics.
@@ -776,12 +789,27 @@ def render_demo(
     # from the actual HOME state after the offline checks are complete.
     state = env.reset(HOME)
     execution_checker = sweep_checker
+    proxy_execution_checker = None
     if dynamic_obstacle:
         execution_checker = FR3SweptVolumeChecker(
             env,
             safety_margin_m=0.015,
             obstacle_state_fn=perception_predictor.apply,
             excluded_obstacle_bodies=("target_object", "dynamic_obstacle"),
+            strict_zero_clearance=True,
+        )
+        # Keep a focused audit for the RGB-D prediction proxy.  The full
+        # scene checker can report a zero distance for benign desk/keyboard
+        # tangencies, which should not hide whether the red obstacle itself
+        # has the requested visual gap.  Candidates must therefore satisfy a
+        # dedicated positive proxy-clearance margin as well.
+        proxy_execution_checker = FR3SweptVolumeChecker(
+            env,
+            safety_margin_m=0.015,
+            obstacle_state_fn=perception_predictor.apply,
+            excluded_obstacle_bodies=("target_object", "dynamic_obstacle"),
+            strict_zero_clearance=True,
+            included_obstacle_geoms=("obstacle_prediction_proxy_geom",),
         )
         obstacle.apply(env, 0.0)
     supervisor = RecedingHorizonSupervisor(
@@ -1080,14 +1108,16 @@ def render_demo(
                 ("AWAY_FROM_OBSTACLE", np.array([away_xy[0], away_xy[1], 0.0])),
                 ("RAISE_CLEARANCE", np.array([0.0, 0.0, 1.0])),
             )
-            offset_candidates = [("HOLD_POSITION", np.zeros(3, dtype=np.float64))]
-            for magnitude in (
-                0.02, 0.03, 0.04, 0.05, 0.06, 0.08,
-                0.085, 0.09, 0.095, 0.10, 0.12,
-            ):
-                offset_candidates.extend(
-                    (name, magnitude * direction) for name, direction in direction_candidates
-                )
+            # A stationary/away-from-obstacle response is visually ambiguous
+            # and is not robust for this crossing geometry: the forearm can
+            # still sweep into the box while the red block passes. Prefer the
+            # direction perpendicular to the measured obstacle velocity and
+            # require a meaningful lateral gap before considering fallbacks.
+            offset_candidates = []
+            for magnitude in (0.08, 0.09, 0.10, 0.12, 0.14, 0.16, 0.18):
+                offset_candidates.append(("LATERAL_FROM_TRACK", magnitude * np.array([lateral_xy[0], lateral_xy[1], 0.0])))
+            for magnitude in (0.12, 0.16, 0.20):
+                offset_candidates.append(("RAISE_CLEARANCE", magnitude * np.array([0.0, 0.0, 1.0])))
             escape_candidate_records = []
             for action_name, avoidance_offset in offset_candidates:
                 if np.linalg.norm(avoidance_offset) < 1.0e-9:
@@ -1120,6 +1150,9 @@ def render_demo(
                 gate_report = execution_checker.check_trajectory(
                     gate_q, gate_t + float(t), near_collision_margin_m=0.010, max_events=8
                 )
+                proxy_gate_report = proxy_execution_checker.check_trajectory(
+                    gate_q, gate_t + float(t), near_collision_margin_m=PROXY_EXECUTION_MARGIN_M, max_events=8
+                ) if proxy_execution_checker is not None else None
                 escape_candidate_records.append(
                     {
                         "action": action_name,
@@ -1128,9 +1161,16 @@ def render_demo(
                         "displacement_m": float(np.linalg.norm(actual_offset)),
                         "collision_count": int(gate_report.collision_count),
                         "min_clearance_m": float(gate_report.min_clearance_m),
+                        "proxy_collision_count": int(proxy_gate_report.collision_count) if proxy_gate_report else 0,
+                        "proxy_near_collision_count": int(proxy_gate_report.near_collision_count) if proxy_gate_report else 0,
+                        "proxy_min_clearance_m": float(proxy_gate_report.min_clearance_m) if proxy_gate_report else None,
                     }
                 )
-                if gate_report.collision_count == 0 and gate_report.min_clearance_m >= 0.0:
+                proxy_safe = bool(
+                    proxy_gate_report is None
+                    or (proxy_gate_report.collision_count == 0 and proxy_gate_report.near_collision_count == 0)
+                )
+                if gate_report.collision_count == 0 and gate_report.near_collision_count == 0 and proxy_safe:
                     selected_avoidance_offset = actual_offset.copy()
                     selected_avoidance_action = action_name
                     selected_q_escape = q_candidate.copy()
@@ -1161,6 +1201,7 @@ def render_demo(
                         "selected_escape_height_m": float(selected_avoidance_offset[2]),
                         "escape_candidate_records": escape_candidate_records,
                         "gate_min_clearance_m": float(selected_gate_report.min_clearance_m),
+                        "gate_proxy_min_clearance_m": float(proxy_gate_report.min_clearance_m) if proxy_gate_report else None,
                     }
                 )
         if avoidance_active and avoidance_q is not None:
@@ -1185,11 +1226,20 @@ def render_demo(
                     near_collision_margin_m=0.010,
                     max_events=8,
                 )
+                resume_proxy_report = proxy_execution_checker.check_trajectory(
+                    resume_q,
+                    resume_t + float(t),
+                    near_collision_margin_m=PROXY_EXECUTION_MARGIN_M,
+                    max_events=8,
+                ) if proxy_execution_checker is not None else None
+            else:
+                resume_proxy_report = None
             obstacle_clear = bool(
                 avoidance_elapsed >= 0.50
                 and resume_gate_report is not None
                 and resume_gate_report.collision_count == 0
-                and resume_gate_report.min_clearance_m >= 0.0
+                and resume_gate_report.near_collision_count == 0
+                and (resume_proxy_report is None or (resume_proxy_report.collision_count == 0 and resume_proxy_report.near_collision_count == 0))
             )
             if obstacle_clear:
                 avoidance_active = False
