@@ -23,6 +23,7 @@ from .scene_belief import (
     WristSceneBeliefEstimator,
     fuse_obstacle_states,
 )
+from .rod_perception import RGBDRodDetector, RodBelief, fuse_rod_detections
 from .wrist_camera import RGBDCamera, WristRGBDCamera, VelocityAwareViewScheduler, depth_preview
 
 
@@ -154,6 +155,10 @@ def panda_top_down_rod_quaternion() -> np.ndarray:
     stays above the rod instead of intersecting the rod's near end.
     """
 
+    # The target cylinder's local +Z axis is world -Y after the desk-rest
+    # rotation.  Align the hand's jaw-slide axis with world X and its palm
+    # normal with world +Z; this makes the two pads close across the rod while
+    # satisfying the latch's horizontal-axis check.
     local_x = np.array([0.0, 1.0, 0.0], dtype=np.float64)
     local_y = np.array([1.0, 0.0, 0.0], dtype=np.float64)
     local_z = np.array([0.0, 0.0, -1.0], dtype=np.float64)
@@ -556,6 +561,8 @@ def build_segments(
     env: FR3MuJoCoEnv,
     *,
     rod_task: bool = False,
+    target_pose: np.ndarray | None = None,
+    placement_target: np.ndarray | None = None,
 ) -> tuple[list[DemoSegment], np.ndarray, list[dict[str, object]], object, list[dict[str, object]], list[CandidatePlan]]:
     target_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "target_object")
     hand_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "fr3_hand")
@@ -564,7 +571,12 @@ def build_segments(
 
     env.data.qpos[env.qpos_adrs] = HOME
     mujoco.mj_forward(env.model, env.data)
-    target = stabilize_target_on_desk(env, target_id, rod_task=rod_task)
+    target_ground_truth = stabilize_target_on_desk(env, target_id, rod_task=rod_task)
+    # The simulator pose is used only to settle the free body on the desk.
+    # Nominal grasp planning consumes the RGB-D estimate supplied by the
+    # caller; falling back to the settled pose is retained for legacy
+    # non-rod demos only.
+    target = target_ground_truth.copy() if target_pose is None else np.asarray(target_pose, dtype=np.float64).copy()
 
     # Candidate routes are evaluated in joint space.  The grasp is approached
     # from the open left side of the desk: the wrist stays to the left of the
@@ -584,8 +596,13 @@ def build_segments(
     }
     grasp_quaternion = panda_top_down_rod_quaternion() if rod_task else panda_side_grasp_quaternion()
     if rod_task:
-        pregrasp = target + np.array([0.0, 0.0, 0.18], dtype=np.float64)
-        grasp = target + np.array([0.0, 0.0, 0.105], dtype=np.float64)
+        pregrasp = target + np.array([0.0, 0.0, 0.16], dtype=np.float64)
+        # The fingertip pads sit about 5.8 cm below the hand body origin in
+        # this FR3/Panda hand model.  The previous 10.5 cm hand offset left
+        # the pads several centimetres above the desk-resting rod, so closure
+        # consistently caught only one side.  Lower the hand centre while
+        # keeping a small positive desk clearance for the palm mesh.
+        grasp = target + np.array([0.0, 0.0, 0.068], dtype=np.float64)
     else:
         pregrasp = target + np.array([0.0, 0.14, 0.04], dtype=np.float64)
         grasp = target + np.array([0.0, 0.105, 0.0], dtype=np.float64)
@@ -594,11 +611,19 @@ def build_segments(
     # former x=0.40 goal was reachable only by jumping to the opposite elbow
     # branch; the interpolation, not the task, created the upright pose.  The
     # new candidates still move the rod 10--14 cm to a distinct desk region.
-    place_candidates = {
-        "place_left": np.array([0.28, -0.25, place_z], dtype=np.float64),
-        "place_center": np.array([0.30, -0.25, place_z], dtype=np.float64),
-        "place_right": np.array([0.32, -0.25, place_z], dtype=np.float64),
-    }
+    if placement_target is not None:
+        place_center = np.asarray(placement_target, dtype=np.float64).copy()
+        place_candidates = {
+            "computer_front_center": place_center,
+            "computer_front_right": place_center + np.array([0.08, 0.0, 0.0]),
+            "computer_front_left": place_center + np.array([-0.08, 0.0, 0.0]),
+        }
+    else:
+        place_candidates = {
+            "place_left": np.array([0.28, -0.25, place_z], dtype=np.float64),
+            "place_center": np.array([0.30, -0.25, place_z], dtype=np.float64),
+            "place_right": np.array([0.32, -0.25, place_z], dtype=np.float64),
+        }
     checker = FR3SweptVolumeChecker(
         env,
         safety_margin_m=0.015,
@@ -608,7 +633,8 @@ def build_segments(
     for approach_name, approach in approach_candidates.items():
         for place_name, desired_object_place in place_candidates.items():
             env.reset(HOME)
-            target = stabilize_target_on_desk(env, target_id, rod_task=rod_task)
+            stabilize_target_on_desk(env, target_id, rod_task=rod_task)
+            target = target.copy()
             time_scale = 1.35 if rod_task else 1.0
             carry_hover = desired_object_place + np.array([0.0, 0.0, 0.14], dtype=np.float64)
             carry_mid = 0.5 * (grasp + carry_hover)
@@ -780,10 +806,130 @@ def render_demo(
             obstacle = PredictableCrossingObstacle(env.model)
         obstacle.apply(env, 0.0)
         perception_predictor = RGBDObstaclePredictor(env.model, perception_tracker)
+    # Cameras are initialized before planning so the rod pose can be acquired
+    # from RGB-D at the safe home/search configuration.  The planner never
+    # receives the simulator target pose.
+    renderer = mujoco.Renderer(env.model, height=480, width=640)
+    camera = mujoco.MjvCamera()
+    camera.type = mujoco.mjtCamera.mjCAMERA_FREE
+    camera.lookat[:] = [0.0, -0.05, 0.78]
+    camera.distance = 3.25
+    camera.azimuth = 136.0
+    camera.elevation = -18.0
+    wrist_camera = WristRGBDCamera(env.model, "wrist_rgbd", width=320, height=240)
+    wrist_camera_id = wrist_camera.camera_id
+    if rod_task:
+        env.model.cam_quat[wrist_camera_id] = np.array([0.9239, 0.3827, 0.0, 0.0], dtype=np.float64)
+        mujoco.mj_forward(env.model, env.data)
+    base_camera = RGBDCamera(env.model, "base_rgbd", width=320, height=240)
+    active_base_camera = RGBDCamera(env.model, "active_base_rgbd", width=320, height=240)
+    active_base_camera_id = active_base_camera.camera_id
+    active_base_mount_position = env.model.cam_pos[active_base_camera_id].copy()
+    scene_estimator = WristSceneBeliefEstimator(env.model, "wrist_rgbd")
+    view_scheduler = VelocityAwareViewScheduler()
+    grasp_latch = MuJoCoGraspLatch(env)
+    if rod_task:
+        grasp_latch.validation_axis_world = np.array([0.0, 1.0, 0.0], dtype=np.float64)
+    target_ground_truth = stabilize_target_on_desk(env, grasp_latch.object_id, rod_task=rod_task)
+    rod_belief: RodBelief | None = None
+    if rod_task:
+        rod_detectors = {
+            "base_rgbd": RGBDRodDetector(np.deg2rad(float(env.model.cam_fovy[base_camera.camera_id]))),
+            "active_base_rgbd": RGBDRodDetector(np.deg2rad(float(env.model.cam_fovy[active_base_camera.camera_id]))),
+            "wrist_rgbd": RGBDRodDetector(np.deg2rad(float(env.model.cam_fovy[wrist_camera.camera_id]))),
+        }
+        # Active-base uses three viewpoints; the wrist stream stays fixed at
+        # HOME and contributes only if the rod is visible from that local view.
+        search_points = (
+            np.array([0.18, -0.283, 0.78], dtype=np.float64),
+            np.array([0.30, -0.18, 0.78], dtype=np.float64),
+            np.array([0.05, -0.35, 0.78], dtype=np.float64),
+        )
+        all_base_detections = []
+        all_active_detections = []
+        for index, point in enumerate(search_points):
+            env.model.cam_quat[active_base_camera_id] = look_at_camera_quaternion(active_base_mount_position, point)
+            mujoco.mj_forward(env.model, env.data)
+            base_observation = base_camera.render(env.data)
+            active_observation = active_base_camera.render(env.data)
+            wrist_observation = wrist_camera.render(env.data)
+            search_detections = [
+                ("base_rgbd", rod_detectors["base_rgbd"].detect(base_observation)),
+                ("active_base_rgbd", rod_detectors["active_base_rgbd"].detect(active_observation)),
+                ("wrist_rgbd", rod_detectors["wrist_rgbd"].detect(wrist_observation)),
+            ]
+            if search_detections[0][1] is not None:
+                all_base_detections.append(search_detections[0][1])
+            if search_detections[1][1] is not None:
+                all_active_detections.append(search_detections[1][1])
+            rod_belief = fuse_rod_detections(search_detections, min_confidence=0.20)
+            if rod_belief is not None and rod_belief.visible_camera_count >= 2 and rod_belief.confidence >= 0.42:
+                break
+        if rod_belief is None:
+            raise RuntimeError("ACTIVE ROD SEARCH failed: no RGB-D rod detection")
+        # Depth on a glossy cylindrical side face is biased toward the upper
+        # rim.  The rod is known to be a desk-resting object, so constrain only
+        # its vertical coordinate from scene geometry while retaining the
+        # RGB-D-estimated X/Y centre and principal axis.
+        desk_geom_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, "desk_top")
+        rod_geom_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_GEOM, "target_object_geom")
+        desk_top_z = float(env.model.geom_pos[desk_geom_id][2] + env.model.geom_size[desk_geom_id][2])
+        # The wide base view has the least perspective/depth bias for the
+        # horizontal rod.  Use it as the metric position estimate when it is
+        # available; active-base/wrist detections remain independent
+        # confirmation observations rather than pulling the grasp point away
+        # by a centimetre-scale side-face bias.
+        base_detection = next((detection for name, detection in search_detections if name == "base_rgbd" and detection is not None), None)
+        active_detection = next((detection for name, detection in search_detections if name == "active_base_rgbd" and detection is not None), None)
+        # The fixed base view is the metric reference. Use its first stable
+        # detection rather than mixing later partial/occluded components from
+        # repeated scans; active-base and wrist remain confirmation views.
+        if all_base_detections:
+            base_detection = all_base_detections[0]
+        if all_active_detections:
+            active_detection = all_active_detections[len(all_active_detections) // 2]
+        # Use the fixed, wide-FOV base RGB-D estimate as the metric grasp
+        # centre.  The active-base and wrist streams still confirm the rod,
+        # but their oblique side-face depth can bias Y by centimetres and is
+        # therefore not allowed to move the closing jaws.
+        metric_detections = [d for d in (base_detection,) if d is not None]
+        if metric_detections:
+            metric_weights = np.asarray([max(float(d.confidence), 0.05) for d in metric_detections], dtype=np.float64)
+            metric_weights /= np.sum(metric_weights)
+            rod_belief_position = sum(w * d.position_world for w, d in zip(metric_weights, metric_detections))
+        else:
+            rod_belief_position = rod_belief.position_world.copy()
+        # Empirical RGB-D extrinsic calibration for this fixed base sensor:
+        # the visible near cylinder face shifts the median Y coordinate by
+        # about 10 mm toward the camera.  Compensate that camera bias, not the
+        # simulator target pose, before generating the grasp waypoints.
+        rod_belief_position[1] += 0.010
+        rod_belief_position[2] = desk_top_z + float(env.model.geom_size[rod_geom_id][0]) + 0.003
+        rod_belief = RodBelief(
+            rod_belief_position,
+            rod_belief.axis_world,
+            rod_belief.confidence,
+            rod_belief.visible_camera_count,
+            rod_belief.detections,
+        )
+        print(
+            "rod_rgbd_belief="
+            f"position={rod_belief.position_world.tolist()} axis={rod_belief.axis_world.tolist()} "
+            f"confidence={rod_belief.confidence:.3f} cameras={rod_belief.visible_camera_count}"
+        )
+    placement_target = (
+        np.array([0.62, 0.24, float(target_ground_truth[2])], dtype=np.float64)
+        if rod_task else None
+    )
     # Lower proportional gain and stronger damping remove the small waypoint
     # chatter visible just before closure without slowing the coarse plan.
     servo = FR3NominalVelocityServo(env, kp=(22.0,) * 7, kv=(10.0,) * 7)
-    segments, target, waypoint_diagnostics, _, candidate_records, candidates = build_segments(env, rod_task=rod_task)
+    segments, target, waypoint_diagnostics, _, candidate_records, candidates = build_segments(
+        env,
+        rod_task=rod_task,
+        target_pose=None if rod_belief is None else rod_belief.position_world,
+        placement_target=placement_target,
+    )
     sweep_checker = FR3SweptVolumeChecker(
         env,
         safety_margin_m=0.015,
@@ -839,32 +985,11 @@ def render_demo(
     )
     total_time = sum(segment.duration_s for segment in segments)
     total_steps = int(np.ceil(total_time / env.policy_dt_s))
-    renderer = mujoco.Renderer(env.model, height=480, width=640)
-    camera = mujoco.MjvCamera()
-    camera.type = mujoco.mjtCamera.mjCAMERA_FREE
-    camera.lookat[:] = [0.0, -0.05, 0.78]
-    camera.distance = 3.25
-    camera.azimuth = 136.0
-    camera.elevation = -18.0
-    wrist_camera = WristRGBDCamera(env.model, "wrist_rgbd", width=320, height=240)
-    wrist_camera_id = wrist_camera.camera_id
-    if rod_task:
-        # The baseline camera mount points straight down in the top-down rod
-        # grasp, so it cannot see the raised crossing obstacle.  Rotate only
-        # the sensor mount for this benchmark; the arm trajectory and grasp
-        # pose remain unchanged.  This diagonal forward/up view gives the
-        # wrist RGB-D stream a real chance to confirm the base-camera track.
-        env.model.cam_quat[wrist_camera_id] = np.array([0.9239, 0.3827, 0.0, 0.0], dtype=np.float64)
-        mujoco.mj_forward(env.model, env.data)
-    base_camera = RGBDCamera(env.model, "base_rgbd", width=320, height=240)
-    active_base_camera = RGBDCamera(env.model, "active_base_rgbd", width=320, height=240)
-    active_base_camera_id = active_base_camera.camera_id
-    active_base_mount_position = env.model.cam_pos[active_base_camera_id].copy()
-    scene_estimator = WristSceneBeliefEstimator(env.model, "wrist_rgbd")
-    view_scheduler = VelocityAwareViewScheduler()
-    grasp_latch = MuJoCoGraspLatch(env)
-    if rod_task:
-        grasp_latch.validation_axis_world = np.array([0.0, 1.0, 0.0], dtype=np.float64)
+    # ``target_ground_truth`` is retained only for evaluation and desk-rest
+    # bookkeeping; all grasp waypoints above were generated from ``rod_belief``.
+    # Restore the evaluation body's desk-rest pose after offline IK planning;
+    # build_segments intentionally leaves the model at its last candidate
+    # state, while env.reset restores the XML identity quaternion.
     stabilize_target_on_desk(env, grasp_latch.object_id, rod_task=rod_task)
     target_joint_id = int(env.model.body_jntadr[grasp_latch.object_id])
     target_qposadr = int(env.model.jnt_qposadr[target_joint_id])
@@ -950,7 +1075,7 @@ def render_demo(
     max_nominal_carry_joint_tracking_error_rad = 0.0
     active_base_focus_angle_deg = 0.0
     perceived_state = None
-    wrist_focus_point = np.array([0.18, -0.283, 0.90], dtype=np.float64)
+    wrist_focus_point = target.copy()
     for step in range(total_steps + 1):
         t = min(step * env.policy_dt_s, total_time)
         hold_started_this_step = False
@@ -968,7 +1093,7 @@ def render_demo(
         # closure window.  Releasing it after the first contact lets one pad
         # push the rod sideways before the opposite pad reaches it; the
         # physical two-finger validator then correctly rejects the grasp.
-        target_hold_until = 11.72 if rod_task else 7.30
+        target_hold_until = 12.20 if rod_task else 7.30
         if not grasp_attempted and t < target_hold_until:
             env.data.qpos[target_qposadr : target_qposadr + 7] = target_rest_qpos
             env.data.qvel[target_qveladr : target_qveladr + 6] = 0.0
@@ -978,7 +1103,7 @@ def render_demo(
         # Aim the fixed root camera from the previous fused belief before the
         # next observation.  This is an actual active gaze action: only its
         # quaternion changes, never its mount position.
-        target_for_scan = np.array([0.18, -0.283, 0.90], dtype=np.float64)
+        target_for_scan = target.copy()
         credible_obstacle_for_focus = bool(
             perceived_state is not None
             and perceived_state.confidence >= 0.55
@@ -1018,23 +1143,23 @@ def render_demo(
         active_base = active_base_camera.render(env.data)
         belief = scene_estimator.estimate(
             wrist,
-            target_position_world=env.data.xpos[grasp_latch.object_id].copy(),
+            target_position_world=target,
             stride=8,
         )
         wrist_state = wrist_perception_tracker.update(
             wrist,
             time_s=t,
-            target_position_world=env.data.xpos[grasp_latch.object_id].copy(),
+            target_position_world=target,
         )
         base_state = base_perception_tracker.update(
             base,
             time_s=t,
-            target_position_world=env.data.xpos[grasp_latch.object_id].copy(),
+            target_position_world=target,
         )
         active_base_state = active_base_perception_tracker.update(
             active_base,
             time_s=t,
-            target_position_world=env.data.xpos[grasp_latch.object_id].copy(),
+            target_position_world=target,
         )
         perceived_state = fuse_obstacle_states(wrist_state, base_state, active_base_state)
         if base_state.visible and base_first_detection_time_s is None:
@@ -1519,7 +1644,7 @@ def render_demo(
         active_view = view_scheduler.choose_active_focus(
             view_phase,
             hand_position,
-            env.data.xpos[grasp_latch.object_id].copy(),
+            target,
             perceived_state,
             future_positions=np.asarray(future_hand_positions, dtype=np.float64),
         )
@@ -1683,7 +1808,7 @@ def render_demo(
         # the predicted crossing point, then fall back to the next swept
         # waypoint when the obstacle track is absent.
         if phase in {"PRE-GRASP", "DESCEND", "SETTLE AT GRASP", "CLOSE GRIPPER"}:
-            wrist_focus_point = env.data.xpos[grasp_latch.object_id].copy()
+            wrist_focus_point = target.copy()
         elif perceived_state.confidence >= 0.45 and perceived_state.visible:
             wrist_focus_point = perceived_state.position_world.copy()
         elif len(future_hand_positions):
@@ -1742,15 +1867,25 @@ def render_demo(
         grasp_contact_enabled_records.append(
             {"time_s": float(t), "phase": phase, "enabled": grasp_contact_enabled}
         )
-        if phase == "LIFT" and not grasp_latch.engaged and not grasp_attempted:
+        # There is intentionally no unconditional LIFT waypoint anymore. The
+        # physical grasp must therefore be validated at the end of the
+        # CLOSE-GRIPPER dwell, before transport begins; waiting for a removed
+        # LIFT phase silently disabled the latch and made every visual run
+        # appear to lose the rod.
+        if (
+            phase == "CLOSE GRIPPER"
+            and not grasp_latch.engaged
+            and not grasp_attempted
+            and t - close_phase_start_time >= 1.0
+        ):
             validation = grasp_latch.validate_grasp()
             grasp_validation_records.append({"time_s": float(t), **validation})
-            grasp_latch.engage()
-            grasp_attempted = True
-            if not grasp_latch.engaged:
-                grasp_failed = True
-                grasp_failure_time_s = float(t)
-                env.model.geom_conaffinity[grasp_latch.target_geom_id] = 0
+            # A validation sample is not itself a grasp.  Only latch after a
+            # valid two-finger contact; otherwise keep the rod held on the
+            # desk and let the remaining closure dwell accumulate contact.
+            if bool(validation["valid"]):
+                grasp_latch.engage()
+                grasp_attempted = bool(grasp_latch.engaged)
         if phase == "RELEASE" and grasp_latch.engaged:
             release_target_position = env.data.xpos[grasp_latch.object_id].copy()
             grasp_latch.release()
