@@ -37,11 +37,12 @@ PERCEPTION_SAFETY_BUFFER_M = 0.030
 PROXY_EXECUTION_MARGIN_M = 0.020
 AVOIDANCE_REPLAN_PERIOD_S = 0.20
 AVOIDANCE_BLEND_DURATION_S = 0.65
+AVOIDANCE_MIN_BLEND_DURATION_S = 0.32
 AVOIDANCE_GATE_HOLD_DURATION_S = 1.00
 AVOIDANCE_MIN_EPISODE_S = 0.50
 AVOIDANCE_UPDATE_THRESHOLD_M = 0.012
 AVOIDANCE_RELEASE_CONFIRMATIONS = 2
-AVOIDANCE_TRIGGER_DISTANCE_M = 0.75
+AVOIDANCE_TRIGGER_DISTANCE_M = 0.95
 
 
 @dataclass(frozen=True)
@@ -917,6 +918,7 @@ def render_demo(
     avoidance_q: np.ndarray | None = None
     avoidance_from_q: np.ndarray | None = None
     avoidance_started_time_s = -np.inf
+    avoidance_blend_duration_s = AVOIDANCE_BLEND_DURATION_S
     avoidance_episode_started_time_s = -np.inf
     avoidance_last_replan_time_s = -np.inf
     avoidance_last_resume_check_time_s = -np.inf
@@ -1081,10 +1083,21 @@ def render_demo(
             last_horizon_collision_count > 0
             or (np.isfinite(last_horizon_clearance_m) and last_horizon_clearance_m < 0.0)
         )
+        # Once the two-finger grasp has been validated, the final part of the
+        # closure dwell is already a safe transport-preparation window.  A
+        # fast crossing can become unavoidable if the shield waits for the
+        # phase label to change to CARRY, even though all three RGB-D streams
+        # have already observed the blocked future corridor.  Permit an
+        # anticipatory response after the latch is engaged, while retaining
+        # the original no-motion rule throughout approach and grasp contact.
+        avoidance_task_window = bool(
+            phase == "CARRY AROUND CLUTTER"
+            or (phase == "CLOSE GRIPPER" and grasp_latch.engaged)
+        )
         obstacle_requires_replan = bool(
             perceived_state.visible
             and perceived_state.confidence >= 0.60
-            and phase == "CARRY AROUND CLUTTER"
+            and avoidance_task_window
             and horizon_is_blocked
             and perceived_obstacle_distance <= AVOIDANCE_TRIGGER_DISTANCE_M
             and (
@@ -1113,6 +1126,10 @@ def render_demo(
                 lateral_xy = np.array([0.0, 1.0], dtype=np.float64)
             lateral_xy /= np.linalg.norm(lateral_xy)
             relative_xy = live_hand_position[:2] - perceived_state.position_world[:2]
+            away_xy = relative_xy.copy()
+            if np.linalg.norm(away_xy) < 1.0e-6:
+                away_xy = lateral_xy.copy()
+            away_xy /= np.linalg.norm(away_xy)
             if avoidance_lateral_direction_world is not None:
                 # Preserve the chosen side of the obstacle while allowing the
                 # direction to rotate smoothly as the measured velocity does.
@@ -1127,9 +1144,30 @@ def render_demo(
             # replan later, forcing a visually abrupt jump to 14 cm.  Starting
             # at 9 cm keeps the initial response causal while leaving the
             # rolling updater only a small correction if speed increases.
-            for magnitude in (0.09, 0.10, 0.11, 0.12, 0.14, 0.16, 0.18):
+            for magnitude in (0.09, 0.10, 0.11, 0.12, 0.14, 0.16, 0.18, 0.20, 0.22, 0.24):
                 offset_candidates.append(
                     ("LATERAL_FROM_TRACK", magnitude * np.array([lateral_xy[0], lateral_xy[1], 0.0]))
+                )
+            # The first side is chosen away from the current obstacle track.
+            # If that direction is kinematically saturated near a joint/workspace
+            # boundary, the opposite side remains a valid collision-gated
+            # alternative.  It is never accepted merely because it exists:
+            # the same predicted swept-volume test rejects any transition that
+            # would cut through the obstacle corridor.
+            for magnitude in (0.14, 0.16, 0.18, 0.20, 0.22, 0.24, 0.26, 0.28):
+                offset_candidates.append(
+                    ("LATERAL_OPPOSITE_SIDE", -magnitude * np.array([lateral_xy[0], lateral_xy[1], 0.0]))
+                )
+            # A shifted crossing can place the perpendicular escape direction
+            # near the edge of the FR3 workspace, where IK realizes only a
+            # fraction of the requested lateral displacement.  Add a second
+            # observation-derived family pointing directly away from the
+            # perceived obstacle.  It is evaluated only after the lower-cost
+            # perpendicular candidates and is still subject to the identical
+            # swept-volume and positive proxy-clearance gates.
+            for magnitude in (0.10, 0.12, 0.14, 0.16, 0.18, 0.20, 0.22, 0.24):
+                offset_candidates.append(
+                    ("AWAY_FROM_OBSTACLE", magnitude * np.array([away_xy[0], away_xy[1], 0.0]))
                 )
             for magnitude in (0.12, 0.16, 0.20):
                 offset_candidates.append(("RAISE_CLEARANCE", np.array([0.0, 0.0, magnitude])))
@@ -1139,6 +1177,17 @@ def render_demo(
             selected_q_escape = None
             selected_gate_report = None
             selected_proxy_gate_report = None
+            obstacle_speed_m_s = float(np.linalg.norm(perceived_state.velocity_world))
+            time_to_corridor_s = (
+                (perceived_obstacle_distance - 0.22) / max(obstacle_speed_m_s, 0.08)
+            )
+            candidate_blend_duration_s = float(
+                np.clip(
+                    0.35 * time_to_corridor_s,
+                    AVOIDANCE_MIN_BLEND_DURATION_S,
+                    AVOIDANCE_BLEND_DURATION_S,
+                )
+            )
             escape_candidate_records = []
             for action_name, requested_offset in offset_candidates:
                 escape_position = nominal_hand_position + requested_offset
@@ -1159,7 +1208,7 @@ def render_demo(
                 mujoco.mj_forward(env.model, env.data)
 
                 gate_segments = [
-                    DemoSegment(AVOIDANCE_BLEND_DURATION_S, q_candidate, 0.0, "ACTIVE OBSTACLE AVOIDANCE"),
+                    DemoSegment(candidate_blend_duration_s, q_candidate, 0.0, "ACTIVE OBSTACLE AVOIDANCE"),
                     # Validate the complete crossing rather than only the
                     # first locally safe escape.  With the shorter 0.8 s
                     # dwell, the first RGB-D estimate accepted a 9 cm target
@@ -1190,6 +1239,7 @@ def render_demo(
                         "move_displacement_world_m": move_displacement.tolist(),
                         "nominal_displacement_m": float(np.linalg.norm(actual_nominal_offset)),
                         "move_displacement_m": float(np.linalg.norm(move_displacement)),
+                        "blend_duration_s": candidate_blend_duration_s,
                         "collision_count": int(gate_report.collision_count),
                         "near_collision_count": int(gate_report.near_collision_count),
                         "min_clearance_m": float(gate_report.min_clearance_m),
@@ -1220,6 +1270,7 @@ def render_demo(
                 "tracking_confidence": float(perceived_state.confidence),
                 "distance_to_hand_m": perceived_obstacle_distance,
                 "horizon_min_clearance_m": float(last_horizon_clearance_m),
+                "candidate_blend_duration_s": candidate_blend_duration_s,
                 "candidate_records": escape_candidate_records,
             }
             if selected_q_escape is None or selected_gate_report is None:
@@ -1272,9 +1323,10 @@ def render_demo(
                     avoidance_q = selected_q_escape
                     avoidance_from_q = q_before_escape.copy()
                     avoidance_started_time_s = float(t)
+                    avoidance_blend_duration_s = candidate_blend_duration_s
                     avoidance_offset_world = selected_avoidance_offset.copy()
                     avoidance_target_hand_position_world = selected_target_hand_position.copy()
-                    if selected_avoidance_action == "LATERAL_FROM_TRACK":
+                    if selected_avoidance_action.startswith("LATERAL_"):
                         direction = np.array([selected_avoidance_offset[0], selected_avoidance_offset[1], 0.0])
                         if np.linalg.norm(direction) > 1.0e-9:
                             avoidance_lateral_direction_world = direction / np.linalg.norm(direction)
@@ -1300,6 +1352,7 @@ def render_demo(
                             "selected_avoidance_offset_world_m": selected_avoidance_offset.tolist(),
                             "selected_avoidance_displacement_m": float(np.linalg.norm(selected_avoidance_offset)),
                             "selected_escape_height_m": float(selected_avoidance_offset[2]),
+                            "selected_blend_duration_s": candidate_blend_duration_s,
                             "escape_candidate_records": escape_candidate_records,
                             "gate_min_clearance_m": float(selected_gate_report.min_clearance_m),
                             "gate_proxy_min_clearance_m": (
@@ -1392,7 +1445,7 @@ def render_demo(
             if avoidance_active and avoidance_q is not None:
                 progress = float(
                     np.clip(
-                        (t - avoidance_started_time_s) / AVOIDANCE_BLEND_DURATION_S,
+                        (t - avoidance_started_time_s) / avoidance_blend_duration_s,
                         0.0,
                         1.0,
                     )
@@ -1977,6 +2030,7 @@ def render_demo(
             "mode": "rolling_rgbd_receding_horizon",
             "replan_period_s": AVOIDANCE_REPLAN_PERIOD_S,
             "blend_duration_s": AVOIDANCE_BLEND_DURATION_S,
+            "minimum_blend_duration_s": AVOIDANCE_MIN_BLEND_DURATION_S,
             "gate_hold_duration_s": AVOIDANCE_GATE_HOLD_DURATION_S,
             "minimum_episode_s": AVOIDANCE_MIN_EPISODE_S,
             "update_threshold_m": AVOIDANCE_UPDATE_THRESHOLD_M,

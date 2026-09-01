@@ -206,6 +206,31 @@ After confidence decays and the obstacle leaves the wrist view, the scheduler
 falls back to `SWEPT_VOLUME_SEARCH`, which is expected rather than a collision
 response.
 
+### Robustness matrix (v20, 2026-09-01)
+
+The same controller was replayed on the server against five dynamic-obstacle
+conditions: baseline crossing, faster crossing, slower crossing, lower
+obstacle height, and a lateral track shift. All five completed grasp and
+placement with zero dynamic-obstacle contacts, zero measured contact force,
+zero illegal target contacts, and strictly positive active-window physical
+clearance:
+
+| Scenario | Placement error | Min physical clearance | Contact steps | Avoidance start / updates | Selected response |
+| --- | ---: | ---: | ---: | ---: | --- |
+| baseline | 0.0274 m | 0.1012 m | 0 | 1 / 2 | lateral |
+| fast | 0.0058 m | 0.0998 m | 0 | 1 / 0 | lateral |
+| slow | 0.0162 m | 0.0700 m | 0 | 1 / 3 | lateral |
+| low | 0.0207 m | 0.0623 m | 0 | 1 / 1 | lateral |
+| shifted | 0.0214 m | 0.0547 m | 0 | 1 / 0 | opposite-side lateral |
+
+The baseline and low-height cases may perform one or two safe rolling target
+updates because their first RGB-D velocity estimate is less conservative; this
+is a gated continuation of the same avoidance episode, not a fixed lift. The
+shifted case demonstrates the new opposite-side candidate family when the
+preferred lateral direction is kinematically constrained. The complete matrix
+and per-scenario GIF/JSON files remain on the server under
+`outputs/robustness_v20_20260901/`.
+
 This validation uses three cooperative RGB-D streams. The fixed `base_rgbd`
 camera provides desk-wide early warning, `active_base_rgbd` is fixed near the
 FR3 root and scans by changing only its quaternion, and `wrist_rgbd` confirms

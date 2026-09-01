@@ -167,6 +167,27 @@ class PredictableCrossingObstacle:
                             has_contact = True
                             break
                     if not has_contact:
+                        # First use the separation between the two geoms'
+                        # world-axis-aligned bounding boxes.  Each physical
+                        # shape is contained by its AABB, so a positive AABB
+                        # separation is a conservative lower bound on the
+                        # actual shape distance and is substantially tighter
+                        # than a bounding sphere for long FR3 link meshes.
+                        def world_aabb(geom_id: int) -> tuple[np.ndarray, np.ndarray]:
+                            local_center = env.model.geom_aabb[geom_id, :3]
+                            local_half = env.model.geom_aabb[geom_id, 3:6]
+                            rotation = env.data.geom_xmat[geom_id].reshape(3, 3)
+                            world_center = env.data.geom_xpos[geom_id] + rotation @ local_center
+                            world_half = np.abs(rotation) @ local_half
+                            return world_center - world_half, world_center + world_half
+
+                        robot_min, robot_max = world_aabb(robot_gid)
+                        obstacle_min, obstacle_max = world_aabb(obstacle_gid)
+                        aabb_axis_separation = np.maximum(
+                            np.maximum(obstacle_min - robot_max, robot_min - obstacle_max),
+                            0.0,
+                        )
+                        aabb_lower_bound = float(np.linalg.norm(aabb_axis_separation))
                         robot_radius = float(np.linalg.norm(env.model.geom_size[robot_gid, :3]))
                         obstacle_radius = float(np.linalg.norm(env.model.geom_size[obstacle_gid, :3]))
                         center_distance = float(
@@ -174,6 +195,7 @@ class PredictableCrossingObstacle:
                         )
                         clearance = max(
                             clearance,
+                            aabb_lower_bound,
                             center_distance - robot_radius - obstacle_radius,
                         )
                 if clearance < best:
