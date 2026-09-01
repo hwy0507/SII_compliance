@@ -4,6 +4,39 @@ This directory defines a clean fixed-base FR3 benchmark inspired by the
 closed-loop mechanism of the NUS `Visibility-Awared-Mobile-Grasping` project.
 It is not intended to be a line-by-line port of the Fetch/ManiSkill code.
 
+## Current branch result: v7 long-transfer rod task (2026-09-01)
+
+`tabletop_demo.py --rod-task --dynamic-obstacle` now validates the current
+long-transfer scenario: the rod is acquired from the three-camera RGB-D search,
+carried from `[0.1821, -0.2834, 0.747]` to the blue-holder side target
+`[0.54, -0.10, 0.747]` (a planned distance of `0.40214 m`), and finally rests
+at `[0.5697, -0.0986, 0.7423]`. The blue `pen_holder` is a known scene
+landmark, not an RGB-D-detected destination; the rod, in contrast, is detected
+and axis-estimated before grasping from the RGB-D search.
+
+The v7 metrics are: `grasp_success=True`, `placement_success=True`, final
+placement error `0.03012 m`, dynamic-obstacle contacts `0`, non-positive
+dynamic-clearance samples `0`, minimum physical dynamic clearance `0.01333 m`,
+one RGB-D-triggered hold, one smooth recovery, and a selected
+`LATERAL_WITH_LOW_CLEARANCE` displacement of `0.09588 m`.
+
+The controller pauses its nominal pick/carry/place time during an active
+avoidance episode. That detail is essential: it prevents an obstacle response
+from consuming the nominal carry time and making the arm jump directly to a
+late phase after recovery. A recovery begins only after two consecutive
+collision-gated checks; stale RGB-D tracks are removed from the prediction
+proxy when the obstacle is no longer visible.
+
+Large v7 GIF/JSON artifacts remain server-only:
+
+```text
+/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/
+  fr3_rod_long_transfer_blue_holder_dynamic_v7_20260901.gif
+  fr3_rod_long_transfer_blue_holder_dynamic_v7_20260901.json
+```
+
+The following v17/v18d sections are retained as prior experiment history.
+
 ## Latest validated result: buffered conditional active avoidance (2026-09-01)
 
 The current implementation has been re-run on the MuJoCo office tabletop

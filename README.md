@@ -8,6 +8,57 @@ MuJoCo experiment: cooperative fixed-base, root-mounted active-base, and wrist R
 task-stage-aware view selection, candidate arm trajectories, short-horizon
 replanning, and Panda two-finger grasp validation.
 
+## Current branch result: long rod transfer to the blue holder (v7, 2026-09-01)
+
+The current `codex/fr3-nus-mujoco-progress` result is the long-distance rod
+task rather than the older front-placement demo described below. It acquires
+the rod from RGB-D observations, transports it across the table, and releases
+it beside the blue `pen_holder` landmark:
+
+| Metric | v7 result |
+| --- | ---: |
+| Planned grasp-to-place distance | `0.40214 m` |
+| Grasp success / final placement success | `True / True` |
+| Final placement error | `0.03012 m` |
+| Blue-holder horizontal centre distance | about `0.110 m` |
+| Dynamic-obstacle contact steps | `0` |
+| Dynamic non-positive-clearance steps | `0` |
+| Closest physical obstacle clearance | `0.01333 m` |
+| RGB-D-triggered holds / recoveries | `1 / 1` |
+| Selected local avoidance displacement | `0.09588 m` |
+| All-three-camera visible steps | `42` |
+
+The blue holder is deliberately placed at `[0.68, -0.10, 0.82]` in the
+reachable part of the tabletop scene. The desired rod centre is its left-side
+neighbour `[0.54, -0.10, 0.747]`, leaving roughly 5 cm surface clearance. In
+the validated rollout the rod begins at `[0.1821, -0.2834, 0.747]` and settles
+at `[0.5697, -0.0986, 0.7423]`; the 40.2 cm planned transport is therefore
+visibly different from a local repositioning task.
+
+The avoidance is **not** a scheduled lift. Three RGB-D streams independently
+track the red box; only a fused visible, confident moving track whose predicted
+future swept corridor blocks the currently grasped carry plan can trigger the
+local shield. Every 0.2 s the shield tests IK-realizable lateral, lateral with
+4 cm low clearance, opposite-side, away-from-obstacle, and raise candidates.
+It accepts the first candidate with no static penetration and with zero
+predicted proxy collisions/near-collisions plus at least 6 cm proxy clearance.
+The selected v7 action is `LATERAL_WITH_LOW_CLEARANCE` and is smoothly blended
+from the measured current arm state. The nominal task clock pauses during that
+inserted safety action and resumes only after two safe recovery checks, so the
+robot cannot skip the carry/place/release stages after the obstacle has passed.
+
+The large experiment artifacts are intentionally server-only and are not
+committed to Git:
+
+```text
+/home/arm1/vmc_mujoco_runtime/nus_fr3_migration/outputs/
+  fr3_rod_long_transfer_blue_holder_dynamic_v7_20260901.gif
+  fr3_rod_long_transfer_blue_holder_dynamic_v7_20260901.json
+```
+
+The following older v18d sections are retained as historical context, not as
+the current-branch result.
+
 The latest server-side validation uses a collision-tested top-down rod grasp,
 an elevated approach corridor, a short pre-grasp settle segment, and a front
 placement corridor. The nominal task contains no unconditional `LIFT` segment:
