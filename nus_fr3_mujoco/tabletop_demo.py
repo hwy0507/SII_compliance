@@ -540,7 +540,11 @@ def _refine_place_and_build_segments(
         # released; otherwise the object is evaluated while the hand is still
         # catching up to the refined placement pose.
         DemoSegment(2.2 * scale, q_place, 0.0, "PLACE DESCEND"),
-        DemoSegment(0.8 * scale, q_place, 0.0, "SETTLE AT PLACE"),
+        # Reserve a short terminal hold so a collision-checked local XY
+        # alignment can actually settle before the gripper releases.  This is
+        # after the obstacle crossing, so it does not alter the avoidance
+        # policy or the fixed computer-front goal.
+        DemoSegment(1.6 * scale, q_place, 0.0, "SETTLE AT PLACE"),
         DemoSegment(0.8 * scale, q_place, 0.04, "RELEASE"),
         DemoSegment(0.8 * scale, q_retract, 0.04, "RETRACT AFTER RELEASE"),
         DemoSegment(1.8 * scale, HOME, 0.04, "RETURN HOME"),
@@ -930,6 +934,13 @@ def render_demo(
         target_pose=None if rod_belief is None else rod_belief.position_world,
         placement_target=placement_target,
     )
+    selected_initial_candidate = next(record for record in candidate_records if record["selected"])
+    selected_initial_plan = next(
+        candidate for candidate in candidates if candidate.name == selected_initial_candidate["name"]
+    )
+    placement_goal_world = np.asarray(
+        selected_initial_plan.waypoint_diagnostics[-1]["object_place_target"], dtype=np.float64
+    )
     sweep_checker = FR3SweptVolumeChecker(
         env,
         safety_margin_m=0.015,
@@ -1058,6 +1069,12 @@ def render_demo(
     avoidance_recovery_active = False
     avoidance_recovery_from_q: np.ndarray | None = None
     avoidance_recovery_started_time_s = -np.inf
+    place_correction_from_q: np.ndarray | None = None
+    place_correction_q: np.ndarray | None = None
+    place_correction_started_time_s = -np.inf
+    place_correction_duration_s = 1.20
+    place_correction_applied = False
+    place_correction_record: dict[str, object] | None = None
     hold_started_this_step = False
     base_first_detection_time_s: float | None = None
     wrist_first_detection_time_s: float | None = None
@@ -1619,6 +1636,81 @@ def render_demo(
                 q_ref = HOME
                 phase = "GRASP FAILED / HOME"
             gripper = 0.04
+        # Apply one small release-side correction after transport/recovery.
+        # Online avoidance can leave a few centimetres of servo tracking error,
+        # but it must not change the fixed computer-front destination.  Use the
+        # currently measured grasp transform to move only the hand/object pair
+        # toward that same goal, capped at 3 cm in XY and collision-gated.
+        if (
+            phase == "SETTLE AT PLACE"
+            and not place_correction_applied
+            and grasp_latch.engaged
+            and place_correction_q is None
+        ):
+            current_object_position = env.data.xpos[grasp_latch.object_id].copy()
+            correction_xy = placement_goal_world[:2] - current_object_position[:2]
+            correction_norm = float(np.linalg.norm(correction_xy))
+            if correction_norm > 1.0e-6:
+                correction_xy *= min(1.0, 0.03 / correction_norm)
+            correction = np.array([correction_xy[0], correction_xy[1], 0.0], dtype=np.float64)
+            if float(np.linalg.norm(correction)) > 1.0e-6:
+                correction_hand_position = env.data.xpos[hand_id].copy() + correction
+                correction_from_q = env.q.copy()
+                correction_q = solve_pose_ik(
+                    env,
+                    hand_id,
+                    correction_hand_position,
+                    env.data.xquat[hand_id].copy(),
+                    correction_from_q,
+                    orientation_weight=0.25,
+                )
+                env.data.qpos[env.qpos_adrs] = correction_from_q
+                mujoco.mj_forward(env.model, env.data)
+                correction_q_samples, correction_t_samples = execution_checker.interpolate_segments(
+                    [DemoSegment(place_correction_duration_s, correction_q, 0.0, "PLACE LOCAL CORRECTION")],
+                    correction_from_q,
+                    sample_dt_s=0.04,
+                )
+                correction_report = execution_checker.check_trajectory(
+                    correction_q_samples,
+                    correction_t_samples + float(t),
+                    near_collision_margin_m=0.010,
+                    max_events=8,
+                )
+                # This is a horizontal <=3 cm terminal alignment after the
+                # obstacle has cleared.  The full checker can flag benign
+                # fingertip/desk proximity here, so require zero penetration
+                # plus a zero-contact dynamic-obstacle proxy rather than
+                # rejecting the correction for desk tangencies.
+                correction_proxy_safe = bool(
+                    proxy_execution_checker is None
+                    or proxy_execution_checker.check_trajectory(
+                        correction_q_samples,
+                        correction_t_samples + float(t),
+                        near_collision_margin_m=PROXY_EXECUTION_MARGIN_M,
+                        max_events=8,
+                    ).collision_count == 0
+                )
+                if correction_report.collision_count == 0 and correction_proxy_safe:
+                    place_correction_from_q = correction_from_q
+                    place_correction_q = correction_q.copy()
+                    place_correction_started_time_s = float(t)
+                    place_correction_applied = True
+                place_correction_record = {
+                    "time_s": float(t),
+                    "requested_delta_world_m": correction.tolist(),
+                    "requested_delta_norm_m": float(np.linalg.norm(correction)),
+                    "accepted": bool(place_correction_applied),
+                    "static_collision_count": int(correction_report.collision_count),
+                    "static_near_collision_count": int(correction_report.near_collision_count),
+                    "proxy_safe": correction_proxy_safe,
+                }
+                env.data.qpos[env.qpos_adrs] = correction_from_q
+                mujoco.mj_forward(env.model, env.data)
+        if place_correction_q is not None and phase == "SETTLE AT PLACE":
+            progress = float(np.clip((t - place_correction_started_time_s) / place_correction_duration_s, 0.0, 1.0))
+            smooth = progress * progress * (3.0 - 2.0 * progress)
+            q_ref = (1.0 - smooth) * place_correction_from_q + smooth * place_correction_q
         hand_position = env.data.xpos[hand_id].copy()
         q_before_view_ik = env.q.copy()
         future_hand_positions = []
@@ -2126,6 +2218,9 @@ def render_demo(
         "placement_reference_position": placement_reference.tolist(),
         "placement_error_m": placement_error,
         "placement_success": placement_success,
+        "placement_goal_world": placement_goal_world.tolist(),
+        "place_correction_applied": bool(place_correction_applied),
+        "place_correction": place_correction_record,
         "grasp_success": bool(grasp_ever_engaged),
         "grasp_ever_engaged": bool(grasp_ever_engaged),
         "grasp_attempted": bool(grasp_attempted),
