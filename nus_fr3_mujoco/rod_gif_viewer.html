@@ -14,26 +14,26 @@
 </head>
 <body><main>
   <h1>FR3 长杆抓取 · 连续低位搬运 · 三相机主动避障</h1>
-  <div class="sub">服务器实验时间：2026-09-01　|　已移除隐藏高位 IK 分支，避障方向与幅度在线决定</div>
-  <div class="viewer"><img src="fr3_rod_balanced_clearance_v17_20260901.gif" alt="FR3 长杆连续低位搬运与三相机主动避障 GIF"></div>
+  <div class="sub">服务器实验时间：2026-09-01　|　v18d：完整预测窗口一次规划，避免后续避障目标跳变</div>
+  <div class="viewer"><img src="fr3_rod_rolling_v18d_20260901.gif" alt="FR3 长杆连续低位搬运与三相机主动避障 GIF"></div>
   <div class="grid">
     <div class="metric"><b>抓取 / 放置</b><span>True / True</span></div>
     <div class="metric"><b>动态障碍物接触</b><span>0 steps</span></div>
     <div class="metric"><b>最大动态接触力</b><span>0 N</span></div>
-    <div class="metric"><b>自适应避障</b><span>1 time · 0.117 m lateral</span></div>
-    <div class="metric"><b>预测代理最小正间隙</b><span>0.029 m</span></div>
-    <div class="metric"><b>三相机同时可见</b><span>23 steps</span></div>
-    <div class="metric"><b>RGB-D 首次触发</b><span>12.04 s</span></div>
-    <div class="metric"><b>名义搬运最高点</b><span>0.916 m</span></div>
+    <div class="metric"><b>自适应避障</b><span>1 start · 0 updates · 0.157 m lateral</span></div>
+    <div class="metric"><b>物理最小动态间隙</b><span>0.080 m</span></div>
+    <div class="metric"><b>三相机同时可见</b><span>24 steps</span></div>
+    <div class="metric"><b>避障开始</b><span>11.80 s</span></div>
+    <div class="metric"><b>名义 / 避障最高点</b><span>0.855 / 0.904 m</span></div>
     <div class="metric"><b>静态扫掠碰撞</b><span>0</span></div>
     <div class="metric"><b>非法目标接触</b><span>0 steps</span></div>
   </div>
   <div class="note">固定 base RGB-D、根部固定但可转向的 active-base RGB-D、以及 wrist RGB-D
-  协同观测。融合轨迹在 <code>11.28 s</code> 首次建立，active-base 在 <code>11.44 s</code>
-  看到障碍物；短时域碰撞预测在 <code>12.04 s</code> 触发一次从当前末端姿态生成的
-  <code>CONDITIONAL_OBSTACLE_AVOIDANCE</code>。系统比较停留、下移、上移、远离和垂直于障碍物轨迹的横移，
-  自动选择约 <code>0.117 m</code> 的最小满足安全阈值的横向位移；Z 分量仅 <code>-0.0006 m</code>，没有主动抬升。
-  预测障碍物代理已膨胀 <code>0.030 m</code>，候选还必须额外保留至少 <code>0.020 m</code> 的正间隙；本次选中轨迹的代理最小正间隙为 <code>0.0287 m</code>。
-  原 GIF 中由隐藏 <code>q_lift</code> IK 分支造成的整臂直立姿态已删除，真实名义 carry 最高点为 <code>0.916 m</code>。
-  障碍物通过后恢复正常搬运，MuJoCo 动态接触审计为 <code>0 steps / 0 N</code>；完整 GIF 和 JSON 原文件保留在服务器。</div>
+  协同观测。base 在 <code>11.28 s</code> 建立穿越段观测，active-base 在 <code>11.44 s</code>
+  看到障碍物；预测窗口在 <code>11.80 s</code> 触发一次从当前末端姿态生成的
+  <code>CONDITIONAL_OBSTACLE_AVOIDANCE</code>。候选验证覆盖 <code>0.65 s</code> 平滑过渡和
+  <code>1.0 s</code> 保持，因此系统一次选择 <code>0.157 m</code> 横向位移，后续更新次数为 <code>0</code>，
+  没有固定抬升动作。预测代理膨胀 <code>0.030 m</code>，执行门额外要求正间隙；active-window 内真实
+  动态障碍物最小物理间隙为 <code>0.0796 m</code>，MuJoCo 接触审计为 <code>0 steps / 0 N</code>。
+  名义搬运最高点 <code>0.855 m</code>，避障期间最高点 <code>0.904 m</code>；完整 GIF 和 JSON 原文件保留在服务器。</div>
 </main></body></html>

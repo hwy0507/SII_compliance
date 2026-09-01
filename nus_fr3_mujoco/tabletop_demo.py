@@ -35,6 +35,13 @@ PERCEPTION_SAFETY_BUFFER_M = 0.030
 # proxy clearance in candidate gating, giving the rendered red obstacle a
 # visible gap of roughly 5 cm while avoiding unnecessarily large detours.
 PROXY_EXECUTION_MARGIN_M = 0.020
+AVOIDANCE_REPLAN_PERIOD_S = 0.20
+AVOIDANCE_BLEND_DURATION_S = 0.65
+AVOIDANCE_GATE_HOLD_DURATION_S = 1.00
+AVOIDANCE_MIN_EPISODE_S = 0.50
+AVOIDANCE_UPDATE_THRESHOLD_M = 0.012
+AVOIDANCE_RELEASE_CONFIRMATIONS = 2
+AVOIDANCE_TRIGGER_DISTANCE_M = 0.75
 
 
 @dataclass(frozen=True)
@@ -703,6 +710,14 @@ def render_demo(
     grasp_closure_m: float = GRASP_CLOSURE_M,
     gripper_kp: float = 800.0,
     rod_task: bool = False,
+    obstacle_enter_time_s: float = 11.2,
+    obstacle_contact_time_s: float = 13.2,
+    obstacle_exit_time_s: float = 14.8,
+    obstacle_before_x_m: float = 1.20,
+    obstacle_corridor_x_m: float = 0.18,
+    obstacle_after_x_m: float = -0.78,
+    obstacle_y_m: float = -0.30,
+    obstacle_z_m: float = 1.05,
 ) -> None:
     env = FR3MuJoCoEnv(model_path, physics_dt_s=0.002, policy_dt_s=0.040, ee_body_name="fr3_link7")
     if dynamic_obstacle:
@@ -737,21 +752,17 @@ def render_demo(
         if rod_task:
             obstacle = PredictableCrossingObstacle(
                 env.model,
-                # Start the crossing after the nominal LIFT segment.  The
-                # obstacle must challenge the already-raised carry motion;
-                # otherwise a normal task lift is visually indistinguishable
-                # from an avoidance response.
-                # Enter before the carry midpoint so the tracker has two or
-                # more RGB-D frames to estimate velocity before the corridor
-                # becomes blocked.  This avoids both t=0 false positives and
-                # a too-late detection that cannot causally trigger escape.
-                enter_time_s=11.2,
-                contact_time_s=13.2,
-                exit_time_s=14.8,
+                # Enter during transport, early enough for multiple RGB-D
+                # frames to estimate velocity before the nominal corridor is
+                # blocked.  There is no unconditional task-level lift, so any
+                # avoidance excursion is attributable to online prediction.
+                enter_time_s=obstacle_enter_time_s,
+                contact_time_s=obstacle_contact_time_s,
+                exit_time_s=obstacle_exit_time_s,
             )
             # Cross the actual nominal carry corridor rather than the old
-            # high background line. This makes an ACTIVE OBSTACLE LIFT, when
-            # it occurs, causally attributable to the RGB-D prediction.
+            # high background line, making the avoidance response causally
+            # attributable to the RGB-D prediction.
             # The obstacle crosses the actual rod carry band (hand z≈0.89 m)
             # with a small vertical clearance.  It is high enough to be
             # visible in all RGB-D streams, but low enough that the nominal
@@ -761,9 +772,9 @@ def render_demo(
             # y/z carry strip horizontally, giving the perception loop a
             # genuine first-detection event shortly before the predicted
             # blockage.
-            obstacle.before = np.array([1.20, -0.30, 1.05], dtype=np.float64)
-            obstacle.corridor = np.array([0.18, -0.30, 1.05], dtype=np.float64)
-            obstacle.after = np.array([-0.78, -0.30, 1.05], dtype=np.float64)
+            obstacle.before = np.array([obstacle_before_x_m, obstacle_y_m, obstacle_z_m], dtype=np.float64)
+            obstacle.corridor = np.array([obstacle_corridor_x_m, obstacle_y_m, obstacle_z_m], dtype=np.float64)
+            obstacle.after = np.array([obstacle_after_x_m, obstacle_y_m, obstacle_z_m], dtype=np.float64)
         else:
             obstacle = PredictableCrossingObstacle(env.model)
         obstacle.apply(env, 0.0)
@@ -876,6 +887,9 @@ def render_demo(
     dynamic_obstacle_min_clearance_time_s = 0.0
     dynamic_obstacle_min_clearance_robot_geom = ""
     dynamic_obstacle_min_clearance_obstacle_geom = ""
+    dynamic_obstacle_clearance_sample_count = 0
+    dynamic_obstacle_nonpositive_clearance_steps = 0
+    dynamic_obstacle_clearance_records: list[dict[str, object]] = []
     release_target_position = None
     last_horizon_clearance_m = sweep_report.min_clearance_m
     last_horizon_collision_count = sweep_report.collision_count
@@ -897,13 +911,26 @@ def render_demo(
     grasp_ever_engaged = False
     close_phase_start_time = -np.inf
     released_target = False
-    dynamic_hold_until = -np.inf
     dynamic_hold_count = 0
     dynamic_hold_records: list[dict[str, object]] = []
     avoidance_active = False
     avoidance_q: np.ndarray | None = None
     avoidance_from_q: np.ndarray | None = None
     avoidance_started_time_s = -np.inf
+    avoidance_episode_started_time_s = -np.inf
+    avoidance_last_replan_time_s = -np.inf
+    avoidance_last_resume_check_time_s = -np.inf
+    avoidance_offset_world = np.zeros(3, dtype=np.float64)
+    avoidance_target_hand_position_world: np.ndarray | None = None
+    avoidance_lateral_direction_world: np.ndarray | None = None
+    avoidance_clear_streak = 0
+    avoidance_replan_attempt_count = 0
+    avoidance_update_count = 0
+    avoidance_release_count = 0
+    avoidance_replan_records: list[dict[str, object]] = []
+    avoidance_recovery_active = False
+    avoidance_recovery_from_q: np.ndarray | None = None
+    avoidance_recovery_started_time_s = -np.inf
     hold_started_this_step = False
     base_first_detection_time_s: float | None = None
     wrist_first_detection_time_s: float | None = None
@@ -1038,13 +1065,14 @@ def render_demo(
             last_horizon_clearance_m = horizon_decision.report.min_clearance_m
             last_horizon_collision_count = horizon_decision.report.collision_count
         q_ref, gripper, phase = supervisor.reference(env.q, t)
-        # Observation-driven safety shield: when the wrist RGB-D tracker has
-        # a high-confidence, visible obstacle in the carry corridor, hold the
-        # current end-effector reference long enough for the crossing to pass.
-        # This is deliberately based on perceived state only; it never reads
-        # the hidden MuJoCo obstacle pose or contact state.  The normal
-        # receding-horizon planner continues checking in parallel and resumes
-        # the selected route after the short hold window.
+        # Observation-driven rolling safety shield.  The nominal plan is
+        # still supplied by the receding-horizon supervisor, but the local
+        # task-space offset may be recomputed every 0.2 s from the latest
+        # fused RGB-D state.  Candidate targets are defined relative to the
+        # current *nominal* hand pose, not relative to the previous escape
+        # pose, so repeated replans cannot accumulate into an ever-growing
+        # lateral excursion.
+        nominal_q_ref = np.asarray(q_ref, dtype=np.float64).copy()
         live_hand_position = env.data.xpos[hand_id].copy()
         perceived_obstacle_distance = float(
             np.linalg.norm(perceived_state.position_world - live_hand_position)
@@ -1053,96 +1081,94 @@ def render_demo(
             last_horizon_collision_count > 0
             or (np.isfinite(last_horizon_clearance_m) and last_horizon_clearance_m < 0.0)
         )
-        obstacle_requires_hold = bool(
+        obstacle_requires_replan = bool(
             perceived_state.visible
             and perceived_state.confidence >= 0.60
-            # The nominal segment list has no LIFT stage.  Keep the gate
-            # strictly scoped to the actual transport interval so any upward
-            # motion is necessarily an obstacle response.
             and phase == "CARRY AROUND CLUTTER"
-            # A safety pause is permitted only when the RGB-D-driven
-            # short-horizon checker says the *current future trajectory* is
-            # blocked.  Distance alone is not sufficient: a passing obstacle
-            # that is visible but outside the swept corridor must not trigger
-            # any arm motion.
-            and dynamic_hold_count == 0
             and horizon_is_blocked
-            # Trigger on an imminent predicted blockage, before the obstacle
-            # reaches the hand.  The old 0.42 m gate was too tight for the
-            # 0.6 s horizon: at the first collision prediction the measured
-            # distance was about 0.5 m, so the supervisor missed the only
-            # causally correct escape window and waited until the obstacle had
-            # already crossed the corridor.
-            and perceived_obstacle_distance <= 0.60
+            and perceived_obstacle_distance <= AVOIDANCE_TRIGGER_DISTANCE_M
             and (
                 float(np.linalg.norm(perceived_state.velocity_world)) >= 0.08
                 or wrist_state.visible
             )
         )
-        if obstacle_requires_hold and t >= dynamic_hold_until - 1.0e-9 and not avoidance_active:
-            # Search task-space reactions from the *measured current pose*.
-            # A vertical lift is only one candidate, not a mandatory policy.
-            # Lateral, lower, hold-position, and away-from-track responses are
-            # considered at the same displacement cost.
+        replan_due = bool(t - avoidance_last_replan_time_s >= AVOIDANCE_REPLAN_PERIOD_S - 1.0e-9)
+        if obstacle_requires_replan and replan_due:
+            avoidance_last_replan_time_s = float(t)
+            avoidance_replan_attempt_count += 1
             q_before_escape = env.q.copy()
             current_hand_quat = env.data.xquat[hand_id].copy()
-            selected_avoidance_offset = None
-            selected_avoidance_action = None
-            selected_q_escape = None
-            selected_gate_report = None
+
+            # Evaluate offsets from the time-aligned nominal hand pose.  This
+            # keeps the avoidance amplitude interpretable across updates.
+            env.data.qpos[env.qpos_adrs] = nominal_q_ref
+            mujoco.mj_forward(env.model, env.data)
+            nominal_hand_position = env.data.xpos[hand_id].copy()
+            env.data.qpos[env.qpos_adrs] = q_before_escape
+            mujoco.mj_forward(env.model, env.data)
+
             velocity_xy = np.asarray(perceived_state.velocity_world[:2], dtype=np.float64)
             lateral_xy = np.array([-velocity_xy[1], velocity_xy[0]], dtype=np.float64)
             if np.linalg.norm(lateral_xy) < 1.0e-6:
                 lateral_xy = np.array([0.0, 1.0], dtype=np.float64)
             lateral_xy /= np.linalg.norm(lateral_xy)
             relative_xy = live_hand_position[:2] - perceived_state.position_world[:2]
-            if float(np.dot(lateral_xy, relative_xy)) < 0.0:
+            if avoidance_lateral_direction_world is not None:
+                # Preserve the chosen side of the obstacle while allowing the
+                # direction to rotate smoothly as the measured velocity does.
+                if float(np.dot(lateral_xy, avoidance_lateral_direction_world[:2])) < 0.0:
+                    lateral_xy *= -1.0
+            elif float(np.dot(lateral_xy, relative_xy)) < 0.0:
                 lateral_xy *= -1.0
-            away_xy = relative_xy.copy()
-            if np.linalg.norm(away_xy) < 1.0e-6:
-                away_xy = lateral_xy.copy()
-            away_xy /= np.linalg.norm(away_xy)
-            direction_candidates = (
-                ("LATERAL_FROM_TRACK", np.array([lateral_xy[0], lateral_xy[1], 0.0])),
-                ("LOWER_CLEARANCE", np.array([0.0, 0.0, -1.0])),
-                ("AWAY_FROM_OBSTACLE", np.array([away_xy[0], away_xy[1], 0.0])),
-                ("RAISE_CLEARANCE", np.array([0.0, 0.0, 1.0])),
-            )
-            # A stationary/away-from-obstacle response is visually ambiguous
-            # and is not robust for this crossing geometry: the forearm can
-            # still sweep into the box while the red block passes. Prefer the
-            # direction perpendicular to the measured obstacle velocity and
-            # require a meaningful lateral gap before considering fallbacks.
-            offset_candidates = []
-            for magnitude in (0.08, 0.09, 0.10, 0.12, 0.14, 0.16, 0.18):
-                offset_candidates.append(("LATERAL_FROM_TRACK", magnitude * np.array([lateral_xy[0], lateral_xy[1], 0.0])))
+
+            offset_candidates: list[tuple[str, np.ndarray]] = []
+            # Start with a moderate offset.  A 6 cm first move was technically
+            # safe for the first velocity estimate but became invalid one
+            # replan later, forcing a visually abrupt jump to 14 cm.  Starting
+            # at 9 cm keeps the initial response causal while leaving the
+            # rolling updater only a small correction if speed increases.
+            for magnitude in (0.09, 0.10, 0.11, 0.12, 0.14, 0.16, 0.18):
+                offset_candidates.append(
+                    ("LATERAL_FROM_TRACK", magnitude * np.array([lateral_xy[0], lateral_xy[1], 0.0]))
+                )
             for magnitude in (0.12, 0.16, 0.20):
-                offset_candidates.append(("RAISE_CLEARANCE", magnitude * np.array([0.0, 0.0, 1.0])))
+                offset_candidates.append(("RAISE_CLEARANCE", np.array([0.0, 0.0, magnitude])))
+
+            selected_avoidance_offset = None
+            selected_avoidance_action = None
+            selected_q_escape = None
+            selected_gate_report = None
+            selected_proxy_gate_report = None
             escape_candidate_records = []
-            for action_name, avoidance_offset in offset_candidates:
-                if np.linalg.norm(avoidance_offset) < 1.0e-9:
-                    q_candidate = q_before_escape.copy()
-                else:
-                    escape_position = live_hand_position + avoidance_offset
-                    q_candidate = solve_pose_ik(
-                        env,
-                        hand_id,
-                        escape_position,
-                        current_hand_quat,
-                        q_before_escape,
-                        orientation_weight=0.35,
-                    )
+            for action_name, requested_offset in offset_candidates:
+                escape_position = nominal_hand_position + requested_offset
+                q_candidate = solve_pose_ik(
+                    env,
+                    hand_id,
+                    escape_position,
+                    current_hand_quat,
+                    q_before_escape,
+                    orientation_weight=0.35,
+                )
                 env.data.qpos[env.qpos_adrs] = q_candidate
                 mujoco.mj_forward(env.model, env.data)
-                actual_offset = env.data.xpos[hand_id].copy() - live_hand_position
+                candidate_hand_position = env.data.xpos[hand_id].copy()
+                actual_nominal_offset = candidate_hand_position - nominal_hand_position
+                move_displacement = candidate_hand_position - live_hand_position
                 env.data.qpos[env.qpos_adrs] = q_before_escape
                 mujoco.mj_forward(env.model, env.data)
-                # Validate both the move and a one-second dwell.  Returning
-                # immediately to nominal carry let the arm meet the obstacle
-                # during recovery even when the initial offset was safe.
+
                 gate_segments = [
-                    DemoSegment(0.40, q_candidate, 0.0, "ACTIVE OBSTACLE AVOIDANCE"),
-                    DemoSegment(1.00, q_candidate, 0.0, "ACTIVE OBSTACLE HOLD"),
+                    DemoSegment(AVOIDANCE_BLEND_DURATION_S, q_candidate, 0.0, "ACTIVE OBSTACLE AVOIDANCE"),
+                    # Validate the complete crossing rather than only the
+                    # first locally safe escape.  With the shorter 0.8 s
+                    # dwell, the first RGB-D estimate accepted a 9 cm target
+                    # and the next update had to jump to 16 cm once the box
+                    # entered the corridor.  The longer causal horizon makes
+                    # that future conflict visible at START, so the arm can
+                    # execute one smooth avoidance motion instead of a late
+                    # corrective surge.
+                    DemoSegment(AVOIDANCE_GATE_HOLD_DURATION_S, q_candidate, 0.0, "ACTIVE OBSTACLE HOLD"),
                 ]
                 gate_q, gate_t = execution_checker.interpolate_segments(
                     gate_segments, env.q, sample_dt_s=0.04
@@ -1151,15 +1177,21 @@ def render_demo(
                     gate_q, gate_t + float(t), near_collision_margin_m=0.010, max_events=8
                 )
                 proxy_gate_report = proxy_execution_checker.check_trajectory(
-                    gate_q, gate_t + float(t), near_collision_margin_m=PROXY_EXECUTION_MARGIN_M, max_events=8
+                    gate_q,
+                    gate_t + float(t),
+                    near_collision_margin_m=PROXY_EXECUTION_MARGIN_M,
+                    max_events=8,
                 ) if proxy_execution_checker is not None else None
                 escape_candidate_records.append(
                     {
                         "action": action_name,
-                        "requested_offset_world_m": avoidance_offset.tolist(),
-                        "actual_offset_world_m": actual_offset.tolist(),
-                        "displacement_m": float(np.linalg.norm(actual_offset)),
+                        "requested_offset_world_m": requested_offset.tolist(),
+                        "actual_nominal_offset_world_m": actual_nominal_offset.tolist(),
+                        "move_displacement_world_m": move_displacement.tolist(),
+                        "nominal_displacement_m": float(np.linalg.norm(actual_nominal_offset)),
+                        "move_displacement_m": float(np.linalg.norm(move_displacement)),
                         "collision_count": int(gate_report.collision_count),
+                        "near_collision_count": int(gate_report.near_collision_count),
                         "min_clearance_m": float(gate_report.min_clearance_m),
                         "proxy_collision_count": int(proxy_gate_report.collision_count) if proxy_gate_report else 0,
                         "proxy_near_collision_count": int(proxy_gate_report.near_collision_count) if proxy_gate_report else 0,
@@ -1171,53 +1203,139 @@ def render_demo(
                     or (proxy_gate_report.collision_count == 0 and proxy_gate_report.near_collision_count == 0)
                 )
                 if gate_report.collision_count == 0 and gate_report.near_collision_count == 0 and proxy_safe:
-                    selected_avoidance_offset = actual_offset.copy()
+                    selected_avoidance_offset = actual_nominal_offset.copy()
                     selected_avoidance_action = action_name
                     selected_q_escape = q_candidate.copy()
                     selected_gate_report = gate_report
+                    selected_proxy_gate_report = proxy_gate_report
                     break
+
             env.data.qpos[env.qpos_adrs] = q_before_escape
             mujoco.mj_forward(env.model, env.data)
-            if selected_q_escape is not None and selected_gate_report is not None:
-                avoidance_active = True
-                avoidance_q = selected_q_escape
-                avoidance_from_q = q_before_escape.copy()
-                avoidance_started_time_s = float(t)
-                dynamic_hold_count += 1
-                hold_started_this_step = True
-                dynamic_hold_records.append(
+            record: dict[str, object] = {
+                "time_s": float(t),
+                "nominal_phase": phase,
+                "obstacle_position_world": perceived_state.position_world.tolist(),
+                "obstacle_velocity_world": perceived_state.velocity_world.tolist(),
+                "tracking_confidence": float(perceived_state.confidence),
+                "distance_to_hand_m": perceived_obstacle_distance,
+                "horizon_min_clearance_m": float(last_horizon_clearance_m),
+                "candidate_records": escape_candidate_records,
+            }
+            if selected_q_escape is None or selected_gate_report is None:
+                record["decision"] = "NO_SAFE_CANDIDATE_KEEP_CURRENT"
+            else:
+                selected_target_hand_position = nominal_hand_position + selected_avoidance_offset
+                offset_change_m = float(np.linalg.norm(selected_avoidance_offset - avoidance_offset_world))
+                target_change_m = (
+                    None
+                    if avoidance_target_hand_position_world is None
+                    else float(
+                        np.linalg.norm(
+                            selected_target_hand_position - avoidance_target_hand_position_world
+                        )
+                    )
+                )
+                is_initial = not avoidance_active
+                # The offset can remain almost constant while the nominal
+                # carry trajectory advances.  In that case the absolute
+                # avoidance target must advance with it; otherwise a nominally
+                # "rolling" controller freezes at the first escape pose and
+                # later makes a visible catch-up motion.
+                update_needed = bool(
+                    is_initial
+                    or offset_change_m >= AVOIDANCE_UPDATE_THRESHOLD_M
+                    or (
+                        target_change_m is not None
+                        and target_change_m >= AVOIDANCE_UPDATE_THRESHOLD_M
+                    )
+                )
+                record.update(
                     {
-                        "time_s": float(t),
-                        "phase": phase,
-                        "action": "CONDITIONAL_OBSTACLE_AVOIDANCE",
-                        "obstacle_position_world": perceived_state.position_world.tolist(),
-                        "obstacle_velocity_world": perceived_state.velocity_world.tolist(),
-                        "tracking_confidence": float(perceived_state.confidence),
-                        "distance_to_hand_m": perceived_obstacle_distance,
-                        "trigger": "rgbd_predicted_carry_blockage",
-                        "selected_avoidance_action": selected_avoidance_action,
-                        "selected_avoidance_offset_world_m": selected_avoidance_offset.tolist(),
-                        "selected_avoidance_displacement_m": float(np.linalg.norm(selected_avoidance_offset)),
-                        "selected_escape_height_m": float(selected_avoidance_offset[2]),
-                        "escape_candidate_records": escape_candidate_records,
+                        "selected_action": selected_avoidance_action,
+                        "selected_offset_world_m": selected_avoidance_offset.tolist(),
+                        "selected_displacement_m": float(np.linalg.norm(selected_avoidance_offset)),
+                        "offset_change_m": offset_change_m,
+                        "target_change_m": target_change_m,
                         "gate_min_clearance_m": float(selected_gate_report.min_clearance_m),
-                        "gate_proxy_min_clearance_m": float(proxy_gate_report.min_clearance_m) if proxy_gate_report else None,
+                        "gate_proxy_min_clearance_m": (
+                            float(selected_proxy_gate_report.min_clearance_m)
+                            if selected_proxy_gate_report is not None else None
+                        ),
                     }
                 )
+                if update_needed:
+                    record["decision"] = "START" if is_initial else "UPDATE"
+                    avoidance_active = True
+                    avoidance_recovery_active = False
+                    avoidance_recovery_from_q = None
+                    avoidance_q = selected_q_escape
+                    avoidance_from_q = q_before_escape.copy()
+                    avoidance_started_time_s = float(t)
+                    avoidance_offset_world = selected_avoidance_offset.copy()
+                    avoidance_target_hand_position_world = selected_target_hand_position.copy()
+                    if selected_avoidance_action == "LATERAL_FROM_TRACK":
+                        direction = np.array([selected_avoidance_offset[0], selected_avoidance_offset[1], 0.0])
+                        if np.linalg.norm(direction) > 1.0e-9:
+                            avoidance_lateral_direction_world = direction / np.linalg.norm(direction)
+                    avoidance_clear_streak = 0
+                    if is_initial:
+                        avoidance_episode_started_time_s = float(t)
+                        dynamic_hold_count += 1
+                        hold_started_this_step = True
+                    else:
+                        avoidance_update_count += 1
+                    dynamic_hold_records.append(
+                        {
+                            "time_s": float(t),
+                            "phase": phase,
+                            "action": "CONDITIONAL_OBSTACLE_AVOIDANCE",
+                            "event": "START" if is_initial else "UPDATE",
+                            "obstacle_position_world": perceived_state.position_world.tolist(),
+                            "obstacle_velocity_world": perceived_state.velocity_world.tolist(),
+                            "tracking_confidence": float(perceived_state.confidence),
+                            "distance_to_hand_m": perceived_obstacle_distance,
+                            "trigger": "rgbd_predicted_carry_blockage",
+                            "selected_avoidance_action": selected_avoidance_action,
+                            "selected_avoidance_offset_world_m": selected_avoidance_offset.tolist(),
+                            "selected_avoidance_displacement_m": float(np.linalg.norm(selected_avoidance_offset)),
+                            "selected_escape_height_m": float(selected_avoidance_offset[2]),
+                            "escape_candidate_records": escape_candidate_records,
+                            "gate_min_clearance_m": float(selected_gate_report.min_clearance_m),
+                            "gate_proxy_min_clearance_m": (
+                                float(selected_proxy_gate_report.min_clearance_m)
+                                if selected_proxy_gate_report is not None else None
+                            ),
+                        }
+                    )
+                else:
+                    record["decision"] = "KEEP_CURRENT_TARGET"
+            avoidance_replan_records.append(record)
+
         if avoidance_active and avoidance_q is not None:
-            avoidance_elapsed = float(t - avoidance_started_time_s)
-            # Never resume nominal carry solely because the obstacle is far
-            # from the hand.  At the previous setting that distance test
-            # released the shield while the box was still crossing the future
-            # carry corridor.  Re-check the actual recovery transition to the
-            # *current* nominal reference and release only if that transition
-            # is collision-free under the RGB-D proxy.
+            episode_elapsed = float(t - avoidance_episode_started_time_s)
             nominal_resume_q, _, _ = supervisor.reference(env.q, t)
-            resume_gate_report = None
-            if avoidance_elapsed >= 0.50:
+            if (
+                episode_elapsed >= AVOIDANCE_MIN_EPISODE_S
+                # Do not begin release while the same fused RGB-D horizon
+                # still classifies the nominal corridor as blocked.  A short
+                # direct transition can be locally clear even though the
+                # next carry samples remain unsafe; releasing on that signal
+                # alone creates avoid/recover oscillation.
+                and not obstacle_requires_replan
+                and t - avoidance_last_resume_check_time_s >= AVOIDANCE_REPLAN_PERIOD_S - 1.0e-9
+            ):
+                avoidance_last_resume_check_time_s = float(t)
                 resume_q, resume_t = execution_checker.interpolate_segments(
-                    [DemoSegment(0.40, np.asarray(nominal_resume_q, dtype=np.float64).copy(), 0.0, "ACTIVE OBSTACLE CLEAR")],
-                    avoidance_q,
+                    [
+                        DemoSegment(
+                            AVOIDANCE_BLEND_DURATION_S,
+                            np.asarray(nominal_resume_q, dtype=np.float64).copy(),
+                            0.0,
+                            "ACTIVE OBSTACLE CLEAR",
+                        )
+                    ],
+                    env.q,
                     sample_dt_s=0.04,
                 )
                 resume_gate_report = execution_checker.check_trajectory(
@@ -1232,28 +1350,83 @@ def render_demo(
                     near_collision_margin_m=PROXY_EXECUTION_MARGIN_M,
                     max_events=8,
                 ) if proxy_execution_checker is not None else None
-            else:
-                resume_proxy_report = None
-            obstacle_clear = bool(
-                avoidance_elapsed >= 0.50
-                and resume_gate_report is not None
-                and resume_gate_report.collision_count == 0
-                and resume_gate_report.near_collision_count == 0
-                and (resume_proxy_report is None or (resume_proxy_report.collision_count == 0 and resume_proxy_report.near_collision_count == 0))
-            )
-            if obstacle_clear:
-                avoidance_active = False
-                avoidance_q = None
-                avoidance_from_q = None
-                q_ref = np.asarray(nominal_resume_q, dtype=np.float64).copy()
-            else:
-                if avoidance_from_q is None:
-                    q_ref = avoidance_q.copy()
-                else:
-                    progress = float(np.clip((t - avoidance_started_time_s) / 0.50, 0.0, 1.0))
-                    smooth = progress * progress * (3.0 - 2.0 * progress)
-                    q_ref = (1.0 - smooth) * avoidance_from_q + smooth * avoidance_q
+                recovery_safe = bool(
+                    resume_gate_report.collision_count == 0
+                    and resume_gate_report.near_collision_count == 0
+                    and (
+                        resume_proxy_report is None
+                        or (
+                            resume_proxy_report.collision_count == 0
+                            and resume_proxy_report.near_collision_count == 0
+                        )
+                    )
+                )
+                avoidance_clear_streak = avoidance_clear_streak + 1 if recovery_safe else 0
+                avoidance_replan_records.append(
+                    {
+                        "time_s": float(t),
+                        "decision": "RECOVERY_CHECK",
+                        "safe": recovery_safe,
+                        "confirmation_streak": int(avoidance_clear_streak),
+                        "gate_min_clearance_m": float(resume_gate_report.min_clearance_m),
+                        "gate_proxy_min_clearance_m": (
+                            float(resume_proxy_report.min_clearance_m)
+                            if resume_proxy_report is not None else None
+                        ),
+                    }
+                )
+                if avoidance_clear_streak >= AVOIDANCE_RELEASE_CONFIRMATIONS:
+                    avoidance_active = False
+                    avoidance_recovery_active = True
+                    avoidance_recovery_from_q = env.q.copy()
+                    avoidance_recovery_started_time_s = float(t)
+                    avoidance_q = None
+                    avoidance_from_q = None
+                    avoidance_offset_world = np.zeros(3, dtype=np.float64)
+                    avoidance_target_hand_position_world = None
+                    avoidance_lateral_direction_world = None
+                    avoidance_release_count += 1
+                    avoidance_replan_records.append(
+                        {"time_s": float(t), "decision": "START_SMOOTH_RECOVERY"}
+                    )
+            if avoidance_active and avoidance_q is not None:
+                progress = float(
+                    np.clip(
+                        (t - avoidance_started_time_s) / AVOIDANCE_BLEND_DURATION_S,
+                        0.0,
+                        1.0,
+                    )
+                )
+                smooth = progress * progress * (3.0 - 2.0 * progress)
+                q_ref = (
+                    avoidance_q.copy()
+                    if avoidance_from_q is None
+                    else (1.0 - smooth) * avoidance_from_q + smooth * avoidance_q
+                )
                 phase = "ACTIVE OBSTACLE AVOIDANCE"
+
+        if avoidance_recovery_active and not avoidance_active:
+            nominal_recovery_q, _, _ = supervisor.reference(env.q, t)
+            recovery_progress = float(
+                np.clip(
+                    (t - avoidance_recovery_started_time_s) / AVOIDANCE_BLEND_DURATION_S,
+                    0.0,
+                    1.0,
+                )
+            )
+            recovery_smooth = recovery_progress * recovery_progress * (3.0 - 2.0 * recovery_progress)
+            if avoidance_recovery_from_q is None:
+                q_ref = np.asarray(nominal_recovery_q, dtype=np.float64).copy()
+            else:
+                q_ref = (
+                    (1.0 - recovery_smooth) * avoidance_recovery_from_q
+                    + recovery_smooth * np.asarray(nominal_recovery_q, dtype=np.float64)
+                )
+            phase = "ACTIVE OBSTACLE RECOVERY"
+            if recovery_progress >= 1.0 - 1.0e-9:
+                avoidance_recovery_active = False
+                avoidance_recovery_from_q = None
+
         if phase == "CLOSE GRIPPER" and last_phase != phase:
             close_phase_start_time = t
         if grasp_failed:
@@ -1285,7 +1458,11 @@ def render_demo(
         # is in effect.  The hold changes the task phase label for the
         # controller, but it must not make the wrist camera fall back to a
         # generic swept-volume view while the obstacle is still in frame.
-        view_phase = "CARRY AROUND CLUTTER" if phase == "DYNAMIC REPLAN HOLD" else phase
+        view_phase = (
+            "CARRY AROUND CLUTTER"
+            if phase in {"ACTIVE OBSTACLE AVOIDANCE", "ACTIVE OBSTACLE RECOVERY"}
+            else phase
+        )
         active_view = view_scheduler.choose_active_focus(
             view_phase,
             hand_position,
@@ -1304,7 +1481,12 @@ def render_demo(
             and active_view_enabled
             and active_view.action_required
             and (
-                phase in {"CARRY AROUND CLUTTER", "RETURN HOME", "DYNAMIC REPLAN HOLD"}
+                phase in {
+                    "CARRY AROUND CLUTTER",
+                    "ACTIVE OBSTACLE AVOIDANCE",
+                    "ACTIVE OBSTACLE RECOVERY",
+                    "RETURN HOME",
+                }
                 or lift_handoff_view
             )
             and t - last_active_view_time >= 0.32
@@ -1539,12 +1721,37 @@ def render_demo(
             mujoco.mj_forward(env.model, env.data)
         if obstacle is not None:
             obstacle_state = obstacle.contact_summary(env)
-            clearance_state = obstacle.clearance_summary(env)
-            if float(clearance_state["min_clearance_m"]) < dynamic_obstacle_min_clearance_m:
-                dynamic_obstacle_min_clearance_m = float(clearance_state["min_clearance_m"])
-                dynamic_obstacle_min_clearance_time_s = float(t)
-                dynamic_obstacle_min_clearance_robot_geom = str(clearance_state["robot_geom"])
-                dynamic_obstacle_min_clearance_obstacle_geom = str(clearance_state["obstacle_geom"])
+            ground_truth_obstacle_state = obstacle.state(t)
+            if ground_truth_obstacle_state.active:
+                clearance_state = obstacle.clearance_summary(env)
+                clearance_value = float(clearance_state["min_clearance_m"])
+                dynamic_obstacle_clearance_sample_count += 1
+                dynamic_obstacle_nonpositive_clearance_steps += int(clearance_value <= 1.0e-6)
+                if clearance_value < dynamic_obstacle_min_clearance_m:
+                    dynamic_obstacle_min_clearance_m = clearance_value
+                    dynamic_obstacle_min_clearance_time_s = float(t)
+                    dynamic_obstacle_min_clearance_robot_geom = str(clearance_state["robot_geom"])
+                    dynamic_obstacle_min_clearance_obstacle_geom = str(clearance_state["obstacle_geom"])
+                if clearance_value < 0.15:
+                    robot_geom_id = mujoco.mj_name2id(
+                        env.model,
+                        mujoco.mjtObj.mjOBJ_GEOM,
+                        str(clearance_state["robot_geom"]),
+                    )
+                    dynamic_obstacle_clearance_records.append(
+                        {
+                            "time_s": float(t),
+                            "phase": phase,
+                            "clearance_m": clearance_value,
+                            "robot_geom": str(clearance_state["robot_geom"]),
+                            "robot_geom_position_world": (
+                                env.data.geom_xpos[robot_geom_id].tolist()
+                                if robot_geom_id >= 0 else None
+                            ),
+                            "obstacle_position_world": ground_truth_obstacle_state.position.tolist(),
+                            "contact_count": int(obstacle_state["contact_count"]),
+                        }
+                    )
             max_dynamic_obstacle_force = max(
                 max_dynamic_obstacle_force,
                 float(obstacle_state["max_contact_force_n"]),
@@ -1614,7 +1821,7 @@ def render_demo(
                 max_nominal_carry_joint_tracking_error_rad,
                 float(np.linalg.norm(command.q_cmd - state.q)),
             )
-        elif phase in {"ACTIVE OBSTACLE LIFT", "ACTIVE OBSTACLE AVOIDANCE"}:
+        elif phase in {"ACTIVE OBSTACLE AVOIDANCE", "ACTIVE OBSTACLE RECOVERY"}:
             max_active_avoidance_hand_z_m = max(max_active_avoidance_hand_z_m, float(hand_position_now[2]))
         view_mode, speed_score = view_scheduler.select(
             phase,
@@ -1724,6 +1931,10 @@ def render_demo(
         "dynamic_obstacle_min_clearance_time_s": float(dynamic_obstacle_min_clearance_time_s),
         "dynamic_obstacle_min_clearance_robot_geom": dynamic_obstacle_min_clearance_robot_geom,
         "dynamic_obstacle_min_clearance_obstacle_geom": dynamic_obstacle_min_clearance_obstacle_geom,
+        "dynamic_obstacle_clearance_scope": "active_window_physical_dynamic_obstacle_geom_only",
+        "dynamic_obstacle_clearance_sample_count": int(dynamic_obstacle_clearance_sample_count),
+        "dynamic_obstacle_nonpositive_clearance_steps": int(dynamic_obstacle_nonpositive_clearance_steps),
+        "dynamic_obstacle_clearance_records": dynamic_obstacle_clearance_records,
         "placement_reference_position": placement_reference.tolist(),
         "placement_error_m": placement_error,
         "placement_success": placement_success,
@@ -1758,6 +1969,30 @@ def render_demo(
         "max_nominal_carry_joint_tracking_error_rad": float(max_nominal_carry_joint_tracking_error_rad),
         "dynamic_safety_hold_count": int(dynamic_hold_count),
         "dynamic_safety_hold_records": dynamic_hold_records,
+        "dynamic_avoidance_replan_attempt_count": int(avoidance_replan_attempt_count),
+        "dynamic_avoidance_update_count": int(avoidance_update_count),
+        "dynamic_avoidance_release_count": int(avoidance_release_count),
+        "dynamic_avoidance_replan_records": avoidance_replan_records,
+        "avoidance_policy": {
+            "mode": "rolling_rgbd_receding_horizon",
+            "replan_period_s": AVOIDANCE_REPLAN_PERIOD_S,
+            "blend_duration_s": AVOIDANCE_BLEND_DURATION_S,
+            "gate_hold_duration_s": AVOIDANCE_GATE_HOLD_DURATION_S,
+            "minimum_episode_s": AVOIDANCE_MIN_EPISODE_S,
+            "update_threshold_m": AVOIDANCE_UPDATE_THRESHOLD_M,
+            "release_confirmations": AVOIDANCE_RELEASE_CONFIRMATIONS,
+            "trigger_distance_m": AVOIDANCE_TRIGGER_DISTANCE_M,
+            "perception_safety_buffer_m": PERCEPTION_SAFETY_BUFFER_M,
+            "proxy_execution_margin_m": PROXY_EXECUTION_MARGIN_M,
+        },
+        "dynamic_obstacle_scenario": {
+            "enter_time_s": float(obstacle_enter_time_s),
+            "contact_time_s": float(obstacle_contact_time_s),
+            "exit_time_s": float(obstacle_exit_time_s),
+            "before_xyz": [float(obstacle_before_x_m), float(obstacle_y_m), float(obstacle_z_m)],
+            "corridor_xyz": [float(obstacle_corridor_x_m), float(obstacle_y_m), float(obstacle_z_m)],
+            "after_xyz": [float(obstacle_after_x_m), float(obstacle_y_m), float(obstacle_z_m)],
+        },
         "perception_contract": {
             "obstacle_pose_available_to_nominal": False,
             "obstacle_velocity_available_to_nominal": False,
@@ -1794,17 +2029,33 @@ def main() -> None:
     parser.add_argument("--grasp-closure", type=float, default=GRASP_CLOSURE_M)
     parser.add_argument("--gripper-kp", type=float, default=800.0)
     parser.add_argument("--rod-task", action="store_true", help="run the long-rod pick/place cooperative-perception benchmark")
+    parser.add_argument("--obstacle-enter-time", type=float, default=11.2)
+    parser.add_argument("--obstacle-contact-time", type=float, default=13.2)
+    parser.add_argument("--obstacle-exit-time", type=float, default=14.8)
+    parser.add_argument("--obstacle-before-x", type=float, default=1.20)
+    parser.add_argument("--obstacle-corridor-x", type=float, default=0.18)
+    parser.add_argument("--obstacle-after-x", type=float, default=-0.78)
+    parser.add_argument("--obstacle-y", type=float, default=-0.30)
+    parser.add_argument("--obstacle-z", type=float, default=1.05)
     args = parser.parse_args()
     render_demo(
-        args.model,
-        args.output,
-        args.fps,
-        args.metrics,
-        args.dynamic_obstacle,
-        not args.disable_active_view,
-        args.grasp_closure,
-        args.gripper_kp,
-        args.rod_task,
+        model_path=args.model,
+        output_path=args.output,
+        fps=args.fps,
+        metrics_path=args.metrics,
+        dynamic_obstacle=args.dynamic_obstacle,
+        active_view_enabled=not args.disable_active_view,
+        grasp_closure_m=args.grasp_closure,
+        gripper_kp=args.gripper_kp,
+        rod_task=args.rod_task,
+        obstacle_enter_time_s=args.obstacle_enter_time,
+        obstacle_contact_time_s=args.obstacle_contact_time,
+        obstacle_exit_time_s=args.obstacle_exit_time,
+        obstacle_before_x_m=args.obstacle_before_x,
+        obstacle_corridor_x_m=args.obstacle_corridor_x,
+        obstacle_after_x_m=args.obstacle_after_x,
+        obstacle_y_m=args.obstacle_y,
+        obstacle_z_m=args.obstacle_z,
     )
 
 

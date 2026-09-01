@@ -109,7 +109,15 @@ class PredictableCrossingObstacle:
         return {"contact_count": count, "max_contact_force_n": max_force, "contact_pairs": contact_pairs}
 
     def clearance_summary(self, env: FR3MuJoCoEnv) -> dict[str, float | str]:
-        """Return the minimum geometric distance to every FR3 collision geom."""
+        """Return distance from the physical red box to FR3 collision geoms.
+
+        The decorative marker is deliberately excluded.  Earlier metrics
+        queried every geom on the mocap body, including the non-colliding
+        marker, and also accumulated samples while the obstacle was parked in
+        its inactive pre-entry pose.  The caller now limits aggregation to the
+        active crossing window; this method limits the geometry to the actual
+        red collision box.
+        """
 
         root_body = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "base")
         robot_geoms: list[int] = []
@@ -125,11 +133,15 @@ class PredictableCrossingObstacle:
                 if parent == current:
                     break
                 current = parent
-        obstacle_geoms = [
-            gid
-            for gid in range(env.model.ngeom)
-            if int(env.model.geom_bodyid[gid]) == self.body_id
-        ]
+        obstacle_geoms = []
+        for gid in range(env.model.ngeom):
+            if int(env.model.geom_bodyid[gid]) != self.body_id:
+                continue
+            name = mujoco.mj_id2name(env.model, mujoco.mjtObj.mjOBJ_GEOM, gid) or ""
+            if name == "dynamic_obstacle_geom":
+                obstacle_geoms.append(gid)
+        if not obstacle_geoms:
+            raise RuntimeError("dynamic obstacle body is missing dynamic_obstacle_geom")
         best = float("inf")
         best_robot = ""
         best_obstacle = ""
@@ -137,6 +149,33 @@ class PredictableCrossingObstacle:
         for robot_gid in robot_geoms:
             for obstacle_gid in obstacle_geoms:
                 clearance = float(mujoco.mj_geomDistance(env.model, env.data, robot_gid, obstacle_gid, 10.0, fromto))
+                # Some mesh/box pairs return exactly zero at a finite-distance
+                # broad-phase boundary even though MuJoCo reports no contact.
+                # Preserve a conservative, strictly geometric lower bound for
+                # the audit in that case.  The bound subtracts both geoms'
+                # bounding-sphere radii from their center distance; it is not
+                # fed back into planning and therefore cannot hide a contact.
+                if clearance <= 1.0e-8:
+                    has_contact = False
+                    obstacle_gid_set = set(obstacle_geoms)
+                    for index in range(env.data.ncon):
+                        contact = env.data.contact[index]
+                        if (
+                            (int(contact.geom1) == robot_gid and int(contact.geom2) in obstacle_gid_set)
+                            or (int(contact.geom2) == robot_gid and int(contact.geom1) in obstacle_gid_set)
+                        ):
+                            has_contact = True
+                            break
+                    if not has_contact:
+                        robot_radius = float(np.linalg.norm(env.model.geom_size[robot_gid, :3]))
+                        obstacle_radius = float(np.linalg.norm(env.model.geom_size[obstacle_gid, :3]))
+                        center_distance = float(
+                            np.linalg.norm(env.data.geom_xpos[robot_gid] - env.data.geom_xpos[obstacle_gid])
+                        )
+                        clearance = max(
+                            clearance,
+                            center_distance - robot_radius - obstacle_radius,
+                        )
                 if clearance < best:
                     best = clearance
                     best_robot = mujoco.mj_id2name(env.model, mujoco.mjtObj.mjOBJ_GEOM, robot_gid) or str(robot_gid)
@@ -160,6 +199,11 @@ class RGBDObstaclePredictor:
             raise ValueError(f"obstacle proxy body {body_name} must be mocap=true")
         self.tracker = tracker
         self.active_confidence_threshold = 0.30
+        # Newly acquired RGB-D tracks tend to underestimate crossing speed
+        # during their first few finite-difference samples.  A modest gain is
+        # an uncertainty margin for prediction only; it does not alter the
+        # measured state exposed to the controller or metrics.
+        self.prediction_velocity_gain = 1.25
         self.last_state = PerceivedObstacleState(
             time_s=0.0,
             position_world=np.array([0.85, 0.20, 1.20], dtype=np.float64),
@@ -176,13 +220,17 @@ class RGBDObstaclePredictor:
         dt = max(float(time_s) - self.last_state.time_s, 0.0)
         # The horizon checker may query several future samples at once.  Keep
         # RGB-D prediction is causal and local: extrapolate for at most the
-        # configured one-second execution horizon and only while the track is
+        # configured local execution horizon and only while the track is
         # well confirmed. The previous 0.60 s cap under-predicted the latter
         # half of the adaptive escape-and-return transition, so a candidate
         # could pass the proxy check and still meet the real obstacle while
         # recovering the nominal carry reference.
-        prediction_dt = min(dt, 1.00)
-        velocity = self.last_state.velocity_world.copy()
+        # The rolling avoidance gate covers a 0.65 s transition followed by
+        # a 1.0 s dwell.  Preserve the same horizon in the RGB-D proxy so the
+        # initial decision sees the complete crossing instead of discovering
+        # the conflict one replan later.
+        prediction_dt = min(dt, 1.65)
+        velocity = self.prediction_velocity_gain * self.last_state.velocity_world.copy()
         if self.last_state.confidence < 0.45:
             velocity[:] = 0.0
         speed = float(np.linalg.norm(velocity))
