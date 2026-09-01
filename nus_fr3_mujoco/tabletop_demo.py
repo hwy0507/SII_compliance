@@ -602,7 +602,7 @@ def build_segments(
         # the pads several centimetres above the desk-resting rod, so closure
         # consistently caught only one side.  Lower the hand centre while
         # keeping a small positive desk clearance for the palm mesh.
-        grasp = target + np.array([0.0, 0.0, 0.068], dtype=np.float64)
+        grasp = target + np.array([0.0, 0.0, 0.078], dtype=np.float64)
     else:
         pregrasp = target + np.array([0.0, 0.14, 0.04], dtype=np.float64)
         grasp = target + np.array([0.0, 0.105, 0.0], dtype=np.float64)
