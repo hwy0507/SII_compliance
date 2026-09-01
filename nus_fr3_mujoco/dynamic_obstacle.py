@@ -262,8 +262,14 @@ class RGBDObstaclePredictor:
         # Unobserved hypotheses are kept outside the workspace after their
         # confidence decays, preventing a stale detection from blocking all
         # plans indefinitely.
-        if self.last_state.confidence < self.active_confidence_threshold:
-            position = np.array([0.85, 0.20, 1.20], dtype=np.float64)
+        # A track that is currently not visible is no longer a valid obstacle
+        # hypothesis for local recovery.  Keeping its last extrapolated pose
+        # made the safety proxy remain frozen in the old crossing corridor,
+        # so the arm could never rejoin the nominal carry path after the red
+        # box had physically exited.  Require both visibility and confidence
+        # before instantiating the proxy; reacquisition will recreate it.
+        if (not self.last_state.visible) or self.last_state.confidence < self.active_confidence_threshold:
+            position = np.array([3.0, 3.0, 3.0], dtype=np.float64)
         env.data.mocap_pos[self.mocap_id] = position
         env.data.mocap_quat[self.mocap_id] = np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float64)
         mujoco.mj_forward(env.model, env.data)
