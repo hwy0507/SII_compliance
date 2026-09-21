@@ -77,6 +77,11 @@ class PickLiftCarryReference:
         self._work = mujoco.MjData(model)
         self._work.qpos[:] = data.qpos
         self._work.qvel[:] = 0.0
+        # Optional diagnostic/demo mode: freeze the nominal Cartesian target
+        # after a preselected time.  The freeze is part of the reference
+        # generator, not a contact/force feedback path, so it preserves the
+        # non-VMC ESN observation contract while isolating impact motion.
+        self.hold_after_s: float | None = None
 
     def _joint_sample(self, time_s: float) -> tuple[np.ndarray, np.ndarray]:
         segment = int(np.searchsorted(self.times, time_s, side="right") - 1)
@@ -90,6 +95,8 @@ class PickLiftCarryReference:
         return q, qdot
 
     def sample(self, time_s: float) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+        if self.hold_after_s is not None and time_s >= self.hold_after_s:
+            time_s = float(self.hold_after_s)
         q, qdot = self._joint_sample(time_s)
         self._work.qpos[:ARM_DOF] = q
         self._work.qvel[:ARM_DOF] = qdot
@@ -104,9 +111,9 @@ class PickLiftCarryReference:
         """Open during approach, close smoothly around the physical block."""
 
         if time_s <= GRASP_TIME_S:
-            return 0.040
+            return 0.060
         close_phase, _ = smoothstep((time_s - GRASP_TIME_S) / 0.55)
-        return float(0.040 * (1.0 - close_phase))
+        return float(0.060 * (1.0 - close_phase))
 
 
 def _grasp_scene_xml(menagerie: Path, contact_time_constant_s: float) -> str:

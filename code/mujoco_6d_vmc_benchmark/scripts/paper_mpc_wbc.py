@@ -136,7 +136,17 @@ class PaperMPCWBC:
             raise ValueError("WBC feedback scale must be finite and in (0, 1]")
 
         q = data.qpos[:ARM_DOF].copy()
-        self.last_idx = self._nearest_waypoint(q, float(data.time))
+        # A real manipulation executive may pause a nominal waypoint queue
+        # while a state-gated safety event is being resolved (for example,
+        # hold a verified grasp while an external impact and a sustained push
+        # take place).  ``effective_time`` is an optional reference-owned
+        # clock for that case.  It is deliberately a property of the nominal
+        # reference/executive, never a student observation: the low-level
+        # controller still sees only its normal joint/WBC signals.
+        raw_time = float(data.time)
+        time_mapper = getattr(self.reference, "effective_time", None)
+        effective_time = float(time_mapper(raw_time)) if callable(time_mapper) else raw_time
+        self.last_idx = self._nearest_waypoint(q, effective_time)
         idx_ref = min(self.last_idx + self.lookahead, len(self.waypoints) - 1)
         target_time = idx_ref * self.waypoint_period_s
         # Adaptation: the source system advances stages state-based (behavior
@@ -147,13 +157,25 @@ class PaperMPCWBC:
         ref_times = np.asarray(getattr(self.reference, "times", None), dtype=float)
         ref_knots = getattr(self.reference, "q_knots", None)
         if ref_times is not None and ref_knots is not None:
-            seg = int(np.clip(np.searchsorted(ref_times, data.time, side="right") - 1,
+            seg = int(np.clip(np.searchsorted(ref_times, effective_time, side="right") - 1,
                               0, len(ref_times) - 2))
             if np.allclose(ref_knots[seg], ref_knots[seg + 1]):
                 target_time = min(target_time, float(ref_times[seg + 1]))
                 idx_ref = min(int(round(target_time / self.waypoint_period_s)),
                               len(self.waypoints) - 1)
-        error = self.waypoints[idx_ref] - q
+        # A state-based task executive may hold at a known stage endpoint.
+        # Aim at that exact joint goal while paused; otherwise duplicate hold
+        # waypoints can make nearest+lookahead keep aiming behind the endpoint
+        # that the executive is waiting to reach. The MPC gains are unchanged.
+        pending_goal = getattr(self.reference, "pending_joint_goal", None)
+        hold_goal = pending_goal(raw_time) if callable(pending_goal) else None
+        if hold_goal is None:
+            error = self.waypoints[idx_ref] - q
+        else:
+            hold_goal = np.asarray(hold_goal, dtype=float)
+            if hold_goal.shape != (ARM_DOF,) or not np.all(np.isfinite(hold_goal)):
+                raise ValueError("Pending task waypoint must be a finite seven-joint goal")
+            error = hold_goal - q
         # The compliance layer scales only the feedback part of the nominal
         # command (same contract as the previous WBCs).
         qdot = self.feedback_gain * feedback_scale * error

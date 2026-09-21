@@ -87,7 +87,7 @@ class RodApproachGeometry:
     cylinder_quaternion_wxyz: tuple[float, float, float, float]
 
 
-def impactor_geometry_spec(impactor_type: str) -> dict[str, str]:
+def impactor_geometry_spec(impactor_type: str, *, ball_radius_m: float | None = None) -> dict[str, str]:
     """Return the physical MuJoCo geometry for a named contact proxy.
 
     ``hand_proxy`` intentionally models only a compliant palm-sized contact
@@ -105,6 +105,10 @@ def impactor_geometry_spec(impactor_type: str) -> dict[str, str]:
             "geom_type": "sphere", "size": "0.040", "mass": "0.16",
             "friction": "0.9 0.02 0.002", "description": "finite-mass spherical impactor",
             "rgba": "0.86 0.10 0.10 1",
+            # A slightly over-damped normal contact keeps the finite-mass
+            # ball's stronger impact impulse from becoming a large numerical
+            # interpenetration at the 2 ms physics step.
+            "solref_dampratio": "2.0",
         },
         "hand_proxy": {
             "geom_type": "ellipsoid", "size": "0.060 0.035 0.025", "mass": "0.18",
@@ -119,7 +123,7 @@ def impactor_geometry_spec(impactor_type: str) -> dict[str, str]:
         # bits 5/5 collide with the hand (4/4), the FR3 arm links (1/1) and
         # the target object (6/7): the board strikes the whole arm.
         "plank": {
-            "geom_type": "box", "size": "0.20 0.010 0.05", "mass": "1.60",
+            "geom_type": "box", "size": "0.15 0.008 0.11", "mass": "1.20",
             "friction": "0.6 0.02 0.002", "description": "tilted dynamic wooden plank",
             "rgba": "0.62 0.45 0.24 1",
             "quat": "0.9537 0.3007 0 0",
@@ -127,7 +131,12 @@ def impactor_geometry_spec(impactor_type: str) -> dict[str, str]:
         },
     }
     try:
-        return specs[impactor_type].copy()
+        result = specs[impactor_type].copy()
+        if impactor_type == "ball" and ball_radius_m is not None:
+            if not np.isfinite(ball_radius_m) or ball_radius_m <= 0.0:
+                raise ValueError("ball_radius_m must be finite and positive")
+            result["size"] = f"{float(ball_radius_m):.8g}"
+        return result
     except KeyError as error:
         raise ValueError(f"unknown impactor type: {impactor_type}") from error
 
@@ -202,6 +211,40 @@ def rod_motion(
     displacement = stroke_m * (1.0 - blend)
     velocity = -stroke_m * derivative / (ROD_END_TIME_S - ROD_RETRACT_TIME_S)
     return float(displacement), float(velocity)
+
+
+def ball_impulse_motion(
+    time_s: float,
+    stroke_m: float,
+    start_time_s: float,
+    press_duration_s: float = 0.08,
+    retract_duration_s: float = 0.10,
+) -> tuple[float, float]:
+    """Short press-and-release pulse for a finite-mass spherical impactor.
+
+    Unlike ``rod_motion`` this profile has no hold segment.  The slide reaches
+    the commanded stroke quickly, then immediately returns to its home
+    position, so any hand displacement after separation is due to the impact
+    impulse and the controller's recovery response rather than a sustained
+    external push.
+    """
+    if not np.isfinite(stroke_m) or stroke_m <= 0.0:
+        raise ValueError("impulse stroke must be finite and positive")
+    if not np.isfinite(start_time_s) or not np.isfinite(press_duration_s) or not np.isfinite(retract_duration_s):
+        raise ValueError("impulse timing must be finite")
+    if press_duration_s <= 0.0 or retract_duration_s <= 0.0:
+        raise ValueError("impulse durations must be positive")
+    elapsed = float(time_s - start_time_s)
+    if elapsed <= 0.0:
+        return 0.0, 0.0
+    if elapsed < press_duration_s:
+        blend, derivative = smoothstep(elapsed / press_duration_s)
+        return float(stroke_m * blend), float(stroke_m * derivative / press_duration_s)
+    if elapsed < press_duration_s + retract_duration_s:
+        phase = (elapsed - press_duration_s) / retract_duration_s
+        blend, derivative = smoothstep(phase)
+        return float(stroke_m * (1.0 - blend)), float(-stroke_m * derivative / retract_duration_s)
+    return 0.0, 0.0
 
 
 def stiffness_schedule(

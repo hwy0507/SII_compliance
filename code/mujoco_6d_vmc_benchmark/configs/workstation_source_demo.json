@@ -1,0 +1,33 @@
+{
+  "description": "Development workstation source recipe; fixed 6D VMC, sustained rod, raised local guards. Not a frozen paper test.",
+  "entrypoint": "run_panel_push_20260920.py",
+  "arguments": {
+    "scene": "push", "duration": 24.0, "nominal_speed": 0.08,
+    "seed": 800, "push_hold": 1000000.0, "push_angle": -0.15,
+    "push_height": 0.65, "push_force": 12.0, "push_target_x": 0.57,
+    "push_stroke": 0.18, "push_press": 0.5, "push_retract": 1.0,
+    "payload_mass": 0.1, "event_stage": "approach", "event_delay": 0.0,
+    "teacher_force_source": "estimated", "teacher_profile": "memory", "dt": 0.00005
+  },
+  "environment": {
+    "PANELS_ENABLED": "1",
+    "PANEL_CONFIG": {
+      "layout": "raised_hand_rim", "pad_bottom_z": 0.55, "pad_top_z": 0.71,
+      "pad_lower_y": -0.15, "pad_upper_y": -0.085, "front_inner_x": 0.595,
+      "back_inner_x": 0.5, "pad_thickness": 0.015, "workstation": true,
+      "end_effector_only": false, "native_ccd": true
+    },
+    "CORE_VMC_CONFIG": {
+      "stiffness_6d": [600,100,1100,16,16,20],
+      "damping_6d": [30,12,48,3.5,3.5,4.5],
+      "mass_6d": [0.5,0.5,0.8,0.06,0.06,0.08],
+      "wrench_limit_6d": [35,35,50,3,3,3],
+      "deadband_6d": [0.2,0.2,0.2,0.03,0.03,0.03],
+      "velocity_limit_6d": [0.12,0.12,0.16,0.55,0.55,0.65],
+      "offset_limit_6d": [0.18,0.18,0.18,0.35,0.35,0.35],
+      "action_limit_6d": [0.16,0.16,0.20,0.60,0.60,0.60],
+      "offset_tracking_gain_6d": 0.8, "filter_tau": 0.015,
+      "axis_rotation_rpy": [0,0,-0.15]
+    }
+  }
+}
