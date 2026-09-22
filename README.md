@@ -506,9 +506,11 @@ SII_compliance/
 ├── code/
 │   ├── mujoco_6d_vmc_benchmark/           # 当前主线
 │   │   ├── SOURCE_GUIDE.md                # 服务器源码导出与复现说明
+│   │   ├── CODE_ORGANIZATION.md            # 当前主线/legacy/实验入口分层
 │   │   ├── configs/                       # 可复现开发场景配置
 │   │   ├── docs/                          # 协议、阶段报告和历史实验说明
-│   │   ├── scripts/                       # WBC/VMC/MLP/ESN/场景/采集/评估代码
+│   │   ├── scripts/                       # 兼容路径保持扁平；入口按 scripts/README.md 分层
+│   │   │   └── README.md                  # canonical、baseline、legacy 入口索引
 │   │   ├── tests/                         # 协议与接口测试
 │   │   └── tools/                         # 源码来源校验工具
 │   ├── whole-body-motion-control/         # NUS/移动抓取相关历史与集成参考
