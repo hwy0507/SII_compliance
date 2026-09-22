@@ -156,7 +156,212 @@ $$
 
 由于跟踪误差、峰值力、峰值力矩、完成时间和平滑性之间存在真实冲突，teacher 选择不使用单一手工加权总分。流程是在每个物理 fixture 内先应用任务和物理有效性门槛，再保留经验 Pareto 非支配参数/轨迹。它是有限扫描范围内的 Pareto 集，不是全局最优证明。
 
-## 4. Teacher 数据场景
+## 4. 经典笛卡尔导纳与阻抗 Baseline
+
+当前仓库把两个经典控制器作为低层柔顺 baseline。二者都接收同一个名义 WBC 参考位姿/速度和机器人本体感觉状态，但输出路径不同：
+
+- **笛卡尔阻抗（Cartesian impedance）**：根据末端位姿误差和速度误差直接构造 6D 笛卡尔虚拟力/力矩，再通过 $J^T$ 映射为关节力矩；
+- **笛卡尔导纳（Cartesian admittance）**：根据测得或估计的外力/力矩驱动一个虚拟质量-阻尼-弹簧系统，积分得到末端让位速度/位移，再通过 Jacobian 伪逆生成关节速度残差。
+
+在本项目的统一比较中，两者都必须复用相同的名义 WBC、MuJoCo 接触模型、速度/力矩安全栈、抓取阶段和任务成功判据。它们不读取障碍物几何、接触真值或未来事件时间。
+
+### 4.1 笛卡尔阻抗控制
+
+设名义末端位姿为 $(p_d,R_d)$，实测末端位姿为 $(p,R)$，名义 twist 为 $\nu_d=[v_d,\omega_d]$，实测 twist 为 $\nu=[v,\omega]$。代码中使用：
+
+$$
+e_p=p_d-p,
+\qquad
+e_R=\operatorname{Log}(R_dR^T),
+$$
+
+$$
+e_v=v_d-v,
+\qquad
+e_\omega=\omega_d-\omega.
+$$
+
+平移和转动通道分别采用阻抗形式：
+
+$$
+F=K_p e_p+D_p e_v,
+\qquad
+M=K_R e_R+D_R e_\omega.
+$$
+
+代码按照阻尼比 $\zeta$ 由虚拟质量/惯量自动设置阻尼：
+
+$$
+D_p=2\zeta\sqrt{m_vK_p},
+\qquad
+D_R=2\zeta\sqrt{I_vK_R}.
+$$
+
+为避免大误差时输出无限增大的力，弹簧项先经过逐轴饱和，再进行向量范数限制：
+
+$$
+F_s=F_{\max}\tanh\left(\frac{K_p e_p}{F_{\max}}\right),
+\qquad
+M_s=M_{\max}\tanh\left(\frac{K_R e_R}{M_{\max}}\right),
+$$
+
+$$
+F=\operatorname{sat}_{\|\cdot\|\le F_{\max}}(F_s+D_pe_v),
+\qquad
+M=\operatorname{sat}_{\|\cdot\|\le M_{\max}}(M_s+D_Re_\omega).
+$$
+
+最终笛卡尔 wrench 为 $w=[F,M]$，通过末端几何 Jacobian 转成关节力矩：
+
+$$
+\tau_{\mathrm{imp}}=J(q)^Tw,
+\qquad
+\tau=\operatorname{rate\_limit}\left(
+\operatorname{project}_{[-\tau_{\max},\tau_{\max}]}
+(\tau_{\mathrm{bias}}+\alpha\tau_{\mathrm{imp}})\right).
+$$
+
+其中 $\alpha$ 是在 torque box 内尽可能大的公共缩放系数，用来保持 wrench 方向而不是简单地逐关节截断。当前 rod baseline 使用的固定参数在代码中是：平移刚度 `900 N/m`、转动刚度 `45 Nm/rad`、阻尼比 `1.2`、力界 `24 N`、力矩界 `3 Nm`；对应代码的 high-stiffness `rigid` 对照为 `8000 N/m`、`360 Nm/rad`、阻尼比 `1.5`、`90 N`、`12 Nm`。正式论文应把这些值写在 protocol 中，并在相同的 fixture 上重新调参，而不能把开发版单个参数直接宣称为全局最优。
+
+代码实现位于 `scripts/run_rod_perturbation_benchmark.py` 的 `_direct_cartesian_wrench`：
+
+```python
+def _direct_cartesian_wrench(
+    nominal_position, nominal_rotation, nominal_twist,
+    ee_position, ee_rotation, ee_twist,
+    translation_stiffness, rotation_stiffness,
+    damping_ratio, maximum_force, maximum_moment,
+):
+    position_error = nominal_position - ee_position
+    rotation_error = so3_log(nominal_rotation @ ee_rotation.T)
+    velocity_error = nominal_twist - ee_twist
+
+    translation_damping = 2.0 * damping_ratio * np.sqrt(
+        VMCConfig().virtual_mass * translation_stiffness
+    )
+    rotation_damping = 2.0 * damping_ratio * np.sqrt(
+        VMCConfig().virtual_inertia * rotation_stiffness
+    )
+
+    force = _saturated_translation_spring(
+        translation_stiffness, maximum_force, position_error
+    )
+    force += translation_damping * velocity_error[:3]
+
+    moment = maximum_moment * np.tanh(
+        rotation_stiffness * rotation_error / maximum_moment
+    )
+    moment += rotation_damping * velocity_error[3:]
+
+    return np.concatenate([
+        _saturate_vector_norm(force, maximum_force),
+        _saturate_vector_norm(moment, maximum_moment),
+    ]), np.concatenate([position_error, rotation_error])
+```
+
+这个控制器的物理含义是：末端被推离名义轨迹后，弹簧误差产生回归力，阻尼项抑制相对速度；它不显式积分外力产生一个新的虚拟末端状态，因此属于直接 Cartesian impedance。
+
+### 4.2 笛卡尔导纳控制
+
+导纳控制的输入是估计外 wrench $w_{\mathrm{ext}}$，输出是期望运动。当前 6D 虚拟动力学可写为：
+
+$$
+M_a\dot\nu_a+B_a\nu_a+K_a\xi_a
+=w_{\mathrm{ext}},
+$$
+
+$$
+\dot\xi_a=\nu_a,
+\qquad
+\nu_{\mathrm{yield}}=\nu_a+K_{\mathrm{off}}\xi_a.
+$$
+
+这里 $\xi_a$ 是虚拟 carriage 相对 nominal 的 6D 位移/姿态偏移，$\nu_a$ 是虚拟 carriage 的 6D 速度。该系统的作用是把外力转换成受质量、阻尼和弹簧约束的让位速度：力越大，虚拟状态越偏；阻尼和弹簧决定响应速度、超调与回归速度。
+
+离散化时，控制周期为 $\Delta t=0.04\,\mathrm{s}$，代码在一个策略周期内使用多个子步积分：
+
+$$
+\nu_{k+1/2}
+=\operatorname{clip}\left[
+\nu_k+\frac{\Delta t}{N_s}M_a^{-1}
+\left(w_k-B_a\nu_k-K_a\xi_k\right),
+-\nu_{\max},\nu_{\max}\right],
+$$
+
+$$
+\xi_{k+1/2}
+=\operatorname{clip}\left[
+\xi_k+\frac{\Delta t}{N_s}\nu_{k+1/2},
+-\xi_{\max},\xi_{\max}\right].
+$$
+
+重复 $N_s$ 次后，将：
+
+$$
+a_{1:6}=\operatorname{clip}\left(
+\frac{R_6\left(\nu_a+K_{\mathrm{off}}\xi_a\right)}
+{[v_{\max},v_{\max},v_{\max},\omega_{\max},\omega_{\max},\omega_{\max}]},
+-1,1\right)
+$$
+
+作为统一 7D action 的 6 个 yielding 通道；第 0 维由 yielding action 的幅度或测量误差产生 WBC slowdown 请求。随后仍然经过共享 action filter 和速度伺服，不直接绕过安全层。
+
+当前代码中的核心状态更新位于 `scripts/run_vmc_6d_constrained_push_20260918.py`：
+
+```python
+def act(self, wrench_world, dt=0.04):
+    wrench = np.asarray(wrench_world, dtype=float)
+    self.filtered += (1.0 - np.exp(-dt / self.filter_tau)) * (
+        wrench - self.filtered
+    )
+
+    w = self.R6.T @ self.filtered
+    w = np.sign(w) * np.maximum(np.abs(w) - self.deadband, 0.0)
+    w = self.sigma * np.tanh(w / self.sigma)
+
+    for _ in range(20):
+        spring = self.sigma * np.tanh(
+            self.k * self.offset / self.sigma
+        )
+        acc = (w - self.b * self.velocity - spring) / self.mass
+        self.velocity = np.clip(
+            self.velocity + acc * (dt / 20.0),
+            -self.vmax, self.vmax,
+        )
+        self.offset = np.clip(
+            self.offset + self.velocity * (dt / 20.0),
+            -self.xmax, self.xmax,
+        )
+
+    residual = self.velocity + self.offset_gain * self.offset
+    action = np.zeros(7)
+    action[1:] = np.clip(
+        self.R6 @ residual / self.action_limits,
+        -1.0, 1.0,
+    )
+    action[0] = np.clip(
+        np.linalg.norm(action[1:]) / np.sqrt(6.0), 0.0, 1.0
+    )
+    return action
+```
+
+对于当前的 student teacher 数据，`wrench_world` 来自 `fr3_contact_interface_20260917.py` 的因果关节负载观测器和 Jacobian 等效 wrench；仿真中的 `contact_force`、障碍物位姿和事件时钟只用于审计与任务 gate，不能作为部署 observation。`vmc_compliance_baseline.py` 的 `SpringCarriageVMC`/`VMCComplianceAdapter` 是同一导纳思想的兼容封装，并额外把位姿/速度误差转换为可部署的 WBC slowdown 通道。
+
+### 4.3 两者的差异与公平比较
+
+| 项目 | 笛卡尔阻抗 | 笛卡尔导纳 |
+|---|---|---|
+| 主要输入 | 位姿误差、twist 误差 | 估计外力/力矩，及其因果滤波值 |
+| 内部状态 | 通常无显式虚拟末端状态 | 6D 虚拟位移/速度状态 |
+| 直接输出 | Cartesian wrench，再映射为 $J^Tw$ | yielding twist/offset，再映射为关节速度 |
+| 柔顺调节量 | $K,D,F_{\max},M_{\max}$ | $M_a,B_a,K_a,K_{\mathrm{off}},\nu_{\max},\xi_{\max}$ |
+| 主要优点 | 结构简单、轨迹回归直接 | 可表达持续接触中的让位和滑移 |
+| 主要风险 | 刚度过高时冲击/力矩大，过低时回归慢 | 估计力噪声、积分漂移和参数耦合 |
+| 当前代码 | `_direct_cartesian_wrench` | `SixDVirtualDynamics`, `SpringCarriageVMC` |
+
+两种 baseline 都应在相同场景、相同 nominal WBC、相同 action/torque safety gate 和相同 task-success gate 下比较。不能因为阻抗控制器输出的是 torque、导纳控制器输出的是 velocity residual，就给它们使用不同的物理步长、不同的碰撞模型或不同的成功标准。
+
+## 5. Teacher 数据场景
 
 当前基础 teacher bank 包含四个场景族：
 
@@ -169,7 +374,7 @@ $$
 
 数据采集必须保留真实 MuJoCo 刚体接触，禁止通过 teleport、焊接物块到手、隐藏穿模或预设 student 事件时钟制造成功轨迹。每条轨迹都记录 contact pair、penetration、task stage、末端状态、关节力矩和 teacher action，并对物理失败轨迹留档而不是静默删除。
 
-### 4.1 数据划分
+### 5.1 数据划分
 
 正式划分按 `scene / physical fixture / VMC parameter group` 进行，而不是把同一 rollout 的相邻时间窗随机拆分：
 
@@ -191,7 +396,7 @@ $$
 \pi_{\theta}:o_t\longmapsto(K,B,M).
 $$
 
-## 5. Student Observation
+## 6. Student Observation
 
 当前目标 observation contract 是 48 维本体感觉输入：
 
@@ -209,9 +414,9 @@ $$
 
 仓库仍兼容早期 45D contract，其中末端 wrench 只有三维力；正式后续实验应优先使用统一 48D contract，并在 checkpoint 中明确写入 contract name，避免 45D/48D 模型混用。
 
-## 6. MLP 与 ESN
+## 7. MLP 与 ESN
 
-### 6.1 MLP baseline
+### 7.1 MLP baseline
 
 匹配版 MLP 使用：
 
@@ -223,7 +428,7 @@ $$
 
 48D 输入时可训练参数量为 `23,687`。MLP 没有显式递归状态，只能从当前 observation 估计动作，因此是较强但无内部时序记忆的 data-driven baseline。
 
-### 6.2 Proposed nonlinear ESN
+### 7.2 Proposed nonlinear ESN
 
 当前主 ESN 使用 128 个固定 reservoir units，并把 reservoir 分成多时间尺度状态：
 
@@ -251,7 +456,7 @@ $$
 
 48D 输入和 128 reservoir 时只有 `1,239` 个可训练 readout 参数。它用于验证“经典低容量 ESN 是否足够”，不能与参数匹配的 nonlinear ESN 混为一谈。
 
-### 6.3 公平训练协议
+### 7.3 公平训练协议
 
 MLP 和 nonlinear ESN 共享：
 
@@ -265,7 +470,7 @@ MLP 和 nonlinear ESN 共享：
 
 当前主线是 supervised action distillation，不是从零 RL。RL、CEM readout refinement 和 torque takeover 代码仍保留用于消融或历史复现，但不能被描述成当前默认 ESN teacher-student 训练流程。尤其是 mixed-CEM refinement 只有在完成公平 BC 对比后才能作为独立扩展实验报告。
 
-## 7. 测试场景与泛化目标
+## 8. 测试场景与泛化目标
 
 四个基础场景用于 teacher 搜索、数据审计和源域留出验证。最终论文测试应冻结为更接近真实办公室的组合环境，包括：
 
@@ -278,7 +483,7 @@ MLP 和 nonlinear ESN 共享：
 
 正式测试时，VMC baseline 可以在测试场景上依据预先声明的预算调参；MLP/ESN 必须保持冻结，不能读取测试标签或重新训练。开发过程中反复看过并修改过的办公室场景只能作为 development acceptance set，最终 paper test 需要另行冻结未见条件。
 
-## 8. 评估协议
+## 9. 评估协议
 
 任务成功是前置 gate，柔顺指标不能掩盖抓取失败、物块滑落、未完成放置或绕开障碍后不再执行任务。当前主要指标包括：
 
@@ -293,7 +498,7 @@ MLP 和 nonlinear ESN 共享：
 
 多指标结果不应被随意压成一个未经验证的总分。当前做法是：先通过任务/物理有效性 gate，再报告 tracking、速度/平滑性、接触力和电机力矩的 Pareto 关系、中位数及最坏值。
 
-## 9. 仓库结构
+## 10. 仓库结构
 
 ```text
 SII_compliance/
@@ -328,7 +533,7 @@ SII_compliance/
 - `scripts/office_complex_scene_v5_20260917.py`：复杂办公室开发场景；
 - `scripts/current_student_policy_20260921.py`：当前 checkpoint contract 和推理加载器。
 
-## 10. 环境与快速检查
+## 11. 环境与快速检查
 
 推荐使用 Linux、NVIDIA GPU 和 EGL headless rendering。准备 MuJoCo Menagerie，至少包含：
 
@@ -383,7 +588,7 @@ python scripts/train_matched_action7_20260921.py \
 
 `--model` 可选 `mlp`、`esn_nonlinear` 或 `esn_linear`。训练脚本要求数据目录存在 `READY.json` 和经过审计的 manifest，并拒绝覆盖已有输出目录。
 
-## 11. 当前状态
+## 12. 当前状态
 
 截至 2026-09-21：
 
@@ -404,7 +609,7 @@ python scripts/train_matched_action7_20260921.py \
 - 不能把 teacher 使用的任务成功监督或仿真状态描述成 student 部署输入；
 - 不能把历史 RL/CEM 代码描述成当前默认训练方法。
 
-## 12. 下一阶段
+## 13. 下一阶段
 
 1. 用统一 48D observation 重新生成并审计四场景 VMC teacher bank；
 2. 扩大每个场景的姿态、入射角、接触部位、载荷和接触时长覆盖；
