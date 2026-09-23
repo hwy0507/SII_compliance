@@ -530,7 +530,7 @@ SII_compliance/
 - `20260923_origin_main_5d0e457/SII_compliance_origin_main_5d0e457.tar.gz` 是整理前 `origin/main`（commit `5d0e4574b5708b5131046f8b9d141633d399f726`）的完整 tracked-file 快照；
 - `legacy_20260923_removed_from_main/removed_files.tar.gz` 是本次从 GitHub 主线移出的历史代码、旧项目、旧结果和旧报告附件；
 - 两个目录都包含 SHA-256 清单，可用于逐文件恢复和校验；
-- 同一整理前快照也保留在 GitHub 分支 `archive/origin-main-20260923`，但正式开发只使用 `main`。
+- 历史快照只保存在 DGX Spark；GitHub 仅维护当前 `main` 主线。
 
 本机项目 GIF 的历史归档（按文件日期 / 算法 / 场景分类）位于 DGX Spark：
 
