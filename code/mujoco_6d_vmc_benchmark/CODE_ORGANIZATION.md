@@ -53,9 +53,7 @@ evaluate_matched_guarded_push_20260921.py / office_complex_scene_v5_20260917.py
 
 ```text
 search_unified_6d_teacher_20260921.py
-    → 多场景 VMC 参数搜索
-collect_four_scene_pareto_20260918.py
-    → 场景/fixture/参数组的 Pareto 采样
+    → 多场景 VMC 参数搜索与 Pareto 候选
 build_current_teacher_bank_20260921.py
     → 统一 manifest 和 READY 标记
 audit_four_scene_dataset_20260918.py
@@ -96,18 +94,16 @@ python scripts/train_matched_action7_20260921.py \
 
 `scripts/` 目前仍然保持扁平目录，这是有意保留的兼容策略，因为大量脚本使用同目录绝对/相对导入，直接搬移会破坏服务器复现命令和已记录的 provenance hash。
 
-下面这些文件只用于历史复现、旧数据转换或消融，不应作为当前 canonical pipeline 的入口：
+旧版 teacher、PPO/RL、Direct-ESN、Fan-Ye、office recovery、overnight
+campaign、旧 benchmark 和 Fetch/ManiSkill 工程已经从 GitHub `main` 移出，
+完整归档于：
 
-- `capture_legacy_teacher45_20260918.py`；
-- `contact_transfer_student_20260916.py`；
-- `run_contact_transfer_20260916.py`；
-- `office_task_v4_20260917.py` 及 `office_recovery_scene_v*.py`；
-- `fan_ye_esn_*.py`、`run_fan_ye_esn_*.py`；
-- `train_ppo_sixd_stiffness.py`、`evaluate_ppo_sixd_stiffness.py`；
-- `lift_diag*.py`、`lift_experiment.py`、`table_experiment.py`；
-- `overnight_*.py`、`run_benchmark_v*_ladder.py` 等历史批处理入口。
+```text
+/home/arm1/SII_compliance_archive/legacy_20260923_removed_from_main/
+```
 
-其中 `legacy` 厚桌角 action adapter 只负责把旧版 trace 转换成当前 canonical action 字段，不是另一套 VMC 控制器，也不参与新的 teacher 采集。
+当前仍留在 `scripts/` 中、但不属于论文主结果的少量模块，是 office/runtime
+所需的兼容支持；它们不能被当作 canonical teacher 或 student 训练入口。
 
 ## 6. 整理约定
 
@@ -120,5 +116,7 @@ python scripts/train_matched_action7_20260921.py \
 ```bash
 python tools/check_source_export.py
 ```
+
+当前 provenance manifest 为 `docs/server_source_20260923.json`。
 
 如果未来需要真正物理搬移脚本，应先把同目录导入改为显式 package import，并重新生成服务器源码 manifest；在此之前保持路径稳定比目录视觉上的“更整齐”更重要。

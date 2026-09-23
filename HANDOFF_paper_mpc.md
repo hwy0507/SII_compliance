@@ -14,7 +14,9 @@
 ### 1.1 大图景
 
 最终目标系统是 NUS 的 **Visibility-Aware Mobile Grasping**（论文 arXiv 2605.02487，
-本地代码 `code/whole-body-motion-control/`，包名 `grasp_anywhere`）。它的架构：
+原始 NUS 参考代码已经从 GitHub 主线移出，保存在 DGX Spark 的
+`/home/arm1/SII_compliance_archive/legacy_20260923_removed_from_main/`
+以及整理前完整快照目录中。当前仓库只保留固定基座 paper-WBC 适配层；其架构：
 
 ```
 规划器（πg 子目标/πv 注视/πr 全身规划, VAMP+重规划）
@@ -199,7 +201,8 @@ GIF 生成参考服务器 `/tmp/run_gifs3.sh`（board）/`run_gifs2.sh`（ball�
    （`git checkout main && git merge paper-mpc-baseline` 或 PR）**。每次提交前
    `git branch --show-current` 确认；发现被切到 main 就先
    `git checkout paper-mpc-baseline` 再提交。工作树里出现的 extraction_*/residual_*/
-   whole-body-motion-control 未提交改动属于并行线，不要动也不要顺手提交。
+   原 `whole-body-motion-control` 工程属于历史参考，已归档，不再作为当前
+   `main` 的工作树内容。需要复查时从 DGX Spark 归档恢复，不要直接复制回主线。
 7. **服务器长命令用 nohup + 日志文件**，expect 直连会断（exit 255）。
 
 ## 9. 关键文档索引

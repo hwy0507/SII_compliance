@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    manifest = json.loads((ROOT / 'docs/server_source_20260921.json').read_text())
+    manifest = json.loads((ROOT / 'docs/server_source_20260923.json').read_text())
     problems = []
     for relative, info in manifest['files'].items():
         path = ROOT / relative

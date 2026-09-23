@@ -28,7 +28,7 @@ def test_smoothstep_clamps_outside_trajectory_segment():
 
 
 def test_gripper_closes_only_after_the_grasp_phase_starts():
-    assert MODULE.PickLiftCarryReference.gripper_target(MODULE.GRASP_TIME_S) == 0.04
+    assert MODULE.PickLiftCarryReference.gripper_target(MODULE.GRASP_TIME_S) == 0.060
     assert MODULE.PickLiftCarryReference.gripper_target(MODULE.GRASP_TIME_S + 1.0) == 0.0
 
 

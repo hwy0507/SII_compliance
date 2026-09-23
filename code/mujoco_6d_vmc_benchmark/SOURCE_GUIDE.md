@@ -2,7 +2,7 @@
 
 This directory is a source-only export from the research runtime on
 `arm1:/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark`, captured on
-2026-09-21. It is intended to make the current MuJoCo compliance work
+2026-09-23. It is intended to make the current MuJoCo compliance work
 reviewable and reproducible without committing experiment outputs, GIFs,
 videos, checkpoints, or private server state.
 
@@ -12,7 +12,18 @@ The export contains the current FR3/Panda-compatible MuJoCo scenes, WBC and
 6D VMC control layers, primitive contact fixtures, the workstation/office
 scenes, teacher-data and audit scripts, and the MLP/ESN student implementations.
 The exact captured files, source paths, sizes, and SHA-256 hashes are recorded
-in `docs/server_source_20260921.json`.
+in `docs/server_source_20260923.json`.
+
+Historical source and result artifacts removed from the GitHub `main` branch
+are archived on DGX Spark at:
+
+```text
+/home/arm1/SII_compliance_archive/20260923_origin_main_5d0e457/
+/home/arm1/SII_compliance_archive/legacy_20260923_removed_from_main/
+```
+
+The first directory is a complete pre-slimming snapshot; the second contains
+the exact removed-file archive and its SHA-256 manifest.
 
 The repository intentionally does **not** include `outputs/`, model weights,
 GIF/MP4 files, large datasets, Python caches, virtual environments, or server
@@ -94,7 +105,7 @@ configuration paths predictable.
    syntax.
 2. Run the ball or workstation smoke recipe before rendering.
 3. Inspect the JSON metrics and contact-pair audit before trusting a GIF.
-4. For teacher collection, run the scene-specific `collect_*`, `search_*`, or
+4. For teacher collection, run the scene-specific `search_*` or
    `build_*teacher*` script and preserve its seed/manifest with the dataset.
 5. Train matched MLP and ESN students using the resulting teacher actions;
    evaluate on held-out fixtures rather than replaying the training fixture.

@@ -1,6 +1,6 @@
 # Data-Driven Compliance Control for FR3
 
-> 更新日期：2026-09-21
+> 更新日期：2026-09-23
 >
 > 当前主线：MuJoCo 中的 FR3/Panda 柔顺控制、VMC teacher 数据生成，以及 MLP/ESN action distillation 与复杂场景泛化验证。
 
@@ -25,7 +25,7 @@ velocity servo + gravity/bias compensation
 MuJoCo FR3/Panda, later real FR3
 ```
 
-仓库中早期的 Fetch、ManiSkill、PPO residual 路线仍作为历史代码保留，但已经不是当前研究主线。当前主要代码位于：
+仓库中早期的 Fetch、ManiSkill、PPO residual 路线已经从 GitHub 主线移出，并完整归档到 DGX Spark；它们不再是当前研究主线。当前主要代码位于：
 
 ```text
 code/mujoco_6d_vmc_benchmark/
@@ -508,16 +508,31 @@ SII_compliance/
 │   │   ├── SOURCE_GUIDE.md                # 服务器源码导出与复现说明
 │   │   ├── CODE_ORGANIZATION.md            # 当前主线/legacy/实验入口分层
 │   │   ├── configs/                       # 可复现开发场景配置
-│   │   ├── docs/                          # 协议、阶段报告和历史实验说明
+│   │   ├── docs/                          # 当前协议、路线图和必要方法说明
 │   │   ├── scripts/                       # 兼容路径保持扁平；入口按 scripts/README.md 分层
 │   │   │   └── README.md                  # canonical、baseline、legacy 入口索引
 │   │   ├── tests/                         # 协议与接口测试
 │   │   └── tools/                         # 源码来源校验工具
-│   ├── whole-body-motion-control/         # NUS/移动抓取相关历史与集成参考
-│   └── residual_compliance_fetch_server_20260706/
-│                                           # 早期 Fetch/ManiSkill 柔顺研究，非当前主线
 └── reports/                               # 早期交接与方向文档
 ```
+
+### 历史代码与实验归档
+
+为了让 GitHub `main` 只保留当前论文主线代码，整理前的完整快照和本次移出的历史内容已存放在 DGX Spark：
+
+```text
+/home/arm1/SII_compliance_archive/20260923_origin_main_5d0e457/
+/home/arm1/SII_compliance_archive/legacy_20260923_removed_from_main/
+```
+
+其中：
+
+- `20260923_origin_main_5d0e457/SII_compliance_origin_main_5d0e457.tar.gz` 是整理前 `origin/main`（commit `5d0e4574b5708b5131046f8b9d141633d399f726`）的完整 tracked-file 快照；
+- `legacy_20260923_removed_from_main/removed_files.tar.gz` 是本次从 GitHub 主线移出的历史代码、旧项目、旧结果和旧报告附件；
+- 两个目录都包含 SHA-256 清单，可用于逐文件恢复和校验；
+- 同一整理前快照也保留在 GitHub 分支 `archive/origin-main-20260923`，但正式开发只使用 `main`。
+
+当前主线中仍保留少量被 office/runtime 动态导入的兼容模块；它们属于运行时支持，不代表对应的历史算法仍是论文主结果。
 
 关键代码入口：
 
@@ -526,7 +541,7 @@ SII_compliance/
 - `scripts/wbc_velocity_residual_core.py`：共享 7D action、安全过滤和速度伺服；
 - `scripts/fr3_contact_interface_20260917.py`：因果 load observer 和部署边界；
 - `scripts/run_vmc_6d_constrained_push_20260918.py`：6D VMC teacher；
-- `scripts/collect_four_scene_pareto_20260918.py`：四场景扫描和 Pareto 采集；
+- `scripts/search_unified_6d_teacher_20260921.py`：统一六维 VMC 参数搜索和 Pareto 候选；
 - `scripts/build_current_teacher_bank_20260921.py`：当前 teacher bank 构建；
 - `scripts/audit_four_scene_dataset_20260918.py`：数据泄漏、物理组和来源审计；
 - `scripts/train_matched_action7_20260921.py`：匹配 MLP/nonlinear ESN/linear ESN 训练；
@@ -625,4 +640,4 @@ python scripts/train_matched_action7_20260921.py \
 更详细的源码说明、已知限制和 provenance 校验见：
 
 - [`code/mujoco_6d_vmc_benchmark/SOURCE_GUIDE.md`](code/mujoco_6d_vmc_benchmark/SOURCE_GUIDE.md)
-- [`code/mujoco_6d_vmc_benchmark/docs/server_source_20260921.json`](code/mujoco_6d_vmc_benchmark/docs/server_source_20260921.json)
+- [`code/mujoco_6d_vmc_benchmark/docs/server_source_20260923.json`](code/mujoco_6d_vmc_benchmark/docs/server_source_20260923.json)

@@ -15,8 +15,7 @@
 
 ### Teacher 数据
 
-- `search_unified_6d_teacher_20260921.py`：VMC 参数搜索；
-- `collect_four_scene_pareto_20260918.py`：多场景 Pareto 采样；
+- `search_unified_6d_teacher_20260921.py`：多场景 VMC 参数搜索和 Pareto 候选；
 - `build_current_teacher_bank_20260921.py`：teacher bank 构建；
 - `audit_four_scene_dataset_20260918.py`：来源、物理和 split 审计；
 - `convert_push_teacher_to_proprio48_20260921.py`：历史 trace 转 canonical 48D。
@@ -40,24 +39,16 @@
 
 ## Legacy / historical
 
-以下脚本保留用于复现旧结果或转换旧数据，不应作为新实验入口：
+旧版 teacher、PPO/RL、Direct-ESN、Fan-Ye、office recovery、overnight
+campaign、旧 benchmark 和 Fetch/ManiSkill 工程已经从 GitHub `main` 移出，
+完整归档在 DGX Spark：
 
 ```text
-capture_legacy_teacher45_20260918.py
-run_contact_transfer_20260916.py
-contact_transfer_student_20260916.py
-office_task_v4_20260917.py
-office_recovery_scene_v*.py
-fan_ye_esn_*.py
-run_fan_ye_esn_*.py
-train_ppo_sixd_stiffness.py
-evaluate_ppo_sixd_stiffness.py
-lift_diag*.py
-overnight_*.py
-run_benchmark_v*_ladder.py
+/home/arm1/SII_compliance_archive/legacy_20260923_removed_from_main/
 ```
 
-`legacy` 只表示协议或数据格式旧，不表示代码一定错误；但这些入口不能替代 canonical 6D VMC teacher pipeline。
+当前目录中仍出现的旧日期后缀模块仅用于运行时兼容或历史接口适配，不能替代
+canonical 6D VMC teacher pipeline。
 
 ## 快速选择
 
@@ -70,4 +61,3 @@ run_benchmark_v*_ladder.py
 | 训练线性 ESN 消融 | `train_matched_action7_20260921.py --model esn_linear` |
 | 检查数据来源 | `audit_four_scene_dataset_20260918.py` |
 | 运行复杂办公室开发场景 | `office_complex_scene_v5_20260917.py` |
-
