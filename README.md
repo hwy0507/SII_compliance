@@ -532,6 +532,14 @@ SII_compliance/
 - 两个目录都包含 SHA-256 清单，可用于逐文件恢复和校验；
 - 历史快照只保存在 DGX Spark；GitHub 仅维护当前 `main` 主线。
 
+此前 GitHub 上的非主线分支也已先导出并归档到 Spark，再从远端删除：
+
+```text
+/home/arm1/SII_compliance_archive/github_branches_removed_20260923/
+```
+
+该目录保存 `paper-mpc-baseline` 与 `codex/fr3-nus-mujoco-progress` 的 branch snapshot、原始 commit 和 SHA-256 清单。
+
 本机项目 GIF 的历史归档（按文件日期 / 算法 / 场景分类）位于 DGX Spark：
 
 ```text
