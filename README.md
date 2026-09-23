@@ -532,6 +532,14 @@ SII_compliance/
 - 两个目录都包含 SHA-256 清单，可用于逐文件恢复和校验；
 - 同一整理前快照也保留在 GitHub 分支 `archive/origin-main-20260923`，但正式开发只使用 `main`。
 
+本机项目 GIF 的历史归档（按文件日期 / 算法 / 场景分类）位于 DGX Spark：
+
+```text
+/home/arm1/SII_compliance_archive/mac_gifs_20260923/
+```
+
+该目录包含 `inventory.json`、`SHA256SUMS` 和 `METADATA.txt`；归档共 443 个 GIF。为避免误删，桌面目录 `/Users/hwy/Desktop/demo_0923` 未纳入归档清理，仍保留在本机。
+
 当前主线中仍保留少量被 office/runtime 动态导入的兼容模块；它们属于运行时支持，不代表对应的历史算法仍是论文主结果。
 
 关键代码入口：
