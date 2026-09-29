@@ -71,28 +71,38 @@ def audit_initial(m,d):
 
 
 def contact_support(m,d,target,desk):
+    """Return whether target is force-supported by one or more support geoms."""
+    supports={int(desk)} if np.isscalar(desk) else {int(x) for x in desk}
     for i in range(d.ncon):
         c=d.contact[i]
-        if {int(c.geom1),int(c.geom2)}=={target,desk}:
+        pair={int(c.geom1),int(c.geom2)}
+        if int(target) in pair and pair.intersection(supports):
             f=np.zeros(6);mujoco.mj_contactForce(m,d,i,f)
             if f[0]>.05:return True
     return False
 
 
 class PickPlaceTask:
-    def __init__(self,initial,fingers,fdofs,source=None):
+    def __init__(self,initial,fingers,fdofs,source=None,destination=None,support_geoms=None,lift_height=.24,carry_waypoint=None):
         source=SOURCE if source is None else np.asarray(source,dtype=float)
+        destination=DEST if destination is None else np.asarray(destination,dtype=float)
         pickup=source+np.array([0,0,.1029])
         above=source+np.array([0,0,.175])
-        carry=DEST+np.array([0,0,.175])
-        placement=DEST+np.array([0,0,.0959])
-        lift=source+np.array([0,0,.24])
+        carry=destination+np.array([0,0,.175]) if carry_waypoint is None else np.asarray(carry_waypoint,dtype=float)
+        placement=destination+np.array([0,0,.0959])
+        lift=source+np.array([0,0,float(lift_height)])
         self.goals=[above,pickup,pickup,lift,carry,placement,placement,carry]
         self.names=['approach','align','grasp','lift','carry','load_transfer','release','retreat']
         self.index=0;self.ready=0.;self.rotation=np.diag([-1.,1.,-1.])
         self.previous_goal=initial.copy();self.path_direction=self.direction()
         self.fingers=fingers;self.fdofs=fdofs;self.gripper=.04
         self.carry_load=None;self.release_load_change=None
+        # Development-only corner placement can release after the payload is
+        # physically supported.  The formal desk task keeps the original
+        # wrench-transfer condition below.
+        self.corner_release_ok=False
+        self.destination=destination.copy()
+        self.support_geoms=None if support_geoms is None else tuple(int(x) for x in support_geoms)
 
     def direction(self):
         v=self.goals[self.index]-self.previous_goal
@@ -106,7 +116,9 @@ class PickPlaceTask:
             self.carry_load=float(wrench[2]) if self.carry_load is None else .95*self.carry_load+.05*float(wrench[2])
         if self.index==5:
             self.release_load_change=float(wrench[2])-(self.carry_load or 0.)
-            ready=ready and self.carry_load is not None and self.release_load_change>.4
+            ready=ready and self.carry_load is not None and (
+                self.release_load_change>.4 or self.corner_release_ok)
+            self.corner_release_ok=False
         if self.index==6:ready=ready and sum(q[self.fingers])>.075
         self.ready=self.ready+DT if ready else 0.
         if self.ready>=.20-1e-9 and self.index<7:

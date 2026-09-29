@@ -1,5 +1,5 @@
 """Audit v5 initial geometry, static cup support and dynamic apparatus reach."""
-import argparse,json
+import argparse,json,os
 from pathlib import Path
 from types import SimpleNamespace
 import mujoco,numpy as np
@@ -11,9 +11,16 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def make(flags):
     original=legacy.extend_xml;original_layout=legacy.task_layout
-    legacy.extend_xml=lambda xml,spec:extend_complex_xml(xml,spec,flags['office_variant'])
+    legacy.extend_xml=lambda xml,spec:extend_complex_xml(
+        xml,spec,flags['office_variant'],flags.get('interaction_demo',False),
+        flags.get('corner_placement',False),flags.get('combined_demo',False),
+        flags.get('combined_contact_v2',False),flags.get('relaxed_pillar',False))
     legacy.task_layout=lambda spec:(np.array([.54,-.19,.60]),np.array([.54,-.19,.425]))
-    a=SimpleNamespace(**dict(flags,push_hold=4.,menagerie=ROOT.parent/'mujoco_menagerie',dt=.0001,settle_only=True,
+    bundled=ROOT/'outputs/canonical_rl_assets_20260923/menagerie'
+    requested=os.environ.get('MUJOCO_MENAGERIE_PATH')
+    menagerie=Path(requested) if requested else bundled if bundled.is_dir() else ROOT.parent/'mujoco_menagerie'
+    if not menagerie.is_dir():raise FileNotFoundError(f'MuJoCo Menagerie not found: {menagerie}')
+    a=SimpleNamespace(**dict(flags,push_hold=4.,menagerie=menagerie,dt=.0001,settle_only=True,
         stiffness=110.,tangent_speed=None,teacher_profile='none',force_target=1.,normal_gain=.02,
         mixture=0.,model=None,render=False))
     try:return legacy.create_environment(a)

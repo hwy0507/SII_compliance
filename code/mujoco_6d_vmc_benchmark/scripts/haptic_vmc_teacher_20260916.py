@@ -59,11 +59,14 @@ class JointLoadObserver:
     obstacle geometry, contact identity, or event time. Accuracy with noisy
     hardware requires a separate calibration; this is ideal-sensor simulation.
     """
-    def __init__(self, velocity, frictionloss, filter_tau=.04):
+    def __init__(self, velocity, frictionloss, filter_tau=.04, friction_velocity_scale=.005):
         self.previous_velocity = np.asarray(velocity).copy()
         self.filtered = np.zeros(7)
         self.filter_tau = filter_tau
         self.frictionloss = np.asarray(frictionloss).copy()
+        self.friction_velocity_scale = float(friction_velocity_scale)
+        if not np.isfinite(self.friction_velocity_scale) or self.friction_velocity_scale<=0:
+            raise ValueError('Friction velocity scale must be positive and finite')
 
     def update(self, velocity, mass_matrix, bias, passive, actuator_torque, dt):
         velocity = np.asarray(velocity)
@@ -72,7 +75,7 @@ class JointLoadObserver:
         # MuJoCo frictionloss is a constraint, not qfrc_passive. It is an
         # internal joint load, so compensate moving friction and use its
         # known stiction interval as uncertainty near zero encoder velocity.
-        motion = np.tanh(velocity[:7]/.005)
+        motion = np.tanh(velocity[:7]/self.friction_velocity_scale)
         compensated = residual + self.frictionloss[:7]*motion
         uncertainty = self.frictionloss[:7]*(1.-np.abs(motion))
         residual = np.sign(compensated)*np.maximum(np.abs(compensated)-uncertainty,0.)

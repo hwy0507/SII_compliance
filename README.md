@@ -1,6 +1,20 @@
 # Data-Driven Compliance Control for FR3
 
-> 更新日期：2026-09-23
+## 2026-09-29 Office-v5 Handoff
+
+The current office-v5 ESN work is documented for fair baseline comparison in
+[`code/mujoco_6d_vmc_benchmark/docs/ESN_OFFICE_BASELINE_HANDOFF_20260929.md`](code/mujoco_6d_vmc_benchmark/docs/ESN_OFFICE_BASELINE_HANDOFF_20260929.md).
+The current pure-proprioceptive ESN checkpoint passes the delayed-ball formal
+reference at `dt=5e-5` (`task/strict=true`, external penetration `0.18855 mm`,
+peak torque `37.76 Nm`, peak speed `0.14243 m/s`, 3-D RMSE `0.00889 m`). The
+single combined cup/pillar/rod/ball/thick-corner scene is not yet a success:
+the registered combined-v4 development run ends in `carry` with `0.26623 mm`
+penetration, so its formal rerun is intentionally not unlocked. No gate,
+actuator limit, or actor input contract was relaxed. The document also records
+the separate relaxed-pillar diagnostic; it must not be used as the formal
+combined benchmark.
+
+> 更新日期：2026-09-29
 >
 > 当前主线：MuJoCo 中的 FR3/Panda 柔顺控制、VMC teacher 数据生成，以及 MLP/ESN action distillation 与复杂场景泛化验证。
 
