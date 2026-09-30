@@ -5,7 +5,7 @@ import pytest
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
-from teacher_bank_design_20260930 import CATEGORIES,decode,design,propose,warm_points
+from teacher_bank_design_20260930 import CATEGORIES,TRAIN_ANCHORS,VALIDATION_ANCHORS,decode,design,propose,warm_points
 from teacher_bank_rollout_20260930 import adapted_run,training_xml
 
 
@@ -18,6 +18,9 @@ def test_fixture_counts_split_identity_and_determinism(tmp_path):
         rows=[r for r in a if r['category']==category]
         assert sum(r['split']=='train' for r in rows)==1000
         assert sum(r['split']=='validation' for r in rows)==100
+        for split,indices in (('train',TRAIN_ANCHORS),('validation',VALIDATION_ANCHORS)):
+            subset=[r for r in rows if r['split']==split]
+            assert len({subset[i]['object_shape'] for i in indices})==3
     assert len({r['physical_config_sha256'] for r in a})==3300
     assert len({r['seed'] for r in a})==3300
     assert all(r['start_s']>=2 for r in a)

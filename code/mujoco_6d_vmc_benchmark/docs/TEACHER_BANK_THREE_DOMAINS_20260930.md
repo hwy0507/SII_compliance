@@ -39,7 +39,9 @@ VMC/导纳为 7 维，阻抗为真实 5 维，固定其仅用于阻尼参数化�
 另两方法保留配对 baseline 结果。当前不做 ESN 训练。某经典法无可行候选不阻止其他方法，
 选其约束优先的最好已观察候选并明确标注不可行；任何失败轨迹不能成为ESN标签。
 验证集只在候选锁定后运行，不回流优化。为避免1000环境长采集挤掉全部验证，v5先执行
-每类预定索引0/1/2共9个验证环境×3方法，然后按剩余窗口采集；其余97/类仍未运行。
+每类预定索引0/1/11共9个验证环境×3方法，然后按剩余窗口采集；其余97/类仍未运行。
+搜索anchor在优化开始前修正为0/337/671，使球/椭球/胶囊和手/杆/推板都被覆盖；旧0/333/666
+对短撞的模3形状索引重复，不能称作三种物体覆盖。验证索引独立固定，不读取结果选索引。
 
 ## 筛选与审计
 
@@ -70,10 +72,73 @@ v5可行候选采用分数：`RMSE/0.05 + 0.3*max_joint_torque_ratio + 0.1*retre
 入口：`tools/teacher_bank_campaign_20260930.py prepare|pilot|run [--archive]`。
 每条 run 单独 execution.json、request、raw/audit；源码不可覆盖。归档先写 incoming，逐文件
 SHA256 核验再发布到服务器 `runs/main/<campaign-name>/`。传输未完成不称已共享。
-长时任务 heartbeat `teacher-10` 每 20 分钟检查，截止 13:48:16 UTC；服务和 campaign lock
+长时任务 heartbeat `teacher-10` 每 20 分钟检查，计算截止 13:48:16 UTC；额外保留至14:28:16
+仅用于最后回合的归档、审计和交付，不增加计算窗口。服务和 campaign lock
 避免重复启动。实际可完成量由 pilot 测得吞吐决定，10 小时优先级高于最大回合数上限。
 
-## 当前状态（初始化及独立审查阶段）
+## 05:23 UTC 接续核对：pilot 与搜索前审查
+
+远端 main=`8dec129deecf2b769e765c5d91a54a64140a22a7`，
+baseline=`5c4844b2d96339f696f6766b4a63cde2514cb547`，已读取两分支更新。
+baseline 的 SimbaV2 campaign_03 正在 Spark 四路训练，本任务不占其仿真资源。
+
+已完成：v6主动类别六条完整pilot及归档；v5阻抗旧raw独立复审及归档；
+v8上方掌翼厚边缘18个跨类初态检查。v8被动三方法结果如下，均为dt=1e-4开发回合：
+
+| 方法 | task | 训练接触筛选 | 可纳入 | RMSE mm | 峰矩 Nm | 峰速 m/s |
+|---|---|---|---|---:|---:|---:|
+| VMC | true | false | false | 36.140 | 48.160 | 0.06160 |
+| 导纳 | false | true | false | 39.900 | 50.927 | 0.06160 |
+| 阻抗 | true | true | true | 47.988 | 45.612 | 0.15314 |
+
+阻抗只是一个训练fixture通过，不是跨条件结果，更不是ESN标签。其累计接触12.8117s、
+18840段接触run，只有一个5ms run以0.231mm上抬通过0.1mm曝光门槛，不能称平顺明显蹭过。
+VMC有真实碰边但接触中上抬仅0.0866mm，按原已注册训练筛选拒绝，不能据任务成功晋级。
+独立复算阻抗550000物理子步的三指标，与原audit差均为0。
+
+v8于05:23:21 UTC完整保存九条pilot后，被预定阶段边界锁阻止进入旧搜索。
+日志末尾BlockingIOError是这次计划内停止，不是物理失败；九条execution均完成，九条归档
+receipt已核验。没有向仿真子进程发送停止信号或改写冻结源码。v9已准备但未执行。
+
+运行中：`teacher-bank-search-v10-20260930.service`，05:29:05 UTC启动，直接进入搜索。
+源码210文件、metadata2文件、source_inputs3文件已逐文件核验到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_three_domains_20260930_v10/`。
+冻结入口为该目录`source/tools/teacher_bank_campaign_20260930.py`，实际计算主机airpig；
+本地相同相对目录是工作缓存。plan记录未提交源码快照hash及base commit，不能当作干净commit。
+
+v10统一修正候选排序：失败anchor数最少优先，其次最大失败标签数，最后原平均评分。
+BO约束为失败anchor数加小于0.25的标签严重度次项，全部通过为-1；它是离散失败代理，
+不是连续物理超限量。评分中峰矩项是各关节峰矩/该关节限值的最大比值，不等于原始Nm排序。
+原始Nm/末端峰速仍完整报告，不正向奖励速度尖峰，也不宣称存在额外实测速率硬门槛。
+阻抗内部参考以250Hz积分，VMC/导纳状态25Hz、共享执行250Hz，这是现有控制实现差异。
+
+每次新仿真前核验实际机器人资产85文件，执行记录保留核验时间/hash；同fixture的模型
+hash跨方法、候选和阶段一致。审计还绑定曝光记录到完整physics时间轴，schema2人手必须
+逐子步对齐，观察q/dq与前后状态对齐。九条旧pilot只读关联复核全部通过，没有改写原audit。
+新搜索开始前73项测试通过。数值nonfinite仍会触发审计异常并停管线待诊断；不把缺失或
+损坏的指标伪造为BO观察，也不能将算法物理发散一律解释成外部基础设施故障。
+
+截止可能发生在某配对block中间，届时实际预算不完全相等；正式比较只用共同完整候选前缀，
+partial结果另外报告。`teacher_bank.json`搜索期间只是暂定选择；完整搜索与
+`anchor_feasibility.json`核验后才称锁定，验证结果不回流调参。
+
+人手曝光schema2已完成并通过小型反例测试：只计施推/保持期间连续接触中的沿推力方向位移，
+拒绝朝推手移动、纯切向移动和撤回后的位移；保留物理子步原始证据。旧schema1人手数据不
+追认为schema2通过，原审计不改写。详见[曝光修正](TEACHER_BANK_PERSON_EXPOSURE_SCHEMA2_20260930.md)。
+冻结综合环境、正式gate及执行器限制没有修改。
+
+已核验服务器产物（主机均为arm1@192.168.31.70）：
+
+- `/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_three_domains_20260930_v6/`：源码和六条主动pilot。
+- `/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_three_domains_20260930_v8/`：源码、metadata与已完成pilot逐条归档。
+- `/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_reaudit_v5_20260930/impedance/`：旧raw复审、复审源码与metadata。
+- `/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_runtime_inputs_20260930/menagerie/`：实际使用的Panda XML/mesh，85文件SHA256核验；不称已归档其他机器人模型。
+- `/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_0527/evidence/`：34文件，含最新几何审计、v6/v8完成汇总和v8计划停止证据；已核验。
+
+未完成：搜索、锁定候选的独立验证、3000个训练配置全部执行、各类1000条合格VMC轨迹、
+新ESN蒸馏和正式验证。当前合格新VMC轨迹为0。3300配置定义不等于3300示范或成功回合。
+
+## 早期初始化与审查记录（历史状态）
 
 已完成：3300 个可复现配置；三方法接入；贝叶斯搜索/单进程恢复框架；动作、子步与曝光审计。
 新测试54项通过；全部是小型正确性测试，不能代替动态表现。

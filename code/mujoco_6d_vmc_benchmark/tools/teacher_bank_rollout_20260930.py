@@ -41,7 +41,9 @@ def training_xml(xml, fixture):
         widths={'square_edge':[.012,.010,.020],'wide_edge':[.012,.016,.020],'thick_edge':[.018,.010,.028]}
         size=widths[fixture['object_shape']];yaw=fixture['corner_yaw_rad']
         extent_x=abs(np.cos(yaw))*size[0]+abs(np.sin(yaw))*size[1]
-        face.set('pos',numbers([fixture['corner_right_x_m']-extent_x,fixture['corner_center_y_m'],fixture['corner_top_z_m']-size[2]]))
+        raised='corner_bottom_z_m' in fixture
+        center_z=fixture['corner_bottom_z_m']+size[2] if raised else fixture['corner_top_z_m']-size[2]
+        face.set('pos',numbers([fixture['corner_right_x_m']-extent_x,fixture['corner_center_y_m'],center_z]))
         face.set('size',numbers(size))
         face.set('friction',numbers([fixture['corner_friction'],.01,.001]))
         # Connect the local apron to the support slab: an isolated floating box
@@ -52,11 +54,26 @@ def training_xml(xml, fixture):
         # Route the rigid connector around the initial gripper. A direct bridge
         # crossed the fingers before t=0; retain that failed fixture revision.
         route_y=-.08;half_width=.006
-        for name,center,size in (
+        pieces=(
             ('office_v5_corner_training_bridge',[pos[0],(pos[1]+route_y)/2,.510],
              [half_width,(route_y-pos[1])/2+half_width,half_width]),
             ('office_v5_corner_training_bridge_connector',[(pos[0]+end)/2,route_y,.510],
-             [(end-pos[0])/2+half_width,half_width,half_width])):
+             [(end-pos[0])/2+half_width,half_width,half_width]))
+        if raised:
+            # Route behind the hand wing and outside the wrist's swept volume.
+            # Keep the raised thick face physically joined to the lower support.
+            route_y=-.480;bridge_z=pos[2];column_x=top_pos[0];low_z=.510
+            top_join_y=top_pos[1]-top_size[1]+.020
+            pieces=(
+                ('office_v5_corner_training_bridge',[pos[0],(pos[1]+route_y)/2,bridge_z],
+                 [half_width,(pos[1]-route_y)/2+half_width,half_width]),
+                ('office_v5_corner_training_bridge_connector',[(pos[0]+column_x)/2,route_y,bridge_z],
+                 [(column_x-pos[0])/2+half_width,half_width,half_width]),
+                ('office_v5_corner_training_bridge_column',[column_x,route_y,(bridge_z+low_z)/2],
+                 [half_width,half_width,(bridge_z-low_z)/2+half_width]),
+                ('office_v5_corner_training_bridge_support_join',[column_x,(route_y+top_join_y)/2,low_z],
+                 [half_width,(top_join_y-route_y)/2+half_width,half_width]))
+        for name,center,size in pieces:
             if min(size)<=0:raise ValueError('Invalid routed corner bridge extent')
             ET.SubElement(world,'geom',name=name,type='box',pos=numbers(center),size=numbers(size),
                 contype=face.get('contype','1'),conaffinity=face.get('conaffinity','1'),
@@ -305,6 +322,68 @@ def column_rows(columns):
         yield {key:value[index] for key,value in columns.items()}
 
 
+def audit_observation_alignment(data):
+    """Bind 48D encoder fields to saved pre/post-action robot state and time.
+
+    First pre-action velocity has no preceding saved post-state; its provenance
+    is explicitly outside this check. Wrench/observer/FK reconstruction is also
+    outside this kinematic association check.
+    """
+    obs=np.asarray(data['observation']);count=len(obs)
+    for name in ('neuron_qpos','qpos','qvel'):
+        value=np.asarray(data[name])
+        if value.ndim!=2 or value.shape[0]!=count or value.shape[1]<7 or not np.isfinite(value).all():
+            raise AssertionError('Invalid state alignment evidence: '+name)
+    for name in ('neuron_time','time'):
+        value=np.asarray(data[name])
+        if value.shape!=(count,) or not np.isfinite(value).all():
+            raise AssertionError('Invalid state alignment time: '+name)
+    if obs.shape!=(count,48) or not np.isfinite(obs).all():raise AssertionError('Invalid observation alignment shape')
+    np.testing.assert_allclose(data['neuron_time'],np.arange(count)*.04,rtol=0,atol=1e-7)
+    np.testing.assert_allclose(data['time'],(np.arange(count)+1)*.04,rtol=0,atol=1e-7)
+    pairs=[(obs[:,:7],data['neuron_qpos'][:,:7])]
+    if count>1:
+        pairs.extend([(data['neuron_qpos'][1:,:7],data['qpos'][:-1,:7]),
+                      (obs[1:,7:14],data['qvel'][:-1,:7])])
+    maximum=0.
+    for left,right in pairs:
+        np.testing.assert_allclose(left,right,rtol=0,atol=1e-12)
+        maximum=max(maximum,float(np.max(np.abs(left-right))) if left.size else 0.)
+    return dict(max_abs=maximum,actions=count,
+        scope='encoder q matches pre-action neuron_qpos; consecutive arm q/dq and 25Hz timestamps match saved post-state',
+        first_pre_action_velocity_independently_verified=False,
+        observer_wrench_and_kinematics_independently_reconstructed=False)
+
+
+def audit_exposure_physics_binding(exposure,physics,fixture):
+    """Prevent a valid early-window exposure file standing in for a full run."""
+    pt=np.asarray(physics['time'],float);pdt=np.asarray(physics['dt'],float)
+    et=np.asarray(exposure['time'],float);ee=np.asarray(exposure['interval_end'],float);edt=np.asarray(exposure['dt'],float)
+    if (pt.ndim!=1 or not len(pt) or pdt.shape!=pt.shape or et.ndim!=1 or not len(et)
+            or ee.shape!=et.shape or edt.shape!=et.shape):raise AssertionError('Invalid exposure/physics binding shape')
+    if not all(np.isfinite(v).all() for v in (pt,pdt,et,ee,edt)):raise AssertionError('Nonfinite exposure/physics binding')
+    begin=pt-pdt;tol=1e-8
+    np.testing.assert_allclose(et[0],begin[0],rtol=0,atol=tol)
+    np.testing.assert_allclose(ee[-1],pt[-1],rtol=0,atol=tol)
+    np.testing.assert_allclose(float(exposure['terminal_time_s']),pt[-1],rtol=0,atol=tol)
+    indices=np.searchsorted(begin,et-tol)
+    ends=np.r_[indices[1:],len(pt)]
+    if np.any(indices>=len(pt)) or np.any(ends<=indices):raise AssertionError('Exposure buckets do not cover physics')
+    np.testing.assert_allclose(begin[indices],et,rtol=0,atol=tol)
+    np.testing.assert_allclose(pt[ends-1],ee,rtol=0,atol=tol)
+    np.testing.assert_allclose(np.add.reduceat(pdt,indices),edt,rtol=0,atol=tol)
+    person_exact=False
+    if fixture['category']=='active_long' and fixture.get('apparatus')=='person' and int(exposure['schema'])>=2:
+        raw=np.asarray(exposure['person_physics'])
+        if raw.shape!=(len(pt),6) or not np.isfinite(raw).all():raise AssertionError('Person raw count differs from physical trace')
+        np.testing.assert_allclose(raw[:,0],begin,rtol=0,atol=tol)
+        np.testing.assert_allclose(raw[:,1],pdt,rtol=0,atol=1e-12)
+        person_exact=True
+    return dict(physical_samples=len(pt),exposure_buckets=len(et),duration_s=float(pdt.sum()),
+        person_every_physical_step_verified=person_exact,
+        scope='exposure interval endpoints and dt sums match physical trace; schema2 person raw times/dt match every substep')
+
+
 def audit(root,request,folder,output_path=None):
     output_path=Path(output_path) if output_path is not None else folder/'audit.json'
     sys.path.insert(0,str(root/'source/scripts'))
@@ -319,7 +398,8 @@ def audit(root,request,folder,output_path=None):
     impedance_execution=None
     servo_columns=None
     with np.load(folder/'rollout.npz') as data_archive,np.load(folder/'teacher_internal.npz') as internal_archive,np.load(folder/'execution_chain.npz') as chain_archive:
-        data=materialize_npz(data_archive,('observation','applied_action'))
+        data=materialize_npz(data_archive,('observation','applied_action','neuron_qpos','qpos','qvel','neuron_time','time'))
+        observation_alignment=audit_observation_alignment(data)
         internal=materialize_npz(internal_archive)
         chain=materialize_npz(chain_archive)
         observations=data['observation'];count=len(observations)
@@ -381,6 +461,8 @@ def audit(root,request,folder,output_path=None):
         measured=[rmse,peak,vpeak];reported=[result['metrics'][k] for k in ('position_rmse_3d_m','generalized_actuator_torque_peak_nm','linear_speed_peak_mps')]
         np.testing.assert_allclose(measured,reported,rtol=2e-7,atol=1e-8)
         substeps=len(dt)
+        with np.load(folder/'exposure.npz') as exposure_archive:
+            binding=audit_exposure_physics_binding(exposure_archive,data,fixture)
     from teacher_bank_exposure_20260930 import audit_saved
     exposure=audit_saved(folder/'exposure.npz',fixture)
     contact=result['contact_coverage_valid'] and exposure['passed']
@@ -398,6 +480,7 @@ def audit(root,request,folder,output_path=None):
         score=score,constraint=-1. if not reasons else float(len(reasons)),replay_max_abs=maximum,replay_scope=replay_scope,
         method=method,exposure=exposure,esn_label_eligible=(not reasons and method=='vmc'),
         impedance_execution=impedance_execution,controller_contract=controller_contract(method),
+        observation_alignment=observation_alignment,exposure_physics_binding=binding,
         substeps=substeps,penetration_mm=result['stats']['max_external_penetration_m']*1000,
         fixture_id=fixture['id'],split=fixture['split'],model_sha256=sha(folder/'rollout.mjb'),
         note='VMC filtered action7 replays shared filter; classical trajectories are baseline evidence, not VMC action labels. Full learner closed-loop validation still required.',

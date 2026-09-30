@@ -2,13 +2,15 @@
 
 2026-09-30 新任务：VMC既作为teacher生成器也作为model-based baseline；导纳/真实力矩
 阻抗同场景同搜索预算调参。3000训练＋300验证配置已生成，不等于有效数据已采满。
-v6主动类别动态pilot正在本机运行（单环境/1线程/3GiB），此前非法初态失败完整保留；
-54项测试通过。v4有效VMC回合task/旧strict成功但无真实face接触；v5三方法被训练face
-挡在align，仍无合格teacher。阻抗审计内存读取已修，原raw复审servo到实际力矩误差0。
+截至05:29 UTC，v6六条主动pilot及v8九条三类别pilot已完成；后者仅阻抗一个训练fixture通过，
+RMSE47.988mm/峰矩45.612Nm/峰速0.15314m/s，有大量接触分段，未证明平顺泛化。
+VMC合格新轨迹仍0。v10固定预算搜索正在本机运行（单环境/1线程/3GiB），73项测试通过。
+人手曝光方向/时窗、成功anchor优先排序、实际资产及跨候选模型hash、观察/曝光时间关联已修。
+先前非法初态和任务失败全部保留，阻抗旧raw独立复审已归档，servo到实际力矩误差0。
 旧corner通过不证明上抬碰face，详见曝光诊断。
 冻结综合测试与门槛未改，无新ESN结果。
 源码和配置已核验共享到
-`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_three_domains_20260930_v5/`。
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_three_domains_20260930_v10/`。
 详见 [三类teacher与经典baseline](TEACHER_BANK_THREE_DOMAINS_20260930.md)。
 
 2026-09-30 更新：按用户要求先修正 teacher，再重做 ESN。归档 MuJoCo 3.11 上首轮

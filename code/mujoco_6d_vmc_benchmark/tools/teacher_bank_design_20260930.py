@@ -16,6 +16,8 @@ CATEGORIES = ('passive_corner', 'active_short', 'active_long')
 SEED = 20260930
 DT = .0001
 DURATION = 55.
+TRAIN_ANCHORS = (0,337,671)  # all three object types in every category
+VALIDATION_ANCHORS = (0,1,11)
 
 
 def sha(path):
@@ -74,13 +76,13 @@ def design(reference):
                     rod_mass_kg=float(.35+.65*u[11]), rod_radius_m=float(.012+.010*u[12]),
                     payload_mass_kg=float(.06+.06*u[13]),
                     corner_offset_m=[float(.006*(2*u[4]-1)),float(.008*(2*u[5]-1)),float(.005*(2*u[6]-1))],
-                    corner_right_x_m=float(.519+.001*(2*u[4]-1)),
-                    corner_center_y_m=float(-.190+.004*(2*u[5]-1)),
-                    corner_top_z_m=float(.534+.001*(2*u[6]-1)),
-                    corner_placement_rule='yaw-aware right boundary and top alignment; source-domain v5',
+                    corner_right_x_m=float(.520+.001*(2*u[4]-1)),
+                    corner_center_y_m=float(-.270+.002*(2*u[5]-1)),
+                    corner_bottom_z_m=float(.633+.001*(2*u[6]-1)),
+                    corner_placement_rule='raised hand-wing underside with outer south rigid connection; source-domain v7',
                     corner_yaw_rad=float(-.25+.5*u[14]), corner_friction=float(.15+.25*u[15]))
                 active_keys=['category','payload_mass_kg']
-                if category=='passive_corner':active_keys+=['corner_right_x_m','corner_center_y_m','corner_top_z_m','corner_placement_rule','corner_yaw_rad','corner_friction','object_shape']
+                if category=='passive_corner':active_keys+=['corner_right_x_m','corner_center_y_m','corner_bottom_z_m','corner_placement_rule','corner_yaw_rad','corner_friction','object_shape']
                 elif category=='active_short':active_keys+=['launch_position_m','axis','start_s','ball_speed_mps','ball_mass_kg','ball_radius_m','object_shape']
                 else:active_keys+=['start_s','press_s','hold_s','retract_s','yaw_rad','axis','target_nominal_m','apparatus','stroke_m','drive_limit_n','object_shape']+(['rod_mass_kg','rod_radius_m'] if apparatus=='rod' else [])
                 values['active_physical_parameters']={k:values[k] for k in active_keys}

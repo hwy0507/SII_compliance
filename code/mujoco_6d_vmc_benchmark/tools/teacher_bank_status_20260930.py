@@ -14,6 +14,7 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 import socket
 import statistics
 import sys
@@ -77,6 +78,186 @@ def distribution(values):
         median=statistics.median(values), mean=statistics.fmean(values), maximum=max(values))
 
 
+def search_accounting(root, plan, fixtures, attempts, now):
+    """Evidence-bound candidate budgets; partially executed blocks stay visible."""
+    categories, methods = plan.get('categories', []), plan.get('methods', ['vmc'])
+    count, anchors = plan.get('search_candidates_per_category'), plan.get('anchor_indices')
+    if (isinstance(count, bool) or not isinstance(count, int) or count <= 0
+            or not isinstance(anchors, list) or not anchors
+            or any(isinstance(i, bool) or not isinstance(i, int) or i < 0 for i in anchors)
+            or len(set(anchors)) != len(anchors)):
+        return dict(available=False, reason='Missing_or_invalid_search_budget_or_anchor_manifest',
+                    bank_state='unverified_not_locked', category=[], partial_blocks=[])
+    by_folder = {row['folder']: row for row in attempts}
+    warnings, files = [], {}
+    def metadata(relative):
+        path = root/relative
+        if not path.exists(): return None
+        if path.is_symlink():
+            warnings.append('symlink_metadata_rejected:'+relative);return None
+        try:
+            result = read_json(path);files[relative] = sha(path)
+            return result
+        except (OSError, ValueError, TypeError):
+            warnings.append('invalid_search_metadata:'+relative);return None
+    def safe_relative(value):
+        return (isinstance(value, str) and not Path(value).is_absolute()
+                and '..' not in Path(value).parts and root in (root/value).resolve().parents)
+    def resolve(origin):
+        relative, errors = origin, []
+        reuse = metadata('reuse_records/'+origin+'.json')
+        if reuse is None and (root/'reuse_records'/(origin+'.json')).exists():
+            errors.append('unreadable_reuse_record')
+        if reuse is not None:
+            if not isinstance(reuse, dict) or not safe_relative(reuse.get('reused_relative')):
+                return None, ['invalid_reuse_record']
+            relative = reuse['reused_relative']
+            reused_row = by_folder.get(relative)
+            if not reused_row or reuse.get('request_sha256') != reused_row['metadata_sha256'].get('request.json'):
+                errors.append('reused_request_hash_mismatch')
+        recovery = metadata('recovery_records/'+relative+'.json')
+        if recovery is None and (root/'recovery_records'/(relative+'.json')).exists():
+            errors.append('unreadable_recovery_record')
+        if recovery is not None:
+            if (not isinstance(recovery, dict) or recovery.get('origin_relative') != relative
+                    or not safe_relative(recovery.get('active_relative'))):
+                return None, errors+['invalid_recovery_record']
+            relative = recovery['active_relative']
+        return by_folder.get(relative), errors
+    groups, categories_out, partial, cutoff_partial = {}, [], [], []
+    deadline = plan.get('deadline_epoch')
+    deadline_valid = (not isinstance(deadline, bool) and isinstance(deadline, (float, int))
+                      and math.isfinite(deadline))
+    for category in categories:
+        train = [f for f in fixtures if f.get('category') == category and f.get('split') == 'train']
+        for method in methods:
+            key = category+'/'+method
+            history = metadata('search/'+key+'/history.json')
+            hentries = {}
+            if history is not None:
+                if not isinstance(history, list): warnings.append('invalid_history:'+key)
+                else:
+                    for entry in history:
+                        if (not isinstance(entry, dict) or isinstance(entry.get('index'), bool)
+                                or not isinstance(entry.get('index'), int)):
+                            warnings.append('invalid_history_entry:'+key);continue
+                        index = entry['index']
+                        if index in hentries:
+                            hentries[index] = None;warnings.append('duplicate_history_index:'+key+':'+str(index))
+                        else: hentries[index] = entry
+            candidates = []
+            for index in range(count):
+                base = f'search/{key}/c{index:02d}'
+                decision = metadata(base+'/decision.json')
+                x = decision.get('x') if isinstance(decision, dict) else None
+                valid_x = (isinstance(x, list) and len(x) > 0 and all(
+                    not isinstance(v, bool) and isinstance(v, (float, int)) and math.isfinite(v) for v in x))
+                anchor_rows = []
+                for anchor in anchors:
+                    row, errors = resolve(base+'/'+str(anchor))
+                    if anchor >= len(train): errors.append('anchor_outside_training_manifest')
+                    if row is not None:
+                        if (row.get('category') != category or row.get('method') != method
+                                or row.get('split') != 'train'
+                                or (anchor < len(train) and row.get('fixture_id') != train[anchor]['id'])):
+                            errors.append('anchor_identity_mismatch')
+                        if not valid_x or row.get('controller_coordinates') != x:
+                            errors.append('candidate_coordinates_mismatch')
+                        if row['status'] not in ('eligible', 'physical_failure'):
+                            errors.append('anchor_not_valid_completed_execution')
+                    else: errors.append('anchor_not_executed')
+                    anchor_rows.append(dict(anchor_index=anchor, folder=row['folder'] if row else None,
+                        complete=not errors, status=row['status'] if row else 'not_executed', errors=errors,
+                        started_epoch=row.get('started_epoch') if row else None,
+                        finished_epoch=row.get('finished_epoch') if row else None,
+                        model_sha256=row.get('model_sha256') if row else None))
+                complete = bool(valid_x and all(row['complete'] for row in anchor_rows))
+                entry = hentries.get(index)
+                history_matches = bool(complete and isinstance(entry, dict) and entry.get('x') == x
+                    and entry.get('total', len(anchors)) == len(anchors))
+                candidates.append(dict(index=index, complete=complete, history_recorded=history_matches,
+                    decision_present=decision is not None, anchors=anchor_rows,
+                    evidence_present=decision is not None or index in hentries or any(r['folder'] for r in anchor_rows)))
+            prefix = 0
+            while prefix < count and candidates[prefix]['complete']: prefix += 1
+            completed_indices = [r['index'] for r in candidates if r['complete']]
+            groups[key] = dict(category=category, method=method, planned_candidates=count,
+                complete_candidate_count=len(completed_indices), complete_candidate_indices=completed_indices,
+                contiguous_complete_prefix_count=prefix,
+                history_entry_count=len(hentries), verified_history_candidate_count=sum(r['history_recorded'] for r in candidates),
+                history_without_complete_evidence=[i for i in hentries if i not in completed_indices],
+                complete_without_history=[r['index'] for r in candidates if r['complete'] and not r['history_recorded']],
+                candidates=candidates)
+        common_prefix = 0
+        blocks = []
+        for index in range(count):
+            matched = [groups[category+'/'+m]['candidates'][index] for m in methods]
+            all_complete = all(r['complete'] for r in matched)
+            model_equal = all_complete and all(
+                len({r['anchors'][j]['model_sha256'] for r in matched}) == 1
+                and isinstance(matched[0]['anchors'][j]['model_sha256'], str)
+                and bool(re.fullmatch('[0-9a-f]{64}', matched[0]['anchors'][j]['model_sha256']))
+                for j in range(len(anchors)))
+            if index == common_prefix and model_equal: common_prefix += 1
+            block = dict(category=category, candidate_index=index, all_methods_complete=all_complete,
+                model_pairing_verified=bool(model_equal),
+                methods={m:dict(complete=groups[category+'/'+m]['candidates'][index]['complete'],
+                    completed_anchors=sum(a['complete'] for a in groups[category+'/'+m]['candidates'][index]['anchors']),
+                    expected_anchors=len(anchors)) for m in methods})
+            if any(r['evidence_present'] for r in matched) and not model_equal:
+                partial.append(block)
+            if deadline_valid and now >= deadline:
+                cutoff_methods = {}
+                any_dispatched = False
+                for method, candidate in zip(methods, matched):
+                    completed = 0
+                    for anchor_row in candidate['anchors']:
+                        start, finish = anchor_row['started_epoch'], anchor_row['finished_epoch']
+                        any_dispatched = any_dispatched or (isinstance(start, (float, int)) and start <= deadline)
+                        completed += bool(anchor_row['complete'] and isinstance(finish, (float, int)) and finish <= deadline)
+                    cutoff_methods[method] = dict(complete=completed == len(anchors),
+                        completed_anchors=completed, expected_anchors=len(anchors))
+                if any_dispatched and not (all(r['complete'] for r in cutoff_methods.values()) and model_equal):
+                    cutoff_partial.append(dict(category=category, candidate_index=index, methods=cutoff_methods,
+                        as_of_epoch=deadline, note='Reconstructed from recorded execution start/finish timestamps; metadata written later may have been unavailable at cutoff.'))
+            blocks.append(block)
+        categories_out.append(dict(category=category,
+            common_complete_prefix_count=common_prefix, common_complete_prefix_indices=list(range(common_prefix)),
+            comparable_anchor_evaluations_per_method=common_prefix*len(anchors),
+            complete_candidates_outside_comparison={m:[i for i in groups[category+'/'+m]['complete_candidate_indices']
+                if i >= common_prefix] for m in methods}, blocks=blocks))
+    search_complete = all(g['complete_candidate_count'] == count and
+                          g['verified_history_candidate_count'] == count for g in groups.values()) and bool(groups)
+    bank = metadata('teacher_bank.json')
+    marker = metadata('anchor_feasibility.json')
+    bank_rows, bank_consistent = {}, True
+    for key, group in groups.items():
+        selected = bank.get(key) if isinstance(bank, dict) else None
+        selection = selected[0] if isinstance(selected, list) and len(selected) == 1 and isinstance(selected[0], dict) else None
+        index = selection.get('index') if selection else None
+        verified = (isinstance(index, int) and not isinstance(index, bool) and 0 <= index < count
+            and group['candidates'][index]['complete'] and group['candidates'][index]['history_recorded'])
+        if verified:
+            decision = metadata(f'search/{key}/c{index:02d}/decision.json')
+            verified = selection.get('x') == decision.get('x')
+        bank_consistent = bank_consistent and bool(verified)
+        bank_rows[key] = dict(present=selection is not None, selected_index=index,
+            selection_has_complete_search_evidence=bool(verified), anchor_feasible=selection.get('anchor_feasible') if selection else None)
+    locked = bool(search_complete and isinstance(marker, dict) and bank_consistent)
+    if marker is not None and not locked:
+        warnings.append('search_completion_marker_not_supported_by_complete_history_and_bank')
+    deadline_record = metadata('deadline_reached.json')
+    return dict(available=True, planned_candidates_per_method_category=count, anchors_per_candidate=len(anchors),
+        method_category=list(groups.values()), category=categories_out,
+        common_prefix_across_all_categories=min((v['common_complete_prefix_count'] for v in categories_out), default=0),
+        partial_blocks=partial, partial_blocks_at_deadline=cutoff_partial,
+        deadline_record=deadline_record, full_search_evidence_complete=search_complete,
+        bank_state='locked_after_complete_search' if locked else 'provisional_not_locked' if bank is not None else 'absent',
+        bank=bank_rows, metadata_sha256=files, warnings=warnings,
+        comparison_scope='Only each category common contiguous completed candidate prefix with matching compiled model hashes; retained physical failures included. Extra and partial candidates are excluded from equal-budget comparison. Equal candidate/anchor counts are not equal wall or CPU time.',
+        snapshot_note='Read-only live snapshot; an in-flight candidate may become complete after this report.')
+
+
 def summarize(root, now=None):
     root = Path(root).resolve()
     now = time.time() if now is None else float(now)
@@ -125,6 +306,8 @@ def summarize(root, now=None):
         category, split, fixture_id = (fixture.get(k, 'unknown') for k in ('category', 'split', 'id'))
         phase = (request or {}).get('phase', 'unknown')
         row.update(method=method, category=category, split=split, fixture_id=fixture_id, phase=phase)
+        row['controller_coordinates'] = (request or {}).get('x')
+        row['model_sha256'] = (audit or {}).get('model_sha256')
         phases[phase] += 1
         if expected.get(fixture_id) != fixture:
             row['errors'].append('fixture_configuration_not_in_plan')
@@ -157,6 +340,8 @@ def summarize(root, now=None):
         row['status'] = status
         row['execution_status'] = (execution or {}).get('status')
         row['execution_returncode'] = (execution or {}).get('returncode')
+        row['started_epoch'] = (execution or {}).get('started')
+        row['finished_epoch'] = (execution or {}).get('finished')
         statuses[status] += 1
         group = groups[(category, method)]
         group['attempts'] += 1
@@ -229,6 +414,9 @@ def summarize(root, now=None):
         incomplete.append('Infrastructure/stale/incomplete evidence requires inspection; excluded from optimizer-quality counts')
     if not (root/'complete.json').exists():
         incomplete.append('Campaign completion marker absent; no completion inferred from scenario definitions')
+    search_progress = search_accounting(root, plan, fixtures, rows, now)
+    if search_progress.get('available') and search_progress['bank_state'] != 'locked_after_complete_search':
+        incomplete.append('Teacher bank is not verified locked; partial search selections are provisional')
     return dict(schema=1, generated_at_utc=datetime.fromtimestamp(now, timezone.utc).isoformat(),
         campaign_root=str(root), compute_host=socket.gethostname(),
         provenance=dict(script_sha256=sha(__file__), plan_sha256=plan_hash, fixtures_sha256=fixtures_hash,
@@ -239,6 +427,7 @@ def summarize(root, now=None):
         total_definitions=len(fixtures), unique_definition_ids=len(fixture_ids),
         attempt_counts=dict(statuses), attempts_total=len(rows), attempts_by_phase=dict(phases),
         vmc_training_data=vmc, method_category=summaries, failure_reasons=dict(reasons),
+        search_progress=search_progress,
         archive_counts=dict(Counter(r['archive'] for r in rows)),
         budget=dict(deadline_epoch=deadline, deadline_reached=now >= deadline if isinstance(deadline, (int, float)) else None,
             remaining_wall_seconds=max(0, deadline-now) if isinstance(deadline, (int, float)) else None,
@@ -274,8 +463,28 @@ def markdown(report):
               f"Budget: deadline reached={report['budget']['deadline_reached']}; remaining wall seconds={report['budget']['remaining_wall_seconds']}; recorded completed attempt wall seconds={report['budget']['completed_attempt_wall_seconds']:.1f}.",
               '', 'Physical failure reasons: '+(', '.join(f'{k}={v}' for k,v in sorted(report['failure_reasons'].items())) or 'none recorded'),
               'Archive accounting: '+', '.join(f'{k}={v}' for k,v in sorted(report['archive_counts'].items())), '',
-              '## Unfinished / limitations', '']
-    lines += ['- '+v for v in report['unfinished'] + report['warnings']]
+              '## Search budget and provisional selection', '']
+    search = report.get('search_progress', {})
+    if search.get('available'):
+        lines += [f'Teacher bank: **{search["bank_state"]}**. Full search evidence complete: {search["full_search_evidence_complete"]}.', '',
+            '| Category / method | Complete candidates | Contiguous prefix | History verified |', '|---|---:|---:|---:|']
+        lines += [f'| {r["category"]} / {r["method"]} | {r["complete_candidate_count"]}/{r["planned_candidates"]} | '
+                  f'{r["contiguous_complete_prefix_count"]} | {r["verified_history_candidate_count"]} |'
+                  for r in search['method_category']]
+        lines += ['', '| Category | Common comparable prefix | Anchor evaluations per method |', '|---|---|---:|']
+        lines += [f'| {r["category"]} | {r["common_complete_prefix_indices"]} | {r["comparable_anchor_evaluations_per_method"]} |'
+                  for r in search['category']]
+        lines += ['', search['comparison_scope'], '',
+            f'Partial blocks: {len(search["partial_blocks"])}; partial blocks at deadline: {len(search["partial_blocks_at_deadline"])}.']
+        for block in search['partial_blocks']:
+            detail=', '.join(f'{m}={r["completed_anchors"]}/{r["expected_anchors"]} anchors'
+                             for m,r in block['methods'].items())
+            lines.append(f'- {block["category"]} / c{block["candidate_index"]:02d}: {detail}; model pairing={block["model_pairing_verified"]}.')
+        lines += ['', 'The earlier aggregate metrics table is descriptive across all completed attempts; it is not an equal-budget controller comparison.']
+    else:
+        lines += ['Search budget unavailable; do not infer a locked bank or an equal-budget comparison.']
+    lines += ['', '## Unfinished / limitations', '']
+    lines += ['- '+v for v in report['unfinished'] + report['warnings'] + search.get('warnings', [])]
     lines += ['', 'Archive receipts are past verification records; this summary does not contact the server or rehash raw trajectories.',
               f"Plan SHA256: `{report['provenance']['plan_sha256']}`", '']
     return '\n'.join(lines)

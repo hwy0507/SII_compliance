@@ -14,7 +14,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "tools"))
-from teacher_bank_rollout_20260930 import audit
+from teacher_bank_rollout_20260930 import audit, audit_exposure_physics_binding, audit_observation_alignment
 from wbc_velocity_residual_core import (
     VelocityResidualActionFilter,
     VelocityResidualSafetyConfig,
@@ -54,7 +54,8 @@ def synthetic_evidence(folder, *, corrupt_label=False, nonfinite_state=False,
     if corrupt_label:
         labels[100, 3] = .75
     np.savez_compressed(folder / "rollout.npz", observation=np.zeros((count, 48)),
-                        applied_action=action)
+                        applied_action=action, neuron_qpos=action, qpos=action, qvel=action,
+                        neuron_time=np.arange(count)*.04, time=(np.arange(count)+1)*.04)
     np.savez_compressed(folder / "teacher_internal.npz", request=action,
                         wrench=six, offset=internal_offset, velocity=six, filtered_wrench=six)
     np.savez_compressed(folder / "execution_chain.npz", request=action,
@@ -87,7 +88,7 @@ def synthetic_evidence(folder, *, corrupt_label=False, nonfinite_state=False,
     from teacher_bank_exposure_20260930 import TrainingExposure
     exposure = TrainingExposure(request['fixture'])
     for i in range(count * 10):
-        exposure.record(.0001 + i * .004, .004, 1. if i in (250, 251) else 0.,
+        exposure.record(i * .004, .004, 1. if i in (250, 251) else 0.,
                         [0., 0., .0002 * i], 3)
     exposure.save(folder)
     return request
@@ -133,3 +134,46 @@ def test_expected_physical_abort_is_retained_as_failure_not_pipeline_crash(tmp_p
     assert 'incomplete_horizon' in result['failure_reasons']
     assert 'physics_abort:global_penetration_exceeded_2mm' in result['failure_reasons']
     assert result['substeps'] == 20000
+
+
+def binding_arrays():
+    physics=dict(time=(np.arange(8)+1)*.001, dt=np.full(8,.001))
+    exposure=dict(time=np.array([0.,.004]), interval_end=np.array([.004,.008]),
+        dt=np.full(2,.004), terminal_time_s=np.array(.008), schema=np.array(2),
+        person_physics=np.c_[np.arange(8)*.001, np.full(8,.001), np.zeros((8,4))])
+    return exposure,physics
+
+
+def test_exposure_must_cover_whole_physics_not_only_valid_early_prefix():
+    exposure,physics=binding_arrays()
+    config=dict(category='active_long',apparatus='person')
+    assert audit_exposure_physics_binding(exposure,physics,config)['person_every_physical_step_verified']
+    for name in ('time','interval_end','dt'):
+        exposure[name]=exposure[name][:1]
+    exposure['terminal_time_s']=np.array(.004)
+    exposure['person_physics']=exposure['person_physics'][:4]
+    with pytest.raises(AssertionError):
+        audit_exposure_physics_binding(exposure,physics,config)
+
+
+def test_schema2_person_cannot_replace_physical_samples_with_coarse_samples():
+    exposure,physics=binding_arrays()
+    exposure['person_physics']=np.c_[np.array([0.,.004]), np.full(2,.004), np.zeros((2,4))]
+    with pytest.raises(AssertionError, match='raw count'):
+        audit_exposure_physics_binding(exposure,physics,dict(category='active_long',apparatus='person'))
+
+
+def test_encoder_observation_and_actor_time_must_match_saved_states():
+    count=4
+    pre=np.arange(count*7,dtype=float).reshape(count,7)*.001
+    post=np.vstack([pre[1:],pre[-1]])
+    post_velocity=post*.01
+    obs=np.zeros((count,48));obs[:,:7]=pre;obs[1:,7:14]=post_velocity[:-1]
+    data=dict(observation=obs,neuron_qpos=pre,qpos=post,qvel=post_velocity,
+              neuron_time=np.arange(count)*.04,time=(np.arange(count)+1)*.04)
+    assert audit_observation_alignment(data)['max_abs']==0.
+    for name,index in [('observation',(1,7)),('neuron_qpos',(2,0)),('neuron_time',2)]:
+        corrupted={k:v.copy() for k,v in data.items()}
+        corrupted[name][index]+=.001
+        with pytest.raises(AssertionError):
+            audit_observation_alignment(corrupted)

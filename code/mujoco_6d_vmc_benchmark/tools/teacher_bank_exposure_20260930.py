@@ -5,6 +5,7 @@ physical-substep evidence needed to audit timing without downsampling aliasing.
 Task success and ball rebound remain independent evaluator requirements.
 """
 import json
+from array import array
 from pathlib import Path
 
 import numpy as np
@@ -18,10 +19,66 @@ MIN_DISPLACEMENT_M = .01
 MIN_SEPARATION_S = .2
 RUN_FIELDS = ('first_s', 'end_s', 'duration_s', 'max_tangent_m',
               'max_displacement_m', 'max_upward_m', 'peak_force_n')
+PERSON_RAW_FIELDS = ('time_s', 'dt_s', 'force_n', 'hand_x_m', 'hand_y_m', 'hand_z_m')
+PERSON_RUN_FIELDS = RUN_FIELDS + ('max_signed_push_m',)
+
+
+def person_window_runs(raw, fixture):
+    """Recompute schema-2 directional person evidence from every physical sample.
+
+    The person's positive rail stroke moves along -fixture.axis. Only complete
+    sampled intervals inside [start, start+press+hold] qualify; discarding the
+    at-most-two boundary substeps prevents credit for motion outside that window.
+    Origin is the first in-window contact pose, never the preceding free pose.
+    """
+    raw = np.asarray(raw, dtype=float)
+    if raw.ndim != 2 or raw.shape[1] != len(PERSON_RAW_FIELDS):
+        raise ValueError('Invalid person physical evidence shape')
+    if not np.isfinite(raw).all():
+        raise ValueError('Nonfinite person physical evidence')
+    if len(raw) and (np.any(raw[:, 1] <= 0) or np.any(raw[:, 1] > SAMPLE_DT + 1e-8)
+                    or np.any(raw[:, 2] < 0)
+                    or not np.allclose(raw[1:, 0], raw[:-1, 0]+raw[:-1, 1], rtol=0, atol=1e-8)):
+        raise ValueError('Invalid person physical time/force evidence')
+    axis = np.asarray(fixture['axis'], dtype=float)
+    if axis.shape != (3,) or not np.isfinite(axis).all() or np.linalg.norm(axis) < 1e-12:
+        raise ValueError('Invalid person drive axis')
+    axis = axis / np.linalg.norm(axis)
+    start = float(fixture['start_s'])
+    retract = start + float(fixture['press_s']) + float(fixture['hold_s'])
+    if not np.isfinite([start, retract]).all() or retract <= start:
+        raise ValueError('Invalid person press/hold window')
+    rows, current, origin = [], None, None
+    for time, dt, force, x, y, z in raw:
+        contact = force > FORCE_N and time >= start-1e-9 and time+dt <= retract+1e-9
+        if not contact:
+            if current is not None:
+                rows.append(current)
+                current = None
+            continue
+        hand = np.array([x, y, z])
+        if current is None:
+            origin = hand.copy()
+            current = [time, time, 0., 0., 0., 0., 0., 0.]
+        delta = hand-origin
+        axial = float(delta @ axis)
+        current[1] = time+dt
+        current[2] += dt
+        current[3] = max(current[3], float(np.linalg.norm(delta-axis*axial)))
+        current[4] = max(current[4], float(np.linalg.norm(delta)))
+        current[5] = max(current[5], float(delta[2]))
+        current[6] = max(current[6], force)
+        current[7] = max(current[7], -axial)
+    if current is not None:
+        rows.append(current)
+    return np.asarray(rows, dtype=float).reshape(-1, len(PERSON_RUN_FIELDS))
 
 
 def summarize_arrays(arrays, fixture):
     """Recompute exposure gates from saved run aggregates, without MuJoCo."""
+    schema = int(np.asarray(arrays['schema']))
+    if schema not in (1, 2):
+        raise ValueError('Unsupported exposure schema')
     runs = np.asarray(arrays['contact_runs'], dtype=float).reshape(-1, len(RUN_FIELDS))
     terminal = float(np.asarray(arrays['terminal_time_s']))
     time = np.asarray(arrays['time'], dtype=float)
@@ -63,7 +120,7 @@ def summarize_arrays(arrays, fixture):
     category = fixture['category']
     first = float(runs[0, 0]) if len(runs) else None
     duration = float(runs[:, 2].sum()) if len(runs) else 0.
-    diagnostics = dict(first_contact_s=first, contact_duration_s=duration,
+    diagnostics = dict(schema=schema, first_contact_s=first, contact_duration_s=duration,
         longest_contact_s=float(runs[:, 2].max()) if len(runs) else 0.,
         max_tangent_m=float(runs[:, 3].max()) if len(runs) else 0.,
         max_displacement_m=float(runs[:, 4].max()) if len(runs) else 0.,
@@ -90,7 +147,7 @@ def summarize_arrays(arrays, fixture):
         diagnostics['retract_start_s'] = retract
         sustained = [i for i, r in enumerate(runs)
                      if r[0] >= start - 1e-9 and r[2] > MIN_LONG_CONTACT_S + 1e-12]
-        if not sustained:
+        if not sustained and fixture['apparatus'] == 'rod':
             reasons.append('continuous_push_contact_not_over_0p4s')
         if fixture['apparatus'] == 'rod':
             moved = [i for i in sustained if runs[i, 3] >= MIN_DISPLACEMENT_M]
@@ -108,9 +165,53 @@ def summarize_arrays(arrays, fixture):
             if not good:
                 reasons.append('no_0p2s_separation_after_slide_before_rod_retract')
         elif fixture['apparatus'] == 'person':
-            good = [i for i in sustained if runs[i, 4] >= MIN_DISPLACEMENT_M]
-            if not good:
-                reasons.append('hand_contact_yield_displacement_below_1cm')
+            good = []
+            diagnostics['accepted_run_index_space'] = 'person_window_runs'
+            if schema == 1:
+                # Norm-only runs and 4ms poses cannot recover exact signed
+                # physical-substep motion. Never retroactively promote them.
+                reasons.append('directional_yield_unverified')
+                diagnostics['directional_verification'] = 'unverified_legacy_schema1'
+            else:
+                raw = np.asarray(arrays['person_physics'], dtype=float)
+                window_runs = person_window_runs(raw, fixture)
+                saved_runs = np.asarray(arrays['person_window_runs'], dtype=float)
+                if saved_runs.shape != window_runs.shape or not np.isfinite(saved_runs).all():
+                    raise ValueError('Invalid person window runs')
+                if not np.allclose(saved_runs, window_runs, rtol=0, atol=1e-10):
+                    raise ValueError('Person window runs differ from physical evidence')
+                if (bool(len(raw)) != bool(len(time)) or (len(raw) and
+                    (abs(raw[0, 0]-time[0]) > 1e-8 or abs(raw[-1, 0]+raw[-1, 1]-terminal) > 1e-8))):
+                    raise ValueError('Person physical horizon differs from exposure aggregates')
+                if len(raw):
+                    indices = np.searchsorted(raw[:, 0], time-1e-9)
+                    ends = np.r_[indices[1:], len(raw)]
+                    if np.any(indices >= len(raw)) or np.any(ends <= indices):
+                        raise ValueError('Person physical buckets differ from exposure aggregates')
+                    comparisons = (
+                        (raw[indices, 0], time),
+                        (np.add.reduceat(raw[:, 1], indices), dt),
+                        (np.add.reduceat(raw[:, 1]*(raw[:, 2] > FORCE_N), indices), contact),
+                        (np.add.reduceat(raw[:, 1]*raw[:, 2], indices), force*dt),
+                        (np.maximum.reduceat(raw[:, 2], indices), peaks),
+                        (raw[ends-1, 3:], hand),
+                    )
+                    if any(not np.allclose(a, b, rtol=0, atol=1e-8) for a, b in comparisons):
+                        raise ValueError('Person physical values differ from exposure aggregates')
+                sustained_window = [i for i, row in enumerate(window_runs)
+                                    if row[2] > MIN_LONG_CONTACT_S + 1e-12]
+                good = [i for i in sustained_window if window_runs[i, 7] >= MIN_DISPLACEMENT_M]
+                if not sustained_window:
+                    reasons.append('continuous_press_hold_hand_contact_not_over_0p4s')
+                if not good:
+                    reasons.append('signed_hand_yield_along_push_below_1cm')
+                diagnostics.update(directional_verification='verified_physical_substep_schema2',
+                    person_push_direction=(-np.asarray(fixture['axis'], dtype=float)/np.linalg.norm(fixture['axis'])).tolist(),
+                    person_window_contact_duration_s=float(window_runs[:, 2].sum()),
+                    person_window_longest_contact_s=float(window_runs[:, 2].max()) if len(window_runs) else 0.,
+                    person_max_signed_push_m=float(window_runs[:, 7].max()) if len(window_runs) else 0.,
+                    person_window_run_count=len(window_runs),
+                    meaning='signed kinematic displacement under contact; not causal attribution against nominal motion')
         else:
             raise ValueError('Unknown long-contact apparatus')
     else:
@@ -125,7 +226,7 @@ def audit_saved(path, fixture=None):
     if path.is_dir():
         path = path / 'exposure.npz'
     with np.load(path, allow_pickle=False) as data:
-        if int(data['schema']) != 1:
+        if int(data['schema']) not in (1, 2):
             raise ValueError('Unsupported exposure schema')
         saved_fixture = json.loads(str(data['fixture_json']))
         if fixture is not None and fixture != saved_fixture:
@@ -152,6 +253,7 @@ class TrainingExposure:
         self._runs = []
         self._bucket = None
         self._samples = []
+        self._person_raw = array('d')
 
     def __call__(self, m, d, env, task):
         import mujoco
@@ -206,6 +308,8 @@ class TrainingExposure:
             raise ValueError('Invalid exposure observation')
         if self._terminal is not None and abs(time - self._terminal) > 1e-8:
             raise ValueError('Exposure observer must sample every physical substep')
+        if self.fixture['category'] == 'active_long' and self.fixture.get('apparatus') == 'person':
+            self._person_raw.extend((float(time), float(dt), float(force), *map(float, hand)))
         contact = force > FORCE_N
         if self.fixture['category'] == 'passive_corner':
             contact = contact and stage in (3, 4)
@@ -259,11 +363,17 @@ class TrainingExposure:
         samples = self._samples + ([self._bucket_array()] if self._bucket is not None else [])
         rows = np.asarray(samples, dtype=float).reshape(-1, 10)
         runs = self._runs + ([self._run_array()] if self._run is not None else [])
-        return dict(schema=np.array(1), fixture_json=np.array(json.dumps(self.fixture, sort_keys=True)),
+        person_raw = np.frombuffer(self._person_raw, dtype=np.float64).reshape(-1, len(PERSON_RAW_FIELDS)).copy()
+        window_runs = (person_window_runs(person_raw, self.fixture)
+                       if self.fixture['category'] == 'active_long' and self.fixture.get('apparatus') == 'person'
+                       else np.empty((0, len(PERSON_RUN_FIELDS))))
+        return dict(schema=np.array(2), fixture_json=np.array(json.dumps(self.fixture, sort_keys=True)),
             time=rows[:, 0], interval_end=rows[:, 1], dt=rows[:, 2], force=rows[:, 3],
             force_peak=rows[:, 4], contact_duration=rows[:, 5], hand=rows[:, 6:9],
             stage=rows[:, 9].astype(np.int32), contact_runs=np.asarray(runs).reshape(-1, len(RUN_FIELDS)),
-            contact_run_fields=np.array(RUN_FIELDS), terminal_time_s=np.array(self._terminal or 0.))
+            contact_run_fields=np.array(RUN_FIELDS), terminal_time_s=np.array(self._terminal or 0.),
+            person_physics=person_raw, person_physics_fields=np.array(PERSON_RAW_FIELDS),
+            person_window_runs=window_runs, person_window_run_fields=np.array(PERSON_RUN_FIELDS))
 
     def summary(self):
         return summarize_arrays(self.arrays(), self.fixture)

@@ -3,6 +3,40 @@
 本文件记录每次对话交付的文件修改、验证和结果边界；最新记录在前。对应提交号由 Git 历史
 查询：`git log --oneline -- UPDATE_LOG.md`。持续提交约定见 [AGENTS.md](AGENTS.md)。
 
+## 2026-09-30 — 三类pilot审计完成，v10公平搜索启动（10小时任务继续）
+
+- 05:19 UTC接续核对main=`8dec129deecf2b769e765c5d91a54a64140a22a7`、
+  baseline=`5c4844b2d96339f696f6766b4a63cde2514cb547`并读日志。baseline的SimbaV2
+  campaign_03在Spark四路训练，本任务本机单环境/1线程/3GiB，不修改其分支或作业。
+- 已完成v6六条主动pilot、v8九条三类别pilot及服务器归档；v8仅阻抗厚桌角fixture0通过，
+  RMSE47.988mm/峰矩45.612Nm/峰速0.15314m/s。接触18840段、其中一个5ms段以0.231mm上抬
+  通过已注册曝光，不称平顺明显蹭过。VMC同场任务成功但上抬0.0866mm不足0.1mm，保留拒绝。
+  当前合格新VMC轨迹为0，不把3300配置定义当成功示范。未启动新ESN。
+- 新训练厚边缘移至掌翼上方，避开下降手掌；18项跨类初态预检通过。只改新增训练域，
+  冻结综合测试/gate/actor/执行器不变。几何失败、旧corner曝光不足与v5失败全部保留。
+- 修复人手曝光方向与施推时窗，schema2保存每个物理子步；旧schema1不追认为新筛选通过。
+  修复搜索anchor的物体形状覆盖（0/337/671），独立验证固定0/1/11。候选成功anchor数量
+  优先，之后比较失败标签代理及原评分；不把该离散代理称作连续物理超限。
+- 每次dispatch核验实际Panda资产85文件，模型hash跨方法/候选/阶段一致；新增曝光-物理
+  时间绑定、观察q/dq-前后状态绑定。九条旧pilot关联只读复核全通过，原audit未改写。
+  搜索开始前73项测试通过。数值异常停机待分类，不吞异常或伪造BO指标。
+- v8于05:23:21 UTC按预定阶段锁在pilot后停止，末尾BlockingIOError是计划内边界停止，
+  不算物理失败。v9只准备未运行。v10于05:29:05 UTC实际启动固定6候选×3anchor搜索，
+  首回合完成并归档，未通过接触筛选。服务`teacher-bank-search-v10-20260930.service`。
+  计算窗口仍截止13:48:16 UTC；heartbeat保留到14:28只做最后归档审计，不扩展计算授权。
+- 已核验服务器根：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/`。
+  其下`teacher_bank_three_domains_20260930_v10/`含源码210文件、metadata2文件、输入3文件，
+  运行记录逐条发布。`teacher_bank_runtime_inputs_20260930/menagerie/`含实际Panda资产85文件；
+  `teacher_bank_reaudit_v5_20260930/impedance/`为旧raw复审及源码；
+  `teacher_bank_review_checkpoint_20260930_0527/evidence/`为34份新几何/pilot报告/计划停止证据。
+  所有路径均已SHA256核验，未覆盖历史产物。
+- 已更新README、联合进度、周报、三类专题及schema2/手掌阻塞诊断；新增独立审计测试和
+  review归档工具。未完成：搜索、锁定参数验证、各类1000条合格teacher、ESN与正式泛化。
+  `teacher_bank.json`搜索中只是暂定选择；截止partial block须单列，公平比较用共同完整预算。
+- 搜索启动后另扩展只读status，独立核验decision/anchors/执行记录和模型hash、reuse/recovery、
+  共同完整候选前缀、截止partial，以及完整搜索后才locked。该工具13项测试通过；没有改
+  v10冻结源码或运行过程。实时PID核验需宿主上下文，沙箱生成报告可能看不到systemd进程。
+
 ## 2026-09-30 — 启动三类 teacher 数据与经典 baseline 的 10 小时任务
 
 - 开工核对 main=`38caf3152282df4963435bb65c11c93a1e4fffa5`、

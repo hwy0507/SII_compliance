@@ -26,9 +26,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def routed_training_xml(xml, fixture, route_y=-.08, bridge_z=.510, half_width=.006, face_position=None,
-                        face_right_x=None, face_top_z=.535, face_y=-.190):
+                        face_right_x=None, face_top_z=.535, face_y=-.190,
+                        face_bottom_z=None, route_mode='north_east'):
     """Connect face northward, then eastward into top, avoiding pickup fingers."""
     root = ET.fromstring(training_xml(xml, fixture))
+    if route_mode == 'production':
+        return ET.tostring(root, encoding='unicode')
     if fixture['category'] != 'passive_corner':
         return ET.tostring(root, encoding='unicode')
     world = root.find('worldbody')
@@ -45,16 +48,33 @@ def routed_training_xml(xml, fixture, route_y=-.08, bridge_z=.510, half_width=.0
         size = np.fromstring(face.get('size'), sep=' ')
         yaw = float(fixture['corner_yaw_rad'])
         extent_x = abs(np.cos(yaw))*size[0]+abs(np.sin(yaw))*size[1]
-        face.set('pos', numbers([face_right_x-extent_x, face_y, face_top_z-size[2]]))
+        center_z=face_top_z-size[2] if face_bottom_z is None else face_bottom_z+size[2]
+        face.set('pos', numbers([face_right_x-extent_x, face_y, center_z]))
     pos = np.fromstring(face.get('pos'), sep=' ')
     top_pos = np.fromstring(top.get('pos'), sep=' ')
     top_size = np.fromstring(top.get('size'), sep=' ')
     end_x = float(top_pos[0] - top_size[0] + .004)
-    if route_y <= pos[1] or end_x <= pos[0]:
-        raise ValueError('Expected north/east corner connection')
     attrs = dict(type='box', contype=face.get('contype', '1'),
                  conaffinity=face.get('conaffinity', '1'), rgba='.50 .32 .18 1',
                  friction=face.get('friction'), solref=face.get('solref', '.002 1'))
+    if route_mode == 'outer_south':
+        route_y=-.480;bridge_z=float(pos[2]);column_x=float(top_pos[0]);low_z=.510
+        ET.SubElement(world, 'geom', name='office_v5_corner_training_bridge',
+            pos=numbers([pos[0],(pos[1]+route_y)/2,bridge_z]),
+            size=numbers([half_width,(pos[1]-route_y)/2+half_width,half_width]),**attrs)
+        ET.SubElement(world, 'geom', name='office_v5_corner_training_bridge_connector',
+            pos=numbers([(pos[0]+column_x)/2,route_y,bridge_z]),
+            size=numbers([(column_x-pos[0])/2+half_width,half_width,half_width]),**attrs)
+        ET.SubElement(world, 'geom', name='office_v5_corner_training_bridge_column',
+            pos=numbers([column_x,route_y,(bridge_z+low_z)/2]),
+            size=numbers([half_width,half_width,(bridge_z-low_z)/2+half_width]),**attrs)
+        top_join_y=float(top_pos[1]-top_size[1]+.020)
+        ET.SubElement(world, 'geom', name='office_v5_corner_training_bridge_support_join',
+            pos=numbers([column_x,(route_y+top_join_y)/2,low_z]),
+            size=numbers([half_width,(top_join_y-route_y)/2+half_width,half_width]),**attrs)
+        return ET.tostring(root, encoding='unicode')
+    if route_mode != 'north_east' or route_y <= pos[1] or end_x <= pos[0]:
+        raise ValueError('Expected north/east corner connection')
     ET.SubElement(world, 'geom', name='office_v5_corner_training_bridge',
         pos=numbers([pos[0], (pos[1] + route_y)/2, bridge_z]),
         size=numbers([half_width, (route_y-pos[1])/2 + half_width, half_width]), **attrs)
@@ -64,7 +84,7 @@ def routed_training_xml(xml, fixture, route_y=-.08, bridge_z=.510, half_width=.0
     return ET.tostring(root, encoding='unicode')
 
 
-def preflight(fixtures, output, routes, indices, wall_seconds=180.):
+def preflight(fixtures, output, routes, indices, wall_seconds=180., category='passive_corner'):
     resource.setrlimit(resource.RLIMIT_AS, (3*1024**3, 3*1024**3))
     sys.path.insert(0, str(ROOT/'scripts'))
     import mujoco
@@ -75,14 +95,14 @@ def preflight(fixtures, output, routes, indices, wall_seconds=180.):
     from office_complex_scene_v5_20260917 import fixture_flags
     os.environ['MUJOCO_MENAGERIE_PATH'] = str(ROOT/'outputs/canonical_rl_assets_20260923/menagerie')
     selected = [f for f in json.loads(Path(fixtures).read_text())
-                if f['category'] == 'passive_corner' and f['split'] == 'train']
+                if f['category'] == category and f['split'] == 'train']
     started = time.time()
     report = dict(purpose='initial_geometry_only_no_physics_integration',
         fixtures_path=str(Path(fixtures).resolve()), fixtures_sha256=sha(fixtures),
         source_sha256=sha(__file__), adapter_sha256=sha(Path(__file__).with_name('teacher_bank_rollout_20260930.py')),
         mujoco=mujoco.__version__, python=sys.executable, threads=1, memory_max_bytes=3*1024**3,
         routes=routes, train_indices=indices, rows=[], started=started,
-        task_success_verified=False, dynamic_contact_verified=False)
+        task_success_verified=False, dynamic_contact_verified=False,category=category)
     original = geometry.extend_complex_xml
     try:
         for route in routes:
@@ -138,8 +158,9 @@ if __name__ == '__main__':
     parser.add_argument('--indices', default='0,1,2,333,666,999')
     parser.add_argument('--routes', default='[{"route_y":-0.08,"bridge_z":0.510,"half_width":0.006}]')
     parser.add_argument('--wall-seconds', type=float, default=180.)
+    parser.add_argument('--category', choices=('passive_corner','active_short','active_long'), default='passive_corner')
     args = parser.parse_args()
     if args.output.exists():
         raise RuntimeError('Preserve previous geometry preflight report')
     preflight(args.fixtures, args.output, json.loads(args.routes),
-              [int(v) for v in args.indices.split(',')], args.wall_seconds)
+              [int(v) for v in args.indices.split(',')], args.wall_seconds,args.category)

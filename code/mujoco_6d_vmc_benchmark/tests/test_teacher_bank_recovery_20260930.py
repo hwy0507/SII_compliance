@@ -89,7 +89,29 @@ def test_infrastructure_failure_is_not_returned_as_optimization_sample(tmp_path,
     (folder / 'audit.json').write_text('{"eligible":true,"score":0}')
     monkeypatch.setattr(campaign, 'stale_execution_evidence', lambda *args: dict(reason='absent'))
     with pytest.raises(RuntimeError, match='not an optimization sample'):
-        campaign.attempt(tmp_path, relative, {}, [], 'search', False)
+        campaign.attempt(tmp_path, relative, {'category':'passive_corner'}, [.5]*7, 'search', False)
+
+
+def test_same_plan_pilot_reuse_checks_controller_and_preserves_raw(tmp_path, monkeypatch):
+    (tmp_path/'plan.json').write_text('{"schema":1}')
+    relative='pilot/passive_corner/vmc';folder=tmp_path/relative
+    folder.mkdir(parents=True)
+    fixture={'category':'passive_corner','id':'passive_corner_train_0000'};point=[.5]*7
+    request=dict(fixture=fixture,method='vmc',teacher=campaign.controller_config(point,'vmc'),
+                 plan_sha256=campaign.sha(tmp_path/'plan.json'),phase='pilot')
+    (folder/'request.json').write_text(json.dumps(request))
+    command=[sys.executable,str(tmp_path/'source/tools/teacher_bank_rollout_20260930.py'),
+             '--root',str(tmp_path),'--request',str(folder/'request.json')]
+    (folder/'execution.json').write_text(json.dumps(dict(status='completed',returncode=0,command=command)))
+    (folder/'audit.json').write_text(json.dumps(dict(eligible=False,score=2.,constraint=1.)))
+    before={p.name:p.read_bytes() for p in folder.iterdir()}
+    monkeypatch.setattr(campaign,'stale_execution_evidence',lambda *args:dict(reason='absent'))
+    result=campaign.attempt(tmp_path,'search/passive_corner/vmc/c00/0',fixture,point,'search',False)
+    assert result['folder']==relative
+    assert {p.name:p.read_bytes() for p in folder.iterdir()}==before
+    assert not (tmp_path/'search').exists()
+    with pytest.raises(RuntimeError,match='does not match'):
+        campaign.attempt(tmp_path,relative,fixture,[.6]*7,'pilot',False)
     assert not (tmp_path / 'recovery_records').exists()
 
 

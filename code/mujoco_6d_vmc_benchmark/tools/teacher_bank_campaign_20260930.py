@@ -10,10 +10,12 @@ import subprocess
 import sys
 import time
 
-from teacher_bank_design_20260930 import CATEGORIES, SEED, DT, DURATION, decode, design, propose, sha, warm_points, write
+import numpy as np
+
+from teacher_bank_design_20260930 import CATEGORIES, SEED, DT, DURATION, TRAIN_ANCHORS, VALIDATION_ANCHORS, decode, design, propose, sha, warm_points, write
 
 REPO = Path(os.environ.get('SII_TEACHER_RESEARCH_ROOT',Path(__file__).resolve().parents[1])).resolve()
-DEFAULT = REPO/'outputs/teacher_bank_three_domains_20260930_v6'
+DEFAULT = REPO/'outputs/teacher_bank_three_domains_20260930_v10'
 SERVER = 'arm1@192.168.31.70'
 REMOTE_BASE = '/home/arm1/sii_shared/SII_compliance/runs/main'
 ASSETS = REPO/'outputs/canonical_rl_assets_20260923/menagerie'
@@ -32,6 +34,36 @@ def initial_points(seed,method,count=8):
     return warm_points(seed,count=count,dimensions=7 if method=='vmc' else SEARCH_DIMENSIONS[method],vmc_reference=method=='vmc')
 
 
+def summarize_candidate(rows, x, index):
+    """Success-count-first candidate evidence with a bounded failure tie-break.
+
+    The constraint signal is a discrete failure-label proxy, not a physical
+    violation magnitude. A whole additional failed anchor always dominates
+    the <0.25 severity tie-break, regardless of how many labels were emitted.
+    """
+    if not rows:raise ValueError('A candidate requires complete anchor results')
+    if any(not isinstance(row['eligible'],bool) for row in rows):
+        raise ValueError('Candidate eligibility must be boolean')
+    constraints=np.asarray([row['constraint'] for row in rows],float)
+    scores=np.asarray([row['score'] for row in rows],float)
+    if not np.isfinite(constraints).all() or not np.isfinite(scores).all():
+        raise ValueError('Nonfinite candidate evidence is not an optimizer observation')
+    if any(row['eligible']!=(row['constraint']<=0) for row in rows):
+        raise ValueError('Eligibility and per-anchor constraint disagree')
+    eligible_count=sum(row['eligible'] for row in rows)
+    failed=len(rows)-eligible_count
+    severity=float(np.maximum(constraints,0).max())
+    proxy=-1. if not failed else float(failed+.25*severity/(1.+severity))
+    return dict(x=x,index=index,eligible_count=eligible_count,total=len(rows),
+                failed_anchor_count=failed,violation_proxy=severity,constraint=proxy,
+                constraint_semantics='failed_anchor_count + 0.25*max_failure_label_count/(1+max_failure_label_count); all feasible=-1; categorical proxy, not physical violation magnitude',
+                score=float(scores.mean()))
+
+
+def candidate_rank(candidate):
+    return (candidate['total']-candidate['eligible_count'],candidate['violation_proxy'],candidate['score'])
+
+
 def prepare(root):
     import mujoco
     if (root/'plan.json').exists():return
@@ -44,25 +76,35 @@ def prepare(root):
     for path in (REPO/'tools').glob('teacher_bank_*_20260930.py'):
         shutil.copy2(path,source/'tools'/path.name)
     reference=REPO/'outputs/teacher_repair_followup_20260930/corner/velocity025_stiff2/rollout.npz'
+    inputs=root/'source_inputs';inputs.mkdir()
+    shutil.copy2(reference,inputs/'nominal_reference.npz')
+    shutil.copy2(reference.with_suffix('.json'),inputs/'nominal_reference_result.json')
+    asset_manifest={str(p.relative_to(ASSETS)):sha(p) for p in (ASSETS/'franka_emika_panda').rglob('*') if p.is_file()}
+    write(inputs/'robot_asset_manifest.json',asset_manifest)
     fixtures=design(reference)
     write(root/'fixtures.json',fixtures)
     write(root/'plan.json',dict(schema=1,seed=SEED,train_per_category=1000,validation_per_category=100,
         categories=CATEGORIES,dt=DT,duration_s=DURATION,policy_dt_s=.04,formal=False,
-        search_candidates_per_category=6,warm_candidates=3,anchor_indices=[0,333,666],
+        search_candidates_per_category=6,warm_candidates=3,anchor_indices=TRAIN_ANCHORS,
         methods=METHODS,deadline_utc='2026-09-30T13:48:16Z',deadline_epoch=DEADLINE,
         collection_candidates_per_fixture=1,validation_candidates_per_category=1,
+        training_exposure_schema=2,
+        person_yield='Whole physical samples in press/hold; continuous contact >0.4 s and max signed displacement along -fixture.axis >=0.01 m. No formal evaluator gate change.',
         max_search_rollouts=162,max_collection_attempts=9000,max_validation_rollouts=27,
-        validation_indices=[0,1,2],validation_before_collection=True,
+        validation_indices=VALIDATION_ANCHORS,validation_before_collection=True,
         budget_revision='Before optimization: v4 full rollout measured 98.3s compute plus archive; 3 initial + 3 BO candidates per method/category, 3 validation fixtures/category then paired collection until deadline.',
         max_total_attempts=9198,wall_clock_budget_overrides_attempt_maxima=True,
         score='RMSE/.05 + .3*max_joint_torque_ratio + .1*retreat_start/55',
         promotion='All search anchors must pass task, unchanged evaluator strict, actual contact and replay/actuator audit.',
-        selection='One locked feasibility-first controller per category/method, including explicitly infeasible best observed baselines; only audited feasible VMC trajectories enter labels.',
+        selection='One locked controller per category/method: fewest failed anchors, then lowest maximum failure-label count, then lowest mean score. Infeasible best observed baselines retained; only audited feasible VMC trajectories enter labels.',
+        optimizer_constraint='All anchors eligible: -1; otherwise failed_anchor_count + 0.25*maximum_failure_label_count/(1+maximum_failure_label_count). Categorical proxy, not continuous physical violation magnitude.',
         raw_data_target='1000 accepted independent training trajectories per category; report any shortfall without replacing failed scenes.',
         validation='100 defined per category; first 3 per category budgeted this window, one locked teacher; no tuning on validation; old heldouts unopened',
         observation='canonical48D; VMC uses estimated wrench; admittance uses encoders/load/nominal twist/error and FK; impedance uses encoders/nominal twist/error and FK. Scene fields are simulator-only.',
         server=SERVER,remote=REMOTE_BASE+'/'+root.name,local_compute_host=socket.gethostname(),python=sys.executable,
         mujoco_version=mujoco.__version__,assets=str(ASSETS),nominal_reference=str(reference),nominal_reference_sha256=sha(reference),
+        source_inputs={p.name:sha(p) for p in inputs.iterdir() if p.is_file()},
+        asset_archive='arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_runtime_inputs_20260930/menagerie/',
         fixtures_sha256=sha(root/'fixtures.json'),
         sources={str(p.relative_to(source)):sha(p) for p in source.rglob('*.py')},
         base_git_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip(),
@@ -75,7 +117,40 @@ def verify(root):
     if sha(root/'fixtures.json')!=plan['fixtures_sha256']:raise RuntimeError('Fixture plan changed')
     for name,digest in plan['sources'].items():
         if sha(root/'source'/name)!=digest:raise RuntimeError('Frozen source changed: '+name)
+    for name,digest in plan.get('source_inputs',{}).items():
+        if sha(root/'source_inputs'/name)!=digest:raise RuntimeError('Frozen source input changed: '+name)
+    if Path(plan['assets']).resolve()!=ASSETS.resolve():
+        raise RuntimeError('Actual runtime asset path differs from frozen plan')
+    verify_assets(root)
     return plan
+
+
+def verify_assets(root, asset_root=None):
+    """Hash actual runtime assets, not just the archived manifest document.
+
+    Called at campaign startup and immediately before every new simulation.
+    The final compiled-model identity audit additionally detects model drift.
+    """
+    asset_root=ASSETS if asset_root is None else Path(asset_root)
+    manifest_path=Path(root)/'source_inputs/robot_asset_manifest.json'
+    expected=json.loads(manifest_path.read_text())
+    if not isinstance(expected,dict) or not expected:
+        raise RuntimeError('Empty or malformed runtime asset manifest')
+    for name in expected:
+        path=Path(name)
+        if path.is_absolute() or '..' in path.parts or len(path.parts)<2:
+            raise RuntimeError('Invalid runtime asset manifest path')
+    top_directories={Path(name).parts[0] for name in expected}
+    actual={str(path.relative_to(asset_root)) for name in top_directories
+            for path in (asset_root/name).rglob('*') if path.is_file()}
+    if actual!=set(expected):
+        raise RuntimeError('Runtime asset file set differs from frozen manifest')
+    for name,digest in expected.items():
+        if sha(asset_root/name)!=digest:
+            raise RuntimeError('Runtime asset content differs from frozen manifest: '+name)
+    return dict(path=str(asset_root.resolve()),manifest_sha256=sha(manifest_path),
+                files_verified=len(expected),verified_at=time.time(),
+                scope='actual runtime files immediately before dispatch; compiled-model identity checked across methods and candidates')
 
 
 def archive(root, relative):
@@ -200,9 +275,26 @@ def resolve_attempt_recovery(root, relative):
 
 
 def attempt(root, relative, fixture, x, phase, archive_enabled, method='vmc'):
+    expected_teacher=controller_config(x,method)
+    # Candidate zero uses the same reference point as pilot. Reuse only exact
+    # same-plan requests; a phase name alone cannot justify recycling a result.
+    pilot_relative=f'pilot/{fixture["category"]}/{method}'
+    pilot_request=root/pilot_relative/'request.json'
+    if phase=='search' and (root/pilot_relative/'audit.json').exists() and pilot_request.exists():
+        prior=json.loads(pilot_request.read_text())
+        if (prior.get('fixture')==fixture and prior.get('teacher')==expected_teacher and
+                prior.get('method')==method and prior.get('plan_sha256')==sha(root/'plan.json')):
+            write(root/'reuse_records'/(relative+'.json'),dict(reused_relative=pilot_relative,
+                reason='identical fixture, controller and immutable plan',phase=phase,
+                request_sha256=sha(pilot_request)))
+            relative=pilot_relative
     relative=resolve_attempt_recovery(root,relative)
     folder=root/relative
     if (folder/'audit.json').exists():
+        prior=json.loads((folder/'request.json').read_text())
+        if (prior.get('fixture')!=fixture or prior.get('teacher')!=expected_teacher or
+                prior.get('method')!=method or prior.get('plan_sha256')!=sha(root/'plan.json')):
+            raise RuntimeError('Saved result does not match requested fixture/controller/plan')
         result=json.loads((folder/'audit.json').read_text())
     else:
         if time.time()>=DEADLINE:
@@ -211,12 +303,14 @@ def attempt(root, relative, fixture, x, phase, archive_enabled, method='vmc'):
         if (folder/'execution.json').exists():
             raise RuntimeError('Prior execution was not safely resolved: '+relative)
         if shutil.disk_usage(root).free<40*1024**3:raise RuntimeError('Less than 40 GiB local free space')
-        request=dict(fixture=fixture,method=method,teacher=controller_config(x,method),x=x,phase=phase,plan_sha256=sha(root/'plan.json'))
+        asset_verification=verify_assets(root)
+        request=dict(fixture=fixture,method=method,teacher=expected_teacher,x=x,phase=phase,plan_sha256=sha(root/'plan.json'))
         write(folder/'request.json',request)
         cmd=[sys.executable,str(root/'source/tools/teacher_bank_rollout_20260930.py'),'--root',str(root),'--request',str(folder/'request.json')]
         env=os.environ.copy();env.update({k:'1' for k in ('OPENBLAS_NUM_THREADS','OMP_NUM_THREADS','MKL_NUM_THREADS','NUMEXPR_NUM_THREADS')})
         env['MUJOCO_MENAGERIE_PATH']=str(ASSETS)
-        execution=dict(command=cmd,status='running',started=time.time(),host=socket.gethostname(),plan_sha256=sha(root/'plan.json'))
+        execution=dict(command=cmd,status='running',started=time.time(),host=socket.gethostname(),
+                       plan_sha256=sha(root/'plan.json'),asset_verification=asset_verification)
         write(folder/'execution.json',execution)
         with (folder/'run.log').open('w') as log:
             child=subprocess.Popen(cmd,cwd=REPO,env=env,stdout=log,stderr=subprocess.STDOUT)
@@ -247,6 +341,9 @@ def attempt(root, relative, fixture, x, phase, archive_enabled, method='vmc'):
 
 def check_paired_models(root,phase,rows):
     """A shared scene seed is insufficient: verify compiled world identity."""
+    root=Path(root)
+    identity_path=root/'fixture_model_identity.json'
+    identities=json.loads(identity_path.read_text()) if identity_path.exists() else {}
     groups={}
     for row in rows:
         groups.setdefault(row['fixture_id'],[]).append(row)
@@ -256,8 +353,13 @@ def check_paired_models(root,phase,rows):
         if len(methods)!=len(set(methods)):raise RuntimeError('Duplicate method in paired group')
         hashes={row['model_sha256'] for row in group}
         if len(hashes)!=1:raise RuntimeError('Paired methods compiled different worlds: '+fixture_id)
-        checks.append(dict(fixture_id=fixture_id,methods=methods,model_sha256=next(iter(hashes)),
+        digest=next(iter(hashes))
+        if fixture_id in identities and identities[fixture_id]['model_sha256']!=digest:
+            raise RuntimeError('Compiled world changed across candidates/phases: '+fixture_id)
+        identities.setdefault(fixture_id,dict(model_sha256=digest,first_verified_phase=phase))
+        checks.append(dict(fixture_id=fixture_id,methods=methods,model_sha256=digest,
                            complete=set(methods)==set(METHODS)))
+    write(identity_path,identities)
     write(root/'paired_model_checks'/(phase+'.json'),checks)
     return checks
 
@@ -275,6 +377,8 @@ def run(root, mode, archive_enabled):
             path=archive(root,'source');metadata=root/'metadata';metadata.mkdir(exist_ok=True)
             for name in ('plan.json','fixtures.json'):shutil.copy2(root/name,metadata/name)
             archive(root,'metadata');write(root/'source_archived.json',dict(path=path))
+        if plan.get('source_inputs') and not (root/'inputs_archived.json').exists():
+            write(root/'inputs_archived.json',dict(path=archive(root,'source_inputs')))
     if mode in ('pilot','pilot-active'):
         categories=CATEGORIES if mode=='pilot' else CATEGORIES[1:]
         rows=[attempt(root,f'pilot/{c}/{method}',train[c][0],initial_points(SEED,method)[0],'pilot',archive_enabled,method) for c in categories for method in METHODS]
@@ -295,9 +399,9 @@ def run(root, mode, archive_enabled):
                     write(decision,dict(x=x,algorithm='latin_hypercube' if index<len(warm) else 'constrained_gp_bo',history_count=len(history)))
                 rows=[attempt(root,f'search/{key}/c{index:02d}/{i}',train[category][i],x,'search',archive_enabled,method) for i in plan['anchor_indices']]
                 paired.extend(rows)
-                history.append(dict(x=x,constraint=max(r['constraint'] for r in rows),score=sum(r['score'] for r in rows)/len(rows),index=index))
+                history.append(summarize_candidate(rows,x,index))
                 write(root/f'search/{key}/history.json',history)
-                ranked=sorted(history,key=lambda r:(max(0.,r['constraint']),r['score']))
+                ranked=sorted(history,key=candidate_rank)
                 bank[key]=[dict(ranked[0],anchor_feasible=ranked[0]['constraint']<=0)]
                 write(root/'teacher_bank.json',bank)
             check_paired_models(root,f'search/{category}/c{index:02d}',paired)
@@ -339,7 +443,10 @@ def run(root, mode, archive_enabled):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('mode',choices=('prepare','pilot','pilot-active','run'));p.add_argument('--root',type=Path,default=DEFAULT)
+    p=argparse.ArgumentParser();p.add_argument('mode',choices=('prepare','pilot','pilot-active','run','campaign'));p.add_argument('--root',type=Path,default=DEFAULT)
     p.add_argument('--archive',action='store_true');a=p.parse_args();root=a.root.resolve()
     if a.mode=='prepare':prepare(root)
+    elif a.mode=='campaign':
+        run(root,'pilot',a.archive)
+        run(root,'run',a.archive)
     else:run(root,a.mode,a.archive)
