@@ -2,6 +2,20 @@
 
 ## 2026-09-30 三类数据生成与经典 baseline
 
+11:44 UTC：162搜索全部完成，27录取/135未录取，独立候选/排名/source/model审计认证
+bank锁定。最终训练录取厚角VMC/导纳/阻抗2/3、0/3、2/3；短撞3/3、1/3、2/3；持续
+1/3、0/3、0/3。持续阻抗仍有task/strict 2/3，不能把0录取说成0任务能力。
+27验证已启动、参数不回调，collection尚未开始；VMC唯一合格训练fixture为2/3/1，无新ESN。
+完整BO27/27与首个人推raw审计通过；49文件证据已核验至服务器runs/main/
+teacher_bank_review_checkpoint_20260930_1138/evidence/；锁参/公平表/162点图等1609文件已核验
+至teacher_bank_review_checkpoint_20260930_1150/evidence/，见[锁参报告](TEACHER_BANK_LOCKED_SEARCH_20260930.md)。
+
+11:31 UTC：持续人推首次录取（VMC c05 anchor0），原记录同段1.2643s让位14.3532mm、
+task/strict true；同候选棍/推板仍失败，故1/3。独立raw复核正在进行，最后经典组还运行，
+bank未锁定，无validation/collection/新ESN。定义有效字段投影3300唯一且train/val无精确
+重复，不等于3300动态有效。c05短撞退化诊断和定义审计56文件已核验到服务器runs/main/
+teacher_bank_review_checkpoint_20260930_1124/evidence/，详见[三类记录](TEACHER_BANK_THREE_DOMAINS_20260930.md)。
+
 11:10 UTC接续：完整c00–c04为135回合、23录取/112失败，c05仍运行；短撞VMC c04同参数
 3/3而c05为0/3。参数未锁定，validation/collection/新ESN均未开始，保持原预算和截止。
 资产覆盖审计发现旧Panda-only清单漏FR3，完整133文件已核验共享；本机冻结源码初始化

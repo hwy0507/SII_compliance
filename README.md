@@ -21,11 +21,20 @@ waypoint RMSE 为 37.406 mm，峰值实际力矩 48.127 Nm，峰值末端速度 
 仅 clone 仓库不包含完整实验数据。
 
 新增三类训练域数据与经典对照任务：每类1000训练＋100验证配置，VMC作为数据生成器及
-model-based baseline，导纳/阻抗使用同场景同预算搜索。九条三类别pilot已完成；仅阻抗一个
-厚边缘训练fixture通过，仍有接触振荡，VMC新合格轨迹为0。当前v10固定预算搜索运行中，
-新曝光与排序、物理时间关联及资产核验通过73项测试；
-不代表3000条有效teacher数据已采满。复核发现旧corner通过仅证明其旧task/strict，不能
-作为“上抬碰face再滑开”的证据。新流程独立核查真实碰边，失败完整保留。
+model-based baseline，导纳/阻抗使用同场景同预算搜索。11:42 UTC全部162搜索回合完成，
+27条录取、135条未录取，九组参数已独立认证锁定。所选参数的训练录取数：厚角VMC/
+导纳/阻抗2/3、0/3、2/3，短撞3/3、1/3、2/3，持续推碰1/3、0/3、0/3；这是训练表现，
+不是独立泛化。task/strict与接触录取分列，三指标并非VMC全面占优，见
+[锁参比较](code/mujoco_6d_vmc_benchmark/docs/TEACHER_BANK_LOCKED_SEARCH_20260930.md)。
+27回合预注册验证已启动；collection及新ESN未开始，不能把3000个训练配置当作已采满
+的有效示范。VMC唯一合格训练fixture目前为厚角2、短撞3、持续1。
+原始回合逐条hash核验归档到服务器`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_three_domains_20260930_v10/`。
+短撞成功仍可能伴随约2.2kN接触峰力，电机力矩合规不代表真实碰撞安全。
+旧资产清单遗漏FR3已明确更正；完整133文件已共享，本机冻结源码静态9/9复现原MJB，
+Spark首例source重建不一致，未加入动态比较。详见
+[资产复现更正](code/mujoco_6d_vmc_benchmark/docs/TEACHER_BANK_ASSET_REPRODUCTION_CORRECTION_20260930.md)。
+复核发现旧corner通过仅证明其旧task/strict，不能作为“上抬碰face再滑开”的证据。
+新流程独立核查真实碰边，失败完整保留。
 进度、服务器产物路径和十小时预算见
 [三类teacher与经典baseline](code/mujoco_6d_vmc_benchmark/docs/TEACHER_BANK_THREE_DOMAINS_20260930.md)。
 

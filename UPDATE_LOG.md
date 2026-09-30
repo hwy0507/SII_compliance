@@ -3,6 +3,29 @@
 本文件记录每次对话交付的文件修改、验证和结果边界；最新记录在前。对应提交号由 Git 历史
 查询：`git log --oneline -- UPDATE_LOG.md`。持续提交约定见 [AGENTS.md](AGENTS.md)。
 
+## 2026-09-30 — 162搜索锁参、首个人推独立通过与完整决策审计
+
+- 11:52 UTC重新fetch并读main=`0a1e7972750114d2e0e1f5c1626004e1ed449d7a`及baseline=
+  `c9185489dfbb8d969525a253493592cbbbcd06d2`，上游无新增变化，未合并baseline。
+- 11:42搜索162/162完成，27录取/135未录取；九组候选/排名、源与配对模型独立核对通过。
+  bank SHA=`1cafd43556f754df0595027c6aa1a358520038bbd5a3f742b9ef3b2a2f287945`。
+  锁定参数训练录取厚角VMC/导纳/阻抗2/3、0/3、2/3；短撞3/3、1/3、2/3；持续1/3、0/3、0/3。
+  task/strict与曝光/录取分开，持续阻抗task/strict仍2/3；不称VMC三指标全面优势。
+  27预注册验证运行，collection/新ESN未开始，仍只有2/3/1个唯一合格VMC训练fixture。
+- 新增定义覆盖工具，3300定义在剔除未消费字段后仍全部唯一、train/val精确重合0，未宣称
+  全量动态有效。全部27BO决策用当时训练前缀同实现精确重放，误差0，不当作收敛证明。
+  短撞c05退化诊断区分两类任务失败，不调原score。首个人推c05原始550000子步/动作与
+  独立连续段重算通过：1.2643s同段14.3532mm；但RMSE/峰力增加且仍碎接触，不称真实安全。
+- 新增validation离线审计、human分段与图工具、相关专属报告，10项针对性测试通过。
+  全162点图显示所有失败并修正长期图标签含paddle，已视觉核验。README/主记录/进度/周报同步。
+- 均已逐项核验到服务器`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/`：
+  `teacher_bank_review_checkpoint_20260930_1124/evidence/`56文件定义覆盖、短撞诊断及工具；
+  `teacher_bank_review_checkpoint_20260930_1138/evidence/`49文件独立人推/图与全部BO审计；
+  `teacher_bank_review_checkpoint_20260930_1150/evidence/`1609文件锁定元数据、公平表和162点图。
+  锁定review SHA=`a2708301bdf41874c01dca8a31611c6a5fc1a09081fb50e6c41ea6c8afd32169`；
+  人推review SHA=`dab55a4eba144668891332ff6c9a4dbd4415ae8a2c21e7cce7e3acb5725ba2a7`。
+  归档后文档地址补充以本Git提交为准，不冒称已在旧快照中。稳定v10未重启，10小时任务继续。
+
 ## 2026-09-30 — 135回合检查点、完整资产复现更正与公平展示
 
 - 11:10 UTC重新fetch并读取main=`2581451cc9c471b19c67286457bea8d3b8a4b2b7`及baseline=

@@ -4,6 +4,49 @@
 截止时停止派发新仿真，已开始的回合允许完整保存；不能把场景定义数当成成功示范数。
 本轮新增的是训练域，不修改冻结综合测试环境、原任务 gate、执行器或 actor 输入。
 
+## 11:44 UTC：162搜索完成，参数独立认证锁定
+
+11:42全部162搜索回合完成，27录取/135未录取，每方法/类别均六候选×三anchor。
+11:44独立快照重建全部候选排名与选中参数，冻结源/模型配对核对通过，bank锁定SHA为
+`1cafd43556f754df0595027c6aa1a358520038bbd5a3f742b9ef3b2a2f287945`。
+选定参数的录取为厚角VMC/导纳/阻抗2/3、0/3、2/3；短撞3/3、1/3、2/3；持续1/3、0/3、0/3。
+仅短撞VMC三anchor全可行，其余保留最优但不全可行baseline继续验证，不删除失败。
+task/strict与录取不可混同；例如持续阻抗task/strict为2/3但曝光0/3。指标与参数见
+[锁参比较](TEACHER_BANK_LOCKED_SEARCH_20260930.md)，不支持VMC三指标全面占优。
+
+完整27BO前缀同实现精确重放；首个人推的原始子步/分段/动作重放也已独立通过。
+1.2643s同段位移14.3532mm，但RMSE与整回合峰力升高，仍有碎接触，详见
+[人推审计](TEACHER_BANK_C05_PERSON_SUCCESS_AUDIT_20260930.md)。原始证据与图等49文件已
+核验至服务器runs/main/teacher_bank_review_checkpoint_20260930_1138/evidence/。
+锁定元数据快照、公平表、全部162点图/来源status1609文件已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_1150/evidence/`。
+27回合预注册验证已启动，不回调参数；后续collection仍遵守13:48:16 UTC截止。
+VMC唯一合格训练fixture暂为2/3/1，尚未每类1000，无新ESN；这里所有结果均开发dt=1e-4。
+
+## 11:31 UTC：首个持续人推录取与定义覆盖审计
+
+VMC持续推碰c05三条已完成：人手anchor0录取，棍337/推板671失败，故该候选1/3。
+原记录人手连续接触最长1.2643s、同段有符号让位14.3532mm，task/strict均true；
+RMSE56.0386mm、峰矩45.0859Nm、峰速0.0616024m/s、外部穿透0.0327918mm。
+此处是已归档runner记录，新的原始子步独立复核正在进行；不声称长期三条件已解决。
+短撞c05阻抗2/3，导纳0/3、VMC0/3；最后两组长期经典方法仍运行，bank尚未锁定。
+
+定义只读审计核对3300个配置及冻结源hash；去掉未消费的paddle rod_radius字段与厚角
+描述字符串后，额外消费字段投影仍3300唯一、train/validation精确重合0。原hash未改。
+水平相对yaw约±34.38度，不涵盖任意3D来向；长期hand/rod/paddle训练500/250/250，
+其它各型334/333/333。v8已有18条初始几何preflight，不是3300条动态验证；虽fixture及
+training_xml AST一致，完整adapter hash不同，因此不冒称v10全量几何已验证。
+短撞c05的采样退化报告区分load_transfer卡住与释放支撑失败，见
+[c05诊断](TEACHER_BANK_VMC_C05_DIAGNOSTIC_20260930.md)。本轮独立复算的是BO/action/
+阶段统计，三物理指标引用已有审计并核raw hash，不能称全部新物理重算。
+
+上述定义覆盖JSON、c05诊断及当时工具/验证审计等56文件已逐项核验共享至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_1124/evidence/`。
+coverage SHA=`e6162d359ca98ac07ca57ba8553b5ecfd503ca11a58bf3d95381b8e1a5ebf544`；
+c05 review_v2 SHA=`8c665ea44fa9378eac3ccc1771cb0532840dedf7a2574ad626f25bc5f60cc43e`。
+新validation离线审计7测试通过，尚未读验证结果；全部BO前缀检查当前25/27精确重放，
+余下2项待生成，不以同实现重放证明优化质量。validation/collection/新ESN仍未开始。
+
 ## 11:10 UTC：完整五候选检查点与资产覆盖更正
 
 10:40完整c00–c04共135回合，23录取/112失败，逐回合有归档凭据。厚角VMC/导纳/阻抗

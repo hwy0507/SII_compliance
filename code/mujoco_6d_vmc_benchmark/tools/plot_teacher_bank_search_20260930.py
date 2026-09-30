@@ -16,7 +16,7 @@ import sys
 COLORS = {'vmc':'#0072B2', 'admittance':'#D55E00', 'impedance':'#009E73'}
 LABELS = {'passive_corner':'Passive collision: thick corner',
           'active_short':'Short active impact: ball / impactor',
-          'active_long':'Sustained active push: hand / rod'}
+          'active_long':'Sustained active push: hand / rod / paddle'}
 METRICS = ('rmse_m', 'peak_torque_nm', 'peak_speed_mps')
 
 
