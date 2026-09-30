@@ -1,7 +1,7 @@
 """Summarize a live or completed paired SimbaV2 campaign without reward ranking."""
 from __future__ import annotations
 import argparse, csv, datetime, json, math, statistics
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 CORE = ("rmse_cm", "peak_torque_nm", "peak_velocity_mps")
@@ -47,7 +47,7 @@ def write_json(path, data):
 def write_csv(path, rows):
     fields = list(dict.fromkeys(k for row in rows for k in row))
     with path.open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=fields)
+        writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
         if fields:
             writer.writeheader()
             for row in rows:
@@ -103,6 +103,52 @@ def run_info(root, spec, warnings):
                 physical_budget_complete=(steps == logged_controls),
                 failure=failure, diagnostics=diagnostics, path=str(p)), curve
 
+def episode_execution(row, protocol, warnings):
+    """Literal gates and integrated time; never infer horizon from summary status."""
+    raw = {}
+    raw_path = row.get("raw_result_json")
+    if raw_path:
+        raw = read(raw_path, warnings) or {}
+    m = raw.get("metrics", row.get("metrics", {}))
+    actual, duration_source = None, None
+    counts = m.get("timestep_sample_counts")
+    if isinstance(counts, dict) and counts:
+        try:
+            pairs = [(float(dt), count) for dt, count in counts.items()]
+            if all(math.isfinite(dt) and dt > 0 and finite(n) and n >= 0 for dt, n in pairs):
+                actual = sum(dt * n for dt, n in pairs)
+                duration_source = "audited_timestep_sample_counts"
+        except (ValueError, TypeError):
+            pass
+    if actual is None and finite(m.get("timestep_s")) and finite(m.get("samples")):
+        actual = m["timestep_s"] * m["samples"]
+        duration_source = "audited_uniform_substep_samples"
+    if actual is None:
+        stages = list((m.get("stages") or {}).values())
+        if stages and all(finite(s.get("duration_s")) for s in stages):
+            actual = sum(s["duration_s"] for s in stages)
+            duration_source = "audited_stage_integrated_durations"
+    full = row.get("full_task_horizon_completed", raw.get("full_task_horizon_completed"))
+    execution = row.get("execution_complete", raw.get("execution_complete"))
+    abort = row.get("abort_reason", raw.get("abort_reason"))
+    requested = (row.get("condition") or {}).get("duration_s", protocol.get("duration_s"))
+    short = (actual < requested - 1e-6 if finite(actual) and finite(requested)
+             else True if full is False else None)
+    full55 = (bool(full is True and execution is True
+                   and abs(requested - 55.) <= 1e-6 and abs(actual - 55.) <= 1e-6)
+              if finite(actual) and finite(requested) and isinstance(full, bool)
+                 and isinstance(execution, bool) else None)
+    reason = (abort if abort else "full_horizon_end" if full is True
+              else "early_termination_without_recorded_reason" if short is True
+              else "unknown")
+    if full is True and short is True:
+        warnings.append("Horizon gate/duration conflict: " + str(raw_path or row.get("case_index")))
+    return dict(full_task_horizon_completed=full, execution_complete=execution,
+        actual_substep_duration_s=actual, substep_duration_source=duration_source,
+        verified_full_55s=full55, early_termination=short,
+        early_abort=bool(abort) and short is True, termination_reason=reason,
+        raw_result_json=raw_path)
+
 def episode_rows(root, run, partition, selections, steps, warnings):
     directory = root / partition / run["run"]
     source = directory / "SUMMARY.json"
@@ -123,6 +169,7 @@ def episode_rows(root, run, partition, selections, steps, warnings):
         rows.append(dict(run=run["run"], group=run["group"], role=run["role"], seed=run["seed"],
             partition=partition, evaluation_status=raw.get("status", "unknown"),
             case_index=row.get("case_index", index), **metrics(row),
+            **episode_execution(row, protocol, warnings),
             **{k: row.get(k) for k in GATES},
             peak_torque_by_joint_nm=row.get("peak_torque_by_joint_nm"),
             contact_coverage_valid=row.get("contact_coverage_valid"),
@@ -133,7 +180,9 @@ def episode_rows(root, run, partition, selections, steps, warnings):
             reused_selected_as_fixed_final=reused,
             source=str(source)))
     return rows, dict(run=run["run"], partition=partition, status=raw.get("status", "unknown"),
-                      completed_episodes=len(rows), source=str(source))
+                      evaluation_rows_written=len(rows),
+                      full_55s_episodes=sum(x["verified_full_55s"] is True for x in rows),
+                      early_abort_episodes=sum(x["early_abort"] for x in rows), source=str(source))
 
 def by_seed(rows):
     grouped = defaultdict(list)
@@ -143,7 +192,21 @@ def by_seed(rows):
     for (partition, group, seed), block in sorted(grouped.items()):
         result.append(dict(partition=partition, group=group, role=GROUPS.get(group, "diagnostic"),
             seed=seed, episodes=len(block),
+            evaluation_files_complete=all(x["evaluation_status"] == "complete" for x in block),
             evaluation_complete=all(x["evaluation_status"] == "complete" for x in block),
+            evaluation_complete_semantics="backward-compatible alias: evaluation files only, not physical horizon",
+            full_task_horizon_completed_episodes=sum(x["full_task_horizon_completed"] is True for x in block),
+            execution_complete_episodes=sum(x["execution_complete"] is True for x in block),
+            full_55s_episodes=sum(x["verified_full_55s"] is True for x in block),
+            full_55s_rate=sum(x["verified_full_55s"] is True for x in block)/len(block),
+            horizon_unknown_episodes=sum(x["verified_full_55s"] is None for x in block),
+            early_abort_episodes=sum(x["early_abort"] is True for x in block),
+            early_termination_episodes=sum(x["early_termination"] is True for x in block),
+            actual_substep_duration_s=[x["actual_substep_duration_s"] for x in block],
+            termination_reasons=dict(Counter(x["termination_reason"] for x in block)),
+            comparison_scope=("mixed_length_failure_diagnostic" if any(x["early_termination"] is True for x in block)
+                              else "full_55s_descriptive" if all(x["verified_full_55s"] is True for x in block)
+                              else "horizon_not_fully_verified"),
             **{k: mean([x[k] for x in block]) for k in CORE},
             **{k+"_rate": mean([int(x[k]) for x in block if isinstance(x[k], bool)]) for k in GATES},
             worst_peak_torque_nm=max((x["peak_torque_nm"] for x in block if finite(x["peak_torque_nm"])), default=None),
@@ -154,13 +217,23 @@ def by_seed(rows):
 def across_seeds(rows):
     grouped = defaultdict(list)
     for row in rows:
-        if row["evaluation_complete"]:
+        if row["evaluation_files_complete"]:
             grouped[(row["partition"], row["group"])].append(row)
     result = []
     for (partition, group), block in sorted(grouped.items()):
         values = dict(partition=partition, group=group, role=GROUPS.get(group, "diagnostic"),
                       independent_training_seeds=len(block), seeds=[x["seed"] for x in block],
                       episodes_per_seed=[x["episodes"] for x in block],
+                      total_episodes=sum(x["episodes"] for x in block),
+                      full_55s_episodes=sum(x["full_55s_episodes"] for x in block),
+                      early_abort_episodes=sum(x["early_abort_episodes"] for x in block),
+                      early_termination_episodes=sum(x["early_termination_episodes"] for x in block),
+                      horizon_unknown_episodes=sum(x["horizon_unknown_episodes"] for x in block),
+                      full_55s_rate_mean=mean([x["full_55s_rate"] for x in block]),
+                      full_55s_rate_seed_sd=sd([x["full_55s_rate"] for x in block]),
+                      comparison_scope=("mixed_length_failure_diagnostic" if any(x["early_termination_episodes"] for x in block)
+                                        else "full_55s_descriptive" if all(x["full_55s_episodes"]==x["episodes"] for x in block)
+                                        else "horizon_not_fully_verified"),
                       statistical_unit="independent training seed; equal weight per seed",
                       confidence_interval="not reported: n<=3 is exploratory; seed SD is descriptive")
         for key in (*CORE, *(x+"_rate" for x in GATES)):
@@ -205,6 +278,9 @@ def report(root, out):
                 warnings.append(f"Protocol mismatch in {partition}: {key} has {observed}; cross-method ranking is not valid.")
     seeds = by_seed(episodes)
     groups = across_seeds(seeds)
+    mixed_partitions = sorted({x["partition"] for x in episodes if x["early_termination"] is True})
+    for partition in mixed_partitions:
+        warnings.append(f"{partition}: 混合长度失败诊断。包含提前终止回合；原始 RMSE/峰值只覆盖实际运行时长，不能与完整 55 s 回合简单排名。失败全部保留，未补齐或填补指标。")
     budget = []
     for group in GROUPS:
         runs = [x for x in training if x["group"] == group]
@@ -218,6 +294,7 @@ def report(root, out):
         "This is Office simulation, not real FR3 hardware validation or a blind previously unseen benchmark.",
         "RMSE uses current task-stage waypoint and all physical substeps; no post-contact-only metric is silently substituted.",
         "Means include failures and physically invalid episodes; physical validity, task and strict success remain separate.",
+        "Evaluation file completion is not physical-horizon completion. Early-abort RMSE/peaks cover actual observed duration only; mixed lengths are failure diagnostics, not directly comparable full-55s rankings.",
         "Peak torque is actual qfrc_actuator Nm; group value is mean of per-episode maxima, not one global maximum.",
         "Peak velocity is a maximum, not P95. Lower speed/torque alone can indicate stalling rather than better control.",
         "Different reward totals are not comparable performance scores; never rank reward groups by total return.",
@@ -231,7 +308,7 @@ def report(root, out):
         campaign=str(root),phase=state.get("phase", "unknown"),protocol=protocol,
         training=training,budgets=budget,evaluation_status=pending,
         per_seed=seeds,across_seed=groups,status_files=statuses,warnings=warnings,
-        limitations=limitations,
+        limitations=limitations,mixed_length_partitions=mixed_partitions,
         completion="complete" if statuses["COMPLETE"] else "in_progress_or_incomplete")
     out.mkdir(parents=True, exist_ok=True)
     write_json(out / "RESULTS.latest.json", payload)
@@ -248,22 +325,25 @@ def report(root, out):
             "|---|---:|---|---:|---:|---:|---:|"]
     for r in training:
         text.append(f"| {r['group']} | {r['seed']} | {r['status']} | {r['transitions']} | {r['updates']} | {r['actual_logged_physics_substeps']} | {number(r['elapsed_s']/3600 if finite(r['elapsed_s']) else None,2)} |")
+    if mixed_partitions:
+        text += ["", "**混合长度失败诊断：" + "、".join(mixed_partitions) + " 含提前终止回合。下表保留全部原始失败指标，不补齐至 55 s；不得与完整 55 s 结果简单排名。**", ""]
     text += ["", "## 统一评测：按训练 seed 汇总", "",
              "每个 seed 先对相同评测条件求均值，再对独立训练 seed 等权统计。"
-             "RMSE 单位 cm；力矩为每回合峰值实际 N·m；速度为每回合峰值 m/s。",
-             "", "| 评测 | 方法 | Seed | episodes | 完整 | RMSE cm | 峰值力矩 | 峰值速度 | strict | task | physical |",
-             "|---|---|---:|---:|---|---:|---:|---:|---:|---:|---:|"]
+             "RMSE 单位 cm；力矩为每回合峰值实际 N·m；速度为每回合峰值 m/s。"
+             "评测文件完备仅指 SUMMARY 写完，实际完成 55 s 单独统计；缺失时长不推测。",
+             "", "| 评测 | 方法 | Seed | episodes | 评测文件完备 | 完整55s/总数 | 提前abort | 实际时长s | RMSE cm | 峰值力矩 | 峰值速度 | strict | task | physical |",
+             "|---|---|---:|---:|---|---:|---:|---|---:|---:|---:|---:|---:|---:|"]
     for r in seeds:
-        text.append(f"| {r['partition']} | {r['group']} | {r['seed']} | {r['episodes']} | {r['evaluation_complete']} | {number(r['rmse_cm'])} | {number(r['peak_torque_nm'])} | {number(r['peak_velocity_mps'],4)} | {number(r['strict_success_rate'])} | {number(r['task_success_rate'])} | {number(r['physical_valid_rate'])} |")
+        text.append(f"| {r['partition']} | {r['group']} | {r['seed']} | {r['episodes']} | {r['evaluation_files_complete']} | {r['full_55s_episodes']}/{r['episodes']} | {r['early_abort_episodes']} | {', '.join(number(t,2) for t in r['actual_substep_duration_s'])} | {number(r['rmse_cm'])} | {number(r['peak_torque_nm'])} | {number(r['peak_velocity_mps'],4)} | {number(r['strict_success_rate'])} | {number(r['task_success_rate'])} | {number(r['physical_valid_rate'])} |")
     if not seeds:
         text += ["", "评测尚无可读取结果；此处没有以训练 reward 或旧协议结果填充。"]
     text += ["", "## Seed 均值 ± 样本标准差", "",
-             "| 评测 | 方法 | 独立 seeds | RMSE cm | 峰值力矩 N·m | 峰值速度 m/s |",
-             "|---|---|---:|---:|---:|---:|"]
+             "| 评测 | 方法 | 独立 seeds | 完整55s/总数 | 提前abort | 解释范围 | RMSE cm | 峰值力矩 N·m | 峰值速度 m/s |",
+             "|---|---|---:|---:|---:|---|---:|---:|---:|"]
     for r in groups:
         fmt=lambda k: number(r[k+"_mean"],4)+" ± "+number(r[k+"_seed_sd"],4)
-        text.append(f"| {r['partition']} | {r['group']} | {r['independent_training_seeds']} | {fmt('rmse_cm')} | {fmt('peak_torque_nm')} | {fmt('peak_velocity_mps')} |")
-    text += ["", "未完成的评测不进入上述跨 seed 统计；n≤3 不给出夸大的显著性或置信区间结论。", "",
+        text.append(f"| {r['partition']} | {r['group']} | {r['independent_training_seeds']} | {r['full_55s_episodes']}/{r['total_episodes']} | {r['early_abort_episodes']} | {r['comparison_scope']} | {fmt('rmse_cm')} | {fmt('peak_torque_nm')} | {fmt('peak_velocity_mps')} |")
+    text += ["", "评测文件尚未完备的 seed 不进入上述跨 seed 统计；文件已写完但提前物理终止的失败仍全部保留，不能称作完整55s回合。n≤3 不给出夸大的显著性或置信区间结论。", "",
              "## 待完成与异常", ""]
     text.extend(f"- {r['run']} / {r['partition']}: {r['status']} ({r['source']})"
                 for r in pending if r["status"] != "complete")

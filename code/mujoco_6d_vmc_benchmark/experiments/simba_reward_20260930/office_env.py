@@ -33,6 +33,14 @@ class Hooks:
         # Monotone task stages, bounded within-stage projection onto the commanded
         # route. No best-so-far position, contact schedule, or obstacle state.
         task=self.task;idx=int(task.index)
+        if os.environ.get("STUDY_DENSE_PROGRESS","0") == "1":
+            from progress_potential import dense_progress_potential
+            d=self.env.data
+            begin=self.initial if idx==0 else np.asarray(task.goals[idx-1])
+            error_rotation=so3_log(task.rotation @ d.xmat[self.env._hand_id].reshape(3,3).T)
+            return dense_progress_potential(idx,len(task.goals),begin,task.goals[idx],
+                d.xpos[self.env._hand_id],error_rotation,
+                body_twist(self.env.model,d,self.env._hand_id)[:3])
         begin=self.initial if idx==0 else np.asarray(task.goals[idx-1])
         end=np.asarray(task.goals[idx]);v=end-begin;length2=float(v@v)
         pos=self.env.data.xpos[self.env._hand_id]

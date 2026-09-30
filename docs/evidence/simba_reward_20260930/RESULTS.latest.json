@@ -1,0 +1,3681 @@
+{
+  "generated_at": "2026-09-30T09:19:41.996998+00:00",
+  "campaign": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03",
+  "phase": "complete",
+  "protocol": {
+    "started": 1790741809.5667377,
+    "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930",
+    "python": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+    "primary_paired_seeds": [
+      41001,
+      41002,
+      41003
+    ],
+    "steps": 100000,
+    "utd": 2,
+    "reward_groups": [
+      "office_task",
+      "metric"
+    ],
+    "ablation": "metric without smooth, seeds41001/41002",
+    "concurrent_simulations": 4,
+    "train_dt": 0.0001,
+    "validation_dt": 0.0001,
+    "test_dt": 5e-05,
+    "validation_manifest": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+    "test_manifest": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+    "validation_sha256": "4addc82da1dd97ec1775a1a4993103269c4618cb96c95c615530d061087a30fc",
+    "test_sha256": "f4d92da6e7bb16a73359c412ab15d0648e23ed194f6b819fc60b561be9ac2243",
+    "runs": [
+      {
+        "id": "office_task_seed41001",
+        "mode": "office_task",
+        "seed": 41001,
+        "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001",
+        "primary": true
+      },
+      {
+        "id": "metric_seed41001",
+        "mode": "metric",
+        "seed": 41001,
+        "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001",
+        "primary": true
+      },
+      {
+        "id": "office_task_seed41002",
+        "mode": "office_task",
+        "seed": 41002,
+        "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002",
+        "primary": true
+      },
+      {
+        "id": "metric_seed41002",
+        "mode": "metric",
+        "seed": 41002,
+        "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002",
+        "primary": true
+      },
+      {
+        "id": "office_task_seed41003",
+        "mode": "office_task",
+        "seed": 41003,
+        "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003",
+        "primary": true
+      },
+      {
+        "id": "metric_seed41003",
+        "mode": "metric",
+        "seed": 41003,
+        "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003",
+        "primary": true
+      },
+      {
+        "id": "metric_nosmooth_seed41001",
+        "mode": "metric",
+        "seed": 41001,
+        "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001",
+        "primary": false
+      },
+      {
+        "id": "metric_nosmooth_seed41002",
+        "mode": "metric",
+        "seed": 41002,
+        "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002",
+        "primary": false
+      }
+    ],
+    "selection": "strict rate,task rate,physical validity,RMSE,peak actual torque,peak speed; all ascending costs",
+    "claims": "Office simulation development conditions, not hardware or a blind unseen benchmark",
+    "max_train_wall_seconds_per_run": 8000.0
+  },
+  "training": [
+    {
+      "run": "office_task_seed41001",
+      "group": "office_task",
+      "role": "primary",
+      "seed": 41001,
+      "status": "step_budget_complete",
+      "transitions": 100000,
+      "updates": 190002,
+      "episodes": 78,
+      "elapsed_s": 6477.119252037955,
+      "planned_transitions": 100000,
+      "physics_dt": 0.0001,
+      "actual_logged_physics_substeps": 40000000,
+      "actual_logged_simulated_seconds": 3999.9999999969423,
+      "logged_control_transitions": 100000,
+      "physical_budget_complete": true,
+      "failure": null,
+      "diagnostics": {
+        "last10_complete_episodes": 10,
+        "last10_task_success_rate": 0.0,
+        "last10_strict_success_rate": 0.0,
+        "last10_rmse_cm": 78.83894187869953,
+        "convergence": "not established by this finite-budget experiment"
+      },
+      "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001",
+      "process_returncode": 0
+    },
+    {
+      "run": "metric_seed41001",
+      "group": "metric",
+      "role": "primary",
+      "seed": 41001,
+      "status": "step_budget_complete",
+      "transitions": 100000,
+      "updates": 190002,
+      "episodes": 75,
+      "elapsed_s": 6552.223304869025,
+      "planned_transitions": 100000,
+      "physics_dt": 0.0001,
+      "actual_logged_physics_substeps": 40000000,
+      "actual_logged_simulated_seconds": 3999.9999999969423,
+      "logged_control_transitions": 100000,
+      "physical_budget_complete": true,
+      "failure": null,
+      "diagnostics": {
+        "last10_complete_episodes": 10,
+        "last10_task_success_rate": 0.0,
+        "last10_strict_success_rate": 0.0,
+        "last10_rmse_cm": 36.19691705956642,
+        "convergence": "not established by this finite-budget experiment"
+      },
+      "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001",
+      "process_returncode": 0
+    },
+    {
+      "run": "office_task_seed41002",
+      "group": "office_task",
+      "role": "primary",
+      "seed": 41002,
+      "status": "step_budget_complete",
+      "transitions": 100000,
+      "updates": 190002,
+      "episodes": 85,
+      "elapsed_s": 6272.2920278050005,
+      "planned_transitions": 100000,
+      "physics_dt": 0.0001,
+      "actual_logged_physics_substeps": 40000000,
+      "actual_logged_simulated_seconds": 3999.9999999969423,
+      "logged_control_transitions": 100000,
+      "physical_budget_complete": true,
+      "failure": null,
+      "diagnostics": {
+        "last10_complete_episodes": 10,
+        "last10_task_success_rate": 0.0,
+        "last10_strict_success_rate": 0.0,
+        "last10_rmse_cm": 93.60164633135449,
+        "convergence": "not established by this finite-budget experiment"
+      },
+      "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002",
+      "process_returncode": 0
+    },
+    {
+      "run": "metric_seed41002",
+      "group": "metric",
+      "role": "primary",
+      "seed": 41002,
+      "status": "step_budget_complete",
+      "transitions": 100000,
+      "updates": 190002,
+      "episodes": 76,
+      "elapsed_s": 6456.441677335068,
+      "planned_transitions": 100000,
+      "physics_dt": 0.0001,
+      "actual_logged_physics_substeps": 40000000,
+      "actual_logged_simulated_seconds": 3999.9999999969423,
+      "logged_control_transitions": 100000,
+      "physical_budget_complete": true,
+      "failure": null,
+      "diagnostics": {
+        "last10_complete_episodes": 10,
+        "last10_task_success_rate": 0.0,
+        "last10_strict_success_rate": 0.0,
+        "last10_rmse_cm": 41.19680624182849,
+        "convergence": "not established by this finite-budget experiment"
+      },
+      "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002",
+      "process_returncode": 0
+    },
+    {
+      "run": "office_task_seed41003",
+      "group": "office_task",
+      "role": "primary",
+      "seed": 41003,
+      "status": "step_budget_complete",
+      "transitions": 100000,
+      "updates": 190002,
+      "episodes": 75,
+      "elapsed_s": 6237.734377140994,
+      "planned_transitions": 100000,
+      "physics_dt": 0.0001,
+      "actual_logged_physics_substeps": 40000000,
+      "actual_logged_simulated_seconds": 3999.9999999969423,
+      "logged_control_transitions": 100000,
+      "physical_budget_complete": true,
+      "failure": null,
+      "diagnostics": {
+        "last10_complete_episodes": 10,
+        "last10_task_success_rate": 0.0,
+        "last10_strict_success_rate": 0.0,
+        "last10_rmse_cm": 41.329366615553035,
+        "convergence": "not established by this finite-budget experiment"
+      },
+      "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003",
+      "process_returncode": 0
+    },
+    {
+      "run": "metric_seed41003",
+      "group": "metric",
+      "role": "primary",
+      "seed": 41003,
+      "status": "step_budget_complete",
+      "transitions": 100000,
+      "updates": 190002,
+      "episodes": 93,
+      "elapsed_s": 6410.818094613962,
+      "planned_transitions": 100000,
+      "physics_dt": 0.0001,
+      "actual_logged_physics_substeps": 40000000,
+      "actual_logged_simulated_seconds": 3999.9999999969423,
+      "logged_control_transitions": 100000,
+      "physical_budget_complete": true,
+      "failure": null,
+      "diagnostics": {
+        "last10_complete_episodes": 10,
+        "last10_task_success_rate": 0.0,
+        "last10_strict_success_rate": 0.0,
+        "last10_rmse_cm": 28.18131795624567,
+        "convergence": "not established by this finite-budget experiment"
+      },
+      "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003",
+      "process_returncode": 0
+    },
+    {
+      "run": "metric_nosmooth_seed41001",
+      "group": "metric_nosmooth",
+      "role": "secondary_ablation",
+      "seed": 41001,
+      "status": "step_budget_complete",
+      "transitions": 100000,
+      "updates": 190002,
+      "episodes": 76,
+      "elapsed_s": 6399.862480857992,
+      "planned_transitions": 100000,
+      "physics_dt": 0.0001,
+      "actual_logged_physics_substeps": 40000000,
+      "actual_logged_simulated_seconds": 3999.9999999969423,
+      "logged_control_transitions": 100000,
+      "physical_budget_complete": true,
+      "failure": null,
+      "diagnostics": {
+        "last10_complete_episodes": 10,
+        "last10_task_success_rate": 0.0,
+        "last10_strict_success_rate": 0.0,
+        "last10_rmse_cm": 18.530136115423087,
+        "convergence": "not established by this finite-budget experiment"
+      },
+      "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001",
+      "process_returncode": 0
+    },
+    {
+      "run": "metric_nosmooth_seed41002",
+      "group": "metric_nosmooth",
+      "role": "secondary_ablation",
+      "seed": 41002,
+      "status": "step_budget_complete",
+      "transitions": 100000,
+      "updates": 190002,
+      "episodes": 90,
+      "elapsed_s": 6533.500822362956,
+      "planned_transitions": 100000,
+      "physics_dt": 0.0001,
+      "actual_logged_physics_substeps": 40000000,
+      "actual_logged_simulated_seconds": 3999.9999999969423,
+      "logged_control_transitions": 100000,
+      "physical_budget_complete": true,
+      "failure": null,
+      "diagnostics": {
+        "last10_complete_episodes": 10,
+        "last10_task_success_rate": 0.0,
+        "last10_strict_success_rate": 0.0,
+        "last10_rmse_cm": 9.831326714698882,
+        "convergence": "not established by this finite-budget experiment"
+      },
+      "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002",
+      "process_returncode": 0
+    }
+  ],
+  "budgets": [
+    {
+      "group": "office_task",
+      "runs": 3,
+      "transitions": 300000,
+      "updates": 570006,
+      "physics_substeps": 120000000,
+      "simulated_seconds": 11999.999999990827,
+      "per_run_wall_s": [
+        6477.119252037955,
+        6272.2920278050005,
+        6237.734377140994
+      ]
+    },
+    {
+      "group": "metric",
+      "runs": 3,
+      "transitions": 300000,
+      "updates": 570006,
+      "physics_substeps": 120000000,
+      "simulated_seconds": 11999.999999990827,
+      "per_run_wall_s": [
+        6552.223304869025,
+        6456.441677335068,
+        6410.818094613962
+      ]
+    },
+    {
+      "group": "metric_nosmooth",
+      "runs": 2,
+      "transitions": 200000,
+      "updates": 380004,
+      "physics_substeps": 80000000,
+      "simulated_seconds": 7999.999999993885,
+      "per_run_wall_s": [
+        6399.862480857992,
+        6533.500822362956
+      ]
+    }
+  ],
+  "evaluation_status": [
+    {
+      "run": "office_task_seed41001",
+      "partition": "test",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 6,
+      "early_abort_episodes": 0,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/office_task_seed41001/SUMMARY.json"
+    },
+    {
+      "run": "office_task_seed41001",
+      "partition": "fixed_final",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 5,
+      "early_abort_episodes": 1,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/office_task_seed41001/SUMMARY.json"
+    },
+    {
+      "run": "metric_seed41001",
+      "partition": "test",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 6,
+      "early_abort_episodes": 0,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_seed41001/SUMMARY.json"
+    },
+    {
+      "run": "metric_seed41001",
+      "partition": "fixed_final",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 6,
+      "early_abort_episodes": 0,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/metric_seed41001/SUMMARY.json"
+    },
+    {
+      "run": "office_task_seed41002",
+      "partition": "test",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 6,
+      "early_abort_episodes": 0,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/office_task_seed41002/SUMMARY.json"
+    },
+    {
+      "run": "office_task_seed41002",
+      "partition": "fixed_final",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 1,
+      "early_abort_episodes": 5,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/office_task_seed41002/SUMMARY.json"
+    },
+    {
+      "run": "metric_seed41002",
+      "partition": "test",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 6,
+      "early_abort_episodes": 0,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_seed41002/SUMMARY.json"
+    },
+    {
+      "run": "metric_seed41002",
+      "partition": "fixed_final",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 6,
+      "early_abort_episodes": 0,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/metric_seed41002/SUMMARY.json"
+    },
+    {
+      "run": "office_task_seed41003",
+      "partition": "test",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 6,
+      "early_abort_episodes": 0,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/office_task_seed41003/SUMMARY.json"
+    },
+    {
+      "run": "office_task_seed41003",
+      "partition": "fixed_final",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 6,
+      "early_abort_episodes": 0,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/office_task_seed41003/SUMMARY.json"
+    },
+    {
+      "run": "metric_seed41003",
+      "partition": "test",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 6,
+      "early_abort_episodes": 0,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_seed41003/SUMMARY.json"
+    },
+    {
+      "run": "metric_seed41003",
+      "partition": "fixed_final",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 5,
+      "early_abort_episodes": 1,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/metric_seed41003/SUMMARY.json"
+    },
+    {
+      "run": "metric_nosmooth_seed41001",
+      "partition": "test",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 6,
+      "early_abort_episodes": 0,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_nosmooth_seed41001/SUMMARY.json"
+    },
+    {
+      "run": "metric_nosmooth_seed41002",
+      "partition": "test",
+      "status": "complete",
+      "evaluation_rows_written": 6,
+      "full_55s_episodes": 6,
+      "early_abort_episodes": 0,
+      "source": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_nosmooth_seed41002/SUMMARY.json"
+    }
+  ],
+  "per_seed": [
+    {
+      "partition": "fixed_final",
+      "group": "metric",
+      "role": "primary",
+      "seed": 41001,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 6,
+      "execution_complete_episodes": 6,
+      "full_55s_episodes": 6,
+      "full_55s_rate": 1.0,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "actual_substep_duration_s": [
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0
+      ],
+      "termination_reasons": {
+        "full_horizon_end": 6
+      },
+      "comparison_scope": "full_55s_descriptive",
+      "rmse_cm": 20.599705818882104,
+      "peak_torque_nm": 48.90759684322724,
+      "peak_velocity_mps": 0.18791009044855464,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 0.3333333333333333,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 51.864998065326134,
+      "worst_peak_velocity_mps": 0.30948229850199527,
+      "physical_invalid_episodes": 4
+    },
+    {
+      "partition": "fixed_final",
+      "group": "metric",
+      "role": "primary",
+      "seed": 41002,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 6,
+      "execution_complete_episodes": 6,
+      "full_55s_episodes": 6,
+      "full_55s_rate": 1.0,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "actual_substep_duration_s": [
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0
+      ],
+      "termination_reasons": {
+        "full_horizon_end": 6
+      },
+      "comparison_scope": "full_55s_descriptive",
+      "rmse_cm": 17.576225364586293,
+      "peak_torque_nm": 56.910178299665645,
+      "peak_velocity_mps": 0.31466832329500793,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 0.16666666666666666,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 64.80063971957051,
+      "worst_peak_velocity_mps": 0.34619767096256177,
+      "physical_invalid_episodes": 5
+    },
+    {
+      "partition": "fixed_final",
+      "group": "metric",
+      "role": "primary",
+      "seed": 41003,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 5,
+      "execution_complete_episodes": 5,
+      "full_55s_episodes": 5,
+      "full_55s_rate": 0.8333333333333334,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 1,
+      "early_termination_episodes": 1,
+      "actual_substep_duration_s": [
+        55.0,
+        17.64,
+        55.0,
+        55.0,
+        55.0,
+        55.0
+      ],
+      "termination_reasons": {
+        "full_horizon_end": 5,
+        "global_penetration_exceeded_2mm": 1
+      },
+      "comparison_scope": "mixed_length_failure_diagnostic",
+      "rmse_cm": 23.438364508748567,
+      "peak_torque_nm": 48.2105785772909,
+      "peak_velocity_mps": 0.32263824828943954,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 0.3333333333333333,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 58.21157166726856,
+      "worst_peak_velocity_mps": 0.4680245940513618,
+      "physical_invalid_episodes": 4
+    },
+    {
+      "partition": "fixed_final",
+      "group": "office_task",
+      "role": "primary",
+      "seed": 41001,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 5,
+      "execution_complete_episodes": 5,
+      "full_55s_episodes": 5,
+      "full_55s_rate": 0.8333333333333334,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 1,
+      "early_termination_episodes": 1,
+      "actual_substep_duration_s": [
+        55.0,
+        55.0,
+        38.72,
+        55.0,
+        55.0,
+        55.0
+      ],
+      "termination_reasons": {
+        "full_horizon_end": 5,
+        "global_penetration_exceeded_2mm": 1
+      },
+      "comparison_scope": "mixed_length_failure_diagnostic",
+      "rmse_cm": 49.672300077138544,
+      "peak_torque_nm": 49.156374283387365,
+      "peak_velocity_mps": 0.46548253484761515,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 0.8333333333333334,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 57.12309771961948,
+      "worst_peak_velocity_mps": 0.6570636454081292,
+      "physical_invalid_episodes": 1
+    },
+    {
+      "partition": "fixed_final",
+      "group": "office_task",
+      "role": "primary",
+      "seed": 41002,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 1,
+      "execution_complete_episodes": 1,
+      "full_55s_episodes": 1,
+      "full_55s_rate": 0.16666666666666666,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 5,
+      "early_termination_episodes": 5,
+      "actual_substep_duration_s": [
+        21.32,
+        21.52,
+        21.48,
+        55.0,
+        20.040000000000003,
+        20.92
+      ],
+      "termination_reasons": {
+        "global_penetration_exceeded_2mm": 5,
+        "full_horizon_end": 1
+      },
+      "comparison_scope": "mixed_length_failure_diagnostic",
+      "rmse_cm": 56.30673685817689,
+      "peak_torque_nm": 51.9663989049965,
+      "peak_velocity_mps": 0.3986983748369567,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 0.16666666666666666,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 61.49966740939896,
+      "worst_peak_velocity_mps": 0.39977566533311776,
+      "physical_invalid_episodes": 5
+    },
+    {
+      "partition": "fixed_final",
+      "group": "office_task",
+      "role": "primary",
+      "seed": 41003,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 6,
+      "execution_complete_episodes": 6,
+      "full_55s_episodes": 6,
+      "full_55s_rate": 1.0,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "actual_substep_duration_s": [
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0
+      ],
+      "termination_reasons": {
+        "full_horizon_end": 6
+      },
+      "comparison_scope": "full_55s_descriptive",
+      "rmse_cm": 74.02220076021771,
+      "peak_torque_nm": 64.22745872807151,
+      "peak_velocity_mps": 0.3883066026884539,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 1.0,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 68.24282092263142,
+      "worst_peak_velocity_mps": 0.39581802940565985,
+      "physical_invalid_episodes": 0
+    },
+    {
+      "partition": "test",
+      "group": "metric",
+      "role": "primary",
+      "seed": 41001,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 6,
+      "execution_complete_episodes": 6,
+      "full_55s_episodes": 6,
+      "full_55s_rate": 1.0,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "actual_substep_duration_s": [
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0
+      ],
+      "termination_reasons": {
+        "full_horizon_end": 6
+      },
+      "comparison_scope": "full_55s_descriptive",
+      "rmse_cm": 4.190112668497744,
+      "peak_torque_nm": 37.77047374965181,
+      "peak_velocity_mps": 0.17421014987079309,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 1.0,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 37.77047374965181,
+      "worst_peak_velocity_mps": 0.17421014987079309,
+      "physical_invalid_episodes": 0
+    },
+    {
+      "partition": "test",
+      "group": "metric",
+      "role": "primary",
+      "seed": 41002,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 6,
+      "execution_complete_episodes": 6,
+      "full_55s_episodes": 6,
+      "full_55s_rate": 1.0,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "actual_substep_duration_s": [
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0
+      ],
+      "termination_reasons": {
+        "full_horizon_end": 6
+      },
+      "comparison_scope": "full_55s_descriptive",
+      "rmse_cm": 6.807428316452304,
+      "peak_torque_nm": 36.479092371111754,
+      "peak_velocity_mps": 0.14367015447238993,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 1.0,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 36.479092371111754,
+      "worst_peak_velocity_mps": 0.14367015447238993,
+      "physical_invalid_episodes": 0
+    },
+    {
+      "partition": "test",
+      "group": "metric",
+      "role": "primary",
+      "seed": 41003,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 6,
+      "execution_complete_episodes": 6,
+      "full_55s_episodes": 6,
+      "full_55s_rate": 1.0,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "actual_substep_duration_s": [
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0
+      ],
+      "termination_reasons": {
+        "full_horizon_end": 6
+      },
+      "comparison_scope": "full_55s_descriptive",
+      "rmse_cm": 1.8249876835057877,
+      "peak_torque_nm": 38.913229324756,
+      "peak_velocity_mps": 0.13289331390626538,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 1.0,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 38.913229324756,
+      "worst_peak_velocity_mps": 0.13289331390626538,
+      "physical_invalid_episodes": 0
+    },
+    {
+      "partition": "test",
+      "group": "metric_nosmooth",
+      "role": "secondary_ablation",
+      "seed": 41001,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 6,
+      "execution_complete_episodes": 6,
+      "full_55s_episodes": 6,
+      "full_55s_rate": 1.0,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "actual_substep_duration_s": [
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0
+      ],
+      "termination_reasons": {
+        "full_horizon_end": 6
+      },
+      "comparison_scope": "full_55s_descriptive",
+      "rmse_cm": 2.8570405087683595,
+      "peak_torque_nm": 40.908315225348154,
+      "peak_velocity_mps": 0.11036991345851131,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 1.0,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 43.56230343385751,
+      "worst_peak_velocity_mps": 0.18396183448142964,
+      "physical_invalid_episodes": 0
+    },
+    {
+      "partition": "test",
+      "group": "metric_nosmooth",
+      "role": "secondary_ablation",
+      "seed": 41002,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 6,
+      "execution_complete_episodes": 6,
+      "full_55s_episodes": 6,
+      "full_55s_rate": 1.0,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "actual_substep_duration_s": [
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0
+      ],
+      "termination_reasons": {
+        "full_horizon_end": 6
+      },
+      "comparison_scope": "full_55s_descriptive",
+      "rmse_cm": 2.983644933793186,
+      "peak_torque_nm": 42.67210009712055,
+      "peak_velocity_mps": 0.17039468677169847,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 1.0,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 42.910949419648915,
+      "worst_peak_velocity_mps": 0.17520253442189246,
+      "physical_invalid_episodes": 0
+    },
+    {
+      "partition": "test",
+      "group": "office_task",
+      "role": "primary",
+      "seed": 41001,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 6,
+      "execution_complete_episodes": 6,
+      "full_55s_episodes": 6,
+      "full_55s_rate": 1.0,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "actual_substep_duration_s": [
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0
+      ],
+      "termination_reasons": {
+        "full_horizon_end": 6
+      },
+      "comparison_scope": "full_55s_descriptive",
+      "rmse_cm": 5.291262435934613,
+      "peak_torque_nm": 33.01641326433403,
+      "peak_velocity_mps": 0.10933656944091692,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 1.0,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 33.01641326433403,
+      "worst_peak_velocity_mps": 0.1266138554087372,
+      "physical_invalid_episodes": 0
+    },
+    {
+      "partition": "test",
+      "group": "office_task",
+      "role": "primary",
+      "seed": 41002,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 6,
+      "execution_complete_episodes": 6,
+      "full_55s_episodes": 6,
+      "full_55s_rate": 1.0,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "actual_substep_duration_s": [
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0
+      ],
+      "termination_reasons": {
+        "full_horizon_end": 6
+      },
+      "comparison_scope": "full_55s_descriptive",
+      "rmse_cm": 11.161995782650312,
+      "peak_torque_nm": 36.81416536257195,
+      "peak_velocity_mps": 0.0520817299752533,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 1.0,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 36.81416536257195,
+      "worst_peak_velocity_mps": 0.061184688608919895,
+      "physical_invalid_episodes": 0
+    },
+    {
+      "partition": "test",
+      "group": "office_task",
+      "role": "primary",
+      "seed": 41003,
+      "episodes": 6,
+      "evaluation_files_complete": true,
+      "evaluation_complete": true,
+      "evaluation_complete_semantics": "backward-compatible alias: evaluation files only, not physical horizon",
+      "full_task_horizon_completed_episodes": 6,
+      "execution_complete_episodes": 6,
+      "full_55s_episodes": 6,
+      "full_55s_rate": 1.0,
+      "horizon_unknown_episodes": 0,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "actual_substep_duration_s": [
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0
+      ],
+      "termination_reasons": {
+        "full_horizon_end": 6
+      },
+      "comparison_scope": "full_55s_descriptive",
+      "rmse_cm": 15.007143043120925,
+      "peak_torque_nm": 55.988492277848096,
+      "peak_velocity_mps": 0.1193021983731817,
+      "strict_success_rate": 0.0,
+      "task_success_rate": 0.0,
+      "physical_valid_rate": 1.0,
+      "placement_complete_rate": 0.0,
+      "worst_peak_torque_nm": 60.3500863385777,
+      "worst_peak_velocity_mps": 0.17794125666173777,
+      "physical_invalid_episodes": 0
+    }
+  ],
+  "across_seed": [
+    {
+      "partition": "fixed_final",
+      "group": "metric",
+      "role": "primary",
+      "independent_training_seeds": 3,
+      "seeds": [
+        41001,
+        41002,
+        41003
+      ],
+      "episodes_per_seed": [
+        6,
+        6,
+        6
+      ],
+      "total_episodes": 18,
+      "full_55s_episodes": 17,
+      "early_abort_episodes": 1,
+      "early_termination_episodes": 1,
+      "horizon_unknown_episodes": 0,
+      "full_55s_rate_mean": 0.9444444444444444,
+      "full_55s_rate_seed_sd": 0.0962250448649376,
+      "comparison_scope": "mixed_length_failure_diagnostic",
+      "statistical_unit": "independent training seed; equal weight per seed",
+      "confidence_interval": "not reported: n<=3 is exploratory; seed SD is descriptive",
+      "rmse_cm_mean": 20.53809856407232,
+      "rmse_cm_seed_sd": 2.9315551208810313,
+      "peak_torque_nm_mean": 51.342784573394596,
+      "peak_torque_nm_seed_sd": 4.83408350085659,
+      "peak_velocity_mps_mean": 0.27507222067766735,
+      "peak_velocity_mps_seed_sd": 0.07558973234283756,
+      "strict_success_rate_mean": 0.0,
+      "strict_success_rate_seed_sd": 0.0,
+      "task_success_rate_mean": 0.0,
+      "task_success_rate_seed_sd": 0.0,
+      "physical_valid_rate_mean": 0.2777777777777778,
+      "physical_valid_rate_seed_sd": 0.09622504486493762,
+      "placement_complete_rate_mean": 0.0,
+      "placement_complete_rate_seed_sd": 0.0
+    },
+    {
+      "partition": "fixed_final",
+      "group": "office_task",
+      "role": "primary",
+      "independent_training_seeds": 3,
+      "seeds": [
+        41001,
+        41002,
+        41003
+      ],
+      "episodes_per_seed": [
+        6,
+        6,
+        6
+      ],
+      "total_episodes": 18,
+      "full_55s_episodes": 12,
+      "early_abort_episodes": 6,
+      "early_termination_episodes": 6,
+      "horizon_unknown_episodes": 0,
+      "full_55s_rate_mean": 0.6666666666666666,
+      "full_55s_rate_seed_sd": 0.44095855184409843,
+      "comparison_scope": "mixed_length_failure_diagnostic",
+      "statistical_unit": "independent training seed; equal weight per seed",
+      "confidence_interval": "not reported: n<=3 is exploratory; seed SD is descriptive",
+      "rmse_cm_mean": 60.00041256517772,
+      "rmse_cm_seed_sd": 12.588162931513116,
+      "peak_torque_nm_mean": 55.116743972151795,
+      "peak_torque_nm_seed_sd": 8.014231224285481,
+      "peak_velocity_mps_mean": 0.41749583745767527,
+      "peak_velocity_mps_seed_sd": 0.04188125567472695,
+      "strict_success_rate_mean": 0.0,
+      "strict_success_rate_seed_sd": 0.0,
+      "task_success_rate_mean": 0.0,
+      "task_success_rate_seed_sd": 0.0,
+      "physical_valid_rate_mean": 0.6666666666666666,
+      "physical_valid_rate_seed_sd": 0.44095855184409843,
+      "placement_complete_rate_mean": 0.0,
+      "placement_complete_rate_seed_sd": 0.0
+    },
+    {
+      "partition": "test",
+      "group": "metric",
+      "role": "primary",
+      "independent_training_seeds": 3,
+      "seeds": [
+        41001,
+        41002,
+        41003
+      ],
+      "episodes_per_seed": [
+        6,
+        6,
+        6
+      ],
+      "total_episodes": 18,
+      "full_55s_episodes": 18,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "horizon_unknown_episodes": 0,
+      "full_55s_rate_mean": 1.0,
+      "full_55s_rate_seed_sd": 0.0,
+      "comparison_scope": "full_55s_descriptive",
+      "statistical_unit": "independent training seed; equal weight per seed",
+      "confidence_interval": "not reported: n<=3 is exploratory; seed SD is descriptive",
+      "rmse_cm_mean": 4.274176222818612,
+      "rmse_cm_seed_sd": 2.4922838273525176,
+      "peak_torque_nm_mean": 37.72093181517319,
+      "peak_torque_nm_seed_sd": 1.2178244864216021,
+      "peak_velocity_mps_mean": 0.15025787274981614,
+      "peak_velocity_mps_seed_sd": 0.02143172316000218,
+      "strict_success_rate_mean": 0.0,
+      "strict_success_rate_seed_sd": 0.0,
+      "task_success_rate_mean": 0.0,
+      "task_success_rate_seed_sd": 0.0,
+      "physical_valid_rate_mean": 1.0,
+      "physical_valid_rate_seed_sd": 0.0,
+      "placement_complete_rate_mean": 0.0,
+      "placement_complete_rate_seed_sd": 0.0
+    },
+    {
+      "partition": "test",
+      "group": "metric_nosmooth",
+      "role": "secondary_ablation",
+      "independent_training_seeds": 2,
+      "seeds": [
+        41001,
+        41002
+      ],
+      "episodes_per_seed": [
+        6,
+        6
+      ],
+      "total_episodes": 12,
+      "full_55s_episodes": 12,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "horizon_unknown_episodes": 0,
+      "full_55s_rate_mean": 1.0,
+      "full_55s_rate_seed_sd": 0.0,
+      "comparison_scope": "full_55s_descriptive",
+      "statistical_unit": "independent training seed; equal weight per seed",
+      "confidence_interval": "not reported: n<=3 is exploratory; seed SD is descriptive",
+      "rmse_cm_mean": 2.9203427212807727,
+      "rmse_cm_seed_sd": 0.08952284746327857,
+      "peak_torque_nm_mean": 41.79020766123435,
+      "peak_torque_nm_seed_sd": 1.247184243384505,
+      "peak_velocity_mps_mean": 0.14038230011510489,
+      "peak_velocity_mps_seed_sd": 0.04244392424893995,
+      "strict_success_rate_mean": 0.0,
+      "strict_success_rate_seed_sd": 0.0,
+      "task_success_rate_mean": 0.0,
+      "task_success_rate_seed_sd": 0.0,
+      "physical_valid_rate_mean": 1.0,
+      "physical_valid_rate_seed_sd": 0.0,
+      "placement_complete_rate_mean": 0.0,
+      "placement_complete_rate_seed_sd": 0.0
+    },
+    {
+      "partition": "test",
+      "group": "office_task",
+      "role": "primary",
+      "independent_training_seeds": 3,
+      "seeds": [
+        41001,
+        41002,
+        41003
+      ],
+      "episodes_per_seed": [
+        6,
+        6,
+        6
+      ],
+      "total_episodes": 18,
+      "full_55s_episodes": 18,
+      "early_abort_episodes": 0,
+      "early_termination_episodes": 0,
+      "horizon_unknown_episodes": 0,
+      "full_55s_rate_mean": 1.0,
+      "full_55s_rate_seed_sd": 0.0,
+      "comparison_scope": "full_55s_descriptive",
+      "statistical_unit": "independent training seed; equal weight per seed",
+      "confidence_interval": "not reported: n<=3 is exploratory; seed SD is descriptive",
+      "rmse_cm_mean": 10.486800420568617,
+      "rmse_cm_seed_sd": 4.893005270384167,
+      "peak_torque_nm_mean": 41.93969030158469,
+      "peak_torque_nm_seed_sd": 12.313909126516833,
+      "peak_velocity_mps_mean": 0.09357349926311731,
+      "peak_velocity_mps_seed_sd": 0.03627676431246176,
+      "strict_success_rate_mean": 0.0,
+      "strict_success_rate_seed_sd": 0.0,
+      "task_success_rate_mean": 0.0,
+      "task_success_rate_seed_sd": 0.0,
+      "physical_valid_rate_mean": 1.0,
+      "physical_valid_rate_seed_sd": 0.0,
+      "placement_complete_rate_mean": 0.0,
+      "placement_complete_rate_seed_sd": 0.0
+    }
+  ],
+  "status_files": {
+    "TRAIN_STATUS": [
+      {
+        "id": "office_task_seed41002",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/office_task_seed41002.log",
+        "elapsed_s": 6280.263843536377,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002",
+          "--reward",
+          "office_task",
+          "--seed",
+          "41002",
+          "--steps",
+          "100000",
+          "--wall-seconds",
+          "8000.0",
+          "--checkpoint-every",
+          "10000"
+        ]
+      },
+      {
+        "id": "metric_seed41002",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/metric_seed41002.log",
+        "elapsed_s": 6480.271467208862,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002",
+          "--reward",
+          "metric",
+          "--seed",
+          "41002",
+          "--steps",
+          "100000",
+          "--wall-seconds",
+          "8000.0",
+          "--checkpoint-every",
+          "10000"
+        ]
+      },
+      {
+        "id": "office_task_seed41001",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/office_task_seed41001.log",
+        "elapsed_s": 6500.273644924164,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001",
+          "--reward",
+          "office_task",
+          "--seed",
+          "41001",
+          "--steps",
+          "100000",
+          "--wall-seconds",
+          "8000.0",
+          "--checkpoint-every",
+          "10000"
+        ]
+      },
+      {
+        "id": "metric_seed41001",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/metric_seed41001.log",
+        "elapsed_s": 6560.276286840439,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001",
+          "--reward",
+          "metric",
+          "--seed",
+          "41001",
+          "--steps",
+          "100000",
+          "--wall-seconds",
+          "8000.0",
+          "--checkpoint-every",
+          "10000"
+        ]
+      },
+      {
+        "id": "office_task_seed41003",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/office_task_seed41003.log",
+        "elapsed_s": 6260.309366703033,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003",
+          "--reward",
+          "office_task",
+          "--seed",
+          "41003",
+          "--steps",
+          "100000",
+          "--wall-seconds",
+          "8000.0",
+          "--checkpoint-every",
+          "10000"
+        ]
+      },
+      {
+        "id": "metric_seed41003",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/metric_seed41003.log",
+        "elapsed_s": 6420.319884777069,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003",
+          "--reward",
+          "metric",
+          "--seed",
+          "41003",
+          "--steps",
+          "100000",
+          "--wall-seconds",
+          "8000.0",
+          "--checkpoint-every",
+          "10000"
+        ]
+      },
+      {
+        "id": "metric_nosmooth_seed41001",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/metric_nosmooth_seed41001.log",
+        "elapsed_s": 6420.319199085236,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001",
+          "--reward",
+          "metric",
+          "--seed",
+          "41001",
+          "--steps",
+          "100000",
+          "--wall-seconds",
+          "8000.0",
+          "--checkpoint-every",
+          "10000",
+          "--smooth",
+          "0"
+        ]
+      },
+      {
+        "id": "metric_nosmooth_seed41002",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/metric_nosmooth_seed41002.log",
+        "elapsed_s": 6540.338308095932,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002",
+          "--reward",
+          "metric",
+          "--seed",
+          "41002",
+          "--steps",
+          "100000",
+          "--wall-seconds",
+          "8000.0",
+          "--checkpoint-every",
+          "10000",
+          "--smooth",
+          "0"
+        ]
+      }
+    ],
+    "VALIDATION_STATUS": [
+      {
+        "id": "office_task_seed41001_checkpoint_step_0040000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41001_checkpoint_step_0040000.log",
+        "elapsed_s": 120.0107650756836,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0040000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41001/checkpoint_step_0040000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41001_checkpoint_step_0060000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41001_checkpoint_step_0060000.log",
+        "elapsed_s": 120.01049876213074,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0060000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41001/checkpoint_step_0060000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41001_checkpoint_step_0020000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41001_checkpoint_step_0020000.log",
+        "elapsed_s": 140.0142433643341,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0020000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41001/checkpoint_step_0020000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41001_checkpoint_step_0080000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41001_checkpoint_step_0080000.log",
+        "elapsed_s": 140.0131950378418,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0080000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41001/checkpoint_step_0080000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41001_checkpoint_step_0020000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41001_checkpoint_step_0020000.log",
+        "elapsed_s": 120.00589036941528,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0020000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41001/checkpoint_step_0020000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41001_checkpoint_step_0100000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41001_checkpoint_step_0100000.log",
+        "elapsed_s": 140.00881671905518,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41001/checkpoint_step_0100000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41001_checkpoint_step_0040000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41001_checkpoint_step_0040000.log",
+        "elapsed_s": 120.00657320022583,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0040000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41001/checkpoint_step_0040000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41001_checkpoint_step_0060000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41001_checkpoint_step_0060000.log",
+        "elapsed_s": 120.00611281394958,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0060000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41001/checkpoint_step_0060000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41001_checkpoint_step_0080000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41001_checkpoint_step_0080000.log",
+        "elapsed_s": 140.01821494102478,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0080000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41001/checkpoint_step_0080000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41001_checkpoint_step_0100000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41001_checkpoint_step_0100000.log",
+        "elapsed_s": 120.0162308216095,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41001/checkpoint_step_0100000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41002_checkpoint_step_0020000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41002_checkpoint_step_0020000.log",
+        "elapsed_s": 120.01596283912659,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0020000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41002/checkpoint_step_0020000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41002_checkpoint_step_0040000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41002_checkpoint_step_0040000.log",
+        "elapsed_s": 120.01555466651917,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0040000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41002/checkpoint_step_0040000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41002_checkpoint_step_0100000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41002_checkpoint_step_0100000.log",
+        "elapsed_s": 60.002962589263916,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41002/checkpoint_step_0100000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41002_checkpoint_step_0060000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41002_checkpoint_step_0060000.log",
+        "elapsed_s": 120.00726842880249,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0060000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41002/checkpoint_step_0060000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41002_checkpoint_step_0080000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41002_checkpoint_step_0080000.log",
+        "elapsed_s": 120.0064287185669,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0080000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41002/checkpoint_step_0080000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41002_checkpoint_step_0020000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41002_checkpoint_step_0020000.log",
+        "elapsed_s": 120.00565338134766,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0020000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41002/checkpoint_step_0020000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41002_checkpoint_step_0040000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41002_checkpoint_step_0040000.log",
+        "elapsed_s": 120.00716972351074,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0040000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41002/checkpoint_step_0040000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41002_checkpoint_step_0060000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41002_checkpoint_step_0060000.log",
+        "elapsed_s": 120.00654625892639,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0060000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41002/checkpoint_step_0060000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41002_checkpoint_step_0080000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41002_checkpoint_step_0080000.log",
+        "elapsed_s": 140.00836277008057,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0080000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41002/checkpoint_step_0080000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41002_checkpoint_step_0100000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41002_checkpoint_step_0100000.log",
+        "elapsed_s": 140.00799822807312,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41002/checkpoint_step_0100000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41003_checkpoint_step_0020000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41003_checkpoint_step_0020000.log",
+        "elapsed_s": 120.00782084465027,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0020000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41003/checkpoint_step_0020000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41003_checkpoint_step_0040000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41003_checkpoint_step_0040000.log",
+        "elapsed_s": 140.0086953639984,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0040000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41003/checkpoint_step_0040000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41003_checkpoint_step_0060000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41003_checkpoint_step_0060000.log",
+        "elapsed_s": 120.00696420669556,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0060000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41003/checkpoint_step_0060000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41003_checkpoint_step_0080000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41003_checkpoint_step_0080000.log",
+        "elapsed_s": 120.00655579566956,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0080000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41003/checkpoint_step_0080000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "office_task_seed41003_checkpoint_step_0100000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41003_checkpoint_step_0100000.log",
+        "elapsed_s": 120.00767207145691,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41003/checkpoint_step_0100000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41003_checkpoint_step_0020000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41003_checkpoint_step_0020000.log",
+        "elapsed_s": 120.00764179229736,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0020000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41003/checkpoint_step_0020000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41003_checkpoint_step_0040000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41003_checkpoint_step_0040000.log",
+        "elapsed_s": 120.0072021484375,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0040000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41003/checkpoint_step_0040000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41003_checkpoint_step_0060000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41003_checkpoint_step_0060000.log",
+        "elapsed_s": 140.00950121879578,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0060000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41003/checkpoint_step_0060000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41003_checkpoint_step_0080000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41003_checkpoint_step_0080000.log",
+        "elapsed_s": 100.00716876983643,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0080000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41003/checkpoint_step_0080000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_seed41003_checkpoint_step_0100000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41003_checkpoint_step_0100000.log",
+        "elapsed_s": 120.00767731666565,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41003/checkpoint_step_0100000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_nosmooth_seed41001_checkpoint_step_0020000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41001_checkpoint_step_0020000.log",
+        "elapsed_s": 120.00727415084839,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001/checkpoint_step_0020000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41001/checkpoint_step_0020000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_nosmooth_seed41001_checkpoint_step_0040000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41001_checkpoint_step_0040000.log",
+        "elapsed_s": 120.00893187522888,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001/checkpoint_step_0040000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41001/checkpoint_step_0040000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_nosmooth_seed41001_checkpoint_step_0060000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41001_checkpoint_step_0060000.log",
+        "elapsed_s": 120.00959420204163,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001/checkpoint_step_0060000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41001/checkpoint_step_0060000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_nosmooth_seed41001_checkpoint_step_0080000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41001_checkpoint_step_0080000.log",
+        "elapsed_s": 120.00859928131104,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001/checkpoint_step_0080000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41001/checkpoint_step_0080000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_nosmooth_seed41001_checkpoint_step_0100000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41001_checkpoint_step_0100000.log",
+        "elapsed_s": 140.01030349731445,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41001/checkpoint_step_0100000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_nosmooth_seed41002_checkpoint_step_0020000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41002_checkpoint_step_0020000.log",
+        "elapsed_s": 140.0098841190338,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002/checkpoint_step_0020000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41002/checkpoint_step_0020000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_nosmooth_seed41002_checkpoint_step_0040000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41002_checkpoint_step_0040000.log",
+        "elapsed_s": 160.01096081733704,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002/checkpoint_step_0040000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41002/checkpoint_step_0040000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_nosmooth_seed41002_checkpoint_step_0060000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41002_checkpoint_step_0060000.log",
+        "elapsed_s": 140.0092396736145,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002/checkpoint_step_0060000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41002/checkpoint_step_0060000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_nosmooth_seed41002_checkpoint_step_0080000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41002_checkpoint_step_0080000.log",
+        "elapsed_s": 120.00731682777405,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002/checkpoint_step_0080000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41002/checkpoint_step_0080000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      },
+      {
+        "id": "metric_nosmooth_seed41002_checkpoint_step_0100000",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41002_checkpoint_step_0100000.log",
+        "elapsed_s": 120.00743007659912,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41002/checkpoint_step_0100000",
+          "--physics-dt",
+          "0.0001"
+        ]
+      }
+    ],
+    "TEST_STATUS": [
+      {
+        "id": "fixed_final_metric_seed41001",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/fixed_metric_seed41001.log",
+        "elapsed_s": 600.0218229293823,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/metric_seed41001",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "test_metric_seed41001",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_metric_seed41001.log",
+        "elapsed_s": 620.0243330001831,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0020000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_seed41001",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "fixed_final_office_task_seed41001",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/fixed_office_task_seed41001.log",
+        "elapsed_s": 680.027360200882,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/office_task_seed41001",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "test_office_task_seed41001",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_office_task_seed41001.log",
+        "elapsed_s": 760.0317726135254,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0020000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/office_task_seed41001",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "fixed_final_office_task_seed41002",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/fixed_office_task_seed41002.log",
+        "elapsed_s": 320.0234203338623,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/office_task_seed41002",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "test_office_task_seed41002",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_office_task_seed41002.log",
+        "elapsed_s": 600.0554010868073,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0020000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/office_task_seed41002",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "test_metric_seed41002",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_metric_seed41002.log",
+        "elapsed_s": 720.0691194534302,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0080000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_seed41002",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "fixed_final_metric_seed41002",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/fixed_metric_seed41002.log",
+        "elapsed_s": 740.0695695877075,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/metric_seed41002",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "test_office_task_seed41003",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_office_task_seed41003.log",
+        "elapsed_s": 660.0572192668915,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0080000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/office_task_seed41003",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "fixed_final_office_task_seed41003",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/fixed_office_task_seed41003.log",
+        "elapsed_s": 660.0559749603271,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/office_task_seed41003",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "test_metric_seed41003",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_metric_seed41003.log",
+        "elapsed_s": 640.0458347797394,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0020000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_seed41003",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "fixed_final_metric_seed41003",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/fixed_metric_seed41003.log",
+        "elapsed_s": 700.0494782924652,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/metric_seed41003",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "test_metric_nosmooth_seed41001",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_metric_nosmooth_seed41001.log",
+        "elapsed_s": 640.0462942123413,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001/checkpoint_step_0080000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_nosmooth_seed41001",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "test_metric_nosmooth_seed41002",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_metric_nosmooth_seed41002.log",
+        "elapsed_s": 620.0377497673035,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--checkpoint",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002/checkpoint_step_0100000",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_nosmooth_seed41002",
+          "--physics-dt",
+          "5e-05"
+        ]
+      },
+      {
+        "id": "nominal_zero",
+        "returncode": 0,
+        "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/nominal_zero.log",
+        "elapsed_s": 1220.1381907463074,
+        "cmd": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+          "--zero-action",
+          "--manifest",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+          "--output",
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/nominal_zero",
+          "--physics-dt",
+          "5e-05"
+        ]
+      }
+    ],
+    "COMPLETE": {
+      "completed": 1790759710.5958114,
+      "elapsed_s": 17901.02907371521,
+      "training": [
+        {
+          "id": "office_task_seed41002",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/office_task_seed41002.log",
+          "elapsed_s": 6280.263843536377,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002",
+            "--reward",
+            "office_task",
+            "--seed",
+            "41002",
+            "--steps",
+            "100000",
+            "--wall-seconds",
+            "8000.0",
+            "--checkpoint-every",
+            "10000"
+          ]
+        },
+        {
+          "id": "metric_seed41002",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/metric_seed41002.log",
+          "elapsed_s": 6480.271467208862,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002",
+            "--reward",
+            "metric",
+            "--seed",
+            "41002",
+            "--steps",
+            "100000",
+            "--wall-seconds",
+            "8000.0",
+            "--checkpoint-every",
+            "10000"
+          ]
+        },
+        {
+          "id": "office_task_seed41001",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/office_task_seed41001.log",
+          "elapsed_s": 6500.273644924164,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001",
+            "--reward",
+            "office_task",
+            "--seed",
+            "41001",
+            "--steps",
+            "100000",
+            "--wall-seconds",
+            "8000.0",
+            "--checkpoint-every",
+            "10000"
+          ]
+        },
+        {
+          "id": "metric_seed41001",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/metric_seed41001.log",
+          "elapsed_s": 6560.276286840439,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001",
+            "--reward",
+            "metric",
+            "--seed",
+            "41001",
+            "--steps",
+            "100000",
+            "--wall-seconds",
+            "8000.0",
+            "--checkpoint-every",
+            "10000"
+          ]
+        },
+        {
+          "id": "office_task_seed41003",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/office_task_seed41003.log",
+          "elapsed_s": 6260.309366703033,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003",
+            "--reward",
+            "office_task",
+            "--seed",
+            "41003",
+            "--steps",
+            "100000",
+            "--wall-seconds",
+            "8000.0",
+            "--checkpoint-every",
+            "10000"
+          ]
+        },
+        {
+          "id": "metric_seed41003",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/metric_seed41003.log",
+          "elapsed_s": 6420.319884777069,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003",
+            "--reward",
+            "metric",
+            "--seed",
+            "41003",
+            "--steps",
+            "100000",
+            "--wall-seconds",
+            "8000.0",
+            "--checkpoint-every",
+            "10000"
+          ]
+        },
+        {
+          "id": "metric_nosmooth_seed41001",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/metric_nosmooth_seed41001.log",
+          "elapsed_s": 6420.319199085236,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001",
+            "--reward",
+            "metric",
+            "--seed",
+            "41001",
+            "--steps",
+            "100000",
+            "--wall-seconds",
+            "8000.0",
+            "--checkpoint-every",
+            "10000",
+            "--smooth",
+            "0"
+          ]
+        },
+        {
+          "id": "metric_nosmooth_seed41002",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/metric_nosmooth_seed41002.log",
+          "elapsed_s": 6540.338308095932,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/train.py",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002",
+            "--reward",
+            "metric",
+            "--seed",
+            "41002",
+            "--steps",
+            "100000",
+            "--wall-seconds",
+            "8000.0",
+            "--checkpoint-every",
+            "10000",
+            "--smooth",
+            "0"
+          ]
+        }
+      ],
+      "validation": [
+        {
+          "id": "office_task_seed41001_checkpoint_step_0040000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41001_checkpoint_step_0040000.log",
+          "elapsed_s": 120.0107650756836,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0040000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41001/checkpoint_step_0040000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41001_checkpoint_step_0060000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41001_checkpoint_step_0060000.log",
+          "elapsed_s": 120.01049876213074,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0060000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41001/checkpoint_step_0060000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41001_checkpoint_step_0020000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41001_checkpoint_step_0020000.log",
+          "elapsed_s": 140.0142433643341,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0020000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41001/checkpoint_step_0020000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41001_checkpoint_step_0080000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41001_checkpoint_step_0080000.log",
+          "elapsed_s": 140.0131950378418,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0080000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41001/checkpoint_step_0080000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41001_checkpoint_step_0020000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41001_checkpoint_step_0020000.log",
+          "elapsed_s": 120.00589036941528,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0020000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41001/checkpoint_step_0020000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41001_checkpoint_step_0100000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41001_checkpoint_step_0100000.log",
+          "elapsed_s": 140.00881671905518,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41001/checkpoint_step_0100000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41001_checkpoint_step_0040000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41001_checkpoint_step_0040000.log",
+          "elapsed_s": 120.00657320022583,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0040000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41001/checkpoint_step_0040000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41001_checkpoint_step_0060000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41001_checkpoint_step_0060000.log",
+          "elapsed_s": 120.00611281394958,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0060000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41001/checkpoint_step_0060000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41001_checkpoint_step_0080000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41001_checkpoint_step_0080000.log",
+          "elapsed_s": 140.01821494102478,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0080000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41001/checkpoint_step_0080000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41001_checkpoint_step_0100000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41001_checkpoint_step_0100000.log",
+          "elapsed_s": 120.0162308216095,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41001/checkpoint_step_0100000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41002_checkpoint_step_0020000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41002_checkpoint_step_0020000.log",
+          "elapsed_s": 120.01596283912659,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0020000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41002/checkpoint_step_0020000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41002_checkpoint_step_0040000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41002_checkpoint_step_0040000.log",
+          "elapsed_s": 120.01555466651917,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0040000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41002/checkpoint_step_0040000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41002_checkpoint_step_0100000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41002_checkpoint_step_0100000.log",
+          "elapsed_s": 60.002962589263916,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41002/checkpoint_step_0100000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41002_checkpoint_step_0060000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41002_checkpoint_step_0060000.log",
+          "elapsed_s": 120.00726842880249,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0060000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41002/checkpoint_step_0060000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41002_checkpoint_step_0080000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41002_checkpoint_step_0080000.log",
+          "elapsed_s": 120.0064287185669,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0080000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41002/checkpoint_step_0080000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41002_checkpoint_step_0020000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41002_checkpoint_step_0020000.log",
+          "elapsed_s": 120.00565338134766,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0020000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41002/checkpoint_step_0020000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41002_checkpoint_step_0040000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41002_checkpoint_step_0040000.log",
+          "elapsed_s": 120.00716972351074,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0040000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41002/checkpoint_step_0040000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41002_checkpoint_step_0060000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41002_checkpoint_step_0060000.log",
+          "elapsed_s": 120.00654625892639,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0060000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41002/checkpoint_step_0060000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41002_checkpoint_step_0080000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41002_checkpoint_step_0080000.log",
+          "elapsed_s": 140.00836277008057,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0080000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41002/checkpoint_step_0080000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41002_checkpoint_step_0100000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41002_checkpoint_step_0100000.log",
+          "elapsed_s": 140.00799822807312,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41002/checkpoint_step_0100000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41003_checkpoint_step_0020000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41003_checkpoint_step_0020000.log",
+          "elapsed_s": 120.00782084465027,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0020000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41003/checkpoint_step_0020000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41003_checkpoint_step_0040000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41003_checkpoint_step_0040000.log",
+          "elapsed_s": 140.0086953639984,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0040000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41003/checkpoint_step_0040000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41003_checkpoint_step_0060000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41003_checkpoint_step_0060000.log",
+          "elapsed_s": 120.00696420669556,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0060000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41003/checkpoint_step_0060000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41003_checkpoint_step_0080000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41003_checkpoint_step_0080000.log",
+          "elapsed_s": 120.00655579566956,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0080000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41003/checkpoint_step_0080000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "office_task_seed41003_checkpoint_step_0100000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_office_task_seed41003_checkpoint_step_0100000.log",
+          "elapsed_s": 120.00767207145691,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41003/checkpoint_step_0100000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41003_checkpoint_step_0020000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41003_checkpoint_step_0020000.log",
+          "elapsed_s": 120.00764179229736,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0020000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41003/checkpoint_step_0020000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41003_checkpoint_step_0040000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41003_checkpoint_step_0040000.log",
+          "elapsed_s": 120.0072021484375,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0040000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41003/checkpoint_step_0040000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41003_checkpoint_step_0060000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41003_checkpoint_step_0060000.log",
+          "elapsed_s": 140.00950121879578,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0060000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41003/checkpoint_step_0060000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41003_checkpoint_step_0080000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41003_checkpoint_step_0080000.log",
+          "elapsed_s": 100.00716876983643,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0080000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41003/checkpoint_step_0080000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_seed41003_checkpoint_step_0100000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_seed41003_checkpoint_step_0100000.log",
+          "elapsed_s": 120.00767731666565,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41003/checkpoint_step_0100000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_nosmooth_seed41001_checkpoint_step_0020000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41001_checkpoint_step_0020000.log",
+          "elapsed_s": 120.00727415084839,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001/checkpoint_step_0020000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41001/checkpoint_step_0020000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_nosmooth_seed41001_checkpoint_step_0040000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41001_checkpoint_step_0040000.log",
+          "elapsed_s": 120.00893187522888,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001/checkpoint_step_0040000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41001/checkpoint_step_0040000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_nosmooth_seed41001_checkpoint_step_0060000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41001_checkpoint_step_0060000.log",
+          "elapsed_s": 120.00959420204163,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001/checkpoint_step_0060000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41001/checkpoint_step_0060000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_nosmooth_seed41001_checkpoint_step_0080000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41001_checkpoint_step_0080000.log",
+          "elapsed_s": 120.00859928131104,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001/checkpoint_step_0080000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41001/checkpoint_step_0080000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_nosmooth_seed41001_checkpoint_step_0100000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41001_checkpoint_step_0100000.log",
+          "elapsed_s": 140.01030349731445,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41001/checkpoint_step_0100000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_nosmooth_seed41002_checkpoint_step_0020000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41002_checkpoint_step_0020000.log",
+          "elapsed_s": 140.0098841190338,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002/checkpoint_step_0020000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41002/checkpoint_step_0020000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_nosmooth_seed41002_checkpoint_step_0040000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41002_checkpoint_step_0040000.log",
+          "elapsed_s": 160.01096081733704,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002/checkpoint_step_0040000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41002/checkpoint_step_0040000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_nosmooth_seed41002_checkpoint_step_0060000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41002_checkpoint_step_0060000.log",
+          "elapsed_s": 140.0092396736145,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002/checkpoint_step_0060000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41002/checkpoint_step_0060000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_nosmooth_seed41002_checkpoint_step_0080000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41002_checkpoint_step_0080000.log",
+          "elapsed_s": 120.00731682777405,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002/checkpoint_step_0080000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41002/checkpoint_step_0080000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        },
+        {
+          "id": "metric_nosmooth_seed41002_checkpoint_step_0100000",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/val_metric_nosmooth_seed41002_checkpoint_step_0100000.log",
+          "elapsed_s": 120.00743007659912,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/validation_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41002/checkpoint_step_0100000",
+            "--physics-dt",
+            "0.0001"
+          ]
+        }
+      ],
+      "test": [
+        {
+          "id": "fixed_final_metric_seed41001",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/fixed_metric_seed41001.log",
+          "elapsed_s": 600.0218229293823,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/metric_seed41001",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "test_metric_seed41001",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_metric_seed41001.log",
+          "elapsed_s": 620.0243330001831,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0020000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_seed41001",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "fixed_final_office_task_seed41001",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/fixed_office_task_seed41001.log",
+          "elapsed_s": 680.027360200882,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/office_task_seed41001",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "test_office_task_seed41001",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_office_task_seed41001.log",
+          "elapsed_s": 760.0317726135254,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0020000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/office_task_seed41001",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "fixed_final_office_task_seed41002",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/fixed_office_task_seed41002.log",
+          "elapsed_s": 320.0234203338623,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/office_task_seed41002",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "test_office_task_seed41002",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_office_task_seed41002.log",
+          "elapsed_s": 600.0554010868073,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0020000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/office_task_seed41002",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "test_metric_seed41002",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_metric_seed41002.log",
+          "elapsed_s": 720.0691194534302,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0080000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_seed41002",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "fixed_final_metric_seed41002",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/fixed_metric_seed41002.log",
+          "elapsed_s": 740.0695695877075,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/metric_seed41002",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "test_office_task_seed41003",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_office_task_seed41003.log",
+          "elapsed_s": 660.0572192668915,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0080000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/office_task_seed41003",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "fixed_final_office_task_seed41003",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/fixed_office_task_seed41003.log",
+          "elapsed_s": 660.0559749603271,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/office_task_seed41003",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "test_metric_seed41003",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_metric_seed41003.log",
+          "elapsed_s": 640.0458347797394,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0020000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_seed41003",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "fixed_final_metric_seed41003",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/fixed_metric_seed41003.log",
+          "elapsed_s": 700.0494782924652,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/fixed_final/metric_seed41003",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "test_metric_nosmooth_seed41001",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_metric_nosmooth_seed41001.log",
+          "elapsed_s": 640.0462942123413,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001/checkpoint_step_0080000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_nosmooth_seed41001",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "test_metric_nosmooth_seed41002",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/test_metric_nosmooth_seed41002.log",
+          "elapsed_s": 620.0377497673035,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--checkpoint",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002/checkpoint_step_0100000",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/metric_nosmooth_seed41002",
+            "--physics-dt",
+            "5e-05"
+          ]
+        },
+        {
+          "id": "nominal_zero",
+          "returncode": 0,
+          "log": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/logs/nominal_zero.log",
+          "elapsed_s": 1220.1381907463074,
+          "cmd": [
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/evaluate.py",
+            "--zero-action",
+            "--manifest",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/test_manifest.json",
+            "--output",
+            "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/test/nominal_zero",
+            "--physics-dt",
+            "5e-05"
+          ]
+        }
+      ],
+      "selections": [
+        {
+          "id": "office_task_seed41001",
+          "mode": "office_task",
+          "seed": 41001,
+          "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001",
+          "primary": true,
+          "selected_checkpoint": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41001/checkpoint_step_0020000",
+          "validation_output": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41001/checkpoint_step_0020000"
+        },
+        {
+          "id": "metric_seed41001",
+          "mode": "metric",
+          "seed": 41001,
+          "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001",
+          "primary": true,
+          "selected_checkpoint": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41001/checkpoint_step_0020000",
+          "validation_output": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41001/checkpoint_step_0020000"
+        },
+        {
+          "id": "office_task_seed41002",
+          "mode": "office_task",
+          "seed": 41002,
+          "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002",
+          "primary": true,
+          "selected_checkpoint": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41002/checkpoint_step_0020000",
+          "validation_output": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41002/checkpoint_step_0020000"
+        },
+        {
+          "id": "metric_seed41002",
+          "mode": "metric",
+          "seed": 41002,
+          "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002",
+          "primary": true,
+          "selected_checkpoint": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41002/checkpoint_step_0080000",
+          "validation_output": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41002/checkpoint_step_0080000"
+        },
+        {
+          "id": "office_task_seed41003",
+          "mode": "office_task",
+          "seed": 41003,
+          "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003",
+          "primary": true,
+          "selected_checkpoint": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/office_task_seed41003/checkpoint_step_0080000",
+          "validation_output": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/office_task_seed41003/checkpoint_step_0080000"
+        },
+        {
+          "id": "metric_seed41003",
+          "mode": "metric",
+          "seed": 41003,
+          "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003",
+          "primary": true,
+          "selected_checkpoint": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_seed41003/checkpoint_step_0020000",
+          "validation_output": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_seed41003/checkpoint_step_0020000"
+        },
+        {
+          "id": "metric_nosmooth_seed41001",
+          "mode": "metric",
+          "seed": 41001,
+          "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001",
+          "primary": false,
+          "selected_checkpoint": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41001/checkpoint_step_0080000",
+          "validation_output": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41001/checkpoint_step_0080000"
+        },
+        {
+          "id": "metric_nosmooth_seed41002",
+          "mode": "metric",
+          "seed": 41002,
+          "path": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002",
+          "primary": false,
+          "selected_checkpoint": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/metric_nosmooth_seed41002/checkpoint_step_0100000",
+          "validation_output": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/validation/metric_nosmooth_seed41002/checkpoint_step_0100000"
+        }
+      ],
+      "all_processes_passed": true,
+      "results_require_review": true
+    }
+  },
+  "warnings": [
+    "fixed_final: 混合长度失败诊断。包含提前终止回合；原始 RMSE/峰值只覆盖实际运行时长，不能与完整 55 s 回合简单排名。失败全部保留，未补齐或填补指标。"
+  ],
+  "limitations": [
+    "This is Office simulation, not real FR3 hardware validation or a blind previously unseen benchmark.",
+    "RMSE uses current task-stage waypoint and all physical substeps; no post-contact-only metric is silently substituted.",
+    "Means include failures and physically invalid episodes; physical validity, task and strict success remain separate.",
+    "Evaluation file completion is not physical-horizon completion. Early-abort RMSE/peaks cover actual observed duration only; mixed lengths are failure diagnostics, not directly comparable full-55s rankings.",
+    "Peak torque is actual qfrc_actuator Nm; group value is mean of per-episode maxima, not one global maximum.",
+    "Peak velocity is a maximum, not P95. Lower speed/torque alone can indicate stalling rather than better control.",
+    "Different reward totals are not comparable performance scores; never rank reward groups by total return.",
+    "Training dt and formal evaluation dt may differ; source/model/fixture hashes and both timesteps must be retained.",
+    "Fixed-budget and validation-selected checkpoint results are separate. Missing fixed-final results are not replaced by arbitrary selected checkpoints.",
+    "Unequal achieved transitions, update counts or physical substep budgets limit causal comparison; report actual budgets.",
+    "Zero successes or flat short learning curves do not prove inherent algorithm weakness or convergence.",
+    "Three or fewer training seeds allow descriptive uncertainty only; episodes are not independent learner seeds."
+  ],
+  "mixed_length_partitions": [
+    "fixed_final"
+  ],
+  "completion": "complete"
+}

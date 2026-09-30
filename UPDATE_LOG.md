@@ -1,3 +1,14 @@
+## 2026-09-30 — 100k奖励主实验完成、发现训练覆盖瓶颈并启动独立修正诊断
+
+- 开工读取main e1d815c390d1221ee0bf80293e2b8179d2e1d3f8 与baseline日志；main的teacher-bank任务独立进行，未合并或修改其作业。
+- 主实验 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/ 完成8×100k transitions、每条190002更新/40000000物理子步；40候选验证、90最终回合和全部进程均正常收尾。冻结frozen_v3/source32d2ea5不变。
+- 主selected测试每组3seed×6条件、全55s/dt5e-5、物理有效全通过，但task/placement/strict皆0。office_task RMSE10.4868±4.8930cm/峰矩41.9397±12.3139Nm/峰速.0936±.0363m/s；metric4.2742±2.4923cm/37.7209±1.2178Nm/.1503±.0214m/s。不能说三指标全面更好或已充分收敛。
+- fixed100k有7提前global_penetration>2mm终止（office6、metric1），只作混合长度失败诊断；仓库report.py补实际时长、55s完整率与abort，3项报告测试通过。独立审计86回合原始时长、21回合raw三指标复算通过（含7abort）；plot_results.py逐90回合核对实际MJB与模型/manifest/hash。小证据和已视觉核验图见docs/evidence/simba_reward_20260930/。
+- 648个完整训练episode无一进入grasp：起点与初始waypoint重合，旧potential退化为ready/.2，随机残差打断停稳后Phi=0占主组约72.6–99.95%。nominal_zero同环境可完成1/6任务（strict0），不能归咎环境不可达。当前结果不能排除训练设计人为弱化baseline，报告明确承认这一限制。
+- 剩余预算启动独立progress_dense_diagnostic_04：两reward×2seed各40k从零训练，shared连续pose/speed potential、UTD2；不改actor/任务gate/物理/filter。新快照 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v4_progressdiag/，协议/patch/hash在其根；supervisor /home/arm1/vmc_mujoco_runtime/reward_study_20260930/PROGRESS_DIAGNOSTIC_PID_04.json；结果 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/progress_dense_diagnostic_04/。6项势函数测试+真实4step smoke通过。该补充在主实验诊断后注册，非独立确认，不混入100k主结果；正在运行，尚无效果结论。
+- 仓库实现位于code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/；完整报告docs/SIMBAV2_REWARD_STUDY_20260930.md；服务器主报告和曲线 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/report/。公开展示入口 http://192.168.31.70:8765/simbav2_reward_20260930.html，媒体仍留Spark。
+- heartbeat已更新接续补充诊断，约18:30前交付实际完成结果。旧四路训练保持SIGSTOP，不重启；现有主实验负结果、旧pilot均保留。
+
 ## 2026-09-30 — 主训练实际启动与自动验收安排
 
 - 有效主实验为 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/；
