@@ -1,3 +1,20 @@
+## 2026-09-30 — 主训练实际启动与自动验收安排
+
+- 有效主实验为 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/；
+  source commit 32d2ea5，source快照 frozen_v3，不热更新。
+- supervisor PID1385951，首批worker1385964/1385965/1385966/1385967（仅为启动时记录，
+  操作前必须再次核对PID命令）。首批实际进入随机warmup，约26–27 policy steps/s/worker；
+  GPU更新与完整checkpoint roundtrip已单独验证，学习效果尚待主训练与评测。
+- 主实验2奖励×3seed共6条；2条no-smooth消融；100k transitions目标/条、UTD2，
+  8000s/run墙钟上限。若预算先到，选共同实际完成checkpoint，不伪称满100k或收敛。
+- 每10k步存checkpoint，另外存跨间隔后首个episode-boundary checkpoint以支持精确恢复。
+- 自动顺序：训练 -> validation候选选择 -> 55s/dt5e-5 test ->
+  主组六条共同训练步数fixed_final评测；报告和曲线数据由report.py汇总。
+- 已建立本会话20分钟heartbeat（ID simbav2），检查真实进程/日志/失败，正常进展安静；
+  目标2026-09-30 18:30前提交真实结果与限制。新增报告仍保存Spark并push baseline。
+- 接续入口 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/ACTIVE_EXPERIMENT.json。
+  旧四路暂停、pilot01/02保留；不得误把这些旧进度当作本轮主实验进度。
+
 ## 2026-09-30 — 训练侧随机动作审计后冻结主实验
 
 - campaign_02 的配对随机warmup物理轨迹、reward子步积分核对通过，但 smooth=.005
