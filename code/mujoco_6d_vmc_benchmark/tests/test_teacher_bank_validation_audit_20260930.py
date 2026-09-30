@@ -84,3 +84,37 @@ def test_half_policy_abort_is_not_legal_completed_evidence_in_frozen_v10():
         audit.audit_duration(2,.06,55.,'global_penetration_exceeded_2mm')
     with pytest.raises(ValueError,match='Unexplained truncated'):
         audit.audit_duration(2,.08,55.,None)
+
+
+def test_initial_rejection_parser_does_not_relabel_generic_failure():
+    assert audit.parse_initial_intersections('MemoryError: allocation failed') is None
+    pairs=[dict(pair=['rod','arm'],depth_mm=60.1)]
+    prefix='File "source.py", line 70, in audit_initial\n'
+    log=prefix+'ValueError: Initial rigid body intersections: '+json.dumps(pairs)
+    assert audit.parse_initial_intersections(log)==pairs
+    assert audit.parse_initial_intersections(log.split('\n')[-1]) is None
+    with pytest.raises(ValueError,match='Malformed'):
+        audit.parse_initial_intersections(prefix+'ValueError: Initial rigid body intersections: []')
+
+
+@pytest.mark.parametrize('returncode',[-9,-15,2,124,137])
+def test_signal_timeout_other_exit_cannot_reuse_stale_geometry_log(tmp_path,returncode):
+    (tmp_path/'execution.json').write_text(json.dumps(dict(status='failed',returncode=returncode)))
+    (tmp_path/'run.log').write_text('File "old.py", line 70, in audit_initial\n'
+        'ValueError: Initial rigid body intersections: [{"pair":["rod","arm"],"depth_mm":60.1}]')
+    # No request exists: an incorrect classification would proceed into it.
+    assert audit.invalid_initial_scene(tmp_path,tmp_path,{},'vmc',{}) is None
+
+
+@pytest.mark.parametrize('name',['execution_chain.npz','rollout_progress.json','rollout_metrics'])
+def test_initial_rejection_rejects_any_partial_dynamic_evidence(tmp_path,monkeypatch,name):
+    (tmp_path/'execution.json').write_text(json.dumps(dict(status='failed',returncode=1)))
+    (tmp_path/'run.log').write_text('File "old.py", line 70, in audit_initial\n'
+        'ValueError: Initial rigid body intersections: [{"pair":["rod","arm"],"depth_mm":60.1}]')
+    (tmp_path/'request.json').write_text(json.dumps(dict(teacher={})))
+    (tmp_path/'command.json').write_text(json.dumps(dict(fixture={},teacher={})))
+    monkeypatch.setattr(audit,'verify_request',lambda *args:None)
+    if name=='rollout_metrics':(tmp_path/name).mkdir()
+    else:(tmp_path/name).touch()
+    with pytest.raises(ValueError,match='Unexpected dynamic/model evidence'):
+        audit.invalid_initial_scene(tmp_path,tmp_path,{},'vmc',{})

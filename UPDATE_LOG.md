@@ -3,6 +3,28 @@
 本文件记录每次对话交付的文件修改、验证和结果边界；最新记录在前。对应提交号由 Git 历史
 查询：`git log --oneline -- UPDATE_LOG.md`。持续提交约定见 [AGENTS.md](AGENTS.md)。
 
+## 2026-09-30 — 严格训练标签出口、初态拒绝诊断与不改场景接续
+
+- 12:21及12:49 UTC核对并读取main=`d39aed3f4800223e1aa1584f1dbcc9d45c13e13f`、baseline=
+  `c9185489dfbb8d969525a253493592cbbbcd06d2`，无上游新变化，未合并baseline。
+- 新训练标签出口绑定原train manifest、锁参、源、实际MJB/NPZ/hash和服务器凭据；
+  历史validation标签即使true也拒绝。1144快照仅6个唯一训练fixture（厚角2/短撞3/持续1），
+  158排除、0隔离。重复不增样本，矛盾结果/模型隔离；未来runner标签增加train条件，
+  冻结v10保留。旧collector/status已另筛train，没有证据表明实际训练数据混用。
+- 12:27原作业在21完整validation后因棍推0001初态交叉最大60.09884mm退出；
+  独立源码/堆栈/空曝光核查表明动态前拒绝，不能说控制器运动失败。三方法该场景均原样
+  保留，无替换。新独立continuation复用全部已完成数据、原冻结attempt与截止，未知异常停机。
+  v1资源检查未派发即失败（cpu.max未委派）；v2记录quota_enforced=false并强制单sim/1线程/
+  MemoryMax3GiB/Swap0，12:46:27启动，最后验证运行中。此前CPUQuota配置请求不等于实际生效。
+- 新增去重原始数组对比、严格标签出口、验证图、接续工具与初态诊断；独立验证审计支持
+  无效初态单列null指标。五组相关70测试通过；未修改gate/环境/参数、未做新ESN或正式dt验证。
+- 已逐文件核验共享至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/`：
+  `teacher_bank_review_checkpoint_20260930_1209/evidence/`厚角raw审计与source发布凭据；
+  `_1237/evidence/`1791文件（完整名称前缀同上teacher_bank_review_checkpoint_20260930）；
+  `_1242/evidence/`45文件初态核查/v1协议；`_1245/evidence/`41文件v2协议/源和首次启动失败。
+  v2 driver SHA=`9215b66fefbd7a91082ddbf7c205c777122a59777f5827502d0042a06ed93077`。
+  运行中state及本次补充文档未冒称已在此前快照中。原截止13:48:16 UTC不延长，继续验证/采集。
+
 ## 2026-09-30 — 162搜索锁参、首个人推独立通过与完整决策审计
 
 - 11:52 UTC重新fetch并读main=`0a1e7972750114d2e0e1f5c1626004e1ed449d7a`及baseline=

@@ -4,12 +4,17 @@ Requires an explicitly supplied locked-bank hash. Each NPZ is materialized and
 closed before opening another. Does not dispatch validation or alter selection.
 """
 import argparse
+import ast
+from datetime import datetime, timezone
 import gc
 import importlib.util
 import json
+import os
 from pathlib import Path
+import platform
 import resource
 import sys
+import time
 
 import numpy as np
 
@@ -45,6 +50,80 @@ def complete_execution(folder):
     if execution.get('status')!='completed' or execution.get('returncode')!=0:
         return None,'not_successfully_completed:'+str(execution.get('status'))
     return execution,None
+
+
+def parse_initial_intersections(log):
+    """Recognize the frozen explicit geometry rejection, never generic failure."""
+    prefix='ValueError: Initial rigid body intersections: '
+    lines=log.strip().splitlines()
+    if not lines or not lines[-1].startswith(prefix) or 'in audit_initial' not in log:
+        return None
+    pairs=json.loads(lines[-1][len(prefix):])
+    if (not isinstance(pairs,list) or not pairs or any(
+            not isinstance(r.get('pair'),list) or len(r['pair'])!=2
+            or not np.isfinite(r.get('depth_mm',float('nan'))) or r['depth_mm']<=.01 for r in pairs)):
+        raise ValueError('Malformed initial intersection evidence')
+    return pairs
+
+
+def verify_request(root,request,execution,fixture,method,selected):
+    if (request['fixture']!=fixture or request['method']!=method or request['phase']!='validation'
+            or request['x']!=selected['x'] or request['plan_sha256']!=sha(root/'plan.json')
+            or execution['plan_sha256']!=request['plan_sha256']):raise ValueError('Locked validation request mismatch')
+    from teacher_bank_design_20260930 import decode,digest
+    from teacher_bank_classical_20260930 import decode as classical_decode
+    expected=decode(request['x']) if method=='vmc' else classical_decode(request['x'],method)
+    if request['teacher']!=expected:raise ValueError('Controller config differs from locked x')
+    if digest(fixture['active_physical_parameters'])!=fixture['physical_config_sha256']:
+        raise ValueError('Fixture physical config hash mismatch')
+
+
+def invalid_initial_scene(root,folder,fixture,method,selected):
+    """Read terminal failure metadata; preserve it without fabricating metrics."""
+    path=folder/'execution.json'
+    if not path.is_file():return None
+    execution=read(path)
+    if execution.get('status')!='failed' or execution.get('returncode')!=1:return None
+    log_path=folder/'run.log'
+    if not log_path.is_file():return None
+    log=log_path.read_text();pairs=parse_initial_intersections(log)
+    if pairs is None:return None
+    before=sha(path)
+    request=read(folder/'request.json')
+    verify_request(root,request,execution,fixture,method,selected)
+    command=read(folder/'command.json')
+    if command['fixture']!=fixture or command['teacher']!=request['teacher']:
+        raise ValueError('Rejected-scene command does not bind to request')
+    if any(folder.glob('rollout*')) or any((folder/name).exists() for name in
+           ('teacher_internal.npz','execution_chain.npz','impedance_servo.npz')):
+        raise ValueError('Unexpected dynamic/model evidence alongside pre-integration rejection')
+    exposure=load_columns(folder/'exposure.npz')
+    if (float(exposure['terminal_time_s'])!=0 or json.loads(str(exposure['fixture_json']))!=fixture
+            or any(len(exposure[k]) for k in ('time','dt','contact_runs','person_physics'))):
+        raise ValueError('Nonempty or mismatched initial-rejection exposure')
+    source=root/'source/scripts/validate_office_apparatus_v5_20260917.py'
+    tree=ast.parse(source.read_text())
+    run=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='run')
+    calls=[n for n in ast.walk(run) if isinstance(n,ast.Call)]
+    guard=next(n.lineno for n in calls if isinstance(n.func,ast.Name) and n.func.id=='audit_initial')
+    steps=[n.lineno for n in calls if isinstance(n.func,ast.Attribute) and n.func.attr in ('step','mj_step','mj_step1','mj_step2')]
+    if not steps or guard>=min(steps):raise ValueError('Initial guard is not before evaluator integration')
+    if 'in audit_initial' not in log or str(root/'source/scripts/office_task_v4_20260917.py') not in log:
+        raise ValueError('Initial-rejection traceback differs from frozen source')
+    if sha(path)!=before:raise ValueError('Failed execution changed during review')
+    evidence=('execution.json','request.json','command.json','run.log','exposure.npz')
+    return dict(folder=str(folder),status='invalid_initial_scene',fixture_id=fixture['id'],
+        category=fixture['category'],method=method,seed=fixture['seed'],execution=execution,
+        controller_coordinates=request['x'],selected_search_candidate=selected['index'],
+        physical_config_sha256=fixture['physical_config_sha256'],initial_intersections=pairs,
+        maximum_initial_overlap_mm=max(r['depth_mm'] for r in pairs),
+        failure_reasons=['invalid_initial_scene'],metrics=None,eligible=False,
+        raw_sha256={name:sha(folder/name) for name in evidence},
+        preintegration_evidence=dict(evaluator_source_sha256=sha(source),
+            original_audit_initial_line=guard,adapted_relative_line=guard-run.lineno+1,
+            first_evaluator_step_line=min(steps),exposure_terminal_time_s=0.,
+            scope='Frozen source ordering plus actual audit_initial traceback and empty exposure; no independent runtime step counter or dynamic rerun.'),
+        comparison_scope='Retained scene-generation rejection, not a controller physical-gate failure; excluded from trajectory metric means, included in planned-case accounting.')
 
 
 def verify_lock(root,bank_hash):
@@ -159,18 +238,12 @@ def action_replay(folder,request,physics,runner):
 
 def audit_case(root,folder,fixture,method,selected,plan,runner):
     execution,skip=complete_execution(folder)
-    if skip:return dict(folder=str(folder),status='skipped',reason=skip)
+    if skip:
+        invalid=invalid_initial_scene(root,folder,fixture,method,selected)
+        return invalid or dict(folder=str(folder),status='skipped',reason=skip)
     before=sha(folder/'execution.json')
     request,audit,meta=map(read,(folder/'request.json',folder/'audit.json',folder/'rollout.json'))
-    if (request['fixture']!=fixture or request['method']!=method or request['phase']!='validation'
-            or request['x']!=selected['x'] or request['plan_sha256']!=sha(root/'plan.json')
-            or execution['plan_sha256']!=request['plan_sha256']):raise ValueError('Locked validation request mismatch')
-    from teacher_bank_design_20260930 import decode,digest
-    from teacher_bank_classical_20260930 import decode as classical_decode
-    expected=decode(request['x']) if method=='vmc' else classical_decode(request['x'],method)
-    if request['teacher']!=expected:raise ValueError('Controller config differs from locked x')
-    if digest(fixture['active_physical_parameters'])!=fixture['physical_config_sha256']:
-        raise ValueError('Fixture physical config hash mismatch')
+    verify_request(root,request,execution,fixture,method,selected)
     if (audit['fixture_id']!=fixture['id'] or audit['split']!='validation' or audit['method']!=method
             or not isinstance(audit['eligible'],bool)):raise ValueError('Audit identity mismatch')
     hashes={}
@@ -229,6 +302,8 @@ def paired_groups(rows,methods):
 
 
 def main():
+    started_utc=datetime.now(timezone.utc).isoformat()
+    started_monotonic=time.monotonic()
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root',type=Path,required=True)
     parser.add_argument('--locked-bank-sha256',required=True)
@@ -270,8 +345,20 @@ def main():
         root=str(root),locked_bank_sha256=args.locked_bank_sha256,plan_sha256=sha(root/'plan.json'),
         lock_verification_scope=LOCK_VERIFICATION_SCOPE,
         frozen_source_sha256=plan['sources'],script_sha256=sha(Path(__file__)),python=sys.executable,
+        audit_execution=dict(argv=[sys.executable,*sys.argv],cwd=str(Path.cwd()),
+            hostname=platform.node(),machine=platform.machine(),platform=platform.platform(),
+            python_version=platform.python_version(),numpy_version=np.__version__,
+            mujoco_version=mujoco.__version__,started_utc=started_utc,
+            audit_finished_utc=datetime.now(timezone.utc).isoformat(),
+            audit_elapsed_s=time.monotonic()-started_monotonic,
+            timestamp_scope='In-process audit start through report assembly, not process exit.',
+            thread_environment={k:os.environ.get(k) for k in
+                ('OPENBLAS_NUM_THREADS','OMP_NUM_THREADS','MKL_NUM_THREADS')},
+            integration_guard=['mj_step','mj_step1','mj_step2']),
         planned_cases=len(plan['categories'])*len(plan['validation_indices'])*len(plan['methods']),
-        audited_cases=sum(r['status']=='audited' for r in rows),paired_fixtures=paired,cases=rows,
+        audited_cases=sum(r['status']=='audited' for r in rows),
+        invalid_initial_scene_cases=sum(r['status']=='invalid_initial_scene' for r in rows),
+        paired_fixtures=paired,cases=rows,
         peak_rss_kib=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
     (output/'review.json').write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')
     (output/'files_sha256.json').write_text(json.dumps({p.name:sha(p) for p in output.iterdir() if p.is_file()},indent=2)+'\n')

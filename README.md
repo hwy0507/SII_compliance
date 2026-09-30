@@ -26,8 +26,11 @@ model-based baseline，导纳/阻抗使用同场景同预算搜索。11:42 UTC�
 导纳/阻抗2/3、0/3、2/3，短撞3/3、1/3、2/3，持续推碰1/3、0/3、0/3；这是训练表现，
 不是独立泛化。task/strict与接触录取分列，三指标并非VMC全面占优，见
 [锁参比较](code/mujoco_6d_vmc_benchmark/docs/TEACHER_BANK_LOCKED_SEARCH_20260930.md)。
-27回合预注册验证已启动；collection及新ESN未开始，不能把3000个训练配置当作已采满
-的有效示范。VMC唯一合格训练fixture目前为厚角2、短撞3、持续1。
+27回合预注册验证中，棍推0001在三方法均出现约60mm初态交叉，保留为无效场景，不换条件。
+已完成回合复用，独立接续调度正在完成剩余验证，原截止不变；无新ESN，不能把3000个训练
+配置当作合法完整数据集或已采满的有效示范。严格train-only标签出口当前为厚角2、短撞3、
+持续1；validation不得用于标签、重复不增样本。见
+[初态拒绝核查](code/mujoco_6d_vmc_benchmark/docs/TEACHER_BANK_VALIDATION_INITIAL_REJECTION_20260930.md)。
 原始回合逐条hash核验归档到服务器`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_three_domains_20260930_v10/`。
 短撞成功仍可能伴随约2.2kN接触峰力，电机力矩合规不代表真实碰撞安全。
 旧资产清单遗漏FR3已明确更正；完整133文件已共享，本机冻结源码静态9/9复现原MJB，

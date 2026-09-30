@@ -4,6 +4,71 @@
 截止时停止派发新仿真，已开始的回合允许完整保存；不能把场景定义数当成成功示范数。
 本轮新增的是训练域，不修改冻结综合测试环境、原任务 gate、执行器或 actor 输入。
 
+## 12:47 UTC：接续v2运行，原场景三方法初态拒绝均保留
+
+`teacher-bank-continuation-v2-20260930.service`于12:46:27开始接续，MainPID1078252。
+执行入口为独立快照`outputs/teacher_bank_continuation_20260930_v2/source/teacher_bank_continuation_20260930.py`，
+protocol SHA=`13bd4af3960a678967272d2ed6c42340858e74f579865ec367bab97bf89e96af`，
+driver SHA=`9215b66fefbd7a91082ddbf7c205c777122a59777f5827502d0042a06ed93077`。
+仍调用原v10冻结attempt和rollout，21完成回合复用；棍推0001三方法均初态拒绝，各自记录和
+归档，没有更换条件。最后验证0011运行，之后按原collection顺序和13:48:16截止继续。
+验证完成标记在独立快照根`validation_finished.json`，分别统计完整动态和初态无效；
+旧`validation_results.json`的21条历史汇总不重写，最终报告以新标记、完整请求和审计为准。
+
+首次接续v1在12:43:03资源检查阶段退出，未派发仿真：用户cgroup只委派memory/pids，
+没有`cpu.max`。v1源与失败记录保留，v2继续强制单sim/四线程环境变量均1、MemoryMax=3GiB、
+MemorySwapMax=0，并记录`cpu_controller_available=false, quota_enforced=false`。
+此前服务的CPUQuota=100%是配置请求，不应当作实际CPU配额生效的证明；单线程限制仍在。
+未新增虚拟地址空间限制，未改变物理/控制运行时。接续21测试及独立审查通过。
+
+以下均已逐文件核验共享，主机`arm1@192.168.31.70`、目录前缀
+`/home/arm1/sii_shared/SII_compliance/runs/main/`：
+`teacher_bank_review_checkpoint_20260930_1237/evidence/`1791文件含停机锁参快照和严格标签出口；
+`teacher_bank_review_checkpoint_20260930_1242/evidence/`45文件含v1协议/源码、初态静态审计和当时工具；
+`teacher_bank_review_checkpoint_20260930_1245/evidence/`41文件含v2协议/源码及v1启动失败证据。
+运行中的v2 state另待完成后归档，不能声称已经共享终态。
+
+## 12:33 UTC：验证初态几何失败，保留并接续修复
+
+12:27:33原v10服务在21个完整验证回合后停止。第22次派发为
+`validation/active_long_validation_0001/vmc`，在`audit_initial`拒绝：棍子与FR3 link3/4/5
+初始交叉，最大深度60.09884064mm。约0.7s返回rc1，无完整rollout/audit；错误日志、请求和
+execution已原样逐文件核验归档至原v10服务器路径。这是无效初态，不能称控制算法的动态
+任务失败，也不能把该场景换掉后追认验证通过。3300定义中至少这一条不具备合法初态。
+
+已完成的厚角与短撞各9条、持续推碰3条均保留。短撞VMC task为3/3但strict/录取1/3；
+两个保存的外部穿透为0.2056437和0.2159002mm，超过0.2mm，不放宽门槛。
+独立锁参快照仍认证bank一致，review SHA为
+`fc3a6c441b75825990e088fe09bd4acac95044acf704faa3442f8ec2b6832937`。
+正在准备独立接续调度：保留已失败目录，明确分类初态几何失败，继续预注册方法/条件和
+原截止；不修改冻结source/plan、参数、场景、执行器或已有汇总，不将基础设施错误伪造为指标。
+
+训练标签出口首轮核验得到厚角2/短撞3/持续1共6个唯一训练fixture；验证样本明确排除，
+即使历史`esn_label_eligible`标志为true也不能入库。未来runner标志已补train条件；原v10
+source保留，旧collector/status本来另筛train，没有证据表明实际发生数据混用。
+样本需绑定锁参、原fixture、实际MJB和原始轨迹hash；相同身份重复不增样本，矛盾结果隔离。
+新标签/去重/验证来源/公平图相关39项小型测试通过，不能代替动态结果。新证据暂仅本地，待归档。
+
+## 12:04 UTC：厚角验证配对完成，独立raw复核通过
+
+首类厚角9个验证回合完成；VMC/导纳/阻抗task及strict分别3/3、0/3、3/3，训练域录取
+2/3、0/3、2/3。VMC在0001缺所需碰边，阻抗在0011缺曝光，均保留为未录取。
+独立复核9条厚角及审计时另已完成的1条短撞VMC：550000子步/55s、三指标、原始hash/
+source/参数/seed、动作与状态/filter、曝光时间绑定通过，10 audited、0 audit_failed。
+三厚角fixture均三方法MJB一致；短撞那条尚未配对，不能提前给该类完整成绩。
+其task/exposure true、strict false，保存外部穿透0.2056437mm超过原0.2mm；不放宽门槛，
+穿透仍仅元数据核验。报告SHA=`0aa2972dea4184baea7c3e05ad6f651a34e9cccd5d597d586b4379813fc05ae4`。
+其余验证继续，银行hash未改变；验证结果不回流选参。全27独立审计待完成。
+
+GitHub main已推送`d39aed3f4800223e1aa1584f1dbcc9d45c13e13f`，2653文件源码已逐项核验发布至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/d39aed3f4800223e1aa1584f1dbcc9d45c13e13f/`。
+tar SHA=`c2cb22afbc55fae8af134397f63268e21520d0e63d01387291dfb2641e69166a`；核验凭据SHA=
+`90b4674b634a2adfaaba8a22654a88ae8a7fba32967583d1d7402d63a1952387`，本地在
+`outputs/teacher_bank_source_archive_d39aed3_20260930/source.verification.json`。维护源码快照
+不替换v10的冻结运行source。首类独立审计、调用来源、源码核验凭据与当时工具已逐项
+核验共享至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_1209/evidence/`。
+
 ## 11:44 UTC：162搜索完成，参数独立认证锁定
 
 11:42全部162搜索回合完成，27录取/135未录取，每方法/类别均六候选×三anchor。
