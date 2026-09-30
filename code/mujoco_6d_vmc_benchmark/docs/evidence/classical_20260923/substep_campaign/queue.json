@@ -1,0 +1,42 @@
+{
+  "max_workers": 4,
+  "sequential_phases": [
+    [
+      "measured",
+      "/home/arm1/vmc_mujoco_runtime/.venv/bin/python",
+      "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/baseline_impedance_admittance_20260923/source_substep_batch/scripts/run_measured_panel_matrix_20260923.py",
+      "--base-root",
+      "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/baseline_impedance_admittance_20260923",
+      "--output",
+      "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/baseline_impedance_admittance_20260923/measured_campaign/measured28",
+      "--workers",
+      "4",
+      "--methods",
+      "esn_no_x_yield",
+      "esn_lowpass_025",
+      "mlp_lowpass_025",
+      "vmc_lowpass_025",
+      "vmc",
+      "impedance",
+      "admittance",
+      "mlp",
+      "esn",
+      "impedance_k300_reference",
+      "impedance_k900_reference",
+      "admittance_r2_reference"
+    ],
+    [
+      "fixed_budget",
+      "/home/arm1/vmc_mujoco_runtime/.venv/bin/python",
+      "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/baseline_impedance_admittance_20260923/source_fixed_budget/scripts/run_classical_fixed_budget_20260923.py",
+      "--base-protocol",
+      "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/baseline_impedance_admittance_20260923/panel_matched48/protocol.json",
+      "--menagerie",
+      "/home/arm1/vmc_mujoco_runtime/mujoco_menagerie",
+      "--output",
+      "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/baseline_impedance_admittance_20260923/measured_campaign/fixed_budget",
+      "--workers",
+      "4"
+    ]
+  ]
+}

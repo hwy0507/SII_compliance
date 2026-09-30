@@ -1,0 +1,68 @@
+{
+  "config": {
+    "purpose": "Development-only teacher traces with ball launch delayed to 2.0 s; never replaces frozen t=0 evaluation.",
+    "teacher": "stiff_vmc",
+    "action_scale": 0.5,
+    "options": {
+      "stiffness_6d": [
+        800.0,
+        800.0,
+        2400.0,
+        20.0,
+        16.0,
+        24.0
+      ],
+      "damping_6d": [
+        39.5979797464,
+        39.5979797464,
+        77.7817459305,
+        3.95979797464,
+        3.3941125497,
+        4.24264068712
+      ]
+    },
+    "ball_launch_time_s": 2.0,
+    "actor_inputs": "canonical48D only; launch time is scene metadata and is not an input",
+    "forbidden_inputs": [
+      "contact truth",
+      "ball state",
+      "event time",
+      "task stage",
+      "visual/range"
+    ]
+  },
+  "teacher_input": "encoder-derived wrench only",
+  "truth_in_actor": false,
+  "task_stage_in_actor": false,
+  "config_sha256": "13acd160d308890b4fd37a2f8c05c45aef5e61a889fcc6d9dd18ae11de5d8f9f",
+  "wrapper_sha256": "e389f1a9a239efd6c1b23b1ff0d1e54eaae9d71582001c2680f85cf23ea804b3",
+  "status": "completed",
+  "argv": [
+    "--output",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/results/delayed2_shift_plus/rollout",
+    "--teacher",
+    "vmc6d",
+    "--task",
+    "pick_place",
+    "--events",
+    "all",
+    "--duration",
+    "55",
+    "--impact-refinement-dt",
+    ".0000015625",
+    "--ball-launch-time-s",
+    "2.0",
+    "--seed",
+    "2026092701",
+    "--variant",
+    "2",
+    "--ball-speed",
+    "1.45",
+    "--person-stroke",
+    ".18",
+    "--rod-stroke",
+    ".225"
+  ],
+  "trace_sha256": "0eafeab96bf2562ca1db151b3be657c2f390216fc5fe0fc841945a3c2fd52600",
+  "steps": 1375
+}

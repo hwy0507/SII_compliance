@@ -82,7 +82,7 @@ def add_pedestrian(world):
     return body
 
 
-def extend_complex_xml(xml,spec=None,variant=0,interaction_demo=False,corner_placement=False,combined_demo=False,combined_contact_v2=False,relaxed_pillar=False):
+def extend_complex_xml(xml,spec=None,variant=0,interaction_demo=False,corner_placement=False,combined_demo=False,combined_contact_v2=False,relaxed_pillar=False,combined_thick_corner_pillar_v1=False,combined_thick_corner_pillar_v2=False,combined_thick_corner_pillar_v3=False,combined_thick_corner_pillar_v4=False):
     """Return the compiled MJCF source for one held-out office fixture."""
     if spec is None:spec=SceneSpec(kind='empty')
     root=ET.fromstring(extend_xml(xml,replace(spec,kind='empty')));world=root.find('worldbody')
@@ -90,7 +90,32 @@ def extend_complex_xml(xml,spec=None,variant=0,interaction_demo=False,corner_pla
     # carry line.  The opt-in interaction demo moves the same physical objects
     # onto the corner-placement approach so contact is visible and auditable.
     offset=float(variant)*.018
-    if combined_contact_v2:
+    if combined_thick_corner_pillar_v4:
+        pillar_xy=np.array([.619,-.270+offset]);cup_xy=None
+    elif combined_thick_corner_pillar_v3:
+        # Independent lift-contact fixture: retain the v1/v2 worlds exactly.
+        # The post remains on the carry-side, while the corner's short inner
+        # face is placed in the measured payload lift corridor.  The top slab
+        # still supports the original corner destination.
+        pillar_xy=np.array([.600,-.340+offset])
+        cup_xy=None
+    elif combined_thick_corner_pillar_v2:
+        # Separate development world: keep a visible post and bring the
+        # corner face into the measured lift corridor. V1 remains unchanged.
+        pillar_xy=np.array([.600,-.340+offset])
+        cup_xy=None
+    elif combined_thick_corner_pillar_v1:
+        # Registered development fixture requested on 2026-09-29.  Keep one
+        # rigid obstacle (the pillar) and the thick corner; omit the cup so
+        # the contact demonstration has a single visually attributable
+        # obstacle.  Geometry is based on the previously audited relaxed
+        # pillar/corner route, with no changes to the robot or task limits.
+        # Above the payload center and just beside the carry hand: the tool
+        # brushes this small, low-friction post while the object remains below
+        # it, so contact is visible without pinning the placement load.
+        pillar_xy=np.array([.600,-.360+offset])
+        cup_xy=None
+    elif combined_contact_v2:
         # Registered combined-contact-v2 fixture: the pillar is on the
         # retreat-side of the corner route and the taller, low-friction cup
         # stays desk-supported while exposing its rim to the carry hand.  The
@@ -127,13 +152,14 @@ def extend_complex_xml(xml,spec=None,variant=0,interaction_demo=False,corner_pla
         pillar_xy=np.array([.840,.250+offset]);cup_xy=np.array([.470,.015+offset])
     else:
         pillar_xy=np.array([.625,.075+offset]);cup_xy=np.array([.470,.015+offset])
-    pillar_friction='.012 .004 .001' if relaxed_pillar else '.045 .008 .001' if combined_contact_v2 else '.08 .01 .001' if combined_demo else '.35 .015 .001'
-    pillar_solref='.025 1' if relaxed_pillar else '.010 1' if combined_contact_v2 else '.008 1' if combined_demo else '.002 1'
-    pillar_center_z=.700 if combined_contact_v2 else .650 if combined_demo else .585
-    pillar_half_z=.015 if relaxed_pillar else .025 if combined_contact_v2 else .050 if combined_demo else .185
-    pillar_radius=.010 if relaxed_pillar else .015 if combined_contact_v2 else .038
-    geom(world,'office_v5_pillar','cylinder',np.r_[pillar_xy,pillar_center_z],[pillar_radius,pillar_half_z],[.27,.29,.32,1],
-         friction=pillar_friction,solref=pillar_solref)
+    pillar_friction='.012 .004 .001' if (combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3) else '.001 .001 .001' if (combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v4) else '.012 .004 .001' if relaxed_pillar else '.045 .008 .001' if combined_contact_v2 else '.08 .01 .001' if combined_demo else '.35 .015 .001'
+    pillar_solref='.025 1' if (combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3) else '.040 1' if (combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v4) else '.025 1' if relaxed_pillar else '.010 1' if combined_contact_v2 else '.008 1' if combined_demo else '.002 1'
+    pillar_center_z=.700 if (combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3) else .750 if (combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v4) else .650 if (relaxed_pillar or combined_demo) else .700 if combined_contact_v2 else .585
+    pillar_half_z=.040 if (combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3) else .010 if (combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v4) else .050 if (relaxed_pillar or combined_demo) else .015 if combined_contact_v2 else .185
+    pillar_radius=.015 if (combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3) else .004 if (combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v4) else .038 if combined_demo else .010 if relaxed_pillar else .015 if combined_contact_v2 else .038
+    pillar_kwargs=dict(friction=pillar_friction,solref=pillar_solref)
+    if combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3 or combined_thick_corner_pillar_v4:pillar_kwargs['solimp']='.99 .999 .002 .5 2'
+    geom(world,'office_v5_pillar','cylinder',np.r_[pillar_xy,pillar_center_z],[pillar_radius,pillar_half_z],[.27,.29,.32,1],**pillar_kwargs)
     geom(world,'office_v5_pillar_mount','cylinder',np.r_[pillar_xy,.407],[.055,.007],[.20,.22,.25,1],friction='.45 .02 .002')
     # Thick L corner: vertical near face x=.688, horizontal underside z=.670.
     # The solids share a body; their touching surfaces, near x face and width
@@ -142,32 +168,40 @@ def extend_complex_xml(xml,spec=None,variant=0,interaction_demo=False,corner_pla
     # upper surface stays inside the measured FR3 reach envelope.  The
     # original formal fixture remains unchanged; this is only the opt-in
     # corner-placement presentation geometry.
-    corner_x=.650 if corner_placement else .750
+    corner_x=.640 if combined_thick_corner_pillar_v2 else .650 if corner_placement else .750
     # The development corner top is intentionally within the measured FR3
     # reach envelope.  Its upper surface is z=.535 m; the payload center is
     # placed at z=.560 m so its 25 mm half-height sits on the slab.
     corner_z=.500 if corner_placement else .690
-    face_z=.440 if corner_placement else .535
-    face_h=.080 if corner_placement else .135
-    face_y=.300+offset if corner_placement else .205+offset
-    geom(world,'office_v5_corner_face','box',[corner_x,face_y,face_z],[.012,.095,face_h],[.50,.32,.18,1],friction='.25 .01 .001',solref='.002 1')
+    face_z=.520 if combined_thick_corner_pillar_v4 else (.500 if combined_thick_corner_pillar_v3 else (.440 if corner_placement else .535))
+    face_h=.020 if combined_thick_corner_pillar_v4 else (.030 if combined_thick_corner_pillar_v3 else (.080 if corner_placement else .135))
+    face_x=.480 if combined_thick_corner_pillar_v4 else (.490 if combined_thick_corner_pillar_v3 else corner_x)
+    face_y=(-.150+offset) if combined_thick_corner_pillar_v4 else ((-.190+offset) if combined_thick_corner_pillar_v3 else (.300+offset if corner_placement else .205+offset))
+    geom(world,'office_v5_corner_face','box',[face_x,face_y,face_z],[.012 if combined_thick_corner_pillar_v4 else (.008 if combined_thick_corner_pillar_v3 else .012),
+         .010 if combined_thick_corner_pillar_v4 else (.025 if combined_thick_corner_pillar_v3 else .095),face_h],[.50,.32,.18,1],friction='.25 .01 .001',solref='.002 1')
+    if combined_thick_corner_pillar_v3:
+        # Interlocking collision solids make the lift face part of the thick
+        # corner, without translating the full support slab into grasp.
+        geom(world,'office_v5_corner_bridge','box',[.536,-.190+offset,.480],[.038,.008,.005],
+             [.50,.32,.18,1],friction='.25 .01 .001',solref='.002 1')
     top_y=-.100+offset if corner_placement else .205+offset
-    top_half_y=.250 if (combined_demo or combined_contact_v2) else (.300 if corner_placement else .095)
+    top_half_y=.250 if (combined_demo or combined_contact_v2 or combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3 or combined_thick_corner_pillar_v4) else (.300 if corner_placement else .095)
     top_half_x=.080 if corner_placement else .062
     geom(world,'office_v5_corner_top','box',[corner_x,top_y,corner_z],[top_half_x,top_half_y,.020],[.57,.37,.20,1],friction='.25 .01 .001',solref='.002 1')
-    add_free_cup(world,cup_xy,mass=float(getattr(spec,'cup_mass',.30)),
-                 height_scale=1.0,radial_scale=.80 if combined_contact_v2 else 1.0,
-                 wall_friction='.18 .01 .001' if combined_contact_v2 else '.65 .02 .002',
-                 contact_handle=bool(combined_contact_v2))
+    if cup_xy is not None:
+        add_free_cup(world,cup_xy,mass=float(getattr(spec,'cup_mass',.30)),
+                     height_scale=1.0,radial_scale=.80 if combined_contact_v2 else 1.0,
+                     wall_friction='.18 .01 .001' if combined_contact_v2 else '.65 .02 .002',
+                     contact_handle=bool(combined_contact_v2))
     # Free ball; evaluator assigns initial qvel and the ball bounces via
     # solref/solimp restitution against rigid robot/desk geoms.
-    ball_xy=np.array([.58 if combined_contact_v2 else .54,
+    ball_xy=np.array([.58 if (combined_contact_v2 or combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3 or combined_thick_corner_pillar_v4) else .54,
                       -.50 if combined_demo else -.43,.655])
     ball=_body(world,'office_v5_ball',ball_xy);ET.SubElement(ball,'freejoint',name='office_v5_ball_free')
     geom(ball,'office_v5_ball_geom','sphere',[0,0,0],[.045],[.80,.15,.12,1],mass=str(getattr(spec,'ball_mass',.22)),
          friction='.12 .005 .0001',
-         solref='.00040 .55' if combined_contact_v2 else '.0005 .35',
-         solimp='.995 .9995 .00005 .5 2' if combined_contact_v2 else '.99 .999 .0001 .5 2',priority='4')
+         solref='.00040 .55' if (combined_contact_v2 or combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3 or combined_thick_corner_pillar_v4) else '.0005 .35',
+         solimp='.995 .9995 .00005 .5 2' if (combined_contact_v2 or combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3 or combined_thick_corner_pillar_v4) else '.99 .999 .0001 .5 2',priority='4')
     contacts=root.find('contact')
     if contacts is None:contacts=ET.SubElement(root,'contact')
     # Dedicated rigid support contacts; the softer ball/robot response is
@@ -178,7 +212,7 @@ def extend_complex_xml(xml,spec=None,variant=0,interaction_demo=False,corner_pla
     # Finite-mass human hand and independent rod, each physically constrained
     # to a rail. They are not mocap bodies and cannot pass through the robot.
     add_pedestrian(world)
-    rod_pos=[.24,-.19,.58] if not corner_placement else ([.24,-.28,.58] if (combined_demo or combined_contact_v2) else ([.24,-.36,.58] if not interaction_demo else [.24,-.19,.58]))
+    rod_pos=[.24,-.19,.58] if not corner_placement else ([.24,-.28,.58] if (combined_demo or combined_contact_v2 or combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3 or combined_thick_corner_pillar_v4) else ([.24,-.36,.58] if not interaction_demo else [.24,-.19,.58]))
     rod=_body(world,'office_v5_push_rod',rod_pos)
     ET.SubElement(rod,'joint',name='office_v5_push_rod_joint',type='slide',axis='1 0 0',range='0 .24',damping='3')
     geom(rod,'office_v5_push_rod_geom','capsule',[0,0,0],[.014],[.72,.50,.20,1],
@@ -187,7 +221,7 @@ def extend_complex_xml(xml,spec=None,variant=0,interaction_demo=False,corner_pla
     return ET.tostring(root,encoding='unicode')
 
 
-def fixture_flags(seed,variant=0,interaction_demo=False,corner_placement=False,combined_demo=False,combined_contact_v2=False,relaxed_pillar=False):
+def fixture_flags(seed,variant=0,interaction_demo=False,corner_placement=False,combined_demo=False,combined_contact_v2=False,relaxed_pillar=False,combined_thick_corner_pillar_v1=False,combined_thick_corner_pillar_v2=False,combined_thick_corner_pillar_v3=False,combined_thick_corner_pillar_v4=False):
     rng=np.random.default_rng(seed)
     return dict(scene='empty',seed=int(seed),duration=55.,nominal_speed=float(rng.uniform(.045,.070)),
       cup_mass=float(rng.uniform(.24,.36)),ball_mass=float(rng.uniform(.16,.28)),
@@ -195,4 +229,8 @@ def fixture_flags(seed,variant=0,interaction_demo=False,corner_placement=False,c
       shift=float(rng.uniform(-.015,.015)),along=float(rng.uniform(-.015,.015)),width=.05,
       office_variant=int(variant),event_seed=int(rng.integers(1,9999999)),
       interaction_demo=bool(interaction_demo),corner_placement=bool(corner_placement),combined_demo=bool(combined_demo),
-      combined_contact_v2=bool(combined_contact_v2),relaxed_pillar=bool(relaxed_pillar))
+      combined_contact_v2=bool(combined_contact_v2),relaxed_pillar=bool(relaxed_pillar),
+      combined_thick_corner_pillar_v1=bool(combined_thick_corner_pillar_v1),
+      combined_thick_corner_pillar_v2=bool(combined_thick_corner_pillar_v2),
+      combined_thick_corner_pillar_v3=bool(combined_thick_corner_pillar_v3),
+      combined_thick_corner_pillar_v4=bool(combined_thick_corner_pillar_v4))

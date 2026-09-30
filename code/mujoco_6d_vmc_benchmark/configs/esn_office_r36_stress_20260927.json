@@ -1,0 +1,14 @@
+{
+  "purpose":"One R36 equilibrium-regularized readout candidate, identical six exposed R34 development conditions",
+  "candidate":"4b61ada5e76d4741b90bc3f71a1cf40c89b9e804950853c8c8dc6df06c51eda2",
+  "physics":"Frozen R34 source, observer .005, shared first .2s at1.5625us then50us, identical task and .2mm gates",
+  "budget":"Six full development episodes, no blind access, one fixed linear correction with unchanged reservoir/nonlinear weights",
+  "jobs":[
+    {"id":"r36_original","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--esn-model","models/r36.npz","--esn-mode","control"]},
+    {"id":"r36_rod_start7","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","7","--esn-model","models/r36.npz","--esn-mode","control"]},
+    {"id":"r36_rod_start9","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","9","--esn-model","models/r36.npz","--esn-mode","control"]},
+    {"id":"r36_rod_hold6","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-hold","6","--esn-model","models/r36.npz","--esn-mode","control"]},
+    {"id":"r36_shift_plus","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092701","--variant","2","--ball-speed","1.45","--person-stroke",".18","--rod-stroke",".225","--esn-model","models/r36.npz","--esn-mode","control"]},
+    {"id":"r36_hard","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24","--esn-model","models/r36.npz","--esn-mode","control"]}
+  ]
+}

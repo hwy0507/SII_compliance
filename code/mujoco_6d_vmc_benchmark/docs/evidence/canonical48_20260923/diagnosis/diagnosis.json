@@ -1,0 +1,253 @@
+{
+  "scope": "train rod only; no new validation-dependent design decisions",
+  "traces": {
+    "train_stochastic": {
+      "samples": 600,
+      "reward_terms": {
+        "position": -5.6468369523637865,
+        "rotation": -0.08247448525215288,
+        "estimated_force": -0.10328081822816323,
+        "action": -0.14644393714762052,
+        "action_change": -0.05585249542401705,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "reward_total": -4.53488868841574,
+      "reward_by_phase": {
+        "0": 0.09056237953150792,
+        "1": 0.14487961559433749,
+        "2": 0.4472710681276375,
+        "3": -5.217601751669215
+      },
+      "phase_counts": {
+        "0": 73,
+        "1": 55,
+        "2": 9,
+        "3": 463
+      },
+      "slowdown_mean": 0.06504005385446363,
+      "slowdown_zero_fraction": 0.44333333333333336,
+      "slowdown_one_fraction": 0.0,
+      "action_mean": [
+        0.06504005385446363,
+        -0.01716840428998694,
+        -0.0017422220689089348,
+        0.007370979270587365,
+        0.008299051046002811,
+        -0.0011604825005148694,
+        -0.00516495867089058
+      ],
+      "action_std": [
+        0.08477558032821632,
+        0.13546722606401526,
+        0.13222674793597444,
+        0.1366850458927421,
+        0.13121649029334653,
+        0.13268008479367238,
+        0.14432820900871468
+      ],
+      "final_48d_pose_error": [
+        0.006150295871081957,
+        0.0017933736224730852,
+        -0.0022771650959186873,
+        -0.01669353355756523,
+        -0.017242395906625553,
+        -0.004085092061283811
+      ],
+      "final_estimated_force_norm": 0.6132476448606771,
+      "task_success": false,
+      "final_stage": 3,
+      "terminal_shaping_uses_last_actor_observation": true,
+      "final_shaping_observation_age_s": 0.04,
+      "final_terminal_labels_from_post_last_physics_step": true
+    },
+    "zero": {
+      "samples": 600,
+      "reward_terms": {
+        "position": -12.181080980643868,
+        "rotation": -0.22119154551538925,
+        "estimated_force": -0.21264199086807423,
+        "action": 0.0,
+        "action_change": 0.0,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "reward_total": -11.11491451702733,
+      "reward_by_phase": {
+        "0": -0.0641072192970954,
+        "1": 0.04757561832482882,
+        "2": 0.44186153978137566,
+        "3": -11.540244455836437
+      },
+      "phase_counts": {
+        "0": 130,
+        "1": 95,
+        "2": 11,
+        "3": 364
+      },
+      "slowdown_mean": 0.0,
+      "slowdown_zero_fraction": 1.0,
+      "slowdown_one_fraction": 0.0,
+      "action_mean": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "action_std": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "final_48d_pose_error": [
+        0.00946563535446665,
+        0.0003694637891024016,
+        0.18761682901847299,
+        0.01055025719408535,
+        -0.10283260486124265,
+        -0.009341873671536396
+      ],
+      "final_estimated_force_norm": 5.619288159418867,
+      "task_success": false,
+      "final_stage": 3,
+      "terminal_shaping_uses_last_actor_observation": true,
+      "final_shaping_observation_age_s": 0.04,
+      "final_terminal_labels_from_post_last_physics_step": true
+    },
+    "ppo640_deterministic": {
+      "samples": 600,
+      "reward_terms": {
+        "position": -16.790714358829497,
+        "rotation": -0.20647491761501655,
+        "estimated_force": -0.23077982497345897,
+        "action": -0.016872067544689444,
+        "action_change": -2.4722543614598193e-05,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "reward_total": -15.744865891506276,
+      "reward_by_phase": {
+        "0": 0.38050059348972126,
+        "1": 0.32077092419930736,
+        "2": 0.4465319637150147,
+        "3": -16.892669372910333
+      },
+      "phase_counts": {
+        "0": 20,
+        "1": 30,
+        "2": 9,
+        "3": 541
+      },
+      "slowdown_mean": 0.025380112855733994,
+      "slowdown_zero_fraction": 0.14166666666666666,
+      "slowdown_one_fraction": 0.0,
+      "action_mean": [
+        0.025380112855733994,
+        0.0028343399187239506,
+        0.05544178303796798,
+        -0.037676983335986736,
+        -0.056953729521483185,
+        -0.056178625105919006,
+        -0.01053840471043562
+      ],
+      "action_std": [
+        0.014307901205312997,
+        0.018119332912915113,
+        0.024186244610644635,
+        0.018578276228053393,
+        0.009892289523766104,
+        0.024663421473649104,
+        0.01531039869624309
+      ],
+      "final_48d_pose_error": [
+        0.00861411501194076,
+        -0.004554960582682493,
+        0.1863116697229209,
+        0.03298085860506056,
+        -0.0672461788485055,
+        0.003165940623694309
+      ],
+      "final_estimated_force_norm": 3.903463491498768,
+      "task_success": false,
+      "final_stage": 3,
+      "terminal_shaping_uses_last_actor_observation": true,
+      "final_shaping_observation_age_s": 0.04,
+      "final_terminal_labels_from_post_last_physics_step": true
+    }
+  },
+  "initial_slowdown": {
+    "gaussian_mean_at_zero_normalized_observation": 0.0,
+    "gaussian_std": 0.1353352832366127,
+    "clip_lower_probability": 0.5,
+    "expected_clipped_mean": 0.05399096651318806,
+    "upper_clip_probability_negligible": true,
+    "interpretation": "SB3 Gaussian plus Box clipping is standard; zero is no slowdown. Positive half-normal initial slowdown is an action-parameterization bias, not a bridge mismatch."
+  },
+  "transition_review": {
+    "nonterminal": "reward uses next published48 observation after previous action physics and next task.update",
+    "terminal": "post-step task/safety outcome; shaping reuses last actor observation40ms old, no terminal bootstrap",
+    "actor_privileged_fields": [],
+    "critic_privileged_fields": [],
+    "dense_shaping_present": true,
+    "terminal_success_signal_sparse": true,
+    "finite_horizon": "24s evaluation endpoint is task terminal, deliberately terminated=True",
+    "reward_version_changed": false
+  },
+  "vmc_control": {
+    "source_id": "push_00000",
+    "split": "train",
+    "physical_fixture": "rod",
+    "focus": "push_rod_geom",
+    "task_success": false,
+    "development_gate": false,
+    "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+    "original_teacher_checks": {
+      "task": true,
+      "physics": true,
+      "target_contact": true,
+      "rod_contact": true,
+      "release": true,
+      "no_incidental_structure_contact": true,
+      "limited_point_force": true,
+      "speed": true,
+      "no_upstream_guard_contact": true
+    },
+    "original_teacher_gate_reused": false,
+    "max_external_penetration_m": 0.00015056827481702424,
+    "focus_contact": true,
+    "peak_external_resultant_force_n": 217.10804090146195,
+    "peak_torque_nm": 41.21818452865614,
+    "speed_p95_mps": 0.058910171209724915,
+    "endpoint_error_m": 0.05238729646802855,
+    "final_stage": 3,
+    "publication_ready": false,
+    "elapsed_s": 112.5657308101654,
+    "peak_rss_gib": 0.47925567626953125,
+    "teacher_called": true,
+    "source_row": {
+      "id": "push_00000",
+      "scene": "push",
+      "split": "train",
+      "physical_fixture": "rod",
+      "fixture_hash": "81446ba451fef33122308cbf864841b4d29ceeabb9c848c974c76682020d5667",
+      "parameter_group": "894ec2391540db238c0ced1bac971005bba5ba30ddef707fde98877b70c8dda5",
+      "samples": 600,
+      "source_trace": "outputs/unified_6d_push_proprio48_20260921/dataset/episodes/push/push_0000.npz",
+      "source_result": "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/vmc_auto_search_20260920/trials/r0000_rod_04/rollout.json",
+      "source_search_result": "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/vmc_auto_search_20260920/trials/r0000_rod_04/search_result.json",
+      "content_hash": "d4a5ca49982246ddd3348036bbad5b0008b7570123932681b765d2b25f700b0e",
+      "conversion": "insert exact recorded teacher_wrench[:,3:6] between legacy force3 and path_direction3",
+      "teacher_family": "six_d_saturated_virtual_model_controller",
+      "teacher_force": "estimated_proprioceptive_wrench",
+      "source_root": "outputs/unified_6d_push_proprio48_20260921",
+      "trace": "dataset/episodes/push/push_00000.npz"
+    }
+  }
+}

@@ -1,0 +1,768 @@
+{
+  "passed": true,
+  "branch": "online_only",
+  "mode": "direct7",
+  "simulator_steps": 0,
+  "gradient_updates": 0,
+  "audit_tool_sha256": "ffe69cbf617f1a0ff129ed0e875c96f7ca89d49d14ce9f2bb4e74e66ab096ba4",
+  "zero": {
+    "train": {
+      "passed": true,
+      "arrays": {
+        "rollout.npz:time": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "rollout.npz:observation": {
+          "shape": [
+            600,
+            48
+          ],
+          "exact": true
+        },
+        "rollout.npz:teacher_action": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "rollout.npz:action": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "rollout.npz:teacher_force": {
+          "shape": [
+            600,
+            6
+          ],
+          "exact": true
+        },
+        "rollout.npz:stage": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "rollout.npz:position": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "rollout.npz:target": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "rollout.npz:force": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "rollout.npz:twist": {
+          "shape": [
+            600,
+            6
+          ],
+          "exact": true
+        },
+        "rollout.npz:object_position": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "rollout.npz:torque": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "rollout.npz:cup_shift": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "rollout.npz:cup_tilt": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "rollout.npz:slide_memory": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "rollout.npz:cup_position": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "rollout.npz:ball_position": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "rollout.npz:ball_velocity": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "physics_states.npz:state": {
+          "shape": [
+            600,
+            46
+          ],
+          "exact": true
+        },
+        "physics_states.npz:nq": {
+          "shape": [],
+          "exact": true
+        },
+        "physics_states.npz:nv": {
+          "shape": [],
+          "exact": true
+        },
+        "physics_states.npz:nu": {
+          "shape": [],
+          "exact": true
+        },
+        "contact_samples.npz:samples": {
+          "shape": [
+            600,
+            59
+          ],
+          "exact": true
+        },
+        "contact_samples.npz:names": {
+          "shape": [
+            29
+          ],
+          "exact": true
+        },
+        "actor_trace.npz:observation": {
+          "shape": [
+            600,
+            48
+          ],
+          "exact": true
+        },
+        "actor_trace.npz:action": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "actor_trace.npz:phase_reward_metadata": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        }
+      },
+      "model_mjb_sha256": "9f220b70f721aba1cec9c86d53fc2e2ec748736034a47a8a9c44951684492288",
+      "task_success": false,
+      "accepted_panel_demo": false,
+      "original_json_differences": [
+        "arguments"
+      ],
+      "argument_differences": [
+        "output"
+      ],
+      "source_set_semantics": "run_primitive_teacher_v7 clean and four explicit contact set fields",
+      "transition_arrays": {
+        "step_index": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "actor_period_s": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "observation": {
+          "shape": [
+            600,
+            48
+          ],
+          "exact": true
+        },
+        "next_observation": {
+          "shape": [
+            600,
+            48
+          ],
+          "exact": true
+        },
+        "next_observation_valid": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "requested_action": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "policy_action": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "parameter_request": {
+          "shape": [
+            600,
+            6
+          ],
+          "exact": true
+        },
+        "parameter_control_active": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "log_scale": {
+          "shape": [
+            600,
+            6
+          ],
+          "exact": true
+        },
+        "stiffness": {
+          "shape": [
+            600,
+            6
+          ],
+          "exact": true
+        },
+        "damping": {
+          "shape": [
+            600,
+            6
+          ],
+          "exact": true
+        },
+        "execution_action": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "reward": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "stage": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "next_stage": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "terminated": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "truncated": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "reward_term_base_terminal": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "reward_term_potential_before": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "reward_term_potential_after": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "reward_term_potential_difference": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        }
+      }
+    },
+    "validation": {
+      "passed": true,
+      "arrays": {
+        "rollout.npz:time": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "rollout.npz:observation": {
+          "shape": [
+            600,
+            48
+          ],
+          "exact": true
+        },
+        "rollout.npz:teacher_action": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "rollout.npz:action": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "rollout.npz:teacher_force": {
+          "shape": [
+            600,
+            6
+          ],
+          "exact": true
+        },
+        "rollout.npz:stage": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "rollout.npz:position": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "rollout.npz:target": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "rollout.npz:force": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "rollout.npz:twist": {
+          "shape": [
+            600,
+            6
+          ],
+          "exact": true
+        },
+        "rollout.npz:object_position": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "rollout.npz:torque": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "rollout.npz:cup_shift": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "rollout.npz:cup_tilt": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "rollout.npz:slide_memory": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "rollout.npz:cup_position": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "rollout.npz:ball_position": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "rollout.npz:ball_velocity": {
+          "shape": [
+            600,
+            3
+          ],
+          "exact": true
+        },
+        "physics_states.npz:state": {
+          "shape": [
+            600,
+            46
+          ],
+          "exact": true
+        },
+        "physics_states.npz:nq": {
+          "shape": [],
+          "exact": true
+        },
+        "physics_states.npz:nv": {
+          "shape": [],
+          "exact": true
+        },
+        "physics_states.npz:nu": {
+          "shape": [],
+          "exact": true
+        },
+        "contact_samples.npz:samples": {
+          "shape": [
+            600,
+            59
+          ],
+          "exact": true
+        },
+        "contact_samples.npz:names": {
+          "shape": [
+            29
+          ],
+          "exact": true
+        },
+        "actor_trace.npz:observation": {
+          "shape": [
+            600,
+            48
+          ],
+          "exact": true
+        },
+        "actor_trace.npz:action": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "actor_trace.npz:phase_reward_metadata": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        }
+      },
+      "model_mjb_sha256": "dc392f9140024d257abc39ab025857a50c19ef79f8b55c1281bae184b55e63bf",
+      "task_success": true,
+      "accepted_panel_demo": false,
+      "original_json_differences": [
+        "arguments"
+      ],
+      "argument_differences": [
+        "output"
+      ],
+      "source_set_semantics": "run_primitive_teacher_v7 clean and four explicit contact set fields",
+      "transition_arrays": {
+        "step_index": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "actor_period_s": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "observation": {
+          "shape": [
+            600,
+            48
+          ],
+          "exact": true
+        },
+        "next_observation": {
+          "shape": [
+            600,
+            48
+          ],
+          "exact": true
+        },
+        "next_observation_valid": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "requested_action": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "policy_action": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "parameter_request": {
+          "shape": [
+            600,
+            6
+          ],
+          "exact": true
+        },
+        "parameter_control_active": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "log_scale": {
+          "shape": [
+            600,
+            6
+          ],
+          "exact": true
+        },
+        "stiffness": {
+          "shape": [
+            600,
+            6
+          ],
+          "exact": true
+        },
+        "damping": {
+          "shape": [
+            600,
+            6
+          ],
+          "exact": true
+        },
+        "execution_action": {
+          "shape": [
+            600,
+            7
+          ],
+          "exact": true
+        },
+        "reward": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "stage": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "next_stage": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "terminated": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "truncated": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "reward_term_base_terminal": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "reward_term_potential_before": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "reward_term_potential_after": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        },
+        "reward_term_potential_difference": {
+          "shape": [
+            600
+          ],
+          "exact": true
+        }
+      }
+    }
+  },
+  "replay": {
+    "train": {
+      "samples": 600,
+      "predict_vs_actor_exact": true,
+      "archived_request_execution_exact": true,
+      "action_sha256": "333f630e62beaf257c69b35b07a52c15807350d2d99524369d267a41bc5bf828",
+      "policy_atol": 0.0,
+      "safety_terminated": false,
+      "fallback": null
+    },
+    "validation": {
+      "samples": 600,
+      "predict_vs_actor_exact": true,
+      "archived_request_execution_exact": true,
+      "action_sha256": "76e87af45a762eecc9edc5a9ce7eeb40327ca7b0e00cc7ddb9da334e08431d54",
+      "policy_atol": 0.0,
+      "safety_terminated": false,
+      "fallback": null
+    }
+  },
+  "input_sha256": {
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/manifest.json": "ddf9192b4df22f4587d8e0306c8136337790c6cb5f74be0cba116c05b10d0a9a",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/COMPLETE.json": "fea0dc5bf87cac644aa95693d6c431b0c6dd0b9c4e2354b26e3728d2146ff226",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/sac_final.zip": "732b70b491f9fc18592387abd0f90dda2124f2500f5bab9798d72e24ff4012b6",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/vecnormalize_train_only.pkl": "069db8b74dcd94171a73f17d3de9253db25bcae6ccce5be06a47debad0d352c2",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/transition_summary.json": "8438d52df07c7853a66399c7f273a8aa786bee8ef3b870445dc4a2fbe65dfb19",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/execution_contract.json": "ddd6dacb8fd6a3908374d8c26bae5941fd2711f5b63573e7ef26972f20685abb",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/transition_contract.json": "dfcbce510dae5c3397a1599354ea4254814950d3f55ba8040d9cc6119d53def0",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/physics_states.npz": "0f7bad4c62d915ad71f0989e8410e2595fe3991602125186494b37ae06bef01f",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/transitions.jsonl": "273c8473d980eab8612f5c62e53871f18db1b84bc030cf11b84994e498314e67",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/actor_trace.npz": "515be7de636697618ee5d200486f588acbef7aa25dc1bde1b6fe432fe4b06a64",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/historical_config_audit.json": "fd30f2517f29ade08b562da6bd666f99931cbfea2c3b7b42fed39149aae4672c",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/contact_samples.npz": "5a91feac573e7a3aaa96529ef58b6f24301b72d92217de660650e2fcc08483ed",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/transitions.npz": "a5128453d38408ae09842758ee1af4daf7049cd49b3a879de7ce0006fe79068a",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/rollout.mjb": "9f220b70f721aba1cec9c86d53fc2e2ec748736034a47a8a9c44951684492288",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/rl_episode_command.json": "bbf1031de12ba0e6a33cea51a49ef809c3655c5303b4aff6228be0d556edf886",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/rollout.npz": "a194792591c0d4e27e327f4c14aacbdb062fe7838bcaa1973bbf175b87ac590b",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/runner.log": "9862c1c83e312ca3991fb87c419729c373f83006b86dc85f025bbce035d05651",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/train/zero/episode_00000/rollout.json": "da4eb957ddd62264b8295f7d749517008b511e5a0907bc14c648deefb95e8e45",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/transition_summary.json": "8438d52df07c7853a66399c7f273a8aa786bee8ef3b870445dc4a2fbe65dfb19",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/execution_contract.json": "ddd6dacb8fd6a3908374d8c26bae5941fd2711f5b63573e7ef26972f20685abb",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/transition_contract.json": "dfcbce510dae5c3397a1599354ea4254814950d3f55ba8040d9cc6119d53def0",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/physics_states.npz": "0f7bad4c62d915ad71f0989e8410e2595fe3991602125186494b37ae06bef01f",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/transitions.jsonl": "273c8473d980eab8612f5c62e53871f18db1b84bc030cf11b84994e498314e67",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/actor_trace.npz": "515be7de636697618ee5d200486f588acbef7aa25dc1bde1b6fe432fe4b06a64",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/historical_config_audit.json": "fd30f2517f29ade08b562da6bd666f99931cbfea2c3b7b42fed39149aae4672c",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/contact_samples.npz": "5a91feac573e7a3aaa96529ef58b6f24301b72d92217de660650e2fcc08483ed",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/transitions.npz": "a5128453d38408ae09842758ee1af4daf7049cd49b3a879de7ce0006fe79068a",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/rollout.mjb": "9f220b70f721aba1cec9c86d53fc2e2ec748736034a47a8a9c44951684492288",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/rl_episode_command.json": "4db00fa470369b7e11e8ac6993243c3437049f5e69bae3608037e411c584ad59",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/rollout.npz": "a194792591c0d4e27e327f4c14aacbdb062fe7838bcaa1973bbf175b87ac590b",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/runner.log": "9862c1c83e312ca3991fb87c419729c373f83006b86dc85f025bbce035d05651",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/zero/episode_00000/rollout.json": "990c69e65878eebf6de6c96e32779a13fd593e58471dcc7e10d81f538ff61f10",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/transition_summary.json": "8438d52df07c7853a66399c7f273a8aa786bee8ef3b870445dc4a2fbe65dfb19",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/execution_contract.json": "ddd6dacb8fd6a3908374d8c26bae5941fd2711f5b63573e7ef26972f20685abb",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/transition_contract.json": "538c7ac20df8ce5d53e2fe7f35e99b2f176fc5a584832d8604b71c6b4e95e50f",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/physics_states.npz": "8681937e3c96ed3aeb8e5bcab41193322c254045d667bae36b4fe69d052547b0",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/transitions.jsonl": "90a2744e8771ace5a66cbffc7c4f7a87c4030feb2b3f48ab4e7cde0ba7790caa",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/actor_trace.npz": "f9605b529bd7be217232ccd8cd43c0f175993dbce5b10b190d7403dec3510e4b",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/historical_config_audit.json": "fd30f2517f29ade08b562da6bd666f99931cbfea2c3b7b42fed39149aae4672c",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/contact_samples.npz": "3b5be4e089683e900e965282372a2335a641a8ad2bb5bf9b3b5602d091ab347b",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/transitions.npz": "3a9beabc35c4f8e280b66291b520e09f46b08ba031d7cd07983f389c63bfc9e4",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/rollout.mjb": "dc392f9140024d257abc39ab025857a50c19ef79f8b55c1281bae184b55e63bf",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/rl_episode_command.json": "69ad405ac47d53087b5d03d395cc2cb351cdfb8c7362caa991dbbc1f34abb7a0",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/rollout.npz": "0f2d4e86584d2ce7e4f45ab65bab7ef79680bf104014b91c89cb81305dc0b5c6",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/runner.log": "2014d3b8166e279e739b57a0c56eee6df7ee966df38b15ec860ffd68766ac51c",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1/training/direct7/eval/validation/zero/episode_00000/rollout.json": "a0d21b938ec43944954ce7db830d2697ff3f395f6f3ab015b0185b6517ffa818",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/transition_summary.json": "8438d52df07c7853a66399c7f273a8aa786bee8ef3b870445dc4a2fbe65dfb19",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/execution_contract.json": "ddd6dacb8fd6a3908374d8c26bae5941fd2711f5b63573e7ef26972f20685abb",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/transition_contract.json": "538c7ac20df8ce5d53e2fe7f35e99b2f176fc5a584832d8604b71c6b4e95e50f",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/physics_states.npz": "8681937e3c96ed3aeb8e5bcab41193322c254045d667bae36b4fe69d052547b0",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/transitions.jsonl": "90a2744e8771ace5a66cbffc7c4f7a87c4030feb2b3f48ab4e7cde0ba7790caa",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/actor_trace.npz": "f9605b529bd7be217232ccd8cd43c0f175993dbce5b10b190d7403dec3510e4b",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/historical_config_audit.json": "fd30f2517f29ade08b562da6bd666f99931cbfea2c3b7b42fed39149aae4672c",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/contact_samples.npz": "3b5be4e089683e900e965282372a2335a641a8ad2bb5bf9b3b5602d091ab347b",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/transitions.npz": "3a9beabc35c4f8e280b66291b520e09f46b08ba031d7cd07983f389c63bfc9e4",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/rollout.mjb": "dc392f9140024d257abc39ab025857a50c19ef79f8b55c1281bae184b55e63bf",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/rl_episode_command.json": "e2f809108048b3892bf62eeb0696482c52fb5985ed1db7554a15d1d953c34aa2",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/rollout.npz": "0f2d4e86584d2ce7e4f45ab65bab7ef79680bf104014b91c89cb81305dc0b5c6",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/runner.log": "2014d3b8166e279e739b57a0c56eee6df7ee966df38b15ec860ffd68766ac51c",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/zero/episode_00000/rollout.json": "e4b8913d908829794ebe96dddb6d69e42f469eda4cad5e8f4c21a4b9c53b0c0b",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/sac/episode_00000/transitions.npz": "c2b4e96423d6a0ed6f72b34e00c7135008fc360046d6cc15ec76d1075ef2a1f6",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/sac/episode_00000/actor_trace.npz": "25ae06cd79339b78f56f01c3455c85a33cb1d2647df48b010e58bd5ccee0a619",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/sac/episode_00000/transition_contract.json": "dfcbce510dae5c3397a1599354ea4254814950d3f55ba8040d9cc6119d53def0",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/sac/episode_00000/rollout.json": "16de772e04cff381c416beb19be0e7847ca213d1e6540c108e9771644cd16b40",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/train/sac/episode_00000/rollout.mjb": "9f220b70f721aba1cec9c86d53fc2e2ec748736034a47a8a9c44951684492288",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/sac/episode_00000/transitions.npz": "873a92b12a4115e756df3f8d7d8afa48229b20554af7e405cd1b10a9f7041ade",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/sac/episode_00000/actor_trace.npz": "4698686f4592a56b0167800dea14779c5acd3d2da7200426bf4c6f39c3929448",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/sac/episode_00000/transition_contract.json": "538c7ac20df8ce5d53e2fe7f35e99b2f176fc5a584832d8604b71c6b4e95e50f",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/sac/episode_00000/rollout.json": "2b1ab211f3a9ec5e255066b70b70d86a6e13506524f8fdaed7da4b6168c53b46",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/canonical48_sac_20260925_r1/training/online_only/eval/validation/sac/episode_00000/rollout.mjb": "dc392f9140024d257abc39ab025857a50c19ef79f8b55c1281bae184b55e63bf"
+  },
+  "device": "cuda",
+  "same_device": true,
+  "normalization_frozen": true,
+  "limitation": "Policy input replay only; no SAC deployment adapter or new physical trajectory is claimed. Fixed proof fallback, when used, does not invent future learned-policy transitions."
+}

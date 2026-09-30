@@ -1,0 +1,29 @@
+# 三训练seed同六fixture部署与聚合：预声明
+
+本协议在新增部署前固定。旧训练seed20260923的18条结果绑定既有`PAIRED_SIX_FIXTURE_RESULTS_20260924.json`，保留全部失败，不重新选择模型。新增训练seed固定20260924、20260925，每seed部署parameter6和direct7最终8192步模型，逐一执行原9400–9405六fixture，共24条learned评估。训练同一fixture、不同初始化/采样，不称多场景训练；不把18个相关fixture回合当18个独立训练seed。
+
+## 名义对照复用与25条执行顺序
+
+全部训练manifest的完整nominal options、原163份执行源、资产、运行时、fixture和基础协议必须相同；新165份训练Python逐字节保留，部署文件只在独立新快照增加。先用seed20260924的parameter6 manifest运行唯一额外nominal_train_vmc/9400，持续zero6，不运行actor。与旧nominal9400比较全部rollout/物理状态/接触/参数轨迹及50µs物理raw逐值精确相等、JSON动力学字段与MJB一致。只允许原源码明确为set的四个contact集合排序，以及实际输出路径差异。不同训练checkpoint/normalizer的metadata属于来源标签，不要求它们相等；nominal options必须相等。
+
+该parity通过后复用旧nominal六条，不能将一次parity计作第七个fixture，也不能将同一六条重复计成三次独立nominal训练seed。失败则停止新launch并保留证据，绝不静默增加其它nominal或重试到通过。随后先运行四个新模型的9400，全部执行/对齐检查通过后执行余下20条。task/gate失败不阻止后续fixture；执行错误、错配、非有限数据或来源漂移阻止新launch，已启动任务保留。所有新learned回合（包括真实安全短回合）进入其分母6。
+
+## 开跑前置条件
+
+每个run必须同时具备COMPLETE且无FAILED、固定8192步/384更新最终zip显式seed匹配、独立全8192 transition/SB3 float32奖励审计、四项最终eval审计、train/validation零策略与旧同模式zero完整600帧及MJB精确parity，以及冻结最终模型在部署device上600帧无仿真动作回放。安全短eval本身保留，回放可按事前规则使用已绑定的原完整proof600帧作输入；不得伪装为新成功eval或更换模型。所有审计及其输入hash在prepare和执行前重新核对。
+
+使用独立request JSON列出4run及全部证据路径、原两run、旧18报告/归档、原六fixture命令。prepare只生成计划，不启动仿真。旧18报告SHA256固定为`c417038bcc43c79ed52925cb942a7993b2eeb56595a9b731f92167adaf44b011`；来源审计及后续单次nominalparity不能改写旧结果。实际启动必须由主协调agent审核具体plan hash并给出launch，绝不因代码/协议完成自动启动。
+
+执行时使用原loader/action接口、50µs测量和原task/panel/strict门。默认最多2worker，每worker单线程；由协调agent确认全服可用slot，所有并行仿真合计不超过4。每条超时1800s；不得覆盖既有目录、改旧快照、干预其它正在运行的进程或选择性重试。重复执行只能在保留失败并另立修订协议后考虑。
+
+## 统计与失败解释
+
+新24条重新读取全部50µs raw；旧seed20260923的12条learned和旧nominal六条只复用绑定hash的已审计报告，不声称所有42条都在本次重新读取raw。共有42条独特性能记录，额外nominal9400仅作parity，合计43条独特仿真记录。若同时列出direct7的旧zero7六条，则另加6条复用对照，不能混入这42条计数。共享nominal六条不复制成三次独立训练结果。
+
+主三指标仍为当前状态机waypoint的3D位置RMSE、实际qfrc_actuator关节峰矩、物理子步末端线速度峰。每个训练seed先对六fixture求回合指标均值和task/strict率，再对三个seed的均值报告平均、总体标准差、最小/最大值及全部seed值；同时保留每seed六fixture的原始值、阶段、触杆、失败项。三个seed只是该小预算配方的重复，不足以宣称收敛或可靠泛化；不进行显著性排名。旧ESN/MLP各只有单个冻结模型，不赋予三seed标准差；六fixture离散程度与RL三训练seed离散程度必须分别标注。
+
+学习收益以每seed parameter6减固定训练nominal的配对差值、direct7减旧zero7为准。nominal来自训练完整options，不是旧fixture VMC。stage3、实际触杆时长、抬升和末段误差必须与主指标共报；waypoint在策略间推进时间不同，不能把低RMSE直接称更好任务完成。辅助共同目标`[0.54,0,0.785]m`末帧距离与绝对(18,24]s末6秒150帧RMSE分别报告，严禁混合两种窗口；短回合末6秒量留空。原0.2mm门和所有失败不变。
+
+## 工具与交付
+
+`prepare_paired_multiseed_deployment_20260925.py`核证据并冻结25job计划；`run_paired_multiseed_deployment_20260925.py`仅在显式launch下执行，复用旧job审计/测量及有界调度；`report_paired_multiseed_deployment_20260925.py`独立读归档并按训练seed聚合。测试只使用合成数据或只读旧证据，不启动任何物理仿真。运行记录与实际结果另写新文件，本协议不表示已开跑或已完成。

@@ -1,0 +1,878 @@
+{
+  "scene": {
+    "kind": "push",
+    "yaw": 0.0,
+    "shift": 0.0,
+    "along": 0.0,
+    "width": 0.05,
+    "cup_mass": 0.3,
+    "ball_speed": 1.5,
+    "ball_mass": 0.2,
+    "ball_angle": 0.0,
+    "ball_height_offset": 0.0,
+    "ball_vertical_speed": 1.3,
+    "ball_target_x": 0.54,
+    "ball_target_y": 0.0,
+    "ball_target_z": 0.62,
+    "ball_radius": 0.06,
+    "ball_shell": 0.005,
+    "ball_contact_time": 0.008,
+    "ball_contact_damping": 0.75,
+    "push_angle": -0.15,
+    "push_height": 0.65,
+    "push_stroke": 0.17,
+    "push_target_x": 0.57,
+    "push_target_y": 0.0,
+    "corner_height": 0.7,
+    "corner_friction": 0.2,
+    "payload_mass": 0.1,
+    "seed": 800
+  },
+  "controller": "vmc",
+  "success": false,
+  "grasp_lift_success": true,
+  "cup_safe": true,
+  "cup_stable": true,
+  "cup_support_contact": false,
+  "real_contact": true,
+  "invalid_physics": false,
+  "upstream_contact": false,
+  "contact": {
+    "peak_force_n": 217.10804090146195,
+    "all_external_peak_force_n": 217.10804090146195,
+    "peak_body_resultant_n": 217.10804090146195,
+    "max_penetration_m": 0.00015056827481702424,
+    "all_external_max_penetration_m": 0.00015056827481702424,
+    "grasp_penetration_m": 4.937243113779153e-05,
+    "duration_s": 0.37974999999996634,
+    "first_s": 0.5053999999999526,
+    "last_s": 24.00000000023495,
+    "first_stage": 0,
+    "first_stage_name": "REACH / CONTACT RESPONSE",
+    "first_payload_held": false,
+    "contact_path_direction": [
+      0.0,
+      0.0,
+      -1.0
+    ],
+    "pairs": [
+      [
+        "push_back_guard",
+        "hand_collision"
+      ],
+      [
+        "push_rod_geom",
+        "69"
+      ],
+      [
+        "push_rod_geom",
+        "fr3_link7_collision"
+      ]
+    ],
+    "robot_geoms": [
+      "hand_collision",
+      "fr3_link7_collision",
+      "69"
+    ],
+    "robot_bodies": [
+      "left_finger",
+      "fr3_link7",
+      "hand"
+    ],
+    "force": [
+      -4.213734842485916,
+      -4.707927834349038,
+      0.32482688163228196
+    ],
+    "impulse_vector_ns": [
+      -1.4421696818254912,
+      -1.354384746103272,
+      -1.1562498799570788
+    ],
+    "contact_impulse_ns": 5.31582569033977,
+    "ball_core_min_distance_m": null,
+    "other_contacts": []
+  },
+  "events": [
+    {
+      "t": 1.280000000000489,
+      "stage": 1
+    },
+    {
+      "t": 3.279999999999025,
+      "stage": 2
+    },
+    {
+      "t": 3.9199999999975335,
+      "stage": 3
+    }
+  ],
+  "requested_event_stage": "approach",
+  "requested_event_stage_index": 0,
+  "fixture_triggered": true,
+  "fixture_trigger_time_s": 0.0,
+  "ball_launched": false,
+  "ball_launch_state": null,
+  "final_stage": 3,
+  "endpoint_error_m": 0.05238729646802855,
+  "lift_m": 0.20613710380333633,
+  "cup_shift_m": 0.0,
+  "cup_tilt_deg": 0.0,
+  "impact_metrics": {
+    "max_lateral_displacement_m": 0.023590159765420934,
+    "max_total_displacement_m": 0.027692771118205943,
+    "recovery_time_s": null,
+    "contact_impulse_ns": 2.29153337670535,
+    "accumulated_contact_impulse_ns": 5.31582569033977
+  },
+  "push_metrics": {
+    "contact_sample_fraction": 0.020512820512820513,
+    "normal_yield_m": 0.015042037983587277,
+    "tangential_travel_m": 0.144309693033737,
+    "path_progress_m": 0.09205093168330714,
+    "stage_advanced_during_contact": true,
+    "error_reduction_during_contact_m": 0.23052005787510996
+  },
+  "payload_top_support": false,
+  "peak_torque_nm": 41.21818452865614,
+  "speed_p95_mps": 0.058910171209724915,
+  "duration_s": 24.00000000023495,
+  "arguments": {
+    "scene": "push",
+    "output": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/canonical48_ppo_diagnosis_20260923_r1/vmc_control/rollout",
+    "menagerie": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/canonical_rl_assets_20260923/menagerie",
+    "model": null,
+    "duration": 24.0,
+    "nominal_speed": 0.08,
+    "mixture": 0.0,
+    "seed": 800,
+    "yaw": 0.0,
+    "shift": 0.0,
+    "width": 0.05,
+    "along": null,
+    "cup_mass": 0.3,
+    "ball_mass": 0.2,
+    "ball_speed": 1.5,
+    "ball_angle": 0.0,
+    "ball_height_offset": 0.0,
+    "ball_vertical_speed": 1.3,
+    "ball_radius": 0.06,
+    "ball_shell": 0.005,
+    "ball_contact_time": 0.008,
+    "ball_contact_damping": 0.75,
+    "ball_target_x": null,
+    "ball_target_y": null,
+    "ball_target_z": null,
+    "push_hold": 1000000.0,
+    "push_angle": -0.15,
+    "push_height": 0.65,
+    "push_force": 8.0,
+    "push_target_x": 0.57,
+    "push_target_y": null,
+    "push_stroke": 0.17,
+    "push_press": 0.5,
+    "push_retract": 1.0,
+    "corner_height": 0.7,
+    "corner_friction": 0.2,
+    "payload_mass": 0.1,
+    "event_stage": "approach",
+    "event_delay": 0.0,
+    "stiffness": 200.0,
+    "tangent_speed": 0.0,
+    "damping": 20.0,
+    "force_on": 0.5,
+    "contact_tau": 0.12,
+    "release_tau": 0.45,
+    "memory_tau": 1.2,
+    "teacher_force_source": "estimated",
+    "teacher_profile": "memory",
+    "force_target": 1.0,
+    "normal_gain": 0.015,
+    "dt": 0.0001,
+    "settle_only": false,
+    "render": false
+  },
+  "teacher_config": {
+    "stiffness": 200.0,
+    "damping": 20.0,
+    "force_on": 0.5,
+    "tangent_speed": 0.0,
+    "contact_tau": 0.12,
+    "release_tau": 0.45,
+    "memory_tau": 1.2,
+    "profile": "memory",
+    "force_target": 1.0,
+    "normal_gain": 0.015
+  },
+  "contract": "proprio48_action7_6d_v1",
+  "cup_initial_position": null,
+  "simulation_timestep_s": 5e-05,
+  "student_mixture": 0.0,
+  "teacher_called": true,
+  "inputs": "q7,qdot7,nominal_twist6,pose_error6,twist_error6,estimated_joint_load7,estimated_wrench6,commanded_path_direction3",
+  "source_sha256": {
+    "run_primitive_teacher_v7_20260917.py": "c451135eb4d2bd799bf6a587895d1a2df6a749f8f2a91e41cb45032d7ff0258b",
+    "primitive_contact_scene_v7_20260917.py": "5abe637940618c687c12c37d72b5beebcc1253ff89b7df2244cc8d502a5d5517",
+    "contact_memory_vmc_20260916.py": "b9f3e8003a43d772d65289ccb21a52a8b73d20d150e4b0ef8060532abbecdd89",
+    "run_panel_push_20260920.py": "851fd1639a68f0ba4e95901adb1c485f65471ba614328d6318eac43b5518f19d",
+    "run_vmc_6d_constrained_push_20260918.py": "e668dd8cc5942a391785f39ba36c8b249438bb58967159b34999b6b395bfb0c5",
+    "workstation_scene_20260920.py": "c2224a793cb423da362982b5724a77c651b9f50d75631e5498a3776b0ce720b4"
+  },
+  "panel_audit": {
+    "native_ccd_enabled": true,
+    "initial_overlap": [],
+    "physical_panels": [
+      {
+        "name": "push_back_guard",
+        "position_m": [
+          0.4925,
+          -0.1175,
+          0.63
+        ],
+        "half_size_m": [
+          0.007500000000000007,
+          0.032499999999999994,
+          0.07999999999999996
+        ]
+      },
+      {
+        "name": "push_front_guard",
+        "position_m": [
+          0.6025,
+          -0.1175,
+          0.63
+        ],
+        "half_size_m": [
+          0.007500000000000007,
+          0.032499999999999994,
+          0.07999999999999996
+        ]
+      }
+    ],
+    "offline_translation_probes": [
+      {
+        "dx_m": -0.06,
+        "dz_m": 0.0,
+        "ik_error_m": 1.6518226508077684e-08,
+        "blocked": true,
+        "pairs": [
+          {
+            "pair": [
+              "push_back_guard",
+              "hand_collision"
+            ],
+            "depth_m": 0.01425302136342219
+          }
+        ]
+      },
+      {
+        "dx_m": 0.0,
+        "dz_m": 0.0,
+        "ik_error_m": 0.0,
+        "blocked": false,
+        "pairs": []
+      },
+      {
+        "dx_m": 0.06,
+        "dz_m": 0.0,
+        "ik_error_m": 3.432996149793953e-08,
+        "blocked": true,
+        "pairs": [
+          {
+            "pair": [
+              "push_front_guard",
+              "hand_collision"
+            ],
+            "depth_m": 0.01898969186630281
+          }
+        ]
+      },
+      {
+        "dx_m": -0.06,
+        "dz_m": -0.12,
+        "ik_error_m": 3.325020393142112e-08,
+        "blocked": true,
+        "pairs": [
+          {
+            "pair": [
+              "push_back_guard",
+              "hand_collision"
+            ],
+            "depth_m": 0.006159415004445423
+          },
+          {
+            "pair": [
+              "ws_push_back_guard_bracket",
+              "hand_collision"
+            ],
+            "depth_m": 0.009985234347904328
+          }
+        ]
+      },
+      {
+        "dx_m": 0.0,
+        "dz_m": -0.12,
+        "ik_error_m": 2.4037805707520927e-08,
+        "blocked": false,
+        "pairs": []
+      },
+      {
+        "dx_m": 0.06,
+        "dz_m": -0.12,
+        "ik_error_m": 1.551503087589138e-08,
+        "blocked": true,
+        "pairs": [
+          {
+            "pair": [
+              "push_front_guard",
+              "hand_collision"
+            ],
+            "depth_m": 0.014046208167835013
+          },
+          {
+            "pair": [
+              "ws_push_front_guard_bracket",
+              "hand_collision"
+            ],
+            "depth_m": 0.017952730895442612
+          }
+        ]
+      },
+      {
+        "dx_m": -0.06,
+        "dz_m": 0.12,
+        "ik_error_m": 4.337342742289473e-08,
+        "blocked": false,
+        "pairs": []
+      },
+      {
+        "dx_m": 0.0,
+        "dz_m": 0.12,
+        "ik_error_m": 3.065510355614439e-07,
+        "blocked": false,
+        "pairs": []
+      },
+      {
+        "dx_m": 0.06,
+        "dz_m": 0.12,
+        "ik_error_m": 0.013998169343373605,
+        "blocked": true,
+        "pairs": [
+          {
+            "pair": [
+              "push_front_guard",
+              "hand_collision"
+            ],
+            "depth_m": 0.0061775814667460885
+          },
+          {
+            "pair": [
+              "push_front_guard",
+              "hand_collision"
+            ],
+            "depth_m": 0.0061775814667460885
+          }
+        ]
+      }
+    ],
+    "contacts": {
+      "office_floor": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "office_robot_pedestal": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "office_desk_top": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "office_leg_0.34_-0.34": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "office_leg_0.34_0.34": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "office_leg_0.82_-0.34": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "office_leg_0.82_0.34": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "push_back_guard": {
+        "first_s": 7.601549999988953,
+        "last_s": 10.740349999981639,
+        "duration_s": 0.03670000000000054,
+        "peak_point_force_n": 61.29641505313664,
+        "max_penetration_m": 2.697639138211438e-06,
+        "bodies": [
+          "hand"
+        ],
+        "peak_resultant_force_n": 61.29641505313666,
+        "peak_sum_point_force_n": 61.29641505313664,
+        "resultant_impulse_ns": 0.8554907640727148,
+        "sum_point_impulse_ns": 0.8554907640727148
+      },
+      "push_front_guard": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_push_back_guard_foot": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_push_back_guard_post": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_push_back_guard_bracket": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_push_front_guard_foot": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_push_front_guard_post": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_push_front_guard_bracket": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_tray_y_-1": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_tray_x_-1": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_tray_y_1": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_tray_x_1": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_actuator_floor_base": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_actuator_column": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_motor_housing": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_linear_rail_-1": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_linear_rail_1": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "target_object_geom": {
+        "first_s": 3.3346999999988975,
+        "last_s": 24.00000000023495,
+        "duration_s": 20.665350000124253,
+        "peak_point_force_n": 74.12654192323869,
+        "max_penetration_m": 4.937243113779153e-05,
+        "bodies": [
+          "left_finger",
+          "right_finger"
+        ],
+        "peak_resultant_force_n": 74.12654192323869,
+        "peak_sum_point_force_n": 139.78828325967623,
+        "resultant_impulse_ns": 21.495396276599394,
+        "sum_point_impulse_ns": 412.1883027453259
+      },
+      "push_rod_geom": {
+        "first_s": 0.5053999999999526,
+        "last_s": 24.00000000023495,
+        "duration_s": 0.3430499999999704,
+        "peak_point_force_n": 217.10804090146192,
+        "max_penetration_m": 0.00015056827481702424,
+        "bodies": [
+          "fr3_link7",
+          "left_finger"
+        ],
+        "peak_resultant_force_n": 217.10804090146195,
+        "peak_sum_point_force_n": 217.10804090146192,
+        "resultant_impulse_ns": 4.46033492626705,
+        "sum_point_impulse_ns": 4.46033492626705
+      },
+      "ws_moving_carriage": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_carriage_coupler": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "moving_obstacle_geom": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      }
+    },
+    "contact_names": [
+      "office_floor",
+      "office_robot_pedestal",
+      "office_desk_top",
+      "office_leg_0.34_-0.34",
+      "office_leg_0.34_0.34",
+      "office_leg_0.82_-0.34",
+      "office_leg_0.82_0.34",
+      "push_back_guard",
+      "push_front_guard",
+      "ws_push_back_guard_foot",
+      "ws_push_back_guard_post",
+      "ws_push_back_guard_bracket",
+      "ws_push_front_guard_foot",
+      "ws_push_front_guard_post",
+      "ws_push_front_guard_bracket",
+      "ws_tray_y_-1",
+      "ws_tray_x_-1",
+      "ws_tray_y_1",
+      "ws_tray_x_1",
+      "ws_actuator_floor_base",
+      "ws_actuator_column",
+      "ws_motor_housing",
+      "ws_linear_rail_-1",
+      "ws_linear_rail_1",
+      "target_object_geom",
+      "push_rod_geom",
+      "ws_moving_carriage",
+      "ws_carriage_coupler",
+      "moving_obstacle_geom"
+    ],
+    "nq": 18,
+    "nv": 17,
+    "nu": 10,
+    "final_rod_position_m": 0.16973929711324737,
+    "final_rod_command_m": 0.17,
+    "final_hand_position_m": [
+      0.5662068828241036,
+      -0.0007000348090956941,
+      0.7376546535886337
+    ],
+    "final_bilateral_grasp": true,
+    "final_rod_gap_m": -2.4091145750923914e-08
+  },
+  "accepted_panel_demo": false,
+  "accepted_unified_teacher": false,
+  "controller_6d_config": {
+    "stiffness_6d": [
+      826.3543109314946,
+      103.95241116926171,
+      996.1327818830155,
+      7.670229445929784,
+      23.58674924076879,
+      31.4543015142091
+    ],
+    "damping_6d": [
+      28.286850766151787,
+      17.714410285367478,
+      52.0862724692756,
+      5.451689945792646,
+      3.276378909823966,
+      3.791191396056319
+    ],
+    "mass_6d": [
+      0.5426011692056452,
+      0.5236593399096259,
+      0.5840080820284139,
+      0.04426561907347963,
+      0.062002550208292186,
+      0.09067414955448634
+    ],
+    "wrench_limit_6d": [
+      25.820059557470064,
+      42.924704789097746,
+      58.839682242845875,
+      4.242493519875442,
+      3.567537425284767,
+      3.5674394880367957
+    ],
+    "deadband_6d": [
+      0.145854045621633,
+      0.11381351859393705,
+      0.1624795745273216,
+      0.025006233861232536,
+      0.02014404260922069,
+      0.03598334905058774
+    ],
+    "velocity_limit_6d": [
+      0.0976041319066542,
+      0.11731685278040867,
+      0.13412231810433328,
+      0.4952824086905574,
+      0.6087627631560645,
+      1.0
+    ],
+    "offset_limit_6d": [
+      0.18,
+      0.18,
+      0.18,
+      0.35,
+      0.35,
+      0.35
+    ],
+    "action_limit_6d": [
+      0.16,
+      0.16,
+      0.2,
+      0.6,
+      0.6,
+      0.6
+    ],
+    "offset_tracking_gain_6d": 1.0087882886603798,
+    "filter_tau": 0.013063438684191998,
+    "axis_rotation_rpy": [
+      -0.008703933255895968,
+      0.020610784083093803,
+      -0.21182689182342707
+    ]
+  },
+  "experiment_contract": {
+    "reference": "unified_6d_vmc_teacher_20260921",
+    "observation": "48D proprioception including encoder-derived 6D wrench",
+    "persistent_rod": true,
+    "lift_goal_z_m": 0.785,
+    "lift_nominal_scale": 0.8,
+    "panel_config": {
+      "slot_upper_y": 0.15,
+      "half_y": 0.17,
+      "back_inner_x": 0.5,
+      "front_inner_x": 0.595,
+      "slot_lower_y": -0.085,
+      "layout": "raised_hand_rim",
+      "pad_bottom_z": 0.55,
+      "pad_top_z": 0.71,
+      "pad_lower_y": -0.15,
+      "pad_upper_y": -0.085,
+      "pad_thickness": 0.015,
+      "native_ccd": true,
+      "workstation": true,
+      "rod_height_m": 0.65
+    }
+  }
+}

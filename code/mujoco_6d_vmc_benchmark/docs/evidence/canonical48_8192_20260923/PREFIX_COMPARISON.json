@@ -1,0 +1,67 @@
+{
+  "steps": 640,
+  "scope": "train observations/actions only; diagnostic, no model selection",
+  "atol": 1e-06,
+  "rtol": 1e-06,
+  "comparisons": {
+    "observation": {
+      "shape": [
+        640,
+        48
+      ],
+      "bit_equal": true,
+      "within_tolerance": true,
+      "max_abs_error": 0.0,
+      "rms_error": 0.0
+    },
+    "action": {
+      "shape": [
+        640,
+        7
+      ],
+      "bit_equal": true,
+      "within_tolerance": true,
+      "max_abs_error": 0.0,
+      "rms_error": 0.0
+    },
+    "phase_reward_metadata": {
+      "shape": [
+        640
+      ],
+      "bit_equal": true,
+      "within_tolerance": true,
+      "max_abs_error": 0.0,
+      "rms_error": 0.0
+    }
+  },
+  "all_within_tolerance": true,
+  "same_training_parameters_except_budget_checkpoint_logging": true,
+  "old_files": [
+    {
+      "file": "outputs/canonical48_ppo_pilot_20260923_r1/train/episode_00000/actor_trace.npz",
+      "sha256": "d22c26bf33d69982b260601c8902325470501d4d002bf158e848a603e666e9bc",
+      "samples_used": 600
+    },
+    {
+      "file": "outputs/canonical48_ppo_pilot_20260923_r1/train/episode_00001/actor_trace.npz",
+      "sha256": "b45a319e228e6341d0f05d55d8262597e49c190da6d122fe0aebd50682ebfa90",
+      "samples_used": 40
+    }
+  ],
+  "new_files": [
+    {
+      "file": "outputs/canonical48_ppo_8192_20260923_r2/train/episode_00000/actor_trace.npz",
+      "sha256": "d22c26bf33d69982b260601c8902325470501d4d002bf158e848a603e666e9bc",
+      "samples_used": 600
+    },
+    {
+      "file": "outputs/canonical48_ppo_8192_20260923_r2/train/episode_00001/actor_trace.npz",
+      "sha256": "c55052d61bd89237697d6746a54e01a6d3ff338ec347ed1e3bfdbffbbc5c327a",
+      "samples_used": 40
+    }
+  ],
+  "bridge_hashes": [
+    "6951e28a8740221796142f686b3df056671462567ba553784198b1ae7380ce38",
+    "6951e28a8740221796142f686b3df056671462567ba553784198b1ae7380ce38"
+  ]
+}

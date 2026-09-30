@@ -1,0 +1,27 @@
+{
+  "scope": "All 8192 train transitions from seed20260923, plus train fixture zero/PPO final eval only; descriptive association, no model selection",
+  "parameter6": {
+    "transitions": 8192,
+    "reward_sum": 4.277303137216041,
+    "reward_mean": 0.0005221317306171925,
+    "stage_counts": {"0": 456, "1": 737, "2": 217, "3": 6782},
+    "execution_action7": {"slowdown_mean": 0.08638822282963232, "slowdown_p95": 0.23898829194268162, "slowdown_max": 0.39869818893493597, "yield_abs_mean": 0.060105846849729354, "yield_abs_p95": 0.295219946813501, "yield_saturation_fraction": 0.0},
+    "log_scale_min": [-0.451184654323344, -0.4123178861224943, -0.37989798540175845, -0.41633683823812917, -0.446905941653533, -0.3333677923053021],
+    "log_scale_max": [0.47011663281860816, 0.47685979345725926, 0.3622482238543378, 0.4317918341180585, 0.4324226572746427, 0.31151991911475774],
+    "log_scale_boundary_fraction": [0,0,0,0,0,0]
+  },
+  "direct7": {
+    "transitions": 8192,
+    "reward_sum": -23.264878458430847,
+    "reward_mean": -0.0028399509836951717,
+    "stage_counts": {"0": 293, "1": 3148, "2": 626, "3": 4125},
+    "execution_action7": {"slowdown_mean": 0.06542830173387415, "slowdown_p95": 0.2859852120280265, "slowdown_max": 0.7140666842460632, "yield_abs_mean": 0.1466132246079533, "yield_abs_p95": 0.36954949647188184, "yield_saturation_fraction": 0.0}
+  },
+  "train_eval": {
+    "parameter6/zero": {"slowdown_mean": 0.06156718301582198, "slowdown_max": 0.35051056618165305, "yield_abs_mean": 0.04157333672925353, "yield_abs_p95": 0.24337455172603661, "yield_saturation_fraction": 0.0},
+    "parameter6/ppo": {"slowdown_mean": 0.025302210091343084, "slowdown_max": 0.3480181056715124, "yield_abs_mean": 0.016373661540541658, "yield_abs_p95": 0.09366688466418396, "yield_saturation_fraction": 0.0, "task_success": true, "development_gate": true, "endpoint_mm": 4.799, "force_peak_n": 217.108},
+    "direct7/zero": {"slowdown_mean": 0.0, "slowdown_max": 0.0, "yield_abs_mean": 0.0, "yield_saturation_fraction": 0.0},
+    "direct7/ppo": {"slowdown_mean": 0.01061751628605028, "slowdown_max": 0.11479386687278748, "yield_abs_mean": 0.13722090015061744, "yield_abs_p95": 0.3637066587805748, "yield_saturation_fraction": 0.0, "task_success": false, "development_gate": false, "endpoint_mm": 192.173, "force_peak_n": 524.452}
+  },
+  "limitations": ["No Gaussian preclip actions are observable from env logs.", "No validation/test data used for selection or diagnosis.", "Associations do not establish causality or generalization."]
+}

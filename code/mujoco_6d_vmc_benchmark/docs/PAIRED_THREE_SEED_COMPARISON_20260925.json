@@ -1,0 +1,904 @@
+{
+  "scope": "All three predeclared training seeds and both modes; canonical train/validation fixtures only, not the six-fixture deployment matrix",
+  "seeds": [
+    20260923,
+    20260924,
+    20260925
+  ],
+  "training_runs": 6,
+  "total_online_training_steps": 49152,
+  "same_original_execution_source_files": 163,
+  "same_fixture_and_assets": true,
+  "same_base_protocol_sha256": "d14cf2545489475f41ea407235cf0e21be6b109120d8506c2c10ace38f6174d3",
+  "same_optimizer_options_except_seed": true,
+  "rows": [
+    {
+      "seed": 20260923,
+      "mode": "parameter6",
+      "training": {
+        "episodes": 14,
+        "complete_episodes": 13,
+        "complete_task_success": 7,
+        "complete_development_gate": 7,
+        "complete_step_counts": [
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600
+        ],
+        "partial_step_counts": [
+          392
+        ],
+        "complete_and_partial_rewards_audited": 8192,
+        "sb3_received_rewards": {
+          "transitions": 8192,
+          "all_float32_conversions_exact": true,
+          "max_float64_to_float32_error": 2.116589747913622e-07
+        }
+      },
+      "evaluations": [
+        {
+          "condition": "train/zero",
+          "task_success": true,
+          "development_gate": true,
+          "final_stage": 3,
+          "endpoint_error_m": 0.005639282823478432,
+          "lift_m": 0.24298859270431744,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "train/ppo",
+          "task_success": true,
+          "development_gate": true,
+          "final_stage": 3,
+          "endpoint_error_m": 0.004799358571697455,
+          "lift_m": 0.2438711776068993,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "validation/zero",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.11172443423476672,
+          "lift_m": 0.12955030978830734,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "validation/ppo",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.107095400945498,
+          "lift_m": 0.13512347086185833,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        }
+      ],
+      "final_model_metadata": {
+        "seed": 20260923,
+        "steps": 8192,
+        "updates": 384
+      },
+      "report_provenance": {
+        "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_gym_20260924/parameter6_final_audit.json",
+        "sha256": "e8b289eb01c6b2cf20397be44438a652c918d3c8cd4a6f8f1108d38be8dca575"
+      },
+      "flat_audit_provenance": {
+        "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_gym_20260924/parameter6_training_transition_audit.json",
+        "sha256": "4fc389bc8b6c456a4ec7210b90ef2094af99127736ef1c8847775c3c611d1894"
+      },
+      "final_artifacts": {
+        "ppo_final.zip": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/training/parameter6/ppo_final.zip",
+          "sha256": "b572e3a20e0a7955ee9bf014f48579aa2c07507136c7ba8bf40a482a3306e33f"
+        },
+        "vecnormalize_train_only.pkl": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/training/parameter6/vecnormalize_train_only.pkl",
+          "sha256": "aee95256242c170b18b65c7998679d462121df61602fb90dfd592e362094a715"
+        },
+        "manifest.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/training/parameter6/manifest.json",
+          "sha256": "6c0ead5219eefd0e1a1381117b7c0afef08d6dd4752b587803fd28d2fe6a0a9c"
+        },
+        "COMPLETE.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/training/parameter6/COMPLETE.json",
+          "sha256": "df88d0bb297b3fe91ddd079c902b2c949caba6cab260167f533b8f5b7aaac728"
+        },
+        "evaluation.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/training/parameter6/evaluation.json",
+          "sha256": "bf9643640594666e35eca071954287c719015fdf269f42031d62dff2d092aaa6"
+        },
+        "model_architecture.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/training/parameter6/model_architecture.json",
+          "sha256": "d547e75cb5fe858dddfb2456d7125c44b0a568d1266a05d8c063c9e341ea0806"
+        }
+      }
+    },
+    {
+      "seed": 20260923,
+      "mode": "direct7",
+      "training": {
+        "episodes": 14,
+        "complete_episodes": 13,
+        "complete_task_success": 0,
+        "complete_development_gate": 0,
+        "complete_step_counts": [
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600
+        ],
+        "partial_step_counts": [
+          392
+        ],
+        "complete_and_partial_rewards_audited": 8192,
+        "sb3_received_rewards": {
+          "transitions": 8192,
+          "all_float32_conversions_exact": true,
+          "max_float64_to_float32_error": 2.4342508897490234e-08
+        }
+      },
+      "evaluations": [
+        {
+          "condition": "train/zero",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.18766951711683086,
+          "lift_m": 0.06032409457621163,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "train/ppo",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.192172885423663,
+          "lift_m": 0.05919570151188214,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "validation/zero",
+          "task_success": true,
+          "development_gate": true,
+          "final_stage": 3,
+          "endpoint_error_m": 0.007068123482073241,
+          "lift_m": 0.22849964702677666,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "validation/ppo",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.017185000666258915,
+          "lift_m": 0.23569436160976903,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        }
+      ],
+      "final_model_metadata": {
+        "seed": 20260923,
+        "steps": 8192,
+        "updates": 384
+      },
+      "report_provenance": {
+        "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_gym_20260924/direct7_final_audit.json",
+        "sha256": "0b31acdeb77b0585e80bb3c76193fbce95259e2833470dc9fc8a8fc08da3176d"
+      },
+      "flat_audit_provenance": {
+        "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_gym_20260924/direct7_training_transition_audit.json",
+        "sha256": "cdc544ef83fdb2972c3ec70ee19ab0b7c3baf48f20b9961885f3d62706ab8219"
+      },
+      "final_artifacts": {
+        "ppo_final.zip": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/training/direct7/ppo_final.zip",
+          "sha256": "07b1558bd19e37be6d3d112bacee8fb721b365785fadbe29e3bb888b024d4197"
+        },
+        "vecnormalize_train_only.pkl": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/training/direct7/vecnormalize_train_only.pkl",
+          "sha256": "f2fd9398fa52c81821397efdc4de0eac56edc060815e51dfb040326301b18ef2"
+        },
+        "manifest.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/training/direct7/manifest.json",
+          "sha256": "3cce1ef4981d3431b9cfd7549e6b23992b4f33c2624e9df2852ea5d0b2baa621"
+        },
+        "COMPLETE.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/training/direct7/COMPLETE.json",
+          "sha256": "dc2743aa39ae6cc89f56b5287cf0eddad554aaa276cad8d140928d86149dbcc0"
+        },
+        "evaluation.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/training/direct7/evaluation.json",
+          "sha256": "7f46a82a4f42eff08f5c173f1dd7d802c8189f48313a48a5dc8604a0e2dba212"
+        },
+        "model_architecture.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/training/direct7/model_architecture.json",
+          "sha256": "65c66cabefc1123d557ac225b56fd9aae9da694c37f91fcd9e250cccdfb1daac"
+        }
+      }
+    },
+    {
+      "seed": 20260924,
+      "mode": "parameter6",
+      "training": {
+        "episodes": 14,
+        "complete_episodes": 13,
+        "complete_task_success": 4,
+        "complete_development_gate": 4,
+        "complete_step_counts": [
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600
+        ],
+        "partial_step_counts": [
+          392
+        ],
+        "complete_and_partial_rewards_audited": 8192,
+        "sb3_received_rewards": {
+          "transitions": 8192,
+          "all_float32_conversions_exact": true,
+          "max_float64_to_float32_error": 9.968465164433837e-08
+        }
+      },
+      "evaluations": [
+        {
+          "condition": "train/zero",
+          "task_success": true,
+          "development_gate": true,
+          "final_stage": 3,
+          "endpoint_error_m": 0.005639282823478432,
+          "lift_m": 0.24298859270431744,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "train/ppo",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.07033151235891108,
+          "lift_m": 0.17951222380872672,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "validation/zero",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.11172443423476672,
+          "lift_m": 0.12955030978830734,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "validation/ppo",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.11315841479058615,
+          "lift_m": 0.11881915616004618,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        }
+      ],
+      "final_model_metadata": {
+        "seed": 20260924,
+        "steps": 8192,
+        "updates": 384
+      },
+      "report_provenance": {
+        "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_multiseed_20260924/seed20260924_parameter6_final.json",
+        "sha256": "68db18f6122893fe61e83e0e0e0809496124ad82c359af9cdbd5e5d6007e3f00"
+      },
+      "flat_audit_provenance": {
+        "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_multiseed_20260924/seed20260924_parameter6_transitions.json",
+        "sha256": "ed72a65fb929645a200a59083cbc259ad76442013a4460d396d866aaf4f07ee3"
+      },
+      "final_artifacts": {
+        "ppo_final.zip": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260924/parameter6/ppo_final.zip",
+          "sha256": "1b2dfab72987e94a0afd9e14a495369a9cf730acbf3f3b34954171dcb633ad8e"
+        },
+        "vecnormalize_train_only.pkl": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260924/parameter6/vecnormalize_train_only.pkl",
+          "sha256": "6a238de64004c9e61eceec80cbca6fef5fe7ec169789e786ab87c9548b385ea3"
+        },
+        "manifest.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260924/parameter6/manifest.json",
+          "sha256": "311bfd5d3d69422e62baf3b57081f5b49ba923daeddb9f43ab3bbf28b6ab71cb"
+        },
+        "COMPLETE.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260924/parameter6/COMPLETE.json",
+          "sha256": "23d309d2d4687a15f8b2b96d6c90cafdce7eb4f70da04ef7edbfcd2655fca77d"
+        },
+        "evaluation.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260924/parameter6/evaluation.json",
+          "sha256": "621e105045202008511496a668667a37d467a57539f8d63c560a8eb0789b4587"
+        },
+        "model_architecture.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260924/parameter6/model_architecture.json",
+          "sha256": "d547e75cb5fe858dddfb2456d7125c44b0a568d1266a05d8c063c9e341ea0806"
+        }
+      }
+    },
+    {
+      "seed": 20260924,
+      "mode": "direct7",
+      "training": {
+        "episodes": 14,
+        "complete_episodes": 13,
+        "complete_task_success": 0,
+        "complete_development_gate": 0,
+        "complete_step_counts": [
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600
+        ],
+        "partial_step_counts": [
+          392
+        ],
+        "complete_and_partial_rewards_audited": 8192,
+        "sb3_received_rewards": {
+          "transitions": 8192,
+          "all_float32_conversions_exact": true,
+          "max_float64_to_float32_error": 2.8935716489542074e-08
+        }
+      },
+      "evaluations": [
+        {
+          "condition": "train/zero",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.18766951711683086,
+          "lift_m": 0.06032409457621163,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "train/ppo",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 1,
+          "endpoint_error_m": 0.04487534642176376,
+          "lift_m": -3.9503381443761754e-07,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "validation/zero",
+          "task_success": true,
+          "development_gate": true,
+          "final_stage": 3,
+          "endpoint_error_m": 0.007068123482073241,
+          "lift_m": 0.22849964702677666,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "validation/ppo",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 1,
+          "endpoint_error_m": 0.04962305757384807,
+          "lift_m": -3.7494564358864224e-07,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        }
+      ],
+      "final_model_metadata": {
+        "seed": 20260924,
+        "steps": 8192,
+        "updates": 384
+      },
+      "report_provenance": {
+        "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_multiseed_20260924/seed20260924_direct7_final.json",
+        "sha256": "24cddbfc831bddc07ddac769c2f2ed5da9b4e978df9e8550879610b213f87ca7"
+      },
+      "flat_audit_provenance": {
+        "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_multiseed_20260924/seed20260924_direct7_transitions.json",
+        "sha256": "b9df6d65eba5827a295cd5abfe5af639a2cb726db39d26a14cf2c478782212de"
+      },
+      "final_artifacts": {
+        "ppo_final.zip": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260924/direct7/ppo_final.zip",
+          "sha256": "543bbc6bccd902f8039da4295817adc3099c72a96a11549198b3ac08cdf8e059"
+        },
+        "vecnormalize_train_only.pkl": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260924/direct7/vecnormalize_train_only.pkl",
+          "sha256": "eb5b4e846d90223f10f8e692959eefe198f4c283cd1b1200880504a28fe99c99"
+        },
+        "manifest.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260924/direct7/manifest.json",
+          "sha256": "e38a50b033cafd8a1596cad9c66c2f6716f583415b119126a809ca5084539352"
+        },
+        "COMPLETE.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260924/direct7/COMPLETE.json",
+          "sha256": "ca2e995e9b6cbb2303c86322c8fa89f3269d883621ec7cc151a09070eeb6da4b"
+        },
+        "evaluation.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260924/direct7/evaluation.json",
+          "sha256": "e694f5b736bb68fc3716a17be21fef2f360e6723b8e21056d41199a3c9760069"
+        },
+        "model_architecture.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260924/direct7/model_architecture.json",
+          "sha256": "65c66cabefc1123d557ac225b56fd9aae9da694c37f91fcd9e250cccdfb1daac"
+        }
+      }
+    },
+    {
+      "seed": 20260925,
+      "mode": "parameter6",
+      "training": {
+        "episodes": 14,
+        "complete_episodes": 13,
+        "complete_task_success": 4,
+        "complete_development_gate": 4,
+        "complete_step_counts": [
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600
+        ],
+        "partial_step_counts": [
+          392
+        ],
+        "complete_and_partial_rewards_audited": 8192,
+        "sb3_received_rewards": {
+          "transitions": 8192,
+          "all_float32_conversions_exact": true,
+          "max_float64_to_float32_error": 2.2993523707270924e-07
+        }
+      },
+      "evaluations": [
+        {
+          "condition": "train/zero",
+          "task_success": true,
+          "development_gate": true,
+          "final_stage": 3,
+          "endpoint_error_m": 0.005639282823478432,
+          "lift_m": 0.24298859270431744,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "train/ppo",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.08942036954553068,
+          "lift_m": 0.16731432776021887,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "validation/zero",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.11172443423476672,
+          "lift_m": 0.12955030978830734,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "validation/ppo",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.10805917139645929,
+          "lift_m": 0.1338335253838559,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        }
+      ],
+      "final_model_metadata": {
+        "seed": 20260925,
+        "steps": 8192,
+        "updates": 384
+      },
+      "report_provenance": {
+        "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_multiseed_20260924/seed20260925_parameter6_final.json",
+        "sha256": "ee3c8a963ea5d7644a5a4841a965953b50fd5e06aa5a2714e0d89bab7d5844d8"
+      },
+      "flat_audit_provenance": {
+        "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_multiseed_20260924/seed20260925_parameter6_transitions.json",
+        "sha256": "80d9c7b93ea7328a39a0607de7bee4933480c9e621e3052f2ebef327783528e0"
+      },
+      "final_artifacts": {
+        "ppo_final.zip": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/parameter6/ppo_final.zip",
+          "sha256": "2547682c01dd07585323f7fba8309d7d3c74a0c9060092e816bd03408d2d4767"
+        },
+        "vecnormalize_train_only.pkl": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/parameter6/vecnormalize_train_only.pkl",
+          "sha256": "d3bbba1db5adb4fdabe960a44dfc730b2a8e1609fab0f787810258c3e13622ca"
+        },
+        "manifest.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/parameter6/manifest.json",
+          "sha256": "6e3198ec5d2c861663b9f51b76fe2c120cb90d18a9d98cea646ce104bc0bf45c"
+        },
+        "COMPLETE.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/parameter6/COMPLETE.json",
+          "sha256": "317ba00cba94520110a4e3be644a7e0162ca1245cc65aa4f3d14fb3b6a0c3092"
+        },
+        "evaluation.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/parameter6/evaluation.json",
+          "sha256": "1aa5a7c12d388db64ea03164218e44d62e39b0eaea53c5ffc0afa6b6b9137b83"
+        },
+        "model_architecture.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/parameter6/model_architecture.json",
+          "sha256": "d547e75cb5fe858dddfb2456d7125c44b0a568d1266a05d8c063c9e341ea0806"
+        }
+      }
+    },
+    {
+      "seed": 20260925,
+      "mode": "direct7",
+      "training": {
+        "episodes": 14,
+        "complete_episodes": 13,
+        "complete_task_success": 0,
+        "complete_development_gate": 0,
+        "complete_step_counts": [
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600,
+          600
+        ],
+        "partial_step_counts": [
+          392
+        ],
+        "complete_and_partial_rewards_audited": 8192,
+        "sb3_received_rewards": {
+          "transitions": 8192,
+          "all_float32_conversions_exact": true,
+          "max_float64_to_float32_error": 2.694306233674837e-08
+        }
+      },
+      "evaluations": [
+        {
+          "condition": "train/zero",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.18766951711683086,
+          "lift_m": 0.06032409457621163,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "train/ppo",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 0,
+          "endpoint_error_m": 0.0557328755657371,
+          "lift_m": -1.4144775006830201e-07,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "validation/zero",
+          "task_success": true,
+          "development_gate": true,
+          "final_stage": 3,
+          "endpoint_error_m": 0.007068123482073241,
+          "lift_m": 0.22849964702677666,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        },
+        {
+          "condition": "validation/ppo",
+          "task_success": false,
+          "development_gate": false,
+          "final_stage": 3,
+          "endpoint_error_m": 0.024172990048477547,
+          "lift_m": 0.20840804104261174,
+          "action_steps": 600,
+          "duration_s": 24.00000000023495,
+          "safety_early_termination": false,
+          "invalid_physics": false
+        }
+      ],
+      "final_model_metadata": {
+        "seed": 20260925,
+        "steps": 8192,
+        "updates": 384
+      },
+      "report_provenance": {
+        "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_multiseed_20260924/seed20260925_direct7_final.json",
+        "sha256": "5a281600abddee886bd5ae181d968077bd80c9a88a3bb527f7aa7582278dabb0"
+      },
+      "flat_audit_provenance": {
+        "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_multiseed_20260924/seed20260925_direct7_transitions.json",
+        "sha256": "124985bfa39e0cf77a0e298f928a1c209ab7cb560eccd87f235643fa824b1175"
+      },
+      "final_artifacts": {
+        "ppo_final.zip": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/ppo_final.zip",
+          "sha256": "6a29dc6a05eb2510b4f3e5f7965936ef808056e9d6f6223cc0e6da89326be30c"
+        },
+        "vecnormalize_train_only.pkl": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/vecnormalize_train_only.pkl",
+          "sha256": "1e85f3324c57316890ca6a040a454775581a29d8bde738082ccf98ca06bc08a9"
+        },
+        "manifest.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/manifest.json",
+          "sha256": "3b3c1a4971ccc7e043199b9f9836a552f986c41a4edf20035e9ff22239bbb471"
+        },
+        "COMPLETE.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/COMPLETE.json",
+          "sha256": "077432c04b68c9dcb087bade43bd7c4dcf7d7a94166a7de23131c640fed3d881"
+        },
+        "evaluation.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/evaluation.json",
+          "sha256": "ae65f7517a03214b8457a74fd26d56ecb231bc2531091f85074454ed0dd5bffd"
+        },
+        "model_architecture.json": {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/model_architecture.json",
+          "sha256": "65c66cabefc1123d557ac225b56fd9aae9da694c37f91fcd9e250cccdfb1daac"
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "parameter6": {
+      "train/zero": {
+        "training_seeds": 3,
+        "task_successful_seeds": 3,
+        "gate_successful_seeds": 3,
+        "final_stages_in_seed_order": [
+          3,
+          3,
+          3
+        ],
+        "endpoint_mm_in_seed_order": [
+          5.639282823478432,
+          5.639282823478432,
+          5.639282823478432
+        ]
+      },
+      "train/ppo": {
+        "training_seeds": 3,
+        "task_successful_seeds": 1,
+        "gate_successful_seeds": 1,
+        "final_stages_in_seed_order": [
+          3,
+          3,
+          3
+        ],
+        "endpoint_mm_in_seed_order": [
+          4.799358571697455,
+          70.33151235891108,
+          89.42036954553068
+        ]
+      },
+      "validation/zero": {
+        "training_seeds": 3,
+        "task_successful_seeds": 0,
+        "gate_successful_seeds": 0,
+        "final_stages_in_seed_order": [
+          3,
+          3,
+          3
+        ],
+        "endpoint_mm_in_seed_order": [
+          111.72443423476672,
+          111.72443423476672,
+          111.72443423476672
+        ]
+      },
+      "validation/ppo": {
+        "training_seeds": 3,
+        "task_successful_seeds": 0,
+        "gate_successful_seeds": 0,
+        "final_stages_in_seed_order": [
+          3,
+          3,
+          3
+        ],
+        "endpoint_mm_in_seed_order": [
+          107.095400945498,
+          113.15841479058615,
+          108.05917139645929
+        ]
+      }
+    },
+    "direct7": {
+      "train/zero": {
+        "training_seeds": 3,
+        "task_successful_seeds": 0,
+        "gate_successful_seeds": 0,
+        "final_stages_in_seed_order": [
+          3,
+          3,
+          3
+        ],
+        "endpoint_mm_in_seed_order": [
+          187.66951711683086,
+          187.66951711683086,
+          187.66951711683086
+        ]
+      },
+      "train/ppo": {
+        "training_seeds": 3,
+        "task_successful_seeds": 0,
+        "gate_successful_seeds": 0,
+        "final_stages_in_seed_order": [
+          3,
+          1,
+          0
+        ],
+        "endpoint_mm_in_seed_order": [
+          192.17288542366302,
+          44.87534642176376,
+          55.732875565737096
+        ]
+      },
+      "validation/zero": {
+        "training_seeds": 3,
+        "task_successful_seeds": 3,
+        "gate_successful_seeds": 3,
+        "final_stages_in_seed_order": [
+          3,
+          3,
+          3
+        ],
+        "endpoint_mm_in_seed_order": [
+          7.068123482073241,
+          7.068123482073241,
+          7.068123482073241
+        ]
+      },
+      "validation/ppo": {
+        "training_seeds": 3,
+        "task_successful_seeds": 0,
+        "gate_successful_seeds": 0,
+        "final_stages_in_seed_order": [
+          3,
+          1,
+          3
+        ],
+        "endpoint_mm_in_seed_order": [
+          17.185000666258915,
+          49.62305757384807,
+          24.172990048477548
+        ]
+      }
+    }
+  },
+  "controlled_direct_seed_comparison": {
+    "mode": "direct7",
+    "compared_training_seeds": [
+      20260923,
+      20260924
+    ],
+    "zero_fixture_parity": true,
+    "seed20260924_deployment_input_replay_exact": true,
+    "evidence": {
+      "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_multiseed_20260924/seed20260924_direct7_zero.json": "16a9a7344d2158af97f7058adb537c6d7ecfbbb531440a3b1aa0868ae0dd5248",
+      "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/docs/evidence/paired_multiseed_20260924/seed20260924_direct7_replay.json": "e261812bf65c88d52f731a7699fb3522596727830c1d56bff019a776579b6633"
+    },
+    "interpretation": "Different training seeds change initialization/sampling jointly; this is not evidence that retraining the same seed is irreproducible. Deployment input replay does not synthesize a new closed-loop trajectory."
+  },
+  "tool_sha256": "d51ee659335e5a0c6a91e90e06cfa368626fa8a011d8f0a23967cb7758b234f2",
+  "interpretation": [
+    "Three training seeds per method, one fixed training fixture; not18 independent training repetitions.",
+    "Training episode successes come from evolving stochastic policies and are not independent final-policy evaluations.",
+    "parameter6 has analytic VMC memory/nominal controller prior and six parameter outputs; direct7 outputs seven execution controls.",
+    "Each method has24576 online transitions across three seeds; no exported demonstration was injected into these PPO runs.",
+    "Endpoint uses current stage target. No pooled endpoint average across differing stages; all failures retained.",
+    "No sampled training torque/speed metrics imported into a physics-substep comparison table.",
+    "Three seeds describe this fixed small-budget recipe; no convergence, broad generalization, or method superiority established."
+  ]
+}

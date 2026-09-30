@@ -1,0 +1,4470 @@
+{
+  "scope": "12 fixed-teacher development diagnostics; offline student actions only; no retraining",
+  "archive": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/teacher_history_diagnostic_20260923_r1_archive",
+  "protocol_sha256": "a395492482c7c116d0d9d327c8c8d1a0c88fea78927df1c0d9f9b87a2ff79c39",
+  "sources_verified": 155,
+  "models_verified": 2,
+  "launch_china": "2026-09-23T20:13:27.203653+08:00",
+  "complete_china": "2026-09-23T20:19:49.854715+08:00",
+  "elapsed_wall_s": 382.6510615348816,
+  "rows": [
+    {
+      "id": "train_9600_approach",
+      "split": "train",
+      "seed": 9600,
+      "requested": "approach",
+      "actual_first_stage": 0,
+      "trigger_s": 0.0,
+      "first_contact_s": 0.5075499999999523,
+      "final_stage": 1,
+      "task_success": false,
+      "strict_success": false,
+      "failed_task": [
+        "lift",
+        "endpoint",
+        "stage"
+      ],
+      "failed_gate": [
+        "task",
+        "release",
+        "gap"
+      ],
+      "endpoint_m": 0.05013017782910534,
+      "lift_m": -1.4144775006830201e-07,
+      "contact_union_duration_s": 16.38474999998215,
+      "rod_contact_s": 16.38474999998215,
+      "contact_by_object": {
+        "push_rod_geom": {
+          "first_s": 0.5075499999999523,
+          "last_s": 24.00000000023495,
+          "duration_s": 16.38474999998215,
+          "bodies": [
+            "fr3_link7",
+            "hand"
+          ]
+        }
+      },
+      "sparse_contact_samples": 281,
+      "longest_sparse_contact_run_s": 0.28,
+      "physical": {
+        "samples": 480000,
+        "timestep_s": 5e-05,
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.07960522936595708,
+        "generalized_actuator_torque_peak_nm": 32.25039010223272,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          2.6654246041006173,
+          32.25039010223272,
+          2.646298909915191,
+          26.316594787387952,
+          1.3724309095426377,
+          4.088053589097467,
+          1.0742140624155703
+        ],
+        "actuator_force_peak_by_actuator": [
+          2.6654246041006173,
+          32.25039010223272,
+          2.646298909915191,
+          26.316594787387952,
+          1.3724309095426377,
+          4.088053589097467,
+          1.0742140624155703
+        ],
+        "position_rmse_xyz_m": [
+          0.008716406676447184,
+          0.006996087204934063,
+          0.048245084916800775
+        ],
+        "position_rmse_3d_m": 0.04952281494581636,
+        "stages": {
+          "0": {
+            "count": 50400,
+            "error_peak_m": 0.05999999457806655,
+            "speed_peak_mps": 0.07960522936595708,
+            "qfrc_peak_nm": 32.25039010223272,
+            "first_s": 5e-05,
+            "last_s": 2.5200000000007963,
+            "position_rmse_xyz_m": [
+              0.005322106825705785,
+              0.005482717245061217,
+              0.025813758777567114
+            ],
+            "position_rmse_3d_m": 0.026920905476598273,
+            "name": "REACH / CONTACT RESPONSE"
+          },
+          "1": {
+            "count": 429600,
+            "error_peak_m": 0.08406664950955411,
+            "speed_peak_mps": 0.05079284505692254,
+            "qfrc_peak_nm": 31.65997054714305,
+            "first_s": 2.520050000000796,
+            "last_s": 24.00000000023495,
+            "position_rmse_xyz_m": [
+              0.009031393981472034,
+              0.007152677851328043,
+              0.050224317528147704
+            ],
+            "position_rmse_3d_m": 0.051528719650905865,
+            "name": "ALIGN TO GRASP"
+          }
+        }
+      },
+      "raw_recomputed_physical": {
+        "linear_speed_peak_mps": 0.07960522750226938,
+        "generalized_actuator_torque_peak_nm": 32.250389099121094,
+        "position_rmse_3d_m": 0.04952281494796016
+      },
+      "teacher_parity_max": 1.3183898417423734e-16,
+      "students": {
+        "mlp": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.14124498441391736,
+            "action_mae": [
+              0.12825644252016097,
+              0.25978203007741557,
+              0.085916109070218,
+              0.03918636972348745,
+              0.023819755854079774,
+              0.15300862831268586,
+              0.015155297957126435
+            ],
+            "slew_yield_mae": [
+              0.05003897336017064,
+              0.02733390432055242,
+              0.01253477316434849,
+              0.014291853512447866,
+              0.09097992728868351,
+              0.009093178774275854
+            ],
+            "slew_linear_mae_mps": 0.02996921694835729,
+            "slew_angular_mae_radps": 0.038121653191802427,
+            "x_sign_reference_samples": 586,
+            "x_sign_conflict_rate": 0.059726962457337884
+          },
+          "loaded": {
+            "samples": 0
+          },
+          "loaded_contact": {
+            "samples": 0
+          },
+          "loaded_no_contact": {
+            "samples": 0
+          },
+          "observed_contact": {
+            "samples": 281,
+            "action_rmse": 0.14604431052467487,
+            "action_mae": [
+              0.14073317483240852,
+              0.24915062749517403,
+              0.0940584056711246,
+              0.03505822970219813,
+              0.02954807968527723,
+              0.1950442883464082,
+              0.012784399832186513
+            ],
+            "slew_yield_mae": [
+              0.05087268120961054,
+              0.030098689814759858,
+              0.011195969374842369,
+              0.017728847811166338,
+              0.11643483168921853,
+              0.007670639899311902
+            ],
+            "slew_linear_mae_mps": 0.030722446799737683,
+            "slew_angular_mae_radps": 0.047278106466565564,
+            "x_sign_reference_samples": 281,
+            "x_sign_conflict_rate": 0.014234875444839857
+          }
+        },
+        "esn": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.09986356748634001,
+            "action_mae": [
+              0.126558207735317,
+              0.1431934404990085,
+              0.04256229356896484,
+              0.02186338797320557,
+              0.04447343925281936,
+              0.11117821713808979,
+              0.04596517302861724
+            ],
+            "slew_yield_mae": [
+              0.018551810967765845,
+              0.013502487004162284,
+              0.006971700370870829,
+              0.026684063551691586,
+              0.06669789037902824,
+              0.027579103817170363
+            ],
+            "slew_linear_mae_mps": 0.013008666114266246,
+            "slew_angular_mae_radps": 0.04032035258263004,
+            "x_sign_reference_samples": 586,
+            "x_sign_conflict_rate": 0.013651877133105802
+          },
+          "loaded": {
+            "samples": 0
+          },
+          "loaded_contact": {
+            "samples": 0
+          },
+          "loaded_no_contact": {
+            "samples": 0
+          },
+          "observed_contact": {
+            "samples": 281,
+            "action_rmse": 0.10176338142118113,
+            "action_mae": [
+              0.13466029102771096,
+              0.12714323054162152,
+              0.04887681640167663,
+              0.021296148327673202,
+              0.04926454524541976,
+              0.1370785761980832,
+              0.04628925939277577
+            ],
+            "slew_yield_mae": [
+              0.01835573067468869,
+              0.015640581248536522,
+              0.006820651533698385,
+              0.029558727147251822,
+              0.08201342624505868,
+              0.02777355563566543
+            ],
+            "slew_linear_mae_mps": 0.013605654485641187,
+            "slew_angular_mae_radps": 0.04644856967599197,
+            "x_sign_reference_samples": 281,
+            "x_sign_conflict_rate": 0.0
+          }
+        }
+      },
+      "mjb_sha256": "9e8e14dc3c8603a1a13919442fdc5fdab023dc8d5a60eb995745cd45dede9652"
+    },
+    {
+      "id": "train_9600_loaded_lift",
+      "split": "train",
+      "seed": 9600,
+      "requested": "loaded_lift",
+      "actual_first_stage": 3,
+      "trigger_s": 2.400000000001076,
+      "first_contact_s": 2.872349999999975,
+      "final_stage": 3,
+      "task_success": false,
+      "strict_success": false,
+      "failed_task": [
+        "endpoint"
+      ],
+      "failed_gate": [
+        "task",
+        "release",
+        "gap",
+        "penetration"
+      ],
+      "endpoint_m": 0.135240078990031,
+      "lift_m": 0.11709947866486431,
+      "contact_union_duration_s": 1.3215500000005767,
+      "rod_contact_s": 1.3060000000005438,
+      "contact_by_object": {
+        "push_back_guard": {
+          "first_s": 3.212199999999183,
+          "last_s": 5.630199999993548,
+          "duration_s": 0.04625000000000081,
+          "bodies": [
+            "fr3_link6"
+          ]
+        },
+        "target_object_geom": {
+          "first_s": 2.1779000000015936,
+          "last_s": 24.00000000023495,
+          "duration_s": 21.819450000162565,
+          "bodies": [
+            "left_finger",
+            "right_finger"
+          ]
+        },
+        "push_rod_geom": {
+          "first_s": 2.872349999999975,
+          "last_s": 22.32420000017932,
+          "duration_s": 1.3060000000005438,
+          "bodies": [
+            "fr3_link7",
+            "hand"
+          ]
+        }
+      },
+      "sparse_contact_samples": 33,
+      "longest_sparse_contact_run_s": 0.2,
+      "physical": {
+        "samples": 480000,
+        "timestep_s": 5e-05,
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.14690837912929253,
+        "generalized_actuator_torque_peak_nm": 41.82381436737109,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          3.1136703183477503,
+          41.82381436737109,
+          3.568633172136958,
+          28.6993541797797,
+          1.517918303138477,
+          3.4355110889423663,
+          0.8224676078866804
+        ],
+        "actuator_force_peak_by_actuator": [
+          3.1136703183477503,
+          41.82381436737109,
+          3.568633172136958,
+          28.6993541797797,
+          1.517918303138477,
+          3.4355110889423663,
+          0.8224676078866804
+        ],
+        "position_rmse_xyz_m": [
+          0.011226680368558081,
+          0.020203660495870187,
+          0.12771000670991664
+        ],
+        "position_rmse_3d_m": 0.12978471429015478,
+        "stages": {
+          "0": {
+            "count": 16000,
+            "error_peak_m": 0.05999999457806655,
+            "speed_peak_mps": 0.07960522936595708,
+            "qfrc_peak_nm": 31.826665184169585,
+            "first_s": 5e-05,
+            "last_s": 0.7999999999999201,
+            "position_rmse_xyz_m": [
+              0.0006987936080437096,
+              3.519849630667543e-05,
+              0.03920088240469607
+            ],
+            "position_rmse_3d_m": 0.03920712604549834,
+            "name": "REACH / CONTACT RESPONSE"
+          },
+          "1": {
+            "count": 24800,
+            "error_peak_m": 0.083764606884733,
+            "speed_peak_mps": 0.07999680038295828,
+            "qfrc_peak_nm": 31.149530700901188,
+            "first_s": 0.8000499999999201,
+            "last_s": 2.040000000001915,
+            "position_rmse_xyz_m": [
+              0.0017708274388116415,
+              2.8952523471466372e-05,
+              0.04731288700827308
+            ],
+            "position_rmse_3d_m": 0.047346023540781955,
+            "name": "ALIGN TO GRASP"
+          },
+          "2": {
+            "count": 7200,
+            "error_peak_m": 0.007539456463364781,
+            "speed_peak_mps": 0.019955001455310747,
+            "qfrc_peak_nm": 34.26835397211272,
+            "first_s": 2.040050000001915,
+            "last_s": 2.400000000001076,
+            "position_rmse_xyz_m": [
+              0.0012513304600762117,
+              2.541850925009388e-05,
+              0.005544589628354816
+            ],
+            "position_rmse_3d_m": 0.005684096073060944,
+            "name": "CLOSE GRIPPER"
+          },
+          "3": {
+            "count": 432000,
+            "error_peak_m": 0.2519065721855083,
+            "speed_peak_mps": 0.14690837912929253,
+            "qfrc_peak_nm": 41.82381436737109,
+            "first_s": 2.400050000001076,
+            "last_s": 24.00000000023495,
+            "position_rmse_xyz_m": [
+              0.011824483532131093,
+              0.021296525619962828,
+              0.13392578676561417
+            ],
+            "position_rmse_3d_m": 0.13612302073886007,
+            "name": "LOADED LIFT"
+          }
+        }
+      },
+      "raw_recomputed_physical": {
+        "linear_speed_peak_mps": 0.14690838000073095,
+        "generalized_actuator_torque_peak_nm": 41.823814392089844,
+        "position_rmse_3d_m": 0.12978471428794505
+      },
+      "teacher_parity_max": 1.942890293094024e-16,
+      "students": {
+        "mlp": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.0805712129321053,
+            "action_mae": [
+              0.06382768035014896,
+              0.11090800571175052,
+              0.0466336325042482,
+              0.04293764590728849,
+              0.023518564209239083,
+              0.06250600768073479,
+              0.006871678482760725
+            ],
+            "slew_yield_mae": [
+              0.01846156058141088,
+              0.014201757836628822,
+              0.00989041905577736,
+              0.014111138525543444,
+              0.03309038028667071,
+              0.0041230070896564296
+            ],
+            "slew_linear_mae_mps": 0.014184579157939005,
+            "slew_angular_mae_radps": 0.01710817530062353,
+            "x_sign_reference_samples": 542,
+            "x_sign_conflict_rate": 0.09225092250922509
+          },
+          "loaded": {
+            "samples": 540,
+            "action_rmse": 0.08482861533780325,
+            "action_mae": [
+              0.06947446060857013,
+              0.1224435383246933,
+              0.05097082386663382,
+              0.04696734250190346,
+              0.025925168159654215,
+              0.06856223453908336,
+              0.007545260441624369
+            ],
+            "slew_yield_mae": [
+              0.02030123716842355,
+              0.015509547454288833,
+              0.010772689793129377,
+              0.015555100895792522,
+              0.03630669981954189,
+              0.004527156264974616
+            ],
+            "slew_linear_mae_mps": 0.015527824805280569,
+            "slew_angular_mae_radps": 0.018796318993436343,
+            "x_sign_reference_samples": 537,
+            "x_sign_conflict_rate": 0.0931098696461825
+          },
+          "loaded_contact": {
+            "samples": 33,
+            "action_rmse": 0.10697619032645808,
+            "action_mae": [
+              0.06398905961673011,
+              0.14545957294652861,
+              0.10638470850229147,
+              0.0676323719268089,
+              0.02796566402591789,
+              0.1133568106213473,
+              0.02254566621233924
+            ],
+            "slew_yield_mae": [
+              0.016908129800642054,
+              0.02282847804618576,
+              0.021457958594078695,
+              0.016779398415550737,
+              0.06781012184542083,
+              0.013527399727403544
+            ],
+            "slew_linear_mae_mps": 0.0203981888136355,
+            "slew_angular_mae_radps": 0.03270563999612504,
+            "x_sign_reference_samples": 32,
+            "x_sign_conflict_rate": 0.03125
+          },
+          "loaded_no_contact": {
+            "samples": 507,
+            "action_rmse": 0.08318290811292457,
+            "action_mae": [
+              0.06983149854295022,
+              0.12094545323096435,
+              0.04736400297318863,
+              0.04562228141507528,
+              0.02579235481924653,
+              0.06564661124378807,
+              0.006568902669566001
+            ],
+            "slew_yield_mae": [
+              0.02052209031070517,
+              0.015033167356591414,
+              0.010077198924428536,
+              0.015475412891547908,
+              0.03425618122614147,
+              0.003941341601739599
+            ],
+            "slew_linear_mae_mps": 0.015210818863908356,
+            "slew_angular_mae_radps": 0.017890978573142997,
+            "x_sign_reference_samples": 505,
+            "x_sign_conflict_rate": 0.09702970297029703
+          },
+          "observed_contact": {
+            "samples": 33,
+            "action_rmse": 0.10697619032645808,
+            "action_mae": [
+              0.06398905961673011,
+              0.14545957294652861,
+              0.10638470850229147,
+              0.0676323719268089,
+              0.02796566402591789,
+              0.1133568106213473,
+              0.02254566621233924
+            ],
+            "slew_yield_mae": [
+              0.016908129800642054,
+              0.02282847804618576,
+              0.021457958594078695,
+              0.016779398415550737,
+              0.06781012184542083,
+              0.013527399727403544
+            ],
+            "slew_linear_mae_mps": 0.0203981888136355,
+            "slew_angular_mae_radps": 0.03270563999612504,
+            "x_sign_reference_samples": 32,
+            "x_sign_conflict_rate": 0.03125
+          }
+        },
+        "esn": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.06844329164523275,
+            "action_mae": [
+              0.06894760096601825,
+              0.08981150496301657,
+              0.03976567468681884,
+              0.03298626544336216,
+              0.018788193021582994,
+              0.05655750174762867,
+              0.014970899417742514
+            ],
+            "slew_yield_mae": [
+              0.01535853763650188,
+              0.012054529608185647,
+              0.0052656513430912695,
+              0.0112729158129498,
+              0.028767279743887486,
+              0.008982539650645523
+            ],
+            "slew_linear_mae_mps": 0.010892906195926264,
+            "slew_angular_mae_radps": 0.016340911735827607,
+            "x_sign_reference_samples": 542,
+            "x_sign_conflict_rate": 0.007380073800738007
+          },
+          "loaded": {
+            "samples": 540,
+            "action_rmse": 0.0720453319978563,
+            "action_mae": [
+              0.07537717042129564,
+              0.098897273395455,
+              0.04337883622190947,
+              0.036110566016749446,
+              0.02063060106093875,
+              0.06202737537216588,
+              0.016466607075241047
+            ],
+            "slew_yield_mae": [
+              0.016787695509760357,
+              0.013136242822570615,
+              0.005688361257568243,
+              0.012378360636563255,
+              0.031524681190705,
+              0.009879964245144637
+            ],
+            "slew_linear_mae_mps": 0.011870766529966404,
+            "slew_angular_mae_radps": 0.0179276686908043,
+            "x_sign_reference_samples": 537,
+            "x_sign_conflict_rate": 0.0074487895716946
+          },
+          "loaded_contact": {
+            "samples": 33,
+            "action_rmse": 0.11434648559428194,
+            "action_mae": [
+              0.15910252185375962,
+              0.10796773980935562,
+              0.08046598484509171,
+              0.05412857782213656,
+              0.041592073584364266,
+              0.11905756364289301,
+              0.020742768149916272
+            ],
+            "slew_yield_mae": [
+              0.01491348516587607,
+              0.014756779844232182,
+              0.0170019845361845,
+              0.024955244150618554,
+              0.07145219953557463,
+              0.012445660889949759
+            ],
+            "slew_linear_mae_mps": 0.015557416515430925,
+            "slew_angular_mae_radps": 0.03628436819204764,
+            "x_sign_reference_samples": 32,
+            "x_sign_conflict_rate": 0.03125
+          },
+          "loaded_no_contact": {
+            "samples": 507,
+            "action_rmse": 0.06839102110853236,
+            "action_mae": [
+              0.06992759133397544,
+              0.09830688800756793,
+              0.04096487980264903,
+              0.034937796017582234,
+              0.019266244861189146,
+              0.0583153512835387,
+              0.016188277064463383
+            ],
+            "slew_yield_mae": [
+              0.016909685532143347,
+              0.013030764081515721,
+              0.004951971576711564,
+              0.011559746916713505,
+              0.028925848635713472,
+              0.009712966238678036
+            ],
+            "slew_linear_mae_mps": 0.01163080706345688,
+            "slew_angular_mae_radps": 0.01673285393036834,
+            "x_sign_reference_samples": 505,
+            "x_sign_conflict_rate": 0.005940594059405941
+          },
+          "observed_contact": {
+            "samples": 33,
+            "action_rmse": 0.11434648559428194,
+            "action_mae": [
+              0.15910252185375962,
+              0.10796773980935562,
+              0.08046598484509171,
+              0.05412857782213656,
+              0.041592073584364266,
+              0.11905756364289301,
+              0.020742768149916272
+            ],
+            "slew_yield_mae": [
+              0.01491348516587607,
+              0.014756779844232182,
+              0.0170019845361845,
+              0.024955244150618554,
+              0.07145219953557463,
+              0.012445660889949759
+            ],
+            "slew_linear_mae_mps": 0.015557416515430925,
+            "slew_angular_mae_radps": 0.03628436819204764,
+            "x_sign_reference_samples": 32,
+            "x_sign_conflict_rate": 0.03125
+          }
+        }
+      },
+      "mjb_sha256": "9e8e14dc3c8603a1a13919442fdc5fdab023dc8d5a60eb995745cd45dede9652"
+    },
+    {
+      "id": "train_9601_approach",
+      "split": "train",
+      "seed": 9601,
+      "requested": "approach",
+      "actual_first_stage": 0,
+      "trigger_s": 0.0,
+      "first_contact_s": 0.43509999999996024,
+      "final_stage": 0,
+      "task_success": false,
+      "strict_success": false,
+      "failed_task": [
+        "lift",
+        "endpoint",
+        "stage"
+      ],
+      "failed_gate": [
+        "task",
+        "release",
+        "gap"
+      ],
+      "endpoint_m": 0.021014779625849366,
+      "lift_m": -1.4144775006830201e-07,
+      "contact_union_duration_s": 20.407000000115676,
+      "rod_contact_s": 20.39145000011516,
+      "contact_by_object": {
+        "push_back_guard": {
+          "first_s": 0.700999999999931,
+          "last_s": 0.9992999999998982,
+          "duration_s": 0.019900000000000057,
+          "bodies": [
+            "fr3_link6"
+          ]
+        },
+        "push_rod_geom": {
+          "first_s": 0.43509999999996024,
+          "last_s": 23.999800000234945,
+          "duration_s": 20.39145000011516,
+          "bodies": [
+            "hand"
+          ]
+        }
+      },
+      "sparse_contact_samples": 446,
+      "longest_sparse_contact_run_s": 1.16,
+      "physical": {
+        "samples": 480000,
+        "timestep_s": 5e-05,
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.18731062047243463,
+        "generalized_actuator_torque_peak_nm": 32.11980030429776,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          3.669372302148486,
+          32.11980030429776,
+          3.7297003761206824,
+          26.170998551636398,
+          2.00101515031036,
+          3.605173020988969,
+          0.7880700566027039
+        ],
+        "actuator_force_peak_by_actuator": [
+          3.669372302148486,
+          32.11980030429776,
+          3.7297003761206824,
+          26.170998551636398,
+          2.00101515031036,
+          3.605173020988969,
+          0.7880700566027039
+        ],
+        "position_rmse_xyz_m": [
+          0.009317897700136342,
+          0.0189057444819758,
+          0.016035895416958927
+        ],
+        "position_rmse_3d_m": 0.026483963709981347,
+        "stages": {
+          "0": {
+            "count": 480000,
+            "error_peak_m": 0.05999999457806655,
+            "speed_peak_mps": 0.18731062047243463,
+            "qfrc_peak_nm": 32.11980030429776,
+            "first_s": 5e-05,
+            "last_s": 24.00000000023495,
+            "position_rmse_xyz_m": [
+              0.009317897700136342,
+              0.0189057444819758,
+              0.016035895416958927
+            ],
+            "position_rmse_3d_m": 0.026483963709981347,
+            "name": "REACH / CONTACT RESPONSE"
+          }
+        }
+      },
+      "raw_recomputed_physical": {
+        "linear_speed_peak_mps": 0.187310622987596,
+        "generalized_actuator_torque_peak_nm": 32.11980056762695,
+        "position_rmse_3d_m": 0.026483963710918566
+      },
+      "teacher_parity_max": 1.6653345369377348e-16,
+      "students": {
+        "mlp": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.1161432235204322,
+            "action_mae": [
+              0.12255082866432271,
+              0.18047105150129966,
+              0.085821776325223,
+              0.04288871394820139,
+              0.011142382442802908,
+              0.09113308986127057,
+              0.014523148962650223
+            ],
+            "slew_yield_mae": [
+              0.11233711671596476,
+              0.027413751949531853,
+              0.013402154577685814,
+              0.006661131803347563,
+              0.05466677959445469,
+              0.008713889377590118
+            ],
+            "slew_linear_mae_mps": 0.05105100774772748,
+            "slew_angular_mae_radps": 0.023347266925130825,
+            "x_sign_reference_samples": 589,
+            "x_sign_conflict_rate": 0.4923599320882852
+          },
+          "loaded": {
+            "samples": 0
+          },
+          "loaded_contact": {
+            "samples": 0
+          },
+          "loaded_no_contact": {
+            "samples": 0
+          },
+          "observed_contact": {
+            "samples": 446,
+            "action_rmse": 0.10852663007197183,
+            "action_mae": [
+              0.13046988504971024,
+              0.13916009541562668,
+              0.08566781954122989,
+              0.0445322904696604,
+              0.009899246170680021,
+              0.1084036169740177,
+              0.011612838137793048
+            ],
+            "slew_yield_mae": [
+              0.1155485558336146,
+              0.027232386760302183,
+              0.014191275284431142,
+              0.005939547702408017,
+              0.06505699611763173,
+              0.006967702882675832
+            ],
+            "slew_linear_mae_mps": 0.05232407262611594,
+            "slew_angular_mae_radps": 0.02598808223423855,
+            "x_sign_reference_samples": 446,
+            "x_sign_conflict_rate": 0.35201793721973096
+          }
+        },
+        "esn": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.06598283271445374,
+            "action_mae": [
+              0.09031436509098101,
+              0.04026260695189934,
+              0.02600520796454219,
+              0.04540863577760105,
+              0.018293023329506528,
+              0.09659602324187398,
+              0.006096104292540837
+            ],
+            "slew_yield_mae": [
+              0.005967615377875539,
+              0.00800142764361943,
+              0.019979003824453823,
+              0.010881639669827638,
+              0.0577480214259351,
+              0.0036576625755244986
+            ],
+            "slew_linear_mae_mps": 0.011316015615316267,
+            "slew_angular_mae_radps": 0.024095774557095745,
+            "x_sign_reference_samples": 589,
+            "x_sign_conflict_rate": 0.011884550084889643
+          },
+          "loaded": {
+            "samples": 0
+          },
+          "loaded_contact": {
+            "samples": 0
+          },
+          "loaded_no_contact": {
+            "samples": 0
+          },
+          "observed_contact": {
+            "samples": 446,
+            "action_rmse": 0.0673935938636066,
+            "action_mae": [
+              0.0931483129618733,
+              0.037621667515619316,
+              0.02275228568152846,
+              0.051403392041820595,
+              0.01608872956065621,
+              0.11005132561566769,
+              0.005114406596748937
+            ],
+            "slew_yield_mae": [
+              0.004130765748216723,
+              0.007222991846940225,
+              0.02073559649716859,
+              0.009653237736393722,
+              0.06602781442028784,
+              0.0030686439580493606
+            ],
+            "slew_linear_mae_mps": 0.010696451364108517,
+            "slew_angular_mae_radps": 0.026249898704910315,
+            "x_sign_reference_samples": 446,
+            "x_sign_conflict_rate": 0.004484304932735426
+          }
+        }
+      },
+      "mjb_sha256": "c35961639d5b1b6b28d176ed46d8d87eb7b94222185c0b832c9aa7076f9122b1"
+    },
+    {
+      "id": "train_9601_loaded_lift",
+      "split": "train",
+      "seed": 9601,
+      "requested": "loaded_lift",
+      "actual_first_stage": 3,
+      "trigger_s": 2.400000000001076,
+      "first_contact_s": 2.867199999999987,
+      "final_stage": 3,
+      "task_success": false,
+      "strict_success": false,
+      "failed_task": [
+        "object_speed",
+        "endpoint"
+      ],
+      "failed_gate": [
+        "task",
+        "penetration"
+      ],
+      "endpoint_m": 0.05417129727179267,
+      "lift_m": 0.20321242217623875,
+      "contact_union_duration_s": 2.1448500000016706,
+      "rod_contact_s": 2.0671500000018517,
+      "contact_by_object": {
+        "push_back_guard": {
+          "first_s": 3.1861499999992438,
+          "last_s": 9.656699999984165,
+          "duration_s": 0.16619999999998986,
+          "bodies": [
+            "fr3_link6",
+            "hand"
+          ]
+        },
+        "target_object_geom": {
+          "first_s": 2.1779000000015936,
+          "last_s": 24.00000000023495,
+          "duration_s": 21.819250000162558,
+          "bodies": [
+            "left_finger",
+            "right_finger"
+          ]
+        },
+        "push_rod_geom": {
+          "first_s": 2.867199999999987,
+          "last_s": 7.316449999989618,
+          "duration_s": 2.0671500000018517,
+          "bodies": [
+            "fr3_link7"
+          ]
+        }
+      },
+      "sparse_contact_samples": 47,
+      "longest_sparse_contact_run_s": 0.36,
+      "physical": {
+        "samples": 480000,
+        "timestep_s": 5e-05,
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.1480455014073733,
+        "generalized_actuator_torque_peak_nm": 40.17733600782183,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          3.596296851726538,
+          40.17733600782183,
+          3.5755022364851086,
+          28.992030289413275,
+          1.7547470796556555,
+          3.4594535790070102,
+          0.7860859932029944
+        ],
+        "actuator_force_peak_by_actuator": [
+          3.596296851726538,
+          40.17733600782183,
+          3.5755022364851086,
+          28.992030289413275,
+          1.7547470796556555,
+          3.4594535790070102,
+          0.7860859932029944
+        ],
+        "position_rmse_xyz_m": [
+          0.01154773395334341,
+          0.021703411874876687,
+          0.13386236246251162
+        ],
+        "position_rmse_3d_m": 0.13610114007793095,
+        "stages": {
+          "0": {
+            "count": 16000,
+            "error_peak_m": 0.05999999457806655,
+            "speed_peak_mps": 0.07960522936595708,
+            "qfrc_peak_nm": 31.826665184169585,
+            "first_s": 5e-05,
+            "last_s": 0.7999999999999201,
+            "position_rmse_xyz_m": [
+              0.0006987936080437096,
+              3.519849630667543e-05,
+              0.03920088240469607
+            ],
+            "position_rmse_3d_m": 0.03920712604549834,
+            "name": "REACH / CONTACT RESPONSE"
+          },
+          "1": {
+            "count": 24800,
+            "error_peak_m": 0.083764606884733,
+            "speed_peak_mps": 0.07999680038295828,
+            "qfrc_peak_nm": 31.149530700901188,
+            "first_s": 0.8000499999999201,
+            "last_s": 2.040000000001915,
+            "position_rmse_xyz_m": [
+              0.0017708274388116415,
+              2.8952523471466372e-05,
+              0.04731288700827308
+            ],
+            "position_rmse_3d_m": 0.047346023540781955,
+            "name": "ALIGN TO GRASP"
+          },
+          "2": {
+            "count": 7200,
+            "error_peak_m": 0.007539456463364781,
+            "speed_peak_mps": 0.02114354445653206,
+            "qfrc_peak_nm": 34.66091580642025,
+            "first_s": 2.040050000001915,
+            "last_s": 2.400000000001076,
+            "position_rmse_xyz_m": [
+              0.0012365108976058207,
+              2.9391104337348542e-05,
+              0.005541783953201022
+            ],
+            "position_rmse_3d_m": 0.005678132828744716,
+            "name": "CLOSE GRIPPER"
+          },
+          "3": {
+            "count": 432000,
+            "error_peak_m": 0.25191361598934014,
+            "speed_peak_mps": 0.1480455014073733,
+            "qfrc_peak_nm": 40.17733600782183,
+            "first_s": 2.400050000001076,
+            "last_s": 24.00000000023495,
+            "position_rmse_xyz_m": [
+              0.012163192659811107,
+              0.02287740247118362,
+              0.1404429162862154
+            ],
+            "position_rmse_3d_m": 0.14281292495598957,
+            "name": "LOADED LIFT"
+          }
+        }
+      },
+      "raw_recomputed_physical": {
+        "linear_speed_peak_mps": 0.14804550511156822,
+        "generalized_actuator_torque_peak_nm": 40.177337646484375,
+        "position_rmse_3d_m": 0.13610114006964383
+      },
+      "teacher_parity_max": 1.3877787807814457e-16,
+      "students": {
+        "mlp": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.08707147149836057,
+            "action_mae": [
+              0.08799122320791672,
+              0.12890037234998405,
+              0.033459195042804146,
+              0.04982121627125487,
+              0.0189718325531581,
+              0.0705099183171471,
+              0.007746245449275099
+            ],
+            "slew_yield_mae": [
+              0.021591975362274994,
+              0.010097514270292799,
+              0.010023093821083807,
+              0.011383099531894862,
+              0.028164889697990952,
+              0.004647747269565051
+            ],
+            "slew_linear_mae_mps": 0.013904194484550507,
+            "slew_angular_mae_radps": 0.014731912166483594,
+            "x_sign_reference_samples": 545,
+            "x_sign_conflict_rate": 0.009174311926605505
+          },
+          "loaded": {
+            "samples": 540,
+            "action_rmse": 0.09168625412957863,
+            "action_mae": [
+              0.09632394375522275,
+              0.1424715677082539,
+              0.03634621469145143,
+              0.05456553199900111,
+              0.02086062240221214,
+              0.07742749910873735,
+              0.008516082975592882
+            ],
+            "slew_yield_mae": [
+              0.023771108664441484,
+              0.01095364631970388,
+              0.010925962896127009,
+              0.012516373441327288,
+              0.0308291230424478,
+              0.0051096497853557205
+            ],
+            "slew_linear_mae_mps": 0.01521690596009076,
+            "slew_angular_mae_radps": 0.01615171542304358,
+            "x_sign_reference_samples": 540,
+            "x_sign_conflict_rate": 0.009259259259259259
+          },
+          "loaded_contact": {
+            "samples": 47,
+            "action_rmse": 0.12064004075876737,
+            "action_mae": [
+              0.08945284421186742,
+              0.18879908136938175,
+              0.08906011065302057,
+              0.05639652178891234,
+              0.026966380352844797,
+              0.09190941759984803,
+              0.020199798716864024
+            ],
+            "slew_yield_mae": [
+              0.017215899451228315,
+              0.021550968416024132,
+              0.01625934703454308,
+              0.016179828211706875,
+              0.05429539716804495,
+              0.012119879230118416
+            ],
+            "slew_linear_mae_mps": 0.018342071633931846,
+            "slew_angular_mae_radps": 0.02753170153662341,
+            "x_sign_reference_samples": 47,
+            "x_sign_conflict_rate": 0.06382978723404255
+          },
+          "loaded_no_contact": {
+            "samples": 493,
+            "action_rmse": 0.08843237469223952,
+            "action_mae": [
+              0.09697899786990367,
+              0.1380549487588157,
+              0.03132075199328965,
+              0.054390975163046064,
+              0.020278531887648776,
+              0.07604686996252596,
+              0.007402219608777978
+            ],
+            "slew_yield_mae": [
+              0.024396047473814745,
+              0.00994335394946646,
+              0.010417506396115744,
+              0.012167119132589272,
+              0.028591973176518543,
+              0.004441331765266781
+            ],
+            "slew_linear_mae_mps": 0.014918969273132276,
+            "slew_angular_mae_radps": 0.015066808024791545,
+            "x_sign_reference_samples": 493,
+            "x_sign_conflict_rate": 0.004056795131845842
+          },
+          "observed_contact": {
+            "samples": 47,
+            "action_rmse": 0.12064004075876737,
+            "action_mae": [
+              0.08945284421186742,
+              0.18879908136938175,
+              0.08906011065302057,
+              0.05639652178891234,
+              0.026966380352844797,
+              0.09190941759984803,
+              0.020199798716864024
+            ],
+            "slew_yield_mae": [
+              0.017215899451228315,
+              0.021550968416024132,
+              0.01625934703454308,
+              0.016179828211706875,
+              0.05429539716804495,
+              0.012119879230118416
+            ],
+            "slew_linear_mae_mps": 0.018342071633931846,
+            "slew_angular_mae_radps": 0.02753170153662341,
+            "x_sign_reference_samples": 47,
+            "x_sign_conflict_rate": 0.06382978723404255
+          }
+        },
+        "esn": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.07004351583789183,
+            "action_mae": [
+              0.06390606950895994,
+              0.09755647486888054,
+              0.050539741315077456,
+              0.03115932618121585,
+              0.017452843119257162,
+              0.0647742884058026,
+              0.007754202025634046
+            ],
+            "slew_yield_mae": [
+              0.017774500668864653,
+              0.014665047400340562,
+              0.007949663377787545,
+              0.010471705871554299,
+              0.032752765780199894,
+              0.0046525212153804285
+            ],
+            "slew_linear_mae_mps": 0.013463070482330966,
+            "slew_angular_mae_radps": 0.015958997622378186,
+            "x_sign_reference_samples": 545,
+            "x_sign_conflict_rate": 0.012844036697247707
+          },
+          "loaded": {
+            "samples": 540,
+            "action_rmse": 0.07373494480486543,
+            "action_mae": [
+              0.06977974670082171,
+              0.10755737126241269,
+              0.05532879733078181,
+              0.03406131811553007,
+              0.019145795946015325,
+              0.07114455315504054,
+              0.008445835914151692
+            ],
+            "slew_yield_mae": [
+              0.019484183604631507,
+              0.01603002645642327,
+              0.008672569111498121,
+              0.011487477567609195,
+              0.03592686117025057,
+              0.005067501548491018
+            ],
+            "slew_linear_mae_mps": 0.014728926390851018,
+            "slew_angular_mae_radps": 0.01749394676211691,
+            "x_sign_reference_samples": 540,
+            "x_sign_conflict_rate": 0.011111111111111112
+          },
+          "loaded_contact": {
+            "samples": 47,
+            "action_rmse": 0.08349170590046631,
+            "action_mae": [
+              0.05581017974648806,
+              0.0848350194416402,
+              0.09863274348224159,
+              0.0400914449378967,
+              0.02474603665186751,
+              0.0804917951219118,
+              0.01647742060870298
+            ],
+            "slew_yield_mae": [
+              0.01792716313512577,
+              0.023142740028798424,
+              0.012582046592264494,
+              0.014847621991120502,
+              0.045687340918877266,
+              0.009886452365221789
+            ],
+            "slew_linear_mae_mps": 0.0178839832520629,
+            "slew_angular_mae_radps": 0.023473805091739856,
+            "x_sign_reference_samples": 47,
+            "x_sign_conflict_rate": 0.0425531914893617
+          },
+          "loaded_no_contact": {
+            "samples": 493,
+            "action_rmse": 0.0727364867001384,
+            "action_mae": [
+              0.07111153097435857,
+              0.10972359952930175,
+              0.05120042923926331,
+              0.0334864378708014,
+              0.01861189875904767,
+              0.0702534367809169,
+              0.007680147312439915
+            ],
+            "slew_yield_mae": [
+              0.019632621661562086,
+              0.015351938144249575,
+              0.008299860305015321,
+              0.011167139255428603,
+              0.034996348902125746,
+              0.00460808838746395
+            ],
+            "slew_linear_mae_mps": 0.014428140036942379,
+            "slew_angular_mae_radps": 0.016923858848339468,
+            "x_sign_reference_samples": 493,
+            "x_sign_conflict_rate": 0.008113590263691683
+          },
+          "observed_contact": {
+            "samples": 47,
+            "action_rmse": 0.08349170590046631,
+            "action_mae": [
+              0.05581017974648806,
+              0.0848350194416402,
+              0.09863274348224159,
+              0.0400914449378967,
+              0.02474603665186751,
+              0.0804917951219118,
+              0.01647742060870298
+            ],
+            "slew_yield_mae": [
+              0.01792716313512577,
+              0.023142740028798424,
+              0.012582046592264494,
+              0.014847621991120502,
+              0.045687340918877266,
+              0.009886452365221789
+            ],
+            "slew_linear_mae_mps": 0.0178839832520629,
+            "slew_angular_mae_radps": 0.023473805091739856,
+            "x_sign_reference_samples": 47,
+            "x_sign_conflict_rate": 0.0425531914893617
+          }
+        }
+      },
+      "mjb_sha256": "c35961639d5b1b6b28d176ed46d8d87eb7b94222185c0b832c9aa7076f9122b1"
+    },
+    {
+      "id": "train_9602_approach",
+      "split": "train",
+      "seed": 9602,
+      "requested": "approach",
+      "actual_first_stage": 0,
+      "trigger_s": 0.0,
+      "first_contact_s": 0.4301999999999608,
+      "final_stage": 1,
+      "task_success": false,
+      "strict_success": false,
+      "failed_task": [
+        "lift",
+        "endpoint",
+        "stage"
+      ],
+      "failed_gate": [
+        "task",
+        "release",
+        "gap",
+        "penetration"
+      ],
+      "endpoint_m": 0.05333092856183482,
+      "lift_m": -3.3293343681961574e-07,
+      "contact_union_duration_s": 17.75770000002773,
+      "rod_contact_s": 17.598500000022444,
+      "contact_by_object": {
+        "push_back_guard": {
+          "first_s": 0.6950499999999317,
+          "last_s": 23.996550000234837,
+          "duration_s": 1.457700000000864,
+          "bodies": [
+            "fr3_link6"
+          ]
+        },
+        "target_object_geom": {
+          "first_s": 10.522049999982148,
+          "last_s": 23.9984500002349,
+          "duration_s": 13.30569999997566,
+          "bodies": [
+            "left_finger"
+          ]
+        },
+        "push_rod_geom": {
+          "first_s": 0.4301999999999608,
+          "last_s": 24.00000000023495,
+          "duration_s": 17.598500000022444,
+          "bodies": [
+            "hand"
+          ]
+        }
+      },
+      "sparse_contact_samples": 382,
+      "longest_sparse_contact_run_s": 1.56,
+      "physical": {
+        "samples": 480000,
+        "timestep_s": 5e-05,
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.19078607049369273,
+        "generalized_actuator_torque_peak_nm": 34.39483805373487,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          3.5615508102730202,
+          34.39483805373487,
+          3.6035557117350243,
+          26.14612149139235,
+          2.019535034046852,
+          3.833987007439566,
+          0.8222151053726583
+        ],
+        "actuator_force_peak_by_actuator": [
+          3.5615508102730202,
+          34.39483805373487,
+          3.6035557117350243,
+          26.14612149139235,
+          2.019535034046852,
+          3.833987007439566,
+          0.8222151053726583
+        ],
+        "position_rmse_xyz_m": [
+          0.0057322205830780655,
+          0.034149689716112826,
+          0.03892475545788642
+        ],
+        "position_rmse_3d_m": 0.05209794859662043,
+        "stages": {
+          "0": {
+            "count": 162400,
+            "error_peak_m": 0.05999999457806655,
+            "speed_peak_mps": 0.19078607049369273,
+            "qfrc_peak_nm": 33.17500551158951,
+            "first_s": 5e-05,
+            "last_s": 8.119999999987746,
+            "position_rmse_xyz_m": [
+              0.00229459584407941,
+              0.03358967985139368,
+              0.020962905722608137
+            ],
+            "position_rmse_3d_m": 0.03966075111419029,
+            "name": "REACH / CONTACT RESPONSE"
+          },
+          "1": {
+            "count": 317600,
+            "error_peak_m": 0.0909527168356628,
+            "speed_peak_mps": 0.044274003132737445,
+            "qfrc_peak_nm": 34.39483805373487,
+            "first_s": 8.120049999987746,
+            "last_s": 24.00000000023495,
+            "position_rmse_xyz_m": [
+              0.006853299442566046,
+              0.03443252322695842,
+              0.04544420940735291
+            ],
+            "position_rmse_3d_m": 0.05742597441649423,
+            "name": "ALIGN TO GRASP"
+          }
+        }
+      },
+      "raw_recomputed_physical": {
+        "linear_speed_peak_mps": 0.1907860726745459,
+        "generalized_actuator_torque_peak_nm": 34.39483642578125,
+        "position_rmse_3d_m": 0.05209794859576179
+      },
+      "teacher_parity_max": 1.942890293094024e-16,
+      "students": {
+        "mlp": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.09606198725594521,
+            "action_mae": [
+              0.09623075303628004,
+              0.14278079824891318,
+              0.08465588363974359,
+              0.06884540677140528,
+              0.026116070196850603,
+              0.08132760489408193,
+              0.012817919753755559
+            ],
+            "slew_yield_mae": [
+              0.02864483766315545,
+              0.020151292405773655,
+              0.02424890792901953,
+              0.015594688718869092,
+              0.048189715189907126,
+              0.007690751852253336
+            ],
+            "slew_linear_mae_mps": 0.02434834599931613,
+            "slew_angular_mae_radps": 0.023825051920343187,
+            "x_sign_reference_samples": 588,
+            "x_sign_conflict_rate": 0.027210884353741496
+          },
+          "loaded": {
+            "samples": 0
+          },
+          "loaded_contact": {
+            "samples": 0
+          },
+          "loaded_no_contact": {
+            "samples": 0
+          },
+          "observed_contact": {
+            "samples": 382,
+            "action_rmse": 0.09528407919021702,
+            "action_mae": [
+              0.09910381441347774,
+              0.1464523246067702,
+              0.07998592153780297,
+              0.0690609715404011,
+              0.024607709499507927,
+              0.0779968037664185,
+              0.0140171438485815
+            ],
+            "slew_yield_mae": [
+              0.030838753845413378,
+              0.018519493507982723,
+              0.02447664583075665,
+              0.014764625699704752,
+              0.045893181853974944,
+              0.00841028630914891
+            ],
+            "slew_linear_mae_mps": 0.024611631061384167,
+            "slew_angular_mae_radps": 0.023022697954276205,
+            "x_sign_reference_samples": 381,
+            "x_sign_conflict_rate": 0.028871391076115485
+          }
+        },
+        "esn": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.09520728659919869,
+            "action_mae": [
+              0.054120295125151215,
+              0.13226943459242443,
+              0.06534532891768297,
+              0.025274064000012808,
+              0.03310119091899353,
+              0.14916435375033407,
+              0.023544024673346032
+            ],
+            "slew_yield_mae": [
+              0.02820068032716034,
+              0.023904495748793754,
+              0.003669177333804515,
+              0.01971212093252856,
+              0.0909215686674159,
+              0.014126414804007628
+            ],
+            "slew_linear_mae_mps": 0.01859145113658605,
+            "slew_angular_mae_radps": 0.041586701467984,
+            "x_sign_reference_samples": 588,
+            "x_sign_conflict_rate": 0.04931972789115646
+          },
+          "loaded": {
+            "samples": 0
+          },
+          "loaded_contact": {
+            "samples": 0
+          },
+          "loaded_no_contact": {
+            "samples": 0
+          },
+          "observed_contact": {
+            "samples": 382,
+            "action_rmse": 0.09714145712002573,
+            "action_mae": [
+              0.05059786981981056,
+              0.14212963917694355,
+              0.06999018461878594,
+              0.02525386701737202,
+              0.03360108833982093,
+              0.1483439630213855,
+              0.026069015546728535
+            ],
+            "slew_yield_mae": [
+              0.027042254975633704,
+              0.025282511458319758,
+              0.0034811387881486617,
+              0.02016065300389254,
+              0.09073653759973144,
+              0.015641409328037113
+            ],
+            "slew_linear_mae_mps": 0.018601968407367355,
+            "slew_angular_mae_radps": 0.04217953331055369,
+            "x_sign_reference_samples": 381,
+            "x_sign_conflict_rate": 0.05774278215223097
+          }
+        }
+      },
+      "mjb_sha256": "d201ea83bbaf69e57e5e1daa563a5b73d45ac1072e86941c20839480732eaf79"
+    },
+    {
+      "id": "train_9602_loaded_lift",
+      "split": "train",
+      "seed": 9602,
+      "requested": "loaded_lift",
+      "actual_first_stage": 3,
+      "trigger_s": 2.400000000001076,
+      "first_contact_s": 2.8640999999999943,
+      "final_stage": 3,
+      "task_success": false,
+      "strict_success": false,
+      "failed_task": [
+        "endpoint"
+      ],
+      "failed_gate": [
+        "task",
+        "gap",
+        "penetration"
+      ],
+      "endpoint_m": 0.10531807415961836,
+      "lift_m": 0.15181524246231942,
+      "contact_union_duration_s": 11.424399999980045,
+      "rod_contact_s": 10.36244999998252,
+      "contact_by_object": {
+        "push_back_guard": {
+          "first_s": 3.1755999999992683,
+          "last_s": 23.53905000021965,
+          "duration_s": 1.5111500000009768,
+          "bodies": [
+            "fr3_link6",
+            "hand"
+          ]
+        },
+        "ws_push_back_guard_bracket": {
+          "first_s": 4.727549999995651,
+          "last_s": 14.336699999973257,
+          "duration_s": 2.6456000000005035,
+          "bodies": [
+            "hand"
+          ]
+        },
+        "target_object_geom": {
+          "first_s": 2.1779000000015936,
+          "last_s": 24.00000000023495,
+          "duration_s": 21.819500000162567,
+          "bodies": [
+            "left_finger",
+            "right_finger"
+          ]
+        },
+        "push_rod_geom": {
+          "first_s": 2.8640999999999943,
+          "last_s": 17.650400000024167,
+          "duration_s": 10.36244999998252,
+          "bodies": [
+            "fr3_link7",
+            "hand"
+          ]
+        }
+      },
+      "sparse_contact_samples": 283,
+      "longest_sparse_contact_run_s": 1.28,
+      "physical": {
+        "samples": 480000,
+        "timestep_s": 5e-05,
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.15084588779898503,
+        "generalized_actuator_torque_peak_nm": 35.01511238819964,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          3.6164053595605954,
+          35.01511238819964,
+          3.708143445442662,
+          28.5904604203247,
+          1.6611918907939467,
+          3.4282115636185404,
+          0.9947737383195236
+        ],
+        "actuator_force_peak_by_actuator": [
+          3.6164053595605954,
+          35.01511238819964,
+          3.708143445442662,
+          28.5904604203247,
+          1.6611918907939467,
+          3.4282115636185404,
+          0.9947737383195236
+        ],
+        "position_rmse_xyz_m": [
+          0.01318771474807277,
+          0.029615329035596653,
+          0.1877705346571302
+        ],
+        "position_rmse_3d_m": 0.19054856918798346,
+        "stages": {
+          "0": {
+            "count": 16000,
+            "error_peak_m": 0.05999999457806655,
+            "speed_peak_mps": 0.07960522936595708,
+            "qfrc_peak_nm": 31.826665184169585,
+            "first_s": 5e-05,
+            "last_s": 0.7999999999999201,
+            "position_rmse_xyz_m": [
+              0.0006987936080437096,
+              3.519849630667543e-05,
+              0.03920088240469607
+            ],
+            "position_rmse_3d_m": 0.03920712604549834,
+            "name": "REACH / CONTACT RESPONSE"
+          },
+          "1": {
+            "count": 24800,
+            "error_peak_m": 0.083764606884733,
+            "speed_peak_mps": 0.07999680038295828,
+            "qfrc_peak_nm": 31.149530700901188,
+            "first_s": 0.8000499999999201,
+            "last_s": 2.040000000001915,
+            "position_rmse_xyz_m": [
+              0.0017708274388116415,
+              2.8952523471466372e-05,
+              0.04731288700827308
+            ],
+            "position_rmse_3d_m": 0.047346023540781955,
+            "name": "ALIGN TO GRASP"
+          },
+          "2": {
+            "count": 7200,
+            "error_peak_m": 0.007539456463364781,
+            "speed_peak_mps": 0.019955001455310747,
+            "qfrc_peak_nm": 34.14854928232049,
+            "first_s": 2.040050000001915,
+            "last_s": 2.400000000001076,
+            "position_rmse_xyz_m": [
+              0.001231442566017083,
+              2.3860997913537762e-05,
+              0.005538153336168479
+            ],
+            "position_rmse_3d_m": 0.005673461246499726,
+            "name": "CLOSE GRIPPER"
+          },
+          "3": {
+            "count": 432000,
+            "error_peak_m": 0.2519227266106837,
+            "speed_peak_mps": 0.15084588779898503,
+            "qfrc_peak_nm": 35.01511238819964,
+            "first_s": 2.400050000001076,
+            "last_s": 24.00000000023495,
+            "position_rmse_xyz_m": [
+              0.013893034967891398,
+              0.03121729614491032,
+              0.19745726307303405
+            ],
+            "position_rmse_3d_m": 0.20039188291822466,
+            "name": "LOADED LIFT"
+          }
+        }
+      },
+      "raw_recomputed_physical": {
+        "linear_speed_peak_mps": 0.15084589204615514,
+        "generalized_actuator_torque_peak_nm": 35.015113830566406,
+        "position_rmse_3d_m": 0.19054856919219845
+      },
+      "teacher_parity_max": 1.6653345369377348e-16,
+      "students": {
+        "mlp": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.08798775286948467,
+            "action_mae": [
+              0.06576817068513223,
+              0.15369273986486867,
+              0.04804425101066365,
+              0.03415366023195082,
+              0.01268290935833477,
+              0.04920077622962484,
+              0.01023461970021721
+            ],
+            "slew_yield_mae": [
+              0.019942395188323723,
+              0.014408220563350366,
+              0.00980427324128181,
+              0.007609745615000873,
+              0.027371761067555334,
+              0.0061407718201303245
+            ],
+            "slew_linear_mae_mps": 0.014718296330985325,
+            "slew_angular_mae_radps": 0.013707426167562176,
+            "x_sign_reference_samples": 545,
+            "x_sign_conflict_rate": 0.03669724770642202
+          },
+          "loaded": {
+            "samples": 540,
+            "action_rmse": 0.09265980321702101,
+            "action_mae": [
+              0.07160548114650965,
+              0.1699798445496626,
+              0.05256027267588732,
+              0.037263309552268344,
+              0.013875656058356603,
+              0.05374940861980108,
+              0.011285044540107668
+            ],
+            "slew_yield_mae": [
+              0.021988875186167767,
+              0.015746020856215053,
+              0.010660607637502855,
+              0.008325393635013974,
+              0.029910008559158267,
+              0.006771026724064599
+            ],
+            "slew_linear_mae_mps": 0.01613183455996192,
+            "slew_angular_mae_radps": 0.015002142972745608,
+            "x_sign_reference_samples": 540,
+            "x_sign_conflict_rate": 0.037037037037037035
+          },
+          "loaded_contact": {
+            "samples": 283,
+            "action_rmse": 0.1074579310334195,
+            "action_mae": [
+              0.08009883743997469,
+              0.21570089950920784,
+              0.06842246925620987,
+              0.03929737969082953,
+              0.014474577676277247,
+              0.04886715838726727,
+              0.010640202871101028
+            ],
+            "slew_yield_mae": [
+              0.017762281174461506,
+              0.020104352165455523,
+              0.012289696868667203,
+              0.008684746605766347,
+              0.0290941044847552,
+              0.006384121722660622
+            ],
+            "slew_linear_mae_mps": 0.016718776736194735,
+            "slew_angular_mae_radps": 0.014720990937727397,
+            "x_sign_reference_samples": 283,
+            "x_sign_conflict_rate": 0.06713780918727916
+          },
+          "loaded_no_contact": {
+            "samples": 257,
+            "action_rmse": 0.07297175955046573,
+            "action_mae": [
+              0.06225287480000915,
+              0.11963331321288713,
+              0.03509334025475389,
+              0.035023457998911135,
+              0.01321614314835065,
+              0.05912558300037323,
+              0.011995123109480718
+            ],
+            "slew_yield_mae": [
+              0.026643062366373767,
+              0.010946768869775175,
+              0.008866707822640936,
+              0.007929685889010388,
+              0.03080845545820906,
+              0.007197073865688432
+            ],
+            "slew_linear_mae_mps": 0.015485513019596596,
+            "slew_angular_mae_radps": 0.015311738404302623,
+            "x_sign_reference_samples": 257,
+            "x_sign_conflict_rate": 0.0038910505836575876
+          },
+          "observed_contact": {
+            "samples": 283,
+            "action_rmse": 0.1074579310334195,
+            "action_mae": [
+              0.08009883743997469,
+              0.21570089950920784,
+              0.06842246925620987,
+              0.03929737969082953,
+              0.014474577676277247,
+              0.04886715838726727,
+              0.010640202871101028
+            ],
+            "slew_yield_mae": [
+              0.017762281174461506,
+              0.020104352165455523,
+              0.012289696868667203,
+              0.008684746605766347,
+              0.0290941044847552,
+              0.006384121722660622
+            ],
+            "slew_linear_mae_mps": 0.016718776736194735,
+            "slew_angular_mae_radps": 0.014720990937727397,
+            "x_sign_reference_samples": 283,
+            "x_sign_conflict_rate": 0.06713780918727916
+          }
+        },
+        "esn": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.06560169030522399,
+            "action_mae": [
+              0.03861169132629342,
+              0.09381122076672754,
+              0.07459165852595517,
+              0.020381041423913383,
+              0.01825461826497084,
+              0.054420332913273355,
+              0.009364581754187402
+            ],
+            "slew_yield_mae": [
+              0.009826169065640523,
+              0.021620405529174443,
+              0.004528741566941787,
+              0.010952770958982507,
+              0.031196212120524452,
+              0.005618749052512443
+            ],
+            "slew_linear_mae_mps": 0.011991772053918912,
+            "slew_angular_mae_radps": 0.01592257737733981,
+            "x_sign_reference_samples": 545,
+            "x_sign_conflict_rate": 0.007339449541284404
+          },
+          "loaded": {
+            "samples": 540,
+            "action_rmse": 0.0690492723087057,
+            "action_mae": [
+              0.04165889053653736,
+              0.10332686215824508,
+              0.08207976043175744,
+              0.022097653283677642,
+              0.02003670622568429,
+              0.05966346387355378,
+              0.010242475513001783
+            ],
+            "slew_yield_mae": [
+              0.010686168111514323,
+              0.023766717561349928,
+              0.004868691936651174,
+              0.012022023735410576,
+              0.03422812731449878,
+              0.006145485307801069
+            ],
+            "slew_linear_mae_mps": 0.013107192536505137,
+            "slew_angular_mae_radps": 0.017465212119236816,
+            "x_sign_reference_samples": 540,
+            "x_sign_conflict_rate": 0.007407407407407408
+          },
+          "loaded_contact": {
+            "samples": 283,
+            "action_rmse": 0.0730716050879043,
+            "action_mae": [
+              0.051673535306639276,
+              0.10112436060821536,
+              0.0906908085206499,
+              0.025208428125681442,
+              0.02281456649837809,
+              0.05907582122923554,
+              0.011310639552335558
+            ],
+            "slew_yield_mae": [
+              0.010889895694307726,
+              0.025366259780460653,
+              0.005717406915972783,
+              0.01368873989902686,
+              0.03536411885460143,
+              0.006786383731401334
+            ],
+            "slew_linear_mae_mps": 0.013991187463580407,
+            "slew_angular_mae_radps": 0.018613080828343204,
+            "x_sign_reference_samples": 283,
+            "x_sign_conflict_rate": 0.007067137809187279
+          },
+          "loaded_no_contact": {
+            "samples": 257,
+            "action_rmse": 0.06432970924691365,
+            "action_mae": [
+              0.030631091042611955,
+              0.10575218487676041,
+              0.07259755572686798,
+              0.018672169702794072,
+              0.016977817287270484,
+              0.060310556746480094,
+              0.00906624818564203
+            ],
+            "slew_yield_mae": [
+              0.010461829956142456,
+              0.022005353950422583,
+              0.003934114741522705,
+              0.010186690372362278,
+              0.032977210560222354,
+              0.005439748911385223
+            ],
+            "slew_linear_mae_mps": 0.012133766216029254,
+            "slew_angular_mae_radps": 0.01620121661465663,
+            "x_sign_reference_samples": 257,
+            "x_sign_conflict_rate": 0.007782101167315175
+          },
+          "observed_contact": {
+            "samples": 283,
+            "action_rmse": 0.0730716050879043,
+            "action_mae": [
+              0.051673535306639276,
+              0.10112436060821536,
+              0.0906908085206499,
+              0.025208428125681442,
+              0.02281456649837809,
+              0.05907582122923554,
+              0.011310639552335558
+            ],
+            "slew_yield_mae": [
+              0.010889895694307726,
+              0.025366259780460653,
+              0.005717406915972783,
+              0.01368873989902686,
+              0.03536411885460143,
+              0.006786383731401334
+            ],
+            "slew_linear_mae_mps": 0.013991187463580407,
+            "slew_angular_mae_radps": 0.018613080828343204,
+            "x_sign_reference_samples": 283,
+            "x_sign_conflict_rate": 0.007067137809187279
+          }
+        }
+      },
+      "mjb_sha256": "d201ea83bbaf69e57e5e1daa563a5b73d45ac1072e86941c20839480732eaf79"
+    },
+    {
+      "id": "validation_9610_approach",
+      "split": "validation",
+      "seed": 9610,
+      "requested": "approach",
+      "actual_first_stage": 0,
+      "trigger_s": 0.0,
+      "first_contact_s": 0.4563499999999579,
+      "final_stage": 0,
+      "task_success": false,
+      "strict_success": false,
+      "failed_task": [
+        "lift",
+        "endpoint",
+        "stage"
+      ],
+      "failed_gate": [
+        "task",
+        "release",
+        "gap"
+      ],
+      "endpoint_m": 0.016010589960599193,
+      "lift_m": -1.4144775006830201e-07,
+      "contact_union_duration_s": 21.612500000155695,
+      "rod_contact_s": 21.612500000155695,
+      "contact_by_object": {
+        "push_rod_geom": {
+          "first_s": 0.4563499999999579,
+          "last_s": 24.00000000023495,
+          "duration_s": 21.612500000155695,
+          "bodies": [
+            "hand"
+          ]
+        }
+      },
+      "sparse_contact_samples": 476,
+      "longest_sparse_contact_run_s": 1.76,
+      "physical": {
+        "samples": 480000,
+        "timestep_s": 5e-05,
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.09102057136117303,
+        "generalized_actuator_torque_peak_nm": 31.826665184169585,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          3.1044615413394725,
+          31.826665184169585,
+          3.1611688030811522,
+          26.17761874041475,
+          1.3028640011883075,
+          4.082824845787393,
+          1.2378342016963493
+        ],
+        "actuator_force_peak_by_actuator": [
+          3.1044615413394725,
+          31.826665184169585,
+          3.1611688030811522,
+          26.17761874041475,
+          1.3028640011883075,
+          4.082824845787393,
+          1.2378342016963493
+        ],
+        "position_rmse_xyz_m": [
+          0.007525694164129408,
+          0.007277081245392059,
+          0.015228584978358262
+        ],
+        "position_rmse_3d_m": 0.018479766896449944,
+        "stages": {
+          "0": {
+            "count": 480000,
+            "error_peak_m": 0.05999999457806655,
+            "speed_peak_mps": 0.09102057136117303,
+            "qfrc_peak_nm": 31.826665184169585,
+            "first_s": 5e-05,
+            "last_s": 24.00000000023495,
+            "position_rmse_xyz_m": [
+              0.007525694164129408,
+              0.007277081245392059,
+              0.015228584978358262
+            ],
+            "position_rmse_3d_m": 0.018479766896449944,
+            "name": "REACH / CONTACT RESPONSE"
+          }
+        }
+      },
+      "raw_recomputed_physical": {
+        "linear_speed_peak_mps": 0.0910205737831013,
+        "generalized_actuator_torque_peak_nm": 31.8266658782959,
+        "position_rmse_3d_m": 0.018479766896134456
+      },
+      "teacher_parity_max": 1.249000902703301e-16,
+      "students": {
+        "mlp": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.11320815407127675,
+            "action_mae": [
+              0.12602725356152414,
+              0.18247911927583252,
+              0.06494253959701884,
+              0.034301764137022746,
+              0.00530790349288512,
+              0.07945766827589694,
+              0.014032570242944761
+            ],
+            "slew_yield_mae": [
+              0.054431079537753606,
+              0.02059140590579645,
+              0.01061110811884349,
+              0.003184742095731073,
+              0.047477652995038706,
+              0.008419542145766854
+            ],
+            "slew_linear_mae_mps": 0.028544531187464747,
+            "slew_angular_mae_radps": 0.019693979078845538,
+            "x_sign_reference_samples": 588,
+            "x_sign_conflict_rate": 0.4608843537414966
+          },
+          "loaded": {
+            "samples": 0
+          },
+          "loaded_contact": {
+            "samples": 0
+          },
+          "loaded_no_contact": {
+            "samples": 0
+          },
+          "observed_contact": {
+            "samples": 476,
+            "action_rmse": 0.10873595911571747,
+            "action_mae": [
+              0.13328412788607924,
+              0.15481917855422944,
+              0.06523027619423208,
+              0.035572509201624095,
+              0.005349220019147358,
+              0.09419801199162761,
+              0.01464722926878631
+            ],
+            "slew_yield_mae": [
+              0.055302346289846406,
+              0.020870728463329376,
+              0.011097243072466097,
+              0.0032095320114884176,
+              0.05649748052709876,
+              0.008788337561271786
+            ],
+            "slew_linear_mae_mps": 0.029090105941880818,
+            "slew_angular_mae_radps": 0.022831783366619656,
+            "x_sign_reference_samples": 476,
+            "x_sign_conflict_rate": 0.3760504201680672
+          }
+        },
+        "esn": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.08749483001703989,
+            "action_mae": [
+              0.10134882365334119,
+              0.11183970463627811,
+              0.05441431014162801,
+              0.04337151642897079,
+              0.04355055430237524,
+              0.12546216033883978,
+              0.0167672210407157
+            ],
+            "slew_yield_mae": [
+              0.009643091665923703,
+              0.017298660888001468,
+              0.007682984050444893,
+              0.026130332581425168,
+              0.07527553857926492,
+              0.01006033262442942
+            ],
+            "slew_linear_mae_mps": 0.011541578868123313,
+            "slew_angular_mae_radps": 0.037155401261706494,
+            "x_sign_reference_samples": 588,
+            "x_sign_conflict_rate": 0.00510204081632653
+          },
+          "loaded": {
+            "samples": 0
+          },
+          "loaded_contact": {
+            "samples": 0
+          },
+          "loaded_no_contact": {
+            "samples": 0
+          },
+          "observed_contact": {
+            "samples": 476,
+            "action_rmse": 0.08951965776988706,
+            "action_mae": [
+              0.10395612148287527,
+              0.11151940784522547,
+              0.05838142950905494,
+              0.0501550747623543,
+              0.04737191958351477,
+              0.1358813667355516,
+              0.016533390577818035
+            ],
+            "slew_yield_mae": [
+              0.008900261660544025,
+              0.018747089935777488,
+              0.007806348075951374,
+              0.02842315175010891,
+              0.08152660454884483,
+              0.009920034346690821
+            ],
+            "slew_linear_mae_mps": 0.01181789989075763,
+            "slew_angular_mae_radps": 0.0399565968818815,
+            "x_sign_reference_samples": 476,
+            "x_sign_conflict_rate": 0.0
+          }
+        }
+      },
+      "mjb_sha256": "a810d13142073de4f4b5417bd4b9ff7747f56ace3c29af976276c5a6a89a8a3e"
+    },
+    {
+      "id": "validation_9610_loaded_lift",
+      "split": "validation",
+      "seed": 9610,
+      "requested": "loaded_lift",
+      "actual_first_stage": 3,
+      "trigger_s": 2.400000000001076,
+      "first_contact_s": 2.8704999999999794,
+      "final_stage": 3,
+      "task_success": false,
+      "strict_success": false,
+      "failed_task": [
+        "object_speed",
+        "endpoint"
+      ],
+      "failed_gate": [
+        "task",
+        "penetration"
+      ],
+      "endpoint_m": 0.04148445635249892,
+      "lift_m": 0.21081516516302296,
+      "contact_union_duration_s": 3.1153499999994088,
+      "rod_contact_s": 3.0576499999995432,
+      "contact_by_object": {
+        "push_back_guard": {
+          "first_s": 3.195499999999222,
+          "last_s": 8.868549999986001,
+          "duration_s": 0.1994999999999862,
+          "bodies": [
+            "fr3_link6"
+          ]
+        },
+        "target_object_geom": {
+          "first_s": 2.1779000000015936,
+          "last_s": 24.00000000023495,
+          "duration_s": 21.81935000016256,
+          "bodies": [
+            "left_finger",
+            "right_finger"
+          ]
+        },
+        "push_rod_geom": {
+          "first_s": 2.8704999999999794,
+          "last_s": 8.980299999985741,
+          "duration_s": 3.0576499999995432,
+          "bodies": [
+            "fr3_link7",
+            "hand"
+          ]
+        }
+      },
+      "sparse_contact_samples": 71,
+      "longest_sparse_contact_run_s": 0.24,
+      "physical": {
+        "samples": 480000,
+        "timestep_s": 5e-05,
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.1469787199787816,
+        "generalized_actuator_torque_peak_nm": 40.15999520927296,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          3.0563963906985574,
+          40.15999520927296,
+          2.973122151369753,
+          28.836476356511348,
+          1.7582613223818941,
+          3.584597746978024,
+          0.8687038412905486
+        ],
+        "actuator_force_peak_by_actuator": [
+          3.0563963906985574,
+          40.15999520927296,
+          2.973122151369753,
+          28.836476356511348,
+          1.7582613223818941,
+          3.584597746978024,
+          0.8687038412905486
+        ],
+        "position_rmse_xyz_m": [
+          0.004452823730712883,
+          0.025008737256202247,
+          0.14159798545535693
+        ],
+        "position_rmse_3d_m": 0.14385845148388754,
+        "stages": {
+          "0": {
+            "count": 16000,
+            "error_peak_m": 0.05999999457806655,
+            "speed_peak_mps": 0.07960522936595708,
+            "qfrc_peak_nm": 31.826665184169585,
+            "first_s": 5e-05,
+            "last_s": 0.7999999999999201,
+            "position_rmse_xyz_m": [
+              0.0006987936080437096,
+              3.519849630667543e-05,
+              0.03920088240469607
+            ],
+            "position_rmse_3d_m": 0.03920712604549834,
+            "name": "REACH / CONTACT RESPONSE"
+          },
+          "1": {
+            "count": 24800,
+            "error_peak_m": 0.083764606884733,
+            "speed_peak_mps": 0.07999680038295828,
+            "qfrc_peak_nm": 31.149530700901188,
+            "first_s": 0.8000499999999201,
+            "last_s": 2.040000000001915,
+            "position_rmse_xyz_m": [
+              0.0017708274388116415,
+              2.8952523471466372e-05,
+              0.04731288700827308
+            ],
+            "position_rmse_3d_m": 0.047346023540781955,
+            "name": "ALIGN TO GRASP"
+          },
+          "2": {
+            "count": 7200,
+            "error_peak_m": 0.007539456463364781,
+            "speed_peak_mps": 0.02021377642018646,
+            "qfrc_peak_nm": 34.50607171494831,
+            "first_s": 2.040050000001915,
+            "last_s": 2.400000000001076,
+            "position_rmse_xyz_m": [
+              0.0012442380791910991,
+              2.710908108852443e-05,
+              0.005543033351244793
+            ],
+            "position_rmse_3d_m": 0.005681028254902337,
+            "name": "CLOSE GRIPPER"
+          },
+          "3": {
+            "count": 432000,
+            "error_peak_m": 0.251911200726981,
+            "speed_peak_mps": 0.1469787199787816,
+            "qfrc_peak_nm": 40.15999520927296,
+            "first_s": 2.400050000001076,
+            "last_s": 24.00000000023495,
+            "position_rmse_xyz_m": [
+              0.004669775428022555,
+              0.02636152169606526,
+              0.14863321243438904
+            ],
+            "position_rmse_3d_m": 0.15102505907049502,
+            "name": "LOADED LIFT"
+          }
+        }
+      },
+      "raw_recomputed_physical": {
+        "linear_speed_peak_mps": 0.1469787138266268,
+        "generalized_actuator_torque_peak_nm": 40.159996032714844,
+        "position_rmse_3d_m": 0.14385845147775778
+      },
+      "teacher_parity_max": 1.1102230246251565e-16,
+      "students": {
+        "mlp": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.08929205206375944,
+            "action_mae": [
+              0.08564969713419252,
+              0.1336325101682444,
+              0.04338366735687769,
+              0.054624312386200004,
+              0.02238803170621196,
+              0.07091347827571261,
+              0.007968962980217082
+            ],
+            "slew_yield_mae": [
+              0.009823655993878171,
+              0.013019191883316305,
+              0.00955784486502247,
+              0.013432819023727168,
+              0.03161093487713998,
+              0.004781377788130246
+            ],
+            "slew_linear_mae_mps": 0.010800230914072288,
+            "slew_angular_mae_radps": 0.016608377229665794,
+            "x_sign_reference_samples": 544,
+            "x_sign_conflict_rate": 0.014705882352941176
+          },
+          "loaded": {
+            "samples": 540,
+            "action_rmse": 0.09402641731344366,
+            "action_mae": [
+              0.09371404350456035,
+              0.14768555304695055,
+              0.04735369597535012,
+              0.059927124239952,
+              0.024666503929064332,
+              0.07788852043982919,
+              0.008762962965624878
+            ],
+            "slew_yield_mae": [
+              0.010695791600214038,
+              0.01419364752224031,
+              0.010405494112803565,
+              0.014799902357438593,
+              0.034673173182648225,
+              0.005257777779374924
+            ],
+            "slew_linear_mae_mps": 0.011764977745085932,
+            "slew_angular_mae_radps": 0.018243617773153906,
+            "x_sign_reference_samples": 539,
+            "x_sign_conflict_rate": 0.014842300556586271
+          },
+          "loaded_contact": {
+            "samples": 71,
+            "action_rmse": 0.09692259102502879,
+            "action_mae": [
+              0.056344929739785714,
+              0.1347166037272684,
+              0.12229403655988501,
+              0.07968775196114725,
+              0.03511932946086965,
+              0.05862912572493249,
+              0.010253057063460682
+            ],
+            "slew_yield_mae": [
+              0.018984573665431565,
+              0.035607015588261605,
+              0.023908726548049073,
+              0.021071597676521787,
+              0.032963915170623456,
+              0.0061518342380764085
+            ],
+            "slew_linear_mae_mps": 0.026166771933914076,
+            "slew_angular_mae_radps": 0.02006244902840722,
+            "x_sign_reference_samples": 71,
+            "x_sign_conflict_rate": 0.04225352112676056
+          },
+          "loaded_no_contact": {
+            "samples": 469,
+            "action_rmse": 0.09358016606293233,
+            "action_mae": [
+              0.09937120145189302,
+              0.1496488694684803,
+              0.03600878300839495,
+              0.0569356432842913,
+              0.02308409324088058,
+              0.0808041217719351,
+              0.008537383688553784
+            ],
+            "slew_yield_mae": [
+              0.009440986639381699,
+              0.010951964936552665,
+              0.00836129474627364,
+              0.013850455944528337,
+              0.0349319307921445,
+              0.005122430213132274
+            ],
+            "slew_linear_mae_mps": 0.009584748774069304,
+            "slew_angular_mae_radps": 0.0179682723166017,
+            "x_sign_reference_samples": 468,
+            "x_sign_conflict_rate": 0.010683760683760684
+          },
+          "observed_contact": {
+            "samples": 71,
+            "action_rmse": 0.09692259102502879,
+            "action_mae": [
+              0.056344929739785714,
+              0.1347166037272684,
+              0.12229403655988501,
+              0.07968775196114725,
+              0.03511932946086965,
+              0.05862912572493249,
+              0.010253057063460682
+            ],
+            "slew_yield_mae": [
+              0.018984573665431565,
+              0.035607015588261605,
+              0.023908726548049073,
+              0.021071597676521787,
+              0.032963915170623456,
+              0.0061518342380764085
+            ],
+            "slew_linear_mae_mps": 0.026166771933914076,
+            "slew_angular_mae_radps": 0.02006244902840722,
+            "x_sign_reference_samples": 71,
+            "x_sign_conflict_rate": 0.04225352112676056
+          }
+        },
+        "esn": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.08031376349047727,
+            "action_mae": [
+              0.07954656031051076,
+              0.09808579795193113,
+              0.07996257996521716,
+              0.03150012211276995,
+              0.02136805774906597,
+              0.06381168376986981,
+              0.010749564580239276
+            ],
+            "slew_yield_mae": [
+              0.027179384595022088,
+              0.02489053391908483,
+              0.006471889613479093,
+              0.012820834649439571,
+              0.028436110471205412,
+              0.006449738748143559
+            ],
+            "slew_linear_mae_mps": 0.01951393604252872,
+            "slew_angular_mae_radps": 0.015902227956262914,
+            "x_sign_reference_samples": 544,
+            "x_sign_conflict_rate": 0.016544117647058824
+          },
+          "loaded": {
+            "samples": 540,
+            "action_rmse": 0.08456835281525238,
+            "action_mae": [
+              0.08714260206768884,
+              0.10810641940665339,
+              0.08802144327443365,
+              0.03445010868142147,
+              0.02349483151782066,
+              0.07007784154426375,
+              0.011774864672979989
+            ],
+            "slew_yield_mae": [
+              0.029929092780170835,
+              0.027391871103613578,
+              0.00702944792880191,
+              0.014096898910692384,
+              0.03113945916947585,
+              0.0070649188037879875
+            ],
+            "slew_linear_mae_mps": 0.02145013727086216,
+            "slew_angular_mae_radps": 0.017433758961318813,
+            "x_sign_reference_samples": 539,
+            "x_sign_conflict_rate": 0.014842300556586271
+          },
+          "loaded_contact": {
+            "samples": 71,
+            "action_rmse": 0.094434930796209,
+            "action_mae": [
+              0.10862609396572623,
+              0.1234331559212223,
+              0.07559281654134038,
+              0.03901016574363521,
+              0.0483720773034678,
+              0.07407210351228177,
+              0.013120494142035465
+            ],
+            "slew_yield_mae": [
+              0.017090068116074445,
+              0.02179038510794676,
+              0.009960127546125552,
+              0.029023246382080668,
+              0.043899983845178916,
+              0.007872296485221282
+            ],
+            "slew_linear_mae_mps": 0.016280193590048918,
+            "slew_angular_mae_radps": 0.026931842237493626,
+            "x_sign_reference_samples": 71,
+            "x_sign_conflict_rate": 0.04225352112676056
+          },
+          "loaded_no_contact": {
+            "samples": 469,
+            "action_rmse": 0.0829725018529045,
+            "action_mae": [
+              0.08389030372065112,
+              0.10578616718376554,
+              0.0899029624600405,
+              0.033759780213581024,
+              0.019728766590782352,
+              0.06947316649153605,
+              0.011571155307728514
+            ],
+            "slew_yield_mae": [
+              0.03187274043720896,
+              0.028239857256475723,
+              0.006585784276712289,
+              0.011837259954469423,
+              0.02920769530598995,
+              0.006942693184637107
+            ],
+            "slew_linear_mae_mps": 0.0222327939901324,
+            "slew_angular_mae_radps": 0.015995882815032218,
+            "x_sign_reference_samples": 468,
+            "x_sign_conflict_rate": 0.010683760683760684
+          },
+          "observed_contact": {
+            "samples": 71,
+            "action_rmse": 0.094434930796209,
+            "action_mae": [
+              0.10862609396572623,
+              0.1234331559212223,
+              0.07559281654134038,
+              0.03901016574363521,
+              0.0483720773034678,
+              0.07407210351228177,
+              0.013120494142035465
+            ],
+            "slew_yield_mae": [
+              0.017090068116074445,
+              0.02179038510794676,
+              0.009960127546125552,
+              0.029023246382080668,
+              0.043899983845178916,
+              0.007872296485221282
+            ],
+            "slew_linear_mae_mps": 0.016280193590048918,
+            "slew_angular_mae_radps": 0.026931842237493626,
+            "x_sign_reference_samples": 71,
+            "x_sign_conflict_rate": 0.04225352112676056
+          }
+        }
+      },
+      "mjb_sha256": "a810d13142073de4f4b5417bd4b9ff7747f56ace3c29af976276c5a6a89a8a3e"
+    },
+    {
+      "id": "validation_9611_approach",
+      "split": "validation",
+      "seed": 9611,
+      "requested": "approach",
+      "actual_first_stage": 0,
+      "trigger_s": 0.0,
+      "first_contact_s": 0.43329999999996044,
+      "final_stage": 1,
+      "task_success": false,
+      "strict_success": false,
+      "failed_task": [
+        "lift",
+        "endpoint",
+        "stage"
+      ],
+      "failed_gate": [
+        "task",
+        "release",
+        "gap"
+      ],
+      "endpoint_m": 0.05207251209762235,
+      "lift_m": -1.4144775062341353e-07,
+      "contact_union_duration_s": 18.42590000004991,
+      "rod_contact_s": 18.35205000004746,
+      "contact_by_object": {
+        "push_back_guard": {
+          "first_s": 0.6979499999999313,
+          "last_s": 12.213099999978207,
+          "duration_s": 0.7198499999999289,
+          "bodies": [
+            "fr3_link6"
+          ]
+        },
+        "target_object_geom": {
+          "first_s": 23.848950000229937,
+          "last_s": 23.94005000023296,
+          "duration_s": 0.028150000000000293,
+          "bodies": [
+            "left_finger"
+          ]
+        },
+        "push_rod_geom": {
+          "first_s": 0.43329999999996044,
+          "last_s": 23.99970000023494,
+          "duration_s": 18.35205000004746,
+          "bodies": [
+            "fr3_link7",
+            "hand"
+          ]
+        }
+      },
+      "sparse_contact_samples": 407,
+      "longest_sparse_contact_run_s": 0.68,
+      "physical": {
+        "samples": 480000,
+        "timestep_s": 5e-05,
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.1923281953706444,
+        "generalized_actuator_torque_peak_nm": 32.48771436013881,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          3.517536835380826,
+          32.48771436013881,
+          3.5442681167889503,
+          26.573841695764987,
+          2.014388959213432,
+          3.726155356347194,
+          0.9285834068734906
+        ],
+        "actuator_force_peak_by_actuator": [
+          3.517536835380826,
+          32.48771436013881,
+          3.5442681167889503,
+          26.573841695764987,
+          2.014388959213432,
+          3.726155356347194,
+          0.9285834068734906
+        ],
+        "position_rmse_xyz_m": [
+          0.013548473161414028,
+          0.03290375306790488,
+          0.04484797281989632
+        ],
+        "position_rmse_3d_m": 0.05724996731015115,
+        "stages": {
+          "0": {
+            "count": 156000,
+            "error_peak_m": 0.05999999457806655,
+            "speed_peak_mps": 0.1923281953706444,
+            "qfrc_peak_nm": 32.48771436013881,
+            "first_s": 5e-05,
+            "last_s": 7.799999999988491,
+            "position_rmse_xyz_m": [
+              0.006877185564463508,
+              0.03320095091972268,
+              0.022640851604593625
+            ],
+            "position_rmse_3d_m": 0.040770172732564294,
+            "name": "REACH / CONTACT RESPONSE"
+          },
+          "1": {
+            "count": 324000,
+            "error_peak_m": 0.09110321962251353,
+            "speed_peak_mps": 0.031229827880773702,
+            "qfrc_peak_nm": 31.746030622923243,
+            "first_s": 7.800049999988491,
+            "last_s": 24.00000000023495,
+            "position_rmse_xyz_m": [
+              0.015785132648203665,
+              0.03275969621376273,
+              0.05227764926570946
+            ],
+            "position_rmse_3d_m": 0.06368140012191893,
+            "name": "ALIGN TO GRASP"
+          }
+        }
+      },
+      "raw_recomputed_physical": {
+        "linear_speed_peak_mps": 0.19232819997733333,
+        "generalized_actuator_torque_peak_nm": 32.48771286010742,
+        "position_rmse_3d_m": 0.05724996731185252
+      },
+      "teacher_parity_max": 3.3306690738754696e-16,
+      "students": {
+        "mlp": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.13487720939287218,
+            "action_mae": [
+              0.09757562337901031,
+              0.20179795580998658,
+              0.1022911710521764,
+              0.05484804763373264,
+              0.027413577910133546,
+              0.13177045451105726,
+              0.024596287107233154
+            ],
+            "slew_yield_mae": [
+              0.034162490128253835,
+              0.02765654562430906,
+              0.017785212282956476,
+              0.016397793185469967,
+              0.07748589977659069,
+              0.014757772264339896
+            ],
+            "slew_linear_mae_mps": 0.026534749345173133,
+            "slew_angular_mae_radps": 0.03621382174213353,
+            "x_sign_reference_samples": 588,
+            "x_sign_conflict_rate": 0.2193877551020408
+          },
+          "loaded": {
+            "samples": 0
+          },
+          "loaded_contact": {
+            "samples": 0
+          },
+          "loaded_no_contact": {
+            "samples": 0
+          },
+          "observed_contact": {
+            "samples": 407,
+            "action_rmse": 0.12572570592327909,
+            "action_mae": [
+              0.10536749549308214,
+              0.1496852849618308,
+              0.10260231557599055,
+              0.049737816298307695,
+              0.03021050177780928,
+              0.16335109287100386,
+              0.022335090041022534
+            ],
+            "slew_yield_mae": [
+              0.03187226003148171,
+              0.026745869559194786,
+              0.01589874987358399,
+              0.018052069773402762,
+              0.09604177668570968,
+              0.013401054024613517
+            ],
+            "slew_linear_mae_mps": 0.024838959821420165,
+            "slew_angular_mae_radps": 0.042498300161241995,
+            "x_sign_reference_samples": 406,
+            "x_sign_conflict_rate": 0.06157635467980296
+          }
+        },
+        "esn": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.10886845626931348,
+            "action_mae": [
+              0.08113398932813842,
+              0.16545309909761183,
+              0.04612022984465317,
+              0.034866053641400684,
+              0.02855497032496321,
+              0.1512433172584223,
+              0.018243941607539123
+            ],
+            "slew_yield_mae": [
+              0.014773419325920613,
+              0.0157386764186729,
+              0.010451057234855572,
+              0.01700243586033989,
+              0.09152424952799836,
+              0.010946364964523458
+            ],
+            "slew_linear_mae_mps": 0.013654384326483008,
+            "slew_angular_mae_radps": 0.039824350117620574,
+            "x_sign_reference_samples": 588,
+            "x_sign_conflict_rate": 0.030612244897959183
+          },
+          "loaded": {
+            "samples": 0
+          },
+          "loaded_contact": {
+            "samples": 0
+          },
+          "loaded_no_contact": {
+            "samples": 0
+          },
+          "observed_contact": {
+            "samples": 407,
+            "action_rmse": 0.11731634300350656,
+            "action_mae": [
+              0.08155452993515662,
+              0.19551104191082894,
+              0.05115867214128318,
+              0.03612137327635133,
+              0.030527386839890196,
+              0.15988533617223727,
+              0.02012073155868829
+            ],
+            "slew_yield_mae": [
+              0.014674452401565704,
+              0.017929440083228325,
+              0.010578976109018645,
+              0.018123980504959093,
+              0.09638050199063036,
+              0.012072438935212959
+            ],
+            "slew_linear_mae_mps": 0.014394289531270877,
+            "slew_angular_mae_radps": 0.04219230714360084,
+            "x_sign_reference_samples": 406,
+            "x_sign_conflict_rate": 0.022167487684729065
+          }
+        }
+      },
+      "mjb_sha256": "a2abf05856868973b1d82799df436e9b7411f5359d66e9a1347bf712393b764d"
+    },
+    {
+      "id": "validation_9611_loaded_lift",
+      "split": "validation",
+      "seed": 9611,
+      "requested": "loaded_lift",
+      "actual_first_stage": 3,
+      "trigger_s": 2.400000000001076,
+      "first_contact_s": 2.865049999999992,
+      "final_stage": 3,
+      "task_success": false,
+      "strict_success": false,
+      "failed_task": [
+        "endpoint"
+      ],
+      "failed_gate": [
+        "task",
+        "penetration"
+      ],
+      "endpoint_m": 0.05948840263583186,
+      "lift_m": 0.19742458676590263,
+      "contact_union_duration_s": 8.211899999987532,
+      "rod_contact_s": 6.682699999991095,
+      "contact_by_object": {
+        "push_back_guard": {
+          "first_s": 3.171899999999277,
+          "last_s": 23.989300000234596,
+          "duration_s": 0.5573499999999468,
+          "bodies": [
+            "fr3_link6",
+            "hand"
+          ]
+        },
+        "ws_push_back_guard_bracket": {
+          "first_s": 4.030149999997277,
+          "last_s": 12.476849999977592,
+          "duration_s": 4.02884999999728,
+          "bodies": [
+            "hand"
+          ]
+        },
+        "target_object_geom": {
+          "first_s": 2.1779000000015936,
+          "last_s": 24.00000000023495,
+          "duration_s": 21.819450000162565,
+          "bodies": [
+            "left_finger",
+            "right_finger"
+          ]
+        },
+        "push_rod_geom": {
+          "first_s": 2.865049999999992,
+          "last_s": 12.411399999977744,
+          "duration_s": 6.682699999991095,
+          "bodies": [
+            "fr3_link7"
+          ]
+        }
+      },
+      "sparse_contact_samples": 219,
+      "longest_sparse_contact_run_s": 1.76,
+      "physical": {
+        "samples": 480000,
+        "timestep_s": 5e-05,
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.15658709633292636,
+        "generalized_actuator_torque_peak_nm": 36.093566757438836,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          2.7676742455904106,
+          36.093566757438836,
+          2.800844465803634,
+          28.286179000201773,
+          2.0058980579868217,
+          3.4223097262827302,
+          0.8267716864662338
+        ],
+        "actuator_force_peak_by_actuator": [
+          2.7676742455904106,
+          36.093566757438836,
+          2.800844465803634,
+          28.286179000201773,
+          2.0058980579868217,
+          3.4223097262827302,
+          0.8267716864662338
+        ],
+        "position_rmse_xyz_m": [
+          0.017243060437110002,
+          0.022162320838383598,
+          0.1682938416999258
+        ],
+        "position_rmse_3d_m": 0.17062036441263678,
+        "stages": {
+          "0": {
+            "count": 16000,
+            "error_peak_m": 0.05999999457806655,
+            "speed_peak_mps": 0.07960522936595708,
+            "qfrc_peak_nm": 31.826665184169585,
+            "first_s": 5e-05,
+            "last_s": 0.7999999999999201,
+            "position_rmse_xyz_m": [
+              0.0006987936080437096,
+              3.519849630667543e-05,
+              0.03920088240469607
+            ],
+            "position_rmse_3d_m": 0.03920712604549834,
+            "name": "REACH / CONTACT RESPONSE"
+          },
+          "1": {
+            "count": 24800,
+            "error_peak_m": 0.083764606884733,
+            "speed_peak_mps": 0.07999680038295828,
+            "qfrc_peak_nm": 31.149530700901188,
+            "first_s": 0.8000499999999201,
+            "last_s": 2.040000000001915,
+            "position_rmse_xyz_m": [
+              0.0017708274388116415,
+              2.8952523471466372e-05,
+              0.04731288700827308
+            ],
+            "position_rmse_3d_m": 0.047346023540781955,
+            "name": "ALIGN TO GRASP"
+          },
+          "2": {
+            "count": 7200,
+            "error_peak_m": 0.007539456463364781,
+            "speed_peak_mps": 0.019955001455310747,
+            "qfrc_peak_nm": 34.16750800400529,
+            "first_s": 2.040050000001915,
+            "last_s": 2.400000000001076,
+            "position_rmse_xyz_m": [
+              0.0012336491595505308,
+              2.4015312588172726e-05,
+              0.005543261844817184
+            ],
+            "position_rmse_3d_m": 0.005678927615695102,
+            "name": "CLOSE GRIPPER"
+          },
+          "3": {
+            "count": 432000,
+            "error_peak_m": 0.2518856341473299,
+            "speed_peak_mps": 0.15658709633292636,
+            "qfrc_peak_nm": 36.093566757438836,
+            "first_s": 2.400050000001076,
+            "last_s": 24.00000000023495,
+            "position_rmse_xyz_m": [
+              0.01816963308889643,
+              0.023361135143774032,
+              0.17687244709054104
+            ],
+            "position_rmse_3d_m": 0.17933137132578625,
+            "name": "LOADED LIFT"
+          }
+        }
+      },
+      "raw_recomputed_physical": {
+        "linear_speed_peak_mps": 0.1565870940064286,
+        "generalized_actuator_torque_peak_nm": 36.09356689453125,
+        "position_rmse_3d_m": 0.17062036441066936
+      },
+      "teacher_parity_max": 1.6653345369377348e-16,
+      "students": {
+        "mlp": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.08853119467511088,
+            "action_mae": [
+              0.06176039567713781,
+              0.15095276122659826,
+              0.0464347685278146,
+              0.03315803825644684,
+              0.014439136192588613,
+              0.06330183511772444,
+              0.011692935692296109
+            ],
+            "slew_yield_mae": [
+              0.030044880660830487,
+              0.013382714018240573,
+              0.01036844558025749,
+              0.008601225629083819,
+              0.03473754512392648,
+              0.007015761415377666
+            ],
+            "slew_linear_mae_mps": 0.01793201341977618,
+            "slew_angular_mae_radps": 0.016784844056129324,
+            "x_sign_reference_samples": 544,
+            "x_sign_conflict_rate": 0.0625
+          },
+          "loaded": {
+            "samples": 540,
+            "action_rmse": 0.09323101233379445,
+            "action_mae": [
+              0.06716781677151064,
+              0.16695613239421644,
+              0.05078837401830433,
+              0.03611629653436559,
+              0.015835364678725365,
+              0.0694279067098278,
+              0.012903079648526578
+            ],
+            "slew_yield_mae": [
+              0.033194532352331614,
+              0.014611822007346167,
+              0.011286467690836166,
+              0.009432045377824827,
+              0.03811704499347314,
+              0.007741847789115947
+            ],
+            "slew_linear_mae_mps": 0.019697607350171308,
+            "slew_angular_mae_radps": 0.018430312720137974,
+            "x_sign_reference_samples": 539,
+            "x_sign_conflict_rate": 0.06307977736549165
+          },
+          "loaded_contact": {
+            "samples": 219,
+            "action_rmse": 0.11955358472781072,
+            "action_mae": [
+              0.07605061774468877,
+              0.2518353570675611,
+              0.06135050167982222,
+              0.04416714703979249,
+              0.0159420504340454,
+              0.09154284466097107,
+              0.017130327113081097
+            ],
+            "slew_yield_mae": [
+              0.02812942886913853,
+              0.01694993759667129,
+              0.013938513246597612,
+              0.009394665639963277,
+              0.05453888445221207,
+              0.010278196267848656
+            ],
+            "slew_linear_mae_mps": 0.019672626570802477,
+            "slew_angular_mae_radps": 0.02473724878667467,
+            "x_sign_reference_samples": 219,
+            "x_sign_conflict_rate": 0.1278538812785388
+          },
+          "loaded_no_contact": {
+            "samples": 321,
+            "action_rmse": 0.06979077855888016,
+            "action_mae": [
+              0.06110758807018352,
+              0.1090478763086636,
+              0.0435824364548388,
+              0.03062366020823327,
+              0.015762579069955623,
+              0.054340145303907704,
+              0.010019069696073496
+            ],
+            "slew_yield_mae": [
+              0.03665016370067826,
+              0.013016659035189766,
+              0.009477128199522398,
+              0.00945754744197337,
+              0.02691336012909982,
+              0.006011441817644095
+            ],
+            "slew_linear_mae_mps": 0.01971465031179677,
+            "slew_angular_mae_radps": 0.014127449796239111,
+            "x_sign_reference_samples": 320,
+            "x_sign_conflict_rate": 0.01875
+          },
+          "observed_contact": {
+            "samples": 219,
+            "action_rmse": 0.11955358472781072,
+            "action_mae": [
+              0.07605061774468877,
+              0.2518353570675611,
+              0.06135050167982222,
+              0.04416714703979249,
+              0.0159420504340454,
+              0.09154284466097107,
+              0.017130327113081097
+            ],
+            "slew_yield_mae": [
+              0.02812942886913853,
+              0.01694993759667129,
+              0.013938513246597612,
+              0.009394665639963277,
+              0.05453888445221207,
+              0.010278196267848656
+            ],
+            "slew_linear_mae_mps": 0.019672626570802477,
+            "slew_angular_mae_radps": 0.02473724878667467,
+            "x_sign_reference_samples": 219,
+            "x_sign_conflict_rate": 0.1278538812785388
+          }
+        },
+        "esn": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.06494728775709857,
+            "action_mae": [
+              0.05161198029335802,
+              0.0903208998809273,
+              0.036679504484916574,
+              0.016903826541216627,
+              0.020206308084957082,
+              0.051459949215583854,
+              0.009401172022622748
+            ],
+            "slew_yield_mae": [
+              0.01957519148415476,
+              0.01114266975793647,
+              0.005261933955875359,
+              0.012061528764504894,
+              0.02899726549197484,
+              0.005640703213573639
+            ],
+            "slew_linear_mae_mps": 0.011993265065988903,
+            "slew_angular_mae_radps": 0.015566499156684501,
+            "x_sign_reference_samples": 544,
+            "x_sign_conflict_rate": 0.012867647058823529
+          },
+          "loaded": {
+            "samples": 540,
+            "action_rmse": 0.06835559502799445,
+            "action_mae": [
+              0.05610924449509803,
+              0.09943931376880895,
+              0.03996285576425234,
+              0.018249900038165026,
+              0.022207674169243182,
+              0.05637251739593826,
+              0.010278234239528823
+            ],
+            "slew_yield_mae": [
+              0.021480979627745304,
+              0.012127256425408708,
+              0.005691639513561053,
+              0.013255431072135513,
+              0.03179403801532632,
+              0.006166940543717287
+            ],
+            "slew_linear_mae_mps": 0.013099958522238397,
+            "slew_angular_mae_radps": 0.017072136543726423,
+            "x_sign_reference_samples": 539,
+            "x_sign_conflict_rate": 0.012987012987012988
+          },
+          "loaded_contact": {
+            "samples": 219,
+            "action_rmse": 0.08424695677937234,
+            "action_mae": [
+              0.06453959743321344,
+              0.14611583263322384,
+              0.050464012528778884,
+              0.02482197502731138,
+              0.024135684417139834,
+              0.06268968620660188,
+              0.01232475754853204
+            ],
+            "slew_yield_mae": [
+              0.031819818886100644,
+              0.01530534870767501,
+              0.007768467294759436,
+              0.014310846029819932,
+              0.03732864196745289,
+              0.007394854529119217
+            ],
+            "slew_linear_mae_mps": 0.018297878296178353,
+            "slew_angular_mae_radps": 0.019678114175464022,
+            "x_sign_reference_samples": 219,
+            "x_sign_conflict_rate": 0.0136986301369863
+          },
+          "loaded_no_contact": {
+            "samples": 321,
+            "action_rmse": 0.05493637754770748,
+            "action_mae": [
+              0.050357695294327785,
+              0.06759458594542318,
+              0.032798515167893075,
+              0.013766147942766094,
+              0.020892302691706197,
+              0.05206267325408373,
+              0.00888200805675092
+            ],
+            "slew_yield_mae": [
+              0.014427379012232166,
+              0.009959025242180279,
+              0.004274738317042464,
+              0.012535381615023706,
+              0.02801809326294117,
+              0.005329204834050556
+            ],
+            "slew_linear_mae_mps": 0.009553714190484966,
+            "slew_angular_mae_radps": 0.015294226570671803,
+            "x_sign_reference_samples": 320,
+            "x_sign_conflict_rate": 0.0125
+          },
+          "observed_contact": {
+            "samples": 219,
+            "action_rmse": 0.08424695677937234,
+            "action_mae": [
+              0.06453959743321344,
+              0.14611583263322384,
+              0.050464012528778884,
+              0.02482197502731138,
+              0.024135684417139834,
+              0.06268968620660188,
+              0.01232475754853204
+            ],
+            "slew_yield_mae": [
+              0.031819818886100644,
+              0.01530534870767501,
+              0.007768467294759436,
+              0.014310846029819932,
+              0.03732864196745289,
+              0.007394854529119217
+            ],
+            "slew_linear_mae_mps": 0.018297878296178353,
+            "slew_angular_mae_radps": 0.019678114175464022,
+            "x_sign_reference_samples": 219,
+            "x_sign_conflict_rate": 0.0136986301369863
+          }
+        }
+      },
+      "mjb_sha256": "a2abf05856868973b1d82799df436e9b7411f5359d66e9a1347bf712393b764d"
+    },
+    {
+      "id": "validation_9612_approach",
+      "split": "validation",
+      "seed": 9612,
+      "requested": "approach",
+      "actual_first_stage": 0,
+      "trigger_s": 0.0,
+      "first_contact_s": 0.42769999999996106,
+      "final_stage": 1,
+      "task_success": false,
+      "strict_success": false,
+      "failed_task": [
+        "lift",
+        "endpoint",
+        "stage"
+      ],
+      "failed_gate": [
+        "task",
+        "release",
+        "gap",
+        "penetration"
+      ],
+      "endpoint_m": 0.05189741801361647,
+      "lift_m": 1.027917159168723e-06,
+      "contact_union_duration_s": 16.23374999997714,
+      "rod_contact_s": 16.077199999971942,
+      "contact_by_object": {
+        "push_back_guard": {
+          "first_s": 0.6927499999999319,
+          "last_s": 23.997350000234864,
+          "duration_s": 1.3116000000005557,
+          "bodies": [
+            "fr3_link6"
+          ]
+        },
+        "target_object_geom": {
+          "first_s": 5.595499999993629,
+          "last_s": 24.00000000023495,
+          "duration_s": 16.803549999996054,
+          "bodies": [
+            "left_finger"
+          ]
+        },
+        "push_rod_geom": {
+          "first_s": 0.42769999999996106,
+          "last_s": 23.999800000234945,
+          "duration_s": 16.077199999971942,
+          "bodies": [
+            "fr3_link7",
+            "hand"
+          ]
+        }
+      },
+      "sparse_contact_samples": 331,
+      "longest_sparse_contact_run_s": 0.48,
+      "physical": {
+        "samples": 480000,
+        "timestep_s": 5e-05,
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.1927782522029071,
+        "generalized_actuator_torque_peak_nm": 33.27208002463281,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          3.58424473756785,
+          33.27208002463281,
+          3.6133260103122753,
+          26.32071394086404,
+          2.034360959480176,
+          3.6819681214178965,
+          0.8312681077083741
+        ],
+        "actuator_force_peak_by_actuator": [
+          3.58424473756785,
+          33.27208002463281,
+          3.6133260103122753,
+          26.32071394086404,
+          2.034360959480176,
+          3.6819681214178965,
+          0.8312681077083741
+        ],
+        "position_rmse_xyz_m": [
+          0.004834748711473088,
+          0.0336136469823416,
+          0.04119938718583283
+        ],
+        "position_rmse_3d_m": 0.05339139971048465,
+        "stages": {
+          "0": {
+            "count": 73600,
+            "error_peak_m": 0.05999999457806655,
+            "speed_peak_mps": 0.1927782522029071,
+            "qfrc_peak_nm": 33.27208002463281,
+            "first_s": 5e-05,
+            "last_s": 3.679999999998093,
+            "position_rmse_xyz_m": [
+              0.002368217815363734,
+              0.032449311884840064,
+              0.02585846745576776
+            ],
+            "position_rmse_3d_m": 0.04155991622442987,
+            "name": "REACH / CONTACT RESPONSE"
+          },
+          "1": {
+            "count": 406400,
+            "error_peak_m": 0.09115817736118947,
+            "speed_peak_mps": 0.0448764605985729,
+            "qfrc_peak_nm": 32.9214919032787,
+            "first_s": 3.6800499999980927,
+            "last_s": 24.00000000023495,
+            "position_rmse_xyz_m": [
+              0.005156774297080225,
+              0.033820224014846766,
+              0.04340155281090541
+            ],
+            "position_rmse_3d_m": 0.05526386396157308,
+            "name": "ALIGN TO GRASP"
+          }
+        }
+      },
+      "raw_recomputed_physical": {
+        "linear_speed_peak_mps": 0.19277825398779375,
+        "generalized_actuator_torque_peak_nm": 33.27207946777344,
+        "position_rmse_3d_m": 0.053391399712253124
+      },
+      "teacher_parity_max": 2.220446049250313e-16,
+      "students": {
+        "mlp": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.1003036635133223,
+            "action_mae": [
+              0.08805108673012728,
+              0.13991289748807964,
+              0.11663979627035853,
+              0.07416372842692587,
+              0.027199011407639376,
+              0.09184776602776415,
+              0.012130571876237247
+            ],
+            "slew_yield_mae": [
+              0.024004160298688598,
+              0.031553391216525714,
+              0.02501350998785406,
+              0.016241147932991494,
+              0.05308067129960251,
+              0.007278343125742344
+            ],
+            "slew_linear_mae_mps": 0.026857020501022823,
+            "slew_angular_mae_radps": 0.025533387452778784,
+            "x_sign_reference_samples": 589,
+            "x_sign_conflict_rate": 0.03904923599320883
+          },
+          "loaded": {
+            "samples": 0
+          },
+          "loaded_contact": {
+            "samples": 0
+          },
+          "loaded_no_contact": {
+            "samples": 0
+          },
+          "observed_contact": {
+            "samples": 331,
+            "action_rmse": 0.10099094822117528,
+            "action_mae": [
+              0.09008949987933626,
+              0.1410365576040865,
+              0.11924404768936939,
+              0.07626579485760163,
+              0.026800736633879933,
+              0.09390175375827925,
+              0.01184562378795408
+            ],
+            "slew_yield_mae": [
+              0.02566462821331828,
+              0.031544302544618694,
+              0.025807383941068848,
+              0.016080441980327948,
+              0.054262971660673794,
+              0.00710737427277244
+            ],
+            "slew_linear_mae_mps": 0.027672104899668634,
+            "slew_angular_mae_radps": 0.02581692930459141,
+            "x_sign_reference_samples": 331,
+            "x_sign_conflict_rate": 0.03323262839879154
+          }
+        },
+        "esn": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.09277640552066299,
+            "action_mae": [
+              0.06574733420170847,
+              0.12448446924379294,
+              0.06454932773482502,
+              0.036366994402392445,
+              0.03658239759820121,
+              0.12989892501303338,
+              0.014283537103843088
+            ],
+            "slew_yield_mae": [
+              0.011017184163043993,
+              0.021559480683973464,
+              0.008439633260761524,
+              0.021812120327306516,
+              0.07763425808706735,
+              0.008570122262305841
+            ],
+            "slew_linear_mae_mps": 0.013672099369259578,
+            "slew_angular_mae_radps": 0.036005500225559914,
+            "x_sign_reference_samples": 589,
+            "x_sign_conflict_rate": 0.03225806451612903
+          },
+          "loaded": {
+            "samples": 0
+          },
+          "loaded_contact": {
+            "samples": 0
+          },
+          "loaded_no_contact": {
+            "samples": 0
+          },
+          "observed_contact": {
+            "samples": 331,
+            "action_rmse": 0.09512100189360476,
+            "action_mae": [
+              0.06737880739863847,
+              0.12891690055896537,
+              0.06844646973523198,
+              0.037014141018771,
+              0.037643244381285884,
+              0.13379982191079465,
+              0.0147075350508167
+            ],
+            "slew_yield_mae": [
+              0.012211654206649795,
+              0.022812669797216,
+              0.008670043874209757,
+              0.022585946628771527,
+              0.08039317248781423,
+              0.008824521030490013
+            ],
+            "slew_linear_mae_mps": 0.014564789292691829,
+            "slew_angular_mae_radps": 0.03726788004902527,
+            "x_sign_reference_samples": 331,
+            "x_sign_conflict_rate": 0.03625377643504532
+          }
+        }
+      },
+      "mjb_sha256": "c539f72faa8545985d6033826d707e7df3f44fd44c0c4ca9c2974c8b6ac9ddcf"
+    },
+    {
+      "id": "validation_9612_loaded_lift",
+      "split": "validation",
+      "seed": 9612,
+      "requested": "loaded_lift",
+      "actual_first_stage": 3,
+      "trigger_s": 2.4400000000009827,
+      "first_contact_s": 2.9004999999999095,
+      "final_stage": 3,
+      "task_success": false,
+      "strict_success": false,
+      "failed_task": [
+        "lift",
+        "endpoint"
+      ],
+      "failed_gate": [
+        "task",
+        "release",
+        "gap",
+        "penetration"
+      ],
+      "endpoint_m": 0.209897492215253,
+      "lift_m": 0.045904647005065025,
+      "contact_union_duration_s": 17.648800000024114,
+      "rod_contact_s": 17.415400000016366,
+      "contact_by_object": {
+        "push_back_guard": {
+          "first_s": 3.202349999999206,
+          "last_s": 23.998850000234913,
+          "duration_s": 1.7923500000015702,
+          "bodies": [
+            "fr3_link6",
+            "hand"
+          ]
+        },
+        "ws_push_back_guard_bracket": {
+          "first_s": 18.515450000052883,
+          "last_s": 23.00650000020197,
+          "duration_s": 0.25794999999997975,
+          "bodies": [
+            "hand"
+          ]
+        },
+        "target_object_geom": {
+          "first_s": 2.1779000000015936,
+          "last_s": 24.00000000023495,
+          "duration_s": 21.81960000016257,
+          "bodies": [
+            "left_finger",
+            "right_finger"
+          ]
+        },
+        "push_rod_geom": {
+          "first_s": 2.9004999999999095,
+          "last_s": 24.00000000023495,
+          "duration_s": 17.415400000016366,
+          "bodies": [
+            "fr3_link7",
+            "hand"
+          ]
+        }
+      },
+      "sparse_contact_samples": 399,
+      "longest_sparse_contact_run_s": 1.12,
+      "physical": {
+        "samples": 480000,
+        "timestep_s": 5e-05,
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.15432593023737282,
+        "generalized_actuator_torque_peak_nm": 35.81406030889222,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          3.612665376752051,
+          35.81406030889222,
+          3.571518838504263,
+          28.580206008152444,
+          1.9492768513800818,
+          3.4376458448921388,
+          0.9073962495984107
+        ],
+        "actuator_force_peak_by_actuator": [
+          3.612665376752051,
+          35.81406030889222,
+          3.571518838504263,
+          28.580206008152444,
+          1.9492768513800818,
+          3.4376458448921388,
+          0.9073962495984107
+        ],
+        "position_rmse_xyz_m": [
+          0.00689227982853795,
+          0.03233023239151509,
+          0.20575329949410803
+        ],
+        "position_rmse_3d_m": 0.20839186092656392,
+        "stages": {
+          "0": {
+            "count": 16000,
+            "error_peak_m": 0.05999999457806655,
+            "speed_peak_mps": 0.07960522936595708,
+            "qfrc_peak_nm": 31.826665184169585,
+            "first_s": 5e-05,
+            "last_s": 0.7999999999999201,
+            "position_rmse_xyz_m": [
+              0.0006987936080437096,
+              3.519849630667543e-05,
+              0.03920088240469607
+            ],
+            "position_rmse_3d_m": 0.03920712604549834,
+            "name": "REACH / CONTACT RESPONSE"
+          },
+          "1": {
+            "count": 24800,
+            "error_peak_m": 0.083764606884733,
+            "speed_peak_mps": 0.07999680038295828,
+            "qfrc_peak_nm": 31.149530700901188,
+            "first_s": 0.8000499999999201,
+            "last_s": 2.040000000001915,
+            "position_rmse_xyz_m": [
+              0.0017708274388116415,
+              2.8952523471466372e-05,
+              0.04731288700827308
+            ],
+            "position_rmse_3d_m": 0.047346023540781955,
+            "name": "ALIGN TO GRASP"
+          },
+          "2": {
+            "count": 8000,
+            "error_peak_m": 0.007539456463364781,
+            "speed_peak_mps": 0.022631989807501997,
+            "qfrc_peak_nm": 35.01781941944328,
+            "first_s": 2.040050000001915,
+            "last_s": 2.4400000000009827,
+            "position_rmse_xyz_m": [
+              0.0012298600757458863,
+              3.706136411157559e-05,
+              0.005524695706209624
+            ],
+            "position_rmse_3d_m": 0.005660052296298555,
+            "name": "CLOSE GRIPPER"
+          },
+          "3": {
+            "count": 431200,
+            "error_peak_m": 0.2517913047413631,
+            "speed_peak_mps": 0.15432593023737282,
+            "qfrc_peak_nm": 35.81406030889222,
+            "first_s": 2.4400500000009826,
+            "last_s": 24.00000000023495,
+            "position_rmse_xyz_m": [
+              0.007256244218874801,
+              0.034110654035460465,
+              0.21665452162339582
+            ],
+            "position_rmse_3d_m": 0.2194433219279031,
+            "name": "LOADED LIFT"
+          }
+        }
+      },
+      "raw_recomputed_physical": {
+        "linear_speed_peak_mps": 0.15432592498947578,
+        "generalized_actuator_torque_peak_nm": 35.81406021118164,
+        "position_rmse_3d_m": 0.20839186092859524
+      },
+      "teacher_parity_max": 1.1102230246251565e-16,
+      "students": {
+        "mlp": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.08107826579524535,
+            "action_mae": [
+              0.05878989935976172,
+              0.1381068287809365,
+              0.061268772984876506,
+              0.046126840706944984,
+              0.024727642577428054,
+              0.04416817110858826,
+              0.017098539915752834
+            ],
+            "slew_yield_mae": [
+              0.008363938541778571,
+              0.018160404868769502,
+              0.013348907889839324,
+              0.014836585546456832,
+              0.024483529144718182,
+              0.010259123949451695
+            ],
+            "slew_linear_mae_mps": 0.013291083766795797,
+            "slew_angular_mae_radps": 0.016526412880208896,
+            "x_sign_reference_samples": 543,
+            "x_sign_conflict_rate": 0.011049723756906077
+          },
+          "loaded": {
+            "samples": 539,
+            "action_rmse": 0.08541085708362144,
+            "action_mae": [
+              0.06397266273115569,
+              0.1527627869469032,
+              0.06721254131530222,
+              0.050542712810788315,
+              0.027310676122804637,
+              0.048221028747095974,
+              0.018936321422701984
+            ],
+            "slew_yield_mae": [
+              0.009072149843612041,
+              0.019898808226769465,
+              0.014614886672654606,
+              0.016386405673682776,
+              0.026731138548441183,
+              0.011361792853621185
+            ],
+            "slew_linear_mae_mps": 0.014528614914345372,
+            "slew_angular_mae_radps": 0.018159779025248377,
+            "x_sign_reference_samples": 538,
+            "x_sign_conflict_rate": 0.011152416356877323
+          },
+          "loaded_contact": {
+            "samples": 399,
+            "action_rmse": 0.08686644104996101,
+            "action_mae": [
+              0.063306421238254,
+              0.15645246597333692,
+              0.06602451168385029,
+              0.0468054035900763,
+              0.032365807113246124,
+              0.05223794789725518,
+              0.018729982713513952
+            ],
+            "slew_yield_mae": [
+              0.00908481299696536,
+              0.019532594453463833,
+              0.013706803563717307,
+              0.019419484267947675,
+              0.02803472793788454,
+              0.011237989628108373
+            ],
+            "slew_linear_mae_mps": 0.01410807033804884,
+            "slew_angular_mae_radps": 0.019564067277980195,
+            "x_sign_reference_samples": 399,
+            "x_sign_conflict_rate": 0.007518796992481203
+          },
+          "loaded_no_contact": {
+            "samples": 140,
+            "action_rmse": 0.08111927576054476,
+            "action_mae": [
+              0.06587145098592541,
+              0.14224720172156655,
+              0.07059842576494033,
+              0.06119404408981761,
+              0.012903552800046366,
+              0.0367728091691421,
+              0.019524386743887852
+            ],
+            "slew_yield_mae": [
+              0.009036059856555175,
+              0.020942517480690384,
+              0.01720292353312591,
+              0.00774213168002782,
+              0.023015908788527602,
+              0.01171463204633271
+            ],
+            "slew_linear_mae_mps": 0.015727166956790488,
+            "slew_angular_mae_radps": 0.014157557504962708,
+            "x_sign_reference_samples": 139,
+            "x_sign_conflict_rate": 0.02158273381294964
+          },
+          "observed_contact": {
+            "samples": 399,
+            "action_rmse": 0.08686644104996101,
+            "action_mae": [
+              0.063306421238254,
+              0.15645246597333692,
+              0.06602451168385029,
+              0.0468054035900763,
+              0.032365807113246124,
+              0.05223794789725518,
+              0.018729982713513952
+            ],
+            "slew_yield_mae": [
+              0.00908481299696536,
+              0.019532594453463833,
+              0.013706803563717307,
+              0.019419484267947675,
+              0.02803472793788454,
+              0.011237989628108373
+            ],
+            "slew_linear_mae_mps": 0.01410807033804884,
+            "slew_angular_mae_radps": 0.019564067277980195,
+            "x_sign_reference_samples": 399,
+            "x_sign_conflict_rate": 0.007518796992481203
+          }
+        },
+        "esn": {
+          "all": {
+            "samples": 600,
+            "action_rmse": 0.07024128180667807,
+            "action_mae": [
+              0.04310724710915588,
+              0.06782119400810713,
+              0.09499153109066391,
+              0.025058887695550678,
+              0.020832202645811596,
+              0.07963627266029998,
+              0.013730159280163799
+            ],
+            "slew_yield_mae": [
+              0.013480134004847804,
+              0.028791841092599125,
+              0.007664807686134626,
+              0.012499321587486935,
+              0.04822657033268951,
+              0.008238095568098276
+            ],
+            "slew_linear_mae_mps": 0.016645594261193827,
+            "slew_angular_mae_radps": 0.022987995829424915,
+            "x_sign_reference_samples": 543,
+            "x_sign_conflict_rate": 0.0055248618784530384
+          },
+          "loaded": {
+            "samples": 539,
+            "action_rmse": 0.07398758796101566,
+            "action_mae": [
+              0.046733752622178076,
+              0.07449623280498953,
+              0.10485426696859758,
+              0.027316169914455207,
+              0.022890131825764944,
+              0.08775935939933074,
+              0.015108484839589726
+            ],
+            "slew_yield_mae": [
+              0.014732921170893348,
+              0.031766223845817655,
+              0.008360868625574197,
+              0.013734079095458943,
+              0.05319481308540054,
+              0.009065090903753832
+            ],
+            "slew_linear_mae_mps": 0.018286671214095038,
+            "slew_angular_mae_radps": 0.025331327694871116,
+            "x_sign_reference_samples": 538,
+            "x_sign_conflict_rate": 0.0055762081784386614
+          },
+          "loaded_contact": {
+            "samples": 399,
+            "action_rmse": 0.07586953374237146,
+            "action_mae": [
+              0.050117764315183014,
+              0.07127692861852558,
+              0.1136342414269676,
+              0.02508872514712361,
+              0.02375746407794806,
+              0.09274164412756113,
+              0.016280969407773824
+            ],
+            "slew_yield_mae": [
+              0.014277867837464995,
+              0.03447288613002563,
+              0.008074617120629575,
+              0.014254478446768788,
+              0.0563894043252824,
+              0.009768581644664293
+            ],
+            "slew_linear_mae_mps": 0.018941790362706726,
+            "slew_angular_mae_radps": 0.026804154805571825,
+            "x_sign_reference_samples": 399,
+            "x_sign_conflict_rate": 0.005012531328320802
+          },
+          "loaded_no_contact": {
+            "samples": 140,
+            "action_rmse": 0.06834030790829794,
+            "action_mae": [
+              0.037089319297113676,
+              0.0836712497364116,
+              0.07983133976224299,
+              0.03366438750135037,
+              0.020418234907043167,
+              0.07355984792387424,
+              0.011766903820265026
+            ],
+            "slew_yield_mae": [
+              0.016029823171163877,
+              0.024052236335824945,
+              0.009176685414666317,
+              0.0122509409442259,
+              0.04409022805173736,
+              0.007060142292159015
+            ],
+            "slew_linear_mae_mps": 0.016419581640551715,
+            "slew_angular_mae_radps": 0.021133770429374095,
+            "x_sign_reference_samples": 139,
+            "x_sign_conflict_rate": 0.007194244604316547
+          },
+          "observed_contact": {
+            "samples": 399,
+            "action_rmse": 0.07586953374237146,
+            "action_mae": [
+              0.050117764315183014,
+              0.07127692861852558,
+              0.1136342414269676,
+              0.02508872514712361,
+              0.02375746407794806,
+              0.09274164412756113,
+              0.016280969407773824
+            ],
+            "slew_yield_mae": [
+              0.014277867837464995,
+              0.03447288613002563,
+              0.008074617120629575,
+              0.014254478446768788,
+              0.0563894043252824,
+              0.009768581644664293
+            ],
+            "slew_linear_mae_mps": 0.018941790362706726,
+            "slew_angular_mae_radps": 0.026804154805571825,
+            "x_sign_reference_samples": 399,
+            "x_sign_conflict_rate": 0.005012531328320802
+          }
+        }
+      },
+      "mjb_sha256": "c539f72faa8545985d6033826d707e7df3f44fd44c0c4ca9c2974c8b6ac9ddcf"
+    }
+  ],
+  "paired_geometry": {
+    "9600": {
+      "argument_differences": [
+        "event_stage",
+        "output"
+      ],
+      "mjb_sha256": "9e8e14dc3c8603a1a13919442fdc5fdab023dc8d5a60eb995745cd45dede9652",
+      "same_environment": true
+    },
+    "9601": {
+      "argument_differences": [
+        "event_stage",
+        "output"
+      ],
+      "mjb_sha256": "c35961639d5b1b6b28d176ed46d8d87eb7b94222185c0b832c9aa7076f9122b1",
+      "same_environment": true
+    },
+    "9602": {
+      "argument_differences": [
+        "event_stage",
+        "output"
+      ],
+      "mjb_sha256": "d201ea83bbaf69e57e5e1daa563a5b73d45ac1072e86941c20839480732eaf79",
+      "same_environment": true
+    },
+    "9610": {
+      "argument_differences": [
+        "event_stage",
+        "output"
+      ],
+      "mjb_sha256": "a810d13142073de4f4b5417bd4b9ff7747f56ace3c29af976276c5a6a89a8a3e",
+      "same_environment": true
+    },
+    "9611": {
+      "argument_differences": [
+        "event_stage",
+        "output"
+      ],
+      "mjb_sha256": "a2abf05856868973b1d82799df436e9b7411f5359d66e9a1347bf712393b764d",
+      "same_environment": true
+    },
+    "9612": {
+      "argument_differences": [
+        "event_stage",
+        "output"
+      ],
+      "mjb_sha256": "c539f72faa8545985d6033826d707e7df3f44fd44c0c4ca9c2974c8b6ac9ddcf",
+      "same_environment": true
+    }
+  },
+  "groups": {
+    "train/approach": {
+      "mlp": {
+        "all": {
+          "episodes": 3,
+          "samples": 1800,
+          "mean_episode_action_rmse": 0.11781673173009827,
+          "mean_episode_slew_linear_mae_mps": 0.03512285689846697,
+          "mean_episode_slew_angular_mae_radps": 0.02843132401242548
+        },
+        "loaded_contact": {
+          "episodes": 0,
+          "samples": 0,
+          "mean_episode_action_rmse": null,
+          "mean_episode_slew_linear_mae_mps": null,
+          "mean_episode_slew_angular_mae_radps": null
+        },
+        "loaded_no_contact": {
+          "episodes": 0,
+          "samples": 0,
+          "mean_episode_action_rmse": null,
+          "mean_episode_slew_linear_mae_mps": null,
+          "mean_episode_slew_angular_mae_radps": null
+        }
+      },
+      "esn": {
+        "all": {
+          "episodes": 3,
+          "samples": 1800,
+          "mean_episode_action_rmse": 0.08701789559999747,
+          "mean_episode_slew_linear_mae_mps": 0.014305377622056187,
+          "mean_episode_slew_angular_mae_radps": 0.035334276202569924
+        },
+        "loaded_contact": {
+          "episodes": 0,
+          "samples": 0,
+          "mean_episode_action_rmse": null,
+          "mean_episode_slew_linear_mae_mps": null,
+          "mean_episode_slew_angular_mae_radps": null
+        },
+        "loaded_no_contact": {
+          "episodes": 0,
+          "samples": 0,
+          "mean_episode_action_rmse": null,
+          "mean_episode_slew_linear_mae_mps": null,
+          "mean_episode_slew_angular_mae_radps": null
+        }
+      }
+    },
+    "train/loaded_lift": {
+      "mlp": {
+        "all": {
+          "episodes": 3,
+          "samples": 1800,
+          "mean_episode_action_rmse": 0.08521014576665019,
+          "mean_episode_slew_linear_mae_mps": 0.014269023324491611,
+          "mean_episode_slew_angular_mae_radps": 0.015182504544889765
+        },
+        "loaded_contact": {
+          "episodes": 3,
+          "samples": 363,
+          "mean_episode_action_rmse": 0.11169138737288165,
+          "mean_episode_slew_linear_mae_mps": 0.018486345727920694,
+          "mean_episode_slew_angular_mae_radps": 0.024986110823491947
+        },
+        "loaded_no_contact": {
+          "episodes": 3,
+          "samples": 1257,
+          "mean_episode_action_rmse": 0.08152901411854327,
+          "mean_episode_slew_linear_mae_mps": 0.015205100385545742,
+          "mean_episode_slew_angular_mae_radps": 0.016089841667412386
+        }
+      },
+      "esn": {
+        "all": {
+          "episodes": 3,
+          "samples": 1800,
+          "mean_episode_action_rmse": 0.06802949926278286,
+          "mean_episode_slew_linear_mae_mps": 0.012115916244058713,
+          "mean_episode_slew_angular_mae_radps": 0.016074162245181867
+        },
+        "loaded_contact": {
+          "episodes": 3,
+          "samples": 363,
+          "mean_episode_action_rmse": 0.09030326552755086,
+          "mean_episode_slew_linear_mae_mps": 0.01581086241035808,
+          "mean_episode_slew_angular_mae_radps": 0.02612375137071023
+        },
+        "loaded_no_contact": {
+          "episodes": 3,
+          "samples": 1257,
+          "mean_episode_action_rmse": 0.06848573901852813,
+          "mean_episode_slew_linear_mae_mps": 0.012730904438809504,
+          "mean_episode_slew_angular_mae_radps": 0.016619309797788147
+        }
+      }
+    },
+    "validation/approach": {
+      "mlp": {
+        "all": {
+          "episodes": 3,
+          "samples": 1800,
+          "mean_episode_action_rmse": 0.11612967565915709,
+          "mean_episode_slew_linear_mae_mps": 0.02731210034455357,
+          "mean_episode_slew_angular_mae_radps": 0.027147062757919282
+        },
+        "loaded_contact": {
+          "episodes": 0,
+          "samples": 0,
+          "mean_episode_action_rmse": null,
+          "mean_episode_slew_linear_mae_mps": null,
+          "mean_episode_slew_angular_mae_radps": null
+        },
+        "loaded_no_contact": {
+          "episodes": 0,
+          "samples": 0,
+          "mean_episode_action_rmse": null,
+          "mean_episode_slew_linear_mae_mps": null,
+          "mean_episode_slew_angular_mae_radps": null
+        }
+      },
+      "esn": {
+        "all": {
+          "episodes": 3,
+          "samples": 1800,
+          "mean_episode_action_rmse": 0.09637989726900546,
+          "mean_episode_slew_linear_mae_mps": 0.012956020854621964,
+          "mean_episode_slew_angular_mae_radps": 0.037661750534962325
+        },
+        "loaded_contact": {
+          "episodes": 0,
+          "samples": 0,
+          "mean_episode_action_rmse": null,
+          "mean_episode_slew_linear_mae_mps": null,
+          "mean_episode_slew_angular_mae_radps": null
+        },
+        "loaded_no_contact": {
+          "episodes": 0,
+          "samples": 0,
+          "mean_episode_action_rmse": null,
+          "mean_episode_slew_linear_mae_mps": null,
+          "mean_episode_slew_angular_mae_radps": null
+        }
+      }
+    },
+    "validation/loaded_lift": {
+      "mlp": {
+        "all": {
+          "episodes": 3,
+          "samples": 1800,
+          "mean_episode_action_rmse": 0.08630050417803854,
+          "mean_episode_slew_linear_mae_mps": 0.014007776033548087,
+          "mean_episode_slew_angular_mae_radps": 0.01663987805533467
+        },
+        "loaded_contact": {
+          "episodes": 3,
+          "samples": 689,
+          "mean_episode_action_rmse": 0.1011142056009335,
+          "mean_episode_slew_linear_mae_mps": 0.01998248961425513,
+          "mean_episode_slew_angular_mae_radps": 0.02145458836435403
+        },
+        "loaded_no_contact": {
+          "episodes": 3,
+          "samples": 930,
+          "mean_episode_action_rmse": 0.08149674012745242,
+          "mean_episode_slew_linear_mae_mps": 0.015008855347552188,
+          "mean_episode_slew_angular_mae_radps": 0.015417759872601175
+        }
+      },
+      "esn": {
+        "all": {
+          "episodes": 3,
+          "samples": 1800,
+          "mean_episode_action_rmse": 0.07183411101808464,
+          "mean_episode_slew_linear_mae_mps": 0.016050931789903817,
+          "mean_episode_slew_angular_mae_radps": 0.01815224098079078
+        },
+        "loaded_contact": {
+          "episodes": 3,
+          "samples": 689,
+          "mean_episode_action_rmse": 0.08485047377265094,
+          "mean_episode_slew_linear_mae_mps": 0.017839954082978,
+          "mean_episode_slew_angular_mae_radps": 0.02447137040617649
+        },
+        "loaded_no_contact": {
+          "episodes": 3,
+          "samples": 930,
+          "mean_episode_action_rmse": 0.06874972910296996,
+          "mean_episode_slew_linear_mae_mps": 0.01606869660705636,
+          "mean_episode_slew_angular_mae_radps": 0.01747462660502604
+        }
+      }
+    }
+  },
+  "file_sha256": {
+    "source_snapshot/assets/fr3_pin/fr3.urdf": "cff675368b5e3c93fd0644b1bdda704c6feb615e62cec4e462b3ef7cd682264c",
+    "source_snapshot/configs/ball_source_demo.json": "b9bcc8041a036d48ad4446752d228256b55f2215a8b1bf31fafbfd72274e483f",
+    "source_snapshot/configs/workstation_source_demo.json": "8c0536f204f3ee03c40598239edf2de115fda6f76aae83c45fe3f2ab4c4b5692",
+    "source_snapshot/scripts/README.md": "424e4840619c9175b454214c65159bb92e970e58cf5b72f997ab0854ecc5bdc4",
+    "source_snapshot/scripts/admittance_reference_core_20260923.py": "8adbdba1a3be517890007ec171629f7727b7f4220d4cc6a10202eaf9ef77f3ea",
+    "source_snapshot/scripts/aggregate_drive_residual_ppo.py": "5da8a21407bcc409dd94db2e8d9468f8fc1fe2d16b97155d4733f5f287f2890b",
+    "source_snapshot/scripts/aggregate_fixed_vmc_validation.py": "a6ee696ef5c2d9bf60ae6077dff78598d9c62db51636e37b19453bbd138dcac9",
+    "source_snapshot/scripts/aggregate_independent_esn_overnight.py": "9d73854db5ce797e41b4295ac4442926b5a6dc068ab6595ff97602a6555d0a96",
+    "source_snapshot/scripts/aggregate_recovery_drive_paired.py": "23e150061384c0dd03044e0f3bcc5c999f9cb51ca447f058fdc52fae81b73d13",
+    "source_snapshot/scripts/analyze_independent_esn_phases.py": "072f4bc75688185cf11e451a1c172d555fdae45bed4a8751c420e58e3d6cf5fb",
+    "source_snapshot/scripts/assemble_esn_wbc_fixture_pool.py": "0e57bdb0c61fe1d760f5618b478331d7afacc656accadcba7807e63aa947e0e3",
+    "source_snapshot/scripts/audit_four_scene_dataset_20260918.py": "c9962848f4853ce02f299c7a9eb1c23472150d78b3aecf030b026e3e065fa0ba",
+    "source_snapshot/scripts/audit_office_complex_scene_v5_20260917.py": "8b0d3a83d5248a91c48b8dab454981e71fd1024ab95b5ed5504208cbcc680af2",
+    "source_snapshot/scripts/audited_velocity_env.py": "ad7f32ba692592cf5c29d3f1b632de50dd3323cb92edb08e73d933476114b1e6",
+    "source_snapshot/scripts/auto_search_workstation_vmc_20260920.py": "44a6525c2ed3b5aea34e68b241d1a0a17b1f2699ad037811c4a4be91c402e1e0",
+    "source_snapshot/scripts/build_current_teacher_bank_20260921.py": "d9906941d67d7d78b1f036d1ab02afa2eb57f2f0af0bfb1f435bae926ba77729",
+    "source_snapshot/scripts/build_primitive_coverage_protocol_v5_20260917.py": "4487f0c700d5007a36c98ba42976bc82a5a18d95d978e6dc3a7dc3493fe30325",
+    "source_snapshot/scripts/calibrate_workstation_contacts_20260920.py": "300a025471ba577b617de981175ffe6bb47d7ef8a083c4d450e171447ebf7509",
+    "source_snapshot/scripts/compare_energy_safety_holdout.py": "e5479a48ceeefb8227d4780f74cc643956f1feb42bd052b15fb954d91c5f160b",
+    "source_snapshot/scripts/compare_v4_final_holdout.py": "a2a28e6d38b92bdd071002de584e49310537b55569901c3a4493e5017b408644",
+    "source_snapshot/scripts/contact_memory_vmc_20260916.py": "b9f3e8003a43d772d65289ccb21a52a8b73d20d150e4b0ef8060532abbecdd89",
+    "source_snapshot/scripts/contact_transfer_student_20260916.py": "31fd23fa2869a61dcb508bc100e962a798bfbd749258183392a420ebd4e4eaab",
+    "source_snapshot/scripts/convert_push_teacher_to_proprio48_20260921.py": "499ab8311d1ae6b229658e95f6044ed483b3c2f11b31c38e44645394e9182c7b",
+    "source_snapshot/scripts/cue_gif_final.py": "9ada2bb1b692a46ca544095b33c458b16c022c4b35e05668a289c776759b57c8",
+    "source_snapshot/scripts/current_student_policy_20260921.py": "c7f0b8d08662afbbe59acf09a86b1706f14c2ce549989895c2d2f2070cffa8db",
+    "source_snapshot/scripts/dataset_primitive_initialization_20260918.py": "f85600574f03f525334f30d2985d8e9608a95d1b1a65d51a46ae4ea20d764c09",
+    "source_snapshot/scripts/delayline_experiment.py": "b13b152437e92ca5c30188d868029375c95b498c5d19bf8071beaf3792943414",
+    "source_snapshot/scripts/direct_esn_compliance.py": "f29ca58682d55fb4fff93ae69696d067797b749b748104091676ae35602c1457",
+    "source_snapshot/scripts/energy_safety.py": "2ca907e9003cf7871a29c6c1e0a81c3d60752ac161df90c84d2b5c3ed0498053",
+    "source_snapshot/scripts/esn128_action7_20260918.py": "204e38627dffd4a6e4ddec561f3cd35ed5c8037a27c63af8f3d1d6eb18d97650",
+    "source_snapshot/scripts/esn128_proprio48_action7_20260921.py": "7c2588d897a78bb05b030d5ae23d9cae78cc50919cf707e0bde02351dc765eab",
+    "source_snapshot/scripts/esn_compliance.py": "c477e876e031ca0af8966605c924d7be5945094915b23dbfe51b16690a3a5291",
+    "source_snapshot/scripts/evaluate_current_students_20260921.py": "f6ac5856155c027c4a76d103b3587bc95c5c095e1e077a40bd03be32a54e843d",
+    "source_snapshot/scripts/evaluate_joint_baseline_vs_esn_20260921.py": "c0c2e736846ac4b88c061fc4bf98238eb0dd2619492db1c1b99bd5ed38725351",
+    "source_snapshot/scripts/evaluate_matched_guarded_push_20260921.py": "6bdff8d8b8d2573498ad20fc6fe5917b51d7e89d623a7fbfbab0a81606016887",
+    "source_snapshot/scripts/evaluate_wbc_velocity_residual.py": "1845701c40558b73cddb39f0b0ab8a4aff3c60b9115332a47a426ba35fa8e213",
+    "source_snapshot/scripts/evaluate_wbc_velocity_residual_checkpoints.py": "f9a512ebcfc63cf6b56315451f3c755cdf8fd2f1d96d3aef6537fd4d8c236c76",
+    "source_snapshot/scripts/extraction_experiment.py": "15e01bba4b26c57e348e623c4173b8f93b5e7e0172749c043e9fe2f9886a7a43",
+    "source_snapshot/scripts/extraction_mlp_train.py": "8e9171e2304cf5adda22be548186a740725ac647326c72c07aacf817a19d454c",
+    "source_snapshot/scripts/fan_ye_esn_design.py": "683962553293e097aef8848a02a43864bd9932f98e3872851a1e9066431c539c",
+    "source_snapshot/scripts/fan_ye_esn_policy.py": "bb5effddd29df554682a0cd1a9b70f711df06a3319e95020d7fffc1079eedea3",
+    "source_snapshot/scripts/fan_ye_esn_rl_adapter.py": "2dfaa351a46bb60262a7262d7abb909e3686d8c7da4c4ef851999c8b512e6a4b",
+    "source_snapshot/scripts/fixed_panda_wbc.py": "56b6a3617f61894536619df226e7e980899b41e7291e678c17d1c525956d003d",
+    "source_snapshot/scripts/fr3_contact_interface_20260917.py": "323b5475be9b34ca97179fbeef77b8d93b5395ba782511fe37f894e99c290b4f",
+    "source_snapshot/scripts/fr3_scene.py": "994b039f0cc9f146ccf1bd09640dafdb8fe6918d05203c0688519e668edb83a5",
+    "source_snapshot/scripts/haptic_vmc_teacher_20260916.py": "811d8b4f8c6281d5df204f8c7ce9ccef72470cbf074cf367b5e68a00ad27b1ad",
+    "source_snapshot/scripts/launch_guarded_push_fixture_v2_20260921.py": "24f6b0fc38d24b84516a53edb9a224e3ee54a7d731c378549316385fde631620",
+    "source_snapshot/scripts/launch_matched_stage1_20260921.py": "d426d75915d14593c1af14088192ea76bf0ef9efc8b6dde8498816e64b9df5cd",
+    "source_snapshot/scripts/lift_gif_final.py": "2568a763c888efa9d16baea7d0d2df368e9027666940af59afb64d2626bced92",
+    "source_snapshot/scripts/low_force_vmc_20260917.py": "9d78182c883edbd7847bc67344e48724127b42e5241962aca10a22d6d35cc513",
+    "source_snapshot/scripts/mlp_compliance_baseline.py": "0ae6db54470be7e534e5451ab3877d90151f3db8da11dca9386bf7c2c71c7943",
+    "source_snapshot/scripts/office_complex_scene_v5_20260917.py": "355c4e9a4681f4971318b023fd8da856a819345d66eebacebca67b55a10e75f0",
+    "source_snapshot/scripts/office_contact_scene_20260916.py": "296d71283e0cca6bf6863c8a5aed7a1dc1af92f66a3118211b95d173467088da",
+    "source_snapshot/scripts/office_task_v4_20260917.py": "101bd2b273f0e6c8d32ec79a66e9d0fbf15554d57231e8f0336bec047361be3d",
+    "source_snapshot/scripts/panel_policy_ablations_20260923.py": "882422b8ddcee4f02da4ad88d5b2e86fa717ca62b8e438b8e0ace95a521270cf",
+    "source_snapshot/scripts/paper_mpc_wbc.py": "15a9db2edb5938f70c4e99968bbdba0f7cd801a34928253bfe98e0462b153bbb",
+    "source_snapshot/scripts/physics_substep_metrics_20260923.py": "f41da00e4702bd86219acc2cb06e00800d596532e525ee92c000f1e22a72ff21",
+    "source_snapshot/scripts/pink_takeover_attribution.py": "37dc689e33f530a51d499f9df68407d7941b526121e976bbc9919a55023f92fe",
+    "source_snapshot/scripts/pink_wbc_adapter.py": "fc5a0a671a70a9c331ea75e45ffc590d11a4dffa6e0e69271b96c2fa46726c7e",
+    "source_snapshot/scripts/plot_benchmark_summary.py": "7a5a20a9547d7d2f11a85f02165ecb42b3d7a3323fb0df10657fcf5486e6ebc3",
+    "source_snapshot/scripts/plot_impactor_matrix.py": "293b94bbd4c6f7df3309060e09daf8684b425a91b68ba3cb9b41996e2855918a",
+    "source_snapshot/scripts/plot_independent_esn_campaign.py": "e6b32d7df2d34d77e910ea5e482224cd130d692acca41ff7ebec85b7af25e234",
+    "source_snapshot/scripts/plot_trajectory_results.py": "375cc95527bc1f390ffb0bdb9dd74e036310b436ec356c1a45ab93aaf347f287",
+    "source_snapshot/scripts/polish_workstation_contacts_20260920.py": "252e3a0b1505ffad06466030532d77a6164a41c629f1a442a4cd4df156eb511a",
+    "source_snapshot/scripts/prepare_fixed_vmc_heldout_manifest.py": "ae8ed76491e7c228c29539230b04f3f5c5fc1887279607ba7984f456c2c6f69b",
+    "source_snapshot/scripts/prepare_stiffness_training.py": "fcbe17b01b4dcdd0ab358761339f7e5659ec69a91ac344143a318d0c5510a4b4",
+    "source_snapshot/scripts/primitive_contact_scene_v6_20260917.py": "c9265203b4c4041f4553cbeba73092972f95061d818af965b801e79ade2b91fc",
+    "source_snapshot/scripts/primitive_contact_scene_v7_20260917.py": "5abe637940618c687c12c37d72b5beebcc1253ff89b7df2244cc8d502a5d5517",
+    "source_snapshot/scripts/publish_workstation_vmc_20260920.py": "c8bbdf2ca3cc0dd5b9ca1b073b91b84036ea31e9843f58c3b31101ae8d56972a",
+    "source_snapshot/scripts/push_numerics_20260916.py": "96f3b76a8babb7b93b5f805f2c3e374abc43cb9533a313ba899392937e44e350",
+    "source_snapshot/scripts/record_closed_loop_esn_design_traces.py": "5c8ca0934671a730eff73cc46ea797202951e16c48d9e8c732bf51cb40aa86ea",
+    "source_snapshot/scripts/record_paper_mpc_expert_traces.py": "6acec548c713e981749dd402d30bf37d23712305583fac8bdfb7cf0b0bd5f4d1",
+    "source_snapshot/scripts/refine_workstation_vmc_20260920.py": "9179bb3e5881246ebe8f8447aa1ebd870a69a3bf12031f32c5809eb4252c7b68",
+    "source_snapshot/scripts/render_compliance_audited.py": "0a374a9ab8add1834627d3f70bcdd7b6e475a1905b4e98f3627880c7b8cff423",
+    "source_snapshot/scripts/render_office_v5_replays_20260917.py": "263b607e07beedbbd874813035909dea7724272be1a59d5c3c3f5a8460983d47",
+    "source_snapshot/scripts/render_panel_push_20260920.py": "2714b0e9ab8afd902b62e15695818d8e9fae609098a219c14f4f3bfbaf4f0ebb",
+    "source_snapshot/scripts/render_rod_comparison.py": "c8ccc092edaa6b2388872dde0967ee0efca126ba6cd2e3b460396ffbde042363",
+    "source_snapshot/scripts/rl_sixd_stiffness_env.py": "ad5e154d804769ed5499a5b621e1e654b64d6e8f97eca91d11ac42dd169bf97f",
+    "source_snapshot/scripts/run_baseline_ladder.py": "5d9d3fe4e3b1e69837a638c552570a717816e6d659aaa2747a67d5db95d5e594",
+    "source_snapshot/scripts/run_benchmark.py": "150336fc0f985b2d11c3f0f5bf7937d6991a16a3da9b2a478e860f11d4dd5fb3",
+    "source_snapshot/scripts/run_classical_fixed_budget_20260923.py": "4c90891b4b0f93734b47393cd6ac8570f73917ed1eb72dab5c821352dae32dde",
+    "source_snapshot/scripts/run_classical_matrix_20260923.py": "97a7638c9a8892539b478b650e6e1f2c08383a4d78e876a28ff4c51327122bf7",
+    "source_snapshot/scripts/run_classical_v7_20260923.py": "996b7fc9a58de9a2302f8ec34cba31f1147dd1e7dad3afe453c5dee21993eac2",
+    "source_snapshot/scripts/run_contact_transfer_20260916.py": "3cc9ee40d14c9397016d8bc78f0264dbb1a793a7ed6e422e60f9b91c6eda99d5",
+    "source_snapshot/scripts/run_core_vmc_push_20260918.py": "7a7d0c595208c8222c0722644587c9381453ba91c77acde3c69d83b5b757caad",
+    "source_snapshot/scripts/run_fixed_wbc_vmc_demo.py": "c4c10c9e3ebd1488fef45f3ff597daa5b3f1cef08425d5edc0bc5b19d1b83c20",
+    "source_snapshot/scripts/run_geometry_matrix.py": "5fc85b538ac2669676927e627bff56410c9ad0edab29720863b65e8489096eb9",
+    "source_snapshot/scripts/run_grasp_impact_benchmark.py": "43cb4688f065b1372415987059dfd2c942eae637c6dcfce2750a21854747a9da",
+    "source_snapshot/scripts/run_impactor_matrix_benchmark.py": "4e6bf812f508882732766ad74112b01aa0b98d277aa510d7d44e0388826176b1",
+    "source_snapshot/scripts/run_loaded_push_audit_20260918.py": "0c3234cc0e919c12641b40d40cdd990cfe0fa052411c882584f7dbf12c05f754",
+    "source_snapshot/scripts/run_matched_stage1_20260921.py": "d28cc0c7365d14a07d1bdd7ed23c23298d1e4a261ef7ab75111cf91292f660a1",
+    "source_snapshot/scripts/run_measured_campaign_queue_20260923.py": "f4f8c952f287e5b6362175a36d27173499ca9cf58fd136b0c175f5fb74369816",
+    "source_snapshot/scripts/run_measured_panel_matrix_20260923.py": "6f43480c583c09ce7a61d16f42d3ad693ff2e344453eda7489c1bb1ee8cca757",
+    "source_snapshot/scripts/run_panel_admittance_reference_20260923.py": "6260f1352946b3daa1f4755164b43b6b7b6e5880f8540ac964efdd1a27ff45fc",
+    "source_snapshot/scripts/run_panel_classical_adapter_20260923.py": "9ab414e40af62b90b39150c1837859ee637b4b99fe091b65f0b53efe72536613",
+    "source_snapshot/scripts/run_panel_classical_matrix_20260923.py": "862965a719be0ffd71587dc5e08f8454d7ac450b3ba4a986167328d0f73b1532",
+    "source_snapshot/scripts/run_panel_impedance_reference_20260923.py": "f7eb89d1e389ef858efc5c0ec726bc3c09cd641307bbd047afd20470d576366e",
+    "source_snapshot/scripts/run_panel_push_20260920.py": "851fd1639a68f0ba4e95901adb1c485f65471ba614328d6318eac43b5518f19d",
+    "source_snapshot/scripts/run_panel_reference_matrix_20260923.py": "bfee190e4b7964d3e513c682171cf950f4e0c50debf7b36553e9f4fd60fb5a0f",
+    "source_snapshot/scripts/run_paper_mpc_benchmark.py": "ae80c9783976a36fac053449264583bddc88f4d0de77de9c389952c8cd2ec338",
+    "source_snapshot/scripts/run_primitive_teacher_v6_20260917.py": "b050a40b7eb965ec37c796024e45329ecd4fb41e9a5b39e9a82e83767b3cef98",
+    "source_snapshot/scripts/run_primitive_teacher_v7_20260917.py": "c451135eb4d2bd799bf6a587895d1a2df6a749f8f2a91e41cb45032d7ff0258b",
+    "source_snapshot/scripts/run_rod_perturbation_benchmark.py": "2fc7d57ffc6c52d59357844f4ec8cb7cace19ce93b6a88638dde1e2f3da43a65",
+    "source_snapshot/scripts/run_sixd_kappa_search.py": "ff473a3a7c7ab8d750ed9ffbb973d19252993176360df83707700d46f01be516",
+    "source_snapshot/scripts/run_source_demo.py": "ef1d3533e0a53f463718fac2432e24679fc0893071fa30fe409bae9eefcc5537",
+    "source_snapshot/scripts/run_static_stiffness_manifest.py": "f01704ef3b9a74ffddf67119ab758d70e7d2109f29e136baf1989c27f8128f3c",
+    "source_snapshot/scripts/run_teacher_history_diagnostic_20260923.py": "0425860be96fda1347c662f36061ced70d73ab989b762a4528f6aa03654df70a",
+    "source_snapshot/scripts/run_vmc_6d_constrained_push_20260918.py": "e668dd8cc5942a391785f39ba36c8b249438bb58967159b34999b6b395bfb0c5",
+    "source_snapshot/scripts/run_with_substep_metrics_20260923.py": "f51387cc6ef3f05e8c239aeb4be4e3d164cd8599bc3cf083c659275c7d591e98",
+    "source_snapshot/scripts/scan_energy_safety.py": "c791df52c0ef9197363a9526feeb00f7e00983bc9f2e8f11f2745422703d520d",
+    "source_snapshot/scripts/scene_gates.py": "557bb5049e0f99709ec0d3407bb649f0a3bff5d3ad93c4f368c46534dc7b95e5",
+    "source_snapshot/scripts/screen_benchmark_v2_manifest.py": "68c1495ed24471fe2fbcfdd34912bb36868173a76ab2f53f725f1640606fc6e3",
+    "source_snapshot/scripts/screen_benchmark_v3_manifest.py": "0849fce1979b9a24f9cbe5e640925eaf41d1684dba95b71a8233b95b9fcc073f",
+    "source_snapshot/scripts/screen_benchmark_v4_axis_pilot.py": "59604d9cdc307ddcfbaecde64dac73eac8dea8ee902daa96b82f8a038983aa1c",
+    "source_snapshot/scripts/screen_benchmark_v4_holdout.py": "b0c8a1fb59eafd303d9aa96dc9cb1ccb2a8d5c2809494570e854ff89a0aec48f",
+    "source_snapshot/scripts/screen_benchmark_v4_manifest.py": "e089e88f75769fe1a1e173011ed7ce91d56fea829155d77d5b1612727dbc75e9",
+    "source_snapshot/scripts/screen_esn_wbc_train_validation.py": "62664d5f48c0c0bfdfc935548a4074d458e205a43fb5379515c25ec75289963c",
+    "source_snapshot/scripts/search_table_corner_targeted_20260921.py": "071399ce1ed8a378bf9d8413d6795481f223237f956581eff3adece760d7a015",
+    "source_snapshot/scripts/search_unified_6d_teacher_20260921.py": "746da52ca163293b8207e804819ccfc5e4e2eef17631a0f576bbf5de4c07c680",
+    "source_snapshot/scripts/smoke_fan_ye_esn_rl_interface.py": "325ae68359f899ee8b3145f4690e5ba50921ecf3cb1258edcc81063afe90754b",
+    "source_snapshot/scripts/smoke_fan_ye_esn_wbc_rl_rollout.py": "f6574052f5af931158fe546d9dfa9425f3b4eb926862ce1e961085ab63405908",
+    "source_snapshot/scripts/stiffness_training_core.py": "a6b48a425893e2324f14b1b64911fdda248a55502ef8b29871d2c1c544045d0e",
+    "source_snapshot/scripts/summarize_workstation_vmc_20260920.py": "4af6d7f222be78b942390085ebc6f929b7eb034a7a93ca28e50a2f4bfbe62725",
+    "source_snapshot/scripts/test_fr3_contact_interface_20260917.py": "96e84c8ce73408a7fa11967de6722d090cd395e7f51dfd6f3c0f5c2164c45198",
+    "source_snapshot/scripts/test_office_scene_v5_20260917.py": "35802f8374fafc269229f9dd3f0dcf2fc8ef2797b5b19f7966331329f2fa464e",
+    "source_snapshot/scripts/train_current_mlp_action7_20260921.py": "c471cc59e2d0a980ae720d204914151dc1282a51e672e0d70bdc0a0b4179f666",
+    "source_snapshot/scripts/train_esn128_action7_20260918.py": "b4563c03f3f418b4c4f73412f105c38f147c9eaf77879fbbd9f3182b684fbd3f",
+    "source_snapshot/scripts/train_matched_action7_20260921.py": "89b8e41a37d9d750756035f0bc169956f5e00b7d98028556aff65efadf353d7e",
+    "source_snapshot/scripts/train_phase_stiffness_cem.py": "1a83d482f277708e4ba671bb02f2d307f99a4513c1c6d730e5b19e604cd6f7a1",
+    "source_snapshot/scripts/train_wbc_error_forecaster.py": "cfd3449b6b301aca325dfc1ecbcade3e8bf15c8e8f991f02a23237f872f7b4d9",
+    "source_snapshot/scripts/train_wbc_velocity_residual.py": "80afc25065450dcd04e8dd10017a8e49824dc45b0d152aabbcc3867284e774a5",
+    "source_snapshot/scripts/tune_workstation_vmc_20260920.py": "d18cc02ae301518e3e550d77241c3221b1d1dfb4fbecb829d6ee953b50b337a2",
+    "source_snapshot/scripts/validate_office_apparatus_v5_20260917.py": "3005e6f79ba7dd9c7d6ceeadcfc3b24599ece4cd0c749a123f1b8ac868f4e5ec",
+    "source_snapshot/scripts/vendor_autolife/NOTICE.md": "c2f7edc9c182aff7d6c17d6cc671d68cc61366ad03c66ac558d8e6d4c3e4ee81",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/autolife.py": "8418cd491c882fd68a727136717a111571f951f7b7433f5c4abf9a8e59c89d68",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/kinematics/__init__.py": "618925b9739b6e6515965aed96e97251b2aa6b8b4ce145c18197d7271a1a0fc9",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/kinematics/collision_model.py": "ca63ddebc0df479c68aaba6bf8801ca43c84bc30491e08483ef716c52b3687fd",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/kinematics/ik_solver_base.py": "686d741d48b977eae1e68e80982a06a20835ec130a4603bd89a87d203269b03a",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/kinematics/pink_ik_solver.py": "f4ef632c0b713d2e335c509e0b7a9544a85aafdbb0ecfe8d42aec9f53726eb7a",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/kinematics/pinocchio_fk.py": "69746fceff3cf5587f82101062e20eaf923774f7c5fcc503fd8b2d58dce5285d",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/types/__init__.py": "b52eda271764cb260fb38ee098d8377ce1f8010b4b408820489d335c9326c0e4",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/types/geometry.py": "49dec1ed7126625d897704495aff31423ed543bcf9ad3bf2cf42182534d7b479",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/types/ik.py": "c667b0c528a442a6a893dd5a1b16c7d296d23b53352437da4eed1442707b6134",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/types/planning.py": "1273de681593fbc275ae7ab12927d178ae9f4439fb05bb89f72508bb6a2d6e5a",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/types/robot.py": "56577e6e3f12748f1f797a6ac34904e1c801e245ffefebdb115676d66e599490",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/utils/rot_utils.py": "0be06a8e10e81eaa77616aa91aa7238be4f5cb526764852f60a451adf5cf07e2",
+    "source_snapshot/scripts/vendor_autolife/autolife_planning/utils/video_recorder.py": "a8c7a369f2d573ca95eaef76572c56cf08ab3f665902a38bc44dae51d1134f73",
+    "source_snapshot/scripts/verify_blocking.py": "ae44ff91b3cac812853b5e14df01347177fdcd7f52fdcc62b78a1c6547d6a826",
+    "source_snapshot/scripts/vmc_compliance_baseline.py": "039c40396d96461a292adaaf601792164a896c8ac7154803d1ac71a748f83f23",
+    "source_snapshot/scripts/vmc_torque_baseline.py": "2a6a9e73e404c7799ea2c8c8d32ab83e75502f10f84d104a9eab5b784e9be18a",
+    "source_snapshot/scripts/wbc_velocity_residual_core.py": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+    "source_snapshot/scripts/wbc_velocity_residual_env.py": "50c2d77df422c5c3ce440428dbd62f7511e4f8c0f8528e8f59d0bf4e8481297c",
+    "source_snapshot/scripts/workstation_scene_20260920.py": "c2224a793cb423da362982b5724a77c651b9f50d75631e5498a3776b0ce720b4",
+    "frozen_models/mlp.npz": "5327061ccbfc147c410be355bd82c6769736978de971afa48a01844fc4dd87b7",
+    "frozen_models/esn.npz": "0f9d1c2970bbf9e35f9748eb68ae73c84340e6f4e193f3ee37e584970337975a",
+    "jobs/train_9600_approach/result.json": "5b4b54d1c6cd5f13204f993693da5d05fe082ce0b183c62df998b60ad5a31260",
+    "jobs/train_9600_approach/command.json": "80ac71b2d7ed3b1a4be1b5ee163460f0c52b11224a83839d76d7590d64c2e0f3",
+    "jobs/train_9600_approach/run.log": "05bccf78484dc2d1889c928a39de1976b40e47ee1f0bd0ca02b836382f28a50c",
+    "jobs/train_9600_approach/metrics/audit_manifest.json": "8ab81b37210c117f95593971774867cddafde31003ec14c77b069ac4fa400cb7",
+    "jobs/train_9600_approach/metrics/episode_0/substep_metrics.npz": "a72f266db126727dac84bd8cb7d61351ad6afbe9fd92f4c3c629abf5ee5cee78",
+    "jobs/train_9600_approach/metrics/episode_0/substep_metrics.json": "9c33589a909d1cfc379c04ee94f958f70d260cbe6c76441a93ae5c9909dc21c9",
+    "jobs/train_9600_approach/rollout/rollout.json": "97c5abe4816d9856e99f900a182a0224c6867dfa0a18eea16e39d7e26b2cb938",
+    "jobs/train_9600_approach/rollout/rollout.mjb": "9e8e14dc3c8603a1a13919442fdc5fdab023dc8d5a60eb995745cd45dede9652",
+    "jobs/train_9600_approach/rollout/rollout.npz": "8f9c8a61746f95432ee65b1c2f6732cdb8e520bee6040f5893ffdc1e2298d282",
+    "jobs/train_9600_loaded_lift/result.json": "ee711ff0a1e649838cafb44cf6e4bae95668672bf5ce5bb87af0bb1524390095",
+    "jobs/train_9600_loaded_lift/command.json": "d75ae3bdb11f6b0c403c140fff11fd95c394f5d79b2a5c97aac2e9621a8fe735",
+    "jobs/train_9600_loaded_lift/run.log": "5225a908fff4b1e9e5c7c77083c36359b4e37562455e4ce28908535ace1b5d9d",
+    "jobs/train_9600_loaded_lift/metrics/audit_manifest.json": "d335210759f8e5e92cb464d5378cdf725a19cfc6ff0a441d9291d0c5f9f86428",
+    "jobs/train_9600_loaded_lift/metrics/episode_0/substep_metrics.npz": "4c4400d8a1cc43127a29d0ab0cd14a8938d7a6b8d28e0ede4e49c72e141f813a",
+    "jobs/train_9600_loaded_lift/metrics/episode_0/substep_metrics.json": "8f697355040bf56ef812d200a1d6077758d97d5bb82ee95b78a9710311586993",
+    "jobs/train_9600_loaded_lift/rollout/rollout.json": "759cb3c3e438c363eeca805d3f1ab522b16b0d5a1e21280f34c6b8244232935a",
+    "jobs/train_9600_loaded_lift/rollout/rollout.mjb": "9e8e14dc3c8603a1a13919442fdc5fdab023dc8d5a60eb995745cd45dede9652",
+    "jobs/train_9600_loaded_lift/rollout/rollout.npz": "229de3634544076ad2fd816cb0ddedccf75f54420fd547329a3f89a75edad77a",
+    "jobs/train_9601_approach/result.json": "bc3477981ba4b425c99c3bc3301b9eeb759539a632941dcabe83976e9f8d41c4",
+    "jobs/train_9601_approach/command.json": "6d67a848defa5977c23e6f7fea25fdc4425d24c1da0e519c997e0ce2fce3875f",
+    "jobs/train_9601_approach/run.log": "10a8e691433d79e057fb14a578749b52c1e377e17b471b99c1f90f559db1d3bf",
+    "jobs/train_9601_approach/metrics/audit_manifest.json": "5fc9c229a558320d2e3676e88a2323df301fa8df03e6e6c32df5f882b4f9d59f",
+    "jobs/train_9601_approach/metrics/episode_0/substep_metrics.npz": "f95b7d49597421bdcd7296dc0417c8cbd4ce4d7a888bbb79d856415e74c51a28",
+    "jobs/train_9601_approach/metrics/episode_0/substep_metrics.json": "19916cdb2fa74c5263c6ccb37c7c2803c95fb4fb21b5f11c3682a377068fdf28",
+    "jobs/train_9601_approach/rollout/rollout.json": "ede6fa1fc54b819e904218ec79cc8f928c6580157b149c24a4c51d4ef8eeef3b",
+    "jobs/train_9601_approach/rollout/rollout.mjb": "c35961639d5b1b6b28d176ed46d8d87eb7b94222185c0b832c9aa7076f9122b1",
+    "jobs/train_9601_approach/rollout/rollout.npz": "21f1c5e7a9fe26dbac8ed16e09aaaac8a90619cc099a86bfaebadfdcb68d8787",
+    "jobs/train_9601_loaded_lift/result.json": "f74fc8fed2fca5171db9970b05d529dd2a8e3b0f4a78269703fa7af2cd1a045b",
+    "jobs/train_9601_loaded_lift/command.json": "41c5adca69b07fb0cb4fd3afc8cc80c71b488f65a24bd3116386519f158ef465",
+    "jobs/train_9601_loaded_lift/run.log": "e575202c3ddfcf85a705edb86e641c21ba5ebd4200ad6a187bed7a79bddc6089",
+    "jobs/train_9601_loaded_lift/metrics/audit_manifest.json": "c9d8335de2c9b54f04205deb1489ac97903519430d527cae6918f80cd22d8451",
+    "jobs/train_9601_loaded_lift/metrics/episode_0/substep_metrics.npz": "5dc7e0024829c0e68fc0616123fa36f43a4d519925ce7f744a08a3d8eeafe128",
+    "jobs/train_9601_loaded_lift/metrics/episode_0/substep_metrics.json": "e0b74c77fb01165e2ca9e86d21bcbf9d03113694ce7b58d3b89ac2e1ca5d17d9",
+    "jobs/train_9601_loaded_lift/rollout/rollout.json": "dd2a216308117649c2a261746938dcfe7188ed4c1fcba3c086447b6256365a69",
+    "jobs/train_9601_loaded_lift/rollout/rollout.mjb": "c35961639d5b1b6b28d176ed46d8d87eb7b94222185c0b832c9aa7076f9122b1",
+    "jobs/train_9601_loaded_lift/rollout/rollout.npz": "1f629353f0ac9d2c50ad1a1411f8026d0cfa3eb8b25aaad49a66d69e79129a97",
+    "jobs/train_9602_approach/result.json": "2b0b89ebd2d7323760dc7dbef0f737b1c11348ee5017d90e86ef27e0eaec8bc9",
+    "jobs/train_9602_approach/command.json": "ef975ff9ce0a516add77ddfb2bf38cf026db46d12085ecddfecb0004244b4ace",
+    "jobs/train_9602_approach/run.log": "9df55d8bb480c2f0dde2ae0ad3b2573aa7594c094e3a5b0ba7055203eb25e1e7",
+    "jobs/train_9602_approach/metrics/audit_manifest.json": "bebf690f91f77895cd4a701dc5ce58de43ecba44259f47f290b1ff263170081d",
+    "jobs/train_9602_approach/metrics/episode_0/substep_metrics.npz": "f8e0dbe4f1f04667dc6fee1c91880f60def9cb10dae4d26c84cc7657c2e6e7b1",
+    "jobs/train_9602_approach/metrics/episode_0/substep_metrics.json": "05c5940a51c240b537d990871c8cffae9b07b6bbcd4521ad94656f630bc0950c",
+    "jobs/train_9602_approach/rollout/rollout.json": "82e99b7e2a5c7621b7e863f164a71ecb611e07f01fb63f010bfa80cd0188d41e",
+    "jobs/train_9602_approach/rollout/rollout.mjb": "d201ea83bbaf69e57e5e1daa563a5b73d45ac1072e86941c20839480732eaf79",
+    "jobs/train_9602_approach/rollout/rollout.npz": "359dc5d9ef4e77b5ce71f53f6b26f0cf085074c41d28b430042bc90be008aa34",
+    "jobs/train_9602_loaded_lift/result.json": "4083db700a32a662ee090d436d802633c6c50b33a1f0cb2fadfac0edf5b4543d",
+    "jobs/train_9602_loaded_lift/command.json": "482b0f5dae76b62d6aa0065198e70aeb8d0fd0ec63148e3147a05418e3e43266",
+    "jobs/train_9602_loaded_lift/run.log": "dc0ee2df382df5511ffed83e002a677881f652579dcdafe6f7b4793fdbff20d1",
+    "jobs/train_9602_loaded_lift/metrics/audit_manifest.json": "aa4bd362c3bcf3b56863531fe7a391475c0758a48bbe91d0d0c8295693325329",
+    "jobs/train_9602_loaded_lift/metrics/episode_0/substep_metrics.npz": "ec9ff8391b85420f02eb6a88a61309bcfa7151b8d20a0c46c455959d7b0a2c87",
+    "jobs/train_9602_loaded_lift/metrics/episode_0/substep_metrics.json": "6b38c52fc44b5c01eed17a5e5837059bdcb3867c8175fc0c8fb90a0099298e1b",
+    "jobs/train_9602_loaded_lift/rollout/rollout.json": "3221bf2857c58e3ec84c4b82c7e863ebdff56d7526074db7c9e294f827617b73",
+    "jobs/train_9602_loaded_lift/rollout/rollout.mjb": "d201ea83bbaf69e57e5e1daa563a5b73d45ac1072e86941c20839480732eaf79",
+    "jobs/train_9602_loaded_lift/rollout/rollout.npz": "f6d85cb74a3e6f71b44a349b591bef5b820c15f96b0dd329aba0858cad6ca336",
+    "jobs/validation_9610_approach/result.json": "a701e5bafc4946e20fc98d87b0101ae40ee7b5c327a25c1f2fe91e20ed2fb550",
+    "jobs/validation_9610_approach/command.json": "704aa3df3b56c25b292a9a3479090a82e2143d4526f2c6e29226557772f6c6b3",
+    "jobs/validation_9610_approach/run.log": "82b68dbbbf2f6254444bb02d81637bc7b8bafc7c9cf67c583eeb3b528ec17f2b",
+    "jobs/validation_9610_approach/metrics/audit_manifest.json": "23b7f1a256cd792f3ef78ccf1f66f394ec79e84441037876f114648626863358",
+    "jobs/validation_9610_approach/metrics/episode_0/substep_metrics.npz": "b6cf08fcf480a9efb8bfc882612b16fc161e5a5d9ecf379bac6a6ef2c9aaf01e",
+    "jobs/validation_9610_approach/metrics/episode_0/substep_metrics.json": "ad9be6bd6ed19ec65cacde4489a9ad84fb82dac6fc9ffe359d648a9d63479ee6",
+    "jobs/validation_9610_approach/rollout/rollout.json": "bdffbc5812bd37e80868b9a9072fd98122b5950c3ae0cf638ac78e715478df6b",
+    "jobs/validation_9610_approach/rollout/rollout.mjb": "a810d13142073de4f4b5417bd4b9ff7747f56ace3c29af976276c5a6a89a8a3e",
+    "jobs/validation_9610_approach/rollout/rollout.npz": "c0b2c08716032d7b7904ae1aaccad53b7095b833da4e3c02be5c79572ae3a2af",
+    "jobs/validation_9610_loaded_lift/result.json": "fa1ada6d41945e1daee0cc3386c330f7bdc17d5d134fe9082337ca713330ea7d",
+    "jobs/validation_9610_loaded_lift/command.json": "28fff4b48851e8702a5929c768cda055e004bf24be0f3a4054ffd1f427c36239",
+    "jobs/validation_9610_loaded_lift/run.log": "b5596cd94edce87e684d9b4be277561b7ef6b554ad1c6ffdd46adb2102df2a79",
+    "jobs/validation_9610_loaded_lift/metrics/audit_manifest.json": "3fe83278d2354429002a29eba83070e9d323276f382aed5d422eb385780bed12",
+    "jobs/validation_9610_loaded_lift/metrics/episode_0/substep_metrics.npz": "342ff058971758d0d55f594cee34f09919b271b2020d977c8a024c41cf34b5d8",
+    "jobs/validation_9610_loaded_lift/metrics/episode_0/substep_metrics.json": "9a009fe36abebc6d9f68af5426ddc77226b5f7de4c3f5adfa726b7de39288805",
+    "jobs/validation_9610_loaded_lift/rollout/rollout.json": "9295ed9de48fbd8bd2aa4ca5ce747d7be61e66120703c10dc4debc292cb77c31",
+    "jobs/validation_9610_loaded_lift/rollout/rollout.mjb": "a810d13142073de4f4b5417bd4b9ff7747f56ace3c29af976276c5a6a89a8a3e",
+    "jobs/validation_9610_loaded_lift/rollout/rollout.npz": "34b2aa2705837ba31d0629397fccc2b3bbc17364d0e8ae7d9859af1373c0886f",
+    "jobs/validation_9611_approach/result.json": "40284b5051f4c548a356b40e441d75a5008f635b41d28a8f3382e0d6843ec83d",
+    "jobs/validation_9611_approach/command.json": "ce21b087556471e7da370cabe4ffbd508ab23c0d94dc89ca79da6d56844a3d84",
+    "jobs/validation_9611_approach/run.log": "2601176b6bf16c8c7d8081101ec1d0c3283f97c8186e108bcf7690b959f2e065",
+    "jobs/validation_9611_approach/metrics/audit_manifest.json": "3eac6a2b22c26a1774bc22433de2ab9f38790721ee2b9fd0dffb7629e42c0215",
+    "jobs/validation_9611_approach/metrics/episode_0/substep_metrics.npz": "9f7eeb3bd0bedd57f8e93eb9dab936047af51558edc6581363e41017c96d04ee",
+    "jobs/validation_9611_approach/metrics/episode_0/substep_metrics.json": "4455112cae9710dd50596a91d4bef2ce6040dac0de997316f04e2203c0f390d4",
+    "jobs/validation_9611_approach/rollout/rollout.json": "0a41df7c0b7fcd7901d0e93512bf1798d0efa7ec12bc477697e06b59f4b53c7b",
+    "jobs/validation_9611_approach/rollout/rollout.mjb": "a2abf05856868973b1d82799df436e9b7411f5359d66e9a1347bf712393b764d",
+    "jobs/validation_9611_approach/rollout/rollout.npz": "38db0f88359c8ca7fdde07352358dd2f99ab66b4be5ee26a74a2e844f6f6cb21",
+    "jobs/validation_9611_loaded_lift/result.json": "fbe6b4bfc6d7a9d731c23b6c3950da1ecefb46bd617401fbf32667af8e2f0e07",
+    "jobs/validation_9611_loaded_lift/command.json": "184d0429b8e480db929c86d599eee2ec0c519597c194e621ccf74d09bc615ef1",
+    "jobs/validation_9611_loaded_lift/run.log": "de7e2d8783e66b165e5d9c0250b7c5d9a84660597a7be449d727223542c921a9",
+    "jobs/validation_9611_loaded_lift/metrics/audit_manifest.json": "ae8ca2946aa67fe60d01127986c670992e16dda13f3618bac7357d91501e8dbf",
+    "jobs/validation_9611_loaded_lift/metrics/episode_0/substep_metrics.npz": "8dfb690ed0f05424beb9586bc7d29153a55b2ad114007230da2b2c9bf8515289",
+    "jobs/validation_9611_loaded_lift/metrics/episode_0/substep_metrics.json": "0fd6a82f0dd47c6acd173b4084374ef7f3c4c0930c441283932d7d3c3a7b03c9",
+    "jobs/validation_9611_loaded_lift/rollout/rollout.json": "634cd43c48afc426f3b27369199bf75c6216fbf0d76b2bdce528fb40a5f134d5",
+    "jobs/validation_9611_loaded_lift/rollout/rollout.mjb": "a2abf05856868973b1d82799df436e9b7411f5359d66e9a1347bf712393b764d",
+    "jobs/validation_9611_loaded_lift/rollout/rollout.npz": "19b8f690da4b7cb130f4d375737a80a8dd95985e2b096e47433bf5c650f69ccd",
+    "jobs/validation_9612_approach/result.json": "c3213878e4ca9cfb55ecf5d62bcf91b60c147059db52d13b1eb31346763df264",
+    "jobs/validation_9612_approach/command.json": "2d549f9e59c073d46b8f54738a63f0abc517fa07eb393423e1d9bd5dde66df16",
+    "jobs/validation_9612_approach/run.log": "a1a92406f4144b99282f74b5ba50ac003ec893e2194e774f8dd6a89f8a117cbe",
+    "jobs/validation_9612_approach/metrics/audit_manifest.json": "13e8d899947a7118186dc4a41c52075e489b504abace2398fade1ba8b824dd03",
+    "jobs/validation_9612_approach/metrics/episode_0/substep_metrics.npz": "115873014fd693b99f468cbe86536ce2ca30122b35cdf431a11c500ed06fdbe4",
+    "jobs/validation_9612_approach/metrics/episode_0/substep_metrics.json": "358f7f003a2bc0c74d1b45c4e800da2ebe928d1f392acf242d037db3bb6ecfb6",
+    "jobs/validation_9612_approach/rollout/rollout.json": "052d8f492ff9079871f0fdee3b23b454cbe48765008aa4c64f975fd276bb17e1",
+    "jobs/validation_9612_approach/rollout/rollout.mjb": "c539f72faa8545985d6033826d707e7df3f44fd44c0c4ca9c2974c8b6ac9ddcf",
+    "jobs/validation_9612_approach/rollout/rollout.npz": "4d5bd16702237503dc5246812b01f888cb5c5efd5b9717813901c5659d5021de",
+    "jobs/validation_9612_loaded_lift/result.json": "c8f47a050cbbc3f2ff27e25eb48321bb0a4be3ebeedd1b11080b09339fa08c17",
+    "jobs/validation_9612_loaded_lift/command.json": "231dcf9892654b7571ff9593a009e507d959e4dc2b1544ee57897869b85e1a3d",
+    "jobs/validation_9612_loaded_lift/run.log": "3bec503b07e4013b16481f2bb91801bdaf8f2840d6a14ccb52e3a1e9b96cd0fc",
+    "jobs/validation_9612_loaded_lift/metrics/audit_manifest.json": "a4391d9f87ca6b9bf73674b875deab7f56054751035fc32cc58cd72b642a1fd5",
+    "jobs/validation_9612_loaded_lift/metrics/episode_0/substep_metrics.npz": "2f052084e00ecae33df7fdf9499354b5e49cd00cab57018188ce4aa2342b6f4d",
+    "jobs/validation_9612_loaded_lift/metrics/episode_0/substep_metrics.json": "9ff02898d923c44f2ea853f3608dd848c805d5fde739037ea032106b4a9e5858",
+    "jobs/validation_9612_loaded_lift/rollout/rollout.json": "1a93c99244be8e0069ceec5ac0b1cf04d358cbe4a1c67257be2dc5c7947a2596",
+    "jobs/validation_9612_loaded_lift/rollout/rollout.mjb": "c539f72faa8545985d6033826d707e7df3f44fd44c0c4ca9c2974c8b6ac9ddcf",
+    "jobs/validation_9612_loaded_lift/rollout/rollout.npz": "783f5f7356e025fe8306b36b7d6b48696b9e01fabc639dbf1165f7e53c4b973b"
+  }
+}

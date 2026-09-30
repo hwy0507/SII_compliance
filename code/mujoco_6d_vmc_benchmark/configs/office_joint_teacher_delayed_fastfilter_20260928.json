@@ -1,0 +1,13 @@
+{
+  "name": "delayed_stiff_fastfilter",
+  "purpose": "Pre-registered development teacher candidate for rod timing via faster proprioceptive wrench filter.",
+  "action_scale": 0.5,
+  "options": {
+    "stiffness_6d": [800.0, 800.0, 2400.0, 20.0, 16.0, 24.0],
+    "damping_6d": [39.5979797464, 39.5979797464, 77.7817459305, 3.95979797464, 3.39411254970, 4.24264068712],
+    "filter_tau": 0.02
+  },
+  "ball_launch_time_s": 2.0,
+  "actor_inputs": "canonical48D only; launch time and rod schedule are not actor inputs",
+  "forbidden_inputs": ["contact truth", "ball state", "event time", "task stage", "visual/range"]
+}

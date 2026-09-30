@@ -1,0 +1,19 @@
+{
+  "purpose": "Closed-loop diagnostic of reservoir history versus global attenuation and nominal WBC; not a new trained candidate or blind audit",
+  "selection": "Original office, earlier sustained rod at7s, and stronger ball/negative layout represent original, sustained disturbance and first-impact failure. Include every planned result; do not extrapolate this three-case diagnostic to all layouts.",
+  "controls": "Same R34 checkpoint, original gates, torque/slew limits, proprio48/action7, first.2s at1.5625us then50us. Reset only the ESN reservoir before each observation, retaining current-input response and output_gain=.5. Observer and task state are not reset.",
+  "reference_results": {
+    "r34_original": "outputs/esn_office_r34_stress_20260927/results/r34_original/rollout.json",
+    "r34_rod_start7": "outputs/esn_office_r34_stress_20260927/results/r34_rod_start7/rollout.json",
+    "r34_hard": "outputs/esn_office_r34_stress_20260927/results/r34_hard/rollout.json",
+    "zero_original": "outputs/esn_office_resolved_stress_20260927/results/zero_original_resolved/rollout.json"
+  },
+  "jobs": [
+    {"id":"reset_original","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--esn-model","models/r34.npz","--esn-mode","control","--memory-ablation","reset_each_observation"]},
+    {"id":"reset_rod_start7","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","7","--esn-model","models/r34.npz","--esn-mode","control","--memory-ablation","reset_each_observation"]},
+    {"id":"reset_hard","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24","--esn-model","models/r34.npz","--esn-mode","control","--memory-ablation","reset_each_observation"]},
+    {"id":"zero_rod_start7","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","7"]},
+    {"id":"zero_hard","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24"]}
+  ],
+  "failure_policy": "All five new episodes retained alongside four existing paired references. No refit, no new gain search, no withheld access. Memoryless reset is an inference ablation, not a separately optimized feedforward baseline."
+}

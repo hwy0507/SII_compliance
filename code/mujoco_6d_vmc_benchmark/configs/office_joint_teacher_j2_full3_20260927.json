@@ -1,0 +1,17 @@
+{
+  "purpose": "Complete fixed-budget six-condition development validation for J2 action-unit aligned teacher (manual wrapper argv fix)",
+  "candidate": "configs/office_joint_teacher_aligned_20260927.json",
+  "split": "development",
+  "teacher": "vmc6d wrapper with action_limit_6d [.32,.32,.32,.60,.60,.60]",
+  "actor_inputs": "encoder-derived proprioceptive wrench only; no truth/stage/event/visual",
+  "gates": "unchanged",
+  "entrypoint": "tools/run_office_joint_teacher_20260927.py",
+  "jobs": [
+    {"id":"j2full3_aligned_original","split":"development","arguments":["--teacher-config","configs/office_joint_teacher_aligned_20260927.json","--teacher","vmc6d","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625"]},
+    {"id":"j2full3_aligned_rod_start7","split":"development","arguments":["--teacher-config","configs/office_joint_teacher_aligned_20260927.json","--teacher","vmc6d","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","7"]},
+    {"id":"j2full3_aligned_rod_start9","split":"development","arguments":["--teacher-config","configs/office_joint_teacher_aligned_20260927.json","--teacher","vmc6d","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","9"]},
+    {"id":"j2full3_aligned_rod_hold6","split":"development","arguments":["--teacher-config","configs/office_joint_teacher_aligned_20260927.json","--teacher","vmc6d","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-hold","6"]},
+    {"id":"j2full3_aligned_shift_plus","split":"development","arguments":["--teacher-config","configs/office_joint_teacher_aligned_20260927.json","--teacher","vmc6d","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092701","--variant","2","--ball-speed","1.45","--person-stroke",".18","--rod-stroke",".225"]},
+    {"id":"j2full3_aligned_hard","split":"development","arguments":["--teacher-config","configs/office_joint_teacher_aligned_20260927.json","--teacher","vmc6d","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24"]}
+  ]
+}

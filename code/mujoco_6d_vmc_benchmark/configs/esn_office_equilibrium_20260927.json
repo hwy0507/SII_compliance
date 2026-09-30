@@ -1,0 +1,23 @@
+{
+  "purpose": "One offline fixed-budget reservoir equilibrium correction, R36; no new sensing",
+  "parent": "outputs/esn_office_resolved_stress_20260927/r34_half_gain/model.npz",
+  "parent_sha256": "7c9455afa2d419857424bd7ea3e18b12faeafa56133f54796e9fb69b0f0b635e",
+  "history": "outputs/esn_office_recovery_20260927/r33_axis_memory/training_data.npz",
+  "seed": 20260927,
+  "force_train_magnitudes": [0.0, 0.2, 0.5, 1.0, 2.0, 4.0, 8.0, 12.0],
+  "moment_train_magnitudes": [0.0, 0.03, 0.05, 0.1, 0.2, 0.4, 0.8, 1.2],
+  "force_check_magnitudes": [0.1, 0.35, 0.75, 1.5, 3.0, 6.0, 10.0],
+  "moment_check_magnitudes": [0.015, 0.04, 0.075, 0.15, 0.3, 0.6, 1.0],
+  "fixed_point_steps": 800,
+  "objective": "Mean squared preservation of parent dynamic logits on original training histories plus equally weighted mean squared VMC equilibrium logits error plus ridge .001 on feature-normalized linear correction; six independent solves",
+  "equilibrium_weight": 1.0,
+  "ridge": 0.001,
+  "history_development_importance": 12.0,
+  "offline_acceptance": {
+    "equilibrium_interpolation_rmse_improves": true,
+    "synthetic_validation_teacher_rmse_relative_increase_at_most": 0.1,
+    "exact_zero_load_and_axis_separation_preserved": true
+  },
+  "scope": "Frozen 128 reservoir, nonlinear readout, output gain .5 and proprio48/action7. Change signed-axis linear readout only. No simulation truth, stage, scene, event time or withheld layouts. Training history is the original R33 set, not observer-scale failures. Interpolation checks are development probes, not blind robot tests.",
+  "budget": "One closed-form candidate, no ridge/weight sweep. Only if offline criteria pass, at most six original declared development regression episodes at original observer scale .005. Full raw failures retained. No first-impact safety improvement claimed."
+}

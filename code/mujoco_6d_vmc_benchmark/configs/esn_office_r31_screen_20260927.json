@@ -1,0 +1,10 @@
+{
+  "purpose":"R31 development layouts plus predeclared physics-resolution diagnosis; original-layout R31 runs locally",
+  "timestep_policy":"Both finer steps are reported, never select a timestep by pass/fail. No safety-gate change. Full eventual verification must use one common justified converged timestep.",
+  "jobs":[
+    {"id":"r31_shift_plus","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--seed","2026092701","--variant","2","--ball-speed","1.45","--person-stroke",".18","--rod-stroke",".225","--esn-model","models/r31.npz","--esn-mode","control"]},
+    {"id":"r31_shift_minus","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24","--esn-model","models/r31.npz","--esn-mode","control"]},
+    {"id":"zero_ball_dt25us","split":"development","arguments":["--task","pick_place","--events","ball","--duration","6.2","--dt",".000025"]},
+    {"id":"zero_ball_dt12_5us","split":"development","arguments":["--task","pick_place","--events","ball","--duration","6.2","--dt",".0000125"]}
+  ]
+}

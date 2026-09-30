@@ -1,0 +1,10 @@
+{
+  "purpose":"Numerical diagnosis after user explicitly retained proprioception-only scope; no sensor or material changes, no full-task success credit",
+  "reference_hard_penetration_mm":0.20737013438008847,
+  "frozen_budget":"Three .08s probes at1.5625us. Parity must reproduce prior first peak. Solver tolerance and native collision algorithm are diagnostics, not gate-based selection.",
+  "jobs":[
+    {"id":"parity","split":"development","entrypoint":"tools/probe_office_contact_solver_20260927.py","arguments":["--variant","parity"]},
+    {"id":"tight_solver","split":"development","entrypoint":"tools/probe_office_contact_solver_20260927.py","arguments":["--variant","tight_solver"]},
+    {"id":"native_ccd","split":"development","entrypoint":"tools/probe_office_contact_solver_20260927.py","arguments":["--variant","native_ccd"]}
+  ]
+}

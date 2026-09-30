@@ -1,0 +1,48 @@
+{
+  "config": {
+    "name": "stiff_scale040",
+    "action_scale": 0.4,
+    "options": {
+      "stiffness_6d": [
+        800,
+        800,
+        2400,
+        20,
+        16,
+        24
+      ],
+      "damping_6d": [
+        39.5979797464,
+        39.5979797464,
+        77.7817459305,
+        3.95979797464,
+        3.3941125497,
+        4.24264068712
+      ]
+    }
+  },
+  "teacher_input": "encoder-derived wrench only",
+  "truth_in_actor": false,
+  "task_stage_in_actor": false,
+  "config_sha256": "ac443b42ae03eb9b032dd3e6c6c0cfed88dcb47c2ae54bb51de69a9c639b7e53",
+  "wrapper_sha256": "e389f1a9a239efd6c1b23b1ff0d1e54eaae9d71582001c2680f85cf23ea804b3",
+  "status": "completed",
+  "argv": [
+    "--output",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/results/teacher_scale040_rod_start9/rollout",
+    "--teacher",
+    "vmc6d",
+    "--task",
+    "pick_place",
+    "--events",
+    "all",
+    "--duration",
+    "55",
+    "--impact-refinement-dt",
+    ".0000015625",
+    "--rod-start",
+    "9"
+  ],
+  "trace_sha256": "d00843346d12d36db2b1ff2512adfb248704bee3fd296378b8a5ac99524672a9",
+  "steps": 1375
+}

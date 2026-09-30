@@ -1,0 +1,141 @@
+# RL 与经典柔顺 baseline 工作记录（2026-09-23）
+
+最新结果以 [本周三维对比周报](BASELINE_WEEKLY_REPORT_20260923.md) 为准：已完成当前 48D 五方法配对、阻抗积分参考 K300/K900 对照及导纳参考 r2 完整回合。以下 primitive 与 RL pilot 记录保留作前期工程诊断，不与当前配对主表混合。全套检查现为 105 项通过；本轮实验已结束，无后台训练或仿真遗留。
+
+本周先完成 impedance/admittance 的开发矩阵，再建立两类 RL baseline 的文献与本机复现入口：
+
+1. RL 调 VMC/阻抗/导纳参数；
+2. RL 直接输出柔顺 action。
+
+当前 GitHub 主线为 `0e9142e9b6c03c22995914e9ef66226cfca27a18`。本记录只引用有 source hash、命令和结果文件的实验。
+
+后续新增公平比较审计：[FAIR_METHOD_COMPARISON_20260923.md](FAIR_METHOD_COMPARISON_20260923.md)。历史 120 条 isolated push 不能冒充 current proposed 的正式对照：完整 provenance 缺失、旧 source/controller 标签不可靠、全部超过当前 0.2 mm 门槛。当前冻结 48D 模型来源见 [CANONICAL_MODEL_PROVENANCE_20260923.md](CANONICAL_MODEL_PROVENANCE_20260923.md)；新配对 panel 矩阵和接口限制见 [PANEL_CLASSICAL_INTEGRATION_20260923.md](PANEL_CLASSICAL_INTEGRATION_20260923.md)。
+
+## 1. 服务器经典 baseline
+
+服务器完成了 24 条隔离运行：
+
+```text
+controller × fixture × variant
+2 × (ball, push, corner, table_corner) × 3 = 24
+```
+
+完整结果：
+
+```text
+/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/baseline_impedance_admittance_20260923/matrix_resume/FINAL_RESULT.json
+```
+
+本机只读保存了同一汇总：
+
+```text
+outputs/server_baseline_20260923/FINAL_RESULT.json
+```
+
+固定参数开发矩阵的通过情况如下：
+
+| 控制器 | ball | push | corner | table_corner | 总计 |
+|---|---:|---:|---:|---:|---:|
+| Cartesian impedance | 3/3 | 3/3 | 0/3 | 0/3 | 6/12 |
+| Cartesian admittance | 2/3 | 0/3 | 0/3 | 0/3 | 2/12 |
+
+这里的通过数已经同时满足严格的 `penetration <= 0.2 mm`、有效接触、无上游误碰和任务完成条件。完整的逐回合 penetration、端点误差、峰值外力、峰值力矩和失败原因见 [CLASSICAL_BASELINES_20260923.md](CLASSICAL_BASELINES_20260923.md)。
+
+实现边界需要保留：impedance 使用 `J.T @ (K e + D e_dot)`，并经现有 torque feasibility/slew 栈；admittance 使用本体 joint-load 估计 wrench，积分 `M x_dd + D x_d + K x = wrench`，再输出 bounded Cartesian velocity residual。admittance 当前把虚拟 offset 用于内部弹簧反馈，但没有把 offset 变成独立的 WBC reference，因此 nominal WBC 会和虚拟位移产生竞争；这解释了 push/corner/table_corner 的失败，也是下一轮应修正的控制接口问题。
+
+这组数据是 source primitive 的固定参数开发诊断，不是 office blind-test，也不是参数搜索后的论文最终 baseline。当前结果支持的结论是：传统 impedance 在球/棍推 primitive 上有可用工况，但在两个桌角 fixture 上没有通过完整任务 gate；admittance 的固定配置还没有通过持续推压和桌角任务。
+
+复现命令（服务器隔离 source snapshot）：
+
+```bash
+cd /home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/baseline_impedance_admittance_20260923/source_resume
+/home/arm1/vmc_mujoco_runtime/.venv/bin/python scripts/run_classical_matrix_20260923.py \
+  --output /home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/baseline_impedance_admittance_20260923/matrix_resume \
+  --menagerie /home/arm1/vmc_mujoco_runtime/mujoco_menagerie --workers 8
+```
+
+## 2. 2024 年以后“RL 调参数”文献
+
+详细核验见 [RL_PARAMETER_LITERATURE_20260923.md](RL_PARAMETER_LITERATURE_20260923.md)。三篇核心文献是：
+
+| 文献 | venue | 适合本项目的 baseline 解释 |
+|---|---|---|
+| Da-VIL: Adaptive Dual-Arm Manipulation with Reinforcement Learning and Variable Impedance Control | ICRA 2025，DOI `10.1109/ICRA55743.2025.11127487` | PPO 输出 6 个笛卡尔对角刚度，再由 CVXPY QP 和动力学计算关节力矩；适合映射为 RL 输出 6D VMC stiffness |
+| Impedance Primitive-Augmented Hierarchical Reinforcement Learning for Sequential Tasks | ICRA 2025，DOI `10.1109/ICRA55743.2025.11128462` | 高层选择 primitive，参数策略输出阶段相关刚度/任务参数，primitive 内使用自适应刚度；适合做 phase-conditioned parameter baseline |
+| Variable Impedance Control Combining Reinforcement Learning and Gaussian Process Regression | IEEE-RAS Humanoids 2024，DOI `10.1109/Humanoids58906.2024.10769856` | RL/FCEM 学 stiffness-damping，GP 建模物体重量变化，momentum observer 提供外力矩估计；公开资料不足以编造完整 obs/action，应先按 paper-spec 补齐 |
+
+这类 baseline 的 action 不是项目的 7D action。公平实现应为：RL 使用允许的本体观测输出 `K/D` 或低维 schedule，解析 VMC/阻抗控制器将参数转换为项目统一的 7D action，再通过同一安全栈。物体姿态、质量、接触 truth、未来事件和障碍物几何必须从 blind student observation 中剔除。
+
+## 3. 2024 年以后“RL 直接输出动作”文献
+
+详细核验见 [RL_ACTION_LITERATURE_20260923.md](RL_ACTION_LITERATURE_20260923.md)。三篇核心文献是：
+
+| 文献 | venue | 动作和迁移限制 |
+|---|---|---|
+| SERL: A Software Suite for Sample-Efficient Robotic Reinforcement Learning | ICRA 2024，DOI `10.1109/ICRA57147.2024.10610040` | RLPD/SAC 风格，7D 常见形式是 6D pose delta + gripper；可作为 SAC/RLPD-action7 的算法来源 |
+| HIL-SERL: Precise and Dexterous Robotic Manipulation via Human-in-the-Loop Reinforcement Learning | Science Robotics 2025，DOI `10.1126/scirobotics.ads5033` | RLPD + demonstration/human intervention；动作为 Cartesian 6D twist/target，夹爪另有离散策略；没有真实 FR3 和纠正数据不能声称忠实复现 |
+| AutoMate: Specialist and Generalist Assembly Policies over Diverse Geometries | RSS 2024，[官方论文页](https://roboticsproceedings.org/rss20/p064.html) | PPO 直接输出 6D incremental pose，底层 task-space impedance；actor 使用目标位姿，critic 使用 privileged state，必须改成 48D proprio-only 才能公平比较 |
+
+三篇的动作语义都不同于当前 ESN 的 `[slowdown, yield_6d]`。本项目应实现 interface-matched `PPO-action7` 和 `SAC/RLPD-action7`，把原论文作为算法来源，而不是把原论文 action 维度直接塞进当前环境。
+
+## 4. 本机 RL 工程预实验
+
+本机使用 RTX 5080（CUDA 12.8 PyTorch，`torch 2.11.0+cu128`），运行环境为 `.venv-rl`。仓库 89 个测试仍然通过：
+
+```bash
+PYTHONPATH=code/mujoco_6d_vmc_benchmark/scripts \
+  .venv-rl/bin/python -m pytest -q code/mujoco_6d_vmc_benchmark/tests
+# 89 passed
+```
+
+由于本机主内存约 16 GB，训练脚本使用单进程 `DummyVecEnv`、单环境、1--3 个 CPU 核和 6 GB 内存上限。首轮并发 16 worker 曾触发系统 OOM；该故障已定位并停止并发方案。
+
+入口脚本：[run_rl_local_pilot_20260923.py](../tools/run_rl_local_pilot_20260923.py)。它会写入 command、Git/source hash、依赖版本、normalization、checkpoint 和冻结评估；默认只用两条旧 rod development fixture 训练，另两条 fixture 做验证，不使用 office 数据。
+
+### 4.1 PPO 调六维刚度
+
+输出目录：
+
+```text
+outputs/rl_pilot_r2_stiffness_ppo/
+```
+
+配置：`51D proprioception -> PPO -> 6D stiffness action`，8,192 steps，单进程，约 42 s。零动作和学习策略在 4 个 legacy fixture 上均通过旧版“有效碰撞 + 抓起保持 + 配对 no-rod + 无 hard torque limit”判据：
+
+```json
+{"zero_paired_gate": [true, true, true, true],
+ "learned_paired_gate": [true, true, true, true],
+ "publication_ready": false}
+```
+
+这个结果只证明 RL 调参链能运行；零动作也全部通过，不能据此宣称 PPO 改善了 VMC 或优于 ESN。它还没有使用当前 canonical 48D observation、四类正式 teacher split 或 office blind test。
+
+### 4.2 SAC 直接输出动作
+
+输出目录：
+
+```text
+outputs/rl_pilot_r2_direct_sac/
+```
+
+配置：`32D legacy WBC state -> SAC -> 7D direct residual action`，8,192 steps，单进程，约 69 s。零动作四个 fixture 全通过，而学习策略四个 fixture 全未通过：
+
+```json
+{"zero_paired_gate": [true, true, true, true],
+ "learned_paired_gate": [false, false, false, false],
+ "publication_ready": false}
+```
+
+冻结评估显示 learned SAC 在这些短预算、旧 32D 环境中没有建立有效接触和任务完成行为。这是失败的工程预实验，不能解释为“RL 直接动作方法不适合本项目”；它提示后续必须改为当前 48D contract、统一 reward/gate、先用 teacher replay warm-start，再做 SAC/RLPD sweep。
+
+## 5. 当前状态与后续执行顺序
+
+导纳 offset 已接入 WBC 参考，且修复运动学快照时序问题；r2 在三个当前 panel 条件下完成 24 s 全程实验。阻抗已改为积分 WBC twist 的移动平衡点，K300/K900 候选均保留。两者仍未成为可靠通过完整 gate 的最终 baseline，四类 primitive 的修正版全矩阵也尚未重跑。
+
+1. 先为所有方法补齐统一的物理子步速度/实际 actuator torque 记录，并明确状态机参考下的全程与阶段误差口径。
+2. 在训练/验证条件上给 impedance/admittance 固定调参预算、验收规则和模型选择规则；冻结后评估新的共同条件，不用这三条开发结果冒充独立测试。
+3. 在当前 canonical 48D observation 和 7D action contract 上实现 `PPO-action7` 与 `RL-tune-VMC`；调参方法按单独控制器家族解释。
+4. 用 VMC teacher bank 初始化 prior replay，实现 `SAC/RLPD-action7`；训练和 ESN 使用同一 fixture-level split、action hold、normalization 和 gates。
+5. 扩大共同物理条件和独立训练 seed，最后执行冻结配置下的 office blind test。全部失败回合保留 failure reason、penetration、contact pair、force/torque 和 trace。
+
+当前已完成的是可复现的 baseline 起点与 RL 工程链路，不是论文最终比较矩阵。

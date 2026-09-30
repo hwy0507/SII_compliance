@@ -1,0 +1,140 @@
+{
+  "status": "guarded_rod_cross_condition_robust_office_complex_failed",
+  "simulation_only": true,
+  "real_robot_ready": false,
+  "strict_penetration_limit_mm": 0.2,
+  "promoted_checkpoint": {
+    "round": "R30",
+    "qualification_scope": "exposed_17_and_once_only_blind_9360_9367",
+    "path": "outputs/esn_r30_phase3_selector_20260926/floor_065_pulse20/hierarchical_margin_vertical_pulsed.npz",
+    "sha256": "3f6ed39af0c103ee6af07fada710cd90a781233041fb02c3f850996f22a3aae1"
+  },
+  "development_9330_9332": {"task_success": 3, "strict_success": 3, "total": 3},
+  "cross_9340_9345": {"task_success": 6, "strict_success": 4, "total": 6},
+  "all_evaluated_9330_9345": {"task_success": 9, "total": 9},
+  "r10_strict_failures": [
+    {"fixture": 9340, "penetration_mm": 0.20138507579629637},
+    {"fixture": 9344, "penetration_mm": 0.2060543249621131}
+  ],
+  "blind_9350_9357_run": true,
+  "r14": {
+    "architecture": "two_frozen_experts_with_reservoir_state_logistic_gate",
+    "physical_rollout_run": false,
+    "reason": "No predeclared gate offset met both offline TPR and FPR requirements.",
+    "offset_0": {"true_positive_rate": 0.9703703703703703, "false_positive_rate": 0.15793650793650793},
+    "offset_minus_1": {"true_positive_rate": 0.8629629629629629, "false_positive_rate": 0.028427128427128426},
+    "offset_minus_2": {"true_positive_rate": 0.05, "false_positive_rate": 0.003823953823953824}
+  },
+  "r15": {
+    "architecture": "two_frozen_experts_with_16_unit_tanh_reservoir_state_gate",
+    "physical_screen_status": "complete",
+    "deployment_inputs": "proprio48_only",
+    "offline_gate_thresholds": {
+      "true_positive_rate_min": 0.95,
+      "false_positive_rate_max": 0.01,
+      "positive_probability_p05_min_exclusive": 0.5,
+      "negative_probability_p95_max_exclusive": 0.5
+    },
+    "candidates": [
+      {"offset": 0.0, "sha256": "c7a365d38c63fc9bb84ee311dc9f7ca82e6a9c8f4009d02443599424ced11797", "true_positive_rate": 1.0, "false_positive_rate": 0.0018037518037518038, "positive_probability_p05": 0.9920734203727944, "negative_probability_p95": 0.004035651690784264, "offline_admitted": true},
+      {"offset": -1.0, "sha256": "a97fae19ee587096a79e20fa1cbf2566a84add3a4191104775a511290e8a7ca7", "true_positive_rate": 1.0, "false_positive_rate": 0.0012265512265512266, "positive_probability_p05": 0.9787428525077374, "negative_probability_p95": 0.00148843030235596, "offline_admitted": true},
+      {"offset": -2.0, "sha256": "bddeb38348294d69e64992d62b1520a8a76546c6e20de8e58ebfc9f558ff77dc", "true_positive_rate": 0.9962962962962963, "false_positive_rate": 0.00007215007215007215, "positive_probability_p05": 0.9442533094665807, "negative_probability_p95": 0.0005480785771838782, "offline_admitted": true}
+    ],
+    "safety_screen_fixtures": [9330, 9332, 9340, 9344, 9345],
+    "safety_screen_result": {"offset_0": "4/5", "offset_minus_1": "5/5", "offset_minus_2": "3/5"},
+    "development_remainder_run": true,
+    "development_remainder_result": {"task_success": 4, "strict_success": 4, "total": 4},
+    "all_development_result": {"task_success": 9, "strict_success": 9, "total": 9},
+    "blind_9350_9357_run": true,
+    "blind_result": {"task_success": 8, "strict_success": 6, "total": 8},
+    "blind_strict_failures": [
+      {"fixture": 9352, "penetration_mm": 0.20382892803272795},
+      {"fixture": 9355, "penetration_mm": 0.20133064899411054}
+    ],
+    "development_summary_sha256": "53dea4c8fbc15899d29acfe1a0c1a024e416a0c5f692d17f0344e90a934dbd35",
+    "blind_summary_sha256": "12d6ea179c855757d8ab477aa9ff9612b030af1f4b1887426b2174b843d5f78b"
+  },
+  "r16_blind_plan": {
+    "fixtures": [9360, 9361, 9362, 9363, 9364, 9365, 9366, 9367],
+    "sha256": "f4960829720474bfa1975a3af876cd3318f7573b471fe84f80b6e94801a659ec",
+    "frozen_before_r15_blind_trajectory_use": true,
+    "run": true
+  },
+  "post_r15_fixed_screens": {
+    "r19_hard_selector": {"task_success": 8, "strict_success": 5, "total": 8},
+    "r20_debounced": {"task_success": 8, "strict_success": 6, "total": 8},
+    "r21_latched": {"task_success": 8, "strict_success": 6, "total": 8},
+    "r25_phase_pulse": {"task_success": 8, "strict_success": 5, "total": 8},
+    "r26": {"pulse8_strict": 3, "pulse16_strict": 5, "total_each": 8, "summary_sha256": "a61131c81369e90ee1e17e9406b48b1007519018c4423feda61c4a668741f476"},
+    "r27": {"scale_025_strict": 3, "scale_050_strict": 0, "scale_075_strict": 4, "task_each": 8, "total_each": 8, "summary_sha256": "9b1410eec52290583688e5efde500e261cd1283c873d0f682ca201e427103f19"},
+    "r28": {"floor_025_strict": 3, "floor_050_strict": 4, "floor_075_strict": 5, "task_each": 8, "total_each": 8, "summary_sha256": "070927a56678799c737ec51f2dffd6afb67095278942eb501bf3fbd8f8ba385b"},
+    "r29": {"floor_035": {"task": 8, "strict": 4}, "floor_050": {"task": 8, "strict": 4}, "floor_065": {"task": 0, "strict": 0}, "total_each": 8, "summary_sha256": "4e1c2e38aa23c99b0cf9b40e817ba9aebc82488b251130b1666fbb41eec88378"}
+  },
+  "r30": {
+    "architecture": "proprio48_reservoir_stage3_detector_plus_20_step_vertical_clearance_pulse",
+    "deployment_inputs": "proprio48_plus_policy_local_reservoir_and_counter_state",
+    "forbidden_deployment_inputs": ["stage", "clock", "fixture_id", "geometry", "contact_truth"],
+    "offline_selector": {"stage3_true_positive_rate": 1.0, "stage2_hard_negative_false_positive_rate": 0.0},
+    "checkpoint_sha256": "3f6ed39af0c103ee6af07fada710cd90a781233041fb02c3f850996f22a3aae1",
+    "spark_manifest_sha256": "56c53d1274d4dbc9fed61f3653aa1eea1b499acfea889e9b764ee232f9931afa",
+    "screen_result": {"task_success": 8, "strict_success": 8, "total": 8},
+    "remainder_result": {"task_success": 9, "strict_success": 9, "total": 9},
+    "exposed_combined": {
+      "task_success": 17,
+      "strict_success": 17,
+      "total": 17,
+      "mean_substep_position_rmse_mm": 45.08519734270084,
+      "max_peak_torque_nm": 41.7355171014612,
+      "max_peak_speed_mps": 0.2534628535718441,
+      "max_penetration_mm": 0.1884672939777839,
+      "summary_sha256": "52a6cf0db1bd0e466548ce0821871a591a86d151b9dab94d56a4ec57f844699c"
+    },
+    "blind_run_count": 1,
+    "blind_result": {
+      "task_success": 8,
+      "strict_success": 8,
+      "total": 8,
+      "mean_substep_position_rmse_mm": 44.84083574265534,
+      "max_peak_torque_nm": 40.96808575569392,
+      "max_peak_speed_mps": 0.2528255078600807,
+      "max_penetration_mm": 0.18313946581484286,
+      "summary_sha256": "c55288e02bf55b2fe575c5a5c8c9d6b47d21bc6763d5cac2c00c393141b670fa",
+      "fixtures": [
+        {"id": 9360, "penetration_mm": 0.16016313214413366, "substep_position_rmse_mm": 42.00141007307322, "peak_torque_nm": 37.608699880558724, "peak_speed_mps": 0.2528255078600807},
+        {"id": 9361, "penetration_mm": 0.18313946581484286, "substep_position_rmse_mm": 44.47908496482927, "peak_torque_nm": 38.34726281670695, "peak_speed_mps": 0.25120101966730474},
+        {"id": 9362, "penetration_mm": 0.1674088693410239, "substep_position_rmse_mm": 46.37150822451743, "peak_torque_nm": 38.9593024710614, "peak_speed_mps": 0.2496469904190678},
+        {"id": 9363, "penetration_mm": 0.17628664721230317, "substep_position_rmse_mm": 44.35186418204847, "peak_torque_nm": 37.66607742252701, "peak_speed_mps": 0.25071036097685734},
+        {"id": 9364, "penetration_mm": 0.14707529843980846, "substep_position_rmse_mm": 47.84450163610445, "peak_torque_nm": 40.96808575569392, "peak_speed_mps": 0.24816079082169643},
+        {"id": 9365, "penetration_mm": 0.17095214006559134, "substep_position_rmse_mm": 42.80592611655263, "peak_torque_nm": 37.468885878678776, "peak_speed_mps": 0.25229115372383565},
+        {"id": 9366, "penetration_mm": 0.17778631191165925, "substep_position_rmse_mm": 47.42718596488811, "peak_torque_nm": 39.87840724146276, "peak_speed_mps": 0.2485781786785529},
+        {"id": 9367, "penetration_mm": 0.16958885353793554, "substep_position_rmse_mm": 43.44520477922912, "peak_torque_nm": 37.789088155798495, "peak_speed_mps": 0.2506864857283943}
+      ]
+    },
+    "claim": "cross_condition_robust_in_audited_guarded_rod_mujoco_only",
+    "real_robot_ready": false
+  },
+  "office_complex_v5": {
+    "historical_exposed_scene": true,
+    "seed": 2026091751,
+    "variant": 0,
+    "events": "all",
+    "task": "pick_place",
+    "duration_s": 21.0,
+    "task_success": false,
+    "strict_success": false,
+    "final_stage": "approach",
+    "max_external_penetration_mm": 0.17771167044679028,
+    "safety_gate_pass": true,
+    "person_hand_contact_present": false,
+    "reservoir_pulse_steps": 20,
+    "reservoir_pulse_time_s": [0.07999999999999935, 0.8399999999999157],
+    "failure_interpretation": "office-domain reservoir history shift caused an early pulse false trigger and no task progress",
+    "raw_json_sha256": "706f106f5c205154c8fc37566de10642a13c55ee4d4cd972ccd1d43f7c46bcfa",
+    "raw_npz_sha256": "c40ee0d56aac3eab4ea567692ad3ade324fd92e5f5837e2c11c241402fc0eab1",
+    "visualization_manifest_sha256": "9428480f8333dee94eada4639e736c8aeaa4bda47e838d52ee839e0d88728553"
+  },
+  "teacher_9332_task_success": false,
+  "neutral_wbc_9332_task_success": false,
+  "esn_r10_9332_task_success": true,
+  "esn_r10_9332_strict_success": true
+}

@@ -1,0 +1,17 @@
+{
+  "purpose": "Matched-budget inference memory ablation for the best wrench1 ESN",
+  "candidate": "outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz",
+  "candidate_sha256": "8975edeb50a68b583034ee1945ff4d8b57303158d64c705cc3d8af9621006352",
+  "split": "development",
+  "method": "wrench1 checkpoint with reservoir reset before every observation",
+  "actor_inputs": "canonical48 pure proprioception; no truth/stage/event/visual",
+  "gates": "unchanged",
+  "jobs": [
+    {"id":"wrench1_memory_reset_original","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz","--esn-mode","control","--memory-ablation","reset_each_observation","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625"]},
+    {"id":"wrench1_memory_reset_rod_start7","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz","--esn-mode","control","--memory-ablation","reset_each_observation","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","7"]},
+    {"id":"wrench1_memory_reset_rod_start9","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz","--esn-mode","control","--memory-ablation","reset_each_observation","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","9"]},
+    {"id":"wrench1_memory_reset_rod_hold6","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz","--esn-mode","control","--memory-ablation","reset_each_observation","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-hold","6"]},
+    {"id":"wrench1_memory_reset_shift_plus","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz","--esn-mode","control","--memory-ablation","reset_each_observation","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092701","--variant","2","--ball-speed","1.45","--person-stroke",".18","--rod-stroke",".225"]},
+    {"id":"wrench1_memory_reset_hard","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz","--esn-mode","control","--memory-ablation","reset_each_observation","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24"]}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "config": {
+    "name": "damped",
+    "action_scale": 0.5,
+    "options": {
+      "damping_6d": [
+        56,
+        56,
+        110,
+        5.6,
+        4.8,
+        6.0
+      ]
+    }
+  },
+  "teacher_input": "encoder-derived wrench only",
+  "truth_in_actor": false,
+  "task_stage_in_actor": false,
+  "config_sha256": "70b81033f8b3554374584a344fca1810d0bfb85664c0c0656d8bef5f20db37cf",
+  "wrapper_sha256": "e389f1a9a239efd6c1b23b1ff0d1e54eaae9d71582001c2680f85cf23ea804b3",
+  "status": "completed",
+  "argv": [
+    "--output",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/results/teacher_damped_rod_start9/rollout",
+    "--teacher",
+    "vmc6d",
+    "--task",
+    "pick_place",
+    "--events",
+    "all",
+    "--duration",
+    "55",
+    "--impact-refinement-dt",
+    ".0000015625",
+    "--rod-start",
+    "9"
+  ],
+  "trace_sha256": "7a3f47388ebd76fa1c8f5323a05f52d13fe7c953a602523170ff02c5b1715ba6",
+  "steps": 1375
+}

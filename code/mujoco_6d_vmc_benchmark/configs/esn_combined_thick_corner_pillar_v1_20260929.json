@@ -1,0 +1,72 @@
+{
+  "fixture": "combined-thick-corner-pillar-v1 development family; results are keyed by archived MJB, not by this flag alone",
+  "purpose": "independent development diagnostics; never merged into frozen baseline",
+  "scene_contract": {
+    "ball_launch_time_s": 2.0,
+    "obstacle": "one pillar; cup omitted; geometry varies across archived candidates",
+    "person_start_s": 3.0,
+    "rod_start_s": 7.0,
+    "rod_hold_s": 6.0,
+    "corner_placement": true,
+    "thick_corner_contact_during_lift": "required demonstration, not yet verified"
+  },
+  "actor_contract": "canonical48D/action7 pure ESN; hybrid_vmc_blend=0",
+  "development_dt_s": 0.0001,
+  "formal_dt_s": 0.00005,
+  "formal_unlock": "only unchanged development task+strict pass; not unlocked",
+  "jobs": [
+    {
+      "id": "esn_ridge_v1_legacy_4mm_pillar",
+      "split": "development",
+      "pillar_center_m": [0.619, -0.270, 0.710],
+      "pillar_radius_m": 0.004,
+      "pillar_half_height_m": 0.010,
+      "scene_source_sha256": "28995a98d98e389aa006ce9233c63294ade6b292d44c9d28f4cb68172318a950",
+      "world_mjb_sha256": "8c2b0f81aea05319192048cf63a4a0e74f5e50b5f8ca91a9bcea20361ee556dd",
+      "world_xml_sha256": "c13dc777f68af8b213b9902cdb6c3fc1bdf0aa19bff5c24262992e5c02cf861c",
+      "model_sha256": "1b1a58fec824cc1fa2d0b2a72d6b97f806ea913042ba74e2663d4a1e89d9433d",
+      "model": "outputs/esn_combined_thick_corner_pillar_v1_20260929/model_ridge_v1.npz",
+      "result": "outputs/combined_thick_corner_pillar_v1_esn_ridge_v1_dt1e4_20260929/rollout.json",
+      "task_success": true,
+      "strict_success": false,
+      "max_external_penetration_mm": 0.9435125336,
+      "pillar_contact_s": 19.4125,
+      "failure": "external penetration 0.9435 mm > 0.2 mm; corner lift-phase contact and substep-continuous rod rub not established"
+    },
+    {
+      "id": "teacher_v8_legacy_4mm_pillar",
+      "split": "development",
+      "pillar_center_m": [0.619, -0.270, 0.710],
+      "pillar_radius_m": 0.004,
+      "pillar_half_height_m": 0.010,
+      "scene_source_sha256": "28995a98d98e389aa006ce9233c63294ade6b292d44c9d28f4cb68172318a950",
+      "world_mjb_sha256": "8c2b0f81aea05319192048cf63a4a0e74f5e50b5f8ca91a9bcea20361ee556dd",
+      "model": null,
+      "result": "outputs/combined_thick_corner_pillar_v1_teacher_v8_dt1e4_20260929/rollout.json",
+      "task_success": false,
+      "strict_success": false,
+      "max_external_penetration_mm": 0.1525106844,
+      "pillar_contact_s": 0.2465,
+      "failure": "load_transfer stalled; task incomplete"
+    },
+    {
+      "id": "esn_ridge_v3_current_2mm_pillar",
+      "split": "development",
+      "pillar_center_m": [0.600, -0.360, 0.750],
+      "pillar_radius_m": 0.002,
+      "pillar_half_height_m": 0.003,
+      "scene_source_sha256": "a85a1d9db689c01a7582340d7fb384bad64dd3af25eef50baa64016c5b175e3f",
+      "world_mjb_sha256": "9280daf61d4e236665365122b43bebac4da88e5c309a393399c5154ef33f6365",
+      "world_xml_sha256": "da86841e29c5be741a2722025d060e6b2d64a0d3c12b00d8b09327ae02601bfc",
+      "model_sha256": "1b1a58fec824cc1fa2d0b2a72d6b97f806ea913042ba74e2663d4a1e89d9433d",
+      "model": "outputs/esn_combined_thick_corner_pillar_v1_20260929/model_ridge_v1.npz",
+      "result": "outputs/combined_thick_corner_pillar_v1_esn_ridge_v3_dt1e4_20260929/rollout.json",
+      "task_success": false,
+      "strict_success": false,
+      "max_external_penetration_mm": 0.1251555980,
+      "pillar_contact_s": 0.0264,
+      "failure": "load_transfer stalled; pillar contact too brief to satisfy unchanged exposure gate"
+    }
+  ],
+  "forbidden_inputs": ["contact truth", "ball state", "event time", "task stage", "visual/range", "geometry"]
+}

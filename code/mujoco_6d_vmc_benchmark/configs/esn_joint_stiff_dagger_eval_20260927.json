@@ -1,0 +1,41 @@
+{
+  "purpose": "Development-only six-condition closed-loop audit of DAgger ESN trained from first-student visited states",
+  "candidate": "outputs/esn_office_joint_esn_stiff_20260927/model_dagger_v1/best.npz",
+  "candidate_sha256": "7525048d87044f8cc30ae44fff00d510c755c4d1113908403fe8b6e96ef66619",
+  "split": "development",
+  "teacher": "J1/J3 fixed stiff VMC; DAgger labels from proprio wrench estimate only",
+  "actor_inputs": "canonical48 pure proprioception; no truth/stage/event/visual",
+  "gates": "unchanged",
+  "jobs": [
+    {
+      "id": "dagger2_student_original",
+      "split": "development",
+      "arguments": ["--esn-model", "outputs/esn_office_joint_esn_stiff_20260927/model_dagger_v1/best.npz", "--esn-mode", "control", "--task", "pick_place", "--events", "all", "--duration", "55", "--impact-refinement-dt", ".0000015625"]
+    },
+    {
+      "id": "dagger2_student_rod_start7",
+      "split": "development",
+      "arguments": ["--esn-model", "outputs/esn_office_joint_esn_stiff_20260927/model_dagger_v1/best.npz", "--esn-mode", "control", "--task", "pick_place", "--events", "all", "--duration", "55", "--impact-refinement-dt", ".0000015625", "--rod-start", "7"]
+    },
+    {
+      "id": "dagger2_student_rod_start9",
+      "split": "development",
+      "arguments": ["--esn-model", "outputs/esn_office_joint_esn_stiff_20260927/model_dagger_v1/best.npz", "--esn-mode", "control", "--task", "pick_place", "--events", "all", "--duration", "55", "--impact-refinement-dt", ".0000015625", "--rod-start", "9"]
+    },
+    {
+      "id": "dagger2_student_rod_hold6",
+      "split": "development",
+      "arguments": ["--esn-model", "outputs/esn_office_joint_esn_stiff_20260927/model_dagger_v1/best.npz", "--esn-mode", "control", "--task", "pick_place", "--events", "all", "--duration", "55", "--impact-refinement-dt", ".0000015625", "--rod-hold", "6"]
+    },
+    {
+      "id": "dagger2_student_shift_plus",
+      "split": "development",
+      "arguments": ["--esn-model", "outputs/esn_office_joint_esn_stiff_20260927/model_dagger_v1/best.npz", "--esn-mode", "control", "--task", "pick_place", "--events", "all", "--duration", "55", "--impact-refinement-dt", ".0000015625", "--seed", "2026092701", "--variant", "2", "--ball-speed", "1.45", "--person-stroke", ".18", "--rod-stroke", ".225"]
+    },
+    {
+      "id": "dagger2_student_hard",
+      "split": "development",
+      "arguments": ["--esn-model", "outputs/esn_office_joint_esn_stiff_20260927/model_dagger_v1/best.npz", "--esn-mode", "control", "--task", "pick_place", "--events", "all", "--duration", "55", "--impact-refinement-dt", ".0000015625", "--seed", "2026092702", "--variant", "-2", "--ball-speed", "1.85", "--person-stroke", ".22", "--rod-stroke", ".24"]
+    }
+  ]
+}

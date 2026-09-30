@@ -1,0 +1,1058 @@
+{
+  "scope": "Only all8192 train transitions and final train/zero, train/PPO; no validation trajectories or six-fixture matrix read",
+  "selection": "All existing seed20260923 episodes, including failures and partial; fixed final policy",
+  "formulas": {
+    "rate": "previous logscale resets to0 per episode; request_delta=log(2)*policy_action-previous; active iff abs(request_delta)>rate_per_s*dt+1e-12; verify actual_delta=clip(request_delta)",
+    "gain": "K/K0=exp(logscale); gain amplitude bound and temporal rate bound are separate",
+    "action": "Actual action7; yield near bound iff abs(yield)>=.99. Gym request is already SB3-clipped, not latent Gaussian.",
+    "returns": "Undiscounted sums separate from audited gamma=.995 discounted returns; partial not grouped with complete episodes"
+  },
+  "modes": {
+    "parameter6": {
+      "mode": "parameter6",
+      "seed": 20260923,
+      "audit_sha256": "4fc389bc8b6c456a4ec7210b90ef2094af99127736ef1c8847775c3c611d1894",
+      "manifest_sha256": "6c0ead5219eefd0e1a1381117b7c0afef08d6dd4752b587803fd28d2fe6a0a9c",
+      "scopes": {
+        "training": {
+          "transitions": 8192,
+          "episodes": [
+            {
+              "episode": "episode_00000",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -2.3318002373916826,
+              "discounted_reward": 0.06666666067049509,
+              "slowdown_mean": 0.15735546670940373,
+              "yield_abs_mean": 0.1114186974201067,
+              "trace_sha256": "32d3c29dca84b95307510c09bc652367b6a8b3c04db29fe56856f4ee6d02c4c4"
+            },
+            {
+              "episode": "episode_00001",
+              "transitions": 600,
+              "complete": true,
+              "task_success": true,
+              "development_gate": true,
+              "final_observed_stage": 3,
+              "reward_sum": 2.6485730695629517,
+              "discounted_reward": 0.3149773245400359,
+              "slowdown_mean": 0.03355445002593261,
+              "yield_abs_mean": 0.02218858896480303,
+              "trace_sha256": "2611d09bf494023456d59fd4017ffb004ad1a7b86a958e6e7242f2bd617e43b9"
+            },
+            {
+              "episode": "episode_00002",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -2.3052323593200055,
+              "discounted_reward": 0.06666666067049544,
+              "slowdown_mean": 0.15397804654142103,
+              "yield_abs_mean": 0.10706939491789064,
+              "trace_sha256": "b87b71a5f21c94866fd4e6d399bd5d2fffcc111af0b1e76faf2513646c25cb5c"
+            },
+            {
+              "episode": "episode_00003",
+              "transitions": 600,
+              "complete": true,
+              "task_success": true,
+              "development_gate": true,
+              "final_observed_stage": 3,
+              "reward_sum": 2.5811683661586495,
+              "discounted_reward": 0.3149773245400368,
+              "slowdown_mean": 0.024601029550417697,
+              "yield_abs_mean": 0.01635041653031238,
+              "trace_sha256": "13014350e58ddb6298c8e59c34f25222ff7e01a5a12eecb3e48cae0dd94641fd"
+            },
+            {
+              "episode": "episode_00004",
+              "transitions": 600,
+              "complete": true,
+              "task_success": true,
+              "development_gate": true,
+              "final_observed_stage": 3,
+              "reward_sum": 2.601013085331966,
+              "discounted_reward": 0.31497732454003685,
+              "slowdown_mean": 0.034258500548451795,
+              "yield_abs_mean": 0.023673607753322543,
+              "trace_sha256": "d1dc1388a5ac3ad9afd6e504f814822b9deab6126759b4b6c984340df086a67f"
+            },
+            {
+              "episode": "episode_00005",
+              "transitions": 600,
+              "complete": true,
+              "task_success": true,
+              "development_gate": true,
+              "final_observed_stage": 3,
+              "reward_sum": 2.6042050376053343,
+              "discounted_reward": 0.31497732454003713,
+              "slowdown_mean": 0.030153153977538726,
+              "yield_abs_mean": 0.019902888105498666,
+              "trace_sha256": "21f7855e698afd2e13f3fd30025e593963664fb7f5894634ade5f305954e3fd2"
+            },
+            {
+              "episode": "episode_00006",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -2.2983155732262723,
+              "discounted_reward": 0.06666666067049576,
+              "slowdown_mean": 0.1566284050795837,
+              "yield_abs_mean": 0.10987990631567907,
+              "trace_sha256": "ad0154831fb513f8b6e680e62a91e00c0a6a3f8c72ead3fa2b6da2f081ccc74a"
+            },
+            {
+              "episode": "episode_00007",
+              "transitions": 600,
+              "complete": true,
+              "task_success": true,
+              "development_gate": true,
+              "final_observed_stage": 3,
+              "reward_sum": 2.6195801759688244,
+              "discounted_reward": 0.31497732454003646,
+              "slowdown_mean": 0.03774022145649003,
+              "yield_abs_mean": 0.025078171949790656,
+              "trace_sha256": "cdc7787fd1e187dc51862608fbe36d49ea2617f27d55f6f2d3ec72b81d01436a"
+            },
+            {
+              "episode": "episode_00008",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -2.2530144370691287,
+              "discounted_reward": 0.06666666067049601,
+              "slowdown_mean": 0.14705449110401156,
+              "yield_abs_mean": 0.10317428811291403,
+              "trace_sha256": "8ced1f93439335b68e0b619bc44024fbbe6da31b2dea6f520f4abeefca22973a"
+            },
+            {
+              "episode": "episode_00009",
+              "transitions": 600,
+              "complete": true,
+              "task_success": true,
+              "development_gate": true,
+              "final_observed_stage": 3,
+              "reward_sum": 2.5938522715881405,
+              "discounted_reward": 0.31497732454003635,
+              "slowdown_mean": 0.030021319044063487,
+              "yield_abs_mean": 0.02006307704331794,
+              "trace_sha256": "ef423f3414e4d545dafe40271cbbe0d4593e0c1193da66f4101ba1f5e3bac650"
+            },
+            {
+              "episode": "episode_00010",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -2.2203575977549312,
+              "discounted_reward": 0.06666666067049587,
+              "slowdown_mean": 0.15012379439502088,
+              "yield_abs_mean": 0.10398975672662254,
+              "trace_sha256": "4e6c7e66779066a89ebbca86ec48aa837d22ae4d2e5c139cd4762021898a36bf"
+            },
+            {
+              "episode": "episode_00011",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -2.2454331696879057,
+              "discounted_reward": 0.06666666067049574,
+              "slowdown_mean": 0.1415927162092378,
+              "yield_abs_mean": 0.10101911901973946,
+              "trace_sha256": "6c2bfe00d696cd7f023613c885fd4799c17a127fb25817a221e33ac95cd46389"
+            },
+            {
+              "episode": "episode_00012",
+              "transitions": 600,
+              "complete": true,
+              "task_success": true,
+              "development_gate": true,
+              "final_observed_stage": 3,
+              "reward_sum": 2.653931723966134,
+              "discounted_reward": 0.31497732454003613,
+              "slowdown_mean": 0.0456734606072149,
+              "yield_abs_mean": 0.03212932639491921,
+              "trace_sha256": "45786762a7e68657a67cc57b1c18dd6b56a8f91383706c81bd082a344cb81449"
+            },
+            {
+              "episode": "episode_00013",
+              "transitions": 392,
+              "complete": false,
+              "task_success": null,
+              "development_gate": null,
+              "final_observed_stage": 3,
+              "reward_sum": -0.3708672185160353,
+              "discounted_reward": 0.20596230259593448,
+              "slowdown_mean": 0.05625328640580429,
+              "yield_abs_mean": 0.03781824959192027,
+              "trace_sha256": "29fc838c13cdac6505295053814f01f32978bae538c786fcd6a785f458f5c272"
+            }
+          ],
+          "reward_sum_including_partial": 4.277303137216041,
+          "stage_counts": {
+            "0": 456,
+            "1": 737,
+            "2": 217,
+            "3": 6782
+          },
+          "slowdown": {
+            "mean": 0.08638822282963232,
+            "p95": 0.23898829194268162,
+            "min": 0.0,
+            "max": 0.39869818893493597
+          },
+          "slowdown_zero_fraction": 0.022216796875,
+          "slowdown_one_fraction": 0.0,
+          "yield_absolute": {
+            "mean": 0.060105846849729354,
+            "p95": 0.295219946813501,
+            "min": 0.0,
+            "max": 0.8242055342358643
+          },
+          "yield_near_limit_fraction": 0.0,
+          "policy_upper_or_abs_one_fraction_by_axis": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "gain_rate": {
+            "limit_per_step": 0.13862943611198905,
+            "active_axis_updates": 13893,
+            "axis_updates": 49152,
+            "active_axis_fraction": 0.28265380859375,
+            "active_by_axis_fraction": [
+              0.3350830078125,
+              0.254638671875,
+              0.26123046875,
+              0.3199462890625,
+              0.2647705078125,
+              0.26025390625
+            ],
+            "any_axis_active_steps": 7031,
+            "any_axis_active_fraction": 0.8582763671875,
+            "actual_max_abs_delta_by_axis": [
+              0.13862943611198908,
+              0.13862943611198908,
+              0.13862943611198908,
+              0.13862943611198908,
+              0.13862943611198908,
+              0.13862943611198908
+            ]
+          },
+          "stiffness_ratio": {
+            "min_by_axis": [
+              0.6368732299241836,
+              0.662113765817088,
+              0.683931176617856,
+              0.6594581023638103,
+              0.6396040655464087,
+              0.7165066200668506
+            ],
+            "max_by_axis": [
+              1.600180815932827,
+              1.611007554419474,
+              1.43655548504674,
+              1.5400145033147756,
+              1.5409862866044175,
+              1.3654989856839477
+            ],
+            "mean_by_axis": [
+              0.9980719066839071,
+              1.0015471659441355,
+              1.0019165660439973,
+              1.0195420446387764,
+              1.0182795642873061,
+              1.0088857253584433
+            ],
+            "gain_bound_fraction": 0.0
+          },
+          "complete_episode_outcome_groups": {
+            "False": {
+              "episodes": 6,
+              "reward_sum_mean": -2.2756922290749877,
+              "discounted_reward_mean": 0.06666666067049565,
+              "slowdown_mean": 0.15112215333977977,
+              "final_stage_counts": {
+                "0": 0,
+                "1": 0,
+                "2": 0,
+                "3": 6
+              }
+            },
+            "True": {
+              "episodes": 7,
+              "reward_sum_mean": 2.6146176757402855,
+              "discounted_reward_mean": 0.3149773245400365,
+              "slowdown_mean": 0.033714590744301325,
+              "final_stage_counts": {
+                "0": 0,
+                "1": 0,
+                "2": 0,
+                "3": 7
+              }
+            }
+          }
+        },
+        "train_zero": {
+          "transitions": 600,
+          "episodes": [
+            {
+              "episode": "episode_00000",
+              "transitions": 600,
+              "complete": true,
+              "task_success": true,
+              "development_gate": true,
+              "final_observed_stage": 3,
+              "reward_sum": 2.7947178138200086,
+              "discounted_reward": 0.31497732454003713,
+              "slowdown_mean": 0.06156718301582198,
+              "yield_abs_mean": 0.04157333672925353,
+              "trace_sha256": "59cf00d7ca020c132ec77c260581b927e7506a79dd2507194d6455f6396ba216"
+            }
+          ],
+          "reward_sum_including_partial": 2.7947178138200086,
+          "stage_counts": {
+            "0": 32,
+            "1": 70,
+            "2": 22,
+            "3": 476
+          },
+          "slowdown": {
+            "mean": 0.06156718301582198,
+            "p95": 0.16213546193144088,
+            "min": 0.0,
+            "max": 0.35051056618165305
+          },
+          "slowdown_zero_fraction": 0.021666666666666667,
+          "slowdown_one_fraction": 0.0,
+          "yield_absolute": {
+            "mean": 0.04157333672925353,
+            "p95": 0.24337455172603661,
+            "min": 0.0,
+            "max": 0.8310130564005397
+          },
+          "yield_near_limit_fraction": 0.0,
+          "policy_upper_or_abs_one_fraction_by_axis": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "gain_rate": {
+            "limit_per_step": 0.13862943611198905,
+            "active_axis_updates": 0,
+            "axis_updates": 3600,
+            "active_axis_fraction": 0.0,
+            "active_by_axis_fraction": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "any_axis_active_steps": 0,
+            "any_axis_active_fraction": 0.0,
+            "actual_max_abs_delta_by_axis": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "stiffness_ratio": {
+            "min_by_axis": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "max_by_axis": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "mean_by_axis": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "gain_bound_fraction": 0.0
+          },
+          "complete_episode_outcome_groups": {
+            "True": {
+              "episodes": 1,
+              "reward_sum_mean": 2.7947178138200086,
+              "discounted_reward_mean": 0.31497732454003713,
+              "slowdown_mean": 0.06156718301582198,
+              "final_stage_counts": {
+                "0": 0,
+                "1": 0,
+                "2": 0,
+                "3": 1
+              }
+            }
+          },
+          "last_target_position_m": [
+            0.54,
+            0.0,
+            0.785
+          ],
+          "evaluation": {
+            "source_id": "push_00000",
+            "split": "train",
+            "physical_fixture": "rod",
+            "focus": "push_rod_geom",
+            "task_success": true,
+            "development_gate": true,
+            "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+            "original_teacher_checks": {
+              "task": true,
+              "physics": true,
+              "target_contact": true,
+              "rod_contact": true,
+              "release": true,
+              "no_incidental_structure_contact": true,
+              "limited_point_force": true,
+              "speed": true,
+              "no_upstream_guard_contact": true
+            },
+            "original_teacher_gate_reused": false,
+            "max_external_penetration_m": 0.00015056840509030314,
+            "focus_contact": true,
+            "peak_external_resultant_force_n": 217.10807167164535,
+            "peak_torque_nm": 36.57135454180461,
+            "speed_p95_mps": 0.05956447473180442,
+            "endpoint_error_m": 0.005639282823478432,
+            "final_stage": 3,
+            "publication_ready": false,
+            "lift_m": 0.24298859270431744,
+            "result_sha256": "0b3b53e72792aaedf23c142d38727b5c9cb1a1eb7f179fa328b116168a9dbf30"
+          }
+        },
+        "train_ppo": {
+          "transitions": 600,
+          "episodes": [
+            {
+              "episode": "episode_00000",
+              "transitions": 600,
+              "complete": true,
+              "task_success": true,
+              "development_gate": true,
+              "final_observed_stage": 3,
+              "reward_sum": 2.6853114519745285,
+              "discounted_reward": 0.3149773245400364,
+              "slowdown_mean": 0.025302210091343084,
+              "yield_abs_mean": 0.016373661540541658,
+              "trace_sha256": "8a5856d13f7ea888640a039c3f81a3b7d175282f7c5b7a6c743fb2e70ca65972"
+            }
+          ],
+          "reward_sum_including_partial": 2.6853114519745285,
+          "stage_counts": {
+            "0": 32,
+            "1": 78,
+            "2": 25,
+            "3": 465
+          },
+          "slowdown": {
+            "mean": 0.025302210091343084,
+            "p95": 0.11231904355194056,
+            "min": 0.0,
+            "max": 0.3480181056715124
+          },
+          "slowdown_zero_fraction": 0.021666666666666667,
+          "slowdown_one_fraction": 0.0,
+          "yield_absolute": {
+            "mean": 0.016373661540541658,
+            "p95": 0.09366688466418396,
+            "min": 0.0,
+            "max": 0.8297321679789786
+          },
+          "yield_near_limit_fraction": 0.0,
+          "policy_upper_or_abs_one_fraction_by_axis": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "gain_rate": {
+            "limit_per_step": 0.13862943611198905,
+            "active_axis_updates": 98,
+            "axis_updates": 3600,
+            "active_axis_fraction": 0.02722222222222222,
+            "active_by_axis_fraction": [
+              0.09833333333333333,
+              0.0033333333333333335,
+              0.0,
+              0.06,
+              0.0,
+              0.0016666666666666668
+            ],
+            "any_axis_active_steps": 69,
+            "any_axis_active_fraction": 0.115,
+            "actual_max_abs_delta_by_axis": [
+              0.13862943611198905,
+              0.13862943611198905,
+              0.11786903950106462,
+              0.13862943611198905,
+              0.13045793017378926,
+              0.13862943611198905
+            ]
+          },
+          "stiffness_ratio": {
+            "min_by_axis": [
+              0.6968746420976313,
+              0.7277522120557074,
+              0.8788245495768819,
+              0.8026979224934269,
+              0.7876549265295123,
+              0.8240675763265675
+            ],
+            "max_by_axis": [
+              1.3474779003960586,
+              1.4207775857948677,
+              1.1633620987995608,
+              1.4091172753439014,
+              1.3763981261764202,
+              1.1833677098410682
+            ],
+            "mean_by_axis": [
+              1.087918473157671,
+              1.1494098304949614,
+              0.9806759355837804,
+              1.0857730463514321,
+              1.137633442851418,
+              0.9344284300153665
+            ],
+            "gain_bound_fraction": 0.0
+          },
+          "complete_episode_outcome_groups": {
+            "True": {
+              "episodes": 1,
+              "reward_sum_mean": 2.6853114519745285,
+              "discounted_reward_mean": 0.3149773245400364,
+              "slowdown_mean": 0.025302210091343084,
+              "final_stage_counts": {
+                "0": 0,
+                "1": 0,
+                "2": 0,
+                "3": 1
+              }
+            }
+          },
+          "last_target_position_m": [
+            0.54,
+            0.0,
+            0.785
+          ],
+          "evaluation": {
+            "source_id": "push_00000",
+            "split": "train",
+            "physical_fixture": "rod",
+            "focus": "push_rod_geom",
+            "task_success": true,
+            "development_gate": true,
+            "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+            "original_teacher_checks": {
+              "task": true,
+              "physics": true,
+              "target_contact": true,
+              "rod_contact": true,
+              "release": true,
+              "no_incidental_structure_contact": true,
+              "limited_point_force": true,
+              "speed": true,
+              "no_upstream_guard_contact": true
+            },
+            "original_teacher_gate_reused": false,
+            "max_external_penetration_m": 0.00015056840509030314,
+            "focus_contact": true,
+            "peak_external_resultant_force_n": 217.10807167164535,
+            "peak_torque_nm": 34.94975738672619,
+            "speed_p95_mps": 0.05961417012166293,
+            "endpoint_error_m": 0.004799358571697455,
+            "final_stage": 3,
+            "publication_ready": false,
+            "lift_m": 0.2438711776068993,
+            "result_sha256": "9102aa55a76c4678c3d065008e1484c97168a13aaa680dcaa1273a7cebd19547"
+          }
+        }
+      },
+      "train_eval_same_final_target": true
+    },
+    "direct7": {
+      "mode": "direct7",
+      "seed": 20260923,
+      "audit_sha256": "cdc544ef83fdb2972c3ec70ee19ab0b7c3baf48f20b9961885f3d62706ab8219",
+      "manifest_sha256": "3cce1ef4981d3431b9cfd7549e6b23992b4f33c2624e9df2852ea5d0b2baa621",
+      "scopes": {
+        "training": {
+          "transitions": 8192,
+          "episodes": [
+            {
+              "episode": "episode_00000",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -2.1770965569973124,
+              "discounted_reward": 0.06666666067049551,
+              "slowdown_mean": 0.06266539750504307,
+              "yield_abs_mean": 0.1076098231590893,
+              "trace_sha256": "d8b4d6f24ab66c788470b2ff83f53c77334cd3a95290805cfaca6c86242fc416"
+            },
+            {
+              "episode": "episode_00001",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -2.101290095605771,
+              "discounted_reward": 0.06666666067049604,
+              "slowdown_mean": 0.08307100386514019,
+              "yield_abs_mean": 0.1133185567952589,
+              "trace_sha256": "ae95a077ba22fe645af62fab3a51bffd4b1a385014c22a31ec385f4a54347850"
+            },
+            {
+              "episode": "episode_00002",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -2.4307072629450186,
+              "discounted_reward": 0.06666666067049568,
+              "slowdown_mean": 0.06301361070945859,
+              "yield_abs_mean": 0.1213794964724285,
+              "trace_sha256": "7236b920d18d5744cf43af2028987832c27593ae0010394b6c596aac23e87424"
+            },
+            {
+              "episode": "episode_00003",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -2.41725338975079,
+              "discounted_reward": 0.06666666067049569,
+              "slowdown_mean": 0.07055798239540309,
+              "yield_abs_mean": 0.13530550913924042,
+              "trace_sha256": "503febbfd7f772830dddf362ec73d3c3955eecc2fb9b3b63e62014ce2a087f4f"
+            },
+            {
+              "episode": "episode_00004",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -1.0834813060031119,
+              "discounted_reward": 0.06666666067049594,
+              "slowdown_mean": 0.019585289464642604,
+              "yield_abs_mean": 0.1302197850777884,
+              "trace_sha256": "f06ad77ae9f61d42bce0fa6096abe179f18c99a2a80ab8cf8bf7bc45689cb92b"
+            },
+            {
+              "episode": "episode_00005",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -2.370935836669422,
+              "discounted_reward": 0.0666666606704953,
+              "slowdown_mean": 0.10754623075015843,
+              "yield_abs_mean": 0.13545905143439693,
+              "trace_sha256": "53130924c9992fff22db0d19ae0a7f927394ac1553e3301c3abbd52bc7fe543e"
+            },
+            {
+              "episode": "episode_00006",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -1.8965944366967853,
+              "discounted_reward": 0.06666666067049545,
+              "slowdown_mean": 0.08628977143205702,
+              "yield_abs_mean": 0.1319598332553869,
+              "trace_sha256": "28204586ea2b16689819e128cb6f21ba7ebc4069a656da7707bbebb51097932d"
+            },
+            {
+              "episode": "episode_00007",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 1,
+              "reward_sum": -0.8178023956307178,
+              "discounted_reward": 0.06666666067049576,
+              "slowdown_mean": 0.001829880600174268,
+              "yield_abs_mean": 0.15400736705639348,
+              "trace_sha256": "c8c392bbe4f268983ebfbd01638ff9f5ae9cf417c786d8b5b3f68c891113a28e"
+            },
+            {
+              "episode": "episode_00008",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -0.9872185790138923,
+              "discounted_reward": 0.06666666067049587,
+              "slowdown_mean": 0.018233336489647627,
+              "yield_abs_mean": 0.1418915379441589,
+              "trace_sha256": "5186b158836306cd6c2616918c8f49ed07d3906869c463ec140e44f4bcf6cd68"
+            },
+            {
+              "episode": "episode_00009",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -2.520395676516454,
+              "discounted_reward": 0.0666666606704962,
+              "slowdown_mean": 0.15610414863098412,
+              "yield_abs_mean": 0.14307448334025039,
+              "trace_sha256": "b1d32190f56391ee1c762ff8d503573da518b0229ede9f965d236264712c2c79"
+            },
+            {
+              "episode": "episode_00010",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -1.9506647864437943,
+              "discounted_reward": 0.06666666067049551,
+              "slowdown_mean": 0.05530517341879507,
+              "yield_abs_mean": 0.15896886443098387,
+              "trace_sha256": "f1f3e4b624318a98e537a0ba20de34d514b5999ded36a85711183f0d31b66584"
+            },
+            {
+              "episode": "episode_00011",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 2,
+              "reward_sum": -1.397069312265358,
+              "discounted_reward": 0.0666666606704959,
+              "slowdown_mean": 0.049863405719709895,
+              "yield_abs_mean": 0.19494728201075406,
+              "trace_sha256": "9c13b0b69931fa5d6e4ae24fcd75aa42d9b1b67c8731014357f54ce2c8b94c32"
+            },
+            {
+              "episode": "episode_00012",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 1,
+              "reward_sum": -0.8454929018060386,
+              "discounted_reward": 0.06666666067049579,
+              "slowdown_mean": 0.06163719215119878,
+              "yield_abs_mean": 0.20644533814092736,
+              "trace_sha256": "4a47ddda330c9956316a15ddd022d33933179a0f12b3679ec97a236b3ea79d2e"
+            },
+            {
+              "episode": "episode_00013",
+              "transitions": 392,
+              "complete": false,
+              "task_success": null,
+              "development_gate": null,
+              "final_observed_stage": 3,
+              "reward_sum": -0.26887592208637723,
+              "discounted_reward": 0.19870629473293414,
+              "slowdown_mean": 0.08818161715420761,
+              "yield_abs_mean": 0.1946514771278547,
+              "trace_sha256": "18e05c121094e174a1626b7c9141cfb1a7c21aa1ed6e1930a5b9ddee9afe5ac3"
+            }
+          ],
+          "reward_sum_including_partial": -23.264878458430847,
+          "stage_counts": {
+            "0": 293,
+            "1": 3148,
+            "2": 626,
+            "3": 4125
+          },
+          "slowdown": {
+            "mean": 0.06542830173387415,
+            "p95": 0.2859852120280265,
+            "min": 0.0,
+            "max": 0.7140666842460632
+          },
+          "slowdown_zero_fraction": 0.5465087890625,
+          "slowdown_one_fraction": 0.0,
+          "yield_absolute": {
+            "mean": 0.1466132246079533,
+            "p95": 0.36954949647188184,
+            "min": 1.862645149230957e-06,
+            "max": 0.8455489277839661
+          },
+          "yield_near_limit_fraction": 0.0,
+          "policy_upper_or_abs_one_fraction_by_axis": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "complete_episode_outcome_groups": {
+            "False": {
+              "episodes": 13,
+              "reward_sum_mean": -1.7689232720264978,
+              "discounted_reward_mean": 0.06666666067049574,
+              "slowdown_mean": 0.06428480177941637,
+              "final_stage_counts": {
+                "0": 0,
+                "1": 2,
+                "2": 1,
+                "3": 10
+              }
+            }
+          }
+        },
+        "train_zero": {
+          "transitions": 600,
+          "episodes": [
+            {
+              "episode": "episode_00000",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -1.5107774729021282,
+              "discounted_reward": 0.0666666606704959,
+              "slowdown_mean": 0.0,
+              "yield_abs_mean": 0.0,
+              "trace_sha256": "a5128453d38408ae09842758ee1af4daf7049cd49b3a879de7ce0006fe79068a"
+            }
+          ],
+          "reward_sum_including_partial": -1.5107774729021282,
+          "stage_counts": {
+            "0": 130,
+            "1": 102,
+            "2": 10,
+            "3": 358
+          },
+          "slowdown": {
+            "mean": 0.0,
+            "p95": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "slowdown_zero_fraction": 1.0,
+          "slowdown_one_fraction": 0.0,
+          "yield_absolute": {
+            "mean": 0.0,
+            "p95": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "yield_near_limit_fraction": 0.0,
+          "policy_upper_or_abs_one_fraction_by_axis": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "complete_episode_outcome_groups": {
+            "False": {
+              "episodes": 1,
+              "reward_sum_mean": -1.5107774729021282,
+              "discounted_reward_mean": 0.0666666606704959,
+              "slowdown_mean": 0.0,
+              "final_stage_counts": {
+                "0": 0,
+                "1": 0,
+                "2": 0,
+                "3": 1
+              }
+            }
+          },
+          "last_target_position_m": [
+            0.54,
+            0.0,
+            0.785
+          ],
+          "evaluation": {
+            "source_id": "push_00000",
+            "split": "train",
+            "physical_fixture": "rod",
+            "focus": "push_rod_geom",
+            "task_success": false,
+            "development_gate": false,
+            "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+            "original_teacher_checks": {
+              "task": true,
+              "physics": true,
+              "target_contact": true,
+              "rod_contact": true,
+              "release": true,
+              "no_incidental_structure_contact": true,
+              "limited_point_force": true,
+              "speed": true,
+              "no_upstream_guard_contact": true
+            },
+            "original_teacher_gate_reused": false,
+            "max_external_penetration_m": 0.00015056840509030314,
+            "focus_contact": true,
+            "peak_external_resultant_force_n": 217.61404509688546,
+            "peak_torque_nm": 31.826665184169585,
+            "speed_p95_mps": 0.05070249768166049,
+            "endpoint_error_m": 0.18766951711683086,
+            "final_stage": 3,
+            "publication_ready": false,
+            "lift_m": 0.06032409457621163,
+            "result_sha256": "da4eb957ddd62264b8295f7d749517008b511e5a0907bc14c648deefb95e8e45"
+          }
+        },
+        "train_ppo": {
+          "transitions": 600,
+          "episodes": [
+            {
+              "episode": "episode_00000",
+              "transitions": 600,
+              "complete": true,
+              "task_success": false,
+              "development_gate": false,
+              "final_observed_stage": 3,
+              "reward_sum": -2.098717073745501,
+              "discounted_reward": 0.06666666067049593,
+              "slowdown_mean": 0.01061751628605028,
+              "yield_abs_mean": 0.13722090015061744,
+              "trace_sha256": "510c5477ec3eb922621867a7ea69d1f7461f49c82c7e5ec13adf91f364005c9f"
+            }
+          ],
+          "reward_sum_including_partial": -2.098717073745501,
+          "stage_counts": {
+            "0": 12,
+            "1": 57,
+            "2": 8,
+            "3": 523
+          },
+          "slowdown": {
+            "mean": 0.01061751628605028,
+            "p95": 0.08584717735648154,
+            "min": 0.0,
+            "max": 0.11479386687278748
+          },
+          "slowdown_zero_fraction": 0.86,
+          "slowdown_one_fraction": 0.0,
+          "yield_absolute": {
+            "mean": 0.13722090015061744,
+            "p95": 0.3637066587805748,
+            "min": 6.718456279486418e-05,
+            "max": 0.44014352560043335
+          },
+          "yield_near_limit_fraction": 0.0,
+          "policy_upper_or_abs_one_fraction_by_axis": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "complete_episode_outcome_groups": {
+            "False": {
+              "episodes": 1,
+              "reward_sum_mean": -2.098717073745501,
+              "discounted_reward_mean": 0.06666666067049593,
+              "slowdown_mean": 0.01061751628605028,
+              "final_stage_counts": {
+                "0": 0,
+                "1": 0,
+                "2": 0,
+                "3": 1
+              }
+            }
+          },
+          "last_target_position_m": [
+            0.54,
+            0.0,
+            0.785
+          ],
+          "evaluation": {
+            "source_id": "push_00000",
+            "split": "train",
+            "physical_fixture": "rod",
+            "focus": "push_rod_geom",
+            "task_success": false,
+            "development_gate": false,
+            "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+            "original_teacher_checks": {
+              "task": true,
+              "physics": true,
+              "target_contact": true,
+              "rod_contact": true,
+              "release": true,
+              "no_incidental_structure_contact": true,
+              "limited_point_force": true,
+              "speed": true,
+              "no_upstream_guard_contact": true
+            },
+            "original_teacher_gate_reused": false,
+            "max_external_penetration_m": 4.690404166610258e-05,
+            "focus_contact": true,
+            "peak_external_resultant_force_n": 524.4516984616421,
+            "peak_torque_nm": 35.27971805345473,
+            "speed_p95_mps": 0.09394832668607464,
+            "endpoint_error_m": 0.192172885423663,
+            "final_stage": 3,
+            "publication_ready": false,
+            "lift_m": 0.05919570151188214,
+            "result_sha256": "7b5f4045ff87d7dedd600766dbffe4dff17a11fe2bb103b17324c29f789ee36b"
+          }
+        }
+      },
+      "train_eval_same_final_target": true
+    }
+  },
+  "tool_sha256": "66bfd996a4929369dd41b9b4ac90dbdcca0e1774e166091289645d970212ad0a",
+  "limitations": [
+    "Single seed descriptive associations, not causal evidence.",
+    "Train exploration request rate statistics do not describe deterministic final policy.",
+    "Different control priors/action sets/hidden VMC state remain; no reward or controller change."
+  ]
+}

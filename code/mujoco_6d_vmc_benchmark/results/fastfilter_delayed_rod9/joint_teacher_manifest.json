@@ -1,0 +1,61 @@
+{
+  "config": {
+    "name": "delayed_stiff_fastfilter",
+    "purpose": "Pre-registered development teacher candidate for rod timing via faster proprioceptive wrench filter.",
+    "action_scale": 0.5,
+    "options": {
+      "stiffness_6d": [
+        800.0,
+        800.0,
+        2400.0,
+        20.0,
+        16.0,
+        24.0
+      ],
+      "damping_6d": [
+        39.5979797464,
+        39.5979797464,
+        77.7817459305,
+        3.95979797464,
+        3.3941125497,
+        4.24264068712
+      ],
+      "filter_tau": 0.02
+    },
+    "ball_launch_time_s": 2.0,
+    "actor_inputs": "canonical48D only; launch time and rod schedule are not actor inputs",
+    "forbidden_inputs": [
+      "contact truth",
+      "ball state",
+      "event time",
+      "task stage",
+      "visual/range"
+    ]
+  },
+  "teacher_input": "encoder-derived wrench only",
+  "truth_in_actor": false,
+  "task_stage_in_actor": false,
+  "config_sha256": "f6daad8d7570bc74874ed84c4655300c7812a9a0ecaa4f9508e100e9331a22f4",
+  "wrapper_sha256": "e389f1a9a239efd6c1b23b1ff0d1e54eaae9d71582001c2680f85cf23ea804b3",
+  "status": "completed",
+  "argv": [
+    "--output",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/results/fastfilter_delayed_rod9/rollout",
+    "--teacher",
+    "vmc6d",
+    "--task",
+    "pick_place",
+    "--events",
+    "all",
+    "--duration",
+    "55",
+    "--impact-refinement-dt",
+    ".0000015625",
+    "--ball-launch-time-s",
+    "2.0",
+    "--rod-start",
+    "9"
+  ],
+  "trace_sha256": "bfe8c3b880b4b93f1b0cde6153932a7984a91c088ee74bce4f1859144e1238a6",
+  "steps": 1375
+}
