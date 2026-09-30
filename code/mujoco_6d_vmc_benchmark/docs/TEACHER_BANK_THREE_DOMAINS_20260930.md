@@ -94,6 +94,23 @@ SHA256 核验再发布到服务器 `runs/main/<campaign-name>/`。传输未完�
 仅用于最后回合的归档、审计和交付，不增加计算窗口。服务和 campaign lock
 避免重复启动。实际可完成量由 pilot 测得吞吐决定，10 小时优先级高于最大回合数上限。
 
+## 06:32 UTC：首轮27回合完整配对
+
+三个类别均有c00共同完整候选前缀；三方法各9条，模型hash配对及搜索历史验证通过。
+录取数按厚角/短撞/持续推碰分别为VMC 0/2/0、导纳0/0/0、阻抗2/1/0，分母均为每类别3。
+共5录取、22失败，27条均有已核验归档凭据；已进入c01厚角VMC，银行仍暂定。
+这仍是第一组初始参数，不是优化完成结果；没有独立验证或正式collection。
+
+人手anchor0另做完整550000子步独立重建，段数据差≤1.22e-13且原hash全部一致：VMC
+最长连续段1.2516s、同段让位9.09595mm，距1cm差0.90405mm；导纳最长.1838s/1.71166mm；
+阻抗最长.0074s，单段最大让位.03322mm来自另一段。VMC/导纳宏观位移约27mm横跨间断，
+不能替代连续接触筛选。详见[人推复核](TEACHER_BANK_PERSON_ANCHOR_REVIEW_20260930.md)。
+源码/JSON/首轮状态38文件已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_0633/evidence/`。
+已提交f3b42f55f76c17e54d7c4ec7c55fb4b7cac6f985完整源码2623文件另经hash/大小/权限核验共享至
+同一服务器`/home/arm1/sii_shared/SII_compliance/source/f3b42f55f76c17e54d7c4ec7c55fb4b7cac6f985/`；
+tar SHA=`274e159481c6f9545ce705b0bcfee90455f0c8caf7433aa7b8357d4a0f931b11`。
+
 ## 06:18 UTC：短撞首轮配对与接触载荷复核
 
 v10累计完成21条搜索回合，5条eligible、16条物理/任务/曝光失败；另1条持续推碰导纳运行中。
