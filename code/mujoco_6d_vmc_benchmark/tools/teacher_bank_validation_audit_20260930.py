@@ -66,10 +66,16 @@ def parse_initial_intersections(log):
     return pairs
 
 
-def verify_request(root,request,execution,fixture,method,selected):
-    if (request['fixture']!=fixture or request['method']!=method or request['phase']!='validation'
+def expected_split(expected_phase):
+    if expected_phase not in ('validation','collection'):raise ValueError('Unsupported audit phase')
+    return 'validation' if expected_phase=='validation' else 'train'
+
+
+def verify_request(root,request,execution,fixture,method,selected,expected_phase='validation'):
+    if fixture.get('split')!=expected_split(expected_phase):raise ValueError('Fixture split differs from audit phase')
+    if (request['fixture']!=fixture or request['method']!=method or request['phase']!=expected_phase
             or request['x']!=selected['x'] or request['plan_sha256']!=sha(root/'plan.json')
-            or execution['plan_sha256']!=request['plan_sha256']):raise ValueError('Locked validation request mismatch')
+            or execution['plan_sha256']!=request['plan_sha256']):raise ValueError('Locked request/phase mismatch')
     from teacher_bank_design_20260930 import decode,digest
     from teacher_bank_classical_20260930 import decode as classical_decode
     expected=decode(request['x']) if method=='vmc' else classical_decode(request['x'],method)
@@ -78,7 +84,7 @@ def verify_request(root,request,execution,fixture,method,selected):
         raise ValueError('Fixture physical config hash mismatch')
 
 
-def invalid_initial_scene(root,folder,fixture,method,selected):
+def invalid_initial_scene(root,folder,fixture,method,selected,expected_phase='validation'):
     """Read terminal failure metadata; preserve it without fabricating metrics."""
     path=folder/'execution.json'
     if not path.is_file():return None
@@ -90,7 +96,7 @@ def invalid_initial_scene(root,folder,fixture,method,selected):
     if pairs is None:return None
     before=sha(path)
     request=read(folder/'request.json')
-    verify_request(root,request,execution,fixture,method,selected)
+    verify_request(root,request,execution,fixture,method,selected,expected_phase)
     command=read(folder/'command.json')
     if command['fixture']!=fixture or command['teacher']!=request['teacher']:
         raise ValueError('Rejected-scene command does not bind to request')
@@ -114,6 +120,7 @@ def invalid_initial_scene(root,folder,fixture,method,selected):
     evidence=('execution.json','request.json','command.json','run.log','exposure.npz')
     return dict(folder=str(folder),status='invalid_initial_scene',fixture_id=fixture['id'],
         category=fixture['category'],method=method,seed=fixture['seed'],execution=execution,
+        phase=expected_phase,split=fixture['split'],
         controller_coordinates=request['x'],selected_search_candidate=selected['index'],
         physical_config_sha256=fixture['physical_config_sha256'],initial_intersections=pairs,
         maximum_initial_overlap_mm=max(r['depth_mm'] for r in pairs),
@@ -236,15 +243,15 @@ def action_replay(folder,request,physics,runner):
             vmc_admittance_limitation='Motor torque metrics are independently measured; complete FK/WBC/dynamics reconstruction from action7 is not performed.'))
 
 
-def audit_case(root,folder,fixture,method,selected,plan,runner):
+def audit_case(root,folder,fixture,method,selected,plan,runner,expected_phase='validation'):
     execution,skip=complete_execution(folder)
     if skip:
-        invalid=invalid_initial_scene(root,folder,fixture,method,selected)
+        invalid=invalid_initial_scene(root,folder,fixture,method,selected,expected_phase)
         return invalid or dict(folder=str(folder),status='skipped',reason=skip)
     before=sha(folder/'execution.json')
     request,audit,meta=map(read,(folder/'request.json',folder/'audit.json',folder/'rollout.json'))
-    verify_request(root,request,execution,fixture,method,selected)
-    if (audit['fixture_id']!=fixture['id'] or audit['split']!='validation' or audit['method']!=method
+    verify_request(root,request,execution,fixture,method,selected,expected_phase)
+    if (audit['fixture_id']!=fixture['id'] or audit['split']!=expected_split(expected_phase) or audit['method']!=method
             or not isinstance(audit['eligible'],bool)):raise ValueError('Audit identity mismatch')
     hashes={}
     for name,expected in audit['files_sha256'].items():
@@ -277,6 +284,7 @@ def audit_case(root,folder,fixture,method,selected,plan,runner):
     if sha(folder/'execution.json')!=before:raise ValueError('Execution changed during review')
     return dict(folder=str(folder),status='audited',eligible=audit['eligible'],failure_reasons=audit['failure_reasons'],
         fixture_id=fixture['id'],category=fixture['category'],method=method,seed=fixture['seed'],
+        phase=expected_phase,split=fixture['split'],
         controller_config=request['teacher'],controller_coordinates=request['x'],
         selected_search_candidate=selected['index'],physical_config_sha256=fixture['physical_config_sha256'],
         model_sha256=audit['model_sha256'],raw_sha256=hashes,audit_sha256=sha(folder/'audit.json'),

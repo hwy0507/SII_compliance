@@ -4,6 +4,67 @@
 截止时停止派发新仿真，已开始的回合允许完整保存；不能把场景定义数当成成功示范数。
 本轮新增的是训练域，不修改冻结综合测试环境、原任务 gate、执行器或 actor 输入。
 
+## 13:55 UTC：十小时窗口终态与可用数据
+
+新派发按原13:48:16截止，最后一个已开始回合13:48:22动态结束、13:48:50归档；
+continuation v2正常rc0退出。原deadline marker拒绝下一条long0002阻抗，未另起作业。
+终态215条目＝162搜索＋27验证＋26collection，其中212完整动态、3初态拒绝。
+追加26raw独立审计通过；8三法完整配对＋1只有VMC/导纳的不齐配对，公平均值排除后者，
+原结果仍保留。9重复对57NPZ/612数组全相同，不增加唯一数。
+严格train-only锁参VMC出口厚角4/短撞4/持续1，共9，205排除/1缺部分配对模型绑定隔离。
+隔离不是证实模型不一致；已有两法raw同MJB且该VMC本来接触失败，不追认标签。
+无新ESN、当前仿真0、每类1000合格数据未完成；完整数值及收尾证据见
+[十小时交接](TEACHER_BANK_TEN_HOUR_REPORT_20260930.md)。
+
+13:57 UTC：2120文件终态证据已核验到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_final/evidence/`，
+包括原run根汇总/历史/决策/截止、continuation源/协议/state和最终raw/去重/标签审计。
+`teacher-10`已暂停，未延长仿真窗口；最新报告地址补充以Git版本为准。
+
+## 13:11 UTC：实际吞吐与采集规模的预算边界
+
+只读汇总已完成搜索的原始`execution.json`，各方法54回合的平均子进程耗时为：
+VMC106.0061s、导纳118.5742s、阻抗119.0932s（中位数98.7161/120.9502/125.1000s）。
+口径为`finished-started`，包括该子进程生成/保存/审计，**不含外部服务器归档**，不是纯
+物理积分或CPU时间。若以本机单环境按这些观测均值外推各方法3000条完整回合，合计约
+286.39小时；这是吞吐规划估计，不是已运行耗时，也未保证所有回合初态合法或成功。
+因此本轮十小时只能完成有限预算优化/验证与少量后续采集，不可能据3300定义声称已采满
+每类1000条合格示范。不能靠删除失败、改变dt/gate或混入不等价ARM模型弥补数量。
+
+13:11宿主检查continuation仍active、MemoryCurrent约1.52GB，cgroup的oom/oom_kill均0。
+持续人推train0000的锁参VMC重复回合已录取；这仍是已知训练fixture，唯一计数不增加。
+
+## 13:06 UTC：首组三方法重复性检查通过，唯一数不增加
+
+厚角train0000的VMC c01、导纳c01、阻抗c02搜索轨迹与collection形成3对。19个NPZ逐文件
+SHA与每个数组的dtype/shape/value均完全相同，含物理子步、控制、接触与阻抗servo记录。
+墙钟耗时不同，仅在execution元数据；不把时间差当成轨迹差异，也不把重复计新场景。
+各方法已完成训练执行19次，但执行身份仍18种，唯一训练fixture仍3；该厚角VMC的
+collection未录取，锁参厚角唯一合格训练fixture仍2。正在运行的short回合未被该审计读取。
+review SHA=`1203a110659cb21bb5b9590c0cb1926924f6d82d418487605b6b4b81d1bb6652`。
+工具未捕获本次审计启动瞬间与峰RSS，报告明确缺失，不以事后时间/内存冒充实测。
+
+固定快照、审计和命令/runtime/hash记录1855文件已逐项核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_1306/evidence/`。
+原稳定collection继续，截止和全部筛选条件不变；最终还需统计新增fixture及剩余重复对。
+
+## 13:01 UTC：预注册验证全部记账，原始审计通过，进入采集
+
+12:54:06验证结束：24完整动态回合＋3初态拒绝，27计划条目无遗漏。独立raw复核0错误/
+0 skipped，8个动态fixture三方法MJB一致，三指标与动作/状态重放通过。VMC/导纳/阻抗
+task为7/8、0/8、7/8；strict为4/8、0/8、6/8；录取3/8、0/8、4/8；各方法另有一个
+预注册初态无效条件。长推2个有效fixture都未录取；不是已获得可泛化teacher。
+详见[锁参验证报告](TEACHER_BANK_LOCKED_VALIDATION_20260930.md)，保留所有失败的三指标表。
+独立review SHA=`1ce3797d9f22be7891592e92cb0335d491151adee9e5390a42c058f0c16ad25f`。
+
+全部验证元数据、raw独立审计、公平表和已视觉核验的24点三指标图1850文件已逐项核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_1300/evidence/`。
+GitHub main检查点已推送并核对`cd38ad943b1cf16442ca181e44eae64579720986`。
+
+同一稳定continuation服务已进入collection；首个厚角train0000三方法完成、逐回合归档。
+这是选定搜索anchor的重复执行，正在对比原始数组，不增加唯一训练环境数。采集继续至
+原13:48:16截止；仍未达到每类1000条合格示范，无新ESN和正式dt=5e-5结果。
+
 ## 12:47 UTC：接续v2运行，原场景三方法初态拒绝均保留
 
 `teacher-bank-continuation-v2-20260930.service`于12:46:27开始接续，MainPID1078252。

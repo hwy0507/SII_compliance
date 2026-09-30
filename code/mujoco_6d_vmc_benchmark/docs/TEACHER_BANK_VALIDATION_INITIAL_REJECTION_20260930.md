@@ -48,5 +48,17 @@
 `invalid_initial_scene`，保留原计划分母并将物理指标置空。其他基础设施异常仍单独保留，
 不会因 returncode 非零而自动改称场景无效。该分类不构成替换场景、回头调参或放松 gate 的授权。
 
-同 fixture 的三种方法仍由主控按原预注册设置执行并记录各自结果；此文目前仅审查首个
-VMC 拒绝。最终跨方法判断等待全部计划条目终态和 `validation_finished` 标记。
+初稿仅审查首个 VMC 拒绝。此后三种方法由主控按原预注册设置执行，
+`teacher_bank_continuation_20260930_v2/validation_finished.json` 已记录全部 27 条有交代：
+24 动态完成、3 初态拒绝，不能称为 27 条动态完成。
+
+最终独立审计于 UTC 12:56:07–12:56:48 完成：
+`outputs/teacher_bank_validation_independent_20260930/final_1255/review.json`，
+SHA256 `1ce3797d9f22be7891592e92cb0335d491151adee9e5390a42c058f0c16ad25f`。
+三种方法各自请求和执行身份已核对，均在相同初态以同一 60.098841 mm 最大交叉拒绝。
+三份失败日志 hash 和空曝光 hash 相同；各自的 command/request/execution hash 在最终报告逐项记录。
+这是初始几何一致的证据，仍不等价于不存在的 MJB hash 配对。
+
+最终独立审计保留全部计划条目：24 条 `audited`、3 条 `invalid_initial_scene`，
+0 条 `audit_failed`、0 条 `skipped`。有效的 8 个 fixture 三方法 MJB 均配对一致。
+审计脚本的 16 项测试含 signal/timeout 遗留日志误分类保护和任意 rollout/动作链残留保护。

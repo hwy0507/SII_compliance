@@ -3,6 +3,36 @@
 本文件记录每次对话交付的文件修改、验证和结果边界；最新记录在前。对应提交号由 Git 历史
 查询：`git log --oneline -- UPDATE_LOG.md`。持续提交约定见 [AGENTS.md](AGENTS.md)。
 
+## 2026-09-30 — 十小时窗口收尾：215条记录、9个唯一teacher条件与公平经典对照
+
+- 13:29 UTC读取实际远端日志，13:55/13:57复核fetch：main=
+  `cd38ad943b1cf16442ca181e44eae64579720986`、baseline=
+  `c9185489dfbb8d969525a253493592cbbbcd06d2`，未合并baseline、未干扰其旧暂停作业。
+- 10小时派发截止13:48:16；最后派发13:46:18.620425、动态结束13:48:22.954650、
+  归档结束13:48:50，continuation v2 rc0退出，截止后派发0。终态162搜索＋27验证记账
+  （24动态/3初态拒绝）＋26collection，共212完整动态/3初态失败；缺失最后long0002
+  阻抗配对明确保留，未补跑。定义3300不等于已执行/合法示范。
+- 验证有效8fixture：VMC/导纳/阻抗task7/8、0/8、7/8；strict4/8、0/8、6/8；
+  全要求录取3/8、0/8、4/8。每方法另1个预注册初态无效条件。类别分别锁参，不称统一策略
+  或VMC全面优势。追加采集共同8训练fixture录取5/8、0/8、5/8，失败参与指标汇总。
+- 新collection独立审计26/26通过，全55s/550000子步，动作重放最大5.55e-17；9重复对
+  57NPZ/612数组完全相同、不增样本。严格train-only锁参VMC清单9唯一（厚角4/短撞4/持续1），
+  205排除/1隔离：隔离因部分配对缺模型绑定且原本接触失败，不是证明模型矛盾；不回写追认。
+  validation全排除，无新ESN。每类1000合格、持续推碰可靠teacher和正式综合泛化未完成。
+- 新collection审计入口/测试、shared validation helper显式phase/split绑定、完整验证及
+  十小时报告；README、联合进度、周报、三类记录同步。65相关测试通过、diff check通过。
+  原冻结v10源207项hash保持一致，环境/gate/actor/执行器限制未改，全部为开发dt=1e-4。
+- 2120文件最终证据已逐项核验至
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_final/evidence/`，
+  含`tools/`审计代码、`outputs/teacher_bank_v10_terminal_review_20260930_1349/`完整metadata、
+  `outputs/teacher_bank_v10_final_comparison_20260930_1350/`及raw/duplicate/strict manifest。
+  终态review SHA=`6414365111679e1712ed169bc83c3022c7b8b6cf68b56fd7f27a4517b7b0deea`；
+  manifest SHA=`6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`。
+  逐条raw及动态源码仍在相邻`teacher_bank_three_domains_20260930_v10/`，215份凭据完整。
+  归档后的文档地址补充以本提交为准，不冒称已在较早快照中。运行中仿真0，teacher-10已暂停。
+- 汇报入口：[十小时结果](code/mujoco_6d_vmc_benchmark/docs/TEACHER_BANK_TEN_HOUR_REPORT_20260930.md)。
+  限时工作已完成，数据数量和研究目标未完成；不能以少量合格轨迹宣称泛化或真实部署安全。
+
 ## 2026-09-30 — 严格训练标签出口、初态拒绝诊断与不改场景接续
 
 - 12:21及12:49 UTC核对并读取main=`d39aed3f4800223e1aa1584f1dbcc9d45c13e13f`、baseline=
