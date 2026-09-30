@@ -15,6 +15,11 @@
 已核验源码/配置位于
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_three_domains_20260930_v10/`。
 详细预算、失败保留和实时状态见 [三类数据记录](TEACHER_BANK_THREE_DOMAINS_20260930.md)。
+05:49 UTC v10首个厚桌角参数配对完成：VMC/导纳/阻抗录取0/3、0/3、2/3，候选尚未锁定，
+不能当独立验证。九条pilot离线归因进一步区分晚期放置失败、收敛超时与接触分段统计：
+球撞并非当场掉块，人推约27mm宏观让位也不等于连续接触通过，详见
+[失败归因](TEACHER_BANK_PILOT_FAILURE_CAUSES_20260930.md)。新报告与复算源码已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_0552/evidence/`。
 下文“当前无仿真”仅指先前teacher修正阶段，不表示本轮无作业。
 
 ## 2026-09-30 teacher 先修正、后蒸馏

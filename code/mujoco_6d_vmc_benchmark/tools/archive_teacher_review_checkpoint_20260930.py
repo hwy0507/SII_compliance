@@ -7,7 +7,7 @@ from teacher_bank_campaign_20260930 import REPO, archive
 from teacher_bank_design_20260930 import sha, write
 
 
-def snapshot(destination):
+def snapshot(destination, extra=()):
     if destination.exists():
         raise FileExistsError('Use a new immutable review checkpoint directory')
     destination.mkdir(parents=True)
@@ -22,6 +22,13 @@ def snapshot(destination):
         ('outputs/teacher_bank_three_domains_20260930_v8/paired_model_checks', '*.json'),
     ):
         sources.extend(sorted((REPO / directory).glob(pattern)))
+    for relative in extra:
+        path = (REPO / relative).resolve()
+        path.relative_to(REPO)
+        if not path.is_file():
+            raise FileNotFoundError(path)
+        sources.append(path)
+    sources = sorted(set(sources))
     records = []
     for source in sources:
         relative = source.relative_to(REPO)
@@ -41,9 +48,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--destination', type=Path, required=True)
     parser.add_argument('--archive', action='store_true')
+    parser.add_argument('--include', type=Path, action='append', default=[],
+                        help='Additional completed review artifact relative to research root')
     args = parser.parse_args()
     destination = args.destination.resolve()
-    snapshot(destination)
+    snapshot(destination, args.include)
     if args.archive:
         path = archive(destination, 'evidence')
         write(destination / 'archive_receipt.json', dict(verified_path=path))

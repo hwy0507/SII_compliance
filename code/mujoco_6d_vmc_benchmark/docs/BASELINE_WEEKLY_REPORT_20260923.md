@@ -12,6 +12,11 @@ VMC合格新轨迹仍0。v10固定预算搜索正在本机运行（单环境/1�
 源码和配置已核验共享到
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_three_domains_20260930_v10/`。
 详见 [三类teacher与经典baseline](TEACHER_BANK_THREE_DOMAINS_20260930.md)。
+05:49 UTC首个厚桌角c00配对（三方法各三anchor）完成，VMC/导纳/阻抗录取分别0/3、0/3、2/3；
+这是训练搜索结果，不是锁定参数独立验证。v8九条pilot的hash/子步指标复核通过，区分球撞
+后段放置失败、慢收敛和人推接触分段；详见[失败机制报告](TEACHER_BANK_PILOT_FAILURE_CAUSES_20260930.md)。
+该新报告、JSON和源码已核验共享在
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_0552/evidence/`。
 
 2026-09-30 更新：按用户要求先修正 teacher，再重做 ESN。归档 MuJoCo 3.11 上首轮
 八条回合已审计：三个 teacher 修正均通过 corner task/strict，综合 pair_average
