@@ -94,6 +94,58 @@ SHA256 核验再发布到服务器 `runs/main/<campaign-name>/`。传输未完�
 仅用于最后回合的归档、审计和交付，不增加计算窗口。服务和 campaign lock
 避免重复启动。实际可完成量由 pilot 测得吞吐决定，10 小时优先级高于最大回合数上限。
 
+## 07:35 UTC：54回合完成，第三组初始参数运行中
+
+c00/c01两个候选均完成三类×三方法×三anchor，所有模型配对和history检查通过。
+共8条录取、46条失败，54条均有逐文件核验归档凭据；VMC合格唯一训练fixture为厚角2、短撞3、
+持续推碰0，正式collection均0。**短撞的三个合格fixture来自不同候选，不能拼成单控制器3/3。**
+c00短撞VMC2/3；c01球形anchor0通过，但337/671的strict失败，故该候选仅1/3。
+c01厚角VMC2/3、导纳0/3、阻抗0/3；c01持续推碰三方法均0/3。所有失败继续保留。
+低力矩失败不能仅凭三指标较低晋级；尚未进入BO候选阶段，也未锁定参数或做独立验证。
+
+相同v10服务已进入c02，缓存受限时正常回收，OOM/oom_kill均0；没有新增本机仿真或重启。
+完整54回合状态36文件已核验归档至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_0736/evidence/`，
+其下`outputs/teacher_bank_reports_20260930/v10_c01_complete_0735.{json,md}`为本检查点。
+原13:48:16 UTC新回合派发截止、6候选固定预算及未完成目标均保持不变。
+
+## 配对三指标图表与复用入口
+
+新增`tools/plot_teacher_bank_search_20260930.py`读取已保存status JSON，只纳入各类别三方法
+共同完整候选前缀。逐回合audit.json须与status保存的SHA匹配，fixture/MJB、完整anchor集合、
+录取标记再次核对；缺失或被改写的证据会报错，不静默删除该点。失败回合全部绘出，partial
+与未配对回合另计数。图表不选择最佳候选、不重算物理子步，也不把训练搜索当成独立验证。
+
+首个例图来自06:32快照：27点（5录取/22失败），排除并注明1条正在运行的c01回合。
+三类别各有RMSE—峰值执行器力矩和RMSE—峰值末端速度两幅图，方法固定颜色、失败与录取
+使用不同标记。RMSE标签明确为**stage-waypoint tracking**，不是平滑全局路径误差，也不暗示
+失败或未来abort回合完成了完整任务。所有点仍按实际记录值展示，速度不正向奖励。
+
+4项证据选择/哈希篡改/配对/不覆盖校验通过；PNG已视觉检查。脚本、测试、来源status、
+完整点JSON、PNG/PDF共42份归档文件逐文件核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_0717/evidence/`。
+其下图表路径为`outputs/teacher_bank_plots_20260930/v10_c00_complete_0632_v3/`。
+PNG SHA=`bf088ec34ac28340a6c19535654dc1d4f4d80885c63926e22643f2e1c9072824`；
+points JSON SHA=`507cae91f03b65b2335c0c4fde6b08d09295dd46e1b1a1a1816f4f919b514c8e`。
+随后新增可选`--campaign-root`供服务器复用，输出同时保留原`source_campaign_root`和实际
+读取的`campaign_root`，不改历史status或放松SHA/模型配对核验。包括“原目录消失后的搬移复用”
+在内5项测试通过；新版脚本/测试另核验归档到同一runs/main父目录的
+`teacher_bank_review_checkpoint_20260930_0722/evidence/`，脚本SHA为
+`705024dab83dec409d8c0c32f043c2709abf92dca0aa3ab468da234243785425`。
+v3图片没有重写，仍由plot_points.json记载的上一版绘图脚本产生。
+服务器复画时显式传入
+`--campaign-root /home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_three_domains_20260930_v10`。
+绘图从本地运行缓存读取已完成audit，未访问正在写入的回合；目标目录须全新且位于原run外：
+
+```bash
+ulimit -v 2097152
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MPLCONFIGDIR=/tmp/sii_teacher_plot_mpl \
+  /home/airpig/桌面/hwy/compliance_control/.venv-canonical-rl/bin/python \
+  tools/plot_teacher_bank_search_20260930.py \
+  --report outputs/teacher_bank_reports_20260930/v10_c00_complete_0632.json \
+  --output outputs/teacher_bank_plots_20260930/c00_recomputed_new_directory
+```
+
 ## 06:32 UTC：首轮27回合完整配对
 
 三个类别均有c00共同完整候选前缀；三方法各9条，模型hash配对及搜索历史验证通过。
