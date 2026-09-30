@@ -1,5 +1,16 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+2026-09-30 新任务：VMC既作为teacher生成器也作为model-based baseline；导纳/真实力矩
+阻抗同场景同搜索预算调参。3000训练＋300验证配置已生成，不等于有效数据已采满。
+v6主动类别动态pilot正在本机运行（单环境/1线程/3GiB），此前非法初态失败完整保留；
+54项测试通过。v4有效VMC回合task/旧strict成功但无真实face接触；v5三方法被训练face
+挡在align，仍无合格teacher。阻抗审计内存读取已修，原raw复审servo到实际力矩误差0。
+旧corner通过不证明上抬碰face，详见曝光诊断。
+冻结综合测试与门槛未改，无新ESN结果。
+源码和配置已核验共享到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_three_domains_20260930_v5/`。
+详见 [三类teacher与经典baseline](TEACHER_BANK_THREE_DOMAINS_20260930.md)。
+
 2026-09-30 更新：按用户要求先修正 teacher，再重做 ESN。归档 MuJoCo 3.11 上首轮
 八条回合已审计：三个 teacher 修正均通过 corner task/strict，综合 pair_average
 task=true、strict=false（穿透 0.187935 mm，柱接触不足）。公共 baseline 环境、gate、

@@ -3,6 +3,42 @@
 本文件记录每次对话交付的文件修改、验证和结果边界；最新记录在前。对应提交号由 Git 历史
 查询：`git log --oneline -- UPDATE_LOG.md`。持续提交约定见 [AGENTS.md](AGENTS.md)。
 
+## 2026-09-30 — 启动三类 teacher 数据与经典 baseline 的 10 小时任务
+
+- 开工核对 main=`38caf3152282df4963435bb65c11c93a1e4fffa5`、
+  baseline=`59342005b11b5892b18301fd9b52c6b07ad87f45`；开工时其日志仅有初始化，
+  其工作区 `/home/arm1/SII_compliance_baseline` 不由本任务修改。
+  04:15 UTC再次核对baseline已到`5bc21d8d19eaf60691f561f0ad9dd4409749e667`，已读新日志：
+  SimbaV2奖励配对训练/GPU验证与布局合法性修正；不合并其分支，不占用Spark仿真槽位。
+- 用户新增授权：三类各至少1000训练环境，VMC同时作teacher/model-based baseline，导纳/阻抗
+  同场景同预算调参，多agent协作，持续10小时。窗口至2026-09-30 13:48:16 UTC。
+- 新增 `tools/teacher_bank_{design,rollout,campaign,classical,exposure}_20260930.py`、相关测试和
+  `docs/TEACHER_BANK_THREE_DOMAINS_20260930.md`、独立场景审查报告（路径相对研究目录）。
+  生成3000训练+300验证配置，支持冻结源码、约束BO、原始/过滤动作、物理子步与接触曝光审计。
+- 已完成34项新测试；动态pilot发现新训练桌角连接件初态与机器人相交，正确拒绝并归档，
+  修正为绕手爪连接后42个初态预检通过。v4九条动态pilot已于04:16 UTC启动。
+  v4完成一个有效物理回合但没有真实上抬碰face，不可入库；导纳adapter在仿真前失败已修。
+  v5于04:30 UTC启动，VMC/导纳前两条均在align被训练face挡住，负结果保留，继续其他配对。
+  尚无合格新teacher轨迹；未启动ESN、不改冻结综合测试或保留集。
+- 已核验服务器源码/失败路径：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_three_domains_20260930_v2/`。
+  v4源码206文件/metadata2文件也已核验归档到同一父目录下
+  `teacher_bank_three_domains_20260930_v4/`，动态轨迹完成后逐条归档。
+  不覆盖失败记录。详细实时状态和限制见上述专题文档。
+- 新增进程身份恢复：仅确认旧PID已退出才另开retry目录，旧文件逐字节保留，基础设施失败
+  不进入BO；新增只读状态汇总器。53项测试通过。公共评分移除对力矩阻抗不公平的action7
+  平滑罚，补配对MJB一致性和阻抗命令→实际物理力矩审计。
+- v5源码209文件、metadata2文件已核验归档到同父目录`teacher_bank_three_domains_20260930_v5/`；
+  几何诊断/初态成功及失败的7份JSON已核验到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_archive_20260930/evidence/`。
+- 重要纠正：旧corner task/strict成功不是“上抬碰face成功”证据。新曝光审计把桌面支撑与
+  真实上抬碰边分开。十小时按98.3s首回合吞吐无法跑满9000次配对采集；搜索前预注册
+  6候选×3anchors/方法/类、每类3个独立验证、之后剩余时间配对采集，3000有效数据目标未完成。
+- v5阻抗完整仿真后审计触发3GiB限制，原因是NPZ逐行索引重复解压且保留整列view；已修为
+  一次读列＋生成器，54项测试通过。旧raw独立复审4.39s成功，13750servo/550000子步实际力矩
+  映射误差0；原failed execution不改写。该复审仅本地、待归档。
+  v5现已停止；v6冻结源码的主动短撞/持续推碰六条pilot已启动，仍单环境/1线程/3GiB。
+
 ## 2026-09-30 — 协作 skill：双分支开工检查、本地计算与服务器归档
 
 - 新增 `skills/sii-research-sync/SKILL.md` 与 `agents/openai.yaml`，安装至

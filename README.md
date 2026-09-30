@@ -20,6 +20,13 @@ waypoint RMSE 为 37.406 mm，峰值实际力矩 48.127 Nm，峰值末端速度 
 [发布证据和产物索引](code/mujoco_6d_vmc_benchmark/docs/evidence/publication_20260930/README.md)；
 仅 clone 仓库不包含完整实验数据。
 
+新增三类训练域数据与经典对照任务：每类1000训练＋100验证配置，VMC作为数据生成器及
+model-based baseline，导纳/阻抗使用同场景同预算搜索。现处于动态pilot和几何曝光校验，
+不代表3000条有效teacher数据已采满。复核发现旧corner通过仅证明其旧task/strict，不能
+作为“上抬碰face再滑开”的证据。新流程独立核查真实碰边，失败完整保留。
+进度、服务器产物路径和十小时预算见
+[三类teacher与经典baseline](code/mujoco_6d_vmc_benchmark/docs/TEACHER_BANK_THREE_DOMAINS_20260930.md)。
+
 ## 2026-09-29 Office-v5 Handoff
 
 The current office-v5 ESN work is documented for fair baseline comparison in
