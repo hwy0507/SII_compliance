@@ -24,7 +24,8 @@ class FakeOffice:
         obs=np.full(48, .001*np.sin(self.k),dtype=np.float32)
         iv=dict(elapsed_s=.04,error_cost=0.,peak_torque_ratio=0.,
                 peak_torque_nm_per_joint=[0.]*7,max_position_error_m=0.,
-                substeps=400,time_s=self.k*.04,stage=0,potential=0.)
+                substeps=400,time_s=self.k*.04,stage=0,potential=0.,
+                task_complete_before_interval=False)
         info={"interval":iv}
         if done:
             info["evaluation"]=dict(strict_success=False,task_success=False,

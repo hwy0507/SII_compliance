@@ -30,6 +30,10 @@ if "issctype" not in np.__dict__:
 sys.path.insert(0, str(UPSTREAM))
 
 import gymnasium as gym
+import jax
+# Upstream uses the pre-0.6 spelling; preserve identical tree-map semantics.
+if not hasattr(jax, "tree_map"):
+    jax.tree_map = jax.tree_util.tree_map
 import jax.numpy as jnp
 from omegaconf import OmegaConf
 from scale_rl.agents import create_agent

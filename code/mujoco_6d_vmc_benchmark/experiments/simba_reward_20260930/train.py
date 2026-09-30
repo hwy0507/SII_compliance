@@ -32,15 +32,37 @@ class Replay:
         n=min(self.count,self.capacity)
         np.savez(path,**{k:v[:n] for k,v in self.data.items()})
         return dict(count=self.count,capacity=self.capacity,rng=self.rng.bit_generator.state)
+    def load(self,path,state):
+        if int(state["capacity"])!=self.capacity:
+            raise ValueError("Replay capacity changed; exact resume requires original total step budget")
+        count=int(state["count"]);n=min(count,self.capacity)
+        if count<0:raise ValueError("Negative replay count")
+        with np.load(path,allow_pickle=False) as saved:
+            if set(saved.files)!=set(self.data):raise ValueError("Replay schema mismatch")
+            for key,array in self.data.items():
+                value=saved[key]
+                if value.shape!=(n,)+array.shape[1:]:raise ValueError("Replay shape mismatch: "+key)
+                array[:n]=value
+        self.count=count
+        self.rng.bit_generator.state=state["rng"]
 
 def fixture(seed,episode):
     rng=np.random.default_rng(seed+100003*episode)
-    variants=(-2,-1,3,4);events=("all","all","ball","person","rod")
+    variants=(-4,-3,-2,-1);events=("all","all","ball","person","rod")
     return dict(seed=int(seed+100003*episode),variant=variants[episode%4],events=events[episode%5],
         ball_speed=float(rng.uniform(1.35,1.95)),person_stroke=float(rng.uniform(.16,.23)),
         rod_stroke=float(rng.uniform(.19,.24)))
 
 def train(a):
+    resume_path=Path(a.resume).resolve() if getattr(a,"resume",None) else None
+    resume_state=json.loads((resume_path/"runner_state.json").read_text()) if resume_path else None
+    if resume_state is not None:
+        if resume_state.get("resume_format_version")!=1:
+            raise ValueError("Unsupported checkpoint resume format")
+        if resume_state.get("mid_episode",True):
+            raise ValueError("Mid-episode checkpoint cannot be resumed exactly: choose checkpoint_boundary_*; simulator state was not saved")
+        if int(resume_state["step"])>=a.steps:
+            raise ValueError("--steps is the original total budget, and must exceed restored step")
     out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
     config=RewardConfig(mode=a.reward,horizon_s=a.duration,gamma=a.gamma,smooth_weight=a.smooth)
     rewarder=OfficeReward(config)
@@ -49,11 +71,24 @@ def train(a):
     exploration=np.random.default_rng(a.seed+71)
     env=OfficeEnv(out/"episodes",rewarder,duration=a.duration,physics_dt=a.physics_dt)
     hashes={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/"scripts").glob("*.py")}
+    run_definition=dict(seed=a.seed,total_step_budget=a.steps,reward=config.to_dict(),
+        utd=a.utd,physics_dt=a.physics_dt,warmup_steps=WARMUP_STEPS,
+        train_variants=[-4,-3,-2,-1],train_event_cycle=["all","all","ball","person","rod"])
+    if resume_state is not None:
+        if resume_state.get("run_definition")!=run_definition:
+            raise ValueError("Resume protocol differs; retain original seed, total steps, reward, UTD, dt and warmup")
+        if resume_state.get("source_sha256")!=hashes:
+            raise ValueError("Runtime source changed; exact resume rejected")
+        agent.load(resume_path)
+        replay.load(resume_path/"replay.npz",resume_state["replay"])
+        exploration.bit_generator.state=resume_state["exploration_rng"]
+        env.episode=int(resume_state["env_episode_index"])
     dump(out/"PROTOCOL.json",dict(
         name="official_simbav2_office_reward_comparison_20260930",seed=a.seed,total_step_budget=a.steps,
         actor="raw proprio48 only; no task stage, clock, contact truth or obstacle geometry",
         action="canonical tanh [-1,1]^7: slowdown + world Cartesian twist residual",
-        additional_rl_only_safety_envelope=False,teacher=False,vmc=False,bc=False,from_scratch=True,
+        additional_rl_only_safety_envelope=False,teacher=False,vmc=False,bc=False,from_scratch=resume_state is None,
+        resumed_from=str(resume_path) if resume_path else None,resume_mode="episode_boundary_exact" if resume_path else None,
         observation_and_reward_normalization="official running statistics; training only",
         reward=config.to_dict(),agent=agent.config,utd=a.utd,initial_random_steps=WARMUP_STEPS,
         train_physics_dt=a.physics_dt,formal_evaluation_physics_dt=.00005,duration_s=a.duration,
@@ -65,14 +100,19 @@ def train(a):
         timeout_is_true_terminal=True,variable_episode_lengths=True,
         equivalence_caveat="variable horizons break RMSE ranking equivalence; discount breaks final peak-square equivalence",
         success_gate="result.strict_success; task_success also reported separately",
-        previous_action_reset=[0.]*7,train_variants=[-2,-1,3,4],train_event_cycle=["all","all","ball","person","rod"],
+        previous_action_reset=[0.]*7,train_variants=[-4,-3,-2,-1],train_event_cycle=["all","all","ball","person","rod"],
         fixture_rule="seed + 100003*episode; no hidden +101*variant",
         scene="main 38caf31 combined_thick_corner_pillar_v4, corner placement, delayed ball2/person3/rod7 hold6",
         main_commit="38caf3152282df4963435bb65c11c93a1e4fffa5",
         source_sha256=hashes,max_wall_seconds=a.wall_seconds,
         checkpoint_selection="fixed step validation only; test not used to update or select",
         budget_caveat="finite compute-budget experiment; no guaranteed convergence claim"))
-    started=time.monotonic();episode=0;step=0;previous=None
+    started=time.monotonic()
+    episode=int(resume_state["episode_index"]) if resume_state else 0
+    step=int(resume_state["step"]) if resume_state else 0
+    previous=resume_state["pending_transition"] if resume_state else None
+    start_step=step
+    next_boundary_checkpoint=(step//a.checkpoint_every+1)*a.checkpoint_every
     episode_return=0.;terms_sum={};episode_start_step=0;last_metrics={}
     stop_requested=False
     def stop_handler(*_):
@@ -93,7 +133,8 @@ def train(a):
             exploration_rng=exploration.bit_generator.state,replay=replay_state,
             pending_transition=previous,env_episode_index=env.episode,
             mid_episode=env.worker is not None,
-            resume_semantics="networks optimizer normalizers RNG replay preserved; environment reset required unless episode boundary",
+            resume_format_version=1,run_definition=run_definition,source_sha256=hashes,
+            resume_semantics="exact resume only at episode boundary; mid-episode checkpoints rejected",
             reward_state=vars(rewarder) | {"config":config.to_dict()}))
     reset()
     rows_file=out/"episode_summaries.jsonl"
@@ -139,10 +180,13 @@ def train(a):
                 trace.flush()
                 dump(out/"progress.json",dict(status="training",step=step,updates=agent.updates,
                     episodes=episode,elapsed_s=time.monotonic()-started,
-                    steps_per_s=step/max(1,time.monotonic()-started),
+                    steps_per_s=(step-start_step)/max(1,time.monotonic()-started),
                     last_reward_terms=terms_sum,last_update=last_metrics,normalizers=agent.diagnostics()))
             if step%a.checkpoint_every==0:checkpoint(f"checkpoint_step_{step:07d}")
-            if stop_requested or time.monotonic()-started>=a.wall_seconds or step>=a.steps:
+            if done and step>=next_boundary_checkpoint:
+                checkpoint(f"checkpoint_boundary_{step:07d}")
+                next_boundary_checkpoint=(step//a.checkpoint_every+1)*a.checkpoint_every
+            if stop_requested or time.monotonic()-started>=a.wall_seconds or step>=a.steps or (getattr(a,"stop_after_step",None) is not None and step>=a.stop_after_step):
                 checkpoint("checkpoint_final")
                 dump(out/"COMPLETE.json",dict(status="step_budget_complete" if step>=a.steps else "wall_budget_checkpoint",
                     steps=step,updates=agent.updates,episodes=episode,elapsed_s=time.monotonic()-started,
@@ -155,6 +199,8 @@ def train(a):
 if __name__=="__main__":
     p=argparse.ArgumentParser()
     p.add_argument("--output",type=Path,required=True)
+    p.add_argument("--resume",type=Path,help="Resume only an episode-boundary checkpoint into a new output directory")
+    p.add_argument("--stop-after-step",type=int,help="Optional absolute early checkpoint step; keeps original total-step learning-rate schedule")
     p.add_argument("--reward",choices=["office_task","metric","task_only"],required=True)
     p.add_argument("--seed",type=int,required=True)
     p.add_argument("--steps",type=int,default=100000)

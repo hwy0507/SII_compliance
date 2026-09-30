@@ -186,10 +186,46 @@ fixed-horizon evaluator's strict gate.
 
 Trainer review: normalizers consume each preceding transition once; raw replay
 is preserved and copied before wrapper normalization. Pending last transition
-is saved in runner_state; do not claim resumability until a load path has been
-tested. Main comparisons must use equal transition/update budgets, with wall
+is saved in runner_state and exact episode-boundary resume has now been tested
+with the real official agent and deterministic fake dynamics (details below). Main comparisons must use equal transition/update budgets, with wall
 time and physical simulated seconds also reported. A common wall-time cutoff
 alone can give different sample budgets when rewards cause different early
 failure rates. Official running reward normalization changes scale during
 training, so raw-reward potential/peak algebra must not be advertised as exact
 identities for the changing normalized training return.
+
+## Exact episode-boundary resume implementation and validation
+
+train.py now accepts --resume CHECKPOINT and keeps --steps as the ORIGINAL
+total budget; extending it implicitly would alter the original learning-rate
+schedule and is rejected. Use a new --output directory. Resume checks seed,
+reward config, UTD, timestep, warmup, fixture cycle and runtime source hashes.
+
+Restores network/optimizer states, both official normalizers, JAX RNG, replay
+data/ring count/sampling RNG, exploration RNG, episode fixture index, and the
+pending terminal transition exactly once. Reward state resets at the next
+episode as in uninterrupted execution. Mid-episode checkpoints are explicitly
+rejected because the live MuJoCo state was not saved. They remain usable for
+evaluation, but cannot be silently reset and called exact continuation.
+
+Existing fixed-step checkpoints remain. New checkpoint_boundary_N checkpoints
+are saved at the first episode end at or beyond each checkpoint interval.
+The optional --stop-after-step records an early checkpoint without changing
+the planned total-step learning-rate schedule.
+
+Test source:
+/home/arm1/vmc_mujoco_runtime/reward_study_20260930/src/test_resume.py
+
+A real official agent, including actual optimizer updates, ran 4 uninterrupted
+steps versus 2 steps + save/reload + 2 steps in deterministic fake dynamics.
+All 111 parameter/optimizer leaves are elementwise identical. Actions, rewards,
+replay, normalizers and RNGs match; pending terminal consumed once; attempting
+mid-episode resume raises the intended error. This validates software state,
+not physical MuJoCo bitwise reproducibility across device/runtime changes.
+
+Results:
+/home/arm1/vmc_mujoco_runtime/reward_study_20260930/resume_invariant_01/VALIDATION.json
+
+The parent subsequently corrected training fixture variants to [-4,-3,-2,-1]
+after initial-geometry audit rejected old variants 3/4. Both fixture generator,
+PROTOCOL and resume run_definition record the corrected list.

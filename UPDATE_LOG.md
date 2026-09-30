@@ -1,3 +1,22 @@
+## 2026-09-30 — GPU 官方算法验证完成，冻结配对训练方案
+
+- 新隔离环境 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu：
+  JAX 0.7.2/CUDA13, MuJoCo3.11；官方update约122.26次/秒，CPU大核7.37次/秒。
+  GPU normalizer/optimizer checkpoint save-load动作差为0；仅补jax.tree_map API别名。
+- 冻结两主奖励组各3种子41001/41002/41003，目标各60000 transitions、UTD2；
+  另配对2种子metric无平滑项消融；最大4仿真并发。
+- 新main几何检查：训练原计划variants3/4及val5/6初始柱座与物块穿模，全部排除；
+  合法训练variants -4/-3/-2/-1。验证layouts0/1与6条最终评测manifest提前固定。
+  测试中旧三布局属于已看过开发条件，另三条仅新物理参数draw；不称盲测新办公室泛化。
+- 物理子步reward/trace、normalizers、replay与RNG以及episode-boundary恢复已验证。
+  4步连续训练与2+2恢复的111个网络/优化器叶子完全一致。
+- 默认validator与新增hooks零动作6.4秒重放，模型hash和所有轨迹/指标完全一致。
+- 运行源将冻结到服务器 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen/，
+  训练输出 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_01/；
+  此日志是执行计划，具体已启动/完成状态以CAMPAIGN_STATE.json与各progress.json为准。
+- 评价只使用raw物理指标和严格任务门槛。运行归一化/discount后不能把reward恒等式直接当作目标指标等价性。
+  当前尚无长训练效果或收敛结论。
+
 # Baseline update log
 
 ## 2026-09-30 — 官方 SimbaV2 奖励对照：接口修复及开跑前审计
