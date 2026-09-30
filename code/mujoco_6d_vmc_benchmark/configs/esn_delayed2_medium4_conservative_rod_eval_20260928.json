@@ -1,0 +1,10 @@
+{
+  "purpose": "Conservative delayed-ball rod-timing stress test with six-second hold; no gate or actuator change.",
+  "candidate": "outputs/esn_office_joint_esn_delayed2_20260928/model_medium4_v1/best.npz",
+  "candidate_sha256": "9739b6644b7bcbc2f7c8e5bee87342482f5ee00c3f543b32604f4fbe7315b5cc",
+  "actor_inputs": "canonical48D only; rod schedule is not an actor input",
+  "jobs": [
+    {"id":"delayed2_medium4_rod7_hold6","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_delayed2_20260928/model_medium4_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--ball-launch-time-s","2.0","--rod-start","7","--rod-hold","6"]},
+    {"id":"delayed2_medium4_rod9_hold6","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_delayed2_20260928/model_medium4_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--ball-launch-time-s","2.0","--rod-start","9","--rod-hold","6"]}
+  ]
+}

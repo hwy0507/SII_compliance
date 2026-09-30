@@ -14,7 +14,11 @@ def make(flags):
     legacy.extend_xml=lambda xml,spec:extend_complex_xml(
         xml,spec,flags['office_variant'],flags.get('interaction_demo',False),
         flags.get('corner_placement',False),flags.get('combined_demo',False),
-        flags.get('combined_contact_v2',False),flags.get('relaxed_pillar',False))
+        flags.get('combined_contact_v2',False),flags.get('relaxed_pillar',False),
+        flags.get('combined_thick_corner_pillar_v1',False),
+        flags.get('combined_thick_corner_pillar_v2',False),
+        flags.get('combined_thick_corner_pillar_v3',False),
+        flags.get('combined_thick_corner_pillar_v4',False))
     legacy.task_layout=lambda spec:(np.array([.54,-.19,.60]),np.array([.54,-.19,.425]))
     bundled=ROOT/'outputs/canonical_rl_assets_20260923/menagerie'
     requested=os.environ.get('MUJOCO_MENAGERIE_PATH')
@@ -73,9 +77,19 @@ def audit(flags):
 
 
 def main(a):
-    rows=[audit(fixture_flags(a.seed+i,i)) for i in range(a.count)]
+    rows=[audit(fixture_flags(a.seed+i,i,corner_placement=a.corner_placement,
+                              combined_thick_corner_pillar_v1=a.combined_thick_corner_pillar_v1,
+                              combined_thick_corner_pillar_v2=a.combined_thick_corner_pillar_v2,
+                              combined_thick_corner_pillar_v3=a.combined_thick_corner_pillar_v3,
+                              combined_thick_corner_pillar_v4=a.combined_thick_corner_pillar_v4)) for i in range(a.count)]
     out=a.output;out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(rows,indent=2,allow_nan=False));print(json.dumps(rows,indent=2))
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--count',type=int,default=6);p.add_argument('--seed',type=int,default=2026091751);main(p.parse_args())
+    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--count',type=int,default=6);p.add_argument('--seed',type=int,default=2026091751)
+    p.add_argument('--corner-placement',action='store_true')
+    p.add_argument('--combined-thick-corner-pillar-v1',action='store_true')
+    p.add_argument('--combined-thick-corner-pillar-v2',action='store_true')
+    p.add_argument('--combined-thick-corner-pillar-v3',action='store_true')
+    p.add_argument('--combined-thick-corner-pillar-v4',action='store_true')
+    main(p.parse_args())

@@ -1,0 +1,18 @@
+{
+  "purpose": "Development-only fixed action low-pass ablation from wrench1 ESN",
+  "candidate": "outputs/esn_office_joint_esn_stiff_20260927/model_wrench_alpha05/best.npz",
+  "candidate_sha256": "19e1b500e02565588b17906cd523ae451b7f15bd69f5cb25a98d11778185c8a7",
+  "parent": "model_wrench_v1; alpha 1.0",
+  "ablation": "alpha 0.5; unchanged canonical48 input, gate, physics, executor and limits",
+  "split": "development",
+  "actor_inputs": "canonical48 pure proprioception; no truth/stage/event/visual",
+  "gates": "unchanged",
+  "jobs": [
+    {"id":"alpha05_student_original","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_alpha05/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625"]},
+    {"id":"alpha05_student_rod_start7","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_alpha05/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","7"]},
+    {"id":"alpha05_student_rod_start9","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_alpha05/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","9"]},
+    {"id":"alpha05_student_rod_hold6","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_alpha05/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-hold","6"]},
+    {"id":"alpha05_student_shift_plus","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_alpha05/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092701","--variant","2","--ball-speed","1.45","--person-stroke",".18","--rod-stroke",".225"]},
+    {"id":"alpha05_student_hard","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_alpha05/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24"]}
+  ]
+}

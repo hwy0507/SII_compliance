@@ -1,0 +1,29 @@
+{
+  "purpose": "algorithm-only ESN/VMC blend screen on frozen combined-v4",
+  "environment_commit": "2e37ddc95d94a4a01d531ae1bf2625a454826d2a",
+  "environment_source_sha256": {
+    "office_complex_scene_v5_20260917.py": "76ff6fb5a7f35a641ee808605ba3ba0fd644772d63cd04f47dafa491fc81ab4f",
+    "validate_office_apparatus_v5_20260917.py": "6694f869dad58b29c96ac42bed29626323b1c2ec3170380bb8ad8b47c5fdf343",
+    "office_task_v4_20260917.py": "255ce3443ecfb46d4e88797f3b5bb78a864c089e395c097aa86e203533852d0f"
+  },
+  "checkpoint": "outputs/esn_office_joint_esn_delayed2_20260928/model_medium4_v1/best.npz",
+  "checkpoint_sha256": "9739b6644b7bcbc2f7c8e5bee87342482f5ee00c3f543b32604f4fbe7315b5cc",
+  "fixed_arguments": [
+    "--combined-contact-v2", "--corner-placement", "--dt", ".0001",
+    "--events", "all", "--task", "pick_place", "--duration", "30",
+    "--ball-speed", "1.7", "--ball-launch-time-s", "2",
+    "--person-stroke", ".2", "--rod-stroke", ".235",
+    "--person-start", "3", "--rod-start", "7", "--rod-hold", "6",
+    "--esn-mode", "control"
+  ],
+  "candidates": [
+    {"name": "shadow_zero_residual", "esn_weight": 0.0, "esn_mode": "shadow", "diagnostic_only": true},
+    {"name": "pure_esn", "esn_weight": 1.0, "hybrid_flag": false},
+    {"name": "blend_esn50", "esn_weight": 0.5, "hybrid_flag": true},
+    {"name": "blend_esn75", "esn_weight": 0.75, "hybrid_flag": true}
+    ,{"name": "load_gated_tau064", "checkpoint": "outputs/esn_combined_v4_algorithm_screen_20260929/models/load_gated_tau064.npz", "release_tau_s": 0.64, "calibration_source": "teacher_train_only"}
+    ,{"name": "quiet_centered_tau064", "checkpoint": "outputs/esn_combined_v4_algorithm_screen_20260929/models/quiet_centered_tau064.npz", "centering_tau_s": 0.64, "calibration_source": "teacher_train_only"}
+    ,{"name": "quiet_centered_tau256", "checkpoint": "outputs/esn_combined_v4_algorithm_screen_20260929/models/quiet_centered_tau256.npz", "centering_tau_s": 2.56, "calibration_source": "teacher_train_only"}
+  ],
+  "selection_rule": "No gate tuning. Prefer task progress first, then physical validity, penetration, cup/pillar coverage and three substep metrics. Preserve every failure."
+}

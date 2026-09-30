@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "run": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/proof/direct7",
+  "snapshot": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/source",
+  "manifest_sha256": "7693b9b3e131303b0f53a37d006515d15b2e030e54086e7c2b9108dd2319ea38",
+  "verified_source_files": 163,
+  "episodes": [
+    {
+      "directory": "SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/proof/direct7/gym/episode_00000",
+      "split": "train",
+      "mode": "direct7",
+      "transitions": 600,
+      "complete": true,
+      "last_next_observation_valid": false,
+      "last_reward_included": true,
+      "max_reward_reconstruction_error": 3.3306690738754696e-16,
+      "max_controller_replay_error": 0.0,
+      "discounted_actual_reward": 0.0666666606704959,
+      "discounted_base_reward": 0.0,
+      "initial_potential": -0.06666666067049583,
+      "last_potential": 0.0,
+      "expected_discounted_reward": 0.06666666067049583,
+      "telescoping_residual": 6.938893903907228e-17,
+      "task_success": false,
+      "development_gate": false,
+      "hashes": {
+        "transitions.jsonl": "273c8473d980eab8612f5c62e53871f18db1b84bc030cf11b84994e498314e67",
+        "transitions.npz": "a5128453d38408ae09842758ee1af4daf7049cd49b3a879de7ce0006fe79068a",
+        "actor_trace.npz": "515be7de636697618ee5d200486f588acbef7aa25dc1bde1b6fe432fe4b06a64",
+        "transition_contract.json": "dfcbce510dae5c3397a1599354ea4254814950d3f55ba8040d9cc6119d53def0"
+      }
+    }
+  ],
+  "training_transitions": 0,
+  "sb3_received_rewards": null,
+  "complete_episodes": 1,
+  "partial_episodes": 0,
+  "limitations": [
+    "No simulation, training, checkpoint reselection, or mutable-source imports.",
+    "Controller replay uses frozen definitions and tolerance rtol=atol=1e-12; raw journal/actor comparisons are exact.",
+    "Partial last next observation is retained in independent journal; old actor_trace cannot independently witness that final next boundary.",
+    "Gym reward is float64; SB3 receives float32. Callback logs verify conversion when present, not actual advantages or critic/bootstrap values.",
+    "Terminal next observation is a marked placeholder; terminal potential is zero and no physical terminal actor observation is claimed."
+  ],
+  "audit_tool_sha256": "18864571f15baef61e3faf989ce2ba86961694631ce78730b4362609db27dff6"
+}

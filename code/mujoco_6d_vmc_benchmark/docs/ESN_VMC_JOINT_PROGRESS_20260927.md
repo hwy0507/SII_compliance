@@ -1,0 +1,974 @@
+# VMC teacher＋ESN 联合优化：首轮结果与运行入口
+
+## 2026-09-30 teacher 先修正、后蒸馏
+
+用户要求先验证 teacher 在特化场景稳定，再做纯 ESN。正确归档 MuJoCo 3.11 的首轮
+八条完整回合及独立审计已完成：三个修正均通过 corner 的 task/strict，原版失败；
+综合场景 pair_average 完成任务、穿透 0.187935 mm，但缺少柱接触，strict 仍失败。
+第二轮四条回合也已完成审计，目前无本任务仿真运行。速度项权重 0.25 + K×2/B×sqrt(2)
+在 corner task/strict 通过，综合 task 通过、strict 因柱接触缺失失败；综合放置动作
+差分 RMS 降低约 86.3%，RMSE/峰矩/峰速为 37.406 mm / 48.127 Nm / 0.070574 m/s。
+共 12 条有效回合保留，teacher 各状态与公共过滤链重放误差全部为 0；尚未完成独立
+特化全协议与跨条件验证，不自动进入 ESN 蒸馏。
+详细机制、冻结模型哈希、解释器错误纠正和运行入口见 [修正记录](TEACHER_REPAIR_20260930.md)。
+环境/gate/公共执行器不变；未解封保留场景、未启动 formal 或新 ESN 蒸馏。
+
+用户重新明确 teacher 和 ESN 均可优化后，已恢复软件研究。原安全门、纯本体、
+物理场景、共同执行器及三个保留布局继续冻结。没有完成最终科研目标，也
+没有替换 R34、提交代码或重启定时任务。
+
+## 已完成：J1 八回合 teacher 机制筛查
+
+四个固定配置 × 原始/强球撞，全部 55 s，均正常退出，任务 8/8、严格 4/8。
+四个原始条件通过；四个强球撞都因首次外部穿透 .207370134 mm 超过 .2 mm
+而不通过，其中默认 teacher 还没有足够推杆接触。失败全部保留。
+
+| teacher | 原始峰矩 Nm | 强球撞峰矩 Nm | 强球撞峰速 m/s | 强球撞 waypoint RMSE mm | 强球撞推杆接触 s |
+|---|---:|---:|---:|---:|---:|
+| 默认 | 39.424 | 42.952 | .118029 | 138.353 | 0 |
+| 全动作半幅 | 38.068 | 38.511 | .137059 | 160.768 | .866 |
+| 半幅＋阻尼×2 | 35.562 | 36.030 | .123578 | 163.084 | .700 |
+| 半幅＋刚度×2、阻尼×sqrt(2) | 36.729 | 36.765 | .109692 | 163.295 | 1.222 |
+| 存档 R34 ESN（参照，未重跑） | 36.719 | 38.501 | .114701 | 160.761 | .799 |
+
+这些差异说明 teacher 仍有可调空间，不支持“已尽力、无法改进”。也没有一个
+候选在所有指标上全面占优。默认 teacher 强球撞未形成推杆接触，不能把其
+较低 waypoint RMSE 当成充分扰动下的优势。刚度候选相对 R34 强球撞峰矩
+约降 4.5%、峰速降 4.4%，waypoint RMSE 升约 1.6%；当前只是一回合条件对照。
+该指标包含阶段目标切换，并非连续参考轨迹跟踪误差。
+
+刚度候选在原始/强球撞进入撤离阶段的时刻分别为 40.92/42.40 s，默认是
+46.16/49.96 s；这是阶段推进时间，不等于任务最终成功时刻。最终物块 XY
+误差和阶段停留时长也完整保存，不能仅按较小峰矩选择论文结果。
+
+已完成 11,000 次动作及 teacher 内部状态的独立重放，动作最大差
+5.55e-17。八条物理子步 RMSE/峰矩/峰速独立复算通过；各条件世界 MJB 与
+R34 完全一致，记录控制源码 hash 与冻结源一致。原始归档约 0.7 GiB：
+
+- [八回合完整表](../outputs/esn_office_joint_teacher_j1_20260927/J1_RESULTS.md)
+- [独立审计和逐文件 hash](../outputs/esn_office_joint_teacher_j1_20260927/J1_AUDIT.json)
+- [输出映射审计](../outputs/esn_office_joint_teacher_j1_20260927/action_contract/ACTION_CONTRACT_AUDIT.md)
+
+## J2 候选两回合已完成；本机同源参照运行中
+
+仅改变 teacher 动作归一化参数，执行器上限不变。两个既定条件，200 次
+非饱和单位转换检查通过。Spark 启动请求在 TCP 连接阶段超时，未执行远端
+命令；随后只读复核远端服务 LoadState=not-found，确认没有重复作业。
+
+因此在本机启动单 worker、CPUQuota 100%、MemoryMax 3G、SwapMax 512M，
+服务名 `esn-office-joint-teacher-j2-local-20260927.service`。两回合现均已正常
+退出，原始与强球撞 task=true，strict 分别 true/false。目录：
+`outputs/esn_office_joint_teacher_j2_20260927/source_snapshot/results`。
+本机原始条件已完成 task=true、strict=true，但与 Spark 的 MJB hash 不同，
+记录控制源码 hash 相同。读取两个 MJB 后发现资产路径长度、BVH 树排列不同，
+以及惯量等浮点差异；虽原始首撞峰值仅差约 1.61e-9 mm，也不能据此证明完整
+动力学等价或忽略 BVH 差异。J2 当前是机制候选，必须补充本机同源默认
+teacher 参照并审计，才可隔离动作编码的闭环影响，不据跨主机比较替换模型。
+在这两回合结束后，已按新冻结的 reference_plan.json 启动固定两回合同机
+默认 teacher 参照，复用完全相同源目录及资产路径。服务名
+`esn-office-joint-teacher-j2-reference-20260927.service`，仍仅一个 worker，
+3G/512M 内存/交换、CPUQuota100%。日志位于 J2 根目录 reference_queue.log，
+结果 job id 为 j2_default_reference_original/hard，原两回合不重跑。
+这是为消除主机混杂补的参照，不是增加候选或按结果继续调参。
+J1/J3 始终同 Spark 来源，不受此比较问题影响。
+
+J2 快照 SHA256：`44a95c507f43b4f409073cae17252c7251d45a7def33ed9925be7214e3fdd7c3`。
+稳定作业不迁移或重启；查当前 execution.json 再接续。
+
+## 正在运行：J3 刚度候选补齐开发条件
+
+J1 中刚度候选展示了峰矩/峰速与误差的权衡，值得检查条件敏感性；这不是
+已宣布胜出。保持同一配置不重调，只运行提前7秒、提前9秒、保持6秒推杆及
+正移布局四个剩余开发条件。与 J1 的原始/强球撞合并为六条件，禁止重复计数。
+Spark 服务 `esn-office-joint-teacher-j3-20260927.service`，两个 worker，
+6G/1G 内存/交换上限；启动前原另一项训练已自然结束，未被本任务终止。
+
+远端目录：
+`/home/arm1/vmc_mujoco_runtime/esn_office_joint_teacher_j3_20260927`。
+本机快照目录：`outputs/esn_office_joint_teacher_j3_20260927/source_snapshot`。
+快照 SHA256：`419d39a8e800403695c9782eb3535e541dc1c31e7528a6afc76c49a57de4492b`。
+
+## 下一步验收与未完成项
+
+收齐 J2/J3 后，先审计三项物理指标、动作/状态重放、源码、世界及主机差异。
+J3 合并全部六条件，曝光不足继续按失败记录，保留布局不解封。没有候选
+解决首次球撞；后续还需研究更广的本体状态驱动 teacher/ESN 结构，不能
+重复将相同零输入读出改动当成首撞修复。
+
+后续蒸馏需明确原始请求、执行接口过滤后的 action 和实际机器人执行量。
+当前解析合成标签不等于已核验的物理 teacher bank。先选可解释的 teacher
+机制，再进行学生闭环验证及匹配预算的记忆消融；本轮没有新 ESN checkpoint。
+
+网络短时中断没有导致重跑或丢失 J1 数据；原传输连接恢复后已收齐八回合。
+最后复核：J1 全部结果的远端/本机 rsync checksum dry-run 无差异；J3 服务
+active/running，两个回合进展至约26 s，内存约1.24 GB。本机 J2 候选两回合
+已正常退出，两个同机参照继续运行。后续接续先检查服务和 execution.json，
+不据此静态记录重复启动。
+
+## ESN 蒸馏训练（2026-09-27）
+
+已冻结 teacher 后启动全 48D 纯本体 ESN 蒸馏：训练轨迹为 J1/J3 stiff
+teacher 的四个开发条件，验证轨迹为提前 9 秒推杆和正移布局，seed
+2026092707，128 单元多时间尺度 reservoir、128 单元非线性读出、单线程和
+3GB 内存上限。标签是 teacher 提交给共同执行接口的七维 action，并保存
+source trace hash；contact truth、ball state、event time、stage 和视觉信息
+没有进入 actor。第一次服务因日志目录不存在而在执行前退出，已保留
+`attempt_1.json`，无 checkpoint/数据产生；第二次服务
+`esn-office-joint-train-stiff-20260927-v2.service` 已按相同参数启动。
+训练完成后必须先做固定观测重放，再在六个开发条件中闭环评估；不能把
+离线 action 拟合误差当成泛化成功。
+
+评估注意事项：`run_office_batch_20260927.py` 将结果写入 benchmark 公共
+`results/` 目录；本轮唯一批处理队列持有 lock，完成后会逐目录复制到
+`outputs/esn_joint_stiff_student_eval_20260927/eval_v2/results/`，并记录
+源文件 hash。公共目录中的六个 `student_*` 条目属于本轮 ESN，不能与旧
+实验目录混用。
+
+训练结果：训练完成，最佳验证 action MSE `0.0003169985`，checkpoint
+SHA256 `833458682888b46a60411a32151f2107877ea63676dd533c0d75f83c9c62d320`。
+模型 contract `proprio48_esn128_action7_v1`，输出层未加入额外 gate；完整
+训练协议和失败尝试保存在 `outputs/esn_office_joint_esn_stiff_20260927/`。
+六条件闭环服务 `esn-joint-stiff-student-eval-20260927.service` 已启动，
+单本机 MuJoCo/单线程/3GB 内存上限；计划文件为
+`configs/esn_joint_stiff_student_eval_20260927.json`。结果完成前不宣称
+泛化或替换参考模型。
+
+## DAgger 闭环复评（2026-09-27）
+
+第一版学生的六条件闭环完成后，使用其实际访问的四类困难轨迹重新计算
+stiff-VMC 标签，训练 `model_dagger_v1`。该模型仍是同一
+`proprio48_esn128_action7_v1` 合约、128 单元多时间尺度储备池、7 维动作和
+纯本体 48D 输入；没有加入接触真值、球状态、事件时间、阶段或视觉。模型
+checkpoint SHA256 为
+`7525048d87044f8cc30ae44fff00d510c755c4d1113908403fe8b6e96ef66619`，训练
+记录见 `outputs/esn_office_joint_esn_stiff_20260927/model_dagger_v1/`。
+
+首次批处理因默认 `/home/airpig/miniforge3/bin/python3` 缺少 Pillow，在任何
+物理积分前六条均退出；这些失败条目保留在公共 `results/dagger_student_*`，
+不得计入性能。随后使用已有成功评估环境
+`.venv-canonical-rl/bin/python`，新 job id 为 `dagger2_student_*`，单 worker
+完成六个开发条件。计划和独立审计分别为：
+
+- `configs/esn_joint_stiff_dagger_eval_20260927.json`
+- `outputs/esn_joint_stiff_dagger_eval_20260927/eval_v1/ESN_JOINT_AUDIT.json`
+
+独立重放动作、储备池状态和物理子步 RMSE/峰矩/峰速均通过，结果如下：
+
+| 条件 | task | strict | waypoint RMSE mm | 峰矩 Nm | 峰速 m/s | 穿透 mm | 推杆接触 s |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| original | 通过 | 通过 | 156.354 | 36.692 | .143418 | .196148 | .851 |
+| rod start7 | 通过 | 通过 | 134.586 | 40.466 | .143418 | .196148 | 1.318 |
+| rod start9 | 通过 | 失败 | 140.663 | 40.661 | .143418 | .196148 | 0 |
+| rod hold6 | 通过 | 通过 | 157.279 | 36.692 | .143418 | .196148 | .963 |
+| shifted plus | 通过 | 失败 | 139.812 | 36.842 | .115245 | .175849 | .181 |
+| hard ball | 通过 | 失败 | 165.774 | 36.463 | .109660 | .207795 | 1.386 |
+
+因此 DAgger 版本在这六个**开发**条件上 `task 6/6`、`strict 3/6`，相对第一版
+`task 4/6`、`strict 1/6` 有明确改善；但推杆时序提前/变化时仍有曝光失败，强
+球撞仍超过 0.2 mm（0.207795 mm）。这不是 held-out 泛化或真实机器人证据，
+也不能把 `6/6` 任务完成改写为六条件安全门全部通过。原始轨迹、每回合
+execution、失败门、源文件 hash 和 plan/checkpoint hash 全部保留。
+
+## DAgger2 与 wrench 加权消融（2026-09-27）
+
+将 DAgger 六条实际闭环轨迹作为第二轮访问状态、仍由相同 stiff-VMC 根据
+`obs[39:45]` 计算标签，得到 `model_dagger2_v1`（seed `2026092709`，
+checkpoint SHA256 `2d0a2dbf17172bd3a6d1eaea537e3309e718fe3d61ed92ef96b02450acfa81c7`）。
+六条件独立审计位于
+`outputs/esn_joint_stiff_dagger2_eval_20260927/eval_v1/ESN_JOINT_AUDIT.json`：
+`task 6/6`、`strict 3/6`，waypoint RMSE/峰矩较 DAgger1 多数下降，但严格
+通过数没有继续上升。这表明访问状态扩充有帮助，却没有消除推杆曝光和首撞
+门槛问题。
+
+为区分“记忆不足”与“扰动状态样本权重不足”，另行训练了
+`model_wrench_v1`（seed `2026092710`，wrench-norm 固定权重 3，仅使用
+48D 中 actor 可见的 wrench 估计，checkpoint SHA256
+`8975edeb50a68b583034ee1945ff4d8b57303158d64c705cc3d8af9621006352`）。其
+离线验证 MSE 为 `2.13e-5`，明显高于 DAgger2 的 `8.28e-6`；六条件闭环
+已完成独立运行，结果为 `task 6/6`、`strict 4/6`（见 wrench1 审计）；它
+改善了严格通过数，但仍不是 held-out 泛化证据。该消融不改变 gate、物理、
+任务或 held-out 划分。
+
+第二轮 wrench 加权 DAgger（`model_wrench_dagger_v2`，seed `2026092711`，
+checkpoint SHA256 `daf876c3647ece26e54ad78813d9106fa0d4c8e4c75386d8d704ae50cc21da47`）
+把 `model_wrench_v1` 的六条闭环轨迹作为访问状态重新打标签。审计位于
+`outputs/esn_joint_stiff_wrench_dagger2_eval_20260927/eval_v1/ESN_JOINT_AUDIT.json`，
+得到 `task 6/6`、`strict 3/6`，没有超过 wrench1 的 `strict 4/6`，因此不把
+它选为当前开发候选。当前最好的开发候选仍是 wrench1：四条严格通过，失败
+集中在 shifted-plus 和 hard ball；尚未满足解封 held-out 的条件。
+
+随后完成固定动作低通消融 `model_wrench_alpha05`：从 wrench1 checkpoint
+复制，仅把 ESN action smoothing `alpha` 从 1.0 改为 0.5，checkpoint SHA256
+`19e1b500e02565588b17906cd523ae451b7f15bd69f5cb25a98d11778185c8a7`。六条件
+独立审计在 `outputs/esn_joint_stiff_alpha05_eval_20260927/eval_v1/`，结果为
+`task 6/6`、`strict 4/6`。它降低了多数峰矩和峰速，但 shifted-plus 推杆接触
+仍只有 `0.182 s`，hard 穿透升至 `0.208280 mm`；严格通过数没有超过 wrench1。
+因此不选为主模型，也不把低通消融写成安全改进。
+
+## 慢时间尺度 reservoir 消融（2026-09-27）
+
+为直接检验“复杂扰动需要更长本体记忆”的假设，保持 128 单元、同一读出
+预算和 wrench-norm 权重 3，仅将默认三组时间常数 `.08/.4/1.6 s` 同比例
+放大为 2 倍，重训 `model_wrench_tau2_v1`。checkpoint SHA256 为
+`86d0038fd9a267853038f0f56071c937ef18de75af038309fc20ebaa1407f498`，六条件
+审计位于 `outputs/esn_joint_stiff_tau2_eval_20260927/eval_v1/`。
+
+结果为 `task 3/6`、`strict 1/6`：shifted-plus 严格通过且接触 `2.519 s`，
+但原始、rod-hold 和 hard 任务失败，hard 穿透 `0.207174 mm`。因此更长
+reservoir 记忆没有带来跨条件泛化，不能替代当前 wrench1 候选；所有动作/状态
+重放、物理指标和失败轨迹均已独立审计保存。
+
+## 受约束读出负结果（2026-09-27）
+
+为检验“ESN 读出动作变化率”是否是剩余失败原因，在 wrench1 数据上加入
+固定 `delta_weight=1` 的相邻时刻 teacher-action 导数匹配损失；该项只使用
+actor 可见的 48D 序列和 teacher action，不引入 gate、接触真值、事件时间或
+阶段标签。模型 `model_wrench_delta_v3` 的 checkpoint SHA256 为
+`81747530e59318dd67dbe9a481b4abea7d06819899eebec04b39ade995e20287`。
+
+六条件审计位于 `outputs/esn_joint_stiff_delta_eval_20260927/eval_v1/`，结果
+为 `task 4/6`、`strict 1/6`；原始和 rod-hold 条件任务失败，shifted-plus
+推杆接触仅 `0.016 s`，hard 穿透 `0.208081 mm`。因此动作导数约束显著
+退化，不再作为后续主线；这支持将研究重点转回 teacher/执行器接口和受扰动
+本体状态覆盖，而不是继续堆叠同类读出正则。
+
+## J2 action-unit 对齐 teacher 六条件复核（2026-09-27，已完成）
+
+J2 的完整六条件队列因 wrapper 参数转发问题曾有两轮仿真前失败：
+`j2full_aligned_*`、`j2full2_*` 和 `j2full3_*` 的 exit code 2 均保留在
+公共 `results/`，没有物理积分，不能计入性能。修复了
+`tools/run_office_joint_teacher_20260927.py` 的手工 argv 消费，并让
+`tools/run_office_batch_20260927.py` 支持计划级 entrypoint；随后以单 worker、
+1 CPU、虚拟内存上限 3 GiB 运行新的 `j2full4_*` 六条件。wrapper 现在把
+`--teacher-config` 从冻结 evaluator 的 argv 中明确剥离，manifest 的 argv、
+配置和 wrapper hash 已保存。
+
+独立审计：
+`J2FULL4_AUDIT.json` 和 `J2FULL4_RESULTS.md`（归档在
+`outputs/esn_office_joint_teacher_j2_full4_20260927/`）。六回合各 1375 次
+teacher action/状态重放、全部物理子步 RMSE、实际 generalized actuator torque、
+末端线速度峰值和 MJB/source/config hash 均通过；结果为 `task 6/6`、`strict 3/6`：
+
+| 条件 | strict | waypoint RMSE mm | 峰矩 Nm | 峰速 m/s | 外部穿透 mm | 推杆接触 s |
+|---|---:|---:|---:|---:|---:|---:|
+| original | 通过 | 156.797 | 38.828 | 0.143303 | 0.196223 | 0.797 |
+| rod start7 | 通过 | 132.339 | 41.843 | 0.143303 | 0.196223 | 1.397 |
+| rod start9 | 失败 | 135.017 | 42.444 | 0.143303 | 0.196223 | 0 |
+| rod hold6 | 通过 | 157.844 | 38.828 | 0.143303 | 0.196223 | 0.850 |
+| shifted plus | 失败 | 140.584 | 38.113 | 0.115232 | 0.176534 | 0.184 |
+| hard ball | 失败 | 162.493 | 38.390 | 0.111476 | 0.207370 | 0.951 |
+
+因此 J2 没有达到 stiff teacher 的开发集 `strict 4/6`，也没有改善 hard/shifted
+失败机制；按预先冻结的预算规则，不用 J2 轨迹另训主 ESN，不把 action-unit
+对齐宣布为 teacher 改进。J2 的完整原始轨迹、execution、失败原因、wrapper
+和源文件 hash 仍保留，供后续共同执行接口研究使用。J3 stiff 补齐的四条结果
+保持 `strict 2/4`，与 J1 原始/强球撞合并为 stiff `4/6`；J2/J3 均未解封
+held-out，也不构成真实机器人证据。
+
+## Wrench 权重 6 固定消融（2026-09-28，负结果）
+
+为检验 wrench-norm 加权是否存在单调收益，在同一 48D/action7、128 单元
+多时间尺度储备池、训练轨迹、验证条件和执行器预算下，将固定权重从 3 提高
+到 6，seed 为 `2026092712`。输入仍只包含 canonical48D 的 actor-visible
+`obs[39:45]` 估计负载；没有接触真值、球状态、事件时间、任务阶段或视觉。
+checkpoint SHA256 为
+`27fdd4fa1ce59cb2f2f5b0387e78ee38e92e4643d2ebc3298e8d9b80baecbaca`。
+
+独立审计位于
+`outputs/esn_office_joint_esn_stiff_wrench6_eval_20260927/eval_v1/ESN_JOINT_AUDIT.json`。
+动作和储备池状态重放、物理时间加权 RMSE、实际 generalized actuator torque
+和末端速度峰值均通过；闭环为 `task 6/6`、`strict 3/6`。hard 外部穿透
+`0.207528 mm`，与 wrench1 的 `0.207610 mm` 接近且仍高于 0.2 mm，
+没有安全改进；因此不采用权重 6，不解封 held-out，也不继续做无依据的同类
+权重扫掠。
+
+## 当前运行状态（2026-09-28 复核）
+
+- J1、J2、J3 及 wrench6 闭环队列均已结束；本机没有遗留 MuJoCo、batch 或训练进程。
+- Spark SSH 当前仍在 TCP 连接阶段被环境拒绝，未启动或重启任何远端作业；不能假设
+  Spark 上有存活服务，既有 J2/J3 结果只以本地归档和审计为准。
+- 当前开发集最佳仍为 `model_wrench_v1`：`task 6/6`、`strict 4/6`；J2 对齐
+  teacher 与 wrench6 均为严格 3/6。三个 held-out 条件继续封存，最终目标尚未完成。
+- 下一步优先级是共同执行接口/受扰动本体覆盖的可解释诊断；不再进行没有新因果
+  假设的同类 wrench 权重或时间常数扫掠。
+
+## Wrench1 reservoir 记忆因果消融（2026-09-28，已完成）
+
+首轮 reset 队列在物理积分前被旧 evaluator 拒绝（它只接受旧的
+`proprio48_office_vmc_memory_esn_v1` contract）；这些 `wrench1_memory_reset_*`
+exit code 1 保留且不计性能。随后仅放宽兼容性检查，使同样是 stateful、48D 的
+`proprio48_esn128_action7_v1` 进入 reset ablation；旧 45D policy 仍被拒绝。
+物理世界、动作滤波、执行器预算、gate 和 checkpoint 均未改变。
+
+新六条件审计见
+`outputs/esn_office_joint_esn_stiff_wrench_memory_reset2_eval_20260927/eval_v1/ESN_JOINT_AUDIT.json`。
+每个观测前清零 reservoir，仅保留当前本体输入和固定读出；动作/储备池状态
+重放、物理时间加权 waypoint RMSE、实际 actuator torque、末端速度峰值和
+hash 均通过。结果为 `task 3/6`、`strict 0/6`，而连续记忆的 wrench1 为
+`task 6/6`、`strict 4/6`：
+
+| 条件 | reset task | reset strict | RMSE mm | 峰矩 Nm | 峰速 m/s | 穿透 mm | 推杆 s |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| original | 失败 | 失败 | 150.622 | 39.743 | 0.143252 | 0.196420 | 1.049 |
+| rod start7 | 通过 | 失败 | 153.401 | 37.514 | 0.143252 | 0.196420 | 1.785 |
+| rod start9 | 通过 | 失败 | 150.976 | 40.188 | 0.143252 | 0.196420 | 0.644 |
+| rod hold6 | 失败 | 失败 | 129.103 | 41.397 | 0.143252 | 0.196420 | 1.313 |
+| shifted plus | 失败 | 失败 | 149.005 | 42.079 | 0.115053 | 0.176065 | 0 |
+| hard ball | 通过 | 失败 | 163.815 | 42.385 | 0.129101 | 0.207205 | 0.566 |
+
+这是一项固定 checkpoint 的推理消融，不是重新训练的 feed-forward baseline；它
+支持“储备池历史是当前跨条件 task 完成能力的必要因素”这一可解释结论，但不
+解决 hard 首撞或接触曝光门槛，也不构成 held-out/硬件成功。后续不再把无记忆
+策略作为主线。
+
+## canonical48D 字段来源审计与 sensors-only 匹配预算消融（2026-09-28）
+
+为避免把“无外部感知”误写成“只含原始传感器”，先对当前最佳 wrench1 的一条
+完整 hard 轨迹做了只读字段来源审计：
+`outputs/esn_office_input_provenance_audit_20260928/INPUT_PROVENANCE_AUDIT.json`。
+审计确认 actor 没有接触真值、球状态、事件时间、阶段标签、视觉或距离输入；但
+canonical48D 中 `command/error/path_direction` 共 15 维依赖 WBC/任务参考，不能
+直接称作“sensor-only”。q/dq 是直接关节本体量，load/wrench 是编码器/动力学
+观测器估计，参考派生量则是本体状态与任务参考的组合。
+
+随后按预先登记的匹配预算做了一个因果字段消融：保持 stiff teacher 数据、DAgger2
+访问轨迹、128 单元多时间尺度 reservoir、wrench-norm 权重 3、action7、执行器
+限制、物理子步和六个开发条件完全不变，只将 command/error/path_direction 置零
+并重新训练；checkpoint SHA256 为
+`f75ea7cd927fe51623c77d9698e851b1c924b27875eea5fb65b954c2b41a34c2`。计划、训练
+manifest 和完整原始轨迹归档于
+`outputs/esn_office_joint_esn_stiff_sensors_only_eval2_20260928/`；独立审计为
+`ESN_JOINT_AUDIT.json`。
+
+| 条件 | task | strict | waypoint RMSE mm | 峰矩 Nm | 峰速 m/s | 外部穿透 mm | 推杆接触 s |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| original | 通过 | 通过 | 154.892 | 36.341 | 0.143396 | 0.196369 | 0.854 |
+| rod-start7 | 通过 | 通过 | 132.956 | 38.795 | 0.143396 | 0.196369 | 1.104 |
+| rod-start9 | 通过 | 失败 | 157.911 | 39.774 | 0.143396 | 0.196369 | 0 |
+| rod-hold6 | 通过 | 通过 | 156.227 | 36.341 | 0.143396 | 0.196369 | 0.937 |
+| shifted-plus | 通过 | 失败 | 134.734 | 36.132 | 0.115289 | 0.176450 | 0.129 |
+| hard-ball | 通过 | 失败 | 163.189 | 35.706 | 0.117556 | 0.207805 | 1.262 |
+
+该 mask 模型为 task `6/6`、strict `3/6`，低于 full48 wrench1 的 task `6/6`、
+strict `4/6`；hard 穿透也略升至 `0.207805 mm`，shifted-plus 推杆曝光降至
+`0.129 s`。固定 checkpoint 的动作/储备池重放、物理时间加权 RMSE、实际
+generalized actuator torque 和末端峰速均通过。结论是：在当前数据和预算下，
+WBC/任务参考派生字段对闭环性能有可测贡献；它不是外部感知，但论文应明确
+“纯本体接口 + 内部参考”与“只含传感器字段”两种说法的区别。该消融不改变
+gate、held-out 封存或任何失败回合，也不能据此声称 full48 ESN 已安全泛化。
+
+首次 batch wrapper 因同名原始回合目录已存在而退出的条目保留在
+`results/sensors_only_original/`；随后按相同配置直接完成并独立归档的六回合是
+`sensors_only2_*`，失败 wrapper 不计入性能。
+
+## wrench1 请求—共同过滤—物理执行链审计（2026-09-28）
+
+为明确“teacher/ESN 请求”不能等同“实际执行量”，对 wrench1 六条已完成轨迹做了
+只读重放，归档于
+`outputs/esn_office_action_execution_chain_v2_20260928/ACTION_EXECUTION_CHAIN_AUDIT.json`。
+保存的 `esn_action` 与 evaluator 提交给共同执行接口的 `applied_action` 逐元素完全
+一致；随后按 office 固定 `maximum_linear_yield_mps=.32`、原角速度及变化率限制
+重放 `VelocityResidualActionFilter`，最后从物理子步独立读取 generalized actuator
+torque 和末端速度。接触真值仅用于离线分层，没有进入 actor 或新 rollout。
+
+六回合 action 幅值饱和率均为 0；完整 55 s 回合的 slew-limited 决策占比仅
+`0.1%–0.4%`。shifted-plus 的推杆接触分层中，过滤后 yield 与请求值 RMSE 为 0，
+但 raw action 峰值仅约 `0.040`；因此该回合曝光不足更指向访问状态/读出响应偏弱，
+而不是共同接口削弱了一个强 ESN 请求。每条球撞轨迹中，碰撞后首个 25 Hz 决策
+区间都受变化率限制，但首次亚毫秒冲击在该观测之前已完成；不能据此把调大 slew
+作为 hard 首峰修复。物理峰矩为 `35.672–40.044 Nm`、末端峰速为
+`0.109680–0.143267 m/s`，均从子步数据独立复算，不能与 action7 混称。
+
+该审计把下一条有信息增益的路线收窄为 shifted-plus 受扰动状态覆盖/teacher 响应，
+而非改共同变化率限制；hard 首峰仍是观测带宽之前的物理边界。没有因此启动新
+teacher 候选或解封 held-out。
+
+## 延迟球撞展示片段（2026-09-28）
+
+为改善动图开场观感，新增了一个独立的展示场景：球在 `t=2.0 s` 发射，发射前
+保持 reset 位姿，首次接触约 `2.08125 s`。片段使用当前 wrench1 checkpoint，时长
+8 s，归档于 `outputs/esn_office_delayed_ball_demo_20260928_v2/`，视频和 GIF 均有
+媒体/源文件哈希。
+
+这不是正式六条件评估：片段在 lift 阶段结束，`task_success=false` 只反映展示
+提前结束；不计入 task/strict、baseline 或 held-out 结果。正式评估仍使用默认
+`ball_launch_time_s=0`，安全门、扰动和条件封存没有改变。
+
+## 延迟球新场景 ESN 重设计（2026-09-28，已完成首轮闭环）
+
+为改善展示和研究“球在进入场景约 2 s 后才撞击”的开发场景，新增固定
+`ball_launch_time_s=2.0` 的 teacher protocol。它是开发条件，不能替换原始
+`t=0` hard-ball，也没有把发射时间、事件时钟、球状态或阶段标签送入 actor。
+配置、四条真实闭环 teacher 轨迹、原始请求/共同接口 action、内部状态、物理
+子步数据和 source/config/hash 归档于
+`outputs/esn_office_joint_teacher_delayed2_20260928/`；独立审计为
+`DELAYED2_AUDIT.json`。teacher 的四回合结果：
+
+| 条件 | task | strict | 外部穿透 mm | 推杆接触 s |
+|---|---:|---:|---:|---:|
+| delayed nominal | 通过 | 通过 | 0.164478 | 0.855 |
+| delayed rod-start9 | 通过 | 失败 | 0.164478 | 0.306 |
+| delayed shifted-plus | 通过 | 失败 | 0.125916 | 0.072 |
+| delayed hard-ball | 通过 | 通过 | 0.194522 | 0.404 |
+
+在固定 128 单元和 action7/canonical48D 预算下，ESN 结构重设计为四时间尺度
+leaky reservoir（32 单元各，tau=`0.04/0.16/0.64/2.56 s`），训练数据混合
+四条原始 stiff-VMC 轨迹中的 nominal/hard/rod7/hold6 与两条 delayed
+nominal/hard 实际 teacher 轨迹；wrench-norm 权重固定 3，seed `2026092814`。
+训练脚本新增 `--tau-layout medium4`，未改变默认三尺度布局。checkpoint：
+`outputs/esn_office_joint_esn_delayed2_20260928/model_medium4_v1/best.npz`，
+SHA256 `9739b6644b7bcbc2f7c8e5bee87342482f5ee00c3f543b32604f4fbe7315b5cc`，
+离线验证 action MSE `1.5206635907816235e-05`。训练峰值常驻内存约 856 MB，
+单线程完成；没有并发启动其他仿真。
+
+四个 delayed 闭环和六个原始 `t=0` 回放均完成独立动作/储备池/物理子步审计：
+
+| 评估 | task | strict | 备注 |
+|---|---:|---:|---|
+| delayed medium4（4 条） | 4/4 | 2/4 | nominal、hard strict；rod9/shift-plus 曝光不足 |
+| t=0 medium4（6 条） | 6/6 | 3/6 | original、rod7、hold6 strict；rod9/shift-plus 曝光不足，hard 穿透 0.208138 mm |
+
+详细审计分别为
+`outputs/esn_office_joint_esn_delayed2_20260928/eval_delayed2_medium4/ESN_JOINT_AUDIT.json`
+和 `outputs/esn_office_joint_esn_delayed2_20260928/eval_t0_medium4/ESN_JOINT_AUDIT.json`。
+两套审计的 action replay、reservoir replay、三项物理子步指标、实际
+generalized actuator torque 和模型/计划 hash 均通过。delayed hard ESN 的外部
+穿透为 `0.198201 mm`，在原门槛内；这只是 delayed 开发条件证据，不是 held-out
+或硬件结果。
+
+### 当前状态（2026-09-28）
+
+- 已完成：延迟 teacher 四回合、medium4 ESN 训练、delayed 四回合闭环、原始
+  t=0 六回合交叉回放和独立审计；当前没有运行中的本机作业。
+- 当前可汇报结论：延迟场景重新训练的 medium4 ESN 能完成 delayed nominal/hard
+  并保留原始 task 6/6，但 strict 仅 delayed 2/4、原始 3/6；它没有消除
+  rod-start9/shift-plus 接触曝光失败，也没有解决原始 hard 的 0.2 mm 门槛。
+  因而仍不能解封 held-out、替换 `wrench1` 正式开发候选或声称真实环境成功。
+- 尚未完成：在不改变输入和 gate 的前提下，针对推杆时序曝光和原始 hard 首撞
+  的 teacher/本体状态覆盖仍需新因果实验；正式 held-out 三布局继续封存。
+
+## 保守推杆时序与 teacher 候选筛查（2026-09-28）
+
+针对“推杆时序是鲁棒性关键指标”的要求，新增固定 `rod_hold=6 s` 的保守开发
+协议，分别测试 delayed `rod_start=7 s` 与 `rod_start=9 s`。medium4 ESN 在
+两条回合均 `task=true, strict=true`，外部穿透均 `0.168514 mm`，推杆接触时长
+分别为 `1.674 s` 与 `0.701 s`。这两条结果和 delayed nominal/hard 合并为
+保守开发窗口的 `4/4 task、4/4 strict`；审计原始目录为
+`results/delayed2_medium4_rod7_hold6` 与 `results/delayed2_medium4_rod9_hold6`，
+动作/储备池和物理子步重放沿用同一 checkpoint 与不变 gate。
+
+同时完成两个预注册 teacher 候选的四条件筛查，均不采用：
+
+| 候选 | delayed strict | hard 外部穿透 | 结论 |
+|---|---:|---:|---|
+| action scale 0.75 | nominal 1/1，其余失败 | 0.206873 mm | 放大动作仍未解决短推杆时序，且超过 0.2 mm |
+| filter tau 0.02 s | nominal 1/1，其余失败 | 0.221086 mm | 加快 wrench 滤波仍未解决短推杆时序，安全退化 |
+
+候选的原始轨迹、请求 action、实际执行量、失败回合和配置均保留在
+`results/gain075_*`、`results/fastfilter_*`，不据单回合挑选模型。当前保守结论是：
+medium4 ESN 对“晚出现但保持足够久”的推杆时序具有开发集稳健性；短 hold 的
+rod9/shift-plus 仍作为接触窗口不足的诊断失败保留，不能被重命名为成功。原始
+t=0 hard 仍只作冻结参照，正式门槛未改。
+
+## 展示冲击与角落放置后续（2026-09-28）
+
+- 已完成冲击慢动作渲染：完整 55 s 保守 delayed rollout 仍 task/strict=true，
+  冲击峰值接触力 2071.20 N，最大外部穿透 0.188555 mm。普通视频和独立
+  4 倍慢动作分别为
+  `outputs/esn_office_delayed_conservative_slowmo2_20260928/rollout.mp4` 与
+  `outputs/esn_office_delayed_conservative_slowmo2_20260928/rollout_impact_slowmo.mp4`；
+  慢动作只重采样物理子步状态，不进入 actor、不改变动作或 gate。
+- 已实现开发开关 `--interaction-demo`、`--corner-placement`：杯子/柱子先过
+  初始无重叠审计，角落支撑改为显式 `office_v5_corner_top` 接触；正式默认
+  场景、t=0 条件和门槛不变。
+- 进行中/未完成：开发 interaction 场景能产生真实柱子接触（首次约 0.296 s），
+  但当前 teacher/ESN 都会在 carry 阶段被路线接触阻挡；杯子接触尚未达到可
+  汇报的柔顺蹭过窗口。corner-placement 的顶面、目标元数据和支撑审计已保存，
+  30 s teacher probe 仍未完成放置，失败审计为
+  `outputs/vmc_corner_nominal_dev11_20260928/rollout.json`。下一轮优先修正
+  角落 approach/推杆 rail 的几何路线，再蒸馏 ESN；不把该失败改写成成功。
+
+## 2026-09-28 交互展示与厚桌角复核
+
+本轮复核发现 interaction-demo 的旧杯子位置 `[.540,-.255]` 与待抓物块手柄
+发生 `13.5 mm` 初始重叠，审计拒绝；该失败保留在
+`outputs/vmc_interaction_cup_path2_20260928`。interaction 开关现固定为
+`cup_xy=[.520,-.330+0.018*variant]`，普通 corner-only 位置不变；当前源文件
+SHA256 为 `dc77a7d2cb738a53dcfd0bfac0d91e1827b7b8ad6f5006722c93005053e09791`。
+
+展示步长 `dt=1e-4` 仅用于开发交互可视化，正式安全评估仍保持 `5e-5`。teacher
+角落交互探测 `outputs/vmc_interaction_corner_cup_path5_dt1e4_20260928/rollout.json`
+出现真实杯子接触 `0.278 s / 56.6 N`，杯子位移 `1.879 mm`、倾角 `0.267 deg`；
+但在 carry 阶段未完成角落释放，且全局地面球穿透 `0.349 mm`，不计 task/strict。
+同一 medium4 ESN（checkpoint SHA256
+`9739b6644b7bcbc2f7c8e5bee87342482f5ee00c3f543b32604f4fbe7315b5cc`）的回放
+`outputs/esn_interaction_corner_cup_path5_dt1e4_20260928/rollout.json` 出现杯子
+接触累计 `3.436 s / 60.0 N`，位移 `1.112 mm`、倾角 `0.737 deg`；同样停在
+carry，不能声称“复杂障碍+角落放置”已完成。完整 ESN 交互动图在该目录的
+`rollout.gif` 和 `rollout.mp4`。
+
+柱子真实接触的历史回合 `outputs/esn_office_corner_interaction_dev2_20260928` 也
+已从原始 `rollout.mjb`/`rollout.npz` 只读重放为
+`rollout_pillar_interaction.gif`/`.mp4`；片段标注接触窗口 `12.70–17.67 s`，不
+改变原回合或把 carry 阻挡失败改写为成功。
+
+更靠近路线的候选
+`outputs/esn_interaction_corner_cup_path7_dt1e4_20260928/rollout.json` 被保留为
+失败：align 阶段持续顶住杯子，峰值 `1618.7 N`、位移 `11.1 mm`。它虽未超过
+外部穿透门槛，却不是柔顺蹭过，代码已回退到前述低力交互几何。
+
+corner-only 的 `outputs/esn_corner_blend05_targeted3_20260928` 仍保持
+`task/strict/release=true`、最大外部穿透 `0.001854 mm`，作为厚桌角最终放置的
+可汇报结果；interaction-demo 只展示真实障碍接触，不替代 corner 放置结果。
+
+球撞击展示新增只读标注版
+`outputs/esn_office_delayed_conservative_slowmo2_20260928/rollout_impact_slowmo_annotated.gif`
+及同名 MP4，在原慢动作帧上叠加末端位移三轴轨迹和峰值 `0.058 m/s`。它不改变
+轨迹、actor 输入、动作或 gate；约 `5.8 mm` 的冲击后末端响应因此可在全景画面
+中直接观察。
+
+### 本轮状态
+
+- 已完成：杯子初始重叠修复；teacher/ESN 低力杯子接触复核；完整 ESN 交互动图；
+  球撞击末端响应显示增强；corner-only 成功模型与动图保持有效。
+- 运行中：无本机或 Spark 仿真作业；没有启动新的远端作业。
+- 尚未完成：同一回合同时满足“杯子/柱子柔顺交互 + 角落最终放置 + 正式
+  `dt=5e-5` 安全门”的跨条件 ESN 结果。当前不调整 gate、不解封 held-out，
+  也不把展示步长结果写成正式安全通过。
+
+## 2026-09-28 resumed combined-scene geometry diagnosis
+
+After the interrupted run, no local or Spark simulation process was active. The
+trial42 audit was rechecked before launching new work: worst external geometry
+`69` is the FR3 `right_finger`, while the development fixture geometry is
+`office_v5_cup_contact_handle`; the pillar was not the source of the reported
+`0.2970 mm` penetration.
+
+Three registered development probes were retained with the unchanged medium4
+checkpoint (`9739b6644b7bcbc2f7c8e5bee87342482f5ee00c3f543b32604f4fbe7315b5cc`):
+
+| probe | fixture change | task/strict | ext. penetration | cup shift | contact evidence | conclusion |
+|---|---|---:|---:|---:|---|---|
+| trial43, 8 s | handle endpoint `.075/.135` | n/a | `0.1860 mm` | negligible | no cup/pillar window before horizon | retained short probe |
+| trial44, 30 s | same handle; v2 pillar | fail/fail | `0.1860 mm` | `16.40 mm` | cup `1.519 s`, `8.88 N`; no pillar | handle no longer causes finger penetration, but cup route is not compliant |
+| trial45, 30 s | handle endpoint `.060/.125`, lower friction | fail/fail | `0.1860 mm` | `8.66 mm` | no cup/pillar window; stopped `load_transfer` | contact coverage is lost; rejected |
+| trial46, 30 s | restore trial44 handle; pillar `y=-.330` (v3) | fail/fail | `0.1860 mm` | `16.40 mm` | cup `1.519 s`, `8.88 N`; no pillar | moving the pillar into the retreat corridor does not create a force-bearing window |
+
+All three are `dt=1e-4` development probes and are not formal safety results.
+Trial44/46 have peak generalized actuator torque `51.75 Nm`, peak linear speed
+`0.07145 m/s`, and 3-D position RMSE `0.05882 m`; they are retained as failures,
+not filtered from the comparison. Trial43's source hash was
+`79b236ce72f93e488d83c6c664c8ab7e3553e2563577d5dc4cc182d846a94d58`, trial45's
+was `b8e3f7f0ff126326bd37c629ae95de33fab8635a5b0bbc42c36eb9974ed97f3b`, and
+the current combined-v3 source is
+`41fb7d1398f47504577df00f8e3169d5fb45021e3da4eed52ff3b3d075262985`.
+The frozen actor input, action7 contract, actuator amplitude/slew limits,
+external-penetration gate, and formal `dt=5e-5` protocol were not changed.
+
+Current scientific status remains: corner-only medium4 ESN is valid separately
+(`outputs/esn_corner_blend05_targeted3_20260928`), and delayed-ball/rod timing
+development evidence remains valid, but one combined office-v5 episode with
+cup brush, pillar brush, and corner placement has not been achieved. The next
+useful experiment must alter the registered retreat-route geometry or the
+teacher route with an explicit pre-registered hypothesis; repeating cup-handle
+length or pillar-y candidates is not informative.
+
+## 2026-09-28 trajectory-supported pillar candidate
+
+Trial47 registered the first geometry chosen from the measured trial46 hand path:
+combined-v4 placed the raised pillar at `[.585,-.300]` while restoring the
+trial44 handle. It did create a real pillar window (`14.0556--29.9999 s`,
+`6.8007 s`, peak `116.81 N`), but the pillar blocked the carry route before
+release. The retained result is task/strict false, `physical_valid=false`, final
+stage `carry`, no cup contact, cup shift `2.01 mm`, external penetration
+`0.22898 mm` (worst pair `office_v5_pillar` vs `fr3_link7_collision`), peak
+torque `47.49 Nm`, peak speed `0.07475 m/s`, and 3-D RMSE `0.07070 m`.
+
+This is an informative negative result: a pillar placed in the measured hand
+corridor is not a valid combined fixture because it is encountered before
+placement. The pillar must instead be reachable after release through a
+registered teacher/task route; changing its position alone is insufficient.
+Raw trial47 data are retained at
+`outputs/esn_combined_contactv4_handle45_trial47_probe30s_dt1e4_20260928/`.
+The source hash is `469b827e3b4a6d43b4d368f303894a321db9e5cf0c549cf49cb018cef910a808`;
+all actor, gate, actuator and formal-step constraints remain frozen.
+
+## 2026-09-28 resumable overnight campaign
+
+Added `tools/overnight_esn_combined_campaign_20260928.py`, a lock-protected,
+single-worker runner with a 3 GiB address-space limit, one BLAS/MuJoCo thread,
+execution manifests, raw rollout preservation, source/checkpoint hashes, and
+failure summaries. It disables EGL rendering during physics because the renderer
+is not reliable under this memory limit; media is a separate read-only step. A
+Codex heartbeat named `overnight-esn-combined-campaign` resumes unfinished work
+without duplicating an evaluator process.
+
+The first complete run is archived in
+`outputs/overnight_esn_combined_campaign_20260928/`: current-source combined-v4
+development failed (`0.26623 mm` penetration; pillar `37.485 s / 125.16 N`; carry
+blocked); the current-source corner-only reference stopped at load transfer
+(`0.001843 mm` penetration), so the older targeted3 success is not reproducible
+under the current source; and the delayed-ball formal reference passed unchanged
+gates (`0.18855 mm`, `37.76 Nm`, `0.14243 m/s`, RMSE `0.00889 m`). The campaign
+did not launch a formal combined rerun after the development candidate failed.
+
+## 2026-09-28 resumable overnight campaign
+
+Added `tools/overnight_esn_combined_campaign_20260928.py`, a lock-protected,
+single-worker runner with a 3 GiB address-space limit, one BLAS/MuJoCo thread,
+execution manifests, raw rollout preservation, source/checkpoint hashes, and
+failure summaries. It does not enable rendering during physics because EGL
+shadow-framebuffer creation is not reliable under the memory limit; rendering is
+kept as a separate read-only media step. A Codex heartbeat named
+`overnight-esn-combined-campaign` is active to resume the runner without
+duplicating an evaluator process.
+
+The first complete run is archived in
+`outputs/overnight_esn_combined_campaign_20260928/`:
+
+| case | task/strict | external penetration | key result |
+|---|---:|---:|---|
+| combined-v4 development, current source | fail/fail | `0.26623 mm` | pillar `37.485 s / 125.16 N`, carry blocked, no placement |
+| corner-only formal reference, current source | fail/fail | `0.001843 mm` | stopped at `load_transfer`; old targeted3 success is not reproducible under current source |
+| delayed-ball formal reference | pass/pass | `0.18855 mm` | task complete; torque `37.76 Nm`, speed `0.14243 m/s`, RMSE `0.00889 m` |
+
+The delayed-ball pass is a formal unchanged-gate reference condition, not the
+combined cup/pillar/corner claim. The campaign intentionally did not launch a
+formal combined rerun after the development candidate failed. Existing media
+from earlier archived trajectories remain labelled by their original source and
+condition; no stale GIF is promoted as current-source combined success.
+
+## 2026-09-28 heartbeat resume check
+
+The resumable campaign was invoked again at `2026-09-28 22:40 +0800`. Its lock,
+existing-result checks, source hashes, and checkpoint hashes completed without
+starting a duplicate evaluator; all registered cases already have preserved
+`execution.json` and raw rollout files. No new physics result was fabricated or
+relabelled. There is currently no active local office evaluator process.
+
+### 2026-09-28 overnight campaign idempotent resume (23:40 +0800)
+
+The runner was invoked again with the recorded `.venv-rl/bin/python` after a
+process and lock check. No evaluator was running; existing rollout files and
+`execution.json` manifests were preserved without duplicate simulation. The
+combined-v4 development candidate remains task/strict false, final stage
+`carry`, with pillar contact `37.4848 s / 125.16 N` and external penetration
+`0.26623 mm`; its formal `dt=5e-5` rerun therefore remains skipped. The
+delayed-ball formal reference remains an unchanged-gate task/strict pass at
+`0.18855 mm`; the current-source corner-only reference remains a failure at
+`load_transfer`. Source/checkpoint hashes and all frozen contracts are
+unchanged; failed rollouts remain retained.
+
+### 2026-09-29 overnight heartbeat resume (00:43 +0800)
+
+The required process check found no active evaluator or campaign. The recorded
+`.venv-rl/bin/python` runner completed an idempotent resume at 00:43; all
+existing `execution.json` and raw rollout files were reused, with no duplicate
+physics integration. Source and checkpoint hashes remained unchanged. Combined-v4
+development is still task/strict false (`carry`, `0.26623 mm` penetration), so
+the formal `dt=5e-5` combined case remains skipped. The delayed-ball formal
+reference remains the current-source unchanged-gate pass (`0.18855 mm`); all
+failures remain archived.
+
+### 2026-09-29 overnight heartbeat resume (02:40 +0800)
+
+No evaluator or campaign process was active at the preflight check. The bounded
+runner reused its existing lock, manifests, and raw rollouts; no duplicate
+physics integration occurred. Hashes are unchanged. Combined-v4 remains
+task/strict false at development resolution (`0.26623 mm` penetration), so the
+formal `dt=5e-5` combined run remains locked out. Delayed-ball remains the
+current-source formal unchanged-gate pass at `0.18855 mm`.
+
+### 2026-09-29 overnight heartbeat resume (01:38 +0800)
+
+Process and lock checks found no active evaluator. The bounded runner reused all
+existing manifests and raw rollouts; no duplicate physics run was started.
+Source/checkpoint hashes are unchanged. Combined-v4 remains development
+task/strict false with `0.26623 mm` penetration, so formal `dt=5e-5` remains
+skipped. Delayed-ball remains the current-source unchanged-gate formal pass at
+`0.18855 mm`; failed episodes remain retained.
+
+## 2026-09-29 relaxed-pillar diagnostic
+
+At the user's request, only the pillar was relaxed in a separate development
+condition. The ESN, ball/person/rod disturbances, cup/corner geometry, actor
+inputs, gates and actuator limits were unchanged. The smaller, lower-friction
+pillar reduced external penetration from combined-v4's `0.26623 mm` to
+`0.117404 mm`; cup contact was `0.8807 s / 7.279 N`, cup shift/tilt were
+`9.839 mm / 0.849 deg`, peak torque `48.813 Nm`, and peak speed `0.068410 m/s`.
+The run still ended in `load_transfer` with task/strict false and no pillar
+contact, so it is not a complete combined success. An intermediate placement
+did create pillar contact (`1.739 s / 60.82 N`) but penetrated `0.5255 mm` and
+was rejected. Full details are in
+`docs/ESN_RELAXED_PILLAR_DIAGNOSTIC_20260929.md`.
+
+## 2026-09-29 algorithm-only ESN screen
+
+The combined-v4 fixture and all evaluation/gate/actuator conditions were frozen;
+only ESN inference was changed. The preregistered 50% and 75% ESN/VMC blends,
+pure ESN, and an ESN shadow run all completed their 30 s development rollouts
+and remain task/strict false at final stage `carry`. The pure ESN achieved
+`0.12913 mm` external penetration and `35.79 Nm` peak torque but left a nearly
+constant carry residual and did not rebound the ball. The 50% blend reduced RMSE
+to `0.08369 m` but reached `0.19068 mm` penetration and sustained pillar
+contact; 75% reached `0.09404 m` RMSE with `0.11268 mm` penetration but had only
+`0.226 s` pillar contact. The shadow run (zero applied ESN residual) also
+stopped at carry with `16.272 s` pillar contact, establishing that the frozen
+WBC route itself is blocked under this fixture.
+
+Two algorithm-only variants were then added: a causal load gate and a
+quiet-state centered readout. Both use only canonical48D joint-load and
+estimated-wrench fields, with thresholds calibrated from six saved teacher
+traces (balanced activity classification accuracy `0.93450`); no contact truth,
+ball state, event time, stage, visual/range, or geometry enters the actor.
+The load-gated `tau_release=.64 s` rollout gave the best RMSE in this screen
+(`0.07212 m`, `0.17152 mm` external penetration, `37.78 Nm`) but still had
+`11.071 s` pillar contact and no placement. Quiet-centering at `0.64 s` and
+`2.56 s` remained carry failures with `0.12190/0.16054 mm` penetration.
+
+Full table, source/checkpoint lineage, raw rollout paths, and failure causes are
+in `docs/ESN_ALGORITHM_ONLY_SCREEN_20260929.md` and
+`outputs/esn_combined_v4_algorithm_screen_20260929/`. The new inference classes
+are in `scripts/current_student_policy_20260921.py`, with construction script
+`tools/make_esn_load_gated_variant_20260929.py` and unit tests
+`tests/test_esn_load_gated_20260929.py`. No formal `dt=5e-5` rerun was unlocked:
+none of the unchanged development candidates passed task and strict gates.
+
+### 2026-09-29 pure-ESN continuation
+
+The deployment contract is now explicitly pure ESN for this branch: every new
+closed-loop evaluation used `--hybrid-vmc-blend 0`; no environment, gate,
+actor-visible field, actuator bound or test condition was changed. The impact
+response generator import-path defect was fixed and its unit test passes. Its
+shared-reservoir dual-readout candidate reached carry with `0.15216 mm`
+external penetration, `0.06220 m` RMSE, `46.40 Nm` peak torque and
+`0.07473 m/s` peak speed, but cup placement and ball rebound both failed.
+An impact-head gain 1.5 variant improved RMSE to `0.06089 m` and retained
+`0.16931 mm` penetration, but still failed placement/rebound. Conservative,
+channel-scaled and gain-2 variants were retained as negative controls; they
+either destabilized the route or exceeded physical validity.
+
+The current-source VMC teacher was run once under the same frozen fixture as a
+diagnostic. It also failed (`carry`, no rebound, `0.27809 mm` penetration), so
+the student failure is not evidence that a pure ESN merely copied an otherwise
+successful teacher. A fixed-reservoir ridge readout and a low-memory NumPy MLP
+readout were then trained from retained same-fixture applied-action traces and
+deployed as pure ESNs. The MLP reached `carry`, `0.19572 mm` penetration,
+`0.06653 m` RMSE, `44.27 Nm`, `0.10602 m/s`, with cup validity true but no
+rebound or placement. The ridge candidate was physically invalid at
+`0.24366 mm` and also failed task completion. All attempted rollouts and
+malformed/aborted attempts remain preserved with sidecars and hashes.
+
+This round adds useful negative evidence but no reportable combined success;
+formal `dt=5e-5` remains locked because no unchanged development candidate
+passed both task and strict gates. Continue only with a pre-registered causal
+readout/trajectory hypothesis; do not reinterpret the offline hybrid trace
+source as a hybrid ESN result or select away failures.
+Independent replay of the best impact-gain and NumPy-MLP actions reproduced all
+750 saved policy samples per rollout exactly (maximum absolute difference zero).
+
+### 2026-09-29 matched-budget ESN screen
+
+This screen changed only ESN learning data/mechanism. The office-v5 world, MuJoCo
+parameters, task and strict gates, canonical48D actor input, action7 interface, and
+actuator amplitude/slew limits stayed frozen. The matched MLP is `48-128-128-7`; the
+ESN uses a 128-unit multi-timescale reservoir and 128-unit nonlinear readout. Thus both
+have 256 hidden/state units under the explicit equal-neuron accounting used here. Both
+exclude contact truth, ball state,
+event/stage, visual and distance fields.
+
+DAgger3 used actual exposure-balanced ESN closed-loop visits, relabeled by the same
+stiff-VMC teacher from the estimated proprioceptive wrench only (wrench weight 3,
+seed 2026092932). Its checkpoint SHA256 is
+`a1af76a0f9b3471717009f5c49e56194da2624f3807cba3092796a8b31c1e1c5`. Independent
+action/reservoir replay and physical substep recomputation passed; six development
+conditions were task `6/6`, strict `4/6`.
+
+DAgger4 was a pre-registered failure-focused follow-up: only rod-start9 and
+shift-plus DAgger3 visits were added, each repeated three times, with the same
+teacher, input, reservoir and budget. Its checkpoint SHA256 is
+`6b0c01b0b865e61e7b5c8bd98bb8e7f45fe1381e20482f4a941f955d2c918d7b`. Replay and
+physical audits passed, but the closed loop regressed to task `5/6`, strict `3/6`;
+rod-start9 task failed and hard penetration was `0.208001 mm`. DAgger4 is retained
+as a negative result and does not replace DAgger3. Raw rollouts, plans, hashes and
+audit are under `outputs/esn_office_joint_esn_stiff_20260929/dagger4_eval/`.
+
+The matched MLP128 remains task `5/6`, strict `3/6`, so DAgger3 has a reproducible
+`+1` task and `+1` strict advantage on this fixed development screen. These are all
+`dt=1e-4` development results; no formal `dt=5e-5`, held-out, or hardware claim is
+authorized because six-condition strict is not complete.
+
+### 2026-09-29 teacher-response probes and follow-up ESN screens
+
+The remaining strict failures were diagnosed from the unchanged gate: rod contact
+duration was only `0.2771 s` for DAgger3 rod-start9 and `0.1206 s` for shift-plus,
+below the fixed `0.4 s` hand/rod exposure requirement. The stiff teacher itself had
+the same limitation (`0.2886 s` and `0.1431 s`), so this is a teacher-response/data
+problem rather than an action replay or physics-audit problem.
+
+Two fixed teacher-only probes were retained. Scaling the stiff teacher to `0.4` gave
+rod durations `0 s` and `0.1363 s`; scaling to `0.6` gave `0.0185 s` and `0.1253 s`.
+Neither was used for ESN training. The existing damped candidate (half action plus
+damping x2) improved rod-start9 to `0.7930 s` and passed task/strict with penetration
+`0.196223 mm`, `39.44 Nm` peak torque and `0.14330 m/s` peak speed. It improved
+shift-plus only to `0.2383 s`, so shift-plus still failed strict. These teacher traces
+are archived under `outputs/esn_office_joint_esn_stiff_20260929/teacher_probes_20260929/`.
+
+Three ESN follow-ups then tested how to transfer that teacher response while retaining
+the equal 256 hidden/state-unit budget and canonical48D input:
+
+| candidate | data change | task | strict | conclusion |
+|---|---|---:|---:|---|
+| DAgger5 | DAgger3 six actual visits, balanced once each | 6/6 | 3/6 | no strict gain |
+| DAgger6 | add damped teacher rod9/shift raw traces | 5/6 | 3/6 | rod9 task regressed |
+| DAgger7 | relabel DAgger3 visits with damped teacher | 6/6 | 3/6 | labels did not transfer exposure |
+
+All three had independent action/reservoir replay max error `0` and physical-substep
+recomputation passed. DAgger3 remains selected at task `6/6`, strict `4/6`; DAgger5,
+6 and 7 are retained as negative or non-superior screens with plans, hashes and raw
+rollouts in `outputs/esn_office_joint_esn_stiff_20260929/`. No gate, environment,
+actor field or actuator limit was modified, and no formal `dt=5e-5` run is unlocked.
+
+## 2026-09-29 dual64 纯 ESN 结构复核
+
+在固定环境、gate、canonical48D/action7、执行器限制和 256 hidden/state-unit
+预算下完成了 dual-readout ESN：共享 128 单元 reservoir，route 和 recovery 各
+64 单元；选择量是纯本体 `||qvel_t-qvel_{t-1}||`，不含接触真值、球状态、
+事件/阶段、视觉或距离。训练脚本已修复为使用已审计的 DAgger3 原始 rollout
+和 damped-teacher probe 路径，所有 trace SHA、teacher 配置和 checkpoint hash
+写入 sidecar。checkpoint 为
+`outputs/esn_office_joint_esn_dual64_20260929/model_dual64_v1/best.npz`，SHA256
+`ab9059fa35b11535939a1b4bd85f8d8861b46fce643371211ee7446565a42d3d`。
+
+六个 unchanged development 条件的独立动作/储备池回放与三项物理子步指标审计均
+通过；结果为 task `6/6`、strict `3/6`。rod-start9 和 shifted-plus 仍未达到
+固定接触门槛，hard 外部穿透 `0.207867 mm`。相对于当前 DAgger3 的 strict
+`4/6` 没有改进，因此 dual64 只作为负结果保留，不替换主候选，也不解封
+combined-v4 held-out 或 formal `dt=5e-5`。审计文件位于
+`outputs/esn_office_joint_esn_dual64_20260929/dual64_audit/`，计划位于
+`configs/esn_joint_stiff_dual64_eval_20260929.json`。
+
+同日又完成一次固定的 damped-label impact-response 读出实验：route 使用 DAgger3，
+impact head 使用 DAgger7，仍是共享 128 reservoir、128 readout、256 总预算，
+并用纯本体 qvel 瞬态作因果 selector。checkpoint SHA256 为
+`b936be8b95fde31e0049606f9ce83321b3191b3dce8e6e71aebed23d6e64b826`。六条件审计
+结果为 task `6/6`、strict `3/6`；rod-start9、shifted-plus 仍失败，hard 穿透
+`0.207172 mm`。动作/储备池回放与物理子步复算均通过。该分支低于 DAgger3 的
+strict `4/6`，不进入 combined-v4 或 formal `dt=5e-5`。
+
+## 2026-09-29 DAgger3 综合场景迁移
+
+为避免把六条件开发优势误当成最终场景成功，直接将当前主候选 DAgger3
+（checkpoint SHA256 `a1af76a0f9b3471717009f5c49e56194da2624f3807cba3092796a8b31c1e1c5`）
+放入冻结的 `combined-contact-v2 + corner-placement` 综合场景。使用纯 ESN
+`hybrid_vmc_blend=0`、原 gate、原 action7/canonical48D 和开发 `dt=1e-4`，未改
+环境或 actor 输入。结果为 task/strict `false/false`，最终阶段 `carry`。
+
+独立动作/储备池回放误差为 0，三项物理子步复算通过：RMSE `90.371 mm`、峰值
+力矩 `42.324 Nm`、峰值速度 `0.070400 m/s`、外部穿透 `0.099829 mm`。
+失败原因可解释且保留：柱子接触从 `16.728 s` 持续到 55 s（约 `23.896 s`），
+没有完成放置或球反弹。原始 rollout、execution、指标和审计位于
+`results/dagger3_combined_v4/` 与
+`outputs/esn_office_joint_esn_stiff_20260929/dagger3_combined_v4_audit/`。
+该结果表明六条件 DAgger3 的 +1 strict 优势尚未迁移到最终综合环境，不能声称
+complex-v4 成功，也不解封 formal `dt=5e-5`。
+
+## 2026-09-29 combined-exposure DAgger8
+
+针对综合场景持续柱接触，固定增加一条实际 combined-v4 访问轨迹，用同一 stiff-VMC
+在其 48D 本体状态上重标注并重训纯 ESN；环境、gate、actor 输入、执行器和 256 单元
+预算均不变。checkpoint SHA256 为
+`03fec322b4c9c84b48ab1842de49dd0dab95abdbd3e332b6532b4c30b1754142`。综合回合仍
+task/strict `false/false`、最终 `carry`，但 RMSE 降至 `53.364 mm`，峰值力矩
+`44.899 Nm`，峰值速度 `0.068360 m/s`，外部穿透 `0.091927 mm`。柱接触仍从
+`15.141 s` 持续到结束（约 `22.189 s`），cup 位移约 `1.373 mm`，没有 placement
+或 rebound；动作/储备池回放误差为 0。结果说明综合暴露重标注改善跟踪，却没有提供
+脱柱恢复行为，不能声称综合场景成功；原始轨迹和审计保留在
+`results/combined_dagger8_v4/` 与 `outputs/esn_office_joint_esn_combined_dagger8_20260929/`。
+
+## 2026-09-29 single-pillar + thick-corner provenance and contact audit
+
+The newer opt-in combined fixture has a 2 s delayed ball, hand and sustained
+rod pushes, one pillar instead of cup plus pillar, and corner placement. It is
+separate from the frozen baseline. The `v1` flag was reused during geometry
+development, so archived MJB hashes now identify results in
+`configs/esn_combined_thick_corner_pillar_v1_20260929.json` and
+`docs/ESN_COMBINED_THICK_CORNER_PILLAR_AUDIT_20260929.md`.
+
+Completed: the old 4 mm pillar `ridge_v1` pure ESN placed and retreated, but
+strict failed at 0.943513 mm external penetration (limit 0.2 mm). Action and
+reservoir replay error was zero; independent physical-substep RMSE/torque/speed
+were 43.9415 mm / 58.8085 Nm / 0.245539 m/s. The current 2 mm pillar geometry
+produced only 0.0264 s pillar contact and stalled at load transfer; it did not
+pass task or strict. Both failures remain archived. Saved control bins support
+48.5 mm hand movement during rod interaction, but do not prove continuous
+physical-substep rubbing. The payload/corner saved-state first contact occurred
+in carry, not lift. These are development `dt=1e-4` observations, not formal
+results. Evaluator-only contact diagnostics now record continuous rod runs and
+payload/corner contact by stage for subsequent runs without altering any gate.
+
+Running: no local office evaluator was active at this audit. Not complete:
+one fixed, visibly meaningful pillar fixture and a pure-ESN rollout that
+simultaneously satisfies placement, 0.2 mm safety, rod rub while still in
+contact, and lift-phase thick-corner contact. No formal `dt=5e-5` rerun is
+unlocked.
+
+The independently flagged v2 geometry also failed its 15 s physics probe:
+moving the whole corner slab x from `.650` to `.640` produced hand/corner
+contact at `0.7306 s` and stalled the pure ESN in `align`. Its longest
+continuous rod run was `0.2371 s` with only `1.80 mm` hand motion; payload
+never contacted the corner in lift. MJB SHA256 `f1fe21a8e05f2643f18384aa23553fc6adf3298b9a154463ac3456621e40dd7d`.
+The failure and raw 15 s rollout are retained; it is not a full-task result.
+No evaluator was running at this check. Next: design a separately versioned
+local lift contact that preserves pre-grasp clearance.
+
+The separate v3 local-face/bridge probe also failed at `align`: the bridge
+touched the robot by `1.0963 s` and the payload never touched the corner
+during lift. Its MJB is `1ac3312081d08c3c3ccd4e5f7d067a5ccafbf56d5108b9958bb06c1cb7019882`.
+More importantly, both v2 and v3 place their 15 mm pillar across the ball
+lane; the ball deflected by `2.04 s` without a ball/robot event. The old
+4 mm v1 geometry had a real ball/link6 impact at `2.0939 s`. This rules out
+using v2/v3 low penetration as a collision-response success. Their failed
+traces remain archived. Running: none; incomplete: a single dynamically
+valid scene meeting the ball, rod, pillar, lift-corner and task/safety goals.
+
+The separate v4 world was then run for the full 55 s with the same pure-ESN
+ridge checkpoint and `dt=1e-4`. Ball/link6 impact occurred at `2.0939 s` and
+rebounded; payload/corner contact during lift totaled `0.2080 s`. Nevertheless
+task/strict were both false: the final stage was `load_transfer`, the best
+load-transfer position error was `16.798 mm` against the unchanged `12 mm` gate,
+pillar exposure was only `0.0375 s`, and worst external penetration was
+`0.394114 mm` against the `0.2 mm` limit. The longest continuous rod contact
+was `0.0349 s` with only `0.122 mm` hand motion. Independent 550,000-substep
+RMSE/torque/speed were `47.0526 mm / 58.0678 Nm / 0.272753 m/s`; all 1375
+actions and reservoir states replayed exactly. MJB SHA256
+`5eaee4aa1399c6e47c9fcb2c477f0b6392dcb13273ca67f878aca2d05f3239f9`.
+Full provenance and failures are in the combined-fixture audit. Running: none.
+Not complete: task/strict success, continuous rod rub, or formal `dt=5e-5`.
+
+A pre-registered algorithm-only output-gain 0.8 ablation on exactly the same
+v4 MJB improved external penetration from `0.394114` to `0.136818 mm`, RMSE
+from `47.0526` to `43.1634 mm`, peak torque from `58.0678` to `53.3077 Nm`,
+and peak speed from `0.272753` to `0.096728 m/s`. Ball rebound and lift-phase
+payload/corner contact remained. However task/strict stayed false/false at
+`load_transfer`: best position error `14.986 mm` exceeded the unchanged 12 mm
+gate, the pillar was never contacted, and the longest uninterrupted rod contact
+was only `0.0683 s` with `0.059 mm` hand motion. Independent action/reservoir
+replay was exact and all three 550,000-substep metrics were recomputed; hashes,
+seed, plan, commands and raw failures are in the combined audit. Running: none.
+Unfinished: pure-ESN combined task/strict and meaningful continuous rubbing.
+
+The 0.98 gain-only screen stayed in lift with task/strict false/false. It had
+`0.173824 mm` penetration, `32.2391 mm / 43.0499 Nm / 0.088481 m/s`
+RMSE/peak-torque/peak-speed, ball rebound, only `0.0023 s` lift-corner contact,
+no pillar contact, and `0.0361 s` longest continuous rod contact. Best lift
+position error was `14.228 mm`; replay and substep audit passed. This negative
+screen also does not unlock formal evaluation.
+
+The pre-registered output-gain 0.95 screen on the same v4 MJB reduced
+penetration to `0.120669 mm`, RMSE/peak torque/peak speed to
+`28.5777 mm / 39.3901 Nm / 0.083917 m/s`, and retained ball rebound. It still
+failed task/strict, remaining in `lift` with best position error `13.716 mm`,
+no pillar or lift-corner contact, and only `0.0218 s` continuous rod contact.
+Replay and substep audits passed; this candidate is retained as a negative
+result. No formal rerun is unlocked.

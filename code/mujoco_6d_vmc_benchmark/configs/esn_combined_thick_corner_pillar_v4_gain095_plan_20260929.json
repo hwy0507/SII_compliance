@@ -1,0 +1,11 @@
+{
+  "purpose": "Fixed pure-ESN output-gain 0.95 causal ablation",
+  "hypothesis": "A gain between 1.0 and 0.8 may retain pillar exposure while reducing v4 penetration.",
+  "world_mjb_reference_sha256": "5eaee4aa1399c6e47c9fcb2c477f0b6392dcb13273ca67f878aca2d05f3239f9",
+  "base_checkpoint_sha256": "1b1a58fec824cc1fa2d0b2a72d6b97f806ea913042ba74e2663d4a1e89d9433d",
+  "candidate_checkpoint": "outputs/esn_combined_thick_corner_pillar_v1_20260929/model_ridge_gain095.npz",
+  "candidate_checkpoint_sha256": "dadd414bd35e3d9979d8f40f6b07fa288122eee833e842aed78933b8d6478c27",
+  "fixed_cli": ["--combined-thick-corner-pillar-v4", "--corner-placement", "--events", "all", "--task", "pick_place", "--duration", "55", "--dt", "0.0001", "--ball-speed", "1.7", "--ball-launch-time-s", "2", "--person-stroke", ".2", "--rod-stroke", ".235", "--person-start", "3", "--rod-start", "7", "--rod-hold", "6", "--seed", "2026091751", "--variant", "0", "--esn-mode", "control", "--hybrid-vmc-blend", "0"],
+  "resource_policy": {"simulation_processes": 1, "threads": 1, "address_space_limit_bytes": 3221225472},
+  "not_allowed": ["environment edit", "gate edit", "actor input edit", "actuator-limit edit", "VMC blend", "failure exclusion"]
+}

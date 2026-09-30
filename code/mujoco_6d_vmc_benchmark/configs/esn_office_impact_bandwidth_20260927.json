@@ -1,0 +1,13 @@
+{
+  "purpose":"Test causal high-rate motor response under unchanged rate and amplitude limits, before choosing an ESN architecture change",
+  "gate_m":0.0002,
+  "dt_s":0.0000015625,
+  "all_probes_s":0.2,
+  "note":"No proposed-method success credit. All first-impact results retained. Gain zero must reproduce archived hard-ball fine-step maximum .207370134 mm before interpreting other trials.",
+  "jobs":[
+    {"id":"parity_zero","split":"development","entrypoint":"tools/probe_office_impact_bandwidth_20260927.py","arguments":["--reflex-gain","0"]},
+    {"id":"fast_reflex_slow_sensor","split":"development","entrypoint":"tools/probe_office_impact_bandwidth_20260927.py","arguments":["--reflex-gain","10","--sensor-tau",".04","--reflex-period",".00005"]},
+    {"id":"fast_reflex_fast_sensor","split":"development","entrypoint":"tools/probe_office_impact_bandwidth_20260927.py","arguments":["--reflex-gain","10","--sensor-tau",".0001","--reflex-period",".00005"]},
+    {"id":"every_step_saturated_reflex","split":"development","entrypoint":"tools/probe_office_impact_bandwidth_20260927.py","arguments":["--reflex-gain","1000000","--sensor-tau",".0001","--reflex-period",".0000015625"]}
+  ]
+}

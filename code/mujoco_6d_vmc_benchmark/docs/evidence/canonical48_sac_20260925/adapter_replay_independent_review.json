@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "scope": "Independent source review and local rehash of all inputs to the actual same-DGX CUDA SAC adapter replay reports; no new physical rollout or extra inference run",
+  "simulator_steps": 0,
+  "training_updates": 0,
+  "branches": {
+    "online_only": {
+      "report": "online_only_deployment_replay.json",
+      "report_sha256": "8d0a62e5fced028e6832c2c630a07aca29e4e98bdabda109bc5d6cd3b9233d12",
+      "all_recorded_input_sha256_rechecked_locally": true,
+      "verified_input_files": 20,
+      "missing_input_files": 0,
+      "actual_archived_train_frames": 600,
+      "actual_archived_validation_frames": 600,
+      "all_request_execution_reset_checks_exact": true,
+      "normalizer_statistics_exact_and_frozen": true,
+      "fallback_used": false
+    },
+    "demo_prefill": {
+      "report": "demo_prefill_deployment_replay.json",
+      "report_sha256": "3a758be6ff2643049c576991786ee4b412043342da6241664f58070993fc34eb",
+      "all_recorded_input_sha256_rechecked_locally": true,
+      "verified_input_files": 20,
+      "missing_input_files": 0,
+      "actual_archived_train_frames": 600,
+      "actual_archived_validation_frames": 600,
+      "all_request_execution_reset_checks_exact": true,
+      "normalizer_statistics_exact_and_frozen": true,
+      "fallback_used": false
+    }
+  },
+  "path_mapping": {
+    "remote_root": "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark",
+    "local_root": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark"
+  },
+  "limitations": [
+    "The reviewed DGX reports cover deterministic policy input replay on archived actual evaluation inputs, not newly generated closed-loop trajectories.",
+    "These four archived learned evaluations each actually contain 600 frames; no short-episode fallback was needed.",
+    "Training final8192/replay/optimizer audit is separate and awaits full-root archive checksum confirmation.",
+    "Final deployment protocol uses direct7 zero7/9400 parity, not nominal zero6; the older draft accompanying the inference-only replay snapshot is not the final13-job physical protocol."
+  ]
+}

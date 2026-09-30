@@ -1,0 +1,21 @@
+# parameter6/direct7配对训练链实现与验收入口
+
+实现对应`RL_PARAMETER_ACTION_PAIRED_PROTOCOL_20260924.md`，当前先进行运行前验收，没有启动训练。旧canonical bridge、旧reward和旧snapshot全部未修改。
+
+`scripts/canonical48_paired_rl_env_20260924.py`以Gym wrapper组合原potential-reward action7环境。parameter6先在原始float64 canonical48上调用已冻结VMC调参adapter，再把action7交给原执行层；direct7直接使用原动作边界。两模式actor/critic均只收到float32 canonical48。adapter的完整名义options显式取训练fixture；验证场景runtime CORE仍保持原fixture值，两个来源在transition_contract中分别记录，不能混同。
+
+每个成功step立即追加并刷新`transitions.jsonl`，episode关闭时导出同内容NPZ。记录step_index、0.04s周期、前/后raw48、env收到请求及clip后动作、实际传给原层的action7、参数请求/K/D/logscale、reward/各项/阶段、terminated/truncated。SB3在调用env前已clip高斯样本，journal不冒称记录了未clip网络latent。direct7参数字段仅作带inactive标志的名义元数据。
+
+非终端next是真实下一actor边界，预算partial最后一次next也立即保存；terminal沿用旧bridge的last-obs占位并明确next_observation_valid=false，不追加privileged sensor、不bootstrap终态。reset/close幂等、跨回合清空VMC状态，未执行step的空回合也明确记录。对非法shape/NaN/Inf先拒绝，再允许任何控制器或队列变化；有限越界输入按原Box语义clip并双份记录。
+
+为核对MJB，私有episode函数副本只把`SKIP_MODEL_ARCHIVE='1'`改为`'0'`，assert替换标记唯一并保存原bridge源hash；原panel按字符串`=='1'`判断跳过，因此此变更仅开启原模型归档。它仍必须通过完整24s物理轨迹等价验收。
+
+`tools/run_canonical48_paired_ppo_20260924.py`每次仅接受一种mode、单进程单环境单核/线程，支持`--proof-only`。真正训练要求同一快照两种proof均完成，逐项核对source、mode、fixture、完整两套franka资产、软件runtime、device、训练nominal及总协议hash。PPO预算/seed/hparams固定，最终checkpoint仅取8192步。每步额外记录实际SB3收到的float32 reward并验证其与Gym float64的转换；没有记录value/advantages，因此不声称验证了实际GAE/loss。
+
+训练后重新载入最终模型，normalizer冻结，对train/validation各跑zero与PPO四条；源文件及模型资产在结束时再次验hash。`model_architecture.json`记录实际可训练参数数目和层shape。checkpoint全保留不做validation筛选。
+
+纯合成wrapper测试13项、独立transition审计测试10项、原VMC/potential测试19项，共42项通过；这些未调用本机仿真。DGX入口`--help`导入smoke通过，Python3.12.3/aarch64、torch2.13.0+cu130、CUDA NVIDIA GB10可用。两模式统一cuda，不允许单边fallback。
+
+当前DGX根`outputs/paired_parameter_action_20260924_r1`，source/assets只读。proof/parameter6持续zero6与此前归档nominal VMC比较；proof/direct7先直接zero7参考24s，再新Gym zero7 24s，二者顺序执行。合计两进程、最多两个物理worker，timeout各1200s，启动PID以各manifest记录为准。成功需有限原始数组逐值一致、MJB相同、仅预声明teacher日志及明确set顺序差异；失败保留不放宽。
+
+验收完成后用独立`tools/audit_paired_transitions_20260924.py`在冻结源码上离线重放controller/reward，核JSONL/NPZ/actor对齐、终端和partial势差恒等式。训练须等主agent审阅这批具体证据后启动。单核实测约137s完成12s仿真，完整训练加四评估预计明显长于旧本机45分钟预算，应依据实际验收耗时设置足够但有限的外部timeout。

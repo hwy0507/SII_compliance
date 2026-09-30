@@ -1,0 +1,247 @@
+{
+  "passed": true,
+  "mode": "direct7",
+  "samples": 600,
+  "metadata": {
+    "mode": "direct7",
+    "device": "cuda",
+    "trained_device": "cuda",
+    "training_steps": 8192,
+    "training_manifest_sha256": "3b3c1a4971ccc7e043199b9f9836a552f986c41a4edf20035e9ff22239bbb471",
+    "training_complete_sha256": "077432c04b68c9dcb087bade43bd7c4dcf7d7a94166a7de23131c640fed3d881",
+    "checkpoint_sha256": "6a29dc6a05eb2510b4f3e5f7965936ef808056e9d6f6223cc0e6da89326be30c",
+    "normalizer_sha256": "1e85f3324c57316890ca6a040a454775581a29d8bde738082ccf98ca06bc08a9",
+    "nominal_options": {
+      "stiffness_6d": [
+        826.3543109314946,
+        103.95241116926171,
+        996.1327818830155,
+        7.670229445929784,
+        23.58674924076879,
+        31.4543015142091
+      ],
+      "damping_6d": [
+        28.286850766151787,
+        17.714410285367478,
+        52.0862724692756,
+        5.451689945792646,
+        3.276378909823966,
+        3.791191396056319
+      ],
+      "mass_6d": [
+        0.5426011692056452,
+        0.5236593399096259,
+        0.5840080820284139,
+        0.04426561907347963,
+        0.062002550208292186,
+        0.09067414955448634
+      ],
+      "wrench_limit_6d": [
+        25.820059557470064,
+        42.924704789097746,
+        58.839682242845875,
+        4.242493519875442,
+        3.567537425284767,
+        3.5674394880367957
+      ],
+      "deadband_6d": [
+        0.145854045621633,
+        0.11381351859393705,
+        0.1624795745273216,
+        0.025006233861232536,
+        0.02014404260922069,
+        0.03598334905058774
+      ],
+      "velocity_limit_6d": [
+        0.0976041319066542,
+        0.11731685278040867,
+        0.13412231810433328,
+        0.4952824086905574,
+        0.6087627631560645,
+        1.0
+      ],
+      "offset_limit_6d": [
+        0.18,
+        0.18,
+        0.18,
+        0.35,
+        0.35,
+        0.35
+      ],
+      "action_limit_6d": [
+        0.16,
+        0.16,
+        0.2,
+        0.6,
+        0.6,
+        0.6
+      ],
+      "offset_tracking_gain_6d": 1.0087882886603798,
+      "filter_tau": 0.013063438684191998,
+      "axis_rotation_rpy": [
+        -0.008703933255895968,
+        0.020610784083093803,
+        -0.21182689182342707
+      ]
+    },
+    "actor_observation": "raw48 cast float32, then own frozen VecNormalize",
+    "backend_observation": "original raw float64 canonical48; wrench[39:45]",
+    "adapter_active": false,
+    "episode_reset": "VMC filter/offset/velocity and log gains; frozen normalizer unchanged",
+    "runtime_CORE_rule": "Unchanged fixture environment; never adapter nominal source",
+    "source_sha256": {
+      "scripts/canonical48_paired_deployment_20260924.py": "815d4a3169e12f66f8806b9c65a69a2cb7bb4d867881933bf7e694220c6a27ac"
+    }
+  },
+  "actual_evaluation": {
+    "samples": 600,
+    "checks": {
+      "independent_policy_requests": {
+        "max_abs_difference": 0.0,
+        "atol": 0.0,
+        "rtol": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "same_request_analytic_backend": {
+        "max_abs_difference": 0.0,
+        "atol": 1e-12,
+        "rtol": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "training_inference_matches_archived_requests": {
+        "max_abs_difference": 0.0,
+        "atol": 0.0,
+        "rtol": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "archived_request_backend": {
+        "max_abs_difference": 0.0,
+        "atol": 1e-12,
+        "rtol": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "same_device_end_to_end": {
+        "max_abs_difference": 0.0,
+        "atol": 1e-12,
+        "rtol": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "reset_replay_observation": {
+        "max_abs_difference": 0.0,
+        "atol": 0.0,
+        "rtol": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "reset_replay_policy_action": {
+        "max_abs_difference": 0.0,
+        "atol": 0.0,
+        "rtol": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "reset_replay_execution_action": {
+        "max_abs_difference": 0.0,
+        "atol": 0.0,
+        "rtol": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "reset_replay_log_scale": {
+        "max_abs_difference": 0.0,
+        "atol": 0.0,
+        "rtol": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "reset_replay_stiffness": {
+        "max_abs_difference": 0.0,
+        "atol": 0.0,
+        "rtol": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "reset_replay_damping": {
+        "max_abs_difference": 0.0,
+        "atol": 0.0,
+        "rtol": 0.0,
+        "exact": true,
+        "passed": true
+      }
+    },
+    "policy_atol": 0.0,
+    "analytic_same_request_atol": 1e-12,
+    "end_to_end_execution_max_abs_difference": 0.0,
+    "end_to_end_exact": true
+  },
+  "actual_evaluation_safety_terminated": false,
+  "fallback": null,
+  "fallback_proof_path": null,
+  "normalizer_checks": {
+    "0": {
+      "max_abs_difference": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "exact": true,
+      "passed": true
+    },
+    "1": {
+      "max_abs_difference": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "exact": true,
+      "passed": true
+    },
+    "2": {
+      "max_abs_difference": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "exact": true,
+      "passed": true
+    },
+    "reference_0": {
+      "max_abs_difference": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "exact": true,
+      "passed": true
+    },
+    "reference_1": {
+      "max_abs_difference": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "exact": true,
+      "passed": true
+    },
+    "reference_2": {
+      "max_abs_difference": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "exact": true,
+      "passed": true
+    }
+  },
+  "end_to_end_exact": true,
+  "input_sha256": {
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/eval/train/ppo/episode_00000/transitions.npz": "32c687d0b58cb18076c6b1a556a961e6ddf6c14add68dfca2cf739cd764492a3",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/eval/train/ppo/episode_00000/actor_trace.npz": "ffff5638365cec23503367c9b9abc63b1f6618d81802e515d10f5229e74b37ca",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/eval/train/ppo/episode_00000/transition_contract.json": "dfcbce510dae5c3397a1599354ea4254814950d3f55ba8040d9cc6119d53def0",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/eval/train/ppo/episode_00000/rollout.json": "cf07737ee05443d3c667a9b8e5b36aa5fa1aefd171542800e162d0da9c8c0cca",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/eval/train/ppo/episode_00000/rollout.mjb": "9f220b70f721aba1cec9c86d53fc2e2ec748736034a47a8a9c44951684492288",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/manifest.json": "3b3c1a4971ccc7e043199b9f9836a552f986c41a4edf20035e9ff22239bbb471",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/COMPLETE.json": "077432c04b68c9dcb087bade43bd7c4dcf7d7a94166a7de23131c640fed3d881",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/ppo_final.zip": "6a29dc6a05eb2510b4f3e5f7965936ef808056e9d6f6223cc0e6da89326be30c",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_multiseed_20260924_r1/training/20260925/direct7/vecnormalize_train_only.pkl": "1e85f3324c57316890ca6a040a454775581a29d8bde738082ccf98ca06bc08a9",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_deployment_source_20260924_r1/source/tools/audit_paired_deployment_replay_20260924.py": "37382d1962a65ffa5f3786bc0628a0d1059a033d31f6340099a1321699a7a7d0",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_deployment_source_20260924_r1/source/scripts/canonical48_paired_deployment_20260924.py": "815d4a3169e12f66f8806b9c65a69a2cb7bb4d867881933bf7e694220c6a27ac",
+    "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/paired_deployment_source_20260924_r1/source/scripts/canonical48_vmc_tuning_20260924.py": "7f2cb469ed3c548f3b769be7a649b3ba21c3f921f5a31e4c3285db717376c5ea"
+  },
+  "policy_atol": 0.0,
+  "analytic_same_request_atol": 1e-12,
+  "limitation": "Fallback is offline policy input replay, not invented future physical transitions. Cross-device actor tolerance does not imply identical closed-loop physics."
+}

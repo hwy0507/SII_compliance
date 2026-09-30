@@ -1,0 +1,11 @@
+{
+  "purpose": "Pre-registered four delayed-ball fast-filter teacher rollouts for rod-timing diagnosis.",
+  "entrypoint": "tools/run_office_joint_teacher_20260927.py",
+  "split": "development",
+  "jobs": [
+    {"id":"fastfilter_delayed_nominal","split":"development","arguments":["--teacher","vmc6d","--teacher-config","configs/office_joint_teacher_delayed_fastfilter_20260928.json","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--ball-launch-time-s","2.0"]},
+    {"id":"fastfilter_delayed_rod9","split":"development","arguments":["--teacher","vmc6d","--teacher-config","configs/office_joint_teacher_delayed_fastfilter_20260928.json","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--ball-launch-time-s","2.0","--rod-start","9"]},
+    {"id":"fastfilter_delayed_shiftplus","split":"development","arguments":["--teacher","vmc6d","--teacher-config","configs/office_joint_teacher_delayed_fastfilter_20260928.json","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--ball-launch-time-s","2.0","--seed","2026092701","--variant","2","--ball-speed","1.45","--person-stroke",".18","--rod-stroke",".225"]},
+    {"id":"fastfilter_delayed_hardball","split":"development","arguments":["--teacher","vmc6d","--teacher-config","configs/office_joint_teacher_delayed_fastfilter_20260928.json","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--ball-launch-time-s","2.0","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24"]}
+  ]
+}

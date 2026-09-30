@@ -1,0 +1,17 @@
+{
+  "purpose": "Development-only slower multi-timescale reservoir audit",
+  "candidate": "outputs/esn_office_joint_esn_stiff_20260927/model_wrench_tau2_v1/best.npz",
+  "candidate_sha256": "86d0038fd9a267853038f0f56071c937ef18de75af038309fc20ebaa1407f498",
+  "parent": "wrench1; same 128 units and readout, reservoir tau multiplier 2",
+  "split": "development",
+  "actor_inputs": "canonical48 pure proprioception; no truth/stage/event/visual",
+  "gates": "unchanged",
+  "jobs": [
+    {"id":"tau2_student_original","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_tau2_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625"]},
+    {"id":"tau2_student_rod_start7","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_tau2_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","7"]},
+    {"id":"tau2_student_rod_start9","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_tau2_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","9"]},
+    {"id":"tau2_student_rod_hold6","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_tau2_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-hold","6"]},
+    {"id":"tau2_student_shift_plus","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_tau2_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092701","--variant","2","--ball-speed","1.45","--person-stroke",".18","--rod-stroke",".225"]},
+    {"id":"tau2_student_hard","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_tau2_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24"]}
+  ]
+}

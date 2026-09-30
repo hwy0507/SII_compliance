@@ -1,0 +1,15 @@
+# 潜势奖励PPO8192：独立DGX部署协议
+
+在本机潜势奖励整轮COMPLETE及四条本机评估汇总完成前落盘本轮部署协议；当时已有部分train评估输出。七job设计与固定final模型选择在训练8064步前已约定，不依据部分评估调整。原dense-reward PPO8192的失败模型、原12条DGX结果和七方法表全部保留。本轮只有独立新增的potential-reward PPO模型，不按本机或DGX验证成绩决定是否报告，不更换中间checkpoint。
+
+## 冻结和执行顺序
+
+模型唯一来源为`outputs/canonical48_ppo_potential_8192_20260924_r1/ppo_final.zip`，需本机COMPLETE成功、reward_version=push4_gate_potential_v1、模型内部num_timesteps=8192。届时冻结最终模型、train-only VecNormalize、COMPLETE和manifest的SHA256，之后不更新normalizer。原48D actor/value输入、action7、无privileged字段保持。
+
+先在DGX CPU对已保存的train frozen-evaluation observation序列推理，与本机GPU原action逐帧比较，要求atol1e-6、normalizer统计不变。随后使用原9400–9405六条验证fixture、原固定budget快照、同MJB、同WBC/observer/task/safety、同physics_substep_metrics和严格gate。所有原baseline源码必须逐字节相同。
+
+总共只运行7条24s物理job：potential PPO9400与zero9400作为首对；zero9400必须与此前已完成的原zero9400全部rollout/physics/contact/子步NPZ数组逐值完全相同且均有限、MJB哈希相同、JSON数值相同。JSON仅对源码声明的contact集合字段排序，文件路径/运行时间等元数据单独记录。首对通过物理/配置检查后，再执行potential PPO9401–9405，最多2个worker；另一个baseline agent最多2个worker，总数≤4。训练失败或parity/原始轨迹不一致则保存FAILED，不偷偷更换模型/物理实现。
+
+另外五条zero不重复计算，复用原已完整归档的同fixture结果，并给出路径/hash。六条新PPO全部失败也完整报告；invalid提前终止保留并标注，不能筛掉。任务成功与严格gate分开计，统计25Hz轨迹误差及50µs子步误差/实际执行扭矩峰值/速度峰值，报告stage及rod刺激是否实际触发。原模型训练budget与ESN imitation不同，本轮同为8192步但reward不同，不把它称等训练预算的完整文献复现。
+
+使用独立driver`run_ppo_potential_validation_20260924.py`，不改原dense PPO hardcoded driver。远程计划根`outputs/ppo_potential_validation_20260924_r1`。结果完整归档后独立复算物理子步指标并添加八方法表，不以单seed/六开发验证场景作为论文最终证明。

@@ -39,6 +39,8 @@ def smooth_profile(t,start,press,hold,retract):
 
 
 def prepare_policy_state(esn, memory_ablation):
+    if getattr(esn, 'kind', None) == 'mlp':
+        return np.empty(0, dtype=float)
     if memory_ablation == 'reset_each_observation':
         obj = getattr(esn, 'obj', esn)
         contract = getattr(esn, 'contract', getattr(obj, 'contract', None))
@@ -67,7 +69,11 @@ def run(a):
                         corner_placement=bool(getattr(a,'corner_placement',False)),
                         combined_demo=bool(getattr(a,'combined_demo',False)),
                         combined_contact_v2=bool(getattr(a,'combined_contact_v2',False)),
-                        relaxed_pillar=bool(getattr(a,'relaxed_pillar',False)))
+                        relaxed_pillar=bool(getattr(a,'relaxed_pillar',False)),
+                        combined_thick_corner_pillar_v1=bool(getattr(a,'combined_thick_corner_pillar_v1',False)),
+                        combined_thick_corner_pillar_v2=bool(getattr(a,'combined_thick_corner_pillar_v2',False)),
+                        combined_thick_corner_pillar_v3=bool(getattr(a,'combined_thick_corner_pillar_v3',False)),
+                        combined_thick_corner_pillar_v4=bool(getattr(a,'combined_thick_corner_pillar_v4',False)))
     flags['duration']=a.duration
     flags['nominal_speed']=.06;flags['ball_speed']=a.ball_speed
     env,task,spec=make(flags);m,d=env.model,env.data;m.opt.timestep=a.dt
@@ -99,7 +105,10 @@ def run(a):
             from contact_transfer_student_20260916 import TransferStudent
             esn=TransferStudent.load(a.esn_model);policy_observation_dim=45
             if abs(esn.dt-.04)>1e-12:raise ValueError('Expected 25Hz legacy ESN checkpoint')
-        if esn.kind not in ('esn','esn_linear'):raise ValueError('Expected ESN checkpoint')
+        # Permit the explicitly paired canonical48D MLP control in the same
+        # frozen physical evaluator.  Its actor contract is still 48D->7D;
+        # this branch changes no world, gate, actuator, or observation field.
+        if esn.kind not in ('esn','esn_linear','mlp'):raise ValueError('Expected canonical ESN/MLP checkpoint')
     elif a.esn_mode=='control':raise ValueError('Control mode needs a checkpoint')
     memory_ablation=getattr(a,'memory_ablation','none')
     if memory_ablation != 'none':
@@ -112,6 +121,7 @@ def run(a):
     target_body=int(m.geom_bodyid[target_geom])
     desk=gid('office_desk_top')
     corner_top=gid('office_v5_corner_top')
+    corner_contact_geoms={g for g in (corner_top,gid('office_v5_corner_face'),gid('office_v5_corner_bridge')) if g>=0}
     if bool(getattr(a,'corner_placement',False)):
         if corner_top<0:raise ValueError('Corner placement requested but corner top is absent')
         # Place the cube on the front portion of the thick corner top.  The
@@ -147,7 +157,7 @@ def run(a):
                            carry_waypoint=(np.array([.560,
                                                      -.330,
                                                      .670])
-                                           if bool(getattr(a,'combined_demo',False)) else
+                                           if bool(getattr(a,'combined_demo',False)) or bool(getattr(a,'combined_thick_corner_pillar_v1',False)) or bool(getattr(a,'combined_thick_corner_pillar_v2',False)) or bool(getattr(a,'combined_thick_corner_pillar_v3',False)) or bool(getattr(a,'combined_thick_corner_pillar_v4',False)) else
                                            np.array([.560,
                                                      -.330,
                                                      .670])
@@ -200,13 +210,13 @@ def run(a):
         d.qvel[ball_dof+1]=a.ball_speed
         ball_launched = True
     cup=bid('office_v5_cup');cup_base=gid('office_v5_cup_base')
-    cup_initial=d.xpos[cup].copy();initial_hand=d.xpos[env._hand_id].copy()
+    cup_initial=d.xpos[cup].copy() if cup>=0 else np.zeros(3);initial_hand=d.xpos[env._hand_id].copy()
     joints={n:jid(n) for n in ('office_v5_person_root','office_v5_shoulder','office_v5_elbow','office_v5_push_rod_joint')}
     configs={
       'person':dict(start=getattr(a,'person_start',3.),press=2.,hold=3.,retract=2.,stroke=a.person_stroke,force_limit=80.),
       'rod':dict(start=getattr(a,'rod_start',11.),press=1.5,hold=getattr(a,'rod_hold',3.),retract=2.,stroke=a.rod_stroke,force_limit=14.)}
     stats=dict(max_penetration_m=0.,worst_pair=None,max_external_penetration_m=0.,worst_external_pair=None,
-      events={},cup_shift_m=0.,cup_tilt_deg=0.,
+      events={},contact_diagnostics={'rod_longest_run': None, 'corner_target_by_stage': {}},cup_shift_m=0.,cup_tilt_deg=0.,
       max_hand_displacement_m=0.,peak_motor_torque_nm=0.,max_person_drive_n=0.,max_rod_drive_n=0.)
     last_ball_velocity=d.qvel[ball_dof:ball_dof+3].copy()
     ball_detail=[];next_ball_sample=0.
@@ -215,13 +225,14 @@ def run(a):
     impact_renderer=None;impact_overview=None;impact_detail=None
     contact_keys=('ball','person_hand','rod','cup','office_v5_pillar')
     interval_peak=np.zeros(len(contact_keys));interval_impulse=np.zeros(len(contact_keys))
+    rod_run=None
     def drive_joint(name,target,kp,kd,limit):
         j=joints[name];q=int(m.jnt_qposadr[j]);v=int(m.jnt_dofadr[j])
         force=float(np.clip(kp*(target-d.qpos[q])-kd*d.qvel[v]+d.qfrc_bias[v],-limit,limit))
         d.qfrc_applied[v]=force
         return force
     def world_step(unused):
-        nonlocal incoming,last_ball_velocity,last_robot_ball_contact,first_ball_pos,next_ball_sample,ball_launched,impact_next
+        nonlocal incoming,last_ball_velocity,last_robot_ball_contact,first_ball_pos,next_ball_sample,ball_launched,impact_next,rod_run
         t=float(d.time)
         if a.events in ('all','ball') and not ball_launched and t < ball_launch_time_s:
             # Display-only delayed launch: hold the free ball at its reset pose
@@ -245,9 +256,12 @@ def run(a):
         c=configs['rod'];target=c['stroke']*smooth_profile(t,c['start'],c['press'],c['hold'],c['retract']) if a.events in ('all','rod') else 0.
         f=drive_joint('office_v5_push_rod_joint',target,160.,12.,c['force_limit'])
         stats['max_rod_drive_n']=max(stats['max_rod_drive_n'],abs(f))
-        resultant={};touch_ball=False
+        resultant={};touch_ball=False;corner_target_force=0.
         for i in range(d.ncon):
             ct=d.contact[i];g1,g2=int(ct.geom1),int(ct.geom2)
+            if target_geom in (g1,g2) and (g2 if g1==target_geom else g1) in corner_contact_geoms:
+                corner_wrench=np.zeros(6);mujoco.mj_contactForce(m,d,i,corner_wrench)
+                corner_target_force+=float(np.linalg.norm(corner_wrench[:3]))
             if m.geom_bodyid[g1]!=m.geom_bodyid[g2] and -ct.dist>stats['max_penetration_m']:
                 stats['max_penetration_m']=-float(ct.dist)
                 stats['worst_pair']=[mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_GEOM,g) or str(g) for g in (g1,g2)]
@@ -273,6 +287,24 @@ def run(a):
             rec['last_s']=t;rec['duration_s']+=m.opt.timestep;rec['peak_n']=max(rec['peak_n'],mag);rec['impulse_ns']+=mag*m.opt.timestep
             if key in contact_keys:
                 k=contact_keys.index(key);interval_peak[k]=max(interval_peak[k],mag);interval_impulse[k]+=mag*m.opt.timestep
+        diagnostics=stats['contact_diagnostics']
+        if corner_target_force>.05:
+            stage_name=task.names[task.index]
+            rec=diagnostics['corner_target_by_stage'].setdefault(stage_name,dict(first_s=t,last_s=t,duration_s=0.,peak_n=0.))
+            rec['last_s']=t;rec['duration_s']+=m.opt.timestep
+            rec['peak_n']=max(rec['peak_n'],corner_target_force)
+        if 'rod' in resultant:
+            hand_xy=d.xpos[env._hand_id,:2].copy()
+            if rod_run is None:
+                rod_run=dict(first_s=t,last_s=t,duration_s=0.,start_xy=hand_xy,last_xy=hand_xy)
+            rod_run['last_s']=t;rod_run['duration_s']+=m.opt.timestep;rod_run['last_xy']=hand_xy
+        elif rod_run is not None:
+            candidate=dict(first_s=rod_run['first_s'],last_s=rod_run['last_s'],duration_s=rod_run['duration_s'],
+                           hand_xy_displacement_m=float(np.linalg.norm(rod_run['last_xy']-rod_run['start_xy'])))
+            longest=diagnostics['rod_longest_run']
+            if longest is None or candidate['duration_s']>longest['duration_s']:
+                diagnostics['rod_longest_run']=candidate
+            rod_run=None
         velocity=d.qvel[ball_dof:ball_dof+3].copy()
         if touch_ball:
             if incoming is None:incoming=last_ball_velocity.copy();first_ball_pos=d.xpos[ball].copy()
@@ -283,8 +315,9 @@ def run(a):
         if t<.30 and (t>=next_ball_sample or touch_ball):
             ball_detail.append((t,d.qpos.copy(),velocity.copy(),touch_ball))
             next_ball_sample=t+.001
-        stats['cup_shift_m']=max(stats['cup_shift_m'],float(np.linalg.norm((d.xpos[cup]-cup_initial)[:2])))
-        stats['cup_tilt_deg']=max(stats['cup_tilt_deg'],float(np.rad2deg(np.arccos(np.clip(d.xmat[cup].reshape(3,3)[2,2],-1,1)))))
+        if cup>=0:
+            stats['cup_shift_m']=max(stats['cup_shift_m'],float(np.linalg.norm((d.xpos[cup]-cup_initial)[:2])))
+            stats['cup_tilt_deg']=max(stats['cup_tilt_deg'],float(np.rad2deg(np.arccos(np.clip(d.xmat[cup].reshape(3,3)[2,2],-1,1)))))
         stats['max_hand_displacement_m']=max(stats['max_hand_displacement_m'],float(np.linalg.norm(d.xpos[env._hand_id]-initial_hand)))
         stats['peak_motor_torque_nm']=max(stats['peak_motor_torque_nm'],float(abs(d.qfrc_actuator[:7]).max()))
         metrics.sample()
@@ -349,8 +382,9 @@ def run(a):
             predicted=esn.act(observation)
             pulse_active=bool(pulse_remaining_before>0 or (not pulse_used_before and getattr(esn,'selector_pulse_used',False)))
             if a.esn_mode=='control':applied=predicted.copy()
+            current_state = policy_state.state.copy() if hasattr(policy_state, 'state') else np.empty(0, dtype=float)
             signal.update(dict(neuron_time=float(d.time),neuron_qpos=d.qpos.copy(),observation=observation,
-                        reservoir_state=policy_state.state.copy(),reservoir_delta=policy_state.state-previous_state,
+                        reservoir_state=current_state,reservoir_delta=current_state-previous_state,
                         esn_action=predicted,applied_action=applied.copy(),
                         selector_pulse_active=pulse_active,
                         prior_contact_peak=interval_peak.copy(),prior_contact_impulse=interval_impulse.copy()))
@@ -372,7 +406,7 @@ def run(a):
             placement_hold=placement_hold+.04 if task.index==7 and supported and near and slow else 0.
         records.append(dict(time=float(d.time),qpos=d.qpos.copy(),qvel=d.qvel.copy(),ctrl=d.ctrl.copy(),
                             mocap_pos=d.mocap_pos.copy(),mocap_quat=d.mocap_quat.copy(),
-                            hand=d.xpos[env._hand_id].copy(),ball=d.xpos[ball].copy(),ball_velocity=d.qvel[ball_dof:ball_dof+3].copy(),cup=d.xpos[cup].copy(),stage=task.index,object_position=d.xpos[env._target_body_id].copy(),**signal))
+                            hand=d.xpos[env._hand_id].copy(),ball=d.xpos[ball].copy(),ball_velocity=d.qvel[ball_dof:ball_dof+3].copy(),cup=d.xpos[cup].copy() if cup>=0 else np.zeros(3),stage=task.index,object_position=d.xpos[env._target_body_id].copy(),**signal))
         if step_index%25==0:
             progress=dict(time_s=float(d.time),stage=task.names[task.index],position_error_m=signal.get('task_position_error_m'),
                           external_penetration_mm=1000*stats['max_external_penetration_m'])
@@ -405,7 +439,7 @@ def run(a):
     cup_supported=False
     for i in range(d.ncon):
         c=d.contact[i]
-        if {int(c.geom1),int(c.geom2)}=={cup_base,desk}:
+        if cup_base>=0 and {int(c.geom1),int(c.geom2)}=={cup_base,desk}:
             f=np.zeros(6);mujoco.mj_contactForce(m,d,i,f);cup_supported=cup_supported or f[0]>.05
     bounce=bool(incoming is not None and incoming[1]>.05 and any(v[1]<-.05 for v in bounce_samples))
     separation=float(np.linalg.norm(d.xpos[ball]-first_ball_pos)) if first_ball_pos is not None else None
@@ -415,13 +449,17 @@ def run(a):
         # contract: the cup and pillar must each receive a real force-bearing
         # brush.  Formal penetration and task gates remain unchanged.
         required=('ball','person_hand','rod','cup','office_v5_pillar')
+    if (bool(getattr(a,'combined_thick_corner_pillar_v1',False)) or bool(getattr(a,'combined_thick_corner_pillar_v2',False)) or bool(getattr(a,'combined_thick_corner_pillar_v3',False)) or bool(getattr(a,'combined_thick_corner_pillar_v4',False))) and a.events=='all':
+        # Single-obstacle successor to combined-demo: the cup is omitted;
+        # pillar, ball, hand and sustained rod contact remain auditable.
+        required=('ball','person_hand','rod','office_v5_pillar')
     contact_ok=all(stats['events'].get(k,{}).get('duration_s',0)>(.0002 if k=='ball' else .4) for k in required)
-    cup_valid=bool(cup_supported and np.linalg.norm(d.cvel[cup,3:])<.02 and stats['cup_shift_m']<.02 and stats['cup_tilt_deg']<10.)
+    cup_valid=(True if cup<0 else bool(cup_supported and np.linalg.norm(d.cvel[cup,3:])<.02 and stats['cup_shift_m']<.02 and stats['cup_tilt_deg']<10.))
     result=dict(purpose='frozen_policy_office_complex_evaluation' if esn else 'scene_development_acceptance_no_policy_training',arguments=vars(a),fixture=flags,
       stats=stats,ball_initial_velocity=[0,a.ball_speed if a.events in ('all','ball') else 0,0],
       ball_launch_time_s=ball_launch_time_s,ball_actuated_after_reset=bool(ball_launch_time_s > 0.0),
       ball_incoming_velocity=incoming,ball_rebound=bounce,ball_final_separation_m=separation,
-      cup_supported=cup_supported,cup_final_speed=float(np.linalg.norm(d.cvel[cup,3:])),
+      cup_supported=cup_supported,cup_present=bool(cup>=0),cup_final_speed=float(np.linalg.norm(d.cvel[cup,3:])) if cup>=0 else None,
       placement_destination=task.destination if a.task=='pick_place' else None,
       placement_support_geoms=[mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_GEOM,g) for g in (task.support_geoms if a.task=='pick_place' else ())],
       initial_geometry_valid=True,physical_valid=abort_reason is None and stats['max_external_penetration_m']<=.0002,
@@ -434,6 +472,12 @@ def run(a):
       source_sha256={name:hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest() for name in
         ('office_complex_scene_v5_20260917.py','validate_office_apparatus_v5_20260917.py','audit_office_complex_scene_v5_20260917.py')})
     result['controller']='existing kinematic WBC '+a.task+', unlocked joints, zero learned residual'
+    if rod_run is not None:
+        candidate=dict(first_s=rod_run['first_s'],last_s=rod_run['last_s'],duration_s=rod_run['duration_s'],
+                       hand_xy_displacement_m=float(np.linalg.norm(rod_run['last_xy']-rod_run['start_xy'])))
+        longest=stats['contact_diagnostics']['rod_longest_run']
+        if longest is None or candidate['duration_s']>longest['duration_s']:
+            stats['contact_diagnostics']['rod_longest_run']=candidate
     result['task_events']=task_events
     result['physics_resolution']=dict(base_dt_s=a.dt,initial_refinement_dt_s=refinement,
         refinement_until_s=refine_until if refinement is not None else None,
@@ -453,7 +497,8 @@ def run(a):
         hybrid_vmc_blend=hybrid_blend,
         policy_contract=policy_contract,observation_dim=policy_observation_dim,
         memory_ablation=memory_ablation,
-        reservoir_size=int(getattr(esn,'obj',esn).state.size) if esn is not None else None,policy_hz=25,
+        reservoir_size=(int(getattr(getattr(esn,'obj',esn),'state').size)
+                        if esn is not None and hasattr(getattr(esn,'obj',esn),'state') else 0),policy_hz=25,
         state_semantics='post-update leaky reservoir state, before physics step; fixed unit ordering',
         contact_semantics='prior_contact_* covers the preceding physics interval; contact truth is diagnostics ONLY',
         contact_keys=contact_keys,force_truth_in_actor=False,weights_changed=False)
@@ -502,6 +547,14 @@ if __name__=='__main__':
                    help='Development-only: combined cup/pillar contact plus corner placement route')
     p.add_argument('--combined-contact-v2',action='store_true',
                    help='Registered combined fixture with cup/pillar on the audited carry/retreat path')
+    p.add_argument('--combined-thick-corner-pillar-v1',action='store_true',
+                   help='Development fixture: delayed ball, one pillar, sustained rod rub and thick-corner placement')
+    p.add_argument('--combined-thick-corner-pillar-v2',action='store_true',
+                   help='Independent development fixture: visible pillar and corner moved into the measured lift corridor')
+    p.add_argument('--combined-thick-corner-pillar-v3',action='store_true',
+                   help='Independent development fixture: local thick-corner face contacts the payload during lift')
+    p.add_argument('--combined-thick-corner-pillar-v4',action='store_true',
+                   help='Independent development fixture: unobstructed ball lane with a lift-side corner face')
     p.add_argument('--relaxed-pillar',action='store_true',
                    help='Development-only: reduce pillar radius/friction/compliance for a registered diagnostic')
     p.add_argument('--seed',type=int,default=2026091751);p.add_argument('--variant',type=int,default=0)

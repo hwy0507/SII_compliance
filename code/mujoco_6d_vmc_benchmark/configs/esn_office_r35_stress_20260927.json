@@ -1,0 +1,14 @@
+{
+  "purpose":"One fixed-budget readout data aggregation candidate; all six developer conditions reused as explicit regression, not blind validation",
+  "training":"Same seed20260927, same128 axis-separated reservoir, original96 synthetic histories/split,3200 nonlinear updates, original5 plus all6 R34 and all3 reset histories, same teacher and importance12, same output_gain.5",
+  "budget":"One trained candidate, six full55s regressions, no best-checkpoint selection and no extra gain search",
+  "physics":"Unchanged gate.2mm and task/exposure gates; initial.2s at1.5625us then50us, original collision algorithm",
+  "jobs":[
+    {"id":"r35_original","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--esn-model","models/r35/model.npz","--esn-mode","control"]},
+    {"id":"r35_rod_start7","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","7","--esn-model","models/r35/model.npz","--esn-mode","control"]},
+    {"id":"r35_rod_start9","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","9","--esn-model","models/r35/model.npz","--esn-mode","control"]},
+    {"id":"r35_rod_hold6","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-hold","6","--esn-model","models/r35/model.npz","--esn-mode","control"]},
+    {"id":"r35_shift_plus","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092701","--variant","2","--ball-speed","1.45","--person-stroke",".18","--rod-stroke",".225","--esn-model","models/r35/model.npz","--esn-mode","control"]},
+    {"id":"r35_hard","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24","--esn-model","models/r35/model.npz","--esn-mode","control"]}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "purpose":"R33 axis-separated reservoir development screen and short-horizon ball convergence probes",
+  "probe_policy":"Probe task success is always false. All timestep results reported; no gate edits. Require last two penetration estimates to differ by <0.001mm before a resolved numerical safety claim.",
+  "jobs":[
+    {"id":"r33_shift_plus","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--seed","2026092701","--variant","2","--ball-speed","1.45","--person-stroke",".18","--rod-stroke",".225","--esn-model","models/r33.npz","--esn-mode","control"]},
+    {"id":"r33_shift_minus","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24","--esn-model","models/r33.npz","--esn-mode","control"]},
+    {"id":"probe_original_dt25us","split":"development","arguments":["--task","pick_place","--events","ball","--duration","6.2","--physics-probe-s",".2","--dt",".000025"]},
+    {"id":"probe_original_dt3_125us","split":"development","arguments":["--task","pick_place","--events","ball","--duration","6.2","--physics-probe-s",".2","--dt",".000003125"]},
+    {"id":"probe_original_dt1_5625us","split":"development","arguments":["--task","pick_place","--events","ball","--duration","6.2","--physics-probe-s",".2","--dt",".0000015625"]},
+    {"id":"probe_hard_dt3_125us","split":"development","arguments":["--task","pick_place","--events","ball","--duration","6.2","--physics-probe-s",".2","--dt",".000003125","--seed","2026092702","--variant","-2","--ball-speed","1.85"]},
+    {"id":"probe_hard_dt1_5625us","split":"development","arguments":["--task","pick_place","--events","ball","--duration","6.2","--physics-probe-s",".2","--dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85"]}
+  ]
+}

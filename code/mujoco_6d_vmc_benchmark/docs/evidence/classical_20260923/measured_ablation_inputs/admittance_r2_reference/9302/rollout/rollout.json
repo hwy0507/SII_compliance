@@ -1,0 +1,907 @@
+{
+  "scene": {
+    "kind": "push",
+    "yaw": 0.0,
+    "shift": 0.0,
+    "along": 0.0,
+    "width": 0.05,
+    "cup_mass": 0.3,
+    "ball_speed": 1.5,
+    "ball_mass": 0.2,
+    "ball_angle": 0.0,
+    "ball_height_offset": 0.0,
+    "ball_vertical_speed": 1.3,
+    "ball_target_x": 0.54,
+    "ball_target_y": 0.0,
+    "ball_target_z": 0.6,
+    "ball_radius": 0.06,
+    "ball_shell": 0.005,
+    "ball_contact_time": 0.008,
+    "ball_contact_damping": 0.75,
+    "push_angle": 0.1,
+    "push_height": 0.585,
+    "push_stroke": 0.18,
+    "push_target_x": 0.57,
+    "push_target_y": 0.0,
+    "corner_height": 0.7,
+    "corner_friction": 0.2,
+    "payload_mass": 0.115,
+    "seed": 9302
+  },
+  "controller": "cartesian_admittance_reference_v2",
+  "success": false,
+  "grasp_lift_success": true,
+  "cup_safe": true,
+  "cup_stable": true,
+  "cup_support_contact": false,
+  "real_contact": true,
+  "invalid_physics": false,
+  "upstream_contact": false,
+  "contact": {
+    "peak_force_n": 233.31851483936367,
+    "all_external_peak_force_n": 233.31851483936367,
+    "peak_body_resultant_n": 233.31851483936367,
+    "max_penetration_m": 0.00021079758015802035,
+    "all_external_max_penetration_m": 0.00021079758015802035,
+    "grasp_penetration_m": 2.5642285550112333e-05,
+    "duration_s": 8.868599999986001,
+    "first_s": 3.1419999999993466,
+    "last_s": 16.586099999988836,
+    "first_stage": 3,
+    "first_stage_name": "LOADED LIFT",
+    "first_payload_held": true,
+    "contact_path_direction": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "pairs": [
+      [
+        "push_back_guard",
+        "fr3_link6_collision"
+      ],
+      [
+        "push_back_guard",
+        "hand_collision"
+      ],
+      [
+        "push_rod_geom",
+        "fr3_link7_collision"
+      ],
+      [
+        "push_rod_geom",
+        "hand_collision"
+      ]
+    ],
+    "robot_geoms": [
+      "fr3_link6_collision",
+      "hand_collision",
+      "fr3_link7_collision"
+    ],
+    "robot_bodies": [
+      "fr3_link6",
+      "fr3_link7",
+      "hand"
+    ],
+    "force": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "impulse_vector_ns": [
+      -8.852127745187225,
+      -14.910787447505589,
+      -33.07969801408827
+    ],
+    "contact_impulse_ns": 53.070371511848755,
+    "ball_core_min_distance_m": null,
+    "other_contacts": []
+  },
+  "events": [
+    {
+      "t": 0.7999999999999201,
+      "stage": 1
+    },
+    {
+      "t": 2.040000000001915,
+      "stage": 2
+    },
+    {
+      "t": 2.6800000000004234,
+      "stage": 3
+    }
+  ],
+  "requested_event_stage": "loaded_lift",
+  "requested_event_stage_index": 3,
+  "fixture_triggered": true,
+  "fixture_trigger_time_s": 2.6800000000004234,
+  "ball_launched": false,
+  "ball_launch_state": null,
+  "final_stage": 3,
+  "endpoint_error_m": 0.015444899585265112,
+  "lift_m": 0.23909631808759096,
+  "cup_shift_m": 0.0,
+  "cup_tilt_deg": 0.0,
+  "impact_metrics": {
+    "max_lateral_displacement_m": 0.03942852341356014,
+    "max_total_displacement_m": 0.052020639019450705,
+    "recovery_time_s": null,
+    "contact_impulse_ns": 37.34913879361985,
+    "accumulated_contact_impulse_ns": 53.070371511848755
+  },
+  "push_metrics": {
+    "contact_sample_fraction": 0.7214765100671141,
+    "normal_yield_m": 0.038806724930600486,
+    "tangential_travel_m": 0.04615864375062817,
+    "path_progress_m": 0.044251216356371526,
+    "stage_advanced_during_contact": false,
+    "error_reduction_during_contact_m": 0.040223435710425165
+  },
+  "payload_top_support": false,
+  "peak_torque_nm": 35.969932624477174,
+  "speed_p95_mps": 0.0663413696462263,
+  "duration_s": 24.00000000023495,
+  "arguments": {
+    "scene": "push",
+    "output": "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/baseline_impedance_admittance_20260923/measured_campaign/measured28/admittance_r2_reference/9302/rollout/rollout",
+    "menagerie": "/home/arm1/vmc_mujoco_runtime/mujoco_menagerie",
+    "model": "admittance_reference_in_memory",
+    "duration": 24.0,
+    "nominal_speed": 0.08,
+    "mixture": 0.0,
+    "seed": 9302,
+    "yaw": 0.0,
+    "shift": 0.0,
+    "width": 0.05,
+    "along": null,
+    "cup_mass": 0.3,
+    "ball_mass": 0.2,
+    "ball_speed": 1.5,
+    "ball_angle": 0.0,
+    "ball_height_offset": 0.0,
+    "ball_vertical_speed": 1.3,
+    "ball_radius": 0.06,
+    "ball_shell": 0.005,
+    "ball_contact_time": 0.008,
+    "ball_contact_damping": 0.75,
+    "ball_target_x": null,
+    "ball_target_y": null,
+    "ball_target_z": null,
+    "push_hold": 1000000.0,
+    "push_angle": 0.1,
+    "push_height": 0.585,
+    "push_force": 12.0,
+    "push_target_x": 0.57,
+    "push_target_y": null,
+    "push_stroke": 0.18,
+    "push_press": 0.5,
+    "push_retract": 1.0,
+    "corner_height": 0.7,
+    "corner_friction": 0.2,
+    "payload_mass": 0.115,
+    "event_stage": "loaded_lift",
+    "event_delay": 0.0,
+    "stiffness": 200.0,
+    "tangent_speed": 0.0,
+    "damping": 20.0,
+    "force_on": 0.5,
+    "contact_tau": 0.12,
+    "release_tau": 0.45,
+    "memory_tau": 1.2,
+    "teacher_force_source": "estimated",
+    "teacher_profile": "memory",
+    "force_target": 1.0,
+    "normal_gain": 0.015,
+    "dt": 0.0001,
+    "settle_only": false,
+    "render": false
+  },
+  "teacher_config": {
+    "stiffness": 200.0,
+    "damping": 20.0,
+    "force_on": 0.5,
+    "tangent_speed": 0.0,
+    "contact_tau": 0.12,
+    "release_tau": 0.45,
+    "memory_tau": 1.2,
+    "profile": "memory",
+    "force_target": 1.0,
+    "normal_gain": 0.015
+  },
+  "contract": "proprio48_action7_6d_v1",
+  "cup_initial_position": null,
+  "simulation_timestep_s": 5e-05,
+  "student_mixture": 0.0,
+  "teacher_called": false,
+  "inputs": "q7,qdot7,nominal_twist6,pose_error6,twist_error6,estimated_joint_load7,estimated_wrench6,commanded_path_direction3",
+  "source_sha256": {
+    "run_primitive_teacher_v7_20260917.py": "c451135eb4d2bd799bf6a587895d1a2df6a749f8f2a91e41cb45032d7ff0258b",
+    "primitive_contact_scene_v7_20260917.py": "5abe637940618c687c12c37d72b5beebcc1253ff89b7df2244cc8d502a5d5517",
+    "contact_memory_vmc_20260916.py": "b9f3e8003a43d772d65289ccb21a52a8b73d20d150e4b0ef8060532abbecdd89",
+    "run_panel_push_20260920.py": "851fd1639a68f0ba4e95901adb1c485f65471ba614328d6318eac43b5518f19d",
+    "run_vmc_6d_constrained_push_20260918.py": "e668dd8cc5942a391785f39ba36c8b249438bb58967159b34999b6b395bfb0c5",
+    "workstation_scene_20260920.py": "c2224a793cb423da362982b5724a77c651b9f50d75631e5498a3776b0ce720b4",
+    "run_panel_admittance_reference_20260923.py": "6260f1352946b3daa1f4755164b43b6b7b6e5880f8540ac964efdd1a27ff45fc",
+    "admittance_reference_core_20260923.py": "8adbdba1a3be517890007ec171629f7727b7f4220d4cc6a10202eaf9ef77f3ea",
+    "fixed_panda_wbc.py": "56b6a3617f61894536619df226e7e980899b41e7291e678c17d1c525956d003d",
+    "audited_velocity_env.py": "ad7f32ba692592cf5c29d3f1b632de50dd3323cb92edb08e73d933476114b1e6",
+    "wbc_velocity_residual_core.py": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+    "haptic_vmc_teacher_20260916.py": "811d8b4f8c6281d5df204f8c7ce9ccef72470cbf074cf367b5e68a00ad27b1ad"
+  },
+  "panel_audit": {
+    "native_ccd_enabled": false,
+    "initial_overlap": [],
+    "physical_panels": [
+      {
+        "name": "push_back_guard",
+        "position_m": [
+          0.4925,
+          -0.1175,
+          0.63
+        ],
+        "half_size_m": [
+          0.007500000000000007,
+          0.032499999999999994,
+          0.07999999999999996
+        ]
+      },
+      {
+        "name": "push_front_guard",
+        "position_m": [
+          0.6025,
+          -0.1175,
+          0.63
+        ],
+        "half_size_m": [
+          0.007500000000000007,
+          0.032499999999999994,
+          0.07999999999999996
+        ]
+      }
+    ],
+    "offline_translation_probes": [
+      {
+        "dx_m": -0.06,
+        "dz_m": 0.0,
+        "ik_error_m": 1.651622429234242e-08,
+        "blocked": true,
+        "pairs": [
+          {
+            "pair": [
+              "push_back_guard",
+              "hand_collision"
+            ],
+            "depth_m": 0.017112638773747697
+          }
+        ]
+      },
+      {
+        "dx_m": 0.0,
+        "dz_m": 0.0,
+        "ik_error_m": 0.0,
+        "blocked": false,
+        "pairs": []
+      },
+      {
+        "dx_m": 0.06,
+        "dz_m": 0.0,
+        "ik_error_m": 3.4371795900567225e-08,
+        "blocked": true,
+        "pairs": [
+          {
+            "pair": [
+              "push_front_guard",
+              "hand_collision"
+            ],
+            "depth_m": 0.018989691862018293
+          }
+        ]
+      },
+      {
+        "dx_m": -0.06,
+        "dz_m": -0.12,
+        "ik_error_m": 3.309668453566582e-08,
+        "blocked": true,
+        "pairs": [
+          {
+            "pair": [
+              "push_back_guard",
+              "hand_collision"
+            ],
+            "depth_m": 0.006204567077921225
+          },
+          {
+            "pair": [
+              "ws_push_back_guard_bracket",
+              "hand_collision"
+            ],
+            "depth_m": 0.012476590410090128
+          }
+        ]
+      },
+      {
+        "dx_m": 0.0,
+        "dz_m": -0.12,
+        "ik_error_m": 2.403808373417238e-08,
+        "blocked": false,
+        "pairs": []
+      },
+      {
+        "dx_m": 0.06,
+        "dz_m": -0.12,
+        "ik_error_m": 1.5005247967668942e-08,
+        "blocked": true,
+        "pairs": [
+          {
+            "pair": [
+              "push_front_guard",
+              "hand_collision"
+            ],
+            "depth_m": 0.014046207707687828
+          },
+          {
+            "pair": [
+              "ws_push_front_guard_bracket",
+              "hand_collision"
+            ],
+            "depth_m": 0.018859506759854972
+          }
+        ]
+      },
+      {
+        "dx_m": -0.06,
+        "dz_m": 0.12,
+        "ik_error_m": 4.337201878696774e-08,
+        "blocked": false,
+        "pairs": []
+      },
+      {
+        "dx_m": 0.0,
+        "dz_m": 0.12,
+        "ik_error_m": 3.0659129870242806e-07,
+        "blocked": false,
+        "pairs": []
+      },
+      {
+        "dx_m": 0.06,
+        "dz_m": 0.12,
+        "ik_error_m": 0.013997982474926462,
+        "blocked": true,
+        "pairs": [
+          {
+            "pair": [
+              "push_front_guard",
+              "hand_collision"
+            ],
+            "depth_m": 0.006177448842856655
+          },
+          {
+            "pair": [
+              "push_front_guard",
+              "hand_collision"
+            ],
+            "depth_m": 0.006177448842856655
+          }
+        ]
+      }
+    ],
+    "contacts": {
+      "office_floor": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "office_robot_pedestal": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "office_desk_top": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "office_leg_0.34_-0.34": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "office_leg_0.34_0.34": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "office_leg_0.82_-0.34": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "office_leg_0.82_0.34": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "push_back_guard": {
+        "first_s": 4.99409999999503,
+        "last_s": 15.226799999971183,
+        "duration_s": 1.5909500000011452,
+        "peak_point_force_n": 107.78935032709207,
+        "max_penetration_m": 4.5670155001665305e-06,
+        "bodies": [
+          "fr3_link6",
+          "hand"
+        ],
+        "peak_resultant_force_n": 107.78935032709207,
+        "peak_sum_point_force_n": 115.61770979131649,
+        "resultant_impulse_ns": 13.709996544841564,
+        "sum_point_impulse_ns": 14.048698487100964
+      },
+      "push_front_guard": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_push_back_guard_foot": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_push_back_guard_post": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_push_back_guard_bracket": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_push_front_guard_foot": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_push_front_guard_post": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_push_front_guard_bracket": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_tray_y_-1": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_tray_x_-1": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_tray_y_1": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_tray_x_1": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_actuator_floor_base": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_actuator_column": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_motor_housing": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_linear_rail_-1": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_linear_rail_1": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "target_object_geom": {
+        "first_s": 2.1779000000015936,
+        "last_s": 24.00000000023495,
+        "duration_s": 21.819500000162567,
+        "peak_point_force_n": 29.926349117229517,
+        "max_penetration_m": 2.5642285550112333e-05,
+        "bodies": [
+          "left_finger",
+          "right_finger"
+        ],
+        "peak_resultant_force_n": 130.40586204040665,
+        "peak_sum_point_force_n": 131.98358805668886,
+        "resultant_impulse_ns": 25.7219710863215,
+        "sum_point_impulse_ns": 437.82406178774863
+      },
+      "push_rod_geom": {
+        "first_s": 3.1419999999993466,
+        "last_s": 16.586099999988836,
+        "duration_s": 8.675499999986451,
+        "peak_point_force_n": 233.3185148393637,
+        "max_penetration_m": 0.00021079758015802035,
+        "bodies": [
+          "fr3_link7",
+          "hand"
+        ],
+        "peak_resultant_force_n": 233.31851483936367,
+        "peak_sum_point_force_n": 233.3185148393637,
+        "resultant_impulse_ns": 47.21161605247721,
+        "sum_point_impulse_ns": 47.38864623242326
+      },
+      "ws_moving_carriage": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "ws_carriage_coupler": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      },
+      "moving_obstacle_geom": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_point_force_n": 0.0,
+        "max_penetration_m": 0.0,
+        "bodies": [],
+        "peak_resultant_force_n": 0.0,
+        "peak_sum_point_force_n": 0.0,
+        "resultant_impulse_ns": 0.0,
+        "sum_point_impulse_ns": 0.0
+      }
+    },
+    "contact_names": [
+      "office_floor",
+      "office_robot_pedestal",
+      "office_desk_top",
+      "office_leg_0.34_-0.34",
+      "office_leg_0.34_0.34",
+      "office_leg_0.82_-0.34",
+      "office_leg_0.82_0.34",
+      "push_back_guard",
+      "push_front_guard",
+      "ws_push_back_guard_foot",
+      "ws_push_back_guard_post",
+      "ws_push_back_guard_bracket",
+      "ws_push_front_guard_foot",
+      "ws_push_front_guard_post",
+      "ws_push_front_guard_bracket",
+      "ws_tray_y_-1",
+      "ws_tray_x_-1",
+      "ws_tray_y_1",
+      "ws_tray_x_1",
+      "ws_actuator_floor_base",
+      "ws_actuator_column",
+      "ws_motor_housing",
+      "ws_linear_rail_-1",
+      "ws_linear_rail_1",
+      "target_object_geom",
+      "push_rod_geom",
+      "ws_moving_carriage",
+      "ws_carriage_coupler",
+      "moving_obstacle_geom"
+    ],
+    "nq": 18,
+    "nv": 17,
+    "nu": 10,
+    "final_rod_position_m": 0.1800000000000229,
+    "final_rod_command_m": 0.18,
+    "final_hand_position_m": [
+      0.5421195110437026,
+      -0.007616033413944257,
+      0.7721000253074533
+    ],
+    "final_bilateral_grasp": true,
+    "final_rod_gap_m": 0.056108408649135084
+  },
+  "accepted_panel_demo": false,
+  "accepted_unified_teacher": false,
+  "controller_6d_config": {
+    "stiffness_6d": [
+      520,
+      360,
+      1400,
+      12,
+      10,
+      14
+    ],
+    "damping_6d": [
+      32,
+      27,
+      62,
+      3,
+      2.7,
+      3.3
+    ],
+    "mass_6d": [
+      0.5,
+      0.5,
+      0.8,
+      0.06,
+      0.06,
+      0.08
+    ],
+    "wrench_limit_6d": [
+      35,
+      35,
+      50,
+      3,
+      3,
+      3
+    ],
+    "deadband_6d": [
+      0.2,
+      0.2,
+      0.2,
+      0.03,
+      0.03,
+      0.03
+    ],
+    "velocity_limit_6d": [
+      0.12,
+      0.12,
+      0.16,
+      0.55,
+      0.55,
+      0.65
+    ],
+    "offset_limit_6d": [
+      0.18,
+      0.18,
+      0.18,
+      0.35,
+      0.35,
+      0.35
+    ],
+    "action_limit_6d": [
+      0.16,
+      0.16,
+      0.2,
+      0.6,
+      0.6,
+      0.6
+    ],
+    "offset_tracking_gain_6d": 1.4,
+    "filter_tau": 0.04,
+    "axis_rotation_rpy": [
+      0.35,
+      0,
+      -0.25
+    ]
+  },
+  "experiment_contract": {
+    "reference": "unified_6d_vmc_teacher_20260921",
+    "observation": "48D proprioception including encoder-derived 6D wrench",
+    "persistent_rod": true,
+    "lift_goal_z_m": 0.785,
+    "lift_nominal_scale": 0.8,
+    "panel_config": {
+      "layout": "raised_hand_rim",
+      "pad_bottom_z": 0.55,
+      "pad_top_z": 0.71,
+      "pad_lower_y": -0.15,
+      "pad_upper_y": -0.085,
+      "front_inner_x": 0.595,
+      "back_inner_x": 0.5,
+      "pad_thickness": 0.015,
+      "end_effector_only": false,
+      "rod_height_m": 0.585,
+      "workstation": true
+    }
+  },
+  "admittance_reference": {
+    "version": "shifted_wbc_reference_r2_snapshot_aligned",
+    "parameters": {
+      "classical_controller": "admittance",
+      "stiffness": 95.0,
+      "rot_stiffness": 4.0,
+      "mass": 0.55,
+      "inertia": 0.065,
+      "zeta": 1.0
+    },
+    "equations": "M*zdd+D*zd+K*z=w_hat; residual=s*(WBC(target+z,zd/s)-WBC(target,0))",
+    "control_period_s": 0.04,
+    "nominal_reference_modified": false,
+    "controller_contact_truth": false,
+    "rotational_model": "bounded local world rotation-vector M-D-K",
+    "kinematics_source": "read-only arm q/J/hand pose from the same nominal-WBC control snapshot",
+    "safety": "unchanged 7D action filter, IK, joint velocity/torque and slew limits",
+    "nominal_scale_unobservable_steps": 0,
+    "trace": "admittance_reference_state.npz",
+    "limitation": "sample-held Cartesian difference with repeated damped-IK projection; not exact joint-space reference replacement"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "purpose":"Measure pure-proprio observer error without modifying actor, task, material or gate; truth is read-only diagnostic output",
+  "budget":"Two full55s R34 trajectories (original and hard); exact original rollout parity required before using observer conclusions",
+  "jobs":[
+    {"id":"r34_original_observer","split":"development","entrypoint":"tools/audit_office_load_observer_20260927.py","arguments":["--condition","original"]},
+    {"id":"r34_hard_observer","split":"development","entrypoint":"tools/audit_office_load_observer_20260927.py","arguments":["--condition","hard"]}
+  ],
+  "no_leakage":"Constraint/contact/friction forces and stage used only in sidecar/audit aggregation; observer inputs and ESN proprio48 remain unchanged. Not a new success count or trained candidate."
+}

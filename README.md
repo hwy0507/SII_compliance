@@ -1,5 +1,23 @@
 # Data-Driven Compliance Control for FR3
 
+## 2026-09-30 当前状态与更新记录
+
+每轮文件更新统一记录于 [UPDATE_LOG.md](UPDATE_LOG.md)；本仓库的提交与推送约定见
+[AGENTS.md](AGENTS.md)。下面的 9/29 handoff 保留为历史版本入口。
+
+当前先修正 VMC teacher，再继续纯 ESN。已完成两轮共 12 条有效开发回合和独立动作／物理子步
+审计。候选 `velocity025_stiff2` 在厚桌角放置开发回归中 task/strict 均通过；在冻结的综合单柱
+v4 中完成放置和撤退，但缺少要求的柱接触，因此 **task=true、strict=false**。该综合开发回合
+waypoint RMSE 为 37.406 mm，峰值实际力矩 48.127 Nm，峰值末端速度 0.070574 m/s，
+外部穿透 0.144922 mm；放置阶段动作差分 RMS 比配对原版下降约 86.3%。
+
+这些是 MuJoCo 3.11、`dt=1e-4` 的 teacher 开发结果，不是 ESN 的正式泛化成功。特化条件覆盖、
+综合 strict、`dt=5e-5` 正式验证及新 ESN 蒸馏仍未完成。详见
+[teacher 修正报告](code/mujoco_6d_vmc_benchmark/docs/TEACHER_REPAIR_20260930.md)。
+原始大轨迹、编译模型及视频保留本地，GitHub 提供源码、配置、报告与
+[发布证据和产物索引](code/mujoco_6d_vmc_benchmark/docs/evidence/publication_20260930/README.md)；
+仅 clone 仓库不包含完整实验数据。
+
 ## 2026-09-29 Office-v5 Handoff
 
 The current office-v5 ESN work is documented for fair baseline comparison in

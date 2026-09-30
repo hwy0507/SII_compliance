@@ -1,0 +1,216 @@
+{
+  "parameter6": {
+    "mode": "parameter6",
+    "progress": {
+      "status": "training",
+      "pid": 472046,
+      "timesteps": 8000,
+      "elapsed_s": 1804.3474078178406,
+      "resources": {
+        "rss_gib": 2.345794677734375,
+        "available_gib": 114.57531356811523
+      },
+      "cuda_allocated_mib": 64.71728515625
+    },
+    "checkpoints": [
+      {
+        "timesteps": 2048,
+        "updates": 96,
+        "model_sha256": "9c30eab3b01527f33bc550193d2037f04a4911b63202c941bc550babd9d309d0",
+        "normalizer_sha256": "217817f5f9516be7c9359349265316c87db1fcd3e316b097acdbb36b60fbfa59",
+        "metadata_sha256": "0c7e08b75aa05d7d64637171dec4cf4cad3d42ef99020dd06bf79c1a06b5c02a"
+      },
+      {
+        "timesteps": 4096,
+        "updates": 192,
+        "model_sha256": "9b19327e6168d66062cb6f3b2dc44770bff267d77a62b6c5e6487167e025489d",
+        "normalizer_sha256": "6958f57c9ca838b5d8967dcf46734ed9d6868b1fd016ca5f3492e8d9be54b138",
+        "metadata_sha256": "25dd215f826b70284c12b126fc7134e8e570af49049da4fd9ad6dd4f380045a6"
+      },
+      {
+        "timesteps": 6144,
+        "updates": 288,
+        "model_sha256": "01b8c929e07d7f4cd1b3872601572b9640053dd46ff4d01fe6c43374983f9c89",
+        "normalizer_sha256": "88b026d1a4bb7b4c5a02a1701755e62f5c93230d1bd2781873be021ffdddbc69",
+        "metadata_sha256": "2834c5c605c4d0fbb307f1db233a574943ae8ffb09108a937cfa8fc8de58bac9"
+      }
+    ]
+  },
+  "direct7": {
+    "mode": "direct7",
+    "progress": {
+      "status": "complete",
+      "mode": "direct7",
+      "pid": 472045
+    },
+    "checkpoints": [
+      {
+        "timesteps": 2048,
+        "updates": 96,
+        "model_sha256": "3109f70dc77cc9b09db02746f3047eb8c48b76f23aa44fec8c4a09bdc68ece56",
+        "normalizer_sha256": "10caa965365c1b05cbe59396938d33e4c8b6a46cc84b0a0b6c3257a4990feed9",
+        "metadata_sha256": "c6fd343b9f79e3dacc680eda2168d9b773722a0bbb0b83a864a9bac674ec427b"
+      },
+      {
+        "timesteps": 4096,
+        "updates": 192,
+        "model_sha256": "b474769d883cee30d59364e4a0c6c71c7303447e5c472d486ddd21ad7cf2291e",
+        "normalizer_sha256": "21c669f575c45589c6621b225f8e36794f1de9fae7ffdbba526928108752066a",
+        "metadata_sha256": "9aaa9e61a5a771d9f8c3fc4589ed427ce1140ac720c69df75b94e98c215c4991"
+      },
+      {
+        "timesteps": 6144,
+        "updates": 288,
+        "model_sha256": "77702a0ab6be73ad7cb5150c149f2ba0c7036b81fc9ed297ac36ede7fd6adc48",
+        "normalizer_sha256": "573dafeb22d3589c55e2f9fd0c6e20305d7379dc213003003956b830ed2736b8",
+        "metadata_sha256": "9dc5a9adff881ba939c679c136eb605c3e155ca63c1a21580dae0229aa718164"
+      },
+      {
+        "timesteps": 8192,
+        "updates": 384,
+        "model_sha256": "07b1558bd19e37be6d3d112bacee8fb721b365785fadbe29e3bb888b024d4197",
+        "normalizer_sha256": "f2fd9398fa52c81821397efdc4de0eac56edc060815e51dfb040326301b18ef2",
+        "metadata_sha256": "364d539d4c2aedb20f424a328b541a9f9710bbee6d62e1960a43deef90da4946"
+      }
+    ],
+    "COMPLETE.json": {
+      "status": "complete",
+      "mode": "direct7",
+      "training_steps": 8192,
+      "recorded_transitions": 8192,
+      "updates": 384,
+      "normalization_frozen": true,
+      "results": {
+        "train/zero": {
+          "source_id": "push_00000",
+          "split": "train",
+          "physical_fixture": "rod",
+          "focus": "push_rod_geom",
+          "task_success": false,
+          "development_gate": false,
+          "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+          "original_teacher_checks": {
+            "task": true,
+            "physics": true,
+            "target_contact": true,
+            "rod_contact": true,
+            "release": true,
+            "no_incidental_structure_contact": true,
+            "limited_point_force": true,
+            "speed": true,
+            "no_upstream_guard_contact": true
+          },
+          "original_teacher_gate_reused": false,
+          "max_external_penetration_m": 0.00015056840509030314,
+          "focus_contact": true,
+          "peak_external_resultant_force_n": 217.61404509688546,
+          "peak_torque_nm": 31.826665184169585,
+          "speed_p95_mps": 0.05070249768166049,
+          "endpoint_error_m": 0.18766951711683086,
+          "final_stage": 3,
+          "publication_ready": false,
+          "episode_reward": -1.5107774729021282,
+          "mode": "direct7"
+        },
+        "train/ppo": {
+          "source_id": "push_00000",
+          "split": "train",
+          "physical_fixture": "rod",
+          "focus": "push_rod_geom",
+          "task_success": false,
+          "development_gate": false,
+          "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+          "original_teacher_checks": {
+            "task": true,
+            "physics": true,
+            "target_contact": true,
+            "rod_contact": true,
+            "release": true,
+            "no_incidental_structure_contact": true,
+            "limited_point_force": true,
+            "speed": true,
+            "no_upstream_guard_contact": true
+          },
+          "original_teacher_gate_reused": false,
+          "max_external_penetration_m": 4.690404166610258e-05,
+          "focus_contact": true,
+          "peak_external_resultant_force_n": 524.4516984616421,
+          "peak_torque_nm": 35.27971805345473,
+          "speed_p95_mps": 0.09394832668607464,
+          "endpoint_error_m": 0.192172885423663,
+          "final_stage": 3,
+          "publication_ready": false,
+          "episode_reward": -2.0987170737455,
+          "mode": "direct7"
+        },
+        "validation/zero": {
+          "source_id": "push_00714",
+          "split": "validation",
+          "physical_fixture": "front",
+          "focus": "push_front_guard",
+          "task_success": true,
+          "development_gate": true,
+          "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+          "original_teacher_checks": {
+            "task": true,
+            "physics": true,
+            "target_contact": true,
+            "rod_contact": true,
+            "release": true,
+            "no_incidental_structure_contact": true,
+            "limited_point_force": true,
+            "speed": true,
+            "no_upstream_guard_contact": true
+          },
+          "original_teacher_gate_reused": false,
+          "max_external_penetration_m": 8.430267597725762e-07,
+          "focus_contact": true,
+          "peak_external_resultant_force_n": 87.69776631284819,
+          "peak_torque_nm": 35.09035736482953,
+          "speed_p95_mps": 0.05984442627999419,
+          "endpoint_error_m": 0.007068123482073241,
+          "final_stage": 3,
+          "publication_ready": false,
+          "episode_reward": 2.394367178603243,
+          "mode": "direct7"
+        },
+        "validation/ppo": {
+          "source_id": "push_00714",
+          "split": "validation",
+          "physical_fixture": "front",
+          "focus": "push_front_guard",
+          "task_success": false,
+          "development_gate": false,
+          "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+          "original_teacher_checks": {
+            "task": true,
+            "physics": true,
+            "target_contact": true,
+            "rod_contact": true,
+            "release": true,
+            "no_incidental_structure_contact": true,
+            "limited_point_force": true,
+            "speed": true,
+            "no_upstream_guard_contact": true
+          },
+          "original_teacher_gate_reused": false,
+          "max_external_penetration_m": 8.366982537242956e-06,
+          "focus_contact": true,
+          "peak_external_resultant_force_n": 102.10917997548617,
+          "peak_torque_nm": 36.54664737615609,
+          "speed_p95_mps": 0.10571801962401753,
+          "endpoint_error_m": 0.017185000666258915,
+          "final_stage": 3,
+          "publication_ready": false,
+          "episode_reward": -2.5794805980225703,
+          "mode": "direct7"
+        }
+      },
+      "checkpoint_sha256": "07b1558bd19e37be6d3d112bacee8fb721b365785fadbe29e3bb888b024d4197",
+      "normalizer_sha256": "f2fd9398fa52c81821397efdc4de0eac56edc060815e51dfb040326301b18ef2",
+      "elapsed_s": 1721.7265493869781,
+      "source_unchanged": true,
+      "publication_ready": false
+    }
+  }
+}

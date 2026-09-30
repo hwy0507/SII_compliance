@@ -1,0 +1,12 @@
+{
+  "purpose": "Development-only direct transfer of selected pure DAgger3 ESN to frozen combined-v4 scene",
+  "candidate": "outputs/esn_office_joint_esn_stiff_20260929/model_exposure_dagger3_v1/best.npz",
+  "candidate_sha256": "a1af76a0f9b3471717009f5c49e56194da2624f3807cba3092796a8b31c1e1c5",
+  "split": "development",
+  "environment": "combined-contact-v2 plus corner-placement; unchanged source and gates",
+  "actor_inputs": "canonical48 pure proprioception; no contact truth, ball, event, stage, visual, distance or geometry",
+  "hybrid_vmc_blend": 0.0,
+  "jobs": [
+    {"id":"dagger3_combined_v4","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260929/model_exposure_dagger3_v1/best.npz","--esn-mode","control","--hybrid-vmc-blend","0","--combined-contact-v2","--corner-placement","--dt",".0001","--events","all","--task","pick_place","--duration","55","--ball-speed","1.7","--ball-launch-time-s","2","--person-stroke",".2","--rod-stroke",".235","--person-start","3","--rod-start","7","--rod-hold","6","--impact-refinement-dt",".0000015625"]}
+  ]
+}

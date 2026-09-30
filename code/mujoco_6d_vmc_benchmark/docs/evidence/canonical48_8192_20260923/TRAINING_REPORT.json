@@ -1,0 +1,561 @@
+{
+  "complete": {
+    "status": "complete",
+    "results": {
+      "train/zero": {
+        "source_id": "push_00000",
+        "split": "train",
+        "physical_fixture": "rod",
+        "focus": "push_rod_geom",
+        "task_success": false,
+        "development_gate": false,
+        "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+        "original_teacher_checks": {
+          "task": true,
+          "physics": true,
+          "target_contact": true,
+          "rod_contact": true,
+          "release": true,
+          "no_incidental_structure_contact": true,
+          "limited_point_force": true,
+          "speed": true,
+          "no_upstream_guard_contact": true
+        },
+        "original_teacher_gate_reused": false,
+        "max_external_penetration_m": 0.00015056827481702424,
+        "focus_contact": true,
+        "peak_external_resultant_force_n": 219.22416627460495,
+        "peak_torque_nm": 31.826665213740437,
+        "speed_p95_mps": 0.05068509222406764,
+        "endpoint_error_m": 0.18787011988211816,
+        "final_stage": 3,
+        "publication_ready": false,
+        "episode_reward": -11.114914517027328
+      },
+      "train/ppo": {
+        "source_id": "push_00000",
+        "split": "train",
+        "physical_fixture": "rod",
+        "focus": "push_rod_geom",
+        "task_success": false,
+        "development_gate": false,
+        "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+        "original_teacher_checks": {
+          "task": true,
+          "physics": true,
+          "target_contact": true,
+          "rod_contact": true,
+          "release": true,
+          "no_incidental_structure_contact": true,
+          "limited_point_force": true,
+          "speed": true,
+          "no_upstream_guard_contact": true
+        },
+        "original_teacher_gate_reused": false,
+        "max_external_penetration_m": 0.0002123297664020301,
+        "focus_contact": true,
+        "peak_external_resultant_force_n": 976.2901583439016,
+        "peak_torque_nm": 52.48596458477987,
+        "speed_p95_mps": 0.19050699483468528,
+        "endpoint_error_m": 0.2941492625297245,
+        "final_stage": 1,
+        "publication_ready": false,
+        "episode_reward": -21.882887926866882
+      },
+      "validation/zero": {
+        "source_id": "push_00714",
+        "split": "validation",
+        "physical_fixture": "front",
+        "focus": "push_front_guard",
+        "task_success": true,
+        "development_gate": true,
+        "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+        "original_teacher_checks": {
+          "task": true,
+          "physics": true,
+          "target_contact": true,
+          "rod_contact": true,
+          "release": true,
+          "no_incidental_structure_contact": true,
+          "limited_point_force": true,
+          "speed": true,
+          "no_upstream_guard_contact": true
+        },
+        "original_teacher_gate_reused": false,
+        "max_external_penetration_m": 8.428890320502918e-07,
+        "focus_contact": true,
+        "peak_external_resultant_force_n": 87.69760843430137,
+        "peak_torque_nm": 35.09028449671003,
+        "speed_p95_mps": 0.05984442627243928,
+        "endpoint_error_m": 0.007068203031775809,
+        "final_stage": 3,
+        "publication_ready": false,
+        "episode_reward": 3.2266948876097317
+      },
+      "validation/ppo": {
+        "source_id": "push_00714",
+        "split": "validation",
+        "physical_fixture": "front",
+        "focus": "push_front_guard",
+        "task_success": false,
+        "development_gate": false,
+        "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+        "original_teacher_checks": {
+          "task": true,
+          "physics": true,
+          "target_contact": true,
+          "rod_contact": true,
+          "release": true,
+          "no_incidental_structure_contact": true,
+          "limited_point_force": true,
+          "speed": true,
+          "no_upstream_guard_contact": true
+        },
+        "original_teacher_gate_reused": false,
+        "max_external_penetration_m": 7.422047204057932e-05,
+        "focus_contact": true,
+        "peak_external_resultant_force_n": 1138.2420062990693,
+        "peak_torque_nm": 57.14113700266206,
+        "speed_p95_mps": 0.30461104250190113,
+        "endpoint_error_m": 0.0944266151482291,
+        "final_stage": 0,
+        "publication_ready": false,
+        "episode_reward": -12.266086622888086
+      }
+    },
+    "elapsed_s": 1548.2235865592957,
+    "normalization_frozen": true,
+    "checkpoint_sha256": "611323476636c3a398bc465b11c4bf51c0dc6fab280fe9067c7babc66901f16e",
+    "publication_ready": false,
+    "resources": {
+      "rss_gib": 2.3242835998535156,
+      "available_gib": 9.322074890136719
+    }
+  },
+  "checkpoint_metadata": {
+    "num_timesteps": 8192,
+    "_n_updates": 384,
+    "seed": 20260923
+  },
+  "archived_train_samples": 8192,
+  "training_episodes": [
+    {
+      "episode": "episode_00000",
+      "samples": 600,
+      "duration_s": 24.00000000023495,
+      "task_success": false,
+      "invalid_physics": false,
+      "upstream_contact": false,
+      "lift_m": 0.25253634613167425,
+      "endpoint_error_m": 0.007149209801016222,
+      "reward_total": -4.53488868841574,
+      "reward_terms": {
+        "position": -5.6468369523637865,
+        "rotation": -0.08247448525215288,
+        "estimated_force": -0.10328081822816323,
+        "action": -0.14644393714762052,
+        "action_change": -0.05585249542401705,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "phase_counts": {
+        "0": 73,
+        "1": 55,
+        "2": 9,
+        "3": 463
+      },
+      "slowdown_mean": 0.06504005385446363,
+      "slowdown_zero_fraction": 0.44333333333333336
+    },
+    {
+      "episode": "episode_00001",
+      "samples": 600,
+      "duration_s": 24.00000000023495,
+      "task_success": true,
+      "invalid_physics": false,
+      "upstream_contact": false,
+      "lift_m": 0.2547529903614077,
+      "endpoint_error_m": 0.014181226491575253,
+      "reward_total": -8.702734139155739,
+      "reward_terms": {
+        "position": -14.583714094835369,
+        "rotation": -0.23889560470578858,
+        "estimated_force": -0.17242225574700537,
+        "action": -0.1542206441910026,
+        "action_change": -0.05348153967657321,
+        "progress": 1.5,
+        "terminal": 5.0
+      },
+      "phase_counts": {
+        "0": 18,
+        "1": 39,
+        "2": 9,
+        "3": 534
+      },
+      "slowdown_mean": 0.0539725098425212,
+      "slowdown_zero_fraction": 0.5083333333333333
+    },
+    {
+      "episode": "episode_00002",
+      "samples": 600,
+      "duration_s": 24.00000000023495,
+      "task_success": false,
+      "invalid_physics": false,
+      "upstream_contact": false,
+      "lift_m": 0.2529740476242049,
+      "endpoint_error_m": 0.01449217257203372,
+      "reward_total": -5.980732810367511,
+      "reward_terms": {
+        "position": -6.891261867719544,
+        "rotation": -0.21469684625105998,
+        "estimated_force": -0.14446655890606044,
+        "action": -0.17536825261730735,
+        "action_change": -0.05493928487353828,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "phase_counts": {
+        "0": 21,
+        "1": 58,
+        "2": 10,
+        "3": 511
+      },
+      "slowdown_mean": 0.06185223655697579,
+      "slowdown_zero_fraction": 0.49833333333333335
+    },
+    {
+      "episode": "episode_00003",
+      "samples": 600,
+      "duration_s": 24.00000000023495,
+      "task_success": false,
+      "invalid_physics": false,
+      "upstream_contact": false,
+      "lift_m": 0.24634817950387206,
+      "endpoint_error_m": 0.017166617620130775,
+      "reward_total": -3.8843198568711568,
+      "reward_terms": {
+        "position": -4.827254479132327,
+        "rotation": -0.19326908426621597,
+        "estimated_force": -0.0750826127518395,
+        "action": -0.22938721450955576,
+        "action_change": -0.05932646621121831,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "phase_counts": {
+        "0": 34,
+        "1": 97,
+        "2": 24,
+        "3": 445
+      },
+      "slowdown_mean": 0.09520031190244481,
+      "slowdown_zero_fraction": 0.3466666666666667
+    },
+    {
+      "episode": "episode_00004",
+      "samples": 600,
+      "duration_s": 24.00000000023495,
+      "task_success": false,
+      "invalid_physics": false,
+      "upstream_contact": false,
+      "lift_m": 0.2425189784333513,
+      "endpoint_error_m": 0.008869947328189519,
+      "reward_total": -5.115071664987091,
+      "reward_terms": {
+        "position": -5.934322213484897,
+        "rotation": -0.18815606732690907,
+        "estimated_force": -0.23677523861640495,
+        "action": -0.1991391496323242,
+        "action_change": -0.056678995926555696,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "phase_counts": {
+        "0": 101,
+        "1": 132,
+        "2": 191,
+        "3": 176
+      },
+      "slowdown_mean": 0.05244107733946293,
+      "slowdown_zero_fraction": 0.56
+    },
+    {
+      "episode": "episode_00005",
+      "samples": 600,
+      "duration_s": 24.00000000023495,
+      "task_success": false,
+      "invalid_physics": false,
+      "upstream_contact": false,
+      "lift_m": 0.26255302693336174,
+      "endpoint_error_m": 0.008690236683679037,
+      "reward_total": -8.595784893709975,
+      "reward_terms": {
+        "position": -9.576432762169318,
+        "rotation": -0.12376167734526798,
+        "estimated_force": -0.13489327735100196,
+        "action": -0.2002291048802474,
+        "action_change": -0.06046807196414027,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "phase_counts": {
+        "0": 22,
+        "1": 58,
+        "2": 33,
+        "3": 487
+      },
+      "slowdown_mean": 0.06573451322658608,
+      "slowdown_zero_fraction": 0.49333333333333335
+    },
+    {
+      "episode": "episode_00006",
+      "samples": 600,
+      "duration_s": 24.00000000023495,
+      "task_success": false,
+      "invalid_physics": false,
+      "upstream_contact": false,
+      "lift_m": 0.2616017727228705,
+      "endpoint_error_m": 0.009827320544187097,
+      "reward_total": -8.50719075163208,
+      "reward_terms": {
+        "position": -9.46812888763741,
+        "rotation": -0.14657995143668423,
+        "estimated_force": -0.10528403075014547,
+        "action": -0.22771444314367745,
+        "action_change": -0.05948343866416372,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "phase_counts": {
+        "0": 25,
+        "1": 61,
+        "2": 19,
+        "3": 495
+      },
+      "slowdown_mean": 0.06043501959453958,
+      "slowdown_zero_fraction": 0.5183333333333333
+    },
+    {
+      "episode": "episode_00007",
+      "samples": 600,
+      "duration_s": 24.00000000023495,
+      "task_success": false,
+      "invalid_physics": false,
+      "upstream_contact": false,
+      "lift_m": 0.24430114307473444,
+      "endpoint_error_m": 0.015853287452240163,
+      "reward_total": -8.508708323364951,
+      "reward_terms": {
+        "position": -9.308790211341444,
+        "rotation": -0.2511929232934164,
+        "estimated_force": -0.1563788972105796,
+        "action": -0.22980574446335617,
+        "action_change": -0.06254054705615512,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "phase_counts": {
+        "0": 16,
+        "1": 30,
+        "2": 22,
+        "3": 532
+      },
+      "slowdown_mean": 0.07366054512948418,
+      "slowdown_zero_fraction": 0.44
+    },
+    {
+      "episode": "episode_00008",
+      "samples": 600,
+      "duration_s": 24.00000000023495,
+      "task_success": false,
+      "invalid_physics": false,
+      "upstream_contact": false,
+      "lift_m": 0.259320438253493,
+      "endpoint_error_m": 0.012123659359382925,
+      "reward_total": -5.518406779355131,
+      "reward_terms": {
+        "position": -6.412165442198172,
+        "rotation": -0.19061048237668948,
+        "estimated_force": -0.1032086056555875,
+        "action": -0.24979771794196398,
+        "action_change": -0.0626245311827188,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "phase_counts": {
+        "0": 22,
+        "1": 53,
+        "2": 9,
+        "3": 516
+      },
+      "slowdown_mean": 0.08200162598242362,
+      "slowdown_zero_fraction": 0.4116666666666667
+    },
+    {
+      "episode": "episode_00009",
+      "samples": 600,
+      "duration_s": 24.00000000023495,
+      "task_success": false,
+      "invalid_physics": false,
+      "upstream_contact": false,
+      "lift_m": 0.2667544399897968,
+      "endpoint_error_m": 0.004750587175771646,
+      "reward_total": -5.572583542603211,
+      "reward_terms": {
+        "position": -6.274870639241224,
+        "rotation": -0.24526369876755733,
+        "estimated_force": -0.15200710940919232,
+        "action": -0.3339813966199714,
+        "action_change": -0.06646069856526651,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "phase_counts": {
+        "0": 18,
+        "1": 35,
+        "2": 68,
+        "3": 479
+      },
+      "slowdown_mean": 0.10023906105818847,
+      "slowdown_zero_fraction": 0.355
+    },
+    {
+      "episode": "episode_00010",
+      "samples": 600,
+      "duration_s": 24.00000000023495,
+      "task_success": false,
+      "invalid_physics": false,
+      "upstream_contact": false,
+      "lift_m": 0.22199352427371316,
+      "endpoint_error_m": 0.04369466289385014,
+      "reward_total": -7.351634665364514,
+      "reward_terms": {
+        "position": -8.009665934187064,
+        "rotation": -0.2332612292453096,
+        "estimated_force": -0.2029778491234958,
+        "action": -0.34510230604419895,
+        "action_change": -0.060627346764446206,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "phase_counts": {
+        "0": 14,
+        "1": 353,
+        "2": 8,
+        "3": 225
+      },
+      "slowdown_mean": 0.05137114637841781,
+      "slowdown_zero_fraction": 0.6033333333333334
+    },
+    {
+      "episode": "episode_00011",
+      "samples": 600,
+      "duration_s": 24.00000000023495,
+      "task_success": false,
+      "invalid_physics": false,
+      "upstream_contact": false,
+      "lift_m": 0.27460122329100484,
+      "endpoint_error_m": 0.012887723151655261,
+      "reward_total": -5.981277397715607,
+      "reward_terms": {
+        "position": -6.516394483229957,
+        "rotation": -0.2577474803036836,
+        "estimated_force": -0.18675320443268725,
+        "action": -0.4479696131018358,
+        "action_change": -0.07241261664744356,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "phase_counts": {
+        "0": 14,
+        "1": 159,
+        "2": 32,
+        "3": 395
+      },
+      "slowdown_mean": 0.11629868237301708,
+      "slowdown_zero_fraction": 0.45666666666666667
+    },
+    {
+      "episode": "episode_00012",
+      "samples": 600,
+      "duration_s": 24.00000000023495,
+      "task_success": false,
+      "invalid_physics": false,
+      "upstream_contact": false,
+      "lift_m": 0.24829144156727861,
+      "endpoint_error_m": 0.03399435387823956,
+      "reward_total": -14.974437262496796,
+      "reward_terms": {
+        "position": -15.076024378021863,
+        "rotation": -0.36555384164973925,
+        "estimated_force": -0.39667230855165614,
+        "action": -0.5731695539340721,
+        "action_change": -0.06301718033946474,
+        "progress": 1.5,
+        "terminal": 0.0
+      },
+      "phase_counts": {
+        "0": 23,
+        "1": 109,
+        "2": 10,
+        "3": 458
+      },
+      "slowdown_mean": 0.06941999570311358,
+      "slowdown_zero_fraction": 0.6066666666666667
+    }
+  ],
+  "partial_episodes": [
+    {
+      "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/canonical48_ppo_8192_20260923_r2/train/episode_00013",
+      "samples": 392,
+      "scored": false
+    }
+  ],
+  "complete_train_episodes": 13,
+  "training_task_successes": 1,
+  "training_invalid_episodes": 0,
+  "periodic_checkpoints": {
+    "step_00002048": {
+      "timesteps": 2048,
+      "updates": 96,
+      "elapsed_s": 371.3362226486206,
+      "selection": "fixed train-step interval; no validation selection",
+      "checkpoint_sha256": "ba23f091c9b9190460f03dce9087702f02ad5f92e5aa9f9cec113b56464c3da6",
+      "resumability": "Policy, optimizer and normalization saved; exact simulator/RNG continuation is not promised"
+    },
+    "step_00004096": {
+      "timesteps": 4096,
+      "updates": 192,
+      "elapsed_s": 662.6187078952789,
+      "selection": "fixed train-step interval; no validation selection",
+      "checkpoint_sha256": "f2128d539acc3af4ee5553b460f3689f4df61328dc6719b440d3520fa6786b70",
+      "resumability": "Policy, optimizer and normalization saved; exact simulator/RNG continuation is not promised"
+    },
+    "step_00006144": {
+      "timesteps": 6144,
+      "updates": 288,
+      "elapsed_s": 1011.7537004947662,
+      "selection": "fixed train-step interval; no validation selection",
+      "checkpoint_sha256": "db8af7450765a4bc052081c0156aab8ba5c0fd069a348a11bcfc7910a1c986f9",
+      "resumability": "Policy, optimizer and normalization saved; exact simulator/RNG continuation is not promised"
+    },
+    "step_00008192": {
+      "timesteps": 8192,
+      "updates": 384,
+      "elapsed_s": 1270.883487701416,
+      "selection": "fixed train-step interval; no validation selection",
+      "checkpoint_sha256": "611323476636c3a398bc465b11c4bf51c0dc6fab280fe9067c7babc66901f16e",
+      "resumability": "Policy, optimizer and normalization saved; exact simulator/RNG continuation is not promised"
+    }
+  },
+  "final_model_sha256": "611323476636c3a398bc465b11c4bf51c0dc6fab280fe9067c7babc66901f16e",
+  "normalizer_sha256": "55fe4881e585d5f48dff32cf467a07ba29c2576a48654bf33516990866366b56",
+  "source_snapshot": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/canonical48_ppo_source_snapshot_20260923_r2",
+  "changed_snapshot_sources": [],
+  "source_snapshot_unchanged": true,
+  "interpretations": [
+    "Training episode scores are on-policy exploratory signals, not frozen-policy evaluation.",
+    "All completed/invalid/partial episodes retained; no validation-based selection.",
+    "Local development metrics must not be merged into DGX matched-physics tables."
+  ]
+}

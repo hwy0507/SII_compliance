@@ -1,0 +1,16 @@
+{
+  "purpose": "Development-only matched-budget sensors-only canonical48D mask ablation retry; first partial attempt preserved separately",
+  "candidate": "outputs/esn_office_joint_esn_stiff_20260928/best.npz",
+  "candidate_sha256": "f75ea7cd927fe51623c77d9698e851b1c924b27875eea5fb65b954c2b41a34c2",
+  "split": "development",
+  "actor_inputs": "canonical48D contract with mask q7,dq7,estimated_joint_load7,estimated_wrench6; reference-derived fields masked",
+  "gates": "unchanged",
+  "jobs": [
+    {"id":"sensors_only2_original","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260928/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625"]},
+    {"id":"sensors_only2_rod_start7","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260928/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","7"]},
+    {"id":"sensors_only2_rod_start9","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260928/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","9"]},
+    {"id":"sensors_only2_rod_hold6","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260928/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-hold","6"]},
+    {"id":"sensors_only2_shift_plus","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260928/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092701","--variant","2","--ball-speed","1.45","--person-stroke",".18","--rod-stroke",".225"]},
+    {"id":"sensors_only2_hard","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260928/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24"]}
+  ]
+}

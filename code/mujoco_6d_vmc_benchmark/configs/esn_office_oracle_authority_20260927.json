@@ -1,0 +1,10 @@
+{
+  "purpose":"Offline optimistic post-contact motor-authority diagnostic, NOT a proposed controller or added deployment sensing",
+  "scope":"Frozen R34 source/world/initial state and original .2mm criterion. Three .08s probes at1.5625us. The diagnostic normal/Jacobian oracle is privileged and is never supplied to ESN or a full task. No pre-contact action. Instant mode intentionally violates slew solely to inspect a mechanical time-scale hypothesis.",
+  "claims_limit":"A greedy local diagnostic is not a global optimal-control bound; no short probe counts as task or ESN success.",
+  "jobs":[
+    {"id":"parity","split":"development","entrypoint":"tools/probe_office_oracle_authority_20260927.py","arguments":["--mode","parity"]},
+    {"id":"oracle_slew","split":"development","entrypoint":"tools/probe_office_oracle_authority_20260927.py","arguments":["--mode","oracle_slew"]},
+    {"id":"oracle_instant","split":"development","entrypoint":"tools/probe_office_oracle_authority_20260927.py","arguments":["--mode","oracle_instant"]}
+  ]
+}

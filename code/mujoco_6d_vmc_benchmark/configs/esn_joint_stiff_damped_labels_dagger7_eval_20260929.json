@@ -1,0 +1,20 @@
+{
+  "purpose":"Development-only six-condition audit of ESN trained with damped-VMC labels on DAgger3 visited observations",
+  "candidate":"outputs/esn_office_joint_esn_stiff_20260929/model_exposure_damped_labels_dagger7_v1/best.npz",
+  "candidate_sha256":"1e7e8440d1d0a4d65a6b946d7322b71586102f5f5b0eaa9cf69c2c062b15a2a3",
+  "split":"development",
+  "teacher":"J1/J3 stiff traces plus dampedx2 VMC labels on DAgger3 visits",
+  "actor_inputs":"canonical48 pure proprioception; no truth/stage/event/visual",
+  "gates":"unchanged",
+  "reservoir_units":128,
+  "hidden_state_units_total":256,
+  "action_dim":7,
+  "jobs":[
+    {"id":"damped_labels_dagger7_original","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260929/model_exposure_damped_labels_dagger7_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625"]},
+    {"id":"damped_labels_dagger7_rod_start7","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260929/model_exposure_damped_labels_dagger7_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","7"]},
+    {"id":"damped_labels_dagger7_rod_start9","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260929/model_exposure_damped_labels_dagger7_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","9"]},
+    {"id":"damped_labels_dagger7_rod_hold6","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260929/model_exposure_damped_labels_dagger7_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-hold","6"]},
+    {"id":"damped_labels_dagger7_shift_plus","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260929/model_exposure_damped_labels_dagger7_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092701","--variant","2","--ball-speed","1.45","--person-stroke",".18","--rod-stroke",".225"]},
+    {"id":"damped_labels_dagger7_hard","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260929/model_exposure_damped_labels_dagger7_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24"]}
+  ]
+}

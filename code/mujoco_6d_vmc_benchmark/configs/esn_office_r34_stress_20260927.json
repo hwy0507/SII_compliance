@@ -1,0 +1,14 @@
+{
+  "purpose":"One globally attenuated R33 readout candidate; retain all R33 failures and test all exposed office families",
+  "candidate":"R34 output_gain=.5, checkpoint 7c9455afa2d419857424bd7ea3e18b12faeafa56133f54796e9fb69b0f0b635e",
+  "physics":"Shared first .2s at1.5625us then50us; fixed .2mm external gate and unchanged task/coverage gates",
+  "budget":"One additional global gain candidate; no per-scene settings or blind access",
+  "jobs":[
+    {"id":"r34_original","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--esn-model","models/r34.npz","--esn-mode","control"]},
+    {"id":"r34_rod_start7","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","7","--esn-model","models/r34.npz","--esn-mode","control"]},
+    {"id":"r34_rod_start9","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","9","--esn-model","models/r34.npz","--esn-mode","control"]},
+    {"id":"r34_rod_hold6","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-hold","6","--esn-model","models/r34.npz","--esn-mode","control"]},
+    {"id":"r34_shift_plus","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092701","--variant","2","--ball-speed","1.45","--person-stroke",".18","--rod-stroke",".225","--esn-model","models/r34.npz","--esn-mode","control"]},
+    {"id":"r34_hard","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24","--esn-model","models/r34.npz","--esn-mode","control"]}
+  ]
+}

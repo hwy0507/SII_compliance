@@ -1,0 +1,363 @@
+{
+  "purpose": "frozen_policy_office_complex_evaluation",
+  "arguments": {
+    "output": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/results/wrench1_memory_reset2_shift_plus/rollout",
+    "render": false,
+    "events": "all",
+    "task": "pick_place",
+    "seed": 2026092701,
+    "variant": 2,
+    "duration": 55.0,
+    "dt": 5e-05,
+    "ball_speed": 1.45,
+    "person_stroke": 0.18,
+    "rod_stroke": 0.225,
+    "esn_model": "outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz",
+    "esn_mode": "control",
+    "memory_ablation": "reset_each_observation",
+    "disable_selector_pulse": false,
+    "teacher": "none",
+    "physics_probe_s": null,
+    "impact_refinement_dt": 1.5625e-06,
+    "impact_refinement_until": 0.2,
+    "person_start": 3.0,
+    "rod_start": 11.0,
+    "rod_hold": 3.0,
+    "observer_friction_velocity_scale": 0.005
+  },
+  "fixture": {
+    "scene": "empty",
+    "seed": 2026092701,
+    "duration": 55.0,
+    "nominal_speed": 0.06,
+    "cup_mass": 0.3586373248564037,
+    "ball_mass": 0.20646484235032306,
+    "ball_speed": 1.45,
+    "yaw": 0.07873859786975207,
+    "shift": -0.009799695258173563,
+    "along": -0.003234549357565248,
+    "width": 0.05,
+    "office_variant": 2,
+    "event_seed": 8886117
+  },
+  "stats": {
+    "max_penetration_m": 0.00018338939851510194,
+    "worst_pair": [
+      "office_floor",
+      "office_v5_ball_geom"
+    ],
+    "max_external_penetration_m": 0.0001760654252092782,
+    "worst_external_pair": [
+      "office_v5_ball_geom",
+      "hand_collision"
+    ],
+    "events": {
+      "ball": {
+        "first_s": 0.06744531250005123,
+        "last_s": 0.06789687500005018,
+        "duration_s": 0.0004531249999999981,
+        "peak_n": 1467.0645824635737,
+        "impulse_ns": 0.4336257947462467,
+        "robot_parts": [
+          "hand"
+        ]
+      },
+      "person_hand": {
+        "first_s": 4.243399999996536,
+        "last_s": 8.675449999986208,
+        "duration_s": 3.5727999999983426,
+        "peak_n": 134.0030488003134,
+        "impulse_ns": 21.13596552119913,
+        "robot_parts": [
+          "fr3_link7"
+        ]
+      },
+      "cup": {
+        "first_s": 20.132650000106327,
+        "last_s": 55.0000000012638,
+        "duration_s": 13.600499999974973,
+        "peak_n": 210.4409860764323,
+        "impulse_ns": 30.654932608393498,
+        "robot_parts": [
+          "hand",
+          "left_finger"
+        ]
+      },
+      "office_v5_pillar": {
+        "first_s": 32.799700000526826,
+        "last_s": 34.4949500005831,
+        "duration_s": 0.05520000000000107,
+        "peak_n": 222.8904543367304,
+        "impulse_ns": 2.6575986425923155,
+        "robot_parts": [
+          "fr3_link7"
+        ]
+      }
+    },
+    "cup_shift_m": 0.10089416045621769,
+    "cup_tilt_deg": 8.659845888743314,
+    "max_hand_displacement_m": 0.4258784879596303,
+    "peak_motor_torque_nm": 42.07859857265327,
+    "max_person_drive_n": 12.262764258297324,
+    "max_rod_drive_n": 1.3778792829350608
+  },
+  "ball_initial_velocity": [
+    0,
+    1.45,
+    0
+  ],
+  "ball_actuated_after_reset": false,
+  "ball_incoming_velocity": [
+    0.0,
+    1.45,
+    -0.6616231875003041
+  ],
+  "ball_rebound": true,
+  "ball_final_separation_m": 14.991487685295487,
+  "cup_supported": true,
+  "cup_final_speed": 6.719675267505042e-05,
+  "initial_geometry_valid": true,
+  "physical_valid": true,
+  "legacy_global_penetration_valid": true,
+  "abort_reason": null,
+  "execution_complete": true,
+  "full_task_horizon_completed": true,
+  "contact_coverage_valid": false,
+  "cup_valid": false,
+  "passed": false,
+  "human_model": "guided massive torso with shoulder/elbow hinges and compliant wrist; not free biped gait",
+  "controller": "existing kinematic WBC pick_place, unlocked joints, zero learned residual + ESN action residual",
+  "schedule": {
+    "person": {
+      "start": 3.0,
+      "press": 2.0,
+      "hold": 3.0,
+      "retract": 2.0,
+      "stroke": 0.18,
+      "force_limit": 80.0
+    },
+    "rod": {
+      "start": 11.0,
+      "press": 1.5,
+      "hold": 3.0,
+      "retract": 2.0,
+      "stroke": 0.225,
+      "force_limit": 14.0
+    }
+  },
+  "source_sha256": {
+    "office_complex_scene_v5_20260917.py": "355c4e9a4681f4971318b023fd8da856a819345d66eebacebca67b55a10e75f0",
+    "validate_office_apparatus_v5_20260917.py": "52a13b03a3439d7b1102559b620da10ab5f9fac9da8e7aee40a09e24c7229062",
+    "audit_office_complex_scene_v5_20260917.py": "99c9b292f47a2b0c0e49e7033e04d13551accbc41d4a4f7dfc26417dc7b28e61",
+    "current_student_policy_20260921.py": "85a9a45e5d902c10dcbaf7c29d16589316b92640f1c26f26396692410f2e3c4f",
+    "office_task_v4_20260917.py": "101bd2b273f0e6c8d32ec79a66e9d0fbf15554d57231e8f0336bec047361be3d",
+    "run_contact_transfer_20260916.py": "3cc9ee40d14c9397016d8bc78f0264dbb1a793a7ed6e422e60f9b91c6eda99d5",
+    "audited_velocity_env.py": "ad7f32ba692592cf5c29d3f1b632de50dd3323cb92edb08e73d933476114b1e6",
+    "wbc_velocity_residual_core.py": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+    "fixed_panda_wbc.py": "56b6a3617f61894536619df226e7e980899b41e7291e678c17d1c525956d003d",
+    "haptic_vmc_teacher_20260916.py": "9a83937d3e547d29a0cf39fc7a6cc7affdc6b0a8cf9393e362a9f8040948dc10",
+    "physics_substep_metrics_20260923.py": "2932ba97724c476c80b8f93041de3b1f0107fa24c07e1fc2f9030e96ffa4f598",
+    "run_benchmark.py": "150336fc0f985b2d11c3f0f5bf7937d6991a16a3da9b2a478e860f11d4dd5fb3"
+  },
+  "task_events": [
+    {
+      "stage": "align",
+      "time_s": 0.3199999999997291
+    },
+    {
+      "stage": "grasp",
+      "time_s": 1.7600000000012581
+    },
+    {
+      "stage": "lift",
+      "time_s": 2.1600000000013915
+    },
+    {
+      "stage": "carry",
+      "time_s": 15.999999999969138
+    },
+    {
+      "stage": "load_transfer",
+      "time_s": 39.000000000732655
+    }
+  ],
+  "physics_resolution": {
+    "base_dt_s": 5e-05,
+    "initial_refinement_dt_s": 1.5625e-06,
+    "refinement_until_s": 0.2,
+    "actor_schedule_input": false,
+    "metric_weighting": "physical time",
+    "note": "Numerical resolution schedule only; world impulses, drives, materials and task gates unchanged"
+  },
+  "final_task_stage": "load_transfer",
+  "observer_settings": {
+    "friction_velocity_scale": 0.005,
+    "filter_tau_s": 0.04,
+    "truth_in_observer": false
+  },
+  "placement_complete": false,
+  "task_success": false,
+  "strict_success": false,
+  "release_supported": null,
+  "max_lift_m": 0.1235959902341856,
+  "neural_logging": {
+    "enabled": true,
+    "mode": "control",
+    "model": "outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz",
+    "model_sha256": "8975edeb50a68b583034ee1945ff4d8b57303158d64c705cc3d8af9621006352",
+    "policy_contract": "proprio48_esn128_action7_v1",
+    "observation_dim": 48,
+    "memory_ablation": "reset_each_observation",
+    "reservoir_size": 128,
+    "policy_hz": 25,
+    "state_semantics": "post-update leaky reservoir state, before physics step; fixed unit ordering",
+    "contact_semantics": "prior_contact_* covers the preceding physics interval; contact truth is diagnostics ONLY",
+    "contact_keys": [
+      "ball",
+      "person_hand",
+      "rod",
+      "cup",
+      "office_v5_pillar"
+    ],
+    "force_truth_in_actor": false,
+    "weights_changed": false
+  },
+  "metrics": {
+    "samples": 1224000,
+    "timestep_s": null,
+    "timestep_sample_counts": {
+      "1.5625e-06": 128000,
+      "5e-05": 1096000
+    },
+    "rmse_weighting": "physical time integral",
+    "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+    "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+    "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+    "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+    "linear_speed_peak_mps": 0.11505265880347393,
+    "generalized_actuator_torque_peak_nm": 42.07859857265327,
+    "generalized_actuator_torque_peak_by_joint_nm": [
+      2.58920831773647,
+      42.07859857265327,
+      2.364896850178804,
+      28.00028550257153,
+      1.9234545206211293,
+      3.6664875929896388,
+      0.5340153828374844
+    ],
+    "actuator_force_peak_by_actuator": [
+      2.58920831773647,
+      42.07859857265327,
+      2.364896850178804,
+      28.00028550257153,
+      1.9234545206211293,
+      3.6664875929896388,
+      0.5340153828374844
+    ],
+    "position_rmse_xyz_m": [
+      0.021783247478897854,
+      0.14010250780914552,
+      0.04581848464447133
+    ],
+    "position_rmse_3d_m": 0.14900522172143582,
+    "stages": {
+      "0": {
+        "count": 130400,
+        "duration_s": 0.3199999999997291,
+        "error_peak_m": 0.004880458854195288,
+        "speed_peak_mps": 0.11505265880347393,
+        "qfrc_peak_nm": 35.28846888843396,
+        "first_s": 1.5625e-06,
+        "last_s": 0.3199999999997291,
+        "position_rmse_xyz_m": [
+          0.00041024476023662613,
+          0.003390973135514441,
+          0.0017118409294488142
+        ],
+        "position_rmse_3d_m": 0.0038206542550744405,
+        "name": "approach"
+      },
+      "1": {
+        "count": 28800,
+        "duration_s": 1.4400000000008266,
+        "error_peak_m": 0.07011172141779388,
+        "speed_peak_mps": 0.05992607547835577,
+        "qfrc_peak_nm": 33.14052771521423,
+        "first_s": 0.3200499999997291,
+        "last_s": 1.7600000000012581,
+        "position_rmse_xyz_m": [
+          0.002122748234804096,
+          0.0034026448265605472,
+          0.041605025478025665
+        ],
+        "position_rmse_3d_m": 0.04179787311468429,
+        "name": "align"
+      },
+      "2": {
+        "count": 8000,
+        "duration_s": 0.3999999999999641,
+        "error_peak_m": 0.0073838596767861215,
+        "speed_peak_mps": 0.05058318065183154,
+        "qfrc_peak_nm": 33.480328172058194,
+        "first_s": 1.7600500000012582,
+        "last_s": 2.1600000000013915,
+        "position_rmse_xyz_m": [
+          0.002234390864565648,
+          0.0019811854317492764,
+          0.004859265653106328
+        ],
+        "position_rmse_3d_m": 0.0057035130347960865,
+        "name": "grasp"
+      },
+      "3": {
+        "count": 276800,
+        "duration_s": 13.839999999974415,
+        "error_peak_m": 0.1326373757760989,
+        "speed_peak_mps": 0.06099606906635479,
+        "qfrc_peak_nm": 42.07859857265327,
+        "first_s": 2.1600500000013914,
+        "last_s": 15.999999999969138,
+        "position_rmse_xyz_m": [
+          0.03806971622689682,
+          0.0028581030306385116,
+          0.08362465892371848
+        ],
+        "position_rmse_3d_m": 0.0919269037150629,
+        "name": "lift"
+      },
+      "4": {
+        "count": 460000,
+        "duration_s": 23.000000000201755,
+        "error_peak_m": 0.42622952826754607,
+        "speed_peak_mps": 0.056620755522209534,
+        "qfrc_peak_nm": 36.45221610723247,
+        "first_s": 16.00004999996914,
+        "last_s": 39.000000000732655,
+        "position_rmse_xyz_m": [
+          0.015785228951146098,
+          0.21662082900302546,
+          0.015346895492059642
+        ],
+        "position_rmse_3d_m": 0.21773673142637714,
+        "name": "carry"
+      },
+      "5": {
+        "count": 320000,
+        "duration_s": 15.999999999969381,
+        "error_peak_m": 0.0748862952328776,
+        "speed_peak_mps": 0.06774056977216884,
+        "qfrc_peak_nm": 37.12312689151065,
+        "first_s": 39.00005000073266,
+        "last_s": 55.0000000012638,
+        "position_rmse_xyz_m": [
+          0.004331254891646318,
+          0.00334289248151836,
+          0.025931340609376154
+        ],
+        "position_rmse_3d_m": 0.02650224754391376,
+        "name": "load_transfer"
+      }
+    }
+  },
+  "model_sha256": "ce4307726dd58ddebd67a9ec1901a2d367ff758ed1b7ee32530d98cafd13eee8"
+}

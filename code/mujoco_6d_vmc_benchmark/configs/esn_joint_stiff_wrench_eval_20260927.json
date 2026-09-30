@@ -1,0 +1,17 @@
+{
+  "purpose": "Development-only fixed wrench-weight ablation after DAgger2",
+  "candidate": "outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz",
+  "candidate_sha256": "8975edeb50a68b583034ee1945ff4d8b57303158d64c705cc3d8af9621006352",
+  "split": "development",
+  "teacher": "J1/J3 fixed stiff VMC with actor-visible wrench-norm loss weight 3",
+  "actor_inputs": "canonical48 pure proprioception; no truth/stage/event/visual",
+  "gates": "unchanged",
+  "jobs": [
+    {"id":"wrench1_student_original","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625"]},
+    {"id":"wrench1_student_rod_start7","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","7"]},
+    {"id":"wrench1_student_rod_start9","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","9"]},
+    {"id":"wrench1_student_rod_hold6","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-hold","6"]},
+    {"id":"wrench1_student_shift_plus","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092701","--variant","2","--ball-speed","1.45","--person-stroke",".18","--rod-stroke",".225"]},
+    {"id":"wrench1_student_hard","split":"development","arguments":["--esn-model","outputs/esn_office_joint_esn_stiff_20260927/model_wrench_v1/best.npz","--esn-mode","control","--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24"]}
+  ]
+}

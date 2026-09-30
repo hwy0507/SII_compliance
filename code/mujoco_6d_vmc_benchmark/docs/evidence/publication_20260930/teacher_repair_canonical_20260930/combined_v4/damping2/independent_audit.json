@@ -1,0 +1,100 @@
+{
+  "replay_passed": true,
+  "max_abs_error": {
+    "wrench": 0.0,
+    "requested_action": 0.0,
+    "teacher_request": 0.0,
+    "effective_wrench": 0.0,
+    "original_readout": 0.0,
+    "offset": 0.0,
+    "velocity": 0.0,
+    "filtered_wrench": 0.0,
+    "submitted_action": 0.0,
+    "clipped_action": 0.0,
+    "yield_twist": 0.0,
+    "wbc_scale": 0.0,
+    "slew_limited": 0.0
+  },
+  "stages": {
+    "0": {
+      "samples": 4,
+      "start_s": 0.0,
+      "end_s": 0.1599999999999987,
+      "action_delta_rms": 0.0,
+      "action_delta_max": 0.0,
+      "best_position_error_m": 3.629625054679969e-08,
+      "final_position_error_m": 3.629625054679969e-08,
+      "physical_speed_peak_mps": 1.5102054796918e-08,
+      "physical_speed_rms_mps": 1.365416666508383e-08
+    },
+    "1": {
+      "samples": 38,
+      "start_s": 0.1599999999999987,
+      "end_s": 1.6799999999998314,
+      "action_delta_rms": 0.005267686036415792,
+      "action_delta_max": 0.06149635588352318,
+      "best_position_error_m": 0.005577681953682033,
+      "final_position_error_m": 0.005577681953682033,
+      "physical_speed_peak_mps": 0.0616024432136513,
+      "physical_speed_rms_mps": 0.04809273077873213
+    },
+    "2": {
+      "samples": 8,
+      "start_s": 1.6799999999998314,
+      "end_s": 1.9999999999997962,
+      "action_delta_rms": 0.008454404900779559,
+      "action_delta_max": 0.02913486194148985,
+      "best_position_error_m": 0.004647237295501069,
+      "final_position_error_m": 0.004674565551845871,
+      "physical_speed_peak_mps": 0.010273732346910716,
+      "physical_speed_rms_mps": 0.004686834924158649
+    },
+    "3": {
+      "samples": 202,
+      "start_s": 1.9999999999997962,
+      "end_s": 10.079999999989846,
+      "action_delta_rms": 0.06043849795210547,
+      "action_delta_max": 0.512914189369666,
+      "best_position_error_m": 0.010711248337180526,
+      "final_position_error_m": 0.010711248337180526,
+      "physical_speed_peak_mps": 0.08224536549793084,
+      "physical_speed_rms_mps": 0.03185616855396359
+    },
+    "4": {
+      "samples": 110,
+      "start_s": 10.079999999989846,
+      "end_s": 14.479999999979592,
+      "action_delta_rms": 0.022234613568829505,
+      "action_delta_max": 0.22904063407987157,
+      "best_position_error_m": 0.009471625839558845,
+      "final_position_error_m": 0.009471625839558845,
+      "physical_speed_peak_mps": 0.055470404125704954,
+      "physical_speed_rms_mps": 0.033309948891478584
+    },
+    "5": {
+      "samples": 1013,
+      "start_s": 14.479999999979592,
+      "end_s": 55.00000000070228,
+      "action_delta_rms": 0.16064209885503633,
+      "action_delta_max": 0.505517283896002,
+      "best_position_error_m": 0.01709861227219042,
+      "final_position_error_m": 0.02248976836656871,
+      "physical_speed_peak_mps": 0.05532891090544408,
+      "physical_speed_rms_mps": 0.006790901440233019
+    }
+  },
+  "task": false,
+  "strict": false,
+  "independent_waypoint_rmse_m": 0.039440126992893135,
+  "independent_peak_torque_nm": 50.93791198730469,
+  "independent_peak_speed_mps": 0.08224536549793084,
+  "penetration_mm": 0.16521809814991617,
+  "source_manifest_sha256": "409c408124d18502deb1146b8188d253ed2ef9e4fc86623a524ad977987766a8",
+  "audit_source_sha256": "d0d86cd061e6f7509dea1846a27725aa6a780eaf217763f7180843e07c28b423",
+  "input_sha256": {
+    "rollout.npz": "96bbbab91f2790929c99f2443d2042256a99d1bb7ea0a17b23565c7e6eddb1a6",
+    "teacher_internal.npz": "9736b4ed81ec727331a6b57f1540ff2a5e37ee298fc1385b227fa84e1237fb42",
+    "execution_chain.npz": "4d2a7876d58242f0c3d065ebb97e41040c30db94b55d8f19f418af4b51b2aa5c"
+  },
+  "limitation": "Paired development simulation and replay; does not establish real hardware stability or generalization."
+}

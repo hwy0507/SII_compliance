@@ -1,0 +1,13 @@
+{
+  "purpose":"One fixed proprioceptive observer uncertainty calibration (.001rad/s instead of .005), same R34 checkpoint and zero controls",
+  "rationale":"Read-only exact-parity audit attributes load-transfer2.0-2.2N equivalent force error predominantly to friction uncertainty. Test calibration as a hypothesis, not an established fix.",
+  "budget":"Four full55s development diagnostic trials; two scenes, ESN and zero in each. No training, no further scale search, no blinded conditions.",
+  "scope":"Same source masses/materials/gates. Task also receives the recalibrated proprio load; stage thresholds unchanged and placement remains independently physically audited. Truth only in sidecar.",
+  "jobs":[
+    {"id":"esn_original_scale1","split":"development","entrypoint":"tools/audit_office_load_observer_20260927.py","arguments":["--condition","original","--friction-velocity-scale",".001"]},
+    {"id":"esn_hard_scale1","split":"development","entrypoint":"tools/audit_office_load_observer_20260927.py","arguments":["--condition","hard","--friction-velocity-scale",".001"]},
+    {"id":"zero_original_scale1","split":"development","entrypoint":"tools/audit_office_load_observer_20260927.py","arguments":["--condition","original","--actor","zero","--friction-velocity-scale",".001"]},
+    {"id":"zero_hard_scale1","split":"development","entrypoint":"tools/audit_office_load_observer_20260927.py","arguments":["--condition","hard","--actor","zero","--friction-velocity-scale",".001"]}
+  ],
+  "claims_limit":"Current simulation has ideal encoder velocities; smaller uncertainty scale requires later noise/calibration testing and does not establish hardware readiness or solve pre-observation first impact."
+}

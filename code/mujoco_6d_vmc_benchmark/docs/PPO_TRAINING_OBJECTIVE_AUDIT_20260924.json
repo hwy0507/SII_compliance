@@ -1,0 +1,1089 @@
+{
+  "scope": "train episodes only; descriptive reward audit, not policy selection or causal attribution",
+  "gamma": 0.995,
+  "action_period_s": 0.04,
+  "manifest_sha256": "5c27f3494c46b90a203f4d615652e8e117ba7e114547ba49976dbc22dd6e716d",
+  "reward_source_sha256": "6951e28a8740221796142f686b3df056671462567ba553784198b1ae7380ce38",
+  "source_snapshot": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/canonical48_ppo_source_snapshot_20260923_r2",
+  "samples": 8192,
+  "complete_episodes": 13,
+  "task_successes": 1,
+  "success_return_ranks": [
+    13
+  ],
+  "discount_weights": {
+    "64": 0.7292124703704614,
+    "200": 0.3688018308805699,
+    "400": 0.1353347165085562,
+    "600": 0.049662132773908116
+  },
+  "rows": [
+    {
+      "episode": "episode_00000",
+      "samples": 600,
+      "partial": false,
+      "task": false,
+      "final_stage": 3,
+      "endpoint_error_m": 0.007149209801016222,
+      "lift_m": 0.25253634613167425,
+      "undiscounted_return": -4.5348886884157364,
+      "discounted_return_from_reset": -1.4750469822092016,
+      "terminal_bonus_raw": 0.0,
+      "terminal_bonus_discounted_from_reset": 0.0,
+      "reward_terms": {
+        "position": {
+          "raw": -5.646836952363783,
+          "discounted": -2.196548618882936
+        },
+        "rotation": {
+          "raw": -0.08247448525215284,
+          "discounted": -0.0280027853617578
+        },
+        "estimated_force": {
+          "raw": -0.10328081822816332,
+          "discounted": -0.05260162520295355
+        },
+        "action": {
+          "raw": -0.14644393714762052,
+          "discounted": -0.046054224173060467
+        },
+        "action_change": {
+          "raw": -0.05585249542401707,
+          "discounted": -0.017785864605673246
+        },
+        "progress": {
+          "raw": 1.5,
+          "discounted": 0.8659461360171792
+        },
+        "terminal": {
+          "raw": 0.0,
+          "discounted": 0.0
+        }
+      },
+      "stage_sample_counts": {
+        "0": 73,
+        "1": 55,
+        "2": 9,
+        "3": 463
+      },
+      "stage_transitions": [
+        {
+          "action_index": 72,
+          "from_stage": 0,
+          "to_stage": 1,
+          "previous_pose_error_m": 0.01905730606681897,
+          "next_pose_error_m": 0.08495781097996036,
+          "reward_progress": 0.5,
+          "reward_position": -0.013593249756793657
+        },
+        {
+          "action_index": 127,
+          "from_stage": 1,
+          "to_stage": 2,
+          "previous_pose_error_m": 0.00631964732501434,
+          "next_pose_error_m": 0.005811933918914938,
+          "reward_progress": 0.5,
+          "reward_position": -0.0009299094270263901
+        },
+        {
+          "action_index": 136,
+          "from_stage": 2,
+          "to_stage": 3,
+          "previous_pose_error_m": 0.007577790656548628,
+          "next_pose_error_m": 0.24989755391301183,
+          "reward_progress": 0.5,
+          "reward_position": -0.03998360862608189
+        }
+      ],
+      "trace_sha256": "d22c26bf33d69982b260601c8902325470501d4d002bf158e848a603e666e9bc",
+      "result_sha256": "d4d217a42d641445d51039712726cbcd8b04d1178ca340d2c634e11e907cd859",
+      "discounted_return_rank": 5
+    },
+    {
+      "episode": "episode_00001",
+      "samples": 600,
+      "partial": false,
+      "task": true,
+      "final_stage": 3,
+      "endpoint_error_m": 0.014181226491575253,
+      "lift_m": 0.2547529903614077,
+      "undiscounted_return": -8.702734139155726,
+      "discounted_return_from_reset": -3.2532651448471803,
+      "terminal_bonus_raw": 5.0,
+      "terminal_bonus_discounted_from_reset": 0.2483106638695406,
+      "reward_terms": {
+        "position": {
+          "raw": -14.583714094835356,
+          "discounted": -4.53041435024701
+        },
+        "rotation": {
+          "raw": -0.23889560470578872,
+          "discounted": -0.05904300146074096
+        },
+        "estimated_force": {
+          "raw": -0.17242225574700537,
+          "discounted": -0.0456397498822763
+        },
+        "action": {
+          "raw": -0.15422064419100256,
+          "discounted": -0.04760760228745361
+        },
+        "action_change": {
+          "raw": -0.05348153967657322,
+          "discounted": -0.01662518153877544
+        },
+        "progress": {
+          "raw": 1.5,
+          "discounted": 1.1977540766995354
+        },
+        "terminal": {
+          "raw": 5.0,
+          "discounted": 0.2483106638695406
+        }
+      },
+      "stage_sample_counts": {
+        "0": 18,
+        "1": 39,
+        "2": 9,
+        "3": 534
+      },
+      "stage_transitions": [
+        {
+          "action_index": 17,
+          "from_stage": 0,
+          "to_stage": 1,
+          "previous_pose_error_m": 0.016710846061014896,
+          "next_pose_error_m": 0.08440912760147723,
+          "reward_progress": 0.5,
+          "reward_position": -0.013505460416236357
+        },
+        {
+          "action_index": 56,
+          "from_stage": 1,
+          "to_stage": 2,
+          "previous_pose_error_m": 0.00821820873527671,
+          "next_pose_error_m": 0.008167093094160577,
+          "reward_progress": 0.5,
+          "reward_position": -0.0013067348950656923
+        },
+        {
+          "action_index": 65,
+          "from_stage": 2,
+          "to_stage": 3,
+          "previous_pose_error_m": 0.007600193061276252,
+          "next_pose_error_m": 0.26246931047752203,
+          "reward_progress": 0.5,
+          "reward_position": -0.04199508967640352
+        }
+      ],
+      "trace_sha256": "c55052d61bd89237697d6746a54e01a6d3ff338ec347ed1e3bfdbffbbc5c327a",
+      "result_sha256": "b2216264de545bdd78ec65e700001af2451e1d62df6a0c57ea45d981e87db6b7",
+      "discounted_return_rank": 13
+    },
+    {
+      "episode": "episode_00002",
+      "samples": 600,
+      "partial": false,
+      "task": false,
+      "final_stage": 3,
+      "endpoint_error_m": 0.01449217257203372,
+      "lift_m": 0.2529740476242049,
+      "undiscounted_return": -5.980732810367514,
+      "discounted_return_from_reset": -1.982032610877557,
+      "terminal_bonus_raw": 0.0,
+      "terminal_bonus_discounted_from_reset": 0.0,
+      "reward_terms": {
+        "position": {
+          "raw": -6.891261867719548,
+          "discounted": -2.9079557064839374
+        },
+        "rotation": {
+          "raw": -0.21469684625106006,
+          "discounted": -0.061593464742695
+        },
+        "estimated_force": {
+          "raw": -0.14446655890606036,
+          "discounted": -0.05549018622178453
+        },
+        "action": {
+          "raw": -0.1753682526173073,
+          "discounted": -0.05195847034171686
+        },
+        "action_change": {
+          "raw": -0.0549392848735383,
+          "discounted": -0.017200454205990635
+        },
+        "progress": {
+          "raw": 1.5,
+          "discounted": 1.112165671118568
+        },
+        "terminal": {
+          "raw": 0.0,
+          "discounted": 0.0
+        }
+      },
+      "stage_sample_counts": {
+        "0": 21,
+        "1": 58,
+        "2": 10,
+        "3": 511
+      },
+      "stage_transitions": [
+        {
+          "action_index": 20,
+          "from_stage": 0,
+          "to_stage": 1,
+          "previous_pose_error_m": 0.016907899033963565,
+          "next_pose_error_m": 0.08392021898550274,
+          "reward_progress": 0.5,
+          "reward_position": -0.013427235037680438
+        },
+        {
+          "action_index": 78,
+          "from_stage": 1,
+          "to_stage": 2,
+          "previous_pose_error_m": 0.008327730206605724,
+          "next_pose_error_m": 0.007829928975623,
+          "reward_progress": 0.5,
+          "reward_position": -0.0012527886360996802
+        },
+        {
+          "action_index": 88,
+          "from_stage": 2,
+          "to_stage": 3,
+          "previous_pose_error_m": 0.0025040190883882482,
+          "next_pose_error_m": 0.25688440472809193,
+          "reward_progress": 0.5,
+          "reward_position": -0.04110150475649471
+        }
+      ],
+      "trace_sha256": "c83780a48864a3e944fc420c59de48d7ba91f183ae2708608f67dc00e42abdf0",
+      "result_sha256": "e624e7e97382cb52e8e01422f54432d1055f993038539958d59778c069675c90",
+      "discounted_return_rank": 7
+    },
+    {
+      "episode": "episode_00003",
+      "samples": 600,
+      "partial": false,
+      "task": false,
+      "final_stage": 3,
+      "endpoint_error_m": 0.017166617620130775,
+      "lift_m": 0.24634817950387206,
+      "undiscounted_return": -3.884319856871154,
+      "discounted_return_from_reset": -1.0399523459593853,
+      "terminal_bonus_raw": 0.0,
+      "terminal_bonus_discounted_from_reset": 0.0,
+      "reward_terms": {
+        "position": {
+          "raw": -4.827254479132325,
+          "discounted": -1.7979731703590525
+        },
+        "rotation": {
+          "raw": -0.19326908426621583,
+          "discounted": -0.04407846808902106
+        },
+        "estimated_force": {
+          "raw": -0.07508261275183949,
+          "discounted": -0.03196324048332068
+        },
+        "action": {
+          "raw": -0.22938721450955576,
+          "discounted": -0.06340486689126236
+        },
+        "action_change": {
+          "raw": -0.059326466211218294,
+          "discounted": -0.01796150355043047
+        },
+        "progress": {
+          "raw": 1.5,
+          "discounted": 0.9154289034137019
+        },
+        "terminal": {
+          "raw": 0.0,
+          "discounted": 0.0
+        }
+      },
+      "stage_sample_counts": {
+        "0": 34,
+        "1": 97,
+        "2": 24,
+        "3": 445
+      },
+      "stage_transitions": [
+        {
+          "action_index": 33,
+          "from_stage": 0,
+          "to_stage": 1,
+          "previous_pose_error_m": 0.017613757884780083,
+          "next_pose_error_m": 0.0842595319043886,
+          "reward_progress": 0.5,
+          "reward_position": -0.013481525104702177
+        },
+        {
+          "action_index": 130,
+          "from_stage": 1,
+          "to_stage": 2,
+          "previous_pose_error_m": 0.007974480360041374,
+          "next_pose_error_m": 0.008709803759454793,
+          "reward_progress": 0.5,
+          "reward_position": -0.0013935686015127669
+        },
+        {
+          "action_index": 154,
+          "from_stage": 2,
+          "to_stage": 3,
+          "previous_pose_error_m": 0.011561607235317208,
+          "next_pose_error_m": 0.25849367076358937,
+          "reward_progress": 0.5,
+          "reward_position": -0.0413589873221743
+        }
+      ],
+      "trace_sha256": "765019633064b088fbb4f7c44cfe603f760eb2211c7aa673c59cc6d4af578648",
+      "result_sha256": "e99de376b0a4c3daff8cb348e8cc3a8d02de6e1137a3e1d75d65a2d322197970",
+      "discounted_return_rank": 3
+    },
+    {
+      "episode": "episode_00004",
+      "samples": 600,
+      "partial": false,
+      "task": false,
+      "final_stage": 3,
+      "endpoint_error_m": 0.008869947328189519,
+      "lift_m": 0.2425189784333513,
+      "undiscounted_return": -5.115071664987099,
+      "discounted_return_from_reset": -0.9522672440500103,
+      "terminal_bonus_raw": 0.0,
+      "terminal_bonus_discounted_from_reset": 0.0,
+      "reward_terms": {
+        "position": {
+          "raw": -5.934322213484904,
+          "discounted": -1.2306745673523094
+        },
+        "rotation": {
+          "raw": -0.18815606732690932,
+          "discounted": -0.05982728412161318
+        },
+        "estimated_force": {
+          "raw": -0.23677523861640498,
+          "discounted": -0.10294908722598058
+        },
+        "action": {
+          "raw": -0.19913914963232426,
+          "discounted": -0.06079040733500137
+        },
+        "action_change": {
+          "raw": -0.056678995926555745,
+          "discounted": -0.0171962944735954
+        },
+        "progress": {
+          "raw": 1.5,
+          "discounted": 0.5191703964584902
+        },
+        "terminal": {
+          "raw": 0.0,
+          "discounted": 0.0
+        }
+      },
+      "stage_sample_counts": {
+        "0": 101,
+        "1": 132,
+        "2": 191,
+        "3": 176
+      },
+      "stage_transitions": [
+        {
+          "action_index": 100,
+          "from_stage": 0,
+          "to_stage": 1,
+          "previous_pose_error_m": 0.01534912064418832,
+          "next_pose_error_m": 0.08424502194597588,
+          "reward_progress": 0.5,
+          "reward_position": -0.013479203511356142
+        },
+        {
+          "action_index": 232,
+          "from_stage": 1,
+          "to_stage": 2,
+          "previous_pose_error_m": 0.009518557814815722,
+          "next_pose_error_m": 0.009614334907348194,
+          "reward_progress": 0.5,
+          "reward_position": -0.001538293585175711
+        },
+        {
+          "action_index": 423,
+          "from_stage": 2,
+          "to_stage": 3,
+          "previous_pose_error_m": 0.011499475528312639,
+          "next_pose_error_m": 0.2470253434786299,
+          "reward_progress": 0.5,
+          "reward_position": -0.03952405495658078
+        }
+      ],
+      "trace_sha256": "2eeb6e152c023a0e41182d251309977677a1194d4c176040d1c27f890861d2ee",
+      "result_sha256": "4dceb7ae7cbbf9fb554b75dda7c2d7a0625388305413cd8ea6aa4b070dd8e97e",
+      "discounted_return_rank": 2
+    },
+    {
+      "episode": "episode_00005",
+      "samples": 600,
+      "partial": false,
+      "task": false,
+      "final_stage": 3,
+      "endpoint_error_m": 0.008690236683679037,
+      "lift_m": 0.26255302693336174,
+      "undiscounted_return": -8.595784893709974,
+      "discounted_return_from_reset": -2.586787830062244,
+      "terminal_bonus_raw": 0.0,
+      "terminal_bonus_discounted_from_reset": 0.0,
+      "reward_terms": {
+        "position": {
+          "raw": -9.576432762169317,
+          "discounted": -3.499029119182693
+        },
+        "rotation": {
+          "raw": -0.12376167734526813,
+          "discounted": -0.030902240892853133
+        },
+        "estimated_force": {
+          "raw": -0.13489327735100176,
+          "discounted": -0.05137293553644123
+        },
+        "action": {
+          "raw": -0.20022910488024737,
+          "discounted": -0.05898932766303399
+        },
+        "action_change": {
+          "raw": -0.060468071964140266,
+          "discounted": -0.018247992548437012
+        },
+        "progress": {
+          "raw": 1.5,
+          "discounted": 1.071753785761215
+        },
+        "terminal": {
+          "raw": 0.0,
+          "discounted": 0.0
+        }
+      },
+      "stage_sample_counts": {
+        "0": 22,
+        "1": 58,
+        "2": 33,
+        "3": 487
+      },
+      "stage_transitions": [
+        {
+          "action_index": 21,
+          "from_stage": 0,
+          "to_stage": 1,
+          "previous_pose_error_m": 0.014375846724630943,
+          "next_pose_error_m": 0.08343372421432413,
+          "reward_progress": 0.5,
+          "reward_position": -0.013349395874291861
+        },
+        {
+          "action_index": 79,
+          "from_stage": 1,
+          "to_stage": 2,
+          "previous_pose_error_m": 0.006900125509740281,
+          "next_pose_error_m": 0.007420956064678684,
+          "reward_progress": 0.5,
+          "reward_position": -0.0011873529703485895
+        },
+        {
+          "action_index": 112,
+          "from_stage": 2,
+          "to_stage": 3,
+          "previous_pose_error_m": 0.007601778888323936,
+          "next_pose_error_m": 0.26188498981334307,
+          "reward_progress": 0.5,
+          "reward_position": -0.04190159837013489
+        }
+      ],
+      "trace_sha256": "037ab11e58e49588d38815bae7c8e5de569d216aa0d28ae94d665f20ff896a06",
+      "result_sha256": "6b5accc757d15ac647ea87bc3e47618ac0d3e5e9eebe799c9c6660a046fb3fa2",
+      "discounted_return_rank": 9
+    },
+    {
+      "episode": "episode_00006",
+      "samples": 600,
+      "partial": false,
+      "task": false,
+      "final_stage": 3,
+      "endpoint_error_m": 0.009827320544187097,
+      "lift_m": 0.2616017727228705,
+      "undiscounted_return": -8.507190751632073,
+      "discounted_return_from_reset": -2.663621109794058,
+      "terminal_bonus_raw": 0.0,
+      "terminal_bonus_discounted_from_reset": 0.0,
+      "reward_terms": {
+        "position": {
+          "raw": -9.468128887637404,
+          "discounted": -3.566502703453171
+        },
+        "rotation": {
+          "raw": -0.1465799514366844,
+          "discounted": -0.037143468951016424
+        },
+        "estimated_force": {
+          "raw": -0.1052840307501455,
+          "discounted": -0.04234956069097148
+        },
+        "action": {
+          "raw": -0.2277144431436774,
+          "discounted": -0.0658586707534339
+        },
+        "action_change": {
+          "raw": -0.05948343866416369,
+          "discounted": -0.018502857578354893
+        },
+        "progress": {
+          "raw": 1.5,
+          "discounted": 1.066736151632891
+        },
+        "terminal": {
+          "raw": 0.0,
+          "discounted": 0.0
+        }
+      },
+      "stage_sample_counts": {
+        "0": 25,
+        "1": 61,
+        "2": 19,
+        "3": 495
+      },
+      "stage_transitions": [
+        {
+          "action_index": 24,
+          "from_stage": 0,
+          "to_stage": 1,
+          "previous_pose_error_m": 0.018404116132155833,
+          "next_pose_error_m": 0.0840282800293557,
+          "reward_progress": 0.5,
+          "reward_position": -0.013444524804696911
+        },
+        {
+          "action_index": 85,
+          "from_stage": 1,
+          "to_stage": 2,
+          "previous_pose_error_m": 0.005664519450859324,
+          "next_pose_error_m": 0.005359892871531642,
+          "reward_progress": 0.5,
+          "reward_position": -0.0008575828594450627
+        },
+        {
+          "action_index": 104,
+          "from_stage": 2,
+          "to_stage": 3,
+          "previous_pose_error_m": 0.005237823949428834,
+          "next_pose_error_m": 0.26182916793942723,
+          "reward_progress": 0.5,
+          "reward_position": -0.041892666870308355
+        }
+      ],
+      "trace_sha256": "b758e4031012035c2b36f6a89818faab6ebd7636535e18a2e8f6146163168f8a",
+      "result_sha256": "b35dbe872df040320685d7d310e51c47ea1e3ef0bfe3ec609465adfacb2639e7",
+      "discounted_return_rank": 10
+    },
+    {
+      "episode": "episode_00007",
+      "samples": 600,
+      "partial": false,
+      "task": false,
+      "final_stage": 3,
+      "endpoint_error_m": 0.015853287452240163,
+      "lift_m": 0.24430114307473444,
+      "undiscounted_return": -8.508708323364948,
+      "discounted_return_from_reset": -3.0340823300153232,
+      "terminal_bonus_raw": 0.0,
+      "terminal_bonus_discounted_from_reset": 0.0,
+      "reward_terms": {
+        "position": {
+          "raw": -9.30879021134144,
+          "discounted": -4.044628237457618
+        },
+        "rotation": {
+          "raw": -0.2511929232934164,
+          "discounted": -0.06033870752055858
+        },
+        "estimated_force": {
+          "raw": -0.15637889721057965,
+          "discounted": -0.056601827791715666
+        },
+        "action": {
+          "raw": -0.22980574446335628,
+          "discounted": -0.07182033947453073
+        },
+        "action_change": {
+          "raw": -0.06254054705615511,
+          "discounted": -0.02087916036258023
+        },
+        "progress": {
+          "raw": 1.5,
+          "discounted": 1.2201859425916817
+        },
+        "terminal": {
+          "raw": 0.0,
+          "discounted": 0.0
+        }
+      },
+      "stage_sample_counts": {
+        "0": 16,
+        "1": 30,
+        "2": 22,
+        "3": 532
+      },
+      "stage_transitions": [
+        {
+          "action_index": 15,
+          "from_stage": 0,
+          "to_stage": 1,
+          "previous_pose_error_m": 0.01401112167344937,
+          "next_pose_error_m": 0.08319121344120017,
+          "reward_progress": 0.5,
+          "reward_position": -0.013310594150592029
+        },
+        {
+          "action_index": 45,
+          "from_stage": 1,
+          "to_stage": 2,
+          "previous_pose_error_m": 0.008260096691424527,
+          "next_pose_error_m": 0.00792595597245509,
+          "reward_progress": 0.5,
+          "reward_position": -0.0012681529555928146
+        },
+        {
+          "action_index": 67,
+          "from_stage": 2,
+          "to_stage": 3,
+          "previous_pose_error_m": 0.01154476747004685,
+          "next_pose_error_m": 0.26285199191872954,
+          "reward_progress": 0.5,
+          "reward_position": -0.04205631870699673
+        }
+      ],
+      "trace_sha256": "ea7610e30629ec3bf123d69858b49bb1b357f7903facdcc40f1f8c99e274176e",
+      "result_sha256": "cc431c66745d04ddbc89fc3a61442d585a99c92e910f4ab810b56895ebc98a06",
+      "discounted_return_rank": 12
+    },
+    {
+      "episode": "episode_00008",
+      "samples": 600,
+      "partial": false,
+      "task": false,
+      "final_stage": 3,
+      "endpoint_error_m": 0.012123659359382925,
+      "lift_m": 0.259320438253493,
+      "undiscounted_return": -5.518406779355139,
+      "discounted_return_from_reset": -2.002771924239278,
+      "terminal_bonus_raw": 0.0,
+      "terminal_bonus_discounted_from_reset": 0.0,
+      "reward_terms": {
+        "position": {
+          "raw": -6.412165442198179,
+          "discounted": -2.9365837147592195
+        },
+        "rotation": {
+          "raw": -0.19061048237668932,
+          "discounted": -0.056023788855471796
+        },
+        "estimated_force": {
+          "raw": -0.10320860565558748,
+          "discounted": -0.041203068128175965
+        },
+        "action": {
+          "raw": -0.24979771794196406,
+          "discounted": -0.07426638248037441
+        },
+        "action_change": {
+          "raw": -0.06262453118271877,
+          "discounted": -0.01961208597077068
+        },
+        "progress": {
+          "raw": 1.5,
+          "discounted": 1.1249171159547344
+        },
+        "terminal": {
+          "raw": 0.0,
+          "discounted": 0.0
+        }
+      },
+      "stage_sample_counts": {
+        "0": 22,
+        "1": 53,
+        "2": 9,
+        "3": 516
+      },
+      "stage_transitions": [
+        {
+          "action_index": 21,
+          "from_stage": 0,
+          "to_stage": 1,
+          "previous_pose_error_m": 0.0161851694920506,
+          "next_pose_error_m": 0.08313110452627304,
+          "reward_progress": 0.5,
+          "reward_position": -0.013300976724203686
+        },
+        {
+          "action_index": 74,
+          "from_stage": 1,
+          "to_stage": 2,
+          "previous_pose_error_m": 0.01058032485997268,
+          "next_pose_error_m": 0.010145848315503445,
+          "reward_progress": 0.5,
+          "reward_position": -0.0016233357304805513
+        },
+        {
+          "action_index": 83,
+          "from_stage": 2,
+          "to_stage": 3,
+          "previous_pose_error_m": 0.01016812512738895,
+          "next_pose_error_m": 0.2664751123784066,
+          "reward_progress": 0.5,
+          "reward_position": -0.04263601798054505
+        }
+      ],
+      "trace_sha256": "66bab69f01f73e89d99baae4a2ed231f4b56043b02d1177b4a0d45b4f12d9780",
+      "result_sha256": "8ba162e6483d81075a955093e18193607a1d4d447b827bba8e554c4f917ecf4a",
+      "discounted_return_rank": 8
+    },
+    {
+      "episode": "episode_00009",
+      "samples": 600,
+      "partial": false,
+      "task": false,
+      "final_stage": 3,
+      "endpoint_error_m": 0.004750587175771646,
+      "lift_m": 0.2667544399897968,
+      "undiscounted_return": -5.572583542603211,
+      "discounted_return_from_reset": -1.6138668006608141,
+      "terminal_bonus_raw": 0.0,
+      "terminal_bonus_discounted_from_reset": 0.0,
+      "reward_terms": {
+        "position": {
+          "raw": -6.274870639241224,
+          "discounted": -2.4982168964959377
+        },
+        "rotation": {
+          "raw": -0.24526369876755721,
+          "discounted": -0.06064611006623916
+        },
+        "estimated_force": {
+          "raw": -0.15200710940919226,
+          "discounted": -0.053306650172458364
+        },
+        "action": {
+          "raw": -0.33398139661997106,
+          "discounted": -0.09983389839347159
+        },
+        "action_change": {
+          "raw": -0.06646069856526647,
+          "discounted": -0.02028906711085032
+        },
+        "progress": {
+          "raw": 1.5,
+          "discounted": 1.1184258215781446
+        },
+        "terminal": {
+          "raw": 0.0,
+          "discounted": 0.0
+        }
+      },
+      "stage_sample_counts": {
+        "0": 18,
+        "1": 35,
+        "2": 68,
+        "3": 479
+      },
+      "stage_transitions": [
+        {
+          "action_index": 17,
+          "from_stage": 0,
+          "to_stage": 1,
+          "previous_pose_error_m": 0.017949847790104154,
+          "next_pose_error_m": 0.08401254516081579,
+          "reward_progress": 0.5,
+          "reward_position": -0.013442007225730525
+        },
+        {
+          "action_index": 52,
+          "from_stage": 1,
+          "to_stage": 2,
+          "previous_pose_error_m": 0.010630217257669007,
+          "next_pose_error_m": 0.010615051334997341,
+          "reward_progress": 0.5,
+          "reward_position": -0.0016984082135995747
+        },
+        {
+          "action_index": 120,
+          "from_stage": 2,
+          "to_stage": 3,
+          "previous_pose_error_m": 0.009930386867552581,
+          "next_pose_error_m": 0.25016567805625156,
+          "reward_progress": 0.5,
+          "reward_position": -0.04002650848900025
+        }
+      ],
+      "trace_sha256": "211f48e33917775d5882ad742297887d8d0fc322611ebafcbe4e9d5a4081f036",
+      "result_sha256": "954f00ab24be9b820925482300a1955178dfc59c287f6137652f3a1df7c483f3",
+      "discounted_return_rank": 6
+    },
+    {
+      "episode": "episode_00010",
+      "samples": 600,
+      "partial": false,
+      "task": false,
+      "final_stage": 3,
+      "endpoint_error_m": 0.04369466289385014,
+      "lift_m": 0.22199352427371316,
+      "undiscounted_return": -7.3516346653645135,
+      "discounted_return_from_reset": -0.8906476794154425,
+      "terminal_bonus_raw": 0.0,
+      "terminal_bonus_discounted_from_reset": 0.0,
+      "reward_terms": {
+        "position": {
+          "raw": -8.009665934187064,
+          "discounted": -1.2794949122790107
+        },
+        "rotation": {
+          "raw": -0.23326122924530948,
+          "discounted": -0.05937381326489781
+        },
+        "estimated_force": {
+          "raw": -0.20297784912349592,
+          "discounted": -0.058937980757210705
+        },
+        "action": {
+          "raw": -0.3451023060441989,
+          "discounted": -0.09946362615021367
+        },
+        "action_change": {
+          "raw": -0.06062734676444623,
+          "discounted": -0.018375355105022324
+        },
+        "progress": {
+          "raw": 1.5,
+          "discounted": 0.6249980081409129
+        },
+        "terminal": {
+          "raw": 0.0,
+          "discounted": 0.0
+        }
+      },
+      "stage_sample_counts": {
+        "0": 14,
+        "1": 353,
+        "2": 8,
+        "3": 225
+      },
+      "stage_transitions": [
+        {
+          "action_index": 13,
+          "from_stage": 0,
+          "to_stage": 1,
+          "previous_pose_error_m": 0.02977225499834789,
+          "next_pose_error_m": 0.08608344188840876,
+          "reward_progress": 0.5,
+          "reward_position": -0.013773350702145401
+        },
+        {
+          "action_index": 366,
+          "from_stage": 1,
+          "to_stage": 2,
+          "previous_pose_error_m": 0.009620228212504264,
+          "next_pose_error_m": 0.00987956587822066,
+          "reward_progress": 0.5,
+          "reward_position": -0.0015807305405153055
+        },
+        {
+          "action_index": 374,
+          "from_stage": 2,
+          "to_stage": 3,
+          "previous_pose_error_m": 0.009097302914807178,
+          "next_pose_error_m": 0.2650051455834524,
+          "reward_progress": 0.5,
+          "reward_position": -0.04240082329335238
+        }
+      ],
+      "trace_sha256": "99611c96c41467d187eaf01fd9040f1e837774696c5af555467ad7199dda9766",
+      "result_sha256": "05da1e2ce4d9ad8840934030df501a599140fb3ced65f16923fae0eb915799c3",
+      "discounted_return_rank": 1
+    },
+    {
+      "episode": "episode_00011",
+      "samples": 600,
+      "partial": false,
+      "task": false,
+      "final_stage": 3,
+      "endpoint_error_m": 0.012887723151655261,
+      "lift_m": 0.27460122329100484,
+      "undiscounted_return": -5.981277397715604,
+      "discounted_return_from_reset": -1.2554405420847508,
+      "terminal_bonus_raw": 0.0,
+      "terminal_bonus_discounted_from_reset": 0.0,
+      "reward_terms": {
+        "position": {
+          "raw": -6.516394483229954,
+          "discounted": -1.8450762098931663
+        },
+        "rotation": {
+          "raw": -0.25774748030368366,
+          "discounted": -0.06188982091827815
+        },
+        "estimated_force": {
+          "raw": -0.18675320443268725,
+          "discounted": -0.06226333951992254
+        },
+        "action": {
+          "raw": -0.4479696131018353,
+          "discounted": -0.12432353856069525
+        },
+        "action_change": {
+          "raw": -0.07241261664744361,
+          "discounted": -0.021306854311508572
+        },
+        "progress": {
+          "raw": 1.5,
+          "discounted": 0.8594192211188201
+        },
+        "terminal": {
+          "raw": 0.0,
+          "discounted": 0.0
+        }
+      },
+      "stage_sample_counts": {
+        "0": 14,
+        "1": 159,
+        "2": 32,
+        "3": 395
+      },
+      "stage_transitions": [
+        {
+          "action_index": 13,
+          "from_stage": 0,
+          "to_stage": 1,
+          "previous_pose_error_m": 0.015578284495339054,
+          "next_pose_error_m": 0.08427353483660499,
+          "reward_progress": 0.5,
+          "reward_position": -0.013483765573856799
+        },
+        {
+          "action_index": 172,
+          "from_stage": 1,
+          "to_stage": 2,
+          "previous_pose_error_m": 0.010827468576780712,
+          "next_pose_error_m": 0.010841951237759306,
+          "reward_progress": 0.5,
+          "reward_position": -0.001734712198041489
+        },
+        {
+          "action_index": 204,
+          "from_stage": 2,
+          "to_stage": 3,
+          "previous_pose_error_m": 0.010061262849452806,
+          "next_pose_error_m": 0.25773666228892705,
+          "reward_progress": 0.5,
+          "reward_position": -0.04123786596622833
+        }
+      ],
+      "trace_sha256": "db8c65d97466149071cb79140e29454504cc4165e168a5918de3eb3c34248b36",
+      "result_sha256": "d898f8400188ddb318f0bb2f33a75d3ad7cf7854ddebb361cca9bd1def085144",
+      "discounted_return_rank": 4
+    },
+    {
+      "episode": "episode_00012",
+      "samples": 600,
+      "partial": false,
+      "task": false,
+      "final_stage": 3,
+      "endpoint_error_m": 0.03399435387823956,
+      "lift_m": 0.24829144156727861,
+      "undiscounted_return": -14.97443726249681,
+      "discounted_return_from_reset": -2.9947209911284243,
+      "terminal_bonus_raw": 0.0,
+      "terminal_bonus_discounted_from_reset": 0.0,
+      "reward_terms": {
+        "position": {
+          "raw": -15.076024378021877,
+          "discounted": -3.582876892377396
+        },
+        "rotation": {
+          "raw": -0.3655538416497395,
+          "discounted": -0.07889116282933002
+        },
+        "estimated_force": {
+          "raw": -0.3966723085516562,
+          "discounted": -0.10183680790697944
+        },
+        "action": {
+          "raw": -0.5731695539340718,
+          "discounted": -0.16522552329003906
+        },
+        "action_change": {
+          "raw": -0.06301718033946474,
+          "discounted": -0.019596548674121153
+        },
+        "progress": {
+          "raw": 1.5,
+          "discounted": 0.9537059439494409
+        },
+        "terminal": {
+          "raw": 0.0,
+          "discounted": 0.0
+        }
+      },
+      "stage_sample_counts": {
+        "0": 23,
+        "1": 109,
+        "2": 10,
+        "3": 458
+      },
+      "stage_transitions": [
+        {
+          "action_index": 22,
+          "from_stage": 0,
+          "to_stage": 1,
+          "previous_pose_error_m": 0.011876013781558356,
+          "next_pose_error_m": 0.0663617742039015,
+          "reward_progress": 0.5,
+          "reward_position": -0.010617883872624242
+        },
+        {
+          "action_index": 131,
+          "from_stage": 1,
+          "to_stage": 2,
+          "previous_pose_error_m": 0.011145908214948475,
+          "next_pose_error_m": 0.011073159084872436,
+          "reward_progress": 0.5,
+          "reward_position": -0.0017717054535795898
+        },
+        {
+          "action_index": 141,
+          "from_stage": 2,
+          "to_stage": 3,
+          "previous_pose_error_m": 0.009353265921465877,
+          "next_pose_error_m": 0.26523324823976513,
+          "reward_progress": 0.5,
+          "reward_position": -0.04243731971836242
+        }
+      ],
+      "trace_sha256": "398895faf5dfcf407135225b2895289ef0415d1563f7b9878e0822e2e7ef1dbd",
+      "result_sha256": "ab74ec0c4af45f600f29f38bb4a741f4e890b01333d9ae39bc4dc29e7761a4ba",
+      "discounted_return_rank": 11
+    },
+    {
+      "episode": "episode_00013",
+      "samples": 392,
+      "partial": true,
+      "counted_in_complete_statistics": false,
+      "trace_sha256": "531ec1d25574f99f59d6fe7478016eaaa0e3f85245150f9576221dfe3997ebd1"
+    }
+  ],
+  "limitations": [
+    "episodes use evolving policies and train-only online normalization",
+    "discounted return from reset is a descriptive objective, not SB3 measured gradient or minibatch loss",
+    "critic bootstrapping and GAE can propagate rewards beyond a rollout; n_steps64 is not an absolute horizon",
+    "low task alignment does not alone prove the cause of deterministic policy collapse",
+    "no validation/test trajectories used; no intermediate checkpoint selected"
+  ]
+}

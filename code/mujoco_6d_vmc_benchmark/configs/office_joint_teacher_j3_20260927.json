@@ -1,0 +1,104 @@
+{
+  "purpose": "Complete six exposed development conditions for the fixed J1 stiff teacher; not held-out validation",
+  "budget": 4,
+  "workers": 2,
+  "reuse": [
+    "J1 j1_stiff_original",
+    "J1 j1_stiff_hard"
+  ],
+  "selection": "J1 stiff trades lower peak torque/speed for higher hard-case waypoint RMSE; promising mechanism candidate, not proven winner. No parameter refit.",
+  "jobs": [
+    {
+      "id": "j3_stiff_rod_start7",
+      "split": "development",
+      "entrypoint": "tools/run_office_joint_teacher_20260927.py",
+      "arguments": [
+        "--task",
+        "pick_place",
+        "--events",
+        "all",
+        "--duration",
+        "55",
+        "--impact-refinement-dt",
+        ".0000015625",
+        "--teacher",
+        "vmc6d",
+        "--teacher-config",
+        "configs/office_joint_teacher_stiff_20260927.json",
+        "--rod-start",
+        "7"
+      ]
+    },
+    {
+      "id": "j3_stiff_rod_start9",
+      "split": "development",
+      "entrypoint": "tools/run_office_joint_teacher_20260927.py",
+      "arguments": [
+        "--task",
+        "pick_place",
+        "--events",
+        "all",
+        "--duration",
+        "55",
+        "--impact-refinement-dt",
+        ".0000015625",
+        "--teacher",
+        "vmc6d",
+        "--teacher-config",
+        "configs/office_joint_teacher_stiff_20260927.json",
+        "--rod-start",
+        "9"
+      ]
+    },
+    {
+      "id": "j3_stiff_rod_hold6",
+      "split": "development",
+      "entrypoint": "tools/run_office_joint_teacher_20260927.py",
+      "arguments": [
+        "--task",
+        "pick_place",
+        "--events",
+        "all",
+        "--duration",
+        "55",
+        "--impact-refinement-dt",
+        ".0000015625",
+        "--teacher",
+        "vmc6d",
+        "--teacher-config",
+        "configs/office_joint_teacher_stiff_20260927.json",
+        "--rod-hold",
+        "6"
+      ]
+    },
+    {
+      "id": "j3_stiff_shift_plus",
+      "split": "development",
+      "entrypoint": "tools/run_office_joint_teacher_20260927.py",
+      "arguments": [
+        "--task",
+        "pick_place",
+        "--events",
+        "all",
+        "--duration",
+        "55",
+        "--impact-refinement-dt",
+        ".0000015625",
+        "--teacher",
+        "vmc6d",
+        "--teacher-config",
+        "configs/office_joint_teacher_stiff_20260927.json",
+        "--seed",
+        "2026092701",
+        "--variant",
+        "2",
+        "--ball-speed",
+        "1.45",
+        "--person-stroke",
+        ".18",
+        "--rod-stroke",
+        ".225"
+      ]
+    }
+  ]
+}

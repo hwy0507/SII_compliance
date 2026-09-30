@@ -1,0 +1,168 @@
+{
+  "samples": 550000,
+  "timestep_s": 0.0001,
+  "timestep_sample_counts": {
+    "0.0001": 550000
+  },
+  "rmse_weighting": "uniform physical samples (equivalent to time integral)",
+  "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+  "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+  "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+  "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+  "linear_speed_peak_mps": 0.06160244318662096,
+  "generalized_actuator_torque_peak_nm": 49.30316184070999,
+  "generalized_actuator_torque_peak_by_joint_nm": [
+    4.750298113089526,
+    49.30316184070999,
+    1.9491221733564916,
+    27.05392929691449,
+    1.8565822839606074,
+    3.700147056447386,
+    0.5539588318717352
+  ],
+  "actuator_force_peak_by_actuator": [
+    4.750298113089526,
+    49.30316184070999,
+    1.9491221733564916,
+    27.05392929691449,
+    1.8565822839606074,
+    3.700147056447386,
+    0.5539588318717352
+  ],
+  "position_rmse_xyz_m": [
+    0.007360512166905463,
+    0.023857529038728634,
+    0.025546746243380995
+  ],
+  "position_rmse_3d_m": 0.03572107325958508,
+  "stages": {
+    "0": {
+      "count": 1600,
+      "duration_s": 0.1599999999999987,
+      "error_peak_m": 3.7775922461150586e-08,
+      "speed_peak_mps": 1.5102071145476133e-08,
+      "qfrc_peak_nm": 31.798505338355714,
+      "first_s": 0.0001,
+      "last_s": 0.1599999999999987,
+      "position_rmse_xyz_m": [
+        4.950769858626126e-09,
+        3.651914760730642e-08,
+        6.440820777586106e-10
+      ],
+      "position_rmse_3d_m": 3.685882670243594e-08,
+      "name": "approach"
+    },
+    "1": {
+      "count": 14000,
+      "duration_s": 1.3999999999998622,
+      "error_peak_m": 0.07210000040080312,
+      "speed_peak_mps": 0.06160244318662096,
+      "qfrc_peak_nm": 33.85866651126019,
+      "first_s": 0.1600999999999987,
+      "last_s": 1.5599999999998446,
+      "position_rmse_xyz_m": [
+        0.0009408286224103462,
+        0.000599104787576675,
+        0.04226914471705582
+      ],
+      "position_rmse_3d_m": 0.04228385838774238,
+      "name": "align"
+    },
+    "2": {
+      "count": 3200,
+      "duration_s": 0.3199999999999811,
+      "error_peak_m": 0.0063057698505030405,
+      "speed_peak_mps": 0.013568068575655255,
+      "qfrc_peak_nm": 33.651814302783144,
+      "first_s": 1.5600999999998446,
+      "last_s": 1.8799999999998094,
+      "position_rmse_xyz_m": [
+        0.00021621001795755164,
+        0.000686199773770833,
+        0.0051569447218553725
+      ],
+      "position_rmse_3d_m": 0.005206889259976664,
+      "name": "grasp"
+    },
+    "3": {
+      "count": 40800,
+      "duration_s": 4.08000000000383,
+      "error_peak_m": 0.13219778639066057,
+      "speed_peak_mps": 0.05313164153572241,
+      "qfrc_peak_nm": 33.505096976500646,
+      "first_s": 1.8800999999998094,
+      "last_s": 5.959999999999448,
+      "position_rmse_xyz_m": [
+        0.0021754999909662652,
+        0.0010092799671861084,
+        0.08491531466384838
+      ],
+      "position_rmse_3d_m": 0.08494917369064423,
+      "name": "lift"
+    },
+    "4": {
+      "count": 38800,
+      "duration_s": 3.8800000000037635,
+      "error_peak_m": 0.14408760728279932,
+      "speed_peak_mps": 0.04639651752395558,
+      "qfrc_peak_nm": 41.32280552514857,
+      "first_s": 5.960099999999448,
+      "last_s": 9.839999999990406,
+      "position_rmse_xyz_m": [
+        0.007852203613221522,
+        0.08722115332930225,
+        0.014352022849392592
+      ],
+      "position_rmse_3d_m": 0.08874213908593047,
+      "name": "carry"
+    },
+    "5": {
+      "count": 183200,
+      "duration_s": 18.319999999970644,
+      "error_peak_m": 0.0382645895017003,
+      "speed_peak_mps": 0.04262463091015428,
+      "qfrc_peak_nm": 49.30316184070999,
+      "first_s": 9.840099999990406,
+      "last_s": 28.15999999994771,
+      "position_rmse_xyz_m": [
+        0.011451374361776243,
+        0.007769146423851892,
+        0.012047435764012772
+      ],
+      "position_rmse_3d_m": 0.01834759710198616,
+      "name": "load_transfer"
+    },
+    "6": {
+      "count": 8000,
+      "duration_s": 0.7999999999999282,
+      "error_peak_m": 0.011807822400801748,
+      "speed_peak_mps": 0.028958451767977515,
+      "qfrc_peak_nm": 48.485519398309066,
+      "first_s": 28.16009999994771,
+      "last_s": 28.959999999945847,
+      "position_rmse_xyz_m": [
+        0.0030160023146040115,
+        0.0007846781276572289,
+        0.008092605251673983
+      ],
+      "position_rmse_3d_m": 0.008671923055766913,
+      "name": "release"
+    },
+    "7": {
+      "count": 260400,
+      "duration_s": 26.039999999952652,
+      "error_peak_m": 0.04415362019153657,
+      "speed_peak_mps": 0.05116086069675253,
+      "qfrc_peak_nm": 47.34283437649074,
+      "first_s": 28.960099999945847,
+      "last_s": 55.00000000070228,
+      "position_rmse_xyz_m": [
+        0.003451983952069779,
+        0.0050976934009380045,
+        0.004181300218511326
+      ],
+      "position_rmse_3d_m": 0.0074421732533338026,
+      "name": "retreat"
+    }
+  }
+}

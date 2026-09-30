@@ -1,0 +1,53 @@
+{
+  "status": "complete",
+  "vmc": {
+    "source_id": "push_00000",
+    "split": "train",
+    "physical_fixture": "rod",
+    "focus": "push_rod_geom",
+    "task_success": false,
+    "development_gate": false,
+    "gate_definition": "task success AND no invalid/upstream AND correct focus contact AND all external penetration<=0.2mm",
+    "original_teacher_checks": {
+      "task": true,
+      "physics": true,
+      "target_contact": true,
+      "rod_contact": true,
+      "release": true,
+      "no_incidental_structure_contact": true,
+      "limited_point_force": true,
+      "speed": true,
+      "no_upstream_guard_contact": true
+    },
+    "original_teacher_gate_reused": false,
+    "max_external_penetration_m": 0.00015056827481702424,
+    "focus_contact": true,
+    "peak_external_resultant_force_n": 217.10804090146195,
+    "peak_torque_nm": 41.21818452865614,
+    "speed_p95_mps": 0.058910171209724915,
+    "endpoint_error_m": 0.05238729646802855,
+    "final_stage": 3,
+    "publication_ready": false,
+    "elapsed_s": 112.5657308101654,
+    "peak_rss_gib": 0.47925567626953125,
+    "teacher_called": true,
+    "source_row": {
+      "id": "push_00000",
+      "scene": "push",
+      "split": "train",
+      "physical_fixture": "rod",
+      "fixture_hash": "81446ba451fef33122308cbf864841b4d29ceeabb9c848c974c76682020d5667",
+      "parameter_group": "894ec2391540db238c0ced1bac971005bba5ba30ddef707fde98877b70c8dda5",
+      "samples": 600,
+      "source_trace": "outputs/unified_6d_push_proprio48_20260921/dataset/episodes/push/push_0000.npz",
+      "source_result": "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/vmc_auto_search_20260920/trials/r0000_rod_04/rollout.json",
+      "source_search_result": "/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/vmc_auto_search_20260920/trials/r0000_rod_04/search_result.json",
+      "content_hash": "d4a5ca49982246ddd3348036bbad5b0008b7570123932681b765d2b25f700b0e",
+      "conversion": "insert exact recorded teacher_wrench[:,3:6] between legacy force3 and path_direction3",
+      "teacher_family": "six_d_saturated_virtual_model_controller",
+      "teacher_force": "estimated_proprioceptive_wrench",
+      "source_root": "outputs/unified_6d_push_proprio48_20260921",
+      "trace": "dataset/episodes/push/push_00000.npz"
+    }
+  }
+}

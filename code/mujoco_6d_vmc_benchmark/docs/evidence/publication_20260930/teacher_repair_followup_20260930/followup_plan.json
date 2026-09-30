@@ -1,0 +1,48 @@
+{
+  "max_new_rollouts": 4,
+  "candidates": {
+    "velocity025_stiff2": {
+      "velocity_weight": 0.25,
+      "options": {
+        "stiffness_6d": [
+          800.0,
+          800.0,
+          2400.0,
+          20.0,
+          16.0,
+          24.0
+        ],
+        "damping_6d": [
+          39.59797974644666,
+          39.59797974644666,
+          77.78174593052023,
+          3.9597979746446663,
+          3.394112549695428,
+          4.242640687119286
+        ]
+      }
+    },
+    "pair_average_pitch035": {
+      "pair_average": true,
+      "options": {
+        "axis_rotation_rpy": [
+          0.0,
+          0.35,
+          0.0
+        ]
+      }
+    }
+  },
+  "rationale": {
+    "velocity025_stiff2": "Test smaller sustained-load offset at preserved damping ratio after velocity025 missed the fixed horizon.",
+    "pair_average_pitch035": "Test SPD anisotropic force-to-tangential coupling with a fixed virtual frame; no surface normal, contact or scene input."
+  },
+  "library": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/teacher_repair_canonical_20260930/source/tools/teacher_repair_campaign_20260930.py",
+  "library_sha256": "4dade206f285124e67e1a8413a2172cad33bdb556b5dc1a6fddc591dcd517c63",
+  "interpreter": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-canonical-rl/bin/python",
+  "first_campaign_plan_sha256": "409c408124d18502deb1146b8188d253ed2ef9e4fc86623a524ad977987766a8",
+  "original_reference": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/teacher_repair_canonical_20260930",
+  "promotion": "corner task AND strict required before combined; no ESN training",
+  "environment_gate_actuator_changes": false,
+  "hidden_conditions_opened": false
+}

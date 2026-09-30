@@ -1,0 +1,31 @@
+{
+  "verified_at": "2026-09-24T01:23:55+08:00",
+  "archives": [
+    {
+      "local": "outputs/contact_sidecar_20260924_r1_archive",
+      "server": "outputs/contact_sidecar_20260924_r1",
+      "status_preserved": "failed: Original audit changed: contact",
+      "diagnosis": "Only explicit set-derived contact collection order differed; all numerical arrays passed exact comparison.",
+      "checksum_dry_run_exit_code": 0,
+      "checksum_differences": []
+    },
+    {
+      "local": "outputs/contact_sidecar_20260924_r2_archive",
+      "server": "outputs/contact_sidecar_20260924_r2",
+      "status_preserved": "complete",
+      "checksum_dry_run_exit_code": 0,
+      "checksum_differences": []
+    }
+  ],
+  "checksum_command": "rsync -rnic --out-format='%i %n'",
+  "r2_protocol_sha256": "d754b8e28eaa24a399ddaa94e026f981e84635bcaf5919ee91bb1529671295aa",
+  "r1_protocol_sha256": "6a2cf7a2118070b51273dbea8f0f1e9c4baddbdbf0d84f0ee6244ad46a995076",
+  "physical_rollouts_executed": 6,
+  "r1_completed_rollouts_reused_by_hash": 2,
+  "r2_new_rollouts": 4,
+  "pairs_exactly_equal_to_historical_arrays": 3,
+  "local_simulation_steps": 0,
+  "local_peak_queries": "Matching MuJoCo 3.11.0, original collision flags, runtime rod masks restored, pre/post state, no mj_step",
+  "report": "docs/CONTACT_SIDECAR_RESULTS_20260924.md",
+  "all_events_at_or_above_0p19mm_have_finite_pre_post_state": true
+}

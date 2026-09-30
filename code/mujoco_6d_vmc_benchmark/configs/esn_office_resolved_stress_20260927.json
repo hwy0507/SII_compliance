@@ -1,0 +1,15 @@
+{
+  "purpose":"Common resolved initial-impact numerics and additional harder rod-exposure development probes; no replacement of original failed fixtures",
+  "physics":"1.5625us for first .2s, then 50us; servo 4ms and actor40ms unchanged; error metrics weighted by elapsed physical time",
+  "gate_m":0.0002,
+  "policy":"Frozen R33; no additional training",
+  "fairness":"Same refinement for zero and ESN. New rod timings are stress probes only, original three layouts/failures retained and blind plan unused. No event clock enters actor.",
+  "jobs":[
+    {"id":"r33_original_resolved","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--esn-model","models/r33.npz","--esn-mode","control"]},
+    {"id":"zero_original_resolved","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625"]},
+    {"id":"r33_rod_start7","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","7","--esn-model","models/r33.npz","--esn-mode","control"]},
+    {"id":"r33_rod_start9","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-start","9","--esn-model","models/r33.npz","--esn-mode","control"]},
+    {"id":"r33_rod_hold6","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--rod-hold","6","--esn-model","models/r33.npz","--esn-mode","control"]},
+    {"id":"r33_hard_resolved","split":"development","arguments":["--task","pick_place","--events","all","--duration","55","--impact-refinement-dt",".0000015625","--seed","2026092702","--variant","-2","--ball-speed","1.85","--person-stroke",".22","--rod-stroke",".24","--esn-model","models/r33.npz","--esn-mode","control"]}
+  ]
+}

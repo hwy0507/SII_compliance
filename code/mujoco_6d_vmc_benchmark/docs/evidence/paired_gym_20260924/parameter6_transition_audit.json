@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "run": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/proof/parameter6",
+  "snapshot": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/source",
+  "manifest_sha256": "a1a9c25c037928e3792ae20aaa960e4f4468922d44341f85bb7b77b5b7cf00bd",
+  "verified_source_files": 163,
+  "episodes": [
+    {
+      "directory": "SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_parameter_action_20260924_r1_archive/proof/parameter6/gym/episode_00000",
+      "split": "train",
+      "mode": "parameter6",
+      "transitions": 600,
+      "complete": true,
+      "last_next_observation_valid": false,
+      "last_reward_included": true,
+      "max_reward_reconstruction_error": 2.220446049250313e-16,
+      "max_controller_replay_error": 2.220446049250313e-16,
+      "discounted_actual_reward": 0.31497732454003713,
+      "discounted_base_reward": 0.2483106638695406,
+      "initial_potential": -0.06666666067049583,
+      "last_potential": 0.0,
+      "expected_discounted_reward": 0.3149773245400364,
+      "telescoping_residual": 7.216449660063518e-16,
+      "task_success": true,
+      "development_gate": true,
+      "hashes": {
+        "transitions.jsonl": "dfc8d9be1223fae59d6861273292d62c0c5d76ffc7e37f4182762a7e2b21f7a0",
+        "transitions.npz": "59cf00d7ca020c132ec77c260581b927e7506a79dd2507194d6455f6396ba216",
+        "actor_trace.npz": "84f0aacc8b5de62c7ab7e26105b91218576d45d97e75b586912ee06114d34e56",
+        "transition_contract.json": "c0f545b66a4c6e4e9ce176dab1599768b98a417991026e1b4c481147208331c8"
+      }
+    }
+  ],
+  "training_transitions": 0,
+  "sb3_received_rewards": null,
+  "complete_episodes": 1,
+  "partial_episodes": 0,
+  "limitations": [
+    "No simulation, training, checkpoint reselection, or mutable-source imports.",
+    "Controller replay uses frozen definitions and tolerance rtol=atol=1e-12; raw journal/actor comparisons are exact.",
+    "Partial last next observation is retained in independent journal; old actor_trace cannot independently witness that final next boundary.",
+    "Gym reward is float64; SB3 receives float32. Callback logs verify conversion when present, not actual advantages or critic/bootstrap values.",
+    "Terminal next observation is a marked placeholder; terminal potential is zero and no physical terminal actor observation is claimed."
+  ],
+  "audit_tool_sha256": "18864571f15baef61e3faf989ce2ba86961694631ce78730b4362609db27dff6"
+}

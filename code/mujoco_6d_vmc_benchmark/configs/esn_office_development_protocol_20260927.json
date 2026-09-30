@@ -1,0 +1,26 @@
+{
+  "purpose": "Office-v5 ESN recovery development; no guarded-rod success substitution",
+  "physics_dt_s": 0.00005,
+  "policy_dt_s": 0.04,
+  "diagnostic_duration_s": 6.2,
+  "full_task_duration_s": 55.0,
+  "strict_external_penetration_m": 0.0002,
+  "task_gates": "Unchanged office PickPlaceTask and placement_complete; all required apparatus contacts and cup stability reported separately and included in strict_success",
+  "diagnostics": {"seed": 2026091751, "variant": 0, "actors": ["zero", "r30", "r30_no_pulse"], "events": ["settle", "ball", "all"]},
+  "development": [
+    {"id":"office_original","seed":2026091751,"variant":0,"ball_speed":1.7,"person_stroke":0.20,"rod_stroke":0.235},
+    {"id":"office_shift_plus","seed":2026092701,"variant":2,"ball_speed":1.45,"person_stroke":0.18,"rod_stroke":0.225},
+    {"id":"office_shift_minus","seed":2026092702,"variant":-2,"ball_speed":1.85,"person_stroke":0.22,"rod_stroke":0.24}
+  ],
+  "withheld": [
+    {"id":"office_intermediate_plus","seed":2026092781,"variant":1,"ball_speed":1.6,"person_stroke":0.21,"rod_stroke":0.23},
+    {"id":"office_intermediate_minus","seed":2026092782,"variant":-1,"ball_speed":1.8,"person_stroke":0.19,"rod_stroke":0.235},
+    {"id":"office_outer_plus","seed":2026092783,"variant":3,"ball_speed":1.5,"person_stroke":0.20,"rod_stroke":0.24}
+  ],
+  "withheld_policy": "Do not simulate or train on withheld layouts before development passes and checkpoint is frozen. Exactly one initial audit per withheld layout, retain failures.",
+  "variation_scope": "Variant shifts pillar, thick corner and cup by 18mm per unit in world y; seed changes actual ball/cup mass. Drive stroke and initial ball velocity vary. Other unused random fixture fields are not claimed as variations.",
+  "no_driven_event_caveat": "settle disables initial ball launch and rail strokes only. All obstacles remain physical; gravity and contact may move them.",
+  "actor_contract": "canonical proprio48/action7; no stage, event clock, geometry, fixture ID or contact truth",
+  "horizon_reason": "55s is historical office task horizon and common to all full-task trials. The prior 21s failed run is retained.",
+  "failure_policy": "Preserve all failures and aborted trials. No gate change, no test recycling labelled blind. Any later protocol version must state cause and preserve this version."
+}

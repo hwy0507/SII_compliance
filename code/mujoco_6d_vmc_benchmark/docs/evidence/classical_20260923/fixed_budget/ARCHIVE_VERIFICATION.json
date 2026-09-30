@@ -1,0 +1,29 @@
+{
+  "verified_at": "2026-09-23T20:08:59+08:00",
+  "local_archive": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/server_archive_20260923",
+  "local_archive_bytes_at_verification": 7250969020,
+  "server_campaign": "arm1@192.168.31.70:/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/outputs/baseline_impedance_admittance_20260923/measured_campaign/",
+  "transfer_complete": true,
+  "checksum_verification": {
+    "method": "rsync -rnic --out-format='%i %n'",
+    "scope": "entire measured_campaign directory, including all 106 episodes",
+    "exit_code": 0,
+    "itemized_differences": []
+  },
+  "campaign_complete_markers_verified": true,
+  "campaign_driver_pid": 413277,
+  "campaign_driver_exited": true,
+  "fixed_budget_raw_audit": {
+    "development_episodes": 48,
+    "validation_episodes": 30,
+    "development_job_files_sha256": 552,
+    "validation_job_files_sha256": 336,
+    "frozen_script_hashes_verified": 134,
+    "report": "docs/CLASSICAL_FIXED_BUDGET_VALIDATION_20260923.json"
+  },
+  "notes": [
+    "The archive additionally includes both frozen source snapshots, base protocol, and the two frozen student checkpoints.",
+    "No simulation was restarted and no frozen source, configuration, result, or acceptance threshold was modified.",
+    "Large raw files remain in the git-ignored outputs directory; small summary and audit evidence are under docs."
+  ]
+}
