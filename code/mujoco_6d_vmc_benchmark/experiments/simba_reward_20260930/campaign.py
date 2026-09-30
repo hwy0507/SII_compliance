@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse, hashlib, json, os, subprocess, sys, time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent
-PY=Path(sys.executable).resolve()
+PY=Path(sys.executable).absolute()
 def write(path,data):
     tmp=Path(str(path)+".tmp");tmp.write_text(json.dumps(data,indent=2)+"\n");tmp.replace(path)
 def launch(command,log,cpu):

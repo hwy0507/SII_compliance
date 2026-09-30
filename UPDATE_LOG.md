@@ -1,3 +1,10 @@
+## 2026-09-30 — 修复 campaign 子进程解释器路径
+
+- 首次 campaign_01 在导入 numpy 前退出：对虚拟环境 Python 使用 resolve() 将软链接解析成
+  /usr/bin/python3.12，丢失 venv。已改为保留 venv 绝对路径，算法与环境未运行，无学习结果。
+- 失败日志完整保留在 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_01/。
+- 重启使用独立 frozen_v2 快照与 campaign_02 输出，不覆盖失败记录。
+
 ## 2026-09-30 — GPU 官方算法验证完成，冻结配对训练方案
 
 - 新隔离环境 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu：
