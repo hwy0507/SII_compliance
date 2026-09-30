@@ -3,6 +3,28 @@
 本文件记录每次对话交付的文件修改、验证和结果边界；最新记录在前。对应提交号由 Git 历史
 查询：`git log --oneline -- UPDATE_LOG.md`。持续提交约定见 [AGENTS.md](AGENTS.md)。
 
+## 2026-09-30 — 135回合检查点、完整资产复现更正与公平展示
+
+- 11:10 UTC重新fetch并读取main=`2581451cc9c471b19c67286457bea8d3b8a4b2b7`及baseline=
+  `c9185489dfbb8d969525a253493592cbbbcd06d2`日志。baseline奖励主实验和独立40k诊断均已收尾，
+  仍存在无grasp的探索瓶颈；不合并、不混同其综合场景和本次训练域，也不声称算法本质失败。
+- v10完整c00–c04共135回合23录取/112失败，c05继续，未重启。短撞VMC c04单参数3/3、
+  c05为0/3；不改规则或丢失败。参数未锁定，validation/collection/新ESN未开始。
+- 纠正资产清单遗漏FR3：完整133文件而非85；未来prepare校验两树与引用资源。原冻结
+  plan/source/execution保留。本机真实冻结初始化零积分9/9逐字节复现；XML-only0/9因质量
+  默认和运行时mask等差异失败。ARM首个source模型22数组有差异，动态补充采集阻断。
+  新资产审计/静态复现工具与报告解释范围，不声称跨架构物理等价。
+- 新公平展示器分列task/strict/曝光/录取与失败，锁定前不输出策略成绩；三方法指标采用
+  同fixture共同完整证据集合，缺失或不匹配一项则共同排除指标聚合但保留任务统计与明细。
+  最终11测试通过；资产6/选择6/Spark driver8通过。Spark采集driver仅准备，未启动态作业。
+- 已逐文件核验服务器`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/`：
+  `teacher_bank_runtime_inputs_complete_20260930/menagerie/`完整133资产，manifest SHA
+  `56b0e9d07c2b0e5636f38fb228dbd077980d2ea14c2ea26bc8987be11a304523`；
+  `teacher_bank_review_checkpoint_20260930_1104/evidence/`含112文件，本机静态成功和XML失败
+  证据、135状态及归档时工具版本；`teacher_bank_spark_static_source_20260930_v1/`为ARM阻断证据。
+  归档后的展示器修正及本段文档以本次Git提交为准，未虚称已在1104快照中。
+  10小时窗口继续至13:48:16 UTC；3300定义不等于示范，未达到每类1000条。
+
 ## 2026-09-30 — 短撞VMC同参数3/3与108回合公平检查点
 
 - 09:42 UTC核对main=`e1d815c390d1221ee0bf80293e2b8179d2e1d3f8`，baseline已前进至

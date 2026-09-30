@@ -66,9 +66,11 @@ def candidate_rank(candidate):
 
 def prepare(root):
     import mujoco
+    from teacher_bank_asset_audit_20260930 import collect_robot_assets
     if (root/'plan.json').exists():return
     if mujoco.__version__!='3.11.0':raise RuntimeError('MuJoCo 3.11.0 required')
     if root.exists() and any(root.iterdir()):raise RuntimeError('Nonempty unregistered directory')
+    asset_manifest=collect_robot_assets(ASSETS)
     root.mkdir(parents=True,exist_ok=True)
     source=root/'source';source.mkdir()
     shutil.copytree(REPO/'scripts',source/'scripts',ignore=shutil.ignore_patterns('__pycache__','outputs','*.log'))
@@ -79,7 +81,6 @@ def prepare(root):
     inputs=root/'source_inputs';inputs.mkdir()
     shutil.copy2(reference,inputs/'nominal_reference.npz')
     shutil.copy2(reference.with_suffix('.json'),inputs/'nominal_reference_result.json')
-    asset_manifest={str(p.relative_to(ASSETS)):sha(p) for p in (ASSETS/'franka_emika_panda').rglob('*') if p.is_file()}
     write(inputs/'robot_asset_manifest.json',asset_manifest)
     fixtures=design(reference)
     write(root/'fixtures.json',fixtures)
@@ -104,7 +105,8 @@ def prepare(root):
         server=SERVER,remote=REMOTE_BASE+'/'+root.name,local_compute_host=socket.gethostname(),python=sys.executable,
         mujoco_version=mujoco.__version__,assets=str(ASSETS),nominal_reference=str(reference),nominal_reference_sha256=sha(reference),
         source_inputs={p.name:sha(p) for p in inputs.iterdir() if p.is_file()},
-        asset_archive='arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_runtime_inputs_20260930/menagerie/',
+        asset_archive=None,asset_archive_status='Complete FR3 + Panda manifest frozen; dedicated archive pending verification',
+        asset_manifest_scope='All franka_fr3 and franka_emika_panda files; required model XML and referenced assets verified',
         fixtures_sha256=sha(root/'fixtures.json'),
         sources={str(p.relative_to(source)):sha(p) for p in source.rglob('*.py')},
         base_git_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip(),
@@ -150,7 +152,9 @@ def verify_assets(root, asset_root=None):
             raise RuntimeError('Runtime asset content differs from frozen manifest: '+name)
     return dict(path=str(asset_root.resolve()),manifest_sha256=sha(manifest_path),
                 files_verified=len(expected),verified_at=time.time(),
-                scope='actual runtime files immediately before dispatch; compiled-model identity checked across methods and candidates')
+                covered_robot_roots=sorted(top_directories),
+                complete_fr3_and_panda_coverage={'franka_fr3','franka_emika_panda'}<=top_directories,
+                scope='Only actual files listed by frozen manifest are verified; legacy Panda-only manifests do not cover FR3. Compiled-model identity checked separately across methods and candidates')
 
 
 def archive(root, relative):
