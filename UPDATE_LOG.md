@@ -3,6 +3,29 @@
 本文件记录每次对话交付的文件修改、验证和结果边界；最新记录在前。对应提交号由 Git 历史
 查询：`git log --oneline -- UPDATE_LOG.md`。持续提交约定见 [AGENTS.md](AGENTS.md)。
 
+## 2026-09-30 — 协作 skill：双分支开工检查、本地计算与服务器归档
+
+- 新增 `skills/sii-research-sync/SKILL.md` 与 `agents/openai.yaml`，安装至
+  `/home/airpig/.codex/skills/sii-research-sync/`，允许自动选择。开工先 fetch/读取远端
+  main、baseline 的 `UPDATE_LOG.md`；收工重新读取 `AGENTS.md`，记录并发布本轮进展。
+  同步更新根目录 AGENTS 与 README，让未自动加载 skill 的后续 agent 也有入口。
+- 本轮远端检查（2026-09-30，Asia/Shanghai）：main=`f098678ad1532f1b87c7e2ac803faa301c4c65ca`；截至本轮查询，
+  远端没有 baseline 分支，因此无 baseline 更新日志可读。没有擅自创建分支或合并代码。
+- 新默认偏好：尽量本地计算，服务器共享持久文件。共享目录为
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance`，源码按 commit 隔离，
+  实验按 branch/run-id 隔离；先同步并校验，再把服务器绝对路径写入更新文档。
+  本地缓存和实际执行来源保留，不改历史 execution.json，不覆盖别的 agent 或 runtime。
+- 本轮归档的是已发布研究源码，服务器代码位置：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/f098678ad1532f1b87c7e2ac803faa301c4c65ca/code/mujoco_6d_vmc_benchmark/`。
+  此路径对应本轮开始时的研究代码；本轮 skill/文档更改以 GitHub 新提交为准。
+  未全量迁移历史 outputs、原始大轨迹或 checkpoint，不声称它们已在新共享目录。
+- 验证：仓库版与安装版 skill 均通过 skill-creator 的 quick_validate，目录内容一致；
+  使用现有 `.venv-canonical-rl` 中的 PyYAML 完成校验，未安装新依赖。文档差异检查通过。
+  本轮没有修改算法、环境或启动仿真。
+- 已完成：skill 编写安装、双分支状态检查、共享目录创建与研究源码归档。2026-09-30
+  03:10:53 UTC 逐文件校验服务器快照：2,592 个文件 SHA256 全部一致，无缺失或额外文件。
+  本轮没有运行中的新实验；历史大文件仍在原位置，后续按实际任务逐批归档。
+
 ## 2026-09-30 — 积累成果同步与每轮自动提交约定
 
 ### 文件更新

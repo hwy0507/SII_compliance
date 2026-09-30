@@ -4,6 +4,8 @@
 
 每轮文件更新统一记录于 [UPDATE_LOG.md](UPDATE_LOG.md)；本仓库的提交与推送约定见
 [AGENTS.md](AGENTS.md)。下面的 9/29 handoff 保留为历史版本入口。
+开工和收工流程见 [sii-research-sync skill](skills/sii-research-sync/SKILL.md)：先读远端
+main/baseline 更新日志，优先本地计算、服务器共享文件，结束时更新进展并提交推送。
 
 当前先修正 VMC teacher，再继续纯 ESN。已完成两轮共 12 条有效开发回合和独立动作／物理子步
 审计。候选 `velocity025_stiff2` 在厚桌角放置开发回归中 task/strict 均通过；在冻结的综合单柱
