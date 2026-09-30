@@ -1,5 +1,14 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+2026-09-30 06:18 UTC：v10首轮c00厚角三方法录取VMC0/3、导纳0/3、阻抗2/3；短撞为2/3、0/3、1/3。
+是相同模型/相同anchor数量的训练搜索比较，非锁定参数验证。VMC两条短撞hash与独立子步指标复核通过，
+但接触峰力1368/1350 N，阻抗成功短撞峰力2077 N；需与电机峰矩分开解释，不代表真实部署安全。
+目前21条搜索完成、另1条导纳持续推碰运行；collection=0，各类1000条有效teacher、新ESN和正式验证未完成。
+新增只读状态工具展示接触载荷/细分失败，19项测试通过；没有改冻结源码、环境、gate或评分。
+本轮状态与源码已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_0621/evidence/`。
+两条VMC复核详见[审计报告](TEACHER_BANK_V10_FIRST_SEARCH_SUCCESS_AUDIT_20260930.md)。下列早期数量为历史记录。
+
 2026-09-30 新任务：VMC既作为teacher生成器也作为model-based baseline；导纳/真实力矩
 阻抗同场景同搜索预算调参。3000训练＋300验证配置已生成，不等于有效数据已采满。
 截至05:29 UTC，v6六条主动pilot及v8九条三类别pilot已完成；后者仅阻抗一个训练fixture通过，

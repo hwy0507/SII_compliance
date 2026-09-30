@@ -3,6 +3,7 @@
 Only metadata of already executed attempts is examined. Report destinations
 must be outside the campaign tree, and existing reports are never overwritten.
 Large trajectory hashes are reported from audits, not silently revalidated.
+Completed rollout.json metadata is hashed against its audit before extraction.
 """
 from __future__ import annotations
 
@@ -76,6 +77,52 @@ def attempt_directories(root):
 def distribution(values):
     return None if not values else dict(count=len(values), minimum=min(values),
         median=statistics.median(values), mean=statistics.fmean(values), maximum=max(values))
+
+
+def contact_metadata(folder, fixture, audit):
+    """Extract existing evaluator metadata, never recompute contacts or gates."""
+    exposure = audit.get('exposure')
+    hashes = audit.get('files_sha256')
+    result = dict(available=False, source='rollout.json',
+        scope='Existing evaluator metadata extraction, not independent physical-substep recomputation',
+        audit_failure_reasons=audit.get('failure_reasons', []),
+        audit_exposure_reasons=exposure.get('reasons', []) if isinstance(exposure, dict) else [])
+    expected = hashes.get('rollout.json') if isinstance(hashes, dict) else None
+    result['expected_sha256'] = expected
+    if not isinstance(expected, str) or not re.fullmatch('[0-9a-f]{64}', expected):
+        return dict(result, reason='missing_or_invalid_rollout_audit_hash')
+    path = folder/'rollout.json'
+    if path.is_symlink():
+        return dict(result, reason='symlink_rollout_rejected')
+    try:
+        # Hash exactly the bytes parsed, rather than a separate earlier file read.
+        raw = path.read_bytes()
+        actual = hashlib.sha256(raw).hexdigest()
+        result['actual_sha256'] = actual
+        if actual != expected:
+            return dict(result, reason='rollout_audit_hash_mismatch')
+        rollout = json.loads(raw, parse_constant=lambda value: (_ for _ in ()).throw(ValueError(value)))
+        events = rollout['stats']['events']
+        if not isinstance(events, dict) or any(not isinstance(e, dict) for e in events.values()):
+            raise ValueError('Events must map event names to metadata objects')
+        # Includes 1e999, which Python's JSON decoder otherwise accepts as infinity.
+        json.dumps(rollout, allow_nan=False)
+    except (OSError, ValueError, TypeError, KeyError):
+        return dict(result, reason='missing_or_invalid_rollout_metadata')
+    category = fixture.get('category')
+    relevant_names = (['office_v5_corner_face', 'office_v5_corner_training_bridge',
+                       'office_v5_corner_training_bridge_connector'] if category == 'passive_corner'
+                      else ['ball'] if category == 'active_short'
+                      else ['person_hand'] if category == 'active_long' and fixture.get('apparatus') == 'person'
+                      else ['rod'] if category == 'active_long' and fixture.get('apparatus') == 'rod' else [])
+    booleans = {k:v for k,v in rollout.items() if isinstance(v, bool)}
+    return dict(result, available=True, events=events,
+        relevant_event_names=relevant_names,
+        relevant_events={k:events[k] for k in relevant_names if k in events},
+        evaluator_booleans=booleans,
+        evaluator_false_fields=[k for k,v in booleans.items() if not v],
+        evaluator_context={k:rollout[k] for k in ('abort_reason', 'contact_required', 'final_task_stage') if k in rollout},
+        note='False fields are reported verbatim, not all are applicable failures. Support top is not passive edge exposure. Contact force N is distinct from actuator torque Nm.')
 
 
 def search_accounting(root, plan, fixtures, attempts, now):
@@ -352,6 +399,7 @@ def summarize(root, now=None):
                 durations.append(finish-start)
                 row['wall_seconds'] = finish-start
         if status in ('eligible', 'physical_failure'):
+            row['contact_metadata'] = contact_metadata(folder, fixture, audit)
             if split == 'train':
                 seen_train[(category, method)].add(fixture_id)
             elif split == 'validation':
@@ -483,6 +531,31 @@ def markdown(report):
         lines += ['', 'The earlier aggregate metrics table is descriptive across all completed attempts; it is not an equal-budget controller comparison.']
     else:
         lines += ['Search budget unavailable; do not infer a locked bank or an equal-budget comparison.']
+    lines += ['', '## Auxiliary contact-load metadata', '',
+        'Only completed cases are read; rollout.json bytes must match the audit SHA256. These are existing evaluator event summaries, not independent physical-substep recomputation. Contact force (N) is distinct from actuator torque (Nm). No score, gate or primary metric changes.', '',
+        '| Case | Category / method | Event | Peak (N) | Impulse (Ns) | Robot parts |',
+        '|---|---|---|---:|---:|---|']
+    def cell(value):
+        return str(value).replace('|', '\\|').replace('\n', ' ')
+    for row in report['attempts']:
+        contact = row.get('contact_metadata')
+        if not contact:
+            continue
+        if not contact['available']:
+            lines.append(f'| {cell(row["folder"])} | {row["category"]} / {row["method"]} | Unavailable: {contact["reason"]} | — | — | — |')
+            continue
+        events = contact['relevant_events']
+        for name, event in events.items():
+            lines.append(f'| {cell(row["folder"])} | {row["category"]} / {row["method"]} | {cell(name)} | '
+                         f'{cell(event.get("peak_n", "—"))} | {cell(event.get("impulse_ns", "—"))} | {cell(event.get("robot_parts", []))} |')
+        if not events:
+            lines.append(f'| {cell(row["folder"])} | {row["category"]} / {row["method"]} | No category-relevant event recorded | — | — | — |')
+    lines += ['', 'Full event dictionaries and evaluator booleans are retained in JSON. Placement support top is excluded from passive edge rows. False flags below are verbatim metadata, not automatically applicable failure reasons.', '']
+    for row in report['attempts']:
+        contact = row.get('contact_metadata', {})
+        if contact.get('available'):
+            flags = ', '.join(k+'=false' for k in contact['evaluator_false_fields']) or 'none'
+            lines.append(f'- {cell(row["folder"])}: {flags}; audit failure reasons={cell(contact["audit_failure_reasons"])}; exposure reasons={cell(contact["audit_exposure_reasons"])}.')
     lines += ['', '## Unfinished / limitations', '']
     lines += ['- '+v for v in report['unfinished'] + report['warnings'] + search.get('warnings', [])]
     lines += ['', 'Archive receipts are past verification records; this summary does not contact the server or rehash raw trajectories.',

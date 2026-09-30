@@ -131,6 +131,73 @@ def test_report_output_is_external_nonoverwriting_and_run_unchanged(tmp_path):
     assert before == after
 
 
+def verified_rollout(folder, events, **flags):
+    put(folder/'rollout.json', dict(stats=dict(events=events), **flags))
+    audit = status.read_json(folder/'audit.json')
+    audit['files_sha256'] = {'rollout.json':status.sha(folder/'rollout.json')}
+    put(folder/'audit.json', audit)
+
+
+def test_contact_events_preserve_metadata_without_counting_support_as_edge(tmp_path):
+    root, fixtures = campaign(tmp_path)
+    folder = attempt(root, fixtures[0], 'completed')
+    edge = dict(peak_n=1350., impulse_ns=.4, robot_parts=['hand'], first_s=2., duration_s=.001)
+    top = dict(peak_n=9999., impulse_ns=2., robot_parts=['payload'])
+    verified_rollout(folder, {'office_v5_corner_face':edge, 'office_v5_corner_top':top}, task_success=True)
+    report = status.summarize(root)
+    contact = report['attempts'][0]['contact_metadata']
+    assert contact['available']
+    assert contact['actual_sha256'] == contact['expected_sha256']
+    assert contact['events']['office_v5_corner_top'] == top
+    assert contact['relevant_events'] == {'office_v5_corner_face':edge}
+    assert report['method_category'][0]['metrics_all_completed']['peak_torque_nm']['maximum'] == 40.
+    rendered = status.markdown(report)
+    assert '1350.0' in rendered and '9999' not in rendered
+    assert 'not independent physical-substep recomputation' in rendered
+
+
+@pytest.mark.parametrize('category,apparatus,event', [
+    ('active_short', 'rod', 'ball'), ('active_long', 'person', 'person_hand'),
+    ('active_long', 'rod', 'rod')])
+def test_contact_category_selection_and_false_evaluator_fields(tmp_path, category, apparatus, event):
+    folder = tmp_path/'case'
+    folder.mkdir()
+    events = {name:dict(peak_n=1., impulse_ns=.1, robot_parts=['hand'])
+              for name in ('ball', 'person_hand', 'rod')}
+    put(folder/'rollout.json', dict(stats=dict(events=events), ball_rebound=False,
+                                   strict_success=False, task_success=True))
+    audit = dict(files_sha256={'rollout.json':status.sha(folder/'rollout.json')},
+                 failure_reasons=['evaluator_strict_failure'])
+    contact = status.contact_metadata(folder, dict(category=category, apparatus=apparatus), audit)
+    assert list(contact['relevant_events']) == [event]
+    assert contact['evaluator_booleans']['ball_rebound'] is False
+    assert 'strict_success' in contact['evaluator_false_fields']
+    assert contact['audit_failure_reasons'] == ['evaluator_strict_failure']
+
+
+def test_contact_missing_and_mismatched_hashes_do_not_change_primary_status(tmp_path, monkeypatch):
+    root, fixtures = campaign(tmp_path)
+    folder = attempt(root, fixtures[0], 'completed')
+    report = status.summarize(root)
+    assert report['attempts'][0]['contact_metadata']['reason'] == 'missing_or_invalid_rollout_audit_hash'
+    verified_rollout(folder, {'ball':dict(peak_n=5.)})
+    (folder/'rollout.json').write_text('changed invalid JSON')
+    report = status.summarize(root)
+    assert report['attempts'][0]['contact_metadata']['reason'] == 'rollout_audit_hash_mismatch'
+    assert report['attempt_counts']['eligible'] == 1
+
+
+def test_noncompleted_rollout_metadata_is_not_read(tmp_path, monkeypatch):
+    root, fixtures = campaign(tmp_path)
+    folder = attempt(root, fixtures[0], 'running', execution_status='running')
+    verified_rollout(folder, {'ball':dict(peak_n=5.)})
+    def forbidden(*args, **kwargs):
+        raise AssertionError('Running rollout was read')
+    monkeypatch.setattr(status, 'contact_metadata', forbidden)
+    report = status.summarize(root)
+    assert 'contact_metadata' not in report['attempts'][0]
+
+
 def search_campaign(tmp_path, count=3):
     root, fixtures=campaign(tmp_path)
     plan=json.loads((root/'plan.json').read_text())

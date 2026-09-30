@@ -2,6 +2,15 @@
 
 ## 2026-09-30 三类数据生成与经典 baseline
 
+最新06:18 UTC：v10完成21条搜索，录取5条；其中VMC短撞2条已独立复核三指标/hash并重放，
+正式collection仍0。c00厚角VMC/导纳/阻抗录取0/3、0/3、2/3，短撞2/3、0/3、1/3。
+持续推碰VMC三条未录取，导纳正在运行；参数银行未锁定，尚无验证/新ESN结果。
+VMC合格短撞峰力约1368/1350 N，阻抗合格短撞约2077 N，不能将电机峰矩合规当真实碰撞安全。
+详见[独立复核](TEACHER_BANK_V10_FIRST_SEARCH_SUCCESS_AUDIT_20260930.md)及[当前预算/失败说明](TEACHER_BANK_THREE_DOMAINS_20260930.md)。
+最新状态/工具已核验归档到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_0621/evidence/`。
+以下05:29/05:49为历史检查点，不代表当前数量。
+
 按用户新增授权，构建每类1000训练＋100验证的厚桌角/短撞/持续推碰训练域，并将VMC、
 导纳、阻抗纳入同场景同预算搜索。原冻结测试不变；尚未开始新ESN蒸馏。
 截至05:29 UTC，v6六条主动pilot、v8九条全类别pilot已完成并核验归档；新厚边缘仅阻抗

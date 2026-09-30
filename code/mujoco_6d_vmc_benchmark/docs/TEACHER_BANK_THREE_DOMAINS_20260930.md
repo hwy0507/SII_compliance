@@ -63,6 +63,24 @@ v5可行候选采用分数：`RMSE/0.05 + 0.3*max_joint_torque_ratio + 0.1*retre
 记录的 Jacobian 投影和共享 limiter，并在验证单位力矩传动后将每个servo输出与其持有区间的
 物理qfrc_actuator逐项对照，不声称重放了整个MuJoCo。三方法配对结束须验证相同MJB hash。
 
+## 反馈输入审计与任务执行器边界
+
+对冻结v10/source的只读核查确认：canonical48为q[0:7]、dq[7:14]、名义twist[14:20]、
+位姿误差[20:26]、名义减实际twist[26:32]、估计关节负载[32:39]、估计wrench[39:45]和
+指令路径方向[45:48]。未直接拼入接触真值、球状态、事件时间、视觉/距离或stage编号。
+JointLoadObserver用dq有限差分、质量矩阵/bias/passive、实际电机力矩和摩擦补偿计算残差；
+不使用qacc/contact/qfrc_constraint。VMC实际只读取估计wrench；导纳使用上述负载、位姿误差、
+名义twist及机器人FK/J；阻抗在servo使用机器人位姿/twist/J及名义指令。模型/传感器理想化，
+尚无真实硬件噪声或标定验证。
+
+**“纯本体”仅指反馈控制器的外界感知来源，不能推广成整套系统无真值辅助。**
+`scripts/validate_office_apparatus_v5_20260917.py:349`的corner_release_ok读取真实物块支撑
+接触和物块速度；`scripts/office_task_v4_20260917.py:117`接受估计负载变化或该标志作为
+释放条件，进而影响stage、夹爪和后续名义参考。这是一条真实影响闭环行为的间接路径，
+不能仅称不影响控制的评估记账。三个方法共享它；本轮不修改冻结执行协议，但也不声称已完成
+无需仿真真值辅助的真实机器人自主放置。上述路径相对已核验服务器
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_three_domains_20260930_v10/source/`。
+
 ## 执行与恢复
 
 本机一个 MuJoCo 子进程、1 线程、MemoryMax=3 GiB、MemorySwapMax=0。子 agent 并行负责
@@ -75,6 +93,35 @@ SHA256 核验再发布到服务器 `runs/main/<campaign-name>/`。传输未完�
 长时任务 heartbeat `teacher-10` 每 20 分钟检查，计算截止 13:48:16 UTC；额外保留至14:28:16
 仅用于最后回合的归档、审计和交付，不增加计算窗口。服务和 campaign lock
 避免重复启动。实际可完成量由 pilot 测得吞吐决定，10 小时优先级高于最大回合数上限。
+
+## 06:18 UTC：短撞首轮配对与接触载荷复核
+
+v10累计完成21条搜索回合，5条eligible、16条物理/任务/曝光失败；另1条持续推碰导纳运行中。
+这里eligible指满足现有开发筛选，不等于真实部署安全。原始21条均有逐文件核验归档凭据。
+固定初始候选c00的完整配对如下（所有失败仍纳入统计）：
+
+| 类别 | VMC | 导纳 | 阻抗 | 每方法完整anchor数 |
+|---|---:|---:|---:|---:|
+| 厚桌角 | 0/3 | 0/3 | 2/3 | 3 |
+| 短时碰撞 | 2/3 | 0/3 | 1/3 | 3 |
+
+VMC短撞337/671的独立子步指标、文件hash与冻结runner重放均复核通过，见
+[首两条成功轨迹审计](TEACHER_BANK_V10_FIRST_SEARCH_SUCCESS_AUDIT_20260930.md)。
+这是初始reference参数，不是BO改善；正式collection仍0，各类1000条合格示范尚未完成。
+两条VMC球撞峰力1368/1350 N，阻抗合格短撞671也有2077 N峰力，不能以电机峰矩低推断碰撞力低，
+也不能声称VMC独占成功。冲击模型/步长敏感性与硬件结构载荷尚未验证，未因此修改任何gate。
+导纳671和阻抗337短撞虽task通过，ball_rebound=false导致strict失败；应与穿透失败区分。
+持续推碰目前仅VMC完成3条、均不合格，尚不能三方法配对；人手/杆两条任务本身通过，
+但曝光条件失败，推板还存在任务/strict失败。缺少连续让位证据不等于完全没有宏观让位。
+
+新增status辅助表先核验rollout.json原audit hash，再提取既有接触事件、冲量与布尔失败字段；
+这部分明确不是独立物理复算，不更改主指标或录取结论。19项status测试通过。
+本次状态及status源码/测试38文件已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_review_checkpoint_20260930_0621/evidence/`，
+对应`outputs/teacher_bank_reports_20260930/v10_0617.{json,md}`。
+首两条VMC复核40文件已核验至同一runs/main父目录的
+`teacher_bank_review_checkpoint_20260930_0603/evidence/`。
+冻结v10服务继续运行，未热更新；本机单环境/1线程/3GiB，原13:48:16 UTC派发截止不变。
 
 ## 05:49 UTC：首个完整参数配对与失败机制
 
