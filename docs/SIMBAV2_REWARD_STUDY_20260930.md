@@ -1,6 +1,6 @@
 # SimbaV2 在复杂 Office 仿真中的奖励对照实验报告
 
-> 日期：2026-09-30。数据截点：17:21（Asia/Shanghai）。campaign_03 全部训练、验证、主组及消融评测、零动作对照均已完成，所有进程退出码通过；后续 progress_dense 诊断已单独启动，尚不纳入主结果。所有实验在 DGX Spark 上执行，尚无真实 FR3 硬件实验。
+> 日期：2026-09-30。数据截点：18:17（Asia/Shanghai）。campaign_03 全部训练、验证、主组及消融评测、零动作对照均已完成，所有进程退出码通过；独立 progress_dense 诊断的四路40k训练与24条评测也已完成，在第12节分开列出。所有实验在 DGX Spark 上执行，尚无真实 FR3 硬件实验。
 >
 > 主产物目录：/home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/
 >
@@ -419,11 +419,19 @@ case_000 原始结果位置：
 - 验证选模与固定100k结果同时保留，不用选模结果掩盖末期失败。
 - 失败回合保留；不把文件完成、进程退出码0误认为任务成功或完整55秒。
 
-## 12. 后续补充：progress_dense诊断
+## 12. 已完成的补充诊断：连续进度势函数仍未解决探索
 
-基于本轮发现，在剩余时间内已单独启动两reward × 两seeds × 40k的诊断，产物目录为 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/progress_dense_diagnostic_04/。它属于后续补充，不属于上述8路100k主实验。本报告截点尚无可引用的完整性能结果。
+### 12.1 独立协议与实际预算
 
-诊断保持物理环境、actor输入、动作filter、网络与成功判据不变，仅替换进度势函数的阶段内部分，让位置、姿态与速度接近门槛时有连续信号，而不依赖ready计时器：
+本节补充数据截至2026-09-30 18:13（Asia/Shanghai）。progress_dense_diagnostic_04 的两reward × 两seeds × 40k从零训练及24条最终评测均已完成，8个训练/评测作业退出码均为0。它是在观察主实验失败后提出的开发诊断，独立于上述8路100k主实验，不覆盖或替换主结果。
+
+每条训练有40,000 transitions、70,002 SAC updates、16,000,000物理子步；四条合计160,000 transitions、280,008 updates、64,000,000物理子步。四条均固定评测40k final checkpoint，没有按本次测试结果挑选checkpoint。每个reward用seeds41001/41002、每seed同六个已知开发物理条件，评测物理步长为0.00005s，控制频率25Hz、时长55s。
+
+相较主实验，这项修改保持物理环境、actor输入、动作filter、网络与成功判据不变，仅替换进度势函数的阶段内部分。但训练总预算从100k变成40k，也使线性学习率的decay horizon从200,000次更新变成80,000次更新。因此不能把本节与主实验40k checkpoint的差异解释为严格的单因素匹配消融，更不能当成未见测试集上的确认性实验。
+
+### 12.2 连续势函数及检验目标
+
+新的阶段内势函数让位置、姿态与速度接近门槛时有连续信号，不依赖ready计时器：
 
 $$
 \Phi_{\mathrm{dense}}(s)
@@ -431,16 +439,47 @@ $$
 +0.5\exp[-(e_p/0.048)^2-(e_R/0.48)^2-(v/0.10)^2]}{8}.
 $$
 
-其中 e_p、e_R、v 分别表示位置误差范数、旋转对数误差范数和末端线速度范数；尺度取共同门槛的4倍。Gaussian在远离目标多个尺度时仍很弱，不能预先声称已解决探索。
+其中 e_p、e_R、v 分别表示位置误差范数、旋转对数误差范数和末端线速度范数；尺度取共同门槛的4倍。零长度路径段的投影项置0；奖励仍采用 γΦ(next)-Φ(current)，终止势函数仍为0。Gaussian在远离目标多个尺度时仍很弱。这项诊断首先检查是否增加进入grasp及后续阶段的真实覆盖，而不仅是reward数值变得非零。
 
-零长度路径段的投影项置0；奖励仍采用 γΦ(next)-Φ(current)，终止势函数仍为0。该设计要检验的是：先能否增加进入grasp及后续阶段的真实覆盖，再谈指标改善。
+### 12.3 全部24条最终评测结果
 
-冻结快照及补丁清单：
+下表为两个独立训练seed的各自六条件均值，再跨seed计算均值±样本标准差；不是把12个条件当作12个训练seed。全部回合真实运行满55s、各记录1,100,000个物理子步，无提前abort。物理失败也保留在指标均值中。
 
-- /home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v4_progressdiag/
-- /home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v4_progressdiag/PROGRESS_DIAGNOSTIC_PATCH.json
+| Reward | 稳定放置/task_success | strict_success | 物理有效 | 全程RMSE（cm） | 峰值实际力矩（N·m） | 峰值线速度（m/s） |
+|---|---:|---:|---:|---:|---:|---:|
+| office_task + dense progress | 0/12 | 0/12 | 11/12 | 19.1963 ± 8.7552 | 39.5328 ± 0.5060 | 0.15373 ± 0.05707 |
+| metric + dense progress | 0/12 | 0/12 | 12/12 | 68.9315 ± 9.3659 | 51.1195 ± 1.5965 | 0.33408 ± 0.10095 |
 
-这项修改是在查看开发结果后提出，之后的评测必须标为诊断/开发迭代。若要写正式未知条件泛化结论，仍需另行冻结未参与本轮分析的新测试条件。
+两组的contact_coverage_valid也均为0/12。物理有效性是原validator的标志，不等于所有事件都发生了有效接触或全部力安全阈值均通过。office_task中失效的是seed41001/case_004：office_v5_ball_geom与fr3_link6_collision之间最大数值压入0.218134mm，超过0.2mm验收门槛，但未超过2mm紧急终止门槛，所以仍运行满55s。不能把“没有触发提前终止”当成“通过物理验收”。
+
+本次metric诊断在三项指标上均未优于office_task诊断，也没有增加完整任务成功。它与主实验验证选模的局部指标趋势不同，进一步表明结果对训练过程和checkpoint敏感，不能挑选有利表格宣称新reward稳定优越。
+
+### 12.4 信号变稠密，但任务状态覆盖仍不足
+
+| Reward | Seed | stage0控制步 | stage1控制步 | 已结束回合 | 最终approach / align | Φ<1e-6的控制步占比 | \|progress reward原始项\|>1e-6的占比 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| office_task | 41001 | 38,637 | 1,363 | 29 | 28 / 1 | 29.350% | 70.110% |
+| office_task | 41002 | 35,037 | 4,963 | 30 | 25 / 5 | 18.735% | 80.990% |
+| metric | 41001 | 40,000 | 0 | 29 | 29 / 0 | 9.310% | 90.683% |
+| metric | 41002 | 39,964 | 36 | 29 | 28 / 1 | 34.675% | 65.660% |
+
+原始progress项为 γΦ(next)-Φ(current)，表中绝对值非零同时包含改善和恶化信号，不能解释为70%—90%的动作都取得正进展。主实验报告的是精确Φ=0，本节报告Φ<1e-6，两个统计门槛不同；这里只能说明新诊断的数值信号较为稠密。
+
+四条合计117条已结束、已记录训练回合仍全部止于approach或align，**没有任何控制步进入grasp及后续阶段**。117不包括训练截止时尚未结束的部分回合，但控制步覆盖统计包括全部160,000 transitions。office_task总共只有6,326/80,000步进入align，metric仅36/80,000步进入align。连续势函数修复了零长度段缺少渐进信号的一部分数值问题，却没有解决从零探索和严格停稳进入抓取阶段的问题。
+
+### 12.5 独立复核、结论与证据入口
+
+独立审计重新读取全部24回合的原始物理子步数组，重新计算时间加权位置RMSE、qfrc_actuator的最大绝对值和末端平移速度范数峰值。与记录的最大绝对差分别为1.86e-11m、1.87e-6N·m和1.47e-8m/s；全部模型hash和实际时长/计数一致。normalizer检查覆盖样本数、缩放分母及更新计数，不应表述为独立核验了完整统计张量。
+
+可据此报告：主实验之后实施了连续进度信号诊断，训练和评测都完成，但未获得抓取覆盖与稳定放置成功。当前仍不足以构成“充分收敛的强RL baseline”，也不能把失败归结为SimbaV2的固有弱点。下一步应优先解决有效探索与进入后续阶段的训练覆盖，再按冻结评测协议比较；若继续开发，必须将这些已看过的条件保留为开发集，另外冻结确认测试条件。
+
+完整服务器证据：
+
+- 诊断训练与评测：/home/arm1/vmc_mujoco_runtime/reward_study_20260930/progress_dense_diagnostic_04/
+- 独立结构化审计：/home/arm1/vmc_mujoco_runtime/reward_study_20260930/progress_dense_diagnostic_04/report/DIAGNOSTIC_AUDIT.json
+- 独立审计文字版：/home/arm1/vmc_mujoco_runtime/reward_study_20260930/progress_dense_diagnostic_04/report/DIAGNOSTIC_AUDIT.md
+- 冻结快照：/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v4_progressdiag/
+- 精确补丁清单：/home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v4_progressdiag/PROGRESS_DIAGNOSTIC_PATCH.json
 
 ## 13. 复核和接续入口
 
@@ -499,4 +538,4 @@ $$
 
 刷新只重新读取已有结果，不启动训练。主报告还提供selected_metrics.png和validation_curves.png；绘图所用90条评测回合对应保存MJB均已完成hash复核，图像由主agent视觉检查。图中的低RMSE仍须结合本报告的零成功和停滞事实解读。
 
-本文主结论以当前实际JSON为依据；progress_dense后续数据须明确补充日期与协议，不覆盖或改写本轮失败记录。
+本文结论以实际JSON为依据；progress_dense数据已在第12节单列日期、协议与结果，不覆盖或改写100k主实验失败记录。

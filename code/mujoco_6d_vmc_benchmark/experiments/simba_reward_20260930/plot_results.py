@@ -33,7 +33,7 @@ def main(root):
   independent_raw_audit=dict(episodes_time_checked=86,episodes_metric_recomputed=21,
    max_abs_rmse_m=3.98e-11,max_abs_torque_nm=3.43e-6,max_abs_velocity_mps=1.22e-8,
    note="Includes all seven early aborts; reported by independent read-only auditor; not all90 metric recomputation"),
-  training_coverage=dict(complete_episodes=648,entered_grasp=0,
+  training_coverage=dict(ended_episodes=648,entered_grasp=0,
     office_task_stage0_percent=[85.291,99.964,72.785],metric_stage0_percent=[100,99.964,92.632],
     office_task_phi_zero_percent=[85.052,99.902,72.567],metric_phi_zero_percent=[99.954,99.908,92.379])
  ),indent=2)+"\n")
