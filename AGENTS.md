@@ -1,3 +1,13 @@
+# 本 baseline 分支的优先约定
+
+本会话用户明确指定：只提交/push baseline，所有新增项目文件保存在 Spark。
+以下继承的 main 约定作为背景；其中 main 发布/本地计算偏好不覆盖本分支用户授权。
+开工读远端 main 与 baseline 的 UPDATE_LOG.md；本分支 workflow 见
+[skill](.codex/skills/sii-compliance-repo-workflow/SKILL.md)。
+当前真实 Git checkout 为 /home/arm1/SII_compliance_baseline；历史错误的独立根提交
+保留在分支 snapshot_initial_20260930，当前 baseline 已恢复原远程提交历史。
+运行中的实验使用冻结 source 快照，不热更新 runtime。
+
 # 本仓库的持续工作约定
 
 用户于 2026-09-30 明确授权并要求：**每次对话结束前，将本次文件改动 commit 并 push 到

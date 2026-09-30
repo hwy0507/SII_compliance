@@ -1,3 +1,34 @@
+# Baseline update log
+
+## 2026-09-30 — 官方 SimbaV2 奖励对照：接口修复及开跑前审计
+
+- 开工已读取 main 38caf3152282df4963435bb65c11c93a1e4fffa5 与 baseline 5934200 日志，
+  整合当前 main 源码到 baseline；不修改 main，保留双方日志。
+- 修复 Spark checkout 的 Git 历史：初始镜像根提交 d386341 保留在
+  snapshot_initial_20260930，当前分支使用 GitHub 原始提交历史。
+- 原论文与官方 commit 86899c277cdc697b2b02d827243de1ea93f20a1d 核查：
+  没有通用 Office reward；官方采用环境 reward + 动态奖励/观测归一化。
+  两主组为 Office task（成功/失败、势函数进度、时间成本）与 metric（在相同 task 上增加
+  全子步平方误差积分、实际归一化力矩峰值平方增量、弱 requested action 平滑）。
+  稀疏 task_only 仅为可选诊断，不能冒充论文原生 Office 奖励。
+- 新源码：code/mujoco_6d_vmc_benchmark/experiments/simba_reward_20260930/。
+  validator 新增可选 policy override/训练侧 metrics hooks；默认命令行行为与既有物理、任务 gate 保持兼容。
+- 服务器开发与运行目录：/home/arm1/vmc_mujoco_runtime/reward_study_20260930/；
+  Git 源码：/home/arm1/SII_compliance_baseline/code/mujoco_6d_vmc_benchmark/。
+  论文 PDF 与提取文本：上述运行目录 paper_sources/。
+- 旧四路CPU训练经用户明确授权 SIGSTOP 暂停（未终止，内存保留），PID与checkpoint证据及恢复方法：
+  /home/arm1/vmc_mujoco_runtime/reward_study_20260930/PAUSED_OLD_RUNS.json。
+- 已验证 reward 15项单测；真实6.4s/64000子步误差积分与共同 evaluator RMSE复算相对差
+  2.58e-10；峰值增量累计与最终峰值平方一致。
+  证据：reward_interval_smoke_64s/VALIDATION.json。
+  官方agent更新、网络/优化器/normalizer/RNG保存恢复与raw replay不被污染检查：
+  official_agent_validation.json。train_smoke_01 为160步随机期管线检查，不是学习效果。
+- 旧比较发现fixture偏移（RL内部再次+101*variant）、RL专用额外残差包络、外载荷误当执行力矩：
+  新接口统一 canonical slowdown action7，移除旧RL额外包络，使用完整子步actual qfrc_actuator。
+  不能将旧矩阵列作本次论文排名。
+- 未完成：GPU隔离环境吞吐验证、配对多seed长训练、验证集checkpoint选择及最终共同评测。
+  当前没有新学习效果结论；开发 dt=1e-4 与正式 dt=5e-5 明确区分。
+
 # 更新日志
 
 本文件记录每次对话交付的文件修改、验证和结果边界；最新记录在前。对应提交号由 Git 历史

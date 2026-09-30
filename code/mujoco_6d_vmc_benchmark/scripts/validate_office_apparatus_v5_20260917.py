@@ -57,7 +57,7 @@ def prepare_policy_state(esn, memory_ablation):
     return getattr(esn, 'obj', esn).state.copy()
 
 
-def run(a):
+def run(a, *, policy_override=None, runtime_hooks=None):
     if a.output.with_suffix('.json').exists():raise RuntimeError('Preserve existing results')
     a.output.parent.mkdir(parents=True,exist_ok=True)
     probe=getattr(a,'physics_probe_s',None)
@@ -95,7 +95,9 @@ def run(a):
     jid=lambda name:mujoco.mj_name2id(m,mujoco.mjtObj.mjOBJ_JOINT,name)
     robot=set(env._push_audit_robot_geom_ids)
     esn=None;policy_contract=None;policy_observation_dim=None
-    if a.esn_model:
+    if policy_override is not None:
+        esn=policy_override;policy_contract="proprio48_direct_rl_action7_v1";policy_observation_dim=48
+    elif a.esn_model:
         with np.load(a.esn_model,allow_pickle=False) as checkpoint:
             policy_contract=str(checkpoint['contract'].item()) if 'contract' in checkpoint.files else 'legacy_contact45'
         if policy_contract.startswith('proprio48_'):
@@ -195,6 +197,8 @@ def run(a):
             load_observer=JointLoadObserver(d.qvel.copy(),m.dof_frictionloss,**observer_kwargs);mass=np.zeros((m.nv,m.nv))
     capacity=None if refinement is None else int(np.ceil(refine_until/refinement)+np.ceil((a.duration-refine_until)/a.dt))+32
     metrics=EpisodeMetrics(env,capacity=capacity)
+    if runtime_hooks is not None:
+        runtime_hooks.attach(env,task,load_observer,metrics)
     mujoco.mj_saveModel(m,str(a.output.with_suffix('.mjb')),None)
     mujoco.mj_saveLastXML(str(a.output.with_suffix('.xml')),m)
     ball=bid('office_v5_ball');ball_geom=gid('office_v5_ball_geom');ball_joint=jid('office_v5_ball_free')
@@ -404,6 +408,17 @@ def run(a):
             near=np.linalg.norm(d.xpos[env._target_body_id,:2]-task.destination[:2])<.025
             slow=np.linalg.norm(d.qvel[env._target_dof:env._target_dof+3])<.015
             placement_hold=placement_hold+.04 if task.index==7 and supported and near and slow else 0.
+        if runtime_hooks is not None:
+            # Reward-only completion evidence; the public success/strict gates
+            # below still require the entire frozen evaluation horizon.
+            cup_now=(cup<0 or (contact_support(m,d,cup_base,(desk,))
+                       and np.linalg.norm(d.cvel[cup,3:])<.02
+                       and stats['cup_shift_m']<.02 and stats['cup_tilt_deg']<10.))
+            runtime_hooks.task_complete=bool(a.task=='pick_place' and placement_hold>=.5
+                and release_truth and max_lift>.10
+                and np.linalg.norm(d.xpos[env._hand_id]-task.goals[-1])<.015
+                and sum(d.qpos[task.fingers])>.075
+                and stats['max_external_penetration_m']<=.0002 and cup_now)
         records.append(dict(time=float(d.time),qpos=d.qpos.copy(),qvel=d.qvel.copy(),ctrl=d.ctrl.copy(),
                             mocap_pos=d.mocap_pos.copy(),mocap_quat=d.mocap_quat.copy(),
                             hand=d.xpos[env._hand_id].copy(),ball=d.xpos[ball].copy(),ball_velocity=d.qvel[ball_dof:ball_dof+3].copy(),cup=d.xpos[cup].copy() if cup>=0 else np.zeros(3),stage=task.index,object_position=d.xpos[env._target_body_id].copy(),**signal))
@@ -493,7 +508,7 @@ def run(a):
     result['release_supported']=release_truth
     result['max_lift_m']=max_lift
     result['neural_logging']=dict(enabled=esn is not None,mode=a.esn_mode,model=str(a.esn_model) if a.esn_model else None,
-        model_sha256=hashlib.sha256(a.esn_model.read_bytes()).hexdigest() if esn else None,
+        model_sha256=hashlib.sha256(a.esn_model.read_bytes()).hexdigest() if a.esn_model else None,
         hybrid_vmc_blend=hybrid_blend,
         policy_contract=policy_contract,observation_dim=policy_observation_dim,
         memory_ablation=memory_ablation,
@@ -513,7 +528,7 @@ def run(a):
     if teacher:
         result['controller']='existing kinematic WBC '+a.task+' + '+a.teacher+' encoder-wrench VMC teacher'
         result['teacher_parameters']={k:v for k,v in vars(teacher).items() if isinstance(v,(float,int,str,np.ndarray))}
-    result['metrics']=metrics.save(a.output.parent/(a.output.name+'_metrics'))
+    result['metrics']=(metrics.summary() if runtime_hooks is not None and not runtime_hooks.save_substeps else metrics.save(a.output.parent/(a.output.name+'_metrics')))
     result['model_sha256']=hashlib.sha256(a.output.with_suffix('.mjb').read_bytes()).hexdigest()
     for name in ('office_task_v4_20260917.py','run_contact_transfer_20260916.py','audited_velocity_env.py',
                  'wbc_velocity_residual_core.py','fixed_panda_wbc.py','haptic_vmc_teacher_20260916.py',
@@ -531,7 +546,11 @@ def run(a):
         mujoco.mj_saveLastXML(str(a.output.with_suffix('.xml')),m)
     if impact_renderer:impact_renderer.close()
     if renderer:renderer.close()
-    env.close();print(json.dumps(clean(result)))
+    if runtime_hooks is not None:
+        runtime_hooks.finish(result)
+    env.close()
+    if runtime_hooks is None:print(json.dumps(clean(result)))
+    return clean(result)
 
 
 if __name__=='__main__':
