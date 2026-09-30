@@ -3,6 +3,27 @@
 本文件记录每次对话交付的文件修改、验证和结果边界；最新记录在前。对应提交号由 Git 历史
 查询：`git log --oneline -- UPDATE_LOG.md`。持续提交约定见 [AGENTS.md](AGENTS.md)。
 
+## 2026-09-30 — 短撞VMC同参数3/3与108回合公平检查点
+
+- 09:42 UTC核对main=`e1d815c390d1221ee0bf80293e2b8179d2e1d3f8`，baseline已前进至
+  `e47da59ebb665fb20764131bd56c7b639805f326`，已读新日志。其100k RL主实验已完成但任务失败，
+  发现训练覆盖问题后正做独立补充诊断；不把该局限解释为算法本质，不混入本轮特化训练比较，
+  未合并baseline或操作其Spark服务。
+- 09:40 v10完整c00–c03共108条，17录取/91失败，全部逐条有核验归档凭据；c04运行。
+  VMC短撞c03同一参数3/3，初始c00为2/3。六条配对550000子步的三指标独立重算、冻结
+  VMC/filter/状态重放与source/参数/model/hash通过；球形RMSE64.667→37.662mm、峰矩
+  47.935→45.004Nm，但峰力1793→2221N、穿透0.11744→0.18863mm。穿透仅元数据核验，
+  不冒称独立物理重算、全面安全提升或泛化。新增短撞审计工具和报告，更新专题/进度/周报。
+- 新终态收尾工具保存原始JSON快照、独立重建选参和锁定、核对后续参数一致性并指出截止
+  汇总归档缺口；11项针对性测试通过，live验收正常。它不重新核验所有原始轨迹/远端receipt。
+  原稳定仿真未重启，仍固定六候选；持续推碰三方法0/12，validation/collection/新ESN未开始。
+- 以下均已逐文件核验至服务器`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/`：
+  `teacher_bank_review_checkpoint_20260930_0913/evidence/`含964文件（短撞审计/六份重放、终态
+  工具与live验收/JSON快照）；review SHA=`d135e2f4336583528e66be27e03b0e47b66201355fbc5d03b21212c7a1659c50`。
+  `teacher_bank_review_checkpoint_20260930_0943/evidence/`含42文件（108回合status/公平图/报告），
+  PNG已视觉核验，SHA=`fb7df489d653adfad53c1a2245d5eca8ef7b2aba7019c3c035ec92148d3f9f13`。
+  10小时任务继续至原截止，不改gate、环境或执行器，不把3300定义当作已采满示范。
+
 ## 2026-09-30 — 初始81回合完成与首个BO决策复核
 
 - 08:57 UTC再次核对main=`b1e14de2dade36eed6cc8d9ce448cd8b4a1565ad`、baseline=
