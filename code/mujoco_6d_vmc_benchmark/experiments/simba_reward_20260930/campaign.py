@@ -71,7 +71,7 @@ def main(a):
     jobs=[];candidates=[]
     for r in runs:
         rp=Path(r["path"])
-        cps=[rp/f"checkpoint_step_{s:07d}" for s in (10000,30000,50000,60000) if s<=a.steps]
+        cps=[rp/f"checkpoint_step_{s:07d}" for s in (20000,40000,60000,80000,100000) if s<=a.steps]
         for cp in cps:
             if not (cp/"official_agent_state.json").exists():continue
             output=root/"validation"/r["id"]/cp.name
@@ -94,6 +94,13 @@ def main(a):
             _,selected=min(options,key=lambda x:x[0])
             selections.append(dict(**r,selected_checkpoint=selected["checkpoint"],validation_output=selected["output"]))
     write(root/"SELECTIONS.json",selections)
+    primary_steps=[]
+    for run in runs:
+        if run["primary"]:
+            candidates_step=[int(cp.name.split("_")[-1]) for cp in Path(run["path"]).glob("checkpoint_step_*") if (cp/"official_agent_state.json").exists()]
+            if candidates_step:primary_steps.append(max(candidates_step))
+    common_step=min(primary_steps) if len(primary_steps)==6 else None
+    write(root/"COMMON_BUDGET.json",dict(common_step=common_step,primary_runs_with_checkpoints=len(primary_steps)))
     PHASE="test"
     jobs=[]
     for r in selections:
@@ -101,8 +108,8 @@ def main(a):
         jobs.append(dict(id="test_"+r["id"],cmd=[PY,ROOT/"evaluate.py","--checkpoint",r["selected_checkpoint"],
             "--manifest",ROOT/"test_manifest.json","--output",out,"--physics-dt",.00005],
             log=root/"logs"/("test_"+r["id"]+".log")))
-        final=Path(r["path"])/f"checkpoint_step_{a.steps:07d}"
-        if r["primary"] and final.exists() and str(final)!=r["selected_checkpoint"]:
+        final=Path(r["path"])/f"checkpoint_step_{common_step or a.steps:07d}"
+        if r["primary"] and final.exists() :
             jobs.append(dict(id="fixed_final_"+r["id"],cmd=[PY,ROOT/"evaluate.py","--checkpoint",final,
                 "--manifest",ROOT/"test_manifest.json","--output",root/"fixed_final"/r["id"],"--physics-dt",.00005],
                 log=root/"logs"/("fixed_"+r["id"]+".log")))
@@ -117,6 +124,6 @@ def main(a):
     write(STATE,dict(phase=PHASE,updated=time.time(),running=[],pending=[]))
 if __name__=="__main__":
     p=argparse.ArgumentParser();p.add_argument("--output",type=Path,required=True)
-    p.add_argument("--steps",type=int,default=60000)
-    p.add_argument("--train-wall-seconds",type=float,default=10000)
+    p.add_argument("--steps",type=int,default=100000)
+    p.add_argument("--train-wall-seconds",type=float,default=8000)
     main(p.parse_args())

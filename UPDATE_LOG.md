@@ -1,3 +1,18 @@
+## 2026-09-30 — 训练侧随机动作审计后冻结主实验
+
+- campaign_02 的配对随机warmup物理轨迹、reward子步积分核对通过，但 smooth=.005
+  在55s累计约32.94，超过误差1.47/峰矩3.10，不符合弱辅助约束。
+  未读测试策略结果；将主实验smooth固定为.0002（无平滑消融为0），从头配对训练。
+  pilot保留至 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_02/。
+- 主实验 campaign_03：Office task vs metric 各3seed，目标100000 transitions/seed、UTD2，
+  2seed无平滑消融，最大4并行；单run墙钟上限8000s，报告共同实际完成checkpoint预算。
+- 冻结源码 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/frozen_v3/，
+  输出 /home/arm1/vmc_mujoco_runtime/reward_study_20260930/campaign_03/。
+  validation-only选checkpoint；另外所有主组在共同训练步数重测，避免各自最优选择掩盖预算。
+- 训练和验证dt=1e-4，最终全55s评测dt=5e-5；所有结果必须注明stage-waypoint参考。
+- report.py按训练seed作统计单元，报告三指标及strict/task/physical/placement；
+  不跨reward比较总回报，不把零成功归因算法本质，不声称固定预算已证明收敛。
+
 ## 2026-09-30 — 修复 campaign 子进程解释器路径
 
 - 首次 campaign_01 在导入 numpy 前退出：对虚拟环境 Python 使用 resolve() 将软链接解析成

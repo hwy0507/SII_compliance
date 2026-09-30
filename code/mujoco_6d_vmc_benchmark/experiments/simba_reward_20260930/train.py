@@ -208,7 +208,7 @@ if __name__=="__main__":
     p.add_argument("--physics-dt",type=float,default=.0001)
     p.add_argument("--gamma",type=float,default=.995)
     p.add_argument("--utd",type=int,default=2)
-    p.add_argument("--smooth",type=float,default=.005)
+    p.add_argument("--smooth",type=float,default=.0002)
     p.add_argument("--wall-seconds",type=float,default=18000)
     p.add_argument("--checkpoint-every",type=int,default=10000)
     train(p.parse_args())

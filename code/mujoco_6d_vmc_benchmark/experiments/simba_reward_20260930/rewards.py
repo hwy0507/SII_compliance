@@ -19,7 +19,7 @@ class RewardConfig:
     error_weight: float = 4.0
     torque_peak_weight: float = 8.0
     time_weight: float = 1.0
-    smooth_weight: float = 0.005
+    smooth_weight: float = 0.0002
     # Declared physical support bound, NOT a cap on actual error.
     max_position_error_m: float = 3.0
     max_actual_torque_ratio: float = 1.0
