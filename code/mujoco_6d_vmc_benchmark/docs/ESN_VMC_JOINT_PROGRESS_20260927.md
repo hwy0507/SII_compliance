@@ -1,5 +1,19 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 low-scale weight-decay screen（本地完成，待同步）
+
+在锁定 teacher manifest（SHA256 `6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`）上完成成对 ESN/MLP weight-decay 屏幕。固定 canonical48D/action7、7/2 identity split、128 宽度、`input_scale=0.25`、combined-thick-corner-pillar-v4、原 gate、纯本体输入和执行器限制，只改变 AdamW `weight_decay=1e-5/1e-4/1e-3`。训练 seed 为 ESN `2026100130`、MLP `2026100131`。
+
+所有六条都是开发 `dt=1e-4`、55 s、550000 物理子步。ESN 三组 task/strict 均为 false，均在 `lift` 停止；MLP 三组 task=true、strict=false，均因柱子等 required contact coverage 不足而未过 strict。指标（RMSE mm / 峰矩 Nm / 峰速 m/s / 外部穿透 mm）为：
+
+| weight decay | ESN | MLP |
+|---:|---|---|
+| 1e-5 | `77.173 / 42.170 / 0.1106 / 0.1635` | `48.442 / 44.781 / 0.0662 / 0.1106` |
+| 1e-4 | `75.485 / 42.723 / 0.1078 / 0.0997` | `60.176 / 45.249 / 0.1172 / 0.1323` |
+| 1e-3 | `73.093 / 41.235 / 0.1134 / 0.0919` | `47.831 / 44.426 / 0.0702 / 0.1666` |
+
+六条独立审计均通过：action replay 最大误差为0，ESN reservoir replay 最大误差为0，MLP reservoir replay 为 null，物理子步均为550000。两次仿真前 setup failure（hash变量错误、teacher root错误）已保留并明确不计实验回合。新增专题报告见 [`ESN_MLP_LOW_SCALE_WEIGHT_DECAY_20261001.md`](ESN_MLP_LOW_SCALE_WEIGHT_DECAY_20261001.md)；原始 rollout、MJB、checkpoint、审计保留在三个 `outputs/esn_mlp_low_scale_weight_decay_20261001_wd*/` 目录。GitHub 与 arm1 当前不可达，产物仅本地待同步；formal `dt=5e-5` 继续锁定，结果不支持 ESN 优势。
+
 ## 2026-10-01 低输入尺度 ESN output-gain 屏幕
 
 在同一 `input_scale=0.25` checkpoint 上预注册只改输出增益 `0.80/0.90/0.95`，其余

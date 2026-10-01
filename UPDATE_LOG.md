@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-01 — low-scale ESN/MLP weight-decay screen completed locally
+
+- 完成预注册 `weight_decay=1e-5/1e-4/1e-3` 屏幕。锁定 teacher manifest SHA256=`6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`，固定 7/2 identity split、canonical48D/action7、ESN/MLP 宽度128、`input_scale=0.25`、combined-v4、原 gate、纯本体输入和执行器限制；仅改变 AdamW weight decay。
+- 三组均为开发 `dt=1e-4`、55 s、550000 物理子步。ESN 三组 task/strict 均为 false，全部在 lift 停滞；MLP 三组 task=true、strict=false，均因 combined contact coverage（含柱子等要求）不足而失败。ESN 的 RMSE/峰矩/峰速/外部穿透分别为 `77.173/42.170/0.1106/0.1635`、`75.485/42.723/0.1078/0.0997`、`73.093/41.235/0.1134/0.0919`；MLP 分别为 `48.442/44.781/0.0662/0.1106`、`60.176/45.249/0.1172/0.1323`、`47.831/44.426/0.0702/0.1666`。
+- 六条独立审计通过：action replay 最大误差为0，ESN reservoir replay 最大误差为0，MLP 无 reservoir，物理子步与55 s时长一致。两次仿真前 setup failure（hash变量错误、teacher root错误）保留并不计实验回合。结果不支持 ESN 优势，formal `dt=5e-5` 仍锁定。
+- 新增报告 `docs/ESN_MLP_LOW_SCALE_WEIGHT_DECAY_20261001.md`、配置和训练器；修复审计器以支持无 reservoir 的 MLP。专题输出和 checkpoint 目前仅本地、待 arm1/GitHub 网络恢复，未声称远端归档；详见专题报告与联合进度。
+
 ## 2026-10-01 — low-input-scale pure ESN output-gain screen completed locally
 
 - 在已登记的 `input_scale=0.25` ESN checkpoint 上只改变 `output_gain=0.80/0.90/0.95`；

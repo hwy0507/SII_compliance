@@ -1,5 +1,9 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-01 low-scale ESN/MLP weight-decay screen
+
+在锁定 teacher bank、canonical48D/action7、7/2 identity split 和 frozen office-v5 combined-v4 上，只改变 ESN/MLP 训练的 AdamW weight decay（`1e-5/1e-4/1e-3`），并固定 ESN 输入尺度 `0.25`。三组开发回合均为 `dt=1e-4`、55 s、550000 物理子步；ESN 三组均在 lift 停止（task/strict=0/3、0/3），MLP 三组均完成 task 但 strict=0/3，失败原因是 required contact coverage 不足。六条 action/储备池/物理子步审计通过，报告见 [`ESN_MLP_LOW_SCALE_WEIGHT_DECAY_20261001.md`](ESN_MLP_LOW_SCALE_WEIGHT_DECAY_20261001.md)。formal `dt=5e-5` 未解锁，结果不支持 ESN 优势；原始失败回合保留，产物目前仅本地待同步。
+
 ### 2026-10-01 低输入尺度 ESN output-gain 屏幕
 
 在同一低输入尺度 ESN checkpoint 上只改变输出增益 `.80/.90/.95`。冻结环境、gate、纯

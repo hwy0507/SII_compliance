@@ -37,20 +37,23 @@ def main():
     if result["model_sha256"] != world_sha:
         raise AssertionError("MJB hash differs from evaluator record")
     if result["arguments"]["hybrid_vmc_blend"] != 0 or result["neural_logging"]["observation_dim"] != 48:
-        raise AssertionError("not a pure canonical48D ESN rollout")
+        raise AssertionError("not a canonical48D student rollout")
     actor = load_current(args.checkpoint)
     with np.load(paths["trace"], allow_pickle=False) as trace:
         if trace["observation"].shape[1] != 48:
             raise AssertionError("observation is not canonical48D")
         actions, states = [], []
+        has_reservoir = "reservoir_state" in trace and (hasattr(actor, "state") or hasattr(actor, "obj"))
         for obs in trace["observation"]:
             actions.append(actor.act(obs))
-            state_obj = actor if hasattr(actor, "state") else actor.obj
-            states.append(state_obj.state.copy())
+            if has_reservoir:
+                state_obj = actor if hasattr(actor, "state") else actor.obj
+                states.append(state_obj.state.copy())
         action_error = float(np.max(np.abs(np.asarray(actions) - trace["applied_action"])))
-        state_error = float(np.max(np.abs(np.asarray(states) - trace["reservoir_state"])))
+        state_error = (float(np.max(np.abs(np.asarray(states) - trace["reservoir_state"])))
+                       if has_reservoir else None)
         count = len(actions)
-    if action_error >= 1e-10 or state_error >= 1e-10:
+    if action_error >= 1e-10 or (state_error is not None and state_error >= 1e-10):
         raise AssertionError(f"ESN replay mismatch: {action_error}, {state_error}")
     with np.load(paths["substeps"], allow_pickle=False) as raw:
         dt = raw["dt"].astype(np.float64)
