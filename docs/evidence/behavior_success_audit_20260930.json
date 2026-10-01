@@ -1,0 +1,156 @@
+{
+  "classification": "posthoc legacy evidence audit; not new evaluation",
+  "supersedes": "uncommitted 20260930 stage-plus-lift draft; that predicate was invalid",
+  "definition": "Exposure, final stage and full runtime do not establish recovery after contact.",
+  "rows": [
+    {
+      "name": "delayed_ball_formal_reference",
+      "source": "/home/arm1/vmc_mujoco_runtime/SII_compliance_eval_2e37ddc/outputs/overnight_esn_combined_campaign_20260928/delayed_ball_formal_reference/rollout.json",
+      "source_sha256": "f18465c6166d34065b6685bd12053f380415c177c9a93349fb379154898b0c0a",
+      "original_required": [
+        "ball",
+        "person_hand",
+        "rod"
+      ],
+      "gates": {
+        "behavior_success": null,
+        "strict_behavior_success": null,
+        "evidence_status": "unknown_missing_temporal_response_evidence",
+        "interaction_exposure_valid": true,
+        "contact_checks": {
+          "ball": true,
+          "person_hand": true,
+          "rod": true
+        },
+        "expected_contacts": [
+          "ball",
+          "person_hand",
+          "rod"
+        ],
+        "full_horizon_completed": true,
+        "physical_valid": true,
+        "legacy_task_success": true,
+        "legacy_placement_completion": false,
+        "task_kind": "hold",
+        "progress_diagnostic_only": {
+          "final_stage": "STATIC SCENE CHECK",
+          "max_lift_m": 0.0,
+          "task_events": []
+        },
+        "reasons": [
+          "aggregate contact duration and final stage cannot establish event-ordered recovery"
+        ]
+      }
+    },
+    {
+      "name": "combined_v4_development",
+      "source": "/home/arm1/vmc_mujoco_runtime/SII_compliance_eval_2e37ddc/outputs/overnight_esn_combined_campaign_20260928/combined_v4_development/rollout.json",
+      "source_sha256": "6492cca448aa9487d3d8f0629e77d8d8c40ae5d22ff0717e7cab2af7405b0198",
+      "original_required": [
+        "ball",
+        "person_hand",
+        "rod",
+        "cup",
+        "office_v5_pillar"
+      ],
+      "gates": {
+        "behavior_success": null,
+        "strict_behavior_success": null,
+        "evidence_status": "unknown_missing_temporal_response_evidence",
+        "interaction_exposure_valid": false,
+        "contact_checks": {
+          "ball": true,
+          "person_hand": true,
+          "rod": true,
+          "cup": false,
+          "office_v5_pillar": true
+        },
+        "expected_contacts": [
+          "ball",
+          "person_hand",
+          "rod",
+          "cup",
+          "office_v5_pillar"
+        ],
+        "full_horizon_completed": true,
+        "physical_valid": false,
+        "legacy_task_success": false,
+        "legacy_placement_completion": false,
+        "task_kind": "pick_place",
+        "progress_diagnostic_only": {
+          "final_stage": "carry",
+          "max_lift_m": 0.16397220757571357,
+          "task_events": [
+            {
+              "stage": "align",
+              "time_s": 0.1599999999999987
+            },
+            {
+              "stage": "grasp",
+              "time_s": 1.6799999999998314
+            },
+            {
+              "stage": "lift",
+              "time_s": 1.9999999999997962
+            },
+            {
+              "stage": "carry",
+              "time_s": 9.679999999990779
+            }
+          ]
+        },
+        "reasons": [
+          "aggregate contact duration and final stage cannot establish event-ordered recovery"
+        ]
+      }
+    },
+    {
+      "name": "corner_only_formal_reference",
+      "source": "/home/arm1/vmc_mujoco_runtime/SII_compliance_eval_2e37ddc/outputs/overnight_esn_combined_campaign_20260928/corner_only_formal_reference/rollout.json",
+      "source_sha256": "bbad8c1c2760b6edde269e7c169deb7d830149b5c53192299d4e309c666317b6",
+      "original_required": [],
+      "gates": {
+        "behavior_success": null,
+        "strict_behavior_success": null,
+        "evidence_status": "unknown_missing_temporal_response_evidence",
+        "interaction_exposure_valid": true,
+        "contact_checks": {},
+        "expected_contacts": [],
+        "full_horizon_completed": true,
+        "physical_valid": true,
+        "legacy_task_success": false,
+        "legacy_placement_completion": false,
+        "task_kind": "pick_place",
+        "progress_diagnostic_only": {
+          "final_stage": "load_transfer",
+          "max_lift_m": 0.13386461802290844,
+          "task_events": [
+            {
+              "stage": "align",
+              "time_s": 0.15999999999999054
+            },
+            {
+              "stage": "grasp",
+              "time_s": 1.680000000001333
+            },
+            {
+              "stage": "lift",
+              "time_s": 2.000000000002008
+            },
+            {
+              "stage": "carry",
+              "time_s": 5.359999999994177
+            },
+            {
+              "stage": "load_transfer",
+              "time_s": 9.79999999998383
+            }
+          ]
+        },
+        "reasons": [
+          "aggregate contact duration and final stage cannot establish event-ordered recovery"
+        ]
+      }
+    }
+  ]
+}

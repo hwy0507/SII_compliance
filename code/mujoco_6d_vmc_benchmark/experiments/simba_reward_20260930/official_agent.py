@@ -40,7 +40,7 @@ from scale_rl.agents import create_agent
 
 
 def official_config(seed: int, total_steps: int, utd: int = 2,
-                    gamma: float = .995) -> dict:
+                    gamma: float = .995, entropy_coef: float = -.5, initial_temperature: float = .01) -> dict:
     if total_steps <= 0 or utd < 1 or not 0 < gamma < 1:
         raise ValueError("invalid training budget, UTD or discount")
     return dict(
@@ -58,19 +58,19 @@ def official_config(seed: int, total_steps: int, utd: int = 2,
         critic_c_shift=3., critic_num_bins=101, critic_min_v=-5., critic_max_v=5.,
         critic_scaler_init=math.sqrt(2/512), critic_scaler_scale=math.sqrt(2/512),
         critic_alpha_init=1/3, critic_alpha_scale=1/math.sqrt(512),
-        target_tau=.005, temp_initial_value=.01, temp_target_entropy=None,
-        temp_target_entropy_coef=-.5, gamma=gamma, n_step=1,
+        target_tau=.005, temp_initial_value=initial_temperature, temp_target_entropy=None,
+        temp_target_entropy_coef=entropy_coef, gamma=gamma, n_step=1,
     )
 
 
 class OfficialOfficeAgent:
     def __init__(self, seed: int, total_steps: int, utd: int = 2,
-                 gamma: float = .995):
+                 gamma: float = .995, entropy_coef: float = -.5, initial_temperature: float = .01):
         actual = subprocess.check_output(
             ["git", "-C", str(UPSTREAM), "rev-parse", "HEAD"], text=True).strip()
         if actual != UPSTREAM_COMMIT:
             raise RuntimeError(f"upstream pin mismatch: {actual}")
-        self.config = official_config(seed, total_steps, utd, gamma)
+        self.config = official_config(seed, total_steps, utd, gamma, entropy_coef, initial_temperature)
         self.utd = utd
         self.agent = create_agent(
             gym.spaces.Box(-np.inf, np.inf, shape=(48,), dtype=np.float32),

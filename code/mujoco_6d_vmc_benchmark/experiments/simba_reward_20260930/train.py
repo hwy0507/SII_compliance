@@ -4,6 +4,7 @@ import argparse, dataclasses, hashlib, json, os, signal, sys, time
 from pathlib import Path
 import numpy as np
 from office_env import OfficeEnv, ROOT
+from terminal_objective import reward_task_success
 from rewards import RewardConfig, OfficeReward, IntervalMetrics
 from official_agent import OfficialOfficeAgent, WARMUP_STEPS, BATCH_SIZE
 
@@ -54,6 +55,16 @@ def fixture(seed,episode):
         rod_stroke=float(rng.uniform(.19,.24)))
 
 def train(a):
+    a.terminal_objective=getattr(a,"terminal_objective","legacy_strict")
+    a.warmup_std=getattr(a,"warmup_std",None)
+    a.entropy_coef=getattr(a,"entropy_coef",-.5)
+    a.initial_temperature=getattr(a,"initial_temperature",.01)
+    if not np.isfinite(a.initial_temperature) or a.initial_temperature<=0:
+        raise ValueError("initial temperature must be finite and positive")
+    if a.warmup_std is not None and (not np.isfinite(a.warmup_std) or a.warmup_std<=0):
+        raise ValueError("warmup standard deviation must be positive and finite")
+    if not np.isfinite(a.entropy_coef) or a.entropy_coef>=0:
+        raise ValueError("entropy coefficient must be finite and negative")
     resume_path=Path(a.resume).resolve() if getattr(a,"resume",None) else None
     resume_state=json.loads((resume_path/"runner_state.json").read_text()) if resume_path else None
     if resume_state is not None:
@@ -66,7 +77,7 @@ def train(a):
     out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
     config=RewardConfig(mode=a.reward,horizon_s=a.duration,gamma=a.gamma,smooth_weight=a.smooth)
     rewarder=OfficeReward(config)
-    agent=OfficialOfficeAgent(a.seed,a.steps,utd=a.utd,gamma=a.gamma)
+    agent=OfficialOfficeAgent(a.seed,a.steps,utd=a.utd,gamma=a.gamma,entropy_coef=a.entropy_coef,initial_temperature=a.initial_temperature)
     replay=Replay(max(a.steps,10000),a.seed+53)
     exploration=np.random.default_rng(a.seed+71)
     env=OfficeEnv(out/"episodes",rewarder,duration=a.duration,physics_dt=a.physics_dt)
@@ -74,6 +85,12 @@ def train(a):
     run_definition=dict(seed=a.seed,total_step_budget=a.steps,reward=config.to_dict(),
         utd=a.utd,physics_dt=a.physics_dt,warmup_steps=WARMUP_STEPS,
         train_variants=[-4,-3,-2,-1],train_event_cycle=["all","all","ball","person","rod"])
+    if a.warmup_std is not None or a.entropy_coef != -.5:
+        run_definition.update(warmup_std=a.warmup_std,entropy_coef=a.entropy_coef)
+    if a.initial_temperature != .01:
+        run_definition["initial_temperature"]=a.initial_temperature
+    if a.terminal_objective != "legacy_strict":
+        run_definition["terminal_objective"]=a.terminal_objective
     if resume_state is not None:
         if resume_state.get("run_definition")!=run_definition:
             raise ValueError("Resume protocol differs; retain original seed, total steps, reward, UTD, dt and warmup")
@@ -91,6 +108,8 @@ def train(a):
         resumed_from=str(resume_path) if resume_path else None,resume_mode="episode_boundary_exact" if resume_path else None,
         observation_and_reward_normalization="official running statistics; training only",
         reward=config.to_dict(),agent=agent.config,utd=a.utd,initial_random_steps=WARMUP_STEPS,
+        warmup_distribution=("uniform[-1,1]" if a.warmup_std is None else "clipped zero-mean Gaussian"),
+        warmup_std=a.warmup_std,entropy_coef=a.entropy_coef,
         train_physics_dt=a.physics_dt,formal_evaluation_physics_dt=.00005,duration_s=a.duration,
         reference="current PickPlaceTask stage waypoint; no continuous sigma path",
         error="all physical substeps; contact intervals retained; no clipping",
@@ -99,7 +118,8 @@ def train(a):
         terminal="55s finite-horizon or existing validator abort; strict_success gate unchanged",
         timeout_is_true_terminal=True,variable_episode_lengths=True,
         equivalence_caveat="variable horizons break RMSE ranking equivalence; discount breaks final peak-square equivalence",
-        success_gate="result.strict_success; task_success also reported separately",
+        success_gate=a.terminal_objective,
+        success_definition="task_physical = literal placement_complete AND task_success AND physical_valid; contact exposure reported separately",
         previous_action_reset=[0.]*7,train_variants=[-4,-3,-2,-1],train_event_cycle=["all","all","ball","person","rod"],
         fixture_rule="seed + 100003*episode; no hidden +101*variant",
         scene="main 38caf31 combined_thick_corner_pillar_v4, corner placement, delayed ball2/person3/rod7 hold6",
@@ -143,13 +163,17 @@ def train(a):
         while step<a.steps:
             policy_action=agent.sample_action(obs,previous_transition=previous,training=True)
             previous=None
-            action=exploration.uniform(-1,1,7).astype(np.float32) if step<WARMUP_STEPS else policy_action
+            action=policy_action
+            if step<WARMUP_STEPS:
+                random_action=(exploration.uniform(-1,1,7) if a.warmup_std is None
+                               else np.clip(exploration.normal(0.,a.warmup_std,7),-1.,1.))
+                action=random_action.astype(np.float32)
             next_obs,done,info=env.step_raw(action)
             iv=info["interval"]
             interval=IntervalMetrics(**{f.name:iv[f.name] for f in dataclasses.fields(IntervalMetrics)})
             result=info.get("evaluation")
-            success=bool(result["strict_success"]) if done else False
-            reason=(("strict_success" if success else result.get("abort_reason") or "finite_horizon_timeout")
+            success=reward_task_success(result,a.terminal_objective) if done else False
+            reason=(("success_"+a.terminal_objective if success else result.get("abort_reason") or "finite_horizon_timeout")
                     if done else None)
             reward,terms=rewarder(interval,action,current_potential=phi,next_potential=iv["potential"],
                 terminated=done,success=success,failure=done and not success,terminal_reason=reason,task_complete_before_interval=iv["task_complete_before_interval"])
@@ -169,7 +193,8 @@ def train(a):
             if done:
                 row=dict(episode=episode,step=step,steps_in_episode=step-episode_start_step,
                     fixture=fixture(a.seed,episode),episode_return=episode_return,reward_terms=terms_sum,
-                    task_success=bool(result["task_success"]),strict_success=success,
+                    task_success=bool(result["task_success"]),strict_success=bool(result["strict_success"]),
+                    training_success=success,training_terminal_objective=a.terminal_objective,
                     physical_valid=bool(result["physical_valid"]),placement_complete=bool(result["placement_complete"]),
                     final_stage=result["final_task_stage"],metrics=result["metrics"],
                     events=result["stats"]["events"],abort_reason=result["abort_reason"],
@@ -201,6 +226,10 @@ if __name__=="__main__":
     p.add_argument("--output",type=Path,required=True)
     p.add_argument("--resume",type=Path,help="Resume only an episode-boundary checkpoint into a new output directory")
     p.add_argument("--stop-after-step",type=int,help="Optional absolute early checkpoint step; keeps original total-step learning-rate schedule")
+    p.add_argument("--initial-temperature",type=float,default=.01)
+    p.add_argument("--terminal-objective",choices=["legacy_strict","task_physical"],default="legacy_strict")
+    p.add_argument("--warmup-std",type=float,default=None,help="Opt-in zero-mean exploration; no teacher or action-space change")
+    p.add_argument("--entropy-coef",type=float,default=-.5,help="Official target entropy per action dimension")
     p.add_argument("--reward",choices=["office_task","metric","task_only"],required=True)
     p.add_argument("--seed",type=int,required=True)
     p.add_argument("--steps",type=int,default=100000)

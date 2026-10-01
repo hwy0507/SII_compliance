@@ -68,7 +68,9 @@ def load_frozen_agent(path):
         raise ValueError("saved LR schedule cannot reconstruct training budget")
     agent = OfficialOfficeAgent(
         seed=int(config["seed"]), total_steps=decay // utd,
-        utd=utd, gamma=float(config["gamma"]))
+        utd=utd, gamma=float(config["gamma"]),
+        entropy_coef=float(config["temp_target_entropy_coef"]),
+        initial_temperature=float(config["temp_initial_value"]))
     agent.load(path)
     return agent
 

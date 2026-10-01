@@ -1,3 +1,14 @@
+## 2026-10-01 — 八小时基线接续：修正终末奖励混淆并实现事件时序验收
+
+- 开工fetch并读取main=3336864、baseline=c918548；main十小时teacher-bank已收尾且无新ESN。本轮不合并main，旧四路训练保持SIGSTOP。用户授权窗口约05:41–13:41 UTC（北京时间13:41–21:41），不是收敛保证。
+- 撤销上轮未提交的stage+lift成功草案。旧三个ESN摘要缺连续NPZ，行为unknown；含杯combined_v4_development的carry早于碰柱，cup要求不得删除。修正源码、定义与小证据；历史原始rollout和旧奖励实验不覆盖。正确审计路径 /home/arm1/vmc_mujoco_runtime/SII_compliance_eval_2e37ddc/outputs/behavior_success_audit_20261001/。
+- 新behavior_telemetry_20261001.py每物理子步累积、4ms保存，只离线使用接触真值；behavior_evaluate.py区分冲击停稳恢复、碰撞后原目标重入并继续运动、承载接触中切向净滑移及任务净进展。保留placement/physical/exposure/unknown；局部推进不等于完整清障。20项时序/振荡/参考跳变/竞争碰撞/掉落反例通过。
+- exploration_pilot_01实际4×10k：std=.02 warmup访问抓取及放置，开始学习后新回合退回approach。独立审计发现真实放置且物理有效仍因contact_coverage不足获-20。新增task_physical目标按placement_complete AND task_success AND physical_valid，不强迫碰遍障碍；旧legacy_strict仍可用。7项目标断言及4项旧证据断言通过；真official agent精确episode-boundary resume回归通过。
+- exploration_pilot_02已启动4路，两reward×initial temperature(.01/.0001)，gamma=.9995、entropy-.5、std=.02，terminal均task_physical。.01分支单独检验终末修复，.0001分支检验过强熵项；只用完全在warmup后的训练回合选择共同配置。主实验计划两reward×3seed×100k，共同checkpoint，新冻结6参数条件55秒/dt5e-5重评RL、ESN纯学生、75%VMC+25%ESN及零动作控制。计划不冒称已完成。
+- 10秒logger开关对照的物理状态/动作/模型/三指标均完全相同；主批次前bootstrap再检查最新source的invariance_02。有限时长与earlyabort分开；report_campaign.py检查原始dt/MJB/normalizer/seed，均值SD以训练seed为单位，支持空间阈值敏感性和partial报告。
+- 所有新代码 /home/arm1/SII_compliance_baseline/code/mujoco_6d_vmc_benchmark/experiments/simba_behavior_20261001/；全数据 /home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/；pilot_01/02与冻结源分开保留。BOOTSTRAP_STATE.json接续pilot→最新日志无扰动检查→campaign_01→共享评测→报告。正式报告预定campaign_01/report/REPORT.md；尚未生成的文件不是结果。
+- 文档 docs/BASELINE_EIGHT_HOUR_PLAN_20261001.md、docs/BEHAVIOR_SUCCESS_DEFINITION_20260930.md（已更正）、docs/TRAINING_OBJECTIVE_AUDIT_20261001.md。源码仅baseline提交；权重、媒体、raw在Spark。heartbeat已恢复，每20分钟核验实际运行，预算到期交付实际证据后暂停。
+
 ## 2026-09-30 — 奖励主实验与40k补充诊断全部收尾，保留失败并交付审计报告
 
 - 收尾前通过Git transport relay fetch并读取远端main 2581451cc9c471b19c67286457bea8d3b8a4b2b7及baseline e47da59日志；main的teacher-bank任务独立继续，未合并或操作其作业。Spark HTTPS无凭据，GitHub发布沿用Mac /tmp/SII_compliance_baseline仅作Git传输中继；代码、训练与大产物均在Spark。

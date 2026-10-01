@@ -230,13 +230,20 @@ def run(a, *, policy_override=None, runtime_hooks=None):
     contact_keys=('ball','person_hand','rod','cup','office_v5_pillar')
     interval_peak=np.zeros(len(contact_keys));interval_impulse=np.zeros(len(contact_keys))
     rod_run=None
+    behavior_recorder=None
+    route_progress_m=0.
+    previous_behavior_hand=d.xpos[env._hand_id].copy()
+    if bool(getattr(a,"behavior_log",False)):
+        from behavior_telemetry_20261001 import BehaviorTelemetry
+        behavior_recorder=BehaviorTelemetry(metadata=dict(task=a.task,
+            fixture_flags=flags,route_progress="signed physical displacement projected on current fixed stage task_direction; no stage jump bonus"))
     def drive_joint(name,target,kp,kd,limit):
         j=joints[name];q=int(m.jnt_qposadr[j]);v=int(m.jnt_dofadr[j])
         force=float(np.clip(kp*(target-d.qpos[q])-kd*d.qvel[v]+d.qfrc_bias[v],-limit,limit))
         d.qfrc_applied[v]=force
         return force
     def world_step(unused):
-        nonlocal incoming,last_ball_velocity,last_robot_ball_contact,first_ball_pos,next_ball_sample,ball_launched,impact_next,rod_run
+        nonlocal incoming,last_ball_velocity,last_robot_ball_contact,first_ball_pos,next_ball_sample,ball_launched,impact_next,rod_run,route_progress_m,previous_behavior_hand
         t=float(d.time)
         if a.events in ('all','ball') and not ball_launched and t < ball_launch_time_s:
             # Display-only delayed launch: hold the free ball at its reset pose
@@ -261,6 +268,7 @@ def run(a, *, policy_override=None, runtime_hooks=None):
         f=drive_joint('office_v5_push_rod_joint',target,160.,12.,c['force_limit'])
         stats['max_rod_drive_n']=max(stats['max_rod_drive_n'],abs(f))
         resultant={};touch_ball=False;corner_target_force=0.
+        behavior_contacts=[]
         for i in range(d.ncon):
             ct=d.contact[i];g1,g2=int(ct.geom1),int(ct.geom2)
             if target_geom in (g1,g2) and (g2 if g1==target_geom else g1) in corner_contact_geoms:
@@ -283,6 +291,11 @@ def run(a, *, policy_override=None, runtime_hooks=None):
                 rg=g1 if g1 in robot else g2
                 robot_part=mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_BODY,int(m.geom_bodyid[rg])) or str(rg)
                 rec=stats['events'].setdefault(key,dict(first_s=t,last_s=t,duration_s=0.,peak_n=0.,impulse_ns=0.,robot_parts=set()))
+                if behavior_recorder is not None:
+                    behavior_contacts.append(dict(obstacle_id=key,force_world=world.copy(),
+                        normal_world=ct.frame.reshape(3,3)[0].copy(),
+                        obstacle_position=d.xpos[int(m.geom_bodyid[other])].copy(),
+                        robot_position=d.xpos[int(m.geom_bodyid[rg])].copy(),robot_part=robot_part))
                 rec['robot_parts'].add(robot_part)
                 resultant[key]=resultant.get(key,np.zeros(3))+world
                 if key=='ball':touch_ball=True
@@ -325,6 +338,18 @@ def run(a, *, policy_override=None, runtime_hooks=None):
         stats['max_hand_displacement_m']=max(stats['max_hand_displacement_m'],float(np.linalg.norm(d.xpos[env._hand_id]-initial_hand)))
         stats['peak_motor_torque_nm']=max(stats['peak_motor_torque_nm'],float(abs(d.qfrc_actuator[:7]).max()))
         metrics.sample()
+        if behavior_recorder is not None:
+            hand_post=metrics.scratch.xpos[env._hand_id].copy()
+            direction=np.asarray(task.path_direction,dtype=float) if hasattr(task,"path_direction") else np.zeros(3)
+            route_progress_m+=float((hand_post-previous_behavior_hand)@direction)
+            previous_behavior_hand=hand_post
+            behavior_recorder.sample(time=t,dt=float(m.opt.timestep),
+                hand_position=hand_post,hand_rotation=metrics.scratch.xmat[env._hand_id].reshape(3,3),
+                hand_twist=metrics.arrays["twist"][metrics.count-1],
+                reference_position=task.goals[task.index],reference_rotation=task.rotation,
+                task_direction=direction,route_progress_m=route_progress_m,
+                contacts=behavior_contacts,stage=int(task.index),
+                object_position=metrics.scratch.xpos[env._target_body_id].copy())
         if impact_renderer is not None and float(d.time) <= ball_launch_time_s+.65 and float(d.time)+1e-12 >= impact_next:
             impact_renderer.update_scene(d,camera=impact_overview);slow1=Image.fromarray(impact_renderer.render())
             impact_renderer.update_scene(d,camera=impact_detail);slow2=Image.fromarray(impact_renderer.render())
@@ -537,6 +562,9 @@ def run(a, *, policy_override=None, runtime_hooks=None):
     if teacher:
         for name in ('run_vmc_6d_constrained_push_20260918.py','contact_memory_vmc_20260916.py'):
             result['source_sha256'][name]=hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
+    if behavior_recorder is not None:
+        result['behavior_telemetry']=behavior_recorder.save(a.output.parent/(a.output.name+'_behavior.npz'))
+        result['source_sha256']['behavior_telemetry_20261001.py']=hashlib.sha256(Path(__file__).with_name('behavior_telemetry_20261001.py').read_bytes()).hexdigest()
     a.output.with_suffix('.json').write_text(json.dumps(clean(result),indent=2,allow_nan=False))
     np.savez_compressed(a.output.with_suffix('.npz'),**{k:np.array([r[k] for r in records]) for k in records[0]})
     np.savez_compressed(a.output.parent/(a.output.name+'_ball_detail.npz'),
@@ -555,6 +583,7 @@ def run(a, *, policy_override=None, runtime_hooks=None):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--render',action='store_true')
+    p.add_argument('--behavior-log',action='store_true',help='Read-only 4ms event-response evidence; no actor inputs')
     p.add_argument('--impact-slowmo',action='store_true',help='Save a separate 4x playback slow-motion impact clip')
     p.add_argument('--events',choices=('settle','ball','person','rod','all'),default='all')
     p.add_argument('--task',choices=('hold','pick_place'),default='hold')
