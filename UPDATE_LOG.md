@@ -1,3 +1,9 @@
+## 2026-10-01 — 低熵诊断运行中，补充48回合独立审计入口
+
+- 读取main=ba84ed8、baseline=92f2f3a；entropy_diagnostic_02 supervisor1797525及四worker1797526–1797529正常，约19k步；无报错，无学习后完整任务成功。冻结训练源码与协议未改。
+- 新report_entropy_diagnostic.py按8策略实例×6条件显式48回合检查，独立于主54矩阵；复用子步复算但不误用all54_present，核对checkpoint共同step/seed/path/hash、manifest、实际MJB、normalizer诊断和raw记录。分两个训练seed统计均值/SD，保留提前终止、物理无效和逐类事件分母。
+- 无评测时的partial smoke通过：0/48、八组pending、没有伪造零指标或完成状态；尚未进行最终48条审计。源码/报告路径分别为 /home/arm1/SII_compliance_baseline/code/mujoco_6d_vmc_benchmark/experiments/simba_behavior_20261001/report_entropy_diagnostic.py 和 /home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/entropy_diagnostic_02/report/。训练→评测仍由已有supervisor自动接续，不重复启动。
+
 ## 2026-10-01 — 100k主矩阵54条完成并发布；注册独立低熵诊断
 
 - 核对远端main=ba84ed8、baseline=107b21e；不合并同期main学生新权重。六路100k/190002更新和九组54条评测均rc0；52条55s，metric seed61002 case2/5仅0.44s提前2mm穿透终止。两RL组task/placement0；office物理18/18，metric14/18，ESN/混合/zero各6/6。
