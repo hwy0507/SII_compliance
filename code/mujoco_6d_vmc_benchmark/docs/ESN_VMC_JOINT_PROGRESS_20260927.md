@@ -1,5 +1,41 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 v3：修正过滤标签后的公平闭环重跑
+
+在继续 ESN/MLP 比较前，修正训练脚本的标签出口：目标现在明确读取每条
+`execution_chain.npz/filtered_action`，同时保留并校验 `rollout.npz/applied_action`。
+训练 metadata 另写入 execution-chain hash，并固定 ESN/MLP 推理源码 hash；新增回归测试覆盖
+这个语义。冻结 teacher manifest（SHA256
+`6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`）和场景、gate、actor
+输入、执行器限制均未改变。
+
+v3 使用 seed `2026100104`、估计负载训练权重 `1+3*tanh(||wrench[39:45]||/0.5)`，新模型与
+审计位于 `outputs/vmc_teacher_esn_mlp_weighted_20261001_v3/`。在同一无初始细步的
+combined-v4 开发命令下，所有行都是 55 s / 550000 物理子步、`dt=1e-4`：
+
+| 方法 | task | strict | 最终阶段 | RMSE mm | 峰值力矩 Nm | 峰值速度 m/s | 外部穿透 mm |
+|---|---:|---:|---|---:|---:|---:|---:|
+| 冻结 VMC teacher | 通过 | 否 | retreat | 43.438 | 50.324 | 0.1008 | 0.1525 |
+| v3 ESN | 否 | 否 | carry | 406.806 | 43.246 | 0.2404 | 0.1929 |
+| v3 MLP | 通过 | 否 | retreat | 43.333 | 44.405 | 0.0753 | 0.1012 |
+
+ESN 与 MLP 的动作重放误差均为 0；ESN 储备池重放误差为 0，三项物理子步指标和
+55 s/550000 子步审计通过。v3 MLP 保持 task 成功但没有满足持续接触 strict；v3 ESN
+在 carry 停滞。v3 不解锁 formal `dt=5e-5`，失败回合和首轮带细步诊断均保留。
+v3 checkpoint SHA256：ESN `a5560ca073c3afed6d553c1ee7a37ac32d537f1245aa6369feabeb022dff40b4`，
+MLP `e27c4ed63cd5f604c5338c90aa87b09e61a90f401a2d92f674c1e69a501e45f0`；独立审计为
+`outputs/vmc_teacher_esn_mlp_weighted_20261001_v3/independent_audit_norefine/AUDIT.json`。
+当前本机仿真 0；arm1 SSH 在本轮检查时端口不可达，未声称远端已归档 v3。
+
+随后完成一个预注册无负载权重对照 v4（seed `2026100105`，emphasis `0`），用来区分负载
+加权和 ESN 随机读出影响。相同 55 s/550000 子步 frozen command 的结果为：ESN
+task/strict `false/false`、最终 `lift`、RMSE `526.818 mm`、峰矩 `44.416 Nm`、峰速
+`0.2204 m/s`、穿透 `0.1323 mm`；MLP `true/false`、放置完成、RMSE `38.832 mm`、
+峰矩 `44.286 Nm`、峰速 `0.0807 m/s`、穿透 `0.1527 mm`。动作重放和 ESN 储备池重放
+仍为 0，独立审计位于 `outputs/vmc_teacher_esn_mlp_weighted_20261001_v4/independent_audit_norefine/AUDIT.json`。
+v3/v4 都表明当前九条 VMC teacher 轨迹下 MLP 的闭环任务完成较稳定，而 ESN 在 lift/carry
+之间随机失稳；两者均未通过 sustained-contact strict，不能宣称 ESN 优势或解锁正式步长。
+
 ## 2026-10-01 VMC teacher 数据上的 ESN/MLP 加权读出续实验
 
 在冻结的 combined-thick-corner-pillar-v4、canonical48D/action7、执行器

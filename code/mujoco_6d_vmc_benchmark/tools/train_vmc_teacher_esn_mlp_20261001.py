@@ -41,18 +41,25 @@ def load_rows(manifest: Path, root: Path):
         for entry in entries:
             # Only the nine certified identities are used.  Validation and
             # excluded/quarantined records are absent from categories.
-            relative = Path(entry["folder"]) / "rollout.npz"
-            path = root / relative
+            relative = Path(entry["folder"])
+            path = root / relative / "rollout.npz"
+            chain_path = root / relative / "execution_chain.npz"
             if not path.is_file():
                 raise FileNotFoundError(path)
-            with np.load(path, allow_pickle=False) as archive:
+            if not chain_path.is_file():
+                raise FileNotFoundError(chain_path)
+            with np.load(path, allow_pickle=False) as archive, np.load(chain_path, allow_pickle=False) as chain:
                 observation = np.asarray(archive["observation"], dtype=np.float32)
-                action = np.asarray(archive["applied_action"], dtype=np.float32)
+                raw_action = np.asarray(archive["applied_action"], dtype=np.float32)
+                action = np.asarray(chain["filtered_action"], dtype=np.float32)
             if observation.ndim != 2 or observation.shape[1] != 48 or action.shape != (len(observation), 7):
                 raise ValueError(f"invalid canonical trace {path}")
+            if raw_action.shape != action.shape:
+                raise ValueError(f"raw/filtered shape mismatch {path}")
             rows.append({"category": category, "fixture_id": entry["fixture_id"],
                          "folder": entry["folder"], "path": str(path),
-                         "trace_sha256": sha(path), "observation": observation,
+                         "trace_sha256": sha(path), "execution_chain_sha256": sha(chain_path),
+                         "observation": observation, "raw_action": raw_action,
                          "action": action, "model_sha256": entry["model_sha256"]})
     return rows, data
 
@@ -227,14 +234,18 @@ def main():
         "train_fixture_ids": [r["fixture_id"] for r in train],
         "validation_fixture_ids": [r["fixture_id"] for r in validation],
         "teacher_trace_hashes": {r["fixture_id"]: r["trace_sha256"] for r in train_rows},
-        "source_sha256": {str(Path(__file__)): sha(Path(__file__))},
+        "source_sha256": {str(Path(__file__)): sha(Path(__file__)),
+                           str(ROOT / "scripts" / "esn128_proprio48_action7_20260921.py"): sha(ROOT / "scripts" / "esn128_proprio48_action7_20260921.py"),
+                           str(ROOT / "scripts" / "current_student_policy_20260921.py"): sha(ROOT / "scripts" / "current_student_policy_20260921.py")},
         "forbidden_inputs": ["contact truth", "object/ball state", "event time", "task stage", "visual/range"],
         "esn_architecture": "48D -> 128 reservoir -> 128 readout -> 7D",
         "mlp_architecture": "48D -> 128 -> 128 -> 7D",
-        "parameter_count_fairness": "Both trainable readouts have 23,687 parameters; ESN reservoir is fixed.",
+        "parameter_count_fairness": "ESN trainable readout has 23,559 parameters and MLP has 23,687; both use 128-unit trainable width and ESN reservoir is fixed.",
         "esn_validation_mse": esn_val, "mlp_validation_mse": mlp_val,
         "esn_replay": esn_rows, "mlp_replay": mlp_rows,
         "checkpoint_sha256": {"esn": sha(esn_path), "mlp": sha(mlp_path)},
+        "target_semantics": "execution_chain.npz filtered_action (raw rollout applied_action retained for audit)",
+        "teacher_chain_hashes": {r["fixture_id"]: r["execution_chain_sha256"] for r in train_rows},
         "limitations": ["Only nine certified VMC fixtures existed; active_long has no held-out identity.",
                         "Replay metrics are teacher-action imitation, not closed-loop task success.",
                         "All source traces are development dt=1e-4 and retain their original gates."],

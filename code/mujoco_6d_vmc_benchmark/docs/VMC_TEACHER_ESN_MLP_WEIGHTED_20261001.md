@@ -1,5 +1,47 @@
 # VMC teacher → ESN/MLP weighted-readout comparison (2026-10-01)
 
+## v3 corrected-label rerun
+
+The original v2 trainer was retained, but the loader semantics are now explicit and
+tested: student targets come from `execution_chain.npz["filtered_action"]`; the
+raw `rollout.npz["applied_action"]` is retained only for provenance comparison.
+Both files are hash-checked for every manifest entry, and metadata pins the ESN/MLP
+inference modules as well as the teacher chain files. This correction changed no
+values in the nine frozen traces (maximum raw-versus-filtered difference
+`8.9e-16`), but prevents a future active filter from silently changing the label.
+
+The immutable v3 output is `outputs/vmc_teacher_esn_mlp_weighted_20261001_v3/`.
+It uses seed `2026100104`, the same weighted loss and the same frozen combined-v4
+command with no initial refinement. All rows are development `dt=1e-4`, 55 s and
+550000 physical substeps. The independent audit is
+`outputs/vmc_teacher_esn_mlp_weighted_20261001_v3/independent_audit_norefine/AUDIT.json`.
+
+| policy | task | strict | final stage | RMSE (mm) | peak torque (Nm) | peak speed (m/s) | penetration (mm) |
+|---|---:|---:|---|---:|---:|---:|---:|
+| frozen VMC teacher | yes | no | retreat | 43.438 | 50.324 | 0.1008 | 0.1525 |
+| v3 ESN | no | no | carry | 406.806 | 43.246 | 0.2404 | 0.1929 |
+| v3 MLP | yes | no | retreat | 43.333 | 44.405 | 0.0753 | 0.1012 |
+
+Action replay is exactly zero for both students and ESN reservoir-state replay is zero.
+The MLP completes placement but misses the unchanged sustained-contact gate; the ESN
+stops in carry. No formal `dt=5e-5` rerun is unlocked, and no environment, gate,
+actor input, or actuator limit changed. The first v3 attempt with an initial fine-step
+diagnostic is kept separately and is not used in the fair table because it has 676000
+physical substeps.
+
+## v4 unweighted control
+
+As a pre-registered control for the loss weighting, v4 used seed `2026100105` and
+`emphasis=0` with the same filtered-action loader, frozen world, and 55 s/550000-step
+command. It produced ESN task/strict `false/false` (lift, 526.818 mm RMSE,
+44.416 Nm, 0.2204 m/s, 0.1323 mm penetration) and MLP `true/false` (retreat,
+38.832 mm, 44.286 Nm, 0.0807 m/s, 0.1527 mm). Replay and independent physical
+substep checks passed; the audit is
+`outputs/vmc_teacher_esn_mlp_weighted_20261001_v4/independent_audit_norefine/AUDIT.json`.
+Across v3 and v4, MLP completes the task but misses the unchanged sustained-contact
+gate, while ESN remains unstable in the late carry/lift sequence. These are development
+results and do not unlock formal `dt=5e-5`.
+
 This is a development-only continuation of the locked VMC-teacher student
 comparison. The MuJoCo world, combined-thick-corner-pillar-v4 fixture, task
 gates, actuator limits, canonical48D observation contract, and action filter are

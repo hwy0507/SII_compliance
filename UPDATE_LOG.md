@@ -1,5 +1,39 @@
 # 更新日志
 
+## 2026-10-01 — v3 teacher-label correction and frozen ESN/MLP rerun
+
+- 开工按 `sii-research-sync` 核对本地 `origin/main` 缓存起点
+  `3336864707c1e59a1015568a0aea1891e18b8980`；本轮网络受限，无法重新连接 GitHub 或
+  `arm1@192.168.31.70`，因此未把缓存 SHA 冒充最新远端状态。远端没有可读的 `baseline`
+  分支／更新日志；baseline 工作区未修改。
+- 修正 `tools/train_vmc_teacher_esn_mlp_20261001.py` 和 weighted trainer：训练目标绑定
+  `execution_chain.npz/filtered_action`，保留 raw `rollout.npz/applied_action`，逐条校验两者
+  shape 与 rollout/chain hash；metadata 增加 execution-chain、ESN/MLP 推理源码 hash，并
+  更正 trainable 参数量为 ESN 23,559、MLP 23,687。新增
+  `tests/test_student_distillation_20261001.py` 的标签出口回归测试。
+- 在冻结 manifest、combined-v4、canonical48D/action7、gate、actor 输入与执行器限制下，
+  使用本地 `.venv-canonical-rl`、单线程完成 v3 训练（seed `2026100104`）与无初始细步的
+  55 s/550000 子步开发闭环。结果：VMC teacher task/strict=true/false，ESN=false/false
+  （carry，RMSE 406.806 mm，43.246 Nm，0.2404 m/s，穿透 0.1929 mm），MLP=true/false
+  （retreat，43.333 mm，44.405 Nm，0.0753 m/s，穿透 0.1012 mm）。动作重放均为 0，ESN
+  储备池重放为 0，独立物理子步审计通过；strict 未通过，不解锁 formal `dt=5e-5`。
+- v3 输出、首轮带细步诊断及失败回合保留在
+  `code/mujoco_6d_vmc_benchmark/outputs/vmc_teacher_esn_mlp_weighted_20261001_v3/`；详见
+  `docs/VMC_TEACHER_ESN_MLP_WEIGHTED_20261001.md`、联合进度与周报。checkpoint：ESN
+  `a5560ca073c3afed6d553c1ee7a37ac32d537f1245aa6369feabeb022dff40b4`，MLP
+  `e27c4ed63cd5f604c5338c90aa87b09e61a90f401a2d92f674c1e69a501e45f0`。v3 尚未同步 arm1，
+  仅本地待同步；已有 v1 归档未覆盖。
+- 验证：`pytest -q tests/test_student_distillation_20261001.py tests/test_esn_compliance.py
+  tests/test_direct_esn_env_contract.py tests/test_office_memory_esn_20260927.py` → 14 passed；
+  `git diff --check` 与两训练脚本 `py_compile` 通过。已完成：标签修复、v3 训练、闭环和
+  独立审计。运行中：无本机仿真。未完成：arm1 归档、正式 `dt=5e-5`（门槛未满足）及
+  strict 泛化成功。
+- 追加预注册无负载权重控制 v4（seed `2026100105`, emphasis=0）：ESN task/strict=false/false、
+  lift、RMSE 526.818 mm、峰矩44.416 Nm、峰速0.2204 m/s、穿透0.1323 mm；MLP=true/false、
+  retreat、RMSE38.832 mm、峰矩44.286 Nm、峰速0.0807 m/s、穿透0.1527 mm。仍为
+  55 s/550000 子步开发回合；动作/储备池重放及独立审计通过。v3/v4 均未过 strict，
+  不解锁 formal dt=5e-5；v4 也仅本地待同步，不能写成服务器已归档。
+
 本文件记录每次对话交付的文件修改、验证和结果边界；最新记录在前。对应提交号由 Git 历史
 查询：`git log --oneline -- UPDATE_LOG.md`。持续提交约定见 [AGENTS.md](AGENTS.md)。
 
