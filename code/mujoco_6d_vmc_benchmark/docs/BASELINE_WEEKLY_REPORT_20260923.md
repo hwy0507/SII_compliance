@@ -1,5 +1,9 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-01 ESN input-scale 屏幕与复现
+
+输入尺度 0.25 的单个 ESN seed 完成 task，但 strict=false；预注册的三个新 seed 复现为 0/3 task success，说明单 seed 成功不具备泛化证据。其余输入尺度 ESN 也未过 task/strict。动作、储备池和物理子步审计通过，所有结果为开发 `dt=1e-4`，没有 formal `dt=5e-5`。
+
 ### 2026-10-01 ESN recurrent spectral-radius screen
 
 第二轮纯 ESN 算法屏幕只改变 128 单元 reservoir 谱半径 `0.60/0.90/1.10`，并为每组训练同宽度 MLP 对照。三组 ESN 均未过 task/strict，MLP 只有谱半径 0.90 对照完成 task、strict=false；所有回合仍是开发 `dt=1e-4`。独立动作/储备池/物理子步审计通过，0.90 ESN 穿透超限被保留为失败；没有 formal `dt=5e-5`。产物目前仅本地，待 arm1 与 GitHub 网络恢复后同步。

@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-01 — pure ESN input-scale screen and replication completed locally
+
+- 在冻结 teacher manifest、office-v5 combined-v4、gate、canonical48D/action7、禁止输入和执行器限制下，预注册输入权重尺度 `0.25/0.45/0.80` 屏幕；配置 SHA=`1197d1739ae0e2f1af9671cf4dbabbd1350bb4ab589ef7b951708fd5bd87deff`，训练器 SHA=`881d670a56f1723576534020ef4baebddd0ed29e5e0f7bb2f7a4ffc9e0db77c6`。
+- `input_scale=0.25` 的单个 ESN seed 完成 task、strict=false，RMSE/峰矩/峰速/穿透=`68.471 mm / 48.004 Nm / 0.1164 m/s / 0.1499 mm`；0.45/0.80 ESN 分别在 carry/load_transfer 停止。MLP 对照全部 task=true、strict=false。
+- 对唯一 task=true 候选预注册复现 seeds `2026100118/19/20`，ESN task/strict=`0/3`、`0/3`；复现 audit 与 73 文件收据 SHA=`688ae6b3556023d64eb1c68ba2d84cde0b6ca461892240cbe9f8a83666b484f2`。屏幕收据 SHA=`0fe9e346533fb27ba4ba306b49d9bc128dbe2bf584b1a168d1ae8dba934e42a2`。因此单 seed 成功不能称 ESN 泛化或优势。
+- 所有回合均为开发 `dt=1e-4`/550000 子步，严格 gate 无一通过，未解锁 formal `dt=5e-5`。GitHub/arm1 仍不可达，产物仅本地待同步。
+
 ## 2026-10-01 — pure ESN spectral-radius screen completed locally
 
 - 在同一 teacher manifest、场景、gate、actor 输入和执行器限制上完成预注册 spectral-radius 屏幕；只改变 128 单元 ESN reservoir 谱半径 `0.60/0.90/1.10`，每组配同宽度 MLP。配置 SHA=`e96a9880d607d77390b062542e25dab677880587a2483aeb3dcfc4e9b48f0c17`，训练脚本 SHA=`9381becd58ce6c750672e6184f4a452004990bec5e98dd989ba8eab97fab5e5c`。

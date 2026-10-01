@@ -1,5 +1,11 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 纯 ESN input-scale 屏幕与三种种子复现（本地，待同步）
+
+第三轮单因素屏幕只改变 ESN 输入权重尺度 `0.25/0.45/0.80`。low=`0.25` 的 ESN 首次完成 task（retreat），指标为 RMSE `68.471 mm`、峰矩 `48.004 Nm`、峰速 `0.1164 m/s`、穿透 `0.1499 mm`，但 strict=false；0.45 ESN 在 carry 停止且穿透 `0.7154 mm`，0.80 ESN 在 load_transfer 停止。三组 MLP 对照均 task=true、strict=false。
+
+对唯一 task=true 的 ESN low 候选做预注册种子 `2026100118/19/20` 复现后，ESN task/strict 为 `0/3`、`0/3`，分别停在 lift；因此单 seed 成功不能称为稳健泛化。复现仍是同一 manifest、7/2 split、场景、gate、actor 输入、执行器限制、55 s、开发 `dt=1e-4` 和 550000 子步。所有 12 条（屏幕6+复现6）动作 replay、ESN 状态 replay 和物理子步审计通过，没有任何 strict 通过，formal `dt=5e-5` 继续锁定。屏幕收据 SHA=`0fe9e346533fb27ba4ba306b49d9bc128dbe2bf584b1a168d1ae8dba934e42a2`，复现收据 SHA=`688ae6b3556023d64eb1c68ba2d84cde0b6ca461892240cbe9f8a83666b484f2`。详见 [`ESN_INPUT_SCALE_20261001.md`](ESN_INPUT_SCALE_20261001.md)。
+
 ## 2026-10-01 纯 ESN spectral-radius 屏幕（本地，待同步）
 
 在上一轮 leak 时间尺度屏幕之后，预注册只改变固定 128 单元 ESN reservoir 的谱半径：`0.60/0.90/1.10`，每组都配同宽度 MLP 对照。teacher manifest、canonical48D/action7、7/2 identity split、估计负载训练权重、combined-v4 场景、原 gate、actor 输入、执行器限制、seed `2026091751`、55 s、开发 `dt=1e-4` 和 550000 子步均未变。
