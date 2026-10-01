@@ -1,5 +1,9 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-01 temporal-consistency candidate replication
+
+对首轮 `delta_weight=1.0` ESN 候选用第二 seed 复现后，ESN 仅到 carry、RMSE 257.986 mm、task/strict 均失败；MLP 完成 task 但 strict 失败。两条独立物理子步审计通过，说明首轮 ESN 到 load_transfer 的结果不具备稳健性；没有 formal `dt=5e-5`。
+
 ### 2026-10-01 temporal-consistency ESN/MLP screen
 
 只在冻结 teacher bank 和 combined-v4 上改变训练目标，加入相邻 action 增量损失，候选 `delta_weight=0/0.5/1.0`。ESN 三组均未完成 task；`delta_weight=1.0` 到达 load_transfer，RMSE 40.378 mm，但没有 placement。MLP 两组完成 task，strict 仍为0/3，required contact coverage 不足。六条 action/储备池/物理子步审计通过，全部为开发 `dt=1e-4`，formal `dt=5e-5` 未解锁。完整表见 [`ESN_MLP_TEMPORAL_CONSISTENCY_SCREEN_20261001.md`](ESN_MLP_TEMPORAL_CONSISTENCY_SCREEN_20261001.md)；大产物目前仅本地待同步。

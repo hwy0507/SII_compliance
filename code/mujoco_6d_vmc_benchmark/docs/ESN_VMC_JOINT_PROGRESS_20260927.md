@@ -1,5 +1,9 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 temporal-consistency seed replication（本地完成，待同步）
+
+对首轮 `delta_weight=1.0` 候选使用第二训练 seed `2026100142`（MLP `2026100143`）复现，其他协议完全不变。ESN 在 carry 停止，task/strict=false，RMSE `257.986 mm`、峰矩 `44.770 Nm`、峰速 `0.1423 m/s`、穿透 `0.1774 mm`；MLP task=true、strict=false。两条均为开发 `dt=1e-4`、55 s、550000子步，独立 action/储备池/物理审计通过。该复现否定首轮单 seed 的稳健 ESN 改进，formal `dt=5e-5` 继续锁定；证据在 `outputs/esn_mlp_temporal_consistency_20261001_rep_seed42/`，仅本地待同步。
+
 ## 2026-10-01 temporal-consistency loss screen（本地完成，待同步）
 
 在锁定 manifest、7/2 identity split、canonical48D/action7、128 宽度和 frozen combined-v4 上，只改变训练目标：weighted action MSE 加 `delta_weight` 倍相邻 action 增量 MSE，候选 `0/0.5/1.0`。环境、gate、禁止输入和执行器限制均未改；ESN seed `2026100140`、MLP seed `2026100141`。

@@ -38,3 +38,7 @@ outputs/esn_mlp_temporal_consistency_20261001_dw1/
 ```
 
 The campaign did not alter the scene, gate, actor inputs, or actuator limits. GitHub and `arm1@192.168.31.70` were unreachable during this round; these large outputs are local only and pending synchronization.
+
+## Seed replication of the promising ESN candidate
+
+The `delta_weight=1.0` candidate was preregistered with a second training seed `2026100142` (MLP seed `2026100143`) using the same manifest, split, scene, and evaluation seed. The ESN validation weighted action MSE was `1.2748e-4` and the MLP value was `3.3384e-5`. In the unchanged development scene, ESN stopped at `carry` with task/strict false, RMSE `257.986 mm`, peak torque `44.770 Nm`, peak speed `0.1423 m/s`, and external penetration `0.1774 mm`. MLP completed task but strict was false, with RMSE `58.208 mm`, peak torque `45.395 Nm`, peak speed `0.1178 m/s`, and external penetration `0.1317 mm`. Both rows completed 550000 physical substeps and passed action/physics audit (replay error 0; ESN reservoir replay error 0; MLP reservoir replay null). The replication therefore rejects a claim of robust ESN improvement from the first seed.

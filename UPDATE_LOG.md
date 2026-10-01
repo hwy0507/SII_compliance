@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-01 — temporal-consistency candidate seed replication completed locally
+
+- 对首轮 `delta_weight=1.0` ESN 候选预注册第二 seed `2026100142`（MLP `2026100143`），manifest、7/2 split、canonical48D/action7、combined-v4、gate、禁止输入和执行器限制均未变。
+- 复现 ESN 在 carry 停止，task/strict=false，RMSE/峰矩/峰速/穿透=`257.986 mm/44.770 Nm/0.1423 m/s/0.1774 mm`；MLP task=true、strict=false，指标=`58.208/45.395/0.1178/0.1317`。两条均完成550000子步，独立 action/储备池/物理审计通过。
+- 复现否定首轮 `delta_weight=1.0` ESN 的稳健泛化结论；formal `dt=5e-5` 仍锁定。复现原始证据保留在 `outputs/esn_mlp_temporal_consistency_20261001_rep_seed42/`，大产物仅本地待同步。
+
 ## 2026-10-01 — temporal-consistency ESN/MLP screen completed locally
 
 - 注册并完成纯 ESN/MLP action-delta loss 屏幕，候选 `delta_weight=0/0.5/1.0`。锁定 manifest SHA=`6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`、7/2 identity split、canonical48D/action7、128 宽度、combined-v4、原 gate、禁止输入和执行器限制；只改变训练目标中的相邻 action 增量损失。
