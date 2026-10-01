@@ -23,6 +23,9 @@
   `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_alpha_screen_20261001_v1/`；
   38 文件收据 `FILE_SHA256_REL.txt` SHA256=`45dcf2d710a8ea12cd0f6ba0277669da76deb6af889347e6ec1f9e01575fbffa`，
   远端逐项校验通过。
+- 最终提交 `afba210d2eb554b2e3fd7ca5c91363549cbacf2b` 的源码快照已归档到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/afba210d2eb554b2e3fd7ca5c91363549cbacf2b/repository.tar`；
+  本地/远端 SHA256=`61b0284f613a13677b5c969be7c5dfca965b491c591efd34806cfb055dc9cb54`。
 
 ## 2026-10-01 — v3 teacher-label correction and frozen ESN/MLP rerun
 
