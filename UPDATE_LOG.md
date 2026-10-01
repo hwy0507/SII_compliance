@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-01 — pre-registered paired ESN/MLP seed screen
+
+- 增加 `configs/esn_mlp_seed_screen_20261001.json`，预注册在锁定的 9 条 teacher manifest
+  上使用 seed `2026100106/07/08` 成对训练 weighted ESN 与 MLP；仍为 canonical48D/action7、
+  128 宽度、固定 7/2 身份留出和训练期估计负载权重。环境、gate、actor 输入和执行器限制不变。
+- 先固定配置并提交，再按同一 combined-v4 冻结命令运行闭环；所有 seed、checkpoint、trace
+  hash、失败原因和独立物理子步审计均保留。未运行前不解读结果。
+
 ## 2026-10-01 — pure ESN output-gain screen completed
 
 - 完成预注册的纯 ESN `output_gain=0.80/0.90/0.95` 屏幕；只改变 v4 checkpoint 输出增益，
