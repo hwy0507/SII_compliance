@@ -1,5 +1,35 @@
 # 更新日志
 
+## 2026-10-01 — memory/dropout diagnostics audited; budget conflict closed out
+
+- 开工实时核对main e0c963b、baseline699e317，未修改baseline。固定权重ESN逐次清空历史
+  回合完成：task/strict=false，停align，25.213mm/34.820Nm/.076344m/s；没有抓起物块，
+  不能把低指标解释成改善。动作与状态按实际reset语义独立重放，最大误差0。
+- 同teacher九轨迹、7/2split、seed152/153、160epochs/1120更新与128+128单元预算下，
+  完成p=0/.1整段128维特征dropout对照。ESN从lift到load_transfer但仍失败，
+  三指标48.971mm/43.600Nm/.116950m/s→44.666mm/47.458Nm/.094228m/s；
+  MLP两组task=true，p=.1为46.587mm/44.587Nm/.073259m/s；五条strict均false。
+- 五条55s/550000子步/dt1e-4独立审计通过：checkpoint/MJB绑定、有限值、物理指标重算、
+  动作/储备池精确重放。p=0权重及原始轨迹与原冻结参考逐字节一致。两dropout组教师身份、
+  原始数据hash、seed/epoch/归一化/储备池不变；相同dropout概率不等于相同表征语义。
+  全部使用冻结MuJoCo3.11.0/MJB5eaee4aa、真实cgroup3GiB/单线程，无新环境/gate。
+- 纠正预算处理：自动化创建05:48:54.070UTC，按创建+8小时保守推算13:48:54.070，
+  但前几轮误用唤醒日程16:20作派发授权。未找到独立起点证明延期，晚期诊断不得写作
+  原八小时内完成。识别冲突后没有新campaign；已启动末回合15:40:30结束并审计。
+  heartbeat已PAUSED、仿真为0；AGENTS新增预算依据规则，原配置/执行记录保持真实，
+  新增明确标为事后的BUDGET_RECONCILIATION.json。继续实验需新的明确预算。
+- 已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/temporal_memory_dropout_20261001_v1/evidence.tar.gz`，
+  232570508bytes，SHA256 `4ed503552bea79609578040aa4cff344a790bf75051313a183764b8e53820bf5`。
+  运行前源码分别为服务器共享根下
+  `source/078446e00aa5470ad1bb68caaa1932d35d802c00/repository.tar`（SHA
+  `50b0a55ad2a8d2264f88e23733679e3f43101bf685445fc1a3ab72fe1557c84c`）及
+  `source/f4422c9b56ef97d1889b774c8d843a1526d4905d/repository.tar`（SHA
+  `10e042986438cddf1df85fd1d5679c70d72a9dbb567177a755f4761e1abccc3d`）。
+- 完整报告 `code/mujoco_6d_vmc_benchmark/docs/ESN_MEMORY_DROPOUT_DIAGNOSTIC_20261001.md`，
+  联合进度/周报/小证据同步。完成了诊断和归档，未完成ESN任务/strict、跨条件泛化和formal；
+  不因阶段推进或回放MSE宣称ESN优势。
+
 ## 2026-10-01 — register paired sequence-consistent latent dropout
 
 - seed52固定权重清空记忆回合已完成，task/strict=false，停align，未证明清空历史能修复；
