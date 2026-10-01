@@ -32,6 +32,9 @@ def sha(path: Path) -> str:
 def audit(run: Path, kind: str) -> dict:
     prefix = run / f"{kind}_combined_v4"
     result = json.loads(prefix.with_suffix(".json").read_text())
+    memory_ablation = result["arguments"].get("memory_ablation", "none")
+    if memory_ablation not in ("none", "reset_each_observation"):
+        raise ValueError(f"Unknown memory ablation: {memory_ablation}")
     model = run / ("esn_temporal.npz" if kind == "esn" else "mlp_temporal.npz")
     training = json.loads((run / "TRAINING_COMPLETE.json").read_text())
     if sha(model) != training["checkpoint_sha256"][kind] or sha(model) != result["neural_logging"]["model_sha256"]:
@@ -51,7 +54,12 @@ def audit(run: Path, kind: str) -> dict:
             raise ValueError(f"{run.name}/{kind}: actor shape mismatch")
         actor = load_current(model)
         actor.reset()
-        replay = np.stack([actor.act(row) for row in obs]).astype(np.float64)
+        predictions = []
+        for row in obs:
+            if memory_ablation == "reset_each_observation":
+                actor.reset()
+            predictions.append(actor.act(row))
+        replay = np.stack(predictions).astype(np.float64)
         action_err = float(np.max(np.abs(replay - applied)))
         state_err = None
         if "reservoir_state" in trace and trace["reservoir_state"].shape[1] == 128:
@@ -59,6 +67,8 @@ def audit(run: Path, kind: str) -> dict:
             actor.reset()
             states = []
             for row in obs:
+                if memory_ablation == "reset_each_observation":
+                    actor.reset()
                 actor.act(row)
                 states.append(np.asarray(obj.state, dtype=np.float64).copy())
             state_err = float(np.max(np.abs(np.asarray(states) - trace["reservoir_state"])))
@@ -95,6 +105,7 @@ def audit(run: Path, kind: str) -> dict:
         "checkpoint_and_mjb_metadata_hash_match": True,
         "actor_state_and_physical_metrics_finite": True,
         "method": kind.upper(),
+        "memory_ablation": memory_ablation,
         "task_success": bool(result["task_success"]),
         "strict_success": bool(result["strict_success"]),
         "final_task_stage": result["final_task_stage"],

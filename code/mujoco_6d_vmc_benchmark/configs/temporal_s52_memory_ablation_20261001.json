@@ -1,0 +1,11 @@
+{
+  "purpose": "One causal closed-loop memory ablation of the unchanged seed52 ESN after the offline history sensitivity diagnosis",
+  "checkpoint_sha256": "fe63f76566099bf0bf0a8cf8e86255a9c1f084a2cf1943ddd36c592b599ad22f",
+  "model_sha256": "5eaee4aa1399c6e47c9fcb2c477f0b6392dcb13273ca67f878aca2d05f3239f9",
+  "mujoco": "3.11.0",
+  "intervention": "reset_each_observation; all weights unchanged; alpha=1 means no action smoothing history",
+  "reference": "outputs/temporal_frozen_runtime_s52_20261001_v1",
+  "budget": "one ESN simulation, no training; reuse completed same-source/runtime MLP reference",
+  "fixed": "canonical48D/action7; 128 reservoir/readout widths; combined-v4; original gates; actuator limits; seed2026091751;55s;dt1e-4",
+  "interpretation": "Diagnostic only; reset removes history and changes feature distribution; failure cannot prove recurrent memory inherently unhelpful"
+}

@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-01 — register seed52 closed-loop memory intervention
+
+- 开工实时读取main e0c963b与baseline699e317日志；本机/Spark同类评估均空闲。
+- 注册一条固定ESN checkpoint的reset_each_observation闭环因果对照，权重、actor输入、
+  冻结3.11.0/MJB、scene/gate/执行器限制、seed/55s/dt1e-4保持不变。复用刚完成的
+  同条件ESN/MLP作为参考，不重复启动MLP。配置temporal_s52_memory_ablation_20261001.json。
+- 守护启动器增加显式方法/记忆消融选项；独立审计按真实记录的记忆语义重放动作和状态。
+  本条先提交再运行；这是诊断，不是部署时混合控制、已改进学习或任务成功结论。
+
 ## 2026-10-01 — frozen-runtime seed52 pair completed and audited
 
 - 本轮开工核对main d29e504、baseline699e317；运行前注册提交5572a73后，本机服务

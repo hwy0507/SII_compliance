@@ -62,7 +62,7 @@ def runtime():
                 cgroup=cgroup, memory_max_bytes=int(limit), threads=1)
 
 
-def child(run, method):
+def child(run, method, memory_ablation="none"):
     sys.path.insert(0, str(ROOT / "scripts"))
     import mujoco
     import validate_office_apparatus_v5_20260917 as evaluator
@@ -75,6 +75,7 @@ def child(run, method):
     arguments = dict(original["arguments"])
     arguments["output"] = run / f"{method}_combined_v4"
     arguments["esn_model"] = run / f"{method}_temporal.npz"
+    arguments["memory_ablation"] = memory_ablation
     for name, digest in original["source_sha256"].items():
         if sha(ROOT / "scripts" / name) != digest:
             raise RuntimeError(f"Evaluator source drift: {name}")
@@ -124,10 +125,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--method", choices=("esn", "mlp"))
+    parser.add_argument("--methods", nargs="+", choices=("esn", "mlp"), default=["esn", "mlp"])
+    parser.add_argument("--memory-ablation", choices=("none", "reset_each_observation"), default="none")
     args = parser.parse_args()
     run = args.root.resolve()
     if args.method:
-        child(run, args.method)
+        child(run, args.method, args.memory_ablation)
         return
     runtime_info = runtime()
     run.mkdir(parents=True, exist_ok=True)
@@ -143,11 +146,12 @@ def main():
         state = dict(status="running", started_utc=now(), deadline_utc=DEADLINE.isoformat(),
                      runtime=runtime_info, original=str(ORIGINAL), rows=[])
         write(state_path, state)
-        for method in ("esn", "mlp"):
+        for method in args.methods:
             if datetime.now(timezone.utc) >= DEADLINE:
                 state["status"] = "deadline_no_new_dispatch"
                 break
-            command = [sys.executable, str(Path(__file__).resolve()), "--root", str(run), "--method", method]
+            command = [sys.executable, str(Path(__file__).resolve()), "--root", str(run), "--method", method,
+                       "--memory-ablation", args.memory_ablation]
             with (run / f"{method}.log").open("x") as log:
                 result = subprocess.run(command, cwd=REPO, stdout=log, stderr=subprocess.STDOUT)
             state["rows"].append(dict(method=method, command=command, returncode=result.returncode))
