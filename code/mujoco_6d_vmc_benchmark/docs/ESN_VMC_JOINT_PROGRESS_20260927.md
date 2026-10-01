@@ -1,5 +1,29 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 temporal-consistency narrow follow-up（本地完成，待同步）
+
+在上一轮 `delta_weight=0/0.5/1.0` 屏幕后，预注册窄区间
+`delta_weight=0.25/0.75`，只改变加权相邻 action 增量损失。锁定 teacher
+manifest SHA256=`6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`、
+7/2 identity split、canonical48D/action7、ESN/MLP 宽度128、combined-v4、原
+gate、纯本体 actor 输入和执行器限制。ESN seed=`2026100150`，MLP
+seed=`2026100151`；四条都是开发 `dt=1e-4`、55 s、550000 物理子步。
+
+| delta | 方法 | task | strict | 最终阶段 | RMSE mm | 峰矩 Nm | 峰速 m/s | 穿透 mm | 球反弹 | 推杆最长连续接触 s |
+|---:|---|:---:|:---:|---|---:|---:|---:|---:|:---:|---:|
+| 0.25 | ESN | 否 | 否 | retreat | 52.502 | 45.556 | 0.117007 | 0.146245 | 是 | 0.7673 |
+| 0.25 | MLP | 是 | 否 | retreat | 44.193 | 44.268 | 0.093121 | 0.140633 | 是 | 0.1243 |
+| 0.75 | ESN | 否 | 否 | carry | 74.311 | 43.161 | 0.108427 | 0.136028 | 是 | 0.0025 |
+| 0.75 | MLP | 是 | 否 | retreat | 45.095 | 45.203 | 0.074644 | 0.099006 | 否 | 0.0123 |
+
+`delta=0.25` ESN 到达 retreat 且推杆连续接触最长，但没有完成放置；两条 MLP
+完成 task，仍因柱子接触覆盖不足或球反弹失败而 strict=false。独立审计
+`outputs/esn_mlp_temporal_consistency_narrow_20261001/INDEPENDENT_AUDIT.json`
+重放 action/ESN reservoir 状态误差均为0，并从物理子步重算三项指标。没有
+strict 候选，formal `dt=5e-5` 继续锁定；结果不支持 ESN 相对 MLP 的优势。
+专题报告见 [`ESN_MLP_TEMPORAL_CONSISTENCY_NARROW_20261001.md`](ESN_MLP_TEMPORAL_CONSISTENCY_NARROW_20261001.md)。
+本轮大产物仅本地，arm1 与 GitHub 网络仍不可达。
+
 ## 2026-10-01 temporal-consistency seed replication（本地完成，待同步）
 
 对首轮 `delta_weight=1.0` 候选使用第二训练 seed `2026100142`（MLP `2026100143`）复现，其他协议完全不变。ESN 在 carry 停止，task/strict=false，RMSE `257.986 mm`、峰矩 `44.770 Nm`、峰速 `0.1423 m/s`、穿透 `0.1774 mm`；MLP task=true、strict=false。两条均为开发 `dt=1e-4`、55 s、550000子步，独立 action/储备池/物理审计通过。该复现否定首轮单 seed 的稳健 ESN 改进，formal `dt=5e-5` 继续锁定；证据在 `outputs/esn_mlp_temporal_consistency_20261001_rep_seed42/`，仅本地待同步。

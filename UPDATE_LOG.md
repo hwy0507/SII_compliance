@@ -1,5 +1,26 @@
 # 更新日志
 
+## 2026-10-01 — temporal-consistency narrow follow-up completed locally
+
+- 开工核对缓存 `origin/main=ba84ed8a39ed743f603aa5d60e901bdf87090e1d`、
+  `origin/baseline=4dad929b6550b167943becd271836f0c74a21a38`；本轮
+  `git ls-remote` 因网络不可达失败，未把缓存 SHA 当作最新远端，也未修改 baseline。
+- 预注册配置 `code/mujoco_6d_vmc_benchmark/configs/esn_mlp_temporal_consistency_narrow_20261001.json`
+  （SHA256 `4e6fd694756b73fd964f9f1fe1ab6e71eee98f4da165c06f5f79d48851eac886`），
+  固定 manifest SHA=`6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`、
+  7/2 split、canonical48D/action7、宽度128、combined-v4、原 gate、禁止输入和执行器限制；
+  只测试 temporal delta loss `0.25/0.75`。
+- 四条开发闭环均 55 s/550000 子步。ESN task/strict=`0/2`,`0/2`，MLP
+  task/strict=`2/2`,`0/2`。`delta=0.25` ESN 到 retreat、RMSE `52.502 mm`、峰矩
+  `45.556 Nm`、峰速 `0.117007 m/s`、穿透 `0.146245 mm`、推杆最长接触 `0.7673 s`，
+  但未完成 placement；`delta=0.75` ESN 停 carry。MLP 两条均 placement 完成，一条缺
+  required contact coverage，另一条球反弹失败，均 strict=false。
+- 新增独立审计脚本 `tools/audit_temporal_narrow_screen_20261001.py`（SHA256
+  `c9639aecdcb26cce9bcfa394e471a1e2c953224456b77ab44dfec5c582e82c3f`），四条 action replay
+  最大误差为0，ESN reservoir replay 最大误差为0，物理子步指标独立重算通过。新增专题报告
+  `docs/ESN_MLP_TEMPORAL_CONSISTENCY_NARROW_20261001.md`；大产物和 raw rollout 仅本地，
+  arm1/GitHub 网络仍不可达，待恢复后同步。formal `dt=5e-5` 继续锁定。
+
 ## 2026-10-01 — temporal-consistency candidate seed replication completed locally
 
 - 对首轮 `delta_weight=1.0` ESN 候选预注册第二 seed `2026100142`（MLP `2026100143`），manifest、7/2 split、canonical48D/action7、combined-v4、gate、禁止输入和执行器限制均未变。

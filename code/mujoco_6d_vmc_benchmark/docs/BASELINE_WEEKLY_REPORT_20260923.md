@@ -1,5 +1,17 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-01 temporal-consistency narrow follow-up
+
+在同一锁定 teacher manifest、combined-v4、原 gate 和 canonical48D/action7
+协议下，预注册 `delta_weight=0.25/0.75` 的相邻 action 增量损失窄屏。四条
+开发回合均完成 55 s/550000 子步：ESN task 为 `0/2`，MLP task 为 `2/2`，但
+strict 均为 `0/2`。`delta=0.25` ESN 的 RMSE/峰矩/峰速/穿透为
+`52.502 mm/45.556 Nm/0.117007 m/s/0.146245 mm`，推杆最长连续接触
+`0.7673 s`，仍未放置；`delta=0.75` ESN 停在 carry。两条 MLP 均完成放置，
+但一条缺柱子接触覆盖，另一条球反弹失败。独立 action/储备池/物理子步审计
+通过，正式 `dt=5e-5` 仍未解锁；结果不支持 ESN 优势。报告见
+`ESN_MLP_TEMPORAL_CONSISTENCY_NARROW_20261001.md`，原始回合仅本地待同步。
+
 ### 2026-10-01 temporal-consistency candidate replication
 
 对首轮 `delta_weight=1.0` ESN 候选用第二 seed 复现后，ESN 仅到 carry、RMSE 257.986 mm、task/strict 均失败；MLP 完成 task 但 strict 失败。两条独立物理子步审计通过，说明首轮 ESN 到 load_transfer 的结果不具备稳健性；没有 formal `dt=5e-5`。
