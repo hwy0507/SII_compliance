@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-01 — pure ESN output-gain screen completed
+
+- 完成预注册的纯 ESN `output_gain=0.80/0.90/0.95` 屏幕；只改变 v4 checkpoint 输出增益，
+  不改 office-v5、gate、canonical48D actor 输入、执行器限制或 MLP。三条回合均为
+  seed `2026091751`、55 s、550000 子步、开发 `dt=1e-4`。
+- 结果：0.80 停在 carry，task/strict=false，RMSE/峰矩/峰速 `520.286 mm/41.950 Nm/
+  0.1879 m/s`，穿透 `0.1688 mm`；0.90 停在 lift，`407.785/46.242/0.2134`，
+  `0.1350 mm`；0.95 停在 lift，`454.745/44.605/0.2160`，`0.1243 mm`。三条均未完成放置，
+  失败回合全部保留，没有候选解锁 formal `dt=5e-5`。
+- 独立 audit `outputs/esn_gain_screen_20261001_v1/gain_{080,090,095}_audit.json` 全部通过：
+  action replay 与储备池状态 replay 最大误差为 0，物理子步为 550000。配置 SHA256 为
+  `1d0e8cb73db0a8effa142a3fcdbc2dd026edf70eaa4517231b72815895ce5c90`，基准 checkpoint
+  SHA256 为 `bb0bd4df0f9467932c15999853f67fe662aaf5f34c06b79855d4d1ab9a4cf1b0`。
+- 结果和审计仅保留在本地 `outputs/esn_gain_screen_20261001_v1/`；当前 SSH 被沙箱拒绝，
+  尚未写入 arm1 共享目录，也不声称已完成 GitHub push。预注册源码提交为本地 `9e9580a`。
+- 已完成：三组闭环、三项物理指标重算、动作/状态重放审计和文档更新。未完成：服务器归档、
+  formal `dt=5e-5`（门槛未满足）及 ESN 跨条件成功。
+
 ## 2026-10-01 — pre-registered ESN output-gain screen
 
 - 注册第二个纯 ESN 算法屏幕，只改变 v4 checkpoint 的 `output_gain=0.80/0.90/0.95`；不

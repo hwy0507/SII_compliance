@@ -1,5 +1,36 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 纯 ESN output-gain 屏幕
+
+在 alpha 屏幕之后，预注册只改变 v4 ESN checkpoint 的输出增益
+`output_gain=0.80/0.90/0.95`，不组合 alpha，也没有修改 office-v5、gate、
+canonical48D 输入、执行器限制或 MLP。计划配置为
+`configs/esn_gain_screen_20261001.json`，配置 SHA256 为
+`1d0e8cb73db0a8effa142a3fcdbc2dd026edf70eaa4517231b72815895ce5c90`；基准
+checkpoint `outputs/vmc_teacher_esn_mlp_weighted_20261001_v4/esn_weighted.npz`
+SHA256 为 `bb0bd4df0f9467932c15999853f67fe662aaf5f34c06b79855d4d1ab9a4cf1b0`。
+预注册源码提交为本地 `9e9580a`，因本轮网络限制尚未推送 GitHub。
+
+三条开发回合都使用相同 combined-thick-corner-pillar-v4、seed `2026091751`、
+55 s、`dt=1e-4` 和 550000 个物理子步：
+
+| output_gain | task | strict | 最终阶段 | RMSE mm | 峰值力矩 Nm | 峰值速度 m/s | 穿透 mm | 推杆最长接触 s |
+|---:|---:|---:|---|---:|---:|---:|---:|---:|
+| 0.80 | 否 | 否 | carry | 520.286 | 41.950 | 0.1879 | 0.1688 | 2.3685 |
+| 0.90 | 否 | 否 | lift | 407.785 | 46.242 | 0.2134 | 0.1350 | 0.2759 |
+| 0.95 | 否 | 否 | lift | 454.745 | 44.605 | 0.2160 | 0.1243 | 0.2722 |
+
+三条均未完成放置，不能解锁 formal `dt=5e-5`。独立审计
+`outputs/esn_gain_screen_20261001_v1/gain_{080,090,095}_audit.json` 均通过：
+动作重放最大误差为 0、储备池状态重放最大误差为 0、物理时长为 55.000000000000014 s、
+物理子步为 550000。失败回合、原始 rollout、MJB、checkpoint 和日志均保留在
+`outputs/esn_gain_screen_20261001_v1/`。本机产物尚未同步到 arm1；SSH 被当前沙箱拒绝，
+不能写成服务器已归档或声称远端 receipt 存在。
+
+这组屏幕没有找到成功候选；gain=0.80 的推杆连续接触最长，但 RMSE 较大且最终停在
+carry，gain=0.90/0.95 在 lift 停滞。结论只支持“固定 teacher bank 下的输出增益屏幕未解决
+ESN 闭环失稳”，不支持 ESN 优于 MLP，也不支持真实环境部署结论。
+
 ## 2026-10-01 纯 ESN action-readout alpha 屏幕
 
 为测试闭环振荡/过冲是否来自 ESN action 更新过快，预注册只改 ESN checkpoint 内部的

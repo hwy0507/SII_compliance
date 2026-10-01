@@ -13,6 +13,19 @@ comparison reports for the independent audits.
 The 38-file raw archive is stored at
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_alpha_screen_20261001_v1/`.
 
+### 2026-10-01 pure ESN output-gain screen
+
+A second pre-registered pure ESN screen changed only the v4 checkpoint output gain
+(`0.80/0.90/0.95`) on the unchanged combined-v4 office scene. All three development
+rows (`dt=1e-4`, 55 s, 550000 physical substeps) failed task and strict: gain 0.80
+stopped in carry (`520.286 mm` RMSE, `41.950 Nm`, `0.1879 m/s`, `0.1688 mm`
+penetration), gain 0.90 stopped in lift (`407.785 mm`, `46.242 Nm`, `0.2134 m/s`,
+`0.1350 mm`), and gain 0.95 stopped in lift (`454.745 mm`, `44.605 Nm`, `0.2160 m/s`,
+`0.1243 mm`). Independent action and reservoir replay errors were zero for every row;
+no formal `dt=5e-5` rerun is unlocked. Raw local evidence is under
+`code/mujoco_6d_vmc_benchmark/outputs/esn_gain_screen_20261001_v1/`; the current
+sandbox rejected SSH, so this new screen is not yet claimed as an arm1 archive.
+
 ### 2026-10-01 teacher-label correction and v3 student rerun
 
 The VMC-teacher student loader now trains against the audited

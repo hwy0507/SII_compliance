@@ -1,5 +1,33 @@
 # VMC teacher → ESN/MLP weighted-readout comparison (2026-10-01)
 
+## Pure ESN output-gain screen
+
+The pre-registered gain screen changed only the v4 pure ESN checkpoint's output
+gain (`0.80`, `0.90`, `0.95`). The office-v5 combined-v4 world, original gates,
+canonical48D actor contract, actuator limits, MLP and evaluation command were
+unchanged. The plan is `configs/esn_gain_screen_20261001.json` (SHA256
+`1d0e8cb73db0a8effa142a3fcdbc2dd026edf70eaa4517231b72815895ce5c90`) and the
+base checkpoint SHA256 is
+`bb0bd4df0f9467932c15999853f67fe662aaf5f34c06b79855d4d1ab9a4cf1b0`.
+
+All rows are development `dt=1e-4`, 55 s and 550000 physical substeps with
+seed `2026091751`:
+
+| output gain | task | strict | final stage | RMSE (mm) | peak torque (Nm) | peak speed (m/s) | penetration (mm) | rod contact (s) |
+|---:|---:|---:|---|---:|---:|---:|---:|---:|
+| 0.80 | no | no | carry | 520.286 | 41.950 | 0.1879 | 0.1688 | 2.3685 |
+| 0.90 | no | no | lift | 407.785 | 46.242 | 0.2134 | 0.1350 | 0.2759 |
+| 0.95 | no | no | lift | 454.745 | 44.605 | 0.2160 | 0.1243 | 0.2722 |
+
+The independent audits are
+`outputs/esn_gain_screen_20261001_v1/gain_{080,090,095}_audit.json`. Each passed
+action replay and reservoir-state replay with maximum absolute error 0, and each
+recomputed 550000 physical substeps over 55.000000000000014 s. None completed
+placement, so no formal `dt=5e-5` rerun is unlocked. The raw rollouts, checkpoints,
+MJB and logs remain under `outputs/esn_gain_screen_20261001_v1/`; they are local
+only because the current sandbox rejected SSH to arm1. These results therefore do
+not support an ESN advantage claim or a hardware conclusion.
+
 ## Pure ESN alpha screen
 
 The pre-registered alpha screen changed only the ESN's internal action-readout

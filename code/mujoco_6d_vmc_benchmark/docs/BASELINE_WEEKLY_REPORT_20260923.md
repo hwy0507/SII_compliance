@@ -1,5 +1,18 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+## 2026-10-01 pure ESN output-gain screen
+
+固定 v4 ESN checkpoint 仅筛选 `output_gain=0.80/0.90/0.95`，环境、gate、
+canonical48D actor 输入、执行器限制和 MLP 均未改。三条 combined-v4 开发回合均为
+55 s/550000 子步、`dt=1e-4`，结果为：0.80 停在 carry，RMSE/峰矩/峰速
+`520.286/41.950/0.1879`、穿透 `0.1688 mm`；0.90 停在 lift，
+`407.785/46.242/0.2134`、穿透 `0.1350 mm`；0.95 停在 lift，
+`454.745/44.605/0.2160`、穿透 `0.1243 mm`。task/strict 全部 false，均未完成放置。
+独立 action/储备池重放最大误差均为 0，550000 子步审计通过，因此没有 formal `dt=5e-5`
+重跑。失败回合和 checkpoint 保留在本机
+`code/mujoco_6d_vmc_benchmark/outputs/esn_gain_screen_20261001_v1/`；由于本轮
+SSH 被沙箱拒绝，尚未声称已归档 arm1。
+
 ## 2026-10-01 ESN action-readout alpha 屏幕
 
 在不改环境、gate、actor 输入、执行器限制或 MLP 的前提下，预注册测试 ESN 输出平滑
