@@ -1,5 +1,17 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 低输入尺度 ESN output-gain 屏幕
+
+在同一 `input_scale=0.25` checkpoint 上预注册只改输出增益 `0.80/0.90/0.95`，其余
+teacher manifest、7/2 split、canonical48D/action7、combined-v4、gate、禁止输入和执行器
+限制均未变。三条开发回合均为 55 s/550000 子步、`dt=1e-4`，结果为：`.80` 停 lift，
+RMSE/峰矩/峰速/穿透 `60.590/37.618/.1031/.1257`；`.90` 停 carry，
+`144.782/37.867/.1395/.1705`；`.95` 停 lift，`73.919/37.051/.1019/.1150`。三条
+task/strict 全部否，柱子覆盖均失败。独立 action/ESN reservoir replay 最大误差为0，
+物理子步均为550000；没有候选解锁 formal `dt=5e-5`。完整结果见
+[`ESN_LOW_SCALE_GAIN_SCREEN_20261001.md`](ESN_LOW_SCALE_GAIN_SCREEN_20261001.md)，原始回合
+保留于 `outputs/esn_low_scale_gain_screen_20261001_v1/`，服务器归档待网络恢复。
+
 ## 2026-10-01 低输入尺度 ESN alpha 屏幕
 
 在先前 `input_scale=0.25` 单 seed task-success 候选上预注册只改 action-readout

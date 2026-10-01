@@ -1,5 +1,22 @@
 # 更新日志
 
+## 2026-10-01 — low-input-scale pure ESN output-gain screen completed locally
+
+- 在已登记的 `input_scale=0.25` ESN checkpoint 上只改变 `output_gain=0.80/0.90/0.95`；
+  base SHA256=`99e0a169025e3ac9643b2021958a92c668172b5745725f28050d530f2a585651`，配置
+  `configs/esn_low_scale_gain_screen_20261001.json` SHA256=
+  `3e7a79e32cf17ebbd7fc6a81ae9703d27f5c09ed8a69746ce82a5c5fb34fde67`。
+- 固定 teacher manifest、7/2 split、canonical48D/action7、combined-v4、原 gate、禁止
+  输入与执行器限制；三条均为开发 `dt=1e-4`、55 s/550000 子步，task/strict=`0/3`、`0/3`。
+  `.80/.90/.95` 最终 lift/carry/lift，指标分别为
+  `60.590/37.618/.1031/.1257`、`144.782/37.867/.1395/.1705`、
+  `73.919/37.051/.1019/.1150`（RMSE mm / 峰矩 Nm / 峰速 m/s / 外部穿透 mm）；柱子
+  覆盖全部失败。
+- 三条独立审计均通过：action/reservoir replay 最大误差为0，物理子步均550000；失败 raw
+  rollout、MJB、checkpoint 和审计保留在 `outputs/esn_low_scale_gain_screen_20261001_v1/`。
+  结果只说明增益单因素没有恢复严格任务，不支持 ESN 泛化或相对 MLP 优势。
+- formal `dt=5e-5` 继续锁定；arm1 与 GitHub 网络不可达，产物仍仅本地待同步。
+
 ## 2026-10-01 — low-input-scale pure ESN alpha screen completed locally
 
 - 开工读取了缓存 main `ba84ed8a39ed743f603aa5d60e901bdf87090e1d` 与 baseline

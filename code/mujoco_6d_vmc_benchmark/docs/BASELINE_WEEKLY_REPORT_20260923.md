@@ -1,5 +1,15 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-01 低输入尺度 ESN output-gain 屏幕
+
+在同一低输入尺度 ESN checkpoint 上只改变输出增益 `.80/.90/.95`。冻结环境、gate、纯
+本体输入和执行器限制不变；三条都是开发 `dt=1e-4`、55 s/550000 子步，task/strict 均为
+否：`.80` lift（`60.590/37.618/.1031/.1257`），`.90` carry
+（`144.782/37.867/.1395/.1705`），`.95` lift（`73.919/37.051/.1019/.1150`），
+顺序为 RMSE mm / 峰矩 Nm / 峰速 m/s / 外部穿透 mm。柱子覆盖均失败，独立 replay 与物理
+子步审计通过；没有 formal `dt=5e-5`。详见
+[`ESN_LOW_SCALE_GAIN_SCREEN_20261001.md`](ESN_LOW_SCALE_GAIN_SCREEN_20261001.md)。
+
 ### 2026-10-01 低输入尺度 ESN alpha 屏幕
 
 在先前唯一一次 `input_scale=0.25` ESN task-success checkpoint 上，只改变 action-readout

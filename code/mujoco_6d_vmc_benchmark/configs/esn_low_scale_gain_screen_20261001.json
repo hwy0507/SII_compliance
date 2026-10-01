@@ -1,0 +1,11 @@
+{
+  "purpose": "pre-registered pure ESN output-gain screen on the replicated low-input-scale checkpoint",
+  "base_checkpoint": "outputs/esn_mlp_input_screen_20261001_low/esn_input.npz",
+  "base_checkpoint_sha256": "99e0a169025e3ac9643b2021958a92c668172b5745725f28050d530f2a585651",
+  "gain_values": [0.80, 0.90, 0.95],
+  "actor_contract": "canonical48D/action7; pure proprioception",
+  "forbidden_inputs": ["contact truth", "object/ball state", "event time", "task stage", "visual/range"],
+  "unchanged": ["office-v5 combined-thick-corner-pillar-v4", "original gates", "actuator amplitude/rate limits", "55 s", "dt 1e-4 development", "550000 physical substeps"],
+  "selection": "report all gain values; no post-hoc gate or failure filtering",
+  "replication_context": "input_scale=0.25; seed=2026100115; fixed 7/2 identity split; locked teacher manifest"
+}
