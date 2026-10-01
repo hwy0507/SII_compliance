@@ -1,5 +1,15 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 纯 ESN reservoir leak 时间尺度屏幕（本地，待同步）
+
+在固定 teacher manifest、canonical48D/action7、128 单元、7/2 identity split、估计负载训练权重和 combined-thick-corner-pillar-v4 闭环上，预注册只改变 ESN reservoir 的三组 leak 时间常数：fast `0.04/0.16/0.64 s`、baseline `0.08/0.40/1.60 s`、slow `0.16/0.80/3.20 s`。每组都训练同宽度 MLP 对照；环境、原 gate、actor 输入、执行器限制、seed `2026091751`、55 s、开发 `dt=1e-4` 和 550000 物理子步均未变。
+
+结果为：fast ESN 在 lift 停止（task/strict=false，RMSE `182.592 mm`、峰矩 `55.548 Nm`、峰速 `0.1311 m/s`、外部穿透 `0.1669 mm`）；baseline ESN 在 carry 停止（`86.080 mm / 40.585 Nm / 0.0862 m/s / 0.1540 mm`）；slow ESN 在 lift 发散（`717.503 mm / 58.190 Nm / 0.5007 m/s / 0.1732 mm`）。fast/baseline MLP 完成 task 但 strict=false，slow MLP 在 load_transfer 停止；不能把 MLP task 完成写成 strict 通过。六条均为开发结果，没有候选解锁 formal `dt=5e-5`。
+
+独立审计 `outputs/esn_mlp_tau_screen_20261001/INDEPENDENT_AUDIT.json` 通过：六条都是 55 s/550000 子步，动作重放最大误差均为 0，ESN 储备池状态重放最大误差均为 0，RMSE/峰矩/峰速由物理子步文件复算一致。训练/闭环脚本、checkpoint、execution metadata、失败回合和 70 文件收据保留在 `outputs/esn_mlp_tau_screen_20261001_{fast,baseline,slow}/`，汇总收据 SHA256=`361116939aee2ef4b6bedbcba828b215a516de3158434c00161e7e9c4694eea0`。详见 [`ESN_TAU_SCREEN_20261001.md`](ESN_TAU_SCREEN_20261001.md)。
+
+本轮开工已核对 main 缓存 SHA `ba84ed8a39ed743f603aa5d60e901bdf87090e1d` 和 baseline 缓存 SHA `4dad929b6550b167943becd271836f0c74a21a38`；GitHub/arm1 在本轮网络限制下不可达，故本轮产物目前仅本地、待同步，未声称服务器归档。失败原因保留为 ESN 分别在 lift/carry 阶段失去任务进展；未调整 gate、环境或输入字段。
+
 ## 2026-10-01 纯 ESN output-gain 屏幕
 
 在 alpha 屏幕之后，预注册只改变 v4 ESN checkpoint 的输出增益

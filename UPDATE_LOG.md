@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-01 — pure ESN reservoir leak-time screen completed locally
+
+- 开工核对 main 缓存 `ba84ed8a39ed743f603aa5d60e901bdf87090e1d` 与 baseline 缓存 `4dad929b6550b167943becd271836f0c74a21a38`；再次 fetch 和 GitHub/arm1 SSH 均因网络限制失败，未把缓存当作最新远端，未修改 baseline。
+- 预注册 `configs/esn_tau_screen_20261001.json`（SHA256=`cd21c44d4b0aa494f464d9aa450c9ff70b6d002361f924e19ae5c7a378d9a9d4`）并新增 `tools/train_esn_mlp_tau_screen_20261001.py`（SHA256=`510fd962ebcf96051f064e5a51bab6fa14a16af5afa9650babd52dd71be4fa09`）。只改变 128 单元 ESN 的 reservoir leak 时间尺度，保持 teacher manifest SHA=`6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`、canonical48D/action7、7/2 identity split、估计负载训练权重、环境/gate/actor 输入/执行器限制不变；每个 profile 都训练同宽度 MLP 对照。
+- fast/baseline/slow 三组均已完成 55 s、`dt=1e-4`、550000 子步闭环。ESN 依次在 lift/carry/lift 停止，task/strict 均为 false；MLP fast/baseline 为 task=true、strict=false，slow 为 task/strict=false。ESN 最佳 baseline 行的 RMSE/峰矩/峰速/穿透为 `86.080 mm / 40.585 Nm / 0.0862 m/s / 0.1540 mm`，但未完成 placement。
+- 独立审计 `outputs/esn_mlp_tau_screen_20261001/INDEPENDENT_AUDIT.json` 通过；六条物理子步均为 550000，动作回放最大误差为 0，ESN 储备池回放最大误差为 0。汇总 70 文件收据 SHA=`361116939aee2ef4b6bedbcba828b215a516de3158434c00161e7e9c4694eea0`。完整结果和失败原因见 `docs/ESN_TAU_SCREEN_20261001.md` 与 `docs/ESN_VMC_JOINT_PROGRESS_20260927.md`。
+- 未完成：strict 泛化成功、formal `dt=5e-5`、arm1 归档与远端 push。由于服务器不可达，本轮大产物仍标记为“本地、待同步”，没有声称服务器已核验。
+
 ## 2026-10-01 — paired ESN/MLP seed screen completed
 
 - 完成预注册配置 `configs/esn_mlp_seed_screen_20261001.json` 的 seed

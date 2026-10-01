@@ -801,3 +801,6 @@ RMSE/peak-torque/peak-speed, ball rebound, only `0.0023 s` lift-corner contact,
 no pillar contact, and `0.0361 s` longest continuous rod contact. Best lift
 position error was `14.228 mm`; replay and substep audit passed. This remains a
 negative development screen, not a formal result.
+### 2026-10-01 ESN reservoir leak-time screen
+
+本轮按固定 teacher manifest 和冻结 combined-v4 开发条件完成纯 ESN 时间尺度屏幕；唯一算法变量是 128 单元储备池 leak 时间常数，另配同宽度 MLP 对照。fast/baseline/slow ESN 均未过 task/strict（最终分别 lift/carry/lift），而 fast/baseline MLP 完成 task、strict 均失败，slow MLP 也未完成 task。所有回合均是 `dt=1e-4` 开发结果；动作与储备池 replay、550000 物理子步和三项指标独立审计通过。没有候选解锁 formal `dt=5e-5`，不能将本轮写成 ESN 泛化或 MLP/ESN 优势。产物目前仅本地，待 arm1 与 GitHub 网络恢复后同步。
