@@ -1,5 +1,24 @@
 # 更新日志
 
+## 2026-10-01 — paired ESN/MLP seed screen completed
+
+- 完成预注册配置 `configs/esn_mlp_seed_screen_20261001.json` 的 seed
+  `2026100106/07/08` 成对训练。三组均使用 manifest SHA256
+  `6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`、固定 7/2
+  identity split、估计负载训练权重、canonical48D/action7 和 128 宽度；环境、gate、
+  actor 输入与执行器限制保持不变。
+- 冻结 combined-v4 开发闭环均为 55 s、550000 子步、`dt=1e-4`。MLP 三组 task=true、
+  strict=false；ESN 三组 task=false，seed106/107/108 分别停在 lift/load_transfer/lift。
+  ESN/MLP 的 `RMSE mm / 峰矩 Nm / 峰速 m/s / 穿透 mm` 为：
+  `874.772/55.664/0.1639/0.1089` vs `52.402/44.708/0.0730/0.1772`；
+  `187.222/47.666/0.1601/0.1612` vs `33.860/44.542/0.0707/0.1530`；
+  `37.743/38.843/0.0721/0.1714` vs `43.083/45.083/0.0724/0.1843`。
+- 六条学生回合独立 action/状态/物理子步审计通过，ESN action/储备池 replay 与 MLP action
+  replay 最大误差均为0；没有 strict 通过，未解锁 formal `dt=5e-5`。seed108 的 ESN
+  数值指标接近成功但 placement gate 未完成，不能写成 task success或ESN优势。
+- 训练峰值 RSS 约 832 MiB；初次错误的 `ulimit -v` 导致 PyTorch 库映射失败，相关失败日志
+  保留并不计为实验回合。完整 output、checkpoint、raw rollout 和 audit 待本轮归档。
+
 ## 2026-10-01 — pre-registered paired ESN/MLP seed screen
 
 - 增加 `configs/esn_mlp_seed_screen_20261001.json`，预注册在锁定的 9 条 teacher manifest

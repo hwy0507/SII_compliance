@@ -36,6 +36,36 @@ SHA256 为 `1a79dd2583859e38ce785d2cd96bfb5efd1b0a2af436c4565224123c92277015`。
 carry，gain=0.90/0.95 在 lift 停滞。结论只支持“固定 teacher bank 下的输出增益屏幕未解决
 ESN 闭环失稳”，不支持 ESN 优于 MLP，也不支持真实环境部署结论。
 
+## 2026-10-01 paired ESN/MLP seed 屏幕
+
+为区分 ESN 随机初始化方差，按预注册配置
+`configs/esn_mlp_seed_screen_20261001.json` 在同一 manifest（SHA256
+`6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`）上成对训练
+seed `2026100106/07/08`。每组均为固定 7 条训练身份、2 条留出身份、估计负载训练权重、
+canonical48D/action7、128 宽度；环境、gate、actor 输入和执行器限制没有改变。
+
+训练验证加权 MSE 与闭环结果如下。闭环均为 combined-v4、55 s、550000 子步、开发
+`dt=1e-4`，独立审计均通过 action replay、ESN 储备池 replay 和三项物理子步复算：
+
+| seed | 方法 | val weighted MSE | task | strict | 最终阶段 | RMSE mm | 峰矩 Nm | 峰速 m/s | 穿透 mm |
+|---:|---|---:|---:|---:|---|---:|---:|---:|---:|
+| 106 | ESN | 5.250e-5 | 否 | 否 | lift | 874.772 | 55.664 | 0.1639 | 0.1089 |
+| 106 | MLP | 1.907e-5 | 是 | 否 | retreat | 52.402 | 44.708 | 0.0730 | 0.1772 |
+| 107 | ESN | 5.648e-5 | 否 | 否 | load_transfer | 187.222 | 47.666 | 0.1601 | 0.1612 |
+| 107 | MLP | 1.693e-5 | 是 | 否 | retreat | 33.860 | 44.542 | 0.0707 | 0.1530 |
+| 108 | ESN | 5.954e-5 | 否 | 否 | lift | 37.743 | 38.843 | 0.0721 | 0.1714 |
+| 108 | MLP | 1.759e-5 | 是 | 否 | retreat | 43.083 | 45.083 | 0.0724 | 0.1843 |
+
+ESN checkpoint SHA256 依次为 `08f223201de36352115e8b944028d3fc875e33b4a2135f9e3a9e8e3f07df3083`、
+`7a72a25743087bc0119cb0545a370119d251e624a19aeb15f8f0555844d0503a` 和
+`f7d4e0cf5beabddad9a440da9585399f54d23388e1b460f3c6d37fd41168d4b7`；对应 MLP 为
+`b7579559269ba234d99754ef58f59faf99240e5c040461697b64439088a6c227`、
+`783f64be585e7fd5ed0afb72ac68d5df85c59d625b1263e3bfcfc5eb93f0a950` 和
+`bee7d284edee1064fe5de05bced2747c4c32610c97b00745fddef4fab5e9134a`。seed=108 的 ESN
+数值指标已接近成功，但 placement gate 未完成，不能记为 task success；三组均不解锁
+formal `dt=5e-5`。完整训练 metadata、失败回合和审计保留在
+`outputs/vmc_teacher_esn_mlp_seed_screen_20261001_s{106,107,108}_correct/`。
+
 ## 2026-10-01 纯 ESN action-readout alpha 屏幕
 
 为测试闭环振荡/过冲是否来自 ESN action 更新过快，预注册只改 ESN checkpoint 内部的

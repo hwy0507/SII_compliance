@@ -16,6 +16,17 @@ canonical48D actor 输入、执行器限制和 MLP 均未改。三条 combined-v
 `source/7fa6a6e39459cf846f21400c7f5fa5d4301da1ca/repository.tar` SHA256=
 `1a79dd2583859e38ce785d2cd96bfb5efd1b0a2af436c4565224123c92277015`。
 
+## 2026-10-01 paired ESN/MLP seed screen
+
+锁定 manifest 上的 seed `106/107/108` 成对训练结果：MLP 三组均 task=true、strict=false；
+ESN 三组均 task=false，最终阶段分别为 lift、load_transfer、lift。ESN/MLP 的
+`RMSE/峰矩/峰速/穿透` 分别为 `874.772/55.664/0.1639/0.1089` 与
+`52.402/44.708/0.0730/0.1772`（106），`187.222/47.666/0.1601/0.1612` 与
+`33.860/44.542/0.0707/0.1530`（107），`37.743/38.843/0.0721/0.1714` 与
+`43.083/45.083/0.0724/0.1843`（108）。全部为开发 `dt=1e-4`、55 s/550000 子步，
+独立 action/状态/物理审计通过；无 strict 通过，因此没有 formal `dt=5e-5`。seed=108
+说明 ESN 可达到低误差状态但仍未完成 placement gate，不能写成 task success。
+
 ## 2026-10-01 ESN action-readout alpha 屏幕
 
 在不改环境、gate、actor 输入、执行器限制或 MLP 的前提下，预注册测试 ESN 输出平滑

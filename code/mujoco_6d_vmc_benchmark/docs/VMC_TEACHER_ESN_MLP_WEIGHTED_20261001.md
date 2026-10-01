@@ -33,6 +33,33 @@ source snapshot for commit `7fa6a6e39459cf846f21400c7f5fa5d4301da1ca` is
 with SHA256 `1a79dd2583859e38ce785d2cd96bfb5efd1b0a2af436c4565224123c92277015`.
 These results therefore do not support an ESN advantage claim or a hardware conclusion.
 
+## Paired random-seed screen
+
+To measure initialization variance without changing the teacher bank or runtime
+contract, three paired weighted ESN/MLP trainings used seeds `2026100106`,
+`2026100107`, and `2026100108`. The fixed manifest hash is
+`6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`; every run
+uses the same 7/2 identity split, 48D/7D interface, 128 width, and training-only
+estimated-wrench weighting. The frozen combined-v4 development evaluation is
+55 s, 550000 physical substeps and `dt=1e-4`.
+
+| seed | policy | validation weighted MSE | task | strict | final stage | RMSE (mm) | peak torque (Nm) | peak speed (m/s) | penetration (mm) |
+|---:|---|---:|---:|---:|---|---:|---:|---:|---:|
+| 106 | ESN | 5.250e-5 | no | no | lift | 874.772 | 55.664 | 0.1639 | 0.1089 |
+| 106 | MLP | 1.907e-5 | yes | no | retreat | 52.402 | 44.708 | 0.0730 | 0.1772 |
+| 107 | ESN | 5.648e-5 | no | no | load_transfer | 187.222 | 47.666 | 0.1601 | 0.1612 |
+| 107 | MLP | 1.693e-5 | yes | no | retreat | 33.860 | 44.542 | 0.0707 | 0.1530 |
+| 108 | ESN | 5.954e-5 | no | no | lift | 37.743 | 38.843 | 0.0721 | 0.1714 |
+| 108 | MLP | 1.759e-5 | yes | no | retreat | 43.083 | 45.083 | 0.0724 | 0.1843 |
+
+All six student rows passed the independent action/physical audit; ESN action and
+reservoir replay errors were zero, and MLP action replay errors were zero. MLP
+completed task in all three seeds, while ESN completed none. Seed 108 shows that
+ESN can reach a low-error, low-torque state but still fails the unchanged placement
+gate. No row passes strict, so no formal `dt=5e-5` rerun is unlocked. Full outputs
+and failure records are under
+`outputs/vmc_teacher_esn_mlp_seed_screen_20261001_s{106,107,108}_correct/`.
+
 ## Pure ESN alpha screen
 
 The pre-registered alpha screen changed only the ESN's internal action-readout

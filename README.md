@@ -29,6 +29,16 @@ with receipt SHA256 `6ed5e73204de983d481200bcf5082a50e1259fbd55a281934aa33e7460d
 The matching source snapshot for commit `7fa6a6e39459cf846f21400c7f5fa5d4301da1ca` is
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/7fa6a6e39459cf846f21400c7f5fa5d4301da1ca/repository.tar`.
 
+### 2026-10-01 paired ESN/MLP seed screen
+
+Three pre-registered seeds on the same nine-trace teacher manifest produced a
+clear closed-loop gap. MLP completed task in all three seeds (`106/107/108`),
+while pure ESN completed none. ESN seed 108 reached `37.743 mm` RMSE,
+`38.843 Nm` peak torque and `0.0721 m/s` peak speed but stopped before placement;
+it is not a task success. All six student rows passed replay and physical-substep
+audits, but none passed strict, so no formal `dt=5e-5` run is claimed. See the
+paired seed table in the weighted comparison report.
+
 ### 2026-10-01 teacher-label correction and v3 student rerun
 
 The VMC-teacher student loader now trains against the audited
