@@ -1,3 +1,12 @@
+## 2026-10-01 — 记录 RL 球碰撞视频疑点，用户下班暂停至明日
+
+- 用户要求先记问题、明天再说；停止排查，不启动实验/自动跟进。新 docs/RL_BALL_REPLAY_AUDIT_20261001.md 保存已确认项、未决项和精确证据位置。
+- campaign_01/seed61001/case0 的 task 撞 hand/link7，metric 无 >0.05N 球—机器人接触，ESN/zero 撞 link6；不同受撞条件不能直接作柔顺性响应对照。未证明 RL 存在额外非物理踢球。
+- 原 MP4 每帧跨200ms、2倍速；高频球日志错误地只覆盖0–0.3s，漏掉2s发球。纠正此前仅凭接触短判断自然性；记录缺口未修复。
+- 新只读 audit_ball_replays.py 成功提取四方法数据并校验原媒体/MJB manifest hash；JSON：/home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/campaign_01/report/BALL_REPLAY_AUDIT_20261001.json。原数据不改，无新仿真。
+- 原视频撞击窗口拼图/慢放：/home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/web_demo/assets/ball_replay_audit_20261001/；浏览页 ball_replay_audit_20261001.html。慢放为原速度1/4、仿真0.5倍速，不恢复缺帧，已目视检查。
+- 开始检查main ba84ed8a39ed743f603aa5d60e901bdf87090e1d与baseline17d00a9；不动main、旧暂停作业与旧heartbeat。
+
 ## 2026-10-01 — 新线程接管并完成熵/有界奖励评测，行为修复仍失败
 
 - 开工核验main ba84ed8与baseline8b48192，未操作main及旧heartbeat。接管既有1818576，未重复启动；旧四路SIGSTOP不变。
