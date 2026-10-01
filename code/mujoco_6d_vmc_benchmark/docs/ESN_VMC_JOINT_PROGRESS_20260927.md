@@ -24,8 +24,13 @@ SHA256 为 `bb0bd4df0f9467932c15999853f67fe662aaf5f34c06b79855d4d1ab9a4cf1b0`。
 `outputs/esn_gain_screen_20261001_v1/gain_{080,090,095}_audit.json` 均通过：
 动作重放最大误差为 0、储备池状态重放最大误差为 0、物理时长为 55.000000000000014 s、
 物理子步为 550000。失败回合、原始 rollout、MJB、checkpoint 和日志均保留在
-`outputs/esn_gain_screen_20261001_v1/`。本机产物尚未同步到 arm1；SSH 被当前沙箱拒绝，
-不能写成服务器已归档或声称远端 receipt 存在。
+`outputs/esn_gain_screen_20261001_v1/`，并已逐项核验到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_gain_screen_20261001_v1/`。
+文件收据 `FILE_SHA256_REL.txt` SHA256 为
+`6ed5e73204de983d481200bcf5082a50e1259fbd55a281934aa33e7460dcff74`；对应提交
+`7fa6a6e39459cf846f21400c7f5fa5d4301da1ca` 的源码快照位于
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/7fa6a6e39459cf846f21400c7f5fa5d4301da1ca/repository.tar`，
+SHA256 为 `1a79dd2583859e38ce785d2cd96bfb5efd1b0a2af436c4565224123c92277015`。
 
 这组屏幕没有找到成功候选；gain=0.80 的推杆连续接触最长，但 RMSE 较大且最终停在
 carry，gain=0.90/0.95 在 lift 停滞。结论只支持“固定 teacher bank 下的输出增益屏幕未解决

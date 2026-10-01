@@ -23,8 +23,11 @@ penetration), gain 0.90 stopped in lift (`407.785 mm`, `46.242 Nm`, `0.2134 m/s`
 `0.1350 mm`), and gain 0.95 stopped in lift (`454.745 mm`, `44.605 Nm`, `0.2160 m/s`,
 `0.1243 mm`). Independent action and reservoir replay errors were zero for every row;
 no formal `dt=5e-5` rerun is unlocked. Raw local evidence is under
-`code/mujoco_6d_vmc_benchmark/outputs/esn_gain_screen_20261001_v1/`; the current
-sandbox rejected SSH, so this new screen is not yet claimed as an arm1 archive.
+`code/mujoco_6d_vmc_benchmark/outputs/esn_gain_screen_20261001_v1/`; the verified
+archive is at `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_gain_screen_20261001_v1/`
+with receipt SHA256 `6ed5e73204de983d481200bcf5082a50e1259fbd55a281934aa33e7460dcff74`.
+The matching source snapshot for commit `7fa6a6e39459cf846f21400c7f5fa5d4301da1ca` is
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/7fa6a6e39459cf846f21400c7f5fa5d4301da1ca/repository.tar`.
 
 ### 2026-10-01 teacher-label correction and v3 student rerun
 

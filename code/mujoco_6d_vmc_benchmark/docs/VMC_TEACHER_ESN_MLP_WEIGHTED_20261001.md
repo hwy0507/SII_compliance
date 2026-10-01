@@ -24,9 +24,14 @@ The independent audits are
 action replay and reservoir-state replay with maximum absolute error 0, and each
 recomputed 550000 physical substeps over 55.000000000000014 s. None completed
 placement, so no formal `dt=5e-5` rerun is unlocked. The raw rollouts, checkpoints,
-MJB and logs remain under `outputs/esn_gain_screen_20261001_v1/`; they are local
-only because the current sandbox rejected SSH to arm1. These results therefore do
-not support an ESN advantage claim or a hardware conclusion.
+MJB and logs remain under `outputs/esn_gain_screen_20261001_v1/` and have been
+verified at `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_gain_screen_20261001_v1/`.
+The relative-file receipt SHA256 is
+`6ed5e73204de983d481200bcf5082a50e1259fbd55a281934aa33e7460dcff74`. The matching
+source snapshot for commit `7fa6a6e39459cf846f21400c7f5fa5d4301da1ca` is
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/7fa6a6e39459cf846f21400c7f5fa5d4301da1ca/repository.tar`
+with SHA256 `1a79dd2583859e38ce785d2cd96bfb5efd1b0a2af436c4565224123c92277015`.
+These results therefore do not support an ESN advantage claim or a hardware conclusion.
 
 ## Pure ESN alpha screen
 

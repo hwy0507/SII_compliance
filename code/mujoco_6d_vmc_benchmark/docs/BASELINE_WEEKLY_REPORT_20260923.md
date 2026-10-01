@@ -10,8 +10,11 @@ canonical48D actor 输入、执行器限制和 MLP 均未改。三条 combined-v
 `454.745/44.605/0.2160`、穿透 `0.1243 mm`。task/strict 全部 false，均未完成放置。
 独立 action/储备池重放最大误差均为 0，550000 子步审计通过，因此没有 formal `dt=5e-5`
 重跑。失败回合和 checkpoint 保留在本机
-`code/mujoco_6d_vmc_benchmark/outputs/esn_gain_screen_20261001_v1/`；由于本轮
-SSH 被沙箱拒绝，尚未声称已归档 arm1。
+`code/mujoco_6d_vmc_benchmark/outputs/esn_gain_screen_20261001_v1/`，并已核验归档到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_gain_screen_20261001_v1/`。
+文件收据 SHA256=`6ed5e73204de983d481200bcf5082a50e1259fbd55a281934aa33e7460dcff74`，源码快照
+`source/7fa6a6e39459cf846f21400c7f5fa5d4301da1ca/repository.tar` SHA256=
+`1a79dd2583859e38ce785d2cd96bfb5efd1b0a2af436c4565224123c92277015`。
 
 ## 2026-10-01 ESN action-readout alpha 屏幕
 

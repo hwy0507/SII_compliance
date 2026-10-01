@@ -13,9 +13,14 @@
   action replay 与储备池状态 replay 最大误差为 0，物理子步为 550000。配置 SHA256 为
   `1d0e8cb73db0a8effa142a3fcdbc2dd026edf70eaa4517231b72815895ce5c90`，基准 checkpoint
   SHA256 为 `bb0bd4df0f9467932c15999853f67fe662aaf5f34c06b79855d4d1ab9a4cf1b0`。
-- 结果和审计仅保留在本地 `outputs/esn_gain_screen_20261001_v1/`；当前 SSH 被沙箱拒绝，
-  尚未写入 arm1 共享目录，也不声称已完成 GitHub push。预注册源码提交为本地 `9e9580a`。
-- 本轮文档与结果记录提交为 `0a611d4`；GitHub push 仍待网络恢复。
+- 结果和审计保留在本地 `outputs/esn_gain_screen_20261001_v1/`，并已逐项核验到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_gain_screen_20261001_v1/`；
+  文件收据 SHA256=`6ed5e73204de983d481200bcf5082a50e1259fbd55a281934aa33e7460dcff74`。
+  预注册源码提交为 `9e9580a`，结果记录为 `0a611d4`，最终同步提交为 `7fa6a6e`。
+- 对应 `7fa6a6e39459cf846f21400c7f5fa5d4301da1ca` 的源码快照已归档到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/7fa6a6e39459cf846f21400c7f5fa5d4301da1ca/repository.tar`，
+  SHA256=`1a79dd2583859e38ce785d2cd96bfb5efd1b0a2af436c4565224123c92277015`。
+- GitHub `main` 已成功推送至 `7fa6a6e`；服务器归档与源码快照逐项核验通过。
 - 已完成：三组闭环、三项物理指标重算、动作/状态重放审计和文档更新。未完成：服务器归档、
   formal `dt=5e-5`（门槛未满足）及 ESN 跨条件成功。
 
