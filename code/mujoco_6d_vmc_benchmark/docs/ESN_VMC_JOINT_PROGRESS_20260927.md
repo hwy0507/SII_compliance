@@ -1,5 +1,20 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 temporal-consistency `delta=0.25` seed replication（本地完成，待同步）
+
+针对窄屏中唯一到达 retreat 的 `delta_weight=0.25` ESN，使用第二训练 seed
+`2026100152`（MLP `2026100153`）复现；manifest、7/2 split、combined-v4、gate、
+纯本体输入和执行器限制均未变。ESN 在 lift 停止，task/strict=false，RMSE
+`72.223 mm`、峰矩 `44.403 Nm`、峰速 `0.125044 m/s`、穿透 `0.131457 mm`、
+推杆最长连续接触 `0.0471 s`；MLP task=true、strict=false，最终 retreat，
+RMSE `46.980 mm`、峰矩 `45.918 Nm`、峰速 `0.070165 m/s`、穿透 `0.151728 mm`。
+
+两条均为开发 `dt=1e-4`、55 s、550000 子步。独立审计
+`outputs/esn_mlp_temporal_consistency_replication_20261001_s52/INDEPENDENT_AUDIT.json`
+显示 action replay 和 ESN reservoir replay 最大误差为0，三项物理指标重算一致。该
+复现否定首轮 `delta=0.25` ESN 的稳健改善，formal `dt=5e-5` 继续锁定；专题报告见
+[`ESN_MLP_TEMPORAL_CONSISTENCY_REPLICATION_20261001.md`](ESN_MLP_TEMPORAL_CONSISTENCY_REPLICATION_20261001.md)。
+
 ## 2026-10-01 temporal-consistency narrow follow-up（本地完成，待同步）
 
 在上一轮 `delta_weight=0/0.5/1.0` 屏幕后，预注册窄区间

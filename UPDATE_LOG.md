@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-01 — temporal-consistency delta=0.25 replication completed locally
+
+- 开工再次核对缓存 `origin/main=ba84ed8a39ed743f603aa5d60e901bdf87090e1d`、
+  `origin/baseline=4dad929b6550b167943becd271836f0c74a21a38`；`git ls-remote` 仍因网络不可达
+  失败，未把缓存当作最新远端，未修改 baseline；本机无运行中的 evaluator/training 进程。
+- 预注册配置 `configs/esn_mlp_temporal_consistency_replication_20261001.json`，锁定 manifest
+  SHA=`6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`、7/2 split、
+  canonical48D/action7、宽度128、combined-v4、原 gate、禁止输入和执行器限制；只复现
+  `delta_weight=0.25`，ESN seed=`2026100152`、MLP seed=`2026100153`。
+- ESN task/strict=`0/1`,`0/1`，停在 lift，指标 `72.223 mm / 44.403 Nm / 0.125044 m/s /
+  0.131457 mm`；MLP task/strict=`1/1`,`0/1`，完成 retreat，指标
+  `46.980 mm / 45.918 Nm / 0.070165 m/s / 0.151728 mm`。两条均为开发 `dt=1e-4`、55 s、
+  550000 子步，失败回合完整保留。
+- 独立审计 action replay 最大误差为0、ESN reservoir replay 最大误差为0，三项物理指标
+  重算一致。新增报告 `docs/ESN_MLP_TEMPORAL_CONSISTENCY_REPLICATION_20261001.md`；
+  结果否定首轮 `delta=0.25` ESN 的稳健改善，formal `dt=5e-5` 继续锁定。大产物仅本地，
+  arm1/GitHub 网络仍不可达。
+
 ## 2026-10-01 — temporal-consistency narrow follow-up completed locally
 
 - 开工核对缓存 `origin/main=ba84ed8a39ed743f603aa5d60e901bdf87090e1d`、

@@ -96,12 +96,15 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", type=Path, required=True)
     ap.add_argument("--output", type=Path, required=True)
+    ap.add_argument("--extra-run", type=Path, action="append", default=[])
     args = ap.parse_args()
     if args.output.exists():
         raise FileExistsError(args.output)
     rows = []
     for run_name in ("dw025", "dw075"):
         run = args.root / f"esn_mlp_temporal_consistency_narrow_20261001_{run_name}"
+        rows.extend([audit(run, "esn"), audit(run, "mlp")])
+    for run in args.extra_run:
         rows.extend([audit(run, "esn"), audit(run, "mlp")])
     report = {
         "contract": "independent temporal narrow screen audit",
