@@ -1,5 +1,17 @@
 # 更新日志
 
+## 2026-10-01 — register frozen-runtime seed52 verification
+
+- 实时查询核对 main d29e504、baseline 699e317并读取对应日志；baseline暂停事项保持不动。
+  当前本机/Spark没有运行中的同类评估，未启动重复作业。
+- 注册两条串行复核：固定seed52 ESN/MLP checkpoint和原55s/dt1e-4参数，仅恢复冻结
+  MuJoCo 3.11.0。启动器检查真实cgroup MemoryMax≤3GiB、单线程、manifest/checkpoint/
+  源码hash，并在保存MJB之后、回合执行之前核对5eaee4aa模型hash，失败保留且不重试。
+- 配置 temporal_frozen_runtime_diagnostic_20261001.json；工具
+  verify_temporal_frozen_runtime_20261001.py。每条保存独立execution/原始轨迹/三指标及
+  action/储备池审计；不训练、不改环境/gate/actor/限制，不解锁formal。此条提交在运行前，
+  尚无新性能结论；运行记录和服务器归档地址在完成后补充。
+
 ## 2026-10-01 — temporal evidence integrity, runtime drift and synchronization repair
 
 - 实时核对 main `ba84ed8a39ed743f603aa5d60e901bdf87090e1d`、baseline

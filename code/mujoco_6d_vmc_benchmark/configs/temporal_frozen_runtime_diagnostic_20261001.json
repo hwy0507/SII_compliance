@@ -1,0 +1,21 @@
+{
+  "purpose": "Same checkpoint runtime diagnostic after discovery of MuJoCo version drift; not a new learning screen",
+  "methods": ["esn", "mlp"],
+  "checkpoint_source": "outputs/esn_mlp_temporal_consistency_replication_20261001_s52",
+  "checkpoint_sha256": {
+    "esn": "fe63f76566099bf0bf0a8cf8e86255a9c1f084a2cf1943ddd36c592b599ad22f",
+    "mlp": "8dcfdec1c3712b19e3646fbe63f1dfea81fbe778d8c75e23edb6718ddc593d4d"
+  },
+  "target_mujoco": "3.11.0",
+  "expected_mjb_sha256": "5eaee4aa1399c6e47c9fcb2c477f0b6392dcb13273ca67f878aca2d05f3239f9",
+  "argument_source": "Original method_combined_v4.json arguments, with only output and checkpoint paths relocated",
+  "scene": "frozen office-v5 combined-thick-corner-pillar-v4",
+  "dt": 0.0001,
+  "duration_s": 55,
+  "seed": 2026091751,
+  "budget": "two serial evaluations; no training or formal evaluation",
+  "dispatch_cutoff_utc": "2026-10-01T16:20:00Z",
+  "resource_policy": "one simulator, one thread, actual cgroup memory.max <= 3221225472",
+  "failure_policy": "keep outputs and logs, stop on infrastructure failure; never silently rerun",
+  "comparison": "Retain original 3.14.0 outcomes and compare paired checkpoint outcomes, model/source hashes and raw metrics; do not claim isolated MuJoCo causality if other library versions differ"
+}
