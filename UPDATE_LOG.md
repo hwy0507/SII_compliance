@@ -1,3 +1,10 @@
+## 2026-10-01 — 新线程接管并完成熵/有界奖励评测，行为修复仍失败
+
+- 开工核验main ba84ed8与baseline8b48192，未操作main及旧heartbeat。接管既有1818576，未重复启动；旧四路SIGSTOP不变。
+- 熵48/48、修复36/36完成，raw审计errors=[]。共同预算40k/20k分别报告，不混主100k；修复12/12完整55s物理有效但任务0，12条原始物块位置最大抬升/水平位移均0。尺度缺陷修正不等于可靠抓取baseline修好。
+- 新docs/SIMBAV2_REPAIR_RESULTS_20261001.md/json；证据在 /home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/{entropy_diagnostic_02,reward_scale_repair_03}/report；修复media/bounded_metric_seed61001有完整MP4/GIF、输入输出hash。
+- 网页 http://192.168.31.70:8765/simbav2_repair_20261001.html；未完成稳定抓取/搬运/放置、抓持后接触验证。两seed有限预算开发诊断，不能宣称收敛或SimbaV2本质弱于ESN。
+
 ## 2026-10-01 — 修复监督器已实际启动并冻结939f176
 
 - reward_scale_repair_03实际启动2026-10-01T12:20:51UTC，supervisor PID1818576（1818575为启动shell）；PROTOCOL.json绑定源码939f176aebdf1ea26c361faaa9e8ead357cd0b6f与四文件overlay SHA。STATE当前waiting_for_predecessor，尚未启动仿真或声称新策略成功。
