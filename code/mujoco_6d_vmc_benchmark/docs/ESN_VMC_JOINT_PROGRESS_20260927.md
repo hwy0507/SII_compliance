@@ -1,5 +1,27 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 14:50 UTC 完整性审计与运行时偏移纠正
+
+最新六条开发回合补强审计完成：ESN task 0/3、MLP task 3/3，strict 双方均 0/3；
+seed52 ESN 停 lift（72.223 mm / 44.403 Nm / 0.125044 m/s），MLP 完成放置
+（46.980 mm / 45.918 Nm / 0.070165 m/s）。这些是多个开发设置，不是三次独立同分布重复。
+源数据未改，动作/储备池精确重放、checkpoint/MJB绑定及物理数组有限值检查通过。
+
+发现最近 MJB 对应 MuJoCo 3.14.0，旧冻结运行时为 3.11.0，双方不能互读 MJB。
+最新六条同模型配对有效，但不能与旧批次作算法单因素排名。下一次评估须显式使用
+/home/airpig/桌面/hwy/compliance_control/.venv-canonical-rl/bin/python，先核验 3.11.0、
+模型 hash、source/config/checkpoint 与 MemoryMax，再做同 checkpoint 的运行时诊断。
+不重新训练来掩盖版本混杂，不改环境/gate，不解锁正式步长。
+
+seed42 配置已恢复，seed52 独立保存；历史命令不重写。窄屏/seed52 没有独立 execution.json，
+历史 MemoryMax 未证实，配置也不是训练前 Git 提交；撤回这些过强的记录描述。
+本轮没有启动仿真；既有子 agent 已完成，本机/服务器未见相关运行中的评估任务。
+GitHub/Spark 经获准网络访问恢复，已读取 main ba84ed8 与 baseline 699e317，未合并 baseline。
+详细审计与归档收据见 [ESN_MLP_TEMPORAL_INTEGRITY_20261001.md](ESN_MLP_TEMPORAL_INTEGRITY_20261001.md)。
+
+已完成：六条重新审计、配置修复、运行时定位、服务器hash归档；运行中：无新实验；未完成：strict 成功、
+跨条件泛化、冻结运行时的本轮 checkpoint 复核及 formal dt=5e-5。
+
 ## 2026-10-01 temporal-consistency `delta=0.25` seed replication（本地完成，待同步）
 
 针对窄屏中唯一到达 retreat 的 `delta_weight=0.25` ESN，使用第二训练 seed

@@ -1,5 +1,30 @@
 # 更新日志
 
+## 2026-10-01 — temporal evidence integrity, runtime drift and synchronization repair
+
+- 实时核对 main `ba84ed8a39ed743f603aa5d60e901bdf87090e1d`、baseline
+  `699e3171cc5e87e946a79f23f6a49d5e5ba1c1b0`；授权外部网络下 GitHub/Spark 均可达，
+  先前失败至少部分为沙箱限制，不能继续称服务器不可达。未合并或操作 baseline 作业。
+- 最新六条回合补强审计通过：checkpoint/模型元数据绑定、actor/状态/物理数值有限、
+  550000 子步与三指标复算、精确 action/reservoir replay。ESN task 0/3、MLP 3/3，
+  strict 各0/3；这些是不同开发配置，不是独立泛化成功率。没有新仿真或正式评估。
+- 定位运行时偏移：旧冻结 MJB 仅被现有 MuJoCo 3.11.0 加载，近期 MJB 仅被3.14.0加载。
+  最新六条模型hash一致；同版本两模型618个公开字段一致。禁止把跨版本结果作仅算法
+  变化排名。后续冻结评估恢复 .venv-canonical-rl/3.11.0，先记录真实执行元数据和限制。
+- seed42配置恢复到62f8c65原字节；seed52另存
+  `configs/esn_mlp_temporal_consistency_narrow_rep_seed52_20261001.json`，历史命令不改。
+  更正窄屏/seed52的“预提交注册”、独立execution.json及历史MemoryMax过强描述。
+  本轮只读审计确实使用systemd MemoryMax=3G/单线程；不能反推历史已遵守。
+- 原始temporal七组成对回合、训练记录、checkpoint、MJB/XML与新旧审计已核验到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/temporal_integrity_20261001T1450Z/evidence.tar.gz`：
+  652346695 bytes，SHA256 `0d30662ae0479b5594f8240eb4f019f7e2f9ee7b76ad974b80b8fdd6216bd460`。
+  运行源码快照：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/434e46fbedfc88df11d7ff8c44f2b3d064ebd217/repository.tar`，
+  SHA256 `d23b4c74298ff87b5079002f4e3bb246582f4db6447a97613eab7da1e88479b2`。
+- 报告 `code/mujoco_6d_vmc_benchmark/docs/ESN_MLP_TEMPORAL_INTEGRITY_20261001.md`；
+  同步联合进度、周报和小型JSON证据。已完成配置/审计/归档修复，当前无新实验运行；
+  未完成同checkpoint冻结运行时复核、ESN任务/strict稳健成功及formal步长验证。
+
 ## 2026-10-01 — temporal-consistency delta=0.25 replication completed locally
 
 - 开工再次核对缓存 `origin/main=ba84ed8a39ed743f603aa5d60e901bdf87090e1d`、

@@ -2,7 +2,7 @@
 
 ## Protocol
 
-This pre-registered follow-up tested only the training loss coefficient
+This development follow-up tested only the training loss coefficient
 `delta_weight = 0.25` and `0.75`. The locked teacher manifest, 7/2 identity
 split, canonical48D proprioceptive input, action7 output, width 128, and
 `office-v5 combined-thick-corner-pillar-v4` scene were unchanged. Both methods
@@ -42,7 +42,7 @@ and its source SHA256 is
 For all four rows, canonical action replay maximum error and ESN reservoir
 state replay maximum error were zero where applicable. The audit independently
 recomputed the three physical substep metrics and verified exactly 550000
-substeps over 55 s. Raw rollouts, checkpoints, MJB/XML files, execution JSON,
+substeps over 55 s. Raw rollouts, checkpoints, MJB/XML files, evaluator JSON,
 and failed rows remain in:
 
 ```text
@@ -51,3 +51,9 @@ outputs/esn_mlp_temporal_consistency_narrow_20261001_dw075/
 ```
 
 These are development results only; no hardware or formal-step claim is made.
+
+Correction (2026-10-01 integrity audit): no separate execution.json exists in
+these directories. The configuration was committed after the runs, not as a
+pre-run Git registration. The recent compiled model corresponds to MuJoCo
+3.14.0; earlier frozen runs used 3.11.0. Do not pool them as algorithm-only
+comparisons. See ESN_MLP_TEMPORAL_INTEGRITY_20261001.md for evidence and archive.

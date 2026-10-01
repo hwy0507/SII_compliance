@@ -1,16 +1,16 @@
 {
-  "purpose": "pre-registered replication of the narrow delta=0.25 candidate",
+  "purpose": "pre-registered replication of the temporal-consistency ESN/MLP candidate",
   "manifest": "outputs/teacher_bank_label_manifest_20260930_final_v1/manifest.json",
   "manifest_sha256": "6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3",
   "input_scale": 0.25,
-  "training_seed": 2026100152,
-  "delta_loss_values": [0.25],
-  "delta_weight": 0.25,
+  "training_seed": 2026100142,
+  "delta_loss_values": [1.0],
   "epochs": 160,
+  "weight_decay": 0.00001,
   "actor_contract": "canonical48D/action7; pure proprioception",
   "width": 128,
   "split": "same fixed 7/2 identity split; no post-hoc filtering",
-  "forbidden_inputs": ["contact truth", "object/ball state", "event time", "task stage", "visual/range", "distance"],
+  "forbidden_inputs": ["contact truth", "object/ball state", "event time", "task stage", "visual/range"],
   "unchanged": ["office-v5 combined-thick-corner-pillar-v4", "original gates", "actuator amplitude/rate limits", "55 s", "dt 1e-4 development", "550000 physical substeps"],
-  "selection": "replication only; no post-hoc gate or failure filtering"
+  "selection": "fixed delta_weight=1.0; no post-hoc gate or failure filtering"
 }

@@ -1,5 +1,18 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-01 temporal seed52 与完整性纠正
+
+seed52 复现 ESN task/strict 均失败，RMSE 72.223 mm、峰矩 44.403 Nm、峰速
+0.125044 m/s；MLP task=true、strict=false，46.980 mm / 45.918 Nm / 0.070165 m/s。
+与窄屏合计六条，ESN task 0/3、MLP 3/3，strict 都为0；不能建立ESN优势。
+六条 checkpoint/MJB 元数据、有限值、动作/储备池精确重放和550000子步指标重算通过。
+
+本轮证实 MuJoCo 版本偏移：最近模型3.14.0，旧冻结模型3.11.0，MJB互不兼容。
+同版本配对可保留，跨版本不能当作仅算法变化的对比；后续回到冻结3.11.0并显式记录运行时。
+恢复seed42配置，另存seed52配置；缺失 execution.json 和历史资源限制证据如实注明，
+不把训练后提交称作预提交注册。本轮无新仿真，不改scene/gate，也不合并baseline分支。
+详见 [完整性审计](ESN_MLP_TEMPORAL_INTEGRITY_20261001.md)；strict与正式评估仍未完成。
+
 ### 2026-10-01 temporal-consistency narrow follow-up
 
 在同一锁定 teacher manifest、combined-v4、原 gate 和 canonical48D/action7

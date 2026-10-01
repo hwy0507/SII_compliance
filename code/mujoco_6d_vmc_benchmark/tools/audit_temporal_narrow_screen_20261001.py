@@ -33,9 +33,22 @@ def audit(run: Path, kind: str) -> dict:
     prefix = run / f"{kind}_combined_v4"
     result = json.loads(prefix.with_suffix(".json").read_text())
     model = run / ("esn_temporal.npz" if kind == "esn" else "mlp_temporal.npz")
+    training = json.loads((run / "TRAINING_COMPLETE.json").read_text())
+    if sha(model) != training["checkpoint_sha256"][kind] or sha(model) != result["neural_logging"]["model_sha256"]:
+        raise ValueError(f"{run.name}/{kind}: checkpoint hash mismatch")
+    if sha(prefix.with_suffix(".mjb")) != result["model_sha256"]:
+        raise ValueError(f"{run.name}/{kind}: compiled model hash mismatch")
     with np.load(prefix.with_suffix(".npz"), allow_pickle=False) as trace:
+        for key in ("observation", "applied_action", "reservoir_state"):
+            if key not in trace:
+                continue
+            value = trace[key]
+            if np.issubdtype(value.dtype, np.number) and not np.isfinite(value).all():
+                raise ValueError(f"{run.name}/{kind}: nonfinite trace {key}")
         obs = np.asarray(trace["observation"], dtype=np.float64)
         applied = np.asarray(trace["applied_action"], dtype=np.float64)
+        if obs.ndim != 2 or obs.shape[1] != 48 or applied.shape != (len(obs), 7):
+            raise ValueError(f"{run.name}/{kind}: actor shape mismatch")
         actor = load_current(model)
         actor.reset()
         replay = np.stack([actor.act(row) for row in obs]).astype(np.float64)
@@ -51,8 +64,14 @@ def audit(run: Path, kind: str) -> dict:
             state_err = float(np.max(np.abs(np.asarray(states) - trace["reservoir_state"])))
     metric_path = prefix.parent / f"{prefix.name}_metrics" / "substep_metrics.npz"
     with np.load(metric_path, allow_pickle=False) as metrics:
+        for key in metrics.files:
+            value = metrics[key]
+            if np.issubdtype(value.dtype, np.number) and not np.isfinite(value).all():
+                raise ValueError(f"{run.name}/{kind}: nonfinite metrics {key}")
         dt = np.asarray(metrics["dt"], dtype=np.float64)
         error = np.asarray(metrics["error"], dtype=np.float64)
+        if not np.allclose(dt, 1e-4, rtol=0, atol=1e-12):
+            raise ValueError(f"{run.name}/{kind}: unexpected physical dt")
         rmse = float(np.sqrt(np.sum(error * error * dt[:, None]) / np.sum(dt)))
         speed = float(np.max(np.linalg.norm(metrics["twist"][:, :3], axis=1)))
         torque = float(np.max(np.abs(metrics["qfrc_actuator"])))
@@ -68,6 +87,13 @@ def audit(run: Path, kind: str) -> dict:
     if action_err > 1e-10 or (state_err is not None and state_err > 1e-10):
         raise ValueError(f"{kind}: policy replay mismatch")
     return {
+        "run_id": run.name,
+        "training_seed": training["seed"] if kind == "esn" else training["mlp_seed"],
+        "summary_sha256": sha(prefix.with_suffix(".json")),
+        "training_record_sha256": sha(run / "TRAINING_COMPLETE.json"),
+        "physical_substep_sha256": sha(metric_path),
+        "checkpoint_and_mjb_metadata_hash_match": True,
+        "actor_state_and_physical_metrics_finite": True,
         "method": kind.upper(),
         "task_success": bool(result["task_success"]),
         "strict_success": bool(result["strict_success"]),

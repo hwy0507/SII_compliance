@@ -20,3 +20,14 @@ error was zero. The independently recomputed metrics and hashes are in
 
 This replication rejects a claim that the first `delta=0.25` ESN result is a
 robust improvement. No strict row exists, so formal `dt=5e-5` remains locked.
+
+Provenance correction: the seed52 configuration is now separately preserved as
+`configs/esn_mlp_temporal_consistency_narrow_rep_seed52_20261001.json` (SHA256
+`cd1830bf361f3acac763a891a93bc9b1d7ebc7cbbac95cef11b737e9ea624b44`). Commit
+434e46f reused the seed42 configuration path; that original path is restored
+to its 62f8c65 contents. Historical training command records remain unchanged.
+The config's literal “pre-registered” purpose is preserved as historical data;
+it does not establish a pre-run commit. No separate execution.json or enforced
+historical MemoryMax can be certified. The six latest paired rows use the same
+MuJoCo 3.14.0 MJB, whereas older frozen data use 3.11.0; cross-runtime ranking is
+not justified. See ESN_MLP_TEMPORAL_INTEGRITY_20261001.md.
