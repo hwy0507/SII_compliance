@@ -1,5 +1,17 @@
 # 更新日志
 
+## 2026-10-01 — register paired sequence-consistent latent dropout
+
+- seed52固定权重清空记忆回合已完成，task/strict=false，停align，未证明清空历史能修复；
+  原始失败与精确动作/状态审计保留，结果报告稍后归档。
+- 预提交固定p=0与p=.1两组：每组ESN/MLP均160epochs、1120优化步、相同7/2身份留出、
+  seed152/153及锁定九条teacher。ESN的128维储备池特征与MLP第一隐藏层128维特征施加
+  同概率、整段序列一致的inverted dropout，推理关闭；保留128+128神经元、原输入/gate。
+  表征不同，因此不是严格等价结构消融，也不从测试回合挑概率。
+- 新训练/评估监督器串行两组，MuJoCo3.11.0、真实3GiB/单线程；每阶段记录执行与hash，
+  16:20UTC后不派发新阶段。补全teacher原始文件hash校验、训练运行时/config元数据；
+  eval支持显式新checkpoint来源。当前仅注册，未声称已启动或提升。
+
 ## 2026-10-01 — register seed52 closed-loop memory intervention
 
 - 开工实时读取main e0c963b与baseline699e317日志；本机/Spark同类评估均空闲。

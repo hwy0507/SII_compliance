@@ -82,7 +82,8 @@ def child(run, method, memory_ablation="none"):
     manifest = ROOT / "outputs/teacher_bank_label_manifest_20260930_final_v1/manifest.json"
     if sha(manifest) != MANIFEST_SHA:
         raise RuntimeError("Teacher manifest changed")
-    if sha(arguments["esn_model"]) != original["neural_logging"]["model_sha256"]:
+    training = json.loads((run / "TRAINING_COMPLETE.json").read_text())
+    if sha(arguments["esn_model"]) != training["checkpoint_sha256"][method]:
         raise RuntimeError("Checkpoint changed")
     record = dict(status="running", started_utc=now(), runtime=runtime(),
                   argv=sys.argv, arguments={k: str(v) if isinstance(v, Path) else v for k, v in arguments.items()},
@@ -92,7 +93,7 @@ def child(run, method, memory_ablation="none"):
                   baseline_summary_sha256=sha(original_path), expected_mjb_sha256=MODEL_SHA,
                   checkpoint_sha256=sha(arguments["esn_model"]), manifest_sha256=MANIFEST_SHA,
                   training_record_sha256=sha(run / "TRAINING_COMPLETE.json"),
-                  training_config_sha256=sha(ROOT / "configs/esn_mlp_temporal_consistency_narrow_rep_seed52_20261001.json"),
+                  training_config_sha256=training.get("config_sha256", sha(ROOT / "configs/esn_mlp_temporal_consistency_narrow_rep_seed52_20261001.json")),
                   development_only=True)
     write(record_path, record)
     original_save = mujoco.mj_saveModel
@@ -127,6 +128,7 @@ def main():
     parser.add_argument("--method", choices=("esn", "mlp"))
     parser.add_argument("--methods", nargs="+", choices=("esn", "mlp"), default=["esn", "mlp"])
     parser.add_argument("--memory-ablation", choices=("none", "reset_each_observation"), default="none")
+    parser.add_argument("--checkpoint-source", type=Path, default=ORIGINAL)
     args = parser.parse_args()
     run = args.root.resolve()
     if args.method:
@@ -142,9 +144,9 @@ def main():
         for filename in ("esn_temporal.npz", "mlp_temporal.npz", "TRAINING_COMPLETE.json"):
             if (run / filename).exists():
                 raise FileExistsError(run / filename)
-            shutil.copyfile(ORIGINAL / filename, run / filename)
+            shutil.copyfile(args.checkpoint_source / filename, run / filename)
         state = dict(status="running", started_utc=now(), deadline_utc=DEADLINE.isoformat(),
-                     runtime=runtime_info, original=str(ORIGINAL), rows=[])
+                     runtime=runtime_info, original=str(ORIGINAL), checkpoint_source=str(args.checkpoint_source.resolve()), rows=[])
         write(state_path, state)
         for method in args.methods:
             if datetime.now(timezone.utc) >= DEADLINE:

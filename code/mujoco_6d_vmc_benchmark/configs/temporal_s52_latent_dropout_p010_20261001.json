@@ -1,0 +1,26 @@
+{
+  "purpose": "Paired sequence-consistent latent dropout diagnostic; selected after memory failure analysis",
+  "manifest_sha256": "6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3",
+  "training_seed": 2026100152,
+  "input_scale": 0.25,
+  "delta_loss_values": [
+    0.25
+  ],
+  "epochs": 160,
+  "latent_dropout": 0.1,
+  "require_runtime_guard": true,
+  "actor_contract": "canonical48D/action7 pure proprioception; ESN128+128 and MLP128+128",
+  "forbidden_inputs": [
+    "contact truth",
+    "object/ball state",
+    "event time",
+    "task stage",
+    "visual/range"
+  ],
+  "fixed": "7/2 identity split; 9 locked teacher trajectories; 1120 updates/method; model selection by unchanged validation action MSE",
+  "comparison": "p=0 control and p=.1 only; no post-hoc dropout selection; both raw outcomes retained",
+  "runtime": "MuJoCo3.11.0; single thread;MemoryMax3GiB",
+  "evaluation": "same frozen combined-v4,seed2026091751,55s,dt1e-4,original gates and actuator limits",
+  "dropout": "same 128-dimensional fixed-per-trajectory inverted mask probability in both methods; ESN reservoir features and MLP first hidden layer; inference off",
+  "deadline_utc": "2026-10-01T16:20:00Z"
+}
