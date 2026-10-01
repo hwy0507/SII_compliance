@@ -75,7 +75,8 @@ def train(a):
         if int(resume_state["step"])>=a.steps:
             raise ValueError("--steps is the original total budget, and must exceed restored step")
     out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
-    config=RewardConfig(mode=a.reward,horizon_s=a.duration,gamma=a.gamma,smooth_weight=a.smooth)
+    config=RewardConfig(mode=a.reward,horizon_s=a.duration,gamma=a.gamma,smooth_weight=a.smooth,
+                        error_transform=getattr(a,"error_transform","quadratic"))
     rewarder=OfficeReward(config)
     agent=OfficialOfficeAgent(a.seed,a.steps,utd=a.utd,gamma=a.gamma,entropy_coef=a.entropy_coef,initial_temperature=a.initial_temperature)
     replay=Replay(max(a.steps,10000),a.seed+53)
@@ -112,7 +113,7 @@ def train(a):
         warmup_std=a.warmup_std,entropy_coef=a.entropy_coef,
         train_physics_dt=a.physics_dt,formal_evaluation_physics_dt=.00005,duration_s=a.duration,
         reference="current PickPlaceTask stage waypoint; no continuous sigma path",
-        error="all physical substeps; contact intervals retained; no clipping",
+        error="raw squared error retained at all physical substeps; optional bounded training transform explicitly in reward config",
         actual_torque="completed mj_step qfrc_actuator[:7], normalized by env.torque_limits",
         peak_speed="all-substep norm(J(q_post) dq_post) diagnostic/safety; no positive reward",
         terminal="55s finite-horizon or existing validator abort; strict_success gate unchanged",
@@ -230,6 +231,8 @@ if __name__=="__main__":
     p.add_argument("--terminal-objective",choices=["legacy_strict","task_physical"],default="legacy_strict")
     p.add_argument("--warmup-std",type=float,default=None,help="Opt-in zero-mean exploration; no teacher or action-space change")
     p.add_argument("--entropy-coef",type=float,default=-.5,help="Official target entropy per action dimension")
+    p.add_argument("--error-transform",choices=["quadratic","bounded"],default="quadratic",
+                   help="Opt-in bounded training error e^2/(scale^2+e^2); raw evaluation metrics unchanged")
     p.add_argument("--reward",choices=["office_task","metric","task_only"],required=True)
     p.add_argument("--seed",type=int,required=True)
     p.add_argument("--steps",type=int,default=100000)

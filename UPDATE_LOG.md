@@ -1,3 +1,11 @@
+## 2026-10-01 — 实现有界指标奖励修复并注册独立同step对照
+
+- 基于main ba84ed8/baseline8e541d5，新增--error-transform bounded：每物理子步e²/(.12²+e²)训练积分及一致失败补偿界；旧quadratic默认保留。峰矩/时间/平滑/任务±20不改，原始三指标不裁剪。
+- 21项奖励回归通过（含可加性、原始误差、极端提前失败/所有截断位置、terminal与非法输入）；新增bounded_reward_repair.py与report_reward_repair.py及docs/BOUNDED_REWARD_REPAIR_20261001.md。物理无扰动测试由监督器在真实训练前执行，尚不冒称已通过。
+- 用户要求优先修复后，核cmd向旧entropy四worker发SIGUSR1，均rc0并保存checkpoint，实际约48.5–50k，共同40k进入原48条评测；不伪称完成原60k。supervisor1797525保持运行，不恢复其他暂停训练。
+- 独立reward_scale_repair_03规划2seed新metric从零30k，与旧low_entropy同seed同step任务/指标共36条正式步长开发条件对照；LR计划100k，entropy-2，其余不变。新监督器等旧评测释放算力，先6.4s物理无扰动，再训练；13:12UTC安全停、13:41UTC真实交付。尚无新学习效果。
+- 新冻结源预定 /home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/frozen_reward_repair_03，结果reward_scale_repair_03；源hash和实际PID由启动协议记录，不热改既有frozen_main_01。报告必须显式36矩阵与raw复算，保留失败，不以阶段冒充抓持。
+
 ## 2026-10-01 — 定位奖励尺度缺陷，明确当前RL不满足baseline交付要求
 
 - fetch读取main=ba84ed8、baseline=140f71a。用户ESN视频取0/4/10/16/22s画面核看，可见抬升/搬运/释放撤离，task=True；未混作本轮固定checkpoint的同条件结果。

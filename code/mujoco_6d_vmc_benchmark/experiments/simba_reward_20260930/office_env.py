@@ -50,10 +50,12 @@ class Hooks:
     def take_interval(self):
         m=self.metrics;end=m.count
         a=m.arrays;sl=slice(self.start,end);dt=a["dt"][sl];err=a["error"][sl].astype(float)
+        error2=np.sum(err*err,axis=1)
         torque=np.abs(a["qfrc_actuator"][sl].astype(float))
         limits=np.asarray(self.env.torque_limits,dtype=float)[:7]
         result=dict(elapsed_s=float(dt.sum()),
-            error_cost=float(np.sum(dt*np.sum(err*err,axis=1))/(self.horizon*self.e_scale**2)),
+            error_cost=float(np.sum(dt*error2)/(self.horizon*self.e_scale**2)),
+            bounded_error_cost=float(np.sum(dt*error2/(self.e_scale**2+error2))/self.horizon),
             peak_torque_ratio=float(np.max(torque/limits)) if end>self.start else 0.,
             peak_torque_nm_per_joint=np.max(torque,axis=0).tolist() if end>self.start else [0.]*7,
             max_position_error_m=float(np.max(np.linalg.norm(err,axis=1))) if end>self.start else 0.,

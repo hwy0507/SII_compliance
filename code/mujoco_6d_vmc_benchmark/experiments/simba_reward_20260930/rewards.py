@@ -9,6 +9,7 @@ from typing import Sequence
 @dataclass(frozen=True)
 class RewardConfig:
     mode: str = "metric"
+    error_transform: str = "quadratic"
     gamma: float = 0.995
     horizon_s: float = 55.0
     control_dt_s: float = 0.04
@@ -28,6 +29,8 @@ class RewardConfig:
     def validate(self):
         if self.mode not in ("task_only", "office_task", "metric"):
             raise ValueError("mode must be task_only, office_task, or metric")
+        if self.error_transform not in ("quadratic", "bounded"):
+            raise ValueError("unknown error transform")
         if not 0.0 < self.gamma <= 1.0:
             raise ValueError("gamma must be in (0,1]")
         for name in ("horizon_s", "control_dt_s", "error_scale_m",
@@ -59,6 +62,7 @@ class IntervalMetrics:
     peak_torque_nm_per_joint: Sequence[float]
     max_position_error_m: float
     substeps: int
+    bounded_error_cost: float | None = None
 
     def validate(self, cfg):
         values = (self.elapsed_s, self.error_cost, self.peak_torque_ratio,
@@ -73,6 +77,10 @@ class IntervalMetrics:
             raise ValueError("declared error support violated; do not silently clip")
         if self.peak_torque_ratio > cfg.max_actual_torque_ratio + 1e-5:
             raise ValueError("declared torque support violated; audit actuator/limits")
+        if cfg.error_transform == "bounded":
+            if (self.bounded_error_cost is None or not math.isfinite(self.bounded_error_cost)
+                    or not 0 <= self.bounded_error_cost <= self.elapsed_s / cfg.horizon_s + 1e-10):
+                raise ValueError("bounded error integral missing or outside [0, elapsed/horizon]")
         max_cost = (self.elapsed_s / cfg.horizon_s
                     * (self.max_position_error_m / cfg.error_scale_m)**2)
         if self.error_cost > max_cost + 1e-8:
@@ -118,7 +126,7 @@ class OfficeReward:
             partial = 0.0
         gsum = (float(n_full) if c.gamma == 1.0 else
                 c.gamma * (-math.expm1(n_full * math.log(c.gamma))) / (1.0 - c.gamma))
-        error_time_rate = ((c.error_weight * (c.max_position_error_m / c.error_scale_m)**2
+        error_time_rate = ((c.error_weight * (1.0 if c.error_transform == "bounded" else (c.max_position_error_m / c.error_scale_m)**2)
                             if c.mode == "metric" else 0.) + c.time_weight) / c.horizon_s
         maximum_smooth_cost = c.smooth_weight * 4.0 * c.action_dim if c.mode == "metric" else 0.
         cost = gsum * (error_time_rate * c.control_dt_s + maximum_smooth_cost)
@@ -173,7 +181,7 @@ class OfficeReward:
         terms = dict(
             task=task,
             progress=c.progress_weight * potential_reward if c.mode != "task_only" else 0.0,
-            error=-c.error_weight * float(interval.error_cost) if c.mode == "metric" else 0.0,
+            error=-c.error_weight * float(interval.bounded_error_cost if c.error_transform == "bounded" else interval.error_cost) if c.mode == "metric" else 0.0,
             peak_torque=-c.torque_peak_weight * peak_increment if c.mode == "metric" else 0.0,
             time=-c.time_weight * time_cost if c.mode != "task_only" else 0.0,
             smooth=-c.smooth_weight * smooth if c.mode == "metric" else 0.0,
@@ -181,6 +189,8 @@ class OfficeReward:
         )
         reward = float(sum(terms.values()))
         info = dict(terms, reward=reward, mode=c.mode,
+                    error_transform=c.error_transform,
+                    bounded_error_cost=interval.bounded_error_cost,
                     error_cost=float(interval.error_cost),
                     error_cost_total=self.error_cost_total,
                     peak_torque_cost_increment=peak_increment,
