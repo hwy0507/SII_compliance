@@ -1,5 +1,9 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-01 fixed-reservoir ESN decomposition
+
+固定 input-scale=0.25 和同一个 reservoir，仅改变读出 seed，ESN task success 为 0/3、strict 为 0/3；MLP 为 3/3 task、0/3 strict。结果表明单 seed ESN 成功不能归因于稳定的 reservoir 或读出机制，仍没有 formal `dt=5e-5`。
+
 ### 2026-10-01 ESN input-scale 屏幕与复现
 
 输入尺度 0.25 的单个 ESN seed 完成 task，但 strict=false；预注册的三个新 seed 复现为 0/3 task success，说明单 seed 成功不具备泛化证据。其余输入尺度 ESN 也未过 task/strict。动作、储备池和物理子步审计通过，所有结果为开发 `dt=1e-4`，没有 formal `dt=5e-5`。

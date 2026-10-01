@@ -1,5 +1,9 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 固定 reservoir / readout seed 分解（本地，待同步）
+
+为区分 input-scale=0.25 单 seed 成功中的 reservoir 与读出随机性，固定 reservoir seed=`2026100101`，只改变 readout seeds=`2026100121/22/23`；input scale、teacher、MLP、环境、gate、输入和执行器限制均不变。ESN 三条 task/strict=`0/3`、`0/3`，最终 lift/carry/carry；MLP 三条 task=`3/3`、strict=`0/3`。所有行仍为开发 `dt=1e-4`、55 s/550000 子步，动作/状态/物理审计通过。固定 reservoir 不能消除 ESN seed 敏感性，formal `dt=5e-5` 继续锁定；收据 SHA=`eda963478fa3362d7ed4078bb6d6e9eb1bd500126310670eed8b83bfcbe54af6`。详见 [`ESN_FIXED_RESERVOIR_20261001.md`](ESN_FIXED_RESERVOIR_20261001.md)。
+
 ## 2026-10-01 纯 ESN input-scale 屏幕与三种种子复现（本地，待同步）
 
 第三轮单因素屏幕只改变 ESN 输入权重尺度 `0.25/0.45/0.80`。low=`0.25` 的 ESN 首次完成 task（retreat），指标为 RMSE `68.471 mm`、峰矩 `48.004 Nm`、峰速 `0.1164 m/s`、穿透 `0.1499 mm`，但 strict=false；0.45 ESN 在 carry 停止且穿透 `0.7154 mm`，0.80 ESN 在 load_transfer 停止。三组 MLP 对照均 task=true、strict=false。

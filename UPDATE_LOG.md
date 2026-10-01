@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-01 — fixed-reservoir ESN readout-seed decomposition completed locally
+
+- 固定 input-scale=`0.25` 和 reservoir seed=`2026100101`，仅改变 readout seeds `2026100121/22/23`，预注册配置 SHA=`c5f31edb3263fa16702229bfd14d74f7f6b584d0f9a8136f5c51d521385e4828`，训练脚本 SHA=`9e30fd12ed056bedcdafe80a32deb67786aa20e6f22b4612b8ebfecdccea5d2f`。
+- ESN task/strict=`0/3`、`0/3`，停在 lift/carry/carry；MLP task/strict=`3/3`、`0/3`。所有回合 550000 子步，动作和 ESN 储备池 replay 最大误差为 0，物理审计通过。
+- 独立 audit SHA=`d82652a366c6f2d5cd6b3562c9b483ae298563f5a130955cf41aad3a8f6a2cb3`，73 文件收据 SHA=`eda963478fa3362d7ed4078bb6d6e9eb1bd500126310670eed8b83bfcbe54af6`。固定 reservoir 仍未消除 ESN 对 readout seed 的敏感性，也没有 strict 候选。
+- 未完成：formal `dt=5e-5`、arm1 归档和 GitHub push；网络仍不可达，产物标记为本地待同步。
+
 ## 2026-10-01 — pure ESN input-scale screen and replication completed locally
 
 - 在冻结 teacher manifest、office-v5 combined-v4、gate、canonical48D/action7、禁止输入和执行器限制下，预注册输入权重尺度 `0.25/0.45/0.80` 屏幕；配置 SHA=`1197d1739ae0e2f1af9671cf4dbabbd1350bb4ab589ef7b951708fd5bd87deff`，训练器 SHA=`881d670a56f1723576534020ef4baebddd0ed29e5e0f7bb2f7a4ffc9e0db77c6`。
