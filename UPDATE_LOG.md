@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-01 — pre-registered ESN output-gain screen
+
+- 注册第二个纯 ESN 算法屏幕，只改变 v4 checkpoint 的 `output_gain=0.80/0.90/0.95`；不
+  组合 alpha、不改环境、gate、actor 输入、执行器限制或 MLP。计划见
+  `configs/esn_gain_screen_20261001.json`，物化工具为
+  `tools/materialize_esn_gain_screen_20261001.py`。
+- 先提交预注册和固定 hash，再逐一运行 55 s/550000 子步开发闭环；未运行前不解读结果。
+
 ## 2026-10-01 — pre-registered ESN output-smoothing screen
 
 - 在不修改 office-v5、gate、actor 输入、执行器限制或 MLP 的前提下，注册纯 ESN action

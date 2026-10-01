@@ -1,0 +1,9 @@
+{
+  "purpose": "pre-registered pure ESN action output-gain screen on frozen VMC-teacher checkpoint",
+  "base_checkpoint": "outputs/vmc_teacher_esn_mlp_weighted_20261001_v4/esn_weighted.npz",
+  "gain_values": [0.8, 0.9, 0.95],
+  "actor_contract": "canonical48D/action7; pure proprioception",
+  "forbidden_inputs": ["contact truth", "object/ball state", "event time", "task stage", "visual/range"],
+  "unchanged": ["office-v5 combined-thick-corner-pillar-v4", "original gates", "actuator amplitude/rate limits", "seed 2026091751", "duration 55 s", "dt 1e-4", "550000 physical substeps"],
+  "selection": "report all gain values; no post-hoc gate or failure filtering"
+}
