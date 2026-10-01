@@ -1,5 +1,24 @@
 # VMC teacher → ESN/MLP weighted-readout comparison (2026-10-01)
 
+## Pure ESN alpha screen
+
+The pre-registered alpha screen changed only the ESN's internal action-readout
+smoothing coefficient. The frozen VMC teacher, MLP, office-v5 world, gates,
+canonical48D inputs, and actuator limits were unchanged. All three rows are
+development `dt=1e-4`, 55 s and 550000 physical substeps.
+
+| alpha | task | strict | final stage | RMSE (mm) | peak torque (Nm) | peak speed (m/s) | penetration (mm) | rod contact (s) |
+|---:|---:|---:|---|---:|---:|---:|---:|---:|
+| 0.25 | no | no | lift | 367.725 | 50.319 | 0.2420 | 0.6467 | 2.2952 |
+| 0.50 | no | no | lift | 411.708 | 36.347 | 0.2306 | 0.1787 | 0.5018 |
+| 0.75 | no | no | carry | 95.040 | 41.629 | 0.0848 | 0.1276 | 0.0038 |
+
+Action and reservoir-state replay were exactly zero for all three; independent audits
+are under `outputs/esn_alpha_screen_20261001_v1/alpha_{025,050,075}_audit/`.
+Alpha 0.75 improves numerical tracking but still fails the task, while alpha 0.25
+extends rod contact at the cost of violating the 0.2 mm penetration limit. No alpha
+candidate passes task or strict, so no formal `dt=5e-5` evaluation is unlocked.
+
 ## v3 corrected-label rerun
 
 The original v2 trainer was retained, but the loader semantics are now explicit and

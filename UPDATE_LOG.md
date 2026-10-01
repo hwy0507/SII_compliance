@@ -9,6 +9,18 @@
   hash；尚未运行闭环，结果不得提前解读。该预注册先提交，随后按单 MuJoCo/1线程/3GiB
   约束逐一运行，所有失败回合保留。
 
+## 2026-10-01 — pure ESN alpha screen completed
+
+- 按已推送的预注册计划，只改变 v4 ESN checkpoint 的 action-readout smoothing
+  `alpha=0.25/0.50/0.75`；场景、gate、canonical48D 输入、执行器限制、MLP 和评测命令均不变。
+- 三条开发回合均为 55 s/550000 子步、`dt=1e-4`，task/strict 全部 false：alpha 0.25
+  停在 lift，RMSE/峰矩/峰速 `367.725 mm/50.319 Nm/0.2420 m/s`，穿透 `0.6467 mm`；
+  alpha 0.50 为 `411.708/36.347/0.2306`，穿透 `0.1787 mm`；alpha 0.75 停在 carry，
+  `95.040/41.629/0.0848`，穿透 `0.1276 mm`。alpha 0.25 推杆接触最长2.2952s，0.50为
+  0.5018s，0.75为0.0038s；不能把接触时长换写成任务成功。
+- 三条动作与储备池状态重放均为0，独立物理子步审计通过；未有候选解锁 formal `dt=5e-5`。
+  原始回合、失败和审计保留在 `outputs/esn_alpha_screen_20261001_v1/`，待本轮归档。
+
 ## 2026-10-01 — v3 teacher-label correction and frozen ESN/MLP rerun
 
 - 开工按 `sii-research-sync` 核对本地 `origin/main` 缓存起点

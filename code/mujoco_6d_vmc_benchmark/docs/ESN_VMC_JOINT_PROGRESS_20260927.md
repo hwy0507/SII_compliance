@@ -1,5 +1,27 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 纯 ESN action-readout alpha 屏幕
+
+为测试闭环振荡/过冲是否来自 ESN action 更新过快，预注册只改 ESN checkpoint 内部的
+readout smoothing `alpha`，候选固定为 `0.25/0.50/0.75`。VMC teacher、MLP、场景、gate、
+canonical48D 输入和执行器限制完全不变；alpha 屏幕计划和 base/config hash 见
+`configs/esn_alpha_screen_20261001.json` 与
+`outputs/esn_alpha_screen_20261001_v1/SCREEN_PLAN.json`。
+
+三个候选均使用同一 combined-v4、55 s、550000 子步、开发 `dt=1e-4`：
+
+| alpha | task | strict | 最终阶段 | RMSE mm | 峰值力矩 Nm | 峰值速度 m/s | 穿透 mm | 推杆最长接触 s |
+|---:|---:|---:|---|---:|---:|---:|---:|---:|
+| 0.25 | 否 | 否 | lift | 367.725 | 50.319 | 0.2420 | 0.6467 | 2.2952 |
+| 0.50 | 否 | 否 | lift | 411.708 | 36.347 | 0.2306 | 0.1787 | 0.5018 |
+| 0.75 | 否 | 否 | carry | 95.040 | 41.629 | 0.0848 | 0.1276 | 0.0038 |
+
+三条回合的动作重放和 ESN 储备池状态重放均为 0，物理子步审计均为 55 s/550000；独立
+审计分别位于 `outputs/esn_alpha_screen_20261001_v1/alpha_025_audit/`、`alpha_050_audit/`
+和 `alpha_075_audit/`。alpha=0.75 在三项数值指标上较好但仍未完成任务，alpha=0.25
+虽延长推杆接触却违反穿透门槛。该屏幕没有成功候选，不解锁 formal `dt=5e-5`；失败回合
+全部保留。
+
 ## 2026-10-01 v3：修正过滤标签后的公平闭环重跑
 
 在继续 ESN/MLP 比较前，修正训练脚本的标签出口：目标现在明确读取每条

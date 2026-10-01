@@ -2,6 +2,15 @@
 
 ## 2026-09-30 当前状态与更新记录
 
+### 2026-10-01 pure ESN alpha screen
+
+A pre-registered pure ESN output-smoothing screen tested `alpha=0.25/0.50/0.75`
+on the unchanged combined-v4 scene. All three were task/strict failures; alpha
+0.75 had the best numerical tracking (95.040 mm RMSE, 0.1276 mm penetration) but
+stopped in carry. Alpha 0.25 extended rod contact but exceeded the penetration limit.
+No formal `dt=5e-5` result is claimed. See the joint progress and weighted
+comparison reports for the independent audits.
+
 ### 2026-10-01 teacher-label correction and v3 student rerun
 
 The VMC-teacher student loader now trains against the audited

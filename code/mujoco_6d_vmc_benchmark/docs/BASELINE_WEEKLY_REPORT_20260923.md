@@ -1,5 +1,15 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+## 2026-10-01 ESN action-readout alpha 屏幕
+
+在不改环境、gate、actor 输入、执行器限制或 MLP 的前提下，预注册测试 ESN 输出平滑
+`alpha=0.25/0.50/0.75`。三条同一 frozen office-v5、55 s/550000 子步开发回合均
+task/strict=false：alpha 0.25 为 lift、RMSE/峰矩/峰速 `367.725 mm/50.319 Nm/0.2420 m/s`、
+穿透 `0.6467 mm`；0.50 为 lift、`411.708/36.347/0.2306`、`0.1787 mm`；0.75 为 carry、
+`95.040/41.629/0.0848`、`0.1276 mm`。三条动作/储备池重放及独立子步审计通过，
+但没有可晋级的 ESN 候选，也不解锁正式 `dt=5e-5`。原始回合、checkpoint 和审计均保留，
+计划及归档路径见联合进度与 ESN/MLP 报告。
+
 ## 2026-10-01 v3 teacher-label correction and ESN/MLP rerun
 
 为保证后续 baseline 对比使用真正的过滤后 teacher action，修正训练 loader 为读取
