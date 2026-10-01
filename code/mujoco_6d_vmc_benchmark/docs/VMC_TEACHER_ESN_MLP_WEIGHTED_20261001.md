@@ -67,3 +67,7 @@ metadata, source files and synchronized docs are archived at
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/vmc_teacher_esn_mlp_weighted_20261001_v1/`.
 An `ARCHIVE_FILE_LIST.txt` receipt is stored beside the archive, and remote
 checkpoint hashes match the values above.
+The documentation and tools are committed in Git commit
+`48358e8af6c2563209d52e8f8eeeb852d9be9dae`; the corresponding immutable source
+snapshot is
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/48358e8af6c2563209d52e8f8eeeb852d9be9dae/repository.tar`.

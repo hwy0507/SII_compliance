@@ -26,6 +26,9 @@
   `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/vmc_teacher_esn_mlp_weighted_20261001_v1/`；
   远端 file-list receipt SHA=`5dc78c054067e88e3b34922023d3bbe476e251008e01941bfa0bd43525a34d96`，
   checkpoint hash 与本地一致。大型 rollout/checkpoint 未提交 Git。
+- 首次代码/文档提交为 `48358e8af6c2563209d52e8f8eeeb852d9be9dae`；对应完整 source tar
+  已归档到服务器 `source/48358e8af6c2563209d52e8f8eeeb852d9be9dae/repository.tar`，
+  SHA256=`951556d584689f520f13d64d3ad0a9130641c067aa02185602835e31e4c9411e`。
 
 ## 2026-09-30 — 十小时窗口收尾：215条记录、9个唯一teacher条件与公平经典对照
 
