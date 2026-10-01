@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2026-10-01 — frozen-runtime seed52 pair completed and audited
+
+- 本轮开工核对main d29e504、baseline699e317；运行前注册提交5572a73后，本机服务
+  sii-temporal-runtime-s52-20261001于15:12:17–15:15:39UTC串行完成两条，均rc0，
+  真实cgroup memory.max=3221225472/单线程。当前无仿真运行，未改baseline或启动训练。
+- 同seed52 checkpoint回到冻结MuJoCo3.11.0，两MJB精确匹配5eaee4aa。
+  ESN task/strict=false，lift，RMSE/峰矩/峰速/穿透
+  48.971mm/43.600Nm/.116950m/s/.131457mm；MLP task=true/strict=false，retreat，
+  46.908mm/45.907Nm/.070165m/s/.151728mm。全部55s/550000子步/dt1e-4。
+  ESN相对原3.14.0的RMSE降低23.252mm，但失败未解决，不能宣称算法提升。
+- 新旧四条独立审计动作/储备池replay最大误差0，三指标复算、模型/checkpoint绑定、
+  原参数和源码hash核对通过。错误运行时启动测试在建目录/仿真前拒绝3.14.0。
+  初次报告工具Path类型错误已修正，仅重跑只读报告，没有重跑回合。
+- ESN末10秒误差中位28.920mm、速度.000860m/s、ready=0；该窗口无输入>12截断、
+  无储备池abs>.95饱和。相同输入离线重置历史改变动作RMS .157981，属于读出依赖诊断，
+  不是闭环记忆消融成功。下一步聚焦历史状态与持续残差，不改gate或解锁formal。
+- 证据已核验：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/temporal_frozen_runtime_s52_20261001_v1/evidence.tar.gz`，
+  92494783bytes，SHA256 `0b51f23b479282e35343515918ede84e090fde4951259f77e5ac137af36e7c75`。
+  运行源码快照：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/5572a733a2fbc97b78201ee586cba188c49d43a3/repository.tar`，
+  SHA256 `f5ddd6459b3589404996eb55773a6b2b794d6df37639e378c9890b23d323d87a`。
+- 报告 `code/mujoco_6d_vmc_benchmark/docs/ESN_MLP_FROZEN_RUNTIME_PAIR_20261001.md`，
+  联合进度/周报/小证据同步。已完成运行时复核与归档；未完成ESN任务/strict稳健成功、
+  跨条件泛化和正式步长验证，不把单checkpoint对照当泛化率。
+
 ## 2026-10-01 — register frozen-runtime seed52 verification
 
 - 实时查询核对 main d29e504、baseline 699e317并读取对应日志；baseline暂停事项保持不动。

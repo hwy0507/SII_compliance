@@ -1,5 +1,21 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 15:16 UTC seed52 冻结运行时复核完成
+
+同checkpoint、同参数在MuJoCo3.11.0完成ESN/MLP两条55s开发复核。两条MJB均精确匹配
+冻结5eaee4aa；实际cgroup≤3GiB/单线程、manifest/源码/模型检查通过，子进程均rc0。
+ESN仍停lift，task/strict=false，三指标48.971mm/43.600Nm/.116950m/s；
+MLP task=true/strict=false，46.908mm/45.907Nm/.070165m/s。相较先前3.14.0，
+ESN RMSE降低23.252mm但未修复任务，不能将版本偏移当作全部失败原因。
+
+新旧四条重新审计action/储备池重放误差为0。ESN最后10秒误差中位28.920mm、速度
+0.000860m/s、ready=0，输入/储备池没有上述截断/饱和；离线清空历史会改变action
+RMS .157981，但不证明闭环会改善。下一步重点诊断历史状态与读出的持续偏置，
+训练期历史扰动需与同预算MLP对照；不改环境和gate，不解锁formal。
+
+已完成：冻结复核、独立审计和离线记忆诊断；运行中：无仿真；未完成：ESN任务/strict
+稳健成功与跨条件验证。详见[复核报告](ESN_MLP_FROZEN_RUNTIME_PAIR_20261001.md)。
+
 ## 2026-10-01 14:50 UTC 完整性审计与运行时偏移纠正
 
 最新六条开发回合补强审计完成：ESN task 0/3、MLP task 3/3，strict 双方均 0/3；
