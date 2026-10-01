@@ -1,3 +1,11 @@
+## 2026-10-01 — 主批次已实际启动，冻结e71a512
+
+- pilot02 4×10k全部正常完成；修正后的两个warmup放置回合实际获得+20，但postwarmup仍无grasp。两个初始温度在预注册训练覆盖分数上均为0，按平局规则选.01，不能称已解决学习或已充分调优。
+- 最新source绑定的telemetry_invariance_02通过，time/qpos/qvel/ctrl/hand/stage/object/observation/action逐元素最大差均0，物理MJB与三指标一致。
+- bootstrap PID1736362、主supervisor启动PID1737384；首批1737387–1737390分别为两reward×seed61001/61002，seed61003两路排队（操作前核对cmd，PID可能过期）。已见每路600真实transitions，约12.1–12.3steps/s，尚在5k warmup。
+- 冻结源 /home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/frozen_main_01/code/mujoco_6d_vmc_benchmark/，source commit e71a512e6fe01eb4e0456c3dfb7d6c6b88afcb54。主协议 /home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/campaign_01/PROTOCOL.json SHA256=733675507e1cf4aabaeaa17d3562af2c759204a245c2554cc46d5046f08b8773。
+- 真实状态读取同研究根BOOTSTRAP_STATE.json与campaign_01/STATE.json，各run的progress.json。自动共享评测、敏感性报告已接续；本条是启动验收，不是最终性能结论。20分钟heartbeat已更新精确路径和预算。只改本日志，不改正在运行的冻结源码。
+
 ## 2026-10-01 — 八小时基线接续：修正终末奖励混淆并实现事件时序验收
 
 - 开工fetch并读取main=3336864、baseline=c918548；main十小时teacher-bank已收尾且无新ESN。本轮不合并main，旧四路训练保持SIGSTOP。用户授权窗口约05:41–13:41 UTC（北京时间13:41–21:41），不是收敛保证。
