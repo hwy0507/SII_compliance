@@ -1,5 +1,17 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-01 低输入尺度 ESN alpha 屏幕
+
+在先前唯一一次 `input_scale=0.25` ESN task-success checkpoint 上，只改变 action-readout
+平滑 `alpha=0.25/0.50/0.75`。同一 combined-v4、原 gate、纯 canonical48D 输入和执行器
+限制下，三条开发回合均为 55 s/550000 子步、`dt=1e-4`，task/strict 全部为 false：
+alpha .25 停在 lift（`68.485 mm / 35.127 Nm / .1010 m/s / .1423 mm`），.50 停在
+carry（`138.424 / 39.585 / .1275 / .1373`），.75 停在 lift（`59.341 / 37.282 /
+.1041 / .1101`）。.50 推杆接触最长 `.6642 s`，但柱子覆盖仍失败；.75 球反弹也失败。
+三条独立 action/储备池/物理子步审计通过，原始回合保留在
+`outputs/esn_low_scale_alpha_screen_20261001_v1/`，没有候选解锁 formal `dt=5e-5`。详见
+[`ESN_LOW_SCALE_ALPHA_SCREEN_20261001.md`](ESN_LOW_SCALE_ALPHA_SCREEN_20261001.md)。
+
 ### 2026-10-01 fixed-reservoir ESN decomposition
 
 固定 input-scale=0.25 和同一个 reservoir，仅改变读出 seed，ESN task success 为 0/3、strict 为 0/3；MLP 为 3/3 task、0/3 strict。结果表明单 seed ESN 成功不能归因于稳定的 reservoir 或读出机制，仍没有 formal `dt=5e-5`。

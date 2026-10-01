@@ -1,5 +1,25 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 低输入尺度 ESN alpha 屏幕
+
+在先前 `input_scale=0.25` 单 seed task-success 候选上预注册只改 action-readout
+平滑 `alpha=0.25/0.50/0.75`。低尺度 base checkpoint SHA256 为
+`99e0a169025e3ac9643b2021958a92c668172b5745725f28050d530f2a585651`；teacher
+manifest、7/2 identity split、canonical48D/action7、combined-v4、gate、禁止输入和
+执行器限制均未变。三条都是开发 `dt=1e-4`、55 s、550000 子步：
+
+| alpha | task | strict | 阶段 | RMSE mm | 峰矩 Nm | 峰速 m/s | 穿透 mm | 推杆最长接触 s |
+|---:|---:|:---:|---|---:|---:|---:|---:|---:|
+| .25 | 否 | 否 | lift | 68.485 | 35.127 | .1010 | .1423 | .0056 |
+| .50 | 否 | 否 | carry | 138.424 | 39.585 | .1275 | .1373 | .6642 |
+| .75 | 否 | 否 | lift | 59.341 | 37.282 | .1041 | .1101 | .0064 |
+
+三条均未完成放置，且柱子接触覆盖均不满足；`.75` 还未通过球反弹条件。独立审计显示
+每条 action replay/ESN reservoir replay 最大误差均为0，物理子步均为550000。结果只说明
+平滑改变停滞位置，不能支持 ESN 泛化或相对 MLP 优势；没有 strict 候选，formal `dt=5e-5`
+继续锁定。完整结果见 [`ESN_LOW_SCALE_ALPHA_SCREEN_20261001.md`](ESN_LOW_SCALE_ALPHA_SCREEN_20261001.md)，
+原始回合保留于 `outputs/esn_low_scale_alpha_screen_20261001_v1/`；服务器归档待网络恢复。
+
 ## 2026-10-01 固定 reservoir / readout seed 分解（本地，待同步）
 
 为区分 input-scale=0.25 单 seed 成功中的 reservoir 与读出随机性，固定 reservoir seed=`2026100101`，只改变 readout seeds=`2026100121/22/23`；input scale、teacher、MLP、环境、gate、输入和执行器限制均不变。ESN 三条 task/strict=`0/3`、`0/3`，最终 lift/carry/carry；MLP 三条 task=`3/3`、strict=`0/3`。所有行仍为开发 `dt=1e-4`、55 s/550000 子步，动作/状态/物理审计通过。固定 reservoir 不能消除 ESN seed 敏感性，formal `dt=5e-5` 继续锁定；收据 SHA=`eda963478fa3362d7ed4078bb6d6e9eb1bd500126310670eed8b83bfcbe54af6`。详见 [`ESN_FIXED_RESERVOIR_20261001.md`](ESN_FIXED_RESERVOIR_20261001.md)。

@@ -1,5 +1,29 @@
 # 更新日志
 
+## 2026-10-01 — low-input-scale pure ESN alpha screen completed locally
+
+- 开工读取了缓存 main `ba84ed8a39ed743f603aa5d60e901bdf87090e1d` 与 baseline
+  `4dad929b6550b167943becd271836f0c74a21a38` 的更新日志；本轮 fetch/SSH 在当前网络下
+  失败，未把缓存冒充最新远端，也未修改 baseline。
+- 在先前唯一一次 `input_scale=0.25` task-success 的 ESN checkpoint 上预注册并物化
+  action-readout `alpha=0.25/0.50/0.75`。base checkpoint SHA256=
+  `99e0a169025e3ac9643b2021958a92c668172b5745725f28050d530f2a585651`，配置
+  `configs/esn_low_scale_alpha_screen_20261001.json` SHA256=
+  `2f286923b0f1a701f42e463553b2f0399fc2b3eba797321536e247a408604f79`。
+- 固定 teacher manifest、7/2 identity split、canonical48D/action7、128 ESN、combined-v4
+  环境、原 gate、禁止输入和执行器限制；三条均为本地 `.venv-rl`、单线程、开发
+  `dt=1e-4`、55 s/550000 子步。结果 task/strict 均 `0/3`：alpha .25 停 lift，
+  `.50` 停 carry，`.75` 停 lift；柱子接触覆盖均失败。三项指标分别为
+  `68.485/35.127/.1010/.1423`、`138.424/39.585/.1275/.1373`、
+  `59.341/37.282/.1041/.1101`（RMSE mm / 峰矩 Nm / 峰速 m/s / 外部穿透 mm）。
+  `.50` 推杆最长连续接触 `.6642 s`，但没有转化为任务成功；`.75` 球反弹失败。
+- 三个独立审计均通过：action replay 与 reservoir replay 最大误差均为 `0`，物理子步为
+  `550000`，最长单回合 RSS 约 `667 MiB`。所有失败 raw rollout、MJB、checkpoint 和审计
+  保留于 `code/mujoco_6d_vmc_benchmark/outputs/esn_low_scale_alpha_screen_20261001_v1/`。
+  详细结果见 `docs/ESN_LOW_SCALE_ALPHA_SCREEN_20261001.md` 和联合进度文档。
+- 本轮无 strict 候选，formal `dt=5e-5` 继续锁定。arm1 归档尝试因 SSH 不可达未完成，
+  产物明确标记为本地待同步；GitHub push 待网络恢复。
+
 ## 2026-10-01 — fixed-reservoir ESN readout-seed decomposition completed locally
 
 - 固定 input-scale=`0.25` 和 reservoir seed=`2026100101`，仅改变 readout seeds `2026100121/22/23`，预注册配置 SHA=`c5f31edb3263fa16702229bfd14d74f7f6b584d0f9a8136f5c51d521385e4828`，训练脚本 SHA=`9e30fd12ed056bedcdafe80a32deb67786aa20e6f22b4612b8ebfecdccea5d2f`。
