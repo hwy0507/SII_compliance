@@ -1,5 +1,9 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-01 ESN recurrent spectral-radius screen
+
+第二轮纯 ESN 算法屏幕只改变 128 单元 reservoir 谱半径 `0.60/0.90/1.10`，并为每组训练同宽度 MLP 对照。三组 ESN 均未过 task/strict，MLP 只有谱半径 0.90 对照完成 task、strict=false；所有回合仍是开发 `dt=1e-4`。独立动作/储备池/物理子步审计通过，0.90 ESN 穿透超限被保留为失败；没有 formal `dt=5e-5`。产物目前仅本地，待 arm1 与 GitHub 网络恢复后同步。
+
 ## 2026-10-01 pure ESN output-gain screen
 
 固定 v4 ESN checkpoint 仅筛选 `output_gain=0.80/0.90/0.95`，环境、gate、

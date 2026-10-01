@@ -1,5 +1,13 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 纯 ESN spectral-radius 屏幕（本地，待同步）
+
+在上一轮 leak 时间尺度屏幕之后，预注册只改变固定 128 单元 ESN reservoir 的谱半径：`0.60/0.90/1.10`，每组都配同宽度 MLP 对照。teacher manifest、canonical48D/action7、7/2 identity split、估计负载训练权重、combined-v4 场景、原 gate、actor 输入、执行器限制、seed `2026091751`、55 s、开发 `dt=1e-4` 和 550000 子步均未变。
+
+三组 ESN task/strict 均为 false：谱半径 0.60 在 lift 停止（RMSE `934.262 mm`、峰矩 `53.141 Nm`、峰速 `0.2172 m/s`、穿透 `0.1127 mm`），0.90 在 lift 停止且穿透超限（`144.160 / 50.655 / 0.2157 / 1.5602`），1.10 到 carry 但未放置（`224.085 / 45.164 / 0.2020 / 0.1049`）。MLP 仅 0.90 完成 task，strict 仍为 false；其余 MLP 也失败，不能把 task 完成写成 strict 通过。
+
+独立审计 `outputs/esn_mlp_spectral_screen_20261001/INDEPENDENT_AUDIT.json` 通过：六条均为 550000 物理子步，动作重放最大误差为 0，ESN 储备池回放最大误差为 0。完整训练/闭环 metadata、失败回合和 73 文件收据保留在 `outputs/esn_mlp_spectral_screen_20261001_{low,baseline,high}/`，收据 SHA256=`6505943bf8a8711fb03a2e48a86545cc1937e77b8f1e64c5e9459179a182ae0`；详见 [`ESN_SPECTRAL_SCREEN_20261001.md`](ESN_SPECTRAL_SCREEN_20261001.md)。没有候选解锁 formal `dt=5e-5`。
+
 ## 2026-10-01 纯 ESN reservoir leak 时间尺度屏幕（本地，待同步）
 
 在固定 teacher manifest、canonical48D/action7、128 单元、7/2 identity split、估计负载训练权重和 combined-thick-corner-pillar-v4 闭环上，预注册只改变 ESN reservoir 的三组 leak 时间常数：fast `0.04/0.16/0.64 s`、baseline `0.08/0.40/1.60 s`、slow `0.16/0.80/3.20 s`。每组都训练同宽度 MLP 对照；环境、原 gate、actor 输入、执行器限制、seed `2026091751`、55 s、开发 `dt=1e-4` 和 550000 物理子步均未变。

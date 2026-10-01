@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-01 — pure ESN spectral-radius screen completed locally
+
+- 在同一 teacher manifest、场景、gate、actor 输入和执行器限制上完成预注册 spectral-radius 屏幕；只改变 128 单元 ESN reservoir 谱半径 `0.60/0.90/1.10`，每组配同宽度 MLP。配置 SHA=`e96a9880d607d77390b062542e25dab677880587a2483aeb3dcfc4e9b48f0c17`，训练脚本 SHA=`9381becd58ce6c750672e6184f4a452004990bec5e98dd989ba8eab97fab5e5c`。
+- 三组 ESN task/strict 均失败：0.60 在 lift，0.90 在 lift 且外部穿透 `1.5602 mm`，1.10 在 carry。MLP 对照仅 0.90 完成 task、strict=false；所有行都是 55 s、`dt=1e-4`、550000 子步开发结果。
+- 独立审计 `outputs/esn_mlp_spectral_screen_20261001/INDEPENDENT_AUDIT.json` 通过，六条动作 replay 最大误差为 0，ESN 储备池 replay 最大误差为 0。73 文件收据 SHA=`6505943bf8a8711fb03a2e48a86545cc1937e77b8f1e64c5e9459179a182ae0`。完整结果和失败原因见 `docs/ESN_SPECTRAL_SCREEN_20261001.md`。
+- 未完成：ESN strict 泛化、formal `dt=5e-5`、arm1 归档与 GitHub push。网络仍不可达，产物明确标记为本地待同步。
+
 ## 2026-10-01 — pure ESN reservoir leak-time screen completed locally
 
 - 开工核对 main 缓存 `ba84ed8a39ed743f603aa5d60e901bdf87090e1d` 与 baseline 缓存 `4dad929b6550b167943becd271836f0c74a21a38`；再次 fetch 和 GitHub/arm1 SSH 均因网络限制失败，未把缓存当作最新远端，未修改 baseline。
