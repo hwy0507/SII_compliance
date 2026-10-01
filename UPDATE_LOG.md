@@ -1,3 +1,11 @@
+## 2026-10-01 — 定位奖励尺度缺陷，明确当前RL不满足baseline交付要求
+
+- fetch读取main=ba84ed8、baseline=140f71a。用户ESN视频取0/4/10/16/22s画面核看，可见抬升/搬运/释放撤离，task=True；未混作本轮固定checkpoint的同条件结果。
+- 新audit_reward_scale.py扫描六路100k控制日志；排除warmup/跨界回合，metric30次提前失败补偿-178至-1810，normalizer分母364–366，office约5。原因是3m误差上界用于整个剩余时间；防逃避数学界不等于适合学习的尺度。
+- 末5k动作分量RMS .38–.64，过滤后平移残差RMS .118–.269m/s，显著大于warmup；metric学习后226个结束回合均approach/align。未将随机训练动作当确定性测试速度，也未把相关性写成唯一因果。
+- 新docs/RL_REWARD_SCALE_DIAGNOSIS_20261001.md及主报告明确不满足稳定抓取baseline要求、修复准入条件和未完成项。JSON在 /home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/campaign_01/report/REWARD_SCALE_AUDIT.json；原数据与冻结源不改。
+- entropy_diagnostic_02 PID1797525–1797529正常，仍只检验熵，未修复reward；不重复启动或热改。剩余预算优先奖励尺度与确定性抓取验证，新训练须独立版本；尚无修复效果结论。
+
 ## 2026-10-01 — 低熵诊断运行中，补充48回合独立审计入口
 
 - 读取main=ba84ed8、baseline=92f2f3a；entropy_diagnostic_02 supervisor1797525及四worker1797526–1797529正常，约19k步；无报错，无学习后完整任务成功。冻结训练源码与协议未改。
