@@ -14,13 +14,15 @@ the following 55 s, 550000-substep results (`dt=1e-4`): VMC teacher task/strict
 Action replay was exact, and ESN reservoir replay was exact. The strict gate remains
 unmet, so no formal `dt=5e-5` result is claimed. The v3 audit and checkpoints are
 under `code/mujoco_6d_vmc_benchmark/outputs/vmc_teacher_esn_mlp_weighted_20261001_v3/`;
-they are local until arm1 SSH access returns.
+the complete raw archive is also available on arm1 in the v3_v4 run directory below.
 
 An unweighted control (v4, seed `2026100105`) was also run on the same frozen command:
 ESN task/strict `false/false` (526.818 mm RMSE) and MLP `true/false` (38.832 mm RMSE).
 This separates the training loss weight from the ESN instability; both still miss the
 unchanged sustained-contact gate. See the weighted comparison report for hashes and
-the independent audit.
+the independent audit. Complete v3/v4 raw outputs are archived at
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/vmc_teacher_esn_mlp_weighted_20261001_v3_v4/`
+with a verified 68-file SHA256 receipt.
 
 每轮文件更新统一记录于 [UPDATE_LOG.md](UPDATE_LOG.md)；本仓库的提交与推送约定见
 [AGENTS.md](AGENTS.md)。下面的 9/29 handoff 保留为历史版本入口。

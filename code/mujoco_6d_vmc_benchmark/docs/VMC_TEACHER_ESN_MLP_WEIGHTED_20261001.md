@@ -40,7 +40,9 @@ substep checks passed; the audit is
 `outputs/vmc_teacher_esn_mlp_weighted_20261001_v4/independent_audit_norefine/AUDIT.json`.
 Across v3 and v4, MLP completes the task but misses the unchanged sustained-contact
 gate, while ESN remains unstable in the late carry/lift sequence. These are development
-results and do not unlock formal `dt=5e-5`.
+results and do not unlock formal `dt=5e-5`. The complete v3/v4 archive (68 files) is
+available at `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/vmc_teacher_esn_mlp_weighted_20261001_v3_v4/`;
+its relative-path SHA256 receipt is `ce2046f058475edcada19bf264a5f0e3406197b8f34a448f1485d3820e34aff5`.
 
 This is a development-only continuation of the locked VMC-teacher student
 comparison. The MuJoCo world, combined-thick-corner-pillar-v4 fixture, task

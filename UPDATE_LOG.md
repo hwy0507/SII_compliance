@@ -21,8 +21,8 @@
   `code/mujoco_6d_vmc_benchmark/outputs/vmc_teacher_esn_mlp_weighted_20261001_v3/`；详见
   `docs/VMC_TEACHER_ESN_MLP_WEIGHTED_20261001.md`、联合进度与周报。checkpoint：ESN
   `a5560ca073c3afed6d553c1ee7a37ac32d537f1245aa6369feabeb022dff40b4`，MLP
-  `e27c4ed63cd5f604c5338c90aa87b09e61a90f401a2d92f674c1e69a501e45f0`。v3 尚未同步 arm1，
-  仅本地待同步；已有 v1 归档未覆盖。
+  `e27c4ed63cd5f604c5338c90aa87b09e61a90f401a2d92f674c1e69a501e45f0`。v3/v4 随后同步到
+  新的 arm1 归档目录（见末项），已有 v1 归档未覆盖。
 - 验证：`pytest -q tests/test_student_distillation_20261001.py tests/test_esn_compliance.py
   tests/test_direct_esn_env_contract.py tests/test_office_memory_esn_20260927.py` → 14 passed；
   `git diff --check` 与两训练脚本 `py_compile` 通过。已完成：标签修复、v3 训练、闭环和
@@ -32,7 +32,12 @@
   lift、RMSE 526.818 mm、峰矩44.416 Nm、峰速0.2204 m/s、穿透0.1323 mm；MLP=true/false、
   retreat、RMSE38.832 mm、峰矩44.286 Nm、峰速0.0807 m/s、穿透0.1527 mm。仍为
   55 s/550000 子步开发回合；动作/储备池重放及独立审计通过。v3/v4 均未过 strict，
-  不解锁 formal dt=5e-5；v4 也仅本地待同步，不能写成服务器已归档。
+  不解锁 formal dt=5e-5；v4 也已进入同一新的 arm1 归档目录。
+- 随后将 v3/v4 完整输出（68个文件，含 checkpoint、55 s 原始 rollout、MJB、日志和两份
+  独立审计）归档到已核验的新目录
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/vmc_teacher_esn_mlp_weighted_20261001_v3_v4/`。
+  相对路径收据 `FILE_SHA256_REL.txt` SHA256=`ce2046f058475edcada19bf264a5f0e3406197b8f34a448f1485d3820e34aff5`，
+  远端逐项 `sha256sum -c` 全部通过；未覆盖已有 v1 归档。
 
 本文件记录每次对话交付的文件修改、验证和结果边界；最新记录在前。对应提交号由 Git 历史
 查询：`git log --oneline -- UPDATE_LOG.md`。持续提交约定见 [AGENTS.md](AGENTS.md)。

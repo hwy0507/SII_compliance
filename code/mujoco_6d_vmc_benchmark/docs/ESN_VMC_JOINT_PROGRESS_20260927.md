@@ -25,7 +25,9 @@ ESN 与 MLP 的动作重放误差均为 0；ESN 储备池重放误差为 0，三
 v3 checkpoint SHA256：ESN `a5560ca073c3afed6d553c1ee7a37ac32d537f1245aa6369feabeb022dff40b4`，
 MLP `e27c4ed63cd5f604c5338c90aa87b09e61a90f401a2d92f674c1e69a501e45f0`；独立审计为
 `outputs/vmc_teacher_esn_mlp_weighted_20261001_v3/independent_audit_norefine/AUDIT.json`。
-当前本机仿真 0；arm1 SSH 在本轮检查时端口不可达，未声称远端已归档 v3。
+当前本机仿真 0；v3/v4 已归档并逐项核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/vmc_teacher_esn_mlp_weighted_20261001_v3_v4/`
+（68 文件，收据 `FILE_SHA256_REL.txt` SHA256=`ce2046f058475edcada19bf264a5f0e3406197b8f34a448f1485d3820e34aff5`）。
 
 随后完成一个预注册无负载权重对照 v4（seed `2026100105`，emphasis `0`），用来区分负载
 加权和 ESN 随机读出影响。相同 55 s/550000 子步 frozen command 的结果为：ESN
@@ -35,6 +37,7 @@ task/strict `false/false`、最终 `lift`、RMSE `526.818 mm`、峰矩 `44.416 N
 仍为 0，独立审计位于 `outputs/vmc_teacher_esn_mlp_weighted_20261001_v4/independent_audit_norefine/AUDIT.json`。
 v3/v4 都表明当前九条 VMC teacher 轨迹下 MLP 的闭环任务完成较稳定，而 ESN 在 lift/carry
 之间随机失稳；两者均未通过 sustained-contact strict，不能宣称 ESN 优势或解锁正式步长。
+服务器归档未覆盖既有 v1 目录。
 
 ## 2026-10-01 VMC teacher 数据上的 ESN/MLP 加权读出续实验
 

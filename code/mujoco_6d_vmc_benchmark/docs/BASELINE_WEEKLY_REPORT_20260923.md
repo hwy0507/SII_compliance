@@ -14,14 +14,17 @@ ESN 为 `false/false`，停在 carry，`406.806 mm/43.246 Nm/0.2404 m/s`，穿�
 MLP 为 `true/false`，放置完成，`43.333 mm/44.405 Nm/0.0753 m/s`，穿透 `0.1012 mm`。
 学生动作回放为 0，ESN 储备池回放为 0，独立三项物理子步审计通过。严格 gate 未通过，
 不解锁 `dt=5e-5`；v3、首轮细步诊断和失败记录均保留。完整路径和 checkpoint hash 见
-`docs/VMC_TEACHER_ESN_MLP_WEIGHTED_20261001.md`，本轮 v3 尚未同步到 arm1（SSH 不可达）。
+`docs/VMC_TEACHER_ESN_MLP_WEIGHTED_20261001.md`；本轮 v3/v4 已另行同步并核验到 arm1 的
+v3_v4 新目录（详见下段）。
 
 随后完成无负载权重控制 v4（seed `2026100105`，emphasis=0），仍是同一 frozen command、
 55 s/550000 子步。ESN 为 task/strict `false/false`，停在 lift，RMSE/峰矩/峰速
 `526.818 mm/44.416 Nm/0.2204 m/s`，穿透 `0.1323 mm`；MLP 为 `true/false`，放置完成，
 `38.832 mm/44.286 Nm/0.0807 m/s`，穿透 `0.1527 mm`。v4 动作/储备池重放与物理子步审计
 通过。v3/v4 的共同结论是 MLP 在当前 teacher bank 上较稳定地完成 task，而 ESN 闭环在
-lift/carry 失稳；两者均未过 strict，仍不做正式步长或泛化成功声明。v4 仅本地待同步。
+lift/carry 失稳；两者均未过 strict，仍不做正式步长或泛化成功声明。v3/v4 已归档至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/vmc_teacher_esn_mlp_weighted_20261001_v3_v4/`，
+68 个文件的相对路径 SHA256 收据为 `ce2046f058475edcada19bf264a5f0e3406197b8f34a448f1485d3820e34aff5`。
 
 ## 2026-10-01 VMC teacher → ESN/MLP 加权读出续实验
 
