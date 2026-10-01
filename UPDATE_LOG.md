@@ -1,3 +1,11 @@
+## 2026-10-01 — 六路100k训练结束，36条RL正式步长评测完成并独立复算
+
+- 本次fetch读取main=ba84ed8a39ed743f603aa5d60e901bdf87090e1d、baseline=4dad929；main已新增teacher学生/平滑/增益/seed开发实验，本批保持预注册ESN checkpoint与冻结源e71a512，不混用其不同模型结果。
+- campaign_01六路训练均正常结束、各100000 transitions/190002更新；共同checkpoint_step_0100000，TRAINING_STATUS.json和COMMON_BUDGET.json留存。六个RL评测进程均rc0、36条输出已生成；ESN/hybrid/zero仍运行，尚非完整比较。
+- 新增独立只读审计源码 code/mujoco_6d_vmc_benchmark/experiments/simba_behavior_20261001/audit_raw_metrics.py，按物理dt加权重算RMSE、实际qfrc_actuator整体及逐关节峰矩、末端线速度峰值；检查时间连续性、样本数、完整时长并绑定raw/NPZ SHA。
+- 不等dt/负力矩/线速度分量/提前时长/错误时间序列断言通过；已完成36条全部复算通过（不是36条任务或物理全通过）。审计仅读取完成的summary，跳过尚在写入的三组，需最终54条结束后重跑。
+- 代码与全部产物仍在Spark。审计 /home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/campaign_01/report/RAW_METRICS_AUDIT.json；原始评测 /home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/campaign_01/evaluation/。未改训练、冻结源、环境或行为阈值；最终报告尚待完整矩阵与敏感性验收。
+
 ## 2026-10-01 — 主批次已实际启动，冻结e71a512
 
 - pilot02 4×10k全部正常完成；修正后的两个warmup放置回合实际获得+20，但postwarmup仍无grasp。两个初始温度在预注册训练覆盖分数上均为0，按平局规则选.01，不能称已解决学习或已充分调优。
