@@ -1,3 +1,9 @@
+## 2026-10-01 — 修复监督器已实际启动并冻结939f176
+
+- reward_scale_repair_03实际启动2026-10-01T12:20:51UTC，supervisor PID1818576（1818575为启动shell）；PROTOCOL.json绑定源码939f176aebdf1ea26c361faaa9e8ead357cd0b6f与四文件overlay SHA。STATE当前waiting_for_predecessor，尚未启动仿真或声称新策略成功。
+- 冻结路径 /home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/frozen_reward_repair_03/code/mujoco_6d_vmc_benchmark；launchlog /home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/reward_scale_repair_03.launch.log。原entropy监督器完成48条后，自动无扰动检查→2seed有界metric训练→共同step≤30k、6策略36评测→专用report。
+- 复查旧低熵训练排除warmup后仍大多approach，metric61002有1个grasp阶段记录但无完整task；不能把仅调熵称修复有效。后续从实际夹起/搬运证据验收，保留失败。已核GitHub baseline源码SHA一致。
+
 ## 2026-10-01 — 实现有界指标奖励修复并注册独立同step对照
 
 - 基于main ba84ed8/baseline8e541d5，新增--error-transform bounded：每物理子步e²/(.12²+e²)训练积分及一致失败补偿界；旧quadratic默认保留。峰矩/时间/平滑/任务±20不改，原始三指标不裁剪。
