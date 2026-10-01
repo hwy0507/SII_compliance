@@ -1,5 +1,15 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+## 2026-10-01 VMC teacher → ESN/MLP 加权读出续实验
+
+在冻结的 office-v5 综合场景上，对 VMC teacher 标签训练的纯 ESN 与 MLP
+进行了同预算加权读出续实验。唯一改动是训练阶段对估计力/负载本体通道使用
+平滑样本权重；actor 输入、环境、执行器限制和 gate 均未改。weighted MLP
+完成任务并将柱接触延长到 `0.6056 s`，但 strict 仍失败；weighted ESN 在
+lift 阶段失败。结果表和审计入口见
+[VMC_TEACHER_ESN_MLP_WEIGHTED_20261001.md](VMC_TEACHER_ESN_MLP_WEIGHTED_20261001.md)。
+这轮仍是开发 `dt=1e-4`，没有满足 strict，故没有 formal `dt=5e-5` 结论。
+
 2026-09-30 13:55 UTC终态：十小时派发窗口已结束，无截止后新回合，服务rc0退出。
 162搜索＋27验证记账＋26collection，共212动态/3初态拒绝。追加collection三方法共同8个
 完整训练fixture：VMC/导纳/阻抗录取5/8、0/8、5/8；RMSE均值40.176/41.389/29.608mm，

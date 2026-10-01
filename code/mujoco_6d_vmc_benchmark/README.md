@@ -7,6 +7,17 @@ separate: a reference provider supplies a nominal end-effector pose and twist;
 the 6D virtual-model controller is the only component that converts that
 reference into arm torques.
 
+## Current VMC-teacher student result (2026-10-01)
+
+The locked VMC teacher bank was used to train width-matched pure ESN and MLP
+students on canonical48D proprioception and action7. A training-only smooth
+weight on estimated wrench channels improved the MLP's rod-contact duration to
+`0.6056 s` and it completed placement in the frozen combined-v4 development
+scene; the unchanged sustained-contact gate still failed. The weighted ESN
+stopped at lift. Both are development `dt=1e-4` results, so no formal
+`dt=5e-5` rerun was unlocked. Full metrics, hashes, replay audit and limits are
+in [VMC_TEACHER_ESN_MLP_WEIGHTED_20261001.md](docs/VMC_TEACHER_ESN_MLP_WEIGHTED_20261001.md).
+
 The original free-space reaching script remains useful for controller
 calibration, but it is **not** the task-level benchmark.  The task-level entry
 point is `scripts/run_grasp_impact_benchmark.py`: Panda descends toward a free

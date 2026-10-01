@@ -1,5 +1,32 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 VMC teacher 数据上的 ESN/MLP 加权读出续实验
+
+在冻结的 combined-thick-corner-pillar-v4、canonical48D/action7、执行器
+限制和原始 gate 下，新增一轮只改训练损失的公平比较。ESN 与 MLP 均保持
+128 单元预算；训练时对估计力/负载本体通道使用预注册的平滑权重
+`1+3*tanh(||wrench[39:45]||/0.5)`，该权重不进入 actor、没有运行时 gate，
+也没有增加任何禁用输入。完整报告见
+[VMC teacher→ESN/MLP weighted](VMC_TEACHER_ESN_MLP_WEIGHTED_20261001.md)。
+
+新 checkpoint 的独立闭环结果（开发 `dt=1e-4`，55 s/550000 子步）如下：
+
+| 方法 | task | strict | placement | RMSE mm | 峰值力矩 Nm | 峰值速度 m/s | 柱最长接触 s |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| VMC teacher（原 v5） | 通过 | 否 | 完成 | 43.438 | 50.324 | 0.1008 | 0.0670 |
+| weighted ESN | 否（lift停滞） | 否 | 未完成 | 688.378 | 62.020 | 0.1800 | 0.0050 |
+| weighted MLP | 通过 | 否 | 完成 | 50.381 | 46.634 | 0.0823 | 0.6056 |
+
+weighted MLP 的推杆接触时间明显高于原 v5 MLP 的 0.0127 s，同时完成放置，
+但仍未满足原始持续接触门槛；weighted ESN 仍在 lift 失败。ESN held-out
+动作 MSE 从 `4.40e-5/6.89e-5` 降为 `3.59e-5/4.08e-5`，MLP 从
+`1.45e-5/2.87e-5` 降为 `1.23e-5/1.53e-5`，说明回放改善没有自动转化为
+闭环严格成功。三项子步指标、动作/储备池状态重放与 hash 审计通过。两名学生
+均 strict=false，因此没有解锁 `dt=5e-5` 正式重跑；失败完整保留，环境/gate
+未改。运行中仿真 0。完整 campaign 已归档至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/vmc_teacher_esn_mlp_weighted_20261001_v1/`，
+远端目录含 `ARCHIVE_FILE_LIST.txt` 收据，checkpoint hash 已逐项核对。
+
 ## 2026-09-30 三类数据生成与经典 baseline
 
 13:55 UTC收尾：原十小时窗口结束，最后派发13:46:18、动态结束13:48:22、归档结束13:48:50，

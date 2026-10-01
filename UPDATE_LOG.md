@@ -3,6 +3,30 @@
 本文件记录每次对话交付的文件修改、验证和结果边界；最新记录在前。对应提交号由 Git 历史
 查询：`git log --oneline -- UPDATE_LOG.md`。持续提交约定见 [AGENTS.md](AGENTS.md)。
 
+## 2026-10-01 — VMC teacher 标签上的 ESN/MLP 加权读出续实验
+
+- 开工核对 origin：`main=3336864707c1e59a1015568a0aea1891e18b8980`，随后复核远端
+  `baseline=4dad929b6550b167943becd271836f0c74a21a38`；baseline 正在独立运行奖励主批次，
+  本轮未合并、停止或改写其冻结源/作业。
+- 新增 `tools/train_vmc_teacher_esn_mlp_weighted_20261001.py`，在冻结
+  canonical48D/action7、相同 128 单元预算下，只对估计力/负载本体通道采用训练期平滑
+  权重；actor、环境、gate、执行器限制均未变。新增报告
+  `docs/VMC_TEACHER_ESN_MLP_WEIGHTED_20261001.md`，并同步联合进度、周报和 README。
+- 新 weighted ESN/MLP checkpoint SHA 分别为
+  `2723e218b474e4414bbbf199eeda0099eae5dfae6af9fbd3e40cbe6b389483c9`、
+  `992a6dcd99685f278687fcf4cf25e1e6d61171dc4dde650489c679f082497cdc`。
+  同一 combined-v4 开发场景：ESN task=false、lift停滞，RMSE 688.378 mm、峰矩
+  62.020 Nm、峰速 0.1800 m/s；MLP task=true、placement complete、strict=false，
+  RMSE 50.381 mm、峰矩 46.634 Nm、峰速 0.0823 m/s、柱最长接触 0.6056 s。
+- `tools/audit_vmc_teacher_esn_mlp_20261001.py` 独立审计通过：三行均 55 s/550000
+  子步，动作/储备池重放和 RMSE/力矩/速度复算通过。两学生 strict 均 false，未解锁
+  formal `dt=5e-5`；失败回合保留。运行中仿真 0，服务器归档待 SSH 恢复。
+- 验证：加权模型训练与闭环均在本地 `.venv-canonical-rl` 单线程运行；10项 ESN/环境
+  合约测试通过，`git diff --check` 通过。完整 campaign 已归档到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/vmc_teacher_esn_mlp_weighted_20261001_v1/`；
+  远端 file-list receipt SHA=`5dc78c054067e88e3b34922023d3bbe476e251008e01941bfa0bd43525a34d96`，
+  checkpoint hash 与本地一致。大型 rollout/checkpoint 未提交 Git。
+
 ## 2026-09-30 — 十小时窗口收尾：215条记录、9个唯一teacher条件与公平经典对照
 
 - 13:29 UTC读取实际远端日志，13:55/13:57复核fetch：main=
