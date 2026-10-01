@@ -10,6 +10,8 @@ on the unchanged combined-v4 scene. All three were task/strict failures; alpha
 stopped in carry. Alpha 0.25 extended rod contact but exceeded the penetration limit.
 No formal `dt=5e-5` result is claimed. See the joint progress and weighted
 comparison reports for the independent audits.
+The 38-file raw archive is stored at
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_alpha_screen_20261001_v1/`.
 
 ### 2026-10-01 teacher-label correction and v3 student rerun
 

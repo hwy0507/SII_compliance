@@ -20,7 +20,9 @@ canonical48D 输入和执行器限制完全不变；alpha 屏幕计划和 base/c
 审计分别位于 `outputs/esn_alpha_screen_20261001_v1/alpha_025_audit/`、`alpha_050_audit/`
 和 `alpha_075_audit/`。alpha=0.75 在三项数值指标上较好但仍未完成任务，alpha=0.25
 虽延长推杆接触却违反穿透门槛。该屏幕没有成功候选，不解锁 formal `dt=5e-5`；失败回合
-全部保留。
+全部保留。完整 38 文件已归档并核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_alpha_screen_20261001_v1/`，
+收据 `FILE_SHA256_REL.txt` SHA256=`45dcf2d710a8ea12cd0f6ba0277669da76deb6af889347e6ec1f9e01575fbffa`。
 
 ## 2026-10-01 v3：修正过滤标签后的公平闭环重跑
 

@@ -19,7 +19,10 @@
   `95.040/41.629/0.0848`，穿透 `0.1276 mm`。alpha 0.25 推杆接触最长2.2952s，0.50为
   0.5018s，0.75为0.0038s；不能把接触时长换写成任务成功。
 - 三条动作与储备池状态重放均为0，独立物理子步审计通过；未有候选解锁 formal `dt=5e-5`。
-  原始回合、失败和审计保留在 `outputs/esn_alpha_screen_20261001_v1/`，待本轮归档。
+  原始回合、失败和审计保留在 `outputs/esn_alpha_screen_20261001_v1/`，并已归档到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_alpha_screen_20261001_v1/`；
+  38 文件收据 `FILE_SHA256_REL.txt` SHA256=`45dcf2d710a8ea12cd0f6ba0277669da76deb6af889347e6ec1f9e01575fbffa`，
+  远端逐项校验通过。
 
 ## 2026-10-01 — v3 teacher-label correction and frozen ESN/MLP rerun
 

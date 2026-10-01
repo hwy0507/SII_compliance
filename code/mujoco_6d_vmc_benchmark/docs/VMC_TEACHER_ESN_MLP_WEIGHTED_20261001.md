@@ -18,6 +18,9 @@ are under `outputs/esn_alpha_screen_20261001_v1/alpha_{025,050,075}_audit/`.
 Alpha 0.75 improves numerical tracking but still fails the task, while alpha 0.25
 extends rod contact at the cost of violating the 0.2 mm penetration limit. No alpha
 candidate passes task or strict, so no formal `dt=5e-5` evaluation is unlocked.
+The 38-file archive is verified at
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_alpha_screen_20261001_v1/`
+with receipt SHA256 `45dcf2d710a8ea12cd0f6ba0277669da76deb6af889347e6ec1f9e01575fbffa`.
 
 ## v3 corrected-label rerun
 

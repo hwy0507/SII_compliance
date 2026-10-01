@@ -8,7 +8,8 @@ task/strict=false：alpha 0.25 为 lift、RMSE/峰矩/峰速 `367.725 mm/50.319 
 穿透 `0.6467 mm`；0.50 为 lift、`411.708/36.347/0.2306`、`0.1787 mm`；0.75 为 carry、
 `95.040/41.629/0.0848`、`0.1276 mm`。三条动作/储备池重放及独立子步审计通过，
 但没有可晋级的 ESN 候选，也不解锁正式 `dt=5e-5`。原始回合、checkpoint 和审计均保留，
-计划及归档路径见联合进度与 ESN/MLP 报告。
+计划及归档路径见联合进度与 ESN/MLP 报告；38 文件已核验到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_alpha_screen_20261001_v1/`。
 
 ## 2026-10-01 v3 teacher-label correction and ESN/MLP rerun
 
