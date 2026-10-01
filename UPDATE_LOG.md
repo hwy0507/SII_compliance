@@ -1,3 +1,12 @@
+## 2026-10-01 — 100k主矩阵54条完成并发布；注册独立低熵诊断
+
+- 核对远端main=ba84ed8、baseline=107b21e；不合并同期main学生新权重。六路100k/190002更新和九组54条评测均rc0；52条55s，metric seed61002 case2/5仅0.44s提前2mm穿透终止。两RL组task/placement0；office物理18/18，metric14/18，ESN/混合/zero各6/6。
+- 全54条实际子步复算通过，最大RMSE/峰矩/峰速差1.122e-11m/1.891e-6Nm/1.107e-8m/s；六条件跨方法MJB一致，记录的normalizer诊断冻结，审计无错。不能做混合时长统一排名。
+- 新中文主报告 docs/SIMBAV2_BEHAVIOR_BASELINE_RESULTS_20261001.md 与publish_delivery.py；网页 http://192.168.31.70:8765/simbav2_behavior_20261001.html。三图PNG/PDF和五方法同case0状态重放媒体在campaign_01/report与media，web_demo/assets/simbav2_behavior_20261001/发布副本；每GIF276帧、三处帧不同、manifest hash核验，HTTP200及13媒体路径检查通过；UI打开队列未冒称已目视核验。
+- 冻结全覆盖行为联合验收均0，但ESN人手局部6/6、棍2/6；zero人手也6/6。报告将任务/局部行为/曝光/unknown分开，不以未曝光概括柔顺失败。任务RL正式停approach，ESN到carry，混合多到load_transfer；不能称充分收敛或ESN全面优势。
+- 剩余预算预注册独立entropy_diagnostic_02：仅entropy coefficient-.5→-2；两reward×2配对seed61001/2目标60k，LR总计划100k，其余不变，从头训练。现有主60k作为相同步数对照；共同最大周期step、八组×六已见参数条件评测。12:45UTC训练cutoff，13:41UTC交付截止；这是看过主结果后的诊断，不是独立确认或主结果替换。源码entropy_diagnostic.py，协议/状态/PID在 /home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/entropy_diagnostic_02/（启动后生成）。
+- 主报告路径 /home/arm1/vmc_mujoco_runtime/behavior_baseline_20261001/campaign_01/report/FINAL_REPORT.md；全54审计RAW_METRICS_AUDIT.json。新脚本编译、diff检查通过；旧四路仍T暂停。新诊断效果尚未知，不暂停heartbeat直至诊断或截止真实交付。
+
 ## 2026-10-01 — 六路100k训练结束，36条RL正式步长评测完成并独立复算
 
 - 本次fetch读取main=ba84ed8a39ed743f603aa5d60e901bdf87090e1d、baseline=4dad929；main已新增teacher学生/平滑/增益/seed开发实验，本批保持预注册ESN checkpoint与冻结源e71a512，不混用其不同模型结果。
