@@ -1,0 +1,10 @@
+{
+  "purpose": "pre-registered pure ESN output smoothing screen on frozen VMC-teacher student checkpoint",
+  "base_checkpoint": "outputs/vmc_teacher_esn_mlp_weighted_20261001_v4/esn_weighted.npz",
+  "alpha_values": [0.25, 0.5, 0.75],
+  "actor_contract": "canonical48D/action7; pure proprioception",
+  "forbidden_inputs": ["contact truth", "object/ball state", "event time", "task stage", "visual/range"],
+  "unchanged": ["office-v5 combined-thick-corner-pillar-v4", "original gates", "actuator amplitude/rate limits", "seed 2026091751", "duration 55 s", "dt 1e-4", "550000 physical substeps"],
+  "closed_loop_command": ["--combined-thick-corner-pillar-v4", "--events", "all", "--task", "pick_place", "--corner-placement", "--duration", "55", "--dt", "0.0001", "--ball-speed", "1.7", "--ball-launch-time-s", "2", "--person-stroke", "0.2", "--rod-stroke", "0.235", "--person-start", "3", "--rod-start", "7", "--rod-hold", "6", "--esn-mode", "control", "--hybrid-vmc-blend", "0"],
+  "selection": "report all alpha values; no post-hoc gate or failure filtering"
+}

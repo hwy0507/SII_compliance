@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-01 — pre-registered ESN output-smoothing screen
+
+- 在不修改 office-v5、gate、actor 输入、执行器限制或 MLP 的前提下，注册纯 ESN action
+  readout `alpha` 屏幕，候选固定为 `0.25/0.50/0.75`；基准 checkpoint 为 v4 无权重
+  ESN，完整命令和选择规则见 `configs/esn_alpha_screen_20261001.json`。
+- 新增 `tools/materialize_esn_alpha_screen_20261001.py`，生成变体前固定 base/config
+  hash；尚未运行闭环，结果不得提前解读。该预注册先提交，随后按单 MuJoCo/1线程/3GiB
+  约束逐一运行，所有失败回合保留。
+
 ## 2026-10-01 — v3 teacher-label correction and frozen ESN/MLP rerun
 
 - 开工按 `sii-research-sync` 核对本地 `origin/main` 缓存起点
