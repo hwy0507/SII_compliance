@@ -38,6 +38,9 @@
   `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/vmc_teacher_esn_mlp_weighted_20261001_v3_v4/`。
   相对路径收据 `FILE_SHA256_REL.txt` SHA256=`ce2046f058475edcada19bf264a5f0e3406197b8f34a448f1485d3820e34aff5`，
   远端逐项 `sha256sum -c` 全部通过；未覆盖已有 v1 归档。
+- 已将本轮提交 `a2a926b5b4deee3dea9476e1eaefd5dcf211f09a` 的源码快照归档到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/a2a926b5b4deee3dea9476e1eaefd5dcf211f09a/repository.tar`，
+  本地/远端 SHA256 均为 `4e6fd79dbf6281217fa7dc718d5b9719be6a667be6fcf13930d35e26d9c7dd70`。
 
 本文件记录每次对话交付的文件修改、验证和结果边界；最新记录在前。对应提交号由 Git 历史
 查询：`git log --oneline -- UPDATE_LOG.md`。持续提交约定见 [AGENTS.md](AGENTS.md)。
