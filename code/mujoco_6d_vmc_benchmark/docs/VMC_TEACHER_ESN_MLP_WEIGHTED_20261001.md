@@ -59,6 +59,14 @@ ESN can reach a low-error, low-torque state but still fails the unchanged placem
 gate. No row passes strict, so no formal `dt=5e-5` rerun is unlocked. Full outputs
 and failure records are under
 `outputs/vmc_teacher_esn_mlp_seed_screen_20261001_s{106,107,108}_correct/`.
+The complete three-seed evidence archive (including raw rollouts, checkpoints,
+training metadata, failure logs and audits) is verified at
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_mlp_seed_screen_20261001_v1/`.
+The evidence tar SHA256 is
+`12ebe6d9529df5dd0bc967a45ed7a5ac77d1d0e4774d8fe10203ac5f158e5aa8`. The source
+snapshot for commit `9888f6cc361004a70a24851e7915062ca5962a5f` is
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/9888f6cc361004a70a24851e7915062ca5962a5f/repository.tar`
+with SHA256 `36563d9b960253ba1ec4a71ac3a4a1fea3966aa9afbdfe4727ad271e5ee9c589`.
 
 ## Pure ESN alpha screen
 

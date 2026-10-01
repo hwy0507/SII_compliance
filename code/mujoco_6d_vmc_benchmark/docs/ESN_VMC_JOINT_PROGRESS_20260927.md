@@ -65,6 +65,12 @@ ESN checkpoint SHA256 依次为 `08f223201de36352115e8b944028d3fc875e33b4a2135f9
 数值指标已接近成功，但 placement gate 未完成，不能记为 task success；三组均不解锁
 formal `dt=5e-5`。完整训练 metadata、失败回合和审计保留在
 `outputs/vmc_teacher_esn_mlp_seed_screen_20261001_s{106,107,108}_correct/`。
+三组完整原始证据（含训练 metadata、checkpoint、rollout、失败日志和审计）已归档至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_mlp_seed_screen_20261001_v1/`；
+证据 tar SHA256=`12ebe6d9529df5dd0bc967a45ed7a5ac77d1d0e4774d8fe10203ac5f158e5aa8`，三份
+相对文件收据均在对应 seed 目录。提交 `9888f6cc361004a70a24851e7915062ca5962a5f` 的源码
+快照位于 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/9888f6cc361004a70a24851e7915062ca5962a5f/repository.tar`，
+SHA256=`36563d9b960253ba1ec4a71ac3a4a1fea3966aa9afbdfe4727ad271e5ee9c589`。
 
 ## 2026-10-01 纯 ESN action-readout alpha 屏幕
 

@@ -17,7 +17,12 @@
   replay 最大误差均为0；没有 strict 通过，未解锁 formal `dt=5e-5`。seed108 的 ESN
   数值指标接近成功但 placement gate 未完成，不能写成 task success或ESN优势。
 - 训练峰值 RSS 约 832 MiB；初次错误的 `ulimit -v` 导致 PyTorch 库映射失败，相关失败日志
-  保留并不计为实验回合。完整 output、checkpoint、raw rollout 和 audit 待本轮归档。
+  保留并不计为实验回合。完整 output、checkpoint、raw rollout 和 audit 已归档到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_mlp_seed_screen_20261001_v1/`；
+  evidence tar SHA256=`12ebe6d9529df5dd0bc967a45ed7a5ac77d1d0e4774d8fe10203ac5f158e5aa8`。
+- 提交 `9888f6cc361004a70a24851e7915062ca5962a5f` 的源码快照已归档到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/9888f6cc361004a70a24851e7915062ca5962a5f/repository.tar`，
+  SHA256=`36563d9b960253ba1ec4a71ac3a4a1fea3966aa9afbdfe4727ad271e5ee9c589`。
 
 ## 2026-10-01 — pre-registered paired ESN/MLP seed screen
 

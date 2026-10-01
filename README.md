@@ -38,6 +38,9 @@ while pure ESN completed none. ESN seed 108 reached `37.743 mm` RMSE,
 it is not a task success. All six student rows passed replay and physical-substep
 audits, but none passed strict, so no formal `dt=5e-5` run is claimed. See the
 paired seed table in the weighted comparison report.
+The raw three-seed archive is verified at
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_mlp_seed_screen_20261001_v1/`
+with evidence tar SHA256 `12ebe6d9529df5dd0bc967a45ed7a5ac77d1d0e4774d8fe10203ac5f158e5aa8`.
 
 ### 2026-10-01 teacher-label correction and v3 student rerun
 

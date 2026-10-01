@@ -26,6 +26,11 @@ ESN 三组均 task=false，最终阶段分别为 lift、load_transfer、lift。E
 `43.083/45.083/0.0724/0.1843`（108）。全部为开发 `dt=1e-4`、55 s/550000 子步，
 独立 action/状态/物理审计通过；无 strict 通过，因此没有 formal `dt=5e-5`。seed=108
 说明 ESN 可达到低误差状态但仍未完成 placement gate，不能写成 task success。
+三组完整原始证据已核验归档至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_mlp_seed_screen_20261001_v1/`，
+evidence tar SHA256=`12ebe6d9529df5dd0bc967a45ed7a5ac77d1d0e4774d8fe10203ac5f158e5aa8`；提交
+`9888f6cc361004a70a24851e7915062ca5962a5f` 的源码快照 SHA256=
+`36563d9b960253ba1ec4a71ac3a4a1fea3966aa9afbdfe4727ad271e5ee9c589`。
 
 ## 2026-10-01 ESN action-readout alpha 屏幕
 
