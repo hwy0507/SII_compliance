@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-01 — temporal-consistency ESN/MLP screen completed locally
+
+- 注册并完成纯 ESN/MLP action-delta loss 屏幕，候选 `delta_weight=0/0.5/1.0`。锁定 manifest SHA=`6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`、7/2 identity split、canonical48D/action7、128 宽度、combined-v4、原 gate、禁止输入和执行器限制；只改变训练目标中的相邻 action 增量损失。
+- 六条均为开发 `dt=1e-4`、55 s、550000 子步。ESN task/strict=`0/3`,`0/3`，最终阶段 carry/carry/load_transfer；`delta_weight=1.0` ESN 最接近完成但仍未放置。MLP 的 `0.5/1.0` 完成 task，strict=`0/3`，required contact coverage 仍失败。六条指标和 checkpoint hash 见 `docs/ESN_MLP_TEMPORAL_CONSISTENCY_SCREEN_20261001.md`。
+- 六条独立 action/储备池/物理子步审计通过：action replay 最大误差为0，ESN reservoir replay 最大误差为0，MLP 无 reservoir，均为550000物理子步。没有 strict 候选，formal `dt=5e-5` 继续锁定；结果不支持 ESN 优势。
+- 新增配置、训练器和专题报告。原始 rollout、checkpoint、MJB 和失败回合仅保留本地待同步；本轮 GitHub 与 arm1 网络仍不可达。
+
 ## 2026-10-01 — low-scale ESN/MLP weight-decay screen completed locally
 
 - 完成预注册 `weight_decay=1e-5/1e-4/1e-3` 屏幕。锁定 teacher manifest SHA256=`6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`，固定 7/2 identity split、canonical48D/action7、ESN/MLP 宽度128、`input_scale=0.25`、combined-v4、原 gate、纯本体输入和执行器限制；仅改变 AdamW weight decay。

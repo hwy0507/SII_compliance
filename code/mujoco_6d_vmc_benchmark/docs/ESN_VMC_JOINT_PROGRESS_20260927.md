@@ -1,5 +1,13 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-01 temporal-consistency loss screen（本地完成，待同步）
+
+在锁定 manifest、7/2 identity split、canonical48D/action7、128 宽度和 frozen combined-v4 上，只改变训练目标：weighted action MSE 加 `delta_weight` 倍相邻 action 增量 MSE，候选 `0/0.5/1.0`。环境、gate、禁止输入和执行器限制均未改；ESN seed `2026100140`、MLP seed `2026100141`。
+
+六条开发回合均为 `dt=1e-4`、55 s、550000 物理子步。ESN 全部 task/strict=false，最终 carry/carry/load_transfer；`delta_weight=1.0` 的 ESN RMSE 40.378 mm，但停在 load_transfer。MLP 的 `0.5/1.0` 完成 task，strict 仍 false，原因是 required contact coverage 不足。指标、checkpoint 和失败原因详见 [`ESN_MLP_TEMPORAL_CONSISTENCY_SCREEN_20261001.md`](ESN_MLP_TEMPORAL_CONSISTENCY_SCREEN_20261001.md)。
+
+六条独立审计均通过：action replay 最大误差为0，ESN reservoir replay 最大误差为0，MLP reservoir replay 为 null，物理子步均为550000。无 strict 候选，formal `dt=5e-5` 继续锁定。原始证据保留在三个 `outputs/esn_mlp_temporal_consistency_20261001_dw*/` 目录；GitHub/arm1 当前不可达，产物仅本地待同步。
+
 ## 2026-10-01 low-scale weight-decay screen（本地完成，待同步）
 
 在锁定 teacher manifest（SHA256 `6e81f03a90a7fc850bd68f19507db0769b517e9f85f9415edefc3433f7fa98f3`）上完成成对 ESN/MLP weight-decay 屏幕。固定 canonical48D/action7、7/2 identity split、128 宽度、`input_scale=0.25`、combined-thick-corner-pillar-v4、原 gate、纯本体输入和执行器限制，只改变 AdamW `weight_decay=1e-5/1e-4/1e-3`。训练 seed 为 ESN `2026100130`、MLP `2026100131`。
