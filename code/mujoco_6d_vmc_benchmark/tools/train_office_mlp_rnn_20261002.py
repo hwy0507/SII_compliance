@@ -15,9 +15,11 @@ from office_mlp_rnn_20261002 import OfficeMLPRNN, CONTRACT
 
 
 class Network(nn.Module):
-    def __init__(self, kind, dimension, seed):
+    def __init__(self, kind, dimension, seed, norm_slowdown=False, modular=False):
         super().__init__()
         self.kind = kind
+        self.norm_slowdown = norm_slowdown
+        self.modular = modular
         self.core = (nn.RNN(dimension, 128, batch_first=True, bias=False)
                      if kind == 'rnn' else nn.Linear(dimension, 128, bias=False))
         self.head = nn.Linear(128, 7, bias=False)
@@ -32,6 +34,24 @@ class Network(nn.Module):
             else:
                 self.core.weight.copy_(torch.tensor(input_w))
             self.head.weight.copy_(torch.tensor(output_w))
+        self.active_parameters = sum(p.numel() for p in self.parameters())
+        if modular:
+            if dimension != 6 or not norm_slowdown:
+                raise ValueError('Matched modular baseline requires six load fields and norm slowdown')
+            input_mask = torch.zeros(128, 6); recurrent_mask = torch.zeros(128, 128); output_mask = torch.zeros(7, 128)
+            begin = 0
+            for axis, width in enumerate((22,22,21,21,21,21)):
+                stop = begin+width
+                input_mask[begin:stop,axis]=1
+                recurrent_mask[begin:stop,begin:stop]=1
+                output_mask[axis+1,begin:stop]=1
+                begin=stop
+            pairs=[(self.core.weight_ih_l0 if kind=='rnn' else self.core.weight,input_mask),(self.head.weight,output_mask)]
+            if kind=='rnn':pairs.append((self.core.weight_hh_l0,recurrent_mask))
+            self.active_parameters=int(sum(mask.sum() for _,mask in pairs))
+            for parameter,mask in pairs:
+                with torch.no_grad():parameter.mul_(mask)
+                parameter.register_hook(lambda gradient,mask=mask:gradient*mask)
 
     def forward(self, x, state=None):
         if self.kind == 'rnn':
@@ -39,11 +59,16 @@ class Network(nn.Module):
         else:
             hidden = torch.tanh(self.core(x))
         raw = self.head(hidden)
-        action = torch.cat((raw[..., :1].clamp(0, 1), torch.tanh(raw[..., 1:])), -1)
+        residual = torch.tanh(raw[..., 1:])
+        scale = (torch.linalg.vector_norm(residual, dim=-1, keepdim=True)/np.sqrt(6)
+                 if self.norm_slowdown else raw[..., :1].clamp(0, 1))
+        action = torch.cat((scale, residual), -1)
         return action, state
 
-    def export(self, fields, scale):
+    def export(self, fields, scale, absolute_inputs=False):
         result = dict(contract=np.asarray(CONTRACT), kind=np.asarray(self.kind), fields=fields,
+                      norm_slowdown=np.asarray(self.norm_slowdown),
+                      absolute_inputs=np.asarray(absolute_inputs),
                       scale=scale, input_w=(self.core.weight_ih_l0 if self.kind == 'rnn' else self.core.weight).detach().numpy(),
                       output_w=self.head.weight.detach().numpy())
         if self.kind == 'rnn':
@@ -59,13 +84,27 @@ def main():
     p.add_argument('--seed', type=int, required=True)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--updates', type=int, default=2400)
+    p.add_argument('--target', choices=('requested', 'filtered'), default='filtered')
+    p.add_argument('--norm-slowdown', action='store_true')
+    p.add_argument('--modular',action='store_true',help='Same per-axis 128-unit structure as the proposed modular ESN')
+    p.add_argument('--learning-rate',type=float,default=.001)
+    p.add_argument('--drift-weight',type=float,default=0.)
+    p.add_argument('--initialize-checkpoint',type=Path)
+    p.add_argument('--parent-metadata',type=Path)
+    p.add_argument('--absolute-inputs',action='store_true')
+    p.add_argument('--precision',choices=('float32','float64'),default='float32',
+                   help='Train/export with matched arithmetic; float64 avoids long recurrent replay drift')
+    p.add_argument('--tbptt-steps',type=int,default=64,help='Sequence length per optimizer update; actual exposure is recorded')
     a = p.parse_args()
+    if not 16<=a.tbptt_steps<=2048:raise ValueError('TBPTT steps must be 16..2048')
     a.output.mkdir(parents=True, exist_ok=False)
     cg = Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::', 1)[1].lstrip('/')
     memory = (cg/'memory.max').read_text().strip()
     assert memory != 'max' and int(memory) <= 3*1024**3
     assert all(os.environ.get(k) == '1' for k in ('OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS', 'MKL_NUM_THREADS'))
     torch.set_num_threads(1)
+    torch.set_default_dtype(torch.float64 if a.precision=='float64' else torch.float32)
+    array_dtype=np.float64 if a.precision=='float64' else np.float32
     torch.manual_seed(a.seed)
     sources = sorted((ROOT/'scripts').glob('*.py')) + [Path(__file__), ROOT/'tools/optimize_tool_contact_20261002.py']
     source_hash = {str(f.relative_to(ROOT)): sha(f) for f in sources}
@@ -82,16 +121,32 @@ def main():
                             if metadata.get('position_error_context') else list(range(39, 45)))
         with np.load(a.data) as z:
             obs, target, episode, train, importance = [z[k].copy() for k in
-                ('observation', 'filtered_teacher_action', 'episode', 'train', 'importance')]
+                ('observation', a.target+'_teacher_action', 'episode', 'train', 'importance')]
         assert all(np.isfinite(x).all() for x in (obs, target, importance))
         train_ids, val_ids = np.unique(episode[train]), np.unique(episode[~train])
         assert not set(train_ids).intersection(val_ids)
         scale = np.maximum(obs[train][:, fields].std(0), .005)
-        features = np.clip(obs[:, fields]/scale, -12, 12).astype(np.float32)
+        features = np.clip(obs[:, fields]/scale, -12, 12).astype(array_dtype)
+        if a.absolute_inputs:features=np.c_[features,np.abs(features)]
         seq = {int(ep): np.flatnonzero(episode == ep) for ep in np.unique(episode)}
         assert all(np.unique(train[ids]).size == 1 for ids in seq.values())
-        model = Network(a.kind, len(fields), a.seed)
-        optimizer = torch.optim.AdamW(model.parameters(), lr=.001, weight_decay=1e-5)
+        model = Network(a.kind, features.shape[1], a.seed, a.norm_slowdown,a.modular)
+        if not 0<=a.drift_weight<=2:raise ValueError('Invalid integrated-action loss weight')
+        parent_sha=None
+        if a.initialize_checkpoint is not None:
+            if a.parent_metadata is None:raise ValueError('Parent metadata required')
+            parent=json.loads(a.parent_metadata.read_text());parent_sha=sha(a.initialize_checkpoint)
+            assert parent_sha==parent['checkpoint_sha256']
+            assert parent['data_sha256']==sha(a.data) and parent['kind']==a.kind and parent['modular']==a.modular
+            with np.load(a.initialize_checkpoint) as z,torch.no_grad():
+                np.testing.assert_array_equal(z['fields'],fields);np.testing.assert_array_equal(z['scale'],scale)
+                assert bool(z['norm_slowdown'])==a.norm_slowdown
+                assert (bool(z['absolute_inputs']) if 'absolute_inputs' in z.files else False)==a.absolute_inputs
+                (model.core.weight_ih_l0 if a.kind=='rnn' else model.core.weight).copy_(torch.from_numpy(z['input_w']))
+                model.head.weight.copy_(torch.from_numpy(z['output_w']))
+                if a.kind=='rnn':model.core.weight_hh_l0.copy_(torch.from_numpy(z['recurrent_w']))
+        if not 0<a.learning_rate<=.01:raise ValueError('Invalid learning rate')
+        optimizer = torch.optim.AdamW(model.parameters(), lr=a.learning_rate, weight_decay=1e-5)
         rng = np.random.default_rng(a.seed+2000)
         def predict_all(ids):
             values = {}
@@ -102,27 +157,46 @@ def main():
             return values
         history, schedule = [], []
         best, best_state, best_step = float('inf'), None, None
+        proxy_scale=torch.tensor([.32,.32,.32,.6,.6,.6])/torch.tensor([.02,.02,.02,.05,.05,.05])*.04
+        def validation_score(values):
+            errors=[values[int(ep)]-target[seq[int(ep)]] for ep in val_ids]
+            mse=float(np.mean(np.concatenate(errors)**2))
+            windows=[]
+            for err in errors:
+                for start in range(0,len(err)-15,16):
+                    windows.append(np.sum(err[start:start+16,1:],axis=0)*proxy_scale.numpy())
+            integrated=float(np.mean(np.asarray(windows)**2))
+            return mse,integrated,mse+a.drift_weight*integrated
+        if parent_sha is not None:
+            vm,vd,best=validation_score(predict_all(val_ids));best_state=copy.deepcopy(model.state_dict());best_step=0
+            history.append(dict(update=0,validation_mse=vm,validation_integrated_proxy=vd,selection_score=best))
         update, epoch = 0, 0
         while update < a.updates:
             order = rng.permutation(train_ids)
             for start in range(0, len(order), 8):
                 group = order[start:start+8]
                 length = max(len(seq[int(ep)]) for ep in group)
-                x = np.zeros((len(group), length, len(fields)), np.float32)
-                y = np.zeros((len(group), length, 7), np.float32)
-                w = np.zeros((len(group), length), np.float32)
+                x = np.zeros((len(group), length, features.shape[1]), array_dtype)
+                y = np.zeros((len(group), length, 7), array_dtype)
+                w = np.zeros((len(group), length), array_dtype)
                 for i, ep in enumerate(group):
                     ids = seq[int(ep)]; n = len(ids)
                     x[i, :n], y[i, :n], w[i, :n] = features[ids], target[ids], importance[ids]
                 hidden = None
-                for offset in range(0, length, 64):
-                    xx, yy, ww = [torch.from_numpy(v[:, offset:offset+64]) for v in (x, y, w)]
+                for offset in range(0, length, a.tbptt_steps):
+                    xx, yy, ww = [torch.from_numpy(v[:, offset:offset+a.tbptt_steps]) for v in (x, y, w)]
                     prediction, hidden = model(xx, hidden)
                     loss = (((prediction-yy)**2)*ww[..., None]).sum()/(7*ww.sum())
                     pair_w = torch.minimum(ww[:, 1:], ww[:, :-1])
                     delta = ((prediction[:, 1:]-prediction[:, :-1])-(yy[:, 1:]-yy[:, :-1]))**2
                     delta_loss = (delta*pair_w[..., None]).sum()/(7*pair_w.sum().clamp_min(1))
                     total = loss+.25*delta_loss
+                    if a.drift_weight and prediction.shape[1]>=16:
+                        residual=prediction[...,1:]-yy[...,1:]
+                        accumulated=residual.unfold(1,16,1).sum(-1)*proxy_scale
+                        window_weights=ww.unfold(1,16,1).amin(-1)
+                        integrated=(accumulated.square()*window_weights[...,None]).sum()/(6*window_weights.sum().clamp_min(1))
+                        total=total+a.drift_weight*integrated
                     if not torch.isfinite(total):
                         raise ValueError('Nonfinite training loss')
                     optimizer.zero_grad(set_to_none=True)
@@ -138,14 +212,14 @@ def main():
                 if update >= a.updates:
                     break
             values = predict_all(val_ids)
-            err = np.concatenate([values[int(ep)]-target[seq[int(ep)]] for ep in val_ids])
-            score = float(np.mean(err**2))
-            history.append(dict(update=update, epoch=epoch, last_train_loss=float(total.detach()), validation_mse=score))
+            validation_mse,validation_integral,score=validation_score(values)
+            history.append(dict(update=update, epoch=epoch, last_train_loss=float(total.detach()), validation_mse=validation_mse,
+                                validation_integrated_proxy=validation_integral,selection_score=score))
             if score < best:
                 best, best_state, best_step = score, copy.deepcopy(model.state_dict()), update
             epoch += 1
         model.load_state_dict(best_state)
-        np.savez_compressed(a.output/'checkpoint.npz', **model.export(fields, scale))
+        np.savez_compressed(a.output/'checkpoint.npz', **model.export(fields, scale,a.absolute_inputs))
         exported = OfficeMLPRNN(a.output/'checkpoint.npz')
         predictions = np.empty_like(target)
         max_error = 0.
@@ -172,13 +246,18 @@ def main():
                            ('seen_physical_histories', episode >= 48)]:
             groups[name] = dict(samples=int(mask.sum()), action_mse=float(np.mean((predictions[mask]-target[mask])**2)))
         result = dict(kind=a.kind, seed=a.seed, updates=update, selected_update=best_step, width=128,
+                      target=a.target, norm_slowdown=a.norm_slowdown,
+                      modular=a.modular,active_trainable_parameters=model.active_parameters,learning_rate=a.learning_rate,
+                      drift_weight=a.drift_weight,drift_window_s=.64,parent_checkpoint_sha256=parent_sha,
+                      absolute_inputs=a.absolute_inputs,precision=a.precision,
                       trainable_parameters=sum(p.numel() for p in model.parameters()), fields=fields.tolist(),
                       data_sha256=sha(a.data), metadata_sha256=sha(a.metadata), lineage=metadata['lineage'],
                       checkpoint_sha256=sha(a.output/'checkpoint.npz'), schedule_sha256=sha(a.output/'schedule.json'),
                       exported_replay_sha256=sha(a.output/'exported_replay.npz'), groups=groups,
                       numpy_torch_max_abs=max_error, unused_field_isolation_pass=True, zero_input_equilibrium_pass=True,
-                      batch_size=8, tbptt_steps=64, action_delta_weight=.25, source_sha256=source_hash,
-                      limitation='Synthetic identity holdout and seen failed-teacher histories; physical success measured separately. No runtime teacher/controller. Width-matched, not parameter-matched.')
+                      batch_size=8, tbptt_steps=a.tbptt_steps, actual_nonpadding_observations=sum(s[3] for s in schedule),
+                      action_delta_weight=.25, source_sha256=source_hash,
+                      limitation='Synthetic identity holdout and declared development histories (success/failure and counterfactual labels retained in lineage); physical success measured separately. No runtime teacher/controller. Width-matched, not parameter-matched.')
         assert all(sha(ROOT/k) == v for k, v in source_hash.items())
         write(a.output/'TRAINING_COMPLETE.json', result)
         state.update(status='complete', checkpoint_sha256=result['checkpoint_sha256'])

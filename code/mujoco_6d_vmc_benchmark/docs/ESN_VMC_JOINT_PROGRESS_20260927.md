@@ -1,5 +1,231 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 十二小时预算内研究最终交接（2026-10-03）
+
+全部物理和独立审计结束：104主比较＋56随机＋7正式步长，共167新增完整55秒回合。
+主比较ESN两seed strict1/4、2/4，随机补充各4/8；同特征RNN主比较各2/4、随机1/8与2/8。
+增强teacher随机5/8、无记忆5/8；两个ESN正式步长均放置失败，teacher/无记忆/RNN seed1成功。
+有局部优势，未证明全面最好、储备池记忆必要性或真实环境泛化；不把不同组分母合并。
+三个同seed共同strict条件中ESN更快完成，但推杆p95力都更高。随机strict子集ESN杆保持期
+最长无接触间隙中位数仅1.1/1.3ms，仍不能宣称持续主动滑脱；恢复时延删失明确记录。
+
+193选定记录的接触覆盖/失败征象、192完整末态和1原abort均已核验；67条成功完成时间补充
+25Hz采样勘误（原插值早20ms），不改gate。47完整三机位视频及2上下对比已核对hash；
+两步长7对轨迹分叉仅作事后诊断，不用于训练或选型。全文及视频索引见
+`PAPER_ESN_12H_RESULTS_20261003.md`、`PAPER_ESN_12H_METHODS_20261003.md`。
+
+2026-10-02 22:24:07UTC服务器主执行根双遍hash核验完成，40094文件/32802129515字节：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/`。
+清单位于同父目录`paper_esn_12h_native_integrity_20261003_final/NATIVE_INTEGRITY.json`，SHA
+`f2bd06e2a7a1b4e26c85eaaa0a6e96061da88b729232c8775a2a58317579b3e8`。Git证据目录保留结果、
+24份汇总所引用独立审计、媒体索引及收据；大轨迹、checkpoint、MP4留服务器，本机存播放缓存。
+运行源码以各run/source及overlay为准，整理后的Git源码另按提交SHA归档source目录。
+
+已完成：本轮冻结比较、审计、报告及共享证据；无本任务运行中作业，无定时任务。
+尚未完成：跨分辨率/条件稳定ESN、持续杆推滑脱、对强对照的持续优势、真实机器人验证。
+后续优先扩充真实teacher承载转移/掉块前闭环历史，不能把2条实际teacher＋48合成序列写成
+大量独立成功物理场景。当前final条件已知，后续训练须登记新验证，不能重新调参后冒充盲测。
+
+## 十二小时研究21:41UTC：主比较与formal完成，ESN未全面领先
+
+104/104四设计条件及共同配置/独立物理审计完成，全部完整55秒。
+ESN seed1 task/strict1/1（分母4），seed2为3/2；同特征RNN为3/2和4/2，普通RNN为4/2和2/1，
+同特征MLP2/2，无记忆3/2，增强teacher3/2。七个经典方法、七个冻结RL和名义zero均0/4任务成功。
+h3两个ESN通过但teacher失败，无记忆也通过，不能独占归因于储备池记忆。
+h1 ESN seed1虽然XY3.427mm，却高于目标32.445mm、停load_transfer；h2则物块掉至地面，
+XY214.157mm，不能把retreat阶段或低RMSE当放置。失败原始记录未改。
+
+7/7正式dt=5e-5锚点及独立审计完成：teacher、无记忆、同特征RNN seed1通过task/strict；
+两个ESN、RNN seed2、VMC04均任务失败。两个ESN的外穿透.174092/.140342mm并未超限，
+失败在放置；开发成功没有保持到更小步长。详细表见`PAPER_ESN_12H_RESULTS_20261003.md`。
+主协调器complete；八随机条件按之前锁定的7模型资格开始，不能因formal失败改变模型或删除资格。
+14条其余设计条件视频全部55秒/1375帧、三机位并下载hash核验；h1全26与formal全7媒体仍生成。
+原生开发RL的16.36秒安全终止视频另完整保留409帧，短时长审计通过。
+尚未完成：56随机回合、193条终版汇总/全任务接触及末态核验、最终文档/Git/原生整体完整性。
+
+## 十二小时研究21:09UTC：继续冻结验证，补齐接触覆盖与完整展示
+
+主验证81/104条完成，仍4模拟器、单线程/3GiB；没有新训练/调参或重启。最终交付连续服务
+`sii-paper-final-delivery-20261003.service`等待原协调器完成，再生成主表、h1全部26模型和formal全部7模型
+的三机位视频；之后等待56条随机验证完成，生成193条选定记录及全体独立放置重建。
+这是一次性后处理作业，不是定时任务，不执行新的物理积分。失败保留、abort按真实时长展示。
+
+独立纯本体输入边界审计：10模型各1375帧、其余30字段改为固定seed大幅随机值，动作/隐藏状态差均0。
+主执行根`ACTOR_INPUT_BOUNDARY_AUDIT.json` SHA `1db78fc30bc58c8dfbf8646e964d406c6fa6625219942c7aeb9575db33077540`。
+112原生开发回合全量索引`development_catalog/catalog.json` SHA
+`2025309ff33dbeed251dcb0643c735057129d7a425fc1f19a15f56dbbd0c62e1`，task14/strict10；
+与本机82条、不同库7条兼容诊断分开，不作为最终26模型统计。完整学习69目录/58训练完成记录，失败导出保留。
+
+开发曲线发现人手指令结束后的再接触，因此补充全任务/窗口外接触审计，原事件窗口统计不覆盖、不删改。
+该补充为事后测量覆盖诊断，不冒充预登记优越性终点。原放置判定每个25Hz有效样本计.04秒，
+13样本计.52秒但首末跨度.48秒，审计说明已纠正；原task/strict一律不变，不宣称子步连续保持认证。
+后处理源包`final_delivery_source_20261003_0505.tar.gz` SHA
+`2d7ecfc244d0449722a1ba928900492d7487f7eca326580956ce22ba93738c21`已核验于服务器主执行根。
+初次打包误含历史outputs且传输未完即尝试解包，失败未执行；完整旧包与不完整解包保留在独立
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_transfer_diagnostic_20261003_0439/`。
+替代包排除outputs，传输完成后先SHA核验再解包，新目录不覆盖任何运行源码；`SOURCE_TRANSFER_DIAGNOSTIC_20261003.json`记录过程。
+未完成：主比较/formal/随机补充全部最终审计、最终论文结论、全根归档验证与Git发布。
+
+## 十二小时研究20:09UTC：26模型已锁定，最终评估开始
+
+38条原生经典候选全部结束并通过独立审计；确定性规则选中admittance_01、impedance_12、
+original_vmc_04。VMC04开发strict通过，另VMC01仅task通过（外穿透.710550mm）；导纳/阻抗均
+未在开发锚点完成放置，全部失败与原参数保留。最终26模型于20:09:22UTC锁定，四条件同步启动，
+当前4个仿真进程、每个单线程/3GiB。之后不再训练/调参。
+服务器主执行根中`final_model_lock/VALIDATION_LOCK.json`的SHA256为
+`755974da1d4d5a3fb1aa24aa779cf91ede2e83768de2b9dd21089de863166701`；本地副本核验一致。
+7个formal合格者在四条件前确定：增强35mm teacher、固定ESN两seed、无记忆重训、同特征RNN两seed、VMC04。
+
+在任何最终回合开始之前，20:01:17UTC另登记8个PCG64固定随机扰动条件，作为7个开发合格者的
+补充稳健性检查（56回合）；原26×4主比较完整保留，未入补充组的模型不算失败。
+`PAPER_ESN_12H_SENSITIVITY_20261003.json` SHA
+`d9191c98ee76691b449322c6ccfdfbd0522563314730854725309afd2eb1b252`，
+快照`sensitivity_source_20261003_0405.tar.gz` SHA
+`cc106f3e17677089805b97778535dc6278514046f1e56a7df2fdae52c82eb17d`已共享核验。
+补充协调器只在主比较/formal全部审计完成后串接，不是定时任务，不根据最终结果改资格。
+代码仅为新条件文件增加精确hash白名单；正在运行的原四条件源码快照未改。
+
+本机82条开发回合与全部后处理/小型证据索引已核验到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_local_audits_20261002_141136/evidence/`，
+746文件/7062404字节，manifest `3f859cd8ea65d7684aa6c8cf63768c68680240e15632ebb861962ea6d3ede870`。
+10个主学生各53500输入的学习回放重建最大误差0；证据主执行根`LEARNING_REPLAY_DIAGNOSTIC.json`，
+SHA `baa4736bc99911eef867af5e9f31e84fffca577c77bbff0115044c0112951fc5`，实际在airpig离线计算。
+6条新增55秒三机位视频全部1375帧解码并下载核验，ESN2/RNN1/MLP1代表拼图已目视检查；
+两个RNN及ESN2的真实释放/支撑末态重建也通过。现有成功不证明推杆保持期持续滑脱。
+baseline源/参数/7个RL checkpoint等537文件1013195685字节另存主执行根`baseline_dependencies/`，
+索引SHA `71edb6111a6ef8786734d146a1c084ea00f96a53f3f3a2ea1ad83d2395badb14`；不改原运行目录。
+运行中：104条主条件队列；待运行：7条formal、56条随机补充。未完成最终统计、媒体、整根原生完整性核验和Git发布。
+
+## 十二小时研究19:27UTC：停止拟合，转入冻结配对验证
+
+所有新学生训练于18:52UTC前结束；19:00UTC登记最终选型规格，之后不再训练/调参。
+同特征可训练RNN两个seed都完成原生开发task/strict：seed1为42.442060mm/50.390430Nm/
+.389962m/s、穿透.196021mm；seed2为29.329836mm/49.395878Nm/.360622m/s、穿透.114708mm。
+两条独立指标/动作/状态审计通过。RNN seed2人手p95/冲量14.413N/26.607Ns，杆11.390N/37.757Ns，
+未接触柱子；其负载较低不能直接解释为同曝光下更柔顺。ESN并非唯一能成功的结构。
+原VMC固定搜索也出现strict通过的original_vmc_04：36.384884mm/48.822414Nm/.368985m/s，
+穿透.120831mm；完整38候选仍顺序评估，不提前按局部结果结束搜索。
+
+最终一次性协调器`sii-paper-final-coordinator-20261003.service`已运行，先等待稳定经典队列完成、
+独立审计，再生成26模型锁和四条件配对；所有开发strict合格者另做5e-5步长，不据最终条件筛选。
+协调器不训练、不调度定时任务，每个队列单线程/3GiB，仿真总并发不超过4。
+截至此记录最终条件尚未派发，正式步长尚未完成。模型与参数冻结后不因测试结果再修改。
+源快照位于服务器主执行根`final_validation_source_20261003_0320.tar.gz`，SHA256
+`b251daadfb8846a04880e1717a1df42f067b8c2d7ebe8e9dfbe1cfb06d2bf702`；规格和封存条件也在该快照内。
+
+新增已核验归档（均在`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/`）：
+
+- `paper_esn_12h_learning_complete_20261002_141136/evidence/`：69组、3710文件、265297768字节，
+  包括全部顶层学生训练、失败导出、数据与离线队列；manifest
+  `f0229abc25df6042a339035671f6a65cf5e069974ba88b432a028b0e72645e90`。
+- `paper_esn_12h_classical_slice2_20261002_141136/evidence/`：本机剩余29条，1712文件、3104419394字节；
+  manifest `3a3eb4f64e83ea6706f819b41a95efb20c71cce67384ce725add133c0b668a5c`。
+
+六条补充开发三机位视频正在从保存状态渲染，包括两个RNN、ESN seed2、teacher以及MLP/名义失败。
+运行源/结果仍在`paper_esn_12h_rl_20261002_141136/`；原始执行路径不改写。19:08UTC复查远端main
+282433d339feef66b0334f223f82a6eea96b040b、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6未变。
+
+## 十二小时研究 18:45 UTC：35mm组两个ESN seed成功，但记忆必要性尚未成立
+
+同原生v6锚点、完整55秒、原门槛：35mm组固定128储备池两seed均task/strict通过。
+seed1为29.012838mm/50.684875Nm/.389144m/s、外穿透.179431mm、XY12.165mm、有效保持18.04s；
+seed2为28.014857mm/50.289936Nm/.354489m/s、外穿透.110893mm、XY21.914mm。
+seed1独立末态重建、两条成功ESN（含50mm组）的55秒/1375帧三机位视频及逐帧解码完成。
+不能把两个初始化seed当跨环境泛化；四个最终条件仍未使用。
+
+35mm组重新训练的无记忆模型也task/strict通过：32.042943mm/52.798248Nm/.356138m/s，
+外穿透.108959mm。因此原成功模型逐观测清空后失败并不足以证明“记忆必要”。同宽普通MLP/RNN
+两seed各0/2 task/strict；feature-matched可训练MLP/RNN已完成离线学习、正在闭环，以拆分固定
+load×context特征与循环记忆的影响。长历史RNN两seed一条放置但穿透.429421mm，strict均失败；
+原64步与新256步训练实际非padding曝光约477万/454万，近似匹配而非完全相等。
+
+共享DAgger把35mm组四条已完成学生历史全部反事实重标注，原8条留出身份逐数组不变；
+两个新ESN均外穿透超限（.535208/.604829mm），暂不替代原固定ESN。读出MSE优化版也失败。
+50mm组第二seed/无记忆/读出优化均失败，所有失败已保留。没有因离线误差更低而声称物理更好。
+
+35mm seed1接触：球、人手、杆、凸边、柱子均实际发生；人手p95约14.884N、冲量28.980Ns，
+杆p95约13.776N、冲量46.724Ns，但杆保持期最大无接触间隙仅1.1ms，不能声称主动蹭开。
+杆撤回0.103s后即接触下一凸边，恢复统计按先验删失，不填一个虚假恢复时间。
+50mm成功seed1没有柱接触，杆撤回后稳定重返路径约1.2065s；这些接触曝光差异必须展示。
+
+服务器主执行根仍为`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/`。
+35mm基础/机制组分别`recovery035_learned_native`、`recovery035_mechanism_native`，共享DAgger为
+`recovery035_dagger_native`，长RNN为`rnn_long_native`，特征匹配为`feature_matched_native`。
+已核验639项/100781194字节完整学习证据：
+`/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_learning_evidence_1815_20261002_141136/evidence/`，
+manifest `f6a56266094c5fb7c89ff6adec32b10bad100ff82ef087ea1cd77a078f799b48`。
+运行中：本机经典剩余候选、原生38条经典复评、学生对照及完成批次独立审计；未完成终版锁定、
+正式步长、四条件配对、最终统计/全部归档/Git发布。模型/数据各bundle收据保存在本run archive_receipts。
+
+## 十二小时研究 17:56 UTC：首条纯线性读出 ESN 开发 strict 成功
+
+统一原baseline解释器后，`recovery05_esn_fixed`完成55秒，task/strict均true，真实最终XY误差
+7.929mm；RMSE41.475743mm、峰矩50.135914Nm、峰速.357187m/s、外穿透.125753mm。
+128固定储备池，仅2884个线性读出系数学习，独立7维输出，无部署VMC或额外隐藏读出。
+这是一个开发锚点，不是正式步长或泛化结论；独立末态重建与整批接触审计正在进行。
+同组条件漏率ESN最终XY25.161mm略超原25mm而失败；adaptive-leak版本task通过但柱子穿透
+.484566mm，strict失败。所有结果保留，不能把只完成放置者称安全成功。
+
+服务器执行根（源码在对应批次source，未提交源码有逐文件hash）：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/`。
+当前成功回合`recovery05_learned_native/recovery05_esn_fixed/`；模型已核验共享在
+`/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_recovery05_learned_20261002_141136/evidence/`，
+bundle manifest SHA `f20cebe3bc35de2ac53afb65cd3784c91e90a99e3275044e8b6915d528853122`。
+14个历史baseline/ESN锚点已逐数组精确重现，共15回合统一场景/解释器/初态审计通过，
+证据`RL_NATIVE_PARITY.json`、`ANCHOR_NATIVE_PARITY.json`、`BASELINE_COMMON_COHORT.json`。
+
+六个恢复teacher在原环境有3条task/strict成功；35mm/.02m progress配置稳定保持13.6s，
+29.894mm/49.246Nm/.384913m/s，已成为下一蒸馏数据组。50mm组继续全部跑完；35mm组保留
+原生成功与本机失败实际执行标签，同身份留出，固定/条件漏率离线模型完成，MLP/RNN同数据训练中。
+宽范围漏率未改善离线误差，不派发。经典剩余29条本机单模拟器运行中，服务器学生两批运行中。
+最终四条件仍封存；尚未锁定终版、完成正式步长/泛化/记忆因果对照或最终媒体，不能声称ESN最佳。
+
+## 十二小时研究中期：统一运行环境，纯ESN到达目标但保持时长不足
+
+仍在原授权窗口内连续执行，无定时任务。原始VMC本地单条task/strict通过，尚非稳健性结论。
+同数据128单元纯ESN的temporal_.25（只优化402个读出系数、加入.64秒动作积分代理）已在
+冻结v6末帧完成松爪、真实桌面支撑、无机器人接触与静止，XY12.557mm、Z约.003mm；但直到
+55秒末才张开夹爪，连续有效保持仅.04秒，低于原.5秒，task/strict仍false。原始轨迹保留，
+没有延长回合、提前宣布成功或更改判据。550000子步RMSE28.915mm、峰矩49.162Nm、峰速
+.382531m/s、最大外穿透.168985mm，末态独立重建核验。其他分组MLP/RNN/积分权重0对照均失败。
+
+新固定对角、级联和阈值储备池未改善离线留出，未进入物理；限幅线性读出留出改善到.000831，
+但其闭环仍卡carry，说明离线拟合不等于放置。正在顺序运行预登记teacher恢复/平滑候选，
+MLP/RNN已获得同动作积分目标的额外4000更新；之后做同预算读出校准。环境、actor输入、
+gate、执行器约束不动，四个最终配对条件仍未使用。
+
+运行环境纠正：服务器最初RL七条使用错误的simba_v2_venv+CUDA12 overlay，已保留为兼容性
+诊断，不纳入精确复现。使用原baseline的reward_study_20260930/venv_gpu及gpu_env.sh库路径
+重跑七条，恢复了历史三指标与direct_office_task_74002的穿透终止；所有task/strict仍失败。
+统一运行环境的VMC与七个非RL锚点正在核验，避免混合本机/服务器数值差异作为算法优势。
+服务器原生运行（尚待最后归档总审计）：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/`，
+其中evaluations_native为正确RL环境，evaluations_r4为兼容性诊断，native_anchor为非RL核验；
+源码native_source_20261003_0040.tar.gz SHA56b205febf6bc90cb3f96380179664ee18f8e83259db7e3dda974bf1d58d4d3e。
+首个native_anchor服务在仿真前因缺少锁目录退出，journal保留；只创建新源码副本outputs目录
+后恢复，未覆盖任何回合。批处理器已为以后启动创建该目录，避免同类预启动错误。
+
+新增九条经典控制器开发失败已独立审计且782项973,560,594字节SHA核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_classical_slice1_20261002_141136/evidence/`，
+manifest b04f3ec8db8e16e470a98e540c4d77d87c1ec1e7176f7326d943393613577d66。
+其余最近学习批次目前仅本地待同步；未完成最终锁模、纯ESN task/strict、formal及跨条件证据。
+
+## 2026-10-02 十二小时同场景研究：15:05 UTC阶段记录，仍在执行
+
+授权14:11:36UTC至次日02:11:36UTC，无定时任务。开工main282433d、baseline ebb0e1e；
+采用baseline已冻结的office-validation-v6，MJB173e404b，55s/dt1e-4。该世界为开发场景，
+不能把v5→v6当作算法改进。原始VMC配置{}现已完成真实释放稳定放置，task/strict=true，
+RMSE28.690mm、峰矩50.573Nm、峰速.384913m/s、最大外部穿透.194972mm、XY11.205mm，
+终端稳定保持2.64s。四类真实接触存在，但杆保持期无明显持续脱离，三项settled-rejoin均删失。
+这是一条成功强baseline，不是ESN优势。首批其他4条全部失败；旧ESN与两版新蒸馏ESN均仍卡carry。
+原始VMC临近穿透门槛，未验证稳健性。新128单元分组ESN、同数据同128hidden的MLP/RNN已完成
+离线训练，闭环待测；既有导纳/阻抗/参数VMC正在相同v6核验，保留各自控制律。
+先验指标层次、候选预算与所有限制见[PAPER_ESN_12H_PROTOCOL_20261002.md](PAPER_ESN_12H_PROTOCOL_20261002.md)。
+首批5条完整轨迹/动作/储备池/filter/物理子步/穿透审计539项520,615,243字节已SHA核验共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_initial_20261002_141136/evidence/`。
+该目录source为确切运行源码，manifest SHA53cbdf8bda7dfdb9b25393c1afaf8d2e32a78c795dabdb48627734c053cc7111。
+后续批次目前仅本地待归档；未完成纯ESN成功、同数据最终比较、formal与跨条件证据。
+
 ## 2026-10-02 纯 MLP / 可训练 RNN 替换：8条完整开发回合均未成功
 
 按用户新授权，用两套既有 teacher 数据训练128宽MLP和Elman RNN，各两个seed、相同2400

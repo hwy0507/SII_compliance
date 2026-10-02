@@ -1,0 +1,22 @@
+{
+  "declared_utc": "2026-10-02T19:00:00+00:00",
+  "purpose": "Freeze final paired validation after all declared development and independent audits finish; no final conditions have been run",
+  "analysis_aliases": {"native_anchor": "_analysis", "evaluations_native": "evaluations_native_analysis"},
+  "fixed_groups": [
+    {"phase": "native_anchor", "names": ["zero", "original_vmc_native", "fixed_admittance", "fixed_impedance", "fixed_vmc"], "role": "frozen_historical_baseline"},
+    {"phase": "evaluations_native", "all": true, "role": "frozen_rl_baseline"},
+    {"phase": "recovery_native", "names": ["recovery_lift0.035_distance0.02"], "role": "enhanced_model_based_teacher"},
+    {"phase": "recovery035_learned_native", "names": ["recovery035_esn_fixed", "paired_recovery035__fp64", "paired_recovery035_rnn_fp64"], "role": "same_data_seed1"},
+    {"phase": "recovery035_mechanism_native", "names": ["recovery035_esn_seed2", "paired_recovery035_mlp_seed2", "paired_recovery035_rnn_seed2", "recovery035_esn_memoryless"], "role": "same_data_seed2_and_memoryless_control"},
+    {"phase": "feature_matched_native", "names": ["paired_feature_matched_mlp", "paired_feature_matched_rnn"], "role": "feature_matched_trainable_control_seed1"},
+    {"phase": "feature_matched_seed2_native", "names": ["paired_feature_matched_rnn_seed2"], "role": "feature_matched_trainable_control_seed2"}
+  ],
+  "classical_search": [
+    {"phase": "classical_native", "category": "admittance_development", "expected_candidates": 15, "role": "same_world_tuned_admittance"},
+    {"phase": "classical_native", "category": "impedance_development", "expected_candidates": 15, "role": "same_world_tuned_impedance"},
+    {"phase": "classical_native", "category": "vmc_development", "expected_candidates": 8, "role": "same_world_tuned_original_vmc"}
+  ],
+  "selection_rule": "Classical only: strict success, then task success, then full horizon, then lower safety excess, final XY error, full-horizon RMSE, alphabetical tie-break. Development selection only, not a ranking of algorithms. All historical baselines and named student seeds remain included regardless of their development result.",
+  "formal_rule": "Only selected models with unchanged development task/strict success qualify for the separate dt=5e-5 resolution test. Eligibility is frozen before the four final conditions.",
+  "limitations": "Same scene/interface does not equalize prior training or parameter count. Ordinary and feature-matched RNN are separate methods; warm starts and additional updates are disclosed. All nonselected development candidates remain in the appendix."
+}

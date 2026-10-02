@@ -1,0 +1,17 @@
+{
+  "registered_utc": "2026-10-02T15:36:22+00:00",
+  "purpose": "Final paired sensitivity evaluation after model lock, never development labels or hyperparameter selection",
+  "geometry_model_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+  "unchanged": ["geometry", "target", "planner", "actor inputs", "ball launch at 2s", "human and rod force limits", "actuator limits", "task and strict gates", "55s duration"],
+  "all_methods_receive_identical_conditions": true,
+  "physics_dt_development_s": 0.0001,
+  "physics_dt_formal_s": 0.00005,
+  "conditions": [
+    {"id": "h1", "ball_speed": 1.305, "person_start": 4.5, "rod_start": 12.5, "person_stroke": 0.18, "rod_stroke": 0.2585},
+    {"id": "h2", "ball_speed": 1.595, "person_start": 3.5, "rod_start": 13.5, "person_stroke": 0.22, "rod_stroke": 0.2115},
+    {"id": "h3", "ball_speed": 1.305, "person_start": 3.5, "rod_start": 13.5, "person_stroke": 0.22, "rod_stroke": 0.2585},
+    {"id": "h4", "ball_speed": 1.595, "person_start": 4.5, "rod_start": 12.5, "person_stroke": 0.18, "rod_stroke": 0.2115}
+  ],
+  "selection_before_evaluation": "Frozen development candidates: ESN, same-data MLP/RNN, original or optimized VMC, optimized admittance/impedance, plus the best pre-existing RL candidate if time permits. Select on development task/strict, safety, completion/progress and disclosed Pareto metrics before any heldout outcome.",
+  "interpretation": "Four paired predeclared perturbation conditions in one fixed geometry, not random population samples or universal generalization. h1/h4 retain 1s separation after human retraction; all ball-human windows remain distinct. Contact exposure is measured, never forced for favorable rankings."
+}

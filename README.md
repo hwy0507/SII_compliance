@@ -1,5 +1,28 @@
 # Data-Driven Compliance Control for FR3
 
+### 2026-10-03 same-scene ESN, RNN, MLP and control-baseline study
+
+The new study uses baseline's already published `office-validation-v6` world and
+its native numerical runtime for every final comparison. Four frozen disturbance
+conditions cover 26 models (104 complete episodes). Pure fixed-reservoir ESN
+achieved strict success in 1/4 and 2/4 conditions across two seeds; matched RNNs,
+a matched MLP, a retrained memoryless control and the enhanced VMC teacher also
+achieved 2/4. Both ESNs failed placement at the finer `dt=5e-5` anchor. These
+results **do not establish ESN superiority or numerical robustness**. In eight
+separately registered random conditions, ESNs reached 4/8 strict success each,
+matched RNNs 1/8 and 2/8, and teacher/memoryless controls 5/8 each. That smaller
+cohort includes development-qualified models only, not the complete baseline set.
+
+Evaluation prioritizes actual placement and the original penetration gate,
+then contact loads and recovery on jointly successful, exposed conditions.
+Tracking error, torque and speed remain diagnostics, not substitutes for task
+completion. Eight separately registered random conditions, complete three-view
+videos, source/checkpoint hashes and independent audits are indexed in the
+[study results and handoff](code/mujoco_6d_vmc_benchmark/docs/PAPER_ESN_12H_RESULTS_20261003.md).
+The [methods](code/mujoco_6d_vmc_benchmark/docs/PAPER_ESN_12H_METHODS_20261003.md)
+disclose data coverage, unequal parameter/training budgets and simulation limits.
+Historical v5 results below are separate experiments, not this study's baseline.
+
 ### 2026-10-02 pure MLP / trainable RNN replacement experiment
 
 Eight width-128 MLP/Elman-RNN models were evaluated in the unchanged office scene:

@@ -25,6 +25,7 @@ def main():
     p.add_argument('--rollout', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--label', required=True)
+    p.add_argument('--scene-label',default='office-v5',help='Display-only scene identifier; does not alter saved physics')
     p.add_argument('--stride', type=int, default=5)
     p.add_argument('--fps', type=float, default=10.)
     p.add_argument('--gif-stride', type=int, default=1)
@@ -93,7 +94,7 @@ def main():
             frame = Image.new('RGB', (width, height), (15, 22, 30))
             draw = ImageDraw.Draw(frame)
             stage = names[int(trace['stage'][index])]
-            draw.text((12, 8), f'{args.label} | office-v5 | t={data.time:.2f}s | {stage}', font=font, fill='white')
+            draw.text((12, 8), f'{args.label} | {args.scene_label} | t={data.time:.2f}s | {stage}', font=font, fill='white')
             draw.text((12, 34),
                       f"task={record['task_success']} | strict={record['strict_success']} | "
                       f"external penetration={1000 * record['stats']['max_external_penetration_m']:.6f} mm",
@@ -125,6 +126,7 @@ def main():
                        append_images=gif_frames[1:], duration=round(1000*args.gif_stride/args.fps), loop=0)
     manifest = {
         'render_only': True,
+        'scene_label': args.scene_label,
         'physics_rerun': False,
         'camera_views': [name for name, *_ in cameras],
         'stride': args.stride,

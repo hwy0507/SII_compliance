@@ -1,0 +1,754 @@
+{
+  "created_utc": "2026-10-02T21:58:06.197938+00:00",
+  "source_sha256": "7f86671c229f4bfe1d9ee19e68b1f00902b1ed088b9f52c1752fa0c898af2307",
+  "rows": [
+    {
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/random_s4/recovery_lift0.035_distance0.02",
+      "common_arguments": {
+        "seed": 2026091751,
+        "duration": 55.0,
+        "dt": 0.0001,
+        "ball_speed": 1.445167,
+        "ball_launch_time_s": 2.0,
+        "person_stroke": 0.198648,
+        "rod_stroke": 0.230474,
+        "person_start": 3.897338,
+        "rod_start": 13.156819,
+        "rod_hold": 6.0,
+        "events": "all",
+        "task": "pick_place",
+        "corner_placement": true,
+        "planned_hand_corner": true,
+        "unexpected_edge": true,
+        "allow_lateral_rejoin": true,
+        "observer_friction_velocity_scale": 0.005,
+        "interaction_schedule": "legacy",
+        "tool_contact": {
+          "id": "office-validation-v6",
+          "registration": "PROTOCOL.json frozen before evaluation",
+          "ball_center_m": [
+            0.54,
+            -0.43,
+            0.61
+          ],
+          "ball_radius_m": 0.06,
+          "ball_mass_kg": 1.0,
+          "rod_center_m": [
+            0.77,
+            -0.12,
+            0.635
+          ],
+          "rod_axis": [
+            -1,
+            0,
+            0
+          ],
+          "rod_fromto": [
+            0.1,
+            0,
+            0,
+            -0.045,
+            0,
+            0
+          ],
+          "rod_solref": ".001 1",
+          "rod_force_limit_n": 14,
+          "rod_hold_s": 6.0,
+          "timing": "ball2; person4-11; rod13-14.5, hold14.5-20.5, retract20.5-22.5",
+          "goal": "Real palm contact and lateral/vertical sliding while rod remains extended; no contact truth in actor, no obstacle chasing",
+          "frozen": "old checkpoints, target, path progress, placement/penetration gate, actuator amplitude/rate limits",
+          "edge_position_m": [
+            0.625,
+            -0.25,
+            0.54
+          ],
+          "edge_half_size_m": [
+            0.01,
+            0.045,
+            0.02
+          ]
+        }
+      },
+      "physics_source_sha256": {
+        "fr3_scene.py": "994b039f0cc9f146ccf1bd09640dafdb8fe6918d05203c0688519e668edb83a5",
+        "wbc_velocity_residual_env.py": "50c2d77df422c5c3ce440428dbd62f7511e4f8c0f8528e8f59d0bf4e8481297c",
+        "wbc_velocity_residual_core.py": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+        "run_contact_transfer_20260916.py": "3cc9ee40d14c9397016d8bc78f0264dbb1a793a7ed6e422e60f9b91c6eda99d5",
+        "fixed_panda_wbc.py": "56b6a3617f61894536619df226e7e980899b41e7291e678c17d1c525956d003d",
+        "office_task_v4_20260917.py": "255ce3443ecfb46d4e88797f3b5bb78a864c089e395c097aa86e203533852d0f",
+        "run_benchmark.py": "150336fc0f985b2d11c3f0f5bf7937d6991a16a3da9b2a478e860f11d4dd5fb3"
+      },
+      "model_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+      "python": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "host": "spark-4eb4",
+      "mujoco": "3.11.0",
+      "execution_sha256": "0aa78f860f46dff3b3c708089abe4a93e1c48d0afbf43121489a397802a443d1",
+      "trace_sha256": "53d8c1f053682d895f513cba05d2a956f333b05f6fc2fdc8b5b4a3a9f9367249",
+      "task_success": true,
+      "strict_success": true,
+      "full_horizon": true,
+      "abort_reason": null,
+      "initial_observation_exact_match": true
+    },
+    {
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/random_s4/recovery035_esn_fixed",
+      "common_arguments": {
+        "seed": 2026091751,
+        "duration": 55.0,
+        "dt": 0.0001,
+        "ball_speed": 1.445167,
+        "ball_launch_time_s": 2.0,
+        "person_stroke": 0.198648,
+        "rod_stroke": 0.230474,
+        "person_start": 3.897338,
+        "rod_start": 13.156819,
+        "rod_hold": 6.0,
+        "events": "all",
+        "task": "pick_place",
+        "corner_placement": true,
+        "planned_hand_corner": true,
+        "unexpected_edge": true,
+        "allow_lateral_rejoin": true,
+        "observer_friction_velocity_scale": 0.005,
+        "interaction_schedule": "legacy",
+        "tool_contact": {
+          "id": "office-validation-v6",
+          "registration": "PROTOCOL.json frozen before evaluation",
+          "ball_center_m": [
+            0.54,
+            -0.43,
+            0.61
+          ],
+          "ball_radius_m": 0.06,
+          "ball_mass_kg": 1.0,
+          "rod_center_m": [
+            0.77,
+            -0.12,
+            0.635
+          ],
+          "rod_axis": [
+            -1,
+            0,
+            0
+          ],
+          "rod_fromto": [
+            0.1,
+            0,
+            0,
+            -0.045,
+            0,
+            0
+          ],
+          "rod_solref": ".001 1",
+          "rod_force_limit_n": 14,
+          "rod_hold_s": 6.0,
+          "timing": "ball2; person4-11; rod13-14.5, hold14.5-20.5, retract20.5-22.5",
+          "goal": "Real palm contact and lateral/vertical sliding while rod remains extended; no contact truth in actor, no obstacle chasing",
+          "frozen": "old checkpoints, target, path progress, placement/penetration gate, actuator amplitude/rate limits",
+          "edge_position_m": [
+            0.625,
+            -0.25,
+            0.54
+          ],
+          "edge_half_size_m": [
+            0.01,
+            0.045,
+            0.02
+          ]
+        }
+      },
+      "physics_source_sha256": {
+        "fr3_scene.py": "994b039f0cc9f146ccf1bd09640dafdb8fe6918d05203c0688519e668edb83a5",
+        "wbc_velocity_residual_env.py": "50c2d77df422c5c3ce440428dbd62f7511e4f8c0f8528e8f59d0bf4e8481297c",
+        "wbc_velocity_residual_core.py": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+        "run_contact_transfer_20260916.py": "3cc9ee40d14c9397016d8bc78f0264dbb1a793a7ed6e422e60f9b91c6eda99d5",
+        "fixed_panda_wbc.py": "56b6a3617f61894536619df226e7e980899b41e7291e678c17d1c525956d003d",
+        "office_task_v4_20260917.py": "255ce3443ecfb46d4e88797f3b5bb78a864c089e395c097aa86e203533852d0f",
+        "run_benchmark.py": "150336fc0f985b2d11c3f0f5bf7937d6991a16a3da9b2a478e860f11d4dd5fb3"
+      },
+      "model_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+      "python": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "host": "spark-4eb4",
+      "mujoco": "3.11.0",
+      "execution_sha256": "9990879d815dda9182b91a570ea473d45ce067bc5d86e112eb3148743022c08f",
+      "trace_sha256": "a5913bd4f6a8145537d17d2aaff7645923cb064b90f1b57548ee408fbc326f8f",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "abort_reason": null,
+      "initial_observation_exact_match": true
+    },
+    {
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/random_s4/recovery035_esn_seed2",
+      "common_arguments": {
+        "seed": 2026091751,
+        "duration": 55.0,
+        "dt": 0.0001,
+        "ball_speed": 1.445167,
+        "ball_launch_time_s": 2.0,
+        "person_stroke": 0.198648,
+        "rod_stroke": 0.230474,
+        "person_start": 3.897338,
+        "rod_start": 13.156819,
+        "rod_hold": 6.0,
+        "events": "all",
+        "task": "pick_place",
+        "corner_placement": true,
+        "planned_hand_corner": true,
+        "unexpected_edge": true,
+        "allow_lateral_rejoin": true,
+        "observer_friction_velocity_scale": 0.005,
+        "interaction_schedule": "legacy",
+        "tool_contact": {
+          "id": "office-validation-v6",
+          "registration": "PROTOCOL.json frozen before evaluation",
+          "ball_center_m": [
+            0.54,
+            -0.43,
+            0.61
+          ],
+          "ball_radius_m": 0.06,
+          "ball_mass_kg": 1.0,
+          "rod_center_m": [
+            0.77,
+            -0.12,
+            0.635
+          ],
+          "rod_axis": [
+            -1,
+            0,
+            0
+          ],
+          "rod_fromto": [
+            0.1,
+            0,
+            0,
+            -0.045,
+            0,
+            0
+          ],
+          "rod_solref": ".001 1",
+          "rod_force_limit_n": 14,
+          "rod_hold_s": 6.0,
+          "timing": "ball2; person4-11; rod13-14.5, hold14.5-20.5, retract20.5-22.5",
+          "goal": "Real palm contact and lateral/vertical sliding while rod remains extended; no contact truth in actor, no obstacle chasing",
+          "frozen": "old checkpoints, target, path progress, placement/penetration gate, actuator amplitude/rate limits",
+          "edge_position_m": [
+            0.625,
+            -0.25,
+            0.54
+          ],
+          "edge_half_size_m": [
+            0.01,
+            0.045,
+            0.02
+          ]
+        }
+      },
+      "physics_source_sha256": {
+        "fr3_scene.py": "994b039f0cc9f146ccf1bd09640dafdb8fe6918d05203c0688519e668edb83a5",
+        "wbc_velocity_residual_env.py": "50c2d77df422c5c3ce440428dbd62f7511e4f8c0f8528e8f59d0bf4e8481297c",
+        "wbc_velocity_residual_core.py": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+        "run_contact_transfer_20260916.py": "3cc9ee40d14c9397016d8bc78f0264dbb1a793a7ed6e422e60f9b91c6eda99d5",
+        "fixed_panda_wbc.py": "56b6a3617f61894536619df226e7e980899b41e7291e678c17d1c525956d003d",
+        "office_task_v4_20260917.py": "255ce3443ecfb46d4e88797f3b5bb78a864c089e395c097aa86e203533852d0f",
+        "run_benchmark.py": "150336fc0f985b2d11c3f0f5bf7937d6991a16a3da9b2a478e860f11d4dd5fb3"
+      },
+      "model_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+      "python": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "host": "spark-4eb4",
+      "mujoco": "3.11.0",
+      "execution_sha256": "1832ad11b2e7c44603d96f0c63963b4cb818b22a800ddeaae0ca7e611387e3e6",
+      "trace_sha256": "0a480468b493f652ecbd872ff31f93e30535daa12624b237246eff43d0976453",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "abort_reason": null,
+      "initial_observation_exact_match": true
+    },
+    {
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/random_s4/recovery035_esn_memoryless",
+      "common_arguments": {
+        "seed": 2026091751,
+        "duration": 55.0,
+        "dt": 0.0001,
+        "ball_speed": 1.445167,
+        "ball_launch_time_s": 2.0,
+        "person_stroke": 0.198648,
+        "rod_stroke": 0.230474,
+        "person_start": 3.897338,
+        "rod_start": 13.156819,
+        "rod_hold": 6.0,
+        "events": "all",
+        "task": "pick_place",
+        "corner_placement": true,
+        "planned_hand_corner": true,
+        "unexpected_edge": true,
+        "allow_lateral_rejoin": true,
+        "observer_friction_velocity_scale": 0.005,
+        "interaction_schedule": "legacy",
+        "tool_contact": {
+          "id": "office-validation-v6",
+          "registration": "PROTOCOL.json frozen before evaluation",
+          "ball_center_m": [
+            0.54,
+            -0.43,
+            0.61
+          ],
+          "ball_radius_m": 0.06,
+          "ball_mass_kg": 1.0,
+          "rod_center_m": [
+            0.77,
+            -0.12,
+            0.635
+          ],
+          "rod_axis": [
+            -1,
+            0,
+            0
+          ],
+          "rod_fromto": [
+            0.1,
+            0,
+            0,
+            -0.045,
+            0,
+            0
+          ],
+          "rod_solref": ".001 1",
+          "rod_force_limit_n": 14,
+          "rod_hold_s": 6.0,
+          "timing": "ball2; person4-11; rod13-14.5, hold14.5-20.5, retract20.5-22.5",
+          "goal": "Real palm contact and lateral/vertical sliding while rod remains extended; no contact truth in actor, no obstacle chasing",
+          "frozen": "old checkpoints, target, path progress, placement/penetration gate, actuator amplitude/rate limits",
+          "edge_position_m": [
+            0.625,
+            -0.25,
+            0.54
+          ],
+          "edge_half_size_m": [
+            0.01,
+            0.045,
+            0.02
+          ]
+        }
+      },
+      "physics_source_sha256": {
+        "fr3_scene.py": "994b039f0cc9f146ccf1bd09640dafdb8fe6918d05203c0688519e668edb83a5",
+        "wbc_velocity_residual_env.py": "50c2d77df422c5c3ce440428dbd62f7511e4f8c0f8528e8f59d0bf4e8481297c",
+        "wbc_velocity_residual_core.py": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+        "run_contact_transfer_20260916.py": "3cc9ee40d14c9397016d8bc78f0264dbb1a793a7ed6e422e60f9b91c6eda99d5",
+        "fixed_panda_wbc.py": "56b6a3617f61894536619df226e7e980899b41e7291e678c17d1c525956d003d",
+        "office_task_v4_20260917.py": "255ce3443ecfb46d4e88797f3b5bb78a864c089e395c097aa86e203533852d0f",
+        "run_benchmark.py": "150336fc0f985b2d11c3f0f5bf7937d6991a16a3da9b2a478e860f11d4dd5fb3"
+      },
+      "model_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+      "python": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "host": "spark-4eb4",
+      "mujoco": "3.11.0",
+      "execution_sha256": "21358785f83d0828c8a9cc0ebe993dc8d23d765ba76fcf4ca4a287bde1ec2be1",
+      "trace_sha256": "35b33f25bacf748249791db14263c2e0f315fbf76f4dde30f73182dabfd1d8a8",
+      "task_success": true,
+      "strict_success": true,
+      "full_horizon": true,
+      "abort_reason": null,
+      "initial_observation_exact_match": true
+    },
+    {
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/random_s4/paired_feature_matched_rnn",
+      "common_arguments": {
+        "seed": 2026091751,
+        "duration": 55.0,
+        "dt": 0.0001,
+        "ball_speed": 1.445167,
+        "ball_launch_time_s": 2.0,
+        "person_stroke": 0.198648,
+        "rod_stroke": 0.230474,
+        "person_start": 3.897338,
+        "rod_start": 13.156819,
+        "rod_hold": 6.0,
+        "events": "all",
+        "task": "pick_place",
+        "corner_placement": true,
+        "planned_hand_corner": true,
+        "unexpected_edge": true,
+        "allow_lateral_rejoin": true,
+        "observer_friction_velocity_scale": 0.005,
+        "interaction_schedule": "legacy",
+        "tool_contact": {
+          "id": "office-validation-v6",
+          "registration": "PROTOCOL.json frozen before evaluation",
+          "ball_center_m": [
+            0.54,
+            -0.43,
+            0.61
+          ],
+          "ball_radius_m": 0.06,
+          "ball_mass_kg": 1.0,
+          "rod_center_m": [
+            0.77,
+            -0.12,
+            0.635
+          ],
+          "rod_axis": [
+            -1,
+            0,
+            0
+          ],
+          "rod_fromto": [
+            0.1,
+            0,
+            0,
+            -0.045,
+            0,
+            0
+          ],
+          "rod_solref": ".001 1",
+          "rod_force_limit_n": 14,
+          "rod_hold_s": 6.0,
+          "timing": "ball2; person4-11; rod13-14.5, hold14.5-20.5, retract20.5-22.5",
+          "goal": "Real palm contact and lateral/vertical sliding while rod remains extended; no contact truth in actor, no obstacle chasing",
+          "frozen": "old checkpoints, target, path progress, placement/penetration gate, actuator amplitude/rate limits",
+          "edge_position_m": [
+            0.625,
+            -0.25,
+            0.54
+          ],
+          "edge_half_size_m": [
+            0.01,
+            0.045,
+            0.02
+          ]
+        }
+      },
+      "physics_source_sha256": {
+        "fr3_scene.py": "994b039f0cc9f146ccf1bd09640dafdb8fe6918d05203c0688519e668edb83a5",
+        "wbc_velocity_residual_env.py": "50c2d77df422c5c3ce440428dbd62f7511e4f8c0f8528e8f59d0bf4e8481297c",
+        "wbc_velocity_residual_core.py": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+        "run_contact_transfer_20260916.py": "3cc9ee40d14c9397016d8bc78f0264dbb1a793a7ed6e422e60f9b91c6eda99d5",
+        "fixed_panda_wbc.py": "56b6a3617f61894536619df226e7e980899b41e7291e678c17d1c525956d003d",
+        "office_task_v4_20260917.py": "255ce3443ecfb46d4e88797f3b5bb78a864c089e395c097aa86e203533852d0f",
+        "run_benchmark.py": "150336fc0f985b2d11c3f0f5bf7937d6991a16a3da9b2a478e860f11d4dd5fb3"
+      },
+      "model_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+      "python": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "host": "spark-4eb4",
+      "mujoco": "3.11.0",
+      "execution_sha256": "a9bad4a34edbd2f5c3aa94cb743c8ceebda871ff475940b3ace42bf7a261d611",
+      "trace_sha256": "4971b3a880064b8f875985d17c638db421151dcfa47ef786090e47862d2b48cf",
+      "task_success": true,
+      "strict_success": false,
+      "full_horizon": true,
+      "abort_reason": null,
+      "initial_observation_exact_match": true
+    },
+    {
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/random_s4/paired_feature_matched_rnn_seed2",
+      "common_arguments": {
+        "seed": 2026091751,
+        "duration": 55.0,
+        "dt": 0.0001,
+        "ball_speed": 1.445167,
+        "ball_launch_time_s": 2.0,
+        "person_stroke": 0.198648,
+        "rod_stroke": 0.230474,
+        "person_start": 3.897338,
+        "rod_start": 13.156819,
+        "rod_hold": 6.0,
+        "events": "all",
+        "task": "pick_place",
+        "corner_placement": true,
+        "planned_hand_corner": true,
+        "unexpected_edge": true,
+        "allow_lateral_rejoin": true,
+        "observer_friction_velocity_scale": 0.005,
+        "interaction_schedule": "legacy",
+        "tool_contact": {
+          "id": "office-validation-v6",
+          "registration": "PROTOCOL.json frozen before evaluation",
+          "ball_center_m": [
+            0.54,
+            -0.43,
+            0.61
+          ],
+          "ball_radius_m": 0.06,
+          "ball_mass_kg": 1.0,
+          "rod_center_m": [
+            0.77,
+            -0.12,
+            0.635
+          ],
+          "rod_axis": [
+            -1,
+            0,
+            0
+          ],
+          "rod_fromto": [
+            0.1,
+            0,
+            0,
+            -0.045,
+            0,
+            0
+          ],
+          "rod_solref": ".001 1",
+          "rod_force_limit_n": 14,
+          "rod_hold_s": 6.0,
+          "timing": "ball2; person4-11; rod13-14.5, hold14.5-20.5, retract20.5-22.5",
+          "goal": "Real palm contact and lateral/vertical sliding while rod remains extended; no contact truth in actor, no obstacle chasing",
+          "frozen": "old checkpoints, target, path progress, placement/penetration gate, actuator amplitude/rate limits",
+          "edge_position_m": [
+            0.625,
+            -0.25,
+            0.54
+          ],
+          "edge_half_size_m": [
+            0.01,
+            0.045,
+            0.02
+          ]
+        }
+      },
+      "physics_source_sha256": {
+        "fr3_scene.py": "994b039f0cc9f146ccf1bd09640dafdb8fe6918d05203c0688519e668edb83a5",
+        "wbc_velocity_residual_env.py": "50c2d77df422c5c3ce440428dbd62f7511e4f8c0f8528e8f59d0bf4e8481297c",
+        "wbc_velocity_residual_core.py": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+        "run_contact_transfer_20260916.py": "3cc9ee40d14c9397016d8bc78f0264dbb1a793a7ed6e422e60f9b91c6eda99d5",
+        "fixed_panda_wbc.py": "56b6a3617f61894536619df226e7e980899b41e7291e678c17d1c525956d003d",
+        "office_task_v4_20260917.py": "255ce3443ecfb46d4e88797f3b5bb78a864c089e395c097aa86e203533852d0f",
+        "run_benchmark.py": "150336fc0f985b2d11c3f0f5bf7937d6991a16a3da9b2a478e860f11d4dd5fb3"
+      },
+      "model_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+      "python": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "host": "spark-4eb4",
+      "mujoco": "3.11.0",
+      "execution_sha256": "e610f6ec4c329cf4db3e065f66f5c585e5904da708c19ab91931479a6025caec",
+      "trace_sha256": "fca8ad3c18876371ca6d9b42a62d2029902840509c0e1872fe2a7c4ae1f29cbb",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "abort_reason": null,
+      "initial_observation_exact_match": true
+    },
+    {
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/random_s4/original_vmc_04",
+      "common_arguments": {
+        "seed": 2026091751,
+        "duration": 55.0,
+        "dt": 0.0001,
+        "ball_speed": 1.445167,
+        "ball_launch_time_s": 2.0,
+        "person_stroke": 0.198648,
+        "rod_stroke": 0.230474,
+        "person_start": 3.897338,
+        "rod_start": 13.156819,
+        "rod_hold": 6.0,
+        "events": "all",
+        "task": "pick_place",
+        "corner_placement": true,
+        "planned_hand_corner": true,
+        "unexpected_edge": true,
+        "allow_lateral_rejoin": true,
+        "observer_friction_velocity_scale": 0.005,
+        "interaction_schedule": "legacy",
+        "tool_contact": {
+          "id": "office-validation-v6",
+          "registration": "PROTOCOL.json frozen before evaluation",
+          "ball_center_m": [
+            0.54,
+            -0.43,
+            0.61
+          ],
+          "ball_radius_m": 0.06,
+          "ball_mass_kg": 1.0,
+          "rod_center_m": [
+            0.77,
+            -0.12,
+            0.635
+          ],
+          "rod_axis": [
+            -1,
+            0,
+            0
+          ],
+          "rod_fromto": [
+            0.1,
+            0,
+            0,
+            -0.045,
+            0,
+            0
+          ],
+          "rod_solref": ".001 1",
+          "rod_force_limit_n": 14,
+          "rod_hold_s": 6.0,
+          "timing": "ball2; person4-11; rod13-14.5, hold14.5-20.5, retract20.5-22.5",
+          "goal": "Real palm contact and lateral/vertical sliding while rod remains extended; no contact truth in actor, no obstacle chasing",
+          "frozen": "old checkpoints, target, path progress, placement/penetration gate, actuator amplitude/rate limits",
+          "edge_position_m": [
+            0.625,
+            -0.25,
+            0.54
+          ],
+          "edge_half_size_m": [
+            0.01,
+            0.045,
+            0.02
+          ]
+        }
+      },
+      "physics_source_sha256": {
+        "fr3_scene.py": "994b039f0cc9f146ccf1bd09640dafdb8fe6918d05203c0688519e668edb83a5",
+        "wbc_velocity_residual_env.py": "50c2d77df422c5c3ce440428dbd62f7511e4f8c0f8528e8f59d0bf4e8481297c",
+        "wbc_velocity_residual_core.py": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+        "run_contact_transfer_20260916.py": "3cc9ee40d14c9397016d8bc78f0264dbb1a793a7ed6e422e60f9b91c6eda99d5",
+        "fixed_panda_wbc.py": "56b6a3617f61894536619df226e7e980899b41e7291e678c17d1c525956d003d",
+        "office_task_v4_20260917.py": "255ce3443ecfb46d4e88797f3b5bb78a864c089e395c097aa86e203533852d0f",
+        "run_benchmark.py": "150336fc0f985b2d11c3f0f5bf7937d6991a16a3da9b2a478e860f11d4dd5fb3"
+      },
+      "model_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+      "python": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "host": "spark-4eb4",
+      "mujoco": "3.11.0",
+      "execution_sha256": "a2fb34114c3f583d76bc7e5b89938b59b9384c43d65c140d93912aada67983e1",
+      "trace_sha256": "8c6d08dfa4813b9ba709088e2dddf1a3c5d61faa32a243855d149e03df123614",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "abort_reason": null,
+      "initial_observation_exact_match": true
+    }
+  ],
+  "common": {
+    "common_arguments": {
+      "seed": 2026091751,
+      "duration": 55.0,
+      "dt": 0.0001,
+      "ball_speed": 1.445167,
+      "ball_launch_time_s": 2.0,
+      "person_stroke": 0.198648,
+      "rod_stroke": 0.230474,
+      "person_start": 3.897338,
+      "rod_start": 13.156819,
+      "rod_hold": 6.0,
+      "events": "all",
+      "task": "pick_place",
+      "corner_placement": true,
+      "planned_hand_corner": true,
+      "unexpected_edge": true,
+      "allow_lateral_rejoin": true,
+      "observer_friction_velocity_scale": 0.005,
+      "interaction_schedule": "legacy",
+      "tool_contact": {
+        "id": "office-validation-v6",
+        "registration": "PROTOCOL.json frozen before evaluation",
+        "ball_center_m": [
+          0.54,
+          -0.43,
+          0.61
+        ],
+        "ball_radius_m": 0.06,
+        "ball_mass_kg": 1.0,
+        "rod_center_m": [
+          0.77,
+          -0.12,
+          0.635
+        ],
+        "rod_axis": [
+          -1,
+          0,
+          0
+        ],
+        "rod_fromto": [
+          0.1,
+          0,
+          0,
+          -0.045,
+          0,
+          0
+        ],
+        "rod_solref": ".001 1",
+        "rod_force_limit_n": 14,
+        "rod_hold_s": 6.0,
+        "timing": "ball2; person4-11; rod13-14.5, hold14.5-20.5, retract20.5-22.5",
+        "goal": "Real palm contact and lateral/vertical sliding while rod remains extended; no contact truth in actor, no obstacle chasing",
+        "frozen": "old checkpoints, target, path progress, placement/penetration gate, actuator amplitude/rate limits",
+        "edge_position_m": [
+          0.625,
+          -0.25,
+          0.54
+        ],
+        "edge_half_size_m": [
+          0.01,
+          0.045,
+          0.02
+        ]
+      }
+    },
+    "physics_source_sha256": {
+      "fr3_scene.py": "994b039f0cc9f146ccf1bd09640dafdb8fe6918d05203c0688519e668edb83a5",
+      "wbc_velocity_residual_env.py": "50c2d77df422c5c3ce440428dbd62f7511e4f8c0f8528e8f59d0bf4e8481297c",
+      "wbc_velocity_residual_core.py": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+      "run_contact_transfer_20260916.py": "3cc9ee40d14c9397016d8bc78f0264dbb1a793a7ed6e422e60f9b91c6eda99d5",
+      "fixed_panda_wbc.py": "56b6a3617f61894536619df226e7e980899b41e7291e678c17d1c525956d003d",
+      "office_task_v4_20260917.py": "255ce3443ecfb46d4e88797f3b5bb78a864c089e395c097aa86e203533852d0f",
+      "run_benchmark.py": "150336fc0f985b2d11c3f0f5bf7937d6991a16a3da9b2a478e860f11d4dd5fb3"
+    },
+    "model_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+    "python": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+    "host": "spark-4eb4",
+    "mujoco": "3.11.0"
+  },
+  "initial_observation": [
+    -0.20521640610078837,
+    0.0453680889435739,
+    -0.13724999916473138,
+    -1.5788773592839247,
+    0.006213502045001084,
+    1.6238183812334435,
+    -2.698849277907932,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -1.1880174794099538e-08,
+    -7.729250796706248e-08,
+    -2.136789635502842e-09,
+    8.357586918837752e-07,
+    -2.509806174275248e-07,
+    3.433774735136101e-06,
+    -5.228793620304373e-09,
+    -3.740851345357399e-08,
+    -5.266994618224885e-10,
+    3.6434571226036767e-07,
+    -1.0925337101051275e-07,
+    1.4949578115973914e-06,
+    -1.1880174794099538e-08,
+    -7.729250796706248e-08,
+    -2.136789635502842e-09,
+    8.357586918837752e-07,
+    -2.509806174275248e-07,
+    3.433774735136101e-06,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -0.1384163192571238,
+    -0.9902759827845137,
+    -0.013942757384242116
+  ],
+  "passed": true,
+  "limitation": "Checks common numerical runtime and task configuration. Does not equalize training exposure or guarantee matching contacts after policies diverge; failures and aborts retained."
+}

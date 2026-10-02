@@ -1,0 +1,61 @@
+{
+  "candidates": [
+    {
+      "name": "recovery_lift0.035_distance0.02",
+      "category": "vmc_development",
+      "config": {
+        "recovery": {
+          "threshold_n": 0.5,
+          "attack_s": 0.12,
+          "release_s": 1.0,
+          "offset_m": 0.035,
+          "gain_per_s": 4.0,
+          "velocity_mps": 0.12,
+          "activation_mode": "progress",
+          "progress_distance_m": 0.02
+        }
+      }
+    },
+    {
+      "name": "recovery035_esn_fixed",
+      "category": "esn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_recovery035_learned_20261002_141136/evidence/models/recovery035_esn_fixed/checkpoint.npz",
+      "checkpoint_sha256": "dc990db3c7b41101aad963339cb028c523c1f61fec488b9204d9159a6f234230"
+    },
+    {
+      "name": "recovery035_esn_seed2",
+      "category": "esn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_recovery035_mechanisms_20261002_141136/evidence/models/recovery035_esn_seed2/checkpoint.npz",
+      "checkpoint_sha256": "3cee334cb11bd08118ba2fb8fabc3cd0b86bb0d48378de4dca6800f729a0b052"
+    },
+    {
+      "name": "recovery035_esn_memoryless",
+      "category": "esn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_recovery035_mechanisms_20261002_141136/evidence/models/recovery035_esn_memoryless/checkpoint.npz",
+      "checkpoint_sha256": "db3cf91ff94e706d64d144e3d24af2c332d896b36fcb96162ddfc6aebdba67b8"
+    },
+    {
+      "name": "paired_feature_matched_rnn",
+      "category": "mlp_rnn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_feature_matched_20261002_141136/evidence/models/paired_feature_matched_rnn/checkpoint.npz",
+      "checkpoint_sha256": "648de91ad9f04a134fe0e345b437367e58d2288c5613b850178f8b252d3ebdbc"
+    },
+    {
+      "name": "paired_feature_matched_rnn_seed2",
+      "category": "mlp_rnn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_feature_matched_seed2_20261002_141136/evidence/models/paired_feature_matched_rnn_seed2/checkpoint.npz",
+      "checkpoint_sha256": "01619a4cd41ef8dae699edffc8225871f7a4c838c049211da4d7cf16ab18f8fe"
+    },
+    {
+      "name": "original_vmc_04",
+      "category": "vmc_development",
+      "config": {
+        "options": {
+          "offset_tracking_gain_6d": 1.2
+        }
+      }
+    }
+  ],
+  "eligibility": "Unchanged development strict gate, fixed before all primary/formal outcomes",
+  "validation_lock_sha256": "755974da1d4d5a3fb1aa24aa779cf91ede2e83768de2b9dd21089de863166701"
+}

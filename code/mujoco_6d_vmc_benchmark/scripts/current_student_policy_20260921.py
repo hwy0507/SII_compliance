@@ -399,6 +399,9 @@ class LinearESN:
 def load_current(path):
     path=Path(path)
     with np.load(path,allow_pickle=False) as z: contract=str(z['contract'])
+    if contract=='proprio48_context_network_v1':
+        from office_context_network_20261003 import OfficeContextNetwork
+        return OfficeContextNetwork(path)
     if contract=='proprio48_office_mlp_rnn_v1':
         from office_mlp_rnn_20261002 import OfficeMLPRNN
         return OfficeMLPRNN(path)

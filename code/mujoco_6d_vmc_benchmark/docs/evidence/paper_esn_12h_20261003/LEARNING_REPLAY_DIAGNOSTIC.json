@@ -1,0 +1,803 @@
+{
+  "created_utc": "2026-10-02T19:39:05.048662+00:00",
+  "source_sha256": "766aecc9164a29f8cb1723152e2daa897bdb03e434d044cd197dc467aefb1c22",
+  "training_data_sha256": "3b083d7a73fb1152d3c4a59ae5cbd6b14756e41cf61eb1e036c5cf776425e303",
+  "rows": [
+    {
+      "name": "recovery035_esn_fixed",
+      "seed": 2026100302,
+      "checkpoint_sha256": "dc990db3c7b41101aad963339cb028c523c1f61fec488b9204d9159a6f234230",
+      "metadata_sha256": "2006787495db467fb57e9e92649ad9108c83e97ec8092494b9b38c30e544eb8d",
+      "exported_replay_sha256": "a4d7d162dd4b6803ec91a9273ab92a28959a2a520659949393f85ecb74902674",
+      "reproduced_max_abs": 0.0,
+      "learned_parameters": 2884,
+      "partitions": {
+        "synthetic_training": {
+          "samples": 40000,
+          "requested_action_mse": 0.0036949325402162473,
+          "mean_error_by_action": [
+            -0.0004866934458087833,
+            -0.00043024933503876974,
+            -0.00047323429755985425,
+            0.023217223989792844,
+            -0.0001770595705873225,
+            -0.00038960793146804173,
+            0.00040213049323142266
+          ]
+        },
+        "synthetic_identity_holdout": {
+          "samples": 8000,
+          "requested_action_mse": 0.00883199836767023,
+          "mean_error_by_action": [
+            0.0033282904566155815,
+            -0.0003353385984691141,
+            -0.004033972303161282,
+            0.015223878428428794,
+            -0.0015289742105977148,
+            -0.0020475190790551294,
+            0.0015683118557785938
+          ]
+        },
+        "native_successful_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.00029240835276527285,
+          "mean_error_by_action": [
+            0.00027617671581801635,
+            -5.2035330749665245e-05,
+            -0.0007355097430372325,
+            0.008257843501333479,
+            0.00010496561829293254,
+            0.00018276834537009177,
+            -0.0005711383067799889
+          ]
+        },
+        "local_failed_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.00023915478130362986,
+          "mean_error_by_action": [
+            0.0005749010897207945,
+            -0.00025377285215817284,
+            0.0008237357113544308,
+            -0.005018831724839865,
+            -0.00023189928435578922,
+            -6.174467855336336e-06,
+            -0.00012921118720212604
+          ]
+        },
+        "counterfactual_student": {
+          "samples": 2750,
+          "requested_action_mse": 0.0007373224244941649,
+          "mean_error_by_action": [
+            -0.0008410198192038012,
+            -4.365148773512853e-05,
+            0.00023639940027779925,
+            -0.007055942153962205,
+            0.00036848673370946147,
+            -0.0001877835502952151,
+            0.00016128611234203808
+          ]
+        }
+      }
+    },
+    {
+      "name": "recovery035_esn_seed2",
+      "seed": 2026100303,
+      "checkpoint_sha256": "3cee334cb11bd08118ba2fb8fabc3cd0b86bb0d48378de4dca6800f729a0b052",
+      "metadata_sha256": "0645e156ac6c728d06c16527482fc4974924ffb052e0d0a667fd91ca3ffdf63f",
+      "exported_replay_sha256": "961cfdef3eb3e135fc34b9c89fb8ce11d3807aa27971043b0ca6a687169f33c4",
+      "reproduced_max_abs": 0.0,
+      "learned_parameters": 2884,
+      "partitions": {
+        "synthetic_training": {
+          "samples": 40000,
+          "requested_action_mse": 0.0038567439847303985,
+          "mean_error_by_action": [
+            7.671633043153878e-05,
+            0.00030755005747766376,
+            -4.8445377544361376e-05,
+            0.024828235106310208,
+            0.0001288347846213593,
+            0.0001334932335785578,
+            5.203657470245906e-06
+          ]
+        },
+        "synthetic_identity_holdout": {
+          "samples": 8000,
+          "requested_action_mse": 0.0067154818384682746,
+          "mean_error_by_action": [
+            0.0036241366831111232,
+            -0.0034541809104515343,
+            -0.0029712960411859657,
+            -0.0009569616596899164,
+            0.001649306320919409,
+            0.0021888015330215078,
+            0.0010751973440291307
+          ]
+        },
+        "native_successful_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0003096730825644844,
+          "mean_error_by_action": [
+            -0.00074638220471366,
+            -0.0001283543598300355,
+            -0.0004745700359106141,
+            0.0017260716604160639,
+            0.00022993720644800855,
+            0.0005653045676604306,
+            0.00039194027987163695
+          ]
+        },
+        "local_failed_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0003177853904329879,
+          "mean_error_by_action": [
+            0.0010677162838307786,
+            -0.000320318211946021,
+            0.0003571038891481289,
+            -0.010313085322439446,
+            8.979257076257233e-05,
+            -0.0003978065919635386,
+            0.00011703442162893418
+          ]
+        },
+        "counterfactual_student": {
+          "samples": 2750,
+          "requested_action_mse": 0.0008317296166138998,
+          "mean_error_by_action": [
+            -0.0009165085255823896,
+            0.0010275125446793047,
+            -0.00015152174847998006,
+            -0.00741009497811716,
+            1.767852817819292e-05,
+            0.00013070881001880447,
+            0.00013038872180540605
+          ]
+        }
+      }
+    },
+    {
+      "name": "recovery035_esn_memoryless",
+      "seed": 2026100302,
+      "checkpoint_sha256": "db3cf91ff94e706d64d144e3d24af2c332d896b36fcb96162ddfc6aebdba67b8",
+      "metadata_sha256": "4c136f9164019d8c84d8f493f652584ec0542a81e6c38314227d2d82c2f1146f",
+      "exported_replay_sha256": "70010597706635d149641d12e63aaf3ab2a5e554bac6da43daa80936cfd9540b",
+      "reproduced_max_abs": 0.0,
+      "learned_parameters": 2884,
+      "partitions": {
+        "synthetic_training": {
+          "samples": 40000,
+          "requested_action_mse": 0.007685088613558725,
+          "mean_error_by_action": [
+            -0.0034421231925198534,
+            -0.0003217855511232174,
+            0.001068942434494881,
+            0.034280730233772885,
+            0.00015208522340493566,
+            -0.0004325535895122841,
+            -0.00020122876923403012
+          ]
+        },
+        "synthetic_identity_holdout": {
+          "samples": 8000,
+          "requested_action_mse": 0.014308901884473108,
+          "mean_error_by_action": [
+            -0.0017615669488281478,
+            0.014556735096638178,
+            -0.006885328283262553,
+            0.012440682596505315,
+            0.001093224369900577,
+            -0.004589510941745379,
+            -0.0017231123481056317
+          ]
+        },
+        "native_successful_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0012361008614872383,
+          "mean_error_by_action": [
+            -0.0019348597779265204,
+            0.005736317759109678,
+            -0.0027197345676611266,
+            -0.002312469099368103,
+            0.0004384343625014739,
+            4.855754112788414e-05,
+            0.0004273855814349601
+          ]
+        },
+        "local_failed_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0009939580251057901,
+          "mean_error_by_action": [
+            0.0006744618167296671,
+            0.006157537294982341,
+            -0.0029090035950345276,
+            -0.0059722446495341615,
+            -0.00034156945655367443,
+            -0.0007178776857098266,
+            -0.0004457757430442005
+          ]
+        },
+        "counterfactual_student": {
+          "samples": 2750,
+          "requested_action_mse": 0.003715956822429478,
+          "mean_error_by_action": [
+            -0.004383821752769667,
+            -0.0186695683181152,
+            0.00672928489924429,
+            -0.024679298089647174,
+            0.0008158897151290067,
+            0.0010462836840287775,
+            0.0008019672774324128
+          ]
+        }
+      }
+    },
+    {
+      "name": "paired_recovery035__fp64",
+      "seed": 2026100302,
+      "checkpoint_sha256": "efbaa770858840919d022678fce3974e7f0b116f703c0fd2b1efec1e6874087c",
+      "metadata_sha256": "731e24a363aefb928ff51214b06976ca50a3fad5a709f326788e05d2b3d3f22f",
+      "exported_replay_sha256": "11239d1bd2706aee64a660254f3794a418cbeadc32e7de5e7d4272081025e998",
+      "reproduced_max_abs": 0.0,
+      "learned_parameters": 5504,
+      "partitions": {
+        "synthetic_training": {
+          "samples": 40000,
+          "requested_action_mse": 0.006380813299012733,
+          "mean_error_by_action": [
+            -0.004208299867800395,
+            0.0033912963977836535,
+            0.006405988422478803,
+            0.0026746273959467816,
+            -0.006311080337838476,
+            -0.01556541770096421,
+            -0.002489926437730048
+          ]
+        },
+        "synthetic_identity_holdout": {
+          "samples": 8000,
+          "requested_action_mse": 0.008052406990120506,
+          "mean_error_by_action": [
+            -0.0051691841040593,
+            0.010108109488365831,
+            0.004517323397889886,
+            0.006407703850943177,
+            -0.00800455455774509,
+            -0.009689690461491702,
+            -0.003049775015835865
+          ]
+        },
+        "native_successful_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.002993721354554363,
+          "mean_error_by_action": [
+            -0.016148828138659085,
+            -0.001147839484891837,
+            0.018285108757870035,
+            -0.03411208966933721,
+            -0.018853665989437978,
+            0.007053529963938153,
+            0.005361280035006354
+          ]
+        },
+        "local_failed_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.002351538493239882,
+          "mean_error_by_action": [
+            -0.009855290379495072,
+            -0.00013228346725316318,
+            0.016145003916544907,
+            -0.029401235730988486,
+            -0.018171966157114177,
+            0.006193460413188074,
+            0.007535836333762554
+          ]
+        },
+        "counterfactual_student": {
+          "samples": 2750,
+          "requested_action_mse": 0.009860096823207095,
+          "mean_error_by_action": [
+            -0.03664469013182409,
+            -0.015708216125989164,
+            0.021658705466812554,
+            -0.05291929545472682,
+            -0.019850073476483526,
+            0.012454964457655067,
+            -0.004526206160523232
+          ]
+        }
+      }
+    },
+    {
+      "name": "paired_recovery035_rnn_fp64",
+      "seed": 2026100302,
+      "checkpoint_sha256": "9f758e36c3a19684cbe7f3583e6c886d57b1a41b37e732fad5c79bf04aa7c13b",
+      "metadata_sha256": "d575fc8c0ebc2b16fd1ee7159446503979c495b48bf691f846920116afcc609e",
+      "exported_replay_sha256": "30b86fa60022d441b8cc2ef7d9533a65ee8352a05b7d2323b0b79b99e993fdea",
+      "reproduced_max_abs": 0.0,
+      "learned_parameters": 21888,
+      "partitions": {
+        "synthetic_training": {
+          "samples": 40000,
+          "requested_action_mse": 0.0035273771583615027,
+          "mean_error_by_action": [
+            -0.006640972995785968,
+            0.0008914281946349603,
+            -0.0001415929938137134,
+            0.003477954258284472,
+            -0.00028006165252499515,
+            -0.001090672871973039,
+            0.0008453951059122787
+          ]
+        },
+        "synthetic_identity_holdout": {
+          "samples": 8000,
+          "requested_action_mse": 0.0055898725947275615,
+          "mean_error_by_action": [
+            -0.0040785372404101225,
+            -0.005496757596368728,
+            0.00017195238627388363,
+            0.004711632046298393,
+            -0.00029200881036164705,
+            -0.0010070192558307078,
+            0.002398443120744659
+          ]
+        },
+        "native_successful_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0010792253245716897,
+          "mean_error_by_action": [
+            -0.006069588807172858,
+            0.0002407649076329455,
+            -0.0047841531157701254,
+            0.0036144624804986068,
+            -0.0044756348594303195,
+            -0.0031598588814085653,
+            -0.0006442917584196117
+          ]
+        },
+        "local_failed_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0008459383559627802,
+          "mean_error_by_action": [
+            -0.0029557741195372555,
+            0.0014396421990125875,
+            -0.0032586391674876225,
+            0.0018808618921323061,
+            -0.0027680487378918075,
+            -0.004429157283021466,
+            -0.0008662736157231084
+          ]
+        },
+        "counterfactual_student": {
+          "samples": 2750,
+          "requested_action_mse": 0.0019826840372946897,
+          "mean_error_by_action": [
+            -0.0019480540159985164,
+            -0.00941586175348202,
+            -0.0025928008270099446,
+            0.0025775136492956286,
+            -0.007097205734428463,
+            -0.009185456326748165,
+            -0.004451586450486132
+          ]
+        }
+      }
+    },
+    {
+      "name": "paired_recovery035_mlp_seed2",
+      "seed": 2026100303,
+      "checkpoint_sha256": "7b8af984a511d7291143c396fb77b2dcb72091f61d82da6200bf82a8026efd41",
+      "metadata_sha256": "b694cd64e55e4bead6a0193dbc1c4eb5b29f8670bc9b30b9f5a4d964ae33b382",
+      "exported_replay_sha256": "2f43d7ab6425de649f6477d8dd66bf2c26b79acd34844ef5003e2191a9e2f731",
+      "reproduced_max_abs": 0.0,
+      "learned_parameters": 5504,
+      "partitions": {
+        "synthetic_training": {
+          "samples": 40000,
+          "requested_action_mse": 0.006439739480247413,
+          "mean_error_by_action": [
+            -0.0017457849584719203,
+            0.008065786299380734,
+            0.009753535067666618,
+            0.008776243900867082,
+            0.0015967668794114927,
+            -0.004059349936399339,
+            -0.006686714161321385
+          ]
+        },
+        "synthetic_identity_holdout": {
+          "samples": 8000,
+          "requested_action_mse": 0.007947260385962454,
+          "mean_error_by_action": [
+            0.0006981997337769378,
+            0.012569683823550106,
+            0.010915350567942126,
+            0.012612528881027586,
+            0.005007651491831802,
+            -0.004292651412876542,
+            -0.002936729136210639
+          ]
+        },
+        "native_successful_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0028970588508048364,
+          "mean_error_by_action": [
+            0.006614881709051519,
+            -0.004349900161281313,
+            0.009737945377511874,
+            0.01635674492499913,
+            0.006318559545745289,
+            0.02056566534707229,
+            -0.0055432763493411495
+          ]
+        },
+        "local_failed_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0022648673474890842,
+          "mean_error_by_action": [
+            0.008669654667725298,
+            -0.005643988773870115,
+            0.010705176582369717,
+            0.016051527121857867,
+            0.004558712036737913,
+            0.018208995504471748,
+            -0.00607676992308948
+          ]
+        },
+        "counterfactual_student": {
+          "samples": 2750,
+          "requested_action_mse": 0.009522646886813323,
+          "mean_error_by_action": [
+            0.003362609239827071,
+            -0.017502732733875575,
+            0.013992727918846575,
+            -0.0034692555840558415,
+            0.0007177878440771214,
+            0.013402037300187833,
+            -0.003255460443416646
+          ]
+        }
+      }
+    },
+    {
+      "name": "paired_recovery035_rnn_seed2",
+      "seed": 2026100303,
+      "checkpoint_sha256": "b1cc87942e94c943d690617b34c25fb00796af5707e9dd7ba3629b94bfe9fe2e",
+      "metadata_sha256": "2389cec34a0c3eb021bfd3b8df2b201f315c5c9584a3dc30cce3acc251a30520",
+      "exported_replay_sha256": "7988894998e6c1b0285bca5aa4da676424364a778cb7f2f082cc3b8d26f77771",
+      "reproduced_max_abs": 0.0,
+      "learned_parameters": 21888,
+      "partitions": {
+        "synthetic_training": {
+          "samples": 40000,
+          "requested_action_mse": 0.0042801154079162365,
+          "mean_error_by_action": [
+            -0.008137201438806752,
+            0.008958355944659284,
+            0.01285467554823619,
+            0.0015422350683531377,
+            0.00047316923944276413,
+            0.0033516788546869448,
+            0.009481550428384637
+          ]
+        },
+        "synthetic_identity_holdout": {
+          "samples": 8000,
+          "requested_action_mse": 0.005834301397141541,
+          "mean_error_by_action": [
+            -0.011758072065489834,
+            0.009596490459394898,
+            0.012977276067690276,
+            -0.006400285723368217,
+            -0.0035072979721425318,
+            0.0014513014234116262,
+            0.00958817703546432
+          ]
+        },
+        "native_successful_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0016114093025292387,
+          "mean_error_by_action": [
+            -0.015317380679330554,
+            -0.004959870755325505,
+            0.004235929988649052,
+            0.0015911428091988167,
+            0.0016754060164186125,
+            0.007007221797123377,
+            0.0016728982260123895
+          ]
+        },
+        "local_failed_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0013674724173118095,
+          "mean_error_by_action": [
+            -0.008219443423712072,
+            -0.007377232704536106,
+            0.003999180559533651,
+            0.0027407464632366743,
+            0.0008954793302708071,
+            0.005446824544564573,
+            0.00031040131098756217
+          ]
+        },
+        "counterfactual_student": {
+          "samples": 2750,
+          "requested_action_mse": 0.002466692582079264,
+          "mean_error_by_action": [
+            -0.023849633055124435,
+            -0.009443423461546842,
+            0.0002312401555425942,
+            0.0011636685050352659,
+            0.0032360916753491962,
+            0.005501094546469722,
+            0.005615133775141146
+          ]
+        }
+      }
+    },
+    {
+      "name": "paired_feature_matched_mlp",
+      "seed": 2026100302,
+      "checkpoint_sha256": "30dbeefe408b3dd5f75372f842afbbae7c025dba1cb8ef8f8e432899fb4ab252",
+      "metadata_sha256": "899e1a709603127751f82c1db12da8109c9514833f0d7eb9090f8cecd1d8e05b",
+      "exported_replay_sha256": "ee172477a7223edd8133b8c9977486ab41d0d1332028083bd5fa91e8502686d5",
+      "reproduced_max_abs": 0.0,
+      "learned_parameters": 22852,
+      "partitions": {
+        "synthetic_training": {
+          "samples": 40000,
+          "requested_action_mse": 0.007123977945221304,
+          "mean_error_by_action": [
+            -0.0026486381465339413,
+            -0.009761493121637505,
+            0.0009767291674264377,
+            0.0324194004990299,
+            -0.0028843217645539354,
+            0.0014432791867239488,
+            -0.0054245939901532685
+          ]
+        },
+        "synthetic_identity_holdout": {
+          "samples": 8000,
+          "requested_action_mse": 0.013956680567217933,
+          "mean_error_by_action": [
+            0.0002616973432389639,
+            1.7169588169886935e-05,
+            -0.004768003809188623,
+            0.011710282602129682,
+            -0.0014862626097334644,
+            -0.004247015078398644,
+            -0.00625385455103391
+          ]
+        },
+        "native_successful_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0014886359823412867,
+          "mean_error_by_action": [
+            -0.0032674022857147093,
+            -0.0024928440989341652,
+            -0.0024489322901064593,
+            0.003035339512509653,
+            0.003068656438739338,
+            0.001967703136095002,
+            -0.007047704334155268
+          ]
+        },
+        "local_failed_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0012111915376967458,
+          "mean_error_by_action": [
+            0.0012144679870167594,
+            0.000463415747115356,
+            -0.0032386679885954327,
+            -0.0015693561271947249,
+            0.00019170588918081152,
+            0.0021710932473426657,
+            -0.006671769752475478
+          ]
+        },
+        "counterfactual_student": {
+          "samples": 2750,
+          "requested_action_mse": 0.004349841236507794,
+          "mean_error_by_action": [
+            -0.018230862658717987,
+            -0.04948153427805149,
+            0.021165107113465753,
+            -0.028502387651509878,
+            0.0111644072971999,
+            -0.003748303944152089,
+            -0.008255282247924578
+          ]
+        }
+      }
+    },
+    {
+      "name": "paired_feature_matched_rnn",
+      "seed": 2026100302,
+      "checkpoint_sha256": "648de91ad9f04a134fe0e345b437367e58d2288c5613b850178f8b252d3ebdbc",
+      "metadata_sha256": "414fb7b4fe65a065e231f0cd0ac5a1481dc8c130a25bdffcfad73f66d817cb19",
+      "exported_replay_sha256": "ad96159cc83c44c9a02888112da94090c80b23b4ae74b91da23d347d615e0eb6",
+      "reproduced_max_abs": 0.0,
+      "learned_parameters": 39236,
+      "partitions": {
+        "synthetic_training": {
+          "samples": 40000,
+          "requested_action_mse": 0.002543204021474263,
+          "mean_error_by_action": [
+            -0.00298120210101525,
+            -0.0010361811876586106,
+            -0.00918168162181235,
+            -0.004432570586226543,
+            -0.0037124998368124784,
+            -0.011475520595075329,
+            -0.003711420058085693
+          ]
+        },
+        "synthetic_identity_holdout": {
+          "samples": 8000,
+          "requested_action_mse": 0.007466536083889531,
+          "mean_error_by_action": [
+            -0.002645298033418996,
+            -0.003292030265996499,
+            -0.00903590908005137,
+            -0.01446082850239676,
+            -0.0034361584828054505,
+            -0.013522171808064098,
+            -0.003698191695030945
+          ]
+        },
+        "native_successful_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0015303750516681954,
+          "mean_error_by_action": [
+            0.004031155571145082,
+            0.012164483643031741,
+            -0.016792114798491395,
+            -0.0273873098224115,
+            -0.005795651018640087,
+            -0.013126363277422502,
+            -0.003032335093338561
+          ]
+        },
+        "local_failed_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0014580773568757892,
+          "mean_error_by_action": [
+            0.005323058811270221,
+            0.014149876587234116,
+            -0.014655617949700635,
+            -0.038823813720094906,
+            -0.006545161433349908,
+            -0.01274011968794929,
+            -0.0037184182699339604
+          ]
+        },
+        "counterfactual_student": {
+          "samples": 2750,
+          "requested_action_mse": 0.0009751556718254306,
+          "mean_error_by_action": [
+            -0.004420136745336452,
+            -0.0010611792795586729,
+            -0.011875310846212324,
+            -0.022999455893904282,
+            0.0022853051464167937,
+            -0.013392625040262422,
+            0.0005143397029166913
+          ]
+        }
+      }
+    },
+    {
+      "name": "paired_feature_matched_rnn_seed2",
+      "seed": 2026100303,
+      "checkpoint_sha256": "01619a4cd41ef8dae699edffc8225871f7a4c838c049211da4d7cf16ab18f8fe",
+      "metadata_sha256": "a2e2056111969a06f06a314099c1201a4dc3a8fe9e2a6e69285bc5ce177d8a33",
+      "exported_replay_sha256": "0f0f98d0b6f8afc3dfd58c3b4fc3be77fff190386d6d28574e22dc570cd68c36",
+      "reproduced_max_abs": 0.0,
+      "learned_parameters": 39236,
+      "partitions": {
+        "synthetic_training": {
+          "samples": 40000,
+          "requested_action_mse": 0.003481866980163105,
+          "mean_error_by_action": [
+            -0.004608076151122734,
+            -0.021581636841258054,
+            -0.0004487136408434715,
+            0.025643696119990823,
+            -0.0011445123379914808,
+            0.005881891384185253,
+            0.004957405761191352
+          ]
+        },
+        "synthetic_identity_holdout": {
+          "samples": 8000,
+          "requested_action_mse": 0.006499062384277451,
+          "mean_error_by_action": [
+            0.0022510443295852066,
+            -0.025369452674985388,
+            -0.004447090513400835,
+            0.013573421598850503,
+            0.00036909477466923673,
+            0.008454825484125432,
+            0.004969737601149162
+          ]
+        },
+        "native_successful_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0017875367006117365,
+          "mean_error_by_action": [
+            -0.014028768455202954,
+            -0.018237725032982564,
+            0.006066754710031698,
+            -0.026612116294847707,
+            -7.806880021215309e-05,
+            0.0034758667095120357,
+            0.004710592038144911
+          ]
+        },
+        "local_failed_teacher": {
+          "samples": 1375,
+          "requested_action_mse": 0.0019403291474681538,
+          "mean_error_by_action": [
+            -0.012326642683912429,
+            -0.01390548748737193,
+            0.00488441940553704,
+            -0.03646879908696848,
+            0.0007625305800853753,
+            0.0005511880269374246,
+            0.003798361151982782
+          ]
+        },
+        "counterfactual_student": {
+          "samples": 2750,
+          "requested_action_mse": 0.0014736788793383955,
+          "mean_error_by_action": [
+            0.002540316021143654,
+            -0.014552865779386883,
+            -0.0026458068257010836,
+            -0.014866080308582868,
+            0.0022694717433886214,
+            0.014829213055476267,
+            0.00928297046874027
+          ]
+        }
+      }
+    }
+  ],
+  "lineage": [
+    {
+      "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paper_esn_12h_20261002_141136/inputs/native_recovery035/rollout.npz",
+      "sha256": "b27405d2683b391be71f6475bbd2f29e354403b454c00bf85b02c139d00afc04",
+      "actual_execution_labels": true,
+      "counterfactual_relabel": false,
+      "task_success": true,
+      "strict_success": true
+    },
+    {
+      "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paper_esn_12h_20261002_141136/teacher_learning/recovery_lift0.035_distance0.02/rollout.npz",
+      "sha256": "0ada6e57727571931e13314636a762fea2655d7f483d0306194e2407842dfd33",
+      "actual_execution_labels": true,
+      "counterfactual_relabel": false,
+      "task_success": false,
+      "strict_success": false
+    },
+    {
+      "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paper_esn_12h_20261002_141136/initial/03_esn_original/rollout.npz",
+      "sha256": "28651574234db2b234160668ccf22ff3fde2f5b5ff0d3f2ee0001b4835967747",
+      "actual_execution_labels": false,
+      "counterfactual_relabel": true,
+      "task_success": false,
+      "strict_success": false
+    },
+    {
+      "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paper_esn_12h_20261002_141136/learning_next/modular_temporal_.25/rollout.npz",
+      "sha256": "c09e4cf4e4398fc2ff11c4206a2ebec502784becf36ecf97546aa419c419748c",
+      "actual_execution_labels": false,
+      "counterfactual_relabel": true,
+      "task_success": false,
+      "strict_success": false
+    }
+  ],
+  "samples": 53500,
+  "limitations": "Recorded development/synthetic histories only. Physical-history labels include successful and failed teachers plus explicit counterfactuals. Low action MSE is not closed-loop placement or compliance evidence. No final-condition data or post-test tuning."
+}

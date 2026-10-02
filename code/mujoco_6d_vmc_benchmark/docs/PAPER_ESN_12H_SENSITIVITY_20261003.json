@@ -1,0 +1,27 @@
+{
+  "registered_utc": "2026-10-02T20:01:17+00:00",
+  "purpose": "Supplementary fixed-model sensitivity study registered before any h1-h4 or formal result; no new training or tuning",
+  "geometry_model_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+  "physics_dt_s": 0.0001,
+  "duration_s": 55,
+  "sampler": "NumPy default_rng (PCG64), seed 2026100312, independent uniform draws, shape (8,5), rounded to six decimals",
+  "parameter_order": ["ball_speed", "person_start", "rod_start", "person_stroke", "rod_stroke"],
+  "lower_bounds": [1.305, 3.5, 12.5, 0.18, 0.2115],
+  "upper_bounds": [1.595, 4.5, 13.5, 0.22, 0.2585],
+  "eligibility": "Every final-selected model that passed the unchanged development-anchor task/strict gate, identical to formal eligibility, fixed before final evaluation. Never select using h1-h4 or formal outcomes.",
+  "all_eligible_models_receive_identical_conditions": true,
+  "conditions": [
+    {"id": "s1", "ball_speed": 1.558752, "person_start": 4.484118, "rod_start": 13.308217, "person_stroke": 0.20446, "rod_stroke": 0.217393},
+    {"id": "s2", "ball_speed": 1.38701, "person_start": 3.501381, "rod_start": 12.643474, "person_stroke": 0.203665, "rod_stroke": 0.21522},
+    {"id": "s3", "ball_speed": 1.478473, "person_start": 3.708031, "rod_start": 12.835047, "person_stroke": 0.197299, "rod_stroke": 0.224618},
+    {"id": "s4", "ball_speed": 1.445167, "person_start": 3.897338, "rod_start": 13.156819, "person_stroke": 0.198648, "rod_stroke": 0.230474},
+    {"id": "s5", "ball_speed": 1.319742, "person_start": 4.10127, "rod_start": 13.04018, "person_stroke": 0.211367, "rod_stroke": 0.236924},
+    {"id": "s6", "ball_speed": 1.563113, "person_start": 4.280552, "rod_start": 12.56243, "person_stroke": 0.18368, "rod_stroke": 0.223977},
+    {"id": "s7", "ball_speed": 1.575283, "person_start": 4.187748, "rod_start": 12.941756, "person_stroke": 0.204116, "rod_stroke": 0.228093},
+    {"id": "s8", "ball_speed": 1.433576, "person_start": 4.062449, "rod_start": 13.279128, "person_stroke": 0.202765, "rod_stroke": 0.220105}
+  ],
+  "unchanged": ["geometry", "target", "planner", "actor inputs", "ball launch at 2s", "contact materials", "actuator constraints", "task and strict gates"],
+  "reporting": "Report separately from the 26-model four-condition primary comparison and from formal resolution. Noneligible models are not tested here, never counted as failures. Preserve every failure and abort. This is a small local perturbation distribution in one geometry, not real-world generalization. No weighted champion score.",
+  "dispatch_deadline_utc": "2026-10-03T01:00:00+00:00",
+  "authorized_end_utc": "2026-10-03T02:11:36+00:00"
+}

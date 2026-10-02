@@ -17,7 +17,11 @@ def sha(path):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--run',type=Path,required=True)
-    a=p.parse_args();prefix=a.run/'esn_combined_v4'
+    p.add_argument('--prefix',default='esn_combined_v4')
+    p.add_argument('--output',type=Path)
+    a=p.parse_args()
+    if Path(a.prefix).name!=a.prefix or a.prefix in ('.','..'):raise ValueError('Expected simple rollout prefix')
+    prefix=a.run/a.prefix
     summary=json.loads(prefix.with_suffix('.json').read_text())
     assert summary.get('path_plan') and mujoco.__version__=='3.11.0'
     model_path=prefix.with_suffix('.mjb')
@@ -33,6 +37,7 @@ def main():
     checks=[]
     with np.load(prefix.with_suffix('.npz')) as z:
         assert len(z['time'])==1375 and abs(float(z['time'][-1])-55)<1e-6
+        np.testing.assert_allclose(np.diff(z['time']), .04, rtol=0, atol=1e-8)
         for i in range(len(z['time'])-1,len(z['time'])-14,-1):
             d.qpos[:]=z['qpos'][i];d.qvel[:]=z['qvel'][i];d.ctrl[:]=z['ctrl'][i]
             d.mocap_pos[:]=z['mocap_pos'][i];d.mocap_quat[:]=z['mocap_quat'][i]
@@ -50,11 +55,13 @@ def main():
     inferred=all(c['valid'] for c in checks) and observed_lift>.1 and summary['full_task_horizon_completed']
     assert inferred==summary['task_success'], 'Independent placement disagrees with reported task success'
     report=dict(task_success=inferred,independent_final_state_checks=checks,
-                coverage_s=.52,max_lift_from_saved_frames_m=observed_lift,
+                sampled_check_count=len(checks),sampled_timestamp_span_s=checks[0]['time_s']-checks[-1]['time_s'],
+                credited_discrete_hold_s=.04*len(checks),max_lift_from_saved_frames_m=observed_lift,
                 summary_sha256=sha(prefix.with_suffix('.json')),trace_sha256=sha(prefix.with_suffix('.npz')),
-                source_sha256=sha(__file__),limitations='Saved-state forward contact reconstruction at 25Hz, not a new physics rollout')
-    output=a.run/'PLACEMENT_AUDIT.json'
+                source_sha256=sha(__file__),limitations='Saved-state forward contact reconstruction at 25Hz, not a new physics rollout. The unchanged evaluator credits 0.04s per valid sample: 13 valid samples credit 0.52s but span only 0.48s between first/last timestamps. This is not continuous substep verification of placement.')
+    output=a.output if a.output is not None else a.run/'PLACEMENT_AUDIT.json'
     if output.exists():raise FileExistsError(output)
+    output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text(json.dumps(report,indent=2))
     print(json.dumps(dict(run=str(a.run),task_success=inferred,final=checks[0]),indent=2))
 

@@ -2,6 +2,7 @@
 import argparse
 from dataclasses import asdict
 import json
+import shutil
 from pathlib import Path
 import numpy as np
 from optimize_tool_contact_20261002 import sha,write,now,EXPECTED_MJB
@@ -11,7 +12,9 @@ from wbc_velocity_residual_core import VelocityResidualActionFilter,VelocityResi
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--batch',help='Explicit immediate child containing physical runs; startup/training records remain separate')
+    p.add_argument('--expected-model-sha256',default=EXPECTED_MJB)
     args=p.parse_args();rows=[];pending=[];verified_sources=set()
+    if args.output.exists() or args.output.with_suffix('.source.py').exists():raise FileExistsError(args.output)
     if args.batch and (Path(args.batch).name!=args.batch or args.batch in ('.','..')):
         raise ValueError('Batch must be an immediate child directory name')
     paths=(args.root/args.batch).glob('*/execution.json') if args.batch else args.root.glob('*/*/execution.json')
@@ -64,7 +67,7 @@ def main():
                 f=filt.filter(a,.04);np.testing.assert_array_equal(f.cartesian_yield_twist,y)
                 if f.wbc_scale!=s:raise ValueError('Common filter replay mismatch')
             row['common_filter_replay_max_abs']=0.
-        assert sha(run/'rollout.mjb')==row['model_sha256']==summary['model_sha256']==EXPECTED_MJB
+        assert sha(run/'rollout.mjb')==row['model_sha256']==summary['model_sha256']==args.expected_model_sha256
         assert sha(run/'rollout.npz')==row['trace_sha256']
         assert sha(run/'config.json')==state['config_sha256']
         assert sha(run/'execution_chain.npz')==row['chain_sha256']
@@ -96,6 +99,7 @@ def main():
     write(args.output,dict(created_utc=now(),rows=rows,pending=pending,strict_pareto_rmse_torque=pareto,
                           selected_batch=args.batch,source_sha256=sha(Path(__file__)),
                           limitation='Fixed seen-world development; unfinished/failed rows are retained; speed remains a safety/report quantity, not a positive reward'))
+    shutil.copy2(__file__,args.output.with_suffix('.source.py'))
     print(json.dumps(dict(completed=len(rows),pending=len(pending),task=sum(r['task_success'] for r in rows),strict=len(valid)),indent=2))
 
 if __name__=='__main__':main()

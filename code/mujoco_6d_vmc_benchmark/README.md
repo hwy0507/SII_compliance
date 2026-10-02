@@ -1,6 +1,15 @@
 # MuJoCo 6D End-Effector VMC Benchmark
 
-The latest fixed-office research is the
+The latest research is the [same-scene 12-hour ESN study](docs/PAPER_ESN_12H_RESULTS_20261003.md)
+on baseline's pre-existing `office-validation-v6`: 26 frozen models over four
+conditions, plus separately registered random and finer-step validation.
+ESN strict success was 1/4 and 2/4 across seeds, without a consistent advantage
+over learned or enhanced-teacher controls. Both ESNs failed placement at the
+`dt=5e-5` anchor. The [methods and comparison rules](docs/PAPER_ESN_12H_METHODS_20261003.md)
+prioritize actual placement, original physical constraints, contact exposure and
+recovery; low RMSE alone cannot establish compliance. Complete failures are retained.
+
+The preceding fixed-office research is the
 [pure MLP / trainable Elman RNN replacement](docs/MLP_RNN_REPLACEMENT_REPORT_20261002.md):
 eight width-128 models, paired data/update schedules, two training seeds and two
 existing teacher datasets. All eight full episodes failed placement/strict;

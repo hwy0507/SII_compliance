@@ -77,10 +77,13 @@ def main():
     p.add_argument('--context-leak-gate',action='store_true',help='Fixed random motion-conditioned leak rates, zero-load equilibrium unchanged')
     p.add_argument('--memory-challenges',action='store_true',help='Half the synthetic histories explicitly test unloaded-stall retention and progress-triggered release')
     p.add_argument('--drift-weight',type=float,default=0.,help='Weight on 0.64s integrated translational-action error, normalized by 20mm; imitation proxy only')
+    p.add_argument('--data-only',action='store_true',help='Export audited teacher labels without fitting a learned hidden readout')
+    p.add_argument('--label-replay-atol',type=float,default=0.,help='Explicit cross-runtime float tolerance; stored actual labels are never replaced by replay')
     args=p.parse_args();out=args.output.resolve();out.mkdir(parents=True,exist_ok=False)
     if not 350<=args.synthetic_steps<=1400:raise ValueError('Synthetic history length outside registered resource bound')
     if args.memory_challenges and args.synthetic_steps<1000:raise ValueError('Memory challenges require complete long histories')
     if not np.isfinite(args.drift_weight) or args.drift_weight<0:raise ValueError('Invalid drift-loss weight')
+    if not 0<=args.label_replay_atol<=1e-10:raise ValueError('Invalid teacher label replay tolerance')
     cg=Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
     memory=(cg/'memory.max').read_text().strip()
     assert memory!='max' and int(memory)<=3*1024**3
@@ -116,10 +119,12 @@ def main():
         if not args.absolute_inputs:raise ValueError('Use --absolute-inputs with --context-inputs')
         actor.win=np.c_[actor.win,np.random.default_rng(args.seed+30000).normal(0,.25/3,(128,12*actor.context_dimension))]
     observations=[];features=[];targets=[];requests=[];episodes=[];is_train=[];importance=[];lineage=[]
-    def append(obs,ep,train,weight,actual=None):
+    def append(obs,ep,train,weight,actual=None,actual_filtered=None):
         raw,y=filtered_labels(obs,config)
         if actual is not None:
-            np.testing.assert_array_equal(raw,actual)
+            np.testing.assert_allclose(raw,actual,rtol=0,atol=args.label_replay_atol)
+            raw=actual.copy()
+            if actual_filtered is not None:y=actual_filtered.copy()
         actor.reset();features.extend(actor.features(o) for o in obs)
         observations.extend(obs);targets.extend(y);requests.extend(raw)
         episodes.extend([ep]*len(obs));is_train.extend([train]*len(obs));importance.extend([weight]*len(obs))
@@ -145,18 +150,25 @@ def main():
                 obs[20:23]=translation_error
         append(np.asarray(seq),ep,ep<40,1.)
     for i,path in enumerate(args.traces+args.relabel_traces):
+        execution_path=path.parent/'execution.json'
+        if execution_path.exists():
+            provenance=json.loads(execution_path.read_text()).get('runtime_provenance',{})
+            if provenance.get('condition_id','development_anchor')!='development_anchor' or provenance.get('physics_tier')=='formal_resolution':
+                raise ValueError('Heldout/formal history prohibited in teacher distillation: '+str(path))
         with np.load(path,allow_pickle=False) as z:obs=z['observation'].copy();raw=z['applied_action'].copy()
         actual=i<len(args.traces)
+        executed=None
         if actual:
             # Fail before fitting if requested->filtered labels differ from
             # the real execution chain, including physical unit overrides.
             replay_raw,replay_filtered=filtered_labels(obs,config)
             with np.load(path.parent/'execution_chain.npz') as chain:
-                np.testing.assert_array_equal(replay_raw,chain['requested_action'])
+                np.testing.assert_array_equal(raw,chain['requested_action'])
+                np.testing.assert_allclose(replay_raw,chain['requested_action'],rtol=0,atol=args.label_replay_atol)
                 executed=np.c_[(1-chain['wbc_scale'])/(1-FILTER_CONFIG.minimum_wbc_scale),
                     chain['yield_twist']/np.r_[np.full(3,FILTER_CONFIG.maximum_linear_yield_mps),np.full(3,FILTER_CONFIG.maximum_angular_yield_radps)]]
                 np.testing.assert_allclose(replay_filtered,executed,rtol=0,atol=1e-12)
-        append(obs,48+i,True,args.real_weight if actual else args.real_weight/3.,actual=raw if actual else None)
+        append(obs,48+i,True,args.real_weight if actual else args.real_weight/3.,actual=raw if actual else None,actual_filtered=executed)
         result=json.loads(path.with_suffix('.json').read_text())
         lineage.append(dict(path=str(path.resolve()),sha256=sha(path),actual_execution_labels=actual,
                             counterfactual_relabel=not actual,task_success=result['task_success'],
@@ -164,6 +176,20 @@ def main():
     x=np.asarray(features);y=np.asarray(targets);raw_requests=np.asarray(requests)
     ep=np.asarray(episodes);train=np.asarray(is_train);w=np.asarray(importance)
     del features,targets,requests,episodes,is_train,importance
+    if args.data_only:
+        np.savez_compressed(out/'training_data.npz',observation=np.asarray(observations),episode=ep,train=train,
+                            requested_teacher_action=raw_requests,filtered_teacher_action=y,importance=w)
+        metadata=dict(completed_utc=now(),seed=args.seed,config=config,config_sha256=sha(args.config),
+            training_data_sha256=sha(out/'training_data.npz'),source_sha256=source_hashes,
+            lineage=lineage,position_error_context=args.position_context,synthetic_steps=args.synthetic_steps,
+            real_weight=args.real_weight,synthetic_memory_challenges=args.memory_challenges,
+            actual_filter_replay_verified=True,data_only=True,
+            label_replay_atol=args.label_replay_atol,actual_requested_labels_preserved=True,
+            limitations='Real executions and counterfactual histories separately declared; synthetic identity holdout only. No model fitted or physical generalization claim.')
+        assert all(sha(ROOT/name)==digest for name,digest in source_hashes.items())
+        write(out/'DATA_COMPLETE.json',metadata)
+        execution.update(status='complete',ended_utc=now(),training_data_sha256=metadata['training_data_sha256'])
+        write(out/'execution.json',execution);print(json.dumps(dict(status='data_complete',episodes=int(ep.max()+1))));return
     norm=np.maximum(x[train].std(0),.005)
     context_dimension=actor.context_dimension
     load_dimension=x.shape[1]-context_dimension if args.context_inputs else x.shape[1]
@@ -245,6 +271,7 @@ def main():
                   drift_weight=args.drift_weight,drift_window_s=window_length*.04,
                   drift_proxy_note='Integrated translational-action discrepancy, not observed robot RMSE; full physical validation required',
                   action_filter_linear_limit_mps=FILTER_CONFIG.maximum_linear_yield_mps,actual_filter_replay_verified=True,
+                  label_replay_atol=args.label_replay_atol,actual_requested_labels_preserved=True,
                   closed_loop_validation=False,limitations='Synthetic held-out histories only; physical traces are declared development training identities; no physical generalization claim')
     assert all(sha(ROOT/name)==digest for name,digest in source_hashes.items()),'Training source changed during fit'
     write(out/'TRAINING_COMPLETE.json',metadata);write(out/'training_history.json',history)

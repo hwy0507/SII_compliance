@@ -5,9 +5,11 @@ import contextlib
 from dataclasses import asdict
 from datetime import datetime, timezone
 import hashlib
+import importlib.metadata
 import json
 import os
 import platform
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -24,6 +26,10 @@ from vmc_teacher_stable_readout_20260930 import StableReadoutTeacher
 from wbc_velocity_residual_core import VelocityResidualActionFilter,VelocityResidualSafetyConfig
 
 EXPECTED_MJB='b092662aa1d6fba12357cd0a6271d309abeb047ad09f20a0a646d48415b637a1'
+EXTRA_SOURCE_FILES=[]
+RUNTIME_PROVENANCE={}
+RUNTIME_ARGUMENT_OVERRIDES={}
+AUDIT_FUNCTION=None
 
 def sha(path):
     h=hashlib.sha256()
@@ -32,6 +38,13 @@ def sha(path):
     return h.hexdigest()
 
 def now():return datetime.now(timezone.utc).isoformat()
+
+def source_base_commit():
+    declared=os.environ.get('SII_SOURCE_BASE_COMMIT')
+    if declared is not None:
+        if not re.fullmatch(r'[0-9a-f]{40}',declared):raise ValueError('Invalid declared source base commit')
+        return declared
+    return subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
 
 def write(path,data):
     def encode(value):
@@ -139,11 +152,13 @@ class ParameterTeacher(StableReadoutTeacher):
             action[3]=(1-activation)*action[3]+activation*correction/.32
         return np.clip(action,-1.,1.)
 
-def audit(run,config,checkpoint=None,memory_ablation='none'):
+def audit(run,config,checkpoint=None,memory_ablation='none',skip_actor_replay=False):
     result=json.loads((run/'rollout.json').read_text())
     with np.load(run/'rollout.npz',allow_pickle=False) as z:
         obs=z['observation']; action=z['applied_action']
-        if checkpoint:
+        if skip_actor_replay:
+            pred=None;state_error=None
+        elif checkpoint:
             from current_student_policy_20260921 import load_current
             actor=load_current(checkpoint);actor.reset()
             states=[];pred=[]
@@ -157,8 +172,8 @@ def audit(run,config,checkpoint=None,memory_ablation='none'):
             pred=[]
             for o in obs:actor.observe(o);pred.append(actor.act(o[39:45]))
             state_error=None
-        action_error=float(np.max(np.abs(np.asarray(pred)-action)))
-        if action_error>1e-10 or (state_error is not None and state_error>1e-10):
+        action_error=float(np.max(np.abs(np.asarray(pred)-action))) if pred is not None else None
+        if (action_error is not None and action_error>1e-10) or (state_error is not None and state_error>1e-10):
             raise ValueError('Actor replay mismatch')
         stages={str(int(s)):dict(start_s=float(z['time'][z['stage']==s][0]),
                     end_s=float(z['time'][z['stage']==s][-1]),
@@ -193,6 +208,7 @@ def audit(run,config,checkpoint=None,memory_ablation='none'):
              max_lift_m=result['max_lift_m'],object_final_position=result.get('object_final_position'),
              placement_error_xy_m=result.get('placement_error_xy_m'),abort_reason=result['abort_reason'],
              action_replay_max_abs=action_error,reservoir_replay_max_abs=state_error,stages=stages,
+             actor_replay_performed=not skip_actor_replay,
              common_filter_replay_max_abs=filter_replay_max_abs,
              model_sha256=sha(run/'rollout.mjb'),trace_sha256=sha(run/'rollout.npz'),
              chain_sha256=sha(run/'execution_chain.npz'),metrics_sha256=sha(run/'rollout_metrics/substep_metrics.npz'))
@@ -218,19 +234,26 @@ def main():
     reference=json.loads(args.reference.read_text())
     a=dict(reference['arguments'],output=run/'rollout',render=False,impact_slowmo=False,
            teacher='vmc6d',esn_model=None,esn_mode='shadow',physics_probe_s=None)
+    a.update(RUNTIME_ARGUMENT_OVERRIDES)
     checkpoint=None
     if args.memory_ablation!='none' and not args.checkpoint:raise ValueError('Memory ablation needs an ESN checkpoint')
     if args.checkpoint:
         checkpoint=run/'checkpoint.npz';shutil.copy2(args.checkpoint,checkpoint)
         a.update(teacher='none',esn_model=checkpoint,esn_mode='control',memory_ablation=args.memory_ablation)
-    source_files=sorted((ROOT/'scripts').glob('*.py'))+[Path(__file__)]
+    source_files=sorted((ROOT/'scripts').glob('*.py'))+[Path(__file__)]+list(EXTRA_SOURCE_FILES)
     sources={str(f.relative_to(ROOT)):sha(f) for f in source_files}
     subprocess.run(['tar','-czf',str(run/'source_overlay.tar.gz'),*sources],cwd=ROOT,check=True)
+    packages={}
+    for name in ('numpy','scipy','mujoco','osqp','jax','jaxlib','torch'):
+        try:packages[name]=importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:packages[name]=None
     record=dict(status='running',started_utc=now(),argv=sys.argv,source_sha256=sources,
-                source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+                source_commit=source_base_commit(),
                 source_commit_is_base_only=True,source_status='Run-specific overlay hashes are authoritative; not a clean commit execution',host=platform.node(),pid=os.getpid(),
                 python=sys.executable,mujoco=mujoco.__version__,memory_max=memory,threads=1,
+                python_version=platform.python_version(),machine=platform.machine(),package_versions=packages,
                 reference_sha256=sha(args.reference),config=config,config_sha256=sha(args.config),
+                runtime_provenance=RUNTIME_PROVENANCE,
                 checkpoint_sha256=sha(checkpoint) if checkpoint else None,
                 arguments={k:str(v) if isinstance(v,Path) else v for k,v in a.items()})
     write(run/'execution.json',record)
@@ -293,7 +316,7 @@ def main():
         with (run/'rollout.log').open('w') as log,contextlib.redirect_stdout(log):evaluator.run(SimpleNamespace(**a))
         for name,rows in [('teacher_internal',teacher_rows),('execution_chain',chain_rows)]:
             if rows:np.savez_compressed(run/(name+'.npz'),**{k:np.asarray([r[k] for r in rows]) for k in rows[0]})
-        record['audit']=audit(run,config,checkpoint,args.memory_ablation)
+        record['audit']=(AUDIT_FUNCTION or audit)(run,config,checkpoint,args.memory_ablation)
         if args.contact_audit:
             with np.load(run/'independent_contacts.npz') as z:
                 values=[float(z['external_penetration_m'].max()*1000),float(z['edge_penetration_m'].max()*1000)]
