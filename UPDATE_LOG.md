@@ -1,5 +1,21 @@
 # 更新日志
 
+## 2026-10-02 — current frozen combined-v4 full three-view media
+
+- 按用户请求展示当前最终测试环境，开工核对main38d40c1、baseline699e317；场景未变。
+  以最新p=.1 ESN已保存轨迹和MuJoCo3.11.0归档MJB生成全景/末端/柱桌角三视角，
+  不重跑物理或训练。仍标注task=false/strict=false及load_transfer停滞，不伪装成功。
+- 渲染工具支持显式fps与GIF抽帧，MP4保留1375帧/25fps/55秒原速，GIF275帧/5fps/55秒；
+  GIF缩至960×280以限制内存。实测视频/GIF时长与帧数一致，已目视核验终帧。
+  本地渲染使用3GiB服务和单线程。短碰撞应优先看25fps MP4，GIF不代表高频物理采样。
+- 媒体和输入输出hash已核验至
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/current_office_v4_esn_media_20261002_v1/`。
+  GIF SHA256=`0c8a370ac63a4d0011df0f646128db93b5be7d89c4c9f81f4b5c67e33a1e7067`；
+  MP4=`e92115da80566fb5a3ed6984a1490caa8168c5760ea9b18c4fb0ec40e9227f49`；
+  manifest=`9c98c016c435423fab0ee0b59f5373c78c535e286118e681069b1469207fbfdc`。
+  对应原始输入仍为temporal_s52_latent_dropout_20261001_v1/p010_eval/esn_combined_v4，
+  MJB5eaee4aa未改。自动研究任务保持暂停；本次仅完成媒体展示。
+
 ## 2026-10-01 — memory/dropout diagnostics audited; budget conflict closed out
 
 - 开工实时核对main e0c963b、baseline699e317，未修改baseline。固定权重ESN逐次清空历史

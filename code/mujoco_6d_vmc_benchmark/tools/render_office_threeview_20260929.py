@@ -26,7 +26,11 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--label', required=True)
     p.add_argument('--stride', type=int, default=5)
+    p.add_argument('--fps', type=float, default=10.)
+    p.add_argument('--gif-stride', type=int, default=1)
     args = p.parse_args()
+    if args.stride < 1 or args.gif_stride < 1 or args.fps <= 0:
+        raise ValueError('Strides and frame rate must be positive')
     if args.output.exists():
         raise FileExistsError(args.output)
     args.output.mkdir(parents=True)
@@ -66,7 +70,7 @@ def main():
     chosen = sorted(set(chosen + [len(trace['time']) - 1]))
     width, height = 1920, 560
     writer = imageio_ffmpeg.write_frames(
-        str(args.output / 'replay_threeview.mp4'), (width, height), fps=10,
+        str(args.output / 'replay_threeview.mp4'), (width, height), fps=args.fps,
         codec='libx264', pix_fmt_out='yuv420p',
         output_params=['-movflags', '+faststart', '-crf', '20'])
     writer.send(None)
@@ -96,7 +100,8 @@ def main():
                 draw.rounded_rectangle((640 * panel + 8, 88, 640 * panel + 180, 118), radius=5, fill=(8, 14, 22))
                 draw.text((640 * panel + 16, 94), name, font=font, fill=(238, 243, 249))
             writer.send(np.asarray(frame))
-            gif_frames.append(frame.resize((1440, 420)))
+            if frame_no % args.gif_stride == 0:
+                gif_frames.append(frame.resize((960, 280)))
             if frame_no in (0, len(chosen) - 1):
                 frame.save(args.output / f'frame_{index:04d}.png')
     finally:
@@ -104,12 +109,19 @@ def main():
         renderer.close()
 
     gif_frames[0].save(args.output / 'replay_threeview.gif', save_all=True,
-                       append_images=gif_frames[1:], duration=100, loop=0)
+                       append_images=gif_frames[1:], duration=round(1000*args.gif_stride/args.fps), loop=0)
     manifest = {
         'render_only': True,
         'physics_rerun': False,
         'camera_views': [name for name, *_ in cameras],
         'stride': args.stride,
+        'fps': args.fps,
+        'gif_stride': args.gif_stride,
+        'source_sha256': digest(Path(__file__)),
+        'mujoco_version': mujoco.__version__,
+        'frame_count': len(chosen),
+        'video_duration_s': len(chosen)/args.fps,
+        'recorded_first_last_s': [float(trace['time'][0]), float(trace['time'][-1])],
         'record': str(args.rollout),
         'input_sha256': {ext: digest(args.rollout.with_suffix(ext)) for ext in ('.json', '.npz', '.mjb')},
         'output_sha256': {
