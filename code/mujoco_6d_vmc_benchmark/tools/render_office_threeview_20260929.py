@@ -96,6 +96,15 @@ def main():
                       font=font, fill=(255, 215, 130))
             for panel, ((name, *_), cam) in enumerate(zip(cameras, camera_objs)):
                 renderer.update_scene(data, camera=cam)
+                if record.get('path_plan'):
+                    # Render-only goal marker; never a collidable geom or actor input.
+                    scene=renderer.scene
+                    target=np.array(record['path_plan']['destination'],dtype=float)
+                    target[2]=.522
+                    mujoco.mjv_initGeom(scene.geoms[scene.ngeom],mujoco.mjtGeom.mjGEOM_CYLINDER,
+                                       np.array([.025,.001,0.]),target,np.eye(3).ravel(),
+                                       np.array([.1,1.,.25,.6],dtype=np.float32))
+                    scene.ngeom+=1
                 frame.paste(Image.fromarray(renderer.render()), (640 * panel, 80))
                 draw.rounded_rectangle((640 * panel + 8, 88, 640 * panel + 180, 118), radius=5, fill=(8, 14, 22))
                 draw.text((640 * panel + 16, 94), name, font=font, fill=(238, 243, 249))

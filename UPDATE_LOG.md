@@ -1,5 +1,22 @@
 # 更新日志
 
+## 2026-10-02 — 靠手桌角新任务与静态路径规划；名义成功，旧ESN仍失败
+
+- 用户授权新目标/成功定义：物块放到靠手桌角并松手稳定即task成功，接触覆盖改为诊断。
+  新协议planned-hand-corner-v1，目标[.690,-.310,.545]m；旧协议/结果保留。
+  开工main7674ed9、baseline699e317，baseline未改。新增静态A*扫掠规划与IK姿态搜索，
+  原竖直姿态不可达，选择-35度；不向ESN加入环境真值，模型几何和执行器限制不改。
+- 两条完整55秒/单线程3GiB开发验证完成：同一规划文件hash50f32f7e，零动作名义执行
+  成功放置，XY误差10.797mm；原ESN仍停carry，不能把名义成功说成ESN成功。
+  ESN三指标43.370mm/38.515Nm/.094228m/s，名义22.767mm/42.020Nm/.068210m/s。
+  动作/状态/子步和独立末端放置审计通过；规划绕障与松手边界检查通过，完整GIF/MP4已保存。
+- 已核验服务器独立归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/planned_hand_corner_pair_20261002_v1/`；
+  evidence.tar.gz SHA256=`7b37f3512c95b3f3d5cd0dd0e8546171727e9faec5f8977ef7a8f88f62b4e73e`。
+  新协议、旧strict区分、baseline复用与失败分析见
+  `code/mujoco_6d_vmc_benchmark/docs/PLANNED_HAND_CORNER_TASK_20261002.md`。
+  未完成：新参考下ESN可靠放置；本轮无重训/其他baseline/正式步长，所有作业结束。
+
 ## 2026-10-02 — 原ESN权重完成12秒推杆时序评估与全程媒体
 
 - 按用户请求复用上次动图的p=.1 ESN（checkpoint9f4b5a81），只改变推杆时序，未训练。

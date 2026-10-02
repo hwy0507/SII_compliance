@@ -76,6 +76,10 @@ def prepare_policy_state(esn, memory_ablation):
 
 def run(a):
     configs = interaction_schedule(a)
+    planned_corner = bool(getattr(a, 'planned_hand_corner', False))
+    if planned_corner and not (a.task == 'pick_place' and a.corner_placement and a.combined_thick_corner_pillar_v4):
+        raise ValueError('Planned hand corner requires combined-v4 corner pick_place')
+    path_plan = None
     if a.output.with_suffix('.json').exists():raise RuntimeError('Preserve existing results')
     a.output.parent.mkdir(parents=True,exist_ok=True)
     probe=getattr(a,'physics_probe_s',None)
@@ -189,6 +193,10 @@ def run(a):
             # This target is a commanded task reference only; no scene truth
             # or schedule field is exposed to the actor.
             task.goals[-1]=np.array([.690,-.330+.018*float(a.variant),.700])
+        if planned_corner:
+            from planned_hand_corner_20261002 import build_plan
+            task,path_plan=build_plan(env,task)
+            a.output.with_suffix('.plan.json').write_text(json.dumps(path_plan,indent=2))
         env.reference=task;env.gripper_target_override=lambda unused,default:task.gripper_target()
         load_observer=JointLoadObserver(d.qvel.copy(),m.dof_frictionloss,**observer_kwargs);mass=np.zeros((m.nv,m.nv))
     if esn and load_observer is None:
@@ -361,7 +369,7 @@ def run(a):
         if a.task=='pick_place':
             wrench=equivalent_tool_wrench(body_jacobian(m,d,env._hand_id),load_observer.filtered)
             before=task.index
-            if bool(getattr(a,'corner_placement',False)) and task.index==5:
+            if bool(getattr(a,'corner_placement',False)) and not planned_corner and task.index==5:
                 # Corner-only release: the payload may be released once the
                 # known support geom is carrying it and its translational
                 # speed is low.  This is evaluator bookkeeping; no contact
@@ -418,7 +426,13 @@ def run(a):
             supported=contact_support(m,d,target_geom,task.support_geoms)
             near=np.linalg.norm(d.xpos[env._target_body_id,:2]-task.destination[:2])<.025
             slow=np.linalg.norm(d.qvel[env._target_dof:env._target_dof+3])<.015
-            placement_hold=placement_hold+.04 if task.index==7 and supported and near and slow else 0.
+            if planned_corner:
+                released=sum(d.qpos[task.fingers])>.075 and not contact_support(m,d,target_geom,robot)
+                height_ok=abs(d.xpos[env._target_body_id,2]-task.destination[2])<.015
+                angular_slow=np.linalg.norm(d.qvel[env._target_dof+3:env._target_dof+6])<.15
+                placement_hold=placement_hold+.04 if supported and near and slow and released and height_ok and angular_slow else 0.
+            else:
+                placement_hold=placement_hold+.04 if task.index==7 and supported and near and slow else 0.
         records.append(dict(time=float(d.time),qpos=d.qpos.copy(),qvel=d.qvel.copy(),ctrl=d.ctrl.copy(),
                             mocap_pos=d.mocap_pos.copy(),mocap_quat=d.mocap_quat.copy(),
                             hand=d.xpos[env._hand_id].copy(),ball=d.xpos[ball].copy(),ball_velocity=d.qvel[ball_dof:ball_dof+3].copy(),cup=d.xpos[cup].copy() if cup>=0 else np.zeros(3),stage=task.index,object_position=d.xpos[env._target_body_id].copy(),**signal))
@@ -498,14 +512,26 @@ def run(a):
     result['physics_resolution']=dict(base_dt_s=a.dt,initial_refinement_dt_s=refinement,
         refinement_until_s=refine_until if refinement is not None else None,
         actor_schedule_input=False,metric_weighting='physical time',
-        note='Numerical resolution schedule only; world impulses, drives, materials and task gates unchanged')
+        note=('New planned-hand-corner task/reference and placement success protocol; materials and actuator limits unchanged'
+              if planned_corner else 'Numerical resolution schedule only; world impulses, drives, materials and task gates unchanged'))
     result['final_task_stage']=task.names[task.index]
     result['observer_settings']=dict(**observer_kwargs,filter_tau_s=.04,truth_in_observer=False)
     result['placement_complete']=bool(a.task=='pick_place' and placement_hold>=.5 and release_truth and max_lift>.10
        and np.linalg.norm(d.xpos[env._hand_id]-task.goals[-1])<.015 and sum(d.qpos[task.fingers])>.075)
+    if planned_corner:
+        result['placement_complete']=bool(placement_hold>=.5 and max_lift>.10)
     result['task_success']=bool(result['full_task_horizon_completed'] and result['placement_complete']) if a.task=='pick_place' else result['full_task_horizon_completed']
     if probe is not None:result['purpose']='short_horizon_physics_probe_not_task_evaluation'
     result['strict_success']=bool(result['task_success'] and result['passed'])
+    if planned_corner:
+        result['legacy_strict_success']=result['strict_success']
+        result['strict_success']=bool(result['task_success'] and result['physical_valid'])
+        result['success_definition']='planned-hand-corner-v1: released payload supported in 25mm XY/15mm Z target region, linear speed <15mm/s and angular speed <0.15rad/s for final 0.5s; full horizon and lift >0.1m; contact coverage is diagnostic only'
+        result['path_plan']=path_plan
+        result['placement_hold_s']=placement_hold
+        result['object_final_position']=d.xpos[env._target_body_id].copy()
+        result['placement_error_xy_m']=float(np.linalg.norm(d.xpos[env._target_body_id,:2]-task.destination[:2]))
+        result['source_sha256']['planned_hand_corner_20261002.py']=hashlib.sha256(Path(__file__).with_name('planned_hand_corner_20261002.py').read_bytes()).hexdigest()
     result['release_supported']=release_truth
     result['max_lift_m']=max_lift
     result['neural_logging']=dict(enabled=esn is not None,mode=a.esn_mode,model=str(a.esn_model) if a.esn_model else None,
@@ -557,6 +583,8 @@ if __name__=='__main__':
     p.add_argument('--task',choices=('hold','pick_place'),default='hold')
     p.add_argument('--corner-placement',action='store_true',
                    help='Development-only: place the payload on office_v5_corner_top')
+    p.add_argument('--planned-hand-corner',action='store_true',
+                   help='New task protocol: static-map planned route to hand-side corner; released placement is task success, contact coverage diagnostic only')
     p.add_argument('--interaction-demo',action='store_true',
                    help='Development-only: move cup/pillar onto the corner approach for physical contact')
     p.add_argument('--combined-demo',action='store_true',

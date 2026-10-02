@@ -1,5 +1,15 @@
 # Data-Driven Compliance Control for FR3
 
+### 2026-10-02 planned hand-side corner task
+
+The user-defined successor task places the released payload at the hand-side
+desk corner. A static-map A* planner and IK posture search generate a shared
+reference. Placement is the primary success measure; obstacle contact coverage
+is diagnostic. Under the new protocol the nominal zero-action rollout succeeds
+(10.8 mm placement error), while the unchanged ESN stalls in carry. This is a
+feasible planned task, not an ESN success result. Both full rollouts are retained.
+See [task definition, results and baseline handoff](code/mujoco_6d_vmc_benchmark/docs/PLANNED_HAND_CORNER_TASK_20261002.md).
+
 ### 2026-10-02 evaluation schedule correction
 
 The new `office-combined-v4-sequential-r12-v1` protocol starts the rod at 12 s,
