@@ -1,3 +1,13 @@
+## 2026-10-02 — robosuite 1.5.2 WBC 场景参考运行
+
+- 开工检查：baseline 当前 HEAD `c9a4e94a68a243e98970dcb82323b999a24f42c6`；已 fetch `origin/main` 和 `origin/baseline` 并读取两份 UPDATE_LOG.md。工作树已有其他 agent 的修改和未跟踪文件，本轮未覆盖或清理。
+- 新增参考脚本：`code/mujoco_6d_vmc_benchmark/experiments/robosuite_reference_20261002/render_stack_reference.py`。
+- 新增调研记录：`docs/WBC_SIM_ENVIRONMENT_SURVEY_20261002.md`，比较 robosuite、Isaac Lab、MuJoCo Menagerie、Drake、Pink、ManiSkill、RoboCasa，并说明 FR3 接入路线。
+- 独立运行环境：`/home/arm1/vmc_mujoco_runtime/robosuite_wbc_venv`，robosuite 1.5.2 + MuJoCo 3.3.7；官方 Stack + Panda + BASIC composite / OSC_POSE 正常创建并运行。
+- 参考媒体：`/home/arm1/vmc_mujoco_runtime/robosuite_wbc_reference_20261002/robosuite_stack_reference.mp4`；288 帧、20 Hz、最大 MuJoCo contact=13、末端误差均值=16.6 mm。网页：<http://192.168.31.70:8765/robosuite_stack_reference_20261002/>。
+- 该视频是场景和数据通道的 reference run，使用 waypoint 控制，不声称 learned stacking policy 成功；Panda 也不等同于最终 FR3。
+- 验证：robosuite Stack headless/offscreen run 成功；参考视频和 HTML 均通过 HTTP 200；未向 GitHub 推送（当前认证仍无法读取 HTTPS 用户名）。
+
 ## 2026-10-02 — 首批保留测试、分场景报告与接触公平性方案
 
 - 两reward×两seed直接SimbaV2主训练均完成，第一seed60300/第二seed61175实际计数；统一采用60000步周期checkpoint。导纳参数RL也完成61175步；阻抗与VMC继续，VMC已在metric第二seed结束后接替空闲槽位，仍最多四路仿真。
