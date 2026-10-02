@@ -62,28 +62,40 @@ def make_scene(fr3_xml: Path) -> str:
     '''
     source = source.replace('\n  </asset>', hand_assets + '\n  </asset>', 1)
     hand_body = f'''
+      <!-- Exact Panda hand attachment and open gripper layout from franka_emika_panda/panda.xml -->
       <body name="fr3v2_hand" quat="0.9238795 0 0 -0.3826834">
         <inertial mass="0.73" pos="-0.01 0 0.03" diaginertia="0.001 0.0025 0.0017"/>
         <geom name="fr3v2_hand_visual_0" mesh="fr3_hand_0" material="fr3_hand_off_white" contype="0" conaffinity="0" group="2"/>
         <geom name="fr3v2_hand_visual_1" mesh="fr3_hand_1" material="fr3_hand_black" contype="0" conaffinity="0" group="2"/>
         <geom name="fr3v2_hand_visual_2" mesh="fr3_hand_2" material="fr3_hand_black" contype="0" conaffinity="0" group="2"/>
-        <geom name="fr3v2_hand_visual_3" mesh="fr3_hand_3" material="fr3_hand_off_white" contype="0" conaffinity="0" group="2"/>
+        <geom name="fr3v2_hand_visual_3" mesh="fr3_hand_3" material="white" contype="0" conaffinity="0" group="2"/>
         <geom name="fr3v2_hand_visual_4" mesh="fr3_hand_4" material="fr3_hand_off_white" contype="0" conaffinity="0" group="2"/>
         <geom name="fr3v2_hand_collision" mesh="fr3_hand_collision" contype="1" conaffinity="1" group="3"/>
-        <body name="fr3v2_left_finger" pos="0 0.024 0.0584">
+        <body name="fr3v2_left_finger" pos="0 0 0.0584">
+          <joint name="fr3v2_finger_joint1" type="slide" axis="0 1 0" range="0 0.04" damping="0.1"/>
           <geom name="fr3v2_left_finger_visual_0" mesh="fr3_hand_finger_0" material="fr3_hand_off_white" contype="0" conaffinity="0" group="2"/>
           <geom name="fr3v2_left_finger_visual_1" mesh="fr3_hand_finger_1" material="fr3_hand_black" contype="0" conaffinity="0" group="2"/>
           <geom name="fr3v2_left_finger_collision" mesh="fr3_hand_finger_0" contype="1" conaffinity="1" group="3"/>
-          <geom name="fr3v2_left_finger_pad" type="box" pos="0 0.0055 0.0445" size="0.0085 0.004 0.0085" rgba="0.25 0.25 0.25 1" contype="1" conaffinity="1"/>
+          <geom type="box" pos="0 0.0055 0.0445" size="0.0085 0.004 0.0085" contype="1" conaffinity="1" group="3"/>
+          <geom type="box" pos="0.0055 0.002 0.05" size="0.003 0.002 0.003" contype="1" conaffinity="1" group="3"/>
+          <geom type="box" pos="-0.0055 0.002 0.05" size="0.003 0.002 0.003" contype="1" conaffinity="1" group="3"/>
+          <geom type="box" pos="0.0055 0.002 0.0395" size="0.003 0.002 0.0035" contype="1" conaffinity="1" group="3"/>
+          <geom type="box" pos="-0.0055 0.002 0.0395" size="0.003 0.002 0.0035" contype="1" conaffinity="1" group="3"/>
         </body>
-        <body name="fr3v2_right_finger" pos="0 -0.024 0.0584">
+        <body name="fr3v2_right_finger" pos="0 0 0.0584" quat="0 0 0 1">
+          <joint name="fr3v2_finger_joint2" type="slide" axis="0 1 0" range="0 0.04" damping="0.1"/>
           <geom name="fr3v2_right_finger_visual_0" mesh="fr3_hand_finger_0" material="fr3_hand_off_white" contype="0" conaffinity="0" group="2"/>
           <geom name="fr3v2_right_finger_visual_1" mesh="fr3_hand_finger_1" material="fr3_hand_black" contype="0" conaffinity="0" group="2"/>
           <geom name="fr3v2_right_finger_collision" mesh="fr3_hand_finger_0" contype="1" conaffinity="1" group="3"/>
-          <geom name="fr3v2_right_finger_pad" type="box" pos="0 0.0055 0.0445" size="0.0085 0.004 0.0085" rgba="0.25 0.25 0.25 1" contype="1" conaffinity="1"/>
+          <geom type="box" pos="0 0.0055 0.0445" size="0.0085 0.004 0.0085" contype="1" conaffinity="1" group="3"/>
+          <geom type="box" pos="0.0055 0.002 0.05" size="0.003 0.002 0.003" contype="1" conaffinity="1" group="3"/>
+          <geom type="box" pos="-0.0055 0.002 0.05" size="0.003 0.002 0.003" contype="1" conaffinity="1" group="3"/>
+          <geom type="box" pos="0.0055 0.002 0.0395" size="0.003 0.002 0.0035" contype="1" conaffinity="1" group="3"/>
+          <geom type="box" pos="-0.0055 0.002 0.0395" size="0.003 0.002 0.0035" contype="1" conaffinity="1" group="3"/>
         </body>
         <site name="flask_ee_site" pos="0 0 0.097" size="0.012" rgba="0.1 0.8 0.2 1"/>
       </body>'''
+
     source = source.replace(
         '<body name="fr3v2_link8" pos="0 0 0.107"><site name="flask_ee_site" pos="0 0 0" size="0.012" rgba="0.1 0.8 0.2 1"/></body>',
         f'<body name="fr3v2_link8" pos="0 0 0.107">{hand_body}</body>',
@@ -172,7 +184,7 @@ class SensorWBC:
 
     def command(self, data: mujoco.MjData, trajectory) -> np.ndarray:
         q_ref, qdot_ref, qddot_ref = trajectory.sample(float(data.time))
-        mujoco.mj_fullM(self.model, data, self.mass)
+        mujoco.mj_fullM(self.model, self.mass, data.qM)
         q_error = q_ref - data.qpos[:7]
         qdot_error = qdot_ref - data.qvel[:7]
         desired_acceleration = qddot_ref + self.kp * q_error + self.kd * qdot_error
@@ -193,6 +205,10 @@ def main() -> int:
         model = mujoco.MjModel.from_xml_path(str(scene_path))
         data = mujoco.MjData(model)
         data.qpos[:7] = HOME
+        for finger_name in ('fr3v2_finger_joint1', 'fr3v2_finger_joint2'):
+            finger_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, finger_name)
+            if finger_id >= 0:
+                data.qpos[int(model.jnt_qposadr[finger_id])] = 0.04
         mujoco.mj_forward(model, data)
         robot_names = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or '').startswith('fr3v2_') and model.geom_contype[i] != 0]
         obstacle_names = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or '').startswith('flask_') and model.geom_contype[i] != 0 and model.geom(i).name != 'flask_target_object_geom']

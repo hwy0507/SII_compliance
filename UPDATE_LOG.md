@@ -1,3 +1,14 @@
+## 2026-10-02 — Use the official Panda gripper hierarchy and expose the Pick object
+
+- Replaced the hand approximation in experiments/flask_fr3_env_20261002/run_sensor_wbc.py with the official menagerie Panda hand layout: the standard hand quaternion, identical left/right finger body positions, slide joints on the Panda finger axis, official finger visual meshes, and the five official fingertip collision pad boxes per finger. Both fingers are initialized open at 0.04 m in the standalone runner and robosuite-style benchmark.
+- Fixed the sensorized runner's mj_fullM call to use MuJoCo's correct (model, mass_matrix, data.qM) signature after adding the two finger joints.
+- Moved the Pick object to a dedicated front tray, enlarged it to an unmistakable orange cube, and retained the yellow beacon. The video panel now includes colored PICK OBJECT / PLACE TARGET swatches.
+- Re-ran the benchmark with /home/arm1/vmc_mujoco_runtime/robosuite_wbc_venv: 31 scene collision geometries, 23 sensors, 2 FLASK route segments, 8.1329 s trajectory, 176 frames, maximum contacts 0, peak torque 31.81 Nm, peak tracking error 0.00960 rad, final joint error 0.00922 rad.
+- Panda hand regression: 0.2 s standalone sensorized runner completed with 11 robot collision geometries, 13 scene obstacles, 23 sensors, maximum contacts 0, peak command torque 32.71 Nm, and the expected end-effector world position [0.55565, 0.00023, 0.53594].
+- Server media replaced at /home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/web_demo/robosuite_style_fr3_benchmark_20261002/robosuite_style_fr3_benchmark_20261002.mp4 and /home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/web_demo/flask_fr3_20261002/flask_fr3_realtime_plot_complex.mp4. Mid-frame inspected locally at outputs/pickplace_frames/panda_final_mid.png.
+- Limitation remains: the hand is open and not actuated, and the Pick object is static; this does not claim physical grasp/lift/place success.
+- Source main inspected earlier: ba84ed8a39ed743f603aa5d60e901bdf87090e1d; previous baseline commit: 22a59a3f4af41bcccffc85f3d15e4e59a0d3d254.
+
 ## 2026-10-02 — 最新蒸馏ESN与RL在同一office配置的三指标对照
 
 - 开工实时获取main 14820fac7141fa8779aa56b5ae0ba595ee2ee0a5、baseline 133a0b4306f70dd703629bf1227961899d6abcfd并读取两分支日志/AGENTS/同步skill。main新增13有效学习模型、24条纯ESN候选/干预；没有已锁定成功终版。

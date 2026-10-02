@@ -41,12 +41,16 @@ def benchmark_scene(fr3_xml: Path) -> str:
     <body name="rs_cube_a" pos="0.20 -0.12 0.36"><geom name="rs_cube_a_geom" type="box" size="0.047 0.047 0.047" rgba="0.78 0.12 0.08 1" contype="1" conaffinity="1"/><site name="rs_cube_a_site" pos="0 0 0.055" size="0.012" rgba="1 0.28 0.16 1"/></body>
     <body name="rs_cube_b" pos="0.20 -0.12 0.454"><geom name="rs_cube_b_geom" type="box" size="0.047 0.047 0.047" rgba="0.95 0.64 0.08 1" contype="1" conaffinity="1"/><site name="rs_cube_b_site" pos="0 0 0.055" size="0.012" rgba="1 0.82 0.14 1"/></body>
     <!-- PickPlace pair: deliberately placed in the front open workspace for visual audit -->
-    <!-- PickPlace pair: front-edge staging so both semantics stay visible in the benchmark camera -->
-    <body name="rs_pick_object" pos="0.45 -0.50 0.40">
+    <!-- PickPlace pair: dedicated front tray keeps the task object fully visible -->
+    <body name="rs_pick_station" pos="0.62 -0.72 0.32">
+      <geom name="rs_pick_station_base" type="box" size="0.16 0.13 0.012" rgba="0.04 0.05 0.06 1" contype="0" conaffinity="0"/>
+      <geom name="rs_pick_station_border" type="box" pos="0 0 0.016" size="0.14 0.11 0.004" rgba="1.0 0.48 0.02 1" contype="0" conaffinity="0"/>
+    </body>
+    <body name="rs_pick_object" pos="0.62 -0.72 0.415">
       <geom name="rs_pick_object_base" type="cylinder" pos="0 0 -0.064" size="0.086 0.006" rgba="0.12 0.02 0.01 0.95" contype="0" conaffinity="0"/>
-      <geom name="rs_pick_object_geom" type="box" size="0.065 0.065 0.065" rgba="0.98 0.12 0.015 1" contype="1" conaffinity="1"/>
-      <geom name="rs_pick_object_top" type="box" pos="0 0 0.069" size="0.050 0.050 0.006" rgba="1.0 0.78 0.04 1" contype="0" conaffinity="0"/>
-      <geom name="rs_pick_object_beacon" type="capsule" fromto="0 0 0.08 0 0 0.25" size="0.014" rgba="1 0.86 0.08 1" contype="0" conaffinity="0"/>
+      <geom name="rs_pick_object_geom" type="box" size="0.095 0.095 0.095" rgba="1.0 0.52 0.015 1" contype="1" conaffinity="1"/>
+      <geom name="rs_pick_object_top" type="box" pos="0 0 0.069" size="0.076 0.076 0.010" rgba="1.0 0.92 0.10 1" contype="0" conaffinity="0"/>
+      <geom name="rs_pick_object_beacon" type="capsule" fromto="0 0 0.10 0 0 0.30" size="0.022" rgba="1 0.92 0.08 1" contype="0" conaffinity="0"/>
       <site name="rs_pick_object_site" pos="0 0 0.075" size="0.018" rgba="1 0.1 0.02 1"/>
     </body>
     <body name="rs_goal_marker" pos="0.72 -0.50 0.315">
@@ -88,8 +92,12 @@ def draw_panel(qerr, torques, contacts, now, duration, segments):
     d.text((14, 132), f"command torque: {torques[-1]:7.2f} Nm", fill="#d8dde2", font=s)
     d.text((14, 154), f"MuJoCo contacts: {contacts[-1]:02d}", fill="#8ff0aa", font=s)
     d.text((14, 194), "task layout", fill="#f2c879", font=f)
-    for i, txt in enumerate(["robosuite-style tabletop arena", "storage bin + raised rim", "tool tray + visual tools", "Stack cubes A / B", "PICK  orange cube  ->  PLACE  green flag", "front-edge task pair kept in view", "FR3 sensors + collision audit"]):
+    for i, txt in enumerate(["robosuite-style tabletop arena", "storage bin + raised rim", "tool tray + visual tools", "Stack cubes A / B", "PICK  orange cube on front tray  ->  PLACE  green flag", "front-edge task pair kept in view", "FR3 sensors + collision audit"]):
         d.text((20, 222 + 25*i), "• " + txt, fill="#c6cbd0", font=s)
+    d.rectangle((20, 391, 34, 405), fill="#ff8a12", outline="#ffd34e")
+    d.text((40, 389), "PICK OBJECT", fill="#ffd34e", font=s)
+    d.rectangle((165, 391, 179, 405), fill="#18f06a", outline="#b8ffca")
+    d.text((185, 389), "PLACE TARGET", fill="#9dffb6", font=s)
     left, top, right, bottom = 16, 412, 384, 464
     d.rectangle((left, top, right, bottom), outline="#3d4653", width=1)
     d.text((left+6, top+5), "q error trace", fill="#aeb8c4", font=s)
@@ -113,6 +121,10 @@ def main():
         model = mujoco.MjModel.from_xml_path(str(scene))
         data = mujoco.MjData(model)
         data.qpos[:7] = HOME
+        for finger_name in ('fr3v2_finger_joint1', 'fr3v2_finger_joint2'):
+            finger_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, finger_name)
+            if finger_id >= 0:
+                data.qpos[int(model.jnt_qposadr[finger_id])] = 0.04
         mujoco.mj_forward(model, data)
         robot = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or "").startswith("fr3v2_") and model.geom_contype[i] != 0]
         obstacles = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or "").startswith(("flask_", "rs_")) and model.geom_contype[i] != 0 and model.geom(i).name != "rs_floor" and model.geom(i).name != "flask_target_object_geom"]
