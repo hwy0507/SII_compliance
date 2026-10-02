@@ -150,4 +150,3 @@ clear_zero也保留原柱子/桌面及静止人体/棍布局；仍记录到与�
     else:assert web.resolve()==ROOT
     print(json.dumps(rows,ensure_ascii=False))
 if __name__=='__main__':main()
-

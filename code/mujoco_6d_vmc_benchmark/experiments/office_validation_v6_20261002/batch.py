@@ -25,4 +25,3 @@ def main():
             (ROOT/'BATCH.json').write_text(json.dumps(dict(rows=rows,pending=len(items)-len(rows)),indent=2))
     assert all(x['returncode']==0 for x in rows), 'Failures preserved; inspect execution records'
 if __name__=='__main__':main()
-

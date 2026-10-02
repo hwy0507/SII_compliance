@@ -7,6 +7,7 @@
 - 基础蒸馏ESN29.492mm/42.808Nm/.3543m/s；context36.686/38.734/.3599；DAgger50.286/37.712/.3539。RL调导纳27.772/38.826/.3945、调阻抗26.260/36.311/.3881、调VMC36.996/37.721/.3658。三个完整直接RL的RMSE188.992/768.911/258.250mm。ESN无全面优势；固定/在线阻抗及两个metric直接RL未接触棍，DAgger未触及未知凸边，低指标不能当该干扰恢复成功。
 - 14完整+1终止回合共7,863,600物理子步独立复算三指标通过；公共参数/模型/策略接口核验，ESN动作及储备池精确重放，RL归一化冻结和所有checkpoint最终hash通过。4条三机位55s/25fps/1375帧MP4与275帧GIF已生成；全部帧解码/时长/hash检查通过，ESN关键时刻拼图及结果图已目视核对。
 - 全部Spark数据 arm1@192.168.31.70:/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002/，含source实际仿真冻结源码、delivery_source交付源码、PROTOCOL/MODEL_AUDIT/MEDIA_AUDIT/DELIVERY_RECEIPT、逐方法轨迹/媒体及report完整CSV/JSON/图。页面 http://192.168.31.70:8765/office_validation_v6_20261002/report/ 。仓库代码 experiments/office_validation_v6_20261002/，报告 docs/OFFICE_VALIDATION_V6_RESULTS_20261002.md。
+- 最终交付规范化五个新增脚本的文件末尾空行，保留真实运行source/hash不变；复查编译及diff检查。
 - 本轮所有评估/渲染已结束；仍是单条件开发验证，不是正式dt5e-5或相等训练预算泛化结论，未实现有干扰成功恢复放置。历史暂停任务与另一agent WBC工作保留；只提交/push本任务baseline文件。
 
 ## 2026-10-02 — Use the official Panda gripper hierarchy and expose the Pick object

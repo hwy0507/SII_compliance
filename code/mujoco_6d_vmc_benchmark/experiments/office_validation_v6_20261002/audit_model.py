@@ -18,4 +18,3 @@ def main():
     result=dict(status='passed',checks=checks,unchanged_physical_arrays=unchanged,changed_geometry_indices=changed,model_sha256=hashlib.sha256(new.read_bytes()).hexdigest(),construction_summary_sha256=hashlib.sha256((ROOT/'construction/rollout.json').read_bytes()).hexdigest(),note='New model compiled once on Spark; this does not claim old/new binary identity')
     (ROOT/'MODEL_AUDIT.json').write_text(json.dumps(result,indent=2))
 if __name__=='__main__':main()
-

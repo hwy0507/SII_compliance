@@ -21,4 +21,3 @@ def main():
     (ROOT/'MEDIA_AUDIT.json').write_text(json.dumps(dict(status='passed',rows=rows),indent=2))
     print(json.dumps(rows))
 if __name__=='__main__':main()
-
