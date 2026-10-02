@@ -1,3 +1,12 @@
+## 2026-10-02 — 最新蒸馏ESN与RL在同一office配置的三指标对照
+
+- 开工实时获取main 14820fac7141fa8779aa56b5ae0ba595ee2ee0a5、baseline 133a0b4306f70dd703629bf1227961899d6abcfd并读取两分支日志/AGENTS/同步skill。main新增13有效学习模型、24条纯ESN候选/干预；没有已锁定成功终版。
+- 新增 experiments/office_baseline_bridge_20261002/compare_distilled_esn.py 与 docs/DISTILLED_ESN_RL_COMPARISON_20261002.md。复用24 ESN+11 baseline完整55秒归档，独立重算19,250,000物理子步；模型b092662a、fixture、公共参数/8个公共源码hash一致，指标与历史统计容差内一致；ESN checkpoint实际文件hash通过。新增仿真/训练0，未改环境/权重/失败原始记录，历史暂停进程不动。
+- 基础VMC蒸馏original_v2：30.058mm/39.210Nm/.370185m/s；RL调导纳29.840/40.473/.416043、调阻抗26.279/38.935/.375062、调VMC42.824/39.553/.393182。基础蒸馏比四个直接RL的RMSE低，但三指标非全面胜出。较晚训练DAgger-drift125.970/37.615/.388723；全部35条task/strict失败，不挑选低误差干预冒充最终成功。
+- 单固定场景开发dt1e-4，不是正式dt5e-5/泛化。ESN已在office优化，RL从primitive迁移，训练曝光不等；ESN airpig/Python3.11.15、RL Spark/Python3.12，公共MuJoCo3.11.0/MJB一致，不声称同机逐位一致。ESN为128储备池+128非线性读出，非只训练线性读出的经典ESN。
+- Spark结果目录 arm1@192.168.31.70:/home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/esn_rl_comparison_20261002/，含完整CSV/JSON、VERIFICATION.json、PNG/PDF和报告；保留所有24候选。ESN来源 /home/arm1/sii_shared/SII_compliance/runs/main/vmc_esn_four_hour_20261002_090155/evidence/；RL来源 /home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/office_bridge/transfer01/。对照图已目视核对。
+- 页面 http://192.168.31.70:8765/primitive_baselines_20261002/esn_rl_comparison_20261002/ 。只提交baseline本任务三文件，不合并main、不触碰另一agent的WBC环境。完整放置、正式步长及相等训练预算比较仍未完成。
+
 ## 2026-10-02 — baseline 发布与交接归档核验
 
 - 最终结果/协议提交 a788be958486b5b24bc546737d44f690763521ba 已正常push到baseline；远端main仍7cd5f4b。只读归档 /home/arm1/sii_shared/SII_compliance/source/a788be958486b5b24bc546737d44f690763521ba/ 的2748个文件、64,416,368字节逐Git blob核验一致；清单在 /home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/PUBLISHED_SOURCE_ARCHIVE.json。
