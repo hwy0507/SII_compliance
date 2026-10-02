@@ -1,5 +1,7 @@
 # 四特化场景 baseline 五小时协议 — 2026-10-02
 
+> 完成结果见 [五小时结果报告](PRIMITIVE_BASELINE_RESULTS_20261002.md)。以下预算与阶段记录保留原时间语义；训练/评测最终状态以结果报告及原始完成记录为准。
+
 用户授权2026-10-02 07:36:31–12:36:31 UTC（15:36–20:36上海），当前线程持续工作，不建立定时任务。最终环境/WBC由另一agent负责，本轮使用四视频的原冻结特化场景。
 
 四视频SHA完全匹配服务器teacher_eight_20260918原件。原轨迹与命令来自 outputs/esn128x128_four_scene_20260918/teacher_gallery/{ball_013_000,push_001_102,corner_013_repeat_1_901,table_corner_003_201}。场景分别使用v7球、core持续无挡板棍推、v6侧角及legacy厚桌角，不将昨天综合office环境冒充视频场景。

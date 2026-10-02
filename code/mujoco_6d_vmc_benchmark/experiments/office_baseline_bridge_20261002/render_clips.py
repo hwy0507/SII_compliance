@@ -8,8 +8,10 @@ def main():
     record=json.loads(src.with_suffix('.json').read_text());trace_path=src.parent/(src.name+'_apparatus_trace.npz')
     with np.load(trace_path) as z:trace={k:z[k] for k in z.files}
     for name,start,end,stride,speed in [('ball',1.9,2.7,1,'0.25x'),('rod',12.5,23.4,4,'1x')]:
-        folder=src.parent/('clip_'+name);folder.mkdir(exist_ok=False);prefix=folder/'trajectory';selected=(trace['time']>=start)&(trace['time']<=end)
-        if not selected.any():raise ValueError('No saved states in clip window')
+        folder=src.parent/('clip_'+name);prefix=folder/'trajectory';selected=(trace['time']>=start)&(trace['time']<=end)
+        if not selected.any():
+            (src.parent/('clip_'+name+'_UNAVAILABLE.json')).write_text(json.dumps(dict(reason='No saved states in requested window',requested_s=[start,end],last_saved_s=float(trace['time'][-1])),indent=2));continue
+        folder.mkdir(exist_ok=False)
         np.savez_compressed(prefix.with_suffix('.npz'),**{k:v[selected] for k,v in trace.items()})
         info=dict(record,summary_scope='Metrics/task fields describe original full run, not this replay window.',clip=dict(source=str(trace_path),source_sha256=hashlib.sha256(trace_path.read_bytes()).hexdigest(),range_s=[start,end],playback=speed,physics_rerun=False,original_summary=str(src.with_suffix('.json'))))
         prefix.with_suffix('.json').write_text(json.dumps(info,indent=2));os.link(src.with_suffix('.mjb'),prefix.with_suffix('.mjb'))

@@ -48,7 +48,7 @@ def build(catalog,output):
             rr.append(row)
         pairs[a+' -> '+b]=rr
     output.mkdir(exist_ok=True,parents=True)
-    result=dict(split=entries['split'],catalog=str(catalog),common_fixture_ids=common,models=summaries,model_pairing_audit=pair_audit,pairwise=pairs,protocols=protocols,limitations=['Development primitive fixtures retain heterogeneous native timestep/task supervisor.','Numeric physical gate is finite peak torque and <=0.2 mm penetration, not a complete safety or passivity certificate.','Primitive strict includes intended contact, unlike the new office-v5 strict definition.','No omitted failures; initial-state rejections stay in attempted count.','Metrics condition on successful execution/full horizon explicitly; an aborted low RMSE is not a win.'])
+    result=dict(split=entries['split'],catalog=str(catalog),common_fixture_ids=common,models=summaries,model_pairing_audit=pair_audit,pairwise=pairs,protocols=protocols,limitations=['Development primitive fixtures retain heterogeneous native timestep/task supervisor.','Legacy ball launch aims at current hand and its common task logic waits for contact; paired models do not imply identical incoming disturbances.','Numeric physical gate is finite peak torque and <=0.2 mm penetration, not a complete safety or passivity certificate.','Primitive strict includes intended contact, unlike the new office-v5 strict definition.','No omitted failures; initial-state rejections stay in attempted count.','Metrics condition on successful execution/full horizon explicitly; an aborted low RMSE is not a win.'])
     (output/'SUMMARY.json').write_text(json.dumps(result,indent=2,allow_nan=False))
     if flat:
         with (output/'EPISODES.csv').open('w') as f:

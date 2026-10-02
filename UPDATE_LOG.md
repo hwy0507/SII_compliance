@@ -1,3 +1,15 @@
+## 2026-10-02 — 四视频 baseline 终评完成与最终环境六组建议
+
+- 原五小时窗口07:36:31–12:36:31 UTC；训练已按11:40 cutoff结束并保存末回合。13模型×12保留条件=156/156、13模型×4展示锚点=52/52、固定main综合迁移11/11均完成；未用测试选权重，全部失败保留。最终报告 docs/PRIMITIVE_BASELINE_RESULTS_20261002.md；完整矩阵和逐场景结果均有实际接触、task/strict、时长、RMSE、实际峰矩/峰速及数值/穿透通过数。
+- 共同周期checkpoint：直接SimbaV2两reward×两seed均60000；在线导纳/阻抗/VMC均40000，按截止前共同可用周期选择。三参数训练最终61175/61175/47475。第一seed原CLI失败恢复导致各多1525物理交互；PHYSICAL_EXPOSURE_FINAL.json明确实际曝光61825，恢复不是精确运行中环境续接。
+- 保留task/strict：zero3/3，grid导纳3/3，grid阻抗6/3；统一BO先验固定导纳3/3、阻抗6/6、VMC5/5；在线调参3/3、6/6、4/4（各分母12）；四个直接RL均0/0。旧桌角有5条>4m/s失败，参数导纳11.98095m/s、VMC14.45098m/s；物理检查均失败，HIGH_SPEED_FAILURE_REVIEW.json保留原生复算证据，不宣称局部能量账本保证实际运动安全。
+- 新office同一归档MJB11条迁移全部完整55s且task/strict=false；固定/调参停carry、直接RL停approach。原ESN历史参考也失败，但训练经历不同。全扰动zero不是无扰动可行性对照。docs/FINAL_ENV_BASELINE_PROTOCOL_20261002.md新增N0/B1/H1/R1/E1/C1明确设置、共同抓稳初态、正式步长/难度冻结及动作空间差异；±20%激励范围仅提案，未改冻结场景或另一agent WBC。
+- 原四视频球是实际手位置相关的首次发射，非完全相同入射状态；52条原生球轨迹非发射速度跳变为0，最大位置积分残差1.80e-15m，动量残差1.37e-16Ns。208条测试/展示的72,384,000子步指标复算通过。这证明日志一致性，不证明接触材料真实。旧球9mm柔性层/.012s solref，新office零margin/.0004s，实际模型清单BALL_CONTACT_MODEL_INVENTORY.json明确两者差异及内核穿透语义。
+- 三个独立注册3s名义步长探针1e-4/5e-5/2.5e-5完成；最细相对最粗冲量-0.99%、峰速-0.57%、峰力-18.09%。峰力仍敏感，不冒称完整正式dt结果。参数限幅/限速/局部账本、48维观测/7维公共输出、模型和配置配对及推理归一化冻结均通过；阻抗的力矩控制律差异保留。
+- 所有代码/数据/媒体在Spark。根 /home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/ 下 final_evaluation01、final_reference01、final_report01、parameter_rl/final_diagnostics01、office_bridge/{transfer01,transfer_report01,numerical01}、FINAL_NATIVE_AUDIT_SUMMARY.json、MEDIA_METADATA_AUDIT.json、HTTP_PUBLICATION_AUDIT.json。52个四场景完整视频及11个综合完整视频全部导出；98完整/近景文件编码元数据与首帧检查通过，232页面/媒体链接HTTP200；代表接触拼图、参数/轨迹图、综合全过程代表帧已目视核对，未声称看完所有视频。
+- 页面 http://192.168.31.70:8765/primitive_baselines_20261002/ 与 results.html、office/ 已更新。代码位于 code/mujoco_6d_vmc_benchmark/experiments/{primitive_baselines_20261002,parameter_rl_20261002,office_baseline_bridge_20261002}/。本次新源码是审计/展示/汇总及3s独立数值诊断，未热改训练快照。
+- 收尾核对main仍7cd5f4b7ac0a3056df76ac62bc690ded0724b104；此前已发布baseline068f0bf，共享HEAD含另一agent已提交WBC工作e7c9701。只暂存本任务文件，保留其未提交run_benchmark.py；只push baseline。当前本轮仿真/导出均结束，四个历史暂停训练PID1150890–1150893保持暂停，无定时任务。正式完整dt=5e-5、新WBC统一cohort及文献全文复现仍未完成。
+
 ## 2026-10-02 — FR3 hand asset and collision audit correction
 
 - 修复用户指出的末端穿模和 hand 建模问题：upstream fr3v2.xml 只到 link8，wrapper 现在注入 menagerie 的官方 Franka hand/finger mesh，使用 Panda 官方 link7→hand 旋转；本轮固定为 open-gripper 几何，不声称已有夹爪 actuator。

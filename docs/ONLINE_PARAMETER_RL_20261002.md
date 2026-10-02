@@ -1,5 +1,7 @@
 # Online parameter RL on the four video-derived primitive scenes
 
+> 完成结果见 [五小时结果报告](PRIMITIVE_BASELINE_RESULTS_20261002.md)。以下预算与阶段记录保留原时间语义；训练/评测最终状态以结果报告及原始完成记录为准。
+
 This is a new development protocol added by the user during the existing five-hour
 2026-10-02 session (07:36:31–12:36:31 UTC). It does not change the final environment
 or WBC work owned by another agent. Computation and artifacts stay on Spark.

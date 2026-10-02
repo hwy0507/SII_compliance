@@ -7,16 +7,32 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+def audit_launch_continuity(p,x,model):
+ original=json.loads((p/'original.json').read_text());launch=original.get('ball_launch_state');launch_time=launch['time_s'] if launch else None
+ delta=x[1:,5:8]-x[:-1,8:11];norm=np.linalg.norm(delta,axis=1)
+ allowed=np.zeros(len(delta),bool) if launch_time is None else abs(x[1:,0]-launch_time-x[1:,1])<2e-8
+ position_residual=np.diff(x[:,2:5],axis=0)-x[1:,1,None]*x[1:,8:11]
+ # These saved fixtures use implicitfast; its free translation update uses final velocity.
+ integrator=int(model.opt.integrator);check_position=integrator in [0,2,3]
+ max_velocity=float(norm[~allowed].max(initial=0.))
+ max_position=float(np.linalg.norm(position_residual[~allowed],axis=1).max(initial=0.)) if check_position else None
+ events=[dict(step_ending_s=float(x[i+1,0]),delta_velocity_mps=delta[i].tolist(),registered_launch=bool(allowed[i])) for i in np.flatnonzero(norm>1e-10)]
+ out=dict(launch_state=launch,launch_aims_at_actual_hand=bool(launch and launch.get('target_was_actual_hand_position')),interstep_velocity_changes=events,maximum_nonlaunch_velocity_jump_mps=max_velocity,maximum_nonlaunch_translation_update_residual_m=max_position,integrator=integrator,pass_continuity=max_velocity<1e-8 and (max_position is None or max_position<1e-8),scope='Checks velocity continuity between successive integration steps and free-position updates; excludes only the explicitly recorded initial scripted launch. Does not certify contact material realism.')
+ (p/'BALL_CONTINUITY_AUDIT.json').write_text(json.dumps(out,indent=2,allow_nan=False))
+ if not out['pass_continuity']:raise RuntimeError('Unregistered ball state change: '+str(p))
+ return out
+
 def audit_ball(p):
  r=json.loads((p/'result.json').read_text());native=p/'ball_native_substeps.npz'
  if not native.exists():return None
  x=np.load(native)['values'];m=mujoco.MjModel.from_binary_path(str(p/'model.mjb'));j=mujoco.mj_name2id(m,mujoco.mjtObj.mjOBJ_JOINT,'primitive_free_ball_joint');b=int(m.jnt_bodyid[j]);mass=float(m.body_mass[b])
+ continuity=audit_launch_continuity(p,x,m)
  contacts=[v for k,v in r['contacts'].items() if 'primitive_free_ball' in k]
  if not contacts:
-  out=dict(intended_contact=False,native_rows=len(x));(p/'BALL_AUDIT.json').write_text(json.dumps(out,indent=2));return out
+  out=dict(intended_contact=False,native_rows=len(x),launch_continuity=continuity);(p/'BALL_AUDIT.json').write_text(json.dumps(out,indent=2));return out
  first=min(v['first_s'] for v in contacts);near=x[(x[:,0]>=first-.03)&(x[:,0]<=first+.20)]
  dv=near[:,8:11]-near[:,5:8];imp=near[:,11:14]*near[:,1,None];grav=(1-near[:,17,None])*mass*m.opt.gravity*near[:,1,None];res=mass*dv-imp-grav
- out=dict(intended_contact=True,first_robot_contact_s=first,mass_kg=mass,native_rows=len(x),audit_window_s=[float(near[0,0]),float(near[-1,0])],velocity_before_mps=near[0,5:8].tolist(),velocity_after_mps=near[-1,8:11].tolist(),contact_impulse_vector_ns=imp.sum(axis=0).tolist(),gravity_impulse_vector_ns=grav.sum(axis=0).tolist(),momentum_balance_residual_vector_ns=res.sum(axis=0).tolist(),max_native_momentum_residual_ns=float(np.linalg.norm(res,axis=1).max()),peak_ball_pair_force_in_window_n=float(near[:,14].max()),robot_contact_pairs={k:v for k,v in r['contacts'].items() if 'primitive_free_ball' in k},interpretation='Momentum balance checks recorded physics consistency, not realism of a chosen contact model. Ball can receive work from robot. Window includes all ball contacts.')
+ out=dict(intended_contact=True,launch_continuity=continuity,first_robot_contact_s=first,mass_kg=mass,native_rows=len(x),audit_window_s=[float(near[0,0]),float(near[-1,0])],velocity_before_mps=near[0,5:8].tolist(),velocity_after_mps=near[-1,8:11].tolist(),contact_impulse_vector_ns=imp.sum(axis=0).tolist(),gravity_impulse_vector_ns=grav.sum(axis=0).tolist(),momentum_balance_residual_vector_ns=res.sum(axis=0).tolist(),max_native_momentum_residual_ns=float(np.linalg.norm(res,axis=1).max()),peak_ball_pair_force_in_window_n=float(near[:,14].max()),robot_contact_pairs={k:v for k,v in r['contacts'].items() if 'primitive_free_ball' in k},interpretation='Momentum balance checks recorded physics consistency, not realism of a chosen contact model. Ball can receive work from robot. Window includes all ball contacts.')
  (p/'BALL_AUDIT.json').write_text(json.dumps(out,indent=2))
  fig,ax=plt.subplots(3,1,figsize=(8.2,7.6),sharex=True,layout='constrained')
  colors=['#2870ad','#d38723','#40926b']
