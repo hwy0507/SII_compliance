@@ -1,3 +1,13 @@
+## 2026-10-02 — FR3 robosuite-style tabletop benchmark
+
+- 新增独立实验目录 `code/mujoco_6d_vmc_benchmark/experiments/robosuite_style_fr3_benchmark_20261002/`。它保留 upstream FR3、FLASK joint planner 和 computed-torque WBC，并加入按 robosuite Stack/PickPlace 组织的工作台任务层：带边沿收纳箱、工具托盘、两个堆叠方块、可拾取圆柱、绿色目标位、柜体侧板/层板和桌面围板。
+- 参考脚本：`run_benchmark.py`；说明：`README.md`。脚本同时提供 MuJoCo offscreen render、右侧 WBC 指标面板和碰撞几何审计。
+- 服务器运行环境：`/home/arm1/vmc_mujoco_runtime/robosuite_wbc_venv`（MuJoCo 3.3.7）；运行输入：`/home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_fr3_v2/fr3v2.xml`。
+- 2026-10-02 reference run：38 个场景碰撞几何、23 个传感器；HOME→GOAL 直达边为 false；FLASK 生成 2 段轨迹；2x retime 后轨迹时长 8.133 s、176 帧；最大命令力矩 27.41 Nm；峰值关节跟踪误差 0.00980 rad；最终关节误差 0.00940 rad；仿真最大接触数 0。
+- 结果媒体：`/home/arm1/vmc_mujoco_runtime/robosuite_style_fr3_benchmark_20261002.mp4` 和同名 JSON；网页：<http://192.168.31.70:8765/robosuite_style_fr3_benchmark_20261002/>。本轮网页视频和页面均通过 HTTP 200。
+- 限制：Stack 方块和 pick object 当前是静态任务物体，用于验证场景、碰撞、轨迹和 WBC 数据通道，不声称完成抓取成功；下一步再接 free-joint 物体和抓取/放置阶段。
+- 开工基线：baseline `b1f26846a08c622b3c9d7f47a60e8d23c1c9c6e4`；工作树保留其他 agent 未提交修改，未清理、未覆盖。GitHub push 仍因 HTTPS 认证缺少用户名而失败。
+
 ## 2026-10-02 — robosuite 1.5.2 WBC 场景参考运行
 
 - 开工检查：baseline 当前 HEAD `c9a4e94a68a243e98970dcb82323b999a24f42c6`；已 fetch `origin/main` 和 `origin/baseline` 并读取两份 UPDATE_LOG.md。工作树已有其他 agent 的修改和未跟踪文件，本轮未覆盖或清理。
