@@ -7,7 +7,7 @@ ROOT=Path('/home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002')
 spec=importlib.util.spec_from_file_location('frozen_baseline_worker',ROOT/'frozen_adapter01/primitive_baselines_20261002/worker.py')
 worker=importlib.util.module_from_spec(spec);spec.loader.exec_module(worker)
 original_save=mujoco.mj_saveModel;original_step=mujoco.mj_step
-active=None;rows=[];qadr=None;dadr=None;ballbody=None;ballgeoms=set()
+active=None;rows=[];poses=[];qadr=None;dadr=None;ballbody=None;ballgeoms=set()
 def save(model,*args,**kwargs):
  global active,qadr,dadr,ballbody,ballgeoms
  result=original_save(model,*args,**kwargs)
@@ -28,6 +28,7 @@ def step(model,data,*args,**kwargs):
   force+=(c.frame.reshape(3,3).T@f[:3])*(1 if g2 in ballgeoms else -1)
   peak=max(peak,float(np.linalg.norm(f[:3])));n+=int(np.linalg.norm(f[:3])>.05);pen=max(pen,-float(c.dist))
  rows.append(np.r_[data.time,model.opt.timestep,data.qpos[qadr:qadr+3],before,data.qvel[dadr:dadr+3],force,peak,n,pen,model.body_gravcomp[ballbody]])
+ if not poses or data.time-poses[-1][0]>=.001-1e-8:poses.append((float(data.time),data.qpos.copy(),data.qvel.copy(),data.ctrl.copy()))
  return result
 
 def main():
@@ -42,5 +43,6 @@ def main():
   if rows:
    out=Path(request['output']);columns=['time','dt','ball_x','ball_y','ball_z','vx_before','vy_before','vz_before','vx_after','vy_after','vz_after','contact_fx','contact_fy','contact_fz','peak_pair_force_n','forceful_contacts','penetration_m','gravcomp']
    np.savez_compressed(out/'ball_native_substeps.npz',values=np.asarray(rows),columns=np.asarray(columns))
+   np.savez_compressed(out/'ball_1khz_states.npz',time=np.array([v[0] for v in poses]),qpos=np.array([v[1] for v in poses]),qvel=np.array([v[2] for v in poses]),ctrl=np.array([v[3] for v in poses]))
    (out/'BALL_PROBE.json').write_text(json.dumps(dict(native_substeps=len(rows),read_only=True,ball_body_id=ballbody,ball_geom_ids=sorted(ballgeoms),all_ball_contacts=True,physics_or_policy_modified=False,force_time='completed MuJoCo substep force, corresponding to preintegration contact configuration'),indent=2))
 if __name__=='__main__':main()

@@ -21,7 +21,7 @@ def build(output):
             task=bool(s["task_success"]),strict=bool(s["strict_success"]),physical_valid=bool(s["physical_valid"]),full_horizon=bool(s["full_task_horizon_completed"]),
             duration_s=float(s["metrics"]["samples"])*float(s["arguments"]["dt"]),stage=s["final_task_stage"],rmse_mm=m["position_rmse_3d_m"]*1000,
             peak_torque_nm=m["generalized_actuator_torque_peak_nm"],peak_speed_mps=m["linear_speed_peak_mps"],external_penetration_mm=s["stats"]["max_external_penetration_m"]*1000,
-            max_lift_m=s.get("max_payload_lift_m"),abort_reason=s.get("abort_reason"),model_sha256=actual,success_definition=s["success_definition"],
+            max_lift_m=s["max_lift_m"],placement_hold_s=s["placement_hold_s"],placement_error_xy_mm=s["placement_error_xy_m"]*1000,object_final_position=s["object_final_position"],abort_reason=s.get("abort_reason"),model_sha256=actual,success_definition=s["success_definition"],
             events=s["stats"]["events"],edge_stats=s["stats"].get("unexpected_edge"),task_events=s["task_events"],
             execution_status=execution.get("status","source_archive"),policy=s.get("baseline_policy"))
         rows.append(row)

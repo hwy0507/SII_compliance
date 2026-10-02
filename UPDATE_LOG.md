@@ -1,3 +1,13 @@
+## 2026-10-02 — 首批保留测试、分场景报告与接触公平性方案
+
+- 两reward×两seed直接SimbaV2主训练均完成，第一seed60300/第二seed61175实际计数；统一采用60000步周期checkpoint。导纳参数RL也完成61175步；阻抗与VMC继续，VMC已在metric第二seed结束后接替空闲槽位，仍最多四路仿真。
+- 首批完整保留测试：zero task/strict=3/12、接触12/12；metric seed74001 task/strict=0/12、接触10/12；office_task seed74001 task/strict=0/12、接触11/12，均完整时长。三模型共36回合原始子步指标复算通过；发生球撞的原生动量残差约1e-16 Ns。这只支持记录数值一致，不是材料真实性或硬件安全证明。
+- 新audit_protocol.py核对保存的48维观测、7维公共输出动作、40ms周期、实际模型hash配对和推理归一化冻结；首批30条快照通过，其余将随完成补齐。新增publish_report.py和office plot_transfer.py，结果页 http://192.168.31.70:8765/primitive_baselines_20261002/results.html 明确未完成分母、分场景结果与新综合迁移分组。zero/历史ESN物块路径已目视检查。
+- FINAL_ENV_BASELINE_PROTOCOL新增共同抓稳初态/共同前缀的接触诊断建议：保留任务监督器与共同lift历史，不向actor增加真值，不根据方法追赶球或改场景。当前学习策略存在无球接触且任务失败，不能用这类样本宣称碰撞恢复成功；本轮冻结测试不改。
+- 原始展示条件单独注册REFERENCE_TELEMETRY_AMENDMENT01：frozen_reference04只增加球1kHz状态记录，用于明确1/40倍速真实近景，不插值、不改物理。测试仍frozen_evaluation03，训练快照不动；编译通过，实际1kHz/100Hz状态对应检查将随展示回合执行，尚不提前宣称通过。有限前台render_campaign随已完成展示导出视频，无cron/定时任务。
+- Spark证据均在 /home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/：final_evaluation01、final_report01、FIRST_BALL_TEST_AUDIT.json、office_bridge/transfer_report01、REFERENCE_TELEMETRY_AMENDMENT01.json、frozen_reference04、parameter_rl/frozen_reference04、dispatch、media_render01。原五小时截止12:36:31 UTC；最终13模型矩阵、共同参数checkpoint和媒体仍进行中。
+- main核对7cd5f4b；只更新baseline，不接入另一agent独立FLASK/WBC环境，不把开发结果写成统一dt=5e-5正式结论。
+
 ## 2026-10-02 — 综合环境zero完整失败证据与最终评估工具
 
 - main再次核对7cd5f4b7ac0a3056df76ac62bc690ded0724b104；共享baseline的独立FLASK/WBC提交保留，不混入本轮固定office接入。原五小时截止12:36:31 UTC不变，无定时任务。

@@ -35,10 +35,11 @@ def main():
    d.mocap_pos[i]=[3,3,3];d.mocap_quat[i]=[1,0,0,0]
  font=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',18)
  label=a.label or result['method'];times=states['time'];maxerr=0.
- def frame(i,speed_label):
-  d.qpos[:]=states['qpos'][i];d.qvel[:]=states['qvel'][i];d.ctrl[:]=states['ctrl'][i];d.time=float(times[i]);mujoco.mj_forward(m,d)
+ def frame(i,speed_label,source=None):
+  sample=states if source is None else source
+  d.qpos[:]=sample['qpos'][i];d.qvel[:]=sample['qvel'][i];d.ctrl[:]=sample['ctrl'][i];d.time=float(sample['time'][i]);mujoco.mj_forward(m,d)
   canvas=Image.new('RGB',(1280,544),(12,20,28));draw=ImageDraw.Draw(canvas)
-  draw.text((12,7),f'{scene} | {label} | {times[i]:.3f} s | {speed_label}',font=font,fill='white')
+  draw.text((12,7),f'{scene} | {label} | {d.time:.3f} s | {speed_label}',font=font,fill='white')
   draw.text((12,33),f'Task {result["task_success"]} | intended contact {result["contact_exposed"]} | RMSE {result["rmse_m"]:.4f} m | peak torque {result["peak_torque_nm"]:.1f} Nm',font=font,fill=(177,211,200))
   for j,cam in enumerate([overview,detail]):
    renderer.update_scene(d,camera=cam);canvas.paste(Image.fromarray(renderer.render()),(640*j,64))
@@ -60,9 +61,23 @@ def main():
   sheet=Image.new('RGB',(1280,816))
   for j,im in enumerate(contactframes):sheet.paste(im,((j%2)*640,(j//2)*272))
   sheet.save(out/'contact_sheet.jpg',quality=94)
+ native_clip=None
+ if first is not None and (e/'ball_1khz_states.npz').exists():
+  high=np.load(e/'ball_1khz_states.npz');ht=high['time']
+  idx=np.clip(np.searchsorted(ht,times),0,len(ht)-1);prev=np.maximum(idx-1,0)
+  idx=np.where(abs(ht[prev]-times)<abs(ht[idx]-times),prev,idx)
+  time_error=float(abs(ht[idx]-times).max());pose_error=float(abs(high['qpos'][idx]-states['qpos']).max())
+  if time_error>1e-8 or pose_error>1e-12:raise RuntimeError(f'1 kHz/100 Hz state mismatch: {time_error}, {pose_error}')
+  select=np.flatnonzero((ht>=first-.04)&(ht<=first+.16))
+  if len(select)<2:raise RuntimeError('Native impact window missing')
+  spacing=float(np.median(np.diff(ht[select])))
+  if abs(spacing-.001)>1e-8:raise RuntimeError('Expected 1 kHz saved poses')
+  with imageio.get_writer(str(out/'contact_0025x.mp4'),fps=25,codec='libx264',quality=9,macro_block_size=16,ffmpeg_params=['-movflags','+faststart']) as w:
+   for i in select:w.append_data(frame(int(i),'0.025x (1/40); actual 1 kHz states',high))
+  native_clip=dict(file='contact_0025x.mp4',frame_count=len(select),fps=25,playback_rate=25*spacing,physical_first_s=float(ht[select[0]]),physical_last_s=float(ht[select[-1]]),video_duration_s=len(select)/25,maximum_matching_pose_error=pose_error,maximum_matching_time_error_s=time_error,source_sha256=hashlib.sha256((e/'ball_1khz_states.npz').read_bytes()).hexdigest(),interpolation=False)
  posteridx=int(np.argmin(abs(times-(first+.03 if first is not None else min(2,times[-1])))))
  Image.fromarray(frame(posteridx,'1x; saved states')).save(out/'poster.jpg',quality=94)
  renderer.close()
- metadata=dict(episode=str(e),label=label,model_sha256=hashlib.sha256((e/'model.mjb').read_bytes()).hexdigest(),states_sha256=hashlib.sha256((e/'render_states.npz').read_bytes()).hexdigest(),mujoco=mujoco.__version__,nq=m.nq,nv=m.nv,nmocap=m.nmocap,frame_count=len(indices),fps=25,simulation_duration_s=float(times[-1]),video_duration_s=len(indices)/25,max_sample_time_error_s=maxerr,first_intended_contact_s=first,physics_advanced=False,interpolation=False,diagnostic_mocap_position=[3,3,3],hidden_mocaps=mocap_names,limitations=['State replay uses archived initial MJB; no new physical metrics inferred from replay.', '100 Hz replay resolves motion, not native substep contact force.', 'Global metrics displayed summarize entire episode, not current frame.'])
+ metadata=dict(native_impact_clip=native_clip,episode=str(e),label=label,model_sha256=hashlib.sha256((e/'model.mjb').read_bytes()).hexdigest(),states_sha256=hashlib.sha256((e/'render_states.npz').read_bytes()).hexdigest(),mujoco=mujoco.__version__,nq=m.nq,nv=m.nv,nmocap=m.nmocap,frame_count=len(indices),fps=25,simulation_duration_s=float(times[-1]),video_duration_s=len(indices)/25,max_sample_time_error_s=maxerr,first_intended_contact_s=first,physics_advanced=False,interpolation=False,diagnostic_mocap_position=[3,3,3],hidden_mocaps=mocap_names,limitations=['State replay uses archived initial MJB; no new physical metrics inferred from replay.', '100 Hz replay resolves motion, not native substep contact force.', 'Global metrics displayed summarize entire episode, not current frame.'])
  (out/'RENDER.json').write_text(json.dumps(metadata,indent=2));print(json.dumps(metadata),flush=True)
 if __name__=='__main__':main()

@@ -27,7 +27,8 @@ def arguments(identity,phase,parameter_step=None):
         worker=ROOT/'office_bridge/frozen03/evaluate.py'
         command=[sys.executable,str(worker),'--method','nominal' if kind=='zero' else kind,'--output',str(output)]
     else:
-        worker=ROOT/('parameter_rl/frozen_evaluation03/evaluate.py' if controller else 'frozen_evaluation03/evaluate.py')
+        snapshot='frozen_reference04' if phase=='reference' else 'frozen_evaluation03'
+        worker=ROOT/('parameter_rl/'+snapshot+'/evaluate.py' if controller else snapshot+'/evaluate.py')
         method='rl' if kind in ('parameter_rl','direct_rl') else kind
         command=[sys.executable,str(worker),'--method',method,'--output',str(output),'--split',phase]
         if phase=='test':command+=['--indices','0','1','2']

@@ -143,3 +143,37 @@ Full replay is 55 s at 1x; ball closeup is explicitly 0.25x. Evidence is under
 /home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/office_bridge/transfer01/zero/.
 The original rollout, source patch, MJB hash, independent OFFICE_AUDIT.json,
 render manifests and contact-clip TIMING_AUDIT.json are retained.
+
+## Separate post-contact capability from early task incompatibility
+
+The first completed 60k metric-RL held-out ball episodes include no intended ball
+contact and task failure, while the paired nominal models have actual contact.
+These are retained failures, not measurements of good impact recovery. This
+observation does not change the registered test set or motivate obstacle chasing.
+
+For the final WBC cohort, include a separately registered **common loaded-state
+contact benchmark** alongside the full pick/carry/place pipeline. Establish a
+physically valid, stable grasp with the common nominal prefix, archive the full
+MuJoCo integration state, task-supervisor state, nominal-reference/planner state,
+and common prefix records, then branch all controllers from that same pre-impact
+condition. Preserve the shared lift/history when scoring the full task; a reset
+that discards it must be labeled as a different remaining-task diagnostic. A
+deterministic shared-prefix replay with verified state equality is an alternative
+to restoring all simulator/internal controller fields. Specify controller-state
+initialization/burn-in before evaluating; ESN memory and classical virtual state
+must not receive a selected favorable history. Verify initial-state equality,
+contact-free settling and actual support/load before releasing an impactor.
+The actor still receives only canonical48; no contact/scene truth or new time
+feature is added. Model hashes, physics settings, finite-force impactor drives,
+actuator limits and physical/task gates remain paired within this new cohort.
+
+A fixed shared handover time and predeclared impactor state are allowed experiment
+conditions; a controller-dependent trigger or chasing the hand is not. Some
+policies may still avoid later contact through their motion. Report the complete
+condition denominator, exposure rate, and contact-conditioned response separately.
+Avoiding a collision can be legitimate task behavior; it cannot establish a
+successful post-impact response when no impact occurred.
+
+This is a proposed final-environment diagnostic cohort, **not** a change applied
+to the current primitive training/testing or exact office-v5 transfer. A fresh
+cohort needs shared reset/burn-in validation and its own training/exposure ledger.
