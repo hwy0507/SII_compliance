@@ -18,7 +18,7 @@ def make(flags):
         flags.get('combined_thick_corner_pillar_v1',False),
         flags.get('combined_thick_corner_pillar_v2',False),
         flags.get('combined_thick_corner_pillar_v3',False),
-        flags.get('combined_thick_corner_pillar_v4',False))
+        flags.get('combined_thick_corner_pillar_v4',False),flags.get('unexpected_edge',False))
     legacy.task_layout=lambda spec:(np.array([.54,-.19,.60]),np.array([.54,-.19,.425]))
     bundled=ROOT/'outputs/canonical_rl_assets_20260923/menagerie'
     requested=os.environ.get('MUJOCO_MENAGERIE_PATH')

@@ -76,6 +76,7 @@ class PlannedCornerTask(PickPlaceTask):
         for stage, route in routes.items():
             self.goals[stage] = route[0][0].copy()
         self.corner_release_ok = False
+        self.allow_lateral_rejoin = False
 
     def update(self, q, dq, pos, rot, twist, wrench):
         route = self.routes.get(self.index)
@@ -83,7 +84,18 @@ class PlannedCornerTask(PickPlaceTask):
             cursor = self.cursors[self.index]
             self.rotation = route[cursor][1].copy()
             if cursor < len(route)-1:
-                if np.linalg.norm(pos-self.goals[self.index]) < .012 and np.linalg.norm(so3_log(self.rotation@rot.T)) < .12:
+                reached=np.linalg.norm(pos-self.goals[self.index]) < .012
+                if self.allow_lateral_rejoin and cursor > 0:
+                    tangent=route[cursor][0]-route[cursor-1][0]
+                    length=np.linalg.norm(tangent)
+                    error=pos-self.goals[self.index]
+                    # Progress through the waypoint's transverse plane permits
+                    # yielding around an unknown obstacle. No obstacle lookup.
+                    if length>1e-8:
+                        forward=float(np.dot(error,tangent/length))
+                        lateral=error-forward*tangent/length
+                        reached=reached or (forward>=0 and np.linalg.norm(lateral)<.08)
+                if reached and np.linalg.norm(so3_log(self.rotation@rot.T)) < .12:
                     previous = self.goals[self.index].copy()
                     self.cursors[self.index] += 1
                     waypoint, rotation = route[cursor+1]
@@ -114,13 +126,15 @@ class PlannedCornerTask(PickPlaceTask):
         return advanced
 
 
-def build_plan(env, base):
+def build_plan(env, base, blind_edge=False, allow_lateral_rejoin=False):
     m, d = env.model, env.data
     scratch = mujoco.MjData(m)
     scratch.qpos[:] = d.qpos
     hand = env._hand_id
     qseed = d.qpos[:7].copy()
     static = {i for i in range(m.ngeom) if m.geom_bodyid[i] == 0 and (m.geom_contype[i] or m.geom_conaffinity[i])}
+    if blind_edge:
+        static={i for i in static if mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_GEOM,i)!='office_v5_unexpected_edge'}
     boxes = []
     for i in sorted(static):
         name = mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_GEOM,i) or str(i)
@@ -191,6 +205,7 @@ def build_plan(env, base):
                 raise ValueError(f'Nominal waypoint IK/static collision check failed: {checks[-1]}')
     base.destination=DESTINATION.copy()
     task=PlannedCornerTask(base,routes)
+    task.allow_lateral_rejoin=allow_lateral_rejoin
     metadata=dict(planner='deterministic static-map A* with direct swept-edge shortcut and IK posture search',
                   grid_m=.01,edge_sample_m=.002,expanded=expanded,tilt_degrees=tilt,
                   destination=DESTINATION.tolist(),target_xy_radius_m=.025,
@@ -199,4 +214,8 @@ def build_plan(env, base):
                   routes={str(k):[dict(hand=p.tolist(),rotation=r.tolist()) for p,r in v] for k,v in routes.items()},
                   static_map_only=True,dynamic_obstacle_state_in_planner=False,
                   limitations='Payload swept-volume and robot waypoint static checks; not a continuous full-arm collision proof or dynamic-contact prediction')
+    if blind_edge or allow_lateral_rejoin:
+        metadata.update(prior_map_omits_unexpected_edge=True,allow_lateral_rejoin=allow_lateral_rejoin,
+                        rejoin_rule='transverse-plane-v2: forward>=0 and perpendicular distance<80mm; final waypoint still requires arrival',
+                        note='Map omission is frozen before any controller result; online reference uses robot pose only')
     return task,metadata

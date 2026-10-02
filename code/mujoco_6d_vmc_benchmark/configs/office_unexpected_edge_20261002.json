@@ -1,0 +1,17 @@
+{
+  "scene_id": "planned-hand-corner-prior-map-omission-edge-v2",
+  "purpose": "A physical obstruction on the frozen nominal route, with geometric detours available; compare nominal and learned compliance without online sensing/replanning",
+  "registration": "Geometry chosen from prior nominal route and robot/payload sizes before learned-policy evaluation; no checkpoint-dependent obstacle placement",
+  "edge": {"center_m": [0.610, -0.250, 0.555], "half_size_m": [0.010, 0.045, 0.035], "friction": [0.6, 0.01, 0.001], "solref": [0.002, 1.0], "supported_bottom_z_m": 0.520},
+  "appearance": "Fixed from initial reset, absent only from prior map; encountered unexpectedly by contact, not spawned or teleported",
+  "reference": "Same offline static-map route and IK posture for all methods; forward plane crossing with perpendicular deviation below 80mm permits lateral rejoin; terminal waypoints still require arrival; no obstacle truth in actor or progress logic",
+  "revision": "v1 incorrectly counted longitudinal overshoot in the 80mm rejoin radius. An informed geometric detour stalled the virtual follower at cursor14/27. v2 corrects the common progress rule for all methods, retaining v1 raw failures, geometry, weights and gates.",
+  "task": "unchanged planned-hand-corner-v1 released/stable placement success",
+  "destination_xyz_m": [0.690, -0.310, 0.545],
+  "actuator_limits": "unchanged",
+  "safety": "original robot-world penetration <=0.2mm; additionally report/enforce obstacle-payload penetration <=0.2mm for strict success",
+  "runtime": {"mujoco": "3.11.0", "dt_s": 0.0001, "duration_s": 55.0, "seed": 2026091751, "variant": 0},
+  "timing": {"ball_launch_s": 2.0, "person_start_s": 3.0, "rod_start_s": 12.0, "rod_hold_s": 6.0},
+  "budget": "one nominal clear control, one nominal blocked, one unchanged ESN blocked, one unchanged MLP blocked; geometry invalidity/blockage diagnosed before learned evaluations; no training",
+  "report": "Keep every failure. Establish clear control passes and blocked nominal stalls with actual edge contact. Learned pass is a hypothesis, not a guaranteed outcome."
+}

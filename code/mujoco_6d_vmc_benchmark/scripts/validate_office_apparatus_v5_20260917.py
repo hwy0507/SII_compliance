@@ -80,6 +80,9 @@ def run(a):
     if planned_corner and not (a.task == 'pick_place' and a.corner_placement and a.combined_thick_corner_pillar_v4):
         raise ValueError('Planned hand corner requires combined-v4 corner pick_place')
     path_plan = None
+    unexpected_edge = bool(getattr(a, 'unexpected_edge', False))
+    if unexpected_edge and not planned_corner:
+        raise ValueError('Unexpected edge requires the planned hand-corner task')
     if a.output.with_suffix('.json').exists():raise RuntimeError('Preserve existing results')
     a.output.parent.mkdir(parents=True,exist_ok=True)
     probe=getattr(a,'physics_probe_s',None)
@@ -96,6 +99,7 @@ def run(a):
                         combined_thick_corner_pillar_v2=bool(getattr(a,'combined_thick_corner_pillar_v2',False)),
                         combined_thick_corner_pillar_v3=bool(getattr(a,'combined_thick_corner_pillar_v3',False)),
                         combined_thick_corner_pillar_v4=bool(getattr(a,'combined_thick_corner_pillar_v4',False)))
+    if unexpected_edge:flags['unexpected_edge']=True
     flags['duration']=a.duration
     flags['nominal_speed']=.06;flags['ball_speed']=a.ball_speed
     env,task,spec=make(flags);m,d=env.model,env.data;m.opt.timestep=a.dt
@@ -195,7 +199,8 @@ def run(a):
             task.goals[-1]=np.array([.690,-.330+.018*float(a.variant),.700])
         if planned_corner:
             from planned_hand_corner_20261002 import build_plan
-            task,path_plan=build_plan(env,task)
+            task,path_plan=build_plan(env,task,blind_edge=unexpected_edge,
+                                     allow_lateral_rejoin=bool(getattr(a,'allow_lateral_rejoin',False)))
             a.output.with_suffix('.plan.json').write_text(json.dumps(path_plan,indent=2))
         env.reference=task;env.gripper_target_override=lambda unused,default:task.gripper_target()
         load_observer=JointLoadObserver(d.qvel.copy(),m.dof_frictionloss,**observer_kwargs);mass=np.zeros((m.nv,m.nv))
@@ -241,6 +246,10 @@ def run(a):
     stats=dict(max_penetration_m=0.,worst_pair=None,max_external_penetration_m=0.,worst_external_pair=None,
       events={},contact_diagnostics={'rod_longest_run': None, 'corner_target_by_stage': {}},cup_shift_m=0.,cup_tilt_deg=0.,
       max_hand_displacement_m=0.,peak_motor_torque_nm=0.,max_person_drive_n=0.,max_rod_drive_n=0.)
+    edge_geom=gid('office_v5_unexpected_edge')
+    if unexpected_edge:
+        stats['unexpected_edge']=dict(first_s=None,last_s=None,duration_s=0.,peak_n=0.,impulse_ns=0.,
+                                      max_penetration_m=0.,by_stage={})
     last_ball_velocity=d.qvel[ball_dof:ball_dof+3].copy()
     ball_detail=[];next_ball_sample=0.
     incoming=None;last_robot_ball_contact=None;bounce_samples=[];first_ball_pos=None
@@ -279,9 +288,13 @@ def run(a):
         c=configs['rod'];target=c['stroke']*smooth_profile(t,c['start'],c['press'],c['hold'],c['retract']) if a.events in ('all','rod') else 0.
         f=drive_joint('office_v5_push_rod_joint',target,160.,12.,c['force_limit'])
         stats['max_rod_drive_n']=max(stats['max_rod_drive_n'],abs(f))
-        resultant={};touch_ball=False;corner_target_force=0.
+        resultant={};touch_ball=False;corner_target_force=0.;edge_force=0.
         for i in range(d.ncon):
             ct=d.contact[i];g1,g2=int(ct.geom1),int(ct.geom2)
+            if unexpected_edge and edge_geom in (g1,g2) and (g2 if g1==edge_geom else g1) in (robot|{target_geom}):
+                edge_wrench=np.zeros(6);mujoco.mj_contactForce(m,d,i,edge_wrench)
+                edge_force+=float(np.linalg.norm(edge_wrench[:3]))
+                stats['unexpected_edge']['max_penetration_m']=max(stats['unexpected_edge']['max_penetration_m'],-float(ct.dist))
             if target_geom in (g1,g2) and (g2 if g1==target_geom else g1) in corner_contact_geoms:
                 corner_wrench=np.zeros(6);mujoco.mj_contactForce(m,d,i,corner_wrench)
                 corner_target_force+=float(np.linalg.norm(corner_wrench[:3]))
@@ -310,6 +323,13 @@ def run(a):
             rec['last_s']=t;rec['duration_s']+=m.opt.timestep;rec['peak_n']=max(rec['peak_n'],mag);rec['impulse_ns']+=mag*m.opt.timestep
             if key in contact_keys:
                 k=contact_keys.index(key);interval_peak[k]=max(interval_peak[k],mag);interval_impulse[k]+=mag*m.opt.timestep
+        if unexpected_edge and edge_force>.05:
+            rec=stats['unexpected_edge']
+            if rec['first_s'] is None:rec['first_s']=t
+            rec['last_s']=t;rec['duration_s']+=m.opt.timestep
+            rec['peak_n']=max(rec['peak_n'],edge_force);rec['impulse_ns']+=edge_force*m.opt.timestep
+            stage_name=task.names[task.index]
+            rec['by_stage'][stage_name]=rec['by_stage'].get(stage_name,0.)+m.opt.timestep
         diagnostics=stats['contact_diagnostics']
         if corner_target_force>.05:
             stage_name=task.names[task.index]
@@ -532,6 +552,10 @@ def run(a):
         result['object_final_position']=d.xpos[env._target_body_id].copy()
         result['placement_error_xy_m']=float(np.linalg.norm(d.xpos[env._target_body_id,:2]-task.destination[:2]))
         result['source_sha256']['planned_hand_corner_20261002.py']=hashlib.sha256(Path(__file__).with_name('planned_hand_corner_20261002.py').read_bytes()).hexdigest()
+    if unexpected_edge:
+        result['unexpected_edge_safe']=bool(stats['unexpected_edge']['max_penetration_m']<=.0002)
+        result['strict_success']=bool(result['strict_success'] and result['unexpected_edge_safe'])
+        result['unknown_obstacle_protocol']='prior-map-omission-edge-v1; fixed physical lip, no online sensing/replanning'
     result['release_supported']=release_truth
     result['max_lift_m']=max_lift
     result['neural_logging']=dict(enabled=esn is not None,mode=a.esn_mode,model=str(a.esn_model) if a.esn_model else None,
@@ -585,6 +609,8 @@ if __name__=='__main__':
                    help='Development-only: place the payload on office_v5_corner_top')
     p.add_argument('--planned-hand-corner',action='store_true',
                    help='New task protocol: static-map planned route to hand-side corner; released placement is task success, contact coverage diagnostic only')
+    p.add_argument('--unexpected-edge',action='store_true',help='Independent fixture: a supported physical lip absent from the prior planning map')
+    p.add_argument('--allow-lateral-rejoin',action='store_true',help='Proprioceptive waypoint-plane progress permits contact detours; same for every method')
     p.add_argument('--interaction-demo',action='store_true',
                    help='Development-only: move cup/pillar onto the corner approach for physical contact')
     p.add_argument('--combined-demo',action='store_true',

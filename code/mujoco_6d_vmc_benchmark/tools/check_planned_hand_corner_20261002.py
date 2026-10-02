@@ -38,7 +38,20 @@ def main():
     for _ in range(5):
         task.update(q,dq,release,DOWN,twist,wrench)
     assert task.index==6
-    print('PASS: obstacle detour, swept edges, deterministic path, blocked goal rejection, no false release, proprioceptive release')
+    base=PickPlaceTask(np.zeros(3),[7,8],[7,8])
+    route=[(np.array([x,0.,0.]),DOWN) for x in (0.,.01,.02)]
+    task=PlannedCornerTask(base,{4:route});task.index=4;task.cursors[4]=1
+    task.goals[4]=route[1][0].copy();task.allow_lateral_rejoin=True
+    task.update(q,dq,np.array([.015,.09,0.]),DOWN,twist,wrench)
+    assert task.cursors[4]==1, 'Must not jump arbitrarily far from the reference'
+    task.update(q,dq,np.array([.015,.03,0.]),DOWN,twist,wrench)
+    assert task.cursors[4]==2 and task.index==4, 'A contact detour may cross a waypoint plane without returning inside the obstacle'
+    task.cursors[4]=1;task.goals[4]=route[1][0].copy()
+    task.update(q,dq,np.array([.15,.03,0.]),DOWN,twist,wrench)
+    assert task.cursors[4]==2, 'Forward travel after a detour must not count as lateral deviation'
+    task.update(q,dq,np.array([.15,.03,0.]),DOWN,twist,wrench)
+    assert task.index==4, 'Crossing the last plane is not arrival at the terminal waypoint'
+    print('PASS: obstacle detour, swept edges, deterministic path, blocked goal rejection, no false release, proprioceptive release, bounded lateral rejoin')
 
 
 if __name__=='__main__':

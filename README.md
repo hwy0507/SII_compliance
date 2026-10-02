@@ -1,5 +1,16 @@
 # Data-Driven Compliance Control for FR3
 
+### 2026-10-02 unknown-obstacle contact task
+
+A separately versioned physical lip blocks the nominal pick-and-place route but
+is absent from the planner's prior map. The clear nominal control places the
+payload; the blocked nominal control remains in contact from 11.39 to 55 seconds.
+The unchanged ESN and MLP both stall before touching the new lip, so learned
+compliance has **not** yet solved this task. A common route-rejoin bug was fixed
+and all four rows rerun with identical geometry, weights and placement thresholds;
+all failures are retained. These are `dt=1e-4` development results.
+See [environment, metrics, full videos and baseline handoff](code/mujoco_6d_vmc_benchmark/docs/UNEXPECTED_EDGE_CONTACT_TASK_20261002.md).
+
 ### 2026-10-02 planned hand-side corner task
 
 The user-defined successor task places the released payload at the hand-side
