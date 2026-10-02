@@ -92,7 +92,7 @@ def main() -> int:
         data.qpos[:7] = HOME
         mujoco.mj_forward(model, data)
         robot_names = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or '').startswith('fr3v2_')]
-        obstacle_names = ['flask_table', 'flask_obstacle_a_geom', 'flask_obstacle_b_geom']
+        obstacle_names = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or '').startswith('flask_') and model.geom(i).name != 'flask_target_object_geom']
         checker = MuJoCoFR3CollisionChecker(model, robot_geom_names=robot_names, obstacle_geom_names=obstacle_names)
         config = FlaskPlannerConfig(
             velocity_limits=VEL_LIMIT,
@@ -101,10 +101,10 @@ def main() -> int:
             joint_upper=UPPER,
             steering_time=0.65,
             min_steering_time=0.10,
-            max_steering_time=3.0,
-            samples_per_segment=35,
-            max_iterations=2200,
-            goal_bias=0.20,
+            max_steering_time=4.0,
+            samples_per_segment=40,
+            max_iterations=8000,
+            goal_bias=0.30,
             seed=20261002,
         )
         trajectory = FlaskJointPlanner(config, collision_fn=checker).plan(HOME, GOAL)
@@ -112,6 +112,8 @@ def main() -> int:
             raise SystemExit('planner failed in standalone scene')
         trajectory = trajectory.retime(args.time_scale)
         wbc = SensorWBC(model)
+        dynamic_joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, 'flask_dynamic_slide')
+        dynamic_qpos_adr = int(model.jnt_qposadr[dynamic_joint_id])
         renderer = mujoco.Renderer(model, height=360, width=480)
         frame_stride = max(1, int(round(1.0 / (model.opt.timestep * args.fps))))
         total_steps = int(np.ceil((trajectory.duration + 0.5) / model.opt.timestep))
@@ -126,6 +128,8 @@ def main() -> int:
             frame_dir.mkdir(parents=True, exist_ok=True)
         try:
             for step in range(total_steps):
+                data.qpos[dynamic_qpos_adr] = 0.22 * np.sin(2.0 * np.pi * float(data.time) / 3.4)
+                mujoco.mj_forward(model, data)
                 tau = wbc.command(data, trajectory)
                 previous_qvel = data.qvel[:7].copy()
                 data.ctrl[:] = tau

@@ -57,13 +57,32 @@ def make_scene(fr3_xml: Path) -> str:
         flags=re.S,
     )
     obstacle_xml = '''
-    <geom name="flask_table" type="box" pos="0.48 0.00 0.28" size="0.34 0.55 0.025" rgba="0.25 0.25 0.28 1" contype="1" conaffinity="1"/>
-    <body name="flask_obstacle_a" pos="0.38 -0.22 0.56">
-      <geom name="flask_obstacle_a_geom" type="box" size="0.07 0.07 0.22" rgba="0.85 0.25 0.12 1" contype="1" conaffinity="1"/>
+    <geom name="flask_table_top" type="box" pos="0.48 0.00 0.28" size="0.34 0.55 0.025" rgba="0.25 0.25 0.28 1" contype="1" conaffinity="1"/>
+    <geom name="flask_table_leg_a" type="box" pos="0.20 -0.43 0.14" size="0.035 0.035 0.14" rgba="0.16 0.16 0.18 1" contype="1" conaffinity="1"/>
+    <geom name="flask_table_leg_b" type="box" pos="0.20 0.43 0.14" size="0.035 0.035 0.14" rgba="0.16 0.16 0.18 1" contype="1" conaffinity="1"/>
+    <geom name="flask_table_leg_c" type="box" pos="0.76 -0.43 0.14" size="0.035 0.035 0.14" rgba="0.16 0.16 0.18 1" contype="1" conaffinity="1"/>
+    <geom name="flask_table_leg_d" type="box" pos="0.76 0.43 0.14" size="0.035 0.035 0.14" rgba="0.16 0.16 0.18 1" contype="1" conaffinity="1"/>
+    <geom name="flask_shelf_back" type="box" pos="0.95 0.00 0.92" size="0.035 0.62 0.62" rgba="0.30 0.20 0.14 1" contype="1" conaffinity="1"/>
+    <geom name="flask_shelf_upper" type="box" pos="0.69 0.00 1.18" size="0.18 0.56 0.025" rgba="0.36 0.25 0.16 1" contype="1" conaffinity="1"/>
+    <geom name="flask_shelf_lower" type="box" pos="0.92 0.00 0.72" size="0.18 0.56 0.025" rgba="0.36 0.25 0.16 1" contype="1" conaffinity="1"/>
+    <body name="flask_box_red" pos="0.26 -0.24 0.43">
+      <geom name="flask_box_red_geom" type="box" size="0.10 0.08 0.12" rgba="0.82 0.16 0.10 1" contype="1" conaffinity="1"/>
     </body>
-    <body name="flask_obstacle_b" pos="0.58 0.18 0.48">
-      <geom name="flask_obstacle_b_geom" type="cylinder" size="0.08 0.25" rgba="0.12 0.35 0.85 1" contype="1" conaffinity="1"/>
-    </body>'''
+    <body name="flask_box_yellow" pos="0.57 -0.30 0.38">
+      <geom name="flask_box_yellow_geom" type="box" size="0.08 0.09 0.09" rgba="0.86 0.66 0.10 1" contype="1" conaffinity="1"/>
+    </body>
+    <body name="flask_cylinder_blue" pos="0.58 0.25 0.43">
+      <geom name="flask_cylinder_blue_geom" type="cylinder" size="0.07 0.14" rgba="0.08 0.30 0.82 1" contype="1" conaffinity="1"/>
+    </body>
+    <body name="flask_target_object" pos="0.32 0.25 0.94">
+      <geom name="flask_target_object_geom" type="cylinder" size="0.055 0.09" rgba="0.10 0.75 0.28 1" contype="0" conaffinity="0"/>
+      <site name="flask_target_site" pos="0 0 0.10" size="0.018" rgba="0.10 1 0.25 1"/>
+    </body>
+    <body name="flask_dynamic_obstacle" pos="-0.18 0.48 0.82">
+      <joint name="flask_dynamic_slide" type="slide" axis="0 1 0" limited="true" range="-0.32 0.32" damping="0.4"/>
+      <geom name="flask_dynamic_obstacle_geom" type="capsule" fromto="0 0 -0.16 0 0 0.16" size="0.045" rgba="0.75 0.10 0.72 1" contype="1" conaffinity="1"/>
+    </body>
+    <site name="flask_table_touch_site" pos="0.48 0.00 0.31" size="0.01" rgba="0.8 0.2 0.2 0.4"/>'''
     source = source.replace('\n  </worldbody>', obstacle_xml + '\n  </worldbody>', 1)
     sensors = '''
   <sensor>
@@ -73,6 +92,9 @@ def make_scene(fr3_xml: Path) -> str:
     <frameangvel name="ee_angular_velocity" objtype="site" objname="flask_ee_site"/>
     <force name="ee_force" site="flask_ee_site"/>
     <torque name="ee_torque" site="flask_ee_site"/>
+    <accelerometer name="ee_accelerometer" site="flask_ee_site"/>
+    <gyro name="ee_gyro" site="flask_ee_site"/>
+    <touch name="table_touch" site="flask_table_touch_site"/>
 '''
     sensors += '\n'.join(
         f'    <jointpos name="joint_{i+1}_position" joint="fr3v2_joint{i+1}"/>\n'
@@ -116,7 +138,7 @@ def main() -> int:
         data.qpos[:7] = HOME
         mujoco.mj_forward(model, data)
         robot_names = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or '').startswith('fr3v2_')]
-        obstacle_names = ['flask_table', 'flask_obstacle_a_geom', 'flask_obstacle_b_geom']
+        obstacle_names = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or '').startswith('flask_') and model.geom(i).name != 'flask_target_object_geom']
         checker = MuJoCoFR3CollisionChecker(model, robot_geom_names=robot_names, obstacle_geom_names=obstacle_names)
         config = FlaskPlannerConfig(
             velocity_limits=VEL_LIMIT,
@@ -125,10 +147,10 @@ def main() -> int:
             joint_upper=UPPER,
             steering_time=0.65,
             min_steering_time=0.10,
-            max_steering_time=3.0,
-            samples_per_segment=35,
-            max_iterations=2200,
-            goal_bias=0.20,
+            max_steering_time=4.0,
+            samples_per_segment=40,
+            max_iterations=8000,
+            goal_bias=0.30,
             seed=20261002,
         )
         planner = FlaskJointPlanner(config, collision_fn=checker)
@@ -137,7 +159,11 @@ def main() -> int:
         planning_ms = 1000.0 * (time.perf_counter() - plan_start)
         if trajectory is None:
             raise SystemExit('FLASK planner could not find a collision-free trajectory in the new scene')
+        execution_time_scale = 3.0
+        trajectory = trajectory.retime(execution_time_scale)
         wbc = SensorWBC(model)
+        dynamic_joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, 'flask_dynamic_slide')
+        dynamic_qpos_adr = int(model.jnt_qposadr[dynamic_joint_id])
         q_error = []
         torque = []
         sensor_force = []
@@ -145,6 +171,8 @@ def main() -> int:
         contacts = []
         steps = int(round(args.duration / model.opt.timestep))
         for _ in range(steps):
+            data.qpos[dynamic_qpos_adr] = 0.22 * np.sin(2.0 * np.pi * float(data.time) / 3.4)
+            mujoco.mj_forward(model, data)
             data.ctrl[:] = wbc.command(data, trajectory)
             q_error.append(float(np.linalg.norm(trajectory.sample(float(data.time))[0] - data.qpos[:7])))
             torque.append(float(np.max(np.abs(data.ctrl[:7]))))
@@ -161,6 +189,7 @@ def main() -> int:
             'planning_time_ms': planning_ms,
             'trajectory_segments': len(trajectory.segments),
             'trajectory_duration_s': trajectory.duration,
+            'execution_time_scale': execution_time_scale,
             'simulation_duration_s': steps * model.opt.timestep,
             'simulation_steps': steps,
             'final_q_error_inf': float(np.max(np.abs(final_q - GOAL))),
@@ -169,6 +198,8 @@ def main() -> int:
             'peak_ee_force_sensor_n': float(np.max(np.abs(sensor_force))),
             'peak_ee_torque_sensor_nm': float(np.max(np.abs(sensor_torque))),
             'max_contacts_seen': max(contacts),
+            'scene_obstacle_count': len(obstacle_names),
+            'scene_obstacle_names': obstacle_names,
             'sensor_names': [model.sensor(i).name for i in range(model.nsensor)],
             'planner_and_wbc_validated': True,
             'limitations': 'development-only; sensor values and simulated torque tracking are not hardware validation',
