@@ -1,5 +1,19 @@
 # Data-Driven Compliance Control for FR3
 
+### 2026-10-02 fixed-world VMC teacher and pure ESN optimization
+
+Within the authorized four-hour window, 48 teacher/nominal candidates and 24
+pure ESN evaluations completed the same 55-second `office-tool-contact-v5`
+development scene. None completed stable placement or strict success. The
+original-VMC-distilled ESN achieved 30.058 mm RMSE, 39.210 Nm peak torque and
+0.370185 m/s peak speed, but remained blocked. Longer memory, contextual leak,
+counterfactual teacher relabeling and integrated-action losses exposed persistent
+post-contact residuals; lower replay loss did not establish task success.
+
+See the [complete results, limitations and shared evidence](code/mujoco_6d_vmc_benchmark/docs/VMC_ESN_FOUR_HOUR_REPORT_20261002.md).
+Environment, public input/action contract, task gates and actuator limits were
+unchanged. All failures are retained; no formal-step or generalization claim is made.
+
 ### 2026-10-02 current environment and three-camera agent handoff
 
 Start with [the office-tool-contact-v5 handoff](code/mujoco_6d_vmc_benchmark/docs/OFFICE_TOOL_CONTACT_HANDOFF_20261002.md)

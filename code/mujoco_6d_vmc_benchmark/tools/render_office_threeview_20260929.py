@@ -76,7 +76,7 @@ def main():
     writer = imageio_ffmpeg.write_frames(
         str(args.output / 'replay_threeview.mp4'), (width, height), fps=args.fps,
         codec='libx264', pix_fmt_out='yuv420p',
-        output_params=['-movflags', '+faststart', '-crf', '20'])
+        output_params=['-movflags', '+faststart', '-crf', '20', '-threads', '1'])
     writer.send(None)
     gif_frames = []
     try:
@@ -129,6 +129,7 @@ def main():
         'camera_views': [name for name, *_ in cameras],
         'stride': args.stride,
         'fps': args.fps,
+        'encoder_threads': 1,
         'gif_stride': args.gif_stride,
         'source_sha256': digest(Path(__file__)),
         'mujoco_version': mujoco.__version__,

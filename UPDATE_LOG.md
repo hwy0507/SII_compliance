@@ -1,5 +1,38 @@
 # 更新日志
 
+## 2026-10-02 — 四小时固定环境teacher/纯ESN联合优化及完整失败审计
+
+- 授权09:01:55–13:01:55UTC，连续前台任务，无定时任务。预登记48条teacher/名义候选、
+  24条纯ESN回合均完成55秒，task/strict均0；额度用完后收尾，不为耗满时间空转。
+  环境tool-contact-v5、MJB b092662a、规划/WBC/gate/公共输入与执行器限制均未改。
+- 优化teacher弹簧/读出、负载耦合与相对参考恢复记忆；纯ESN增加多时间尺度、负载×运动/
+  误差派生输入、context调制leak、失败学生历史反事实重标注及积分动作损失。
+  仍无新成功teacher数据。原VMC蒸馏ESN30.058mm/39.210Nm/.370185m/s、穿透.111707mm，
+  但卡carry；推进最远学生integral41为76.718mm/38.129Nm/.398990m/s、XY76.918mm，仍失败。
+- teacher47最终XY49.157mm，但没有接触未知凸边，后段卡柱子，推杆连续受力8.8172秒，
+  不能把更近的终点当作滑脱成功。DAgger漂移损失配对RMSE153.759→125.970mm、峰矩/峰速
+  略升且均失败；零初态平衡不足以保证已有历史卸载，离线干预与物理清空记忆结果分别保存。
+- 13个有效学习模型及1个拒绝部署的旧标签模型、8组读出和最后3条gain/记忆干预全部保留。
+  本模型128储备池另加128非线性读出；没有MLP新实验，不声称严格参数/FLOP匹配或ESN优势。
+  全72条三指标、动作/状态、公共filter、幅值/4ms指令变化率及源/配置/hash审计通过；
+  33条独立接触sidecar复算一致，6条穿透超限保留，5组配对数据/seed/预算一致性核验通过。
+- 新工具包括冻结批次runner、teacher worker、学习/物理/配对/记忆/视频审计和归档发布；
+  teacher与学生checkpoint重放验证、编译与diff检查通过。三机位编码固定单线程，
+  两条完整55秒1375帧MP4/GIF已生成并验证，视频明确标为失败。
+- 按sii-research-sync开工读取main `7cd5f4b7ac0a3056df76ac62bc690ded0724b104`及baseline
+  `e564e09a691293802ec76c237d717b202d592e85`；收工main未前进，baseline更新至
+  `a788be958486b5b24bc546737d44f690763521ba`并已读日志。未改baseline作业/分支或独立FLASK环境。
+- 已核验5050项、5,951,412,066字节原始数据及运行源码：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/vmc_esn_four_hour_20261002_090155/evidence/`。
+  manifest SHA256 `20731dc23f9924cf2247a2c7d62db12a7f75602ddae8d8e7ae3a059f5f6de98f`。
+  代码在其中各批次`source/`及逐回合/训练overlay，例如`final_intent/source/`与
+  `esn_dagger_pair/source/`；base commit不冒充干净源码。本次发布源码另按完整commit SHA
+  归档同一服务器`/home/arm1/sii_shared/SII_compliance/source/`，不覆盖旧运行。
+- 完整结果/限制/媒体入口：`code/mujoco_6d_vmc_benchmark/docs/VMC_ESN_FOUR_HOUR_REPORT_20261002.md`；
+  原预登记协议、联合进度、周报、两处README及小型归档收据已同步。
+  已完成本轮预算内实验和审计共享，无运行中任务；未完成稳定放置/strict、成功teacher数据、
+  formal dt=5e-5及跨条件泛化。
+
 ## 2026-10-02 — 当前环境及三机位完整交接，补充跨机器复跑入口
 
 - 用户认可当前交互展示，要求先同步供其他agent接续；本轮未启动仿真/训练，未改变环境、

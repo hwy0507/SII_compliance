@@ -1,0 +1,13 @@
+{
+  "protocol": "fixed_tool_contact_four_hour_20261002",
+  "registered_before_rollouts": true,
+  "hypothesis": "Force-only lift cannot distinguish commanded horizontal progress from final descent. Use only existing canonical nominal/measured motion and path direction, with bounded virtual-spring excitation from resisting load and stalled motion; no phase/time/obstacle input.",
+  "candidates": {
+    "24_reference_force4": {"velocity_weight":0.25,"channel_gain":[0.1,0.5,0.5,1,0,0,0],"options":{"stiffness_6d":[800,800,200,40,32,48],"damping_6d":[56,56,35,5.6,4.8,6],"deadband_6d":[0.5,0.5,0.5,0.08,0.08,0.08]},"reference_coupling":{"mode":"force","gain":4,"threshold_n":0.5,"attack_s":0.08,"release_s":1,"integral_rate_nps":20,"max_force_n":30}},
+    "25_reference_force8": {"velocity_weight":0.25,"channel_gain":[0.1,0.5,0.5,1,0,0,0],"options":{"stiffness_6d":[800,800,200,40,32,48],"damping_6d":[56,56,35,5.6,4.8,6],"deadband_6d":[0.5,0.5,0.5,0.08,0.08,0.08]},"reference_coupling":{"mode":"force","gain":8,"threshold_n":0.5,"attack_s":0.08,"release_s":4,"integral_rate_nps":20,"max_force_n":30}},
+    "26_reference_stall10": {"velocity_weight":0.25,"channel_gain":[0.1,0.5,0.5,1,0,0,0],"options":{"stiffness_6d":[800,800,200,40,32,48],"damping_6d":[56,56,35,5.6,4.8,6],"deadband_6d":[0.5,0.5,0.5,0.08,0.08,0.08]},"reference_coupling":{"mode":"stall_integral","gain":4,"threshold_n":0.3,"attack_s":0.08,"release_s":2,"integral_rate_nps":10,"max_force_n":30}},
+    "27_reference_stall20": {"velocity_weight":0.25,"channel_gain":[0.1,0.5,0.5,1,0,0,0],"options":{"stiffness_6d":[800,800,200,40,32,48],"damping_6d":[56,56,35,5.6,4.8,6],"deadband_6d":[0.5,0.5,0.5,0.08,0.08,0.08]},"reference_coupling":{"mode":"stall_integral","gain":4,"threshold_n":0.3,"attack_s":0.08,"release_s":2,"integral_rate_nps":20,"max_force_n":30}},
+    "28_reference_stall40": {"velocity_weight":0.25,"channel_gain":[0.1,0.5,0.5,1,0,0,0],"options":{"stiffness_6d":[800,800,200,40,32,48],"damping_6d":[56,56,35,5.6,4.8,6],"deadband_6d":[0.5,0.5,0.5,0.08,0.08,0.08]},"reference_coupling":{"mode":"stall_integral","gain":4,"threshold_n":0.3,"attack_s":0.08,"release_s":2,"integral_rate_nps":40,"max_force_n":30}},
+    "29_reference_stall20_short": {"velocity_weight":0.25,"channel_gain":[0.1,0.5,0.5,1,0,0,0],"options":{"stiffness_6d":[800,800,200,40,32,48],"damping_6d":[56,56,35,5.6,4.8,6],"deadband_6d":[0.5,0.5,0.5,0.08,0.08,0.08]},"reference_coupling":{"mode":"stall_integral","gain":4,"threshold_n":0.3,"attack_s":0.08,"release_s":0.2,"integral_rate_nps":20,"max_force_n":30}}
+  }
+}

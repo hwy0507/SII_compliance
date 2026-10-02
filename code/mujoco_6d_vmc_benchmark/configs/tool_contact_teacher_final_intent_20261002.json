@@ -1,0 +1,57 @@
+{
+  "protocol": "fixed_tool_contact_four_hour_20261002",
+  "registered_before_rollouts": true,
+  "contact_audit": true,
+  "hypothesis": "Candidate44 has the most forward progress. The .015m/s intent normalization misclassifies its legitimate .007-.013m/s horizontal commands as disappearing intent during saturated vertical recovery. Change only this teacher-internal normalization to .003m/s; task/safety gates and all public limits remain unchanged.",
+  "candidates": {
+    "47_progress_intent003": {
+      "velocity_weight": 0.25,
+      "channel_gain": [
+        0.1,
+        0.25,
+        0.5,
+        0.3,
+        0,
+        0,
+        0
+      ],
+      "options": {
+        "stiffness_6d": [
+          800,
+          800,
+          200,
+          40,
+          32,
+          48
+        ],
+        "damping_6d": [
+          56,
+          56,
+          35,
+          5.6,
+          4.8,
+          6
+        ],
+        "deadband_6d": [
+          0.5,
+          0.5,
+          0.5,
+          0.08,
+          0.08,
+          0.08
+        ]
+      },
+      "recovery": {
+        "threshold_n": 0.3,
+        "attack_s": 0.12,
+        "release_s": 1,
+        "offset_m": 0.075,
+        "gain_per_s": 6,
+        "velocity_mps": 0.24,
+        "activation_mode": "progress",
+        "progress_distance_m": 0.3,
+        "intent_velocity_mps": 0.003
+      }
+    }
+  }
+}

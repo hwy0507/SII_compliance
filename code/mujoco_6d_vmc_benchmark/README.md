@@ -1,5 +1,12 @@
 # MuJoCo 6D End-Effector VMC Benchmark
 
+The latest fixed-office research is the
+[2026-10-02 VMC/ESN four-hour report](docs/VMC_ESN_FOUR_HOUR_REPORT_20261002.md):
+48 teacher/nominal settings and 24 pure ESN evaluations completed, with no stable
+placement or strict success. It uses the frozen common WBC and canonical48/action7
+residual interface; the legacy standalone VMC descriptions below do not replace
+that office control contract.
+
 This directory contains the MuJoCo compliance benchmarks for this project.
 They use a **fixed-nominal-reference proxy**, not yet a replacement for the
 whole-body controller (WBC).  The controller contract is intentionally

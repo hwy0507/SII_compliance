@@ -1,0 +1,290 @@
+{
+  "protocol": "fixed_tool_contact_four_hour_20261002",
+  "registered_before_rollouts": true,
+  "contact_audit": true,
+  "hypothesis": "The .08 m/s teacher-internal cap saturates while the payload remains blocked; increase only actor readout capacity within the unchanged .32 m/s public action limit. Compare envelope vs bounded evidence-integrating activation; keep the reference-relative equilibrium bounded.",
+  "candidates": {
+    "36_recovery_v016_o060": {
+      "velocity_weight": 0.25,
+      "channel_gain": [
+        0.1,
+        0.25,
+        0.5,
+        0.3,
+        0,
+        0,
+        0
+      ],
+      "options": {
+        "stiffness_6d": [
+          800,
+          800,
+          200,
+          40,
+          32,
+          48
+        ],
+        "damping_6d": [
+          56,
+          56,
+          35,
+          5.6,
+          4.8,
+          6
+        ],
+        "deadband_6d": [
+          0.5,
+          0.5,
+          0.5,
+          0.08,
+          0.08,
+          0.08
+        ]
+      },
+      "recovery": {
+        "threshold_n": 0.3,
+        "attack_s": 0.12,
+        "release_s": 8,
+        "offset_m": 0.06,
+        "gain_per_s": 2,
+        "velocity_mps": 0.16,
+        "activation_mode": "envelope"
+      }
+    },
+    "37_recovery_v016_o075": {
+      "velocity_weight": 0.25,
+      "channel_gain": [
+        0.1,
+        0.25,
+        0.5,
+        0.3,
+        0,
+        0,
+        0
+      ],
+      "options": {
+        "stiffness_6d": [
+          800,
+          800,
+          200,
+          40,
+          32,
+          48
+        ],
+        "damping_6d": [
+          56,
+          56,
+          35,
+          5.6,
+          4.8,
+          6
+        ],
+        "deadband_6d": [
+          0.5,
+          0.5,
+          0.5,
+          0.08,
+          0.08,
+          0.08
+        ]
+      },
+      "recovery": {
+        "threshold_n": 0.3,
+        "attack_s": 0.12,
+        "release_s": 8,
+        "offset_m": 0.075,
+        "gain_per_s": 2,
+        "velocity_mps": 0.16,
+        "activation_mode": "envelope"
+      }
+    },
+    "38_recovery_v024_o075": {
+      "velocity_weight": 0.25,
+      "channel_gain": [
+        0.1,
+        0.25,
+        0.5,
+        0.3,
+        0,
+        0,
+        0
+      ],
+      "options": {
+        "stiffness_6d": [
+          800,
+          800,
+          200,
+          40,
+          32,
+          48
+        ],
+        "damping_6d": [
+          56,
+          56,
+          35,
+          5.6,
+          4.8,
+          6
+        ],
+        "deadband_6d": [
+          0.5,
+          0.5,
+          0.5,
+          0.08,
+          0.08,
+          0.08
+        ]
+      },
+      "recovery": {
+        "threshold_n": 0.3,
+        "attack_s": 0.12,
+        "release_s": 8,
+        "offset_m": 0.075,
+        "gain_per_s": 2,
+        "velocity_mps": 0.24,
+        "activation_mode": "envelope"
+      }
+    },
+    "39_recovery_v016_hold20": {
+      "velocity_weight": 0.25,
+      "channel_gain": [
+        0.1,
+        0.25,
+        0.5,
+        0.3,
+        0,
+        0,
+        0
+      ],
+      "options": {
+        "stiffness_6d": [
+          800,
+          800,
+          200,
+          40,
+          32,
+          48
+        ],
+        "damping_6d": [
+          56,
+          56,
+          35,
+          5.6,
+          4.8,
+          6
+        ],
+        "deadband_6d": [
+          0.5,
+          0.5,
+          0.5,
+          0.08,
+          0.08,
+          0.08
+        ]
+      },
+      "recovery": {
+        "threshold_n": 0.3,
+        "attack_s": 0.12,
+        "release_s": 20,
+        "offset_m": 0.075,
+        "gain_per_s": 2,
+        "velocity_mps": 0.16,
+        "activation_mode": "envelope"
+      }
+    },
+    "40_recovery_integral": {
+      "velocity_weight": 0.25,
+      "channel_gain": [
+        0.1,
+        0.25,
+        0.5,
+        0.3,
+        0,
+        0,
+        0
+      ],
+      "options": {
+        "stiffness_6d": [
+          800,
+          800,
+          200,
+          40,
+          32,
+          48
+        ],
+        "damping_6d": [
+          56,
+          56,
+          35,
+          5.6,
+          4.8,
+          6
+        ],
+        "deadband_6d": [
+          0.5,
+          0.5,
+          0.5,
+          0.08,
+          0.08,
+          0.08
+        ]
+      },
+      "recovery": {
+        "threshold_n": 0.3,
+        "attack_s": 0.12,
+        "release_s": 8,
+        "offset_m": 0.075,
+        "gain_per_s": 2,
+        "velocity_mps": 0.16,
+        "activation_mode": "integral"
+      }
+    },
+    "41_recovery_integral_k4": {
+      "velocity_weight": 0.25,
+      "channel_gain": [
+        0.1,
+        0.25,
+        0.5,
+        0.3,
+        0,
+        0,
+        0
+      ],
+      "options": {
+        "stiffness_6d": [
+          800,
+          800,
+          200,
+          40,
+          32,
+          48
+        ],
+        "damping_6d": [
+          56,
+          56,
+          35,
+          5.6,
+          4.8,
+          6
+        ],
+        "deadband_6d": [
+          0.5,
+          0.5,
+          0.5,
+          0.08,
+          0.08,
+          0.08
+        ]
+      },
+      "recovery": {
+        "threshold_n": 0.3,
+        "attack_s": 0.12,
+        "release_s": 8,
+        "offset_m": 0.075,
+        "gain_per_s": 4,
+        "velocity_mps": 0.16,
+        "activation_mode": "integral"
+      }
+    }
+  }
+}

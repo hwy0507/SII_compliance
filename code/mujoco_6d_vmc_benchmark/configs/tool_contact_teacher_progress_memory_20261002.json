@@ -1,0 +1,248 @@
+{
+  "protocol": "fixed_tool_contact_four_hour_20261002",
+  "registered_before_rollouts": true,
+  "contact_audit": true,
+  "hypothesis": "Candidate41 temporarily clears the lip at30s, but time-decayed memory drops the payload back and delays forward travel until50s. Retain load-induced equilibrium while motion is stalled, decay it with measured forward travel or absent nominal forward intent; no world geometry/phase/time input.",
+  "candidates": {
+    "42_progress_memory": {
+      "velocity_weight": 0.25,
+      "channel_gain": [
+        0.1,
+        0.25,
+        0.5,
+        0.3,
+        0,
+        0,
+        0
+      ],
+      "options": {
+        "stiffness_6d": [
+          800,
+          800,
+          200,
+          40,
+          32,
+          48
+        ],
+        "damping_6d": [
+          56,
+          56,
+          35,
+          5.6,
+          4.8,
+          6
+        ],
+        "deadband_6d": [
+          0.5,
+          0.5,
+          0.5,
+          0.08,
+          0.08,
+          0.08
+        ]
+      },
+      "recovery": {
+        "threshold_n": 0.3,
+        "attack_s": 0.12,
+        "release_s": 1,
+        "offset_m": 0.075,
+        "gain_per_s": 4,
+        "velocity_mps": 0.16,
+        "activation_mode": "progress",
+        "progress_distance_m": 0.3
+      }
+    },
+    "43_progress_offset090": {
+      "velocity_weight": 0.25,
+      "channel_gain": [
+        0.1,
+        0.25,
+        0.5,
+        0.3,
+        0,
+        0,
+        0
+      ],
+      "options": {
+        "stiffness_6d": [
+          800,
+          800,
+          200,
+          40,
+          32,
+          48
+        ],
+        "damping_6d": [
+          56,
+          56,
+          35,
+          5.6,
+          4.8,
+          6
+        ],
+        "deadband_6d": [
+          0.5,
+          0.5,
+          0.5,
+          0.08,
+          0.08,
+          0.08
+        ]
+      },
+      "recovery": {
+        "threshold_n": 0.3,
+        "attack_s": 0.12,
+        "release_s": 1,
+        "offset_m": 0.09,
+        "gain_per_s": 4,
+        "velocity_mps": 0.16,
+        "activation_mode": "progress",
+        "progress_distance_m": 0.3
+      }
+    },
+    "44_progress_fast_lift": {
+      "velocity_weight": 0.25,
+      "channel_gain": [
+        0.1,
+        0.25,
+        0.5,
+        0.3,
+        0,
+        0,
+        0
+      ],
+      "options": {
+        "stiffness_6d": [
+          800,
+          800,
+          200,
+          40,
+          32,
+          48
+        ],
+        "damping_6d": [
+          56,
+          56,
+          35,
+          5.6,
+          4.8,
+          6
+        ],
+        "deadband_6d": [
+          0.5,
+          0.5,
+          0.5,
+          0.08,
+          0.08,
+          0.08
+        ]
+      },
+      "recovery": {
+        "threshold_n": 0.3,
+        "attack_s": 0.12,
+        "release_s": 1,
+        "offset_m": 0.075,
+        "gain_per_s": 6,
+        "velocity_mps": 0.24,
+        "activation_mode": "progress",
+        "progress_distance_m": 0.3
+      }
+    },
+    "45_progress_long_travel": {
+      "velocity_weight": 0.25,
+      "channel_gain": [
+        0.1,
+        0.25,
+        0.5,
+        0.3,
+        0,
+        0,
+        0
+      ],
+      "options": {
+        "stiffness_6d": [
+          800,
+          800,
+          200,
+          40,
+          32,
+          48
+        ],
+        "damping_6d": [
+          56,
+          56,
+          35,
+          5.6,
+          4.8,
+          6
+        ],
+        "deadband_6d": [
+          0.5,
+          0.5,
+          0.5,
+          0.08,
+          0.08,
+          0.08
+        ]
+      },
+      "recovery": {
+        "threshold_n": 0.3,
+        "attack_s": 0.12,
+        "release_s": 1,
+        "offset_m": 0.075,
+        "gain_per_s": 4,
+        "velocity_mps": 0.16,
+        "activation_mode": "progress",
+        "progress_distance_m": 0.6
+      }
+    },
+    "46_progress_rotation": {
+      "velocity_weight": 0.25,
+      "channel_gain": [
+        0.1,
+        0.25,
+        0.5,
+        0.3,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "options": {
+        "stiffness_6d": [
+          800,
+          800,
+          200,
+          8,
+          6,
+          10
+        ],
+        "damping_6d": [
+          56,
+          56,
+          35,
+          2.8,
+          2.4,
+          3
+        ],
+        "deadband_6d": [
+          0.5,
+          0.5,
+          0.5,
+          0.08,
+          0.08,
+          0.08
+        ]
+      },
+      "recovery": {
+        "threshold_n": 0.3,
+        "attack_s": 0.12,
+        "release_s": 1,
+        "offset_m": 0.075,
+        "gain_per_s": 4,
+        "velocity_mps": 0.16,
+        "activation_mode": "progress",
+        "progress_distance_m": 0.3
+      }
+    }
+  }
+}
