@@ -21,6 +21,13 @@ class Replay:
   self.count[scene]+=1
  def sample(self,n):
   present=np.flatnonzero(self.count);ss=self.rng.choice(present,n);ii=np.array([self.rng.integers(min(self.count[s],self.capacity)) for s in ss]);return {k:v[ss,ii] for k,v in self.data.items()}
+ def restore(self,p,state):
+  saved=np.load(p);self.count=np.asarray(state['count'],int)
+  if state['capacity_per_scene']!=self.capacity:raise ValueError('Replay capacity changed')
+  for k,v in self.data.items():
+   for scene in range(4):
+    rows=saved[f'{scene}_{k}'];v[scene,:len(rows)]=rows
+  self.rng.bit_generator.state=state['rng']
  def save(self,p):
   values={f'{s}_{k}':v[s,:min(self.count[s],self.capacity)] for k,v in self.data.items() for s in range(4)};np.savez(p,**values)
   return dict(count=self.count.tolist(),capacity_per_scene=self.capacity,rng=self.rng.bit_generator.state)
@@ -44,7 +51,7 @@ class Episode:
   if rc:raise RuntimeError(f'worker exit {rc}: {self.out}')
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--reward',choices=['office_task','metric'],required=True);p.add_argument('--seed',type=int,required=True);p.add_argument('--steps',type=int,default=100000);p.add_argument('--deadline',type=float,required=True);p.add_argument('--warmup',type=int,default=5000);a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--reward',choices=['office_task','metric'],required=True);p.add_argument('--seed',type=int,required=True);p.add_argument('--steps',type=int,default=100000);p.add_argument('--deadline',type=float,required=True);p.add_argument('--warmup',type=int,default=5000);p.add_argument('--resume',type=Path);a=p.parse_args()
  out=a.output;out.mkdir(parents=True,exist_ok=False);fixtures=json.loads((ROOT/'FIXTURES.json').read_text());train={s:[f for f in fixtures if f['split']=='train' and f['scene']==s] for s in SCENES}
  agent=OfficialOfficeAgent(a.seed,a.steps,utd=2,gamma=.9995,entropy_coef=-2.,initial_temperature=.0001)
  replay=Replay(max(100000,a.steps),a.seed+53);rng=np.random.default_rng(a.seed+71);stop=False;step=0;ep=0;started=time.monotonic();pending=None;episode=None
@@ -55,6 +62,12 @@ def main():
  protocol=dict(seed=a.seed,reward=a.reward,steps=a.steps,deadline_epoch=a.deadline,agent=agent.config,warmup_steps=a.warmup,warmup_std=.02,scene_sampling='round-robin episodes, deterministic shuffled fixture permutations per scene',replay_sampling='uniform scene then uniform transition within scene',actor_uses_teacher=False,unused_legacy_teacher_may_run=True,bc=False,upstream='86899c277cdc697b2b02d827243de1ea93f20a1d',fixed_scene_source=str(ROOT/'source_scene_20260918'),fixtures_sha256=hashlib.sha256((ROOT/'FIXTURES.json').read_bytes()).hexdigest(),source_hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in HERE.glob('*.py')},success='original primitive task success; legacy thick table requires measured lift, placement and release; all require <=0.2mm external penetration for terminal +20',limitations=['Video-derived old source fixtures are not new final environment.', 'Different source fixtures retain original dt/task supervisor/safety limits.', 'Ball legacy task gate uses contact truth; this is shared task logic, absent from actor.', 'Bounded metric and task potential are adaptations, not original-paper task reward.'])
  dump(out/'PROTOCOL.json',protocol)
  permutations={s:np.random.default_rng(a.seed+100+i).permutation(len(train[s])).tolist() for i,s in enumerate(SCENES)}
+ if a.resume:
+  state=json.loads((a.resume/'runner.json').read_text());agent.load(a.resume);replay.restore(a.resume/'replay.npz',state['replay']);rng.bit_generator.state=state['exploration_rng'];step=state['step'];ep=state['episode']+int(state['mid_episode']);pending=state['pending_transition']
+  if pending and state['mid_episode']:pending['truncated']=True
+  protocol['recovery']=dict(checkpoint=str(a.resume),recovered_step=step,next_episode=ep,abandoned_checkpoint_partial_episode=state['mid_episode'],exact_environment_resume=False,replay_preserved=True,normalizer_boundary='Pending transition consumed once; partial-episode recovery marked truncated for return normalizer',old_run_preserved=True)
+  dump(out/'PROTOCOL.json',protocol)
+
  def checkpoint(name):
   cp=out/name;agent.save(cp);r=replay.save(cp/'replay.npz');dump(cp/'runner.json',dict(step=step,episode=ep,replay=r,exploration_rng=rng.bit_generator.state,pending_transition=pending,mid_episode=episode is not None,exact_resume_supported=False))
  def status():dump(out/'STATE.json',dict(step=step,episode=ep,wall_s=time.monotonic()-started,steps_per_s=step/max(time.monotonic()-started,1),scene_transitions=replay.count.tolist(),diagnostics=agent.diagnostics(),stop_requested=stop))

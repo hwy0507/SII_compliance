@@ -134,8 +134,7 @@ def execute(request,channel):
  entry=SCENE/fixture['entry'];sys.argv=[str(entry)]
  for k,v in flags.items():
   if v is None or v is False:continue
-  sys.argv+=['--'+k.replace('_','-')]
-  if v is not True:sys.argv.append(str(v))
+  sys.argv+=['--'+k.replace('_','-')+(('='+str(v)) if v is not True else '')]
  started=time.monotonic()
  with (out/'run.log').open('w') as log,contextlib.redirect_stdout(log):runpy.run_path(str(entry),run_name='__main__')
  e=state['env'];source=json.loads((out/'original.json').read_text());duration=float(records[-1]['time']) if records else 0

@@ -1,3 +1,13 @@
+## 2026-10-02 — 在线参数 RL、训练恢复与最终环境接入协议
+
+- 用户确认每种导纳/阻抗/VMC控制器只有一组统一先验（旧三类BO物理参数几何均值），四特化场景共用。参数RL动作7/5/7维、25Hz、log空间限速/夹紧与局部储能预算；不是新BO最优或整体无源证明。新增 experiments/parameter_rl_20261002，原helper版本/hash和先验均保留。
+- shield1800次更新及空tank限制检查通过；零参数动作与固定先验球回合、原生球遥测开关逐元素相同。5维阻抗梯度pilot完成750交互/1470更新；首次元数据构造失败发生在仿真前，保留不隐去。admittance seed75001主预算运行中。
+- 原两reward直接RL在21525步被负科学计数法CLI解析共同中断。adapter02修正为--key=value；从20000步恢复agent/replay/RNG并跳过未完回合，明确不是物理状态精确恢复。旧campaign01失败和campaign02恢复分别保存，现均已继续超过40000步。经典96回合搜索仍运行。
+- 新增确定性评估、子步三指标独立复算、球动量审计、真实时长MP4和页面。zero球原生动量残差峰值8.48e-17 Ns，只说明数值一致性。早期10k验证RL四场景任务均失败，保留且不冒充最终成绩。
+- 用户提供main 7cd5f4b7ac0a3056df76ac62bc690ded0724b104后已fetch/read源码、交接和配置；已有v5完整ESN task/strict仍false，最大外穿透.653202mm。新增 docs/FINAL_ENV_BASELINE_PROTOCOL_20261002.md 和 office_baseline_bridge_20261002/evaluate.py，直接使用公共canonical48/动作链；目前只导入/编译检查，无新office仿真或接入等价性结论。不改另一agent的WBC工作。
+- 本轮main最初f3437ad，后复核b75ef8e及上述7cd5f4b；远端baseline e564e09，共享checkout另有WBC提交01b50e1。实际计算主机Spark；源码在 /home/arm1/SII_compliance_baseline/code/mujoco_6d_vmc_benchmark/experiments/，产物在 /home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/：parameter_rl/frozen_train02、gradient_smoke02_impedance、campaign02、RECOVERY02.json、CLI_REGRESSION02.json、evaluation01、MEDIA_CATALOG.json。页面 http://192.168.31.70:8765/primitive_baselines_20261002/。
+- 五小时原窗口截至12:36:31 UTC，无定时任务、四路以内持续计算。正式保留集、三参数方法主训练、最终媒体/报告尚未完成；旧特化步长不一致，只是开发结果，不冒充正式dt=5e-5综合结论。
+
 ## 2026-10-02 — reference-style real-time speed/acceleration plot added
 
 - 根据用户提供的视频，新增 `experiments/flask_fr3_env_20261002/render_realtime_plot.py`：左侧逐帧渲染独立 MuJoCo FR3，右侧在线绘制 `Speed + limit` 与 `Acceleration + limit` 两个面板；显示 fastest-joint speed、末端速度、fastest-joint acceleration、torque usage 和限值线，并用移动竖线标记当前时间。绘图使用 Pillow，不给服务器研究虚拟环境增加 Matplotlib 依赖。
