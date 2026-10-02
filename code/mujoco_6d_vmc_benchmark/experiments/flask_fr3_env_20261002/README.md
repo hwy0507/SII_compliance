@@ -73,3 +73,9 @@ command torque. The result JSON is
 The user-facing render uses the raw 5.71 s route (1x retime), producing visible
 changes at each steering segment. These are simulated development measurements,
 not hardware validation.
+
+## Hand asset correction (2026-10-02)
+
+The upstream fr3v2.xml stops at link8 and does not contain a hand. The wrapper now injects the official Franka hand / finger meshes from the sibling franka_emika_panda menagerie asset, using the same link7-to-hand rotation as the official Panda model. The fingers are fixed open geometry in this 7-DoF benchmark; no gripper actuator is claimed yet.
+
+The target marker was moved to [0.78, 0.32, 1.10] on the rear shelf region so it is not visually embedded in the moving arm. Robot and obstacle collision audit lists now include only geoms with contype != 0. The 0.2 s asset audit reported 13 robot collision geoms, five hand / finger collision geoms, 13 scene obstacle geoms, zero MuJoCo contacts, and an end-effector site world position of [0.55565, 0.00023, 0.53595] at HOME.

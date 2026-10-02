@@ -42,6 +42,53 @@ def make_scene(fr3_xml: Path) -> str:
         '<body name="fr3v2_link8" pos="0 0 0.107"><site name="flask_ee_site" pos="0 0 0" size="0.012" rgba="0.1 0.8 0.2 1"/></body>',
         1,
     )
+
+    # The upstream FR3 XML stops at link8. Add the official Franka hand / finger
+    # meshes from the menagerie so the end-effector frame and collision model are
+    # physically visible. The fingers are fixed open in this 7-DoF benchmark;
+    # gripper actuation is a separate follow-up experiment.
+    panda_assets = fr3_xml.parent.parent / "franka_emika_panda" / "assets"
+    hand_assets = f'''
+    <material name="fr3_hand_off_white" rgba="0.901961 0.921569 0.929412 1"/>
+    <material name="fr3_hand_black" rgba="0.25 0.25 0.25 1"/>
+    <mesh name="fr3_hand_0" file="{panda_assets / "hand_0.obj"}"/>
+    <mesh name="fr3_hand_1" file="{panda_assets / "hand_1.obj"}"/>
+    <mesh name="fr3_hand_2" file="{panda_assets / "hand_2.obj"}"/>
+    <mesh name="fr3_hand_3" file="{panda_assets / "hand_3.obj"}"/>
+    <mesh name="fr3_hand_4" file="{panda_assets / "hand_4.obj"}"/>
+    <mesh name="fr3_hand_finger_0" file="{panda_assets / "finger_0.obj"}"/>
+    <mesh name="fr3_hand_finger_1" file="{panda_assets / "finger_1.obj"}"/>
+    <mesh name="fr3_hand_collision" file="{panda_assets / "hand.stl"}"/>
+    '''
+    source = source.replace('\n  </asset>', hand_assets + '\n  </asset>', 1)
+    hand_body = f'''
+      <body name="fr3v2_hand" quat="0.9238795 0 0 -0.3826834">
+        <inertial mass="0.73" pos="-0.01 0 0.03" diaginertia="0.001 0.0025 0.0017"/>
+        <geom name="fr3v2_hand_visual_0" mesh="fr3_hand_0" material="fr3_hand_off_white" contype="0" conaffinity="0" group="2"/>
+        <geom name="fr3v2_hand_visual_1" mesh="fr3_hand_1" material="fr3_hand_black" contype="0" conaffinity="0" group="2"/>
+        <geom name="fr3v2_hand_visual_2" mesh="fr3_hand_2" material="fr3_hand_black" contype="0" conaffinity="0" group="2"/>
+        <geom name="fr3v2_hand_visual_3" mesh="fr3_hand_3" material="fr3_hand_off_white" contype="0" conaffinity="0" group="2"/>
+        <geom name="fr3v2_hand_visual_4" mesh="fr3_hand_4" material="fr3_hand_off_white" contype="0" conaffinity="0" group="2"/>
+        <geom name="fr3v2_hand_collision" mesh="fr3_hand_collision" contype="1" conaffinity="1" group="3"/>
+        <body name="fr3v2_left_finger" pos="0 0.024 0.0584">
+          <geom name="fr3v2_left_finger_visual_0" mesh="fr3_hand_finger_0" material="fr3_hand_off_white" contype="0" conaffinity="0" group="2"/>
+          <geom name="fr3v2_left_finger_visual_1" mesh="fr3_hand_finger_1" material="fr3_hand_black" contype="0" conaffinity="0" group="2"/>
+          <geom name="fr3v2_left_finger_collision" mesh="fr3_hand_finger_0" contype="1" conaffinity="1" group="3"/>
+          <geom name="fr3v2_left_finger_pad" type="box" pos="0 0.0055 0.0445" size="0.0085 0.004 0.0085" rgba="0.25 0.25 0.25 1" contype="1" conaffinity="1"/>
+        </body>
+        <body name="fr3v2_right_finger" pos="0 -0.024 0.0584">
+          <geom name="fr3v2_right_finger_visual_0" mesh="fr3_hand_finger_0" material="fr3_hand_off_white" contype="0" conaffinity="0" group="2"/>
+          <geom name="fr3v2_right_finger_visual_1" mesh="fr3_hand_finger_1" material="fr3_hand_black" contype="0" conaffinity="0" group="2"/>
+          <geom name="fr3v2_right_finger_collision" mesh="fr3_hand_finger_0" contype="1" conaffinity="1" group="3"/>
+          <geom name="fr3v2_right_finger_pad" type="box" pos="0 0.0055 0.0445" size="0.0085 0.004 0.0085" rgba="0.25 0.25 0.25 1" contype="1" conaffinity="1"/>
+        </body>
+        <site name="flask_ee_site" pos="0 0 0.097" size="0.012" rgba="0.1 0.8 0.2 1"/>
+      </body>'''
+    source = source.replace(
+        '<body name="fr3v2_link8" pos="0 0 0.107"><site name="flask_ee_site" pos="0 0 0" size="0.012" rgba="0.1 0.8 0.2 1"/></body>',
+        f'<body name="fr3v2_link8" pos="0 0 0.107">{hand_body}</body>',
+        1,
+    )
     source = re.sub(
         r'<actuator>.*?</actuator>',
         '''<actuator>\n'''
@@ -74,7 +121,7 @@ def make_scene(fr3_xml: Path) -> str:
     <body name="flask_cylinder_blue" pos="0.58 0.25 0.43">
       <geom name="flask_cylinder_blue_geom" type="cylinder" size="0.07 0.14" rgba="0.08 0.30 0.82 1" contype="1" conaffinity="1"/>
     </body>
-    <body name="flask_target_object" pos="0.32 0.25 1.10">
+    <body name="flask_target_object" pos="0.78 0.32 1.10">
       <geom name="flask_target_object_geom" type="cylinder" size="0.055 0.09" rgba="0.10 0.75 0.28 1" contype="0" conaffinity="0"/>
       <site name="flask_target_site" pos="0 0 0.10" size="0.018" rgba="0.10 1 0.25 1"/>
     </body>
@@ -147,8 +194,8 @@ def main() -> int:
         data = mujoco.MjData(model)
         data.qpos[:7] = HOME
         mujoco.mj_forward(model, data)
-        robot_names = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or '').startswith('fr3v2_')]
-        obstacle_names = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or '').startswith('flask_') and model.geom(i).name != 'flask_target_object_geom']
+        robot_names = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or '').startswith('fr3v2_') and model.geom_contype[i] != 0]
+        obstacle_names = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or '').startswith('flask_') and model.geom_contype[i] != 0 and model.geom(i).name != 'flask_target_object_geom']
         checker = MuJoCoFR3CollisionChecker(model, robot_geom_names=robot_names, obstacle_geom_names=obstacle_names)
         config = FlaskPlannerConfig(
             velocity_limits=VEL_LIMIT,
@@ -213,6 +260,10 @@ def main() -> int:
             'peak_ee_torque_sensor_nm': float(np.max(np.abs(sensor_torque))),
             'max_contacts_seen': max(contacts),
             'scene_obstacle_count': len(obstacle_names),
+            'robot_collision_geom_count': len(robot_names),
+            'hand_geom_names': [name for name in robot_names if 'hand' in name or 'finger' in name],
+            'ee_site_world_position': data.site('flask_ee_site').xpos.copy().tolist(),
+            'target_marker_world_position': data.body('flask_target_object').xpos.copy().tolist(),
             'scene_obstacle_names': obstacle_names,
             'sensor_names': [model.sensor(i).name for i in range(model.nsensor)],
             'planner_and_wbc_validated': True,

@@ -26,3 +26,7 @@ The 2026-10-02 reference run created a two-segment collision-free route over 8.1
 - /home/arm1/vmc_mujoco_runtime/robosuite_style_fr3_benchmark_20261002.json
 - http://192.168.31.70:8765/robosuite_style_fr3_benchmark_20261002/
 
+
+## Hand asset correction
+
+The FR3 wrapper now injects the official Franka hand / finger meshes from the menagerie sibling asset. The fixed-open hand contains visual mesh and collision mesh entries with a centered end-effector site. Target markers are placed on the rear shelf, and the collision audit includes only geoms with contype != 0. The current video has been regenerated after this correction.

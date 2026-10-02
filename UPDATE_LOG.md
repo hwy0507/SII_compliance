@@ -1,3 +1,14 @@
+## 2026-10-02 — FR3 hand asset and collision audit correction
+
+- 修复用户指出的末端穿模和 hand 建模问题：upstream fr3v2.xml 只到 link8，wrapper 现在注入 menagerie 的官方 Franka hand/finger mesh，使用 Panda 官方 link7→hand 旋转；本轮固定为 open-gripper 几何，不声称已有夹爪 actuator。
+- 将旧的绿色 target marker 从可能与运动臂视觉重叠的 [0.32, 0.25, 1.10] 移到后方层板区域 [0.78, 0.32, 1.10]。
+- robot / obstacle collision audit 均收紧为 contype != 0 的几何体，视觉 mesh 不再被错误地当成碰撞障碍。
+- 0.2 s hand asset audit：13 个机器人碰撞几何，其中 hand/finger 5 个；13 个场景障碍几何；23 个传感器；最大接触数 0；HOME 时末端 site 世界坐标约 [0.55565, 0.00023, 0.53595]。
+- 修正后的 robosuite-style FR3 视频重新生成并替换网页 MP4：<http://192.168.31.70:8765/flask_fr3_20261002/>；详情页：<http://192.168.31.70:8765/robosuite_style_fr3_benchmark_20261002/>。
+- 代码涉及 `experiments/flask_fr3_env_20261002/run_sensor_wbc.py` 和 `experiments/robosuite_style_fr3_benchmark_20261002/run_benchmark.py`；未删除既有实验输出。
+- 限制：固定 open hand 解决资产和穿模显示问题，但真正 PickPlace 仍需后续加入 finger joints / actuator 和 free-joint 物体。
+- 本轮基线为 `185eb9e4430ad0096a5c3715db9397d3c3fbeb41`；GitHub push 仍因 HTTPS 认证无法读取用户名而失败。
+
 ## 2026-10-02 — FR3 robosuite-style tabletop benchmark
 
 - 新增独立实验目录 `code/mujoco_6d_vmc_benchmark/experiments/robosuite_style_fr3_benchmark_20261002/`。它保留 upstream FR3、FLASK joint planner 和 computed-torque WBC，并加入按 robosuite Stack/PickPlace 组织的工作台任务层：带边沿收纳箱、工具托盘、两个堆叠方块、可拾取圆柱、绿色目标位、柜体侧板/层板和桌面围板。
