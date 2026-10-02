@@ -1,3 +1,11 @@
+## 2026-10-02 — 注册四视频特化场景 baseline 五小时连续实验
+
+- 用户新授权07:36:31–12:36:31UTC，当前线程连续推进，无定时任务。最终环境/WBC由另一agent负责。开工fetch main f3437ad、baseline699e317，不改main/旧作业。
+- 四MP4 SHA匹配原teacher_eight_20260918，恢复ball-v7/push-core/corner-v6/legacy-table各自命令与原始轨迹。新experiments/primitive_baselines_20261002包含prepare/worker/train/classical/campaign；协议docs/PRIMITIVE_BASELINES_FIVE_HOUR_20261002.md。
+- 每场景1000训练+12验证+12测试定义，非4096条已完成数据；按原采样范围、互斥split、场景均衡replay。SimbaV2两reward×2seed目标60k；导纳/阻抗各6候选×8训练条件，留出条件不选参。
+- 实测球6.4s审计开关状态/动作全相同；三指标raw复算通过；RL750步1470更新接口通过但任务失败。固定阻抗球试跑成功、导纳失败；两厚桌角放置失败，不把旧抓取task字段当放置。
+- 代码/数据/媒体留Spark /home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/，原场景source_scene_20260918及新frozen_adapter01均独立快照，原结果不改。训练主结果待真实运行，不宣称完成或收敛。
+
 ## 2026-10-01 — 记录 RL 球碰撞视频疑点，用户下班暂停至明日
 
 - 用户要求先记问题、明天再说；停止排查，不启动实验/自动跟进。新 docs/RL_BALL_REPLAY_AUDIT_20261001.md 保存已确认项、未决项和精确证据位置。
