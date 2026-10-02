@@ -20,7 +20,7 @@ Run on arm1:
       --time-scale 2.0 \
       --output /home/arm1/vmc_mujoco_runtime/robosuite_style_fr3_benchmark_20261002.mp4
 
-The 2026-10-02 reference run created a two-segment collision-free route over 8.133 seconds (after 2x retiming), with 38 collision geometries, 23 sensors, 0 simulated contacts, 27.41 Nm peak commanded torque, 0.00980 rad peak joint tracking error, and 0.00940 rad final joint error. The result is available at:
+The 2026-10-02 reference run created a two-segment collision-free route over 8.133 seconds (after 2x retiming), with 31 collision geometries, 23 sensors, 0 simulated contacts, 27.41 Nm peak commanded torque, 0.00980 rad peak joint tracking error, and 0.00940 rad final joint error. The result is available at:
 
 - /home/arm1/vmc_mujoco_runtime/robosuite_style_fr3_benchmark_20261002.mp4
 - /home/arm1/vmc_mujoco_runtime/robosuite_style_fr3_benchmark_20261002.json

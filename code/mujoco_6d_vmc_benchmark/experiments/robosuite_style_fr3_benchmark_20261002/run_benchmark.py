@@ -100,7 +100,7 @@ def main():
         data.qpos[:7] = HOME
         mujoco.mj_forward(model, data)
         robot = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or "").startswith("fr3v2_")]
-        obstacles = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or "").startswith(("flask_", "rs_")) and model.geom(i).name != "rs_floor" and model.geom(i).name != "flask_target_object_geom"]
+        obstacles = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or "").startswith(("flask_", "rs_")) and model.geom_contype[i] != 0 and model.geom(i).name != "rs_floor" and model.geom(i).name != "flask_target_object_geom"]
         checker = MuJoCoFR3CollisionChecker(model, robot_geom_names=robot, obstacle_geom_names=obstacles)
         cfg = FlaskPlannerConfig(velocity_limits=VEL_LIMIT, acceleration_limits=np.full(7,12.0), joint_lower=LOWER, joint_upper=UPPER, steering_time=0.65, min_steering_time=0.10, max_steering_time=4.0, samples_per_segment=45, max_iterations=10000, goal_bias=0.25, seed=20261002)
         planner = FlaskJointPlanner(cfg, collision_fn=checker)
