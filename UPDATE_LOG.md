@@ -1,3 +1,9 @@
+## 2026-10-02 — Replace artificial pillar with realistic workbench clutter
+
+- Replaced the central orange pillar demonstration with a blue storage tote (active collision geometry) and a black tool tray on the tabletop. The scene now presents a workbench layout with shelves, bins, boxes, a cylinder object, target marker, and moving capsule rather than isolated vertical posts.
+- The direct HOME-to-GOAL edge remains invalid because of the tote; FLASK finds a 2-segment route in 5.0 ms. Full 24.0 s / 12,000-step sensor WBC validation reports zero contacts, `0.00628 rad` final joint error, and `31.29 Nm` peak command torque.
+- Re-rendered the realistic workbench video at 3x retime (209 frames, 8.36 s) and replaced the web page at `http://192.168.31.70:8765/flask_fr3_20261002/`. Local evidence: `outputs/flask_fr3_realistic_workspace_wbc.mp4` and `outputs/flask_fr3_realistic_workspace_wbc_mid.png`.
+
 ## 2026-10-02 — Add explicit central-pillar obstacle-avoidance demonstration
 
 - Added a collision-active central orange pillar that blocks the direct HOME-to-GOAL FLASK edge. The deterministic planner now reports `direct_edge_available=false` and produces a 4-segment route in 37.1 ms. Added brighter key/head lighting and an `obstacle route` title so the render is easier to inspect.

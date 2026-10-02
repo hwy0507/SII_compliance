@@ -78,9 +78,14 @@ def make_scene(fr3_xml: Path) -> str:
       <geom name="flask_target_object_geom" type="cylinder" size="0.055 0.09" rgba="0.10 0.75 0.28 1" contype="0" conaffinity="0"/>
       <site name="flask_target_site" pos="0 0 0.10" size="0.018" rgba="0.10 1 0.25 1"/>
     </body>
-    <body name="flask_central_pillar" pos="0.45 0.20 0.90">
-      <geom name="flask_central_pillar_geom" type="cylinder" size="0.06 0.18" rgba="0.92 0.25 0.08 1" contype="1" conaffinity="1"/>
-      <geom name="flask_central_pillar_support" type="cylinder" pos="0 0 -0.39" size="0.04 0.18" rgba="0.62 0.16 0.06 1" contype="0" conaffinity="0"/>
+    <body name="flask_storage_tote" pos="0.42 0.18 0.52">
+      <geom name="flask_storage_tote_geom" type="box" size="0.09 0.12 0.16" rgba="0.12 0.34 0.48 1" contype="1" conaffinity="1"/>
+      <geom name="flask_storage_tote_rim" type="box" pos="0 0 0.17" size="0.105 0.135 0.018" rgba="0.08 0.20 0.28 1" contype="0" conaffinity="0"/>
+    </body>
+    <body name="flask_tool_tray" pos="0.66 -0.18 0.35">
+      <geom name="flask_tool_tray_base" type="box" size="0.11 0.12 0.025" rgba="0.18 0.18 0.20 1" contype="0" conaffinity="0"/>
+      <geom name="flask_tool_tray_wall_a" type="box" pos="0 0.105 0.05" size="0.11 0.012 0.05" rgba="0.22 0.22 0.24 1" contype="0" conaffinity="0"/>
+      <geom name="flask_tool_tray_wall_b" type="box" pos="0 -0.105 0.05" size="0.11 0.012 0.05" rgba="0.22 0.22 0.24 1" contype="0" conaffinity="0"/>
     </body>
     <light name="flask_key_light" pos="1.3 -1.4 2.0" dir="-0.4 0.5 -1.0" diffuse="0.9 0.9 0.9" specular="0.3 0.3 0.3"/>
     <body name="flask_dynamic_obstacle" pos="-0.35 0.55 0.82">
@@ -196,7 +201,7 @@ def main() -> int:
             'planning_time_ms': planning_ms,
             'trajectory_segments': len(trajectory.segments),
             'direct_edge_available': direct_edge_available,
-            'obstacle_avoidance_route': 'central_pillar_requires_multisegment_FLASK_route',
+            'obstacle_avoidance_route': 'storage_tote_requires_multisegment_FLASK_route',
             'trajectory_duration_s': trajectory.duration,
             'execution_time_scale': execution_time_scale,
             'simulation_duration_s': steps * model.opt.timestep,
