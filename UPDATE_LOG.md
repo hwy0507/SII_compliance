@@ -1,3 +1,10 @@
+## 2026-10-02 — baseline 发布与交接归档核验
+
+- 最终结果/协议提交 a788be958486b5b24bc546737d44f690763521ba 已正常push到baseline；远端main仍7cd5f4b。只读归档 /home/arm1/sii_shared/SII_compliance/source/a788be958486b5b24bc546737d44f690763521ba/ 的2748个文件、64,416,368字节逐Git blob核验一致；清单在 /home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/PUBLISHED_SOURCE_ARCHIVE.json。
+- 同一runtime根新增 FINAL_HANDOFF.json，汇总13方法的选定checkpoint、测试/展示/office目录、归一化/推理hash与16项证据文件hash；明确当前bridge只适配7cd5f4b，新WBC须另建共同cohort，不因48维形状相同就默认语义相同。
+- 高速失败的额外针对性核验 HIGH_SPEED_EFFORT_LIMIT_AUDIT.json：5条旧桌角>4m/s回合的实际7关节驱动力矩仍在模型[87,87,87,87,12,12,12]Nm幅值内；不据此声称速度、slew、无源或整体安全通过。原穿透/task/strict失败不变。
+- 共享checkout后续的22a59a3属于另一agent的视觉/WBC更新，未接入本轮冻结实验。原五小时窗口剩余时间用于交接与归档核验，没有新训练、改测试门槛、定时任务或删除失败。本日志是新增交接索引，实际实验实现与结果源码快照仍精确指向a788be9。
+
 ## 2026-10-02 — Make PickPlace objects visually explicit in the FR3 benchmark
 
 - Fixed the user-visible PickPlace ambiguity in experiments/robosuite_style_fr3_benchmark_20261002/run_benchmark.py: the static pick object is now a saturated orange front-edge cube with a yellow beacon, and the static place target is a green ring with a raised flag. The pair is positioned away from the storage bin and rendered from a front camera so both are identifiable.
