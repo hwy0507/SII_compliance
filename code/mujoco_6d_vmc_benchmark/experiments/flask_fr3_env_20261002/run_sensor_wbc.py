@@ -74,7 +74,7 @@ def make_scene(fr3_xml: Path) -> str:
     <body name="flask_cylinder_blue" pos="0.58 0.25 0.43">
       <geom name="flask_cylinder_blue_geom" type="cylinder" size="0.07 0.14" rgba="0.08 0.30 0.82 1" contype="1" conaffinity="1"/>
     </body>
-    <body name="flask_target_object" pos="0.32 0.25 0.94">
+    <body name="flask_target_object" pos="0.32 0.25 1.10">
       <geom name="flask_target_object_geom" type="cylinder" size="0.055 0.09" rgba="0.10 0.75 0.28 1" contype="0" conaffinity="0"/>
       <site name="flask_target_site" pos="0 0 0.10" size="0.018" rgba="0.10 1 0.25 1"/>
     </body>

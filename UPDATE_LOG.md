@@ -1,3 +1,8 @@
+## 2026-10-02 — Fix visual target-cylinder interpenetration
+
+- Corrected the complex-scene render after visual inspection showed the green target cylinder intersecting the end-effector. The target body was at `z=0.94 m` while the goal end-effector was at approximately `z=0.86 m`; it is now placed at `z=1.10 m`, leaving visible clearance while preserving the target marker.
+- Re-ran the sensorized WBC validation: zero contacts, `0.00796 rad` final joint error, and `28.06 Nm` peak command torque. Re-rendered 144 frames at 8x and replaced the web-served MP4 with the corrected video.
+
 ## 2026-10-02 — Complex standalone FLASK FR3 scene and live traces
 
 - Expanded the generated `flask_fr3_env_20261002` MuJoCo wrapper with a cluttered tabletop, four table legs, rear/upper/lower shelving, three colored objects, a visual target, a moving capsule obstacle, accelerometer, gyroscope, and touch sensing. The wrapper remains independent of existing SII benchmark scenes.

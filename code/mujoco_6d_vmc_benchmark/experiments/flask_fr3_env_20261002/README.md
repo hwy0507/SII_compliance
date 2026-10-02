@@ -58,9 +58,9 @@ directory for later encoding.
 
 The current wrapper scene has 12 collision-checked obstacle geometries: a tabletop,
 four legs, a rear shelf, two shelf boards, red/yellow boxes, a blue cylinder,
-and a sinusoidally moving capsule. The green target cylinder is visualized as a
-goal marker and has contact disabled so the controller can settle at the goal
-without an artificial grasping impulse. The dynamic capsule is moved to the side
+and a sinusoidally moving capsule. The green target cylinder is visualized as a goal marker at `z=1.10 m`,
+above the end-effector goal pose, and has contact disabled so the controller can
+settle at the goal without an artificial grasping impulse or visual interpenetration. The dynamic capsule is moved to the side
 of the work area and remains collision-free during this development run.
 
 The planner uses 8,000 iterations, 40 samples per cubic segment, and a 3x
