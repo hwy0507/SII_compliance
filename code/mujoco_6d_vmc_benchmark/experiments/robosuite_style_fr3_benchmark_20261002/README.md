@@ -5,11 +5,11 @@ This experiment keeps the upstream FR3 asset, FLASK joint planner, and computed-
 - raised-edge storage bin;
 - tool tray with visual tools;
 - two stacked task cubes;
-- pick object and green goal marker;
+- visually explicit PickPlace pair: orange cube with yellow beacon at the front edge and a raised green goal flag/ring;
 - cabinet side and shelf;
 - worktable apron and rear board.
 
-The task objects are static in this development benchmark. The purpose is to validate scene organization, collision checking, trajectory routing, sensors, and WBC tracking. It is not a grasp-success claim.
+The task objects are static in this development benchmark. The orange Pick object and raised green Place marker are deliberately staged at the front edge so both remain visible in the benchmark camera. The purpose is to validate scene organization, collision checking, trajectory routing, sensors, and WBC tracking. It is not a grasp-success claim.
 
 Run on arm1:
 
@@ -20,7 +20,7 @@ Run on arm1:
       --time-scale 2.0 \
       --output /home/arm1/vmc_mujoco_runtime/robosuite_style_fr3_benchmark_20261002.mp4
 
-The 2026-10-02 reference run created a two-segment collision-free route over 8.133 seconds (after 2x retiming), with 31 collision geometries, 23 sensors, 0 simulated contacts, 27.41 Nm peak commanded torque, 0.00980 rad peak joint tracking error, and 0.00940 rad final joint error. The result is available at:
+The 2026-10-02 reference run created a two-segment collision-free route over 8.133 seconds (after 2x retiming), with 31 collision geometries, 23 sensors, 0 simulated contacts, 31.81 Nm peak commanded torque, 0.00960 rad peak joint tracking error, and 0.00922 rad final joint error. The result is available at:
 
 - /home/arm1/vmc_mujoco_runtime/robosuite_style_fr3_benchmark_20261002.mp4
 - /home/arm1/vmc_mujoco_runtime/robosuite_style_fr3_benchmark_20261002.json
@@ -29,4 +29,4 @@ The 2026-10-02 reference run created a two-segment collision-free route over 8.1
 
 ## Hand asset correction
 
-The FR3 wrapper now injects the official Franka hand / finger meshes from the menagerie sibling asset. The fixed-open hand contains visual mesh and collision mesh entries with a centered end-effector site. Target markers are placed on the rear shelf, and the collision audit includes only geoms with contype != 0. The current video has been regenerated after this correction.
+The FR3 wrapper now injects the official Franka hand / finger meshes from the menagerie sibling asset. The fixed-open hand contains visual mesh and collision mesh entries with a centered end-effector site. The PickPlace pair is staged at the front edge: the orange cube is the static pick object, while the tall green flag and ring identify the static place target. The collision audit includes only geoms with contype != 0. The current video has been regenerated after this correction.

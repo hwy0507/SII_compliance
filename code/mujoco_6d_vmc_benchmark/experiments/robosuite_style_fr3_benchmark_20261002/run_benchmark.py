@@ -40,8 +40,23 @@ def benchmark_scene(fr3_xml: Path) -> str:
     </body>
     <body name="rs_cube_a" pos="0.20 -0.12 0.36"><geom name="rs_cube_a_geom" type="box" size="0.047 0.047 0.047" rgba="0.78 0.12 0.08 1" contype="1" conaffinity="1"/><site name="rs_cube_a_site" pos="0 0 0.055" size="0.012" rgba="1 0.28 0.16 1"/></body>
     <body name="rs_cube_b" pos="0.20 -0.12 0.454"><geom name="rs_cube_b_geom" type="box" size="0.047 0.047 0.047" rgba="0.95 0.64 0.08 1" contype="1" conaffinity="1"/><site name="rs_cube_b_site" pos="0 0 0.055" size="0.012" rgba="1 0.82 0.14 1"/></body>
-    <body name="rs_pick_object" pos="0.38 0.30 0.36"><geom name="rs_pick_object_geom" type="cylinder" size="0.055 0.07" rgba="0.12 0.38 0.83 1" contype="1" conaffinity="1"/><site name="rs_pick_object_site" pos="0 0 0.08" size="0.013" rgba="0.20 0.55 1 1"/></body>
-    <body name="rs_goal_marker" pos="0.34 0.30 0.50"><geom name="rs_goal_marker_geom" type="cylinder" size="0.075 0.012" rgba="0.10 0.85 0.28 0.72" contype="0" conaffinity="0"/><site name="rs_goal_site" pos="0 0 0.02" size="0.016" rgba="0.10 1 0.25 1"/></body>
+    <!-- PickPlace pair: deliberately placed in the front open workspace for visual audit -->
+    <!-- PickPlace pair: front-edge staging so both semantics stay visible in the benchmark camera -->
+    <body name="rs_pick_object" pos="0.45 -0.50 0.40">
+      <geom name="rs_pick_object_base" type="cylinder" pos="0 0 -0.064" size="0.086 0.006" rgba="0.12 0.02 0.01 0.95" contype="0" conaffinity="0"/>
+      <geom name="rs_pick_object_geom" type="box" size="0.065 0.065 0.065" rgba="0.98 0.12 0.015 1" contype="1" conaffinity="1"/>
+      <geom name="rs_pick_object_top" type="box" pos="0 0 0.069" size="0.050 0.050 0.006" rgba="1.0 0.78 0.04 1" contype="0" conaffinity="0"/>
+      <geom name="rs_pick_object_beacon" type="capsule" fromto="0 0 0.08 0 0 0.25" size="0.014" rgba="1 0.86 0.08 1" contype="0" conaffinity="0"/>
+      <site name="rs_pick_object_site" pos="0 0 0.075" size="0.018" rgba="1 0.1 0.02 1"/>
+    </body>
+    <body name="rs_goal_marker" pos="0.72 -0.50 0.315">
+      <geom name="rs_goal_marker_base" type="cylinder" size="0.102 0.008" rgba="0.02 0.16 0.05 0.95" contype="0" conaffinity="0"/>
+      <geom name="rs_goal_marker_geom" type="cylinder" pos="0 0 0.010" size="0.090 0.010" rgba="0.05 1.0 0.22 0.98" contype="0" conaffinity="0"/>
+      <geom name="rs_goal_marker_inner" type="cylinder" pos="0 0 0.022" size="0.058 0.006" rgba="0.015 0.08 0.025 0.95" contype="0" conaffinity="0"/>
+      <geom name="rs_goal_marker_pole" type="capsule" fromto="0 0 0.025 0 0 0.42" size="0.018" rgba="0.10 1.0 0.28 1" contype="0" conaffinity="0"/>
+      <geom name="rs_goal_marker_flag" type="box" pos="0 0 0.43" size="0.11 0.020 0.035" rgba="0.10 1.0 0.28 1" contype="0" conaffinity="0"/>
+      <site name="rs_goal_site" pos="0 0 0.030" size="0.018" rgba="0.10 1 0.25 1"/>
+    </body>
     <geom name="rs_cabinet_side" type="box" pos="0.77 0.40 0.62" size="0.10 0.10 0.30" rgba="0.45 0.27 0.14 1" contype="1" conaffinity="1"/>
     <geom name="rs_cabinet_shelf" type="box" pos="0.67 0.40 0.77" size="0.10 0.10 0.018" rgba="0.55 0.34 0.19 1" contype="1" conaffinity="1"/>
     <light name="rs_fill_light" pos="-1.1 -1.2 2.4" dir="0.25 0.45 -1" diffuse="0.8 0.85 1.0" specular="0.2 0.2 0.2"/>
@@ -73,7 +88,7 @@ def draw_panel(qerr, torques, contacts, now, duration, segments):
     d.text((14, 132), f"command torque: {torques[-1]:7.2f} Nm", fill="#d8dde2", font=s)
     d.text((14, 154), f"MuJoCo contacts: {contacts[-1]:02d}", fill="#8ff0aa", font=s)
     d.text((14, 194), "task layout", fill="#f2c879", font=f)
-    for i, txt in enumerate(["robosuite-style tabletop arena", "storage bin + raised rim", "tool tray + visual tools", "Stack cubes A / B", "Pick object + green goal", "cabinet side and shelf", "FR3 sensors + collision audit"]):
+    for i, txt in enumerate(["robosuite-style tabletop arena", "storage bin + raised rim", "tool tray + visual tools", "Stack cubes A / B", "PICK  orange cube  ->  PLACE  green flag", "front-edge task pair kept in view", "FR3 sensors + collision audit"]):
         d.text((20, 222 + 25*i), "• " + txt, fill="#c6cbd0", font=s)
     left, top, right, bottom = 16, 412, 384, 464
     d.rectangle((left, top, right, bottom), outline="#3d4653", width=1)
@@ -113,8 +128,8 @@ def main():
         renderer = mujoco.Renderer(model, height=480, width=640)
         cam = mujoco.MjvCamera()
         mujoco.mjv_defaultCamera(cam)
-        cam.lookat[:] = [0.38, 0.0, 0.57]
-        cam.distance, cam.azimuth, cam.elevation = 2.15, -45, -22
+        cam.lookat[:] = [0.42, -0.10, 0.55]
+        cam.distance, cam.azimuth, cam.elevation = 2.05, -58, -20
         stride = max(1, int(round(1.0/(model.opt.timestep*a.fps))))
         total = int(np.ceil((traj.duration+0.6)/model.opt.timestep))
         qerr, torques, contacts, times = [], [], [], []

@@ -1,3 +1,12 @@
+## 2026-10-02 — Make PickPlace objects visually explicit in the FR3 benchmark
+
+- Fixed the user-visible PickPlace ambiguity in experiments/robosuite_style_fr3_benchmark_20261002/run_benchmark.py: the static pick object is now a saturated orange front-edge cube with a yellow beacon, and the static place target is a green ring with a raised flag. The pair is positioned away from the storage bin and rendered from a front camera so both are identifiable.
+- Updated the benchmark panel to state PICK orange cube -> PLACE green flag, and updated the server detail page plus the main FR3 page to describe the actual task pair and its static-object limitation.
+- Re-ran the independent FR3 + FLASK + computed-torque WBC benchmark with the robosuite virtual environment and --time-scale 2.0: 31 scene collision geometries, 23 sensors, HOME-to-GOAL direct edge unavailable, 2 route segments, 8.1329 s trajectory, 176 frames, 0 maximum contacts, 31.81 Nm peak command torque, 0.00960 rad peak joint tracking error, and 0.00922 rad final joint error.
+- Server media: /home/arm1/vmc_mujoco_runtime/robosuite_style_fr3_benchmark_20261002_pickplace_v5.mp4 (copied to /home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/web_demo/robosuite_style_fr3_benchmark_20261002/robosuite_style_fr3_benchmark_20261002.mp4 and /home/arm1/vmc_mujoco_runtime/mujoco_6d_vmc_benchmark/web_demo/flask_fr3_20261002/flask_fr3_realtime_plot_complex.mp4) with JSON report /home/arm1/vmc_mujoco_runtime/robosuite_style_fr3_benchmark_20261002_pickplace_v5.json.
+- Validation: python -m py_compile passed; the mid-frame was inspected and shows both colored task markers; HTTP-served MP4 replacement completed. This remains a development visualization: no finger actuator, free-joint object, grasp state machine, or physical pick/place success claim.
+- Source main inspected: ba84ed8a39ed743f603aa5d60e901bdf87090e1d; baseline before this batch: e7c970118c0114e65d8d2f897e9472ae58cbe7af. GitHub fetch/push remains blocked by missing HTTPS credentials; this commit is retained locally on baseline.
+
 ## 2026-10-02 — 四视频 baseline 终评完成与最终环境六组建议
 
 - 原五小时窗口07:36:31–12:36:31 UTC；训练已按11:40 cutoff结束并保存末回合。13模型×12保留条件=156/156、13模型×4展示锚点=52/52、固定main综合迁移11/11均完成；未用测试选权重，全部失败保留。最终报告 docs/PRIMITIVE_BASELINE_RESULTS_20261002.md；完整矩阵和逐场景结果均有实际接触、task/strict、时长、RMSE、实际峰矩/峰速及数值/穿透通过数。
