@@ -50,6 +50,9 @@ def interaction_schedule(a):
     if profile == 'sequential-r12-v1':
         if (configs['person']['start'], configs['rod']['start'], configs['rod']['hold']) != (3., 12., 6.):
             raise ValueError('sequential-r12-v1 requires --person-start 3 --rod-start 12 --rod-hold 6')
+    elif profile == 'tool-contact-r12-h10-v1':
+        if (configs['person']['start'],configs['rod']['start'],configs['rod']['hold']) != (3.,12.,10.):
+            raise ValueError('tool-contact-r12-h10-v1 requires person3, rod12, hold10')
     elif profile != 'legacy':
         raise ValueError(f'Unknown interaction schedule: {profile}')
     return configs
@@ -100,6 +103,8 @@ def run(a):
                         combined_thick_corner_pillar_v3=bool(getattr(a,'combined_thick_corner_pillar_v3',False)),
                         combined_thick_corner_pillar_v4=bool(getattr(a,'combined_thick_corner_pillar_v4',False)))
     if unexpected_edge:flags['unexpected_edge']=True
+    tool_contact=getattr(a,'tool_contact',None)
+    if tool_contact:flags['tool_contact']=tool_contact
     flags['duration']=a.duration
     flags['nominal_speed']=.06;flags['ball_speed']=a.ball_speed
     env,task,spec=make(flags);m,d=env.model,env.data;m.opt.timestep=a.dt
@@ -258,13 +263,15 @@ def run(a):
     contact_keys=('ball','person_hand','rod','cup','office_v5_pillar')
     interval_peak=np.zeros(len(contact_keys));interval_impulse=np.zeros(len(contact_keys))
     rod_run=None
+    pair_stats={};apparatus_trace=[];next_apparatus_sample=0.
+    rod_contact_interval_s=0.
     def drive_joint(name,target,kp,kd,limit):
         j=joints[name];q=int(m.jnt_qposadr[j]);v=int(m.jnt_dofadr[j])
         force=float(np.clip(kp*(target-d.qpos[q])-kd*d.qvel[v]+d.qfrc_bias[v],-limit,limit))
         d.qfrc_applied[v]=force
         return force
     def world_step(unused):
-        nonlocal incoming,last_ball_velocity,last_robot_ball_contact,first_ball_pos,next_ball_sample,ball_launched,impact_next,rod_run
+        nonlocal incoming,last_ball_velocity,last_robot_ball_contact,first_ball_pos,next_ball_sample,ball_launched,impact_next,rod_run,next_apparatus_sample,rod_contact_interval_s
         t=float(d.time)
         if a.events in ('all','ball') and not ball_launched and t < ball_launch_time_s:
             # Display-only delayed launch: hold the free ball at its reset pose
@@ -288,9 +295,17 @@ def run(a):
         c=configs['rod'];target=c['stroke']*smooth_profile(t,c['start'],c['press'],c['hold'],c['retract']) if a.events in ('all','rod') else 0.
         f=drive_joint('office_v5_push_rod_joint',target,160.,12.,c['force_limit'])
         stats['max_rod_drive_n']=max(stats['max_rod_drive_n'],abs(f))
-        resultant={};touch_ball=False;corner_target_force=0.;edge_force=0.
+        resultant={};touch_ball=False;corner_target_force=0.;edge_force=0.;pair_forces={}
         for i in range(d.ncon):
             ct=d.contact[i];g1,g2=int(ct.geom1),int(ct.geom2)
+            if tool_contact and (ball_geom in (g1,g2) or gid('office_v5_push_rod_geom') in (g1,g2)):
+                wf=np.zeros(6);mujoco.mj_contactForce(m,d,i,wf)
+                names=[mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_GEOM,g) or f'geom_{g}' for g in (g1,g2)]
+                key='|'.join(names)
+                pair_forces[key]=pair_forces.get(key,0.)+float(np.linalg.norm(wf[:3]))
+                if key not in pair_stats:
+                    pair_stats[key]=dict(bodies=[mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_BODY,int(m.geom_bodyid[g])) for g in (g1,g2)],first_s=None,last_s=None,duration_s=0.,peak_n=0.,impulse_ns=0.,max_penetration_m=0.)
+                pair_stats[key]['max_penetration_m']=max(pair_stats[key]['max_penetration_m'],-float(ct.dist))
             if unexpected_edge and edge_geom in (g1,g2) and (g2 if g1==edge_geom else g1) in (robot|{target_geom}):
                 edge_wrench=np.zeros(6);mujoco.mj_contactForce(m,d,i,edge_wrench)
                 edge_force+=float(np.linalg.norm(edge_wrench[:3]))
@@ -323,6 +338,21 @@ def run(a):
             rec['last_s']=t;rec['duration_s']+=m.opt.timestep;rec['peak_n']=max(rec['peak_n'],mag);rec['impulse_ns']+=mag*m.opt.timestep
             if key in contact_keys:
                 k=contact_keys.index(key);interval_peak[k]=max(interval_peak[k],mag);interval_impulse[k]+=mag*m.opt.timestep
+        for key,force in pair_forces.items():
+            if force>.05:
+                rec=pair_stats[key]
+                if rec['first_s'] is None:rec['first_s']=t
+                rec['last_s']=t;rec['duration_s']+=m.opt.timestep
+                rec['peak_n']=max(rec['peak_n'],force);rec['impulse_ns']+=force*m.opt.timestep
+        rod_palm_force=sum(f for k,f in pair_forces.items() if 'push_rod' in k and 'hand_collision' in k)
+        if rod_palm_force>.05:rod_contact_interval_s+=m.opt.timestep
+        if tool_contact and t<=28. and t+1e-10>=next_apparatus_sample:
+            apparatus_trace.append(dict(time=t,qpos=d.qpos.copy(),qvel=d.qvel.copy(),ctrl=d.ctrl.copy(),stage=task.index,
+                mocap_pos=d.mocap_pos.copy(),mocap_quat=d.mocap_quat.copy(),hand=d.xpos[env._hand_id].copy(),twist=body_twist(m,d,env._hand_id),
+                rod_force=rod_palm_force,rod_contact_interval_s=rod_contact_interval_s,
+                rod_travel=float(d.qpos[m.jnt_qposadr[joints['office_v5_push_rod_joint']]])))
+            rod_contact_interval_s=0.
+            next_apparatus_sample=t+.005
         if unexpected_edge and edge_force>.05:
             rec=stats['unexpected_edge']
             if rec['first_s'] is None:rec['first_s']=t
@@ -355,7 +385,7 @@ def run(a):
         elif last_robot_ball_contact is not None and 0.<t-last_robot_ball_contact<.12:
             bounce_samples.append(velocity.copy())
         last_ball_velocity=velocity
-        if t<.30 and (t>=next_ball_sample or touch_ball):
+        if ball_launch_time_s-.25<=t<ball_launch_time_s+.70 and (t>=next_ball_sample or touch_ball):
             ball_detail.append((t,d.qpos.copy(),velocity.copy(),touch_ball))
             next_ball_sample=t+.001
         if cup>=0:
@@ -557,6 +587,9 @@ def run(a):
         result['strict_success']=bool(result['strict_success'] and result['unexpected_edge_safe'])
         result['unknown_obstacle_protocol']='prior-map-omission-edge-v1; fixed physical lip, no online sensing/replanning'
     result['release_supported']=release_truth
+    if tool_contact:
+        result['apparatus_contact_pairs']=pair_stats
+        np.savez_compressed(a.output.parent/(a.output.name+'_apparatus_trace.npz'),**{k:np.array([r[k] for r in apparatus_trace]) for k in apparatus_trace[0]})
     result['max_lift_m']=max_lift
     result['neural_logging']=dict(enabled=esn is not None,mode=a.esn_mode,model=str(a.esn_model) if a.esn_model else None,
         model_sha256=hashlib.sha256(a.esn_model.read_bytes()).hexdigest() if esn else None,
@@ -645,7 +678,7 @@ if __name__=='__main__':
     p.add_argument('--impact-refinement-dt',type=float,help='Shared fine physics step for initial impulse, no actor input')
     p.add_argument('--impact-refinement-until',type=float,default=.2)
     p.add_argument('--person-start',type=float,default=3.)
-    p.add_argument('--interaction-schedule',choices=('legacy','sequential-r12-v1'),default='legacy',
+    p.add_argument('--interaction-schedule',choices=('legacy','sequential-r12-v1','tool-contact-r12-h10-v1'),default='legacy',
                    help='World-only protocol label and timing guard; sequential-r12-v1 requires explicit starts 3/12 and rod hold 6')
     p.add_argument('--rod-start',type=float,default=11.)
     p.add_argument('--rod-hold',type=float,default=3.)

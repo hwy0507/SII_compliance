@@ -28,6 +28,7 @@ def main():
     p.add_argument('--stride', type=int, default=5)
     p.add_argument('--fps', type=float, default=10.)
     p.add_argument('--gif-stride', type=int, default=1)
+    p.add_argument('--contact-closeup',action='store_true',help='Render-only palm/rod close views; no state modification')
     args = p.parse_args()
     if args.stride < 1 or args.gif_stride < 1 or args.fps <= 0:
         raise ValueError('Strides and frame rate must be positive')
@@ -55,6 +56,9 @@ def main():
         ('end-effector', [.58, -.05, .58], 1.40, 110, -25),
         ('pillar-corner', [.57, -.24, .58], 1.20, 75, -20),
     ]
+    if args.contact_closeup:
+        cameras[1]=('palm impact',[.54,-.19,.54],.72,110,-15)
+        cameras[2]=('palm / rod',[.52,-.17,.62],.80,75,-15)
     camera_objs = []
     for _, lookat, distance, azimuth, elevation in cameras:
         cam = mujoco.MjvCamera()

@@ -1,5 +1,16 @@
 # Data-Driven Compliance Control for FR3
 
+### 2026-10-02 palm-directed ball and rod interactions
+
+The opt-in `office-tool-contact-v5` fixture redirects a heavier ball to the palm
+and raises/reorients a shorter physical rod to push the palm without hitting the
+payload or person. An unchanged ESN shows a 13.845 mm ball-induced hand deviation
+against a same-model zero-launch control, and a 15.12–19.18 s interval free of
+force-bearing rod contact while the rod remains extended. Recontact/chatter remain.
+The full episode still fails placement/safety at the existing pillar; this is an
+interaction repair, not an ESN success or superiority claim.
+See [physical settings, failures and full/close-up videos](code/mujoco_6d_vmc_benchmark/docs/TOOL_CONTACT_REPAIR_20261002.md).
+
 ### 2026-10-02 unknown-obstacle contact task
 
 A separately versioned physical lip blocks the nominal pick-and-place route but

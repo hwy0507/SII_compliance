@@ -82,7 +82,7 @@ def add_pedestrian(world):
     return body
 
 
-def extend_complex_xml(xml,spec=None,variant=0,interaction_demo=False,corner_placement=False,combined_demo=False,combined_contact_v2=False,relaxed_pillar=False,combined_thick_corner_pillar_v1=False,combined_thick_corner_pillar_v2=False,combined_thick_corner_pillar_v3=False,combined_thick_corner_pillar_v4=False,unexpected_edge=False):
+def extend_complex_xml(xml,spec=None,variant=0,interaction_demo=False,corner_placement=False,combined_demo=False,combined_contact_v2=False,relaxed_pillar=False,combined_thick_corner_pillar_v1=False,combined_thick_corner_pillar_v2=False,combined_thick_corner_pillar_v3=False,combined_thick_corner_pillar_v4=False,unexpected_edge=False,tool_contact=None):
     """Return the compiled MJCF source for one held-out office fixture."""
     if spec is None:spec=SceneSpec(kind='empty')
     root=ET.fromstring(extend_xml(xml,replace(spec,kind='empty')));world=root.find('worldbody')
@@ -197,8 +197,9 @@ def extend_complex_xml(xml,spec=None,variant=0,interaction_demo=False,corner_pla
     # solref/solimp restitution against rigid robot/desk geoms.
     ball_xy=np.array([.58 if (combined_contact_v2 or combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3 or combined_thick_corner_pillar_v4) else .54,
                       -.50 if combined_demo else -.43,.655])
+    if tool_contact:ball_xy=np.array(tool_contact['ball_center_m'])
     ball=_body(world,'office_v5_ball',ball_xy);ET.SubElement(ball,'freejoint',name='office_v5_ball_free')
-    geom(ball,'office_v5_ball_geom','sphere',[0,0,0],[.045],[.80,.15,.12,1],mass=str(getattr(spec,'ball_mass',.22)),
+    geom(ball,'office_v5_ball_geom','sphere',[0,0,0],[tool_contact['ball_radius_m'] if tool_contact else .045],[.80,.15,.12,1],mass=str(tool_contact['ball_mass_kg'] if tool_contact else getattr(spec,'ball_mass',.22)),
          friction='.12 .005 .0001',
          solref='.00040 .55' if (combined_contact_v2 or combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3 or combined_thick_corner_pillar_v4) else '.0005 .35',
          solimp='.995 .9995 .00005 .5 2' if (combined_contact_v2 or combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3 or combined_thick_corner_pillar_v4) else '.99 .999 .0001 .5 2',priority='4')
@@ -213,10 +214,11 @@ def extend_complex_xml(xml,spec=None,variant=0,interaction_demo=False,corner_pla
     # to a rail. They are not mocap bodies and cannot pass through the robot.
     add_pedestrian(world)
     rod_pos=[.24,-.19,.58] if not corner_placement else ([.24,-.28,.58] if (combined_demo or combined_contact_v2 or combined_thick_corner_pillar_v1 or combined_thick_corner_pillar_v2 or combined_thick_corner_pillar_v3 or combined_thick_corner_pillar_v4) else ([.24,-.36,.58] if not interaction_demo else [.24,-.19,.58]))
+    if tool_contact:rod_pos=tool_contact['rod_center_m']
     rod=_body(world,'office_v5_push_rod',rod_pos)
-    ET.SubElement(rod,'joint',name='office_v5_push_rod_joint',type='slide',axis='1 0 0',range='0 .24',damping='3')
+    ET.SubElement(rod,'joint',name='office_v5_push_rod_joint',type='slide',axis=numbers(tool_contact.get('rod_axis',[1,0,0])) if tool_contact else '1 0 0',range='0 .24',damping='3')
     geom(rod,'office_v5_push_rod_geom','capsule',[0,0,0],[.014],[.72,.50,.20,1],
-         fromto='-.22 0 0 .045 0 0',mass='.65',solref='.001 1',solimp='.95 .99 .0001 .5 2')
+         fromto=numbers(tool_contact.get('rod_fromto',[-.22,0,0,.045,0,0])) if tool_contact else '-.22 0 0 .045 0 0',mass='.65',solref=tool_contact.get('rod_solref','.001 1') if tool_contact else '.001 1',solimp='.95 .99 .0001 .5 2')
     if unexpected_edge:
         # Stationary, physically supported lip omitted from the prior map.
         # Never spawned/teleported into the robot; all methods share it.
