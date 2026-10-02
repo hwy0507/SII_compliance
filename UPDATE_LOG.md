@@ -1,3 +1,10 @@
+## 2026-10-02 — reference-style real-time speed/acceleration plot added
+
+- 根据用户提供的视频，新增 `experiments/flask_fr3_env_20261002/render_realtime_plot.py`：左侧逐帧渲染独立 MuJoCo FR3，右侧在线绘制 `Speed + limit` 与 `Acceleration + limit` 两个面板；显示 fastest-joint speed、末端速度、fastest-joint acceleration、torque usage 和限值线，并用移动竖线标记当前时间。绘图使用 Pillow，不给服务器研究虚拟环境增加 Matplotlib 依赖。
+- `FlaskTrajectory.retime(scale)` 新增时间缩放，保持几何路径和端点不变，同时按时间尺度缩放速度/加速度。参考视频复现命令使用 `--time-scale 3`，规划时长从约 2.08 s 变为 6.246 s；arm1 生成 170 帧/25 FPS，帧目录为 `/home/arm1/vmc_mujoco_runtime/flask_fr3_env_20261002_realtime_plot.frames/`，统计 JSON 为 `/home/arm1/vmc_mujoco_runtime/flask_fr3_env_20261002_realtime_plot.json`。由于服务器无 ffmpeg，脚本按设计回退为 PNG 帧；本地已将帧编码为 `outputs/flask_fr3_realtime_plot.mp4`（6.8 s）。
+- 可视化运行结果：peak speed ratio 0.3170、peak acceleration ratio 0.1147、peak torque ratio 0.3318、final joint error 0.00916 rad。该视频是独立 FR3 仿真和在线绘图展示，不是硬件或实时性认证。
+- 验证：重定时回归、可视化脚本 `py_compile`、EGL MuJoCo 渲染和 170 帧生成通过；未修改历史训练作业。
+
 ## 2026-10-02 — standalone sensorized FR3 FLASK/WBC environment completed
 
 - 按用户要求新建独立环境 `code/mujoco_6d_vmc_benchmark/experiments/flask_fr3_env_20261002/`，不加载仓库已有 benchmark scene，也不继承原有“无传感器”限制。`run_sensor_wbc.py` 在运行时从 `/home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_fr3_v2/fr3v2.xml` 生成全新 wrapper：7 个 torque motor、两个障碍物、末端 frame/force/torque 传感器、7 组 joint position/velocity 传感器。

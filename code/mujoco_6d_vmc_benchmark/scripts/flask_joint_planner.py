@@ -133,6 +133,23 @@ class FlaskTrajectory:
             remaining -= segment.duration
         return self.segments[-1].sample(self.segments[-1].duration)
 
+    def retime(self, time_scale: float) -> "FlaskTrajectory":
+        """Return the same geometric path at a slower/faster time scale.
+
+        A scale ``s`` maps ``q_new(t)=q_old(t/s)``; velocities and
+        accelerations are therefore divided by ``s`` and ``s**2``.
+        This is useful for visualization and for selecting a conservative
+        execution speed without changing the sampled collision path.
+        """
+
+        scale = float(time_scale)
+        if not np.isfinite(scale) or scale <= 0.0:
+            raise ValueError("time_scale must be finite and positive")
+        return FlaskTrajectory(tuple(
+            JointSegment(segment.q0, segment.v0 / scale, segment.q1, segment.v1 / scale, segment.duration * scale)
+            for segment in self.segments
+        ))
+
     def sample_times(self, count_per_segment: int = 32) -> tuple[Array, Array, Array, Array]:
         if count_per_segment < 2:
             raise ValueError("count_per_segment must be at least two")

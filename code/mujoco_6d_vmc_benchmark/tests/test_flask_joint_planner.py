@@ -60,3 +60,15 @@ def test_sampling_tree_uses_collision_free_closed_form_edges():
     _, q, _, _ = trajectory.sample_times(30)
     assert not any(collision(sample) for sample in q)
     np.testing.assert_allclose(trajectory.goal[0], [0.8, 0.8])
+
+
+def test_retime_scales_velocity_and_duration_without_changing_endpoints():
+    planner = FlaskJointPlanner(config())
+    trajectory = planner.plan(np.array([-0.7, -0.4]), np.array([0.6, 0.8]))
+    slowed = trajectory.retime(3.0)
+    assert slowed.duration == 3.0 * trajectory.duration
+    np.testing.assert_allclose(slowed.start[0], trajectory.start[0])
+    np.testing.assert_allclose(slowed.goal[0], trajectory.goal[0])
+    _, _, v0, _ = trajectory.sample_times(20)
+    _, _, v1, _ = slowed.sample_times(20)
+    assert np.max(np.abs(v1)) < np.max(np.abs(v0)) / 2.9

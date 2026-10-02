@@ -33,3 +33,20 @@ in 3.86 ms, simulated for 4.0 s / 2000 steps, with peak command torque
 48.57 Nm, zero contacts, zero measured end-effector force/torque in this
 non-contact scene, and final joint error 0.0644 rad. These are simulated
 development measurements, not hardware or real-time certification.
+
+## Reference-style live plot
+
+To render the MuJoCo view beside the online speed and acceleration plots, run:
+
+```bash
+MUJOCO_GL=egl PYTHONPATH=code/mujoco_6d_vmc_benchmark/scripts:code/mujoco_6d_vmc_benchmark/experiments/flask_fr3_env_20261002 \
+  python code/mujoco_6d_vmc_benchmark/experiments/flask_fr3_env_20261002/render_realtime_plot.py \
+  --fr3-xml /home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_fr3_v2/fr3v2.xml \
+  --time-scale 3 --output /home/arm1/vmc_mujoco_runtime/flask_fr3_env_20261002_realtime_plot.mp4
+```
+
+The default time scale makes the planned path about 6.25 s long. The right
+panel updates every rendered frame and shows normalized arm/EE speed above
+and normalized arm acceleration/torque usage below, each with a dashed limit.
+If ffmpeg is unavailable, the script writes the same live frames to a `.frames`
+directory for later encoding.
