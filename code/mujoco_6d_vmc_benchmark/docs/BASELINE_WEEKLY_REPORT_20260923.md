@@ -1,5 +1,18 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-02 固定综合环境MLP/RNN替换ESN对照
+
+两套既有VMC数据×MLP/Elman RNN×两个训练seed，固定128宽、2400更新、相同数据和训练序列。
+8条完整55秒开发回合task/strict均0，环境/规划/WBC/gate/执行器未变。原VMC组MLP/RNN平均
+RMSE39.060/29.307mm、峰矩38.470/38.933Nm、峰速.404145/.386349m/s；均卡carry。
+恢复41组RNN没有稳定改善，seed2甚至停approach；MLP seed2最终XY59.899mm仍未放置。
+原VMC MLP seed2外穿透.205319mm超限。所有失败保留，不把离线MSE改善或早期卡住的低指标算成功。
+128宽不等于参数相等；RNN循环权重确实学习，历史ESN只作训练机制不同的同数据参考。
+8物理/动作/状态/接触审计、4组数据曝光核验及2条完整三视角视频完成；680项证据已核验共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/mlp_rnn_replacement_20261002_131535/evidence/`。
+无运行中任务；稳定放置、成功teacher、formal和泛化未完成。baseline分支/作业未改动。
+见[完整报告](MLP_RNN_REPLACEMENT_REPORT_20261002.md)。
+
 ### 2026-10-02 四小时固定综合环境VMC/纯ESN研究
 
 预登记48条teacher/名义候选、24条纯ESN回合全部55秒完成，task/strict均0；是开发候选

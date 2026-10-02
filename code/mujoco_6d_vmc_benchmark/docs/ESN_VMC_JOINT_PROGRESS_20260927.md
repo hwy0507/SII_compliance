@@ -1,5 +1,21 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-02 纯 MLP / 可训练 RNN 替换：8条完整开发回合均未成功
+
+按用户新授权，用两套既有 teacher 数据训练128宽MLP和Elman RNN，各两个seed、相同2400
+更新/序列曝光。固定tool-contact-v5、MJB b092662a、规划/WBC/gate/公共输入与执行器限制。
+8条55秒开发回合全部完成，task/strict=0/8。原VMC组MLP/RNN两seed平均RMSE为39.060/29.307mm，
+峰矩38.470/38.933Nm、峰速.404145/.386349m/s，均卡carry；RNN没有改善最终放置。
+恢复41组无稳定优势：RNN seed1距目标101.545mm但RMSE74.640mm，seed2全程approach，不能把
+低RMSE/低峰矩当进步。MLP seed2距目标59.899mm仍未放置。原VMC MLP seed2穿透.205319mm超限。
+四个RNN的离线拟合误差都较低，但没有任务成功；128宽相同不等于参数量相同，旧ESN另有128非线性读出。
+8条物理/动作/filter/状态/接触和4组训练曝光审计、两条55秒三机位视频完成。首次预启动资产路径
+失败保留并复用原checkpoint；未重复训练或丢失败。已核验680项、747,693,072字节共享在
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/mlp_rnn_replacement_20261002_131535/evidence/`，
+运行源码在其中evaluations/source，后处理源码postprocess_source。无运行中作业。
+未完成：稳定放置/strict、成功teacher数据、formal与跨条件泛化。
+完整表格、hash与限制见[MLP/RNN报告](MLP_RNN_REPLACEMENT_REPORT_20261002.md)。
+
 ## 2026-10-02 四小时固定环境联合优化：72条完成，仍未放置
 
 授权09:01:55–13:01:55UTC，连续任务、无定时任务。预登记48条teacher/名义候选与24条

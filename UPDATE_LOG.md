@@ -1,5 +1,34 @@
 # 更新日志
 
+## 2026-10-02 — 固定teacher数据下纯MLP/可训练RNN替换ESN
+
+- 按用户新授权，完成两套既有teacher数据×MLP/Elman RNN×两个seed，共8模型、8条55秒开发
+  回合；全部task/strict失败，未修改tool-contact-v5环境、b092662a模型、规划/WBC/gate/执行器。
+  本轮是独立8模型协议，不延长已结束四小时预算，无定时任务。
+- 原VMC组MLP/RNN两seed平均RMSE39.060/29.307mm、峰矩38.470/38.933Nm、峰速.404145/.386349m/s，
+  均卡carry；原VMC MLP seed2外穿透.205319mm超限。恢复41组未显示稳定优势：RNN seed1最终
+  XY101.545mm，seed2全程approach，较低RMSE/峰矩不能当作进步；MLP seed2最终XY59.899mm仍未放置。
+- 新增office_mlp_rnn_20261002 actor、训练/固定8回合runner/独立模型审计；loader添加契约、
+  evaluator仅允许RNN类型。128隐藏宽度、2400更新、同data/seed/序列曝光，RNN学习循环矩阵。
+  四对RNN离线拟合更好但闭环均失败；参数量不相等，旧ESN另有128非线性读出，不声称结构优势。
+- 8条550000子步指标、动作/filter、4条RNN状态、8份独立接触sidecar、执行器幅值/4ms变化率及
+  source/data/config/checkpoint/trace hash审计通过；4组训练曝光完全一致。导出Torch/NumPy最大差≤3.76e-7。
+  原始teacher失败标签/trace hash复核；两条55秒/1375帧/25fps三机位视频完整解码并目视检查。
+- 初次资产路径缺失在物理启动前失败，记录保留、原MLP checkpoint核验复用，没有重训或丢弃回合。
+  报告工具增加显式物理batch选择，避免把归档预启动协调记录当待完成物理回合；初次诊断仍保留。
+  编译与diff检查通过。专题报告/协议、联合进度、周报、两处README和小型审计收据同步。
+- 按sii-research-sync开工核对main `14820fac7141fa8779aa56b5ae0ba595ee2ee0a5`、baseline
+  `133a0b4306f70dd703629bf1227961899d6abcfd`；收工main未前进，baseline更新至
+  `d00b995711c68a2e42a2ffd4ec2813758849aff3`，历史ESN/RL对照更新已读，未合并分支或干预独立作业。
+- 已核验680项、747,693,072字节证据：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/mlp_rnn_replacement_20261002_131535/evidence/`。
+  manifest SHA256 `8a5209a9432138459175202d7a6452125bfc1c1bd7082aca0943256e5743931d`。
+  运行源码在该根目录`evaluations/source/`、后处理源码`postprocess_source/`；本轮Git源码另外
+  按完整发布commit SHA归档服务器`/home/arm1/sii_shared/SII_compliance/source/`。
+  小型证据入口`code/mujoco_6d_vmc_benchmark/docs/evidence/mlp_rnn_replacement_20261002/`。
+- 完整结果和视频索引：`code/mujoco_6d_vmc_benchmark/docs/MLP_RNN_REPLACEMENT_REPORT_20261002.md`。
+  已完成本轮比较/审计/共享，无运行中实验；未完成成功teacher、放置/strict、formal步长与跨条件泛化。
+
 ## 2026-10-02 — 四小时固定环境teacher/纯ESN联合优化及完整失败审计
 
 - 授权09:01:55–13:01:55UTC，连续前台任务，无定时任务。预登记48条teacher/名义候选、

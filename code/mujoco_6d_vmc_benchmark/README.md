@@ -1,7 +1,13 @@
 # MuJoCo 6D End-Effector VMC Benchmark
 
 The latest fixed-office research is the
-[2026-10-02 VMC/ESN four-hour report](docs/VMC_ESN_FOUR_HOUR_REPORT_20261002.md):
+[pure MLP / trainable Elman RNN replacement](docs/MLP_RNN_REPLACEMENT_REPORT_20261002.md):
+eight width-128 models, paired data/update schedules, two training seeds and two
+existing teacher datasets. All eight full episodes failed placement/strict;
+better RNN offline fit did not solve recovery. The scene, WBC, gates and actuator
+limits remained frozen, and raw failures plus full videos are archived.
+
+The preceding [VMC/ESN four-hour report](docs/VMC_ESN_FOUR_HOUR_REPORT_20261002.md):
 48 teacher/nominal settings and 24 pure ESN evaluations completed, with no stable
 placement or strict success. It uses the frozen common WBC and canonical48/action7
 residual interface; the legacy standalone VMC descriptions below do not replace

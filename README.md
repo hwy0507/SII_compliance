@@ -1,5 +1,17 @@
 # Data-Driven Compliance Control for FR3
 
+### 2026-10-02 pure MLP / trainable RNN replacement experiment
+
+Eight width-128 MLP/Elman-RNN models were evaluated in the unchanged office scene:
+two existing teacher datasets, two training seeds, identical paired exposure and
+2,400 updates. All eight full 55-second development episodes failed placement and
+strict success. On original-VMC data, mean RMSE was 39.060 mm for MLP and 29.307 mm
+for RNN, but both remained blocked. Recovery-data results were seed-sensitive;
+one RNN never passed approach. Lower offline imitation error did not establish
+success. Width matching is not parameter matching.
+
+See the [complete paired results, videos and verified server evidence](code/mujoco_6d_vmc_benchmark/docs/MLP_RNN_REPLACEMENT_REPORT_20261002.md).
+
 ### 2026-10-02 fixed-world VMC teacher and pure ESN optimization
 
 Within the authorized four-hour window, 48 teacher/nominal candidates and 24

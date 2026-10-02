@@ -139,7 +139,7 @@ def run(a):
         # Permit the explicitly paired canonical48D MLP control in the same
         # frozen physical evaluator.  Its actor contract is still 48D->7D;
         # this branch changes no world, gate, actuator, or observation field.
-        if esn.kind not in ('esn','esn_linear','mlp'):raise ValueError('Expected canonical ESN/MLP checkpoint')
+        if esn.kind not in ('esn','esn_linear','mlp','rnn'):raise ValueError('Expected canonical ESN/MLP/RNN checkpoint')
     elif a.esn_mode=='control':raise ValueError('Control mode needs a checkpoint')
     memory_ablation=getattr(a,'memory_ablation','none')
     if memory_ablation != 'none':

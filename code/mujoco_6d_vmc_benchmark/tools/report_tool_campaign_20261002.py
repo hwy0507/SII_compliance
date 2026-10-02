@@ -10,8 +10,12 @@ from wbc_velocity_residual_core import VelocityResidualActionFilter,VelocityResi
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--batch',help='Explicit immediate child containing physical runs; startup/training records remain separate')
     args=p.parse_args();rows=[];pending=[];verified_sources=set()
-    for state_path in sorted(args.root.glob('*/*/execution.json')):
+    if args.batch and (Path(args.batch).name!=args.batch or args.batch in ('.','..')):
+        raise ValueError('Batch must be an immediate child directory name')
+    paths=(args.root/args.batch).glob('*/execution.json') if args.batch else args.root.glob('*/*/execution.json')
+    for state_path in sorted(paths):
         run=state_path.parent;state=json.loads(state_path.read_text())
         recovered=(run/'RECOVERY_AUDIT.json').is_file()
         if (state.get('status')!='complete' and not recovered) or not (run/'AUDIT.json').exists():
@@ -90,6 +94,7 @@ def main():
         s['rmse_mm']<=r['rmse_mm'] and s['peak_torque_nm']<=r['peak_torque_nm'] and
         (s['rmse_mm']<r['rmse_mm'] or s['peak_torque_nm']<r['peak_torque_nm']) for s in valid)]
     write(args.output,dict(created_utc=now(),rows=rows,pending=pending,strict_pareto_rmse_torque=pareto,
+                          selected_batch=args.batch,source_sha256=sha(Path(__file__)),
                           limitation='Fixed seen-world development; unfinished/failed rows are retained; speed remains a safety/report quantity, not a positive reward'))
     print(json.dumps(dict(completed=len(rows),pending=len(pending),task=sum(r['task_success'] for r in rows),strict=len(valid)),indent=2))
 
