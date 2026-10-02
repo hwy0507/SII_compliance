@@ -1,3 +1,14 @@
+## 2026-10-02 — 经典搜索锁定；综合环境原始MJB接入核验通过
+
+- 原四视频经典搜索96/96完成：12候选×8训练条件，模型hash全部配对；独立区间聚合误差RMSE<2.4e-12m、峰矩0。导纳锁k150/zeta1.4，阻抗锁k600/zeta1.4；只用训练集。LOCK_AUDIT.json和原SELECTION/ROWS保留，尚非测试成绩。
+- 两reward seed74001都完成60300步（按规则补完末回合），保存相同60000步checkpoint用于比较；seed74002继续。导纳/阻抗在线参数RL运行中，VMC等待空闲槽位，原训练截至11:40 UTC，五小时总窗口仍截至12:36:31 UTC。
+- office_bridge/interface01在积分前拒绝服务器重编译MJB：458数组一致，其余包括网格BVH排列、路径和微小浮点差异；完整MODEL_MISMATCH_AUDIT01.json保留。修复为在相同源码初始化前加载原始归档MJB，仍严格检查 b092662aa1d6fba12357cd0a6271d309abeb047ad09f20a0a646d48415b637a1，不放宽模型或物理gate。
+- interface02七个80ms检查全部完成，名义/zero/固定导纳阻抗VMC/5维参数RL/直接RL均匹配原始MJB；zero状态、qvel、ctrl、canonical48逐元素一致。INTERFACE_AUDIT.json显式比较诊断NaN位置；原初版审计NaN字段保留，不假装物理量非有限。临时冻结一路本任务训练约24秒为检查让出槽位，finally中原状态恢复，INTERFACE_SLOT.json记录；未动四个历史暂停进程。
+- 评估新增完整归一化统计hash（mean/var/count/累计回报），离线加载测试通过且能检测“计数未变但均值改变”。冻结评估03只增只读检查，不热改训练；综合接入原始MJB与执行源码patch/hash均记录。80ms不是接触或完整任务成功，完整综合迁移预算单独注册且尚未执行。
+- 新增 summarize.py / report_training.py，按显式catalog汇总配对MJB、任务/strict/接触、提前终止和全时长指标，训练曲线不当测试成绩。docs/FINAL_ENV_BASELINE_PROTOCOL_20261002.md明确阻抗更换的是其力矩控制律，公共名义WBC参考/约束一致，避免“全部低层控制律不变”的误读。
+- Spark产物：/home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/ 下 campaign01/classical/LOCK_AUDIT.json、campaign02、parameter_rl/campaign01、office_bridge/interface02、office_bridge/FULL_NORMALIZER_AUDIT.json、office_bridge/TRANSFER_BUDGET.json、frozen_evaluation03、parameter_rl/frozen_evaluation03、office_bridge/frozen03、training_report01、reference_diagnostic_report。源码在 /home/arm1/SII_compliance_baseline/。
+- main已核对7cd5f4b，baseline上一发布f5e5397；所有新结果是开发检查，最终评估/媒体仍进行中，另一agent未提交WBC修改不纳入本提交。
+
 ## 2026-10-02 — Fix visual target-cylinder interpenetration
 
 - Corrected the complex-scene render after visual inspection showed the green target cylinder intersecting the end-effector. The target body was at `z=0.94 m` while the goal end-effector was at approximately `z=0.86 m`; it is now placed at `z=1.10 m`, leaving visible clearance while preserving the target marker.

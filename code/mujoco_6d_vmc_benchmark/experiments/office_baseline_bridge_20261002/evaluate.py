@@ -37,6 +37,37 @@ def build_evaluator():
     exec(compile(text,str(source)+'[baseline-policy-seam]','exec'),namespace)
     return namespace['run'],text,replacements
 
+def install_archived_loader(output):
+    """Compile XML for provenance, then initialize from the exact archived MJB."""
+    import fr3_scene
+    source=SOURCE/'scripts/fr3_scene.py'
+    original=source.read_text()
+    needle='    model = mujoco.MjModel.from_xml_string(xml)'
+    if original.count(needle)!=1:raise RuntimeError('Pinned FR3 constructor changed')
+    binary=REFERENCE/'esn_combined_v4.mjb'
+    if sha(binary)!=MODEL_SHA:raise RuntimeError('Archived model hash mismatch')
+    replacement=needle+"\n    model = mujoco.MjModel.from_binary_path("+repr(str(binary))+")"
+    modified=original.replace(needle,replacement)
+    # The temporary compile also preserves mj_saveLastXML's diagnostic exporter.
+    # XML is not the authoritative model: post-compile masks/options are reapplied
+    # by the unchanged initializer, and the saved binary must match the archive.
+    exec(compile(modified,str(source)+'[archived-model-loader]','exec'),fr3_scene.__dict__)
+    (output/'executed_fr3_scene.py.txt').write_text(modified)
+    return dict(mode='archived_model_before_initialization',archive=str(binary),archive_sha256=MODEL_SHA,upstream_constructor_sha256=sha(source),executed_constructor_sha256=hashlib.sha256(modified.encode()).hexdigest(),xml_export='diagnostic only; archived MJB is authoritative')
+
+def normalization_hash(agent):
+    """Fingerprint full normalizer state, including moments and return accumulator."""
+    digest=hashlib.sha256()
+    normalizers=[('obs',agent.observation_normalizer.obs_rms),('reward',agent.reward_normalizer.G_rms)]
+    for prefix,state in normalizers:
+        for key in ('mean','var','count'):
+            value=np.asarray(getattr(state,key))
+            digest.update((prefix+'.'+key+str(value.shape)+str(value.dtype)).encode());digest.update(value.tobytes())
+    for key in ('G','G_r_max'):
+        value=np.asarray(getattr(agent.reward_normalizer,key))
+        digest.update((key+str(value.shape)+str(value.dtype)).encode());digest.update(value.tobytes())
+    return digest.hexdigest()
+
 class Policy:
     def __init__(self,env,args):
         self.args=args;self.agent=None;self.controller=None;self.actions=[];self.obs=[]
@@ -53,7 +84,7 @@ class Policy:
                 sys.path.insert(0,str(PARAMETER))
                 from official_parameter_agent import OfficialParameterAgent
                 self.agent=OfficialParameterAgent(**kwargs,action_dimension=c['action_dimension'])
-            self.agent.load(args.checkpoint);self.before=self.agent.diagnostics()
+            self.agent.load(args.checkpoint);self.before=self.agent.diagnostics();self.normalization_before=normalization_hash(self.agent)
         if args.method in ('parameter_fixed','parameter_rl'):
             if not args.controller:raise ValueError('Choose parameter controller')
             sys.path.insert(0,str(PARAMETER))
@@ -70,9 +101,9 @@ class Policy:
         else:action=np.zeros(7)
         self.actions.append(np.asarray(action).copy());return action
     def finish(self,out):
-        if self.agent and self.agent.diagnostics()!=self.before:raise RuntimeError('Evaluation changed normalizer')
+        if self.agent and (self.agent.diagnostics()!=self.before or normalization_hash(self.agent)!=self.normalization_before):raise RuntimeError('Evaluation changed normalizer')
         np.savez_compressed(out/'baseline_policy.npz',observation=np.asarray(self.obs),action=np.asarray(self.actions))
-        detail=dict(label=self.label,steps=len(self.actions),normalizers_unchanged=True if self.agent else None,observation='exact evaluator canonical48',training=False)
+        detail=dict(normalization_hash=self.normalization_before if self.agent else None,label=self.label,steps=len(self.actions),normalizers_unchanged=True if self.agent else None,observation='exact evaluator canonical48',training=False)
         if self.controller:detail['parameters']=self.controller.save(out)
         return detail
 
@@ -96,8 +127,12 @@ def main():
     settings.update(output=args.output/'rollout',esn_model=None,esn_mode='shadow',teacher='none',hybrid_vmc_blend=0.,render=False,impact_slowmo=False,physics_probe_s=args.probe)
     sys.path.insert(0,str(SOURCE/'scripts'))
     run,executed,replacements=build_evaluator()
+    archive_loader=install_archived_loader(args.output)
     upstream={str(f.relative_to(SOURCE)):sha(f) for f in (SOURCE/'scripts').glob('*.py')}
     record=dict(status='running',started_epoch=time.time(),main_commit=MAIN_SHA,source_root=str(SOURCE),upstream_source_sha256=upstream,executed_evaluator_sha256=hashlib.sha256(executed.encode()).hexdigest(),bridge_sha256=sha(__file__),reference_summary_sha256=sha(REFERENCE/'esn_combined_v4.json'),method=args.method,controller=args.controller,checkpoint=str(args.checkpoint) if args.checkpoint else None,probe_s=args.probe,expected_model_sha256=MODEL_SHA,simulation_host='Spark',purpose='interface_diagnostic' if args.probe else 'frozen_primitive_policy_transfer_development',argv=sys.argv)
+    record['archive_loader']=archive_loader
+    policy_root=PARAMETER if args.method.startswith('parameter_') else DIRECT
+    record['policy_source_sha256']={str(p.relative_to(policy_root)):sha(p) for p in policy_root.rglob('*') if p.is_file() and p.suffix in ('.py','.json')}
     if args.checkpoint:record['checkpoint_hashes']={str(f.relative_to(args.checkpoint)):sha(f) for f in args.checkpoint.rglob('*') if f.is_file() and f.name!='replay.npz'}
     dump(args.output/'EXECUTION.json',record)
     (args.output/'executed_evaluator.py.txt').write_text(executed)

@@ -52,6 +52,9 @@ observer, nominal references, safety projector, torque/slew limits and evaluatio
 One geometric-mean prior per controller is shared across all primitive training
 scenes and office transfer. No scene-label prior selection. The prior is transferred
 from the older BO bank, not a fresh office-specific BO optimum.
+The common WBC generates identical nominal-reference semantics for all methods.
+Impedance uses its own wrench-to-torque law with the inherited torque projector
+and slew limits; it does not retain the nominal velocity-tracking torque law.
 The fixed-prior comparator uses precisely the same implementation as parameter RL
 with zero parameter action. This isolates online parameter adaptation.
 Classical controllers may contain their intrinsic virtual state; the RL actor still
