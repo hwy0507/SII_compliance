@@ -23,34 +23,49 @@ def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def now():return datetime.now(timezone.utc).isoformat()
 
 
+def load_reference(reference, kind):
+    """Accept a verified shared full rollout, not a truncated causal probe."""
+    reference=Path(reference).resolve()
+    result_path=reference/f'{kind}_combined_v4.json'
+    original=json.loads(result_path.read_text())
+    if not original.get('full_task_horizon_completed'):
+        raise ValueError('Reference must be a complete full-horizon rollout, not a probe')
+    checkpoint=reference/f'{kind}_temporal.npz'
+    if sha(checkpoint)!=original['neural_logging']['model_sha256']:
+        raise ValueError('Reference checkpoint hash differs from its saved rollout')
+    if not (reference/'TRAINING_COMPLETE.json').is_file():
+        raise FileNotFoundError(reference/'TRAINING_COMPLETE.json')
+    return original,checkpoint
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--method',choices=('nominal','esn','mlp'),required=True)
     p.add_argument('--clear',action='store_true')
     p.add_argument('--expected-mjb')
+    p.add_argument('--reference-dir',type=Path,default=ROOT/'outputs/temporal_s52_latent_dropout_20261001_v1/p010_eval',
+                   help='Shared full rollout directory containing method summary, checkpoint and TRAINING_COMPLETE.json')
     p.add_argument('--fixture',type=Path,required=True)
     p.add_argument('--probe',type=float)
     p.add_argument('--no-render',action='store_true')
     p.add_argument('--ball-off',action='store_true',help='Causal diagnostic: same model, zero incoming ball velocity')
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();run=args.output.resolve();run.mkdir(parents=True,exist_ok=False)
-    reference=ROOT/'outputs/temporal_s52_latent_dropout_20261001_v1/p010_eval'
+    reference=args.reference_dir.resolve()
     kind='mlp' if args.method=='mlp' else 'esn'
-    original=json.loads((reference/f'{kind}_combined_v4.json').read_text())
+    original,checkpoint=load_reference(reference,kind)
     config=args.fixture.resolve()
     assert mujoco.__version__=='3.11.0'
     cg=Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
     memory=(cg/'memory.max').read_text().strip()
     assert memory!='max' and int(memory)<=3*1024**3
     assert all(os.environ.get(k)=='1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS'))
-    checkpoint=reference/f'{kind}_temporal.npz'
-    assert sha(checkpoint)==original['neural_logging']['model_sha256']
     shutil.copy2(checkpoint,run/checkpoint.name)
     shutil.copy2(reference/'TRAINING_COMPLETE.json',run/'TRAINING_COMPLETE.json')
     shutil.copy2(config,run/config.name)
     prefix=run/f'{kind}_combined_v4'
     a=dict(original['arguments'],output=prefix,esn_model=run/checkpoint.name,
-           rod_start=12.,interaction_schedule='sequential-r12-v1',planned_hand_corner=True,
+           rod_start=12.,rod_hold=6.,physics_probe_s=None,interaction_schedule='sequential-r12-v1',planned_hand_corner=True,
            unexpected_edge=not args.clear,allow_lateral_rejoin=True,tool_contact=json.loads(config.read_text()))
     if args.probe:a['physics_probe_s']=args.probe
     if a['tool_contact'].get('rod_hold_s')==10.:
@@ -64,6 +79,7 @@ def main():
     record=dict(status='running',started_utc=now(),method=args.method,clear=args.clear,
                 argv=sys.argv,python=sys.executable,mujoco=mujoco.__version__,memory_max=memory,threads=1,
                 config_sha256=sha(config),checkpoint_sha256=sha(checkpoint),training_performed=False,
+                reference_dir=str(reference),reference_summary_sha256=sha(reference/f'{kind}_combined_v4.json'),
                 checkpoint_active=args.method!='nominal',source_sha256=sources,
                 source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                 arguments={k:str(v) if isinstance(v,Path) else v for k,v in a.items()})

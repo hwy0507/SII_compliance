@@ -1,5 +1,13 @@
 # Data-Driven Compliance Control for FR3
 
+### 2026-10-02 current environment and three-camera agent handoff
+
+Start with [the office-tool-contact-v5 handoff](code/mujoco_6d_vmc_benchmark/docs/OFFICE_TOOL_CONTACT_HANDOFF_20261002.md)
+to reuse the user-reviewed scene: exact geometry/timing, shared planning and gates,
+three camera poses (`--contact-closeup`), full-video replay, server assets/hashes,
+and a portable `--reference-dir` evaluation command. The interaction is visually
+approved; full placement/strict still fail. This handoff adds no training or physics changes.
+
 ### 2026-10-02 palm-directed ball and rod interactions
 
 The opt-in `office-tool-contact-v5` fixture redirects a heavier ball to the palm

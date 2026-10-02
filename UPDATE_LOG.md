@@ -1,5 +1,28 @@
 # 更新日志
 
+## 2026-10-02 — 当前环境及三机位完整交接，补充跨机器复跑入口
+
+- 用户认可当前交互展示，要求先同步供其他agent接续；本轮未启动仿真/训练，未改变环境、
+  机位、gate或权重。按sii-research-sync开工及收工核对远端main
+  `03809257e72b612bdc760ada3113e8ddba32c098`、baseline
+  `e564e09a691293802ec76c237d717b202d592e85`，未改baseline分支/独立作业。
+- 新增`code/mujoco_6d_vmc_benchmark/docs/OFFICE_TOOL_CONTACT_HANDOFF_20261002.md`，
+  固定office-tool-contact-v5的坐标/尺寸/时序、公共规划/成功定义/本体输入限制、三机位
+  lookat/距离/方位/俯角、25fps原速完整视频和慢放区别、重渲染/复跑命令、共享资产与hash。
+  README、接触修正报告、联合进度和周报均加入入口。
+- `run_tool_contact_20261002.py`新增`--reference-dir`，可直接使用共享完整回合中的
+  summary/checkpoint/TRAINING_COMPLETE；验证完整时长和权重hash，拒绝短探针参考。
+  无仿真验证：共享参考与原p010权重及所有非覆盖参数一致，短球对照被拒绝。
+- 已核验原物理源码：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/03809257e72b612bdc760ada3113e8ddba32c098/`。
+  已核验原证据：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/tool_contact_review_20261002/evidence/`，
+  manifest SHA256 `936b6af1988b65bfce16dcf6c4fa44b2b1bf8460913b59aff2accb6496c6221f`。
+  本次提交源码另按完整SHA归档到同一服务器source目录，不覆盖历史产物。
+- 已完成：环境与拍摄交接、可移植参考入口。运行中：本任务无新增作业。
+  未完成：完整放置/strict、正式步长和跨条件验证；全程仍49.428mm/45.880Nm/.370425m/s、
+  最大穿透.653202mm、task/strict=false，不把画面认可当成功。VMC新采集/ESN新学习待后续推进。
+
 ## 2026-10-02 — 球撞响应与棍推掌部修正；保持期滑脱已观察，整场仍失败
 
 - 用户要求先修物理交互，暂缓ESN算法修复。本轮未重训、未改WBC/actor输入/权重/执行器限制。
