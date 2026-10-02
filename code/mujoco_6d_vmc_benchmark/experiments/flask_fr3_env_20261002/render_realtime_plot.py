@@ -36,7 +36,7 @@ def draw_live_panel(times, speed, ee_speed, acceleration, torque, now, duration,
         small = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 9)
     except OSError:
         font = small = ImageFont.load_default()
-    draw.text((12, 8), f'FLASK FR3 WBC | t = {now:.2f} s | time scale = {time_scale:g}x', fill='#222222', font=font)
+    draw.text((12, 8), f'FLASK FR3 WBC | obstacle route | t = {now:.2f} s | time scale = {time_scale:g}x', fill='#222222', font=font)
     panels = [(52, 34, 700, 160, 'Speed + limit'), (52, 205, 700, 331, 'Acceleration + limit')]
     for left, top, right, bottom, title in panels:
         draw.rectangle((left, top, right, bottom), outline='#aaaaaa', width=1)
@@ -89,6 +89,9 @@ def main() -> int:
         scene_path.write_text(make_scene(args.fr3_xml))
         model = mujoco.MjModel.from_xml_path(str(scene_path))
         data = mujoco.MjData(model)
+        model.vis.headlight.ambient[:] = np.array([0.35, 0.35, 0.35])
+        model.vis.headlight.diffuse[:] = np.array([0.75, 0.75, 0.75])
+        model.vis.headlight.specular[:] = np.array([0.15, 0.15, 0.15])
         data.qpos[:7] = HOME
         mujoco.mj_forward(model, data)
         robot_names = [model.geom(i).name for i in range(model.ngeom) if (model.geom(i).name or '').startswith('fr3v2_')]
@@ -128,7 +131,7 @@ def main() -> int:
             frame_dir.mkdir(parents=True, exist_ok=True)
         try:
             for step in range(total_steps):
-                data.qpos[dynamic_qpos_adr] = 0.22 * np.sin(2.0 * np.pi * float(data.time) / 3.4)
+                data.qpos[dynamic_qpos_adr] = 0.16 * np.sin(2.0 * np.pi * float(data.time) / 3.4)
                 mujoco.mj_forward(model, data)
                 tau = wbc.command(data, trajectory)
                 previous_qvel = data.qvel[:7].copy()

@@ -1,3 +1,9 @@
+## 2026-10-02 — Add explicit central-pillar obstacle-avoidance demonstration
+
+- Added a collision-active central orange pillar that blocks the direct HOME-to-GOAL FLASK edge. The deterministic planner now reports `direct_edge_available=false` and produces a 4-segment route in 37.1 ms. Added brighter key/head lighting and an `obstacle route` title so the render is easier to inspect.
+- Moved the dynamic capsule farther outside the work area and reduced its slide amplitude after the first pillar test revealed a real link-5 contact. Full 24.0 s / 12,000-step sensor WBC validation now reports zero contacts, `0.00719 rad` final joint error, and `39.78 Nm` peak command torque.
+- Rendered the raw 5.71 s, 1x route into 157 frames with visibly changing speed/acceleration traces. Published replacement page/video at `http://192.168.31.70:8765/flask_fr3_20261002/`; local evidence is `outputs/flask_fr3_obstacle_avoidance_wbc.mp4` and `outputs/flask_fr3_obstacle_avoidance_wbc_mid.png`.
+
 ## 2026-10-02 — 经典搜索锁定；综合环境原始MJB接入核验通过
 
 - 原四视频经典搜索96/96完成：12候选×8训练条件，模型hash全部配对；独立区间聚合误差RMSE<2.4e-12m、峰矩0。导纳锁k150/zeta1.4，阻抗锁k600/zeta1.4；只用训练集。LOCK_AUDIT.json和原SELECTION/ROWS保留，尚非测试成绩。

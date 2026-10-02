@@ -56,17 +56,20 @@ directory for later encoding.
 
 ## Complex scene run (2026-10-02)
 
-The current wrapper scene has 12 collision-checked obstacle geometries: a tabletop,
-four legs, a rear shelf, two shelf boards, red/yellow boxes, a blue cylinder,
-and a sinusoidally moving capsule. The green target cylinder is visualized as a goal marker at `z=1.10 m`,
+The current wrapper scene has 14 named obstacle geometries: a tabletop, four
+legs, a rear shelf, two shelf boards, red/yellow boxes, a blue cylinder, a
+central orange pillar with a visual support, and a sinusoidally moving capsule. The green target cylinder is visualized as a goal marker at `z=1.10 m`,
 above the end-effector goal pose, and has contact disabled so the controller can
 settle at the goal without an artificial grasping impulse or visual interpenetration. The dynamic capsule is moved to the side
 of the work area and remains collision-free during this development run.
 
-The planner uses 8,000 iterations, 40 samples per cubic segment, and a 3x
-execution retime. On `arm1`, the fresh scene produced a one-segment FLASK plan
-in 0.73 ms, ran 6.0 s / 3,000 MuJoCo steps, saw zero contacts, reached
-`0.00796 rad` final infinity-norm joint error, and used at most `28.06 Nm`
+The planner uses 8,000 iterations, 40 samples per cubic segment, and the
+central pillar makes the direct HOME-to-GOAL edge invalid. FLASK then produces a
+4-segment obstacle-avoidance route in about 37 ms. On `arm1`, the fresh scene
+was simulated for 24.0 s / 12,000 MuJoCo steps, saw zero contacts, reached
+`0.00719 rad` final infinity-norm joint error, and used at most `39.78 Nm`
 command torque. The result JSON is
 `/home/arm1/vmc_mujoco_runtime/flask_fr3_env_20261002_complex_sensor_wbc.json`.
-These are simulated development measurements, not hardware validation.
+The user-facing render uses the raw 5.71 s route (1x retime), producing visible
+changes at each steering segment. These are simulated development measurements,
+not hardware validation.
