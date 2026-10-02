@@ -588,6 +588,8 @@ SII_compliance/
 
 - `scripts/paper_mpc_wbc.py`：NUS paper control layer 的固定基座复现；
 - `scripts/fixed_panda_wbc.py`：resolved-rate FR3/Panda WBC；
+- `scripts/flask_joint_planner.py`：FLASK differential-flatness 关节空间采样规划器；
+- `scripts/flask_wbc.py`：FLASK 轨迹到固定基座 WBCCommand 的执行适配器；
 - `scripts/wbc_velocity_residual_core.py`：共享 7D action、安全过滤和速度伺服；
 - `scripts/fr3_contact_interface_20260917.py`：因果 load observer 和部署边界；
 - `scripts/run_vmc_6d_constrained_push_20260918.py`：6D VMC teacher；

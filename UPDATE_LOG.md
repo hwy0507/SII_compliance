@@ -1,3 +1,10 @@
+## 2026-10-02 — standalone sensorized FR3 FLASK/WBC environment completed
+
+- 按用户要求新建独立环境 `code/mujoco_6d_vmc_benchmark/experiments/flask_fr3_env_20261002/`，不加载仓库已有 benchmark scene，也不继承原有“无传感器”限制。`run_sensor_wbc.py` 在运行时从 `/home/arm1/vmc_mujoco_runtime/mujoco_menagerie/franka_fr3_v2/fr3v2.xml` 生成全新 wrapper：7 个 torque motor、两个障碍物、末端 frame/force/torque 传感器、7 组 joint position/velocity 传感器。
+- 新环境中实际运行 FLASK 规划 + sensorized computed-torque WBC：2 段无碰轨迹，规划 3.86 ms；4.0 s、2000 步 MuJoCo 仿真，峰值命令力矩 48.57 Nm、最大接触数 0、末端力/力矩传感器为 0（该场景没有人为接触）、最终关节误差 0.0644 rad。结果 JSON：`/home/arm1/vmc_mujoco_runtime/flask_fr3_env_20261002_sensor_wbc.json`。
+- 运行命令和传感器/WBC 设计记录在 `code/mujoco_6d_vmc_benchmark/experiments/flask_fr3_env_20261002/README.md` 与 `docs/FLASK_FR3_20261002.md`。这只是独立 MuJoCo 开发结果，不是硬件、实时性或接触力响应认证。
+- 验证：新 runner 和 planner `py_compile` 通过；独立环境 runner 实际完成；此前 planner 三项回归继续通过。未修改运行中的历史训练进程。
+
 ## 2026-10-02 — 注册四视频特化场景 baseline 五小时连续实验
 
 - 用户新授权07:36:31–12:36:31UTC，当前线程连续推进，无定时任务。最终环境/WBC由另一agent负责。开工fetch main f3437ad、baseline699e317，不改main/旧作业。
@@ -5,6 +12,15 @@
 - 每场景1000训练+12验证+12测试定义，非4096条已完成数据；按原采样范围、互斥split、场景均衡replay。SimbaV2两reward×2seed目标60k；导纳/阻抗各6候选×8训练条件，留出条件不选参。
 - 实测球6.4s审计开关状态/动作全相同；三指标raw复算通过；RL750步1470更新接口通过但任务失败。固定阻抗球试跑成功、导纳失败；两厚桌角放置失败，不把旧抓取task字段当放置。
 - 代码/数据/媒体留Spark /home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/，原场景source_scene_20260918及新frozen_adapter01均独立快照，原结果不改。训练主结果待真实运行，不宣称完成或收敛。
+
+## 2026-10-02 — FLASK-style fixed-base FR3 motion-planning extension
+
+- 参考论文 `2603.16059v4.pdf` 的机械臂差分平坦性特例：把 `q` 作为 flat output、`(q,qdot)` 作为 flat state、`qddot` 作为 pseudo-control，实现闭式 cubic Hermite/LQ 最小加速度 steering，并在其上加入确定性采样树。新增 `code/mujoco_6d_vmc_benchmark/scripts/flask_joint_planner.py`、`flask_wbc.py` 和 `run_flask_fr3_smoke.py`；新增聚焦回归 `tests/test_flask_joint_planner.py`。
+- `FlaskJointPlanner` 对每条候选边按有限采样检查 FR3 关节位置、速度、加速度及可插拔碰撞回调；`MuJoCoFR3CollisionChecker` 提供固定基座 MuJoCo 场景适配；`FlaskTrajectoryWBC` 将轨迹转成既有 `WBCCommand`，不改变 scaledWBC/VMC 的安全和观测边界。
+- 服务器开发 smoke 使用 baseline 检出 commit `699e3171cc5e87e946a79f23f6a49d5e5ba1c1b0`、`/home/arm1/vmc_mujoco_runtime/simba_v2_venv/bin/python`，命令和配置记录于 `docs/FLASK_FR3_20261002.md`。合成 7-DOF keep-out 条件找到 2 段轨迹，规划耗时 2.79 ms、总时长 3.09 s、采样碰撞 0、终点误差 0、峰速度 2.5602 rad/s（限值 2.61）、峰加速度 8.8921 rad/s²（限值 10）。证据 JSON：`/home/arm1/vmc_mujoco_runtime/flask_fr3_20261002_smoke.json`。这是 development smoke，不是 MuJoCo 几何、真实 FR3 或硬件成功结论。
+- 验证：三个 planner 回归函数由服务器研究虚拟环境直接执行并通过；三个新增 Python 模块 `py_compile` 通过；`git diff --check` 通过。服务器 `pytest` 未安装，因此没有冒称 pytest 结果。
+- 本轮起始同步受服务器 GitHub HTTPS 凭据缺失影响，未能重新 fetch；可读的 `origin/main` 为 `ba84ed8a39ed743f603aa5d60e901bdf87090e1d`，baseline 工作区起点为 `699e3171cc5e87e946a79f23f6a49d5e5ba1c1b0`，且起点存在远端已有未跟踪目录 `code/mujoco_6d_vmc_benchmark/experiments/primitive_baselines_20261002/`，本轮未触碰。
+- 局限/后续：尚未在现有 FR3 MuJoCo 几何场景完成成对 scaledWBC 对照，也未做连续 swept-volume、真实动力学或硬件验证；部署前应显式提供 robot/obstacle geom 名称并提高/自适应碰撞采样密度。
 
 ## 2026-10-01 — 记录 RL 球碰撞视频疑点，用户下班暂停至明日
 

@@ -37,6 +37,8 @@ evaluate_matched_guarded_push_20260921.py / office_complex_scene_v5_20260917.py
 | `build_current_teacher_bank_20260921.py` | 构建 canonical teacher bank | 是 |
 | `train_matched_action7_20260921.py` | MLP、nonlinear ESN、linear ESN 的公平训练入口 | 是 |
 | `current_student_policy_20260921.py` | 冻结模型的部署 contract 和推理加载 | 是 |
+| `flask_joint_planner.py` | FLASK 闭式 cubic flat-state steering 与采样树 | 是，运动规划扩展 |
+| `flask_wbc.py` | FLASK 关节轨迹到现有 WBCCommand 的执行适配 | 是，运动规划扩展 |
 
 ## 2. 经典 baseline
 
