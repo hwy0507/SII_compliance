@@ -1,0 +1,18 @@
+{
+  "scene_id": "office-combined-v4-sequential-r12-v1",
+  "geometry": "combined-thick-corner-pillar-v4",
+  "interaction_schedule": "sequential-r12-v1",
+  "purpose": "Shared evaluation-only schedule correction for frozen ESN, MLP and baseline policies; no retraining or tuning",
+  "difference_from_previous_combined_v4": {"rod_start_s": [7.0, 12.0]},
+  "schedule_s": {
+    "ball_launch": 2.0,
+    "person": {"advance": [3.0, 5.0], "hold": [5.0, 8.0], "retract": [8.0, 10.0]},
+    "rod": {"advance": [12.0, 13.5], "hold": [13.5, 19.5], "retract": [19.5, 21.5]},
+    "commanded_recovery_gap": 2.0
+  },
+  "shared_cli": ["--combined-thick-corner-pillar-v4", "--corner-placement", "--events", "all", "--task", "pick_place", "--duration", "55", "--dt", "0.0001", "--ball-speed", "1.7", "--ball-launch-time-s", "2", "--person-stroke", "0.2", "--rod-stroke", "0.235", "--person-start", "3", "--rod-start", "12", "--rod-hold", "6", "--seed", "2026091751", "--variant", "0", "--interaction-schedule", "sequential-r12-v1"],
+  "runtime": {"mujoco": "3.11.0", "development_dt_s": 0.0001, "formal_dt_s": 0.00005, "formal_requires_development_strict_pass": true},
+  "development_mjb_sha256": "5eaee4aa1399c6e47c9fcb2c477f0b6392dcb13273ca67f878aca2d05f3239f9",
+  "unchanged": ["geometry", "contact materials", "ball", "drive force limits", "actor observations", "actuator amplitude and slew limits", "task and strict gates", "55 second horizon", "checkpoint weights"],
+  "interpretation": "Commanded drive windows are disjoint. Actual contact separation and successful rod exposure require rollout audit; do not infer them from the schedule. Do not pool old rod-start-7 results with this protocol."
+}

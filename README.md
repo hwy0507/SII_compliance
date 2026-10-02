@@ -1,5 +1,14 @@
 # Data-Driven Compliance Control for FR3
 
+### 2026-10-02 evaluation schedule correction
+
+The new `office-combined-v4-sequential-r12-v1` protocol starts the rod at 12 s,
+two seconds after the hand's commanded retraction ends. Geometry, gates and
+existing policy weights are unchanged. Use the same new schedule for every method;
+keep old rod-start-7 results separate. Schedule guards and 80 ms physics checks
+passed; full-episode performance under the new timing has not yet been evaluated.
+See [shared configuration and baseline handoff](code/mujoco_6d_vmc_benchmark/docs/OFFICE_SEQUENTIAL_R12_HANDOFF_20261002.md).
+
 ## 2026-09-30 当前状态与更新记录
 
 ### 2026-10-01 pure ESN alpha screen

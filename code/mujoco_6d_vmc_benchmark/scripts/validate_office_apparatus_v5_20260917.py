@@ -38,6 +38,23 @@ def smooth_profile(t,start,press,hold,retract):
     return float(u*u*(3-2*u))
 
 
+def interaction_schedule(a):
+    """World-side schedule; named protocols reject stale timing overrides."""
+    configs = {
+        'person': dict(start=getattr(a, 'person_start', 3.), press=2., hold=3.,
+                       retract=2., stroke=a.person_stroke, force_limit=80.),
+        'rod': dict(start=getattr(a, 'rod_start', 11.), press=1.5,
+                    hold=getattr(a, 'rod_hold', 3.), retract=2.,
+                    stroke=a.rod_stroke, force_limit=14.)}
+    profile = getattr(a, 'interaction_schedule', 'legacy')
+    if profile == 'sequential-r12-v1':
+        if (configs['person']['start'], configs['rod']['start'], configs['rod']['hold']) != (3., 12., 6.):
+            raise ValueError('sequential-r12-v1 requires --person-start 3 --rod-start 12 --rod-hold 6')
+    elif profile != 'legacy':
+        raise ValueError(f'Unknown interaction schedule: {profile}')
+    return configs
+
+
 def prepare_policy_state(esn, memory_ablation):
     if getattr(esn, 'kind', None) == 'mlp':
         return np.empty(0, dtype=float)
@@ -58,6 +75,7 @@ def prepare_policy_state(esn, memory_ablation):
 
 
 def run(a):
+    configs = interaction_schedule(a)
     if a.output.with_suffix('.json').exists():raise RuntimeError('Preserve existing results')
     a.output.parent.mkdir(parents=True,exist_ok=True)
     probe=getattr(a,'physics_probe_s',None)
@@ -212,9 +230,6 @@ def run(a):
     cup=bid('office_v5_cup');cup_base=gid('office_v5_cup_base')
     cup_initial=d.xpos[cup].copy() if cup>=0 else np.zeros(3);initial_hand=d.xpos[env._hand_id].copy()
     joints={n:jid(n) for n in ('office_v5_person_root','office_v5_shoulder','office_v5_elbow','office_v5_push_rod_joint')}
-    configs={
-      'person':dict(start=getattr(a,'person_start',3.),press=2.,hold=3.,retract=2.,stroke=a.person_stroke,force_limit=80.),
-      'rod':dict(start=getattr(a,'rod_start',11.),press=1.5,hold=getattr(a,'rod_hold',3.),retract=2.,stroke=a.rod_stroke,force_limit=14.)}
     stats=dict(max_penetration_m=0.,worst_pair=None,max_external_penetration_m=0.,worst_external_pair=None,
       events={},contact_diagnostics={'rod_longest_run': None, 'corner_target_by_stage': {}},cup_shift_m=0.,cup_tilt_deg=0.,
       max_hand_displacement_m=0.,peak_motor_torque_nm=0.,max_person_drive_n=0.,max_rod_drive_n=0.)
@@ -469,6 +484,7 @@ def run(a):
       contact_coverage_valid=contact_ok,contact_required=list(required),cup_valid=cup_valid,passed=abort_reason is None and contact_ok and stats['max_external_penetration_m']<=.0002 and cup_valid and (bounce if 'ball' in required else True),
       human_model='guided massive torso with shoulder/elbow hinges and compliant wrist; not free biped gait',
       controller='existing kinematic WBC pose hold, unlocked joints, zero learned residual',schedule=configs,
+      interaction_schedule=getattr(a,'interaction_schedule','legacy'),
       source_sha256={name:hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest() for name in
         ('office_complex_scene_v5_20260917.py','validate_office_apparatus_v5_20260917.py','audit_office_complex_scene_v5_20260917.py')})
     result['controller']='existing kinematic WBC '+a.task+', unlocked joints, zero learned residual'
@@ -575,6 +591,8 @@ if __name__=='__main__':
     p.add_argument('--impact-refinement-dt',type=float,help='Shared fine physics step for initial impulse, no actor input')
     p.add_argument('--impact-refinement-until',type=float,default=.2)
     p.add_argument('--person-start',type=float,default=3.)
+    p.add_argument('--interaction-schedule',choices=('legacy','sequential-r12-v1'),default='legacy',
+                   help='World-only protocol label and timing guard; sequential-r12-v1 requires explicit starts 3/12 and rod hold 6')
     p.add_argument('--rod-start',type=float,default=11.)
     p.add_argument('--rod-hold',type=float,default=3.)
     p.add_argument('--observer-friction-velocity-scale',type=float,default=.005)

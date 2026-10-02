@@ -1,5 +1,18 @@
 # 更新日志
 
+## 2026-10-02 — 顺序扰动修复：人手撤回后2秒启动推杆
+
+- 用户授权将combined-v4推杆起点7→12秒，登记独立`sequential-r12-v1`；人手3–10秒、
+  推杆12–21.5秒，球2秒及其他物理/任务/gate/actor/执行器设置不变。旧配置与结果保留。
+  新共享配置和验证器启动检查拒绝误带旧时序。已有ESN/MLP/baseline权重和参数不需重训。
+- 开工实时核对main5dc538b、baseline699e317；未改baseline分支、未重启旧campaign。
+  3GiB/单线程的两个80ms检查成功：新旧MJB5eaee4aa及所有轨迹数组一致，权重hash未变；
+  全55秒指令检查无重叠。新55秒实际接触/任务/strict尚未评估，不能报告效果改善。
+- 已核验共享源码/配置/执行证据：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/office_sequential_r12_check_20261002_v1/`。
+  evidence.tar.gz SHA256=`b2d10aa5d0f2d271c3bd514ebad3ad8e46f92d364b50ea744a0aa04811b0008b`。
+  接入与未完成项见`code/mujoco_6d_vmc_benchmark/docs/OFFICE_SEQUENTIAL_R12_HANDOFF_20261002.md`。
+
 ## 2026-10-02 — current frozen combined-v4 full three-view media
 
 - 按用户请求展示当前最终测试环境，开工核对main38d40c1、baseline699e317；场景未变。
