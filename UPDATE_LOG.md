@@ -1,5 +1,19 @@
 # 更新日志
 
+## 2026-10-02 — 原ESN权重完成12秒推杆时序评估与全程媒体
+
+- 按用户请求复用上次动图的p=.1 ESN（checkpoint9f4b5a81），只改变推杆时序，未训练。
+  开工核对maind43f050、baseline699e317。本机单线程/3GiB、MuJoCo3.11.0完成55秒开发
+  评估；task/strict仍false，停load_transfer；RMSE38.708mm、峰矩48.463Nm、峰速
+  .094228m/s、外部穿透.122975mm。人手接触4.2813–8.8977秒；推杆/柱子未记录有效接触，
+  不把时序分离或低指标冒充成功。动作/储备池重放误差0，550000子步物理指标独立复算通过。
+- 全景/末端/柱桌角三视角GIF及MP4完整55秒原速，实测帧数275/1375，已目视核验。
+  新单回合启动器保存原参数/源/模型/权重hash、执行和审计；所有作业完成，无新增campaign。
+- 已核验服务器归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_sequential_r12_media_20261002_v1/`。
+  evidence.tar.gz SHA256=`c6938228a27aeb7a6b08d33245d96325fb4ec0cd2274582cfb89cc9a268c1e31`。
+  详细结果及源码/媒体地址见`code/mujoco_6d_vmc_benchmark/docs/ESN_SEQUENTIAL_R12_REPLAY_20261002.md`。
+
 ## 2026-10-02 — 顺序扰动修复：人手撤回后2秒启动推杆
 
 - 用户授权将combined-v4推杆起点7→12秒，登记独立`sequential-r12-v1`；人手3–10秒、
