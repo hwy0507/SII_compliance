@@ -112,3 +112,34 @@ Host: arm1@192.168.31.70.
 - Model SHA256: b092662aa1d6fba12357cd0a6271d309abeb047ad09f20a0a646d48415b637a1
 - Primitive baseline study: /home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/
 - Source and artifact histories remain separate from WBC development.
+
+## Executed feasibility evidence at 2026-10-02 10:24 UTC
+
+The exact archived composite MJB has now run under the nominal (zero extra action)
+controller for all 55 s / 550,000 substeps. It lifts 0.128606 m but remains in
+carry and never establishes the final placement hold: task=false, strict=false.
+Its limited physical gate passes, with maximum external penetration 0.158694 mm.
+RMSE is 27.5569 mm, actual peak generalized actuator torque 36.9007 Nm and peak
+hand speed 0.398633 m/s. Independent raw-substep recomputation agrees within
+float32 logging tolerances. This is all-event zero, **not** the no-disturbance
+feasibility control proposed above.
+
+Ball, human and rod contact the hand. Ball peak force is 7883.55 N and impulse
+2.57116 Ns; aggregate robot contact is 3.2 ms. Do not infer contact stiffness or
+hardware safety from the rendered frames. Unknown-edge aggregate statistics
+include payload contact from 11.8843 s; specifically recorded robot-finger
+contacts begin 33.7344 s and persist to the end. Distinguish those definitions
+rather than calling the earlier payload contact a robot-arm collision.
+
+The main source ESN reference is also a complete failed episode, with 49.4283 mm
+RMSE, 45.8801 Nm peak torque, 0.370425 m/s peak speed and 0.653202 mm external
+penetration. This comparison motivates progress/contact diagnostics; it does not
+prove the learned method is inferior at equal training exposure. A fixed composite
+fixture with two failed controllers is not sufficient to establish either
+impossibility or useful statistical discrimination among methods.
+
+Published zero replay: http://192.168.31.70:8765/primitive_baselines_20261002/office/
+Full replay is 55 s at 1x; ball closeup is explicitly 0.25x. Evidence is under
+/home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/office_bridge/transfer01/zero/.
+The original rollout, source patch, MJB hash, independent OFFICE_AUDIT.json,
+render manifests and contact-clip TIMING_AUDIT.json are retained.

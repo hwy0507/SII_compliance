@@ -1,3 +1,12 @@
+## 2026-10-02 — 综合环境zero完整失败证据与最终评估工具
+
+- main再次核对7cd5f4b7ac0a3056df76ac62bc690ded0724b104；共享baseline的独立FLASK/WBC提交保留，不混入本轮固定office接入。原五小时截止12:36:31 UTC不变，无定时任务。
+- 精确归档MJB下zero已完成55秒/550000子步：task/strict=false，停carry，抬升.128606m；RMSE27.5569mm、实际峰矩36.9007Nm、峰速.398633m/s、外穿透.158694mm。原始子步独立复算通过。球/人/棍均接触hand；凸边综合统计含物块，机器人手指接触33.7344秒才开始，不将两种统计混说。
+- 新office report/summarize/render_clips/gallery保存完整和分窗诊断、1倍速55秒视频、.25倍球近景和原速棍近景及帧时序核验。发布 http://192.168.31.70:8765/primitive_baselines_20261002/office/ ，已目视核对球接触拼图。zero全扰动不是无扰动任务可行性对照；未声称综合任务成功或正式dt通过。
+- dispatch_evaluation.py准备固定测试/原始展示/综合迁移命令和原窗口超时限制，拒绝覆盖旧结果；测试矩阵仍按预注册12条件/模型。最新三类参数RL共同checkpoint尚未锁定，VMC待仿真槽位，未提前报最终成绩。
+- 新audit_parameters.py检查已实际执行的参数上下界、.04秒限速和局部储能账本；导纳50550更新/阻抗30750更新快照通过，约束真实触发（3/460次）；不是整体无源证明。训练及后续测试仍进行中。
+- Spark证据：/home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/office_bridge/{transfer01/zero,source_esn_review,transfer_report01}、parameter_rl/{admittance_applied_audit.json,impedance_applied_audit.json}、FINAL_EVALUATION_CATALOG.json、FINAL_REFERENCE_CATALOG.json、PHYSICAL_EXPOSURE_SNAPSHOT.json。两reward第一seed学到60300步，原失败恢复额外1525物理交互保留并计账；比较固定60000步checkpoint。
+
 ## 2026-10-02 — Replace artificial pillar with realistic workbench clutter
 
 - Replaced the central orange pillar demonstration with a blue storage tote (active collision geometry) and a black tool tray on the tabletop. The scene now presents a workbench layout with shelves, bins, boxes, a cylinder object, target marker, and moving capsule rather than isolated vertical posts.
