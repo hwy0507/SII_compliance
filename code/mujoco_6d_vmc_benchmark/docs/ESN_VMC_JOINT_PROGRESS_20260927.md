@@ -1,5 +1,15 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-03 12:32UTC：新数据采集与学习接口准备
+
+teacher最近核验28/48完整、25任务成功、15严格成功，所有失败继续保留，不改采样/门槛。
+新增实际请求/过滤/执行链资格导出、真实身份mask，纯ESN读出差分/16步积分目标及同样损失的MLP/RNN。
+本地旧训练数据工程拟合/导出回放/输入隔离通过，不是新闭环结果；新数据33模型3seed计划尚未开训。
+办公RL在线通信/原官方SimbaV2训练/冻结评估代码已准备，须先通过已知train_000完整原生重放。
+连续依赖服务`sii-r72-prepare-learning-20261003-v2`等collector完成才导出/重放；原生无torch的依赖已去除。
+源在 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_learning_runtime_v2/`；
+两端tar hash核验，详见根UPDATE_LOG/RESEARCH_STATUS。24最终条件仍封存，未获得新泛化结论。
+
 ## 72小时新研究已登记（2026-10-03 11:49UTC）
 
 固定入口为仓库根 `RESEARCH_STATUS.md`。用户假期3–4天授权按72小时至10-06 11:30UTC执行，

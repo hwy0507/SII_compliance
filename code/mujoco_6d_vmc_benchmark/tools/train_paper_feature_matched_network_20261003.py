@@ -46,7 +46,9 @@ def main():
     p.add_argument('--kind',choices=('mlp','rnn'),required=True)
     p.add_argument('--seed',type=int,default=2026100302);p.add_argument('--updates',type=int,default=4000)
     p.add_argument('--learning-rate',type=float,default=.0001)
+    p.add_argument('--integral-weight',type=float,default=0.)
     a=p.parse_args();assert 0<a.learning_rate<=.001 and 0<a.updates<=12000
+    assert 0<=a.integral_weight<=2
     out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
     cg=Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
     memory=(cg/'memory.max').read_text().strip();assert memory!='max' and int(memory)<=3*1024**3
@@ -62,7 +64,10 @@ def main():
                    source_sha256=hashes,memory_max=memory,torch=torch.__version__,numpy=np.__version__)
     write(out/'execution.json',execution)
     try:
-        with np.load(a.data) as z:obs,ep,train,weight,y=[z[k].copy() for k in ('observation','episode','train','importance','requested_teacher_action')]
+        with np.load(a.data) as z:
+            obs,ep,train,weight,y=[z[k].copy() for k in ('observation','episode','train','importance','requested_teacher_action')]
+            physical=z['physical_execution'].astype(bool) if 'physical_execution' in z.files else ep>=48
+        assert np.any(physical)
         actor=OfficeVMCMemoryESN(a.checkpoint)
         assert actor.position_context and actor.context_gate_w is None and not actor.nonlinear and not actor.axis_separable
         assert actor.readout_activation=='clipped_linear' and actor.reset_at_each_observation==(a.kind=='mlp')
@@ -108,6 +113,11 @@ def main():
                     loss=(error.square()*importance[...,None]).sum()/(7*importance.sum())
                     pw=torch.minimum(importance[:,1:],importance[:,:-1]);delta=error[:,1:]-error[:,:-1]
                     loss=loss+.25*(delta.square()*pw[...,None]).sum()/(7*pw.sum().clamp_min(1))
+                    if a.integral_weight and error.shape[1]>=16:
+                        scale=error.new_tensor([0.,.32/.02*.04,.32/.02*.04,.32/.02*.04,.6/.05*.04,.6/.05*.04,.6/.05*.04])
+                        integrated=error.unfold(1,16,1).sum(-1)*scale
+                        iw=importance.unfold(1,16,1).amin(-1)
+                        loss+=a.integral_weight*(integrated.square()*iw[...,None]).sum()/(7*iw.sum().clamp_min(1))
                     assert torch.isfinite(loss)
                     optimizer.zero_grad(set_to_none=True);loss.backward();torch.nn.utils.clip_grad_norm_(model.parameters(),1.);optimizer.step()
                     if hidden is not None:hidden=hidden.detach()
@@ -144,8 +154,10 @@ def main():
                     training_data_sha256=sha(a.data),source_sha256=hashes,lineage=meta['lineage'],seed=a.seed,updates=update,selected_update=selected,
                     width=128,trainable_parameters=sum(p.numel() for p in model.parameters() if p.requires_grad)-12*7,
                     features_matched_to_context_esn=True,learning_rate=a.learning_rate,precision='float64',tbptt_steps=64,
+                    integral_weight=a.integral_weight,integral_window_steps=16,action_delta_weight=.25,
                     actual_nonpadding_observations=sum(s[3] for s in schedule),schedule_sha256=sha(out/'schedule.json'),
-                    holdout_mse=float(np.mean((predictions[~train]-y[~train])**2)),physical_history_mse=float(np.mean((predictions[ep>=48]-y[ep>=48])**2)),
+                    holdout_mse=float(np.mean((predictions[~train]-y[~train])**2)),physical_history_mse=float(np.mean((predictions[physical]-y[physical])**2)),
+                    validation_split=meta.get('selection_split','legacy whole synthetic identities'),
                     numpy_torch_max_abs=maximum,unused_field_isolation_pass=True,zero_load_equilibrium_pass=True,
                     limitation='Warm-started feature-matched MLP/RNN mechanism control; not parameter/FLOP matched and not an ESN. Fixed time constants; input/recurrent weights learn as declared. Physical success untested.')
         assert all(sha(ROOT/k)==h for k,h in hashes.items())

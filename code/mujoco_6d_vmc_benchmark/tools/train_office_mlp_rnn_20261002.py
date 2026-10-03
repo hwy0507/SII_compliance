@@ -10,7 +10,7 @@ import sys
 import numpy as np
 import torch
 from torch import nn
-from optimize_tool_contact_20261002 import ROOT, sha, write, now
+from optimize_tool_contact_20261002 import ROOT, sha, write, now, source_base_commit
 from office_mlp_rnn_20261002 import OfficeMLPRNN, CONTRACT
 
 
@@ -110,7 +110,7 @@ def main():
     source_hash = {str(f.relative_to(ROOT)): sha(f) for f in sources}
     subprocess.run(['tar', '-czf', str(a.output/'source_overlay.tar.gz'), *source_hash], cwd=ROOT, check=True)
     state = dict(status='running', started_utc=now(), argv=sys.argv, host=platform.node(),
-                 source_commit_base=subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+                 source_commit_base=source_base_commit(),
                  source_sha256=source_hash, python=sys.executable, python_version=platform.python_version(),
                  torch_version=torch.__version__, numpy_version=np.__version__, memory_max=memory, threads=1)
     write(a.output/'execution.json', state)
@@ -122,6 +122,7 @@ def main():
         with np.load(a.data) as z:
             obs, target, episode, train, importance = [z[k].copy() for k in
                 ('observation', a.target+'_teacher_action', 'episode', 'train', 'importance')]
+            physical = z['physical_execution'].astype(bool) if 'physical_execution' in z.files else episode >= 48
         assert all(np.isfinite(x).all() for x in (obs, target, importance))
         train_ids, val_ids = np.unique(episode[train]), np.unique(episode[~train])
         assert not set(train_ids).intersection(val_ids)
@@ -242,9 +243,11 @@ def main():
         write(a.output/'history.json', history)
         np.savez_compressed(a.output/'exported_replay.npz', prediction=predictions, episode=episode)
         groups = {}
-        for name, mask in [('synthetic_train', train & (episode < 48)), ('synthetic_holdout', ~train),
-                           ('seen_physical_histories', episode >= 48)]:
-            groups[name] = dict(samples=int(mask.sum()), action_mse=float(np.mean((predictions[mask]-target[mask])**2)))
+        masks = ([('real_train', train & physical), ('real_identity_validation', ~train & physical)]
+                 if metadata.get('all_real_execution') else [('synthetic_train', train & (episode < 48)),
+                    ('synthetic_holdout', ~train), ('seen_physical_histories', physical)])
+        for name, mask in masks:
+            groups[name] = dict(samples=int(mask.sum()), action_mse=float(np.mean((predictions[mask]-target[mask])**2)) if np.any(mask) else None)
         result = dict(kind=a.kind, seed=a.seed, updates=update, selected_update=best_step, width=128,
                       target=a.target, norm_slowdown=a.norm_slowdown,
                       modular=a.modular,active_trainable_parameters=model.active_parameters,learning_rate=a.learning_rate,
@@ -257,7 +260,8 @@ def main():
                       numpy_torch_max_abs=max_error, unused_field_isolation_pass=True, zero_input_equilibrium_pass=True,
                       batch_size=8, tbptt_steps=a.tbptt_steps, actual_nonpadding_observations=sum(s[3] for s in schedule),
                       action_delta_weight=.25, source_sha256=source_hash,
-                      limitation='Synthetic identity holdout and declared development histories (success/failure and counterfactual labels retained in lineage); physical success measured separately. No runtime teacher/controller. Width-matched, not parameter-matched.')
+                      validation_split=metadata.get('selection_split','Legacy synthetic identity holdout'),
+                      limitation='Data provenance and whole-history split declared in dataset metadata; physical success measured separately. No runtime teacher/controller. Width-matched, not parameter-matched.')
         assert all(sha(ROOT/k) == v for k, v in source_hash.items())
         write(a.output/'TRAINING_COMPLETE.json', result)
         state.update(status='complete', checkpoint_sha256=result['checkpoint_sha256'])

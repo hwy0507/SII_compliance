@@ -16,7 +16,10 @@ def main():
     p.add_argument('--leak-gate',action='store_true')
     p.add_argument('--memory-reset',action='store_true',help='Fit a matched-width memoryless ablation, resetting before every observation')
     p.add_argument('--gate-minimum',type=float,default=.05);p.add_argument('--gate-maximum',type=float,default=2.)
+    p.add_argument('--delta-weight',type=float,default=0.,help='Readout error first-difference loss within training histories only')
+    p.add_argument('--integral-weight',type=float,default=0.,help='16-step physical-unit integrated action-error loss; no simulator truth')
     a=p.parse_args()
+    assert 0<=a.delta_weight<=2 and 0<=a.integral_weight<=2
     assert 0<=a.gate_minimum<1<a.gate_maximum<=100
     if not a.leak_gate and (a.gate_minimum!=.05 or a.gate_maximum!=2.):raise ValueError('Gate limits require gate')
     out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
@@ -32,8 +35,12 @@ def main():
                python=sys.executable,numpy=np.__version__,memory_max=memory,seed=a.seed,leak_gate=a.leak_gate)
     write(out/'execution.json',state)
     try:
-        with np.load(a.data) as z:obs,ep,train,importance,y=[z[k].copy() for k in ('observation','episode','train','importance','requested_teacher_action')]
+        with np.load(a.data) as z:
+            obs,ep,train,importance,y=[z[k].copy() for k in ('observation','episode','train','importance','requested_teacher_action')]
+            physical=z['physical_execution'].astype(bool) if 'physical_execution' in z.files else ep>=48
         assert not set(ep[train]).intersection(ep[~train])
+        assert np.any(physical) and np.any(train) and np.any(~train)
+        assert all(np.isfinite(v).all() for v in (obs,importance,y))
         rng=np.random.default_rng(a.seed)
         base_w=rng.normal(size=(128,128))*(rng.random((128,128))<.08)
         base_w/=max(np.max(abs(np.linalg.eigvals(base_w))),1e-12)
@@ -56,8 +63,38 @@ def main():
                 n=x.shape[1]-12;norm=np.maximum(x[train,:n].std(0),.005)
                 xx=x[train,:n]/norm;weighted=importance[train,None]*xx
                 gram=xx.T@weighted;rhs=xx.T@(importance[train,None]*y[train])
+                # The temporal loss compares action errors, not action magnitude:
+                # it preserves the teacher's intentional yielding response.
+                # Each history is isolated, with no validation state/label in fit.
+                temporal_gram=np.zeros_like(gram);temporal_rhs=np.zeros_like(rhs)
+                integrated_gram=np.zeros_like(gram);integrated_rhs=np.zeros_like(rhs)
+                pair_mass=window_mass=0.
+                if a.delta_weight or a.integral_weight:
+                    for eid in np.unique(ep[train]):
+                        ids=np.flatnonzero(ep==eid);assert np.all(train[ids])
+                        ex=x[ids,:n]/norm;ey=y[ids];ew=importance[ids]
+                        if a.delta_weight:
+                            dx=np.diff(ex,axis=0);dy=np.diff(ey,axis=0);pw=np.minimum(ew[1:],ew[:-1])
+                            temporal_gram+=dx.T@(pw[:,None]*dx);temporal_rhs+=dx.T@(pw[:,None]*dy);pair_mass+=pw.sum()
+                        if a.integral_weight and len(ids)>=16:
+                            cx=np.vstack((np.zeros((1,n)),np.cumsum(ex,axis=0)))
+                            cy=np.vstack((np.zeros((1,7)),np.cumsum(ey,axis=0)))
+                            ix=cx[16:]-cx[:-16];iy=cy[16:]-cy[:-16]
+                            iw=np.lib.stride_tricks.sliding_window_view(ew,16).min(1)
+                            integrated_gram+=ix.T@(iw[:,None]*ix);integrated_rhs+=ix.T@(iw[:,None]*iy);window_mass+=iw.sum()
+                    mass=importance[train].sum()
+                    if pair_mass:
+                        gram+=a.delta_weight*mass/pair_mass*temporal_gram
+                        rhs+=a.delta_weight*mass/pair_mass*temporal_rhs
+                proxy_scale=np.r_[0.,np.full(3,.32/.02*.04),np.full(3,.6/.05*.04)]
                 for ridge in (.001,.1):
-                    weights=np.zeros((x.shape[1],7));weights[:n]=np.linalg.solve(gram+ridge*np.eye(n),rhs)/norm[:,None]
+                    weights=np.zeros((x.shape[1],7))
+                    if a.integral_weight:
+                        assert window_mass>0
+                        for channel in range(7):
+                            strength=a.integral_weight*importance[train].sum()/window_mass*proxy_scale[channel]**2
+                            weights[:n,channel]=np.linalg.solve(gram+strength*integrated_gram+ridge*np.eye(n),rhs[:,channel]+strength*integrated_rhs[:,channel])/norm
+                    else:weights[:n]=np.linalg.solve(gram+ridge*np.eye(n),rhs)/norm[:,None]
                     prediction=np.clip(x@weights,-1,1);prediction[:,0]=np.clip(prediction[:,0],0,1)
                     mse=float(np.mean((prediction[~train]-y[~train])**2))
                     name=f'rho{rho}_gain{gain}_ridge{ridge}'
@@ -69,7 +106,7 @@ def main():
                         **({'context_gate_w':actor.context_gate_w} if actor.context_gate_w is not None else {}),
                         **({'context_gate_limits':actor.context_gate_limits} if actor.context_gate_limits is not None else {}))
                     row=dict(name=name,rho=rho,input_gain=gain,ridge=ridge,holdout_mse=mse,
-                        physical_history_mse=float(np.mean((prediction[ep>=48]-y[ep>=48])**2)),checkpoint_sha256=sha(checkpoint))
+                        physical_history_mse=float(np.mean((prediction[physical]-y[physical])**2)),checkpoint_sha256=sha(checkpoint))
                     candidates.append(row)
                     if mse<best:best=mse;selected=row;selected_checkpoint=checkpoint
         shutil.copy2(selected_checkpoint,out/'checkpoint.npz')
@@ -92,7 +129,10 @@ def main():
             reservoir_width=128,learned_hidden_readout_width=0,trainable_readout_coefficients=int((actor.weights.shape[0]-12)*7),
             fields=sorted(fields),contextual_leak_gate=a.leak_gate,readout_activation='clipped_linear',
             gate_multiplier_limits=[a.gate_minimum,a.gate_maximum] if a.leak_gate else None,
-            independent_slowdown_readout=True,selection='Whole-history synthetic holdout requested-action MSE only',
+            independent_slowdown_readout=True,selection=metadata.get('selection_split','Whole-history synthetic holdout')+' requested-action MSE only',
+            temporal_readout_loss=dict(delta_weight=a.delta_weight,integral_weight=a.integral_weight,integral_window_steps=16,
+                physical_unit_scale=proxy_scale.tolist(),fit_uses_training_histories_only=True),
+            physical_history_mask='explicit physical_execution array' if metadata.get('all_real_execution') else 'legacy episode >= 48',
             reset_at_each_observation=a.memory_reset,
             limitation='New recovery-teacher dataset and context architecture; not isolated memory comparison. No runtime VMC, extra learned hidden layer, contact truth, event time, task phase or object state. Physical success untested.')
         assert all(sha(ROOT/k)==h for k,h in hashes.items())

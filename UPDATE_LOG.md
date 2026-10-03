@@ -1,5 +1,29 @@
 # 更新日志
 
+## 2026-10-03 — 同真实数据学习机制与办公RL适配接口准备
+
+- 72小时窗口继续，最近已核验teacher28/48完整，25 task、15 strict。四稳定队列保持运行，
+  不按中间结果重采样；最终封存24条件未读取。main已发布659672d，baseline仍ebb0e1e，未合并分支。
+- 新增真实示范导出器：逐身份原task/strict/55s资格、完整失败账本、训练/离线验证分割，
+  逐项核验请求/过滤/执行action链及source/trace。开发与最终历史不能进入训练数据。
+  修正旧训练脚本把episode<48一律叫合成轨迹的统计假设，新增显式physical_execution掩码，旧默认兼容。
+- 纯ESN新增受约束线性读出的误差差分/16步积分目标，保持固定储备池、零负载平衡和相同本体字段。
+  MLP/RNN同时获得积分损失选择；新增覆盖3seed、合计33模型的顺序训练计划（含记忆清空重新训练、普通与同特征网络），
+  宽度128但实际参数/成本不同明确披露。尚未在新数据开训，不把离线fit当任务成功。
+- 本地单线程3GiB旧训练数据工程回归完成，12个新读出候选/导出回放/输入隔离/零平衡通过；
+  该回归只验证实现，非新闭环实验或新盲测。checkpoint SHA dd040d112eb1b53663546aa0bca602264ef54a64710ae5640118d627d8f01936。
+  原生执行本机airpig，归档到本轮服务器根`engineering_local_v1/outputs/research72_engineering_20261003/temporal_readout/`；
+  tar两端SHA 1c68737d7eb98afdd4b231cc17e8f0c8eb03b0343f231ceeaaf95694bce3df77，解包checkpoint hash一致。
+- 已实现同v6原生RL IPC、原官方SimbaV2办公从零训练、冻结归一化评估、有限开发队列和依赖准备服务。
+  baseline奖励原公式沿用，平滑项显式改用共同filter之后action；训练专用potential不进入actor。
+  这些新增物理接口尚待实际完全重放验证；不宣称RL已开训或通过。
+- 新准备源在 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_learning_runtime_v2/`，
+  base659672d＋本轮overlay；tar两端SHA deb7e5c546cab79d0776d1102e9205d1ff2f2c39b4df6889c9e6d881dca5e7d3。
+  `sii-r72-prepare-learning-20261003-v2`等待collector完成后导出数据和单回合RL重放，不提前增加仿真并发。
+  v1仅空闲等待器因原生环境无torch而替换；不安装额外框架、不动稳定物理作业，保留版本与替换记录。
+- 上次已提交完整源码source/659672d9b463b98b3290d461f7bfe6b8901ea572逐文件核验3085项通过。
+  本批编译/diff检查、33任务依赖顺序检查通过；最终学习/公平比较/新留出/论文证据仍未完成。
+
 ## 2026-10-03 — 新72小时研究登记与真实teacher采集启动
 
 - 用户授权假期3–4天持续自主研究，保守窗口10-03 11:30至10-06 11:30UTC，含准备时间；
