@@ -1,4 +1,4 @@
-"""Read-only timing/exposure diagnostics on completed training identities only.
+"""Read-only timing/exposure diagnostics on completed public identities only.
 
 Contact truth is used for offline analysis, never for actor or imitation targets.
 These are associations; short-latency impacts do not alone prove unavoidability.
@@ -7,18 +7,44 @@ import argparse
 from collections import Counter
 import json
 from pathlib import Path
+import shutil
 import sys
 import numpy as np
-from optimize_tool_contact_20261002 import sha,write,now
+from optimize_tool_contact_20261002 import sha,write,now,ParameterTeacher
 
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--root',type=Path,required=True)
+    p.add_argument('--public-phase',type=Path,help='A registered public development phase, never final')
+    p.add_argument('--condition',help='Require every registered candidate on this public identity')
+    p.add_argument('--counterfactual-teacher',action='store_true',
+        help='Diagnostic only: query original teacher on student observations; never actual-execution labels')
     p.add_argument('--output',type=Path,required=True);a=p.parse_args();out=a.output.resolve()
+    assert bool(a.public_phase)==bool(a.condition)
+    assert not a.counterfactual_teacher or a.public_phase
+    teacher_config=None
+    if a.counterfactual_teacher:
+        assert sha(a.root/'teacher.json')==json.loads((a.root/'PROTOCOL.json').read_text())['teacher_config_sha256']
+        teacher_config=json.loads((a.root/'teacher.json').read_text())
+    if a.public_phase:
+        spec=json.loads((a.public_phase/'SPECIFICATION.json').read_text())
+        assert spec['protocol_sha256']==sha(a.root/'PROTOCOL.json')
+        assert sha(a.root/'CONDITIONS.json')==json.loads((a.root/'PROTOCOL.json').read_text())['condition_file_sha256']
+        public=json.loads((a.root/'CONDITIONS.json').read_text())['conditions']
+        assert a.condition in {c['id'] for c in public if c['role']=='development'}
+        assert a.condition in spec['conditions']
+        paths=sorted(a.public_phase.glob(f'queue_*/*__{a.condition}/AUDIT.json'))
+        expected={c['name']+'__'+a.condition for c in spec['candidates']}
+        assert {path.parent.name for path in paths}==expected, 'Wait for every registered model, including failures'
+    else:
+        paths=sorted((a.root/'teacher_bank').glob('queue_*/train_*/AUDIT.json'))
+        assert len(paths)==32
+    assert all(json.loads((path.parent/'execution.json').read_text())['status']=='complete' for path in paths)
     out.mkdir(parents=True,exist_ok=False);rows=[]
-    for path in sorted((a.root/'teacher_bank').glob('queue_*/train_*/AUDIT.json')):
+    shutil.copy2(__file__,out/Path(__file__).name)
+    for path in paths:
         run=path.parent;audit=json.loads(path.read_text());state=json.loads((run/'execution.json').read_text())
-        assert state['status']=='complete' and state['runtime_provenance']['data_role']=='train'
+        assert state['status']=='complete' and state['runtime_provenance']['data_role']==('development' if a.public_phase else 'train')
         assert sha(run/'rollout.npz')==audit['trace_sha256']
         with np.load(run/'research_substeps.npz') as z:
             force=z['contact_force_sum'][:,5].copy();pen=z['external_penetration_m'].copy()
@@ -43,12 +69,31 @@ def main():
                 postcontact_estimated_wrench=obs[after,39:45].tolist(),postcontact_requests=requests[after].tolist(),
                 peak_penetration_relative_to_first_pillar_s=float(time[peak]-t0),
                 pillar_p95_active_force_n=float(np.percentile(force[active],95)))
+            if teacher_config is not None:
+                teacher=ParameterTeacher(teacher_config);queries=[]
+                for observation in obs:
+                    teacher.observe(observation);queries.append(teacher.act(observation[39:45]))
+                queries=np.asarray(queries)
+                at_peak=max(0,int(np.searchsorted(clock,time[peak],side='right')-1))
+                selected=np.unique(np.r_[before,after,at_peak]).astype(int)
+                row['counterfactual_teacher_query']=dict(
+                    actual_execution=False,used_as_training_labels=False,
+                    teacher_config_sha256=sha(a.root/'teacher.json'),
+                    actor_times_s=clock[selected].tolist(),last_actor_before_peak_index=int(at_peak),
+                    selected_actor_indices=selected.tolist(),estimated_wrench=obs[selected,39:45].tolist(),
+                    position_error=obs[selected,20:23].tolist(),
+                    student_requested_action=requests[selected].tolist(),
+                    original_teacher_requested_action=queries[selected].tolist(),
+                    student_filtered_action=filtered[selected].tolist(),
+                    interpretation='Original teacher recurrent state replayed on actual student observations; hypothetical requests, not executed labels or proof of superior physical outcome.')
         rows.append(row)
-    assert len(rows)==32
+    assert len(rows)==len(paths)
     result=dict(completed_utc=now(),source_sha256=sha(Path(__file__)),rows=rows,
         count=len(rows),task=sum(r['task'] for r in rows),strict=sum(r['strict'] for r in rows),
         failed_worst_pairs=dict(Counter(str(r['worst_pair']) for r in rows if not r['strict'])),
-        limitations='Training identities only; hand speed is not link7 normal approach speed. Aggregate external peak may belong to another contact than first pillar. Timing association is not a causal impossibility proof. No diagnostics fed to actor.')
+        data_role='development' if a.public_phase else 'train',
+        public_condition=a.condition,phase=str(a.public_phase) if a.public_phase else None,
+        limitations='Public identities only; hand speed is not link7 normal approach speed. Aggregate external peak may belong to another contact than first pillar. Timing association is not a causal impossibility proof. No diagnostics fed to actor or training labels.')
     write(out/'DIAGNOSTICS.json',result)
     print(json.dumps({k:v for k,v in result.items() if k!='rows'}))
 

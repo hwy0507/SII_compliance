@@ -1,5 +1,12 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-03 17:08UTC 首条件33模型结果齐备
+
+同development_000：ESN6候选回合4task/3strict，matchedRNN同为4/3，matchedMLP2/2（分母6），
+memoryless1/1（分母3），ordinaryMLP1/1、ordinaryRNN2/0（各分母6）。不是跨条件/选定权重最终成功率。
+全部模型参与离线柱子接触诊断；matchedRNN部分仍等同初始ESN，后续小学习率增强baseline尚待执行。
+失败对照不删掉，truth仅离线诊断不作actor/训练输入。当前37/264完成，RL仍等待参数确认；最终仍封存。
+
 ### 2026-10-03 16:50UTC 容量与推理成本核验
 
 同数据全部102已拟合模型零仿真完整train_000重放误差全0。可训练系数ESN2884、ordinaryMLP5504、
