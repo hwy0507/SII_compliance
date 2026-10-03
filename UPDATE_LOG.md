@@ -1,5 +1,22 @@
 # 更新日志
 
+## 2026-10-03 — 初始264回合完成与全部候选的描述报告
+
+- 开工实时核验main94fdf073be3c03c437d88b656ea5e6903f3c0796、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，fetch并读两日志/AGENTS。
+  既有main94源码arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/94fdf073be3c03c437d88b656ea5e6903f3c0796/
+  3211文件已核验，tar SHA a9004df3d23c08d85e126e2726f2834f118c5d2fd0bf6d69228a0d948eee1e3f。
+- 22:40:59UTC初始33模型×8条件264回合及四队列独立审计完成：261完整/3短回合，105task/51strict是全部候选账本，不作最终方法率。
+  ESN点版19/24task、9/24strict，积分11/24、4/24；六matchedRNN均selected_update0继承ESN，不能据此宣称充分优化RNN不如ESN。
+- 新零物理报告逐hash关联264独立审计/接触指标和33训练记录；保留各seed/variant、短失败、暴露NA/恢复删失。
+  点版ESN推杆P95均值21.432N较无记忆24.303低，但力模积分36.733Ns较33.242高，暴露集合不同，不作全面优势结论。
+  原事件指标为v2，最终须用v4独立复算；没有改门槛/指标、拟合或开封最终条件。
+- 服务器本轮根/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/public_initial_report_v2/REPORT.json
+  SHA adb7ff8e71117d09a612796e6a56ca02b17b430054ca707f51832112194d7b4d；报告脚本SHA8c78f2f0b78228b89e790826c38dda11fd1de02ea350e1b17a07b37cecca8d32，
+  selector依赖SHA6b1785c55c183982c7040293276987c3a9e87ef70914934bf598b649db530354均两端核验。Git含279518字节同字节报告。
+  v1只读汇总因str/Path类型失败，源保留；v2在独立目录修复后141ms完成，无仿真重跑。3聚合边界检查及真实全批对接通过。
+- 更新RESEARCH_STATUS、联合进度、周报和RESEARCH72_INITIAL_DEVELOPMENT。64回合teacher/经典确认开始、四仿真内；
+  新teacher采集/增强网络与ESN/RL适配仍待前序。24最终封存，修订02未登记；不以初始开发结果声称可投稿或ESN独占优势。
+
 ## 2026-10-03 — 首撞短步长诊断登记与诊断成本分母
 
 - 本轮延续实时核验main f40b1ad05d43373c380d71b06807b7ee9785a8b7、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；稳定仿真保留。

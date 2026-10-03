@@ -1,0 +1,50 @@
+{
+  "recorded_utc": "2026-10-03T22:46:21+00:00",
+  "receipt_kind": "retrospective_from_observed_systemd_output_and_journal",
+  "status": "complete",
+  "host": "arm1@192.168.31.70",
+  "new_physics_episodes": 0,
+  "new_fitted_models": 0,
+  "sealed_contents_read": false,
+  "source_base_commit": "94fdf073be3c03c437d88b656ea5e6903f3c0796",
+  "source_kind": "existing_selector_plus_uncommitted_report_script",
+  "source_sha256": "8c78f2f0b78228b89e790826c38dda11fd1de02ea350e1b17a07b37cecca8d32",
+  "selector_sha256": "6b1785c55c183982c7040293276987c3a9e87ef70914934bf598b649db530354",
+  "command": [
+    "/usr/bin/python3",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/public_initial_report_v2/research72_public_cohort_report_20261003.py",
+    "--root", "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+    "--phase", "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/learning_development_v1",
+    "--output", "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/public_initial_report_v2/REPORT.json"
+  ],
+  "service": "sii-r72-initial-report-v2.service",
+  "systemd_invocation_id": "5b87499b240d4ac680e392eb09a65e3e",
+  "journal_start_utc_second_precision": "2026-10-03T22:42:57+00:00",
+  "report_created_utc": "2026-10-03T22:42:57.302533+00:00",
+  "observed_exit_code": 0,
+  "systemd_runtime_ms": 141,
+  "systemd_cpu_ms": 141,
+  "memory_max_bytes": 3221225472,
+  "memory_swap_max_bytes": 0,
+  "cpu_quota_percent": 100,
+  "report_sha256": "adb7ff8e71117d09a612796e6a56ca02b17b430054ca707f51832112194d7b4d",
+  "failed_predecessor": {
+    "service": "sii-r72-initial-report-v1.service",
+    "systemd_invocation_id": "14b5cae9b7014652a9d9b7507b9b25c0",
+    "journal_start_utc_second_precision": "2026-10-03T22:41:56+00:00",
+    "observed_exit_code": 1,
+    "source_sha256": "29f01fca01635a09a535710b81e84bec2f2a6722edd1dabb3e80a0eaa97a3ac3",
+    "error": "AttributeError: str object has no attribute read_bytes; checkpoint path required Path conversion",
+    "source_preserved": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/public_initial_report_v1/research72_public_cohort_report_20261003.py",
+    "report_created": false,
+    "new_physics_episodes": 0
+  },
+  "checks": [
+    "All 264 observations linked to four completed independent audits and matching metric hashes",
+    "All 33 checkpoint bytes and training metadata linked",
+    "No-contact aggregate remains null",
+    "Short failures retained in denominator but excluded from full-horizon means",
+    "Unobserved recovery remains right-censored"
+  ],
+  "limitation": "This attestation was written after execution. It is not an original in-process execution.json or final-test result."
+}
