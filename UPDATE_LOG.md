@@ -1,5 +1,21 @@
 # 更新日志
 
+## 2026-10-03 — 选定teacher共享读出再拟合入口准备，尚未启动新预算
+
+- 延续实时核对main ad957af96444b418c0bceb8063bd0e72031bd8fc与baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；重读AGENTS收尾。
+  ad957af源码已在arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/ad957af96444b418c0bceb8063bd0e72031bd8fc/核验3175文件，
+  tar SHA58f3b23608d8c012db9159c0284fcef932aa24567964138134a3cbbb6b795dca。
+- 新refit-data-receipt要求teacher选择/执行/config/数据hash和合格账本一致，未完成采集、标签非真实或最终已开封均拒绝。
+  同teacher验证0新采集；不同teacher要求40真实身份导出。只用train/imitation_validation，保留拒绝账本。
+- 可选context-readout-refit沿用12组ESN ridge和128储备池，加已验证固定G交互，只训练读出；同特征MLP/RNN获得相同特征。
+  网络沿用此前跨3seed验证选好的point学习率/4000更新。数据相同则不重复训练/评估普通网络，新增12模型；数据变则18模型。
+  服务器权重引用保留真实路径，不能在本机伪造挂载；登记时在服务器核验复用权重，最后模型选择支持声明的不同数据谱系。
+- 14项合成登记/数据来源/跨seed选择/全38模型入口回归通过；没有实际拟合或物理重放。
+  RESEARCH72_READOUT_REFIT_PREPARATION明确拟议cap60、额外96或144回合及成本，但AMENDMENT_02尚不存在，当前有效cap仍48。
+  必须等teacher确认和剩余预算核定后才能正式登记/拟合；不让额外ESN搜索挤掉已登记baseline或最后24小时评估。
+- 19:19UTC初始131/264，第四条件32/33；4稳定仿真、无新增物理；真正24条件仍封存。
+  已完成工程，未完成新结构学习/完整跨条件比较/投稿证据。新代码将在本提交对应source目录核验，不改运行快照。
+
 ## 2026-10-03 — 补齐放置阶段接触负载、保留原事件统计及全失败安全审计
 
 - 18:53UTC实时核对main2bd499594f45fce1888e34128bdaa67d260dc23a、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；读取AGENTS和两日志。

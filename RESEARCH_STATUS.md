@@ -1,6 +1,6 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
-最后人工核验：**2026-10-03 18:59 UTC / 北京时间10月4日02:59**。本页是 GitHub 固定入口；
+最后人工核验：**2026-10-03 19:19 UTC / 北京时间10月4日03:19**。本页是 GitHub 固定入口；
 每个完成的研究批次更新，具体提交见 [UPDATE_LOG.md](UPDATE_LOG.md)。运行状态有时间戳，不代表实时监控。
 
 ## 当前结论
@@ -12,6 +12,11 @@
 [上轮全部26方法正式矩阵](code/mujoco_6d_vmc_benchmark/docs/evidence/all_methods_formal_20261003/report/MATRIX.md)。
 
 ## 本轮状态
+
+19:19UTC初始开发131/264，第四条件32/33，仍不提前按不齐的seed汇总胜负。
+[下一轮共享拟合入口](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_READOUT_REFIT_PREPARATION_20261003.md)
+工程完成：teacher确认后，纯ESN与同特征对照增加固定本体×记忆读出；如数据不变，普通MLP/RNN复用已有拟合/回合。
+14项登记/数据来源/原选择入口回归通过。尚未登记修订02、未增加实际拟合，当前cap仍48；不热改稳定作业。
 
 18:59UTC初始学习开发115/264已有逐回合AUDIT，前三个条件各33完整。第三条件ESN与matchedRNN均
 3/6任务、1/6严格；matchedMLP2/6严格、memoryless1/3严格，ordinaryMLP/RNN均0严格。

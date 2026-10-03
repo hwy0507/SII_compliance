@@ -87,6 +87,36 @@ def contextual_gate_jobs(seeds,selection):
     return result
 
 
+def context_readout_refit_jobs(seeds, selection, include_ordinary=True):
+    """One fixed point-loss variant for every family, shared selected-teacher data.
+
+    Fixed rates come from the earlier whole-identity validation across seeds.
+    Reservoir parents precede matched networks; no new gate or temporal search.
+    """
+    rates={(d['family'], d['variant']): d['selected_learning_rate'] for d in selection['decisions']}
+    result=[]
+    for seed in seeds:
+        for family in ('esn', 'memoryless'):
+            result.append(dict(name=f'readout_refit_{family}_{seed}', family=family, seed=seed,
+                variant='readout_refit_point', script='train_paper_context_esn_20261003.py',
+                extra=['--state-context-readout']+(['--memory-reset'] if family=='memoryless' else [])))
+        for kind in ('mlp', 'rnn'):
+            result.append(dict(name=f'readout_refit_matched_{kind}_{seed}', family='matched_'+kind,
+                seed=seed, variant='readout_refit_point',
+                parent=f'readout_refit_{"memoryless" if kind=="mlp" else "esn"}_{seed}',
+                script='train_paper_feature_matched_network_20261003.py',
+                extra=['--kind', kind, '--updates', '4000', '--learning-rate',
+                       str(rates['matched_'+kind, 'point']), '--integral-weight', '0']))
+            if include_ordinary:
+                result.append(dict(name=f'readout_refit_ordinary_{kind}_{seed}', family='ordinary_'+kind,
+                    seed=seed, variant='readout_refit_point', script='train_office_mlp_rnn_20261002.py',
+                    extra=['--kind', kind, '--updates', '4000', '--learning-rate',
+                           str(rates['ordinary_'+kind, 'point']), '--target', 'requested',
+                           '--absolute-inputs', '--precision', 'float64', '--drift-weight', '0']))
+    assert len(result)==(6 if include_ordinary else 4)*len(seeds) and len({j['name'] for j in result})==len(result)
+    return result
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--data',type=Path,required=True);p.add_argument('--metadata',type=Path,required=True)
@@ -95,6 +125,8 @@ def main():
     p.add_argument('--neural-lr-refinement',action='store_true')
     p.add_argument('--parent-learning',type=Path)
     p.add_argument('--contextual-gate-extension',action='store_true')
+    p.add_argument('--context-readout-refit',action='store_true')
+    p.add_argument('--refit-data-receipt',type=Path)
     p.add_argument('--amendment',type=Path)
     p.add_argument('--learning-rate-selection',type=Path)
     a=p.parse_args();out=a.output.resolve();protocol=read(a.protocol);meta=read(a.metadata)
@@ -103,7 +135,18 @@ def main():
     assert all(x['data_role'] in ('train','imitation_validation') and x['actual_execution_labels'] for x in meta['lineage'])
     out.mkdir(parents=True,exist_ok=True)
     parent_root=a.parent_learning.resolve() if a.parent_learning else out
-    assert not (a.neural_lr_refinement and a.contextual_gate_extension)
+    assert sum((a.neural_lr_refinement, a.contextual_gate_extension, a.context_readout_refit))<=1
+    if a.context_readout_refit:
+        assert a.amendment and a.learning_rate_selection and a.refit_data_receipt and not a.parent_learning
+        amendment=read(a.amendment); selection=read(a.learning_rate_selection); data_receipt=read(a.refit_data_receipt)
+        assert amendment['protocol_sha256']==selection['protocol_sha256']==data_receipt['protocol_sha256']==sha(a.protocol)
+        assert amendment['scope']=='fixed_state_context_readout_selected_teacher_refit'
+        assert amendment['new_learning_cap_per_family_seed']==60 and amendment['sealed_contents_read'] is False
+        assert amendment['learning_rate_selection_sha256']==sha(a.learning_rate_selection)
+        assert data_receipt['status']=='complete' and data_receipt['selected_teacher_verified']
+        assert data_receipt['training_data_sha256']==sha(a.data)
+        assert data_receipt['dataset_metadata_sha256']==sha(a.metadata)
+        include_ordinary=selection['data_sha256']!=sha(a.data)
     if a.contextual_gate_extension:
         assert a.amendment and a.learning_rate_selection and not a.parent_learning
         amendment=read(a.amendment);selection=read(a.learning_rate_selection)
@@ -118,7 +161,8 @@ def main():
         assert original['protocol_sha256']==sha(a.protocol) and original['data_sha256']==sha(a.data)
         assert protocol['budget_caps']['learning_candidates_per_family_seed']>=12
     spec=dict(protocol_sha256=sha(a.protocol),data_sha256=sha(a.data),metadata_sha256=sha(a.metadata),
-        jobs=(contextual_gate_jobs(protocol['budget_caps']['training_seeds'],selection) if a.contextual_gate_extension else
+        jobs=(context_readout_refit_jobs(protocol['budget_caps']['training_seeds'],selection,include_ordinary) if a.context_readout_refit else
+              contextual_gate_jobs(protocol['budget_caps']['training_seeds'],selection) if a.contextual_gate_extension else
               (neural_refinement_jobs if a.neural_lr_refinement else jobs)(protocol['budget_caps']['training_seeds'])),width=128,
         shared_data_roles=['train','imitation_validation'],closed_loop_development_used=False,
         selection='Each model uses whole-identity validation MSE (ordinary temporal nets also their registered integrated proxy). Later common development budget is separate.',
@@ -139,6 +183,22 @@ def main():
             mechanism='Existing fixed random sigmoid gate modulates reservoir leak using the same twelve proprioceptive context values. Only ESN readout learns; matched networks get the identical fixed gate.',
             accounting='Additional24 ridge candidates per ESN seed,12 memoryless,2 gradient fits per matched neural family. ESN cumulative48; memoryless24; ordinary+matched MLP/RNN pooled14 each. Parent fit cost separate.',
             next_selection='All21 models on the same8 development conditions; compare variants across all3 seeds by the existing strict/task/horizon/penetration/RMSE/torque rule. No new data or synthetic-probe labels.')
+    if a.context_readout_refit:
+        reused=[] if include_ordinary else [c for c in selection['selected_candidates']
+            if c['category'] in ('ordinary_mlp','ordinary_rnn') and c['variant']=='point']
+        if not include_ordinary:
+            assert len(reused)==6 and len({c['name'] for c in reused})==6
+            # These are server archive paths, intentionally not remapped or
+            # reread as local files. Registration verifies them on the server.
+            assert all(c['seed'] in protocol['budget_caps']['training_seeds'] for c in reused)
+        spec.update(stage='state_context_readout_refit', amendment_sha256=sha(a.amendment),
+            learning_rate_selection_sha256=sha(a.learning_rate_selection),
+            refit_data_receipt_sha256=sha(a.refit_data_receipt), refit_data_receipt=data_receipt,
+            reused_ordinary_candidates=reused, ordinary_refit_required=include_ordinary,
+            mechanism='Fixed128 state-times-current-proprioception readout features; no leak gate. Pure ESN trains only final coefficients; matched MLP/RNN inherit the same fixed projection.',
+            accounting='Additional12 ridge fits per ESN/memoryless seed; one4000-update fit per matched neural subfamily/seed, plus ordinary only if data changed. ESN cumulative60, memoryless36, pooledMLP/RNN15 or16 each; shared cap60. Parent cost remains visible.',
+            next_selection='All12 or18 new models on all8 existing development conditions. Same selected-teacher data access for all6 families; identical-data ordinary fits and development histories reused from registered rate selection, never duplicated. Existing candidates remain eligible; family choice across all3 seeds, no final feedback.',
+            limitation='One extra registered point-loss variant, no new rate/gate/temporal search. Changed teacher data, when present, prevents claiming an isolated readout-mechanism benefit versus earlier cohorts.')
     if (out/'SPECIFICATION.json').exists():assert read(out/'SPECIFICATION.json')==spec
     else:write(out/'SPECIFICATION.json',spec)
     if a.register_only:print(json.dumps(dict(jobs=len(spec['jobs']),specification_sha256=sha(out/'SPECIFICATION.json'))));return

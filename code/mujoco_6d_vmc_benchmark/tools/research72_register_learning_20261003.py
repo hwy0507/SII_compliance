@@ -34,11 +34,30 @@ def main():
     assert state['specification_sha256'] == sha(learning/'SPECIFICATION.json')
     assert spec['protocol_sha256'] == protocol_sha
     gated=spec.get('stage')=='contextual_gate_extension'
+    refit=spec.get('stage')=='state_context_readout_refit'
     if gated:
         assert a.amendment and sha(a.amendment)==spec['amendment_sha256']
         amendment=read(a.amendment)
         assert amendment['protocol_sha256']==protocol_sha and amendment['new_learning_cap_per_family_seed']==48
-    expected=21 if gated else 33
+    if refit:
+        assert a.amendment and sha(a.amendment)==spec['amendment_sha256']
+        amendment=read(a.amendment)
+        assert amendment['scope']=='fixed_state_context_readout_selected_teacher_refit'
+        assert amendment['protocol_sha256']==protocol_sha and amendment['new_learning_cap_per_family_seed']==60
+        receipt=spec['refit_data_receipt']
+        assert receipt['protocol_sha256']==protocol_sha and receipt['selected_teacher_verified']
+        assert receipt['training_data_sha256']==spec['data_sha256']
+        assert all(sha(e['path'])==e['sha256'] for e in receipt['evidence'])
+        rates=read(root/'NEURAL_LR_SELECTION.json')
+        assert sha(root/'NEURAL_LR_SELECTION.json')==spec['learning_rate_selection_sha256']
+        if not spec['ordinary_refit_required']:
+            assert spec['data_sha256']==rates['data_sha256']
+            assert len(spec['reused_ordinary_candidates'])==6
+            for c in spec['reused_ordinary_candidates']:
+                assert c in rates['selected_candidates']
+                assert sha(c['checkpoint'])==c['checkpoint_sha256']
+                assert read(Path(c['checkpoint']).parent/'TRAINING_COMPLETE.json')['data_sha256']==spec['data_sha256']
+    expected=(18 if spec['ordinary_refit_required'] else 12) if refit else 21 if gated else 33
     assert len(state['rows']) == len(spec['jobs']) == expected
     assert {r['name'] for r in state['rows']} == {j['name'] for j in spec['jobs']}
     assert all(sha(learning/'source'/k) == h
@@ -72,7 +91,10 @@ def main():
         archived_learning_directory=str(learning),
         variant_selection='Within each family use summed strict, then task, then full horizons across all three seeds; break ties by worst penetration, mean RMSE, mean actual peak torque, lexical variant. Retain every seed for the chosen variant, never choose a lucky seed.',
         contact_reporting='Report exposure alongside force and recovery; absent contact is NA, not zero.')
-    if gated:result['amendment_sha256']=sha(a.amendment)
+    if gated or refit:result['amendment_sha256']=sha(a.amendment)
+    if refit:
+        result.update(refit_data_receipt=spec['refit_data_receipt'],
+            ordinary_refit_required=spec['ordinary_refit_required'], reused_ordinary_candidates=spec['reused_ordinary_candidates'])
     with a.output.open('x') as f:
         json.dump(result, f, indent=2, allow_nan=False)
         f.write('\n')

@@ -90,11 +90,44 @@ def main():
         if label=='context':candidates.extend(models)
     candidates.extend(rates['selected_candidates'])
     assert len({c['name'] for c in candidates})==len(candidates)==54
+    candidate_data={c['name']:rates['data_sha256'] for c in candidates}
+    refit_amendment=root/'AMENDMENT_02_CONTEXT_READOUT_REFIT.json'
+    extra_count=0
+    if refit_amendment.exists():
+        extra=read(refit_amendment)
+        assert extra['protocol_sha256']==pdigest and extra['new_learning_cap_per_family_seed']==60
+        assert extra['scope']=='fixed_state_context_readout_selected_teacher_refit'
+        phase=root/'context_readout_refit_development_v1'
+        models,rows,proof=load_phase(phase,pdigest,conditions)
+        spec=read(phase/'SPECIFICATION.json')
+        assert spec['amendment_sha256']==sha(refit_amendment)
+        extra_count=18 if spec['ordinary_refit_required'] else 12
+        assert len(models)==extra_count and len({c['name'] for c in models})==extra_count
+        expected={'esn','memoryless','matched_mlp','matched_rnn'}
+        if spec['ordinary_refit_required']:expected|={'ordinary_mlp','ordinary_rnn'}
+        else:
+            assert spec['data_sha256']==rates['data_sha256']
+            reused=spec['reused_ordinary_candidates']
+            assert len(reused)==6
+            assert all(c in rates['selected_candidates'] for c in reused)
+            assert {c['category'] for c in reused}=={'ordinary_mlp','ordinary_rnn'}
+        assert {c['category'] for c in models}==expected
+        assert not set(observations).intersection(rows)
+        observations.update(rows);candidates.extend(models);evidence.extend(proof)
+        candidate_data.update({c['name']:spec['data_sha256'] for c in models})
+        receipt=spec['refit_data_receipt']
+        assert receipt['selected_teacher_verified'] and receipt['training_data_sha256']==spec['data_sha256']
+        assert all(sha(e['path'])==e['sha256'] for e in receipt['evidence'])
+        evidence.extend(receipt['evidence'])
+        evidence.append(dict(path=str(refit_amendment),sha256=sha(refit_amendment)))
+        completion.append(dict(path=str(phase/'execution.json'),sha256=sha(phase/'execution.json')))
+        assert len({c['name'] for c in candidates})==len(candidates)==54+extra_count
     for c in candidates:
         assert sha(Path(c['checkpoint']))==c['checkpoint_sha256']
         metadata=Path(c['checkpoint']).parent/'TRAINING_COMPLETE.json';training=read(metadata)
-        assert training.get('training_data_sha256',training.get('data_sha256'))==rates['data_sha256']
+        assert training.get('training_data_sha256',training.get('data_sha256'))==candidate_data[c['name']]
         c['training_metadata_sha256']=sha(metadata)
+        c['training_data_sha256']=candidate_data[c['name']]
     ranked=rank_variants(candidates,observations,protocol['budget_caps']['training_seeds'],conditions)
     assert set(ranked)=={'esn','memoryless','ordinary_mlp','ordinary_rnn','matched_mlp','matched_rnn'}
     selected=[c for choices in ranked.values() for c in choices[0]['candidates']]
@@ -104,7 +137,8 @@ def main():
         amendment_sha256=sha(root/'AMENDMENT_01_CONTEXT_MEMORY.json'),
         paired_seed_groups=[dict(name=family,names=[c['name'] for c in choices[0]['candidates']]) for family,choices in ranked.items()],
         selection='Registered aggregate strict/task/full-horizon counts, worst penetration, mean RMSE/torque and lexical variant across every seed/condition; learning rates already selected by identity validation.',
-        caveats=['54 eligible frozen weight candidates drawn from75 actually evaluated models; earlier unselected learning rates remain in the exposure ledger.',
+        caveats=[f'{len(candidates)} eligible frozen weight candidates drawn from{75+extra_count} actually evaluated models; earlier unselected learning rates remain in the exposure ledger.',
+            'Optional registered final refit uses the same selected-teacher data for every learning family; selected models may still come from older cohorts. Data generation and architecture changes are not an isolated mechanism ablation.',
             'Family-selected ESN versus family-selected memoryless may use different gates/losses; do not call it an isolated memory ablation.',
             'No heldout data read. Selection is not a final result; all selected seeds proceed even when development success is zero.'])
     with a.output.open('x') as f:json.dump(result,f,indent=2,allow_nan=False);f.write('\n')
