@@ -1,5 +1,14 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-03 11:49UTC 新72小时公平比较研究已启动
+
+仓库根 `RESEARCH_STATUS.md` 为固定进度入口。新授权窗口至10-06 11:30UTC，初批48个事先登记的
+teacher训练/验证/开发回合正在Spark四队列运行，正式dt5e-5、同v6/门槛；24最终新条件封存未测。
+计划同数据ESN/MLP/RNN、显式经典及RL适配预算、逐方法曝光账本；这些训练/适配目前均未完成。
+不把primitive迁移失败写成RL本质失败，不只给proposed额外数据。基础main33f4380/baselineebb0e1e已实时核对。
+服务器原生根 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/`；
+公开协议/源hash见 `evidence/research72_20261003/` 和根更新日志。前轮正式两个ESN失败结论保留。
+
 ### 2026-10-03 全26方法同一正式锚点实际重跑完成
 
 新增[正式测试矩阵](evidence/all_methods_formal_20261003/report/MATRIX.md)：26冻结模型全部用dt5e-5、

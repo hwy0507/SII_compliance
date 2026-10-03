@@ -1,0 +1,111 @@
+{
+  "schema": "sii-research72-v1",
+  "registered_utc": "2026-10-03T11:48:47.642978+00:00",
+  "authorization_start_utc": "2026-10-03T11:30:00+00:00",
+  "dispatch_deadline_utc": "2026-10-06T11:30:00+00:00",
+  "time_basis": "User authorized approximately 3\u20134 days around 11:30 UTC Oct 3; conservative 72 h inclusive of planning. Stop early if sufficient evidence; finish in-flight episodes at cutoff.",
+  "source_base_commit": "33f438075649508ceb8f84479880d5d622f4eb4f",
+  "baseline_commit": "ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6",
+  "protocol_generator_sha256": "188c58b1152ac0502003a0cbca34051892e8d765382d2a6191ce5641bd4e6379",
+  "condition_file_sha256": "6900a0ccf4ba1352c66a4e26a48b6c70049252499f8bac6ec0133b41e359920f",
+  "sealed_condition_sha256": "97ea7c7700b1d415c7139244f2481e0b930d921fe4d86b7913347731d17bf2ed",
+  "teacher_config_sha256": "7bf27f54a98def3714ce25964eb6742662c9ae9189a2df9ddd6d65a8e30b6227",
+  "world": "office-validation-v6",
+  "geometry_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+  "formal_model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+  "physics_dt_s": 5e-05,
+  "duration_s": 55,
+  "environment_seed": 2026091751,
+  "unchanged": [
+    "geometry",
+    "target",
+    "planner",
+    "common WBC",
+    "48D/7D actor contract",
+    "25 Hz actor / 4 ms servo",
+    "actuator amplitude/slew",
+    "contact material",
+    "task/strict gates",
+    "ball launch 2 s"
+  ],
+  "disturbance_distribution": {
+    "fields": [
+      "ball_speed",
+      "person_start",
+      "rod_start",
+      "person_stroke",
+      "rod_stroke"
+    ],
+    "lower": [
+      1.305,
+      3.5,
+      12.5,
+      0.18,
+      0.2115
+    ],
+    "upper": [
+      1.595,
+      4.5,
+      13.5,
+      0.22,
+      0.2585
+    ],
+    "scope": "Same previously registered local disturbance ranges, new identities; not new geometry or broad real-world generalization."
+  },
+  "data_roles": {
+    "train": 32,
+    "imitation_validation": 8,
+    "development": 8,
+    "sealed_final": 24
+  },
+  "first_batch": {
+    "teacher": "enhanced35mm",
+    "episodes": 48,
+    "qualification": "full 55 s AND original task AND strict; failed executions retained outside positive demonstration set",
+    "training_targets": "Save actual requested, clipped, filtered action and physical execution; common-filter-aware learning may be compared without changing deployment filter."
+  },
+  "budget_caps": {
+    "teacher_parameter_candidates": 12,
+    "classical_candidates_per_family": 12,
+    "learning_candidates_per_family_seed": 24,
+    "training_seeds": [
+      2026100301,
+      2026100302,
+      2026100303
+    ],
+    "rl_adaptation_steps_per_family_seed": 80000,
+    "rl_families": [
+      "parameter_admittance",
+      "parameter_impedance",
+      "parameter_vmc",
+      "direct_metric",
+      "direct_office_task"
+    ]
+  },
+  "budgets_semantics": "Caps, not promises of exhausted compute or equality of unlike operations. Each stage registers actual candidates before runs; ledger reports data, optimizer, simulator and wall time separately. Stop new development by hour 48 to reserve audit/test time.",
+  "fairness": [
+    "Same qualifying demonstrations/splits to pure ESN, MLP and RNN",
+    "128 hidden/reservoir units; also report trainable/total parameters, latency and exposure",
+    "Memoryless and temporal-loss ablations on matched data",
+    "Classical/RL adaptation uses train/development only; frozen primitive-transfer results remain separate",
+    "Freeze every final model before any sealed rollout; evaluate all registered finalists, no success eligibility filter",
+    "No test-based retraining or gate/environment modification; preserve failure and numerical abort"
+  ],
+  "analysis": [
+    "Primary original task/strict success with paired conditions and seed uncertainty",
+    "Contact exposure and P95/peak/force-magnitude integral by event; absent contact is NA",
+    "Recovery latency with censoring; completion and released-placement evidence",
+    "Conditional jointly-successful comparisons accompanied by full-cohort failures/coverage",
+    "RMSE, cumulative tracking error, actual actuator peak/slew, peak speed",
+    "Paired confidence intervals and multiplicity disclosure, no post-hoc weighted winner score"
+  ],
+  "resources": {
+    "local_simulators": 1,
+    "local_threads": 1,
+    "memory_max_per_worker": "3G",
+    "swap_max": 0,
+    "spark_simulators": 4,
+    "placement": "Prefer local learning/postprocessing; native frozen Spark libraries for physics parity."
+  },
+  "completion": "Stop when protocol, robust comparisons, independent audits and report are complete, even if ESN does not win. Otherwise stop dispatch at deadline and publish remaining gaps. No journal submission or real-hardware claim."
+}

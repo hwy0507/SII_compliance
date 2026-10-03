@@ -1,5 +1,11 @@
 # Data-Driven Compliance Control for FR3
 
+**Active research (2026-10-03–06):** [72-hour progress dashboard](RESEARCH_STATUS.md).
+The new registered campaign expands real teacher trajectories at the formal
+physics step and prepares same-data ESN/MLP/RNN and adapted-baseline comparisons.
+It does not yet establish ESN superiority; live-status snapshots and outstanding
+publication requirements are tracked at that fixed entry.
+
 ### 2026-10-03 same-scene ESN, RNN, MLP and control-baseline study
 
 The new study uses baseline's already published `office-validation-v6` world and

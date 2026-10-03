@@ -1,5 +1,25 @@
 # 更新日志
 
+## 2026-10-03 — 新72小时研究登记与真实teacher采集启动
+
+- 用户授权假期3–4天持续自主研究，保守窗口10-03 11:30至10-06 11:30UTC，含准备时间；
+  不沿用旧截止、不建定时任务。新增固定GitHub入口 `RESEARCH_STATUS.md`，root README链接。
+  开工实时核对main `33f438075649508ceb8f84479880d5d622f4eb4f`、baseline
+  `ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6`；工作树干净、无活动仿真，历史停止作业未动。
+- 新协议先登记32训练/8离线验证/8开发身份，同原扰动范围、同v6几何与gate、正式dt5e-5；
+  另生成24最终身份并封存，仅记录hash。旧最终条件不作为新盲测或训练轨迹。
+  新增3脚本：protocol/role-aware worker/可恢复teacher队列，源码编译与diff检查通过。
+- 11:49UTC实际启动48回合增强35mm VMC采集：4顺序队列、各1线程/MemoryMax3GiB/Swap0。
+  原worker执行和审计不改；保存角色、协议hash、action全链、原始物理与失败。
+  所有完整task/strict合格历史供ESN/MLP/RNN共享；失败留在采集账本，不冒充示范。
+- 服务器原生共享根 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/`；
+  实际源在相邻`research72_20261003_1149_runtime/`，base33f4380＋3新脚本，运行时各queue另存hash清单。
+  初始源tar两端SHA一致 `0c43441298a6a68dac2d25f1578d3ee87ebd49c2c88cd0282a033e78aea4353d`；
+  协议SHA `5457d85726e2a88067e153464b7e50dbc9fcd173b89a9fc5da2da096c0891732`，公开副本在
+  `code/mujoco_6d_vmc_benchmark/docs/evidence/research72_20261003/`，未下载封存条件。
+- 已完成协议/启动核验；运行中真实teacher；未完成新学习、经典/RL适配、新留出与论文证据。
+  预算上限和逐阶段登记不等于已执行或各方法成本相同；不预设ESN获胜，不承诺真机/录用。
+
 ## 2026-10-03 — 26模型同一正式测试场景全部实际重跑完成
 
 - 用户质疑0/0与是否统一测试后，新授权有限26模型×1固定v6锚点、正式dt5e-5实际重跑；
