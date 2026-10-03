@@ -19,6 +19,7 @@ from optimize_tool_contact_20261002 import ROOT,sha,write,now
 from run_all_methods_formal_20261003 import V6,PARAMETER,MENAGERIE
 from run_paper_final_validation_20261003 import ENV
 from research72_probe_online_20261003 import read_event
+from research72_checkpoint_20261003 import checkpoint_hashes
 
 REWARDS=Path('/home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/frozen_adapter01/simba_reward_20260930')
 
@@ -37,6 +38,16 @@ class Replay:
     def save(self,path):
         np.savez_compressed(path,**{k:v[:min(self.count,self.capacity)] for k,v in self.data.items()})
         return dict(count=self.count,capacity=self.capacity,rng_state=self.rng.bit_generator.state,sha256=sha(path))
+    def restore(self,path,state):
+        assert sha(path)==state['sha256'] and state['capacity']==self.capacity
+        count=int(state['count']);assert 0<=count<=self.capacity
+        with np.load(path,allow_pickle=False) as z:
+            assert set(z.files)==set(self.data)
+            for key,values in self.data.items():
+                assert z[key].shape==(count,*values.shape[1:]) and z[key].dtype==values.dtype
+                assert np.isfinite(z[key]).all()
+                values[:count]=z[key]
+        self.count=count;self.rng.bit_generator.state=state['rng_state']
 
 
 def main():
@@ -48,11 +59,17 @@ def main():
     p.add_argument('--probe-receipt',type=Path,required=True)
     p.add_argument('--parameter-source',type=Path,default=PARAMETER,
         help='Independently archived baseline law/priors; allows declared office-development prior initialization')
+    p.add_argument('--resume-checkpoint',type=Path,
+        help='Verified complete episode boundary; resume into a new independent output directory')
+    p.add_argument('--stop-at-step',type=int,
+        help='Optional finite segment boundary; total optimizer schedule and exposure cap remain --steps')
     a=p.parse_args();root=a.root.resolve();out=a.output.resolve()
     parameter=a.parameter_source.resolve()
     protocol=json.loads((root/'PROTOCOL.json').read_text());pdigest=sha(root/'PROTOCOL.json')
     assert a.seed in protocol['budget_caps']['training_seeds']
     assert 1375<=a.steps<=protocol['budget_caps']['rl_adaptation_steps_per_family_seed']
+    segment_limit=a.steps if a.stop_at_step is None else a.stop_at_step
+    assert 1375<=segment_limit<=a.steps
     assert json.loads(a.probe_receipt.read_text())['observations_and_physics_exact']
     assert sha(root/'CONDITIONS.json')==protocol['condition_file_sha256']
     conditions=[c for c in json.loads((root/'CONDITIONS.json').read_text())['conditions'] if c['role']=='train']
@@ -84,19 +101,49 @@ def main():
         smoothness_action='Actual common filtered normalized action7; differs from legacy primitive prefilter smoothing and is disclosed.',
         prior=prior,parameter_source=str(parameter),prior_file_sha256=sha(parameter/'PRIORS.json'),
         probe_receipt=str(a.probe_receipt),probe_receipt_sha256=sha(a.probe_receipt),
-        initialization='from scratch, same official upstream SimbaV2 configuration; no primitive checkpoint or replay',
-        resume='Episode-boundary replay and RNG saved. Automatic optimizer/RNG exact-resume is not implemented; do not silently restart.',
+        initialization=('verified same-cohort episode-boundary resume' if a.resume_checkpoint else
+            'from scratch, same official upstream SimbaV2 configuration; no primitive checkpoint or replay'),
+        resume='Explicit verified episode boundary only, into a new output directory. Incomplete episodes are preserved, never silently retried.',
+        segment_step_limit=segment_limit,
+        exposure_accounting='steps/episodes are cumulative across linked segments; rows contain only this segment. Never sum cumulative steps across segments.',
         fixed_scope='Original full55s gate/physics/actuator. Budget stops before an episode if fewer than1375 steps remain; no overshoot.')
     write(out/'PROTOCOL.json',registered)
     state=dict(status='running',started_utc=now(),host=platform.node(),python=sys.executable,memory_max=memory,
         seed=a.seed,steps=0,episodes=0,updates=0,rows=[],checkpoint_rows=[])
     stop=False;process=None;step=episode=0;pending=None;last_checkpoint_step=0
+    if a.resume_checkpoint is not None:
+        cp=a.resume_checkpoint.resolve();parent_out=cp.parent
+        parent=json.loads((parent_out/'PROTOCOL.json').read_text())
+        for key in ('protocol_sha256','seed','controller','reward','agent_config','utd','maximum_new_physics_steps','prior_file_sha256'):
+            assert parent[key]==registered[key], 'Resume protocol mismatch: '+key
+        previous=json.loads((parent_out/'execution.json').read_text())
+        assert previous['status']=='complete', 'Resume only a completed finite segment'
+        checkpoint_row=next(r for r in previous['checkpoint_rows'] if Path(r['path'])==cp)
+        assert checkpoint_hashes(cp)==checkpoint_row['hashes']
+        runner=json.loads((cp/'office_runner.json').read_text())
+        assert runner['episode_boundary'] and runner['automatic_exact_resume_supported']
+        assert runner['pending_transition'] is None
+        step=int(runner['step']);episode=int(runner['episode'])
+        assert step==checkpoint_row['step']==previous['steps'] and episode==previous['episodes']
+        assert all('step_after' in r for r in previous['rows']), 'Incomplete parent physics cannot be silently replayed'
+        assert step+1375<=segment_limit
+        np.testing.assert_array_equal(order,runner['condition_order'])
+        replay.restore(cp/'office_replay.npz',runner['replay'])
+        assert replay.count==step
+        rng.bit_generator.state=runner['exploration_rng'];agent.load(cp)
+        assert agent.interactions==step and agent.reward_samples==step
+        last_checkpoint_step=step
+        state['resumed_from']=dict(checkpoint=str(cp),hashes=checkpoint_row['hashes'],
+            training_protocol_sha256=sha(parent_out/'PROTOCOL.json'),
+            parent_execution_sha256=sha(parent_out/'execution.json'),inherited_steps=step,inherited_episodes=episode)
     def request_stop(*_):
         nonlocal stop
         stop=True
     signal.signal(signal.SIGTERM,request_stop);signal.signal(signal.SIGUSR1,request_stop)
     def save():
-        state.update(steps=step,episodes=episode,updates=agent.updates,diagnostics=agent.diagnostics(),stop_requested=stop)
+        inherited=state.get('resumed_from',{})
+        state.update(steps=step,episodes=episode,updates=agent.updates,diagnostics=agent.diagnostics(),stop_requested=stop,
+            new_segment_steps=step-inherited.get('inherited_steps',0),new_segment_episodes=episode-inherited.get('inherited_episodes',0))
         write(out/'execution.json',state)
     def checkpoint():
         nonlocal last_checkpoint_step
@@ -104,13 +151,13 @@ def main():
         if cp.exists():return
         agent.save(cp);replay_state=replay.save(cp/'office_replay.npz')
         write(cp/'office_runner.json',dict(step=step,episode=episode,replay=replay_state,exploration_rng=rng.bit_generator.state,
-            condition_order=order.tolist(),pending_transition=None,episode_boundary=True,automatic_exact_resume_supported=False))
+            condition_order=order.tolist(),pending_transition=None,episode_boundary=True,automatic_exact_resume_supported=True))
         state['checkpoint_rows'].append(dict(path=str(cp),step=step,episode=episode,
-            hashes={f.name:sha(f) for f in cp.iterdir() if f.is_file()}));last_checkpoint_step=step;save()
+            hashes=checkpoint_hashes(cp)));last_checkpoint_step=step;save()
     save()
     try:
         with (out/'training.jsonl').open('x') as training_log:
-            while step+1375<=a.steps and datetime.now(timezone.utc)<deadline and not stop:
+            while step+1375<=segment_limit and datetime.now(timezone.utc)<deadline and not stop:
                 c=conditions[int(order[episode%len(order)])];run=out/f'episode_{episode:05d}_{c["id"]}'
                 cmd=[sys.executable,str(ROOT/'tools/research72_worker_20261003.py'),'--worker-kind','online',
                     '--research-protocol',str(root/'PROTOCOL.json'),'--protocol-sha256',pdigest,'--research-condition',c['id'],

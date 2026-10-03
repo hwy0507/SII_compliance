@@ -1,5 +1,28 @@
 # 更新日志
 
+## 2026-10-03 — RL嵌套checkpoint修复、边界续跑与有限训练登记
+
+- main45662c03ca40269f08e183fa6e814a900f026aca已推送核对，baseline仍ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6。
+  已提交源码在`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/45662c03ca40269f08e183fa6e814a900f026aca/`，
+  Git归档SHA b8eed5e8612ddfdf1e0569c9b71080d929aff11e6d724a6c6918276b33ef44d2，3111文件内容/大小/模式核验通过。
+- 新RL适配开训前发现hash清单遗漏嵌套模型/优化器文件；修为递归完整清单，拒绝缺组件和symlink，评估要求精确文件集合。
+  原生Spark无物理回归通过：5D与7D分别比较112个状态数组，保存/恢复后三次动作及优化更新逐值一致，
+  replay内容/采样RNG一致。每模型71个原agent文件均覆盖；不将该工程权重当训练baseline，0新增物理步。
+- 新增显式完整回合边界续跑，恢复优化器/归一化/actor RNG、replay/RNG、探索RNG、条件顺序与累计计数。
+  只恢复已完整结束的段到新目录，不自动覆盖或重试中断回合。实际物理分段端到端验证尚待首个训练段。
+- 登记15模型（RL导纳/阻抗/VMC、direct metric/office_task，各3seed），各最多80000累计步。
+  初始5500步段不改变总学习率计划；续跑不清回放、不重复计曝光。参数中心沿事先规则从经典开发确认中选择，方程/范围不变。
+  `sii-r72-rl-office-adaptation-v1`正在等待统一开发与经典确认，未开始RL物理训练，不创建定时任务。
+- 新共享4槽位flock，6个竞争进程工程验证峰值4且全部释放；新RL限3队列、每队列3GiB/CPUQuota100%，
+  为ESN后续开发留容量。检测到未使用锁的旧仿真时等待，不终止或热改稳定作业。现有筛选20/96完成（非最终统计）。
+- 本轮根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/`：
+  `rl_checkpoint_probe_v2/`、`rl_office_adaptation_v1/SPECIFICATION.json`及对应Git小证据可核验。
+  源在相邻`research72_20261003_1149_rl_runtime_v3/`，由已归档development_v3加三层overlay组成，
+  SHA依次a7b674ba3e640aa512e59bb618efcb02ceb79204bc96559c7d18981c460b753b、
+  c5b697572199b6895a80e07b5c3422ebcdcafbed8d3706776d50250824a70f42、
+  685ad0d2bae2f002f56646ef013b2d36a0104c5ec27088107107e421e60ae0a1，两端均核验；base45662c0＋未提交改动，非干净commit运行。
+- 编译/diff检查通过。24最终条件仍封存；RL学习效果、全部模型闭环对比、最终审计和投稿结果仍未完成。
+
 ## 2026-10-03 — 真实数据与33模型拟合完成，启动统一开发比较
 
 - 本轮开工实时核对main fb484272f42e2e89fc54bfbec839f9d1b7d50900、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；

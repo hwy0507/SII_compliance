@@ -42,14 +42,14 @@ def validate(root,spec):
     return protocol
 
 
-def queue(root,phase,index):
+def queue(root,phase,index,queue_count=4):
     spec=read(phase/'SPECIFICATION.json');protocol=validate(root,spec)
     deadline=datetime.fromisoformat(protocol['authorization_start_utc'])+timedelta(hours=48)
     output=phase/f'queue_{index}';output.mkdir(exist_ok=False)
     source=output/'source'
     for folder in ('scripts','tools','assets'):
         shutil.copytree(ROOT/folder,source/folder,ignore=shutil.ignore_patterns('__pycache__','*.pyc','outputs'))
-    manifest=[(c,condition) for condition in spec['conditions'] for c in spec['candidates']][index::4]
+    manifest=[(c,condition) for condition in spec['conditions'] for c in spec['candidates']][index::queue_count]
     state=dict(status='running',started_utc=now(),specification_sha256=sha(phase/'SPECIFICATION.json'),
         protocol_sha256=sha(root/'PROTOCOL.json'),rows=[])
     write(output/'execution.json',state)
@@ -87,34 +87,46 @@ def queue(root,phase,index):
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--root',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True);p.add_argument('--specification',type=Path)
-    p.add_argument('--queue',type=int,choices=range(4));a=p.parse_args();root=a.root.resolve();phase=a.output.resolve()
-    if a.queue is not None:queue(root,phase,a.queue);return
+    p.add_argument('--queue',type=int,choices=range(4));p.add_argument('--queue-count',type=int,choices=range(1,5),default=4)
+    p.add_argument('--managed-slots',action='store_true')
+    a=p.parse_args();root=a.root.resolve();phase=a.output.resolve()
+    if a.queue is not None:
+        assert a.queue<a.queue_count
+        if a.managed_slots:
+            from research72_slots_20261003 import simulation_slot
+            deadline=datetime.fromisoformat(read(root/'PROTOCOL.json')['authorization_start_utc'])+timedelta(hours=48)
+            with simulation_slot(root,deadline):queue(root,phase,a.queue,a.queue_count)
+        else:queue(root,phase,a.queue,a.queue_count)
+        return
     assert a.specification is not None
     spec=read(a.specification);protocol=validate(root,spec)
-    assert not active_workers(), 'Existing physics; wait without duplicate dispatch'
-    for proc in Path('/proc').glob('[0-9]*/cmdline'):
-        try:names={Path(x.decode(errors='replace')).name for x in proc.read_bytes().split(b'\0')}
-        except OSError:continue
-        assert 'research72_worker_20261003.py' not in names,'Another research simulation active'
+    if not a.managed_slots:
+        assert not active_workers(), 'Existing physics; wait without duplicate dispatch'
+        for proc in Path('/proc').glob('[0-9]*/cmdline'):
+            try:names={Path(x.decode(errors='replace')).name for x in proc.read_bytes().split(b'\0')}
+            except OSError:continue
+            assert 'research72_worker_20261003.py' not in names,'Another research simulation active'
     phase.mkdir(parents=True,exist_ok=False);shutil.copy2(a.specification,phase/'SPECIFICATION.json')
     assert re.fullmatch('[a-zA-Z0-9_-]+',phase.name)
     with (phase/'coordinator.lock').open('x') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
-        state=dict(status='running',started_utc=now(),specification_sha256=sha(phase/'SPECIFICATION.json'),queues=[])
+        state=dict(status='running',started_utc=now(),specification_sha256=sha(phase/'SPECIFICATION.json'),queues=[],
+            queue_count=a.queue_count,managed_slots=a.managed_slots)
         write(phase/'execution.json',state)
         def launch(i):
             cmd=['systemd-run','--user','--wait','--pipe','--collect','--unit=sii-r72-'+phase.name.replace('_','-')+'-'+str(i),
                 '--property=MemoryMax=3G','--property=MemorySwapMax=0']
             env={**ENV,'SII_SOURCE_BASE_COMMIT':os.environ.get('SII_SOURCE_BASE_COMMIT',protocol['source_base_commit'])}
             cmd+=['--setenv='+k+'='+v for k,v in env.items()]
-            cmd+=[sys.executable,str(Path(__file__).resolve()),'--root',str(root),'--output',str(phase),'--queue',str(i)]
+            cmd+=[sys.executable,str(Path(__file__).resolve()),'--root',str(root),'--output',str(phase),'--queue',str(i),'--queue-count',str(a.queue_count)]
+            if a.managed_slots:cmd+=['--managed-slots']
             with (phase/f'queue_{i}.log').open('x') as log:rc=subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT).returncode
             return dict(queue=i,command=cmd,returncode=rc)
         try:
-            with ThreadPoolExecutor(max_workers=4) as pool:state['queues']=list(pool.map(launch,range(4)))
+            with ThreadPoolExecutor(max_workers=a.queue_count) as pool:state['queues']=list(pool.map(launch,range(a.queue_count)))
             assert all(q['returncode']==0 for q in state['queues'])
             rows=[]
-            for i in range(4):
+            for i in range(a.queue_count):
                 q=phase/f'queue_{i}';cmd=[sys.executable,str(ROOT/'tools/audit_paper_phase_20261003.py'),
                     '--phase',str(q),'--output',str(phase/f'queue_{i}_analysis'),'--model-sha256',protocol['formal_model_sha256']]
                 with (phase/f'audit_{i}.log').open('x') as log:subprocess.run(cmd,check=True,env={**os.environ,**ENV},stdout=log,stderr=subprocess.STDOUT)

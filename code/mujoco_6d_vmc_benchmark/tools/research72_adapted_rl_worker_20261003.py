@@ -35,7 +35,8 @@ def main():
     training=json.loads(training_path.read_text())
     assert training['controller']==a.controller
     assert worker.sha(a.parameter_source/'PRIORS.json')==training['prior_file_sha256']
-    for name,h in expected['hashes'].items():assert worker.sha(a.agent_checkpoint/name)==h
+    from research72_checkpoint_20261003 import checkpoint_hashes
+    assert checkpoint_hashes(a.agent_checkpoint)==expected['hashes']
     cp=json.loads((a.agent_checkpoint/'official_agent_state.json').read_text());cfg=cp['config'];utd=cp['utd']
     assert cfg==training['agent_config']
     sys.path.insert(0,str(a.parameter_source))
