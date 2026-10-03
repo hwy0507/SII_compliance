@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-03 — 补齐放置阶段接触负载、保留原事件统计及全失败安全审计
+
+- 18:53UTC实时核对main2bd499594f45fce1888e34128bdaa67d260dc23a、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；读取AGENTS和两日志。
+  main2bd源码在arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/2bd499594f45fce1888e34128bdaa67d260dc23a/核验3173文件，
+  tar SHA966cc1894a3c16e39ea745d1e0ea8a9b88bda61a31cec823e23c52332030f8f8。
+- development_001的全6ESN与teacher曲线暴露晚期人体接触。新增metrics v4全实际时长/原事件窗外负载，
+  保留原窗口、恢复与所有gate；补充属公开开发观察后、最终开封前登记，不宣称最初预注册。
+  final report将短失败、完整失败、缺字段和无接触分开；安全表包含短回合外穿透/edge及执行器幅值/变化率审计。
+  external不含payload而edge含robot或payload，不把重叠列相加；补充表不作配对优越性推断。
+- 本地14项测试通过；初次入口缺PYTHONPATH导入失败已纠正。Spark原生7条完整55s只读回归：所有旧数值/结果精确不变，
+  ESN302point窗外人体力模积分1.430966Ns/接触0.29505s，原teacher0.167416Ns/0.02675s；不是安全/优越性结论。
+  0新物理、0拟合。服务器本轮根/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/下
+  supplemental_contact_regression_v1/results/REGRESSION.json SHA29ee8fff3ccd85bc50746341814d8278f64fd526aae9c92e099220ef29075c04，7产物hash核验。
+  public_condition1_esn_curves_v1/保留全6候选+teacher图；精确源/图hash见RESEARCH72_SUPPLEMENTAL_CONTACT_20261003.md。
+- 18:59UTC初始学习开发115/264，前三条件各33完整；第三条件总11task/5strict，ESN/matchedRNN各3/6task、1/6strict，
+  matchedMLP2/6strict、memoryless1/3strict、ordinaryMLP/RNN0strict。含损失候选，非最终模型统计。
+  4稳定物理队列未重启，RL/确认teacher/新组等待；真正最终24封存。尚无最终胜者或可投稿结论。
+
 ## 2026-10-03 — 38模型冻结前汇总、相同teacher无重复采集与方法定位
 
 - 本阶段基于已实时核对main9d996dde19adf4bb816cc403b51bc5025f527f32及baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；收尾重读AGENTS。

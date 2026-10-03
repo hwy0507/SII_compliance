@@ -13,6 +13,8 @@ def metrics(success=True, full=True, exposed=True, force=10.):
         contact={event: dict(exposure=exposed, contact_p95_force_n=force if exposed else None,
             peak_force_n=force if exposed else 0., impulse_ns=force if exposed else 0.,
             contact_duration_s=1. if exposed else 0., extended_no_contact_longest_s=None) for event in EVENTS},
+        safety_audit=dict(external_penetration_mm=.1 if full else 2.1, edge_penetration_mm=.05,
+            actuator_amplitude_and_command_slew_valid=True, command_torque_rate_peak_nmps=[100.]*7),
         recovery={event: dict(exposed=exposed, settled_rejoin_time_s=None,
             right_censored=exposed, observation_window_s=2.) for event in ('ball', 'human', 'rod')})
     record.update({field: 1. for field in SCALARS})
@@ -30,6 +32,23 @@ def row(model, condition='c0', **kwargs):
 
 
 class ReportTests(unittest.TestCase):
+    def test_supplemental_missing_short_and_unexposed_are_distinct(self):
+        rows = [row('esn1', full=False, success=False), row('esn2'), row('zero')]
+        rows[0]['metrics']['supplemental_contact'] = dict(outside_event_window=dict(human=dict(
+            exposure=True, contact_p95_force_n=100., peak_force_n=120., impulse_ns=2., contact_duration_s=.1)))
+        rows[1]['metrics']['supplemental_contact'] = dict(outside_event_window=dict(human=dict(
+            exposure=False, contact_p95_force_n=None, peak_force_n=0., impulse_ns=0., contact_duration_s=0.)))
+        report = assemble(models(), ['c0'], rows)
+        esn = report['families']['esn']['supplemental_contacts']['outside_event_window']['human']
+        self.assertEqual(esn['short_horizon']['metrics']['peak_force_n']['mean'],120.)
+        self.assertEqual(esn['full_horizon']['exposed'],0)
+        self.assertEqual(esn['full_horizon']['available'],1)
+        self.assertIsNone(esn['full_horizon']['metrics']['peak_force_n']['mean'])
+        baseline = report['families']['nominal_zero']['supplemental_contacts']['outside_event_window']['human']
+        self.assertEqual(baseline['full_horizon']['missing'],1)
+        self.assertEqual(baseline['full_horizon']['available'],0)
+        self.assertIn('Supplemental contact', markdown(report))
+
     def test_missing_retains_denominator_and_separates_failure(self):
         report = assemble(models(), ['c0', 'c1'], [row('esn1'), row('esn2', success=False)])
         esn = report['families']['esn']
@@ -60,6 +79,8 @@ class ReportTests(unittest.TestCase):
         self.assertEqual(esn['full_horizon_metrics']['rmse_mm']['mean'], 1)
         self.assertEqual(esn['short_horizon_metrics']['rmse_mm']['mean'], .001)
         self.assertEqual(esn['strict']['successes'], 1)
+        self.assertEqual(esn['all_observed_safety']['external_penetration_mm']['maximum'], 2.1)
+        self.assertEqual(esn['all_observed_safety']['episodes'], 2)
         recovery = esn['recovery']['rod']
         self.assertEqual(recovery['full_horizon']['right_censored'], 1)
         self.assertEqual(recovery['short_horizon']['right_censored'], 1)
@@ -136,6 +157,7 @@ class ReportTests(unittest.TestCase):
                 actuator_amplitude_and_command_slew_valid=True, independent_contact_sidecar_verified=True,
                 model_sha256='model', trace_sha256='trace', audit_sha256=first['audit_sha256'],
                 task_success=True, strict_success=True, full_horizon=True,
+                penetration_mm=.1, edge_penetration_mm=.05, command_torque_rate_peak_nmps=[100.]*7,
                 rmse_mm=1., peak_torque_nm=1., peak_speed_mps=1.)
             analysis = phase/'queue_0_analysis'
             write(analysis/'INDEPENDENT_AUDIT.json', dict(rows=[audit], pending=[]))

@@ -1,5 +1,13 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-03 18:59UTC：接触统计覆盖补齐与第三完整开发条件
+
+初始开发115/264；第三共同条件33候选11task/5strict，ESN与matchedRNN各3/6task、1/6strict。
+matchedMLP2/6strict、memoryless1/3strict；ordinaryMLP/RNN0严格。是含损失候选的开发结果，非最终模型泛化率。
+全6ESN与原teacher时序图揭示放置阶段窗外人体接触；新v4保留旧指标，补全部实际时长/窗外负载。
+7条原生完整轨迹旧字段精确一致，14合成检查通过；没有新拟合或物理回合、无运行快照热改。
+逐条hash、全部曲线和登记说明见RESEARCH72_SUPPLEMENTAL_CONTACT_20261003.md；最终仍封存。
+
 ## 2026-10-03 18:36UTC：最终入口串联与方法定位
 
 开发100/264已有逐回合AUDIT，第三条件仍32/33；不使用未齐条件决定模型。当前无新拟合/预算修订。

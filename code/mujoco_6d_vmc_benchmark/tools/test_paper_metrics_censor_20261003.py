@@ -60,6 +60,37 @@ class CensorTests(unittest.TestCase):
         self.assertFalse(result['contact']['pillar']['exposure'])
         self.assertIsNone(result['contact']['pillar']['contact_p95_force_n'])
 
+    def test_late_human_contact_preserved_without_changing_event_metrics(self):
+        root = self.make_run(55.)
+        before = measure(root)
+        with np.load(root/'research_substeps.npz') as data:
+            values = {k: data[k].copy() for k in data.files}
+        # Ten 10 ms samples well outside the human push window [1,8].
+        values['contact_force_sum'][2000:2010, 2] = 4.
+        values['contact_force_sum'][:, 0] = values['contact_force_sum'][:, 1:4].sum(axis=1)
+        np.savez(root/'research_substeps.npz', **values)
+        path = root/'research_channels.json'; channels = json.loads(path.read_text())
+        channels['telemetry_sha256'] = sha(root/'research_substeps.npz')
+        path.write_text(json.dumps(channels))
+        after = measure(root)
+        self.assertEqual(before['contact'], after['contact'])
+        self.assertEqual(before['recovery'], after['recovery'])
+        extra = after['supplemental_contact']
+        late = extra['outside_event_window']['human']
+        self.assertTrue(late['exposure'])
+        self.assertAlmostEqual(late['contact_duration_s'], .1)
+        self.assertAlmostEqual(late['impulse_ns'], .4)
+        self.assertEqual(late['peak_force_n'], 4.)
+        self.assertAlmostEqual(extra['whole_observed_horizon']['human']['impulse_ns'],
+                               after['contact']['human']['impulse_ns']+.4)
+        self.assertNotIn('external_robot', extra['outside_event_window'])
+
+    def test_short_history_supplement_has_no_invented_future(self):
+        extra = measure(self.make_run(2.))['supplemental_contact']
+        self.assertAlmostEqual(extra['whole_observed_horizon']['human']['observed_duration_s'],2.)
+        self.assertFalse(extra['outside_event_window']['human']['exposure'])
+        self.assertIsNone(extra['outside_event_window']['human']['contact_p95_force_n'])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -17,6 +17,21 @@ def segments(mask):
     return zip(np.flatnonzero(np.diff(padded) == 1), np.flatnonzero(np.diff(padded) == -1))
 
 
+def force_statistics(time, dt, force, mask, semantics):
+    """Observed support only; integral is of summed magnitudes, not net force."""
+    active = mask & (force > FORCE_THRESHOLD_N)
+    ids = np.flatnonzero(active)
+    return dict(observed_duration_s=float(dt[mask].sum()), exposure=bool(len(ids)),
+        force_semantics=semantics, contact_duration_s=float(dt[active].sum()),
+        impulse_ns=float(np.sum(force[mask]*dt[mask])),
+        peak_force_n=float(force[mask].max(initial=0.)),
+        contact_p95_force_n=float(np.percentile(force[active], 95)) if len(ids) else None,
+        contact_rms_force_n=float(np.sqrt(np.sum(force[active]**2*dt[active])/dt[active].sum())) if len(ids) else None,
+        force_squared_integral_n2s=float(np.sum(force[mask]**2*dt[mask])),
+        first_contact_s=float(time[ids[0]]) if len(ids) else None,
+        last_contact_s=float(time[ids[-1]]) if len(ids) else None)
+
+
 def measure(run):
     summary = json.loads((run/'rollout.json').read_text())
     state = json.loads((run/'execution.json').read_text())
@@ -75,6 +90,20 @@ def measure(run):
     contact['rod']['extended_no_contact_longest_s'] = rod_gap[0] if rod_gap else None
     contact['rod']['extended_no_contact_interval_s'] = list(rod_gap[1:]) if rod_gap else None
     contact['rod']['gap_requires_prior_contact'] = True
+    # Supplemental after public development inspection, before final opening.
+    # Preserve original commanded-event windows above exactly. Static human
+    # geometry can be encountered again during placement; report those loads.
+    all_samples = np.ones(len(time), dtype=bool)
+    whole = {'external_robot': force_statistics(time, dt, force[:, 0], all_samples,
+                                               channels['force_columns'][0])}
+    outside = {}
+    for name, (start, end, column) in windows.items():
+        whole[name] = force_statistics(time, dt, force[:, column], all_samples,
+                                       channels['force_columns'][column])
+        if name in ('ball', 'human', 'rod'):
+            outside[name] = force_statistics(time, dt, force[:, column],
+                (time < start) | (time > end), channels['force_columns'][column])
+            outside[name]['excluded_event_window_s'] = [float(start), float(end)]
     # Rejoin is explicitly settled rejoin plus reference progress. Fast traversal
     # need not pass it; task completion/progress remain separate primary outcomes.
     recovery = {}
@@ -107,7 +136,7 @@ def measure(run):
                               settled_rejoin_time_s=reached, right_censored=bool(observed and reached is None),
                               applicable=observed, observation_window_s=max(0., float(censor-unload)),
                               criterion='position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage')
-    result = dict(created_utc=now(), metric_version='3-observed-horizon-censor',
+    result = dict(created_utc=now(), metric_version='4-supplemental-whole-horizon-contact',
                   run=str(run.resolve()), metric_source_sha256=sha(Path(__file__)),
                   constants=dict(force_threshold_n=FORCE_THRESHOLD_N, rejoin_error_m=REJOIN_ERROR_M,
                                  settled_speed_mps=SETTLED_SPEED_MPS, hold_s=HOLD_S),
@@ -121,6 +150,8 @@ def measure(run):
                   torque_total_variation_nm_by_joint=total_variation.tolist(),
                   absolute_joint_mechanical_work_j=float(np.sum(np.abs(torque*values['dq']).sum(axis=1)*dt)),
                   contact=contact, recovery=recovery,
+                  supplemental_contact=dict(whole_observed_horizon=whole, outside_event_window=outside,
+                      note='Supplemental descriptive metrics registered after public development inspection, before final opening. Outside means before OR after the original window. No invented future time for aborted runs. External robot excludes payload; edge includes robot OR payload, so channels are not disjoint or additive. No change to event metrics or task/strict gates.'),
                   final_route_cursor=int(cursor[-1]), placement_error_xy_mm=float(summary['placement_error_xy_m']*1000),
                   model_sha256=sha(run/'rollout.mjb'), trace_sha256=sha(run/'rollout.npz'),
                   native_metrics_sha256=sha(run/'rollout_metrics/substep_metrics.npz'),

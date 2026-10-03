@@ -1,6 +1,6 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
-最后人工核验：**2026-10-03 18:36 UTC / 北京时间10月4日02:36**。本页是 GitHub 固定入口；
+最后人工核验：**2026-10-03 18:59 UTC / 北京时间10月4日02:59**。本页是 GitHub 固定入口；
 每个完成的研究批次更新，具体提交见 [UPDATE_LOG.md](UPDATE_LOG.md)。运行状态有时间戳，不代表实时监控。
 
 ## 当前结论
@@ -12,6 +12,13 @@
 [上轮全部26方法正式矩阵](code/mujoco_6d_vmc_benchmark/docs/evidence/all_methods_formal_20261003/report/MATRIX.md)。
 
 ## 本轮状态
+
+18:59UTC初始学习开发115/264已有逐回合AUDIT，前三个条件各33完整。第三条件ESN与matchedRNN均
+3/6任务、1/6严格；matchedMLP2/6严格、memoryless1/3严格，ordinaryMLP/RNN均0严格。
+仍不能宣称ESN领先；增强网络/新记忆组和RL适配继续等前序。4仿真队列未重启。
+已补[全程及事件窗外接触统计](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_SUPPLEMENTAL_CONTACT_20261003.md)，
+避免漏报放置时再次碰到人体模型；7条公开轨迹原生复算旧字段精确不变，14测试通过。
+新指标适用于全部方法，失败/短回合保留，无接触NA；真正最终24条件仍封存。
 
 | 工作 | 状态 | 可核验事实 |
 |---|---|---|

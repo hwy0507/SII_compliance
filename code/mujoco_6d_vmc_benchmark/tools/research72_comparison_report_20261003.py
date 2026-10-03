@@ -17,6 +17,8 @@ EVENTS = ('ball', 'human', 'rod', 'unknown_edge', 'pillar')
 SCALARS = ('rmse_mm', 'position_error_integral_m_s', 'time_above_25mm_s',
            'peak_torque_nm', 'peak_speed_mps', 'absolute_joint_mechanical_work_j')
 CONTACT = ('contact_p95_force_n', 'peak_force_n', 'impulse_ns', 'contact_duration_s')
+SUPPLEMENTAL_SCOPES = {'whole_observed_horizon': ('external_robot',)+EVENTS,
+                       'outside_event_window': ('ball', 'human', 'rod')}
 
 
 def distribution(values):
@@ -79,6 +81,13 @@ def assemble(candidates, conditions, rows):
                     full_horizon_metrics={k: distribution(r[k] for r in full) for k in SCALARS},
                     short_horizon_metrics={k: distribution(r[k] for r in short) for k in SCALARS},
                     contacts={}, recovery={})
+        safety = [r['safety_audit'] for r in records if r.get('safety_audit') is not None]
+        item['all_observed_safety'] = dict(episodes=len(safety),
+            actuator_bound_and_slew_verified=sum(r['actuator_amplitude_and_command_slew_valid'] for r in safety),
+            external_penetration_mm=distribution(r['external_penetration_mm'] for r in safety),
+            edge_penetration_mm=distribution(r['edge_penetration_mm'] for r in safety),
+            maximum_joint_command_rate_nmps=distribution(max(r['command_torque_rate_peak_nmps']) for r in safety),
+            note='Includes short and failed episodes; these diagnostics do not redefine strict success.')
         for event in EVENTS:
             exposed = [r for r in full if r['contact'][event]['exposure']]
             item['contacts'][event] = dict(observed_full_horizons=len(full), full_horizon_exposed=len(exposed),
@@ -90,6 +99,19 @@ def assemble(candidates, conditions, rows):
         for event in ('ball', 'human', 'rod'):
             item['recovery'][event] = dict(full_horizon=recovery_summary(full, event),
                                           short_horizon=recovery_summary(short, event))
+        item['supplemental_contacts'] = {}
+        for scope, events in SUPPLEMENTAL_SCOPES.items():
+            item['supplemental_contacts'][scope] = {}
+            for event in events:
+                populations = {}
+                for label, histories in (('full_horizon', full), ('short_horizon', short)):
+                    observed = [r['supplemental_contact'][scope][event] for r in histories
+                                if event in r.get('supplemental_contact', {}).get(scope, {})]
+                    exposed = [r for r in observed if r['exposure']]
+                    populations[label] = dict(available=len(observed), missing=len(histories)-len(observed),
+                        exposed=len(exposed),
+                        metrics={k: distribution(r.get(k) for r in exposed) for k in CONTACT})
+                item['supplemental_contacts'][scope][event] = populations
         result[family] = item
     comparisons = {}
     if 'esn' in grids:
@@ -121,6 +143,7 @@ def assemble(candidates, conditions, rows):
                          'Contact differences condition on jointly strict, full, exposed pairs and are not causal claims.',
                          'Force integral is the integral of force magnitude, not signed net impulse.',
                          'Short trajectories are separate; unexposed contact metrics are NA.',
+                         'Supplemental whole-horizon and outside-event loads are descriptive, introduced after public development inspection; missing legacy fields are not zero. Outside includes before and after commanded windows. External and edge channels overlap and must not be added.',
                          'Intervals are exploratory, crossed condition/seed bootstrap, not multiplicity-adjusted.',
                          'No scalar winner score, hardware validation, passivity or human-safety claim.'])
 
@@ -196,6 +219,12 @@ def load_evidence(root, phase, lock_path, lock_digest):
                 assert metrics[field] == independent[field]
             for field in ('rmse_mm', 'peak_torque_nm', 'peak_speed_mps'):
                 assert abs(metrics[field]-independent[field]) <= 1e-8
+            metrics['safety_audit'] = dict(
+                external_penetration_mm=independent['penetration_mm'],
+                edge_penetration_mm=independent['edge_penetration_mm'],
+                actuator_amplitude_and_command_slew_valid=independent['actuator_amplitude_and_command_slew_valid'],
+                command_torque_rate_peak_nmps=independent['command_torque_rate_peak_nmps'],
+                provenance='Independent full-substep audit; added annotation, not a field of the hashed metrics file')
             collected.append(dict(candidate=key[0], condition_id=key[1], category=candidate['category'],
                 metrics=metrics, run=str(run), metric_sha256=sha(metric_path)))
         evidence.append(dict(path=str(execution_path), sha256=sha(execution_path)))
@@ -228,8 +257,15 @@ def markdown(report):
         interval_text = 'NA' if interval is None else f'[{value(interval[0])}, {value(interval[1])}]'
         lines.append(f"| {family} | {value(statistic['difference'])} | {interval_text} | "
             f"{statistic['paired_cells']}/{statistic['planned_paired_cells']} |")
+    lines += ['', '## Safety audit: all observed episodes, including short failures', '',
+        '| Family | Audited episodes | Maximum external penetration mm | Maximum edge penetration mm | Maximum joint command change / 4 ms (Nm/s) |',
+        '|---|---:|---:|---:|---:|']
+    for family, r in report['families'].items():
+        safety = r['all_observed_safety']
+        lines.append(f"| {family} | {safety['episodes']} | {value(safety['external_penetration_mm']['maximum'])} | "
+            f"{value(safety['edge_penetration_mm']['maximum'])} | {value(safety['maximum_joint_command_rate_nmps']['maximum'])} |")
     for event in EVENTS:
-        lines += ['', f'## {event}: exposed full episodes only', '',
+        lines += ['', f'## {event}: original event window, exposed full episodes only', '',
             '| Family | Exposed / full | P95 force N (mean) | Force-magnitude integral Ns (mean) | Contact duration s (mean) |',
             '|---|---:|---:|---:|---:|']
         for family, r in report['families'].items():
@@ -248,6 +284,18 @@ def markdown(report):
             paired = comparison['jointly_strict_full_exposed_contacts'][event]
             lines.append(f"| {family} | {paired['contact_p95_force_n']['paired_cells']} | "
                 f"{paired_text(paired['contact_p95_force_n'])} | {paired_text(paired['impulse_ns'])} |")
+    for scope, events in SUPPLEMENTAL_SCOPES.items():
+        lines += ['', f'## Supplemental contact: {scope}', '',
+            'Descriptive exposed episodes, including task failures. Full and short histories remain separate; missing legacy fields are not zero. No paired superiority inference from this table.', '',
+            '| Family | Channel | Horizon | Available / missing | Exposed | P95 N (mean) | Force integral Ns (mean) | Duration s (mean) |',
+            '|---|---|---|---:|---:|---:|---:|---:|']
+        for family, r in report['families'].items():
+            for event in events:
+                for horizon, data in r['supplemental_contacts'][scope][event].items():
+                    m = data['metrics']
+                    lines.append(f"| {family} | {event} | {horizon} | {data['available']} / {data['missing']} | "
+                        f"{data['exposed']} | {value(m['contact_p95_force_n']['mean'])} | "
+                        f"{value(m['impulse_ns']['mean'])} | {value(m['contact_duration_s']['mean'])} |")
     lines += ['', '## Limits', ''] + ['- '+text for text in report['caveats']]
     return '\n'.join(lines)+'\n'
 
