@@ -236,6 +236,44 @@ def load_evidence(root, phase, lock_path, lock_digest):
     return lock['candidates'], conditions, collected, evidence, engineering
 
 
+def rl_replay_coverage(candidates, rows, receipts):
+    """Attach independent RL actor provenance without dropping physical outcomes."""
+    models={c['name']:c for c in candidates if c.get('adapted_rl')}
+    expected={str(Path(r['run']).resolve()):r for r in rows if r['candidate'] in models}
+    verified={}; evidence=[]
+    for path in receipts:
+        record=read(path)
+        assert record['status'] in ('complete','failed_preserved')
+        assert record['physics_steps']==record['training_updates']==0
+        assert record['condition_manifests_read'] is False
+        assert record['source_sha256']==sha(Path(__file__).with_name('research72_rl_actor_replay_20261004.py'))
+        assert record['checkpoint_helper_sha256']==sha(Path(__file__).with_name('research72_checkpoint_20261003.py'))
+        for source,digest in record['parameter_source_sha256'].items():assert sha(source)==digest
+        planned=record['planned_runs']; completed=[r['run'] for r in record['rows']]
+        assert len(planned)==len(set(planned)) and len(completed)==len(set(completed))
+        assert set(planned)<=set(expected)
+        assert set(completed)<=set(planned)
+        if record['status']=='complete':assert set(completed)==set(planned)
+        for replay in record['rows']:
+            run=replay['run']; assert run in expected and run not in verified
+            original=expected[run]; candidate=models[original['candidate']]['adapted_rl']
+            assert record['checkpoint_manifest_sha256']==candidate['manifest_sha256']==sha(candidate['manifest'])
+            assert record['checkpoint_hashes']==read(candidate['manifest'])['hashes']
+            assert replay['raw_actor_replay_max_abs']==0.
+            assert replay['normalization_unchanged'] and replay['counters_unchanged'] and replay['observation_not_mutated']
+            assert set(replay['evidence_sha256'])=={'execution.json','AUDIT.json','rollout.npz','baseline_policy.npz','ADAPTED_RL_CHECKPOINT.json'}
+            for filename,digest in replay['evidence_sha256'].items():assert sha(Path(run)/filename)==digest
+            assert replay['evidence_sha256']['rollout.npz']==original['metrics']['trace_sha256']
+            for field in ('task_success','strict_success','full_horizon'):
+                assert replay[field]==original['metrics'][field]
+            verified[run]=dict(candidate=original['candidate'],condition_id=original['condition_id'],samples=replay['samples'])
+        evidence.append(dict(path=str(Path(path).resolve()),sha256=sha(path)))
+    return dict(status='complete' if len(verified)==len(expected) else 'incomplete',
+        audited_physical_rl_episodes=len(expected), independently_replayed=len(verified),
+        missing_runs=sorted(set(expected)-set(verified)), rows=verified, evidence=evidence,
+        note='Independent frozen actor replay; physical outcomes remain in the matrix even when this extra provenance check is missing. Parameter laws/servo dynamics require their separate audits.')
+
+
 def markdown(report):
     lines = ['# Frozen-model comparison', '',
         f"Audited {report['audited']}/{report['planned']} planned episodes. Missing records remain missing.", '',
@@ -250,6 +288,9 @@ def markdown(report):
             f"{value(s['peak_torque_nm']['mean'])} | {value(s['peak_speed_mps']['mean'])} |")
     lines += ['', 'Counts use planned denominators; where missing > 0, these are observed successes, not complete success rates.',
               'JSON includes success-rate bounds, per-seed counts, failure stages, contact exposure, censored recovery and paired intervals.']
+    if 'independent_rl_actor_replay' in report:
+        replay=report['independent_rl_actor_replay']
+        lines += ['', f"Independent frozen RL actor replay: {replay['independently_replayed']}/{replay['audited_physical_rl_episodes']} physically audited RL episodes ({replay['status']}). Missing actor replay does not erase physical outcomes."]
     lines += ['', '## ESN minus each baseline: strict success', '',
         'Paired observed cells only. Intervals are exploratory; incomplete pairs do not establish a full planned comparison.', '',
         '| Baseline | Rate difference | 95% crossed interval | Paired cells / planned |',
@@ -311,6 +352,8 @@ def main():
     for name in ('root', 'phase', 'model-lock', 'output'):
         parser.add_argument('--'+name, type=Path, required=True)
     parser.add_argument('--lock-sha256', required=True)
+    parser.add_argument('--rl-actor-replay', nargs='*', type=Path, default=[],
+                        help='Separate frozen-RL actor replay receipts; absent coverage remains explicitly incomplete')
     args = parser.parse_args()
     candidates, conditions, rows, evidence, engineering = load_evidence(
         args.root.resolve(), args.phase.resolve(), args.model_lock.resolve(), args.lock_sha256)
@@ -319,6 +362,7 @@ def main():
         model_lock_sha256=args.lock_sha256, evidence=evidence, engineering=engineering,
         raw_rows=rows, metric_versions=sorted({r['metrics']['metric_version'] for r in rows}),
         sealed_manifest_read_by_report=False)
+    report['independent_rl_actor_replay']=rl_replay_coverage(candidates,rows,args.rl_actor_replay)
     args.output.mkdir(parents=True, exist_ok=False)
     (args.output/'REPORT.json').write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
     (args.output/'MATRIX.md').write_text(markdown(report))

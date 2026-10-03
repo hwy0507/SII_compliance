@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
-from research72_comparison_report_20261003 import assemble, markdown, load_evidence, EVENTS, SCALARS, sha
+from research72_comparison_report_20261003 import assemble, markdown, load_evidence, rl_replay_coverage, EVENTS, SCALARS, sha
 
 
 def metrics(success=True, full=True, exposed=True, force=10.):
@@ -32,6 +32,19 @@ def row(model, condition='c0', **kwargs):
 
 
 class ReportTests(unittest.TestCase):
+    def test_missing_independent_rl_replay_does_not_erase_physical_outcome(self):
+        candidates=[dict(name='rl',category='direct_metric',seed=1,adapted_rl={'manifest':'not_opened'})]
+        rows=[dict(candidate='rl',category='direct_metric',condition_id='c0',run='/synthetic/failed',metrics=metrics(success=False))]
+        coverage=rl_replay_coverage(candidates,rows,[])
+        self.assertEqual(coverage['status'],'incomplete')
+        self.assertEqual(coverage['audited_physical_rl_episodes'],1)
+        self.assertEqual(coverage['missing_runs'],['/synthetic/failed'])
+        report=assemble(candidates,['c0'],rows)
+        report['independent_rl_actor_replay']=coverage
+        self.assertEqual(report['audited'],1)
+        self.assertEqual(report['families']['direct_metric']['strict']['successes'],0)
+        self.assertIn('incomplete',markdown(report))
+
     def test_supplemental_missing_short_and_unexposed_are_distinct(self):
         rows = [row('esn1', full=False, success=False), row('esn2'), row('zero')]
         rows[0]['metrics']['supplemental_contact'] = dict(outside_event_window=dict(human=dict(

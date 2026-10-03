@@ -1,5 +1,18 @@
 # 更新日志
 
+## 2026-10-03 — 独立RL actor回放准备与缺失证据保留
+
+- 实时核验/fetch main c5343841a29987bc1468c9143ecfcfda4ce48399、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6并读两日志。
+  main c534完整3223文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/c5343841a29987bc1468c9143ecfcfda4ce48399/，
+  tar SHA0d249b49abe926daa5dace405429578a06ed8e40dc18b1ff27dbf182649aeca3。
+- 新独立进程从冻结官方RL权重重算raw actor，核对canonical48、normalizer/计数、checkpoint/训练源；覆盖失败/短回合，0新物理/拟合。
+  汇总器显式记录回放覆盖；缺失不删物理结果。1线程/3GiB下14项合成测试通过，真实RL尚未运行此审计，不混称baseline完成。
+- 源码核对RL奖励metadata未拼入actor；调参7/5/7维语义保留。现有物理/过滤器审计继续覆盖本入口未重建的控制律与伺服。
+- 共享根/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_actor_replay_engineering_v1/evidence/，
+  5文件/52,258字节，manifest SHA f4db3b3e57967170bcc97f12419e5546eda59817b61c176f87a9fda52d816472，
+  tar SHA a6a4251a6ffe93842e9074d1cf070bfbca237c63771f007b80620d23423a261d，已逐hash核验；完整说明见RESEARCH72_RL_ACTOR_REPLAY_20261004。
+- 23:47UTC确认42/64，四稳定仿真未改；增强组/RL/teacher新采集待前序。24最终仍封存，学习修订02未登记，尚无最终优势结论。
+
 ## 2026-10-03 — 全方法与五类接触图导出工程核验
 
 - 23:27UTC实时核验并fetch main4b72e83c422d9fbd42896b208e8f8028ae88d3b7、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，读取两日志和AGENTS；无新远端改动。

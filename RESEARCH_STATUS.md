@@ -1,6 +1,6 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
-最后人工核验：**2026-10-03 23:30 UTC / 北京时间10月4日07:30**。本页是 GitHub 固定入口；
+最后人工核验：**2026-10-03 23:47 UTC / 北京时间10月4日07:47**。本页是 GitHub 固定入口；
 每个完成的研究批次更新，具体提交见 [UPDATE_LOG.md](UPDATE_LOG.md)。运行状态有时间戳，不代表实时监控。
 
 ## 当前结论
@@ -12,6 +12,9 @@
 [上轮全部26方法正式矩阵](code/mujoco_6d_vmc_benchmark/docs/evidence/all_methods_formal_20261003/report/MATRIX.md)。
 
 ## 本轮状态
+
+23:47UTC teacher/经典确认42/64，四队列运行。新增[独立冻结RL动作回放入口](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_RL_ACTOR_REPLAY_20261004.md)，
+14项合成检查通过；最终报告明确回放覆盖与缺失，不删物理失败。真实RL训练/回放未完成，24最终仍封存；源码overlay已共享核验。
 
 23:30UTC[最终对比图导出准备](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_FIGURE_EXPORT_20261003.md)完成三项合成测试及版式核验，
 覆盖全部方法、五类接触、缺失/无配对/失败；只读取审计报告既有统计。源码/合成样例已共享核验，不是研究结果。
