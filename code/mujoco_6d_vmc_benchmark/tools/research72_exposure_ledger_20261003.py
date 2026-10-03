@@ -101,12 +101,14 @@ def main():
     p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     a=p.parse_args();root=a.root.resolve()
     phases=('teacher_bank','controller_screen_v1','learning_development_v1','controller_confirmation_v1',
-            'additional_development_v1/nominal_development','additional_development_v1/neural_lr_development')
+            'additional_development_v1/nominal_development','additional_development_v1/neural_lr_development',
+            'context_gate_development_v1/development')
     result=dict(created_utc=datetime.now(timezone.utc).isoformat(),source_sha256=sha(Path(__file__)),
         protocol_sha256=sha(root/'PROTOCOL.json'),snapshot_only=True,sealed_contents_read=False,
         physics=[physics(root/x) for x in phases],
         learning=[learning(root/'local_learning_archive_v1/learning_v1'),
-                  learning(root/'local_neural_refinement_archive_v1/neural_lr_refinement_v1')],
+                  learning(root/'local_neural_refinement_archive_v1/neural_lr_refinement_v1'),
+                  learning(root/'local_context_gate_archive_v1/context_gate_learning_v1')],
         rl=reinforcement(root/'rl_office_adaptation_v1'),
         accounting=['Do not equate fitted ridge candidates, gradient updates and simulator interactions.',
             'Teacher collection is shared by learned methods; charge all attempts, including failures.',

@@ -23,8 +23,8 @@ class OfficeContextNetwork:
         self.core=_Core(path)
         if self.core.w.shape!=(128,128) or self.core.win.shape!=(128,156):
             raise ValueError('Expected 128 context units')
-        if self.core.nonlinear or self.core.context_gate_w is not None:
-            raise ValueError('No hidden readout or adaptive gate in this control')
+        if self.core.nonlinear:
+            raise ValueError('No hidden nonlinear readout in this control')
         if self.core.reset_at_each_observation!=(self.kind=='mlp'):
             raise ValueError('MLP must be memoryless; RNN must retain state')
 

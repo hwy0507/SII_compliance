@@ -24,6 +24,7 @@ def main():
     p.add_argument('--root', type=Path, required=True)
     p.add_argument('--learning', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--amendment', type=Path)
     a = p.parse_args()
     root, learning = a.root.resolve(), a.learning.resolve()
     state = read(learning/'execution.json')
@@ -32,7 +33,13 @@ def main():
     assert state['status'] == 'complete'
     assert state['specification_sha256'] == sha(learning/'SPECIFICATION.json')
     assert spec['protocol_sha256'] == protocol_sha
-    assert len(state['rows']) == len(spec['jobs']) == 33
+    gated=spec.get('stage')=='contextual_gate_extension'
+    if gated:
+        assert a.amendment and sha(a.amendment)==spec['amendment_sha256']
+        amendment=read(a.amendment)
+        assert amendment['protocol_sha256']==protocol_sha and amendment['new_learning_cap_per_family_seed']==48
+    expected=21 if gated else 33
+    assert len(state['rows']) == len(spec['jobs']) == expected
     assert {r['name'] for r in state['rows']} == {j['name'] for j in spec['jobs']}
     assert all(sha(learning/'source'/k) == h
                for k, h in read(learning/'SOURCE_HASHES.json').items())
@@ -59,16 +66,17 @@ def main():
         fitting_spec_sha256=sha(learning/'SPECIFICATION.json'),
         fitting_execution_sha256=sha(learning/'execution.json'),
         data_sha256=spec['data_sha256'], conditions=conditions, candidates=candidates,
-        episodes=264, selection='All 33 completed models; no replay-MSE success eligibility filter.',
+        episodes=len(candidates)*len(conditions), selection=f'All {expected} completed models; no replay-MSE success eligibility filter.',
         purpose='Paired development evaluation, not final heldout evidence.',
         fit_origin='Local airpig; original execution paths retained unchanged.',
         archived_learning_directory=str(learning),
         variant_selection='Within each family use summed strict, then task, then full horizons across all three seeds; break ties by worst penetration, mean RMSE, mean actual peak torque, lexical variant. Retain every seed for the chosen variant, never choose a lucky seed.',
         contact_reporting='Report exposure alongside force and recovery; absent contact is NA, not zero.')
+    if gated:result['amendment_sha256']=sha(a.amendment)
     with a.output.open('x') as f:
         json.dump(result, f, indent=2, allow_nan=False)
         f.write('\n')
-    print(json.dumps(dict(models=len(candidates), episodes=264, sha256=sha(a.output))))
+    print(json.dumps(dict(models=len(candidates), episodes=result['episodes'], sha256=sha(a.output))))
 
 
 if __name__ == '__main__':

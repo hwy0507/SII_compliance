@@ -1,0 +1,19 @@
+{
+  "registered_utc": "2026-10-03T15:23:00+00:00",
+  "scope": "fixed_proprioceptive_contextual_leak_extension",
+  "protocol_sha256": "5457d85726e2a88067e153464b7e50dbc9fcd173b89a9fc5da2da096c0891732",
+  "previous_learning_cap_per_family_seed": 24,
+  "new_learning_cap_per_family_seed": 48,
+  "applies_to_all_learning_families": true,
+  "sealed_contents_read": false,
+  "learning_rate_selection_sha256": "dc5af909d1918f41a9b60e98dd39d0f3c0a26ac30cbd3ec9d9e46827359bcd34",
+  "mechanism_probe_sha256": "f2dda9efb2fb684c0104e9c06871f16fcb933160b7fac56146a7af016a241434",
+  "rationale": "For the existing ESN, when estimated load is zero, both the contextual drive and direct-context readout vanish. Equal loaded prefixes therefore give identical subsequent outputs even when proprioceptive progress differs. The teacher has progress-dependent state release. A synthetic diagnostic confirms this expressiveness limitation but does not establish a physically realized task failure.",
+  "change": "Use the already implemented fixed random context-dependent leak gate with default multiplier range0.05..2.0; same128 reservoir units, same18 public observation fields and constrained linear readout. Input/recurrent/gate weights remain fixed in ESN. No teacher at deployment, new observation, geometry, gate, actuator or filter change.",
+  "paired_controls": "Identical fixed gate for retrained memoryless128 ablation and feature-matched MLP/RNN. Their existing selected learning rates across3seeds are reused; both loss variants,4000updates. Existing ordinary and ungated neural baselines remain. All families may use the same revised48cap; actual compute differs and is disclosed.",
+  "new_jobs": "Per seed: gated ESN point/temporal each12ridge candidates; gated memoryless12ridge; matched gated MLP/RNN point/temporal each one4000update fit. Three seeds,21models. ESN cumulative48; memoryless24; pooled ordinary+matched MLP/RNN each14 candidates perseed.",
+  "data": "Unchanged18 real train and6 whole-identity validation trajectories. Synthetic probe is not training data; no development or sealed histories enter fitting.",
+  "development": "All21models x same8 public development identities =168 episodes, managed simulation slots; all failures retained. Shared variant choice across all3seeds follows the existing strict/task/horizon/penetration/RMSE/torque ranking. Never choose a lucky seed.",
+  "deadline": "Original72h window and stop-new-development-at48h remain unchanged. No recurring automation. Complete current stable jobs; no hot source edits.",
+  "disclosure": "This is an explicit pre-experiment budget amendment motivated by a mechanistic finding, not a claim that the original24cap was preserved. Original candidates, results and cost ledger stay visible. An improvement is unproven until paired closed-loop evaluation. Do not tune further from sealed outcomes."
+}

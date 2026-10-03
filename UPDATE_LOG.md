@@ -1,5 +1,30 @@
 # 更新日志
 
+## 2026-10-03 — 记忆表达缺口诊断、预算修订01与同机制ESN/MLP/RNN
+
+- 延续本轮核对main e32f02ddc16e1b65511b5a9f9cfbd316042b43ef、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；
+  e32源码归档SHA8f007a3f8333ee5fff0da721b0a36f8456dac01d4d98093621fd440433e2edf0在服务器source/<该SHA>/全3133文件核验。
+- 代码和零仿真输入干预发现：原ESN的context只乘当前load，直接context读出被约束为0；load归零后，
+  相同历史无法区分后续卡住/前进/意图消失。3seed两loss的10秒合成探针状态仅保留约0.78%，
+  卡住时teacher恢复记忆仍0.99976、z动作约0.37491；该人工输入序列不保证物理可实现，不当任务失败证据。
+- 真实18训练＋6验证完整teacher动作复现最大误差1.11e-16；估计线性负载<0.5N且恢复记忆>0.5的片段
+  分别3.24秒/16身份、1.08秒/6身份。<0.05N的验证片段为0；真实覆盖远少于人工10秒探针，不能过度解释机制。
+- 15:23UTC在新拟合前将AMENDMENT_01_CONTEXT_MEMORY.json归档服务器，SHA5b6e9c22751b0045e7da980f24480338ab03164c6cd7fc29a05fbab68ac27a6a。
+  各学习族每seed上限显式24→48；实际ESN48、memoryless24、普通+同特征MLP/RNN各14。72h/48h截止、数据、环境/gate/actor/执行器均不变。
+- 使用既有固定随机本体context→leak调制（0.05..2），仍128固定储备池、受约束线性读出、无运行teacher；
+  相同固定gate提供给重训memoryless及matchedMLP/RNN，后者沿之前3seed平均验证选定LR，各4000更新，全部原组保留。
+  NumPy/Torch含gate及无gate最大差3.83e-15，零平衡/禁用字段隔离通过，gate不是可训练参数。
+- 本地单CPU/3GiB完成21模型（另108ridge和48000梯度更新），完整动作导出回放与输入审计通过。
+  gate打破合成输入不可区分性，但未获得teacher长时间保持；ESN点/积分验证误差普遍高于原版，未宣称机制或任务改进。
+  全21模型登记同8开发身份168回合，四仿真既有筛选74/96正常；新有限服务等待原followup，之后每回合共享释放槽位。
+- 服务器根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/`：
+  `local_context_gate_archive_v1/`包SHA c206c4e98102bff46d0dc97a8915e5018ddfbb9369914f08ce5b2e5b1c0b2ea6，21模型元数据/权重/原拟合源全核验。
+  `memory_mechanism_archive_v1/`原探针/一致性包SHA2bdd45803e510475fdc40221ca0a7c30c6c2cb3fe377e852390911e921ed96d8，两端及解包数组hash一致。
+  `CONTEXT_GATE_DEVELOPMENT_SPECIFICATION.json` SHA19347931867d439ca2951a934c5b9bde636681fe785eed1c934db920993b6cbf。
+  有限服务`sii-r72-context-gate-development-v1`已核验仅等待；相邻`research72_20261003_1149_context_runtime_v1/`源码tar
+  SHA516ed7e308b8911c355b6397217db32d963d5de6306888fd2e083ae8d293d641，base e32＋本批修改，旧runtime不改。
+- 完成：工程/机制/拟合/归档；运行：开发筛选；等待：全部学习闭环和RL。最终24身份仍封存，新的物理改进与投稿证据未完成。
+
 ## 2026-10-03 — 最终评估冻结保护与训练成本账本
 
 - 15:00UTC实时核对远端main389e9e53bc016a03a250fe5f053a5a6513331023、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，

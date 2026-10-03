@@ -19,6 +19,8 @@ class Network(torch.nn.Module):
         self.echo=torch.nn.Parameter(torch.tensor(actor.w,dtype=torch.float64),requires_grad=kind=='rnn')
         self.coeff=torch.nn.Parameter(torch.tensor(actor.weights*norm[:,None],dtype=torch.float64))
         self.register_buffer('leak',torch.tensor(actor.leak,dtype=torch.float64))
+        self.register_buffer('context_gate_w',None if actor.context_gate_w is None else torch.tensor(actor.context_gate_w,dtype=torch.float64))
+        self.gate_limits=(.05,2.) if actor.context_gate_limits is None else tuple(actor.context_gate_limits)
         self.register_buffer('norm',torch.tensor(norm,dtype=torch.float64))
         mask=np.ones_like(actor.weights);mask[-12:]=0
         self.register_buffer('mask',torch.tensor(mask,dtype=torch.float64))
@@ -26,13 +28,20 @@ class Network(torch.nn.Module):
 
     def forward(self,drive,force,cross,context,state=None):
         projection=drive@self.win.T
+        leak=self.leak
+        if self.context_gate_w is not None:
+            low,high=self.gate_limits
+            bias=float(np.log((1-low)/(high-1)))
+            gate=low+(high-low)*torch.sigmoid((context@self.context_gate_w.T+bias).clamp(-40,40))
+            leak=(gate*self.leak).clamp_max(1.)
         if self.kind=='mlp':
-            hidden=torch.tanh(projection)*self.leak
+            hidden=torch.tanh(projection)*leak
         else:
             if state is None:state=projection.new_zeros((len(projection),128))
             states=[]
             for t in range(projection.shape[1]):
-                state=state+self.leak*(torch.tanh(projection[:,t]+state@self.echo.T)-state)
+                rate=leak if self.context_gate_w is None else leak[:,t]
+                state=state+rate*(torch.tanh(projection[:,t]+state@self.echo.T)-state)
                 states.append(state)
             hidden=torch.stack(states,1)
         signed=torch.cat((force,hidden),-1)
@@ -69,7 +78,7 @@ def main():
             physical=z['physical_execution'].astype(bool) if 'physical_execution' in z.files else ep>=48
         assert np.any(physical)
         actor=OfficeVMCMemoryESN(a.checkpoint)
-        assert actor.position_context and actor.context_gate_w is None and not actor.nonlinear and not actor.axis_separable
+        assert actor.position_context and not actor.nonlinear and not actor.axis_separable
         assert actor.readout_activation=='clipped_linear' and actor.reset_at_each_observation==(a.kind=='mlp')
         force=np.clip(obs[:,39:45]/actor.scale,-12,12)
         context=np.c_[np.clip(np.c_[obs[:,14:17]/.06,obs[:,26:29]/.06,obs[:,45:48]],-4,4),np.clip(obs[:,20:23]/.08,-4,4)]
@@ -154,12 +163,13 @@ def main():
                     training_data_sha256=sha(a.data),source_sha256=hashes,lineage=meta['lineage'],seed=a.seed,updates=update,selected_update=selected,
                     width=128,trainable_parameters=sum(p.numel() for p in model.parameters() if p.requires_grad)-12*7,
                     features_matched_to_context_esn=True,learning_rate=a.learning_rate,precision='float64',tbptt_steps=64,
+                    fixed_contextual_leak_gate=actor.context_gate_w is not None,gate_weights_trainable=False,
                     integral_weight=a.integral_weight,integral_window_steps=16,action_delta_weight=.25,
                     actual_nonpadding_observations=sum(s[3] for s in schedule),schedule_sha256=sha(out/'schedule.json'),
                     holdout_mse=float(np.mean((predictions[~train]-y[~train])**2)),physical_history_mse=float(np.mean((predictions[physical]-y[physical])**2)),
                     validation_split=meta.get('selection_split','legacy whole synthetic identities'),
                     numpy_torch_max_abs=maximum,unused_field_isolation_pass=True,zero_load_equilibrium_pass=True,
-                    limitation='Warm-started feature-matched MLP/RNN mechanism control; not parameter/FLOP matched and not an ESN. Fixed time constants; input/recurrent weights learn as declared. Physical success untested.')
+                    limitation='Warm-started feature-matched MLP/RNN mechanism control; not parameter/FLOP matched and not an ESN. Fixed base time constants and optional fixed proprioceptive leak modulation; input/recurrent weights learn as declared. Physical success untested.')
         assert all(sha(ROOT/k)==h for k,h in hashes.items())
         write(out/'TRAINING_COMPLETE.json',result);execution.update(status='complete',checkpoint_sha256=result['checkpoint_sha256'])
         print(json.dumps({k:result[k] for k in ('kind','selected_update','holdout_mse','physical_history_mse','numpy_torch_max_abs')}))
