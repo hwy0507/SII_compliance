@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-03 — 官方RL GPU有限吞吐与剩余预算依据
+
+- 延续核验main788d6814d0ed3ac2cc5bb5a7cacafa367a66e539、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；
+  788源码arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/788d6814d0ed3ac2cc5bb5a7cacafa367a66e539/
+  已核验3195文件，tar SHA04457028dd9328893be595a922833daa507e552e65666416df1d6a0f292d7b53。
+- GPU0空闲/96GiB可用后进行有限吞吐探针：官方actor128/critic512、batch256、UTD2、同80k计划；
+  每维度1冷＋8预热＋32计时共82更新，总164工程更新，0物理/0候选，权重全部丢弃。同步等待JAX参数树完成。
+  5D动作0.773ms＋两更新17.449ms；7D0.839＋18.568ms；冷周期71.160/16.000s，同进程缓存复用，不作速度胜者比较。
+  20:47:22–20:49:03UTC，单线程3GiB，峰值2,220,003,328B。组合物理内存和3learner争用仍未验证。
+- 原工程检查点5D/7D各74/73文件在实际探针后经独立递归hash核对完整集合/字节精确不变；
+  语法检查及实际有限运行通过。不能把这些工程更新给baseline计入真实训练步或宣称已收敛。
+  实際执行脚本SHA0ed30caf396db249c1b304767344a84ae546979a9bfe39f576bade140a9293c9；
+  本轮服务器根/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_throughput_probe_v1/execution.json
+  SHA687fdaf8d61f842bdd3c7572891e2064ab11e364d1895cc8cc3b9a38153a9861，已两端核验，Git保存小型同字节证据。
+- 两条件teacher筛选中领先09/07均不同于原配置，需要为40条实际采集留预算；八条件确认前不选teacher。
+  可选共享ESN交互读出再拟合若数据改变须144开发回合，目前修订02仍未登记。
+  20:56UTC初始198/264、第六条件32/33，四仿真持续；RL v2/teacher确认/新组仍等待，24最终条件未读。
+
 ## 2026-10-03 — 170公开轨迹首撞时序核对与柔顺性归因边界
 
 - 延续实时核验main be473ca6d6c38a71182032504b8d5194ce235ac7、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；

@@ -1,6 +1,6 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
-最后人工核验：**2026-10-03 20:37 UTC / 北京时间10月4日04:37**。本页是 GitHub 固定入口；
+最后人工核验：**2026-10-03 20:56 UTC / 北京时间10月4日04:56**。本页是 GitHub 固定入口；
 每个完成的研究批次更新，具体提交见 [UPDATE_LOG.md](UPDATE_LOG.md)。运行状态有时间戳，不代表实时监控。
 
 ## 当前结论
@@ -12,6 +12,11 @@
 [上轮全部26方法正式矩阵](code/mujoco_6d_vmc_benchmark/docs/evidence/all_methods_formal_20261003/report/MATRIX.md)。
 
 ## 本轮状态
+
+20:56UTC初始198/264，第六身份仍32/33；四仿真持续。已完成[RL GPU有限吞吐探针](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_RL_THROUGHPUT_20261003.md)：
+动作＋两更新约18–19ms，首轮编译16–71s，峰值内存2.07GiB。164工程更新的权重全部丢弃，0新物理/候选；
+原检查点完整文件集合和字节不变。真实三训练队列/物理续跑及组合内存尚未验证，仍不把准备工作当baseline训练完成。
+可选ESN读出拟合须等teacher确认、新数据与时间核算，修订02尚未登记。
 
 20:37UTC初始184/264，第六条件19/33，四仿真继续。
 [170条完整范围的碰撞时序诊断](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_IMPACT_TIMING_20261003.md)
