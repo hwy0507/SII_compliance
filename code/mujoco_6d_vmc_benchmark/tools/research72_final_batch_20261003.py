@@ -107,8 +107,12 @@ def main():
     assert sha(root/'sealed/HELDOUT.json')==protocol['sealed_condition_sha256']
     conditions=read(root/'sealed/HELDOUT.json')['conditions']
     assert len(conditions)==24 and all(c['role']=='heldout' for c in conditions)
+    write(out/'PLANNED.json',dict(model_lock_sha256=a.lock_sha256,
+        rows=[dict(candidate=c['name'],condition_id=d['id'],queue=i%4)
+              for i,(c,d) in enumerate((c,d) for d in conditions for c in lock['candidates'])]))
     state=dict(status='running',started_utc=now(),model_lock_sha256=a.lock_sha256,
-        expected=len(lock['candidates'])*24,unseal_receipt_sha256=sha(root/'FINAL_UNSEAL_RECEIPT.json'),queues=[])
+        expected=len(lock['candidates'])*24,planned_sha256=sha(out/'PLANNED.json'),
+        unseal_receipt_sha256=sha(root/'FINAL_UNSEAL_RECEIPT.json'),queues=[],audit_failures=[])
     write(out/'execution.json',state)
     def launch(index):
         command=['systemd-run','--user','--wait','--pipe','--collect',
@@ -124,18 +128,24 @@ def main():
     try:
         with ThreadPoolExecutor(max_workers=4) as pool:
             state['queues']=list(pool.map(launch,range(4)))
-        assert all(q['returncode']==0 for q in state['queues'])
         rows=[]
         for index in range(4):
             phase=out/f'queue_{index}'
+            if not (phase/'execution.json').exists():
+                state['audit_failures'].append(dict(queue=index,error='Queue execution metadata never created'))
+                continue
             command=[sys.executable,str(ROOT/'tools/audit_paper_phase_20261003.py'),
                 '--phase',str(phase),'--output',str(out/f'queue_{index}_analysis'),
-                '--model-sha256',protocol['formal_model_sha256']]
+                '--model-sha256',protocol['formal_model_sha256'],'--allow-partial']
             with (out/f'audit_{index}.log').open('x') as log:
-                subprocess.run(command,check=True,stdout=log,stderr=subprocess.STDOUT)
-            rows.extend(dict(r,run=str(phase/r['name'])) for r in read(phase/'execution.json')['rows'])
+                rc=subprocess.run(command,stdout=log,stderr=subprocess.STDOUT).returncode
+            if rc:
+                state['audit_failures'].append(dict(queue=index,error='Independent audit failed',returncode=rc))
+                continue
+            rows.extend(dict(r,run=str(phase/r['name'])) for r in read(phase/'execution.json')['rows'] if 'audit_sha256' in r)
         write(out/'SUMMARY.json',dict(expected=state['expected'],completed=len(rows),rows=rows,
             task=sum(r['audit']['task_success'] for r in rows),strict=sum(r['audit']['strict_success'] for r in rows)))
+        assert all(q['returncode']==0 for q in state['queues']) and not state['audit_failures'], 'Engineering failures retained; successful peers were still independently audited'
         state['status']='complete' if len(rows)==state['expected'] else 'deadline_no_new_dispatch'
     except BaseException as exc:
         state.update(status='failed_preserved',error=repr(exc));raise

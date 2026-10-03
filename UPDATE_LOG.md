@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2026-10-03 — 最终矩阵/媒体入口、工程中断保留与第二条件完整结果
+
+- 延续本轮实时核对main e4366a7a941da64b443db1278ce36af4eae72ebb与baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，AGENTS已重读。
+  e436源码在arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/e4366a7a941da64b443db1278ce36af4eae72ebb/核验3165文件，
+  tar SHA068bec9321ced62a1b3fa8780a8e68d6bd18b1dbb535306d686ca257a1eddd88。
+- 第二共同开发身份development_001全部33候选：ESN6回合3task/3strict，matchedRNN同3/3；ordinaryMLP1/1、
+  ordinaryRNN1/0、matchedMLP0/0（分母均6），memoryless0/0（分母3）；总8task/7strict。
+  分母都是真实已跑次数，不是未评估。含损失候选，不是最后模型的泛化成功率；增强baseline仍待执行。
+- ESN303点版XY13.192mm、外穿透0.149mm，但直到53.44s才load_transfer、54.76s才release，任务仍失败；
+  积分版XY7.520mm、外穿透0.187mm，54.24s才load_transfer，亦失败。原55s任务要求不修改。
+  两者RMSE102.724/124.436mm；需要改善恢复推进而非单看末端XY。另seed301积分版柱子穿透0.687mm失败。
+- 全33模型只读诊断主机arm1@192.168.31.70，本轮根
+  /home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/public_contact_diagnostics_condition1_v1/，
+  DIAGNOSTICS SHA5c90db239476de8dff03d8382f8af903f047d48afa0f0cb85e881ffac773cb26，
+  source SHA9afb61d840dc0c93b32f93d0262c188a48d2178a7e94c4521e58b660fa04cc9a。零新物理回合或拟合，反事实查询不当训练标签。
+- 新research72_comparison_report汇总全部锁定方法/seed/24计划身份，验证原始audit/独立复算/metrics/锁关联，
+  未审计保持缺失及分母上下界；短回合单列、无接触NA、恢复右删失，严格成功为主、接触条件子集明确披露。
+  输出Markdown与逐回合JSON和交叉bootstrap，不排序制造ESN第一；8项合成回归含证据链接入/篡改拒绝通过。
+- 修复未来最终batch一队列报错会跳过全部peer独立审计的问题：先保存完整PLANNED，保留失败且继续审计已完成peer；
+  audit_paper_phase新增显式allow-partial，审计完成不等于物理全完成。2项合成队列故障测试通过，无自动重试。
+  当前运行runtime没有热改；最终入口预演只覆盖worker，完整多队列真实最终链路仍未执行。
+- 新最终媒体入口避免沿用旧12小时硬编码截止；选择首个共同最终ID、全部锁定方法/seed，三机位25fps全程，
+  失败不剔除、短回合不补帧、缺失不冒充0成功。选择回归通过；未制作或读取最终视频/条件。
+- 已完成工程和第二条件诊断；运行仍为初始4队列；RL、确认teacher再采集等仍等待前序。
+  真正最终24身份封存；最终矩阵/媒体及新结构训练均未完成，不宣称RAL可投稿或ESN领先。
+
 ## 2026-10-03 — 当前本体调制读出工程验证与最终入口预演登记
 
 - 17:42UTC实时核对main65b3dd64868010d9579c565842abeb9a04ac9ca4、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，读取两分支日志和AGENTS。
