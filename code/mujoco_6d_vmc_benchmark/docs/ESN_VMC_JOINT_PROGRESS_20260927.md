@@ -1,5 +1,16 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-03 16:30UTC：首个闭环成功存在，但脱离效果尚弱
+
+96控制器筛选完整且独立审计通过：teacher21task/13strict，三个经典方法各0/24；仍待8条件确认。
+初始264学习回合已开始。首条件/seed ESN点版通过，XY24.774mm，积分版26.381mm放置失败；
+无记忆/初始matchedMLP也通过。ESN点版RMSE较小，但推杆接触更长、累计力更大、保持期脱离仅1.3ms，
+无记忆约2.19s；不能据此声称记忆提升柔顺性。全部恢复诊断右删失，柱子未触对ESN记NA。
+新有限teacher-refinement等待参数选择，原32train/8validation真实采集，配置相同则不重复；
+不给学生使用开发历史，不自动新增训练预算。默认导出原生回归得到同数据hash，选择器3项合成回归通过。
+主机arm1@192.168.31.70，本轮根/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/，
+见controller_screen_v1、early_learning_metrics_v1、teacher_refinement_v1及Git小证据。最终24条件继续封存。
+
 ## 2026-10-03 15:37UTC：输入调制记忆的配对机制实验已拟合
 
 原ESN在load归零后context不能影响后续动作，这是代码与合成干预一致验证的表达限制，尚不是实际失败因果证明。

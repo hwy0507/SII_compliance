@@ -39,6 +39,8 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--refined-teacher-bank',type=Path,
+        help='Separately collected selected teacher; requires immutable selection/config receipts')
     a=p.parse_args();root=a.root.resolve();out=a.output.resolve()
     cg=Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
     memory=(cg/'memory.max').read_text().strip()
@@ -47,12 +49,24 @@ def main():
     protocol=read(root/'PROTOCOL.json');protocol_sha=sha(root/'PROTOCOL.json')
     assert protocol['schema']=='sii-research72-v1'
     assert sha(root/'CONDITIONS.json')==protocol['condition_file_sha256']
-    assert sha(root/'teacher.json')==protocol['teacher_config_sha256']
-    assert read(root/'teacher_bank/execution.json')['status']=='complete'
-    summary=read(root/'teacher_bank/SUMMARY.json')
+    bank=a.refined_teacher_bank.resolve() if a.refined_teacher_bank else root/'teacher_bank'
+    teacher_path=bank/'teacher.json' if a.refined_teacher_bank else root/'teacher.json'
+    expected_teacher_sha=protocol['teacher_config_sha256']
+    selection_receipt=None
+    if a.refined_teacher_bank:
+        selection_receipt=read(bank/'TEACHER_SELECTION.json')
+        assert selection_receipt['protocol_sha256']==protocol_sha
+        choice=Path(selection_receipt['choice_path']);assert sha(choice)==selection_receipt['choice_sha256']
+        selected=next(c for c in read(choice)['candidates'] if c['category']=='enhanced_teacher')
+        assert selected==selection_receipt['candidate'] and selected['config']==read(teacher_path)
+        expected_teacher_sha=selection_receipt['teacher_config_sha256']
+    assert sha(teacher_path)==expected_teacher_sha
+    assert read(bank/'execution.json')['status']=='complete'
+    summary=read(bank/'SUMMARY.json')
     conditions={c['id']:c for c in read(root/'CONDITIONS.json')['conditions']}
-    assert len(summary['rows'])==len(conditions)==48
-    assert {r['name'] for r in summary['rows']}==set(conditions)
+    expected_ids={k for k,c in conditions.items() if not a.refined_teacher_bank or c['role'] in ('train','imitation_validation')}
+    assert len(summary['rows'])==len(expected_ids)==(40 if a.refined_teacher_bank else 48)
+    assert {r['name'] for r in summary['rows']}==expected_ids
     out.mkdir(parents=True,exist_ok=False)
     state=dict(status='running',started_utc=now(),argv=sys.argv,host=platform.node(),
         python=sys.executable,numpy=np.__version__,memory_max=memory,protocol_sha256=protocol_sha)
@@ -66,15 +80,15 @@ def main():
         'filtered_teacher_action','clipped_teacher_action','executed_yield_twist','executed_wbc_scale','physical_execution')}
     lineage=[];ledger=[]
     try:
-        teacher=read(root/'teacher.json')
+        teacher=read(teacher_path)
         for row in summary['rows']:
             c=conditions[row['name']];run=Path(row['run'])
-            assert run.parent.parent==root/'teacher_bank' and run.name==c['id']
+            assert run.parent.parent==bank and run.name==c['id']
             record=read(run/'execution.json');audit=read(run/'AUDIT.json')
             assert record['status']=='complete' and sha(run/'AUDIT.json')==row['audit_sha256']
             assert record['runtime_provenance']['research_protocol_sha256']==protocol_sha
             assert record['runtime_provenance']['research_condition']==c
-            assert sha(run/'config.json')==protocol['teacher_config_sha256']
+            assert sha(run/'config.json')==expected_teacher_sha
             assert sha(run/'rollout.npz')==audit['trace_sha256']==row['trace_sha256']
             assert sha(run/'execution_chain.npz')==audit['chain_sha256']
             assert sha(run/'rollout.mjb')==protocol['formal_model_sha256']
@@ -119,6 +133,7 @@ def main():
         result=dict(completed_utc=now(),training_data_sha256=sha(out/'training_data.npz'),lineage=lineage,
             qualification_ledger_sha256=sha(out/'QUALIFICATION_LEDGER.json'),source_sha256=hashes,
             protocol_sha256=protocol_sha,position_error_context=True,all_real_execution=True,
+            teacher_bank=str(bank),teacher_config_sha256=expected_teacher_sha,teacher_selection_receipt=selection_receipt,
             actual_filter_replay_verified=True,actual_requested_labels_preserved=True,label_replay_atol=1e-10,
             episodes=len(lineage),training_identities=sum(x['data_role']=='train' for x in lineage),
             validation_identities=sum(x['data_role']=='imitation_validation' for x in lineage),frames=len(combined['episode']),

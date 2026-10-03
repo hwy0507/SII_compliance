@@ -102,7 +102,7 @@ def main():
     a=p.parse_args();root=a.root.resolve()
     phases=('teacher_bank','controller_screen_v1','learning_development_v1','controller_confirmation_v1',
             'additional_development_v1/nominal_development','additional_development_v1/neural_lr_development',
-            'context_gate_development_v1/development')
+            'context_gate_development_v1/development','teacher_refinement_v1/collection')
     result=dict(created_utc=datetime.now(timezone.utc).isoformat(),source_sha256=sha(Path(__file__)),
         protocol_sha256=sha(root/'PROTOCOL.json'),snapshot_only=True,sealed_contents_read=False,
         physics=[physics(root/x) for x in phases],

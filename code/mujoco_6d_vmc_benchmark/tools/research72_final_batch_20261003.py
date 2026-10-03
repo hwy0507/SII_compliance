@@ -24,6 +24,7 @@ def no_development_processes():
         'research72_rl_campaign_20261003.py','research72_followup_20261003.py',
         'research72_additional_development_20261003.py','research72_batch_20261003.py',
         'research72_queued_development_20261003.py',
+        'research72_refined_teacher_20261003.py',
         'research72_worker_20261003.py','train_paper_context_esn_20261003.py',
         'train_paper_feature_matched_network_20261003.py','train_office_mlp_rnn_20261002.py'}
     for proc in Path('/proc').glob('[0-9]*'):

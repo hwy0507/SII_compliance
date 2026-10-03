@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2026-10-03 — 控制器筛选完成、真实teacher再采集入口与首轮学习闭环
+
+- 16:27UTC重新核对main 8bdade7fbd15f76f725c985514bde6e0c94a0253、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6并读取两分支日志/AGENTS；无远端新变更。
+  main8bd源码在服务器source/<完整SHA>/核验3144文件，tar SHA ead3221294e2cfd2565679acaa8b71713381afd64a84217700f6a8fe0919b612。
+- 参数筛选96/96完整55s并独立审计：增强teacher21task/13strict（24回合），导纳/阻抗/VMC各0/24。
+  这只是12候选×2开发条件；按原规则各取2个继续8条件确认，尚未确定最终参数。
+- 初始33模型×8开发条件正在实跑。第一个条件development_000/seed2026100301：
+  ESN点版task/strict均通过，RMSE29.399mm、峰矩50.386Nm、峰速0.373926m/s、放置XY24.774mm，距离25mm门槛很近；
+  ESN积分版XY26.381mm而失败。无记忆及初始matchedMLP均成功，RMSE37.050mm、XY20.283mm。不是最终盲测或跨条件结论。
+- 首4回合离线接触诊断：ESN点版推杆P95力14.313N、力模积分43.724Ns、接触4.945s、保持期最大脱离仅0.0013s；
+  无记忆分别25.297N、28.817Ns、2.666s、2.191s。低P95与低RMSE并未同时带来更快脱离和更低累计负载。
+  ESN未触柱子，该项显示NA；无记忆有柱子接触。球接触峰力约5.9–6.8kN，属于刚性碰撞仿真瞬态，不能称人体安全力或25Hz策略反应。
+  全部恢复诊断右删失，不能写成0秒恢复；完整队列独立审计仍待完成。
+- 新增有限refined-teacher服务：等待8条件选择后，在原32train/8validation身份真实执行选中teacher；若配置相同则跳过。
+  原48轨迹不覆盖，无开发历史作标签。只采集/审计/导出，不偷偷增加学生训练；任何新拟合须先登记预算。
+  导出器默认路径原生回归仍得到相同24示范/33000帧和同一数据SHA b97acf4c61d9d3ba4d5fcb4817ac449b460e65a4821be632c5f61a5a1bba67c6。
+- 新学习选择器只接受完整独立审计的三组开发结果，跨全部3seed/8条件统一选variant，失败族也保留；3项合成回归通过。
+  54合格权重来自75实跑权重；未对尚未完成的真实数据执行选择。最终入口补充等待refined-teacher，成本账本纳入再采集。
+  分析方案注明参数RL内部5D→公共7D；独立选出的ESN/memoryless不同loss/gate不冒充隔离记忆消融。
+- 服务器根 arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/：
+  controller_screen_v1/SUMMARY.json、early_learning_metrics_v1/、teacher_export_regression_v1/、teacher_refinement_v1/SPECIFICATION.json。
+  context21权重原生1375帧重放最大误差1.66e-14；CONTEXT_GATE_NATIVE_REPLAY.json与以上小证据已纳入Git。
+  新采集实际源码相邻research72_20261003_1149_teacher_refinement_runtime_v1，tar SHA4bb4d0bbb27b4a95fa8406bd8b4ce6c0f8b7c75acb829a84a4e51a8e56fbfb51（8bd加本批修改）。
+- 已完成：筛选/初步诊断/导出回归/选择器工程；运行：四学习仿真；等待：参数确认、RL适配、同机制/小LR评估、新teacher采集。
+  24最终身份仍封存。未取得ESN最优或RAL投稿完成结论。
+
 ## 2026-10-03 — 记忆表达缺口诊断、预算修订01与同机制ESN/MLP/RNN
 
 - 延续本轮核对main e32f02ddc16e1b65511b5a9f9cfbd316042b43ef、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；
