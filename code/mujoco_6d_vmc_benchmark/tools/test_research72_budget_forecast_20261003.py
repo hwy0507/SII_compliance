@@ -21,6 +21,14 @@ def fixture():
 
 
 class BudgetTests(unittest.TestCase):
+    def test_registered_short_diagnostics_are_conservatively_charged(self):
+        snapshot, protocol, throughput = fixture()
+        snapshot['physics'].append(dict(path='/synthetic/public_numerical_probe_v1',
+            status='waiting_for_predecessor', totals={'completed': 1}, rows=[]))
+        result = forecast(snapshot, protocol, throughput)
+        self.assertEqual(result['pending_phases'][-1]['remaining_including_inflight'], 2)
+        self.assertEqual(result['pending_phases'][-1]['maximum_registered_episodes'], 3)
+
     def test_short_failure_stays_completed_but_cannot_shrink_full_horizon_cost(self):
         result = forecast(*fixture())
         self.assertEqual(result['full_horizon_timing_samples'], 2)

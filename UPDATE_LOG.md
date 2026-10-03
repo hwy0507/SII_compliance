@@ -1,5 +1,24 @@
 # 更新日志
 
+## 2026-10-03 — 首撞短步长诊断登记与诊断成本分母
+
+- 本轮延续实时核验main f40b1ad05d43373c380d71b06807b7ee9785a8b7、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；稳定仿真保留。
+  f40源码arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/f40b1ad05d43373c380d71b06807b7ee9785a8b7/
+  已核验3206文件，tar SHA4139bca72fd41b21393b8294f016e3028958ae69402c8dc7bc4c9abd565f3844。
+- 22:02:45UTC登记原teacher/train_000三条3s前缀，dt100/50/25μs，最多9模拟秒/210000子步。
+  只改诊断MJB timestep并验证还原整个二进制hash；50μs前缀须与已有轨迹精确重放。正式55s/50μs/原gate及输入不变。
+  独立runtime的525旧文件与f40逐hash一致，仅新增诊断和测试；未对运行源热改。
+- 有限服务sii-r72-numerical-probe-v1/PID2403221，1线程/3GiB/CPUQuota100%，等followup完成后取一共享租约。
+  当前waiting_for_predecessor/0派发；worker拒绝无存活租约owner的启动。无定时任务、无新增模型或学习预算修订02。
+- 原生最终版本3模型/角色测试、本地4预算＋2账本检查通过；均0积分。诊断attempted/completed/耗时保留，
+  但已知重放成功和短探针false不混任务成功/失败分母；预测对新增短探针保守计完整回合成本。
+- 服务器本轮根/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/下public_numerical_probe_v1/SPECIFICATION.json
+  SHA234712686ed7ee00571a0ec3886c3f134ae33c91631d87024111cdb67ca892a2；Git同字节证据。
+  相邻_numerical_runtime_v1实际脚本SHA86a8d8907b93464d9a2c42ef46431534f1cd2697e486e1a04951f8a91b445a36；
+  incoming/research72-numerical-overlay-v2.tar.gz SHAc722b43ba619c67d5588a4f8df33f837850e56c980028f7f8058a5a13c567e60两端核验。
+- 22:05UTC初始246/264，第七完整身份ESN/matchedRNN各4/6task、1/6strict；matchedMLP2/6strict、memoryless1/3、普通MLP1/6、RNN0/6。
+  全264整阶段审计/teacher确认/增强组/RL尚未完成，24最终仍封存。诊断边界及准确共享路径见RESEARCH72_NUMERICAL_DIAGNOSTIC。
+
 ## 2026-10-03 — 全102学习actor字段审计与本地完整三机位工程验证
 
 - 延续核对main c84a7cd8aea0ab1874d7c3682773e772445c2cc5、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；运行快照不改。

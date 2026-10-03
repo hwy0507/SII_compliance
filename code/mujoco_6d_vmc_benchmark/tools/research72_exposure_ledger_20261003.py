@@ -60,6 +60,7 @@ def physics(path):
                 condition_id=r.get('condition_id',r['name']),
                 role='diagnostic_rehearsal' if r.get('diagnostic_only') else r.get('role','development'),
                 wall_seconds=seconds(r),returncode=r.get('returncode'),completed=False)
+            row['task_evaluation_eligible']=row['role'] not in ('numerical_diagnostic','diagnostic_rehearsal')
             if 'audit_sha256' in r:
                 assert sha(run/'AUDIT.json')==r['audit_sha256']
                 audit=read(run/'AUDIT.json');summary=read(run/'rollout.json')
@@ -68,9 +69,12 @@ def physics(path):
                     final_stage=summary['final_task_stage'],audit_sha256=r['audit_sha256'],trace_sha256=r['trace_sha256'])
             rows.append(row)
     totals=dict(attempted=len(rows),completed=sum(r['completed'] for r in rows),
-                task=sum(r.get('task',False) for r in rows),strict=sum(r.get('strict',False) for r in rows),
-                failed_task=sum(r['completed'] and not r['task'] for r in rows),
-                failed_strict=sum(r['completed'] and not r['strict'] for r in rows),
+                diagnostic_attempted=sum(not r['task_evaluation_eligible'] for r in rows),
+                task_evaluation_completed=sum(r['completed'] and r['task_evaluation_eligible'] for r in rows),
+                task=sum(r.get('task',False) and r['task_evaluation_eligible'] for r in rows),
+                strict=sum(r.get('strict',False) and r['task_evaluation_eligible'] for r in rows),
+                failed_task=sum(r['completed'] and r['task_evaluation_eligible'] and not r['task'] for r in rows),
+                failed_strict=sum(r['completed'] and r['task_evaluation_eligible'] and not r['strict'] for r in rows),
                 wall_seconds_completed=sum(r['wall_seconds'] or 0 for r in rows if r['completed']))
     return dict(path=str(path),status=state['status'],execution_receipt=str(execution),totals=totals,rows=rows)
 
@@ -108,7 +112,7 @@ def main():
     phases=('teacher_bank','controller_screen_v1','learning_development_v1','controller_confirmation_v1',
             'additional_development_v1/nominal_development','additional_development_v1/neural_lr_development',
             'context_gate_development_v1/development','teacher_refinement_v1/collection',
-            'final_rehearsal_v1/evaluation')
+            'final_rehearsal_v1/evaluation','public_numerical_probe_v1')
     result=dict(created_utc=datetime.now(timezone.utc).isoformat(),source_sha256=sha(Path(__file__)),
         protocol_sha256=sha(root/'PROTOCOL.json'),snapshot_only=True,sealed_contents_read=False,
         physics=[physics(root/x) for x in phases],

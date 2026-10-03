@@ -1,6 +1,6 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
-最后人工核验：**2026-10-03 21:35 UTC / 北京时间10月4日05:35**。本页是 GitHub 固定入口；
+最后人工核验：**2026-10-03 22:05 UTC / 北京时间10月4日06:05**。本页是 GitHub 固定入口；
 每个完成的研究批次更新，具体提交见 [UPDATE_LOG.md](UPDATE_LOG.md)。运行状态有时间戳，不代表实时监控。
 
 ## 当前结论
@@ -12,6 +12,11 @@
 [上轮全部26方法正式矩阵](code/mujoco_6d_vmc_benchmark/docs/evidence/all_methods_formal_20261003/report/MATRIX.md)。
 
 ## 本轮状态
+
+22:05UTC初始246/264，第七身份完整，ESN/matchedRNN各4/6放置、1/6严格；四队列正常，最终24封存。
+已登记[三个3秒数值步长诊断](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_NUMERICAL_DIAGNOSTIC_20261003.md)，
+仅原teacher与已知train_000，待前序完成和共享租约；目前0派发、无结果。正式dt5e-5/55s和gate不变。
+诊断成本保留，既不混任务分母也不纳入示范。现有学习/teacher/RL继续；没有新增ESN拟合或修订02。
 
 21:35UTC补齐[102模型输入隔离与三机位工程核验](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_INPUT_AND_MEDIA_AUDIT_20261003.md)：
 全部140,250时刻动作精确重放，扰动未声明字段不改变动作/可见状态；0新拟合。已知训练teacher的完整55s三视角

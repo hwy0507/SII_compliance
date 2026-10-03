@@ -36,6 +36,11 @@ def forecast(snapshot, protocol, throughput, optional_episodes=144, reserve_hour
     counts = dict(learning_development_v1=264, controller_confirmation_v1=64,
         nominal_development=8, neural_lr_development=168, development=168,
         collection=40, evaluation=1)
+    if any(Path(p['path']).name == 'public_numerical_probe_v1' and p['status'] != 'not_started'
+           for p in snapshot['physics']):
+        # Deliberately charge a full55s-equivalent for each registered3s probe;
+        # small conservative overhead instead of claiming an exact speedup.
+        counts['public_numerical_probe_v1'] = 3
     pending = []
     for phase in snapshot['physics']:
         label = Path(phase['path']).name
