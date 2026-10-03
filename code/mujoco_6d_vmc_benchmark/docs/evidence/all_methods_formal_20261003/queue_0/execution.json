@@ -1,0 +1,1333 @@
+{
+  "status": "complete",
+  "started_utc": "2026-10-03T10:48:23.845483+00:00",
+  "argv": [
+    "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728_runtime/tools/run_all_methods_formal_20261003.py",
+    "--root",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728",
+    "--queue",
+    "0"
+  ],
+  "protocol_sha256": "27d3f3ad0d566bb771c7e7c039e606b858a1215ddf406f83d17693819f85f704",
+  "validation_lock_sha256": "755974da1d4d5a3fb1aa24aa779cf91ede2e83768de2b9dd21089de863166701",
+  "selected_candidate_names": [
+    "zero",
+    "fixed_vmc",
+    "direct_metric_74001",
+    "recovery_lift0.035_distance0.02",
+    "recovery035_esn_seed2",
+    "paired_feature_matched_mlp",
+    "impedance_12"
+  ],
+  "rows": [
+    {
+      "name": "zero",
+      "started_utc": "2026-10-03T10:48:23.845771+00:00",
+      "command": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/source/tools/paper_office_worker_20261002.py",
+        "--v6-input",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002",
+        "--reference",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002/esn_original_v2/rollout.json",
+        "--config",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/zero.config.json",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/zero",
+        "--contact-audit",
+        "--physics-dt",
+        "5e-05"
+      ],
+      "category": "upstream_anchor",
+      "returncode": 0,
+      "ended_utc": "2026-10-03T10:54:39.717660+00:00",
+      "audit": {
+        "task_success": false,
+        "strict_success": false,
+        "memory_ablation": "none",
+        "full_horizon": true,
+        "stage": "carry",
+        "rmse_mm": 26.722195345403595,
+        "peak_torque_nm": 37.913848876953125,
+        "peak_speed_mps": 0.3760981072205353,
+        "penetration_mm": 0.17198945861233608,
+        "edge_penetration_mm": 0.06829426912547991,
+        "worst_pair": [
+          "office_v5_ball_geom",
+          "hand_collision"
+        ],
+        "physical_seconds": 54.99999999999989,
+        "max_lift_m": 0.16450635080589698,
+        "object_final_position": [
+          0.6191275758896224,
+          -0.26660031218940766,
+          0.589506350805897
+        ],
+        "placement_error_xy_m": 0.08310495413233858,
+        "abort_reason": null,
+        "action_replay_max_abs": 0.0,
+        "reservoir_replay_max_abs": null,
+        "stages": {
+          "0": {
+            "start_s": 0.04000000000000063,
+            "end_s": 0.15999999999999054,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "1": {
+            "start_s": 0.19999999999998613,
+            "end_s": 1.5600000000010799,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              1.0135197314814898e-06,
+              -3.577468317830324e-07,
+              2.154455681837865e-06,
+              2.556899394822418e-07,
+              7.173953775835156e-07,
+              3.066905724243823e-10
+            ]
+          },
+          "2": {
+            "start_s": 1.6000000000011643,
+            "end_s": 1.8800000000017552,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              -1.1575178809317257,
+              0.33847766498434195,
+              0.982651376514067,
+              0.027490176167825824,
+              -0.06296865756092568,
+              -0.0001916960825532251
+            ]
+          },
+          "3": {
+            "start_s": 1.9200000000018396,
+            "end_s": 10.319999999982619,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              -2.8329735551452244,
+              0.47811108816983877,
+              -0.9269215825149967,
+              0.039583046495205665,
+              0.0875999088905318,
+              -0.00048659587513793346
+            ]
+          },
+          "4": {
+            "start_s": 10.359999999982525,
+            "end_s": 55.00000000126404,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              -3.201930006482082,
+              1.5603016707159159,
+              -0.4890112452546873,
+              0.0002810355104320456,
+              0.004085048853785585,
+              -0.0014695089607865844
+            ]
+          }
+        },
+        "actor_replay_performed": true,
+        "common_filter_replay_max_abs": 0.0,
+        "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "trace_sha256": "7f4184e69cfa7dec1ae1553a165636535c3cede7f29146cefe40e9064ff22b0f",
+        "chain_sha256": "6fef92fe8b9c2af22a7fab4614505fb66b8e139a1fb0c596a3579a0b4ca1549d",
+        "metrics_sha256": "d4ac0f63f03e80a376ff943dbb51a4b69bc534783d6e36db835890435c51c27f"
+      }
+    },
+    {
+      "name": "fixed_vmc",
+      "started_utc": "2026-10-03T10:54:39.718165+00:00",
+      "command": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/source/tools/paper_classical_worker_20261002.py",
+        "--v6-input",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002",
+        "--reference",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002/esn_original_v2/rollout.json",
+        "--config",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/fixed_vmc.config.json",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/fixed_vmc",
+        "--contact-audit",
+        "--physics-dt",
+        "5e-05",
+        "--controller",
+        "vmc",
+        "--parameter-source",
+        "/home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/parameter_rl/frozen_train02"
+      ],
+      "category": "upstream_anchor",
+      "returncode": 0,
+      "ended_utc": "2026-10-03T11:01:02.582274+00:00",
+      "audit": {
+        "task_success": false,
+        "strict_success": false,
+        "memory_ablation": "none",
+        "full_horizon": true,
+        "stage": "carry",
+        "rmse_mm": 30.805526146122354,
+        "peak_torque_nm": 37.894073486328125,
+        "peak_speed_mps": 0.37660501641186395,
+        "penetration_mm": 0.16947908955390545,
+        "edge_penetration_mm": 0.06209001660063048,
+        "worst_pair": [
+          "office_v5_ball_geom",
+          "hand_collision"
+        ],
+        "physical_seconds": 54.99999999999989,
+        "max_lift_m": 0.13533229215524695,
+        "object_final_position": [
+          0.5897261772887903,
+          -0.24743807634374024,
+          0.5603322921552469
+        ],
+        "placement_error_xy_m": 0.11818982110440297,
+        "abort_reason": null,
+        "action_replay_max_abs": null,
+        "reservoir_replay_max_abs": null,
+        "stages": {
+          "0": {
+            "start_s": 0.04000000000000063,
+            "end_s": 0.15999999999999054,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "1": {
+            "start_s": 0.19999999999998613,
+            "end_s": 1.5600000000010799,
+            "mean_action": [
+              0.00046839625978726016,
+              -0.001139135607242761,
+              0.0,
+              0.00013573193176145466,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              1.0135197314814898e-06,
+              -3.577468317830324e-07,
+              2.154455681837865e-06,
+              2.556899394822418e-07,
+              7.173953775835156e-07,
+              2.7047956694710557e-10
+            ]
+          },
+          "2": {
+            "start_s": 1.6000000000011643,
+            "end_s": 1.8800000000017552,
+            "mean_action": [
+              0.004279721564604629,
+              -0.00744554017855164,
+              0.0,
+              0.0031490178928110526,
+              0.00016295484301000296,
+              0.0010145300093364496,
+              0.0
+            ],
+            "median_wrench": [
+              -0.6976217340018596,
+              0.10644620521157055,
+              0.6470873678778458,
+              0.0059842065762099736,
+              -0.00899459279328605,
+              -0.00016102058534718777
+            ]
+          },
+          "3": {
+            "start_s": 1.9200000000018396,
+            "end_s": 10.719999999981686,
+            "mean_action": [
+              0.02621685455818908,
+              -0.052573834579861006,
+              0.014692630449942746,
+              -0.010310506050109523,
+              -0.0017973334742721052,
+              -0.016272102235061696,
+              -0.0004331865215872908
+            ],
+            "median_wrench": [
+              -3.0474939958164846,
+              0.47629506099144875,
+              -1.6995608619621134,
+              -0.05173489055256925,
+              -0.1524283697646274,
+              -0.0007315531422141559
+            ]
+          },
+          "4": {
+            "start_s": 10.759999999981593,
+            "end_s": 55.00000000126404,
+            "mean_action": [
+              0.02070590458800668,
+              -0.040279254460107404,
+              0.012776655052573893,
+              -0.004053042227112972,
+              0.0004307466954335074,
+              -0.006115388812880965,
+              0.007747234323493263
+            ],
+            "median_wrench": [
+              -1.9934523099688135,
+              0.7242323556568471,
+              -0.9311235172652338,
+              0.0009494530726409108,
+              -0.018562471265672027,
+              -5.267501640773141e-05
+            ]
+          }
+        },
+        "actor_replay_performed": false,
+        "common_filter_replay_max_abs": 0.0,
+        "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "trace_sha256": "266e6ac967c0bfd659c693e0d613c608fc65454524df89e9c34af5cfec35f467",
+        "chain_sha256": "787cff877237b03d80568c44c2a40ddd8b436eff0163a66abf418229736e867f",
+        "metrics_sha256": "3b3e0f4a55a4155895b497fd165519337d8466090dd2169bd8fe9e448f729e32",
+        "policy_trace_consistency_max_abs": 0.0,
+        "controller": "vmc",
+        "parameter_source_sha256": {
+          "train.py": "49bfcfe4d3bb162ebe110a8fd36fc9a41b1df25b0a946d790c33f8d17dffa5f5",
+          "controllers.py": "a97cd0b142a97519f2ef55d5bc857f445e6140e1ea32df09609dd7aacb76aeb2",
+          "HASHES.json": "37489284dc1ed59433b639dd7dc09444a4f7ba0ab0373cb3b96e983e965d5906",
+          "PRIORS.json": "87bce1ed34085b608118c7b3a2d027d939d66294916277879a1375e4aaa57171",
+          "official_parameter_agent.py": "cef423295711966e963ac5f23492350d1f3bda0c3177822fa221312ab65f8d89",
+          "ball_probe.py": "8b6ec90806035a8f9ac542be0f75c85ac97ee3bc8e9b49d1be7f57891817d305",
+          "worker.py": "eb11450e5f709c75e67a0635d4996602781c984544197504b312938b0e2a622f",
+          "BO_LOCKED_SOURCE.json": "1cafd43556f754df0595027c6aa1a358520038bbd5a3f742b9ef3b2a2f287945",
+          "evaluate.py": "71144cfe5639f22a7381bde1a01c5254e2ea4b0b7cc15f57e2720117acb5b3a9",
+          "test_shield.py": "97dbb3ad76ea050d17794b74dfe39f0e70f4c376b417732d9d12cc87c95fece5",
+          "vendor/teacher_bank_design_20260930.py": "f438db02acc4dadce09719da78c070a6bf3ffbba883aa715c203d5b82421142e",
+          "vendor/admittance_reference_core_20260923.py": "8adbdba1a3be517890007ec171629f7727b7f4220d4cc6a10202eaf9ef77f3ea",
+          "vendor/energy_safety.py": "2ca907e9003cf7871a29c6c1e0a81c3d60752ac161df90c84d2b5c3ed0498053",
+          "vendor/current_student_policy_20260921.py": "a26eea40b1a9c9008e055ae6a7f76a981a49ebfa5fa18e06223ddeca72450213",
+          "vendor/vmc_teacher_stable_readout_20260930.py": "36455df952fb25c068592cbdb83540c34a317b33e9ad2b22a14757b252cc5a32",
+          "vendor/stiffness_training_core.py": "a6b48a425893e2324f14b1b64911fdda248a55502ef8b29871d2c1c544045d0e",
+          "vendor/teacher_bank_classical_20260930.py": "b218373fb7f6ba1d0b85820554fe4b77a883d114e0f7cc1a15f46b3099d47be3",
+          "vendor/run_vmc_6d_constrained_push_20260918.py": "e668dd8cc5942a391785f39ba36c8b249438bb58967159b34999b6b395bfb0c5",
+          "vendor/run_panel_impedance_reference_20260923.py": "f7eb89d1e389ef858efc5c0ec726bc3c09cd641307bbd047afd20470d576366e",
+          "vendor/SOURCE.json": "8155b7994240da11f57bdb409ea99914b1ddb1c213a3b861b75830015ec16d95",
+          "vendor/run_panel_admittance_reference_20260923.py": "6260f1352946b3daa1f4755164b43b6b7b6e5880f8540ac964efdd1a27ff45fc"
+        }
+      }
+    },
+    {
+      "name": "direct_metric_74001",
+      "started_utc": "2026-10-03T11:01:02.583034+00:00",
+      "command": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/source/tools/paper_rl_worker_20261002.py",
+        "--v6-input",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002",
+        "--reference",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002/esn_original_v2/rollout.json",
+        "--config",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/direct_metric_74001.config.json",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/direct_metric_74001",
+        "--contact-audit",
+        "--physics-dt",
+        "5e-05",
+        "--case",
+        "direct_metric_74001",
+        "--bridge",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002/source/bridge_frozen.py"
+      ],
+      "category": "frozen_rl_transfer",
+      "returncode": 0,
+      "ended_utc": "2026-10-03T11:04:37.583378+00:00",
+      "audit": {
+        "task_success": false,
+        "strict_success": false,
+        "memory_ablation": "none",
+        "full_horizon": true,
+        "stage": "approach",
+        "rmse_mm": 196.73797898663648,
+        "peak_torque_nm": 45.186981201171875,
+        "peak_speed_mps": 0.29442519713606846,
+        "penetration_mm": 0.4312703368495988,
+        "edge_penetration_mm": 0.0,
+        "worst_pair": [
+          "office_v5_pillar",
+          "fr3_link6_collision"
+        ],
+        "physical_seconds": 54.99999999999989,
+        "max_lift_m": 0.0,
+        "object_final_position": [
+          0.54,
+          -0.19,
+          0.4249969877369443
+        ],
+        "placement_error_xy_m": 0.1920937271229854,
+        "abort_reason": null,
+        "action_replay_max_abs": null,
+        "reservoir_replay_max_abs": null,
+        "stages": {
+          "0": {
+            "start_s": 0.04000000000000063,
+            "end_s": 55.00000000126404,
+            "mean_action": [
+              0.5286586753456769,
+              0.4319167294001037,
+              -0.6698626103612213,
+              -0.8178991082168439,
+              0.8002133277089081,
+              0.45165181403894994,
+              0.4605708393278447
+            ],
+            "median_wrench": [
+              -1.9078352392406757,
+              14.123903726290017,
+              22.15098961404203,
+              1.8731554268026833,
+              0.47124806243758105,
+              -5.155799427962341
+            ]
+          }
+        },
+        "actor_replay_performed": false,
+        "common_filter_replay_max_abs": 0.0,
+        "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "trace_sha256": "ddd16810c4a46728e8f5d12641e646359ad7f4e30bb51c635b896a7d55a1c8e4",
+        "chain_sha256": "32395a698a6d3a57d1972b098954d744915a33fb67e56c1da7e2d8d46401a2d9",
+        "metrics_sha256": "7de05c1ef1e54a24e33feac52a340892ec8f908fe0a89f7604265c6704a7f037",
+        "policy_trace_consistency_max_abs": 0.0,
+        "learned_actor_replay_max_abs": 0.0,
+        "case": "direct_metric_74001"
+      }
+    },
+    {
+      "name": "recovery_lift0.035_distance0.02",
+      "started_utc": "2026-10-03T11:04:37.584025+00:00",
+      "command": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/source/tools/paper_office_worker_20261002.py",
+        "--v6-input",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002",
+        "--reference",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002/esn_original_v2/rollout.json",
+        "--config",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/recovery_lift0.035_distance0.02.config.json",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/recovery_lift0.035_distance0.02",
+        "--contact-audit",
+        "--physics-dt",
+        "5e-05"
+      ],
+      "category": "vmc_development",
+      "returncode": 0,
+      "ended_utc": "2026-10-03T11:09:27.616730+00:00",
+      "audit": {
+        "task_success": true,
+        "strict_success": true,
+        "memory_ablation": "none",
+        "full_horizon": true,
+        "stage": "retreat",
+        "rmse_mm": 30.516252065261476,
+        "peak_torque_nm": 49.09294509887695,
+        "peak_speed_mps": 0.38403608743420253,
+        "penetration_mm": 0.15579712505470114,
+        "edge_penetration_mm": 0.07952506081935042,
+        "worst_pair": [
+          "office_v5_ball_geom",
+          "hand_collision"
+        ],
+        "physical_seconds": 54.99999999999989,
+        "max_lift_m": 0.1745604425801311,
+        "object_final_position": [
+          0.708727929624597,
+          -0.31510909158059547,
+          0.5449969685583512
+        ],
+        "placement_error_xy_m": 0.01941231992325415,
+        "abort_reason": null,
+        "action_replay_max_abs": 0.0,
+        "reservoir_replay_max_abs": null,
+        "stages": {
+          "0": {
+            "start_s": 0.04000000000000063,
+            "end_s": 0.15999999999999054,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "1": {
+            "start_s": 0.19999999999998613,
+            "end_s": 2.000000000002008,
+            "mean_action": [
+              0.010271533252993886,
+              -0.00828880896343989,
+              0.0013813065907516946,
+              -0.0005552173114029706,
+              -0.0016693243254283549,
+              -0.010677971530276668,
+              0.0
+            ],
+            "median_wrench": [
+              -2.7433583468172104e-06,
+              9.676501370063207e-07,
+              1.903453909170022e-06,
+              -5.050649919746262e-07,
+              -1.4177940759499775e-06,
+              1.8001636553030526e-10
+            ]
+          },
+          "2": {
+            "start_s": 2.040000000001915,
+            "end_s": 2.60000000000061,
+            "mean_action": [
+              0.16562884466746144,
+              -0.03266557054312061,
+              0.009427953650644433,
+              -0.004732726652043117,
+              0.01620988750902354,
+              3.055085073224717e-05,
+              -0.005486773748477323
+            ],
+            "median_wrench": [
+              -0.4664375381687836,
+              0.047194416722315,
+              -0.36050925589318755,
+              -0.01808553630449656,
+              -0.10308881136675044,
+              -0.0007934446204204298
+            ]
+          },
+          "3": {
+            "start_s": 2.6400000000005166,
+            "end_s": 10.759999999981593,
+            "mean_action": [
+              0.09809048103647057,
+              -0.03118145127120153,
+              0.005690731041667481,
+              -0.012169308074474307,
+              -0.011188994794734505,
+              -0.035663838248845454,
+              0.0005761300710221402
+            ],
+            "median_wrench": [
+              -0.491769381787996,
+              0.04756174931652289,
+              -1.095498409465772,
+              -0.01308995022836783,
+              -0.024746823207229415,
+              5.094644809466927e-06
+            ]
+          },
+          "4": {
+            "start_s": 10.7999999999815,
+            "end_s": 31.52000000048459,
+            "mean_action": [
+              0.05691027987890268,
+              -0.02356306938081534,
+              -0.0022387444090258436,
+              0.15580010532538893,
+              -0.010493446385032678,
+              0.008875486328746225,
+              0.027618224213370724
+            ],
+            "median_wrench": [
+              -0.04036926402377936,
+              -0.004400508513198009,
+              -0.7992906099335289,
+              -0.001042307866410147,
+              0.019807191341415023,
+              -5.683056589371769e-05
+            ]
+          },
+          "5": {
+            "start_s": 31.560000000485918,
+            "end_s": 32.20000000050716,
+            "mean_action": [
+              0.05849711483427557,
+              -0.03567928756016294,
+              0.019096823392961256,
+              -0.01090789914983868,
+              -0.009958490471257941,
+              -0.029164281168853723,
+              -0.004722243425747991
+            ],
+            "median_wrench": [
+              -0.10072023740647576,
+              0.06680506630865868,
+              -0.9197655845095246,
+              0.004551192638640692,
+              -0.024782511822186593,
+              -0.0020373425524956227
+            ]
+          },
+          "6": {
+            "start_s": 32.24000000050849,
+            "end_s": 32.72000000052442,
+            "mean_action": [
+              0.11739186718203806,
+              -0.03635524815614303,
+              0.01008182124015376,
+              -0.0019759528944658707,
+              -0.028600772067996716,
+              -0.1229253559290109,
+              -0.008257392017998046
+            ],
+            "median_wrench": [
+              0.40499891829726986,
+              -0.5098274725441005,
+              -0.6120321516606533,
+              0.05353191296754367,
+              -0.030430965057201703,
+              0.05220333577509567
+            ]
+          },
+          "7": {
+            "start_s": 32.76000000052575,
+            "end_s": 55.00000000126404,
+            "mean_action": [
+              0.014410761264232783,
+              0.005310557133687917,
+              -0.003401623932261631,
+              0.0008336015820451239,
+              0.005070680943221728,
+              0.009651479606277307,
+              0.0029469997924705844
+            ],
+            "median_wrench": [
+              8.392863599647057e-104,
+              1.8160595357548207e-117,
+              9.09264830345161e-102,
+              -4.1190883534892204e-119,
+              1.6528733311202159e-102,
+              -4.2258376969664275e-119
+            ]
+          }
+        },
+        "actor_replay_performed": true,
+        "common_filter_replay_max_abs": 0.0,
+        "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "trace_sha256": "2b1e588c7bbaf06ffa7a35fc096c8d7228504d75308f1ce2ae63ad511bf1bb73",
+        "chain_sha256": "1b9b08403704359eccb0ccfab0d6d560b18f1318a2301615fe8e39fba5738415",
+        "metrics_sha256": "b5b40479fe1d328ee0b11329e1fd33b0887c708a939b171050115150056f61cc"
+      }
+    },
+    {
+      "name": "recovery035_esn_seed2",
+      "started_utc": "2026-10-03T11:09:27.617768+00:00",
+      "command": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/source/tools/paper_office_worker_20261002.py",
+        "--v6-input",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002",
+        "--reference",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002/esn_original_v2/rollout.json",
+        "--config",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/recovery035_esn_seed2.config.json",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/recovery035_esn_seed2",
+        "--contact-audit",
+        "--physics-dt",
+        "5e-05",
+        "--checkpoint",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_recovery035_mechanisms_20261002_141136/evidence/models/recovery035_esn_seed2/checkpoint.npz"
+      ],
+      "category": "esn_development",
+      "returncode": 0,
+      "ended_utc": "2026-10-03T11:14:19.029292+00:00",
+      "audit": {
+        "task_success": false,
+        "strict_success": false,
+        "memory_ablation": "none",
+        "full_horizon": true,
+        "stage": "retreat",
+        "rmse_mm": 27.42325310571752,
+        "peak_torque_nm": 51.32155227661133,
+        "peak_speed_mps": 0.3677489259416083,
+        "penetration_mm": 0.14034172969066921,
+        "edge_penetration_mm": 0.08352634690426441,
+        "worst_pair": [
+          "office_v5_ball_geom",
+          "hand_collision"
+        ],
+        "physical_seconds": 54.99999999999989,
+        "max_lift_m": 0.17757348401219514,
+        "object_final_position": [
+          0.7167674345905393,
+          -0.31882774283545867,
+          0.5449967047145836
+        ],
+        "placement_error_xy_m": 0.02818553881208931,
+        "abort_reason": null,
+        "action_replay_max_abs": 0.0,
+        "reservoir_replay_max_abs": 0.0,
+        "stages": {
+          "0": {
+            "start_s": 0.04000000000000063,
+            "end_s": 0.15999999999999054,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "1": {
+            "start_s": 0.19999999999998613,
+            "end_s": 1.680000000001333,
+            "mean_action": [
+              0.001058059907769847,
+              -0.0017302316485978532,
+              -0.0002342791414200167,
+              0.00046031816514389593,
+              -0.0005780319959174262,
+              -0.0008079417675622387,
+              0.00013565684987240138
+            ],
+            "median_wrench": [
+              1.0075143084522727e-06,
+              -3.556895538875557e-07,
+              2.480064750325637e-06,
+              2.319931027273226e-07,
+              6.509545990558844e-07,
+              3.7022873872866935e-10
+            ]
+          },
+          "2": {
+            "start_s": 1.7200000000014175,
+            "end_s": 2.000000000002008,
+            "mean_action": [
+              0.00820013752509489,
+              -0.0009873345745585373,
+              0.0016754461911439537,
+              0.0061257957866347554,
+              0.007128037581029927,
+              0.0020541257149161315,
+              0.0001402644968054585
+            ],
+            "median_wrench": [
+              -0.0027544934225493256,
+              0.038046096232228634,
+              0.0942871485740224,
+              0.00680493295579275,
+              -3.1010587646416245e-05,
+              -3.385749058629085e-05
+            ]
+          },
+          "3": {
+            "start_s": 2.040000000001915,
+            "end_s": 10.399999999982432,
+            "mean_action": [
+              0.07807678261718667,
+              -0.03745293850407451,
+              0.012418471834252126,
+              0.0038723375976245735,
+              0.00504793362499208,
+              0.0002725513659129624,
+              -0.002788540974603671
+            ],
+            "median_wrench": [
+              -0.852740795944607,
+              0.2607000213474978,
+              -0.9181136911136999,
+              0.0047562681830941676,
+              0.008219969730156432,
+              -2.755814915607229e-05
+            ]
+          },
+          "4": {
+            "start_s": 10.439999999982339,
+            "end_s": 30.60000000045405,
+            "mean_action": [
+              0.06068050952529926,
+              -0.030477575041205546,
+              0.002478343964970784,
+              0.1718462264384212,
+              -0.007403748148114815,
+              0.023243873676111287,
+              0.031366600968281165
+            ],
+            "median_wrench": [
+              -0.08404776629038371,
+              0.00037859418284186264,
+              -0.806497263643471,
+              -0.0006566003365357292,
+              0.03352964093508413,
+              0.0003846411689787844
+            ]
+          },
+          "5": {
+            "start_s": 30.640000000455377,
+            "end_s": 31.32000000047795,
+            "mean_action": [
+              0.09383870194347853,
+              0.09303143434315131,
+              -0.06417730335673585,
+              0.02543034310688594,
+              0.09036149694933535,
+              0.1502484710204404,
+              0.048509708118356705
+            ],
+            "median_wrench": [
+              0.9710116411411236,
+              -0.7484539123214533,
+              1.3687835744442833,
+              0.1893337730725965,
+              0.22245142115546213,
+              0.1195421617789598
+            ]
+          },
+          "6": {
+            "start_s": 31.36000000047928,
+            "end_s": 32.20000000050716,
+            "mean_action": [
+              0.06925459250930956,
+              -0.024680148209167332,
+              0.02574136001183319,
+              0.037267899320440674,
+              -0.0031314566821773982,
+              -0.010821660377614832,
+              -0.001253210931324352
+            ],
+            "median_wrench": [
+              -5.39129924462396e-05,
+              -0.0056602694556947344,
+              0.0007013452763246213,
+              0.0003953753355741833,
+              -1.403044425137839e-05,
+              0.0006249722540139229
+            ]
+          },
+          "7": {
+            "start_s": 32.24000000050849,
+            "end_s": 55.00000000126404,
+            "mean_action": [
+              0.00518767098736591,
+              -0.0022175002005871444,
+              0.000765480090418527,
+              0.004242064122538817,
+              -0.001842235014207214,
+              -0.0049597544313726635,
+              -0.0008758485659269431
+            ],
+            "median_wrench": [
+              -2.809406293350342e-109,
+              1.1142877062986563e-108,
+              -9.763418289998523e-110,
+              -2.7367228482597906e-110,
+              -2.4244373416346216e-110,
+              -6.613391015513463e-111
+            ]
+          }
+        },
+        "actor_replay_performed": true,
+        "common_filter_replay_max_abs": 0.0,
+        "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "trace_sha256": "c9fbbd5ee47892e40bc1495dad921a68db5624000c12afb3fff8b7d5257bde9a",
+        "chain_sha256": "0b2c8ee99ab54537082c67966b7ed5057c965f522727a9d7ba00b49210319986",
+        "metrics_sha256": "f6d8d231b965e30bb06b849142da616c23e2977f953ed242f750d559ba5a938a"
+      }
+    },
+    {
+      "name": "paired_feature_matched_mlp",
+      "started_utc": "2026-10-03T11:14:19.030924+00:00",
+      "command": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/source/tools/paper_office_worker_20261002.py",
+        "--v6-input",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002",
+        "--reference",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002/esn_original_v2/rollout.json",
+        "--config",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/paired_feature_matched_mlp.config.json",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/paired_feature_matched_mlp",
+        "--contact-audit",
+        "--physics-dt",
+        "5e-05",
+        "--checkpoint",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_feature_matched_20261002_141136/evidence/models/paired_feature_matched_mlp/checkpoint.npz"
+      ],
+      "category": "mlp_rnn_development",
+      "returncode": 0,
+      "ended_utc": "2026-10-03T11:19:15.646611+00:00",
+      "audit": {
+        "task_success": false,
+        "strict_success": false,
+        "memory_ablation": "none",
+        "full_horizon": true,
+        "stage": "retreat",
+        "rmse_mm": 32.68657861928059,
+        "peak_torque_nm": 49.86566162109375,
+        "peak_speed_mps": 0.36036350569236536,
+        "penetration_mm": 0.14106758541096467,
+        "edge_penetration_mm": 0.0826980205328511,
+        "worst_pair": [
+          "office_v5_ball_geom",
+          "hand_collision"
+        ],
+        "physical_seconds": 54.99999999999989,
+        "max_lift_m": 0.17140462200831935,
+        "object_final_position": [
+          0.7138832620693016,
+          -0.318235019732272,
+          0.5449968482870869
+        ],
+        "placement_error_xy_m": 0.025263130389202637,
+        "abort_reason": null,
+        "action_replay_max_abs": 0.0,
+        "reservoir_replay_max_abs": null,
+        "stages": {
+          "0": {
+            "start_s": 0.04000000000000063,
+            "end_s": 0.15999999999999054,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "1": {
+            "start_s": 0.19999999999998613,
+            "end_s": 1.680000000001333,
+            "mean_action": [
+              0.002235600545744304,
+              -0.0030294156748965476,
+              0.0006710173597510855,
+              0.0021125942865444095,
+              -0.0008582234038609413,
+              -0.000407175607111006,
+              -0.000553236164539203
+            ],
+            "median_wrench": [
+              1.0077562701326126e-06,
+              -3.5577485233348125e-07,
+              2.480385330078734e-06,
+              2.320140222415353e-07,
+              6.510134619897508e-07,
+              3.7018991394755146e-10
+            ]
+          },
+          "2": {
+            "start_s": 1.7200000000014175,
+            "end_s": 2.000000000002008,
+            "mean_action": [
+              0.046477617586049805,
+              -0.06516487827369963,
+              0.01811946448283675,
+              0.01778531178159823,
+              -0.03670037812693086,
+              -0.039677310628901896,
+              -0.01077023067462425
+            ],
+            "median_wrench": [
+              -0.22543725490761718,
+              0.04253571307695925,
+              0.001180392548528441,
+              -0.041031280490758174,
+              -0.023469188129025962,
+              -5.673764727002668e-05
+            ]
+          },
+          "3": {
+            "start_s": 2.040000000001915,
+            "end_s": 10.67999999998178,
+            "mean_action": [
+              0.08968297180567332,
+              -0.08514890715568164,
+              0.012152709644995947,
+              0.008130744437652241,
+              0.008860970299043909,
+              0.014964566198875982,
+              -0.013209789040802031
+            ],
+            "median_wrench": [
+              -1.455663741071285,
+              0.3733660208056578,
+              -0.9443938575894709,
+              -0.02078867984512731,
+              -0.028802355548928522,
+              0.00020693746346526405
+            ]
+          },
+          "4": {
+            "start_s": 10.719999999981686,
+            "end_s": 31.280000000476623,
+            "mean_action": [
+              0.058141472051239526,
+              -0.035860309387804476,
+              -0.005642107644735484,
+              0.15792189618388613,
+              0.0005295360511170584,
+              0.023182661850536374,
+              0.04550765982856827
+            ],
+            "median_wrench": [
+              -0.12576605919385395,
+              0.0024775260033884083,
+              -0.7843365639510951,
+              0.0018635894804398263,
+              0.05143084101637746,
+              0.03308397805334411
+            ]
+          },
+          "5": {
+            "start_s": 31.32000000047795,
+            "end_s": 32.120000000504504,
+            "mean_action": [
+              0.11305940798816148,
+              0.069060111712956,
+              -0.05389152242434886,
+              0.052223106679097527,
+              0.06382386670912774,
+              0.0752202199167477,
+              0.026606084745756944
+            ],
+            "median_wrench": [
+              -0.0043779095276487425,
+              -0.31425408081576595,
+              -0.7863780208293514,
+              0.06042632813430603,
+              0.049635328003283526,
+              0.06644098221165073
+            ]
+          },
+          "6": {
+            "start_s": 32.16000000050583,
+            "end_s": 39.400000000746175,
+            "mean_action": [
+              0.11208492969940184,
+              0.0032242549898750038,
+              -0.04176628053764354,
+              0.06727327149165079,
+              0.020177181822461934,
+              0.01872694056566703,
+              0.016667315535191934
+            ],
+            "median_wrench": [
+              -0.00010231324841439083,
+              4.9235076842233774e-05,
+              -8.193203592421335e-05,
+              -4.84498828047458e-06,
+              -1.8677771903411606e-05,
+              -1.5487424936099708e-06
+            ]
+          },
+          "7": {
+            "start_s": 39.4400000007475,
+            "end_s": 55.00000000126404,
+            "mean_action": [
+              0.010098717448713643,
+              -0.010065017192651222,
+              0.0060474258373281,
+              0.0023700877833848525,
+              -0.004966056749674601,
+              -0.014068066441872433,
+              -0.0034156972803822167
+            ],
+            "median_wrench": [
+              6.158756180435861e-79,
+              -1.2557838580283105e-79,
+              4.6025059755253133e-79,
+              1.2329034571990145e-80,
+              8.073068364021151e-80,
+              8.604792299121475e-81
+            ]
+          }
+        },
+        "actor_replay_performed": true,
+        "common_filter_replay_max_abs": 0.0,
+        "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "trace_sha256": "e666439c099c91528b287e1ed668ad77312405aee32aac5b96d2b8880978dafb",
+        "chain_sha256": "2851db10d318709ce2a9b94716a3ae1ab7d8ed1df014626f3f8780d775859286",
+        "metrics_sha256": "3c74383c1b8c0a2c0830e226ffe32c23e9948fcd8e991c8cb0174950fd50ce73"
+      }
+    },
+    {
+      "name": "impedance_12",
+      "started_utc": "2026-10-03T11:19:15.648328+00:00",
+      "command": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/source/tools/paper_classical_worker_20261002.py",
+        "--v6-input",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002",
+        "--reference",
+        "/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002/esn_original_v2/rollout.json",
+        "--config",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/impedance_12.config.json",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/impedance_12",
+        "--contact-audit",
+        "--physics-dt",
+        "5e-05",
+        "--controller",
+        "impedance",
+        "--parameter-source",
+        "/home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/parameter_rl/frozen_train02"
+      ],
+      "category": "impedance_development",
+      "returncode": 0,
+      "ended_utc": "2026-10-03T11:23:25.788461+00:00",
+      "audit": {
+        "task_success": false,
+        "strict_success": false,
+        "memory_ablation": "none",
+        "full_horizon": true,
+        "stage": "carry",
+        "rmse_mm": 23.112390773343588,
+        "peak_torque_nm": 44.48880386352539,
+        "peak_speed_mps": 0.3719455751250779,
+        "penetration_mm": 0.16177867646987087,
+        "edge_penetration_mm": 0.14150597619148622,
+        "worst_pair": [
+          "office_v5_ball_geom",
+          "hand_collision"
+        ],
+        "physical_seconds": 54.99999999999989,
+        "max_lift_m": 0.15438675889965242,
+        "object_final_position": [
+          0.58516496954756,
+          -0.28105667923801503,
+          0.5786679461294941
+        ],
+        "placement_error_xy_m": 0.10875706610007073,
+        "abort_reason": null,
+        "action_replay_max_abs": null,
+        "reservoir_replay_max_abs": null,
+        "stages": {
+          "0": {
+            "start_s": 0.04000000000000063,
+            "end_s": 0.15999999999999054,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "1": {
+            "start_s": 0.19999999999998613,
+            "end_s": 1.6000000000011643,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              1.0406812395954691e-07,
+              -3.711700330143912e-08,
+              1.4040814584024495e-05,
+              -5.6909840023746026e-08,
+              3.549040402032898e-06,
+              1.555026806849562e-10
+            ]
+          },
+          "2": {
+            "start_s": 1.6400000000012487,
+            "end_s": 1.9200000000018396,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              -0.5956804446529989,
+              0.0940780858693772,
+              1.1141135024759796,
+              0.07379202198446587,
+              -0.030674498692215536,
+              -7.219315933854678e-05
+            ]
+          },
+          "3": {
+            "start_s": 1.960000000001924,
+            "end_s": 4.519999999996135,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              -0.004481252810171058,
+              -0.0001884345202354809,
+              -0.7867648883935222,
+              -0.0005539151755315512,
+              -6.487058775434124e-05,
+              -6.675401043436883e-05
+            ]
+          },
+          "4": {
+            "start_s": 4.559999999996042,
+            "end_s": 55.00000000126404,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              -15.372304444573274,
+              5.840331157293791,
+              39.01609029110374,
+              -0.5918137619420257,
+              -0.1891412389853404,
+              -0.4005866374918299
+            ]
+          }
+        },
+        "actor_replay_performed": false,
+        "common_filter_replay_max_abs": 0.0,
+        "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "trace_sha256": "55ca514ab889685b7fe7320c43647a9abb63d20bd017136c83199cdf10baf080",
+        "chain_sha256": "d00ba755871e6316a5aabd8a099c440e325410d762ab995d2a8afb679fd62c30",
+        "metrics_sha256": "db60385982be37e9f9c81ce2dc992b2aa15dc44b52e81ba1cee328d8f08dfc10",
+        "policy_trace_consistency_max_abs": 0.0,
+        "controller": "impedance",
+        "parameter_source_sha256": {
+          "train.py": "49bfcfe4d3bb162ebe110a8fd36fc9a41b1df25b0a946d790c33f8d17dffa5f5",
+          "controllers.py": "a97cd0b142a97519f2ef55d5bc857f445e6140e1ea32df09609dd7aacb76aeb2",
+          "HASHES.json": "37489284dc1ed59433b639dd7dc09444a4f7ba0ab0373cb3b96e983e965d5906",
+          "PRIORS.json": "87bce1ed34085b608118c7b3a2d027d939d66294916277879a1375e4aaa57171",
+          "official_parameter_agent.py": "cef423295711966e963ac5f23492350d1f3bda0c3177822fa221312ab65f8d89",
+          "ball_probe.py": "8b6ec90806035a8f9ac542be0f75c85ac97ee3bc8e9b49d1be7f57891817d305",
+          "worker.py": "eb11450e5f709c75e67a0635d4996602781c984544197504b312938b0e2a622f",
+          "BO_LOCKED_SOURCE.json": "1cafd43556f754df0595027c6aa1a358520038bbd5a3f742b9ef3b2a2f287945",
+          "evaluate.py": "71144cfe5639f22a7381bde1a01c5254e2ea4b0b7cc15f57e2720117acb5b3a9",
+          "test_shield.py": "97dbb3ad76ea050d17794b74dfe39f0e70f4c376b417732d9d12cc87c95fece5",
+          "vendor/teacher_bank_design_20260930.py": "f438db02acc4dadce09719da78c070a6bf3ffbba883aa715c203d5b82421142e",
+          "vendor/admittance_reference_core_20260923.py": "8adbdba1a3be517890007ec171629f7727b7f4220d4cc6a10202eaf9ef77f3ea",
+          "vendor/energy_safety.py": "2ca907e9003cf7871a29c6c1e0a81c3d60752ac161df90c84d2b5c3ed0498053",
+          "vendor/current_student_policy_20260921.py": "a26eea40b1a9c9008e055ae6a7f76a981a49ebfa5fa18e06223ddeca72450213",
+          "vendor/vmc_teacher_stable_readout_20260930.py": "36455df952fb25c068592cbdb83540c34a317b33e9ad2b22a14757b252cc5a32",
+          "vendor/stiffness_training_core.py": "a6b48a425893e2324f14b1b64911fdda248a55502ef8b29871d2c1c544045d0e",
+          "vendor/teacher_bank_classical_20260930.py": "b218373fb7f6ba1d0b85820554fe4b77a883d114e0f7cc1a15f46b3099d47be3",
+          "vendor/run_vmc_6d_constrained_push_20260918.py": "e668dd8cc5942a391785f39ba36c8b249438bb58967159b34999b6b395bfb0c5",
+          "vendor/run_panel_impedance_reference_20260923.py": "f7eb89d1e389ef858efc5c0ec726bc3c09cd641307bbd047afd20470d576366e",
+          "vendor/SOURCE.json": "8155b7994240da11f57bdb409ea99914b1ddb1c213a3b861b75830015ec16d95",
+          "vendor/run_panel_admittance_reference_20260923.py": "6260f1352946b3daa1f4755164b43b6b7b6e5880f8540ac964efdd1a27ff45fc"
+        }
+      }
+    }
+  ],
+  "ended_utc": "2026-10-03T11:23:25.790061+00:00"
+}

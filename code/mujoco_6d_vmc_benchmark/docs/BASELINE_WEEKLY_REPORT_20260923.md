@@ -1,5 +1,15 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-03 全26方法同一正式锚点实际重跑完成
+
+新增[正式测试矩阵](evidence/all_methods_formal_20261003/report/MATRIX.md)：26冻结模型全部用dt5e-5、
+相同v6/seed/初态/门槛，各完整55秒；不按原开发资格筛选。5个task/strict通过：增强teacher、
+普通RNN两seed、同特征RNN seed1、无记忆。两个ESN均失败，三RL调参停carry、四RL action停approach。
+共同配置/子步/动作/权重及26放置审计通过，7旧formal轨迹hash完全复现。单锚点不代表泛化成功率。
+服务器根 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/`，
+双遍核验2787文件/3.827GB；Git小证据和核验收据见矩阵上级目录。已结束，不改环境或重训。
+下一研究窗口来自用户新授权，需补强同训练条件baseline及ESN稳定放置，保持本次冻结证据不变。
+
 ### 2026-10-03 全26方法柔顺性统一制表
 
 新增[完整矩阵](evidence/unified_compliance_20261003/MATRIX.md)，基于相同v6/原生运行库/开发dt1e-4

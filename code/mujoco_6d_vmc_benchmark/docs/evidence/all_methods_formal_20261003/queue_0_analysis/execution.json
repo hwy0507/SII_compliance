@@ -1,0 +1,102 @@
+{
+  "status": "complete",
+  "started_utc": "2026-10-03T11:26:28.263666+00:00",
+  "argv": [
+    "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728_runtime/tools/audit_paper_phase_20261003.py",
+    "--phase",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0",
+    "--output",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0_analysis",
+    "--model-sha256",
+    "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3"
+  ],
+  "phase": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0",
+  "phase_execution_sha256": "e3fd1d494b1edfd50f9c146bb033db55ba3db4512247c5b40e1c3a24ef06518c",
+  "sources": {
+    "audit_paper_phase_20261003.py": "323662f1da2c8cb132c04bf37c7b38202bc1caf85b48ccf478679568cbf1077f",
+    "report_tool_campaign_20261002.py": "ea5f90dd0d802084c097850945e11ffb21ed34f82d660f08483690d162b4aafb",
+    "paper_metrics_20261002.py": "a5822ce263e420163e1cf2fa95f389ac51a6334f8bd2b1f9ac6f2ba05dc7b4e0"
+  },
+  "commands": [
+    [
+      "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728_runtime/tools/report_tool_campaign_20261002.py",
+      "--root",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728",
+      "--batch",
+      "queue_0",
+      "--output",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0_analysis/INDEPENDENT_AUDIT.json",
+      "--expected-model-sha256",
+      "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3"
+    ],
+    [
+      "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728_runtime/tools/paper_metrics_20261002.py",
+      "--run",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/zero",
+      "--output",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0_analysis/zero.metrics.json"
+    ],
+    [
+      "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728_runtime/tools/paper_metrics_20261002.py",
+      "--run",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/fixed_vmc",
+      "--output",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0_analysis/fixed_vmc.metrics.json"
+    ],
+    [
+      "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728_runtime/tools/paper_metrics_20261002.py",
+      "--run",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/direct_metric_74001",
+      "--output",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0_analysis/direct_metric_74001.metrics.json"
+    ],
+    [
+      "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728_runtime/tools/paper_metrics_20261002.py",
+      "--run",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/recovery_lift0.035_distance0.02",
+      "--output",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0_analysis/recovery_lift0.035_distance0.02.metrics.json"
+    ],
+    [
+      "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728_runtime/tools/paper_metrics_20261002.py",
+      "--run",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/recovery035_esn_seed2",
+      "--output",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0_analysis/recovery035_esn_seed2.metrics.json"
+    ],
+    [
+      "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728_runtime/tools/paper_metrics_20261002.py",
+      "--run",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/paired_feature_matched_mlp",
+      "--output",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0_analysis/paired_feature_matched_mlp.metrics.json"
+    ],
+    [
+      "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728_runtime/tools/paper_metrics_20261002.py",
+      "--run",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/impedance_12",
+      "--output",
+      "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0_analysis/impedance_12.metrics.json"
+    ]
+  ],
+  "episodes": 7,
+  "outputs": {
+    "fixed_vmc.metrics.json": "b06fe1bc9b9b38ec66867309ac1628550c8ec5388cc1374d4c837ee5337682e9",
+    "recovery035_esn_seed2.metrics.json": "054e5557f41e6711964c69bf77b28c104fcfba78dc1c6ea38709a00cac57b666",
+    "paired_feature_matched_mlp.metrics.json": "a866a25f6ab19bbd8003faa526a125ba7629621d2ae51b5d4b1f344a4873db5a",
+    "impedance_12.metrics.json": "e109b0f30ff8a239a4714635fbcc19651d54ff06a5777fa0cfbd54cc73a50a1c",
+    "recovery_lift0.035_distance0.02.metrics.json": "b1012b4f2b39c13c23318d08134c3f2c2b928f25f1dde5fba8574716786b324a",
+    "direct_metric_74001.metrics.json": "2a9d6c9606efddd5ecb8f7e360ec42485cc61e353f8bf10af448e7fb2bb76faa",
+    "zero.metrics.json": "29f5090eafa729fc9c8c25db4a4e32eee2542471a0acf8d87a9c70a747d5787b",
+    "INDEPENDENT_AUDIT.json": "c8218ec4344e141a6e0cf062f90f557df2fd8157524da3d1523648ac535f1af6"
+  },
+  "ended_utc": "2026-10-03T11:26:39.914088+00:00"
+}

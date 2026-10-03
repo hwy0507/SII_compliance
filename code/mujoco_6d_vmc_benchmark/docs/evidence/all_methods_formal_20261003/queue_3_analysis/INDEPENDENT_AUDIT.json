@@ -1,0 +1,1561 @@
+{
+  "created_utc": "2026-10-03T11:27:06.352858+00:00",
+  "rows": [
+    {
+      "task_success": false,
+      "strict_success": false,
+      "memory_ablation": "none",
+      "full_horizon": true,
+      "stage": "carry",
+      "rmse_mm": 37.50622136226903,
+      "peak_torque_nm": 40.06204605102539,
+      "peak_speed_mps": 0.3844441406245014,
+      "penetration_mm": 0.1745913559306177,
+      "edge_penetration_mm": 0.08274086755153473,
+      "worst_pair": [
+        "office_v5_ball_geom",
+        "hand_collision"
+      ],
+      "physical_seconds": 54.99999999999989,
+      "max_lift_m": 0.13309708312538576,
+      "object_final_position": [
+        0.5899865291819888,
+        -0.25927401514363535,
+        0.5580970831253858
+      ],
+      "placement_error_xy_m": 0.11214196308569466,
+      "abort_reason": null,
+      "action_replay_max_abs": null,
+      "reservoir_replay_max_abs": null,
+      "stages": {
+        "0": {
+          "start_s": 0.04000000000000063,
+          "end_s": 0.15999999999999054,
+          "mean_action": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median_wrench": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "1": {
+          "start_s": 0.19999999999998613,
+          "end_s": 1.680000000001333,
+          "mean_action": [
+            0.0,
+            -0.0006867436369980693,
+            7.92923025382919e-05,
+            0.0002538499293676751,
+            -0.0016137226648783114,
+            -0.0017223003566645364,
+            4.411559099203394e-05
+          ],
+          "median_wrench": [
+            1.0074435577004744e-06,
+            -3.5566454671150034e-07,
+            2.4800513232557446e-06,
+            2.319914856828534e-07,
+            6.509500558860055e-07,
+            3.702836339126825e-10
+          ]
+        },
+        "2": {
+          "start_s": 1.7200000000014175,
+          "end_s": 2.000000000002008,
+          "mean_action": [
+            0.0,
+            -0.012584001249008322,
+            0.0030817821801217005,
+            0.007176711522320474,
+            -0.03797005178817791,
+            0.0322410316223571,
+            0.0007677394886010489
+          ],
+          "median_wrench": [
+            -0.3803007217074712,
+            0.10891467465631016,
+            0.31182028361824815,
+            -0.009074732234023563,
+            -0.02000062116142128,
+            0.00044631655007049343
+          ]
+        },
+        "3": {
+          "start_s": 2.040000000001915,
+          "end_s": 11.399999999980102,
+          "mean_action": [
+            0.0,
+            -0.014807386859631056,
+            0.006958775377247816,
+            -0.0005770843482498576,
+            0.0006401357424609455,
+            -0.04331526495194035,
+            -0.009161292335764511
+          ],
+          "median_wrench": [
+            -2.0278192302444467,
+            0.6530343657547679,
+            -2.4289777704603916,
+            -0.008563032971656415,
+            -0.05503812066251031,
+            -0.0003427536582107325
+          ]
+        },
+        "4": {
+          "start_s": 11.439999999980008,
+          "end_s": 55.00000000126404,
+          "mean_action": [
+            0.0,
+            -0.05338423276035889,
+            0.01711325122738891,
+            -0.025201757717834547,
+            0.0656132807787389,
+            0.13469198431510673,
+            0.08303635413797214
+          ],
+          "median_wrench": [
+            -3.0559904296240132,
+            0.32587454158565105,
+            -0.5778446808300839,
+            0.07272666941509556,
+            0.15938997698538138,
+            0.11085202994604941
+          ]
+        }
+      },
+      "actor_replay_performed": false,
+      "common_filter_replay_max_abs": 0.0,
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "trace_sha256": "180c63e2d496a4fe9fa73f60028245d33ef1d0205d8f9cf75aa7bb263b4501fb",
+      "chain_sha256": "07e21785455fa01dc42e0e061d2edf7a396db5e7802bea326d8977abc6af3cdf",
+      "metrics_sha256": "942be503ee72bb45e310ad489470dc0b4a5406df6ef9818c4720056e480cd6b4",
+      "policy_trace_consistency_max_abs": 0.0,
+      "controller": "admittance",
+      "parameter_source_sha256": {
+        "train.py": "49bfcfe4d3bb162ebe110a8fd36fc9a41b1df25b0a946d790c33f8d17dffa5f5",
+        "controllers.py": "a97cd0b142a97519f2ef55d5bc857f445e6140e1ea32df09609dd7aacb76aeb2",
+        "HASHES.json": "37489284dc1ed59433b639dd7dc09444a4f7ba0ab0373cb3b96e983e965d5906",
+        "PRIORS.json": "87bce1ed34085b608118c7b3a2d027d939d66294916277879a1375e4aaa57171",
+        "official_parameter_agent.py": "cef423295711966e963ac5f23492350d1f3bda0c3177822fa221312ab65f8d89",
+        "ball_probe.py": "8b6ec90806035a8f9ac542be0f75c85ac97ee3bc8e9b49d1be7f57891817d305",
+        "worker.py": "eb11450e5f709c75e67a0635d4996602781c984544197504b312938b0e2a622f",
+        "BO_LOCKED_SOURCE.json": "1cafd43556f754df0595027c6aa1a358520038bbd5a3f742b9ef3b2a2f287945",
+        "evaluate.py": "71144cfe5639f22a7381bde1a01c5254e2ea4b0b7cc15f57e2720117acb5b3a9",
+        "test_shield.py": "97dbb3ad76ea050d17794b74dfe39f0e70f4c376b417732d9d12cc87c95fece5",
+        "vendor/teacher_bank_design_20260930.py": "f438db02acc4dadce09719da78c070a6bf3ffbba883aa715c203d5b82421142e",
+        "vendor/admittance_reference_core_20260923.py": "8adbdba1a3be517890007ec171629f7727b7f4220d4cc6a10202eaf9ef77f3ea",
+        "vendor/energy_safety.py": "2ca907e9003cf7871a29c6c1e0a81c3d60752ac161df90c84d2b5c3ed0498053",
+        "vendor/current_student_policy_20260921.py": "a26eea40b1a9c9008e055ae6a7f76a981a49ebfa5fa18e06223ddeca72450213",
+        "vendor/vmc_teacher_stable_readout_20260930.py": "36455df952fb25c068592cbdb83540c34a317b33e9ad2b22a14757b252cc5a32",
+        "vendor/stiffness_training_core.py": "a6b48a425893e2324f14b1b64911fdda248a55502ef8b29871d2c1c544045d0e",
+        "vendor/teacher_bank_classical_20260930.py": "b218373fb7f6ba1d0b85820554fe4b77a883d114e0f7cc1a15f46b3099d47be3",
+        "vendor/run_vmc_6d_constrained_push_20260918.py": "e668dd8cc5942a391785f39ba36c8b249438bb58967159b34999b6b395bfb0c5",
+        "vendor/run_panel_impedance_reference_20260923.py": "f7eb89d1e389ef858efc5c0ec726bc3c09cd641307bbd047afd20470d576366e",
+        "vendor/SOURCE.json": "8155b7994240da11f57bdb409ea99914b1ddb1c213a3b861b75830015ec16d95",
+        "vendor/run_panel_admittance_reference_20260923.py": "6260f1352946b3daa1f4755164b43b6b7b6e5880f8540ac964efdd1a27ff45fc"
+      },
+      "frozen_source_hashes_verified": true,
+      "filter_config_provenance": "Recorded execution configuration; full chain replay required",
+      "error_integral_m2_s": 0.07736941524815366,
+      "peak_speed_time_s": 2.065650000001855,
+      "peak_torque_time_s": 11.552049999979747,
+      "actuator_amplitude_and_command_slew_valid": true,
+      "command_torque_rate_peak_nmps": [
+        699.9999955296516,
+        636.1246109008789,
+        699.9999899417162,
+        699.9998092651367,
+        160.0000038743019,
+        160.0000262260437,
+        160.0000001490116
+      ],
+      "slew_semantics": "Torque-command changes divided by frozen 4ms servo update, not by 100us zero-order-hold physical sampling",
+      "independent_contact_sidecar_available": true,
+      "independent_contact_sidecar_verified": true,
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_3/admittance_01",
+      "checkpoint_sha256": null,
+      "config": {
+        "parameters": [
+          673.1440027594494,
+          6.421286874603853,
+          0.5181769440463339,
+          0.03464623393570493,
+          0.610953082620331,
+          1.8911753040375214,
+          1.4408415454972299
+        ]
+      },
+      "audit_sha256": "b17b38558795a36810771367664560a2230fe1948de77b426c9466bcd67d61c4",
+      "completed_utc": "2026-10-03T11:19:59.052721+00:00",
+      "metadata_write_recovery": false,
+      "failure_reason": "No stable released placement; terminal stage carry",
+      "contact_events": {
+        "office_v5_corner_top": {
+          "first_s": 1.429800000000805,
+          "last_s": 2.2706000000013775,
+          "duration_s": 0.010249999999999966,
+          "peak_n": 552.8281285007038,
+          "impulse_ns": 0.6503594706643027,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "ball": {
+          "first_s": 2.065250000001856,
+          "last_s": 2.199550000001543,
+          "duration_s": 0.003650000000000003,
+          "peak_n": 6806.1291513095575,
+          "impulse_ns": 2.267200925864857,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "person_hand": {
+          "first_s": 5.154049999994657,
+          "last_s": 9.938499999983508,
+          "duration_s": 4.129999999997044,
+          "peak_n": 192.453939446544,
+          "impulse_ns": 57.70668647563968,
+          "robot_parts": [
+            "fr3_link7",
+            "hand"
+          ]
+        },
+        "office_v5_corner_face": {
+          "first_s": 5.886049999992951,
+          "last_s": 9.652849999984173,
+          "duration_s": 1.2039000000003284,
+          "peak_n": 175.27825769873326,
+          "impulse_ns": 15.331864798665793,
+          "robot_parts": [
+            "hand",
+            "left_finger"
+          ]
+        },
+        "rod": {
+          "first_s": 14.145649999973703,
+          "last_s": 21.046200000136896,
+          "duration_s": 5.705949999993371,
+          "peak_n": 255.97284322778137,
+          "impulse_ns": 37.46058131403668,
+          "robot_parts": [
+            "hand"
+          ]
+        }
+      },
+      "unexpected_edge": {
+        "first_s": 23.96625000023383,
+        "last_s": 54.99990000126404,
+        "duration_s": 21.609700000155602,
+        "peak_n": 25.607694753927866,
+        "impulse_ns": 126.70896446570099,
+        "max_penetration_m": 8.274086755153473e-05,
+        "by_stage": {
+          "carry": 21.609700000155602
+        }
+      },
+      "rod_longest_run": {
+        "first_s": 17.003550000002694,
+        "last_s": 17.07780000000516,
+        "duration_s": 0.07429999999999998,
+        "hand_xy_displacement_m": 0.00020836066250885582
+      }
+    },
+    {
+      "task_success": false,
+      "strict_success": false,
+      "memory_ablation": "none",
+      "full_horizon": true,
+      "stage": "approach",
+      "rmse_mm": 515.7472830411891,
+      "peak_torque_nm": 57.70022964477539,
+      "peak_speed_mps": 1.038342638538716,
+      "penetration_mm": 0.27368832255264186,
+      "edge_penetration_mm": 0.0,
+      "worst_pair": [
+        "office_v5_push_rod_geom",
+        "hand_collision"
+      ],
+      "physical_seconds": 54.99999999999989,
+      "max_lift_m": 0.010024387691737191,
+      "object_final_position": [
+        0.5249858474631329,
+        -0.19020848462924883,
+        0.4249969877369463
+      ],
+      "placement_error_xy_m": 0.20391095530226258,
+      "abort_reason": null,
+      "action_replay_max_abs": null,
+      "reservoir_replay_max_abs": null,
+      "stages": {
+        "0": {
+          "start_s": 0.04000000000000063,
+          "end_s": 55.00000000126404,
+          "mean_action": [
+            -0.2238775157192722,
+            -0.16755761390382592,
+            -0.6081062754765788,
+            0.24561790959977292,
+            0.0028333819641477684,
+            -0.601965941496532,
+            -0.3077227698012509
+          ],
+          "median_wrench": [
+            -44.15376492325482,
+            12.323887521751029,
+            53.85753758205489,
+            -8.47636077043888,
+            21.315154319295182,
+            -14.129043177138863
+          ]
+        }
+      },
+      "actor_replay_performed": false,
+      "common_filter_replay_max_abs": 0.0,
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "trace_sha256": "eaa912af0144f2526a3f078afca8d21873dbfc9518cc30d504f1bbe5116cf0d0",
+      "chain_sha256": "754f400667aced064da4121ab0a991b05b9f4b55516cce5609892fd1f01d9d2a",
+      "metrics_sha256": "a6905052473154fce6abe14ed72d43c5cbffd1f01fc12bfe0b5fa3fcf4db5512",
+      "policy_trace_consistency_max_abs": 0.0,
+      "learned_actor_replay_max_abs": 0.0,
+      "case": "direct_office_task_74002",
+      "frozen_source_hashes_verified": true,
+      "filter_config_provenance": "Recorded execution configuration; full chain replay required",
+      "error_integral_m2_s": 14.629739298040228,
+      "peak_speed_time_s": 22.802900000195212,
+      "peak_torque_time_s": 23.456050000216894,
+      "actuator_amplitude_and_command_slew_valid": true,
+      "command_torque_rate_peak_nmps": [
+        700.0002861022949,
+        700.0007629394531,
+        700.0002861022949,
+        700.0007629394531,
+        160.00008583068848,
+        160.00008583068848,
+        160.00008583068848
+      ],
+      "slew_semantics": "Torque-command changes divided by frozen 4ms servo update, not by 100us zero-order-hold physical sampling",
+      "independent_contact_sidecar_available": true,
+      "independent_contact_sidecar_verified": true,
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_3/direct_office_task_74002",
+      "checkpoint_sha256": null,
+      "config": {},
+      "audit_sha256": "c5f01af798decfd8e8137f7420ae974dd711d3ec7df36b13be45fd3689f740bc",
+      "completed_utc": "2026-10-03T11:03:35.162995+00:00",
+      "metadata_write_recovery": false,
+      "failure_reason": "No stable released placement; terminal stage approach",
+      "contact_events": {
+        "office_v5_corner_face": {
+          "first_s": 1.8953000000017874,
+          "last_s": 10.140199999983038,
+          "duration_s": 0.7573999999999248,
+          "peak_n": 2824.6197717718287,
+          "impulse_ns": 48.934834536038124,
+          "robot_parts": [
+            "left_finger",
+            "hand",
+            "fr3_link7"
+          ]
+        },
+        "ball": {
+          "first_s": 2.046000000001901,
+          "last_s": 2.404300000001066,
+          "duration_s": 0.003550000000000003,
+          "peak_n": 6060.915370642589,
+          "impulse_ns": 1.8363842198944533,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "office_v5_corner_top": {
+          "first_s": 3.070599999999513,
+          "last_s": 9.70579999998405,
+          "duration_s": 2.88744999999994,
+          "peak_n": 1087.1084895024565,
+          "impulse_ns": 127.739130107858,
+          "robot_parts": [
+            "hand",
+            "fr3_link7"
+          ]
+        },
+        "person_hand": {
+          "first_s": 5.254949999994422,
+          "last_s": 14.251849999973455,
+          "duration_s": 4.156099999996983,
+          "peak_n": 676.3745511904801,
+          "impulse_ns": 239.36821832660587,
+          "robot_parts": [
+            "right_finger",
+            "hand",
+            "fr3_link7"
+          ]
+        },
+        "rod": {
+          "first_s": 13.55879999997507,
+          "last_s": 14.071099999973876,
+          "duration_s": 0.3593999999999686,
+          "peak_n": 7634.235029692969,
+          "impulse_ns": 34.100163882710795,
+          "robot_parts": [
+            "right_finger",
+            "hand"
+          ]
+        }
+      },
+      "unexpected_edge": {
+        "first_s": null,
+        "last_s": null,
+        "duration_s": 0.0,
+        "peak_n": 0.0,
+        "impulse_ns": 0.0,
+        "max_penetration_m": 0.0,
+        "by_stage": {}
+      },
+      "rod_longest_run": {
+        "first_s": 13.629099999974907,
+        "last_s": 13.881999999974317,
+        "duration_s": 0.2529499999999803,
+        "hand_xy_displacement_m": 0.006587427986426322
+      }
+    },
+    {
+      "task_success": false,
+      "strict_success": false,
+      "memory_ablation": "none",
+      "full_horizon": true,
+      "stage": "retreat",
+      "rmse_mm": 22.693153013837343,
+      "peak_torque_nm": 45.09023666381836,
+      "peak_speed_mps": 0.33418004420137354,
+      "penetration_mm": 0.1413129716696429,
+      "edge_penetration_mm": 0.13425449980588078,
+      "worst_pair": [
+        "office_v5_ball_geom",
+        "hand_collision"
+      ],
+      "physical_seconds": 54.99999999999989,
+      "max_lift_m": 0.14949698874302925,
+      "object_final_position": [
+        0.5798949740255189,
+        -0.3114375356708918,
+        0.5449964516504532
+      ],
+      "placement_error_xy_m": 0.11011440983652515,
+      "abort_reason": null,
+      "action_replay_max_abs": null,
+      "reservoir_replay_max_abs": null,
+      "stages": {
+        "0": {
+          "start_s": 0.04000000000000063,
+          "end_s": 0.15999999999999054,
+          "mean_action": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median_wrench": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "1": {
+          "start_s": 0.19999999999998613,
+          "end_s": 1.680000000001333,
+          "mean_action": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median_wrench": [
+            -2.7195790321622995e-06,
+            9.528036960789693e-07,
+            3.2169097007784506e-05,
+            2.3867787953645556e-07,
+            2.0107008039970164e-06,
+            2.245139148336861e-09
+          ]
+        },
+        "2": {
+          "start_s": 1.7200000000014175,
+          "end_s": 2.040000000001915,
+          "mean_action": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median_wrench": [
+            -1.9718231761501661,
+            0.28457373026035454,
+            2.338685193046568,
+            0.15877145714099603,
+            0.054035037713965915,
+            -0.0011753401433176728
+          ]
+        },
+        "3": {
+          "start_s": 2.0800000000018217,
+          "end_s": 4.719999999995669,
+          "mean_action": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median_wrench": [
+            -0.005316468403619227,
+            5.736732398797795e-05,
+            -0.7866561425145904,
+            -0.0006657968220692014,
+            0.00027201575843227647,
+            -4.897759956937323e-05
+          ]
+        },
+        "4": {
+          "start_s": 4.759999999995576,
+          "end_s": 34.8400000005948,
+          "mean_action": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median_wrench": [
+            -17.421821404993697,
+            2.0260207890075606,
+            4.013138420413191,
+            0.4466634519969671,
+            0.9280646503468473,
+            0.3488067736951073
+          ]
+        },
+        "5": {
+          "start_s": 34.88000000059613,
+          "end_s": 35.5600000006187,
+          "mean_action": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median_wrench": [
+            -0.20849320370225102,
+            -3.216530739357927e-05,
+            0.010319419539326526,
+            0.013955492341712856,
+            -0.001642239304671618,
+            0.008180215095375488
+          ]
+        },
+        "6": {
+          "start_s": 35.60000000062003,
+          "end_s": 36.08000000063596,
+          "mean_action": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median_wrench": [
+            -2.9877891901694382,
+            1.499679522430224,
+            -0.9341387414391592,
+            -0.10571645800288584,
+            -0.34546666809321047,
+            -0.07011142152828771
+          ]
+        },
+        "7": {
+          "start_s": 36.12000000063729,
+          "end_s": 55.00000000126404,
+          "mean_action": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median_wrench": [
+            -3.335398592084612e-17,
+            2.490323270803912e-28,
+            -1.551743305958687e-17,
+            -5.86649514207624e-19,
+            -3.922217497276261e-18,
+            -7.086283902880667e-31
+          ]
+        }
+      },
+      "actor_replay_performed": false,
+      "common_filter_replay_max_abs": 0.0,
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "trace_sha256": "1b6fd5275c805a8e30ca8080cf0ef763eb079aad9ac4255cdcbb91478b28c38e",
+      "chain_sha256": "d00ba755871e6316a5aabd8a099c440e325410d762ab995d2a8afb679fd62c30",
+      "metrics_sha256": "2993b742eb82c965386c3835a801771042f5a6bdee3e71582bb1f0d9a8d27a3f",
+      "policy_trace_consistency_max_abs": 0.0,
+      "controller": "impedance",
+      "parameter_source_sha256": {
+        "train.py": "49bfcfe4d3bb162ebe110a8fd36fc9a41b1df25b0a946d790c33f8d17dffa5f5",
+        "controllers.py": "a97cd0b142a97519f2ef55d5bc857f445e6140e1ea32df09609dd7aacb76aeb2",
+        "HASHES.json": "37489284dc1ed59433b639dd7dc09444a4f7ba0ab0373cb3b96e983e965d5906",
+        "PRIORS.json": "87bce1ed34085b608118c7b3a2d027d939d66294916277879a1375e4aaa57171",
+        "official_parameter_agent.py": "cef423295711966e963ac5f23492350d1f3bda0c3177822fa221312ab65f8d89",
+        "ball_probe.py": "8b6ec90806035a8f9ac542be0f75c85ac97ee3bc8e9b49d1be7f57891817d305",
+        "worker.py": "eb11450e5f709c75e67a0635d4996602781c984544197504b312938b0e2a622f",
+        "BO_LOCKED_SOURCE.json": "1cafd43556f754df0595027c6aa1a358520038bbd5a3f742b9ef3b2a2f287945",
+        "evaluate.py": "71144cfe5639f22a7381bde1a01c5254e2ea4b0b7cc15f57e2720117acb5b3a9",
+        "test_shield.py": "97dbb3ad76ea050d17794b74dfe39f0e70f4c376b417732d9d12cc87c95fece5",
+        "vendor/teacher_bank_design_20260930.py": "f438db02acc4dadce09719da78c070a6bf3ffbba883aa715c203d5b82421142e",
+        "vendor/admittance_reference_core_20260923.py": "8adbdba1a3be517890007ec171629f7727b7f4220d4cc6a10202eaf9ef77f3ea",
+        "vendor/energy_safety.py": "2ca907e9003cf7871a29c6c1e0a81c3d60752ac161df90c84d2b5c3ed0498053",
+        "vendor/current_student_policy_20260921.py": "a26eea40b1a9c9008e055ae6a7f76a981a49ebfa5fa18e06223ddeca72450213",
+        "vendor/vmc_teacher_stable_readout_20260930.py": "36455df952fb25c068592cbdb83540c34a317b33e9ad2b22a14757b252cc5a32",
+        "vendor/stiffness_training_core.py": "a6b48a425893e2324f14b1b64911fdda248a55502ef8b29871d2c1c544045d0e",
+        "vendor/teacher_bank_classical_20260930.py": "b218373fb7f6ba1d0b85820554fe4b77a883d114e0f7cc1a15f46b3099d47be3",
+        "vendor/run_vmc_6d_constrained_push_20260918.py": "e668dd8cc5942a391785f39ba36c8b249438bb58967159b34999b6b395bfb0c5",
+        "vendor/run_panel_impedance_reference_20260923.py": "f7eb89d1e389ef858efc5c0ec726bc3c09cd641307bbd047afd20470d576366e",
+        "vendor/SOURCE.json": "8155b7994240da11f57bdb409ea99914b1ddb1c213a3b861b75830015ec16d95",
+        "vendor/run_panel_admittance_reference_20260923.py": "6260f1352946b3daa1f4755164b43b6b7b6e5880f8540ac964efdd1a27ff45fc"
+      },
+      "frozen_source_hashes_verified": true,
+      "filter_config_provenance": "Recorded execution configuration; full chain replay required",
+      "error_integral_m2_s": 0.028323855654018865,
+      "peak_speed_time_s": 2.0660000000018544,
+      "peak_torque_time_s": 36.38805000064619,
+      "actuator_amplitude_and_command_slew_valid": true,
+      "command_torque_rate_peak_nmps": [
+        699.999988079071,
+        699.9998092651367,
+        700.0000029802322,
+        699.9998092651367,
+        160.0000038743019,
+        160.0000262260437,
+        43.066272512078285
+      ],
+      "slew_semantics": "Torque-command changes divided by frozen 4ms servo update, not by 100us zero-order-hold physical sampling",
+      "independent_contact_sidecar_available": true,
+      "independent_contact_sidecar_verified": true,
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_3/fixed_impedance",
+      "checkpoint_sha256": null,
+      "config": {},
+      "audit_sha256": "e6a6aa19c360d1a4e11cef481880ada142af4445a15d449f624e937dcd7eca88",
+      "completed_utc": "2026-10-03T10:53:32.238442+00:00",
+      "metadata_write_recovery": false,
+      "failure_reason": "No stable released placement; terminal stage retreat",
+      "contact_events": {
+        "office_v5_corner_top": {
+          "first_s": 0.9863999999998996,
+          "last_s": 2.189250000001567,
+          "duration_s": 0.16794999999998966,
+          "peak_n": 3185.5635494459,
+          "impulse_ns": 3.8059804108341027,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "ball": {
+          "first_s": 2.0656000000018553,
+          "last_s": 2.2044500000015317,
+          "duration_s": 0.004200000000000002,
+          "peak_n": 6008.863187052474,
+          "impulse_ns": 2.3297417790745825,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "person_hand": {
+          "first_s": 5.295449999994328,
+          "last_s": 36.65800000065515,
+          "duration_s": 4.3953999999964255,
+          "peak_n": 158.46655720763883,
+          "impulse_ns": 63.883694747662965,
+          "robot_parts": [
+            "hand",
+            "left_finger"
+          ]
+        },
+        "office_v5_unexpected_edge": {
+          "first_s": 15.546299999970438,
+          "last_s": 32.06740000050276,
+          "duration_s": 9.145349999985356,
+          "peak_n": 28.86446415209483,
+          "impulse_ns": 183.91387239688254,
+          "robot_parts": [
+            "right_finger",
+            "left_finger"
+          ]
+        }
+      },
+      "unexpected_edge": {
+        "first_s": 9.758799999983927,
+        "last_s": 33.095700000536894,
+        "duration_s": 23.321500000212428,
+        "peak_n": 60.50308349317502,
+        "impulse_ns": 530.140817505112,
+        "max_penetration_m": 0.00013425449980588078,
+        "by_stage": {
+          "carry": 23.321500000212428
+        }
+      },
+      "rod_longest_run": null
+    },
+    {
+      "task_success": true,
+      "strict_success": true,
+      "memory_ablation": "none",
+      "full_horizon": true,
+      "stage": "retreat",
+      "rmse_mm": 33.86001546549499,
+      "peak_torque_nm": 51.377037048339844,
+      "peak_speed_mps": 0.3916060965586895,
+      "penetration_mm": 0.17302265042835646,
+      "edge_penetration_mm": 0.08409559022582343,
+      "worst_pair": [
+        "office_v5_ball_geom",
+        "hand_collision"
+      ],
+      "physical_seconds": 54.99999999999989,
+      "max_lift_m": 0.17053124104606127,
+      "object_final_position": [
+        0.7024570212002498,
+        -0.3161808797547765,
+        0.5449969877369472
+      ],
+      "placement_error_xy_m": 0.013906137196449616,
+      "abort_reason": null,
+      "action_replay_max_abs": 0.0,
+      "reservoir_replay_max_abs": 0.0,
+      "stages": {
+        "0": {
+          "start_s": 0.04000000000000063,
+          "end_s": 0.15999999999999054,
+          "mean_action": [
+            0.04827338405864822,
+            0.00045241184810656393,
+            0.005287446914197842,
+            0.12349766879346526,
+            -0.005123876475393231,
+            0.10424483610860535,
+            0.04284811238300841
+          ],
+          "median_wrench": [
+            -4.256921809722291e-05,
+            1.6427086578779028e-05,
+            -3.2498993037564274e-05,
+            -3.398287808980049e-06,
+            -9.052046074175935e-06,
+            0.004677602759336136
+          ]
+        },
+        "1": {
+          "start_s": 0.19999999999998613,
+          "end_s": 1.8800000000017552,
+          "mean_action": [
+            0.015852596193253264,
+            -0.009251556902672148,
+            -0.017146634094837642,
+            -0.015480510535208453,
+            -0.021573767439856326,
+            -0.007318262960307356,
+            0.004474078543505544
+          ],
+          "median_wrench": [
+            -0.18681299875847787,
+            0.06637323845909637,
+            -0.006238718876143361,
+            -0.007655109184382681,
+            -0.02153919333478147,
+            5.181451802627793e-06
+          ]
+        },
+        "2": {
+          "start_s": 1.9200000000018396,
+          "end_s": 2.4400000000009827,
+          "mean_action": [
+            0.1059876848823056,
+            -0.044287720277225336,
+            0.016422324999662598,
+            0.019610956874035218,
+            -0.05147104802612501,
+            -0.07674475162232963,
+            -0.029423901836076283
+          ],
+          "median_wrench": [
+            -1.3932664685342582,
+            0.4099769888611967,
+            -0.33078046778893233,
+            -0.09042847508758106,
+            -0.12959362861426302,
+            -0.0003802585911762659
+          ]
+        },
+        "3": {
+          "start_s": 2.4800000000008895,
+          "end_s": 10.719999999981686,
+          "mean_action": [
+            0.09117138877343824,
+            -0.04379724944053252,
+            -0.0028694462066468,
+            0.007382519315992182,
+            -0.007750084193715951,
+            0.025215636598292693,
+            -0.00017882098906064138
+          ],
+          "median_wrench": [
+            -1.9725616260819772,
+            0.26987450267605667,
+            -1.0026436861077888,
+            0.005648951274857753,
+            0.022084925063628358,
+            0.0034288358891741335
+          ]
+        },
+        "4": {
+          "start_s": 10.759999999981593,
+          "end_s": 31.36000000047928,
+          "mean_action": [
+            0.06091047218211697,
+            -0.017678142500657905,
+            -0.010224450107858853,
+            0.1735253210467457,
+            -0.0019529166772784122,
+            0.03350707737833324,
+            0.028532878730120614
+          ],
+          "median_wrench": [
+            0.00800542094720602,
+            -0.07521874909838837,
+            -0.7720187011952346,
+            0.00516461554795752,
+            0.0827663037482854,
+            0.03537018806924644
+          ]
+        },
+        "5": {
+          "start_s": 31.400000000480606,
+          "end_s": 32.4000000005138,
+          "mean_action": [
+            0.0757935556449752,
+            -0.026591869743923302,
+            -0.00853216029909849,
+            0.0022682433714360075,
+            0.0038240906809901107,
+            -0.04753262879716591,
+            0.019613000640323144
+          ],
+          "median_wrench": [
+            -0.20781955008372632,
+            0.051057703070733956,
+            -0.2420667314228934,
+            0.07403788178177535,
+            -0.03865341996318404,
+            0.06836163358227709
+          ]
+        },
+        "6": {
+          "start_s": 32.44000000051513,
+          "end_s": 32.92000000053106,
+          "mean_action": [
+            0.08952419865531104,
+            -0.09813304030280329,
+            0.03195172221909745,
+            -0.0006287342854823209,
+            -0.07978748253398132,
+            -0.14869416785535663,
+            -0.031077349670474614
+          ],
+          "median_wrench": [
+            -1.435176550768045,
+            0.7873888227187357,
+            -1.6948955047779741,
+            -0.07726771225952216,
+            -0.16088416319066717,
+            -0.03365125330032993
+          ]
+        },
+        "7": {
+          "start_s": 32.96000000053239,
+          "end_s": 55.00000000126404,
+          "mean_action": [
+            0.0947645293993774,
+            0.009163412096208783,
+            0.003154199360276018,
+            -0.047169778126616636,
+            -0.011353005136992297,
+            0.009694597102465514,
+            -0.025177742057272218
+          ],
+          "median_wrench": [
+            -1.3522257838213594,
+            0.7066392706511051,
+            -0.7445135411508617,
+            -0.07202339900374569,
+            -0.1648572357965092,
+            -0.036161151397855876
+          ]
+        }
+      },
+      "actor_replay_performed": true,
+      "common_filter_replay_max_abs": 0.0,
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "trace_sha256": "d418efb9bb8a657e5f58379fbdbbb5031b71f864273be544d418c8bdd24e7a95",
+      "chain_sha256": "62288e0a41ad0e8c2b9d707c825b8aa05c849607a92b14b729aafdec37f8c917",
+      "metrics_sha256": "4f21f0600cee69fd3cc96d5c144dfffd87e1a614ff0cefa58e701b4aca4cc1e9",
+      "frozen_source_hashes_verified": true,
+      "filter_config_provenance": "Recorded execution configuration; full chain replay required",
+      "error_integral_m2_s": 0.06305753560279564,
+      "peak_speed_time_s": 2.0667000000018527,
+      "peak_torque_time_s": 32.076050000503045,
+      "actuator_amplitude_and_command_slew_valid": true,
+      "command_torque_rate_peak_nmps": [
+        700.0000104308128,
+        578.4721374511719,
+        699.999988079071,
+        699.9998092651367,
+        160.0000113248825,
+        160.0000262260437,
+        159.9999964237213
+      ],
+      "slew_semantics": "Torque-command changes divided by frozen 4ms servo update, not by 100us zero-order-hold physical sampling",
+      "independent_contact_sidecar_available": true,
+      "independent_contact_sidecar_verified": true,
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_3/paired_recovery035_rnn_fp64",
+      "checkpoint_sha256": "9f758e36c3a19684cbe7f3583e6c886d57b1a41b37e732fad5c79bf04aa7c13b",
+      "config": {},
+      "audit_sha256": "f6af6f3be9202425d76e37d5a670d58ca8698d392cc542018ed70712e62afc75",
+      "completed_utc": "2026-10-03T11:08:34.493757+00:00",
+      "metadata_write_recovery": false,
+      "failure_reason": null,
+      "contact_events": {
+        "ball": {
+          "first_s": 2.0663000000018537,
+          "last_s": 2.1998000000015425,
+          "duration_s": 0.003950000000000004,
+          "peak_n": 6719.82811192824,
+          "impulse_ns": 2.315998772602963,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "office_v5_corner_top": {
+          "first_s": 2.2706000000013775,
+          "last_s": 2.579400000000658,
+          "duration_s": 0.03085000000000037,
+          "peak_n": 285.773472072283,
+          "impulse_ns": 1.4132210034452457,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "person_hand": {
+          "first_s": 5.236899999994464,
+          "last_s": 33.164450000539176,
+          "duration_s": 3.5681499999983535,
+          "peak_n": 139.16428130799736,
+          "impulse_ns": 31.176694374566615,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "office_v5_corner_face": {
+          "first_s": 6.02404999999263,
+          "last_s": 9.347749999984885,
+          "duration_s": 0.9319999999999056,
+          "peak_n": 182.65601703736561,
+          "impulse_ns": 7.047110345030982,
+          "robot_parts": [
+            "left_finger"
+          ]
+        },
+        "rod": {
+          "first_s": 14.101649999973805,
+          "last_s": 17.82070000002982,
+          "duration_s": 2.1423000000016765,
+          "peak_n": 253.47318043232198,
+          "impulse_ns": 28.607395549765624,
+          "robot_parts": [
+            "hand"
+          ]
+        }
+      },
+      "unexpected_edge": {
+        "first_s": 20.410350000115788,
+        "last_s": 29.35025000041256,
+        "duration_s": 1.9437000000018896,
+        "peak_n": 24.278418783778807,
+        "impulse_ns": 6.236084582088712,
+        "max_penetration_m": 8.409559022582343e-05,
+        "by_stage": {
+          "carry": 1.9437000000018896
+        }
+      },
+      "rod_longest_run": {
+        "first_s": 14.178699999973626,
+        "last_s": 14.325199999973284,
+        "duration_s": 0.14654999999999202,
+        "hand_xy_displacement_m": 0.002969688910064869
+      }
+    },
+    {
+      "task_success": false,
+      "strict_success": false,
+      "memory_ablation": "none",
+      "full_horizon": true,
+      "stage": "carry",
+      "rmse_mm": 36.89786343872853,
+      "peak_torque_nm": 37.86148452758789,
+      "peak_speed_mps": 0.36983199391863214,
+      "penetration_mm": 0.15488371374922988,
+      "edge_penetration_mm": 0.06856635244815189,
+      "worst_pair": [
+        "office_v5_ball_geom",
+        "hand_collision"
+      ],
+      "physical_seconds": 54.99999999999989,
+      "max_lift_m": 0.12935798145352456,
+      "object_final_position": [
+        0.5896036777945642,
+        -0.23230230297817778,
+        0.5543579814535246
+      ],
+      "placement_error_xy_m": 0.12695020139752652,
+      "abort_reason": null,
+      "action_replay_max_abs": null,
+      "reservoir_replay_max_abs": null,
+      "stages": {
+        "0": {
+          "start_s": 0.04000000000000063,
+          "end_s": 0.15999999999999054,
+          "mean_action": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median_wrench": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "1": {
+          "start_s": 0.19999999999998613,
+          "end_s": 1.5600000000010799,
+          "mean_action": [
+            0.001094200837101281,
+            -0.002673633287629702,
+            0.0,
+            8.910336629094184e-05,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median_wrench": [
+            1.0135197314814898e-06,
+            -3.577468317830324e-07,
+            2.154455681837865e-06,
+            2.556899394822418e-07,
+            7.173953775835156e-07,
+            3.066905724243823e-10
+          ]
+        },
+        "2": {
+          "start_s": 1.6000000000011643,
+          "end_s": 1.8800000000017552,
+          "mean_action": [
+            0.005030334856953056,
+            -0.008556601940799423,
+            0.0,
+            0.002376884785023079,
+            -0.002430900842049752,
+            0.00047459954220368416,
+            0.0
+          ],
+          "median_wrench": [
+            -0.021342692691559487,
+            -0.03650391584237025,
+            0.6626817112527528,
+            -0.0030766761623871996,
+            -0.0007426925664703413,
+            0.00014989585044090863
+          ]
+        },
+        "3": {
+          "start_s": 1.9200000000018396,
+          "end_s": 12.599999999977305,
+          "mean_action": [
+            0.03504137620776426,
+            -0.07285275365302973,
+            0.01723424394696821,
+            -0.014209703293334106,
+            -0.0036656479531673647,
+            -0.024323300324138507,
+            -0.00015222274966485245
+          ],
+          "median_wrench": [
+            -0.8862391176438045,
+            0.28645341013578984,
+            -1.3706815099382639,
+            -0.03920746121422024,
+            -0.1177828222740806,
+            -0.001458672565838166
+          ]
+        },
+        "4": {
+          "start_s": 12.639999999977212,
+          "end_s": 55.00000000126404,
+          "mean_action": [
+            0.024629651351268562,
+            -0.05319182727175763,
+            0.013921708671827508,
+            -0.008583932317229941,
+            -0.0010914965334341488,
+            -0.007838757809527004,
+            0.002179323172016783
+          ],
+          "median_wrench": [
+            -1.005265902857123,
+            0.35616510475688756,
+            -0.7931204493571329,
+            -0.04101795765665467,
+            -0.09751613050293953,
+            -0.025041518405107963
+          ]
+        }
+      },
+      "actor_replay_performed": false,
+      "common_filter_replay_max_abs": 0.0,
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "trace_sha256": "91b91d54d68eeb7948b6135d3a53e50221b2c45ff31b84dbf4c70e871df1bcff",
+      "chain_sha256": "10f32c19b783d65ad712db6aac93ba42ac8271a559b046f2927d17762f73d2f4",
+      "metrics_sha256": "cab9c83003901841309656056a3c821b077619df41b5c2031d982728f85afeaa",
+      "policy_trace_consistency_max_abs": 0.0,
+      "learned_actor_replay_max_abs": 0.0,
+      "case": "parameter_vmc",
+      "frozen_source_hashes_verified": true,
+      "filter_config_provenance": "Recorded execution configuration; full chain replay required",
+      "error_integral_m2_s": 0.07487987794886813,
+      "peak_speed_time_s": 2.064400000001858,
+      "peak_torque_time_s": 2.1280500000017097,
+      "actuator_amplitude_and_command_slew_valid": true,
+      "command_torque_rate_peak_nmps": [
+        699.999988079071,
+        488.4958267211914,
+        700.0000104308128,
+        700.0002861022949,
+        160.0000262260437,
+        160.0000262260437,
+        146.75411209464073
+      ],
+      "slew_semantics": "Torque-command changes divided by frozen 4ms servo update, not by 100us zero-order-hold physical sampling",
+      "independent_contact_sidecar_available": true,
+      "independent_contact_sidecar_verified": true,
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_3/parameter_vmc",
+      "checkpoint_sha256": null,
+      "config": {},
+      "audit_sha256": "6ed95cef3c172467d26dd228a350e95b2ff73a088206c53b983c96fed76b6c39",
+      "completed_utc": "2026-10-03T10:59:54.924028+00:00",
+      "metadata_write_recovery": false,
+      "failure_reason": "No stable released placement; terminal stage carry",
+      "contact_events": {
+        "office_v5_corner_top": {
+          "first_s": 1.429800000000805,
+          "last_s": 2.0964000000017835,
+          "duration_s": 0.011349999999999959,
+          "peak_n": 261.75994296585213,
+          "impulse_ns": 0.42253001703942283,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "ball": {
+          "first_s": 2.063950000001859,
+          "last_s": 2.1655500000016223,
+          "duration_s": 0.001749999999999999,
+          "peak_n": 6385.384490565303,
+          "impulse_ns": 2.067065332644448,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "person_hand": {
+          "first_s": 5.218149999994508,
+          "last_s": 9.899699999983598,
+          "duration_s": 4.423149999996361,
+          "peak_n": 156.34291733304002,
+          "impulse_ns": 49.548792853206066,
+          "robot_parts": [
+            "hand",
+            "fr3_link7"
+          ]
+        },
+        "rod": {
+          "first_s": 14.080699999973854,
+          "last_s": 20.92970000013303,
+          "duration_s": 6.13989999999236,
+          "peak_n": 236.3309622338029,
+          "impulse_ns": 27.910590453697502,
+          "robot_parts": [
+            "hand"
+          ]
+        }
+      },
+      "unexpected_edge": {
+        "first_s": 30.695650000457224,
+        "last_s": 55.00000000126404,
+        "duration_s": 22.59350000018826,
+        "peak_n": 19.02820384946407,
+        "impulse_ns": 36.49758970340766,
+        "max_penetration_m": 6.856635244815189e-05,
+        "by_stage": {
+          "carry": 22.59350000018826
+        }
+      },
+      "rod_longest_run": {
+        "first_s": 17.046350000004114,
+        "last_s": 20.708700000125692,
+        "duration_s": 3.662399999998134,
+        "hand_xy_displacement_m": 0.001942213668822887
+      }
+    },
+    {
+      "task_success": true,
+      "strict_success": true,
+      "memory_ablation": "none",
+      "full_horizon": true,
+      "stage": "retreat",
+      "rmse_mm": 29.072601891146736,
+      "peak_torque_nm": 49.70433807373047,
+      "peak_speed_mps": 0.3849513426722964,
+      "penetration_mm": 0.18091291859468991,
+      "edge_penetration_mm": 0.084070817306722,
+      "worst_pair": [
+        "office_v5_ball_geom",
+        "hand_collision"
+      ],
+      "physical_seconds": 54.99999999999989,
+      "max_lift_m": 0.17101075020393847,
+      "object_final_position": [
+        0.7071354716649306,
+        -0.315794660922889,
+        0.5449969817920259
+      ],
+      "placement_error_xy_m": 0.01808873915978941,
+      "abort_reason": null,
+      "action_replay_max_abs": 0.0,
+      "reservoir_replay_max_abs": 0.0,
+      "stages": {
+        "0": {
+          "start_s": 0.04000000000000063,
+          "end_s": 0.15999999999999054,
+          "mean_action": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median_wrench": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "1": {
+          "start_s": 0.19999999999998613,
+          "end_s": 1.5600000000010799,
+          "mean_action": [
+            0.0023494506614385484,
+            -0.0030248987863854904,
+            0.0005267206696017014,
+            0.0024279627869108677,
+            -0.0010591213633604833,
+            -0.0007013412705621119,
+            -0.00032412097237901
+          ],
+          "median_wrench": [
+            1.0145669109955198e-06,
+            -3.58116376131413e-07,
+            2.154764572781404e-06,
+            2.557211408704339e-07,
+            7.174833813530034e-07,
+            3.0653576738420105e-10
+          ]
+        },
+        "2": {
+          "start_s": 1.6000000000011643,
+          "end_s": 1.8800000000017552,
+          "mean_action": [
+            0.047572248903917376,
+            -0.0399546420407708,
+            0.010692363431324244,
+            0.02532299781424379,
+            -0.012043498180974449,
+            0.0435517328131286,
+            -0.004179927289123467
+          ],
+          "median_wrench": [
+            -0.04613794006763079,
+            0.0013875329649243758,
+            0.24702882019051497,
+            -0.0013099166127919935,
+            0.010032137595886444,
+            4.1173346114684134e-05
+          ]
+        },
+        "3": {
+          "start_s": 1.9200000000018396,
+          "end_s": 10.639999999981873,
+          "mean_action": [
+            0.0789020706183943,
+            -0.044810478985465606,
+            0.005465048807077854,
+            0.010408862234574117,
+            0.013474655252298951,
+            0.05682199637028487,
+            -0.0030616242405095023
+          ],
+          "median_wrench": [
+            -0.9947378288687896,
+            0.12294814796428458,
+            -0.8414679621911555,
+            0.009231013560077501,
+            0.027562216021953592,
+            -5.344720384861867e-05
+          ]
+        },
+        "4": {
+          "start_s": 10.67999999998178,
+          "end_s": 30.840000000462016,
+          "mean_action": [
+            0.06620874972323244,
+            -0.024774666151845245,
+            -0.008841824606027665,
+            0.1687796244901727,
+            0.0008114525099484116,
+            0.038573350201320016,
+            0.04530193217407975
+          ],
+          "median_wrench": [
+            -0.19225322539735856,
+            -0.00011363349831344793,
+            -0.7747857107303172,
+            0.004736074432378317,
+            0.06266417735187603,
+            0.04666780142408306
+          ]
+        },
+        "5": {
+          "start_s": 30.880000000463344,
+          "end_s": 31.52000000048459,
+          "mean_action": [
+            0.1119858239348623,
+            0.08971330116468122,
+            -0.05159193765909312,
+            0.04430393107962055,
+            0.06734664386267829,
+            0.11570589647279228,
+            0.04036391995078287
+          ],
+          "median_wrench": [
+            1.3906285109716445,
+            -0.8405726978828071,
+            0.6772353268125508,
+            0.1927848000029827,
+            0.1719666349162317,
+            0.12327390819012658
+          ]
+        },
+        "6": {
+          "start_s": 31.560000000485918,
+          "end_s": 32.04000000050185,
+          "mean_action": [
+            0.07431236169586862,
+            -0.07388945099980823,
+            0.00758015266443481,
+            0.0070730582107120885,
+            0.04651504015245805,
+            -0.0018189363533711717,
+            0.040231668958897945
+          ],
+          "median_wrench": [
+            -0.057742116004827204,
+            -0.06929204517558915,
+            -0.014839695882446997,
+            0.028821008030408674,
+            -0.025131121347332946,
+            0.043284088352968805
+          ]
+        },
+        "7": {
+          "start_s": 32.080000000503176,
+          "end_s": 55.00000000126404,
+          "mean_action": [
+            0.006034008741469023,
+            -0.005512664231895372,
+            0.003755487002663806,
+            -0.0006517585046024555,
+            -0.003315445562145976,
+            -0.007876463111754444,
+            -0.0016406437468787923
+          ],
+          "median_wrench": [
+            1.1730737636504932e-120,
+            -1.9392685621616045e-117,
+            1.3001388428552796e-118,
+            2.5936372961925426e-119,
+            3.0946151733659432e-120,
+            4.861544001317138e-119
+          ]
+        }
+      },
+      "actor_replay_performed": true,
+      "common_filter_replay_max_abs": 0.0,
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "trace_sha256": "a50e99536762f18f025acc29519ee79615b73d447faf12d3049007e9eaccf171",
+      "chain_sha256": "05c605a481e82296de3de7206011a7835dc7a7285e35d458ccdb63d143bc3165",
+      "metrics_sha256": "56ff30170617771843c4974a8707a030a39bf50b667ebe4a626cbdaa4aee09c8",
+      "frozen_source_hashes_verified": true,
+      "filter_config_provenance": "Recorded execution configuration; full chain replay required",
+      "error_integral_m2_s": 0.046486889939660804,
+      "peak_speed_time_s": 2.0647000000018574,
+      "peak_torque_time_s": 31.716050000491098,
+      "actuator_amplitude_and_command_slew_valid": true,
+      "command_torque_rate_peak_nmps": [
+        699.999975040555,
+        699.9998092651367,
+        700.0000104308128,
+        700.0002861022949,
+        160.0000262260437,
+        160.0000262260437,
+        160.0000001490116
+      ],
+      "slew_semantics": "Torque-command changes divided by frozen 4ms servo update, not by 100us zero-order-hold physical sampling",
+      "independent_contact_sidecar_available": true,
+      "independent_contact_sidecar_verified": true,
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_3/recovery035_esn_memoryless",
+      "checkpoint_sha256": "db3cf91ff94e706d64d144e3d24af2c332d896b36fcb96162ddfc6aebdba67b8",
+      "config": {},
+      "audit_sha256": "7f7e6a9bc7cb8353cab4ad6d4e9a20aad76bca92a4d2ac04ff70aec5e7a0a467",
+      "completed_utc": "2026-10-03T11:13:31.164621+00:00",
+      "metadata_write_recovery": false,
+      "failure_reason": null,
+      "contact_events": {
+        "office_v5_corner_top": {
+          "first_s": 1.429750000000805,
+          "last_s": 2.0676000000018506,
+          "duration_s": 0.04735000000000084,
+          "peak_n": 739.3072981157096,
+          "impulse_ns": 1.356615881577804,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "ball": {
+          "first_s": 2.0643000000018583,
+          "last_s": 2.1903500000015645,
+          "duration_s": 0.0025,
+          "peak_n": 6997.093078936235,
+          "impulse_ns": 2.1806338142353288,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "person_hand": {
+          "first_s": 5.283899999994355,
+          "last_s": 31.933250000498308,
+          "duration_s": 3.445549999998639,
+          "peak_n": 141.7937633983473,
+          "impulse_ns": 29.8026832022046,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "rod": {
+          "first_s": 14.088449999973836,
+          "last_s": 19.114600000072773,
+          "duration_s": 3.3697999999988157,
+          "peak_n": 257.79038473967,
+          "impulse_ns": 36.81497548972258,
+          "robot_parts": [
+            "hand"
+          ]
+        }
+      },
+      "unexpected_edge": {
+        "first_s": 20.386850000115007,
+        "last_s": 28.853650000396076,
+        "duration_s": 3.527649999998448,
+        "peak_n": 26.029498921093246,
+        "impulse_ns": 11.61933383697586,
+        "max_penetration_m": 8.4070817306722e-05,
+        "by_stage": {
+          "carry": 3.527649999998448
+        }
+      },
+      "rod_longest_run": {
+        "first_s": 16.97240000000166,
+        "last_s": 17.124300000006702,
+        "duration_s": 0.15194999999999143,
+        "hand_xy_displacement_m": 0.0029700090680574503
+      }
+    }
+  ],
+  "pending": [],
+  "strict_pareto_rmse_torque": [
+    "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_3/recovery035_esn_memoryless"
+  ],
+  "selected_batch": "queue_3",
+  "source_sha256": "ea5f90dd0d802084c097850945e11ffb21ed34f82d660f08483690d162b4aafb",
+  "limitation": "Fixed seen-world development; unfinished/failed rows are retained; speed remains a safety/report quantity, not a positive reward"
+}

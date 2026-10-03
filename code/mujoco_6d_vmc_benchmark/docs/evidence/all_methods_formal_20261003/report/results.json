@@ -1,0 +1,4469 @@
+{
+  "created_utc": "2026-10-03T11:27:13.942568+00:00",
+  "source_sha256": "4df3c7d1625697c3ec07efbb09ad8ba205895ea4da3096fbc51809ae2c6bfbee",
+  "protocol_sha256": "27d3f3ad0d566bb771c7e7c039e606b858a1215ddf406f83d17693819f85f704",
+  "validation_lock_sha256": "755974da1d4d5a3fb1aa24aa779cf91ede2e83768de2b9dd21089de863166701",
+  "rows": [
+    {
+      "name": "recovery035_esn_fixed",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_1/recovery035_esn_fixed",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "retreat",
+      "abort_reason": null,
+      "rmse_mm": 27.885582834695047,
+      "peak_torque_nm": 50.25509262084961,
+      "peak_speed_mps": 0.3796690932393851,
+      "penetration_mm": 0.17409183999466854,
+      "edge_penetration_mm": 0.08210909134871856,
+      "trace_sha256": "40a0fabab43177b2eb89f58e4982eb1977fcaabb00f632102eec6de02e778ba2",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 194.91965926558487,
+      "object_final_position": [
+        0.7286448201111808,
+        -0.5010503898106103,
+        -0.32500301226305367
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u7269\u5757\u6389\u843d\u81f3\u5730\u9762",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0024000000000000002,
+          "impulse_ns": 2.107640497970581,
+          "peak_force_n": 6845.76416015625,
+          "contact_p95_force_n": 4729.913574218748,
+          "contact_rms_force_n": 1761.936520797982,
+          "force_squared_integral_n2s": 7450.608727972075,
+          "first_contact_s": 2.064800000001857,
+          "last_contact_s": 2.1776000000015943,
+          "hand_max_displacement_during_event_m": 0.06762589514255524,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.0003027527283693151
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 3.8399000000000014,
+          "impulse_ns": 33.04557567555234,
+          "peak_force_n": 195.85992431640625,
+          "contact_p95_force_n": 13.436687803268429,
+          "contact_rms_force_n": 10.412496393830272,
+          "force_squared_integral_n2s": 416.3222696137542,
+          "first_contact_s": 5.289199999994342,
+          "last_contact_s": 9.90744999998358,
+          "hand_max_displacement_during_event_m": 0.03661685436964035,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.06389591588393141
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 3.6555000000000013,
+          "impulse_ns": 39.617916595277556,
+          "peak_force_n": 243.80845642089844,
+          "contact_p95_force_n": 19.174010848999025,
+          "contact_rms_force_n": 12.614093289420358,
+          "force_squared_integral_n2s": 581.6461601491573,
+          "first_contact_s": 14.09554999997382,
+          "last_contact_s": 20.60985000012241,
+          "hand_max_displacement_during_event_m": 0.053344402462244034,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.04988754338190328,
+          "extended_no_contact_longest_s": 0.21340000000000003,
+          "extended_no_contact_interval_s": [
+            19.248750000077226,
+            19.46210000008431
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 1.5616000000000003,
+          "impulse_ns": 6.6888639813182875,
+          "peak_force_n": 23.616912841796875,
+          "contact_p95_force_n": 12.330913829803464,
+          "contact_rms_force_n": 5.7830081539850635,
+          "force_squared_integral_n2s": 52.224875398921924,
+          "first_contact_s": 21.545600000153474,
+          "last_contact_s": 30.754500000459178,
+          "hand_max_displacement_during_event_m": 0.14336338639259338,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.018035666501215082
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.1776000000015943,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.8223999999984057,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 22.54555000018667,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 0.04555000018666888,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.0507893168487354,
+      "time_above_25mm_s": 15.24679999999999,
+      "absolute_joint_mechanical_work_j": 154.0876041297797,
+      "torque_total_variation_nm": 9955.029100936445,
+      "execution_sha256": "440bf85b7183480857cfe427e68953546e15f4176101445da68929e7a64158fb",
+      "metrics_sha256": "80b0efe607f39832783d19374382d8c062cfcc74fd2e200f323487777506cc82",
+      "independent_audit_sha256": "b2c1d8f899098cd9c5cb5639bc4a9ad2c675905c9d9b7d83077f6c0b53c51afe",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "recovery035_esn_seed2",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/recovery035_esn_seed2",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "retreat",
+      "abort_reason": null,
+      "rmse_mm": 27.42325310571752,
+      "peak_torque_nm": 51.32155227661133,
+      "peak_speed_mps": 0.3677489259416083,
+      "penetration_mm": 0.14034172969066921,
+      "edge_penetration_mm": 0.08352634690426441,
+      "trace_sha256": "c9fbbd5ee47892e40bc1495dad921a68db5624000c12afb3fff8b7d5257bde9a",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 28.18553881208931,
+      "object_final_position": [
+        0.7167674345905393,
+        -0.31882774283545867,
+        0.5449967047145836
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u653e\u7f6eXY\u8d8525mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0029000000000000007,
+          "impulse_ns": 2.114379539680481,
+          "peak_force_n": 5914.1181640625,
+          "contact_p95_force_n": 3992.889892578124,
+          "contact_rms_force_n": 1470.9054756634737,
+          "force_squared_integral_n2s": 6274.332463176692,
+          "first_contact_s": 2.064900000001857,
+          "last_contact_s": 2.185050000001577,
+          "hand_max_displacement_during_event_m": 0.07208064198493958,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.0004070220370717679
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 3.7494000000000014,
+          "impulse_ns": 33.231766641560945,
+          "peak_force_n": 149.48617553710938,
+          "contact_p95_force_n": 14.769057321548456,
+          "contact_rms_force_n": 10.540757384998281,
+          "force_squared_integral_n2s": 416.5867088954849,
+          "first_contact_s": 5.282899999994357,
+          "last_contact_s": 9.893749999983612,
+          "hand_max_displacement_during_event_m": 0.04059956595301628,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.05822077527256836
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 3.034600000000001,
+          "impulse_ns": 34.69725225619004,
+          "peak_force_n": 330.28729248046875,
+          "contact_p95_force_n": 23.196719169616696,
+          "contact_rms_force_n": 13.786444419124303,
+          "force_squared_integral_n2s": 576.7744344851786,
+          "first_contact_s": 14.08259999997385,
+          "last_contact_s": 19.93150000009989,
+          "hand_max_displacement_during_event_m": 0.05789726972579956,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.04667201980816268,
+          "extended_no_contact_longest_s": 0.5684500000000001,
+          "extended_no_contact_interval_s": [
+            19.931550000099893,
+            20.499950000118762
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 1.9002500000000007,
+          "impulse_ns": 6.6402874163914465,
+          "peak_force_n": 23.657316207885742,
+          "contact_p95_force_n": 10.236772346496577,
+          "contact_rms_force_n": 4.94246932603608,
+          "force_squared_integral_n2s": 46.41931277449405,
+          "first_contact_s": 21.11950000013933,
+          "last_contact_s": 27.912550000364835,
+          "hand_max_displacement_during_event_m": 0.13842496275901794,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.02277754375987155
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.185050000001577,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.814949999998423,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 22.709550000192113,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 0.20955000019211312,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.0091818318589134,
+      "time_above_25mm_s": 14.75639999999999,
+      "absolute_joint_mechanical_work_j": 151.83486706175418,
+      "torque_total_variation_nm": 8295.26202785801,
+      "execution_sha256": "cbcd731b8a5ab30d098a60c1437dd4d72870bda758de2204734c2df76b114495",
+      "metrics_sha256": "054e5557f41e6711964c69bf77b28c104fcfba78dc1c6ea38709a00cac57b666",
+      "independent_audit_sha256": "c8218ec4344e141a6e0cf062f90f557df2fd8157524da3d1523648ac535f1af6",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "recovery_lift0.035_distance0.02",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/recovery_lift0.035_distance0.02",
+      "task_success": true,
+      "strict_success": true,
+      "full_horizon": true,
+      "stage": "retreat",
+      "abort_reason": null,
+      "rmse_mm": 30.516252065261476,
+      "peak_torque_nm": 49.09294509887695,
+      "peak_speed_mps": 0.38403608743420253,
+      "penetration_mm": 0.15579712505470114,
+      "edge_penetration_mm": 0.07952506081935042,
+      "trace_sha256": "2b1e588c7bbaf06ffa7a35fc096c8d7228504d75308f1ce2ae63ad511bf1bb73",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 19.412319923254152,
+      "object_final_position": [
+        0.708727929624597,
+        -0.31510909158059547,
+        0.5449969685583512
+      ],
+      "placement_hold_s": 22.3999999999997,
+      "failure_reasons": [],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0052000000000000015,
+          "impulse_ns": 2.4957579758167263,
+          "peak_force_n": 6274.37548828125,
+          "contact_p95_force_n": 2167.483239746091,
+          "contact_rms_force_n": 1148.6280928087804,
+          "force_squared_integral_n2s": 6860.601777065588,
+          "first_contact_s": 2.066600000001853,
+          "last_contact_s": 2.2138500000015098,
+          "hand_max_displacement_during_event_m": 0.034204158931970596,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.000323742622777722
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 3.8544500000000013,
+          "impulse_ns": 37.61421919967234,
+          "peak_force_n": 205.6006317138672,
+          "contact_p95_force_n": 14.52403144836425,
+          "contact_rms_force_n": 12.039296768521904,
+          "force_squared_integral_n2s": 558.6819704868151,
+          "first_contact_s": 5.265249999994398,
+          "last_contact_s": 9.922649999983545,
+          "hand_max_displacement_during_event_m": 0.04071532562375069,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.04427444682959026
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 2.3023000000000007,
+          "impulse_ns": 29.249745289119623,
+          "peak_force_n": 317.22943115234375,
+          "contact_p95_force_n": 22.98804473876953,
+          "contact_rms_force_n": 14.633986197738803,
+          "force_squared_integral_n2s": 493.04572285224293,
+          "first_contact_s": 14.09089999997383,
+          "last_contact_s": 18.859250000064296,
+          "hand_max_displacement_during_event_m": 0.06646404415369034,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.04052906549290642,
+          "extended_no_contact_longest_s": 1.6407000000000005,
+          "extended_no_contact_interval_s": [
+            18.859300000064298,
+            20.499950000118762
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 1.0172500000000002,
+          "impulse_ns": 3.4764800230886204,
+          "peak_force_n": 23.267759323120117,
+          "contact_p95_force_n": 11.004924583435058,
+          "contact_rms_force_n": 4.99651144041344,
+          "force_squared_integral_n2s": 25.395775812753907,
+          "first_contact_s": 20.27000000011113,
+          "last_contact_s": 29.02275000040169,
+          "hand_max_displacement_during_event_m": 0.13056056201457977,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.009525517085702033
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.2138500000015098,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.7861499999984902,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 23.673000000224096,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.1730000002240963,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.0877607533621863,
+      "time_above_25mm_s": 11.249899999999997,
+      "absolute_joint_mechanical_work_j": 142.03274378988172,
+      "torque_total_variation_nm": 9155.073995266579,
+      "execution_sha256": "dbb1a4e9e828a9d9f9eda2de6e6cbb1ee429ec9e2e0b0d2d4f9e506c9fce61b3",
+      "metrics_sha256": "b1012b4f2b39c13c23318d08134c3f2c2b928f25f1dde5fba8574716786b324a",
+      "independent_audit_sha256": "c8218ec4344e141a6e0cf062f90f557df2fd8157524da3d1523648ac535f1af6",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "paired_recovery035__fp64",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_2/paired_recovery035__fp64",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "carry",
+      "abort_reason": null,
+      "rmse_mm": 49.92012530496969,
+      "peak_torque_nm": 39.12140655517578,
+      "peak_speed_mps": 0.37986014241938537,
+      "penetration_mm": 0.16514818743371562,
+      "edge_penetration_mm": 0.08744578805485066,
+      "trace_sha256": "059dbd68eeb2d9b4488cd807ff76269453a94627883c6df4684b1a1baf6ff9a4",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 124.66113297749084,
+      "object_final_position": [
+        0.5963964948654461,
+        -0.227666641622261,
+        0.5786208335182452
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u642c\u8fd0\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.002300000000000001,
+          "impulse_ns": 2.1010611558914185,
+          "peak_force_n": 6594.93017578125,
+          "contact_p95_force_n": 4703.002258300781,
+          "contact_rms_force_n": 1765.0021699109086,
+          "force_squared_integral_n2s": 7165.035117517497,
+          "first_contact_s": 2.0654000000018558,
+          "last_contact_s": 2.1658500000016216,
+          "hand_max_displacement_during_event_m": 0.019849037751555443,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00027449819586321944
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 4.7718500000000015,
+          "impulse_ns": 133.54971394582012,
+          "peak_force_n": 159.8505859375,
+          "contact_p95_force_n": 38.30060882568359,
+          "contact_rms_force_n": 31.441179192125183,
+          "force_squared_integral_n2s": 4717.201576025823,
+          "first_contact_s": 5.206449999994535,
+          "last_contact_s": 10.06644999998321,
+          "hand_max_displacement_during_event_m": 0.033119652420282364,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.02747650896598558
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 6.8087500000000025,
+          "impulse_ns": 67.01688898804375,
+          "peak_force_n": 265.7488098144531,
+          "contact_p95_force_n": 12.261511898040771,
+          "contact_rms_force_n": 10.193509275477929,
+          "force_squared_integral_n2s": 707.4810849492375,
+          "first_contact_s": 13.975549999974099,
+          "last_contact_s": 21.20325000014211,
+          "hand_max_displacement_during_event_m": 0.032570939511060715,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.05755813206521167,
+          "extended_no_contact_longest_s": 0.00025,
+          "extended_no_contact_interval_s": [
+            20.02005000010283,
+            20.020250000102838
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 21.55675,
+          "impulse_ns": 16.55694420285952,
+          "peak_force_n": 30.864707946777344,
+          "contact_p95_force_n": 1.9365396142005915,
+          "contact_rms_force_n": 1.2263653394739216,
+          "force_squared_integral_n2s": 32.42074724398195,
+          "first_contact_s": 30.79040000046037,
+          "last_contact_s": 55.00000000126404,
+          "hand_max_displacement_during_event_m": 0.03200392797589302,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.02968041420757512
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.1658500000016216,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.8341499999983784,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 30.79040000046037,
+          "settled_rejoin_time_s": 2.051750000253268,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 8.29040000046037,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.9301914360627481,
+      "time_above_25mm_s": 19.66265,
+      "absolute_joint_mechanical_work_j": 100.62260961813247,
+      "torque_total_variation_nm": 6060.772978812194,
+      "execution_sha256": "63e5f26922b797435bdda1a8051a7c50591f940ae24fcd12180fd162e0f3114f",
+      "metrics_sha256": "215cab6b3e7841a5a87877966972d0da867cbf45ddeb4ecf5076c4941ceedf52",
+      "independent_audit_sha256": "4db2f75f7141acb1679c0a530a933ef9ba4b0959f89c097e0ff62c047da03206",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "paired_recovery035_mlp_seed2",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_1/paired_recovery035_mlp_seed2",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "carry",
+      "abort_reason": null,
+      "rmse_mm": 40.72239443996572,
+      "peak_torque_nm": 40.19736099243164,
+      "peak_speed_mps": 0.3729592151125748,
+      "penetration_mm": 0.1721670848915512,
+      "edge_penetration_mm": 0.05653066770030542,
+      "trace_sha256": "6dcc6569a0370c42b3b046a287a32efae005259eb65e1c39291e2430de6ba2af",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 116.76909091969394,
+      "object_final_position": [
+        0.5964386978531554,
+        -0.24013367524480328,
+        0.5812926763666123
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u642c\u8fd0\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.003100000000000001,
+          "impulse_ns": 2.258518738937378,
+          "peak_force_n": 6791.87060546875,
+          "contact_p95_force_n": 4040.2583740234336,
+          "contact_rms_force_n": 1554.1304599633131,
+          "force_squared_integral_n2s": 7487.496608415919,
+          "first_contact_s": 2.0646500000018575,
+          "last_contact_s": 2.199250000001544,
+          "hand_max_displacement_during_event_m": 0.03494098037481308,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00020585128092075403
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 4.395400000000001,
+          "impulse_ns": 115.07878408886715,
+          "peak_force_n": 437.6288757324219,
+          "contact_p95_force_n": 49.185052680969186,
+          "contact_rms_force_n": 36.73868891126621,
+          "force_squared_integral_n2s": 5932.608793033273,
+          "first_contact_s": 5.12709999999472,
+          "last_contact_s": 10.046899999983255,
+          "hand_max_displacement_during_event_m": 0.07429913431406021,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.03393682647650624
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 5.603150000000001,
+          "impulse_ns": 45.27032590293177,
+          "peak_force_n": 237.75721740722656,
+          "contact_p95_force_n": 12.859208965301512,
+          "contact_rms_force_n": 8.593513098435784,
+          "force_squared_integral_n2s": 413.7840399609544,
+          "first_contact_s": 14.148049999973697,
+          "last_contact_s": 21.055900000137218,
+          "hand_max_displacement_during_event_m": 0.02981487847864628,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.04111811045481519,
+          "extended_no_contact_longest_s": 0.0005,
+          "extended_no_contact_interval_s": [
+            15.241499999971149,
+            15.241949999971148
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 27.70550000000002,
+          "impulse_ns": 26.818284083574735,
+          "peak_force_n": 8.301700592041016,
+          "contact_p95_force_n": 2.5081632494926436,
+          "contact_rms_force_n": 1.241274334657997,
+          "force_squared_integral_n2s": 42.687586525859665,
+          "first_contact_s": 23.672650000224085,
+          "last_contact_s": 55.00000000126404,
+          "hand_max_displacement_during_event_m": 0.03622038662433624,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.04839919944681652
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.199250000001544,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.8007499999984562,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 23.672650000224085,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.1726500002240847,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.7508424933387314,
+      "time_above_25mm_s": 11.518899999999997,
+      "absolute_joint_mechanical_work_j": 100.29186915280597,
+      "torque_total_variation_nm": 6238.632980328264,
+      "execution_sha256": "91324d6fc74756c2bb5def761f98a80b8c9003b10ea6571a3684a83284fc2f32",
+      "metrics_sha256": "2930411de8bb764cebaeeab246265430e728a47f226d285da87640f4ebb965d5",
+      "independent_audit_sha256": "b2c1d8f899098cd9c5cb5639bc4a9ad2c675905c9d9b7d83077f6c0b53c51afe",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "paired_recovery035_rnn_fp64",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_3/paired_recovery035_rnn_fp64",
+      "task_success": true,
+      "strict_success": true,
+      "full_horizon": true,
+      "stage": "retreat",
+      "abort_reason": null,
+      "rmse_mm": 33.86001546549499,
+      "peak_torque_nm": 51.377037048339844,
+      "peak_speed_mps": 0.3916060965586895,
+      "penetration_mm": 0.17302265042835646,
+      "edge_penetration_mm": 0.08409559022582343,
+      "trace_sha256": "d418efb9bb8a657e5f58379fbdbbb5031b71f864273be544d418c8bdd24e7a95",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 13.906137196449617,
+      "object_final_position": [
+        0.7024570212002498,
+        -0.3161808797547765,
+        0.5449969877369472
+      ],
+      "placement_hold_s": 22.279999999999703,
+      "failure_reasons": [],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.003950000000000001,
+          "impulse_ns": 2.3159987778902056,
+          "peak_force_n": 6719.828125,
+          "contact_p95_force_n": 3172.2941406249947,
+          "contact_rms_force_n": 1352.3805847567212,
+          "force_squared_integral_n2s": 7224.286321806379,
+          "first_contact_s": 2.0663000000018537,
+          "last_contact_s": 2.1998000000015425,
+          "hand_max_displacement_during_event_m": 0.050973083823919296,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.0002762541202742747
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 3.431200000000001,
+          "impulse_ns": 30.640747229754922,
+          "peak_force_n": 139.16427612304688,
+          "contact_p95_force_n": 18.598429489135743,
+          "contact_rms_force_n": 10.053790746988309,
+          "force_squared_integral_n2s": 346.8212642079623,
+          "first_contact_s": 5.236899999994464,
+          "last_contact_s": 9.863399999983683,
+          "hand_max_displacement_during_event_m": 0.05182003974914551,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.047196556809258314
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 2.1423000000000005,
+          "impulse_ns": 28.607397210356226,
+          "peak_force_n": 253.47317504882812,
+          "contact_p95_force_n": 22.152437210083008,
+          "contact_rms_force_n": 14.721539782416071,
+          "force_squared_integral_n2s": 464.2872544587534,
+          "first_contact_s": 14.101649999973805,
+          "last_contact_s": 17.82070000002982,
+          "hand_max_displacement_during_event_m": 0.07258521765470505,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.033069525062206805,
+          "extended_no_contact_longest_s": 2.6792500000000006,
+          "extended_no_contact_interval_s": [
+            17.820750000029822,
+            20.499950000118762
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 1.9437000000000006,
+          "impulse_ns": 6.236107913914976,
+          "peak_force_n": 24.278419494628906,
+          "contact_p95_force_n": 8.71593117713928,
+          "contact_rms_force_n": 4.4405014806795196,
+          "force_squared_integral_n2s": 38.32598128472358,
+          "first_contact_s": 20.410350000115788,
+          "last_contact_s": 29.35025000041256,
+          "hand_max_displacement_during_event_m": 0.12814004719257355,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.018653461231948873
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.1998000000015425,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.8001999999984575,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 23.412400000215445,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 0.9124000002154453,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.5818089317258512,
+      "time_above_25mm_s": 33.24235000000002,
+      "absolute_joint_mechanical_work_j": 193.2318914611019,
+      "torque_total_variation_nm": 25050.496506978234,
+      "execution_sha256": "37c0302b7a5604fe53902e2e011076e335561a51e710113e07a9f808ff989cc5",
+      "metrics_sha256": "d3a678dd536d845b5bebd159a978b420c0112f536d42ff6b5b698b27f08490b4",
+      "independent_audit_sha256": "91eb70f56939f5f3c188f179a279fb7026bf899933bd86a1feefca862a7b37b2",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "paired_recovery035_rnn_seed2",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_2/paired_recovery035_rnn_seed2",
+      "task_success": true,
+      "strict_success": true,
+      "full_horizon": true,
+      "stage": "retreat",
+      "abort_reason": null,
+      "rmse_mm": 38.88181272284501,
+      "peak_torque_nm": 51.9017333984375,
+      "peak_speed_mps": 0.39797068535332647,
+      "penetration_mm": 0.17405917223857725,
+      "edge_penetration_mm": 0.08227801917189088,
+      "trace_sha256": "bd79b96f23e0cc83fc936d418dba4941bc3625969fdeccbaf5d62ec3af1ad58c",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 5.911161445542665,
+      "object_final_position": [
+        0.6912062211384571,
+        -0.31578678323426834,
+        0.5449969877369464
+      ],
+      "placement_hold_s": 5.040000000000004,
+      "failure_reasons": [],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.00125,
+          "impulse_ns": 1.8879895559310913,
+          "peak_force_n": 6312.8271484375,
+          "contact_p95_force_n": 5476.923632812498,
+          "contact_rms_force_n": 2344.7313850246173,
+          "force_squared_integral_n2s": 6872.206584899324,
+          "first_contact_s": 2.061900000001864,
+          "last_contact_s": 2.138700000001685,
+          "hand_max_displacement_during_event_m": 0.0177155788987875,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00023169741625724967
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 4.408400000000001,
+          "impulse_ns": 101.10860786263346,
+          "peak_force_n": 341.43450927734375,
+          "contact_p95_force_n": 39.381123733520496,
+          "contact_rms_force_n": 31.50033900607179,
+          "force_squared_integral_n2s": 4374.329052391751,
+          "first_contact_s": 5.175649999994607,
+          "last_contact_s": 10.039099999983273,
+          "hand_max_displacement_during_event_m": 0.05818390101194382,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.04862068894254086
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 4.209550000000001,
+          "impulse_ns": 42.007537987518326,
+          "peak_force_n": 207.46722412109375,
+          "contact_p95_force_n": 19.520410537719727,
+          "contact_rms_force_n": 11.222723759269785,
+          "force_squared_integral_n2s": 530.190838020799,
+          "first_contact_s": 14.160149999973669,
+          "last_contact_s": 20.99300000013513,
+          "hand_max_displacement_during_event_m": 0.04915330186486244,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.04930186377425847,
+          "extended_no_contact_longest_s": 0.0009000000000000001,
+          "extended_no_contact_interval_s": [
+            14.930449999971874,
+            14.931299999971872
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 10.2488,
+          "impulse_ns": 24.11857708290202,
+          "peak_force_n": 22.773462295532227,
+          "contact_p95_force_n": 5.309401512145996,
+          "contact_rms_force_n": 2.902896865112167,
+          "force_squared_integral_n2s": 86.36469300869622,
+          "first_contact_s": 25.251450000276495,
+          "last_contact_s": 47.07270000100088,
+          "hand_max_displacement_during_event_m": 0.13858413696289062,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.0840148995624505
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.6142500000000002,
+          "impulse_ns": 0.9405698508381902,
+          "peak_force_n": 3.4148213863372803,
+          "contact_p95_force_n": 2.8532135009765622,
+          "contact_rms_force_n": 1.7101474534698735,
+          "force_squared_integral_n2s": 1.7964399150107222,
+          "first_contact_s": 54.137700001235416,
+          "last_contact_s": 55.00000000126404,
+          "hand_max_displacement_during_event_m": 0.0016341654118150473,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.004151965967850538
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.138700000001685,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.861299999998315,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 25.251450000276495,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.7514500002764954,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.6403579122654983,
+      "time_above_25mm_s": 15.002349999999991,
+      "absolute_joint_mechanical_work_j": 206.5502992877595,
+      "torque_total_variation_nm": 21268.744895236174,
+      "execution_sha256": "63713aa4f58d8becb570f3e496dd9853ab41e48c3d01f702296ef1834ef389c0",
+      "metrics_sha256": "faf160bd7f1e7e92e7e1a9edf9372883a4446531c43d43649ce0d8a76780d57e",
+      "independent_audit_sha256": "4db2f75f7141acb1679c0a530a933ef9ba4b0959f89c097e0ff62c047da03206",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "paired_feature_matched_mlp",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/paired_feature_matched_mlp",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "retreat",
+      "abort_reason": null,
+      "rmse_mm": 32.68657861928059,
+      "peak_torque_nm": 49.86566162109375,
+      "peak_speed_mps": 0.36036350569236536,
+      "penetration_mm": 0.14106758541096467,
+      "edge_penetration_mm": 0.0826980205328511,
+      "trace_sha256": "e666439c099c91528b287e1ed668ad77312405aee32aac5b96d2b8880978dafb",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 25.263130389202637,
+      "object_final_position": [
+        0.7138832620693016,
+        -0.318235019732272,
+        0.5449968482870869
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u653e\u7f6eXY\u8d8525mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.003650000000000001,
+          "impulse_ns": 2.179586764407158,
+          "peak_force_n": 5964.81298828125,
+          "contact_p95_force_n": 3414.7042480468685,
+          "contact_rms_force_n": 1315.6894995003847,
+          "force_squared_integral_n2s": 6318.291835698842,
+          "first_contact_s": 2.065650000001855,
+          "last_contact_s": 2.1797000000015894,
+          "hand_max_displacement_during_event_m": 0.05480140075087547,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00036103173885578915
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 3.617500000000001,
+          "impulse_ns": 30.1482825891613,
+          "peak_force_n": 145.86654663085938,
+          "contact_p95_force_n": 13.82243709564209,
+          "contact_rms_force_n": 9.559186368750588,
+          "force_squared_integral_n2s": 330.56007430816993,
+          "first_contact_s": 5.288149999994345,
+          "last_contact_s": 9.719449999984018,
+          "hand_max_displacement_during_event_m": 0.05111852288246155,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.05849414607980739
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 3.336950000000001,
+          "impulse_ns": 35.267382359643285,
+          "peak_force_n": 275.2628173828125,
+          "contact_p95_force_n": 16.988042640686036,
+          "contact_rms_force_n": 11.463998524311762,
+          "force_squared_integral_n2s": 438.552854682906,
+          "first_contact_s": 14.080749999973854,
+          "last_contact_s": 19.061950000071025,
+          "hand_max_displacement_during_event_m": 0.06477054953575134,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.0528867470386938,
+          "extended_no_contact_longest_s": 1.4380000000000004,
+          "extended_no_contact_interval_s": [
+            19.062000000071027,
+            20.499950000118762
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 2.730200000000001,
+          "impulse_ns": 9.263924361584383,
+          "peak_force_n": 23.657981872558594,
+          "contact_p95_force_n": 9.808180379867546,
+          "contact_rms_force_n": 4.7104308818133624,
+          "force_squared_integral_n2s": 60.57811310874835,
+          "first_contact_s": 20.480200000118106,
+          "last_contact_s": 28.886850000397178,
+          "hand_max_displacement_during_event_m": 0.14088180661201477,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.02524590301002151
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 1.0002000000000004,
+          "impulse_ns": 1.302750324289351,
+          "peak_force_n": 4.526020526885986,
+          "contact_p95_force_n": 2.921528768539428,
+          "contact_rms_force_n": 1.5782359826211307,
+          "force_squared_integral_n2s": 2.491338152732075,
+          "first_contact_s": 36.31400000064373,
+          "last_contact_s": 38.37205000071205,
+          "hand_max_displacement_during_event_m": 0.044425711035728455,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.004802973041913929
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.1797000000015894,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.8202999999984106,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 22.545500000186667,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 0.04550000018666722,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.3081076052088993,
+      "time_above_25mm_s": 21.601750000000003,
+      "absolute_joint_mechanical_work_j": 179.58564719176243,
+      "torque_total_variation_nm": 12410.27726348658,
+      "execution_sha256": "60256bc0b3df04216a54019e9e245e1c305b0216e0379db9656a5cb2e12f6c4a",
+      "metrics_sha256": "a866a25f6ab19bbd8003faa526a125ba7629621d2ae51b5d4b1f344a4873db5a",
+      "independent_audit_sha256": "c8218ec4344e141a6e0cf062f90f557df2fd8157524da3d1523648ac535f1af6",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "paired_feature_matched_rnn",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_1/paired_feature_matched_rnn",
+      "task_success": true,
+      "strict_success": true,
+      "full_horizon": true,
+      "stage": "release",
+      "abort_reason": null,
+      "rmse_mm": 45.28926494045115,
+      "peak_torque_nm": 53.648624420166016,
+      "peak_speed_mps": 0.37265875659727404,
+      "penetration_mm": 0.17069889760533105,
+      "edge_penetration_mm": 0.08955630382032868,
+      "trace_sha256": "b72b8fd2cc5accf8663dc062686617bdc915e38ccf96fe22f38a85ca24ee6e5a",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 13.407471370495932,
+      "object_final_position": [
+        0.6799362980001773,
+        -0.3188590174742707,
+        0.5449969877369465
+      ],
+      "placement_hold_s": 1.7200000000000009,
+      "failure_reasons": [],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0022500000000000007,
+          "impulse_ns": 2.090909851074219,
+          "peak_force_n": 6768.01806640625,
+          "contact_p95_force_n": 4851.604101562497,
+          "contact_rms_force_n": 1814.4057297875654,
+          "force_squared_integral_n2s": 7407.153342643385,
+          "first_contact_s": 2.064800000001857,
+          "last_contact_s": 2.158850000001638,
+          "hand_max_displacement_during_event_m": 0.03416737914085388,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00027164426426091814
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 4.4231500000000015,
+          "impulse_ns": 103.43079796843566,
+          "peak_force_n": 458.1831970214844,
+          "contact_p95_force_n": 41.889733505249,
+          "contact_rms_force_n": 32.063256324667094,
+          "force_squared_integral_n2s": 4547.230000223913,
+          "first_contact_s": 5.113599999994752,
+          "last_contact_s": 10.019999999983318,
+          "hand_max_displacement_during_event_m": 0.03628005459904671,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.05241030828935537
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 6.330450000000002,
+          "impulse_ns": 46.74827019098653,
+          "peak_force_n": 261.1160888671875,
+          "contact_p95_force_n": 11.555632591247555,
+          "contact_rms_force_n": 7.8794052963686285,
+          "force_squared_integral_n2s": 393.02616443701413,
+          "first_contact_s": 13.967799999974117,
+          "last_contact_s": 21.09240000013843,
+          "hand_max_displacement_during_event_m": 0.05886373296380043,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.08484457753341375,
+          "extended_no_contact_longest_s": 0.0004,
+          "extended_no_contact_interval_s": [
+            15.968499999969454,
+            15.968849999969454
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 4.223800000000001,
+          "impulse_ns": 19.663851578494086,
+          "peak_force_n": 29.745630264282227,
+          "contact_p95_force_n": 12.995056390762329,
+          "contact_rms_force_n": 6.112789357993462,
+          "force_squared_integral_n2s": 157.82733265014392,
+          "first_contact_s": 24.514100000252018,
+          "last_contact_s": 41.41760000081315,
+          "hand_max_displacement_during_event_m": 0.16111396253108978,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.05126897568239945
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.008650000000000001,
+          "impulse_ns": 0.03772251306772232,
+          "peak_force_n": 6.001052379608154,
+          "contact_p95_force_n": 5.892942905426025,
+          "contact_rms_force_n": 4.589605260652387,
+          "force_squared_integral_n2s": 0.1822077212804598,
+          "first_contact_s": 42.51490000084958,
+          "last_contact_s": 42.523500000849864,
+          "hand_max_displacement_during_event_m": 0.04737306386232376,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00028225728882700914
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.158850000001638,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.841149999998362,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 24.514100000252018,
+          "settled_rejoin_time_s": 1.0961500002215452,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 2.014100000252018,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.8156421241002985,
+      "time_above_25mm_s": 19.395649999999996,
+      "absolute_joint_mechanical_work_j": 198.0874796573731,
+      "torque_total_variation_nm": 17106.435101095598,
+      "execution_sha256": "a95e9ad91ea2633055443cf1fc6a68966147505e875b23304394d64244ccae3b",
+      "metrics_sha256": "377f964faa576ae31dc53e8f77db0fccb3689acf35d6133f0261f94786105590",
+      "independent_audit_sha256": "b2c1d8f899098cd9c5cb5639bc4a9ad2c675905c9d9b7d83077f6c0b53c51afe",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "paired_feature_matched_rnn_seed2",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_2/paired_feature_matched_rnn_seed2",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "carry",
+      "abort_reason": null,
+      "rmse_mm": 43.135365868172194,
+      "peak_torque_nm": 42.3928337097168,
+      "peak_speed_mps": 0.37980701073858764,
+      "penetration_mm": 0.15844827764671718,
+      "edge_penetration_mm": 0.07770719987185375,
+      "trace_sha256": "447692052f3099b9c1ed5cc4ae711de01a02ccf06d820747b3587f88e7e20395",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 57.320327860800845,
+      "object_final_position": [
+        0.6400412714377175,
+        -0.2818975903789393,
+        0.6205793859913599
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u642c\u8fd0\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.002700000000000001,
+          "impulse_ns": 2.0705650710582733,
+          "peak_force_n": 6419.79541015625,
+          "contact_p95_force_n": 4283.110546874995,
+          "contact_rms_force_n": 1588.8450320915626,
+          "force_squared_integral_n2s": 6815.9570472055075,
+          "first_contact_s": 2.0650500000018566,
+          "last_contact_s": 2.17085000000161,
+          "hand_max_displacement_during_event_m": 0.034621160477399826,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00036346507043422973
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 3.9203000000000015,
+          "impulse_ns": 47.21680413327506,
+          "peak_force_n": 188.96963500976562,
+          "contact_p95_force_n": 27.073727130889893,
+          "contact_rms_force_n": 15.070634609217189,
+          "force_squared_integral_n2s": 890.394325115496,
+          "first_contact_s": 5.1346999999947025,
+          "last_contact_s": 9.964999999983446,
+          "hand_max_displacement_during_event_m": 0.060485728085041046,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.06559156878538336
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 5.499950000000002,
+          "impulse_ns": 32.45571967203728,
+          "peak_force_n": 232.82814025878906,
+          "contact_p95_force_n": 10.25658903121948,
+          "contact_rms_force_n": 6.5376721790384575,
+          "force_squared_integral_n2s": 235.07422936106562,
+          "first_contact_s": 14.1041499999738,
+          "last_contact_s": 21.001850000135423,
+          "hand_max_displacement_during_event_m": 0.04006436839699745,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.06850246687393804,
+          "extended_no_contact_longest_s": 0.0006000000000000001,
+          "extended_no_contact_interval_s": [
+            16.727949999993545,
+            16.728499999993563
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 5.693600000000002,
+          "impulse_ns": 18.442128646107967,
+          "peak_force_n": 27.965261459350586,
+          "contact_p95_force_n": 9.504656744003295,
+          "contact_rms_force_n": 4.557170140751719,
+          "force_squared_integral_n2s": 118.24354616086138,
+          "first_contact_s": 24.355900000246766,
+          "last_contact_s": 40.798000000792584,
+          "hand_max_displacement_during_event_m": 0.11693886667490005,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.05769251338805188
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.17085000000161,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.82914999999839,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 24.355900000246766,
+          "settled_rejoin_time_s": 0.38005000019777313,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 1.8559000002467663,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.9566308562792747,
+      "time_above_25mm_s": 25.240450000000013,
+      "absolute_joint_mechanical_work_j": 178.84138132233736,
+      "torque_total_variation_nm": 19952.65605908525,
+      "execution_sha256": "446dd2f4a48993f09f3a12b4a0955aa1edfc1c44d23d2cfea03dbf95a7cd697b",
+      "metrics_sha256": "f09416680f9f4f1d0bc5e4f56c781a30ebacd333d78fa7fa3dbe8a531560e4c2",
+      "independent_audit_sha256": "4db2f75f7141acb1679c0a530a933ef9ba4b0959f89c097e0ff62c047da03206",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "recovery035_esn_memoryless",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_3/recovery035_esn_memoryless",
+      "task_success": true,
+      "strict_success": true,
+      "full_horizon": true,
+      "stage": "retreat",
+      "abort_reason": null,
+      "rmse_mm": 29.072601891146736,
+      "peak_torque_nm": 49.70433807373047,
+      "peak_speed_mps": 0.3849513426722964,
+      "penetration_mm": 0.18091291859468991,
+      "edge_penetration_mm": 0.084070817306722,
+      "trace_sha256": "a50e99536762f18f025acc29519ee79615b73d447faf12d3049007e9eaccf171",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 18.08873915978941,
+      "object_final_position": [
+        0.7071354716649306,
+        -0.315794660922889,
+        0.5449969817920259
+      ],
+      "placement_hold_s": 23.159999999999684,
+      "failure_reasons": [],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0025000000000000005,
+          "impulse_ns": 2.1806338300704957,
+          "peak_force_n": 6997.09326171875,
+          "contact_p95_force_n": 4663.89875488281,
+          "contact_rms_force_n": 1754.16604627838,
+          "force_squared_integral_n2s": 7692.74629478981,
+          "first_contact_s": 2.0643000000018583,
+          "last_contact_s": 2.1903500000015645,
+          "hand_max_displacement_during_event_m": 0.065361388027668,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00029889316460890344
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 3.298100000000001,
+          "impulse_ns": 29.344116060290016,
+          "peak_force_n": 141.79376220703125,
+          "contact_p95_force_n": 14.668081474304191,
+          "contact_rms_force_n": 10.145637085758507,
+          "force_squared_integral_n2s": 339.4864667001111,
+          "first_contact_s": 5.283899999994355,
+          "last_contact_s": 9.880599999983643,
+          "hand_max_displacement_during_event_m": 0.05063064023852348,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.06261038616434263
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 3.369800000000001,
+          "impulse_ns": 36.814975485457474,
+          "peak_force_n": 257.7903747558594,
+          "contact_p95_force_n": 19.331718921661377,
+          "contact_rms_force_n": 12.135614633485496,
+          "force_squared_integral_n2s": 496.28103570590844,
+          "first_contact_s": 14.088449999973836,
+          "last_contact_s": 19.114600000072773,
+          "hand_max_displacement_during_event_m": 0.06521625816822052,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.05480500775659042,
+          "extended_no_contact_longest_s": 1.3853500000000003,
+          "extended_no_contact_interval_s": [
+            19.114650000072775,
+            20.499950000118762
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 3.5276500000000013,
+          "impulse_ns": 11.619347620833109,
+          "peak_force_n": 26.029499053955078,
+          "contact_p95_force_n": 8.62996044158935,
+          "contact_rms_force_n": 4.45124354196497,
+          "force_squared_integral_n2s": 69.89533747725166,
+          "first_contact_s": 20.386850000115007,
+          "last_contact_s": 28.853650000396076,
+          "hand_max_displacement_during_event_m": 0.1373285949230194,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.032210646879935426
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.1903500000015645,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.8096499999984355,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 22.500000000185157,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.851567787980457e-10,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.0462296539585785,
+      "time_above_25mm_s": 14.815599999999991,
+      "absolute_joint_mechanical_work_j": 145.10758226953502,
+      "torque_total_variation_nm": 8929.888392216551,
+      "execution_sha256": "a7f73af62e18d8ed738129fff6cf9ca252f8e6a12220556caeced3e7d6df987b",
+      "metrics_sha256": "54f2b2184a293e3cd72c74ab72a28152b1b679e8ead1e9b906b34073685b0e24",
+      "independent_audit_sha256": "91eb70f56939f5f3c188f179a279fb7026bf899933bd86a1feefca862a7b37b2",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "parameter_admittance",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_1/parameter_admittance",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "carry",
+      "abort_reason": null,
+      "rmse_mm": 27.72624225687819,
+      "peak_torque_nm": 38.19237518310547,
+      "peak_speed_mps": 0.3779989920452076,
+      "penetration_mm": 0.17090284431647712,
+      "edge_penetration_mm": 0.11607264574767726,
+      "trace_sha256": "ee4576bb98af273a3fc35d2464801c55b8a2913315f5fb610db4c57bcfb24ac3",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 114.98140011969168,
+      "object_final_position": [
+        0.5896081225535482,
+        -0.2539447298083289,
+        0.5639057906031715
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u642c\u8fd0\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.00165,
+          "impulse_ns": 2.0829971028327945,
+          "peak_force_n": 6800.55322265625,
+          "contact_p95_force_n": 5429.854492187499,
+          "contact_rms_force_n": 2150.448852796351,
+          "force_squared_integral_n2s": 7630.309943013684,
+          "first_contact_s": 2.0634500000018603,
+          "last_contact_s": 2.1733000000016043,
+          "hand_max_displacement_during_event_m": 0.06960563361644745,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.0001796418608270144
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 4.132100000000001,
+          "impulse_ns": 35.754155876477064,
+          "peak_force_n": 141.4923858642578,
+          "contact_p95_force_n": 11.204934883117675,
+          "contact_rms_force_n": 9.522519873146262,
+          "force_squared_integral_n2s": 374.69215356128507,
+          "first_contact_s": 5.2972999999943235,
+          "last_contact_s": 9.936649999983512,
+          "hand_max_displacement_during_event_m": 0.025566842406988144,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.040918910840273354
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 6.173200000000002,
+          "impulse_ns": 28.740914486027982,
+          "peak_force_n": 227.84742736816406,
+          "contact_p95_force_n": 6.305988264083862,
+          "contact_rms_force_n": 5.008675691862835,
+          "force_squared_integral_n2s": 154.86603263952523,
+          "first_contact_s": 14.148049999973697,
+          "last_contact_s": 20.9710500001344,
+          "hand_max_displacement_during_event_m": 0.025230251252651215,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.05692033369319168,
+          "extended_no_contact_longest_s": 0.00030000000000000003,
+          "extended_no_contact_interval_s": [
+            19.67605000009141,
+            19.67630000009142
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 12.112349999999996,
+          "impulse_ns": 122.02416175734275,
+          "peak_force_n": 138.5012969970703,
+          "contact_p95_force_n": 30.293262481689442,
+          "contact_rms_force_n": 13.903292722386562,
+          "force_squared_integral_n2s": 2341.3360131907216,
+          "first_contact_s": 27.327000000345397,
+          "last_contact_s": 55.00000000126404,
+          "hand_max_displacement_during_event_m": 0.05770833417773247,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.10054309488526725
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.1733000000016043,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.8266999999983957,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": 1.200049999978237,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 27.327000000345397,
+          "settled_rejoin_time_s": 0.14005000018980596,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 4.827000000345397,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.1466910028563735,
+      "time_above_25mm_s": 4.6281500000000015,
+      "absolute_joint_mechanical_work_j": 132.97531611288198,
+      "torque_total_variation_nm": 10861.533030063703,
+      "execution_sha256": "1bfc416aefcde6a57ccf88739dc5501b87009591113dd67369af9a96d1a65387",
+      "metrics_sha256": "93b683f29824fcf316f35bc84d4acb9a6ea6ac0893fdd85241385e00bc37069c",
+      "independent_audit_sha256": "b2c1d8f899098cd9c5cb5639bc4a9ad2c675905c9d9b7d83077f6c0b53c51afe",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "parameter_impedance",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_2/parameter_impedance",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "carry",
+      "abort_reason": null,
+      "rmse_mm": 26.332755149410968,
+      "peak_torque_nm": 36.00974655151367,
+      "peak_speed_mps": 0.37227596492791426,
+      "penetration_mm": 0.13977413108100817,
+      "edge_penetration_mm": 0.07483758261537171,
+      "trace_sha256": "8a4065f68678aa69668c82dca209bcfd196427034e832d273ea712537fa41af4",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 85.86565711882454,
+      "object_final_position": [
+        0.6179815908060325,
+        -0.26324254273789244,
+        0.5896484763664268
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u642c\u8fd0\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0054,
+          "impulse_ns": 2.543555420327187,
+          "peak_force_n": 5862.71923828125,
+          "contact_p95_force_n": 2011.065130615229,
+          "contact_rms_force_n": 1091.0774250126904,
+          "force_squared_integral_n2s": 6428.429715810544,
+          "first_contact_s": 2.064400000001858,
+          "last_contact_s": 2.211600000001515,
+          "hand_max_displacement_during_event_m": 0.04003290459513664,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.0004910946403346687
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 4.255200000000001,
+          "impulse_ns": 60.08103944857037,
+          "peak_force_n": 139.3599853515625,
+          "contact_p95_force_n": 20.65926866531371,
+          "contact_rms_force_n": 16.11714276217379,
+          "force_squared_integral_n2s": 1105.3404999009724,
+          "first_contact_s": 5.3088999999942965,
+          "last_contact_s": 10.099899999983132,
+          "hand_max_displacement_during_event_m": 0.034932225942611694,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.027962040908087137
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 0.002650000000000001,
+          "impulse_ns": 0.27718509006500247,
+          "peak_force_n": 303.25341796875,
+          "contact_p95_force_n": 237.3194458007812,
+          "contact_rms_force_n": 121.72647902818359,
+          "force_squared_integral_n2s": 39.26593959598687,
+          "first_contact_s": 13.980949999974086,
+          "last_contact_s": 14.025449999973983,
+          "hand_max_displacement_during_event_m": 0.026177769526839256,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 5.0525557754909e-05,
+          "extended_no_contact_longest_s": 5.999950000000002,
+          "extended_no_contact_interval_s": [
+            14.500049999972877,
+            20.499950000118762
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 40.47849999999998,
+          "impulse_ns": 367.80130414149176,
+          "peak_force_n": 24.943532943725586,
+          "contact_p95_force_n": 11.335321569442742,
+          "contact_rms_force_n": 9.352037058569028,
+          "force_squared_integral_n2s": 3540.2737815277446,
+          "first_contact_s": 13.54154999997511,
+          "last_contact_s": 55.00000000126404,
+          "hand_max_displacement_during_event_m": 0.05551125481724739,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.05113614704076812
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.211600000001515,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.788399999998485,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 22.500000000185157,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.851567787980457e-10,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.0681762480810824,
+      "time_above_25mm_s": 3.8222000000000014,
+      "absolute_joint_mechanical_work_j": 69.96361367232957,
+      "torque_total_variation_nm": 483.1201754729527,
+      "execution_sha256": "bfee6ce1ef872498a5041d23d42b6fd48cf4eebac35671507cc4ed8d51125da1",
+      "metrics_sha256": "9f3ca69a63000bcf7bea77d4549e39f3f82ad1ad7a3de7db047d60470e5e339f",
+      "independent_audit_sha256": "4db2f75f7141acb1679c0a530a933ef9ba4b0959f89c097e0ff62c047da03206",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "parameter_vmc",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_3/parameter_vmc",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "carry",
+      "abort_reason": null,
+      "rmse_mm": 36.89786343872853,
+      "peak_torque_nm": 37.86148452758789,
+      "peak_speed_mps": 0.36983199391863214,
+      "penetration_mm": 0.15488371374922988,
+      "edge_penetration_mm": 0.06856635244815189,
+      "trace_sha256": "91b91d54d68eeb7948b6135d3a53e50221b2c45ff31b84dbf4c70e871df1bcff",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 126.95020139752653,
+      "object_final_position": [
+        0.5896036777945642,
+        -0.23230230297817778,
+        0.5543579814535246
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u642c\u8fd0\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0017499999999999998,
+          "impulse_ns": 2.0670653089523316,
+          "peak_force_n": 6385.38427734375,
+          "contact_p95_force_n": 5121.303173828122,
+          "contact_rms_force_n": 2016.220888717524,
+          "force_squared_integral_n2s": 7114.006676176545,
+          "first_contact_s": 2.063950000001859,
+          "last_contact_s": 2.1655500000016223,
+          "hand_max_displacement_during_event_m": 0.03735408931970596,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00021837230194794404
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 4.4231500000000015,
+          "impulse_ns": 49.54879285248817,
+          "peak_force_n": 156.34291076660156,
+          "contact_p95_force_n": 20.66423835754392,
+          "contact_rms_force_n": 13.429717401145965,
+          "force_squared_integral_n2s": 797.7474334027663,
+          "first_contact_s": 5.218149999994508,
+          "last_contact_s": 9.899699999983598,
+          "hand_max_displacement_during_event_m": 0.047417186200618744,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.02481136680988979
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 6.139900000000002,
+          "impulse_ns": 27.9105911183165,
+          "peak_force_n": 236.33096313476562,
+          "contact_p95_force_n": 5.699082088470456,
+          "contact_rms_force_n": 4.927086159658152,
+          "force_squared_integral_n2s": 149.05330546266282,
+          "first_contact_s": 14.080699999973854,
+          "last_contact_s": 20.92970000013303,
+          "hand_max_displacement_during_event_m": 0.047726526856422424,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.05669108889253757,
+          "extended_no_contact_longest_s": 0.0005,
+          "extended_no_contact_interval_s": [
+            15.88004999996966,
+            15.88049999996966
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 22.593500000000006,
+          "impulse_ns": 36.49758970377522,
+          "peak_force_n": 19.0282039642334,
+          "contact_p95_force_n": 3.098718774318695,
+          "contact_rms_force_n": 1.8635494561923471,
+          "force_squared_integral_n2s": 78.46308130250847,
+          "first_contact_s": 30.695650000457224,
+          "last_contact_s": 55.00000000126404,
+          "hand_max_displacement_during_event_m": 0.02483564428985119,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.023370993777426047
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.1655500000016223,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.8344499999983777,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 30.695650000457224,
+          "settled_rejoin_time_s": 0.7800500002110518,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 8.195650000457224,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.458226148311576,
+      "time_above_25mm_s": 10.370999999999999,
+      "absolute_joint_mechanical_work_j": 64.9346016932301,
+      "torque_total_variation_nm": 1484.4340846113892,
+      "execution_sha256": "f5d5dd46a62f318e28fed12c6d1720fc2febcdc78bf0b84a14e4bd7c1efd16f3",
+      "metrics_sha256": "7d5853c92c307d82ff7ebc37d5faff5279ca321bb1b0127cc8bb4cb8965bcf02",
+      "independent_audit_sha256": "91eb70f56939f5f3c188f179a279fb7026bf899933bd86a1feefca862a7b37b2",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "direct_metric_74001",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/direct_metric_74001",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "approach",
+      "abort_reason": null,
+      "rmse_mm": 196.73797898663648,
+      "peak_torque_nm": 45.186981201171875,
+      "peak_speed_mps": 0.29442519713606846,
+      "penetration_mm": 0.4312703368495988,
+      "edge_penetration_mm": 0.0,
+      "trace_sha256": "ddd16810c4a46728e8f5d12641e646359ad7f4e30bb51c635b896a7d55a1c8e4",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 192.0937271229854,
+      "object_final_position": [
+        0.54,
+        -0.19,
+        0.4249969877369443
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u63a5\u8fd1\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm",
+        "\u5916\u90e8\u7a7f\u900f\u8d850.2mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0005,
+          "impulse_ns": 1.4200967109680174,
+          "peak_force_n": 6081.79345703125,
+          "contact_p95_force_n": 5624.711669921874,
+          "contact_rms_force_n": 3445.449717426967,
+          "force_squared_integral_n2s": 5935.561877658783,
+          "first_contact_s": 2.039200000001917,
+          "last_contact_s": 2.0396500000019158,
+          "hand_max_displacement_during_event_m": 0.02077241986989975,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00010813298458956201
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 3.672900000000001,
+          "impulse_ns": 92.71575830331537,
+          "peak_force_n": 216.52685546875,
+          "contact_p95_force_n": 66.89167404174805,
+          "contact_rms_force_n": 32.14145227158666,
+          "force_squared_integral_n2s": 3794.373653251262,
+          "first_contact_s": 4.968849999995089,
+          "last_contact_s": 10.24614999998279,
+          "hand_max_displacement_during_event_m": 0.03578801825642586,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.06737611377366005
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": false,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0,
+          "extended_no_contact_longest_s": null,
+          "extended_no_contact_interval_s": null,
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 1.2765000000000004,
+          "impulse_ns": 16.31528063580159,
+          "peak_force_n": 42.31904983520508,
+          "contact_p95_force_n": 24.727028656005853,
+          "contact_rms_force_n": 14.946364169635888,
+          "force_squared_integral_n2s": 285.1621885877171,
+          "first_contact_s": 2.4340500000009966,
+          "last_contact_s": 4.284549999996684,
+          "hand_max_displacement_during_event_m": 0.21654704213142395,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.020542164878390046
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.0396500000019158,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.9603499999980842,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": false,
+          "unload_s": 22.5,
+          "censor_s": 55.00000000126404,
+          "settled_rejoin_time_s": null,
+          "right_censored": false,
+          "applicable": false,
+          "observation_window_s": 32.50000000126404,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 9.866225140542692,
+      "time_above_25mm_s": 52.86069999999991,
+      "absolute_joint_mechanical_work_j": 128.874440148156,
+      "torque_total_variation_nm": 12122.98111710143,
+      "execution_sha256": "f7db59a8752b791827082fcd7acd4c785d40a60b10a2b1c964cb13d90f2cb622",
+      "metrics_sha256": "2a9d6c9606efddd5ecb8f7e360ec42485cc61e353f8bf10af448e7fb2bb76faa",
+      "independent_audit_sha256": "c8218ec4344e141a6e0cf062f90f557df2fd8157524da3d1523648ac535f1af6",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "direct_metric_74002",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_1/direct_metric_74002",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "approach",
+      "abort_reason": null,
+      "rmse_mm": 476.11599795962024,
+      "peak_torque_nm": 69.42218780517578,
+      "peak_speed_mps": 0.6821420049482444,
+      "penetration_mm": 0.10709879558128513,
+      "edge_penetration_mm": 0.0,
+      "trace_sha256": "421bbbf0f729f62f3cf981adf503896f338efa05494726ee8d95656261bb4e8f",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 182.00131904005045,
+      "object_final_position": [
+        0.555870327152102,
+        -0.1869808511083168,
+        0.42499698773694583
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u63a5\u8fd1\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0083,
+          "impulse_ns": 2.217798787689209,
+          "peak_force_n": 3827.754638671875,
+          "contact_p95_force_n": 1289.5998229980469,
+          "contact_rms_force_n": 613.3531455568443,
+          "force_squared_integral_n2s": 3122.4772736651466,
+          "first_contact_s": 2.064900000001857,
+          "last_contact_s": 2.535200000000761,
+          "hand_max_displacement_during_event_m": 0.14877748489379883,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.0011269232616069374
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 0.3514500000000001,
+          "impulse_ns": 7.905333206558229,
+          "peak_force_n": 438.6654052734375,
+          "contact_p95_force_n": 77.99205474853503,
+          "contact_rms_force_n": 38.64267982110981,
+          "force_squared_integral_n2s": 524.8050685353301,
+          "first_contact_s": 5.518749999993807,
+          "last_contact_s": 9.741649999983967,
+          "hand_max_displacement_during_event_m": 0.12762406468391418,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.024230564212339527
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": false,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0,
+          "extended_no_contact_longest_s": null,
+          "extended_no_contact_interval_s": null,
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.535200000000761,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.4647999999992392,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": false,
+          "unload_s": 22.5,
+          "censor_s": 55.00000000126404,
+          "settled_rejoin_time_s": null,
+          "right_censored": false,
+          "applicable": false,
+          "observation_window_s": 32.50000000126404,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 23.090379485293276,
+      "time_above_25mm_s": 54.1319999999999,
+      "absolute_joint_mechanical_work_j": 358.2874467426673,
+      "torque_total_variation_nm": 12734.100303232186,
+      "execution_sha256": "063dc758fa9f505932988ea6550b9783855546dd64785581ad478e5c467acc23",
+      "metrics_sha256": "782ffc67715a70a0639668240bcf31a83a7b3ab354f35235755deedb987f212d",
+      "independent_audit_sha256": "b2c1d8f899098cd9c5cb5639bc4a9ad2c675905c9d9b7d83077f6c0b53c51afe",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "direct_office_task_74001",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_2/direct_office_task_74001",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "approach",
+      "abort_reason": null,
+      "rmse_mm": 243.96696836894168,
+      "peak_torque_nm": 37.76145935058594,
+      "peak_speed_mps": 0.350890606950224,
+      "penetration_mm": 0.12325461166472543,
+      "edge_penetration_mm": 0.0,
+      "trace_sha256": "6220ea99d7b95fa9c693b5b139806977b192d9122407f2a7d8137c4be4e6fd4c",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 192.0937271229854,
+      "object_final_position": [
+        0.54,
+        -0.19,
+        0.4249969877369443
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u63a5\u8fd1\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0005,
+          "impulse_ns": 1.2640331928253175,
+          "peak_force_n": 5423.568359375,
+          "contact_p95_force_n": 5154.149755859375,
+          "contact_rms_force_n": 3090.4682239759263,
+          "force_squared_integral_n2s": 4775.49692170246,
+          "first_contact_s": 2.108150000001756,
+          "last_contact_s": 2.108600000001755,
+          "hand_max_displacement_during_event_m": 0.04459448531270027,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00013545665056782633
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 0.9222000000000004,
+          "impulse_ns": 10.32824839061685,
+          "peak_force_n": 162.52626037597656,
+          "contact_p95_force_n": 17.76479358673095,
+          "contact_rms_force_n": 13.391937136555255,
+          "force_squared_integral_n2s": 165.39101860448483,
+          "first_contact_s": 5.270049999994387,
+          "last_contact_s": 6.6248999999912295,
+          "hand_max_displacement_during_event_m": 0.1888870745897293,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.03793972455403447
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": false,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0,
+          "extended_no_contact_longest_s": null,
+          "extended_no_contact_interval_s": null,
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.108600000001755,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.891399999998245,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": false,
+          "unload_s": 22.5,
+          "censor_s": 55.00000000126404,
+          "settled_rejoin_time_s": null,
+          "right_censored": false,
+          "applicable": false,
+          "observation_window_s": 32.50000000126404,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 12.653120667463574,
+      "time_above_25mm_s": 54.4911999999999,
+      "absolute_joint_mechanical_work_j": 178.68451661369144,
+      "torque_total_variation_nm": 27294.755639241368,
+      "execution_sha256": "ee83227528ad9d7b9da00b861f973a56e4e26c39df5084cae08b37137e98d8ae",
+      "metrics_sha256": "b2573eaffefd5ea77b98f337eaa19a9aa63ed80f887f63debee25f89186b7a93",
+      "independent_audit_sha256": "4db2f75f7141acb1679c0a530a933ef9ba4b0959f89c097e0ff62c047da03206",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "direct_office_task_74002",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_3/direct_office_task_74002",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "approach",
+      "abort_reason": null,
+      "rmse_mm": 515.7472830411891,
+      "peak_torque_nm": 57.70022964477539,
+      "peak_speed_mps": 1.038342638538716,
+      "penetration_mm": 0.27368832255264186,
+      "edge_penetration_mm": 0.0,
+      "trace_sha256": "eaa912af0144f2526a3f078afca8d21873dbfc9518cc30d504f1bbe5116cf0d0",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 203.91095530226258,
+      "object_final_position": [
+        0.5249858474631329,
+        -0.19020848462924883,
+        0.4249969877369463
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u63a5\u8fd1\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm",
+        "\u5916\u90e8\u7a7f\u900f\u8d850.2mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0035500000000000015,
+          "impulse_ns": 1.8363842491149902,
+          "peak_force_n": 6060.91552734375,
+          "contact_p95_force_n": 3310.5089111328125,
+          "contact_rms_force_n": 1285.3485207982646,
+          "force_squared_integral_n2s": 5865.028910709922,
+          "first_contact_s": 2.046000000001901,
+          "last_contact_s": 2.404300000001066,
+          "hand_max_displacement_during_event_m": 0.07247768342494965,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00030138835463063446
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 3.9355500000000014,
+          "impulse_ns": 258.6009060661307,
+          "peak_force_n": 676.3745727539062,
+          "contact_p95_force_n": 110.32449340820312,
+          "contact_rms_force_n": 73.08719086230172,
+          "force_squared_integral_n2s": 21022.6748928447,
+          "first_contact_s": 5.254949999994422,
+          "last_contact_s": 10.099349999983133,
+          "hand_max_displacement_during_event_m": 0.22407691180706024,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.09206369778544125
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 0.3594000000000001,
+          "impulse_ns": 52.233442159032826,
+          "peak_force_n": 7634.23486328125,
+          "contact_p95_force_n": 295.37792816162107,
+          "contact_rms_force_n": 292.26250272417997,
+          "force_squared_integral_n2s": 30699.002957197306,
+          "first_contact_s": 13.55879999997507,
+          "last_contact_s": 14.071099999973876,
+          "hand_max_displacement_during_event_m": 0.4844246506690979,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.018162469981901023,
+          "extended_no_contact_longest_s": 5.999950000000002,
+          "extended_no_contact_interval_s": [
+            14.500049999972877,
+            20.499950000118762
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.404300000001066,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.595699999998934,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 55.00000000126404,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 32.50000000126404,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 25.405225547999635,
+      "time_above_25mm_s": 53.6803999999999,
+      "absolute_joint_mechanical_work_j": 243.02384974380485,
+      "torque_total_variation_nm": 11844.272702788177,
+      "execution_sha256": "331f508312e243436f5c57a2a92cfd54512c3e956698f7ab371acfa67e020cbd",
+      "metrics_sha256": "7cee7da5ad9636eecbd74b5ba97c80b44d4e8669702b9e544a8f6fe9a2f525e5",
+      "independent_audit_sha256": "91eb70f56939f5f3c188f179a279fb7026bf899933bd86a1feefca862a7b37b2",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "fixed_admittance",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_2/fixed_admittance",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "carry",
+      "abort_reason": null,
+      "rmse_mm": 28.519853249484363,
+      "peak_torque_nm": 39.02988052368164,
+      "peak_speed_mps": 0.3843423194553621,
+      "penetration_mm": 0.1789648616123937,
+      "edge_penetration_mm": 0.12811322858352653,
+      "trace_sha256": "f4d88d84b24e85d92d74121d7501878e974ad1b5aacd7ca78da888beb5489f89",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 111.7811582878633,
+      "object_final_position": [
+        0.589564581245914,
+        -0.2609311299511823,
+        0.5679518037806085
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u642c\u8fd0\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0026000000000000007,
+          "impulse_ns": 2.2338062598228454,
+          "peak_force_n": 6964.09375,
+          "contact_p95_force_n": 4556.1703857421835,
+          "contact_rms_force_n": 1727.729665683893,
+          "force_squared_integral_n2s": 7761.129473978861,
+          "first_contact_s": 2.064500000001858,
+          "last_contact_s": 2.191400000001562,
+          "hand_max_displacement_during_event_m": 0.06884384900331497,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00020683377488111255
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 3.8320500000000015,
+          "impulse_ns": 28.469707085005194,
+          "peak_force_n": 138.17117309570312,
+          "contact_p95_force_n": 10.157204627990723,
+          "contact_rms_force_n": 7.7525288175282245,
+          "force_squared_integral_n2s": 230.312731236386,
+          "first_contact_s": 5.301299999994314,
+          "last_contact_s": 9.83874999998374,
+          "hand_max_displacement_during_event_m": 0.03666859492659569,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.07204417509702597
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 5.267400000000001,
+          "impulse_ns": 24.22219592619235,
+          "peak_force_n": 243.1581573486328,
+          "contact_p95_force_n": 7.915437912940977,
+          "contact_rms_force_n": 5.201435935427564,
+          "force_squared_integral_n2s": 142.50916902265016,
+          "first_contact_s": 14.115999999973772,
+          "last_contact_s": 20.94365000013349,
+          "hand_max_displacement_during_event_m": 0.04023055359721184,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.07035081031898509,
+          "extended_no_contact_longest_s": 0.001,
+          "extended_no_contact_interval_s": [
+            19.939950000100172,
+            19.940900000100203
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 9.3778,
+          "impulse_ns": 106.0644866892449,
+          "peak_force_n": 242.01148986816406,
+          "contact_p95_force_n": 29.99259662628174,
+          "contact_rms_force_n": 16.995352999032377,
+          "force_squared_integral_n2s": 2708.7027309757577,
+          "first_contact_s": 26.11250000030508,
+          "last_contact_s": 54.92705000126162,
+          "hand_max_displacement_during_event_m": 0.06390693038702011,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.09047014092455676
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.191400000001562,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.808599999998438,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 26.11250000030508,
+          "settled_rejoin_time_s": 0.8693500002140162,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 3.6125000003050793,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.2285949235004543,
+      "time_above_25mm_s": 9.721,
+      "absolute_joint_mechanical_work_j": 167.46447907080608,
+      "torque_total_variation_nm": 13457.388415203834,
+      "execution_sha256": "c40204bb4be6e4ee91b6d14bc09299ae79a28f9ea6666e80f439ad8d9848c55f",
+      "metrics_sha256": "0c1d21b9734f41a3c8c1218260606aa1f958cbfef351bcf4bbd857709f52b6ca",
+      "independent_audit_sha256": "4db2f75f7141acb1679c0a530a933ef9ba4b0959f89c097e0ff62c047da03206",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "fixed_impedance",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_3/fixed_impedance",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "retreat",
+      "abort_reason": null,
+      "rmse_mm": 22.693153013837343,
+      "peak_torque_nm": 45.09023666381836,
+      "peak_speed_mps": 0.33418004420137354,
+      "penetration_mm": 0.1413129716696429,
+      "edge_penetration_mm": 0.13425449980588078,
+      "trace_sha256": "1b6fd5275c805a8e30ca8080cf0ef763eb079aad9ac4255cdcbb91478b28c38e",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 110.11440983652516,
+      "object_final_position": [
+        0.5798949740255189,
+        -0.3114375356708918,
+        0.5449964516504532
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u653e\u7f6eXY\u8d8525mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0042,
+          "impulse_ns": 2.3297417825698856,
+          "peak_force_n": 6008.86328125,
+          "contact_p95_force_n": 3025.345336914058,
+          "contact_rms_force_n": 1256.8746815067755,
+          "force_squared_integral_n2s": 6634.882653053584,
+          "first_contact_s": 2.0656000000018553,
+          "last_contact_s": 2.2044500000015317,
+          "hand_max_displacement_during_event_m": 0.0983734130859375,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00026658524081414484
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 4.0336500000000015,
+          "impulse_ns": 66.17772277607472,
+          "peak_force_n": 196.6824951171875,
+          "contact_p95_force_n": 30.3184024810791,
+          "contact_rms_force_n": 18.640066866605128,
+          "force_squared_integral_n2s": 1401.5001340884758,
+          "first_contact_s": 5.295449999994328,
+          "last_contact_s": 10.128849999983064,
+          "hand_max_displacement_during_event_m": 0.058881472796201706,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.09273194042605329
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": false,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0,
+          "extended_no_contact_longest_s": null,
+          "extended_no_contact_interval_s": null,
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 23.321500000000007,
+          "impulse_ns": 530.1408175130285,
+          "peak_force_n": 60.503082275390625,
+          "contact_p95_force_n": 34.67596092224121,
+          "contact_rms_force_n": 24.025314450638803,
+          "force_squared_integral_n2s": 13461.536751024043,
+          "first_contact_s": 9.758799999983927,
+          "last_contact_s": 33.095700000536894,
+          "hand_max_displacement_during_event_m": 0.1502961814403534,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.0970599947289615
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.2044500000015317,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.7955499999984683,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": 0.2000499999805676,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": false,
+          "unload_s": 22.5,
+          "censor_s": 22.500000000185157,
+          "settled_rejoin_time_s": null,
+          "right_censored": false,
+          "applicable": false,
+          "observation_window_s": 1.851567787980457e-10,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 0.7623567220584337,
+      "time_above_25mm_s": 3.077900000000001,
+      "absolute_joint_mechanical_work_j": 92.66707585444973,
+      "torque_total_variation_nm": 505.4157600195422,
+      "execution_sha256": "6bd2285c640a9bb0f38d825393d691301564deee62fadbe95da05136eca5c9cc",
+      "metrics_sha256": "4dffb2f7a7e5c932f1d51e67fdb846f760f9f7528a2be9fd6ba86b7dc674e2d5",
+      "independent_audit_sha256": "91eb70f56939f5f3c188f179a279fb7026bf899933bd86a1feefca862a7b37b2",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "fixed_vmc",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/fixed_vmc",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "carry",
+      "abort_reason": null,
+      "rmse_mm": 30.805526146122354,
+      "peak_torque_nm": 37.894073486328125,
+      "peak_speed_mps": 0.37660501641186395,
+      "penetration_mm": 0.16947908955390545,
+      "edge_penetration_mm": 0.06209001660063048,
+      "trace_sha256": "266e6ac967c0bfd659c693e0d613c608fc65454524df89e9c34af5cfec35f467",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 118.18982110440297,
+      "object_final_position": [
+        0.5897261772887903,
+        -0.24743807634374024,
+        0.5603322921552469
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u642c\u8fd0\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0015499999999999995,
+          "impulse_ns": 2.0604397212982177,
+          "peak_force_n": 6748.4345703125,
+          "contact_p95_force_n": 5492.219482421875,
+          "contact_rms_force_n": 2212.340482926798,
+          "force_squared_integral_n2s": 7586.398139215002,
+          "first_contact_s": 2.0638000000018595,
+          "last_contact_s": 2.1613000000016322,
+          "hand_max_displacement_during_event_m": 0.04159985110163689,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00018861285323552564
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 3.9870000000000014,
+          "impulse_ns": 39.51472109621093,
+          "peak_force_n": 149.77671813964844,
+          "contact_p95_force_n": 15.459262561798099,
+          "contact_rms_force_n": 11.743865650465217,
+          "force_squared_integral_n2s": 549.8805827192971,
+          "first_contact_s": 5.28184999999436,
+          "last_contact_s": 9.913299999983566,
+          "hand_max_displacement_during_event_m": 0.02847178652882576,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.01863145969707806
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 6.706500000000002,
+          "impulse_ns": 43.9334914370684,
+          "peak_force_n": 246.3831329345703,
+          "contact_p95_force_n": 7.543256306648253,
+          "contact_rms_force_n": 6.83005677540468,
+          "force_squared_integral_n2s": 312.8560491112935,
+          "first_contact_s": 14.12509999997375,
+          "last_contact_s": 21.03100000013639,
+          "hand_max_displacement_during_event_m": 0.012883398681879044,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.01576816164103892,
+          "extended_no_contact_longest_s": 0.00015000000000000001,
+          "extended_no_contact_interval_s": [
+            14.526649999972815,
+            14.526749999972814
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 26.559200000000015,
+          "impulse_ns": 88.03107066010834,
+          "peak_force_n": 13.152530670166016,
+          "contact_p95_force_n": 5.824901580810547,
+          "contact_rms_force_n": 3.549731488117336,
+          "force_squared_integral_n2s": 334.66168654324434,
+          "first_contact_s": 28.440850000382373,
+          "last_contact_s": 55.00000000126404,
+          "hand_max_displacement_during_event_m": 0.0385269895195961,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.04179097807105803
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.1613000000016322,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.8386999999983678,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 28.440850000382373,
+          "settled_rejoin_time_s": 0.5000500002017567,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 5.9408500003823725,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.2242100677915428,
+      "time_above_25mm_s": 8.91515,
+      "absolute_joint_mechanical_work_j": 58.155483978082735,
+      "torque_total_variation_nm": 1402.2969716236375,
+      "execution_sha256": "72e71070723f9d72fd2e2dfd2c60fc05d52a89f381968393e08a3af039b4c830",
+      "metrics_sha256": "b06fe1bc9b9b38ec66867309ac1628550c8ec5388cc1374d4c837ee5337682e9",
+      "independent_audit_sha256": "c8218ec4344e141a6e0cf062f90f557df2fd8157524da3d1523648ac535f1af6",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "original_vmc_native",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_1/original_vmc_native",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "carry",
+      "abort_reason": null,
+      "rmse_mm": 31.528797277297905,
+      "peak_torque_nm": 42.911373138427734,
+      "peak_speed_mps": 0.38403608743420253,
+      "penetration_mm": 0.15579712505470114,
+      "edge_penetration_mm": 0.1458813619822294,
+      "trace_sha256": "8212a213e396950d3e2204717a4a41f93073fd6fcf15a911b84b060446b6ef4c",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 289.4623163841466,
+      "object_final_position": [
+        0.41727782435044913,
+        -0.21298944637076156,
+        0.43086402808752516
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u642c\u8fd0\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0052000000000000015,
+          "impulse_ns": 2.4957579758167263,
+          "peak_force_n": 6274.37548828125,
+          "contact_p95_force_n": 2167.483239746091,
+          "contact_rms_force_n": 1148.6280928087804,
+          "force_squared_integral_n2s": 6860.601777065588,
+          "first_contact_s": 2.066600000001853,
+          "last_contact_s": 2.2138500000015098,
+          "hand_max_displacement_during_event_m": 0.034204158931970596,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.000323742622777722
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 3.8544500000000013,
+          "impulse_ns": 37.61421919967234,
+          "peak_force_n": 205.6006317138672,
+          "contact_p95_force_n": 14.52403144836425,
+          "contact_rms_force_n": 12.039296768521904,
+          "force_squared_integral_n2s": 558.6819704868151,
+          "first_contact_s": 5.265249999994398,
+          "last_contact_s": 9.922649999983545,
+          "hand_max_displacement_during_event_m": 0.039461199194192886,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.04427444682959026
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 5.751000000000002,
+          "impulse_ns": 37.05995207437603,
+          "peak_force_n": 245.22854614257812,
+          "contact_p95_force_n": 9.546952438354491,
+          "contact_rms_force_n": 6.895264681223751,
+          "force_squared_integral_n2s": 273.4294263744459,
+          "first_contact_s": 14.125899999973749,
+          "last_contact_s": 21.084750000138175,
+          "hand_max_displacement_during_event_m": 0.02073017694056034,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.06991191659824078,
+          "extended_no_contact_longest_s": 0.00045000000000000004,
+          "extended_no_contact_interval_s": [
+            15.08209999997152,
+            15.08249999997152
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 18.504349999999995,
+          "impulse_ns": 200.9482171024406,
+          "peak_force_n": 234.96221923828125,
+          "contact_p95_force_n": 27.961452674865725,
+          "contact_rms_force_n": 15.323781424114818,
+          "force_squared_integral_n2s": 4345.159588072037,
+          "first_contact_s": 24.019100000235586,
+          "last_contact_s": 54.573600001249886,
+          "hand_max_displacement_during_event_m": 0.11688743531703949,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.21547527891240886
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.2138500000015098,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.7861499999984902,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 24.019100000235586,
+          "settled_rejoin_time_s": 0.5577000002036705,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 1.5191000002355857,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.2962646201626404,
+      "time_above_25mm_s": 10.6367,
+      "absolute_joint_mechanical_work_j": 196.60596846976162,
+      "torque_total_variation_nm": 17587.861346286107,
+      "execution_sha256": "4b6052b96eb882b815a1a5b1ca7b4b54abc8895c492297cf2a3cc7e6dc487454",
+      "metrics_sha256": "b7ac77555d554d712c178838023f8a4d29172c370d122eace94daa33ef597fa7",
+      "independent_audit_sha256": "b2c1d8f899098cd9c5cb5639bc4a9ad2c675905c9d9b7d83077f6c0b53c51afe",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "admittance_01",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_3/admittance_01",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "carry",
+      "abort_reason": null,
+      "rmse_mm": 37.50622136226903,
+      "peak_torque_nm": 40.06204605102539,
+      "peak_speed_mps": 0.3844441406245014,
+      "penetration_mm": 0.1745913559306177,
+      "edge_penetration_mm": 0.08274086755153473,
+      "trace_sha256": "180c63e2d496a4fe9fa73f60028245d33ef1d0205d8f9cf75aa7bb263b4501fb",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 112.14196308569466,
+      "object_final_position": [
+        0.5899865291819888,
+        -0.25927401514363535,
+        0.5580970831253858
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u642c\u8fd0\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.003650000000000001,
+          "impulse_ns": 2.2672009320259097,
+          "peak_force_n": 6806.12939453125,
+          "contact_p95_force_n": 3492.555810546867,
+          "contact_rms_force_n": 1416.9398692075138,
+          "force_squared_integral_n2s": 7328.172864266795,
+          "first_contact_s": 2.065250000001856,
+          "last_contact_s": 2.199550000001543,
+          "hand_max_displacement_during_event_m": 0.033388227224349976,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.0003026961490720024
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 4.130000000000001,
+          "impulse_ns": 57.708061081473154,
+          "peak_force_n": 192.4539337158203,
+          "contact_p95_force_n": 35.75648994445801,
+          "contact_rms_force_n": 19.100395671863705,
+          "force_squared_integral_n2s": 1506.7277242138264,
+          "first_contact_s": 5.154049999994657,
+          "last_contact_s": 9.938499999983508,
+          "hand_max_displacement_during_event_m": 0.06534472852945328,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.059308795893420085
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 5.705950000000001,
+          "impulse_ns": 37.460581314833846,
+          "peak_force_n": 255.97283935546875,
+          "contact_p95_force_n": 10.416460323333737,
+          "contact_rms_force_n": 7.094541292339344,
+          "force_squared_integral_n2s": 287.1948205187205,
+          "first_contact_s": 14.145649999973703,
+          "last_contact_s": 21.046200000136896,
+          "hand_max_displacement_during_event_m": 0.019508449360728264,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.04662507605835517,
+          "extended_no_contact_longest_s": 0.00045000000000000004,
+          "extended_no_contact_interval_s": [
+            15.804049999969838,
+            15.804449999969837
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 21.609700000000004,
+          "impulse_ns": 126.71027490383604,
+          "peak_force_n": 25.607694625854492,
+          "contact_p95_force_n": 13.273265838623043,
+          "contact_rms_force_n": 7.179437636744258,
+          "force_squared_integral_n2s": 1113.8574389784303,
+          "first_contact_s": 23.96625000023383,
+          "last_contact_s": 54.99990000126404,
+          "hand_max_displacement_during_event_m": 0.04910804331302643,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.1389933091931629
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.199550000001543,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.800449999998457,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 23.96625000023383,
+          "settled_rejoin_time_s": 0.23960000019311067,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 1.4662500002338312,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.5327133741969299,
+      "time_above_25mm_s": 9.5821,
+      "absolute_joint_mechanical_work_j": 148.74589674360277,
+      "torque_total_variation_nm": 24452.493545026704,
+      "execution_sha256": "b2342f55d9028a3b4cc85cf9b7bf7f5cb55064b986df73a8c6ce0a74a5cca0ad",
+      "metrics_sha256": "5e88bb5283763fc26ed7169a1754e1a0d7057b6b634b1eee4296f75c4eded2a8",
+      "independent_audit_sha256": "91eb70f56939f5f3c188f179a279fb7026bf899933bd86a1feefca862a7b37b2",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "impedance_12",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/impedance_12",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "carry",
+      "abort_reason": null,
+      "rmse_mm": 23.112390773343588,
+      "peak_torque_nm": 44.48880386352539,
+      "peak_speed_mps": 0.3719455751250779,
+      "penetration_mm": 0.16177867646987087,
+      "edge_penetration_mm": 0.14150597619148622,
+      "trace_sha256": "55ca514ab889685b7fe7320c43647a9abb63d20bd017136c83199cdf10baf080",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 108.75706610007073,
+      "object_final_position": [
+        0.58516496954756,
+        -0.28105667923801503,
+        0.5786679461294941
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u642c\u8fd0\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0018999999999999996,
+          "impulse_ns": 2.1765901810169224,
+          "peak_force_n": 6584.24560546875,
+          "contact_p95_force_n": 5099.520458984373,
+          "contact_rms_force_n": 1989.2803360771713,
+          "force_squared_integral_n2s": 7518.748885456277,
+          "first_contact_s": 2.0642500000018584,
+          "last_contact_s": 2.175550000001599,
+          "hand_max_displacement_during_event_m": 0.10412588715553284,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.00020986539171161833
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 4.047850000000001,
+          "impulse_ns": 112.05665279358251,
+          "peak_force_n": 120.49920654296875,
+          "contact_p95_force_n": 59.134698486328126,
+          "contact_rms_force_n": 32.3979364915002,
+          "force_squared_integral_n2s": 4248.729773553336,
+          "first_contact_s": 5.344899999994213,
+          "last_contact_s": 10.27659999998272,
+          "hand_max_displacement_during_event_m": 0.051856525242328644,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.09445820010668042
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": false,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0,
+          "extended_no_contact_longest_s": null,
+          "extended_no_contact_interval_s": null,
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 45.56644999999995,
+          "impulse_ns": 2007.8246924958698,
+          "peak_force_n": 97.33775329589844,
+          "contact_p95_force_n": 45.485450744628906,
+          "contact_rms_force_n": 44.16724106277532,
+          "force_squared_integral_n2s": 88888.53284834417,
+          "first_contact_s": 9.431699999984689,
+          "last_contact_s": 55.00000000126404,
+          "hand_max_displacement_during_event_m": 0.0845358595252037,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.09547637593829747
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.175550000001599,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.824449999998401,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": 1.2649999999780857,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": false,
+          "unload_s": 22.5,
+          "censor_s": 22.500000000185157,
+          "settled_rejoin_time_s": null,
+          "right_censored": false,
+          "applicable": false,
+          "observation_window_s": 1.851567787980457e-10,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 0.9472103947673939,
+      "time_above_25mm_s": 2.9835000000000007,
+      "absolute_joint_mechanical_work_j": 63.01916953249629,
+      "torque_total_variation_nm": 644.6368056133588,
+      "execution_sha256": "b478f5676348d173cc44219a7be835f6be4326a27cd9d83e999b8184a8d05d9c",
+      "metrics_sha256": "e109b0f30ff8a239a4714635fbcc19651d54ff06a5777fa0cfbd54cc73a50a1c",
+      "independent_audit_sha256": "c8218ec4344e141a6e0cf062f90f557df2fd8157524da3d1523648ac535f1af6",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "original_vmc_04",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_1/original_vmc_04",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "carry",
+      "abort_reason": null,
+      "rmse_mm": 46.37225523300083,
+      "peak_torque_nm": 41.09353256225586,
+      "peak_speed_mps": 0.36976677406253844,
+      "penetration_mm": 0.16504379323918741,
+      "edge_penetration_mm": 0.10722109663245649,
+      "trace_sha256": "f8dcc21a8944f325f3b11b58eb6ff1982f65572318deb069bb1c5d4dd44afad7",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 89.57654632313952,
+      "object_final_position": [
+        0.6103403171331423,
+        -0.2690330306620904,
+        0.5852242086896113
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u642c\u8fd0\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.004450000000000001,
+          "impulse_ns": 2.4808825893640516,
+          "peak_force_n": 6494.037109375,
+          "contact_p95_force_n": 2723.46040039062,
+          "contact_rms_force_n": 1283.6843808332474,
+          "force_squared_integral_n2s": 7332.912873698808,
+          "first_contact_s": 2.066150000001854,
+          "last_contact_s": 2.214700000001508,
+          "hand_max_displacement_during_event_m": 0.026683781296014786,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.0003010220209523134
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 4.577350000000001,
+          "impulse_ns": 115.08583365586476,
+          "peak_force_n": 658.2911987304688,
+          "contact_p95_force_n": 46.78520393371581,
+          "contact_rms_force_n": 34.98437849513082,
+          "force_squared_integral_n2s": 5602.249510345289,
+          "first_contact_s": 5.132699999994707,
+          "last_contact_s": 10.0704999999832,
+          "hand_max_displacement_during_event_m": 0.045285072177648544,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.05241596486023052
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 5.269750000000001,
+          "impulse_ns": 30.443618965841605,
+          "peak_force_n": 228.31016540527344,
+          "contact_p95_force_n": 9.295813465118405,
+          "contact_rms_force_n": 6.289848665367315,
+          "force_squared_integral_n2s": 208.48288404683078,
+          "first_contact_s": 14.107499999973792,
+          "last_contact_s": 21.00810000013563,
+          "hand_max_displacement_during_event_m": 0.03424276411533356,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.06594758284027828,
+          "extended_no_contact_longest_s": 0.00055,
+          "extended_no_contact_interval_s": [
+            15.687999999970108,
+            15.688499999970107
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 20.4676,
+          "impulse_ns": 143.94207854713278,
+          "peak_force_n": 49.79379653930664,
+          "contact_p95_force_n": 20.8550627708435,
+          "contact_rms_force_n": 9.499015244671341,
+          "force_squared_integral_n2s": 1846.8179654469448,
+          "first_contact_s": 26.65205000032299,
+          "last_contact_s": 55.00000000126404,
+          "hand_max_displacement_during_event_m": 0.0818764939904213,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.21783414801133139
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.214700000001508,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.7852999999984922,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 26.65205000032299,
+          "settled_rejoin_time_s": 0.02005000018582237,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 4.1520500003229905,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.6767130551388927,
+      "time_above_25mm_s": 10.338099999999999,
+      "absolute_joint_mechanical_work_j": 184.79307376406396,
+      "torque_total_variation_nm": 17606.934877820382,
+      "execution_sha256": "39ccb5a7d600283198215f977332617d7824cfd817476fca31a8e4b5d1df3269",
+      "metrics_sha256": "cc6dcf799b8c829b60088c727be687bfd52944148b2576ad536d87b68cf98901",
+      "independent_audit_sha256": "b2c1d8f899098cd9c5cb5639bc4a9ad2c675905c9d9b7d83077f6c0b53c51afe",
+      "frozen_model_configuration_verified": true
+    },
+    {
+      "name": "zero",
+      "tier": "all_models_formal_anchor",
+      "condition": "anchor",
+      "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_0/zero",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "stage": "carry",
+      "abort_reason": null,
+      "rmse_mm": 26.722195345403595,
+      "peak_torque_nm": 37.913848876953125,
+      "peak_speed_mps": 0.3760981072205353,
+      "penetration_mm": 0.17198945861233608,
+      "edge_penetration_mm": 0.06829426912547991,
+      "trace_sha256": "7f4184e69cfa7dec1ae1553a165636535c3cede7f29146cefe40e9064ff22b0f",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "duration_s": 54.99999999999989,
+      "final_xy_mm": 83.10495413233858,
+      "object_final_position": [
+        0.6191275758896224,
+        -0.26660031218940766,
+        0.589506350805897
+      ],
+      "placement_hold_s": 0.0,
+      "failure_reasons": [
+        "\u505c\u5728\u642c\u8fd0\u9636\u6bb5",
+        "\u653e\u7f6eXY\u8d8525mm",
+        "\u653e\u7f6e\u9ad8\u5ea6\u8d8515mm"
+      ],
+      "contact": {
+        "ball": {
+          "window_s": [
+            2.0,
+            4.0
+          ],
+          "observed_duration_s": 2.0000500000000008,
+          "exposure": true,
+          "force_semantics": "ball_robot_sum",
+          "contact_duration_s": 0.0013499999999999999,
+          "impulse_ns": 2.0383983211517336,
+          "peak_force_n": 6845.78271484375,
+          "contact_p95_force_n": 5744.160205078124,
+          "contact_rms_force_n": 2398.544655645056,
+          "force_squared_integral_n2s": 7766.572227916669,
+          "first_contact_s": 2.063150000001861,
+          "last_contact_s": 2.16230000000163,
+          "hand_max_displacement_during_event_m": 0.0659729391336441,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.0001713951124836392
+        },
+        "human": {
+          "window_s": [
+            4.0,
+            11.0
+          ],
+          "observed_duration_s": 7.000000000000003,
+          "exposure": true,
+          "force_semantics": "human_robot_sum",
+          "contact_duration_s": 3.972650000000001,
+          "impulse_ns": 39.08452317801751,
+          "peak_force_n": 140.71469116210938,
+          "contact_p95_force_n": 14.328804397583003,
+          "contact_rms_force_n": 10.700419843569831,
+          "force_squared_integral_n2s": 454.8643920795883,
+          "first_contact_s": 5.293949999994331,
+          "last_contact_s": 9.92029999998355,
+          "hand_max_displacement_during_event_m": 0.02186456136405468,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.020431567209820124
+        },
+        "rod": {
+          "window_s": [
+            13.0,
+            22.5
+          ],
+          "observed_duration_s": 9.49995,
+          "exposure": true,
+          "force_semantics": "rod_robot_sum",
+          "contact_duration_s": 6.763300000000002,
+          "impulse_ns": 55.260939254666866,
+          "peak_force_n": 241.1752471923828,
+          "contact_p95_force_n": 9.281518936157227,
+          "contact_rms_force_n": 8.422004360145646,
+          "force_squared_integral_n2s": 479.7219338295908,
+          "first_contact_s": 14.121849999973758,
+          "last_contact_s": 21.09545000013853,
+          "hand_max_displacement_during_event_m": 0.009170296601951122,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.004349652217379721,
+          "extended_no_contact_longest_s": 0.00015000000000000001,
+          "extended_no_contact_interval_s": [
+            14.92804999997188,
+            14.928149999971879
+          ],
+          "gap_requires_prior_contact": true
+        },
+        "unknown_edge": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": true,
+          "force_semantics": "edge_robot_or_payload_sum",
+          "contact_duration_s": 30.579300000000025,
+          "impulse_ns": 136.00275219595432,
+          "peak_force_n": 13.778380393981934,
+          "contact_p95_force_n": 9.83149003982544,
+          "contact_rms_force_n": 5.090012132158011,
+          "force_squared_integral_n2s": 792.2553390422179,
+          "first_contact_s": 24.42075000024892,
+          "last_contact_s": 55.00000000126404,
+          "hand_max_displacement_during_event_m": 0.07556601613759995,
+          "displacement_window": "First actual contact through event-window end",
+          "hand_path_during_contact_m": 0.08235537738329965
+        },
+        "pillar": {
+          "window_s": [
+            0.0,
+            55.00000000126404
+          ],
+          "observed_duration_s": 54.99999999999989,
+          "exposure": false,
+          "force_semantics": "pillar_robot_sum",
+          "contact_duration_s": 0.0,
+          "impulse_ns": 0.0,
+          "peak_force_n": 0.0,
+          "contact_p95_force_n": null,
+          "contact_rms_force_n": null,
+          "force_squared_integral_n2s": 0.0
+        }
+      },
+      "recovery": {
+        "ball": {
+          "exposed": true,
+          "unload_s": 2.16230000000163,
+          "censor_s": 4.0,
+          "settled_rejoin_time_s": null,
+          "right_censored": true,
+          "applicable": true,
+          "observation_window_s": 1.83769999999837,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "human": {
+          "exposed": true,
+          "unload_s": 11.0,
+          "censor_s": 13.0,
+          "settled_rejoin_time_s": 1.4899999999775613,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 2.0,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        },
+        "rod": {
+          "exposed": true,
+          "unload_s": 22.5,
+          "censor_s": 24.42075000024892,
+          "settled_rejoin_time_s": 0.18005000019113382,
+          "right_censored": false,
+          "applicable": true,
+          "observation_window_s": 1.920750000248919,
+          "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+        }
+      },
+      "position_error_integral_m_s": 1.0326663566904501,
+      "time_above_25mm_s": 3.795800000000001,
+      "absolute_joint_mechanical_work_j": 63.43218423940717,
+      "torque_total_variation_nm": 466.22264575290046,
+      "execution_sha256": "876f217ac4866ebb81487235d382d5992112df2b9a81c488bbe1e694056deea4",
+      "metrics_sha256": "29f5090eafa729fc9c8c25db4a4e32eee2542471a0acf8d87a9c70a747d5787b",
+      "independent_audit_sha256": "c8218ec4344e141a6e0cf062f90f557df2fd8157524da3d1523648ac535f1af6",
+      "frozen_model_configuration_verified": true
+    }
+  ],
+  "task_successes": 5,
+  "strict_successes": 5,
+  "note": "Single known anchor, not a success-rate estimate. Includes every frozen model regardless of development qualification."
+}

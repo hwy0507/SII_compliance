@@ -1,5 +1,9 @@
 # 纯 ESN 同场景论文研究：最终结果与交接
 
+2026-10-03新增独立授权的[全26模型正式锚点实际重测](evidence/all_methods_formal_20261003/report/MATRIX.md)：
+全部55秒、dt5e-5，5个模型task/strict通过，两个ESN及七RL失败；7条原formal轨迹hash完全复现。
+新增结果与下述原12小时研究分开，未混入原分母，任务/严格成功明确分列。
+
 补充阅读：[全部26方法统一柔顺性矩阵](evidence/unified_compliance_20261003/MATRIX.md)，包含RL调参、
 RL action和经典控制器；基于既有四条件104回合后处理，失败/未接触/删失显式保留，不改变以下结论。
 

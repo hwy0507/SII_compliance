@@ -1,5 +1,29 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 全26模型统一正式测试重跑（2026-10-03，已完成）
+
+用户再次要求在统一测试环境实际运行。旧矩阵“0/0”表示两个成功计数均为0，各自分母4，
+不是未测试；旧四扰动组已统一运行，但正式dt5e-5当时只测7个开发合格模型。
+本轮新授权为有限26模型×1个原v6锚点，全部重新运行，权重/归一化/几何/目标/门槛不改，
+不重训、不按旧成功筛选。新协议与新run独立，不延长旧12小时预算，不覆盖旧实验。
+服务器根：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/`。
+源快照为相邻`all_methods_formal_20261003_104728_runtime/`及各queue/source；base main c2bbc79，
+baseline ebb0e1e，新增两个有限派发/报告脚本；原worker和物理不改。采用原生Spark运行库避免已知跨库差异。
+最多4条顺序队列，各1线程、MemoryMax3GiB/Swap0；主服务`sii-all-formal-coordinator-20261003-104728`。
+26/26均完整55秒，独立共同世界/初态、子步/动作/源/权重及26条真实放置重建已通过；
+5模型task/strict通过：增强teacher、普通RNN两seed、同特征RNN seed1、无记忆重训。
+两个ESN、七RL、七普通/调参经典以及其余对照失败。21个失败末态为13 carry、4 approach、4 retreat。
+ESN seed1掉块、seed2放置XY28.19mm超25mm；RL调参三条停carry、RL action四条停approach。
+7条已有formal结果重复的轨迹hash和全部三指标完全相同，未用重复试验增加独立样本数。
+[正式统一矩阵](evidence/all_methods_formal_20261003/report/MATRIX.md)将任务/严格成功分列为是/否，
+包括26模型完整接触指标、失败征象及来源。双遍hash核验2787文件/3826668265字节，
+完整清单在相邻`all_methods_formal_20261003_104728_integrity/NATIVE_INTEGRITY.json`，
+SHA `e0869790eb167394cb88a7ba5bc2953d5c830a6fe012141e3b37ef1ae8adaa7f`。
+本机174份下载证据逐项核验一致。该有限重测无运行中作业；这是已知单锚点复测，不是盲测泛化证据。
+
+用户随后授权假期期间自主持续优化ESN并兼顾baseline、面向RAL准备公平可投稿结果，按72小时新研究窗口规划。
+新研究与本次冻结重测分开记录；已知结果不再作为盲测，不以预设ESN胜出为选指标依据。
+
 ## 全部baseline统一柔顺性矩阵（2026-10-03）
 
 已将26方法×4条件104个既有v6回合整理为[统一矩阵](evidence/unified_compliance_20261003/MATRIX.md)，

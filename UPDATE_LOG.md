@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2026-10-03 — 26模型同一正式测试场景全部实际重跑完成
+
+- 用户质疑0/0与是否统一测试后，新授权有限26模型×1固定v6锚点、正式dt5e-5实际重跑；
+  旧0/0仅为两个成功计数（各分母4），不是未测试。原12小时预算/结果不改，新协议于10:48:23UTC登记。
+  开工核对main c2bbc79de083564b6107fbe200ab2ecf10bb3207、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6。
+- 26/26完整55秒，无重训、无换权重、无环境/gate更改、无开发资格筛选、无自动重试。
+  5模型task/strict均通过：增强VMC teacher、普通RNN两seed、同特征RNN seed1、无记忆重训。
+  两ESN均失败：seed1掉块；seed2最终XY28.19mm超原25mm。三RL调参停carry、四RL action停approach。
+  21失败末态13 carry/4 approach/4 retreat；不能把阶段名当放置成功。明确任务/严格两列是/否。
+- 各queue独立子步三指标、执行器、action/filter、源/权重审计及共同世界/初态核验通过；
+  26条最终放置独立重建、全任务接触覆盖和失败征象汇总完成。7条旧formal重测的轨迹hash与三指标完全相同。
+  每模型1条已知锚点，不是成功率/泛化估计；RL训练曝光不同，失败不推广为RL算法族不适用。
+- 新增有限执行/报告脚本 `tools/run_all_methods_formal_20261003.py`、`tools/report_all_methods_formal_20261003.py`；
+  归档校验工具允许显式指定研究目录名，默认原研究不变。源码编译、diff检查和实际全量执行审计通过。
+  入口 `code/mujoco_6d_vmc_benchmark/docs/evidence/all_methods_formal_20261003/report/MATRIX.md`，
+  同目录JSON含全26回合；上级有协议、共同配置、4批审计、放置审计与双遍核验收据。
+- 服务器原生执行/共享根：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/`。
+  基础源码c2bbc79＋两个新脚本快照在相邻`all_methods_formal_20261003_104728_runtime/`及各queue/source。
+  最多4并发、1线程、各3GiB/Swap0。11:28:35UTC双遍核验2787文件/3826668265字节；
+  清单在相邻`all_methods_formal_20261003_104728_integrity/NATIVE_INTEGRITY.json`，SHA
+  `e0869790eb167394cb88a7ba5bc2953d5c830a6fe012141e3b37ef1ae8adaa7f`；174下载证据逐项hash一致。
+  本轮无运行中仿真；不修改旧数据，不把新增结果混入原四条件或随机组。
+- 用户随后授权约3–4天自主持续研究、定期GitHub更新，目标公平RAL级证据；按72小时新窗口规划，
+  先解决ESN放置稳定性并补强同训练条件baseline，另设新模型冻结和留出验证，不预设ESN必胜。
+
 ## 2026-10-03 — 全部26方法统一柔顺性矩阵（含RL调参与RL action）
 
 - 应用户要求，对既有冻结v6四条件104个完整55秒回合统一制表；未重训、重跑、改环境或gate。

@@ -34,9 +34,12 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--expected-root-name',default='paper_esn_12h_rl_20261002_141136',
+                   help='Explicit study directory basename; defaults to the original frozen study')
     a=p.parse_args();root=a.root.resolve();out=a.output.resolve()
     assert root!=out and root not in out.parents and out not in root.parents
-    assert root.name=='paper_esn_12h_rl_20261002_141136' and root.is_dir()
+    assert Path(a.expected_root_name).name==a.expected_root_name
+    assert root.name==a.expected_root_name and root.is_dir()
     out.mkdir(parents=True,exist_ok=False)
     sources=entries(root);files={};executions=[]
     for relative,path in sources.items():

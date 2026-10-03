@@ -1,0 +1,933 @@
+{
+  "status": "models_frozen_before_final_evaluation",
+  "created_utc": "2026-10-02T20:09:22.528348+00:00",
+  "candidates": [
+    {
+      "name": "zero",
+      "category": "upstream_anchor",
+      "config": {
+        "channel_gain": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "original_vmc_native",
+      "category": "runtime_parity",
+      "config": {}
+    },
+    {
+      "name": "fixed_admittance",
+      "category": "upstream_anchor",
+      "controller": "admittance"
+    },
+    {
+      "name": "fixed_impedance",
+      "category": "upstream_anchor",
+      "controller": "impedance"
+    },
+    {
+      "name": "fixed_vmc",
+      "category": "upstream_anchor",
+      "controller": "vmc"
+    },
+    {
+      "name": "parameter_admittance",
+      "rl_case": "parameter_admittance",
+      "category": "frozen_rl_transfer"
+    },
+    {
+      "name": "parameter_impedance",
+      "rl_case": "parameter_impedance",
+      "category": "frozen_rl_transfer"
+    },
+    {
+      "name": "parameter_vmc",
+      "rl_case": "parameter_vmc",
+      "category": "frozen_rl_transfer"
+    },
+    {
+      "name": "direct_metric_74001",
+      "rl_case": "direct_metric_74001",
+      "category": "frozen_rl_transfer"
+    },
+    {
+      "name": "direct_metric_74002",
+      "rl_case": "direct_metric_74002",
+      "category": "frozen_rl_transfer"
+    },
+    {
+      "name": "direct_office_task_74001",
+      "rl_case": "direct_office_task_74001",
+      "category": "frozen_rl_transfer"
+    },
+    {
+      "name": "direct_office_task_74002",
+      "rl_case": "direct_office_task_74002",
+      "category": "frozen_rl_transfer"
+    },
+    {
+      "name": "recovery_lift0.035_distance0.02",
+      "category": "vmc_development",
+      "config": {
+        "recovery": {
+          "threshold_n": 0.5,
+          "attack_s": 0.12,
+          "release_s": 1.0,
+          "offset_m": 0.035,
+          "gain_per_s": 4.0,
+          "velocity_mps": 0.12,
+          "activation_mode": "progress",
+          "progress_distance_m": 0.02
+        }
+      }
+    },
+    {
+      "name": "recovery035_esn_fixed",
+      "category": "esn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_recovery035_learned_20261002_141136/evidence/models/recovery035_esn_fixed/checkpoint.npz",
+      "checkpoint_sha256": "dc990db3c7b41101aad963339cb028c523c1f61fec488b9204d9159a6f234230"
+    },
+    {
+      "name": "paired_recovery035__fp64",
+      "category": "mlp_rnn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_recovery035_learned_20261002_141136/evidence/models/paired_recovery035__fp64/checkpoint.npz",
+      "checkpoint_sha256": "efbaa770858840919d022678fce3974e7f0b116f703c0fd2b1efec1e6874087c"
+    },
+    {
+      "name": "paired_recovery035_rnn_fp64",
+      "category": "mlp_rnn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_recovery035_learned_20261002_141136/evidence/models/paired_recovery035_rnn_fp64/checkpoint.npz",
+      "checkpoint_sha256": "9f758e36c3a19684cbe7f3583e6c886d57b1a41b37e732fad5c79bf04aa7c13b"
+    },
+    {
+      "name": "recovery035_esn_seed2",
+      "category": "esn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_recovery035_mechanisms_20261002_141136/evidence/models/recovery035_esn_seed2/checkpoint.npz",
+      "checkpoint_sha256": "3cee334cb11bd08118ba2fb8fabc3cd0b86bb0d48378de4dca6800f729a0b052"
+    },
+    {
+      "name": "paired_recovery035_mlp_seed2",
+      "category": "mlp_rnn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_recovery035_mechanisms_20261002_141136/evidence/models/paired_recovery035_mlp_seed2/checkpoint.npz",
+      "checkpoint_sha256": "7b8af984a511d7291143c396fb77b2dcb72091f61d82da6200bf82a8026efd41"
+    },
+    {
+      "name": "paired_recovery035_rnn_seed2",
+      "category": "mlp_rnn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_recovery035_mechanisms_20261002_141136/evidence/models/paired_recovery035_rnn_seed2/checkpoint.npz",
+      "checkpoint_sha256": "b1cc87942e94c943d690617b34c25fb00796af5707e9dd7ba3629b94bfe9fe2e"
+    },
+    {
+      "name": "recovery035_esn_memoryless",
+      "category": "esn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_recovery035_mechanisms_20261002_141136/evidence/models/recovery035_esn_memoryless/checkpoint.npz",
+      "checkpoint_sha256": "db3cf91ff94e706d64d144e3d24af2c332d896b36fcb96162ddfc6aebdba67b8"
+    },
+    {
+      "name": "paired_feature_matched_mlp",
+      "category": "mlp_rnn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_feature_matched_20261002_141136/evidence/models/paired_feature_matched_mlp/checkpoint.npz",
+      "checkpoint_sha256": "30dbeefe408b3dd5f75372f842afbbae7c025dba1cb8ef8f8e432899fb4ab252"
+    },
+    {
+      "name": "paired_feature_matched_rnn",
+      "category": "mlp_rnn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_feature_matched_20261002_141136/evidence/models/paired_feature_matched_rnn/checkpoint.npz",
+      "checkpoint_sha256": "648de91ad9f04a134fe0e345b437367e58d2288c5613b850178f8b252d3ebdbc"
+    },
+    {
+      "name": "paired_feature_matched_rnn_seed2",
+      "category": "mlp_rnn_development",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_feature_matched_seed2_20261002_141136/evidence/models/paired_feature_matched_rnn_seed2/checkpoint.npz",
+      "checkpoint_sha256": "01619a4cd41ef8dae699edffc8225871f7a4c838c049211da4d7cf16ab18f8fe"
+    },
+    {
+      "name": "admittance_01",
+      "controller": "admittance",
+      "category": "admittance_development",
+      "config": {
+        "parameters": [
+          673.1440027594494,
+          6.421286874603853,
+          0.5181769440463339,
+          0.03464623393570493,
+          0.610953082620331,
+          1.8911753040375214,
+          1.4408415454972299
+        ]
+      }
+    },
+    {
+      "name": "impedance_12",
+      "controller": "impedance",
+      "category": "impedance_development",
+      "config": {
+        "parameters": [
+          1254.5545597492783,
+          53.5571151930613,
+          1.8078080710270363,
+          1.2396092046862894,
+          0.7800835502927537
+        ]
+      }
+    },
+    {
+      "name": "original_vmc_04",
+      "category": "vmc_development",
+      "config": {
+        "options": {
+          "offset_tracking_gain_6d": 1.2
+        }
+      }
+    }
+  ],
+  "specification_sha256": "b969283c73e91911a3d887b52f96c2df51899352b5e38731cb0bac1edf7340d5",
+  "source_sha256": "6f0568d71126b71af19ddd2f83cec7a3e51dd7c7a98f8f7e70b2bb3136bf252b",
+  "development_evidence": [
+    {
+      "name": "zero",
+      "role": "frozen_historical_baseline",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/native_anchor/zero",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "fb299bfa1971e22a7473e7cc3b5a6c8b60fe59d9c21a48cd4854cb518a18247e",
+      "development_audit_sha256": "c5488a7a5f268535849857414045a951989430671749bf79d56d0cad15c9f37e",
+      "source_manifest_sha256": "d8c6771f186a22933262dc04e55dd40e5d49aab6f846cddfe410282b2cf6f0bc"
+    },
+    {
+      "name": "original_vmc_native",
+      "role": "frozen_historical_baseline",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/native_anchor/original_vmc_native",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "fb20d547c1f50aef1d4ee4db4f1d5c08f9669b8810eb289f2682a1e6ddc04176",
+      "development_audit_sha256": "c5488a7a5f268535849857414045a951989430671749bf79d56d0cad15c9f37e",
+      "source_manifest_sha256": "d8c6771f186a22933262dc04e55dd40e5d49aab6f846cddfe410282b2cf6f0bc"
+    },
+    {
+      "name": "fixed_admittance",
+      "role": "frozen_historical_baseline",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/native_anchor/fixed_admittance",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "b70bbb2f14e333956d37ec733c878f14e56fea3f5f211ae2674a2bef063f32b9",
+      "development_audit_sha256": "c5488a7a5f268535849857414045a951989430671749bf79d56d0cad15c9f37e",
+      "source_manifest_sha256": "d8c6771f186a22933262dc04e55dd40e5d49aab6f846cddfe410282b2cf6f0bc"
+    },
+    {
+      "name": "fixed_impedance",
+      "role": "frozen_historical_baseline",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/native_anchor/fixed_impedance",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "15852dfc072b4bbeefcb62f82ba5262e56741d1b2392afb6860d36b807ad5c0f",
+      "development_audit_sha256": "c5488a7a5f268535849857414045a951989430671749bf79d56d0cad15c9f37e",
+      "source_manifest_sha256": "d8c6771f186a22933262dc04e55dd40e5d49aab6f846cddfe410282b2cf6f0bc"
+    },
+    {
+      "name": "fixed_vmc",
+      "role": "frozen_historical_baseline",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/native_anchor/fixed_vmc",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "56b5fcdff0eb77a1285f44c4611e95afc32d3bfe66d49f06168dfc2189440f42",
+      "development_audit_sha256": "c5488a7a5f268535849857414045a951989430671749bf79d56d0cad15c9f37e",
+      "source_manifest_sha256": "d8c6771f186a22933262dc04e55dd40e5d49aab6f846cddfe410282b2cf6f0bc"
+    },
+    {
+      "name": "parameter_admittance",
+      "role": "frozen_rl_baseline",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/evaluations_native/parameter_admittance",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "8800aac52e16c7872803a1264bab203cba700db8505363676da1e4d5fbb90a69",
+      "development_audit_sha256": "15368a8c6ef7024567aa6894001f5e850edb2f8cf2dfd4c149df1f3720933005",
+      "source_manifest_sha256": "f4f98616b73265009dd1305bb124273b9dc0c8d2f5012ed3f60f3c063a00f0fb"
+    },
+    {
+      "name": "parameter_impedance",
+      "role": "frozen_rl_baseline",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/evaluations_native/parameter_impedance",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "acd809f03b31e09ab3dc4f680ddb8950efafcc811eda80f1d0aa0a2a8d59b88f",
+      "development_audit_sha256": "15368a8c6ef7024567aa6894001f5e850edb2f8cf2dfd4c149df1f3720933005",
+      "source_manifest_sha256": "f4f98616b73265009dd1305bb124273b9dc0c8d2f5012ed3f60f3c063a00f0fb"
+    },
+    {
+      "name": "parameter_vmc",
+      "role": "frozen_rl_baseline",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/evaluations_native/parameter_vmc",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "9caf9b666af93cfa2695c818f6bf97754e08d2d5531ba92473af811379fc997c",
+      "development_audit_sha256": "15368a8c6ef7024567aa6894001f5e850edb2f8cf2dfd4c149df1f3720933005",
+      "source_manifest_sha256": "f4f98616b73265009dd1305bb124273b9dc0c8d2f5012ed3f60f3c063a00f0fb"
+    },
+    {
+      "name": "direct_metric_74001",
+      "role": "frozen_rl_baseline",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/evaluations_native/direct_metric_74001",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "fe67e93dadf68c6e5d81f9ea10e655403d5083d7fc6835c11814aca4321eb147",
+      "development_audit_sha256": "15368a8c6ef7024567aa6894001f5e850edb2f8cf2dfd4c149df1f3720933005",
+      "source_manifest_sha256": "f4f98616b73265009dd1305bb124273b9dc0c8d2f5012ed3f60f3c063a00f0fb"
+    },
+    {
+      "name": "direct_metric_74002",
+      "role": "frozen_rl_baseline",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/evaluations_native/direct_metric_74002",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "5e8d904d4154fee20b566d70885a9315ef0a051ff7829118af6380c216dd65e6",
+      "development_audit_sha256": "15368a8c6ef7024567aa6894001f5e850edb2f8cf2dfd4c149df1f3720933005",
+      "source_manifest_sha256": "f4f98616b73265009dd1305bb124273b9dc0c8d2f5012ed3f60f3c063a00f0fb"
+    },
+    {
+      "name": "direct_office_task_74001",
+      "role": "frozen_rl_baseline",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/evaluations_native/direct_office_task_74001",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "2970b0bfe4d52977e415ca261d0334a4578f3efd940658622ee19097190b37e2",
+      "development_audit_sha256": "15368a8c6ef7024567aa6894001f5e850edb2f8cf2dfd4c149df1f3720933005",
+      "source_manifest_sha256": "f4f98616b73265009dd1305bb124273b9dc0c8d2f5012ed3f60f3c063a00f0fb"
+    },
+    {
+      "name": "direct_office_task_74002",
+      "role": "frozen_rl_baseline",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/evaluations_native/direct_office_task_74002",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "2d54b65b95df4484972dba5f1da7b51d22b9356ebdce1811cdffd0a4784b658d",
+      "development_audit_sha256": "15368a8c6ef7024567aa6894001f5e850edb2f8cf2dfd4c149df1f3720933005",
+      "source_manifest_sha256": "f4f98616b73265009dd1305bb124273b9dc0c8d2f5012ed3f60f3c063a00f0fb"
+    },
+    {
+      "name": "recovery_lift0.035_distance0.02",
+      "role": "enhanced_model_based_teacher",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/recovery_native/recovery_lift0.035_distance0.02",
+      "task_success": true,
+      "strict_success": true,
+      "development_trace_sha256": "b27405d2683b391be71f6475bbd2f29e354403b454c00bf85b02c139d00afc04",
+      "development_audit_sha256": "de04901e4aa9d24474dac19df6a7159a2cc6df510b994f2c3a4eb395d11791eb",
+      "source_manifest_sha256": "1d3cf94dbd1e4e1d949db3d808ca66cbac01454b1637b095ce3e7f4e3789bcb3"
+    },
+    {
+      "name": "recovery035_esn_fixed",
+      "role": "same_data_seed1",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/recovery035_learned_native/recovery035_esn_fixed",
+      "task_success": true,
+      "strict_success": true,
+      "development_trace_sha256": "0b55b9d4092b3751d5803aaef0338dad48ee8bb130f04a6bbc192bdc2c22c66c",
+      "development_audit_sha256": "6761c489a3e627ddc23338c50fdb79346a26fcf57ecaa40077fd6f01a77b5846",
+      "source_manifest_sha256": "2f08eac52000f9985278bd633446bcf775dff06db0035b827ca675af2054a2c2"
+    },
+    {
+      "name": "paired_recovery035__fp64",
+      "role": "same_data_seed1",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/recovery035_learned_native/paired_recovery035__fp64",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "a175be25b778dcb696c1f6a66b945dc42e48f1449506a0fcee38bb1b1adb98ab",
+      "development_audit_sha256": "6761c489a3e627ddc23338c50fdb79346a26fcf57ecaa40077fd6f01a77b5846",
+      "source_manifest_sha256": "2f08eac52000f9985278bd633446bcf775dff06db0035b827ca675af2054a2c2"
+    },
+    {
+      "name": "paired_recovery035_rnn_fp64",
+      "role": "same_data_seed1",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/recovery035_learned_native/paired_recovery035_rnn_fp64",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "aa0d5d72ed2e00be2cb424055a3c878c9197a8f800c21d816d767197f44c145d",
+      "development_audit_sha256": "6761c489a3e627ddc23338c50fdb79346a26fcf57ecaa40077fd6f01a77b5846",
+      "source_manifest_sha256": "2f08eac52000f9985278bd633446bcf775dff06db0035b827ca675af2054a2c2"
+    },
+    {
+      "name": "recovery035_esn_seed2",
+      "role": "same_data_seed2_and_memoryless_control",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/recovery035_mechanism_native/recovery035_esn_seed2",
+      "task_success": true,
+      "strict_success": true,
+      "development_trace_sha256": "4e5041191c6fc3b6c4e5e104f58caa5ea0ec4399934c82df6528efdd0d3a1253",
+      "development_audit_sha256": "676b81fea30a016f3119702b2bd5d6715d875e84c00111e0b58a70e52c901342",
+      "source_manifest_sha256": "9ef2a429f7ce55c1cf89a0651605c0d9b7e3c59156c23afe03fa527b280c8ddc"
+    },
+    {
+      "name": "paired_recovery035_mlp_seed2",
+      "role": "same_data_seed2_and_memoryless_control",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/recovery035_mechanism_native/paired_recovery035_mlp_seed2",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "7ce4cd8d751b700b91ba74f34d7456bbedaef26dbaa710e2ab566aa2ff06e8b4",
+      "development_audit_sha256": "676b81fea30a016f3119702b2bd5d6715d875e84c00111e0b58a70e52c901342",
+      "source_manifest_sha256": "9ef2a429f7ce55c1cf89a0651605c0d9b7e3c59156c23afe03fa527b280c8ddc"
+    },
+    {
+      "name": "paired_recovery035_rnn_seed2",
+      "role": "same_data_seed2_and_memoryless_control",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/recovery035_mechanism_native/paired_recovery035_rnn_seed2",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "4a6bb965983baff1587c2bc21b43f22ca5fb3d3bbb87f9567374e3136a96da27",
+      "development_audit_sha256": "676b81fea30a016f3119702b2bd5d6715d875e84c00111e0b58a70e52c901342",
+      "source_manifest_sha256": "9ef2a429f7ce55c1cf89a0651605c0d9b7e3c59156c23afe03fa527b280c8ddc"
+    },
+    {
+      "name": "recovery035_esn_memoryless",
+      "role": "same_data_seed2_and_memoryless_control",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/recovery035_mechanism_native/recovery035_esn_memoryless",
+      "task_success": true,
+      "strict_success": true,
+      "development_trace_sha256": "d838a4f3e68cfcc4f4e8f42723222acd09eeb5cf3ea2249bacbe78da18b3debd",
+      "development_audit_sha256": "676b81fea30a016f3119702b2bd5d6715d875e84c00111e0b58a70e52c901342",
+      "source_manifest_sha256": "9ef2a429f7ce55c1cf89a0651605c0d9b7e3c59156c23afe03fa527b280c8ddc"
+    },
+    {
+      "name": "paired_feature_matched_mlp",
+      "role": "feature_matched_trainable_control_seed1",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/feature_matched_native/paired_feature_matched_mlp",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "c92d572b380dfbba908f02c0509f8311cd8400e7f52532cf39e0af92b6d90a79",
+      "development_audit_sha256": "eec9218181b1d827772d380e6e80022aec61de44f5bcaeda8859841c45579064",
+      "source_manifest_sha256": "bdc1cc9580b714b50f63962544a2aa1d43e77e485f5c9359a5a9b44d085e51f5"
+    },
+    {
+      "name": "paired_feature_matched_rnn",
+      "role": "feature_matched_trainable_control_seed1",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/feature_matched_native/paired_feature_matched_rnn",
+      "task_success": true,
+      "strict_success": true,
+      "development_trace_sha256": "8737d8901860654901933396f6ad8b018b3a777a112b6dbf483b0b09fec67123",
+      "development_audit_sha256": "eec9218181b1d827772d380e6e80022aec61de44f5bcaeda8859841c45579064",
+      "source_manifest_sha256": "bdc1cc9580b714b50f63962544a2aa1d43e77e485f5c9359a5a9b44d085e51f5"
+    },
+    {
+      "name": "paired_feature_matched_rnn_seed2",
+      "role": "feature_matched_trainable_control_seed2",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/feature_matched_seed2_native/paired_feature_matched_rnn_seed2",
+      "task_success": true,
+      "strict_success": true,
+      "development_trace_sha256": "a387b92003944a2f79a7afdf3ad6489faac034881e525311401918a69abde041",
+      "development_audit_sha256": "c47d417ccfe0b30ff5623218e5545d709575a21452c09bc9437a5261d7ee17ff",
+      "source_manifest_sha256": "3ba2092bacc577a001e955e77edcb5e93c284ba22e4306bcd50c659d29c9643b"
+    },
+    {
+      "name": "admittance_01",
+      "role": "same_world_tuned_admittance",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/classical_native/admittance_01",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "f42fc6a6f3c0af68c4caecdf8554f8de5ce196cce4958b028bed15e842e11736",
+      "development_audit_sha256": "cd33f43c53e5a20bb2cb275e5c7c6ee7069ccf993d5608a43bde0ac3e97560d5",
+      "source_manifest_sha256": "19293554e893f199e237c5d80050fd2caa7ea4fb744efc688faf45d6e6d4b0ae"
+    },
+    {
+      "name": "impedance_12",
+      "role": "same_world_tuned_impedance",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/classical_native/impedance_12",
+      "task_success": false,
+      "strict_success": false,
+      "development_trace_sha256": "bdf41ca9be2c3526aa5e738c71187e3aa147264593ca97b16eb8484007513684",
+      "development_audit_sha256": "cd33f43c53e5a20bb2cb275e5c7c6ee7069ccf993d5608a43bde0ac3e97560d5",
+      "source_manifest_sha256": "19293554e893f199e237c5d80050fd2caa7ea4fb744efc688faf45d6e6d4b0ae"
+    },
+    {
+      "name": "original_vmc_04",
+      "role": "same_world_tuned_original_vmc",
+      "development_run": "/home/arm1/sii_shared/SII_compliance/runs/main/paper_esn_12h_rl_20261002_141136/classical_native/original_vmc_04",
+      "task_success": true,
+      "strict_success": true,
+      "development_trace_sha256": "7123cbf991122629cc243e139e0930878cd1375e034f90bfb51604a994eafe7a",
+      "development_audit_sha256": "cd33f43c53e5a20bb2cb275e5c7c6ee7069ccf993d5608a43bde0ac3e97560d5",
+      "source_manifest_sha256": "19293554e893f199e237c5d80050fd2caa7ea4fb744efc688faf45d6e6d4b0ae"
+    }
+  ],
+  "classical_selection": [
+    {
+      "category": "admittance_development",
+      "selected": "admittance_01",
+      "ranked_development_candidates": [
+        {
+          "name": "admittance_01",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.07388685747357948,
+            36.26681222615551,
+            "admittance_01"
+          ]
+        },
+        {
+          "name": "admittance_14",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.07858159312628259,
+            26.30367028681716,
+            "admittance_14"
+          ]
+        },
+        {
+          "name": "admittance_05",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.09497255130291248,
+            27.52887892701833,
+            "admittance_05"
+          ]
+        },
+        {
+          "name": "admittance_08",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.10081507812166797,
+            31.143061317279944,
+            "admittance_08"
+          ]
+        },
+        {
+          "name": "admittance_03",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.11065362905984592,
+            29.230989321217685,
+            "admittance_03"
+          ]
+        },
+        {
+          "name": "admittance_07",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.11241559886061943,
+            33.82861282074881,
+            "admittance_07"
+          ]
+        },
+        {
+          "name": "admittance_13",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.11476026785390263,
+            42.96926163574579,
+            "admittance_13"
+          ]
+        },
+        {
+          "name": "admittance_04",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.11785520386595344,
+            44.01553115385518,
+            "admittance_04"
+          ]
+        },
+        {
+          "name": "admittance_11",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.1185491423417943,
+            32.96544960085188,
+            "admittance_11"
+          ]
+        },
+        {
+          "name": "admittance_02",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.12032094460959691,
+            31.51854338477854,
+            "admittance_02"
+          ]
+        },
+        {
+          "name": "admittance_12",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.1209413036709909,
+            31.525068612168763,
+            "admittance_12"
+          ]
+        },
+        {
+          "name": "admittance_09",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.12270466487792273,
+            36.19162446102815,
+            "admittance_09"
+          ]
+        },
+        {
+          "name": "admittance_00",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.12491081565114337,
+            34.0649006611576,
+            "admittance_00"
+          ]
+        },
+        {
+          "name": "admittance_06",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.13423089802194865,
+            32.291666755884094,
+            "admittance_06"
+          ]
+        },
+        {
+          "name": "admittance_10",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.19296946233233025,
+            37.95128566285434,
+            "admittance_10"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "impedance_development",
+      "selected": "impedance_12",
+      "ranked_development_candidates": [
+        {
+          "name": "impedance_12",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.07814818736051783,
+            23.84415760824399,
+            "impedance_12"
+          ]
+        },
+        {
+          "name": "impedance_03",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.08419595951300357,
+            28.22646095215666,
+            "impedance_03"
+          ]
+        },
+        {
+          "name": "impedance_06",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.08998675869251375,
+            26.11297208443994,
+            "impedance_06"
+          ]
+        },
+        {
+          "name": "impedance_04",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.11182442804475304,
+            21.99280205529579,
+            "impedance_04"
+          ]
+        },
+        {
+          "name": "impedance_05",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.1133116886956769,
+            26.251054935280187,
+            "impedance_05"
+          ]
+        },
+        {
+          "name": "impedance_07",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.11639281747504704,
+            25.9753127251644,
+            "impedance_07"
+          ]
+        },
+        {
+          "name": "impedance_14",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.17801918989767862,
+            23.762137519243176,
+            "impedance_14"
+          ]
+        },
+        {
+          "name": "impedance_00",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.18900403418988326,
+            22.796732242151585,
+            "impedance_00"
+          ]
+        },
+        {
+          "name": "impedance_13",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.19520387345543488,
+            25.690589740093657,
+            "impedance_13"
+          ]
+        },
+        {
+          "name": "impedance_09",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.19746121155159738,
+            24.371028693353026,
+            "impedance_09"
+          ]
+        },
+        {
+          "name": "impedance_10",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.20026129775136833,
+            38.718191944497676,
+            "impedance_10"
+          ]
+        },
+        {
+          "name": "impedance_11",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.20374464778099016,
+            37.96299259915483,
+            "impedance_11"
+          ]
+        },
+        {
+          "name": "impedance_02",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.21855783218897248,
+            22.153002214338432,
+            "impedance_02"
+          ]
+        },
+        {
+          "name": "impedance_01",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.2244438714581678,
+            24.2029909274743,
+            "impedance_01"
+          ]
+        },
+        {
+          "name": "impedance_08",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.25120359569439754,
+            21.36808428807707,
+            "impedance_08"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "vmc_development",
+      "selected": "original_vmc_04",
+      "ranked_development_candidates": [
+        {
+          "name": "original_vmc_04",
+          "key": [
+            -1,
+            -1,
+            -1,
+            0.0,
+            0.008026448600313641,
+            36.38488432849362,
+            "original_vmc_04"
+          ]
+        },
+        {
+          "name": "original_vmc_01",
+          "key": [
+            0,
+            -1,
+            -1,
+            0.5105504536811976,
+            0.007141710607154722,
+            28.48047298910122,
+            "original_vmc_01"
+          ]
+        },
+        {
+          "name": "original_vmc_05",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.08966998637748044,
+            29.078391270409607,
+            "original_vmc_05"
+          ]
+        },
+        {
+          "name": "original_vmc_07",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.11242839049588922,
+            28.196725154605506,
+            "original_vmc_07"
+          ]
+        },
+        {
+          "name": "original_vmc_03",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.11263352920053517,
+            28.944208475145377,
+            "original_vmc_03"
+          ]
+        },
+        {
+          "name": "original_vmc_00",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.11393892082026547,
+            28.90762288953091,
+            "original_vmc_00"
+          ]
+        },
+        {
+          "name": "original_vmc_06",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.1150633743790766,
+            28.23392467641542,
+            "original_vmc_06"
+          ]
+        },
+        {
+          "name": "original_vmc_02",
+          "key": [
+            0,
+            0,
+            -1,
+            0.0,
+            0.26495962857867683,
+            27.792520896743298,
+            "original_vmc_02"
+          ]
+        }
+      ]
+    }
+  ],
+  "training_closed": true,
+  "rules": "No fitting, tuning or model selection after final evaluation. Both paired seeds retained. Failure/abort results retained. No weighted superiority score."
+}

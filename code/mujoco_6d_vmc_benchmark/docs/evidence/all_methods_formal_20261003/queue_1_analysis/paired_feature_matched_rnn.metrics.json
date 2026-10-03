@@ -1,0 +1,182 @@
+{
+  "created_utc": "2026-10-03T11:26:50.750423+00:00",
+  "metric_version": "2-first-contact-displacement-next-obstacle-censor",
+  "run": "/home/arm1/sii_shared/SII_compliance/runs/main/all_methods_formal_20261003_104728/queue_1/paired_feature_matched_rnn",
+  "metric_source_sha256": "a5822ce263e420163e1cf2fa95f389ac51a6334f8bd2b1f9ac6f2ba05dc7b4e0",
+  "constants": {
+    "force_threshold_n": 0.05,
+    "rejoin_error_m": 0.025,
+    "settled_speed_mps": 0.025,
+    "hold_s": 0.5
+  },
+  "task_success": true,
+  "strict_success": true,
+  "full_horizon": true,
+  "abort_reason": null,
+  "final_stage": "release",
+  "sample_count": 1100000,
+  "duration_s": 54.99999999999989,
+  "rmse_mm": 45.289264940451154,
+  "position_error_integral_m_s": 1.8156421241002985,
+  "time_above_25mm_s": 19.395649999999996,
+  "peak_torque_nm": 53.648624420166016,
+  "peak_speed_mps": 0.37265875659727404,
+  "torque_total_variation_nm_by_joint": [
+    2077.201196807103,
+    7273.822694778442,
+    919.3086405179347,
+    4861.884754180908,
+    377.01914880797267,
+    1282.9470257759094,
+    314.2516402273286
+  ],
+  "absolute_joint_mechanical_work_j": 198.0874796573731,
+  "contact": {
+    "ball": {
+      "window_s": [
+        2.0,
+        4.0
+      ],
+      "observed_duration_s": 2.0000500000000008,
+      "exposure": true,
+      "force_semantics": "ball_robot_sum",
+      "contact_duration_s": 0.0022500000000000007,
+      "impulse_ns": 2.090909851074219,
+      "peak_force_n": 6768.01806640625,
+      "contact_p95_force_n": 4851.604101562497,
+      "contact_rms_force_n": 1814.4057297875654,
+      "force_squared_integral_n2s": 7407.153342643385,
+      "first_contact_s": 2.064800000001857,
+      "last_contact_s": 2.158850000001638,
+      "hand_max_displacement_during_event_m": 0.03416737914085388,
+      "displacement_window": "First actual contact through event-window end",
+      "hand_path_during_contact_m": 0.00027164426426091814
+    },
+    "human": {
+      "window_s": [
+        4.0,
+        11.0
+      ],
+      "observed_duration_s": 7.000000000000003,
+      "exposure": true,
+      "force_semantics": "human_robot_sum",
+      "contact_duration_s": 4.4231500000000015,
+      "impulse_ns": 103.43079796843566,
+      "peak_force_n": 458.1831970214844,
+      "contact_p95_force_n": 41.889733505249,
+      "contact_rms_force_n": 32.063256324667094,
+      "force_squared_integral_n2s": 4547.230000223913,
+      "first_contact_s": 5.113599999994752,
+      "last_contact_s": 10.019999999983318,
+      "hand_max_displacement_during_event_m": 0.03628005459904671,
+      "displacement_window": "First actual contact through event-window end",
+      "hand_path_during_contact_m": 0.05241030828935537
+    },
+    "rod": {
+      "window_s": [
+        13.0,
+        22.5
+      ],
+      "observed_duration_s": 9.49995,
+      "exposure": true,
+      "force_semantics": "rod_robot_sum",
+      "contact_duration_s": 6.330450000000002,
+      "impulse_ns": 46.74827019098653,
+      "peak_force_n": 261.1160888671875,
+      "contact_p95_force_n": 11.555632591247555,
+      "contact_rms_force_n": 7.8794052963686285,
+      "force_squared_integral_n2s": 393.02616443701413,
+      "first_contact_s": 13.967799999974117,
+      "last_contact_s": 21.09240000013843,
+      "hand_max_displacement_during_event_m": 0.05886373296380043,
+      "displacement_window": "First actual contact through event-window end",
+      "hand_path_during_contact_m": 0.08484457753341375,
+      "extended_no_contact_longest_s": 0.0004,
+      "extended_no_contact_interval_s": [
+        15.968499999969454,
+        15.968849999969454
+      ],
+      "gap_requires_prior_contact": true
+    },
+    "unknown_edge": {
+      "window_s": [
+        0.0,
+        55.00000000126404
+      ],
+      "observed_duration_s": 54.99999999999989,
+      "exposure": true,
+      "force_semantics": "edge_robot_or_payload_sum",
+      "contact_duration_s": 4.223800000000001,
+      "impulse_ns": 19.663851578494086,
+      "peak_force_n": 29.745630264282227,
+      "contact_p95_force_n": 12.995056390762329,
+      "contact_rms_force_n": 6.112789357993462,
+      "force_squared_integral_n2s": 157.82733265014392,
+      "first_contact_s": 24.514100000252018,
+      "last_contact_s": 41.41760000081315,
+      "hand_max_displacement_during_event_m": 0.16111396253108978,
+      "displacement_window": "First actual contact through event-window end",
+      "hand_path_during_contact_m": 0.05126897568239945
+    },
+    "pillar": {
+      "window_s": [
+        0.0,
+        55.00000000126404
+      ],
+      "observed_duration_s": 54.99999999999989,
+      "exposure": true,
+      "force_semantics": "pillar_robot_sum",
+      "contact_duration_s": 0.008650000000000001,
+      "impulse_ns": 0.03772251306772232,
+      "peak_force_n": 6.001052379608154,
+      "contact_p95_force_n": 5.892942905426025,
+      "contact_rms_force_n": 4.589605260652387,
+      "force_squared_integral_n2s": 0.1822077212804598,
+      "first_contact_s": 42.51490000084958,
+      "last_contact_s": 42.523500000849864,
+      "hand_max_displacement_during_event_m": 0.04737306386232376,
+      "displacement_window": "First actual contact through event-window end",
+      "hand_path_during_contact_m": 0.00028225728882700914
+    }
+  },
+  "recovery": {
+    "ball": {
+      "exposed": true,
+      "unload_s": 2.158850000001638,
+      "censor_s": 4.0,
+      "settled_rejoin_time_s": null,
+      "right_censored": true,
+      "applicable": true,
+      "observation_window_s": 1.841149999998362,
+      "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+    },
+    "human": {
+      "exposed": true,
+      "unload_s": 11.0,
+      "censor_s": 13.0,
+      "settled_rejoin_time_s": null,
+      "right_censored": true,
+      "applicable": true,
+      "observation_window_s": 2.0,
+      "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+    },
+    "rod": {
+      "exposed": true,
+      "unload_s": 22.5,
+      "censor_s": 24.514100000252018,
+      "settled_rejoin_time_s": 1.0961500002215452,
+      "right_censored": false,
+      "applicable": true,
+      "observation_window_s": 2.014100000252018,
+      "criterion": "position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage"
+    }
+  },
+  "final_route_cursor": -1,
+  "placement_error_xy_mm": 13.407471370495932,
+  "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+  "trace_sha256": "b72b8fd2cc5accf8663dc062686617bdc915e38ccf96fe22f38a85ca24ee6e5a",
+  "native_metrics_sha256": "7c04d65162a8789d22b6b01eafb1d12844c5002e02f3002af64af037013156de",
+  "research_metrics_sha256": "54ff511f2c96bc64bb7fd0df90d36a2154b8873e87c973252cc85b9e37598f4a",
+  "execution_sha256": "a95e9ad91ea2633055443cf1fc6a68966147505e875b23304394d64244ccae3b",
+  "limitation": "Descriptive paired-development contact/recovery metrics; no-contact is NA. Task and safety dominate. Held-step force/post-step velocity work is diagnostic, not a passivity certificate. A lower first impact peak cannot establish 25Hz feedback response."
+}
