@@ -1,5 +1,29 @@
 # 更新日志
 
+## 2026-10-03 — 全方法与五类接触图导出工程核验
+
+- 23:27UTC实时核验并fetch main4b72e83c422d9fbd42896b208e8f8028ae88d3b7、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，读取两日志和AGENTS；无新远端改动。
+- 最终图入口只消费已有审计统计，不选模型/重算CI；16方法固定顺序，保留缺失、seed、无配对NA、全部五类接触。
+  成功子集的P95/力模积分仅条件诊断，图注不作总体/因果优势；三项合成测试及三图目视检查通过，0物理/拟合/封存读取。
+- 已核验arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/figure_engineering_archive_v4/evidence/
+  10文件/2,056,068字节，manifest SHA7fce50cef55ca5a05c2f1c8132746af0726a996dcbdde54ffe999e6f9613754f，
+  tar SHAf4ee52a04dbeb355b4df1bdd606bea4f0767f9a8215fdc628ff5ab377f4bf479；源/合成输入/六图hash见RESEARCH72_FIGURE_EXPORT。
+- Git保留v2和v4真实合成manifest，说明仅版式数据；v3本地试排未伪作服务器归档。teacher/经典确认继续，RL等前序；最终比较未完成。
+
+## 2026-10-03 — RAL机器人储备池作者稿及近年先例核对
+
+- 延续实时核验main4b72e83c422d9fbd42896b208e8f8028ae88d3b7、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6。
+  main4b源码arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/4b72e83c422d9fbd42896b208e8f8028ae88d3b7/
+  全3218文件核验，tar SHAaf0f17eeba547949e5b5ec11eba394b3bc426062fd8c446d15dcf6aefea98018。
+- 阅读Shen等arXiv2409.06961v2的完整HTML正文/公式/表/参考文献，对应DOI10.1109/LRA.2024.3523229；图未独立渲染、未复现实验。
+  其ESN/物理储备池、T-S分组读出和200Hz软体硬件控制已有明确先例；人工抗扰施于计算储备池，不当本项目机械臂避让证据。
+  补查ICRA2025 RC+FORCE及2026 SSRN纯运动学ESN力估计，前者仅元数据/摘要、后者是预印本且未读全文；不夸大阅读范围或方法首次性。
+- 更新RESEARCH72_METHOD_POSITIONING及进度/周报：论文贡献仍须靠同数据机制消融与公平闭环结果，未引入新baseline/预算或改环境/gate。
+  23:06UTC参数确认16/64、四稳定仿真，其余等前序，真正24最终未开。
+- 本轮服务器根/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/related_work_review_v2/全8文件核验；
+  tar SHA2e68435b5e3ea6ca8f79efb0e698b8782d7c05cb500506b1e2477cd1f9cb3406；HTML SHA61f4a5baada4835aabbddaf505d83c19c16e3e648e212e5ae8fa25790dbf9a46；
+  阅读记录SHA84f7682a953d784ee260e6c846f815b25f9747904846ce4404b3d82db165b77b。保留广搜不相关命中，OpenAlex两次429未伪作已读文献。
+
 ## 2026-10-03 — RL组合内存有限预检与RMSE解释
 
 - 本轮延续核验main558947de4d9aef526768f6af86c0f94dd331b3a0、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6。

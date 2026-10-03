@@ -20,6 +20,31 @@ NG-RC正文式(2)–(6)明确区分对固定特征线性与对输入/状态非�
 这里只是基础文献初查，不是覆盖最新机器人储备池/柔顺控制工作的系统综述。一次Crossref查询遇到429；
 之后通过已核验DOI逐条取得元数据。Nature首次请求只返回303页面，跟随重定向后取得正文；没有将重定向页当论文。
 
+## 23:10UTC后续机器人文献核对
+
+| 文献 | 实际阅读范围 | 对本项目的约束 |
+|---|---|---|
+| Shen, Miyazaki, Kawashima, [Control Pneumatic Soft Bending Actuator With Feedforward Hysteresis Compensation by Pneumatic Physical Reservoir Computing](https://doi.org/10.1109/LRA.2024.3523229)，RAL卷期2025 | [arXiv:2409.06961v2](https://arxiv.org/html/2409.06961v2)，2024-12-27作者稿HTML正文、公式/表及参考文献；图未独立渲染，非逐页核对出版社终稿 | RC/ESN已用于机器人控制；固定记忆＋线性正则化读出本身不是本文新贡献 |
+| Giannetto et al., [Reservoir Computing Encodes Physical Adaptations for Reinforcement Learning](https://doi.org/10.1109/ICRA55743.2025.11127876)，ICRA2025 | Crossref元数据＋Semantic Scholar完整摘要，未获得全文 | 摘要已有RC+FORCE特征预训练/RL身体配置适应；不能泛称首次用储备池实现机器人适应或泛化 |
+| Thanee, Uttayopas, [Computationally Efficient Sensorless Force Estimation for Robotic Haptic Exploration Using Echo State Networks](https://doi.org/10.2139/ssrn.6832482)，2026预印本 | Crossref元数据和完整摘要；posted-content，DOI创建2026-05-26，未读全文/未确认期刊审稿状态 | 已有末端位置/速度驱动ESN估计接触力的工作；估计准确不等于完成闭环操作任务，也不把预印本当正式期刊实验定论 |
+
+Shen作者稿III-A式(3)–(5)明确采用固定随机ESN/泄漏状态、历史参考输入和ridge读出；III-B式(7)–(12)
+把物理储备池输出与输入历史送入T-S分组线性读出。其模型参数包含800节点ESN、100步washout，硬件信号200Hz。
+这些设置不等于本轮128节点/25Hz策略，论文报告的相对速度不能移用到我们的部署成本。
+正文同时解释物理储备池增加装置空间、可调性有限等代价，不能只摘录其速度优势。
+
+IV节确有真实气动执行器跟踪及FPRC+PD实验；Fig.17的人工干扰施加在用于计算的物理储备池，
+不是本项目机械臂受到球/手/杆碰撞后完成pick-and-place。不能把该抗扰实验当我们的硬件安全/柔顺行为背书。
+结论仍将系统稳定性分析列为困难和未来工作；不把“物理系统遵守守恒”或“储备池状态有界”直接等同闭环无源证明。
+
+因此本文若要形成方法贡献，需要在本轮已冻结任务中证明纯本体记忆机制对接触后的恢复与安全放置有实际贡献，
+并与调好参数的经典/RL以及充分优化的MLP/RNN比较。初始ESN点版较积分版更好的开发计数只是候选结果；
+当前不能声称特征交互或多时间尺度首次提出，更不能因目标RAL就预定ESN胜者。
+这次不引入新baseline/预算或修改环境，现有完整开发、冻结与留出计划继续。
+
+另外读取Baldini2022机器人RC综述的元数据/摘要，未读其全文。两次OpenAlex请求429后没有把失败页面当证据，
+Semantic Scholar提供两篇论文摘要。此次是定向补查，不是系统性/穷尽性综述。
+
 ## 当前结构究竟研究什么
 
 当前实验包含固定多时间尺度储备池、请求动作的点损失/时序积分代理、同输入的本体context调制记忆漏率。
@@ -64,3 +89,9 @@ G固定，最终ESN只训练线性系数；同特征MLP/RNN使用相同固定变
 tar SHA256：3c7b08994ab1e09d1daf0efed5f845843482a63d7f59ff0e98f9586fbfad961c。
 HTML SHA256：b03455ff17545082d796162b922d3741a79df55b438e6c62160c20d84fcc8231。
 元数据单独初始归档related_work_metadata_archive_v1保持不变，不包含全文阅读证据。
+
+23:10UTC新增同根`related_work_review_v2/`，8文件逐内容/大小/模式核验（6份元数据/摘要响应、1份作者HTML、1阅读记录）。
+tar SHA256 `2e68435b5e3ea6ca8f79efb0e698b8782d7c05cb500506b1e2477cd1f9cb3406`；
+HTML SHA256 `61f4a5baada4835aabbddaf505d83c19c16e3e648e212e5ae8fa25790dbf9a46`；
+REVIEW_RECEIPT.md SHA256 `84f7682a953d784ee260e6c846f815b25f9747904846ce4404b3d82db165b77b`。
+原v1不覆盖；本次未使用封存数据，0新仿真/拟合。

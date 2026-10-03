@@ -87,6 +87,10 @@ RL从头office训练与历史primitive迁移分开。分段恢复继承的累计
 
 ## 可发表性边界
 
+23:30UTC完成最终审计JSON的图导出入口`plot_research72_comparison_20261003.py`，不选模型、不另算统计，
+16方法固定序、全部五接触事件、缺失上下界和NA保留；仅合成验证，真正最终结果未读取。
+成功且暴露的成对子集不能替代完整矩阵/失败/暴露/恢复删失；工程记录见RESEARCH72_FIGURE_EXPORT_20261003.md。
+
 18:10UTC补充执行工程：最终汇总器research72_comparison_report_20261003.py接收冻结模型锁、
 全部队列的事先计划和完成的独立审计，不重新读取封存manifest。逐物理回合关联FINAL_ROLE、
 trace/model/checkpoint/audit/metrics hash，三个主指标与独立子步复算保持一致；未审计视为缺失。

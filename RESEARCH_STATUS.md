@@ -1,6 +1,6 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
-最后人工核验：**2026-10-03 22:57 UTC / 北京时间10月4日06:57**。本页是 GitHub 固定入口；
+最后人工核验：**2026-10-03 23:30 UTC / 北京时间10月4日07:30**。本页是 GitHub 固定入口；
 每个完成的研究批次更新，具体提交见 [UPDATE_LOG.md](UPDATE_LOG.md)。运行状态有时间戳，不代表实时监控。
 
 ## 当前结论
@@ -12,6 +12,14 @@
 [上轮全部26方法正式矩阵](code/mujoco_6d_vmc_benchmark/docs/evidence/all_methods_formal_20261003/report/MATRIX.md)。
 
 ## 本轮状态
+
+23:30UTC[最终对比图导出准备](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_FIGURE_EXPORT_20261003.md)完成三项合成测试及版式核验，
+覆盖全部方法、五类接触、缺失/无配对/失败；只读取审计报告既有统计。源码/合成样例已共享核验，不是研究结果。
+teacher/经典64确认仍在四队列运行，未重启；RL和其他批次等待前序，24最终继续封存。
+
+23:06UTC参数确认16/64完成，四仿真继续。补读[RAL作者稿与近年相关摘要](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_METHOD_POSITIONING_20261003.md)：
+固定记忆/线性读出及机器人适应已有先例，需由完整闭环和机制消融支持本项目贡献；不把文献中的物理储备池抗扰当机械臂避让证据。
+8份原始响应/阅读记录已核验共享，0新实验。当前仍无完整投稿结论。
 
 22:55UTC完成[RL组合内存有限预检](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_RL_MEMORY_PREFLIGHT_20261003.md)：
 实际训练依赖/80k Replay＋1.086GB物理队列等量内存压力，峰值2.649GiB，8工程更新丢弃、原权重不变、0物理。
