@@ -1,5 +1,22 @@
 # 更新日志
 
+## 2026-10-03 — 第六开发条件失败与剩余容量核算
+
+- 本轮实时核对main792316711f11e43a12e06bfeb389f87b015fe040、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，读取两日志/AGENTS。
+  main792源码已在arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/792316711f11e43a12e06bfeb389f87b015fe040/
+  核验3198文件，tar SHAdfae85ee383bb48c1044cfa6c22b3afbe4ef98b26543e07532cc27a4ee2fdb55。
+- 21:09:42UTC只读成本快照209/264，206个完整回合中位351.820s/P90378.758s。完整失败计时保留，短回合计成本但不压低完整预测。
+  15RL全80k上限＋已有待执行组理想还需35.253–37.829h；新增144回合加3.518–3.788h会挤占最终912回合。
+  当前不登记修订02/不新拟合。理想容量不是实际排队保证，2h收尾只是规划假设；真实RL争用/物理续跑待验证。
+- 第六开发身份33候选完整：ESN/matchedRNN各4task/0strict（n6）；matchedMLP2/2、memoryless1/1、ordinaryMLP2/1、ordinaryRNN2/0。
+  ESN已放置四条柱子/link7穿透0.223096–0.593794mm；303temporal RMSE247.992mm停carry。未改gate/未删失败，阶段独立复核待全264结束。
+- 新纯标准库预测工具3项检查通过：累计RL去重、缺失阶段拒绝、短回合不压低全程耗时。本机0物理/拟合，源与预测共3文件已hash核验共享。
+  服务器本轮根/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/：
+  EXPOSURE_SNAPSHOT_20261003_2120.json SHA97c4dfbba35b60a1f606bc83490106c0e28539a8f27ebe9d7bd157fe5d0cdd55；
+  budget_forecast_archive_v1/research72-budget-20261003-2120.json SHAeaa9c54e7f9cab6fdd40fc3e9fc04e2994c27189b2e1e1b9e31eed8fd1b802d5。
+  文件名2120不是实际生成时间；完整口径/命令/源hash见RESEARCH72_CAPACITY_FORECAST。
+- 四稳定物理队列保留；teacher确认/再采集、增强组及RL仍等前序，24最终封存，尚无完整投稿结论。
+
 ## 2026-10-03 — 官方RL GPU有限吞吐与剩余预算依据
 
 - 延续核验main788d6814d0ed3ac2cc5bb5a7cacafa367a66e539、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；

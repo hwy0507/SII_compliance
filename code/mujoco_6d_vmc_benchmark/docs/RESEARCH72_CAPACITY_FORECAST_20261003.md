@@ -1,0 +1,66 @@
+# 72小时剩余算力核算与第六公开开发条件
+
+2026-10-03，使用实际21:09:42UTC的只读成本快照；文件名2120只是标识。
+此为规划估计，未增加预算、拟合或物理回合，未打开24条封存条件。
+
+## 容量与决策
+
+初始学习开发209/264完成，其中206个完整55s回合给出每回合墙钟中位351.820s、P90 378.758s。
+完整回合包含成功和失败；3个短回合仍计入已执行成本，不能用其短耗时降低完整回合预测。
+在途回合保守计作一个完整待执行回合。预测计入55初始＋64确认＋8名义＋168学习率组＋168记忆组＋40新teacher＋1工程重放，
+并假设15个RL各达到80k上限，RL累计步只计一次；未启动模型不丢失。
+RL动作＋两次更新采用此前隔离GPU探针的较大均值19.406ms，并保守给所有剩余步计费，包括warmup。
+
+| 估计依据 | 既有剩余开发理想时间 h | 可选144回合理想新增 h | 最终912回合纯物理 h | 加2h收尾后最晚开始最终测试 UTC |
+|---|---:|---:|---:|---|
+| 完整回合中位 | 35.253 | 3.518 | 22.282 | 10-05 11:13 |
+| 完整回合P90 | 37.829 | 3.788 | 23.988 | 10-05 09:30 |
+
+当前开发窗口剩余38.338h。即使四槽理想分配，追加144回合后，相对48h开发截止仍差0.433–3.278h；
+加最终测试和假设的2h审计/媒体余量后，相对72h截止差0.715–5.266h。
+因此**本次不登记修订02或启动新拟合**。优先完成已登记组，并等待teacher确认与RL真实端到端吞吐后重新核算。
+这不是终止ESN研究，也不根据成败减少某一方法的测试分母。
+
+这些数值不是完成保证：三个RL队列可以长期占据租约，其他单队列可能等待；短RL失败会增加启动次数，
+三learner GPU竞争、checkpoint与阶段审计未实测计入。正的理想余量也不足以直接准入额外组。
+2h收尾是明确的规划假设，不是已经测得的媒体耗时。RL80k是上限而非保证收敛；实际达到步数仍须报告。
+主协议48h停止新增开发并不自动保证剩余24h足够，需持续核对最终测试开始时点，不能拖到截止才检查。
+
+## 第六条件的失败保留
+
+development_005全部33个初始候选已完成逐回合AUDIT，阶段级独立复核仍待整个264批结束。
+以下是开发候选计数，含同一seed的两个损失版本，不是最终选定方法的成功率。
+
+| 初始家族 | 回合数 | task | strict |
+|---|---:|---:|---:|
+| ESN | 6 | 4 | 0 |
+| 同特征RNN | 6 | 4 | 0 |
+| 同特征MLP | 6 | 2 | 2 |
+| 重新拟合无记忆 | 3 | 1 | 1 |
+| 普通MLP | 6 | 2 | 1 |
+| 普通RNN | 6 | 2 | 0 |
+
+ESN四条已放置回合的最差接触均为pillar/link7：301temporal 0.345055mm、302point 0.593794mm、
+302temporal 0.223096mm、303point 0.574926mm，超过原0.2mm限制。
+301point停carry，终点XY58.303mm；303temporal停carry，RMSE247.992mm、XY291.478mm。
+没有调门槛或删失败；增强网络和记忆调制组仍未开始闭环，不把初始结果当其最终结果。
+
+## 可复核产物
+
+主机`arm1@192.168.31.70`，根`/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/`：
+
+- `EXPOSURE_SNAPSHOT_20261003_2120.json`，SHA256 `97c4dfbba35b60a1f606bc83490106c0e28539a8f27ebe9d7bd157fe5d0cdd55`。
+  全部候选/回合成本原始输入，Spark只读生成；实际源为已核验main7923167源码快照。
+- `budget_forecast_archive_v1/research72-budget-20261003-2120.json`，SHA256 `eaa9c54e7f9cab6fdd40fc3e9fc04e2994c27189b2e1e1b9e31eed8fd1b802d5`。
+  本机airpig标准库零物理计算，不启动MuJoCo；输入实际本地路径保留不改写。
+- 同目录`research72_budget_forecast_20261003.py` SHA256 `fec45e792e66d891755feeed8736182f3e7d687718435066957025223d46d3df`；
+  `test_research72_budget_forecast_20261003.py` SHA256 `3dde4e37478bea33032f6a50e256da9f54e7084f023d56680763a910176ed835`。
+  全3文件已独立核验集合和hash后发布。3项检查覆盖短失败不压低完整耗时、RL分段累计去重、缺失阶段/账本矛盾拒绝。
+- 第六条件：`learning_development_v1/queue_*/<candidate>__development_005/`的原始rollout/AUDIT；
+  不创建或改写历史执行记录。当前4物理队列稳定，其余等待前序。
+
+实际本地预测命令：在benchmark目录用
+`/home/airpig/桌面/hwy/compliance_control/.venv-canonical-rl/bin/python tools/research72_budget_forecast_20261003.py`
+传入`--snapshot /tmp/research72-exposure-20261003-2120.json`、`--protocol docs/evidence/research72_20261003/PROTOCOL.json`、
+`--throughput docs/evidence/research72_20261003/RL_THROUGHPUT_PROBE_V1.json`、`--output /tmp/research72-budget-20261003-2120.json`。
+纯标准库算术，无训练随机seed，主协议/三训练seed和所有输入SHA在快照中保留。

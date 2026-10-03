@@ -1,6 +1,6 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
-最后人工核验：**2026-10-03 20:56 UTC / 北京时间10月4日04:56**。本页是 GitHub 固定入口；
+最后人工核验：**2026-10-03 21:15 UTC / 北京时间10月4日05:15**。本页是 GitHub 固定入口；
 每个完成的研究批次更新，具体提交见 [UPDATE_LOG.md](UPDATE_LOG.md)。运行状态有时间戳，不代表实时监控。
 
 ## 当前结论
@@ -12,6 +12,11 @@
 [上轮全部26方法正式矩阵](code/mujoco_6d_vmc_benchmark/docs/evidence/all_methods_formal_20261003/report/MATRIX.md)。
 
 ## 本轮状态
+
+21:09成本快照209/264；第六完整开发条件ESN4/6放置、0/6严格，四条已放置仍因柱子/link7穿透0.223–0.594mm失败。
+原门槛/失败分母保留。[剩余容量核算](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_CAPACITY_FORECAST_20261003.md)
+显示按RL全80k估计，现有开发还需理想35.25–37.83h；再加144回合会超出预留窗口，因此本轮不登记修订02。
+最终912回合纯物理约22.28–23.99h，另需审计/媒体；持续核对开始时点。已有ESN/增强baseline验证继续，不预定胜者。
 
 20:56UTC初始198/264，第六身份仍32/33；四仿真持续。已完成[RL GPU有限吞吐探针](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_RL_THROUGHPUT_20261003.md)：
 动作＋两更新约18–19ms，首轮编译16–71s，峰值内存2.07GiB。164工程更新的权重全部丢弃，0新物理/候选；
