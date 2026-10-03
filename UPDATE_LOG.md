@@ -1,5 +1,26 @@
 # 更新日志
 
+## 2026-10-03 — 170公开轨迹首撞时序核对与柔顺性归因边界
+
+- 延续实时核验main be473ca6d6c38a71182032504b8d5194ce235ac7、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；
+  be473ca源码已在arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/be473ca6d6c38a71182032504b8d5194ce235ac7/
+  核验3189文件，tar SHA f0306577208e5612ff08a225fe9b850ba444f5215892eb65d538b05c1bf07312。
+- 前五完整开发身份33初始学习候选＋原teacher共170条全部纳入，4时序回归通过。只读Spark原生20:29:31–20:30:04UTC，
+  单线程3GiB、CPU23.299s，无新物理或拟合。球首段接触0.45–0.50ms，至下次真实actor计算9.20–32.20ms；
+  170/170球窗峰值和首段接触结束都先于那次计算，已保守考虑50μs采样余量。
+- 峰值5485.92–7407.39N不能当已标定人体安全受力，也不能证明25Hz策略已即时抑制首次碰撞。
+  碰前姿态/动作、公共4ms WBC和被动物理仍有作用。所有峰值继续报告，不改gate/actor时钟；结合后续恢复/持续接触解释柔顺性。
+  此为公开开发事后诊断，不是最终盲测、ESN胜者或RL已验证。全部失败/短回合均保留。
+- 本轮服务器根/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/下：
+  public_impact_timing_v1/IMPACT_TIMING.json SHA cd8a9ec1f707fdb1be008eceb5331d83ce17e2a4f1ee7d9a929616aa141686e8；
+  SPECIFICATION SHA166648074e86fc909ddbed9dd1bc183878f36c6cace5035025eef0c04f1ffe33；
+  EXECUTION_RECEIPT SHAa1c9d99d50f02a6cae2f075308954314b81f41cf76f45e311e698a9a612c0eea明确是基于日志补写的事后说明。
+  实际诊断脚本SHA2a7db52731480f3dae1bed9c0c47df4c62cbb8c7352898a5a86523e179a19fa5；精确入口见RESEARCH72_IMPACT_TIMING。
+- 本地单线程3GiB绘图已目视核验；服务器impact_timing_plot_archive_v1全4文件核验，tar SHA
+  fc1c842de54cac4a87d1f25ccd076f9b09db3ebb9feed393cb1dddf6d632bfd3；PNG SHA c9cab76a261e3f6b567776da6a5e1efd8b63ac2f8e8c78f3b44e2c291eb94a8a。
+  Git含小型全部结果和图；不改历史路径。初始20:37UTC184/264、4稳定仿真，teacher确认/新组/RL v2仍等待。
+  最终24封存；学习预算修订02尚未登记，无最终可投稿结果。
+
 ## 2026-10-03 — RL首次开训前轮转登记、第五共同条件与统计区间解释
 
 - 19:55UTC实时核对main2da38895ce8a91eb9cc7b47d94a72e53ff615166、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；
