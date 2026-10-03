@@ -1,6 +1,6 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
-最后人工核验：**2026-10-03 19:19 UTC / 北京时间10月4日03:19**。本页是 GitHub 固定入口；
+最后人工核验：**2026-10-03 19:37 UTC / 北京时间10月4日03:37**。本页是 GitHub 固定入口；
 每个完成的研究批次更新，具体提交见 [UPDATE_LOG.md](UPDATE_LOG.md)。运行状态有时间戳，不代表实时监控。
 
 ## 当前结论
@@ -12,6 +12,11 @@
 [上轮全部26方法正式矩阵](code/mujoco_6d_vmc_benchmark/docs/evidence/all_methods_formal_20261003/report/MATRIX.md)。
 
 ## 本轮状态
+
+19:37UTC初始143/264，四个条件已各33完整；第四条件ESN/matchedRNN各4/6严格，仍是候选开发结果。
+新增[全部99轨迹的teacher覆盖诊断图](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_PROPRIO_SUPPORT_20261003.md)：
+部分ESN失败伴随明显本体覆盖偏离，而clip比例很低；成功回合也可能偏离，不能当因果或胜者证据。
+计算在本机仅4.163秒，无新物理/拟合；原始hash、全部点和短失败均保留并在Spark核验归档。
 
 19:19UTC初始开发131/264，第四条件32/33，仍不提前按不齐的seed汇总胜负。
 [下一轮共享拟合入口](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_READOUT_REFIT_PREPARATION_20261003.md)

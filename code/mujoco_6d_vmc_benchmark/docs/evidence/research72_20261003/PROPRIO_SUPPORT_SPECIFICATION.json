@@ -1,0 +1,15 @@
+{
+  "registered_utc": "2026-10-03T19:32:00+00:00",
+  "role": "Post-hoc public diagnostic, not model selection, a new learning candidate or final evaluation",
+  "protocol_sha256": "5457d85726e2a88067e153464b7e50dbc9fcd173b89a9fc5da2da096c0891732",
+  "training_data_sha256": "b97acf4c61d9d3ba4d5fcb4817ac449b460e65a4821be632c5f61a5a1bba67c6",
+  "phase": "learning_development_v1",
+  "conditions": ["development_000", "development_001", "development_002"],
+  "selection": "All 33 initial models on these first three complete public identities, 99 trajectories, including every failure. Their task outcomes have already been inspected; support distances have not.",
+  "representation": "18 existing actor fields: reference-relative velocity, reference-relative position, measured motion, estimated wrench, route direction; fixed physical scaling and actor clipping, no fitted transform",
+  "calibration": "Nearest distance for each training sample to all OTHER training identities, excluding its whole trajectory; pooled 95th percentile. No validation or development values calibrate the threshold.",
+  "report": "Per trajectory median/p95/max instantaneous distance, fraction above training calibration, component clipping fraction, original task/strict/full-horizon. Preserve per-frame distance and trace hashes.",
+  "limitations": "Does not include recurrent state, estimate calibrated OOD probability, establish causation or make independent-frame statistical claims. No counterfactual teacher labels or new fits.",
+  "compute": "Spark read-only trace extraction, local one-thread3GiB distance computation; zero new simulation episodes",
+  "sealed_contents_read": false
+}

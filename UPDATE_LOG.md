@@ -1,5 +1,24 @@
 # 更新日志
 
+## 2026-10-03 — 本机99轨迹覆盖诊断与第四共同条件完整
+
+- 延续main a5ed961ef2216033e2311f964ba4617dc80f0de5、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6实时核验。
+  main a5ed源码在arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/a5ed961ef2216033e2311f964ba4617dc80f0de5/核验3178文件，
+  tar SHAd3bcddf8c1b8756a8daf64f7461cb690cae7594dfef0ec42f570cd96f8ea5eaa；未改运行快照。
+- 新本体覆盖诊断固定前三完整开发身份全部33候选共99轨迹；18D已有actor字段、固定物理尺度与clip。
+  校准排除整个自身teacher训练身份，18身份24750帧的近邻P95=0.308898；不用验证/开发校准，不含储备池状态。
+  ESN303temporal/condition001超参照72.7%、RMSE124.44mm；302temporal成功仍46.9%、95.20mm。
+  clip约0–0.3%，不能只改裁剪或把距离当失败原因/校准OOD概率。所有失败和短回合保存，图无胜者筛选。
+- 本机airpig/NumPy2.4.6/SciPy1.17.1，单线程3GiB，4.163秒；2合成检查通过；Spark只读提取核验所有trace/AUDIT/model。
+  0新物理、0拟合。诊断说明RESEARCH72_PROPRIO_SUPPORT及Git内174KiB图，PNG SHA c7d4a4f4397148972371da7c91a435749f478a8e6acdda77754097e10c9d20ea。
+  初图标签拥挤仅修排版后目视核验v2，未改数据；代码/数据注册时钟与真实执行命令记录在EXECUTION_RECEIPT。
+- 本轮服务器根/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/下：
+  public_proprio_export_v1；proprio_support_archive_v1核验5文件/tar SHAdc07c9d45036ecda010dd2124208f1d421ff6628f04d3490211eaa608363f6b4；
+  proprio_support_plot_archive_v2核验4文件/tar SHA78f681f29e7f14bfb46810f484a2ef45057e7dc2a9d4a72297cbefa1bc931fad。
+- 19:37UTC143/264，第四共同身份ESN/matchedRNN各5/6task、4/6strict；matchedMLP2/6strict、memoryless1/3、
+  ordinaryMLP1/6、ordinaryRNN0/6。初始候选不是最终方法统计；RL/新组/teacher确认等待，4仿真稳定，无其他活跃agent。
+  真正24条件封存，修订02未登记；当前没有完整投稿结论。
+
 ## 2026-10-03 — 选定teacher共享读出再拟合入口准备，尚未启动新预算
 
 - 延续实时核对main ad957af96444b418c0bceb8063bd0e72031bd8fc与baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；重读AGENTS收尾。
