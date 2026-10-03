@@ -1,5 +1,30 @@
 # 更新日志
 
+## 2026-10-03 — 成对统计、短回合删失修正与实际推理成本
+
+- 继续已核对的main9855fa8a78c9ea87bd3cf0a63f0fbd345483a296/baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6。
+  9855源码tar SHA ed40d4b2980729b8f4eef998e76fcced5636448cd5e401f9b4281902df733719已在server source/<完整SHA>/核验3151文件。
+- 新成对统计模块按条件与训练seed交叉bootstrap，确定性经典对照不伪造3seed；缺失回合保留分母上下界，
+  无接触/短回合/失败不进入“双方严格成功且接触”的条件子集；该子集不取代完整成功率。8项合成回归通过，
+  包含首seed失败不能抹掉后续seed与确定性对照的有效配对。尚未处理最终24身份。
+- 模型锁加入所有AMENDMENT文件内容与集合，7项保护回归通过。完整冻结前后预算修订必须一致，真实封存仍未打开。
+- 修复paper_metrics早停回合恢复观察窗可能超过实际最后采样时间的问题；v3增加计划截止并保留右删失。
+  3项完整提取器合成回归通过；一个真实55s ESN回合全部数值与v2精确相同，只增加计划截止及变更版本/源时间。
+  原runtime和历史v2证据不覆盖；主机arm1@192.168.31.70，本轮根metrics_censor_regression_v1/full_esn_point.json
+  SHA7aece33d1cc89609f3dac3a1571433901327eab5e80ae9e6608dc4d909194d65，Git含同一小证据。
+- 按服务器PRIORS与controllers重新核对，纠正文档“全部参数RL5D”：导纳7参数、阻抗5、VMC7。
+  阻抗公共残余动作虽记录为7D零，真实执行仍是其独立底层力矩律。实际训练代码一直使用各prior维度，未更改控制律。
+- 本地1线程3GiB零仿真核验全部102已保存拟合，已知train_000完整1375帧动作重放误差全0；
+  每模型3次序列推理、保留原始ns。ESN/memoryless2884可训练系数；ordinaryMLP5504、RNN21888；
+  matchedMLP22852、RNN39236。各模型中位数再取族中位数：ESN32.15us、普通MLP7.98us、普通RNN10.00us。
+  ESN系数少不意味着推理更快，固定特征有开销；actor-only耗时不当整个控制器实时保证。
+- 服务器本轮根inference_profile_archive_v1/inference_profile_v1/完整6文件逐内容/大小/模式核验，
+  tar SHA4f826b6a90e2ce22925b223d6b6ddbdb99693202c6f70c0842ef72ee64912eaa，PROFILE SHA91431277af003439608cb5677a53cdd1fd6328bfcc737272f02712d29f60ffa2。
+  Git INFERENCE_PROFILE_RECEIPT.json含精确命令、成本、归档与局限；初次systemd缺工作目录退出2、脚本未打开，修正工作目录后完成，不是物理重试。
+- 16:50UTC公开开发24/264完成。首条件ESN全部3seed×2损失已齐：3/6 strict；
+  seed303点/积分外穿透0.551/0.476mm超过0.2mm，点版任务成功仍strict失败；积分版任务也失败。
+  待完整开发审计，不从单条件选择模型或改gate。后续RL/teacher再采集等仍等待前序，未重复启动。
+
 ## 2026-10-03 — 控制器筛选完成、真实teacher再采集入口与首轮学习闭环
 
 - 16:27UTC重新核对main 8bdade7fbd15f76f725c985514bde6e0c94a0253、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6并读取两分支日志/AGENTS；无远端新变更。
@@ -18,7 +43,8 @@
   导出器默认路径原生回归仍得到相同24示范/33000帧和同一数据SHA b97acf4c61d9d3ba4d5fcb4817ac449b460e65a4821be632c5f61a5a1bba67c6。
 - 新学习选择器只接受完整独立审计的三组开发结果，跨全部3seed/8条件统一选variant，失败族也保留；3项合成回归通过。
   54合格权重来自75实跑权重；未对尚未完成的真实数据执行选择。最终入口补充等待refined-teacher，成本账本纳入再采集。
-  分析方案注明参数RL内部5D→公共7D；独立选出的ESN/memoryless不同loss/gate不冒充隔离记忆消融。
+  分析方案注明参数动作与公共7D接口不同；16:45核对原prior后更正为导纳7D/阻抗5D/VMC7D，阻抗另有底层力矩律；
+  独立选出的ESN/memoryless不同loss/gate不冒充隔离记忆消融。
 - 服务器根 arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/：
   controller_screen_v1/SUMMARY.json、early_learning_metrics_v1/、teacher_export_regression_v1/、teacher_refinement_v1/SPECIFICATION.json。
   context21权重原生1375帧重放最大误差1.66e-14；CONTEXT_GATE_NATIVE_REPLAY.json与以上小证据已纳入Git。

@@ -24,6 +24,7 @@ class FinalLockTests(unittest.TestCase):
         self.save('PROTOCOL.json',dict(sealed_condition_sha256=sha(self.root/'sealed/HELDOUT.json')))
         self.output=self.root/'evaluation'
         self.lock=dict(schema='sii-research72-final-lock-v1',training_closed=True,
+            amendment_sha256={},
             all_registered_finalists_included=True,protocol_sha256=sha(self.root/'PROTOCOL.json'),
             sealed_condition_sha256=sha(self.root/'sealed/HELDOUT.json'),
             frozen_utc=datetime.now(timezone.utc).isoformat(),
@@ -51,6 +52,17 @@ class FinalLockTests(unittest.TestCase):
 
     def test_added_source_file_is_rejected(self):
         (self.source/'tools/extra.py').write_text('changed import resolution')
+        with self.assertRaises(AssertionError):self.check()
+
+    def test_added_or_changed_amendment_is_rejected(self):
+        amendment=dict(protocol_sha256=sha(self.root/'PROTOCOL.json'),cap=48)
+        self.save('AMENDMENT_01.json',amendment)
+        with self.assertRaises(AssertionError):self.check()
+        self.lock['amendment_sha256']={'AMENDMENT_01.json':sha(self.root/'AMENDMENT_01.json')}
+        self.save('LOCK.json',self.lock);self.lock_sha=sha(self.root/'LOCK.json')
+        self.receipt['model_lock_sha256']=self.lock_sha;self.save('FINAL_UNSEAL_RECEIPT.json',self.receipt)
+        self.check()
+        amendment['cap']=60;self.save('AMENDMENT_01.json',amendment)
         with self.assertRaises(AssertionError):self.check()
 
     def test_changed_asset_is_rejected(self):

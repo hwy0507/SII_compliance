@@ -1,0 +1,89 @@
+{
+  "recorded_utc": "2026-10-03T16:52:00+00:00",
+  "kind": "actor-only-profile-archive-receipt",
+  "actual_compute_host": "airpig",
+  "physics_steps": 0,
+  "training_updates": 0,
+  "models": 102,
+  "profile_sha256": "91431277af003439608cb5677a53cdd1fd6328bfcc737272f02712d29f60ffa2",
+  "archive_sha256": "4f826b6a90e2ce22925b223d6b6ddbdb99693202c6f70c0842ef72ee64912eaa",
+  "archive_verified_files": 6,
+  "server_host": "arm1@192.168.31.70",
+  "server_path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/inference_profile_archive_v1/inference_profile_v1",
+  "resources": {
+    "threads": 1,
+    "MemoryMax": "3G",
+    "MemorySwapMax": 0,
+    "CPUQuota": "100%"
+  },
+  "execution_command": [
+    "systemd-run",
+    "--user",
+    "--wait",
+    "--pipe",
+    "--collect",
+    "--unit=sii-r72-inference-profile-local-v2",
+    "--working-directory=/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark",
+    "--property=MemoryMax=3G",
+    "--property=MemorySwapMax=0",
+    "--property=CPUQuota=100%",
+    "--setenv=OPENBLAS_NUM_THREADS=1",
+    "--setenv=OMP_NUM_THREADS=1",
+    "--setenv=MKL_NUM_THREADS=1",
+    "/home/airpig/桌面/hwy/compliance_control/.venv-canonical-rl/bin/python",
+    "tools/research72_inference_profile_20261003.py",
+    "--data",
+    "outputs/research72_20261003_1149/demonstrations_v1/training_data.npz",
+    "--metadata",
+    "outputs/research72_20261003_1149/demonstrations_v1/DATA_COMPLETE.json",
+    "--learning",
+    "outputs/research72_20261003_1149/learning_v1",
+    "outputs/research72_20261003_1149/neural_lr_refinement_v1",
+    "outputs/research72_20261003_1149/context_gate_learning_v1",
+    "--output",
+    "outputs/research72_20261003_1149/inference_profile_v1"
+  ],
+  "observed_exit_code": 0,
+  "service_runtime_s": 14.849,
+  "cpu_time_s": 14.66,
+  "failed_preceding_invocation": "v1 lacked systemd WorkingDirectory, exited2 before opening the script or creating data. v2 explicitly selected the benchmark directory. No physics or fitting in either invocation.",
+  "replay_max_abs_all_models": 0,
+  "families": {
+    "esn": {
+      "models": 12,
+      "trainable": 2884,
+      "median_of_model_median_us": 32.15
+    },
+    "memoryless": {
+      "models": 6,
+      "trainable": 2884,
+      "median_of_model_median_us": 32.7
+    },
+    "matched_mlp": {
+      "models": 24,
+      "trainable": 22852,
+      "median_of_model_median_us": 30.33
+    },
+    "matched_rnn": {
+      "models": 24,
+      "trainable": 39236,
+      "median_of_model_median_us": 29.92
+    },
+    "ordinary_mlp": {
+      "models": 18,
+      "trainable": 5504,
+      "median_of_model_median_us": 7.98
+    },
+    "ordinary_rnn": {
+      "models": 18,
+      "trainable": 21888,
+      "median_of_model_median_us": 10
+    }
+  },
+  "limitations": [
+    "One compute host, actor-only timing, not physics/WBC/filter and not hard-real-time certification.",
+    "102 saved fits include unselected learning rates; no new candidates fitted and no latency-based selection.",
+    "Fixed feature expansion can make ESN inference slower despite fewer trained coefficients.",
+    "Actual parameter matrices, fixed coefficients, all timings and source copies reside in server archive."
+  ]
+}

@@ -15,6 +15,17 @@ def read(p):return json.loads(Path(p).read_text())
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 
+def amendment_hashes(root):
+    """Freeze all explicit protocol changes together with the original protocol."""
+    amendments={}
+    protocol_sha=sha(root/'PROTOCOL.json')
+    for path in sorted(root.glob('AMENDMENT_*.json')):
+        assert not path.is_symlink()
+        assert read(path)['protocol_sha256']==protocol_sha
+        amendments[path.name]=sha(path)
+    return amendments
+
+
 def runtime_hashes(source):
     """Exact runnable source/asset set, excluding interpreter-generated caches."""
     result={}
@@ -70,6 +81,7 @@ def verify_lock(root,path,expected):
     assert lock['schema']=='sii-research72-final-lock-v1'
     assert lock['training_closed'] is True and lock['all_registered_finalists_included'] is True
     assert lock['protocol_sha256']==sha(root/'PROTOCOL.json')
+    assert lock['amendment_sha256']==amendment_hashes(root), 'Protocol amendments changed'
     assert lock['sealed_condition_sha256']==protocol['sealed_condition_sha256']
     assert datetime.fromisoformat(lock['frozen_utc'])<=datetime.now(timezone.utc)
     verify_candidates(lock['candidates'])
@@ -116,6 +128,7 @@ def main():
     source_hashes=runtime_hashes(source)
     lock=dict(schema='sii-research72-final-lock-v1',frozen_utc=datetime.now(timezone.utc).isoformat(),
         protocol_sha256=sha(root/'PROTOCOL.json'),sealed_condition_sha256=protocol['sealed_condition_sha256'],
+        amendment_sha256=amendment_hashes(root),
         candidates=candidates,paired_seed_groups=selection['paired_seed_groups'],
         selection_sha256=sha(a.finalists),development_evidence=selection['development_evidence'],
         completion_receipts=selection['completion_receipts'],

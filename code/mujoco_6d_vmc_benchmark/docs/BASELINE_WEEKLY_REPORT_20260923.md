@@ -1,5 +1,13 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-03 16:50UTC 容量与推理成本核验
+
+同数据全部102已拟合模型零仿真完整train_000重放误差全0。可训练系数ESN2884、ordinaryMLP5504、
+ordinaryRNN21888、matchedMLP22852、matchedRNN39236；同128宽度不能写成同参数数或同训练开销。
+本地actor-only族中位推理ESN32.15us、普通MLP7.98us、普通RNN10us，不声称ESN推理最快。
+成对条件/seed bootstrap与缺失、接触NA、删失处理完成8项合成回归；参数RL维度和阻抗力矩律差异已更正。
+实际数据在服务器本轮根inference_profile_archive_v1，原始timing/source/hash与命令见根UPDATE_LOG。
+
 ### 2026-10-03 16:30UTC 筛选完成、闭环对比开始
 
 teacher/导纳/阻抗/VMC各24次筛选已完成并独立审计，teacher21task/13strict，其余各0/24；
@@ -7,7 +15,8 @@ teacher/导纳/阻抗/VMC各24次筛选已完成并独立审计，teacher21task/
 首条件ESN点版与memoryless/matchedMLP均task/strict成功，ESN积分版放置越过25mm门槛失败。
 ESN点版推杆P95力更低，但脱离和力积分不如无记忆，不能只选有利指标。完整比较仍待多条件与seed。
 选定teacher的40真实回合再采集入口已就绪，数据对各学习族共享；新增训练预算尚未启动。
-RL内部5D参数→公共7D与直接动作区别已在分析方案披露；最终24条件继续封存。服务器入口见UPDATE_LOG。
+RL参数维度导纳7D/阻抗5D/VMC7D与直接动作语义区别已在分析方案披露（16:45复核纠正概称5D）；
+阻抗另有底层力矩律。最终24条件继续封存。服务器入口见UPDATE_LOG。
 
 ### 2026-10-03 15:37UTC 新记忆机制也提供给baseline
 

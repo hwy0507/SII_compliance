@@ -89,6 +89,10 @@ def measure(run):
             next_obstacle = np.flatnonzero((time >= unload) & np.any(force[:, 4:6] > FORCE_THRESHOLD_N, axis=1))
             if len(next_obstacle):
                 censor = min(censor, float(time[next_obstacle[0]]))
+        # An aborted rollout cannot supply observation time after its last
+        # physical sample, even when the scheduled next disturbance is later.
+        planned_censor = censor
+        censor = min(censor, float(time[-1]))
         index = int(np.searchsorted(time, unload)); index = min(index, len(time)-1)
         progress = (stage > stage[index]) | ((stage == stage[index]) & (cursor > cursor[index]))
         band = ((time >= unload) & (time <= censor) & (position_error <= REJOIN_ERROR_M)
@@ -99,10 +103,11 @@ def measure(run):
                 if dt[s:e].sum() >= HOLD_S-1e-10:
                     reached = float(time[s]-unload); break
         recovery[name] = dict(exposed=observed, unload_s=float(unload), censor_s=float(censor),
+                              planned_censor_s=float(planned_censor),
                               settled_rejoin_time_s=reached, right_censored=bool(observed and reached is None),
                               applicable=observed, observation_window_s=max(0., float(censor-unload)),
                               criterion='position<=25mm, actual speed<=25mm/s, continuous0.5s and at least one subsequent route cursor/task stage')
-    result = dict(created_utc=now(), metric_version='2-first-contact-displacement-next-obstacle-censor',
+    result = dict(created_utc=now(), metric_version='3-observed-horizon-censor',
                   run=str(run.resolve()), metric_source_sha256=sha(Path(__file__)),
                   constants=dict(force_threshold_n=FORCE_THRESHOLD_N, rejoin_error_m=REJOIN_ERROR_M,
                                  settled_speed_mps=SETTLED_SPEED_MPS, hold_s=HOLD_S),
