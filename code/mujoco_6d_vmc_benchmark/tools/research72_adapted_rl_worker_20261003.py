@@ -30,8 +30,14 @@ def main():
     assert expected['checkpoint']==str(a.agent_checkpoint.resolve())
     assert expected['controller']==a.controller
     assert expected['hashes'] and 'official_agent_state.json' in expected['hashes']
+    training_path=Path(expected['training_protocol'])
+    assert worker.sha(training_path)==expected['training_protocol_sha256']
+    training=json.loads(training_path.read_text())
+    assert training['controller']==a.controller
+    assert worker.sha(a.parameter_source/'PRIORS.json')==training['prior_file_sha256']
     for name,h in expected['hashes'].items():assert worker.sha(a.agent_checkpoint/name)==h
     cp=json.loads((a.agent_checkpoint/'official_agent_state.json').read_text());cfg=cp['config'];utd=cp['utd']
+    assert cfg==training['agent_config']
     sys.path.insert(0,str(a.parameter_source))
     from official_parameter_agent import OfficialParameterAgent
     from controllers import ParameterController

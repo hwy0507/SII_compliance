@@ -1,0 +1,594 @@
+{
+  "protocol_sha256": "5457d85726e2a88067e153464b7e50dbc9fcd173b89a9fc5da2da096c0891732",
+  "data_sha256": "b97acf4c61d9d3ba4d5fcb4817ac449b460e65a4821be632c5f61a5a1bba67c6",
+  "metadata_sha256": "ca5c124af8ebcd9cbb06b5fceee382e7bdc1cf45c1893f666fb5059504cd2370",
+  "jobs": [
+    {
+      "name": "esn_2026100301_point",
+      "family": "esn",
+      "seed": 2026100301,
+      "variant": "point",
+      "script": "train_paper_context_esn_20261003.py",
+      "extra": []
+    },
+    {
+      "name": "esn_2026100301_temporal",
+      "family": "esn",
+      "seed": 2026100301,
+      "variant": "temporal",
+      "script": "train_paper_context_esn_20261003.py",
+      "extra": [
+        "--delta-weight",
+        ".25",
+        "--integral-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "memoryless_2026100301",
+      "family": "memoryless",
+      "seed": 2026100301,
+      "variant": "point",
+      "script": "train_paper_context_esn_20261003.py",
+      "extra": [
+        "--memory-reset"
+      ]
+    },
+    {
+      "name": "matched_mlp_2026100301_point",
+      "family": "matched_mlp",
+      "seed": 2026100301,
+      "variant": "point",
+      "parent": "memoryless_2026100301",
+      "script": "train_paper_feature_matched_network_20261003.py",
+      "extra": [
+        "--kind",
+        "mlp",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".0001",
+        "--integral-weight",
+        "0"
+      ]
+    },
+    {
+      "name": "ordinary_mlp_2026100301_point",
+      "family": "ordinary_mlp",
+      "seed": 2026100301,
+      "variant": "point",
+      "script": "train_office_mlp_rnn_20261002.py",
+      "extra": [
+        "--kind",
+        "mlp",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".001",
+        "--target",
+        "requested",
+        "--absolute-inputs",
+        "--precision",
+        "float64",
+        "--drift-weight",
+        "0"
+      ]
+    },
+    {
+      "name": "matched_mlp_2026100301_temporal",
+      "family": "matched_mlp",
+      "seed": 2026100301,
+      "variant": "temporal",
+      "parent": "memoryless_2026100301",
+      "script": "train_paper_feature_matched_network_20261003.py",
+      "extra": [
+        "--kind",
+        "mlp",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".0001",
+        "--integral-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "ordinary_mlp_2026100301_temporal",
+      "family": "ordinary_mlp",
+      "seed": 2026100301,
+      "variant": "temporal",
+      "script": "train_office_mlp_rnn_20261002.py",
+      "extra": [
+        "--kind",
+        "mlp",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".001",
+        "--target",
+        "requested",
+        "--absolute-inputs",
+        "--precision",
+        "float64",
+        "--drift-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "matched_rnn_2026100301_point",
+      "family": "matched_rnn",
+      "seed": 2026100301,
+      "variant": "point",
+      "parent": "esn_2026100301_point",
+      "script": "train_paper_feature_matched_network_20261003.py",
+      "extra": [
+        "--kind",
+        "rnn",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".0001",
+        "--integral-weight",
+        "0"
+      ]
+    },
+    {
+      "name": "ordinary_rnn_2026100301_point",
+      "family": "ordinary_rnn",
+      "seed": 2026100301,
+      "variant": "point",
+      "script": "train_office_mlp_rnn_20261002.py",
+      "extra": [
+        "--kind",
+        "rnn",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".001",
+        "--target",
+        "requested",
+        "--absolute-inputs",
+        "--precision",
+        "float64",
+        "--drift-weight",
+        "0"
+      ]
+    },
+    {
+      "name": "matched_rnn_2026100301_temporal",
+      "family": "matched_rnn",
+      "seed": 2026100301,
+      "variant": "temporal",
+      "parent": "esn_2026100301_temporal",
+      "script": "train_paper_feature_matched_network_20261003.py",
+      "extra": [
+        "--kind",
+        "rnn",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".0001",
+        "--integral-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "ordinary_rnn_2026100301_temporal",
+      "family": "ordinary_rnn",
+      "seed": 2026100301,
+      "variant": "temporal",
+      "script": "train_office_mlp_rnn_20261002.py",
+      "extra": [
+        "--kind",
+        "rnn",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".001",
+        "--target",
+        "requested",
+        "--absolute-inputs",
+        "--precision",
+        "float64",
+        "--drift-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "esn_2026100302_point",
+      "family": "esn",
+      "seed": 2026100302,
+      "variant": "point",
+      "script": "train_paper_context_esn_20261003.py",
+      "extra": []
+    },
+    {
+      "name": "esn_2026100302_temporal",
+      "family": "esn",
+      "seed": 2026100302,
+      "variant": "temporal",
+      "script": "train_paper_context_esn_20261003.py",
+      "extra": [
+        "--delta-weight",
+        ".25",
+        "--integral-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "memoryless_2026100302",
+      "family": "memoryless",
+      "seed": 2026100302,
+      "variant": "point",
+      "script": "train_paper_context_esn_20261003.py",
+      "extra": [
+        "--memory-reset"
+      ]
+    },
+    {
+      "name": "matched_mlp_2026100302_point",
+      "family": "matched_mlp",
+      "seed": 2026100302,
+      "variant": "point",
+      "parent": "memoryless_2026100302",
+      "script": "train_paper_feature_matched_network_20261003.py",
+      "extra": [
+        "--kind",
+        "mlp",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".0001",
+        "--integral-weight",
+        "0"
+      ]
+    },
+    {
+      "name": "ordinary_mlp_2026100302_point",
+      "family": "ordinary_mlp",
+      "seed": 2026100302,
+      "variant": "point",
+      "script": "train_office_mlp_rnn_20261002.py",
+      "extra": [
+        "--kind",
+        "mlp",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".001",
+        "--target",
+        "requested",
+        "--absolute-inputs",
+        "--precision",
+        "float64",
+        "--drift-weight",
+        "0"
+      ]
+    },
+    {
+      "name": "matched_mlp_2026100302_temporal",
+      "family": "matched_mlp",
+      "seed": 2026100302,
+      "variant": "temporal",
+      "parent": "memoryless_2026100302",
+      "script": "train_paper_feature_matched_network_20261003.py",
+      "extra": [
+        "--kind",
+        "mlp",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".0001",
+        "--integral-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "ordinary_mlp_2026100302_temporal",
+      "family": "ordinary_mlp",
+      "seed": 2026100302,
+      "variant": "temporal",
+      "script": "train_office_mlp_rnn_20261002.py",
+      "extra": [
+        "--kind",
+        "mlp",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".001",
+        "--target",
+        "requested",
+        "--absolute-inputs",
+        "--precision",
+        "float64",
+        "--drift-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "matched_rnn_2026100302_point",
+      "family": "matched_rnn",
+      "seed": 2026100302,
+      "variant": "point",
+      "parent": "esn_2026100302_point",
+      "script": "train_paper_feature_matched_network_20261003.py",
+      "extra": [
+        "--kind",
+        "rnn",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".0001",
+        "--integral-weight",
+        "0"
+      ]
+    },
+    {
+      "name": "ordinary_rnn_2026100302_point",
+      "family": "ordinary_rnn",
+      "seed": 2026100302,
+      "variant": "point",
+      "script": "train_office_mlp_rnn_20261002.py",
+      "extra": [
+        "--kind",
+        "rnn",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".001",
+        "--target",
+        "requested",
+        "--absolute-inputs",
+        "--precision",
+        "float64",
+        "--drift-weight",
+        "0"
+      ]
+    },
+    {
+      "name": "matched_rnn_2026100302_temporal",
+      "family": "matched_rnn",
+      "seed": 2026100302,
+      "variant": "temporal",
+      "parent": "esn_2026100302_temporal",
+      "script": "train_paper_feature_matched_network_20261003.py",
+      "extra": [
+        "--kind",
+        "rnn",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".0001",
+        "--integral-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "ordinary_rnn_2026100302_temporal",
+      "family": "ordinary_rnn",
+      "seed": 2026100302,
+      "variant": "temporal",
+      "script": "train_office_mlp_rnn_20261002.py",
+      "extra": [
+        "--kind",
+        "rnn",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".001",
+        "--target",
+        "requested",
+        "--absolute-inputs",
+        "--precision",
+        "float64",
+        "--drift-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "esn_2026100303_point",
+      "family": "esn",
+      "seed": 2026100303,
+      "variant": "point",
+      "script": "train_paper_context_esn_20261003.py",
+      "extra": []
+    },
+    {
+      "name": "esn_2026100303_temporal",
+      "family": "esn",
+      "seed": 2026100303,
+      "variant": "temporal",
+      "script": "train_paper_context_esn_20261003.py",
+      "extra": [
+        "--delta-weight",
+        ".25",
+        "--integral-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "memoryless_2026100303",
+      "family": "memoryless",
+      "seed": 2026100303,
+      "variant": "point",
+      "script": "train_paper_context_esn_20261003.py",
+      "extra": [
+        "--memory-reset"
+      ]
+    },
+    {
+      "name": "matched_mlp_2026100303_point",
+      "family": "matched_mlp",
+      "seed": 2026100303,
+      "variant": "point",
+      "parent": "memoryless_2026100303",
+      "script": "train_paper_feature_matched_network_20261003.py",
+      "extra": [
+        "--kind",
+        "mlp",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".0001",
+        "--integral-weight",
+        "0"
+      ]
+    },
+    {
+      "name": "ordinary_mlp_2026100303_point",
+      "family": "ordinary_mlp",
+      "seed": 2026100303,
+      "variant": "point",
+      "script": "train_office_mlp_rnn_20261002.py",
+      "extra": [
+        "--kind",
+        "mlp",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".001",
+        "--target",
+        "requested",
+        "--absolute-inputs",
+        "--precision",
+        "float64",
+        "--drift-weight",
+        "0"
+      ]
+    },
+    {
+      "name": "matched_mlp_2026100303_temporal",
+      "family": "matched_mlp",
+      "seed": 2026100303,
+      "variant": "temporal",
+      "parent": "memoryless_2026100303",
+      "script": "train_paper_feature_matched_network_20261003.py",
+      "extra": [
+        "--kind",
+        "mlp",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".0001",
+        "--integral-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "ordinary_mlp_2026100303_temporal",
+      "family": "ordinary_mlp",
+      "seed": 2026100303,
+      "variant": "temporal",
+      "script": "train_office_mlp_rnn_20261002.py",
+      "extra": [
+        "--kind",
+        "mlp",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".001",
+        "--target",
+        "requested",
+        "--absolute-inputs",
+        "--precision",
+        "float64",
+        "--drift-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "matched_rnn_2026100303_point",
+      "family": "matched_rnn",
+      "seed": 2026100303,
+      "variant": "point",
+      "parent": "esn_2026100303_point",
+      "script": "train_paper_feature_matched_network_20261003.py",
+      "extra": [
+        "--kind",
+        "rnn",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".0001",
+        "--integral-weight",
+        "0"
+      ]
+    },
+    {
+      "name": "ordinary_rnn_2026100303_point",
+      "family": "ordinary_rnn",
+      "seed": 2026100303,
+      "variant": "point",
+      "script": "train_office_mlp_rnn_20261002.py",
+      "extra": [
+        "--kind",
+        "rnn",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".001",
+        "--target",
+        "requested",
+        "--absolute-inputs",
+        "--precision",
+        "float64",
+        "--drift-weight",
+        "0"
+      ]
+    },
+    {
+      "name": "matched_rnn_2026100303_temporal",
+      "family": "matched_rnn",
+      "seed": 2026100303,
+      "variant": "temporal",
+      "parent": "esn_2026100303_temporal",
+      "script": "train_paper_feature_matched_network_20261003.py",
+      "extra": [
+        "--kind",
+        "rnn",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".0001",
+        "--integral-weight",
+        ".1"
+      ]
+    },
+    {
+      "name": "ordinary_rnn_2026100303_temporal",
+      "family": "ordinary_rnn",
+      "seed": 2026100303,
+      "variant": "temporal",
+      "script": "train_office_mlp_rnn_20261002.py",
+      "extra": [
+        "--kind",
+        "rnn",
+        "--updates",
+        "4000",
+        "--learning-rate",
+        ".001",
+        "--target",
+        "requested",
+        "--absolute-inputs",
+        "--precision",
+        "float64",
+        "--drift-weight",
+        ".1"
+      ]
+    }
+  ],
+  "width": 128,
+  "shared_data_roles": [
+    "train",
+    "imitation_validation"
+  ],
+  "closed_loop_development_used": false,
+  "selection": "Each model uses whole-identity validation MSE (ordinary temporal nets also their registered integrated proxy). Later common development budget is separate.",
+  "fair_budget_caveats": [
+    "Same width is not same parameters/FLOPs.",
+    "ESN fits 12 ridge/input/spectral candidates per loss/seed; memoryless fits 12 additional ablation candidates.",
+    "Matched networks inherit a frozen same-data parent then get 4000 gradient updates; disclose parent fit cost.",
+    "Ordinary nets train from scratch; both neural baseline families get the temporal-loss choice.",
+    "ESN point uses no delta term; historical networks retain their fixed .25 delta term. Temporal ablation adds .1 integration."
+  ]
+}

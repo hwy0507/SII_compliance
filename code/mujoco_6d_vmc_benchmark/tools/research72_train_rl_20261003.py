@@ -46,7 +46,10 @@ def main():
     p.add_argument('--reward',choices=('metric','office_task'),required=True)
     p.add_argument('--seed',type=int,required=True);p.add_argument('--steps',type=int,default=80000)
     p.add_argument('--probe-receipt',type=Path,required=True)
+    p.add_argument('--parameter-source',type=Path,default=PARAMETER,
+        help='Independently archived baseline law/priors; allows declared office-development prior initialization')
     a=p.parse_args();root=a.root.resolve();out=a.output.resolve()
+    parameter=a.parameter_source.resolve()
     protocol=json.loads((root/'PROTOCOL.json').read_text());pdigest=sha(root/'PROTOCOL.json')
     assert a.seed in protocol['budget_caps']['training_seeds']
     assert 1375<=a.steps<=protocol['budget_caps']['rl_adaptation_steps_per_family_seed']
@@ -60,16 +63,16 @@ def main():
     deadline=min(datetime.fromisoformat(protocol['dispatch_deadline_utc']),datetime.fromisoformat(protocol['authorization_start_utc'])+timedelta(hours=48))
     assert datetime.now(timezone.utc)<deadline
     out.mkdir(parents=True,exist_ok=False)
-    sys.path.insert(0,str(PARAMETER));sys.path.insert(0,str(REWARDS))
+    sys.path.insert(0,str(parameter));sys.path.insert(0,str(REWARDS))
     from official_parameter_agent import OfficialParameterAgent,BATCH_SIZE
     from rewards import OfficeReward,RewardConfig,IntervalMetrics
-    prior=json.loads((PARAMETER/'PRIORS.json').read_text())['methods'][a.controller] if a.controller else None
+    prior=json.loads((parameter/'PRIORS.json').read_text())['methods'][a.controller] if a.controller else None
     dimension=prior['action_dimension'] if prior else 7
     agent=OfficialParameterAgent(seed=a.seed,total_steps=a.steps,utd=2,gamma=.9995,entropy_coef=-2.,
         initial_temperature=.0001,action_dimension=dimension)
     replay=Replay(a.steps,dimension,a.seed+53);rng=np.random.default_rng(a.seed+71)
     order=np.random.default_rng(a.seed+100).permutation(len(conditions))
-    sources={str(f):sha(f) for folder in (PARAMETER,REWARDS) for f in folder.rglob('*') if f.is_file() and f.suffix in ('.py','.json')}
+    sources={str(f):sha(f) for folder in (parameter,REWARDS) for f in folder.rglob('*') if f.is_file() and f.suffix in ('.py','.json')}
     sources.update({str(f):sha(f) for f in (ROOT/'tools').glob('research72_*.py')})
     reward_config=RewardConfig(mode=a.reward,error_transform='bounded',horizon_s=55,gamma=.9995)
     registered=dict(registered_utc=now(),protocol_sha256=pdigest,seed=a.seed,controller=a.controller,reward=reward_config.to_dict(),
@@ -79,7 +82,8 @@ def main():
         stage_deadline_utc=deadline.isoformat(),bc=False,teacher_labels_used=False,actor_input='canonical48 only',
         privileged_reward_metadata='Reference stage/error potential and physical metric intervals, never concatenated to actor input',
         smoothness_action='Actual common filtered normalized action7; differs from legacy primitive prefilter smoothing and is disclosed.',
-        prior=prior,probe_receipt=str(a.probe_receipt),probe_receipt_sha256=sha(a.probe_receipt),
+        prior=prior,parameter_source=str(parameter),prior_file_sha256=sha(parameter/'PRIORS.json'),
+        probe_receipt=str(a.probe_receipt),probe_receipt_sha256=sha(a.probe_receipt),
         initialization='from scratch, same official upstream SimbaV2 configuration; no primitive checkpoint or replay',
         resume='Episode-boundary replay and RNG saved. Automatic optimizer/RNG exact-resume is not implemented; do not silently restart.',
         fixed_scope='Original full55s gate/physics/actuator. Budget stops before an episode if fewer than1375 steps remain; no overshoot.')
@@ -112,7 +116,7 @@ def main():
                     '--research-protocol',str(root/'PROTOCOL.json'),'--protocol-sha256',pdigest,'--research-condition',c['id'],
                     '--v6-input',str(V6),'--reference',str(V6/'esn_original_v2/rollout.json'),
                     '--config',str(root/'teacher.json'),'--output',str(run),'--physics-dt','.00005','--contact-audit',
-                    '--parameter-source',str(PARAMETER)]
+                    '--parameter-source',str(parameter)]
                 if a.controller:cmd+=['--controller',a.controller]
                 entry=dict(episode=episode,condition_id=c['id'],run=str(run),command=cmd,started_utc=now(),step_before=step)
                 state['rows'].append(entry);save()

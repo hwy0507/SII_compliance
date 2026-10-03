@@ -25,6 +25,7 @@ def read(p):return json.loads(p.read_text())
 def validate(root,spec):
     protocol=read(root/'PROTOCOL.json')
     assert spec['protocol_sha256']==sha(root/'PROTOCOL.json')
+    if 'baseline_priors_sha256' in spec:assert sha(PARAMETER/'PRIORS.json')==spec['baseline_priors_sha256']
     assert sha(root/'CONDITIONS.json')==protocol['condition_file_sha256']
     conditions={c['id']:c for c in read(root/'CONDITIONS.json')['conditions']}
     assert 1<=len(spec['candidates'])<=48
@@ -68,7 +69,7 @@ def queue(root,phase,index):
             if c.get('rl_case'):command+=['--case',c['rl_case'],'--bridge',str(V6/'source/bridge_frozen.py')]
             if c.get('adapted_rl'):
                 adapted=c['adapted_rl'];command+=['--agent-checkpoint',adapted['checkpoint'],'--checkpoint-manifest',adapted['manifest'],
-                    '--parameter-source',str(PARAMETER)]
+                    '--parameter-source',adapted.get('parameter_source',str(PARAMETER))]
                 if adapted.get('controller'):command+=['--controller',adapted['controller']]
             row=dict(name=name,candidate=c['name'],condition_id=condition,category=c['category'],started_utc=now(),command=command)
             state['rows'].append(row);write(output/'execution.json',state)
