@@ -14,6 +14,8 @@ def main():
     p.add_argument('--data',type=Path,required=True);p.add_argument('--metadata',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True);p.add_argument('--seed',type=int,default=2026100302)
     p.add_argument('--leak-gate',action='store_true')
+    p.add_argument('--state-context-readout',action='store_true',
+        help='128 fixed state-times-proprioception features; no extra recurrent or trainable hidden units')
     p.add_argument('--memory-reset',action='store_true',help='Fit a matched-width memoryless ablation, resetting before every observation')
     p.add_argument('--gate-minimum',type=float,default=.05);p.add_argument('--gate-maximum',type=float,default=2.)
     p.add_argument('--delta-weight',type=float,default=0.,help='Readout error first-difference loss within training histories only')
@@ -55,6 +57,8 @@ def main():
                 actor.reset_at_each_observation=a.memory_reset
                 actor.context_gate_w=np.random.default_rng(a.seed+40000).normal(0,1,(128,12)) if a.leak_gate else None
                 actor.context_gate_limits=(np.array([a.gate_minimum,a.gate_maximum]) if a.gate_minimum!=.05 or a.gate_maximum!=2. else None)
+                actor.state_context_readout_w=(np.random.default_rng(a.seed+50000).normal(0,1/np.sqrt(12),(128,12))
+                                              if a.state_context_readout else None)
                 actor.reset();features=[];previous=None
                 for eid,o in zip(ep,obs):
                     if eid!=previous:actor.reset();previous=eid
@@ -104,6 +108,7 @@ def main():
                         readout_activation='clipped_linear',output_gain=1.,
                         reset_at_each_observation=a.memory_reset,
                         **({'context_gate_w':actor.context_gate_w} if actor.context_gate_w is not None else {}),
+                        **({'state_context_readout_w':actor.state_context_readout_w} if actor.state_context_readout_w is not None else {}),
                         **({'context_gate_limits':actor.context_gate_limits} if actor.context_gate_limits is not None else {}))
                     row=dict(name=name,rho=rho,input_gain=gain,ridge=ridge,holdout_mse=mse,
                         physical_history_mse=float(np.mean((prediction[physical]-y[physical])**2)),checkpoint_sha256=sha(checkpoint))
@@ -128,6 +133,7 @@ def main():
             lineage=metadata['lineage'],source_sha256=hashes,seed=a.seed,candidates=candidates,selected=selected,
             reservoir_width=128,learned_hidden_readout_width=0,trainable_readout_coefficients=int((actor.weights.shape[0]-12)*7),
             fields=sorted(fields),contextual_leak_gate=a.leak_gate,readout_activation='clipped_linear',
+            state_context_readout=a.state_context_readout,state_context_projection_trainable=False,
             gate_multiplier_limits=[a.gate_minimum,a.gate_maximum] if a.leak_gate else None,
             independent_slowdown_readout=True,selection=metadata.get('selection_split','Whole-history synthetic holdout')+' requested-action MSE only',
             temporal_readout_loss=dict(delta_weight=a.delta_weight,integral_weight=a.integral_weight,integral_window_steps=16,

@@ -1,5 +1,14 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-03 17:46UTC：读出结构工程就绪，尚无新拟合
+
+初始开发60/264，四队列稳定。完整首条件代数诊断显示记忆项可覆盖当前负载的反向请求；
+新可选r*tanh(G*c)固定交互允许当前本体信息调制记忆读出，仅训练线性系数。
+4组合随机工程探针最大NumPy/Torch差5.61e-15；旧102模型完整1375帧重放精确相同。
+尚未新增拟合、闭环结果或预算修订02；ESN48/seed cap已满。优先等待teacher选择/真实再采集再决定共享拟合。
+已核验服务器本轮根context_readout_engineering_archive_v1及public_contact_diagnostics_v3，详见UPDATE_LOG与结构说明。
+单条已知train_000最终入口预演等待前序，仅工程验证；真正24最终条件仍封存。
+
 ## 2026-10-03 17:08UTC：闭环动作偏差定位，不当执行标签
 
 首条件33模型完整14task/10strict，ESN与matchedRNN各4task/3strict（各6损失候选回合）。

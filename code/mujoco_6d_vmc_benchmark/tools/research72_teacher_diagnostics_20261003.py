@@ -19,9 +19,12 @@ def main():
     p.add_argument('--condition',help='Require every registered candidate on this public identity')
     p.add_argument('--counterfactual-teacher',action='store_true',
         help='Diagnostic only: query original teacher on student observations; never actual-execution labels')
+    p.add_argument('--readout-decomposition',action='store_true',
+        help='Replay fixed-feature readout contributions at the queried contact frames, without fitting')
     p.add_argument('--output',type=Path,required=True);a=p.parse_args();out=a.output.resolve()
     assert bool(a.public_phase)==bool(a.condition)
     assert not a.counterfactual_teacher or a.public_phase
+    assert not a.readout_decomposition or a.counterfactual_teacher
     teacher_config=None
     if a.counterfactual_teacher:
         assert sha(a.root/'teacher.json')==json.loads((a.root/'PROTOCOL.json').read_text())['teacher_config_sha256']
@@ -86,6 +89,37 @@ def main():
                     original_teacher_requested_action=queries[selected].tolist(),
                     student_filtered_action=filtered[selected].tolist(),
                     interpretation='Original teacher recurrent state replayed on actual student observations; hypothetical requests, not executed labels or proof of superior physical outcome.')
+                if a.readout_decomposition:
+                    with np.load(run/'checkpoint.npz') as checkpoint:
+                        contract=str(checkpoint['contract'])
+                    from office_vmc_memory_esn_20260927 import OfficeVMCMemoryESN
+                    from office_context_network_20261003 import OfficeContextNetwork
+                    if contract in (OfficeVMCMemoryESN.contract,OfficeContextNetwork.contract):
+                        model=(OfficeVMCMemoryESN if contract==OfficeVMCMemoryESN.contract else OfficeContextNetwork)(run/'checkpoint.npz')
+                        actor=getattr(model,'core',model)
+                        assert not actor.nonlinear and not actor.axis_separable and actor.weights.shape in ((424,7),(552,7))
+                        assert actor.readout_activation=='clipped_linear' and actor.output_gain==1.
+                        groups={'current_signed_load':slice(0,6),'signed_state':slice(6,134),
+                                'current_absolute_load':slice(134,140),'absolute_state':slice(140,268),
+                                'current_load_context':slice(268,412),'direct_context_forbidden':slice(412,424)}
+                        if getattr(actor,'state_context_readout_w',None) is not None:
+                            assert actor.weights.shape==(552,7)
+                            groups.update(state_current_context=slice(412,540),direct_context_forbidden=slice(540,552))
+                        decomposition=[];maximum=0.
+                        for index,observation in enumerate(obs):
+                            features=actor.features(observation);raw=features@actor.weights
+                            prediction=np.clip(raw,-1.,1.);prediction[0]=np.clip(raw[0],0.,1.)
+                            maximum=max(maximum,float(np.max(np.abs(prediction-requests[index]))))
+                            if index in selected:
+                                parts={key:(features[sl]@actor.weights[sl]).tolist() for key,sl in groups.items()}
+                                np.testing.assert_allclose(np.sum(list(parts.values()),axis=0),raw,rtol=0,atol=1e-11)
+                                decomposition.append(dict(actor_index=index,time_s=float(clock[index]),
+                                    raw_before_clipping=raw.tolist(),contributions=parts,
+                                    state_norm=float(np.linalg.norm(actor.state))))
+                        assert maximum<1e-10
+                        row['readout_decomposition']=dict(frames=decomposition,replay_max_abs=maximum,
+                            checkpoint_sha256=sha(run/'checkpoint.npz'),
+                            caveat='Algebraic feature contributions, not independent causal interventions; correlated features and cancellation are possible.')
         rows.append(row)
     assert len(rows)==len(paths)
     result=dict(completed_utc=now(),source_sha256=sha(Path(__file__)),rows=rows,

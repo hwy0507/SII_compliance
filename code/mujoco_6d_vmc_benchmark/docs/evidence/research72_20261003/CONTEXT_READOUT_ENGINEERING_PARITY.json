@@ -1,0 +1,80 @@
+{
+  "completed_utc": "2026-10-03T17:27:33.337594+00:00",
+  "argv": [
+    "tools/research72_context_readout_parity_20261003.py",
+    "--learning",
+    "outputs/research72_20261003_1149/learning_v1",
+    "--data",
+    "outputs/research72_20261003_1149/demonstrations_v1/training_data.npz",
+    "--output",
+    "outputs/research72_20261003_1149/context_readout_parity_v1"
+  ],
+  "physics_steps": 0,
+  "training_updates": 0,
+  "new_fits": 0,
+  "data_sha256": "b97acf4c61d9d3ba4d5fcb4817ac449b460e65a4821be632c5f61a5a1bba67c6",
+  "source_sha256": {
+    "tools/research72_context_readout_parity_20261003.py": "a91bbc6800b8a8c35de4d71c50e979b45f7e7d569292f7034629734bcef0df6c",
+    "tools/train_paper_feature_matched_network_20261003.py": "19e9836a2f5058a049a6b8563869dc9595a683f3b1e9b64c53749077051f7a1b",
+    "scripts/office_vmc_memory_esn_20260927.py": "5b03256b390ba2a119122852651d325f6a5e30d86098ce19c06cd95020408c3a"
+  },
+  "rows": [
+    {
+      "kind": "rnn",
+      "gated": false,
+      "max_abs_error": 4.107825191113079e-15,
+      "export_exact": true,
+      "zero_equilibrium": true,
+      "unused_field_isolation": true,
+      "projection_trainable": false,
+      "esn_trainable_readout": 3780,
+      "matched_trainable_parameters": 40132,
+      "same_state_zero_load_context_response_delta": 0.003385608071621249,
+      "engineering_probe_sha256": "f4c37179325874a4bcb57095b6f73b60c214f24e86b7a0458cb2b284126ff2d3",
+      "engineering_probe_not_a_candidate": true
+    },
+    {
+      "kind": "rnn",
+      "gated": true,
+      "max_abs_error": 5.6066262743570405e-15,
+      "export_exact": true,
+      "zero_equilibrium": true,
+      "unused_field_isolation": true,
+      "projection_trainable": false,
+      "esn_trainable_readout": 3780,
+      "matched_trainable_parameters": 40132,
+      "same_state_zero_load_context_response_delta": null,
+      "engineering_probe_sha256": "eb68a83827362b3687bb1f7e4a01677dbd24f3f4a32244ba35a6f4e90de84600",
+      "engineering_probe_not_a_candidate": true
+    },
+    {
+      "kind": "mlp",
+      "gated": false,
+      "max_abs_error": 2.4424906541753444e-15,
+      "export_exact": true,
+      "zero_equilibrium": true,
+      "unused_field_isolation": true,
+      "projection_trainable": false,
+      "esn_trainable_readout": 3780,
+      "matched_trainable_parameters": 23748,
+      "same_state_zero_load_context_response_delta": null,
+      "engineering_probe_sha256": "ae8708bcdb9fc1ce47e6854dcfd1ff79c766edbfe9d95c90653e5925a34dd7cc",
+      "engineering_probe_not_a_candidate": true
+    },
+    {
+      "kind": "mlp",
+      "gated": true,
+      "max_abs_error": 2.7755575615628914e-15,
+      "export_exact": true,
+      "zero_equilibrium": true,
+      "unused_field_isolation": true,
+      "projection_trainable": false,
+      "esn_trainable_readout": 3780,
+      "matched_trainable_parameters": 23748,
+      "same_state_zero_load_context_response_delta": null,
+      "engineering_probe_sha256": "b5c0d46353d1b9f42874f259ab7b38f98d8bd586fad67380c7831e4e8b6ad817",
+      "engineering_probe_not_a_candidate": true
+    }
+  ],
+  "limitation": "Synthetic coefficients test implementation and expressiveness only, not fit quality, physical success or superiority."
+}

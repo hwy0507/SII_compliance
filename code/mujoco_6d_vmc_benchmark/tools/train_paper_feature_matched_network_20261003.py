@@ -20,6 +20,8 @@ class Network(torch.nn.Module):
         self.coeff=torch.nn.Parameter(torch.tensor(actor.weights*norm[:,None],dtype=torch.float64))
         self.register_buffer('leak',torch.tensor(actor.leak,dtype=torch.float64))
         self.register_buffer('context_gate_w',None if actor.context_gate_w is None else torch.tensor(actor.context_gate_w,dtype=torch.float64))
+        projection=getattr(actor,'state_context_readout_w',None)
+        self.register_buffer('state_context_readout_w',None if projection is None else torch.tensor(projection,dtype=torch.float64))
         self.gate_limits=(.05,2.) if actor.context_gate_limits is None else tuple(actor.context_gate_limits)
         self.register_buffer('norm',torch.tensor(norm,dtype=torch.float64))
         mask=np.ones_like(actor.weights);mask[-12:]=0
@@ -45,7 +47,10 @@ class Network(torch.nn.Module):
                 states.append(state)
             hidden=torch.stack(states,1)
         signed=torch.cat((force,hidden),-1)
-        features=torch.cat((signed,signed.abs(),cross,context),-1)
+        pieces=[signed,signed.abs(),cross]
+        if self.state_context_readout_w is not None:
+            pieces.append(hidden*torch.tanh(context@self.state_context_readout_w.T))
+        features=torch.cat((*pieces,context),-1)
         raw=(features/self.norm)@self.coeff
         return torch.cat((raw[...,:1].clamp(0,1),raw[...,1:].clamp(-1,1)),-1),state
 
@@ -164,6 +169,8 @@ def main():
                     width=128,trainable_parameters=sum(p.numel() for p in model.parameters() if p.requires_grad)-12*7,
                     features_matched_to_context_esn=True,learning_rate=a.learning_rate,precision='float64',tbptt_steps=64,
                     fixed_contextual_leak_gate=actor.context_gate_w is not None,gate_weights_trainable=False,
+                    fixed_state_context_readout=getattr(actor,'state_context_readout_w',None) is not None,
+                    state_context_projection_trainable=False,
                     integral_weight=a.integral_weight,integral_window_steps=16,action_delta_weight=.25,
                     actual_nonpadding_observations=sum(s[3] for s in schedule),schedule_sha256=sha(out/'schedule.json'),
                     holdout_mse=float(np.mean((predictions[~train]-y[~train])**2)),physical_history_mse=float(np.mean((predictions[physical]-y[physical])**2)),

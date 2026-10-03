@@ -73,6 +73,8 @@ def main():
             trainable=core.weights.size-core.context_dimension*7
             fixed=core.win.size+core.w.size+core.leak.size+core.scale.size
             fixed+=core.context_gate_w.size if core.context_gate_w is not None else 0
+            projection=getattr(core,'state_context_readout_w',None)
+            fixed+=projection.size if projection is not None else 0
             if cls==OfficeContextNetwork:
                 learned_hidden=core.win.size+(core.w.size if actor.kind=='rnn' else 0)
                 trainable+=learned_hidden;fixed-=learned_hidden

@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2026-10-03 — 当前本体调制读出工程验证与最终入口预演登记
+
+- 17:42UTC实时核对main65b3dd64868010d9579c565842abeb9a04ac9ca4、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，读取两分支日志和AGENTS。
+  65b源码在arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/65b3dd64868010d9579c565842abeb9a04ac9ca4/核验3158文件；
+  tar SHA f646a5b44ada140f03712fb0e7d0a74087df108d61cf09804065a9458d6a4bb3。
+- 公开完整首条件诊断v3保留全部33模型。ESN积分303在41.72s的z请求+0.3368中，当前signed load项-0.4708，
+  signed state项+1.4374，另有absolute state等抵消。是相关特征的代数分解，不是隔离因果结论或实际teacher执行标签。
+  DIAGNOSTICS SHA66b833eb6d2ce68f35156ffe16c5fbf5d3926bd21087a24ad8752f64e8394d38；真实执行脚本SHA89c57a43ed28a29e8b6767b957c39fde49525946093c0621af88dd2d3949966e。
+- 新可选固定交互特征r*tanh(G*c)，仍128储备池、相同本体输入，只训练线性读出；没有混合teacher。
+  扩展特征后不是单独对r/c线性和，训练系数2884→3780，固定G另1536系数，不能称等参数/FLOP。
+  给同特征MLP/RNN同一固定变换；未拟合任何新候选，原ESN48/seed cap仍用满，无修订02。
+- 本地单线程3GiB，4随机系数组合NumPy/Torch最大差5.61e-15，真实loader导出精确；
+  零状态零负载平衡、禁用字段隔离、固定G无梯度通过。旧102模型在已知train_000完整1375帧动作重放全部误差0。
+  ENGINEERING_ONLY权重不列候选，不是物理结果。原运行runtime保持不变。
+- 本轮共享根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/：
+  public_contact_diagnostics_v3/；context_readout_engineering_archive_v1/已核验14文件，
+  tar SHA ff52bdeb2fecdafc2ebc9f3791f152b0b86491f7e60524b5c7d29f22e1926c82。
+  PARITY SHAfa1bef3e4193bfc188b9307b138aee2391438762bd7ea47dc2a62aa69e674b3e，
+  backward PROFILE SHA3b7d7c7491783de56853edf256e8da570bc7b343b504f3d45e9889d707b047fb。
+- 最终入口预演服务已登记，等待followup完成后使用1受管理槽位重放已知train_000的原teacher。
+  独立合成协议/锁/receipt不读写真正封存区或FINAL_UNSEAL_RECEIPT。spec SHA92dc8c61a5e41e63bf5a29b4ed5d154583322cd92b563263b9bd4fd47a37f712。
+  相邻research72_20261003_1149_final_rehearsal_runtime_v1核验499文件，tar SHA1179c10aaf2631970fdf261ff9811df37a5096f4329c7dc4fc9e800f337ac8d2。
+  最终batch拒绝预演活动时启动，曝光账本将预演单列；预演尚未物理执行，不能宣称最终链路全部验证。
+- 17:46UTC初始开发60/264完成，4队列稳定；RL/teacher再采集/预演等待前序。真正最终24条件仍封存。
+  已完成工程验证，尚未完成新结构学习、全部baseline适配或最终统计；不宣称ESN优化有效或论文可投稿。
+
 ## 2026-10-03 — 首开发条件完整对照与柱子失败动作诊断
 
 - 继续核对main415501369e4b26ecdca60f65a9a6761115ffb6e8、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6。

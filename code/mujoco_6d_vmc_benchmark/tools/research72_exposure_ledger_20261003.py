@@ -46,14 +46,18 @@ def learning(path):
 
 
 def physics(path):
-    if not (path/'execution.json').exists():return dict(path=str(path),status='not_started')
-    state=read(path/'execution.json');rows=[]
+    execution=path/'execution.json'
+    if path.name=='evaluation' and path.parent.name=='final_rehearsal_v1':
+        execution=path.parent/'execution.json'
+    if not execution.exists():return dict(path=str(path),status='not_started')
+    state=read(execution);rows=[]
     for q in sorted(path.glob('queue_[0-3]/execution.json')):
         queue=read(q)
         for r in queue['rows']:
             run=q.parent/r['name']
             row=dict(run=str(run),name=r['name'],category=r.get('category','enhanced_teacher'),
-                condition_id=r.get('condition_id',r['name']),role=r.get('role','development'),
+                condition_id=r.get('condition_id',r['name']),
+                role='diagnostic_rehearsal' if r.get('diagnostic_only') else r.get('role','development'),
                 wall_seconds=seconds(r),returncode=r.get('returncode'),completed=False)
             if 'audit_sha256' in r:
                 assert sha(run/'AUDIT.json')==r['audit_sha256']
@@ -67,7 +71,7 @@ def physics(path):
                 failed_task=sum(r['completed'] and not r['task'] for r in rows),
                 failed_strict=sum(r['completed'] and not r['strict'] for r in rows),
                 wall_seconds_completed=sum(r['wall_seconds'] or 0 for r in rows if r['completed']))
-    return dict(path=str(path),status=state['status'],totals=totals,rows=rows)
+    return dict(path=str(path),status=state['status'],execution_receipt=str(execution),totals=totals,rows=rows)
 
 
 def reinforcement(path):
@@ -102,7 +106,8 @@ def main():
     a=p.parse_args();root=a.root.resolve()
     phases=('teacher_bank','controller_screen_v1','learning_development_v1','controller_confirmation_v1',
             'additional_development_v1/nominal_development','additional_development_v1/neural_lr_development',
-            'context_gate_development_v1/development','teacher_refinement_v1/collection')
+            'context_gate_development_v1/development','teacher_refinement_v1/collection',
+            'final_rehearsal_v1/evaluation')
     result=dict(created_utc=datetime.now(timezone.utc).isoformat(),source_sha256=sha(Path(__file__)),
         protocol_sha256=sha(root/'PROTOCOL.json'),snapshot_only=True,sealed_contents_read=False,
         physics=[physics(root/x) for x in phases],

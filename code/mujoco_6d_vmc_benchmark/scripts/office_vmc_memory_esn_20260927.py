@@ -25,6 +25,7 @@ class OfficeVMCMemoryESN:
             self.reset_at_each_observation=bool(z['reset_at_each_observation']) if 'reset_at_each_observation' in z.files else False
             self.context_dimension=12 if self.position_context else 9
             self.context_gate_w=z['context_gate_w'].copy() if 'context_gate_w' in z.files else None
+            self.state_context_readout_w=z['state_context_readout_w'].copy() if 'state_context_readout_w' in z.files else None
             self.context_gate_limits=z['context_gate_limits'].astype(float) if 'context_gate_limits' in z.files else None
             if self.context_gate_limits is not None:
                 if self.context_gate_limits.shape!=(2,) or not np.isfinite(self.context_gate_limits).all() or not 0<=self.context_gate_limits[0]<1<self.context_gate_limits[1]<=100:
@@ -46,6 +47,13 @@ class OfficeVMCMemoryESN:
                 if not self.context_inputs or self.context_gate_w.shape!=(self.w.shape[0],self.context_dimension) or not np.isfinite(self.context_gate_w).all():
                     raise ValueError('Invalid context-conditioned reservoir leak')
             if self.position_context and not self.context_inputs:raise ValueError('Position context requires context inputs')
+            if self.state_context_readout_w is not None:
+                if (not self.context_inputs or self.nonlinear or
+                    self.state_context_readout_w.shape!=(self.w.shape[0],self.context_dimension) or
+                    not np.isfinite(self.state_context_readout_w).all()):
+                    raise ValueError('Invalid fixed state-context readout projection')
+                expected=2*(6+self.w.shape[0])+12*self.context_dimension+self.w.shape[0]+self.context_dimension
+                if self.weights.shape!=(expected,7):raise ValueError('State-context readout dimension mismatch')
             if self.context_inputs and not self.absolute_inputs:raise ValueError('Context reservoir requires magnitude channels')
             if self.context_inputs and np.any(self.weights[-self.context_dimension:]!=0):raise ValueError('Direct context-only action is forbidden')
             self.output_gain=float(z['output_gain']) if 'output_gain' in z.files else 1.
@@ -92,7 +100,17 @@ class OfficeVMCMemoryESN:
         base=np.r_[signed,np.abs(signed)]
         if getattr(self,'readout_order',1)==3:
             base=np.r_[base,signed*np.abs(signed),signed**3]
-        return np.r_[base,cross,context] if cross is not None else base
+        if cross is not None:
+            projection=getattr(self,'state_context_readout_w',None)
+            if projection is not None:
+                # Fixed bounded interaction with *current* proprioception lets
+                # remembered load affect the action differently as progress or
+                # tracking error changes. It cannot generate a zero-state
+                # action by context alone. Only the final coefficients learn.
+                interaction=self.state*np.tanh(projection@context)
+                return np.r_[base,cross,interaction,context]
+            return np.r_[base,cross,context]
+        return base
 
     def act(self,obs):
         features=self.features(obs)
