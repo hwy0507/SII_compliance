@@ -11,7 +11,7 @@ import os
 from pathlib import Path
 import time
 
-WORKERS = {'research72_worker_20261003.py', 'paper_office_worker_20261002.py',
+WORKERS = {'research72_worker_20261003.py', 'research72_final_worker_20261003.py', 'paper_office_worker_20261002.py',
     'paper_classical_worker_20261002.py', 'paper_rl_worker_20261002.py',
     'validate_office_apparatus_v5_20260917.py', 'validate_office_v5_20260918.py'}
 

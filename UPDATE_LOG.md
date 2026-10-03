@@ -1,5 +1,25 @@
 # 更新日志
 
+## 2026-10-03 — 最终评估冻结保护与训练成本账本
+
+- 15:00UTC实时核对远端main389e9e53bc016a03a250fe5f053a5a6513331023、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，
+  两分支无新修改；读取AGENTS/同步skill。389源码包SHA77790e550cdfd516b2ef69701ae2a5339222bede0ea8addc28933ab164a33219
+  已在`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/389e9e53bc016a03a250fe5f053a5a6513331023/`核验3126文件。
+- 新增最终模型锁、独立最终worker和有限4槽队列。锁要求全部16类别、全部3seed与开发证据，
+  不按strict资格删方法；checkpoint/RL嵌套文件、精确源码及资产集合核验。直接调用子队列也必须先有同锁/同输出开封收据。
+  6项合成数据回归通过，含改权重、加源码、改资产、改收据/条件hash、缺收据拒绝；未读真实封存条件，未启动最终评估。
+  真实端到端最终执行仍未验证。新增代码本批提交前仅本地，不热改已有稳定runtime。
+- 新只读曝光账本分开统计teacher失败、ridge候选、神经梯度、开发仿真和RL累计新交互；恢复段不重复累加继承步数。
+  15:08UTC快照teacher48完整44task/28strict；筛选56/96完成17task/11strict，其余仍在运行，非最终结果。
+  初始33模型108ridge/96000梯度更新，复核48模型192000梯度更新；RL等待前序，当前新交互0。
+- 本轮服务器根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/`：
+  `EXPOSURE_SNAPSHOT_20261003_1520.json`（实际时间见created_utc）SHA579bf27e5ee931f9c00d036b59c35a911e8583e83072eb49d181f3d48e5cd369，
+  已下载逐SHA核对并保留Git证据。实际脚本在服务器incoming/research72_exposure_ledger_20261003_1520.py，
+  SHA2812aaf433ef13005e9f7f966781ea6f7c1f16418cde2036af6c721aa317c85e两端一致；后续已提交源码以source/<commit>为准。
+- 新分析方案先登记成对条件/seed交叉bootstrap、接触覆盖与双方成功子集局限、恢复删失和成本披露；
+  不把72回合视为72独立环境，不把无接触当柔顺零力，不以多指标事后加权制造赢家。环境/gate/actor/执行器均未改变。
+  四仿真稳定运行；33+21学习模型闭环、RL适配、最终24条件及投稿证据仍未完成。
+
 ## 2026-10-03 — 加强神经baseline与累计动作偏差诊断
 
 - 开工沿用已核验main d08dc8f23a0b5e9bbff2bed66e489620333d9052、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6。
