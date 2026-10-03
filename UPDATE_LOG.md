@@ -1,5 +1,22 @@
 # 更新日志
 
+## 2026-10-03 — 全102学习actor字段审计与本地完整三机位工程验证
+
+- 延续核对main c84a7cd8aea0ab1874d7c3682773e772445c2cc5、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；运行快照不改。
+  c84源码在arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/c84a7cd8aea0ab1874d7c3682773e772445c2cc5/
+  核验3201文件，tar SHA20595252d883a0ff09b4c084544561ad45416e0f6eab6b9664d497a9752d253b。
+- 本机21:23:55–21:24:06UTC对全部102模型回放train_000：140250时刻请求与导出最大差0，扰动未声明30字段动作逐值不变，
+  82500状态检查不变。只读输入、有限幅值和checkpoint身份通过；3负对照涵盖隐藏状态偷用字段/输入原位改写。
+  是声明18字段的序列边界检查，不证明上游传感器真实、不覆盖RL、不是任务通过；0拟合/0物理。
+- 21:30:42–21:31:02UTC本地已知teacher完整55s三视角：18.771s渲染＋1.692s全帧解码，1375帧/25fps，峰值691216384B。
+  输入状态/模型不变，仅mj_forward；6时刻三视图拼图目视核对。不是ESN或新最终成功，最终38模型仍按固定首条件全展示。
+- 本轮服务器根/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/：
+  actor_field_audit_archive_v1全3文件核验，结果SHA7aaba52990beb7423b707ae243434c8420f4f38ef51723d52a3ebb4dec9fc5d6；Git含同字节全102行。
+  media_rehearsal_archive_v1/evidence全10文件/18244126字节核验；execution SHA464dbe742f17fa3e65c247cbf30fe8d9f4f637b323a9ec72f6b14266ad113f5f；
+  MP4 SHA d6a009c7240eeb8877f4ce853331044c349787083fe4227a9c1b68d07ed11b0b；tar SHA2a8e5a140687976644095e88c189a544b0610f5afa7c63215ddbf8131366659d。
+  实际本地路径/命令保留，脚本混合源及边界见RESEARCH72_INPUT_AND_MEDIA_AUDIT。
+- 最新物理检查220/264，四队列稳定；24最终封存，修订02未登记，不因媒体变快削减审计预留。teacher/增强组/RL与最终比较未完成。
+
 ## 2026-10-03 — 第六开发条件失败与剩余容量核算
 
 - 本轮实时核对main792316711f11e43a12e06bfeb389f87b015fe040、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，读取两日志/AGENTS。

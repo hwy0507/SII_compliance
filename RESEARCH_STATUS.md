@@ -1,6 +1,6 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
-最后人工核验：**2026-10-03 21:15 UTC / 北京时间10月4日05:15**。本页是 GitHub 固定入口；
+最后人工核验：**2026-10-03 21:35 UTC / 北京时间10月4日05:35**。本页是 GitHub 固定入口；
 每个完成的研究批次更新，具体提交见 [UPDATE_LOG.md](UPDATE_LOG.md)。运行状态有时间戳，不代表实时监控。
 
 ## 当前结论
@@ -12,6 +12,11 @@
 [上轮全部26方法正式矩阵](code/mujoco_6d_vmc_benchmark/docs/evidence/all_methods_formal_20261003/report/MATRIX.md)。
 
 ## 本轮状态
+
+21:35UTC补齐[102模型输入隔离与三机位工程核验](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_INPUT_AND_MEDIA_AUDIT_20261003.md)：
+全部140,250时刻动作精确重放，扰动未声明字段不改变动作/可见状态；0新拟合。已知训练teacher的完整55s三视角
+本地渲染18.77s、全帧解码1.69s，0新物理积分，峰值0.644GiB；共享归档已核验。
+这不是新ESN/留出成功，未来最终38模型仍须全部展示。最新物理检查220/264、四稳定队列，其他阶段继续等待。
 
 21:09成本快照209/264；第六完整开发条件ESN4/6放置、0/6严格，四条已放置仍因柱子/link7穿透0.223–0.594mm失败。
 原门槛/失败分母保留。[剩余容量核算](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_CAPACITY_FORECAST_20261003.md)
