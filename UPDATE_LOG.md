@@ -1,5 +1,30 @@
 # 更新日志
 
+## 2026-10-03 — 38模型冻结前汇总、相同teacher无重复采集与方法定位
+
+- 本阶段基于已实时核对main9d996dde19adf4bb816cc403b51bc5025f527f32及baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；收尾重读AGENTS。
+  main9d源码在arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/9d996dde19adf4bb816cc403b51bc5025f527f32/
+  核验3170文件，tar SHA586c79474bf49dd7d05cca9d679b130014472e4374956fa11f6cdbf4f48d4bee。
+- 新research72_finalize_selection仅汇总公开选择：6学习族×3seed、5RL族×3seed、teacher/三经典/nominal共5确定性方法，合计38。
+  缺任何family/seed或混用跨seed variant则阻止冻结，不以开发成功资格筛模型。RL按最新完成训练边界选checkpoint，
+  不读reward/任务结果来挑权重；保留实际累计步和stop_reason，共同cap不冒充每族步数严格相同。
+- 发现再采集在teacher相同时记录complete_skipped_identical_teacher，而最终锁只接受complete工作收据：
+  新汇总器核验原teacher/config/选择hash完全相同且新增物理0，再写明确的零操作closure；不改原执行状态或伪造40条新示范。
+  五项合成检查通过，包含38模型全失败仍保留、缺失seed/族、混variant拒绝及真实文件/manifest衔接的skip分支。
+  checkpoint字节仍由已有final-lock验证；本次并未执行真实最终模型汇总、锁定或开封。
+- 文献原始元数据4篇已核验；已读Gauthier等(2021)NG-RC出版商HTML正文Introduction至Methods，未读补充材料。
+  新RESEARCH72_METHOD_POSITIONING说明固定非线性特征+线性读出及leaky ESN不是本项目首创，
+  本体信息调制记忆的有效性仍待同数据消融与完整闭环结果；状态有界不当echo-state收缩、无源或机器人安全证明。
+  其余3篇仅核验元数据，不声称完成系统综述或忠实复现；一次429和首次303页面未冒充有效全文。
+- 已核验共享归档主机arm1@192.168.31.70，本轮根
+  /home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/related_work_review_v1/：
+  5文件，tar SHA3c7b08994ab1e09d1daf0efed5f845843482a63d7f59ff0e98f9586fbfad961c，
+  HTML SHAb03455ff17545082d796162b922d3741a79df55b438e6c62160c20d84fcc8231。
+  初始4元数据归档related_work_metadata_archive_v1独立保留，tar SHA5ea2cfc9dd0888f0bb50e25c4b5e54ed645ac99fe359708b81fc5f0e063c7347。
+- 18:36UTC初始开发100/264（33/33/32/2分布），仍4稳定物理队列；第三条件尚未齐备，不提前汇总其胜负。
+  本机约10.6GiB可用；没有活跃subagent或新增仿真。teacher确认、RL与再采集仍等待前序，真正24条件封存。
+  无新拟合、无预算修订02、无最终结论；下一轮学生拟合必须等真实数据与可用预算核定。
+
 ## 2026-10-03 — 最终矩阵/媒体入口、工程中断保留与第二条件完整结果
 
 - 延续本轮实时核对main e4366a7a941da64b443db1278ce36af4eae72ebb与baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，AGENTS已重读。
