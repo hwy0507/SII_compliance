@@ -140,6 +140,7 @@ def assemble(candidates, conditions, rows):
                 missing_pairs=[dict(candidate=c['name'], condition_id=d) for c in candidates for d in conditions
                                if (c['name'], d) not in seen],
                 caveats=['Strict success is primary; task and all failures remain visible.',
+                         'RMSE is time-weighted distance to the current task-stage goal, not a shared time-indexed trajectory. Policies can progress through stages at different times; lower RMSE alone does not establish better completion or compliance.',
                          'Contact differences condition on jointly strict, full, exposed pairs and are not causal claims.',
                          'Force integral is the integral of force magnitude, not signed net impulse.',
                          'Short trajectories are separate; unexposed contact metrics are NA.',
@@ -238,7 +239,7 @@ def load_evidence(root, phase, lock_path, lock_digest):
 def markdown(report):
     lines = ['# Frozen-model comparison', '',
         f"Audited {report['audited']}/{report['planned']} planned episodes. Missing records remain missing.", '',
-        '| Family | Task | Strict | Missing | Full / short | RMSE mm (full mean) | Peak torque Nm (full mean) | Peak speed m/s (full mean) |',
+        '| Family | Task | Strict | Missing | Full / short | Stage-goal RMSE mm (full mean) | Peak torque Nm (full mean) | Peak speed m/s (full mean) |',
         '|---|---:|---:|---:|---:|---:|---:|---:|']
     def value(x):
         return 'NA' if x is None else f'{x:.3f}'

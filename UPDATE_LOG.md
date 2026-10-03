@@ -1,5 +1,21 @@
 # 更新日志
 
+## 2026-10-03 — RL组合内存有限预检与RMSE解释
+
+- 本轮延续核验main558947de4d9aef526768f6af86c0f94dd331b3a0、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6。
+  main558源码已在arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/558947de4d9aef526768f6af86c0f94dd331b3a0/
+  全3215文件核验；tar SHA484d74b444652d2053523998cc09f63e4514bc436efd04ef0da62eae926b5a13。
+- 22:53:57–22:55:16UTC实际learner依赖＋80k Replay＋1,086,394,368B物理队列等量压力，CUDA单线程3GiB/无swap，
+  4周期/8工程更新峰值2,844,037,120B，余359.715MiB，oom/max事件0。原工程7D73文件集合/hash不变；8更新丢弃，不计训练或候选。
+  这是零物理静态压力，不是三learner+真实仿真/存档峰值保证。真实5500步仍须核验，不改运行资源与训练源码。
+- 共享根/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_memory_probe_v1/execution.json
+  SHA26885a47d096fd3bcce484544bbb86ca7812b746524d540538d7dc7b83193297；相邻rl_memory_probe_source_v1实际脚本
+  SHA9be4dc23c1ae0e0fc8a880d08ea241eb249e570509abd9cc67aa77aef36b2593，两端核验。Git含同字节原执行记录，语法/有限真实运行通过。
+- 核对EpisodeMetrics.sample：RMSE是物理子步末端到当前任务阶段goal距离，各控制器切换时间不同。
+  最终报告明确Stage-goal RMSE与解释边界；不改任何计算、排序或gate，不把低误差但停滞称柔顺优势。
+- 更新分析方案、联合进度、周报、RESEARCH_STATUS及RESEARCH72_RL_MEMORY_PREFLIGHT。teacher/经典确认运行中，
+  新组/RL等待，24最终仍封存，修订02未登记，无ESN最终优势结论。
+
 ## 2026-10-03 — 初始264回合完成与全部候选的描述报告
 
 - 开工实时核验main94fdf073be3c03c437d88b656ea5e6903f3c0796、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，fetch并读两日志/AGENTS。

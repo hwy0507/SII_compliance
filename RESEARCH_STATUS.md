@@ -1,6 +1,6 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
-最后人工核验：**2026-10-03 22:45 UTC / 北京时间10月4日06:45**。本页是 GitHub 固定入口；
+最后人工核验：**2026-10-03 22:57 UTC / 北京时间10月4日06:57**。本页是 GitHub 固定入口；
 每个完成的研究批次更新，具体提交见 [UPDATE_LOG.md](UPDATE_LOG.md)。运行状态有时间戳，不代表实时监控。
 
 ## 当前结论
@@ -12,6 +12,10 @@
 [上轮全部26方法正式矩阵](code/mujoco_6d_vmc_benchmark/docs/evidence/all_methods_formal_20261003/report/MATRIX.md)。
 
 ## 本轮状态
+
+22:55UTC完成[RL组合内存有限预检](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_RL_MEMORY_PREFLIGHT_20261003.md)：
+实际训练依赖/80k Replay＋1.086GB物理队列等量内存压力，峰值2.649GiB，8工程更新丢弃、原权重不变、0物理。
+仍需真实5500步/三learner验证，未把预检当训练完成。已明确RMSE是当前任务阶段goal误差，各方法进度不同，数值计算不改。
 
 初始264/264物理与四队列独立审计已在22:40:59UTC完成。[全部初始版本及柔顺指标](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_INITIAL_DEVELOPMENT_20261003.md)：
 ESN点版19/24放置、9/24strict，积分版11/24、4/24；种子差异明显，积分损失尚未改善闭环。
