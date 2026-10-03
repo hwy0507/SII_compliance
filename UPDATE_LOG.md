@@ -1,5 +1,27 @@
 # 更新日志
 
+## 2026-10-03 — 全部26方法统一柔顺性矩阵（含RL调参与RL action）
+
+- 应用户要求，对既有冻结v6四条件104个完整55秒回合统一制表；未重训、重跑、改环境或gate。
+  开工实时核对main `965be4b04f157eeece21f182ce2fab62fe0ef128`、baseline
+  `ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6`及双方日志/AGENTS；三个原研究协调服务inactive。
+- 26行包括2纯ESN、teacher、全部MLP/RNN/无记忆、3个RL调参、4个RL action、7经典及zero。
+  全回合（包括失败）中位数统一列RMSE/峰矩/峰速、球峰力、人手/杆/桌角P95力；补充积分、时长、
+  恢复观察/删失、全任务再接触。显式接触分母，无接触NA；JSON保存范围和全部104条来源/失败记录。
+- ESN主组task为1/4、3/4，strict1/4、2/4；七RL均task0/4。ESN并非各项力最低：RL调导纳
+  人手/杆P95为14.5/7.2N，ESN为22.1/19.2及18.7/22.4N。RL与ESN无共同strict回合，
+  不能将全回合描述性差异解释成同等完成任务时的柔顺优势；历史训练曝光不等。正式步长ESN失败仍保留。
+- 新增标准库复算脚本 `code/mujoco_6d_vmc_benchmark/tools/build_unified_compliance_matrix_20261003.py`；
+  入口 `code/mujoco_6d_vmc_benchmark/docs/evidence/unified_compliance_20261003/MATRIX.md`，
+  同目录MATRIX.json与服务器核验收据。核对原报告/锁/窗口hash、26方法×4条件全覆盖、trace/接触字段，
+  独立检查中位数与成功计数；编译/diff检查通过。本轮只做本地后处理，无运行中实验或新增训练。
+- 已核验服务器共享根：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/unified_compliance_20261003_1034/`，
+  内含tools脚本及docs/evidence同路径矩阵；3文件内容/大小/权限核验通过，归档SHA256
+  `2eda7f13b25e409eae53900c353fea1e65abb6aedc36cb357831a91b4e397a09`。
+  MATRIX.json SHA `de918f795f65f9d06a254fb00303faa948186f78c92534e47792a5480f8251f0`。
+  原物理归档不变；已提交源码按最终commit另存服务器source/<commit>，不覆盖运行快照。
+
 ## 2026-10-03 — 十二小时预算内同场景研究收尾：局部ESN优势，未证明全面最好
 
 - 授权窗口2026-10-02 14:11:36至次日02:11:36UTC，连续任务，无定时任务。22:24UTC前实验、
