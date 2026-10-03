@@ -45,18 +45,49 @@ def jobs(seeds):
     return result
 
 
+def neural_refinement_jobs(seeds):
+    result=[]
+    for seed in seeds:
+        for family in ('mlp','rnn'):
+            for variant in ('point','temporal'):
+                parent=f'memoryless_{seed}' if family=='mlp' else f'esn_{seed}_{variant}'
+                for lr in ('.000001','.00001'):
+                    result.append(dict(name=f'matched_{family}_{seed}_{variant}_lr{lr[1:]}',
+                        family='matched_'+family,seed=seed,variant=variant,learning_rate=float(lr),parent=parent,
+                        script='train_paper_feature_matched_network_20261003.py',
+                        extra=['--kind',family,'--updates','4000','--learning-rate',lr,
+                            '--integral-weight','0' if variant=='point' else '.1']))
+                for lr in ('.0001','.0003'):
+                    result.append(dict(name=f'ordinary_{family}_{seed}_{variant}_lr{lr[1:]}',
+                        family='ordinary_'+family,seed=seed,variant=variant,learning_rate=float(lr),
+                        script='train_office_mlp_rnn_20261002.py',extra=['--kind',family,'--updates','4000',
+                            '--learning-rate',lr,'--target','requested','--absolute-inputs','--precision','float64',
+                            '--drift-weight','0' if variant=='point' else '.1']))
+    assert len(result)==48 and len({j['name'] for j in result})==48
+    return result
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--data',type=Path,required=True);p.add_argument('--metadata',type=Path,required=True)
     p.add_argument('--protocol',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--register-only',action='store_true')
+    p.add_argument('--neural-lr-refinement',action='store_true')
+    p.add_argument('--parent-learning',type=Path)
     a=p.parse_args();out=a.output.resolve();protocol=read(a.protocol);meta=read(a.metadata)
     assert meta['all_real_execution'] and meta['protocol_sha256']==sha(a.protocol)
     assert meta['training_data_sha256']==sha(a.data)
     assert all(x['data_role'] in ('train','imitation_validation') and x['actual_execution_labels'] for x in meta['lineage'])
     out.mkdir(parents=True,exist_ok=True)
+    parent_root=a.parent_learning.resolve() if a.parent_learning else out
+    if a.neural_lr_refinement:
+        assert a.parent_learning is not None
+        assert read(parent_root/'execution.json')['status']=='complete'
+        original=read(parent_root/'SPECIFICATION.json')
+        assert original['protocol_sha256']==sha(a.protocol) and original['data_sha256']==sha(a.data)
+        assert protocol['budget_caps']['learning_candidates_per_family_seed']>=12
     spec=dict(protocol_sha256=sha(a.protocol),data_sha256=sha(a.data),metadata_sha256=sha(a.metadata),
-        jobs=jobs(protocol['budget_caps']['training_seeds']),width=128,
+        jobs=(neural_refinement_jobs if a.neural_lr_refinement else jobs)(protocol['budget_caps']['training_seeds']),width=128,
         shared_data_roles=['train','imitation_validation'],closed_loop_development_used=False,
         selection='Each model uses whole-identity validation MSE (ordinary temporal nets also their registered integrated proxy). Later common development budget is separate.',
         fair_budget_caveats=['Same width is not same parameters/FLOPs.',
@@ -64,6 +95,12 @@ def main():
             'Matched networks inherit a frozen same-data parent then get 4000 gradient updates; disclose parent fit cost.',
             'Ordinary nets train from scratch; both neural baseline families get the temporal-loss choice.',
             'ESN point uses no delta term; historical networks retain their fixed .25 delta term. Temporal ablation adds .1 integration.'])
+    if a.neural_lr_refinement:
+        spec.update(stage='neural_learning_rate_refinement',parent_learning=str(parent_root),
+            parent_specification_sha256=sha(parent_root/'SPECIFICATION.json'),
+            rationale='Original feature-matched fits all selected update zero, and validation worsened after updates. Check smaller fixed learning rates using the same identity holdout, no closed-loop or final feedback.',
+            accounting='4 additional candidates per subfamily/seed, plus original2 =6. Pooling ordinary+matched within MLP/RNN gives12 per family/seed, within cap24. 4000 updates per added fit; parent cost remains visible.',
+            next_selection='For each subfamily/loss select one shared learning rate by mean validation action MSE across all three seeds, including original rate; retain all three seeds. Closed-loop success is separate.')
     if (out/'SPECIFICATION.json').exists():assert read(out/'SPECIFICATION.json')==spec
     else:write(out/'SPECIFICATION.json',spec)
     if a.register_only:print(json.dumps(dict(jobs=len(spec['jobs']),specification_sha256=sha(out/'SPECIFICATION.json'))));return
@@ -93,7 +130,7 @@ def main():
                 command=[sys.executable,str(source/'tools'/job['script']),'--data',str(a.data.resolve()),'--metadata',str(a.metadata.resolve()),
                     '--output',str(dest),'--seed',str(job['seed']),*job['extra']]
                 if job.get('parent'):
-                    parent=out/job['parent'];command+=['--checkpoint',str(parent/'checkpoint.npz'),'--parent-metadata',str(parent/'TRAINING_COMPLETE.json')]
+                    parent=parent_root/job['parent'];command+=['--checkpoint',str(parent/'checkpoint.npz'),'--parent-metadata',str(parent/'TRAINING_COMPLETE.json')]
                 row=dict(name=job['name'],family=job['family'],command=command,started_utc=now());state['rows'].append(row);write(out/'execution.json',state)
                 with (out/(job['name']+'.log')).open('x') as log:
                     rc=subprocess.run(command,cwd=source,stdout=log,stderr=subprocess.STDOUT).returncode

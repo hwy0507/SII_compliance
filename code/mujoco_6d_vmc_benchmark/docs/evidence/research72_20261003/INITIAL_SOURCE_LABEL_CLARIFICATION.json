@@ -1,0 +1,15 @@
+{
+  "record_type": "provenance_clarification_without_rewriting_historical_records",
+  "research_root": "arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/",
+  "affected_record": "teacher_bank/execution.json queue commands",
+  "observed_legacy_environment_label": "SII_SOURCE_BASE_COMMIT=282433d339feef66b0334f223f82a6eea96b040b",
+  "research_protocol_base_reference": "33f438075649508ceb8f84479880d5d622f4eb4f",
+  "cause": "The initial teacher launcher inherited the historical ENV dictionary source label. That environment variable is not evidence of the actual executed file contents.",
+  "authoritative_initial_runtime": "arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_runtime/",
+  "authoritative_initial_runtime_tar_sha256": "0c43441298a6a68dac2d25f1578d3ee87ebd49c2c88cd0282a033e78aea4353d",
+  "reproduction_rule": "Use the archived runtime plus each episode source_overlay.tar.gz, execution.json source_sha256, RESEARCH_ROLE.json wrapper hash and original model/config hashes. Do not reconstruct this run by checking out the stale environment label alone.",
+  "validation": "All four teacher queues underwent independent source-content, actor/filter, actuator and physical-substep audit. Their immutable audit copies are TEACHER_QUEUE_0_AUDIT.json through TEACHER_QUEUE_3_AUDIT.json.",
+  "later_launchers": "Controller development and later launchers explicitly override SII_SOURCE_BASE_COMMIT; run-specific source hashes remain authoritative even when a base commit label is correct.",
+  "historical_metadata_modified": false,
+  "simulation_restarted": false
+}

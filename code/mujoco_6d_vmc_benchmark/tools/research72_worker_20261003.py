@@ -17,7 +17,7 @@ def main():
     p.add_argument('--research-protocol', type=Path, required=True)
     p.add_argument('--protocol-sha256', required=True)
     p.add_argument('--research-condition', required=True)
-    p.add_argument('--worker-kind', choices=('office','classical','rl','online','adapted_rl'), default='office')
+    p.add_argument('--worker-kind', choices=('office','classical','rl','online','adapted_rl','nominal'), default='office')
     a, rest = p.parse_known_args()
     protocol = json.loads(a.research_protocol.read_text())
     assert office.worker.sha(a.research_protocol) == a.protocol_sha256
@@ -45,7 +45,9 @@ def main():
         return expected, overrides, provenance
     office.evaluation_settings = settings
     output = Path(rest[rest.index('--output')+1]).resolve()
-    if a.worker_kind == 'adapted_rl':
+    if a.worker_kind == 'nominal':
+        import research72_nominal_worker_20261003 as selected
+    elif a.worker_kind == 'adapted_rl':
         import research72_adapted_rl_worker_20261003 as selected
     elif a.worker_kind == 'online':
         import research72_online_worker_20261003 as selected

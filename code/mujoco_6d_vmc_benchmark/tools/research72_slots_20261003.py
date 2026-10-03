@@ -48,7 +48,7 @@ def simulation_slot(root, deadline):
     handle = None
     while datetime.now(timezone.utc) < deadline:
         if unleased_workers():
-            time.sleep(10)
+            time.sleep(1)
             continue
         for index in range(4):
             candidate = (directory/f'slot_{index}.lock').open('a+')
@@ -61,7 +61,7 @@ def simulation_slot(root, deadline):
             break
         if handle is not None:
             break
-        time.sleep(10)
+        time.sleep(1)
     if handle is None:
         raise TimeoutError('No simulation lease before development cutoff')
     old = os.environ.get('SII_R72_SIMULATION_LEASE')

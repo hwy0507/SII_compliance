@@ -1,5 +1,15 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-03 14:43UTC：防止欠优化baseline，诊断ESN累计偏差
+
+同数据小学习率复核48拟合已完成并归档，21个新权重等待8身份闭环；ordinary RNN验证点误差改善36.42%，
+ordinary MLP改善23.91%，matched RNN也有小幅收益。仍在原候选cap内，不选择幸运seed。
+33模型×6离线验证动作filter诊断完成：ESN积分损失降低累计残差代理，但约98.0→87.8mm的量是开放回放积分，
+不是真实位移、任务RMSE或成功证据。后续依据闭环失败机制决定ESN优化，不预定胜者。
+新增8回合零让位名义WBC参考待运行；额外开发与RL在原四队列流程之后共享槽位，每评估回合释放以便ESN插入。
+服务器本轮根`local_neural_refinement_archive_v1/`、`additional_development_v1/`，小证据/hash及初始SOURCE标签澄清见根UPDATE_LOG。
+24最终条件继续封存，当前尚不具备新的闭环泛化结论。
+
 ## 2026-10-03 14:18UTC：RL恢复链与后续资源准备
 
 新RL checkpoint全嵌套hash、5D/7D模型优化器重放及replay/RNG恢复工程检查通过；0新物理步。

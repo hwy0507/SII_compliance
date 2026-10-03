@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2026-10-03 — 加强神经baseline与累计动作偏差诊断
+
+- 开工沿用已核验main d08dc8f23a0b5e9bbff2bed66e489620333d9052、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6。
+  d08完整Git归档SHA03945be24408f486f792d36d460a05f4de434c5ca69467906f41ded057f56cf2已传Spark，source/<SHA>/3117文件内容/大小/模式核验。
+- 原同特征网络验证均选初始化，不能据此断言ESN结构优势。先登记再本地运行48个小学习率拟合（单CPU/3GiB）：
+  matched取1e-6/1e-5，ordinary取1e-4/3e-4；每个4千更新，数据/宽度/损失和3seed不变。
+  原始＋新增合计每普通/同特征子族每seed6候选，合并MLP/RNN仍仅12≤cap24；ESN候选预算未扩大。
+- 按跨3seed平均整身份验证动作MSE择一个共同学习率，保留全部seed，不看闭环/最终条件。
+  ordinary MLP点/积分误差下降23.91%/24.59%，ordinary RNN下降36.42%/27.41%；matched RNN下降1.62%/.94%。
+  matched MLP积分组继续用原学习率；其余7组共21新模型登记8开发身份168回合，未把这些离线改进当任务成功。
+- 新独立回放诊断完整重现教师动作filter和实际记录，覆盖33模型×6验证身份。ESN点/积分版本的
+  残余速度差累积末值范数均值约98.0/87.8mm；是固定teacher观测下的开放回放代理，不是真实位置误差或物理结果。
+  当前仍须等待闭环结果再确定下一步ESN机制，不把该代理当论文主结果。
+- 新增零让位参考接口：相同规划/反馈WBC、7D零动作、同世界与gate；不是开环机械臂。已编译，尚待物理执行。
+  `sii-r72-additional-development-v1`等待原统一开发/经典确认结束，然后8个名义参考＋168个神经复核回合。
+  与3条RL训练共享4个flock槽位；评估每回合释放，允许ESN后续开发插入。原稳定四队列未修改或重启。
+- 服务器根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/`：
+  `local_neural_refinement_archive_v1/`含全部48拟合/源码及`replay_drift_v1`；包两端SHA
+  97a39b953bfbe4b90f7aab28d82b4f98c14b4f8934c0827c5d3846d2f84c04fa，逐权重/训练记录/实际源码/数据hash核验。
+  选择文件`NEURAL_LR_SELECTION.json` SHA dc5af909d1918f41a9b60e98dd39d0f3c0a26ac30cbd3ec9d9e46827359bcd34。
+  后续源码相邻`research72_20261003_1149_development_runtime_v4/`，RLruntime_v3加新overlay
+  1399f47d891ef90b2d6e777e4119fe8c0a5fc9319b8106a2c014a296c18d7b5d两端一致；base d08dc8f＋本批改动。
+- 新增初始SOURCE标签澄清：teacher队列ENV继承了旧282433d标签，与协议base33f4380不同；
+  实际源以已核验runtime tar及每回合source hashes为准，四独立审计已通过。澄清同时存Git和本轮根，未篡改原日志。
+- 全部新脚本编译/diff检查通过；本轮拟合和离线诊断完成，闭环队列运行/等待中。24最终条件仍封存，未获得新最终优越性结论。
+
 ## 2026-10-03 — RL嵌套checkpoint修复、边界续跑与有限训练登记
 
 - main45662c03ca40269f08e183fa6e814a900f026aca已推送核对，baseline仍ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6。

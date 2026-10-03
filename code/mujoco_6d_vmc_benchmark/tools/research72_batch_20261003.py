@@ -14,6 +14,7 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 from optimize_tool_contact_20261002 import ROOT,sha,write,now
 from run_all_methods_formal_20261003 import V6,PARAMETER,MENAGERIE,active_workers
 from run_paper_final_validation_20261003 import ENV
@@ -34,7 +35,7 @@ def validate(root,spec):
     assert all(conditions[c]['role']=='development' for c in spec['conditions'])
     for c in spec['candidates']:
         assert re.fullmatch('[a-zA-Z0-9_.-]+',c['name']) and c['name'] not in ('.','..')
-        assert sum(bool(c.get(k)) for k in ('checkpoint','controller','rl_case','adapted_rl'))<=1
+        assert sum(bool(c.get(k)) for k in ('checkpoint','controller','rl_case','adapted_rl','nominal'))<=1
         if c.get('checkpoint'):assert sha(Path(c['checkpoint']))==c['checkpoint_sha256']
         if c.get('adapted_rl'):
             assert sha(Path(c['adapted_rl']['manifest']))==c['adapted_rl']['manifest_sha256']
@@ -42,7 +43,7 @@ def validate(root,spec):
     return protocol
 
 
-def queue(root,phase,index,queue_count=4):
+def queue(root,phase,index,queue_count=4,managed_slots=False):
     spec=read(phase/'SPECIFICATION.json');protocol=validate(root,spec)
     deadline=datetime.fromisoformat(protocol['authorization_start_utc'])+timedelta(hours=48)
     output=phase/f'queue_{index}';output.mkdir(exist_ok=False)
@@ -59,7 +60,7 @@ def queue(root,phase,index,queue_count=4):
         for c,condition in manifest:
             if datetime.now(timezone.utc)>=deadline:state['status']='deadline_no_new_dispatch';break
             name=c['name']+'__'+condition;run=output/name;config=output/(name+'.config.json');write(config,c.get('config',{}))
-            kind='adapted_rl' if c.get('adapted_rl') else 'rl' if c.get('rl_case') else 'classical' if c.get('controller') else 'office'
+            kind='nominal' if c.get('nominal') else 'adapted_rl' if c.get('adapted_rl') else 'rl' if c.get('rl_case') else 'classical' if c.get('controller') else 'office'
             command=[sys.executable,str(source/'tools/research72_worker_20261003.py'),'--worker-kind',kind,
                 '--research-protocol',str(root/'PROTOCOL.json'),'--protocol-sha256',sha(root/'PROTOCOL.json'),
                 '--research-condition',condition,'--v6-input',str(V6),'--reference',str(V6/'esn_original_v2/rollout.json'),
@@ -74,7 +75,17 @@ def queue(root,phase,index,queue_count=4):
             row=dict(name=name,candidate=c['name'],condition_id=condition,category=c['category'],started_utc=now(),command=command)
             state['rows'].append(row);write(output/'execution.json',state)
             with (output/(name+'.log')).open('x') as log:
-                rc=subprocess.run(command,cwd=source,env=env,stdout=log,stderr=subprocess.STDOUT).returncode
+                if managed_slots:
+                    from research72_slots_20261003 import simulation_slot
+                    with simulation_slot(root,deadline) as lease:
+                        row['simulation_lease']=lease;write(output/'execution.json',state)
+                        leased_env={**env,**{k:os.environ[k] for k in ('SII_R72_SIMULATION_LEASE','SII_R72_LEASE_OWNER_PID')}}
+                        rc=subprocess.run(command,cwd=source,env=leased_env,stdout=log,stderr=subprocess.STDOUT).returncode
+                    # Allow a waiting ESN queue to acquire the shared spare slot
+                    # before this long baseline evaluation requests it again.
+                    time.sleep(1.1)
+                else:
+                    rc=subprocess.run(command,cwd=source,env=env,stdout=log,stderr=subprocess.STDOUT).returncode
             row.update(returncode=rc,ended_utc=now());write(output/'execution.json',state)
             if rc:raise RuntimeError(name+' failed; preserved without automatic retry')
             row.update(audit=read(run/'AUDIT.json'),audit_sha256=sha(run/'AUDIT.json'),trace_sha256=sha(run/'rollout.npz'))
@@ -92,11 +103,7 @@ def main():
     a=p.parse_args();root=a.root.resolve();phase=a.output.resolve()
     if a.queue is not None:
         assert a.queue<a.queue_count
-        if a.managed_slots:
-            from research72_slots_20261003 import simulation_slot
-            deadline=datetime.fromisoformat(read(root/'PROTOCOL.json')['authorization_start_utc'])+timedelta(hours=48)
-            with simulation_slot(root,deadline):queue(root,phase,a.queue,a.queue_count)
-        else:queue(root,phase,a.queue,a.queue_count)
+        queue(root,phase,a.queue,a.queue_count,a.managed_slots)
         return
     assert a.specification is not None
     spec=read(a.specification);protocol=validate(root,spec)
