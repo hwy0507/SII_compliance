@@ -73,7 +73,9 @@ contacts; that restriction must remain explicit in the report.
                   bootstrap_seed=seed, bootstrap_replicates=replicates,
                   outcome_conditioned=eligible is not None,
                   ci95=None, valid_bootstrap_replicates=0,
-                  interval_semantics="Exploratory percentile interval; no multiplicity adjustment")
+                  empirical_difference_constant=None, bootstrap_distribution_constant=None,
+                  point_interval=None,
+                  interval_semantics="Exploratory empirical percentile interval; no multiplicity adjustment. A point interval is not certainty about unseen conditions or training seeds.")
     if not count:
         return result
     rng = np.random.default_rng(seed)
@@ -82,8 +84,11 @@ contacts; that restriction must remain explicit in the report.
     draws = delta[seeds[:, :, None], conditions[:, None, :]]
     counts = np.isfinite(draws).sum(axis=(1, 2))
     estimates = np.nansum(draws, axis=(1, 2))[counts > 0]/counts[counts > 0]
-    result.update(ci95=np.percentile(estimates, [2.5, 97.5]).tolist(),
-                  valid_bootstrap_replicates=len(estimates))
+    interval = np.percentile(estimates, [2.5, 97.5]).tolist()
+    result.update(ci95=interval, valid_bootstrap_replicates=len(estimates),
+                  empirical_difference_constant=bool(np.ptp(delta[valid]) == 0),
+                  bootstrap_distribution_constant=bool(np.ptp(estimates) == 0),
+                  point_interval=bool(interval[0] == interval[1]))
     return result
 
 

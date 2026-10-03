@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 import json
 from research72_final_lock_20261003 import read, sha, verify_candidates
+from research72_rl_schedule_20261003 import active_campaign, AMENDMENT
 
 LEARNED = {'esn', 'memoryless', 'ordinary_mlp', 'ordinary_rnn', 'matched_mlp', 'matched_rnn'}
 CLASSICAL = {'enhanced_teacher', 'classical_admittance', 'classical_impedance', 'classical_vmc'}
@@ -49,8 +50,13 @@ def main():
         assert sha(row['path']) == row['sha256']
     for row in completion:
         assert sha(row['path']) == row['sha256'] and read(row['path'])['status'] == 'complete'
+    rl = active_campaign(root)
+    if (root/AMENDMENT).exists():
+        evidence.append(dict(path=str(root/AMENDMENT), sha256=sha(root/AMENDMENT)))
+        amendment = read(root/AMENDMENT)
+        evidence.append(dict(path=amendment['supersession_receipt'], sha256=amendment['supersession_receipt_sha256']))
     for name in ('followup_v1', 'additional_development_v1', 'context_gate_development_v1',
-                 'rl_office_adaptation_v1', 'final_rehearsal_v1'):
+                 rl.name, 'final_rehearsal_v1'):
         path = root/name/'execution.json'
         assert read(path)['status'] == 'complete', 'Public predecessor incomplete: '+name
         completion.append(dict(path=str(path), sha256=sha(path)))
@@ -79,7 +85,7 @@ def main():
     nominal_path = root/'additional_development_v1/NOMINAL_SPECIFICATION.json'; nominal = read(nominal_path)
     assert nominal['protocol_sha256'] == digest and len(nominal['candidates']) == 1
     evidence.append(dict(path=str(nominal_path), sha256=sha(nominal_path)))
-    rl = root/'rl_office_adaptation_v1'; spec_path = rl/'SPECIFICATION.json'; spec = read(spec_path)
+    spec_path = rl/'SPECIFICATION.json'; spec = read(spec_path)
     assert spec['protocol_sha256'] == digest
     jobs = {j['name']: j for j in spec['jobs']}
     assert len(jobs) == len(families)*len(seeds)
@@ -105,6 +111,8 @@ def main():
                 variant='office_from_scratch_latest_completed_boundary', config={},
                 cumulative_training_steps=manifest['cumulative_physics_steps'],
                 training_stop_reason=training['stop_reason'],
+                dispatch_stop_reason=state.get('dispatch_stop_reason', 'legacy_job_major'),
+                all_requested_segments_dispatched=state.get('all_requested_segments_dispatched'),
                 adapted_rl=dict(checkpoint=manifest['checkpoint'], manifest=str(manifest_path),
                     manifest_sha256=sha(manifest_path), parameter_source=str(rl/'parameter_source'),
                     controller=job['controller']))

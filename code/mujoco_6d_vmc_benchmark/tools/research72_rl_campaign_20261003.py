@@ -1,8 +1,9 @@
 """Finite office RL adaptation after controller selection and paired development.
 
 Three sequential queues share four simulation leases with future ESN work.
-Each model uses an explicit 5,500-step segment then a verified boundary resume,
-with an unchanged 80,000-step total schedule/cap. No new sealed conditions.
+Each model starts with 5,500 steps, then uses verified boundary continuation.
+An explicit amendment can interleave all jobs at fixed cumulative boundaries;
+the optimizer schedule and per-model cap remain 80,000. No sealed conditions.
 """
 import argparse
 from concurrent.futures import ThreadPoolExecutor
@@ -19,6 +20,7 @@ from run_all_methods_formal_20261003 import PARAMETER
 from run_paper_final_validation_20261003 import ENV
 from research72_checkpoint_20261003 import checkpoint_hashes
 from research72_slots_20261003 import simulation_slot
+from research72_rl_schedule_20261003 import active_campaign, dispatch_plan, closure, AMENDMENT, LIMITS
 
 
 def read(p):
@@ -30,61 +32,65 @@ def queue(root, out, index):
     deadline = datetime.fromisoformat(spec['development_deadline_utc'])
     dest = out/f'queue_{index}'
     dest.mkdir(exist_ok=False)
-    state = dict(status='waiting_for_simulation_lease', started_utc=now(), rows=[])
+    jobs = spec['jobs'][index::3]
+    state = dict(status='waiting_for_simulation_lease', started_utc=now(), rows=[
+        dict(name=j['name'], seed=j['seed'], family=j['family'], segments=[]) for j in jobs])
+    rows = {r['name']: r for r in state['rows']}
+    checkpoints = {}
     write(dest/'execution.json', state)
     try:
         with simulation_slot(root, deadline) as lease:
             state.update(status='running', simulation_lease=lease)
             write(dest/'execution.json', state)
-            for job in spec['jobs'][index::3]:
+            exhausted = True
+            plan = dispatch_plan(jobs, spec.get('dispatch_schedule', 'legacy_job_major'))
+            for job, stage, limit in plan:
                 if datetime.now(timezone.utc) >= deadline:
-                    state['status'] = 'deadline_no_new_dispatch'
+                    exhausted = False
                     break
                 model = dest/job['name']
-                model.mkdir()
-                row = dict(name=job['name'], seed=job['seed'], family=job['family'], segments=[])
-                state['rows'].append(row)
-                previous = None
-                for stage, limit in (('initial',5500),('continued',80000)):
-                    if datetime.now(timezone.utc) >= deadline:
-                        break
-                    output = model/stage
-                    command = [sys.executable, str(ROOT/'tools/research72_train_rl_20261003.py'),
-                        '--root',str(root),'--output',str(output),'--reward',job['reward'],
-                        '--seed',str(job['seed']),'--steps','80000','--stop-at-step',str(limit),
-                        '--probe-receipt',spec['ipc_probe_receipt'],
-                        '--parameter-source',str(out/'parameter_source')]
-                    if job['controller']:
-                        command += ['--controller',job['controller']]
-                    if previous:
-                        command += ['--resume-checkpoint',previous['path']]
-                    part = dict(stage=stage,command=command,started_utc=now())
-                    row['segments'].append(part)
-                    write(dest/'execution.json',state)
-                    with (model/(stage+'.log')).open('x') as log:
-                        part['returncode'] = subprocess.run(command,cwd=ROOT,
-                            stdout=log,stderr=subprocess.STDOUT).returncode
-                    part['ended_utc'] = now()
-                    write(dest/'execution.json',state)
-                    assert part['returncode']==0, 'Failed training retained, no automatic retry'
-                    result = read(output/'execution.json')
-                    assert result['status']=='complete'
-                    previous = result['checkpoint_rows'][-1]
-                    assert previous['step']==result['steps']
-                    assert checkpoint_hashes(previous['path'])==previous['hashes']
-                    part.update(cumulative_steps=result['steps'],new_segment_steps=result['new_segment_steps'],
-                        episodes=result['episodes'],updates=result['updates'],
-                        execution_sha256=sha(output/'execution.json'))
-                    manifest = dict(checkpoint=previous['path'],hashes=previous['hashes'],controller=job['controller'],
-                        seed=job['seed'],family=job['family'],cumulative_physics_steps=result['steps'],
-                        training_protocol=str(output/'PROTOCOL.json'),training_protocol_sha256=sha(output/'PROTOCOL.json'))
-                    write(model/(stage+'_CHECKPOINT.json'),manifest)
-                    row.update(latest_manifest=str(model/(stage+'_CHECKPOINT.json')),
-                        latest_manifest_sha256=sha(model/(stage+'_CHECKPOINT.json')))
-                    write(dest/'execution.json',state)
-                assert previous is not None, 'No completed training segment'
-            else:
-                state['status']='complete'
+                row = rows[job['name']]
+                previous = checkpoints.get(job['name'])
+                if previous and previous['step']+1375 > limit:
+                    row.setdefault('boundaries_without_full_episode_budget', []).append(limit)
+                    continue
+                model.mkdir(exist_ok=previous is not None)
+                output = model/stage
+                command = [sys.executable, str(ROOT/'tools/research72_train_rl_20261003.py'),
+                    '--root',str(root),'--output',str(output),'--reward',job['reward'],
+                    '--seed',str(job['seed']),'--steps','80000','--stop-at-step',str(limit),
+                    '--probe-receipt',spec['ipc_probe_receipt'],
+                    '--parameter-source',str(out/'parameter_source')]
+                if job['controller']:
+                    command += ['--controller',job['controller']]
+                if previous:
+                    command += ['--resume-checkpoint',previous['path']]
+                part = dict(stage=stage,command=command,started_utc=now())
+                row['segments'].append(part)
+                write(dest/'execution.json',state)
+                with (model/(stage+'.log')).open('x') as log:
+                    part['returncode'] = subprocess.run(command,cwd=ROOT,
+                        stdout=log,stderr=subprocess.STDOUT).returncode
+                part['ended_utc'] = now()
+                write(dest/'execution.json',state)
+                assert part['returncode']==0, 'Failed training retained, no automatic retry'
+                result = read(output/'execution.json')
+                assert result['status']=='complete'
+                previous = result['checkpoint_rows'][-1]
+                checkpoints[job['name']] = previous
+                assert previous['step']==result['steps']
+                assert checkpoint_hashes(previous['path'])==previous['hashes']
+                part.update(cumulative_steps=result['steps'],new_segment_steps=result['new_segment_steps'],
+                    episodes=result['episodes'],updates=result['updates'],
+                    execution_sha256=sha(output/'execution.json'))
+                manifest = dict(checkpoint=previous['path'],hashes=previous['hashes'],controller=job['controller'],
+                    seed=job['seed'],family=job['family'],cumulative_physics_steps=result['steps'],
+                    training_protocol=str(output/'PROTOCOL.json'),training_protocol_sha256=sha(output/'PROTOCOL.json'))
+                write(model/(stage+'_CHECKPOINT.json'),manifest)
+                row.update(latest_manifest=str(model/(stage+'_CHECKPOINT.json')),
+                    latest_manifest_sha256=sha(model/(stage+'_CHECKPOINT.json')))
+                write(dest/'execution.json',state)
+            state.update(closure(state['rows'], exhausted))
     except BaseException as exc:
         state.update(status='failed_preserved',error=repr(exc))
         raise
@@ -106,6 +112,7 @@ def main():
         return
     assert a.predecessor and a.checkpoint_probe
     protocol=read(root/'PROTOCOL.json')
+    assert out == active_campaign(root), 'Output must match the registered active RL cohort'
     deadline=datetime.fromisoformat(protocol['authorization_start_utc'])+timedelta(hours=48)
     assert protocol['budget_caps']['rl_adaptation_steps_per_family_seed']==80000
     probe=read(a.checkpoint_probe)
@@ -128,6 +135,13 @@ def main():
         budgets='80,000 cumulative physics steps per family/seed, never per segment. No replay resets on continuation.',
         reserved_simulators=3,shared_simulator_cap=4,
         role='Training/development only; no final-test unlock or outcome-based early checkpoint selection.')
+    amendment = root/AMENDMENT
+    if amendment.exists():
+        assert not (root/'FINAL_UNSEAL_RECEIPT.json').exists()
+        spec.update(dispatch_schedule='round_robin_cumulative_boundaries',
+            cumulative_step_boundaries=list(LIMITS),dispatch_amendment_sha256=sha(amendment),
+            budgets='80,000 cumulative steps per family/seed, same optimizer schedule and replay/RNG. All five jobs per queue receive an initial segment before longer continuations.',
+            closure_semantics='Complete means all fifteen models have a valid completed boundary; any cutoff below cap and unequal actual steps are disclosed. No outcome-based truncation.')
     write(out/'SPECIFICATION.json',spec)
     state=dict(status='waiting_for_predecessor',started_utc=now(),specification_sha256=sha(out/'SPECIFICATION.json'))
     write(out/'execution.json',state)

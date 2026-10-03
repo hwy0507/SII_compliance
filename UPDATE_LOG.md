@@ -1,5 +1,27 @@
 # 更新日志
 
+## 2026-10-03 — RL首次开训前轮转登记、第五共同条件与统计区间解释
+
+- 19:55UTC实时核对main2da38895ce8a91eb9cc7b47d94a72e53ff615166、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；
+  读取两日志、同步skill和AGENTS，四稳定仿真保留，未读真正24封存条件。
+- 初始20:15UTC169/264，五身份各33完整。第五身份ESN/matchedRNN各4/6task、1/6strict；
+  matchedMLP2/2、memoryless1/1、ordinaryMLP1/1、ordinaryRNN3/0。三条已放置ESN因pillar/link7
+  穿透0.209686/0.279906/0.573083mm失败，303temporal RMSE250.986mm仍carry。原gate不改、失败保留。
+- RL原逐模型80k顺序存在晚排方法零checkpoint风险。首次office训练前登记累计边界5500/27500/49500/71500/80000的轮转，
+  同15任务、80k总计划、奖励/模型/训练身份/截止/3租约；完整恢复优化器/回放/RNG。先保证所有组有初段。
+  有限队列完成不冒充全80k或收敛，实际步数/截止另存最终候选；更多启动可能增加编译成本。
+- 16调度/模型汇总/冻结工程回归通过，包含真实队列入口25个模拟分段父checkpoint和新增步核算；实际物理续跑未验证。
+  精确核验旧等待器PID2332615、零队列后仅停止该等待器，旧execution字节不变；新v2 PID2384702等待同followup。
+  独立runtime_v4仅两调度文件不同，trainer及其余源逐hash一致，无物理中断。主动选择器/成本快照识别登记的活跃v2。
+- 主机arm1@192.168.31.70，本轮根/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/：
+  AMENDMENT_RL_ROUND_ROBIN.json SHA3ff1ae22f310825de701344df84d8f74c1c18b27e7719c448a5b563c009a7d46；
+  rl_dispatch_change_v1/execution.json SHAb99f9aa0601b553e67258bfc4529d0b0498856ad9c6653fdd505c34159c5d1ee；
+  活跃rl_office_adaptation_v2，旧v1仅历史登记。相邻research72_20261003_1149_rl_runtime_v4保存真实混合源链。
+  incoming/sii-r72-rl-dispatch-overlay-20261003-2045.tar.gz已两端核验SHAfa888c0e518ac15b2681ba0ebaafc0e3c597a683e5a346acac884af4a8d45509；
+  文件名2045是标识，实际20:13:54执行。完整报告RESEARCH72_RL_DISPATCH_20261003.md。
+- 统计报告区分观测恒定/重抽恒定/点区间，避免将[1,1]当新条件的确定保证；原10000重抽和数值区间不变，18项回归通过。
+  本轮无新ESN拟合、无学习预算修订02；teacher确认和新组仍未完成，尚无最终投稿结论。
+
 ## 2026-10-03 — 本机99轨迹覆盖诊断与第四共同条件完整
 
 - 延续main a5ed961ef2216033e2311f964ba4617dc80f0de5、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6实时核验。

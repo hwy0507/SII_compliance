@@ -8,6 +8,7 @@ from datetime import datetime,timezone
 import hashlib
 import json
 from pathlib import Path
+from research72_rl_schedule_20261003 import active_campaign
 
 
 def read(path):return json.loads(path.read_text())
@@ -114,7 +115,7 @@ def main():
         learning=[learning(root/'local_learning_archive_v1/learning_v1'),
                   learning(root/'local_neural_refinement_archive_v1/neural_lr_refinement_v1'),
                   learning(root/'local_context_gate_archive_v1/context_gate_learning_v1')],
-        rl=reinforcement(root/'rl_office_adaptation_v1'),
+        rl=reinforcement(active_campaign(root)),
         accounting=['Do not equate fitted ridge candidates, gradient updates and simulator interactions.',
             'Teacher collection is shared by learned methods; charge all attempts, including failures.',
             'Validation/development physics is separate from demonstration and RL training exposure.',

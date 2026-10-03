@@ -145,6 +145,7 @@ def assemble(candidates, conditions, rows):
                          'Short trajectories are separate; unexposed contact metrics are NA.',
                          'Supplemental whole-horizon and outside-event loads are descriptive, introduced after public development inspection; missing legacy fields are not zero. Outside includes before and after commanded windows. External and edge channels overlap and must not be added.',
                          'Intervals are exploratory, crossed condition/seed bootstrap, not multiplicity-adjusted.',
+                         'A point bootstrap interval only describes empirical resampling; it is not certainty about unseen conditions or seeds. JSON flags constant observed differences, constant resamples and point intervals separately.',
                          'No scalar winner score, hardware validation, passivity or human-safety claim.'])
 
 
@@ -255,9 +256,12 @@ def markdown(report):
     for family, comparison in report['esn_minus_baseline'].items():
         statistic = comparison['strict_success']; interval = statistic['ci95']
         interval_text = 'NA' if interval is None else f'[{value(interval[0])}, {value(interval[1])}]'
+        if statistic.get('point_interval'):
+            interval_text += ' (point interval)'
         lines.append(f"| {family} | {value(statistic['difference'])} | {interval_text} | "
             f"{statistic['paired_cells']}/{statistic['planned_paired_cells']} |")
-    lines += ['', '## Safety audit: all observed episodes, including short failures', '',
+    lines += ['', 'Point intervals reflect limited empirical variation, not certainty about unseen conditions or seeds. The predeclared bootstrap and its numerical intervals are unchanged.',
+        '', '## Safety audit: all observed episodes, including short failures', '',
         '| Family | Audited episodes | Maximum external penetration mm | Maximum edge penetration mm | Maximum joint command change / 4 ms (Nm/s) |',
         '|---|---:|---:|---:|---:|']
     for family, r in report['families'].items():
@@ -279,7 +283,8 @@ def markdown(report):
             interval = statistic['ci95']
             if interval is None:
                 return 'NA'
-            return f"{value(statistic['difference'])} [{value(interval[0])}, {value(interval[1])}]"
+            note = ' (point interval)' if statistic.get('point_interval') else ''
+            return f"{value(statistic['difference'])} [{value(interval[0])}, {value(interval[1])}]"+note
         for family, comparison in report['esn_minus_baseline'].items():
             paired = comparison['jointly_strict_full_exposed_contacts'][event]
             lines.append(f"| {family} | {paired['contact_p95_force_n']['paired_cells']} | "

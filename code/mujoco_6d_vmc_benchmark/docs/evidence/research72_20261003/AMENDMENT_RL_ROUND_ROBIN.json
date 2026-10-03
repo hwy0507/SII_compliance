@@ -1,0 +1,38 @@
+{
+  "registered_utc": "2026-10-03T20:13:54.556807+00:00",
+  "protocol_sha256": "5457d85726e2a88067e153464b7e50dbc9fcd173b89a9fc5da2da096c0891732",
+  "scope": "outcome_independent_round_robin_rl_dispatch",
+  "cumulative_step_boundaries": [
+    5500,
+    27500,
+    49500,
+    71500,
+    80000
+  ],
+  "active_campaign": "rl_office_adaptation_v2",
+  "superseded_campaign": "rl_office_adaptation_v1",
+  "superseded_execution_sha256": "8109fc1478d88a41f2f6159570a0e352a7fa5cd02650ce04b95409196b1fbc0e",
+  "supersession_receipt": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_dispatch_change_v1/execution.json",
+  "supersession_receipt_sha256": "b99f9aa0601b553e67258bfc4529d0b0498856ad9c6653fdd505c34159c5d1ee",
+  "reason": "Reduce risk that a late queued family/seed has no checkpoint at the fixed development cutoff. Registered before any office RL training outcome.",
+  "unchanged": [
+    "15 family/seed jobs",
+    "80000 total-step optimizer schedule and per-model cap",
+    "original deadline",
+    "reward",
+    "agent configuration",
+    "training identities",
+    "replay/RNG/normalization/optimizer continuation",
+    "latest completed boundary selection",
+    "geometry, task and strict gates, actor fields and actuator limits",
+    "three leased queues"
+  ],
+  "limitations": [
+    "More process launches may increase compilation overhead.",
+    "Actual episode-boundary steps may differ below the common cap; report every value.",
+    "A concluded finite queue is not evidence of optimizer convergence or success.",
+    "The former waiting registration remains historical and is not a second training cohort."
+  ],
+  "physical_continuation_verified": false,
+  "sealed_contents_read": false
+}

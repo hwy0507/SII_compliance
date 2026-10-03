@@ -12,6 +12,9 @@ class StatisticsTests(unittest.TestCase):
         self.assertEqual(r['difference'],2)
         self.assertEqual(r['ci95'],[2,2])
         self.assertEqual(r['paired_conditions'],24)
+        self.assertTrue(r['empirical_difference_constant'])
+        self.assertTrue(r['bootstrap_distribution_constant'])
+        self.assertTrue(r['point_interval'])
 
     def test_deterministic_reference_keeps_single_seed(self):
         r = crossed_difference(np.ones((3,4)),np.zeros((1,4)))
@@ -31,12 +34,24 @@ class StatisticsTests(unittest.TestCase):
         x = np.repeat([[-1.],[0.],[1.]],24,axis=1)
         r = crossed_difference(x,np.zeros((1,24)))
         self.assertEqual(r['ci95'],[-1,1])
+        self.assertFalse(r['empirical_difference_constant'])
+        self.assertFalse(r['bootstrap_distribution_constant'])
+        self.assertFalse(r['point_interval'])
         self.assertEqual(r,crossed_difference(x,np.zeros((1,24))))
 
     def test_no_pairs_remain_na(self):
         r = crossed_difference([[np.nan]],[[1.]])
         self.assertIsNone(r['difference']);self.assertIsNone(r['ci95'])
         self.assertEqual(r['valid_bootstrap_replicates'],0)
+        self.assertIsNone(r['point_interval'])
+        self.assertIsNone(r['empirical_difference_constant'])
+
+    def test_finite_resample_degeneracy_is_not_constant_input(self):
+        # One artificial draw isolates the distinction. Actual research still
+        # uses the predeclared 10,000 draws, unchanged by this reporting check.
+        r = crossed_difference([[0., 1.]], [[0., 0.]], replicates=1)
+        self.assertFalse(r['empirical_difference_constant'])
+        self.assertTrue(r['point_interval'])
 
     def test_no_contact_short_failure_excluded_from_contact_pair(self):
         def row(exposed=True,full=True,success=True,force=8):
