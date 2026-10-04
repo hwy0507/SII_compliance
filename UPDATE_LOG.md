@@ -1,5 +1,19 @@
 # 更新日志
 
+## 2026-10-04 — 一次性连续衔接全部开发与912最终评估
+
+- 05:59UTC实时查询/fetch并读main a3b8c97fa027f4bf9bb55149e45cac4f664be562、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志，依既有AGENTS/skill继续；工作区干净，原七个队列/监护PID仍存活。
+  main a3完整3289文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/a3b8c97fa027f4bf9bb55149e45cac4f664be562/，tar SHA0fd1ecbcdcff983818ec7c2ddf29108699f356295189a980b1c50dddd011a781。
+- 新research72_final_transition是一次性连续依赖进程，全部前置/监护关闭且无活跃开发后，调用已有公开选模→38模型汇总→冻结→912最终批次；规则/门槛/场景/预算不改。
+  缺前置、终止失败、源码变化、已有最终输出或命令错误均保留并停止，不自动重试；8项合成回归通过，包括37模型、911回合与已开封拒绝。没有实际选模或物理测试。
+- 06:09实际服务sii-r72-final-transition-v1/PID2513613已核验存活，512MiB/Swap0/单线程/CPUQuota30%；waiting_for_predecessors、steps空，最终24未开封。
+  五项仍待完成：增强网络、context、新refit、RL、RL共同边界监护；原稳定服务不重启。后续先检查该监督状态，禁止重复手工派发final矩阵。
+  supervisor独立两源final_transition_source_v1核验，tar SHA7cfeb2dee5e9eef397a5d07be925adbd74760812b86e76a520d19931be3cb953；实际子流程使用固定a3 runtime。
+- 本轮根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/；final_transition_v1/SPECIFICATION.json SHA665883fca7dc5dab7b3d80d64fcccd9b6ec1028fa9dbc271bcb4950edd8a9fe5，Git同字节。
+  05:59快照RL165754交互/191536更新、context28/168、增强19/168、refit4/144；新容量预测含912/2h收尾余量3.673–5.867h，仍非保证，不追加搜索。
+  BUDGET_FORECAST_20261004_0559.json SHAfb3dabe4a21ee43d898778b35a21eda77b3ade9120a5f62d4e6bf817a0e66b51，Git同字节；新增FINAL_TRANSITION报告，更新状态/进度/周报/容量。
+  完整最终比较、独立RL actor、统计/媒体/论文结论仍未完成，目标active；即监督最终complete也不等于投稿完成。
+
 ## 2026-10-04 — RL物理奖励输入独立复算与短失败保留
 
 - 05:41UTC实时查询/fetch并读main19a11c21f6aef4be2801a1e3c192146182a23bad、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志与AGENTS，工作区干净；前轮属实质进展，本轮实际PID/服务继续存活。

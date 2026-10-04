@@ -1,5 +1,15 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-04 06:09UTC：连续衔接已启动，最终条件仍封存
+
+一次性sii-r72-final-transition-v1/PID2513613已实际运行，只等待全部既定开发/审计/RL边界关闭；无定时任务、无新搜索。
+完成后按已有规则依次学习选模、38模型汇总、冻结、912最终评估，缺前置/失败/已有最终输出即保留停止；8项编排回归通过。
+当前waiting_for_predecessors，steps为空；五项仍未结束，尚未实际选模/冻结/开封。后续须先查该进程与final_transition_v1/execution.json，不重复手工派发final。
+两源与登记已核验共享本轮根final_transition_source_v1/final_transition_v1，actual runtime固定a3b8c97；详见RESEARCH72_FINAL_TRANSITION。
+服务器arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/。
+05:59快照RL165754交互/191536更新、context28/168、增强网络19/168、refit4/144；含最终912和2h收尾的理想余量3.67–5.87h，不再扩大搜索。
+独立最终RL actor、统计/媒体与投稿结论仍需在物理完成后执行，目标active。
+
 ## 2026-10-04 05:51UTC：五家族RL奖励物理输入闭合
 
 从原始时间戳独立划分并复算62训练回合82004区间/65603200物理子步，误差/力矩/时长/过滤动作核对通过，4个短失败全部保留。
