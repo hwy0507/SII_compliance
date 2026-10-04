@@ -1,5 +1,10 @@
 # 更新日志
 
+## 2026-10-04 — 07:31UTC队列进度
+
+- arm1 收据新增完成回合：neural-LR 25/168、context gate 32/168、context readout refit 10/144；RL adaptation 和 boundary watcher 仍 active，final transition 仍 `waiting_for_predecessors`，最终评估尚未创建。
+- 只读观察，无重启、无新派发、无解封；失败分母和固定协议不变。
+
 ## 2026-10-04 — 07:22UTC服务与资源审计
 
 - arm1 `systemd --user` 只读核对：additional neural-LR 24/168、context gate 31/168、context readout refit 10/144；RL adaptation、RL boundary watcher 和 final transition 均 active，final transition 仍等待前置，最终评估目录不存在。

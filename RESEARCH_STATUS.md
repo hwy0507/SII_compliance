@@ -6,6 +6,8 @@
 
 07:22UTC服务/资源审计：neural-LR24/168、context gate31/168、readout refit10/144；所有既有服务仍 active，3GiB 队列无 OOM/kill，final supervisor 仍等待前置。
 
+07:31UTC队列收据更新：neural-LR25/168、context gate32/168、readout refit10/144；最终评估仍未创建。
+
 运行计数快照：**文件名`EXPOSURE_SNAPSHOT_20261004_0717.json`，内部实际时间2026-10-04 06:18:25 UTC / 北京时间10月4日14:18:25**；连续衔接服务核验约至06:27UTC。这不是实时监控。
 历史与证据路径保留在 [UPDATE_LOG.md](UPDATE_LOG.md) 和 [联合研究进度](code/mujoco_6d_vmc_benchmark/docs/ESN_VMC_JOINT_PROGRESS_20260927.md)。
 
