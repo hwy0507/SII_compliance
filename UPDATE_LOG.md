@@ -1,5 +1,20 @@
 # 更新日志
 
+## 2026-10-04 — 首批真实RL存档通过与最终评估容量复核
+
+- 延续实时核验main759ba7b1d847b660af201ddb51e528ebf9b465b9、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；
+  main759完整3231文件已核验归档arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/759ba7b1d847b660af201ddb51e528ebf9b465b9/，
+  tar SHAc2d498bb33101a0bef38f966f80061135f27ef8897e7ab2bb938fdd475971b60。
+- 00:56UTC导纳301/VMC301各5500真实交互、4完整回合、1002梯度更新并保存。独立零积分/零更新检查每个75存档文件、
+  原始manifest、回放形状/终止计数、runner/agent/奖励计数、RNG可加载、源/prior不变，通过；未将其当真实续训或最终成功。
+  两queue累计峰2.67/2.66GiB，max/oom事件0；已轮转下一模型，第三RL等租约，不重启稳定作业。
+  Git含两个同字节初始manifest，权重/回放位于本轮根rl_office_adaptation_v2，hash/精确路径见RESEARCH72_RL_MEMORY_PREFLIGHT。
+- 00:44UTC新的公开成本快照：既有剩余开发理想32.697–34.220h，最终912回合理想22.824–23.942h；
+  再追加144开发会相对总窗口欠2.370–5.186h（含2h收尾假设）。暂不登记修订02，保持全部baseline和最终分母；真实并行/启动成本仍须核对。
+  本机零物理预测与源/测试全4文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/budget_forecast_archive_v2/，
+  tar SHA8412d5cc484555c83d09365e5bb48bf5f8cdb32d2a21f7b4938d8765dfe93cf6；详见RESEARCH72_CAPACITY_FORECAST。
+- 本轮只有核验/文档/小证据更新，未改训练或环境；最终24封存，未完成最终公平矩阵，不宣称RL收敛或ESN最终优势。
+
 ## 2026-10-04 — Teacher完整确认、数值敏感性与真实RL启动
 
 - 00:32UTC实时查询/fetch并读main `92d1ea1290dc4b146520224fd86cce90777a9ffb`、baseline `ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6`日志及AGENTS；无新协作改动。

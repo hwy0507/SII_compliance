@@ -1,5 +1,33 @@
 # RL learner组合内存预检
 
+## 2026-10-04 00:56UTC真实首段检查
+
+调导纳seed2026100301和调VMC同seed各完成5500步、4个完整训练回合、1002次梯度更新，
+已保存真实checkpoint并轮转到下一模型。训练还远未收敛，不能把本节资源/存档检查当作最终任务效果。
+对应两个真实queue子服务累计峰值2,867,982,336/2,851,860,480字节（约2.67/2.66GiB），
+memory.events max/oom/oom_kill均0，限制仍3GiB/无swap/1线程。父调度服务的低内存不能代表这些子服务。
+第三RL队列此时仍等租约；本次不是三个learner同时训练的完整压力保证。
+
+零积分/零更新的独立只读检查：每个checkpoint全部75文件hash与不可变manifest相同；
+episode_boundary=true、pending_transition=null；runner/agent/replay累计步和reward_samples均5500；
+agent更新数与execution同为1002。回放各数组float32/有限、观测5500×48、动作5500×7，
+terminal恰4个且最后一条终止、truncated全0；探索和回放RNG状态可加载，所有登记源文件与prior hash仍一致。
+这验证真实保存完整性，**不是实际续训已完成或最终冻结actor回放**；其余模型/首个resume段仍待核对。
+
+主机arm1@192.168.31.70，以下相对目录位于本轮共享根
+`/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/`：
+
+| 模型 | 原始manifest路径 | SHA256 |
+|---|---|---|
+| 导纳301 | `queue_0/parameter_admittance_2026100301/initial_CHECKPOINT.json` | `e7b87d5eeeab012d264488fe4bea6069a502357bd3430251ab8f21980d4ec09f` |
+| VMC301 | `queue_2/parameter_vmc_2026100301/initial_CHECKPOINT.json` | `8a40de50910f9366bf129c6665857dc970db3ecf2b03a06b41d73dfe44ea7696` |
+
+Git evidence中的RL_ADMITTANCE_301_INITIAL_CHECKPOINT.json和RL_VMC_301_INITIAL_CHECKPOINT.json为同字节副本；
+完整权重、优化器、回放、命令及逐回合失败保留服务器各initial目录。只读核验用原生NumPy2.2.6及
+main759ba7b的research72_checkpoint辅助函数，无新候选，无修改原始存档。
+
+## 历史：启动前静态压力检查
+
 2026-10-03 22:53:57–22:55:16UTC在Spark完成，0物理积分、0候选权重、8次工程梯度更新后全部丢弃。
 这是资源工程检查，不是RL实际训练、完整仿真并行检查或闭环表现。
 
