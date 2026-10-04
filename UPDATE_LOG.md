@@ -1,5 +1,10 @@
 # 更新日志
 
+## 2026-10-04 — 08:00UTC队列进度
+
+- arm1 收据更新：context gate 33/168、context readout refit 13/144、neural-LR 26/168；RL adaptation、boundary watcher 和 final transition 仍 active/waiting，正式评估与模型锁仍不存在。
+- 只读轮询未发现终止失败；没有重启、解封或追加搜索。
+
 ## 2026-10-04 — 开发回合独立只读审计
 
 - 新增 `RESEARCH72_DEVELOPMENT_AUDIT_20261004.md`，从 arm1 三个开发目录的已完成 `execution.json` 独立汇总 70 条带 audit 回合：neural-LR 26 条（task 9、strict 7、最大穿透0.9309 mm）、context gate 32 条（17、9、2.4684 mm）、readout refit 12 条（4、2、0.5069 mm）。
