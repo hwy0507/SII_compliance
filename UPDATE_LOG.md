@@ -1,5 +1,18 @@
 # 更新日志
 
+## 2026-10-04 — 最终RL共同边界的完整账本检查
+
+- 05:26UTC重新实时查询/fetch并读main2000768、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志与AGENTS；承接前轮12文件审计，正常提交/push为9ccabddd8095166c4b535d6b108631327e5af33e。
+  完整3284文件已逐内容/大小/模式核验到arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/9ccabddd8095166c4b535d6b108631327e5af33e/，tar SHA4afd43694094e5acbfb4ca15e4b3eb230bdb1d3a8049f46a8123abfa31ddcce9。
+- 最终38模型汇总原5项回归补至8项：真实final_policy/selected_boundary/main串联15个合成RL模型，包含49336与49500实际步数差异，必须选择登记边界而非后续收尾权重；1375额外步保留计成本。
+  缺一个登记阶段不回退，监护关闭证据篡改拒绝，真实新teacher完成与旧相同teacher跳过路径均覆盖。本机8项通过；仅checkpoint字节检查在合成测试中mock，实际13存档另经真实verify_candidates核验。
+  无实际最终选择/冻结/开封，无新物理/训练；不修改运行中源码、队列或研究选择规则。
+- 只读加载核查：当时13个已完成RL存档964文件/1,836,571,406字节，两遍真实完整校验约1.988/0.914s；550个runtime文件约.030/.030s。
+  这是当前存档在现有缓存状态的粗计时，不代表完整15个最终checkpoint冷加载、JAX推理初始化或912回合完成耗时，原预算预测不据此缩减。
+- 05:35公开快照：RL151254实际交互/171034更新，旧context26/168、增强网络18/168、新refit3/144；全部120拟合已完成，原作业继续。
+  服务器本轮根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/，EXPOSURE_SNAPSHOT_20261004_0535.json SHA2809fa0829b508af25ede9c933cbca54b9a804441589cca64ed59c786ebe83a9。
+  新refit仍只完成三个开发样本，不做胜负推断；最终24封存，完整912比较、独立最终审计和投稿证据未完成，目标active。
+
 ## 2026-10-04 — RL完整续训闭合与五家族奖励缓存核验
 
 - 05:05UTC实时查询/fetch并读main2000768fbd0b4dd2edef709854e6b444b98335a0、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志与AGENTS；工作区原干净，只有root agent。
