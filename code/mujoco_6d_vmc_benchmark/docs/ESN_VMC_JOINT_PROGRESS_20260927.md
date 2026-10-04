@@ -1,5 +1,9 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-04 07:22UTC：服务资源审计，最终条件仍封存
+
+arm1 服务仍 active：neural-LR24/168、context gate31/168、context readout refit10/144，RL adaptation 与边界监护继续；final transition 仍等待前置，最终评估未创建。3GiB 开发/RL队列未出现 OOM/kill，未重启或新增作业。
+
 ## 2026-10-04 07:08UTC：开发队列继续，最终条件仍封存
 
 只读复核服务器收据：增强网络23/168、context gate31/168、context readout refit9/144；RL adaptation仍运行，RL共同边界监护为`watching`。连续衔接仍`waiting_for_predecessors`，`final_evaluation_v1`不存在；没有新增派发或重启，失败仍保留。

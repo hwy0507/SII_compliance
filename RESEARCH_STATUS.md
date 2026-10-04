@@ -4,6 +4,8 @@
 
 服务器既有队列仍在运行：增强网络已完成23/168、context gate 31/168、context readout refit 9/144；RL adaptation 仍运行，RL final boundary 为 `watching`。连续衔接 `final_transition_v1` 仍 `waiting_for_predecessors`，最终24条件封存，`final_evaluation_v1` 尚未创建。未重复启动任何作业。
 
+07:22UTC服务/资源审计：neural-LR24/168、context gate31/168、readout refit10/144；所有既有服务仍 active，3GiB 队列无 OOM/kill，final supervisor 仍等待前置。
+
 运行计数快照：**文件名`EXPOSURE_SNAPSHOT_20261004_0717.json`，内部实际时间2026-10-04 06:18:25 UTC / 北京时间10月4日14:18:25**；连续衔接服务核验约至06:27UTC。这不是实时监控。
 历史与证据路径保留在 [UPDATE_LOG.md](UPDATE_LOG.md) 和 [联合研究进度](code/mujoco_6d_vmc_benchmark/docs/ESN_VMC_JOINT_PROGRESS_20260927.md)。
 

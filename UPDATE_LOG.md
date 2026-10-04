@@ -1,5 +1,10 @@
 # 更新日志
 
+## 2026-10-04 — 07:22UTC服务与资源审计
+
+- arm1 `systemd --user` 只读核对：additional neural-LR 24/168、context gate 31/168、context readout refit 10/144；RL adaptation、RL boundary watcher 和 final transition 均 active，final transition 仍等待前置，最终评估目录不存在。
+- final supervisor 当前约10 MiB、MemoryMax 512 MiB；开发/RL服务 MemoryMax 3 GiB，观测峰值未超过上限，未发现 OOM/kill。没有重启、暂停、解封或新增队列。
+
 ## 2026-10-04 — 07:08UTC队列核对
 
 - 只读复核 arm1 既有收据：增强网络仍23/168、context gate 31/168、context readout refit 已9/144；RL adaptation 仍运行，RL final boundary `watching`（最近检查07:07UTC）。连续衔接仍 `waiting_for_predecessors`，`final_evaluation_v1` 缺失。
