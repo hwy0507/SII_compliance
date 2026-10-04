@@ -3,6 +3,28 @@
 2026-10-03。两项均为工程核验：0新物理积分、0拟合、0封存条件访问，不增加控制器成功率证据。
 主机为本地airpig，Python3.11.15/NumPy2.4.6，单线程库设置、MemoryMax3GiB。
 
+## 2026-10-04：固定储备池身份独立重建
+
+01:14:41UTC完成新的零训练/零推理/零物理核验。初始与context-gate两批合计12个ESN、6个重新拟合无记忆对照，
+覆盖全部216个保留ridge候选；不是只检查选定的18个checkpoint，也没有按任务成败筛选。
+以原训练seed重新生成随机输入矩阵、稀疏循环矩阵及其原谱半径缩放、四组时间尺度和固定gate投影，全部逐值相同。
+检查完整checkpoint字段白名单、2884个可训练读出系数、禁止直接context输出的末12行全0、限幅与输出增益配置。
+不允许额外隐藏读出层/阈值字段悄悄进入本轮纯ESN合同。每个拟合模型执行两个内存负对照：修改循环矩阵与增加隐藏层均被拒绝；
+不将这些被修改的内存副本写作候选。MLP/RNN允许学习其矩阵，明确排除在“固定储备池”断言之外。
+
+这是采用原拟合运行库NumPy2.4.6的初始化重建，不要求不同BLAS/架构下重新做特征值分解逐位相同。
+实际部署使用已归档矩阵；随后将本地审计逐hash关联Spark档案中的18选定权重、训练metadata和216候选，全部相同。
+本机systemd单线程/3GiB/无swap，进程1.183s、CPU1.050s，原权重不改。
+本结果支持当前ESN训练只改变声明的读出；不证明echo-state收缩、机器人稳定性、留出成功或优于神经baseline。
+
+共享主机arm1@192.168.31.70，本轮根`/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/`：
+
+- `fixed_reservoir_audit_v1/`全部2文件已核验；保留真实本地命令/路径，没有改写执行主机。
+- 结果SHA256 `b01441975949630d46b0b579b36e25bf40fdc52fd043390810c6155af3d4fdcc`，Git同字节FIXED_RESERVOIR_AUDIT_V1.json。
+- 实际审计源码SHA256 `51bec65f7e63a4627aeaf4895090a7ee84a60d0387e71277eb4fdc15f89874d0`，无需MuJoCo或读取条件manifest。
+- tar SHA256 `2b6ea4ba8a0db3bdde62b10dffea7f2ebb0257b46bcf2288b12d525fe11717bd`。
+- 模型档案：`local_learning_archive_v1/learning_v1/`与`local_context_gate_archive_v1/context_gate_learning_v1/`。
+
 ## 已拟合模型的部署输入边界
 
 21:23:55–21:24:06UTC，11.776s墙钟、11.545s CPU，完整检查三个拟合归档的102模型：

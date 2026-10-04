@@ -26,6 +26,11 @@ Git evidence中的RL_ADMITTANCE_301_INITIAL_CHECKPOINT.json和RL_VMC_301_INITIAL
 完整权重、优化器、回放、命令及逐回合失败保留服务器各initial目录。只读核验用原生NumPy2.2.6及
 main759ba7b的research72_checkpoint辅助函数，无新候选，无修改原始存档。
 
+补充运行观察：10月4日约01:19UTC，第二模型越过warm-up后，两queue累计峰触及3GiB；
+memory.events max分别169/148，OOM/oom_kill仍0，训练计数继续增加。
+当时anon约1.83/1.87GB、file约1.25/1.26GB；符合限额下文件页缓存回收，不能再将后续累计max写成0。
+这也不是未来不会OOM的保证；保持原限制/稳定作业并继续检查checkpoint保存，未据此增加资源。
+
 ## 历史：启动前静态压力检查
 
 2026-10-03 22:53:57–22:55:16UTC在Spark完成，0物理积分、0候选权重、8次工程梯度更新后全部丢弃。

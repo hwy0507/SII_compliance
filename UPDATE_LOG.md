@@ -1,5 +1,19 @@
 # 更新日志
 
+## 2026-10-04 — 纯ESN固定矩阵独立重建与实际归档关联
+
+- 01:10UTC实时查询/fetch并读取main5b50c0cd87fab8cb711979ef1d15069ecf2fd762、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志，工作区干净。
+  main5b50完整3233文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/5b50c0cd87fab8cb711979ef1d15069ecf2fd762/，
+  tar SHAa6f923d6d9b9a864c02470c6aad5b1018db0438a26ba1dc9e977a171457d5409。
+- 新零训练/零推理/零物理审计从seed独立重建12个ESN＋6个无记忆拟合的全部216保留候选固定矩阵、时间尺度、gate及字段合同，
+  全部精确一致；每拟合两项内存负对照拒绝修改循环矩阵/额外隐藏层。原权重不改，MLP/RNN不纳入固定矩阵断言。
+  本机1线程/3GiB完成1.183s，再与Spark模型/metadata/候选逐hash关联通过；不证明稳定、泛化或ESN优势。
+- 全2文件（实际源/结果）已核验到arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/fixed_reservoir_audit_v1/，
+  tar SHA2b6ea4ba8a0db3bdde62b10dffea7f2ebb0257b46bcf2288b12d525fe11717bd；结果SHAb01441975949630d46b0b579b36e25bf40fdc52fd043390810c6155af3d4fdcc。
+  Git同字节结果，完整方法/源码hash见RESEARCH72_INPUT_AND_MEDIA_AUDIT，更新方法定位/状态/联合进度/周报。
+- RL第二模型梯度开始后两queue峰触及3GiB、max事件169/148，OOM仍0，anon约1.83/1.87GB、file约1.25/1.26GB；
+  保留页缓存回收的真实观察，不沿用旧max0断言，不增加限制或重启作业。实际新ESN开发和teacher采集继续，最终24未开封。
+
 ## 2026-10-04 — 首批真实RL存档通过与最终评估容量复核
 
 - 延续实时核验main759ba7b1d847b660af201ddb51e528ebf9b465b9、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；
