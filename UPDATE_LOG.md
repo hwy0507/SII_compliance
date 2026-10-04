@@ -1,5 +1,10 @@
 # 更新日志
 
+## 2026-10-04 — 08:07UTC队列进度
+
+- arm1 收据更新：neural-LR 27/168、context gate 33/168、context readout refit 13/144；RL boundary watcher 与 final transition 仍正常刷新，模型锁和正式评估不存在。
+- 未重启或新增队列，失败回合和固定分母保持不变。
+
 ## 2026-10-04 — 08:00UTC队列进度
 
 - arm1 收据更新：context gate 33/168、context readout refit 13/144、neural-LR 26/168；RL adaptation、boundary watcher 和 final transition 仍 active/waiting，正式评估与模型锁仍不存在。
