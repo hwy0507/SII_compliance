@@ -1,5 +1,9 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-04 08:36UTC：neural-LR与readout继续，最终条件仍封存
+
+服务器收据更新为 neural-LR29/168、context gate34/168、context readout refit15/144；RL与final transition继续，尚未生成模型锁或正式评估。
+
 ## 2026-10-04 08:26UTC：neural-LR与readout继续，最终条件仍封存
 
 服务器收据更新为 neural-LR28/168、context gate34/168、context readout refit14/144；RL与final transition继续，尚未生成模型锁或正式评估。
