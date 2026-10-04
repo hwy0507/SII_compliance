@@ -35,3 +35,18 @@
 输入源核对同时确认RL actor只接收canonical48；阶段potential和接触子步指标单独用于奖励，不拼接到actor。
 调参RL输出维度导纳7/阻抗5/VMC7，阻抗的7D公共请求为零、参数作用于底层力矩律。
 此源码核对不能替代真实传感器、硬件安全或充分收敛证据；不增加学习预算或改变动作范围。
+
+## 00:14UTC上游源码归档补充
+
+实际加载的 `/home/arm1/vmc_mujoco_runtime/SimbaV2` 为 `86899c277cdc697b2b02d827243de1ea93f20a1d`，
+实时git状态干净；在上游仓库根生成固定commit归档，225文件的内容/大小/模式核验后，再逐SHA核对实际运行源，全部相同。
+共享目录为本轮根 `upstream_simbav2_source_v1/`，未切换原运行路径或修改正在等待的训练代码。
+tar SHA `3471111f91bf5e3404bb11f7807c885305490da95741d69453ce1aaac74b2fae`；
+原归档核验收据SHA `e45cce44191c7dbef0ccf06084222ac12255114770248bcd22b1784a945a7a49`，Git同字节证据
+`docs/evidence/research72_20261003/UPSTREAM_SIMBAV2_SOURCE_V1.json`。
+归档保留上游源码/许可证，不含.git、Python/CUDA运行库或已训练权重；复现时仍需原固定提交和execution中依赖版本。
+这次检查先于实际office适配；冻结/最终审计时仍需核对实际上游未改变，不能把commit指针单独当所有外部依赖的hash。
+
+最终汇总文字另补失败阶段、task成功但strict失败数量和ball/human/rod的恢复/右删失计数。
+这些是既有JSON字段的呈现，不新增门槛、指标或排序；独立回放收据额外核对每回合checkpoint manifest内容一致。
+对应最终源以新的完整Git提交为准，上面v1源码overlay/历史hash保持原样，14项回归仍通过。

@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-04 — Teacher完整确认、数值敏感性与真实RL启动
+
+- 00:32UTC实时查询/fetch并读main `92d1ea1290dc4b146520224fd86cce90777a9ffb`、baseline `ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6`日志及AGENTS；无新协作改动。
+  main92完整3226文件已共享核验到arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/92d1ea1290dc4b146520224fd86cce90777a9ffb/，
+  tar SHA53195da043f6dc2919af8112d8ebff88b7395f7a11afa61515c053770331133c。
+- 64/64 teacher/经典开发确认及四队列独立审计完成。预登记选择teacher09、adm03、imp02、vmc11；teacher8task/7strict，
+  相同原teacher8/4；development006柱子/link6外穿透.313866810mm失败保留。所有经典确认0/8task，有限搜索不能解释为其普遍上限。
+  新报告RESEARCH72_CONTROLLER_CONFIRMATION_20261004给出全部候选与hash，Git同字节选择/汇总；不是ESN/最终保留集结果。
+- 三步长3秒球撞诊断完成：50→25μs峰力−10.437%、力模积分+.504%；50μs前缀精确重放。正式步长不改，峰力仍有数值敏感性。
+  已知teacher通过最终入口55s逐值重放及独立审计；不代表真实24条件或全部38方法通过。
+- 00:35UTC四物理进程：teacher采集、名义WBC、两个真实RL训练；第三RL等租约，新context队列已接续。
+  两RL实际子服务峰1.93/1.94GiB、OOM/max事件0；首回合完整，warm-up更新0，真实梯度/保存峰值仍待查。稳定作业不重启。
+- 官方SimbaV2 HEAD86899c277cdc697b2b02d827243de1ea93f20a1d完整225文件源码归档并与live逐hash匹配；
+  上游归档不包括运行库/权重。独立RL报告额外核对每回合checkpoint manifest，并展示失败阶段、恢复删失；14项相关合成测试通过。
+- 本轮产物共享根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/，
+  对应followup_v1、controller_confirmation_v1、public_numerical_probe_v1、final_rehearsal_v1、upstream_simbav2_source_v1；精确hash见专题报告/Git证据。
+  更新精简RESEARCH_STATUS、联合进度及周报；最终24仍封存，学习修订02未登记，尚无最终ESN优势或可投稿结论。
+
 ## 2026-10-03 — 独立RL actor回放准备与缺失证据保留
 
 - 实时核验/fetch main c5343841a29987bc1468c9143ecfcfda4ce48399、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6并读两日志。

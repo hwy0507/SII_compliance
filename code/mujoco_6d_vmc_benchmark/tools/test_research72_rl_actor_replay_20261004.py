@@ -41,7 +41,7 @@ class Tests(unittest.TestCase):
             root=Path(tmp);obs=np.full((3,48),.2);actions=obs[:,:7]
             np.savez(root/'rollout.npz',observation=obs,applied_action=actions)
             np.savez(root/'baseline_policy.npz',observation=obs,action=actions,raw_action=actions)
-            manifest={'controller':None,'checkpoint':'synthetic-only'}
+            manifest={'controller':None,'checkpoint':'synthetic-only','hashes':{'synthetic':'not-a-real-model'}}
             for name,value in [('execution.json',{'status':'complete'}),('ADAPTED_RL_CHECKPOINT.json',manifest),
                 ('AUDIT.json',dict(adapted_rl=True,normalization_unchanged=True,trace_sha256=sha(root/'rollout.npz'),
                     task_success=False,strict_success=False,full_horizon=False))]:
@@ -51,7 +51,6 @@ class Tests(unittest.TestCase):
             # Link an independent receipt into publication without reading any
             # condition manifest. Then reject changed normalization evidence.
             from research72_comparison_report_20261003 import rl_replay_coverage
-            manifest['hashes']={'synthetic':'not-a-real-model'}
             manifest_path=root/'manifest.json';manifest_path.write_text(json.dumps(manifest))
             source=Path(__file__).parent
             receipt=dict(status='complete',physics_steps=0,training_updates=0,condition_manifests_read=False,

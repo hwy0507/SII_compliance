@@ -259,6 +259,7 @@ def rl_replay_coverage(candidates, rows, receipts):
             original=expected[run]; candidate=models[original['candidate']]['adapted_rl']
             assert record['checkpoint_manifest_sha256']==candidate['manifest_sha256']==sha(candidate['manifest'])
             assert record['checkpoint_hashes']==read(candidate['manifest'])['hashes']
+            assert read(Path(run)/'ADAPTED_RL_CHECKPOINT.json')==read(candidate['manifest'])
             assert replay['raw_actor_replay_max_abs']==0.
             assert replay['normalization_unchanged'] and replay['counters_unchanged'] and replay['observation_not_mutated']
             assert set(replay['evidence_sha256'])=={'execution.json','AUDIT.json','rollout.npz','baseline_policy.npz','ADAPTED_RL_CHECKPOINT.json'}
@@ -310,6 +311,21 @@ def markdown(report):
         safety = r['all_observed_safety']
         lines.append(f"| {family} | {safety['episodes']} | {value(safety['external_penetration_mm']['maximum'])} | "
             f"{value(safety['edge_penetration_mm']['maximum'])} | {value(safety['maximum_joint_command_rate_nmps']['maximum'])} |")
+    lines += ['', '## Failure and recovery accounting', '',
+        '| Family | Failed-task terminal stages | Task succeeded, strict failed | Abort reasons |',
+        '|---|---|---:|---|']
+    for family, r in report['families'].items():
+        stages=', '.join(f'{k}: {v}' for k,v in sorted(r['failed_task_stages'].items())) or 'none'
+        aborts=', '.join(f'{k}: {v}' for k,v in sorted(r['aborted'].items())) or 'none'
+        lines.append(f"| {family} | {stages} | {r['task_succeeded_but_strict_failed']} | {aborts} |")
+    lines += ['', 'Settled rejoin uses the predeclared threshold/window. A censored recovery is not zero seconds. These counts do not redefine placement or strict success.', '',
+        '| Family | Event | Horizon | Exposed | Recovered | Right-censored |',
+        '|---|---|---|---:|---:|---:|']
+    for family, r in report['families'].items():
+        for event in ('ball','human','rod'):
+            for horizon, data in r['recovery'][event].items():
+                lines.append(f"| {family} | {event} | {horizon} | {data['exposed']} | {data['recovered']} | {data['right_censored']} |")
+    lines += ['', 'The JSON retains every observed recovery time and observation window. No naive mean mixes recovered and censored episodes; unexposed episodes have no recovery measurement.']
     for event in EVENTS:
         lines += ['', f'## {event}: original event window, exposed full episodes only', '',
             '| Family | Exposed / full | P95 force N (mean) | Force-magnitude integral Ns (mean) | Contact duration s (mean) |',

@@ -1,5 +1,15 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-04 00:35UTC 全部经典确认与真实RL接续
+
+8候选×8开发条件64完整回合/独立审计完成。选teacher09(8task/7strict)、adm03/imp02/vmc11(各0/8task)；
+teacher柱子/link6 .31387mm失败不删，经典有限搜索不宣称普遍上限。排序优先门槛/成功/最坏穿透，非只挑最低RMSE。
+两个RL实际训练首回合已结束，仍warm-up无梯度；各子服务峰约1.94GiB无OOM，第三等租约。总4物理，新teacher40条采集中。
+已知teacher55s最终入口精确重放/审计通过；三步长短诊断峰力10.4%敏感，正式50μs/gate不改，不作策略/硬件安全证明。
+上游SimbaV2完整源归档225文件及live匹配，最终报告新增失败阶段/恢复删失和严格checkpoint证据关联；14项合成检查通过。
+服务器research72_20261003_1149根下原始轨迹/hash保留，见RESEARCH72_CONTROLLER_CONFIRMATION_20261004等报告。
+增强网络/context仍待完整闭环；真正24最终封存，尚不构成RAL最终结论。
+
 ### 2026-10-03 23:47UTC 独立RL actor回放与证据覆盖
 
 除worker内回放，新增独立进程重载冻结SimbaV2，对全部完成评估（含失败/短回合）核验raw action、观测、normalizer及hash。
