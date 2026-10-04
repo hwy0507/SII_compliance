@@ -14,6 +14,8 @@
 
 08:07UTC队列审计：neural-LR27/168，其余开发队列不变；模型锁与正式评估仍缺失。
 
+08:17UTC队列审计：context gate34/168，其余开发队列不变；RL与final transition仍 active/waiting。
+
 07:31UTC队列收据更新：neural-LR25/168、context gate32/168、readout refit10/144；最终评估仍未创建。
 
 运行计数快照：**文件名`EXPOSURE_SNAPSHOT_20261004_0717.json`，内部实际时间2026-10-04 06:18:25 UTC / 北京时间10月4日14:18:25**；连续衔接服务核验约至06:27UTC。这不是实时监控。
