@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-04 — 独立核验六个新完成RL续训段及38个短失败
+
+- 开工查询/fetch main371264a、baseline ebb0e1e并读日志/AGENTS；原final transition2513613和delivery2550310实际active，未开封、重启或新增训练。上一轮属于实际进展，本轮使用等待时间补真实数据证据。
+- 原冻结工具审计六个新完成27500阶段：130回合/129707转移/103765600物理子步；5500父回放前缀和新增观测/原始动作/终止逐值核验。129577可核验奖励精确一致，130首奖励仍因初始potential缺失而排除。
+- 物理区间独立重算最大误差积分差5.55e-17，其余力矩/时长/最大位置误差及过滤动作差0。direct task302保留26个短失败、metric302保留12个，原原因global_penetration_exceeded_2mm；不是冻结策略的最终失败率，不宣称ESN优势。
+- Spark单线程1GiB/Swap0/CPUQuota100%，服务67.019秒、0新物理/actor/梯度。原训练/开发继续；全部共同边界、912正式、最终独立actor和投稿结论仍未完成。
+- 共享根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/下`rl_completed_continuation_audit_v2/`八文件1203070字节完整核验；清单SHA0b16e4a2f7a25de575b7b701113d60b206a00de001e661adc424d1aa3db550c3。两审计/清单Git同字节，详见RESEARCH72_RL_REWARD_AND_CONTINUATION_20261004.md。
+- 实际工具源码371264a完整3303文件归档已核验，服务器source/371264a8131effa0d593ad585c4ecc60f83ee7f6，tar SHA9cc0dd6f38c4034e453c443251654a472c1e64229a4f40f45fcbe362767423d6。
+
 ## 2026-10-04 — 接通最终评测后的独立RL回放、矩阵与媒体
 
 - 开工实时查询/fetch main de89c451ca33f56aee9e66ca06dac398417b5f04、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，读AGENTS/两分支日志；原最终监督PID2513613仍等待前置，未开封/重启。
