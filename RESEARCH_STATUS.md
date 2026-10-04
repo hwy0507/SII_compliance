@@ -1,37 +1,24 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
-## 2026-10-04 06:50UTC 核对
+## 2026-10-04 08:45:42 UTC 快照
 
-服务器既有队列仍在运行：增强网络已完成23/168、context gate 31/168、context readout refit 9/144；RL adaptation 仍运行，RL final boundary 为 `watching`。连续衔接 `final_transition_v1` 仍 `waiting_for_predecessors`，最终24条件封存，`final_evaluation_v1` 尚未创建。未重复启动任何作业。
+neural-LR29/168、context gate34/168、readout refit16/144；120拟合已完成，RL累计287566交互/425162更新。
+三组新开发包括2条物理短回合，不能将程序complete当作完整55秒或任务成功。
+七个相关服务的实际cgroup `memory.events` 中oom/oom_kill均0；max计数非零说明触及内存限制，不能称没有内存压力。
+final transition仍等待前置，最终24条件尚未开封，完整912比较未开始。
 
-07:22UTC服务/资源审计：neural-LR24/168、context gate31/168、readout refit10/144；所有既有服务仍 active，3GiB 队列无 OOM/kill，final supervisor 仍等待前置。
-
-07:37UTC队列审计：context gate32/168、readout refit11/144；neural-LR25/168但 worker 仍 active，RL watcher 与 final transition 收据持续刷新，最终评估仍未创建。
-
-07:49UTC队列审计：neural-LR26/168、context gate32/168、readout refit12/144；模型锁和最终评估仍不存在。
-
-08:00UTC队列审计：neural-LR26/168、context gate33/168、readout refit13/144；RL与衔接 supervisor 仍运行，正式评估尚未创建。
-
-08:07UTC队列审计：neural-LR27/168，其余开发队列不变；模型锁与正式评估仍缺失。
-
-08:17UTC队列审计：context gate34/168，其余开发队列不变；RL与final transition仍 active/waiting。
-
-08:26UTC队列审计：neural-LR28/168、context gate34/168、readout refit14/144；最终评估与模型锁仍缺失。
-
-08:36UTC队列审计：neural-LR29/168、context gate34/168、readout refit15/144；RL与final transition仍 active/waiting。
-
-07:31UTC队列收据更新：neural-LR25/168、context gate32/168、readout refit10/144；最终评估仍未创建。
-
-运行计数快照：**文件名`EXPOSURE_SNAPSHOT_20261004_0717.json`，内部实际时间2026-10-04 06:18:25 UTC / 北京时间10月4日14:18:25**；连续衔接服务核验约至06:27UTC。这不是实时监控。
+账本：`EXPOSURE_SNAPSHOT_20261004_0850.json`；内部真实时间如上，0850只是文件标识。
+按原预测器，剩余开发理想19.736–20.669h；保留912回合及2h收尾后余量4.127–6.178h，
+不包含全部等待/冷启动，不是完成保证。没有追加搜索或重启稳定作业。
 历史与证据路径保留在 [UPDATE_LOG.md](UPDATE_LOG.md) 和 [联合研究进度](code/mujoco_6d_vmc_benchmark/docs/ESN_VMC_JOINT_PROGRESS_20260927.md)。
 
 ## 当前结论
 
-新增开发回合独立审计见 [RESEARCH72_DEVELOPMENT_AUDIT_20261004.md](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_DEVELOPMENT_AUDIT_20261004.md)：当前三组共70条已完成带审计回合，均为不平衡开发曝光，不能替代最终38×24留出矩阵；readout refit ESN两条中仅一条 strict 且有一条外穿透0.5069 mm。
+开发回合worker指标汇总见 [RESEARCH72_DEVELOPMENT_AUDIT_20261004.md](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_DEVELOPMENT_AUDIT_20261004.md)：保留历史70条和后续79条快照。它们没有独立复算物理子步，不替代完整阶段审计或最终38×24矩阵；历史readout refit ESN两条中仅一条strict，另一条外穿透0.5069 mm。
 
 04:52UTC补充：新固定交互读出首条开发（seed301/development000）worker审计task/strict通过，
 30.699mm / 49.981Nm / .349058m/s，最大外穿透.143599mm，动作/filter/储备池重放误差0。
-该条仍只是一个开发样本，整阶段独立审计仍待完成；不是最终结果。下表已更新至文件名0717快照（内部实际时间06:18:25UTC）。
+该条仍只是一个开发样本，整阶段独立审计仍待完成；不是最终结果。工作状态表更新至08:45:42UTC快照，初始模型结果表保留其原完整阶段口径。
 最终选择器JSON路径兼容错误已修复，72候选合成端到端账本及缺回合/篡改拒绝在本机与Spark各3项通过；
 实际最终选择尚未运行，不能使用旧9e7fa92及更早版本的该入口。
 
@@ -67,11 +54,11 @@
 | 初始学习组 | 33拟合及264闭环/独立审计完成 |
 | teacher/经典参数 | 96筛选＋64确认及审计完成；teacher09为8/8task、7/8strict，其余选定adm03/imp02/vmc11 |
 | 名义规划＋WBC | 八条共同开发全完成/独立审计通过，task/strict均0/8，均停carry |
-| 更强MLP/RNN | 48学习率复核拟合完成；21模型的168开发回合已接续，当前19/168 |
-| contextual-leak ESN及同机制对照 | 21拟合完成；开发29/168。离线误差变差，不能先称优化成功 |
+| 更强MLP/RNN | 48学习率复核拟合完成；21模型的168开发回合已接续，当前29/168 |
+| contextual-leak ESN及同机制对照 | 21拟合完成；开发34/168。离线误差变差，不能先称优化成功 |
 | 选定teacher再采集 | 40/40完成，task40、strict25；20训练＋5验证合格示范，已由全部六个模仿家族共享拟合 |
-| 固定本体×记忆读出 | 修订02前瞻登记，18拟合/固定矩阵/字段重放/763文件归档完成，开发6/144，全部候选继续 |
-| RL office适配 | 三队列持有真实租约继续运行；累计177603交互/206734更新；全部15模型49,500共同最终阶段不变 |
+| 固定本体×记忆读出 | 修订02前瞻登记，18拟合/固定矩阵/字段重放/763文件归档完成，开发16/144，全部候选继续 |
+| RL office适配 | 三队列继续运行；累计287566交互/425162更新；全部15模型49,500共同最终阶段不变 |
 | RL接口/恢复工程 | 导纳/VMC301各27,500步续训阶段已完整审计，父5,500前缀与新增22,000真实转移核验；非逐梯度或最终任务审计 |
 | RL奖励数据 | 五家族六段62回合82,004区间/65,603,200子步的误差/力矩/时长/过滤动作核对通过；81,942缓存奖励一致，62首奖励因初始potential未知排除，不是全15最终模型 |
 | 最终冻结/评估 | 一次性连续衔接服务已运行但仍等待全部前置，尚未选模/冻结/开封；计划38模型×24条件=912回合 |
@@ -80,7 +67,7 @@
 
 最终选择工程检查增至8项，合成完整38模型账本验证全部15个RL的登记边界、实际短回合步数和后续未用成本；
 缺少边界或关闭证据篡改均阻止选择，未实际冻结或开封。新快照在共享本轮根
-`EXPOSURE_SNAPSHOT_20261004_0717.json`（内部实际时间06:18:25UTC，0717仅运行标识），SHA `74fca49834e4136decb3cd5be3418f05dd7e3fd45b1e49104e6a03fd40cbff89`。
+`EXPOSURE_SNAPSHOT_20261004_0850.json`（内部实际时间08:45:42UTC），SHA `c708837a1b011d7b623ffbf88c8fd7aac346e72eb88c115727902c24f477df67`。
 
 [连续衔接服务](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_FINAL_TRANSITION_20261004.md)将全部既定开发完成与最终912评估顺序连接。
 当前PID2513613/512MiB服务仅等待，无新物理或搜索。后续先查共享`final_transition_v1/execution.json`及实际PID，

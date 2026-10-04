@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-04 — 核验成本账本、真实OOM计数和报告证据范围
+
+- 本轮承接并已fetch main edf63e5、baseline ebb0e1e，后续本任务main7282022；遵循AGENTS/同步skill，未修改活跃runtime。上一轮属已核验等待，本轮补可复查证据。
+- 复用冻结a3b8c97的exposure/forecast工具生成新文件0850，内部真实时间08:45:42UTC：120拟合完成、RL287566交互/425162更新；neural-LR29/168（task10/strict8/短1）、context34/168（18/10/短1）、refit16/144（5/3/短0）。
+  快照SHAc708837a1b011d7b623ffbf88c8fd7aac346e72eb88c115727902c24f477df67，预测SHAb694b6e3864288380256bb6b7b955bd6342e85eca246ca4ab1678c387cb45ec4，Git与服务器字节一致。
+- 剩余开发理想19.736–20.669h、完整912和2h收尾后余量4.127–6.178h；原有等待/冷加载限制仍适用，不据此加搜索。共享根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/，文件EXPOSURE_SNAPSHOT_20261004_0850.json与BUDGET_FORECAST_20261004_0850.json。
+- 七相关服务真实MainPID/ActiveState和cgroup memory.events核对：oom/oom_kill/oom_group_kill均0；开发与RL的max计数非零，说明触及内存限制，不能把MemoryPeak≤MemoryMax本身当OOM检查。前轮较强资源表述本轮补足实际证据。
+- 修正DEVELOPMENT_AUDIT：旧表仅worker已有指标重新汇总，不是独立物理子步审计；complete可能是短回合。保留历史数据并关联新79条账本，不扩大成功/机制结论。状态页合并密集轮询文字，旧记录仍在本日志/进度历史中，补更正周报0717实际时间。
+- 7282022共享源码已对Git原tar逐文件内容/大小/模式/完整集合核验3297文件通过（原tar SHA28229ff680f7aece49edeab47b8513d4a067ccbaa202815584f3787a3fcd148e）。第一次验证导入产生1个pyc缓存导致集合检查拒绝；仅删除本次自动生成缓存后以python -B通过，没有源码或实验修改。
+- 最终24封存，全部开发/RL/912正式/独立actor/统计/媒体仍未完成。本轮0新物理/训练/选模；不以不平衡开发结果宣称ESN领先。
+
 ## 2026-10-04 — 08:36UTC队列进度
 
 - arm1 收据更新：neural-LR 29/168、context gate 34/168、context readout refit 15/144；RL adaptation、boundary watcher、final transition 仍 active/waiting，模型锁和正式评估仍不存在。

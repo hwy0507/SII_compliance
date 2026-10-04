@@ -1,5 +1,14 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-04 08:45:42UTC：成本核验与审计范围更正
+
+新公开账本0850保存原回合身份/trace与audit hash，neural-LR29/168、context34/168、refit16/144，含2条短回合。
+RL累计287566实际交互/425162更新，120拟合完成；原预测剩余开发理想19.736–20.669h，完整912/2h收尾后余量4.127–6.178h，非保证。
+DEVELOPMENT_AUDIT原仅汇总worker已有数值，本轮明确不是独立物理子步复算；完整阶段和最终审计仍未完成。
+实际七服务cgroup OOM/kill均0，max非零；7282022共享源码3297文件逐内容/大小/模式/集合核验。
+最终24仍封存，稳定作业不改、不增加搜索。快照/预测Git同字节，服务器根
+arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/。
+
 ## 2026-10-04 08:36UTC：neural-LR与readout继续，最终条件仍封存
 
 服务器收据更新为 neural-LR29/168、context gate34/168、context readout refit15/144；RL与final transition继续，尚未生成模型锁或正式评估。
