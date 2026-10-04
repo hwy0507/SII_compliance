@@ -1,5 +1,18 @@
 # 更新日志
 
+## 2026-10-04 — RL物理奖励输入独立复算与短失败保留
+
+- 05:41UTC实时查询/fetch并读main19a11c21f6aef4be2801a1e3c192146182a23bad、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志与AGENTS，工作区干净；前轮属实质进展，本轮实际PID/服务继续存活。
+  main19a完整3284文件核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/19a11c21f6aef4be2801a1e3c192146182a23bad/，tar SHA1f170330481b8121489168602eeefc2e850742edac17cc00fe5ac2c8a30ca431。
+- 新research72_reward_intervals从物理/actor时间戳独立划区间，重算dt/error/实际力矩积分与峰值并核对公共过滤action；五家族六完整训练段的62回合82004区间/65603200物理子步通过，4短失败保留。
+  时长、峰力矩/误差、动作差值0，积分最大8.33e-17；六项边界/篡改回归通过。Spark1线程/1GiB/CPUQuota100%，约33s完成，无新物理/actor/拟合。
+  只补物理日志归约，不独立重算任务potential/初始potential、终止观测或接触真实性，不把这些训练记录当最终策略测试。
+- direct_metric301自然完成27336步/22回合/44674更新，5500父前缀及新增21836真实转移核验；新18回合含39.76/1.04/7.64s三个穿透超限短失败。
+  新21818奖励精确核验、18首奖励排除；与原五段合计81942已核验奖励/62未知首项，与82004物理区间对应。不补写步数、不丢失败、不称已收敛。
+- 两源reward_intervals_source_v1核验，tar SHAfc4fdbb7145ba401f15a7aa479c3641160904d48b289c5d57b503e0190039f37；结果reward_intervals_audit_v1三文件276836字节独立核验，清单SHAddf8c0bea89c62cf4455e01966687002ad7493b178aba07beebe26307477a140。
+  共同根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/，Git保留物理区间/新奖励/清单同字节；更新原RL奖励报告、状态、进度、周报。
+  稳定开发与RL队列继续，未追加搜索/更改环境或gate；全部共同训练边界和38×24最终比较未完成，最终条件封存、目标active。
+
 ## 2026-10-04 — 最终RL共同边界的完整账本检查
 
 - 05:26UTC重新实时查询/fetch并读main2000768、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志与AGENTS；承接前轮12文件审计，正常提交/push为9ccabddd8095166c4b535d6b108631327e5af33e。
