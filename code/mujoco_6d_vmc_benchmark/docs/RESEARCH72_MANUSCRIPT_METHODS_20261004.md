@@ -85,8 +85,15 @@ and gate matrices are fixed; only the final linear readout is fitted. Its
 readout rows are identically zero, leaving 412×7=2,884 trainable coefficients.
 The raw readout is phi_t^T B. Channel zero is clipped to [0,1], the other six
 to [-1,1]. No learned hidden readout is included in this campaign's pure ESN.
-The separately implemented state-times-context feature extension has not been
-registered or fitted in this campaign and is not part of this method claim.
+Amendment 02, registered before fitting on 4 October at 04:20 UTC, adds a
+separate ungated point-loss candidate with 128 fixed interaction features
+`h_t * tanh(G_c c_t)`, where G_c has independent Gaussian entries with
+standard deviation 1/sqrt(12), generated with seed+50000. These features
+precede the zero context-only rows. The readout has 552 features, of which
+540×7=3,780 coefficients are fitted. The 128 reservoir units, input fields,
+and bounded action interface are unchanged. All 72 ESN/memoryless ridge
+candidates passed an independent exact reconstruction of their fixed arrays.
+This is a registered candidate, not yet the selected final method.
 
 When wrench input is zero and the initial state is zero, arbitrary context
 cannot generate an action. This equilibrium does not imply immediate zero
@@ -104,6 +111,26 @@ strict gates. All rejected executions remain in the collection ledger and
 are charged to data-collection cost. Complete condition identities, rather
 than adjacent frames, define the fitting/validation split. ESN, MLP, and RNN
 receive the same qualifying trajectories within a learning cohort.
+
+The first cohort used 18 training and 6 validation identities. After selection
+of teacher09 on public development conditions, all 40 training/validation
+identities were physically recollected. The unchanged eligibility rule yielded
+20 training and 5 validation histories (34,375 frames), shared by all six
+imitation families in Amendment 02. Each of three seeds contributes one
+ESN, memoryless, matched MLP/RNN and ordinary MLP/RNN refit; all 18 enter the
+same eight development conditions. Existing candidates remain eligible under
+the original aggregate-seed selection rule. The new cohort changes both data
+and features, so differences from earlier cohorts do not isolate the feature
+mechanism. Teacher validation strict success decreased from 6/8 to 5/8 despite
+placement increasing from 7/8 to 8/8; this is not uniformly better data.
+
+The refit adds 12 ridge candidates per ESN/memoryless seed and one 4,000-update
+point-loss fit per neural family/seed at the previously selected learning rate.
+Cumulative ESN and memoryless counts are 60 and 36 candidates per seed;
+pooling ordinary and matched networks gives 16 fits per MLP/RNN type per seed.
+These are unequal computation costs, disclosed separately from shared teacher
+collection, development simulation and RL interaction. No additional gate,
+learning-rate or temporal-loss search is included in this amendment.
 
 Labels are requested teacher actions from actual executed histories. Requested,
 clipped, filtered, and executed quantities are retained for provenance and

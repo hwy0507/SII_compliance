@@ -1,5 +1,26 @@
 # 更新日志
 
+## 2026-10-04 — 共享新teacher重训完成，纯ESN交互读出进入144条开发比较
+
+- 04:28UTC实时核对/fetch并读main8c1633e5b643b68c26008047c1fb5f4a1cf25010、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志及AGENTS，承接已登记研究的未提交源码/证据。
+  main8c完整3259源文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/8c1633e5b643b68c26008047c1fb5f4a1cf25010/，tar SHA5473d1fcee18f0607afce2c56ec94558441a096076b06a48678aec1c689b4ede。
+- teacher40/40完整采集完成：task40、strict25；新20训练＋5验证34,375帧，真实请求/过滤重放已核验。验证8配对审计task7→8、strict6→5，合格柱接触0/5，明确不是全面改善。
+  validation审计20文件1,056,265字节全核验，清单SHAaedb6501a93be5825b97b8d0bce4fe0e228753f874d05bf4011563a76ada6382，SUMMARY Git同字节。
+- 修订02于04:20:58拟合前登记，保留原条件/gate/最终38×24，核验三RL真实租约与容量。纯128ESN新增固定本体×记忆读出，只训练3780线性系数。
+  全六模仿家族共享新数据、固定学习率；本机1线程3GiB于04:22–04:26完成18拟合，6固定模型72候选精确重建，18actor共24,750帧隔离/导出重放误差0。
+  新数据＋结构不能当单因素机制证明；累计ESN60、无记忆36候选/seed，ordinary+matched MLP/RNN各16，不称等计算。
+- 763文件核验共享本轮根local_context_readout_refit_archive_v1，tar SHA07d887b4c98426a3a97441e0d1568a8020b2581b494e9b9268e2c2a9b987034b。
+  登记JSON路径字符串错误在写出spec前修复，原拟合未重跑；18模型×8开发全部登记，单队列PID2490149已运行，仍共享四仿真槽。
+  修订/登记/储备池/输入审计等Git原字节证据，实际源/seed/hash/限制详见RESEARCH72_READOUT_REFIT_RESULTS，更新状态/进度/周报/英文方法。
+- RL导纳301/VMC301各16,500步真实存档保留5500回放前缀精确一致，新增11000转移关联实际8回合；未重算梯度/奖励/终止帧下一观测，不称最终任务审计。
+  prefix源两文件核验，tar SHAfd4cf8c6e74e65015a6a28884e1cd7554b464a3ae8b8478ac12a54261763f988；两实际结果Git同字节。
+  q1自然得槽在一次性让槽工具之前，真实events=[]，未向研究进程发暂停/恢复信号；工具仅自身一次性测试子进程的信号检查通过，不重复调用。
+- 成本工具从登记起计144条、未来optional=0避免重计；新refit_dispatch_source_v1三文件核验，tar SHAccbf38b89d0f15ba9410adeb8fff760e122fa7dcfd563e1b1153bbc1701f91f0。
+  04:36:18快照120拟合完成、RL106418交互/102858更新、旧context23/168、增强网络14/168、新refit0/144；含912最终和2h收尾理想余量3.48–5.74h，非完成保证。
+  本轮6登记＋8容量＋2曝光＋3回放回归通过；首审计漏systemd工作目录在模型加载前失败，补全后独立审计通过。未改环境/输入/执行器/门槛。
+- 上述本轮根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/。
+  运行中稳定作业保留，24最终条件仍封存；开发/全RL共同边界/最终冻结/912评估和论文证据仍未完成，目标active。
+
 ## 2026-10-04 — 新旧teacher训练示范的配对质量审计
 
 - 03:40UTC实时核对/fetch并读取main6c0cbb6e2edd8fa75a0b1762166ce4bb51f1584f、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志与AGENTS，工作区干净。

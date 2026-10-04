@@ -1,0 +1,96 @@
+{
+  "registered_utc": "2026-10-04T04:20:58.260037+00:00",
+  "scope": "fixed_state_context_readout_selected_teacher_refit",
+  "protocol_sha256": "5457d85726e2a88067e153464b7e50dbc9fcd173b89a9fc5da2da096c0891732",
+  "previous_learning_cap_per_family_seed": 48,
+  "new_learning_cap_per_family_seed": 60,
+  "applies_to_all_learning_families": true,
+  "sealed_contents_read": false,
+  "learning_rate_selection_sha256": "dc5af909d1918f41a9b60e98dd39d0f3c0a26ac30cbd3ec9d9e46827359bcd34",
+  "data_receipt": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/REFIT_DATA_RECEIPT_20261004.json",
+  "data_receipt_sha256": "1aea31681b1a4a2fb76b1c2a013bb6b26326b1ee4ee708028182602fb0297d02",
+  "training_data_sha256": "7bb2f7bad7555cc97ca9cc32d43040e91775ce05cdfd32d109a7afbeb1d7e0a0",
+  "training_identities": 20,
+  "validation_identities": 5,
+  "engineering_parity": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/context_readout_engineering_archive_v1/context_readout_parity_v1/PARITY.json",
+  "engineering_parity_sha256": "fa1bef3e4193bfc188b9307b138aee2391438762bd7ea47dc2a62aa69e674b3e",
+  "forecast": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/BUDGET_FORECAST_20261004_0416.json",
+  "forecast_sha256": "13037d9935e678ffc20e70b374a65f034ececc6e9d3104c83f0a1f2550036794",
+  "observed_rl_queues": [
+    {
+      "queue": 0,
+      "process": {
+        "pid": 2428446,
+        "parent": 2631,
+        "start_ticks": 109762845,
+        "argv": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_rl_campaign_20261003.py",
+          "--root",
+          "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+          "--output",
+          "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2",
+          "--queue",
+          "0"
+        ],
+        "caught": 2,
+        "uid": 1000
+      },
+      "observed_slot": 3
+    },
+    {
+      "queue": 1,
+      "process": {
+        "pid": 2428447,
+        "parent": 2631,
+        "start_ticks": 109762846,
+        "argv": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_rl_campaign_20261003.py",
+          "--root",
+          "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+          "--output",
+          "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2",
+          "--queue",
+          "1"
+        ],
+        "caught": 2,
+        "uid": 1000
+      },
+      "observed_slot": 1
+    },
+    {
+      "queue": 2,
+      "process": {
+        "pid": 2428448,
+        "parent": 2631,
+        "start_ticks": 109762846,
+        "argv": [
+          "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+          "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_rl_campaign_20261003.py",
+          "--root",
+          "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+          "--output",
+          "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2",
+          "--queue",
+          "2"
+        ],
+        "caught": 2,
+        "uid": 1000
+      },
+      "observed_slot": 2
+    }
+  ],
+  "additional_development_episodes": 144,
+  "new_models": 18,
+  "source_sha256": "7af7d30031435c6048b3e51c45a2d0286da740a3c4b4dbe4f6372d9ba7e20580",
+  "mechanism": "128 fixed state-times-current-proprioception readout features, same128 reservoir and18 allowed input fields. No leak gate. ESN learns only3780 readout coefficients. Teacher remains offline.",
+  "rationale": "Earlier parity probe shows the existing readout cannot immediately condition a remembered load on changed current proprioception when current load is zero. Test the fixed readout interaction with actual selected-teacher trajectories. Benefit remains unproven.",
+  "data": "All six imitation families receive the identical selected-teacher20train/5validation data. Original failed attempts and old candidates remain. No synthetic/development/final labels.",
+  "jobs": "Per seed: ESN12 ridge candidates; memoryless12; matched MLP/RNN and ordinary MLP/RNN one4000-update point fit each at earlier fixed validation-selected rates. Three seeds,18models. No further rate/gate/loss search.",
+  "accounting": "Cumulative ESN60 ridge candidates per seed, memoryless36, pooled ordinary+matched MLP/RNN16 each. Count parent fits, failed teacher collection, actual training and development separately; not equal compute.",
+  "development": "All18models on all8 existing development identities. Aggregate all3seeds by unchanged strict/task/horizon/penetration/RMSE/torque/lexical rule. Earlier eligible candidates remain; no successful-only admission or seed selection.",
+  "resources": "Fit locally1thread/MemoryMax3GiB, archive source/data/models onSpark. Development uses the shared four-slot cap; no stable runtime/source changes. Three realRL queues already hold leases.",
+  "limits": "Same environment/input/action/filter/gates/deadlines. Complete final38x24 preserved. Forecast includes maximum2750unused RL steps each and2h reporting; remaining P90 margin>=3h but contention/waits are not guaranteed.",
+  "interpretation": "New data plus readout change is a system variant, not an isolated readout-mechanism ablation. Same-data ESN/memoryless/matched comparisons remain available; no preset winner."
+}

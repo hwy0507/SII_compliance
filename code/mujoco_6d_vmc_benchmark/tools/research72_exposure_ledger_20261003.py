@@ -113,12 +113,25 @@ def main():
             'additional_development_v1/nominal_development','additional_development_v1/neural_lr_development',
             'context_gate_development_v1/development','teacher_refinement_v1/collection',
             'final_rehearsal_v1/evaluation','public_numerical_probe_v1')
+    physics_rows=[physics(root/x) for x in phases]
+    learning_rows=[learning(root/'local_learning_archive_v1/learning_v1'),
+                   learning(root/'local_neural_refinement_archive_v1/neural_lr_refinement_v1'),
+                   learning(root/'local_context_gate_archive_v1/context_gate_learning_v1')]
+    refit=root/'AMENDMENT_02_CONTEXT_READOUT_REFIT.json'
+    if refit.exists():
+        amendment=read(refit)
+        assert amendment['protocol_sha256']==sha(root/'PROTOCOL.json')
+        assert amendment['scope']=='fixed_state_context_readout_selected_teacher_refit'
+        assert amendment['new_models']==18 and amendment['additional_development_episodes']==144
+        row=physics(root/'context_readout_refit_development_v1')
+        row.update(registered_maximum_episodes=144,amendment_sha256=sha(refit))
+        physics_rows.append(row)
+        row=learning(root/'local_context_readout_refit_archive_v1/context_readout_refit_v1')
+        row['local_fit_status_not_inferred_from_missing_server_archive']=True
+        learning_rows.append(row)
     result=dict(created_utc=datetime.now(timezone.utc).isoformat(),source_sha256=sha(Path(__file__)),
         protocol_sha256=sha(root/'PROTOCOL.json'),snapshot_only=True,sealed_contents_read=False,
-        physics=[physics(root/x) for x in phases],
-        learning=[learning(root/'local_learning_archive_v1/learning_v1'),
-                  learning(root/'local_neural_refinement_archive_v1/neural_lr_refinement_v1'),
-                  learning(root/'local_context_gate_archive_v1/context_gate_learning_v1')],
+        physics=physics_rows,learning=learning_rows,
         rl=reinforcement(active_campaign(root)),
         accounting=['Do not equate fitted ridge candidates, gradient updates and simulator interactions.',
             'Teacher collection is shared by learned methods; charge all attempts, including failures.',

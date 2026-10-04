@@ -22,6 +22,17 @@ def fixture():
 
 
 class BudgetTests(unittest.TestCase):
+    def test_registered_refit_is_charged_before_archive_or_dispatch(self):
+        snapshot,protocol,throughput=fixture()
+        snapshot['physics'].append(dict(path='/synthetic/context_readout_refit_development_v1',
+            status='not_started',registered_maximum_episodes=144,amendment_sha256='synthetic'))
+        result=forecast(snapshot,protocol,throughput,optional_episodes=0)
+        self.assertEqual(result['pending_phases'][-1]['remaining_including_inflight'],144)
+        self.assertEqual(result['optional_episodes_hypothetical'],0)
+        self.assertEqual(result['scenarios'][0]['optional_development_ideal_hours'],0)
+        snapshot['physics'][-1]['registered_maximum_episodes']=8
+        with self.assertRaises(AssertionError):forecast(snapshot,protocol,throughput)
+
     def test_common_boundary_charges_every_compatibility_step(self):
         snapshot, protocol, throughput = fixture()
         boundary=dict(scope='outcome_independent_common_rl_final_boundary',

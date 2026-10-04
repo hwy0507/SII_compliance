@@ -16,7 +16,7 @@ def read(p):
 
 
 def sha(p):
-    return hashlib.sha256(p.read_bytes()).hexdigest()
+    return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 
 def main():

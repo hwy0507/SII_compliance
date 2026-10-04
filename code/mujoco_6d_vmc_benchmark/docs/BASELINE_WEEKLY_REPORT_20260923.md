@@ -1,5 +1,16 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-04 04:36UTC 共享新teacher的六家族重训与RL真实继承
+
+teacher40/40任务、25/40strict，20训练＋5验证同数据供全部六模仿家族；验证strict6→5的退步及柱暴露0/5公开保留。
+修订02在拟合前登记，18模型本机1线程/3GiB完成；纯ESN只学3780读出，6固定模型72候选及18actor输入/动作重放通过。
+763文件已核验共享local_context_readout_refit_archive_v1，18×8开发完整登记启动，全部旧候选保留，不能以新数据差值单独证明记忆机制。
+累计实际ESN60候选/seed、无记忆36，ordinary+matched MLP/RNN各16，不称等计算。成本144回合前瞻计入，不削减最终38×24矩阵。
+导纳/VMC301继承5500前缀、追加11000真实转移核验通过，未逐梯度或独立奖励重算；q1自然得槽，未发暂停/恢复信号。
+当前120拟合、RL106418交互/102858更新、旧context23/168、增强网络14/168、新refit0/144，最终条件仍封存。
+共享根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/；
+详见RESEARCH72_READOUT_REFIT_RESULTS、TEACHER_DATA_QUALITY和Git原字节证据；没有新的全面ESN优势结论。
+
 ### 2026-10-04 03:51UTC teacher同训练身份配对审计
 
 64完整回合7040万子步重算并关联原始hash通过，新teacher task32/32（旧29）、strict20/32（旧18），严格改进8条而退化6条。
