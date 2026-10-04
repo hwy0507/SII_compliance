@@ -1,5 +1,19 @@
 # 更新日志
 
+## 2026-10-04 — 实际物理装置核验与论文结论范围
+
+- 01:30UTC实时查询/fetch并读main58fcf97d6e90d08f6feba94b7740365609815f20、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志和AGENTS，工作区干净。
+  main58完整3235文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/58fcf97d6e90d08f6feba94b7740365609815f20/，
+  tar SHA9281c6b48f7c11579835f1b4b7724b9b4e6b2ddfb3b22a91c8b29c92df81b163。
+- 新零积分只读审计核对公开train000精确MJB、七个实际源码hash、1375帧旧mocap位置：球1kg/r60mm、物块80g自由体，
+  无payload weld；实际人/杆为有限质量驱动机构，但模型仍有场外旧mocap。保留审计早期粗假设被拒绝的记录，未修改模型来通过。
+  解释14/80N驱动力不等于接触力上限、2s前球被固定、柱为特定低摩擦小几何；不冒充人体安全、广泛环境或硬件验证。
+- 本机1线程/3GiB成功审计.219s；全部3文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/apparatus_audit_v1/，
+  结果SHAcb30b726a8acc310d2607bd38a44785730aae02e6b5c527c9f01d23f10e38648、tar SHAd5c178a5316e26436f16f5672569df115ada885a19db4b1a9e41fe4eda568321；
+  与服务器原execution/model/trace再次关联，Git同字节小证据。详见RESEARCH72_APPARATUS_SCOPE，更新方法定位/状态/联合进度/周报。
+- 01:44UTC新teacher14/40、名义7/8、context7/168；四RL模型首段各5500/1002，后续两模型4750步；第三队列等租约。
+  两queue memory.max事件447/685、OOM0，稳定作业不重启。无新候选、环境/gate/预算修改或封存读取；最终公平矩阵仍未完成。
+
 ## 2026-10-04 — 纯ESN固定矩阵独立重建与实际归档关联
 
 - 01:10UTC实时查询/fetch并读取main5b50c0cd87fab8cb711979ef1d15069ecf2fd762、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志，工作区干净。

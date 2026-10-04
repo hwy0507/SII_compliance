@@ -1,0 +1,4303 @@
+{
+  "schema": "sii-research72-apparatus-readonly-v1",
+  "created_utc": "2026-10-04T01:37:50.047832+00:00",
+  "host": "airpig",
+  "python": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-canonical-rl/bin/python",
+  "numpy": "2.4.6",
+  "mujoco": "3.11.0",
+  "argv": [
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/research72_apparatus_audit_20261004.py",
+    "--model",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/research72_20261003_1149/media_rehearsal_v1/input/rollout.mjb",
+    "--execution",
+    "/tmp/research72-scene-source-execution.json",
+    "--trace",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/research72_20261003_1149/media_rehearsal_v1/input/rollout.npz",
+    "--source-root",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark",
+    "--output",
+    "/tmp/research72-apparatus-audit-v1.json"
+  ],
+  "model": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/research72_20261003_1149/media_rehearsal_v1/input/rollout.mjb",
+  "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+  "public_execution": "/tmp/research72-scene-source-execution.json",
+  "execution_sha256": "4f5b3d67698594d362197b9b387744b762701c07d80c6c7730b88b6fb5a01f95",
+  "trace": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/research72_20261003_1149/media_rehearsal_v1/input/rollout.npz",
+  "trace_sha256": "785c075ced8fcc30ca470030b84166f1c0fb6607dfe3fa87b701a052bb791d67",
+  "saved_mocap_sample_count": 1375,
+  "saved_mocap_pos_min": [
+    [
+      3.0,
+      3.0,
+      3.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "saved_mocap_pos_max": [
+    [
+      3.0,
+      3.0,
+      3.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "source_root": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark",
+  "source_sha256": {
+    "scripts/fr3_scene.py": "994b039f0cc9f146ccf1bd09640dafdb8fe6918d05203c0688519e668edb83a5",
+    "scripts/office_complex_scene_v5_20260917.py": "82aa0348b185fcba788cb217d77312fdc0dfb0ffbf7b0f936ae3ba6b83b9d97b",
+    "scripts/office_contact_scene_20260916.py": "296d71283e0cca6bf6863c8a5aed7a1dc1af92f66a3118211b95d173467088da",
+    "scripts/office_task_v4_20260917.py": "255ce3443ecfb46d4e88797f3b5bb78a864c089e395c097aa86e203533852d0f",
+    "scripts/planned_hand_corner_20261002.py": "60fc1bc868a04e5a8e27c887b91a9ba4ffeaed6cd073379be589780d59fcabd5",
+    "scripts/validate_office_apparatus_v5_20260917.py": "76ed25f77c7c32452121382b1f5a766f1b553af62802a1afb7000b3bd029ebe0",
+    "scripts/wbc_velocity_residual_env.py": "50c2d77df422c5c3ce440428dbd62f7511e4f8c0f8528e8f59d0bf4e8481297c"
+  },
+  "audit_source_sha256": "55b2d970d9bb583141f196d677feb2fdab975f26a5a7ddc1c27be62c3521ade6",
+  "threads": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "condition_id": "train_000",
+  "actor_calls": 0,
+  "physics_steps": 0,
+  "heldout_reads": 0,
+  "counts": {
+    "nq": 29,
+    "nv": 27,
+    "nu": 9,
+    "nbody": 24,
+    "ngeom": 97,
+    "njnt": 17,
+    "neq": 1,
+    "nmocap": 3,
+    "npair": 2,
+    "nexclude": 1
+  },
+  "options": {
+    "timestep": 5e-05,
+    "gravity": [
+      0.0,
+      0.0,
+      -9.81
+    ],
+    "integrator": 3,
+    "solver": 2,
+    "iterations": 1000,
+    "tolerance": 1e-10,
+    "cone": 0,
+    "impratio": 1.0,
+    "disableflags": 131072,
+    "enableflags": 0
+  },
+  "arguments": {
+    "output": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_0/train_000/rollout",
+    "render": false,
+    "impact_slowmo": false,
+    "events": "all",
+    "task": "pick_place",
+    "corner_placement": true,
+    "interaction_demo": false,
+    "combined_demo": false,
+    "combined_contact_v2": false,
+    "combined_thick_corner_pillar_v1": false,
+    "combined_thick_corner_pillar_v2": false,
+    "combined_thick_corner_pillar_v3": false,
+    "combined_thick_corner_pillar_v4": true,
+    "relaxed_pillar": false,
+    "seed": 2026091751,
+    "variant": 0,
+    "duration": 55.0,
+    "dt": 5e-05,
+    "ball_speed": 1.515087,
+    "ball_launch_time_s": 2.0,
+    "person_stroke": 0.187964,
+    "rod_stroke": 0.216075,
+    "esn_model": null,
+    "esn_mode": "shadow",
+    "hybrid_vmc_blend": 0.0,
+    "memory_ablation": "none",
+    "disable_selector_pulse": false,
+    "teacher": "vmc6d",
+    "physics_probe_s": null,
+    "impact_refinement_dt": null,
+    "impact_refinement_until": 0.2,
+    "person_start": 3.576477,
+    "rod_start": 13.046196,
+    "rod_hold": 6.0,
+    "observer_friction_velocity_scale": 0.005,
+    "interaction_schedule": "legacy",
+    "planned_hand_corner": true,
+    "unexpected_edge": true,
+    "allow_lateral_rejoin": true,
+    "tool_contact": {
+      "id": "office-validation-v6",
+      "registration": "PROTOCOL.json frozen before evaluation",
+      "ball_center_m": [
+        0.54,
+        -0.43,
+        0.61
+      ],
+      "ball_radius_m": 0.06,
+      "ball_mass_kg": 1.0,
+      "rod_center_m": [
+        0.77,
+        -0.12,
+        0.635
+      ],
+      "rod_axis": [
+        -1,
+        0,
+        0
+      ],
+      "rod_fromto": [
+        0.1,
+        0,
+        0,
+        -0.045,
+        0,
+        0
+      ],
+      "rod_solref": ".001 1",
+      "rod_force_limit_n": 14,
+      "rod_hold_s": 6.0,
+      "timing": "ball2; person4-11; rod13-14.5, hold14.5-20.5, retract20.5-22.5",
+      "goal": "Real palm contact and lateral/vertical sliding while rod remains extended; no contact truth in actor, no obstacle chasing",
+      "frozen": "old checkpoints, target, path progress, placement/penetration gate, actuator amplitude/rate limits",
+      "edge_position_m": [
+        0.625,
+        -0.25,
+        0.54
+      ],
+      "edge_half_size_m": [
+        0.01,
+        0.045,
+        0.02
+      ]
+    }
+  },
+  "bodies": [
+    {
+      "id": 0,
+      "name": "world",
+      "parentid": 0,
+      "mass": 0.0,
+      "inertia": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": -1,
+      "jntnum": 0
+    },
+    {
+      "id": 1,
+      "name": "base",
+      "parentid": 0,
+      "mass": 0.0,
+      "inertia": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": -1,
+      "jntnum": 0
+    },
+    {
+      "id": 2,
+      "name": "fr3_link0",
+      "parentid": 1,
+      "mass": 2.8206720543557333,
+      "inertia": [
+        0.011467894078245599,
+        0.011257366489891372,
+        0.007685106916899783
+      ],
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": -1,
+      "jntnum": 0
+    },
+    {
+      "id": 3,
+      "name": "fr3_link1",
+      "parentid": 2,
+      "mass": 2.92747,
+      "inertia": [
+        0.0239286,
+        0.0227246,
+        0.00610634
+      ],
+      "pos": [
+        0.0,
+        0.0,
+        0.333
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 0,
+      "jntnum": 1
+    },
+    {
+      "id": 4,
+      "name": "fr3_link2",
+      "parentid": 3,
+      "mass": 2.93554,
+      "inertia": [
+        0.0629567,
+        0.0411924,
+        0.0246371
+      ],
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        0.7071067811865475,
+        -0.7071067811865475,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 1,
+      "jntnum": 1
+    },
+    {
+      "id": 5,
+      "name": "fr3_link3",
+      "parentid": 4,
+      "mass": 2.2449,
+      "inertia": [
+        0.0267409,
+        0.0189869,
+        0.0171587
+      ],
+      "pos": [
+        0.0,
+        -0.316,
+        0.0
+      ],
+      "quat": [
+        0.7071067811865475,
+        0.7071067811865475,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 2,
+      "jntnum": 1
+    },
+    {
+      "id": 6,
+      "name": "fr3_link4",
+      "parentid": 5,
+      "mass": 2.6156,
+      "inertia": [
+        0.05139,
+        0.0372717,
+        0.0160047
+      ],
+      "pos": [
+        0.0825,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        0.7071067811865475,
+        0.7071067811865475,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 3,
+      "jntnum": 1
+    },
+    {
+      "id": 7,
+      "name": "fr3_link5",
+      "parentid": 6,
+      "mass": 2.32712,
+      "inertia": [
+        0.0579335,
+        0.0449144,
+        0.0130634
+      ],
+      "pos": [
+        -0.0825,
+        0.384,
+        0.0
+      ],
+      "quat": [
+        0.7071067811865475,
+        -0.7071067811865475,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 4,
+      "jntnum": 1
+    },
+    {
+      "id": 8,
+      "name": "fr3_link6",
+      "parentid": 7,
+      "mass": 1.81704,
+      "inertia": [
+        0.0175039,
+        0.0161123,
+        0.00193529
+      ],
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        0.7071067811865475,
+        0.7071067811865475,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 5,
+      "jntnum": 1
+    },
+    {
+      "id": 9,
+      "name": "fr3_link7",
+      "parentid": 8,
+      "mass": 0.627143,
+      "inertia": [
+        0.000223836,
+        0.000223642,
+        5.64132e-07
+      ],
+      "pos": [
+        0.088,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        0.7071067811865475,
+        0.7071067811865475,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 6,
+      "jntnum": 1
+    },
+    {
+      "id": 10,
+      "name": "hand",
+      "parentid": 9,
+      "mass": 0.73,
+      "inertia": [
+        0.001,
+        0.0025,
+        0.0017
+      ],
+      "pos": [
+        0.0,
+        0.0,
+        0.107
+      ],
+      "quat": [
+        0.9238795391929064,
+        0.0,
+        0.0,
+        -0.38268341623423263
+      ],
+      "mocapid": -1,
+      "jntadr": -1,
+      "jntnum": 0
+    },
+    {
+      "id": 11,
+      "name": "left_finger",
+      "parentid": 10,
+      "mass": 0.015,
+      "inertia": [
+        2.375e-06,
+        2.375e-06,
+        7.5e-07
+      ],
+      "pos": [
+        0.0,
+        0.0,
+        0.0584
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 7,
+      "jntnum": 1
+    },
+    {
+      "id": 12,
+      "name": "right_finger",
+      "parentid": 10,
+      "mass": 0.015,
+      "inertia": [
+        2.375e-06,
+        2.375e-06,
+        7.5e-07
+      ],
+      "pos": [
+        0.0,
+        0.0,
+        0.0584
+      ],
+      "quat": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mocapid": -1,
+      "jntadr": 8,
+      "jntnum": 1
+    },
+    {
+      "id": 13,
+      "name": "target_object",
+      "parentid": 0,
+      "mass": 0.08,
+      "inertia": [
+        3.333333333333334e-05,
+        3.333333333333334e-05,
+        3.333333333333334e-05
+      ],
+      "pos": [
+        0.54,
+        0.0,
+        0.455
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 9,
+      "jntnum": 1
+    },
+    {
+      "id": 14,
+      "name": "rod_support",
+      "parentid": 0,
+      "mass": 0.3,
+      "inertia": [
+        0.0022647,
+        0.0022647,
+        2.94e-05
+      ],
+      "pos": [
+        0.55,
+        -0.2,
+        0.53
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 10,
+      "jntnum": 1
+    },
+    {
+      "id": 15,
+      "name": "moving_obstacle",
+      "parentid": 0,
+      "mass": 0.0,
+      "inertia": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pos": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": 0,
+      "jntadr": -1,
+      "jntnum": 0
+    },
+    {
+      "id": 16,
+      "name": "nominal_marker",
+      "parentid": 0,
+      "mass": 0.06544984694978737,
+      "inertia": [
+        1.6362461737446845e-05,
+        1.6362461737446845e-05,
+        1.6362461737446845e-05
+      ],
+      "pos": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": 1,
+      "jntadr": -1,
+      "jntnum": 0
+    },
+    {
+      "id": 17,
+      "name": "actual_marker",
+      "parentid": 0,
+      "mass": 0.057905835790967065,
+      "inertia": [
+        1.3341504566238813e-05,
+        1.3341504566238813e-05,
+        1.3341504566238813e-05
+      ],
+      "pos": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": 2,
+      "jntadr": -1,
+      "jntnum": 0
+    },
+    {
+      "id": 18,
+      "name": "office_v5_ball",
+      "parentid": 0,
+      "mass": 1.0,
+      "inertia": [
+        0.0014399999999999999,
+        0.0014399999999999999,
+        0.0014399999999999999
+      ],
+      "pos": [
+        0.54,
+        -0.43,
+        0.61
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 11,
+      "jntnum": 1
+    },
+    {
+      "id": 19,
+      "name": "office_v5_person",
+      "parentid": 0,
+      "mass": 48.5,
+      "inertia": [
+        7.760519507555007,
+        7.687430906713786,
+        0.2738878765969121
+      ],
+      "pos": [
+        1.2,
+        -0.19,
+        -0.35
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 12,
+      "jntnum": 1
+    },
+    {
+      "id": 20,
+      "name": "office_v5_upper_arm",
+      "parentid": 19,
+      "mass": 1.8,
+      "inertia": [
+        0.011331194593066547,
+        0.011331194593066547,
+        0.0012499749724750658
+      ],
+      "pos": [
+        -0.035,
+        0.0,
+        1.18
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 13,
+      "jntnum": 1
+    },
+    {
+      "id": 21,
+      "name": "office_v5_forearm",
+      "parentid": 20,
+      "mass": 1.0,
+      "inertia": [
+        0.0061075104126609575,
+        0.0061075104126609575,
+        0.00043640083063491223
+      ],
+      "pos": [
+        -0.19,
+        0.0,
+        -0.1
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 14,
+      "jntnum": 1
+    },
+    {
+      "id": 22,
+      "name": "office_v5_human_hand",
+      "parentid": 21,
+      "mass": 0.45000000000000007,
+      "inertia": [
+        0.0005672387910902729,
+        0.0003293361579697557,
+        0.0002883392338839293
+      ],
+      "pos": [
+        -0.19,
+        0.0,
+        -0.12
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 15,
+      "jntnum": 1
+    },
+    {
+      "id": 23,
+      "name": "office_v5_push_rod",
+      "parentid": 0,
+      "mass": 0.65,
+      "inertia": [
+        0.001489097907331976,
+        0.001489097907331976,
+        6.22469653767821e-05
+      ],
+      "pos": [
+        0.77,
+        -0.12,
+        0.635
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mocapid": -1,
+      "jntadr": 16,
+      "jntnum": 1
+    }
+  ],
+  "joints": [
+    {
+      "id": 0,
+      "name": "fr3_joint1",
+      "type": 3,
+      "bodyid": 3,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range": [
+        -2.7437,
+        2.7437
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 0,
+      "first_dof_damping": 0.21,
+      "first_dof_armature": 0.195
+    },
+    {
+      "id": 1,
+      "name": "fr3_joint2",
+      "type": 3,
+      "bodyid": 4,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range": [
+        -1.7837,
+        1.7837
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 1,
+      "first_dof_damping": 0.21,
+      "first_dof_armature": 0.195
+    },
+    {
+      "id": 2,
+      "name": "fr3_joint3",
+      "type": 3,
+      "bodyid": 5,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range": [
+        -2.9007,
+        2.9007
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 2,
+      "first_dof_damping": 0.21,
+      "first_dof_armature": 0.195
+    },
+    {
+      "id": 3,
+      "name": "fr3_joint4",
+      "type": 3,
+      "bodyid": 6,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range": [
+        -3.0421,
+        -0.1518
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 3,
+      "first_dof_damping": 0.21,
+      "first_dof_armature": 0.195
+    },
+    {
+      "id": 4,
+      "name": "fr3_joint5",
+      "type": 3,
+      "bodyid": 7,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range": [
+        -2.8065,
+        2.8065
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 4,
+      "first_dof_damping": 0.21,
+      "first_dof_armature": 0.074
+    },
+    {
+      "id": 5,
+      "name": "fr3_joint6",
+      "type": 3,
+      "bodyid": 8,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range": [
+        0.5445,
+        4.5169
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 5,
+      "first_dof_damping": 0.21,
+      "first_dof_armature": 0.074
+    },
+    {
+      "id": 6,
+      "name": "fr3_joint7",
+      "type": 3,
+      "bodyid": 9,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range": [
+        -3.0159,
+        3.0159
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 6,
+      "first_dof_damping": 0.21,
+      "first_dof_armature": 0.074
+    },
+    {
+      "id": 7,
+      "name": "finger_joint1",
+      "type": 2,
+      "bodyid": 11,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        0.0,
+        0.04
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 7,
+      "first_dof_damping": 1.0,
+      "first_dof_armature": 0.1
+    },
+    {
+      "id": 8,
+      "name": "finger_joint2",
+      "type": 2,
+      "bodyid": 12,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        0.0,
+        0.04
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 8,
+      "first_dof_damping": 1.0,
+      "first_dof_armature": 0.1
+    },
+    {
+      "id": 9,
+      "name": "target_freejoint",
+      "type": 0,
+      "bodyid": 13,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range": [
+        0.0,
+        0.0
+      ],
+      "limited": false,
+      "stiffness": 0.0,
+      "dofadr": 9,
+      "first_dof_damping": 0.0,
+      "first_dof_armature": 0.0
+    },
+    {
+      "id": 10,
+      "name": "rod_slide",
+      "type": 2,
+      "bodyid": 14,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        0.0,
+        0.2
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 15,
+      "first_dof_damping": 2.0,
+      "first_dof_armature": 0.0
+    },
+    {
+      "id": 11,
+      "name": "office_v5_ball_free",
+      "type": 0,
+      "bodyid": 18,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range": [
+        0.0,
+        0.0
+      ],
+      "limited": false,
+      "stiffness": 0.0,
+      "dofadr": 16,
+      "first_dof_damping": 0.0,
+      "first_dof_armature": 0.0
+    },
+    {
+      "id": 12,
+      "name": "office_v5_person_root",
+      "type": 2,
+      "bodyid": 19,
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "range": [
+        0.0,
+        0.25
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 22,
+      "first_dof_damping": 10.0,
+      "first_dof_armature": 0.0
+    },
+    {
+      "id": 13,
+      "name": "office_v5_shoulder",
+      "type": 3,
+      "bodyid": 20,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        -0.45,
+        0.45
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 23,
+      "first_dof_damping": 4.0,
+      "first_dof_armature": 0.0
+    },
+    {
+      "id": 14,
+      "name": "office_v5_elbow",
+      "type": 3,
+      "bodyid": 21,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        -0.45,
+        0.45
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 24,
+      "first_dof_damping": 3.0,
+      "first_dof_armature": 0.0
+    },
+    {
+      "id": 15,
+      "name": "office_v5_human_hand_joint",
+      "type": 2,
+      "bodyid": 22,
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "range": [
+        -0.05,
+        0.03
+      ],
+      "limited": true,
+      "stiffness": 180.0,
+      "dofadr": 25,
+      "first_dof_damping": 8.0,
+      "first_dof_armature": 0.0
+    },
+    {
+      "id": 16,
+      "name": "office_v5_push_rod_joint",
+      "type": 2,
+      "bodyid": 23,
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "range": [
+        0.0,
+        0.24
+      ],
+      "limited": true,
+      "stiffness": 0.0,
+      "dofadr": 26,
+      "first_dof_damping": 3.0,
+      "first_dof_armature": 0.0
+    }
+  ],
+  "collision_geometries": [
+    {
+      "id": 0,
+      "name": "office_floor",
+      "type": 0,
+      "bodyid": 0,
+      "pos": [
+        0.0,
+        0.0,
+        -0.35
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        3.0,
+        3.0,
+        0.05
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 1,
+      "name": "office_robot_pedestal",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.0,
+        0.0,
+        -0.175
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.11,
+        0.11,
+        0.175
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 2,
+      "name": "office_desk_top",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.58,
+        0.0,
+        0.375
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.28,
+        0.38,
+        0.025
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.75,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 3,
+      "name": "office_leg_0.34_-0.34",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.34,
+        -0.34,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.022,
+        0.022,
+        0.35
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 4,
+      "name": "office_leg_0.34_0.34",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.34,
+        0.34,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.022,
+        0.022,
+        0.35
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 5,
+      "name": "office_leg_0.82_-0.34",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.82,
+        -0.34,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.022,
+        0.022,
+        0.35
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 6,
+      "name": "office_leg_0.82_0.34",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.82,
+        0.34,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.022,
+        0.022,
+        0.35
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 7,
+      "name": "office_monitor_foot",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.77,
+        0.33,
+        0.408
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.065,
+        0.04,
+        0.008
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 8,
+      "name": "office_monitor_stand",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.79,
+        0.33,
+        0.475
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.014,
+        0.012,
+        0.075
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 9,
+      "name": "office_monitor_screen",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.79,
+        0.34,
+        0.64
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.12,
+        0.012,
+        0.075
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 10,
+      "name": "office_notebook",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.72,
+        -0.29,
+        0.41
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.07,
+        0.045,
+        0.01
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 11,
+      "name": "office_keyboard",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.72,
+        0.315,
+        0.409
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.095,
+        0.025,
+        0.009
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 12,
+      "name": "office_v5_pillar",
+      "type": 5,
+      "bodyid": 0,
+      "pos": [
+        0.619,
+        -0.27,
+        0.75
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.004,
+        0.01,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.04,
+        1.0
+      ],
+      "solimp": [
+        0.99,
+        0.999,
+        0.002,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 13,
+      "name": "office_v5_pillar_mount",
+      "type": 5,
+      "bodyid": 0,
+      "pos": [
+        0.619,
+        -0.27,
+        0.407
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.055,
+        0.007,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.45,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 14,
+      "name": "office_v5_corner_face",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.48,
+        -0.15,
+        0.52
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.012,
+        0.01,
+        0.02
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.25,
+        0.01,
+        0.001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.002,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 15,
+      "name": "office_v5_corner_top",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.65,
+        -0.1,
+        0.5
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.08,
+        0.25,
+        0.02
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.25,
+        0.01,
+        0.001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.002,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 16,
+      "name": "office_v5_unexpected_edge",
+      "type": 6,
+      "bodyid": 0,
+      "pos": [
+        0.625,
+        -0.25,
+        0.54
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.01,
+        0.045,
+        0.02
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.01,
+        0.001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.002,
+        1.0
+      ],
+      "solimp": [
+        0.99,
+        0.999,
+        0.0001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 24,
+      "name": "fr3_link0_collision",
+      "type": 7,
+      "bodyid": 2,
+      "pos": [
+        -0.02918976494812825,
+        -0.0008794657433381033,
+        0.056603190871099385
+      ],
+      "quat": [
+        0.004117442190191032,
+        0.5649162892401779,
+        0.013287536953695939,
+        0.8250309534693994
+      ],
+      "size": [
+        0.08795145720684315,
+        0.09678180273792579,
+        0.13696475672841643
+      ],
+      "contype": 1,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 25,
+      "name": "fr3_link1_collision",
+      "type": 7,
+      "bodyid": 3,
+      "pos": [
+        1.1398820915856956e-05,
+        -0.03126552790474082,
+        -0.06937330600306169
+      ],
+      "quat": [
+        0.9846604466134691,
+        0.17448115554571433,
+        -0.00010181363154822071,
+        0.0003476613010725047
+      ],
+      "size": [
+        0.05512828784915359,
+        0.07177791551707499,
+        0.14486789149820062
+      ],
+      "contype": 1,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 28,
+      "name": "fr3_link2_collision",
+      "type": 7,
+      "bodyid": 4,
+      "pos": [
+        -1.3176598960949857e-05,
+        -0.07032155242600999,
+        0.031178238962717285
+      ],
+      "quat": [
+        0.5748395185688816,
+        0.8182661668698585,
+        -6.0594080700084605e-05,
+        -6.615106757326808e-05
+      ],
+      "size": [
+        0.05511758456737486,
+        0.07206326213341196,
+        0.14560717062694645
+      ],
+      "contype": 1,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 31,
+      "name": "fr3_link3_collision",
+      "type": 7,
+      "bodyid": 5,
+      "pos": [
+        0.04434830651028118,
+        0.024928326043788408,
+        -0.03812998477430685
+      ],
+      "quat": [
+        0.06152642695272303,
+        0.34982386113764713,
+        0.2342914407032685,
+        0.9049559579219146
+      ],
+      "size": [
+        0.06700028505462377,
+        0.06723617244837261,
+        0.13452230594613018
+      ],
+      "contype": 1,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 34,
+      "name": "fr3_link4_collision",
+      "type": 7,
+      "bodyid": 6,
+      "pos": [
+        -0.038550293782220996,
+        0.039525609740403186,
+        0.024716241294624602
+      ],
+      "quat": [
+        0.8135664015423966,
+        0.4650414654536131,
+        0.3097916222493188,
+        0.16085800096435648
+      ],
+      "size": [
+        0.067596907270172,
+        0.06833362798828586,
+        0.1349649576296325
+      ],
+      "contype": 1,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 38,
+      "name": "fr3_link5_collision",
+      "type": 7,
+      "bodyid": 7,
+      "pos": [
+        -6.367782928270055e-05,
+        0.03841237238901031,
+        -0.10997017276152861
+      ],
+      "quat": [
+        0.990766975437971,
+        -0.13557061118016325,
+        0.0009631055707835466,
+        0.0006944014627582428
+      ],
+      "size": [
+        0.055414025891630886,
+        0.06981473616232675,
+        0.17212466873427057
+      ],
+      "contype": 1,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 47,
+      "name": "fr3_link6_collision",
+      "type": 7,
+      "bodyid": 8,
+      "pos": [
+        0.05100229468882071,
+        0.006932672925551056,
+        0.006168992845328934
+      ],
+      "quat": [
+        -0.04608409462416937,
+        0.7543623029558251,
+        0.044494053684973986,
+        0.6533253793390681
+      ],
+      "size": [
+        0.04743505993789375,
+        0.0728086582368283,
+        0.10055312654987443
+      ],
+      "contype": 1,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 52,
+      "name": "fr3_link7_collision",
+      "type": 7,
+      "bodyid": 9,
+      "pos": [
+        0.010361372015609292,
+        0.010359604079229402,
+        0.0791077729186581
+      ],
+      "quat": [
+        0.6354698952692425,
+        0.27802138256278225,
+        -0.6704617545659058,
+        0.2633688643495788
+      ],
+      "size": [
+        0.030079795229078273,
+        0.043901876581363124,
+        0.07367135333728089
+      ],
+      "contype": 1,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 58,
+      "name": "hand_collision",
+      "type": 7,
+      "bodyid": 10,
+      "pos": [
+        -2.766565750015626e-06,
+        -0.0006154696715489709,
+        0.023929521661208913
+      ],
+      "quat": [
+        0.6979450889502281,
+        0.7161512318154959,
+        -0.00024248002010803584,
+        8.47516784973465e-05
+      ],
+      "size": [
+        0.0316414129467146,
+        0.048672013538853746,
+        0.10394595560976382
+      ],
+      "contype": 8,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 62,
+      "name": null,
+      "type": 7,
+      "bodyid": 11,
+      "pos": [
+        4.874233902202884e-07,
+        0.015695411594453968,
+        0.01687440937109482
+      ],
+      "quat": [
+        0.7065877969294265,
+        0.027086624566754466,
+        -0.027086624566754466,
+        0.7065877969294265
+      ],
+      "size": [
+        0.014414417604459833,
+        0.010501512915939037,
+        0.037332739328875035
+      ],
+      "contype": 12,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 63,
+      "name": null,
+      "type": 6,
+      "bodyid": 11,
+      "pos": [
+        0.0,
+        0.0055,
+        0.0445
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.0085,
+        0.004,
+        0.014
+      ],
+      "contype": 12,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        3.0,
+        0.04,
+        0.004
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 64,
+      "name": null,
+      "type": 6,
+      "bodyid": 11,
+      "pos": [
+        0.0055,
+        0.002,
+        0.05
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.003,
+        0.002,
+        0.003
+      ],
+      "contype": 12,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        3.0,
+        0.04,
+        0.004
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 65,
+      "name": null,
+      "type": 6,
+      "bodyid": 11,
+      "pos": [
+        -0.0055,
+        0.002,
+        0.05
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.003,
+        0.002,
+        0.003
+      ],
+      "contype": 12,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        3.0,
+        0.04,
+        0.004
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 66,
+      "name": null,
+      "type": 6,
+      "bodyid": 11,
+      "pos": [
+        0.0055,
+        0.002,
+        0.0395
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.003,
+        0.002,
+        0.0035
+      ],
+      "contype": 12,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        3.0,
+        0.04,
+        0.004
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 67,
+      "name": null,
+      "type": 6,
+      "bodyid": 11,
+      "pos": [
+        -0.0055,
+        0.002,
+        0.0395
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.003,
+        0.002,
+        0.0035
+      ],
+      "contype": 12,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        3.0,
+        0.04,
+        0.004
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 70,
+      "name": null,
+      "type": 7,
+      "bodyid": 12,
+      "pos": [
+        4.874233902202884e-07,
+        0.015695411594453968,
+        0.01687440937109482
+      ],
+      "quat": [
+        0.7065877969294265,
+        0.027086624566754466,
+        -0.027086624566754466,
+        0.7065877969294265
+      ],
+      "size": [
+        0.014414417604459833,
+        0.010501512915939037,
+        0.037332739328875035
+      ],
+      "contype": 12,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 71,
+      "name": null,
+      "type": 6,
+      "bodyid": 12,
+      "pos": [
+        0.0,
+        0.0055,
+        0.0445
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.0085,
+        0.004,
+        0.014
+      ],
+      "contype": 12,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        3.0,
+        0.04,
+        0.004
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 72,
+      "name": null,
+      "type": 6,
+      "bodyid": 12,
+      "pos": [
+        0.0055,
+        0.002,
+        0.05
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.003,
+        0.002,
+        0.003
+      ],
+      "contype": 12,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        3.0,
+        0.04,
+        0.004
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 73,
+      "name": null,
+      "type": 6,
+      "bodyid": 12,
+      "pos": [
+        -0.0055,
+        0.002,
+        0.05
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.003,
+        0.002,
+        0.003
+      ],
+      "contype": 12,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        3.0,
+        0.04,
+        0.004
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 74,
+      "name": null,
+      "type": 6,
+      "bodyid": 12,
+      "pos": [
+        0.0055,
+        0.002,
+        0.0395
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.003,
+        0.002,
+        0.0035
+      ],
+      "contype": 12,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        3.0,
+        0.04,
+        0.004
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 75,
+      "name": null,
+      "type": 6,
+      "bodyid": 12,
+      "pos": [
+        -0.0055,
+        0.002,
+        0.0395
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.003,
+        0.002,
+        0.0035
+      ],
+      "contype": 12,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        3.0,
+        0.04,
+        0.004
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 76,
+      "name": "target_object_geom",
+      "type": 6,
+      "bodyid": 13,
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.025,
+        0.025,
+        0.025
+      ],
+      "contype": 4,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        2.5,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.0001,
+        0.5,
+        2.0
+      ],
+      "priority": 3
+    },
+    {
+      "id": 78,
+      "name": "moving_obstacle_geom",
+      "type": 2,
+      "bodyid": 15,
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.04,
+        0.0,
+        0.0
+      ],
+      "contype": 4,
+      "conaffinity": 4,
+      "condim": 3,
+      "friction": [
+        0.9,
+        0.05,
+        0.02
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.75,
+        0.9,
+        0.006,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 81,
+      "name": "office_v5_ball_geom",
+      "type": 2,
+      "bodyid": 18,
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.06,
+        0.0,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.12,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.0004,
+        0.55
+      ],
+      "solimp": [
+        0.995,
+        0.9995,
+        5e-05,
+        0.5,
+        2.0
+      ],
+      "priority": 4
+    },
+    {
+      "id": 82,
+      "name": "office_v5_person_torso",
+      "type": 3,
+      "bodyid": 19,
+      "pos": [
+        0.0,
+        0.0,
+        1.025
+      ],
+      "quat": [
+        6.123233995736766e-17,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.105,
+        0.175,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 83,
+      "name": "office_v5_person_head",
+      "type": 2,
+      "bodyid": 19,
+      "pos": [
+        0.0,
+        0.0,
+        1.48
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.105,
+        0.0,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 84,
+      "name": "office_v5_person_leg_-1",
+      "type": 3,
+      "bodyid": 19,
+      "pos": [
+        0.0,
+        -0.07,
+        0.435
+      ],
+      "quat": [
+        6.123233995736766e-17,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.055,
+        0.34500000000000003,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 85,
+      "name": "office_v5_person_foot_-1",
+      "type": 6,
+      "bodyid": 19,
+      "pos": [
+        -0.035,
+        -0.07,
+        0.055
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.09,
+        0.055,
+        0.04
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 86,
+      "name": "office_v5_person_leg_1",
+      "type": 3,
+      "bodyid": 19,
+      "pos": [
+        0.0,
+        0.07,
+        0.435
+      ],
+      "quat": [
+        6.123233995736766e-17,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.055,
+        0.34500000000000003,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 87,
+      "name": "office_v5_person_foot_1",
+      "type": 6,
+      "bodyid": 19,
+      "pos": [
+        -0.035,
+        0.07,
+        0.055
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.09,
+        0.055,
+        0.04
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 88,
+      "name": "office_v5_upper_arm_geom",
+      "type": 3,
+      "bodyid": 20,
+      "pos": [
+        -0.095,
+        0.0,
+        -0.05
+      ],
+      "quat": [
+        0.8560801460239054,
+        0.0,
+        0.5168430937757501,
+        0.0
+      ],
+      "size": [
+        0.038,
+        0.10735455276791944,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 89,
+      "name": "office_v5_forearm_geom",
+      "type": 3,
+      "bodyid": 21,
+      "pos": [
+        -0.095,
+        0.0,
+        -0.06
+      ],
+      "quat": [
+        0.8757833611653003,
+        0.0,
+        0.48270436532727684,
+        0.0
+      ],
+      "size": [
+        0.03,
+        0.11236102527122116,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 90,
+      "name": "office_v5_human_palm",
+      "type": 6,
+      "bodyid": 22,
+      "pos": [
+        -0.037,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.032,
+        0.036,
+        0.015
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.0001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 91,
+      "name": "office_v5_human_finger_0",
+      "type": 3,
+      "bodyid": 22,
+      "pos": [
+        -0.08549999999999999,
+        -0.0255,
+        -0.0025
+      ],
+      "quat": [
+        0.7582233771877502,
+        0.0,
+        0.6519948698310459,
+        0.0
+      ],
+      "size": [
+        0.007,
+        0.016688319268278632,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.0001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 92,
+      "name": "office_v5_human_finger_1",
+      "type": 3,
+      "bodyid": 22,
+      "pos": [
+        -0.08549999999999999,
+        -0.0085,
+        -0.0025
+      ],
+      "quat": [
+        0.7582233771877502,
+        0.0,
+        0.6519948698310459,
+        0.0
+      ],
+      "size": [
+        0.007,
+        0.016688319268278632,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.0001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 93,
+      "name": "office_v5_human_finger_2",
+      "type": 3,
+      "bodyid": 22,
+      "pos": [
+        -0.08549999999999999,
+        0.0085,
+        -0.0025
+      ],
+      "quat": [
+        0.7582233771877502,
+        0.0,
+        0.6519948698310459,
+        0.0
+      ],
+      "size": [
+        0.007,
+        0.016688319268278632,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.0001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 94,
+      "name": "office_v5_human_finger_3",
+      "type": 3,
+      "bodyid": 22,
+      "pos": [
+        -0.08549999999999999,
+        0.0255,
+        -0.0025
+      ],
+      "quat": [
+        0.7582233771877502,
+        0.0,
+        0.6519948698310459,
+        0.0
+      ],
+      "size": [
+        0.007,
+        0.016688319268278632,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.0001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 95,
+      "name": "office_v5_human_thumb",
+      "type": 3,
+      "bodyid": 22,
+      "pos": [
+        -0.047,
+        -0.046,
+        -0.0015
+      ],
+      "quat": [
+        0.7358391464591352,
+        -0.2253712630604715,
+        0.6385519120046694,
+        0.0
+      ],
+      "size": [
+        0.01,
+        0.018090052515125545,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    },
+    {
+      "id": 96,
+      "name": "office_v5_push_rod_geom",
+      "type": 3,
+      "bodyid": 23,
+      "pos": [
+        0.027500000000000004,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        0.7071067811865476,
+        0.0,
+        0.7071067811865475,
+        0.0
+      ],
+      "size": [
+        0.014,
+        0.07250000000000001,
+        0.0
+      ],
+      "contype": 32,
+      "conaffinity": 63,
+      "condim": 3,
+      "friction": [
+        0.6,
+        0.02,
+        0.002
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.95,
+        0.99,
+        0.0001,
+        0.5,
+        2.0
+      ],
+      "priority": 2
+    }
+  ],
+  "equalities": [
+    {
+      "id": 0,
+      "name": "finger_sync",
+      "type": 2,
+      "obj1id": 7,
+      "obj2id": 8,
+      "data": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "active0": true,
+      "solref": [
+        0.003,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.98,
+        0.001,
+        0.5,
+        2.0
+      ]
+    }
+  ],
+  "actuators": [
+    {
+      "id": 0,
+      "name": "torque_1",
+      "trntype": 0,
+      "trnid": [
+        0,
+        -1
+      ],
+      "ctrlrange": [
+        -87.0,
+        87.0
+      ],
+      "forcerange": [
+        -87.0,
+        87.0
+      ],
+      "ctrllimited": true,
+      "forcelimited": true,
+      "gainprm": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "biasprm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": 1,
+      "name": "torque_2",
+      "trntype": 0,
+      "trnid": [
+        1,
+        -1
+      ],
+      "ctrlrange": [
+        -87.0,
+        87.0
+      ],
+      "forcerange": [
+        -87.0,
+        87.0
+      ],
+      "ctrllimited": true,
+      "forcelimited": true,
+      "gainprm": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "biasprm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": 2,
+      "name": "torque_3",
+      "trntype": 0,
+      "trnid": [
+        2,
+        -1
+      ],
+      "ctrlrange": [
+        -87.0,
+        87.0
+      ],
+      "forcerange": [
+        -87.0,
+        87.0
+      ],
+      "ctrllimited": true,
+      "forcelimited": true,
+      "gainprm": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "biasprm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": 3,
+      "name": "torque_4",
+      "trntype": 0,
+      "trnid": [
+        3,
+        -1
+      ],
+      "ctrlrange": [
+        -87.0,
+        87.0
+      ],
+      "forcerange": [
+        -87.0,
+        87.0
+      ],
+      "ctrllimited": true,
+      "forcelimited": true,
+      "gainprm": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "biasprm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": 4,
+      "name": "torque_5",
+      "trntype": 0,
+      "trnid": [
+        4,
+        -1
+      ],
+      "ctrlrange": [
+        -12.0,
+        12.0
+      ],
+      "forcerange": [
+        -12.0,
+        12.0
+      ],
+      "ctrllimited": true,
+      "forcelimited": true,
+      "gainprm": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "biasprm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": 5,
+      "name": "torque_6",
+      "trntype": 0,
+      "trnid": [
+        5,
+        -1
+      ],
+      "ctrlrange": [
+        -12.0,
+        12.0
+      ],
+      "forcerange": [
+        -12.0,
+        12.0
+      ],
+      "ctrllimited": true,
+      "forcelimited": true,
+      "gainprm": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "biasprm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": 6,
+      "name": "torque_7",
+      "trntype": 0,
+      "trnid": [
+        6,
+        -1
+      ],
+      "ctrlrange": [
+        -12.0,
+        12.0
+      ],
+      "forcerange": [
+        -12.0,
+        12.0
+      ],
+      "ctrllimited": true,
+      "forcelimited": true,
+      "gainprm": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "biasprm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": 7,
+      "name": "gripper",
+      "trntype": 3,
+      "trnid": [
+        0,
+        -1
+      ],
+      "ctrlrange": [
+        0.0,
+        0.08
+      ],
+      "forcerange": [
+        -220.0,
+        220.0
+      ],
+      "ctrllimited": true,
+      "forcelimited": true,
+      "gainprm": [
+        800.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "biasprm": [
+        0.0,
+        -800.0,
+        -25.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": 8,
+      "name": "rod_driver",
+      "trntype": 0,
+      "trnid": [
+        10,
+        -1
+      ],
+      "ctrlrange": [
+        0.0,
+        0.2
+      ],
+      "forcerange": [
+        -300.0,
+        300.0
+      ],
+      "ctrllimited": true,
+      "forcelimited": true,
+      "gainprm": [
+        5000.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "biasprm": [
+        0.0,
+        -5000.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "explicit_pairs": [
+    {
+      "id": 0,
+      "name": null,
+      "geom1": 0,
+      "geom2": 81,
+      "dim": 3,
+      "friction": [
+        0.12,
+        0.12,
+        0.005,
+        0.0001,
+        0.0001
+      ],
+      "solref": [
+        0.00012,
+        0.85
+      ],
+      "solimp": [
+        0.9992,
+        0.99992,
+        4e-05,
+        0.5,
+        2.0
+      ],
+      "margin": 0.0,
+      "gap": 0.0
+    },
+    {
+      "id": 1,
+      "name": null,
+      "geom1": 2,
+      "geom2": 81,
+      "dim": 3,
+      "friction": [
+        0.12,
+        0.12,
+        0.005,
+        0.0001,
+        0.0001
+      ],
+      "solref": [
+        0.00012,
+        0.85
+      ],
+      "solimp": [
+        0.9992,
+        0.99992,
+        4e-05,
+        0.5,
+        2.0
+      ],
+      "margin": 0.0,
+      "gap": 0.0
+    }
+  ],
+  "legacy_mocap_geometries": [
+    {
+      "id": 78,
+      "name": "moving_obstacle_geom",
+      "type": 2,
+      "bodyid": 15,
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.04,
+        0.0,
+        0.0
+      ],
+      "contype": 4,
+      "conaffinity": 4,
+      "condim": 3,
+      "friction": [
+        0.9,
+        0.05,
+        0.02
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.001,
+        1.0
+      ],
+      "solimp": [
+        0.75,
+        0.9,
+        0.006,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 79,
+      "name": null,
+      "type": 2,
+      "bodyid": 16,
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.025,
+        0.0,
+        0.0
+      ],
+      "contype": 0,
+      "conaffinity": 0,
+      "condim": 3,
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    },
+    {
+      "id": 80,
+      "name": null,
+      "type": 2,
+      "bodyid": 17,
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.024,
+        0.0,
+        0.0
+      ],
+      "contype": 0,
+      "conaffinity": 0,
+      "condim": 3,
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "margin": 0.0,
+      "gap": 0.0,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ],
+      "priority": 0
+    }
+  ],
+  "checks": {
+    "exact_model": true,
+    "source_matches_public_execution": true,
+    "task_apparatus_not_mocap": true,
+    "no_weld": true,
+    "ball_and_payload_free_joints": true
+  },
+  "limitations": [
+    "No integration, contact-force recomputation, or hardware validation.",
+    "Compiled geometry parameters are not effective combined contact coefficients.",
+    "Drive schedule/control interpretation additionally requires source review."
+  ]
+}
