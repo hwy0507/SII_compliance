@@ -1,5 +1,9 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
+2026-10-04 10:00UTC：补充direct office-task seed301新完成续训段审计；新增16回合/16996800子步、
+21230个可核验奖励一致，16首奖励仍未核验；一条24.84秒穿透终止失败保留。
+这是在线训练记录，不是最终策略测试；[证据与边界](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_RL_REWARD_AND_CONTINUATION_20261004.md)。
+
 已完成120次拟合的[实际成本对照](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_TRAINING_COST_TABLE_20261004.md)已整理：
 宽度128不代表参数/搜索/计算投入相同；teacher共享成本、父模型初始化和运行中RL成本分开披露。
 它是成本账本汇总，不是最终性能结果或全部研究完成证明。

@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-04 — 补充直接动作RL task301真实续训审计
+
+- 上轮属于已核验等待；本轮发现09:17自然完成的新段并审计。开工main7d66262、baseline ebb0e1e；一次fetch TLS中断后重查/fetch成功，两分支未变，AGENTS已重读。
+- 冻结371264a三工具核验5500父缓存前缀、新增21246转移/16回合/16996800子步及21230奖励，16首奖励继续排除；实际累计26746步/43494更新。一条24.84秒global_penetration_exceeded_2mm失败保留，不当最终策略0/16或ESN优势。
+- Spark单线程1GiB只读审计10.631秒，0新增仿真/actor/学习；既有队列与最终监督保持运行，最终条件未开封。研究报告/状态/进度/周报同步，最终912和投稿结论仍未完成。
+- 三结果163793字节在arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_completed_continuation_audit_v3/，Git证据RL_CONTINUATION_V3_*逐SHA同字节；具体hash见RL_REWARD_AND_CONTINUATION报告。
+- 前次源码7d662627117d61c76f793db60f50aa7774ed4fa2已核验3309文件共享至source/同SHA，tar d1d3fd6ff083899dc08646409b94b49a286206cc7f7f30ab6e38bf62a4f7e152。
+
 ## 2026-10-04 — 09:44公开快照与剩余容量复核
 
 - 开工fetch/read main256bd75、baseline ebb0e1e；具体监督/训练/开发PID持续存活，未重启或解封。上一轮为已核验等待，本轮保存新成本与容量证据。
