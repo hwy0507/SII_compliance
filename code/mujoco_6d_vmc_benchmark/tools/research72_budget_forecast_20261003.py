@@ -28,7 +28,7 @@ def percentile(values, q):
     return ordered[left]+(ordered[right]-ordered[left])*(index-left)
 
 
-def queue_remaining_steps(snapshot, protocol):
+def queue_remaining_steps(snapshot, protocol, effective_cap=None):
     """Actual fixed queue assignment; missing not-yet-started models cost the cap."""
     caps = protocol['budget_caps']
     jobs = [f'{family}_{seed}' for seed in caps['training_seeds'] for family in caps['rl_families']]
@@ -36,12 +36,13 @@ def queue_remaining_steps(snapshot, protocol):
     rows = snapshot['rl']['rows']
     steps = {row['name']: row['cumulative_steps'] for row in rows}
     assert len(steps) == len(rows) and set(steps) <= set(jobs), 'Duplicate or unregistered RL model'
-    cap = caps['rl_adaptation_steps_per_family_seed']
+    cap = caps['rl_adaptation_steps_per_family_seed'] if effective_cap is None else effective_cap
+    assert all(0 <= step <= cap for step in steps.values()), 'Exposure exceeds forecast cap'
     return [dict(queue=index, models=jobs[index::3],
         remaining_interactions=sum(cap-steps.get(name, 0) for name in jobs[index::3])) for index in range(3)]
 
 
-def forecast(snapshot, protocol, throughput, optional_episodes=144, reserve_hours=2.):
+def forecast(snapshot, protocol, throughput, optional_episodes=144, reserve_hours=2., rl_boundary=None):
     assert snapshot['sealed_contents_read'] is False
     snapshot_time = datetime.fromisoformat(snapshot['created_utc'])
     end = datetime.fromisoformat(protocol['dispatch_deadline_utc'])
@@ -70,6 +71,20 @@ def forecast(snapshot, protocol, throughput, optional_episodes=144, reserve_hour
         if r['completed'] and r['full_horizon'] and r['wall_seconds'] is not None]
     assert timings and all(t > 0 for t in timings)
     cap = protocol['budget_caps']['rl_adaptation_steps_per_family_seed']
+    original_cap = cap
+    selected_limit = cap
+    compatibility_extra = 0
+    if rl_boundary is not None:
+        assert rl_boundary['scope'] == 'outcome_independent_common_rl_final_boundary'
+        assert rl_boundary['all_fifteen_models_required'] and not rl_boundary['selection_uses_rewards_or_task_results']
+        assert not rl_boundary['sealed_contents_read']
+        assert datetime.fromisoformat(rl_boundary['registered_utc']) <= snapshot_time
+        assert rl_boundary['original_exposure_cap'] == rl_boundary['original_optimizer_schedule_steps'] == original_cap
+        selected_limit = rl_boundary['selected_step_limit']
+        compatibility_extra = rl_boundary['maximum_compatibility_extra_steps_per_model']
+        assert selected_limit == 49500 and compatibility_extra == 2750
+        cap = selected_limit+compatibility_extra
+        assert cap <= original_cap
     rl = snapshot['rl']
     assert rl['registered_models'] == 15
     interactions = sum(r['cumulative_steps'] for r in rl['rows'])
@@ -81,7 +96,7 @@ def forecast(snapshot, protocol, throughput, optional_episodes=144, reserve_hour
     rl_equivalent = remaining_steps/1375
     isolated_gpu_s = max(r['steady_action_mean_s']+r['steady_two_updates_mean_s']
         for r in throughput['rows'])
-    queues = queue_remaining_steps(snapshot, protocol)
+    queues = queue_remaining_steps(snapshot, protocol, cap)
     assert sum(row['remaining_interactions'] for row in queues) == remaining_steps
     scenarios = []
     for name, episode_s in [('median', statistics.median(timings)), ('p90', percentile(timings, .9))]:
@@ -112,6 +127,10 @@ def forecast(snapshot, protocol, throughput, optional_episodes=144, reserve_hour
         final_condition_contents_read=False, optional_fits_authorized_by_this_report=False,
         full_horizon_timing_samples=len(timings), pending_phases=pending,
         rl_remaining_interactions_to_all_caps=remaining_steps,
+        rl_budget=dict(original_cap=original_cap, selected_step_limit=selected_limit,
+            maximum_unused_compatibility_steps_per_model=compatibility_extra,
+            conservative_total_cap_per_model=cap,
+            all_fifteen_common_boundary=rl_boundary is not None),
         rl_full_episode_duration_equivalent=rl_equivalent,
         rl_fixed_queues=queues,
         optional_episodes_hypothetical=optional_episodes, scenarios=scenarios,
@@ -120,6 +139,7 @@ def forecast(snapshot, protocol, throughput, optional_episodes=144, reserve_hour
             'Full-horizon timing includes every observed outcome. Short attempts remain in exposure costs, but do not set full-episode timing.',
             'Inflight episodes are conservatively charged a complete future episode; teacher recollection is charged40 until its recorded closure.',
             'RL physics equivalent excludes extra launch overhead from short failures; GPU timing is isolated, not three-learner contention.',
+            'If a common RL boundary is registered, its complete maximum compatibility allowance is charged even if closure later collects fewer steps. Cold checkpoint loading is not timed here.',
             'Two reporting hours are an explicit planning assumption, not measured media/audit completion.',
             'Three RL queues can hold leases; competing one-queue cohorts can cause idle capacity or starvation. Positive slack is insufficient to admit extra work.',
             'The queue constraint adds the longest indivisible RL queue, but assumes every queue gets a lease immediately. It excludes additional waiting and is an estimate under the assumed timing, not a measured completion bound.'])
@@ -130,14 +150,24 @@ def main():
     for name in ('snapshot', 'protocol', 'throughput', 'output'):
         p.add_argument('--'+name, type=Path, required=True)
     p.add_argument('--optional-episodes', type=int, default=144)
+    p.add_argument('--rl-final-boundary', type=Path)
     a = p.parse_args()
     assert a.optional_episodes >= 0
     snapshot, protocol, throughput = read(a.snapshot), read(a.protocol), read(a.throughput)
     assert snapshot['protocol_sha256'] == digest(a.protocol)
     assert throughput['status'] == 'complete' and throughput['physics_steps'] == 0
-    result = forecast(snapshot, protocol, throughput, a.optional_episodes)
+    boundary = None
+    inputs = [a.snapshot, a.protocol, a.throughput]
+    if a.rl_final_boundary:
+        boundary = read(a.rl_final_boundary)
+        assert boundary['protocol_sha256'] == digest(a.protocol)
+        for key in ('registration', 'forecast', 'governor_source'):
+            assert digest(Path(boundary[key])) == boundary[key+'_sha256']
+        assert digest(a.rl_final_boundary.parent/'rl_office_adaptation_v2/SPECIFICATION.json') == boundary['specification_sha256']
+        inputs.append(a.rl_final_boundary)
+    result = forecast(snapshot, protocol, throughput, a.optional_episodes, rl_boundary=boundary)
     result.update(source_sha256=digest(Path(__file__)),
-        inputs={str(path.resolve()): digest(path) for path in (a.snapshot, a.protocol, a.throughput)})
+        inputs={str(path.resolve()): digest(path) for path in inputs})
     with a.output.open('x') as stream:
         json.dump(result, stream, indent=2, allow_nan=False)
         stream.write('\n')

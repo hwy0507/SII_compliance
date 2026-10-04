@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-04 — 共同边界后的保守成本复算
+
+- 承接已发布7d9fcd8ca3b17bbd0580b0b63e7c7f58c917c3a7；其3255源码文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/7d9fcd8ca3b17bbd0580b0b63e7c7f58c917c3a7/，tar SHA dbde88e74d2cd1f1835bc7808465f938a7f411dd7e558b13fdc1f13d2c6ae226。
+  本轮main/baseline实时核对如上一条；baseline仍ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，无并行文件修改。
+- 容量工具核验登记修订后，计入所有15模型49,500＋最大2750后续收尾步，原80k协议/优化器不改；新增算术回归共7通过。
+  03:27实际快照下剩余开发理想21.91–22.94h，最终912物理22.82–23.94h，加2h收尾预计余量7.18–9.32h；额外等待/冷加载仍未计，未登记追加ESN拟合。
+- 两源文件已核验共享本轮根budget_forecast_source_v5，tar SHA6e9833187cc81b4601a181bceb0ddce83bb512324dfe129a9cf9b801e06f6940。
+  BUDGET_FORECAST_20261004_0327.json SHA8c962f7e502653c3bde882ba6f969b024d3d387563a1bd2f13bf2c351da5b44d，Git同字节；共同根为arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/。
+  只做只读成本算术，0物理/拟合；更新状态、容量、联合进度、周报，原训练继续、最终条件封存，目标active。
+
 ## 2026-10-04 — 全部RL共同最终边界前瞻登记
 
 - 03:12UTC左右重新实时查询/fetch并读取main271a937444de7577d3432d627d2eeba1cb7efee3、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志/AGENTS，承接三个未提交源文件。

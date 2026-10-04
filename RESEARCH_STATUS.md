@@ -65,6 +65,8 @@
 已为全部15模型登记统一49,500自然完整回合边界；实际48,126–49,500步，原80k优化器日程不变。
 独立持续监护已运行，尚未发训练信号；原队列后续冗余阶段可额外采0–2750步/模型，全部计成本而不选其权重。
 缺任一模型边界/关闭证据则不冻结，不因结果删baseline。见[登记与核验](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_RL_FINAL_BOUNDARY_20261004.md)。
+新预测按每模型最大52,250总交互成本计，理想剩余开发21.91–22.94h；保留最终912和2h收尾后预计余量7.18–9.32h。
+仍未计真实额外等待/冷加载，不能凭正余量直接新增拟合；容量报告和同字节JSON已发布，实际最终比较仍待完成。
 最终同时报告任务、strict、失败阶段、接触暴露、P95/力模积分、恢复/删失和运动指标，不以加权总分挑胜者。
 [方法正文草稿](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_MANUSCRIPT_METHODS_20261004.md)给出ESN公式、对照差异、精确task/strict口径及投稿前缺口；不构成实验完成声明。
 [分析方案](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_ANALYSIS_PLAN_20261003.md)、

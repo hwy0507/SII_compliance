@@ -22,6 +22,30 @@ def fixture():
 
 
 class BudgetTests(unittest.TestCase):
+    def test_common_boundary_charges_every_compatibility_step(self):
+        snapshot, protocol, throughput = fixture()
+        boundary=dict(scope='outcome_independent_common_rl_final_boundary',
+            all_fifteen_models_required=True,selection_uses_rewards_or_task_results=False,
+            sealed_contents_read=False,registered_utc='2026-10-03T20:30:00+00:00',
+            original_exposure_cap=80000,original_optimizer_schedule_steps=80000,
+            selected_step_limit=49500,maximum_compatibility_extra_steps_per_model=2750)
+        snapshot['rl']['rows']=[dict(name='admittance_301',cumulative_steps=50000)]
+        snapshot['rl']['totals']['completed_interaction_steps']=50000
+        result=forecast(snapshot,protocol,throughput,optional_episodes=0,rl_boundary=boundary)
+        self.assertEqual(result['rl_remaining_interactions_to_all_caps'],15*52250-50000)
+        self.assertEqual(sum(q['remaining_interactions'] for q in result['rl_fixed_queues']),15*52250-50000)
+        self.assertEqual(result['rl_budget']['original_cap'],80000)
+        self.assertEqual(result['rl_budget']['selected_step_limit'],49500)
+        self.assertEqual(protocol['budget_caps']['rl_adaptation_steps_per_family_seed'],80000)
+        for change in [dict(selection_uses_rewards_or_task_results=True),
+                       dict(registered_utc='2026-10-04T20:30:00+00:00'),
+                       dict(maximum_compatibility_extra_steps_per_model=0)]:
+            with self.assertRaises(AssertionError):
+                forecast(snapshot,protocol,throughput,rl_boundary=dict(boundary,**change))
+        snapshot['rl']['rows'][0]['cumulative_steps']=53000
+        snapshot['rl']['totals']['completed_interaction_steps']=53000
+        with self.assertRaises(AssertionError):forecast(snapshot,protocol,throughput,rl_boundary=boundary)
+
     def test_registered_short_diagnostics_are_conservatively_charged(self):
         snapshot, protocol, throughput = fixture()
         snapshot['physics'].append(dict(path='/synthetic/public_numerical_probe_v1',
