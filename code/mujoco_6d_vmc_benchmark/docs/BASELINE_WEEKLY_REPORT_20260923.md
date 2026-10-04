@@ -1,5 +1,12 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-04 01:54UTC 六真实RL存档与名义参考
+
+六RL各5500交互/1002更新，含5D阻抗；完整文件/回放/计数/RNG/原源和轨迹hash独立核验通过，未混称实际续训或任务成功。
+名义规划＋WBC八条完整开发及独立审计完成，task/strict0/8、全carry；RMSE26.697mm低而任务未完成，详见CONTROLLER_CONFIRMATION。
+本轮证据rl_saved_state_audit_v1、nominal_development及预算v3均服务器已核验，Git保存小型原件，source/hash见专题报告。
+teacher16/40、context8/168，增强网络已接续；全RL cap下最终窗口很紧，不追加候选或省略baseline。最终留出仍封存。
+
 ### 2026-10-04 01:44UTC 共同物理装置与真实资源进展
 
 新增精确MJB/实际源/公开轨迹只读审计：自由球1kg、物块80g摩擦抓持，有限质量人/杆代理，驱动力限制不是接触力保证。

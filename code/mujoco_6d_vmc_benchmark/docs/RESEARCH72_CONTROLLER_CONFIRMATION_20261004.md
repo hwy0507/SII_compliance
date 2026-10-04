@@ -1,5 +1,20 @@
 # Teacher与经典控制器：完整八条件开发确认
 
+## 名义规划＋WBC补充参考
+
+10月4日01:53:05UTC，未调参的nominal_zero八条共同开发身份全部55s完成，独立源/物理子步/零动作回放/
+公共过滤/执行器幅值与变化率/穿透sidecar核验通过。task/strict均0/8，全部停在carry；这八条另计，不改下方64确认分母。
+平均阶段goal RMSE26.697mm、回合峰力矩均值37.532Nm、回合峰速度均值.36838m/s、最坏外穿透.18533mm。
+低RMSE与较小穿透同时伴随任务停滞，不能当作更好柔顺性；也不据此推断只有ESN可完成，因为teacher已有成功。
+
+本轮服务器根下`additional_development_v1/nominal_development/`：
+SUMMARY SHA256 `6c2c6ec9784bcdbedcf0a742e607a46f874873279eef6ed2fce8142806062718`（Git同字节NOMINAL_DEVELOPMENT_SUMMARY.json），
+execution SHA256 `f801ff972ba0299f9254cc587a76d4576ece5bcda21f34ea8277dcd5a89908c5`；
+queue_0_analysis/INDEPENDENT_AUDIT.json SHA256 `3f95269cb8b63b51d2a034f013dfe1c912be955d871c7d112c98ba7bcf61ca87`，
+其完整输出集合已逐hash复核。增强MLP/RNN开发已接续等待租约；此处仍是公开开发，不是最终24身份结果。
+
+## Teacher与经典参数确认
+
 2026-10-04 00:21:42UTC，96回合参数筛选后的8候选×8公开开发条件全部完成，64条均55s、50μs。
 四队列各16条独立物理子步、动作过滤/执行器及接触审计通过。按预登记规则选择配置，不是最终保留条件结果。
 

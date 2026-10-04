@@ -1,5 +1,37 @@
 # RL learner组合内存预检
 
+## 2026-10-04 六个真实首段存档独立复核
+
+截至01:49UTC六个模型已完成5500步/4完整回合/1002梯度更新，包含首个真实5维阻抗模型。
+新的零JAX/零动作/零梯度/零物理检查对全部六个不可变manifest执行完整文件集合/hash、经验回放、
+runner/agent计数、整回合边界、两种RNG可加载、seed条件顺序、44源文件与prior身份核对，全部通过。
+各模型的24条训练回合AUDIT与trace hash也逐项关联；这是文件/状态一致性，不替代原始子步审计或实际续训。
+
+| family/seed尾号 | action维度 | checkpoint文件数 |
+|---|---:|---:|
+| parameter_admittance/301 | 7 | 75 |
+| direct_metric/301 | 7 | 75 |
+| parameter_impedance/302 | 5 | 74 |
+| parameter_vmc/301 | 7 | 75 |
+| parameter_admittance/302 | 7 | 72 |
+| direct_metric/302 | 7 | 74 |
+
+所有replay为float32且有限，observation/next_observation为5500×48、action为5500×相应维度，
+恰4个terminal且末条终止，truncated全0；pending=null。文件数量差异不凭经验判失败，实际集合须与本模型manifest完全一致。
+本次未加载官方优化器或做真实恢复更新，不将这些检查称作续训/收敛/最终actor回放成功。
+六个首段端到端1560.208–1667.848秒（含首5000步warm-up、启动/保存），仍不是三个learner稳态吞吐保证。
+
+主机arm1@192.168.31.70，本轮根`/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/`：
+
+- `rl_saved_state_audit_v1/AUDIT.json` SHA256 `bb3120147ee90a4c2e90447b373ad44818a39dcc84015380e4d495514a3b4d35`，Git同字节证据RL_SAVED_STATE_AUDIT_V1.json。
+- 同目录tools下实际核验源码SHA256 `79c260018f624edbdf684ca7896baabcd986e33b73a17d7335344d082564e46a`、
+  checkpoint辅助源码SHA256 `09819072752e8c440b4074bda225829a3351bdfd2ada21c0e512b015ffa9fb3f`，原生NumPy2.2.6，1线程/3GiB/无swap；1.572s墙钟、1.124s CPU。
+- 源包incoming/research72-rl-saved-state-audit-v1.tar.gz SHA256 `717b32450b5902a52426740d1871ccb6302277aee4c1bbef422eecbbdd227261`，源与结果均核验。
+- 首5D manifest：`rl_office_adaptation_v2/queue_0/parameter_impedance_2026100302/initial_CHECKPOINT.json`，
+  SHA256 `b8dfd88edc65ff28e64f9fbc0d26a852f6ad86ccb653d67669c4e5872ec9cf4b`；Git同字节RL_IMPEDANCE_302_INITIAL_CHECKPOINT.json。
+
+其余模型/真实续训仍在进行。第三RL队列仍待租约，历史内存事件与局限继续适用。
+
 ## 2026-10-04 00:56UTC真实首段检查
 
 调导纳seed2026100301和调VMC同seed各完成5500步、4个完整训练回合、1002次梯度更新，

@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-04 — 首5D真实RL存档与名义控制完整开发结果
+
+- 01:49UTC实时查询/fetch并读main66c72b90fdbcd7355b2fad2029f482ef24a555b4、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志及AGENTS。
+  main66完整3238文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/66c72b90fdbcd7355b2fad2029f482ef24a555b4/，
+  tar SHAded8abdba4cea715edc88cd627aa0750e90a34aab932faf3c73a9de774bea152。
+- 六模型各5500步/4回合/1002更新已保存，包括5D阻抗302。新增独立零JAX/动作/物理审计核对完整存档、回放维度、
+  计数/episode边界/RNG/条件顺序/44源与prior及24条原轨迹hash，全部通过；不是实际续训或最终策略评估。
+  本轮服务器根rl_saved_state_audit_v1源/结果已核验，结果SHAbb3120147ee90a4c2e90447b373ad44818a39dcc84015380e4d495514a3b4d35，
+  源包SHA717b32450b5902a52426740d1871ccb6302277aee4c1bbef422eecbbdd227261；Git同字节审计及首5D原manifest，详见RL_MEMORY_PREFLIGHT。
+- 名义规划＋WBC开发8/8完整与独立审计完成：task/strict0/8，均carry；RMSE26.697mm、峰力矩均值37.532Nm、峰速度均值.36838m/s。
+  SUMMARY SHA6c2c6ec9784bcdbedcf0a742e607a46f874873279eef6ed2fce8142806062718，Git同字节；原件additional_development_v1/nominal_development/。
+  低误差不抵消任务停滞，非最终留出结果；见CONTROLLER_CONFIRMATION新增名义参考，不混旧64确认分母。
+- 实际01:54成本快照：既有剩余开发理想31.569–33.038h，最终22.824–23.942h；不新增回合也只有总余量+1.199至−1.387h（含2h收尾）。
+  budget_forecast_archive_v3全4文件核验，tar SHA5a48ce61fa3d6f0c725380dc6ead5c86f0ced0b2483588b3a9f5b3f24f9d909f。
+  不绕过开发闭环替换新teacher重训权重，不登记修订02、不减最终baseline；原稳定作业与封存条件保持。
+- 上述本轮根为arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/。
+  更新状态/联合进度/周报，真实续训、更强学习组、teacher40与最终比较未完成；保持研究目标active。
+
 ## 2026-10-04 — 实际物理装置核验与论文结论范围
 
 - 01:30UTC实时查询/fetch并读main58fcf97d6e90d08f6feba94b7740365609815f20、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志和AGENTS，工作区干净。
