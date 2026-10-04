@@ -1,5 +1,21 @@
 # 更新日志
 
+## 2026-10-04 — RL完整续训闭合与五家族奖励缓存核验
+
+- 05:05UTC实时查询/fetch并读main2000768fbd0b4dd2edef709854e6b444b98335a0、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志与AGENTS；工作区原干净，只有root agent。
+  main2000768完整3276文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/2000768fbd0b4dd2edef709854e6b444b98335a0/，tar SHA700aa4acb9d6fad89a8464d59e1719718e83daca19fda1427190ca71675ac5fe。
+- 导纳301/VMC301自然完成27500步/20回合/45002更新；复用冻结审计工具核对75/74存档文件、44源、原轨迹引用，并验证5500父前缀和新增22000真实转移。
+  与旧16500中途快照区分；未逐梯度重算或把训练结束当最终策略成功，15模型49500共同边界继续等待。
+- 新research72_reward_replay_audit按原协议SHA加载冻结rewards.py，从保存区间/实际过滤action核验回放奖励，四项边界/篡改回归通过。
+  五家族代表段60124奖励逐值一致，包括office_task303原41.72s短失败；其终止task−20、负成本补偿−.2224180869保留。
+  因初始potential未保存，44个首奖励明确未核验；未从子步独立重算区间、未重算梯度/终止观测，0物理/actor/学习，不称全15模型审计。
+- reward_replay_source_v1两源核验，tar SHA4d304639183d6c490899961a8393ca4e264bd738a0d77ec137ec9c5ae6a6625e。
+  rl_completed_continuation_audit_v1五完成结果315828字节逐hash/大小核验，清单SHA33014cf06562a26ac02b4528e9ab6ac45bae1b857b386e70a70f79d78aa3c397；存档/奖励/清单Git同字节，长前缀原件服务器保留。
+  共同根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/；详见新RESEARCH72_RL_REWARD_AND_CONTINUATION，同步状态/进度/周报。
+- 05:19真实成本RL140438交互/154400更新、context25/168、增强网络17/168、新refit2/144；三RL及评估实际PID存活，三memory.events的oom/oom_kill均0。
+  新预测保留完整912和2h收尾后理想余量3.632–5.857h，非完成保证；BUDGET_FORECAST_20261004_0520.json SHA7c4709023889cf34387cd711025f2137bc6d492ce65167fe22025b8a123ad795，Git原字节。
+  本轮未加训练/物理、未重启稳定队列、未改环境/奖励/gate；最终24仍封存，全部正式比较与论文结论未完成，目标active。
+
 ## 2026-10-04 — 新读出实际推理成本和更强RNN对照
 
 - 承接main a09926105598ef04b8f77982fa119d67556088fb，baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；本轮已实时核对分支及AGENTS。

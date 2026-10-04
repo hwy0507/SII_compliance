@@ -1,0 +1,114 @@
+{
+  "schema": "sii-research72-rl-saved-state-audit-v1",
+  "created_utc": "2026-10-04T05:08:18.626786+00:00",
+  "host": "spark-4eb4",
+  "python": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+  "numpy": "2.2.6",
+  "argv": [
+    "/home/arm1/sii_shared/SII_compliance/source/2000768fbd0b4dd2edef709854e6b444b98335a0/code/mujoco_6d_vmc_benchmark/tools/research72_rl_saved_state_audit_20261004.py",
+    "--manifest",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/cumulative_0027500_CHECKPOINT.json",
+    "--manifest",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/cumulative_0027500_CHECKPOINT.json",
+    "--output",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_completed_continuation_audit_v1/SAVED_STATE.json"
+  ],
+  "source_sha256": {
+    "/home/arm1/sii_shared/SII_compliance/source/2000768fbd0b4dd2edef709854e6b444b98335a0/code/mujoco_6d_vmc_benchmark/tools/research72_rl_saved_state_audit_20261004.py": "79c260018f624edbdf684ca7896baabcd986e33b73a17d7335344d082564e46a",
+    "/home/arm1/sii_shared/SII_compliance/source/2000768fbd0b4dd2edef709854e6b444b98335a0/code/mujoco_6d_vmc_benchmark/tools/research72_checkpoint_20261003.py": "09819072752e8c440b4074bda225829a3351bdfd2ada21c0e512b015ffa9fb3f"
+  },
+  "physics_steps": 0,
+  "gradient_updates": 0,
+  "actor_calls": 0,
+  "sealed_reads": 0,
+  "rows": [
+    {
+      "manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/cumulative_0027500_CHECKPOINT.json",
+      "manifest_sha256": "9e955f8a43f344d597e561b32088ee190c5708b4222b24279d246f76fbc2b2bf",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/cumulative_0027500/checkpoint_0027500",
+      "checkpoint_files_verified": 75,
+      "training_protocol_sha256": "844bb7355af9a4877dc865b6eea175fdac2187e3bac55460bba98a7c4caabf21",
+      "execution_sha256": "78ec5b1899f97dd1011d385b6c24a8c7cc14ee59cba4d1bd97afecb29aa5c0d3",
+      "source_files_verified": 44,
+      "family": "parameter_admittance",
+      "controller": "admittance",
+      "seed": 2026100301,
+      "action_dimension": 7,
+      "cumulative_steps": 27500,
+      "cumulative_episodes": 20,
+      "cumulative_updates": 45002,
+      "new_segment_steps": 22000,
+      "inherited_steps": 5500,
+      "replay_shapes": {
+        "observation": [
+          27500,
+          48
+        ],
+        "next_observation": [
+          27500,
+          48
+        ],
+        "action": [
+          27500,
+          7
+        ],
+        "reward": [
+          27500
+        ],
+        "terminated": [
+          27500
+        ],
+        "truncated": [
+          27500
+        ]
+      },
+      "episode_boundary": true,
+      "rng_states_loadable": true,
+      "note": "No learner loaded, no updates/actions/physics; actual resumed training remains a separate check."
+    },
+    {
+      "manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/cumulative_0027500_CHECKPOINT.json",
+      "manifest_sha256": "84a21d5a0f91bf9ccaf7b490a5a82a29ef0498c01fe09aff1bbb5dc6ea2f84c5",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/cumulative_0027500/checkpoint_0027500",
+      "checkpoint_files_verified": 74,
+      "training_protocol_sha256": "715c7aab22a7c1bd4d732f3a618966c615ab3b8942fec313428438e20b1639e2",
+      "execution_sha256": "5ff28d820934206d97958f5290dcedad6a09764275f2d569f1278c6c18bbef4e",
+      "source_files_verified": 44,
+      "family": "parameter_vmc",
+      "controller": "vmc",
+      "seed": 2026100301,
+      "action_dimension": 7,
+      "cumulative_steps": 27500,
+      "cumulative_episodes": 20,
+      "cumulative_updates": 45002,
+      "new_segment_steps": 22000,
+      "inherited_steps": 5500,
+      "replay_shapes": {
+        "observation": [
+          27500,
+          48
+        ],
+        "next_observation": [
+          27500,
+          48
+        ],
+        "action": [
+          27500,
+          7
+        ],
+        "reward": [
+          27500
+        ],
+        "terminated": [
+          27500
+        ],
+        "truncated": [
+          27500
+        ]
+      },
+      "episode_boundary": true,
+      "rng_states_loadable": true,
+      "note": "No learner loaded, no updates/actions/physics; actual resumed training remains a separate check."
+    }
+  ]
+}
