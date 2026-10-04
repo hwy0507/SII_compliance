@@ -174,6 +174,18 @@ respectively. A shared recorded action7 does not erase this difference:
 impedance parameters affect a separate Cartesian torque law and its common
 residual-action record can be zero while the parameter policy still acts.
 
+Before any learner reached the 49,500-step round, a common final boundary was
+registered on 2026-10-04 at 03:24 UTC for all fifteen RL models. This time-capacity
+amendment preserves the complete held-out comparison; it is independent of rewards
+and task outcomes. Each finalist must use the naturally completed 49,500-stage
+checkpoint (48,126–49,500 actual steps because a full episode is reserved before
+dispatch). The original 80,000-step optimizer schedule remains unchanged. Immutable
+coordinators may collect at most two additional episodes during graceful closure;
+these later weights are ineligible, and their interactions are reported separately
+as unused post-selection cost. Actual closure and all fifteen boundary receipts
+are mandatory before freezing. This is a prospective policy, not a claim that
+training or final evaluation has finished; see RESEARCH72_RL_FINAL_BOUNDARY_20261004.
+
 For each imitation family, selection aggregates every registered training
 seed and all eight development conditions. The frozen ranking prioritizes
 strict count, task count, full horizons, worst penetration, mean stage-goal

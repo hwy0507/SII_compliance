@@ -1,0 +1,605 @@
+{
+  "status": "complete",
+  "created_utc": "2026-10-04T03:24:43.261172+00:00",
+  "source_sha256": "00b7656a9ed03b69660b9e4d9db2befdf5fb27774eacf7dce005995aaceb13c7",
+  "parents": [
+    {
+      "pid": 2428446,
+      "parent": 2631,
+      "start_ticks": 109762845,
+      "argv": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_rl_campaign_20261003.py",
+        "--root",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2",
+        "--queue",
+        "0"
+      ],
+      "caught": 2,
+      "uid": 1000,
+      "queue": 0
+    },
+    {
+      "pid": 2428447,
+      "parent": 2631,
+      "start_ticks": 109762846,
+      "argv": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_rl_campaign_20261003.py",
+        "--root",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2",
+        "--queue",
+        "1"
+      ],
+      "caught": 2,
+      "uid": 1000,
+      "queue": 1
+    },
+    {
+      "pid": 2428448,
+      "parent": 2631,
+      "start_ticks": 109762846,
+      "argv": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_rl_campaign_20261003.py",
+        "--root",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2",
+        "--queue",
+        "2"
+      ],
+      "caught": 2,
+      "uid": 1000,
+      "queue": 2
+    }
+  ],
+  "queue_snapshots": [
+    {
+      "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/execution.json",
+      "sha256": "31b0f28166821c97d7c8bd3d505ef8bf22d2f24843e8e5ec1d8061148c3e9269",
+      "snapshot": {
+        "status": "running",
+        "started_utc": "2026-10-04T00:22:07.721227+00:00",
+        "rows": [
+          {
+            "name": "parameter_admittance_2026100301",
+            "seed": 2026100301,
+            "family": "parameter_admittance",
+            "segments": [
+              {
+                "stage": "initial",
+                "command": [
+                  "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_train_rl_20261003.py",
+                  "--root",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+                  "--output",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/initial",
+                  "--reward",
+                  "metric",
+                  "--seed",
+                  "2026100301",
+                  "--steps",
+                  "80000",
+                  "--stop-at-step",
+                  "5500",
+                  "--probe-receipt",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/prepare_learning_v2/rl_parity/execution.json",
+                  "--parameter-source",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/parameter_source",
+                  "--controller",
+                  "admittance"
+                ],
+                "started_utc": "2026-10-04T00:27:48.181093+00:00",
+                "returncode": 0,
+                "ended_utc": "2026-10-04T00:53:55.034027+00:00",
+                "cumulative_steps": 5500,
+                "new_segment_steps": 5500,
+                "episodes": 4,
+                "updates": 1002,
+                "execution_sha256": "62daefe1e0b02f1e94e788923a2765b45e14dbce8e14e91db8ff5a8e08de4727"
+              },
+              {
+                "stage": "cumulative_0027500",
+                "command": [
+                  "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_train_rl_20261003.py",
+                  "--root",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+                  "--output",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/cumulative_0027500",
+                  "--reward",
+                  "metric",
+                  "--seed",
+                  "2026100301",
+                  "--steps",
+                  "80000",
+                  "--stop-at-step",
+                  "27500",
+                  "--probe-receipt",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/prepare_learning_v2/rl_parity/execution.json",
+                  "--parameter-source",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/parameter_source",
+                  "--controller",
+                  "admittance",
+                  "--resume-checkpoint",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/initial/checkpoint_0005500"
+                ],
+                "started_utc": "2026-10-04T02:42:22.612156+00:00"
+              }
+            ],
+            "latest_manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/initial_CHECKPOINT.json",
+            "latest_manifest_sha256": "e7b87d5eeeab012d264488fe4bea6069a502357bd3430251ab8f21980d4ec09f"
+          },
+          {
+            "name": "direct_metric_2026100301",
+            "seed": 2026100301,
+            "family": "direct_metric",
+            "segments": [
+              {
+                "stage": "initial",
+                "command": [
+                  "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_train_rl_20261003.py",
+                  "--root",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+                  "--output",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/direct_metric_2026100301/initial",
+                  "--reward",
+                  "metric",
+                  "--seed",
+                  "2026100301",
+                  "--steps",
+                  "80000",
+                  "--stop-at-step",
+                  "5500",
+                  "--probe-receipt",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/prepare_learning_v2/rl_parity/execution.json",
+                  "--parameter-source",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/parameter_source"
+                ],
+                "started_utc": "2026-10-04T00:53:55.122186+00:00",
+                "returncode": 0,
+                "ended_utc": "2026-10-04T01:20:29.422633+00:00",
+                "cumulative_steps": 5500,
+                "new_segment_steps": 5500,
+                "episodes": 4,
+                "updates": 1002,
+                "execution_sha256": "6695c10049054f946c4ea233f15e14e3431fe8bbe3c1012467bc6348fa9f2392"
+              }
+            ],
+            "latest_manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/direct_metric_2026100301/initial_CHECKPOINT.json",
+            "latest_manifest_sha256": "5a3cacc53ccd176abbe5d96acf60cb288dec3278f9e02eb2d931f3adbb8df5f0"
+          },
+          {
+            "name": "parameter_impedance_2026100302",
+            "seed": 2026100302,
+            "family": "parameter_impedance",
+            "segments": [
+              {
+                "stage": "initial",
+                "command": [
+                  "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_train_rl_20261003.py",
+                  "--root",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+                  "--output",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_impedance_2026100302/initial",
+                  "--reward",
+                  "metric",
+                  "--seed",
+                  "2026100302",
+                  "--steps",
+                  "80000",
+                  "--stop-at-step",
+                  "5500",
+                  "--probe-receipt",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/prepare_learning_v2/rl_parity/execution.json",
+                  "--parameter-source",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/parameter_source",
+                  "--controller",
+                  "impedance"
+                ],
+                "started_utc": "2026-10-04T01:20:29.490878+00:00",
+                "returncode": 0,
+                "ended_utc": "2026-10-04T01:48:23.872104+00:00",
+                "cumulative_steps": 5500,
+                "new_segment_steps": 5500,
+                "episodes": 4,
+                "updates": 1002,
+                "execution_sha256": "ba6ef94f51b3193367856d0f6b592610dab0e98d77e2ba84f651221b56c08f88"
+              }
+            ],
+            "latest_manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_impedance_2026100302/initial_CHECKPOINT.json",
+            "latest_manifest_sha256": "b8dfd88edc65ff28e64f9fbc0d26a852f6ad86ccb653d67669c4e5872ec9cf4b"
+          },
+          {
+            "name": "direct_office_task_2026100302",
+            "seed": 2026100302,
+            "family": "direct_office_task",
+            "segments": [
+              {
+                "stage": "initial",
+                "command": [
+                  "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_train_rl_20261003.py",
+                  "--root",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+                  "--output",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/direct_office_task_2026100302/initial",
+                  "--reward",
+                  "office_task",
+                  "--seed",
+                  "2026100302",
+                  "--steps",
+                  "80000",
+                  "--stop-at-step",
+                  "5500",
+                  "--probe-receipt",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/prepare_learning_v2/rl_parity/execution.json",
+                  "--parameter-source",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/parameter_source"
+                ],
+                "started_utc": "2026-10-04T01:48:23.941773+00:00",
+                "returncode": 0,
+                "ended_utc": "2026-10-04T02:15:22.613933+00:00",
+                "cumulative_steps": 5500,
+                "new_segment_steps": 5500,
+                "episodes": 4,
+                "updates": 1002,
+                "execution_sha256": "1cf57ef3d8658eb68ec28473473535d66e95cb3e85fe33f0873fad90c6704f66"
+              }
+            ],
+            "latest_manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/direct_office_task_2026100302/initial_CHECKPOINT.json",
+            "latest_manifest_sha256": "e4966da4931b08328c83d24687c66f2a473f10a3ee7b2183f9f11f7bbc49ecd8"
+          },
+          {
+            "name": "parameter_vmc_2026100303",
+            "seed": 2026100303,
+            "family": "parameter_vmc",
+            "segments": [
+              {
+                "stage": "initial",
+                "command": [
+                  "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_train_rl_20261003.py",
+                  "--root",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+                  "--output",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/initial",
+                  "--reward",
+                  "metric",
+                  "--seed",
+                  "2026100303",
+                  "--steps",
+                  "80000",
+                  "--stop-at-step",
+                  "5500",
+                  "--probe-receipt",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/prepare_learning_v2/rl_parity/execution.json",
+                  "--parameter-source",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/parameter_source",
+                  "--controller",
+                  "vmc"
+                ],
+                "started_utc": "2026-10-04T02:15:22.684308+00:00",
+                "returncode": 0,
+                "ended_utc": "2026-10-04T02:42:22.542143+00:00",
+                "cumulative_steps": 5500,
+                "new_segment_steps": 5500,
+                "episodes": 4,
+                "updates": 1002,
+                "execution_sha256": "24c861df801fc8d0ef60e97fb23072b39f5cb0a78d04003b297823c9cf67a137"
+              }
+            ],
+            "latest_manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/initial_CHECKPOINT.json",
+            "latest_manifest_sha256": "1e2e0bbee02db2a4a6bf1cbbaeb6477ad230da9cbdbbcdb0d2a2bd2b613ccfdc"
+          }
+        ],
+        "simulation_lease": {
+          "slot": 3,
+          "owner_pid": 2428446,
+          "locking": "flock held by supervising queue"
+        }
+      }
+    },
+    {
+      "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/execution.json",
+      "sha256": "404c203951d583a2fef18493121204f0a64b2990e3e242923c4ac93c46d8027a",
+      "snapshot": {
+        "status": "waiting_for_simulation_lease",
+        "started_utc": "2026-10-04T00:22:07.721333+00:00",
+        "rows": [
+          {
+            "name": "parameter_impedance_2026100301",
+            "seed": 2026100301,
+            "family": "parameter_impedance",
+            "segments": []
+          },
+          {
+            "name": "direct_office_task_2026100301",
+            "seed": 2026100301,
+            "family": "direct_office_task",
+            "segments": []
+          },
+          {
+            "name": "parameter_vmc_2026100302",
+            "seed": 2026100302,
+            "family": "parameter_vmc",
+            "segments": []
+          },
+          {
+            "name": "parameter_admittance_2026100303",
+            "seed": 2026100303,
+            "family": "parameter_admittance",
+            "segments": []
+          },
+          {
+            "name": "direct_metric_2026100303",
+            "seed": 2026100303,
+            "family": "direct_metric",
+            "segments": []
+          }
+        ]
+      }
+    },
+    {
+      "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/execution.json",
+      "sha256": "6e44162fd9d10e70452d9d80198a00411e9f309cea565c6227548b074d473672",
+      "snapshot": {
+        "status": "running",
+        "started_utc": "2026-10-04T00:22:07.721266+00:00",
+        "rows": [
+          {
+            "name": "parameter_vmc_2026100301",
+            "seed": 2026100301,
+            "family": "parameter_vmc",
+            "segments": [
+              {
+                "stage": "initial",
+                "command": [
+                  "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_train_rl_20261003.py",
+                  "--root",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+                  "--output",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/initial",
+                  "--reward",
+                  "metric",
+                  "--seed",
+                  "2026100301",
+                  "--steps",
+                  "80000",
+                  "--stop-at-step",
+                  "5500",
+                  "--probe-receipt",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/prepare_learning_v2/rl_parity/execution.json",
+                  "--parameter-source",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/parameter_source",
+                  "--controller",
+                  "vmc"
+                ],
+                "started_utc": "2026-10-04T00:26:58.116108+00:00",
+                "returncode": 0,
+                "ended_utc": "2026-10-04T00:53:49.093464+00:00",
+                "cumulative_steps": 5500,
+                "new_segment_steps": 5500,
+                "episodes": 4,
+                "updates": 1002,
+                "execution_sha256": "0b8102b50961e289bd701724dac2856cc1462d1339b6a9669b7fb2c8a8b5ea72"
+              },
+              {
+                "stage": "cumulative_0027500",
+                "command": [
+                  "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_train_rl_20261003.py",
+                  "--root",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+                  "--output",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/cumulative_0027500",
+                  "--reward",
+                  "metric",
+                  "--seed",
+                  "2026100301",
+                  "--steps",
+                  "80000",
+                  "--stop-at-step",
+                  "27500",
+                  "--probe-receipt",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/prepare_learning_v2/rl_parity/execution.json",
+                  "--parameter-source",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/parameter_source",
+                  "--controller",
+                  "vmc",
+                  "--resume-checkpoint",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/initial/checkpoint_0005500"
+                ],
+                "started_utc": "2026-10-04T02:39:49.000746+00:00"
+              }
+            ],
+            "latest_manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/initial_CHECKPOINT.json",
+            "latest_manifest_sha256": "8a40de50910f9366bf129c6665857dc970db3ecf2b03a06b41d73dfe44ea7696"
+          },
+          {
+            "name": "parameter_admittance_2026100302",
+            "seed": 2026100302,
+            "family": "parameter_admittance",
+            "segments": [
+              {
+                "stage": "initial",
+                "command": [
+                  "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_train_rl_20261003.py",
+                  "--root",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+                  "--output",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_admittance_2026100302/initial",
+                  "--reward",
+                  "metric",
+                  "--seed",
+                  "2026100302",
+                  "--steps",
+                  "80000",
+                  "--stop-at-step",
+                  "5500",
+                  "--probe-receipt",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/prepare_learning_v2/rl_parity/execution.json",
+                  "--parameter-source",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/parameter_source",
+                  "--controller",
+                  "admittance"
+                ],
+                "started_utc": "2026-10-04T00:53:49.163434+00:00",
+                "returncode": 0,
+                "ended_utc": "2026-10-04T01:19:55.941399+00:00",
+                "cumulative_steps": 5500,
+                "new_segment_steps": 5500,
+                "episodes": 4,
+                "updates": 1002,
+                "execution_sha256": "47c98e42fd6a0246ed45164549335077a36fa22bb390a52d94dee752920a9099"
+              }
+            ],
+            "latest_manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_admittance_2026100302/initial_CHECKPOINT.json",
+            "latest_manifest_sha256": "1d378c77708e2e7a6048c66b24c495887680affc89ffcccb21018a376819195b"
+          },
+          {
+            "name": "direct_metric_2026100302",
+            "seed": 2026100302,
+            "family": "direct_metric",
+            "segments": [
+              {
+                "stage": "initial",
+                "command": [
+                  "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_train_rl_20261003.py",
+                  "--root",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+                  "--output",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_metric_2026100302/initial",
+                  "--reward",
+                  "metric",
+                  "--seed",
+                  "2026100302",
+                  "--steps",
+                  "80000",
+                  "--stop-at-step",
+                  "5500",
+                  "--probe-receipt",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/prepare_learning_v2/rl_parity/execution.json",
+                  "--parameter-source",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/parameter_source"
+                ],
+                "started_utc": "2026-10-04T01:19:56.008786+00:00",
+                "returncode": 0,
+                "ended_utc": "2026-10-04T01:46:56.494070+00:00",
+                "cumulative_steps": 5500,
+                "new_segment_steps": 5500,
+                "episodes": 4,
+                "updates": 1002,
+                "execution_sha256": "45acdd127d5b612bd67b901c9589c35668b45d865c1efe4d487d9bb67914262e"
+              }
+            ],
+            "latest_manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_metric_2026100302/initial_CHECKPOINT.json",
+            "latest_manifest_sha256": "63a941a6c001309e2ca07dd2b74af73205ea37541282ab7e66fa47d47ee00f13"
+          },
+          {
+            "name": "parameter_impedance_2026100303",
+            "seed": 2026100303,
+            "family": "parameter_impedance",
+            "segments": [
+              {
+                "stage": "initial",
+                "command": [
+                  "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_train_rl_20261003.py",
+                  "--root",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+                  "--output",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_impedance_2026100303/initial",
+                  "--reward",
+                  "metric",
+                  "--seed",
+                  "2026100303",
+                  "--steps",
+                  "80000",
+                  "--stop-at-step",
+                  "5500",
+                  "--probe-receipt",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/prepare_learning_v2/rl_parity/execution.json",
+                  "--parameter-source",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/parameter_source",
+                  "--controller",
+                  "impedance"
+                ],
+                "started_utc": "2026-10-04T01:46:56.563181+00:00",
+                "returncode": 0,
+                "ended_utc": "2026-10-04T02:14:28.142133+00:00",
+                "cumulative_steps": 5500,
+                "new_segment_steps": 5500,
+                "episodes": 4,
+                "updates": 1002,
+                "execution_sha256": "65341adbd9194fa74d0ace80c2bfecd0eac68b74de7a4e4e557a0f36d7be4a33"
+              }
+            ],
+            "latest_manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_impedance_2026100303/initial_CHECKPOINT.json",
+            "latest_manifest_sha256": "9f06bd0be697134687832b8fae7796b2f8f11fb2e00780571d2bfab291b46934"
+          },
+          {
+            "name": "direct_office_task_2026100303",
+            "seed": 2026100303,
+            "family": "direct_office_task",
+            "segments": [
+              {
+                "stage": "initial",
+                "command": [
+                  "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149_rl_runtime_v4/tools/research72_train_rl_20261003.py",
+                  "--root",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149",
+                  "--output",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/initial",
+                  "--reward",
+                  "office_task",
+                  "--seed",
+                  "2026100303",
+                  "--steps",
+                  "80000",
+                  "--stop-at-step",
+                  "5500",
+                  "--probe-receipt",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/prepare_learning_v2/rl_parity/execution.json",
+                  "--parameter-source",
+                  "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/parameter_source"
+                ],
+                "started_utc": "2026-10-04T02:14:28.209621+00:00",
+                "returncode": 0,
+                "ended_utc": "2026-10-04T02:39:48.930568+00:00",
+                "cumulative_steps": 5168,
+                "new_segment_steps": 5168,
+                "episodes": 4,
+                "updates": 338,
+                "execution_sha256": "7f6b0d3646f02cfc9c95307bfbc755d19c7b3dc436239f99eacae156712a2782"
+              }
+            ],
+            "latest_manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/initial_CHECKPOINT.json",
+            "latest_manifest_sha256": "91ecd9fdabdd7c0dbae2ec24b2ec1a7a7daed9fc090233b27191d0671a486cc9"
+          }
+        ],
+        "simulation_lease": {
+          "slot": 2,
+          "owner_pid": 2428448,
+          "locking": "flock held by supervising queue"
+        }
+      }
+    }
+  ],
+  "selected_boundary_not_started": true,
+  "physics_steps": 0,
+  "signals_sent": 0,
+  "sealed_reads": 0
+}

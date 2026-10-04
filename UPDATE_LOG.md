@@ -1,5 +1,19 @@
 # 更新日志
 
+## 2026-10-04 — 全部RL共同最终边界前瞻登记
+
+- 03:12UTC左右重新实时查询/fetch并读取main271a937444de7577d3432d627d2eeba1cb7efee3、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志/AGENTS，承接三个未提交源文件。
+  main271a937的3249文件已核验归档arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/271a937444de7577d3432d627d2eeba1cb7efee3/，tar SHA28cdd9b55ff2c97683593ecbc53872f523f77137b84e7d7e67e11a8889d95bf9。
+- 03:24:43UTC在全部模型均未进入49,500阶段时登记统一最终边界：5RL家族×3seed均选该自然完成checkpoint，实际48,126–49,500步；原80k优化器/奖励/runtime保持。
+  依据已归档串行队列容量保护完整912回合，不使用奖励或任务成败。不可变队列后续两阶段精确SIGUSR1温和结束，最多2750额外步/模型全部保留/计成本，权重不参与选择。
+- 新research72_rl_final_boundary以PID/start ticks/argv/父进程/UID/handler/pidfd核对目标；finalize_selection要求全部15边界与关闭hash证据，无缺失回退。
+  本机边界6通过1跳过（缺pidfd），Spark7全通过含真实一次性测试子进程；原finalizer5通过。dry-run三个队列零信号，持续监护服务PID2471052已运行，尚未发训练信号，不创建定时任务。
+- 本轮根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/。
+  rl_final_boundary_source_v1两文件完整核验，源tar SHAe5903f2beb8dc3460627d391fab404cf5d91c94eeb6292be83497f4ea12cc9a8。
+  AMENDMENT SHAe2b74294410aa3a97aa9ded6623f8a621424048101b3b5c7c32fe3159a4a7779；登记/DRY_RUN同字节Git证据，详见RESEARCH72_RL_FINAL_BOUNDARY。
+- 更新状态、容量、分析方案、英文方法草稿、联合进度、周报。03:27快照teacher32/40（32训练task全过、20strict）、context16/168、增强网络8/168，RL72418交互/44856更新。
+  新teacher尚未用于学生拟合，未登记修订02、未解封最终24条件；ESN泛化/全baseline最终比较/投稿证据仍未完成。稳定作业继续，目标active。
+
 ## 2026-10-04 — 真实RL续训首动作验证与队列容量修正
 
 - 02:30UTC实时查询/fetch并读main1066bcad0142c706cd93d2c84382e0c18500885c、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志及AGENTS约定，原工作区干净。

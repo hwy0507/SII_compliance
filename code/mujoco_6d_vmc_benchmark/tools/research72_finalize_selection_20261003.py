@@ -10,6 +10,7 @@ from pathlib import Path
 import json
 from research72_final_lock_20261003 import read, sha, verify_candidates
 from research72_rl_schedule_20261003 import active_campaign, AMENDMENT
+from research72_rl_final_boundary_20261004 import final_policy, selected_boundary, STAGE
 
 LEARNED = {'esn', 'memoryless', 'ordinary_mlp', 'ordinary_rnn', 'matched_mlp', 'matched_rnn'}
 CLASSICAL = {'enhanced_teacher', 'classical_admittance', 'classical_impedance', 'classical_vmc'}
@@ -89,27 +90,45 @@ def main():
     assert spec['protocol_sha256'] == digest
     jobs = {j['name']: j for j in spec['jobs']}
     assert len(jobs) == len(families)*len(seeds)
+    budget_policy=final_policy(root,rl)
+    if budget_policy:
+        evidence.extend(dict(path=str(p),sha256=sha(p)) for p in budget_policy['evidence'])
+        p=budget_policy['completion'];completion.append(dict(path=str(p),sha256=sha(p)))
+        closed={r['name']:r for r in budget_policy['closure']['models']}
+        assert len(closed)==len(jobs) and set(closed)==set(jobs)
     reinforcement = []; seen = set()
     for path in sorted(rl.glob('queue_[0-2]/execution.json')):
         state = read(path); assert state['status'] == 'complete'
         completion.append(dict(path=str(path), sha256=sha(path)))
         for row in state['rows']:
             job = jobs[row['name']]; assert row['name'] not in seen; seen.add(row['name'])
-            manifest_path = Path(row['latest_manifest']); manifest = read(manifest_path)
-            assert sha(manifest_path) == row['latest_manifest_sha256']
+            latest_manifest=read(row['latest_manifest'])
+            assert sha(row['latest_manifest'])==row['latest_manifest_sha256']
+            actual_steps=latest_manifest['cumulative_physics_steps']
+            if budget_policy:
+                selected=selected_boundary(path.parent,row)
+                assert all(closed[row['name']][k]==v for k,v in selected.items())
+                assert actual_steps==closed[row['name']]['actual_total_training_steps']
+                assert 0<=actual_steps-selected['selected_steps']<=2750
+                manifest_path=Path(selected['selected_manifest'])
+                latest=next(part for part in row['segments'] if part['stage']==STAGE)
+            else:
+                manifest_path=Path(row['latest_manifest']);latest=row['segments'][-1]
+            manifest=read(manifest_path)
             assert manifest['family'] == job['family'] and manifest['seed'] == job['seed']
             assert manifest['controller'] == job['controller']
             assert 0 < manifest['cumulative_physics_steps'] <= protocol['budget_caps']['rl_adaptation_steps_per_family_seed']
-            # Latest completed finite boundary is selected without examining
-            # reward, task outcome or any evaluation trajectory.
-            latest = row['segments'][-1]
+            # Either the prospective common budget boundary or the legacy
+            # latest boundary; no reward, outcome or final trajectory ranking.
             assert latest['returncode'] == 0 and latest['cumulative_steps'] == manifest['cumulative_physics_steps']
             training_path = path.parent/row['name']/latest['stage']/'execution.json'; training = read(training_path)
             assert sha(training_path) == latest['execution_sha256'] and training['status'] == 'complete'
             assert training['checkpoint_rows'][-1]['path'] == manifest['checkpoint']
             candidate = dict(name='office_rl_'+job['name'], category=job['family'], seed=job['seed'],
-                variant='office_from_scratch_latest_completed_boundary', config={},
+                variant='office_from_scratch_common_49500_boundary' if budget_policy else 'office_from_scratch_latest_completed_boundary', config={},
                 cumulative_training_steps=manifest['cumulative_physics_steps'],
+                total_collected_training_steps=actual_steps,
+                unused_post_selection_training_steps=actual_steps-manifest['cumulative_physics_steps'],
                 training_stop_reason=training['stop_reason'],
                 dispatch_stop_reason=state.get('dispatch_stop_reason', 'legacy_job_major'),
                 all_requested_segments_dispatched=state.get('all_requested_segments_dispatched'),
@@ -128,10 +147,13 @@ def main():
         selection_uses_only_train_validation_development=True, all_registered_finalists_included=True,
         incomplete_or_failed_training_disclosed=True, development_evidence=evidence,
         completion_receipts=completion, sealed_contents_read=False,
-        selection='Shared learned variants and classical configurations from public development; RL latest completed training boundary without outcome ranking; untuned nominal WBC.',
+        selection='Shared learned variants and classical configurations from public development; RL '+
+            ('prospectively registered common49500 boundary' if budget_policy else 'latest completed training boundary')+
+            ' without outcome ranking; untuned nominal WBC.',
         caveats=['Episode-boundary RL steps can differ below the shared cap; actual steps and stop reasons remain per candidate.',
                  'Any incomplete predecessor or absent model blocks freezing; this tool does not silently drop or invent a replacement.',
                  'Selected candidates may fail development; all remain in the final matrix.',
+                 'Post-selection compatibility training, if present, is unused by finalists but remains in exposure costs.',
                  'This file does not freeze runtime or open heldout conditions.'])
     output.parent.mkdir(parents=True, exist_ok=True)
     if skip:
