@@ -15,7 +15,8 @@ def fixture():
         dict(completed=True, full_horizon=False, wall_seconds=1)])
     protocol = dict(authorization_start_utc='2026-10-03T11:30:00+00:00',
         dispatch_deadline_utc='2026-10-06T11:30:00+00:00',
-        budget_caps={'rl_adaptation_steps_per_family_seed': 80000})
+        budget_caps={'rl_adaptation_steps_per_family_seed': 80000, 'training_seeds': [301,302,303],
+                     'rl_families': ['admittance','impedance','vmc','direct_metric','direct_task']})
     throughput = dict(rows=[dict(steady_action_mean_s=.001, steady_two_updates_mean_s=.019)])
     return snapshot, protocol, throughput
 
@@ -42,11 +43,34 @@ class BudgetTests(unittest.TestCase):
 
     def test_cumulative_rl_is_not_added_twice_and_unstarted_models_remain(self):
         snapshot, protocol, throughput = fixture()
-        snapshot['rl']['rows'] = [dict(cumulative_steps=27500,
+        snapshot['rl']['rows'] = [dict(name='admittance_301', cumulative_steps=27500,
             segments=[dict(cumulative_steps=5500), dict(cumulative_steps=27500)])]
         snapshot['rl']['totals']['completed_interaction_steps'] = 27500
         result = forecast(snapshot, protocol, throughput)
         self.assertEqual(result['rl_remaining_interactions_to_all_caps'], 15*80000-27500)
+
+    def test_unstarted_queue_cannot_be_divided_over_four_slots(self):
+        snapshot, protocol, throughput = fixture()
+        for phase in snapshot['physics']:
+            counts = dict(learning_development_v1=264,controller_confirmation_v1=64,nominal_development=8,
+                          neural_lr_development=168,development=168,collection=40,evaluation=1)
+            phase['totals']['completed'] = counts[phase['path'].split('/')[-1]]
+        jobs = [f'{family}_{seed}' for seed in [301,302,303] for family in protocol['budget_caps']['rl_families']]
+        snapshot['rl']['rows'] = [dict(name=name,cumulative_steps=80000) for index,name in enumerate(jobs) if index%3!=1]
+        snapshot['rl']['totals']['completed_interaction_steps'] = 800000
+        result = forecast(snapshot, protocol, throughput, optional_episodes=0)
+        row = result['scenarios'][0]
+        expected = 400000*(360/1375+.020)/3600
+        self.assertAlmostEqual(row['queue_constrained_ideal_development_hours'], expected)
+        self.assertAlmostEqual(row['ideal_remaining_development_hours'], expected/4)
+        self.assertEqual(result['rl_fixed_queues'][1]['remaining_interactions'], 400000)
+
+    def test_duplicate_queue_accounting_rejected(self):
+        snapshot, protocol, throughput = fixture()
+        snapshot['rl']['rows'] = [dict(name='admittance_301',cumulative_steps=1)]*2
+        snapshot['rl']['totals']['completed_interaction_steps'] = 2
+        with self.assertRaisesRegex(AssertionError, 'Duplicate'):
+            forecast(snapshot, protocol, throughput)
 
     def test_missing_phase_or_inconsistent_ledger_refuses_forecast(self):
         snapshot, protocol, throughput = fixture()

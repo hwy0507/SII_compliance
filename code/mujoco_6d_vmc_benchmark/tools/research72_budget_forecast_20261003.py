@@ -28,6 +28,19 @@ def percentile(values, q):
     return ordered[left]+(ordered[right]-ordered[left])*(index-left)
 
 
+def queue_remaining_steps(snapshot, protocol):
+    """Actual fixed queue assignment; missing not-yet-started models cost the cap."""
+    caps = protocol['budget_caps']
+    jobs = [f'{family}_{seed}' for seed in caps['training_seeds'] for family in caps['rl_families']]
+    assert len(jobs) == 15 and len(set(jobs)) == 15
+    rows = snapshot['rl']['rows']
+    steps = {row['name']: row['cumulative_steps'] for row in rows}
+    assert len(steps) == len(rows) and set(steps) <= set(jobs), 'Duplicate or unregistered RL model'
+    cap = caps['rl_adaptation_steps_per_family_seed']
+    return [dict(queue=index, models=jobs[index::3],
+        remaining_interactions=sum(cap-steps.get(name, 0) for name in jobs[index::3])) for index in range(3)]
+
+
 def forecast(snapshot, protocol, throughput, optional_episodes=144, reserve_hours=2.):
     assert snapshot['sealed_contents_read'] is False
     snapshot_time = datetime.fromisoformat(snapshot['created_utc'])
@@ -68,6 +81,8 @@ def forecast(snapshot, protocol, throughput, optional_episodes=144, reserve_hour
     rl_equivalent = remaining_steps/1375
     isolated_gpu_s = max(r['steady_action_mean_s']+r['steady_two_updates_mean_s']
         for r in throughput['rows'])
+    queues = queue_remaining_steps(snapshot, protocol)
+    assert sum(row['remaining_interactions'] for row in queues) == remaining_steps
     scenarios = []
     for name, episode_s in [('median', statistics.median(timings)), ('p90', percentile(timings, .9))]:
         prereq = sum(r['remaining_including_inflight'] for r in pending
@@ -79,6 +94,8 @@ def forecast(snapshot, protocol, throughput, optional_episodes=144, reserve_hour
         base_hours = ((prereq+queued+rl_equivalent)*episode_s/3600+learner_hours)/4
         optional_hours = optional_episodes*episode_s/3600/4
         final_hours = 38*24*episode_s/3600/4
+        queue_hours = [row['remaining_interactions']*(episode_s/1375+isolated_gpu_s)/3600 for row in queues]
+        constrained_hours = max(base_hours, *queue_hours)
         scenarios.append(dict(episode_time_basis=name, episode_wall_s=episode_s,
             ideal_remaining_development_hours=base_hours,
             isolated_learning_slot_hours=learner_hours,
@@ -86,6 +103,9 @@ def forecast(snapshot, protocol, throughput, optional_episodes=144, reserve_hour
             development_window_remaining_hours=(development_end-snapshot_time).total_seconds()/3600,
             development_ideal_slack_with_optional_hours=(development_end-snapshot_time).total_seconds()/3600-base_hours-optional_hours,
             final_physics_ideal_hours=final_hours, reporting_reserve_hours=reserve_hours,
+            rl_queue_ideal_hours_assuming_immediate_lease=queue_hours,
+            queue_constrained_ideal_development_hours=constrained_hours,
+            queue_constrained_total_slack_without_optional_hours=(end-snapshot_time).total_seconds()/3600-constrained_hours-final_hours-reserve_hours,
             latest_final_start_with_assumed_reserve_utc=(end-timedelta(hours=final_hours+reserve_hours)).isoformat(),
             total_ideal_slack_with_optional_and_reserve_hours=(end-snapshot_time).total_seconds()/3600-base_hours-optional_hours-final_hours-reserve_hours))
     return dict(snapshot_utc=snapshot['created_utc'], forecast_only=True,
@@ -93,6 +113,7 @@ def forecast(snapshot, protocol, throughput, optional_episodes=144, reserve_hour
         full_horizon_timing_samples=len(timings), pending_phases=pending,
         rl_remaining_interactions_to_all_caps=remaining_steps,
         rl_full_episode_duration_equivalent=rl_equivalent,
+        rl_fixed_queues=queues,
         optional_episodes_hypothetical=optional_episodes, scenarios=scenarios,
         limitations=['No new work or amendment is registered by this forecast.',
             'Ideal four-slot sharing is a capacity estimate, not a scheduling or completion guarantee.',
@@ -100,7 +121,8 @@ def forecast(snapshot, protocol, throughput, optional_episodes=144, reserve_hour
             'Inflight episodes are conservatively charged a complete future episode; teacher recollection is charged40 until its recorded closure.',
             'RL physics equivalent excludes extra launch overhead from short failures; GPU timing is isolated, not three-learner contention.',
             'Two reporting hours are an explicit planning assumption, not measured media/audit completion.',
-            'Three RL queues can hold leases; competing one-queue cohorts can cause idle capacity or starvation. Positive slack is insufficient to admit extra work.'])
+            'Three RL queues can hold leases; competing one-queue cohorts can cause idle capacity or starvation. Positive slack is insufficient to admit extra work.',
+            'The queue constraint adds the longest indivisible RL queue, but assumes every queue gets a lease immediately. It excludes additional waiting and is an estimate under the assumed timing, not a measured completion bound.'])
 
 
 def main():

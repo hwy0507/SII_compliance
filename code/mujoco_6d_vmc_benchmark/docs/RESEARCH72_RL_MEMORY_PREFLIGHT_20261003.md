@@ -1,5 +1,33 @@
 # RL learner组合内存预检
 
+## 2026-10-04 02:51UTC 真实续训起点独立动作重放
+
+parameter_vmc301、parameter_admittance301均真实继承5500步/4回合/1002更新，并执行第5回合train028。
+各首续训回合完整保存至6875累计步，学习计数持续增长；不是把旧checkpoint文件存在当作已续训。
+新的独立进程重载原父checkpoint、核对源码/配置/先验/条件顺序/累计计数，使用实际新轨迹首observation，
+以training=True及pending=None重放第一个随机动作。两者与实际记录逐值相等，max_abs=0。
+重放只在内存将interaction/observation计数5500→5501，reward计数和1002更新保持；磁盘父权重及所有不可变证据hash未变。
+
+本次每个审计仅一次actor调用、零梯度/物理/封存读取。它验证接续首动作的权重/随机状态/观测归一化路径，
+**未独立重构此后每次优化器更新，也未验证续训后replay完整前缀或最终冻结策略**。
+六项合成回归检查拒绝错误seed/源、重复条件、计数重置、不完整父阶段和错误首动作/RNG；合成检查不当真实训练结果。
+两审计使用原生Spark NumPy2.2.6/JAX0.7.2 GPU，单线程/3GiB/无swap，墙钟分别7.563/7.391s；没有增加仿真并发。
+
+以下为共享本轮根（主机/完整地址见后文）的新`rl_resume_action_audit_v1/`：
+
+- `VMC301_FIRST_ACTION.json` SHA `ab492d2cae78ea7721a0b39913de9ad99da4752470a05af17ed8235d06aa9ef7`。
+- `ADMITTANCE301_FIRST_ACTION.json` SHA `4add155e9f0c35426a247e17499bbe5c692608a3371ed2a099b0cbb188387bda`。
+- 两原件与Git证据RL_RESUME_*同字节，保存审计时child execution完整快照及其hash；正在增长的原文件不被改写。
+- 三源/测试文件归档核验，审计源码SHA `dd38ffa8df4f6c6cc9b63edd5f8a0ea0251f277e5cd27eb3979ae175f94b0e96`，
+  原始源tar SHA `ff9a4cdc27de1b18d2e225e320d21690977421aecd5dd42a20b9e43167154039`。
+
+十个模型已完成首段。新增VMC303为5500步/1002更新，直接任务奖励303为5168步/338更新、4回合，
+其中train031在carry因最大外部/全局穿透2.560352mm触发原2mm中止；未补齐为虚构5500步或删除失败。
+新增两个存档核验通过，`rl_saved_state_audit_v3/AUDIT.json` SHA `a094a55f2627298175f4f0609ecd41aafb23e1595992273c443874427e0d5828`，Git同字节。
+两原manifest SHA分别1e2e0bbee02db2a4a6bf1cbbaeb6477ad230da9cbdbbcdb0d2a2bd2b613ccfdc、
+91ecd9fdabdd7c0dbae2ec24b2ec1a7a7daed9fc090233b27191d0671a486cc9；零JAX/物理审计441ms。
+第三队列仍等租约，十模型首段不等于十五模型训练完成。首次续训启动包含冷编译，不以其单回合时间冒充稳态吞吐。
+
 ## 2026-10-04 02:22UTC 首个任务奖励直接RL存档
 
 增量复核direct_office_task/2026100302及parameter_impedance/2026100303两个首段，

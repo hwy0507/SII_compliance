@@ -1,5 +1,21 @@
 # 更新日志
 
+## 2026-10-04 — 真实RL续训首动作验证与队列容量修正
+
+- 02:30UTC实时查询/fetch并读main1066bcad0142c706cd93d2c84382e0c18500885c、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志及AGENTS约定，原工作区干净。
+  main1066的3244文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/1066bcad0142c706cd93d2c84382e0c18500885c/，tar SHA c50e57a1f5ac3fbef09cd0284959461be716eaef3783d4be8d465dc4a1a520e8。
+- 新research72_rl_resume_audit在原生Spark分别独立加载VMC301/导纳301父checkpoint，以真实续训首观测重放随机动作，精确一致；
+  每审计仅1次actor调用、0梯度/物理，保存运行中child execution原字节快照hash、不修改原件。六回归通过，非全段优化器/最终策略核验。
+  rl_resume_action_audit_v1三源文件已核验；两结果SHA分别ab492d2cae78ea7721a0b39913de9ad99da4752470a05af17ed8235d06aa9ef7、
+  4add155e9f0c35426a247e17499bbe5c692608a3371ed2a099b0cbb188387bda，Git同字节。源tar SHA ff9a4cdc27de1b18d2e225e320d21690977421aecd5dd42a20b9e43167154039。
+- 新增VMC303/任务奖励303首段存档核验通过，后者train031因穿透2.560352mm在carry中止，真实5168步/338更新保留，未补成5500。
+  rl_saved_state_audit_v3/AUDIT.json SHA a094a55f2627298175f4f0609ecd41aafb23e1595992273c443874427e0d5828，Git同字节；十首段不是全部15模型训练完成。
+- 容量预测新增实际串行RL最长队列，6回归通过。02:43实际快照预测全80k开发31.28–32.70h、最终22.82–23.94h，含2h收尾余量+0.67至−1.88h且未计等待；
+  不再只用总量除以四。budget_forecast_archive_v4四文件核验，tar SHA bd92cfac326de98edb7abafeae1c3cc4221792bb2d434601c5e893d8b8eb723e，详见CAPACITY_FORECAST。
+- 上述产物根均arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/。
+  更新状态/联合进度/周报：teacher26/40、context13/168、增强网络4/168，q0/q2真实续训、q1等租约。未改冻结环境/gate、未发停止信号/改预算，24最终封存。
+  下一步须据真实稳态明确共同预算边界以保护完整比较；不因某方法失败删回合，目标active。
+
 ## 2026-10-04 — 英文方法正文草稿与首任务奖励RL真实存档
 
 - 02:17UTC实时查询/fetch并读main f6d22ffffa74e33e1e28dc8e49695cd22c3a7262、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志及AGENTS，工作区原干净。
