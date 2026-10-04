@@ -1,5 +1,10 @@
 # 更新日志
 
+## 2026-10-04 — 开发回合独立只读审计
+
+- 新增 `RESEARCH72_DEVELOPMENT_AUDIT_20261004.md`，从 arm1 三个开发目录的已完成 `execution.json` 独立汇总 70 条带 audit 回合：neural-LR 26 条（task 9、strict 7、最大穿透0.9309 mm）、context gate 32 条（17、9、2.4684 mm）、readout refit 12 条（4、2、0.5069 mm）。
+- 报告明确不平衡开发曝光不能替代 38×24 正式留出，也不把动作重放误差或单个成功回合当作安全结论；未读取封存条件、未修改 gate、未启动新物理。
+
 ## 2026-10-04 — 07:49UTC队列进展
 
 - arm1 收据更新为 neural-LR 26/168、context gate 32/168、context readout refit 12/144；RL adaptation、boundary watcher 和 final transition 仍 active/waiting，`final_evaluation_v1` 及模型锁仍缺失。

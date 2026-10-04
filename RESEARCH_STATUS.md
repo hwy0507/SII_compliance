@@ -17,6 +17,8 @@
 
 ## 当前结论
 
+新增开发回合独立审计见 [RESEARCH72_DEVELOPMENT_AUDIT_20261004.md](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_DEVELOPMENT_AUDIT_20261004.md)：当前三组共70条已完成带审计回合，均为不平衡开发曝光，不能替代最终38×24留出矩阵；readout refit ESN两条中仅一条 strict 且有一条外穿透0.5069 mm。
+
 04:52UTC补充：新固定交互读出首条开发（seed301/development000）worker审计task/strict通过，
 30.699mm / 49.981Nm / .349058m/s，最大外穿透.143599mm，动作/filter/储备池重放误差0。
 该条仍只是一个开发样本，整阶段独立审计仍待完成；不是最终结果。下表已更新至文件名0717快照（内部实际时间06:18:25UTC）。
