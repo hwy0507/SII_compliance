@@ -1,5 +1,13 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-04 04:59UTC：新模型部署成本与有效RNN学习
+
+新18模型在同公开训练序列的74,250次actor-only计时完成，18模型warm重放精确，0拟合/物理。
+ESN3780学习系数、32.2–32.8μs；普通MLP5504/7.85–7.91μs，RNN21888/9.89–10.10μs，不能称ESN推理更快。
+新matched RNN三个seed选择4000/3600/3600更新，验证动作MSE略低于ESN；全部144闭环仍按原计划保留，不用代理MSE判任务成功。
+本机1线程3GiB计算，六文件已核验共享refit_inference_archive_v1，PROFILE Git同字节，见READOUT_REFIT_RESULTS。
+原四仿真继续、最终24封存；仅补成本与实现证据，没有新搜索或最终模型选择。
+
 ## 2026-10-04 04:52UTC：首条refit闭环与最终汇总预检
 
 refit seed301/development000 worker审计task/strict通过，完整55s；RMSE30.699mm、峰力矩49.981Nm、峰速度.349058m/s、外穿透.143599mm。

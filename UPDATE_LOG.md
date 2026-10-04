@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-04 — 新读出实际推理成本和更强RNN对照
+
+- 承接main a09926105598ef04b8f77982fa119d67556088fb，baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；本轮已实时核对分支及AGENTS。
+  最新main3275文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/a09926105598ef04b8f77982fa119d67556088fb/，tar SHA70a971f64d6d78415cd4bb989657089725ee4fabd6eca648c72738b445f7b563。
+- 复用既有inference_profile入口，本机单线程3GiB测量新18模型/同公开1375帧训练序列，固定打乱顺序、每模型3遍，共74250计时；warm导出重放误差0，0物理/拟合/封存读取。
+  ESN3780可训练系数，actor中位32.205–32.800μs；普通MLP5504系数/7.847–7.910μs，RNN21888系数/9.885–10.104μs。不称ESN推理更快，不以actor延迟证明端到端实时。
+  新matched RNN三个seed选择更新4000/3600/3600、验证MSE均优于ESN父模型；其三seed均值.000230356 vs ESN.000232886。保留更强对照，离线代理不是闭环成功。
+- 六文件源码/原始计时/PROFILE已完整核验共享本轮根refit_inference_archive_v1，tar SHAf6f6a71315f7a8146ac0ed1f0b50c78ded5cf451fdad2fab9fd5b371a7277939；PROFILE SHA674c80045d0e22e1962430d8f1e4bfd3deba47780621ea791cad1826adb8ad8b，Git同字节。
+  本轮根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/；更新READOUT_REFIT_RESULTS、方法定位、联合进度和周报。
+- 同时检查Spark空间余2.7TiB，运行目录93GiB；三RL服务正常、swap0，原队列不重启。开发144及旧增强组/RL运行中，最终24封存，目标active。
+
 ## 2026-10-04 — 最终选择的真实路径兼容修复与新读出首回合
 
 - 承接已推送main9e7fa92dedd121a79e838a49fa48cd1c27921444，baseline仍ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；本轮前已实时核对两分支和AGENTS，无其他工作区改动。

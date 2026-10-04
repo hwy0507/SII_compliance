@@ -1,5 +1,12 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-04 04:59UTC 新组公平成本与更强RNN
+
+18模型同公开序列单线程actor-only计时74250次，导出重放误差0；ESN约32–33μs而普通MLP/RNN约8/10μs，参数少不等于推理快。
+新matched RNN三个seed均选择真实3600–4000更新的checkpoint，其验证动作MSE略优于ESN，不再是原初始组的零步选择现象。
+全部新模型同数据、同8开发身份继续，代理误差不判任务；没有再加搜索或筛掉baseline。
+共享refit_inference_archive_v1六文件hash/大小/模式核验，PROFILE Git同字节，详细数值与限制见READOUT_REFIT_RESULTS。
+
 ### 2026-10-04 04:52UTC 最终全候选汇总保护
 
 修正最终学习选择器JSON路径/hash类型兼容，完整72候选合成账本跑通实际load_phase/main；全部失败仍保留18选定模型、refit少1回合或teacher收据变化均拒绝。
