@@ -1,5 +1,10 @@
 # 更新日志
 
+## 2026-10-04 — 07:37UTC队列继续审计
+
+- arm1 收据更新：context readout refit 11/144、context gate 32/168；neural-LR 保持25/168但其 worker/supervisor仍存活，RL boundary watcher 与 final transition 收据持续刷新。
+- `final_evaluation_v1`、模型锁和开封收据仍不存在；没有终止失败、重启或新增派发，正式912回合尚未开始。
+
 ## 2026-10-04 — 07:31UTC队列进度
 
 - arm1 收据新增完成回合：neural-LR 25/168、context gate 32/168、context readout refit 10/144；RL adaptation 和 boundary watcher 仍 active，final transition 仍 `waiting_for_predecessors`，最终评估尚未创建。
