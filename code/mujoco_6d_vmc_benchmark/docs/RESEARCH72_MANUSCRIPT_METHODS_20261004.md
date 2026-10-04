@@ -132,6 +132,15 @@ These are unequal computation costs, disclosed separately from shared teacher
 collection, development simulation and RL interaction. No additional gate,
 learning-rate or temporal-loss search is included in this amendment.
 
+The completed-fit ledger contains 120 jobs, 288 ridge candidates and 384,000
+gradient updates. Per seed, ordinary MLP/RNN receive seven fits each and their
+feature-matched counterparts nine each. All 54 feature-matched fits use fitted
+parent weights; their parent costs are shared rather than free. Validation
+selection of update zero does not erase the 4,000 updates actually performed.
+The accompanying RESEARCH72_TRAINING_COST_TABLE_20261004 separates these costs
+from physical data collection and incomplete RL/development costs; it is not
+an equal-computation or end-to-end speed comparison.
+
 Labels are requested teacher actions from actual executed histories. Requested,
 clipped, filtered, and executed quantities are retained for provenance and
 replay; requesting an action does not imply that exactly that quantity reached

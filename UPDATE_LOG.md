@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-04 — 公布120次已完成拟合的实际成本对照
+
+- 实时fetch/read main52ae14c、baseline ebb0e1e及AGENTS；原监督与开发仍为真实存活进程，最终未开封。最近两轮为已核验等待，本轮整理完整拟合成本，不增加搜索。
+- 新RESEARCH72_TRAINING_COST_TABLE_20261004.md从08:45:42UTC不可变快照逐行核算：120作业、288ridge、384000梯度更新、146480736次非padding样本访问，进程耗时合计1742.801748秒；与四批totals交叉一致，作业名不重复。
+- 明确ESN60ridge/seed、无记忆36、普通MLP/RNN各7拟合/seed、同特征各9；披露参数范围、54个父权重初始化、验证选第0步仍花4000更新、80次共享teacher采集与额外8开发、四控制器160调参回合。不同单位/共享成本不混成同预算或零成本。
+- 不把重复样本访问当新增物理数据，不把拟合进程之和当端到端训练/日历时间；新refit ESN推理慢于普通小网络的既有证据一并链接。RL完整成本、最终逐模型谱系及性能仍待闭合，未改模型/场景/选择规则。
+- 引用已核验服务器根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/EXPOSURE_SNAPSHOT_20261004_0850.json，SHAc708837a1b011d7b623ffbf88c8fd7aac346e72eb88c115727902c24f477df67；0新仿真/训练/计时。源码52ae14c已完整3306文件核验，tar SHAefcb274212cf57d4c5a5443ed9a9424d70a5bb7933afcc50c7b3dffb47772d81。
+
 ## 2026-10-04 — 独立核验六个新完成RL续训段及38个短失败
 
 - 开工查询/fetch main371264a、baseline ebb0e1e并读日志/AGENTS；原final transition2513613和delivery2550310实际active，未开封、重启或新增训练。上一轮属于实际进展，本轮使用等待时间补真实数据证据。
