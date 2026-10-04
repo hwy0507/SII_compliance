@@ -1,9 +1,16 @@
 # 更新日志
 
+## 2026-10-04 — 修正公开快照时间标签并复核最终衔接守卫
+
+- 更正 `EXPOSURE_SNAPSHOT_20261004_0717.json` 的说明：文件名中的 `0717` 仅为运行标识，JSON 内部 `created_utc` 为 `2026-10-04T06:18:25.398327+00:00`；同步修正 `RESEARCH_STATUS.md`、联合进度和最终衔接报告，未改原始 JSON 或 SHA。
+- 本地用 Python `unittest` 运行最终衔接、最终锁定和 exposure ledger 的 17 项回归，全部通过；未启动物理、训练或选择流程。
+- 开工时远端 GitHub 与 arm1 SSH 均因网络不可达，无法刷新远端 SHA、读取服务器 `execution.json` 或 push；本地基线仍为 `main=9c66ea6`、`baseline=ebb0e1e` 缓存引用。网络恢复后先核对远端并继续既有衔接服务，不重复派发。
+- 研究状态仍为：最终 24 条件封存，连续衔接待前置队列；912 回合、独立 RL actor 审计、统计、媒体和 RAL 结论均未完成，失败保留。
+
 ## 2026-10-04 — 开发队列继续推进，连续衔接保持等待
 
 - 06:16UTC实时查询/fetch并读main eea104e06fb86ef5b358ab273e51badef9967882、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；连续服务PID2513613仍存活，未重复派发。
-- 07:17公开快照：全部120拟合完成，RL177603交互/206734更新；增强网络19/168、context29/168、新refit6/144，直接/参数RL的失败和短回合仍在分母中。
+- 文件名`EXPOSURE_SNAPSHOT_20261004_0717.json`对应的公开快照内部实际时间为06:18:25UTC（0717仅运行标识）：全部120拟合完成，RL177603交互/206734更新；增强网络19/168、context29/168、新refit6/144，直接/参数RL的失败和短回合仍在分母中。
   25个开发/训练相关进程仍有真实PID；三队列均保留既有租约和共同边界监护，final_transition仍waiting_for_predecessors，最终24封存且final_evaluation_v1未创建。
 - 新预测理想剩余开发22.511–23.573h、完整912物理22.824–23.942h，保留2h收尾后余量5.857–3.678h；额外等待/冷加载未计，不追加搜索或改变预算。
   快照SHA74fca49834e4136decb3cd5be3418f05dd7e3fd45b1e49104e6a03fd40cbff89，预测SHAd7f72cc2f9337f3154a02d2f105aa37cfc8ff2e039b2b5fb3ee24fa0ba20295，Git同字节。

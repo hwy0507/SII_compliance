@@ -35,7 +35,7 @@ context_readout_refit_development_v1、rl_office_adaptation_v2、rl_final_bounda
 
 ## 已验证范围与时间余量
 
-07:17公开快照更新：RL177603交互/206734更新，context29/168、增强网络19/168、refit6/144；
+06:18:25UTC公开快照更新（文件名`EXPOSURE_SNAPSHOT_20261004_0717.json`中的0717仅为运行标识）：RL177603交互/206734更新，context29/168、增强网络19/168、refit6/144；
 三RL队列、三开发队列和连续监督均仍存活。新的理想余量为3.678–5.857h（含912和2h收尾），
 仍不计所有等待/冷启动，且不是完成保证；不追加任何搜索。
 
