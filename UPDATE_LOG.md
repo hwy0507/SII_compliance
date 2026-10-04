@@ -1,5 +1,18 @@
 # 更新日志
 
+## 2026-10-04 — 最终选择的真实路径兼容修复与新读出首回合
+
+- 承接已推送main9e7fa92dedd121a79e838a49fa48cd1c27921444，baseline仍ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；本轮前已实时核对两分支和AGENTS，无其他工作区改动。
+  main9e完整3274文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/9e7fa92dedd121a79e838a49fa48cd1c27921444/，tar SHA49f18477cffb2f15561761f9d96645a90d6dd09a05b9395e8eb09192fd8f80a2。
+- 在后续最终学习选择器发现同类JSON路径字符串/hash接口错误，规范化为Path。新增完整72候选合成账本测试，经真实load_phase/main验证18模型输出，全部失败仍入选、teacher证据篡改拒绝、refit缺1回合拒绝。
+  本机3项通过、原38模型汇总5项通过；Spark同3项通过，零实际选模/物理/拟合/封存读取。不修改运行中冻结源，真实最终选模必须用本修复后的入口。
+  本轮根selection_guard_source_v1两文件内容/大小/模式全核验，tar SHAff30db5889c35883933aef23daf173f181ad957c3ff9ac5c2040ae8547771411。
+- 04:51:49UTC新refit首条development000/seed301完整55s结束，worker审计task/strict通过，RMSE30.699mm、峰力矩49.981Nm、峰速度.349058m/s，外穿透.143599mm。
+  请求/公共filter/储备池重放误差0；raw trace SHA5c43b9cd6b48c015ff5b9e314d001d23b8b0b5438de23e7139c13766f66ef26c。
+  仅单条公共开发、整阶段独立审计未完成，不据它改候选、gate或声称泛化；固定144队列继续。
+- 04:52UTC旧context24/168、增强网络15/168、新refit1/144；三RL队列持真实租约、共同边界监护watching。24最终仍封存，目标active。
+  共同产物根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/；进度/周报同步，无新搜索或重启。
+
 ## 2026-10-04 — 共享新teacher重训完成，纯ESN交互读出进入144条开发比较
 
 - 04:28UTC实时核对/fetch并读main8c1633e5b643b68c26008047c1fb5f4a1cf25010、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志及AGENTS，承接已登记研究的未提交源码/证据。

@@ -1,5 +1,12 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-04 04:52UTC 最终全候选汇总保护
+
+修正最终学习选择器JSON路径/hash类型兼容，完整72候选合成账本跑通实际load_phase/main；全部失败仍保留18选定模型、refit少1回合或teacher收据变化均拒绝。
+本机/Spark各3通过，原38模型汇总5通过；实际最终选模未运行，24仍封存。共享selection_guard_source_v1两源核验，不改运行中实验。
+新refit仅首条seed301/development000 worker审计task/strict通过（30.699mm/49.981Nm/.349058m/s，外穿透.143599mm），整阶段独立审计待完结，不称泛化优势。
+旧context24/168、增强网络15/168、新refit1/144及三RL原队列继续，不削减baseline或新增搜索。
+
 ### 2026-10-04 04:36UTC 共享新teacher的六家族重训与RL真实继承
 
 teacher40/40任务、25/40strict，20训练＋5验证同数据供全部六模仿家族；验证strict6→5的退步及柱暴露0/5公开保留。

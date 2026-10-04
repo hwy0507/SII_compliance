@@ -14,7 +14,7 @@ import statistics
 
 
 def read(p):return json.loads(p.read_text())
-def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 
 def rank_variants(candidates,observations,seeds,conditions):
