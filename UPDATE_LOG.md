@@ -1,5 +1,17 @@
 # 更新日志
 
+## 2026-10-04 — 新旧teacher训练示范的配对质量审计
+
+- 03:40UTC实时核对/fetch并读取main6c0cbb6e2edd8fa75a0b1762166ce4bb51f1584f、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志与AGENTS，工作区干净。
+  main6c0cbb6完整3256文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/6c0cbb6e2edd8fa75a0b1762166ce4bb51f1584f/，tar SHAd1ddb7352859f63204e34882899ac7be69d7efee458aecf007856c26ecce581d。
+- 新research72_teacher_data_comparison只读审计同32训练身份初始/选定teacher共64完整回合、70,400,000已保存子步；使用原v4指标，0物理/拟合/封存读取。
+  逐协议/config/MJB/trace/chain/native/telemetry及原三指标核验通过；Spark单线程3GiB服务正常结束。新teacher任务29→32、strict18→20，8改善6退化；柱子合格示范仍只有2条。
+  推杆P95力降低，但桌角接触时长4.112→8.583s、力模积分8.169→22.369Ns；不能称全面柔顺改善。人手两身份位移变化单列，负载指标保持，不以均值相同冒充所有字段相同。
+- 本轮根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/。
+  teacher_data_audit_source_v1单源文件核验，tar SHA83dd9acfc784111c72218cac63b7b179c3993a06e6373d8bfd9f29f005a9bd19；teacher_data_train_comparison_v1共68文件/1,677,577字节全核验，清单SHA3105de87e10c5254b4d2f0e020c095401f36e8d374675e5ed58cd8aaa8f31287。
+  SUMMARY SHAd59f26e76abc0e0c69b412edc2130cc2dd270546eea4380671440492ccd41cc3，Git同字节；新增TEACHER_DATA_QUALITY报告，同步状态/联合进度/周报。
+- 03:51采集37/40、context18/168、增强网络10/168，原RL/预算监护运行中。等待8验证完整导出；未新拟合/登记修订02/解封24最终条件，目标active。
+
 ## 2026-10-04 — 共同边界后的保守成本复算
 
 - 承接已发布7d9fcd8ca3b17bbd0580b0b63e7c7f58c917c3a7；其3255源码文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/7d9fcd8ca3b17bbd0580b0b63e7c7f58c917c3a7/，tar SHA dbde88e74d2cd1f1835bc7808465f938a7f411dd7e558b13fdc1f13d2c6ae226。
