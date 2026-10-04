@@ -1,5 +1,21 @@
 # 更新日志
 
+## 2026-10-04 — 英文方法正文草稿与首任务奖励RL真实存档
+
+- 02:17UTC实时查询/fetch并读main f6d22ffffa74e33e1e28dc8e49695cd22c3a7262、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志及AGENTS，工作区原干净。
+  前者3242文件已核验共享arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/f6d22ffffa74e33e1e28dc8e49695cd22c3a7262/，
+  tar SHA6187c1f6b96da35d5f42549a7351d88d6b929468b5c87c402b54cae312a1be36。
+- 新RESEARCH72_MANUSCRIPT_METHODS英文稿按实际actor/trainer/evaluator/selection与统计方案逐项核对：给出储备池公式、
+  精确task/strict口径、对照差异、912回合计划和推断边界。未选最终变体、未填最终结果或虚构新颖性/ESN优势，不改环境或gate。
+  正文SHA b7d2feabb5c2477ce56943f0fd1c83bdabc9f50cec06cdc2576c3313ddd2b5c3；共享methods_draft_v1/docs/，单文件内容/大小/模式核验，
+  tar SHA bf66c8495fda765fceeaab3afee10e84c710bb1dd4977375fd6acde1f8d1c41e。
+- 新增直接任务奖励302/阻抗303两个首段存档独立复核（75/74文件、7/5维）：各5500步/4回合/1002更新，完整hash/回放/计数/边界/RNG/源核验通过。
+  复用v1已归档源码，零动作/更新/物理/封存读取；rl_saved_state_audit_v2/AUDIT.json SHA a23428d103a1f393f98c269f837bffa786a99355185d11b28f7f9406a9b6f53f，
+  Git同字节证据，详见RL_MEMORY_PREFLIGHT；不把存档核验当实际续训或任务成功。
+- 上述本轮产物根为arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/。
+  02:22快照teacher21/40、context10/168、增强网络2/168；RL八首段完成/累计46875交互，q1等租约、OOM0。
+  四实际仿真原作业保留，无新搜索/派发/预算修改。更新状态/联合进度/周报；最终公平矩阵、实际续训和最终论文证据仍未完成，目标active。
+
 ## 2026-10-04 — 首5D真实RL存档与名义控制完整开发结果
 
 - 01:49UTC实时查询/fetch并读main66c72b90fdbcd7355b2fad2029f482ef24a555b4、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6日志及AGENTS。
