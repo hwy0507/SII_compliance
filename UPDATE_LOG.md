@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-04 — 接通最终评测后的独立RL回放、矩阵与媒体
+
+- 开工实时查询/fetch main de89c451ca33f56aee9e66ca06dac398417b5f04、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6，读AGENTS/两分支日志；原最终监督PID2513613仍等待前置，未开封/重启。
+- 新 `research72_final_delivery_20261004.py` 等最终批次终止后顺序调用原冻结a3 runtime：全部15模型独立RL回放→统一38×24矩阵/统计→图→全部38模型同条件三视角视频。无新增物理/学习/选模，不改变gate或环境；失败/短回合/缺失保留，不自动重试。
+- 本机与Spark各9项合成编排检查通过；实际依赖和内置ffmpeg可用。合成测试不等于真实RL回放，缺失报告不伪装完整。论文解释/媒体目视核验仍由研究者完成。
+- 09:04:53UTC实际服务 `sii-r72-final-delivery-v1` active，PID2550310，MemoryMax3GiB/Swap0/单线程/CPUQuota100%，`waiting_for_final`、steps空；没有定时任务。
+- 已核验共享根 arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/：`final_delivery_source_v1` 两源码文件，tar SHA ff113e8896f4b1f6dd0fdb4df8c34cc6fd2fd55078bb735f8c1203f029a25174；`final_delivery_v1/SPECIFICATION.json` SHA348925fe49141896477d3f7433e032949991c71f0f343716137f5d03075d2134，Git同字节。
+- 已完成：后处理连续衔接/工程验证；运行中：原开发/RL和两等待监督；未完成：最终912、真实独立RL回放、统计、视频、论文结果。报告见 `RESEARCH72_FINAL_DELIVERY_20261004.md`，未宣称ESN获胜或投稿就绪。
+
 ## 2026-10-04 — 核验成本账本、真实OOM计数和报告证据范围
 
 - 本轮承接并已fetch main edf63e5、baseline ebb0e1e，后续本任务main7282022；遵循AGENTS/同步skill，未修改活跃runtime。上一轮属已核验等待，本轮补可复查证据。

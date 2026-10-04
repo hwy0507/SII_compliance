@@ -1,5 +1,14 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-04 09:04:53UTC：最终后处理接通
+
+原研究作业继续；新一次性监督PID2550310实际waiting_for_final，单线程/3GiB，0新物理/训练/选模。
+待最终批次终止后运行原a3工具的15个RL独立动作回放、38×24统一统计及全部模型固定条件三视角视频；
+短失败/缺失保留，无自动重试。本机/Spark各9项合成编排测试通过，不等于实际最终审计。
+模型锁和912仍未产生；论文解释/目视检查未完成，不能声明ESN领先。详见RESEARCH72_FINAL_DELIVERY_20261004.md，
+服务器根arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/，
+新源码final_delivery_source_v1及登记final_delivery_v1已核验，未改活跃runtime。
+
 ## 2026-10-04 08:45:42UTC：成本核验与审计范围更正
 
 新公开账本0850保存原回合身份/trace与audit hash，neural-LR29/168、context34/168、refit16/144，含2条短回合。
