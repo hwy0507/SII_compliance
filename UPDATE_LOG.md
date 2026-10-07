@@ -8,7 +8,7 @@
 - 离线验证：相对父 ESN，5 个 validation identity 的 action delta energy `0.014357→0.009489`，action energy `0.012396→0.009701`，最大单步 action 跳变 `1.566→1.366`；action MSE `0.000242→0.000612`。这只是峰矩代理/输出平滑证据，不是真实峰值力矩或任务成功结果。
 - 训练/回放和 source/config/hash 收据在本地 `code/mujoco_6d_vmc_benchmark/outputs/esn_torque_generalization_20261007_grid/`；其中 `REPLAY_COMPARISON.json` SHA256 `082da4d47cf3c5bf60d2be3be9618114e8e1c8330ef85d969aae1af6372d0abb`。大型 checkpoint 未加入 Git，当前仅本地、待服务器同步。
 - 已完成：编译、单候选测试、36 候选网格、噪声候选、部署 replay parity、离线 identity-holdout 审计和文档更新。未完成：arm1 development 闭环、真实峰值力矩/RMSE/速度、跨条件确认、服务器归档和远端 push。
-- 失败原因保留：本机闭环启动被 `ModuleNotFoundError: PIL` 阻止；SSH `192.168.31.70:22` 当前不可达。没有修改环境、gate、actor 输入、执行器限制，也没有读取 sealed 条件。
+- 失败原因保留：默认本机解释器闭环启动被 `ModuleNotFoundError: PIL` 阻止；已找到兼容 `.venv-canonical-rl`，但 worker 的 cgroup `MemoryMax≤3G` 审计因 `systemd-run --user` bus 不可用而阻止执行；SSH `192.168.31.70:22` 当前不可达。没有修改环境、gate、actor 输入、执行器限制，也没有读取 sealed 条件。
 
 ## 2026-10-07 — 全部 16 个方法的 ESN 重点指标表
 

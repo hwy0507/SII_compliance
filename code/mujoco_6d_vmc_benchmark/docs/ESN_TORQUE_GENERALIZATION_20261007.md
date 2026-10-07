@@ -36,13 +36,12 @@
 
 ## 物理闭环状态
 
-本轮没有把新 checkpoint 放入正式 `/24` 矩阵，也没有声称峰值力矩下降或泛化成功。预定的 development 闭环回合在本机启动前被依赖检查阻止：当前解释器缺少 Pillow 和 SciPy；随后 SSH 到 `arm1@192.168.31.70` 也不可达。因此本轮：
+本轮没有把新 checkpoint 放入正式 `/24` 矩阵，也没有声称峰值力矩下降或泛化成功。默认解释器确实因缺少 Pillow/SciPy 在首次尝试时失败；随后找到兼容的 `/home/airpig/桌面/hwy/compliance_control/.venv-canonical-rl/bin/python3`（Pillow、SciPy、MuJoCo 3.11.0），但 worker 要求显式 cgroup `MemoryMax≤3G`，本机 `systemd-run --user` 因受限运行容器无法连接 bus，arm1 SSH 也不可达。因此本轮：
 
 - 物理子步数：0；
 - task/strict：未测；
 - 真实峰值力矩、峰值速度、RMSE、穿透：未测；
 - sealed 条件：未读取；
-- 失败原因：`ModuleNotFoundError: PIL`（本机），`ssh ... port 22: failure`（服务器不可达）。
+- 失败原因：默认解释器 `ModuleNotFoundError: PIL`；兼容解释器的 cgroup 审计失败（`memory.max` 为 `max`，`systemd-run --user` 为 `Operation not permitted`）；`ssh ... port 22: failure`（服务器不可达）。
 
 下一步应在依赖完整且资源受限的既有 worker 上，用未参与选择的 8 个 development identities 评估父 ESN、平滑候选和噪声候选；只有闭环 task/strict 与物理峰值结果完成后，才决定是否进入新的冻结模型锁。
-
