@@ -1,5 +1,13 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-07 统一单模型/24条件主表
+
+修正最终表的分母不一致问题：论文主表固定每个 family 的一个模型，在相同 24 个 office-v6 held-out
+条件上重算。神经网络/RL 统一采用模型锁中 seed `2026100301`，经典控制器、teacher 和 nominal zero
+使用唯一冻结模型；不按结果挑选 seed。统一结果见
+`docs/RESEARCH72_UNIFORM24_MATRIX_20261007.md`，原三 seed `/72` 汇总仅作为附录敏感性分析。
+
+
 ### 2026-10-07 ESN 因果储备池读出专项（baseline 冻结）
 
 本轮只对 proposed ESN 做算法读出实验，baseline 模型、office-v6 场景、gate、canonical48D/action7

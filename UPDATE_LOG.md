@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-07 — 修正为完全统一的 24 条件单模型矩阵
+
+- 用户指出原表混用 `/72` 神经/RL 多 seed 与 `/24` 经典单模型分母。本轮从同一服务器 `REPORT.json` 的 912 条原始回合重聚合，没有新仿真或结果筛选。
+- 论文主表现在固定每个 family 的一个模型，在完全相同的 `heldout_000`–`heldout_023` 条件上比较，所有行统一 `/24`；神经网络/RL 使用模型锁中首个 seed `2026100301`，经典控制器/teacher/zero 使用其唯一模型。
+- 新增 `code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_UNIFORM24_MATRIX_20261007.md` 和可复核工具 `code/mujoco_6d_vmc_benchmark/tools/build_uniform24_matrix_20261007.py`；原 `/72` 全 seed 结果保留为敏感性附录。
+- 独立重算得到 ESN `20/24 task, 16/24 strict`，matched RNN `16/24, 15/24`，matched MLP `12/24, 11/24`；所有经典/RL 行同为 `/24`，失败分母保留。
+
 ## 2026-10-07 — 统一 office-v6 ESN/RNN/MLP 与服务器 baseline 矩阵复核
 
 - 本轮重新核对远端 `main=510589794be317e20ea300eb022f86616dab5b12`、`baseline=ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6`，并检查服务器进程；没有重复启动仿真或训练。
