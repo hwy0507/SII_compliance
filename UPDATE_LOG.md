@@ -6,6 +6,7 @@
 - 论文主表现在固定每个 family 的一个模型，在完全相同的 `heldout_000`–`heldout_023` 条件上比较，所有行统一 `/24`；神经网络/RL 使用模型锁中首个 seed `2026100301`，经典控制器/teacher/zero 使用其唯一模型。
 - 新增 `code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_UNIFORM24_MATRIX_20261007.md` 和可复核工具 `code/mujoco_6d_vmc_benchmark/tools/build_uniform24_matrix_20261007.py`；原 `/72` 全 seed 结果保留为敏感性附录。
 - 独立重算得到 ESN `20/24 task, 16/24 strict`，matched RNN `16/24, 15/24`，matched MLP `12/24, 11/24`；所有经典/RL 行同为 `/24`，失败分母保留。
+- 本轮源码快照已核验至 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/3d565c1/source.tar`，SHA256 `c5b51fc92920ac7276e25208f4983c7bd91a69639d135e2fc194fc5c855aaa84`，93,235,200 bytes。
 
 ## 2026-10-07 — 统一 office-v6 ESN/RNN/MLP 与服务器 baseline 矩阵复核
 
