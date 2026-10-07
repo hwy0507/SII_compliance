@@ -1,5 +1,12 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-07 最终公平矩阵闭合
+
+38 个冻结模型×24 个 held-out 条件全部完成（912/912）；task 284、strict 218。统一矩阵见
+`docs/RESEARCH72_FINAL_RESULTS_20261007.md`。ESN 60/72 task、43/72 strict；matched RNN 58/72 task、44/72 strict；
+普通/匹配 MLP、memoryless、经典控制器与 RL 全部保留在相同场景和分母中。ESN 的优势应表述为 task success、RMSE 和峰速权衡，
+不能声称 strict、峰值力矩或所有 baseline 上全面领先。360 条 RL 最终回合独立 actor replay 完成，失败与短回合未删除。
+
 ### 2026-10-04 11:00UTC seed303两个训练段审计
 
 VMC参数/直接task的32新回合/35192800子步、43959奖励核验一致，32首项未核验；54.64秒穿透失败保留。

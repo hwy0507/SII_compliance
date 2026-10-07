@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-07 — 最终 912 回合公平矩阵与独立 RL 回放闭合
+
+- 开工复核 main f89e040、baseline ebb0e1e、AGENTS；原开发/最终监督已自然完成，未重启或修改 gate/actor 输入/环境。
+- 最终模型锁定后 38×24=912/912 held-out 物理回合完成，task 284、strict 218；最终 `SUMMARY.json` SHA e6d29024bf0e80df16554325193f7a94c6ba8e1193cc31f168a08c9da7346660，统一 `REPORT.json` SHA 100341d7cd42cac944fb5f28849c6028890faf160adfdd27201b0ed4d3fb8d45。
+- 最终 ESN 60/72 task、43/72 strict、RMSE 33.780 mm、峰矩49.734 Nm、峰速0.372 m/s；matched RNN 58/72、44/72、33.500 mm、49.729 Nm、0.378 m/s；matched MLP 28/72、26/72。ESN task/速度/RMSE 权衡较好，但 strict 略低于 RNN，不宣称全面优势。
+- final delivery `complete`，15 个 RL 模型 360/360 回合独立 actor replay，缺失0；服务器本轮根 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/final_evaluation_v1/` 与 `final_delivery_v1/` 保留逐回合轨迹、审计、图和344个媒体文件。
+- 新增 `docs/RESEARCH72_FINAL_RESULTS_20261007.md`，明确 task/strict、RMSE、峰矩、峰速、work、short 分母和局限；最终结果已达到可投稿表格基础，但仍需论文作者目视检查媒体并按局限写摘要。
+
 ## 2026-10-04 — 两个seed303新完成RL续训段独立核验
 
 - 前轮为已核验等待；本轮查询/fetch/read main48d09de、baseline ebb0e1e与AGENTS，确认两段已自然complete，原监督真实存活、final未启动，不重复计算既有审计。

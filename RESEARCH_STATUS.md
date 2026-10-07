@@ -1,5 +1,13 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
+## 最终闭合（2026-10-07）
+
+最终 38 模型×24 held-out 条件已完成 912/912；task 284/912、strict 218/912。最终交付状态 complete，
+15 个 RL 模型的 360/360 条最终物理回合完成独立 actor replay。统一矩阵和投稿口径见
+[RESEARCH72_FINAL_RESULTS_20261007](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_FINAL_RESULTS_20261007.md)。
+ESN 60/72 task、43/72 strict；matched RNN 58/72 task、44/72 strict。ESN 在 task、RMSE/速度权衡上表现好，
+但 strict 略低于 matched RNN，因此不宣称全面领先。
+
 2026-10-04 11:00UTC：VMC参数303和直接task303两段续训审计完成；新增32回合/35192800子步、
 43959可核验奖励一致，32首项仍未核验，保留一条54.64秒穿透终止失败。
 这是训练链证据，非最终任务比较；[新增审计与局限](code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_RL_REWARD_AND_CONTINUATION_20261004.md)。

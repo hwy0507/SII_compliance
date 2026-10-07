@@ -1,5 +1,13 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-07：最终 912 回合闭合
+
+最终模型锁定后一次性开启 24 个 held-out 条件，38×24=912/912 完成；task 284、strict 218。
+ESN(readout refit) 60/72 task、43/72 strict，matched RNN 58/72 task、44/72 strict，matched MLP 28/72 task、26/72 strict。
+ESN 的 33.780 mm RMSE 和 0.372 m/s 峰速均值支持任务/速度权衡优势，但 strict 与峰值力矩不全面领先。
+最终物理矩阵、360 条 RL 独立 replay、三视角媒体和失败回合保存在服务器本轮根；详见
+`docs/RESEARCH72_FINAL_RESULTS_20261007.md`。研究目标已从“等待最终评估”转为结果审计和论文表述。
+
 ## 2026-10-04 11:00UTC：补核两个seed303 RL训练段
 
 VMC参数303/直接task303的32新回合、43991转移/35192800子步及43959可核验奖励一致；
