@@ -17,6 +17,8 @@
 
 报告 SHA256：`100341d7cd42cac944fb5f28849c6028890faf160adfdd27201b0ed4d3fb8d45`
 
+接触力、冲量、恢复和力矩变差统计见 `RESEARCH72_COMPLIANCE_METRICS_20261007.md`。
+
 ## 统一 24 条条件结果
 
 | 方法 | 固定模型 | Task | Strict | RMSE (mm) | 峰值力矩 (Nm) | 峰值速度 (m/s) | Work (J) | Short |
