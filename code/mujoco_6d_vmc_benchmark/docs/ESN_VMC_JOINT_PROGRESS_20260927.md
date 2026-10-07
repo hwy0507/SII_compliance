@@ -2362,3 +2362,9 @@ development_005 峰矩仅 `40.169 Nm`，明确不能把低峰矩当成功或柔�
 RMSE `27.721–31.180 mm`、峰矩 `39.309–48.710 Nm`、峰速 `0.354–0.385 m/s`、穿透 `0.138–0.178 mm`。
 低峰矩和低穿透均未转化为放置成功，因此不升级该候选。独立 paper metrics 已核对，证据账本为
 `outputs/esn_torque_v2_corrected_20261007/closed_loop_noise_summary.json`，原始回合保存在 arm1 campaign 根目录。
+
+为完成因果配对，父 ESN checkpoint `acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7`
+已在八个相同 development 条件上补齐，task/strict `7/8`、`6/8`。父 ESN 在 development_002 以
+`2.602 mm` 穿透中止，在 development_004 完整执行但 strict 因 `0.657 mm` 失败；其余回合保留原始审计。
+配对账本为 `outputs/esn_torque_v2_corrected_20261007/parent_paired_summary.json`。配对结果显示 `.003`
+readout 的收益是条件依赖的：某些条件穿透下降，但另一些条件放置失败或峰矩高于父 ESN；不能写成统一降矩/泛化优势。

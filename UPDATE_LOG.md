@@ -7,10 +7,16 @@
 - arm1 独立 `paper_metrics_20261002.py` 审计完成，原始回合保留在 `arm1:/home/arm1/sii_shared/SII_compliance/runs/main/esn_torque_generalization_20261007_fa64f33/noise_dev*/`；新增本地账本 `code/mujoco_6d_vmc_benchmark/outputs/esn_torque_v2_corrected_20261007/closed_loop_noise_summary.json`。
 - 结论：noise readout 可压低部分峰矩，但八个条件均未完成放置，不升级候选；未修改环境、gate、actor 输入或正式 `/24` 矩阵。
 
+## 2026-10-08 — 父 ESN 八条件因果配对
+
+- 父 checkpoint `acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7` 在同八个 development 条件补齐，task/strict `7/8`、`6/8`；`development_002` 因 `2.602 mm` 穿透中止，`development_004` 完整但 strict 因 `0.657 mm` 穿透失败。
+- 独立 paper metrics 核对 RMSE、峰矩、峰速和 horizon，worker 接触审计提供穿透；replay 最大差均为 `0`。新增 `code/mujoco_6d_vmc_benchmark/outputs/esn_torque_v2_corrected_20261007/parent_paired_summary.json`。
+- 配对结果修正模型解释：`.003` 在 development_001 峰矩 `49.907 Nm` 高于父 `49.126 Nm`，development_003 父通过而 `.003` 失败；development_002 `.003` 低穿透而父早停。readout 改动是条件依赖的 trade-off，不是统一峰矩或泛化优势。
+
 ## 2026-10-07 — v2 `.003` ESN 八条件闭环与独立审计
 
 - 固定 office-v6、canonical48D/action7、原 task/strict gate、执行器限制和正式 `dt=5e-5`，只评估 ESN readout 候选 `ridge=0.1, smooth_weight=0.003, action_weight=0.0001, parent_trust=100`；checkpoint SHA256 `5b043942da39ff6ee280c56a95b8198a30609ba9fcfde16580fe7fe6e6166dad`。
-- 八个 development 条件完成正式闭环：task `4/8`、strict `3/8`。四个 strict 通过回合 RMSE `29.634–34.438 mm`、峰矩 `49.907–50.485 Nm`、峰速 `0.349–0.366 m/s`、穿透 `0.140–0.184 mm`；最低峰矩失败回合 `40.169 Nm`，说明低峰矩不能替代放置成功。
+- 八个 development 条件完成正式闭环：task `4/8`、strict `3/8`。三个 strict 通过回合 RMSE `29.634–34.438 mm`、峰矩 `49.907–50.485 Nm`、峰速 `0.349–0.366 m/s`、穿透 `0.140–0.184 mm`；最低峰矩失败回合 `40.169 Nm`，说明低峰矩不能替代放置成功。
 - 所有回合完整保存；动作、储备池、公共 filter replay 最大差均为 `0`。arm1 独立 `paper_metrics_20261002.py` 重算与 worker 审计在浮点舍入范围内一致。首次 dev001 输出目录错误作为基础设施失败保留并排除物理分母。
 - 新增 `code/mujoco_6d_vmc_benchmark/outputs/esn_torque_v2_corrected_20261007/closed_loop_v2_s005_summary.json`，更新 `docs/ESN_TORQUE_GENERALIZATION_20261007.md`、`docs/ESN_STAGE_REPORT_20261007.md` 和 `docs/ESN_VMC_JOINT_PROGRESS_20260927.md`。原始服务器证据位于 `arm1:/home/arm1/sii_shared/SII_compliance/runs/main/esn_torque_generalization_20261007_fa64f33/v2_s005_dev*/`。
 - 限制：该候选没有超过 `.01` 的 `5/8` task、`4/8` strict，不升级正式 `/24` 模型；sealed 条件、环境、gate、actor 输入均未改变。

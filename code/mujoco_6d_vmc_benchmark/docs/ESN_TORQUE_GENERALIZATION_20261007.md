@@ -147,7 +147,7 @@ RMSE `36.499 mm`、峰值力矩 `48.836 Nm`、穿透 `0.1397 mm`。因此八个�
 | development_006 | 失败 | 失败 | 31.413 | 51.612 | 0.3585 | 0.160 |
 | development_007 | 通过 | 通过 | 34.438 | 50.430 | 0.3488 | 0.140 |
 
-该候选的 task/strict 为 `4/8` 和 `3/8`。四个严格通过回合的峰矩为 `49.907–50.485 Nm`；失败回合中有低至
+该候选的 task/strict 为 `4/8` 和 `3/8`。三个严格通过回合的峰矩为 `49.907–50.485 Nm`；失败回合中有低至
 `40.169 Nm` 的放置失败，不能挑选低峰矩回合宣称柔顺优势。所有回合完整执行且动作、储备池、公共 filter replay
 最大绝对差均为 `0`。arm1 上的 `paper_metrics_20261002.py` 对八个保存的 substep/research 轨迹独立重算，
 核心指标与 worker 审计在浮点舍入范围内一致。小型可审计账本见
@@ -157,6 +157,22 @@ RMSE `36.499 mm`、峰值力矩 `48.836 Nm`、穿透 `0.1397 mm`。因此八个�
 相对 `.01` 候选的八条件结果 `5/8` task、`4/8` strict，本候选没有提升跨条件成功率，因此不升级为正式模型。
 它在部分条件保持低峰矩/低穿透，但失败模式仍包括放置错误；sealed 条件、环境、gate、actor 输入和正式 `/24`
 矩阵均未改变。
+
+## 2026-10-08：父 ESN 配对条件补齐
+
+为区分 readout 修改与条件本身难度，固定父 checkpoint `acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7`
+在同一八个 development 条件上完成配对闭环。父 ESN 的 task/strict 为 `7/8`、`6/8`；
+`development_002` 在 `2.602 mm` 穿透时中止，`development_004` 完整执行但 strict 因 `0.657 mm` 穿透失败，
+其余 task/strict 失败分母均保留。所有动作、储备池、公共 filter replay 均为零差，独立 paper metrics 已核对
+RMSE、峰矩、峰速和 horizon；穿透字段来自 worker 的独立接触审计。配对小型账本为
+`outputs/esn_torque_v2_corrected_20261007/parent_paired_summary.json`。
+
+这组配对结果修正了“候选普遍降矩”的解释：在 `development_001`，父 ESN 峰矩 `49.126 Nm` 低于 `.003`
+候选的 `49.907 Nm`；在 `development_003`，父 ESN strict 通过而 `.003` 失败，尽管后者峰矩较低；
+在 `development_002`，`.003` 完整低穿透而父 ESN 早停。改动带来条件依赖的穿透/放置 trade-off，不能
+声称统一峰矩或泛化优势。
+
+逐条件的 `.003 − parent` 差值也不呈单调方向：development_000 峰矩 `−0.128 Nm` 但穿透 `+0.437 mm` 并由 strict 通过变为失败；development_001 峰矩 `+0.781 Nm`；development_002 峰矩 `−1.400 Nm`、RMSE `−33.249 mm` 且避免父 ESN 的早停；development_003 峰矩 `−4.054 Nm` 但父 ESN 通过而候选失败；development_005 峰矩 `−10.239 Nm` 但父 ESN 通过而候选失败。其余条件也有正负混合变化，支持保守的“条件依赖 trade-off”结论。
 
 ## 2026-10-08：本体噪声一致性候选负结果
 

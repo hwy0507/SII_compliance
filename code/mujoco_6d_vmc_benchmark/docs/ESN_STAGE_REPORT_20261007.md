@@ -74,7 +74,7 @@ action_weight=0.0001,parent_trust=100` 候选 task/strict 均通过，RMSE `30.8
 ## v2 `.003` 候选收尾
 
 固定 reservoir 的下一预注册读出候选（`smooth_weight=0.003`，其它参数不变）在八个 development 条件上完成正式
-`dt=5e-5` 闭环，task/strict 为 `4/8`、`3/8`。独立 `paper_metrics_20261002.py` 逐回合重算通过，四个 strict
+`dt=5e-5` 闭环，task/strict 为 `4/8`、`3/8`。独立 `paper_metrics_20261002.py` 逐回合重算通过，三个 strict
 通过回合峰矩 `49.907–50.485 Nm`；最低峰矩失败回合为 `40.169 Nm`，因此低力矩与任务成功脱钩。该候选不进入正式
 `/24` 主表，完整证据见 `docs/ESN_TORQUE_GENERALIZATION_20261007.md` 和
 `outputs/esn_torque_v2_corrected_20261007/closed_loop_v2_s005_summary.json`。
@@ -84,3 +84,10 @@ action_weight=0.0001,parent_trust=100` 候选 task/strict 均通过，RMSE `30.8
 预注册 noise readout 在同一八个 development 条件上 task/strict 为 `0/8`、`0/8`，虽然峰矩范围降到
 `39.309–48.710 Nm`、穿透保持 `0.138–0.178 mm`。所有回合完整执行且 replay 为零差；独立 paper metrics
 已核对。该结果支持“输出平滑可能降低力矩代理，但会牺牲放置闭环”的解释，不进入正式模型表。
+
+## 父 ESN 因果配对
+
+父 ESN 在同八个 development 条件上 task/strict `7/8`、`6/8`。在 development_001 父峰矩
+`49.126 Nm` 低于 `.003` 候选的 `49.907 Nm`，而 development_003 父 strict 通过、`.003` 失败。
+development_002 则相反：父 ESN 因 `2.602 mm` 穿透中止，`.003` 完整执行但仍未放置成功。结果说明
+readout 改动有条件依赖的穿透/放置 trade-off，不能报告为统一峰矩或泛化优势。
