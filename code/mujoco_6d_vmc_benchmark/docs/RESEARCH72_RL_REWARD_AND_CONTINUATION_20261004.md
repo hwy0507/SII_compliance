@@ -1,5 +1,38 @@
 # 实际RL完整续训及奖励缓存核验
 
+## 11:00UTC补充：VMC参数与直接task两个seed303训练段
+
+两段分别于10:13:09和10:16:28UTC自然完成。复用371264a原三工具，未改运行中训练或追加物理。
+VMC303父5500、实际累计27500步/45002更新；直接task303父5168、累计27159步/44320更新。
+父缓存前缀精确保留，新增观测/原始action/终止/非末帧下一观测与真实轨迹一致。
+
+| 训练段 | 新回合 | 新转移 | 子步 | 核验奖励 | 未核验首项 | 短失败 |
+|---|---:|---:|---:|---:|---:|---:|
+| VMC参数303 | 16 | 22000 | 17600000 | 21984 | 16 | 0 |
+| 直接task303 | 16 | 21991 | 17592800 | 21975 | 16 | 1 |
+
+共1759.64模拟秒；原始区间重算误差积分最大差4.16e-17、有界积分6.25e-17，
+时长/实际力矩/最大位置误差/过滤action差0。原rtol1e-12、atol1e-13未改变。
+直接task303的train009于54.64秒因`global_penetration_exceeded_2mm`终止，未当完整55秒；
+两组各16条task/strict均false。这是在线更新策略的训练过程，不能作为最终冻结策略成功率或ESN优势证据。
+32首奖励仍因初始potential缺失排除；potential/终止下一观测/逐梯度一致性和收敛未因此得到验证。
+
+Spark原venv_gpu，单线程1GiB/Swap0/CPUQuota100%，服务`sii-r72-continuation-audit-v4`
+20.644秒正常退出；物理区间审计11:00:34–11:00:52UTC。0新仿真/actor/梯度/最终条件读取。
+服务器arm1@192.168.31.70，目录
+`/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_completed_continuation_audit_v4/`。
+四文件327499字节，与Git证据前缀`RL_CONTINUATION_V4_`逐SHA同字节：
+
+| 文件 | SHA256 |
+|---|---|
+| `parameter_vmc_2026100303_PREFIX.json` | `e90397bbf184e1d1b5d2d7b37b26bca129a8778ef21e0044f25334447df8eb89` |
+| `direct_office_task_2026100303_PREFIX.json` | `48ac689f5499e3071c56c2dfc2e6f4bbdc844a4aef69a1af522f8a6a2f67f4e2` |
+| `REWARDS.json` | `1a6f02bf6526fd7be174add2dc28ca9d4106795ad932ec5f67ed98576f1d7674` |
+| `INTERVALS.json` | `a643720ed7f01a060bc29682a6732647a323ee9bd2cbb5a627b5bcd3a14ff9f1` |
+
+累计四批审计240回合/276948区间/221558400子步，276708可核验奖励、240首项未核验。
+原队列继续；全部15模型共同边界、最终912、独立最终actor和论文结论仍未完成。
+
 ## 10:00UTC补充：direct office-task 301 新完成训练段
 
 原队列于09:17:16UTC自然完成该27500上限阶段，实际26746步/43494更新。

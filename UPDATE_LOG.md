@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-04 — 两个seed303新完成RL续训段独立核验
+
+- 前轮为已核验等待；本轮查询/fetch/read main48d09de、baseline ebb0e1e与AGENTS，确认两段已自然complete，原监督真实存活、final未启动，不重复计算既有审计。
+- 冻结371264a三工具检查VMC参数303和直接task303父缓存前缀/新增43991转移/32回合/35192800子步，43959奖励精确一致，32首项因初始potential缺失排除。
+- VMC实际累计27500步/45002更新；task实际27159步/44320更新，保留train009于54.64秒穿透失败，两组各16条task/strict false是在线训练记录，非冻结策略最终0/16或ESN优势。
+- Spark单线程1GiB只读服务20.644秒正常结束，0新物理/actor/梯度。四结果327499字节位于arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_completed_continuation_audit_v4/，Git前缀RL_CONTINUATION_V4_同字节，hash见RL_REWARD_AND_CONTINUATION报告。
+- 进度/周报/状态同步累计240回合审计范围；原训练开发继续、最终912与投稿结论未完成。源码48d09de981cef794948579b26167a2c7130a49d4完整3314文件已核验服务器source/同SHA，tar c8c29a1152d159ac7c2bb4228ed0ada15f9828c28bdef43c1950d4ef8b71b8fd。
+
 ## 2026-10-04 — 10:42公开进度与最终阶段容量复核
 
 - 前数轮为具体PID已核验等待；本轮重新查询/fetch/read main fbc11302、baseline ebb0e1e及AGENTS，保留原作业。

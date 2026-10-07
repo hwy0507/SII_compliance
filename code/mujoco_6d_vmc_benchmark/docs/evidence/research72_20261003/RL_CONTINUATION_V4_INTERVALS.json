@@ -1,0 +1,1491 @@
+{
+  "status": "complete",
+  "started_utc": "2026-10-04T11:00:34.419290+00:00",
+  "source_sha256": "3b1165d194f959103352117942da11227c93275fb280b6a60e6281baf5307629",
+  "host": "spark-4eb4",
+  "python": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+  "numpy": "2.2.6",
+  "argv": [
+    "/home/arm1/sii_shared/SII_compliance/source/371264a8131effa0d593ad585c4ecc60f83ee7f6/code/mujoco_6d_vmc_benchmark/tools/research72_reward_intervals_20261004.py",
+    "--manifest",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500_CHECKPOINT.json",
+    "--manifest",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500_CHECKPOINT.json",
+    "--output",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_completed_continuation_audit_v4/INTERVALS.json"
+  ],
+  "memory_max": 1073741824,
+  "physics_steps": 0,
+  "actor_calls": 0,
+  "gradient_updates": 0,
+  "sealed_reads": 0,
+  "rows": [
+    {
+      "manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500_CHECKPOINT.json",
+      "manifest_sha256": "5fa76ddea5b18d7f844280959906e44596bd61c4a8ed98d6f5890d79216804e8",
+      "training_protocol_sha256": "39afbc6e85d1eb30ba79f8fd7377b65dff265d964bf4d5ddf01ef9a66fc7ace2",
+      "execution_sha256": "afbcf0aa172a9c8f68ac3b634dfe0874698d09a70da78219ff596d8edde880bf",
+      "family": "parameter_vmc",
+      "seed": 2026100303,
+      "episodes": [
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00004_train_024",
+          "evidence_sha256": {
+            "execution.json": "f854360c9c8668d7334770dd6e9deae2d113be693aa3fdaa61cb01716c969dc7",
+            "AUDIT.json": "f8d90d9133ed0291c59cc7c3d76cd41cba512afef9adceca30e615675fe6d4de",
+            "rollout.json": "3edd9cd114f859cb2665527aa8fff7b0dbd794ca4155affffffec0a31382e92f",
+            "rollout.npz": "2f5904dd68274ea6eed6544d78d5885cd9ced1b3e5cf0bf05bc04512e360570f",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "bd3d12cbce3ad9a83499c95a84bca0d069b590413ba063d33721a092e9cc718a",
+            "rollout_metrics/substep_metrics.npz": "31834d02b91a0372ec4dc8639e5b6819e1f0d3e6dc2288fe0c01b5f2bab8290b",
+            "RL_INTERVALS.json": "4533bdc1a8d1079b5b0cfd56dedf661647475b83aa51bd6edcb35479295ee315"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 4.336808689942018e-19,
+            "bounded_error_integral": 1.0408340855860843e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00005_train_002",
+          "evidence_sha256": {
+            "execution.json": "5dff8b951bcd53f698cc08c2ba8b8f2eab763ff3d0154cd39fa8fd7c5bcfc7d1",
+            "AUDIT.json": "2da1f8c4d5bcaa96847b20b33c2769e610eda3f8357f6d7435b6a201b55ff810",
+            "rollout.json": "2e3c61a606370f7809b4f766adb7d29e8181359536c37790ffc61c7a6a7c6111",
+            "rollout.npz": "dc7f6bc5ad388b65bbed5c11c8256dc0831f488701361b30359d7dea5870562e",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "319ce467f9fb61de932f29fa9092b25e5aa9a0733e5f8ebb4754c76f937723df",
+            "rollout_metrics/substep_metrics.npz": "490fc7da23264f37a490e0245a1af2eba14d89e3839b3902602cd994f11bee17",
+            "RL_INTERVALS.json": "49b933bc93875ae18dcf47b5463345731b12f9a47430f645b23f837be2d67fae"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 4.336808689942018e-19,
+            "bounded_error_integral": 1.0408340855860843e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00006_train_001",
+          "evidence_sha256": {
+            "execution.json": "a27f65839cd144ac363ee8fe15560f2b3f7a6a0329bc70f13338be7e70d8816d",
+            "AUDIT.json": "51785f05edce58e0de260c84ef74fd816908210f77339498ecdbe7fd750f9d1e",
+            "rollout.json": "75e456ead905d2615c3caf0f687a2251fe2dcf138971a1d7e35f1b4803933d2e",
+            "rollout.npz": "53a65428dd0e10fd1913038dcc4cc7ea84c1a813f45450e0a3fca87d73a49f74",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "27014398d75a239213714b4dc665e18bcb30c84273054b93a73bf9bfeba68bcf",
+            "rollout_metrics/substep_metrics.npz": "ca6fc317edb047bfba8ae51ea21f9247327c3c198d23abf4d9fb1be132108673",
+            "RL_INTERVALS.json": "0ce6287b746d3d07bd327dfb9ad0f9a3000df40480645694848e76c57d88cff1"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 3.2526065174565133e-19,
+            "bounded_error_integral": 1.3877787807814457e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00007_train_017",
+          "evidence_sha256": {
+            "execution.json": "35dfd33e738296933d716dfe3a1a6d5d6568fe5c4fe58fa9185bc9b1a31afa25",
+            "AUDIT.json": "8fe8a93afab1926999f631ba1a491c987bcc97b0098469c381bab939ff708be2",
+            "rollout.json": "dde140e1e29c087f2ec64fc1ad82106f085da214811398dcd3682d04caaf7b00",
+            "rollout.npz": "2cb65f31e537bbb0657c16c813ac8a026423f073a8cbb4aba79d1fe5d169ba52",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "3c14ff1a2f3c356bf8864a20431756f02fc1467beb658133edbfd86c477ddeed",
+            "rollout_metrics/substep_metrics.npz": "6b98c6c4c6b1935cdccbda0476edd78b5c8af4a35f46628d219528e9a7c84c1f",
+            "RL_INTERVALS.json": "9fead4a9c5c047dcfa5023ce1a80586f0f29e2345a78f63ab135287fcd7fff52"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 4.336808689942018e-19,
+            "bounded_error_integral": 1.3877787807814457e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00008_train_021",
+          "evidence_sha256": {
+            "execution.json": "cbe1f9273549b63f3242c7e522b0d29ac87a1e34dc112adf3513965a18baea72",
+            "AUDIT.json": "0623977beb8a9efbcb6bd8cde1228caee95c703ff2310ada413ed530376c55b6",
+            "rollout.json": "b3a1a97032a6bdb92d41081ae85ac91dbde13f828f541faaf6c4e44dd2badd87",
+            "rollout.npz": "1e19a6e1891f23cbac3a5cf76a955ec424008dccd2a3ff20811db722a3ccbbb3",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "a46a7c94bbb551f8e32693cd406f3c933d1e37f299d16ec212e380cc429bb635",
+            "rollout_metrics/substep_metrics.npz": "2a5c62b734ab44dea0212ef8b12282ca18ae1d98e4eef5bc7d83df1200244b9a",
+            "RL_INTERVALS.json": "7ce6ebf6f7f320813a8d2780f6fc5a07c7749f0c12f6e962efc5e4d12a33db90"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 4.336808689942018e-19,
+            "bounded_error_integral": 1.3877787807814457e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00009_train_023",
+          "evidence_sha256": {
+            "execution.json": "fc0c1f005f358490b0d7c0c339ac14c458593a7004aa9a6b85c86d0f879fff53",
+            "AUDIT.json": "6eddf5c233986ac114a881d3a4f9a811da61460500783c098faf1b590ed2948f",
+            "rollout.json": "cf1e6bce51f3317a4e4ed55d39a6c39ebc438f12b731a3d54fcd3bc4fbd63d29",
+            "rollout.npz": "9e1ee8871ecff85aba3a57201949df6e809597b63c7600dbe0eca1971cd8593e",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "27beece4d14959f6c56f9e3ca2a981d4dedd21de4095d6fd0f3ac6fa2ec006c4",
+            "rollout_metrics/substep_metrics.npz": "361fbc06e26af0019e6eb21d07fe15d750096a379884e4544453a27352ed63f3",
+            "RL_INTERVALS.json": "8b421322e5e77e76b07e17c0c9c6213ec6f19bbda0271921d47a5972de044262"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 3.2526065174565133e-19,
+            "bounded_error_integral": 1.0408340855860843e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00010_train_030",
+          "evidence_sha256": {
+            "execution.json": "ef7321bdec3d96cad79b6f80f7d6dc56beb79a23a1af67622c50015bd47f7ad1",
+            "AUDIT.json": "99e7865751d84865ee93fd52bb33b8a2210510e192be212ab75113a0355764ab",
+            "rollout.json": "35ebd0a6931a074aba0e00bb22d7f6ab30bd7b5965d39e798d4428fb9ccae392",
+            "rollout.npz": "73b6c10d59911417044a5f5f15db7abf429a1d0214258b885558c39ddcd6a0d6",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "26d2982072159c8468adb1df03fc8a9c0cf52c09e74555d4e29adb30b7c19f70",
+            "rollout_metrics/substep_metrics.npz": "800368dbebfec3730fdafc7a86bf6c0ed74244c843e2970568cdb3a5ab0c5aaa",
+            "RL_INTERVALS.json": "a4ee8785c46b0a3f19394573b4ad0f19e56ce3caa85d98fee4029f2fe71a016d"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 3.2526065174565133e-19,
+            "bounded_error_integral": 1.0408340855860843e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00011_train_006",
+          "evidence_sha256": {
+            "execution.json": "7d6135d6b744e5110b4ea14e28d964da37ad7d293d47dd2ca1798d38fe9368f6",
+            "AUDIT.json": "a9c8a87ed859124380affe21148dc1693b89086300ec72385a2dc0018d1467ad",
+            "rollout.json": "5e3a61e8c222331e7deb6550e96b52d413c1f5b681a03f40ffb5d2af43b6dd18",
+            "rollout.npz": "2aadea4a851fb07c8b469d71e2a3cf0f9ea2f0a953711b8a6d47c658a8ec2580",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "b455de7e8ca445cedac4c2b0f278668023eaa0e3d8691c419ef996c3641c781d",
+            "rollout_metrics/substep_metrics.npz": "f30619c5228852f55171cbb59230bf5a7e1574ca99167e4bcfd80c74bfaf8ae2",
+            "RL_INTERVALS.json": "a116784f7192a6b3eb40f62f54458b387f0cc41ff4de2e6268deacf46e59698f"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 2.168404344971009e-19,
+            "bounded_error_integral": 6.938893903907228e-18,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00012_train_022",
+          "evidence_sha256": {
+            "execution.json": "8e80aef70cfffc1b7bd66a23cc61bfffd53764565ff62acd9e0e537e1db33bdf",
+            "AUDIT.json": "ae374f4fe92979cab63c969861e7ff25fc50c5478740bd6a1d09c9359ee8748f",
+            "rollout.json": "6e56c07e8f49582ecd7e34ea0409fa92cb430cb08a5f22f7ecabc230e70cf401",
+            "rollout.npz": "c789783c09def17cdbc569ce14a5d3608dc4442d7f78e6fff41bb84f2f026c0d",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "ab7ea47e3abbdc7207cf3674a14a97cc4ce350e13aabcfc04270fc121b813f06",
+            "rollout_metrics/substep_metrics.npz": "51ca4e566826a98658146b5b4301b554b1d48bad8eec9258c334e30900c70d44",
+            "RL_INTERVALS.json": "187f5a03e5df0f71aa07bd5d31baa7b90345dc325fc4eb5b91b1ebb2173a99e1"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 3.2526065174565133e-19,
+            "bounded_error_integral": 1.3877787807814457e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00013_train_025",
+          "evidence_sha256": {
+            "execution.json": "f1dd244a6d3ff29ce9da6f2434d4c3d42dec9e68ddf251b4157159fc3a23eb81",
+            "AUDIT.json": "7f6379bf2a07b6d050e61805c004cefa24bbc261e35e82264f6ae0be135d9063",
+            "rollout.json": "df92628fbcf1f6cf1755518b863a000003ba460bdf4b16ae4c4bb8cd703e960c",
+            "rollout.npz": "68bd9f7f52bee178ca9c4310bb219779d526a335dd2cafc43d95f69de9e7e540",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "ba1119697a8970ea6f6701493f8582596b65eded9e655aeee40d39fec71ab647",
+            "rollout_metrics/substep_metrics.npz": "72692f961ff1b97f82d8c59531d19d81382f9821dc940da77f72909c22d5ff66",
+            "RL_INTERVALS.json": "015ae343a467e20bf3bb0c734d31e7b8d02616df09114d6867b18c08ac0358d2"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 2.168404344971009e-19,
+            "bounded_error_integral": 1.0408340855860843e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00014_train_015",
+          "evidence_sha256": {
+            "execution.json": "1017604fbb2f616d3ac615c155b21cc7c57a2b0a8692da36c121d82cc1005432",
+            "AUDIT.json": "01ac05dca64512d5b14f4ca70432daa79c25414292f414e1a97922dd23db4c29",
+            "rollout.json": "a8a4393df900570bf892448c4d5ac028c45f3cd1c67fbd81c87e5e4214824450",
+            "rollout.npz": "fd854220547ba20d4af15507d283453a2f91a0029866795e92fe91238810dbed",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "6ed721267004a83e99827320ec54e433b01f63172919032b7ea4b9c7317fa672",
+            "rollout_metrics/substep_metrics.npz": "1749514fc1b88dfd3e0062e4ad1df4d05d996f010951f7ba17dff1bf79c7301a",
+            "RL_INTERVALS.json": "a33a7e4a66decaa6371f066b57fe9f8f8d54c17cc84fdbc31c7a1e434df5d97a"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 3.2526065174565133e-19,
+            "bounded_error_integral": 1.3877787807814457e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00015_train_000",
+          "evidence_sha256": {
+            "execution.json": "f2605dd8e58810e11171e64e6217b0776832bc96a8497b5b79d01730201bd75d",
+            "AUDIT.json": "fcb54fefa23e01388e971b13ee01385a7cb98697f3084cbba9d466fb629b5e77",
+            "rollout.json": "cde9670134c57432e4af45cf11d2bc193db0219356f650e1ce4774bd1aee0ff2",
+            "rollout.npz": "02855f26d2ae255a01bca6499d74588f433f051d3946b77552d0263d07812977",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "e288c9498e862be10f74551c16e03116605e05f027cef868975327c8e99fcb29",
+            "rollout_metrics/substep_metrics.npz": "2bd53ccf0cb8119e7557f6d6f38436d4716c7aeb2a27bcc487acf9538ba2d5a6",
+            "RL_INTERVALS.json": "b014693371475e1363cfb0a0420ad3e86d3849e5c1f0abaf2294412016b521f4"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 3.2526065174565133e-19,
+            "bounded_error_integral": 1.3877787807814457e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00016_train_009",
+          "evidence_sha256": {
+            "execution.json": "df04c71ef35bd822261e1fd25b4d7c6b2df612328f0d31648ade2387e5c7ac18",
+            "AUDIT.json": "669b408a46944bdf6581a1aea9d8e3a230af8ccb6c0cd099bc3669f8bf056fc2",
+            "rollout.json": "93cab1fee24dae7fbf420a68c81b8cf1d025a9fa2c0d59bf44fc6d00efbf5d79",
+            "rollout.npz": "417500245694b94f47b11695c11ba94df35eb57fcafccebb4ba8141c76d1d70d",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "73d8d92464aedfc8477b7929c90d7c67a21789546d7336e315362891ab5afe86",
+            "rollout_metrics/substep_metrics.npz": "4bc789375ba5319284efc5824703ffdadbffa023f8deb3163efde773e6ebc573",
+            "RL_INTERVALS.json": "ecae2af3b8dc6ee2373efa0e3a981209a4ca08a06d2c9b07824a1a75b35bff77"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 2.168404344971009e-19,
+            "bounded_error_integral": 1.3877787807814457e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00017_train_003",
+          "evidence_sha256": {
+            "execution.json": "1e1e4cf517c5660aa08c5bcb3a9aa493869cf661b1f547e8865a98c34c02a484",
+            "AUDIT.json": "ab9bb054af8bf33ff21be74686c68a54740080e80800cf8bb4a377953c6a1725",
+            "rollout.json": "49ce77d23ad1a43cdcda64639a9c45960390e7d022a6a5b331f6613d77260aef",
+            "rollout.npz": "e164c1c3f2323ca73a413fb3b06dd205f2a8ecfa686edc37e2af0f50ac4e5246",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "4c0d3987e288763979c6e6b20462302c54007bcc519244d00e8bd4f40d5bdd02",
+            "rollout_metrics/substep_metrics.npz": "944781458d95d3ae5aff59b504b2803a412070639690d451f11139d73cc4ae24",
+            "RL_INTERVALS.json": "0db68f28258397b0e5b4036997a55d91438c40a5850b16f3bc404c606f7318ce"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 2.168404344971009e-19,
+            "bounded_error_integral": 6.938893903907228e-18,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00018_train_018",
+          "evidence_sha256": {
+            "execution.json": "0ece7dbe7a6311ce3f3e748add1ecd1bc61946b7a785b79fbb1b2b67183aed8c",
+            "AUDIT.json": "a1afff0df91ad415cb78358d2eb3574dd68940ed58f50a50feea0155f28baf63",
+            "rollout.json": "5c82b2daf1c4c09101c3ea0688c3111566d52d99b0c24b11ee365a6b605b5f09",
+            "rollout.npz": "eadd5bcbd828b87906f0fccba7f04606ad98db00ed513016eef21ca6cbf8b69d",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "a4a7ed2d53bcae5b5e9fa44138e1b49d05ae9ee615c71ebcf4ce1eb0dcc92b19",
+            "rollout_metrics/substep_metrics.npz": "079485dcb29bd7400974ea27eeacc5f2f9b30868e2ed0f849be73f800c0b1447",
+            "RL_INTERVALS.json": "b4afe202b83d08e878f13890210aa78c5b5cecf81c6461ea7bd04bfc0513a466"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 3.2526065174565133e-19,
+            "bounded_error_integral": 1.0408340855860843e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_vmc_2026100303/cumulative_0027500/episode_00019_train_005",
+          "evidence_sha256": {
+            "execution.json": "ebf343f9c1c74be497222dfeefb1861299c16ae3676956ff33d189e899b204f0",
+            "AUDIT.json": "998a391628a55bfae46ef7fb4f72d2bbaafec8103937bc16b4c6a96690f8e49d",
+            "rollout.json": "c4b28fd0590fcc9eb90e99fe89bf60549c09999a268ee4fd2fbd8707b154586c",
+            "rollout.npz": "c95de9754bcbe26d1a2c0a69e6e6bcac380b2c325015f4ec6baf8ca6855754e4",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "9e4d49610ba5c6f40620074f59005b535584893c2b6a693daafecaa6368c5419",
+            "rollout_metrics/substep_metrics.npz": "af5ec5eb11e5448c7464a2020fe7ca38ba7ff7b1e2947f4e6f2561b8306c223f",
+            "RL_INTERVALS.json": "c43664d77e63b4dee584d833f9cd9c58725228c2235a1a2c793e17ce37a245b9"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 3.2526065174565133e-19,
+            "bounded_error_integral": 1.0408340855860843e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        }
+      ]
+    },
+    {
+      "manifest": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500_CHECKPOINT.json",
+      "manifest_sha256": "15422f8ec32c109bc10a307fc4354a10be22d529ed3d337fde18c252f86153da",
+      "training_protocol_sha256": "3582b1e9cbee40e46d9a670d32cb01220e06be7e42e683a85ae8b08eff2be5d6",
+      "execution_sha256": "a98713d5ad412f5a30ac567ed9e86934c365ec8a9e16c1a7079f6fa8a37e9303",
+      "family": "direct_office_task",
+      "seed": 2026100303,
+      "episodes": [
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00004_train_024",
+          "evidence_sha256": {
+            "execution.json": "ba5fc6f02389bbcc0f712358850ae5bb91d172e25a8472adae6d71315f78198b",
+            "AUDIT.json": "9983b0f11ef7a64f2db2677c4999899bf214f574d3a02c5d023731e827a722d8",
+            "rollout.json": "08fa782db8211a3bdfc59d4da38607773bf955f5d8464306413e65955b51477c",
+            "rollout.npz": "b5199a04da9d4fe850efcb994d06fb1e64f2b49a67a6a19705cee45561c26821",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "e59bb51d4cb3cc8c04c8083841052418fa0c998230b39337c306c688063ad476",
+            "rollout_metrics/substep_metrics.npz": "8d4a36ad6f0a3a0ad53c01e3000b8079c406d13f39065256f80f06d857504053",
+            "RL_INTERVALS.json": "caf02cb9e654992d462f99923ddbc841bc7d71a3abcef293a13cdca7a38578fe"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 1.734723475976807e-18,
+            "bounded_error_integral": 1.734723475976807e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00005_train_002",
+          "evidence_sha256": {
+            "execution.json": "0cc8e6789cbb153e416722988a422ca6c5b0e3b0823f60ce9f63b40a9baa0075",
+            "AUDIT.json": "93f9d3af4856d169a8596defd720d1fa3614f5f669e443a8b3ada8a5fc9eb145",
+            "rollout.json": "fd7cfb3f02ab54d87fbcd28fd309a7ae059ad9919987c12e2ae6cbb4ef61d27b",
+            "rollout.npz": "06491043508dfc463652d41e602ad1a82008904fafc26bc35508a34137ad4cd6",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "ded52d31e08588ac3ec8ccbe00b8aaad43affd32d4271c712c370664c6555200",
+            "rollout_metrics/substep_metrics.npz": "72b5f20e690caf2d9354b4becb3b00581322523dc8a947ee9d2da9721456f683",
+            "RL_INTERVALS.json": "6752fc3b19dee0d48a039ff2900292eb171ff900c41feea7dcec6910f0702056"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 2.710505431213761e-19,
+            "bounded_error_integral": 1.5612511283791264e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00006_train_001",
+          "evidence_sha256": {
+            "execution.json": "53ef34c094b2d216a596c019fbcb4adbbdde8a4372ae0184f9a38c41956e686f",
+            "AUDIT.json": "bd7247d9e9c34d737b967de0fb53cdba65c94b713846395dd6ececb92d6a3aca",
+            "rollout.json": "587fe12615ac23c3aeaaf48f4264083f8f00219b57083f7a67d579ee7675cbc3",
+            "rollout.npz": "ca01abdeeb4953f429dd1cef193d5b25f2a78a16e70d467c0062df7a8aaea2cc",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "854d8bd532064dbe6153e1bf85f470aea534c21e1a0ee63169f1bafd58dd5ceb",
+            "rollout_metrics/substep_metrics.npz": "78c226bfc1903d8705603c5af742deafff960d58cf6a7da096c8f62a52ec60f2",
+            "RL_INTERVALS.json": "c7ced5257aa7d21212da873309074d4848268e6569bba86d05cf79f0d26dcb2d"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 4.163336342344337e-17,
+            "bounded_error_integral": 6.245004513516506e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00007_train_017",
+          "evidence_sha256": {
+            "execution.json": "b52f9c706974014c238da7d2277538728cdebdeae4c622d435de24174321eed0",
+            "AUDIT.json": "146378ecb79eca66e5b7d30876ee799ed4cfcf63f4685578b17a9905917f51b4",
+            "rollout.json": "09062a09fb1285b2a65ad19cd1128cde4bf0c17a851c1f799c782df4cb9bb61b",
+            "rollout.npz": "65b78373128454000dddabb8b7ba52dbc2172ffb52f01aaf5856a08428a97897",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "b9a4f3d36b5e064f12f1266ea8c5521827a8a11fb30a1d2c497f62b2c8d530d0",
+            "rollout_metrics/substep_metrics.npz": "8bfa9a359fa44e585430c0ce4b2f3e996ce3608a6d708db4ebc7c52f2af7356d",
+            "RL_INTERVALS.json": "3e8b239540b1704597fe1ccc124d5460319e331fc03ff6c56fcb7fe5545cd51e"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 2.7755575615628914e-17,
+            "bounded_error_integral": 4.163336342344337e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00008_train_021",
+          "evidence_sha256": {
+            "execution.json": "594a17847663f552c5edd1499a8dcc318bfa1ba7ec691c17e8552ec184731341",
+            "AUDIT.json": "ea04001c169656c8035ef0aeda09cb4c27a898d82c94aa14fcc98123e8a4cf2d",
+            "rollout.json": "daeb3505d1734f98b8d4c4856b3a57e7133c949e19326538088820bd64fb3a00",
+            "rollout.npz": "58d84bcd7f873462257e9391751338534498e9b262082a840416e77141e9ed45",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "7a29f211842015cbec426508c89d2d7de0dc6e77f41d71b0de7e4e6fa9c6c815",
+            "rollout_metrics/substep_metrics.npz": "467e8a42517f9183445bd591082077ac863cf84b8df141707427c1df0515d6bb",
+            "RL_INTERVALS.json": "4370371db01cae2abb10a9649a3d5732ddf496f4aa62b12efcda269a3e75dd56"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 2.0816681711721685e-17,
+            "bounded_error_integral": 2.7755575615628914e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00009_train_023",
+          "evidence_sha256": {
+            "execution.json": "ac09668385feb54175afc60d883fc830ab7515c293047dbc2f7ff13ee470bdba",
+            "AUDIT.json": "1ff59f813af82cf81ecd13d36426ce357d57cb2d774b84c34b388b2c09d78015",
+            "rollout.json": "6e94466031e7dfc944942e37b6c4fa0bb9ac2f3894f5365773f4648d6a68e820",
+            "rollout.npz": "a25a73e72697db45830dda9b2b4132e15f357cd51b0a959b1bedf73ef83cf145",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "e346add0175cb94be6ed9a5ec2bab0c8ba055e7f3cff165a1ad0766431a695af",
+            "rollout_metrics/substep_metrics.npz": "50ad712ccaedd6541b22febf0203e5bf94fe8d9f2dc6524d1c2926f9b9205574",
+            "RL_INTERVALS.json": "65c49f0326d9ade5bddc44e99b76fa65b5c2f5277c003c092204a05ba004de0c"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 1.9081958235744878e-17,
+            "bounded_error_integral": 5.551115123125783e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00010_train_030",
+          "evidence_sha256": {
+            "execution.json": "66157c74cd9c43e7c416c8c494850009ce2c6de2166e6869e2b3b38c0840b65d",
+            "AUDIT.json": "04671a030d4d6765b6df454b22941faff153a7c95fc3f20dd0647d02624b5bd6",
+            "rollout.json": "a1d54b99f9ebf08477f5d4aca19d4a9a5a328713876315b125006e0ca3ec549b",
+            "rollout.npz": "37f8917091d24ee41f65e5409ed204970a07bc64d28fd9505860332a0d56d7e0",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "7cde401ebb5a635202c9a06ab8a043cebf22063fba0953bb89f6c1f59fd2112b",
+            "rollout_metrics/substep_metrics.npz": "b405a13024679da740a3177f411284223e4b19b5142ac7e57890d9e6fa5b52fe",
+            "RL_INTERVALS.json": "57b6deba23072a155b47f7c8feb57f80776a79b2b1916ec1de55e9ca3735f17e"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 4.163336342344337e-17,
+            "bounded_error_integral": 2.7755575615628914e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00011_train_006",
+          "evidence_sha256": {
+            "execution.json": "be7dfb50c888ba973ea592a3b962421f7f29edc87320073a4af5ce76f3994fa7",
+            "AUDIT.json": "fe4deecf1a945f2ad5167466720b839b7a45cd8a6b1379eaf9533190e3035321",
+            "rollout.json": "f102ed821346b7d7d45d6cfe0dbb8e930aa5f16756943372dba2de0f64556d6e",
+            "rollout.npz": "227fce98f798f14e98ba5917f39ca807742061879ac4a3d8a3d000242d1f10b0",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "e7ec2e91240823d8a539977af90fabc2c9a5117bbcc6979095ac09ebdac5848a",
+            "rollout_metrics/substep_metrics.npz": "4e5978261516bf3223f97034efc536c30c444c227f3d485922f9d7de29ad6dde",
+            "RL_INTERVALS.json": "28388a76013541e260deb604136a0ea84ae68b90d60609ec0d3370564fbdd5d7"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 5.204170427930421e-18,
+            "bounded_error_integral": 2.7755575615628914e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00012_train_022",
+          "evidence_sha256": {
+            "execution.json": "39a7510ca90ec720c4ebd4862902dce9726a0da3b44767237700ac3b3f320541",
+            "AUDIT.json": "61f9349918e8b9689257d4f021396c7904cd32495d6aaa5753f70a5798e4cb63",
+            "rollout.json": "a67348a48d4f9a0c2f5416cc860f92e725c21b9c23bf386d2388729bde4f1115",
+            "rollout.npz": "48fff7c8717c4981f908e2148808a0f2d970376f10b982aeeb8b2c8ce3f7833d",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "888280b55362b69f246584ca75b3ee17581cb71363592e837b22f1cd1d9671db",
+            "rollout_metrics/substep_metrics.npz": "92bb0fd5dcd062166124797f186233b077efcca868d0870dc865bfa5a9270a11",
+            "RL_INTERVALS.json": "7278ed140de89519c3cdf060f91785726082e3e1581c1324aff99d3504db6731"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 1.734723475976807e-18,
+            "bounded_error_integral": 2.0816681711721685e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00013_train_025",
+          "evidence_sha256": {
+            "execution.json": "d14ef8fa909b19778c06ba6edd83588825a2badba33798523c05631dceaeaeea",
+            "AUDIT.json": "9d422759f14f8e0df2331efae501b04e6468de352293c1a9115e6b2930edf426",
+            "rollout.json": "b884b4bbfc4ad67a56a5bbdb42b5f9b9d0b2227ae96441de99dc6a3ae9ac28d0",
+            "rollout.npz": "db53078b6d94e91f388cf8a76a2ff9a0b0f71df8b3efd9f19290c29b7a127d70",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "5abcaeb6c08228a9f0e3606f22fc61fe25b7a812787a1b6ec3a7a502423db77f",
+            "rollout_metrics/substep_metrics.npz": "e57c81c8f63e72cc9ef9c449c8a24450cfdce3a5f3fc99cd012638c8def0868d",
+            "RL_INTERVALS.json": "bb19d9c628d223f117946c31daf2bac65ee25e74952134b5df5f174fe016a5f4"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 4.163336342344337e-17,
+            "bounded_error_integral": 3.469446951953614e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00014_train_015",
+          "evidence_sha256": {
+            "execution.json": "c765fe24ae83cf51a10881dafcec4e394c85e20eb786d5d5092c19fac39fc4cf",
+            "AUDIT.json": "e2b0aa80ddb825099e47690ff472029696aaf485397ae4846f74a7a3c6592108",
+            "rollout.json": "6369f7393a04dacfc43d34bf129adbd3fb2b958dc568894617b7b530b325d7f8",
+            "rollout.npz": "993dcd3bc7f7ee57abd9c653b293f2b361dbc3cfa5b7b9ac4b59768b38d52959",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "6bde55b028e37e27432d50bc96c979d7fdb9a0a2d2e55262f03aa39e47017961",
+            "rollout_metrics/substep_metrics.npz": "5d77b7ebbad8980f0a393368b9db284d17ee9dfaf372d01519c97ae82f124635",
+            "RL_INTERVALS.json": "3476419c9775d2bc1f8dad157f2201d34b9370b399ed816e84ec3abed43c31fa"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 8.131516293641283e-20,
+            "bounded_error_integral": 3.469446951953614e-18,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00015_train_000",
+          "evidence_sha256": {
+            "execution.json": "ee123bdc3fedfd070e8f1babd0b0b91faaa0adf56bbd7e9b332cdb99d0239c05",
+            "AUDIT.json": "7da214e5ac99e8e914b25c6ef8f70a653a51218e380d6ca8c1e08669026c8f8b",
+            "rollout.json": "90094363aa02ee63472da28f09d512670655da2a45a9786ad823c530cf87b9e8",
+            "rollout.npz": "c575cc082073b7edea860012fe82e754e51557836f5a86c087a49997b883f9df",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "b722ad91f9614fb30f6cd05df147519bb464a962c73021fe9847201e93877e62",
+            "rollout_metrics/substep_metrics.npz": "a3f66b31b3a3305705c8adeb0ec809a216ce233e90c878d49f57a72d9cc7f370",
+            "RL_INTERVALS.json": "a3c22106a4c5871425e408393953ae3cf6c0f01dc6b0cedb03e5957d070d5f15"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 2.6020852139652106e-18,
+            "bounded_error_integral": 2.0816681711721685e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00016_train_009",
+          "evidence_sha256": {
+            "execution.json": "c4e52afedd161ec8ddecbbb0b7f70547aeeb8c56eb3751390b7b630dbcdaa934",
+            "AUDIT.json": "e9198ad9caf4c6d7300cb46912366fe1f88a62c16ac6f19e24fe081413203813",
+            "rollout.json": "606da914596c2a7431b3e8f333381a81c0fa1107e0a96f10907d3a43818c0203",
+            "rollout.npz": "a8b1e03628458cba29e04641eb8b41471cb2a9cddd47644e6c645d7c372cced6",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "6855b208d5d49f4a9da20182a22c61f6276bde4d416e4d1a097138836cdc8b13",
+            "rollout_metrics/substep_metrics.npz": "60fc54d342eeeb701c5226a4c5249c001fd7998ee8b1437378136daad9caa8bc",
+            "RL_INTERVALS.json": "b3cbc38dafc4aa2130f1e712fac27897f6ad7cfb4df8e324e93b2e060894c597"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": false,
+          "abort_reason": "global_penetration_exceeded_2mm",
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1366,
+          "substeps_checked": 1092800,
+          "elapsed_s": 54.63999999999901,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 1.0842021724855044e-19,
+            "bounded_error_integral": 6.938893903907228e-18,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00017_train_003",
+          "evidence_sha256": {
+            "execution.json": "05b24048f994cd7d4db5687f95e5701fe4ab3636b9e94ec004f393967da0530f",
+            "AUDIT.json": "da91fbc15a368fd42431c19ac62c13fd68f5642e58ff776de228208816ba9f37",
+            "rollout.json": "1a9d855044b862a79cc14078d0805f85f876391ddb9eea8fac50fe9b59fc53c5",
+            "rollout.npz": "8adb3792e5f3fc1bc6f79ad279f2562491fa30189c2a21d9adcdef09a28babb4",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "0c9c59185b549ea38082c9e3c1d7875025c36386f83fe0052c0fe113bbdd0050",
+            "rollout_metrics/substep_metrics.npz": "58c48f49348c2e83898d99ca2bba858089c0a7d6c3a79ad25307be9d235e5257",
+            "RL_INTERVALS.json": "11d6c02443b8bcfaa84ccadd721745b64a49b74e8e273e7258ecc3c1fcd092be"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 1.734723475976807e-18,
+            "bounded_error_integral": 2.0816681711721685e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00018_train_018",
+          "evidence_sha256": {
+            "execution.json": "b3e58d1f2d14659e326bf82b8fb486bb4f039e343bfbe28bfe997f70d0dd4c0b",
+            "AUDIT.json": "eb8bc7eda70fb3dd44a06aa6cc36c7c235b7555498d1fa7320ccba96bb8b1b73",
+            "rollout.json": "66d7537aabf62d5a2e2223a8a47f590d7fa6b39a5b8abed3a51ccec745ee189c",
+            "rollout.npz": "ff28cf5607599c34d9dfbe53d0222b52838bec54ac9aa687657e3a06931699b7",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "ff05e8e87c8867de0b0cda0a5c1fc153f96b72bda984e51d123956cec61f2391",
+            "rollout_metrics/substep_metrics.npz": "2b60d71c0ce50ba98b33b3230339b4c30c38ff0e6dcea613ddafc2b46ee7245d",
+            "RL_INTERVALS.json": "824ede6fcb429d1603b3cb124a4f8e88ccf02cb41049f441b9f4126f704fcc71"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 2.6020852139652106e-18,
+            "bounded_error_integral": 2.7755575615628914e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        },
+        {
+          "run": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/direct_office_task_2026100303/cumulative_0027500/episode_00019_train_005",
+          "evidence_sha256": {
+            "execution.json": "343e1402f402795ab61c3e0f6dd945a7dff4b66cce03f4f5a3641bdba029eb2f",
+            "AUDIT.json": "5997783d90617973acc5571c15c4899ca6576f24f2725d35eb7133ae8b1f356b",
+            "rollout.json": "55ae7f15468a19be46963bd4d413d5068e88cc9ede26826b15d8469468e45f27",
+            "rollout.npz": "e7c357d3db4e9b1ac482ec3b4a8867a8dc787f1cd6ea788d978170af09fec711",
+            "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+            "execution_chain.npz": "07d4f41d8485380750c67e89170b9ac1f324d0e1fc5231b151173b6b37462373",
+            "rollout_metrics/substep_metrics.npz": "9b87f7140c802e2611b7781d00ecac0b8070b2081e50070e640baafb7568d4f1",
+            "RL_INTERVALS.json": "c8d35c534b3b63dde0c19ab975b5f5ffb1bae279cb02405a632d95c0bae433e5"
+          },
+          "torque_ratio_denominator_source": "Archived MJB first seven symmetric actuator control ranges, equal to frozen default effort limits",
+          "torque_limits": [
+            87.0,
+            87.0,
+            87.0,
+            87.0,
+            12.0,
+            12.0,
+            12.0
+          ],
+          "full_horizon": true,
+          "abort_reason": null,
+          "task_success": false,
+          "strict_success": false,
+          "intervals_checked": 1375,
+          "substeps_checked": 1100000,
+          "elapsed_s": 54.999999999999005,
+          "timestamp_partition_verified": true,
+          "filtered_action_max_abs": 0.0,
+          "max_absolute_error": {
+            "elapsed_s": 0.0,
+            "error_integral": 1.0408340855860843e-17,
+            "bounded_error_integral": 2.7755575615628914e-17,
+            "peak_torque_ratio": 0.0,
+            "peak_torque_nm_per_joint": 0.0,
+            "max_position_error_m": 0.0
+          },
+          "numerical_comparison": {
+            "rtol": 1e-12,
+            "atol": 1e-13
+          },
+          "potential_checked": false
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Reduces recorded physical error/effort samples; does not re-simulate dynamics or establish contact realism.",
+    "Task potential/initial potential and terminal next observation are not independently reconstructed.",
+    "Filtered actions checked against execution chain, not a new actor or full servo replay.",
+    "All episodes in each supplied completed segment included, including failures; not all fifteen final models."
+  ],
+  "ended_utc": "2026-10-04T11:00:52.298234+00:00"
+}
