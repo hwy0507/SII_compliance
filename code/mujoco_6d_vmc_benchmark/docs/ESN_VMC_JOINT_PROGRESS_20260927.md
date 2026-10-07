@@ -2313,17 +2313,19 @@ Completed: fixed-reservoir v2 anchored readout candidate
 was evaluated with the unchanged office-v6 worker, canonical48D/action7
 interface, original gate and actuator limits, formal `dt=5e-5`, one thread,
 and `MemoryMax=3GiB`. It passed task/strict on development_000, 001 and 004
-and failed on 002 and 003, for `3/5` task and `3/5` strict. Passing metrics:
-RMSE `28.338–31.076 mm`, peak torque `49.663–49.909 Nm`, peak speed
-`0.364–0.366 m/s`, and maximum penetration `0.148–0.164 mm`; all action and
+and failed strict on 002, 003, 005 and 006, for `5/8` task and `4/8` strict.
+Passing strict metrics: RMSE `28.338–36.499 mm`, peak torque `48.836–49.909 Nm`, peak speed
+`0.349–0.366 m/s`, and maximum penetration `0.139–0.164 mm`; all action and
 reservoir replay checks were exact. Checkpoint SHA256 is
 `da281fbe03e122f0d36bb6e5e65183f9fd480b2f5acfd6a939404888075f5d59`.
 
-The two failures are retained and informative. development_002 completed
+The failures are retained and informative. development_002 completed
 55 s with penetration `0.174 mm` but missed task/strict; its paired parent
 ESN aborted at `24.32 s` with `2.602 mm` penetration. development_003 also
 completed 55 s with `0.139 mm` penetration and only `38.311 Nm` peak torque,
-but missed placement. These results support a limited robustness/low-torque
+but missed placement; development_005 passed task but failed strict at
+`0.486 mm` penetration, and development_006 missed placement despite
+`0.160 mm` penetration. These results support a limited robustness/low-torque
 signal and explicitly do not establish cross-condition generalization or
 task success. No sealed final condition was read and the uniform `/24` matrix
 was not changed.
@@ -2347,3 +2349,11 @@ Running: no new worker at this checkpoint. Not complete: confirmation on the
 remaining registered development identities, independent substep/contact
 audit aggregation, and any claim of a new frozen ESN model. The candidate is
 not promoted until the unchanged selection rule is satisfied.
+
+2026-10-07 v2 `.003` 候选已完成八个 development 闭环，task/strict `4/8`、`3/8`；四个严格通过回合
+RMSE `29.634–34.438 mm`、峰矩 `49.907–50.485 Nm`、峰速 `0.349–0.366 m/s`、穿透 `0.140–0.184 mm`。
+development_000 strict 因 `0.581 mm` 穿透失败；development_003/004/005/006 虽低穿透但放置失败，其中
+development_005 峰矩仅 `40.169 Nm`，明确不能把低峰矩当成功或柔顺性结论。所有回合完整保存，三项 replay 最大差
+`0`；arm1 独立 paper metrics 已核对。首次 dev001 目录错误作为基础设施失败保留并排除。候选 checkpoint
+`5b043942da39ff6ee280c56a95b8198a30609ba9fcfde16580fe7fe6e6166dad`，证据账本为
+`outputs/esn_torque_v2_corrected_20261007/closed_loop_v2_s005_summary.json`。

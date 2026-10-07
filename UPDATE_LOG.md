@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-07 — v2 `.003` ESN 八条件闭环与独立审计
+
+- 固定 office-v6、canonical48D/action7、原 task/strict gate、执行器限制和正式 `dt=5e-5`，只评估 ESN readout 候选 `ridge=0.1, smooth_weight=0.003, action_weight=0.0001, parent_trust=100`；checkpoint SHA256 `5b043942da39ff6ee280c56a95b8198a30609ba9fcfde16580fe7fe6e6166dad`。
+- 八个 development 条件完成正式闭环：task `4/8`、strict `3/8`。四个 strict 通过回合 RMSE `29.634–34.438 mm`、峰矩 `49.907–50.485 Nm`、峰速 `0.349–0.366 m/s`、穿透 `0.140–0.184 mm`；最低峰矩失败回合 `40.169 Nm`，说明低峰矩不能替代放置成功。
+- 所有回合完整保存；动作、储备池、公共 filter replay 最大差均为 `0`。arm1 独立 `paper_metrics_20261002.py` 重算与 worker 审计在浮点舍入范围内一致。首次 dev001 输出目录错误作为基础设施失败保留并排除物理分母。
+- 新增 `code/mujoco_6d_vmc_benchmark/outputs/esn_torque_v2_corrected_20261007/closed_loop_v2_s005_summary.json`，更新 `docs/ESN_TORQUE_GENERALIZATION_20261007.md`、`docs/ESN_STAGE_REPORT_20261007.md` 和 `docs/ESN_VMC_JOINT_PROGRESS_20260927.md`。原始服务器证据位于 `arm1:/home/arm1/sii_shared/SII_compliance/runs/main/esn_torque_generalization_20261007_fa64f33/v2_s005_dev*/`。
+- 限制：该候选没有超过 `.01` 的 `5/8` task、`4/8` strict，不升级正式 `/24` 模型；sealed 条件、环境、gate、actor 输入均未改变。
+
 ## 2026-10-07 — ESN 读出平滑与泛化开发（本轮）
 
 - 开工核对：工作区 `main` 为 `26cf8a2e028c4c332a0c22fce05ad9106abdd3eb`；缓存的 baseline 为 `ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6`。本轮 `git fetch`/GitHub 访问因网络不可达失败，不能声称已读取最新远端；服务器 SSH 也不可达。

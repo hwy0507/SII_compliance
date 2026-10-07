@@ -100,6 +100,16 @@ RMSE `35.209 mm`、峰值力矩 `38.311 Nm`、峰值速度 `0.3495 m/s`。这进
 开发锚点 `49.981 Nm`，但两个失败条件说明跨条件泛化尚未成立。回合摘要见
 `outputs/esn_torque_v2_corrected_20261007/closed_loop_v2_s004_dev004.json`。
 
+继续完成剩余登记条件后，`development_005` 为 task 通过但 strict 失败（穿透 `0.4859 mm`），
+RMSE `28.361 mm`、峰值力矩 `52.153 Nm`；`development_006` task/strict 均失败但完整执行，
+RMSE `29.789 mm`、峰值力矩 `41.185 Nm`、穿透 `0.1598 mm`；`development_007` task/strict 通过，
+RMSE `36.499 mm`、峰值力矩 `48.836 Nm`、穿透 `0.1397 mm`。因此八个已测 development identities
+的 `.01` 候选为 task `5/8`、strict `4/8`；严格通过回合的峰值力矩范围为 `48.836–49.909 Nm`，
+而失败回合同时展示了穿透失败或放置失败，不能按低峰矩挑选。三个新增摘要为
+`closed_loop_v2_s004_dev005.json`、`closed_loop_v2_s004_dev006.json`、
+`closed_loop_v2_s004_dev007.json`；其中 `dev005` 的首次 worker 目录为
+`v2_s004_dev005_r1`，其启动目录错误尝试单独保留。
+
 本轮没有把新 checkpoint 放入正式 `/24` 矩阵，也没有声称峰值力矩下降或泛化成功。默认解释器曾因缺少 Pillow/SciPy 失败；随后找到兼容解释器并在 arm1 恢复了显式 cgroup worker。此前本机受限容器无法连接 user bus，故物理闭环统一转到 arm1；当前新增回合仍属于 development，不解封 sealed 条件。因此正式 `/24` 物理矩阵没有改变。
 
 - 新增物理回合：v2 `.03` 在 development_000 通过，v2 `.01` 在 development_000/001/004 通过、002/003 失败，父 ESN 在 development_002 因穿透中止；所有回合均为正式 `dt=5e-5`、1线程、`MemoryMax=3GiB`。
@@ -108,7 +118,7 @@ RMSE `35.209 mm`、峰值力矩 `38.311 Nm`、峰值速度 `0.3495 m/s`。这进
 
 独立审计已完成：arm1 上的只读 `paper_metrics_20261002.py` 从保存的
 `rollout_metrics/substep_metrics.npz` 与 `research_substeps.npz` 重算 RMSE、峰值力矩、峰值速度、穿透、
-完整 horizon 和接触/恢复诊断；六个回合与原始 `AUDIT.json` 的核心数值一致（浮点舍入范围内），动作、
+完整 horizon 和接触/恢复诊断；九个回合与原始 `AUDIT.json` 的核心数值一致（浮点舍入范围内），动作、
 储备池和公共 filter replay 均为零差。汇总见
 `outputs/esn_torque_v2_corrected_20261007/INDEPENDENT_AUDIT_SUMMARY.json`，服务器每个回合的
 `INDEPENDENT_PAPER_METRICS.json` 也保留在 campaign 根目录。
@@ -118,3 +128,32 @@ RMSE `35.209 mm`、峰值力矩 `38.311 Nm`、峰值速度 `0.3495 m/s`。这进
 为 `cf6fd24b89051de457ebe0035e2d6ad40287e5b02cf9b062d760bdbdd4bea388`。
 
 下一步应在依赖完整且资源受限的既有 worker 上，用未参与选择的 8 个 development identities 评估父 ESN、平滑候选和噪声候选；只有闭环 task/strict 与物理峰值结果完成后，才决定是否进入新的冻结模型锁。
+
+## 2026-10-07：v2 anchored `.003` 八条件闭环与独立审计
+
+预注册候选 `ridge=0.1, smooth_weight=0.003, action_weight=0.0001, parent_trust=100` 使用 checkpoint
+`5b043942da39ff6ee280c56a95b8198a30609ba9fcfde16580fe7fe6e6166dad` 完成八个登记 development 条件的正式
+`dt=5e-5` 闭环。`development_001` 首次启动因预创建输出目录产生 `FileExistsError`，原失败目录和日志保留；
+`v2_s005_dev001_r1` 是同条件的唯一物理重跑。
+
+| 条件 | Task | Strict | RMSE mm | 峰矩 Nm | 峰速 m/s | 穿透 mm |
+|---|---:|---:|---:|---:|---:|---:|
+| development_000 | 通过 | 失败 | 32.215 | 49.853 | 0.3661 | 0.581 |
+| development_001 | 通过 | 通过 | 29.634 | 49.907 | 0.3657 | 0.184 |
+| development_002 | 通过 | 通过 | 30.554 | 50.485 | 0.3627 | 0.174 |
+| development_003 | 失败 | 失败 | 37.075 | 48.590 | 0.3494 | 0.140 |
+| development_004 | 失败 | 失败 | 34.231 | 50.684 | 0.3646 | 0.153 |
+| development_005 | 失败 | 失败 | 29.099 | 40.169 | 0.3675 | 0.150 |
+| development_006 | 失败 | 失败 | 31.413 | 51.612 | 0.3585 | 0.160 |
+| development_007 | 通过 | 通过 | 34.438 | 50.430 | 0.3488 | 0.140 |
+
+该候选的 task/strict 为 `4/8` 和 `3/8`。四个严格通过回合的峰矩为 `49.907–50.485 Nm`；失败回合中有低至
+`40.169 Nm` 的放置失败，不能挑选低峰矩回合宣称柔顺优势。所有回合完整执行且动作、储备池、公共 filter replay
+最大绝对差均为 `0`。arm1 上的 `paper_metrics_20261002.py` 对八个保存的 substep/research 轨迹独立重算，
+核心指标与 worker 审计在浮点舍入范围内一致。小型可审计账本见
+`outputs/esn_torque_v2_corrected_20261007/closed_loop_v2_s005_summary.json`；原始审计和独立 JSON 位于
+`arm1:/home/arm1/sii_shared/SII_compliance/runs/main/esn_torque_generalization_20261007_fa64f33/v2_s005_dev*/`。
+
+相对 `.01` 候选的八条件结果 `5/8` task、`4/8` strict，本候选没有提升跨条件成功率，因此不升级为正式模型。
+它在部分条件保持低峰矩/低穿透，但失败模式仍包括放置错误；sealed 条件、环境、gate、actor 输入和正式 `/24`
+矩阵均未改变。

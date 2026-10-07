@@ -41,10 +41,10 @@ action_weight=0.0001,parent_trust=100` 候选 task/strict 均通过，RMSE `30.8
 在固定 reservoir 和 20/5 identity split 上，预注册 36 个 readout 候选。最佳平滑候选为 `ridge=1.0, smooth_weight=0.1, action_weight=0.005`，checkpoint SHA256 为 `69ecee9d57f34d67be5bec47a4be621d58b9957cc066b1fad0cac7bf588146e4`。5 个验证身份上的 action delta energy 从父 ESN 的 `0.014357` 降至 `0.009489`，最大单步 action 跳变从 `1.566` 降至 `1.366`，action energy 从 `0.012396` 降至 `0.009701`；action MSE 从 `0.000242` 增至 `0.000612`。因此它是降低输出抖动和峰矩代理的候选，不是已经证明降低真实峰值力矩的结果。
 
 随后对 v2 anchored `smooth_weight=0.01, action_weight=0.0001, parent_trust=100` 做了真实闭环审计。
-在五个已登记 development identities 上 task/strict 为 `3/5`；通过回合 RMSE 为 `28.338–31.076 mm`，
-峰值力矩为 `49.663–49.909 Nm`，均略低于父 ESN 锚点 `49.981 Nm`。两个失败回合仍完整保留：
-`development_002` task/strict 失败但 55 s 完整执行、穿透 `0.174 mm`，`development_003` task/strict 失败、
-穿透 `0.139 mm`、峰值力矩 `38.311 Nm`。配对父 ESN 在 development_002 更早因 `2.602 mm` 穿透中止。
+在八个已登记 development identities 上 task/strict 为 `5/8` 和 `4/8`；通过回合 RMSE 为 `28.338–36.499 mm`，
+峰值力矩为 `48.836–49.909 Nm`，大多数通过回合略低于父 ESN 锚点 `49.981 Nm`；失败回合全部保留：
+`development_002/003/006` task/strict 失败但完整执行、穿透分别 `0.174/0.139/0.160 mm`；
+`development_005` task 通过但 strict 因 `0.486 mm` 穿透失败。配对父 ESN 在 development_002 更早因 `2.602 mm` 穿透中止。
 该结果支持“轻度降矩并改善困难条件穿透”的候选解释，同时明确表明低力矩/低穿透不等于放置成功；
 尚未更新统一 `/24` 主表，也未读取 sealed 条件。详细审计见 `docs/ESN_TORQUE_GENERALIZATION_20261007.md`。
 
@@ -70,3 +70,11 @@ action_weight=0.0001,parent_trust=100` 候选 task/strict 均通过，RMSE `30.8
 4. 只有完成闭环收据后，才把新候选与当前 ESN、matched RNN 做对照。
 
 本汇报不预先承诺峰值力矩一定下降；若降矩导致任务或恢复恶化，将保留该失败结论。
+
+## v2 `.003` 候选收尾
+
+固定 reservoir 的下一预注册读出候选（`smooth_weight=0.003`，其它参数不变）在八个 development 条件上完成正式
+`dt=5e-5` 闭环，task/strict 为 `4/8`、`3/8`。独立 `paper_metrics_20261002.py` 逐回合重算通过，四个 strict
+通过回合峰矩 `49.907–50.485 Nm`；最低峰矩失败回合为 `40.169 Nm`，因此低力矩与任务成功脱钩。该候选不进入正式
+`/24` 主表，完整证据见 `docs/ESN_TORQUE_GENERALIZATION_20261007.md` 和
+`outputs/esn_torque_v2_corrected_20261007/closed_loop_v2_s005_summary.json`。
