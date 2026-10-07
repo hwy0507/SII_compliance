@@ -91,3 +91,8 @@ action_weight=0.0001,parent_trust=100` 候选 task/strict 均通过，RMSE `30.8
 `49.126 Nm` 低于 `.003` 候选的 `49.907 Nm`，而 development_003 父 strict 通过、`.003` 失败。
 development_002 则相反：父 ESN 因 `2.602 mm` 穿透中止，`.003` 完整执行但仍未放置成功。结果说明
 readout 改动有条件依赖的穿透/放置 trade-off，不能报告为统一峰矩或泛化优势。
+
+## state-delta v4 smoke
+
+因果 state-delta/abs-state-delta v4 在正式 `dt=5e-5` 的 development_000 仅 task 通过、strict 失败，
+峰矩 `53.107 Nm`、穿透 `0.5795 mm`，高于父 ESN/已测候选；独立审计通过后按停止规则不继续派发。

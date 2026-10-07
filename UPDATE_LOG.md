@@ -13,6 +13,11 @@
 - 独立 paper metrics 核对 RMSE、峰矩、峰速和 horizon，worker 接触审计提供穿透；replay 最大差均为 `0`。新增 `code/mujoco_6d_vmc_benchmark/outputs/esn_torque_v2_corrected_20261007/parent_paired_summary.json`。
 - 配对结果修正模型解释：`.003` 在 development_001 峰矩 `49.907 Nm` 高于父 `49.126 Nm`，development_003 父通过而 `.003` 失败；development_002 `.003` 低穿透而父早停。readout 改动是条件依赖的 trade-off，不是统一峰矩或泛化优势。
 
+## 2026-10-08 — state-delta v4 正式 smoke 负结果
+
+- 已训练的纯 ESN state-delta/abs-state-delta readout v4（checkpoint `7e10362d32a666b0e1d2cc7cad4bbed7c3280d6dc081058873751b57a413345f`）在 development_000、正式 `dt=5e-5` 上 task 通过但 strict 失败：RMSE `30.459 mm`、峰矩 `53.107 Nm`、峰速 `0.3647 m/s`、穿透 `0.5795 mm`，replay 最大差 `0`。
+- 独立 paper metrics 完成；首条件相对父 ESN 和已测 readout 候选均不利，因此停止该候选后续派发，保留服务器原始回合和哈希。未改环境、gate、actor 输入或正式 `/24` 矩阵。
+
 ## 2026-10-07 — v2 `.003` ESN 八条件闭环与独立审计
 
 - 固定 office-v6、canonical48D/action7、原 task/strict gate、执行器限制和正式 `dt=5e-5`，只评估 ESN readout 候选 `ridge=0.1, smooth_weight=0.003, action_weight=0.0001, parent_trust=100`；checkpoint SHA256 `5b043942da39ff6ee280c56a95b8198a30609ba9fcfde16580fe7fe6e6166dad`。

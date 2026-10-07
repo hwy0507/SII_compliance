@@ -183,3 +183,13 @@ RMSE、峰矩、峰速和 horizon；穿透字段来自 worker 的独立接触审
 独立 `paper_metrics_20261002.py` 审计已完成；证据账本为
 `outputs/esn_torque_v2_corrected_20261007/closed_loop_noise_summary.json`，原始服务器回合位于
 `arm1:/home/arm1/sii_shared/SII_compliance/runs/main/esn_torque_generalization_20261007_fa64f33/noise_dev*/`。
+
+## 2026-10-08：state-delta v4 正式 smoke 负结果
+
+离线机制候选 `state-delta/|state-delta|` v4（checkpoint `7e10362d32a666b0e1d2cc7cad4bbed7c3280d6dc081058873751b57a413345f`）
+在同一 office-v6、正式 `dt=5e-5` 的 `development_000` 上完成一次闭环 smoke：task 通过但 strict 失败，
+RMSE `30.459 mm`、峰矩 `53.107 Nm`、峰速 `0.3647 m/s`、穿透 `0.5795 mm`，动作/储备池/公共 filter replay
+最大差为 `0`。独立 paper metrics 已核对；worker AUDIT SHA256 为
+`9476c87f1cdd2da8758255334d739aba4fe9dfbcf0bc833ceb86de73d2a48a07`，独立 JSON SHA256 为
+`cd2a0b91b96d485240b585278701fbd6ca19742d0ef856c692cd7c1199fdfa09`。相对父 ESN 与已测 readout 候选，该条件的
+峰矩和穿透均不利，因此按停止规则不再派发其余条件；该候选不进入正式矩阵。

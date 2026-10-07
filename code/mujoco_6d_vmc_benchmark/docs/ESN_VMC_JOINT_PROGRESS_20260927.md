@@ -2368,3 +2368,7 @@ RMSE `27.721–31.180 mm`、峰矩 `39.309–48.710 Nm`、峰速 `0.354–0.385 
 `2.602 mm` 穿透中止，在 development_004 完整执行但 strict 因 `0.657 mm` 失败；其余回合保留原始审计。
 配对账本为 `outputs/esn_torque_v2_corrected_20261007/parent_paired_summary.json`。配对结果显示 `.003`
 readout 的收益是条件依赖的：某些条件穿透下降，但另一些条件放置失败或峰矩高于父 ESN；不能写成统一降矩/泛化优势。
+
+state-delta v4 只做了正式 `dt=5e-5` 的 development_000 smoke：task=true、strict=false，RMSE
+`30.459 mm`、峰矩 `53.107 Nm`、峰速 `0.3647 m/s`、穿透 `0.5795 mm`，replay 最大差 `0`。独立
+paper metrics 已核对。由于首条件相对父 ESN 和 `.003` 候选均未改善，按停止规则未派发其余条件；候选不进入正式矩阵。
