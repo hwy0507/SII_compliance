@@ -7,6 +7,7 @@
 - 最终 ESN 60/72 task、43/72 strict、RMSE 33.780 mm、峰矩49.734 Nm、峰速0.372 m/s；matched RNN 58/72、44/72、33.500 mm、49.729 Nm、0.378 m/s；matched MLP 28/72、26/72。ESN task/速度/RMSE 权衡较好，但 strict 略低于 RNN，不宣称全面优势。
 - final delivery `complete`，15 个 RL 模型 360/360 回合独立 actor replay，缺失0；服务器本轮根 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/final_evaluation_v1/` 与 `final_delivery_v1/` 保留逐回合轨迹、审计、图和344个媒体文件。
 - 新增 `docs/RESEARCH72_FINAL_RESULTS_20261007.md`，明确 task/strict、RMSE、峰矩、峰速、work、short 分母和局限；最终结果已达到可投稿表格基础，但仍需论文作者目视检查媒体并按局限写摘要。
+- 本次提交 `1e2cb5bb2e28caa54f43f6d1f8471cbbb41925ab` 已推送 `main`；未压缩源码归档 SHA256 `b7a1c595fcfb61c80fbb695efaad01a0f190f3a776c61f01ceaafd39e228f8f1`，经服务器验证脚本核对 3319 个文件后发布至 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/1e2cb5bb2e28caa54f43f6d1f8471cbbb41925ab/`。
 
 ## 2026-10-04 — 两个seed303新完成RL续训段独立核验
 
