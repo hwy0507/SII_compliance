@@ -1,0 +1,68 @@
+{
+  "status": "complete",
+  "contract": "VMC_teacher_ESN_state_delta_residual_20261007_v1",
+  "parent_checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+  "checkpoint_sha256": "7e10362d32a666b0e1d2cc7cad4bbed7c3280d6dc081058873751b57a413345f",
+  "training_data_sha256": "7bb2f7bad7555cc97ca9cc32d43040e91775ce05cdfd32d109a7afbeb1d7e0a0",
+  "source_sha256": {
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/train_esn_state_delta_residual_20261007.py": "cd52f2e194715562fa2610cf8c91a80238b5c4591437c2698cd702a6349841e5",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/scripts/office_vmc_memory_esn_20260927.py": "afcff76d7769d9453cd58a412d7c280a5d9355b4335fc7e318eec973d181c44a"
+  },
+  "reservoir_width": 128,
+  "reservoir_and_parent_readout_frozen": true,
+  "trained_parameters": 1792,
+  "feature_definition": "frozen parent ESN + causal state_delta and abs(state_delta) residual",
+  "causal_gate_threshold": 2.0,
+  "causal_residual_output_gain": 0.25,
+  "feature_dimension": 808,
+  "candidate_ridges": [
+    {
+      "ridge": 0.01,
+      "train_mse": 0.00018311970396329272,
+      "validation_mse": 0.0002289717518037432,
+      "correction_rms": 0.0014968485783435725
+    },
+    {
+      "ridge": 0.1,
+      "train_mse": 0.00018315445800404212,
+      "validation_mse": 0.00022899442744798206,
+      "correction_rms": 0.0014926550616971026
+    },
+    {
+      "ridge": 1.0,
+      "train_mse": 0.00018344124759968713,
+      "validation_mse": 0.00022919430852881703,
+      "correction_rms": 0.0014618957766855717
+    },
+    {
+      "ridge": 10.0,
+      "train_mse": 0.00018471045761101246,
+      "validation_mse": 0.00023020078577154647,
+      "correction_rms": 0.0013539811482342473
+    }
+  ],
+  "selected": {
+    "ridge": 0.01,
+    "train_mse": 0.00018311970396329272,
+    "validation_mse": 0.0002289717518037432,
+    "correction_rms": 0.0014968485783435725
+  },
+  "export_parity_max_abs": 1.291725244562808e-20,
+  "export_parity_rows": 80,
+  "export_parity_scope": "first 16 observations of each held-out identity",
+  "actor_contract": "canonical48D/action7 pure proprioception",
+  "forbidden_inputs": [
+    "contact truth",
+    "object/ball state",
+    "event time",
+    "task stage",
+    "visual/range"
+  ],
+  "unchanged": [
+    "office-v6",
+    "original gate",
+    "actuator amplitude/rate limits",
+    "formal dt=5e-5 reserved"
+  ],
+  "limitation": "Offline identity-holdout improvement only; no closed-loop success claim until the frozen development worker evaluates this checkpoint."
+}

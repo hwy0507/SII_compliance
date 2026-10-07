@@ -26,6 +26,11 @@ class OfficeVMCMemoryESN:
             self.context_dimension=12 if self.position_context else 9
             self.context_gate_w=z['context_gate_w'].copy() if 'context_gate_w' in z.files else None
             self.state_context_readout_w=z['state_context_readout_w'].copy() if 'state_context_readout_w' in z.files else None
+            self.state_delta_readout=bool(z['state_delta_readout']) if 'state_delta_readout' in z.files else False
+            self.state_delta_weights=z['state_delta_weights'].copy() if 'state_delta_weights' in z.files else None
+            self.state_delta_scale=z['state_delta_scale'].copy() if 'state_delta_scale' in z.files else None
+            self.state_delta_gate_threshold=float(z['state_delta_gate_threshold']) if 'state_delta_gate_threshold' in z.files else None
+            self.state_delta_output_gain=float(z['state_delta_output_gain']) if 'state_delta_output_gain' in z.files else 1.
             self.context_gate_limits=z['context_gate_limits'].astype(float) if 'context_gate_limits' in z.files else None
             if self.context_gate_limits is not None:
                 if self.context_gate_limits.shape!=(2,) or not np.isfinite(self.context_gate_limits).all() or not 0<=self.context_gate_limits[0]<1<self.context_gate_limits[1]<=100:
@@ -52,8 +57,20 @@ class OfficeVMCMemoryESN:
                     self.state_context_readout_w.shape!=(self.w.shape[0],self.context_dimension) or
                     not np.isfinite(self.state_context_readout_w).all()):
                     raise ValueError('Invalid fixed state-context readout projection')
-                expected=2*(6+self.w.shape[0])+12*self.context_dimension+self.w.shape[0]+self.context_dimension
+                expected=2*(6+self.w.shape[0])+(2*self.w.shape[0] if self.state_delta_readout else 0)+12*self.context_dimension+self.w.shape[0]+self.context_dimension
                 if self.weights.shape!=(expected,7):raise ValueError('State-context readout dimension mismatch')
+            if self.state_delta_readout:
+                expected_delta=2*self.w.shape[0]
+                if self.state_delta_weights is None or self.state_delta_scale is None:
+                    raise ValueError('State-delta readout requires correction weights and scale')
+                if self.state_delta_weights.shape!=(expected_delta,7) or self.state_delta_scale.shape!=(expected_delta,):
+                    raise ValueError('State-delta correction dimension mismatch')
+                if not np.isfinite(self.state_delta_weights).all() or not np.isfinite(self.state_delta_scale).all() or np.any(self.state_delta_scale<=0):
+                    raise ValueError('Invalid state-delta correction')
+                if self.state_delta_gate_threshold is not None and (not np.isfinite(self.state_delta_gate_threshold) or self.state_delta_gate_threshold<=0):
+                    raise ValueError('Invalid state-delta gate threshold')
+                if not np.isfinite(self.state_delta_output_gain) or not 0<=self.state_delta_output_gain<=1:
+                    raise ValueError('Invalid state-delta output gain')
             if self.context_inputs and not self.absolute_inputs:raise ValueError('Context reservoir requires magnitude channels')
             if self.context_inputs and np.any(self.weights[-self.context_dimension:]!=0):raise ValueError('Direct context-only action is forbidden')
             self.output_gain=float(z['output_gain']) if 'output_gain' in z.files else 1.
@@ -63,7 +80,8 @@ class OfficeVMCMemoryESN:
                     setattr(self,key,z[key].copy())
         self.reset()
 
-    def reset(self):self.state=np.zeros(self.w.shape[0])
+    def reset(self):
+        self.state=np.zeros(self.w.shape[0]);self.previous_state=np.zeros(self.w.shape[0])
 
     def features(self,obs):
         obs=np.asarray(obs,dtype=float)
@@ -78,6 +96,7 @@ class OfficeVMCMemoryESN:
             # Derived products let the reservoir remember load conditional on
             # commanded/measured motion. They vanish when estimated load does.
             cross=np.outer(drive,context).ravel();drive=np.r_[drive,cross]
+        previous_state=self.state.copy()
         leak=self.leak
         if getattr(self,'context_gate_w',None) is not None:
             # A fixed random contextual gate changes each neuron's memory
@@ -96,8 +115,12 @@ class OfficeVMCMemoryESN:
         if getattr(self,'linear_units',None) is not None:
             response[self.linear_units]=activation[self.linear_units]
         self.state+=leak*(response-self.state)
+        state_delta=self.state-previous_state
+        self.previous_state=previous_state
         signed=np.r_[x,self.state]
         base=np.r_[signed,np.abs(signed)]
+        if getattr(self,'state_delta_readout',False):
+            base=np.r_[base,state_delta,np.abs(state_delta)]
         if getattr(self,'readout_order',1)==3:
             base=np.r_[base,signed*np.abs(signed),signed**3]
         if cross is not None:
@@ -115,6 +138,17 @@ class OfficeVMCMemoryESN:
     def act(self,obs):
         features=self.features(obs)
         raw=features@self.weights
+        if getattr(self,'state_delta_readout',False):
+            start=2*(6+self.w.shape[0])
+            delta_features=features[start:start+2*self.w.shape[0]]
+            correction=delta_features@self.state_delta_weights
+            if getattr(self,'state_delta_gate_threshold',None) is not None:
+                n=self.w.shape[0]
+                normalized=self.state_delta_scale
+                delta_norm=np.sqrt(np.mean((delta_features[:n]/normalized[:n])**2))
+                gate=np.clip(delta_norm/self.state_delta_gate_threshold,0.,1.)
+                correction*=gate
+            raw+=correction*getattr(self,'state_delta_output_gain',1.)
         if getattr(self,'nonlinear',False):
             scaled=features/self.feature_scale
             if getattr(self,'context_inputs',False):

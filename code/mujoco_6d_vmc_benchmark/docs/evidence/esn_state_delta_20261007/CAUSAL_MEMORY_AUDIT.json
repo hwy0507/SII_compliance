@@ -1,0 +1,89 @@
+{
+  "status": "complete",
+  "experiment": "causal reservoir state-delta readout memory stress audit",
+  "data_sha256": "7bb2f7bad7555cc97ca9cc32d43040e91775ce05cdfd32d109a7afbeb1d7e0a0",
+  "candidate_sha256": "7e10362d32a666b0e1d2cc7cad4bbed7c3280d6dc081058873751b57a413345f",
+  "parent_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+  "rnn_sha256": "cd20bde63987ee562a54b7e7668cb1487053bc24713196eeaee56e9c681ba670",
+  "identity_split": "25 episodes: 20 train, 5 held-out; held-out-only metrics",
+  "actor_contract": "canonical48D/action7 pure proprioception",
+  "forbidden_inputs": [
+    "contact truth",
+    "object/ball state",
+    "event time",
+    "task stage",
+    "visual/range"
+  ],
+  "reset_definition": "reset reservoir at every observation; diagnostic counterfactual only",
+  "transient_definition": "top quartile of frozen-parent reservoir delta norm on held-out rows",
+  "results": {
+    "parent_esn": {
+      "model": "/tmp/esn_delta_20261007/parent_checkpoint.npz",
+      "model_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+      "intact_mse": {
+        "held_out": 0.00024163267258234868,
+        "held_out_transient": 0.0005907829012738879,
+        "held_out_quiet": 0.0001252266905961664
+      },
+      "reset_per_sample_mse": {
+        "held_out": 0.006579907868068964,
+        "held_out_transient": 0.012973656432492731,
+        "held_out_quiet": 0.004448244993312477
+      },
+      "memory_gap": {
+        "held_out": 0.006338275195486616,
+        "held_out_transient": 0.012382873531218842,
+        "held_out_quiet": 0.004323018302716311
+      },
+      "held_out_transient_rows": 1719,
+      "held_out_quiet_rows": 5156
+    },
+    "causal_delta_esn": {
+      "model": "code/mujoco_6d_vmc_benchmark/outputs/esn_state_delta_gate_20261007_v4_gain025_clipparity/checkpoint.npz",
+      "model_sha256": "7e10362d32a666b0e1d2cc7cad4bbed7c3280d6dc081058873751b57a413345f",
+      "intact_mse": {
+        "held_out": 0.00022897175180374332,
+        "held_out_transient": 0.0005455878657926132,
+        "held_out_quiet": 0.0001234125780359258
+      },
+      "reset_per_sample_mse": {
+        "held_out": 0.006817953800803732,
+        "held_out_transient": 0.01323154778002318,
+        "held_out_quiet": 0.004679674504783905
+      },
+      "memory_gap": {
+        "held_out": 0.006588982048999989,
+        "held_out_transient": 0.012685959914230566,
+        "held_out_quiet": 0.004556261926747979
+      },
+      "held_out_transient_rows": 1719,
+      "held_out_quiet_rows": 5156
+    },
+    "matched_rnn": {
+      "model": "code/mujoco_6d_vmc_benchmark/outputs/research72_20261003_1149/context_readout_refit_v1/readout_refit_matched_rnn_2026100303/checkpoint.npz",
+      "model_sha256": "cd20bde63987ee562a54b7e7668cb1487053bc24713196eeaee56e9c681ba670",
+      "intact_mse": {
+        "held_out": 0.00023451743919044937,
+        "held_out_transient": 0.0005116659151370607,
+        "held_out_quiet": 0.0001421166963370311
+      },
+      "reset_per_sample_mse": {
+        "held_out": 0.006716053030904167,
+        "held_out_transient": 0.011324023483488621,
+        "held_out_quiet": 0.005179764976599924
+      },
+      "memory_gap": {
+        "held_out": 0.006481535591713717,
+        "held_out_transient": 0.01081235756835156,
+        "held_out_quiet": 0.005037648280262893
+      },
+      "held_out_transient_rows": 1719,
+      "held_out_quiet_rows": 5156
+    }
+  },
+  "limitations": [
+    "Offline action replay is not closed-loop task success.",
+    "Reset-per-sample is a causal memory ablation, not a baseline controller.",
+    "All physical claims require unchanged development and formal workers."
+  ]
+}

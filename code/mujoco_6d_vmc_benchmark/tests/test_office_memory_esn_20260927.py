@@ -41,3 +41,14 @@ def test_diagnostic_reset_erases_history_but_preserves_current_input_and_weights
     prepare_policy_state(reset,'reset_each_observation')
     np.testing.assert_array_equal(reset.act(impulse),fresh.act(impulse))
     np.testing.assert_array_equal(reset.weights,fresh.weights)
+
+
+def test_state_delta_readout_exposes_only_causal_reservoir_change():
+    p=policy();p.state_delta_readout=True;p.state_delta_weights=np.zeros((256,7));p.state_delta_scale=np.ones(256);p.weights=np.zeros((524,7))
+    impulse=np.zeros(48);impulse[39]=2.
+    first=p.features(impulse)
+    assert first.shape==(524,)
+    assert np.linalg.norm(first[-256:-128])>0
+    quiet=np.zeros(48);second=p.features(quiet)
+    np.testing.assert_allclose(second[-256:-128],p.state-p.previous_state)
+    p.reset();np.testing.assert_array_equal(p.act(quiet),np.zeros(7))

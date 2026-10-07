@@ -1,5 +1,13 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-07 ESN 因果储备池读出专项（baseline 冻结）
+
+本轮只对 proposed ESN 做算法读出实验，baseline 模型、office-v6 场景、gate、canonical48D/action7
+接口和执行器限制均未修改。新增 `Δh`/`|Δh|` 因果 residual 与状态变化门控；修正真实解码后固定身份
+留出 MSE 为0.000228972，matched RNN 为0.000234517，储备池清空 memory gap 为0.006588982 对0.006481536。
+服务器已核验的单开发锚点上，gain=0.25 ESN task/strict 通过且三项连续指标优于 matched RNN；这仍不是
+跨条件或正式 `dt=5e-5` 结果。方法和全部失败/兼容性记录见 `docs/ESN_CAUSAL_STATE_DELTA_EXPERIMENT_20261007.md`。
+
 ### 2026-10-07 最终公平矩阵闭合
 
 38 个冻结模型×24 个 held-out 条件全部完成（912/912）；task 284、strict 218。统一矩阵见

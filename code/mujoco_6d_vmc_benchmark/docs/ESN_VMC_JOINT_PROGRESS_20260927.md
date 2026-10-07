@@ -1,5 +1,26 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-07：因果储备池状态变化读出实验
+
+针对最终矩阵中 ESN 与 matched RNN 差距较小的问题，完成一项只修改 ESN 读出的机制实验：固定
+128 单元多时间尺度储备池和 parent 读出，加入因果 `Δh`/`|Δh|` residual，并用 RMS 状态变化门控
+小幅输出（阈值 2.0、gain 0.25）。48D 本体输入、action7、原 gate、执行器限制和正式 `dt=5e-5`
+均未改；禁止字段审计通过。
+
+固定身份留出离线审计中，修正解码后的因果 ESN MSE `0.000228972`，matched RNN `0.000234517`；清空储备池后
+因果 ESN 的 memory gap `0.006588982`，RNN 为 `0.006481536`。这支持 ESN 确实利用了储备池历史，
+但瞬态窗口 MSE 仍高于 RNN，不能声称全面优势。
+
+服务器已核验的 office-v6 开发锚点中，旧 v3 gain=0.25 从 parent ESN 的 task/strict 失败提升到通过，且
+RMSE `29.400 mm`、峰矩 `49.032 Nm`、峰速 `0.3461 m/s`，均优于 matched RNN 的 `29.938 mm`、
+`54.435 Nm`、`0.3863 m/s`；该结果仅是单一开发锚点，仍需多条件复核。服务器归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_state_delta_gate_dev_20261007_v3_gain025/`。
+
+该服务器锚点属于解码修正前的 v3；本轮已生成 v4 并发现真实父解码为 `clipped_linear`，因此 v3 数字
+不能直接当作 v4 闭环结果。v4 目前只有离线审计和本地 office-v5 smoke，待同一 office-v6 worker 复核。
+本地 office-v5 兼容 smoke（不同环境版本）task/strict 为 false/false，已单独保留，不能混入 office-v6
+公平矩阵。完整方法、离线审计、失败原因和下一步见 `docs/ESN_CAUSAL_STATE_DELTA_EXPERIMENT_20261007.md`。
+
 ## 2026-10-07：最终 912 回合闭合
 
 最终模型锁定后一次性开启 24 个 held-out 条件，38×24=912/912 完成；task 284、strict 218。

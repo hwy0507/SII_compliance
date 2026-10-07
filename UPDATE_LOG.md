@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-07 — 因果储备池状态变化读出实验
+
+- 开工读取了本地 AGENTS、联合进度与 baseline 周报；本次 `git ls-remote` 因当前网络不可达失败，不能把缓存 SHA 当作最新远端日志。未发现本机 validate/train/overnight 进程，也未重启既有作业。
+- 新增 `tools/audit_esn_causal_memory_20261007.py`：固定 20/5 身份留出，比较完整时间顺序与逐观测清空储备池的动作回放，并分解瞬态/安静窗口；新增报告 `docs/ESN_CAUSAL_STATE_DELTA_EXPERIMENT_20261007.md`。
+- proposed ESN 仅加入因果储备池状态变化 `Δh`、`|Δh|` residual，阈值2.0、gain0.25；统一父模型 `clipped_linear` 解码后新候选 checkpoint SHA `7e10362d32a666b0e1d2cc7cad4bbed7c3280d6dc081058873751b57a413345f`，训练数据 SHA `7bb2f7bad7555cc97ca9cc32d43040e91775ce05cdfd32d109a7afbeb1d7e0a0`。旧 v3 候选保留，但不再作为部署候选。
+- 离线 held-out MSE：修正解码后的因果 ESN `0.000228972`、matched RNN `0.000234517`；memory gap：`0.006588982` 对 `0.006481536`。该证据支持历史利用增强，但瞬态窗口仍不如 RNN，不能声称全面胜出。
+- 已核验的 office-v6 开发锚点记录属于解码修正前的 v3：gain=0.25 ESN task/strict 通过，RMSE `29.400 mm`、峰矩 `49.032 Nm`、峰速 `0.3461 m/s`；matched RNN 为 `29.938 mm`、`54.435 Nm`、`0.3863 m/s`。该结果来自前一轮服务器归档 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_state_delta_gate_dev_20261007_v3_gain025/`，本轮 SSH 不可达，未宣称重新上传；不能直接当作 v4 闭环结果。
+- 本地 office-v5 兼容 smoke（修正解码候选）完整55 s但 task/strict=false/false，RMSE `456.748 mm`、峰矩 `68.982 Nm`、峰速 `0.361326 m/s`、最大外穿透 `0.196223 mm`；已放在 v4 候选目录 `v5_smoke_dev_anchor/`，明确不纳入 office-v6 公平矩阵。
+- 已完成：机制实现、输入/部署 parity、离线因果记忆审计、兼容 smoke、进度/周报/报告更新。运行中：无。尚未完成：同一 frozen office-v6 worker 的多条件闭环复核、服务器本轮归档、formal dt=5e-5 解封；不得据单锚点解封或改变 gate。
+- 本轮本地提交为 `a75c691`；GitHub `main` 的 fetch/push 因网络不可达失败，恢复后需先核对远端 SHA 再正常推送，当前不能声称已发布。
+
 ## 2026-10-07 — 最终 912 回合公平矩阵与独立 RL 回放闭合
 
 - 开工复核 main f89e040、baseline ebb0e1e、AGENTS；原开发/最终监督已自然完成，未重启或修改 gate/actor 输入/环境。

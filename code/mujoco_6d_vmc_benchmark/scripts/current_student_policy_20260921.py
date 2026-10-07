@@ -405,7 +405,9 @@ def load_current(path):
     if contract=='proprio48_office_mlp_rnn_v1':
         from office_mlp_rnn_20261002 import OfficeMLPRNN
         return OfficeMLPRNN(path)
-    if contract=='proprio48_office_vmc_memory_esn_v1':
+    if (contract=='proprio48_office_vmc_memory_esn_v1' or
+        contract.startswith('VMC_teacher_ESN_state_delta_residual_20261007_v1') or
+        contract.startswith('VMC_teacher_ESN_state_delta_readout_20261007_v1')):
         from office_vmc_memory_esn_20260927 import OfficeVMCMemoryESN
         return OfficeVMCMemoryESN(path)
     if contract=='current_four_scene_action7_mlp_v1':return CurrentMLP(path)
