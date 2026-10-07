@@ -5,6 +5,7 @@
 - 从同一 `/24` 固定模型 cohort 的逐回合 `REPORT.json` 重算球/人手/棍子的接触 P95、冲量、接触时长、恢复成功率与条件恢复时间，并加入最大穿透、单位时间力矩总变差和机械功。
 - 新增 `code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_COMPLIANCE_METRICS_20261007.md` 和后处理工具 `code/mujoco_6d_vmc_benchmark/tools/build_uniform24_compliance_metrics_20261007.py`。未把右删失恢复回合当作零，也未把未接触回合当作零力。
 - 主要结果：ESN 人手接触 P95 `19.6 N`、棍子 P95 `13.4 N`，人手/棍子恢复分别 `3/24`、`2/24`；matched RNN 为 `20.4 N`、`13.8 N`，恢复 `1/24`、`1/24`。柔顺接触力优势不能脱离 ESN `16/24 strict`、穿透和恢复率解释。
+- 统计 JSON 已独立归档到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/uniform24_compliance_20261007/UNIFORM24_COMPLIANCE_METRICS.json`，SHA256 `c82c7d839d6ec9ef9704fce57299804713fe61afc07fe4e59ecfbca310fb91d0`。
 
 ## 2026-10-07 — 修正为完全统一的 24 条件单模型矩阵
 
