@@ -7,6 +7,7 @@
 - 同场景最终表已整理在 `code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_FINAL_RESULTS_20261007.md`，覆盖 ESN、matched RNN/MLP、普通 RNN/MLP、memoryless、经典 VMC/导纳/阻抗、参数 RL 和直接动作 RL；保留失败、short 回合和完整分母。
 - 最新 ESN v4 目前只有训练/离线 replay 收据，没有 office-v6 闭环收据，故不放入正式矩阵，也不把 v3 开发锚点冒充 v4 正式结果。当前表中的 ESN 是已完成统一闭环的 readout-refit 版本；结论是 ESN task 60/72，但 strict 43/72，matched RNN strict 44/72，不能声称 ESN 全指标领先。
 - 服务器原始证据根：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/`。本轮未修改 gate、环境、actor 输入或执行器限制。
+- 当前源码快照已归档至 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/ad4a98c/source.tar`，远端 SHA256 `0634bf59f7e63cea1f67d01f1685b6bb92937fbc5aa8b96afd90881c7264bf12`（93,224,960 bytes）。
 
 ## 2026-10-07 — 因果储备池状态变化读出实验
 
