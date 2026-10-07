@@ -1,7 +1,7 @@
 # SII_compliance 阶段性汇报：VMC teacher 蒸馏的纯 ESN 与统一 baseline 对比
 
 日期：2026-10-07  
-版本：GitHub `main` `26cf8a2`（本轮新增读出平滑开发结果，尚待推送）
+版本：本轮结果待提交至 GitHub `main`；统一主表与 sealed 条件保持不变。
 
 ## 一、研究问题与冻结边界
 
@@ -30,9 +30,25 @@ ESN 的关键执行指标为 RMSE `31.451 mm`、峰值速度 `0.360 m/s`。相�
 
 ## 四点五、本轮 ESN-only 峰值力矩代理与泛化开发
 
+### v2 anchored readout 的真实闭环复核
+
+在同一 frozen `development_000`、正式 `dt=5e-5` 上，v2 `smooth_weight=0.01,
+action_weight=0.0001,parent_trust=100` 候选 task/strict 均通过，RMSE `30.823 mm`、峰值力矩
+`49.663 Nm`、峰值速度 `0.3659 m/s`、最大穿透 `0.1636 mm`。该候选相对父 ESN 锚点的 `49.981 Nm`
+下降 `0.318 Nm`（约 `0.64%`），同时优于 `.03` 候选在同一条件下的 `51.595 Nm` 和 `33.303 mm`。
+这是一个 development identity 的物理证据，尚未进入统一 `/24` 主表，也不能单独支持跨条件泛化结论；后续将把该候选在其余已登记 development identities 上验证，失败回合保留。
+
 在固定 reservoir 和 20/5 identity split 上，预注册 36 个 readout 候选。最佳平滑候选为 `ridge=1.0, smooth_weight=0.1, action_weight=0.005`，checkpoint SHA256 为 `69ecee9d57f34d67be5bec47a4be621d58b9957cc066b1fad0cac7bf588146e4`。5 个验证身份上的 action delta energy 从父 ESN 的 `0.014357` 降至 `0.009489`，最大单步 action 跳变从 `1.566` 降至 `1.366`，action energy 从 `0.012396` 降至 `0.009701`；action MSE 从 `0.000242` 增至 `0.000612`。因此它是降低输出抖动和峰矩代理的候选，不是已经证明降低真实峰值力矩的结果。
 
-同样测试的本体噪声一致性候选 checkpoint SHA256 为 `c327ee61c583beb5a392b3752496f6e8eabc136e181551408d4471ded7acab6e`，验证 MSE `0.000548`、delta energy `0.010215`，作为折中候选保留。闭环 development 评估随后找到包含 Pillow、SciPy、MuJoCo 3.11.0 的兼容解释器，但本机受限容器不能建立 worker 所需的 `MemoryMax≤3G` cgroup；服务器归档已完成，尚未运行新的物理闭环 worker。没有读取 sealed 条件、没有改动正式矩阵。
+随后对 v2 anchored `smooth_weight=0.01, action_weight=0.0001, parent_trust=100` 做了真实闭环审计。
+在五个已登记 development identities 上 task/strict 为 `3/5`；通过回合 RMSE 为 `28.338–31.076 mm`，
+峰值力矩为 `49.663–49.909 Nm`，均略低于父 ESN 锚点 `49.981 Nm`。两个失败回合仍完整保留：
+`development_002` task/strict 失败但 55 s 完整执行、穿透 `0.174 mm`，`development_003` task/strict 失败、
+穿透 `0.139 mm`、峰值力矩 `38.311 Nm`。配对父 ESN 在 development_002 更早因 `2.602 mm` 穿透中止。
+该结果支持“轻度降矩并改善困难条件穿透”的候选解释，同时明确表明低力矩/低穿透不等于放置成功；
+尚未更新统一 `/24` 主表，也未读取 sealed 条件。详细审计见 `docs/ESN_TORQUE_GENERALIZATION_20261007.md`。
+
+同样测试的本体噪声一致性候选 checkpoint SHA256 为 `c327ee61c583beb5a392b3752496f6e8eabc136e181551408d4471ded7acab6e`，验证 MSE `0.000548`、delta energy `0.010215`，作为折中候选保留。物理闭环统一转到 arm1 的兼容 worker（MuJoCo 3.11.0、显式 `MemoryMax≤3G`）；本机 cgroup 不可用这一限制已记录。没有读取 sealed 条件、没有改动正式矩阵。
 
 ## 五、证据与限制
 

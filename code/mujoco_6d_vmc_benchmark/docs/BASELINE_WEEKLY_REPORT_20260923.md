@@ -1520,3 +1520,19 @@ negative development screen, not a formal result.
 ### 2026-10-01 ESN reservoir leak-time screen
 
 本轮按固定 teacher manifest 和冻结 combined-v4 开发条件完成纯 ESN 时间尺度屏幕；唯一算法变量是 128 单元储备池 leak 时间常数，另配同宽度 MLP 对照。fast/baseline/slow ESN 均未过 task/strict（最终分别 lift/carry/lift），而 fast/baseline MLP 完成 task、strict 均失败，slow MLP 也未完成 task。所有回合均是 `dt=1e-4` 开发结果；动作与储备池 replay、550000 物理子步和三项指标独立审计通过。没有候选解锁 formal `dt=5e-5`，不能将本轮写成 ESN 泛化或 MLP/ESN 优势。产物目前仅本地，待 arm1 与 GitHub 网络恢复后同步。
+## 2026-10-07 ESN-only torque/generalization follow-up
+
+This ESN-only follow-up did not alter the baseline methods, office-v6 scene,
+gate, actor inputs, actuator limits, or sealed final conditions. A fixed
+128-unit reservoir with an anchored readout (`ridge=0.1,
+smooth_weight=0.01, action_weight=0.0001, parent_trust=100`) was evaluated by
+the same formal `dt=5e-5`, one-thread, 3 GiB worker. It passed task/strict on
+3 of 5 registered development identities and failed on 2 of 5. Passing peak
+torque was `49.663–49.909 Nm` versus the parent development anchor `49.981
+Nm`; failures were retained. On development_002, the parent paired run
+aborted at `2.602 mm` penetration while the candidate completed 55 s at
+`0.174 mm` penetration but still missed placement, illustrating that a lower
+contact burden does not imply task success. The candidate is not added to the
+uniform baseline/main result table or promoted to a frozen model. Details,
+hashes, and raw audit locations are in
+`docs/ESN_TORQUE_GENERALIZATION_20261007.md`.

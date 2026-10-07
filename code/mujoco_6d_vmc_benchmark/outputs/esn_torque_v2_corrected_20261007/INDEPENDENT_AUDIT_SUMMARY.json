@@ -1,0 +1,16 @@
+{
+  "status": "complete",
+  "metric_source": "arm1 paper_metrics_20261002.py on saved rollout_metrics/substep_metrics.npz and research_substeps.npz",
+  "physics_dt": 0.00005,
+  "resource_contract": {"threads": 1, "memory_max_bytes": 3221225472},
+  "rows": [
+    {"condition":"development_000","candidate":"v2_s004","task":true,"strict":true,"rmse_mm":30.822527772419853,"peak_torque_nm":49.662960052490234,"peak_speed_mps":0.36586599462485553,"penetration_mm":0.1636036209177427,"audit_match":true},
+    {"condition":"development_001","candidate":"v2_s004","task":true,"strict":true,"rmse_mm":28.337583223949608,"peak_torque_nm":49.90901565551758,"peak_speed_mps":0.3656542232131804,"penetration_mm":0.14844217669285095,"audit_match":true},
+    {"condition":"development_002","candidate":"v2_s004","task":false,"strict":false,"rmse_mm":30.678399853997384,"peak_torque_nm":51.860103607177734,"peak_speed_mps":0.3625203574779873,"penetration_mm":0.17383210009499128,"audit_match":true},
+    {"condition":"development_003","candidate":"v2_s004","task":false,"strict":false,"rmse_mm":35.20935528355983,"peak_torque_nm":38.310791015625,"peak_speed_mps":0.34951828733159873,"penetration_mm":0.13948437900250468,"audit_match":true},
+    {"condition":"development_004","candidate":"v2_s004","task":true,"strict":true,"rmse_mm":31.075697933497676,"peak_torque_nm":49.68193435668945,"peak_speed_mps":0.3642701660995287,"penetration_mm":0.152128882936543,"audit_match":true},
+    {"condition":"development_002","candidate":"parent_esn","task":false,"strict":false,"rmse_mm":63.80306633937626,"peak_torque_nm":51.88535690307617,"peak_speed_mps":0.3592279643106583,"penetration_mm":2.6021692565092627,"abort_reason":"global_penetration_exceeded_2mm","audit_match":true}
+  ],
+  "replay_checks": {"action_replay_max_abs":0.0,"reservoir_replay_max_abs":0.0,"common_filter_replay_max_abs":0.0},
+  "interpretation": "Independent substep recomputation matches each worker AUDIT for RMSE, peak torque, peak speed and horizon status within floating point rounding. This is a development audit; no sealed condition was read and no model was promoted."
+}

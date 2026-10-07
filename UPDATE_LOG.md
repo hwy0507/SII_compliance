@@ -2096,3 +2096,12 @@
 本次不重复运行已经完成的长仿真实验。
 发布整理同时移除了八份历史 Markdown 的行尾空白或多余末尾空行，不修改实验内容。
 `git diff --cached --check` 通过；推送前 fetch 确认远端 main 与此次同步起点一致。
+
+## 2026-10-07 — ESN v2 anchored readout 真实降矩/泛化审计
+
+- 仅修改纯 ESN readout；office-v6 场景、原 task/strict gate、48D/action7 本体输入、执行器约束和 sealed 条件保持不变。v2 候选为 `ridge=0.1, smooth_weight=0.01, action_weight=0.0001, parent_trust=100`，checkpoint SHA256 `da281fbe03e122f0d36bb6e5e65183f9fd480b2f5acfd6a939404888075f5d59`。
+- 在正式 `dt=5e-5`、单线程、`MemoryMax=3GiB` worker 上，development_000/001/004 通过 task/strict，development_002/003 失败，分母为 `3/5`。通过回合 RMSE `28.338–31.076 mm`、峰值力矩 `49.663–49.909 Nm`，略低于父 ESN 锚点 `49.981 Nm`；失败回合和基础设施失败均保留。
+- development_002 的父 ESN 配对在 `24.32 s` 因 `2.602 mm` 穿透中止，而 v2 候选完整跑完 55 s、穿透 `0.174 mm` 但仍未放置成功；development_003 v2 穿透 `0.139 mm`、峰矩 `38.311 Nm` 但 task/strict 失败。结论是有限的低峰矩/低穿透鲁棒性信号，不能称跨条件泛化或任务优势。
+- 原始审计、trace/chain/metrics/source 哈希与失败目录归档在
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_torque_generalization_20261007_fa64f33/`；本地摘要在 `code/mujoco_6d_vmc_benchmark/outputs/esn_torque_v2_corrected_20261007/`。
+- 更新文档：`docs/ESN_TORQUE_GENERALIZATION_20261007.md`、`docs/ESN_STAGE_REPORT_20261007.md`、`docs/ESN_VMC_JOINT_PROGRESS_20260927.md`、`docs/BASELINE_WEEKLY_REPORT_20260923.md`。统一 `/24` 主表未改，sealed 条件未读取。

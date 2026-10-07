@@ -2305,3 +2305,45 @@ failed task/strict, remaining in `lift` with best position error `13.716 mm`,
 no pillar or lift-corner contact, and only `0.0218 s` continuous rod contact.
 Replay and substep audits passed; this candidate is retained as a negative
 result. No formal rerun is unlocked.
+
+## 2026-10-07 — v2 anchored readout torque/generalization follow-up
+
+Completed: fixed-reservoir v2 anchored readout candidate
+`ridge=0.1, smooth_weight=0.01, action_weight=0.0001, parent_trust=100`
+was evaluated with the unchanged office-v6 worker, canonical48D/action7
+interface, original gate and actuator limits, formal `dt=5e-5`, one thread,
+and `MemoryMax=3GiB`. It passed task/strict on development_000, 001 and 004
+and failed on 002 and 003, for `3/5` task and `3/5` strict. Passing metrics:
+RMSE `28.338–31.076 mm`, peak torque `49.663–49.909 Nm`, peak speed
+`0.364–0.366 m/s`, and maximum penetration `0.148–0.164 mm`; all action and
+reservoir replay checks were exact. Checkpoint SHA256 is
+`da281fbe03e122f0d36bb6e5e65183f9fd480b2f5acfd6a939404888075f5d59`.
+
+The two failures are retained and informative. development_002 completed
+55 s with penetration `0.174 mm` but missed task/strict; its paired parent
+ESN aborted at `24.32 s` with `2.602 mm` penetration. development_003 also
+completed 55 s with `0.139 mm` penetration and only `38.311 Nm` peak torque,
+but missed placement. These results support a limited robustness/low-torque
+signal and explicitly do not establish cross-condition generalization or
+task success. No sealed final condition was read and the uniform `/24` matrix
+was not changed.
+
+Infrastructure failures from early retries (wrong working directory, missing
+thread environment, missing Git provenance, and Menagerie path) are preserved
+under the campaign root and excluded from physical denominators. Raw audits,
+source commit, checkpoint hashes, traces and local summaries are listed in
+`docs/ESN_TORQUE_GENERALIZATION_20261007.md` and
+`outputs/esn_torque_v2_corrected_20261007/`.
+
+Independent audit completed: `paper_metrics_20261002.py` re-read each saved
+`rollout_metrics/substep_metrics.npz` and `research_substeps.npz` on arm1 and
+recomputed RMSE, peak actuator torque, peak end-effector speed, penetration,
+horizon/abort and contact/recovery diagnostics. All six rows matched their
+worker `AUDIT.json` values within floating-point rounding; action, reservoir,
+and common-filter replay errors remained zero. The compact audit ledger is
+`outputs/esn_torque_v2_corrected_20261007/INDEPENDENT_AUDIT_SUMMARY.json`.
+
+Running: no new worker at this checkpoint. Not complete: confirmation on the
+remaining registered development identities, independent substep/contact
+audit aggregation, and any claim of a new frozen ESN model. The candidate is
+not promoted until the unchanged selection rule is satisfied.
