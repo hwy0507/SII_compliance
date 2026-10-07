@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-07 — ESN 读出平滑与泛化开发（本轮）
+
+- 开工核对：工作区 `main` 为 `26cf8a2e028c4c332a0c22fce05ad9106abdd3eb`；缓存的 baseline 为 `ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6`。本轮 `git fetch`/GitHub 访问因网络不可达失败，不能声称已读取最新远端；服务器 SSH 也不可达。
+- 新增 `code/mujoco_6d_vmc_benchmark/tools/train_esn_torque_generalization_20261007.py`：固定 128 单元 reservoir，只训练 readout；加入 action increment、action magnitude 和可选本体噪声一致性正则。修复 float32 checkpoint 的合理部署 parity 容差，并修复噪声特征重复归一化变量错误。
+- 新增 `code/mujoco_6d_vmc_benchmark/docs/ESN_TORQUE_GENERALIZATION_20261007.md` 与更新 `ESN_STAGE_REPORT_20261007.md`。36 候选预注册网格在 20/5 identity split 上选择 `ridge=1.0, smooth=0.1, action=0.005`；平滑候选 checkpoint SHA256 `69ecee9d57f34d67be5bec47a4be621d58b9957cc066b1fad0cac7bf588146e4`。
+- 离线验证：相对父 ESN，5 个 validation identity 的 action delta energy `0.014357→0.009489`，action energy `0.012396→0.009701`，最大单步 action 跳变 `1.566→1.366`；action MSE `0.000242→0.000612`。这只是峰矩代理/输出平滑证据，不是真实峰值力矩或任务成功结果。
+- 训练/回放和 source/config/hash 收据在本地 `code/mujoco_6d_vmc_benchmark/outputs/esn_torque_generalization_20261007_grid/`；其中 `REPLAY_COMPARISON.json` SHA256 `082da4d47cf3c5bf60d2be3be9618114e8e1c8330ef85d969aae1af6372d0abb`。大型 checkpoint 未加入 Git，当前仅本地、待服务器同步。
+- 已完成：编译、单候选测试、36 候选网格、噪声候选、部署 replay parity、离线 identity-holdout 审计和文档更新。未完成：arm1 development 闭环、真实峰值力矩/RMSE/速度、跨条件确认、服务器归档和远端 push。
+- 失败原因保留：本机闭环启动被 `ModuleNotFoundError: PIL` 阻止；SSH `192.168.31.70:22` 当前不可达。没有修改环境、gate、actor 输入、执行器限制，也没有读取 sealed 条件。
+
 ## 2026-10-07 — 全部 16 个方法的 ESN 重点指标表
 
 - 按用户指定的 16 个方法生成统一展示表，选择 Task/Strict、RMSE、峰值速度、人手/棍子接触力 P95，并同时列出恢复率和最大穿透作为约束列。

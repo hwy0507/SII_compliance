@@ -1,5 +1,9 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-07 ESN-only 读出平滑开发
+
+本轮只修改 ESN readout，不改 baseline、环境、gate 或 actor 输入。固定 20/5 identity split 的 36 候选网格选出平滑候选；离线 validation action delta energy `0.009489`（父 ESN `0.014357`），action energy `0.009701`（父 `0.012396`），最大单步 action 跳变 `1.366`（父 `1.566`），但 action MSE `0.000612`（父 `0.000242`）。这些是降低峰矩的代理，不能替代真实物理峰矩和 task/strict。闭环 development 因本机缺 Pillow/SciPy、arm1 SSH 不可达而未完成，sealed 条件未读取；详见 `docs/ESN_TORQUE_GENERALIZATION_20261007.md`。
+
 ### 2026-10-07 全部方法的 ESN 重点指标表
 
 按用户指定的 16 个方法统一列出 Task/Strict、RMSE、峰速、人手/棍子接触 P95，并保留恢复率和最大穿透约束。

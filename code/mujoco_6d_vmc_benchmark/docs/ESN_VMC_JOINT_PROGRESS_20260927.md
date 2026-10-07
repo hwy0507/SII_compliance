@@ -1,5 +1,13 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-07：峰值力矩代理与泛化读出开发（本轮）
+
+- 固定 parent ESN reservoir 和 canonical48D/action7，本轮只改 readout 拟合；环境、gate、执行器限制和 sealed 24 条件均未改/未读。
+- 36 候选固定网格在 20/5 identity split 上完成。最佳平滑候选：`ridge=1.0, smooth_weight=0.1, action_weight=0.005`，checkpoint SHA256 `69ecee9d57f34d67be5bec47a4be621d58b9957cc066b1fad0cac7bf588146e4`。
+- 离线 validation：MSE `0.000612`、delta energy `0.009489`、action energy `0.009701`、最大单步跳变 `1.366`；父 ESN 对应 `0.000242/0.014357/0.012396/1.566`。噪声折中候选 SHA256 `c327ee61c583beb5a392b3752496f6e8eabc136e181551408d4471ded7acab6e`。
+- 运行状态：训练/离线 replay 已完成；闭环 development 尚未完成。本机缺少 Pillow/SciPy，arm1 SSH 不可达；未启动 formal dt=5e-5 sealed 评估。物理步数、task/strict、真实峰矩、RMSE、峰速均未新增。
+- 证据：`docs/ESN_TORQUE_GENERALIZATION_20261007.md`、`outputs/esn_torque_generalization_20261007_grid/REPLAY_COMPARISON.json`。失败原因和未完成项保留，不把离线代理指标写成物理通过。
+
 ## 2026-10-07：ESN 重点指标全方法表
 
 已将用户指定的 16 个方法统一统计 Task/Strict、RMSE、峰速、接触 P95、恢复率和最大穿透，见
