@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-07 — 统一 office-v6 ESN/RNN/MLP 与服务器 baseline 矩阵复核
+
+- 本轮重新核对远端 `main=510589794be317e20ea300eb022f86616dab5b12`、`baseline=ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6`，并检查服务器进程；没有重复启动仿真或训练。
+- 复用并核验服务器最终收据：38 个冻结模型 × 24 个 held-out 条件 = 912/912 回合，`SUMMARY.json` SHA256 `e6d29024bf0e80df16554325193f7a94c6ba8e1193cc31f168a08c9da7346660`，统一 `REPORT.json` SHA256 `100341d7cd42cac944fb5f28849c6028890faf160adfdd27201b0ed4d3fb8d45`；15 个 RL 模型另有 360/360 独立 actor replay。
+- 同场景最终表已整理在 `code/mujoco_6d_vmc_benchmark/docs/RESEARCH72_FINAL_RESULTS_20261007.md`，覆盖 ESN、matched RNN/MLP、普通 RNN/MLP、memoryless、经典 VMC/导纳/阻抗、参数 RL 和直接动作 RL；保留失败、short 回合和完整分母。
+- 最新 ESN v4 目前只有训练/离线 replay 收据，没有 office-v6 闭环收据，故不放入正式矩阵，也不把 v3 开发锚点冒充 v4 正式结果。当前表中的 ESN 是已完成统一闭环的 readout-refit 版本；结论是 ESN task 60/72，但 strict 43/72，matched RNN strict 44/72，不能声称 ESN 全指标领先。
+- 服务器原始证据根：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/`。本轮未修改 gate、环境、actor 输入或执行器限制。
+
 ## 2026-10-07 — 因果储备池状态变化读出实验
 
 - 开工读取了本地 AGENTS、联合进度与 baseline 周报；本次 `git ls-remote` 因当前网络不可达失败，不能把缓存 SHA 当作最新远端日志。未发现本机 validate/train/overnight 进程，也未重启既有作业。
