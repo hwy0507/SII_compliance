@@ -2357,3 +2357,8 @@ development_005 峰矩仅 `40.169 Nm`，明确不能把低峰矩当成功或柔�
 `0`；arm1 独立 paper metrics 已核对。首次 dev001 目录错误作为基础设施失败保留并排除。候选 checkpoint
 `5b043942da39ff6ee280c56a95b8198a30609ba9fcfde16580fe7fe6e6166dad`，证据账本为
 `outputs/esn_torque_v2_corrected_20261007/closed_loop_v2_s005_summary.json`。
+
+2026-10-08 noise consistency 候选已完成八个 development 闭环，task/strict `0/8`、`0/8`；全部完整执行，
+RMSE `27.721–31.180 mm`、峰矩 `39.309–48.710 Nm`、峰速 `0.354–0.385 m/s`、穿透 `0.138–0.178 mm`。
+低峰矩和低穿透均未转化为放置成功，因此不升级该候选。独立 paper metrics 已核对，证据账本为
+`outputs/esn_torque_v2_corrected_20261007/closed_loop_noise_summary.json`，原始回合保存在 arm1 campaign 根目录。

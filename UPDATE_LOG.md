@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-08 — noise consistency ESN 负结果闭环
+
+- 使用预注册 noise checkpoint `c327ee61c583beb5a392b3752496f6e8eabc136e181551408d4471ded7acab6e`，在相同 office-v6、canonical48D/action7、原 gate、执行器限制和正式 `dt=5e-5` 下完成八个 development 条件；task/strict `0/8`、`0/8`。
+- 八回合全部完整执行，RMSE `27.721–31.180 mm`、峰矩 `39.309–48.710 Nm`、峰速 `0.354–0.385 m/s`、穿透 `0.138–0.178 mm`；动作、储备池和公共 filter replay 最大差 `0`。
+- arm1 独立 `paper_metrics_20261002.py` 审计完成，原始回合保留在 `arm1:/home/arm1/sii_shared/SII_compliance/runs/main/esn_torque_generalization_20261007_fa64f33/noise_dev*/`；新增本地账本 `code/mujoco_6d_vmc_benchmark/outputs/esn_torque_v2_corrected_20261007/closed_loop_noise_summary.json`。
+- 结论：noise readout 可压低部分峰矩，但八个条件均未完成放置，不升级候选；未修改环境、gate、actor 输入或正式 `/24` 矩阵。
+
 ## 2026-10-07 — v2 `.003` ESN 八条件闭环与独立审计
 
 - 固定 office-v6、canonical48D/action7、原 task/strict gate、执行器限制和正式 `dt=5e-5`，只评估 ESN readout 候选 `ridge=0.1, smooth_weight=0.003, action_weight=0.0001, parent_trust=100`；checkpoint SHA256 `5b043942da39ff6ee280c56a95b8198a30609ba9fcfde16580fe7fe6e6166dad`。

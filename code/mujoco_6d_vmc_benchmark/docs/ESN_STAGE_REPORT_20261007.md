@@ -78,3 +78,9 @@ action_weight=0.0001,parent_trust=100` 候选 task/strict 均通过，RMSE `30.8
 通过回合峰矩 `49.907–50.485 Nm`；最低峰矩失败回合为 `40.169 Nm`，因此低力矩与任务成功脱钩。该候选不进入正式
 `/24` 主表，完整证据见 `docs/ESN_TORQUE_GENERALIZATION_20261007.md` 和
 `outputs/esn_torque_v2_corrected_20261007/closed_loop_v2_s005_summary.json`。
+
+## noise consistency 候选负结果
+
+预注册 noise readout 在同一八个 development 条件上 task/strict 为 `0/8`、`0/8`，虽然峰矩范围降到
+`39.309–48.710 Nm`、穿透保持 `0.138–0.178 mm`。所有回合完整执行且 replay 为零差；独立 paper metrics
+已核对。该结果支持“输出平滑可能降低力矩代理，但会牺牲放置闭环”的解释，不进入正式模型表。

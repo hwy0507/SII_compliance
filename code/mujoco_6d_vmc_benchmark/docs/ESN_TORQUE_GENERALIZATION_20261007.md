@@ -157,3 +157,13 @@ RMSE `36.499 mm`、峰值力矩 `48.836 Nm`、穿透 `0.1397 mm`。因此八个�
 相对 `.01` 候选的八条件结果 `5/8` task、`4/8` strict，本候选没有提升跨条件成功率，因此不升级为正式模型。
 它在部分条件保持低峰矩/低穿透，但失败模式仍包括放置错误；sealed 条件、环境、gate、actor 输入和正式 `/24`
 矩阵均未改变。
+
+## 2026-10-08：本体噪声一致性候选负结果
+
+预注册 noise consistency checkpoint `c327ee61c583beb5a392b3752496f6e8eabc136e181551408d4471ded7acab6e`
+在同一八个 development 条件上完成正式 `dt=5e-5` 闭环。八回合均完整执行，动作/储备池/公共 filter replay
+均为零差，但 task/strict 为 `0/8`、`0/8`。RMSE 范围 `27.721–31.180 mm`，峰矩范围 `39.309–48.710 Nm`，
+峰速 `0.354–0.385 m/s`，最大穿透 `0.138–0.178 mm`。低峰矩和低穿透没有转化为放置成功，因此该候选不升级。
+独立 `paper_metrics_20261002.py` 审计已完成；证据账本为
+`outputs/esn_torque_v2_corrected_20261007/closed_loop_noise_summary.json`，原始服务器回合位于
+`arm1:/home/arm1/sii_shared/SII_compliance/runs/main/esn_torque_generalization_20261007_fa64f33/noise_dev*/`。
