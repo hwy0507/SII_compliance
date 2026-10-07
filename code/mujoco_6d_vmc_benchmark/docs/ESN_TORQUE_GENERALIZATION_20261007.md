@@ -28,11 +28,19 @@
 
 相对父 ESN，平滑网格候选的验证 action delta energy 降低约 33.9%，action energy 降低约 21.7%，最大单步跳变降低约 12.7%；代价是 action MSE 增加约 153%。加入小幅本体噪声后 MSE 和平滑度折中，但仍不如纯平滑网格候选的预注册目标分数。完整逐身份结果和数据 hash 见：
 
-`outputs/esn_torque_generalization_20261007_grid/REPLAY_COMPARISON.json`
+本地：`outputs/esn_torque_generalization_20261007_grid/REPLAY_COMPARISON.json`；服务器归档：
+
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_torque_generalization_20261007_fa64f33/REPLAY_COMPARISON.json`
 
 训练网格收据：
 
 `outputs/esn_torque_generalization_20261007_grid/TRAINING_COMPLETE.json`
+
+提交源码快照已核验至：
+
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/source/fa64f33b59794a0f88d53f667b8517e87a6737eb/source.tar`
+
+源码 tar SHA256：`871cd8fb426a6171217f84bc0cd5810fd5b295a66fdca172d49aeecc62b544be`。
 
 ## 物理闭环状态
 
@@ -42,6 +50,6 @@
 - task/strict：未测；
 - 真实峰值力矩、峰值速度、RMSE、穿透：未测；
 - sealed 条件：未读取；
-- 失败原因：默认解释器 `ModuleNotFoundError: PIL`；兼容解释器的 cgroup 审计失败（`memory.max` 为 `max`，`systemd-run --user` 为 `Operation not permitted`）；`ssh ... port 22: failure`（服务器不可达）。
+- 失败原因：默认解释器 `ModuleNotFoundError: PIL`；兼容解释器的 cgroup 审计失败（`memory.max` 为 `max`，`systemd-run --user` 为 `Operation not permitted`）。服务器归档已完成，但尚未运行新的物理闭环 worker。
 
 下一步应在依赖完整且资源受限的既有 worker 上，用未参与选择的 8 个 development identities 评估父 ESN、平滑候选和噪声候选；只有闭环 task/strict 与物理峰值结果完成后，才决定是否进入新的冻结模型锁。

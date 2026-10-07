@@ -6,7 +6,7 @@
 - 36 候选固定网格在 20/5 identity split 上完成。最佳平滑候选：`ridge=1.0, smooth_weight=0.1, action_weight=0.005`，checkpoint SHA256 `69ecee9d57f34d67be5bec47a4be621d58b9957cc066b1fad0cac7bf588146e4`。
 - 离线 validation：MSE `0.000612`、delta energy `0.009489`、action energy `0.009701`、最大单步跳变 `1.366`；父 ESN 对应 `0.000242/0.014357/0.012396/1.566`。噪声折中候选 SHA256 `c327ee61c583beb5a392b3752496f6e8eabc136e181551408d4471ded7acab6e`。
 - 运行状态：训练/离线 replay 已完成；闭环 development 尚未完成。兼容 `.venv-canonical-rl` 已找到，但本机受限容器无法建立 worker 所需的 `MemoryMax≤3G` cgroup（`systemd-run --user` bus 不可用），arm1 SSH 也不可达；未启动 formal dt=5e-5 sealed 评估。物理步数、task/strict、真实峰矩、RMSE、峰速均未新增。
-- 证据：`docs/ESN_TORQUE_GENERALIZATION_20261007.md`、`outputs/esn_torque_generalization_20261007_grid/REPLAY_COMPARISON.json`。失败原因和未完成项保留，不把离线代理指标写成物理通过。
+- 证据：`docs/ESN_TORQUE_GENERALIZATION_20261007.md`、`outputs/esn_torque_generalization_20261007_grid/REPLAY_COMPARISON.json`；服务器归档 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_torque_generalization_20261007_fa64f33/` 已核验。失败原因和未完成项保留，不把离线代理指标写成物理通过。
 
 ## 2026-10-07：ESN 重点指标全方法表
 

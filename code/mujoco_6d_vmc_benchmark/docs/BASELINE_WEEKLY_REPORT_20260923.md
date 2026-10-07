@@ -2,7 +2,7 @@
 
 ### 2026-10-07 ESN-only 读出平滑开发
 
-本轮只修改 ESN readout，不改 baseline、环境、gate 或 actor 输入。固定 20/5 identity split 的 36 候选网格选出平滑候选；离线 validation action delta energy `0.009489`（父 ESN `0.014357`），action energy `0.009701`（父 `0.012396`），最大单步 action 跳变 `1.366`（父 `1.566`），但 action MSE `0.000612`（父 `0.000242`）。这些是降低峰矩的代理，不能替代真实物理峰矩和 task/strict。兼容依赖解释器已找到，但本机 worker 的 3 GiB cgroup 审计和 arm1 SSH 均不可用，闭环 development 未完成，sealed 条件未读取；详见 `docs/ESN_TORQUE_GENERALIZATION_20261007.md`。
+本轮只修改 ESN readout，不改 baseline、环境、gate 或 actor 输入。固定 20/5 identity split 的 36 候选网格选出平滑候选；离线 validation action delta energy `0.009489`（父 ESN `0.014357`），action energy `0.009701`（父 `0.012396`），最大单步 action 跳变 `1.366`（父 `1.566`），但 action MSE `0.000612`（父 `0.000242`）。这些是降低峰矩的代理，不能替代真实物理峰矩和 task/strict。兼容依赖解释器已找到，但本机 worker 的 3 GiB cgroup 审计不可用；服务器归档已完成，闭环 development 未完成，sealed 条件未读取；详见 `docs/ESN_TORQUE_GENERALIZATION_20261007.md`。
 
 ### 2026-10-07 全部方法的 ESN 重点指标表
 

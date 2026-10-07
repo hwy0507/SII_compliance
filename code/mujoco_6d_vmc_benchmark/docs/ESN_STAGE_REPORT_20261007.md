@@ -32,7 +32,7 @@ ESN 的关键执行指标为 RMSE `31.451 mm`、峰值速度 `0.360 m/s`。相�
 
 在固定 reservoir 和 20/5 identity split 上，预注册 36 个 readout 候选。最佳平滑候选为 `ridge=1.0, smooth_weight=0.1, action_weight=0.005`，checkpoint SHA256 为 `69ecee9d57f34d67be5bec47a4be621d58b9957cc066b1fad0cac7bf588146e4`。5 个验证身份上的 action delta energy 从父 ESN 的 `0.014357` 降至 `0.009489`，最大单步 action 跳变从 `1.566` 降至 `1.366`，action energy 从 `0.012396` 降至 `0.009701`；action MSE 从 `0.000242` 增至 `0.000612`。因此它是降低输出抖动和峰矩代理的候选，不是已经证明降低真实峰值力矩的结果。
 
-同样测试的本体噪声一致性候选 checkpoint SHA256 为 `c327ee61c583beb5a392b3752496f6e8eabc136e181551408d4471ded7acab6e`，验证 MSE `0.000548`、delta energy `0.010215`，作为折中候选保留。闭环 development 评估随后找到包含 Pillow、SciPy、MuJoCo 3.11.0 的兼容解释器，但本机受限容器不能建立 worker 所需的 `MemoryMax≤3G` cgroup，且 arm1 SSH 不可达；没有读取 sealed 条件、没有改动正式矩阵。
+同样测试的本体噪声一致性候选 checkpoint SHA256 为 `c327ee61c583beb5a392b3752496f6e8eabc136e181551408d4471ded7acab6e`，验证 MSE `0.000548`、delta energy `0.010215`，作为折中候选保留。闭环 development 评估随后找到包含 Pillow、SciPy、MuJoCo 3.11.0 的兼容解释器，但本机受限容器不能建立 worker 所需的 `MemoryMax≤3G` cgroup；服务器归档已完成，尚未运行新的物理闭环 worker。没有读取 sealed 条件、没有改动正式矩阵。
 
 ## 五、证据与限制
 
