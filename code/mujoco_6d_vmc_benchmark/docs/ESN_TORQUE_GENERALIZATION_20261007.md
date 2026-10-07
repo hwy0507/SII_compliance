@@ -113,4 +113,8 @@ RMSE `35.209 mm`、峰值力矩 `38.311 Nm`、峰值速度 `0.3495 m/s`。这进
 `outputs/esn_torque_v2_corrected_20261007/INDEPENDENT_AUDIT_SUMMARY.json`，服务器每个回合的
 `INDEPENDENT_PAPER_METRICS.json` 也保留在 campaign 根目录。
 
+本轮 Git commit `95f437f507911ed035a9503ba183c41589415951` 的源码快照已归档到
+`arm1:/home/arm1/sii_shared/SII_compliance/source/95f437f507911ed035a9503ba183c41589415951/source.tar.gz`，SHA256
+为 `cf6fd24b89051de457ebe0035e2d6ad40287e5b02cf9b062d760bdbdd4bea388`。
+
 下一步应在依赖完整且资源受限的既有 worker 上，用未参与选择的 8 个 development identities 评估父 ESN、平滑候选和噪声候选；只有闭环 task/strict 与物理峰值结果完成后，才决定是否进入新的冻结模型锁。

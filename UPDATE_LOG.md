@@ -2104,4 +2104,6 @@
 - development_002 的父 ESN 配对在 `24.32 s` 因 `2.602 mm` 穿透中止，而 v2 候选完整跑完 55 s、穿透 `0.174 mm` 但仍未放置成功；development_003 v2 穿透 `0.139 mm`、峰矩 `38.311 Nm` 但 task/strict 失败。结论是有限的低峰矩/低穿透鲁棒性信号，不能称跨条件泛化或任务优势。
 - 原始审计、trace/chain/metrics/source 哈希与失败目录归档在
   `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/esn_torque_generalization_20261007_fa64f33/`；本地摘要在 `code/mujoco_6d_vmc_benchmark/outputs/esn_torque_v2_corrected_20261007/`。
+- 本轮提交 `95f437f507911ed035a9503ba183c41589415951` 的源码快照已归档到
+  `arm1:/home/arm1/sii_shared/SII_compliance/source/95f437f507911ed035a9503ba183c41589415951/source.tar.gz`，SHA256 `cf6fd24b89051de457ebe0035e2d6ad40287e5b02cf9b062d760bdbdd4bea388`。
 - 更新文档：`docs/ESN_TORQUE_GENERALIZATION_20261007.md`、`docs/ESN_STAGE_REPORT_20261007.md`、`docs/ESN_VMC_JOINT_PROGRESS_20260927.md`、`docs/BASELINE_WEEKLY_REPORT_20260923.md`。统一 `/24` 主表未改，sealed 条件未读取。
