@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-08 — 15小时修复阶段三：有限接续进程、物块进度筛选与状态重放
+
+- 核对main `bc86e561f03e9366d45ba70840489829e55a3492`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。新有限`continue_baseline_repair_campaign_20261008.py`按已有筛选→确认→10组RL→8开发条件→冻结→16×24执行，没有定时任务；训练拟于22:00 UTC提前收口以预留评测时间，原15小时截止不延长。
+- 开发诊断显示空手retreat不能代表物块进度，新增物块实际3D放置距离优先于arm-stage的排序补充；原排序和失败保留，未改task/strict或actor，final24仍封存。该排序明确标注为开发诊断后的修正，不冒称最初预注册。
+- 5维RL真实梯度/恢复探针通过；VMC1375步动作、offset/velocity、参数/能量全部重放误差0；六个验收物理子步指标独立重算一致。VMC审计入口曾误用panel单位和漏设导入路径，失败日志保留，实际控制器未重跑。
+- 服务`sii-r15-continuation.service`使用不可变`source_v7`，当前等已有144筛选；两个direct RL保持运行。其余参数RL/第二seed、开发选择和最终新矩阵仍未完成；两seed开发选择后得到的是固定模型评估，不是训练seed均值。
+- 已核验服务器根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`，新证据`RL_DIM5_CONTRACT.json`、`actor_replay_v1/VMC_ACCEPTANCE_V3.json`、`acceptance_independent_audit/SUMMARY.json`及`continuation_v1/SCHEDULE.json`。阶段工具/报告归档`delivery_stage03.tar.gz`（发布前核验），详见15小时记录。
+
 ## 2026-10-08 — 15小时修复阶段二：独立奖励重算与阻抗滑移定位
 
 - 前一阶段已推送main `17517dcceec6f00726ef8fcad0125bbb0eaf9c9a`，baseline仍为`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。持续执行同一15小时任务，无新增定时任务，不改环境/gate/actor/执行器。

@@ -97,6 +97,31 @@ v2按真实float32转换逐位验证，没有放宽误差阈值。
 本机NVIDIA驱动当前不可用且本地环境缺少JAX/Flax，因此RL继续用已验证Spark运行时；
 本机承担MuJoCo只读重建和代码检查，没有为追求占用率破坏稳定环境。
 
+## 第三阶段：完整接续流程与筛选修正（15:05 UTC）
+
+`sii-r15-continuation.service`已启动，实际源为`source_v7/`，这是本次有限长任务的接续进程，
+不是定时任务。当前等待已有144经典筛选结束，不重复派发；随后执行前2×8确认，
+冻结`parameter_v2`先验，启动另8个family/seed RL任务，与已有两个direct RL共10路。
+`continuation_v1/SCHEDULE.json`登记22:00 UTC提前结束新训练并在回合边界保存，
+为10个RL模型各8开发条件、最终16×24和审计留出时间；原15小时截止不延长。
+RL使用截止前各seed最新完整checkpoint，再按同一8开发条件选择seed；所有seed结果与预算保留。
+这不是多个训练seed平均的最终成功率，不能当作跨训练seed稳定性结论。
+
+验收已说明空手retreat会误导仅基于机械臂stage的筛选。因此，在开发阶段新增明确排序修正：
+仍优先strict/task/full，再按最坏及累计物块最终3D放置距离、机械臂stage、穿透、RMSE、峰矩排序。
+目标取每回合原`placement_destination`，仅用于开发评价，不进入actor、不改任务gate。
+原144筛选的排序/全部失败不覆盖；新的screen/confirmation排序另存
+`CLASSICAL_SCREEN_PAYLOAD_RANK.json`及`CLASSICAL_CONFIRMATION_PAYLOAD_RANK.json`，生成后才可作为选择证据。
+此修正由已公开开发诊断驱动，不冒称最初预注册，也没有读取final24。
+本地及Spark测试通过：锁定前不读保留条件、禁止覆盖锁、缺少RL adapter不能默认为teacher/zero、
+严格成功优先、不能用空手retreat冒充物块推进。
+
+新增5维参数阻抗RL的真实优化器/保存恢复探针通过；7维已在此前验证。
+VMC完整1375步动作、虚拟offset/velocity、参数和能量状态重放最大误差为0，
+仅使用已记录本体48D和原安全单位。先前两次重放诊断分别用了panel默认0.16而非office0.32单位、
+漏设脚本导入路径，原失败日志保留；修正的是审计入口，实际仿真控制器不变。
+六项验收的独立物理子步三指标/Task/Strict重算均一致，证据位于`acceptance_independent_audit/`。
+
 ## 未完成
 
 完整物理验收和独立动作/子步审计、经典筛选/确认、RL收敛与多seed充分性、

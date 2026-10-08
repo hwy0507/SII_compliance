@@ -80,6 +80,7 @@ def main():
     p.add_argument('--workers',type=int,default=10)
     p.add_argument('--source-subdir',default='source_v1')
     p.add_argument('--attempt-name')
+    p.add_argument('--selection-file',type=Path,help='Explicit documented development reranking; confirmation only')
     a=p.parse_args(); root=a.root.resolve()
     assert 1<=a.workers<=10
     assert '/' not in a.source_subdir and (a.attempt_name is None or '/' not in a.attempt_name)
@@ -94,7 +95,7 @@ def main():
         candidates=[c for c in candidates if c['name'] in ('vmc_00','admittance_00','impedance_00','impedance_01','impedance_02','impedance_03')]
     elif a.mode=='screen':conditions=conditions[:2]
     else:
-        selected=read(root/'classical_screen/SUMMARY.json')['ranked']
+        selected=read(a.selection_file or root/'classical_screen/SUMMARY.json')['ranked']
         names={c['name'] for group in selected.values() for c in group[:2]}
         candidates=[c for c in candidates if c['name'] in names]
     jobs=[(c,d) for d in conditions for c in candidates]

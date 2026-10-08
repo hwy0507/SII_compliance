@@ -16,13 +16,14 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--parameter-source',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--action-dimension',type=int,choices=(5,7),default=7)
     a=p.parse_args();sys.path.insert(0,str(a.parameter_source))
     from official_parameter_agent import OfficialParameterAgent
     import jax
     def digest(tree):
         return hashlib.sha256(b''.join(np.asarray(x).tobytes() for x in jax.tree_util.tree_leaves(tree))).hexdigest()
     agent=OfficialParameterAgent(seed=2026100811,total_steps=200000,utd=2,gamma=.9995,
-        entropy_coef=-2.,initial_temperature=.0001,action_dimension=7)
+        entropy_coef=-2.,initial_temperature=.0001,action_dimension=a.action_dimension)
     rng=np.random.default_rng(119);observations=rng.normal(0,.1,(256,48)).astype(np.float32)
     actions=[]
     for index,obs in enumerate(observations):
@@ -45,11 +46,11 @@ def main():
     with tempfile.TemporaryDirectory(prefix='sii-rl-repair-contract-') as t:
         cp=Path(t)/'checkpoint';agent.save(cp)
         restored=OfficialParameterAgent(seed=2026100811,total_steps=200000,utd=2,gamma=.9995,
-            entropy_coef=-2.,initial_temperature=.0001,action_dimension=7)
+            entropy_coef=-2.,initial_temperature=.0001,action_dimension=a.action_dimension)
         restored.load(cp)
         np.testing.assert_array_equal(restored.sample_action(observations[0],training=False),predicted)
         assert restored.diagnostics()==diagnostics
-    result=dict(status='passed',synthetic_updates=3,physics_steps=0,actor_updated=True,
+    result=dict(status='passed',synthetic_updates=3,physics_steps=0,actor_updated=True,action_dimension=a.action_dimension,
         replay_inputs_immutable=True,checkpoint_prediction_exact=True,normalization_counters_exact=True,
         actual_optimizer_metrics=reports,scope='Synthetic contract only; not successful physics or RL convergence')
     with a.output.open('x') as f:json.dump(result,f,indent=2,allow_nan=False);f.write('\n')
