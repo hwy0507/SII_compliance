@@ -1,0 +1,407 @@
+{
+  "scope": "Algebra/recorded trajectories only; zero new physics steps or gradient updates",
+  "source_sha256": {
+    "/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_uniform24_20261008/source/scripts/vmc_teacher_stable_readout_20260930.py": "36455df952fb25c068592cbdb83540c34a317b33e9ad2b22a14757b252cc5a32",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_uniform24_20261008/source/scripts/run_vmc_6d_constrained_push_20260918.py": "e668dd8cc5942a391785f39ba36c8b249438bb58967159b34999b6b395bfb0c5",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_uniform24_20261008/source/scripts/wbc_velocity_residual_core.py": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_uniform24_20261008/source/scripts/run_panel_impedance_reference_20260923.py": "f7eb89d1e389ef858efc5c0ec726bc3c09cd641307bbd047afd20470d576366e"
+  },
+  "auditor_sha256": "555d94a89c9a3a110411197b75b4f1826fd7303260cd659f3ff00ddc318f33cc",
+  "created_utc": "2026-10-08T13:14:33.512255+00:00",
+  "host": "spark-4eb4",
+  "python": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+  "python_version": "3.12.3",
+  "numpy_version": "2.2.6",
+  "vmc_execution_sha256": "46d9b0564801da67af6ce780a55559aa9ab5f16a6c6329765774435993ee7b64",
+  "actual_action_filter_config": {
+    "minimum_wbc_scale": 0.2,
+    "maximum_linear_yield_mps": 0.32,
+    "maximum_angular_yield_radps": 0.6,
+    "maximum_scale_rate_per_s": 4.0,
+    "maximum_linear_yield_rate_mps2": 1.2,
+    "maximum_angular_yield_rate_radps2": 4.0,
+    "pseudoinverse_damping": 0.04,
+    "maximum_joint_speed_radps": 1.25,
+    "maximum_joint_acceleration_radps2": 8.0,
+    "authority_gate_start_error_m": 0.004,
+    "authority_gate_full_error_m": 0.012,
+    "predictive_authority_enabled": false,
+    "predictive_authority_min_multiplier": 0.35,
+    "predictive_authority_max_multiplier": 1.0,
+    "predictive_authority_recovery_deadband": 0.05,
+    "predictive_authority_release_gain": 1.0,
+    "predictive_authority_require_kinematic_agreement": false,
+    "predictive_authority_require_measured_recovery": false,
+    "directional_phase_projection": false,
+    "directional_phase_minimum_error_m": 0.004,
+    "directional_phase_rate_deadband_m2ps": 2e-05,
+    "rejoin_velocity_envelope": false,
+    "rejoin_linear_velocity_per_m": 5.0,
+    "rejoin_angular_velocity_per_rad": 4.0,
+    "phase_memory_floor_maximum": 0.55,
+    "phase_memory_floor_error_start_m": 0.003,
+    "phase_memory_floor_error_full_m": 0.008,
+    "phase_memory_floor_rise_per_s": 8.0,
+    "phase_memory_floor_release_per_s": 1.2,
+    "velocity_gain_nm_per_radps": [
+      42.0,
+      42.0,
+      36.0,
+      32.0,
+      9.0,
+      8.0,
+      6.0
+    ],
+    "maximum_torque_rate_nmps": [
+      700.0,
+      700.0,
+      700.0,
+      700.0,
+      160.0,
+      160.0,
+      160.0
+    ]
+  },
+  "vmc_units_probe": {
+    "encoder_units": [
+      0.16,
+      0.16,
+      0.2,
+      0.6,
+      0.6,
+      0.6
+    ],
+    "decoder_units": [
+      0.32,
+      0.32,
+      0.32,
+      0.6,
+      0.6,
+      0.6
+    ],
+    "virtual_physical_readout": [
+      0.006214935369395395,
+      0.006214935369395395,
+      0.0027753586654205593,
+      0.0053078453126219425,
+      0.005881540047192925,
+      0.004555410502365138
+    ],
+    "decoded_filtered_twist": [
+      0.01242987073879079,
+      0.01242987073879079,
+      0.004440573864672895,
+      0.0053078453126219425,
+      0.005881540047192925,
+      0.004555410502365138
+    ],
+    "ratio": [
+      2.0,
+      2.0,
+      1.5999999999999999,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "slew_limited": false,
+    "interpretation": "Confirmed physical readout normalization mismatch; closed-loop harm not established by this probe",
+    "actual_parameter_controller_defaults_verified": true
+  },
+  "impedance_bound_probe": {
+    "duration_s": 1.0,
+    "nominal_tangential_speed_mps": 0.05,
+    "position_bound_m": 0.04,
+    "actual_reference_displacement_m": [
+      0.0,
+      5.699694156646728e-10,
+      0.0
+    ],
+    "interpretation": "Scalar anti-windup can stall tangential reference at travel bound; diagnostic only"
+  },
+  "root": "/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_uniform24_20261008",
+  "protocol_sha256": "9eae482be714b1d62ae58634d66a21b4ba9fcefe8303540ac07480663e66c3ec",
+  "final_report_sha256": "aa84f38750aeafabcf4d5e4586a2f379068b175ccc611535d3cf84d44b5a8203",
+  "controller_source_sha256": "a97cd0b142a97519f2ef55d5bc857f445e6140e1ea32df09609dd7aacb76aeb2",
+  "impedance_ignores_limited_joint_command": {
+    "confirmed": true,
+    "interpretation": "Native Cartesian torque backend still uses torque box/slew; upstream joint speed/acceleration command limiter is not consumed"
+  },
+  "impedance_recorded_anchors": [
+    {
+      "family": "classical_impedance",
+      "condition_id": "office_v7_24_000",
+      "anchor_selection": "first registered condition, no outcome selection",
+      "statistics": "Last 125 actor observations (5 seconds), medians; not physical-substep RMSE",
+      "tail_spring_bound_fraction": 1.0,
+      "tail_position_error_mm": 26.126384676287092,
+      "tail_nominal_speed_mm_s": 56.907534012933034,
+      "tail_actual_speed_mm_s": 0.41123641036633724,
+      "median_spring_error6": [
+        0.028790657763520966,
+        -0.009872040485858005,
+        0.02595459192797306,
+        0.00922361733093213,
+        0.02507357511412998,
+        0.0002101676369534538
+      ],
+      "median_residual_joint_torque_nm": [
+        -0.02502191031066666,
+        0.6990574763103528,
+        -0.020233539770578318,
+        1.174953869177167,
+        0.015678397148104636,
+        -0.07236597499407393,
+        -0.010712748267503248
+      ],
+      "common_action7_identically_zero": true,
+      "evidence_sha256": {
+        "impedance_servo.npz": "72f5cc5e7a4d870b9f6a1a8e5bc8424f73c40ac0b64b8cb01e5f8696c521ce50",
+        "rollout.npz": "aa0863e5059fb3fd42fa764dcb0926d28747652f5e04454c7be00d913a35866d",
+        "execution.json": "56347bf3a19899b16303773d2bb1f6991e7b6c12e4804317a0a8bafe164bfa79"
+      }
+    },
+    {
+      "family": "parameter_impedance",
+      "condition_id": "office_v7_24_000",
+      "anchor_selection": "first registered condition, no outcome selection",
+      "statistics": "Last 125 actor observations (5 seconds), medians; not physical-substep RMSE",
+      "tail_spring_bound_fraction": 1.0,
+      "tail_position_error_mm": 12.924564502506719,
+      "tail_nominal_speed_mm_s": 29.398929403865814,
+      "tail_actual_speed_mm_s": 0.9551580989722426,
+      "median_spring_error6": [
+        0.03254307789531813,
+        -0.02145007346890751,
+        -0.008966419215688082,
+        0.012129207960871292,
+        0.01651310761865371,
+        0.011203692930417392
+      ],
+      "median_residual_joint_torque_nm": [
+        -0.13684845723271225,
+        4.081679918899305,
+        -0.07825264849812424,
+        -2.0970829038298375,
+        0.0740284856062213,
+        -0.9323186435120502,
+        -0.09081783589001233
+      ],
+      "common_action7_identically_zero": true,
+      "evidence_sha256": {
+        "impedance_servo.npz": "aad94c7dee1973574fd73e346f5544e8105148b34c0ef4bc2e3c32d65cdd2ef7",
+        "rollout.npz": "7f68a68bf6bd4e0b8b60e61c4e556d8a40bcdec9a6084fa43d9c0dba3d9b2c86",
+        "execution.json": "c4c331122b37b91f010eff11df105838b6df4179b4db671edfc9d99cdc31cea4"
+      }
+    }
+  ],
+  "model": {
+    "frictionloss_nm": [
+      1.137,
+      1.137,
+      1.137,
+      1.137,
+      0.763,
+      0.44,
+      0.248
+    ],
+    "payload_mass_kg": 0.08,
+    "sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3"
+  },
+  "rl_training": [
+    {
+      "family": "parameter_vmc",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/cumulative_0049500/checkpoint_0049500",
+      "interactions": 49500,
+      "updates": 89002,
+      "episodes": 36,
+      "task_successes": 0,
+      "strict_successes": 0,
+      "short_episodes": 0,
+      "replay_terminals": 36,
+      "replay_truncated": 0,
+      "initialization": "from scratch, same official upstream SimbaV2 configuration; no primitive checkpoint or replay",
+      "teacher_labels_used": false,
+      "warmup_steps": 5000,
+      "chain": [
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/cumulative_0049500",
+          "cumulative_steps": 49500,
+          "segment_episodes": 16
+        },
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/cumulative_0027500",
+          "cumulative_steps": 27500,
+          "segment_episodes": 16
+        },
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/initial",
+          "cumulative_steps": 5500,
+          "segment_episodes": 4
+        }
+      ],
+      "checkpoint_manifest_sha256": "503d557695e36448e344aa86d27fdb55bd8368f4cedd7e2f773d70450bd9de64",
+      "replay_sha256": "37a6f0a6fb7c59a827ec08c89259a5af1f318fefa90b549646652a054173feef",
+      "segment_execution_sha256": {
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/cumulative_0049500/execution.json": "49931f359407611c5dfcfc4bf742298bf7a9a30da3696a4fcb30d65bdbb9d1ec",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/cumulative_0027500/execution.json": "5ff28d820934206d97958f5290dcedad6a09764275f2d569f1278c6c18bbef4e",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_2/parameter_vmc_2026100301/initial/execution.json": "0b8102b50961e289bd701724dac2856cc1462d1339b6a9669b7fb2c8a8b5ea72"
+      }
+    },
+    {
+      "family": "parameter_admittance",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/cumulative_0049500/checkpoint_0049500",
+      "interactions": 49500,
+      "updates": 89002,
+      "episodes": 36,
+      "task_successes": 0,
+      "strict_successes": 0,
+      "short_episodes": 0,
+      "replay_terminals": 36,
+      "replay_truncated": 0,
+      "initialization": "from scratch, same official upstream SimbaV2 configuration; no primitive checkpoint or replay",
+      "teacher_labels_used": false,
+      "warmup_steps": 5000,
+      "chain": [
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/cumulative_0049500",
+          "cumulative_steps": 49500,
+          "segment_episodes": 16
+        },
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/cumulative_0027500",
+          "cumulative_steps": 27500,
+          "segment_episodes": 16
+        },
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/initial",
+          "cumulative_steps": 5500,
+          "segment_episodes": 4
+        }
+      ],
+      "checkpoint_manifest_sha256": "09b2be284b5441cee0b6c5e16ccc4a28c72998823aa55444211ed0d727b0474a",
+      "replay_sha256": "9a985583e32262e5dd069de571aa83c9009035d444d577e477572649bd8a707d",
+      "segment_execution_sha256": {
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/cumulative_0049500/execution.json": "7239660f55ffc4891dc9117d684821e2d8e67c05032e72e6d82f625da254ee42",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/cumulative_0027500/execution.json": "78ec5b1899f97dd1011d385b6c24a8c7cc14ee59cba4d1bd97afecb29aa5c0d3",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/parameter_admittance_2026100301/initial/execution.json": "62daefe1e0b02f1e94e788923a2765b45e14dbce8e14e91db8ff5a8e08de4727"
+      }
+    },
+    {
+      "family": "parameter_impedance",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/parameter_impedance_2026100301/cumulative_0049500/checkpoint_0049500",
+      "interactions": 49500,
+      "updates": 89002,
+      "episodes": 36,
+      "task_successes": 0,
+      "strict_successes": 0,
+      "short_episodes": 0,
+      "replay_terminals": 36,
+      "replay_truncated": 0,
+      "initialization": "from scratch, same official upstream SimbaV2 configuration; no primitive checkpoint or replay",
+      "teacher_labels_used": false,
+      "warmup_steps": 5000,
+      "chain": [
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/parameter_impedance_2026100301/cumulative_0049500",
+          "cumulative_steps": 49500,
+          "segment_episodes": 16
+        },
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/parameter_impedance_2026100301/cumulative_0027500",
+          "cumulative_steps": 27500,
+          "segment_episodes": 16
+        },
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/parameter_impedance_2026100301/initial",
+          "cumulative_steps": 5500,
+          "segment_episodes": 4
+        }
+      ],
+      "checkpoint_manifest_sha256": "18dcab3304d7c2d4cc95f52efaa8774d89dfc588143ed06a6efaace15151ff4e",
+      "replay_sha256": "4866774b5f4ec43f32f2061c568ec53533af25c22963e35b50e4e20c6220b169",
+      "segment_execution_sha256": {
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/parameter_impedance_2026100301/cumulative_0049500/execution.json": "e442da7f0af505238b06bfcfcc0f59f77d592ae9f085a58a6f285e7b6ecb7899",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/parameter_impedance_2026100301/cumulative_0027500/execution.json": "5c9b7b2d829050cd2aef81bca34311dee757329c1096659d5a1e88307d5180c3",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/parameter_impedance_2026100301/initial/execution.json": "29dfb5fc4c4bab4f8daecf0fc182f4d8731b07077e24f0d39c32a7bf5823cacf"
+      }
+    },
+    {
+      "family": "direct_metric",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/direct_metric_2026100301/cumulative_0049500/checkpoint_0049336",
+      "interactions": 49336,
+      "updates": 88674,
+      "episodes": 38,
+      "task_successes": 0,
+      "strict_successes": 0,
+      "short_episodes": 3,
+      "replay_terminals": 38,
+      "replay_truncated": 0,
+      "initialization": "from scratch, same official upstream SimbaV2 configuration; no primitive checkpoint or replay",
+      "teacher_labels_used": false,
+      "warmup_steps": 5000,
+      "chain": [
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/direct_metric_2026100301/cumulative_0049500",
+          "cumulative_steps": 49336,
+          "segment_episodes": 16
+        },
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/direct_metric_2026100301/cumulative_0027500",
+          "cumulative_steps": 27336,
+          "segment_episodes": 18
+        },
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/direct_metric_2026100301/initial",
+          "cumulative_steps": 5500,
+          "segment_episodes": 4
+        }
+      ],
+      "checkpoint_manifest_sha256": "19da619dde30199d03b99a25c36affd5a045c38cc35f95b7248c5dfa14b17646",
+      "replay_sha256": "0397dffb746954f3803ae12d48046f6bae933df1b5075b70b8caa17cfd311718",
+      "segment_execution_sha256": {
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/direct_metric_2026100301/cumulative_0049500/execution.json": "b1f8776d4e28062dac663e44f39b936ddd49036151d7621a6341a6921002fc05",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/direct_metric_2026100301/cumulative_0027500/execution.json": "4bc682adea229bb07a9ef526b97918bb87f596f0a4351c09423728ddd08c107f",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_0/direct_metric_2026100301/initial/execution.json": "6695c10049054f946c4ea233f15e14e3431fe8bbe3c1012467bc6348fa9f2392"
+      }
+    },
+    {
+      "family": "direct_office_task",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/direct_office_task_2026100301/cumulative_0049500/checkpoint_0049182",
+      "interactions": 49182,
+      "updates": 88366,
+      "episodes": 38,
+      "task_successes": 0,
+      "strict_successes": 0,
+      "short_episodes": 4,
+      "replay_terminals": 38,
+      "replay_truncated": 0,
+      "initialization": "from scratch, same official upstream SimbaV2 configuration; no primitive checkpoint or replay",
+      "teacher_labels_used": false,
+      "warmup_steps": 5000,
+      "chain": [
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/direct_office_task_2026100301/cumulative_0049500",
+          "cumulative_steps": 49182,
+          "segment_episodes": 18
+        },
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/direct_office_task_2026100301/cumulative_0027500",
+          "cumulative_steps": 26746,
+          "segment_episodes": 16
+        },
+        {
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/direct_office_task_2026100301/initial",
+          "cumulative_steps": 5500,
+          "segment_episodes": 4
+        }
+      ],
+      "checkpoint_manifest_sha256": "02df6029833aba0f965c156c4ea9e46f6d6a9fba7b57c0838f6d441e6cf5afd1",
+      "replay_sha256": "b1b37a568cc386be3f9028ced16e2d1a84899feb13d0446a8ed247d368d916ae",
+      "segment_execution_sha256": {
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/direct_office_task_2026100301/cumulative_0049500/execution.json": "edabcea8c1272d476676fe8cbf4be057af68f99d7a6e0d2581370fd34a973d9a",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/direct_office_task_2026100301/cumulative_0027500/execution.json": "d2ad8ca4022db6bf5750dfc6a1d781ab98bce5a4e8a366cc11ed4116a0a71bbf",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/rl_office_adaptation_v2/queue_1/direct_office_task_2026100301/initial/execution.json": "1b4909e9caa4cfd2dbd3fe073549e69ae9ff86e6f37e35fe49973554eb215576"
+      }
+    }
+  ]
+}

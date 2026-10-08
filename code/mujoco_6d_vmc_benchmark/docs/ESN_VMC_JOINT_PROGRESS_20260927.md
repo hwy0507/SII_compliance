@@ -1,5 +1,19 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-08：经典/RL 实现审计，尚不能作为充分优化的论文对照
+
+用户要求检查baseline是否实现不足。本轮复现VMC读出/action解码的2/2/1.6倍单位不一致；
+阻抗4cm边界切向积分停滞，首条件末段持续到边界，且其原生力矩路径不消费上游受限关节命令。
+五个最终RL checkpoint有约4.9万真实交互、36–38个训练回合，但训练Task/Strict均零，
+缺少actor/critic loss等收敛记录。未确认导纳方程或官方RL更新符号错误。
+旧384回合统计不变；其0/24不能直接支撑“ESN优于完善经典控制/充分训练RL”。
+
+详见 [实现公平性审计](BASELINE_IMPLEMENTATION_FAIRNESS_AUDIT_20261008.md)。
+已核验源码/数值探针/训练链证据在
+`arm1:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_implementation_audit_20261008/v2/`。
+已完成只读诊断与归档；本轮无训练/仿真运行中。未完成修复后开发验收、因果消融和新统一评测。
+本轮没有改控制器、环境、gate或checkpoint；后续修复不能以确保ESN胜出为验收目标。
+
 ## 2026-10-08：office-v7 统一24条件最终完成
 
 20:45:50 CST，本批16方法×24条件全部完成，384/384个55秒回合，无基础设施失败；八路评估与最终报告服务均正常退出。ESN Task/Strict为20/24、16/24，matched RNN17/24、14/24，matched MLP15/24、12/24；enhanced teacher24/24、20/24。经典三类、参数RL三类、直接RL两类和nominal zero均0/24真实任务成功。ESN相对matched RNN的RMSE/峰速低4.61%/2.53%，峰矩高2.55%；最坏穿透0.696mm，仍未全部安全通过。配对精确McNemar p(Task/Strict)=0.5078/0.7744，不声称显著全面优势。

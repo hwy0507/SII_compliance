@@ -1,0 +1,70 @@
+{
+  "scope": "Algebra/recorded trajectories only; zero new physics steps or gradient updates",
+  "source_sha256": {
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/scripts/vmc_teacher_stable_readout_20260930.py": "36455df952fb25c068592cbdb83540c34a317b33e9ad2b22a14757b252cc5a32",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/scripts/run_vmc_6d_constrained_push_20260918.py": "e668dd8cc5942a391785f39ba36c8b249438bb58967159b34999b6b395bfb0c5",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/scripts/wbc_velocity_residual_core.py": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/scripts/run_panel_impedance_reference_20260923.py": "f7eb89d1e389ef858efc5c0ec726bc3c09cd641307bbd047afd20470d576366e"
+  },
+  "auditor_sha256": "555d94a89c9a3a110411197b75b4f1826fd7303260cd659f3ff00ddc318f33cc",
+  "created_utc": "2026-10-08T13:13:42.920293+00:00",
+  "host": "airpig",
+  "python": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-canonical-rl/bin/python",
+  "python_version": "3.11.15",
+  "numpy_version": "2.4.6",
+  "vmc_units_probe": {
+    "encoder_units": [
+      0.16,
+      0.16,
+      0.2,
+      0.6,
+      0.6,
+      0.6
+    ],
+    "decoder_units": [
+      0.32,
+      0.32,
+      0.32,
+      0.6,
+      0.6,
+      0.6
+    ],
+    "virtual_physical_readout": [
+      0.006214935369395395,
+      0.006214935369395395,
+      0.0027753586654205593,
+      0.0053078453126219425,
+      0.005881540047192925,
+      0.004555410502365138
+    ],
+    "decoded_filtered_twist": [
+      0.01242987073879079,
+      0.01242987073879079,
+      0.004440573864672895,
+      0.0053078453126219425,
+      0.005881540047192925,
+      0.004555410502365138
+    ],
+    "ratio": [
+      2.0,
+      2.0,
+      1.5999999999999999,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "slew_limited": false,
+    "interpretation": "Confirmed physical readout normalization mismatch; closed-loop harm not established by this probe"
+  },
+  "impedance_bound_probe": {
+    "duration_s": 1.0,
+    "nominal_tangential_speed_mps": 0.05,
+    "position_bound_m": 0.04,
+    "actual_reference_displacement_m": [
+      0.0,
+      5.699694156646728e-10,
+      0.0
+    ],
+    "interpretation": "Scalar anti-windup can stall tangential reference at travel bound; diagnostic only"
+  }
+}
