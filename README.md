@@ -1,10 +1,15 @@
 # Data-Driven Compliance Control for FR3
 
-**Active research (2026-10-03–06):** [72-hour progress dashboard](RESEARCH_STATUS.md).
-The new registered campaign expands real teacher trajectories at the formal
-physics step and prepares same-data ESN/MLP/RNN and adapted-baseline comparisons.
-It does not yet establish ESN superiority; live-status snapshots and outstanding
-publication requirements are tracked at that fixed entry.
+**Active research (2026-10-08–09):** [baseline repair and fair reevaluation](code/mujoco_6d_vmc_benchmark/docs/BASELINE_REPAIR_15H_20261008.md),
+[progress dashboard](RESEARCH_STATUS.md), and [update log](UPDATE_LOG.md).
+An implementation audit found a VMC action-unit mismatch, impedance reference/
+execution limitations and insufficient evidence of RL convergence. The previous
+384-episode results remain archived, but their weak-baseline outcomes do not
+establish ESN superiority over correctly implemented, well-trained alternatives.
+The current bounded campaign repairs and tests the adapters, retrains two RL
+seeds per family, and will freeze all16 methods before opening24 new final
+conditions. Geometry, proprioceptive inputs, task/safety gates and actuator
+limits remain fixed. New final results are not available yet.
 
 ### 2026-10-03 same-scene ESN, RNN, MLP and control-baseline study
 

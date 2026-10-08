@@ -23,8 +23,18 @@ def main():
         src = t/'legacy'
         if not (src/'controllers_legacy.py').exists():
             shutil.copy2(src/'controllers.py', src/'controllers_legacy.py')
-        sys.path.insert(0, str(src))
-        from baseline_repair_controllers_20261008 import ParameterController, ProjectedEquilibrium
+        sys.path[:0] = [str(root/'tools'), str(src)]
+        from baseline_repair_controllers_20261008 import ParameterController, ProjectedEquilibrium, DiskArrayLog
+        # Exact archival values, without retaining one Python object per row.
+        disk=DiskArrayLog(28)
+        for i in range(10000):disk.append(np.arange(28,dtype=float)+i*.125)
+        assert len(disk)==10000 and disk
+        mapped=np.asarray(disk)
+        assert isinstance(mapped.base,np.memmap)
+        np.testing.assert_array_equal(mapped[[0,4999,9999]],np.arange(28)[None,:]+np.array([0,4999,9999])[:,None]*.125)
+        np.savez_compressed(t/'disk_trace.npz',values=mapped)
+        with np.load(t/'disk_trace.npz') as saved:np.testing.assert_array_equal(saved['values'],mapped)
+        disk.close()
         from run_panel_impedance_reference_20260923 import ReferenceImpedanceConfig
         from wbc_velocity_residual_core import VelocityResidualSafetyConfig, VelocityResidualActionFilter
         priors = json.loads((src/'PRIORS.json').read_text())['methods']
@@ -79,7 +89,8 @@ def main():
         result = dict(status='passed', physics_steps=0, vmc_physical_unit_max_abs=float(np.max(abs(decoded.cartesian_yield_twist-expected))),
             projected_tangential_displacement_m=float(integrator.position[1]),
             projected_position_rotation_bounds=True, impedance_consumes_limited_nominal=True,
-            impedance_equivalent_command_speed_slew=True, impedance_torque_box_slew=True)
+            impedance_equivalent_command_speed_slew=True, impedance_torque_box_slew=True,
+            disk_telemetry_float64_npz_exact=True, tested_controller_source=str(root/'tools/baseline_repair_controllers_20261008.py'))
         a.output.parent.mkdir(parents=True, exist_ok=True)
         with a.output.open('x') as f:
             json.dump(result, f, indent=2); f.write('\n')

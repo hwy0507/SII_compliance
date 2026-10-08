@@ -7,6 +7,7 @@ and torque limiting; it is not an action7 policy or a global passivity proof.
 """
 from pathlib import Path
 import json
+import tempfile
 
 import numpy as np
 from scipy.spatial.transform import Rotation
@@ -20,6 +21,36 @@ from wbc_velocity_residual_core import (
 REPAIR_VERSION = 'physical-units-projected-impedance-v1'
 ParameterShield = legacy.ParameterShield
 vectors = legacy.vectors
+
+
+class DiskArrayLog:
+    """Append exact float64 rows without a per-substep Python-object history.
+
+    Temporary disk storage is only an implementation detail of telemetry;
+    controller state and final NPZ schema remain identical. The memory map
+    lets NumPy's compressed save stream rows under the worker's memory cap.
+    """
+    def __init__(self, width):
+        self.width=int(width);self.count=0
+        self.file=tempfile.TemporaryFile(prefix='sii-impedance-telemetry-',buffering=1024*1024)
+
+    def append(self,row):
+        row=np.ascontiguousarray(row,dtype=np.float64)
+        if row.shape!=(self.width,):raise ValueError('Telemetry row width changed')
+        self.file.write(row.tobytes());self.count+=1
+
+    def __bool__(self):return self.count>0
+
+    def __len__(self):return self.count
+
+    def __array__(self,dtype=None,copy=None):
+        self.file.flush()
+        if not self.count:return np.empty((0,self.width),dtype=dtype or np.float64)
+        values=np.memmap(self.file,dtype=np.float64,mode='r',shape=(self.count,self.width))
+        if dtype is not None and np.dtype(dtype)!=values.dtype:return values.astype(dtype)
+        return values.copy() if copy else values
+
+    def close(self):self.file.close()
 
 
 class ProjectedEquilibrium(MovingEquilibrium):
@@ -71,6 +102,8 @@ class ParameterController(legacy.ParameterController):
         elif method == 'impedance':
             import audited_velocity_env as backend
             from run_benchmark import body_jacobian, body_twist
+            self.servo = DiskArrayLog(28)
+            self.repair_servo = DiskArrayLog(36)
             self.actor = ProjectedEquilibrium(self.actor.cfg)
             self.apply(self.shield.theta)
             self.previous_equivalent_command = np.zeros(7)
@@ -135,5 +168,7 @@ class ParameterController(legacy.ParameterController):
                     'nominal_limited_qdot', 'requested_equivalent_qdot', 'limited_equivalent_qdot',
                     'nullspace_torque', 'friction_feedforward') for i in range(7)]))
             report['execution_semantics'] = 'Native torque: projected Cartesian spring/damper, model friction feedforward and nullspace posture; bounded equivalent joint command then unchanged torque amplitude/slew. Physical velocity still audited separately.'
+            report['telemetry_storage'] = 'Disk-backed exact float64 rows, same complete servo NPZ schemas; no control-law change'
+            self.servo.close();self.repair_servo.close()
         (Path(out)/'CONTROLLER_REPAIR.json').write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
         return report

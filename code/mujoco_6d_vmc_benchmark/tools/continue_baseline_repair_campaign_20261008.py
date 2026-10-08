@@ -68,11 +68,11 @@ def wait_complete(path,deadline):
         time.sleep(30)
 
 
-def execute(root,source):
+def execute(root,source,attempt):
     protocol=read(root/'PROTOCOL.json');pdigest=sha(root/'PROTOCOL.json')
     cutoff=datetime.fromisoformat(TRAIN_STOP);end=datetime.fromisoformat(protocol['dispatch_deadline_utc'])
     assert cutoff<datetime.fromisoformat(protocol['training_dispatch_deadline_utc'])<end
-    directory=root/'continuation_v1';directory.mkdir(exist_ok=False)
+    directory=root/attempt;directory.mkdir(exist_ok=False)
     write(directory/'SCHEDULE.json',dict(registered_utc=now(),protocol_sha256=pdigest,
         stop_new_training_utc=TRAIN_STOP,overall_deadline_utc=end.isoformat(),
         reason='Measured classical median ~387s/55s rollout. Reserve about one hour for80 development evaluations and >5h for384 final plus audit.',
@@ -96,6 +96,8 @@ def execute(root,source):
     assert read(confirmation/'execution.json')['status']=='complete'
     parameter=root/'parameter_v2'
     shutil.copytree(root/'parameter_v1',parameter,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
+    # Numerical laws unchanged; bounded-memory telemetry for native torque RL.
+    shutil.copy2(source/'tools/baseline_repair_controllers_20261008.py',parameter/'baseline_repair_controllers_20261008.py')
     priors=read(parameter/'PRIORS.json');chosen={}
     for method in ('vmc','admittance','impedance'):
         c=selected[method][0];assert c['episodes']==8
@@ -114,7 +116,7 @@ def execute(root,source):
             reward='office_task' if family=='direct_office_task' else 'metric'
             base=root/'rl'/f'{family}_{seed}'
             exists=controller is None and seed==2026100811
-            output=base/('continued_v5' if exists else 'trained_v7')
+            output=base/('continued_v5' if exists else 'trained_v8')
             param=parameter if controller else root/'parameter_v1'
             unit=('sii-r15-rl-direct-'+reward.replace('_','-')+'-s1-continued.service' if exists else
                 'sii-r15-rl-'+family.replace('_','-')+'-'+str(seed)+'.service')
@@ -209,11 +211,12 @@ def execute(root,source):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--root',type=Path,required=True)
-    p.add_argument('--source',type=Path,required=True);a=p.parse_args();root=a.root.resolve()
+    p.add_argument('--source',type=Path,required=True);p.add_argument('--attempt',default='continuation_v2')
+    a=p.parse_args();root=a.root.resolve();assert '/' not in a.attempt
     lock=(root/'.continuation.lock').open('a');fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
-    try:execute(root,a.source.resolve())
+    try:execute(root,a.source.resolve(),a.attempt)
     except BaseException as exc:
-        d=root/'continuation_v1'
+        d=root/a.attempt
         if d.exists():write(d/'FAILURE.json',dict(ended_utc=now(),error=repr(exc),old_evidence_preserved=True))
         raise
 

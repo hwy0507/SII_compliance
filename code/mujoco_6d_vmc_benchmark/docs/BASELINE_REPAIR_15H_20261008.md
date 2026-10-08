@@ -122,6 +122,24 @@ VMC完整1375步动作、虚拟offset/velocity、参数和能量状态重放最�
 漏设脚本导入路径，原失败日志保留；修正的是审计入口，实际仿真控制器不变。
 六项验收的独立物理子步三指标/Task/Strict重算均一致，证据位于`acceptance_independent_audit/`。
 
+## 第四阶段：内存压力预检与日志存储（15:24 UTC）
+
+实际读取两个direct RL cgroup：`memory.peak`到达3221225472字节，`memory.events.max`
+约1200–1400，oom/oom_kill均0。不能把systemd摘要中不可信的512KiB“peak”作为工作集证据。
+当前RL尚能运行，但原生阻抗额外累积每个物理子步的两份Python数组列表，接入RL风险更大。
+新增`DiskArrayLog`顺序保存完整float64行，最终NPZ字段和数值不变，临时磁盘页可在限额下回收。
+本地和Spark验证10000行保存/恢复逐位一致，VMC单位/阻抗位置旋转/命令和力矩限幅测试仍通过。
+这只是存储实现变化，不是新控制律，也没有放宽3GiB限制。
+
+只在原接续进程尚未派发新物理回合时停止它，并保存`CONTINUATION_MEMORY_PREFLIGHT.json`；
+现有screen和两个direct RL未停止。新`sii-r15-continuation-v2.service`/`source_v8`已接续等待，
+将把同样控制律、磁盘日志的版本用于后续`parameter_v2`；旧参数源和运行中源码保持原样。
+`continuation_v1`历史状态已明确标为superseded_before_new_physics_dispatch，不能同时重启它。
+后续5维RL完整物理回合的实际内存表现仍待观察，代数探针不替代运行验收。
+
+15:24 UTC快照：screen116/144完成，无基础设施失败；两个direct RL约28000/29000交互，
+仍无训练任务成功，分别已有6/12个本接续段短回合；全部保留。最终条件未打开。
+
 ## 未完成
 
 完整物理验收和独立动作/子步审计、经典筛选/确认、RL收敛与多seed充分性、

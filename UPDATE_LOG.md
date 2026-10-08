@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-08 — 15小时修复阶段四：3GiB内存预检与无损日志存储
+
+- 前一阶段main已推送`bc68921`，baseline未改。实读两个RL cgroup发现达到3GiB并触发内存回收，oom/oom_kill均0；不使用systemd摘要中的512KiB假工作集。原生阻抗后续与RL组合前，将两个子步Python数组历史改成磁盘顺序float64记录，完整NPZ不变，不增大限额。
+- 本地/Spark10000行NPZ逐位一致及原控制律/限制契约通过。只停止尚未派发新物理任务的continuation_v1，记录superseded和原因；已有经典筛选/两个direct RL未重启。新`continuation_v2`/`source_v8`服务等待既有筛选，后续流程和15小时截止保持。
+- 15:24 UTC：screen116/144完成，两个direct RL约28000/29000步，尚无训练Task成功；短回合和失败保留。参数RL完整物理内存验收、开发选择和最终16×24仍未完成。
+- README与RESEARCH_STATUS更新到真实当前批次，明确旧弱baseline结果不能支撑ESN全面优势。服务器主根不变，新增`CONTINUATION_MEMORY_PREFLIGHT.json`、`STREAMED_TELEMETRY_CONTRACT_SPARK.json`与`continuation_v2/SCHEDULE.json`；阶段归档`delivery_stage04.tar.gz`（发布前核验），大轨迹仍在原run。
+
 ## 2026-10-08 — 15小时修复阶段三：有限接续进程、物块进度筛选与状态重放
 
 - 核对main `bc86e561f03e9366d45ba70840489829e55a3492`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。新有限`continue_baseline_repair_campaign_20261008.py`按已有筛选→确认→10组RL→8开发条件→冻结→16×24执行，没有定时任务；训练拟于22:00 UTC提前收口以预留评测时间，原15小时截止不延长。
