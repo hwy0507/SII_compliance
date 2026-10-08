@@ -430,9 +430,48 @@ server源码`delivery_continuation_source_v1/finish_repair_delivery_20261009.py`
 `edd7b7c79fb6d76c5799217ea44e082c6d4c824534565f126d3b0763861d0730`。
 20:58快照参数48500–51000步，direct最高146000，当前训练段仍无任务成功；新最终24仍封存。
 
+## 第十七阶段：训练收口与最终checkpoint诊断（22:17 UTC）
+
+22:00:02 UTC发出回合边界停止请求，22:05:32.232405全部十组完成并保存；没有因当前无成功延长预算。
+`TRAINING_DRAINED.json`的十个execution hash与末checkpoint步数已核对，80个开发评估于22:05:33启动。
+仍由原continuation_v3运行，新final24尚未解封，最终审计服务保持等待，没有重复训练或仿真。
+
+|方法|seed|实际交互步|完整/短回合合计|当前学习器累计更新|
+|---|---:|---:|---:|---:|
+|参数VMC|2026100811|63250|46|116502|
+|参数VMC|2026100812|63250|46|116502|
+|参数导纳|2026100811|63250|46|116502|
+|参数导纳|2026100812|63250|46|116502|
+|参数阻抗|2026100811|60500|44|111002|
+|参数阻抗|2026100812|63250|46|116502|
+|直接metric|2026100811|147664|116|285330|
+|直接metric|2026100812|100863|85|191728|
+|直接task|2026100811|164621|137|319244|
+|直接task|2026100812|85285|72|160572|
+
+更新数不含已废弃/额外重建计算，最终账本另列；不把复用同一物理数据重复计交互。
+最终训练诊断所有现行段Task/Strict仍零：VMC多停carry；阻抗seed2虽8条到retreat仍未放置；
+直接策略多停approach/align，现行metric两seed短失败8/12、task22/13条均保留。
+历史同seed随机预热放置成功但Strict失败的记录不变，不能列为学习成果。
+
+首轮`checkpoint_panel_final/`十条诊断均因新启动服务漏配cuDNN动态库路径失败，发生在加载模型前，
+不是baseline物理或模型错误。原wrapper还错误返回0；保留原收据/日志，并修改工具显式合并冻结ENV、
+记录覆盖环境、任何子诊断失败即非零退出。独立`checkpoint_panel_source_v2/`及
+`checkpoint_panel_final_v2/`对同样十个checkpoint重新只读核验通过，两个登记的entries逐项完全一致。
+模型/归一化hash未变，不训练、不仿真、不据诊断选模；终止Q减归一化奖励的均值0.625–2.521仍非零，
+不能证明收敛，也不能把不同样本/归一化的历次诊断直接当无偏学习趋势。
+
+服务器主根同前；本轮已核验小型证据：
+
+- `TRAINING_DRAINED.json` SHA `3937fc8b84747d328b14b15edbe4b4ddaea804583b8c8a9d06c18dca5aa249c8`。
+- `RL_DEVELOPMENT_MODELS.json` SHA `5aab1fb61ff70d09ce5729ea89cf813630d44f9a6cbad3dacab1f4ec3eedbec7`。
+- `TRAINING_DIAGNOSTIC_FINAL.json` SHA `435ebe688b3c0aa5e982c909212da163824e0aedddd65b7ed68bc098561a946a`。
+- `checkpoint_panel_final_v2/execution.json` SHA `8b44f1680262b21906a431f9d1c98a9f75df0bfe423fbe2546ed6ca0b02c9725`。
+- 修复后的panel工具 SHA `3580b09eb897ade10c415c8ee6a70266de4b83605854b7c8a9d96792a4b0dbbb`。
+
 ## 尚未完成（当前）
 
 已完成六项诊断验收、144筛选/48确认和所述独立动作/子步检查，但经典均未达到任务成功。
-八组奖励重建与所述样本接续审计已完成；RL收敛与多seed充分性、新最终模型锁定、
+八组奖励重建、十组有限训练与所述样本接续审计已完成；RL收敛与多seed充分性、新最终模型锁定、
 全方法新24条件矩阵及论文级结论均尚未完成。
 最终结果不以ESN获胜为条件；baseline修好后优于ESN也照实报告。

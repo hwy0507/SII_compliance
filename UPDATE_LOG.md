@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-09 — 15小时修复阶段十七：训练结束，80开发评估开始
+
+- 22:13 UTC实查远端main `6f72a5ba0c307a00aaef66cd0f17068e18bd658d`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无并行新提交。训练按22:00收口，22:05:32十组全部在回合边界保存，十execution/hash与末checkpoint核对；参数60500–63250步、直接85285–164621步，逐seed真实预算入15小时记录，未声称均20万或收敛。
+- 80开发回合由原continuation_v3运行，新final24仍封存，最终384和全量审计尚未完成。最后训练诊断现行段仍无Task/Strict成功，失败与旧预热Task记录全部保留；没有新增训练或改测试门槛。
+- 修正checkpoint诊断入口漏cuDNN路径及子诊断失败仍退出0的问题；显式复用冻结ENV并记录，失败非零退出。首轮十个失败日志/收据保留在`checkpoint_panel_final/`，v2使用逐项相同十checkpoint全部通过可复现性检查；这不是baseline算法修复或收敛证明，未重训或改权重。
+- 服务器主根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`已核验：`TRAINING_DRAINED.json` SHA `3937fc8b84747d328b14b15edbe4b4ddaea804583b8c8a9d06c18dca5aa249c8`、`TRAINING_DIAGNOSTIC_FINAL.json` SHA `435ebe688b3c0aa5e982c909212da163824e0aedddd65b7ed68bc098561a946a`、`checkpoint_panel_final_v2/execution.json` SHA `8b44f1680262b21906a431f9d1c98a9f75df0bfe423fbe2546ed6ca0b02c9725`；工具位于`checkpoint_panel_source_v2/`。README/面板/联合进度/周报同步；阶段十七交付归档发布前核验。
+
 ## 2026-10-09 — 15小时修复阶段十六：解封前明确判据与统计假设
 
 - 前一发布main `ba9897e8d2e3d68e06731d434c900101bacd03f7`已远端核验，baseline仍`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。新增`BASELINE_REPAIR_EVALUATION_NOTES_20261009.md`，逐代码说明当前放置Task、Strict穿透判据、25Hz保持检测、完整/短回合指标，以及原生阻抗命令限制与实际速度的区别。

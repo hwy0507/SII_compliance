@@ -6,12 +6,14 @@ child loads one frozen learner without simulator or optimizer updates; failures
 are recorded alongside successes rather than silently replaced.
 """
 import argparse
+import os
 from pathlib import Path
 import subprocess
 import sys
 
 from office_v7_uniform24_20261008 import read, write, sha, now
 from research72_checkpoint_20261003 import checkpoint_hashes
+from run_paper_final_validation_20261003 import ENV
 
 
 def main():
@@ -41,6 +43,7 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     write(out/'REGISTRATION.json', dict(created_utc=now(), jobs_sha256=sha(jobs_file),
         entries=entries, source_sha256=sha(__file__), diagnostic_sha256=sha(diagnostic),
+        diagnostic_environment_overrides=dict(ENV),
         rule='Latest fully registered checkpoint per job at one snapshot, all ten included.',
         scope='Historical behavior replay only; no physics, optimizer, model selection or final access. Different step counts disclosed.'))
     results = []
@@ -50,7 +53,8 @@ def main():
         command = [sys.executable, str(diagnostic), '--checkpoint', entry['checkpoint'], '--output', str(result)]
         record = dict(entry, started_utc=now(), command=command)
         with (out/(name+'.log')).open('x') as stream:
-            rc = subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT).returncode
+            rc = subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT,
+                                env={**os.environ, **ENV}).returncode
         record.update(ended_utc=now(), returncode=rc,
                       status='passed' if rc == 0 else 'diagnostic_failure_preserved')
         assert checkpoint_hashes(Path(entry['checkpoint'])) == entry['hashes']
@@ -71,6 +75,8 @@ def main():
         else 'incomplete_preserved', ended_utc=now(), rows=results,
         interpretation='Passing means diagnostic reproducibility, not convergence or task success. '
         'Sampled one-action TD residual is stochastic; behavior returns are not current-policy returns.'))
+    if any(r['status'] != 'passed' for r in results):
+        raise RuntimeError('Incomplete critic diagnostics; failed attempts preserved')
 
 
 if __name__ == '__main__':
