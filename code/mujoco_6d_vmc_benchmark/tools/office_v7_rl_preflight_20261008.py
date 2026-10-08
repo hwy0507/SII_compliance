@@ -38,4 +38,3 @@ def main():
     a.output.write_text(json.dumps(result,indent=2)+"\n")
 
 if __name__=="__main__":main()
-
