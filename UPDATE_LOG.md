@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-09 — 15小时修复阶段十四：04:01 CST训练复查
+
+- 前一发布main `12e7bfe7929864f961c8e8ca548484dd929d2a3d`已远端核验，baseline仍`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。十组稳定训练；参数约3.8–4万交互，direct metric10.8/6.35万、task12.775/5.775万，原06:00 CST收口不变。
+- 新训练诊断05：优化数值有限、十组OOM/oom_kill均0（3GiB回收事件仍存在）；当前训练段Task/Strict均0，导纳seed2一条到release、阻抗seed2六条到retreat也没有放置成功。direct当前段短失败3/12/22/12条均保留。不是整个历史从未有过预热放置，也不是学习收敛结论。
+- 势函数审计02核对401个完整回合全部通过，无待flush回合；上次direct metric seed1第81回合末三条已齐，1375条完整抵消误差3.55e-15。计算账本04保留历史预热成功（Strict失败）和废弃/重建梯度成本，不把复用数据重复算物理交互。
+- 已核验服务器根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`；`TRAINING_DIAGNOSTIC_05.json` SHA `155420a797f0dd7e5b63fd6056ac136b80fa62503d3dedeedee94c92c368e20d`，`POTENTIAL_OBJECTIVE_AUDIT_02.json` SHA `e8010cce9594e499b1bbac14ca30fed23d8fdd63803229b27d99caa5efc64d34`，`COMPUTE_LEDGER_04.json` SHA `3f5ea2716d110368dc54154cf5956ef56d61ef59d34be8d1d9b221769576d099`。本阶段归档发布前核验；README/进度面板已更新。
+- 本阶段未改算法、奖励、环境或门槛，没有训练重启；final24仍封存。开发选模、最终全16×24及最终审计未完成，继续同一有限长任务。
+
 ## 2026-10-09 — 15小时修复阶段十三：势函数奖励排查与完整/短回合分表
 
 - 延续已核验main `1ddcbf3cde1e83c454c4002edf48086575934687`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，不改source_v9或稳定训练。19:42 UTC参数约3.45–3.625万步，direct最高12.125万；十组仍运行，原截止不变，新final24未读。

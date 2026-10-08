@@ -11,13 +11,17 @@ seeds per family, and will freeze all16 methods before opening24 new final
 conditions. Geometry, proprioceptive inputs, task/safety gates and actuator
 limits remain fixed. New final results are not available yet.
 
-At 2026-10-09 01:05 CST, all 144 classical screening and 48 confirmation
-episodes finished without placement success. An independent audit also found
-an 80-fold torque-smoothness reward inflation caused by confusing the 4 ms
-servo period with the 0.05 ms physics step. Affected metric learners are being
-rebuilt from retained off-policy data with corrected rewards; both task-reward
-learners continue unchanged. Old failures and extra reconstruction costs remain
-in the audit trail. The final 24 conditions remain sealed.
+At 2026-10-09 04:01 CST, all 144 classical screening and 48 confirmation
+episodes had finished without placement success. All eight affected metric
+learners have been rebuilt from retained off-policy data after fixing an
+80-fold torque-smoothness reward inflation (4 ms servo versus 0.05 ms physics
+clock). All ten training jobs are stable with no OOM, but current learned
+segments still have no task success; additional arm-stage progress is not
+payload placement. The two task-reward learners remain unchanged. Independent
+checks cover actual rewards, dynamic controller replay, and terminal potential
+cancellation; none establishes learning convergence. Training stops at 06:00
+CST before development selection and final evaluation. The final 24 conditions
+remain sealed, and historical training/data budgets will be disclosed separately.
 
 ### 2026-10-03 same-scene ESN, RNN, MLP and control-baseline study
 

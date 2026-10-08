@@ -383,6 +383,28 @@ direct metric seed1第81回合捕获日志1372/1375条，已有物理完成收�
 早期renderer仅含事件表的源码保留在`comparison_renderer_source_v1/`，未运行最终；使用stage13新版。
 19:42 UTC十组稳定，参数34500–36250步、direct最高121250步，最终条件仍封存。
 
+## 第十四阶段：新增训练/计算账本与日志尾部闭合（20:01 UTC）
+
+诊断05对新增完整回合和优化日志检查通过，十组真实cgroup OOM/oom_kill为0，3GiB回收事件保留。
+当前段Task/Strict仍均零：VMC均carry；导纳seed2有一条release，其余多carry；
+阻抗seed1/2分别1/6条retreat，均未实际放好物块。direct metric seed1/2短失败3/12条，
+task seed1/2短失败22/12条，原因均为原2mm穿透中止。全部失败保留，不将阶段名当任务成功。
+参数3.8–4万步，direct metric10.8/6.35万，task12.775/5.775万；这些是时点快照。
+
+势函数审计02覆盖401个完整日志回合，无待flush记录。前一快照direct metric seed1第81回合
+现已1375/1375条完整：折扣progress=-.6249994097529533，期望-.6249994097529569，
+误差3.55e-15；终止Task项仍-20。日志缓冲不被误报为奖励缺失或回合物理失败。
+账本04区分原始物理交互、实际优化和102868次metric seed1重建优化等额外计算；
+两条历史同seed随机预热Task成功/Strict失败仍保留，不属于当前学习后成功。
+
+服务器新证据`TRAINING_DIAGNOSTIC_05.json` SHA
+`155420a797f0dd7e5b63fd6056ac136b80fa62503d3dedeedee94c92c368e20d`，
+`POTENTIAL_OBJECTIVE_AUDIT_02.json` SHA
+`e8010cce9594e499b1bbac14ca30fed23d8fdd63803229b27d99caa5efc64d34`，
+`COMPUTE_LEDGER_04.json` SHA
+`3f5ea2716d110368dc54154cf5956ef56d61ef59d34be8d1d9b221769576d099`。
+训练没有重启或改奖励，原22:00 UTC收口保持；final24仍封存，尚无新最终比较。
+
 ## 尚未完成（当前）
 
 已完成六项诊断验收、144筛选/48确认和所述独立动作/子步检查，但经典均未达到任务成功。
