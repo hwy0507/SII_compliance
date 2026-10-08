@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-08 — office-v7 384回合最终闭合与交付
+
+- 20:45:50 CST，本批16方法×24条件全部完成，384/384个55秒回合，无基础设施失败；八路评估与最终报告服务均正常退出。ESN Task/Strict为20/24、16/24，matched RNN17/24、14/24，matched MLP15/24、12/24；enhanced teacher24/24、20/24。经典三类、参数RL三类、直接RL两类和nominal zero均0/24真实任务成功。ESN相对matched RNN的RMSE/峰速低4.61%/2.53%，峰矩高2.55%；最坏穿透0.696mm，仍未全部安全通过。配对精确McNemar p(Task/Strict)=0.5078/0.7744，不声称显著全面优势。
+- 复核 main `68f9c21c8de4fde9885bf368863d5ada2dcac4cd`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，未更改冻结场景、gate、模型、actor输入或执行器限制，没有新训练/重复仿真/定时任务。
+- 新增 `docs/OFFICE_V7_UNIFORM24_FINAL_20261008.md`、只读核验脚本和小型 `final/VERIFIED_SUMMARY.json`；同步联合进度、周报和登记入口。最终报告重建逐字段一致、384身份唯一、各24条件齐全，收据/AUDIT/metrics哈希一致；120条RL exact replay及归一化冻结通过。
+- 已核验服务器根：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_uniform24_20261008/`；完整结果 `report_final/REPORT.json` SHA256 `aa84f38750aeafabcf4d5e4586a2f379068b175ccc611535d3cf84d44b5a8203`，原始源/轨迹/审计不移动。`final_delivery_20261008/` 归档本轮报告、核验摘要和核验源码；GitHub只提交小型证据。
+- 已完成本批评估/最终报告/审计；运行中无本批作业。未完成baseline性能修复、ESN全部安全通过和更广泛泛化。24个固定布局扰动条件不等于24种布局，相同评测不等于相等历史训练预算。禁止重启旧协调器或用本轮评测反向选权重。
+
 ## 2026-10-08 — 经典/RL 停滞诊断与实际八路加速
 
 - 开工核对 main `c81233d1cfcf3afbbb75a182986831f259e53fc4`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。用户再次要求充分利用算力，本轮将本批剩余评测从4路提高到8路，每路仍单线程/3GiB/禁swap，并限定高性能CPU核5–9、15–19；未改物理、gate、策略、条件或演员输入。增加独立回合并发本身不等于破坏公平性，先前将4路说成硬件极限的解释不准确。

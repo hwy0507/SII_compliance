@@ -1,5 +1,14 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-08：office-v7 全方法24条件最终闭合
+
+20:45:50 CST，本批16方法×24条件全部完成，384/384个55秒回合，无基础设施失败；八路评估与最终报告服务均正常退出。ESN Task/Strict为20/24、16/24，matched RNN17/24、14/24，matched MLP15/24、12/24；enhanced teacher24/24、20/24。经典三类、参数RL三类、直接RL两类和nominal zero均0/24真实任务成功。ESN相对matched RNN的RMSE/峰速低4.61%/2.53%，峰矩高2.55%；最坏穿透0.696mm，仍未全部安全通过。配对精确McNemar p(Task/Strict)=0.5078/0.7744，不声称显著全面优势。
+
+见 [最终统一表](OFFICE_V7_UNIFORM24_FINAL_20261008.md)，完整服务器证据位于
+`arm1:/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_uniform24_20261008/report_final/`。
+五类RL共120回合加载/动作重放/归一化冻结通过；运行修复不代表性能改进，0/24是完整55秒物理失败。
+没有本批运行中作业；后续优化须在独立开发条件进行，不从当前24评测条件挑参数。
+
 ### 2026-10-08 office-v7 三类障碍统一开发场景
 
 新增独立 `office-v7` 条件：球 2.0 s、手推 4.5 s、棍推 14.0–22.5 s，最后厚桌角放置；几何、MJB、gate、actor 输入、action7 与执行器限制均沿用 office-v6。正式 `dt=5e-5`、55 s、17 个注册方法中 12 个完成物理回合，task `4/12`、strict `3/12`。三类通过行是 ESN fixed、ESN memoryless 与 matched MLP；matched RNN 因 `0.423 mm` 穿透失败。参数/RL 五行被 JAX/Orbax checkpoint sharding 基础设施错误阻止，保留为 `not run`，未伪装成物理失败。详表见 `docs/OFFICE_V7_ALL_METHODS_20261008.md`，原始收据在 arm1 的 `office_v7_three_obstacle_20261008/run_003`。这只是新 development protocol，未覆盖 office-v6 正式矩阵，也不能从单条件声称泛化优势。

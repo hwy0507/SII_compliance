@@ -1,5 +1,14 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-08：office-v7 统一24条件最终完成
+
+20:45:50 CST，本批16方法×24条件全部完成，384/384个55秒回合，无基础设施失败；八路评估与最终报告服务均正常退出。ESN Task/Strict为20/24、16/24，matched RNN17/24、14/24，matched MLP15/24、12/24；enhanced teacher24/24、20/24。经典三类、参数RL三类、直接RL两类和nominal zero均0/24真实任务成功。ESN相对matched RNN的RMSE/峰速低4.61%/2.53%，峰矩高2.55%；最坏穿透0.696mm，仍未全部安全通过。配对精确McNemar p(Task/Strict)=0.5078/0.7744，不声称显著全面优势。
+
+完整表、接触覆盖、失败与统计局限见 [最终报告](OFFICE_V7_UNIFORM24_FINAL_20261008.md)。
+服务器 `arm1:/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_uniform24_20261008/report_final/`。
+已完成全部评估、独立审计及最终核验；本批没有运行中作业。baseline性能修复与ESN安全泛化仍未完成。
+以下为历史进度，旧“运行中”状态由本条覆盖。
+
 ## 2026-10-07：峰值力矩代理与泛化读出开发（本轮）
 
 - 固定 parent ESN reservoir 和 canonical48D/action7，本轮只改 readout 拟合；环境、gate、执行器限制和 sealed 24 条件均未改/未读。
