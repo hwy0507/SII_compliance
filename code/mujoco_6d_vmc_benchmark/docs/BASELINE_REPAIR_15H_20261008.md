@@ -469,9 +469,33 @@ server源码`delivery_continuation_source_v1/finish_repair_delivery_20261009.py`
 - `checkpoint_panel_final_v2/execution.json` SHA `8b44f1680262b21906a431f9d1c98a9f75df0bfe423fbe2546ed6ca0b02c9725`。
 - 修复后的panel工具 SHA `3580b09eb897ade10c415c8ee6a70266de4b83605854b7c8a9d96792a4b0dbbb`。
 
+## 第十八阶段：全部模型冻结与384最终启动（22:56 UTC）
+
+80开发回合全部完成，无基础设施失败，Task/Strict均0/80；78完整55秒、2条提前终止。
+依据既定Strict/Task/full/最坏与总物块目标距离等字典序选择，未临时以RMSE或某个阶段挑优：
+参数VMC2026100811、导纳2026100812、阻抗2026100811、direct metric/task均2026100811。
+例如阻抗seed2虽有更多机械臂阶段进展，最坏物块距离287.57mm，对照seed1为102.35mm，
+仍按已登记规则选seed1，不能拿阶段名充当放置。
+
+时间链：开发结束22:51:51.323451 → 开发选模 → 全16冻结22:51:51.803454 →
+最终评测开始22:51:52.236500。`audit_repair_model_lock_20261009.py`独立读取80条开发收据与
+实际末物块位置复算评分、排序，核验每族最终选择、未更换八个原参考、全部源/参数/checkpoint hash。
+在核验冻结锁之后才检查最终24与训练/开发的身份及完整overrides元组不重合；不读取最终结果。
+这些检查通过，不意味着分层队列是IID或能代表任意真实环境，也不代表RL已训练充分。
+
+服务器新增`model_lock_audit_source_v1/`工具 SHA
+`0bb22c0b3b4312946b6933f2265018ec811942a5136c57a804689f3ea3c743e4`；
+`MODEL_LOCK_AUDIT.json` SHA `9168776c68c2d82eb2e0e9266d139998b72729005253e53192e7ce3e1b446f06`。
+`FINAL_MODEL_LOCK.json` SHA `943fafa86ef309fd9de87a62797039c5c430a81c326cd3a2498abe520750213e`，
+`FINAL_MODELS.json` SHA `782afc3f6f215c98a0107b0e1aa54d0df232c5ff990e999eaad4547885a87bea`，
+`RL_SELECTION.json` SHA `d24e0dffb8af345918ca84c481dc6c737785061c813964de6df56b74951593f2`。
+开发完成收据`rl_development/execution.json` SHA
+`695beff044bb1497acfe97074964eebed8f615fb38d4dfe5ef7b85add38578cc`。
+384最终回合正在原10路/3GiB约束下执行；原04:23:12 UTC总截止保持，最终独立审计仍等待。
+
 ## 尚未完成（当前）
 
 已完成六项诊断验收、144筛选/48确认和所述独立动作/子步检查，但经典均未达到任务成功。
-八组奖励重建、十组有限训练与所述样本接续审计已完成；RL收敛与多seed充分性、新最终模型锁定、
-全方法新24条件矩阵及论文级结论均尚未完成。
+八组奖励重建、十组有限训练、80开发评估和最终模型锁定已完成；RL收敛与多seed充分性、
+全方法新24条件矩阵、最终全量审计及论文级结论均尚未完成。
 最终结果不以ESN获胜为条件；baseline修好后优于ESN也照实报告。

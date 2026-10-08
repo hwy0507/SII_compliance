@@ -7,7 +7,7 @@ execution limitations and insufficient evidence of RL convergence. The previous
 384-episode results remain archived, but their weak-baseline outcomes do not
 establish ESN superiority over correctly implemented, well-trained alternatives.
 The current bounded campaign repairs and tests the adapters, retrains two RL
-seeds per family, and will freeze all16 methods before opening24 new final
+seeds per family, and has frozen all16 methods before opening24 new final
 conditions. Geometry, proprioceptive inputs, task/safety gates and actuator
 limits remain fixed. New final results are not available yet.
 
@@ -15,7 +15,7 @@ The [evaluation notes](code/mujoco_6d_vmc_benchmark/docs/BASELINE_REPAIR_EVALUAT
 define Task/Strict, contact and recovery metrics, and the assumptions behind
 nominal uncertainty estimates for the single stratified 24-condition cohort.
 
-At 2026-10-09 06:17 CST, all 144 classical screening and 48 confirmation
+At 2026-10-09 06:56 CST, all 144 classical screening and 48 confirmation
 episodes had finished without placement success. All eight affected metric
 learners have been rebuilt from retained off-policy data after fixing an
 80-fold torque-smoothness reward inflation (4 ms servo versus 0.05 ms physics
@@ -26,7 +26,11 @@ clock). All ten training jobs saved final checkpoints at episode boundaries by
 frozen checkpoint diagnostics passed reproducibility checks, but value residuals
 remain and convergence is unproven. A diagnostic-only cuDNN launcher failure was
 preserved and fixed without changing checkpoints. Eighty development evaluations
-are running; the final 24 conditions remain sealed. Independent checks cover
+finished at 06:51 CST: no Task/Strict successes, 78 full and two early failures.
+The registered ranking selected one seed per RL family; independent checks
+verified the 80 scores, all model/source hashes and freeze-before-test chronology.
+The 384 final evaluations started at 06:51:52 CST and are still running.
+Independent checks cover
 actual rewards, dynamic controller replay and terminal potential cancellation;
 historical training/data budgets and discarded/rebuild work are reported separately.
 
