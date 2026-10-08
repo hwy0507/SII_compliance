@@ -1,3 +1,13 @@
+## 2026-10-08 — 接触条件下柔顺指标探索与正式判据建议
+
+- 继续核对main 282433d339feef66b0334f223f82a6eea96b040b、baseline ebb0e1e6a71ddbfe6fb763fd4dabe1278cfa4ac6；保留另一agent对 run_sensor_wbc.py 的未提交修改。未重训、未改变v6场景、checkpoint或历史失败记录。
+- 使用已冻结 office-validation-v6 的8条确实发生棍—手受力接触轨迹，计算棍手接触冲量、峰力、接触时长、手部XY让位、棍推窗口物块目标距离减少量，以及“物块推进/接触冲量”。分析明确标记为探索性，未用于选权重或调场景。
+- 基础VMC蒸馏ESN的棍手冲量35.349 N·s，Zero 69.635 N·s，降低49.2%；棍推窗口物块推进30.561对17.933mm，单位冲量推进0.865对0.258mm/(N·s)，ESN相对Zero提高235.7%。在已发生接触方法中，ESN按该效率指标第一。
+- 不能据此声称ESN全面最佳：固定导纳绝对冲量最低24.737 N·s；DAgger ESN推进量更大但冲量/峰力更高；固定/在线阻抗无棍接触，不能作为棍推柔顺胜者；v6有扰动回合task/strict仍全失败。
+- 新报告 docs/COMPLIANCE_METRICS_EXPLORATORY_20261008.md 说明建议的正式证据链：任务/安全门槛优先、接触覆盖单列、相同初始状态的接触冲量、任务推进/冲量、棍推后恢复时间、峰矩/峰速和多场景多seed paired bootstrap。提出contact-only新协议，避免Zero因停滞获得假低RMSE。
+- Spark分析产物：arm1@192.168.31.70:/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002/compliance_metrics_exploratory/，含 METRICS.json/csv、PNG/PDF、报告；原始v6轨迹和模型未改。当前结论仍是开发条件趋势，不是正式泛化或任务成功证明。
+- 新增脚本 experiments/analyze_compliance_metrics_20261008.py，通过编译检查；只提交本任务脚本、报告与本日志，保留其他agent未提交文件。
+
 ## 2026-10-02 — 独立v6验证场景与冻结ESN/RL配对评估完成
 
 - 用户授权保留组合干扰思路新建验证场景；开工核对main 14820fac7141fa8779aa56b5ae0ba595ee2ee0a5、baseline d00b995711c68a2e42a2ffd4ec2813758849aff3，读取AGENTS及同步skill。先写PROTOCOL.json锁定场景、14方法checkpoint/hash和预算，未按结果改场景/权重，无重训。
