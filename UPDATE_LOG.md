@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-09 — 15小时修复阶段八：全部奖励重建接续、预算账本与最终核验工具
+
+- main上一发布`f6cc500ceecc3abde688eb26fb72eb73a3996b61`已远端核验，baseline仍`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。17:09:58 UTC八组metric全部重建/恢复；唯一continuation_v3接续十组实际梯度训练，旧v1/v2不重启，原训练/总截止保持。
+- 独立奖励检查已覆盖八组15条修复后完整回合，全部通过；证据`LIVE_SERVO_REWARD_AUDIT_02.json` SHA `451f8b40b3a8bc97ec68cff82059590452c42b654bb9d5fbd501c891db749bea`。十组optimizer有限、OOM均0；两组较早task服务有3GiB内存回收压力，不把systemd摘要误作真实内存。
+- 新`report_repair_compute_20261009.py`按实际物理行和日志更新数统计，排除继承/复用数据的重复仿真计数，重建计算是总计算子集，废弃/替换梯度另列。`COMPUTE_LEDGER_02.json` SHA `feb74bb69afe59a7e3674fd8fedf0f2e0ec6c1f4d1fbbc6d67a2c800e4742908`；快照不是最终预算。初始两个direct同seed预热曾Task成功但Strict失败（穿透0.98245mm），不能当成梯度学习或两项独立成功证据。
+- `verify_repair_final_20261009.py`已通过配对概率/Holm/无接触NA检查；将在完整384后核验模型锁、原始数据hash、动作/储备池及RL归一化，再输出全部15项ESN配对对照，成功检验分别Holm校正，条件接触指标与总表失败分开。未运行最终核验，未打开final24，不按结果选指标或改模型。
+- 已核验服务器主根仍`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`；新工具`analysis_stage08_source/`，训练`source_v9/`不变，登记`RL_JOBS_CORRECTED.json`、进度`continuation_v3/execution.json`。阶段交付`delivery_stage08.tar.gz`发布前核验；尚未完成RL收口、开发选择/冻结及16×24新矩阵，继续原长任务。
+
 ## 2026-10-09 — 15小时修复阶段六/七：奖励时钟纠错与原始转移重建
 
 - 01:01 CST重新核对远端main `9ff915d2830eee2e699dce20539b1bda9b13b607`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；未合并baseline。经典144筛选及48确认全完成，Task/Strict均0，选择VMC09/导纳17/阻抗00；不把运行正确当成性能合格。
