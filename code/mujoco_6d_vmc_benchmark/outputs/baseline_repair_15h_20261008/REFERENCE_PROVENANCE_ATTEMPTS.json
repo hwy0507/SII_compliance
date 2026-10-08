@@ -1,0 +1,23 @@
+{
+  "server_root": "arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/",
+  "attempts": [
+    {
+      "unit": "sii-r15-reference-provenance-01.service",
+      "invocation": "95c7690f10bb46a4904cb26a87f6c412",
+      "source": "checkpoint_panel_source_v1/audit_repair_reference_provenance_20261009.py",
+      "source_sha256": "ff550a84de326deef638b30732ea929b09482c9466b8cd48917a831f93c805e6",
+      "status": "diagnostic_failure_preserved",
+      "error": "KeyError training_data_sha256: archived ordinary MLP training metadata uses data_sha256. No model/data modified and no output evidence file produced."
+    },
+    {
+      "unit": "sii-r15-reference-provenance-02.service",
+      "invocation": "b1f89af1509543c0a3a48df8f5116867",
+      "source": "reference_provenance_source_v2/audit_repair_reference_provenance_20261009.py",
+      "status": "passed",
+      "output": "REFERENCE_PROVENANCE_02.json",
+      "output_sha256": "03326d03d8b8815c730c47c4d00fc11b9ff3539c0c77fc3a60702f889425ed46",
+      "change": "Read the actual archived metadata key and record which key was used. All six checkpoint/metadata/dataset registry checks pass."
+    }
+  ],
+  "scope": "Audit harness compatibility only. Historical metadata/checkpoints and all running training remain unchanged."
+}

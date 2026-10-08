@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-09 — 15小时修复阶段十：十组冻结critic诊断与参考模型训练来源
+
+- 上一发布main `40a7dd9a159c5333928e0cacf80482af5e0e016a`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；继续同一长任务。18:05 UTC十组训练仍运行，参数约1.675–1.7875万交互、direct metric7.407/2.6万、task8.725/3.075万，没有新最终成绩。
+- 新只读panel在看诊断前登记十个最新完整checkpoint，按单进程/3GiB顺序加载相同GPU拓扑，不仿真或训练。十组模型/归一化未变，检查全通过；终止状态最小双Q减归一化奖励的均值约0.398–2.845，尚无收敛证据，不把历史行为return差当当前策略价值偏差。全部十组继续按原预算训练。
+- 六个神经参考模型checkpoint及训练metadata/data登记hash通过：选定ESN/matched RNN/ordinary RNN来自20train/5validation的新teacher数据，matched MLP/ordinary MLP/memoryless来自18train/6validation旧teacher数据。历史都曾获得新数据拟合候选机会，但开发选择出的版本不同；最终统一评测是系统比较，不是六者同数据/同预算结构消融，宽度128亦不代表参数相等。本批不据此倒推换模型。
+- 来源审计首版对ordinary MLP的旧`data_sha256`字段不兼容，保留失败，v2记录真实字段后通过；没有修改历史模型/metadata。新增工具`audit_repair_checkpoint_panel_20261009.py`、`audit_repair_reference_provenance_20261009.py`，详情见15小时记录第十阶段。
+- 已核验服务器根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`；`checkpoint_panel_01/execution.json` SHA `1e58c6ceea00791e7a39db3ce81223bb0f325f6c5494e025de9b3ac0964a34d5`，`REFERENCE_PROVENANCE_02.json` SHA `03326d03d8b8815c730c47c4d00fc11b9ff3539c0c77fc3a60702f889425ed46`。源码与失败版本分目录保留，阶段十归档发布前核验。训练收口、开发选模、全16模型冻结与新384矩阵仍未完成，final24未读。
+
 ## 2026-10-09 — 15小时修复阶段九：两个seed的学习后动态动作/状态审计
 
 - 17:53 UTC实时核对main `82c9443427bcdf101236d07ba2058985f64fc8d3`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；两分支无并行新更新，未合并baseline。十组训练稳定继续，参数组约1.45–1.575万交互，direct metric约7.025/2.225万、task约8.325/2.825万；这是运行快照，不是收敛或最终成绩。

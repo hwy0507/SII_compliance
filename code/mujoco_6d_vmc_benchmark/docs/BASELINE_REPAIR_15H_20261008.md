@@ -278,6 +278,35 @@ VMC各1375步的action/offset/velocity/参数/能量全为零误差；导纳从�
 17:48快照：参数组约1.375–1.475万交互，direct metric seed1/2约6.875/2.071万，
 task seed1/2约8.175/2.675万，十组继续训练。最终条件仍封存。
 
+## 第十阶段：全部RL价值诊断与神经参考来源核对（18:05 UTC）
+
+`checkpoint_panel_01/`在运行诊断前一次性登记十组最新完整checkpoint，不依据诊断结果选模型。
+单线程3GiB顺序加载原GPU拓扑，没有仿真/梯度更新，十组全部完成且checkpoint/归一化不变。
+六组参数模型均在15125步；direct metric两seed为67194/15189步，task为80258/22015步。
+在等距256转移加全部terminal的固定采样中，terminal的最小双Q减归一化即时奖励，
+各组均值约0.398–2.845；确定性actor饱和比例约21%–41%。这是尚未充分拟合的诊断，
+不是严格收敛检验，也不能把历史行为return差当作当前策略的无偏价值误差。
+普通TD残差使用固定seed的一次后继动作抽样，有采样噪声；任务成功仍须闭环判断。
+十组继续训练，不因通过可复现诊断就提前冻结；原收口/总截止不变。
+
+另对六个固定神经参考核验checkpoint、训练metadata及registry中的data hash。
+ESN、matched RNN、ordinary RNN选中的是新teacher的20train/5validation数据`7bb2f7…`；
+matched MLP、ordinary MLP、memoryless仍是旧teacher的18train/6validation数据`b97acf…`。
+历史各族都曾获得新数据候选机会，但登记选中的最终系统版本不同；本批不倒推改选。
+因此最终16行是相同测试条件下的系统比较，**不是六者同数据/同计算的结构消融**。
+其中ESN/matched RNN的选中数据相同，仍需披露读出拟合/梯度训练与搜索预算差异。
+名义宽度128也不是参数量相等：metadata声明ESN可训练读出3780、matched RNN40132、
+matched MLP22852、ordinary RNN21888、ordinary MLP5504、memoryless2884。
+这些是已归档训练声明；本轮未独立重算所有旧训练成本或重审全部旧物理标签。
+
+首来源审计对ordinary MLP误读新字段名，实际旧字段为`data_sha256`，失败保留；
+新v2正确读取两种历史schema，并记录采用的字段，原数据/模型没有变化。
+证据`REFERENCE_PROVENANCE_ATTEMPTS.json`、`REFERENCE_PROVENANCE_02.json` SHA
+`03326d03d8b8815c730c47c4d00fc11b9ff3539c0c77fc3a60702f889425ed46`；
+十组panel的`execution.json` SHA `1e58c6ceea00791e7a39db3ce81223bb0f325f6c5494e025de9b3ac0964a34d5`。
+服务器新增源码`checkpoint_panel_source_v1/`和`reference_provenance_source_v2/`均为只读审计入口，
+`source_v9`训练源不变。新final24仍封存，尚未有新384对比结果。
+
 ## 尚未完成（当前）
 
 已完成六项诊断验收、144筛选/48确认和所述独立动作/子步检查，但经典均未达到任务成功。

@@ -1,0 +1,2056 @@
+{
+  "created_utc": "2026-10-08T18:03:30.390069+00:00",
+  "source_sha256": "424f0a0e9cbf28f57eca18076c990a7b7364e715771b9c9689d80d5f422aeb3e",
+  "registry_sha256": "02980c636bb5fddabdf1bc16a669c7e093bc5be0a3bf5e027114b6849bc316d8",
+  "rows": [
+    {
+      "family": "esn",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/local_context_readout_refit_archive_v1/context_readout_refit_v1/readout_refit_esn_2026100301/checkpoint.npz",
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+      "metadata": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/local_context_readout_refit_archive_v1/context_readout_refit_v1/readout_refit_esn_2026100301/TRAINING_COMPLETE.json",
+      "metadata_sha256": "28508e3f0ef1ef5518a8908c05ec6d459fc637251d9d7e677ae8764e18842186",
+      "training_data_sha256": "7bb2f7bad7555cc97ca9cc32d43040e91775ce05cdfd32d109a7afbeb1d7e0a0",
+      "metadata_data_key": "training_data_sha256",
+      "flags": {
+        "contract": "proprio48_office_vmc_memory_esn_v1",
+        "axis_separable": false,
+        "absolute_inputs": true,
+        "context_inputs": true,
+        "position_context": true,
+        "reset_at_each_observation": false,
+        "readout_activation": "clipped_linear",
+        "output_gain": 1.0
+      },
+      "shapes": {
+        "win": [
+          128,
+          156
+        ],
+        "w": [
+          128,
+          128
+        ],
+        "weights": [
+          552,
+          7
+        ],
+        "leak": [
+          128
+        ],
+        "scale": [
+          6
+        ],
+        "state_context_readout_w": [
+          128,
+          12
+        ]
+      },
+      "stored_selected_numeric_scalars": 41886,
+      "declared_training_details": {
+        "completed_utc": "2026-10-04T04:22:14.811445+00:00",
+        "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+        "training_data_sha256": "7bb2f7bad7555cc97ca9cc32d43040e91775ce05cdfd32d109a7afbeb1d7e0a0",
+        "seed": 2026100301,
+        "selected": {
+          "name": "rho0.5_gain0.08_ridge0.001",
+          "rho": 0.5,
+          "input_gain": 0.08,
+          "ridge": 0.001,
+          "holdout_mse": 0.0002416326725823486,
+          "physical_history_mse": 0.00020631243304483434,
+          "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7"
+        },
+        "reservoir_width": 128,
+        "learned_hidden_readout_width": 0,
+        "trainable_readout_coefficients": 3780,
+        "fields": [
+          14,
+          15,
+          16,
+          20,
+          21,
+          22,
+          26,
+          27,
+          28,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "contextual_leak_gate": false,
+        "readout_activation": "clipped_linear",
+        "state_context_readout": true,
+        "state_context_projection_trainable": false,
+        "gate_multiplier_limits": null,
+        "independent_slowdown_readout": true,
+        "selection": "Whole real physical identities, preassigned imitation_validation; not closed-loop generalization requested-action MSE only",
+        "temporal_readout_loss": {
+          "delta_weight": 0.0,
+          "integral_weight": 0.0,
+          "integral_window_steps": 16,
+          "physical_unit_scale": [
+            0.0,
+            0.64,
+            0.64,
+            0.64,
+            0.4799999999999999,
+            0.4799999999999999,
+            0.4799999999999999
+          ],
+          "fit_uses_training_histories_only": true
+        },
+        "physical_history_mask": "explicit physical_execution array",
+        "reset_at_each_observation": false,
+        "limitation": "New recovery-teacher dataset and context architecture; not isolated memory comparison. No runtime VMC, extra learned hidden layer, contact truth, event time, task phase or object state. Physical success untested."
+      },
+      "declared_lineage_role_counts": {
+        "train": 20,
+        "imitation_validation": 5
+      },
+      "declared_lineage": [
+        {
+          "condition_id": "train_000",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_000/rollout.npz",
+          "sha256": "2f22353afbef7a979c29e5400b4964a878c09ea03222632ae20a6d24255c6fac",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_001",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_001/rollout.npz",
+          "sha256": "46ffa1f95e23003640ee1e4c990f09945059d9393eb9dec8bef50eee2dba01e1",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_002",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_002/rollout.npz",
+          "sha256": "a07391f028d7f0c4b1f4314c2f2e6a5888e039b8ccf2a0f76e24195479a2131b",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_007",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_007/rollout.npz",
+          "sha256": "904ed5a2039c8aacc208239154ba1bd9d66a1fe268968fe4c1d315f62fd32efe",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_010",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_010/rollout.npz",
+          "sha256": "6857e93de4af971baa8d33322c483b34147f1672e8d456e0fe86ecfad0a1d30c",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_011",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_011/rollout.npz",
+          "sha256": "02c91fef07298ab5d1c3fac64936d64c09a93156d567bf17ce05b766f0f912d3",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_012",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_012/rollout.npz",
+          "sha256": "5bde82c65ac0795a6a7ce36f5820f985cc974264ef3103af17d40baabe063756",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_015",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_015/rollout.npz",
+          "sha256": "c2af72a07dee6648f9f1aa945ca222646bce775cd5ca91b7f94f56553a7e021f",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_016",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_016/rollout.npz",
+          "sha256": "004dc4858a4930a8a9c4cee2f31eca5fa851a9c901b48e9c20154e34a444a893",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_017",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_017/rollout.npz",
+          "sha256": "9d07c1b7aa9e718608e61aa1169bba622776d14d7e7e8971cbe11f219bf2b58f",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_018",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_018/rollout.npz",
+          "sha256": "584ca11d98e735efffbd2bd1555607ff51317de87bdca39d5597ff74d2a94838",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_019",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_019/rollout.npz",
+          "sha256": "62a13b2747e16cca00ed2633a185560766461194f693f2f999b2b6da1b343158",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_020",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_020/rollout.npz",
+          "sha256": "2dc4eef8cd6f86e18b970485c7f73b51745c3fa2b0abe1f90f5f0faa9d60f209",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_021",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_021/rollout.npz",
+          "sha256": "5b10066a78b15116966b4d4f953cc1f3ea468f023c5e527b2e15591934944fcf",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_023",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_023/rollout.npz",
+          "sha256": "732520580146b524540b0359c0332db8b8dbf5dde95e0d8b21119129c7396d56",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_024",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_024/rollout.npz",
+          "sha256": "7fb5f55b96f61f527155f92d4e161c21bc2879a98231db2fd4de7898d4e89712",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_026",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_026/rollout.npz",
+          "sha256": "e2890de62bd8df78bc168714bc5ad2b7500a2c51a38847d88413e4419e028d8d",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_027",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_027/rollout.npz",
+          "sha256": "7ddd735ffa6391cad54b7aafa92aa0288dd42a49d8892f43ca14616db5f2e5e1",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_028",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_028/rollout.npz",
+          "sha256": "4495c860422facdd27d420c887c6cc1ad3093e828593c677e58c94f090d03b27",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_031",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_031/rollout.npz",
+          "sha256": "509914f5e43444e4e03cbda62b79d3999823d9fd27fc2fd4fbd3b18f75b420ff",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_002",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_002/rollout.npz",
+          "sha256": "9caf73b08e4e13d8471aa8eb2e18ebfc8c7d42d7a1b2f41666cf5436f977407c",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_004",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_004/rollout.npz",
+          "sha256": "26eb0ffaba2c6e1b3ee735bd128692b66f0f7a7d2179145c435e6dfe2feb5c51",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_005",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_005/rollout.npz",
+          "sha256": "f35d19ee9f4a55ee0e20bf639d6593acbbe1f984e4e83c87f1e89fd0fb9998e1",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_006",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_006/rollout.npz",
+          "sha256": "3232c62f7dc56b73b60d75b943330520a64220f796b4d62617266797ee548299",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_007",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_007/rollout.npz",
+          "sha256": "5d84d786fc3db02225e414e573c5d36fceb2a66ebedb6e31342f9da1b1b31096",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        }
+      ]
+    },
+    {
+      "family": "matched_rnn",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/local_context_readout_refit_archive_v1/context_readout_refit_v1/readout_refit_matched_rnn_2026100301/checkpoint.npz",
+      "checkpoint_sha256": "eec045b36ee3cfd88405856305ab99ed21c63c3ef1cd6f74bd94c6f2a35cc8c0",
+      "metadata": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/local_context_readout_refit_archive_v1/context_readout_refit_v1/readout_refit_matched_rnn_2026100301/TRAINING_COMPLETE.json",
+      "metadata_sha256": "95ff5417c7daa2e58df593d572cef0c0fa980f94cd92d89a36c461984b616c25",
+      "training_data_sha256": "7bb2f7bad7555cc97ca9cc32d43040e91775ce05cdfd32d109a7afbeb1d7e0a0",
+      "metadata_data_key": "training_data_sha256",
+      "flags": {
+        "contract": "proprio48_context_network_v1",
+        "network_kind": "rnn",
+        "axis_separable": false,
+        "absolute_inputs": true,
+        "context_inputs": true,
+        "position_context": true,
+        "reset_at_each_observation": false,
+        "readout_activation": "clipped_linear",
+        "output_gain": 1.0
+      },
+      "shapes": {
+        "win": [
+          128,
+          156
+        ],
+        "w": [
+          128,
+          128
+        ],
+        "weights": [
+          552,
+          7
+        ],
+        "leak": [
+          128
+        ],
+        "scale": [
+          6
+        ],
+        "state_context_readout_w": [
+          128,
+          12
+        ]
+      },
+      "stored_selected_numeric_scalars": 41886,
+      "declared_training_details": {
+        "completed_utc": "2026-10-04T04:23:14.081446+00:00",
+        "kind": "rnn",
+        "checkpoint_sha256": "eec045b36ee3cfd88405856305ab99ed21c63c3ef1cd6f74bd94c6f2a35cc8c0",
+        "parent_checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+        "training_data_sha256": "7bb2f7bad7555cc97ca9cc32d43040e91775ce05cdfd32d109a7afbeb1d7e0a0",
+        "seed": 2026100301,
+        "updates": 4000,
+        "selected_update": 4000,
+        "width": 128,
+        "trainable_parameters": 40132,
+        "features_matched_to_context_esn": true,
+        "learning_rate": 1e-06,
+        "precision": "float64",
+        "tbptt_steps": 64,
+        "fixed_contextual_leak_gate": false,
+        "gate_weights_trainable": false,
+        "fixed_state_context_readout": true,
+        "state_context_projection_trainable": false,
+        "integral_weight": 0.0,
+        "integral_window_steps": 16,
+        "action_delta_weight": 0.25,
+        "actual_nonpadding_observations": 1670216,
+        "schedule_sha256": "e63aff1fba79c435fd0c8f3476e8828a4fa122d7fdca7d76ff76a8d5ec637de6",
+        "holdout_mse": 0.00023706455842552473,
+        "physical_history_mse": 0.0002009292411065802,
+        "validation_split": "Whole real physical identities, preassigned imitation_validation; not closed-loop generalization",
+        "numpy_torch_max_abs": 1.5633327965502986e-14,
+        "unused_field_isolation_pass": true,
+        "zero_load_equilibrium_pass": true,
+        "limitation": "Warm-started feature-matched MLP/RNN mechanism control; not parameter/FLOP matched and not an ESN. Fixed base time constants and optional fixed proprioceptive leak modulation; input/recurrent weights learn as declared. Physical success untested."
+      },
+      "declared_lineage_role_counts": {
+        "train": 20,
+        "imitation_validation": 5
+      },
+      "declared_lineage": [
+        {
+          "condition_id": "train_000",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_000/rollout.npz",
+          "sha256": "2f22353afbef7a979c29e5400b4964a878c09ea03222632ae20a6d24255c6fac",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_001",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_001/rollout.npz",
+          "sha256": "46ffa1f95e23003640ee1e4c990f09945059d9393eb9dec8bef50eee2dba01e1",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_002",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_002/rollout.npz",
+          "sha256": "a07391f028d7f0c4b1f4314c2f2e6a5888e039b8ccf2a0f76e24195479a2131b",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_007",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_007/rollout.npz",
+          "sha256": "904ed5a2039c8aacc208239154ba1bd9d66a1fe268968fe4c1d315f62fd32efe",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_010",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_010/rollout.npz",
+          "sha256": "6857e93de4af971baa8d33322c483b34147f1672e8d456e0fe86ecfad0a1d30c",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_011",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_011/rollout.npz",
+          "sha256": "02c91fef07298ab5d1c3fac64936d64c09a93156d567bf17ce05b766f0f912d3",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_012",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_012/rollout.npz",
+          "sha256": "5bde82c65ac0795a6a7ce36f5820f985cc974264ef3103af17d40baabe063756",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_015",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_015/rollout.npz",
+          "sha256": "c2af72a07dee6648f9f1aa945ca222646bce775cd5ca91b7f94f56553a7e021f",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_016",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_016/rollout.npz",
+          "sha256": "004dc4858a4930a8a9c4cee2f31eca5fa851a9c901b48e9c20154e34a444a893",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_017",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_017/rollout.npz",
+          "sha256": "9d07c1b7aa9e718608e61aa1169bba622776d14d7e7e8971cbe11f219bf2b58f",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_018",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_018/rollout.npz",
+          "sha256": "584ca11d98e735efffbd2bd1555607ff51317de87bdca39d5597ff74d2a94838",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_019",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_019/rollout.npz",
+          "sha256": "62a13b2747e16cca00ed2633a185560766461194f693f2f999b2b6da1b343158",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_020",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_020/rollout.npz",
+          "sha256": "2dc4eef8cd6f86e18b970485c7f73b51745c3fa2b0abe1f90f5f0faa9d60f209",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_021",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_021/rollout.npz",
+          "sha256": "5b10066a78b15116966b4d4f953cc1f3ea468f023c5e527b2e15591934944fcf",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_023",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_023/rollout.npz",
+          "sha256": "732520580146b524540b0359c0332db8b8dbf5dde95e0d8b21119129c7396d56",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_024",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_024/rollout.npz",
+          "sha256": "7fb5f55b96f61f527155f92d4e161c21bc2879a98231db2fd4de7898d4e89712",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_026",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_026/rollout.npz",
+          "sha256": "e2890de62bd8df78bc168714bc5ad2b7500a2c51a38847d88413e4419e028d8d",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_027",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_027/rollout.npz",
+          "sha256": "7ddd735ffa6391cad54b7aafa92aa0288dd42a49d8892f43ca14616db5f2e5e1",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_028",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_028/rollout.npz",
+          "sha256": "4495c860422facdd27d420c887c6cc1ad3093e828593c677e58c94f090d03b27",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_031",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_031/rollout.npz",
+          "sha256": "509914f5e43444e4e03cbda62b79d3999823d9fd27fc2fd4fbd3b18f75b420ff",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_002",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_002/rollout.npz",
+          "sha256": "9caf73b08e4e13d8471aa8eb2e18ebfc8c7d42d7a1b2f41666cf5436f977407c",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_004",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_004/rollout.npz",
+          "sha256": "26eb0ffaba2c6e1b3ee735bd128692b66f0f7a7d2179145c435e6dfe2feb5c51",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_005",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_005/rollout.npz",
+          "sha256": "f35d19ee9f4a55ee0e20bf639d6593acbbe1f984e4e83c87f1e89fd0fb9998e1",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_006",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_006/rollout.npz",
+          "sha256": "3232c62f7dc56b73b60d75b943330520a64220f796b4d62617266797ee548299",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_007",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_007/rollout.npz",
+          "sha256": "5d84d786fc3db02225e414e573c5d36fceb2a66ebedb6e31342f9da1b1b31096",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        }
+      ]
+    },
+    {
+      "family": "matched_mlp",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/local_context_gate_archive_v1/context_gate_learning_v1/gated_matched_mlp_2026100301_point/checkpoint.npz",
+      "checkpoint_sha256": "786079a6576a46ce25022e23e41aa8ad0921d073b2aeb9e2c60adc02a6183562",
+      "metadata": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/local_context_gate_archive_v1/context_gate_learning_v1/gated_matched_mlp_2026100301_point/TRAINING_COMPLETE.json",
+      "metadata_sha256": "47be54421cd0412990ac900a4a1a1f3fede643b4ae2f4469887750d5bb029dbf",
+      "training_data_sha256": "b97acf4c61d9d3ba4d5fcb4817ac449b460e65a4821be632c5f61a5a1bba67c6",
+      "metadata_data_key": "training_data_sha256",
+      "flags": {
+        "contract": "proprio48_context_network_v1",
+        "network_kind": "mlp",
+        "axis_separable": false,
+        "absolute_inputs": true,
+        "context_inputs": true,
+        "position_context": true,
+        "reset_at_each_observation": true,
+        "readout_activation": "clipped_linear",
+        "output_gain": 1.0
+      },
+      "shapes": {
+        "win": [
+          128,
+          156
+        ],
+        "w": [
+          128,
+          128
+        ],
+        "weights": [
+          424,
+          7
+        ],
+        "leak": [
+          128
+        ],
+        "scale": [
+          6
+        ],
+        "context_gate_w": [
+          128,
+          12
+        ]
+      },
+      "stored_selected_numeric_scalars": 40990,
+      "declared_training_details": {
+        "completed_utc": "2026-10-03T15:27:31.543031+00:00",
+        "kind": "mlp",
+        "checkpoint_sha256": "786079a6576a46ce25022e23e41aa8ad0921d073b2aeb9e2c60adc02a6183562",
+        "parent_checkpoint_sha256": "2613e77bb0a2fa0da5f6a838349d3c022e40e9edceedbe50931218c3bb38ac26",
+        "training_data_sha256": "b97acf4c61d9d3ba4d5fcb4817ac449b460e65a4821be632c5f61a5a1bba67c6",
+        "seed": 2026100301,
+        "updates": 4000,
+        "selected_update": 1200,
+        "width": 128,
+        "trainable_parameters": 22852,
+        "features_matched_to_context_esn": true,
+        "learning_rate": 1e-05,
+        "precision": "float64",
+        "tbptt_steps": 64,
+        "fixed_contextual_leak_gate": true,
+        "gate_weights_trainable": false,
+        "integral_weight": 0.0,
+        "integral_window_steps": 16,
+        "action_delta_weight": 0.25,
+        "actual_nonpadding_observations": 1505216,
+        "schedule_sha256": "895a24cf8f765f5d203f6554ba5eb9660e2d0d5fe4838bcc0e4f868a6b33cc54",
+        "holdout_mse": 0.0011021948063717668,
+        "physical_history_mse": 0.0009540910621290479,
+        "validation_split": "Whole real physical identities, preassigned imitation_validation; not closed-loop generalization",
+        "numpy_torch_max_abs": 6.8833827526759706e-15,
+        "unused_field_isolation_pass": true,
+        "zero_load_equilibrium_pass": true,
+        "limitation": "Warm-started feature-matched MLP/RNN mechanism control; not parameter/FLOP matched and not an ESN. Fixed base time constants and optional fixed proprioceptive leak modulation; input/recurrent weights learn as declared. Physical success untested."
+      },
+      "declared_lineage_role_counts": {
+        "train": 18,
+        "imitation_validation": 6
+      },
+      "declared_lineage": [
+        {
+          "condition_id": "train_000",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_0/train_000/rollout.npz",
+          "sha256": "785c075ced8fcc30ca470030b84166f1c0fb6607dfe3fa87b701a052bb791d67",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_016",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_0/train_016/rollout.npz",
+          "sha256": "4bede001ef35a3a0bfa82ae70fdd81e0a3fe6191e1c26ec2fab186fe1f5d2243",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_020",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_0/train_020/rollout.npz",
+          "sha256": "7e25358ca6951eae8e610af3ce4cbf6d71725ccfbc60542529abc468bb899195",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_000",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_0/imitation_validation_000/rollout.npz",
+          "sha256": "e3b93f16ebaaded586b2dfacc1a83e3fa07a334a5a3ebc069f98398f89436969",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_005",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/train_005/rollout.npz",
+          "sha256": "46d79eef5d29a68ea98912f60b586f617e7e8f35ad38d817f13113e86207e1cb",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_017",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/train_017/rollout.npz",
+          "sha256": "4ec991b921e46dae3fc88018c6f643d35ab93be775f1f15a3f4191445a1aa176",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_021",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/train_021/rollout.npz",
+          "sha256": "00c17f3be57752ca06206edfebeecc77135feb1ddecd2dbb753ca8a56052493f",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_029",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/train_029/rollout.npz",
+          "sha256": "95d8f5125ba6d9bec3e9838b9e82fc77428aa58916d3a885c97d36889d0fcf64",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_001",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/imitation_validation_001/rollout.npz",
+          "sha256": "3018b4be0c0bbcc24d90d18a84c31f478ddefa5d5d93fb673a5fbf3b11ec5fba",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_005",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/imitation_validation_005/rollout.npz",
+          "sha256": "c19f4e831c5d444b8f3307cd3fe19c48e5f9dcdd18086fde21acedb3189205b5",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_006",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_006/rollout.npz",
+          "sha256": "8830a4afec9fa78a76a795b5491960383057acc3acfd55d77fe43b1a8dbc5997",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_010",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_010/rollout.npz",
+          "sha256": "3871fd87dbfd44ca5f54243efd740098ed8c80865e41467819106e6878931543",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_014",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_014/rollout.npz",
+          "sha256": "93b588cccd3e029b68f9c193edf07ab6a0c06288515d654cfce8cd6dd5f65e0e",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_018",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_018/rollout.npz",
+          "sha256": "279a8ddedfd04fa7c1fda991f300a0b91ade4efe5c4e857c994b3b866e1eab73",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_022",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_022/rollout.npz",
+          "sha256": "0ac328f06db7209f95d101761c6363d581928e80589c7097ed873eb63830a723",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_030",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_030/rollout.npz",
+          "sha256": "da62a6665931d8b53ff1245302ab2602ab5ea126f851975285a704edfd11c678",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_006",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/imitation_validation_006/rollout.npz",
+          "sha256": "6e0757e4fa4d2faa36120537cb926dcd3a16b7c61d00eb45733ad79480a39668",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_007",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_007/rollout.npz",
+          "sha256": "a4ffc31b9aa30c719790342fc957da7f70142aaa65b8b08317eeefc1ca83c6f7",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_019",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_019/rollout.npz",
+          "sha256": "5b3524a4e78a1e24d4eb51484e4dde3c49db984bbf8c00c0c74f0bc8e04aab33",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_023",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_023/rollout.npz",
+          "sha256": "04093f635d20ef20f73a6cc9df70af26afbed175b89f0de6587db723206d5fb3",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_027",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_027/rollout.npz",
+          "sha256": "43ed1ea70ebcf103cce90cbc888e40ed7f40c16f0b046ce169b75badef093486",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_031",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_031/rollout.npz",
+          "sha256": "18a77f84515705729cab0f8d52930e29dc1d4daf4c2892d5aa203b763831c86c",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_003",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/imitation_validation_003/rollout.npz",
+          "sha256": "1bd5d582853128e8e60530822707b422967fabf3cb28bc8ab6ee502099b5cd7e",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_007",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/imitation_validation_007/rollout.npz",
+          "sha256": "0ee9192a0635ccfacae9111815f91b82310a158d007a6673ce93ada06fc1bf08",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        }
+      ]
+    },
+    {
+      "family": "ordinary_rnn",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/local_context_readout_refit_archive_v1/context_readout_refit_v1/readout_refit_ordinary_rnn_2026100301/checkpoint.npz",
+      "checkpoint_sha256": "6f3df0b65da56926214b523f7d431a3773f5b03632cb595d8f9008f642f1a910",
+      "metadata": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/local_context_readout_refit_archive_v1/context_readout_refit_v1/readout_refit_ordinary_rnn_2026100301/TRAINING_COMPLETE.json",
+      "metadata_sha256": "5ea0573f9e475106a1911ddd5772d2facd0d903fb4780650243249a08cd783f0",
+      "training_data_sha256": "7bb2f7bad7555cc97ca9cc32d43040e91775ce05cdfd32d109a7afbeb1d7e0a0",
+      "metadata_data_key": "data_sha256",
+      "flags": {
+        "contract": "proprio48_office_mlp_rnn_v1",
+        "absolute_inputs": true
+      },
+      "shapes": {
+        "scale": [
+          18
+        ]
+      },
+      "stored_selected_numeric_scalars": 18,
+      "declared_training_details": {
+        "kind": "rnn",
+        "seed": 2026100301,
+        "updates": 4000,
+        "selected_update": 2112,
+        "width": 128,
+        "target": "requested",
+        "norm_slowdown": false,
+        "modular": false,
+        "active_trainable_parameters": 21888,
+        "learning_rate": 0.0003,
+        "drift_weight": 0.0,
+        "drift_window_s": 0.64,
+        "parent_checkpoint_sha256": null,
+        "absolute_inputs": true,
+        "precision": "float64",
+        "trainable_parameters": 21888,
+        "fields": [
+          14,
+          15,
+          16,
+          20,
+          21,
+          22,
+          26,
+          27,
+          28,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "data_sha256": "7bb2f7bad7555cc97ca9cc32d43040e91775ce05cdfd32d109a7afbeb1d7e0a0",
+        "metadata_sha256": "f817cca99dfa04bd2249bc00f8958c5a2d453cab2845eb1897e483ba68d8ac49",
+        "checkpoint_sha256": "6f3df0b65da56926214b523f7d431a3773f5b03632cb595d8f9008f642f1a910",
+        "schedule_sha256": "e63aff1fba79c435fd0c8f3476e8828a4fa122d7fdca7d76ff76a8d5ec637de6",
+        "exported_replay_sha256": "9cfab4cda7e3d08e2070300a0bc0762f5ecdde1c1f27a18941dae890b94869b9",
+        "groups": {
+          "real_train": {
+            "samples": 27500,
+            "action_mse": 0.0006817673702226631
+          },
+          "real_identity_validation": {
+            "samples": 6875,
+            "action_mse": 0.0007035295684518345
+          }
+        },
+        "numpy_torch_max_abs": 6.661338147750939e-16,
+        "unused_field_isolation_pass": true,
+        "zero_input_equilibrium_pass": true,
+        "batch_size": 8,
+        "tbptt_steps": 64,
+        "actual_nonpadding_observations": 1670216,
+        "action_delta_weight": 0.25,
+        "validation_split": "Whole real physical identities, preassigned imitation_validation; not closed-loop generalization",
+        "limitation": "Data provenance and whole-history split declared in dataset metadata; physical success measured separately. No runtime teacher/controller. Width-matched, not parameter-matched."
+      },
+      "declared_lineage_role_counts": {
+        "train": 20,
+        "imitation_validation": 5
+      },
+      "declared_lineage": [
+        {
+          "condition_id": "train_000",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_000/rollout.npz",
+          "sha256": "2f22353afbef7a979c29e5400b4964a878c09ea03222632ae20a6d24255c6fac",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_001",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_001/rollout.npz",
+          "sha256": "46ffa1f95e23003640ee1e4c990f09945059d9393eb9dec8bef50eee2dba01e1",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_002",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_002/rollout.npz",
+          "sha256": "a07391f028d7f0c4b1f4314c2f2e6a5888e039b8ccf2a0f76e24195479a2131b",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_007",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_007/rollout.npz",
+          "sha256": "904ed5a2039c8aacc208239154ba1bd9d66a1fe268968fe4c1d315f62fd32efe",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_010",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_010/rollout.npz",
+          "sha256": "6857e93de4af971baa8d33322c483b34147f1672e8d456e0fe86ecfad0a1d30c",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_011",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_011/rollout.npz",
+          "sha256": "02c91fef07298ab5d1c3fac64936d64c09a93156d567bf17ce05b766f0f912d3",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_012",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_012/rollout.npz",
+          "sha256": "5bde82c65ac0795a6a7ce36f5820f985cc974264ef3103af17d40baabe063756",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_015",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_015/rollout.npz",
+          "sha256": "c2af72a07dee6648f9f1aa945ca222646bce775cd5ca91b7f94f56553a7e021f",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_016",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_016/rollout.npz",
+          "sha256": "004dc4858a4930a8a9c4cee2f31eca5fa851a9c901b48e9c20154e34a444a893",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_017",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_017/rollout.npz",
+          "sha256": "9d07c1b7aa9e718608e61aa1169bba622776d14d7e7e8971cbe11f219bf2b58f",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_018",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_018/rollout.npz",
+          "sha256": "584ca11d98e735efffbd2bd1555607ff51317de87bdca39d5597ff74d2a94838",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_019",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_019/rollout.npz",
+          "sha256": "62a13b2747e16cca00ed2633a185560766461194f693f2f999b2b6da1b343158",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_020",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_020/rollout.npz",
+          "sha256": "2dc4eef8cd6f86e18b970485c7f73b51745c3fa2b0abe1f90f5f0faa9d60f209",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_021",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_021/rollout.npz",
+          "sha256": "5b10066a78b15116966b4d4f953cc1f3ea468f023c5e527b2e15591934944fcf",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_023",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_023/rollout.npz",
+          "sha256": "732520580146b524540b0359c0332db8b8dbf5dde95e0d8b21119129c7396d56",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_024",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_024/rollout.npz",
+          "sha256": "7fb5f55b96f61f527155f92d4e161c21bc2879a98231db2fd4de7898d4e89712",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_026",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_026/rollout.npz",
+          "sha256": "e2890de62bd8df78bc168714bc5ad2b7500a2c51a38847d88413e4419e028d8d",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_027",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_027/rollout.npz",
+          "sha256": "7ddd735ffa6391cad54b7aafa92aa0288dd42a49d8892f43ca14616db5f2e5e1",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_028",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_028/rollout.npz",
+          "sha256": "4495c860422facdd27d420c887c6cc1ad3093e828593c677e58c94f090d03b27",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_031",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/train_031/rollout.npz",
+          "sha256": "509914f5e43444e4e03cbda62b79d3999823d9fd27fc2fd4fbd3b18f75b420ff",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_002",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_002/rollout.npz",
+          "sha256": "9caf73b08e4e13d8471aa8eb2e18ebfc8c7d42d7a1b2f41666cf5436f977407c",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_004",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_004/rollout.npz",
+          "sha256": "26eb0ffaba2c6e1b3ee735bd128692b66f0f7a7d2179145c435e6dfe2feb5c51",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_005",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_005/rollout.npz",
+          "sha256": "f35d19ee9f4a55ee0e20bf639d6593acbbe1f984e4e83c87f1e89fd0fb9998e1",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_006",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_006/rollout.npz",
+          "sha256": "3232c62f7dc56b73b60d75b943330520a64220f796b4d62617266797ee548299",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_007",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_refinement_v1/collection/queue_0/imitation_validation_007/rollout.npz",
+          "sha256": "5d84d786fc3db02225e414e573c5d36fceb2a66ebedb6e31342f9da1b1b31096",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        }
+      ]
+    },
+    {
+      "family": "ordinary_mlp",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/local_neural_refinement_archive_v1/neural_lr_refinement_v1/ordinary_mlp_2026100301_point_lr0001/checkpoint.npz",
+      "checkpoint_sha256": "50bb22dd179e34af387f7e3375a9c7214e0eaa524df34c33a16562f52a03ea07",
+      "metadata": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/local_neural_refinement_archive_v1/neural_lr_refinement_v1/ordinary_mlp_2026100301_point_lr0001/TRAINING_COMPLETE.json",
+      "metadata_sha256": "5cdaf2aeb21873a9574557b99a3aad9432050983151aaf27c73b053ba6ea938e",
+      "training_data_sha256": "b97acf4c61d9d3ba4d5fcb4817ac449b460e65a4821be632c5f61a5a1bba67c6",
+      "metadata_data_key": "data_sha256",
+      "flags": {
+        "contract": "proprio48_office_mlp_rnn_v1",
+        "absolute_inputs": true
+      },
+      "shapes": {
+        "scale": [
+          18
+        ]
+      },
+      "stored_selected_numeric_scalars": 18,
+      "declared_training_details": {
+        "kind": "mlp",
+        "seed": 2026100301,
+        "updates": 4000,
+        "selected_update": 4000,
+        "width": 128,
+        "target": "requested",
+        "norm_slowdown": false,
+        "modular": false,
+        "active_trainable_parameters": 5504,
+        "learning_rate": 0.0001,
+        "drift_weight": 0.0,
+        "drift_window_s": 0.64,
+        "parent_checkpoint_sha256": null,
+        "absolute_inputs": true,
+        "precision": "float64",
+        "trainable_parameters": 5504,
+        "fields": [
+          14,
+          15,
+          16,
+          20,
+          21,
+          22,
+          26,
+          27,
+          28,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "data_sha256": "b97acf4c61d9d3ba4d5fcb4817ac449b460e65a4821be632c5f61a5a1bba67c6",
+        "metadata_sha256": "ca5c124af8ebcd9cbb06b5fceee382e7bdc1cf45c1893f666fb5059504cd2370",
+        "checkpoint_sha256": "50bb22dd179e34af387f7e3375a9c7214e0eaa524df34c33a16562f52a03ea07",
+        "schedule_sha256": "895a24cf8f765f5d203f6554ba5eb9660e2d0d5fe4838bcc0e4f868a6b33cc54",
+        "exported_replay_sha256": "cb8e9813acabffb2c55af0c1e8d16dd356cbbeb5e44f6568bf6cae2708b0ff9a",
+        "groups": {
+          "real_train": {
+            "samples": 24750,
+            "action_mse": 0.0013587625518912247
+          },
+          "real_identity_validation": {
+            "samples": 8250,
+            "action_mse": 0.0014964700250139986
+          }
+        },
+        "numpy_torch_max_abs": 5.551115123125783e-16,
+        "unused_field_isolation_pass": true,
+        "zero_input_equilibrium_pass": true,
+        "batch_size": 8,
+        "tbptt_steps": 64,
+        "actual_nonpadding_observations": 1505216,
+        "action_delta_weight": 0.25,
+        "validation_split": "Whole real physical identities, preassigned imitation_validation; not closed-loop generalization",
+        "limitation": "Data provenance and whole-history split declared in dataset metadata; physical success measured separately. No runtime teacher/controller. Width-matched, not parameter-matched."
+      },
+      "declared_lineage_role_counts": {
+        "train": 18,
+        "imitation_validation": 6
+      },
+      "declared_lineage": [
+        {
+          "condition_id": "train_000",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_0/train_000/rollout.npz",
+          "sha256": "785c075ced8fcc30ca470030b84166f1c0fb6607dfe3fa87b701a052bb791d67",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_016",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_0/train_016/rollout.npz",
+          "sha256": "4bede001ef35a3a0bfa82ae70fdd81e0a3fe6191e1c26ec2fab186fe1f5d2243",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_020",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_0/train_020/rollout.npz",
+          "sha256": "7e25358ca6951eae8e610af3ce4cbf6d71725ccfbc60542529abc468bb899195",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_000",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_0/imitation_validation_000/rollout.npz",
+          "sha256": "e3b93f16ebaaded586b2dfacc1a83e3fa07a334a5a3ebc069f98398f89436969",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_005",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/train_005/rollout.npz",
+          "sha256": "46d79eef5d29a68ea98912f60b586f617e7e8f35ad38d817f13113e86207e1cb",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_017",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/train_017/rollout.npz",
+          "sha256": "4ec991b921e46dae3fc88018c6f643d35ab93be775f1f15a3f4191445a1aa176",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_021",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/train_021/rollout.npz",
+          "sha256": "00c17f3be57752ca06206edfebeecc77135feb1ddecd2dbb753ca8a56052493f",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_029",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/train_029/rollout.npz",
+          "sha256": "95d8f5125ba6d9bec3e9838b9e82fc77428aa58916d3a885c97d36889d0fcf64",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_001",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/imitation_validation_001/rollout.npz",
+          "sha256": "3018b4be0c0bbcc24d90d18a84c31f478ddefa5d5d93fb673a5fbf3b11ec5fba",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_005",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/imitation_validation_005/rollout.npz",
+          "sha256": "c19f4e831c5d444b8f3307cd3fe19c48e5f9dcdd18086fde21acedb3189205b5",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_006",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_006/rollout.npz",
+          "sha256": "8830a4afec9fa78a76a795b5491960383057acc3acfd55d77fe43b1a8dbc5997",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_010",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_010/rollout.npz",
+          "sha256": "3871fd87dbfd44ca5f54243efd740098ed8c80865e41467819106e6878931543",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_014",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_014/rollout.npz",
+          "sha256": "93b588cccd3e029b68f9c193edf07ab6a0c06288515d654cfce8cd6dd5f65e0e",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_018",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_018/rollout.npz",
+          "sha256": "279a8ddedfd04fa7c1fda991f300a0b91ade4efe5c4e857c994b3b866e1eab73",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_022",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_022/rollout.npz",
+          "sha256": "0ac328f06db7209f95d101761c6363d581928e80589c7097ed873eb63830a723",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_030",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_030/rollout.npz",
+          "sha256": "da62a6665931d8b53ff1245302ab2602ab5ea126f851975285a704edfd11c678",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_006",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/imitation_validation_006/rollout.npz",
+          "sha256": "6e0757e4fa4d2faa36120537cb926dcd3a16b7c61d00eb45733ad79480a39668",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_007",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_007/rollout.npz",
+          "sha256": "a4ffc31b9aa30c719790342fc957da7f70142aaa65b8b08317eeefc1ca83c6f7",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_019",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_019/rollout.npz",
+          "sha256": "5b3524a4e78a1e24d4eb51484e4dde3c49db984bbf8c00c0c74f0bc8e04aab33",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_023",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_023/rollout.npz",
+          "sha256": "04093f635d20ef20f73a6cc9df70af26afbed175b89f0de6587db723206d5fb3",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_027",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_027/rollout.npz",
+          "sha256": "43ed1ea70ebcf103cce90cbc888e40ed7f40c16f0b046ce169b75badef093486",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_031",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_031/rollout.npz",
+          "sha256": "18a77f84515705729cab0f8d52930e29dc1d4daf4c2892d5aa203b763831c86c",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_003",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/imitation_validation_003/rollout.npz",
+          "sha256": "1bd5d582853128e8e60530822707b422967fabf3cb28bc8ab6ee502099b5cd7e",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_007",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/imitation_validation_007/rollout.npz",
+          "sha256": "0ee9192a0635ccfacae9111815f91b82310a158d007a6673ce93ada06fc1bf08",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        }
+      ]
+    },
+    {
+      "family": "memoryless",
+      "checkpoint": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/local_context_gate_archive_v1/context_gate_learning_v1/gated_memoryless_2026100301/checkpoint.npz",
+      "checkpoint_sha256": "2613e77bb0a2fa0da5f6a838349d3c022e40e9edceedbe50931218c3bb38ac26",
+      "metadata": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/local_context_gate_archive_v1/context_gate_learning_v1/gated_memoryless_2026100301/TRAINING_COMPLETE.json",
+      "metadata_sha256": "25a092098e32daa26bb6dd38c7fb8ddedad3e766586a772d6afe17d5d1cf00a7",
+      "training_data_sha256": "b97acf4c61d9d3ba4d5fcb4817ac449b460e65a4821be632c5f61a5a1bba67c6",
+      "metadata_data_key": "training_data_sha256",
+      "flags": {
+        "contract": "proprio48_office_vmc_memory_esn_v1",
+        "axis_separable": false,
+        "absolute_inputs": true,
+        "context_inputs": true,
+        "position_context": true,
+        "reset_at_each_observation": true,
+        "readout_activation": "clipped_linear",
+        "output_gain": 1.0
+      },
+      "shapes": {
+        "win": [
+          128,
+          156
+        ],
+        "w": [
+          128,
+          128
+        ],
+        "weights": [
+          424,
+          7
+        ],
+        "leak": [
+          128
+        ],
+        "scale": [
+          6
+        ],
+        "context_gate_w": [
+          128,
+          12
+        ]
+      },
+      "stored_selected_numeric_scalars": 40990,
+      "declared_training_details": {
+        "completed_utc": "2026-10-03T15:27:19.706212+00:00",
+        "checkpoint_sha256": "2613e77bb0a2fa0da5f6a838349d3c022e40e9edceedbe50931218c3bb38ac26",
+        "training_data_sha256": "b97acf4c61d9d3ba4d5fcb4817ac449b460e65a4821be632c5f61a5a1bba67c6",
+        "seed": 2026100301,
+        "selected": {
+          "name": "rho0.5_gain0.6_ridge0.1",
+          "rho": 0.5,
+          "input_gain": 0.6,
+          "ridge": 0.1,
+          "holdout_mse": 0.0011134858606905596,
+          "physical_history_mse": 0.0009463966018432283,
+          "checkpoint_sha256": "2613e77bb0a2fa0da5f6a838349d3c022e40e9edceedbe50931218c3bb38ac26"
+        },
+        "reservoir_width": 128,
+        "learned_hidden_readout_width": 0,
+        "trainable_readout_coefficients": 2884,
+        "fields": [
+          14,
+          15,
+          16,
+          20,
+          21,
+          22,
+          26,
+          27,
+          28,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "contextual_leak_gate": true,
+        "readout_activation": "clipped_linear",
+        "gate_multiplier_limits": [
+          0.05,
+          2.0
+        ],
+        "independent_slowdown_readout": true,
+        "selection": "Whole real physical identities, preassigned imitation_validation; not closed-loop generalization requested-action MSE only",
+        "temporal_readout_loss": {
+          "delta_weight": 0.0,
+          "integral_weight": 0.0,
+          "integral_window_steps": 16,
+          "physical_unit_scale": [
+            0.0,
+            0.64,
+            0.64,
+            0.64,
+            0.4799999999999999,
+            0.4799999999999999,
+            0.4799999999999999
+          ],
+          "fit_uses_training_histories_only": true
+        },
+        "physical_history_mask": "explicit physical_execution array",
+        "reset_at_each_observation": true,
+        "limitation": "New recovery-teacher dataset and context architecture; not isolated memory comparison. No runtime VMC, extra learned hidden layer, contact truth, event time, task phase or object state. Physical success untested."
+      },
+      "declared_lineage_role_counts": {
+        "train": 18,
+        "imitation_validation": 6
+      },
+      "declared_lineage": [
+        {
+          "condition_id": "train_000",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_0/train_000/rollout.npz",
+          "sha256": "785c075ced8fcc30ca470030b84166f1c0fb6607dfe3fa87b701a052bb791d67",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_016",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_0/train_016/rollout.npz",
+          "sha256": "4bede001ef35a3a0bfa82ae70fdd81e0a3fe6191e1c26ec2fab186fe1f5d2243",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_020",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_0/train_020/rollout.npz",
+          "sha256": "7e25358ca6951eae8e610af3ce4cbf6d71725ccfbc60542529abc468bb899195",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_000",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_0/imitation_validation_000/rollout.npz",
+          "sha256": "e3b93f16ebaaded586b2dfacc1a83e3fa07a334a5a3ebc069f98398f89436969",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_005",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/train_005/rollout.npz",
+          "sha256": "46d79eef5d29a68ea98912f60b586f617e7e8f35ad38d817f13113e86207e1cb",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_017",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/train_017/rollout.npz",
+          "sha256": "4ec991b921e46dae3fc88018c6f643d35ab93be775f1f15a3f4191445a1aa176",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_021",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/train_021/rollout.npz",
+          "sha256": "00c17f3be57752ca06206edfebeecc77135feb1ddecd2dbb753ca8a56052493f",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_029",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/train_029/rollout.npz",
+          "sha256": "95d8f5125ba6d9bec3e9838b9e82fc77428aa58916d3a885c97d36889d0fcf64",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_001",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/imitation_validation_001/rollout.npz",
+          "sha256": "3018b4be0c0bbcc24d90d18a84c31f478ddefa5d5d93fb673a5fbf3b11ec5fba",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_005",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_1/imitation_validation_005/rollout.npz",
+          "sha256": "c19f4e831c5d444b8f3307cd3fe19c48e5f9dcdd18086fde21acedb3189205b5",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_006",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_006/rollout.npz",
+          "sha256": "8830a4afec9fa78a76a795b5491960383057acc3acfd55d77fe43b1a8dbc5997",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_010",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_010/rollout.npz",
+          "sha256": "3871fd87dbfd44ca5f54243efd740098ed8c80865e41467819106e6878931543",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_014",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_014/rollout.npz",
+          "sha256": "93b588cccd3e029b68f9c193edf07ab6a0c06288515d654cfce8cd6dd5f65e0e",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_018",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_018/rollout.npz",
+          "sha256": "279a8ddedfd04fa7c1fda991f300a0b91ade4efe5c4e857c994b3b866e1eab73",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_022",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_022/rollout.npz",
+          "sha256": "0ac328f06db7209f95d101761c6363d581928e80589c7097ed873eb63830a723",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_030",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/train_030/rollout.npz",
+          "sha256": "da62a6665931d8b53ff1245302ab2602ab5ea126f851975285a704edfd11c678",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_006",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_2/imitation_validation_006/rollout.npz",
+          "sha256": "6e0757e4fa4d2faa36120537cb926dcd3a16b7c61d00eb45733ad79480a39668",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_007",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_007/rollout.npz",
+          "sha256": "a4ffc31b9aa30c719790342fc957da7f70142aaa65b8b08317eeefc1ca83c6f7",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_019",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_019/rollout.npz",
+          "sha256": "5b3524a4e78a1e24d4eb51484e4dde3c49db984bbf8c00c0c74f0bc8e04aab33",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_023",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_023/rollout.npz",
+          "sha256": "04093f635d20ef20f73a6cc9df70af26afbed175b89f0de6587db723206d5fb3",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_027",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_027/rollout.npz",
+          "sha256": "43ed1ea70ebcf103cce90cbc888e40ed7f40c16f0b046ce169b75badef093486",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "train_031",
+          "data_role": "train",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/train_031/rollout.npz",
+          "sha256": "18a77f84515705729cab0f8d52930e29dc1d4daf4c2892d5aa203b763831c86c",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_003",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/imitation_validation_003/rollout.npz",
+          "sha256": "1bd5d582853128e8e60530822707b422967fabf3cb28bc8ab6ee502099b5cd7e",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        },
+        {
+          "condition_id": "imitation_validation_007",
+          "data_role": "imitation_validation",
+          "path": "/home/arm1/sii_shared/SII_compliance/runs/main/research72_20261003_1149/teacher_bank/queue_3/imitation_validation_007/rollout.npz",
+          "sha256": "0ee9192a0635ccfacae9111815f91b82310a158d007a6673ce93ada06fc1bf08",
+          "actual_execution_labels": true,
+          "synthetic": false,
+          "task_success": true,
+          "strict_success": true
+        }
+      ]
+    }
+  ],
+  "actual_selected_dataset_groups": {
+    "7bb2f7bad7555cc97ca9cc32d43040e91775ce05cdfd32d109a7afbeb1d7e0a0": [
+      "esn",
+      "matched_rnn",
+      "ordinary_rnn"
+    ],
+    "b97acf4c61d9d3ba4d5fcb4817ac449b460e65a4821be632c5f61a5a1bba67c6": [
+      "matched_mlp",
+      "ordinary_mlp",
+      "memoryless"
+    ]
+  },
+  "all_six_selected_models_use_same_dataset": false,
+  "note": "Checkpoint and training metadata hashes verified against registered references. Stored scalar count is neither trainable parameter count nor FLOPs. Training details are archived declarations; raw historical physical trajectories not independently re-audited here. All selected references stay unchanged. Different selected training sets and refinement histories preclude calling this an isolated architecture ablation."
+}
