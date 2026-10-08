@@ -307,6 +307,31 @@ matched MLP22852、ordinary RNN21888、ordinary MLP5504、memoryless2884。
 服务器新增源码`checkpoint_panel_source_v1/`和`reference_provenance_source_v2/`均为只读审计入口，
 `source_v9`训练源不变。新final24仍封存，尚未有新384对比结果。
 
+## 第十一阶段：新增回合、内存与第二轮价值诊断（18:30–19:03 UTC）
+
+新增诊断04和计算账本03完成：当前十组优化日志均有限，所有OOM/oom_kill为0。
+十组真实cgroup均曾触及3GiB，不能再沿用较早“八组无max事件”的快照说法。
+抽查VMC/阻抗/task进程anon约1.56–1.91GiB、文件页约.89–1.15GiB，近期memory PSI接近0；
+稳定作业保留，未抬高限额或重启。旧失败服务仍留作证据，不是新作业失败。
+
+18:30审计中，VMC/导纳接续段均停carry；两seed阻抗分别有1/4条到retreat但未完成放置；
+direct metric seed1/2分别1/12条穿透早停，task21/10条，全部保留。学习后仍无Task成功。
+19:03实际步骤为参数组27250–28750、direct metric92750/44250、task107500/44750。
+上述是训练段快照，不替代截止时完整计算账本或冻结模型的测试成功率。
+
+第二轮`checkpoint_panel_02/`全部通过只读一致性检查：六个参数模型26125步，
+direct metric89194/37613、task101654/43448步。各模型terminal最小双Q减归一化奖励均值约
+.782–3.269，仍存在明显误差；确定性actor在固定采样中的饱和比例约22%–42%。
+两轮数据集和归一化随训练变化，不能直接用这些均值升降宣称改善/恶化。
+terminal子集残差还不等于部分可观测任务中当前策略的总体无偏价值误差，更不是收敛证明。
+原checkpoint、归一化与训练均未改变，无新物理回合或优化器更新来自这项诊断。
+
+已核验新增服务器证据：`TRAINING_DIAGNOSTIC_04.json` SHA
+`be674049ba0d99e2954bda6d13dafd103fd0a77db0a90e9b8b3a9f95f6e2bf00`，
+`COMPUTE_LEDGER_03.json` SHA `34e773e958b01260fb958e6a9213845e4209a4ea55816054d50964c42faad19e`，
+`checkpoint_panel_02/execution.json` SHA `4987a92e605adf14f02a8b0aa2cd81119a778929cf4cf7156e7f6df5c2de4d1f`。
+三个历史快照都保留；唯一continuation_v3继续原训练/开发/冻结/最终流程，final24未读。
+
 ## 尚未完成（当前）
 
 已完成六项诊断验收、144筛选/48确认和所述独立动作/子步检查，但经典均未达到任务成功。

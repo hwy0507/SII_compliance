@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-09 — 15小时修复阶段十一：新增训练回合与第二轮checkpoint检查
+
+- 前一发布main `47f9b3b17a66522994d2b3e1848497b02d6cd25d`，baseline仍为`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。19:03 UTC十组稳定运行，参数2.725–2.875万步、direct metric约9.275/4.425万、task10.75/4.475万；当前训练段Task/Strict仍均零，旧预热成功记录不抹去。
+- `TRAINING_DIAGNOSTIC_04.json`对新增完整回合/优化日志核验通过，全部数值有限、十组cgroup OOM=0；触及3GiB的事件存在，但抽查主要有可回收文件缓存且近期内存等待压力接近0，不因此重启。VMC/导纳多停carry；阻抗虽部分到retreat，物块仍未放好；直接动作多停approach/align。只列真实失败，不视为方法性能上限。
+- `checkpoint_panel_02/`对十个新增完整checkpoint再次只读检查通过。六组参数均26125步，direct metric89194/37613，task101654/43448；checkpoint/归一化保持不变。terminal价值残差仍明显，两个panel的采样数据和归一化不同，不以原始残差升降作无偏学习曲线或收敛结论。
+- 已核验服务器根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`；诊断04 SHA `be674049ba0d99e2954bda6d13dafd103fd0a77db0a90e9b8b3a9f95f6e2bf00`，`COMPUTE_LEDGER_03.json` SHA `34e773e958b01260fb958e6a9213845e4209a4ea55816054d50964c42faad19e`，panel02执行摘要 SHA `4987a92e605adf14f02a8b0aa2cd81119a778929cf4cf7156e7f6df5c2de4d1f`。大产物留服务器，阶段十一交付归档发布前核验。
+- 本阶段是新增学习证据审计，没有更改算法/奖励/环境/门槛，没有新模拟器或训练重启。训练按22:00 UTC收口，final24仍封存；开发冻结、新384评测与最终比较尚未完成。
+
 ## 2026-10-09 — 15小时修复阶段十：十组冻结critic诊断与参考模型训练来源
 
 - 上一发布main `40a7dd9a159c5333928e0cacf80482af5e0e016a`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；继续同一长任务。18:05 UTC十组训练仍运行，参数约1.675–1.7875万交互、direct metric7.407/2.6万、task8.725/3.075万，没有新最终成绩。
