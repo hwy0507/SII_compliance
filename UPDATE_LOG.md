@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-08 — uniform24 中间结果快照（批次仍运行）
+
+- 15:48 CST 读取服务器批次：`77/384` 回合已完成、4 回合正在运行，其余未派发；评测服务和自动报告服务均为 active。没有基础设施失败或重复启动。
+- 当前完成数/Task/Strict：ESN `5/5/4`，matched RNN `5/4/3`，matched MLP `5/3/2`，ordinary RNN `4/2/1`，ordinary MLP `5/4/4`，memoryless `5/2/2`；enhanced teacher `4/4/3`。经典控制器、RL 和 nominal zero 当前已完成的回合均未 Task 成功。以上是前 4–6 个条件的中间计数，不是每方法 `/24` 成功率。
+- 当前完成回合的均值指标显示 ESN RMSE `28.89 mm`、峰矩 `51.49 Nm`、峰速 `0.362 m/s`、最坏穿透 `0.375 mm`；matched RNN `29.86/49.80/0.363/0.474`；matched MLP `44.17/47.67/0.373/0.297`。RL direct metric/task 当前 RMSE `77.38/159.20 mm`，但都为任务失败；不能用低峰矩或低 RMSE 取代成功率与安全门槛。
+- 失败阶段保留：经典/RL parameter 多停在 `carry`，RL direct metric 停在 `approach`，direct task 停在 `lift`；这些结果不能外推到尚未完成的条件。
+- 中间报告已在服务器独立目录 `.../office_v7_uniform24_20261008/report_progress_current/` 生成；`report_final/` 仍等待 384 回合完成。原始回合、物理子步、RL replay 和哈希均保留。
+
 ## 2026-10-08 — uniform24 首批闭环核对与源码归档
 
 - 14:18 CST 复查新批次：16/384 个物理回合已完成独立审计，另四路运行，未发现基础设施失败；评测及最终报告服务均为 active。五种 RL 均已至少完成一个真实 55 s 回合，动作 exact replay、归一化冻结通过，但首条件均未完成放置；ESN/matched RNN/matched MLP 首条件均 Task/Strict 通过。尚无完整 `/24` 成功率。

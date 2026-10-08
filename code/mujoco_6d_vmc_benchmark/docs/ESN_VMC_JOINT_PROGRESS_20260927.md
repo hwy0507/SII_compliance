@@ -2395,3 +2395,17 @@ RL 加载修复为恢复原 CUDA/JAX/Orbax 环境；五个 checkpoint 各 1375 �
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_uniform24_20261008/`。
 `report_final/` 是批次结束后的预定产物，目前未完成；不能引用为最终结果。尚未完成完整
 384 回合及跨方法结论，不据单条件声称 ESN 优势。
+
+### 中间快照（2026-10-08 15:48 CST）
+
+批次完成 `77/384` 回合，4 回合运行中。当前计数为 ESN `5/5 task, 4/5 strict`、
+matched RNN `4/5, 3/5`、matched MLP `3/5, 2/5`、ordinary RNN `2/4, 1/4`、
+ordinary MLP `4/5, 4/5`、memoryless `2/5, 2/5`、enhanced teacher `4/4, 3/4`。
+经典控制器、五类 RL 和 nominal zero 的已完成回合当前均未 Task 成功。由于每个方法还未
+完成 24 个条件，不能报告最终成功率或泛化结论。
+
+已完成回合的 ESN 均值为 RMSE `28.89 mm`、峰矩 `51.49 Nm`、峰速 `0.362 m/s`、
+最坏穿透 `0.375 mm`；matched RNN 为 `29.86/49.80/0.363/0.474`，matched MLP 为
+`44.17/47.67/0.373/0.297`。这些均值混合了成功和失败回合，不能作为单独柔顺性排名。
+中间报告位于服务器 `office_v7_uniform24_20261008/report_progress_current/`；
+最终报告仍由等待服务在批次结束后生成。
