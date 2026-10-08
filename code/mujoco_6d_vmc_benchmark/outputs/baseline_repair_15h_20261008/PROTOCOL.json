@@ -1,0 +1,88 @@
+{
+  "schema": "sii-baseline-repair-15h-v1",
+  "registered_utc": "2026-10-08T13:36:14.338826+00:00",
+  "authorization": "User grants 15 hours to fix baseline problems and rerun fair comparisons; local and Spark compute authorized; no recurring automation.",
+  "authorization_start_utc": "2026-10-08T13:23:12+00:00",
+  "training_dispatch_deadline_utc": "2026-10-08T23:23:12+00:00",
+  "dispatch_deadline_utc": "2026-10-09T04:23:12+00:00",
+  "time_basis": "Clock at start of this user turn. Ten hours repair/development/training, five hours reserved for freeze/evaluation/audit. Finish in-flight episodes; no new dispatch after cutoff.",
+  "source_base_commit": "d5627f49a94651962bdb3f0c5a75c4b503c325ab",
+  "baseline_commit": "f6e8f8c2711a93f0b5dfc88c608bd82647084d5d",
+  "formal_model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+  "physics_dt_s": 5e-05,
+  "duration_s": 55.0,
+  "condition_file_sha256": "591d2e71a4c0fde428292ed70b479574ea87700eff04ded4826e2de2aee407a4",
+  "sealed_condition_sha256": "94818ec1ca4910510d11413f1321a5ad6b3fe2131618a447e0544f51a5cb3b10",
+  "reference_models_sha256": "02980c636bb5fddabdf1bc16a669c7e093bc5be0a3bf5e027114b6849bc316d8",
+  "distribution": {
+    "ball_speed": [
+      1.305,
+      1.595
+    ],
+    "person_start": [
+      4.0,
+      5.0
+    ],
+    "rod_start": [
+      13.5,
+      14.5
+    ],
+    "person_stroke": [
+      0.18,
+      0.22
+    ],
+    "rod_stroke": [
+      0.2115,
+      0.2585
+    ],
+    "rod_hold": [
+      4.5,
+      5.5
+    ]
+  },
+  "unchanged": [
+    "MJB geometry/contact/friction",
+    "planner/target",
+    "task and strict gates",
+    "actor canonical48 proprioceptive fields",
+    "actuator amplitude/slew",
+    "common action filter"
+  ],
+  "controller_repairs": [
+    "VMC physical action units match decoder",
+    "projected impedance equilibrium, bounded nominal/torque-equivalent commands",
+    "model friction feedforward and nullspace posture, explicitly logged"
+  ],
+  "development_acceptance": "Active-disturbance-off diagnostic, same static MJB. Require lift/progress and safety, not counted as full complex-task success or absent-static-contact claim.",
+  "budgets": {
+    "classical_candidates_per_family": 24,
+    "screen_conditions": 2,
+    "confirmation_top_per_family": 2,
+    "confirmation_conditions": 8,
+    "training_seeds": [
+      2026100811,
+      2026100812
+    ],
+    "rl_steps_per_family_seed": 200000,
+    "rl_families": [
+      "parameter_vmc",
+      "parameter_admittance",
+      "parameter_impedance",
+      "direct_metric",
+      "direct_office_task"
+    ]
+  },
+  "selection": "Development only: strict count, task count, full/physically-valid count, stage progress, penetration, RMSE and torque. Finite search is not proof of globally optimal baseline.",
+  "final": "Freeze before reading new final24; all16 existing families, all failures retained. Additional algorithms or warmstarts require separately named registered rows; never relabel BC as pure RL.",
+  "training_fairness": "Disclose teacher data, prior exposure, interaction/gradient/search budgets and architecture separately; common evaluation does not imply equal training history.",
+  "resources": {
+    "spark_max_new_simulators": 10,
+    "spark_cpu_affinity": "5-9,15-19",
+    "local_max_simulators": 1,
+    "threads_per_worker": 1,
+    "memory_max_per_worker": "3GiB",
+    "memory_swap_max": 0,
+    "authorization": "Current all-compute request supersedes previous four/eight-way scope for this new run; preserve paused historical jobs"
+  },
+  "completion": "Report repaired implementations, all-method results and unresolved limits honestly; never require ESN to win. No physical hardware claims."
+}

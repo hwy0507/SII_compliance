@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-08 — 用户授权15小时baseline修复/重评，第一阶段启动
+
+- 14:10 UTC阶段核对：验收重试6/6完成、Task/Strict均0/6；高刚度阻抗进入retreat但物块掉落，不能算成功。经典筛选18/144完成。两组direct RL在4125步安全保存后，用source_v4接续至5500步；独立真实优化器探针通过，修正的是嵌套optimizer日志兼容性，尚无学习性能结论。新证据`RL_CONTRACT_TEST_V2.json`、`RL_LOGGER_TYPE_FIX.json`与source_v4存同一服务器主根。
+- 开工实时核对main `d5627f49a94651962bdb3f0c5a75c4b503c325ab`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。新长任务窗口13:23:12 UTC至次日04:23:12 UTC，前10小时开发/训练、后5小时冻结/评测/审计；无定时任务。保留旧384回合、旧源码及四个历史暂停RL进程。
+- VMC单位修复、投影式阻抗参考、受限名义/等效命令、摩擦前馈/零空间姿态项保存到独立parameter_v1；本地/Spark数值契约通过，尚不等于任务成功。新增RL逐次optimizer日志、每步奖励和实际物理力矩平滑成本，修复参数阻抗action7恒零导致平滑项不可见，并保存初始potential用于完整奖励重放。
+- 新32训练/8开发/24封存条件，同一冻结MJB/目标/规划/actor/gate/执行器限制，formal dt5e-5。经典各24候选×2筛选＋前2×8确认；纯RL各族两seed，上限每seed20万且受截止控制，实际预算如实报告，不冒称收敛或相等历史训练。
+- Spark登记10路上限、单线程/每worker3GiB，8共享经典物理租约＋2direct RL烟测；本机保守单模拟器。运行中：六个验收重试、经典筛选、两个5500步RL烟测。首验收`events=none`在55s后报告KeyError，原失败保留、无Task分数；新版本映射既有`settle`关闭主动扰动模式，正式all-events场景不改。
+- 已核验服务器主根 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`，PROTOCOL SHA256 `ff4e3830fbbaaa40efee2d277c57b3859d19162e6ef286c971cbe22a3a44de71`，source_v1/v2/v3和parameter_v1各自留存；详见 `docs/BASELINE_REPAIR_15H_20261008.md`。尚未完成完整验收、RL收敛、最终模型冻结或新比较表。不会为了ESN优势保留弱baseline。
+
 ## 2026-10-08 — 经典/RL 实现公平性审计：限制旧表的算法优劣结论
 
 - 按用户要求审查实际冻结代码，开工核对 main `f135ac021aed4bb2af75d5d118a56d1a374cf555`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。本轮仅诊断，不修控制器、不训练、不改场景/gate/checkpoint；384旧回合及全部失败保留。

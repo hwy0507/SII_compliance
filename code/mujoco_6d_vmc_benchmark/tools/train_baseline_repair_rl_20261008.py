@@ -1,0 +1,186 @@
+"""Finite, auditable SimbaV2 training on repair-campaign train identities.
+
+Same canonical48 input and raw-action replay. Capture every optimizer diagnostic
+and per-step reward decomposition. Metric smoothness now uses actual actuator
+torque slew for ALL methods, including native impedance's zero action7 path.
+No demonstrations/BC/privileged actor inputs in these pure-RL rows.
+"""
+import argparse
+from datetime import datetime, timezone
+import json
+import os
+from pathlib import Path
+import platform
+import signal
+import subprocess
+import sys
+import numpy as np
+from office_v7_uniform24_20261008 import read, write, sha, now, V6, MENAGERIE
+from run_paper_final_validation_20261003 import ENV
+from research72_train_rl_20261003 import Replay, REWARDS
+from research72_probe_online_20261003 import read_event
+from research72_checkpoint_20261003 import checkpoint_hashes
+from baseline_repair_rl_diagnostics_20261008 import flatten_metrics
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--root',type=Path,required=True)
+    p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--parameter-source',type=Path,required=True)
+    p.add_argument('--controller',choices=('vmc','admittance','impedance'))
+    p.add_argument('--reward',choices=('metric','office_task'),required=True)
+    p.add_argument('--seed',type=int,required=True)
+    p.add_argument('--steps',type=int,default=200000)
+    p.add_argument('--stop-at-step',type=int)
+    p.add_argument('--resume-checkpoint',type=Path)
+    a=p.parse_args();root=a.root.resolve();out=a.output.resolve();parameter=a.parameter_source.resolve()
+    protocol=read(root/'PROTOCOL.json');pdigest=sha(root/'PROTOCOL.json')
+    assert a.seed in protocol['budgets']['training_seeds']
+    assert 1375<=a.steps<=protocol['budgets']['rl_steps_per_family_seed']
+    limit=a.stop_at_step or a.steps
+    assert 1375<=limit<=a.steps
+    deadline=datetime.fromisoformat(protocol['training_dispatch_deadline_utc'])
+    assert datetime.now(timezone.utc)<deadline
+    assert sha(root/'CONDITIONS.json')==protocol['condition_file_sha256']
+    conditions=[c for c in read(root/'CONDITIONS.json')['conditions'] if c['role']=='train']
+    assert len(conditions)==32
+    cg=Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
+    memory=(cg/'memory.max').read_text().strip()
+    assert memory!='max' and int(memory)<=3*1024**3
+    assert all(os.environ.get(k)=='1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS'))
+    out.mkdir(parents=True,exist_ok=False)
+    sys.path[:0]=[str(parameter),str(REWARDS)]
+    from official_parameter_agent import OfficialParameterAgent,BATCH_SIZE
+    from rewards import RewardConfig,OfficeReward,IntervalMetrics
+    prior=read(parameter/'PRIORS.json')['methods'][a.controller] if a.controller else None
+    dimension=prior['action_dimension'] if prior else 7
+    agent=OfficialParameterAgent(seed=a.seed,total_steps=a.steps,utd=2,gamma=.9995,
+        entropy_coef=-2.,initial_temperature=.0001,action_dimension=dimension)
+    replay=Replay(a.steps,dimension,a.seed+53);rng=np.random.default_rng(a.seed+71)
+    order=np.random.default_rng(a.seed+100).permutation(len(conditions))
+    source=Path(__file__).resolve().parents[1]
+    source_hashes={str(f):sha(f) for folder in (parameter,REWARDS,source/'tools')
+        for f in folder.rglob('*') if f.is_file() and f.suffix in ('.py','.json')}
+    cfg=RewardConfig(mode=a.reward,error_transform='bounded',horizon_s=55,gamma=.9995,smooth_weight=0.)
+    specification=dict(schema='sii-repair-rl-v1',registered_utc=now(),protocol_sha256=pdigest,
+        seed=a.seed,controller=a.controller,agent_config=agent.config,utd=2,reward=cfg.to_dict(),
+        torque_slew_weight=1. if a.reward=='metric' else 0.,
+        torque_slew_failure_continuation='At premature failure, charge 7*remaining_seconds/55 (conservative undiscounted bound).',
+        initialization='from scratch' if not a.resume_checkpoint else 'same repaired cohort exact episode-boundary resume',
+        teacher_labels_used=False,bc=False,actor_input='unchanged canonical48',
+        warmup_steps=5000,warmup_behavior='AR(1) rho=.9, stationary std=.10; pure exploration, no teacher',
+        training_conditions=[conditions[int(i)]['id'] for i in order],maximum_steps=a.steps,segment_limit=limit,
+        prior_file_sha256=sha(parameter/'PRIORS.json'),parameter_source=str(parameter),
+        source_sha256=source_hashes,deadline_utc=deadline.isoformat(),
+        optimizer_diagnostics='Every update returned metrics retained in optimizer.jsonl; includes actor/critic losses, Q and temperature when exposed upstream',
+        checkpoints='Every >=10000 interactions at completed episode boundary; all retained; development-only selection before final lock')
+    write(out/'PROTOCOL.json',specification)
+    step=episode=last_checkpoint=0;pending=None;colored=np.zeros(dimension);stop=False;process=None
+    state=dict(status='running',started_utc=now(),host=platform.node(),python=sys.executable,
+               memory_max=memory,rows=[],checkpoint_rows=[],steps=0,episodes=0)
+    if a.resume_checkpoint:
+        cp=a.resume_checkpoint.resolve();parent=read(cp.parent/'PROTOCOL.json')
+        for k in ('protocol_sha256','seed','controller','agent_config','reward','prior_file_sha256'):
+            assert parent[k]==specification[k],k
+        runner=read(cp/'office_runner.json');old=read(cp.parent/'execution.json')
+        entry=next(r for r in old['checkpoint_rows'] if r['path']==str(cp))
+        assert checkpoint_hashes(cp)==entry['hashes'] and runner['episode_boundary']
+        agent.load(cp);replay.restore(cp/'office_replay.npz',runner['replay'])
+        step=runner['step'];episode=runner['episode'];last_checkpoint=step
+        rng.bit_generator.state=runner['exploration_rng'];colored=np.asarray(runner['colored_noise'])
+        assert step==replay.count==agent.interactions==agent.reward_samples
+        state['resumed_from']=dict(checkpoint=str(cp),inherited_steps=step,inherited_episodes=episode,
+            parent_execution_sha256=sha(cp.parent/'execution.json'),hashes=entry['hashes'])
+    def request_stop(*_):
+        nonlocal stop
+        stop=True
+    signal.signal(signal.SIGTERM,request_stop);signal.signal(signal.SIGUSR1,request_stop)
+    def save():
+        state.update(steps=step,episodes=episode,updates=agent.updates,diagnostics=agent.diagnostics(),stop_requested=stop)
+        write(out/'execution.json',state)
+    def checkpoint():
+        nonlocal last_checkpoint
+        cp=out/f'checkpoint_{step:07d}'
+        if cp.exists():return
+        assert pending is None and replay.count==step==agent.interactions==agent.reward_samples
+        agent.save(cp);rp=replay.save(cp/'office_replay.npz')
+        write(cp/'office_runner.json',dict(step=step,episode=episode,replay=rp,
+            exploration_rng=rng.bit_generator.state,colored_noise=colored.tolist(),condition_order=order.tolist(),
+            episode_boundary=True,pending_transition=None))
+        state['checkpoint_rows'].append(dict(path=str(cp),step=step,episode=episode,hashes=checkpoint_hashes(cp)))
+        last_checkpoint=step;save()
+    save()
+    try:
+        with (out/'training.jsonl').open('x') as log,(out/'optimizer.jsonl').open('x') as optlog:
+            while step+1375<=limit and datetime.now(timezone.utc)<deadline and not stop:
+                c=conditions[int(order[episode%len(order)])];run=out/f'episode_{episode:05d}_{c["id"]}'
+                command=[sys.executable,str(source/'tools/baseline_repair_worker_20261008.py'),
+                    '--research-protocol',str(root/'PROTOCOL.json'),'--protocol-sha256',pdigest,
+                    '--research-condition',c['id'],'--phase','train','--worker-kind','online',
+                    '--v6-input',str(V6),'--reference',str(V6/'esn_original_v2/rollout.json'),
+                    '--config',str(root/'teacher.json'),'--output',str(run),'--physics-dt','.00005',
+                    '--contact-audit','--parameter-source',str(parameter)]
+                if a.controller:command+=['--controller',a.controller]
+                row=dict(episode=episode,condition_id=c['id'],run=str(run),command=command,
+                         started_utc=now(),step_before=step);state['rows'].append(row);save()
+                environment={**os.environ,**ENV,'JAX_PLATFORMS':'cpu','MUJOCO_MENAGERIE_PATH':str(MENAGERIE),
+                    'SII_SOURCE_BASE_COMMIT':protocol['source_base_commit']}
+                rewarder=OfficeReward(cfg);total=0.;count=0
+                with (out/(run.name+'.stderr.log')).open('x') as err:
+                    process=subprocess.Popen(command,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err,
+                                             text=True,bufsize=1,env=environment)
+                    event=read_event(process.stdout);assert event['kind']=='observation' and event['interval'] is None
+                    obs=np.asarray(event['observation'],np.float32);phi=event['potential']
+                    while True:
+                        action=agent.sample_action(obs,previous_transition=pending,training=True);pending=None
+                        if step<5000:
+                            colored=.9*colored+np.sqrt(1-.9**2)*rng.normal(0,.10,dimension)
+                            action=np.clip(colored,-1,1).astype(np.float32)
+                        process.stdin.write(json.dumps(dict(action=action.tolist()))+'\n');process.stdin.flush()
+                        event=read_event(process.stdout);done=event['kind']=='terminal';iv=event['interval']
+                        next_obs=np.asarray(event['observation'],np.float32);next_phi=iv['potential']
+                        success=bool(done and event['result']['task_success'] and event['result']['strict_success'])
+                        interval=IntervalMetrics(elapsed_s=iv['elapsed_s'],error_cost=iv['error_integral']/(55*.12**2),
+                            bounded_error_cost=iv['bounded_error_integral']/55,peak_torque_ratio=iv['peak_torque_ratio'],
+                            peak_torque_nm_per_joint=iv['peak_torque_nm_per_joint'],max_position_error_m=iv['max_position_error_m'],substeps=iv['substeps'])
+                        reward,terms=rewarder(interval,iv['executed_action'],current_potential=phi,next_potential=next_phi,
+                            terminated=done,success=success,failure=done and not success,
+                            terminal_reason=('original_strict_success' if success else 'original_horizon_or_abort') if done else None)
+                        physical_smooth=specification['torque_slew_weight']*iv['torque_slew_cost']
+                        remaining=7*max(0.,55-rewarder.elapsed_s)/55 if done and not success and a.reward=='metric' else 0.
+                        reward-=physical_smooth+remaining
+                        terms.update(physical_slew=-physical_smooth,physical_slew_failure_continuation=-remaining,final_reward=reward)
+                        assert np.isfinite(reward)
+                        replay.add(observation=obs,action=action,reward=reward,terminated=float(done),truncated=0.,next_observation=next_obs)
+                        pending=dict(reward=reward,terminated=done,truncated=False);obs=next_obs;phi=next_phi
+                        step+=1;count+=1;total+=reward
+                        if step>=5000:
+                            for _ in range(2):
+                                info=agent.update(replay.sample(BATCH_SIZE))
+                                info=flatten_metrics(info)
+                                assert all(np.isfinite(v) for v in info.values()),'Nonfinite optimizer diagnostic'
+                                optlog.write(json.dumps(dict(step=step,update=agent.updates,metrics=info))+'\n')
+                        log.write(json.dumps(dict(step=step,episode=episode,terms=terms))+'\n')
+                        if step%250==0:save();log.flush();optlog.flush()
+                        if done:
+                            process.stdin.close();assert process.wait(timeout=60)==0;process=None
+                            agent.consume_transition(**pending);pending=None
+                            row.update(ended_utc=now(),return_value=total,steps=count,step_after=step,
+                                result=event['result'],audit_sha256=sha(run/'AUDIT.json'),trace_sha256=sha(run/'rollout.npz'))
+                            episode+=1;save();break
+                if step-last_checkpoint>=10000:checkpoint()
+            checkpoint()
+            assert all(sha(k)==v for k,v in source_hashes.items())
+            state.update(status='complete',stop_reason='requested' if stop else 'deadline' if datetime.now(timezone.utc)>=deadline else 'step_budget')
+    except BaseException as exc:
+        state.update(status='failed_preserved',error=repr(exc));raise
+    finally:
+        if process is not None and process.poll() is None:
+            process.stdin.close()
+            try:process.wait(timeout=60)
+            except subprocess.TimeoutExpired:process.terminate();process.wait(timeout=60)
+        state['ended_utc']=now();save()
+
+
+if __name__=='__main__':main()
