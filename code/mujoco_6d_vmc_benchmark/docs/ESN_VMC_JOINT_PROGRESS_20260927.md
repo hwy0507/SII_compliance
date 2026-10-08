@@ -2372,3 +2372,8 @@ readout 的收益是条件依赖的：某些条件穿透下降，但另一些条
 state-delta v4 只做了正式 `dt=5e-5` 的 development_000 smoke：task=true、strict=false，RMSE
 `30.459 mm`、峰矩 `53.107 Nm`、峰速 `0.3647 m/s`、穿透 `0.5795 mm`，replay 最大差 `0`。独立
 paper metrics 已核对。由于首条件相对父 ESN 和 `.003` 候选均未改善，按停止规则未派发其余条件；候选不进入正式矩阵。
+## 2026-10-08 — office-v7 three-obstacle unified comparison
+
+Completed one independent development condition using the unchanged office-v6 MJB, gate, actor contract and actuator limits. The registered schedule is ball 2.0 s, person 4.5 s, rod 14.0–22.5 s, followed by thick-corner placement; formal `dt=5e-5`, 55 s, seed `2026100807`, canonical48D/action7. The 17-method campaign is archived at `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_three_obstacle_20261008/run_003/`.
+
+Twelve methods completed physical rollouts: task `4/12`, strict `3/12`. `recovery035_esn_fixed`, `recovery035_esn_memoryless` and the matched MLP passed task/strict in this single condition; matched RNN failed because of `0.423 mm` penetration. Five RL transfer rows were preserved as infrastructure failures from a pinned JAX/Orbax sharding error and are not counted as physical zeros. The full table and limitations are in `docs/OFFICE_V7_ALL_METHODS_20261008.md`. This development condition does not amend the sealed office-v6 matrix and does not establish generalization.

@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-08 — office-v7 三类障碍统一方法统计
+
+- 开工核对：本地 `main=a518ed45ffa2fd2aab84bdc29bba9243ebdaf9d1`；GitHub fetch 当时不可达，使用已缓存 main/baseline 日志，未把缓存冒充最新远端。服务器 SSH 后恢复可用；未发现已有 office-v7 作业后才启动独立 run。
+- 新增并上传 runner 修复：`office_v7_campaign_20261008.py` 使用完整 40 位 Git SHA，且通过冻结 evaluator 允许的 `legacy` parser 注册新时序；场景设置仍写入独立 `PROTOCOL.json/CONDITIONS.json`，没有改写 office-v6 历史目录、gate、actor 输入、MJB 或执行器限制。源码 SHA256 `b19d414801ce6694693525887e361995a07a49e7cce59509d041d0aa51e7842f`，服务器路径为 `arm1:/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_three_obstacle_20261008/source/tools/office_v7_campaign_20261008.py`。
+- `run_001`（短 SHA）和 `run_002`（未注册 schedule 标签）均为基础设施失败并完整保留。`run_003` 正式 `dt=5e-5`、55 s、17 方法注册，12 个物理回合完成，task `4/12`、strict `3/12`；参数/RL 五行在 checkpoint JAX/Orbax sharding 载入前失败，表中保留为 `not run`，没有计为物理零分。
+- 新增 `code/mujoco_6d_vmc_benchmark/docs/OFFICE_V7_ALL_METHODS_20261008.md`，并更新联合进度与 baseline 周报。完整 raw rollout、AUDIT、substep/contact channels、失败日志和 model/source hashes 位于服务器 run-003。限制：单一 development 条件，不能替代 sealed office-v6 矩阵或声称跨条件泛化；RL rows 需要匹配 checkpoint runtime 后另行补跑。
+
 ## 2026-10-08 — noise consistency ESN 负结果闭环
 
 - 使用预注册 noise checkpoint `c327ee61c583beb5a392b3752496f6e8eabc136e181551408d4471ded7acab6e`，在相同 office-v6、canonical48D/action7、原 gate、执行器限制和正式 `dt=5e-5` 下完成八个 development 条件；task/strict `0/8`、`0/8`。

@@ -1,5 +1,9 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+### 2026-10-08 office-v7 三类障碍统一开发场景
+
+新增独立 `office-v7` 条件：球 2.0 s、手推 4.5 s、棍推 14.0–22.5 s，最后厚桌角放置；几何、MJB、gate、actor 输入、action7 与执行器限制均沿用 office-v6。正式 `dt=5e-5`、55 s、17 个注册方法中 12 个完成物理回合，task `4/12`、strict `3/12`。三类通过行是 ESN fixed、ESN memoryless 与 matched MLP；matched RNN 因 `0.423 mm` 穿透失败。参数/RL 五行被 JAX/Orbax checkpoint sharding 基础设施错误阻止，保留为 `not run`，未伪装成物理失败。详表见 `docs/OFFICE_V7_ALL_METHODS_20261008.md`，原始收据在 arm1 的 `office_v7_three_obstacle_20261008/run_003`。这只是新 development protocol，未覆盖 office-v6 正式矩阵，也不能从单条件声称泛化优势。
+
 ### 2026-10-07 ESN-only 读出平滑开发
 
 本轮只修改 ESN readout，不改 baseline、环境、gate 或 actor 输入。固定 20/5 identity split 的 36 候选网格选出平滑候选；离线 validation action delta energy `0.009489`（父 ESN `0.014357`），action energy `0.009701`（父 `0.012396`），最大单步 action 跳变 `1.366`（父 `1.566`），但 action MSE `0.000612`（父 `0.000242`）。这些是降低峰矩的代理，不能替代真实物理峰矩和 task/strict。兼容依赖解释器已找到，但本机 worker 的 3 GiB cgroup 审计不可用；服务器归档已完成，闭环 development 未完成，sealed 条件未读取；详见 `docs/ESN_TORQUE_GENERALIZATION_20261007.md`。
