@@ -11,6 +11,14 @@ seeds per family, and will freeze all16 methods before opening24 new final
 conditions. Geometry, proprioceptive inputs, task/safety gates and actuator
 limits remain fixed. New final results are not available yet.
 
+At 2026-10-09 01:05 CST, all 144 classical screening and 48 confirmation
+episodes finished without placement success. An independent audit also found
+an 80-fold torque-smoothness reward inflation caused by confusing the 4 ms
+servo period with the 0.05 ms physics step. Affected metric learners are being
+rebuilt from retained off-policy data with corrected rewards; both task-reward
+learners continue unchanged. Old failures and extra reconstruction costs remain
+in the audit trail. The final 24 conditions remain sealed.
+
 ### 2026-10-03 same-scene ESN, RNN, MLP and control-baseline study
 
 The new study uses baseline's already published `office-validation-v6` world and

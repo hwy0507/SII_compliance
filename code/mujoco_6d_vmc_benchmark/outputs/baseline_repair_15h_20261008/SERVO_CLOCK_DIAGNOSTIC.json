@@ -1,0 +1,27 @@
+{
+  "created_utc": "2026-10-08T16:51:38.783019+00:00",
+  "run": "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/rl/parameter_impedance_2026100811/trained_v8/episode_00000_repair_train_012",
+  "physics_dt_s": 5e-05,
+  "servo_dt_s": 0.004,
+  "old_smooth_cost": 0.3661850601163402,
+  "corrected_smooth_cost": 0.004577313251454248,
+  "independently_reconstructed_servo_cost": 0.00457731295595829,
+  "old_inflation_factor": 80.00000000000009,
+  "max_old_normalized_physical_rate": 80.00004291534424,
+  "max_actual_servo_rate": 1.0000000000023308,
+  "hashes": {
+    "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/rl/parameter_impedance_2026100811/trained_v8/episode_00000_repair_train_012/rollout_metrics/substep_metrics.npz": "4fb48ade8cc29776acca107b4ff88c2f261e9fa5cc2dbf1b3c3659fa3394c609",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/rl/parameter_impedance_2026100811/trained_v8/episode_00000_repair_train_012/impedance_servo.npz": "bccd397fd6dcf3ba4cba30d3b145626316757e3f600799fbf74415de68474838",
+    "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/rl/parameter_impedance_2026100811/trained_v8/episode_00000_repair_train_012/RL_INTERVALS.json": "9b26eb7de1cdb88513af1c25deac24cb92d3390c14f21d644cf3329c282eca88"
+  },
+  "finding": "Physics-step derivative of zero-order-held motor torque inflates cost by80 and invalidates old7*remaining/horizon bound. Use4ms executed update changes and ceil remaining updates.",
+  "unchanged": [
+    "physics",
+    "actor inputs",
+    "executed actions",
+    "gate",
+    "torque/speed limits",
+    "classical selection",
+    "heldout seal"
+  ]
+}

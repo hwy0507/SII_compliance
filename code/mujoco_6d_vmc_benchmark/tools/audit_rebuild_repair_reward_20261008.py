@@ -15,6 +15,7 @@ from office_v7_uniform24_20261008 import read, write, sha, now
 from research72_train_rl_20261003 import Replay, REWARDS
 from research72_checkpoint_20261003 import checkpoint_hashes
 from baseline_repair_rl_diagnostics_20261008 import flatten_metrics
+from baseline_repair_reward_clock_20261009 import TIME_BASE, SERVO_DT, slew_cost_rows, remaining_slew_bound
 
 
 def main():
@@ -38,13 +39,15 @@ def main():
     rows=[r for _,s in reversed(segments) for r in (s.get('source_episode_rows',[])+s['rows'])]
     sys.path[:0]=[spec['parameter_source'],str(REWARDS),str(Path(__file__).resolve().parents[1]/'scripts')]
     from rewards import RewardConfig,OfficeReward,IntervalMetrics
-    from wbc_velocity_residual_core import VelocityResidualSafetyConfig
-    rates=np.asarray(VelocityResidualSafetyConfig().maximum_torque_rate_nmps)
-    saved=np.load(cp/'office_replay.npz');runner=read(cp/'office_runner.json')
+    # Materialize each compressed array once. NpzFile indexing in the update
+    # loop would repeatedly decompress the full replay (quadratic IO).
+    with np.load(cp/'office_replay.npz') as archive:saved={k:archive[k] for k in archive.files}
+    runner=read(cp/'office_runner.json')
     assert runner['step']==len(saved['reward'])==sum(r['steps'] for r in rows)
     rewards=[];evidence=[];position=0
     for row in rows:
         run=Path(row['run']);assert sha(run/'rollout.npz')==row['trace_sha256']
+        rates=np.asarray(read(run/'execution.json')['action_filter_config']['maximum_torque_rate_nmps'])
         ivs=read(run/'RL_INTERVALS.json');meta=read(run/'RL_REWARD_METADATA.json')
         assert ivs[0] is None and len(ivs)==row['steps']+1
         with np.load(run/'baseline_policy.npz') as policy,np.load(run/'execution_chain.npz') as chain:
@@ -56,6 +59,7 @@ def main():
             dt=z['dt'].astype(float);tau=z['qfrc_actuator'].astype(float);error=z['error'].astype(float)
         costs=np.sum((np.diff(tau,axis=0)/(dt[1:,None]*rates[None,:]))**2,axis=1)*dt[1:]/55.
         costs=np.r_[0.,costs]
+        servo_costs=slew_cost_rows(tau,rates)
         old_first=float(np.sum((tau[0]/(dt[0]*rates))**2)*dt[0]/55.)
         rewarder=OfficeReward(RewardConfig(mode=spec['reward']['mode'],error_transform='bounded',
             horizon_s=55,gamma=.9995,smooth_weight=0.))
@@ -63,9 +67,10 @@ def main():
         logs=[]
         for j,iv in enumerate(ivs[1:]):
             n=iv['substeps'];end=offset+n
-            new_cost=float(costs[offset:end].sum())
+            physical_cost=float(costs[offset:end].sum())
+            new_cost=float(servo_costs[offset:end].sum())
             excluded='first recorded sample excluded' in meta['torque_slew_definition']
-            expected_old=new_cost+(old_first if offset==0 and not excluded else 0.)
+            expected_old=(new_cost if meta.get('torque_slew_time_base')==TIME_BASE else physical_cost)+(old_first if offset==0 and not excluded else 0.)
             max_error=max(max_error,abs(expected_old-iv['torque_slew_cost']))
             np.testing.assert_allclose(expected_old,iv['torque_slew_cost'],rtol=1e-10,atol=1e-10)
             e2=np.sum(error[offset:end]**2,axis=1)
@@ -81,10 +86,13 @@ def main():
                 terminated=done,success=success,failure=done and not success,
                 terminal_reason=('original_strict_success' if success else 'original_horizon_or_abort') if done else None)
             weight=spec['torque_slew_weight']
-            remaining=7*max(0.,55-rewarder.elapsed_s)/55 if done and not success and weight else 0.
-            old=reward-weight*expected_old-remaining;new=reward-weight*new_cost-remaining
-            replay_reward=new if spec.get('torque_slew_initial_sample') else old
-            np.testing.assert_allclose(replay_reward,saved['reward'][position+j],rtol=2e-6,atol=2e-7)
+            failed=done and not success and weight
+            old_remaining=(remaining_slew_bound(rewarder.elapsed_s) if spec.get('torque_slew_time_base')==TIME_BASE else 7*max(0.,55-rewarder.elapsed_s)/55) if failed else 0.
+            new_remaining=remaining_slew_bound(rewarder.elapsed_s) if failed else 0.
+            checkpoint_cost=new_cost if spec.get('torque_slew_time_base')==TIME_BASE else physical_cost
+            if offset==0 and not spec.get('torque_slew_initial_sample'):checkpoint_cost+=old_first
+            old=reward-weight*checkpoint_cost-old_remaining;new=reward-weight*new_cost-new_remaining
+            np.testing.assert_allclose(old,saved['reward'][position+j],rtol=2e-6,atol=2e-7)
             rewards.append(new);old_total+=old;new_total+=new
             logs.append(dict(step=position+j+1,old_reward=old,corrected_reward=new,corrected_slew_cost=new_cost))
             phi=iv['potential'];offset=end
@@ -95,10 +103,12 @@ def main():
             artificial_first_cost=old_first,interval_reconstruction_max_abs=max_error))
         position+=row['steps']
     report=dict(status='passed',time_utc=now(),episodes=evidence,steps=position,physics_rerun=False,
-        correction='Exclude first sampled derivative only; all later derivatives and interval boundaries retained',
-        note='First sample is initialization, not a measured zero-to-gravity action; physical environment and gates unchanged')
+        correction='Use actual4ms servo update period for executed torque changes, exclude first unobserved predecessor, ceil remaining servo updates for failure bound',
+        note='Original physics/actions/failures retained; only reward and explicitly rebuilt learner change. No environment or gate change')
     write(out/'REWARD_AUDIT.json',report)
     if not a.rebuild:return
+    # Large physical arrays are no longer needed during JAX reconstruction.
+    del tau,error,dt,costs,servo_costs
     from official_parameter_agent import OfficialParameterAgent,BATCH_SIZE
     cfg=spec['agent_config'];seed=spec['seed']
     agent=OfficialParameterAgent(seed=seed,total_steps=spec['maximum_steps'],utd=spec['utd'],gamma=cfg['gamma'],
@@ -108,7 +118,7 @@ def main():
         for i,reward in enumerate(rewards):
             agent.sample_action(saved['observation'][i],previous_transition=pending,training=True)
             pending=None
-            values={k:saved[k][i] for k in saved.files};values['reward']=reward;replay.add(**values)
+            values={k:saved[k][i] for k in saved};values['reward']=reward;replay.add(**values)
             pending=dict(reward=reward,terminated=bool(saved['terminated'][i]),truncated=bool(saved['truncated'][i]))
             if i+1>=5000:
                 for _ in range(spec['utd']):
@@ -118,7 +128,10 @@ def main():
                 agent.consume_transition(**pending);pending=None
     assert pending is None and agent.interactions==agent.reward_samples==position
     spec.update(torque_slew_initial_sample='excluded; no artificial zero-to-gravity jump',
+        torque_slew_time_base=TIME_BASE,torque_slew_control_dt_s=SERVO_DT,
+        torque_slew_failure_continuation='At premature failure, charge 7*ceil(remaining_seconds/servo_dt)*servo_dt/55; conservative servo-update bound.',
         initialization='Fresh agent consuming same retained off-policy transition prefix, corrected rewards; no new physics',
+        reward_rebuild_source_sha256={str(p):sha(p) for p in [Path(__file__),Path(__file__).with_name('baseline_repair_reward_clock_20261009.py')]},
         rebuilt_from_checkpoint=str(cp),rebuilt_from_hashes=entry['hashes'],reward_audit_sha256=sha(out/'REWARD_AUDIT.json'))
     write(out/'PROTOCOL.json',spec)
     target=out/cp.name;agent.save(target);rp=replay.save(target/'office_replay.npz')

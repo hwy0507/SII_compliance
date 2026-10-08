@@ -15,10 +15,11 @@ def main():
         ("        return dict(elapsed_s=float(dt.sum()),error_integral=float(dt@e2),",
          "        signed_tau=arrays['qfrc_actuator'][begin:end].astype(float)\n"
          "        previous_tau=arrays['qfrc_actuator'][begin-1].astype(float) if begin else signed_tau[0]\n"
-         "        changes=np.diff(np.vstack((previous_tau,signed_tau)),axis=0)\n"
          "        rates=np.asarray(metrics.env.safety_config.maximum_torque_rate_nmps)\n"
-         "        slew_ratio=changes/(dt[:,None]*rates[None,:])\n"
-         "        slew_cost=float(dt@np.sum(slew_ratio**2,axis=1)/55.)\n"
+         "        from audited_velocity_env import CONTROL_DT\n"
+         "        from baseline_repair_reward_clock_20261009 import SERVO_DT,slew_cost_rows\n"
+         "        assert CONTROL_DT==SERVO_DT\n"
+         "        slew_cost=float(slew_cost_rows(signed_tau,rates,previous_tau).sum())\n"
          "        return dict(torque_slew_cost=slew_cost,elapsed_s=float(dt.sum()),error_integral=float(dt@e2),"),
         ("            iv=interval();self.intervals.append(iv)",
          "            if not self.observations:self.initial_potential=potential(self.env)\n"
@@ -26,7 +27,8 @@ def main():
         ("            worker.write(output/'RL_INTERVALS.json',self.intervals)",
          "            worker.write(output/'RL_INTERVALS.json',self.intervals)\n"
          "            worker.write(output/'RL_REWARD_METADATA.json',dict(initial_potential=self.initial_potential,"
-         "torque_slew_definition='sum_physics dt/horizon * sum_j ((tau_j-tau_prev_j)/(dt*max_rate_j))**2; first recorded sample excluded because no preceding sample exists',"
+         "torque_slew_definition='sum_recorded_changes servo_dt/horizon * sum_j ((tau_j-tau_prev_j)/(servo_dt*max_rate_j))**2; servo_dt=.004; first recorded sample excluded because no preceding sample exists',"
+         "torque_slew_time_base='executed_motor_torque_changes_at_250Hz_not_physics_dt',"
          "actor_input_unchanged=True,template_sha256=TEMPLATE_SHA))"),
         ("    worker.EXTRA_SOURCE_FILES=[Path(__file__),Path(classical.__file__),Path(office.__file__)]",
          "    worker.EXTRA_SOURCE_FILES=[Path(__file__),TEMPLATE_PATH,Path(classical.__file__),Path(office.__file__)]"),

@@ -8,6 +8,7 @@ import argparse
 from collections import Counter
 import json
 from pathlib import Path
+import subprocess
 import numpy as np
 from office_v7_uniform24_20261008 import read, write, sha, now
 
@@ -84,7 +85,8 @@ def main():
     protocol = read(a.root/'PROTOCOL.json')
     assert sha(a.root/'CONDITIONS.json') == protocol['condition_file_sha256']
     conditions = {c['id'] for c in read(a.root/'CONDITIONS.json')['conditions'] if c['role'] == 'train'}
-    paths = sorted([*a.root.glob('rl/*/continued_v5'), *a.root.glob('rl/*/trained_v8')])
+    paths = sorted([*a.root.glob('rl/*/continued_v5'), *a.root.glob('rl/*/trained_v8'),
+                    *a.root.glob('rl/*/continued_v9')])
     result = dict(created_utc=now(), source_sha256=sha(__file__), segments=[],
         note='Diagnostic only; no final conditions accessed, no weight selection, no new physics. '
              'Parameter-impedance zero action7 is intentional native torque execution, not zero actuator effort.')
@@ -92,6 +94,23 @@ def main():
         if (path/'execution.json').exists():
             value = inspect_segment(path, conditions); result['segments'].append(value)
             print(json.dumps({k:value[k] for k in ('path','status','state_steps','complete_segment_episodes','task','strict','short')}), flush=True)
+    jobs_path = a.root/('RL_JOBS_CORRECTED.json' if (a.root/'RL_JOBS_CORRECTED.json').exists() else 'RL_JOBS.json')
+    if jobs_path.exists():
+        result['resources'] = []
+        for job in read(jobs_path)['jobs']:
+            pid = int(subprocess.check_output(['systemctl','--user','show',job['unit'],
+                                              '-p','MainPID','--value'], text=True).strip())
+            resource = dict(unit=job['unit'], pid=pid)
+            if pid:
+                try:
+                    relative = Path(f'/proc/{pid}/cgroup').read_text().split('::', 1)[1].strip().lstrip('/')
+                    cg = Path('/sys/fs/cgroup')/relative
+                    resource['cgroup'] = str(cg)
+                    resource['counters'] = {name:(cg/name).read_text().strip() for name in
+                        ('memory.current','memory.peak','memory.max','memory.events','memory.swap.max')}
+                except FileNotFoundError:
+                    resource['exited_during_snapshot'] = True
+            result['resources'].append(resource)
     write(a.output, result)
 
 

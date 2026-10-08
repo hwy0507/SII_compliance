@@ -138,6 +138,15 @@ def execute(root,source,attempt):
     for unit,command in commands:
         launch=[x for x in managed(source,command,unit.removesuffix('.service')) if x not in ('--wait','--pipe','--collect')]
         subprocess.run(launch,check=True)
+    finish_training(root,source,directory,jobs,stage)
+
+
+def finish_training(root,source,directory,jobs,stage):
+    protocol=read(root/'PROTOCOL.json')
+    cutoff=datetime.fromisoformat(TRAIN_STOP);end=datetime.fromisoformat(protocol['dispatch_deadline_utc'])
+    selection=read(root/'CLASSICAL_SELECTION.json')
+    chosen=selection['chosen'];parameter=Path(selection['parameter_source']);hashes=file_hashes(parameter)
+    assert hashes==selection['parameter_hashes']
     stage('ten_seed_family_training')
     while datetime.now(timezone.utc)<cutoff:
         states=[]
@@ -212,9 +221,33 @@ def execute(root,source,attempt):
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--root',type=Path,required=True)
     p.add_argument('--source',type=Path,required=True);p.add_argument('--attempt',default='continuation_v2')
+    p.add_argument('--resume-jobs',type=Path,help='Explicit audited replacement job registration; never relaunch old jobs')
     a=p.parse_args();root=a.root.resolve();assert '/' not in a.attempt
     lock=(root/'.continuation.lock').open('a');fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
-    try:execute(root,a.source.resolve(),a.attempt)
+    try:
+        if a.resume_jobs:
+            protocol=read(root/'PROTOCOL.json');registration=read(a.resume_jobs);jobs=registration['jobs']
+            assert registration['protocol_sha256']==sha(root/'PROTOCOL.json')
+            assert len(jobs)==10 and len({j['unit'] for j in jobs})==10
+            assert {(j['family'],j['seed']) for j in jobs}=={
+                (f,s) for f in protocol['budgets']['rl_families'] for s in protocol['budgets']['training_seeds']}
+            from baseline_repair_reward_clock_20261009 import TIME_BASE
+            for j in jobs:
+                output=Path(j['output']);assert output.is_relative_to(root/'rl')
+                spec=read(output/'PROTOCOL.json')
+                assert spec['seed']==j['seed'] and spec['controller']==j['controller'] and spec['reward']['mode']==j['reward']
+                if j['reward']=='metric':assert spec['torque_slew_time_base']==TIME_BASE
+                assert read(output/'execution.json')['status'] in ('running','complete')
+            directory=root/a.attempt;directory.mkdir(exist_ok=False)
+            write(directory/'SCHEDULE.json',dict(registered_utc=now(),protocol_sha256=sha(root/'PROTOCOL.json'),
+                stop_new_training_utc=TRAIN_STOP,overall_deadline_utc=protocol['dispatch_deadline_utc'],
+                resume_registration=str(a.resume_jobs),resume_registration_sha256=sha(a.resume_jobs),
+                source=str(a.source.resolve()),source_hashes=file_hashes(a.source.resolve()),
+                reason='Explicit servo-time reward correction. Reuse completed classical selection and all physical data; only affected metric learners rebuilt. Task learners unchanged. No deadline extension or heldout access.'))
+            def stage(name,**extra):
+                write(directory/'execution.json',dict(status='running',stage=name,updated_utc=now(),**extra))
+            finish_training(root,a.source.resolve(),directory,jobs,stage)
+        else:execute(root,a.source.resolve(),a.attempt)
     except BaseException as exc:
         d=root/a.attempt
         if d.exists():write(d/'FAILURE.json',dict(ended_utc=now(),error=repr(exc),old_evidence_preserved=True))

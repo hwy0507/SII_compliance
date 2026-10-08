@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-09 — 15小时修复阶段六/七：奖励时钟纠错与原始转移重建
+
+- 01:01 CST重新核对远端main `9ff915d2830eee2e699dce20539b1bda9b13b607`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；未合并baseline。经典144筛选及48确认全完成，Task/Strict均0，选择VMC09/导纳17/阻抗00；不把运行正确当成性能合格。
+- 独立实际伺服对照证实新平滑奖励把4ms更新期错作0.05ms物理步长，首阻抗回合成本0.366185应为0.00457731（约80倍），旧失败剩余上界也不再成立。新增伺服时钟函数及测试，修复在线成本、上界、奖励重建/接续；未改世界、gate、actor、执行器或失败。原始物理数据没有重跑。
+- 八组metric在回合边界保存后由不可变source_v9重建：七组已恢复实际梯度，第八组direct metric seed1的55932步前缀重建中；两组task奖励不受影响继续训练。旧梯度与重建梯度分账，不冒称exact resume或相等训练预算；原v2协调器留存superseded说明，完成后接续有限v3，22:00 UTC训练收口与次日04:23总截止不延长。
+- 新独立在线奖励审计对七组已恢复训练的8个完整回合通过：实际物理力矩增量、每区间成本、训练负奖励和失败续算一致，原生阻抗还对照独立250Hz记录。非收敛或最终成功证明；第八组尚未有修复后回合。旧奖励critic只读诊断及CPU拓扑加载失败保留，不能用旧诊断评价新权重。
+- 已核验服务器根 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`；`SERVO_CLOCK_DIAGNOSTIC.json` SHA `9d07b467746a73ca60067e7e8777c49e4ec1f525fe34c95236be70d30d44e7ad`，`LIVE_SERVO_REWARD_AUDIT_01.json` SHA `b1bc1b0a6e148336973a63b085264611670db22edf15ef9fb3c758bcf6b40f61`；实际运行源码及清单`source_v9/`、`SOURCE_V9_HASHES.json`，重建收据`servo_reward_repair_v1/`。本次交付归档`delivery_stage07.tar.gz`发布前核验，GitHub仅小型证据。
+- 更正当前enhanced teacher的输入口径：实际是同一canonical48/估计负载及共享名义指令上的手工恢复VMC，不能因名称自动归作特权actor并排除。仍纳入全部16方法。final24仍封存；完整新矩阵、RL充分训练及泛化结论尚未完成，继续同一长任务。
+
 ## 2026-10-08 — 15小时修复阶段五：筛选完成、RL失败定位与原生伺服审计
 
 - 核对远端main `0e8e2bd9aff78ad936e5ef670a0ecf81f94ffeae`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。经典144/144筛选完成，无基础设施失败，Task/Strict均0；前两名各8条件确认正在运行，两组direct RL稳定，不重复启动。

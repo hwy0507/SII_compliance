@@ -1,0 +1,30 @@
+{
+  "scope": "Read-only checkpoint diagnostics, no physics or optimizer updates",
+  "server_root": "arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/",
+  "attempts": [
+    {
+      "unit": "sii-r15-critic-metric-01.service",
+      "backend": "cpu",
+      "status": "infrastructure_failure_preserved",
+      "reason": "GPU checkpoint Orbax sharding names cuda:0; default CPU restore has no matching device and raises ValueError about missing concrete sharding. CUDA plugin also reports missing cuDNN library path in this CPU-only launch. No evaluation result produced.",
+      "evidence": "systemd user journal, invocation 93e3f7e3610547a1a0b40fcec6093a0e; full traceback retained in supervising task tool output",
+      "checkpoint_unchanged": true
+    },
+    {
+      "unit": "sii-r15-critic-metric-02.service",
+      "backend": "cuda",
+      "status": "passed",
+      "checkpoint_step": 38057,
+      "output": "CRITIC_METRIC_02.json",
+      "change": "Same diagnostic source and checkpoint; matched training GPU topology and registered CUDA library paths. No learner or model change."
+    },
+    {
+      "unit": "sii-r15-critic-task-01.service",
+      "backend": "cuda",
+      "status": "passed",
+      "checkpoint_step": 36787,
+      "output": "CRITIC_TASK_01.json"
+    }
+  ],
+  "portability_limit": "The current official default checkpoint loader is not verified across GPU-to-CPU topology. Formal campaign evaluation uses the existing GPU runtime."
+}

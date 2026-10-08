@@ -1,5 +1,13 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+10月9日01:05 CST：经典144筛选/48确认全部完成但未成功放置。新独立审计证明平滑奖励时钟错误：
+4ms伺服跳变按0.05ms物理步长计算，成本放大约80倍；source_v9已修复，首个无前驱样本仍排除，
+失败剩余成本使用真实伺服更新次数上界。七组metric已从保留数据重建并恢复实际梯度，第八组历史前缀处理中；
+两个task奖励训练不受影响。全部旧失败、checkpoint及废弃/重建计算成本保留，不重跑历史物理。
+原生250Hz限制/状态重放通过；旧奖励critic诊断不能充当新模型收敛证明。最终24仍封存，未有新比较成绩。
+服务器`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`
+保存`SERVO_CLOCK_DIAGNOSTIC.json`、`SERVO_CLOCK_REPAIR_PLAN.json`、`SOURCE_V9_HASHES.json`及各组重建收据。
+
 23:54 CST：经典144筛选全完成，无基础设施失败且无Task/Strict成功，48回合确认进行中。
 direct metric/task约3.65/3.725万步，本段26/36回合均失败，穿透早停6/14；actor/执行链/hash一致、
 optimizer有限及OOM为0不等于学习收敛。三类参数shield重放通过；阻抗02原生伺服等效速度、

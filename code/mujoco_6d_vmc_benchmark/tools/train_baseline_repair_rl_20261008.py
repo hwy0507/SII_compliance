@@ -21,6 +21,7 @@ from research72_train_rl_20261003 import Replay, REWARDS
 from research72_probe_online_20261003 import read_event
 from research72_checkpoint_20261003 import checkpoint_hashes
 from baseline_repair_rl_diagnostics_20261008 import flatten_metrics
+from baseline_repair_reward_clock_20261009 import TIME_BASE, SERVO_DT, remaining_slew_bound
 
 
 def main():
@@ -67,7 +68,8 @@ def main():
         seed=a.seed,controller=a.controller,agent_config=agent.config,utd=2,reward=cfg.to_dict(),
         torque_slew_weight=1. if a.reward=='metric' else 0.,
         torque_slew_initial_sample='excluded; no artificial zero-to-gravity jump',
-        torque_slew_failure_continuation='At premature failure, charge 7*remaining_seconds/55 (conservative undiscounted bound).',
+        torque_slew_time_base=TIME_BASE, torque_slew_control_dt_s=SERVO_DT,
+        torque_slew_failure_continuation='At premature failure, charge 7*ceil(remaining_seconds/servo_dt)*servo_dt/55; conservative servo-update bound.',
         initialization='from scratch' if not a.resume_checkpoint else 'same repaired cohort exact episode-boundary resume',
         teacher_labels_used=False,bc=False,actor_input='unchanged canonical48',
         warmup_steps=5000,warmup_behavior='AR(1) rho=.9, stationary std=.10; pure exploration, no teacher',
@@ -86,6 +88,7 @@ def main():
             assert parent[k]==specification[k],k
         if a.reward=='metric':
             assert parent.get('torque_slew_initial_sample')==specification['torque_slew_initial_sample'], 'Reward boundary correction requires explicit replay rebuild'
+            assert parent.get('torque_slew_time_base')==TIME_BASE, 'Servo-time reward correction requires explicit replay rebuild'
         runner=read(cp/'office_runner.json');old=read(cp.parent/'execution.json')
         entry=next(r for r in old['checkpoint_rows'] if r['path']==str(cp))
         assert checkpoint_hashes(cp)==entry['hashes'] and runner['episode_boundary']
@@ -151,7 +154,7 @@ def main():
                             terminated=done,success=success,failure=done and not success,
                             terminal_reason=('original_strict_success' if success else 'original_horizon_or_abort') if done else None)
                         physical_smooth=specification['torque_slew_weight']*iv['torque_slew_cost']
-                        remaining=7*max(0.,55-rewarder.elapsed_s)/55 if done and not success and a.reward=='metric' else 0.
+                        remaining=remaining_slew_bound(rewarder.elapsed_s) if done and not success and a.reward=='metric' else 0.
                         reward-=physical_smooth+remaining
                         terms.update(physical_slew=-physical_smooth,physical_slew_failure_continuation=-remaining,final_reward=reward)
                         assert np.isfinite(reward)
