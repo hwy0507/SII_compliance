@@ -1,0 +1,19 @@
+{
+  "recorded_utc": "2026-10-08T17:49:00+00:00",
+  "server_root": "arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008",
+  "previous_attempts_file": "DYNAMIC_REPLAY_ATTEMPTS_20261009.json",
+  "previous_attempts_sha256": "06bcfcd6de887e192a439098a2e4619df54b84fa14db51b594e2a4291da8d53d",
+  "resolution": "The Cartesian-WBC audit additionally omitted the fixture nominal speed override: actual rollout.fixture.nominal_speed is 0.06m/s, not the generic0.08 default. With the exact recorded speed and pre-integration kinematics, complete admittance action/state replay passes at original1e-10 tolerance. No controller/physics/gate/record changed.",
+  "audit_source": "dynamic_replay_v5/replay_repair_dynamic_controllers_20261009.py",
+  "audit_source_sha256": "d677c7d5d86073af2c2d9ae3fbba29ad500d6470683088168e2a97045e178f5c",
+  "physics_steps": 0,
+  "successful_evidence": {
+    "VMC_DYNAMIC_REPLAY_01.json": "34961e64dbbb344bf63289ffa22401ad47397772a270d7296ae17eb9b369e350",
+    "VMC_DYNAMIC_REPLAY_S2_05.json": "7fba0bba16f374b36fe31877063030a35ce8a10cfc536c736304d263db2a12c3",
+    "ADMITTANCE_DYNAMIC_REPLAY_05.json": "9ddde1cc382d2f0a08f243c7edb47a68d4d9d97c4c6f9069165d5c5d8b30f9fa",
+    "ADMITTANCE_DYNAMIC_REPLAY_S2_05.json": "076cfaa18eda498043956c04e6c229f4a1c6c141b4244112489f21d430937110",
+    "NATIVE_PARAMETER_RL_LEARNED_S1.json": "4357d694ab232c5e45c0bf0cd59180687fe571e4ed9c5f60f949024ae14afdc6",
+    "NATIVE_PARAMETER_RL_LEARNED_S2.json": "656e01ca9f43abed95c4a07745941012ce9ac29292dfb411d2074994ad559703"
+  },
+  "scope": "Two training seeds each: VMC1375full state/action updates exact; admittance1375updates with max action errors5.52e-15/4.31e-15; native impedance1375shield updates and13750servo outputs satisfy registered bounds. Nonzero learned raw parameter actions retained. This does not establish task success, global passivity or convergence. Native impedance robot dynamics are not independently replayed. All failed audit attempts and the earlier explicitly partial admittance audit remain preserved."
+}

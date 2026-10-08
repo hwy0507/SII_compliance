@@ -1,0 +1,45 @@
+{
+  "recorded_utc": "2026-10-08T17:40:00+00:00",
+  "server_root": "arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008",
+  "run": "rl/parameter_admittance_2026100811/continued_v9/episode_00006_repair_train_029",
+  "new_physics_steps": 0,
+  "controller_or_training_changed": false,
+  "attempts": [
+    {
+      "unit": "sii-r15-admittance-full-replay-01.service",
+      "status": "failed_preserved",
+      "source": "replay_repair_dynamic_controllers_20261009.py",
+      "source_sha256": "73225069b25b7a03952024c9829753f64d562d25509782ce2f986cdfa10b68fd",
+      "reason": "Incorrect audit assumption: actual controller uses Cartesian shifted-reference WBC, not legacy joint-waypoint mapping. Refused by reference_mapping assertion."
+    },
+    {
+      "unit": "sii-r15-admittance-full-replay-02.service",
+      "status": "failed_preserved",
+      "source": "dynamic_replay_v2/replay_repair_dynamic_controllers_20261009.py",
+      "source_sha256": "c7845f6c7f27984ca1643852f0c0a2094584c1de1e210442361554d79210075e",
+      "reason": "Audit used panel-default WBC config; nominal reconstruction failed scalar consistency (residual 2.41311436754332e-6). This does not establish an error in the running controller."
+    },
+    {
+      "unit": "sii-r15-admittance-full-replay-03.service",
+      "status": "failed_preserved_unresolved",
+      "source": "dynamic_replay_v3/replay_repair_dynamic_controllers_20261009.py",
+      "source_sha256": "0d018944fbea7ac282a9337a899ad61fe8c6df4cace97340805a333b121bd909",
+      "reason": "Used actual ScaledReferenceWBC config and attempted pre-integration kinematic reconstruction. Failed at policy index4, nominal consistency residual 8.636935811599029e-7. Earlier state/action errors were zero. Exact kinematic/WBC reconstruction remains unverified; no assertion tolerance was loosened."
+    },
+    {
+      "unit": "sii-r15-admittance-state-replay-04.service",
+      "status": "passed_partial_scope",
+      "source": "dynamic_replay_v4/replay_repair_dynamic_controllers_20261009.py",
+      "source_sha256": "0cc87fed1da74872db9ae9fdd2680ddb6dd76e7d4ca5e8fa7be9f01d7bca0a16",
+      "evidence": "ADMITTANCE_STATE_REPLAY_04.json",
+      "evidence_sha256": "90c7564c04f27057503cf91b69f4c5b79a465f383d8ecec84b283edd57546b30",
+      "scope": "1375 chronological updates of virtual offset/velocity/parameters/energy exactly replay from zero using canonical48 estimated wrench and raw learned parameter actions. Does NOT verify Cartesian WBC action mapping."
+    }
+  ],
+  "separate_vmc_evidence": {
+    "run": "rl/parameter_vmc_2026100811/continued_v9/episode_00006_repair_train_029",
+    "evidence": "VMC_DYNAMIC_REPLAY_01.json",
+    "evidence_sha256": "34961e64dbbb344bf63289ffa22401ad47397772a270d7296ae17eb9b369e350",
+    "scope": "1375 full state/action updates, including nonzero learned parameter requests, reproduced exactly."
+  }
+}

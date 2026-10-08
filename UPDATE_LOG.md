@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-09 — 15小时修复阶段九：两个seed的学习后动态动作/状态审计
+
+- 17:53 UTC实时核对main `82c9443427bcdf101236d07ba2058985f64fc8d3`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；两分支无并行新更新，未合并baseline。十组训练稳定继续，参数组约1.45–1.575万交互，direct metric约7.025/2.225万、task约8.325/2.825万；这是运行快照，不是收敛或最终成绩。
+- 新`replay_repair_dynamic_controllers_20261009.py`重建非零学习后参数动作：两个seed各1375步VMC动作/虚拟状态零误差，导纳完整共享WBC动作最大误差5.52e-15/4.31e-15；原生阻抗两组shield及各13750次250Hz伺服限幅/变化率检查通过。没有修改训练代码、gate、世界或actor。
+- 导纳审计入口先后误用joint映射、通用WBC配置及默认名义速度；最终按归档Cartesian映射、pre-integration运动学和fixture速度.06恢复，原1e-10阈值内通过。全部失败尝试及部分状态审计保留，明确是审计入口错误，不列作baseline缺陷。未独立重放完整机器人动力学或证明无源性。
+- 已核验服务器主根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`；工具`dynamic_replay_v5/` SHA `d677c7d5d86073af2c2d9ae3fbba29ad500d6470683088168e2a97045e178f5c`，证据索引`DYNAMIC_REPLAY_RESOLUTION_20261009.json` SHA `5be4407cc6872e15630a803503f7d7357638836850aa36980bd641dda8d3a78a`。小型证据入库，原始数据仍在服务器；阶段九交付归档发布前核验。
+- 已完成所述两个seed动作/状态/限制检查；运行中十组训练；未完成充分学习验证、开发选模/全16模型冻结和新16×24矩阵。仍按22:00 UTC训练收口、次日04:23:12 UTC总截止执行同一有限长任务。
+
 ## 2026-10-09 — 15小时修复阶段八：全部奖励重建接续、预算账本与最终核验工具
 
 - main上一发布`f6cc500ceecc3abde688eb26fb72eb73a3996b61`已远端核验，baseline仍`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。17:09:58 UTC八组metric全部重建/恢复；唯一continuation_v3接续十组实际梯度训练，旧v1/v2不重启，原训练/总截止保持。
