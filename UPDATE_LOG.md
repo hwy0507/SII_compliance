@@ -1,8 +1,16 @@
 # 更新日志
 
+## 2026-10-08 — 15小时修复阶段五：筛选完成、RL失败定位与原生伺服审计
+
+- 核对远端main `0e8e2bd9aff78ad936e5ef670a0ecf81f94ffeae`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。经典144/144筛选完成，无基础设施失败，Task/Strict均0；前两名各8条件确认正在运行，两组direct RL稳定，不重复启动。
+- 新只读训练诊断验证完成回合的48D/原始action/控制器action/过滤action与hash；快照metric/task约36500/37250交互，本段26/36回合均失败，6/14次原2mm穿透早停，多停approach。optimizer未见非有限值、cgroup无OOM；运行稳定和高过滤频率均不等于收敛或算法正确性结论。
+- 三类参数shield各1375步重放误差0；阻抗02完整13750次伺服记录符合40mm弹簧界、1.25rad/s等效命令界、8rad/s²变化率和原力矩slew。更正：原生日志对应250Hz伺服，不是20kHz物理子步；磁盘存储是预防调整，未证实旧原生日志导致OOM。实际物理速度/力矩仍需独立子步审计。
+- 新工具`inspect_repair_training_20261008.py`、`audit_repair_parameter_trace_20261008.py`及证据位于服务器主根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`：`TRAINING_DIAGNOSTIC_01.json`、`NATIVE_PARAMETER_AUDIT_01.json`、`VMC_PARAMETER_AUDIT_01.json`、`ADMITTANCE_PARAMETER_AUDIT_01.json`。未改训练源/环境/gate/actor，final24仍封存；阶段五归档发布前核验。
+- 未完成经典确认、其余8组RL与原生参数RL实际内存验收、开发选择及最终16×24矩阵。继续原15小时长任务，无定时任务，不要求ESN获胜。
+
 ## 2026-10-08 — 15小时修复阶段四：3GiB内存预检与无损日志存储
 
-- 前一阶段main已推送`bc68921`，baseline未改。实读两个RL cgroup发现达到3GiB并触发内存回收，oom/oom_kill均0；不使用systemd摘要中的512KiB假工作集。原生阻抗后续与RL组合前，将两个子步Python数组历史改成磁盘顺序float64记录，完整NPZ不变，不增大限额。
+- 前一阶段main已推送`bc68921`，baseline未改。实读两个RL cgroup发现达到3GiB并触发内存回收，oom/oom_kill均0；不使用systemd摘要中的512KiB假工作集。原生阻抗后续与RL组合前，将两个伺服回调Python数组历史改成磁盘顺序float64记录，完整NPZ不变，不增大限额。
 - 本地/Spark10000行NPZ逐位一致及原控制律/限制契约通过。只停止尚未派发新物理任务的continuation_v1，记录superseded和原因；已有经典筛选/两个direct RL未重启。新`continuation_v2`/`source_v8`服务等待既有筛选，后续流程和15小时截止保持。
 - 15:24 UTC：screen116/144完成，两个direct RL约28000/29000步，尚无训练Task成功；短回合和失败保留。参数RL完整物理内存验收、开发选择和最终16×24仍未完成。
 - README与RESEARCH_STATUS更新到真实当前批次，明确旧弱baseline结果不能支撑ESN全面优势。服务器主根不变，新增`CONTINUATION_MEMORY_PREFLIGHT.json`、`STREAMED_TELEMETRY_CONTRACT_SPARK.json`与`continuation_v2/SCHEDULE.json`；阶段归档`delivery_stage04.tar.gz`（发布前核验），大轨迹仍在原run。
