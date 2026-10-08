@@ -11,6 +11,10 @@ seeds per family, and will freeze all16 methods before opening24 new final
 conditions. Geometry, proprioceptive inputs, task/safety gates and actuator
 limits remain fixed. New final results are not available yet.
 
+The [evaluation notes](code/mujoco_6d_vmc_benchmark/docs/BASELINE_REPAIR_EVALUATION_NOTES_20261009.md)
+define Task/Strict, contact and recovery metrics, and the assumptions behind
+nominal uncertainty estimates for the single stratified 24-condition cohort.
+
 At 2026-10-09 04:01 CST, all 144 classical screening and 48 confirmation
 episodes had finished without placement success. All eight affected metric
 learners have been rebuilt from retained off-policy data after fixing an
