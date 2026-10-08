@@ -332,6 +332,30 @@ terminal子集残差还不等于部分可观测任务中当前策略的总体无
 `checkpoint_panel_02/execution.json` SHA `4987a92e605adf14f02a8b0aa2cd81119a778929cf4cf7156e7f6df5c2de4d1f`。
 三个历史快照都保留；唯一continuation_v3继续原训练/开发/冻结/最终流程，final24未读。
 
+## 第十二阶段：最终控制器全量审计入口与开发预检（19:21–19:25 UTC）
+
+新增`audit_repair_final_controllers_20261009.py`，仅接受模型锁定且全部384回合完成的产物。
+逐回合检查144个经典/参数RL的shield，其中96个VMC/导纳完整动态状态与action重放，
+48个原生阻抗伺服限制检查；隔离子进程避免控制器backend覆盖相互污染，失败保留。
+入口尚未对最终批次运行；仍需与独立物理子步/统计核验并用，不是完整动力学或无源性证明。
+
+使用既有`classical_confirmation/*__repair_development_000`及实际`parameter_v1`源码预检：
+VMC09全部1375步动作/状态误差0；导纳17全部1375步动作最大差5.8494875609937935e-15；
+阻抗00共13750条250Hz记录，等效命令峰速.6857848414989055rad/s，
+等效加速度8.000000000018652rad/s²，力矩slew比1.0000000000023308，
+弹簧位置误差.04000000000000008m、旋转.04819651379419816rad，原数值容差内通过。
+首个没有前驱的力矩样本不构造虚假差分。没有重跑物理或改动控制器。
+
+已核验服务器主根下源码`final_controller_audit_source_v1/` SHA
+`4f54d0f4026161a2bb33adc25e39ec988f4337424bd100b1ffc7ffe8473b43db`；三份预检收据：
+
+- `FINAL_AUDIT_PREFLIGHT_VMC_09.json`：`86879a24d904ae4bdac0bca1bf52fb291da81a6c91236f967c39fa74aed77089`
+- `FINAL_AUDIT_PREFLIGHT_ADMITTANCE_17.json`：`a10f7fb6223b58e0abce5fd4c08d69182ab83c087c3015835a1f00a459e99994`
+- `FINAL_AUDIT_PREFLIGHT_IMPEDANCE_00.json`：`31540597b1cc9bde76001a37bf176a01dfc9da00cce9a7f3b32023c34a1406c4`
+
+19:25 UTC十组训练仍运行，参数31250–33000步，direct metric99750/51500，task115250/50500。
+Spark可用内存约70GiB、磁盘2.3TiB；保留稳定训练，按原预算收口。新final24仍封存。
+
 ## 尚未完成（当前）
 
 已完成六项诊断验收、144筛选/48确认和所述独立动作/子步检查，但经典均未达到任务成功。
