@@ -1540,3 +1540,20 @@ contact burden does not imply task success. The candidate is not added to the
 uniform baseline/main result table or promoted to a frozen model. Details,
 hashes, and raw audit locations are in
 `docs/ESN_TORQUE_GENERALIZATION_20261007.md`.
+
+## 2026-10-08 新 office-v7 统一 24 条件评测（运行中）
+
+新登记 16 方法 × 同 24 综合扰动条件 = 384 回合，覆盖 ESN、matched/ordinary RNN/MLP、
+memoryless、经典 VMC/导纳/阻抗、RL 调三种参数、两种直接动作 RL、enhanced teacher 和 zero。
+固定每个 family 的旧 uniform24 首模型，本轮不训练；正式 dt=5e-5、55 s、同 MJB 与 gate。
+新的时序/幅度条件与旧 office-v6 分开，不把历史结果当作新评测。
+
+五类 RL 的 CUDA/JAX/Orbax 加载设置已修复，预检各重放 1375 个旧动作、误差 0，
+归一化及训练计数未变。14:05 CST 快照已有 7/384 真实回合完成审计：首条件三种神经
+模型 Task/Strict 通过，三种参数 RL 和 metric 直接 RL 未完成任务。样本未齐，不报告
+最终成功率；修复的是运行故障，不是承诺 RL 性能已提升。
+
+四路有限评测与逐回合审计正在运行，原始失败和接触覆盖均保留；批次结束后独立生成统一表。
+详见 `docs/OFFICE_V7_UNIFORM24_20261008.md`；服务器证据：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_uniform24_20261008/`。
+全 384 回合、每方法 `/24` 成功率和最终跨方法结论尚未完成。

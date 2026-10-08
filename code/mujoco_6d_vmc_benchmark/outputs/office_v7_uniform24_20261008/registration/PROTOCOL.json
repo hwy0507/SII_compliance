@@ -1,0 +1,55 @@
+{
+  "schema": "sii-office-v7-sequential-v1",
+  "registered_utc": "2026-10-08T05:51:09.054046+00:00",
+  "authorization": "2026-10-08 user: every method on 24 combined scenes and repair RL",
+  "scene": "office-v7-sequential-24",
+  "physics_dt_s": 5e-05,
+  "duration_s": 55.0,
+  "formal_model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+  "condition_file_sha256": "5b10a6328f7c7b1c70b1a6c95b8d64a2740491b7ec0acf06a58d7b86559190ed",
+  "model_manifest_sha256": "02980c636bb5fddabdf1bc16a669c7e093bc5be0a3bf5e027114b6849bc316d8",
+  "source_manifest_sha256": "008a6d817e5db113906708c91e26214f2ca905fc6031594ae0296fa3e22e3c71",
+  "source_base_commit": "bebb6331707228f7bf84fd4925611243cf2c442e",
+  "condition_sampler_seed": 2026100824,
+  "environment_seed": 2026091751,
+  "conditions": 24,
+  "methods": 16,
+  "expected": 384,
+  "distribution": {
+    "ball_speed": [
+      1.305,
+      1.595
+    ],
+    "person_start": [
+      4.0,
+      5.0
+    ],
+    "rod_start": [
+      13.5,
+      14.5
+    ],
+    "person_stroke": [
+      0.18,
+      0.22
+    ],
+    "rod_stroke": [
+      0.2115,
+      0.2585
+    ],
+    "rod_hold": [
+      4.5,
+      5.5
+    ]
+  },
+  "actor_contract": "unchanged canonical48/action7; estimated proprioceptive loads and reference-relative fields",
+  "categories": {
+    "passive": "fixed pillar/thick corner",
+    "active_short": "ball at 2s",
+    "active_long": "person then rod; >=1.5s separation between commanded motions"
+  },
+  "model_selection": "No fitting. Same 16 first frozen family models as uniform24, replacing the older v7 pilot lock explicitly.",
+  "comparison": "New paired development/generalization assessment; never reuses office-v6 outcomes.",
+  "gates": "unchanged task/strict, external penetration <=0.2mm; physical short failures stay in /24",
+  "resources": "Spark <=4 simulators, one thread and MemoryMax=3GiB per worker",
+  "missing": "Infrastructure failure remains pending, never counted as physical task failure"
+}

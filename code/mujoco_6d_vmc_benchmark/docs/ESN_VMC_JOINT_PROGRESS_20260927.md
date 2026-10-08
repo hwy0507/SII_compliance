@@ -2377,3 +2377,21 @@ paper metrics 已核对。由于首条件相对父 ESN 和 `.003` 候选均未�
 Completed one independent development condition using the unchanged office-v6 MJB, gate, actor contract and actuator limits. The registered schedule is ball 2.0 s, person 4.5 s, rod 14.0–22.5 s, followed by thick-corner placement; formal `dt=5e-5`, 55 s, seed `2026100807`, canonical48D/action7. The 17-method campaign is archived at `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_three_obstacle_20261008/run_003/`.
 
 Twelve methods completed physical rollouts: task `4/12`, strict `3/12`. `recovery035_esn_fixed`, `recovery035_esn_memoryless` and the matched MLP passed task/strict in this single condition; matched RNN failed because of `0.423 mm` penetration. Five RL transfer rows were preserved as infrastructure failures from a pinned JAX/Orbax sharding error and are not counted as physical zeros. The full table and limitations are in `docs/OFFICE_V7_ALL_METHODS_20261008.md`. This development condition does not amend the sealed office-v6 matrix and does not establish generalization.
+
+## 2026-10-08 — 新 16 × 24 综合条件与 RL 恢复
+
+按用户要求开始新的 office-v7 384 回合有限评测，固定每个方法一个旧 uniform24 首模型，
+24 个同配对扰动条件，formal dt=5e-5、55 s。这不是复用旧 office-v6 结果或旧 v7 单条件模型。
+球/人手/棍的扰动参数预注册，布局/MJB、任务门槛、actor 输入及执行器限制不变。
+RL 加载修复为恢复原 CUDA/JAX/Orbax 环境；五个 checkpoint 各 1375 动作 exact replay 通过，
+归一化/计数均冻结。本轮不训练；可运行不等于任务表现已改善。
+
+2026-10-08 14:05 CST 快照：7/384 回合通过独立子步审计。ESN/matched RNN/matched MLP
+在新条件 000 均 Task/Strict 通过；三类参数 RL 停在 carry，direct-metric 停在 approach。
+全部保留，未形成任何方法完整 `/24`。四路有限服务稳定运行；另有只等待结束的报告服务，
+不会新增仿真或定时任务。最终 Task/Strict 按各 24 回合报告，早停及失败保留分母。
+
+详见 `docs/OFFICE_V7_UNIFORM24_20261008.md`。真实源码、登记及产物在
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_uniform24_20261008/`。
+`report_final/` 是批次结束后的预定产物，目前未完成；不能引用为最终结果。尚未完成完整
+384 回合及跨方法结论，不据单条件声称 ESN 优势。

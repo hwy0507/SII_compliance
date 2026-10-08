@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-08 — 新 office-v7 统一 24 条件启动与 RL 运行修复
+
+- 实时 fetch/read main `bebb6331707228f7bf84fd4925611243cf2c442e`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；baseline 最新仅为探索性接触指标后处理，不修改冻结模型或环境。检查现有进程后，在独立 run 启动有限批处理，没有定时任务或重复训练。
+- 用户要求每方法 24 个新综合场景。本轮登记同一 24 条扰动参数条件 × 16 个固定 family 模型，共 384 个新物理回合；沿用旧 uniform24 的首个冻结模型，而非旧 v7 单条件 pilot 的较早模型。球、人手/棍、柱/厚桌角覆盖三类障碍；几何固定，时序/幅度抽样 seed `2026100824`，实际初态 seed `2026091751`，55 s、formal `dt=5e-5`。不复用旧 office-v6 结果冒充本轮成功率。
+- 修复缺失的原 CUDA/JAX/Orbax 运行设置。五个本轮 RL checkpoint 均加载成功，各自 1,375 动作 exact replay，归一化/计数不变；不是重新训练或声称性能已改善。首条件三种参数 RL 均停在 carry、direct-metric 停在 approach；这些真实失败保留。
+- 14:05 CST 检查快照：7/384 回合已完成独立审计，四路运行，无基础设施失败；ESN/matched RNN/matched MLP 在首条件均 Task/Strict 通过。尚未取得任何方法完整 `/24`，不报告最终百分比。每回合保留 raw trace、物理子步、动作重放、source/config/model hash 和失败原因。
+- 新增 `office_v7_uniform24_20261008.py`、RL preflight、独立报告工具，补齐旧 pilot runner 的环境设置；协议及小型预检证据归档到 `outputs/office_v7_uniform24_20261008/registration/`。验证包括编译、24 条件唯一性/时序、五类 RL replay、首回合真实报告、Wilson 区间边界及 `git diff --check`。
+- 已核验服务器主根：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/office_v7_uniform24_20261008/`。实际 `source/`、`SOURCE_HASHES.json`、协议/模型/条件、原始回合和独立审计已存在；SHA 详见 `code/mujoco_6d_vmc_benchmark/docs/OFFICE_V7_UNIFORM24_20261008.md`。报告程序独立存 `reporting_source/`，SHA256 `a06bf5ba1ae13f7b244225710e2f7acd3030eae896d8b1c3cdccd452d80a7ba7`，与本地一致。
+- 运行中：`sii-office-v7-uniform24-20261008.service` 四路评测，每路一线程/3GiB；`sii-office-v7-uniform24-report-20261008.service` 仅等待该有限批次结束，然后生成 `report_final/REPORT.md` 与 JSON。未完成：384 全部回合、最终成功率与跨方法结论。原 gate、actor 输入、执行器限制、历史失败和封存数据未改。
+
 ## 2026-10-08 — office-v7 三类障碍统一方法统计
 
 - 开工核对：本地 `main=a518ed45ffa2fd2aab84bdc29bba9243ebdaf9d1`；GitHub fetch 当时不可达，使用已缓存 main/baseline 日志，未把缓存冒充最新远端。服务器 SSH 后恢复可用；未发现已有 office-v7 作业后才启动独立 run。

@@ -85,10 +85,14 @@ def run_one(root: Path, candidate: dict, condition_id: str, protocol: dict, sour
     row = {"method": name, "category": candidate["category"], "command": command, "started_utc": now()}
     write(root / f"{name}.execution.json", row)
     unit = "sii-office-v7-" + root.name.replace("_", "-") + "-" + str(abs(hash(name)) % 100000)
+    # Archived Orbax arrays carry CUDA sharding. Match their original runtime;
+    # silently falling back to CPU makes restore fail before any simulation.
+    from run_paper_final_validation_20261003 import ENV as frozen_environment
     managed = [
         "systemd-run", "--user", "--wait", "--pipe", "--collect", "--unit=" + unit,
         "--property=MemoryMax=3G", "--property=MemorySwapMax=0",
     ] + ["--setenv=" + key + "=" + value for key, value in {
+        **frozen_environment,
         "OMP_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1", "MKL_NUM_THREADS": "1",
         "MUJOCO_MENAGERIE_PATH": str(MENAGERIE),
         # optimize_tool_contact_20261002 validates this as a full Git SHA.
