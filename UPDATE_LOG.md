@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-09 — 15小时修复阶段十五：有限最终审计接续
+
+- 21:02 UTC重新核对main `a73dcfd50a07a54477ff1eaca3a9a02e8714df0c`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无并行新提交。十组训练保留；20:58快照参数4.85–5.1万、direct最高14.6万，当前段仍无Task/Strict成功。
+- 新`finish_repair_delivery_20261009.py`以一次性`sii-r15-final-delivery-v1.service`接续：等待现有384和协调器报告完成，才顺序运行最终轨迹/统计核验、144经典/参数控制器审计、全16比较表、最终计算账本与势奖励审计。独立锁防重复、预核全部工具hash、失败保留；不创建定时任务，不运行训练/仿真，不替代人工审阅与Git发布。
+- 实际状态`waiting_existing_final_evaluation`，所有checks为空；MemoryMax=3221225472、swap=0、单数值线程/CPUQuota100%。目前只验证启动/资源/登记和语法；完整链尚未执行，不能写成最终审计已通过。原总截止后不新开审计阶段，已开始的阶段允许完成；不延长训练或开新物理回合。
+- 已核验服务器主根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`；源码`delivery_continuation_source_v1/finish_repair_delivery_20261009.py` SHA `10dbf7ca1a32519acc6170b14c5a990f5a029f396ebde2926aa148d475d2defd`，输出`final_delivery_v1/`，登记SHA `edd7b7c79fb6d76c5799217ea44e082c6d4c824534565f126d3b0763861d0730`。阶段十五交付归档发布前核验。
+- 已完成有限接续入口；运行中十组训练和一个仅等待的后处理服务；尚未完成开发选模/模型锁、新384及最终审计。训练22:00 UTC收口、04:23:12 UTC总截止不变，final24仍封存。
+
 ## 2026-10-09 — 15小时修复阶段十四：04:01 CST训练复查
 
 - 前一发布main `12e7bfe7929864f961c8e8ca548484dd929d2a3d`已远端核验，baseline仍`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。十组稳定训练；参数约3.8–4万交互，direct metric10.8/6.35万、task12.775/5.775万，原06:00 CST收口不变。
