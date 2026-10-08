@@ -66,6 +66,7 @@ def main():
     specification=dict(schema='sii-repair-rl-v1',registered_utc=now(),protocol_sha256=pdigest,
         seed=a.seed,controller=a.controller,agent_config=agent.config,utd=2,reward=cfg.to_dict(),
         torque_slew_weight=1. if a.reward=='metric' else 0.,
+        torque_slew_initial_sample='excluded; no artificial zero-to-gravity jump',
         torque_slew_failure_continuation='At premature failure, charge 7*remaining_seconds/55 (conservative undiscounted bound).',
         initialization='from scratch' if not a.resume_checkpoint else 'same repaired cohort exact episode-boundary resume',
         teacher_labels_used=False,bc=False,actor_input='unchanged canonical48',
@@ -83,6 +84,8 @@ def main():
         cp=a.resume_checkpoint.resolve();parent=read(cp.parent/'PROTOCOL.json')
         for k in ('protocol_sha256','seed','controller','agent_config','reward','prior_file_sha256'):
             assert parent[k]==specification[k],k
+        if a.reward=='metric':
+            assert parent.get('torque_slew_initial_sample')==specification['torque_slew_initial_sample'], 'Reward boundary correction requires explicit replay rebuild'
         runner=read(cp/'office_runner.json');old=read(cp.parent/'execution.json')
         entry=next(r for r in old['checkpoint_rows'] if r['path']==str(cp))
         assert checkpoint_hashes(cp)==entry['hashes'] and runner['episode_boundary']

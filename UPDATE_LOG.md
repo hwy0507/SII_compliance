@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-08 — 15小时修复阶段二：独立奖励重算与阻抗滑移定位
+
+- 前一阶段已推送main `17517dcceec6f00726ef8fcad0125bbb0eaf9c9a`，baseline仍为`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。持续执行同一15小时任务，无新增定时任务，不改环境/gate/actor/执行器。
+- 两个direct RL到5500步/4回合/1002次梯度，训练链可运行。独立原始子步审计找出新平滑奖励首样本的人工零→重力跳变，source_v5排除无前驱的首差分；metric用原5500条off-policy转移重建学习器/归一化/重放及梯度，无物理重跑，旧权重与失败保留。task奖励权重0不受影响，原checkpoint直接接续。实际梯度计算包含废弃诊断更新，不冒称exact resume或预算完全相等。
+- 本地单线程3GiB运动学重建：两项高刚度阻抗在约9.80/8.92s出现相对夹爪>20mm滑移，接触厚桌角后丢物；低RMSE/低外部穿透不能代替放置成功。几何重建不是接触力重放，最大时间戳运动学差0.0124/0.0127mm已披露。
+- 新增奖励审计/重建、滑移诊断和最终评测锁定工具；最终16×24尚未运行。当前经典144筛选及两组RL继续运行，未完成参数RL多seed、冻结/新对比或收敛证明。
+- 服务器主根仍为`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`；训练源`source_v5`、奖励证据在各`rl/direct_*_2026100811/reward_boundary_audit_rebuild_v2/`，本阶段小型证据和工具归档`delivery_stage02.tar.gz`（发布前核验）。详见`docs/BASELINE_REPAIR_15H_20261008.md`。
+
 ## 2026-10-08 — 用户授权15小时baseline修复/重评，第一阶段启动
 
 - 14:10 UTC阶段核对：验收重试6/6完成、Task/Strict均0/6；高刚度阻抗进入retreat但物块掉落，不能算成功。经典筛选18/144完成。两组direct RL在4125步安全保存后，用source_v4接续至5500步；独立真实优化器探针通过，修正的是嵌套optimizer日志兼容性，尚无学习性能结论。新证据`RL_CONTRACT_TEST_V2.json`、`RL_LOGGER_TYPE_FIX.json`与source_v4存同一服务器主根。

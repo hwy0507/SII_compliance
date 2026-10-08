@@ -14,7 +14,7 @@ def main():
     changes = [
         ("        return dict(elapsed_s=float(dt.sum()),error_integral=float(dt@e2),",
          "        signed_tau=arrays['qfrc_actuator'][begin:end].astype(float)\n"
-         "        previous_tau=arrays['qfrc_actuator'][begin-1].astype(float) if begin else np.zeros(7)\n"
+         "        previous_tau=arrays['qfrc_actuator'][begin-1].astype(float) if begin else signed_tau[0]\n"
          "        changes=np.diff(np.vstack((previous_tau,signed_tau)),axis=0)\n"
          "        rates=np.asarray(metrics.env.safety_config.maximum_torque_rate_nmps)\n"
          "        slew_ratio=changes/(dt[:,None]*rates[None,:])\n"
@@ -26,7 +26,7 @@ def main():
         ("            worker.write(output/'RL_INTERVALS.json',self.intervals)",
          "            worker.write(output/'RL_INTERVALS.json',self.intervals)\n"
          "            worker.write(output/'RL_REWARD_METADATA.json',dict(initial_potential=self.initial_potential,"
-         "torque_slew_definition='sum_physics dt/horizon * sum_j ((tau_j-tau_prev_j)/(dt*max_rate_j))**2',"
+         "torque_slew_definition='sum_physics dt/horizon * sum_j ((tau_j-tau_prev_j)/(dt*max_rate_j))**2; first recorded sample excluded because no preceding sample exists',"
          "actor_input_unchanged=True,template_sha256=TEMPLATE_SHA))"),
         ("    worker.EXTRA_SOURCE_FILES=[Path(__file__),Path(classical.__file__),Path(office.__file__)]",
          "    worker.EXTRA_SOURCE_FILES=[Path(__file__),TEMPLATE_PATH,Path(classical.__file__),Path(office.__file__)]"),
