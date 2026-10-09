@@ -1,5 +1,13 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+10月9日14:16 CST：direct office_task与RL调阻抗各完成同八development条件，
+均Task 0/8、Strict 0/8；16条55秒子步/动作/条件/checkpoint审计通过，分别停approach/carry。
+调导纳6500交互、调VMC1250交互正在本地推进，余下metric与低熵对照未完成。
+独立奖励重建发现直接组观察到的完整Strict失败回报相同，即使两个预热回合Task通过；
+没有改运行奖励，只登记学习信号问题，不能认定唯一因果或宣称RL已经调好。
+完整八阻抗开发的接触停滞诊断完成；低RMSE的静止接触不代表柔顺任务成功。
+新结果与封存final分开，详情见[本地补强记录](BASELINE_LOCAL_RL_20261009.md)。
+
 10月9日13:21 CST：持续本机监看，direct office_task与调阻抗各11k交互/12002更新完成，
 原始奖励/动作重建及八条调阻抗参数轨迹独立审计通过。学习段仍未成功（direct停approach、
 阻抗卡carry）。首个开发因Menagerie路径漏传在物理前失败，保留失败并用同checkpoint独立重跑；

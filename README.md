@@ -5,7 +5,13 @@ Two memory-capped local lanes cover all five RL families plus exploration contro
 Spark is reserved for the user's other work. GPU update/resume and physical reward checks passed.
 The first random-warmup episode passed Task but failed Strict; it is not a trained-policy result.
 Direct office-task and impedance tuning have now each completed 11k interactions and 12,002 updates.
-Learned behavior still fails placement; eight-condition development evaluations are in progress.
+Both completed the same eight development conditions: Task 0/8 and Strict 0/8 for each.
+All 16 full-horizon physical/action audits passed; direct policies stopped at approach, impedance
+at carry. Admittance and VMC tuning are now running; metric/low-entropy controls remain pending.
+Low error while stalled does not establish good compliance. A read-only reward census found that
+the direct task reward assigns identical raw discounted returns to the observed full-horizon
+Strict failures, including two warmup Task successes. This is a sparse learning-signal concern,
+not a demonstrated coding error; no running reward or weights were changed.
 A missing evaluation asset path was repaired in a separate attempt without retraining; the original
 failure is retained. The current queue receipt is `parallel_v2.execution.json`. A one-shot observer
 independently audits completed configurations; 11k diagnostic segments are not convergence evidence.

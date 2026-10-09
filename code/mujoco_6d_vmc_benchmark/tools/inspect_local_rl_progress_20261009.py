@@ -12,6 +12,38 @@ import numpy as np
 from office_v7_uniform24_20261008 import read, write, sha, now
 
 
+def objective_information(segment):
+    from audit_repair_potential_objective_20261009 import inspect as inspect_potential
+    potential = inspect_potential(segment)
+    spec = read(segment/'PROTOCOL.json')
+    state = read(segment/'execution.json')
+    assert state['status'] == 'complete', 'Objective census needs a flushed completed segment'
+    gamma = spec['reward']['gamma']
+    rows = {r['episode']:dict(condition=r['condition_id'], task=r['result']['task_success'],
+        strict=r['result']['strict_success'], count=0, expected_steps=r['steps'],
+        discounted_return=0., undiscounted_return=0., terminal_task_reward=None)
+        for r in state['rows']}
+    with (segment/'training.jsonl').open() as stream:
+        for line in stream:
+            record = json.loads(line); row = rows[record['episode']]; terms = record['terms']
+            row['discounted_return'] += gamma**row['count']*terms['final_reward']
+            row['undiscounted_return'] += terms['final_reward']; row['count'] += 1
+            if terms['terminated']: row['terminal_task_reward'] = terms['task']
+    for episode, row in rows.items():
+        assert row['count'] == row['expected_steps'] and row['terminal_task_reward'] is not None
+        original = next(r for r in state['rows'] if r['episode'] == episode)
+        np.testing.assert_allclose(row['undiscounted_return'], original['return_value'], rtol=0, atol=1e-10)
+    return dict(mode=spec['reward']['mode'], gamma=gamma, episodes=list(rows.values()),
+        discounted_return_std=float(np.std([r['discounted_return'] for r in rows.values()])),
+        task_pass_strict_fail_count=sum(r['task'] and not r['strict'] for r in rows.values()),
+        positive_terminal_task_reward_count=sum(r['terminal_task_reward'] > 0 for r in rows.values()),
+        potential_audit=potential,
+        interpretation='Current terminal reward uses Task AND Strict. Equal failed complete returns do not prove '
+            'all policies equivalent: unseen strict-success trajectories can have different returns. '
+            'Potential shaping can aid temporal-difference learning despite its telescoping identity. '
+            'This census diagnoses observed reward information, not failure causality; no reward was changed.')
+
+
 def inspect(segment):
     payload = (segment/'execution.json').read_bytes()
     state = json.loads(payload)
@@ -75,6 +107,8 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--objective-audit', action='store_true',
+                   help='Also reconstruct discounted reward information for completed training segments only')
     a = p.parse_args()
     assert not a.output.exists()
     jobs = read(a.root/'PROTOCOL.json')['jobs']
@@ -83,7 +117,10 @@ def main():
                   new_physics_steps=0, gradient_updates=0, heldout_reads=0)
     for name in names:
         if (a.root/name/'execution.json').exists():
-            report['segments'].append(inspect(a.root/name))
+            segment = inspect(a.root/name)
+            if a.objective_audit and segment['status'] == 'complete':
+                segment['objective_information'] = objective_information(a.root/name)
+            report['segments'].append(segment)
         else:
             report['not_started'].append(name)
     write(a.output, report)

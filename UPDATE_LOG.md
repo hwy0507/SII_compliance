@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-09 — 本机RL监看：两组同八开发完成、奖励信息审计与原始轨迹归档
+
+- 延续本轮已授权监看；再次核对远端main `6caa74831135bccb8961b524c145646c291f638c`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读取日志，无合并。全部训练/仿真/分析仍在本机，两lane各3GiB/禁swap/数值单线程；服务器仅存档，显示配置未动。
+- direct office_task、RL调阻抗各11000交互/12002更新，均完成同八development条件，Task/Strict各0/8。16条完整55秒正式dt子步/动作/身份/checkpoint独立审计通过；分别停approach/carry。均值RMSE/峰矩/峰速为205.018mm/41.929Nm/0.34735m/s及23.327mm/36.510Nm/0.37383m/s；不以不同失败阶段的低指标宣称柔顺优势。
+- 新增只读`--objective-audit`，逐项核对折扣与未折扣原始奖励及势函数抵消。直接组观察到的八条完整Strict失败回报几乎完全相同，包含两次Task已完成的预热；这是当前奖励信息的局限，不是实现重建错误、唯一因果证明或所有策略等价。未改变运行奖励/权重，后续奖励消融须独立登记。阻抗metric回报仍有差异；全八训练＋八开发接触停滞诊断完成，不声称经典无解。
+- 14:23 CST调导纳8000交互/6002更新、调VMC2750交互/仍预热，服务正常、OOM计数0；剩余直接metric与两个历史熵对照待运行。只读一次性监看进程持续审计已完成组，有限队列结束即停止等待研究审查，不创建定时任务。训练充分性、多seed、经典脱困和新统一final仍未完成，旧384最终比较未被替换。
+- 逐文件核验共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_local_rl_20261009_stage3/evidence/`，210文件/1040156441字节，清单SHA `70afb7ed548d2b888702f00035f7535770e5a641b2532be302fce6de5ad3ca23`，含direct八开发原始轨迹和奖励诊断源；`.../baseline_local_rl_20261009_stage4/evidence/`，292文件/1198991995字节，SHA `168f920b8509531b43e29fee6a589630dc1267a895cb84fafb3e1a02961a022b`，含阻抗八开发原始轨迹、完整成对审计和停滞诊断。所有失败保留，checkpoint/训练在stage2、基础源/继承smoke在stage1；不覆盖旧归档。
+- 前次已发布源码/报告小包也已核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_local_rl_20261009_stage2/review_6caa748.tar.gz`，354665字节，SHA `4a748dc9875cb7f9e6b5cbdf2c070ad4d07cc900cf116b662bcc40606ca2a2a8`。本次同步README、进度面板、联合进度、周报及小型证据；奖励实数据重建、源码语法与diff检查通过。
+
 ## 2026-10-09 — 本机RL持续监看：首段完成、开发资源路径修复、独立学习诊断
 
 - 开工及本轮远端核对main `c745da382a45ed7d8ef59f6915cc3464ef2a8ea2`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，不合并。按`sii-research-sync`持续本地计算，服务器仅归档，不触碰已恢复显示。
