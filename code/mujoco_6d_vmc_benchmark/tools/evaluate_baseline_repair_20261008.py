@@ -14,6 +14,7 @@ import sys
 from office_v7_uniform24_20261008 import read,write,sha,now,V6,FAMILIES
 from run_baseline_repair_screen_20261008 import managed
 from research72_checkpoint_20261003 import checkpoint_hashes
+from report_office_v7_uniform24_20261008 import build, markdown
 
 
 BASELINES={'classical_'+m for m in ('vmc','admittance','impedance')}|{
@@ -163,7 +164,6 @@ def run(root,models,source,out,phase,workers,condition_ids):
         completed=sum(r['status']=='complete' for r in rows),failures=failures)
     write(out/'execution.json',result)
     if phase=='final':
-        from report_office_v7_uniform24_20261008 import build,markdown
         report=build(out)
         report['interpretation']='Repaired baseline cohort: independent new24 final conditions, frozen model per family; prior weak-baseline matrix not reused. Equal evaluation does not mean equal historical training.'
         write(out/'REPORT.json',report);(out/'REPORT.md').write_text(markdown(report))

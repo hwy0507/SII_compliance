@@ -41,7 +41,8 @@ def main():
     for name in ('baseline_repair_controllers_20261008.py', 'baseline_repair_worker_20261008.py',
                  'test_baseline_repair_20261008.py', Path(__file__).name, 'run_baseline_repair_screen_20261008.py',
                  'baseline_repair_online_worker_20261008.py', 'train_baseline_repair_rl_20261008.py',
-                 'baseline_repair_rl_diagnostics_20261008.py', 'test_baseline_repair_rl_20261008.py'):
+                 'baseline_repair_rl_diagnostics_20261008.py', 'test_baseline_repair_rl_20261008.py',
+                 'report_office_v7_uniform24_20261008.py'):
         shutil.copy2(Path(__file__).with_name(name), source/'tools'/name)
     parameter = root/'parameter_v1'
     shutil.copytree(PARAMETER, parameter, ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))

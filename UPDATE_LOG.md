@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-09 — 15小时修复最终交付：384全完成，ESN未全面胜出
+
+- 前一已核验main `fa4a891428dd03c14131a51267178fa836d0560a`，baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，不合并。新增`BASELINE_REPAIR_FINAL_RESULTS_20261009.md`及全16柔顺/任务表；新384回合全为55秒，422400000物理子步核验、144控制器审计和最终预算/614回合势函数检查通过，所有本批计算服务已结束。
+- ESN21/24 Task、15/24 Strict；matched RNN24/16、matched MLP13/9、ordinary RNN14/9、ordinary MLP18/15、memoryless12/10、enhanced teacher24/17；三经典/五RL及nominal全零。ESN人手负载与跟踪有优势，但共同Strict时棍P95更高、球冲量更大；不能挑指标宣称全面最好，也不能称baseline已充分训练或性能问题全部解决。
+- 384完成后协调器因冻结快照漏带报告模块而退出，原FAILURE和v1停止收据保留；独立`delivery_continuation_source_v2/`补原版本报告模块，五入口预检及完整后处理通过，无物理重跑/源覆盖/门槛改动。未来prepare补依赖，evaluate提前导入；`finish_repair_delivery`新增严格限定该缺报告错误的恢复入口。语法/diff及实际全链验证通过。
+- 服务器主根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`；真实物理源`source_v9/`、控制器`parameter_v2/`、384原始数据`final_evaluation/episodes/`、最终审计/表`final_delivery_v2/`。最终执行SHA `267aaeb2b3dc6db07c23ffd258ce9a76de0ce308e6cc5d36ddeecca633794f27`，比较表SHA `16c5345874b4912797d9062419caef8147e0eb3dc1ac4f5fd88a7f3b6ea49dd0`；审阅报告与阶段二十归档发布前核验，小型证据入Git，大轨迹/模型留服务器。
+- 十组RL实际875183物理交互/684训练回合、1753254次记录优化，含102868次废弃/替代成本；每模型预算和历史teacher差异明确披露。已完成有限修复与重评；未完成强RL学习、经典恢复、同数据多seed因果比较和真实硬件泛化，当前不支持“ESN全面优于强baseline”的RAL结论。
+
 ## 2026-10-09 — 15小时修复阶段十九：最终评估过半，未发布局部排名
 
 - 前一已远端核验main `c12c656f53ff8989e7eb0f35773339528e2b9243`，baseline仍`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。00:54:53 UTC快照202/384完成、10运行，各方法完成12或13条件，无基础设施/逐回合审计失败；完成不是任务成功，未用部分结果改模型或排名。

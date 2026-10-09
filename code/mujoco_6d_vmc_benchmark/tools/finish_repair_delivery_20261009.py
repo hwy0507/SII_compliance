@@ -6,6 +6,7 @@ access while waiting. Preserve failures. Publication remains a reviewed step.
 import argparse
 from datetime import datetime, timezone
 import fcntl
+import inspect
 from pathlib import Path
 import subprocess
 import sys
@@ -18,6 +19,8 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--recover-missing-report', action='store_true',
+                   help='Only recover the recorded missing-report import after all384 episodes completed; preserve old coordinator failure')
     a = p.parse_args()
     root, out = a.root.resolve(), a.output.resolve()
     assert out.is_relative_to(root) and not out.exists()
@@ -59,6 +62,7 @@ def main():
         commands=[dict(stage=label, command=[sys.executable,str(script),*args],
                        script_sha256=expected[label]) for label,script,args in entries],
         dynamic_replay_sha256=sha(dynamic),
+        recover_missing_report=a.recover_missing_report,
         scope='Wait existing384; sequential audit/report only. No new physics, learning, model selection, '
               'Git writes or recurring task. In-flight audits may finish; no new stage after original deadline.')
     write(out/'REGISTRATION.json', registration)
@@ -68,7 +72,32 @@ def main():
         write(out/'execution.json', state)
     save()
     try:
-        while True:
+        recovered = False
+        if a.recover_missing_report:
+            final = root/'final_evaluation'
+            completed = read(final/'execution.json')
+            assert completed['status'] == 'complete' and completed['completed'] == completed['expected'] == 384
+            assert not completed['failures']
+            failure = root/'continuation_v3/FAILURE.json'
+            assert read(failure)['error'] == repr(ModuleNotFoundError("No module named 'report_office_v7_uniform24_20261008'"))
+            assert not (final/'REPORT.json').exists() and not (final/'REPORT.md').exists()
+            from report_office_v7_uniform24_20261008 import build, markdown
+            report_module = Path(inspect.getfile(build)).resolve()
+            assert sha(report_module) == 'a06bf5ba1ae13f7b244225710e2f7acd3030eae896d8b1c3cdccd452d80a7ba7'
+            assert not report_module.is_relative_to(source)
+            report = build(final)
+            assert report['complete'] and report['completed'] == 384
+            report['interpretation'] = 'Repaired baseline cohort: independent new24 final conditions, frozen model per family; prior weak-baseline matrix not reused. Equal evaluation does not mean equal historical training.'
+            write(final/'REPORT.json', report)
+            (final/'REPORT.md').write_text(markdown(report))
+            write(out/'REPORT_RECOVERY.json', dict(recovered_utc=now(),
+                original_coordinator_failure_sha256=sha(failure),
+                completed_physics_receipt_sha256=sha(final/'execution.json'),
+                report_module=str(report_module), report_module_sha256=sha(report_module),
+                report_sha256=sha(final/'REPORT.json'),
+                scope='Missing derived report only; old failure/execution preserved, frozen source and384 episodes unchanged.'))
+            recovered = True
+        while not recovered:
             final = root/'final_evaluation/execution.json'
             if final.exists():
                 s = read(final)

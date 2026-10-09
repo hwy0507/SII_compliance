@@ -1,0 +1,79 @@
+{
+  "registered_utc": "2026-10-09T02:46:40.689139+00:00",
+  "source_sha256": "70be856efcb8ded62d38c161e58bc060838590298e0905ca4604fe6f49398841",
+  "protocol_sha256": "ff4e3830fbbaaa40efee2d277c57b3859d19162e6ef286c971cbe22a3a44de71",
+  "deadline_utc": "2026-10-09T04:23:12+00:00",
+  "python": "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+  "import_source": "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/source_v9",
+  "commands": [
+    {
+      "stage": "verification",
+      "command": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/analysis_stage08_source/verify_repair_final_20261009.py",
+        "--root",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/final_delivery_v2/verification"
+      ],
+      "script_sha256": "71727df25d25659588f80239f190b1b331bab0ab0b14597d69b1568c1b85e231"
+    },
+    {
+      "stage": "controller_audit",
+      "command": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/final_controller_audit_source_v1/audit_repair_final_controllers_20261009.py",
+        "--root",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008",
+        "--dynamic-script",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/dynamic_replay_v5/replay_repair_dynamic_controllers_20261009.py",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/final_delivery_v2/controller_audit"
+      ],
+      "script_sha256": "4f54d0f4026161a2bb33adc25e39ec988f4337424bd100b1ffc7ffe8473b43db"
+    },
+    {
+      "stage": "comparison",
+      "command": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/analysis_stage13_source/render_repair_comparison_20261009.py",
+        "--root",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008",
+        "--verified",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/final_delivery_v2/verification",
+        "--controllers",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/final_delivery_v2/controller_audit",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/final_delivery_v2/comparison"
+      ],
+      "script_sha256": "07aa97e4f46d805545ddca59001259e160f5899448cf6aea885d856307b05bb9"
+    },
+    {
+      "stage": "compute_ledger",
+      "command": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/analysis_stage08_source/report_repair_compute_20261009.py",
+        "--root",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/final_delivery_v2/COMPUTE_LEDGER_FINAL.json"
+      ],
+      "script_sha256": "119b715ac721677aecdee302964f71e84022af90a225ab8ffdf9c3a6f7b68019"
+    },
+    {
+      "stage": "potential_audit",
+      "command": [
+        "/home/arm1/vmc_mujoco_runtime/reward_study_20260930/venv_gpu/bin/python",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/analysis_stage13_source/audit_repair_potential_objective_20261009.py",
+        "--root",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008",
+        "--output",
+        "/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/final_delivery_v2/POTENTIAL_OBJECTIVE_FINAL.json"
+      ],
+      "script_sha256": "f707cb7cf46d9c646fe441a3eed6344c3acc21c2fd18b3bacae2eb69541511db"
+    }
+  ],
+  "dynamic_replay_sha256": "d677c7d5d86073af2c2d9ae3fbba29ad500d6470683088168e2a97045e178f5c",
+  "recover_missing_report": true,
+  "scope": "Wait existing384; sequential audit/report only. No new physics, learning, model selection, Git writes or recurring task. In-flight audits may finish; no new stage after original deadline."
+}

@@ -1,43 +1,39 @@
 # Data-Driven Compliance Control for FR3
 
-**Active research (2026-10-08–09):** [baseline repair and fair reevaluation](code/mujoco_6d_vmc_benchmark/docs/BASELINE_REPAIR_15H_20261008.md),
+**Latest completed study (2026-10-09):** [all16 repaired-method results](code/mujoco_6d_vmc_benchmark/docs/BASELINE_REPAIR_FINAL_RESULTS_20261009.md),
+[complete compliance tables](code/mujoco_6d_vmc_benchmark/outputs/baseline_repair_15h_20261008/final_delivery_v2/comparison/COMPARISON.md),
 [progress dashboard](RESEARCH_STATUS.md), and [update log](UPDATE_LOG.md).
-An implementation audit found a VMC action-unit mismatch, impedance reference/
-execution limitations and insufficient evidence of RL convergence. The previous
-384-episode results remain archived, but their weak-baseline outcomes do not
-establish ESN superiority over correctly implemented, well-trained alternatives.
-The current bounded campaign repairs and tests the adapters, retrains two RL
-seeds per family, and has frozen all16 methods before opening24 new final
-conditions. Geometry, proprioceptive inputs, task/safety gates and actuator
-limits remain fixed. New final results are not available yet.
+All 384 new final episodes completed the same 55-second scene at `dt=5e-5`,
+with unchanged geometry, proprioceptive inputs, task/safety gates and actuator
+limits. Independent checks covered 422.4 million physics samples and all144
+classical/parameter-RL controller traces. The bounded campaign is finished.
 
-At 08:54 CST, 202/384 final episodes had completed their per-episode checks,
-with ten running and no infrastructure failures. Every method had completed
-12 or 13 conditions. The frozen registry/source hashes remain unchanged;
-whole-cohort audits and final rankings are still pending.
+|Method|Task /24|Strict /24|RMSE mm|Mean peak torque Nm|Mean peak speed m/s|
+|---|---:|---:|---:|---:|---:|
+|ESN|21|15|28.730|49.709|0.358|
+|Matched RNN|24|16|29.958|50.979|0.374|
+|Matched MLP|13|9|41.261|47.448|0.374|
+|Enhanced teacher|24|17|38.525|50.680|0.386|
 
-The [evaluation notes](code/mujoco_6d_vmc_benchmark/docs/BASELINE_REPAIR_EVALUATION_NOTES_20261009.md)
-define Task/Strict, contact and recovery metrics, and the assumptions behind
-nominal uncertainty estimates for the single stratified 24-condition cohort.
+All16 methods, including ordinary networks, three classical controllers and
+five RL families, are in the linked report. The eight classical/RL baselines
+still failed placement in every final condition. This is not evidence of their
+best achievable performance or of ESN superiority over converged RL. ESN shows
+tracking/contact-load tradeoffs, not uniformly better task success or compliance.
 
-At 2026-10-09 06:56 CST, all 144 classical screening and 48 confirmation
-episodes had finished without placement success. All eight affected metric
-learners have been rebuilt from retained off-policy data after fixing an
-80-fold torque-smoothness reward inflation (4 ms servo versus 0.05 ms physics
-clock). All ten training jobs saved final checkpoints at episode boundaries by
-06:05 CST after the registered 06:00 cutoff. Parameter policies received
-60,500–63,250 interactions; direct policies received 85,285–164,621, not a claimed
-200,000 each. The current learned segments still have no task success. All ten
-frozen checkpoint diagnostics passed reproducibility checks, but value residuals
-remain and convergence is unproven. A diagnostic-only cuDNN launcher failure was
-preserved and fixed without changing checkpoints. Eighty development evaluations
-finished at 06:51 CST: no Task/Strict successes, 78 full and two early failures.
-The registered ranking selected one seed per RL family; independent checks
-verified the 80 scores, all model/source hashes and freeze-before-test chronology.
-The 384 final evaluations started at 06:51:52 CST and are still running.
-Independent checks cover
-actual rewards, dynamic controller replay and terminal potential cancellation;
-historical training/data budgets and discarded/rebuild work are reported separately.
+Confirmed VMC action-unit, impedance reference/execution and RL reward-clock
+errors were repaired and independently checked. Ten RL runs received actual
+budgets of 60,500–164,621 interactions each; none of the current learned segments
+showed task success or established convergence. Training exposure and parameter
+counts are unequal, so this is a same-test system comparison, not a controlled
+architecture ablation. A missing report dependency after all physics completed
+was recovered separately; failed receipts and frozen simulation source remain intact.
+
+Read the [evaluation notes](code/mujoco_6d_vmc_benchmark/docs/BASELINE_REPAIR_EVALUATION_NOTES_20261009.md)
+for Task/Strict definitions, contact exposure, recovery censoring and nominal
+statistical assumptions for this single stratified24 cohort. This study does
+not yet support a RAL claim of across-the-board ESN superiority or real-world safety.
+Server evidence: `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_repair_15h_20261008/`.
 
 ### 2026-10-03 same-scene ESN, RNN, MLP and control-baseline study
 
