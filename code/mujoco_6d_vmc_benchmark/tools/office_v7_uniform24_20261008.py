@@ -23,6 +23,10 @@ HISTORY = Path("/home/arm1/sii_shared/SII_compliance/runs/main/research72_202610
 V6 = Path("/home/arm1/vmc_mujoco_runtime/office_validation_v6_20261002")
 PARAMETER = Path("/home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/parameter_rl/frozen_train02")
 MENAGERIE = Path("/home/arm1/sii_shared/SII_compliance/runs/main/teacher_bank_runtime_inputs_complete_20260930/menagerie")
+if os.environ.get('SII_LOCAL_RUNTIME'):
+    _local = Path(os.environ['SII_LOCAL_RUNTIME']).resolve(strict=True)
+    V6 = _local/'v6'
+    MENAGERIE = _local/'menagerie'
 FAMILIES = ("esn", "matched_rnn", "matched_mlp", "ordinary_rnn", "ordinary_mlp",
             "memoryless", "classical_vmc", "classical_admittance", "classical_impedance",
             "parameter_vmc", "parameter_admittance", "parameter_impedance",

@@ -1,5 +1,13 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+10月9日12:21 CST：按用户最新要求转为**纯本机计算**，Spark只作存档，不恢复任何服务器队列。
+GPU梯度/归一化/checkpoint、全范围参数映射与冻结正式模型核验通过；本地55秒smoke完成，
+Task=true/Strict=false（外穿透0.273794mm），属随机预热、0梯度，不是已学会的RL成果。
+物理子步奖励/动作replay独立复算通过，两路本机RL已开始接续/训练，每路3GiB/禁swap。
+五族加两组探索对照、各最多11k诊断交互及8开发条件，尚未完成收敛/多seed/最终统一比较。
+见[本地RL补强记录](BASELINE_LOCAL_RL_20261009.md)；当前状态读`parallel.execution.json`，
+下方11:50服务器中断记录为历史状态，禁止据此在Spark重启。
+
 10月9日11:50 CST：开始baseline补强，完整参数映射数值审计与本地18模型同数据审计通过。
 新队列被服务器重启打断，尚无可核验新闭环结果；实验暂停派发，优先处理显示器无信号。
 详见[补强记录](BASELINE_STRENGTHENING_20261009.md)和[显示故障记录](SERVER_DISPLAY_INCIDENT_20261009.md)。

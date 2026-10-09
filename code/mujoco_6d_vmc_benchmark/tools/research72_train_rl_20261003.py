@@ -22,6 +22,8 @@ from research72_probe_online_20261003 import read_event
 from research72_checkpoint_20261003 import checkpoint_hashes
 
 REWARDS=Path('/home/arm1/vmc_mujoco_runtime/primitive_baselines_20261002/frozen_adapter01/simba_reward_20260930')
+if os.environ.get('SII_LOCAL_RUNTIME'):
+    REWARDS = Path(os.environ['SII_LOCAL_RUNTIME']).resolve(strict=True)/'simba_reward_20260930'
 
 
 class Replay:

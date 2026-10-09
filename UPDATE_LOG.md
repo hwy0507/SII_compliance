@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-09 — RL补强转为本机两路，服务器仅存档
+
+- 开工及发布前核对main `694a94d6907d6624e615b9a9cccfe2242502bd2e`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读取日志；无分支合并。按用户最新要求，AGENTS登记禁止服务器计算，保护已恢复显示，不恢复旧Spark队列。使用`sii-research-sync`完成分支核验、归档和发布。
+- 新增本地有限RL入口/两路续跑调度，显式本地运行时目录，取消本机子进程继承Spark CUDA路径；官方SimbaV2固定原commit，历史环境二进制和正式dt=5e-5模型hash一致。全范围参数映射保留原rate/tank约束；参数轨迹独立审计精确检查字符串版本标签并补齐适配器hash。五RL族+两探索强度对照，原32train/8development身份、每配置11k诊断上限/共77k，不读封存final、不声称充分训练。
+- 完成5D/7D GPU真实梯度更新、归一化计数、checkpoint预测精确恢复与全范围约束测试；物理奖励时钟测试通过。首个55秒/1375交互smoke完整，Task=true/Strict=false，RMSE28.4595mm、峰矩49.0145Nm、峰速0.364766m/s、外穿透0.273794mm（柱—link6）；这是随机预热、0梯度，不能称学习成功。子步奖励重建、replay原始观测/动作和共同filter一致性通过，失败及完整checkpoint保留。
+- 12:21 CST本机RTX 5080两路开始：direct office_task精确接续smoke、parameter impedance metric从零训练；各3GiB/禁swap/数值单线程，最大合计6GiB，启动可用RAM8.84GiB。原单回合5分30秒，无OOM；新队列状态在`parallel.execution.json`。语法/diff检查通过，无定时任务；多seed、收敛诊断及新统一最终比较仍未完成。README/进度面板/周报/联合进度同步。
+- 两路随后各完成首个完整回合并继续：direct接续Task=true/Strict=false，调阻抗Task/Strict=false且仍卡carry；都未过5000步随机预热，不是方法成绩。调阻抗1375参数更新及13750伺服行独立审计通过，命令幅值/加速度/力矩变化率限制保持；新审计小文件入Git，新增原始回合尚在本地、待后续边界归档。
+- 已核验共享归档 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_local_rl_20261009_stage1/stage1_verified_snapshot.tar.gz`（190281186字节，SHA `ffdad404d6713fceda5e9824b2969b160379f1adecfc3a6dfb3af8b43bdeec12`），含冻结执行源、参数源、首回合原始轨迹/checkpoint与审计。运行中两目录不在此阶段快照，待后续归档；未在服务器启动训练/仿真/分析。详见`BASELINE_LOCAL_RL_20261009.md`，小型证据入Git。
+
 ## 2026-10-09 — 显示已恢复，持久保留自动识别并加入协作保护约定
 
 - 开工核对main `4e710fbccb6673bca6ab57276e59de4b23874a7f`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读取日志，无合并。用户确认画面已恢复，要求保持当前配置。

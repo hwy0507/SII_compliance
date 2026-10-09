@@ -32,11 +32,17 @@ def main():
         actual = shield.records[-1]
         assert set(actual) == set(record)
         for key in record:
+            if isinstance(record[key], str):
+                assert actual[key] == record[key], (key, actual[key], record[key])
+                continue
             error = float(np.max(np.abs(np.asarray(actual[key])-np.asarray(record[key]))))
             errors[key] = max(errors.get(key, 0.), error)
     assert max(errors.values()) < 1e-10, errors
     files = [a.run/'CONTROLLER_REPAIR.json', a.run/'parameter_trace.json',
              a.parameter_source/'PRIORS.json', a.parameter_source/'controllers_legacy.py', Path(__file__)]
+    files += [a.parameter_source/name for name in ('controllers.py',
+        'baseline_repair_controllers_20261008.py', 'baseline_fullrange_controllers_20261009.py')
+        if (a.parameter_source/name).exists()]
     result = dict(status='passed', created_utc=now(), method=method, updates=len(records),
         shield_replay_max_abs=errors, new_physics_steps=0,
         limitation='Shield recurrence replay uses recorded virtual offset/velocity as inputs. '

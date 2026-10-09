@@ -1,0 +1,19 @@
+{
+  "protocol_sha256": "ef3ec8c85bd06ccb2a915d861116286e29b78a13ec1df4da02f0c0a5825bd2bb",
+  "host": "airpig",
+  "server_compute": false,
+  "authorization": "User requests full local compute; adapt the conservative one-simulator initial setup after successful smoke",
+  "local_max_simulators": 2,
+  "memory_max_per_lane": 3221225472,
+  "maximum_lane_memory_total": 6442450944,
+  "memory_swap_max": 0,
+  "numerical_threads_per_lane": 1,
+  "cpu_affinity_per_lane": [
+    "1,6",
+    "2,7"
+  ],
+  "schedule": "Two independent configurations; each lane serializes training and its eight development episodes",
+  "unchanged": "All scientific protocol, physics, inputs, seeds, rewards, optimizer schedule and per-job limits unchanged",
+  "launcher_sha256": "f75f425a39e531b7e383206a46aff7553e7f045a3434b282b4ff23775ce0c407",
+  "helper_sha256": "c7f0b975356c3344afb52ab1303a790ffedb0fe291c39fc3c5161ffae1d6f080"
+}

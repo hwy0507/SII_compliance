@@ -23,6 +23,12 @@ ENV = {
     'SII_SOURCE_BASE_COMMIT': '282433d339feef66b0334f223f82a6eea96b040b',
 }
 FORMAL_HASH = 'd4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3'
+if os.environ.get('SII_LOCAL_RUNTIME'):
+    # CUDA libraries come from this interpreter's pip wheels. Never carry a
+    # Spark-specific loader path into local subprocesses or change drivers.
+    ENV['LD_LIBRARY_PATH'] = os.environ.get('LD_LIBRARY_PATH', '')
+    ENV['SII_LOCAL_RUNTIME'] = str(Path(os.environ['SII_LOCAL_RUNTIME']).resolve(strict=True))
+    ENV['XLA_PYTHON_CLIENT_MEM_FRACTION'] = '0.12'
 
 
 def main():

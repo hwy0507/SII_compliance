@@ -1,5 +1,10 @@
 # Data-Driven Compliance Control for FR3
 
+**In progress (2026-10-09):** [local-only RL baseline strengthening](code/mujoco_6d_vmc_benchmark/docs/BASELINE_LOCAL_RL_20261009.md).
+Two memory-capped local lanes cover all five RL families plus exploration controls;
+Spark is reserved for the user's other work. GPU update/resume and physical reward checks passed.
+The first random-warmup episode passed Task but failed Strict; it is not a trained-policy result.
+
 **Latest completed study (2026-10-09):** [all16 repaired-method results](code/mujoco_6d_vmc_benchmark/docs/BASELINE_REPAIR_FINAL_RESULTS_20261009.md),
 [complete compliance tables](code/mujoco_6d_vmc_benchmark/outputs/baseline_repair_15h_20261008/final_delivery_v2/comparison/COMPARISON.md),
 [progress dashboard](RESEARCH_STATUS.md), and [update log](UPDATE_LOG.md).
