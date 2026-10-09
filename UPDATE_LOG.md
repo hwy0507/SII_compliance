@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-09 — 显示已恢复，持久保留自动识别并加入协作保护约定
+
+- 开工核对main `4e710fbccb6673bca6ab57276e59de4b23874a7f`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读取日志，无合并。用户确认画面已恢复，要求保持当前配置。
+- 11:57 CST远端确认原`/etc/X11/xorg.conf`不再生效，备份hash仍为`794ba039ae3fd03aef2097cf7b5015da9b74f292c23c7042d3f93ee694490b33`；实际显示为USB-C-1、2560×1440/59.95Hz，HDMI断开。纠正此前只查HDMI的局限；自动探测恢复真实USB-C输出，不需要再硬编码分辨率。
+- `AGENTS.md`新增用户明确要求的显示保护约定，禁止研究任务恢复旧headless配置或修改系统显示设置；故障报告顶部更新恢复证据。未再改变显示、重启桌面/机器或启动实验；磁盘配置已持久化，但未额外做重启测试。
+- 新版共享说明归档至 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/display_recovery_20261009/DISPLAY_CONFIGURATION_PRESERVED_1157.md`，按本轮传输核验；旧故障记录保留。baseline补强的中断与未完成状态不变。
+
 ## 2026-10-09 — baseline补强启动后被主机重启打断；优先处理显示无信号
 
 - 开工实查main `0a1080709b85a9918aa0a1975f4401836ee48f30`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无分支合并。新增full-range参数RL映射，保留原rate/tank/执行器限制；三类端点、随机状态和旧映射兼容验证通过。新增登记式探索配置入口、有限开发队列；编译/diff检查通过。
