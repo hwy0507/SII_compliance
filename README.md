@@ -1,24 +1,19 @@
 # Data-Driven Compliance Control for FR3
 
 **In progress (2026-10-09):** [local-only RL baseline strengthening](code/mujoco_6d_vmc_benchmark/docs/BASELINE_LOCAL_RL_20261009.md).
-The user has authorized [longer checkpoint continuation](code/mujoco_6d_vmc_benchmark/docs/RL_EXTENDED_TRAINING_20261009.md)
-before any new final comparison. A finite continuation service waits for the current diagnostic
-queue and audits, then evaluates cumulative 55k/110k/220k/up-to-499k checkpoints.
-Usable policies and independent-seed confirmation are still pending; failed plateaus are not convergence.
-Two memory-capped local lanes cover all five RL families plus exploration controls;
-Spark is reserved for the user's other work. GPU update/resume and physical reward checks passed.
-The first random-warmup episode passed Task but failed Strict; it is not a trained-policy result.
-Direct office-task and impedance tuning have now each completed 11k interactions and 12,002 updates.
-Both completed the same eight development conditions: Task 0/8 and Strict 0/8 for each.
-All 16 full-horizon physical/action audits passed; direct policies stopped at approach, impedance
-at carry. Admittance and VMC tuning are now running; metric/low-entropy controls remain pending.
-Low error while stalled does not establish good compliance. A read-only reward census found that
-the direct task reward assigns identical raw discounted returns to the observed full-horizon
-Strict failures, including two warmup Task successes. This is a sparse learning-signal concern,
-not a demonstrated coding error; no running reward or weights were changed.
-A missing evaluation asset path was repaired in a separate attempt without retraining; the original
-failure is retained. The current queue receipt is `parallel_v2.execution.json`. A one-shot observer
-independently audits completed configurations; 11k diagnostic segments are not convergence evidence.
+The [new 15-hour window](code/mujoco_6d_vmc_benchmark/docs/BASELINE_OVERNIGHT_15H_20261009.md)
+runs from Oct 9 21:21 to Oct 10 12:21 CST, with an active episode-boundary budget guard.
+All seven initial diagnostic configurations completed the same eight development conditions:
+Task/Strict 0/8 each, with all 56 independent physical/action audits passing.
+Checkpoint continuation began at 18:20 CST. As of 21:33, direct office-task reached 54,146
+interactions / 98,294 updates; its first six audited development episodes still failed.
+Impedance tuning is near 51k; the remaining configurations follow in the same two local lanes.
+More updates and lower error while stalled do not establish convergence or good compliance.
+No Spark computation, environment/gate changes, privileged actor inputs, or final-test access.
+A train-only counterfactual audit separates Task reward from continuous safety penalties,
+providing distinctions absent from the original observed failed returns; this is not yet a
+trained reward variant or evidence of improved learning. Usable RL policies, classical recovery,
+independent-seed confirmation and a new fair final comparison remain pending.
 
 **Latest completed study (2026-10-09):** [all16 repaired-method results](code/mujoco_6d_vmc_benchmark/docs/BASELINE_REPAIR_FINAL_RESULTS_20261009.md),
 [complete compliance tables](code/mujoco_6d_vmc_benchmark/outputs/baseline_repair_15h_20261008/final_delivery_v2/comparison/COMPARISON.md),

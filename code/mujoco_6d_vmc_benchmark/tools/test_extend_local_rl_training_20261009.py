@@ -8,6 +8,12 @@ def row(steps, task=0, strict=0):
 
 
 class ExtensionContracts(unittest.TestCase):
+    def test_episode_boundary_shortfall_does_not_hide_failed_plateau(self):
+        history = [row(9684), dict(row(54146), scheduled_limit=55000),
+                   dict(row(109271), scheduled_limit=110000)]
+        self.assertTrue(assess(history)['zero_task_learning_stall'])
+        self.assertFalse(assess(history)['converged'])
+
     def test_failed_plateau_is_not_convergence(self):
         out = assess([row(11000), row(55000), row(110000)])
         self.assertTrue(out['zero_task_learning_stall'])

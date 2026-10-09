@@ -107,12 +107,14 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--training-suffix', default='segment011k')
     p.add_argument('--objective-audit', action='store_true',
                    help='Also reconstruct discounted reward information for completed training segments only')
     a = p.parse_args()
     assert not a.output.exists()
     jobs = read(a.root/'PROTOCOL.json')['jobs']
-    names = ['direct_office_task_smoke']+[j['name']+'_segment011k' for j in jobs]
+    names = (['direct_office_task_smoke'] if a.training_suffix == 'segment011k' else [])
+    names += [j['name']+'_'+a.training_suffix for j in jobs]
     report = dict(created_utc=now(), source_sha256=sha(__file__), segments=[], not_started=[],
                   new_physics_steps=0, gradient_updates=0, heldout_reads=0)
     for name in names:

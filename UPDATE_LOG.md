@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-09 21:33 CST — 新15小时本机baseline修正窗口与奖励诊断
+
+- 21:40补充：首组55k开发8/8完整独立审计，Task/Strict仍0/8（7carry/1load_transfer），调导纳已接续。12个本轮源/注册/审计文件已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_15h_setup_20261009/evidence/`，79752字节，清单SHA `f1c219037bfe41ad8a8483b92a48a239ae6c954521d7b3f4faccf031e0d835ca`。旧诊断剩余五配置12.86GB快照正在传输，新55k原始数据待归档；不冒充全量已共享。
+
+- 按`sii-research-sync`核对main `935f8cb2242dd7a9e6c637644359ef8673e9fcdd`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS，无分支合并。用户再授15小时，登记21:21至次日12:21 CST；全部计算仍仅本机两lane，服务器仅归档，无定时任务。
+- 原七配置56/56开发独立审计完成，Task/Strict全0；原接续18:20开始。直接office_task已54146交互/98294更新，新增33训练失败；首6开发审计通过但均未成功，调阻抗约51k仍训练。更晚状态见15小时报告，不以部分开发或步数称收敛。
+- 新增精确进程身份/pidfd保护的一次性预算guard，不改冻结执行源、不重启健康worker；到点阻止旧协调器继续派发，使用trainer既有SIGUSR1处理器完成当前回合/checkpoint。独立预算侧收据保留旧日志。自有虚拟进程身份/信号测试通过，实际guard已启动。
+- 修正未来extension判定：55k登记节点与实际完整回合步数分别记录，避免54146被遗漏为未达到第一节点；七项回归通过。运行副本未改，后续独立判断使用修正语义。
+- 新增train-only奖励信息消融：Task终奖与连续安全超标成本分开；原八训练回报标准差约0，离线重计9.09。三个单元检查及真实原始子步/hash核验通过，零新物理/梯度，不是新模型成绩，未更改当前训练、gate或actor输入。
+- 新报告`BASELINE_OVERNIGHT_15H_20261009.md`；本轮新产物目前仅本地待归档，旧extension设置已核验地址仍为`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/local_rl_extension_setup_20261009/evidence/`。强RL策略、经典恢复、多seed与最终公平比较仍未完成。
+
 ## 2026-10-09 — 授权延长RL训练，等可用策略再比较
 
 - 核对远端main `32fd4eeee1878a71be5a1a7e813d0b2d9e9a22ea`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及日志/AGENTS，无合并。用户要求继续至可用策略，11k不得当充分训练；按`sii-research-sync`保留原队列、冻结环境和本机计算限制。

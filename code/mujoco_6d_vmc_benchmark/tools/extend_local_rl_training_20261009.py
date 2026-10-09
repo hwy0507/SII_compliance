@@ -32,7 +32,9 @@ def assess(history):
                  and all(r['task'] >= 7 and r['strict'] >= 6 for r in recent)
                  and max(r['strict'] for r in recent)-min(r['strict'] for r in recent) <= 1)
     # Two post-diagnostic checkpoints across substantial additional exposure.
-    extended = [r for r in history if r['steps'] >= 55000]
+    # Whole-episode budgets can end at 54,146 rather than exactly 55,000.
+    # Identify the registered node separately from actual consumed interactions.
+    extended = [r for r in history if r.get('scheduled_limit', r['steps']) >= 55000]
     stalled = (len(extended) >= 2 and all(r['task'] == 0 for r in extended[-2:]))
     return dict(candidate_usable_and_stable=candidate,
                 zero_task_learning_stall=stalled,
@@ -196,7 +198,9 @@ def main():
         execution.update(status='running', parent_audit_sha256=sha(parent_audit), admitted_available_kib=available)
         save()
         campaign.command = managed
-        histories = {m['method']:[dict(steps=11000, completed=m['completed'], task=m['task'], strict=m['strict'])]
+        histories = {m['method']:[dict(
+                         steps=read(root/(m['method']+'_segment011k')/'execution.json')['steps'],
+                         scheduled_limit=11000, completed=m['completed'], task=m['task'], strict=m['strict'])]
                      for m in report['methods']}
         previous_suffix = 'segment011k'
         for limit in registration['cumulative_interaction_checkpoints']:
@@ -249,7 +253,8 @@ def main():
             assert len(report['methods']) == 7 and all(m['all_development_complete'] for m in report['methods'])
             for m in report['methods']:
                 actual = read(root/(m['method']+'_'+suffix)/'execution.json')['steps']
-                histories[m['method']].append(dict(steps=actual, completed=m['completed'], task=m['task'], strict=m['strict']))
+                histories[m['method']].append(dict(steps=actual, scheduled_limit=limit,
+                    completed=m['completed'], task=m['task'], strict=m['strict']))
             decisions = {name:assess(values) for name,values in histories.items()}
             stage.update(ended_utc=now(), audit_sha256=sha(audit_path), decisions=decisions)
             write(out/'LEARNING_CURVES.json', dict(histories=histories, decisions=decisions,
