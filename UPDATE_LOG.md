@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-09 — 搬运卡住的完整三视角GIF/MP4
+
+- 按`sii-research-sync`核对远端main `93caa3989d5704feb1bf9f082e54cee8d84a9981`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及日志，无合并。选已完成RL调阻抗11k的首个开发身份dev000解释失败，不改实验/训练队列。
+- 本地原MuJoCo3.11.0保存状态回放，三视角全55秒GIF/MP4放入用户下载目录；4.56秒进入搬运，10.588秒至结束持续桌沿接触，最终XY误差86.415mm，Task/Strict false。新报告`docs/RL_CARRY_STALL_MEDIA_20261009.md`记录解释/源与媒体hash，未把11k诊断当充分训练结果。
+- 仅渲染、无新物理步/动作选择，MemoryMax1GiB/禁swap/单线程；原冻结环境与训练依赖不变。MP4完整解码、GIF276帧/55.2秒读取及12秒/最终画面目视检查通过，下载副本hash一致。
+- 已核验服务器媒体与源码：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_impedance_carry_media_20261009/evidence/`，6文件/10968041字节，清单SHA `ba0c4e2f27362f8dd4306657bbd2b9c600a9c9d47c35c468150dd847904a3ae9`。原回合仍在stage4归档；服务器只存储/校验。完整RL队列和审计继续，本次没有新增算法结果。
+
 ## 2026-10-09 — 本机RL监看：两组同八开发完成、奖励信息审计与原始轨迹归档
 
 - 延续本轮已授权监看；再次核对远端main `6caa74831135bccb8961b524c145646c291f638c`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读取日志，无合并。全部训练/仿真/分析仍在本机，两lane各3GiB/禁swap/数值单线程；服务器仅存档，显示配置未动。
