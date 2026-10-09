@@ -61,6 +61,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--training-suffix', default='segment011k',
+                        help='Exact completed training segment suffix; no checkpoint selection')
     args = parser.parse_args()
     assert not args.output.exists()
     root = args.root.resolve()
@@ -77,7 +79,7 @@ def main():
         rows, pending = [], []
         checkpoint = None
         for identity in identities:
-            label = job['name']+'_segment011k__'+identity
+            label = job['name']+'_'+args.training_suffix+'__'+identity
             path = root/(label+'.execution.json')
             if not path.exists():
                 pending.append(dict(condition=identity, status='not_started')); continue
@@ -99,7 +101,7 @@ def main():
                 pending.append(dict(condition=identity, status=receipt['status'])); continue
             run = root/label
             if checkpoint is None:
-                checkpoint = read(root/(job['name']+'_segment011k.checkpoint.json'))
+                checkpoint = read(root/(job['name']+'_'+args.training_suffix+'.checkpoint.json'))
                 assert checkpoint['controller'] == job['controller']
                 assert checkpoint_hashes(Path(checkpoint['checkpoint'])) == checkpoint['hashes']
                 assert sha(checkpoint['training_protocol']) == checkpoint['training_protocol_sha256']
@@ -112,7 +114,8 @@ def main():
             row['condition'] = identity
             row['parameter_audit_present'] = (run/'INDEPENDENT_PARAMETER_AUDIT.json').exists() if job['controller'] else None
             rows.append(row)
-        method = dict(method=job['name'], completed=len(rows), planned=len(identities),
+        method = dict(method=job['name'], training_suffix=args.training_suffix,
+            completed=len(rows), planned=len(identities),
             task=sum(r['task'] for r in rows), strict=sum(r['strict'] for r in rows),
             all_development_complete=len(rows) == len(identities), episodes=rows, pending=pending)
         report['methods'].append(method)

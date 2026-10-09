@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-09 — 授权延长RL训练，等可用策略再比较
+
+- 核对远端main `32fd4eeee1878a71be5a1a7e813d0b2d9e9a22ea`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及日志/AGENTS，无合并。用户要求继续至可用策略，11k不得当充分训练；按`sii-research-sync`保留原队列、冻结环境和本机计算限制。
+- 新增`extend_local_rl_training_20261009.py`，原诊断七配置及独立审计全部完成后才接管同一计算锁，精确恢复checkpoint/optimizer/replay/随机状态到累计55k/110k/220k/499125节点；沿用500k学习率日程、原reward/actor/gate/参数限制。每节点同八development评估/原始子步与动作审计，无final访问；接续声明将原77k诊断上限显式扩为有限分段学习，不覆盖原协议与失败。
+- 预先登记连续三节点Task≥7/8、Strict≥6/8及稳定性作为开发可用筛查，仅触发独立seed确认，不称统计收敛。所有七配置连续两个≥55k节点仍Task零成功时转科学修正；预算/安全截止/存储不足不算收敛。至少三seed和最终比较仍未完成、未自动派发。新报告`RL_EXTENDED_TRAINING_20261009.md`说明预算、上限和边界。
+- 15:56 CST接续服务`sii-local-rl-extension-v1-20261009.service`实际active，状态`waiting_for_parent`，约14MiB，未占第三仿真lane。原队列综合指标直接动作与历史熵对照继续；已完成四配置×八开发全部Task/Strict零成功。接续保持本机两lane/各3GiB/禁swap/单线程，服务器只存档；新55k训练尚未开始，未获得可用新策略。
+- 六个回归检查通过：零成功平台、单次好结果、安全失败、未完成开发/训练不能误作可用或收敛；新后缀审计接口在32条完整真实开发轨迹上通过。源码编译/diff检查通过。更新README、研究面板、联合进度、周报和本地报告。
+- 已核验接续源码/登记/真实审计包：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/local_rl_extension_setup_20261009/evidence/`，416文件/3188786字节，清单SHA `012bfc5d808b519a295289a5d3a9d4d5e1a3447eb0d9396fa9e26e28ca61ee17`。登记SHA `f07ff9423284e06cc1260d1bff226611d0e2bd66301e1eef75a514c45f36dd2c`；该包不冒充尚未生成的新checkpoint/轨迹。
+
 ## 2026-10-09 — 搬运卡住的完整三视角GIF/MP4
 
 - 按`sii-research-sync`核对远端main `93caa3989d5704feb1bf9f082e54cee8d84a9981`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及日志，无合并。选已完成RL调阻抗11k的首个开发身份dev000解释失败，不改实验/训练队列。

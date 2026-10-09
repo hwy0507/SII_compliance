@@ -1,0 +1,92 @@
+{
+  "schema": "sii-local-rl-extended-training-v1",
+  "registered_utc": "2026-10-09T07:54:21.670471+00:00",
+  "authorization": "2026-10-09 user: continue RL training until a usable converged policy before comparison",
+  "parent_root": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/campaign_v2",
+  "parent_protocol_sha256": "ef3ec8c85bd06ccb2a915d861116286e29b78a13ec1df4da02f0c0a5825bd2bb",
+  "compute_host": "airpig",
+  "server_compute": false,
+  "max_simulators": 2,
+  "memory_max_per_lane": 3221225472,
+  "memory_swap_max": 0,
+  "numerical_threads": 1,
+  "coordinator_memory_max": 1073741824,
+  "admission_available_memory_gib": 7,
+  "condition_file_sha256": "591d2e71a4c0fde428292ed70b479574ea87700eff04ded4826e2de2aee407a4",
+  "jobs": [
+    {
+      "name": "direct_office_task",
+      "controller": null,
+      "reward": "office_task",
+      "hp": "exploratory"
+    },
+    {
+      "name": "parameter_impedance",
+      "controller": "impedance",
+      "reward": "metric",
+      "hp": "exploratory"
+    },
+    {
+      "name": "parameter_admittance",
+      "controller": "admittance",
+      "reward": "metric",
+      "hp": "exploratory"
+    },
+    {
+      "name": "parameter_vmc",
+      "controller": "vmc",
+      "reward": "metric",
+      "hp": "exploratory"
+    },
+    {
+      "name": "direct_metric",
+      "controller": null,
+      "reward": "metric",
+      "hp": "exploratory"
+    },
+    {
+      "name": "direct_office_task_historical_entropy",
+      "controller": null,
+      "reward": "office_task",
+      "hp": "historical"
+    },
+    {
+      "name": "parameter_impedance_historical_entropy",
+      "controller": "impedance",
+      "reward": "metric",
+      "hp": "historical"
+    }
+  ],
+  "cumulative_interaction_checkpoints": [
+    55000,
+    110000,
+    220000,
+    499125
+  ],
+  "maximum_additional_interactions": 3416875,
+  "initial_next_stage_additional_interactions": 308000,
+  "original_optimizer_schedule_steps": 500000,
+  "dispatch_deadline_utc": "2026-10-11T04:12:12.072113+00:00",
+  "deadline_basis": "Inherited operational fail-safe, not a new user time limit and not a convergence criterion; review and register continuation if reached",
+  "resume": "Preserve actor/critic/targets/temperature/normalizers/optimizer/replay/RNG; same reward and scientific protocol",
+  "unchanged": [
+    "formal MJB and dt5e-5",
+    "32train/8development identities",
+    "canonical48 actor fields",
+    "actuator amplitude and slew",
+    "Task/Strict gates",
+    "no teacher labels or BC"
+  ],
+  "readiness": {
+    "task_at_least": 7,
+    "strict_at_least": 6,
+    "denominator": 8,
+    "consecutive_checkpoints": 3,
+    "strict_count_range_at_most": 1,
+    "interpretation": "Operational usability screen only; three-seed confirmation and learning-curve review still required, never final-test ranking"
+  },
+  "failed_plateau": "If all seven settings have zero Task at two consecutive >=55k checkpoints, stop blind dispatch for scientific reward/exploration/control review, not convergence",
+  "terminal_policy": "No final evaluation dispatched. A finite segment is part of ongoing baseline development, not goal completion.",
+  "archive": "All raw failures retained locally; stage-boundary storage checks; server only receives separately verified files",
+  "source_base_commit": "32fd4eeee1878a71be5a1a7e813d0b2d9e9a22ea"
+}

@@ -1,6 +1,10 @@
 # Data-Driven Compliance Control for FR3
 
 **In progress (2026-10-09):** [local-only RL baseline strengthening](code/mujoco_6d_vmc_benchmark/docs/BASELINE_LOCAL_RL_20261009.md).
+The user has authorized [longer checkpoint continuation](code/mujoco_6d_vmc_benchmark/docs/RL_EXTENDED_TRAINING_20261009.md)
+before any new final comparison. A finite continuation service waits for the current diagnostic
+queue and audits, then evaluates cumulative 55k/110k/220k/up-to-499k checkpoints.
+Usable policies and independent-seed confirmation are still pending; failed plateaus are not convergence.
 Two memory-capped local lanes cover all five RL families plus exploration controls;
 Spark is reserved for the user's other work. GPU update/resume and physical reward checks passed.
 The first random-warmup episode passed Task but failed Strict; it is not a trained-policy result.
