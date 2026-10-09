@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-09 — 本机RL持续监看：首段完成、开发资源路径修复、独立学习诊断
+
+- 开工及本轮远端核对main `c745da382a45ed7d8ef59f6915cc3464ef2a8ea2`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，不合并。按`sii-research-sync`持续本地计算，服务器仅归档，不触碰已恢复显示。
+- direct office_task、parameter impedance各11000交互/12002更新完成；前者继承1375步smoke，未重复计算。两组完整物理奖励/原始replay核验及八个阻抗参数回合重放通过。直接组纯学习四回合停approach、阻抗仍卡carry；不能把随机预热Task成功当学习成功，更不能称11k已收敛。
+- 首个开发评估在物理开始前因漏传`MUJOCO_MENAGERIE_PATH`失败，原收据/源/日志保留。同checkpoint、条件和正式模型在独立`_assets_retry_v2`完成55秒重跑，Task/Strict失败但actor/filter重放误差0、归一化未更新。只修资源路径，不修改环境/奖励/gate；新恢复入口仅接受这一可核验资源错误，不因物理失败自动重跑。
+- 13:16旧健康阻抗段结束后，独立v3协调器核对源/hash/内存并复用已有checkpoint接续原七配置队列；状态为`parallel_v2.execution.json`，旧失败状态仍保留。13:30直接4/8、阻抗2/8开发已完成且全失败，六回合原始子步/动作/条件/checkpoint独立审计通过，其余在进行。新增随机/混合/学习分组检查与一次性只读观察器；后者v2补进度原地写入竞态防护，未重启实验、未创建定时任务。
+- 固定checkpoint价值诊断补充categorical目标上界概率及熵尺度敏感度，温度/归一化/权重均不变。两组终止价值残差仍大；熵因素待原登记低熵对照验证，不把soft Q减历史behavior return称纯高估。CPU读取GPU分片诊断失败后用原本地GPU恢复通过，未改checkpoint。
+- 阻抗八训练＋两开发均接触意外桌沿约44秒；两个开发末10秒原4cm弹簧误差边界持续触发，但执行命令限幅未改请求、力矩scale和参数能量scale均1，实际速度约0.13–0.14mm/s。新增只读停滞诊断，将持续接触平衡与安全层完全阻断区分；不声称因此证明经典无解，不改约束或actor字段。
+- README、进度面板、联合进度与周报同步；源码语法/diff及真实恢复/审计链检查通过。已逐文件核验归档 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_local_rl_20261009_stage2/evidence/`：717文件、2736212640字节，清单SHA `65e69ae7f36b1f063913b0996258f90bbbd03857c06d578174a2a31b7266a632`。包括两个完整训练段/checkpoint、首开发重跑和原失败；smoke/基础源仍在stage1包，其余正在增加的开发数据未包括在此快照。全部7×8、低熵对照、充分训练/多seed、经典补强和新最终公平比较未完成。
+
 ## 2026-10-09 — RL补强转为本机两路，服务器仅存档
 
 - 开工及发布前核对main `694a94d6907d6624e615b9a9cccfe2242502bd2e`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读取日志；无分支合并。按用户最新要求，AGENTS登记禁止服务器计算，保护已恢复显示，不恢复旧Spark队列。使用`sii-research-sync`完成分支核验、归档和发布。

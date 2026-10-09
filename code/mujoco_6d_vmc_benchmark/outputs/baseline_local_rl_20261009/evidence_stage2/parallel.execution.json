@@ -1,0 +1,76 @@
+{
+  "status": "failed_preserved",
+  "started_utc": "2026-10-09T04:21:00.105698+00:00",
+  "host": "airpig",
+  "source_sha256": "f75f425a39e531b7e383206a46aff7553e7f045a3434b282b4ff23775ce0c407",
+  "helper_sha256": "c7f0b975356c3344afb52ab1303a790ffedb0fe291c39fc3c5161ffae1d6f080",
+  "resource_amendment_sha256": "267d16b273044cdc64349f15afa21f30f747111807e21dcef9419399296424ad",
+  "initial_available_kib": 9264388,
+  "jobs": [
+    {
+      "name": "direct_office_task",
+      "controller": null,
+      "reward": "office_task",
+      "hp": "exploratory"
+    },
+    {
+      "name": "parameter_impedance",
+      "controller": "impedance",
+      "reward": "metric",
+      "hp": "exploratory"
+    },
+    {
+      "name": "parameter_admittance",
+      "controller": "admittance",
+      "reward": "metric",
+      "hp": "exploratory"
+    },
+    {
+      "name": "parameter_vmc",
+      "controller": "vmc",
+      "reward": "metric",
+      "hp": "exploratory"
+    },
+    {
+      "name": "direct_metric",
+      "controller": null,
+      "reward": "metric",
+      "hp": "exploratory"
+    },
+    {
+      "name": "direct_office_task_historical_entropy",
+      "controller": null,
+      "reward": "office_task",
+      "hp": "historical"
+    },
+    {
+      "name": "parameter_impedance_historical_entropy",
+      "controller": "impedance",
+      "reward": "metric",
+      "hp": "historical"
+    }
+  ],
+  "completed": [],
+  "failures": [
+    {
+      "job": {
+        "name": "direct_office_task",
+        "controller": null,
+        "reward": "office_task",
+        "hp": "exploratory"
+      },
+      "error": "RuntimeError('direct_office_task_segment011k__repair_development_000 failed; preserved /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/campaign_v2/direct_office_task_segment011k__repair_development_000.execution.json')"
+    },
+    {
+      "job": {
+        "name": "parameter_impedance",
+        "controller": "impedance",
+        "reward": "metric",
+        "hp": "exploratory"
+      },
+      "error": "AssertionError('Other lane failed; do not start a new job')"
+    }
+  ],
+  "updated_utc": "2026-10-09T05:15:32.209896+00:00",
+  "ended_utc": "2026-10-09T05:15:32.209888+00:00"
+}

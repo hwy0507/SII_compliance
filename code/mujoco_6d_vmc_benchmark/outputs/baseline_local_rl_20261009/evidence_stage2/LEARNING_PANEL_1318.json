@@ -1,0 +1,836 @@
+{
+  "created_utc": "2026-10-09T05:18:26.091253+00:00",
+  "source_sha256": "e8e236287543daf80b514219b89d52294f057a00ea859af8be6834975ff3d45e",
+  "segments": [
+    {
+      "segment": "outputs/baseline_local_rl_20261009/campaign_v2/direct_office_task_smoke",
+      "status": "complete",
+      "captured_execution_sha256": "e1ae7af5ee926f8d4256536e78c00bf6b164c1e4e99c83b9f1017a135c234176",
+      "training_protocol_sha256": "6de9897c65199e7b64c8ec875cee902304b796986ed6fc56f0055f3778f92069",
+      "steps": 1375,
+      "updates": 0,
+      "inherited_steps": 0,
+      "groups": {
+        "random_warmup": {
+          "episodes": 1,
+          "task": 1,
+          "strict": 0
+        },
+        "mixed_warmup_and_learning": {
+          "episodes": 0,
+          "task": 0,
+          "strict": 0
+        },
+        "learned_behavior": {
+          "episodes": 0,
+          "task": 0,
+          "strict": 0
+        }
+      },
+      "episodes": [
+        {
+          "episode": 0,
+          "condition": "repair_train_008",
+          "group": "random_warmup",
+          "steps": 1375,
+          "step_before": 0,
+          "step_after": 1375,
+          "task": true,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "retreat",
+          "rmse_mm": 28.4595292955692,
+          "peak_torque_nm": 49.0145149230957,
+          "peak_speed_mps": 0.3647659039298796,
+          "penetration_mm": 0.27379406738183143,
+          "placement_error_xy_m": 0.011874201944098502,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              0.00289744190902936,
+              0.010150240031875497,
+              0.014331183691249779,
+              -0.007177492515599376,
+              -0.028688079054925104,
+              0.005863280199499886,
+              0.0170457556245621
+            ],
+            "std": [
+              0.11106148465282512,
+              0.10136473225928232,
+              0.097463916661106,
+              0.09481074899806055,
+              0.09796145764013024,
+              0.09273938389937299,
+              0.09831218397815362
+            ],
+            "abs95_fraction": 0.0,
+            "mean_absolute_change": 0.03586789506112609
+          },
+          "audit_sha256": "eea62afdcbbbe56455e91a03a04babcceb57d8be185e0cc09d766ba2c1ab60ee",
+          "trace_sha256": "f68eadc6ede029660d0794345094edc9a02ca4e98113ddb004598e40b8e3f150"
+        }
+      ],
+      "unfinished_episodes": 0,
+      "complete_optimizer_rows_through_snapshot": 0,
+      "first_optimizer": null,
+      "last_optimizer": null,
+      "checkpoints": [
+        {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/campaign_v2/direct_office_task_smoke/checkpoint_0001375",
+          "step": 1375,
+          "file_count": 76
+        }
+      ],
+      "interpretation": "Within-training behavior on differing identities, not a paired evaluation or trained-policy success rate. Warmup/mixed excluded from learned group."
+    },
+    {
+      "segment": "outputs/baseline_local_rl_20261009/campaign_v2/direct_office_task_segment011k",
+      "status": "complete",
+      "captured_execution_sha256": "d9b213143f53a2c8f95ba739cb6f55ef87f11db2f230b364de1061116984cc33",
+      "training_protocol_sha256": "43faebebe6c27c5c7545ef003dde57e8df02759542494da7aca580ea35d5ba98",
+      "steps": 11000,
+      "updates": 12002,
+      "inherited_steps": 1375,
+      "groups": {
+        "random_warmup": {
+          "episodes": 2,
+          "task": 1,
+          "strict": 0
+        },
+        "mixed_warmup_and_learning": {
+          "episodes": 1,
+          "task": 0,
+          "strict": 0
+        },
+        "learned_behavior": {
+          "episodes": 4,
+          "task": 0,
+          "strict": 0
+        }
+      },
+      "episodes": [
+        {
+          "episode": 1,
+          "condition": "repair_train_002",
+          "group": "random_warmup",
+          "steps": 1375,
+          "step_before": 1375,
+          "step_after": 2750,
+          "task": true,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "release",
+          "rmse_mm": 45.84781838207884,
+          "peak_torque_nm": 47.58174133300781,
+          "peak_speed_mps": 0.39511744458942105,
+          "penetration_mm": 0.34262398256730575,
+          "placement_error_xy_m": 0.020432734576841548,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              -0.005860906698487022,
+              0.0034707016796191137,
+              -0.009749983829155099,
+              0.008432989682221722,
+              -0.017457375505050138,
+              0.006442639323148135,
+              -0.01554998058877589
+            ],
+            "std": [
+              0.09551592654707099,
+              0.10242216828182166,
+              0.08966848350200678,
+              0.10445814410024193,
+              0.10103453786639498,
+              0.0861958942198042,
+              0.10291516141085592
+            ],
+            "abs95_fraction": 0.0,
+            "mean_absolute_change": 0.035848804696140234
+          },
+          "audit_sha256": "f9106c1b48add0a50d2695030c3365e18210d29ae1175e78cbdf89588b9d172b",
+          "trace_sha256": "02868d77209cc28aa7f09ca196364e7256194b2d2cc40d20c01230b28c266739"
+        },
+        {
+          "episode": 2,
+          "condition": "repair_train_004",
+          "group": "random_warmup",
+          "steps": 1375,
+          "step_before": 2750,
+          "step_after": 4125,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "retreat",
+          "rmse_mm": 34.48823016137134,
+          "peak_torque_nm": 49.59270095825195,
+          "peak_speed_mps": 0.3552564050705393,
+          "penetration_mm": 0.5149466549809896,
+          "placement_error_xy_m": 0.013713529554185625,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              -0.006667229787389012,
+              -0.011072098416784271,
+              -0.0039275583514245226,
+              -0.005821216653355143,
+              0.004924858791362071,
+              0.0007599999852920354,
+              -0.013015686023934738
+            ],
+            "std": [
+              0.09872144314019862,
+              0.1104009850276733,
+              0.09161916850390354,
+              0.10572688987196996,
+              0.09642900586631029,
+              0.10558279699427356,
+              0.10712840580338238
+            ],
+            "abs95_fraction": 0.0,
+            "mean_absolute_change": 0.03545025012998406
+          },
+          "audit_sha256": "09d5f2ce931bc67509d4fca6ab3d9fff5ca3787990d3997896f15ce2c614d9c0",
+          "trace_sha256": "40254b4f395a78bae9c07065530e7f87955c38246ad93fdbb8bea3fd4535f1a2"
+        },
+        {
+          "episode": 3,
+          "condition": "repair_train_012",
+          "group": "mixed_warmup_and_learning",
+          "steps": 1375,
+          "step_before": 4125,
+          "step_after": 5500,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "carry",
+          "rmse_mm": 48.27236473459918,
+          "peak_torque_nm": 60.460548400878906,
+          "peak_speed_mps": 0.32465637238712775,
+          "penetration_mm": 0.7035096456055343,
+          "placement_error_xy_m": 0.04628479117462449,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              0.0036859760879517788,
+              0.0018243522679386346,
+              -0.016947578719859434,
+              0.009620069243987514,
+              -0.04107512668848292,
+              0.0022645637328307863,
+              0.00814764766455284
+            ],
+            "std": [
+              0.32098480184563594,
+              0.34151847306401056,
+              0.3115012515856401,
+              0.3344108896066921,
+              0.31809273786665193,
+              0.33763007865648,
+              0.3216079604112012
+            ],
+            "abs95_fraction": 0.005298701298701298,
+            "mean_absolute_change": 0.23265276988027841
+          },
+          "audit_sha256": "6cfe97c41986feb5aad84c4cb32e90dff8015deef61f08ddf6e8dfe09902f4d7",
+          "trace_sha256": "dd59b44c747b490c1e2489366f8f56f8761419fce03018a6e8fe2026753a2e2f"
+        },
+        {
+          "episode": 4,
+          "condition": "repair_train_015",
+          "group": "learned_behavior",
+          "steps": 1375,
+          "step_before": 5500,
+          "step_after": 6875,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "approach",
+          "rmse_mm": 92.64607717526803,
+          "peak_torque_nm": 53.939273834228516,
+          "peak_speed_mps": 0.2854666445198477,
+          "penetration_mm": 1.3123492570862414,
+          "placement_error_xy_m": 0.1855596401720485,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              -0.0407062407550402,
+              -0.009965098574757575,
+              -0.05742680562054738,
+              -0.03231548991617323,
+              0.047636009317399426,
+              0.028610734463161366,
+              0.0387405961825597
+            ],
+            "std": [
+              0.5838683637253737,
+              0.5838831039901746,
+              0.5675652501364202,
+              0.5809977366455591,
+              0.5733097715767099,
+              0.5899760812503909,
+              0.5845759700319265
+            ],
+            "abs95_fraction": 0.035844155844155845,
+            "mean_absolute_change": 0.6593074733702232
+          },
+          "audit_sha256": "a3d00fc943c06af90a05422b5ac45a77d5a78f85c08eac761db8e45a9c51990e",
+          "trace_sha256": "63ac76c2f636ea202ca610383e955ee26daa07867cba0ac7f35c17a30d78cb4f"
+        },
+        {
+          "episode": 5,
+          "condition": "repair_train_030",
+          "group": "learned_behavior",
+          "steps": 1375,
+          "step_before": 6875,
+          "step_after": 8250,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "approach",
+          "rmse_mm": 178.50010002710624,
+          "peak_torque_nm": 52.94754409790039,
+          "peak_speed_mps": 0.46975984702471874,
+          "penetration_mm": 0.1612831911282876,
+          "placement_error_xy_m": 0.19206261853621942,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              -0.04253834270685911,
+              -0.03412966374434869,
+              -0.07430853676076302,
+              0.026135557889599693,
+              0.10526852605005049,
+              0.012717610211323269,
+              0.12252572764799168
+            ],
+            "std": [
+              0.5829585853301574,
+              0.5844161183507377,
+              0.5684063200489937,
+              0.5814232159515125,
+              0.5668700086842664,
+              0.5922325772738305,
+              0.5766258202797953
+            ],
+            "abs95_fraction": 0.03438961038961039,
+            "mean_absolute_change": 0.6626748791946522
+          },
+          "audit_sha256": "cca5418d99ff1ef8821d22e2ccf1decbf66802cde4b6ea13d9c05c68e6cf3d15",
+          "trace_sha256": "efb5a5fb4f9db9d7741823e798fbde83409a648698afb5937d53f37e571a51d8"
+        },
+        {
+          "episode": 6,
+          "condition": "repair_train_026",
+          "group": "learned_behavior",
+          "steps": 1375,
+          "step_before": 8250,
+          "step_after": 9625,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "approach",
+          "rmse_mm": 153.64378517016578,
+          "peak_torque_nm": 56.70411682128906,
+          "peak_speed_mps": 0.2917998264389163,
+          "penetration_mm": 0.1605166787571785,
+          "placement_error_xy_m": 0.18397866917089115,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              -0.03338120173612102,
+              -0.0020189379435879263,
+              -0.06489987471212887,
+              -0.017021043637682767,
+              -0.007780530311590568,
+              -0.08119249309667131,
+              0.04437669243307953
+            ],
+            "std": [
+              0.58679316437363,
+              0.5929298539216358,
+              0.5882306239729647,
+              0.5834777730885063,
+              0.5992817478896119,
+              0.5857566142940982,
+              0.5858155465332758
+            ],
+            "abs95_fraction": 0.03355844155844156,
+            "mean_absolute_change": 0.6719013455083467
+          },
+          "audit_sha256": "3dc53cdaf806766b91a02161c2f02826a09cbe944b88f1f6dc7bb59e0b126f0f",
+          "trace_sha256": "1be3c1e247f1dbdd7effd2521a5e41a869dbf1cd2c15853db0bdc69fc93f4afe"
+        },
+        {
+          "episode": 7,
+          "condition": "repair_train_007",
+          "group": "learned_behavior",
+          "steps": 1375,
+          "step_before": 9625,
+          "step_after": 11000,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "approach",
+          "rmse_mm": 176.21406531119231,
+          "peak_torque_nm": 58.15315628051758,
+          "peak_speed_mps": 0.40222606960816265,
+          "penetration_mm": 0.15408141630602729,
+          "placement_error_xy_m": 0.1920937271229854,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              0.041390327898954804,
+              0.0001027974309399724,
+              -0.06232491340124133,
+              0.0730532942137427,
+              0.041571657826192675,
+              -0.05320462039663372,
+              0.1890720275871625
+            ],
+            "std": [
+              0.5792119167997266,
+              0.5875282606975214,
+              0.5879720706124496,
+              0.5825919048890424,
+              0.5955568526653752,
+              0.5764889245613422,
+              0.5656495193800992
+            ],
+            "abs95_fraction": 0.03605194805194805,
+            "mean_absolute_change": 0.6613563852617009
+          },
+          "audit_sha256": "c78dab3161586fe68776dae4da89a89e28353200c5fb24fcb3aaccafcaf5fae7",
+          "trace_sha256": "cb92794ba7e8413cc90027f3bbe446bb5a1979c3f865a711cbd124eea7cd8b51"
+        }
+      ],
+      "unfinished_episodes": 0,
+      "complete_optimizer_rows_through_snapshot": 12002,
+      "first_optimizer": {
+        "step": 5000,
+        "update": 1,
+        "metrics": {
+          "_grads/log_temp": -0.14519958198070526,
+          "actor/entropy": -18.01995849609375,
+          "actor/loss": 0.18727874755859375,
+          "actor/mean_action": -0.003391544334590435,
+          "critic/batch_rew_max": 0.06966513395309448,
+          "critic/batch_rew_mean": 0.00011742116475943476,
+          "critic/batch_rew_min": -0.007783103734254837,
+          "critic/loss": 9.231008529663086,
+          "temperature/loss": -0.14519958198070526,
+          "temperature/value": 0.009999999776482582
+        }
+      },
+      "last_optimizer": {
+        "step": 11000,
+        "update": 12002,
+        "metrics": {
+          "_grads/log_temp": 0.027413006871938705,
+          "actor/entropy": 4.6755170822143555,
+          "actor/loss": -1.4803035259246826,
+          "actor/mean_action": -0.02669667825102806,
+          "critic/batch_rew_max": 0.0032612604554742575,
+          "critic/batch_rew_mean": -0.00028548575937747955,
+          "critic/batch_rew_min": -0.010968096554279327,
+          "critic/loss": 8.40388011932373,
+          "temperature/loss": 0.027413006871938705,
+          "temperature/value": 0.003353060921654105
+        }
+      },
+      "checkpoints": [
+        {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/campaign_v2/direct_office_task_segment011k/checkpoint_0011000",
+          "step": 11000,
+          "file_count": 76
+        }
+      ],
+      "interpretation": "Within-training behavior on differing identities, not a paired evaluation or trained-policy success rate. Warmup/mixed excluded from learned group."
+    },
+    {
+      "segment": "outputs/baseline_local_rl_20261009/campaign_v2/parameter_impedance_segment011k",
+      "status": "complete",
+      "captured_execution_sha256": "ce778b113a9e649204385655346c3ac9c1ac2caedc6102b5afa2cb3e70bf313b",
+      "training_protocol_sha256": "345e76a2474b0efb4048c1da43ef952c845d61604a3b17408083a65b54b5cc06",
+      "steps": 11000,
+      "updates": 12002,
+      "inherited_steps": 0,
+      "groups": {
+        "random_warmup": {
+          "episodes": 3,
+          "task": 0,
+          "strict": 0
+        },
+        "mixed_warmup_and_learning": {
+          "episodes": 1,
+          "task": 0,
+          "strict": 0
+        },
+        "learned_behavior": {
+          "episodes": 4,
+          "task": 0,
+          "strict": 0
+        }
+      },
+      "episodes": [
+        {
+          "episode": 0,
+          "condition": "repair_train_008",
+          "group": "random_warmup",
+          "steps": 1375,
+          "step_before": 0,
+          "step_after": 1375,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "carry",
+          "rmse_mm": 23.153747087409904,
+          "peak_torque_nm": 35.91450119018555,
+          "peak_speed_mps": 0.38574796755265844,
+          "penetration_mm": 0.1768692058723598,
+          "placement_error_xy_m": 0.08733777737326863,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              0.003911617287035121,
+              -0.00857008014883137,
+              0.015216760331977804,
+              0.009021415192214508,
+              0.002451906516139967
+            ],
+            "std": [
+              0.10125252958067006,
+              0.10421988460307836,
+              0.11923922929420191,
+              0.09560348287312723,
+              0.10038326030491797
+            ],
+            "abs95_fraction": 0.0,
+            "mean_absolute_change": 0.03599630306245719
+          },
+          "audit_sha256": "41774003fa1d970d95f93379306d3441b796700edb42a82bc499515524efab0e",
+          "trace_sha256": "dfe5dbdcdfbea12999c94df1601dfb062a054fdcb55b26f69404731702fc56bf"
+        },
+        {
+          "episode": 1,
+          "condition": "repair_train_002",
+          "group": "random_warmup",
+          "steps": 1375,
+          "step_before": 1375,
+          "step_after": 2750,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "carry",
+          "rmse_mm": 23.1720541207026,
+          "peak_torque_nm": 35.79461669921875,
+          "peak_speed_mps": 0.3844318339050694,
+          "penetration_mm": 0.16111658926334402,
+          "placement_error_xy_m": 0.08814352279620875,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              -0.003702530353605239,
+              0.0005086086715084755,
+              0.007046581354856078,
+              -0.004909550457536666,
+              -0.0068099205852777235
+            ],
+            "std": [
+              0.10558713218168271,
+              0.09948269138241572,
+              0.10131656522467036,
+              0.10589934929782689,
+              0.09861135664956938
+            ],
+            "abs95_fraction": 0.0,
+            "mean_absolute_change": 0.035308127884700814
+          },
+          "audit_sha256": "ac851a0099667638246b80ffa00a1584af8e6cddfa055b543d38d711daf8e803",
+          "trace_sha256": "81d33deca22e911fc7f5a1cae3679fa7ab125c1f0423b7a69bd17eafb4f8a233"
+        },
+        {
+          "episode": 2,
+          "condition": "repair_train_004",
+          "group": "random_warmup",
+          "steps": 1375,
+          "step_before": 2750,
+          "step_after": 4125,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "carry",
+          "rmse_mm": 23.07061699716258,
+          "peak_torque_nm": 36.927555084228516,
+          "peak_speed_mps": 0.36224853972697996,
+          "penetration_mm": 0.15774790238212424,
+          "placement_error_xy_m": 0.0856493490626696,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              -0.02767967576454182,
+              -0.00854090740268657,
+              -0.00925998573664517,
+              -0.0030887368858093394,
+              0.0029193417837589304
+            ],
+            "std": [
+              0.09999775134307032,
+              0.10322119792933453,
+              0.09568117649785315,
+              0.10102002848083694,
+              0.10056300119504723
+            ],
+            "abs95_fraction": 0.0,
+            "mean_absolute_change": 0.035842153435282686
+          },
+          "audit_sha256": "09d34065dc8afb887d6ee199dfbf557ac42da1a9518cee0cc4fde2faa89de266",
+          "trace_sha256": "952d6e852d746dc942d64142a77e70b5a48a4e1048576b8edce1d242ba4f0389"
+        },
+        {
+          "episode": 3,
+          "condition": "repair_train_012",
+          "group": "mixed_warmup_and_learning",
+          "steps": 1375,
+          "step_before": 4125,
+          "step_after": 5500,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "carry",
+          "rmse_mm": 22.983789499305402,
+          "peak_torque_nm": 37.145511627197266,
+          "peak_speed_mps": 0.3595509142770898,
+          "penetration_mm": 0.1508735917836555,
+          "placement_error_xy_m": 0.0864551279550129,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              0.03646320957175604,
+              -0.01315060012156821,
+              -0.08959764246030731,
+              0.002884060663045437,
+              -0.011210358052726157
+            ],
+            "std": [
+              0.3527565907525332,
+              0.3490254819207437,
+              0.35803773192896793,
+              0.3566411919289634,
+              0.3510125616861825
+            ],
+            "abs95_fraction": 0.01309090909090909,
+            "mean_absolute_change": 0.2503094190007565
+          },
+          "audit_sha256": "7bc6ce29a5b71fd285a35a1355018cb80b48721894a535463a32a4fc8451d6dd",
+          "trace_sha256": "ab556eb68a6839fdbe16b0f35e748d41db7b749278738270d788a648babdd187"
+        },
+        {
+          "episode": 4,
+          "condition": "repair_train_015",
+          "group": "learned_behavior",
+          "steps": 1375,
+          "step_before": 5500,
+          "step_after": 6875,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "carry",
+          "rmse_mm": 23.513392017945296,
+          "peak_torque_nm": 36.22368621826172,
+          "peak_speed_mps": 0.381312576475008,
+          "penetration_mm": 0.15845817560755743,
+          "placement_error_xy_m": 0.08954021340189827,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              0.06916792902062563,
+              -0.020734256801788104,
+              -0.07372710564470088,
+              -0.05911176940523596,
+              -0.0004551811024377292
+            ],
+            "std": [
+              0.5689289766175732,
+              0.5765044330853305,
+              0.5765452485827706,
+              0.5772913685324691,
+              0.5780339091829036
+            ],
+            "abs95_fraction": 0.03432727272727273,
+            "mean_absolute_change": 0.6520474610416411
+          },
+          "audit_sha256": "f14e985fbedbc624522fc06ea6258e44695efa64250287fde66c11f1941be40c",
+          "trace_sha256": "e54176dfd8cacd93f6e1763f28487f1748424518d246716d99f4ee40a335dc74"
+        },
+        {
+          "episode": 5,
+          "condition": "repair_train_030",
+          "group": "learned_behavior",
+          "steps": 1375,
+          "step_before": 6875,
+          "step_after": 8250,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "carry",
+          "rmse_mm": 23.13246605078236,
+          "peak_torque_nm": 37.78703689575195,
+          "peak_speed_mps": 0.3869668135372789,
+          "penetration_mm": 0.16522649398319111,
+          "placement_error_xy_m": 0.08780521630330598,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              0.009204764747611163,
+              0.04838230680699714,
+              -0.00954982559450648,
+              -0.02700965088195252,
+              0.02098173003533686
+            ],
+            "std": [
+              0.5634334222605084,
+              0.5890621747439366,
+              0.5686255954810047,
+              0.5681526970914959,
+              0.5835886150503945
+            ],
+            "abs95_fraction": 0.02749090909090909,
+            "mean_absolute_change": 0.6489555940870636
+          },
+          "audit_sha256": "b4cbc1c5729c2228f399de0026ba1d5efbe7462c5f82b4d08bcd6e61797bca16",
+          "trace_sha256": "fcd40bf80d658304aa274a02c923194728cebe2fad459f547fd2b0a62c1a5706"
+        },
+        {
+          "episode": 6,
+          "condition": "repair_train_026",
+          "group": "learned_behavior",
+          "steps": 1375,
+          "step_before": 8250,
+          "step_after": 9625,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "carry",
+          "rmse_mm": 23.095546500711258,
+          "peak_torque_nm": 36.36833953857422,
+          "peak_speed_mps": 0.3743244997542142,
+          "penetration_mm": 0.16972058977773152,
+          "placement_error_xy_m": 0.08586926408963494,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              0.004529842468232593,
+              0.10393082695826888,
+              0.015446529975330288,
+              -0.028841872432015157,
+              0.006155388019344008
+            ],
+            "std": [
+              0.5586391185142343,
+              0.5651918925334787,
+              0.6076319339819364,
+              0.582396393701368,
+              0.6045054068263322
+            ],
+            "abs95_fraction": 0.03301818181818182,
+            "mean_absolute_change": 0.6380464637011332
+          },
+          "audit_sha256": "81b63588904f5633203c37e88e12d368b49f467bb64a2815ab2b49087cc30d49",
+          "trace_sha256": "c4d6b06722f1a5b6c821cac11dfbcf1370ed8d7a684953da07d39df31246944f"
+        },
+        {
+          "episode": 7,
+          "condition": "repair_train_007",
+          "group": "learned_behavior",
+          "steps": 1375,
+          "step_before": 9625,
+          "step_after": 11000,
+          "task": false,
+          "strict": false,
+          "full_horizon": true,
+          "final_stage": "carry",
+          "rmse_mm": 23.013075119581252,
+          "peak_torque_nm": 36.96211242675781,
+          "peak_speed_mps": 0.3786754634399339,
+          "penetration_mm": 0.15765212281082924,
+          "placement_error_xy_m": 0.08526872057896706,
+          "abort_reason": null,
+          "raw_action": {
+            "mean": [
+              -0.0370763002094728,
+              0.0639347113959322,
+              0.11938106419535523,
+              0.07066793453007598,
+              0.06384075774142349
+            ],
+            "std": [
+              0.5665512489147061,
+              0.57876185168957,
+              0.5601181537175999,
+              0.5518920247955116,
+              0.5895379773250693
+            ],
+            "abs95_fraction": 0.029236363636363637,
+            "mean_absolute_change": 0.6347493297180833
+          },
+          "audit_sha256": "4b5dd20c0d81bcf8b7e30ae7076503c6ab6eb12099b1643b72f88a22364e7131",
+          "trace_sha256": "72fcc49e73a46234c9f6e79168ac94775aa0a9a7b3326c7a95ce3d02dafd5584"
+        }
+      ],
+      "unfinished_episodes": 0,
+      "complete_optimizer_rows_through_snapshot": 12002,
+      "first_optimizer": {
+        "step": 5000,
+        "update": 1,
+        "metrics": {
+          "_grads/log_temp": -0.09000770002603531,
+          "actor/entropy": -11.500770568847656,
+          "actor/loss": 0.10675734281539917,
+          "actor/mean_action": 0.014932452701032162,
+          "critic/batch_rew_max": 0.002602463588118553,
+          "critic/batch_rew_mean": -0.00023606019385624677,
+          "critic/batch_rew_min": -0.009472213685512543,
+          "critic/loss": 9.23141098022461,
+          "temperature/loss": -0.09000770002603531,
+          "temperature/value": 0.009999999776482582
+        }
+      },
+      "last_optimizer": {
+        "step": 11000,
+        "update": 12002,
+        "metrics": {
+          "_grads/log_temp": 0.01895776018500328,
+          "actor/entropy": 3.1652557849884033,
+          "actor/loss": -1.0464028120040894,
+          "actor/mean_action": -0.04833323508501053,
+          "critic/batch_rew_max": 0.0019420008175075054,
+          "critic/batch_rew_mean": -0.001748466631397605,
+          "critic/batch_rew_min": -0.17595696449279785,
+          "critic/loss": 8.765396118164062,
+          "temperature/loss": 0.01895776018500328,
+          "temperature/value": 0.003346320241689682
+        }
+      },
+      "checkpoints": [
+        {
+          "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/campaign_v2/parameter_impedance_segment011k/checkpoint_0011000",
+          "step": 11000,
+          "file_count": 75
+        }
+      ],
+      "interpretation": "Within-training behavior on differing identities, not a paired evaluation or trained-policy success rate. Warmup/mixed excluded from learned group."
+    }
+  ],
+  "not_started": [
+    "parameter_admittance_segment011k",
+    "parameter_vmc_segment011k",
+    "direct_metric_segment011k",
+    "direct_office_task_historical_entropy_segment011k",
+    "parameter_impedance_historical_entropy_segment011k"
+  ],
+  "new_physics_steps": 0,
+  "gradient_updates": 0,
+  "heldout_reads": 0
+}

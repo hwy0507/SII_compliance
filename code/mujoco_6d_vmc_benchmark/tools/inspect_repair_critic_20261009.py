@@ -75,7 +75,7 @@ def main():
     ndist, _ = raw._actor(observations=next_obs)
     next_action = ndist.sample(seed=jax.random.PRNGKey(2026100902))
     logp = ndist.log_prob(next_action)
-    target_q, _ = raw._target_critic(observations=next_obs, actions=next_action)
+    target_q, target_info = raw._target_critic(observations=next_obs, actions=next_action)
     alpha = float(raw._temperature())
     backup = normalized_reward[indices]+cfg['gamma']*(1-data['terminated'][indices])*(
         np.asarray(target_q).min(axis=0)-alpha*np.asarray(logp))
@@ -84,6 +84,38 @@ def main():
     terminal = data['terminated'][indices].astype(bool)
     result['terminal_q_minus_normalized_reward'] = summary(replay_q[terminal]-normalized_reward[indices][terminal])
     result['temperature'] = alpha
+    # Inspect probability mass, not only the expected value: the categorical
+    # projection can clip upper atoms while its expectation stays in support.
+    # This follows upstream's minimum-mean twin selection, without updating it.
+    q_array = np.asarray(target_q)
+    target_probs = np.exp(np.asarray(target_info['log_prob']))
+    selected_probs = target_probs[q_array.argmin(axis=0), np.arange(len(indices))]
+    np.testing.assert_allclose(selected_probs.sum(-1), 1., rtol=1e-5, atol=1e-6)
+    low, high = cfg['critic_min_v'], cfg['critic_max_v']
+    support = np.linspace(low, high, cfg['critic_num_bins'])
+    entropy_bonus = -alpha*np.asarray(logp)
+    alive = (1-data['terminated'][indices])[:, None]
+    projection = {}
+    for label, bonus in [('actual_soft_backup', entropy_bonus),
+                         ('same_sample_without_entropy_term', np.zeros_like(entropy_bonus))]:
+        atoms = normalized_reward[indices, None]+cfg['gamma']*alive*(support[None, :]+bonus[:, None])
+        clipped = np.clip(atoms, low, high)
+        projection[label] = dict(
+            lower_clipped_probability=summary((selected_probs*(atoms < low)).sum(-1)),
+            upper_clipped_probability=summary((selected_probs*(atoms > high)).sum(-1)),
+            signed_expectation_removed_by_clipping=summary((selected_probs*(atoms-clipped)).sum(-1)))
+    result['categorical_projection'] = projection
+    result['sampled_next_action_entropy'] = summary(-np.asarray(logp))
+    result['entropy_bonus_per_transition'] = summary(entropy_bonus)
+    horizon = round(55/.04)
+    factor = cfg['gamma']*(1-cfg['gamma']**(horizon-1))/(1-cfg['gamma'])
+    result['entropy_scale_sensitivity'] = dict(
+        future_steps=horizon-1, frozen_mean_entropy_bonus=float(entropy_bonus.mean()),
+        discounted_constant_bonus_sum=float(entropy_bonus.mean()*factor),
+        uniform_box_entropy_upper_bound=cfg['action_dimension']*float(np.log(2)),
+        caveat='Constant-alpha/entropy sensitivity only, not an observed return or proof of failure causality. '
+               'Temperature, state distribution and remaining horizon change during real learning. '
+               'No-entropy atom comparison is diagnostic, not a newly trained baseline.')
     assert before == agent.diagnostics() and norm_before == normalization_hash(agent)
     assert checkpoint_hashes(cp) == before_hashes
     result['normalization_and_checkpoint_unchanged'] = True

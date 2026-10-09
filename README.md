@@ -4,6 +4,11 @@
 Two memory-capped local lanes cover all five RL families plus exploration controls;
 Spark is reserved for the user's other work. GPU update/resume and physical reward checks passed.
 The first random-warmup episode passed Task but failed Strict; it is not a trained-policy result.
+Direct office-task and impedance tuning have now each completed 11k interactions and 12,002 updates.
+Learned behavior still fails placement; eight-condition development evaluations are in progress.
+A missing evaluation asset path was repaired in a separate attempt without retraining; the original
+failure is retained. The current queue receipt is `parallel_v2.execution.json`. A one-shot observer
+independently audits completed configurations; 11k diagnostic segments are not convergence evidence.
 
 **Latest completed study (2026-10-09):** [all16 repaired-method results](code/mujoco_6d_vmc_benchmark/docs/BASELINE_REPAIR_FINAL_RESULTS_20261009.md),
 [complete compliance tables](code/mujoco_6d_vmc_benchmark/outputs/baseline_repair_15h_20261008/final_delivery_v2/comparison/COMPARISON.md),

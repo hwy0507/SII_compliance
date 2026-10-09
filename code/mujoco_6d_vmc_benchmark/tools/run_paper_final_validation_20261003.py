@@ -28,6 +28,7 @@ if os.environ.get('SII_LOCAL_RUNTIME'):
     # Spark-specific loader path into local subprocesses or change drivers.
     ENV['LD_LIBRARY_PATH'] = os.environ.get('LD_LIBRARY_PATH', '')
     ENV['SII_LOCAL_RUNTIME'] = str(Path(os.environ['SII_LOCAL_RUNTIME']).resolve(strict=True))
+    ENV['MUJOCO_MENAGERIE_PATH'] = str(Path(ENV['SII_LOCAL_RUNTIME'])/'menagerie')
     ENV['XLA_PYTHON_CLIENT_MEM_FRACTION'] = '0.12'
 
 
