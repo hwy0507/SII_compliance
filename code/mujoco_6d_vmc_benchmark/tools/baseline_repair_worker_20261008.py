@@ -17,7 +17,7 @@ def main():
     root = a.research_protocol.parent
     protocol = json.loads(a.research_protocol.read_text())
     assert office.worker.sha(a.research_protocol) == a.protocol_sha256
-    assert protocol['schema'] == 'sii-baseline-repair-15h-v1'
+    assert protocol['schema'] in ('sii-baseline-repair-15h-v1', 'sii-baseline-strengthening-v1')
     path = root/('sealed/HELDOUT.json' if a.phase == 'final' else 'CONDITIONS.json')
     key = 'sealed_condition_sha256' if a.phase == 'final' else 'condition_file_sha256'
     assert office.worker.sha(path) == protocol[key]

@@ -35,6 +35,8 @@ def main():
     p.add_argument('--steps',type=int,default=200000)
     p.add_argument('--stop-at-step',type=int)
     p.add_argument('--resume-checkpoint',type=Path)
+    p.add_argument('--hyperparameter-id', default='historical',
+                   help='Registered exploration configuration; never selected using final outcomes')
     a=p.parse_args();root=a.root.resolve();out=a.output.resolve();parameter=a.parameter_source.resolve()
     protocol=read(root/'PROTOCOL.json');pdigest=sha(root/'PROTOCOL.json')
     assert a.seed in protocol['budgets']['training_seeds']
@@ -56,8 +58,15 @@ def main():
     from rewards import RewardConfig,OfficeReward,IntervalMetrics
     prior=read(parameter/'PRIORS.json')['methods'][a.controller] if a.controller else None
     dimension=prior['action_dimension'] if prior else 7
+    hyperparameters = protocol.get('rl_hyperparameters', {
+        'historical': dict(entropy_coef=-2., initial_temperature=.0001)})
+    if a.hyperparameter_id not in hyperparameters:
+        raise ValueError('Unregistered RL hyperparameters')
+    hp = hyperparameters[a.hyperparameter_id]
+    if set(hp) != {'entropy_coef', 'initial_temperature'}:
+        raise ValueError('Only registered entropy/temperature changes supported')
     agent=OfficialParameterAgent(seed=a.seed,total_steps=a.steps,utd=2,gamma=.9995,
-        entropy_coef=-2.,initial_temperature=.0001,action_dimension=dimension)
+        entropy_coef=hp['entropy_coef'],initial_temperature=hp['initial_temperature'],action_dimension=dimension)
     replay=Replay(a.steps,dimension,a.seed+53);rng=np.random.default_rng(a.seed+71)
     order=np.random.default_rng(a.seed+100).permutation(len(conditions))
     source=Path(__file__).resolve().parents[1]
@@ -78,6 +87,7 @@ def main():
         source_sha256=source_hashes,deadline_utc=deadline.isoformat(),
         optimizer_diagnostics='Every update returned metrics retained in optimizer.jsonl; includes actor/critic losses, Q and temperature when exposed upstream',
         checkpoints='Every >=10000 interactions at completed episode boundary; all retained; development-only selection before final lock')
+    specification['hyperparameter_id'] = a.hyperparameter_id
     write(out/'PROTOCOL.json',specification)
     step=episode=last_checkpoint=0;pending=None;colored=np.zeros(dimension);stop=False;process=None
     state=dict(status='running',started_utc=now(),host=platform.node(),python=sys.executable,

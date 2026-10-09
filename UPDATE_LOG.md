@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-09 — baseline补强启动后被主机重启打断；优先处理显示无信号
+
+- 开工实查main `0a1080709b85a9918aa0a1975f4401836ee48f30`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无分支合并。新增full-range参数RL映射，保留原rate/tank/执行器限制；三类端点、随机状态和旧映射兼容验证通过。新增登记式探索配置入口、有限开发队列；编译/diff检查通过。
+- 本地18个同20train/5validation、三seed神经checkpoint的数据/父模型/hash/梯度曝光及字段隔离审计通过；不称同参数量或同总历史预算。经典登记40候选×8条件×3类，180历史组合可复用，780待补跑；RL探索初段不是训练充分性证明。
+- 服务器独立run `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_strengthening_20261009_0334/` 已登记并通过映射测试；11:39启动后被主机重启打断，新job/config/log有0字节文件。11:44/11:46本轮服务与进程均不存在，尚无可核验新完整回合，不相信旧running状态、不自动重启。协议SHA `9b3b7235c13ac2af6f35f8c416d0dbd7ed006b16d44c80a06b380f30ca66819b`；原15小时最终报告和执行收据SHA仍匹配。
+- 用户报告NVIDIA启动画面后无信号但风扇仍转；SSH/GDM仍正常，HDMI底层disconnected/EDID零字节，7月27日旧Xorg强制headless/1600×900。临时1024×768切换执行成功但用户确认未恢复。无明确故障归因，不把显示报错直接当训练引发的硬件损坏。
+- `repair_spark_display_20261009.sh`已上传并核验至 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/display_recovery_20261009/`，SHA `4f1a100cb6076fb08397725a71e00642298016a0a6383bbd3c9d588b2d223a86`，bash语法和远端只读check通过。脚本限定主机/原配置hash，备份后停用强制配置并重启GDM，可rollback；sudo需要用户在终端认证，尚未应用系统修改或验证物理画面恢复。
+- 联合进度/周报及两份专题记录更新。当前研究受基础设施故障中断，剩余baseline调参充分性、RL收敛与新统一对比均未完成。无定时任务、无新环境/gate修改。
+
 ## 2026-10-09 — 15小时修复最终交付：384全完成，ESN未全面胜出
 
 - 前一已核验main `fa4a891428dd03c14131a51267178fa836d0560a`，baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，不合并。新增`BASELINE_REPAIR_FINAL_RESULTS_20261009.md`及全16柔顺/任务表；新384回合全为55秒，422400000物理子步核验、144控制器审计和最终预算/614回合势函数检查通过，所有本批计算服务已结束。
