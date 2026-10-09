@@ -11,6 +11,11 @@ seeds per family, and has frozen all16 methods before opening24 new final
 conditions. Geometry, proprioceptive inputs, task/safety gates and actuator
 limits remain fixed. New final results are not available yet.
 
+At 08:54 CST, 202/384 final episodes had completed their per-episode checks,
+with ten running and no infrastructure failures. Every method had completed
+12 or 13 conditions. The frozen registry/source hashes remain unchanged;
+whole-cohort audits and final rankings are still pending.
+
 The [evaluation notes](code/mujoco_6d_vmc_benchmark/docs/BASELINE_REPAIR_EVALUATION_NOTES_20261009.md)
 define Task/Strict, contact and recovery metrics, and the assumptions behind
 nominal uncertainty estimates for the single stratified 24-condition cohort.
