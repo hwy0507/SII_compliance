@@ -2,6 +2,10 @@
 
 ## 2026-10-09 21:33 CST — 新15小时本机baseline修正窗口与奖励诊断
 
+- 10月10日12:28 CST收口：预算guard在12:21冻结调度器并让已有worker完成回合，12:25退出；无110k后新派发。direct110k实际108458步/40训练回合/6 Task/2 Strict，impedance110k 104500步/36回合/0 Task/0 Strict；未做development重评，不能作为最终成功率。新收口报告`BASELINE_15H_CLOSE_20261010.md`。
+- 四格离线信用试验均12002 updates/0 physics，不能替代闭环baseline。可用RL策略、经典恢复、development重评、多seed和统一最终公平矩阵仍未完成；旧384结果保留。
+- 收口小型证据包已核验发布至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_15h_close_20261010/evidence/`，8文件/60847字节，manifest SHA `f14b4e029cea7bf9ab4b452c2f7f2a81ec52279fd55ca7d6be51f93c8ef8d77a`。新110k大型轨迹/checkpoint仍留本机，未冒充已归档。
+
 - 10月10日11:30 CST：55k接续已完成全部七配置；直接office_task进入110k接续训练，训练身份新增回合出现6/27 Task、2/27 Strict，尚未完成development；阻抗110k接续仍0/24训练回合。预算guard仍active，截止12:21 CST。
 - 固定四格信用分配试验（原奖励/任务安全分开 × n-step 1/25）全部完成，每格12002 updates、0 new physics、无heldout/final reads；`CREDIT_ASSIGNMENT_REPORT.json`只记录学习机制证据，不是闭环baseline。新增n-step和task-safety实现/测试仍需收工发布。
 - 11:46 CST：旧55k诊断快照3091文件/12,856,965,783字节已完成服务器核验发布：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_local_rl_20261009_stage5/evidence/`，manifest SHA `3f5465d4ee035771f03c8ec70f06ab08f80344a741eb1916f7e97676e921298d`。新110k原始训练仍只在本机。

@@ -15,6 +15,12 @@ providing distinctions absent from the original observed failed returns; this is
 trained reward variant or evidence of improved learning. Usable RL policies, classical recovery,
 independent-seed confirmation and a new fair final comparison remain pending.
 
+**15-hour window closed (2026-10-10):** the deadline guard preserved running episodes and stopped new
+dispatch. Direct RL's 110k training segment ended at 108,458 interactions (6/40 Task, 2/40 Strict),
+and impedance at 104,500 (0/36); these are training identities, not final/development scores.
+The [close report](code/mujoco_6d_vmc_benchmark/docs/BASELINE_15H_CLOSE_20261010.md) records the
+remaining fairness limitations.
+
 **Latest completed study (2026-10-09):** [all16 repaired-method results](code/mujoco_6d_vmc_benchmark/docs/BASELINE_REPAIR_FINAL_RESULTS_20261009.md),
 [complete compliance tables](code/mujoco_6d_vmc_benchmark/outputs/baseline_repair_15h_20261008/final_delivery_v2/comparison/COMPARISON.md),
 [progress dashboard](RESEARCH_STATUS.md), and [update log](UPDATE_LOG.md).
