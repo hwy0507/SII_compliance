@@ -36,6 +36,8 @@ def main():
     p.add_argument('--steps',type=int,default=200000)
     p.add_argument('--stop-at-step',type=int)
     p.add_argument('--resume-checkpoint',type=Path)
+    p.add_argument('--continuation-registration',type=Path,
+                   help='New local continuation authority; preserves original scientific protocol hash')
     p.add_argument('--hyperparameter-id', default='historical',
                    help='Registered exploration configuration; never selected using final outcomes')
     a=p.parse_args();root=a.root.resolve();out=a.output.resolve();parameter=a.parameter_source.resolve()
@@ -47,6 +49,21 @@ def main():
     limit=a.stop_at_step or a.steps
     assert 1375<=limit<=a.steps
     deadline=datetime.fromisoformat(protocol['training_dispatch_deadline_utc'])
+    continuation = None
+    if a.continuation_registration:
+        continuation=read(a.continuation_registration)
+        assert continuation['schema']=='sii-local-rl-convergence-v2'
+        assert continuation['parent_protocol_sha256']==pdigest
+        assert continuation['parent_root']==str(root)
+        assert continuation['host']==platform.node()=='airpig'
+        assert continuation['resources']['server_compute'] is False
+        assert a.resume_checkpoint and out.is_relative_to(Path(continuation['run_root']))
+        assert limit in continuation['training_limits']
+        assert a.steps==continuation['optimizer_schedule_steps']==500000
+        assert a.seed==continuation['seed'] and a.reward_variant=='original'
+        assert any(j['controller']==a.controller and j['reward']==a.reward and
+                   j['hp']==a.hyperparameter_id for j in continuation['jobs'])
+        deadline=datetime.fromisoformat(continuation['dispatch_deadline_utc'])
     assert datetime.now(timezone.utc)<deadline
     assert sha(root/'CONDITIONS.json')==protocol['condition_file_sha256']
     conditions=[c for c in read(root/'CONDITIONS.json')['conditions'] if c['role']=='train']
@@ -95,6 +112,9 @@ def main():
         optimizer_diagnostics='Every update returned metrics retained in optimizer.jsonl; includes actor/critic losses, Q and temperature when exposed upstream',
         checkpoints='Every >=10000 interactions at completed episode boundary; all retained; development-only selection before final lock')
     specification['hyperparameter_id'] = a.hyperparameter_id
+    if continuation:
+        specification['continuation_registration_sha256']=sha(a.continuation_registration)
+        specification['continuation_registration']=str(a.continuation_registration.resolve())
     specification['reward_variant'] = a.reward_variant
     if a.reward_variant=='task_safety':
         specification['task_safety_definition']='Original Task terminal +20/-20, plus20*increments of excess/(1+excess); excess=max(0,external_peak/.0002-1). Early failure charges unused worst-case safety peak budget. Original Strict evaluation unchanged.'
@@ -141,6 +161,12 @@ def main():
     try:
         with (out/'training.jsonl').open('x') as log,(out/'optimizer.jsonl').open('x') as optlog:
             while step+1375<=limit and datetime.now(timezone.utc)<deadline and not stop:
+                if continuation:
+                    import shutil
+                    if shutil.disk_usage(out).free < continuation['min_free_disk_bytes']:
+                        stop=True
+                        state['resource_stop_reason']='disk_reserve'
+                        break
                 c=conditions[int(order[episode%len(order)])];run=out/f'episode_{episode:05d}_{c["id"]}'
                 command=[sys.executable,str(source/'tools/baseline_repair_worker_20261008.py'),
                     '--research-protocol',str(root/'PROTOCOL.json'),'--protocol-sha256',pdigest,

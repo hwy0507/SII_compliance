@@ -1,10 +1,17 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
+## 2026-10-10 13:14 CST：用户重新授权，本机RL连续接续已启动
+
+新服务`sii-convergence-20261010-v2`已运行，首先补齐两个已保存110k模型的同八development，
+随后自动恢复到165k/220k/330k/约500k节点；其余五配置也在队列，本机仍两路3GiB/禁swap/单线程。
+旧15小时收口不再阻止本次新授权接续。成功稳定性与失败平台分开判定，达到步数不算收敛；
+没有新的最终RL成绩，也没有服务器计算。见[续训登记](code/mujoco_6d_vmc_benchmark/docs/RL_CONVERGENCE_CONTINUATION_20261010.md)。
+
 ## 2026-10-10 12:53 CST：15小时窗口收口后的只读监看
 
 本机无运行中的 RL/MuJoCo 作业；没有启动新计算。110k 扩展目录的实际收据均已 `complete`：direct office_task 108458 步/40 训练回合/6 Task/2 Strict，RL impedance 104500 步/36 回合/0 Task/0 Strict。只读训练轨迹审计新增物理步为0，结果仍属于训练身份，尚未完成固定8条 development 条件重评，不能写成最终 baseline 成功率或与 ESN 排名。详见 [监看审计](code/mujoco_6d_vmc_benchmark/docs/BASELINE_MONITOR_20261010.md)。
 
-## 当前：新15小时窗口，55k接续正在评估（2026-10-09 21:33 CST）
+## 历史：新15小时窗口，55k接续正在评估（2026-10-09 21:33 CST）
 
 原七配置56/56开发全完成，均零成功；18:20起接续健康作业。
 直接office_task已54146交互/98294更新，首6个开发独立审计通过且均Task/Strict失败；

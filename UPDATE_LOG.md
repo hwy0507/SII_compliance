@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-10 — 重新授权仅本机RL训练至可用策略，连续接续已启动
+
+- 实查远端main `6e31e394617b92ad067aab798e3037b930a6bfe9`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取两分支日志/AGENTS与`sii-research-sync`。前轮网络/SSH失败来自沙箱限制，本轮宿主机正常连通；新授权覆盖旧15小时收口后的等待状态，不再要求用户重复给小时数。
+- 新增`launch_rl_convergence_20261010.py`及五个停止条件回归，trainer增加显式接续登记校验。旧协议/hash不改，完整恢复两110k及其余五55k checkpoint；保持原reward/n-step=1、500k优化器日程和所有冻结物理/actor/gate/执行限制。新source快照与旧worker字节一致，入口/审计叠加单独hash。
+- 13:14 CST本机`sii-convergence-20261010-v2.service`实际active、两开发worker已开始物理推进。先评两个已存110k节点，随后两路接续165k；剩余五配置在lane空闲后补至165k，后续220k/330k/499125共同节点。每次八development与原始物理/动作/参数/身份/模型hash审计，不解封final、不用teacher或BC、不在Spark计算。
+- 单lane3GiB/禁swap/数值线程1，协调器1GiB，启动可用内存≥7GiB；同全局计算锁、防旧活跃unit重复派发。新登记72h有限安全边界至10月13日13:13:46 CST，属于agent运行保护而非用户时间上限或收敛定义。连续失败平台触发机制复查，稳定成功需独立seed确认，500k不能自动称收敛。
+- 注册SHA `56542a1a43c30d6a1cbc7e1fda6d003e45740eda94536c4f53397aee91a433bc`；五个新回归、七个原接续回归、语法/diff通过。新增`RL_CONVERGENCE_CONTINUATION_20261010.md`并更新研究面板、联合进度、周报。当前两110k开发运行中，新的训练步与开发结果尚未完成；新产物暂本地，服务器归档核验另记。
+- 13:17 CST续训源码/登记/测试589文件、5192187字节已逐文件核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_convergence_v2_setup_20261010/evidence/`，manifest SHA `15d66fbf101fd50303e79c3eae4aef181778d541c2e1f0e96c4667a0be868486`；不冒充运行中轨迹已完整共享。两worker各约1.8GiB，均保持3GiB/禁swap。
+
 ## 2026-10-10 12:53 CST — 110k RL 收口状态监看与只读审计
 
 - 按 `sii-research-sync` 核对本地缓存的 main `6e31e394617b92ad067aab798e3037b930a6bfe9`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS 和 15 小时收口报告；本轮尝试联网刷新远端失败，未把缓存 SHA 宣称为新的远端检查。工作区开工时干净。
