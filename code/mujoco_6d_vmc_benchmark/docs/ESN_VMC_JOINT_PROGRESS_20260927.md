@@ -1,5 +1,12 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+10月10日17:11 CST：经典有限搜索已完成3/90条（同一开发条件的3个VMC候选，均完整失败），
+boundary_03运行中。新增只读连续监视器，核验条件/seed/模型/路线/参数/轨迹/独立重放收据，
+结束后汇总全部候选；4项完整性回归通过。验收不要求必须解卡，既定调参后保留失败。
+RL保持暂停；本机单模拟器，服务器只归档。监视器源码/登记/启动快照已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/classical_monitor_setup_20261010/evidence/`。
+实时进度仍本地，不将开发候选试验计为最终成功率。详见[经典baseline记录](CLASSICAL_BASELINE_READINESS_20261010.md)。
+
 10月10日接续：6条接触归因已完成。三经典active_only均Task/Strict通过，但阻抗无棍接触；
 三经典edge_only均停carry失败，均跑满55秒且非安全早停。与4条clear合计10条路线/模型/
 轨迹hash核验通过。连续队列已开始原冻结综合环境的最多90条边界搜索/八开发确认，
