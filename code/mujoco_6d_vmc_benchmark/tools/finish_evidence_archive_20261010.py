@@ -15,8 +15,8 @@ from office_v7_uniform24_20261008 import read, write, sha, now
 
 
 def destination(name):
-    if not re.fullmatch(r'rl_[a-z0-9_]+',name):
-        raise ValueError('Expected one rl_ archive run name, not a path')
+    if not re.fullmatch(r'(?:rl|classical)_[a-z0-9_]+',name):
+        raise ValueError('Expected one rl_ or classical_ archive run name, not a path')
     return '/home/arm1/sii_shared/SII_compliance/incoming/'+name
 
 
