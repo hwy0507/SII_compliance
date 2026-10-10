@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-10 12:53 CST — 110k RL 收口状态监看与只读审计
+
+- 按 `sii-research-sync` 核对本地缓存的 main `6e31e394617b92ad067aab798e3037b930a6bfe9`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS 和 15 小时收口报告；本轮尝试联网刷新远端失败，未把缓存 SHA 宣称为新的远端检查。工作区开工时干净。
+- 确认本机无 `sii-local-rl`/MuJoCo/validate/overnight 进程；没有启动新训练、仿真或服务器计算。两个外层扩展收据的旧 `running` 字样与实际子目录冲突，子目录 `execution.json` 已为 `complete` 并有结束时间，保留历史文件不改写。
+- 运行只读 `inspect_local_rl_progress_20261009.py --training-suffix extended110000`：新增物理步 0、held-out/final 读取 0。direct 110k 为 108458 步/40 训练回合/6 Task/2 Strict；impedance 110k 为 104500 步/36 回合/0 Task/0 Strict。审计 SHA `8ad74de12c28a5182f68a6626587b86eca08e8bf8cf6d2b1801843711af2fafd`。
+- 新增 `code/mujoco_6d_vmc_benchmark/docs/BASELINE_MONITOR_20261010.md`，明确训练身份指标、development 尚未重评、服务器大型轨迹仍主要本地及下一步预算边界；不以训练回合结果替代公平 baseline 成绩。
+- 已完成：进程/收据核对、110k 原始轨迹与 hash 只读审计。运行中：无作业。尚未完成：固定 8 条 development 重评、独立 seed、统一 final 矩阵；新计算需新的明确预算登记。
+
 ## 2026-10-09 21:33 CST — 新15小时本机baseline修正窗口与奖励诊断
 
 - 10月10日12:28 CST收口：预算guard在12:21冻结调度器并让已有worker完成回合，12:25退出；无110k后新派发。direct110k实际108458步/40训练回合/6 Task/2 Strict，impedance110k 104500步/36回合/0 Task/0 Strict；未做development重评，不能作为最终成功率。新收口报告`BASELINE_15H_CLOSE_20261010.md`。
