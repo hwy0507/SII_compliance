@@ -2632,3 +2632,6 @@ ordinary MLP `4/5, 4/5`、memoryless `2/5, 2/5`、enhanced teacher `4/4, 3/4`。
 `docs/OFFICE_V7_STALL_AND_DISPATCH_20261008.md`。证据在服务器同run的 `dispatch_v2/`，
 诊断未用于本批选模型或调参数，不能声称baseline性能已经修复。全384回合和后续独立开发
 因果消融尚未完成。
+10月10日20:43 CST：用户授权一次性15小时过夜baseline接续。经典搜索已64/90并继续；
+新增协调器先等待其安全完成，再从已保存RL checkpoint启动新独立接续，禁止覆盖旧收据/重复活动RL。
+当前协调器`waiting_for_classical`，RL尚未启动；资源与有限窗口记录见`CLASSICAL_BASELINE_READINESS_20261010.md`。

@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-10 — 登记15小时过夜baseline接续：经典先收口，随后RL checkpoint接续
+
+- 按同步skill核对并fetch main `fe695ec7e9a1a7810e0ae61689062eda36f9a68e`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及两日志/AGENTS。用户授权一次性15小时；不创建定时任务，不使用服务器计算。
+- 经典两路搜索检查时已完成64/90，vmc boundary_05 的 development_006/007在运行，服务和监视器正常。保留原90回合、环境、参数、seed、gate、worker和失败记录。
+- RL历史`continuation_v2`有中断/失败保留收据，`extension_v1`的旧running字样没有活动服务；未覆盖或伪装这些收据。
+- 新增`overnight_baseline_coordinator_20261010.py`及3项回归。协调器不持有全局锁等待经典完成；经典失败即停止。完成后检查活动RL和可用内存≥7GiB，调用已有RL接续工具从不可变checkpoint建立新`overnight_15h_20261010`，每路1线程/3GiB/禁swap，最终测试读取0。
+- 20:43 CST一次性服务`sii-overnight-baseline-20261010.service`实际active，内存512MiB/禁swap，15小时deadline至2026-10-11 03:43 UTC；当前`waiting_for_classical`、经典64/90，未启动RL，不影响在途经典worker。
+- 已完成：过夜协议、资源门槛、失败保留和服务登记。运行中：经典90回合、只读监视、过夜协调器。待完成：经典收口、RL checkpoint接续与审计、统一公平比较。不能提前称baseline调参充分或RL收敛/proposed优越。
 ## 2026-10-10 — 本机经典搜索在安全边界从串行提升至两路
 
 - 18:07首批两路已完成：导纳boundary_03/04均完整55秒，分别耗时362.176/361.000秒，shield/动态重放通过。约6分钟完成2回合，原串行约6分钟1回合；是首批吞吐观察，不是同参数配对测速。累计14/90且全量证据复核通过，boundary_05/06已自动接续；两新增Task/Strict失败照常保留。剩余约3.8小时，最终调参仍未完成。

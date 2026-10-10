@@ -190,6 +190,28 @@ Task/Strict均失败、完整55秒；这不是选定VMC跨条件0/3的成功率�
 没有把吞吐改善说成算法成功。新核验快照仅本地`outputs/classical_parallel_first_pair_verified_20261010/`，
 下面服务器设置包是原12条启动时点，不含后续新轨迹。
 
+## 15小时过夜baseline接续（2026-10-10 20:43 CST）
+
+用户下班前授权一次性15小时窗口，要求传统控制器和RL都做到实现正确、调参可审计、
+可与proposed公平对比。当前经典搜索仍为同一90回合登记，已完成64/90，两路运行至
+`vmc_boundary_05`的development_006/007；没有重启或改变条件。
+
+新增`tools/overnight_baseline_coordinator_20261010.py`：协调器在等待经典完成时不持有全局
+仿真锁；经典状态失败则停止。经典完成后检查没有活动RL服务、可用内存≥7GiB，调用已有
+`launch_rl_convergence_20261010.py prepare/run`从已保存checkpoint建立新的独立
+`overnight_15h_20261010`目录，旧continuation/extension收据保持不动。RL仍用原7种配置、
+原reward/actor/环境/gate/执行器限制和checkpoint连续性，开发评估及失败回合照常审计；
+不读final，不用teacher，不把训练步数叫收敛。
+
+20:43 CST服务`sii-overnight-baseline-20261010.service`已active，协调器内存512MiB/禁swap，
+deadline为2026-10-11 03:43 UTC（从启动起15小时）。当前状态`waiting_for_classical`、
+经典64条；它不占用经典worker资源。服务、状态文件和旧RL归档中名称含`rl`的收尾服务均不代表
+训练在运行。若窗口到期或基础设施/审计失败，状态写成`stopped_at_deadline`或
+`failed_preserved`，不自动补时或重启。
+
+当前本地协调器状态：
+`/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/overnight_baseline_coordinator_20261010/execution.json`。
+
 用户指出算力利用不足。实查24个逻辑核，但原worker只占满1核，约0.7–0.9GiB；
 可用内存约7GiB、内存PSI近零，串行调度过于保守。经典MuJoCo worker主要受CPU限制，
 本次通过并行独立回合提速，不迁移到GPU物理引擎或服务器。

@@ -52,6 +52,13 @@
   共最多6GiB worker上限，仍占用同一全局仿真锁。以该run的`DISPATCH_V2.json`为凭据，
   原90回合/参数/条件/seed/worker来源/排序规则不变，不重复已完成回合，不启动服务器计算。
 
+  **2026-10-10过夜15小时baseline接续**：用户授权一次性15小时窗口，
+  `sii-overnight-baseline-20261010.service`先等待上述经典90回合自然完成；随后在全局锁释放、
+  可用内存≥7GiB且没有活动RL服务时，从已保存的RL checkpoint创建独立
+  `outputs/baseline_local_rl_20261009/overnight_15h_20261010/`并接续。协调器不持有仿真锁等待，
+  不覆盖旧`running`收据；RL每路仍1线程/3GiB/禁swap、服务器不计算，15小时是有限安全窗口，
+  不是收敛或成功条件。经典与RL失败均保留，最终比较需独立审计后再做。
+
 - **Spark显示配置保护（用户2026-10-09明确要求）**：保持Xorg自动识别显示器。
   `/etc/X11/xorg.conf`当前不存在，旧强制headless/HDMI配置仅存为
   `/etc/X11/xorg.conf.sii-backup-20261009`，不得为训练、EGL渲染或远程访问恢复它。
