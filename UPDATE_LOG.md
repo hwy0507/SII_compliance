@@ -2,6 +2,10 @@
 
 ## 2026-10-09 21:33 CST — 新15小时本机baseline修正窗口与奖励诊断
 
+- 10月10日11:30 CST：55k接续已完成全部七配置；直接office_task进入110k接续训练，训练身份新增回合出现6/27 Task、2/27 Strict，尚未完成development；阻抗110k接续仍0/24训练回合。预算guard仍active，截止12:21 CST。
+- 固定四格信用分配试验（原奖励/任务安全分开 × n-step 1/25）全部完成，每格12002 updates、0 new physics、无heldout/final reads；`CREDIT_ASSIGNMENT_REPORT.json`只记录学习机制证据，不是闭环baseline。新增n-step和task-safety实现/测试仍需收工发布。
+- 11:46 CST：旧55k诊断快照3091文件/12,856,965,783字节已完成服务器核验发布：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_local_rl_20261009_stage5/evidence/`，manifest SHA `3f5465d4ee035771f03c8ec70f06ab08f80344a741eb1916f7e97676e921298d`。新110k原始训练仍只在本机。
+
 - 21:40补充：首组55k开发8/8完整独立审计，Task/Strict仍0/8（7carry/1load_transfer），调导纳已接续。12个本轮源/注册/审计文件已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_15h_setup_20261009/evidence/`，79752字节，清单SHA `f1c219037bfe41ad8a8483b92a48a239ae6c954521d7b3f4faccf031e0d835ca`。旧诊断剩余五配置12.86GB快照正在传输，新55k原始数据待归档；不冒充全量已共享。
 
 - 按`sii-research-sync`核对main `935f8cb2242dd7a9e6c637644359ef8673e9fcdd`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS，无分支合并。用户再授15小时，登记21:21至次日12:21 CST；全部计算仍仅本机两lane，服务器仅归档，无定时任务。

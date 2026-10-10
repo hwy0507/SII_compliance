@@ -26,6 +26,9 @@ def main():
     a=p.parse_args();cp=a.checkpoint.resolve();out=a.output.resolve()
     assert not out.exists();out.mkdir(parents=True)
     spec=read(cp.parent/'PROTOCOL.json');state=read(cp.parent/'execution.json')
+    task_safety=spec.get('reward_variant','original')=='task_safety'
+    if a.rebuild:
+        assert not task_safety and spec['agent_config']['n_step']==1, 'Reward variants/n-step need a separately registered fresh learner'
     entry=next(r for r in state['checkpoint_rows'] if r['path']==str(cp))
     assert checkpoint_hashes(cp)==entry['hashes']
     segments=[];cursor=cp.parent
@@ -57,6 +60,10 @@ def main():
             filtered=chain['filtered_action'].copy()
         with np.load(run/'rollout_metrics/substep_metrics.npz') as z:
             dt=z['dt'].astype(float);tau=z['qfrc_actuator'].astype(float);error=z['error'].astype(float)
+        if task_safety:
+            with np.load(run/'research_substeps.npz') as z:penetration=z['external_penetration_m'].copy()
+            assert len(penetration)==len(dt) and np.isfinite(penetration).all() and np.min(penetration)>=0
+            safety_peak=0.
         costs=np.sum((np.diff(tau,axis=0)/(dt[1:,None]*rates[None,:]))**2,axis=1)*dt[1:]/55.
         costs=np.r_[0.,costs]
         servo_costs=slew_cost_rows(tau,rates)
@@ -78,7 +85,7 @@ def main():
             np.testing.assert_allclose(dt[offset:end]@(e2/(.12**2+e2)),iv['bounded_error_integral'],rtol=1e-10,atol=1e-12)
             np.testing.assert_allclose(filtered[j],iv['executed_action'],rtol=0,atol=1e-7)
             done=j==len(ivs)-2
-            success=bool(done and row['result']['task_success'] and row['result']['strict_success'])
+            success=bool(done and row['result']['task_success'] and (task_safety or row['result']['strict_success']))
             interval=IntervalMetrics(elapsed_s=iv['elapsed_s'],error_cost=iv['error_integral']/(55*.12**2),
                 bounded_error_cost=iv['bounded_error_integral']/55,peak_torque_ratio=iv['peak_torque_ratio'],
                 peak_torque_nm_per_joint=iv['peak_torque_nm_per_joint'],max_position_error_m=iv['max_position_error_m'],substeps=n)
@@ -92,6 +99,18 @@ def main():
             checkpoint_cost=new_cost if spec.get('torque_slew_time_base')==TIME_BASE else physical_cost
             if offset==0 and not spec.get('torque_slew_initial_sample'):checkpoint_cost+=old_first
             old=reward-weight*checkpoint_cost-old_remaining;new=reward-weight*new_cost-new_remaining
+            if task_safety:
+                measured=float(penetration[offset:end].max())
+                if 'external_penetration_peak_m' in iv:
+                    np.testing.assert_allclose(measured,iv['external_penetration_peak_m'],rtol=0,atol=1e-12)
+                else:
+                    assert spec.get('reward_metadata_rebuilt_from_physical_substeps') is True
+                next_peak=max(safety_peak,measured)
+                old_excess=max(0.,safety_peak/.0002-1.)
+                new_excess=max(0.,next_peak/.0002-1.)
+                safety_cost=20.*(new_excess/(1.+new_excess)-old_excess/(1.+old_excess))
+                if done and rewarder.elapsed_s<55.-1e-7:safety_cost+=20./(1.+new_excess)
+                old-=safety_cost;new-=safety_cost;safety_peak=next_peak
             np.testing.assert_allclose(old,saved['reward'][position+j],rtol=2e-6,atol=2e-7)
             rewards.append(new);old_total+=old;new_total+=new
             logs.append(dict(step=position+j+1,old_reward=old,corrected_reward=new,corrected_slew_cost=new_cost))
@@ -103,6 +122,7 @@ def main():
             artificial_first_cost=old_first,interval_reconstruction_max_abs=max_error))
         position+=row['steps']
     report=dict(status='passed',time_utc=now(),episodes=evidence,steps=position,physics_rerun=False,
+        reward_variant=spec.get('reward_variant','original'),n_step=spec['agent_config']['n_step'],
         correction='Use actual4ms servo update period for executed torque changes, exclude first unobserved predecessor, ceil remaining servo updates for failure bound',
         note='Original physics/actions/failures retained; only reward and explicitly rebuilt learner change. No environment or gate change')
     write(out/'REWARD_AUDIT.json',report)

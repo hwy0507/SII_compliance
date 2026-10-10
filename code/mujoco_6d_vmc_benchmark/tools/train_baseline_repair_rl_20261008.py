@@ -31,6 +31,7 @@ def main():
     p.add_argument('--parameter-source',type=Path,required=True)
     p.add_argument('--controller',choices=('vmc','admittance','impedance'))
     p.add_argument('--reward',choices=('metric','office_task'),required=True)
+    p.add_argument('--reward-variant',choices=('original','task_safety'),default='original')
     p.add_argument('--seed',type=int,required=True)
     p.add_argument('--steps',type=int,default=200000)
     p.add_argument('--stop-at-step',type=int)
@@ -39,6 +40,8 @@ def main():
                    help='Registered exploration configuration; never selected using final outcomes')
     a=p.parse_args();root=a.root.resolve();out=a.output.resolve();parameter=a.parameter_source.resolve()
     protocol=read(root/'PROTOCOL.json');pdigest=sha(root/'PROTOCOL.json')
+    assert a.reward_variant in protocol.get('reward_variants',['original'])
+    if a.reward_variant=='task_safety':assert a.reward=='office_task'
     assert a.seed in protocol['budgets']['training_seeds']
     assert 1375<=a.steps<=protocol['budgets']['rl_steps_per_family_seed']
     limit=a.stop_at_step or a.steps
@@ -67,7 +70,11 @@ def main():
         raise ValueError('Only registered entropy/temperature changes supported')
     agent=OfficialParameterAgent(seed=a.seed,total_steps=a.steps,utd=2,gamma=.9995,
         entropy_coef=hp['entropy_coef'],initial_temperature=hp['initial_temperature'],action_dimension=dimension)
-    replay=Replay(a.steps,dimension,a.seed+53);rng=np.random.default_rng(a.seed+71)
+    if agent.config['n_step']==1:replay=Replay(a.steps,dimension,a.seed+53)
+    else:
+        from multistep_rl_replay_20261009 import MultiStepReplay
+        replay=MultiStepReplay(a.steps,dimension,a.seed+53,n_step=agent.config['n_step'],gamma=agent.config['gamma'])
+    rng=np.random.default_rng(a.seed+71)
     order=np.random.default_rng(a.seed+100).permutation(len(conditions))
     source=Path(__file__).resolve().parents[1]
     source_hashes={str(f):sha(f) for folder in (parameter,REWARDS,source/'tools')
@@ -88,12 +95,16 @@ def main():
         optimizer_diagnostics='Every update returned metrics retained in optimizer.jsonl; includes actor/critic losses, Q and temperature when exposed upstream',
         checkpoints='Every >=10000 interactions at completed episode boundary; all retained; development-only selection before final lock')
     specification['hyperparameter_id'] = a.hyperparameter_id
+    specification['reward_variant'] = a.reward_variant
+    if a.reward_variant=='task_safety':
+        specification['task_safety_definition']='Original Task terminal +20/-20, plus20*increments of excess/(1+excess); excess=max(0,external_peak/.0002-1). Early failure charges unused worst-case safety peak budget. Original Strict evaluation unchanged.'
     write(out/'PROTOCOL.json',specification)
     step=episode=last_checkpoint=0;pending=None;colored=np.zeros(dimension);stop=False;process=None
     state=dict(status='running',started_utc=now(),host=platform.node(),python=sys.executable,
                memory_max=memory,rows=[],checkpoint_rows=[],steps=0,episodes=0)
     if a.resume_checkpoint:
         cp=a.resume_checkpoint.resolve();parent=read(cp.parent/'PROTOCOL.json')
+        assert parent.get('reward_variant','original')==a.reward_variant,'Reward changes require explicit replay rebuild'
         for k in ('protocol_sha256','seed','controller','agent_config','reward','prior_file_sha256'):
             assert parent[k]==specification[k],k
         if a.reward=='metric':
@@ -143,6 +154,9 @@ def main():
                 environment={**os.environ,**ENV,'JAX_PLATFORMS':'cpu','MUJOCO_MENAGERIE_PATH':str(MENAGERIE),
                     'SII_SOURCE_BASE_COMMIT':protocol['source_base_commit']}
                 rewarder=OfficeReward(cfg);total=0.;count=0
+                if a.reward_variant=='task_safety':
+                    from decoupled_task_safety_reward_20261009 import TaskSafetyPenalty
+                    safety_penalty=TaskSafetyPenalty()
                 with (out/(run.name+'.stderr.log')).open('x') as err:
                     process=subprocess.Popen(command,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err,
                                              text=True,bufsize=1,env=environment)
@@ -156,17 +170,25 @@ def main():
                         process.stdin.write(json.dumps(dict(action=action.tolist()))+'\n');process.stdin.flush()
                         event=read_event(process.stdout);done=event['kind']=='terminal';iv=event['interval']
                         next_obs=np.asarray(event['observation'],np.float32);next_phi=iv['potential']
-                        success=bool(done and event['result']['task_success'] and event['result']['strict_success'])
+                        success=bool(done and event['result']['task_success'] and
+                            (a.reward_variant=='task_safety' or event['result']['strict_success']))
                         interval=IntervalMetrics(elapsed_s=iv['elapsed_s'],error_cost=iv['error_integral']/(55*.12**2),
                             bounded_error_cost=iv['bounded_error_integral']/55,peak_torque_ratio=iv['peak_torque_ratio'],
                             peak_torque_nm_per_joint=iv['peak_torque_nm_per_joint'],max_position_error_m=iv['max_position_error_m'],substeps=iv['substeps'])
                         reward,terms=rewarder(interval,iv['executed_action'],current_potential=phi,next_potential=next_phi,
                             terminated=done,success=success,failure=done and not success,
-                            terminal_reason=('original_strict_success' if success else 'original_horizon_or_abort') if done else None)
+                            terminal_reason=(('original_task_success' if a.reward_variant=='task_safety' else 'original_strict_success') if success else 'original_horizon_or_abort') if done else None)
                         physical_smooth=specification['torque_slew_weight']*iv['torque_slew_cost']
                         remaining=remaining_slew_bound(rewarder.elapsed_s) if done and not success and a.reward=='metric' else 0.
                         reward-=physical_smooth+remaining
                         terms.update(physical_slew=-physical_smooth,physical_slew_failure_continuation=-remaining,final_reward=reward)
+                        if a.reward_variant=='task_safety':
+                            penalty,safety_terms=safety_penalty(iv['external_penetration_peak_m'],
+                                terminated=done,elapsed_s=rewarder.elapsed_s)
+                            reward-=penalty
+                            terms.update(**safety_terms,final_reward=reward,
+                                terminal_task_success=bool(done and event['result']['task_success']),
+                                terminal_strict_success=bool(done and event['result']['strict_success']))
                         assert np.isfinite(reward)
                         replay.add(observation=obs,action=action,reward=reward,terminated=float(done),truncated=0.,next_observation=next_obs)
                         pending=dict(reward=reward,terminated=done,truncated=False);obs=next_obs;phi=next_phi

@@ -53,13 +53,17 @@ def identity(pid):
 
 
 def signal_exact(expected, sig):
-    # pidfd prevents PID reuse between identity verification and delivery.
-    fd = os.pidfd_open(expected['pid'])
-    try:
-        assert identity(expected['pid']) == expected, 'Process identity changed'
-        signal.pidfd_send_signal(fd, sig)
-    finally:
-        os.close(fd)
+    # Prefer pidfd when the interpreter exposes it. The research venv's Python
+    # build omits the wrappers, so retain a checked os.kill fallback; the
+    # fallback verifies identity immediately before delivery and is only used
+    # for the guard's own explicitly owned processes.
+    assert identity(expected['pid']) == expected, 'Process identity changed'
+    if hasattr(os, 'pidfd_open') and hasattr(signal, 'pidfd_send_signal'):
+        fd = os.pidfd_open(expected['pid'])
+        try: signal.pidfd_send_signal(fd, sig)
+        finally: os.close(fd)
+    else:
+        os.kill(expected['pid'], sig)
 
 
 def owned_receipts(root, registration_hash):

@@ -1,8 +1,21 @@
 import unittest
 from audit_decoupled_task_safety_reward_20261009 import safety_potential,terminal_task_adjustment
+from decoupled_task_safety_reward_20261009 import TaskSafetyPenalty
 
 
 class RewardTests(unittest.TestCase):
+    def test_early_abort_pays_unused_safety_budget(self):
+        penalty=TaskSafetyPenalty()
+        one,_=penalty(.0003,terminated=False,elapsed_s=1.)
+        two,_=penalty(.00025,terminated=True,elapsed_s=2.)
+        self.assertAlmostEqual(one+two,20.)
+        with self.assertRaises(AssertionError):penalty(0.,terminated=True,elapsed_s=2.)
+
+    def test_full_horizon_does_not_charge_counterfactual_future(self):
+        cost,parts=TaskSafetyPenalty()(.0004,terminated=True,elapsed_s=55.)
+        self.assertEqual(cost,10.)
+        self.assertEqual(parts['safety_failure_continuation'],0.)
+
     def test_unchanged_safety_boundary_and_monotonic_cost(self):
         self.assertEqual(safety_potential(.0002),0.)
         values=[safety_potential(v) for v in [0.,.0001,.0002,.00021,.0004,.002,1.]]

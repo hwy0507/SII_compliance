@@ -20,7 +20,8 @@ def main():
          "        from baseline_repair_reward_clock_20261009 import SERVO_DT,slew_cost_rows\n"
          "        assert CONTROL_DT==SERVO_DT\n"
          "        slew_cost=float(slew_cost_rows(signed_tau,rates,previous_tau).sum())\n"
-         "        return dict(torque_slew_cost=slew_cost,elapsed_s=float(dt.sum()),error_integral=float(dt@e2),"),
+         "        external_peak=float(metrics.research['external_penetration_m'][begin:end].max())\n"
+         "        return dict(external_penetration_peak_m=external_peak,torque_slew_cost=slew_cost,elapsed_s=float(dt.sum()),error_integral=float(dt@e2),"),
         ("            iv=interval();self.intervals.append(iv)",
          "            if not self.observations:self.initial_potential=potential(self.env)\n"
          "            iv=interval();self.intervals.append(iv)"),
