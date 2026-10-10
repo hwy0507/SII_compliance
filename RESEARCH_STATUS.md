@@ -1,5 +1,13 @@
 # 假期研究进度：ESN 与 baseline 公平比较
 
+## 2026-10-10 15:05 CST：完整110k开发零成功，自动续训已停止
+
+direct108458步与阻抗104500步各完成同8个development，Task/Strict均0/8。
+独立审计通过不代表任务通过；本配置/预算失败不能证明所有RL不适合、调参充分或收敛。
+agent停止自动续步时误将SIGUSR1发给子进程，两在途回合中断，单列基础设施事故；
+此前完整验证与checkpoint完好。训练unit均inactive，仅旧归档继续。
+详见[结果与事故记录](code/mujoco_6d_vmc_benchmark/docs/RL_CONVERGENCE_CONTINUATION_20261010.md)。
+
 ## 2026-10-10 13:14 CST：用户重新授权，本机RL连续接续已启动
 
 新服务`sii-convergence-20261010-v2`已运行，首先补齐两个已保存110k模型的同八development，

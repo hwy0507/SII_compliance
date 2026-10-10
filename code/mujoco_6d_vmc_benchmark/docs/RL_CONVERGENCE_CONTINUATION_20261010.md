@@ -1,5 +1,53 @@
 # 仅本机 RL 接续：开发曲线、稳定成功与失败平台分开记录
 
+## 最新状态：2026-10-10 15:05 CST，停止无诊断依据的步数扩展
+
+用户质疑一直追加步数的科研意义。agent据此停止自动续训；并非用户明确下达停机命令。
+本节覆盖下方历史启动计划，未启动新实验。
+
+| 固定 development 验证 | 实际累计交互 | Task | Strict | 终止阶段 |
+|---|---:|---:|---:|---|
+| direct office_task | 108458 | 0/8 | 0/8 | 8 carry |
+| RL impedance | 104500 | 0/8 | 0/8 | 6 retreat、2 carry |
+
+16条均完整55秒、dt=5e-5，独立物理子步/动作/身份审计通过；审计通过不是任务或安全通过。
+两个审计SHA分别为`06f30d5cc1394ed7b510c1925af25f9609931e626ec4547c487f5d27c683b55c`、
+`4440e839e091df675f1619777b593f0674ee59c8e3ae4c7d5b83bc030385a6ba`。
+早期11k/55k开发节点亦零成功，但不能称损失或策略已收敛；未满足旧登记的
+“三个≥110k节点”失败平台规则。本次停止是研究方向判断，不能冒充预登记规则已触发。
+未读取final，不用训练中偶发成功替代开发成功。
+
+证据支持“所评估RL配置在已消耗预算与本协议下未学得开发集可用策略”，不支持
+“RL普遍不能解决任务”。公平baseline不要求训练成功，但需实现核验、有依据的调参预算、
+学习曲线、多seed与统一评估；当前不能宣称调参充分。ESN使用teacher数据，纯RL从交互学习，
+监督来源/数据/搜索成本必须另列，不能将范式差异全部归因于储备池结构。
+后续先利用已有奖励/信用分配与阶段进展诊断判断信息增益，不自动接续165k/220k/500k。
+
+### 停止操作事故：与算法失败分列
+
+14:55:32 CST，agent执行`systemctl --user kill --signal=SIGUSR1`停止两续训unit，
+遗漏`--kill-whom=main`。journal确认信号同时发往trainer与仿真子进程；两trainer均报
+`Worker closed before terminal`、exit 1，未实现预期的回合边界停止。
+15:05实查协调器和两worker均inactive/MainPID=0；旧完整评估/checkpoint完好。
+
+- direct记录到119168步，episode81–88完整；episode89/repair_train_011中断。
+  本段checkpoint_rows为空，不能声称最新梯度已落盘；旧108458 checkpoint保留。
+- impedance记录到115739步，episode76–83完整；episode84/repair_train_010中断。
+  有115500 checkpoint记录，未评估其效果；旧104500 checkpoint保留。
+- 两中断回合不算任务失败、不补造terminal；本节作为旁路事故记录，原execution.json
+  和残留running状态不改写。所有完整新增训练回合保留，不把165k未完成段当完整节点。
+  今后停止需核对主PID身份，仅向trainer发信号并等回合/checkpoint落盘；复用已有
+  budget guard的pidfd身份保护，不再向整个unit广播该信号。
+
+新完整开发/续训大产物当前仅本地；旧13.5GB closed110k包收尾服务仍active、
+收据waiting_for_transfer，不重复上传、不称已发布。
+15:09 CST小型审计/事故包6文件、133192字节已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_development_stop_20261010/evidence/`，
+manifest SHA `a00cc324bcf2736d6711c27f3b701fb3c2fe850564e04534e6189007274cb648`。
+包含两个开发审计、协调器与两训练段收据、本节归档前快照；不包含全部原始轨迹。
+本轮核对远端main `3aa0f4445ef20f24ebde5574f99a6621789fc3d4`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；环境/gate/actor/执行器限制未变。
+
 用户2026-10-10再次明确要求：继续把RL跑到收敛，再看效果，只用本机算力。
 这是旧15小时窗口结束后的新接续授权；不再因旧窗口已收口而只做只读监视。
 

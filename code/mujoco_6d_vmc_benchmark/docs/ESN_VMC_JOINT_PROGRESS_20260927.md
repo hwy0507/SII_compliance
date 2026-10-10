@@ -1,5 +1,11 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+10月10日15:05 CST：direct108458步/阻抗104500步同8条件development均Task/Strict 0/8；
+16完整55秒回合独立审计passed不代表任务passed。agent停止自动续步，遗漏main-only信号
+导致两在途回合中断，单列事故，旧完整评估/checkpoint完好。当前无训练unit，仅旧归档继续。
+不新增仿真，不据零成功断言RL普遍不适合或ESN结构独占优势。
+见[结果与事故记录](RL_CONVERGENCE_CONTINUATION_20261010.md)。
+
 10月10日13:14 CST：用户重新授权只用本机继续RL至可用/收敛。连续服务已启动，
 先补两个110k模型同八development，再接续165k/220k/330k/约500k；七RL配置完整入队。
 两路各3GiB/禁swap/单线程，服务器不计算，旧环境/gate/actor/限制不变。

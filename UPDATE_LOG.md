@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-10 15:05 CST — 完整110k开发零成功，停止盲目续步并记录停止事故
+
+- 15:09 CST已核验6文件/133192字节的小型审计与事故包：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_development_stop_20261010/evidence/`，manifest SHA `a00cc324bcf2736d6711c27f3b701fb3c2fe850564e04534e6189007274cb648`。包含两完整开发审计、协调器/训练段原始收据及报告快照；不冒充所有原始轨迹已归档。JSON与服务journal交叉核验、文档diff检查通过；本轮无算法改动/新训练测试。
+
+- 按sii-research-sync实查/fetch main `3aa0f4445ef20f24ebde5574f99a6621789fc3d4`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及两日志/AGENTS；不合并baseline，不改环境/gate/actor/限制。
+- direct108458步、Task/Strict 0/8、8 carry；阻抗104500步、0/8、6 retreat/2 carry。16条均55秒、dt5e-5、独立审计passed，未读final。不能据此断言所有RL不适合、单seed调参充分或数学收敛。
+- 用户提出方法论质疑后，agent停止自动续训（非用户明确停机指令）。遗漏仅向main发SIGUSR1，误中断两在途仿真，trainer均报Worker closed before terminal。direct119168步无本段checkpoint；阻抗115739步有115500 checkpoint记录。旧108458/104500 checkpoint及完整评估保留；中断不算算法失败、不声称未落盘梯度已保存。
+- 三计算unit均inactive；原大包归档收尾active、waiting_for_transfer。新开发大产物/中断轨迹仅本地，服务器不计算。本轮只核对与记录，更新续训报告、研究面板、联合进度与周报；后续先诊断信息增益，不自动追加预算。
+
 ## 2026-10-10 — 重新授权仅本机RL训练至可用策略，连续接续已启动
 
 - 实查远端main `6e31e394617b92ad067aab798e3037b930a6bfe9`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取两分支日志/AGENTS与`sii-research-sync`。前轮网络/SSH失败来自沙箱限制，本轮宿主机正常连通；新授权覆盖旧15小时收口后的等待状态，不再要求用户重复给小时数。
