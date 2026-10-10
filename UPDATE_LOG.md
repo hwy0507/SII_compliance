@@ -2,6 +2,8 @@
 
 ## 2026-10-10 15:05 CST — 完整110k开发零成功，停止盲目续步并记录停止事故
 
+- 用户澄清直接动作RL的对照目的就是“无teacher示范、从交互探索”的完整学习方案；RL调传统控制器是保留结构先验的独立类别。接受此研究问题，不要求给直接RL补示范；将结果限定于所评估算法/任务/预算，ESN结构效应仍由同teacher的MLP/RNN支撑。澄清写入续训报告，服务器小包为此前快照，最新解释以本提交为准。
+
 - 15:09 CST已核验6文件/133192字节的小型审计与事故包：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_development_stop_20261010/evidence/`，manifest SHA `a00cc324bcf2736d6711c27f3b701fb3c2fe850564e04534e6189007274cb648`。包含两完整开发审计、协调器/训练段原始收据及报告快照；不冒充所有原始轨迹已归档。JSON与服务journal交叉核验、文档diff检查通过；本轮无算法改动/新训练测试。
 
 - 按sii-research-sync实查/fetch main `3aa0f4445ef20f24ebde5574f99a6621789fc3d4`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及两日志/AGENTS；不合并baseline，不改环境/gate/actor/限制。
