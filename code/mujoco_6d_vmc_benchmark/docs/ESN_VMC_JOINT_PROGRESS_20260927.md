@@ -1,5 +1,10 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+10月10日15:23 CST：用户授权本机继续寻找可发表RL证据，新四格（奖励×信用分配）
+连续服务已启动，先行简单奖励学习检查。每格从零同seed、11k/55k节点各八development，
+最多220k训练/64评估，单模拟器3GiB禁swap；不沿用旧无限续步。12项回归通过。
+这是机制诊断，多算法/多seed/充分调参/最终比较尚未完成，见[证据研究协议](RL_EVIDENCE_STUDY_20261010.md)。
+
 10月10日15:05 CST：direct108458步/阻抗104500步同8条件development均Task/Strict 0/8；
 16完整55秒回合独立审计passed不代表任务passed。agent停止自动续步，遗漏main-only信号
 导致两在途回合中断，单列事故，旧完整评估/checkpoint完好。当前无训练unit，仅旧归档继续。

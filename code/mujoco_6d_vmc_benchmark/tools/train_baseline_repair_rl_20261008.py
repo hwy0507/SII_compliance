@@ -42,6 +42,7 @@ def main():
                    help='Registered exploration configuration; never selected using final outcomes')
     a=p.parse_args();root=a.root.resolve();out=a.output.resolve();parameter=a.parameter_source.resolve()
     protocol=read(root/'PROTOCOL.json');pdigest=sha(root/'PROTOCOL.json')
+    stop_file = Path(protocol['cooperative_stop_file']) if protocol.get('cooperative_stop_file') else None
     assert a.reward_variant in protocol.get('reward_variants',['original'])
     if a.reward_variant=='task_safety':assert a.reward=='office_task'
     assert a.seed in protocol['budgets']['training_seeds']
@@ -161,6 +162,18 @@ def main():
     try:
         with (out/'training.jsonl').open('x') as log,(out/'optimizer.jsonl').open('x') as optlog:
             while step+1375<=limit and datetime.now(timezone.utc)<deadline and not stop:
+                # A marker requests episode-boundary shutdown without sending
+                # a signal to the simulator child or killing its terminal data.
+                if stop_file and stop_file.exists():
+                    stop=True
+                    state['resource_stop_reason']='cooperative_stop_file'
+                    break
+                if protocol.get('min_free_disk_bytes'):
+                    import shutil
+                    if shutil.disk_usage(out).free < protocol['min_free_disk_bytes']:
+                        stop=True
+                        state['resource_stop_reason']='disk_reserve'
+                        break
                 if continuation:
                     import shutil
                     if shutil.disk_usage(out).free < continuation['min_free_disk_bytes']:
