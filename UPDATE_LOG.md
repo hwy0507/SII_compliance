@@ -8,6 +8,8 @@
 - 单lane3GiB/禁swap/数值线程1，协调器1GiB，启动可用内存≥7GiB；同全局计算锁、防旧活跃unit重复派发。新登记72h有限安全边界至10月13日13:13:46 CST，属于agent运行保护而非用户时间上限或收敛定义。连续失败平台触发机制复查，稳定成功需独立seed确认，500k不能自动称收敛。
 - 注册SHA `56542a1a43c30d6a1cbc7e1fda6d003e45740eda94536c4f53397aee91a433bc`；五个新回归、七个原接续回归、语法/diff通过。新增`RL_CONVERGENCE_CONTINUATION_20261010.md`并更新研究面板、联合进度、周报。当前两110k开发运行中，新的训练步与开发结果尚未完成；新产物暂本地，服务器归档核验另记。
 - 13:17 CST续训源码/登记/测试589文件、5192187字节已逐文件核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_convergence_v2_setup_20261010/evidence/`，manifest SHA `15d66fbf101fd50303e79c3eae4aef181778d541c2e1f0e96c4667a0be868486`；不冒充运行中轨迹已完整共享。两worker各约1.8GiB，均保持3GiB/禁swap。
+- 13:28 CST：两方法前2个development均完整55秒、Task/Strict 0/2、worker动作重放误差0；其余继续，暂无完整8条件结果。新审计入口已通过旧55k阻抗8条真实轨迹复算（0新物理）；SHA `a07f3653c93901bc4666195beb4fd8ef0f90e9840f067e761e0c2e7c9eff955b`。
+- 旧两110k训练段3096文件/13504141567字节正限速上传至服务器`incoming/rl_closed110k_20261010/`，manifest SHA `f91bab36baf92a82eff7f0d08532a204d740386172a1ecca4306568286021588`，尚未核验发布。新增一次性归档收尾工具/本机服务，等当前rsync结束后再全量hash核验；无定时任务/服务器训练。源码与启动记录已push `76d89d7`，此前未推送的`f24729a`一并补发。
 
 ## 2026-10-10 12:53 CST — 110k RL 收口状态监看与只读审计
 

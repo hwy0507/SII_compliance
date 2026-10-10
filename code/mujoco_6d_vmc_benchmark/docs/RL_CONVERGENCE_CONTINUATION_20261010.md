@@ -68,3 +68,15 @@ actor/critic/target/temperature/normalizer/optimizer/replay/RNG。
 本轮已实查远端main `6e31e394617b92ad067aab798e3037b930a6bfe9`、baseline
 `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读取两个UPDATE_LOG，不合并baseline。
 此前GitHub/SSH失败来自沙箱网络限制；本轮宿主机访问均正常，并非已证实的远端故障。
+
+13:28 CST补充：两方法各完成前2条开发回合，均为完整55秒、Task/Strict 0/2、
+worker动作重放误差0；其余6条正在依次运行。部分开发结果不能替代完整8条件结论。
+历史55k阻抗的8条真实开发轨迹已通过新审计入口复算，审计SHA
+`a07f3653c93901bc4666195beb4fd8ef0f90e9840f067e761e0c2e7c9eff955b`，新增物理步0。
+
+此前两110k完整训练段另作大型归档：3096文件、13504141567字节，manifest SHA
+`f91bab36baf92a82eff7f0d08532a204d740386172a1ecca4306568286021588`。
+目前仍传输至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/incoming/rl_closed110k_20261010/`，
+**未核验发布**；新一次性本机服务`sii-rl-archive-finish-20261010`等待当前rsync的精确进程身份消失，
+再进行远端全文件校验，成功后才发布为独立run。结果以本地新运行根的
+`CLOSED110K_ARCHIVE_TRANSFER.json`为准；失败保留暂存与原始文件，不重启或打断训练。
