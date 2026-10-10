@@ -125,6 +125,17 @@ class Monitor:
         active = state.get('active')
         if active:
             require(planned.get(active['name']) == active, 'Unregistered active job')
+        active_jobs = state.get('active_jobs', [active] if active else [])
+        require(len({j['name'] for j in active_jobs})==len(active_jobs), 'Duplicate active job')
+        require(not set(names) & {j['name'] for j in active_jobs}, 'Completed job dispatched again')
+        for job in active_jobs:
+            require(planned.get(job['name'])==job, 'Unregistered parallel job')
+        lanes=state.get('parallel_lanes',1)
+        require(lanes in (1,2) and len(active_jobs)<=lanes, 'Excess concurrent lanes')
+        if lanes==2:
+            amendment=read(root/'DISPATCH_V2.json')
+            require(sha(root/'DISPATCH_V2.json')==state['dispatch_amendment_sha256'], 'Resource amendment changed')
+            require(amendment['registration_sha256']==self.registration_hash and amendment['simulators']==2, 'Wrong parallel registration')
         durations = [(datetime.fromisoformat(r['ended_utc'])-datetime.fromisoformat(r['started_utc'])).total_seconds() for r in rows]
         summaries = []
         for c in reg['candidates']:
@@ -137,10 +148,10 @@ class Monitor:
         return dict(status='verified_complete' if state['status']=='complete' else 'verified_partial',
             updated_utc=now(), campaign_status=state['status'], campaign_error=state.get('error'),
             execution_sha256=hashlib.sha256(state_bytes).hexdigest(), registration_sha256=self.registration_hash,
-            completed=len(rows), budget=reg['max_episodes'], active=active,
+            completed=len(rows), budget=reg['max_episodes'], active=active,active_jobs=active_jobs,parallel_lanes=lanes,
             completed_by_method=dict(Counter(r['method'] for r in results)),
             median_episode_wall_seconds=median,
-            approximate_remaining_hours=None if median is None else median*(reg['max_episodes']-len(rows))/3600,
+            approximate_remaining_hours=None if median is None else median*(reg['max_episodes']-len(rows))/3600/lanes,
             candidates=summaries, rows=results, additional_physics_steps=0, final_test_reads=0,
             interpretation='Development parameter trials, not final selected-policy success rates. Task failures remain valid audited outcomes. Zero evaluated means pending, not zero success. ETA uses completed wall times and can change.')
 

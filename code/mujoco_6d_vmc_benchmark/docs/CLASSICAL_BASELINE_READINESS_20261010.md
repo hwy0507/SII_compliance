@@ -1,6 +1,10 @@
 # 经典 baseline：基础验收、停滞归因与补强
 
 用户2026-10-10要求优先把VMC、导纳、阻抗做扎实。新计算仅在airpig本机；Spark只归档。
+
+最新调度：18:00 CST在第12条完整回合及审计结束后，原串行协调器/监视器自然退出，
+同一run交接至本机两路；详见文末“本机两路交接”。原12条结果完整保留，不新增候选预算。
+
 用户再次澄清：验收要求是实现正确、公平且有依据的调参，不要求baseline必须解卡。
 正常运行后的卡住是有效失败结果，不为强行过关添加恢复机制或无限追加预算。
 开工已查询/fetch main `c705c652181dc255b5ac03a5942718f9c8070677` 与 baseline
@@ -176,3 +180,46 @@ Task/Strict均失败、完整55秒；这不是选定VMC跨条件0/3的成功率�
 5文件/151713字节，manifest SHA `936c58e6febbc85024a1024409a54eca0006311b7238a432554d8090f2c2e57d`。
 其中`START_SNAPSHOT.json`仅为启动时快照，不是服务器实时监视结果；实时结果仍在airpig本地，
 未声称新90回合完整原始轨迹已归档。服务器本轮只读与传输/核验，没有启动计算任务。
+
+## 本机两路交接（2026-10-10 18:00 CST）
+
+18:07实测首批两回合均完成55秒且shield/动态重放通过，耗时362.176/361.000秒。
+约6分钟完成2条，相比此前约6分钟1条吞吐改善；不同参数并非配对测速，不能断言精确加速比。
+累计14/90（VMC9、导纳5），全14条条件/seed/模型/配置/轨迹/审计证据再核验通过，
+下两条boundary_05/06自动派发，预计余下约3.8小时。新增两条仍Task/Strict失败并保留，
+没有把吞吐改善说成算法成功。新核验快照仅本地`outputs/classical_parallel_first_pair_verified_20261010/`，
+下面服务器设置包是原12条启动时点，不含后续新轨迹。
+
+用户指出算力利用不足。实查24个逻辑核，但原worker只占满1核，约0.7–0.9GiB；
+可用内存约7GiB、内存PSI近零，串行调度过于保守。经典MuJoCo worker主要受CPU限制，
+本次通过并行独立回合提速，不迁移到GPU物理引擎或服务器。
+
+17:55左右登记STOP_REQUESTED，原admittance_boundary_02完整55秒及独立审计后自然退出；
+没有发终止信号。旧execution、CHAIN_EXECUTION和停止请求保留在run的`serial_handoff_v1/`。
+12条完成结果（VMC9、导纳3）与旧收据逐项相同。原REGISTRATION SHA仍为
+`44e1094a88d86130aa7ec2d22dea99acd63d6fab1ad3e6ec6a584f6ccfe7035e`。
+
+18:00:58启动`sii-classical-parallel-20261010-v2.service`，新协调器
+`tools/parallel_classical_search_20261010.py`只派发原冻结worker，持有原全局仿真锁。
+每路单线程/3GiB/禁swap，分别绑定独立CPU1/6；worker合计最多6GiB。无在途时需至少7GiB
+可用内存才能派发，已有一路时需至少4GiB才启动第二路，无第三路。初始实测8220925952字节可用。
+保持原54筛选+36确认，选模必须等全部54条筛选结束。所有失败保留，基础设施/审计异常后
+停止新派发并等另一路结束；不将先完成的候选提前选中，不重新跑旧结果。
+
+资源补充登记`DISPATCH_V2.json` SHA
+`9e3a17005cdb3329910fd7a3e8e11302ff280c7fc7442418bd5cce89cffc1726`。
+控制器/worker来源、参数、seed、环境模型、gate、actor、执行限制与登记排序均不变。
+根`CHAIN_EXECUTION.json`是旧串行收口记录，当前状态以根`execution.json`和上述v2服务为准。
+新监视器`sii-classical-monitor-20261010-v2.service`使用
+`outputs/classical_boundary_monitor_20261010_v2/`，支持两路active_jobs并验证资源补充登记；
+v1监视器的CLOSE是安全交接记录，不代表90条全部完成。
+
+18:02观察到两个worker分别在CPU1/6上约100% CPU、各约0.66GiB RSS，可用内存6.4GiB，
+内存PSI为0；两路实际派发admittance_boundary_03/04。预计余下约4小时，尚非实测最终加速比。
+7项完整性/内存准入/防重复回归通过，12条交接结果重核验通过，0新增检查物理步。
+
+18:03已核验源码、资源登记、串行交接和启动快照至：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/classical_parallel_setup_20261010/evidence/`。
+11文件/318902字节，manifest `d47aed02df06a3a83795c7020d74124042f6e9f5cdf0190bd3b1ea3302b0051c`。
+源码入口`source/parallel_classical_search_20261010.py`；复现worker仍用原run冻结来源。
+小包START_SNAPSHOT是12条完成/2条在途时的快照，实时进度仍在本机。服务器未启动实验。

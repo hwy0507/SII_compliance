@@ -46,6 +46,11 @@
   本轮`baseline_local_rl_20261009/campaign_v2`在完整单回合预检后登记本机两路并行，
   每路最多一个模拟器/3GiB/禁swap，数值线程1，合计最多6GiB；启动可用内存至少7GiB。
   以其`LOCAL_RESOURCE_AMENDMENT.json`为准，不外推并发，也不与原单路调度器重复启动。
+  **2026-10-10经典搜索资源调整**：用户指出本机利用不足后，
+  `classical_boundary_search_20261010_v1`允许在原回合及审计结束的安全边界交接至本机2路。
+  每路单线程/3GiB/禁swap、分别绑定CPU1/6，首次派发可用内存≥7GiB、已有1路时≥4GiB；
+  共最多6GiB worker上限，仍占用同一全局仿真锁。以该run的`DISPATCH_V2.json`为凭据，
+  原90回合/参数/条件/seed/worker来源/排序规则不变，不重复已完成回合，不启动服务器计算。
 
 - **Spark显示配置保护（用户2026-10-09明确要求）**：保持Xorg自动识别显示器。
   `/etc/X11/xorg.conf`当前不存在，旧强制headless/HDMI配置仅存为
