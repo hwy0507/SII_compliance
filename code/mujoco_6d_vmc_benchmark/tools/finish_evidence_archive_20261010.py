@@ -20,6 +20,24 @@ def destination(name):
     return '/home/arm1/sii_shared/SII_compliance/incoming/'+name
 
 
+def transfer_source(argument, process_cwd):
+    """Resolve an rsync argument in the sender's cwd, not this service's cwd."""
+    path=Path(argument)
+    return (path if path.is_absolute() else Path(process_cwd)/path).resolve()
+
+
+def source_matches(argument, process_cwd, archive):
+    expected=Path(archive).resolve()
+    if transfer_source(argument,process_cwd)==expected:return True
+    # rsync chdir()s into a directory source while retaining the original
+    # relative argument in /proc/cmdline. Require both exact cwd and basename;
+    # destination/process identity and the complete archive hashes are checked
+    # separately, so this is not permission to trust arbitrary sender paths.
+    supplied=Path(argument)
+    return (not supplied.is_absolute() and supplied.name==expected.name
+            and Path(process_cwd).resolve()==expected)
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--pid',type=int,required=True)
@@ -30,13 +48,16 @@ def main():
     assert not a.receipt.exists()
     remote=destination(a.run_name)
     process=identity(a.pid)
+    process_cwd=None
     if process is not None:
         assert Path(process['argv'][0]).name=='rsync'
         assert process['argv'][-1]=='arm1@192.168.31.70:'+remote+'/'
-        assert Path(process['argv'][-2]).resolve()==a.archive.resolve()
+        process_cwd=str(Path('/proc')/str(a.pid)/'cwd')
+        process_cwd=str(Path(process_cwd).resolve(strict=True))
+        assert source_matches(process['argv'][-2],process_cwd,a.archive)
     expected=sha(a.archive/'archive_manifest.json')
     state=dict(status='waiting_for_transfer',started_utc=now(),pid=a.pid,process_identity=process,
-        source_sha256=sha(__file__),local_archive=str(a.archive.resolve()),
+        source_sha256=sha(__file__),local_archive=str(a.archive.resolve()),transfer_working_directory=process_cwd,
         manifest_sha256=expected,server_compute=False,server_use='storage verification only')
     write(a.receipt,state)
     try:

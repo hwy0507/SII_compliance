@@ -24,7 +24,7 @@
 主动驱动关闭。球与桌面/地面的两个显式接触pair保留，不涉及机器人/负载。全部55秒。
 
 这是单独保存二进制/hash的诊断环境，**不替换冻结综合场景，不计入最终比较成功率**。
-五项完整性/选模测试确认：frozen/events_off模型字节不变；clear/edge_only/active_only只修改
+七项完整性/选模/归档回归确认：frozen/events_off模型字节不变；clear/edge_only/active_only只修改
 登记mask且恢复后整个二进制相同；机器人、物块与放置支撑未改。
 
 入口 `tools/classical_acceptance_20261010.py` 使用独立源码快照、与RL共用本地仿真锁、
@@ -40,12 +40,20 @@
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/classical_local_setup_20261010/evidence/`。
 其中`tools/`为本轮入口，`registration/`为三个不可变登记，`clear_audits/`为基础验收与控制器审计。
 26文件/454548字节，manifest SHA `64d881b45f24b2b3023524ecc67f07a18822c0a303ddbacd106f8b1def695930`。
+16:52 CST已核验完整10条诊断的小型结果/控制器审计/最新归档修复源码：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/classical_diagnostics_close_20261010/evidence/`，
+16文件/136639字节，manifest SHA `e6f1fa8fc85c222b51d7850fe5066b3e5cf05d7ea62900fa99d4981c2e20823e`。
+其中`classical_diagnostics_verified_20261010.json`是10条核验后的诊断矩阵；不包含10条全部原始子步轨迹。
 复现仍需历史`baseline_repair_15h_20261008/source_v9/`、`parameter_v2/`及各execution中
 登记的冻结MJB/Menagerie/本机MuJoCo3.11.0运行时；小包不包含这些大型依赖。
 完整基础诊断/源码/失败包1445文件/749877105字节正在传输，清单SHA
 `1e9f6ad501ddf8b915c79f73630efc6bae3016f52fde5c82aba5e55492e345d7`；
-目标incoming/classical_readiness_20261010尚未核验发布。一次性收尾服务等待原rsync后
+目标`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/incoming/classical_readiness_20261010/`
+尚未核验发布。一次性收尾服务等待原rsync后
 逐文件核验，不重启传输；本地收据`outputs/classical_readiness_archive_transfer_20261010.json`。
+收尾v1/v2在验证相对源路径时退出，原rsync与仿真均未中断：systemd默认cwd不同，且rsync
+运行中会chdir进入源目录。现修正为核验发送进程cwd、原参数与预期归档目录，保留精确进程
+身份/目的地址/逐文件hash检查；路径回归通过，16:33 v3实际waiting_for_transfer。
 
 **四条clear诊断已全部完成，Task/Strict均通过。**每条均55秒、110万物理子步。
 
@@ -67,7 +75,33 @@ VMC完整1375步虚拟状态/动作/参数/能量独立重放误差0；导纳最
 阻抗放置XY误差20.713mm。VMC球/手/棍均有实际机器人接触，并非仅打开驱动而完全错过。
 Task/Strict通过不等于峰接触力低：例如此VMC回合球接触峰约6400N，属于当前仿真接触模型，
 不能据它证明硬件安全或所有柔顺指标良好。VMC/导纳独立状态/动作重放通过，阻抗独立
-shield/伺服审计通过；三条edge_only归因正在进行。
+shield/伺服审计通过；三条edge_only归因随后均已完成。
+
+接触覆盖另计，不能把“主动驱动已开启”当作全部实际接触：
+
+|active_only控制器|球接触 s|人手接触 s|棍接触 s|
+|---|---:|---:|---:|
+|VMC|0.00195|4.24200|5.72020|
+|导纳|0.00395|4.52215|0.36725|
+|阻抗|0.00260|4.56890|0|
+
+阻抗此回合没有碰棍，**不能据其Task/Strict通过声称棍推恢复验收通过**。VMC/导纳接触
+时长也不匹配，三者不能仅按接触冲量排名。冻结综合场景仍使用同一时序；不为补接触而改正式gate。
+edge_only三类均完整55秒失败、停carry，VMC/导纳/阻抗放置XY误差分别
+79.198/44.146/85.735mm，桌沿穿透0.070541/0.082683/0.091266mm，均非超安全阈值早停。
+这与clear/active_only成功形成支持桌沿阻塞机理的对照。
+
+|固定所选控制器|clear基础放置|active_only放置|edge_only放置|
+|---|---|---|---|
+|VMC|Task/Strict通过|Task/Strict通过，球手棍实际接触|失败，carry|
+|导纳|Task/Strict通过|Task/Strict通过，球手棍实际接触|失败，carry|
+|阻抗|Task/Strict通过|Task/Strict通过，但未接触棍|失败，carry|
+
+`report_classical_diagnostics_20261010.py`对10条完整诊断重新核验登记、模型/轨迹hash、
+1375×48观察/1375×7动作、每条55秒、实际路线精确一致、各诊断组内模型完全相同；通过。
+输出 `outputs/classical_diagnostics_verified_20261010.json`，零新增物理步、零final读取。
+只证明这一个开发锚点上的诊断差异，不能外推为跨条件成功率。未以这些修改后的诊断环境
+替换最终综合环境，也未将Task/Strict成功当作所有接触指标都优秀。
 
 ## 旧开发失败的具体证据
 
@@ -84,7 +118,7 @@ admittance_17、impedance_00；完整55秒末尾10个1Hz几何重建快照中，
 ## 后续验收顺序
 
 1. 已完成四类clear正控制及独立重放。
-2. 正在执行六条接触归因：三经典各跑active_only（原主动球/手/棍，关闭非支撑静态障碍）
+2. 已完成六条接触归因：三经典各跑active_only（原主动球/手/棍，关闭非支撑静态障碍）
    和edge_only（仅保留未知桌沿，关闭主动驱动）。规划路线和门槛仍同原场景。
    登记SHA `39b2a64bddf915285f67d10fbe11522363502274ed926f460453115f9b31a079`，
    本地 `outputs/classical_contact_attribution_20261010_v2/`。未启动的v1因补充物理早停计数和
@@ -98,6 +132,11 @@ admittance_17、impedance_00；完整55秒末尾10个1Hz几何重建快照中，
    16:14 CST一次性连续服务`sii-classical-strengthen-20261010-v1`启动，先接触归因再搜索；
    每回合保存原始轨迹/源/config/hash并独立重放。不是定时任务；完成有限预算后停止审阅，
    不自动解封final或无限追加。物理早停作为失败计入；基础设施/审计异常保留并停机排查。
+   归因队列已complete；CHAIN_EXECUTION已进入frozen_world_parameter_search，首条
+   vmc_boundary_00在完整原综合环境运行。最终统一表仍需以后全部方法同一冻结设置重评，
+   不把本机新开发成绩直接拼接成与旧Spark最终成绩同批次的比较。
+   首条原中心VMC已完整55秒复现carry失败，独立审计通过；boundary_01已实际运行，
+   并非只写了协议而未启动。仍需完成全部筛选及每类前二的八条件确认。
 4. 再依据因果结果决定必要控制设计；不同控制律另列，保留传统原法与
    enhanced teacher这一更强model-based参考。不能把添加恢复机制后的算法冒称原始线性导纳/阻抗。
 5. 锁定配置后在冻结综合场景统一评估；所有失败保留，未解封新最终条件。

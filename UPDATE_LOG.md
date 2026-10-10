@@ -2,10 +2,17 @@
 
 ## 2026-10-10 — 优先补强经典baseline：四组基础搬运验收通过，有限接触归因与调参连续执行
 
+- 六条接触归因已完整完成并独立审计：active_only三类Task/Strict通过（阻抗未碰棍）；edge_only三类均完整55秒失败/carry，VMC/导纳/阻抗目标XY误差79.198/44.146/85.735mm，桌沿穿透均<0.1mm，非安全早停。10条诊断的路线、组内模型、登记与轨迹hash重新核验通过，零新分析物理步/零final访问。连续服务已进入原冻结综合环境的54筛选+36确认搜索；尚无扩展搜索结论。
+
+- 接触覆盖核查：active_only阻抗没有实际碰棍，不能算棍推恢复通过；VMC/导纳棍接触为5.720/0.367s，不能忽略覆盖直接按冲量判优。
+- 修复归档收尾的cwd依赖：systemd默认cwd与rsync原工作目录不同，rsync又会进入源目录；前两收尾检查在传输前置核验退出，原传输/仿真未受影响。使用精确发送进程cwd/源参数匹配，保持目的路径、pid身份和全文件hash核验；7项回归通过，v3已实际waiting_for_transfer。GitHub当前helper比已封存小包版本更新，未覆盖封存包。
+
+- 16:52 CST已核验10诊断结果/独立控制器审计/最新helper源码小包：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/classical_diagnostics_close_20261010/evidence/`，16文件/136639字节，manifest `e6f1fa8fc85c222b51d7850fe5066b3e5cf05d7ea62900fa99d4981c2e20823e`。大轨迹包仍在原传输中；没有宣称全部原始数据已共享。首个原综合场景VMC中心复现已完成/审计通过，boundary_01参数候选已实际执行，搜索仍未完成。
+
 - 按`sii-research-sync`查询/fetch并读main `c705c652181dc255b5ac03a5942718f9c8070677`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS。用户改为优先VMC/导纳/阻抗；RL在完整第4回合/5500交互处安全保存暂停，75个checkpoint文件hash核验，不向进程组发信号。
 - 修正验收缺口：此前关推力仍保留静态障碍。新增独立clear诊断，在原模型规划后仅屏蔽登记非支撑障碍，原路线/姿态/目标/负载/支撑/任务与安全限制不变；原综合基准未修改。名义、VMC、导纳、阻抗均完整55秒并Task/Strict通过，放置XY误差6.826/9.875/12.342/20.695mm。不得把诊断成功并入最终比较。
 - VMC/导纳1375步动态状态/动作重放最大误差0/6.95e-15；三参数shield重放通过，13750条阻抗伺服限制通过。五项场景隔离/预算/选模回归及原控制器单位/投影/执行约束测试通过。未发现新的已证实控制律错误，不以纯重命名伪装修复。
-- 旧development_000同所选参数/同路线诊断显示物块与未知桌沿接触停滞（末尾10快照VMC10/导纳8/阻抗10），原始trace hash核验。新增六条active_only/edge_only因果诊断；16:28三类active_only均Task/Strict通过，独立重放/伺服审计通过，三条edge_only运行中。
+- 旧development_000同所选参数/同路线诊断显示物块与未知桌沿接触停滞（末尾10快照VMC10/导纳8/阻抗10），原始trace hash核验。新增六条active_only/edge_only因果诊断现已全部完成，结果见本节顶部。
 - 一次性本机服务`sii-classical-strengthen-20261010-v1`16:14启动：接触归因后，在原冻结综合环境每类中心+8参数边界候选×同2开发筛选，top2补其余6条件，共最多90回合；参数合法范围/actor/gate/执行限制不变，单模拟器/1线程/3GiB/禁swap，服务器不计算。登记SHA `44e1094a88d86130aa7ec2d22dea99acd63d6fab1ad3e6ec6a584f6ccfe7035e`。物理失败保留计数，审计/基础设施异常停止排查；不自动解封final、不宣称充分调参或ESN优越已成立。
 - 已核验共享小包：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/classical_local_setup_20261010/evidence/`，26文件/454548字节，manifest `64d881b45f24b2b3023524ecc67f07a18822c0a303ddbacd106f8b1def695930`。`tools/`为新源码入口，`registration/`为登记，`clear_audits/`为已完成审计。749877105字节完整基础轨迹包正传入独立incoming，尚未核验；收尾服务负责原传输的逐文件核验，未启动服务器实验。
 - 新增`CLASSICAL_BASELINE_READINESS_20261010.md`与执行/诊断/测试工具，更新联合进度和周报；扩展调参、完整恢复与最终公平重评尚未完成。仿真前npair过严断言的v1失败保留；未派发的归因v1另记superseded，不计作算法失败。

@@ -5,6 +5,7 @@ import mujoco
 import numpy as np
 from classical_acceptance_20261010 import disable_obstacles, DISABLED_NAMES, rank_candidates, read
 from strengthen_classical_local_20261010 import candidates
+from finish_evidence_archive_20261010 import transfer_source, source_matches, destination
 
 
 MODEL = Path(__file__).resolve().parents[1]/'outputs/baseline_local_rl_20261009/runtime/v6/construction/rollout.mjb'
@@ -80,6 +81,22 @@ class SearchTest(unittest.TestCase):
         with self.assertRaises(AssertionError):rank_candidates(reg,rows[:-1])
         rows[0]['status']='failed_preserved'
         with self.assertRaises(AssertionError):rank_candidates(reg,rows)
+
+
+class ArchiveTest(unittest.TestCase):
+    def test_sender_cwd_is_used(self):
+        self.assertEqual(transfer_source('outputs/run/', '/tmp/producer'), Path('/tmp/producer/outputs/run'))
+        self.assertEqual(transfer_source('/tmp/actual/run', '/tmp/other'), Path('/tmp/actual/run'))
+        self.assertTrue(source_matches('outputs/run/', '/tmp/producer', '/tmp/producer/outputs/run'))
+        self.assertTrue(source_matches('outputs/run/', '/tmp/producer/outputs/run', '/tmp/producer/outputs/run'))
+        self.assertFalse(source_matches('outputs/other/', '/tmp/producer/outputs/run', '/tmp/producer/outputs/run'))
+        self.assertFalse(source_matches('/tmp/wrong/run', '/tmp/producer/outputs/run', '/tmp/producer/outputs/run'))
+
+    def test_archive_names_are_not_paths(self):
+        for name in ('rl_evidence_phase1_setup_20261010','classical_readiness_20261010'):
+            self.assertTrue(destination(name).endswith('/'+name))
+        for name in ('../classical_run','classical_a/../b','classical_a;whoami','/classical_a','classical_a b','classical_'):
+            with self.assertRaises(ValueError):destination(name)
 
 
 if __name__ == '__main__':
