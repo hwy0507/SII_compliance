@@ -88,6 +88,7 @@ def prepare(root, out):
         dispatch_deadline_utc=(start+timedelta(hours=72)).isoformat(),
         deadline_basis='Agent-chosen finite 72h safety horizon under renewed open-ended user authority, NOT an inherited or user-specified 15h limit; review and renew if unfinished',
         min_free_disk_bytes=40*1024**3,
+        cooperative_stop_file=str(out/'STOP_REQUESTED'),
         resources=dict(server_compute=False, simulators=2, numerical_threads=1,
             memory_max_per_lane=3*1024**3, memory_swap_max=0, admission_available_kib=7*1024**2),
         schedule='Evaluate the two saved 110k nodes first, immediately resume both to165k; remaining five resume55k to165k as lanes free; all seven then share165k/220k/330k/499125 development checkpoints',
@@ -139,6 +140,23 @@ def audit_segment(root, segment, output):
     print('audited',segment.name,result['task'],result['strict'])
 
 
+def reuse_development(root, out, reg, name):
+    """Re-audit exact prior trajectories; never infer success from a cached flag."""
+    cached = reg['reuse_development'][name]
+    segment = Path(cached['segment'])
+    parent = reg['parents'][name]
+    assert segment.resolve() == Path(parent['segment']).resolve()
+    assert sha(cached['audit']) == cached['audit_sha256']
+    prior = read(cached['audit'])
+    assert prior['status'] == 'passed' and prior['completed'] == 8
+    assert prior['checkpoint'] == parent['checkpoint']
+    output = out / (name + '.reused_development_audit.json')
+    audit_segment(root, segment, output)
+    fresh = read(output)
+    assert fresh['rows'] == prior['rows'] and fresh['checkpoint'] == prior['checkpoint']
+    return output, fresh
+
+
 def run(root, out):
     reg = read(out/'REGISTRATION.json'); protocol = read(root/'PROTOCOL.json')
     assert platform.node() == reg['host'] == 'airpig'
@@ -167,6 +185,7 @@ def run(root, out):
         state['updated_utc']=now();write(out/'execution.json',state)
     def check_dispatch():
         assert not stop.is_set(), 'Another lane failed; preserve and review'
+        assert not Path(reg.get('cooperative_stop_file', out/'STOP_REQUESTED')).exists(), 'Cooperative stop requested'
         assert datetime.now(timezone.utc)<deadline, 'Finite safety horizon reached; not convergence'
         assert shutil.disk_usage(out).free>=reg['min_free_disk_bytes'], 'Disk reserve; archive without deleting failures'
     def managed(target, argv, training=False):
@@ -181,7 +200,7 @@ def run(root, out):
         record=dict(status='running',started_utc=now(),command=argv,managed_command=command,
             host='airpig',lane=lane_id.number,unit=unit,registration_sha256=state['registration_sha256'])
         write(receipt,record)
-        with mutex:state['active'][str(lane_id.number)]=dict(target=str(target),unit=unit);save()
+        with mutex:state['active'][str(lane_id.number)]=dict(target=str(target),unit=unit,training=training,started_utc=record['started_utc']);save()
         with Path(str(target)+'.log').open('x') as log:
             result=subprocess.run(command,stdout=log,stderr=subprocess.STDOUT,pass_fds=(lock.fileno(),))
         artifacts=[target/'execution.json',target/'AUDIT.json'] if not target.is_file() else [target]
@@ -258,16 +277,21 @@ def run(root, out):
                                         str(source/'tools/audit_repair_parameter_trace_20261008.py'),'--run',str(target),
                                         '--parameter-source',str(root/'parameter_fullrange'),
                                         '--output',str(target/'INDEPENDENT_PARAMETER_AUDIT.json')])
-                        report=evaluate(job,segment)
+                        if limit == 110000 and name in reg.get('reuse_development', {}):
+                            audit_path, report = reuse_development(root, out, reg, name)
+                        else:
+                            report=evaluate(job,segment)
+                            audit_path=Path(str(segment)+'.development_audit.json')
                         row=dict(steps=report['steps'],scheduled_limit=limit,completed=8,task=report['task'],strict=report['strict'],
-                            audit=str(Path(str(segment)+'.development_audit.json')),
-                            audit_sha256=sha(Path(str(segment)+'.development_audit.json')))
+                            audit=str(audit_path),audit_sha256=sha(audit_path))
                         latest[name]=segment
                         with mutex:
                             state['histories'].setdefault(name,[]).append(row)
                             state['decisions'][name]=decision(state['histories'][name]);save()
                     except BaseException as exc:
                         stop.set()
+                        write(Path(reg.get('cooperative_stop_file', out/'STOP_REQUESTED')),
+                              dict(reason='Lane failed; finish current episode and preserve checkpoint',error=repr(exc)))
                         with mutex:state['failures'].append(dict(name=name,limit=limit,error=repr(exc)));save()
                         return
             with ThreadPoolExecutor(max_workers=2) as pool:list(pool.map(lane,range(2)))

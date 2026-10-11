@@ -65,6 +65,8 @@ def main():
         assert any(j['controller']==a.controller and j['reward']==a.reward and
                    j['hp']==a.hyperparameter_id for j in continuation['jobs'])
         deadline=datetime.fromisoformat(continuation['dispatch_deadline_utc'])
+        if continuation.get('cooperative_stop_file'):
+            stop_file=Path(continuation['cooperative_stop_file'])
     assert datetime.now(timezone.utc)<deadline
     assert sha(root/'CONDITIONS.json')==protocol['condition_file_sha256']
     conditions=[c for c in read(root/'CONDITIONS.json')['conditions'] if c['role']=='train']

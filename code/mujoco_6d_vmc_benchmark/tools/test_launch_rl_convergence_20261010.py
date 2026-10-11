@@ -1,6 +1,9 @@
 """Continuation stopping criteria must not certify unusable or unsafe policies."""
 import unittest
-from launch_rl_convergence_20261010 import decision
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
+from launch_rl_convergence_20261010 import decision, reuse_development
 
 
 def row(limit, task=0, strict=0):
@@ -8,6 +11,15 @@ def row(limit, task=0, strict=0):
 
 
 class ConvergenceDecisions(unittest.TestCase):
+    def test_reuse_cannot_substitute_another_checkpoint(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)
+            reg={'parents':{'job':{'segment':str(root/'expected')}},
+                 'reuse_development':{'job':{'segment':str(root/'other')}}}
+            with patch('launch_rl_convergence_20261010.audit_segment') as audit:
+                with self.assertRaises(AssertionError):reuse_development(root,root,reg,'job')
+                audit.assert_not_called()
+
     def test_three_failed_nodes_request_revision_not_convergence(self):
         r=decision([row(s) for s in (110000,165000,220000)])
         self.assertTrue(r['stop_failed_plateau'])

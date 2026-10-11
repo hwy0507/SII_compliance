@@ -71,8 +71,32 @@ def prepare_rl(benchmark, base_rl, run_root, deadline):
 
 
 def run(args, lock_path):
+    # Own a separate orchestration lock; the learner owns the simulator lock.
+    # Never overwrite an earlier attempt, including one that failed at startup.
+    with (args.output / 'coordinator.lock').open('a') as guard:
+        fcntl.flock(guard, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        if (args.output / 'execution.json').exists():
+            raise RuntimeError('Existing execution receipt; use a new output directory')
+        try:
+            return run_once(args, lock_path)
+        except BaseException as exc:
+            path = args.output / 'execution.json'
+            state = read(path) if path.exists() else {}
+            state.update(status='failed_preserved', error=repr(exc), ended_utc=now().isoformat())
+            write(path, state)
+            raise
+
+
+def run_child(command):
+    result = subprocess.run(command, check=False)
+    if result.returncode:
+        raise subprocess.CalledProcessError(result.returncode, command)
+    return result
+
+
+def run_once(args, lock_path):
     started = now()
-    deadline = started + timedelta(hours=15)
+    deadline = started + timedelta(hours=getattr(args, 'safety_hours', 15))
     state = dict(status='waiting_for_classical', started_utc=started.isoformat(),
                  deadline_utc=deadline.isoformat(), host=os.uname().nodename,
                  server_compute=False, final_test_reads=0, rl_run_root=None,
@@ -100,22 +124,47 @@ def run(args, lock_path):
                                  if line.startswith('MemAvailable:')))
         if available_kib < 7 * 1024 * 1024:
             raise RuntimeError(f'Insufficient memory for two RL lanes: {available_kib} KiB')
-        run_root = args.rl_parent / 'overnight_15h_20261010'
+        run_root = args.rl_parent / getattr(args, 'run_name', 'overnight_15h_20261010')
         state.update(status='preparing_rl',available_memory_kib=available_kib,
                      rl_run_root=str(run_root))
         write(args.output / 'execution.json', state)
         prepare_rl(args.benchmark, args.rl_parent, run_root, deadline)
+        registration = read(run_root / 'REGISTRATION.json')
+        if getattr(args, 'authorization', None):
+            registration['authorization'] = args.authorization
+            registration['deadline_basis'] = 'Agent-selected finite safety horizon under renewed user authority; not an extension of the expired overnight window or convergence criterion'
+            write(run_root / 'REGISTRATION.json', registration)
+        if getattr(args, 'reuse_development_root', None):
+            from office_v7_uniform24_20261008 import sha
+            registration['reuse_development'] = {}
+            for name, parent in registration['parents'].items():
+                if parent['scheduled_limit'] != 110000:
+                    continue
+                segment = args.reuse_development_root.resolve() / (name + '_closed110000')
+                if segment.resolve() != Path(parent['segment']).resolve():
+                    raise RuntimeError('Reused development is not the registered parent checkpoint')
+                audit = Path(str(segment) + '.development_audit.json')
+                registration['reuse_development'][name] = dict(segment=str(segment),
+                    audit=str(audit), audit_sha256=sha(audit))
+            write(run_root / 'REGISTRATION.json', registration)
         command = [sys.executable, str(args.benchmark / 'tools/launch_rl_convergence_20261010.py'),
                    'run', '--root', str(args.rl_parent / 'campaign_v2'), '--run-root', str(run_root)]
         state.update(status='running_rl',rl_registration=str(run_root / 'REGISTRATION.json'),
                      rl_command=command)
         write(args.output / 'execution.json', state)
+        # The child rechecks resources and acquires this lock atomically itself.
+        # A competing campaign in this handoff gap causes a safe child failure.
+        fcntl.flock(lock, fcntl.LOCK_UN)
         try:
-            result = subprocess.run(command, check=False)
+            if now() >= deadline:
+                raise TimeoutError('Dispatch deadline reached during preparation')
+            result = run_child(command)
             state.update(status='complete_review_required' if result.returncode == 0
                          else 'failed_preserved', rl_returncode=result.returncode)
         except BaseException as exc:
             state.update(status='failed_preserved', error=repr(exc))
+            if isinstance(exc, subprocess.CalledProcessError):
+                state['rl_returncode'] = exc.returncode
             raise
         finally:
             state['ended_utc'] = now().isoformat()
@@ -128,9 +177,15 @@ def main():
     p.add_argument('--classical-root', type=Path, required=True)
     p.add_argument('--rl-parent', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--run-name', default='overnight_15h_20261010')
+    p.add_argument('--safety-hours', type=float, default=15)
+    p.add_argument('--authorization')
+    p.add_argument('--reuse-development-root', type=Path)
     a = p.parse_args()
-    for path in (a.benchmark, a.classical_root, a.rl_parent):
-        path = path.resolve()
+    for field in ('benchmark', 'classical_root', 'rl_parent'):
+        setattr(a, field, getattr(a, field).resolve())
+    if a.safety_hours <= 0 or Path(a.run_name).name != a.run_name or a.run_name in ('.', '..'):
+        p.error('Positive safety hours and a single run directory name required')
     a.output = a.output.resolve()
     a.output.mkdir(parents=True, exist_ok=True)
     lock_path = a.benchmark / 'outputs/baseline_local_rl_20261009/.local-rl-compute.lock'
