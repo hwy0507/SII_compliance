@@ -1,5 +1,13 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+10月11日收口核查：经典90/90已完成并独立复核；每类top2各8开发条件均Task/Strict 0/8，
+全部55秒停在carry，无安全早停。此前clear正控制通过；失败保留为所测接触条件下的结果。
+昨夜RL在22:03因新增协调器父子重复持有全局锁而启动失败，新增训练0，外层错误返回0又使
+systemd误显success。当前无运行服务，15小时窗口已结束，未重启。故障尚未修复，
+不能称RL收敛或全baseline最终验收完成。详见[过夜收口报告](BASELINE_OVERNIGHT_CLOSEOUT_20261011.md)。
+小型收口证据已逐文件核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_closeout_20261011/evidence/`；90条大轨迹仍本地。
+
+
 10月10日18:07 CST：首批两路在约6分钟完成2条完整55秒回合及独立审计，累计14/90；
 全14条证据核验通过，下两条已自动接续。新两条Task/Strict失败保留，未改变环境和预算。
 

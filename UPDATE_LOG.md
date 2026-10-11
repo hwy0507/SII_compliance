@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-11 — 经典90回合完成；如实记录RL整夜未启动的调度故障
+
+- 开工实查/fetch并读main `6023800c9632c8de6a043338f6fa6b544481aede`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`两日志/AGENTS。当前用户请求核查状态，本轮无新训练、仿真、算法或环境修改。
+- 经典54筛选＋36确认全部完成；11:53 CST只读重新核验90条条件/seed/参数/模型/路线/轨迹hash及独立审计收据，通过。每类top2各8开发条件Task/Strict均0/8；90条全部完整55秒，无安全早停。不能将参数试验次数当作最终选定策略成功率，未读final。
+- RL于昨夜22:03启动即失败：外层协调器持全局锁调用同样需要锁的子进程，子进程BlockingIOError退出1；父脚本却返回0，使systemd错误显示success。这是我们的调度实现与监测缺陷，不是RL算法失败。原failure及源码保留，新run无execution/checkpoint，昨夜新增训练0。当前无运行服务、15小时窗口已结束，没有擅自重启。
+- 新增 `docs/BASELINE_OVERNIGHT_CLOSEOUT_20261011.md`，完整列出六组候选8条件指标、RL实际旧checkpoint与故障定位；更新经典验收、联合进度、周报。锁交接/退出码/集成测试修复及最终统一重评尚未完成，不宣称已收敛或全baseline可投稿验收通过。
+- 小包已核验发布至 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_closeout_20261011/evidence/`，5文件218613字节，manifest `4215d0701bb622c53039117a6c32b6d3ccb6fdfdb31f93caf8e98187f8703624`；含故障源码、失败收据、CLOSE、完整选择及新复核。90条大型原始轨迹仍在本机，不冒称全部已共享。服务器仅传输/核验，没有实验计算。
+
 ## 2026-10-10 — 登记15小时过夜baseline接续：经典先收口，随后RL checkpoint接续
 
 - 按同步skill核对并fetch main `fe695ec7e9a1a7810e0ae61689062eda36f9a68e`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及两日志/AGENTS。用户授权一次性15小时；不创建定时任务，不使用服务器计算。

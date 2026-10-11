@@ -1,5 +1,13 @@
 # 经典 baseline：基础验收、停滞归因与补强
 
+10月11日收口核查：经典90/90已完成并独立复核；每类top2各8开发条件均Task/Strict 0/8，
+全部55秒停在carry，无安全早停。此前clear正控制通过；失败保留为所测接触条件下的结果。
+昨夜RL在22:03因新增协调器父子重复持有全局锁而启动失败，新增训练0，外层错误返回0又使
+systemd误显success。当前无运行服务，15小时窗口已结束，未重启。故障尚未修复，
+不能称RL收敛或全baseline最终验收完成。详见[过夜收口报告](BASELINE_OVERNIGHT_CLOSEOUT_20261011.md)。
+小型收口证据已逐文件核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/baseline_closeout_20261011/evidence/`；90条大轨迹仍本地。
+
+
 用户2026-10-10要求优先把VMC、导纳、阻抗做扎实。新计算仅在airpig本机；Spark只归档。
 
 最新调度：18:00 CST在第12条完整回合及审计结束后，原串行协调器/监视器自然退出，
