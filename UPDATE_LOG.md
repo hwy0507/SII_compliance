@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-12 21:45 CST — 启动先baseline后teacher/student的15小时一次性任务
+
+- 开工核对远端main `e6d63c84eb84e0b326597131e1ab4f9ebfe9684e`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读两分支日志/AGENTS/sii-research-sync。保留他人会议prompt，服务器只存储、不训练、不改显示。
+- 原统一baseline继续，启动时123/168已复算。新增`tools/teacher_student_15h_20261012.py`一次性服务，真实waiting_for_baseline、零新仿真/拟合；检查PID1676275只持自己的单例锁，原PID1649757仍持全局锁。168完整行与独立审计passed是teacher采集硬前置。
+- 15小时从用户授权21:28算至明日12:28；6teacher候选×2训练身份、最多80新采集，07:58截止采集以留4.5小时重训/比较。原环境/gate/本体输入/执行限制不变，不读封存条件；失败和未派发身份记账，数量上限不冒充采集完成。
+- 现有合格refined数据20train/5validation。本轮新数据与历史真实轨迹统一供三seed ESN、ordinary/matched MLP/RNN学习，固定首seed五族各8开发身份闭环。记录可训练参数/固定存储与不等训练成本；不预设ESN优势、不以拟合MSE冒充任务成功。新旧teacher不同则披露混合，非纯样本量消融。
+- v1准备缺历史conditions缓存，v2导入发现仿真环境无torch；两者0仿真/拟合保留。v3使用hash核对的历史公共条件、单独现有PyTorch拟合解释器；16项回归与冻结导入通过。运行worker1线程/3GiB/禁swap，协调器1GiB，非定时任务、不自动盲重启。
+- 设置/源码/历史数据603文件、24327306字节已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_student_setup_20261012_v3/evidence/`，manifest `6b95404ace71424690d410c73cab63e17df518c4ee7d66b7d4f3c3b404cf7748`。不含尚未产生的新结果；之后baseline/data/final边界归档并核验，自动更新报告/日志安全push，失败标pending。
+- 详见`code/mujoco_6d_vmc_benchmark/docs/TEACHER_STUDENT_15H_20261012.md`。已完成登记/测试/服务启动/设置归档；运行中baseline及等待协调器；未完成新采集、训练和闭环，不称投稿级公平性或泛化验收。
+
 ## 2026-10-12 19:50 CST — 七组RL开发评估闭合，统一比较开始ESN实测
 
 - 开工核对远端main `4007ea3d5ccd867c7949f5b7bdf6d563f3a22bbd`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取两分支日志/AGENTS；用户要求持续盯至出结果。保留原稳定作业，只本机计算，无新训练预算、定时任务或服务器实验。
