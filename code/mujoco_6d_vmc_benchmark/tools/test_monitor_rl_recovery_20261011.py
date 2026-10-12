@@ -9,6 +9,15 @@ from monitor_rl_recovery_20261011 import snapshot
 
 
 class RecoveryMonitorTests(unittest.TestCase):
+    def test_cooperative_stop_is_terminal_not_infrastructure_failure(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)
+            write(root/'execution.json',dict(status='stopped_requested'))
+            with patch('monitor_rl_recovery_20261011.unit_state',return_value=dict(ActiveState='inactive')):
+                value=snapshot(root,root,'unit')
+            self.assertTrue(value['terminal'])
+            self.assertFalse(value['failures'])
+
     def test_failed_receipt_overrides_successful_systemd_exit(self):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d);outer=root/'outer';outer.mkdir();run=root/'run';run.mkdir()

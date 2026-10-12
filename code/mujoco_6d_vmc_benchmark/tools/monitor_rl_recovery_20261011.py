@@ -24,7 +24,7 @@ def snapshot(outer_root, run_root, unit):
     failures=[]
     if outer.get('status')=='failed_preserved' or state.get('failures'):
         failures.append('Coordinator recorded failure, regardless of systemd exit status')
-    terminal=outer.get('status') in ('complete_review_required','stopped_at_deadline','failed_preserved')
+    terminal=outer.get('status') in ('complete_review_required','stopped_at_deadline','stopped_requested','failed_preserved')
     if not terminal and service.get('ActiveState') in ('inactive','failed'):
         failures.append('Coordinator is not active and has no terminal receipt')
     active=[]

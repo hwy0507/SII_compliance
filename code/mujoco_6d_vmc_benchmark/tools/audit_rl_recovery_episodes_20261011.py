@@ -10,11 +10,15 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--run-root',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--names',nargs='+',default=['direct_office_task','parameter_impedance'],
+                   help='Exact registered methods to inspect; defaults preserve the original two-lane audit')
     args=p.parse_args();assert not args.output.exists()
     registration=read(args.run_root/'REGISTRATION.json')
     protocol=read(Path(registration['parent_root'])/'PROTOCOL.json')
     reports=[]
-    for name in ('direct_office_task','parameter_impedance'):
+    assert len(args.names)==len(set(args.names))
+    assert set(args.names)<={j['name'] for j in registration['jobs']}
+    for name in args.names:
         segment=args.run_root/(name+'_step165000')
         report=inspect(segment)
         assert report['episodes'], 'Wait for a fully saved first episode: '+name

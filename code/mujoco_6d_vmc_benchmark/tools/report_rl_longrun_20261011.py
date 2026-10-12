@@ -131,7 +131,7 @@ def main():
                 write(a.output/'LATEST.json',report)
                 (a.output/'LATEST.md').write_text(markdown(report))
                 outer=read(a.outer_root/'execution.json')
-                terminal=outer['status'] in ('failed_preserved','complete_review_required','stopped_at_deadline')
+                terminal=outer['status'] in ('failed_preserved','complete_review_required','stopped_at_deadline','stopped_requested')
                 monitor_path=a.monitor_root/'LATEST.json'
                 monitor_failed=(a.monitor_root/'ALERT.json').exists() or time.time()-monitor_path.stat().st_mtime>300
                 if monitor_failed and not terminal:

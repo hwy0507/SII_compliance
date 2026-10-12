@@ -1,5 +1,17 @@
 # 更新日志
 
+## 2026-10-12 — 补齐RL最后一个165k节点，保留CPU兼容性探针与诊断纠正
+
+- 14:09:42首条新CUDA训练回合完整55秒落盘，已99000步/188002次更新，新增2750条有限优化器记录；110万物理子步独立复算、模型/轨迹/动作一致性通过，Task/Strict失败保留，已进入下一回合。首回合小包已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_completion_first_episode_20261012/evidence/`，3文件15390字节，manifest `3d2cee03550fa967471b0a856319db6c86245d72936fd0afd93fcdf30c7c7e59`。这是实训恢复证据，不是新的冻结策略开发成功率。
+
+- 已在宿主机fetch并读main `8de2df9d5c5b23a7803d0b7f375f3d1427de4abc`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`和AGENTS。用户授权继续；只在本机计算，不动服务器显示或算力，不建定时任务，保留未跟踪会议prompt。
+- 上轮六个完整CUDA节点已各8条件审计Task/Strict 0/8；最后一组历史熵调阻抗在截止后保存97625步。前五组完整55秒，直接RL历史熵配置八条均穿透早停，不能把其低峰速当优势；原failed_preserved收据保留。
+- 本轮曾把沙箱GPU不可见误判为驱动故障，宿主机实查RTX5080正常，现予纠正。CPU兼容恢复后的97625步八条件试跑完整55秒，Task/Strict0/8，均值22.819469mm/36.279807Nm/.378260m/s，880万物理子步复算通过；只作为兼容探针，不冒称165k或并入CUDA主表。初期bus/加载/cgroup/相对路径失败均未进入物理仿真，收据缺陷如实披露。
+- CPU恢复改动两份源码已单独快照，原runtime随后按全清单恢复；CUDA对保存观测重放最大差7.1032e-6，归一化hash和checkpoint不变，不声称跨设备闭环等价。新增CPU物理审计/跨设备动作审计工具与独立单节点接续工具。
+- 新`completion_20261012_v1`在14:02:50启动，14:05已实训98000步/186002次更新；单模拟器1线程/3GiB/禁swap，从97625接165k后自动八条件审计及七配置汇总，原六组不重跑。12小时安全派发截止至10月13日02:01:42；运行中，尚无新165k开发成绩。3项新协调器、8项监视/汇总、6项停止规则检查通过，源副本独立import通过。
+- 已核验小包 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_completion_setup_20261012/evidence/`，609文件5340373字节，manifest `160425ee4230959cd901d21500cec61cbbdf0db42bb93a3bf5f39639e23fecd5`。含冻结source、注册、六组旧审计、CPU探针源码/审计/重放与runtime恢复证明；大型raw/checkpoint仍本地。详情见`code/mujoco_6d_vmc_benchmark/docs/RL_NODE_COMPLETION_20261012.md`。
+
+
 ## 2026-10-11 晚 — 保留在途两路，启动一次性过夜结果汇总与节点归档
 
 - 按sii-research-sync核对/fetch并读main `6c6c83413d3076b3e3e5206cb77bf44f06ea1ab2`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`和AGENTS。用户要求过夜长时任务；原稳定worker不重启，不建定时任务、不使用服务器计算。无关未跟踪会议prompt文档保留未提交。
