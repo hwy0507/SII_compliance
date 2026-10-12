@@ -1,5 +1,12 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-12T18:17:49.874143+00:00 — 15小时teacher/student接续：baseline_complete
+
+- 实际状态 `baseline_final_audit`；baseline审计：True。
+- 归档状态 `verified`；详情见 `code/mujoco_6d_vmc_benchmark/docs/TEACHER_STUDENT_15H_LIVE_20261012.md`。
+- 单模拟器/1线程/3GiB，只本机计算；不改环境/gate、不解封保留条件，失败均保留。
+
+
 10月12日21:45 CST：用户新增15小时授权，必须先做完baseline统计再采集/重训。
 一次性`teacher_student_15h_20261012_v3`已实际等待baseline，旧123/168配对仍运行且未重启。
 硬前置为168完整行及独立审计passed；之后6候选×2训练身份搜索、有限80回合上限采集、

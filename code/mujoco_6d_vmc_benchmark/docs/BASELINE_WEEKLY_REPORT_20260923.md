@@ -1,5 +1,12 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+## 2026-10-12T18:17:49.874143+00:00 — 15小时teacher/student接续：baseline_complete
+
+- 实际状态 `baseline_final_audit`；baseline审计：True。
+- 归档状态 `verified`；详情见 `code/mujoco_6d_vmc_benchmark/docs/TEACHER_STUDENT_15H_LIVE_20261012.md`。
+- 单模拟器/1线程/3GiB，只本机计算；不改环境/gate、不解封保留条件，失败均保留。
+
+
 10月12日21:45 CST：新15小时任务已启动并等待现有baseline完整统计，原123/168配对未重启。
 必须21配置×8条件齐全、独立审计通过后才采teacher和重训；baseline失败不删除、不无限加步数。
 后续统一扩充真实VMC示范给ESN/MLP/RNN，五族包括普通及特征匹配对照，三seed离线、
