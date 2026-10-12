@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-12 晚 — 接续baseline，登记与proposed的同八条件比较
+
+- 开工实际fetch/读取main `55c53fb871c26ae8717d4b730aa22fded31bcd1b`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS。沙箱网络/systemd受限后在宿主机核对正常，不再把沙箱不可见当服务器/GPU故障。仅本机计算，未动服务器显示/训练，保留其他agent未跟踪会议prompt。
+- 18:12 CST历史熵RL调阻抗已155000步/300002更新/112回合、checkpoint152625；原训练/监视/汇总保持运行。已有六配置仍各Task/Strict0/8，最后节点尚待165k及8条件审计，没有追加训练预算或伪称收敛。
+- 新 `tools/compare_local_baselines_20261012.py` 冻结同一八development条件，复用7RL×8与经典三类各两候选×8，补跑ESN、matched/ordinary RNN/MLP、memoryless、teacher、zero共64新回合；总168行、21配置覆盖原16方法族及附组。旧24测试分数不拼入新8条件表，封存条件不读。
+- 一次性服务 `sii-paired-baseline-comparison-20261012-v2` 18:12:52实际active，当前waiting_for_rl、新增物理0。等旧任务成功闭合后再拿全局锁，前置失败则停止；单模拟器/单线程/3GiB/禁swap、子任务30分钟上限，14小时有限派发保护。v1仅prepare未派发，保留；原环境/gate/actor/执行器限制不变。
+- 7项回归通过（条件身份/前置失败/真实flock交接/pending/早停），冻结副本导入和六学生48D→7D重置推理通过。已有完整RL轨迹110万子步及接触指标复算通过。新表另报告接触P95/冲量/恢复及删失，保留所有失败，不为低指标挑回合。
+- 设置与冻结源码/权重606文件、6423779字节已核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/paired_baseline_setup_20261012_v2/evidence/`，manifest `3440a74deb080156a558814913904d5760b10e51f81d6921a58a45eb4da2546c`。代码在`source/`，权重在`checkpoints/`；大轨迹未包含，未来结果未提前宣称已上传。
+- 新增 `docs/BASELINE_PAIRED_DEVELOPMENT_20261012.md`，同步联合进度和周报。已完成登记/预检/服务启动；运行中旧RL与新等待队列；待完成64闭环、统一独立复算与之后最终24条件比较。当前不是完整最终矩阵或可投稿验收结论。
+
 ## 2026-10-12 — 补齐RL最后一个165k节点，保留CPU兼容性探针与诊断纠正
 
 - 14:09:42首条新CUDA训练回合完整55秒落盘，已99000步/188002次更新，新增2750条有限优化器记录；110万物理子步独立复算、模型/轨迹/动作一致性通过，Task/Strict失败保留，已进入下一回合。首回合小包已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_completion_first_episode_20261012/evidence/`，3文件15390字节，manifest `3d2cee03550fa967471b0a856319db6c86245d72936fd0afd93fcdf30c7c7e59`。这是实训恢复证据，不是新的冻结策略开发成功率。

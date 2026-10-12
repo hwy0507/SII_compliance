@@ -1,0 +1,75 @@
+# 修复后 baseline 与冻结学生的同条件开发比较
+
+2026-10-12 开工已实际 fetch 并读取远端 main
+`55c53fb871c26ae8717d4b730aa22fded31bcd1b`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 的更新日志与根目录 AGENTS。
+服务器只读查询未发现本任务的新训练进程；本轮不使用服务器计算或修改显示配置。
+
+## 当前状态
+
+18:12 CST 原 CUDA 接续仍在运行：历史熵 RL 调阻抗 155000 步、300002 次更新、
+112 个累计训练回合，checkpoint 已保存到 152625。原训练、监视、汇总服务保留，
+未修改加载中的代码、奖励、环境、gate、actor 输入或执行器限制。
+六个已完成 RL 节点仍各 Task/Strict 0/8；最后一个尚待 165k 节点的八条件评估，不能填零。
+
+新增一次性服务 `sii-paired-baseline-comparison-20261012-v2.service` 于 18:12:52 CST 启动，
+已实查 active/MainPID=1649757，execution 为 `waiting_for_rl`、新增物理回合 0。
+它等原接续状态真正为 `complete_review_required` 后才申请全局仿真锁；等待时不持锁。
+前置作业失败/停止则新服务也失败退出，保留收据，不盲目重启。
+这不是定时任务，也不意味着新比较已完成。
+
+## 固定比较范围
+
+全部使用 `repair_development_000`–`007` 的精确 overrides/seed，正式 `dt=5e-5`、55秒、
+同一 MJB `d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3`。
+经典与 RL 共用物理 scripts 已逐文件确认字节相同；经典只复用 `fixture=frozen` 的结果，
+clear/active_only/edge_only 诊断不进入比较。所有 actor 仍只使用原本体接口。
+
+|来源|模型数|每模型条件|物理回合|处理|
+|---|---:|---:|---:|---|
+|原七种 RL 配置的约165k节点|7|8|56|等待最后节点完成，核验模型/审计/原始数据后复用|
+|经典 VMC/导纳/阻抗各两名已确认候选|6|8|48|两名全部保留，不凭确认结果删除较差者|
+|ESN、matched RNN/MLP、ordinary RNN/MLP、memoryless、teacher、zero|8|8|64|同机补跑，既有模型不训练、不换 seed|
+|合计|21|8|168|只新增64条物理回合，包含原16方法族及5个附加配置|
+
+六个学生 checkpoint 从服务器原冻结目录下载，每个 SHA256 与 10月8日最终模型清单精确一致。
+teacher、zero 配置也继承该清单；checkpoint 的本地路径适配另存 `CHECKPOINT_MAPPING.json`。
+采用同条件开发比较，是为了核查 baseline 修复后的实际差距；**不是把旧24条件测试分数
+拼接到新8条件表，也不是新盲测、等训练预算或RL收敛证明。**最终24条件统一泛化评估尚未派发。
+
+所有168条都从原始物理子步重新计算 RMSE、实际峰矩、末端峰速，以及预先已有的接触力P95、
+冲量、接触时长、力矩总变差、机械功与恢复删失。每回合的完整/早停与真实接触覆盖独立记录。
+无接触的P95为NA，未观察到恢复保留删失；不能用早停/不接触的低力或低速度判优。
+报告中接触P95是各接触回合P95的均值，冲量是八回合实际事件窗口的均值，不是合并样本分位数。
+
+## 资源与故障边界
+
+本机只运行一个模拟器，每个worker单线程、MemoryMax=3GiB、MemorySwapMax=0，
+入场可用内存至少4GiB、磁盘余量至少40GiB。协调器上限1GiB。
+每个子任务30分钟硬上限，子失败传播非零退出码并保留原尝试，防止服务active但无限停滞。
+登记为14小时有限派发保护，到界停止新派发；不是新增训练预算或收敛条件。
+原RL预算/截止不延长，新比较也不接续任何训练。
+
+`v1` 仅 prepare，尚未派发；增加子任务时限与完整接触指标表后另冻结为 `v2`，前版保留。
+部署前7项回归通过，包括真实 flock 交接、前置失败传播、不同条件拒绝、缺失记pending、
+早停计入分母。冻结副本 import 及六个学生的 load/reset/48D→7D 有限输出检查通过。
+2GiB/单线程下对一条旧完整RL轨迹复算110万物理子步及接触指标通过：RMSE 27.815104mm，
+与原审计一致；这是分析链预检，不是新物理或新策略成绩。
+
+## 运行与证据入口
+
+本机实际工作集：
+`/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/`。
+登记SHA256 `1371791143e6a423ed51c4fbd3c79f3628cee4c730729ee176b277819ad586a1`。
+`source/` 为不可变执行源码快照；`REGISTRATION.json`、`execution.json` 分别表示协议和真实进度。
+开始比较后 `MODEL_LOCK.json` 固定全部模型，`REPORT.json`/`REPORT.md` 保存已经独立审计的行，
+`analysis/` 保存复算，`episodes/` 保存64条新原始轨迹。历史大轨迹仍在原位置，路径不伪造为服务器执行。
+
+设置包已于18:16:40 CST逐文件核验发布至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/paired_baseline_setup_20261012_v2/evidence/`，
+606文件、6423779字节，manifest SHA256
+`3440a74deb080156a558814913904d5760b10e51f81d6921a58a45eb4da2546c`。
+执行源码位于该目录 `source/`，六个模型位于 `checkpoints/`；包含登记、条件和分析预检，
+不包含尚未生成的64条新轨迹，也不包含旧104条大轨迹。包内报告是归档前快照，最新状态以GitHub为准。
+已完成：协议、冻结源码/模型核对、回归和真实分析预检。运行中：原RL训练，配对协调器等待。
+待完成：最后RL开发节点、64条参考模型闭环、168条统一复算以及后续最终评估。
