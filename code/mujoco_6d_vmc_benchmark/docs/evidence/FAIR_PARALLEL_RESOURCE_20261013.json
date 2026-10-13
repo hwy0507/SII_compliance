@@ -1,0 +1,96 @@
+{
+  "observed_utc": "2026-10-13T05:45:40.809052+00:00",
+  "execution": {
+    "status": "prospective_evaluation",
+    "started_utc": "2026-10-13T04:50:33.752087+00:00",
+    "jobs": [],
+    "server_compute": false,
+    "final_test_reads": 0,
+    "registration_sha256": "a2e80a62252e97af7137ded2962a5790087d8154e2e01c52d0d7a305b2f44b64",
+    "updated_utc": "2026-10-13T05:44:54.691507+00:00",
+    "active": null,
+    "dispatcher": "dispatch_v4",
+    "handoff_completed_utc": "2026-10-13T05:38:09.564858+00:00",
+    "previous_execution_sha256": "1cc60991a5099119031f3db461419da3ca1476ffdff770b77c99292d919df968",
+    "fits_complete": 39,
+    "model_lock_sha256": "4da573485533ad1d7a7d0a026ee8a33a46812e6f7dcb517ae3b2c632a652f3ab",
+    "active_jobs": {
+      "0": {
+        "cap": 2147483648,
+        "cpu": 1,
+        "unit": "sii-fair-p4-d27eb7277a07ae7b",
+        "job": "historical_admittance_boundary_07__prospective_20261013_acceptance_000",
+        "started_utc": "2026-10-13T05:44:54.691126+00:00"
+      },
+      "1": {
+        "cap": 2415919104,
+        "cpu": 6,
+        "unit": "sii-fair-p4-a49e8be7b754c19b",
+        "job": "esn_gradient_s2026101303__prospective_20261013_acceptance_000",
+        "started_utc": "2026-10-13T05:44:54.691501+00:00"
+      }
+    },
+    "evaluated": 3,
+    "expected": 288,
+    "neural_memory_cap_bytes": 2415919104,
+    "pilot_peak_bytes": 1159131136
+  },
+  "workers": [
+    {
+      "lane": {
+        "cap": 2147483648,
+        "cpu": 1,
+        "unit": "sii-fair-p4-d27eb7277a07ae7b",
+        "job": "historical_admittance_boundary_07__prospective_20261013_acceptance_000",
+        "started_utc": "2026-10-13T05:44:54.691126+00:00"
+      },
+      "unit": "sii-fair-p4-d27eb7277a07ae7b.service",
+      "properties": {
+        "MainPID": "1777690",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-fair-p4-d27eb7277a07ae7b.service",
+        "MemoryCurrent": "567074816",
+        "CPUUsageNSec": "46026117000",
+        "MemoryMax": "2147483648",
+        "MemorySwapMax": "0",
+        "ActiveState": "active",
+        "memory_peak_bytes": 620470272,
+        "memory_events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\n",
+        "process": "1777690   1 99.9 578348 /home/airpig/桌面/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/source/tools/baseline_repair_worker_20261008.py --research-protocol /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/PROTOCOL.json --protocol-sha256 a5b4eb9b04509e5abd9a38e2032c4f06b2654094652ee3759336bf72ffeab8a6 --research-condition prospective_20261013_acceptance_000 --phase acceptance --worker-kind classical --v6-input /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6 --reference /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6/esn_original_v2/rollout.json --config /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/configs/historical_admittance_boundary_07__prospective_20261013_acceptance_000.json --output /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/evaluation/historical_admittance_boundary_07__prospective_20261013_acceptance_000 --contact-audit --physics-dt .00005 --parameter-source /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/dependencies/admittance_boundary_07/parameter --controller admittance"
+      }
+    },
+    {
+      "lane": {
+        "cap": 2415919104,
+        "cpu": 6,
+        "unit": "sii-fair-p4-a49e8be7b754c19b",
+        "job": "esn_gradient_s2026101303__prospective_20261013_acceptance_000",
+        "started_utc": "2026-10-13T05:44:54.691501+00:00"
+      },
+      "unit": "sii-fair-p4-a49e8be7b754c19b.service",
+      "properties": {
+        "MainPID": "1777688",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-fair-p4-a49e8be7b754c19b.service",
+        "MemoryCurrent": "566558720",
+        "CPUUsageNSec": "45946221000",
+        "MemoryMax": "2415919104",
+        "MemorySwapMax": "0",
+        "ActiveState": "active",
+        "memory_peak_bytes": 618647552,
+        "memory_events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\n",
+        "process": "1777688   6 99.7 577948 /home/airpig/桌面/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/source/tools/baseline_repair_worker_20261008.py --research-protocol /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/PROTOCOL.json --protocol-sha256 a5b4eb9b04509e5abd9a38e2032c4f06b2654094652ee3759336bf72ffeab8a6 --research-condition prospective_20261013_acceptance_000 --phase acceptance --worker-kind office --v6-input /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6 --reference /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6/esn_original_v2/rollout.json --config /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/configs/esn_gradient_s2026101303__prospective_20261013_acceptance_000.json --output /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/evaluation/esn_gradient_s2026101303__prospective_20261013_acceptance_000 --contact-audit --physics-dt .00005 --checkpoint /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/learning/esn_gradient_s2026101303_lr1e-05/checkpoint.npz"
+      }
+    }
+  ],
+  "meminfo": [
+    "MemTotal:       15763596 kB",
+    "MemAvailable:    4635596 kB",
+    "SwapTotal:       2097148 kB",
+    "SwapFree:            256 kB"
+  ],
+  "categories": {
+    "neural": 1159131136,
+    "classical_admittance": 1024077824
+  },
+  "scientific_change": false,
+  "server_compute": false
+}

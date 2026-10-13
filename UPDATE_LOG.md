@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-13 13:45 CST — 已核实两路独立评估同时运行
+
+- 已完成39/39拟合、36个模型/配置锁定、3/288回合及逐回合审计；两路实际在途为导纳boundary_07与ESN-gradient seed2026101303，分别CPU1/6，实测99.9%/99.7%单核CPU。不是仅登记并行上限。
+- 完整导纳回合内核峰值1,024,077,824字节，按预登记规则后续同类上限2GiB；神经worker2.25GiB。两路均禁swap，内存超限/oom/oom_kill计数0；仍按剩余硬上限预留增长空间并保留0.75GiB。最多4路是上限，当前只证实2路；完整吞吐加速倍数尚未测得。
+- 运行中：本机一次性`dispatch_v4`服务推进原288回合，固定环境/原门槛/模型/源/seed/dt5e-5不变；服务器不计算。未完成：完整统一矩阵、最终独立审计与配对统计，不提前作方法排名。
+- 两路实测证据已核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/fair_parallel_resource_20261013_054540/FAIR_PARALLEL_RESOURCE_20261013.json`，SHA256 `d90a1893e6ca6538398cd84ebb559a21902f062e72df89432b1df7b2d472e990`；仓库小证据在`docs/evidence/FAIR_PARALLEL_RESOURCE_20261013.json`（benchmark内）。
+- 全部训练与冻结源/调度器快照已核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/fair_comparison_20261013_v2_parallel_v4_models_locked/evidence/`，967文件220706579字节，manifest `bf11f955fc69c2c6cdafb2ee9b6fb5e129413728166319c42e73f40923fc8465`。该快照含前2条结果，后续轨迹仍由运行服务分阶段归档。
+
+- 本轮开工main `06ac5565a33bbffc2c6d742e6876e025a339ee74`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；收工前再次核对远端main `b3813d0b2d5f46fadf8fd144f6f34c77271250b8`、baseline未变，读取最新日志与AGENTS。资源代码10项测试通过；未改动他人会议prompt。
+
 ## 2026-10-13T05:38:48.661112+00:00 — 公平比较并行调度 parallel_v4_models_locked
 
 - 状态 `models_locked`，已评 2/288；资源调整不改实验/模型/门槛，旧封存集未读。
