@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-13 — 旧场景抽动诊断与冻结ESN迁移契约核查
+
+- 用户要求不改ESN具体参数，排查迁移/适配结构。本轮只读分析，checkpoint `acd3b27e…`、归一化、储备池、读出、输出增益、过滤参数、环境与gate全部未变，无新物理仿真。新增两份报告 `code/mujoco_6d_vmc_benchmark/docs/ORIGINAL_ESN_OLD_OFFICE_CHATTER_20261013.md` 与 `ORIGINAL_ESN_TRANSFER_CONTRACT_20261013.md`，对应tools脚本和docs/evidence小证据。
+- 11.48–16.68s中ESN x请求100次正负翻转、62.3%达到±0.32m/s，25Hz序列主要两步交替；89.1%相邻过滤动作达到48mm/s变化率边界。13s名义x约−4mm/s，ESN请求连续+320/−320/+320mm/s。16.72–22.68s五类扰动接触均零，动作仍有56次反向；不能解释成纯粹被棍子顶动。精确代数读出分解将主要放大环节定位到负载×y位置误差项，不将各相关项当独立因果份额。
+- 确认迁移参考层不一致：wrapper关闭planned_hand_corner而选择旧PickPlaceTask远阶段终点，原配套PlannedCornerTask使用局部路点。原训练数据SHA `7bb2f7ba…`核验通过，训练y误差最大16.608mm、验证16.327mm，原8条部署最大15.613–16.730mm；旧棍推窗口均值437.677mm，error/.08的y特征100%截断到+4。字段排列一致但参考范围不一致，上一轮只核对48D接口/MJB还不充分；未证明其解释全部振荡，保持权重的参考对照未运行。
+- 公共执行/观测器/WBC/动作核心hash和action_filter_config一致，前7关节索引与执行器相关参数逐值一致，25Hz相同。adapter差异仅增加其他contract分发；当前ESN仍走同一路径。Jacobain重建未出现秩切换；其与live缓存wrench最大差0.0003632，首版过严精确重建断言失败已保留，不伪称这部分逐位重放一致。
+- 已核验服务器 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/original_esn_old_office_chatter_20261013_v1/evidence/`（14文件1824405字节，manifest `adbf15d0a6b3f4f6230b27b43514663d8c98f849b79f2f567f03fd508c67f13c`），含图/数值/失败与源码；以及同根 `original_esn_transfer_contract_20261013_v1/evidence/`（4文件19385字节，manifest `03daee8ee4301536115ff711d7e1f041f7f1c073dfe50b60afd14dbf74d04f25`），含契约审计/源码/报告/adapter差异。均有父目录ARCHIVE_VERIFICATION.json。
+- 已完成：时序/读出/训练范围/接口审计；运行中：原公平比较服务未重启；未完成：公共参考对齐实现和冻结权重因果对照。后续不得偷偷压缩actor误差或只给ESN添加滤波来改善这条结果；若恢复共同参考，须所有方法一致、新旧实验单列。使用sii-research-sync，本机1线程/1GiB/禁swap，服务器仅文件存储；开工main `74fcd826741bc0b40bd0f031932f2e1880f26665`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，保留他人会议prompt。
+
 ## 2026-10-13 — 当前原ESN跨布局测试：水杯／高柱旧综合环境
 
 - 应用户要求，将当前原checkpoint `acd3b27e…` 直接接入9月28日原MJB `586dd7f2…`；55秒单回合，未训练/调权重/改环境/改gate。当前评估器与名义控制代码，不冒充9月28日整个软件运行时复现，也不混入当前公平矩阵。
