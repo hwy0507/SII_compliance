@@ -19,6 +19,7 @@ import threading
 import time
 
 GIB = 1024**3
+DISPATCH = 'dispatch_v4'
 
 
 def read(path):
@@ -51,7 +52,7 @@ def admission(available, new_cap, active, reserve):
 def neural_cap(peak, full_horizon):
     if not full_horizon or peak <= 0:return 3*GIB
     # At least 2x the full-episode peak including compression/audit/analysis.
-    for cap in (3*GIB//2,2*GIB,3*GIB):
+    for cap in range(6*(GIB//4), 3*GIB+1, GIB//4):
         if 2*peak <= cap:return cap
     return 3*GIB
 
@@ -64,22 +65,30 @@ def memory_receipt(path):
 
 
 def prepare(out):
-    dest=out/'dispatch_v3';dest.mkdir(exist_ok=False)
+    dest=out/DISPATCH;dest.mkdir(exist_ok=False)
     script=dest/Path(__file__).name;shutil.copy2(Path(__file__),script)
     old=read(out/'REGISTRATION.json')
-    write(dest/'REGISTRATION.json',dict(schema='sii-fair-resource-amendment-v3',registered_utc=now(),
+    old_pilot=out/'dispatch_v3/RESOURCE_PILOT.json'
+    pilot=read(old_pilot)
+    pilot.update(neural_cap_bytes=neural_cap(pilot['peak_bytes'],pilot['full_horizon']),
+                 predecessor_receipt=str(old_pilot),predecessor_receipt_sha256=sha(old_pilot),
+                 rule='Same >=2x full-episode peak, quarter-GiB rounding; no repeated pilot')
+    write(dest/'RESOURCE_PILOT.json',pilot)
+    write(dest/'REGISTRATION.json',dict(schema='sii-fair-resource-amendment-v4',registered_utc=now(),
         authority='2026-10-13 user: fully use compute and accelerate evaluation; local only remains in force',
         source_sha256=sha(script),original_registration_sha256=sha(out/'REGISTRATION.json'),
         original_source_manifest_sha256=sha(out/'SOURCE_HASHES.json'),
         original_deadline_utc=old['dispatch_deadline_utc'],new_dispatch_deadline=False,
-        handoff_stop_sha256=sha(out/'STOP_REQUESTED'),previous_service='sii-fair-comparison-20261013-v2.service',
+        handoff_stop_sha256=sha(out/'DISPATCH_STOP_REQUESTED'),handoff_stop_path=str(out/'DISPATCH_STOP_REQUESTED'),
+        previous_service='sii-fair-parallel-20261013-v3.service',
         max_lanes=4,cpu_cores=[1,6,2,7],numeric_threads=1,heavy_memory_cap_bytes=3*GIB,
         headroom_bytes=3*GIB//4,memory_swap_max=0,
         admission='Available >= new hard cap + sum(active hard cap-current cgroup usage) + .75GiB. Stop admissions under pressure; no killing desktop apps.',
-        pilot='First registered new ESN evaluation, full55s required for low-memory tier; no extra episode or result-based selection. Cap1.5/2/3GiB requires >=2x measured cgroup peak including postprocessing.',
+        pilot='Reuse full55s v3 ESN pilot; peak1.079524GiB ->2.25GiB cap. No extra episode. Same >=2x peak but quarter-GiB rounding between1.5 and3GiB.',
+        category_memory='Other kinds initially3GiB. After a full55s episode, apply same 2x/quarter-GiB rule to that category (neural,office,nominal,classical-controller,adapted_rl-controller). Use maximum observed complete-episode peak, including postprocessing; short episodes never lower caps.',
         dispatch='At most4lanes. First wait for original coordinator/child/publication to exit, reuse all completed fits and any evaluated pairs. Then per condition select first memory-admissible model. Heavy candidates interleaved with neural checkpoints; no outcome-based scheduling.',
         scope='39fits/288original episodes, unchanged source/data/selection/models/environment/gates/dt/seed/audits. Classical and RL retain3GiB caps. RL GPU contexts remain native; never migrate frozen physics to GPU.',
-        stop_file=str(out/'DISPATCH_STOP_REQUESTED'),server_compute=False))
+        stop_file=str(out/'DISPATCH_V4_STOP_REQUESTED'),server_compute=False))
     print(json.dumps(dict(dispatch=str(dest),sha256=sha(dest/'REGISTRATION.json'))))
 
 
@@ -94,25 +103,27 @@ def build_class(out):
         def __init__(self, root):
             self.mutex=threading.RLock();self.local=threading.local();self.lanes={}
             super().__init__(root)
-            self.amend=read(root/'dispatch_v3/REGISTRATION.json')
+            self.amend=read(root/DISPATCH/'REGISTRATION.json')
             require(sha(Path(__file__))==self.amend['source_sha256'],'Dispatcher source changed')
             require(sha(root/'REGISTRATION.json')==self.amend['original_registration_sha256'],'Science registration changed')
             require(sha(root/'SOURCE_HASHES.json')==self.amend['original_source_manifest_sha256'],'Frozen source changed')
             require(self.reg['dispatch_deadline_utc']==self.amend['original_deadline_utc'],'Deadline changed')
             self.cg_parent=(Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')).parent
             self.memory_cap=3*GIB
-            if (root/'dispatch_v3/RESOURCE_PILOT.json').exists():
-                self.memory_cap=read(root/'dispatch_v3/RESOURCE_PILOT.json')['neural_cap_bytes']
+            if (root/DISPATCH/'RESOURCE_PILOT.json').exists():
+                self.memory_cap=read(root/DISPATCH/'RESOURCE_PILOT.json')['neural_cap_bytes']
+            self.profiles={'neural':read(root/DISPATCH/'RESOURCE_PILOT.json')['peak_bytes']}
+            if (root/DISPATCH/'CATEGORY_PEAKS.json').exists():self.profiles=read(root/DISPATCH/'CATEGORY_PEAKS.json')
 
         def save(self, **kwargs):
             with self.mutex:super().save(**kwargs)
 
         def check(self, cutoff=None):
             require(datetime.now(timezone.utc)<(cutoff or self.deadline),'Dispatch deadline reached')
-            require(not (self.out/'DISPATCH_STOP_REQUESTED').exists(),'Stop requested at boundary')
+            require(not (self.out/'DISPATCH_V4_STOP_REQUESTED').exists(),'Stop requested at boundary')
             # The original stop is consumed only by this explicitly registered
             # resource handoff. An unrelated/changed stop is never ignored.
-            require(sha(self.out/'STOP_REQUESTED')==self.amend['handoff_stop_sha256'],'Handoff stop changed')
+            require(sha(self.amend['handoff_stop_path'])==self.amend['handoff_stop_sha256'],'Handoff stop changed')
 
         def train(self):
             if (self.out/'MODEL_LOCK.json').exists():
@@ -124,7 +135,11 @@ def build_class(out):
             super().train()
 
         def cap(self,model):
-            return self.memory_cap if model.get('checkpoint') and model['worker_kind']=='office' else 3*GIB
+            return neural_cap(self.profiles.get(self.category(model),0),True)
+
+        def category(self,model):
+            if model.get('checkpoint') and model['worker_kind']=='office':return 'neural'
+            return model['worker_kind']+'_'+str(model.get('controller',''))
 
         def usage(self):
             result=[]
@@ -151,8 +166,8 @@ def build_class(out):
             lane_id=self.local.lane
             with self.mutex:
                 lane=self.lanes[lane_id];cap=lane['cap'];cpu=lane['cpu']
-            unit='sii-fair-p3-'+hashlib.sha256((str(self.out)+name).encode()).hexdigest()[:16]
-            profile=self.out/'dispatch_v3'/(name+'.memory.json')
+            unit='sii-fair-p4-'+hashlib.sha256((str(self.out)+name).encode()).hexdigest()[:16]
+            profile=self.out/DISPATCH/(name+'.memory.json')
             # ExecStopPost captures the exact kernel peak BEFORE the cgroup is
             # removed; sampled RSS would miss compression/allocation spikes.
             import shlex
@@ -163,7 +178,7 @@ def build_class(out):
                 '--property=ExecStopPost='+stop,'--working-directory='+str(self.source)]
             argv+=['--setenv='+k+'='+v for k,v in self.env.items()]+command
             r=dict(status='running',command=command,managed_command=argv,started_utc=now(),unit=unit,
-                   lane=lane_id,cpu=cpu,memory_cap_bytes=cap,dispatch_sha256=sha(self.out/'dispatch_v3/REGISTRATION.json'))
+                   lane=lane_id,cpu=cpu,memory_cap_bytes=cap,dispatch_sha256=sha(self.out/DISPATCH/'REGISTRATION.json'))
             write(receipt,r)
             with self.mutex:
                 lane.update(unit=unit,job=name,started_utc=now())
@@ -192,12 +207,12 @@ def build_class(out):
             report=dict(updated_utc=now(),interpretation='Same prospective8 and frozen39fit/36model lock; resource-only local parallel dispatch. Same science as serial protocol, no test-based model changes.',
                 rows=ordered,methods=summarise(ordered,[m['name'] for m in models],set(ci)),expected_rows=288,
                 previous_sealed_test_reads=0,condition_file_sha256=sha(self.out/'CONDITIONS.json'),
-                resource_amendment_sha256=sha(self.out/'dispatch_v3/REGISTRATION.json'))
+                resource_amendment_sha256=sha(self.out/DISPATCH/'REGISTRATION.json'))
             write(self.out/'REPORT.json',report);(self.out/'REPORT.md').write_text(render(report))
-            self.save(evaluated=len(rows),expected=288,dispatcher='parallel_v3',neural_memory_cap_bytes=self.memory_cap)
+            self.save(evaluated=len(rows),expected=288,dispatcher=DISPATCH,neural_memory_cap_bytes=self.memory_cap)
 
         def compare(self):
-            self.save(status='prospective_evaluation',dispatcher='parallel_v3')
+            self.save(status='prospective_evaluation',dispatcher=DISPATCH)
             models=read(self.out/'MODEL_LOCK.json')['models'];conditions=read(self.out/'CONDITIONS.json')['conditions']
             rows=[];completed=set()
             # A genuine serial full episode can be reused but never relabeled
@@ -208,9 +223,17 @@ def build_class(out):
                     rows.append(r);completed.add((r['method'],r['condition']))
             def add(row):
                 key=(row['method'],row['condition']);require(key not in completed,'Duplicate episode')
+                model=next(m for m in models if m['name']==row['method'])
+                name=row['method']+'__'+row['condition']
+                files=[self.out/DISPATCH/(n+'.memory.json') for n in (name,name+'_metrics')]
+                if row['metrics']['full_horizon'] and all(p.exists() for p in files):
+                    category=self.category(model)
+                    self.profiles[category]=max(self.profiles.get(category,0),*[read(p)['memory_peak_bytes'] for p in files])
+                    write(self.out/DISPATCH/'CATEGORY_PEAKS.json',self.profiles)
+                    self.memory_cap=neural_cap(self.profiles['neural'],True)
                 rows.append(row);completed.add(key);self.write_report(rows,models,conditions)
             # One original planned episode; budget remains288, not289.
-            pilot_file=self.out/'dispatch_v3/RESOURCE_PILOT.json'
+            pilot_file=self.out/DISPATCH/'RESOURCE_PILOT.json'
             if not pilot_file.exists():
                 pair=next(((m,c) for c in conditions for m in models if m['group']=='primary' and
                            m['family']=='esn_gradient' and (m['name'],c['id']) not in completed),None)
@@ -221,7 +244,7 @@ def build_class(out):
                 self.lanes[0]=dict(cap=3*GIB,cpu=self.amend['cpu_cores'][0],unit=None)
                 row=self.lane_evaluate(0,m,c);self.lanes.clear();add(row)
                 name=m['name']+'__'+c['id']
-                peak=max(read(self.out/'dispatch_v3'/(n+'.memory.json'))['memory_peak_bytes'] for n in (name,name+'_metrics'))
+                peak=max(read(self.out/DISPATCH/(n+'.memory.json'))['memory_peak_bytes'] for n in (name,name+'_metrics'))
                 self.memory_cap=neural_cap(peak,row['metrics']['full_horizon'])
                 write(pilot_file,dict(created_utc=now(),episode=name,full_horizon=row['metrics']['full_horizon'],
                     peak_bytes=peak,neural_cap_bytes=self.memory_cap,rule='2x peak; all heavy methods keep3GiB',
@@ -273,7 +296,7 @@ def build_class(out):
             self.save(status='complete_review_required',active_jobs={})
 
         def publish(self,stage):
-            phase='parallel_'+stage if not stage.startswith('parallel_') else stage
+            phase='parallel_v4_'+stage
             publish_snapshot(self,phase)
 
     return ParallelCampaign
@@ -289,9 +312,10 @@ def publish_snapshot(campaign,stage):
         if p.is_file() and p.suffix in ('.json','.md'):shutil.copy2(p,evidence/p.name)
     s=read(evidence/'execution.json');s['live_campaign_status']=s['status'];s['status']='report_snapshot';write(evidence/'execution.json',s)
     shutil.copytree(campaign.source,evidence/'source',ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
-    shutil.copytree(out/'dispatch_v3',evidence/'dispatch_v3',ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
-    folders=('learning',) if stage=='parallel_models_locked' else ()
-    if stage=='parallel_final':folders=('data','learning','dependencies','receipts','configs','metrics','evaluation')
+    for folder in ('dispatch_v3',DISPATCH):
+        shutil.copytree(out/folder,evidence/folder,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
+    folders=('learning',) if stage.endswith('_models_locked') else ()
+    if stage.endswith('_final'):folders=('data','learning','dependencies','receipts','configs','metrics','evaluation')
     for folder in folders:shutil.copytree(out/folder,evidence/folder,copy_function=os.link,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
     archive=dict(status='pending',local=str(evidence))
     try:
@@ -335,7 +359,7 @@ def publish_snapshot(campaign,stage):
 
 
 def run(out):
-    amend=read(out/'dispatch_v3/REGISTRATION.json')
+    amend=read(out/DISPATCH/'REGISTRATION.json')
     assert sha(Path(__file__))==amend['source_sha256']
     # Wait without the global simulator lock. Avoid original publisher races.
     while True:
@@ -343,13 +367,13 @@ def run(out):
         if p.stdout.strip() not in ('active','activating','deactivating'):break
         if datetime.now(timezone.utc)>=datetime.fromisoformat(amend['original_deadline_utc']):raise RuntimeError('Deadline while waiting')
         time.sleep(5)
-    previous=out/'dispatch_v3/PREVIOUS_EXECUTION.json'
+    previous=out/DISPATCH/'PREVIOUS_EXECUTION.json'
     if not previous.exists():shutil.copy2(out/'execution.json',previous)
     state=read(previous)
     assert state.get('error')=="ValueError('Stop requested at boundary')",'Unexpected predecessor failure; do not mask it'
     cls=build_class(out);campaign=cls(out)
     campaign.state.pop('ended_utc',None);campaign.state.pop('error',None)
-    campaign.save(dispatcher='parallel_v3',handoff_completed_utc=now(),previous_execution_sha256=sha(previous))
+    campaign.save(dispatcher=DISPATCH,handoff_completed_utc=now(),previous_execution_sha256=sha(previous))
     campaign.run()
 
 

@@ -19,7 +19,8 @@ def test_three_light_lanes_fit_without_promising_four():
 
 def test_pilot_margin_and_short_episode_do_not_shrink_cap():
     assert neural_cap(.5*GIB,True)==1.5*GIB
-    assert neural_cap(.8*GIB,True)==2*GIB
-    assert neural_cap(1.1*GIB,True)==3*GIB
+    assert neural_cap(.8*GIB,True)==1.75*GIB
+    assert neural_cap(1.1*GIB,True)==2.25*GIB
+    assert neural_cap(1159131136,True)==2.25*GIB
     assert neural_cap(.1*GIB,False)==3*GIB
     assert neural_cap(0,True)==3*GIB
