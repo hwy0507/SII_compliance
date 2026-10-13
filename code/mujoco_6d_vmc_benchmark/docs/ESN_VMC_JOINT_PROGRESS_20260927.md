@@ -1,5 +1,11 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-13T10:06:54.344118+00:00 — 公平比较并行调度 parallel_v4_parallel_condition_prospective_20261013_acceptance_001
+
+- 状态 `prospective_evaluation`，已评 72/288；资源调整不改实验/模型/门槛，旧封存集未读。
+- 归档 `verified`，详见 `code/mujoco_6d_vmc_benchmark/docs/FAIR_COMPARISON_LIVE_20261013.md`。全部失败保留，完成前不作结果排名。
+
+
 ## 2026-10-13 — 冻结ESN参数，定位旧场景参考契约差异
 
 已完成只读诊断：12秒附近ESN请求频繁饱和翻转，负载×位置误差读出放大明显。

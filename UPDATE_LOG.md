@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-13T10:06:54.344118+00:00 — 公平比较并行调度 parallel_v4_parallel_condition_prospective_20261013_acceptance_001
+
+- 状态 `prospective_evaluation`，已评 72/288；资源调整不改实验/模型/门槛，旧封存集未读。
+- 归档 `verified`，详见 `code/mujoco_6d_vmc_benchmark/docs/FAIR_COMPARISON_LIVE_20261013.md`。全部失败保留，完成前不作结果排名。
+
+
 ## 2026-10-13 — 旧场景抽动诊断与冻结ESN迁移契约核查
 
 - 用户要求不改ESN具体参数，排查迁移/适配结构。本轮只读分析，checkpoint `acd3b27e…`、归一化、储备池、读出、输出增益、过滤参数、环境与gate全部未变，无新物理仿真。新增两份报告 `code/mujoco_6d_vmc_benchmark/docs/ORIGINAL_ESN_OLD_OFFICE_CHATTER_20261013.md` 与 `ORIGINAL_ESN_TRANSFER_CONTRACT_20261013.md`，对应tools脚本和docs/evidence小证据。
