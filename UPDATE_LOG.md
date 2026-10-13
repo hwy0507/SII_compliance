@@ -2836,3 +2836,17 @@
 - 拼接 segment/55k extension/110k continuation/recovery 日志并按训练步去重，覆盖直接动作两种 reward 标准和参数输出 admittance、impedance、VMC、历史熵附组。
 - 主图：`code/mujoco_6d_vmc_benchmark/outputs/reward_training_curves_20261013/reward_convergence_episode_return.png`及同名PDF；脚本：`tools/plot_reward_convergence_episode_return_20261013.py`。transition-level辅助图仍保留。
 - 观察：各方法大多在自身 reward 尺度上较早进入平台，直接动作两种标准的水平明显不同；这说明目标回报稳定化，但不等同任务成功率或安全收敛。
+
+## 2026-10-14 — 夜间补充RL actor/critic loss收敛图
+
+- 自动任务按已授权范围完成只读分析；未重训、未启动仿真、未影响在途作业。
+- 从近期 `baseline_local_rl_20261009` 的 `optimizer.jsonl` 读取实际 `actor/loss`、`critic/loss`、`actor/entropy`、`temperature/value`；按真实训练步拼接 segment/extension/continuation/recovery，重复同一步优化记录先取均值，再按1000步分箱，粗线为约5000步移动平均。
+- 主图：`code/mujoco_6d_vmc_benchmark/outputs/reward_training_curves_20261013/loss_convergence_actor_critic.png/pdf`；辅助图：`loss_convergence_auxiliary.png/pdf`；说明：`LOSS_README.md`；脚本：`tools/plot_rl_loss_convergence_20261013.py`。
+- 图上可见 actor/critic loss 在约5万–8万步附近出现明显下降后进入平台，随后部分方法缓慢回升；这只能说明优化器诊断量的阶段性稳定，不能单独证明策略任务成功或严格收敛。旧PPO/SAC pilot的monitor/TensorBoard已核对但因协议不同单独保留，未混图。
+
+## 2026-10-14 — 夜间补充RL actor/critic loss收敛图
+
+- 自动任务按已授权范围完成只读分析；未重训、未启动仿真、未影响在途作业。
+- 从近期 `baseline_local_rl_20261009` 的 `optimizer.jsonl` 读取实际 `actor/loss`、`critic/loss`、`actor/entropy`、`temperature/value`；按真实训练步拼接 segment/extension/continuation/recovery，重复同一步优化记录先取均值，再按1000步分箱，粗线为约5000步移动平均。
+- 主图：`code/mujoco_6d_vmc_benchmark/outputs/reward_training_curves_20261013/loss_convergence_actor_critic.png/pdf`；辅助图：`loss_convergence_auxiliary.png/pdf`；说明：`LOSS_README.md`；脚本：`tools/plot_rl_loss_convergence_20261013.py`。
+- 图上可见 actor/critic loss 在约5万–8万步附近出现明显下降后进入平台，随后部分方法缓慢回升；这只能说明优化器诊断量的阶段性稳定，不能单独证明策略任务成功或严格收敛。旧PPO/SAC pilot的monitor/TensorBoard已核对但因协议不同单独保留，未混图。
