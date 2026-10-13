@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-13 — 原ESN残差链路诊断与002完整视频
+
+- 用户要求先检查根本问题、观察另一条件，暂不修改算法。新增 `code/mujoco_6d_vmc_benchmark/docs/ORIGINAL_ESN_ALGORITHM_REVIEW_20261013.md` 和只读诊断脚本 `tools/review_original_esn_residual_20261013.py`（benchmark内）。全部8条原ESN轨迹的动作/128维状态/公共过滤器精确重放一致，输入与源码hash核对，零负载从reset输出为零、未读取字段扰动不改变输出。相同实现重放不是独立控制理论证明。
+- 001的25.48–30.20s窗口：上抬请求/过滤后均值均31.720mm/s，z过滤差<2e-15mm/s，最大请求仅为320mm/s上限的17.162%；名义比例仍94.376%。不支持“残差硬上限太小”，也不据此贸然扩大动作。003有22.56s同路点驻留并最终任务失败，说明脱困局限不只存在于成功案例。保留全部Task7/8、Strict2/8及安全失败。
+- 按编号顺延选择002（查看成绩前确定），相同冻结几何、不同扰动；完整55s/1375帧/25fps三视角MP4，保存MJB和状态重渲染，无新物理仿真。34.80s开始释放、35.32s撤离；Task=true/Strict=false，RMSE28.050mm/峰矩51.253Nm/峰速0.36975m/s，柱/link7最大穿透0.550130mm。顶部穿透是整回合最大值。全帧解码、18s/35s目视验证通过。
+- 按sii-research-sync归档并逐文件核验18文件：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/original_esn_algorithm_review_20261013_v1/`，含analysis/REVIEW.json/execution.json、media、诊断/渲染源码与四个冻结重放源码。REVIEW SHA256 `27d156bcf128c0daa89b59fff48445a340a508cf539eada3ac025b8298cc7f3f`；MP4 `3e0c6c5eed564b81b1e046cdf65e2f8e277e8445bf9f9f7f7f53b67af5cf7b30`；报告 `79e812818abdd95b27318c9580cad2e7f1544e7ea6a02f1bcac99c03dd830fdc`。
+- 开工核对main `3ef9208c0325da2aba70067cdf0c75f182314106`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及日志/AGENTS。完成静态检查/历史重放/视频/归档；原公平比较服务PID1775739保持运行，未重启；闭环稳定性/恢复改进消融/新公平矩阵未完成。只本机计算，渲染1线程/1GiB/禁swap；服务器仅存储；保留他人会议prompt。
+
 ## 2026-10-13 — 原 ESN 完成任务但 Strict 未通过的三视角视频
 
 - 用户请求观看执行MP4；取当前8条件中编号最前的Task成功/Strict失败原ESN回合 `repair_development_001`，用于说明两种判据的区别，并非随机抽样或整体成功率证据。原checkpoint `acd3b27e…`；Task=true、Strict=false，最大外穿透0.380594mm（柱/link7），49.08s释放、49.88s撤离；原门槛不变。
