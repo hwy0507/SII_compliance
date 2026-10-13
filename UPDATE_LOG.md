@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-13 — 原 ESN 完成任务但 Strict 未通过的三视角视频
+
+- 用户请求观看执行MP4；取当前8条件中编号最前的Task成功/Strict失败原ESN回合 `repair_development_001`，用于说明两种判据的区别，并非随机抽样或整体成功率证据。原checkpoint `acd3b27e…`；Task=true、Strict=false，最大外穿透0.380594mm（柱/link7），49.08s释放、49.88s撤离；原门槛不变。
+- 本地复用已保存qpos/qvel/ctrl/mocap和MJB，只做mj_forward渲染，无重新物理积分/策略执行。使用现有 `tools/render_office_threeview_20260929.py`，stride1/fps25/gif-stride5；原速55秒、1375帧、1920×560、overview/end-effector/pillar-corner三视角。单线程库/编码器、CPUQuota100%/MemoryMax1GiB/Swap0，服务正常结束，原公平比较未重启。
+- 验证：源轨迹 `81a8efb51968b131f5db64aa409bd41d208c85d44696374f6c26b62bc1c5d3e5`、MJB `d4c28e40…`、原模型hash一致；视频全帧解码及55秒/1375帧检查通过；18s棍推和55s末帧三视角目视核对；输入hash未变。顶部穿透数值为整回合最大值，不是当前帧穿透。
+- 已核验服务器 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/original_esn_media_20261013_001/`，含MP4/GIF、两帧、manifest及实际renderer源码，6文件hash与本地一致；MP4 SHA256 `138db2a77c791732dc25aebdd02c7dbd6f8cc0d4c8a69039a2ab04a518a3f638`，manifest `1e0347ffb36dab9d480d7093031ebaad4d88872b32d4dc4400e1c7e2fe2f2d0b`。本地播放缓存为benchmark下 `outputs/original_esn_media_20261013_001/replay_threeview.mp4`。
+- 开工核对main `d703f57bf487fbe7cb67f20cacfcf3649b7e496e`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及两分支日志，按sii-research-sync/AGENTS发布；保留他人会议prompt。完成视频与归档，原ESN安全约束不足仍保留，新公平比较仍未完成。
+
 ## 2026-10-13 — 原 ESN 组会汇报稿与训练谱系核验
 
 - 新增 `code/mujoco_6d_vmc_benchmark/docs/ORIGINAL_ESN_GROUP_MEETING_20261013.md`：八页讲述提纲、两分钟口述稿、teacher来源/资格筛选、真实训练配置、全过程曲线讲解及全部21旧配置表。历史24条留出与当前8条开发复测分开，新ESN/新RNN仅作明确标注的进展对照。
