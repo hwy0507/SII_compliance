@@ -2816,3 +2816,17 @@
 - 图中每点为一个 episode 的 `final_reward` 求和，横轴为该回合最后记录的训练步；同时保留原始点线和 15 回合移动平均。未重训、未仿真、未修改既有运行。
 - 产物在 `code/mujoco_6d_vmc_benchmark/outputs/reward_training_curves_20261013/`，含 PNG、PDF、说明；脚本为 `code/mujoco_6d_vmc_benchmark/tools/plot_reward_training_curves_20261013.py`。部分历史日志在 97,625 或 108,458 步封存，图中保留实际终点，不补齐。
 - 这是训练目标回报曲线，不等同任务成功或安全收敛；远端 fetch 因网络不可达，本轮按本地缓存分支状态完成。
+
+## 2026-10-13 — 重画RL reward收敛过程图
+
+- 根据用户反馈，弃用只按回合数量且从中途开始的旧主图，改用真实训练步拼接后的完整 episode return；上图保留原始回报，下图为10回合移动平均趋势。
+- 拼接 segment/55k extension/110k continuation/recovery 日志并按训练步去重，覆盖直接动作两种 reward 标准和参数输出 admittance、impedance、VMC、历史熵附组。
+- 主图：`code/mujoco_6d_vmc_benchmark/outputs/reward_training_curves_20261013/reward_convergence_episode_return.png`及同名PDF；脚本：`tools/plot_reward_convergence_episode_return_20261013.py`。transition-level辅助图仍保留。
+- 观察：各方法大多在自身 reward 尺度上较早进入平台，直接动作两种标准的水平明显不同；这说明目标回报稳定化，但不等同任务成功率或安全收敛。
+
+## 2026-10-13 — 重画RL reward收敛过程图
+
+- 根据用户反馈，弃用只按回合数量且从中途开始的旧主图，改用真实训练步拼接后的完整 episode return；上图保留原始回报，下图为10回合移动平均趋势。
+- 拼接 segment/55k extension/110k continuation/recovery 日志并按训练步去重，覆盖直接动作两种 reward 标准和参数输出 admittance、impedance、VMC、历史熵附组。
+- 主图：`code/mujoco_6d_vmc_benchmark/outputs/reward_training_curves_20261013/reward_convergence_episode_return.png`及同名PDF；脚本：`tools/plot_reward_convergence_episode_return_20261013.py`。transition-level辅助图仍保留。
+- 观察：各方法大多在自身 reward 尺度上较早进入平台，直接动作两种标准的水平明显不同；这说明目标回报稳定化，但不等同任务成功率或安全收敛。
