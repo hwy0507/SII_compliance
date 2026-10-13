@@ -1,5 +1,12 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+## 2026-10-13T04:25:46.077489+00:00 — 15小时teacher/student接续：final
+
+- 实际状态 `complete_review_required`；baseline审计：True。
+- 归档状态 `verified`；详情见 `code/mujoco_6d_vmc_benchmark/docs/TEACHER_STUDENT_15H_LIVE_20261012.md`。
+- 单模拟器/1线程/3GiB，只本机计算；不改环境/gate、不解封保留条件，失败均保留。
+
+
 ## 2026-10-13T00:01:28.831803+00:00 — 15小时teacher/student接续：teacher_data_complete
 
 - 实际状态 `collecting`；baseline审计：True。

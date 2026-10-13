@@ -1,13 +1,13 @@
 # 15小时本机teacher→student进展
 
-更新时间：2026-10-13T00:01:28.830522+00:00；阶段：teacher_data_complete。
+更新时间：2026-10-13T04:25:46.075359+00:00；阶段：final。
 
 Baseline完整表先审计，然后才采集/训练；新数据与模型结果不得当作封存泛化成绩。
 
 ```json
 {
   "execution": {
-    "status": "collecting",
+    "status": "complete_review_required",
     "started_utc": "2026-10-12T13:45:02.122548+00:00",
     "jobs": [],
     "server_compute": false,
@@ -18,22 +18,24 @@ Baseline完整表先审计，然后才采集/训练；新数据与模型结果�
       "unit": "sii-paired-dev-fc3589409a1e12a2",
       "started_utc": "2026-10-12T17:49:45.924210+00:00"
     },
-    "updated_utc": "2026-10-13T00:01:22.066859+00:00",
+    "updated_utc": "2026-10-13T04:06:33.209450+00:00",
     "active": null,
     "baseline_completed_utc": "2026-10-12T17:56:16.164697+00:00",
     "baseline_report_sha256": "e6938945b4b2ff1d8ee562027a35272dbb23a582d6a28fc6ba6f1d6194affcc7",
-    "collection_completed": 50
+    "collection_completed": 50,
+    "student_rows": 40,
+    "ended_utc": "2026-10-13T04:06:33.209447+00:00"
   },
   "archive": {
     "status": "verified",
     "receipt": {
-      "verified_utc": "2026-10-13T00:01:27.656756+00:00",
-      "files_verified": 985,
-      "total_bytes": 52340205,
-      "manifest_sha256": "d8adb1f98f31565adf4adbd3990eba03f676c8491aa7bcfa83641479b77d15ab",
+      "verified_utc": "2026-10-13T04:25:44.841744+00:00",
+      "files_verified": 3994,
+      "total_bytes": 15416918386,
+      "manifest_sha256": "4f7ce4dca8d98b3a713616aca0d418da5cfba5eb7c05bc0d606b65700ab3aec4",
       "actual_compute_host": "airpig",
-      "local_execution_root": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/teacher_student_15h_20261012_v3/delivery_teacher_data_complete/evidence",
-      "published_evidence": "/home/arm1/sii_shared/SII_compliance/runs/main/teacher_student_15h_20261012_v3_teacher_data_complete/evidence",
+      "local_execution_root": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/teacher_student_15h_20261012_v3/delivery_final/evidence",
+      "published_evidence": "/home/arm1/sii_shared/SII_compliance/runs/main/teacher_student_15h_20261012_v3_final/evidence",
       "historical_execution_paths_preserved": true
     }
   }
@@ -42,6 +44,25 @@ Baseline完整表先审计，然后才采集/训练；新数据与模型结果�
 
 数据：44训练身份、11验证身份，75625实际控制帧；teacher混合=True。
 
+|网络|seed|可训练参数|存储浮点标量（含固定矩阵/归一化）|验证动作MSE|
+|---|---:|---:|---:|---:|
+|esn|2026101201|3780|41887|0.000245514|
+|esn|2026101202|3780|41887|0.0002461354|
+|esn|2026101203|3780|41887|0.0002489043|
+|matched_rnn|2026101201|40132|41887|0.000245514|
+|matched_rnn|2026101202|40132|41887|0.0002461354|
+|matched_rnn|2026101203|40132|41887|0.0002489043|
+|matched_mlp|2026101201|23748|41887|0.001073052|
+|matched_mlp|2026101202|23748|41887|0.001086025|
+|matched_mlp|2026101203|23748|41887|0.001083082|
+|ordinary_rnn|2026101201|21888|21906|0.0007285402|
+|ordinary_rnn|2026101202|21888|21906|0.0007041986|
+|ordinary_rnn|2026101203|21888|21906|0.0007256639|
+|ordinary_mlp|2026101201|5504|5522|0.001690781|
+|ordinary_mlp|2026101202|5504|5522|0.001659466|
+|ordinary_mlp|2026101203|5504|5522|0.001668592|
+
+存储标量不等于可训练参数；matched包含父ESN拟合成本。闭环仅预登记首seed，另两seed仅离线。
 
 # 同一八条件开发比较
 
@@ -98,6 +119,36 @@ Shared development cohort, not final/heldout generalization or equal training bu
 | direct_metric | 32.232 / 8 | 97.005 / 3 | NA / 0 | 39.805 | 0.438 | 0/8 | 0/3 |
 | direct_office_task_historical_entropy | NA / 0 | NA / 0 | 52.778 / 8 | 0.000 | 0.000 | 0/0 | 0/0 |
 | parameter_impedance_historical_entropy | 15.932 / 8 | 158.244 / 1 | 17.668 / 8 | 47.240 | 0.077 | 8/8 | 0/1 |
+
+P95列为各实际接触回合P95的均值；冲量按全部8回合实际窗口均值，非接触为真实零冲量。
+未观测到恢复者按既定窗口删失；未接触不作为恢复失败。此表不是相同接触轨迹的因果排名。
+所有逐回合接触/冲量/恢复指标保留在REPORT.json rows[].metrics；缺接触与删失不填零。
+经典两候选、RL两个熵附组全部展示；不能把开发调参成绩称为盲测或RL收敛。
+
+
+# 同一八条件开发比较
+
+Expanded real teacher dataset; same8 development identities and formal resolution. Predeclared one closed-loop seed;3 seeds offline. Not final heldout or proof of superiority.
+
+|方法|已评/计划|Task|Strict|RMSE mm|回合峰矩均值 Nm|回合峰速均值 m/s|早停|
+|---|---:|---:|---:|---:|---:|---:|---:|
+| esn | 8/8 | 5/8 | 3/8 | 33.9734 | 49.6837 | 0.3745 | 0 |
+| matched_rnn | 8/8 | 5/8 | 3/8 | 33.9734 | 49.6837 | 0.3745 | 0 |
+| matched_mlp | 8/8 | 3/8 | 2/8 | 35.4872 | 46.1980 | 0.3750 | 0 |
+| ordinary_rnn | 8/8 | 7/8 | 5/8 | 35.2777 | 51.4030 | 0.3675 | 0 |
+| ordinary_mlp | 8/8 | 0/8 | 0/8 | 42.8512 | 41.1881 | 0.3645 | 0 |
+
+失败均计入分母；早停的连续指标只覆盖实际时长，不与完整55秒直接判优。
+
+## 接触窗口柔顺指标（描述性，需同时看接触覆盖和任务成功）
+
+|方法|人手P95 N / 接触回合|棍P95 N / 接触回合|桌角P95 N / 接触回合|人手冲量 N·s|棍冲量 N·s|人手恢复/暴露|棍恢复/暴露|
+|---|---:|---:|---:|---:|---:|---:|---:|
+| esn | 10.278 / 8 | 12.524 / 8 | 10.615 / 8 | 24.014 | 30.019 | 4/8 | 2/8 |
+| matched_rnn | 10.278 / 8 | 12.524 / 8 | 10.615 / 8 | 24.014 | 30.019 | 4/8 | 2/8 |
+| matched_mlp | 23.372 / 8 | 13.086 / 8 | 6.484 / 8 | 55.905 | 39.230 | 2/8 | 0/8 |
+| ordinary_rnn | 26.102 / 8 | 14.848 / 8 | 7.720 / 8 | 51.319 | 39.408 | 2/8 | 0/8 |
+| ordinary_mlp | 37.749 / 8 | 11.524 / 8 | 11.672 / 8 | 98.536 | 34.375 | 0/8 | 1/8 |
 
 P95列为各实际接触回合P95的均值；冲量按全部8回合实际窗口均值，非接触为真实零冲量。
 未观测到恢复者按既定窗口删失；未接触不作为恢复失败。此表不是相同接触轨迹的因果排名。
