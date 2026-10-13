@@ -65,6 +65,16 @@
   updates/完整回合/checkpoint，不能仅凭active宣称推进。停止用独立STOP_REQUESTED在回合
   边界落盘，不向整个进程组发送停止信号。当前两路3GiB/禁swap/1线程限制不变。
 
+- **2026-10-13公平比较加速（用户新授权）**：`fair_comparison_20261013_v2`可按
+  `dispatch_v3/REGISTRATION.json`切换为本机最多4路独立回合，CPU1/6/2/7、每路1线程、禁swap。
+  先完成当前子作业并保留31个已完成拟合，再交接原全局锁；不改冻结source或39拟合/288回合协议。
+  第一个原计划ESN完整回合测内核cgroup峰值（含审计压缩），只有保留≥2倍余量时神经策略
+  worker才用1.5/2GiB上限，否则3GiB；经典/RL保持3GiB。派发须满足
+  `MemAvailable ≥ 新worker硬上限 + Σ(运行worker硬上限−当前cgroup内存，最低0) + 0.75GiB`。
+  上限4路不等于必须开4路；内存不足等待，基础设施失败停止新派发并收完其他在途回合。
+  旧STOP_REQUESTED仅按登记hash消费为本次交接，新停止入口DISPATCH_STOP_REQUESTED。
+  不重算完成回合、不延长原48小时派发截止、不使用服务器算力，不关闭用户桌面应用。
+
 - **Spark显示配置保护（用户2026-10-09明确要求）**：保持Xorg自动识别显示器。
   `/etc/X11/xorg.conf`当前不存在，旧强制headless/HDMI配置仅存为
   `/etc/X11/xorg.conf.sii-backup-20261009`，不得为训练、EGL渲染或远程访问恢复它。
