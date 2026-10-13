@@ -1,5 +1,11 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+## 2026-10-13T07:55:05.248843+00:00 — 公平比较并行调度 parallel_v4_parallel_condition_prospective_20261013_acceptance_000
+
+- 状态 `prospective_evaluation`，已评 36/288；资源调整不改实验/模型/门槛，旧封存集未读。
+- 归档 `verified`，详见 `code/mujoco_6d_vmc_benchmark/docs/FAIR_COMPARISON_LIVE_20261013.md`。全部失败保留，完成前不作结果排名。
+
+
 ## 2026-10-13 14:27 CST — 26配置全过程曲线已完成并共享
 
 - 按用户请求，用已审计208条轨迹绘制所有原/新学生、经典6配置、RL7配置及参考的全过程RMSE/实际力矩/末端速度。8条件×4组共32页PDF及32张PNG；交互HTML可选方法/条件/时间范围/误差定义，完整CSV.gz保留全部失败。原/新版本不混合，不使用未完成前瞻性结果。

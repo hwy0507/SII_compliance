@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-13T07:55:05.248843+00:00 — 公平比较并行调度 parallel_v4_parallel_condition_prospective_20261013_acceptance_000
+
+- 状态 `prospective_evaluation`，已评 36/288；资源调整不改实验/模型/门槛，旧封存集未读。
+- 归档 `verified`，详见 `code/mujoco_6d_vmc_benchmark/docs/FAIR_COMPARISON_LIVE_20261013.md`。全部失败保留，完成前不作结果排名。
+
+
 ## 2026-10-13 — 原ESN残差链路诊断与002完整视频
 
 - 用户要求先检查根本问题、观察另一条件，暂不修改算法。新增 `code/mujoco_6d_vmc_benchmark/docs/ORIGINAL_ESN_ALGORITHM_REVIEW_20261013.md` 和只读诊断脚本 `tools/review_original_esn_residual_20261013.py`（benchmark内）。全部8条原ESN轨迹的动作/128维状态/公共过滤器精确重放一致，输入与源码hash核对，零负载从reset输出为零、未读取字段扰动不改变输出。相同实现重放不是独立控制理论证明。
