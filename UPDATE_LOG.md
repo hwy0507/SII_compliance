@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-13 — 棍推对抗专项：编码器摩擦候选失败，明确物块接触与反向读出
+
+- 新增benchmark电机补偿/运行/测试/比较/读出方向/姿态几何/媒体工具，报告 `docs/ORIGINAL_ESN_ROD_OPPOSITION_20261013.md`。原ESN `acd3b27e…`、旧MJB `586dd7f2…`、输入公式/参数/过滤/事件/gate/执行器/55秒冻结；保留同拍反馈和continuous reference，仅测试实际编码器速度的模型摩擦补偿，系数来自原模型/观测器，没有搜索。
+- 原基准近期棍接触采样中名义x−11.813mm/s、过滤ESN+8.152mm/s，存在抵消。冻结策略精确重放显示接触跨度82帧中53帧估计Fx>0、其中10帧原始vx<0；13.72秒记忆及记忆×上下文合计−0.32043，产生−72.991mm/s请求。这些请求并非适配翻号；估计力和瞬时符号不是被动性证明，未排除其他执行因素。
+- 唯一新候选55秒Task/Strict=false、仍carry。14.76秒进入carry较基准17.28秒早，RMSE30.846mm、峰矩45.207Nm、峰速0.101871m/s、穿透0.159115mm，但缺失棍—机器人接触，不能以较低x波动宣称修复。没有调整棍时序/位置或采用为默认。
+- 纠正中间“提前离开棍子扫掠位置”的推断：25Hz保存姿态有185帧棍—物块接触，首末10.48–16.64秒、采样几何穿透最大0.034866mm。缺失robot接触不等于没有任何rod接触；几何重建不替代物理子步力/时长，未实现末端受推后蹭开的要求。
+- 2项补偿方向/边界测试通过；1375步动作/状态/过滤精确重放，1,224,000物理子步三指标/独立穿透、13,750伺服补偿/安全投影/幅值与变化率审计，源码tar/hash核验。完整55s三视角MP4全帧解码及14秒/末帧/曲线目视核对；MP4 `3f0152c6be49c5a35669e58f88bed688cf7d5e8b2b51ebf6240479a3f271773f`。小证据在benchmark `docs/evidence/ORIGINAL_ESN_ROD_OPPOSITION_20261013_{COMPARISON,DIRECTION,GEOMETRY,MEDIA}.json`。
+- 已核验服务器：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/original_esn_rod_opposition_20261013_v1/evidence/`，62文件197480808字节，manifest `bed61d3943697e3ab2a89479be47d9d3f7d2028dd287b7707dc3b01f98dfd4d5`，2026-10-13T13:07:52Z发布。含原始失败/基准输入/源码/命令/模型/协议/审计/媒体，父目录ARCHIVE_VERIFICATION.json，历史执行路径保留。
+- 使用sii-research-sync；开工main `021f35fdbaaaad07d40a13d891bb89f95319f03b`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。收工fetch main已由公平协调器推进至 `ee7c6f24d742e66c7dbe17b802d9a3688a0d3c6b`，baseline不变，保留其108/288进度提交与他人会议prompt。本机单线程1.5GiB/渲染1GiB、禁swap，服务器仅存储；lease12:57:39 UTC已thaw，公平作业未重启。
+- 已完成本轮有限候选/诊断/共享；运行中原公平比较；未完成旧布局合格棍推和放置。本轮候选不采用、不并入论文结果。若探索重训须另建版本保留旧权重，用独立训练/验收，不能在当前测试回合反复调参冒充泛化。
+
 ## 2026-10-13T13:04:09.469771+00:00 — 公平比较并行调度 parallel_v4_parallel_condition_prospective_20261013_acceptance_002
 
 - 状态 `prospective_evaluation`，已评 108/288；资源调整不改实验/模型/门槛，旧封存集未读。

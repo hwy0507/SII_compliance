@@ -1,5 +1,16 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+## 2026-10-13 — ESN棍推执行候选未通过，原公平比较不变
+
+冻结原ESN的单次编码器摩擦补偿候选Task/Strict均false，55秒仍carry；虽RMSE降低，
+棍—机器人接触缺失，保存姿态有185帧棍—物块接触，不能以接触对象变化宣称柔顺提升。
+原模型部分反向动作精确读出重放一致，并非适配翻号；不能据单轴符号认定全部算法性质。
+候选未采用、未替换公平分数；动作/状态/子步/伺服约束和源hash审计及完整MP4完成。
+原公平作业继续、未重启。详见 `ORIGINAL_ESN_ROD_OPPOSITION_20261013.md`。
+已核验服务器62文件：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/original_esn_rod_opposition_20261013_v1/evidence/`。
+已完成本轮有限候选/诊断/归档；未完成旧布局棍推与放置的合格修复。
+
 ## 2026-10-13T13:04:09.469771+00:00 — 公平比较并行调度 parallel_v4_parallel_condition_prospective_20261013_acceptance_002
 
 - 状态 `prospective_evaluation`，已评 108/288；资源调整不改实验/模型/门槛，旧封存集未读。
