@@ -1,5 +1,14 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-13 — 当前原ESN在旧水杯／高柱环境的单次迁移
+
+已完成：冻结当前原权重 `acd3b27e…`、原场景MJB `586dd7f2…`，55秒Task通过/Strict未通过，
+43.32秒释放；杯倾倒、0.277821mm穿透与棍累计接触不足保留。动作/状态/过滤精确重放及
+三项子步复算通过，完整三视角MP4生成。旧阶段终点RMSE217.945mm不可与新规划路点误差直接排名。
+运行中：原公平矩阵，短暂派发lease已恢复；未完成：此布局多条件统计/接触改善。
+详见 [本次报告](ORIGINAL_ESN_OLD_OFFICE_TRANSFER_20261013.md)；共享核验状态见根UPDATE_LOG。
+
+
 ## 2026-10-13T07:55:05.248843+00:00 — 公平比较并行调度 parallel_v4_parallel_condition_prospective_20261013_acceptance_000
 
 - 状态 `prospective_evaluation`，已评 36/288；资源调整不改实验/模型/门槛，旧封存集未读。

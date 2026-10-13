@@ -1,0 +1,82 @@
+{
+  "status": "audit_recovered",
+  "time_utc": "2026-10-13T08:29:10.394978+00:00",
+  "physics_rerun": false,
+  "historical_execution_status": "failed_preserved",
+  "historical_error": "KeyError('placement_destination')",
+  "execution_sha256": "2dd58631ce15ad8ff63def47805c1fd25e9c9e0f029b8635384c0f762bc26437",
+  "audit_source_sha256": "c25de3be632f6048b4ed656f2a7fe926801caa59e485451a84fd33f2d50660d3",
+  "source_archive_verified": true,
+  "unchanged_runtime_sources": 187,
+  "independent_contact_max_mm": [
+    0.27782133727111424,
+    0.0
+  ],
+  "input_sha256": {
+    "rollout.json": "f546bb381bbab38ab341391223042011517366acc6028fa8f60b9ca23ceba576",
+    "rollout.npz": "a122e678ba6ef26e9ce38ef9c9834957c37c5ce7c52eb1ccbbdc6a5224c13468",
+    "checkpoint.npz": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+    "rollout.mjb": "586dd7f279dc511983910661b0941846a2a8bb8d8d4afb312907d3634cd5a620",
+    "source_overlay.tar.gz": "4d99e69ce8c9e2ac578b034868685fbd4058fed3e1bb512db76bee126a8cce01",
+    "independent_contacts.npz": "1599a4701ded49abf98f9881a7ada2089d709e68dfc5a4dc53e17dae058b4806"
+  },
+  "audit_sha256": "445be8daf82a51df2ab23ea507b985588af42610d35747a1acb9007aaacc83fd",
+  "result": {
+    "task_success": true,
+    "strict_success": false,
+    "stage": "retreat",
+    "full_horizon": true,
+    "rmse_mm": 217.94458096874897,
+    "peak_torque_nm": 49.84224319458008,
+    "peak_speed_mps": 0.3939663139949212,
+    "penetration_mm": 0.27782133727111424,
+    "edge_penetration_mm": 0.0,
+    "edge_present": false,
+    "physical_seconds": 55.000000000000014,
+    "samples": 1224000,
+    "abort_reason": null,
+    "task_events": [
+      {
+        "stage": "align",
+        "time_s": 0.15999999999983552
+      },
+      {
+        "stage": "grasp",
+        "time_s": 1.560000000000836
+      },
+      {
+        "stage": "lift",
+        "time_s": 1.8800000000015114
+      },
+      {
+        "stage": "carry",
+        "time_s": 10.239999999982562
+      },
+      {
+        "stage": "load_transfer",
+        "time_s": 41.92000000082959
+      },
+      {
+        "stage": "release",
+        "time_s": 43.320000000876064
+      },
+      {
+        "stage": "retreat",
+        "time_s": 44.32000000090926
+      }
+    ],
+    "action_replay_max_abs": 0.0,
+    "reservoir_replay_max_abs": 0.0,
+    "common_filter_replay_max_abs": 0.0,
+    "old_schedule_observer_match": true,
+    "historical_placement_metadata": {
+      "placement_destination": "not recorded in historical reference",
+      "placement_support_geoms": "not recorded in historical reference"
+    },
+    "model_sha256": "586dd7f279dc511983910661b0941846a2a8bb8d8d4afb312907d3634cd5a620",
+    "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+    "trace_sha256": "a122e678ba6ef26e9ce38ef9c9834957c37c5ce7c52eb1ccbbdc6a5224c13468",
+    "chain_sha256": "98c0113502e990115b61f90fdf847314d53ee6704c101796a72b2349a82bde2e",
+    "metrics_sha256": "bb444d48f7276b742bd5d743d38744aef45b3d58b4801886ff534471a8dcb5e6"
+  }
+}

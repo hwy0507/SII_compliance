@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-13 — 当前原ESN跨布局测试：水杯／高柱旧综合环境
+
+- 应用户要求，将当前原checkpoint `acd3b27e…` 直接接入9月28日原MJB `586dd7f2…`；55秒单回合，未训练/调权重/改环境/改gate。当前评估器与名义控制代码，不冒充9月28日整个软件运行时复现，也不混入当前公平矩阵。
+- Task=true、Strict=false；43.32s释放、44.32s撤离。阶段目标距离RMSE217.945mm、峰矩49.842Nm、峰速0.39397m/s。旧任务RMSE包含到阶段终点的搬运距离，不能与新版规划路点RMSE直接排名。Strict三项失败：外穿透0.277821mm>0.2mm；杯倾倒92.048°/位移142.798mm；棍累计接触0.02985s不足0.4s。
+- 完成1375步动作/储备池/过滤精确重放、1,224,000物理子步三指标复算与独立穿透核对、运行源码tar/checkpoint/model hash审计。首个尝试在物理开始前XML导出初始化失败；完整回合后审计因旧JSON缺字段失败，均保留。只补做audit-only，`AUDIT_RECOVERY.json`绑定原failed execution与新审计源码，没有重跑物理或改写历史失败。
+- 完整55s/1375帧/25fps三视角MP4全帧解码通过，24s/55s目视核对；MP4 SHA256 `1f6e4cfc1c943755c3f30c83305f4ccaea1600d5e818391b037354eac205f8d1`。报告 `code/mujoco_6d_vmc_benchmark/docs/ORIGINAL_ESN_OLD_OFFICE_TRANSFER_20261013.md`，小证据在同级 `evidence/ORIGINAL_ESN_OLD_OFFICE_TRANSFER_20261013.json`。
+- 已逐文件核验并发布至 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/original_esn_old_office_transfer_20261013_v1/evidence/`，核验时间08:36:08 UTC。manifest `9c736257a15b5be44551dbf85f2a19ecddc4b0892199824d3e3853ad8b47eaf7`，45文件226138489字节，含两次失败/恢复、完整轨迹、原场景、视频与源码；父目录保留 `ARCHIVE_VERIFICATION.json`。
+- 使用sii-research-sync；开工main `5a63bd74e94b2a21b4db08160e4eb474eac3ec7b`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；运行时base main已由公平作业正常推进至 `02e3e289b02a561f1e6c0ac5abddb143612369e0`。本机单线程/1.5GiB仿真、1GiB分析渲染、禁swap，服务器仅存储。为安全准入短暂冻结协调器派发的两次lease均已thaw；独立在途worker未停止，原公平服务active/running且未重启。保留他人会议prompt。
+- 已完成：此次冻结权重单回合、审计恢复、视频、共享归档核验；运行中：原公平比较；未完成：跨布局统计成功率及接触质量改进。本次不声称ESN全面泛化或优于baseline。
+
 ## 2026-10-13T07:55:05.248843+00:00 — 公平比较并行调度 parallel_v4_parallel_condition_prospective_20261013_acceptance_000
 
 - 状态 `prospective_evaluation`，已评 36/288；资源调整不改实验/模型/门槛，旧封存集未读。
