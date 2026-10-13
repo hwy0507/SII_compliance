@@ -1,5 +1,11 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+## 2026-10-13T04:51:08.632476+00:00 — 公平性修正 setup
+
+- 状态 `training`，新条件已评 0/288；39拟合/3seed，旧封存集未读。
+- 归档 `verified`，详情 `code/mujoco_6d_vmc_benchmark/docs/FAIR_COMPARISON_LIVE_20261013.md`。失败保留；不能在完整审计前宣称胜出或所有baseline充分收敛。
+
+
 10月13日新增公平性修正：全部经典6候选、RL7配置和历史8参考保留，在8个新前瞻性身份与新3seed学生统一验收。主网络对照统一数据/特征/初始化/损失/预算，不再把matched选回父ESN包装成有效RNN结果。实现和预登记已完成，新闭环待执行；不改环境/门槛、不解封旧holdout。见[协议](FAIR_COMPARISON_PROTOCOL_20261013.md)。
 
 10月13日12:27 CST：baseline168＋新学生40回合全部完成，独立审计通过、最终归档核验并push。

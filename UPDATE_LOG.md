@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-13T04:51:08.632476+00:00 — 公平性修正 setup
+
+- 状态 `training`，新条件已评 0/288；39拟合/3seed，旧封存集未读。
+- 归档 `verified`，详情 `code/mujoco_6d_vmc_benchmark/docs/FAIR_COMPARISON_LIVE_20261013.md`。失败保留；不能在完整审计前宣称胜出或所有baseline充分收敛。
+
+
 ## 2026-10-13 — 公平性修正：共同训练机制与前瞻性全方法验收
 
 - 核对远端main `0fffa8560d45be84ab7da036d1eb7c976ba3dfca`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；读AGENTS/sync skill。本机与服务器无重复研究作业，旧15小时任务不延长。
