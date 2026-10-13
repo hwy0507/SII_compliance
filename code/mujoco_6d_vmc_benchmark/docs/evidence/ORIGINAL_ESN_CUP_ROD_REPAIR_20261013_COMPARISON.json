@@ -1,0 +1,3878 @@
+{
+  "runs": {
+    "previous": {
+      "task": false,
+      "strict": false,
+      "stage": "load_transfer",
+      "full_horizon": true,
+      "events": [
+        {
+          "stage": "align",
+          "time_s": 0.15999999999983552
+        },
+        {
+          "stage": "grasp",
+          "time_s": 1.560000000000836
+        },
+        {
+          "stage": "lift",
+          "time_s": 1.8800000000015114
+        },
+        {
+          "stage": "carry",
+          "time_s": 10.239999999982562
+        },
+        {
+          "stage": "load_transfer",
+          "time_s": 53.68000000121998
+        }
+      ],
+      "rmse_m": 0.03623980564332247,
+      "peak_torque_nm": 40.35093783218214,
+      "peak_speed_mps": 0.12180465035784649,
+      "penetration_mm": 0.17154687588545398,
+      "contact_events": {
+        "ball": {
+          "first_s": 2.088900000001557,
+          "last_s": 2.104500000001521,
+          "duration_s": 0.0008500000000000003,
+          "peak_n": 1929.0894300723887,
+          "impulse_ns": 0.7480272701614222,
+          "robot_parts": [
+            "fr3_link6",
+            "hand"
+          ]
+        },
+        "person_hand": {
+          "first_s": 4.287249999996434,
+          "last_s": 8.666549999986229,
+          "duration_s": 2.673300000000439,
+          "peak_n": 151.9586810138827,
+          "impulse_ns": 16.193961182209666,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "rod": {
+          "first_s": 13.028999999976062,
+          "last_s": 17.030400000003343,
+          "duration_s": 1.4854000000009224,
+          "peak_n": 61.77416391878162,
+          "impulse_ns": 12.135807440736405,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "office_v5_pillar": {
+          "first_s": 40.55085000078414,
+          "last_s": 40.56935000078475,
+          "duration_s": 0.014049999999999943,
+          "peak_n": 297.8264770104857,
+          "impulse_ns": 0.5547390631903214,
+          "robot_parts": [
+            "fr3_link6"
+          ]
+        }
+      },
+      "cup_valid": true,
+      "cup_shift_m": 0.011059967888342237,
+      "cup_tilt_deg": 5.229419972688787,
+      "final_object": [
+        0.5426219602882102,
+        0.2265391698040248,
+        0.42805507177723173
+      ],
+      "windows": [
+        {
+          "start_s": 12.0,
+          "end_s": 18.0,
+          "samples": 150,
+          "actual_xyz_velocity_step_rms_mps": [
+            0.015418648569669907,
+            0.007767366183312817,
+            0.007804177663342643
+          ],
+          "raw_xyz_step_rms_mps": [
+            0.10305984493627277,
+            0.05422719437243954,
+            0.05999521027296277
+          ],
+          "raw_x_flips": 72,
+          "raw_x_saturation_fraction": 0.0,
+          "nominal_mean_xyz_mps": [
+            0.025561975086949684,
+            0.036007414700386396,
+            0.017466915685301544
+          ],
+          "filtered_yield_mean_xyz_mps": [
+            -0.037620458812242144,
+            0.011743451151291426,
+            -0.003368191383849557
+          ],
+          "filtered_feedback_scale_mean": 0.97955133086276,
+          "actual_mean_xyz_mps": [
+            -0.0037619463399122042,
+            0.01330339765347163,
+            -0.002214088360773463
+          ]
+        },
+        {
+          "start_s": 27.0,
+          "end_s": 42.0,
+          "samples": 375,
+          "actual_xyz_velocity_step_rms_mps": [
+            0.01266229680348813,
+            0.0022277407084518256,
+            0.008400021147054577
+          ],
+          "raw_xyz_step_rms_mps": [
+            0.0643165765833811,
+            0.009663042001713319,
+            0.016776890565237762
+          ],
+          "raw_x_flips": 108,
+          "raw_x_saturation_fraction": 0.0026666666666666666,
+          "nominal_mean_xyz_mps": [
+            0.011179665872869135,
+            0.03485850760307147,
+            0.01837054739930835
+          ],
+          "filtered_yield_mean_xyz_mps": [
+            -0.016129330590862412,
+            -0.003167587048101969,
+            -0.010336730011380925
+          ],
+          "filtered_feedback_scale_mean": 0.950867586901232,
+          "actual_mean_xyz_mps": [
+            -0.0003425058282166425,
+            0.006550492844342247,
+            -0.00046875895650889477
+          ]
+        },
+        {
+          "start_s": 30.0,
+          "end_s": 55.0,
+          "samples": 625,
+          "actual_xyz_velocity_step_rms_mps": [
+            0.013503287590319803,
+            0.0032954759263831325,
+            0.008683664356591018
+          ],
+          "raw_xyz_step_rms_mps": [
+            0.06941608670669638,
+            0.010793841118820188,
+            0.013395263911081043
+          ],
+          "raw_x_flips": 194,
+          "raw_x_saturation_fraction": 0.0032,
+          "nominal_mean_xyz_mps": [
+            0.008974261766272296,
+            0.03505766656313794,
+            0.015293909804396216
+          ],
+          "filtered_yield_mean_xyz_mps": [
+            -0.012795269465543628,
+            -0.004403347045268678,
+            -0.009602477378295267
+          ],
+          "filtered_feedback_scale_mean": 0.9553677997826476,
+          "actual_mean_xyz_mps": [
+            0.0002035734537235212,
+            0.008782745030384587,
+            -0.0028840848664802724
+          ]
+        }
+      ],
+      "payload_cup": {
+        "sampled_contact_frames": 162,
+        "first_s": 27.680000000356873,
+        "last_s": 41.240000000807015,
+        "span_s": 13.560000000450142,
+        "caveat": "25Hz saved-pose mj_forward geometry, not a substep duration/force measurement or proof of no contact between frames",
+        "samples": [
+          {
+            "time_s": 27.680000000356873,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -3.8857980343108556e-06
+              }
+            ]
+          },
+          {
+            "time_s": 27.7200000003582,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -8.516903566244474e-06
+              }
+            ]
+          },
+          {
+            "time_s": 27.76000000035953,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -6.465506482630778e-08
+              }
+            ]
+          },
+          {
+            "time_s": 27.800000000360857,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.0524159581437945e-05
+              }
+            ]
+          },
+          {
+            "time_s": 27.880000000363513,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.0951103533610868e-05
+              }
+            ]
+          },
+          {
+            "time_s": 27.92000000036484,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -3.6887534887974395e-05
+              }
+            ]
+          },
+          {
+            "time_s": 27.96000000036617,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -3.5738709110166855e-09
+              }
+            ]
+          },
+          {
+            "time_s": 30.480000000449824,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -6.483393218698536e-06
+              }
+            ]
+          },
+          {
+            "time_s": 30.52000000045115,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -7.092918380343616e-08
+              }
+            ]
+          },
+          {
+            "time_s": 30.56000000045248,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -6.050278728972513e-07
+              }
+            ]
+          },
+          {
+            "time_s": 31.200000000473725,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.7756546036105843e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.240000000475053,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.0635511338922182e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.28000000047638,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.4073780022736696e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.32000000047771,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.4681822146092759e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.360000000479037,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.6339504258653544e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.400000000480365,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.6263227248560298e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.440000000481692,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.606990352984229e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.48000000048302,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.549894465067987e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.520000000484348,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.5144460429792464e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.560000000485676,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.5410599975089325e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.600000000487004,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.3487629671893544e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.64000000048833,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.4497342984458889e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.68000000048966,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.810864516075498e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.720000000490987,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.20841181622804e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.760000000492315,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.9463612310015255e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.800000000493643,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.0710495747421958e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.84000000049497,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.0413324910718396e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.8800000004963,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.7930857463122278e-05
+              }
+            ]
+          },
+          {
+            "time_s": 31.960000000498955,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.1715626301162494e-05
+              }
+            ]
+          },
+          {
+            "time_s": 32.04000000050161,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -3.0373357055144147e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -6.53499582330541e-06
+              }
+            ]
+          },
+          {
+            "time_s": 32.080000000502935,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.1539129152886171e-05
+              }
+            ]
+          },
+          {
+            "time_s": 32.12000000050426,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -3.380502568038712e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.15820191069806e-05
+              }
+            ]
+          },
+          {
+            "time_s": 32.16000000050559,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.4665777786559687e-08
+              }
+            ]
+          },
+          {
+            "time_s": 32.20000000050692,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.01866268778407e-06
+              }
+            ]
+          },
+          {
+            "time_s": 32.280000000509574,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.225459089707539e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.9174545226613996e-06
+              }
+            ]
+          },
+          {
+            "time_s": 32.3200000005109,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -3.062692226422004e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.0713706581321692e-05
+              }
+            ]
+          },
+          {
+            "time_s": 32.36000000051223,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.3573119882455629e-05
+              }
+            ]
+          },
+          {
+            "time_s": 32.40000000051356,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.953345881752077e-05
+              }
+            ]
+          },
+          {
+            "time_s": 32.440000000514885,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.0951172818398853e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.2341451028154487e-06
+              }
+            ]
+          },
+          {
+            "time_s": 32.48000000051621,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.0826485512204225e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.1833277966256024e-06
+              }
+            ]
+          },
+          {
+            "time_s": 32.52000000051754,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.3237298023468668e-05
+              }
+            ]
+          },
+          {
+            "time_s": 32.56000000051887,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.037475751501154e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.1182931210048286e-06
+              }
+            ]
+          },
+          {
+            "time_s": 32.6000000005202,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.9697612366884272e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.0693628212060516e-05
+              }
+            ]
+          },
+          {
+            "time_s": 32.68000000052285,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.5998630967069593e-05
+              }
+            ]
+          },
+          {
+            "time_s": 32.72000000052418,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.6963227549778762e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -8.183057135568252e-06
+              }
+            ]
+          },
+          {
+            "time_s": 32.76000000052551,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.6984183327259965e-08
+              }
+            ]
+          },
+          {
+            "time_s": 32.800000000526836,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.0210494614462788e-05
+              }
+            ]
+          },
+          {
+            "time_s": 32.840000000528164,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.1156418924954953e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.7828339583601694e-06
+              }
+            ]
+          },
+          {
+            "time_s": 32.88000000052949,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.7665570167856482e-05
+              }
+            ]
+          },
+          {
+            "time_s": 32.92000000053082,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.3443999633194119e-05
+              }
+            ]
+          },
+          {
+            "time_s": 32.96000000053215,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.834903131482428e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -6.660887320310585e-07
+              }
+            ]
+          },
+          {
+            "time_s": 33.000000000533475,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.0908025473706403e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -3.6357782072477574e-06
+              }
+            ]
+          },
+          {
+            "time_s": 33.0400000005348,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.047452255120426e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -3.717147440839819e-06
+              }
+            ]
+          },
+          {
+            "time_s": 33.08000000053613,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.7664768490259177e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.4272066985352221e-06
+              }
+            ]
+          },
+          {
+            "time_s": 33.12000000053746,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.8757276175693548e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -3.0212595080322443e-06
+              }
+            ]
+          },
+          {
+            "time_s": 33.16000000053879,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.9211253931684138e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -4.001629672766103e-06
+              }
+            ]
+          },
+          {
+            "time_s": 33.200000000540115,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.3813222302094335e-05
+              }
+            ]
+          },
+          {
+            "time_s": 33.24000000054144,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.1696634609480116e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -7.642905166562325e-06
+              }
+            ]
+          },
+          {
+            "time_s": 33.28000000054277,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -5.3373395938040954e-08
+              }
+            ]
+          },
+          {
+            "time_s": 33.3200000005441,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.7108814490687835e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.4040467018933169e-05
+              }
+            ]
+          },
+          {
+            "time_s": 33.360000000545426,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.2292995020047666e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.040000000568,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.0510644642379664e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -7.831854825649602e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.08000000056933,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.54772761869239e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.5163401606777627e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.120000000570656,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.659862169894559e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -3.3029929460441033e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.16000000057198,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.5185183962176292e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.6385282559582399e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.20000000057331,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.4966700035752099e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.2715612320957298e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.24000000057464,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.6752040566047495e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.9975077449773844e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.28000000057597,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.7842326340836894e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -4.0657786424106334e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.320000000577295,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.7151261911638152e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -3.347430839736266e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.36000000057862,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.612620478553967e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.2902386531225644e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.40000000057995,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.5712762389960012e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.8834226248405025e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.44000000058128,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.6348844271066822e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.5977154525644313e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.480000000582606,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.6819853199380595e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -3.2269094273485405e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.520000000583934,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.5524385669095898e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.1960230552814103e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.56000000058526,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.589486288446271e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -3.009847584546461e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.60000000058659,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.7937542188499383e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -5.597944894744147e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.64000000058792,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.6929160362850095e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -5.203836917268242e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.680000000589246,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.6957362317116078e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -5.866705153338039e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.720000000590574,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.6332089146461665e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -5.8621511252161925e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.7600000005919,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.4848467172068777e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -4.9664884467389384e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.80000000059323,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.4589376823528134e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -5.269053036429329e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.84000000059456,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.432968237960919e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -5.573872320859457e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.880000000595885,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.3872957053138093e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -5.696680877505479e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.92000000059721,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.3390872018482182e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -5.80556991302718e-06
+              }
+            ]
+          },
+          {
+            "time_s": 34.96000000059854,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.2918310166229598e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -5.928261968692357e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.00000000059987,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.2518763906135032e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -6.12238594008313e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.0400000006012,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.2158502409991366e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -6.353816741538567e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.080000000602524,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.1811841822103034e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -6.602176523781877e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.12000000060385,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.1426919507193496e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -6.821952458297975e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.16000000060518,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.1026955758405821e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -7.040974511894172e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.20000000060651,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.062278143464235e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -7.271990540822173e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.240000000607836,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.0225786640974781e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -7.525624806897451e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.280000000609164,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -9.829546675332146e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -7.7931194882691e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.32000000061049,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -9.41536887820099e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -8.052840951280509e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.36000000061182,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -9.335193290937016e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -8.654553859343163e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.40000000061315,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -9.571756715567456e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -9.57985870315922e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.440000000614475,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -9.754744868914741e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.0454919634136594e-05
+              }
+            ]
+          },
+          {
+            "time_s": 35.4800000006158,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -9.919532033938138e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.1309096886998151e-05
+              }
+            ]
+          },
+          {
+            "time_s": 35.52000000061713,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.0094140897958672e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.21658430136867e-05
+              }
+            ]
+          },
+          {
+            "time_s": 35.56000000061846,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.0282559716888432e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.3027764209810697e-05
+              }
+            ]
+          },
+          {
+            "time_s": 35.60000000061979,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.0464364994174828e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.3875917546225007e-05
+              }
+            ]
+          },
+          {
+            "time_s": 35.640000000621114,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.0601430954547122e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.4674816404461867e-05
+              }
+            ]
+          },
+          {
+            "time_s": 35.68000000062244,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.068541307246967e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.541810903962143e-05
+              }
+            ]
+          },
+          {
+            "time_s": 35.72000000062377,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.0646423574255309e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.6039263464829143e-05
+              }
+            ]
+          },
+          {
+            "time_s": 35.7600000006251,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -6.309200129217208e-07
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -6.725111480951144e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.800000000626426,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.1424888862980852e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.835287540337562e-05
+              }
+            ]
+          },
+          {
+            "time_s": 35.840000000627754,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.1168224846275769e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.9021044858217855e-05
+              }
+            ]
+          },
+          {
+            "time_s": 35.88000000062908,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.959951060565584e-07
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -8.971099775125947e-06
+              }
+            ]
+          },
+          {
+            "time_s": 35.92000000063041,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -5.102107224889244e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.4425421288889758e-05
+              }
+            ]
+          },
+          {
+            "time_s": 35.96000000063174,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -8.28236518603471e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.8266696498484776e-05
+              }
+            ]
+          },
+          {
+            "time_s": 36.000000000633065,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.0361660255367042e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.1022263310744847e-05
+              }
+            ]
+          },
+          {
+            "time_s": 36.04000000063439,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -3.3918889784842713e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.4591793822282862e-05
+              }
+            ]
+          },
+          {
+            "time_s": 36.08000000063572,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.1268691712330099e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.2944274831874177e-05
+              }
+            ]
+          },
+          {
+            "time_s": 36.12000000063705,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.674819738538521e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.3791804432717877e-05
+              }
+            ]
+          },
+          {
+            "time_s": 36.16000000063838,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -5.092884248344854e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.755152270637293e-05
+              }
+            ]
+          },
+          {
+            "time_s": 36.200000000639704,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -4.312404770656726e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.7092716342141026e-05
+              }
+            ]
+          },
+          {
+            "time_s": 36.24000000064103,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -5.348344882008389e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.8494252511472238e-05
+              }
+            ]
+          },
+          {
+            "time_s": 36.28000000064236,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -5.107222985471001e-07
+              }
+            ]
+          },
+          {
+            "time_s": 36.32000000064369,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -5.576220454610339e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.971192602657952e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.16000000067157,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.7066873028678854e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.7503863183176464e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.2000000006729,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -3.6236357627088707e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.8675753711642652e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.24000000067423,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.1564609594584661e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.634705456963462e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.28000000067556,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.2796541739465178e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.320000000676885,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.3516884799273588e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.36000000067821,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -4.990453888174252e-07
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.6544666672996677e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.40000000067954,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -2.405362462778813e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.8924955727618726e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.44000000068087,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.7653522370370612e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.8722170969405904e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.480000000682196,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.733827101559453e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.520000000683524,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.6214148086930408e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.56000000068485,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.721429168563914e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.60000000068618,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.6511603404171435e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.64000000068751,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.752461361877279e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.680000000688835,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.3543102541083936e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.1552599982927916e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.72000000069016,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.8929136585218224e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.76000000069149,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.9212981856180688e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.80000000069282,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.6429548594375596e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.84000000069415,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.986949233294465e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.4908117987542526e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.880000000695475,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.674803623819896e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.9200000006968,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.0546484331718312e-05
+              }
+            ]
+          },
+          {
+            "time_s": 37.96000000069813,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -4.83138237037982e-06
+              }
+            ]
+          },
+          {
+            "time_s": 38.00000000069946,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -8.68250821935115e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -3.3601837673343456e-05
+              }
+            ]
+          },
+          {
+            "time_s": 38.040000000700786,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -7.392607607356522e-07
+              }
+            ]
+          },
+          {
+            "time_s": 38.080000000702114,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.1167129692646555e-05
+              }
+            ]
+          },
+          {
+            "time_s": 38.16000000070477,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -8.594042211903363e-09
+              }
+            ]
+          },
+          {
+            "time_s": 38.2000000007061,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -1.5355842797158284e-06
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.8528814969684198e-05
+              }
+            ]
+          },
+          {
+            "time_s": 38.28000000070875,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -3.816636146586221e-06
+              }
+            ]
+          },
+          {
+            "time_s": 38.32000000071008,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -6.06779614822452e-08
+              }
+            ]
+          },
+          {
+            "time_s": 38.36000000071141,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.3804117979145968e-05
+              }
+            ]
+          },
+          {
+            "time_s": 38.40000000071274,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.838911868448622e-07
+              }
+            ]
+          },
+          {
+            "time_s": 38.440000000714065,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -2.932239278894527e-08
+              }
+            ]
+          },
+          {
+            "time_s": 38.48000000071539,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -4.068367213578119e-09
+              }
+            ]
+          },
+          {
+            "time_s": 38.52000000071672,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.4757930439901162e-07
+              }
+            ]
+          },
+          {
+            "time_s": 38.640000000720704,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -4.580089404214716e-06
+              }
+            ]
+          },
+          {
+            "time_s": 38.68000000072203,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.659175291466373e-05
+              }
+            ]
+          },
+          {
+            "time_s": 39.52000000074992,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.8672121444243778e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.852938017674247e-05
+              }
+            ]
+          },
+          {
+            "time_s": 39.560000000751245,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.2106494916980237e-07
+              }
+            ]
+          },
+          {
+            "time_s": 39.60000000075257,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_19"
+                ],
+                "distance_m": -1.801840487751505e-08
+              }
+            ]
+          },
+          {
+            "time_s": 39.760000000757884,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -4.556747186027464e-05
+              }
+            ]
+          },
+          {
+            "time_s": 39.80000000075921,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -3.392865031641868e-06
+              }
+            ]
+          },
+          {
+            "time_s": 39.84000000076054,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -5.907371756925465e-06
+              }
+            ]
+          },
+          {
+            "time_s": 39.88000000076187,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -3.947699158316116e-06
+              }
+            ]
+          },
+          {
+            "time_s": 41.240000000807015,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_0"
+                ],
+                "distance_m": -3.650578740939294e-05
+              }
+            ]
+          }
+        ]
+      },
+      "hashes": {
+        "rollout.json": "97697cfd8007ca87e3e3c6c2b265c4003c7117f08956e33cfbadc4eb1a23f428",
+        "rollout.npz": "9dd3041859c9465de6ec8babc4b84563120564457c2f8209fcdf795f22cb0648",
+        "rollout.mjb": "586dd7f279dc511983910661b0941846a2a8bb8d8d4afb312907d3634cd5a620",
+        "checkpoint.npz": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+        "execution.json": "a603a5e4571fc63e533ee4c90648ed05374de7baf8c78fec9a6265345278d62a"
+      }
+    },
+    "path_only": {
+      "task": false,
+      "strict": false,
+      "stage": "carry",
+      "full_horizon": true,
+      "events": [
+        {
+          "stage": "align",
+          "time_s": 0.15999999999983552
+        },
+        {
+          "stage": "grasp",
+          "time_s": 1.560000000000836
+        },
+        {
+          "stage": "lift",
+          "time_s": 1.8800000000015114
+        },
+        {
+          "stage": "carry",
+          "time_s": 10.239999999982562
+        }
+      ],
+      "rmse_m": 0.034051733509026266,
+      "peak_torque_nm": 42.05822980991906,
+      "peak_speed_mps": 0.10399397982618236,
+      "penetration_mm": 0.17154687588545398,
+      "contact_events": {
+        "ball": {
+          "first_s": 2.088900000001557,
+          "last_s": 2.104500000001521,
+          "duration_s": 0.0008500000000000003,
+          "peak_n": 1929.0894300723887,
+          "impulse_ns": 0.7480272701614222,
+          "robot_parts": [
+            "hand",
+            "fr3_link6"
+          ]
+        },
+        "person_hand": {
+          "first_s": 4.287249999996434,
+          "last_s": 8.666549999986229,
+          "duration_s": 2.673300000000439,
+          "peak_n": 151.9586810138827,
+          "impulse_ns": 16.193961182209666,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "rod": {
+          "first_s": 13.504849999974953,
+          "last_s": 16.989150000001974,
+          "duration_s": 1.191400000000302,
+          "peak_n": 60.728165750885545,
+          "impulse_ns": 8.23019970131266,
+          "robot_parts": [
+            "hand"
+          ]
+        }
+      },
+      "cup_valid": true,
+      "cup_shift_m": 1.8479263464067475e-08,
+      "cup_tilt_deg": 9.583585410390605e-06,
+      "final_object": [
+        0.5391260801734437,
+        0.050007302613598516,
+        0.546613200035218
+      ],
+      "windows": [
+        {
+          "start_s": 12.0,
+          "end_s": 18.0,
+          "samples": 150,
+          "actual_xyz_velocity_step_rms_mps": [
+            0.012566136658264832,
+            0.006703228442728587,
+            0.006637530612332496
+          ],
+          "raw_xyz_step_rms_mps": [
+            0.09007132687168738,
+            0.04716821231184913,
+            0.05245105657608197
+          ],
+          "raw_x_flips": 58,
+          "raw_x_saturation_fraction": 0.0,
+          "nominal_mean_xyz_mps": [
+            0.01857528876249545,
+            0.033312585075128756,
+            0.025427395856652275
+          ],
+          "filtered_yield_mean_xyz_mps": [
+            -0.030850767401137773,
+            0.008072855900682822,
+            -0.0141873104900819
+          ],
+          "filtered_feedback_scale_mean": 0.9633639297025259,
+          "actual_mean_xyz_mps": [
+            -0.0033027305534864934,
+            0.01137979867563331,
+            -0.0013248264902244074
+          ]
+        },
+        {
+          "start_s": 27.0,
+          "end_s": 42.0,
+          "samples": 375,
+          "actual_xyz_velocity_step_rms_mps": [
+            1.0667353054419777e-05,
+            0.00011465384487445246,
+            5.80711074874804e-06
+          ],
+          "raw_xyz_step_rms_mps": [
+            0.0001679850715350495,
+            3.161335146318895e-05,
+            0.00012778104395130783
+          ],
+          "raw_x_flips": 0,
+          "raw_x_saturation_fraction": 0.0,
+          "nominal_mean_xyz_mps": [
+            0.007827717060033467,
+            0.03172563979945602,
+            0.004899177012571828
+          ],
+          "filtered_yield_mean_xyz_mps": [
+            -0.0017627388052154603,
+            0.0006345975670332571,
+            -0.00033369972355585273
+          ],
+          "filtered_feedback_scale_mean": 1.0,
+          "actual_mean_xyz_mps": [
+            0.0005613169589858139,
+            0.004180805127747098,
+            -0.0002591270128488339
+          ]
+        },
+        {
+          "start_s": 30.0,
+          "end_s": 55.0,
+          "samples": 625,
+          "actual_xyz_velocity_step_rms_mps": [
+            1.7894582769263072e-06,
+            8.305813715801048e-07,
+            1.2208115412135288e-06
+          ],
+          "raw_xyz_step_rms_mps": [
+            1.5434242352109604e-05,
+            6.2306588624633876e-06,
+            2.3480890414707957e-06
+          ],
+          "raw_x_flips": 1,
+          "raw_x_saturation_fraction": 0.0,
+          "nominal_mean_xyz_mps": [
+            0.00296134401648659,
+            0.03165098042543289,
+            0.006454696687261976
+          ],
+          "filtered_yield_mean_xyz_mps": [
+            -0.0003546099656170205,
+            0.000222011053315663,
+            -0.00015367483738604158
+          ],
+          "filtered_feedback_scale_mean": 1.0,
+          "actual_mean_xyz_mps": [
+            0.00020547829579111433,
+            0.004122633069118442,
+            -0.00011235290330946192
+          ]
+        }
+      ],
+      "payload_cup": {
+        "sampled_contact_frames": 0,
+        "first_s": null,
+        "last_s": null,
+        "span_s": 0.0,
+        "caveat": "25Hz saved-pose mj_forward geometry, not a substep duration/force measurement or proof of no contact between frames",
+        "samples": []
+      },
+      "hashes": {
+        "rollout.json": "4387af6142c00e7949993477bb34fbaf077904c587d847ea1b08ef1b649d0093",
+        "rollout.npz": "ebc6e9b2712d7075931f9a1dfe6f240c05aa00785517c42b8463e09755e7d8ef",
+        "rollout.mjb": "586dd7f279dc511983910661b0941846a2a8bb8d8d4afb312907d3634cd5a620",
+        "checkpoint.npz": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+        "execution.json": "7aafdf2839b26b6a504e216c311ffbf68c3b43f6b1d86ae017e79d34e9f0706a"
+      }
+    },
+    "path_bridge": {
+      "task": false,
+      "strict": false,
+      "stage": "carry",
+      "full_horizon": true,
+      "events": [
+        {
+          "stage": "align",
+          "time_s": 0.15999999999983552
+        },
+        {
+          "stage": "grasp",
+          "time_s": 1.560000000000836
+        },
+        {
+          "stage": "lift",
+          "time_s": 1.8800000000015114
+        },
+        {
+          "stage": "carry",
+          "time_s": 14.119999999973519
+        }
+      ],
+      "rmse_m": 0.04268250925586485,
+      "peak_torque_nm": 44.20983371831808,
+      "peak_speed_mps": 0.11153241780770337,
+      "penetration_mm": 0.18230979838414887,
+      "contact_events": {
+        "ball": {
+          "first_s": 2.0884000000015583,
+          "last_s": 2.105650000001518,
+          "duration_s": 0.0008000000000000003,
+          "peak_n": 2064.1483601999566,
+          "impulse_ns": 0.7544167151550009,
+          "robot_parts": [
+            "hand",
+            "fr3_link6"
+          ]
+        },
+        "person_hand": {
+          "first_s": 4.171899999996703,
+          "last_s": 8.439249999986759,
+          "duration_s": 3.2218999999991604,
+          "peak_n": 157.5533187456255,
+          "impulse_ns": 16.629548292337738,
+          "robot_parts": [
+            "fr3_link7"
+          ]
+        },
+        "rod": {
+          "first_s": 10.23214999998258,
+          "last_s": 16.78904999999533,
+          "duration_s": 0.8590999999999136,
+          "peak_n": 228.1490114419797,
+          "impulse_ns": 4.946717512417834,
+          "robot_parts": [
+            "hand"
+          ]
+        }
+      },
+      "cup_valid": true,
+      "cup_shift_m": 1.8597522585518627e-08,
+      "cup_tilt_deg": 9.583585410390605e-06,
+      "final_object": [
+        0.5390747695928011,
+        -0.0039683570742365445,
+        0.5465379314826792
+      ],
+      "windows": [
+        {
+          "start_s": 12.0,
+          "end_s": 18.0,
+          "samples": 150,
+          "actual_xyz_velocity_step_rms_mps": [
+            0.011078151037160516,
+            0.003612740905199781,
+            0.005556630072372742
+          ],
+          "raw_xyz_step_rms_mps": [
+            0.06868695246222906,
+            0.027506542213773844,
+            0.05337638034458411
+          ],
+          "raw_x_flips": 60,
+          "raw_x_saturation_fraction": 0.0,
+          "nominal_mean_xyz_mps": [
+            0.0074426563455263365,
+            0.02710930324478387,
+            0.02128419132812045
+          ],
+          "filtered_yield_mean_xyz_mps": [
+            -0.021560931928253653,
+            -0.00926457252016791,
+            0.013984215050394214
+          ],
+          "filtered_feedback_scale_mean": 0.907591624040449,
+          "actual_mean_xyz_mps": [
+            -0.0025501995907670624,
+            0.0026879027851321965,
+            0.0005817666323691313
+          ]
+        },
+        {
+          "start_s": 27.0,
+          "end_s": 42.0,
+          "samples": 375,
+          "actual_xyz_velocity_step_rms_mps": [
+            0.004313927803171392,
+            0.0006780937147324877,
+            0.0037738829197183758
+          ],
+          "raw_xyz_step_rms_mps": [
+            0.029379721690442968,
+            0.003564804392637045,
+            0.005894884851041603
+          ],
+          "raw_x_flips": 27,
+          "raw_x_saturation_fraction": 0.0,
+          "nominal_mean_xyz_mps": [
+            0.0018254561053305132,
+            0.03132829801601106,
+            0.009751024611414928
+          ],
+          "filtered_yield_mean_xyz_mps": [
+            0.002273652315772796,
+            -0.0027291385085034974,
+            0.00024264850810772697
+          ],
+          "filtered_feedback_scale_mean": 0.9878806729796471,
+          "actual_mean_xyz_mps": [
+            0.0016676502741833467,
+            0.0036260664371276703,
+            -4.876224122850432e-05
+          ]
+        },
+        {
+          "start_s": 30.0,
+          "end_s": 55.0,
+          "samples": 625,
+          "actual_xyz_velocity_step_rms_mps": [
+            0.004116765114071952,
+            0.000655709678953656,
+            0.003536649351618226
+          ],
+          "raw_xyz_step_rms_mps": [
+            0.03053916256719149,
+            0.0034939829498917907,
+            0.00627346186361397
+          ],
+          "raw_x_flips": 48,
+          "raw_x_saturation_fraction": 0.0,
+          "nominal_mean_xyz_mps": [
+            0.004792587800984348,
+            0.03138435779344406,
+            0.008914156260766632
+          ],
+          "filtered_yield_mean_xyz_mps": [
+            -0.0020990813146876414,
+            -0.0029323392494261602,
+            0.001731626163605627
+          ],
+          "filtered_feedback_scale_mean": 0.9852184617271152,
+          "actual_mean_xyz_mps": [
+            6.686517513659612e-05,
+            0.0037018997616742495,
+            -6.107161186528255e-05
+          ]
+        }
+      ],
+      "payload_cup": {
+        "sampled_contact_frames": 0,
+        "first_s": null,
+        "last_s": null,
+        "span_s": 0.0,
+        "caveat": "25Hz saved-pose mj_forward geometry, not a substep duration/force measurement or proof of no contact between frames",
+        "samples": []
+      },
+      "hashes": {
+        "rollout.json": "bddaf065085925f63a6c974863ee5469d6626cbf1c6e5fcbfc4b9885f335e80c",
+        "rollout.npz": "e039ecb28b907a1862f8254811f4416362b182de6d9238f9af4113c9079d4552",
+        "rollout.mjb": "586dd7f279dc511983910661b0941846a2a8bb8d8d4afb312907d3634cd5a620",
+        "checkpoint.npz": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+        "execution.json": "5c6fe4ef0c5e6ff4ffce88ecc6f818118d2802ef6f3ce97d2bfc22d9f9e75abc"
+      }
+    },
+    "friction_probe": {
+      "task": false,
+      "strict": false,
+      "stage": "load_transfer",
+      "full_horizon": true,
+      "events": [
+        {
+          "stage": "align",
+          "time_s": 0.15999999999983552
+        },
+        {
+          "stage": "grasp",
+          "time_s": 1.6000000000009205
+        },
+        {
+          "stage": "lift",
+          "time_s": 1.9200000000015958
+        },
+        {
+          "stage": "carry",
+          "time_s": 9.599999999984053
+        },
+        {
+          "stage": "load_transfer",
+          "time_s": 21.720000000159022
+        }
+      ],
+      "rmse_m": 0.2981348114149058,
+      "peak_torque_nm": 59.95726434753498,
+      "peak_speed_mps": 0.48770135536613207,
+      "penetration_mm": 0.2149798888285537,
+      "contact_events": {
+        "ball": {
+          "first_s": 2.088900000001557,
+          "last_s": 2.1050500000015195,
+          "duration_s": 0.0008000000000000003,
+          "peak_n": 2139.022557158241,
+          "impulse_ns": 0.7507753310701849,
+          "robot_parts": [
+            "hand",
+            "fr3_link6"
+          ]
+        },
+        "person_hand": {
+          "first_s": 4.295449999996415,
+          "last_s": 8.995449999985462,
+          "duration_s": 3.3570499999988455,
+          "peak_n": 142.71888134734303,
+          "impulse_ns": 23.47353111498416,
+          "robot_parts": [
+            "left_finger",
+            "hand"
+          ]
+        },
+        "rod": {
+          "first_s": 10.81569999998122,
+          "last_s": 12.551649999977174,
+          "duration_s": 0.20589999999998548,
+          "peak_n": 263.5370257922417,
+          "impulse_ns": 2.202797313746066,
+          "robot_parts": [
+            "hand",
+            "right_finger"
+          ]
+        },
+        "office_v5_pillar": {
+          "first_s": 24.6985500002579,
+          "last_s": 51.98430000116369,
+          "duration_s": 0.9474499999999039,
+          "peak_n": 2829.696470971496,
+          "impulse_ns": 109.80158888012954,
+          "robot_parts": [
+            "fr3_link7",
+            "fr3_link5",
+            "hand"
+          ]
+        },
+        "office_v5_corner_top": {
+          "first_s": 25.04225000026931,
+          "last_s": 27.435450000348755,
+          "duration_s": 0.44219999999995946,
+          "peak_n": 1176.0919353532631,
+          "impulse_ns": 85.65367626044812,
+          "robot_parts": [
+            "fr3_link6"
+          ]
+        },
+        "office_v5_corner_face": {
+          "first_s": 25.347300000279436,
+          "last_s": 29.59035000042029,
+          "duration_s": 0.3208999999999728,
+          "peak_n": 2770.478026358174,
+          "impulse_ns": 57.87454005768902,
+          "robot_parts": [
+            "hand",
+            "fr3_link6"
+          ]
+        },
+        "cup": {
+          "first_s": 51.51655000114816,
+          "last_s": 53.897900001227214,
+          "duration_s": 0.519299999999951,
+          "peak_n": 798.2273579306446,
+          "impulse_ns": 24.393991831171878,
+          "robot_parts": [
+            "right_finger",
+            "fr3_link7",
+            "fr3_link6",
+            "fr3_link5",
+            "hand"
+          ]
+        }
+      },
+      "cup_valid": false,
+      "cup_shift_m": 0.06972248650445909,
+      "cup_tilt_deg": 90.26438863151533,
+      "final_object": [
+        0.4710680059718402,
+        0.11680838049427887,
+        0.436571005602758
+      ],
+      "windows": [
+        {
+          "start_s": 12.0,
+          "end_s": 18.0,
+          "samples": 150,
+          "actual_xyz_velocity_step_rms_mps": [
+            0.013390692391697422,
+            0.005918763755169384,
+            0.013148882870088885
+          ],
+          "raw_xyz_step_rms_mps": [
+            0.0850656531649786,
+            0.023329915861723293,
+            0.023322276620625727
+          ],
+          "raw_x_flips": 52,
+          "raw_x_saturation_fraction": 0.0,
+          "nominal_mean_xyz_mps": [
+            0.01874284078078833,
+            0.04561560697613769,
+            0.009331678823307628
+          ],
+          "filtered_yield_mean_xyz_mps": [
+            -0.021388429141929618,
+            0.004378733225801876,
+            -0.006801882467170801
+          ],
+          "filtered_feedback_scale_mean": 0.9179393770808497,
+          "actual_mean_xyz_mps": [
+            0.0006812554330599238,
+            0.048425425936272685,
+            -0.0048188769023498786
+          ]
+        },
+        {
+          "start_s": 27.0,
+          "end_s": 42.0,
+          "samples": 375,
+          "actual_xyz_velocity_step_rms_mps": [
+            0.028834033233755732,
+            0.023337208777855604,
+            0.035785382763569136
+          ],
+          "raw_xyz_step_rms_mps": [
+            0.3550911792357977,
+            0.12593431309229386,
+            0.12801858847819544
+          ],
+          "raw_x_flips": 153,
+          "raw_x_saturation_fraction": 0.624,
+          "nominal_mean_xyz_mps": [
+            0.03026573600981231,
+            -0.013606554967582566,
+            0.0008417550570182758
+          ],
+          "filtered_yield_mean_xyz_mps": [
+            -0.009525832253001546,
+            0.11643833405493749,
+            0.10178803595362039
+          ],
+          "filtered_feedback_scale_mean": 0.7799547324057943,
+          "actual_mean_xyz_mps": [
+            -0.030580510002468395,
+            0.006877729898049242,
+            0.013665765992978834
+          ]
+        },
+        {
+          "start_s": 30.0,
+          "end_s": 55.0,
+          "samples": 625,
+          "actual_xyz_velocity_step_rms_mps": [
+            0.025300226097286643,
+            0.021154536100256267,
+            0.030783289217975435
+          ],
+          "raw_xyz_step_rms_mps": [
+            0.3074967629499885,
+            0.07964526075956598,
+            0.11220654712724644
+          ],
+          "raw_x_flips": 203,
+          "raw_x_saturation_fraction": 0.4784,
+          "nominal_mean_xyz_mps": [
+            0.028448412160687206,
+            0.007676377197322897,
+            -0.008265243131145832
+          ],
+          "filtered_yield_mean_xyz_mps": [
+            0.011811143537223193,
+            0.08418063435619084,
+            0.06320444376829287
+          ],
+          "filtered_feedback_scale_mean": 0.8975117645189442,
+          "actual_mean_xyz_mps": [
+            -0.005078563201289579,
+            -0.017129328585501993,
+            -0.00019637415598227283
+          ]
+        }
+      ],
+      "payload_cup": {
+        "sampled_contact_frames": 26,
+        "first_s": 53.88000000122662,
+        "last_s": 55.0000000012638,
+        "span_s": 1.1200000000371801,
+        "caveat": "25Hz saved-pose mj_forward geometry, not a substep duration/force measurement or proof of no contact between frames",
+        "samples": [
+          {
+            "time_s": 53.88000000122662,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -2.1407859721506856e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -2.140785972154155e-05
+              }
+            ]
+          },
+          {
+            "time_s": 53.92000000122795,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.9970765758811626e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.9970765758818565e-05
+              }
+            ]
+          },
+          {
+            "time_s": 53.960000001229275,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.8635197647526303e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.8635197647505486e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.0000000012306,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.9170069745590157e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.917006974562485e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.04000000123193,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -2.051665006411532e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -2.051665006411532e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.08000000123326,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.9654454834813068e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.9654454834813068e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.12000000123459,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.9643196810966573e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.9643196810966573e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.160000001235915,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -2.0139703664687897e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -2.0139703664687897e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.20000000123724,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.4537736801854134e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.4537736801899237e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.24000000123857,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -2.2478015934256773e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -2.2478015934256773e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.2800000012399,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.5121748094804738e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.512174809484984e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.320000001241226,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.4983980524300305e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.4983980524293367e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.360000001242554,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.9553793888741483e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.9553793888720666e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.40000000124388,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.3458121153737262e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.3458121153771957e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.44000000124521,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.4918621235121554e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.4918621235111146e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.48000000124654,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.9448341428519172e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.9448341428553867e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.520000001247865,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.3710943055297159e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.3710943055297159e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.56000000124919,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.1273342577101247e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.1273342577101247e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.60000000125052,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.0772163392652745e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.077216339262499e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.64000000125185,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.4854913231984734e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.4854913231974326e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.68000000125318,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -8.899551195939298e-06
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -8.899551195939298e-06
+              }
+            ]
+          },
+          {
+            "time_s": 54.720000001254505,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.2280411842879174e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.2280411842865296e-05
+              }
+            ]
+          },
+          {
+            "time_s": 54.76000000125583,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -7.299842319372779e-06
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -7.299842319379718e-06
+              }
+            ]
+          },
+          {
+            "time_s": 54.80000000125716,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -9.444152427821179e-06
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -9.44415242781424e-06
+              }
+            ]
+          },
+          {
+            "time_s": 54.84000000125849,
+            "pairs": [
+              {
+                "names": [
+                  "office_v5_cup_handle_0",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.4857932361223014e-05
+              },
+              {
+                "names": [
+                  "office_v5_cup_handle_1",
+                  "target_object_geom"
+                ],
+                "distance_m": -1.4857932361223014e-05
+              }
+            ]
+          },
+          {
+            "time_s": 55.0000000012638,
+            "pairs": [
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_2"
+                ],
+                "distance_m": -2.977926855172234e-05
+              },
+              {
+                "names": [
+                  "target_object_geom",
+                  "office_v5_cup_wall_3"
+                ],
+                "distance_m": -3.7810811050322377e-06
+              }
+            ]
+          }
+        ]
+      },
+      "hashes": {
+        "rollout.json": "d68b1afd4a931be4500f39b2cabc6b459829cdab0b63cc44cf60d0c3bbbc39fe",
+        "rollout.npz": "fc9b3ff73c784bf64e78eb598b29fc0ad535e66fd6fe3acf66b1e78d65e99e79",
+        "rollout.mjb": "586dd7f279dc511983910661b0941846a2a8bb8d8d4afb312907d3634cd5a620",
+        "checkpoint.npz": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+        "execution.json": "8592fa16bcba37407147357a1caf37c439b789fef607a9412d633d90d044765f"
+      }
+    }
+  },
+  "source_sha256": "9a948d18fac9d3cf191e6df37915ff08c0c2f598124a28459569d7780238e011",
+  "same_checkpoint_scene_filter_schedule_gates": true,
+  "excluded_adapter_failure": {
+    "path": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/original_esn_payload_bridge_20261013/path_bridge/episode",
+    "execution_sha256": "456392bd28d66143627d3cee98d67b39b6b20d98865ea459016746b8204afd3f",
+    "error": "AssertionError('\\nArrays are not equal\\n\\nMismatched elements: 972 / 1375 (70.7%)\\nFirst 5 mismatches are at indices:\\n [5]: 1.0 (ACTUAL), 0.999999830152591 (DESIRED)\\n [6]: 1.0 (ACTUAL), 0.9999995869347367 (DESIRED)\\n [7]: 1.0 (ACTUAL), 0.9999995969196894 (DESIRED)\\n [8]: 1.0 (ACTUAL), 0.9999996565049601 (DESIRED)\\n [9]: 1.0 (ACTUAL), 0.9999997675221073 (DESIRED)\\nMax absolute difference among violations: 0.30334369\\nMax relative difference among violations: 0.43542805\\n ACTUAL: array([1., 1., 1., ..., 1., 1., 1.], shape=(1375,))\\n DESIRED: array([1., 1., 1., ..., 1., 1., 1.], shape=(1375,))')",
+    "reason": "Bridge consumed neutral joint composition scale1 rather than actual feedback scale; full failed trace preserved, not valid B"
+  },
+  "all_servo_amplitude_rate_bounds_pass": true,
+  "observed_servo_bounds": {
+    "linear_amplitude": 0.132079043472392,
+    "angular_amplitude": 0.2703436469793585,
+    "linear_rate": 1.200000000000003,
+    "angular_rate": 4.000000000000011,
+    "scale_rate": 4.000000000000059,
+    "minimum_scale": 0.5882643457679786
+  },
+  "paired_A_B_plan_identical": true,
+  "caveats": [
+    "Different contact exposure across repaired trajectories; not a pure policy ranking",
+    "Planning around known cup is not a demonstration of ESN cup compliance",
+    "Actuator interpolation is a new common adapter, not an ESN weight or parameter change",
+    "C is an explicitly added model-friction feedforward diagnostic after A; not a predeclared original A/B arm or evidence of ESN superiority",
+    "Reference RMSE differs after path change; no direct RMSE improvement claim"
+  ]
+}

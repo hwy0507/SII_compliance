@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-13 — 固定ESN继续修复杯口/棍推：有限执行层对照未通过，不采用失败方案
+
+- 新增benchmark `tools/`中的payload路径/servo衔接/摩擦前馈独立入口、配套测试/分析/视频工具及 `docs/ORIGINAL_ESN_CUP_ROD_REPAIR_20261013.md`。保持原checkpoint `acd3b27e…`、MJB `586dd7f2…`、actor公式/参数、环境/时序、gate、执行器限制、55秒与正式dt5e-5不变；没有训练或运行时teacher，也没改原公平矩阵。
+- 原杯口与物块确有接触：25Hz保存姿态重建162帧，27.68–41.24秒首末跨度13.56秒，不是累计接触时间。复用初始已知地图A*，计入物块半尺寸＋原12mm容差＋2mm间隙；相同起终点延后下降。A（仅路径）、有效B（路径＋40ms内10伺服步衔接）均没有采样物块—杯壁接触，但55秒仍carry、Task/Strict=false。规划避杯不是ESN杯接触柔顺证据。
+- A→B的12–18秒实测x速度变化RMS12.566→11.078mm/s，仅改善11.8%；棍峰力60.728→228.149N、结束进度更慢，不能认定整体更好。新增插值首版误读direct_esn中性关节合成scale=1，972/1375反馈终值不符，被审计拦截；完整错误B `path_bridge/episode`保持failed_preserved。修正版从_last_policy_wbc_scale读取反馈系数且不双重缩放，补针对性测试后只重跑一次。
+- A30–55秒名义y31.651mm/s、ESN修正+0.222mm/s、反馈系数1，实际仅4.123mm/s，定位公共伺服摩擦/跟踪不足而非ESN相抵。另登记且仅运行一次C：相同路径/衔接，加固定机器人摩擦前馈到原力矩安全投影前。C21.72秒完成搬运，但放置响应失稳，Task/Strict=false、峰矩59.957Nm、峰速0.48770m/s、穿透0.214980mm、杯倾倒、棍接触仅0.2059秒。未采用此方案，没有按失败再调ESN或放宽gate；也不把新前馈称为恢复历史代码。
+- 5项测试通过；有效A/B/C均完成1375步动作/储备池/过滤精确重放、1,224,000物理子步与独立穿透审计；B/C记录13,750伺服动作并验证限幅/限速/缩放，C另逐步重放力矩分解与安全投影。四回合源码tar/hash均核对，错误B只保留不计入有效对照。三份完整55s/25fps/1375帧三视角MP4全帧解码和定点目视核对完成；小证据在benchmark `docs/evidence/ORIGINAL_ESN_CUP_ROD_REPAIR_20261013_{COMPARISON,BUNDLE_AUDIT,MEDIA}.json`。
+- 已核验服务器：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/original_esn_payload_bridge_20261013_v1/evidence/`，135文件489128317字节，manifest `d53e6369b434920b9e227d81d65f3e9c1f2097033991ca4044f25e713185cc43`，2026-10-13T12:00:16Z核验发布；父目录ARCHIVE_VERIFICATION.json。含四回合全部原始/失败数据、checkpoint/MJB/源tar与source/tools快照、协议、报告、三份视频；不改历史执行路径。
+- 使用sii-research-sync：开工与收工fetch核对main `77dccc20dd06483f5bdb979a0cf0b2b79c02f353`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。本机1线程/1.5GiB串行仿真、1GiB渲染/禁swap，服务器仅存储。两次协调器lease已thaw，原公平服务active/running、未重启。在途worker及他人会议prompt均保留。
+- 已完成：本轮有限修复候选、失败归因、审计/完整视频/共享归档。运行中：原公平比较。未完成：冻结原ESN在旧反向搬运布局中顺滑、及时且安全的完整放置；不能称已修好或把本轮候选并入论文胜出结果。
+
 ## 2026-10-13 — 固定ESN继续修复：公共位置/速度参考，搬运完成但55秒未释放
 
 - 应用户要求继续修复并解释原好版本为何迁移变差。新增benchmark `tools/continuous_old_office_reference_20261013.py`、run/test工具、`analyze_reference_repair_20261013.py`及 `docs/ORIGINAL_ESN_CONTINUOUS_REFERENCE_20261013.md`。统一生成carry弧长位置与速度前馈，保留原直线路径；60mm/s、12mm、80mm和0.12rad来自既有名义/到点规则，不按回合调ESN。此为新公共参考设计，不假称历史遗漏分支；不改权重/输入公式/增益/过滤/执行器/场景时序/gate，原公平矩阵不采用此实验。
