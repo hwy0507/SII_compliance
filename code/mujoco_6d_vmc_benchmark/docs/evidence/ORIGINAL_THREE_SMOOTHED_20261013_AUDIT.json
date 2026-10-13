@@ -1,0 +1,488 @@
+{
+  "status": "passed",
+  "rows": 24,
+  "conditions": [
+    "repair_development_000",
+    "repair_development_001",
+    "repair_development_002",
+    "repair_development_003",
+    "repair_development_004",
+    "repair_development_005",
+    "repair_development_006",
+    "repair_development_007"
+  ],
+  "input_sha256": "294b9fc1a4149f4d604a50bcd07c9733692d772ae6877e8e7aad4f22534e1ee5",
+  "input_path": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/full_task_curves_20261013_v2/curve_data.json",
+  "source_sha256": "b617cd1ec033d8d8691eb926c4320df4566b531fc02c8dea38db72835b688473",
+  "checks": [
+    "original_only",
+    "three_methods_only",
+    "raw_substep_hash",
+    "episode_audit_hash",
+    "checkpoint_hash",
+    "raw_metrics_unchanged",
+    "finite_smoothed_curves",
+    "constant_preservation_at_edges",
+    "symmetric_kernel",
+    "contact_spans_within_recording",
+    "no_new_simulation"
+  ],
+  "records": [
+    {
+      "method": "esn",
+      "condition": "repair_development_000",
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_000",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_000/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "1289bb7029e7b39332295c5255b238a022a5865001f47f1f9cdf584e052453cd",
+        "audit_sha256": "257366ee5d071a331d5f6cb1354becec70302bfdd49e41d510200e6f62f4c2e8",
+        "metric_sha256": "d2f69a60dc8cc54d0c4606c71ed4ceb73c052bf94533346cee33c281c0b85cdf"
+      },
+      "raw_metrics": {
+        "rmse_mm": 29.408237526203102,
+        "peak_torque_nm": 50.68260955810547,
+        "peak_speed_mps": 0.3494315380844318
+      },
+      "task": true,
+      "strict": true
+    },
+    {
+      "method": "ordinary_rnn",
+      "condition": "repair_development_000",
+      "checkpoint_sha256": "6f3df0b65da56926214b523f7d431a3773f5b03632cb595d8f9008f642f1a910",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_000",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_000/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "a4eb1046df50ff293756ad76948935daee3e9befcd88646158cd5a8fd18aa880",
+        "audit_sha256": "ceb90c189f7bab110683c5f9c9f502d94a5108fc787621049d99d77a7a3d2e45",
+        "metric_sha256": "c52ce7eb65e9ad375f24d549a13096e0fc014453d8df7117457495a46aa94b70"
+      },
+      "raw_metrics": {
+        "rmse_mm": 36.82971538076916,
+        "peak_torque_nm": 49.3376579284668,
+        "peak_speed_mps": 0.38985754683730917
+      },
+      "task": false,
+      "strict": false
+    },
+    {
+      "method": "ordinary_mlp",
+      "condition": "repair_development_000",
+      "checkpoint_sha256": "50bb22dd179e34af387f7e3375a9c7214e0eaa524df34c33a16562f52a03ea07",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_000",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_000/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "53128b5e75ca1b48f876ef54affaf65d6cdb74a404d4d2bf245d64f60918f909",
+        "audit_sha256": "06e816ba59a16bdd98c828152b7e79ec5160deea8582c29f26ea051874af3822",
+        "metric_sha256": "7e6292c6a2fd146070f1646f1ba446e5c7ebe0fabf7e6188f2f20f55037224fe"
+      },
+      "raw_metrics": {
+        "rmse_mm": 43.34888559742095,
+        "peak_torque_nm": 42.913124084472656,
+        "peak_speed_mps": 0.3763588998262243
+      },
+      "task": false,
+      "strict": false
+    },
+    {
+      "method": "esn",
+      "condition": "repair_development_001",
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_001",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_001/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "b1b5e2fdc8eba5e82dd6c576fb5648d235075ce712a397026d213e3e155e797f",
+        "audit_sha256": "8828ebc13ce775a508c47fb8dfbb21b81d5c5734ac2564d1c8b428bfb274f4f5",
+        "metric_sha256": "d414014e60f4cac0a268921e48dabbbb4276ea3e99f91d0ded79400abbd5a615"
+      },
+      "raw_metrics": {
+        "rmse_mm": 31.191511785304506,
+        "peak_torque_nm": 49.038387298583984,
+        "peak_speed_mps": 0.37043378087471435
+      },
+      "task": true,
+      "strict": false
+    },
+    {
+      "method": "ordinary_rnn",
+      "condition": "repair_development_001",
+      "checkpoint_sha256": "6f3df0b65da56926214b523f7d431a3773f5b03632cb595d8f9008f642f1a910",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_001",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_001/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "37210973dfb47b6cc37dd24cb7dea8baed79a25b470ed8a1db1118b73eec7dca",
+        "audit_sha256": "8dc6e7cda2c9f53841c86b0acaa10f5e63ebf21d40f6552fbd3df550f5b7bf66",
+        "metric_sha256": "0cc86f0af8e1bccc1e0067b4623ddfeb9c2cac641e017c0104aef2bf9b16a188"
+      },
+      "raw_metrics": {
+        "rmse_mm": 38.2492799929107,
+        "peak_torque_nm": 49.96836853027344,
+        "peak_speed_mps": 0.42088076055650636
+      },
+      "task": false,
+      "strict": false
+    },
+    {
+      "method": "ordinary_mlp",
+      "condition": "repair_development_001",
+      "checkpoint_sha256": "50bb22dd179e34af387f7e3375a9c7214e0eaa524df34c33a16562f52a03ea07",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_001",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_001/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "5b53f982b71a0aaa6a308c7bee83254a3049f728eec9c0bb8e8a7655ef79245d",
+        "audit_sha256": "3f13a1cf7e5399824938eef22063ee14f9dcba0439a953dadbaf2359fff33762",
+        "metric_sha256": "09b282f6566a42d28f102c04308c8ba67baecfb3435d17c4e758bbbb66b38a14"
+      },
+      "raw_metrics": {
+        "rmse_mm": 45.50488809636744,
+        "peak_torque_nm": 48.93960952758789,
+        "peak_speed_mps": 0.3859673024006043
+      },
+      "task": true,
+      "strict": true
+    },
+    {
+      "method": "esn",
+      "condition": "repair_development_002",
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_002",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_002/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "042d3431785965433ff9e33f783fd64b2cfdfa1714174ec27e87ee05d394c056",
+        "audit_sha256": "c2b4b99a53a3938ba1450ebc995059ce8c6698545b850991a812a89a7540fb5e",
+        "metric_sha256": "493bc3fe2ae159b1e19d05c5c9d6e80b8467fd14a6ecb8d930a5d2d9db9b5ff2"
+      },
+      "raw_metrics": {
+        "rmse_mm": 28.04965621438651,
+        "peak_torque_nm": 51.25302505493164,
+        "peak_speed_mps": 0.369750079340931
+      },
+      "task": true,
+      "strict": false
+    },
+    {
+      "method": "ordinary_rnn",
+      "condition": "repair_development_002",
+      "checkpoint_sha256": "6f3df0b65da56926214b523f7d431a3773f5b03632cb595d8f9008f642f1a910",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_002",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_002/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "092ae46442089aca6e184383209a7cb60548a02c46162e902d1889632587b5eb",
+        "audit_sha256": "2ed08b6fe3647a9ce189f2ab55095d4e40f0047513ec27d9c2b97e75c7eee8f9",
+        "metric_sha256": "3f237629c86281f1d095aa776aafd5477406f339e8ddeaf39cf9fcbceba16169"
+      },
+      "raw_metrics": {
+        "rmse_mm": 36.17518610854519,
+        "peak_torque_nm": 48.77434539794922,
+        "peak_speed_mps": 0.4039327886762623
+      },
+      "task": true,
+      "strict": true
+    },
+    {
+      "method": "ordinary_mlp",
+      "condition": "repair_development_002",
+      "checkpoint_sha256": "50bb22dd179e34af387f7e3375a9c7214e0eaa524df34c33a16562f52a03ea07",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_002",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_002/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "564c7e06903010de238a165b8a70b85e4f59284ce14e82f1052c6edf295cb399",
+        "audit_sha256": "000f1dec953c61d88467c767f1497172ac4578059a539ae5c3d45aee81b67f1a",
+        "metric_sha256": "b143d4b9d71385a0a715848ac37237c8bd84eba48a600851e3375ee579b1bdd8"
+      },
+      "raw_metrics": {
+        "rmse_mm": 46.28951900394879,
+        "peak_torque_nm": 50.22260284423828,
+        "peak_speed_mps": 0.37061285575666664
+      },
+      "task": true,
+      "strict": true
+    },
+    {
+      "method": "esn",
+      "condition": "repair_development_003",
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_003",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_003/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "0700e477e5040b6ea846e733950bd5fa0f85ad4983bac1788323ec3de868fa0b",
+        "audit_sha256": "d87767cb34615951b37b1e0c9590781fc60f1962fd6fb44e33b6850d0a14462a",
+        "metric_sha256": "888825ed8d060391d4abb167a0d3758eff1aea118b6dd99a424779950a163490"
+      },
+      "raw_metrics": {
+        "rmse_mm": 30.72930245159348,
+        "peak_torque_nm": 41.58799743652344,
+        "peak_speed_mps": 0.3505611108941224
+      },
+      "task": false,
+      "strict": false
+    },
+    {
+      "method": "ordinary_rnn",
+      "condition": "repair_development_003",
+      "checkpoint_sha256": "6f3df0b65da56926214b523f7d431a3773f5b03632cb595d8f9008f642f1a910",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_003",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_003/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "19af3f6c5b187aad375232b3bf041cc8a48e8a6ec30b6fa23318b37f02d91b83",
+        "audit_sha256": "171febdbfdf7ceae9ca5dd941ef8bd4575ae3b0376711376029ab1b23858f49f",
+        "metric_sha256": "e70465fece2d9dfa9797cad7fd7e8f5ed097de4b86d91e141247036b59afa91c"
+      },
+      "raw_metrics": {
+        "rmse_mm": 36.1461924308194,
+        "peak_torque_nm": 40.48175048828125,
+        "peak_speed_mps": 0.39261035553483176
+      },
+      "task": false,
+      "strict": false
+    },
+    {
+      "method": "ordinary_mlp",
+      "condition": "repair_development_003",
+      "checkpoint_sha256": "50bb22dd179e34af387f7e3375a9c7214e0eaa524df34c33a16562f52a03ea07",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_003",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_003/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "0a82b0ac5c85c1faf0666be6d0faf1f8c52f2d10c2002e16aead2c45959acd75",
+        "audit_sha256": "ef63cefad3cb7de567a5be936c086e66ad643cc10bbb298566d0bfc64fc62d13",
+        "metric_sha256": "71f7a5cfe8cbd6381a654a8ad1952cfc61fcfac67d5d5aa12a0bbd5a31b25bee"
+      },
+      "raw_metrics": {
+        "rmse_mm": 46.16210126788148,
+        "peak_torque_nm": 49.58757781982422,
+        "peak_speed_mps": 0.3639818308084369
+      },
+      "task": false,
+      "strict": false
+    },
+    {
+      "method": "esn",
+      "condition": "repair_development_004",
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_004",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_004/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "fb8ee3eaadee04e9b4845cf207382815da263ca24ed9b411fe3ad94b4184a8d9",
+        "audit_sha256": "b68af892fc16094ec3fe78c5a7e709a50e46015fb9c2b6d6f1fc6050457cc198",
+        "metric_sha256": "3e2a50ab13df6585d200baff53f664fe9a016e149520a9b513d2903b45ecf0e8"
+      },
+      "raw_metrics": {
+        "rmse_mm": 26.450242933771733,
+        "peak_torque_nm": 50.359375,
+        "peak_speed_mps": 0.35045523056430333
+      },
+      "task": true,
+      "strict": true
+    },
+    {
+      "method": "ordinary_rnn",
+      "condition": "repair_development_004",
+      "checkpoint_sha256": "6f3df0b65da56926214b523f7d431a3773f5b03632cb595d8f9008f642f1a910",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_004",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_004/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "a0995ae845c15f313c265798cdd9b7824b21032323dc04d8c88956389015b645",
+        "audit_sha256": "d66a26c1a9b057e09b533055de8dff22f2e84b89afcfbfb8c24e223d800fd6d0",
+        "metric_sha256": "6ce45b28034a04627990f23852c4d8d01935cd5301937d2a9cfa0bbdd24e92a4"
+      },
+      "raw_metrics": {
+        "rmse_mm": 41.53103970807414,
+        "peak_torque_nm": 50.248050689697266,
+        "peak_speed_mps": 0.38789035259692467
+      },
+      "task": false,
+      "strict": false
+    },
+    {
+      "method": "ordinary_mlp",
+      "condition": "repair_development_004",
+      "checkpoint_sha256": "50bb22dd179e34af387f7e3375a9c7214e0eaa524df34c33a16562f52a03ea07",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_004",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_004/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "a23b806b973c2127c6ddc41f1660ce80f33f296557a2e395faf1afe0ce214992",
+        "audit_sha256": "1ae52ad370d5cf4ef05e8bbee62608739e50bb6d164f36d4bd601dc3d223b9f0",
+        "metric_sha256": "42c33a81bd86e134d13f8949c4357f93d90a7c1a302c8a6919fa1009853915b7"
+      },
+      "raw_metrics": {
+        "rmse_mm": 46.66114603785854,
+        "peak_torque_nm": 43.5238151550293,
+        "peak_speed_mps": 0.3817020725836619
+      },
+      "task": false,
+      "strict": false
+    },
+    {
+      "method": "esn",
+      "condition": "repair_development_005",
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_005",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_005/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "a7a265d93355a5c3d1ab97dc8375ffda354fe86309eb351140d44afe963ba6de",
+        "audit_sha256": "a1ba2c541ce28a73128b7fd35363dccad25e630a642a0ef8b02eb4d957e526c1",
+        "metric_sha256": "7e18dc0440f982c4a77509d55269f8d8b99cbc2b9ce344160bd8219c379b14ca"
+      },
+      "raw_metrics": {
+        "rmse_mm": 32.44158047995057,
+        "peak_torque_nm": 50.47352600097656,
+        "peak_speed_mps": 0.3588312990770993
+      },
+      "task": true,
+      "strict": false
+    },
+    {
+      "method": "ordinary_rnn",
+      "condition": "repair_development_005",
+      "checkpoint_sha256": "6f3df0b65da56926214b523f7d431a3773f5b03632cb595d8f9008f642f1a910",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_005",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_005/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "4726753c0ea4900f0b18d401e132d340168de3d60882727ee89c22d4ed130923",
+        "audit_sha256": "333e848a31da9da90aae31bb16d82fbb6412d93c3169192059f9d37063a8c0bc",
+        "metric_sha256": "e9b82c7f5ecc2148809730de610fef232272288c63db482a2fc263f28bfb3c8d"
+      },
+      "raw_metrics": {
+        "rmse_mm": 36.64403089661577,
+        "peak_torque_nm": 49.987369537353516,
+        "peak_speed_mps": 0.3826991169397137
+      },
+      "task": true,
+      "strict": true
+    },
+    {
+      "method": "ordinary_mlp",
+      "condition": "repair_development_005",
+      "checkpoint_sha256": "50bb22dd179e34af387f7e3375a9c7214e0eaa524df34c33a16562f52a03ea07",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_005",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_005/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "24d449ac2009a6fb05827ddf3f5af6ea3d73ff29f6911a8a804ad551d14ec109",
+        "audit_sha256": "5992dfccb031222f1f07d533aeca6bbb46497a29606ceefb68edf7112eceb4c2",
+        "metric_sha256": "8bf0b026661b4e320dc6007160dab320fb4be8df15ff4acc467bcfccb77daefb"
+      },
+      "raw_metrics": {
+        "rmse_mm": 46.224370621371975,
+        "peak_torque_nm": 49.62651062011719,
+        "peak_speed_mps": 0.3590404653027393
+      },
+      "task": true,
+      "strict": true
+    },
+    {
+      "method": "esn",
+      "condition": "repair_development_006",
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_006",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_006/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "0dfe2f54c1a24375da0a11983efaa3039ff6b4cfaf783212955138ae82cb71d6",
+        "audit_sha256": "f8fe29538da790342681a1a83fefa21b5cb7283096380d267cd54967c1af0b0f",
+        "metric_sha256": "367cb5da93dc8c2eda910eb18709e62b182c3bac362a591b12bb45368f89adfa"
+      },
+      "raw_metrics": {
+        "rmse_mm": 29.206515321854347,
+        "peak_torque_nm": 49.419891357421875,
+        "peak_speed_mps": 0.3557160461105923
+      },
+      "task": true,
+      "strict": false
+    },
+    {
+      "method": "ordinary_rnn",
+      "condition": "repair_development_006",
+      "checkpoint_sha256": "6f3df0b65da56926214b523f7d431a3773f5b03632cb595d8f9008f642f1a910",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_006",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_006/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "c63d93853c867298619e93bbc598be7fe13341b5cbadab2e705b600254f53d3d",
+        "audit_sha256": "a346bb6f8538161fceeca46ec2601688fea5eae8b24fd73c0665ef67e3229ab5",
+        "metric_sha256": "c808d1b02f4beb675b821eb7fc6c33b41cfe9890a97fdd35f0214a188f9cf8ef"
+      },
+      "raw_metrics": {
+        "rmse_mm": 40.36052170088586,
+        "peak_torque_nm": 38.5302734375,
+        "peak_speed_mps": 0.40692259076621656
+      },
+      "task": false,
+      "strict": false
+    },
+    {
+      "method": "ordinary_mlp",
+      "condition": "repair_development_006",
+      "checkpoint_sha256": "50bb22dd179e34af387f7e3375a9c7214e0eaa524df34c33a16562f52a03ea07",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_006",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_006/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "510ccd5a3c6673df22440682ebe3961cc5727c58dfd1c20d76d52607f9a6f39e",
+        "audit_sha256": "3034c427d045dcf01cd4e66ce179aad58c040214a766745b63ec5fd5c1e7bfcf",
+        "metric_sha256": "0c182fa137d356fcc109e8bd4fa0339ca38e9438371f5d2c2f03acb25614e8d0"
+      },
+      "raw_metrics": {
+        "rmse_mm": 45.56434959102498,
+        "peak_torque_nm": 48.49395751953125,
+        "peak_speed_mps": 0.36712876555462987
+      },
+      "task": true,
+      "strict": true
+    },
+    {
+      "method": "esn",
+      "condition": "repair_development_007",
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_007",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_007/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "892ccf6c93bc33b3f996fc38cfd8eba953994fbc12a547b50114a7421de0a9dc",
+        "audit_sha256": "2fc6db7158c05521bd7d6ad23c9c744e454a4f2205d9977d02db8a94fa4f57c1",
+        "metric_sha256": "053b6fd24d50266aaf39fa527fa652e9e14c952f6602b6503c4959b75f011b51"
+      },
+      "raw_metrics": {
+        "rmse_mm": 28.9024947935115,
+        "peak_torque_nm": 50.75132369995117,
+        "peak_speed_mps": 0.3652903881851964
+      },
+      "task": true,
+      "strict": false
+    },
+    {
+      "method": "ordinary_rnn",
+      "condition": "repair_development_007",
+      "checkpoint_sha256": "6f3df0b65da56926214b523f7d431a3773f5b03632cb595d8f9008f642f1a910",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_007",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_007/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "b1282ede0aedd1480b5b771629f0c8a69caef90bff45f865f40c0237e51aa49e",
+        "audit_sha256": "ae9700c1429d1010ef68c3511983d84f382a8e327929d46d9e15ec71fb0bac2d",
+        "metric_sha256": "aba71ee215adce4cdd7625a527668eb02323ebbeef417a3900e661f72d92f10e"
+      },
+      "raw_metrics": {
+        "rmse_mm": 35.67734832064597,
+        "peak_torque_nm": 50.12744140625,
+        "peak_speed_mps": 0.38190824818854635
+      },
+      "task": true,
+      "strict": true
+    },
+    {
+      "method": "ordinary_mlp",
+      "condition": "repair_development_007",
+      "checkpoint_sha256": "50bb22dd179e34af387f7e3375a9c7214e0eaa524df34c33a16562f52a03ea07",
+      "source": {
+        "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_007",
+        "raw": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_007/rollout_metrics/substep_metrics.npz",
+        "raw_sha256": "2a136db09a09502bbb18acf174771149af39f2b860af070d1b8c238fca7d6efb",
+        "audit_sha256": "76e0a957e814e2338f32667cf42f5d2a18a300b4ce296bb359bb2f21aa60052b",
+        "metric_sha256": "7bfe41ba8f84e56d4065f968dd1e6d04df41e37985dba747e0f8945255240664"
+      },
+      "raw_metrics": {
+        "rmse_mm": 44.88553230236158,
+        "peak_torque_nm": 40.87335968017578,
+        "peak_speed_mps": 0.3622904870288777
+      },
+      "task": false,
+      "strict": false
+    }
+  ]
+}

@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-13 — 原版ESN/MLP/RNN三指标统一平滑与实际接触时段
+
+- 按用户要求仅绘制 `esn__original/ordinary_mlp__original/ordinary_rnn__original`，原8开发条件×3方法全部保留。新增benchmark `tools/plot_original_students_smoothed_20261013.py`、报告 `docs/ORIGINAL_THREE_SMOOTHED_CURVES_20261013.md`、首编号PNG及小型来源审计；没有混入matched、新训练模型或棍推修复候选。
+- 使用统一居中高斯σ0.20s/截断±0.60s，边缘按可用样本归一化；局部RMSE先平滑20ms误差平方均值再开方，力矩/速度平滑20ms实际物理峰值包络。8张PNG、8页PDF、首图PDF、HTML、接触时刻CSV、未经平滑的指标CSV及原/平滑数值均已保存。平滑压低短时峰值，仅供趋势展示，不替代原始峰值或反应延迟测量。
+- 第一编号球接触共同包络2.063–2.225s、人手5.575–10.529s、棍15.650–21.803s；下部逐方法分别标出实际首末跨度及未知凸边/柱子，明确跨度内部有间断、不是累计接触时长。原失败/Task/Strict不变，不把平滑视觉改善当新性能。
+- 24/24原始子步/AUDIT/checkpoint hash通过，三指标与原审计一致；有限值/时间间隔/事件边界/常量边缘保持/核对称性检查通过；首末编号PNG目视核对、系统pdfinfo确认8页。Python缺pypdf、打包pdfinfo不兼容GLIBC，已用`/usr/bin/pdfinfo`完成验证。本机1线程/1GiB/禁swap分析5.4s，未启动仿真。
+- 已核验服务器源码和全产物：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/original_three_smoothed_20261013_v1/evidence/`，19文件34610827字节，manifest `b28c07f829e3b2c90459629d55494c6cc04b5d48dc805e81b3e549f4c42d8b7b`，2026-10-13T13:24:56Z发布，父目录含ARCHIVE_VERIFICATION.json。该目录内含绘图脚本/source_curves.json/REPORT.md/execution.json，原物理轨迹仍在既有归档中。
+- 使用sii-research-sync核对main `d34cddf67402d43b1e9e7935641a983494dd12a9`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；main最近修复候选未通过，baseline无本轮更新，均未混入本图。已完成本轮绘图/校验/共享；原公平v4服务和worker运行中未重启；未新增训练或公平结论。保留其他agent会议prompt文件。
+
 ## 2026-10-13 — 棍推对抗专项：编码器摩擦候选失败，明确物块接触与反向读出
 
 - 新增benchmark电机补偿/运行/测试/比较/读出方向/姿态几何/媒体工具，报告 `docs/ORIGINAL_ESN_ROD_OPPOSITION_20261013.md`。原ESN `acd3b27e…`、旧MJB `586dd7f2…`、输入公式/参数/过滤/事件/gate/执行器/55秒冻结；保留同拍反馈和continuous reference，仅测试实际编码器速度的模型摩擦补偿，系数来自原模型/观测器，没有搜索。

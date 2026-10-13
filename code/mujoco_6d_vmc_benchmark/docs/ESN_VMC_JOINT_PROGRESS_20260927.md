@@ -1,5 +1,14 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-13 — 原版三模型平滑曲线已交付
+
+仅分析原ESN/ordinary MLP/ordinary RNN的既有8条件24条完整轨迹，三指标统一高斯σ0.20s平滑。
+实际球/手/棍/未知凸边/柱子接触首末跨度逐方法标注，原峰值另存；8图、8页PDF和数值已归档。
+24条来源/模型hash与指标核验通过，图与PDF检查完成；本机1线程/1GiB，服务器仅存储。
+已核验共享目录：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/original_three_smoothed_20261013_v1/evidence/`。
+详见[原版三模型平滑图](ORIGINAL_THREE_SMOOTHED_CURVES_20261013.md)。原公平比较继续运行；
+未新增仿真或修改模型、环境、gate，未将平滑展示当作新的性能提升。
+
 ## 2026-10-13 — 棍推对抗：公共电机补偿候选失败，未采用
 
 冻结原ESN/输入公式/参数/场景/事件/gate/限制，单次55秒测试编码器速度摩擦补偿。
