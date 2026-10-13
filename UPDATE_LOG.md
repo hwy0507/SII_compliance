@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-13 — 聚焦棍推：修正反馈系数错拍，但完整任务仍未恢复
+
+- 新增benchmark `tools/feedback_tick_contract_20261013.py`及run/pair/test/analyze/render工具，报告 `docs/ORIGINAL_ESN_ROD_TICK_REPAIR_20261013.md`。冻结原ESN checkpoint `acd3b27e…`、旧场景MJB `586dd7f2…`、输入公式/参数/事件时间/gate/执行器/55秒不变；沿用continuous reference，仅测试公共WBC反馈系数和当前残差同拍。没有储备池重置、摩擦前馈、teacher或新增滤波。
+- 发现原direct_esn执行中反馈系数滞后当前残差40ms，13,750伺服步错拍率78.98%、最大差0.16。A记录版与此前完整回合time/qpos/qvel/观测/动作/状态逐值一致；B同步版错拍率与误差归零、合成scale=1保留。原生运行也有该路由，不能称其为迁移独有原因。
+- A/B均Task=false、Strict=false。B的12–18秒实际x速度相邻变化RMS15.419→13.638mm/s，但原请求翻转72→115、棍峰力61.774→95.162N；棍后2–6秒局部较平稳，完整任务反而慢，55秒仍carry（A为load_transfer）。B峰矩43.180Nm、峰速0.102859m/s、穿透0.161005mm。没有采用为默认修复或更新公平矩阵。
+- A首次棍接触前2秒已47次x请求翻转；离线相同观测的零状态重放最终动作/状态差约1e-8，不支持永久储备池损坏，但不证明闭环重置有效。原生成功002的棍峰力282.148N来自不同路径/姿态，不能直接因果比较。保留负结果，未继续按这一个回合调ESN。
+- 一个时序/不重复缩放测试及两次完整集成回合通过审计；每回合1375策略步精确动作/状态/过滤重放、1,224,000物理子步独立指标及穿透审计、13,750真实消费记录、源tar/hash核验。普通/棍近景两份55秒三视角MP4全帧解码通过，另有明确标记的8–23秒原速剪辑；关键帧及曲线目视核对。小证据位于benchmark `docs/evidence/ORIGINAL_ESN_ROD_TICK_REPAIR_20261013_{ANALYSIS,MEDIA}.json`。
+- 已核验服务器：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/original_esn_rod_tick_20261013_v1/evidence/`，84文件375235511字节，manifest `d6ac65a06350c947b81dfa5dbddd161b44eeee0fcbe9b2501eda1dcbc3ce5d6a`，2026-10-13T12:35:53Z发布。包含失败原始回合/源码tar/source工具快照/checkpoint/场景/对照输入/审计/视频；父目录ARCHIVE_VERIFICATION.json，不改历史执行路径。
+- 使用sii-research-sync；开工及收工fetch核对main `2b4461a6f746952c45fe86f1a1e6b34104738b9b`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。本机串行单线程1.5GiB仿真/1GiB渲染、禁swap；服务器只存储。派发lease12:29:38 UTC已thaw，原公平作业未重启，保留他人会议prompt。
+- 已完成本轮时序修正候选及完整审计/共享；运行中原公平比较；未完成冻结原ESN在旧布局中顺滑、按时的放置。后续公共执行改变须全方法一致重评，不将本轮局部改善宣传为完整修复。
+
 ## 2026-10-13 — 固定ESN继续修复杯口/棍推：有限执行层对照未通过，不采用失败方案
 
 - 新增benchmark `tools/`中的payload路径/servo衔接/摩擦前馈独立入口、配套测试/分析/视频工具及 `docs/ORIGINAL_ESN_CUP_ROD_REPAIR_20261013.md`。保持原checkpoint `acd3b27e…`、MJB `586dd7f2…`、actor公式/参数、环境/时序、gate、执行器限制、55秒与正式dt5e-5不变；没有训练或运行时teacher，也没改原公平矩阵。

@@ -1,0 +1,1674 @@
+{
+  "runs": {
+    "native": {
+      "task": true,
+      "strict": false,
+      "stage": "retreat",
+      "events": [
+        {
+          "stage": "align",
+          "time_s": 0.15999999999999054
+        },
+        {
+          "stage": "grasp",
+          "time_s": 1.8000000000015863
+        },
+        {
+          "stage": "lift",
+          "time_s": 2.4800000000008895
+        },
+        {
+          "stage": "carry",
+          "time_s": 6.19999999999222
+        },
+        {
+          "stage": "load_transfer",
+          "time_s": 32.36000000051247
+        },
+        {
+          "stage": "release",
+          "time_s": 34.80000000059347
+        },
+        {
+          "stage": "retreat",
+          "time_s": 35.32000000061073
+        }
+      ],
+      "metrics": {
+        "samples": 1100000,
+        "timestep_s": 5e-05,
+        "timestep_sample_counts": {
+          "5e-05": 1100000
+        },
+        "rmse_weighting": "uniform physical samples (equivalent to time integral)",
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.3697500844815564,
+        "generalized_actuator_torque_peak_nm": 51.25302467630575,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          4.245620570841577,
+          51.25302467630575,
+          4.460435754565309,
+          30.376385612864482,
+          2.429748543484111,
+          4.655005076546747,
+          1.4148855357444141
+        ],
+        "actuator_force_peak_by_actuator": [
+          4.245620570841577,
+          51.25302467630575,
+          4.460435754565309,
+          30.376385612864482,
+          2.429748543484111,
+          4.655005076546747,
+          1.4148855357444141
+        ],
+        "position_rmse_xyz_m": [
+          0.0094726092298075,
+          0.005071372614663208,
+          0.025910115165245558
+        ],
+        "position_rmse_3d_m": 0.028049656213466827,
+        "stages": {
+          "0": {
+            "count": 3200,
+            "duration_s": 0.15999999999999054,
+            "error_peak_m": 3.7775560441959067e-08,
+            "speed_peak_mps": 1.510124567074304e-08,
+            "qfrc_peak_nm": 31.798505638682165,
+            "first_s": 5e-05,
+            "last_s": 0.15999999999999054,
+            "position_rmse_xyz_m": [
+              4.94910921731489e-09,
+              3.651985857902775e-08,
+              6.476062169813548e-10
+            ],
+            "position_rmse_3d_m": 3.685936986017763e-08,
+            "name": "approach"
+          },
+          "1": {
+            "count": 32800,
+            "duration_s": 1.6400000000012487,
+            "error_peak_m": 0.07210000068517561,
+            "speed_peak_mps": 0.06160207103073563,
+            "qfrc_peak_nm": 36.18509106323489,
+            "first_s": 0.16004999999999053,
+            "last_s": 1.8000000000015863,
+            "position_rmse_xyz_m": [
+              0.0009822699315369828,
+              0.0005516096311898493,
+              0.03910282183922092
+            ],
+            "position_rmse_3d_m": 0.0391190465527149,
+            "name": "align"
+          },
+          "2": {
+            "count": 13600,
+            "duration_s": 0.6799999999999333,
+            "error_peak_m": 0.006830975926470015,
+            "speed_peak_mps": 0.3697500844815564,
+            "qfrc_peak_nm": 36.778670837736314,
+            "first_s": 1.8000500000015864,
+            "last_s": 2.4800000000008895,
+            "position_rmse_xyz_m": [
+              0.0014541395172473104,
+              0.003989621009752336,
+              0.002523714235566049
+            ],
+            "position_rmse_3d_m": 0.004939709614934487,
+            "name": "grasp"
+          },
+          "3": {
+            "count": 74400,
+            "duration_s": 3.7199999999979996,
+            "error_peak_m": 0.13532659184539206,
+            "speed_peak_mps": 0.04767917692087631,
+            "qfrc_peak_nm": 36.25622091379661,
+            "first_s": 2.4800500000008894,
+            "last_s": 6.19999999999222,
+            "position_rmse_xyz_m": [
+              0.0038403132285323898,
+              0.005402525461196716,
+              0.08563934111380274
+            ],
+            "position_rmse_3d_m": 0.08589547155385076,
+            "name": "lift"
+          },
+          "4": {
+            "count": 523200,
+            "duration_s": 26.160000000306656,
+            "error_peak_m": 0.04974083664576678,
+            "speed_peak_mps": 0.10492538298177205,
+            "qfrc_peak_nm": 43.51840078578664,
+            "first_s": 6.20004999999222,
+            "last_s": 32.36000000051247,
+            "position_rmse_xyz_m": [
+              0.0133777968980919,
+              0.006562610822281972,
+              0.013320111875800024
+            ],
+            "position_rmse_3d_m": 0.0199864626944129,
+            "name": "carry"
+          },
+          "5": {
+            "count": 48800,
+            "duration_s": 2.4400000000009827,
+            "error_peak_m": 0.02049960287157879,
+            "speed_peak_mps": 0.03950107770617523,
+            "qfrc_peak_nm": 48.41503810801818,
+            "first_s": 32.36005000051247,
+            "last_s": 34.80000000059347,
+            "position_rmse_xyz_m": [
+              0.0028602136576860405,
+              0.0024875889356286798,
+              0.015196829758097986
+            ],
+            "position_rmse_3d_m": 0.015662456881884414,
+            "name": "load_transfer"
+          },
+          "6": {
+            "count": 10400,
+            "duration_s": 0.519999999999951,
+            "error_peak_m": 0.005520113399831658,
+            "speed_peak_mps": 0.012961231060718805,
+            "qfrc_peak_nm": 47.44027736990783,
+            "first_s": 34.80005000059347,
+            "last_s": 35.32000000061073,
+            "position_rmse_xyz_m": [
+              0.002181260765125035,
+              0.003925462902721762,
+              0.00267218237338549
+            ],
+            "position_rmse_3d_m": 0.005225678536109041,
+            "name": "release"
+          },
+          "7": {
+            "count": 393600,
+            "duration_s": 19.680000000091542,
+            "error_peak_m": 0.02259678369559907,
+            "speed_peak_mps": 0.05781108497102071,
+            "qfrc_peak_nm": 51.25302467630575,
+            "first_s": 35.320050000610735,
+            "last_s": 55.00000000126404,
+            "position_rmse_xyz_m": [
+              0.002965876484371776,
+              0.0027131566531851704,
+              0.00987711335693112
+            ],
+            "position_rmse_3d_m": 0.010663724049830788,
+            "name": "retreat"
+          }
+        }
+      },
+      "penetration_mm": 0.5501302956723266,
+      "rod": {
+        "first_s": 14.9187999999719,
+        "last_s": 16.856849999997824,
+        "duration_s": 1.3445500000006252,
+        "peak_n": 282.1482617678497,
+        "impulse_ns": 17.625071055087997,
+        "robot_parts": [
+          "hand"
+        ]
+      },
+      "cup_valid": true,
+      "windows": [
+        {
+          "window": "before_rod",
+          "start_s": 12.9187999999719,
+          "end_s": 14.9187999999719,
+          "frames": 50,
+          "actual_xyz_step_rms_mmps": [
+            5.513693768054087,
+            2.469291688762916,
+            3.857710728938549
+          ],
+          "raw_x_sign_flips": 3,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            1.0155015157594889,
+            0.4627941519247202,
+            1.108191266813139,
+            0.07106157376623867,
+            0.14997950665077317,
+            0.04340888875132991
+          ],
+          "state_norm_mean": 0.3019888524519895,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.03218478256147225,
+            "min_mps_per_n": 0.02737552602294968,
+            "max_mps_per_n": 0.04286156738991326,
+            "negative_fraction": 0.0,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "rod_first_2s",
+          "start_s": 14.9187999999719,
+          "end_s": 16.918799999971903,
+          "frames": 50,
+          "actual_xyz_step_rms_mmps": [
+            14.294913764235307,
+            8.47203899026769,
+            6.540059656661274
+          ],
+          "raw_x_sign_flips": 9,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            6.99516410686679,
+            0.8380653699821153,
+            4.886574590862719,
+            0.3507851419966888,
+            0.36571012913609424,
+            0.9352542787267322
+          ],
+          "state_norm_mean": 1.8674418053791444,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            282.1482617678497,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.032979638513238596,
+            "min_mps_per_n": 0.024405504044344717,
+            "max_mps_per_n": 0.039089869179843584,
+            "negative_fraction": 0.0,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "after_rod_0_2s",
+          "start_s": 16.896849999997823,
+          "end_s": 18.896849999997823,
+          "frames": 50,
+          "actual_xyz_step_rms_mmps": [
+            16.908407186594513,
+            6.507793565629774,
+            9.45794186150512
+          ],
+          "raw_x_sign_flips": 18,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            1.318107120251931,
+            0.43573040352147935,
+            0.975255560251973,
+            0.08364131741503107,
+            0.1570649734083089,
+            0.06351266258757676
+          ],
+          "state_norm_mean": 0.6645022818495115,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.03398541213576481,
+            "min_mps_per_n": 0.020236325129330268,
+            "max_mps_per_n": 0.061268285144566725,
+            "negative_fraction": 0.0,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "after_rod_2_6s",
+          "start_s": 18.896849999997823,
+          "end_s": 22.896849999997823,
+          "frames": 100,
+          "actual_xyz_step_rms_mmps": [
+            18.792763542265448,
+            7.520435379294594,
+            9.284164390462132
+          ],
+          "raw_x_sign_flips": 72,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            2.0696264415475785,
+            0.9408607242445428,
+            1.5059546238565902,
+            0.18717396908803396,
+            0.3729650086677115,
+            0.12897266918233116
+          ],
+          "state_norm_mean": 0.60773284886892,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.031981751986076556,
+            "min_mps_per_n": 0.01967959624328719,
+            "max_mps_per_n": 0.04109772779808285,
+            "negative_fraction": 0.0,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "fixed_12_18s",
+          "start_s": 12,
+          "end_s": 18,
+          "frames": 150,
+          "actual_xyz_step_rms_mmps": [
+            13.037807977840801,
+            6.696263303012843,
+            7.069339759995962
+          ],
+          "raw_x_sign_flips": 32,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            4.115011346060332,
+            0.6074720178049403,
+            2.9473108510247674,
+            0.210640008022441,
+            0.24256057329938696,
+            0.5410503489682683
+          ],
+          "state_norm_mean": 0.9208482271264753,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            282.1482617678497,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.033171818060031555,
+            "min_mps_per_n": 0.020236325129330268,
+            "max_mps_per_n": 0.061268285144566725,
+            "negative_fraction": 0.0,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        }
+      ],
+      "offline_memory_test": {
+        "offline_only": true,
+        "physical_controller_never_reset": true,
+        "replay_start_s": 16.91999999999992,
+        "caveat": "Both replays consume the SAME recorded observations; this tests memory dependence, not closed-loop reset recovery",
+        "initial_action_difference": 0.39773294087231004,
+        "final_action_difference": 3.372153823649857e-08,
+        "final_state_difference": 4.1238245134444726e-08,
+        "suffix_action_difference_below_1e_4_after_s": 19.40000000064401
+      },
+      "hashes": {
+        "rollout.json": "a35da0361be32dcbd59d714b506b1902abf96a60d91e6eeb9f58bce68887f488",
+        "rollout.npz": "c0832dcceb9abf5cc04b1e0ff4bc00e4f578ef4aff628170df5f0edc0a5f5d38",
+        "rollout.mjb": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3"
+      },
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7"
+    },
+    "historical": {
+      "task": false,
+      "strict": false,
+      "stage": "load_transfer",
+      "events": [
+        {
+          "stage": "align",
+          "time_s": 0.15999999999983552
+        },
+        {
+          "stage": "grasp",
+          "time_s": 1.560000000000836
+        },
+        {
+          "stage": "lift",
+          "time_s": 1.8800000000015114
+        },
+        {
+          "stage": "carry",
+          "time_s": 10.239999999982562
+        },
+        {
+          "stage": "load_transfer",
+          "time_s": 53.68000000121998
+        }
+      ],
+      "metrics": {
+        "samples": 1224000,
+        "timestep_s": null,
+        "timestep_sample_counts": {
+          "1.5625e-06": 128000,
+          "5e-05": 1096000
+        },
+        "rmse_weighting": "physical time integral",
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.12180465035784649,
+        "generalized_actuator_torque_peak_nm": 40.35093783218214,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          3.5701651063854225,
+          40.35093783218214,
+          3.4784659165971017,
+          27.507404447926067,
+          2.0860474121533272,
+          3.8160749287186055,
+          0.8704213328807824
+        ],
+        "actuator_force_peak_by_actuator": [
+          3.5701651063854225,
+          40.35093783218214,
+          3.4784659165971017,
+          27.507404447926067,
+          2.0860474121533272,
+          3.8160749287186055,
+          0.8704213328807824
+        ],
+        "position_rmse_xyz_m": [
+          0.020390026754720562,
+          0.012125328179937566,
+          0.027396108091047873
+        ],
+        "position_rmse_3d_m": 0.03623980564332247,
+        "stages": {
+          "0": {
+            "count": 102400,
+            "duration_s": 0.15999999999983552,
+            "error_peak_m": 3.7775928545900734e-08,
+            "speed_peak_mps": 1.5100761017489047e-08,
+            "qfrc_peak_nm": 31.79850533836226,
+            "first_s": 1.5625e-06,
+            "last_s": 0.15999999999983552,
+            "position_rmse_xyz_m": [
+              4.951160869103746e-09,
+              3.6520884498453666e-08,
+              6.43816871575223e-10
+            ],
+            "position_rmse_3d_m": 3.6860595473557706e-08,
+            "name": "approach"
+          },
+          "1": {
+            "count": 52800,
+            "duration_s": 1.4000000000007569,
+            "error_peak_m": 0.07210000077440999,
+            "speed_peak_mps": 0.06160221294643595,
+            "qfrc_peak_nm": 33.19482480074128,
+            "first_s": 0.16000156249983552,
+            "last_s": 1.560000000000836,
+            "position_rmse_xyz_m": [
+              0.0009697394211586476,
+              0.0006003580747767187,
+              0.04226985789125405
+            ],
+            "position_rmse_3d_m": 0.04228524223070871,
+            "name": "align"
+          },
+          "2": {
+            "count": 6400,
+            "duration_s": 0.3199999999999729,
+            "error_peak_m": 0.006119248338805371,
+            "speed_peak_mps": 0.015767044379058775,
+            "qfrc_peak_nm": 35.52440816452364,
+            "first_s": 1.5600500000008362,
+            "last_s": 1.8800000000015114,
+            "position_rmse_xyz_m": [
+              0.000988726957056576,
+              0.0006962598610051243,
+              0.004552492185219383
+            ],
+            "position_rmse_3d_m": 0.004710365578820904,
+            "name": "grasp"
+          },
+          "3": {
+            "count": 167200,
+            "duration_s": 8.359999999987187,
+            "error_peak_m": 0.13294097930537122,
+            "speed_peak_mps": 0.10399397982618236,
+            "qfrc_peak_nm": 38.01423901043142,
+            "first_s": 1.8800500000015115,
+            "last_s": 10.239999999982562,
+            "position_rmse_xyz_m": [
+              0.04662208391601272,
+              0.006824865733300728,
+              0.06141309103866457
+            ],
+            "position_rmse_3d_m": 0.07740649360275026,
+            "name": "lift"
+          },
+          "4": {
+            "count": 868800,
+            "duration_s": 43.44000000088029,
+            "error_peak_m": 0.04477940554084075,
+            "speed_peak_mps": 0.12180465035784649,
+            "qfrc_peak_nm": 40.35093783218214,
+            "first_s": 10.240049999982562,
+            "last_s": 53.68000000121998,
+            "position_rmse_xyz_m": [
+              0.010368160503545837,
+              0.01327925522307577,
+              0.010703048459546352
+            ],
+            "position_rmse_3d_m": 0.019959774994580237,
+            "name": "carry"
+          },
+          "5": {
+            "count": 26400,
+            "duration_s": 1.3200000000005734,
+            "error_peak_m": 0.07279285610439491,
+            "speed_peak_mps": 0.08791036404832546,
+            "qfrc_peak_nm": 37.11014514473941,
+            "first_s": 53.68005000121998,
+            "last_s": 55.0000000012638,
+            "position_rmse_xyz_m": [
+              0.004228146037395045,
+              0.005228783631017536,
+              0.041427327956026536
+            ],
+            "position_rmse_3d_m": 0.041969523451544144,
+            "name": "load_transfer"
+          }
+        }
+      },
+      "penetration_mm": 0.17154687588545398,
+      "rod": {
+        "first_s": 13.028999999976062,
+        "last_s": 17.030400000003343,
+        "duration_s": 1.4854000000009224,
+        "peak_n": 61.77416391878162,
+        "impulse_ns": 12.135807440736405,
+        "robot_parts": [
+          "hand"
+        ]
+      },
+      "cup_valid": true,
+      "windows": [
+        {
+          "window": "before_rod",
+          "start_s": 11.028999999976062,
+          "end_s": 13.028999999976062,
+          "frames": 50,
+          "actual_xyz_step_rms_mmps": [
+            8.67100275902773,
+            8.611264497126657,
+            9.068641382840838
+          ],
+          "raw_x_sign_flips": 47,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            2.5960273384076693,
+            1.4874350500964544,
+            2.2011299513564855,
+            0.43814603579068506,
+            0.5124889589171334,
+            0.06258132649712911
+          ],
+          "state_norm_mean": 0.8958820011260579,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.007634895643708894,
+            "min_mps_per_n": 0.0022494817512974663,
+            "max_mps_per_n": 0.042934071632974025,
+            "negative_fraction": 0.0,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "rod_first_2s",
+          "start_s": 13.028999999976062,
+          "end_s": 15.028999999976062,
+          "frames": 50,
+          "actual_xyz_step_rms_mmps": [
+            11.349302872844476,
+            7.666685885563833,
+            7.961277054832345
+          ],
+          "raw_x_sign_flips": 30,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            3.195194125321807,
+            1.8389208497208458,
+            2.021191208289926,
+            0.23287323140164293,
+            0.4207108930246135,
+            0.09622315754673504
+          ],
+          "state_norm_mean": 0.8516842842415384,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            31.642844043792735,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.009585703709712456,
+            "min_mps_per_n": -0.023008289153123584,
+            "max_mps_per_n": 0.04245013483523685,
+            "negative_fraction": 0.16,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "after_rod_0_2s",
+          "start_s": 17.070400000003342,
+          "end_s": 19.070400000003342,
+          "frames": 50,
+          "actual_xyz_step_rms_mmps": [
+            10.059746138707728,
+            4.746219825774224,
+            7.8438156732583595
+          ],
+          "raw_x_sign_flips": 2,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            0.6656153190127966,
+            0.16194809547765196,
+            0.8928948024399352,
+            0.034294279972061296,
+            0.1353962484460501,
+            0.0052304822747194
+          ],
+          "state_norm_mean": 0.47961116681132476,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.04777126821457714,
+            "min_mps_per_n": -0.008449390907177001,
+            "max_mps_per_n": 0.06061945448585071,
+            "negative_fraction": 0.08,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "after_rod_2_6s",
+          "start_s": 19.070400000003342,
+          "end_s": 23.070400000003342,
+          "frames": 100,
+          "actual_xyz_step_rms_mmps": [
+            14.620915873148807,
+            3.8908841635188645,
+            9.577451882917714
+          ],
+          "raw_x_sign_flips": 56,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            1.6262767184850728,
+            0.2355890467644763,
+            1.5622471389784618,
+            0.06158118770523185,
+            0.38000497834378005,
+            0.012084580198795136
+          ],
+          "state_norm_mean": 0.5006962365163218,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.03706508093750005,
+            "min_mps_per_n": -0.005444929989718572,
+            "max_mps_per_n": 0.04787172688287322,
+            "negative_fraction": 0.03,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "fixed_12_18s",
+          "start_s": 12,
+          "end_s": 18,
+          "frames": 150,
+          "actual_xyz_step_rms_mmps": [
+            15.418648569669907,
+            7.7673661833128165,
+            7.804177663342643
+          ],
+          "raw_x_sign_flips": 72,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            3.6011002927582236,
+            1.9428283366336754,
+            1.8510248245026757,
+            0.27823023994770596,
+            0.4118396266371341,
+            0.08812359077689273
+          ],
+          "state_norm_mean": 0.9100829946190231,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            61.77416391878162,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.010054921410050932,
+            "min_mps_per_n": -0.04795950891997691,
+            "max_mps_per_n": 0.06061945448585071,
+            "negative_fraction": 0.16666666666666666,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        }
+      ],
+      "offline_memory_test": {
+        "offline_only": true,
+        "physical_controller_never_reset": true,
+        "replay_start_s": 17.08000000000499,
+        "caveat": "Both replays consume the SAME recorded observations; this tests memory dependence, not closed-loop reset recovery",
+        "initial_action_difference": 0.2983090105470427,
+        "final_action_difference": 5.6377641860505534e-08,
+        "final_state_difference": 7.56918554431496e-08,
+        "suffix_action_difference_below_1e_4_after_s": 20.000000000663928
+      },
+      "hashes": {
+        "rollout.json": "97697cfd8007ca87e3e3c6c2b265c4003c7117f08956e33cfbadc4eb1a23f428",
+        "rollout.npz": "9dd3041859c9465de6ec8babc4b84563120564457c2f8209fcdf795f22cb0648",
+        "rollout.mjb": "586dd7f279dc511983910661b0941846a2a8bb8d8d4afb312907d3634cd5a620"
+      },
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7"
+    },
+    "lagged": {
+      "task": false,
+      "strict": false,
+      "stage": "load_transfer",
+      "events": [
+        {
+          "stage": "align",
+          "time_s": 0.15999999999983552
+        },
+        {
+          "stage": "grasp",
+          "time_s": 1.560000000000836
+        },
+        {
+          "stage": "lift",
+          "time_s": 1.8800000000015114
+        },
+        {
+          "stage": "carry",
+          "time_s": 10.239999999982562
+        },
+        {
+          "stage": "load_transfer",
+          "time_s": 53.68000000121998
+        }
+      ],
+      "metrics": {
+        "samples": 1224000,
+        "timestep_s": null,
+        "timestep_sample_counts": {
+          "1.5625e-06": 128000,
+          "5e-05": 1096000
+        },
+        "rmse_weighting": "physical time integral",
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.12180465035784649,
+        "generalized_actuator_torque_peak_nm": 40.35093783218214,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          3.5701651063854225,
+          40.35093783218214,
+          3.4784659165971017,
+          27.507404447926067,
+          2.0860474121533272,
+          3.8160749287186055,
+          0.8704213328807824
+        ],
+        "actuator_force_peak_by_actuator": [
+          3.5701651063854225,
+          40.35093783218214,
+          3.4784659165971017,
+          27.507404447926067,
+          2.0860474121533272,
+          3.8160749287186055,
+          0.8704213328807824
+        ],
+        "position_rmse_xyz_m": [
+          0.020390026754720562,
+          0.012125328179937566,
+          0.027396108091047873
+        ],
+        "position_rmse_3d_m": 0.03623980564332247,
+        "stages": {
+          "0": {
+            "count": 102400,
+            "duration_s": 0.15999999999983552,
+            "error_peak_m": 3.7775928545900734e-08,
+            "speed_peak_mps": 1.5100761017489047e-08,
+            "qfrc_peak_nm": 31.79850533836226,
+            "first_s": 1.5625e-06,
+            "last_s": 0.15999999999983552,
+            "position_rmse_xyz_m": [
+              4.951160869103746e-09,
+              3.6520884498453666e-08,
+              6.43816871575223e-10
+            ],
+            "position_rmse_3d_m": 3.6860595473557706e-08,
+            "name": "approach"
+          },
+          "1": {
+            "count": 52800,
+            "duration_s": 1.4000000000007569,
+            "error_peak_m": 0.07210000077440999,
+            "speed_peak_mps": 0.06160221294643595,
+            "qfrc_peak_nm": 33.19482480074128,
+            "first_s": 0.16000156249983552,
+            "last_s": 1.560000000000836,
+            "position_rmse_xyz_m": [
+              0.0009697394211586476,
+              0.0006003580747767187,
+              0.04226985789125405
+            ],
+            "position_rmse_3d_m": 0.04228524223070871,
+            "name": "align"
+          },
+          "2": {
+            "count": 6400,
+            "duration_s": 0.3199999999999729,
+            "error_peak_m": 0.006119248338805371,
+            "speed_peak_mps": 0.015767044379058775,
+            "qfrc_peak_nm": 35.52440816452364,
+            "first_s": 1.5600500000008362,
+            "last_s": 1.8800000000015114,
+            "position_rmse_xyz_m": [
+              0.000988726957056576,
+              0.0006962598610051243,
+              0.004552492185219383
+            ],
+            "position_rmse_3d_m": 0.004710365578820904,
+            "name": "grasp"
+          },
+          "3": {
+            "count": 167200,
+            "duration_s": 8.359999999987187,
+            "error_peak_m": 0.13294097930537122,
+            "speed_peak_mps": 0.10399397982618236,
+            "qfrc_peak_nm": 38.01423901043142,
+            "first_s": 1.8800500000015115,
+            "last_s": 10.239999999982562,
+            "position_rmse_xyz_m": [
+              0.04662208391601272,
+              0.006824865733300728,
+              0.06141309103866457
+            ],
+            "position_rmse_3d_m": 0.07740649360275026,
+            "name": "lift"
+          },
+          "4": {
+            "count": 868800,
+            "duration_s": 43.44000000088029,
+            "error_peak_m": 0.04477940554084075,
+            "speed_peak_mps": 0.12180465035784649,
+            "qfrc_peak_nm": 40.35093783218214,
+            "first_s": 10.240049999982562,
+            "last_s": 53.68000000121998,
+            "position_rmse_xyz_m": [
+              0.010368160503545837,
+              0.01327925522307577,
+              0.010703048459546352
+            ],
+            "position_rmse_3d_m": 0.019959774994580237,
+            "name": "carry"
+          },
+          "5": {
+            "count": 26400,
+            "duration_s": 1.3200000000005734,
+            "error_peak_m": 0.07279285610439491,
+            "speed_peak_mps": 0.08791036404832546,
+            "qfrc_peak_nm": 37.11014514473941,
+            "first_s": 53.68005000121998,
+            "last_s": 55.0000000012638,
+            "position_rmse_xyz_m": [
+              0.004228146037395045,
+              0.005228783631017536,
+              0.041427327956026536
+            ],
+            "position_rmse_3d_m": 0.041969523451544144,
+            "name": "load_transfer"
+          }
+        }
+      },
+      "penetration_mm": 0.17154687588545398,
+      "rod": {
+        "first_s": 13.028999999976062,
+        "last_s": 17.030400000003343,
+        "duration_s": 1.4854000000009224,
+        "peak_n": 61.77416391878162,
+        "impulse_ns": 12.135807440736405,
+        "robot_parts": [
+          "hand"
+        ]
+      },
+      "cup_valid": true,
+      "windows": [
+        {
+          "window": "before_rod",
+          "start_s": 11.028999999976062,
+          "end_s": 13.028999999976062,
+          "frames": 50,
+          "actual_xyz_step_rms_mmps": [
+            8.67100275902773,
+            8.611264497126657,
+            9.068641382840838
+          ],
+          "raw_x_sign_flips": 47,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            2.5960273384076693,
+            1.4874350500964544,
+            2.2011299513564855,
+            0.43814603579068506,
+            0.5124889589171334,
+            0.06258132649712911
+          ],
+          "state_norm_mean": 0.8958820011260579,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.007634895643708894,
+            "min_mps_per_n": 0.0022494817512974663,
+            "max_mps_per_n": 0.042934071632974025,
+            "negative_fraction": 0.0,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "rod_first_2s",
+          "start_s": 13.028999999976062,
+          "end_s": 15.028999999976062,
+          "frames": 50,
+          "actual_xyz_step_rms_mmps": [
+            11.349302872844476,
+            7.666685885563833,
+            7.961277054832345
+          ],
+          "raw_x_sign_flips": 30,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            3.195194125321807,
+            1.8389208497208458,
+            2.021191208289926,
+            0.23287323140164293,
+            0.4207108930246135,
+            0.09622315754673504
+          ],
+          "state_norm_mean": 0.8516842842415384,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            31.642844043792735,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.009585703709712456,
+            "min_mps_per_n": -0.023008289153123584,
+            "max_mps_per_n": 0.04245013483523685,
+            "negative_fraction": 0.16,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "after_rod_0_2s",
+          "start_s": 17.070400000003342,
+          "end_s": 19.070400000003342,
+          "frames": 50,
+          "actual_xyz_step_rms_mmps": [
+            10.059746138707728,
+            4.746219825774224,
+            7.8438156732583595
+          ],
+          "raw_x_sign_flips": 2,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            0.6656153190127966,
+            0.16194809547765196,
+            0.8928948024399352,
+            0.034294279972061296,
+            0.1353962484460501,
+            0.0052304822747194
+          ],
+          "state_norm_mean": 0.47961116681132476,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.04777126821457714,
+            "min_mps_per_n": -0.008449390907177001,
+            "max_mps_per_n": 0.06061945448585071,
+            "negative_fraction": 0.08,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "after_rod_2_6s",
+          "start_s": 19.070400000003342,
+          "end_s": 23.070400000003342,
+          "frames": 100,
+          "actual_xyz_step_rms_mmps": [
+            14.620915873148807,
+            3.8908841635188645,
+            9.577451882917714
+          ],
+          "raw_x_sign_flips": 56,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            1.6262767184850728,
+            0.2355890467644763,
+            1.5622471389784618,
+            0.06158118770523185,
+            0.38000497834378005,
+            0.012084580198795136
+          ],
+          "state_norm_mean": 0.5006962365163218,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.03706508093750005,
+            "min_mps_per_n": -0.005444929989718572,
+            "max_mps_per_n": 0.04787172688287322,
+            "negative_fraction": 0.03,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "fixed_12_18s",
+          "start_s": 12,
+          "end_s": 18,
+          "frames": 150,
+          "actual_xyz_step_rms_mmps": [
+            15.418648569669907,
+            7.7673661833128165,
+            7.804177663342643
+          ],
+          "raw_x_sign_flips": 72,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            3.6011002927582236,
+            1.9428283366336754,
+            1.8510248245026757,
+            0.27823023994770596,
+            0.4118396266371341,
+            0.08812359077689273
+          ],
+          "state_norm_mean": 0.9100829946190231,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            61.77416391878162,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.010054921410050932,
+            "min_mps_per_n": -0.04795950891997691,
+            "max_mps_per_n": 0.06061945448585071,
+            "negative_fraction": 0.16666666666666666,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        }
+      ],
+      "offline_memory_test": {
+        "offline_only": true,
+        "physical_controller_never_reset": true,
+        "replay_start_s": 17.08000000000499,
+        "caveat": "Both replays consume the SAME recorded observations; this tests memory dependence, not closed-loop reset recovery",
+        "initial_action_difference": 0.2983090105470427,
+        "final_action_difference": 5.6377641860505534e-08,
+        "final_state_difference": 7.56918554431496e-08,
+        "suffix_action_difference_below_1e_4_after_s": 20.000000000663928
+      },
+      "hashes": {
+        "rollout.json": "2f7405733dfa1c39840b12fbfef944898c4c4c6f94ebb7a9bcdbf3287706bb02",
+        "rollout.npz": "9dd3041859c9465de6ec8babc4b84563120564457c2f8209fcdf795f22cb0648",
+        "rollout.mjb": "586dd7f279dc511983910661b0941846a2a8bb8d8d4afb312907d3634cd5a620"
+      },
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+      "audit": {
+        "task_success": false,
+        "strict_success": false,
+        "stage": "load_transfer",
+        "full_horizon": true,
+        "rmse_mm": 36.23980564132592,
+        "peak_torque_nm": 40.35093688964844,
+        "peak_speed_mps": 0.12180465104695033,
+        "penetration_mm": 0.17154687588545398,
+        "edge_penetration_mm": 0.0,
+        "edge_present": false,
+        "physical_seconds": 55.000000000000014,
+        "samples": 1224000,
+        "abort_reason": null,
+        "task_events": [
+          {
+            "stage": "align",
+            "time_s": 0.15999999999983552
+          },
+          {
+            "stage": "grasp",
+            "time_s": 1.560000000000836
+          },
+          {
+            "stage": "lift",
+            "time_s": 1.8800000000015114
+          },
+          {
+            "stage": "carry",
+            "time_s": 10.239999999982562
+          },
+          {
+            "stage": "load_transfer",
+            "time_s": 53.68000000121998
+          }
+        ],
+        "action_replay_max_abs": 0.0,
+        "reservoir_replay_max_abs": 0.0,
+        "common_filter_replay_max_abs": 0.0,
+        "old_schedule_observer_match": true,
+        "historical_placement_metadata": {
+          "placement_destination": "not recorded in historical reference",
+          "placement_support_geoms": "not recorded in historical reference"
+        },
+        "model_sha256": "586dd7f279dc511983910661b0941846a2a8bb8d8d4afb312907d3634cd5a620",
+        "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+        "trace_sha256": "9dd3041859c9465de6ec8babc4b84563120564457c2f8209fcdf795f22cb0648",
+        "chain_sha256": "02ac5ad7cea683bad6119e782a07aea3430cc84b65600e9ede194ab3dbb6a387",
+        "metrics_sha256": "5514b6b9a5ea17da1dff8fec06d09c9262a61c2c09dbf8d6a2ed5379594fdaae",
+        "diagnostic_11_48_16_68": {
+          "frames": 130,
+          "x_request_sign_flips": 82,
+          "x_request_saturation_fraction": 0.0,
+          "y_error_mean_m": 0.013685659567624376,
+          "y_feature_saturation_fraction": 0.0
+        },
+        "original_environment_checkpoint_schedule_destination_gates_retained": true,
+        "changed_component": "common carry reference position and feedforward together",
+        "reference_sha256": "6b191be4379421d12dfe11d58ce85676478de900dfb4336a15b01848aed9326b",
+        "reference_progress_and_feedforward_audited": true,
+        "feedback_tick_contract": {
+          "same_tick_scale": false,
+          "composition_scale_neutral": true,
+          "measured_scale_lag_policy_ticks": 1,
+          "wrong_tick_fraction": 0.7898181818181819,
+          "max_current_vs_consumed_scale_error": 0.16000000000000003,
+          "servo_steps": 13750
+        },
+        "servo_tick_trace_sha256": "14f6ff24f14bdfa0dd4f8991e9ac0ad6121d0f75c58ec102470db36830a2c05b",
+        "common_feedback_timing_fix": false
+      }
+    },
+    "same_tick": {
+      "task": false,
+      "strict": false,
+      "stage": "carry",
+      "events": [
+        {
+          "stage": "align",
+          "time_s": 0.15999999999983552
+        },
+        {
+          "stage": "grasp",
+          "time_s": 1.560000000000836
+        },
+        {
+          "stage": "lift",
+          "time_s": 1.8800000000015114
+        },
+        {
+          "stage": "carry",
+          "time_s": 17.28000000001163
+        }
+      ],
+      "metrics": {
+        "samples": 1224000,
+        "timestep_s": null,
+        "timestep_sample_counts": {
+          "1.5625e-06": 128000,
+          "5e-05": 1096000
+        },
+        "rmse_weighting": "physical time integral",
+        "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+        "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+        "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+        "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+        "linear_speed_peak_mps": 0.10285851024475755,
+        "generalized_actuator_torque_peak_nm": 43.17973301094531,
+        "generalized_actuator_torque_peak_by_joint_nm": [
+          2.9440667618670475,
+          43.17973301094531,
+          3.019065881551849,
+          27.470906420100313,
+          1.7603260282436701,
+          3.760144852240469,
+          0.6441553054274909
+        ],
+        "actuator_force_peak_by_actuator": [
+          2.9440667618670475,
+          43.17973301094531,
+          3.019065881551849,
+          27.470906420100313,
+          1.7603260282436701,
+          3.760144852240469,
+          0.6441553054274909
+        ],
+        "position_rmse_xyz_m": [
+          0.018934831134754873,
+          0.010816706469620232,
+          0.026365221151884336
+        ],
+        "position_rmse_3d_m": 0.034214819235813244,
+        "stages": {
+          "0": {
+            "count": 102400,
+            "duration_s": 0.15999999999983552,
+            "error_peak_m": 3.7775928545900734e-08,
+            "speed_peak_mps": 1.5100761017489047e-08,
+            "qfrc_peak_nm": 31.79850533836226,
+            "first_s": 1.5625e-06,
+            "last_s": 0.15999999999983552,
+            "position_rmse_xyz_m": [
+              4.951160869103746e-09,
+              3.6520884498453666e-08,
+              6.43816871575223e-10
+            ],
+            "position_rmse_3d_m": 3.6860595473557706e-08,
+            "name": "approach"
+          },
+          "1": {
+            "count": 52800,
+            "duration_s": 1.4000000000007569,
+            "error_peak_m": 0.07210000077440999,
+            "speed_peak_mps": 0.06160221261863325,
+            "qfrc_peak_nm": 33.194824794505394,
+            "first_s": 0.16000156249983552,
+            "last_s": 1.560000000000836,
+            "position_rmse_xyz_m": [
+              0.0009697393986936239,
+              0.0006003580659643071,
+              0.0422698583191549
+            ],
+            "position_rmse_3d_m": 0.04228524265781356,
+            "name": "align"
+          },
+          "2": {
+            "count": 6400,
+            "duration_s": 0.3199999999999729,
+            "error_peak_m": 0.006119248882279325,
+            "speed_peak_mps": 0.015767048355793796,
+            "qfrc_peak_nm": 35.62989544776112,
+            "first_s": 1.5600500000008362,
+            "last_s": 1.8800000000015114,
+            "position_rmse_xyz_m": [
+              0.000986320986164846,
+              0.0006952865711278854,
+              0.004552299384413168
+            ],
+            "position_rmse_3d_m": 0.004709530994596859,
+            "name": "grasp"
+          },
+          "3": {
+            "count": 308000,
+            "duration_s": 15.39999999997078,
+            "error_peak_m": 0.13294351669633236,
+            "speed_peak_mps": 0.10285851024475755,
+            "qfrc_peak_nm": 42.9400246448021,
+            "first_s": 1.8800500000015115,
+            "last_s": 17.28000000001163,
+            "position_rmse_xyz_m": [
+              0.03517909058663199,
+              0.0052784938034828015,
+              0.0475910284283712
+            ],
+            "position_rmse_3d_m": 0.059416638227064826,
+            "name": "lift"
+          },
+          "4": {
+            "count": 754400,
+            "duration_s": 37.720000000690405,
+            "error_peak_m": 0.02271557108907303,
+            "speed_peak_mps": 0.0660826500923287,
+            "qfrc_peak_nm": 43.17973301094531,
+            "first_s": 17.28005000001163,
+            "last_s": 55.0000000012638,
+            "position_rmse_xyz_m": [
+              0.004179334907365262,
+              0.01261776013579827,
+              0.00473095827565203
+            ],
+            "position_rmse_3d_m": 0.014108744710938044,
+            "name": "carry"
+          }
+        }
+      },
+      "penetration_mm": 0.16100450469617894,
+      "rod": {
+        "first_s": 13.433949999975118,
+        "last_s": 16.693299999992153,
+        "duration_s": 0.49129999999995405,
+        "peak_n": 95.1624736549727,
+        "impulse_ns": 2.8125786684995764,
+        "robot_parts": [
+          "hand"
+        ]
+      },
+      "cup_valid": true,
+      "windows": [
+        {
+          "window": "before_rod",
+          "start_s": 11.433949999975118,
+          "end_s": 13.433949999975118,
+          "frames": 50,
+          "actual_xyz_step_rms_mmps": [
+            16.509487925686326,
+            4.793632950067686,
+            6.197229548393723
+          ],
+          "raw_x_sign_flips": 35,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            2.1043835314259804,
+            0.8114850106363395,
+            3.8154093589449865,
+            0.19493741696261022,
+            0.5277701326492079,
+            0.013654467397524423
+          ],
+          "state_norm_mean": 0.7349232436267527,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.03604898333845141,
+            "min_mps_per_n": 0.022211716500292467,
+            "max_mps_per_n": 0.05394401123589354,
+            "negative_fraction": 0.0,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "rod_first_2s",
+          "start_s": 13.433949999975118,
+          "end_s": 15.433949999975118,
+          "frames": 50,
+          "actual_xyz_step_rms_mmps": [
+            12.928963577012132,
+            4.929738941575844,
+            8.450734973823074
+          ],
+          "raw_x_sign_flips": 41,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            2.5931863402788666,
+            0.9208234396165463,
+            2.637626540150156,
+            0.16888596596669764,
+            0.4471004675728442,
+            0.015146042203144945
+          ],
+          "state_norm_mean": 0.7542053132837053,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            95.1624736549727,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.0393066593849907,
+            "min_mps_per_n": 0.027526773812271976,
+            "max_mps_per_n": 0.06180506046297829,
+            "negative_fraction": 0.0,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "after_rod_0_2s",
+          "start_s": 16.733299999992152,
+          "end_s": 18.733299999992152,
+          "frames": 50,
+          "actual_xyz_step_rms_mmps": [
+            12.125705134896153,
+            4.89232226173945,
+            11.798659753930622
+          ],
+          "raw_x_sign_flips": 32,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            2.0787190426358397,
+            0.7352727876090597,
+            2.2095995500160095,
+            0.1664333584530084,
+            0.4568214425856933,
+            0.03177210115110809
+          ],
+          "state_norm_mean": 0.6958534065200798,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.0367298582788822,
+            "min_mps_per_n": 0.004830459367143325,
+            "max_mps_per_n": 0.047402025687095506,
+            "negative_fraction": 0.0,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "after_rod_2_6s",
+          "start_s": 18.733299999992152,
+          "end_s": 22.733299999992152,
+          "frames": 100,
+          "actual_xyz_step_rms_mmps": [
+            4.702365048143453,
+            1.3472791758332627,
+            3.2880823786572644
+          ],
+          "raw_x_sign_flips": 1,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            0.4468953955390434,
+            0.15731075922622037,
+            0.8353885088821583,
+            0.031742590859780644,
+            0.08688704035596703,
+            0.0008270837389221531
+          ],
+          "state_norm_mean": 0.2734239759664469,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.005645854329813793,
+            "min_mps_per_n": -0.012608140038707916,
+            "max_mps_per_n": 0.0447396682306489,
+            "negative_fraction": 0.24,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        },
+        {
+          "window": "fixed_12_18s",
+          "start_s": 12,
+          "end_s": 18,
+          "frames": 150,
+          "actual_xyz_step_rms_mmps": [
+            13.638193406645886,
+            4.433686067537628,
+            8.54102056449138
+          ],
+          "raw_x_sign_flips": 115,
+          "raw_x_saturation_fraction": 0.0,
+          "estimated_wrench_rms": [
+            2.3628440712632868,
+            0.8591033335943886,
+            3.125857739386758,
+            0.17964358345687115,
+            0.48439176373902504,
+            0.014623340407987162
+          ],
+          "state_norm_mean": 0.7465002303547315,
+          "diagnosed_contact_peak_n": [
+            0.0,
+            0.0,
+            95.1624736549727,
+            0.0,
+            0.0
+          ],
+          "local_preclip_vx_Fx_sensitivity": {
+            "median_mps_per_n": 0.03839720739637453,
+            "min_mps_per_n": 0.004830459367143325,
+            "max_mps_per_n": 0.06180506046297829,
+            "negative_fraction": 0.0,
+            "caveat": "Finite difference of next preclip readout at frozen preceding reservoir state, other observation fields fixed; not a physical intervention or stability proof"
+          }
+        }
+      ],
+      "offline_memory_test": {
+        "offline_only": true,
+        "physical_controller_never_reset": true,
+        "replay_start_s": 16.759999999994367,
+        "caveat": "Both replays consume the SAME recorded observations; this tests memory dependence, not closed-loop reset recovery",
+        "initial_action_difference": 0.21877664134796973,
+        "final_action_difference": 1.1405276158803944e-08,
+        "final_state_difference": 2.50211967925143e-08,
+        "suffix_action_difference_below_1e_4_after_s": 19.440000000645338
+      },
+      "hashes": {
+        "rollout.json": "3686b64df307e09a833c602c617f8fc9226143fd0a8576072309005d78d93482",
+        "rollout.npz": "aa02117c6fcb90cd709b2d5ae94aeb0d85b4c18512c433aa63fd177eaf9b29f0",
+        "rollout.mjb": "586dd7f279dc511983910661b0941846a2a8bb8d8d4afb312907d3634cd5a620"
+      },
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+      "audit": {
+        "task_success": false,
+        "strict_success": false,
+        "stage": "carry",
+        "full_horizon": true,
+        "rmse_mm": 34.21481923673527,
+        "peak_torque_nm": 43.17973327636719,
+        "peak_speed_mps": 0.10285850698620144,
+        "penetration_mm": 0.16100450469617894,
+        "edge_penetration_mm": 0.0,
+        "edge_present": false,
+        "physical_seconds": 55.000000000000014,
+        "samples": 1224000,
+        "abort_reason": null,
+        "task_events": [
+          {
+            "stage": "align",
+            "time_s": 0.15999999999983552
+          },
+          {
+            "stage": "grasp",
+            "time_s": 1.560000000000836
+          },
+          {
+            "stage": "lift",
+            "time_s": 1.8800000000015114
+          },
+          {
+            "stage": "carry",
+            "time_s": 17.28000000001163
+          }
+        ],
+        "action_replay_max_abs": 0.0,
+        "reservoir_replay_max_abs": 0.0,
+        "common_filter_replay_max_abs": 0.0,
+        "old_schedule_observer_match": true,
+        "historical_placement_metadata": {
+          "placement_destination": "not recorded in historical reference",
+          "placement_support_geoms": "not recorded in historical reference"
+        },
+        "model_sha256": "586dd7f279dc511983910661b0941846a2a8bb8d8d4afb312907d3634cd5a620",
+        "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7",
+        "trace_sha256": "aa02117c6fcb90cd709b2d5ae94aeb0d85b4c18512c433aa63fd177eaf9b29f0",
+        "chain_sha256": "cf6266e04636b03040cd1e37fc4ed8e1755cafea82ba1667145efd54d3b4c0a0",
+        "metrics_sha256": "5f72e7c864eb71f4c3d9b691b073d6c1b8b3d8bee8293e85ab13d323a3fd45c5",
+        "diagnostic_11_48_16_68": {
+          "frames": 130,
+          "x_request_sign_flips": 103,
+          "x_request_saturation_fraction": 0.0,
+          "y_error_mean_m": 0.00284112697399016,
+          "y_feature_saturation_fraction": 0.0
+        },
+        "original_environment_checkpoint_schedule_destination_gates_retained": true,
+        "changed_component": "common carry reference position and feedforward together",
+        "reference_sha256": "5b498c4ee120ef5f291b3c6130c55a6ce770f61ea2f848baa93d5d9eef44effb",
+        "reference_progress_and_feedforward_audited": true,
+        "feedback_tick_contract": {
+          "same_tick_scale": true,
+          "composition_scale_neutral": true,
+          "measured_scale_lag_policy_ticks": 0,
+          "wrong_tick_fraction": 0.0,
+          "max_current_vs_consumed_scale_error": 0.0,
+          "servo_steps": 13750
+        },
+        "servo_tick_trace_sha256": "57c11b3eb7788b827f68aebceab216f60cfed747521893613845dc4b00b8f979",
+        "common_feedback_timing_fix": true
+      }
+    }
+  },
+  "source_sha256": "cacf53927974d99c70c8fe5b4761b3a95509ea3627caceeb1143beba4fd6bcad",
+  "historical_instrumentation_exact_reproduction": {
+    "time": 0.0,
+    "qpos": 0.0,
+    "qvel": 0.0,
+    "observation": 0.0,
+    "applied_action": 0.0,
+    "reservoir_state": 0.0
+  },
+  "correction_only": "Same-tick feedback scale latch, with existing residual/limits/reference unchanged",
+  "limitations": [
+    "One old-layout pair, not generalization or baseline ranking",
+    "Native is a different route/posture and schedule, not a matched physical comparison",
+    "Same-clock/event-aligned windows still have different contact exposure",
+    "Offline cold-state replay is diagnostic only; no deployed state resets",
+    "Physics dt5e-5 does not make a failed task or unsafe rollout a passed result"
+  ]
+}
