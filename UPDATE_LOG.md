@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-13T05:38:02.855602+00:00 — 公平比较并行调度 parallel_final
+
+- 状态 `failed_preserved`，已评 2/288；资源调整不改实验/模型/门槛，旧封存集未读。
+- 归档 `verified`，详见 `code/mujoco_6d_vmc_benchmark/docs/FAIR_COMPARISON_LIVE_20261013.md`。全部失败保留，完成前不作结果排名。
+
+
 ## 2026-10-13 — 完整回合内存实测后细化并发档位
 
 - 39/39拟合已完成、36模型锁定；新调度器/模型快照已经服务器核验，`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/fair_comparison_20261013_v2_parallel_models_locked/evidence/`，956文件220632399字节，manifest `e8af933b29e2698f5569346dc3812d630402a5a8b6627d600fa4ed626c78eb59`。

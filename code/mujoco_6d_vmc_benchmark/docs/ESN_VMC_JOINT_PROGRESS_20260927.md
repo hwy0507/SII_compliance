@@ -1,5 +1,11 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-13T05:38:02.855602+00:00 — 公平比较并行调度 parallel_final
+
+- 状态 `failed_preserved`，已评 2/288；资源调整不改实验/模型/门槛，旧封存集未读。
+- 归档 `verified`，详见 `code/mujoco_6d_vmc_benchmark/docs/FAIR_COMPARISON_LIVE_20261013.md`。全部失败保留，完成前不作结果排名。
+
+
 ## 2026-10-13T05:22:05.556660+00:00 — 公平比较并行调度 parallel_models_locked
 
 - 状态 `models_locked`，已评 0/288；资源调整不改实验/模型/门槛，旧封存集未读。
