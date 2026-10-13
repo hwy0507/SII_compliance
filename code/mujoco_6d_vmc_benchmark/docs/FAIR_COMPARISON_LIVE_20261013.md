@@ -1,6 +1,6 @@
 # 公平性修正：实时状态
 
-2026-10-13T05:38:02.854615+00:00；parallel_final；状态 `failed_preserved`。
+2026-10-13T05:38:48.660816+00:00；parallel_v4_models_locked；状态 `models_locked`。
 
 本机动态内存准入、最多4独立CPU核、每worker1线程/禁swap；完整保留39拟合/288回合原协议，服务器只归档。
 
@@ -9,28 +9,28 @@
   "archive": {
     "status": "verified",
     "receipt": {
-      "verified_utc": "2026-10-13T05:38:01.750149+00:00",
-      "files_verified": 1944,
-      "total_bytes": 1966880466,
-      "manifest_sha256": "e6150d77b71279e9049249be3c2da943ef57ad50700b56562b064aa350838890",
+      "verified_utc": "2026-10-13T05:38:47.427175+00:00",
+      "files_verified": 967,
+      "total_bytes": 220706579,
+      "manifest_sha256": "bf11f955fc69c2c6cdafb2ee9b6fb5e129413728166319c42e73f40923fc8465",
       "actual_compute_host": "airpig",
-      "local_execution_root": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/delivery_parallel_final/evidence",
-      "published_evidence": "/home/arm1/sii_shared/SII_compliance/runs/main/fair_comparison_20261013_v2_parallel_final/evidence",
+      "local_execution_root": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/delivery_parallel_v4_models_locked/evidence",
+      "published_evidence": "/home/arm1/sii_shared/SII_compliance/runs/main/fair_comparison_20261013_v2_parallel_v4_models_locked/evidence",
       "historical_execution_paths_preserved": true
     }
   },
   "execution": {
-    "status": "failed_preserved",
+    "status": "models_locked",
     "started_utc": "2026-10-13T04:50:33.752087+00:00",
     "jobs": [],
     "server_compute": false,
     "final_test_reads": 0,
     "registration_sha256": "a2e80a62252e97af7137ded2962a5790087d8154e2e01c52d0d7a305b2f44b64",
-    "updated_utc": "2026-10-13T05:34:20.634023+00:00",
+    "updated_utc": "2026-10-13T05:38:10.330989+00:00",
     "active": null,
-    "dispatcher": "parallel_v3",
-    "handoff_completed_utc": "2026-10-13T05:15:51.478873+00:00",
-    "previous_execution_sha256": "dc85e0a7ea3717570904db697a593c8e8aa68d91ee3c258688ec1c2699365daa",
+    "dispatcher": "dispatch_v4",
+    "handoff_completed_utc": "2026-10-13T05:38:09.564858+00:00",
+    "previous_execution_sha256": "1cc60991a5099119031f3db461419da3ca1476ffdff770b77c99292d919df968",
     "fits_complete": 39,
     "model_lock_sha256": "4da573485533ad1d7a7d0a026ee8a33a46812e6f7dcb517ae3b2c632a652f3ab",
     "active_jobs": {
@@ -45,9 +45,7 @@
     "evaluated": 2,
     "expected": 288,
     "neural_memory_cap_bytes": 3221225472,
-    "pilot_peak_bytes": 1159131136,
-    "error": "ValueError('Stop requested at boundary')",
-    "ended_utc": "2026-10-13T05:34:20.634018+00:00"
+    "pilot_peak_bytes": 1159131136
   }
 }
 ```
