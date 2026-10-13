@@ -1,13 +1,13 @@
 # 15小时本机teacher→student进展
 
-更新时间：2026-10-12T18:17:49.871929+00:00；阶段：baseline_complete。
+更新时间：2026-10-13T00:01:28.830522+00:00；阶段：teacher_data_complete。
 
 Baseline完整表先审计，然后才采集/训练；新数据与模型结果不得当作封存泛化成绩。
 
 ```json
 {
   "execution": {
-    "status": "baseline_final_audit",
+    "status": "collecting",
     "started_utc": "2026-10-12T13:45:02.122548+00:00",
     "jobs": [],
     "server_compute": false,
@@ -18,26 +18,29 @@ Baseline完整表先审计，然后才采集/训练；新数据与模型结果�
       "unit": "sii-paired-dev-fc3589409a1e12a2",
       "started_utc": "2026-10-12T17:49:45.924210+00:00"
     },
-    "updated_utc": "2026-10-12T17:56:16.166053+00:00",
+    "updated_utc": "2026-10-13T00:01:22.066859+00:00",
     "active": null,
     "baseline_completed_utc": "2026-10-12T17:56:16.164697+00:00",
-    "baseline_report_sha256": "e6938945b4b2ff1d8ee562027a35272dbb23a582d6a28fc6ba6f1d6194affcc7"
+    "baseline_report_sha256": "e6938945b4b2ff1d8ee562027a35272dbb23a582d6a28fc6ba6f1d6194affcc7",
+    "collection_completed": 50
   },
   "archive": {
     "status": "verified",
     "receipt": {
-      "verified_utc": "2026-10-12T18:17:48.867369+00:00",
-      "files_verified": 6118,
-      "total_bytes": 24535685543,
-      "manifest_sha256": "bb8409f178f1487d4e8579a116532980b1cdb5e9ef9ac0c08dc646b539683f36",
+      "verified_utc": "2026-10-13T00:01:27.656756+00:00",
+      "files_verified": 985,
+      "total_bytes": 52340205,
+      "manifest_sha256": "d8adb1f98f31565adf4adbd3990eba03f676c8491aa7bcfa83641479b77d15ab",
       "actual_compute_host": "airpig",
-      "local_execution_root": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/teacher_student_15h_20261012_v3/delivery_baseline_complete/evidence",
-      "published_evidence": "/home/arm1/sii_shared/SII_compliance/runs/main/teacher_student_15h_20261012_v3_baseline_complete/evidence",
+      "local_execution_root": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/teacher_student_15h_20261012_v3/delivery_teacher_data_complete/evidence",
+      "published_evidence": "/home/arm1/sii_shared/SII_compliance/runs/main/teacher_student_15h_20261012_v3_teacher_data_complete/evidence",
       "historical_execution_paths_preserved": true
     }
   }
 }
 ```
+
+数据：44训练身份、11验证身份，75625实际控制帧；teacher混合=True。
 
 
 # 同一八条件开发比较
