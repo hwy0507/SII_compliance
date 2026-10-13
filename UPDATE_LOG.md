@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-13 — 固定ESN继续修复：公共位置/速度参考，搬运完成但55秒未释放
+
+- 应用户要求继续修复并解释原好版本为何迁移变差。新增benchmark `tools/continuous_old_office_reference_20261013.py`、run/test工具、`analyze_reference_repair_20261013.py`及 `docs/ORIGINAL_ESN_CONTINUOUS_REFERENCE_20261013.md`。统一生成carry弧长位置与速度前馈，保留原直线路径；60mm/s、12mm、80mm和0.12rad来自既有名义/到点规则，不按回合调ESN。此为新公共参考设计，不假称历史遗漏分支；不改权重/输入公式/增益/过滤/执行器/场景时序/gate，原公平矩阵不采用此实验。
+- 原成功002与当前迁移checkpoint相同 `acd3b27e…`；成功002是手侧桌角、−35°姿态/负y路线（carry255.75mm），当前旧杯柱布局是向下姿态/正y路线（425mm）。原27,500训练帧路径y最大0、正y占比0；ESN实际使用该方向×负载特征。是训练覆盖外证据，不证明单一原因；旧8条Task7/8、Strict2/8不改写，也不冒充本轮重跑。
+- 预登记1个55秒回合完成：53.68s进入load_transfer，55秒未释放，Task=false/Strict=false。上轮55秒仍carry，本轮走完搬运；原远终点迁移Task=true仍保留，未完全恢复。11.48–16.68s x请求饱和62.31%（原）/3.08%（上轮）/0%（本轮）；实际x速度变化RMS21.54/19.13/14.36mm/s。翻转82次仍存在，30–55s波动较上轮增加，不能称全程消振。20–30s实际y速度2.597→9.811mm/s；峰矩40.351Nm、峰速0.12180m/s、外穿透0.171547mm。RMSE36.240mm仅本轮参考口径，不直接排名。棍累计接触1.4854s，柱/link6接触14.05ms；杯有效，任务未过。
+- 两项进度/速度一致性及终端gate测试通过；1375步动作/储备池/过滤精确重放，1,224,000子步指标/独立穿透和真实参考增速/前馈审计通过。原MJB `586dd7f2…`未变。完整55s三视角MP4全帧解码、13秒/末帧目视核验通过；MP4 SHA256 `8e0d08351bb5f2029b84bd38e730c40bf8a986e9bf77d728a557c9a319139824`，小证据在benchmark `docs/evidence/ORIGINAL_ESN_CONTINUOUS_REFERENCE_20261013_{AUDIT,ANALYSIS}.json`。
+- 已核验共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/original_esn_continuous_reference_20261013_v1/evidence/`，38文件126190764字节，manifest `3cac99b9a07e4495c40b8a21d65c3692f66a7fc25d857fffe8bbabb62561ba3a`，2026-10-13T11:08:36Z发布；父目录ARCHIVE_VERIFICATION.json。含完整失败轨迹/原始模型与checkpoint/命令与源码tar/source独立文件/协议/审计/视频，未改写本机执行历史。
+- 按sii-research-sync核对远端main `06480dd72d2f6ae578cfc7e6d9371b4aca00dcae`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及日志/AGENTS。本机1线程/仿真1.5GiB/渲染1GiB/禁swap，经内存准入等既有worker自然结束；协调器lease已恢复，原公平服务active/running未重启；服务器只存储，保留他人会议prompt。
+- 已完成本轮结构修正、单次验证、审计/视频/归档；运行中原公平比较；未完成旧布局按时放置与全程平稳性。剩余问题不能直接认定实现bug，不用成功筛选/ESN调参/延长时限掩盖。未来公共参考对照须所有方法一致使用。
+
 ## 2026-10-13 — 冻结ESN修复公共参考，完整MP4与两次失败保留
 
 - 用户授权修复迁移适配并给MP4，禁止改ESN具体参数。新增benchmark `tools/old_office_waypoint_reference_20261013.py`、执行/对照/测试工具和 `docs/ORIGINAL_ESN_REFERENCE_FIX_20261013.md`；只将旧搬运直线细分为公共局部路点，最终版补齐原部署已有的forward-plane/lateral<80mm回归分支。WBC和actor共用参考，无actor独有输入缩放，无训练/改权重/改增益/改过滤/改环境时序/改gate。
