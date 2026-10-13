@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-13 — 冻结ESN修复公共参考，完整MP4与两次失败保留
+
+- 用户授权修复迁移适配并给MP4，禁止改ESN具体参数。新增benchmark `tools/old_office_waypoint_reference_20261013.py`、执行/对照/测试工具和 `docs/ORIGINAL_ESN_REFERENCE_FIX_20261013.md`；只将旧搬运直线细分为公共局部路点，最终版补齐原部署已有的forward-plane/lateral<80mm回归分支。WBC和actor共用参考，无actor独有输入缩放，无训练/改权重/改增益/改过滤/改环境时序/改gate。
+- v1/v2均完整55秒、Task=false/Strict=false，最终v2在carry、cursor18/43。原直达终点Task=true，本次任务退步明确保留。11.48–16.68s x请求饱和62.31%→3.08%，正负翻转100→54；原请求相邻变化RMS降约80.6%，实际x速度变化RMS仅降约11.2%，不称振荡已解决。峰矩42.197Nm、峰速0.24710m/s、外穿透0.171547mm；杯/柱尚未接触，不能据此声称更柔顺。局部目标RMSE34.671mm与原阶段终点RMSE不同口径，不直接排名。
+- 两项参考推进/原阶段与释放门槛测试通过；1375步原始动作/储备池/过滤精确重放，1,224,000物理子步三指标复算和独立穿透审计通过。原checkpoint `acd3b27e…`、MJB `586dd7f2…`不变。完整55秒/1375帧/25fps三视角MP4全帧解码通过、13秒/末帧目视核验；最终MP4 SHA256 `fd50e0d80c6553a882c9c0f0c17f3578400211e2185adcc365b138047c7cdb8a`。小证据位于benchmark `docs/evidence/ORIGINAL_ESN_REFERENCE_FIX_20261013_{AUDIT,COMPARISON}.json`。
+- 已核验服务器v1：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/original_esn_reference_fix_20261013_v1/evidence/`，35文件128507071字节，manifest `734979f9f36de33b97b94b5607ef0b7dd5e8029eaa882ed2ec4e714a28cbbc86`；v2同根 `original_esn_reference_fix_20261013_v2/evidence/`，36文件127315143字节，manifest `82ec6761fcdf98e571c88f37a90ba1c04174c0d3c765951b90ca9983fce60368`，2026-10-13T10:40:46Z核验。两者父目录均有ARCHIVE_VERIFICATION.json，含完整失败轨迹/协议/源码快照/视频；v2源码另在evidence/source/，不冒充干净Git快照。
+- 按sii-research-sync开工核对main `13b963aa9376f05cd254ca0debf162c536c4a9f7`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及日志/AGENTS，收工远端仍相同。本机单线程仿真1.5GiB、渲染1GiB、禁swap；服务器仅存储。两次有时限派发lease均已恢复，独立worker未停，原公平服务active/running未重启。保留他人会议prompt。
+- 已完成：公共参考修复、两次完整对照/审计/视频/归档。运行中：原公平比较；未完成：旧布局残余波动和按时放置，不能称整体修复成功。不把新参考回合混入原公平矩阵；后续各方法必须共用相同参考协议。
+
 ## 2026-10-13T10:06:54.344118+00:00 — 公平比较并行调度 parallel_v4_parallel_condition_prospective_20261013_acceptance_001
 
 - 状态 `prospective_evaluation`，已评 72/288；资源调整不改实验/模型/门槛，旧封存集未读。
