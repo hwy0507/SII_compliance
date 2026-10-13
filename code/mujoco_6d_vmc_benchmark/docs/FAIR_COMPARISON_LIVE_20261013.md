@@ -1,6 +1,6 @@
 # 公平性修正：实时状态
 
-2026-10-13T21:24:19.225332+00:00；parallel_v4_parallel_condition_prospective_20261013_acceptance_007；状态 `prospective_evaluation`。
+2026-10-13T22:02:24.286428+00:00；parallel_v4_final；状态 `complete_review_required`。
 
 本机动态内存准入、最多4独立CPU核、每worker1线程/禁swap；完整保留39拟合/288回合原协议，服务器只归档。
 
@@ -9,43 +9,36 @@
   "archive": {
     "status": "verified",
     "receipt": {
-      "verified_utc": "2026-10-13T21:24:18.091448+00:00",
-      "files_verified": 1192,
-      "total_bytes": 10221886,
-      "manifest_sha256": "cad9a94f82ada6dd560c63aaa5d613cbbdd5283a022169adbfbe6a6dfcff4ffa",
+      "verified_utc": "2026-10-13T22:02:23.072324+00:00",
+      "files_verified": 12539,
+      "total_bytes": 44654298437,
+      "manifest_sha256": "3b7bf40325c06bc43732d52325469fa329289812e38521727547d52704c36a8b",
       "actual_compute_host": "airpig",
-      "local_execution_root": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/delivery_parallel_v4_parallel_condition_prospective_20261013_acceptance_007/evidence",
-      "published_evidence": "/home/arm1/sii_shared/SII_compliance/runs/main/fair_comparison_20261013_v2_parallel_v4_parallel_condition_prospective_20261013_acceptance_007/evidence",
+      "local_execution_root": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/delivery_parallel_v4_final/evidence",
+      "published_evidence": "/home/arm1/sii_shared/SII_compliance/runs/main/fair_comparison_20261013_v2_parallel_v4_final/evidence",
       "historical_execution_paths_preserved": true
     }
   },
   "execution": {
-    "status": "prospective_evaluation",
+    "status": "complete_review_required",
     "started_utc": "2026-10-13T04:50:33.752087+00:00",
     "jobs": [],
     "server_compute": false,
     "final_test_reads": 0,
     "registration_sha256": "a2e80a62252e97af7137ded2962a5790087d8154e2e01c52d0d7a305b2f44b64",
-    "updated_utc": "2026-10-13T21:24:15.350968+00:00",
+    "updated_utc": "2026-10-13T21:24:47.518081+00:00",
     "active": null,
     "dispatcher": "dispatch_v4",
     "handoff_completed_utc": "2026-10-13T05:38:09.564858+00:00",
     "previous_execution_sha256": "1cc60991a5099119031f3db461419da3ca1476ffdff770b77c99292d919df968",
     "fits_complete": 39,
     "model_lock_sha256": "4da573485533ad1d7a7d0a026ee8a33a46812e6f7dcb517ae3b2c632a652f3ab",
-    "active_jobs": {
-      "1": {
-        "cap": 2415919104,
-        "cpu": 6,
-        "unit": null,
-        "job": null,
-        "started_utc": "2026-10-13T21:24:14.039181+00:00"
-      }
-    },
+    "active_jobs": {},
     "evaluated": 288,
     "expected": 288,
     "neural_memory_cap_bytes": 2415919104,
-    "pilot_peak_bytes": 1159131136
+    "pilot_peak_bytes": 1159131136,
+    "ended_utc": "2026-10-13T21:24:47.518074+00:00"
   }
 }
 ```
@@ -137,3 +130,24 @@ Same prospective8 and frozen39fit/36model lock; resource-only local parallel dis
 | historical_vmc_boundary_05 | 12.881 / 8 | 13.208 / 8 | 9.766 / 8 | 35.665 | 70.389 | 130.702 |
 
 不接触的P95为NA；冲量按全部回合描述，不能忽略未到达接触位置或早停的失败。
+
+## 主对照配对差值
+
+|对照|指标|均值差|描述性95%区间|
+|---|---|---:|---|
+|rnn_scratch|task_success|0.0416667|[-0.166667,0.334375]|
+|rnn_scratch|strict_success|0.0416667|[-0.166667,0.334375]|
+|rnn_scratch|rmse_mm|6.11173|[-1.25549,15.2848]|
+|rnn_scratch|peak_torque_nm|0.0648003|[-1.72473,2.70494]|
+|rnn_scratch|peak_speed_mps|0.00134554|[-0.00705578,0.011012]|
+|rnn_scratch|human_impulse_ns|38.4636|[-6.19781,92.8408]|
+|rnn_scratch|rod_impulse_ns|1.71761|[-5.47853,13.7149]|
+|rnn_scratch|unknown_edge_impulse_ns|6.99413|[-0.131015,14.7456]|
+|mlp_scratch|task_success|0.0416667|[-0.333333,0.5]|
+|mlp_scratch|strict_success|0.125|[-0.25,0.625]|
+|mlp_scratch|rmse_mm|-0.360221|[-4.68318,5.49563]|
+|mlp_scratch|peak_torque_nm|-0.22635|[-4.1767,3.78042]|
+|mlp_scratch|peak_speed_mps|0.00393741|[-0.00911943,0.0141004]|
+|mlp_scratch|human_impulse_ns|9.2468|[-24.1198,55.2892]|
+|mlp_scratch|rod_impulse_ns|2.15542|[-1.92603,5.95239]|
+|mlp_scratch|unknown_edge_impulse_ns|-5.4174|[-18.6105,5.93389]|
