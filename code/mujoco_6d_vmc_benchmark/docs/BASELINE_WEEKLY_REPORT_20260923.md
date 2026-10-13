@@ -1,5 +1,7 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+10月13日新增公平性修正：全部经典6候选、RL7配置和历史8参考保留，在8个新前瞻性身份与新3seed学生统一验收。主网络对照统一数据/特征/初始化/损失/预算，不再把matched选回父ESN包装成有效RNN结果。实现和预登记已完成，新闭环待执行；不改环境/门槛、不解封旧holdout。见[协议](FAIR_COMPARISON_PROTOCOL_20261013.md)。
+
 10月13日12:27 CST：baseline168＋新学生40回合全部完成，独立审计通过、最终归档核验并push。
 全部26配置（含旧/新权重及附组）见[统一完整表](TEACHER_STUDENT_COMPLETE_COMPARISON_20261013.md)。
 新ESN Task5/8 Strict3/8，ordinary RNN7/8、5/8；RL/经典仍各0/8。失败全保留，
