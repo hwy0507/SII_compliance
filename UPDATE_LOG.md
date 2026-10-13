@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-13 12:27 CST — 持续监视至结果、审计、归档全部完成
+
+- 本轮实际查询/fetch main `e82ba274bbe86928b25484596cd577381c8bd3d7` 与baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读更新日志/AGENTS和sync skill；监视未重启仿真。12:06学生40/40与独立审计完成，12:25:44最终归档核验通过，自动报告push `c9efbae3c524224cccb42d8b7445619c0e0cf4e4`。
+- 既有baseline168行及新增学生40行全部审计passed；新增26配置统一表 `code/mujoco_6d_vmc_benchmark/docs/TEACHER_STUDENT_COMPLETE_COMPARISON_20261013.md`，逐行与两份审计锁定报告hash/数值核对，不混选新旧最优值。未动他人会议prompt。
+- 新ESN Task5/8、Strict3/8、RMSE33.973mm/平均回合峰矩49.684Nm/平均回合峰速.3745m/s；ordinary RNN7/8、5/8、35.278/51.403/.3675。ESN部分接触指标较低，但成功率不领先，不能声称全面优于RNN。matched RNN均选回update0父ESN，闭环完全相同，不能充当独立训练有效的RNN对照。
+- 数据44train/11validation、75625实际帧，teacher mixture；旧ESN7/8、2/8到新5/8、3/8并非单因素数据量消融。三seed离线，首预登记seed闭环，仅8开发身份；最终盲测泛化/所有baseline收敛/ESN全面优越均未完成或未获支持。
+- 已核验服务器 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_student_15h_20261012_v3_final/evidence/`，3994文件15416918386字节，manifest `4f7ce4dca8d98b3a713616aca0d418da5cfba5eb7c05bc0d606b65700ab3aec4`。baseline原始168条另在同根 `teacher_student_15h_20261012_v3_baseline_complete/evidence/`，6118文件24535685543字节。
+- 所有本批仿真/学习/审计已结束，无追加训练或服务器计算；统一表补入GitHub，过夜窗口不延长。
+
 ## 2026-10-13T04:25:46.077489+00:00 — 15小时teacher/student接续：final
 
 - 实际状态 `complete_review_required`；baseline审计：True。

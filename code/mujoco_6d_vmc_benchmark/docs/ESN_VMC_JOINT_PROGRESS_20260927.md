@@ -1,5 +1,12 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+10月13日12:27 CST：连续监视至208比较回合、独立审计与服务器最终归档全部完成。
+新ESN5/8 Task、3/8 Strict；ordinary RNN7/8、5/8，ESN成功率未领先。
+matched RNN选回update0父ESN，结果相同，不作为独立训练有效的循环网络对照。
+44train/11validation、75625帧是两teacher混合数据；非纯数据量消融，也非最终盲测。
+最终3994文件15.4GB已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/teacher_student_15h_20261012_v3_final/evidence/`。
+参见[26配置统一完整表](TEACHER_STUDENT_COMPLETE_COMPARISON_20261013.md)，本批结束、未追加派发。
+
 ## 2026-10-13T04:25:46.077489+00:00 — 15小时teacher/student接续：final
 
 - 实际状态 `complete_review_required`；baseline审计：True。

@@ -1,5 +1,11 @@
 # 本周 baseline 进展与三维对比（2026-09-23）
 
+10月13日12:27 CST：baseline168＋新学生40回合全部完成，独立审计通过、最终归档核验并push。
+全部26配置（含旧/新权重及附组）见[统一完整表](TEACHER_STUDENT_COMPLETE_COMPARISON_20261013.md)。
+新ESN Task5/8 Strict3/8，ordinary RNN7/8、5/8；RL/经典仍各0/8。失败全保留，
+不把低误差卡住当好表现、不将RL有限预算失败称普遍不适合。matched RNN回退update0需披露。
+正式dt5e-5、同8开发身份，不是最终封存泛化；本批学习/仿真已结束，不自动追加预算。
+
 ## 2026-10-13T04:25:46.077489+00:00 — 15小时teacher/student接续：final
 
 - 实际状态 `complete_review_required`；baseline审计：True。
