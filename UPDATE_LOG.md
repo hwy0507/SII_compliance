@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-13T13:04:09.469771+00:00 — 公平比较并行调度 parallel_v4_parallel_condition_prospective_20261013_acceptance_002
+
+- 状态 `prospective_evaluation`，已评 108/288；资源调整不改实验/模型/门槛，旧封存集未读。
+- 归档 `verified`，详见 `code/mujoco_6d_vmc_benchmark/docs/FAIR_COMPARISON_LIVE_20261013.md`。全部失败保留，完成前不作结果排名。
+
+
 ## 2026-10-13 — 聚焦棍推：修正反馈系数错拍，但完整任务仍未恢复
 
 - 新增benchmark `tools/feedback_tick_contract_20261013.py`及run/pair/test/analyze/render工具，报告 `docs/ORIGINAL_ESN_ROD_TICK_REPAIR_20261013.md`。冻结原ESN checkpoint `acd3b27e…`、旧场景MJB `586dd7f2…`、输入公式/参数/事件时间/gate/执行器/55秒不变；沿用continuous reference，仅测试公共WBC反馈系数和当前残差同拍。没有储备池重置、摩擦前馈、teacher或新增滤波。
