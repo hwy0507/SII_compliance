@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-13T05:15:46.986128+00:00 — 公平性修正 final
+
+- 状态 `failed_preserved`，新条件已评 0/288；39拟合/3seed，旧封存集未读。
+- 归档 `verified`，详情 `code/mujoco_6d_vmc_benchmark/docs/FAIR_COMPARISON_LIVE_20261013.md`。失败保留；不能在完整审计前宣称胜出或所有baseline充分收敛。
+
+
 ## 2026-10-13T04:51:08.632476+00:00 — 公平性修正 setup
 
 - 状态 `training`，新条件已评 0/288；39拟合/3seed，旧封存集未读。
