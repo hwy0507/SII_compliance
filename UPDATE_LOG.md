@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-13 — 原 ESN 组会汇报稿与训练谱系核验
+
+- 新增 `code/mujoco_6d_vmc_benchmark/docs/ORIGINAL_ESN_GROUP_MEETING_20261013.md`：八页讲述提纲、两分钟口述稿、teacher来源/资格筛选、真实训练配置、全过程曲线讲解及全部21旧配置表。历史24条留出与当前8条开发复测分开，新ESN/新RNN仅作明确标注的进展对照。
+- 锁定原ESN `readout_refit_esn_2026100301`，checkpoint `acd3b27e…`；真实数据20训练/5验证、27,500/6,875帧，仅训练3,780个线性读出系数。监督标签是实际执行历史中的原始teacher请求，不是执行力矩；无contextual leak gate、无时序损失项。明确增强teacher的人工恢复先验，以及旧MLP/无记忆家族选中模型数据版本不同。
+- 当前原ESN Task7/8、Strict2/8，人手冲量相对同数据普通RNN低57.5%；matched RNN接触表现相近且Strict更高。保留柱/link6、link7穿透失败与峰矩不全面领先，不把历史24条件的20/24、16/24同当前结果混合。
+- 验证：21行三指标/Task/Strict/早停与已审计report逐值核对，5行接触表核对，文档链接/模型与数据hash/训练字段检查通过；服务器模型、训练metadata、数据和历史24条报告hash重新确认。无训练或新仿真。
+- 已核验服务器 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/original_esn_group_meeting_20261013_1458/`，报告及3个小证据文件SHA一致；报告SHA256 `e09771ae9d3d3bf4ebcdeb9c63c779bc382d757706b3d2348277e0125915a26a`。实际训练源码快照仍在报告列出的原模型目录，未修改实验。
+- 完成：汇报整理/核验/归档。运行中：本机既有 `sii-fair-parallel-20261013-v4.service`，14:54快照21/288，未重启；未完成：该批全矩阵与最终审计。本轮不取其局部成绩作排名。开工main `7e1a384379af82a45ecd3300f192bb36793ceb21`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；按sii-research-sync/AGENTS发布，保留他人会议流程图prompt。
+
 ## 2026-10-13 14:27 CST — 26配置全过程曲线已完成并共享
 
 - 按用户请求，用已审计208条轨迹绘制所有原/新学生、经典6配置、RL7配置及参考的全过程RMSE/实际力矩/末端速度。8条件×4组共32页PDF及32张PNG；交互HTML可选方法/条件/时间范围/误差定义，完整CSV.gz保留全部失败。原/新版本不混合，不使用未完成前瞻性结果。
