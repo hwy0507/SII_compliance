@@ -2809,3 +2809,10 @@
 - 本轮提交 `95f437f507911ed035a9503ba183c41589415951` 的源码快照已归档到
   `arm1:/home/arm1/sii_shared/SII_compliance/source/95f437f507911ed035a9503ba183c41589415951/source.tar.gz`，SHA256 `cf6fd24b89051de457ebe0035e2d6ad40287e5b02cf9b062d760bdbdd4bea388`。
 - 更新文档：`docs/ESN_TORQUE_GENERALIZATION_20261007.md`、`docs/ESN_STAGE_REPORT_20261007.md`、`docs/ESN_VMC_JOINT_PROGRESS_20260927.md`、`docs/BASELINE_WEEKLY_REPORT_20260923.md`。统一 `/24` 主表未改，sealed 条件未读取。
+
+## 2026-10-13 — 绘制现有RL训练reward曲线
+
+- 按用户要求读取本机 `code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/recovery_20261011_v1` 的既有 `training.jsonl`，绘制直接输出动作的两种 reward 标准，以及参数输出的 admittance/impedance/VMC/历史熵附组。
+- 图中每点为一个 episode 的 `final_reward` 求和，横轴为该回合最后记录的训练步；同时保留原始点线和 15 回合移动平均。未重训、未仿真、未修改既有运行。
+- 产物在 `code/mujoco_6d_vmc_benchmark/outputs/reward_training_curves_20261013/`，含 PNG、PDF、说明；脚本为 `code/mujoco_6d_vmc_benchmark/tools/plot_reward_training_curves_20261013.py`。部分历史日志在 97,625 或 108,458 步封存，图中保留实际终点，不补齐。
+- 这是训练目标回报曲线，不等同任务成功或安全收敛；远端 fetch 因网络不可达，本轮按本地缓存分支状态完成。
