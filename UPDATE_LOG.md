@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-13T14:50:05.843925+00:00 — 公平比较并行调度 parallel_v4_parallel_condition_prospective_20261013_acceptance_003
+
+- 状态 `prospective_evaluation`，已评 144/288；资源调整不改实验/模型/门槛，旧封存集未读。
+- 归档 `verified`，详见 `code/mujoco_6d_vmc_benchmark/docs/FAIR_COMPARISON_LIVE_20261013.md`。全部失败保留，完成前不作结果排名。
+
+
 ## 2026-10-13 — 原版ESN/MLP/RNN三指标统一平滑与实际接触时段
 
 - 按用户要求仅绘制 `esn__original/ordinary_mlp__original/ordinary_rnn__original`，原8开发条件×3方法全部保留。新增benchmark `tools/plot_original_students_smoothed_20261013.py`、报告 `docs/ORIGINAL_THREE_SMOOTHED_CURVES_20261013.md`、首编号PNG及小型来源审计；没有混入matched、新训练模型或棍推修复候选。

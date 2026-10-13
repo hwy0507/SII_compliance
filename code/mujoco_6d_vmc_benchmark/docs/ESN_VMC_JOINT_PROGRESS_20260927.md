@@ -1,5 +1,11 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-13T14:50:05.843925+00:00 — 公平比较并行调度 parallel_v4_parallel_condition_prospective_20261013_acceptance_003
+
+- 状态 `prospective_evaluation`，已评 144/288；资源调整不改实验/模型/门槛，旧封存集未读。
+- 归档 `verified`，详见 `code/mujoco_6d_vmc_benchmark/docs/FAIR_COMPARISON_LIVE_20261013.md`。全部失败保留，完成前不作结果排名。
+
+
 ## 2026-10-13 — 原版三模型平滑曲线已交付
 
 仅分析原ESN/ordinary MLP/ordinary RNN的既有8条件24条完整轨迹，三指标统一高斯σ0.20s平滑。
