@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-13T05:22:05.556660+00:00 — 公平比较并行调度 parallel_models_locked
+
+- 状态 `models_locked`，已评 0/288；资源调整不改实验/模型/门槛，旧封存集未读。
+- 归档 `verified`，详见 `code/mujoco_6d_vmc_benchmark/docs/FAIR_COMPARISON_LIVE_20261013.md`。全部失败保留，完成前不作结果排名。
+
+
 ## 2026-10-13 — 按用户授权加速公平比较，复用31拟合并引入动态并行
 
 - 开工核对main `06ac5565a33bbffc2c6d742e6876e025a339ee74`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及两分支日志/AGENTS；本机24核、16GiB RAM，可用约4.6GiB（有一个训练进程），swap已满。GPU约6%，主要瓶颈是单核MuJoCo及可用RAM。
