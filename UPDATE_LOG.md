@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-14 19:19 CST — RL监视回合：两路worker真实推进
+
+- 再次核对远端 `main=c62ff87823b594e31cca1cebf0c67ac9264a7ef2`、
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 与 `AGENTS.md`。heartbeat
+  `rl-full-acceptance-monitor-15h-20261014` 继续生效，未重复启动任何作业。
+- `sii-rl-full-campaign-v2.service`、direct 与 impedance 子服务均为 active/running；
+  durable state 分别为 direct `interactions=32142, updates=54286`、impedance
+  `interactions=22000, updates=34002`。两路当前训练回合分别为
+  `repair_train_025` 与 `repair_train_011`，admittance/VMC 目录尚未生成。
+- 已完成且可审计的训练收据为 direct 26 回合、impedance 18 回合；两者
+  `task_success=false`、`strict_success=false` 均为 26/26 与 18/18。训练仍在进行，
+  没有冻结checkpoint、统一acceptance或方法成功结论。
+- 资源核对：direct cgroup `MemoryCurrent≈3.185GiB/3.0GiB`、impedance≈2.69GiB，
+  两者 `MemorySwapMax=0`、`OOMKilled` 未见；GPU 43°C、显存约2.3GiB、利用率约6%。
+  宿主交换空间已接近满载，但worker cgroup禁swap且仍在推进；继续监视，不强行重启或扩容。
+- 本轮未改环境、gate、actor输入、执行器限制或训练预算；失败收据保留。统一四方法
+  acceptance、物理子步/action replay/hash审计仍未开始，不能将当前结果写成最终对比。
+
 ## 2026-10-14 18:59 CST — 注册15小时RL全量监视
 
 - 按用户授权创建 heartbeat `rl-full-acceptance-monitor-15h-20261014`，窗口至
