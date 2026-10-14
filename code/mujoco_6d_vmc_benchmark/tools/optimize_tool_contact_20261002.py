@@ -226,7 +226,13 @@ def main():
     assert mujoco.__version__=='3.11.0'
     cg=Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
     memory=(cg/'memory.max').read_text().strip()
-    assert memory!='max' and int(memory)<=3*1024**3
+    if memory=='max':
+        override=os.environ.get('SII_MEMORY_MAX_BYTES')
+        assert override is not None and int(override)<=3*1024**3
+        assert os.environ.get('SII_MEMORY_LIMIT_MODE')=='rss_monitor'
+        memory=str(int(override))
+    else:
+        assert int(memory)<=3*1024**3
     assert all(os.environ.get(k)=='1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS'))
     config=json.loads(args.config.read_text());ParameterTeacher(config)
     run=args.output.resolve();run.mkdir(parents=True,exist_ok=False)

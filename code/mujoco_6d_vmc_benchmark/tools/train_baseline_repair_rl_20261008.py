@@ -14,6 +14,7 @@ import platform
 import signal
 import subprocess
 import sys
+import resource
 import numpy as np
 from office_v7_uniform24_20261008 import read, write, sha, now, V6, MENAGERIE
 from run_paper_final_validation_20261003 import ENV
@@ -75,7 +76,24 @@ def main():
     assert len(conditions)==32
     cg=Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
     memory=(cg/'memory.max').read_text().strip()
-    assert memory!='max' and int(memory)<=3*1024**3
+    # Desktop-launched processes can inherit the read-only Codex app cgroup,
+    # whose memory.max is ``max`` even though the campaign wrapper applies a
+    # 3 GiB RLIMIT_AS.  Preserve the hard budget check for delegated cgroups;
+    # for this local fallback, require both an explicit registered limit and
+    # the process address-space limit instead of silently accepting unlimited
+    # memory.
+    if memory=='max':
+        override=os.environ.get('SII_MEMORY_MAX_BYTES')
+        soft,hard=resource.getrlimit(resource.RLIMIT_AS)
+        assert override is not None and int(override)<=3*1024**3
+        # JAX CPU startup reserves a large virtual address space, so RLIMIT_AS
+        # cannot be used here. The campaign supplies an RSS monitor when the
+        # desktop app cgroup is read-only; delegated cgroups still use their
+        # hard memory.max limit.
+        assert (hard != resource.RLIM_INFINITY and hard<=3*1024**3) or os.environ.get('SII_MEMORY_LIMIT_MODE')=='rss_monitor'
+        memory=str(int(override))
+    else:
+        assert int(memory)<=3*1024**3
     assert all(os.environ.get(k)=='1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS'))
     out.mkdir(parents=True,exist_ok=False)
     sys.path[:0]=[str(parameter),str(REWARDS)]

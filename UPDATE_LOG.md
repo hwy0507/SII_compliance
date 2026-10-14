@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-14 16:24 CST — 四类 RL 从头在线重训已启动
+
+- 按用户要求登记并启动新的 `outputs/rl_full_retrain_20261014_v1` 批次，四个冻结接口分别为 direct action、impedance parameter、admittance parameter、VMC parameter；每个方法从头在真实 MuJoCo train 条件在线采样和更新，不导入 teacher/BC/离线 replay。
+- 固定 formal dt=5e-5、office-v5 几何与摩擦、canonical48 本体输入、原 Task/Strict gate、共用 action filter、执行器幅值/变化率限制；每个方法 500000 交互步上限，完成后才进入同一 `repair_acceptance_000` 测试，Task 与 Strict 同时通过才计成功。
+- 已完成并保存 1375 步真实 MuJoCo 预检收据；当前 direct 和 impedance 两路已进入正式 from-scratch 训练，分别使用 CPU1/6、单线程，admittance/VMC 在前两路完成后接续。当前尚无任何方法完成训练或 acceptance，不能报告成功。
+- 桌面 Codex 进程继承只读 cgroup（`memory.max=max`），无法冒称 systemd `MemoryMax=3GiB`；新增显式 3 GiB RSS 监视模式，若 cgroup 可写仍强制硬上限，超限请求回合边界停止。服务器不计算。
+- 旧 smoke 预检在继承 cgroup 断言处失败并保留为 `failed_preserved`；不计入训练结果。远端 main/baseline 本轮开工核对因 GitHub 网络不可达，使用缓存 main `fffab0a`、baseline `f6e8f8c…`，待网络恢复后同步。
+- 新增 `code/mujoco_6d_vmc_benchmark/tools/rl_full_retrain_campaign_20261014.py`；未完成：四方法训练、冻结 checkpoint、统一 acceptance、独立物理子步审计、服务器归档和远端 push。
+
 ## 2026-10-14 15:56 CST — online reward平台通过，冻结测试失败
 
 - direct原奖励从22k边界checkpoint真实续训至32633步，新增8个完整回合；最后两个四回合reward窗口均值-21.7636/-21.8681，相对变化0.48%、最后窗口CV0.63%，通过预注册平台门槛。

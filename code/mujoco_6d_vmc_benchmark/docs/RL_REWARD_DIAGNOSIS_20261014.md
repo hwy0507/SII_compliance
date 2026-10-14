@@ -204,3 +204,11 @@ task_safety变体不能从该旧checkpoint恢复（训练器明确禁止改变re
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_credit_setup_20261014_v1/evidence/`，
 manifest `a39212c1697e0c7a9405f625cc74df68ec1e45f75b58538dd47421d243909990`。
 补评尚未派发；首组22k新原始数据仍本机、待完整边界归档，11k前缀已共享。
+# 四接口从头在线重训（2026-10-14）
+
+用户要求 direct、阻抗参数、导纳参数和 VMC 参数四类接口全部重新训练，训练结束后在同一冻结 acceptance 条件统一测试。新批次登记在
+`outputs/rl_full_retrain_20261014_v1/PROTOCOL.json`，每类 500000 个真实 MuJoCo 交互步上限，使用单独的 from-scratch SimbaV2 agent；没有 teacher、BC 或离线 replay。
+
+当前状态：direct 与 impedance 已开始正式训练，admittance 与 VMC 排队接续；1375 步真实交互预检已完成。训练收敛、checkpoint 冻结、acceptance 和物理审计均未完成，任何 reward 平台或中间轨迹都不等于任务成功。
+
+本机 Codex 桌面会话的父 cgroup 为只读且 `memory.max=max`，因此本批显式记录 3 GiB RSS 监视模式；可写 cgroup 则仍要求 `memory.max<=3GiB`。发生超限时只请求回合边界停止并保留失败收据。服务器只做归档，不运行训练。
