@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-14 17:16 CST — v2 RL 训练已移交持久宿主服务
+
+- v1 中断批次确认停在 direct 6,875 步/5 回合、impedance 6,500 步/4 回合，无 checkpoint；其残留子进程已终止并保留全部收据。
+- 新批次 `outputs/rl_full_retrain_20261014_v2` 已由 `sii-rl-full-campaign-v2.service` 启动。direct 与 impedance 两个 worker 已在独立 user-systemd 单元中运行，均显示 `MemoryMax=3221225472`、`MemorySwapMax=0`，GPU 可见；admittance/VMC 将按 pair 接续。
+- 当前仍是 from-scratch online 训练，尚无冻结 checkpoint、统一 acceptance 或成功结论。所有训练、环境、gate、输入和执行器限制保持登记协议不变。
+
 ## 2026-10-14 17:10 CST — 训练进程中断，保留并重建宿主机服务
 
 - 检查确认 `rl_full_retrain_20261014_v1` 并非持续运行：direct 在 6,875 步/5 回合、impedance 在 6,500 步/4 回合时随 Codex 沙箱子进程退出，均无 checkpoint，admittance/VMC 尚未开始；两路训练回合 Task/Strict 均为0，不能作为收敛或成功证据。
