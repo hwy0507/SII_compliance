@@ -1,5 +1,17 @@
 # 更新日志
 
+## 2026-10-14 20:19 CST — RL监视回合：训练回合继续写入
+
+- 远端基线仍为 `main=c62ff87823b594e31cca1cebf0c67ac9264a7ef2`、
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；重新读取 `AGENTS.md`，未重复启动，
+  未改冻结环境、gate、actor输入或执行器限制。
+- `sii-rl-full-campaign-v2.service`、direct、impedance 均 active/running。虽然主状态文件仍
+  停在 direct 43142/76286、impedance 33000/56002 边界，独立回合收据已推进到 direct 39、
+  impedance 27 个完成回合；各有一个 `repair_train` 回合运行中，说明真实worker仍在采样。
+- 已完成回合 Task/Strict 仍为 direct `0/39`、impedance `0/27`；admittance/VMC 尚未生成
+  训练目录或checkpoint。两worker `MemoryMax=3GiB`、`MemorySwapMax=0`，当前内存约2.85/2.82GiB，
+  服务正常且未见OOM。GPU查询仍暂不可用，未据此重启。统一acceptance和最终物理审计尚未开始。
+
 ## 2026-10-14 19:59 CST — RL监视回合：两路继续推进，尚未接续后两类
 
 - 复核远端 `main=c62ff87823b594e31cca1cebf0c67ac9264a7ef2`、
