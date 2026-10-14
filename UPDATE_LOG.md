@@ -1,5 +1,20 @@
 # 更新日志
 
+## 2026-10-14 18:59 CST — 注册15小时RL全量监视
+
+- 按用户授权创建 heartbeat `rl-full-acceptance-monitor-15h-20261014`，窗口至
+  2026-10-15 09:59 CST；每20分钟检查 `outputs/rl_full_retrain_20261014_v2` 的四类RL训练、
+  checkpoint、execution 收据、资源和失败原因。
+- 开工核对：远端 `main=9b01f20f065f829f0bc2b801622b2ea776b9167a`、
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；AGENTS约束已读取。工作区保留既有
+  未跟踪 `docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md`，未将其纳入本次变更。
+- 当前 v2 仍为 `training`：direct/impedance 的 user-systemd worker 已登记为
+  `MemoryMax=3GiB`、禁swap、单线程；admittance/VMC尚未派发，尚无冻结checkpoint、统一
+  acceptance 或Task+Strict成功结论。只监视既有作业，不重复启动、不修改环境/gate/actor输入。
+- 15小时结束时仅在四方法完成训练并通过同一正式 acceptance 及独立物理审计后报告结果；失败与
+  未完成回合保留，不能把reward平台或早期回合写成成功。大产物继续按协议归档到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/` 独立目录。
+
 ## 2026-10-14 17:16 CST — v2 RL 训练已移交持久宿主服务
 
 - v1 中断批次确认停在 direct 6,875 步/5 回合、impedance 6,500 步/4 回合，无 checkpoint；其残留子进程已终止并保留全部收据。
