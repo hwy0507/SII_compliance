@@ -178,6 +178,16 @@ reward 收敛判据，再冻结 checkpoint 进入测试集。原22k诊断不满�
 不重复占用模拟器；服务器仍只存储。收敛是有限 reward 平台判据，不等价于全局最优或
 证明 RL 普遍适用。
 
+## 14:58–15:10 CST — continuation启动收据与有效online续训
+
+v1–v6 continuation 尝试均在训练器保护断言、systemd单元命名或运行时字段检查处退出，
+没有生成MuJoCo物理步、梯度更新或策略结果，全部保留为基础设施启动失败。v7修正注册
+字段、唯一单元名、`SII_LOCAL_RUNTIME`、Menagerie路径和磁盘保留字段后，direct原奖励
+从22k episode-boundary checkpoint恢复并进入真实环境交互。当前约30.5k总步、51,002次
+更新、22个完整回合，仍未到33k边界，reward窗口尚未判定，acceptance未解锁。
+task_safety变体不能从该旧checkpoint恢复（训练器明确禁止改变reward_variant），因此其
+启动失败不计作策略失败；后续按合法online链路推进。
+
 另核验四个既有离线RL拟合：相同11000步纯RL数据、seed2026100911、12002次更新，
 组合为原/解耦奖励×1/25步回报，无teacher、BC或新交互。这些权重此前未闭环评估。
 新增`rl_credit_closed_loop_20261014.py`登记全部四格各开发000–003，共最多16回合；

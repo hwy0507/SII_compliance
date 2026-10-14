@@ -32,20 +32,24 @@ def prepare(root, parent):
     shutil.copytree(parent/'source', root/'source', ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
     shutil.copytree(parent/'parameter_fullrange', root/'parameter_fullrange', ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
     jobs = [
-        dict(name='direct_original', family='direct', controller=None, reward='office_task',
+        dict(name='direct_original', family='direct', controller=None, reward='office_task', hp='exploratory',
              reward_variant='original', checkpoint=str(parent/'direct_s2026101411_original_train/checkpoint_0022000')),
-        dict(name='direct_task_safety', family='direct', controller=None, reward='office_task',
+        dict(name='direct_task_safety', family='direct', controller=None, reward='office_task', hp='exploratory',
              reward_variant='task_safety', checkpoint=str(parent/'direct_s2026101411_task_safety_train/checkpoint_0022000')),
-        dict(name='impedance_original', family='impedance', controller='impedance', reward='metric',
+        dict(name='impedance_original', family='impedance', controller='impedance', reward='metric', hp='exploratory',
              reward_variant='original', checkpoint=str(parent/'impedance_s2026101411_original_train/checkpoint_0022000')),
-        dict(name='impedance_payload_shaping', family='impedance', controller='impedance', reward='metric',
+        dict(name='impedance_payload_shaping', family='impedance', controller='impedance', reward='metric', hp='exploratory',
              reward_variant='payload_shaping', checkpoint=str(parent/'impedance_s2026101411_payload_shaping_train/checkpoint_0022000')),
     ]
     registration = dict(
         schema='sii-local-rl-convergence-v2', created_utc=now().isoformat(), host='airpig',
-        parent_root=str(parent), parent_protocol_sha256=sha(parent/'PROTOCOL.json'), run_root=str(root),
-        server_compute=False, resources=dict(simulator_lanes=2, threads_per_lane=1,
-            memory_max_gib=3, swap=False, cpu_affinity=['1','6']),
+        # The trainer's continuation guard calls this the current run root;
+        # retain the historical source separately for the coordinator wait.
+        parent_root=str(root), historical_parent_root=str(parent),
+        parent_protocol_sha256=sha(parent/'PROTOCOL.json'), run_root=str(root),
+        resources=dict(simulator_lanes=2, threads_per_lane=1,
+            memory_max_gib=3, swap=False, cpu_affinity=['1','6'], server_compute=False),
+        min_free_disk_bytes=20*1024**3,
         seed=2026101411, optimizer_schedule_steps=500000,
         training_limits=[33000,44000,55000,66000,77000,88000],
         dispatch_deadline_utc=pp['training_dispatch_deadline_utc'],
@@ -88,7 +92,7 @@ def converged(paths, reg):
 
 
 def run(root):
-    root=root.resolve(); reg=read(root/'CONTINUATION_REGISTRATION.json'); parent=Path(reg['parent_root'])
+    root=root.resolve(); reg=read(root/'CONTINUATION_REGISTRATION.json'); parent=Path(reg['historical_parent_root'])
     while True:
         parent_state=read(parent/'execution.json')
         if parent_state['status'] in ('complete_review_required','failed_preserved'): break
@@ -114,11 +118,14 @@ def run(root):
                     '--hyperparameter-id','exploratory','--resume-checkpoint',job['checkpoint'],
                     '--continuation-registration',str(root/'CONTINUATION_REGISTRATION.json')]
                 if job['controller']: args += ['--controller',job['controller']]
-                unit='sii-rl-convergence-1014-p%d-%s'%(pair_index,job['name'].replace('_','-'))
+                run_tag=root.name.rsplit('_',1)[-1].replace('-','')
+                unit='sii-rl-convergence-1014-%s-p%d-%s'%(run_tag,pair_index,job['name'].replace('_','-'))
                 cmd=['systemd-run','--user','--unit='+unit,'-p','MemoryMax=3G','-p','MemorySwapMax=0',
                      '-p','CPUQuota=100%','-p','CPUAffinity='+('1' if len(units)==0 else '6'),
                      '--working-directory='+str(root), '--setenv=OPENBLAS_NUM_THREADS=1',
-                     '--setenv=OMP_NUM_THREADS=1','--setenv=MKL_NUM_THREADS=1']+args
+                     '--setenv=OMP_NUM_THREADS=1','--setenv=MKL_NUM_THREADS=1',
+                     '--setenv=SII_LOCAL_RUNTIME='+str(Path('/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime')),
+                     '--setenv=MUJOCO_MENAGERIE_PATH='+str(Path('/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/menagerie'))]+args
                 subprocess.run(cmd,check=True); units.append(unit)
             while True:
                 statuses=[]
