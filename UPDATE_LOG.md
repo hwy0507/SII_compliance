@@ -1,5 +1,18 @@
 # 更新日志
 
+## 2026-10-14 19:39 CST — RL监视回合：训练继续，GPU查询暂不可用
+
+- 复核远端 `main=c62ff87823b594e31cca1cebf0c67ac9264a7ef2`、
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 与 `AGENTS.md`；heartbeat
+  `rl-full-acceptance-monitor-15h-20261014` 仍在窗口内，未重复启动或修改作业。
+- `sii-rl-full-campaign-v2.service`、direct、impedance 均 active/running。direct 已有
+  30 个完成训练收据，impedance 20 个；现有收据 `task_success=false`、
+  `strict_success=false` 分别为 30/30 与 20/20。两路都有新的 `repair_train` 回合处于
+  running，admittance/VMC 尚未派发，尚无冻结checkpoint或统一acceptance。
+- 两个worker仍使用登记的单线程、3GiB、禁swap约束；本轮未见OOM或服务退出。宿主
+  `nvidia-smi` 查询暂时报告无法与NVIDIA驱动通信，但不据此重启或宣称训练停止；以服务和
+  回合收据为准继续监视。物理子步/action replay/hash审计和四方法统一测试仍未开始。
+
 ## 2026-10-14 19:19 CST — RL监视回合：两路worker真实推进
 
 - 再次核对远端 `main=c62ff87823b594e31cca1cebf0c67ac9264a7ef2`、
