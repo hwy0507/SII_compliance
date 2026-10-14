@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-14 23:39 CST — RL监视回合：两路持续推进
+
+- 合并本时段两次心跳检查，继续核对 v2 收据与 `AGENTS.md`，未重复启动或修改冻结条件。
+- direct 已推进至 `interactions=98142, updates=186286`，完成75回合；impedance 至
+  `interactions=88000, updates=166002`，完成64回合。Task/Strict均失败：direct `0/75`、
+  impedance `0/64`；admittance/VMC 尚未接续。
+- 两worker active/running，MemoryCurrent约2.82/2.88GiB，MemoryMax=3GiB、禁swap且未见OOM。
+  GPU查询仍无法连接驱动，未重启。尚无统一acceptance、最终成功或独立物理审计结论。
+
 ## 2026-10-14 22:59 CST — RL监视回合：impedance推进到77k
 
 - 继续核对现有 v2 收据与 `AGENTS.md`，未重复启动或修改冻结实验条件。
