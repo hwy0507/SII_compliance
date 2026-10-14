@@ -2,6 +2,12 @@
 
 ## 2026-10-14 — RL奖励与在线参数机制诊断启动
 
+11:32 CST：首组直接动作原/新奖励各22k交互完成，固定开发均Task0/4、Strict0/4；
+八回合动作重放/独立物理指标核验通过。在线阻抗参数成对训练运行中。旧数据四格
+（奖励×1/25步回报）已登记条件性补评，无新训练、未派发；方案已核验共享到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_credit_setup_20261014_v1/evidence/`。
+首组成对失败说明终奖解耦在该预算内未解决问题，不能推论RL普遍不适用；后续组/完整审计未完成。
+
 10:52 CST补充：两臂共同11k边界均Task1/8、Strict0/8（唯一Task为随机预热），仍在训练。
 12条新回合已通过独立物理/奖励审计；16完整回合与两套checkpoint已hash核验共享到
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_reward_diagnosis_direct_011k_20261014_v1/evidence/`。
