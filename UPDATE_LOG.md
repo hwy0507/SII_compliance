@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-14 22:19 CST — RL监视回合：impedance推进到66k
+
+- 继续核对 v2 收据和 `AGENTS.md`，未重复启动或修改冻结实验条件。
+- direct 已完成61回合，主状态仍为 `76142/142286`；impedance 已推进至
+  `interactions=66000, updates=122002`，完成50回合。Task/Strict均失败：direct `0/61`、
+  impedance `0/50`。admittance/VMC 尚未生成目录或checkpoint。
+- 两worker active/running，MemoryCurrent约2.87/2.79GiB，MemoryMax=3GiB、禁swap且未见OOM。
+  GPU查询仍无法连接驱动，未因此重启；统一acceptance与物理审计未开始。
+
 ## 2026-10-14 21:59 CST — RL监视回合：direct推进到76k
 
 - 复核现有 v2 收据与 `AGENTS.md`，未重复启动或修改冻结实验条件。
