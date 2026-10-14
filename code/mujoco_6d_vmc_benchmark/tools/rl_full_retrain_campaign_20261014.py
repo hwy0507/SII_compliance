@@ -160,8 +160,21 @@ def run(root: Path):
         for job,cpu in zip(pair,cpus):
             # use a child process so a completed pair can be monitored and
             # failures remain isolated without overwriting another output.
-            procs.append(subprocess.Popen([str(PY),str(Path(__file__)),'_job','--root',str(root),
-                                           '--job',job['name'],'--cpu',cpu],cwd=BENCH,env=env(root)))
+            child=[str(PY),str(Path(__file__)),'_job','--root',str(root),
+                   '--job',job['name'],'--cpu',cpu]
+            if os.environ.get('PERSIST_SYSTEMD')=='1':
+                unit='sii-rl-full-%s-%s'%(root.name.rsplit('_',1)[-1],job['name'].replace('_','-'))
+                command=['systemd-run','--user','--wait','--collect','--pipe','--unit='+unit,
+                    '--property=MemoryMax=3G','--property=MemorySwapMax=0','--property=TasksMax=256',
+                    '--property=CPUAffinity='+cpu,'--working-directory='+str(BENCH)]
+                command += ['--setenv='+k+'='+v for k,v in env(root).items()
+                            if k in ('OPENBLAS_NUM_THREADS','OMP_NUM_THREADS','MKL_NUM_THREADS','NUMEXPR_NUM_THREADS',
+                                     'JAX_PLATFORMS','XLA_PYTHON_CLIENT_PREALLOCATE','XLA_PYTHON_CLIENT_MEM_FRACTION',
+                                     'SII_LOCAL_RUNTIME','MUJOCO_MENAGERIE_PATH','SII_MEMORY_MAX_BYTES',
+                                     'SII_MEMORY_LIMIT_MODE','SII_SOURCE_BASE_COMMIT')]
+                procs.append(subprocess.Popen(command+child,cwd=BENCH))
+            else:
+                procs.append(subprocess.Popen(child,cwd=BENCH,env=env(root)))
         while any(p.poll() is None for p in procs):
             for p in procs:
                 if p.poll() is None:
