@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-15 07:20 CST — RL监视回合：两路继续推进
+
+- 已重新核对 `AGENTS.md`、远端 `main=f2d77c2c6da823e262ddf4439aa3d0f4885842c4` 和
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；未修改冻结环境、gate、actor输入或执行器限制。
+- campaign、direct、impedance 均 active。direct 已完成163回合、第164回合在途，最新
+  `step=223028`；impedance 已完成140回合、第141回合在途，最新 `step=192619`。已完成回合
+  的 Task/Strict 成功数均为0。
+- admittance/VMC worker 仍不存在，未手动派发。两路仍为 `MemoryMax=3GiB`、禁swap、单线程；
+  direct 当前约2.9GiB、impedance约2.7GiB，未见OOM；GPU约44°C、2329MiB/16303MiB、利用率约2%。
+  尚未开始统一 acceptance 或独立物理/action-filter/hash审计。
+
 ## 2026-10-15 07:00 CST — RL监视回合：训练仍在安全推进
 
 - 已重新核对 `AGENTS.md` 与远端日志；当前远端为 `main=65890b610d8b98f8a7a3e1f02e060fd767e0f540`、
