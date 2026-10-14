@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-14 17:10 CST — 训练进程中断，保留并重建宿主机服务
+
+- 检查确认 `rl_full_retrain_20261014_v1` 并非持续运行：direct 在 6,875 步/5 回合、impedance 在 6,500 步/4 回合时随 Codex 沙箱子进程退出，均无 checkpoint，admittance/VMC 尚未开始；两路训练回合 Task/Strict 均为0，不能作为收敛或成功证据。
+- 中断批次完整保留为失败收据；没有把未保存的网络状态当作可恢复 checkpoint。GPU 查询显示宿主 RTX 5080 可见，但原服务被沙箱隔离且配置为 CPU，故利用率低。
+- 修正 `rl_full_retrain_campaign_20261014.py` 的宿主训练环境为 JAX CUDA；下一批将由 user-systemd 独立服务托管，显式 `MemoryMax=3G`、`MemorySwapMax=0`、单线程，避免对话结束回收训练进程。环境、gate、actor 输入和执行器限制不变。
+- 未完成：新的四方法 from-scratch 训练、checkpoint 冻结、统一 acceptance、物理审计和归档。当前不报告任何方法成功。
+
 ## 2026-10-14 16:24 CST — 四类 RL 从头在线重训已启动
 
 - 按用户要求登记并启动新的 `outputs/rl_full_retrain_20261014_v1` 批次，四个冻结接口分别为 direct action、impedance parameter、admittance parameter、VMC parameter；每个方法从头在真实 MuJoCo train 条件在线采样和更新，不导入 teacher/BC/离线 replay。

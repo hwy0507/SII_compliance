@@ -77,7 +77,7 @@ def prepare(root: Path, parent: Path):
 def env(root):
     return {**os.environ,
         'OPENBLAS_NUM_THREADS':'1','OMP_NUM_THREADS':'1','MKL_NUM_THREADS':'1','NUMEXPR_NUM_THREADS':'1',
-        'JAX_PLATFORMS':'cpu','XLA_PYTHON_CLIENT_PREALLOCATE':'false','XLA_PYTHON_CLIENT_MEM_FRACTION':'.20',
+        'JAX_PLATFORMS':'cuda','XLA_PYTHON_CLIENT_PREALLOCATE':'false','XLA_PYTHON_CLIENT_MEM_FRACTION':'.20',
         'SII_LOCAL_RUNTIME':str(RUNTIME),'MUJOCO_MENAGERIE_PATH':str(RUNTIME/'menagerie'),
         'SII_MEMORY_MAX_BYTES':str(3*1024**3),'SII_MEMORY_LIMIT_MODE':'rss_monitor',
         'SII_SOURCE_BASE_COMMIT':read(root/'PROTOCOL.json')['source_base_commit']}
