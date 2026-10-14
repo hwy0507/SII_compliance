@@ -1,5 +1,18 @@
 # 更新日志
 
+## 2026-10-14 19:59 CST — RL监视回合：两路继续推进，尚未接续后两类
+
+- 复核远端 `main=c62ff87823b594e31cca1cebf0c67ac9264a7ef2`、
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 与 `AGENTS.md`；heartbeat窗口内未
+  重复启动作业，冻结环境、gate、actor输入和执行器限制不变。
+- 两个现有worker仍 active/running：direct `interactions=43142, updates=76286`，
+  impedance `interactions=33000, updates=56002`。已完成收据 direct 35、impedance 24，
+  两类均 `task_success=false` 与 `strict_success=false` 全部为 0；admittance/VMC 尚无
+  目录、checkpoint或训练回合。
+- 当前两路 cgroup `MemoryMax=3221225472`、`MemorySwapMax=0`，MemoryCurrent分别约
+  2.90GiB 与 2.89GiB，服务仍在运行且未见 OOM。`nvidia-smi` 继续无法连接驱动，未据此
+  重启；宿主swap已满但worker禁swap。尚未具备统一acceptance或最终成功结论。
+
 ## 2026-10-14 19:39 CST — RL监视回合：训练继续，GPU查询暂不可用
 
 - 复核远端 `main=c62ff87823b594e31cca1cebf0c67ac9264a7ef2`、
