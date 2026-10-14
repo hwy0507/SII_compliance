@@ -1,5 +1,9 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-14 acceptance
+
+v7 direct原奖励真实续训至32633步并通过预注册reward平台；冻结checkpoint的acceptance回合Task/Strict均失败，RMSE1003.24mm、峰矩50.719Nm、峰速0.30580m/s、外穿透0.06673mm。说明reward平台不等于任务策略成功，结果已保留。
+
 ## 2026-10-14 — RL奖励与在线参数机制诊断启动
 
 11:32 CST：首组直接动作原/新奖励各22k交互完成，固定开发均Task0/4、Strict0/4；
