@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-14 21:19 CST — RL监视回合：direct推进到65k
+
+- 复核远端 `main=c62ff87823b594e31cca1cebf0c67ac9264a7ef2`、
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 与 `AGENTS.md`；未重复启动，冻结约束不变。
+- direct 状态推进至 `interactions=65142, updates=120286`，已完成51回合；impedance 已完成37回合，
+  状态仍为 `44000/78002`。已完成收据 Task/Strict 均失败：direct `0/51`、impedance `0/37`。
+  admittance/VMC 仍无训练目录或checkpoint。
+- 两worker active/running，MemoryCurrent约2.79/2.62GiB，MemoryMax=3GiB、禁swap且未见OOM。
+  GPU查询仍不可用，未因此重启；统一acceptance和独立物理审计尚未开始。
+
 ## 2026-10-14 20:59 CST — RL监视回合：impedance推进到44k
 
 - 复核远端 `main=c62ff87823b594e31cca1cebf0c67ac9264a7ef2`、
