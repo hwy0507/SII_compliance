@@ -12,6 +12,12 @@ def main():
     template = Path(native.__file__)
     original = template.read_text()
     changes = [
+        ("    def interval():",
+         "    def measured_payload_potential(env):\n"
+         "        if __import__('os').environ.get('SII_REWARD_PAYLOAD_TELEMETRY')!='1':return None\n"
+         "        from payload_reward_potential_20261014 import payload_potential\n"
+         "        return payload_potential(env.data.xpos[env._hand_id],env.data.xpos[env._target_body_id],env.reference.destination)\n"
+         "    def interval():"),
         ("        return dict(elapsed_s=float(dt.sum()),error_integral=float(dt@e2),",
          "        signed_tau=arrays['qfrc_actuator'][begin:end].astype(float)\n"
          "        previous_tau=arrays['qfrc_actuator'][begin-1].astype(float) if begin else signed_tau[0]\n"
@@ -21,7 +27,9 @@ def main():
          "        assert CONTROL_DT==SERVO_DT\n"
          "        slew_cost=float(slew_cost_rows(signed_tau,rates,previous_tau).sum())\n"
          "        external_peak=float(metrics.research['external_penetration_m'][begin:end].max())\n"
-         "        return dict(external_penetration_peak_m=external_peak,torque_slew_cost=slew_cost,elapsed_s=float(dt.sum()),error_integral=float(dt@e2),"),
+         "        return dict(payload_potential=measured_payload_potential(metrics.env),external_penetration_peak_m=external_peak,torque_slew_cost=slew_cost,elapsed_s=float(dt.sum()),error_integral=float(dt@e2),"),
+        ("send(dict(kind='observation',observation=observation,interval=iv,potential=potential(self.env)))",
+         "send(dict(kind='observation',observation=observation,interval=iv,potential=potential(self.env),payload_potential=measured_payload_potential(self.env)))"),
         ("            iv=interval();self.intervals.append(iv)",
          "            if not self.observations:self.initial_potential=potential(self.env)\n"
          "            iv=interval();self.intervals.append(iv)"),

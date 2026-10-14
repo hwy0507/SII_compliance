@@ -1,5 +1,14 @@
 # VMC teacher＋ESN 联合优化：首轮结果与运行入口
 
+## 2026-10-14 — RL奖励与在线参数机制诊断启动
+
+已完成867条历史训练审计与新协议登记；运行中本机12小时成对奖励实验，截止21:27:15 CST。
+直接动作检查Task/Strict奖励耦合，参数组检查物块推进势函数；参数每40ms更新、不是固定参数。
+ESN权重、actor输入、场景和全部评估门槛不变。两套共10项检查通过，新成对结果及轨迹审计未完成。
+已核验方案/源码/历史审计共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_reward_diagnosis_setup_20261014_v1/evidence/`。
+新训练产物仅本地运行中、待边界归档；详见[诊断报告](RL_REWARD_DIAGNOSIS_20261014.md)。
+
 ## 2026-10-13T22:02:24.287399+00:00 — 公平比较并行调度 parallel_v4_final
 
 - 状态 `complete_review_required`，已评 288/288；资源调整不改实验/模型/门槛，旧封存集未读。

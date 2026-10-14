@@ -31,7 +31,7 @@ def main():
     p.add_argument('--parameter-source',type=Path,required=True)
     p.add_argument('--controller',choices=('vmc','admittance','impedance'))
     p.add_argument('--reward',choices=('metric','office_task'),required=True)
-    p.add_argument('--reward-variant',choices=('original','task_safety'),default='original')
+    p.add_argument('--reward-variant',choices=('original','task_safety','payload_shaping'),default='original')
     p.add_argument('--seed',type=int,required=True)
     p.add_argument('--steps',type=int,default=200000)
     p.add_argument('--stop-at-step',type=int)
@@ -44,7 +44,9 @@ def main():
     protocol=read(root/'PROTOCOL.json');pdigest=sha(root/'PROTOCOL.json')
     stop_file = Path(protocol['cooperative_stop_file']) if protocol.get('cooperative_stop_file') else None
     assert a.reward_variant in protocol.get('reward_variants',['original'])
-    if a.reward_variant=='task_safety':assert a.reward=='office_task'
+    # A registered task_safety comparison retains the chosen base objective,
+    # including metric/slew terms for online parameter controllers. Only the
+    # terminal Task/Strict coupling and explicit safety cost differ.
     assert a.seed in protocol['budgets']['training_seeds']
     assert 1375<=a.steps<=protocol['budgets']['rl_steps_per_family_seed']
     limit=a.stop_at_step or a.steps
@@ -121,6 +123,8 @@ def main():
     specification['reward_variant'] = a.reward_variant
     if a.reward_variant=='task_safety':
         specification['task_safety_definition']='Original Task terminal +20/-20, plus20*increments of excess/(1+excess); excess=max(0,external_peak/.0002-1). Early failure charges unused worst-case safety peak budget. Original Strict evaluation unchanged.'
+    if a.reward_variant=='payload_shaping':
+        specification['payload_shaping_definition']='Only replace reference-progress potential with measured approach/lift/payload-goal potential, equal thirds; same weight5/gamma/terminal cancellation. Original Task AND Strict reward and all metric costs unchanged. Reward-only physical fields never enter actor48.'
     write(out/'PROTOCOL.json',specification)
     step=episode=last_checkpoint=0;pending=None;colored=np.zeros(dimension);stop=False;process=None
     state=dict(status='running',started_utc=now(),host=platform.node(),python=sys.executable,
@@ -202,7 +206,9 @@ def main():
                     process=subprocess.Popen(command,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err,
                                              text=True,bufsize=1,env=environment)
                     event=read_event(process.stdout);assert event['kind']=='observation' and event['interval'] is None
-                    obs=np.asarray(event['observation'],np.float32);phi=event['potential']
+                    obs=np.asarray(event['observation'],np.float32)
+                    potential_key='payload_potential' if a.reward_variant=='payload_shaping' else 'potential'
+                    phi=event[potential_key]
                     while True:
                         action=agent.sample_action(obs,previous_transition=pending,training=True);pending=None
                         if step<5000:
@@ -210,7 +216,7 @@ def main():
                             action=np.clip(colored,-1,1).astype(np.float32)
                         process.stdin.write(json.dumps(dict(action=action.tolist()))+'\n');process.stdin.flush()
                         event=read_event(process.stdout);done=event['kind']=='terminal';iv=event['interval']
-                        next_obs=np.asarray(event['observation'],np.float32);next_phi=iv['potential']
+                        next_obs=np.asarray(event['observation'],np.float32);next_phi=iv[potential_key]
                         success=bool(done and event['result']['task_success'] and
                             (a.reward_variant=='task_safety' or event['result']['strict_success']))
                         interval=IntervalMetrics(elapsed_s=iv['elapsed_s'],error_cost=iv['error_integral']/(55*.12**2),

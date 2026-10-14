@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-14 — 12小时本机RL奖励/在线参数诊断，先发布方案与历史审计
+
+- 开工核对远端main `a08bc203eeee7dfd7a1faffd2409026d1d0f4d69`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；本地既有两提交保留，未合并baseline。
+- 已完成867条历史训练回合审计：直接动作任务奖励122回合Task7/Strict2；三种在线参数
+  各120回合Task0，但均无穿透超限，不能把参数失败归因于Strict阻断终奖。
+  参数确实每40ms变化；完整失败回合势函数折扣消项是数学性质，不是公式错误。
+- 新增有限诊断工具、物块进度奖励专用遥测和预登记成对实验；两套5项测试通过。
+  当前新训练运行中，未有完整成对开发结果，不宣称收敛或RL普遍不适用。
+  起止2026-10-14 09:27:15–21:27:15 CST；12小时截止含启动故障，不顺延。
+  v1/v2启动失败、v3未训练替代记录保留；v4冻结actor48/物理/执行器/Task/Strict。
+- 方案/冻结源码/历史审计629文件已核验共享：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_reward_diagnosis_setup_20261014_v1/evidence/`，
+  archive manifest SHA256 `4302bd2ff8a166601b2f3d4ed5df8c6c9dd3a701878c4d20f8338fd55b06ae9d`。
+  新训练原始轨迹/checkpoint仍在本机运行，待完成边界归档；服务器未计算。
+- 详见 [RL诊断协议与结果](code/mujoco_6d_vmc_benchmark/docs/RL_REWARD_DIAGNOSIS_20261014.md)。
+  未完成：成对闭环评估、新轨迹独立奖励/动作/物理审计、最终结论。
+
 ## 2026-10-13T22:02:24.287399+00:00 — 公平比较并行调度 parallel_v4_final
 
 - 状态 `complete_review_required`，已评 288/288；资源调整不改实验/模型/门槛，旧封存集未读。
