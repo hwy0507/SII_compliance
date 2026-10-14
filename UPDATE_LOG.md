@@ -6,6 +6,11 @@
 - 新批次 `outputs/rl_full_retrain_20261014_v2` 已由 `sii-rl-full-campaign-v2.service` 启动。direct 与 impedance 两个 worker 已在独立 user-systemd 单元中运行，均显示 `MemoryMax=3221225472`、`MemorySwapMax=0`，GPU 可见；admittance/VMC 将按 pair 接续。
 - 当前仍是 from-scratch online 训练，尚无冻结 checkpoint、统一 acceptance 或成功结论。所有训练、环境、gate、输入和执行器限制保持登记协议不变。
 
+## 2026-10-14 18:28 CST — v2 持续监视确认真实推进
+
+- `sii-rl-full-campaign-v2.service`、direct 和 impedance 两个子服务均 active；最近核对 direct 18,250 步/13 回合、impedance 13,250 步/9 回合，均为真实 MuJoCo online 交互和梯度更新。
+- 两路 cgroup 仍为 `MemoryMax=3GiB`、`MemorySwapMax=0`，GPU 显存约2.5GiB、温度47°C，无 OOM；尚未达到训练边界，admittance/VMC 尚未派发。
+
 ## 2026-10-14 17:10 CST — 训练进程中断，保留并重建宿主机服务
 
 - 检查确认 `rl_full_retrain_20261014_v1` 并非持续运行：direct 在 6,875 步/5 回合、impedance 在 6,500 步/4 回合时随 Codex 沙箱子进程退出，均无 checkpoint，admittance/VMC 尚未开始；两路训练回合 Task/Strict 均为0，不能作为收敛或成功证据。
