@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-15 10:39 CST — RL监视回合：两路继续到新边界
+
+- 继续核对收据和 `AGENTS.md`，未新增派发、未重复启动、未修改冻结实验条件。
+- direct 已推进至 `interactions=175142, updates=340286`，完成130回合；impedance 至
+  `interactions=154000, updates=298002`，完成114回合。Task/Strict均失败；admittance/VMC
+  尚未接续。
+- 两worker active/running，MemoryCurrent约2.87/2.87GiB，MemoryMax=3GiB、禁swap且未见OOM。
+  GPU查询仍无法连接驱动，未重启；尚无统一acceptance或独立物理审计结果。
+
 ## 2026-10-15 10:19 CST — RL监视回合：在途回合继续完成
 
 - 当前窗口仍在收尾阶段；继续核对 v2 收据与 `AGENTS.md`，未重复启动或修改冻结实验条件。
