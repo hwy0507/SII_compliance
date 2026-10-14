@@ -1,5 +1,28 @@
 # 更新日志
 
+## 2026-10-15 06:22 CST — RL监视回合：两路仍在真实推进
+
+- 重新读取 `AGENTS.md`；GitHub 本轮 fetch 仍因网络不可达，使用已缓存的
+  `origin/main=c62ff87823b594e31cca1cebf0c67ac9264a7ef2`、
+  `origin/baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，未将缓存冒充实时远端。
+- 宿主机只存在登记的 `sii-rl-full-campaign-v2` 及其 direct/impedance user-systemd worker，
+  没有重复进程。direct 当前完成至 `episode=152` 后正在第153回合，训练日志约
+  `207084` 物理步；impedance 完成至 `episode=130` 后正在第131回合，约 `179542` 物理步。
+  两个最后收据仍为在途，尚不能计入完成回合或成功统计；admittance/VMC 目录和服务仍不存在。
+- cgroup 仍为每路 `MemoryMax=3GiB`、`MemorySwapMax=0`、单线程；宿主机 GPU 恢复可见，约
+  45°C、显存占用约2.3GiB，未见 OOM。未修改冻结环境、gate、actor输入或执行器限制。
+- 当前尚无统一 frozen acceptance、独立物理子步/action-filter replay 审计或任何
+  `Task=true && Strict=true` 结果；保留所有失败和在途收据，不把 reward/checkpoint 当成功。
+
+## 2026-10-15 06:24 CST — RL监视回合：新回合仍在运行
+
+- 宿主机核对显示登记的 campaign、direct、impedance 服务仍 active；没有 admittance/VMC
+  worker，也没有重复启动。最新训练日志为 direct `step=208154`（第153回合在途）、
+  impedance `step=180133`（第132回合在途）。此前已完成回合分别为 direct `152`、impedance
+  `131`，两路已完成回合的 Task 成功数和 Strict 成功数均为 `0`。
+- 资源保持每路 `MemoryMax=3GiB`、禁swap；GPU约45°C、2331MiB/16303MiB、利用率约6%，
+  未见 OOM。窗口仍只收既有在途回合，不手动派发其余方法；统一 acceptance 和独立审计仍未开始。
+
 ## 2026-10-15 11:59 CST — RL监视回合：direct推进到195k
 
 - 继续核对 v2 收据与 `AGENTS.md`，未新增派发、未重复启动、未修改冻结实验条件。
