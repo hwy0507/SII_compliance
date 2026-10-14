@@ -160,6 +160,24 @@ Optax0.2.5，详见`RUNTIME_VERSIONS.json`。两臂预算22000步不变，未有
 故这四次失败不是Strict把已完成Task挡住。结论限于本seed/预算：终奖解耦未解决闭环失败。
 在线阻抗原/物块势函数两臂已运行；完整训练回合奖励独立重算正在执行，未宣称收敛。
 
+## 14:17 CST — 按需求改为 online 收敛后测试协议
+
+用户明确要求 direct/parameter RL 必须在真实 MuJoCo 交互中持续更新，先达到预注册的
+reward 收敛判据，再冻结 checkpoint 进入测试集。原22k诊断不满足这一要求，只作为机制
+诊断保留，不称为收敛模型。
+
+已登记新 continuation：`outputs/rl_online_convergence_20261014_v1/`。它从已审计的
+22k episode-boundary checkpoint 继续纯在线交互，direct 原/Task-Safety 与 impedance
+原/物块势函数分成两组成对实验；不使用 teacher/BC，不把测试条件放入训练。训练分段上限
+33k、44k、55k、66k、77k、88k，最多延长到授权截止；每组两臂的最后两个四回合窗口都必须
+满足：回报均值相对变化≤5%、最后窗口变异系数≤25%，且至少8个新的完整回合。未满足则
+标记未收敛，不进入测试。
+
+只有两臂均满足判据后，才在未参与训练的 `repair_acceptance_000` 做一次 acceptance
+评估；final sealed 条件继续封存。新run服务先等待当前 admittance 在途回合自然结束，
+不重复占用模拟器；服务器仍只存储。收敛是有限 reward 平台判据，不等价于全局最优或
+证明 RL 普遍适用。
+
 另核验四个既有离线RL拟合：相同11000步纯RL数据、seed2026100911、12002次更新，
 组合为原/解耦奖励×1/25步回报，无teacher、BC或新交互。这些权重此前未闭环评估。
 新增`rl_credit_closed_loop_20261014.py`登记全部四格各开发000–003，共最多16回合；

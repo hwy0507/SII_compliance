@@ -19,6 +19,17 @@
   manifest `9b3fb49a365cdd7f928223dc0de32c627bee6261b8a6096cad537a8e4a2e8910`。
   参数阻抗两臂仍在优化，未提前封存或排名。
 
+## 2026-10-14 14:17 CST — 登记 online 收敛后测试协议
+
+- 根据用户重申，direct/parameter RL 后续必须先在真实 MuJoCo 交互中学习并达到预注册
+  reward 平台，再冻结 checkpoint 进入测试；固定22k诊断不满足此条件，保留为机制证据。
+- 新增 `code/mujoco_6d_vmc_benchmark/tools/rl_online_convergence_campaign_20261014.py`，
+  登记 `outputs/rl_online_convergence_20261014_v1/CONTINUATION_REGISTRATION.json`：从已审计
+  22k边界checkpoint纯在线续训，33k–88k分段延长；两臂最近两个四回合窗口均值变化≤5%、
+  变异系数≤25%且至少8回合才解锁 acceptance `repair_acceptance_000`。
+- 当前协调器等待在途admittance回合自然结束，不重复启动模拟器；未达到收敛不测试、
+  不报告模型胜负。服务器仍只存储，未改环境、actor、gate或执行器限制。
+
 ## 2026-10-14 10:52 CST — 成对11k原始数据与权重已共享，训练继续
 
 - 两臂共同11000步边界各8完整回合，均Task1/8、Strict0/8，唯一Task成功来自随机预热；

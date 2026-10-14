@@ -11,6 +11,8 @@
 更正：22k直接动作成对快照现已完成独立奖励/物理审计并发布至
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_reward_diagnosis_direct_022k_20261014_v1/evidence/`，
 manifest `9b3fb49a365cdd7f928223dc0de32c627bee6261b8a6096cad537a8e4a2e8910`；参数阻抗成对训练继续。
+用户已明确测试门槛：必须先在真实 MuJoCo 交互中训练到预注册 reward 平台，再冻结模型
+测试。新online continuation已登记，原22k结果不作收敛结论；acceptance尚未解锁。
 
 10:52 CST：两臂共同11000步各8回合，均Task1/8、Strict0/8，Task成功都来自随机预热。
 12新回合独立子步/奖励重放通过；共同边界16回合/两套checkpoint及版本信息1219文件
