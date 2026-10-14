@@ -8,6 +8,9 @@
 仅主实验正常完成且预算允许时派发，不新增训练、不占服务器算力。补评方案已共享核验：
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_credit_setup_20261014_v1/evidence/`。
 没有成功改进或收敛结论；22k原始数据仍待归档，既有11k前缀已共享。
+更正：22k直接动作成对快照现已完成独立奖励/物理审计并发布至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_reward_diagnosis_direct_022k_20261014_v1/evidence/`，
+manifest `9b3fb49a365cdd7f928223dc0de32c627bee6261b8a6096cad537a8e4a2e8910`；参数阻抗成对训练继续。
 
 10:52 CST：两臂共同11000步各8回合，均Task1/8、Strict0/8，Task成功都来自随机预热。
 12新回合独立子步/奖励重放通过；共同边界16回合/两套checkpoint及版本信息1219文件

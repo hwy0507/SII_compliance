@@ -13,6 +13,11 @@
   manifest `a39212c1697e0c7a9405f625cc74df68ec1e45f75b58538dd47421d243909990`。
   首组22k原始数据仍待归档，11k前缀已共享；后续对照/最终归因未完成。
   开工main/baseline SHA见本日首条，未改环境/actor/gate，服务器仅存储。
+- 直接动作22k成对快照（32训练回合、八条开发回合）均通过逐步奖励/物理审计，
+  2059文件/6446255276字节已发布到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_reward_diagnosis_direct_022k_20261014_v1/evidence/`，
+  manifest `9b3fb49a365cdd7f928223dc0de32c627bee6261b8a6096cad537a8e4a2e8910`。
+  参数阻抗两臂仍在优化，未提前封存或排名。
 
 ## 2026-10-14 10:52 CST — 成对11k原始数据与权重已共享，训练继续
 

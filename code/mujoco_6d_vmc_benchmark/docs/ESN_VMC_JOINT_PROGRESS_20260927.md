@@ -7,6 +7,8 @@
 （奖励×1/25步回报）已登记条件性补评，无新训练、未派发；方案已核验共享到
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_credit_setup_20261014_v1/evidence/`。
 首组成对失败说明终奖解耦在该预算内未解决问题，不能推论RL普遍不适用；后续组/完整审计未完成。
+直接动作22k成对快照已独立审计并发布至服务器，manifest
+`9b3fb49a365cdd7f928223dc0de32c627bee6261b8a6096cad537a8e4a2e8910`；参数阻抗仍在训练。
 
 10:52 CST补充：两臂共同11k边界均Task1/8、Strict0/8（唯一Task为随机预热），仍在训练。
 12条新回合已通过独立物理/奖励审计；16完整回合与两套checkpoint已hash核验共享到
