@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-15 10:19 CST — RL监视回合：在途回合继续完成
+
+- 当前窗口仍在收尾阶段；继续核对 v2 收据与 `AGENTS.md`，未重复启动或修改冻结实验条件。
+- 主checkpoint仍为 direct `164142/318286`、impedance `143000/276002`，独立完成回合已增至
+  direct 127、impedance 110；Task/Strict均失败。admittance/VMC 尚未接续。
+- 两worker active/running，MemoryCurrent约2.80/2.84GiB，MemoryMax=3GiB、禁swap且未见OOM。
+  GPU查询仍无法连接驱动，未重启；统一acceptance和独立物理审计未开始。
+
 ## 2026-10-15 09:59 CST — RL监视回合：窗口末期两路仍在训练
 
 - 继续核对 v2 收据与 `AGENTS.md`，未重复启动或修改冻结实验条件；15小时窗口进入末期。
