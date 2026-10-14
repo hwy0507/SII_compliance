@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-15 00:19 CST — RL监视回合：回合收据继续写入
+
+- 当前仍在15小时监视窗口内；核对 v2 收据和 `AGENTS.md`，未重复启动，冻结环境、gate、actor
+  输入和执行器限制保持不变。
+- 主状态尚未刷新（direct `98142/186286`、impedance `88000/166002`），但独立完成回合已增至
+  direct 78、impedance 67；两类 Task/Strict 仍全部失败。admittance/VMC 尚未接续。
+- 两worker active/running，MemoryCurrent约2.95/2.87GiB，MemoryMax=3GiB、禁swap且未见OOM。
+  GPU查询仍无法连接驱动，未重启；统一acceptance和独立物理审计尚未开始。
+
 ## 2026-10-14 23:39 CST — RL监视回合：两路持续推进
 
 - 合并本时段两次心跳检查，继续核对 v2 收据与 `AGENTS.md`，未重复启动或修改冻结条件。
