@@ -122,3 +122,19 @@ actor没有显式获得前一参数、能量罐、虚拟偏移；这是控制状
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_reward_diagnosis_audit_checkpoint_20261014_0206/evidence/`。
 manifest `dd8bcae1ad9d02fc02638ba4e1f325a361ed2decb0ed68ae049e674aef4fd16f`；
 原始新轨迹待完整边界归档。两路训练继续，尚未有学习后成对闭环结论。
+
+## 02:52 UTC — 共同11k checkpoint与16条原始轨迹已归档
+
+两臂均已跨过11000步，checkpoint前缀各8个完整回合，Task均1/8、Strict均0/8。
+唯一Task成功为首个随机预热回合，不能算学到策略。捕获的12条新回合已经过独立
+子步与奖励重算，前三个成对预热回合状态/动作完全相同；其余回合独立审计待续。
+
+1219文件、2696560250字节（16完整原始回合、两套11000步checkpoint、冻结源码/参数、
+训练日志前缀、配置与运行库版本）已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_reward_diagnosis_direct_011k_20261014_v1/evidence/`。
+manifest SHA256 `c06d9e6a60145f1952b93a4f254e873a9f00c524b2176dc9b278b1da25917bc7`。
+`captured_parent_execution.json`保留捕获时父训练仍running的真实状态；`SNAPSHOT.json`
+明确只归档已关闭checkpoint前缀，没有把整场训练标为完成。后续轨迹仍本机运行中。
+
+实际本机Python3.13.13、MuJoCo3.11.0、NumPy2.2.6、JAX/jaxlib0.7.2、Flax0.10.7、
+Optax0.2.5，详见`RUNTIME_VERSIONS.json`。两臂预算22000步不变，未有开发评估结论。

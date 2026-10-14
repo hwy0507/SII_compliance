@@ -35,6 +35,8 @@ def inspect(training, episode, logs, campaign):
         np.testing.assert_array_equal(policy['action'],trace['applied_action'])
         np.testing.assert_array_equal(policy['action'],chain['requested_action'])
         assert np.isfinite(policy['raw_action']).all()
+        initial_qpos=trace['neuron_qpos'][0].copy()
+        assert trace['neuron_time'][0]==0.
     assert audit['common_filter_replay_max_abs']==0
     # These constants are frozen in the source manifest, not fitted to traces.
     limits=np.array([87.,87.,87.,87.,12.,12.,12.])
@@ -64,7 +66,26 @@ def inspect(training, episode, logs, campaign):
     from decoupled_task_safety_reward_20261009 import TaskSafetyPenalty
     rewarder=OfficeReward(RewardConfig(**cfg));safety=TaskSafetyPenalty()
     initial=logs[0]['terms']['current_potential'];phi=initial;offset=0
-    if variant!='payload_shaping':close(initial,read(run/'RL_REWARD_METADATA.json')['initial_potential'])
+    if variant!='payload_shaping':
+        close(initial,read(run/'RL_REWARD_METADATA.json')['initial_potential'])
+    else:
+        # Pure forward kinematics of the saved initial joint state, no mj_step
+        # or environment reset. Both bodies are independent of mocap apparatus.
+        import mujoco
+        model=mujoco.MjModel.from_binary_path(str(run/'rollout.mjb'))
+        data=mujoco.MjData(model);data.qpos[:]=initial_qpos
+        mujoco.mj_kinematics(model,data)
+        hand_id=mujoco.mj_name2id(model,mujoco.mjtObj.mjOBJ_BODY,'hand')
+        object_id=mujoco.mj_name2id(model,mujoco.mjtObj.mjOBJ_BODY,'target_object')
+        assert hand_id>0 and object_id>0
+        for body in (hand_id,object_id):
+            while body:
+                assert model.body_mocapid[body]<0
+                body=model.body_parentid[body]
+        h0=data.xpos[hand_id];p0=data.xpos[object_id]
+        reconstructed=(1/(1+np.linalg.norm(h0-p0)/.04)+np.clip((p0[2]-.425)/.10,0,1)
+            +1/(1+np.linalg.norm(p0-goal)/.04))/3
+        close(initial,reconstructed,atol=1e-7)
     discounted=undiscounted=progress=0.;maximum_residual=0.;peak=0.
     for index,(iv,record,end) in enumerate(zip(ivs,logs,counts,strict=True)):
         t=record['terms'];done=index==len(ivs)-1
@@ -115,8 +136,8 @@ def inspect(training, episode, logs, campaign):
         rmse_mm=rmse,peak_torque_nm=torque_peak,peak_speed_mps=speed,penetration_mm=peak*1000,
         actor_observation_dimension=48,common_filter_replay_max_abs=0,
         payload_reward_pose_semantics='live xpos pre-final-integration; aligned one physics substep before scratch post-integration telemetry',
-        initial_payload_potential_independently_reconstructed=False if variant=='payload_shaping' else None,
-        limitation='Payload initial potential follows the saved reward log; all later potentials independently reconstructed from physical positions. Base reward reducer replay is complemented by independent substep inputs and shaping identity.',
+        initial_payload_potential_independently_reconstructed=True if variant=='payload_shaping' else None,
+        limitation='Base reward reducer replay is complemented by independent substep inputs, payload-pose potential reconstruction and shaping identity. This does not prove policy convergence or Markov sufficiency.',
         source_sha256=sha(run/'executed_online_worker.py.txt'),trace_sha256=row['trace_sha256'],
         research_sha256=sha(research_path),intervals_sha256=sha(run/'RL_INTERVALS.json'))
 
