@@ -1,5 +1,17 @@
 # 更新日志
 
+## 2026-10-14 10:06 CST — 首个成对预热回合奖励重放通过
+
+- 原/新奖励首回合物理轨迹与actor48/原始动作完全一致，均Task通过/Strict失败；
+  折扣回报−11.4082与+2.2892，逐步重算误差均0。仍是随机预热，不是已学习策略的比较。
+- 新增只读物理子步/奖励审计和历史优化器/参数局部敏感性探针；保留审计采样对齐错误，
+  按live位置与scratch位置相差一个物理子步的实际语义修正，未改训练源。
+- 9文件审计检查点已核验：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_reward_diagnosis_audit_checkpoint_20261014_0206/evidence/`；
+  manifest `dd8bcae1ad9d02fc02638ba4e1f325a361ed2decb0ed68ae049e674aef4fd16f`。
+  原始新轨迹仍本机运行中、待完整边界归档。两路成对训练继续，未有新闭环排名。
+  本轮开工分支SHA及预算见下条；相关源/方案已在main `92dfd88`，baseline未合并。
+
 ## 2026-10-14 — 12小时本机RL奖励/在线参数诊断，先发布方案与历史审计
 
 - 开工核对远端main `a08bc203eeee7dfd7a1faffd2409026d1d0f4d69`、baseline

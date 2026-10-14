@@ -98,3 +98,27 @@ archive manifest SHA256 `4302bd2ff8a166601b2f3d4ed5df8c6c9dd3a701878c4d20f8338fd
 
 已完成历史审计和预检；运行中新对照；未完成完整成对结果、可学习性上限检验或普遍适用性结论。
 即使本轮两种奖励都失败，仍不能排除探索/部分可观测/参数表达能力等原因，不能直接写“RL不适用”。
+
+## 01:59 UTC — 新轨迹重放与学习机制线索
+
+v4原奖励首个完整1375步回合通过逐步奖励重算（最大差0）、物理三指标/穿透与公共filter核对。
+这是随机预热回合，Task通过/Strict失败，穿透0.40607mm；不能称学会了策略。与v2同seed原奖励
+预热回合比较，qpos/qvel/ctrl/actor48/原始动作/执行action数组逐元素相同，新增奖励遥测没有
+改变该回合控制行为。审计v1曾把live pre-integration xpos和scratch post-integration位置混用；
+按保存源码对齐前一物理子步后通过，失败审计源码/收据保留，训练/奖励未变。
+
+末回合参数映射只读探针：原始动作每维±0.01时，所有维度下一步rate-limited请求同时不变的
+时刻占比为导纳11.49%、阻抗9.02%、VMC12.65%；部分维度不敏感更常见。
+这是局部执行映射的平坦区域，不等于多步控制权为零，也不构成放开安全限制的理由。
+actor没有显式获得前一参数、能量罐、虚拟偏移；这是控制状态依赖线索，尚未证明存在相同
+可达观测对应冲突最优动作，不能据此直接归因。
+
+从固定上游actor loss/entropy/temperature公式重建末5000更新的actor采样soft-Q均值约
+2.88–3.84（归一化单位）；这是含熵的minibatch估值，不是实际回报，单凭正值不能证明
+过估计。critic loss是分布交叉熵，不应把“未降到0”误认作实现bug或未收敛的充分证据。
+后续新奖励首回合也完成独立重算，误差0；与原奖励首回合的物理/动作完全相同，
+折扣回报从−11.4082变为+2.2892。`FIRST_EPISODE_REWARD_AUDIT_v3.json`包含两臂及配对核对。
+上述重放与`HISTORICAL_LEARNING_MECHANISM_AUDIT_v1.json`等9文件已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_reward_diagnosis_audit_checkpoint_20261014_0206/evidence/`。
+manifest `dd8bcae1ad9d02fc02638ba4e1f325a361ed2decb0ed68ae049e674aef4fd16f`；
+原始新轨迹待完整边界归档。两路训练继续，尚未有学习后成对闭环结论。
