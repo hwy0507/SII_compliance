@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-15 23:03 CST — v4 reward窗口监视
+
+- `direct_task_safety` 继续真实推进至约 `7,250` live steps、5 个完整回合、`4,502` 次更新，
+  未请求停止，未见新的 OOM 收据。
+- 7,000–7,500 步的单步 reward 均值暂约 `-0.0010`，温度约 `0.00630`、actor entropy 约
+  `4.6`；这是短窗口平台迹象，仍没有 held-out Task/Strict 成功，不能判为收敛。
+- 其余三路仍未接续；继续按单路安全边界和 v4 协议观察。
+
 ## 2026-10-15 22:46 CST — v4 Direct 持续推进
 
 - 已确认 v4 现有 Direct worker 未重复启动，`direct_task_safety` 当前约 `6,250` live steps、
