@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-15 23:45 CST — v4 Direct 9.75k 监视
+
+- `direct_task_safety` 当前约 `9,750` live steps、7 个完整回合、`9,502` 次更新，仍为 running；
+  没有 OOM 或重复启动。
+- 8k–9k、9k–9.75k reward 均值约 `-0.0217`、`-0.0244`，温度约 `0.00411`，短平台继续
+  下滑且回合间波动明显；Task/Strict 仍为 `0/0`，尚未收敛或接续其余方法。
+
 ## 2026-10-15 23:24 CST — v4 Direct 8.5k 监视
 
 - `direct_task_safety` 当前 `8,500` live steps、6 个完整回合、`7,002` 次更新，仍为 running；
