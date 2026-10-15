@@ -1,5 +1,41 @@
 # 更新日志
 
+## 2026-10-15 13:40 CST — v2 调参失败保留与 v3b 百万步批次
+
+- 核对开工时本地缓存远端 SHA：`main=32d027966797647ab16496e8b35d05bca498f4d8`、
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；本轮 GitHub 网络不可达，未宣称
+  已取得最新远端日志。
+- v2 `outputs/rl_tuned_20261015_v2` 保留为失败收据：Direct 仅 2,250 live steps、
+  0 updates；Impedance 在首个观测因 `payload_shaping` 读取缺失的
+  `payload_potential` 抛出 `TypeError(NoneType)`；Admittance/VMC 为 0 steps。该失败是
+  reward 接口兼容性/调度问题，不能作为 RL 不适用结论。
+- 新批次 `outputs/rl_tuned_20261015_v3b` 独立登记，协议 SHA
+  `9fbeae9535bea093e98fdcb782e97673544f44f0ce69173eb5f78ed7f0561c03`，四方法各
+  `1,000,000` live MuJoCo interactions，reward 全部使用兼容的 `original`，只调已登记的
+  熵/温度臂：Direct `direct_balanced`，Impedance/Admittance `parameter_balanced`，VMC
+  `parameter_explore`。物理、gate、canonical48、动作滤波、执行器限制和 dt=5e-5 均冻结；
+  本机 CPU、两路并行、每路单线程/3 GiB/禁 swap，服务器不计算。
+- 四路 1,375 步 smoke 均完成完整回合和 checkpoint hash；Task/Strict 均 0/0，属于 smoke
+  预检，不是成功或收敛证据。CPU Orbax 保存器在 smoke 初版卡在临时目录，保留失败目录；
+  v3b 的 parameter agent 改用同一网络状态的便携 Flax msgpack，保持 actor/critic/
+  target_critic/temperature/obs_norm/rew_norm 目录契约，独立保存/加载验证通过。
+- v3b 长训练已从绝对路径启动，Direct/Impedance 当前均真实推进但仍在 warmup（约
+  1,500/4,250 steps、0 updates、未到 5,000 warmup）；尚未完成四方法，未做 acceptance，
+  不声称 reward 收敛或成功。正式调度收据与所有失败/未完成产物均保留。
+
+## 2026-10-15 11:25 CST — 启动 RL 调参百万步批次
+
+- 针对上一批 reward 平台化且探索温度快速塌缩的问题，登记本机 run
+  `code/mujoco_6d_vmc_benchmark/outputs/rl_tuned_20261015_v1`：四个策略各
+  `1,000,000` 次 live MuJoCo interaction，最多两路并行、每路单线程/3 GiB/禁 swap，服务器不计算。
+- 只改变登记的 RL 学习信号和探索超参数：direct 使用 `task_safety + direct_balanced`，
+  impedance/admittance 使用 `payload_shaping + parameter_balanced`，VMC 使用
+  `payload_shaping + parameter_explore`；不改物理、gate、actor 输入、动作滤波或执行器限制。
+- 修正 `rl_full_retrain_campaign_20261014.py`，使 worker 从 `PROTOCOL.json` 读取实际步数、
+  reward variant 和 hyperparameter arm；源码提交为 `9bba6f997a863d0dc9036cae8d7b83526f6d86fc`。
+- 本批次只在回报窗口稳定且测试回合同时出现 Task 与 Strict 成功时判定收敛；保留每个 arm 的
+  checkpoint、原始 reward/optimizer 日志和失败收据，不按 best-of-test 选点。
+
 ## 2026-10-15 10:08 CST — RL 15小时窗口收尾
 
 - 窗口于 `2026-10-15T01:59:34Z` 到期，已在
