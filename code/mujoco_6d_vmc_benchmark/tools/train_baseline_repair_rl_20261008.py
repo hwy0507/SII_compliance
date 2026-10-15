@@ -108,7 +108,13 @@ def main():
     hp = hyperparameters[a.hyperparameter_id]
     if set(hp) != {'entropy_coef', 'initial_temperature'}:
         raise ValueError('Only registered entropy/temperature changes supported')
-    agent=OfficialParameterAgent(seed=a.seed,total_steps=a.steps,utd=2,gamma=.9995,
+    # The default UTD=2 is retained for the registered baseline.  A lower
+    # registered UTD arm can be selected for long CPU-only recovery runs so
+    # that live MuJoCo interaction remains the bottleneck instead of two JAX
+    # updates per transition exhausting the workstation memory budget.
+    utd = int(os.environ.get('SII_RL_UTD', '2'))
+    assert utd in (1, 2), 'Only registered UTD arms 1 and 2 are allowed'
+    agent=OfficialParameterAgent(seed=a.seed,total_steps=a.steps,utd=utd,gamma=.9995,
         entropy_coef=hp['entropy_coef'],initial_temperature=hp['initial_temperature'],action_dimension=dimension)
     if agent.config['n_step']==1:replay=Replay(a.steps,dimension,a.seed+53)
     else:
@@ -134,6 +140,7 @@ def main():
         source_sha256=source_hashes,deadline_utc=deadline.isoformat(),
         optimizer_diagnostics='Every update returned metrics retained in optimizer.jsonl; includes actor/critic losses, Q and temperature when exposed upstream',
         checkpoints='Every >=10000 interactions at completed episode boundary; all retained; development-only selection before final lock')
+    specification['utd'] = utd
     specification['hyperparameter_id'] = a.hyperparameter_id
     if continuation:
         specification['continuation_registration_sha256']=sha(a.continuation_registration)

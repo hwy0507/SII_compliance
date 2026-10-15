@@ -83,6 +83,12 @@ def env(root):
         'JAX_PLATFORMS':'cpu','XLA_PYTHON_CLIENT_PREALLOCATE':'false','XLA_PYTHON_CLIENT_MEM_FRACTION':'.20',
         'SII_LOCAL_RUNTIME':str(RUNTIME),'MUJOCO_MENAGERIE_PATH':str(RUNTIME/'menagerie'),
         'SII_MEMORY_MAX_BYTES':str(3*1024**3),'SII_MEMORY_LIMIT_MODE':'rss_monitor',
+        # Payload shaping is an optional reward-only telemetry channel.  It
+        # never enters the canonical48 actor observation and is ignored by
+        # original/task-safety arms.  Keep it enabled for the registered
+        # payload arm so the online worker cannot return a missing value.
+        'SII_REWARD_PAYLOAD_TELEMETRY':'1',
+        'SII_RL_UTD':os.environ.get('SII_RL_UTD','2'),
         'SII_SOURCE_BASE_COMMIT':read(root/'PROTOCOL.json')['source_base_commit']}
 
 
@@ -160,7 +166,14 @@ def run(root: Path):
     state=read(root/'execution.json'); state.update(status='training',started_utc=datetime.now(timezone.utc).isoformat())
     write(root/'execution.json',state)
     # Two independent lanes, then two more, to keep the registered 6 GiB cap.
-    for pair,cpus in ((jobs[:2],('1','6')),(jobs[2:],('1','6'))):
+    # A single-lane mode is available for the desktop fallback where the
+    # host has less than 7 GiB free; it preserves the same live interaction
+    # budget while preventing the two JAX processes from competing for RAM.
+    if os.environ.get('SII_SINGLE_LANE')=='1':
+        pairs=[([job],('1',)) for job in jobs]
+    else:
+        pairs=[(jobs[:2],('1','6')),(jobs[2:],('1','6'))]
+    for pair,cpus in pairs:
         procs=[]
         for job,cpu in zip(pair,cpus):
             # use a child process so a completed pair can be monitored and
@@ -176,7 +189,8 @@ def run(root: Path):
                             if k in ('OPENBLAS_NUM_THREADS','OMP_NUM_THREADS','MKL_NUM_THREADS','NUMEXPR_NUM_THREADS',
                                      'JAX_PLATFORMS','XLA_PYTHON_CLIENT_PREALLOCATE','XLA_PYTHON_CLIENT_MEM_FRACTION',
                                      'SII_LOCAL_RUNTIME','MUJOCO_MENAGERIE_PATH','SII_MEMORY_MAX_BYTES',
-                                     'SII_MEMORY_LIMIT_MODE','SII_SOURCE_BASE_COMMIT')]
+                                     'SII_MEMORY_LIMIT_MODE','SII_REWARD_PAYLOAD_TELEMETRY','SII_RL_UTD',
+                                     'SII_SOURCE_BASE_COMMIT')]
                 procs.append(subprocess.Popen(command+child,cwd=BENCH))
             else:
                 procs.append(subprocess.Popen(child,cwd=BENCH,env=env(root)))
