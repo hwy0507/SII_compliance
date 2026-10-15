@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-15 22:27 CST — v4 单路 Direct 监视
+
+- 已再次核对远端缓存 `main=32d027966797647ab16496e8b35d05bca498f4d8`、
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 与 AGENTS；GitHub 网络仍不可达。
+- v4 `direct_task_safety` 真实完成 3 个回合，约 5,000 live steps、2 次 optimizer update；
+  5k–10k 窗口当前 reward 均值约 `-0.0023`，温度约 `0.00975`，探索尚未塌缩。
+- Task/Strict 仍为 0，Impedance/Admittance/VMC 尚未接续；当前没有收敛或 acceptance 证据。
+  单路 CPU、1线程、3GiB、禁 swap 继续生效，所有旧失败收据保留。
+
 ## 2026-10-15 21:58 CST — v3b异常退出与v4单路探索恢复
 
 - 继续核对远端缓存：`main=32d027966797647ab16496e8b35d05bca498f4d8`、
