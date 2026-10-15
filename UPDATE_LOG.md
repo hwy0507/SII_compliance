@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-16 00:22 CST — v4 Direct 12k checkpoint
+
+- `direct_task_safety` 当前约 `12,000` live steps、8 个完整回合、`14,002` 次更新；最近安全
+  checkpoint 为 `checkpoint_0011000`，worker 仍在运行，未见 OOM。
+- 11k–12k reward 均值约 `-0.0214`，当前 12k 后短窗口约 `-0.00074`，温度约 `0.00268`；
+  回合间变化仍明显。Task/Strict 仍为 `0/0`，尚未接续其余三类或开始 acceptance。
+
 ## 2026-10-16 00:06 CST — v4 Direct 11k 监视
 
 - `direct_task_safety` 已推进至 `11,000` live steps、8 个完整回合、`12,002` 次更新，仍为
