@@ -22,6 +22,10 @@
 - v3b 长训练已从绝对路径启动，Direct/Impedance 当前均真实推进但仍在 warmup（约
   1,500/4,250 steps、0 updates、未到 5,000 warmup）；尚未完成四方法，未做 acceptance，
   不声称 reward 收敛或成功。正式调度收据与所有失败/未完成产物均保留。
+- 后续监视已确认两路越过 warmup：最新 Direct 约 11,500 steps/13,002 updates、
+  Impedance 约 12,375 steps/14,752 updates；已完成回合仍为 Task/Strict 全 0，return
+  只在失败平台附近波动。Admittance/VMC 尚待第一对完成后按协议接续，四方法 acceptance
+  尚未开始；本机 CPU 吞吐显示该百万步预算是多日级，不能把早期曲线称作收敛。
 
 ## 2026-10-15 11:25 CST — 启动 RL 调参百万步批次
 
