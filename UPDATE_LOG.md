@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-15 21:58 CST — v3b异常退出与v4单路探索恢复
+
+- 继续核对远端缓存：`main=32d027966797647ab16496e8b35d05bca498f4d8`、
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；本轮网络仍不可达，未冒称已取得新的 GitHub 日志。
+- v3b 的 Direct/Impedance 进程在约 43,250/40,750 live steps 后返回码 1；其
+  `execution.json` 曾停留在 running，已保留原始收据。Direct 从
+  `checkpoint_0033000` 的单路恢复也在 34,090 steps、25 回合处失败；因此双路内存竞争
+  不是唯一故障来源，不能把这两批称作收敛。
+- 新增源码提交 `f9705f7`：登记 UTD=1 的内存安全臂和单路调度入口，仍冻结 MuJoCo/MJB、
+  gate、canonical48 actor 输入、公共动作滤波、执行器限制和 dt=5e-5。
+- 新 run `outputs/rl_tuned_20261015_v4` 已登记独立协议 SHA
+  `61d379a9e514d99f59fb5f5262b9e7b0770ee0c8baabb3b413f4d93a746fa9db`：单路 CPU、1线程、
+  3GiB、UTD=1；Direct 使用 task-safety，Impedance/Admittance/VMC 使用 payload shaping，
+  探索温度 0.01，payload telemetry 只用于 reward，不进入 canonical48。首次相对路径启动
+  失败已保留，随后已用绝对路径重新启动。
+- v4 当前 Direct task-safety 正在真实推进，最新约 750 live steps、0 完整回合；其余三类
+  尚未接续。尚无 reward 收敛、Task/Strict 成功或 acceptance 证据；按安全回合继续收据。
+
 ## 2026-10-15 13:40 CST — v2 调参失败保留与 v3b 百万步批次
 
 - 核对开工时本地缓存远端 SHA：`main=32d027966797647ab16496e8b35d05bca498f4d8`、
