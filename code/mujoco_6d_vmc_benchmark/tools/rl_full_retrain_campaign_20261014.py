@@ -19,7 +19,7 @@ RUNTIME = BENCH/'outputs/baseline_local_rl_20261009/runtime'
 PARAMETER = BENCH/'outputs/rl_online_convergence_20261014_v7/parameter_fullrange'
 REFERENCE = BENCH/'outputs/rl_online_convergence_20261014_v7/teacher.json'
 SEED = 2026101421
-STEPS = 500000
+STEPS = 1000000
 
 
 def prepare(root: Path, parent: Path):
@@ -53,16 +53,16 @@ def prepare(root: Path, parent: Path):
         unchanged=['MJB geometry/contact/friction','planner/target','task and strict gates',
                    'actor canonical48 proprioceptive fields','actuator amplitude/slew','common action filter'],
         purity='From-scratch online RL only; no teacher demonstrations, BC, replay imports, or privileged actor fields',
-        selection='Latest complete episode-boundary checkpoint at the registered 500000-interaction limit; no best-of-test selection',
+        selection='Latest complete episode-boundary checkpoint at the registered 1000000-interaction limit; no best-of-test selection',
         evaluation=dict(phase='acceptance', condition='repair_acceptance_000', task_and_strict_required=True,
                         frozen_test_after_all_training=True),
         cooperative_stop_file=str(root/'STOP_REQUESTED'),
         min_free_disk_bytes=20*1024**3,
         jobs=[
-            dict(name='direct_original',family='direct',controller=None,reward='office_task',reward_variant='original',hp='exploratory'),
-            dict(name='impedance_original',family='impedance',controller='impedance',reward='metric',reward_variant='original',hp='exploratory'),
-            dict(name='admittance_original',family='admittance',controller='admittance',reward='metric',reward_variant='original',hp='exploratory'),
-            dict(name='vmc_original',family='vmc',controller='vmc',reward='metric',reward_variant='original',hp='exploratory'),
+            dict(name='direct_original',family='direct',controller=None,reward='office_task',reward_variant='original',hp='direct_balanced'),
+            dict(name='impedance_original',family='impedance',controller='impedance',reward='metric',reward_variant='original',hp='parameter_balanced'),
+            dict(name='admittance_original',family='admittance',controller='admittance',reward='metric',reward_variant='original',hp='parameter_balanced'),
+            dict(name='vmc_original',family='vmc',controller='vmc',reward='metric',reward_variant='original',hp='parameter_explore'),
         ])
     write(root/'PROTOCOL.json',protocol)
     write(root/'REGISTRATION.json',dict(schema='sii-full-rl-retrain-v1',registered_utc=start.isoformat(),
