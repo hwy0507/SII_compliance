@@ -1,5 +1,22 @@
 # 更新日志
 
+## 2026-10-16 01:13 CST — v4 Direct 持续监视
+
+- `direct_task_safety` 文件仍在连续写入，当前约 `15,078` live steps、10 个完整回合、约
+  `20,164` 次 optimizer updates；最近 checkpoint 仍为 `checkpoint_0011000`。未发现新的 OOM、swap
+  或重复 worker；其余 `impedance_payload`、`admittance_payload`、`vmc_payload` 仍未创建
+  execution.json，尚未接续。
+- 最近 1,000 个单步 reward 均值约 `-0.00111`（范围约 `-0.0583` 至 `0.0458`），温度约
+  `0.00161`，critic loss 约 `8.08`，Task/Strict 仍为 `0/0`。该零附近短窗口和回合周期波动
+  不满足稳定 reward 加 held-out Task/Strict 成功的收敛判据；未执行 acceptance。
+
+## 2026-10-16 01:04 CST — v4 Direct 14.5k 监视
+
+- `direct_task_safety` 当前 `14,500` live steps、10 个完整回合、`19,002` 次更新，仍在运行；
+  最近完整 checkpoint 仍为 `checkpoint_0011000`，无 OOM。
+- 12k–14k reward 均值约 `-0.0211`、`-0.0215`，14k 后短窗口约 `-0.0011`，温度约 `0.00175`。
+  该模式仍是回合重置造成的周期性波动，Task/Strict 为 `0/0`，尚未收敛或接续其余方法。
+
 ## 2026-10-16 00:43 CST — v4 Direct 13.25k 监视
 
 - `direct_task_safety` 已推进至约 `13,250` live steps、9 个完整回合、`16,502` 次更新，仍为
