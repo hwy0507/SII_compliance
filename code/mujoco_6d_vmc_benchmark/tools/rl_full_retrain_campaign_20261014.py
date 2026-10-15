@@ -87,10 +87,12 @@ def run_job(root: Path, job: dict, cpu: str):
     out = root/job['name']
     if out.exists():
         raise FileExistsError(out)
+    steps = int(read(root/'PROTOCOL.json')['budgets']['rl_steps_per_family_seed'])
     command=[str(PY),str(BENCH/'tools/train_baseline_repair_rl_20261008.py'),
              '--root',str(root),'--output',str(out),'--parameter-source',str(root/'parameter_fullrange'),
-             '--seed',str(SEED),'--steps',str(STEPS),'--reward',job['reward'],
-             '--reward-variant','original','--hyperparameter-id','exploratory']
+             '--seed',str(SEED),'--steps',str(steps),'--reward',job['reward'],
+             '--reward-variant',job.get('reward_variant','original'),
+             '--hyperparameter-id',job.get('hp','exploratory')]
     if job['controller']: command += ['--controller',job['controller']]
     log=root/(job['name']+'.log')
     record=dict(status='running',job=job,started_utc=datetime.now(timezone.utc).isoformat(),
