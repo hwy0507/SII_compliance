@@ -1,5 +1,25 @@
 # 更新日志
 
+## 2026-10-15 10:08 CST — RL 15小时窗口收尾
+
+- 窗口于 `2026-10-15T01:59:34Z` 到期，已在
+  `code/mujoco_6d_vmc_benchmark/outputs/rl_full_retrain_20261014_v2/STOP_REQUESTED`
+  写入 cooperative stop 收据；两路当前回合均在安全边界完成，之后未继续派发训练。
+- `direct_original` 最终为 `status=complete`、196 个完整回合、267404 steps、524810 updates；
+  `impedance_original` 为 166 个完整回合、228250 steps、446502 updates。两路
+  `Task=0`、`Strict=0`；direct 有 156/196 回合 physical_valid，impedance 有 165/166，
+  这不等同于任务成功。
+- `admittance_original` 和 `vmc_original` 仅创建了零步初始 checkpoint，均为
+  `steps=0, episodes=0, updates=0, stop_requested=true`，没有真实训练交互，不能计为完成。
+- 协调器根收据为 `complete_review_required`；四路 acceptance 收据均为
+  `failed_preserved`，日志显示冻结测试二进制路径缺失（`.../rl_online_convergence_20261014_v7/construction/rollout.mjb`）。
+  未据此宣称成功；本轮没有统一 acceptance 通过，也没有独立物理子步、action/filter replay、
+  source/config/checkpoint hash、RMSE、峰值力矩、峰值速度或穿透审计结论。
+- 本机两路均保持 3 GiB、禁 swap、单线程，未使用服务器计算；保留全部失败和未完成收据。
+  远端网络在本轮仍不可达，不能重新核验 GitHub 最新 SHA；已知缓存为
+  `main=32d027966797647ab16496e8b35d05bca498f4d8`、
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。
+
 ## 2026-10-15 09:40 CST — RL监视回合：窗口即将结束
 
 - 已重新核对 `AGENTS.md`、远端 `main=32d027966797647ab16496e8b35d05bca498f4d8` 和
