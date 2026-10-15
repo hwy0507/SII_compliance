@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-15 22:46 CST — v4 Direct 持续推进
+
+- 已确认 v4 现有 Direct worker 未重复启动，`direct_task_safety` 当前约 `6,250` live steps、
+  4 个完整回合、`2,502` 次更新，`status=running`。
+- 单路 CPU/UTD=1 资源约束仍满足；当前温度和 reward 仍处于探索早期，Task/Strict 尚为 0/0，
+  未开始后续三类，也未做 acceptance。继续保留失败收据并等待安全 checkpoint。
+
 ## 2026-10-15 22:27 CST — v4 单路 Direct 监视
 
 - 已再次核对远端缓存 `main=32d027966797647ab16496e8b35d05bca498f4d8`、
