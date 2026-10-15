@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-16 02:46 CST — v4 Direct 20.5k 监视
+
+- `direct_task_safety` 仍在真实写入，约 `20,560` live steps，第 14 回合仍在途，`31,128`
+  optimizer updates；安全 checkpoint 仍为 `checkpoint_0011000`。无 OOM 或重复 worker，其他三
+  路仍未创建 execution.json，未手动派发。
+- 最近 1,000 步 reward 均值约 `-0.00111`，温度约 `0.000614`，critic loss 约 `8.12`，actor
+  entropy 约 `3.16`。短窗口回到零附近但没有任何 Task/Strict 成功（仍 `0/0`），不足以判定
+  收敛，未执行 acceptance。系统 swap 仍占满 2 GiB；worker 登记保持禁 swap，未见 OOM 收据。
+
 ## 2026-10-16 02:26 CST — v4 Direct 19k 监视
 
 - `direct_task_safety` 仍在真实写入，当前约 `19,370` live steps，第 14 回合在途，`28,736`
