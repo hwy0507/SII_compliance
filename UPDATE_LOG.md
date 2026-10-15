@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-15 08:20 CST — RL监视回合：窗口末期继续收尾
+
+- 已重新核对 `AGENTS.md`、远端 `main=6bf114c3a52c9e9b3ec884da44040675b1f3f1b5` 和
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；未新增派发或改变冻结协议。
+- campaign、direct、impedance 均 active。direct 已完成174回合、第175回合在途，最新
+  `step=238098`；impedance 已完成149回合、第150回合在途，最新 `step=205411`。已完成回合
+  的 Task/Strict 成功数均为0。
+- admittance/VMC 仍不存在，未手动启动。两路仍为3GiB内存上限、禁swap、单线程，未见OOM；
+  GPU约43°C、2336MiB/16303MiB、利用率约6%。窗口结束只收完在途回合，不启动新训练；统一
+  acceptance和独立审计未开始。
+
 ## 2026-10-15 08:00 CST — RL监视回合：窗口末期仍在训练
 
 - 已重新核对 `AGENTS.md`、远端 `main=8ce679ba9fa1c9bea5cf69673b78d7f9210755cd` 和
