@@ -1,5 +1,27 @@
 # 更新日志
 
+## 2026-10-16 14:10 CST — 实现有界跟踪训练奖励与恢复隔离，完成真实轨迹复算
+
+- 开工核对远端main `e47c4164013760b1d0c30d90eb7f6d85780b287a`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，fetch/read日志、AGENTS和Goal进度。
+  上轮奖励分解给出新证据；本轮将调整落实到可选trainer组件，未修改活动源码快照。
+- 新`goal_tracking_reward_20261016.py`沿用已有误差尺度.12m、权重4、horizon55s、gamma.9995，
+  额外扣除物理子步有界跟踪积分。提前失败扣剩余折扣最坏成本，防止通过短回合少受罚；
+  Task/Strict、actor48、filter和物理保持。只接受独立Goal登记中的Direct task_safety配置。
+- trainer在恢复/输出目录创建前拒绝不同tracking目标的checkpoint；奖励变更须全新训练或
+  另行完整replay/normalizer重建，不能偷换旧reward。收敛统计同样拒绝跨tracking目标拼接。
+  27项相关测试通过，覆盖成本方向/部分时间步/早停/配置与恢复隔离；trainer编译检查通过。
+- 在已冻结五回合日志上复算候选奖励：两条原折扣总回报均−11.40821的安全失败，候选分别
+  −13.90299与−11.62889；确实能区分跟踪质量。这是相同历史轨迹的奖励算术，未发生新策略
+  训练/接受测试，不能声称有效或收敛。尚需登记并执行实际训练比较，当前服务不就地变更。
+- 同一协调器/worker活跃，14:09 optimizer60,090步/93,748更新，六个完整回合仍Task/Strict0/6，
+  第七在途；其余三类排队。58,781 checkpoint和活动source/parameter manifest核验通过。
+  14:07 MemoryCurrent3,168,563,200字节，OOM0、memory.max事件1371，保持3GiB/禁swap。
+- 源码/测试/真实奖励复算/完整输入快照已归档核验：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-component-20261016T0610/evidence.tar.gz`，
+  1,239,902字节，SHA256 `bbe188dc15aa95c10bdf4c1930733cee1e9513349754cbf552bb9089638f6c1e`。
+  Goal active，未收敛/未最终验收；服务器仅归档/hash。
+
 ## 2026-10-16 14:01 CST — 定位Direct训练奖励的任务区分不足，保留完整证据
 
 - 开工查询/fetch/read main `ea271110dc9ef16da2047e2df8fa374eefa8cc28`、baseline

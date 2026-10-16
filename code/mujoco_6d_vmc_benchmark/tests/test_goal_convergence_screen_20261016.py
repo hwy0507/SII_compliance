@@ -137,6 +137,17 @@ class ConvergenceScreenTests(unittest.TestCase):
             with self.assertRaisesRegex(AssertionError,'parent method evidence is missing'):
                 collect(root)
 
+    def test_lineage_rejects_optional_tracking_objective_drift(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=self.make_lineage(Path(tmp))
+            path=root/'direct/PROTOCOL.json'
+            spec,_=read_bound(path)
+            from goal_tracking_reward_20261016 import CONFIG
+            spec['tracking_guidance']=CONFIG
+            write(path,spec)
+            with self.assertRaisesRegex(AssertionError,'different training treatments'):
+                collect(root)
+
 
 if __name__=='__main__':
     unittest.main()

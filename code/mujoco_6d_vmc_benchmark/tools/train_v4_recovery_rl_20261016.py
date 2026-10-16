@@ -26,6 +26,7 @@ from research72_probe_online_20261003 import read_event
 from research72_checkpoint_20261003 import checkpoint_hashes
 from baseline_repair_rl_diagnostics_20261008 import flatten_metrics
 from baseline_repair_reward_clock_20261009 import TIME_BASE, SERVO_DT, remaining_slew_bound
+from goal_tracking_reward_20261016 import validate_guidance, check_reward_resume, tracking_terms
 
 
 def main():
@@ -84,6 +85,12 @@ def main():
         deadline=datetime.fromisoformat(continuation['dispatch_deadline_utc'])
         if continuation.get('cooperative_stop_file'):
             stop_file=Path(continuation['cooperative_stop_file'])
+    guidance = validate_guidance(goal_job, controller=a.controller, reward=a.reward,
+                                 reward_variant=a.reward_variant)
+    if a.resume_checkpoint:
+        # Reject objective changes before allocating replay or creating output.
+        check_reward_resume(read(a.resume_checkpoint.resolve().parent/'PROTOCOL.json'),
+                            dict(tracking_guidance=guidance))
     assert datetime.now(timezone.utc)<deadline
     assert sha(root/'CONDITIONS.json')==protocol['condition_file_sha256']
     conditions=[c for c in read(root/'CONDITIONS.json')['conditions'] if c['role']=='train']
@@ -146,6 +153,10 @@ def main():
         specification['continuation_registration_sha256']=sha(a.continuation_registration)
         specification['continuation_registration']=str(a.continuation_registration.resolve())
     specification['reward_variant'] = a.reward_variant
+    if guidance is not None:
+        assert guidance['gamma'] == cfg.gamma and guidance['horizon_s'] == cfg.horizon_s
+        specification['tracking_guidance'] = guidance
+        specification['tracking_guidance_definition'] = 'Train-only -4 times existing bounded physical tracking integral; discounted worst-case remaining tracking cost at early failure. Task/Strict labels and gates unchanged. Different objective: do not pool with original task_safety.'
     if goal_job is not None:
         specification['goal_registration_sha256']=sha(a.goal_registration)
         specification['goal_registration']=str(a.goal_registration.resolve())
@@ -277,6 +288,12 @@ def main():
                             terms.update(**safety_terms,final_reward=reward,
                                 terminal_task_success=bool(done and event['result']['task_success']),
                                 terminal_strict_success=bool(done and event['result']['strict_success']))
+                        if guidance is not None:
+                            guidance_terms = tracking_terms(interval.bounded_error_cost,
+                                interval.elapsed_s, rewarder.elapsed_s,
+                                terminated=done, success=success, config=guidance)
+                            reward += sum(guidance_terms.values())
+                            terms.update(**guidance_terms, final_reward=reward)
                         assert np.isfinite(reward)
                         replay.add(observation=obs,action=action,reward=reward,terminated=float(done),truncated=0.,next_observation=next_obs)
                         pending=dict(reward=reward,terminated=done,truncated=False);obs=next_obs;phi=next_phi

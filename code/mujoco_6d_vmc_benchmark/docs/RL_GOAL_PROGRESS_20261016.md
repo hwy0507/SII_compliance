@@ -4,6 +4,38 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 14:10 CST：密集tracking组件完成，尚未启动新奖励训练
+
+核对远端main `e47c4164013760b1d0c30d90eb7f6d85780b287a`与baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS及日志。同一协调器/Direct worker活跃，
+14:09 optimizer60,090步/93,748更新；六完整回合Task/Strict0/6、第七在途，其他三类排队。
+58,781 checkpoint、冻结source/parameter manifest通过；内存3,168,563,200字节、OOM0，
+硬限回收max1371，3GiB/swap0保护继续，不重启活动作业。
+
+新增`goal_tracking_reward_20261016.py`，采用已有metric中的权重4与.12m误差尺度，只增加
+`-4*sum(dt/55 * error²/(.12²+error²))`，不增加torque/slew项，也不改变Task终止奖励。
+提前失败加上剩余完整/部分RL interval的gamma折扣最坏成本；gamma.9995、RL dt.04s和
+55s时间窗保持。全回合附加成本在[-4,0]，不是可通过拖延刷取的正奖励；并不声称最优策略
+不变，密集成本有可能影响取舍，需真实训练和最终任务验证。
+
+trainer仅从显式Goal job `tracking_guidance`读取固定CONFIG，且限定Direct/office_task/
+task_safety组合，避免叠加已有metric成本。未登记保持旧行为。恢复前比较父子tracking配置，
+禁止旧reward replay/normalizer直接续到新目标；未来试验优先全新同seed对照，而非无依据
+保留已学critic和旧奖励。收敛统计fingerprint包含tracking配置，不能混合不同目标回合。
+现有prepare-next仍是原配置精确接续入口，不能用它暗中部署这一处理；新处理尚未登记/派发。
+
+27项Goal相关测试通过（新增密集成本方向、剩余分数步、gamma1/.9995/.9、提前失败、
+参数边界/非有限值、旧新恢复拒绝、收敛统计拒绝tracking漂移）；trainer编译通过。
+用五回合冻结完整日志执行真实奖励复算，结果`TRACKING_COUNTERFACTUAL_20261016T0610.json`：
+episode37与40原折扣回报同为−11.4082118，候选变为−13.9029927/−11.6288941；
+所有原Task/Strict失败标签保持。仅算术反事实，没有新轨迹、模型更新或checkpoint/replay改写，
+不能当成策略收益改善。下一步在独立有限新处理登记后做实际训练比较，当前stage继续。
+
+源码/测试/复算结果与完整输入快照已归档核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-component-20261016T0610/evidence.tar.gz`，
+1,239,902字节，SHA256 `bbe188dc15aa95c10bdf4c1930733cee1e9513349754cbf552bb9089638f6c1e`。
+Goal仍active；四方法收敛、统一acceptance及最终独立审计都未完成。
+
 ## 14:01 CST：奖励分解给出下一阶段调整依据
 
 核对main `ea271110dc9ef16da2047e2df8fa374eefa8cc28`、baseline

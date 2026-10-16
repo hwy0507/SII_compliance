@@ -126,6 +126,7 @@ def collect(root):
             assert spec['controller'] == job['controller'] and spec['seed'] == job['seed']
             fingerprint = {key:spec[key] for key in ('protocol_sha256','seed','controller','agent_config',
                 'reward','reward_variant','utd','prior_file_sha256','training_conditions')}
+            fingerprint['tracking_guidance'] = spec.get('tracking_guidance')
             if entry['fingerprint'] is not None:
                 assert entry['fingerprint'] == fingerprint, 'Do not pool different training treatments'
                 assert execution['resumed_from']['inherited_steps'] == entry['cumulative_steps']
