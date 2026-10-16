@@ -1,5 +1,26 @@
 # 更新日志
 
+## 2026-10-16 10:33 CST — v4 真实UTD/资源异常、停止中断与隔离修复
+
+- 实测并 fetch 远端 main `32d027966797647ab16496e8b35d05bca498f4d8`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取两分支日志及 AGENTS；保留无关未跟踪文件。
+- Direct 至少47,448步/84,898更新，已结束34回合（33个完整55s、24个physical_valid），
+  Task/Strict各0/34；最近10回合return均值−29.81，未收敛，其他三路未启动，未进行验收。
+- 定位旧trainer写死`range(2)`导致实际UTD2；v4进程继承无限额共享cgroup，并无独立3GiB/
+  禁swap硬限。旧v3b两路仍在运行，未改动。登记截止实际为12:33:19 CST，纠正早前末期表述。
+- 本轮向v4协调器TERM、trainer USR1请求阻止派发并安全收尾后，整个v4进程树消失，未生成
+  最终收据/checkpoint；这是停止操作后的中断，不能称安全边界完成。原始running/失败收据保留。
+- 新增独立`tools/train_v4_recovery_rl_20261016.py`，修复UTD循环并要求内核内存/swap硬限，
+  不修改其他在途run的旧trainer。语法与实际循环UTD1/2测试通过；尚未真实恢复，停止后可用
+  内存2931MiB不足新worker预算。恢复须独立登记、原截止、已核验43,656步checkpoint。
+- 更新RL进度和`docs/RL_V4_MONITOR_20261016.md`；checkpoint/协议/部分收据已归档核验至
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-v4-monitor-20261016T0229/receipt-checkpoint.tar.gz`，
+  SHA256 `aaed7b35c6fe1da01bb63f6153bf99730a0e3fa05724cf779ec54c8b75479b2c`。
+  全部原始轨迹仍仅本地、待同步；服务器只传输/归档/hash核验。无新增训练、未改冻结科学条件。
+- 同目录补充归档`recovery-interruption.tar.gz`已核验，SHA256
+  `0766f2e260481c73bb724cbef1da17308c5f2a3df0d3aa6011b08f34d7bd148b`，含中断收据、
+  恢复源码与报告快照。硬内存/禁swap guard的允许/拒绝用例通过，实际恢复仍待资源准入。
+
 ## 2026-10-16 10:06 CST — v4 Direct 46.0k 末期监视
 
 - `direct_task_safety` 第 32 回合已结束于 `45,031` 步，`physical_valid=true` 但
