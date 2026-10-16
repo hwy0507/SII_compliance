@@ -1,5 +1,34 @@
 # 更新日志
 
+## 2026-10-17 04:45 CST — 第二次retreat失败：不同时间、相近位置的搬运掉落
+
+开工按sii-research-sync查询/fetch/read main `4572db887cbfb4d72e022665304a76b0babb7ac0`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS和RL进度，收工重读AGENTS。
+上一轮为已验证等待；本轮对control ep16/19两个已闭合失败作原生时间线诊断，
+同一协调器2502213/worker2502235仍active，优化推进至28,286步/23,287更新，未重启或重复派发。
+
+两回合rollout.npz/json、RL_INTERVALS、AUDIT、execution逐文件匹配既有原始归档成员大小/hash，
+再次远端核验对应归档，分析前后hash不变；1375个40ms采样与neuron_time偏移.04秒通过。
+ep19/repair_train_018在32.60s最高点(.599666,−.276229,.581138)m，XY误差.096440m；
+32.92s仍carry，高度已降至.447965m、手—物块距离.234572m、XY误差.199780m。
+post-interval时间上的stage5/6/7首个样本为34.00/34.80/35.32s，此时物块已在桌面；
+因此同样不是仅在正常release后才失败。最终XY误差.181052m、hold0、
+release_supported/placement_complete/Task/Strict均false。
+ep16最高点47.08s在(.598111,−.271706,.578743)m，两次最高点空间距离约5mm，
+但时点相差14.48s。提示后续应检查共同空间区域的原生接触/动作证据；不是接触原因或修复有效证明。
+两回合训练条件不同，不作因果配对或策略改善结论。stage采样时间是post-interval时间，
+与前轮引用的pre-interval边界相差40ms；不宣称精确接触脱离时刻，.45m只用于描述。
+
+本机CPU6/1GiB/swap0助手5.028秒正常完成，峰28,712,960字节，OOM/max事件/swap0。
+未运行仿真、梯度、action/filter重放或独立物理子步审计；活动配置及冻结约束保持。
+证据 `BENCH/outputs/rl_goal_retreat_repeat_20261017T2045`，含两回合输入、报告和脚本；
+共享归档已上传并再次核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-retreat-repeat-20261017T2045/evidence.tar.gz`，
+3,420,374字节，SHA `031a8354e85fbad812785f3f857dd38bde8ea15a2d8f3b9fc2dad5cb1c5f8846`。
+全部失败保留，服务器仅归档/hash。继续44k×2登记对照，四族仍未证明收敛，
+Goal active，最终验收未执行；同步三份进度并提交/push main，保留无关meeting文件。
+
+
 ## 2026-10-17 04:42 CST — 已验证等待：控制组20完整回合，仍无Task/Strict成功
 
 本轮按sii-research-sync查询/fetch/read main `f27b1bcb640afb646f927060946f2bd44165d2c9`、
