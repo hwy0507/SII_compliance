@@ -1,5 +1,33 @@
 # 更新日志
 
+## 2026-10-17 00:38 CST — VMC真实推进与Direct在线对照接续核验
+
+开工查询/fetch/read远端main `f9969c69a396b94c6663cd05c6a048a9cfc91b0b`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；按sii-research-sync开工与收工重读AGENTS。
+Goal工具确认active，承接原持续目标，不重复创建或启动worker。本轮无训练源码/协议修改。
+
+当前协调器2447861/VMC2479454与其单个模拟器正常推进；核验期间optimizer从17,307/12,308推进到
+17,858steps/12,859updates，temperature .003200021。execution快照17,750/12,751。
+当前段已核验前三完整回合均1375步/55秒、physical_valid，Task/Strict0/3；
+return依次−25.216931、−25.206806、−25.658431，不能据此声称reward收敛。
+内存当前3,110,014,976、峰3,202,686,976字节，max/OOM/oom_kill/swap0，GPU39°C/1439MiB。
+free62,989,017,088字节，50GiB保留线继续；不存在重复RL训练worker。
+
+本机CPU6/1GiB/swap0归档helper核验cp16500、4125条连续有限更新和三个已结束回合reward求和、
+AUDIT hash及checkpoint各成员hash。新增第3回合原始产物/cp16500、闭合日志前缀、现场快照、
+登记与Direct既有预检记录核验共享至独立目录：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-vmc-progress-20261016T1640/evidence.tar.gz`，
+269,013,117字节，SHA256 `475880a8c61e86cbf8f56819f79c778f76477fe0e476a30a3b5fb453205b00a6`。
+本地/暂存/最终大小和hash一致；服务器仅存储/hash；16500之后数据待后续安全边界归档。
+归档脚本随包保存，现场收据本地位于outputs/rl_goal_vmc_progress_20261016T1640。
+
+已重新核验Direct alpha0/1有限在线对照登记、source/checkpoint和封存预检（未重复学习预检）；
+登记SHA `1be1942c09c6f03b5b361b0c694e9449331edd36aa0febd451e6055601a87f45`不变。
+两组均从cp21262增加最多11k交互，尚无LAUNCH/execution。等待当前四族阶段全部闭合，
+派发时仍须复核全局锁、磁盘/内存/GPU、截止；本次通过静态核验不等于派发准入或在线收益。
+阻抗occupancy对照仍待存储容量，未移除历史原件、未绕过既有删除审批拒绝。
+四方法均未证实收敛，未最终acceptance；Goal保持active，下一实质步骤为本段结束后的Direct在线对照。
+
 ## 2026-10-17 00:30 CST — 新奖励接续修复与真实CUDA保存恢复核验
 
 开工实时查询/fetch/read main `40bc1546ae10ae2aa1ea02c1cad916c62f763049`、baseline
