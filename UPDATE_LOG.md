@@ -1,5 +1,25 @@
 # 更新日志
 
+## 2026-10-16 16:30 CST — 导纳6个完整回合仍为失败平台，奖励与实际参数链路复核
+
+- 开工查询/fetch/read main `e100c6d81f12c3451d286bcc249c014567acc8c6`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/Goal进度。上一轮GPU对照入口为进展。
+  原导纳PID2360933/协调器2329290均active，7750步/2751更新继续至归档快照8326步/3327更新；
+  第6完整55秒回合于08:25:17Z结束，cp8250全部hash通过，第7在途。没有重复训练/重启。
+- 6回合Task/Strict0/6、physical_valid6/6；return均值−25.346825935、总体标准差.030040937，
+  第6−25.363762985。奖励独立重算与日志一致：折扣跟踪罚.12158–.16440、峰矩罚1.60827–1.66978，
+  任务失败罚10.05993，potential项抵消符合公式；reward稳定不能作为成功收敛。
+- 第4/5/6回合末10秒carry cursor分别18；17/18（87/163采样）；17/18（170/80采样）。
+  第6位置误差12.363–18.301mm，250个25Hz样本均未满足位置/重入条件，姿态/速度条件均满足；
+  实际参数变化、energy_scale=1，不支持“动作未应用/能量限制全吞掉”的解释。不能用25Hz样本
+  代替独立物理子步审计，也不能将不同condition间误差差异解释为学习因果改善。
+- 快照temperature .00735918，memory.current3,057,926,144、peak3GiB；max1311是硬上限回收，
+  OOM/kill0、swap0，memory压力avg60=.07%，未见更新停滞。保留原限制/冻结源/奖励，VMC排队。
+  第6完整轨迹/cp8250、6回合reward/carry诊断、执行/资源快照及复现脚本已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-admittance-learning-20261016T0830/evidence.tar.gz`，
+  269,154,608字节，SHA256 `a83b4c807756c4c4812b7ccd227e471070324f3c38ce7c88dc777adcd0a48ea5`。
+  本机只读诊断exit0，无新仿真/梯度；服务器仅归档。Goal active，GPU验证/奖励对照仍待四族前序闭合。
+
 ## 2026-10-16 16:20 CST — 补齐GPU奖励对照交接入口，导纳第5回合闭合
 
 - 开工查询/fetch/read main `5925a1c12d9641c699cbbf834fddc56565206a47`、baseline

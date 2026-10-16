@@ -1,5 +1,16 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 16:30 CST 导纳6回合奖励/实际参数复核，训练继续
+
+导纳快照8326步/3327更新，cp8250与第6完整55秒回合正常保存，physical_valid6/6、
+Task/Strict0/6。reward均值−25.34683、标准差.03004是失败平台。六回合奖励重算一致；
+末回合末10秒仍carry17/18，误差12.36–18.30mm，参数变化且energy_scale1，尚无动作不应用证据。
+不同condition与25Hz样本限制保留，不将该诊断当因果改善或最终物理审计。OOM0/swap0，
+max1311回收事件未造成观察到的更新停滞；原服务继续，无重复进程，VMC排队。
+第6轨迹/cp8250与六回合诊断归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-admittance-learning-20261016T0830/`，
+SHA256 `a83b4c807756c4c4812b7ccd227e471070324f3c38ce7c88dc777adcd0a48ea5`。Goal active。
+
 ## 2026-10-16 16:20 CST GPU配对训练准备入口已补齐，导纳第5回合保全
 
 导纳快照7364步/2365更新，5完整55秒回合physical_valid5/5、Task/Strict0/5；第5return−25.29435。
