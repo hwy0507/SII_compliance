@@ -1,5 +1,39 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-17 04:50 CST — 搬运掉落附近的原生接触与控制参数
+
+开工按sii-research-sync查询/fetch/read main `14e289888d25dcb5cbeece57ead4fcadff828e76`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读AGENTS/两份进度并收工重读AGENTS。
+上一轮定位相近掉落位置；本轮增加原生接触摘要与动作窗口证据。同一协调器2502213/
+worker2502235保持active，实测28,965步/23,966更新，OOM/max事件/swap0，未重复启动或改配置。
+
+固定control ep16/19；输入rollout.npz/json、execution、parameter_trace/actions与FULLRANGE
+全部匹配既有归档成员大小/hash，原始远端归档重新核验，分析前后文件不变。
+接触记录器源码hash与两个execution一致：
+`76ed25f77c7c32452121382b1f5a766f1b553af62802a1afb7000b3bd029ebe0`。
+参数trace与NPZ逐元素一致，1375条记录、canonical48形状、pre/post时间差.04s通过。
+
+ep16/19凸边接触摘要last_s为47.138600/32.663750，全部发生于carry；
+该摘要合并robot与payload接触，不能仅凭它分清接触对象，也不能把全回合peak移作掉落瞬时力。
+物块—桌角接触carry窗口分别47.185250–47.274450s、32.712250–32.784050s，
+峰78.127802/79.959737N，与掉落过程在时间上接近，但尚未证明因果或精确脱离时刻。
+最高点前后按pre-interval时间±.4s，各21条记录：平移刚度范围
+370.059–543.301（中位478.025）与156.696–185.296（中位171.325），
+两个窗口energy_scale均未小于.999999。不能据此认定统一低刚度或能量缩放导致两次掉落。
+五路prior_contact仅ball/person_hand/rod/cup/pillar，且属于前一物理区间；
+不包含凸边/物块/指尖接触，因此五路零值不是无碰撞证据。无接触真值加入actor。
+
+本机CPU6/1GiB/swap0助手3.924秒退出0，峰34,275,328字节、OOM/max事件/swap0。
+仅分析既有训练摘要与25Hz控制记录，无仿真/梯度/filter重放/独立物理子步审计。
+证据 `BENCH/outputs/rl_goal_drop_contacts_20261017T2050`，含输入/源码/脚本；
+服务器仅归档/hash，上传后再次核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-drop-contacts-20261017T2050/evidence.tar.gz`，
+4,071,245字节，SHA `1253ea4cf15bbca1ccee0f71f55be4bed61cacc3bb7b08e291503c85122ac5a7`。
+本轮未证明可直接修补的实现缺陷；保留凸边—桌角区域接触为后续诊断方向，
+先完成已登记44k×2奖励对照。全部失败保留，冻结约束保持，四族未证明收敛，
+Goal active，最终验收未执行；三份进度同步提交/push main，保留无关meeting文件。
+
+
 ## 2026-10-17 04:45 CST — 第二次retreat失败：不同时间、相近位置的搬运掉落
 
 开工按sii-research-sync查询/fetch/read main `4572db887cbfb4d72e022665304a76b0babb7ac0`、
