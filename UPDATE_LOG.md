@@ -1,5 +1,33 @@
 # 更新日志
 
+## 2026-10-16 18:40 CST — 四族GPU完整循环闭合，阻抗奖励权重对照正式开训
+
+- 开工查询/fetch/read main `3aa0ca2d0f677155c6d67fd4aa7a86ae67f9fbb7`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，AGENTS/Goal进度重读，上一轮为进展。
+  导纳原PID2396091完成，原协调器自动接续VMC2398175，10:34:53Z四族GPU段自然闭合。
+  各新增1375步/1375更新、一个完整55秒回合；checkpoint/连续更新/reward重算/冻结源通过。
+  四族Task/Strict0/4；Direct physical_valid=false，另三族true，不称策略成功或收敛。
+- 导纳与VMC均12375步/7376更新，return−25.304798245/−25.222012881，峰值内存
+  2,298,105,856/2,294,398,976字节；四族OOM/max0、swap0、实际CUDA/CPU亲和符合登记。
+  n25谱系各累计9闭合回合，全部Task/Strict失败、收敛筛查不通过。GPU全循环验证仅开放后续本机GPU训练。
+  导纳/VMC原始轨迹/checkpoint及四族收尾记录已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-close-20261016T1035/evidence.tar.gz`，
+  534,010,065字节，SHA256 `1940f7934c88cc047e72d031ce7c369a0c2ebccd945d8d0abe81ad924f9642d8`。
+  包中明确引用前两族既有独立归档，未重复打包其大型数据；服务器只存储/hash。
+- 已实际prepare/preflight/launch `outputs/rl_goal_impedance_tracking_gpu_20261016`，登记SHA256
+  `87caa8863d96f65489e24564acaf68eb7ee52637b922a6fa7330f3cf4aba90d5`，来源commit3aa0ca2。
+  两个fresh同seed2026101421组，tracking总权重4对40（额外36），其余设置相同；每组11k，
+  总22k、n25/UTD1/5000热身/1M优化器日程，串行CPU1/单模拟器/3GiB/swap0/CUDA0。
+  截止2026-10-17T10:35:37.388010Z，冻结物理/gate/actor/filter/执行器/dt未改。
+- 两组CUDA丢弃更新预检通过：fresh初始化一致、奖励/末25步回报正确、旧checkpoint不变，
+  峰值1,506,635,776字节、OOM0。协调器`sii-rl-goal-stage-9c45a18ea80c.service`10:37:17Z启动，
+  control trainer2400811，10:38快照182步/0更新，随后execution到250步；0更新符合5000热身。
+  tracking组仍排队，不声称已测出权重效果；当前未闭合首回合。内存1,541,767,168、OOM/max0/swap0。
+  新源码/登记/预检/启动快照已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-gpu-launch-20261016T1038/evidence.tar.gz`，
+  2,171,353字节，SHA256 `92303c15324ca854e402f2fa1dc083d2d5ad5bf549dad9a8b8d764d3da8b092a`。
+  Goal active；用匹配条件的任务/物理指标判断奖励实验，不比较不同定义reward总分，不提前最终验收。
+
 ## 2026-10-16 18:25 CST — 前两族GPU完整训练回合核验归档，导纳接续
 
 - 开工查询/fetch/read main `cc986e0fdcae45dee6a09da14723e5cc7022d52d`、baseline

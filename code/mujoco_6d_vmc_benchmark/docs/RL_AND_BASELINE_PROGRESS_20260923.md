@@ -1,5 +1,17 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 18:40 CST 四族GPU完整验证闭合，阻抗奖励对照已开训
+
+四族各新增1375步/1375更新、完整55秒，checkpoint/奖励/资源检查通过，OOM0/swap0。
+四回合Task/Strict均失败；n25谱系各9回合仍全失败，未收敛。导纳/VMC原始数据与四族收尾归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-close-20261016T1035/evidence.tar.gz`，
+SHA256 `1940f7934c88cc047e72d031ce7c369a0c2ebccd945d8d0abe81ad924f9642d8`，前两族引用原独立包。
+阻抗GPU新配对已prepare/preflight/launch：跟踪权重4对40，两fresh同seed组各11k、串行/3GiB/swap0，
+冻结物理/gate等不改；control trainer2400811已有250交互/0更新（5000热身），tracking仍排队。
+源码/登记/预检/启动快照已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-gpu-launch-20261016T1038/evidence.tar.gz`，
+SHA256 `92303c15324ca854e402f2fa1dc083d2d5ad5bf549dad9a8b8d764d3da8b092a`。Goal active，无奖励改善/收敛或最终验收声明。
+
 ## 2026-10-16 18:25 CST GPU前两族完整回合已归档，导纳在途
 
 Direct62906/96564、阻抗12375/7376，各新增1375步/1375更新，两完整55秒回合Task/Strict均false；

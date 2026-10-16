@@ -4,6 +4,52 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 18:40 CST：四族GPU验证完成，阻抗4对40奖励实验已开始
+
+开工main `3aa0ca2d0f677155c6d67fd4aa7a86ae67f9fbb7`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`查询/fetch/read，AGENTS开工/收工重读。上一轮为进展。
+导纳原2396091完成后协调器自动接续VMC2398175，无重复启动；GPU阶段10:34:53.046862Z自然闭合。
+四族各1375条新增交互/连续真实更新、完整55秒、最终checkpoint与冻结来源核验通过，奖励分解重算一致。
+各实际CUDA/亲和[1]、最终峰值≤3GiB，OOM/max0、swap0。全循环验证仅证明训练链路可用于GPU接续。
+
+|方法|总steps/updates|本次return|Task/Strict|physical_valid|内存峰值bytes|
+|---|---:|---:|---|---|---:|
+|Direct|62906/96564|−38.733161806|false/false|false|2306428928|
+|Impedance|12375/7376|−25.791857652|false/false|true|2308399104|
+|Admittance|12375/7376|−25.304798245|false/false|true|2298105856|
+|VMC|12375/7376|−25.222012881|false/false|true|2294398976|
+
+n25阶段谱系各9闭合回合，全部Task/Strict失败；不足96回合且没有成功证据，收敛筛查均false。
+所有training_complete=false，无最终acceptance。导纳/VMC原始回合/checkpoint、全日志、
+四族更新/奖励/资源/谱系检查与复现脚本已核验至：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-close-20261016T1035/evidence.tar.gz`
+534,010,065字节，SHA256 `1940f7934c88cc047e72d031ce7c369a0c2ebccd945d8d0abe81ad924f9642d8`。
+前两族大型轨迹/checkpoint仍引用18:25条目已核验包，此包不重复收录；所有原始失败保留。
+
+已实际创建并启动新GPU配对，原CPU配对保持未启动且未修改：
+`outputs/rl_goal_impedance_tracking_gpu_20261016/REGISTRATION.json` SHA256
+`87caa8863d96f65489e24564acaf68eb7ee52637b922a6fa7330f3cf4aba90d5`，source commit3aa0ca2。
+顺序为impedance_control（原tracking权重4）、impedance_tracking（额外36、总40）；
+两者均fresh网络/optimizer/replay/normalizer/RNG，同seed2026101421，其余训练条件相同。
+历史checkpoint只提供丢弃预检数据，不加载进正式fresh模型；不同目标的reward总分不直接比较。
+每组最多11000新交互，总22000；n25/UTD1/5000随机热身/1M optimizer日程，单seed最多8完整回合/组，
+仅用于先检验奖励候选，不能取代四族完整训练或收敛要求。最终任务与物理判据保持冻结。
+CPU1/单模拟器/单线程/3GiB/swap0，CUDA0不预分配、allocator .125（非GPU总内存硬限），
+磁盘保留50GiB，派发保护截止2026-10-17T10:35:37.388010Z，本阶段STOP_REQUESTED在回合边界生效。
+
+本机CPU6/2GiB/swap0/CUDA预检exit0：两组初始网络hash一致、奖励与末25步回报独立核对通过，
+各一次更新有限、旧checkpoint hash未变；峰值1,506,635,776字节，OOM/max0。两次丢弃更新不计训练。
+协调器`sii-rl-goal-stage-9c45a18ea80c.service`10:37:17.101585Z启动；
+control服务`sii-rl-goal-33a827d0c492.service` trainer2400811，tracking服务名
+`sii-rl-goal-7f55e47acca6.service`仍排队，未提前启动。
+10:38:08快照182步/0更新，随后execution250步，0更新符合5000热身；首回合在途。
+内存current/peak1,541,767,168、OOM/max0/swap0；GPU45°C/1105MiB，实际JAX0.7.2/cuda:0。
+新冻结源码/登记/两组预检/启动快照及复现脚本已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-gpu-launch-20261016T1038/evidence.tar.gz`
+2,171,353字节，SHA256 `92303c15324ca854e402f2fa1dc083d2d5ad5bf549dad9a8b8d764d3da8b092a`。
+服务器仅存储/hash；新训练轨迹尚在本机，完成回合后归档。Goal active，继续控制组→处理组，
+检查完整回合Task/Strict、carry进度/物理跟踪及奖励分解；未声称权重修复有效，未最终验收。
+
 ## 18:25 CST：GPU前两族完整回合保全，导纳继续
 
 开工main `cc986e0fdcae45dee6a09da14723e5cc7022d52d`、baseline
