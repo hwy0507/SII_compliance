@@ -1,5 +1,21 @@
 # v4 宿主机核验与恢复交接（2026-10-16 10:33 CST）
 
+## 10:46 CST 复查补充
+
+本轮宿主机检查未发现v4或恢复trainer；原execution仍显示running，但实际已中断，没有新
+训练交互。持久化47,448步/84,898更新、34已结束回合及Task/Strict各0/34不变，其余三方法
+未启动。checkpoint_0043656的所有登记hash再次匹配；历史reward/temperature指标没有新样本。
+MemAvailable=3035MiB、swap已用2047MiB，仍不足单worker3072MiB上限，更未包含余量。
+旧v3b模拟器PID2309032/2309783仍运行，未发信号或干预；共享app cgroup的oom/oom_kill=0，
+memory.max与swap.max均为max，不能当作已退出v4的独立资源收据。GPU42°C、517MiB、4%。
+本轮没有恢复、没有验收、没有改源码/冻结配置；派发截止仍12:33:19 CST。
+
+远端已查询/fetch/读取：main `f8cbb9b71f481ef614729b59c98abdc8dc7d3371`，baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。本轮独立监视收据：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-v4-monitor-20261016T0246/MONITOR.json`，
+SHA256 `5b766ad9f15d5edb23e29cc1f1c6ca0ca5613f128fc14a9154007e28c67c7796`。
+下文保留10:33检查与中断处置的原始说明。
+
 本轮未达到收敛或验收。实际计算主机为 airpig，冻结物理/MJB、dt=5e-5、canonical48、公共
 filter、执行器限制和最终 gate 未改；未使用服务器计算。开工源码 `7be409d`。
 

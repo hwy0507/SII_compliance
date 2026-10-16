@@ -1,5 +1,22 @@
 # 更新日志
 
+## 2026-10-16 10:46 CST — v4 中断后复查，资源准入仍不足
+
+- 已查询并 fetch 远端 main `f8cbb9b71f481ef614729b59c98abdc8dc7d3371`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取两分支日志、AGENTS 和 v4 交接报告。
+- 宿主机 v4/恢复进程为空；原 execution 的 running 是中断前陈旧状态，不代表推进。
+  持久化日志仍为47,448步/84,898更新，34已结束回合中33完整、24 physical_valid，
+  Task/Strict各0/34；索引34回合未完成。其余三方法未启动，未执行验收。
+- 43,656步checkpoint全部登记hash再次通过；历史最近1000步reward均值−0.001225、
+  temperature最近1000更新均值0.00032924，没有新样本。既有UTD修复版本尚未真实恢复。
+- MemAvailable=3035MiB，仍低于3072MiB worker上限（尚未加余量），系统swap已用2047MiB；
+  旧v3b两路仍活动，未干预。共享app cgroup无限额、oom/oom_kill=0，不能当成v4独立指标。
+  GPU42°C、517/16303MiB、4%。本轮不启动、不发信号、不改冻结条件，截止仍12:33:19 CST。
+- 更新RL进度和交接报告；本轮收据归档至
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-v4-monitor-20261016T0246/MONITOR.json`，
+  SHA256 `5b766ad9f15d5edb23e29cc1f1c6ca0ca5613f128fc14a9154007e28c67c7796`。
+  服务器仅归档/hash核验，全部原始轨迹仍未全量同步。
+
 ## 2026-10-16 10:33 CST — v4 真实UTD/资源异常、停止中断与隔离修复
 
 - 实测并 fetch 远端 main `32d027966797647ab16496e8b35d05bca498f4d8`、baseline
