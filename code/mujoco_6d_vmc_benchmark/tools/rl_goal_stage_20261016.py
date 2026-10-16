@@ -55,6 +55,11 @@ def interaction_budget(reg):
     if kind == 'gpu_training_preflight':
         assert 'finite_continuation_budget' not in reg
         return 1375
+    if kind == 'fresh_parameter_occupancy_pilot':
+        assert 'finite_continuation_budget' not in reg
+        from goal_tracking_pilot_20261016 import validate_pair
+        validate_pair(reg)
+        return 44000
     if kind in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot', 'resumed_actor_regularization_pilot'):
         assert 'finite_continuation_budget' not in reg
         return 11000
@@ -341,7 +346,7 @@ def verify_inputs(reg):
 
 
 def verify_preflight(reg):
-    if reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot'):
+    if reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot', 'fresh_parameter_occupancy_pilot'):
         from goal_tracking_pilot_20261016 import verify_pilot_preflight
         return verify_pilot_preflight(reg)
     root = Path(reg['run_root'])
@@ -434,7 +439,7 @@ def run(root):
     if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot':
         from goal_actor_regularization_pilot_20261016 import require_predecessor_complete
         require_predecessor_complete(reg)
-    if reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot'):
+    if reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot', 'fresh_parameter_occupancy_pilot'):
         from goal_tracking_pilot_20261016 import require_predecessor_complete
         require_predecessor_complete(reg)
     assert not (root / 'execution.json').exists(), 'Never retry in-place'
@@ -505,7 +510,7 @@ def launch(root):
     if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot':
         from goal_actor_regularization_pilot_20261016 import require_predecessor_complete
         require_predecessor_complete(reg)
-    if reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot'):
+    if reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot', 'fresh_parameter_occupancy_pilot'):
         from goal_tracking_pilot_20261016 import require_predecessor_complete
         require_predecessor_complete(reg)
     verify_inputs(reg)

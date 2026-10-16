@@ -15,7 +15,8 @@ from pathlib import Path
 COMPONENTS = ('task', 'progress', 'error', 'peak_torque', 'time', 'smooth',
               'failure_continuation', 'physical_slew',
               'physical_slew_failure_continuation', 'safety_peak_cost',
-              'safety_failure_continuation', 'tracking_guidance', 'tracking_failure_continuation')
+              'safety_failure_continuation', 'tracking_guidance', 'tracking_failure_continuation',
+              'payload_occupancy', 'payload_occupancy_failure_continuation')
 
 
 def close(a, b):

@@ -122,6 +122,8 @@ def validate_protocol(protocol, job, registration_sha):
         raise ValueError('Executed protocol does not match registered pilot')
     if protocol.get('tracking_guidance') != job.get('tracking_guidance'):
         raise ValueError('Executed tracking guidance differs')
+    if protocol.get('payload_occupancy_guidance') != job.get('payload_occupancy_guidance'):
+        raise ValueError('Executed occupancy guidance differs')
     if protocol['agent_config']['n_step'] != 25 or protocol['reward']['mode'] != job['reward']:
         raise ValueError('Executed credit horizon or reward mode differs')
 

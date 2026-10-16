@@ -2,7 +2,7 @@
 
 Uses existing reward-only payload_potential telemetry, never local waypoint
 error or additional actor inputs. This is an explicit objective change, unlike
-potential-based shaping. Not enabled in any active trainer or source snapshot.
+potential-based shaping. Enabled only by an explicit paired-job registration.
 """
 import math
 from goal_tracking_reward_20261016 import discounted_cost_tail

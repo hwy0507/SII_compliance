@@ -19,31 +19,43 @@ from goal_tracking_reward_20261016 import CONFIG, PARAMETER_CONFIG, tracking_ter
 from goal_compute_backend_20261016 import backend, runtime_info, GPU_RESOURCES
 
 
-def pair_settings(controller):
+def pair_settings(controller, occupancy=False):
+    if occupancy:
+        from goal_payload_occupancy_reward_20261016 import CONFIG as OCCUPANCY_CONFIG
+        assert controller == 'impedance', 'Occupancy evidence currently covers impedance only'
+        return dict(prefix='impedance',reward='metric',variant='payload_shaping',hp='parameter_balanced',
+                    config=OCCUPANCY_CONFIG,kind='fresh_parameter_occupancy_pilot',
+                    guidance_key='payload_occupancy_guidance',suffix='occupancy',budget=44000)
     if controller is None:
         return dict(prefix='direct', reward='office_task', variant='task_safety',
-                    hp='direct_explore', config=CONFIG, kind='fresh_direct_tracking_pilot')
+                    hp='direct_explore', config=CONFIG, kind='fresh_direct_tracking_pilot',
+                    guidance_key='tracking_guidance',suffix='tracking',budget=11000)
     assert controller == 'impedance', 'Only the evidenced impedance treatment is registered'
     return dict(prefix='impedance', reward='metric', variant='payload_shaping',
-                hp='parameter_balanced', config=PARAMETER_CONFIG, kind='fresh_parameter_tracking_pilot')
+                hp='parameter_balanced', config=PARAMETER_CONFIG, kind='fresh_parameter_tracking_pilot',
+                guidance_key='tracking_guidance',suffix='tracking',budget=11000)
 
 
 def validate_pair(reg):
-    assert len(reg['jobs']) == 2 and reg['maximum_new_interactions'] == 22000
+    assert len(reg['jobs']) == 2
     control, treatment = reg['jobs']
-    settings = pair_settings(control['controller'])
+    settings = pair_settings(control['controller'], reg['experiment_kind']=='fresh_parameter_occupancy_pilot')
+    key,budget=settings['guidance_key'],settings['budget']
+    assert reg['maximum_new_interactions'] == 2*budget
     assert reg['experiment_kind'] == settings['kind']
-    assert control['name'] == settings['prefix']+'_control' and treatment['name'] == settings['prefix']+'_tracking'
+    assert control['name'] == settings['prefix']+'_control' and treatment['name'] == settings['prefix']+'_'+settings['suffix']
     for job in reg['jobs']:
-        assert job['checkpoint'] is None and job['inherited_steps'] == 0 and job['limit'] == 11000
+        assert job['checkpoint'] is None and job['inherited_steps'] == 0 and job['limit'] == budget
         assert job['controller'] == control['controller'] and job['reward'] == settings['reward']
         assert job['reward_variant'] == settings['variant'] and job['hp'] == settings['hp']
         assert not job['credit_migration']
-    excluded = {'name','output','unit','tracking_guidance'}
+        other='tracking_guidance' if key=='payload_occupancy_guidance' else 'payload_occupancy_guidance'
+        assert job.get(other) is None, 'Only one reward treatment may differ'
+    excluded = {'name','output','unit',key}
     assert {k:v for k,v in control.items() if k not in excluded} == {
-        k:v for k,v in treatment.items() if k not in excluded}, 'Only tracking reward may differ'
-    assert control.get('tracking_guidance') is None and treatment['tracking_guidance'] == settings['config']
-    assert reg['new_interactions_per_family'] == 11000 and reg['optimizer_schedule_steps'] == 1000000
+        k:v for k,v in treatment.items() if k not in excluded}, 'Only the registered reward component may differ'
+    assert control.get(key) is None and treatment[key] == settings['config']
+    assert reg['new_interactions_per_family'] == budget and reg['optimizer_schedule_steps'] == 1000000
 
 
 def require_predecessor_complete(reg):
@@ -56,18 +68,21 @@ def require_predecessor_complete(reg):
     return completed_stage_checkpoints(old, state)
 
 
-def prepare(previous, destination, checkpoint, reward_receipt, controller=None):
+def prepare(previous, destination, checkpoint, reward_receipt, controller=None, occupancy=False):
     assert not destination.exists(), 'Preserve every pilot attempt'
     old = read(previous/'REGISTRATION.json'); verify_inputs(old)
     assert len(old['jobs']) == 4 and not old.get('experiment_kind')
     cp = verify_checkpoint(checkpoint)
     receipt = read(reward_receipt)
-    settings = pair_settings(controller)
+    settings = pair_settings(controller,occupancy)
     assert receipt['protocol_snapshot']['controller'] == controller
     assert receipt['protocol_snapshot']['reward_variant'] == settings['variant']
     if controller:
         assert receipt['protocol_snapshot']['reward']['error_weight'] == PARAMETER_CONFIG['base_error_weight']
     assert receipt['protocol_sha256'] == digest(checkpoint.parent/'PROTOCOL.json')
+    assert receipt['protocol_snapshot'] == read(checkpoint.parent/'PROTOCOL.json')
+    assert not receipt['protocol_snapshot'].get('tracking_guidance')
+    assert not receipt['protocol_snapshot'].get('payload_occupancy_guidance')
     parent_job = next(j for j in old['jobs'] if j['controller'] == controller)
     assert checkpoint.parent == Path(parent_job['output'])
     # Use one complete recorded training episode for a discarded-update preflight.
@@ -82,17 +97,21 @@ def prepare(previous, destination, checkpoint, reward_receipt, controller=None):
                  'goal_tracking_reward_20261016.py','goal_tracking_pilot_20261016.py',
                  'goal_compute_backend_20261016.py'):
         shutil.copy2(BENCH/'tools'/name, source/'tools'/name)
+    if occupancy:
+        shutil.copy2(BENCH/'tools/goal_payload_occupancy_reward_20261016.py',
+                     source/'tools/goal_payload_occupancy_reward_20261016.py')
     jobs = []
-    for name in (settings['prefix']+'_control',settings['prefix']+'_tracking'):
+    for name in (settings['prefix']+'_control',settings['prefix']+'_'+settings['suffix']):
         output = destination/name
         job = dict(name=name,controller=controller,reward=settings['reward'],reward_variant=settings['variant'],
-            hp=settings['hp'],seed=parent_job['seed'],inherited_steps=0,limit=11000,
+            hp=settings['hp'],seed=parent_job['seed'],inherited_steps=0,limit=settings['budget'],
             checkpoint=None,credit_migration=False,output=str(output),
             unit='sii-rl-goal-'+hashlib.sha256(str(output).encode()).hexdigest()[:12])
-        if name.endswith('_tracking'): job['tracking_guidance'] = dict(settings['config'])
+        if name.endswith('_'+settings['suffix']): job[settings['guidance_key']] = dict(settings['config'])
         jobs.append(job)
     reg = dict(old)
-    for key in ('parent_checkpoint_hashes','previous_stage','preflight_required_jobs'):
+    for key in ('parent_checkpoint_hashes','previous_stage','preflight_required_jobs',
+                'selected_lineages','selection_basis','actor_regularization_origin','finite_continuation_budget'):
         reg.pop(key, None)
     started = datetime.now(timezone.utc)
     reg.update(experiment_kind=settings['kind'], registered_utc=started.isoformat(),
@@ -100,7 +119,8 @@ def prepare(previous, destination, checkpoint, reward_receipt, controller=None):
         source_manifest=manifest(source),parameter_manifest=manifest(parameter),jobs=jobs,
         source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=BENCH,text=True).strip(),
         source_worktree_state='Frozen predecessor physics/worker/parameter retained; only trainer, tracking component and dispatch tools replaced. Manifests authoritative.',
-        maximum_new_interactions=22000,dispatch_deadline_utc=(started+timedelta(hours=24)).isoformat(),
+        maximum_new_interactions=2*settings['budget'],new_interactions_per_family=settings['budget'],
+        dispatch_deadline_utc=(started+timedelta(hours=24)).isoformat(),
         stop_file=str(destination/'STOP_REQUESTED'),
         coordinator_unit='sii-rl-goal-stage-'+hashlib.sha256(str(destination).encode()).hexdigest()[:12],
         pilot_predecessor=dict(root=str(previous),registration_sha256=digest(previous/'REGISTRATION.json')),
@@ -111,6 +131,10 @@ def prepare(previous, destination, checkpoint, reward_receipt, controller=None):
             'Eight closed impedance failures remain at carry waypoint20; discounted tracking cost around0.09 versus torque1.6-2.8. Test tenfold tracking weight4->40 with one added weight36 component; no gate or physical change.'),
         limitations='Single seed, eight full-horizon episodes per arm at most; pilot feasibility only, not convergence or four-family completion. Historical training is not the matched control.',
         comparison='Report every Task/Strict result, stage reached and physical tracking cost on matched train identities; do not compare different-objective reward totals as improvement.')
+    if occupancy:
+        reg.update(evidence_basis='Measured training-only payload progress avoids the local reference reset at waypoint advances. Fixed-log shadow motivates a single weight4 dense-cost candidate; no online benefit established.',
+            limitations='Fresh same-seed pair, 44000 interactions per arm: one32-condition full-horizon cycle with39001 updates if no early termination. Short failures remain; this budget is not convergence or final acceptance. Phi need not equal1 at task success.',
+            source_worktree_state='Predecessor frozen physics/worker/parameter retained. Fresh paired objective: only occupancy reward differs; trainer/pilot/dispatch and helper replaced as recorded by manifests.')
     validate_pair(reg); write(destination/'REGISTRATION.json',reg)
     return reg
 
@@ -131,7 +155,10 @@ def verify_pilot_preflight(reg):
     for job in reg['jobs']:
         arm = result['arms'][job['name']]
         assert arm['fresh_before'] and arm['n_step'] == 25 and arm['finite_update']
-        assert arm['terminal_window_checked'] and arm['guidance'] == job.get('tracking_guidance')
+        key=pair_settings(job['controller'],reg['experiment_kind']=='fresh_parameter_occupancy_pilot')['guidance_key']
+        assert arm['terminal_window_checked'] and arm['guidance'] == job.get(key)
+        if key=='payload_occupancy_guidance':
+            assert arm['guidance_key']==key and arm['reward_normalizer_verified']
     return result
 
 
@@ -229,22 +256,44 @@ def preflight(root):
         dimension = receipt['protocol_snapshot']['agent_config']['action_dimension']
         initial_hashes = []
         for job in reg['jobs']:
+            key=pair_settings(job['controller'],reg['experiment_kind']=='fresh_parameter_occupancy_pilot')['guidance_key']
             agent = OfficialParameterAgent(seed=job['seed'],total_steps=1000000,utd=1,gamma=.9995,
                 entropy_coef=hp['entropy_coef'],initial_temperature=hp['initial_temperature'],action_dimension=dimension)
             assert agent.interactions == agent.updates == agent.reward_samples == 0
             initial_hashes.append({name:hashlib.sha256(serialization.to_bytes(getattr(agent.raw_agent,name))).hexdigest()
                 for name in ('_actor','_critic','_target_critic','_temperature')})
             replay = MultiStepReplay(len(logs),dimension,job['seed']+53,n_step=25,gamma=.9995)
+            norm=agent.reward_normalizer
+            initial_count=float(norm.G_rms.count)
+            initial_mean=np.asarray(norm.G_rms.mean).copy()
+            initial_var=np.asarray(norm.G_rms.var).copy()
+            expected_g=float(np.asarray(norm.G).reshape(-1)[0])
+            expected_max=float(norm.G_r_max); expected_returns=[]
             previous_time = 0.
             for i, entry in enumerate(logs):
                 terms = entry['terms']; reward = float(raw['reward'][i]); elapsed = terms['elapsed_s']
                 if job.get('tracking_guidance'):
                     reward += sum(tracking_terms(terms['bounded_error_cost'],elapsed-previous_time,elapsed,
                         terminated=terms['terminated'],success=terms['success'],config=job['tracking_guidance']).values())
+                if job.get('payload_occupancy_guidance'):
+                    from goal_payload_occupancy_reward_20261016 import occupancy_terms
+                    reward += sum(occupancy_terms(terms['next_potential'],elapsed-previous_time,elapsed,
+                        terminated=terms['terminated'],success=terms['success'],config=job['payload_occupancy_guidance']).values())
                 agent.sample_action(raw['observation'][i],training=True)
                 agent.consume_transition(reward,bool(raw['terminated'][i]))
+                expected_g=norm.gamma*(not bool(raw['terminated'][i]))*expected_g+float(np.float32(reward))
+                expected_returns.append(expected_g);expected_max=max(expected_max,abs(expected_g))
                 transition = {k:v[i] for k,v in raw.items()}; transition['reward'] = reward
                 replay.add(**transition); previous_time = elapsed
+            count=initial_count+len(logs)
+            expected_mean=(initial_count*initial_mean+sum(expected_returns))/count
+            expected_var=(initial_count*(initial_var+initial_mean**2)+sum(x*x for x in expected_returns))/count-expected_mean**2
+            assert agent.reward_samples==len(logs)
+            np.testing.assert_allclose(norm.G_rms.count,count,rtol=0,atol=1e-8)
+            np.testing.assert_allclose(norm.G_rms.mean,expected_mean,rtol=2e-6,atol=1e-7)
+            np.testing.assert_allclose(norm.G_rms.var,expected_var,rtol=2e-6,atol=1e-7)
+            np.testing.assert_allclose(norm.G,[expected_g],rtol=2e-6,atol=1e-7)
+            np.testing.assert_allclose(norm.G_r_max,expected_max,rtol=2e-6,atol=1e-7)
             start = len(logs)-25
             terminal = replay.at(np.arange(start,len(logs)))
             expected = [sum(.9995**j*float(replay.data['reward'][i+j]) for j in range(len(logs)-i))
@@ -255,7 +304,10 @@ def preflight(root):
             assert agent.updates == 1 and all(np.isfinite(v) for v in metrics.values())
             result['gradient_updates'] += 1
             result['arms'][job['name']] = dict(fresh_before=True,n_step=agent.config['n_step'],
-                guidance=job.get('tracking_guidance'),finite_update=True,terminal_window_checked=True,
+                guidance=job.get(key),guidance_key=key,finite_update=True,terminal_window_checked=True,
+                reward_normalizer_verified=True,
+                expected_reward_mean=expected_mean.tolist(),expected_reward_variance=expected_var.tolist(),
+                reward_samples=agent.reward_samples,
                 diagnostic_replay_count=replay.count,metrics=metrics,initial_network_hashes=initial_hashes[-1])
             del agent, replay
         result.update(initial_networks_equal=initial_hashes[0]==initial_hashes[1],
@@ -277,11 +329,12 @@ if __name__ == '__main__':
     p.add_argument('--checkpoint',type=Path)
     p.add_argument('--reward-receipt',type=Path)
     p.add_argument('--controller',choices=('impedance',))
+    p.add_argument('--payload-occupancy',action='store_true')
     p.add_argument('--cpu-pilot',type=Path)
     p.add_argument('--gpu-validation',type=Path)
     a = p.parse_args()
     if a.mode == 'prepare':
-        prepare(a.previous_stage.resolve(),a.root.resolve(),a.checkpoint.resolve(),a.reward_receipt.resolve(),a.controller)
+        prepare(a.previous_stage.resolve(),a.root.resolve(),a.checkpoint.resolve(),a.reward_receipt.resolve(),a.controller,a.payload_occupancy)
     elif a.mode == 'prepare-gpu':
         prepare_gpu_pilot(a.cpu_pilot.resolve(),a.gpu_validation.resolve(),a.root.resolve())
     elif a.mode == 'preflight': preflight(a.root.resolve())

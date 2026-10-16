@@ -1,5 +1,33 @@
 # 更新日志
 
+## 2026-10-16 23:40 CST — 物块进度奖励对照准备与真实CUDA预检
+
+- 开工实时查询/fetch/read main `a63ff29a290ce36fd73f1c9954bf695c9610e4e8`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；开工/收工重读AGENTS。上一轮为实质进展，Goal继续active。
+  原导纳2467890真实推进，归档快照15,500步/10,501更新，收工16,250步/11,251更新；新增2完整回合
+  physical_valid2/2、Task/Strict0/2，return−25.493493/−25.264967，cp13750/15125和2750连续有限更新已核验。
+- 将上一轮仅shadow的物块进度成本接入显式登记的可选trainer分支；新
+  `outputs/rl_goal_impedance_occupancy_20261016`使用原奖励control与额外weight4 occupancy处理，
+  两组fresh同seed/model/optimizer/replay/normalizer，物理/48维/gate/filter/执行器/dt不变；不修改活动source。
+  各44,000交互、1M优化日程、24h派发保护，完整55秒情况下覆盖32条件/39,001更新；比旧8回合pilot多学习曝光，
+  但仍不是收敛或最终测试。登记SHA `b3cb37f91cb713f4878fc7a0e79ae506a846feef159236baa72dd74f557caf1d`。
+- `goal_tracking_pilot`支持单独occupancy类型及44k有限预算，清除从四族选型继承的旧lineage元数据，
+  双组仅允许这一reward差异；dispatcher保持四族前置闭合约束。报告核对实际reward配置，screen不把两组当四族。
+  新奖励进入raw replay前累加，跨reward恢复必须拒绝；分解工具记录两项新增成本。候选的选型接续仍需显式兼容验证。
+  96项Goal unittest通过，包括独立快照依赖、配对身份/预算/混合reward拒绝、缺失处理配置拒绝与结果分解。
+- 真实CPU6/2GiB/swap0/CUDA0预检通过：两组4网络/优化器初始化hash一致，1375条同源训练replay各自重算奖励；
+  reward normalizer的count/mean/variance/G/最大绝对回报与独立递推、批量矩计算一致，末25步回报独立求和一致。
+  两次丢弃更新有限，峰1,516,871,680字节、OOM/max/swap0，保存模型/仿真0，源cp23375 hash不变。
+  实际隔离trainer准入通过；提前launch因四族未闭合拒绝，未生成LAUNCH/execution。已准备Direct alpha0/1 pair保持原hash，均未派发。
+- 已核验共享源码/登记/预检/报告、完整阻抗reward收据及前2导纳回合/cp：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-occupancy-ready-20261016T1540/evidence.tar.gz`，
+  547,562,429字节，SHA `766cab7086f18f6305632f316daa1f06a0695491438d01b0d7ccdd25f62a2fc7`，本地/暂存/最终一致。
+  服务器只做文件/hash。对照仍not_started，不能据预检宣称真实闭环或reward改善，四方法仍未证实收敛，未最终acceptance。
+- 64回合数据按当前2个完整导纳样本估算约20.10GB（不含增长/短失败/传输缓存），当前容量不足以在50GiB保护线之上容纳整对照。
+  重新核验服务器后释放T1455/T1520/T1525三份重复tar缓存2,164,485,381字节，free59.79→61.95GB；
+  原轨迹/checkpoint零删除，缓存可从对应服务器evidence.tar.gz恢复。释放收据单独保留并同步。
+  当前导纳峰3GiB/max1、OOM/swap0、GPU38°C，继续原导纳→VMC；下一步继续核验归档/可恢复离线保留以筹足新试验空间。
+
 ## 2026-10-16 23:25 CST — 阻抗有限段闭合、导纳接续与奖励停滞诊断
 
 - 开工实时查询/fetch/read main `fe07aa91d57935765dd3bee0e6d45a9fe66f533f`、baseline

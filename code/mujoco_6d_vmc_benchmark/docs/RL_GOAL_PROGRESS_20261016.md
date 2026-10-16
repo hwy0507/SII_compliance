@@ -1,5 +1,49 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 23:40 CST：occupancy对照已登记并通过真实预检，未派发
+
+开工main `a63ff29a290ce36fd73f1c9954bf695c9610e4e8`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`实时查询/fetch/read，开工/收工读AGENTS。
+上一轮实际闭合阻抗并诊断奖励，属于进展。原协调器2447861/导纳2467890保持active；
+归档快照15,500步/10,501更新，收工16,250步/11,251更新，新增ep9/10各完整55秒、physical_valid、Task/Strict失败。
+return−25.4934929291/−25.2649668678，cp13750/15125和2750条训练/更新连续有限、逐回合回报和核验。
+导纳峰3GiB、memory.max1、OOM/swap0；GPU38°C。没有重启健康worker、没有重复模拟器。
+
+新根`outputs/rl_goal_impedance_occupancy_20261016`，登记
+`b3cb37f91cb713f4878fc7a0e79ae506a846feef159236baa72dd74f557caf1d`；派发截止2026-10-17T15:34:37.666477Z。
+原payload_shaping reward的fresh control与额外weight4 measured-payload occupancy成本的fresh处理组，
+相同seed/初始化/超参数/物理/条件/学习日程，两组各44,000交互。完整回合情况下32条件循环/39,001次更新；
+短失败保持并可能增加结束回合数，不能把预算当收敛。历史cp23375仅用于诊断replay预检，不被当作fresh对照初始模型。
+本试验不替换当前四族lineage；Direct actor正则化pair原登记/hash保持，尚未运行。
+
+trainer只有登记payload_occupancy_guidance才加入新reward，加入后再写raw replay和消费normalizer，
+早失败补最坏剩余折扣成本。改变/去除该reward不能静默恢复旧checkpoint。公共物理/gate/48维/filter未改。
+pilot验证双组仅reward项不同，44000预算只适用于本类型；从选型四族新建fresh pair时清掉旧selected_lineages，
+避免将两组误当四族恢复。dispatch继续强制前置四方法闭合；报告验证实际处理配置，screen双组独立且four_family_scope=false。
+96项Goal unittest通过，含独立快照入口/预算/seed/混合处理/缺失配置/分解测试；尚未补齐此新reward的跨source选型接续，
+在实际训练结果支持采用时必须先明确核验该兼容链，不放宽现有source一致性检查。
+
+CPU6/2GiB/swap0/CUDA0真实预检：1375条旧训练replay分别生成control与处理reward，
+两组4网络/优化器初始化序列化hash一致，源checkpoint hash不变；agent初始计数为0，预检未保存模型/未仿真。
+独立递推G和批量矩核验normalizer的count/mean/variance/G/G_r_max；control mean−1.35227406、variance .607512116，
+处理mean−2.19579339、variance1.103416443，均1375 reward样本；这些是归一化统计，不是新策略回报。
+末25步replay回报与独立折扣求和一致，两组各一次丢弃更新有限；峰1,516,871,680字节、max/OOM/swap0。
+实际从冻结snapshot隔离导入验证两组trainer准入；提前launch被前置四族仍running拒绝，未创建LAUNCH或execution。
+新pair report/screen都为not_started；预检通过不证明在线收益或任务成功。
+
+服务器已核验`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-occupancy-ready-20261016T1540/evidence.tar.gz`，
+547,562,429字节，SHA `766cab7086f18f6305632f316daa1f06a0695491438d01b0d7ccdd25f62a2fc7`。
+含完整新pair/source/parameter/登记/预检/报告、交付工具/测试、阻抗8回合reward完整收据、导纳ep9/10原始回合及cp；
+训练在airpig，服务器仅文件存储和hash。本轮仍无最终acceptance，四方法均未证实收敛。
+
+容量估算：每完整回合raw约160.9MB、cp约153.1MB，64回合约20,098,866,176字节，
+仅是两个导纳样本的规划估计，不含checkpoint增长/短失败/缓存，不是派发许可。
+当前空闲不足以同时容纳新对照及50GiB保护区，继续归档并使用已验证的可恢复离线保留流程后再派发。
+已重新核验远端并移除三个明确重复传输tar（T1455 lineage/T1520 diagnosis/T1525 impedance-close），
+释放2,164,485,381字节，free59,785,506,816→61,949,943,808；原始回合和checkpoint全部留本地。
+释放收据`TRANSFER_CACHE_RELEASE_20261016T1540.json`单独同步同服务器目录，可按收据下载对应evidence.tar.gz恢复缓存。
+下一步继续当前导纳→VMC、准备后续Direct在线对照及occupancy试验的存储余量；Goal active。
+
 ## 23:25 CST：阻抗闭合并交接导纳；局部误差加权假设修正
 
 实时核对main `fe07aa91d57935765dd3bee0e6d45a9fe66f533f`、baseline

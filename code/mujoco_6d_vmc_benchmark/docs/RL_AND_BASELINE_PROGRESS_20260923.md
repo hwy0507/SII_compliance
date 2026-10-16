@@ -1,5 +1,24 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 23:40 CST 物块进度奖励有限对照准备
+
+原stage02_v2导纳2467890持续推进，收工16,250步/11,251更新；ep9/10完整physical_valid、Task/Strict0/2，
+return−25.493493/−25.264967，cp13750/15125和2750连续有限更新/逐回合回报和核验。
+新`rl_goal_impedance_occupancy_20261016`登记fresh control/weight4物块进度成本两组，各44k、1M优化日程；
+同seed/物理/输入/滤波/执行器，原四族训练和已准备Direct alpha0/1对照不变。登记
+`b3cb37f91cb713f4878fc7a0e79ae506a846feef159236baa72dd74f557caf1d`。
+96项测试与真实CUDA预检通过：同初始化、1375训练样本奖励/归一化统计独立核验、末25步回报求和、各一次丢弃更新有限，
+源cp23375不变、仿真/保存模型0，峰1,516,871,680字节/2GiB、OOM/max/swap0。
+隔离trainer准入通过，实际提前launch因四族未闭合拒绝、无LAUNCH/execution；仅准备，未证实online收益。
+报告/screen识别新reward并拒绝混用，双组不等于四族；采用候选前仍须完成明确的选型接续兼容核验。
+证据及前2导纳原始回合/cp已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-occupancy-ready-20261016T1540/evidence.tar.gz`，
+547,562,429字节，SHA `766cab7086f18f6305632f316daa1f06a0695491438d01b0d7ccdd25f62a2fc7`，本地/暂存/最终一致。
+64回合估计需20.10GB且不含增长/缓存，当前尚不足以在50GiB保护区之上完整存放；继续核验归档/离线保留再派发。
+重新核验远端后释放3份重复tar缓存2,164,485,381字节，free59.79→61.95GB；原始轨迹/cp零删除，可下载服务器包恢复缓存。
+当前导纳峰3GiB/max1、OOM/swap0、GPU38°C。按sii-research-sync核对两分支main a63ff29/baseline f6e8f8c及收工AGENTS。
+Goal active，四方法未证实收敛、未最终acceptance；服务器仅归档，所有失败保留。
+
 ## 2026-10-16 23:25 CST 阻抗阶段结束、导纳接续及reward诊断
 
 stage02_v2阻抗23,375步/18,376更新，本段11,000连续有限更新、8完整physical_valid回合、Task/Strict0/8；

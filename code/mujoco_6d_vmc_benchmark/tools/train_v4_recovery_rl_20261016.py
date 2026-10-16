@@ -102,6 +102,14 @@ def main():
     minimum_disk = effective_disk_reserve(protocol, continuation, goal)
     guidance = validate_guidance(goal_job, controller=a.controller, reward=a.reward,
                                  reward_variant=a.reward_variant)
+    occupancy = (goal_job or {}).get('payload_occupancy_guidance')
+    parent_reward = read(a.resume_checkpoint.resolve().parent/'PROTOCOL.json') if a.resume_checkpoint else {}
+    if occupancy is not None or parent_reward.get('payload_occupancy_guidance') is not None:
+        from goal_payload_occupancy_reward_20261016 import validate_guidance as validate_occupancy, check_reward_resume as check_occupancy_resume, occupancy_terms
+        occupancy = validate_occupancy(goal_job,controller=a.controller,reward=a.reward,reward_variant=a.reward_variant)
+        assert guidance is None, 'Do not combine independently registered reward treatments'
+        if a.resume_checkpoint:
+            check_occupancy_resume(parent_reward,dict(payload_occupancy_guidance=occupancy))
     if a.resume_checkpoint:
         # Reject objective changes before allocating replay or creating output.
         check_reward_resume(read(a.resume_checkpoint.resolve().parent/'PROTOCOL.json'),
@@ -185,6 +193,10 @@ def main():
         specification['tracking_guidance'] = guidance
         specification['tracking_guidance_definition'] = f"Train-only -{guidance['weight']:g} times existing bounded physical tracking integral, added to base reward; discounted worst-case remaining added tracking cost at early failure. Task/Strict labels and gates unchanged. Different objective: do not pool with untreated reward."
     if goal_job is not None:
+        if occupancy is not None:
+            assert occupancy['gamma']==cfg.gamma and occupancy['horizon_s']==cfg.horizon_s
+            specification['payload_occupancy_guidance']=occupancy
+            specification['payload_occupancy_definition']='Train-only dense cost4*(1-measured payload potential)*interval/55; discounted worst-case remaining added cost on early failure. Different objective, not potential shaping. Original Task/Strict and actor48 unchanged.'
         specification['goal_registration_sha256']=sha(a.goal_registration)
         specification['goal_registration']=str(a.goal_registration.resolve())
         specification['credit_horizon_migration']=goal_job.get('credit_migration',False)
@@ -331,6 +343,11 @@ def main():
                                 terminated=done, success=success, config=guidance)
                             reward += sum(guidance_terms.values())
                             terms.update(**guidance_terms, final_reward=reward)
+                        if occupancy is not None:
+                            occupancy_reward = occupancy_terms(next_phi,interval.elapsed_s,rewarder.elapsed_s,
+                                terminated=done,success=success,config=occupancy)
+                            reward += sum(occupancy_reward.values())
+                            terms.update(**occupancy_reward,final_reward=reward)
                         assert np.isfinite(reward)
                         replay.add(observation=obs,action=action,reward=reward,terminated=float(done),truncated=0.,next_observation=next_obs)
                         pending=dict(reward=reward,terminated=done,truncated=False);obs=next_obs;phi=next_phi

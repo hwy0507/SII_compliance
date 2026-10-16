@@ -99,7 +99,7 @@ def collect(root):
             assert reg_hash == expected_reg, 'Parent registration changed'
             parent_state,parent_hash = read_bound(cursor/'execution.json')
             assert parent_hash == expected_execution and parent_state['status'] == 'finite_stage_complete'
-        if reg.get('selected_lineages') or reg.get('experiment_kind')=='resumed_actor_regularization_pilot':
+        if reg.get('selected_lineages') or reg.get('experiment_kind') in ('resumed_actor_regularization_pilot','fresh_parameter_occupancy_pilot'):
             return collect_selected(root)
         stages.append((reg,reg_hash))
         previous = reg.get('previous_stage')
@@ -129,6 +129,7 @@ def collect(root):
             fingerprint = {key:spec[key] for key in ('protocol_sha256','seed','controller','agent_config',
                 'reward','reward_variant','utd','prior_file_sha256','training_conditions')}
             fingerprint['tracking_guidance'] = spec.get('tracking_guidance')
+            fingerprint['payload_occupancy_guidance'] = spec.get('payload_occupancy_guidance')
             if entry['fingerprint'] is not None:
                 assert entry['fingerprint'] == fingerprint, 'Do not pool different training treatments'
                 assert execution['resumed_from']['inherited_steps'] == entry['cumulative_steps']
@@ -164,9 +165,12 @@ def collect_selected(root):
     enters that method's return windows. Historical failures are not dropped.
     """
     latest, _ = read_bound(root/'REGISTRATION.json')
-    pair_scope=latest.get('experiment_kind')=='resumed_actor_regularization_pilot'
+    pair_scope=latest.get('experiment_kind') in ('resumed_actor_regularization_pilot','fresh_parameter_occupancy_pilot')
     if pair_scope:
-        from goal_actor_regularization_pilot_20261016 import validate_pair
+        if latest['experiment_kind']=='resumed_actor_regularization_pilot':
+            from goal_actor_regularization_pilot_20261016 import validate_pair
+        else:
+            from goal_tracking_pilot_20261016 import validate_pair
         validate_pair(latest)
     else:
         assert len(latest['jobs']) == 4
@@ -231,6 +235,7 @@ def collect_selected(root):
             fingerprint = {key:spec[key] for key in ('protocol_sha256','seed','controller','agent_config',
                 'reward','reward_variant','utd','prior_file_sha256','training_conditions')}
             fingerprint['tracking_guidance'] = spec.get('tracking_guidance')
+            fingerprint['payload_occupancy_guidance'] = spec.get('payload_occupancy_guidance')
             if entry['fingerprint'] is not None:
                 assert entry['fingerprint'] == fingerprint, 'Do not pool different training treatments'
                 assert execution['resumed_from']['inherited_steps'] == entry['cumulative_steps']
