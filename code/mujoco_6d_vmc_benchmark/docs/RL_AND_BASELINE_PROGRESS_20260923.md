@@ -1,5 +1,13 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 13:39 CST 收敛统计可复核，第四回合继续
+
+Stage01 Direct optimizer已到55,804步/89,462更新，54,656 checkpoint hash通过；3完整回合
+return均值−31.810846、标准差7.480807，Task/Strict0/3、physical_valid1/3，第四回合在途。
+新增按精确阶段lineage统计的收敛筛选，落实原登记96回合/两个32回合窗口及联合成功要求，
+保留失败/未完成，拒绝重复计数或跨reward拼接；8项测试通过，真实结果不满足收敛。
+worker OOM0/swap0，其他三类未启动。详见[Goal进度](RL_GOAL_PROGRESS_20261016.md)。
+
 ## 2026-10-16 13:31 CST 精确接续入口完成，第三回合继续
 
 Stage01 Direct已到54,500步/88,158更新，保持UTD1；2个结束回合Task/Strict0/2，第三回合在途。

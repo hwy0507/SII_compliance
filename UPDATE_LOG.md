@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-16 13:39 CST — 落实训练收敛统计，拒绝失败平台与累计计数冒充成功
+
+- 查询/fetch/read main `dee4c4ba65b5866d1e31fe0d15122c34da47d384`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/Goal进度。同一stage/worker保持active；
+  optimizer55,804步/89,462更新，54,656 checkpoint hash核验通过，第四回合在途。
+- 3个完整回合return−21.667945/−34.277519/−39.487075，均值−31.810846、标准差7.480807，
+  Task/Strict联合0/3、physical_valid1/3。temperature约0.00058627，不将早期样本判作收敛。
+- 新增训练收敛统计工具：按原登记96回合/两32回合窗口/全条件覆盖/各窗联合成功≥90%/
+  mean漂移≤5%/CV≤25%检查。只合并hash绑定精确接续的自有rows，旧n1回合不混入n25；
+  保留所有失败/在途记录，拒绝重复、缺失、非有限值及不同reward/配置混合。快照与hash可复核。
+  8项针对性测试通过，实际Direct与未启动的其余三类均未满足判据；不执行最终验收。
+- worker内存2,913,398,784字节、上限3GiB，约0.92GB为file缓存，OOM0/worker swap0。
+  持续Goal和训练继续，物理/gate/输入/执行器与活动源码保持。
+- 源码/测试/完整统计快照已归档核验：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-screen-20261016T0539/evidence.tar.gz`，
+  41,304字节，SHA256 `45442e7ee148cdc6cd734afe9594700778551612fd30f9837809b2b14f7ca311`。
+  服务器只归档/hash；第二个新回合之后的大型轨迹/checkpoint仍本机待同步。
+
 ## 2026-10-16 13:31 CST — 补齐四类RL精确接续与逐方法恢复预检
 
 - 查询/fetch/read main `24fd0bd0dc6fda266053bcee6b7ddf7dd23dcd1b`、baseline

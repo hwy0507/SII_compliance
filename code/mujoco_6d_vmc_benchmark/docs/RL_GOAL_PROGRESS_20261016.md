@@ -4,6 +4,38 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 13:39 CST：收敛统计检查落地，训练仍未满足判据
+
+本轮核对main `dee4c4ba65b5866d1e31fe0d15122c34da47d384`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并fetch/read日志与AGENTS。上一轮完成了精确
+接续能力和真实恢复验证，属于进展；本轮保持同一协调器/Direct worker运行，没有重复派发。
+13:39 optimizer已记录55,804步/89,462更新；最近已闭合checkpoint为54,656步，hash通过。
+本阶段3个完整55秒回合return−21.667945、−34.277519、−39.487075，均值−31.810846、
+总体标准差7.480807，Task/Strict联合0/3、physical_valid1/3，第四回合在途。
+temperature最新约0.00058627；这些早期样本不是收敛或调参有效的证明。
+
+新增`screen_goal_rl_convergence_20261016.py`落实先前登记的96回合、两个32回合窗口、
+各窗全32训练条件覆盖、各窗Task AND Strict≥90%、均值漂移≤5%、末窗CV≤25%判据。
+均值相对漂移明确定义为abs(new_mean-old_mean)/max(abs(old_mean),1e-12)，CV为总体标准差/
+max(abs(mean),1e-12)；负回报同样处理。此数值解释在任何合格窗口出现之前固定。
+
+沿新阶段的hash绑定lineage，只累加每段自己的闭合rows，不相加累计episodes/steps；
+Direct旧n1继承的37回合不能混入本n25收敛统计。早期失败/非完整回合仍在分母，在途回合
+单独保留；重复、缺失、乱序、跨奖励/agent配置拼接和缺失父方法证据会报invalid_evidence。
+每份统计保留实际读取的execution与protocol快照/hash，以免活动文件后续更新导致无法复核。
+统计的training_candidate即使为true，也始终不代表最终acceptance或Goal完成。
+
+8项有针对性的测试通过，覆盖失败reward平台、Task/Strict不同时成功、条件缺失、样本不足、
+均值漂移/方差、失败分母/在途回合、重复/非有限值、精确接续计数和奖励漂移拒绝。
+真实阶段检查结果：Direct样本3、联合成功0；其余三类not_started，all_training_candidates=false。
+统计工具只读训练收据，无仿真、无梯度、无模型选择或最终验收。
+worker内存2,913,398,784字节/上限3GiB，随后memory.stat约1.97GB anon和0.92GB file缓存，
+OOM/oom_kill=0、swap.current=0；系统可用内存约5.54GiB。继续观察硬限，不移除保护。
+本轮源码/测试/完整统计快照已归档核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-screen-20261016T0539/evidence.tar.gz`，
+41,304字节，SHA256 `45442e7ee148cdc6cd734afe9594700778551612fd30f9837809b2b14f7ca311`。
+服务器只归档/hash；第二个新回合之后的大型轨迹/checkpoint仍本机待同步。
+
 ## 13:31 CST：四方法精确接续能力完成，当前阶段继续
 
 开工核对main `24fd0bd0dc6fda266053bcee6b7ddf7dd23dcd1b`、baseline
