@@ -1,5 +1,43 @@
 # 更新日志
 
+## 2026-10-17 06:13 CST — occupancy首完整回合：原生奖励公式逐区间核验
+
+开工查询/fetch/read main `32d344e3a828c65d482c856ab268bca256287eaa`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读AGENTS/两份RL进度，收工重读。
+上一轮已完成control预算及自动交接核验；本轮新增occupancy奖励链路证据。
+协调器2502213/occupancy worker2546313保持active，未重启/重复启动/改活动snapshot。
+只读观察器补充warmup空optimizer列表的明确表示（last_optimizer=null），先于4回合目标
+检查首回合公式；不更改训练预算、warmup或优化器。观察器在首回合归档后正常退出。
+
+ep0/repair_train_008完成1375步/55s，physical_valid，Task/Strict0/1，stage carry，
+return−27.520973245；仍处于5000步warmup，optimizer更新0，无学习/收敛或处理收益结论。
+全部1375交互连续，reward分解、AUDIT/trace及cp1375成员hash通过，全部失败保留。
+对首回合原生25Hz手/物块位置重算approach/lift/payload-goal三项等权phi，
+逐区间与RL_INTERVALS及训练日志next_potential核对，最大误差0。
+独立按−4*(1−phi)*interval/55重算occupancy项，1375区间最大误差0，
+occupancy总和−2.027561326，折扣总和−1.495285257；
+首回合完整55s、remaining-tail=0，与日志一致。本证据未覆盖实际提前失败非零tail路径。
+phi初始.112047706、最终/最高.530355179；最终reference potential .594671346，
+核验使用实测物块phi，没有把参考进度冒充物块进度。潜能折扣望远镜残差3.55e−15。
+输入文件读前后hash不变，匹配原始归档成员，原始远端归档复核通过。
+这些是原生遥测/奖励算术核验，无仿真、梯度、独立物理子步或action/filter replay。
+不同定义reward不相减/排名；待两组44k均完成后再比较匹配条件的原生任务结果。
+
+奖励公式助手CPU6/1GiB/swap0，1.208秒退出0，峰32,407,552字节；
+首回合整体核验/归档助手4.331秒退出0。
+worker峰2,086,580,224/max3,221,225,472字节，OOM/max事件/swap0；
+磁盘余56,455,733,248字节，高于50GiB保护；GPU43°C/1113MiB。
+证据 `BENCH/outputs/rl_goal_stream_window_20261017T2215` 含
+OCCUPANCY_REWARD_VERIFICATION、WINDOW、TRAINING_SCREEN、原生输入、检查器源码及原始归档映射；
+已上传且独立SSH复核
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T2215/evidence.tar.gz`，
+2,736,274字节，SHA `9824f7cb848187994097a35940533f009c7ca6b658addb4cab2b62243b5fd23e`。
+按sii-research-sync更新三份进度、提交/push main，保留无关meeting文件。
+Goal active，下一步接续同一worker到4完整回合/5500步并核验warmup后真实更新；
+四族均未证明收敛，控制组0/32结果不变，最终acceptance未执行。
+物理/MJB/gate/canonical48/filter/执行器/dt5e-5保持，本机计算/服务器仅归档。
+
+
 ## 2026-10-17 06:08 CST — 控制组44k预算完成，occupancy奖励组自动接续
 
 开工查询/fetch/read main `7e3abb95f099832fb8f047421330de3be078d260`、
