@@ -1,5 +1,32 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-17 05:27 CST — 已验证等待：控制组26完整回合，35,750步
+
+按sii-research-sync开工查询/fetch/read main `dc821e27b9a7c42bd5c4866c5a872c311c17a5ac`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读AGENTS及两份RL进度，收工重读AGENTS。
+上一轮及本轮均为已验证等待；同一协调器2502213/worker2502235持续active，
+本轮从33,500步/28,501更新观察至35,750步/30,751更新，约11.5分钟，
+26回合闭合且归档后观察器正常退出，未重启、重复派发或改变活动配置。
+
+控制组完成44k预算81.25%；26回合均1375步/55s且physical_valid，Task/Strict0/26。
+新增ep24/25（repair_train_020/025）return −25.791228914/−25.978695063，均停carry。
+全26回合平均return −25.390795640、标准差.465323370，仍不能认定收敛。
+35,750条交互与30,751更新连续且有限，闭合reward分解/总和、AUDIT/trace、
+cp35750成员hash通过；末temperature .001100571、critic loss6.502209。
+occupancy组尚未启动，无奖励处理收益结论；四族未证明收敛，最终acceptance未执行。
+
+本机CPU1/单线程/CUDA0/UTD1保持；worker峰3,040,776,192/max3,221,225,472字节，
+OOM/max事件/swap0，磁盘余57,555,910,656字节，高于50GiB保护线。
+收工仍active，current2,610,409,472字节，GPU42°C/1457MiB。
+CPU6/1GiB/swap0核验归档助手7.062秒退出0，无新增模拟器或独立物理/filter审计。
+本地证据 `BENCH/outputs/rl_goal_stream_window_20261017T2125`，保留全部失败和新增原始归档映射。
+共享归档已上传并再次核验大小/SHA：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T2125/evidence.tar.gz`，
+14,342,104字节，SHA `602f417d2fa194e6822376e6e767ff1ed62a94017865ba50211d3b599174abb7`。
+物理/MJB/gate/canonical48/filter/执行器/dt5e-5保持，服务器只存储/hash。
+Goal active，继续44k×2登记对照；三份进度同步提交/push main，保留无关meeting文件。
+
+
 ## 2026-10-17 05:12 CST — 已验证等待：控制组24完整回合，33,000步
 
 开工按sii-research-sync查询/fetch/read main `d9a4184ea2fcd1a56eddd037d9f9fb97e932bb4d`、
