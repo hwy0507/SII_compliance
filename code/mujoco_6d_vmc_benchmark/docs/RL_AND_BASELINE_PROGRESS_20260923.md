@@ -1,5 +1,16 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 16:20 CST GPU配对训练准备入口已补齐，导纳第5回合保全
+
+导纳快照7364步/2365更新，5完整55秒回合physical_valid5/5、Task/Strict0/5；第5return−25.29435。
+新增从未启动CPU对照创建独立fresh GPU对照的显式入口，要求四族真实GPU全循环通过和冻结
+物理/runtime匹配，原CPU目录保持，必须新的CUDA预检。49项Goal测试通过；实际调用因前序
+仍在运行按预期拒绝，未建GPU目录或新模拟器。memory.events.max503、OOM0/swap0，继续更新。
+第5导纳原始轨迹/cp6875与实现/测试/拒绝收据已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-pair-entry-20261016T0820/`，
+SHA256 `68548ebda3ad34e1c641c3fd6c9e7f9b1a84e98572dd055058910fc352d4fa56`。
+Goal active，准备入口不是GPU训练验证或收敛；实际GPU全循环和奖励对照尚未派发。
+
 ## 2026-10-16 16:10 CST 末端邻近诊断与导纳梯度更新
 
 导纳6576步/1577更新，4完整55秒回合physical_valid4/4、Task/Strict0/4；VMC排队。

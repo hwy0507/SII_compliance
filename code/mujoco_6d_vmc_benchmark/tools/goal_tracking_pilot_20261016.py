@@ -13,10 +13,10 @@ import subprocess
 import sys
 
 from rl_goal_stage_20261016 import (BENCH, read, write, digest, manifest, verify_inputs,
-    completed_stage_checkpoints)
+    completed_stage_checkpoints, validate_gpu_training_closure)
 from rl_recovery_control_20261016 import verify_checkpoint
 from goal_tracking_reward_20261016 import CONFIG, PARAMETER_CONFIG, tracking_terms
-from goal_compute_backend_20261016 import backend, runtime_info
+from goal_compute_backend_20261016 import backend, runtime_info, GPU_RESOURCES
 
 
 def pair_settings(controller):
@@ -135,6 +135,62 @@ def verify_pilot_preflight(reg):
     return result
 
 
+def prepare_gpu_pilot(cpu_pilot, validation, destination):
+    """New fresh pair only after actual four-family CUDA full-loop validation.
+
+    Preserve the original CPU experiment and all historical model checkpoints.
+    The new pair needs its own CUDA discarded-update preflight before launch.
+    """
+    assert not destination.exists(), 'Preserve every pilot attempt'
+    old = read(cpu_pilot/'REGISTRATION.json')
+    verify_inputs(old); validate_pair(old); verify_pilot_preflight(old)
+    assert backend(old) == 'cpu'
+    assert not (cpu_pilot/'LAUNCH.json').exists() and not (cpu_pilot/'execution.json').exists(), \
+        'Only an unlaunched CPU pilot can be superseded by this fresh GPU pair'
+    require_predecessor_complete(old)
+    gpu = read(validation/'REGISTRATION.json'); state = read(validation/'execution.json')
+    verify_inputs(gpu); validate_gpu_training_closure(gpu,state)
+    assert state['registration_sha256'] == digest(validation/'REGISTRATION.json')
+    for key in ('parent_root','parent_protocol_sha256','runtime','python','compute_host','dispatch_lock'):
+        assert old[key] == gpu[key], 'CUDA validation must use the same frozen task/runtime'
+    assert old['parameter_manifest'] == gpu['parameter_manifest']
+    # Dispatch and learning plumbing may differ; physical worker/scripts/assets
+    # must match the validation used to authorize these full training loops.
+    physical = lambda files: {k:v for k,v in files.items() if
+        k.startswith(('scripts/','assets/')) or k == 'tools/baseline_repair_worker_20261008.py'}
+    assert physical(old['source_manifest']) == physical(gpu['source_manifest'])
+    destination.mkdir(parents=True)
+    ignore=shutil.ignore_patterns('__pycache__','*.pyc')
+    source=destination/'source'; parameter=destination/'parameter_n25'
+    shutil.copytree(old['source'],source,ignore=ignore)
+    shutil.copytree(old['parameter_source'],parameter,ignore=ignore)
+    # Only this preparation entry point is added; retain the paired trainer and
+    # reward implementation that already passed the original CPU preflight.
+    shutil.copy2(BENCH/'tools/goal_tracking_pilot_20261016.py',source/'tools/goal_tracking_pilot_20261016.py')
+    started=datetime.now(timezone.utc)
+    jobs=[]
+    for job in old['jobs']:
+        output=destination/job['name']
+        jobs.append(dict(job,output=str(output),
+            unit='sii-rl-goal-'+hashlib.sha256(str(output).encode()).hexdigest()[:12]))
+    reg=dict(old,run_root=str(destination),source=str(source),parameter_source=str(parameter),
+        source_manifest=manifest(source),parameter_manifest=manifest(parameter),jobs=jobs,
+        registered_utc=started.isoformat(),dispatch_deadline_utc=(started+timedelta(hours=24)).isoformat(),
+        stop_file=str(destination/'STOP_REQUESTED'),
+        coordinator_unit='sii-rl-goal-stage-'+hashlib.sha256(str(destination).encode()).hexdigest()[:12],
+        resources=dict(old['resources'],**GPU_RESOURCES),
+        source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=BENCH,text=True).strip(),
+        source_worktree_state='Original fresh CPU pair source retained except GPU-pair preparation entry point; content manifests authoritative.',
+        gpu_training_validation=dict(root=str(validation),registration_sha256=digest(validation/'REGISTRATION.json'),
+            execution_sha256=digest(validation/'execution.json')),
+        derived_from_cpu_pilot=dict(root=str(cpu_pilot),registration_sha256=digest(cpu_pilot/'REGISTRATION.json'),
+            cpu_preflight_sha256=digest(cpu_pilot/'CREDIT_PREFLIGHT.json')),
+        backend_migration='None: both arms initialize fresh on CUDA; historical checkpoint is diagnostic replay only. CPU pair remains unlaunched.')
+    validate_pair(reg); verify_inputs(reg)
+    write(destination/'REGISTRATION.json',reg)
+    return reg
+
+
 def preflight(root):
     reg = read(root/'REGISTRATION.json'); verify_inputs(reg); validate_pair(reg)
     out = root/'CREDIT_PREFLIGHT.json'; assert not out.exists()
@@ -211,14 +267,18 @@ def preflight(root):
 
 if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('mode',choices=('prepare','preflight','check-ready'))
+    p.add_argument('mode',choices=('prepare','prepare-gpu','preflight','check-ready'))
     p.add_argument('--root',type=Path,required=True)
     p.add_argument('--previous-stage',type=Path)
     p.add_argument('--checkpoint',type=Path)
     p.add_argument('--reward-receipt',type=Path)
     p.add_argument('--controller',choices=('impedance',))
+    p.add_argument('--cpu-pilot',type=Path)
+    p.add_argument('--gpu-validation',type=Path)
     a = p.parse_args()
     if a.mode == 'prepare':
         prepare(a.previous_stage.resolve(),a.root.resolve(),a.checkpoint.resolve(),a.reward_receipt.resolve(),a.controller)
+    elif a.mode == 'prepare-gpu':
+        prepare_gpu_pilot(a.cpu_pilot.resolve(),a.gpu_validation.resolve(),a.root.resolve())
     elif a.mode == 'preflight': preflight(a.root.resolve())
     else: require_predecessor_complete(read(a.root.resolve()/'REGISTRATION.json'))

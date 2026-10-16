@@ -4,6 +4,38 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 16:20 CST：GPU奖励对照交接入口完成，导纳第5回合已保存
+
+开工核对main `5925a1c12d9641c699cbbf834fddc56565206a47`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`与远端日志/AGENTS。原导纳PID2360933从
+6951步/1952更新推进至归档快照7364步/2365更新；第5完整55秒回合于08:13:41Z闭合，
+return−25.294348699，cp6875完整hash通过。累计physical_valid5/5、Task/Strict0/5，
+第6在途、VMC排队。训练任务失败与资源故障分开：当前没有OOM，仍不能说已收敛。
+
+已准备的CPU奖励对照原先没有显式转为新GPU登记的入口。新增
+`goal_tracking_pilot_20261016.py prepare-gpu --cpu-pilot <原CPU配对目录> --gpu-validation <四族GPU完整循环目录> --root <新目录>`。
+必须CPU配对从未启动且其预检通过、四族前序正常闭合、实际GPU完整55秒回合/资源保护通过；
+核验相同parent协议/runtime/解释器/锁、parameter清单、scripts/assets及物理worker源码。
+只复制原配对源并更新准备入口，trainer/reward不变；两臂fresh模型/optimizer/replay/normalizers、
+同seed、各11k/1M日程、CPU1/3GiB/swap0/UTD1，显式CUDA0/.125 allocator，原CPU目录不变。
+新登记保存原CPU登记/预检hash与GPU验证登记/execution hash，24小时派发保护；不能复制旧
+CPU预检当GPU预检，必须在新source上重新实际跑2次丢弃更新，再按原launch/锁/资源准入派发。
+
+49项Goal测试、编译/diff检查通过。合成GPU闭合fixture验证入口逻辑，不是真实GPU训练证据。
+实际对现有阻抗pilot运行该入口，因stage01仍running在创建目录前exit1；完整命令/stderr在
+`GPU_PAIR_READINESS_20261016T0820.json`，原CPU登记SHA256
+`52884e47b1db9e4ea4a050940e70d1edcf81aa46482d44412ba2976b69472a16`保持。没有新GPU
+目录/LAUNCH/训练进程；当前CPU训练继续。待stage01四族闭合，先完成已实现的GPU四族
+真实全循环验证，再使用此入口执行奖励对照，不能用准备工作替代在线修复效果。
+
+导纳快照temperature .00802963，memory.current3,164,946,432、peak3,221,225,472字节，
+memory.events.max503，OOM/kill0、swap0。硬上限回收事件不等于OOM；保留3GiB限制并继续观察
+真实步数，不为接近上限重启健康作业。本地约81GiB可用，50GiB派发保留线不变。
+第5完整原始回合/cp6875、实现/测试、真实拒绝收据与执行/资源快照已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-pair-entry-20261016T0820/evidence.tar.gz`，
+268,980,389字节，SHA256 `68548ebda3ad34e1c641c3fd6c9e7f9b1a84e98572dd055058910fc352d4fa56`。
+服务器仅传输/文件hash，无计算；后续回合仍本机待归档。Goal active，四族均无可验证收敛结论。
+
 ## 16:10 CST：末端邻近诊断，导纳真实学习继续
 
 开工核对main `bc56632dbe6a4f92f1fe7cb1f529d6b50af32229`、baseline

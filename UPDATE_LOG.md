@@ -1,5 +1,27 @@
 # 更新日志
 
+## 2026-10-16 16:20 CST — 补齐GPU奖励对照交接入口，导纳第5回合闭合
+
+- 开工查询/fetch/read main `5925a1c12d9641c699cbbf834fddc56565206a47`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/Goal进度；上一轮诊断归档为进展。
+  原导纳PID2360933持续运行，由6951步/1952更新推进至归档快照7364步/2365更新；
+  5个完整55秒回合physical_valid5/5、Task/Strict0/5，第5return−25.294348699；VMC排队。
+- `goal_tracking_pilot_20261016.py`新增显式`prepare-gpu`入口：仅从未启动且CPU预检通过的
+  配对登记创建独立GPU实验；必须先核验四族前序闭合与真实GPU完整循环、无OOM/swap证据，
+  并匹配冻结物理源码/parameter清单、原协议/runtime/解释器/锁。两臂仍fresh、同seed、
+  各11k、UTD1，保留原trainer/reward，原CPU登记/源码/预检不变；新GPU登记必须重新预检，
+  不能复用CPU通过收据或把历史checkpoint当初始化。当前没有创建/启动GPU对照。
+- 49项Goal测试通过，包含freshness/冻结trainer保持、独立预检、running/短GPU回合、已启动
+  CPU对照及runtime不匹配拒绝。编译/diff检查通过。真实现有阻抗pilot调用在stage01仍运行时
+  正确exit1，完整stderr保留，未创建目标目录；原登记SHA256 `52884e47b1db9e4ea4a050940e70d1edcf81aa46482d44412ba2976b69472a16`不变。
+  这些测试不是实际GPU完整回合通过，GPU训练仍待原四族完成。
+- 导纳快照temperature .00802963，memory.current3,164,946,432、peak3,221,225,472/3GiB，
+  memory.events.max503（硬上限回收），OOM/kill0、swap0；真实更新继续，不扩大内存、不重启。
+  第5完整轨迹/cp6875、源码/测试、真实拒绝与执行/资源快照已归档核验：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-pair-entry-20261016T0820/evidence.tar.gz`，
+  268,980,389字节，SHA256 `68548ebda3ad34e1c641c3fd6c9e7f9b1a84e98572dd055058910fc352d4fa56`。
+  服务器仅归档，无新模拟器、训练奖励修改或最终验收；Goal active，未收敛。
+
 ## 2026-10-16 16:10 CST — 末端与早期输入邻近诊断完成，导纳真实更新继续
 
 - 开工查询/fetch/read main `bc56632dbe6a4f92f1fe7cb1f529d6b50af32229`、baseline
