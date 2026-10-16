@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-16 19:07 CST — 阻抗真实学习已开始，501次更新与模型落盘核验通过
+
+- 查询/fetch/read main `1f59dbfc810e210fe39ae72bc6fd1310f8517859`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工重读AGENTS。上一轮为进展。
+  同一trainer2400811持续运行，5000步开始第一次更新；5500步第四完整回合于11:04:24Z结束。
+  只读核验实际等待同一active PID至cp5500，未启动第二模拟器或修改活动源码。
+- cp4125/5500文件与tar成员hash通过；501条optimizer序号连续1–501、交互5000–5500，
+  所有指标有限；cp保存interactions5500/updates501，actor/critic文件hash相较热身cp均改变。
+  critic loss首末9.23035→8.98545，temperature首末0.01000→0.00956482；这些不是收敛证据。
+  前5500条训练日志序号完整，四回合reward求和与execution一致。第四回合return−24.997562068，
+  四回合physical_valid4/4、Task/Strict0/4，保留全部失败。11:06:39Z已6000步/1001更新，第五回合在途。
+- 第三/第四原始回合、cp4125/5500、前5500步训练日志、501条优化指标、核验/复现脚本已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-learning-20261016T1105/evidence.tar.gz`，
+  459,990,965字节，SHA256 `c7b7c8a674282783bc8c056ebfdf69d2dfad617768efd949cd77ed32938c3d60`。
+  本机/远端hash和大小一致，服务器仅存储/hash，没有计算；前两个回合已有独立归档。
+- 最新资源current2,820,227,072、peak2,923,593,728字节、OOM/max0/swap0，GPU44°C/1448MiB。
+  control仍按11k预算继续，tracking与Direct v2待队列接续。Goal active，四类尚未证明收敛，未运行最终acceptance。
+
 ## 2026-10-16 18:58 CST — Goal接续，阻抗control完成第三个热身回合
 
 - 查询/fetch/read main `bf1c5904620059a5ff6a1f404b038944f48f73e9`、baseline

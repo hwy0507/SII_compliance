@@ -1,5 +1,15 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 19:07 CST 阻抗热身转学习已核验
+
+原trainer2400811到6000步/1001更新；cp5500的501条真实更新连续且有限、actor/critic文件hash改变，
+cp4125/5500源文件及归档成员hash通过。第四完整回合return−24.997562，四回合Task/Strict0/4、
+physical_valid4/4，无收敛结论。OOM/max0、swap0，仍单模拟器/3GiB/UTD1/CUDA0。
+第三/第四轨迹与两个checkpoint、截至5500步日志和核验源码已核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-learning-20261016T1105/evidence.tar.gz`，
+459,990,965字节，SHA256 `c7b7c8a674282783bc8c056ebfdf69d2dfad617768efd949cd77ed32938c3d60`。
+Goal active；继续阻抗control→tracking，Direct v2后续接续，最终acceptance仍未运行。
+
 ## 2026-10-16 18:58 CST 阻抗control三个热身回合闭合
 
 Goal active，原trainer2400811持续4125步/0更新（5000步热身），三个55秒回合

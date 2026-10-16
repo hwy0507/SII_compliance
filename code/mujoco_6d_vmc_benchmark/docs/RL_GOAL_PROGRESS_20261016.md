@@ -1,5 +1,28 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 19:07 CST：阻抗跨过热身，真实更新及5500 checkpoint核验通过
+
+本轮main `1f59dbfc810e210fe39ae72bc6fd1310f8517859`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`查询/fetch/read，AGENTS开工/收工重读。
+上一轮为进展；原trainer2400811/协调器2400799继续，观察服务每30秒检查原PID active，
+有600秒时限，不凭状态文件重新启动。5000步开始更新，5500边界11:04:24Z闭合，核验服务exit0。
+
+cp4125/5500及归档tar内成员hash通过，前者updates0，后者interactions5500/updates501。
+actor/critic保存文件hash均改变，优化日志501条step5000–5500/update1–501连续、指标全部有限；
+critic loss首末9.23035→8.98545，temperature .01000→.00956482，actor entropy −12.02979→3.14322。
+这些是早期更新观测，不能据此判定策略改善或收敛。5500条训练日志完整、四回合reward求和一致。
+第四回合repair_train_007完整55秒，return−24.997562068、physical_valid=true、Task/Strict=false。
+累计四回合physical_valid4/4、Task/Strict0/4，全部失败保留；第五回合repair_train_002已启动。
+11:06:39Z execution6000步/1001更新，资源current2,820,227,072、peak2,923,593,728字节，
+OOM/max0、swap0；GPU44°C/1448MiB。没有第二模拟器，冻结source/配置未改。
+
+第三/第四回合原始轨迹、cp4125/5500、截至5500步训练与更新日志、检查收据/脚本已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-learning-20261016T1105/evidence.tar.gz`
+459,990,965字节，SHA256 `c7b7c8a674282783bc8c056ebfdf69d2dfad617768efd949cd77ed32938c3d60`。
+本机/远端hash与大小一致，服务器仅存储/hash。前两个回合在前两独立包，不重复打包。
+后续日志/第五回合仍本地。control继续至11k后应自动接续fresh tracking组；Direct v2预检已通过、
+仍未启动，须等当前配对结束和全局仿真锁释放。Goal active，四类尚未收敛，不提前最终验收。
+
 ## 18:58 CST：原阻抗control已完成三个热身回合，Goal继续
 
 开工main `bf1c5904620059a5ff6a1f404b038944f48f73e9`、baseline
