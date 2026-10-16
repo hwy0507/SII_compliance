@@ -1,5 +1,16 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 18:58 CST 阻抗control三个热身回合闭合
+
+Goal active，原trainer2400811持续4125步/0更新（5000步热身），三个55秒回合
+physical_valid3/3、Task/Strict0/3，return−25.49341/−26.06712/−25.07228。
+OOM/max0、swap0；第四回合已启动，未重复派发或改活动源码。下一核查5000真实更新及5500checkpoint。
+第二回合/cp2750核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-warmup-20261016T1058/evidence.tar.gz`，
+193,890,501字节，SHA256 `89398d832ac2abe46b389832768c8ba648fc8187f322fc25c1d74c434c8868f0`。
+归档首版误处理在途行的失败及修复记录均保留，训练未受影响；第三回合仍本地待同步。
+阻抗处理组/Direct v2尚未启动；当前无收敛/最终验收结论，详见Goal进度。
+
 ## 2026-10-16 18:50 CST 修复Direct GPU准备依赖遗漏，阻抗热身继续
 
 旧Direct快照转GPU只刷新部分模块，实测入口ImportError；修复为配套刷新五模块，保留原失败目录。

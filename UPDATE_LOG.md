@@ -1,5 +1,24 @@
 # 更新日志
 
+## 2026-10-16 18:58 CST — Goal接续，阻抗control完成第三个热身回合
+
+- 查询/fetch/read main `bf1c5904620059a5ff6a1f404b038944f48f73e9`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工重读AGENTS；Goal仍active，未重复创建。
+  原协调器2400799、trainer2400811及单模拟器真实推进；10:56:57Z累计4125步/0更新，
+  三个完整55秒回合return依次−25.493411918、−26.067120701、−25.072283800，
+  physical_valid3/3、Task/Strict0/3。5000步随机热身尚未结束，0更新符合登记，不表示学习卡死。
+- 本轮核验并归档第二回合及checkpoint_0002750；文件与tar内checkpoint成员hash通过。
+  初次临时归档脚本误将尚未结束的rows当完整回合，缺step_after后退出、未生成包；
+  修复为仅选ended_utc/step_after齐备行，完整execution快照仍保留在途行，失败脚本/journal随包保留。
+  这只影响归档，训练未受影响，活动训练源码未改。
+- 已核验独立归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-warmup-20261016T1058/evidence.tar.gz`，
+  193,890,501字节，SHA256 `89398d832ac2abe46b389832768c8ba648fc8187f322fc25c1d74c434c8868f0`。
+  首回合归档见前条；第三回合/cp4125新产生，仍仅本地待同步。服务器只存储/hash。
+- 4125边界资源current1,895,649,280、peak2,617,638,912字节，OOM/max0、swap0；GPU43°C、约1117MiB。
+  control第四回合repair_train_007已接续；tracking处理组与Direct v2仍未启动，不抢占原模拟器。
+  下一步核查5000步真实学习及5500回合边界checkpoint，再完成control→tracking配对；无最终验收或收敛结论。
+
 ## 2026-10-16 18:50 CST — 修复旧Direct快照的GPU准备依赖遗漏，真实预检通过
 
 - 开工查询/fetch/read main `6c5e2df121b18b5d181a3fb49393aa3081fb0de7`、baseline

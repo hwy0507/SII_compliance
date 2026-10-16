@@ -1,5 +1,23 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 18:58 CST：原阻抗control已完成三个热身回合，Goal继续
+
+开工main `bf1c5904620059a5ff6a1f404b038944f48f73e9`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已查询/fetch/read，两次读取AGENTS。
+原协调器2400799/trainer2400811保持运行，唯一模拟器推进，未新建Goal/重启训练或更改冻结快照。
+10:56:57Z到4125步/0更新，第四回合repair_train_007随后启动。5000步之前仍为登记热身，
+三回合return−25.493411918、−26.067120701、−25.072283800，physical_valid3/3、Task/Strict0/3。
+不能将热身reward小幅波动或无梯度更新解释为收敛/故障。下一重点是5000步更新和5500完整边界。
+4125边界current1,895,649,280、peak2,617,638,912字节，OOM/max0、swap0，GPU43°C/约1117MiB。
+
+第二回合repair_train_029及cp2750源文件/tar成员hash核验通过，已归档核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-warmup-20261016T1058/evidence.tar.gz`
+193,890,501字节，SHA256 `89398d832ac2abe46b389832768c8ba648fc8187f322fc25c1d74c434c8868f0`。
+临时归档首版误访问在途row的step_after而退出，无包/无训练影响；修复只选闭合行，
+仍在完整execution快照保留在途条目，失败脚本与journal随包归档。源脚本保留/tmp，归档包含复现源码。
+首回合已有独立包；第三回合/cp4125在本次包快照后产生，仍仅本地待同步，不冒称已经归档。
+服务器未计算。阻抗处理组和Direct v2继续等待当前队列，所有四方法仍未证明收敛，最终验收未运行。
+
 用户于2026-10-16 12:52 CST明确开启Goal，要求持续推进并自主修复训练问题。Goal active，
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
