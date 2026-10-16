@@ -16,6 +16,32 @@ spec.loader.exec_module(control)
 
 
 class RecoveryTests(unittest.TestCase):
+    def test_strictest_disk_registration_is_used_at_actual_episode_boundary(self):
+        tree=ast.parse((TOOLS/'train_v4_recovery_rl_20261016.py').read_text())
+        helper=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='effective_disk_reserve')
+        env={};exec(compile(ast.Module(body=[helper],type_ignores=[]),'<reserve>','exec'),env)
+        reserve=env['effective_disk_reserve'];gib=1024**3
+        self.assertEqual(reserve({'min_free_disk_bytes':20*gib},None,{'minimum_free_disk':50*gib}),50*gib)
+        self.assertEqual(reserve({'min_free_disk_bytes':70*gib},None,{'minimum_free_disk':50*gib}),70*gib)
+        self.assertEqual(reserve({}, {'min_free_disk_bytes':60*gib}, {'minimum_free_disk':50*gib}),60*gib)
+        for bad in (-1,1.5,True,'50'):
+            with self.assertRaises(ValueError):reserve({},None,{'minimum_free_disk':bad})
+        loop=next(n for n in ast.walk(tree) if isinstance(n,ast.While) and 'step + 1375' in ast.unparse(n.test))
+        start=next(i for i,n in enumerate(loop.body) if isinstance(n,ast.Assign) and
+            any(isinstance(t,ast.Name) and t.id=='disk_free' for t in n.targets))
+        # Run the actual boundary block, then a sentinel where dispatch follows.
+        body=loop.body[start:start+3]+ast.parse('started_simulator=True').body
+        test_loop=ast.For(target=ast.Name(id='_',ctx=ast.Store()),iter=ast.List(elts=[ast.Constant(0)],ctx=ast.Load()),body=body,orelse=[])
+        code=compile(ast.fix_missing_locations(ast.Module(body=[test_loop],type_ignores=[])),'<boundary>','exec')
+        for free,expected in ((49*gib,False),(50*gib,True),(60*gib,True)):
+            mock=type('Disk',(),{'disk_usage':staticmethod(lambda path: type('Usage',(),{'free':free})())})
+            values=dict(shutil=mock,out='/unused',minimum_disk=50*gib,state={},stop=False,started_simulator=False)
+            exec(code,values)
+            self.assertEqual(values['started_simulator'],expected)
+            self.assertEqual(values['stop'],not expected)
+            self.assertEqual(values['state']['disk_boundary_snapshot'],dict(free_bytes=free,reserve_bytes=50*gib))
+            if not expected:self.assertEqual(values['state']['resource_stop_reason'],'disk_reserve')
+
     def test_actual_trainer_update_loop_honors_registration(self):
         tree=ast.parse((TOOLS/'train_v4_recovery_rl_20261016.py').read_text())
         # Execute the optimizer loop that actually calls agent.update, not a

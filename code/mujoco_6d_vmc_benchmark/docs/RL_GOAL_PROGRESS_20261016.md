@@ -4,6 +4,37 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 16:40 CST：修复每回合磁盘保护遗漏，导纳第7回合保全
+
+开工main `681a1a3f55a18063a2622410889dafb83c5e9f77`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已查询/fetch/read，AGENTS重读。
+导纳同PID2360933从8807步/3808更新推进至快照9701/4702；第7于08:36:50Z闭合，
+return−25.435066062、cp9625全部hash通过。7完整55秒physical_valid7/7、Task/Strict0/7；
+第8在途、VMC排队。memory.current3,034,660,864、peak3GiB、max1877、OOM/kill0/swap0，
+temperature .00650053。max是上限回收事件，未作为重启依据。
+
+存储盘点发现实际实现遗漏：Goal派发前要求50GiB，但trainer原回合检查只读取父协议20GiB。
+新增`effective_disk_reserve`取父协议/continuation/Goal最大值，拒绝非法字节数，每回合
+记录free/reserve并在不足时停止下一回合，沿原退出路径保存checkpoint。49项Goal＋6项恢复
+测试通过；直接运行实际AST边界块，49GiB不派发，50/60允许，70GiB父约束仍优先。
+真实登记辅助函数计算50GiB，free85,491,027,968字节（约79.6GiB），没有空间不足的实际停机。
+当前冻结trainer hash `c762d875d469047f311942c02f4e1bcbe81fa9d51712779f84beb6a28654ace7`未改；
+候选新trainer hash `119ab188749e7b8362fc6d51dd5ff85decbf9f6cf1dd9f5846f0bd65a7de34d0`。
+后续GPU验证准备会引入新trainer，GPU配对准备也更新为复制新trainer；两臂物理/parameter/
+reward快照仍一致，旧CPU pilot/source不改。此前“GPU准备保留旧trainer”说明自此被此修复取代。
+同时修正tracking元数据硬编码−4，按真实额外权重4/36填写；实际奖励算法没有改变。
+
+`STORAGE_FORECAST_20261016T0840.json`保留各闭合回合/checkpoint实际大小及登记依赖：
+stage01约7.06GB，保留线以上约32.12GB。按当前完整轨迹每交互101,792–117,904字节外推，
+四族各1M交互仅轨迹407–472GB；尚不含checkpoint/log/source/传输缓存，不是保证总量。
+长期训练须增量核验归档并把不再本地依赖的历史数据离线保留；当前不删除任何原始文件，
+不降低50GiB保留线，不把此盘点当完整存储迁移已经完成。
+
+第7完整轨迹/cp9625、修复/测试、真实登记检查/资源快照及盘点脚本已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-disk-guard-20261016T0840/evidence.tar.gz`，
+270,081,238字节，SHA256 `0d1e3c4bcc31c7c5f191b0c83fa21053a357e222c43e620e6ddc31dc02626eaf`。
+服务器仅文件传输/大小/hash。Goal active；继续收完导纳并核对VMC接续，GPU真实完整循环待四族闭合。
+
 ## 16:30 CST：导纳第6回合正常闭合，稳定失败回报不等于收敛
 
 开工核对main `e100c6d81f12c3451d286bcc249c014567acc8c6`、baseline

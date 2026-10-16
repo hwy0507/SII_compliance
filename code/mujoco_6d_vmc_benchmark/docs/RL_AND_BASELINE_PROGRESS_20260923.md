@@ -1,5 +1,16 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 16:40 CST Goal磁盘保留线修复，导纳第7回合归档
+
+导纳9701步/4702更新，7完整55秒physical_valid7/7、Task/Strict0/7；第8在途。修复trainer
+每回合只查旧20GiB、遗漏Goal50GiB的问题：后续取所有登记最大值，回合边界保存后停止新派发。
+49项Goal＋6项恢复测试通过，真实登记计算50GiB；当前约79.6GiB，活动冻结source保持不变。
+GPU新配对准备会引入该修复；额外tracking权重说明改为真实4/36，奖励计算保持。
+第7轨迹/cp9625、修复与存储盘点已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-disk-guard-20261016T0840/`，
+SHA256 `0d1e3c4bcc31c7c5f191b0c83fa21053a357e222c43e620e6ddc31dc02626eaf`。未删原始文件；
+四百万交互轨迹空间外推407–472GB，后续仍需归档/离线保留。Goal active，未收敛。
+
 ## 2026-10-16 16:30 CST 导纳6回合奖励/实际参数复核，训练继续
 
 导纳快照8326步/3327更新，cp8250与第6完整55秒回合正常保存，physical_valid6/6、

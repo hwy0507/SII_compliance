@@ -1,5 +1,26 @@
 # 更新日志
 
+## 2026-10-16 16:40 CST — 修复Goal每回合磁盘保留线遗漏，导纳进入第8回合
+
+- 开工查询/fetch/read main `681a1a3f55a18063a2622410889dafb83c5e9f77`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/Goal进度。原导纳PID2360933
+  由8807/3808推进至归档快照9701/4702（steps/updates）；7个完整55秒回合physical_valid7/7、
+  Task/Strict0/7，第7return−25.435066062，cp9625全部hash通过，第8在途，VMC排队。
+- 确认资源保护缺口：协调器派发前检查Goal50GiB，但trainer每回合只读取旧协议20GiB。
+  新trainer在每回合边界取原协议/continuation/Goal登记的最大保留线，记录实际free/reserve，
+  不足时停止新回合并保存checkpoint。真实登记计算为50GiB，当前free约79.6GiB，未触发停止。
+  49项Goal＋6项恢复测试、编译/diff通过；回归直接执行实际边界代码，49GiB拒绝、50/60允许，
+  并验证更严格父协议不被降低。此修复尚未进入活动worker，冻结source清单核验不变。
+- 新GPU配对准备入口会复制修复trainer，物理/parameter/reward保持原配对快照；原CPU pilot
+  目录不改。另将tracking说明中硬编码额外权重4改为真实登记4/36，奖励算术未变。
+  磁盘盘点stage01约7.06GB、保留线以上约32.12GB；按现有轨迹密度外推四族各1M仅轨迹
+  约407–472GB（不含checkpoint等，非精确预测），后续需逐阶段核验归档/离线保留，本轮未删原始数据。
+- 快照memory.current3,034,660,864、peak3GiB、max1877、OOM/kill0、swap0；temperature .00650053。
+  第7轨迹/cp9625、修复源码/测试、真实登记检查及存储盘点已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-disk-guard-20261016T0840/evidence.tar.gz`，
+  270,081,238字节，SHA256 `0d1e3c4bcc31c7c5f191b0c83fa21053a357e222c43e620e6ddc31dc02626eaf`。
+  本机计算、服务器仅归档。Goal active，资源保护修复不是训练收敛或最终验收通过。
+
 ## 2026-10-16 16:30 CST — 导纳6个完整回合仍为失败平台，奖励与实际参数链路复核
 
 - 开工查询/fetch/read main `e100c6d81f12c3451d286bcc249c014567acc8c6`、baseline

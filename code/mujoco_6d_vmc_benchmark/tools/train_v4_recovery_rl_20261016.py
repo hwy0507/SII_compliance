@@ -16,6 +16,7 @@ import os
 from pathlib import Path
 import platform
 import signal
+import shutil
 import subprocess
 import sys
 import numpy as np
@@ -29,6 +30,16 @@ from baseline_repair_reward_clock_20261009 import TIME_BASE, SERVO_DT, remaining
 from goal_tracking_reward_20261016 import validate_guidance, check_reward_resume, tracking_terms
 from goal_compute_backend_20261016 import (backend, check_backend_resume, runtime_info,
     gpu_snapshot, gpu_admission_reason)
+
+
+def effective_disk_reserve(protocol, continuation=None, goal=None):
+    """Retain the strictest registered reserve at every episode boundary."""
+    values=[protocol.get('min_free_disk_bytes',0)]
+    if continuation is not None:values.append(continuation['min_free_disk_bytes'])
+    if goal is not None:values.append(goal['minimum_free_disk'])
+    if any(type(v) is not int or v<0 for v in values):
+        raise ValueError('Disk reserves must be nonnegative integer byte counts')
+    return max(values)
 
 
 def main():
@@ -88,6 +99,7 @@ def main():
         deadline=datetime.fromisoformat(continuation['dispatch_deadline_utc'])
         if continuation.get('cooperative_stop_file'):
             stop_file=Path(continuation['cooperative_stop_file'])
+    minimum_disk = effective_disk_reserve(protocol, continuation, goal)
     guidance = validate_guidance(goal_job, controller=a.controller, reward=a.reward,
                                  reward_variant=a.reward_variant)
     if a.resume_checkpoint:
@@ -159,6 +171,7 @@ def main():
     specification['utd'] = utd
     specification['learning_backend'] = backend(goal)
     specification['compute_runtime'] = compute_runtime
+    specification['effective_min_free_disk_bytes'] = minimum_disk
     specification['backend_migration'] = bool(goal_job and goal_job.get('backend_migration'))
     specification['recovery_implementation'] = '20261016: range(utd), hard cgroup memory/swap required; inherited v4 checkpoints were trained with actual UTD=2'
     specification['recovery_trainer_source'] = str(Path(__file__).resolve())
@@ -170,7 +183,7 @@ def main():
     if guidance is not None:
         assert guidance['gamma'] == cfg.gamma and guidance['horizon_s'] == cfg.horizon_s
         specification['tracking_guidance'] = guidance
-        specification['tracking_guidance_definition'] = 'Train-only -4 times existing bounded physical tracking integral; discounted worst-case remaining tracking cost at early failure. Task/Strict labels and gates unchanged. Different objective: do not pool with original task_safety.'
+        specification['tracking_guidance_definition'] = f"Train-only -{guidance['weight']:g} times existing bounded physical tracking integral, added to base reward; discounted worst-case remaining added tracking cost at early failure. Task/Strict labels and gates unchanged. Different objective: do not pool with untreated reward."
     if goal_job is not None:
         specification['goal_registration_sha256']=sha(a.goal_registration)
         specification['goal_registration']=str(a.goal_registration.resolve())
@@ -252,18 +265,12 @@ def main():
                     stop=True
                     state['resource_stop_reason']='cooperative_stop_file'
                     break
-                if protocol.get('min_free_disk_bytes'):
-                    import shutil
-                    if shutil.disk_usage(out).free < protocol['min_free_disk_bytes']:
-                        stop=True
-                        state['resource_stop_reason']='disk_reserve'
-                        break
-                if continuation:
-                    import shutil
-                    if shutil.disk_usage(out).free < continuation['min_free_disk_bytes']:
-                        stop=True
-                        state['resource_stop_reason']='disk_reserve'
-                        break
+                disk_free = shutil.disk_usage(out).free
+                state['disk_boundary_snapshot'] = dict(free_bytes=disk_free,reserve_bytes=minimum_disk)
+                if disk_free < minimum_disk:
+                    stop=True
+                    state['resource_stop_reason']='disk_reserve'
+                    break
                 c=conditions[int(order[episode%len(order)])];run=out/f'episode_{episode:05d}_{c["id"]}'
                 command=[sys.executable,str(source/'tools/baseline_repair_worker_20261008.py'),
                     '--research-protocol',str(root/'PROTOCOL.json'),'--protocol-sha256',pdigest,

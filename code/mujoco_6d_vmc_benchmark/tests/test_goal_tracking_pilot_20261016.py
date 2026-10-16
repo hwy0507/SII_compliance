@@ -46,8 +46,10 @@ class TrackingPilotTests(unittest.TestCase):
             self.assertEqual(manifest(cpu),before)
             self.assertEqual(reg['resources']['learning_backend'],'cuda')
             self.assertTrue(all(j['checkpoint'] is None and j['inherited_steps']==0 for j in reg['jobs']))
-            self.assertEqual(digest(cpu/'source/tools/train_v4_recovery_rl_20261016.py'),
+            self.assertEqual(digest(Path(__file__).resolve().parents[1]/'tools/train_v4_recovery_rl_20261016.py'),
                 digest(base/'cuda_pair/source/tools/train_v4_recovery_rl_20261016.py'))
+            self.assertEqual(digest(cpu/'source/tools/baseline_repair_worker_20261008.py'),
+                digest(base/'cuda_pair/source/tools/baseline_repair_worker_20261008.py'))
             self.assertEqual(reg['maximum_new_interactions'],22000)
             verify_inputs(reg);validate_pair(reg)
             with self.assertRaises(FileNotFoundError):verify_pilot_preflight(reg)
