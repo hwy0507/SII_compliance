@@ -1,5 +1,26 @@
 # 更新日志
 
+## 2026-10-16 14:21 CST — Direct有限阶段结束并自动接续阻抗，奖励对照已登记预检
+
+- 查询/fetch/read main `80c0b6133b48ae5c24f682b0c5f0ba30e02a83d0`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS及Goal进度；上一轮奖励实现为进展。
+- Direct正常结束于61,531步/95,189更新，阶段新增11,000/11,000、8个完整55秒回合，
+  Task/Strict0/8、physical_valid3/8；最后return−39.422419。最终checkpoint hash通过。
+  原协调器自动启动impedance_payload（PID2344947），已有真实250步/0更新，处于5000步
+  热身；Direct进程退出，无重复训练。阶段完成不是1M训练完成或收敛，后两族仍排队。
+- 新`goal_tracking_pilot_20261016.py`及dispatcher保护：独立两组Direct，从零初始化，
+  同seed/参数/5000步热身/训练条件顺序，各11k、合计22k；唯一差异为有界tracking项。
+  必须前序四族全部正常闭合并核对checkpoint后才能launch/run，沿用单模拟器/3GiB/swap0。
+  注册`outputs/rl_goal_tracking_pilot_20261016`，截止2026-10-17T06:16:14.522695Z；尚未派发。
+- 30项相关测试通过；真实活动前序被正确拒绝提前启动，无LAUNCH收据。两个fresh模型用
+  同一历史训练完整回合作丢弃更新预检，初始四网络hash相同、各一次梯度有限、n25 terminal
+  窗口复算通过，旧checkpoint hash不变；预检exit0、峰值1,357,033,472字节、OOM0。
+  无模拟器、无模型保存，不能当成新奖励训练效果；两组pilot不冒充四方法完成。
+- 冻结源码/parameter/登记/预检与测试已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-pilot-20261016T0618/evidence.tar.gz`，
+  2,318,827字节，SHA256 `948a868c5ff1a10fdcb237eef83def388055b665c32757b92446175d09e488ca`。
+  服务器只归档/hash；当前运行和Goal保持，尚未收敛/统一验收。
+
 ## 2026-10-16 14:10 CST — 实现有界跟踪训练奖励与恢复隔离，完成真实轨迹复算
 
 - 开工核对远端main `e47c4164013760b1d0c30d90eb7f6d85780b287a`、baseline

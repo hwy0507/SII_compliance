@@ -4,6 +4,44 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 14:21 CST：Direct阶段0/8，阻抗自动接续；fresh奖励对照预检完成
+
+开工核对main `80c0b6133b48ae5c24f682b0c5f0ba30e02a83d0`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS与日志。Direct正常结束该有限阶段：
+61,531步/95,189更新，新增11k/11k；8个完整55秒回合Task/Strict0/8，physical_valid3/8。
+末两个return−21.8339448、−39.4224188。最终61,531 checkpoint实际hash通过；原worker
+已退出，原协调器PID2329290继续自动启动impedance_payload、PID2344947，真实250步/0更新，
+处于登记5000步探索热身，不能因0更新误认卡住。admittance/VMC仍排队。Direct没有收敛，
+原1M优化日程未完成；第5至8回合大型原始产物目前仅本机，待下一次同步。
+
+奖励候选落实为独立`outputs/rl_goal_tracking_pilot_20261016/`两组有限对照：
+direct_control与direct_tracking均从零初始化，不加载旧actor/critic/optimizer/replay/normalizer；
+相同seed2026101421、n25/UTD1/1M日程、5000步热身、条件顺序、训练预算11k，合计22k。
+唯一处理差异是tracking CONFIG。历史已续训Direct不能充当这个fresh对照组；两组原始reward
+目标不同，报告效果应看匹配条件的Task/Strict、阶段与跟踪指标，不能用不同奖励数值作胜负。
+本pilot最多各8个完整回合、单seed，只能提供可行性证据，绝不等于96回合收敛或四族完成。
+
+登记SHA256 `42f101068a4185f7d920900de8b18f63720720436254fb3f2bbe4ab4cb7f3c91`，
+截止2026-10-17T06:16:14.522695Z；硬限单模拟器/CPU1/1线程/3GiB/swap0、内存/磁盘准入不变。
+前序`stage01`四族全部正常闭合且checkpoint吻合后，才能用本pilot冻结source中的
+`rl_goal_stage_20261016.py launch --root <pilot绝对目录>`派发。launch和run双重检查前序，
+仍持全局dispatch lock；当前只完成准备，没有LAUNCH/训练进程，没有创建额外等待服务。
+通用四族收敛统计不能用于这两个pilot组；不能将这两组混入原四族lineage。
+
+30项相关测试通过，覆盖fresh/同seed/仅奖励差异、前序在途/失败拒绝、缺失预检/错误处理拒绝。
+真实running前序提前启动检查被拒绝，未创建LAUNCH。预检服务
+`sii-rl-tracking-preflight-20261016-0617.service`正常exit0，峰值1,357,033,472字节、OOM0，
+CPU6/2GiB/swap0；同一历史1375条训练transition分别灌入临时fresh模型，各一次丢弃更新。
+actor/critic/target critic/temperature初始hash完全相同，n25末端窗口独立复算通过、指标有限、
+源checkpoint hash未变；没有模拟器、模型保存或训练收益证据。冻结manifest与总预检均复核通过。
+
+源码/测试、完整冻结source/parameter、REGISTRATION和CREDIT_PREFLIGHT已归档核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-pilot-20261016T0618/evidence.tar.gz`，
+2,318,827字节，SHA256 `948a868c5ff1a10fdcb237eef83def388055b665c32757b92446175d09e488ca`。
+预检所读历史51,906 checkpoint在此前credit归档中；本包不重复其大型replay。
+下一步跟踪阻抗的真实steps/updates与完整回合，然后依次收尾其余方法并启动已准备的对照。
+Goal active；训练收敛、统一acceptance和独立最终审计仍未完成。
+
 ## 14:10 CST：密集tracking组件完成，尚未启动新奖励训练
 
 核对远端main `e47c4164013760b1d0c30d90eb7f6d85780b287a`与baseline

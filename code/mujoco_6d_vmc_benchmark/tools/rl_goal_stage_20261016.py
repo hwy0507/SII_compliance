@@ -230,6 +230,9 @@ def verify_inputs(reg):
 
 
 def verify_preflight(reg):
+    if reg.get('experiment_kind') == 'fresh_direct_tracking_pilot':
+        from goal_tracking_pilot_20261016 import verify_pilot_preflight
+        return verify_pilot_preflight(reg)
     root = Path(reg['run_root'])
     digest_reg = digest(root/'REGISTRATION.json')
     preflight = read(root/'CREDIT_PREFLIGHT.json')
@@ -296,6 +299,9 @@ def worker_command(reg, job):
 
 def run(root):
     reg = read(root / 'REGISTRATION.json')
+    if reg.get('experiment_kind') == 'fresh_direct_tracking_pilot':
+        from goal_tracking_pilot_20261016 import require_predecessor_complete
+        require_predecessor_complete(reg)
     assert not (root / 'execution.json').exists(), 'Never retry in-place'
     assert len(list(Path('/proc').glob('[0-9]*'))) > 20, 'Host /proc required'
     verify_inputs(reg)
@@ -359,6 +365,9 @@ def run(root):
 
 def launch(root):
     reg = read(root / 'REGISTRATION.json')
+    if reg.get('experiment_kind') == 'fresh_direct_tracking_pilot':
+        from goal_tracking_pilot_20261016 import require_predecessor_complete
+        require_predecessor_complete(reg)
     verify_inputs(reg)
     verify_preflight(reg)
     assert not (root / 'LAUNCH.json').exists() and not (root / 'execution.json').exists()
