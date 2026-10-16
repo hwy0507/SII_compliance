@@ -1,5 +1,13 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 14:53 CST 阻抗梯度更新启动，carry阻塞定位
+
+阻抗5500步/501更新checkpoint已核验，继续推进至5769/770，4个完整回合Task/Strict0/4、
+physical_valid4/4。闭合训练诊断显示四回合末10秒均卡carry第21/28点：位置误差未进12mm，
+也未越过横向重入平面；姿态/速度满足。原生未知凸边接触持续到结束，不能把低刚度定为
+唯一原因或放宽门槛。新增3项诊断测试通过，四回合/四checkpoint已完成远端大小/hash核验；详细证据、
+hash与局限见[Goal进度](RL_GOAL_PROGRESS_20261016.md)。Goal active，尚无收敛或最终验收。
+
 ## 2026-10-16 14:35 CST Direct失败证据归档齐全，阻抗继续推进
 
 Direct阶段8回合均停approach，Task/Strict0/8；最后4回合/4 checkpoint与完整日志已归档核验，

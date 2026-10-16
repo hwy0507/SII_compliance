@@ -1,5 +1,30 @@
 # 更新日志
 
+## 2026-10-16 14:53 CST — 阻抗梯度更新真实启动，定位carry路径点阻塞
+
+- 开工查询/fetch/read main `9348836f2d03fde25b3a8f5977340dbddfa1c663`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS与Goal进度。Goal active；
+  同一协调器2329290/阻抗trainer2344947继续，没有重启/重复派发或修改活动快照。
+- 阻抗在5000步产生第1次梯度更新，5500 checkpoint正常落盘、累计501次更新，随后真实
+  optimizer推进至5769步/770次更新。归档快照中的日志UTD1关系及所有指标有限性通过。
+  4个完整55秒回合return−25.493412/−26.067121/−25.072284/−24.997477，physical_valid4/4，
+  Task/Strict0/4；第5回合在途。cp1375/2750/4125/5500与活动source/parameter清单hash通过。
+- 新训练轨迹诊断工具及3项测试：严格校验冻结planner/gate/observation版本，按前一行
+  post-step手位置对齐当前pre-step canonical误差，重建目标与实际route逐点精确一致。
+  四回合最后10秒均卡carry路径cursor20/28，各250采样；半径到达/横向重入均0/250，
+  姿态与速度均250/250通过。前三热身回合误差12.605–13.414mm、forward−6.425至−4.436mm；
+  第4回合包含501次更新后仍相同阻塞，误差12.737–13.002mm，尚未形成改善证据。
+- 原生训练rollout记录四回合未知凸边接触持续43.98–44.88秒直至55秒，支持障碍接触
+  与路径进展停滞同时存在，不能据此把低刚度定为唯一根因或直接提高刚度。energy_scale均1；
+  零action7属于native阻抗后端语义，不代表5维RL参数未执行。25Hz诊断不是最终独立审计，
+  不放宽12mm/gate，不声称收敛；需继续观察学习后控制并登记有证据的训练调整。
+- 快照内存2,736,730,112字节、峰值2,897,244,160/3GiB、OOM/max事件0、swap0；GPU44°C/
+  526MiB仅系统观测，训练仍CPU。旧v3–v6协调器各单task，未发现重复当前训练worker。
+  3项新测试通过。四回合及checkpoint/诊断/源码已归档并核对大小与最终远端SHA256：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-20261016T0649/evidence.tar.gz`，
+  846,865,888字节，SHA256 `6c87112421ddc26b3b3bb66ce090cf66ac0da0a0fd8612c0df1bae4a2fd30e10`。
+  服务器仅传输/归档/hash；第5及后续回合未纳入此包。14:54观察6250步/1251更新，继续推进。
+
 ## 2026-10-16 14:35 CST — Direct阶段证据归档补齐，阻抗两完整热身回合仍未放置
 
 - 查询/fetch/read main `9358461c2daae6e8cd629eeca3592342d133cdcb`、baseline

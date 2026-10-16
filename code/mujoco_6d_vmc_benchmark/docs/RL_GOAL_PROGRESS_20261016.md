@@ -4,6 +4,50 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 14:53 CST：阻抗进入梯度更新，carry停滞已有可复算定位
+
+开工核对main `9348836f2d03fde25b3a8f5977340dbddfa1c663`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`和AGENTS。Goal保持active，当前阶段
+未结束，Direct仍0/8；admittance/VMC排队，fresh tracking pilot仍prepared未派发。
+阻抗同一PID2344947于5000步开始第1次更新，5500步/501更新checkpoint hash通过，
+最新观察5769步/770更新；第5回合在途。4个完整55秒回合return依次−25.493412、
+−26.067121、−25.072284、−24.997477，Task/Strict0/4、physical_valid4/4。
+不同条件且前三仅热身，不能把相近return当收敛，或按回合顺序认定训练改进。
+
+新增`tools/diagnose_goal_carry_stall_20261016.py`与3项测试：检查冻结source hash，
+对齐前一行post-step手位置和当前pre-step canonical error。重建目标严格匹配route，
+防止相差一个控制周期的错位推断；覆盖半径与横向平面不同逻辑、最终点禁止平面捷径、
+错位输入拒绝。四回合最后10秒各250样本全部在carry cursor20（28点中的第21点），
+到达半径与forward平面条件均未满足；姿态<.12rad与速度<.025m/s均满足。
+前三热身误差12.605–13.414mm，forward仍在点后4.436–6.425mm；第4回合含501次更新，
+最后10秒仍12.737–13.002mm、forward−5.417至−4.790mm。三个planner/observation源
+hash与执行记录吻合，路径重建误差0。末10秒energy_scale均1，参数确有变化。
+注意canonical[26:32]是command−twist，不是原始twist；本工具直接使用明确的原生速度字段。
+
+原生rollout的unknown-edge接触从10.12–11.02秒持续至55秒，累计43.98–44.88秒，
+都发生在carry。该证据提示障碍接触/路径阻塞，尚未证明刚度单因果或可通过增大刚度解决；
+不得调整最终gate，也不能把25Hz采样推断当全部物理子步证明。零action7是native阻抗
+后端输出语义，实际5维parameter_actions存在；原生训练审计未替代最终统一验收。
+
+`CARRY_DIAGNOSTIC_20261016T0650.json`保存前三热身回合（真实创建06:47Z，文件名仅标签），
+`CARRY_POST_WARMUP_20261016T0649.json`保存第4回合；
+`IMPEDANCE_CHECKPOINT_20261016T0649.json`保存execution快照、四checkpoint校验、
+optimizer首尾与资源。归档快照optimizer最后5614步/615更新，所有已记录更新满足UTD1且
+指标有限；温度0.00946349。内存2,736,730,112、峰值2,897,244,160/3GiB，OOM0/max0/swap0。
+打包仅本机CPU6/1GiB/swap0、exit0，无模拟器；训练保持CPU1单路。GPU44°C/526MiB为
+主机观测，不是训练用GPU。另查旧v3–v6协调器各单task，未改动无关服务。
+
+四完整失败原始回合、cp1375/2750/4125/5500、捕获日志、诊断及源码/测试已归档核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-20261016T0649/evidence.tar.gz`，
+846,865,888字节，
+SHA256 `6c87112421ddc26b3b3bb66ce090cf66ac0da0a0fd8612c0df1bae4a2fd30e10`。
+上传后核验size/hash，再从独立incoming目录发布至不存在的最终目录，复核最终hash一致。
+本地包`/tmp/rl-goal-impedance-20261016T0649.tar.gz`保留；第5及后续回合不在本包。
+14:54观察6250步/1251更新；旧v3–v6均在等待failed Direct子服务（子服务MainPID0，
+其他子服务inactive），不是四个并发训练；未更改这些旧收据/服务，当前只有一个阻抗模拟器。
+后续继续观察学习回合、保存失败，再按已登记顺序接续导纳/VMC及fresh奖励对照；
+本次定位不是修复完成或Goal完成，不做最终acceptance。
+
 ## 14:35 CST：Direct完整阶段证据保全，阻抗继续热身
 
 核对main `9358461c2daae6e8cd629eeca3592342d133cdcb`、baseline
