@@ -1,5 +1,16 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 20:05 CST tracking进入真实更新，原进程继续
+
+tracking原trainer2413986已6500步/1501更新，四完整55秒Task/Strict0/4、physical_valid4/4。
+cp5500的501条更新连续有限，actor/critic保存文件改变；cp2750/4125/5500及5500步日志核验通过。
+配对报告3热身/1混合/0全学习；混合对RMSE差−0.00004432mm、放置误差+0.017674mm，
+无有效改善结论。继续登记处理组，未重复启动或改活动快照；OOM/max0、swap0。
+第2–4轨迹/cp、学习日志和配对/核验证据已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-learning-20261016T1200/evidence.tar.gz`，
+653,909,672字节，SHA256 `9d26c72d6443420a51ffd36aaddf1b53c621e204de963b2bafc76633b0cf09ac`。
+Goal active，Direct v2待阻抗对照完成，四类均未证明收敛/最终验收；详见Goal进度。
+
 ## 2026-10-16 19:43 CST tracking首回合实际奖励/replay核验
 
 tracking2500步/0更新热身，首完整回合return−26.51296、Task/Strict失败、physical_valid=true。

@@ -1,5 +1,25 @@
 # 更新日志
 
+## 2026-10-16 20:05 CST — tracking真实学习与checkpoint核验，奖励对照继续
+
+- 查询/fetch/read main `5633e19fc60307f28c7cc1e4e0ad02f9fa31a45d`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS与Goal进度。原trainer2413986与
+  协调器2400799保持active；12:03Z execution到6500步/1501更新，第五回合在途，无重复启动。
+- 已核验cp2750/4125/5500源文件及归档成员hash，cp5500有501次连续有限更新（step5000–5500），
+  actor/critic保存文件相较热身改变，5500条训练记录与四回合reward求和一致。
+  critic loss首末9.230323→8.983398，temperature .010000→.00956565；仅证明学习链路工作。
+  四完整55秒return为−26.512956/−27.083870/−26.077475/−26.004701，physical_valid4/4、Task/Strict0/4。
+- 配对报告在5500边界有3对热身、1对混合学习、0对全学习；热身原生指标完全一致。
+  混合对tracking−control RMSE为−0.00004432mm，放置XY误差为+0.017674mm，其余峰矩/峰速/穿透差0。
+  差异很小，没有有效改善证据；不同定义reward不作优劣比较，不凭501次更新改活动快照。
+- 第2–4回合原始轨迹、cp2750/4125/5500、截至5500步日志/501更新、配对报告及复现源已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-learning-20261016T1200/evidence.tar.gz`，
+  653,909,672字节，SHA256 `9d26c72d6443420a51ffd36aaddf1b53c621e204de963b2bafc76633b0cf09ac`。
+  incoming核验后发布到不存在的独立目录，最终远端hash/大小再次一致；服务器仅存储/hash。
+- 6500步execution资源快照current2,822,778,880/peak3,116,003,328字节、max/OOM0、swap0；
+  12:03服务current2,847,494,144字节，GPU44°C/1433MiB。保持3GiB/单模拟器/UTD1。
+  继续tracking到登记11k，结束后做完整配对，再接续已预检Direct v2。Goal active，四类尚未证明收敛，未最终验收。
+
 ## 2026-10-16 19:43 CST — tracking首回合奖励实际进入replay，配对热身轨迹完全一致
 
 - 查询/fetch/read main `40eb81b3cce1d5ae3dd65c06acb2ea816539225c`、baseline

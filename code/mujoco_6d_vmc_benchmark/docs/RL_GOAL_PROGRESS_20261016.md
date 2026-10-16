@@ -1,5 +1,32 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 20:05 CST：tracking学习链路核验通过，尚无有效改善证据
+
+查询/fetch/read main `5633e19fc60307f28c7cc1e4e0ad02f9fa31a45d`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS；Goal保持active。
+同一trainer2413986/协调器2400799运行，12:03Z execution6500步/1501更新，第五回合在途。
+首次GPU更新出现短暂编译等待后真实推进，未重启或重复启动模拟器。
+
+cp2750/4125/5500逐文件与tar成员hash通过；cp5500保存5500交互/501更新。
+actor/critic文件相较热身改变，optimizer step5000–5500/update1–501连续且全部有限；
+5500条训练记录连续、逐回合reward求和一致。critic loss首末9.230323→8.983398，
+temperature .010000→.00956565，actor entropy −12.029792→3.148023，仅作学习链路证据。
+四个完整55秒return −26.512956/−27.083870/−26.077475/−26.004701，physical_valid4/4、Task/Strict0/4。
+
+5500边界配对报告：warmup3对的原生指标完全一致；mixed1对的tracking−control
+RMSE −0.00004431954mm，放置XY误差+0.00001767408m，峰矩/峰速/穿透差均0；learned0对。
+当前差异极小，不证明处理改善，不比较不同奖励定义的return总分；保留失败/在途收据。
+继续完成已登记11k处理组后再分析全学习配对，不改活动源码或提前运行最终acceptance。
+
+第2–4原始回合、cp2750/4125/5500、5500步训练日志/501更新、登记/配对/核验及复现脚本已归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-learning-20261016T1200/evidence.tar.gz`
+653,909,672字节，SHA256 `9d26c72d6443420a51ffd36aaddf1b53c621e204de963b2bafc76633b0cf09ac`。
+incoming与发布后的最终目录均核验hash/大小，服务器只存储/hash；本地原件未删除。
+6500步资源快照current2,822,778,880/peak3,116,003,328字节，max/OOM0、swap0；
+12:03 systemd current2,847,494,144字节，GPU44°C/1433MiB。冻结约束与3GiB保护不变。
+后续回合仍本地待边界归档。Direct v2已预检但未派发，等待阻抗配对结束且全局锁释放。
+四方法均尚无收敛证据；有限pilot结束不等于Goal完成。
+
 ## 19:43 CST：首次实际配对验证新增奖励已写入replay
 
 开工main `40eb81b3cce1d5ae3dd65c06acb2ea816539225c`、baseline
