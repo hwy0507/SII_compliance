@@ -1,5 +1,17 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 20:28 CST 阻抗对照结束，Direct v2接续
+
+阻抗control/tracking各11000步/6001更新、8完整55秒、physical_valid8/8、Task/Strict0/8。
+4个全学习配对的RMSE中位差−.100881mm，但放置误差+2.718305mm，峰矩/峰速/穿透略增；
+提高跟踪权重未证明有效修复，有限pilot不是收敛。最终checkpoint/日志核验通过，失败全部保留。
+原服务正常退出、全局锁释放后启动Direct v2，control PID2424017已750步/0更新热身，
+from scratch、n25/UTD1/CUDA0、各11k预算，后接weight4处理组；没有重复仿真。
+最终两回合/cp、完整对照及Direct启动证据已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-pair-close-direct-launch-20261016T1226/evidence.tar.gz`，
+540,752,690字节，SHA256 `77e18a30d230fd041a5042cc1165e996c6d3abf0b8567876ee30fa2f9d2ab436`。
+Goal active，继续Direct及后续四方法训练；未最终验收。
+
 ## 2026-10-16 20:15 CST 两个全学习配对完成、仍未解卡
 
 tracking原进程9000步/4001更新，6完整55秒Task/Strict0/6、physical_valid6/6。

@@ -1,5 +1,36 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 20:28 CST：阻抗完整对照结束，Direct v2已实际推进
+
+开工main `536e6c941d08c5a2a9841a3fd47687a42cf688b7`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`查询/fetch/read，AGENTS开工/收工读取，上一轮为进展。
+观察原tracker2413986/协调器2400799至12:23:40Z均inactive，根收据finite_stage_complete。
+两组各11000交互/6001更新、8完整55秒、physical_valid8/8、Task/Strict0/8，training_complete=false。
+tracking返回依次−26.512956/−27.083870/−26.077475/−26.004701/−26.520930/−26.288968/
+−27.095333/−27.058253。6001条更新连续有限、最终cp9625/11000源和tar成员hash通过。
+
+完整配对3热身/1混合/4全学习。全学习中位差tracking−control：RMSE−.100881mm、
+峰矩+.296778Nm、峰速+.002600m/s、穿透+.006392mm、放置XY+2.718305mm。
+后两配对改变此前仅2对的放置误差方向；没有任务成功，不能将奖励权重40当作已验证修复。
+单seed短训练对照也不足以证明长期无效；不同定义return不作排名，未修改活动源码或最终gate。
+
+确认active_workers为空、全局锁可获取之后，接续已登记且预检通过的Direct v2，未重复启动：
+`outputs/rl_goal_direct_tracking_gpu_20261016_v2`，登记SHA
+`109bf618dcc7f34e8d5d74d2940ab6704787bdabcf7a6c7c619890b53c9e4e06`。
+协调器`sii-rl-goal-stage-bb18f8d17dfd`，control worker`sii-rl-goal-edf740b23fa9`/PID2424017；
+实际协议from scratch、seed2026101421、task_safety/n25/UTD1/CUDA0，canonical48不变。
+control及额外weight4处理组各11k预算，1M优化日程、5000热身。12:25:11Z真实250步，
+12:27:21Z750步/0更新、首回合在途。后续处理组由此协调器接续；未启动额外模拟器。
+
+tracking最后两原始回合/cp、全日志/配对、交接观察与源码、Direct登记/冻结源/实际协议已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-pair-close-direct-launch-20261016T1226/evidence.tar.gz`
+540,752,690字节，SHA256 `77e18a30d230fd041a5042cc1165e996c6d3abf0b8567876ee30fa2f9d2ab436`。
+incoming及最终路径大小/hash一致。tracking全部8回合和checkpoint连同此前独立包均已归档，本地仍保留。
+只读登记摘要CLI误用可选字段强索引导致KeyError，改.get后读取成功；实际输入/预检已通过，失败记录在包内。
+tracking最终peak3GiB、max1358、OOM0/swap0；Direct current约1.72GB、max/OOM0/swap0，
+GPU最近45°C/1102MiB。继续Direct对照，再依据完整证据登记后续训练；有限pilot不能替代足量训练。
+Goal active，四方法均未证明收敛，未运行统一acceptance或最终独立审计。
+
 ## 20:15 CST：两对全学习结果仍失败，继续处理组
 
 开工main `619c3f8f2b94aa4a8a05b50d2f9558288356cf93`、baseline

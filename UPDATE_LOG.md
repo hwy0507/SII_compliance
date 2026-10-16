@@ -1,5 +1,30 @@
 # 更新日志
 
+## 2026-10-16 20:28 CST — 阻抗奖励对照完整结束，Direct v2真实接续
+
+- 查询/fetch/read main `536e6c941d08c5a2a9841a3fd47687a42cf688b7`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工读取AGENTS；上一轮为进展。
+  只读观察原tracker2413986/协调器2400799至12:23:40Z均inactive，根收据finite_stage_complete。
+  tracking完成11000步/6001连续有限更新、8完整55秒、physical_valid8/8、Task/Strict0/8；
+  control亦11000/6001、8完整、Task/Strict0/8。training_complete仍false，有限pilot不是收敛。
+- 完整配对3热身/1混合/4全学习；全学习tracking−control中位差为RMSE−.100881mm、
+  峰矩+.296778Nm、峰速+.002600m/s、穿透+.006392mm、放置XY+2.718305mm。
+  后两配对改变早期放置误差方向，不能将早期2对改善外推；增加跟踪权重未证明有效修复。
+  tracking末两return−27.095333/−27.058253；不同定义reward不直接排名，所有失败保留。
+- 原服务退出后核对active_workers为空、全局锁可获取，再仅启动一次已预检Direct v2：
+  注册SHA `109bf618dcc7f34e8d5d74d2940ab6704787bdabcf7a6c7c619890b53c9e4e06`，
+  协调器`sii-rl-goal-stage-bb18f8d17dfd`，control worker`sii-rl-goal-edf740b23fa9`/PID2424017。
+  实际from scratch、seed2026101421、task_safety/n25/UTD1/CUDA0；control后接额外tracking weight4，
+  各11k有限预算、1M优化日程、5000热身。12:27:21Z已750步/0更新，首回合在途；无重复仿真。
+- tracking最终cp9625/11000源与tar成员hash、6001条更新序号和有限性、完整配对核验通过；
+  最后两原始回合/cp、完整日志/配对、交接观察与Direct登记/冻结源/实际协议已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-pair-close-direct-launch-20261016T1226/evidence.tar.gz`，
+  540,752,690字节，SHA256 `77e18a30d230fd041a5042cc1165e996c6d3abf0b8567876ee30fa2f9d2ab436`。
+  incoming及最终目录hash/大小一致，服务器仅存储/hash；此前包加本包覆盖tracking8回合全部cp。
+- tracking最终peak3,221,225,472字节/max1358、OOM0/swap0；Direct现current约1.72GB、OOM/max0/swap0，
+  GPU最近45°C/1102MiB。只读摘要CLI曾对可选字段强索引KeyError，改.get后读取成功，收据保留。
+  Goal active，继续Direct完整对照及后续四方法训练；四类尚无收敛证据，未最终acceptance。
+
 ## 2026-10-16 20:15 CST — 两个全学习配对闭合，控制遥测缩小停滞排查范围
 
 - 开工查询/fetch/read main `619c3f8f2b94aa4a8a05b50d2f9558288356cf93`、baseline
