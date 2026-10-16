@@ -1,5 +1,44 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 03:29 CST — 已验证等待：同一worker闭合十回合，控制组继续运行
+
+上一轮为固定样本critic诊断进展；本轮为对已确认存活的PID2502235的已验证等待，
+从12,000步/7,001更新观察到13,750步/8,751更新，持续约10分钟，协调器2502213保持。
+开工按sii-research-sync查询/fetch/read main `46a226438adf3edb8aa2717086e5536c83470876`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/两份进度，收工重读AGENTS。
+没有重启、重复训练或修改活动snapshot；观察器达到十回合且归档完成后正常退出，训练继续。
+
+`rl_goal_stream_occupancy_20261017_v2/impedance_control`闭合10个1375步/55秒回合，
+physical_valid10/10、Task/Strict0/10。新增repair_train_010/027 return
+−25.759603751/−25.400400406，均停在carry；保留全部失败，不将回报平台视为收敛。
+13,750交互序号与8,751优化序号连续且指标有限；10回合reward逐项/总和、AUDIT与trace hash、
+cp13750全部成员hash通过。最后temperature .004527187、critic loss8.104725。
+控制组44k预算完成31.25%，occupancy组仍排队；没有处理收益或四族完成结论。
+
+worker峰2,731,810,816字节、3GiB硬限、memory.max/OOM/oom_kill/swap0；
+记录时MemoryCurrent2,280,210,432字节，本机free58,428,452,864字节，50GiB保护保持。
+沙箱nvidia-smi不能访问驱动，随后宿主复核43°C/1441MiB且优化持续，未误判为GPU故障。
+服务器归档盘可用3,553,241,657,344字节，仅查询容量/传输/hash，未使用服务器计算。
+新增两回合归档耗时41.446/38.407秒后同一worker继续；正常归档等待不算训练异常。
+CPU1/线程1、CUDA0/.125/UTD1、冻结物理/MJB/gate/canonical48/filter/执行器/dt5e-5保持。
+
+本轮闭合日志、训练screen、逐回合原生结果、监视轨迹、脚本与新增轨迹已独立归档核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T1920/evidence.tar.gz`，
+7,669,855字节，SHA `cb41442eedf21dd0a07792a7404ee5ee9a608adc4696014de5973eeffbb1f284`。
+本地缓存BENCH/outputs/rl_goal_stream_window_20261017T1920；分析/归档本机CPU6/1GiB/swap0。
+新增原始回合/checkpoint已重核服务器大小/hash，同主机共同根
+`/home/arm1/sii_shared/SII_compliance/runs/main/`：
+
+- `goal-stream-0aa94c08d05b7ead45da3481/evidence.tar.gz`，268,001,970字节，
+  SHA `e3724b0c7cd8ce949600049b1420d660377dfb6afcc7ed17eda7cb5294c3655d`。
+- `goal-stream-640d8cde1a6b99e95e5ee828/evidence.tar.gz`，269,075,243字节，
+  SHA `f3c1658daf6dfc157a99eded7394063267e2d61173b629f245d935b8014b42ec`。
+
+活动研究代码仍f788fcb、登记SHA d37b16975a6f…，本轮无研究源码修改；文档diff检查后提交/push main。
+Goal active；继续control到登记边界，核对后续occupancy派发。四族均未证明收敛；
+训练screen条件仍不满足，最终acceptance与独立物理/action/filter重放未执行，历史数据未删除。
+
+
 ## 2026-10-17 03:15 CST — 固定终局样本确认critic能学习罚分，策略泛化仍未解决
 
 上一Goal轮有训练链路/失败定位进展；本轮开工查询/fetch/read main
