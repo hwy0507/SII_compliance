@@ -1,5 +1,45 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 21:15 CST：Direct control闭合且末回合安全失败，tracking奖励已实际写入replay
+
+开工main `8eaccb4fc0762ced11b4e90f3537e2ddd73ff087`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`查询/fetch/read，开工/收工读取AGENTS；上一轮为进展。
+control于13:03:20Z正常结束有限预算，实际10993步/5994更新、8闭合但仅7完整55秒，
+physical_valid7/8、Task/Strict0/8。末回合在54.72秒因柱体与fr3_link6碰撞穿透3.930900mm中止，
+abort_reason=global_penetration_exceeded_2mm；step_budget表示余量不足再派完整回合，不表示任务成功。
+最后4个全学习回合return−21.765686/−21.699330/−21.695607/−41.679094，均停在approach；
+对应native RMSE382.939/285.229/480.001/721.447mm。前三个较高return不能覆盖末回合安全失败，
+不同条件的跨回合数值不能作为因果对照。配对报告保留短回合，不能凑成4个完整学习配对。
+5994条step5000–10993/update1–5994连续有限，10993交互序号/8回合reward求和正确；
+cp6875/8250/9625/10993源与归档成员hash核验，最终cp保存实际10993交互/5994更新。
+
+原协调器2424012自动接续tracking，13:03:26Z开始，worker2432993、unit sii-rl-goal-185982a6fdbe。
+归档快照2250步/0更新，首回合1375步/55秒完整、return−23.6473104406、Task/Strict失败。
+首回合每步奖励均满足实际final_reward=control−4*bounded_error_cost，新增累计−.388026116762；
+五个非reward replay数组完全一致、实际replay.reward与记录一致，初始模型四组和obs_norm hash一致。
+这是预热期奖励接入证据，不是学习效果或收敛证据；活动快照/奖励权重/物理/gate均保持登记值。
+control最终memory peak3GiB/max1428，OOM0/swap0；tracking当前仍3GiB/swap0，未重复启动模拟器。
+
+离线保留实质落地：已完成阻抗pair的16回合共64文件、2,294,939,982字节转为服务器持久保留。
+范围只含此前工具允许的三个大型物理npz及rollout.mjb。9个独立最终归档包重新校验大小/hash，
+全部tar成员字节与本地原件一致后才执行；先全目标预验证，再逐文件写持久日志后移除。
+16个回合全部失败仍保留；144个checkpoint文件hash未变，动作/小收据/25与250Hz诊断留本地。
+离线后重新report(old)的完整arms/comparison与PAIR_COMPLETE原报告完全一致；两最终cp11000再次通过。
+原阻抗三个服务均确认inactive。处理后free72,665,419,776字节，此值早于本轮新归档包生成。
+9个本轮新下载传输包经远端/本地复核后清理，不删除服务器包；恢复时显式传新的下载archive路径。
+恢复索引为阻抗root的`OFFLINE_RETENTION_20261016T1300/`：REGISTRATION、READY、16个JSON计划、
+逐回合removal.jsonl、RESULT和RESTORE.md。本目录也随本轮包上服务器；先恢复所需大文件再做物理审计。
+不能把已离线原件当作永远不需恢复，也不能因缺失而跳过最终检查。
+
+本轮Direct control最后4回合/4cp和完整日志、tracking首回合/cp1375、实际奖励检查、全部离线清单/脚本已核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-control-close-retention-20261016T1310/evidence.tar.gz`
+1,198,940,149字节，SHA256 `4d38896ac3492a6ddbf0993dab9482fd30172a08e21cf2b954afcc83297677eb`。
+加此前分包已覆盖control全部8回合/cp；tracking第2及后续回合仍本地待闭合归档。
+当前cp实测约148–151MB，单轨迹约146–159MB。44k每族32回合×4，仅按当前大小已约39GB，
+尚不含replay增长/暂存包，超过当前50GiB保护线以上余量；需按安全分阶段保留安排，不能直接套用44k。
+继续tracking既定完整对照，后续合并所选各族checkpoint须显式登记来源、训练目标和接续预检；
+当前四族prepare-next不能直接把两个pilot当完整四族前序。Goal active，尚无收敛/最终acceptance结论。
+
 ## 20:55 CST：Direct越过热身真实更新，归档恢复实测通过
 
 开工main `f29614ca5b75b525b067513339f1d6386cf003fe`、baseline

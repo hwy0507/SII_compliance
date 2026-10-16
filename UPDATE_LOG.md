@@ -1,5 +1,33 @@
 # 更新日志
 
+## 2026-10-16 21:15 CST — Direct对照安全失败闭合，tracking实际奖励与存储离线保留核验
+
+- 查询/fetch/read main `8eaccb4fc0762ced11b4e90f3537e2ddd73ff087`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；开工/收工读AGENTS，上一轮为实质进展。
+  Direct control原worker于13:03:20Z闭合，实际10993步/5994更新、7完整55秒+1短回合，
+  physical_valid7/8、Task/Strict0/8；第8回合54.72秒穿透3.930900mm触发global_penetration_exceeded_2mm，
+  return−41.679094，未写成11000步/8完整。最后4回合均approach，RMSE382.939/285.229/480.001/721.447mm；
+  前三个学习回合return约−21.7不能视为有效收敛。5994更新连续有限，最终cp10993及此前3个cp核验通过。
+- 原协调器2424012于13:03:26Z自动接续tracking worker2432993，归档快照2250步/0更新热身。
+  首完整回合return−23.647310、Task/Strict失败；1375条实际训练记录与checkpoint replay核验：
+  final_reward逐步等于control−4*bounded_error_cost，新增合计−.388026116762，非reward数组完全一致，
+  初始actor/critic/target/temperature及obs_norm hash一致。仅证明奖励真实接入，不证明策略改善。
+- 已完成阻抗pair的16个回合经独立9包远端/本地大小hash及tar逐成员核验后，离线保留64个指定大文件，
+  回收2,294,939,982字节；144个checkpoint文件hash不变，动作/诊断/失败收据留本地。
+  后续重新生成完整阻抗配对报告的arms/comparison与原报告一致，两最终cp再次核验通过。
+  每回合恢复清单、逐文件日志、结果与RESTORE.md位于该root的OFFLINE_RETENTION_20261016T1300/；
+  需要物理数组/MJB时先按清单从服务器下载原tar，用offline工具restore，不忽略缺失数据或重编译模型。
+  9个本轮下载的重复传输缓存重新核验后移除；原始失败仍完整存于服务器，可恢复。
+- Direct control最后4回合（含安全失败）/cp6875/8250/9625/10993、完整学习日志、tracking首回合/cp1375、
+  实际奖励验证、离线保留登记/恢复清单及执行脚本已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-control-close-retention-20261016T1310/evidence.tar.gz`，
+  1,198,940,149字节，SHA256 `4d38896ac3492a6ddbf0993dab9482fd30172a08e21cf2b954afcc83297677eb`。
+  服务器仅存储/hash。control最终peak3GiB/max1428、OOM0/swap0；tracking同样3GiB/swap0限制。
+- 本轮未改训练源码/活动快照或冻结接口，执行脚本编译及真实数据断言通过，继续tracking完整对照。
+  当前单cp约150MB，后续44k×4仅按现有轨迹+cp大小已约39GB，尚未计replay增长/传输暂存；
+  不在现有约19GB安全余量下直接派发。需先完成分阶段保留和精确checkpoint接续登记，保持50GiB保护。
+  Goal active，四方法未证明收敛，未最终acceptance；保留无关用户文件。
+
 ## 2026-10-16 20:55 CST — Direct真实学习核验，闭合回合归档恢复工具通过实测
 
 - 开工查询/fetch/read main `f29614ca5b75b525b067513339f1d6386cf003fe`、baseline

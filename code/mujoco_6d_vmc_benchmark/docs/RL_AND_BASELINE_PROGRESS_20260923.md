@@ -1,5 +1,19 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 21:15 CST Direct末回合安全失败保全，tracking自动接续
+
+Direct control实际10993步/5994连续有限更新，7完整55秒+1短回合，Task/Strict0/8；
+末回合54.72秒穿透3.930900mm中止、return−41.679094，不能写成8完整或已收敛。
+原协调器自动启动tracking worker2432993，快照2250步/0更新；首1375步实际额外奖励−.388026116762，
+非reward replay数组和初始模型/obs_norm均与control一致，只证明接入、不证明有效学习。
+已完成阻抗16失败回合64个大型文件离线保留，回收2,294,939,982字节；服务器原件保留、144cp文件hash不变，
+离线后完整配对报告相同。恢复清单/日志/RESTORE.md保存并归档，最终审计前须恢复所需原件。
+control末4回合/cp含失败、tracking首回合/cp、学习/奖励核验和离线收据已核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-control-close-retention-20261016T1310/evidence.tar.gz`，
+1,198,940,149字节，SHA256 `4d38896ac3492a6ddbf0993dab9482fd30172a08e21cf2b954afcc83297677eb`。
+本机计算、服务器仅存储/hash。继续完整tracking对照；后续需同时安排checkpoint存储和精确接续，
+不能在约19GB安全余量内直接派四族44k（当前体积估算已约39GB）。Goal active，四类未收敛/未最终验收。
+
 ## 2026-10-16 20:55 CST Direct真实更新与原始归档恢复
 
 Direct原worker归档快照7000步/2001更新，5完整55秒physical_valid5/5、Task/Strict0/5。
