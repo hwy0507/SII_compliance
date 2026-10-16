@@ -1,5 +1,28 @@
 # 更新日志
 
+## 2026-10-16 20:15 CST — 两个全学习配对闭合，控制遥测缩小停滞排查范围
+
+- 开工查询/fetch/read main `619c3f8f2b94aa4a8a05b50d2f9558288356cf93`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工读取AGENTS。上一轮为进展。
+  本轮观察原trainer2413986到8250边界，现12:14:49Z已9000步/4001更新、6完整55秒，
+  physical_valid6/6、Task/Strict0/6；第七回合在途，未重复启动或改活动源码。
+- cp6875/8250源文件及tar成员hash通过，前8250步日志完整、3251次更新连续有限，回合reward求和一致。
+  两新增return−26.520930/−26.288968。全学习配对2对的tracking−control中位差：RMSE−.100881mm、
+  放置XY−1.274364mm、峰矩+.296778Nm、峰速+.006372m/s、穿透+.015202mm。未改善所有指标，仍全失败；
+  这是单seed在线训练诊断，不是收敛、因果确证或最终独立审计，不比较不同reward总分。
+- 两回合末10秒仍carry20/28，误差12.706–12.822及12.552–12.615mm，能量scale1，姿态/速度满足。
+  首个全学习回合250Hz控制遥测：tracking末段名义qdot范数中位.06707rad/s，等效请求/限幅后
+  范数中位均.32869rad/s，二者最大差1.63e-19；弹簧wrench随参数改变。未支持该段“名义指令为零”
+  或“等效速度限幅截断”的解释；不外推为所有限制/接触问题已排除，也不修改冻结gate。
+- 原始两回合/cp6875/8250、训练与更新日志、配对/carry/servo诊断和复现源已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-learned-20261016T1212/evidence.tar.gz`，
+  534,465,416字节，SHA256 `aa19ceb33724a597a141fd8b10074635bb7da0af6d4fdfaeb0c741871188f5fb`。
+  incoming与最终目录hash/大小一致。首分析服务漏设工作目录exit2，独立v2补工作目录后exit0；
+  失败原因保存在本包，训练未受影响，服务器仅存储/hash。
+- 最新内存current3,190,861,824/peak3,221,225,472字节、max371、OOM/oom_kill0、swap0；
+  GPU最近44°C/1443MiB。继续处理组到11k和完整配对，Direct v2待全局锁释放后接续。
+  Goal active；四方法尚无收敛证据，未最终验收。
+
 ## 2026-10-16 20:05 CST — tracking真实学习与checkpoint核验，奖励对照继续
 
 - 查询/fetch/read main `5633e19fc60307f28c7cc1e4e0ad02f9fa31a45d`、baseline

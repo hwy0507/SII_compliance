@@ -1,5 +1,17 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 20:15 CST 两个全学习配对完成、仍未解卡
+
+tracking原进程9000步/4001更新，6完整55秒Task/Strict0/6、physical_valid6/6。
+cp6875/8250及3251条连续有限更新核验通过。两全学习配对的RMSE中位差−.100881mm、
+放置误差−1.274364mm，但峰矩/峰速/穿透略增，未证明有效收敛。
+两回合末段carry20/28；首回合servo遥测表明名义指令非零、等效速度限幅几乎无影响，
+进一步排查不能直接归因为该限幅器。未改活动源码/gate，OOM0/swap0，保留内存限制。
+两原始轨迹/cp/配对/诊断已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-learned-20261016T1212/evidence.tar.gz`，
+534,465,416字节，SHA256 `aa19ceb33724a597a141fd8b10074635bb7da0af6d4fdfaeb0c741871188f5fb`。
+Goal active，继续完整配对及Direct v2，未最终验收；详见Goal进度。
+
 ## 2026-10-16 20:05 CST tracking进入真实更新，原进程继续
 
 tracking原trainer2413986已6500步/1501更新，四完整55秒Task/Strict0/4、physical_valid4/4。

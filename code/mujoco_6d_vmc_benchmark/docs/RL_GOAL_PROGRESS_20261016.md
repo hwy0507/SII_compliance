@@ -1,5 +1,34 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 20:15 CST：两对全学习结果仍失败，继续处理组
+
+开工main `619c3f8f2b94aa4a8a05b50d2f9558288356cf93`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`查询/fetch/read，AGENTS开工/收工读取；上一轮为进展。
+原trainer2413986与协调器2400799继续，观察服务核对同一live PID直到cp8250完成。
+12:14:49Z已9000步/4001更新、6完整55秒，physical_valid6/6、Task/Strict0/6，第七回合在途。
+新闭合return−26.5209300959/−26.2889681344。cp6875/8250源与tar成员hash、8250步日志完整性、
+3251条更新序号及有限指标、逐回合reward和均通过；cp8250温度.00739581、critic loss8.77130。
+
+配对warmup3/mixed1/learned2，两个learned的tracking−control中位差：RMSE−.100881mm，
+放置XY−1.274364mm，峰矩+.296778Nm，峰速+.006372m/s，穿透+.015202mm。
+表现发生变化但没有全面改善或任务通过；单seed在线训练有限pilot，不能称收敛或充分因果证据。
+两个处理回合末10秒均carry20/28不变，位置误差分别12.706–12.822、12.552–12.615mm；
+各250采样姿态/速度满足，参数变化且energy_scale1。
+
+首个全学习回合的既有250Hz servo遥测只读诊断：末10秒tracking名义qdot范数中位.06707rad/s，
+等效请求与限幅后范数中位均.32869rad/s，最大分量差1.63e-19；对应control .06652/.46008rad/s。
+tracking弹簧wrench中位约[4.552,−.294,−9.008]N，control约[6.696,−.494,−12.513]N。
+因此该段不是名义指令归零或等效速度限幅截断；不能据此排除其他限制/接触，或断言根因已修复。
+该诊断不运行物理/动作重放或最终acceptance，不改活动快照、gate或控制接口。
+
+两原始回合/cp6875/8250、截至8250训练/更新日志、配对/carry/servo诊断与复现源已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-learned-20261016T1212/evidence.tar.gz`
+534,465,416字节，SHA256 `aa19ceb33724a597a141fd8b10074635bb7da0af6d4fdfaeb0c741871188f5fb`。
+incoming及最终目录大小/hash通过。首报告服务因systemd默认cwd导致找不到相对脚本exit2；
+独立v2显式设置工作目录后通过，失败收据保留，未影响训练。
+内存current3,190,861,824/peak3,221,225,472字节、max371、OOM0/swap0；GPU最近44°C/1443MiB。
+继续剩余两回合、完整配对，再启动已预检Direct v2；Goal active，四方法尚无收敛证据。
+
 ## 20:05 CST：tracking学习链路核验通过，尚无有效改善证据
 
 查询/fetch/read main `5633e19fc60307f28c7cc1e4e0ad02f9fa31a45d`、baseline
