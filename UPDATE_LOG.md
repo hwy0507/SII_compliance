@@ -1,5 +1,28 @@
 # 更新日志
 
+## 2026-10-16 15:40 CST — 阻抗11k阶段正常闭合，导纳自动接续；停滞证据与末端残差保全
+
+- 开工查询/fetch/read main `d26bf9b139cad17ddc786cdb91be2505b6214c9a`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/Goal进度。上一轮实现与归档为进展。
+  原阻抗服务在07:35:46Z正常结束，11000步/6001更新、8个完整55秒回合，Task/Strict0/8、
+  physical_valid8/8；原协调器2329290自动接续导纳PID2360933，已750步/0更新（5000步热身），
+  OOM/max0/swap0。VMC仍排队；没有重复模拟器、重启或修改活动快照。
+- 阻抗8回合return均值−25.587298、标准差.473319，末回合−25.939879。所有8回合末10秒
+  均在carry cursor20/28，位置/重入0/250、姿态/速度250/250；末回合误差12.7987–13.1865mm。
+  8回合奖励独立重算一致，折扣tracking罚−.09224至−.09628，峰矩罚−1.58985至−2.83311；
+  shaping折扣抵消符合公式，失败回报变化仍主要来自峰矩，不能据此宣布收敛或改gate。
+- 11000 checkpoint全部hash通过；1159训练样本只读credit诊断：末25步200样本absTD.32021、
+  actorQ−behaviorQ2.05245、策略维度|a|>.95占37.7%；远端959样本absTD.02174，最新回合
+  145样本absTD.40119，温度.00580246。5500 cp对应末端absTD.92890，但样本/条件/replay不同，
+  不是配对因果比较；仍存在末端拟合与动作外推疑点，不是真实Q高估证明。无梯度/仿真/模型写回，
+  RNG/normalizer/hash未变，诊断峰值895,913,984字节。初次诊断服务因漏设WorkingDirectory
+  在脚本执行前exit2，已保留失败收据；新独立服务显式工作目录后exit0，未重复训练。
+- 末回合原始轨迹、cp11000、最终日志/execution、完整8回合reward/carry/收敛筛查及只读诊断
+  已核验归档：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-close-20261016T0738/evidence.tar.gz`，
+  272,146,819字节，SHA256 `dbc33e71d76da775d82c56017adc2435ad076f87ab3f1553f13d72895885c662`。
+  incoming与最终独立目录hash均通过；前7回合已在前轮包保全。本机算、服务器仅归档。
+  Goal active；当前仅Direct/阻抗有限段闭合，非1M训练完成；四族GPU完整循环验证和最终验收未开始。
+
 ## 2026-10-16 15:26 CST — 实现显式GPU训练接续与四族完整循环验证门槛
 
 - 开工查询/fetch/read main `3c9b58b60787344d46b31792e9f32942e7b3e51b`、baseline

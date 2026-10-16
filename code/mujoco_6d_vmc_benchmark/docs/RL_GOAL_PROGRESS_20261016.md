@@ -4,6 +4,40 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 15:40 CST：阻抗11k闭合，导纳真实启动；8个失败回合完整保全
+
+开工核对main `d26bf9b139cad17ddc786cdb91be2505b6214c9a`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`与AGENTS/远端日志。上一轮为实质进展。
+阻抗11000步/6001更新于07:35:46Z正常结束，step_budget、8个完整55秒回合、physical_valid8/8、
+Task/Strict0/8。checkpoint0011000各文件hash通过；1M日程未完成，不能把有限段结束当收敛。
+协调器PID2329290自动启动导纳PID2360933/user unit sii-rl-goal-7310d204f8a4，真实250→750步，
+仍5000步热身、0更新、首回合在途；3GiB/swap0/单CPU1保持，OOM/max0。VMC尚未启动。
+
+阻抗回报均值−25.587297829、总体标准差.473319155；第8回合−25.939879296。
+8个末10秒窗口各250采样均停carry cursor20/28，位置与横向重入均不满足、姿态/速度均满足；
+末回合位置误差12.7987–13.1865mm，forward−5.955至−4.829mm。参数动作在改变，energy_scale=1。
+这不是独立物理子步审计，也不能把刚度、reward或障碍接触单独定为原因；最终gate未修改。
+全8回合训练奖励复算一致：折扣potential合计均−.560238529（预期抵消），tracking罚
+−.092243至−.096281、峰矩罚−1.589846至−2.833113，task罚均−10.059933。
+小幅回报波动主要是峰矩差异，没有任务进展/收敛证据。
+
+11000 cp只读诊断1159样本（固定规则包含全部末25步）：200末端附近样本absTD.320213、
+actorQ−behaviorQ2.052449、策略维度饱和率37.7%；959远端样本absTD.0217425，最新回合
+145样本absTD.401190，温度.00580246095。5500 cp末端absTD.928903不能直接作为同样本
+改善率：样本数/轨迹/条件/归一化均变化。末端动作外推与残差值得继续查，但不是独立真实Q证明。
+诊断无梯度/仿真/保存，checkpoint/RNG/normalizer不变，内存峰值895,913,984字节，exit0。
+初次服务0738漏设WorkingDirectory，Python在/home/airpig找相对tools路径而exit2，未执行诊断；
+在独立0738b服务明确工作目录后完成。失败与修复均写入归档收据，没有重启现有trainer。
+
+已核验服务器最终归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-close-20261016T0738/evidence.tar.gz`，
+272,146,819字节，SHA256 `dbc33e71d76da775d82c56017adc2435ad076f87ab3f1553f13d72895885c662`。
+包内含第8回合原始数据、cp11000、最终training/optimizer/execution/PROTOCOL、
+`IMPEDANCE_CREDIT_0011000.json`、`IMPEDANCE_REWARD_20261016T0738.json`和
+`IMPEDANCE_CLOSE_20261016T0738.json`；后者保留8回合carry结果、收敛筛查、协调器快照、服务证据
+与初次诊断失败。前7回合/checkpoint分包索引见下文；服务器只归档。导纳新轨迹仅本机。
+四族均未满足前瞻收敛标准，GPU完整循环验证仍等stage01正常完成；Goal active、无最终acceptance。
+
 ## 15:26 CST：GPU训练路径已实现，等待现有阶段安全闭合后验证完整循环
 
 开工核对main `3c9b58b60787344d46b31792e9f32942e7b3e51b`、baseline
