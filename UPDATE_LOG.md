@@ -1,5 +1,22 @@
 # 更新日志
 
+## 2026-10-16 17:40 CST — VMC第6完整回合保全，真实更新继续至3501次
+
+- 开工实时查询/fetch/read main `d18ab1b41d6bc9fd0a7c9136daa5b2d4867cfc3b`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/Goal进度。上一轮诊断修正为进展；
+  本轮核验并等待原VMC PID2375301的第6回合结束，没有重复启动。7750/2751→8500/3501，
+  第7回合在途；协调器2329290保持active，GPU验证目录未创建，四族前序闭合约束仍有效。
+- 第6完整55秒return−25.157868312，physical_valid累计6/6、Task/Strict0/6。cp8250逐文件与
+  tar成员hash通过；前6回合reward重算一致，保留3251条optimizer记录。step8250 temperature
+  .007400999，末10秒cursor18→20、误差12.018–18.622mm，参数变化、energy_scale1；
+  仍未在55秒内完成任务，不把单回合return变化当学习改善或收敛，25Hz诊断不替代最终审计。
+- 快照current3,111,485,440、peak/上限3GiB，max1285（上限回收）、OOM/kill0、swap0；
+  memory pressure avg60=.05%，真实步骤与更新继续。冻结源核验通过，没有改环境/奖励/资源限制。
+  只读归档服务exit0。第6原始回合/cp8250、reward/carry/优化器/资源快照已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-vmc-episode6-20261016T0940/evidence.tar.gz`，
+  268,708,282字节，SHA256 `199cc0cb0b465e947f566e398a227782e683dc2eaae561863b9adc05ef0be312`。
+  Goal active；VMC继续既定段，之后四族GPU完整循环与奖励对照，不提前做统一acceptance。
+
 ## 2026-10-16 17:30 CST — 修正路点就绪诊断解释，VMC首个全学习回合仍未成功
 
 - 开工实时查询/fetch/read main `f296a7dffaabdfe79bbdadcd39815ff8bd09d8ae`、baseline

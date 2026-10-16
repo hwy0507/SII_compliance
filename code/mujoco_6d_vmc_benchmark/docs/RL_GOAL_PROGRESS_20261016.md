@@ -4,6 +4,30 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 17:40 CST：VMC第6回合闭合，第7回合继续学习
+
+开工main `d18ab1b41d6bc9fd0a7c9136daa5b2d4867cfc3b`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已实时查询/fetch/read，AGENTS与进度重读。
+上一轮修正诊断为进展；本轮核验原服务及PID2375301/协调器2329290 live，等待第6回合
+完成并保存cp8250。7750/2751推进至8500/3501，第7回合在途，未重复启动或修改运行快照。
+
+第6完整55秒return−25.157868312，physical_valid累计6/6、Task/Strict0/6；cp8250逐文件
+及tar成员hash通过，前6reward重算一致。保留至8250的3251条optimizer记录，末温度.007400999。
+第6末10秒cursor18→20（两次推进），位置误差12.018–18.622mm、姿态就绪250/250、速度249/250，
+参数确实变化、energy_scale1；position/rejoin采样就绪0仍不能当没有推进的证据。
+不同condition/单回合return波动不证明学习改善，未达Task/Strict，未证明收敛。
+
+资源快照current3,111,485,440、peak=max3,221,225,472字节，memory.events.max1285，
+OOM/kill0、swap0；pressure avg60=.05%。上限回收没有阻止真实更新，不扩容或重启。
+GPU验证仍需四族本阶段闭合，目标目录尚未创建；核对派发/后端入口未见重复或提前启动。
+冻结输入/源清单通过，未改变奖励或其他训练配置。本轮只读归档服务exit0，无额外仿真/梯度。
+
+第6原始回合/cp8250、前6reward、carry/3251条optimizer/资源快照/复现脚本已核验至：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-vmc-episode6-20261016T0940/evidence.tar.gz`
+（268,708,282字节，SHA256 `199cc0cb0b465e947f566e398a227782e683dc2eaae561863b9adc05ef0be312`）。
+服务器仅传输/核验，不计算。Goal active；VMC继续剩余既定回合，再进行四族GPU完整循环验证
+与已登记奖励配对。所有失败保留；未做统一acceptance或最终独立物理审计。
+
 ## 17:30 CST：路点诊断增加推进证据，区分缓慢前进与末窗停滞
 
 开工main `f296a7dffaabdfe79bbdadcd39815ff8bd09d8ae`、baseline

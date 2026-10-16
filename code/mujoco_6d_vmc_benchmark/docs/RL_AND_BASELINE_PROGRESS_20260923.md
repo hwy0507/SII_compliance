@@ -1,5 +1,13 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 17:40 CST VMC六完整回合，学习更新继续
+
+VMC原PID2375301推进至8500步/3501更新，第7回合在途；6完整55秒physical_valid6/6、
+Task/Strict0/6，第6return−25.157868312，末10秒cursor18→20，仍未完成任务或收敛。
+cp8250与奖励重算通过，OOM0/swap0。原始回合/checkpoint/优化器及资源收据已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-vmc-episode6-20261016T0940/evidence.tar.gz`，
+SHA256 `199cc0cb0b465e947f566e398a227782e683dc2eaae561863b9adc05ef0be312`。Goal active，冻结设置不改，后续GPU验证与奖励对照不变。
+
 ## 2026-10-16 17:30 CST 纠正零路点就绪计数的含义，VMC五回合仍未成功
 
 VMC7250步/2251更新，5完整55秒physical_valid5/5、Task/Strict0/5，第5return−25.33003。
