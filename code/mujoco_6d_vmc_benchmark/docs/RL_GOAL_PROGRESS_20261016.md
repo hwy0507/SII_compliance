@@ -4,6 +4,36 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 16:10 CST：末端邻近诊断，导纳真实学习继续
+
+开工核对main `bc56632dbe6a4f92f1fe7cb1f529d6b50af32229`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及远端日志/AGENTS。导纳同PID2360933从
+5500/501推进至6576/1577（steps/updates），4完整55秒回合physical_valid4/4、Task/Strict0/4；
+第4return−25.347365861。下一回合在途；VMC排队，原协调器继续，无重复模拟器。
+
+新只读工具`tools/diagnose_goal_terminal_neighbours_20261016.py`检查阻抗cp11000与导纳cp5500。
+每回合末25个样本，在同回合距离末端至少50步的早期候选中寻找观测/动作邻居。距离为观测
+差除以整个replay每维标准差（floor1e-6）的均方，加原始动作差均方，两组等权；这不是网络
+真实normalizer或物理等价判据。保留短回合跳过收据，拒绝未闭合/非有限replay；不跨回合。
+
+阻抗200对、导纳100对：观测RMS中位数.081423/.128995，动作RMS中位数.092459/.104988，
+时间差中位数2.90/3.52秒。末端n25奖励均值−22.544659/−22.502375，对应较早窗口
+−.051879/−.057405；bootstrap mask分别0/1。尽管部分输入接近，原始观测差仍非零，
+**奖励分量不是完整Bellman目标**，不能据此证明时间混淆、真实Q高估、输入不足或学习不可能。
+本轮未改actor输入/terminal处理/奖励；结果仅补充末端残差诊断，后续需实际训练对照验证。
+
+3项边界/动作邻居/短回合测试、编译与diff检查通过；真实诊断在本机CPU6/1GiB/swap0，
+exit0、峰值100,077,568字节、OOM/max0，无JAX/模型加载/梯度/仿真，checkpoint hash前后相同。
+归档快照6383步/1384更新、temperature .0087939678，内存current3,118,579,712、
+peak3,165,929,472/3GiB，OOM/max0/swap0。随后anon约1.76GB/file约1.29GB，接近上限
+包含文件缓存，未据此重启；全GPU38°C/498MiB，训练仍CPU。新冻结源与登记hash通过。
+
+第4导纳完整原始轨迹/cp5500、只读工具/测试/诊断收据、execution及optimizer快照已归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-terminal-neighbours-20261016T0810/evidence.tar.gz`，
+267,986,596字节，SHA256 `19116474cc1bb4db182f5fcd829131fb68f1484d793c299194d1aa9cd5024d13`。
+之后数据仍本机待安全边界归档，失败/在途行均保留。Goal active，无收敛或最终acceptance；
+下一阶段仍为四族stage01结束后的真实GPU全循环预检，再推进奖励对照/后续训练。
+
 ## 16:00 CST：导纳进入优化阶段，释放已核验的重复传输缓存
 
 开工核对main `25c904e1567e3e76f596c524c0f7adcd1ada40a9`、baseline

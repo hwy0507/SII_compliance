@@ -1,5 +1,16 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 16:10 CST 末端邻近诊断与导纳梯度更新
+
+导纳6576步/1577更新，4完整55秒回合physical_valid4/4、Task/Strict0/4；VMC排队。
+只读阻抗11000/导纳5500 replay：同回合末端与早期邻居的n25奖励约−22.5对−.05，
+但bootstrap mask不同、输入非精确相同，不能将奖励差当作完整目标矛盾或已证实bug。
+3项测试/真实诊断通过，checkpoint未变，未改冻结输入/gate；OOM0/swap0，无重复训练。
+原始第4导纳回合/cp5500和诊断已保全至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-terminal-neighbours-20261016T0810/`，
+包SHA256 `19116474cc1bb4db182f5fcd829131fb68f1484d793c299194d1aa9cd5024d13`。
+Goal继续；GPU完整循环预检/奖励对照尚未派发，未声称收敛或最终通过。
+
 ## 2026-10-16 16:00 CST 导纳开始梯度更新，重复传输缓存已核验清理
 
 导纳5250步/251更新、3完整热身回合Task/Strict0/3；部分carry窗口仍跨多个路径点，不能

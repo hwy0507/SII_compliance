@@ -1,5 +1,27 @@
 # 更新日志
 
+## 2026-10-16 16:10 CST — 末端与早期输入邻近诊断完成，导纳真实更新继续
+
+- 开工查询/fetch/read main `bc56632dbe6a4f92f1fe7cb1f529d6b50af32229`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/Goal进度。Goal仍active。
+  导纳原PID2360933由5500步/501更新推进至6576步/1577更新；4个完整55秒回合
+  physical_valid4/4、Task/Strict0/4，第4return−25.347365861；VMC仍排队，无重复模拟器。
+- 新增只读`diagnose_goal_terminal_neighbours_20261016.py`及3项通过的测试。阻抗11000与
+  导纳5500 checkpoint分别检查200/100个末25步样本；仅在同回合距末端至少50步的候选中，
+  按全replay标准差归一化观测差和原始动作差寻找邻居。观测RMS中位数.08142/.12900，
+  动作RMS中位数.09246/.10499；末端25步奖励均值−22.54466/−22.50237，早期−.05188/−.05740。
+  末端bootstrap mask0、早期1，因此奖励分量差异不等于完整Bellman目标矛盾；不是精确状态
+  相同、隐藏时间混淆、真实Q高估或实现bug的证明。保留逐样本索引/距离/时间差供后续复核。
+- 实际诊断exit0、峰值100,077,568字节、OOM/max0，checkpoint前后hash相同；没有仿真、梯度
+  或模型写回。导纳快照6383步/1384更新、temperature .00879397，memory.current3,118,579,712、
+  peak3,165,929,472/3GiB、OOM/max0/swap0；稍后anon约1.76GB、file约1.29GB，未因缓存接近
+  上限重启健康worker。GPU38°C/498MiB（整卡占用，当前RL仍CPU）。冻结输入/gate/物理不变。
+- 第4导纳原始回合/cp5500、诊断源码/测试/逐样本收据及训练快照归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-terminal-neighbours-20261016T0810/evidence.tar.gz`，
+  267,986,596字节，SHA256 `19116474cc1bb4db182f5fcd829131fb68f1484d793c299194d1aa9cd5024d13`。
+  服务器仅传输/大小/hash核验。当前仍无收敛结论；待四族stage01闭合后执行已实现的GPU完整
+  循环预检，再进行已登记奖励对照/后续训练，不把有限段完成或诊断完成作为Goal完成。
+
 ## 2026-10-16 16:00 CST — 导纳开始梯度更新；核验并清理重复传输缓存，保留全部训练证据
 
 - 开工查询/fetch/read main `25c904e1567e3e76f596c524c0f7adcd1ada40a9`、baseline
