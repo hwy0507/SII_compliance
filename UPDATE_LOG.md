@@ -1,5 +1,60 @@
 # 更新日志
 
+## 2026-10-17 03:15 CST — 固定终局样本确认critic能学习罚分，策略泛化仍未解决
+
+上一Goal轮有训练链路/失败定位进展；本轮开工查询/fetch/read main
+`131615dc7414a03c8dafd3048ff2175ffdd0ac4c`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS/进度，收工重读AGENTS。
+同一协调器2502213/worker2502235持续active。只读观察到第八回合及归档闭合，未重启或重复启动。
+
+阻抗fresh control已闭合11,000步/6,001更新（44k预算的25%），8回合全1375步/55秒、
+physical_valid8/8，Task/Strict0/8。新增repair_train_022/000回报−26.077511768/−25.892417060；
+末10秒均250采样停在carry waypoint20/28，位置误差中位12.801975/12.738583mm，
+radius/rejoin readiness0，rotation/speed均250/250。冻结12mm门槛未改。
+11,000交互、6,001优化记录连续且有限，8回合reward逐项及总和、AUDIT/trace hash、
+cp11000成员hash通过。occupancy组尚未启动，没有奖励处理收益结论。
+收工live optimizer为11,342步/6,343更新；第九回合在途。
+
+本轮先以cp9625的1,131个预定训练样本检查n25 categorical critic：
+平均clipped mass1.55e-6、终局窗口0，未见显著support截断。较早6回合末25步TD残差均值
+.0269027；刚闭合第七回合为3.6951479。这些新终局数据刚进入训练，不能凭此判定学习故障。
+
+随后在cp9625与cp11000上固定全部前7回合的末25步，共175条完全相同历史样本：
+经验池前9625条每字段字节hash一致，独立逐步折扣求和与n25回报一致；
+没有bootstrap的终局窗口直接对比已保存尺度下的奖励目标，两个checkpoint均截断0。
+第七回合25条TD绝对残差均值3.695133→.016740，normalizer分母6.278640→6.015730；
+换回原reward尺度残差23.200407→.100701，说明新增1,375更新确实学到了这批失败罚分。
+并非所有历史样本都改善：前6回合平均绝对残差.026902→.046366，后者最大2.903373。
+不能将局部拟合改善等同于策略收敛。
+
+cp11000当前actor动作Q比历史动作Q高：前6回合末段均值差2.898145、第七回合2.729928。
+这是相同历史状态下critic估值的泛化/外推疑点，未执行替代动作的物理结果，不是已证实的
+真实Q误差或失败因果关系。继续既定44k×2奖励对照；不因该疑点修改活动网络、扩大support、
+放宽filter/gate或立刻同时叠加正则化。完整对照后再依据任务结果与估值证据决定下一实验。
+
+两只读诊断本机CPU6/2GiB/swap0/CUDA0完成，峰1,291,501,568/1,280,163,840字节、
+max/OOM均0；网络/RNG/归一化/checkpoint在各探针内均未改变，新增梯度/仿真0。
+训练峰2,694,467,584字节、3GiB硬限、max/OOM/oom_kill/swap0；
+收工MemoryCurrent2,293,448,704字节、GPU42°C/1439MiB。分析/归档CPU6/1GiB/swap0。
+研究实现仍f788fcb，活动登记d37b16975a6f…及解释器/物理/MJB/48维/执行器/dt5e-5均保持。
+
+报告、固定样本索引/逐样本估值/原数据hash、闭合日志、原生新轨迹和脚本已上传并重新核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-credit-followup-20261017/evidence.tar.gz`，
+6,898,258字节，SHA `ec8e868bf6605583c85f40b8c7b34bbdb0fc775cd12d5441342e67aa291ba4de`。
+本地缓存BENCH/outputs/rl_goal_stream_credit_followup_20261017；服务器只传输/归档/hash。
+新增两回合完整原件/checkpoint独立归档重核如下，同主机共同根
+`/home/arm1/sii_shared/SII_compliance/runs/main/`：
+
+- `goal-stream-ff349b04467a9829252d900f/evidence.tar.gz`，267,262,273字节，
+  SHA `0f9fe58a43b4ad034302d3b18e8ed10133e9f17529acc6103a5073d3c647b9f5`。
+- `goal-stream-d929a5499e35e76fc29df4da/evidence.tar.gz`，267,502,587字节，
+  SHA `fdc8c8246765cd2cefab96ecbdf626eadc87ec21b3b22f04df5b456c94a5022d`。
+
+本轮无研究源码变更；诊断脚本和断言验证随证据保留。三进度文档diff检查后提交/push main。
+全部失败/历史数据保留；四族均尚未收敛，最终acceptance和独立物理/filter重放未执行。
+Goal保持active，继续健康control并核对occupancy自动接续。
+
+
 ## 2026-10-17 03:04 CST — 阻抗早期学习链路核验通过，完整回合仍停滞于carry
 
 按sii-research-sync查询/fetch/read远端main `9f4b8747dfea25e66e1007941b32678d5e31d6de`、
