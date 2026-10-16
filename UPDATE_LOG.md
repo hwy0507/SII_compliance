@@ -1,5 +1,35 @@
 # 更新日志
 
+## 2026-10-17 00:15 CST — 导纳阶段关闭、VMC接续与错误放置诊断
+
+开工实时查询/fetch/read main `fd1b5660c87a88477507b306941105a307525987`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，按sii-research-sync开工/收工读AGENTS。
+上一轮有实际工具修复/归档进展；本轮保留所有失败、原件和活动source，历史100文件移除仍未获明确批准，未执行。
+
+导纳正常关闭23,375步/18,376更新，本段11,000条连续有限更新、8完整55秒physical_valid回合、Task/Strict0/8，
+末return−25.351177、temperature .001980882；cp23375成员hash和逐回合reward求和核验。
+协调器2447861自动接续VMC2479454（sii-rl-goal-f97f0a2da6b1），收工实测12,978步/7,979更新；
+无重复worker。导纳最终峰3GiB/max2369、OOM/swap0；VMC当前约2.52GB/max/OOM/swap0、GPU38°C，
+free64,913,981,440字节，50GiB保护保持。四方法当前选中lineage闭合回合数18/17/17/9、联合成功均0；
+这是训练screen快照，未证实收敛、未最终acceptance，VMC本段首回合在途。
+
+新增8阻抗/6导纳完整训练回合的动作和reward诊断：原始动作std约.51–.66，几乎每tick至少一维受参数速率限制，
+能量限制0。不能据此判定零控制能力或放宽限速。7阻抗carry末段位置误差中位12.69–15.83mm，
+6导纳为14.12–17.03mm；阻抗ep16却已进入release/retreat，物块目标XY误差258.172mm、release_supported=false。
+首次carry-only诊断因此报错，原脚本/失败收据保留，修正适用范围后全量保留14回合，峰506,691,584字节/OOM0。
+固定轨迹occupancy重算对该错误放置额外成本−3.097749，其他7个阻抗carry为−2.0065…−2.0506；
+支持已登记在线候选的检验理由，不代表新策略收益。详见`RL_PARAMETER_FAILURE_DIAGNOSIS_20261017.md`。
+
+诊断/源码/失败收据、导纳ep13–15和cp19250/20625/22000核验共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-parameter-diagnosis-20261016T1615/evidence.tar.gz`，
+852,248,130字节，SHA `2e724776968fb1d0dd32a4a512a895892b20a51c71934430093cf0ce70a08dbb`。
+导纳最终回合/cp23375、完整日志和四族screen补包：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-admittance-close-20261016T1615/evidence.tar.gz`，
+278,175,559字节，SHA `d2ebefcd27119b779e8cf6b8c3b9c35203f091f82d7d6eadaf3a57fee2a219e0`；
+两包本地/暂存/最终一致，服务器仅文件/hash。VMC新数据仍仅本地、待安全回合边界归档。
+Direct正则化/阻抗occupancy两组准备协议保持未派发；继续VMC，当前四族阶段闭合和资源准入后才开后续有限对照。
+Goal active；本轮为真实训练推进和新失败类型证据，不把阶段结束或shadow成本当收敛。
+
 ## 2026-10-16 23:58 CST — 导纳持续推进、归档核验提速与存储保留审批
 
 开工实时核对main `50af442b2b75ff6351eff48114aae54b6a11d7d2`、baseline
