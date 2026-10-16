@@ -1,5 +1,26 @@
 # 更新日志
 
+## 2026-10-16 19:16 CST — 奖励配对报告工具完成，阻抗control真实推进至8000步
+
+- 查询/fetch/read main `9456b51a798462f30328b93231dd1cab35b3caf9`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工重读AGENTS，上一轮为进展。
+  原协调器2400799/trainer2400811继续；8000步/3001更新，五个完整55秒回合，Task/Strict0/5、
+  physical_valid5/5。第五回合为首个全程学习策略回合，return−25.682297583，仍停carry；
+  原生训练审计RMSE23.28643mm、峰矩36.09985Nm、峰速.379328m/s、穿透.150319mm，不是最终独立审计。
+- 新增`tools/report_goal_tracking_pair_20261016.py`与6项针对性测试：校验登记/预检/执行协议，
+  同episode+condition及同曝光窗口配对，按warmup/mixed/learned分组；保留缺失、短回合、
+  无效与失败收据，不比较不同定义reward总分，不将单独Task成功当joint成功。原生指标仅作训练诊断。
+  实际在当前数据运行exit0，5闭合+1在途、无无效闭合收据，处理组未启动、可比较配对0；无效果结论。
+  初始pytest命令因训练环境未装pytest而退出，改用仓库既有unittest后6测试通过，未改环境。
+- 工具/测试/两个报告快照、第五原始回合/cp6875、内存快照和复现脚本已核验独立归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-pair-report-20261016T1116/evidence.tar.gz`，
+  266,677,855字节，SHA256 `6c16b1005c956b60e11604f29b1c7d8e9deb199096c2efa7a0fbb2709c193093`。
+  cp文件与tar成员hash通过，本机/远端hash大小一致；服务器只存储/hash。
+- 11:13内存anon1,617,608,704/file1,460,359,168/inactive_file966,529,024字节；11:15后出现
+  memory.events.max9→85（触及3GiB限制并回收），但OOM/oom_kill0、swap0，原进程仍推进至8000。
+  最新MemoryCurrent3,220,987,904字节；不能继续写max0，也不能把可回收缓存当成已证明内存泄漏。
+  保留3GiB/swap0保护和原训练，继续核查压力、control→tracking接续。Goal active、未收敛/未最终验收。
+
 ## 2026-10-16 19:07 CST — 阻抗真实学习已开始，501次更新与模型落盘核验通过
 
 - 查询/fetch/read main `1f59dbfc810e210fe39ae72bc6fd1310f8517859`、baseline

@@ -1,5 +1,33 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 19:16 CST：配对报告可用，control首个全学习回合仍失败
+
+开工main `9456b51a798462f30328b93231dd1cab35b3caf9`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`查询/fetch/read，AGENTS开工/收工重读，上一轮为进展。
+原trainer2400811仍active，8000步/3001更新，五个完整回合physical_valid5/5、Task/Strict0/5。
+第五回合repair_train_002从5500到6875，全程使用学习策略，return−25.682297583，末stage=carry；
+原生审计RMSE23.28643mm、峰矩36.09985Nm、峰速.379328m/s、穿透.150319mm。不同条件不能
+直接和热身回合作因果比较，当前仍未证明奖励改善或收敛。
+
+新增`tools/report_goal_tracking_pair_20261016.py`，用于本次阻抗及后续Direct配对。
+先核验登记/源/预检，执行协议须匹配注册hash、seed、奖励/指导项、UTD、n25、预算、热身与条件顺序。
+对相同episode+condition、相同步数窗口的完整回合，列出原生物理指标差并按热身/混合/学习分组。
+缺失、在途、损坏、短回合与失败均保留；失败完整回合仍入比较，Task AND Strict才计成功，
+不对不同目标的reward总分求差/排名；不运行新仿真、不宣称收敛或最终acceptance。
+6项测试覆盖错配、短/在途、失败分母、单Task成功、hash篡改、曝光/奖励错配与分组。
+最初pytest命令不可用，按仓库使用unittest，6项通过且实际报告exit0。训练环境未安装/改动。
+真实报告5个闭合、1个在途、0个无效闭合；tracking未启动、0个可比较配对，当前不作处理效果结论。
+
+工具/测试/报告两版本、第五回合原始数据/cp6875、内存及复现/测试收据已核验至：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-pair-report-20261016T1116/evidence.tar.gz`
+266,677,855字节，SHA256 `6c16b1005c956b60e11604f29b1c7d8e9deb199096c2efa7a0fbb2709c193093`。
+cp文件/tar成员及远端整体hash均通过；服务器仅存储/hash，前四回合在之前独立包，第六回合仍本地。
+
+内存11:13 anon1,617,608,704/file1,460,359,168/inactive_file966,529,024字节，包含较多文件缓存。
+11:15后memory.events.max9→85，OOM/oom_kill仍0、swap0，实际到8000步仍正常推进。
+最新MemoryCurrent3,220,987,904，保留3GiB保护，不调限/重启；max触顶并非OOM，但需继续跟踪。
+当前control按11k预算继续，tracking随后fresh启动；Direct v2保持已预检未派发。Goal active。
+
 ## 19:07 CST：阻抗跨过热身，真实更新及5500 checkpoint核验通过
 
 本轮main `1f59dbfc810e210fe39ae72bc6fd1310f8517859`、baseline

@@ -1,5 +1,16 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 19:16 CST 阻抗8000步，配对报告与第五回合归档
+
+原trainer2400811到8000步/3001更新，五个完整回合Task/Strict0/5、physical_valid5/5。
+第五全学习回合return−25.68230、仍carry，尚未收敛。新增配对报告按条件/曝光匹配及热身阶段分组，
+保留所有失败/缺失，不比较不同reward总分；6测试和真实报告通过，处理组未启动因此无配对效果结论。
+工具/报告/第五轨迹/cp6875已核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-pair-report-20261016T1116/evidence.tar.gz`，
+266,677,855字节，SHA256 `6c16b1005c956b60e11604f29b1c7d8e9deb199096c2efa7a0fbb2709c193093`。
+内存包含约1.46GB文件缓存，随后3GiB触顶回收max85、OOM0/swap0，仍真实推进；继续跟踪压力。
+Goal active，未改活动训练或冻结接口，未最终验收。
+
 ## 2026-10-16 19:07 CST 阻抗热身转学习已核验
 
 原trainer2400811到6000步/1001更新；cp5500的501条真实更新连续且有限、actor/critic文件hash改变，
