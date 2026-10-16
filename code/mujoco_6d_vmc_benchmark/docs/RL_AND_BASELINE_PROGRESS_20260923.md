@@ -1,5 +1,46 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-17 03:48 CST — 已验证等待：控制组十二回合，奖励对照继续
+
+本轮承接同一PID2502235从14,500步推进至16,500步的观察与归档；协调器2502213保持active。
+复核远端main `135e1c7349bf108ae40d59e3d293b7bdfdd40e18`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并fetch/read两分支日志、AGENTS与两份进度。
+沙箱fetch网络失败后宿主fetch成功；baseline没有新的RL变更。Goal保持active，没有重复派发或重启。
+
+`rl_goal_stream_occupancy_20261017_v2/impedance_control`已核验16,500连续交互、
+11,501连续有限优化更新，44k控制预算完成37.5%；12回合均1375步/55秒、physical_valid，
+Task/Strict均0/12，平均return −25.599748795、标准差.372667896。
+新增ep10/11（repair_train_017/012）return −25.693374591/−26.003577436，均carry失败。
+12回合reward分解与总和、AUDIT/trace hash、cp16500全部成员hash通过。
+末次temperature .003578299、critic loss7.789541、actor loss.616567、entropy1.863455。
+收工实时读取已达17,358步/12,359更新，第十三回合仍在途；不能与已归档闭合统计混算。
+occupancy处理组尚未启动，不比较不同目标的总reward来宣称收益；四族均未证明收敛。
+
+归档时worker内存2,313,179,136字节、峰2,769,199,104、硬限3,221,225,472，
+memory.max事件/OOM/oom_kill/swap均0；磁盘可用58,362,855,424字节，50GiB保护保持。
+宿主19:46UTC复核同一服务active、MemoryCurrent2,460,209,152、GPU43°C/1438MiB。
+归档助手CPU6/1GiB/swap0，5.824秒正常结束；本机CPU1/线程1/CUDA0/.125/UTD1训练保持。
+物理/MJB、最终gate、canonical48、filter、执行器与dt5e-5均未改。
+
+本轮证据归档已核验并再次读取服务器大小/SHA：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T1935/evidence.tar.gz`，
+8,495,607字节，SHA `9f3694059aa9a0f1a2e5b80b3afc9e62495780796f1e2e145e8c025b1d151dca`。
+本地缓存BENCH/outputs/rl_goal_stream_window_20261017T1935，含WINDOW、TRAINING_SCREEN、
+闭合训练/优化日志、WATCH、归档收据和实际观察脚本。新增原始轨迹/checkpoint已核验于同主机
+`/home/arm1/sii_shared/SII_compliance/runs/main/`：
+
+- `goal-stream-732f56334291d23283af4822/evidence.tar.gz`，268,897,079字节，
+  SHA `7ca042aa49162a5f9090338455c0c8e1b005180b0e905093e66567d0f0f4386d`。
+- `goal-stream-61f2565877a723e74fba984b/evidence.tar.gz`，269,570,697字节，
+  SHA `70c3d5f0633ab36861ff41abf4f1e4a83d42b5a3f19cf0b8a7efd6d37facf81c`。
+
+当前32训练条件均events=all，现有worker没有课程/state-reset入口；本轮未改变任务或引入teacher/replay。
+活动研究代码仍f788fcb，登记SHA `d37b16975a6f8e6408e951ec5bf69f14294b718dca7dc951ad56e9ba1c5e3aa6`。
+先完成登记44k×2配对，再按相同条件/曝光的任务与原生指标决定下一调整；不将失败reward平台当收敛。
+本轮仅更新三份进度，保留无关meeting文档及全部历史失败；未执行最终acceptance或独立物理/filter重放。
+收工重读AGENTS，文档diff检查后提交并正常push main；Goal继续，不以观察器退出作为训练终止。
+
+
 ## 2026-10-17 03:29 CST — 已验证等待：同一worker闭合十回合，控制组继续运行
 
 上一轮为固定样本critic诊断进展；本轮为对已确认存活的PID2502235的已验证等待，
