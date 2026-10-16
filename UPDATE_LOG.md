@@ -1,5 +1,43 @@
 # 更新日志
 
+## 2026-10-17 04:14 CST — 已验证等待：控制组22k步，十六完整回合尚无成功
+
+上一轮完成原生动作/停滞诊断；本轮确认同一协调器2502213/worker2502235存活后，
+从20,250步/15,251更新观察至22,000步/17,001更新，约9.5分钟，无重启或重复派发。
+开工查询/fetch/read main `c7400ac979497f4e0cb6035ebdf50c3f8de99bf2`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/两份进度，收工重读AGENTS。
+
+`rl_goal_stream_occupancy_20261017_v2/impedance_control`完成44k预算50%；
+16回合均1375步/55秒且physical_valid，Task/Strict0/16，均未证明收敛。
+新增ep14/15（repair_train_015/019）return −26.029092712/−24.977225453，carry失败；
+全16平均−25.498580653、标准差.441282141。22,000交互与17,001更新连续且有限，
+16回合reward分解/总和、AUDIT/trace hash、cp22000成员hash通过。
+末temperature .002250975、critic loss7.500761、actor loss1.571514、entropy−.175552。
+occupancy组尚未启动；控制失败reward平台不是成功或处理收益证据。
+
+归档时worker current2,395,394,048字节、peak2,848,673,792、max3,221,225,472；
+memory.max事件/OOM/oom_kill/swap0，free58,156,675,072字节，高于50GiB保护线。
+收工同一worker active、current2,415,771,648，GPU42°C/1440MiB。
+本机CPU1/单线程/CUDA0/.125/UTD1保持；CPU6/1GiB/swap0归档助手7.890秒正常完成。
+观察器只在目标回合及归档完成后结束；训练继续第17回合。
+
+证据已独立归档核验，并再次从服务器读取大小/hash：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T2005/evidence.tar.gz`，
+10,173,291字节，SHA `7318bd8ee255fd6d3c6731d43af589ee1a62df049e2e8a87d4954f140023a6f3`。
+本地缓存BENCH/outputs/rl_goal_stream_window_20261017T2005，保留WATCH、闭合日志、训练screen和映射。
+新增原始轨迹/checkpoint重核于同主机共同根 `/home/arm1/sii_shared/SII_compliance/runs/main/`：
+
+- `goal-stream-a045808f4f18e5d556ca147e/evidence.tar.gz`，271,566,092字节，
+  SHA `bfef83c999e7edcaea7f25f6de07f4ab44b64b354d44647dc242b0867b8e00e7`。
+- `goal-stream-1c819d0c4484899952ec0176/evidence.tar.gz`，271,931,949字节，
+  SHA `024838ba97582db37eb89e9fdc062ab206265edf3d4fbc936ff3741c85e28c00`。
+
+服务器仅归档，活动代码f788fcb/登记d37b16975a6f…不变；冻结物理/MJB/gate/canonical48/
+filter/执行器/dt5e-5保持。本轮属于已验证等待，无研究源码修改；四族仍未证明收敛，
+最终acceptance及独立物理/action-filter重放未执行，全部失败保留。Goal active，
+继续登记44k×2对照；三份进度diff检查后提交/push main，保留无关meeting文件。
+
+
 ## 2026-10-17 04:04 CST — 十四回合原生动作诊断：并非始终低刚度，停滞原因仍需对照验证
 
 上一轮为已验证等待；本轮增加固定闭合前缀的原生动作/路径点诊断，避免将早期低刚度观察
