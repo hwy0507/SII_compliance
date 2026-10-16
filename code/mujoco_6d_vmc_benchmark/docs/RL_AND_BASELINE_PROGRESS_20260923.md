@@ -1,5 +1,15 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 18:25 CST GPU前两族完整回合已归档，导纳在途
+
+Direct62906/96564、阻抗12375/7376，各新增1375步/1375更新，两完整55秒回合Task/Strict均false；
+Direct physical_valid=false、阻抗true。checkpoint/更新序列/reward重算通过，峰值约2.31GB、OOM0/swap0。
+阻抗末10秒仍cursor20/28、误差12.599–13.074mm，支持后续已登记跟踪权重对照，未证明根因或收敛。
+两完整轨迹/checkpoint/日志及诊断已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-first-pair-20261016T1022/evidence.tar.gz`，
+SHA256 `80052f2894e1ed09256961858a2a63c04ab266241625f1ed92b8925dd90d657e`。
+导纳原PID2396091已11472/6473，VMC排队。Goal active；四族GPU循环完成后先运行阻抗奖励配对，未最终验收。
+
 ## 2026-10-16 18:10 CST 四族首段结束，GPU实际接续训练
 
 Stage01四族各8完整回合Task/Strict0/8；Direct61531/95189，另三族11000/6001（steps/updates）。

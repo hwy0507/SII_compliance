@@ -4,6 +4,43 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 18:25 CST：GPU前两族完整回合保全，导纳继续
+
+开工main `cc986e0fdcae45dee6a09da14723e5cc7022d52d`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已查询/fetch/read，AGENTS与进度重读，上一轮为进展。
+原协调器2392590持续运行；阻抗2394029于10:20:32.874592Z正常完成，随后自动接续导纳2396091，
+服务`sii-rl-goal-6e7a6f363edc.service`。10:23:28Z导纳11472/6473，OOM/max0、swap0，VMC仍排队。
+冻结源与配置未改，没有重复启动模拟器；GPU训练未被只读归档打断。
+
+|已完成GPU回合|总steps/updates|本段新增steps/updates|Task/Strict|physical_valid|return|内存峰值bytes|
+|---|---:|---:|---|---|---:|---:|
+|Direct|62906/96564|1375/1375|false/false|false|−38.733161806|2306428928|
+|Impedance|12375/7376|1375/1375|false/false|true|−25.791857652|2308399104|
+
+均完整55秒且无提前abort；两服务OOM/max0、swap0。两段1375条optimizer的step/update与父checkpoint
+严格连续，最终检查点逐文件及归档成员hash通过，两个回合reward重算一致。训练链路的完整循环
+与资源验证通过不代表任务成功、收敛或四族GPU阶段已经结束。阻抗服务含初始化443.595秒；
+不同条件/初始化时间不构成CPU/GPU因果吞吐对比。
+
+阻抗只读25Hz训练诊断：末10秒cursor20/28不变，位置误差12.599–13.074mm，姿态/速度均250/250
+就绪、energy_scale1，参数确实在变化。这次确有整窗cursor不动证据，不用零ready计数单独推断。
+折扣跟踪成本.0951568、力矩成本2.324404；继续支持已登记权重4→40的训练对照，并不证明因果根因。
+Direct训练原生记录仍approach，外穿透1.30573mm导致physical_valid失败；这些原生指标未在本轮
+进行最终独立子步审计，不冒充acceptance。所有失败标签与原始轨迹保留。
+
+本机只读归档服务`sii-goal-gpu-first-pair-receipt-20261016.service`exit0；两原始回合/最终checkpoint/
+训练及optimizer日志/奖励分解/carry诊断/协调器快照及复现脚本已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-first-pair-20261016T1022/evidence.tar.gz`
+548,866,014字节，SHA256 `80052f2894e1ed09256961858a2a63c04ab266241625f1ed92b8925dd90d657e`。
+服务器仅传输/hash；导纳/VMC新轨迹仍仅本机或未生成，不声称已归档。
+
+已复核两CPU奖励pilot的冻结输入、前序闭合、同seed配对、同物理/parameter清单及旧预检；两者
+均未启动，也未修改。四族实际CUDA完整回合验证通过后，在新目录准备GPU配对，先执行阻抗：
+`goal_tracking_pilot_20261016.py prepare-gpu --cpu-pilot outputs/rl_goal_impedance_tracking_pilot_20261016`
+配合`--gpu-validation outputs/rl_goal_gpu_preflight_20261016 --root outputs/rl_goal_impedance_tracking_gpu_20261016`。
+随后用本机CPU6/2GiB/swap0/CUDA0运行该新快照的preflight（两次丢弃更新），通过后launch。
+仍只启动一个模拟器；不同reward总分不直接比较。Goal active，无最终验收或收敛声明。
+
 ## 18:10 CST：Stage01全部闭合，四族CUDA预检通过，实际GPU训练接续
 
 开工main `4076420f0d1166acfe10cbb6a66dfb5cbc6c2063`、baseline

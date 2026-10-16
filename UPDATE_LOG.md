@@ -1,5 +1,24 @@
 # 更新日志
 
+## 2026-10-16 18:25 CST — 前两族GPU完整训练回合核验归档，导纳接续
+
+- 开工查询/fetch/read main `cc986e0fdcae45dee6a09da14723e5cc7022d52d`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS/Goal进度，上一轮为实质进展。
+  本轮核验原GPU协调器2392590和阻抗2394029；阻抗10:20:32Z正常闭合12375步/7376更新，
+  原协调器接续导纳2396091，10:23:28Z已11472步/6473更新，OOM/max0、swap0。没有重复启动。
+- Direct与阻抗各新增1375步/1375更新，连续optimizer序列、两最终checkpoint及tar成员hash、
+  奖励分解重算全部通过。Direct Task/Strict=false、physical_valid=false、return−38.73316；
+  阻抗Task/Strict=false、physical_valid=true、return−25.79186。内存峰值分别2,306,428,928/
+  2,308,399,104字节，OOM0/swap0。GPU完整链路通过不等于策略成功；四族GPU验证仍未全部完成。
+- 阻抗末10秒carry cursor20/28不变，位置误差12.599–13.074mm、姿态/速度250/250就绪，
+  energy_scale1、参数实际变化。新回合折扣跟踪成本.09516、力矩成本2.32440，继续支持既定
+  跟踪权重对照，未证明根因或改善。只读训练诊断不代替最终独立物理审计，不改变冻结gate。
+- 两完整原始回合/最终checkpoint/完整日志/奖励分解/carry诊断/复现脚本已核验归档至：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-first-pair-20261016T1022/evidence.tar.gz`，
+  548,866,014字节，SHA256 `80052f2894e1ed09256961858a2a63c04ab266241625f1ed92b8925dd90d657e`。
+  本机只读核验服务exit0、服务器仅归档/hash。两CPU奖励pilot冻结配置/前序/同物理清单复核通过，
+  尚未派发；四族CUDA完整循环通过后先启动阻抗奖励配对。Goal active，最终acceptance未运行。
+
 ## 2026-10-16 18:10 CST — 四族首段闭合，CUDA恢复预检通过并实际启动训练
 
 - 开工查询/fetch/read main `4076420f0d1166acfe10cbb6a66dfb5cbc6c2063`、baseline
