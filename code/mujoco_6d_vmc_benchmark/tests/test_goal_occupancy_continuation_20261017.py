@@ -10,7 +10,7 @@ import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 from rl_goal_stage_20261016 import read,write,digest,manifest,verify_inputs,prepare_next,seal_preflight,verify_preflight
-from goal_selected_continuation_20261016 import prepare_selected,closed_source,training_source,TRAINER,OCCUPANCY_HELPER
+from goal_selected_continuation_20261016 import prepare_selected,closed_source,training_source,TRAINER,OCCUPANCY_HELPER,STORAGE_HELPER
 from goal_tracking_pilot_20261016 import prepare
 from goal_payload_occupancy_reward_20261016 import CONFIG
 from screen_goal_rl_convergence_20261016 import collect
@@ -19,7 +19,7 @@ from test_goal_convergence_screen_20261016 import CRITERIA,CONDITIONS,rows
 
 
 class OccupancyContinuationTests(unittest.TestCase):
-    def fixture(self,base):
+    def fixture(self,base,stream=False):
         helper=selected_fixtures.SelectedContinuationTests();old=helper.fixture(base/'four')
         reg=read(old/'REGISTRATION.json');reg['training_convergence']=CRITERIA
         job=next(j for j in reg['jobs'] if j['controller']=='impedance')
@@ -37,8 +37,49 @@ class OccupancyContinuationTests(unittest.TestCase):
         receipt=base/'reward.json';write(receipt,dict(protocol_snapshot=spec,protocol_sha256=digest(cp.parent/'PROTOCOL.json'),
             execution_snapshot=dict(rows=[dict(ended_utc='closed',episode=7,step_after=11000)])))
         pair=base/'pair';prepare(old,pair,cp,receipt,'impedance',True)
+        if stream:
+            from goal_prospective_storage_20261017 import prepare as prepare_storage
+            (base/'outputs').mkdir()
+            destination=base/'outputs/rl_goal_stream_fixture'
+            prepare_storage(pair,destination)
+            pair=destination
         self.close(pair,cp)
         return old,pair
+
+    def test_storage_migration_selects_and_continues_without_reset(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base=Path(tmp);old,pair=self.fixture(base,stream=True)
+            before=(manifest(old),manifest(pair))
+            selected=base/'selected'
+            reg=prepare_selected(old,self.selection(old,pair),selected)
+            self.assertEqual((manifest(old),manifest(pair)),before)
+            self.assertEqual(training_source(reg),training_source(read(old/'REGISTRATION.json')))
+            self.assertEqual(reg['source_manifest'][STORAGE_HELPER],read(pair/'REGISTRATION.json')['source_manifest'][STORAGE_HELPER])
+            self.assertEqual(reg['jobs'][1]['inherited_steps'],44000)
+            self.assertEqual(reg['jobs'][1]['payload_occupancy_guidance'],CONFIG)
+            self.assertFalse((selected/'LAUNCH.json').exists())
+            check=subprocess.run([sys.executable,'-I','-c',
+                'import sys;sys.path.insert(0,sys.argv[1]);from rl_goal_stage_20261016 import read,verify_inputs;verify_inputs(read(sys.argv[2]))',
+                str(selected/'source/tools'),str(selected/'REGISTRATION.json')],cwd=base,
+                env=dict(os.environ,PYTHONPATH=''),capture_output=True,text=True,timeout=20)
+            self.assertEqual(check.returncode,0,check.stderr)
+            self.close(selected)
+            later=prepare_next(selected,base/'later');verify_inputs(later)
+            self.assertEqual(later['jobs'][1]['inherited_steps'],55000)
+            self.assertEqual(later['jobs'][1]['payload_occupancy_guidance'],CONFIG)
+
+    def test_storage_migration_does_not_hide_source_or_ancestry_tamper(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base=Path(tmp);old,pair=self.fixture(base,stream=True)
+            reg=prepare_selected(old,self.selection(old,pair),base/'selected')
+            for key in (TRAINER,STORAGE_HELPER,OCCUPANCY_HELPER,'tools/baseline_repair_worker_20261008.py'):
+                bad=deepcopy(reg);bad['source_manifest'][key]='changed'
+                with self.assertRaises(AssertionError):training_source(bad)
+            original=read(pair/'REGISTRATION.json')['storage_predecessor']
+            path=Path(original['root'])/'REGISTRATION.json'
+            changed=read(path);changed['pilot_predecessor']['registration_sha256']='changed'
+            write(path,changed)
+            with self.assertRaisesRegex(AssertionError,'Storage predecessor changed'):training_source(reg)
 
     def close(self,root,fresh_cp=None):
         reg=read(root/'REGISTRATION.json');sha=digest(root/'REGISTRATION.json')

@@ -25,6 +25,13 @@ ACTOR_PILOT = 'resumed_actor_regularization_pilot'
 OCCUPANCY_PILOT = 'fresh_parameter_occupancy_pilot'
 TRAINER = 'tools/train_v4_recovery_rl_20261016.py'
 OCCUPANCY_HELPER = 'tools/goal_payload_occupancy_reward_20261016.py'
+STORAGE_HELPER = 'tools/goal_prospective_storage_20261017.py'
+# Reviewed archive-at-boundary migration. Do not ignore arbitrary trainer or
+# storage changes merely because a registration calls them storage plumbing.
+STORAGE_MIGRATION_HASHES = {
+    TRAINER: 'c6f52e81bea7ef01fcea73b3d0c9d8bf30046df700bfd59c5e95edc21750550e',
+    STORAGE_HELPER: '2c7f98aaf1c342763855be9698770dd8881ce079e898a802802917e342df1311',
+}
 
 
 def frozen(manifest_data):
@@ -58,6 +65,23 @@ def training_source(reg):
         from goal_tracking_pilot_20261016 import validate_pair
         validate_pair(pilot)
         assert pilot['experiment_kind']==OCCUPANCY_PILOT
+        if pilot.get('storage_predecessor'):
+            from goal_prospective_storage_20261017 import validate as validate_storage
+            validate_storage(root)
+            predecessor=pilot['storage_predecessor'];old_root=Path(predecessor['root'])
+            assert digest(old_root/'REGISTRATION.json')==predecessor['registration_sha256'], 'Storage predecessor changed'
+            old=read(old_root/'REGISTRATION.json');validate_pair(old)
+            assert old['experiment_kind']==OCCUPANCY_PILOT and not old.get('storage_predecessor')
+            assert pilot['pilot_predecessor']==old['pilot_predecessor'], 'Storage migration changed training ancestry'
+            assert pilot['parameter_manifest']==old['parameter_manifest'], 'Storage migration changed parameter implementation'
+            for key,expected in STORAGE_MIGRATION_HASHES.items():
+                assert pilot['source_manifest'][key]==data[key]==expected, 'Unregistered storage implementation change'
+                if key in old['source_manifest']:
+                    data[key]=old['source_manifest'][key]
+                else:
+                    data.pop(key)
+            assert frozen(data)==frozen(old['source_manifest']), 'Storage migration changed other frozen source'
+            pilot=old
         pred=pilot['pilot_predecessor'];parent_root=Path(pred['root'])
         assert digest(parent_root/'REGISTRATION.json')==pred['registration_sha256']
         parent=read(parent_root/'REGISTRATION.json')
@@ -229,6 +253,10 @@ def prepare_selected(base, selection, destination, interactions_per_family=11000
         pilot=read(Path(occupancy_origins[0]['root'])/'REGISTRATION.json')
         for key in (TRAINER,OCCUPANCY_HELPER):
             shutil.copy2(Path(pilot['source'])/key,Path(reg['source'])/key)
+        if pilot.get('storage_predecessor'):
+            # Preserve the exact optional trainer dependency in the new source
+            # snapshot. This does not retrofit storage policy onto old runs.
+            shutil.copy2(Path(pilot['source'])/STORAGE_HELPER,Path(reg['source'])/STORAGE_HELPER)
     for job in reg['jobs']:
         item = chosen[job['name']]
         old, cp = item['job'], item['checkpoint']

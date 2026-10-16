@@ -1,5 +1,56 @@
 # 更新日志
 
+## 2026-10-17 07:32 CST — 修复归档迁移后的接续误拒绝，occupancy十二回合
+
+开工查询/fetch/read main `dec11ea216d26559ccffca456f6e862ee7b315ae`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读AGENTS/两份进度，收工重读AGENTS。
+上一轮为已核验等待；本轮新增真实接续缺陷复现、修复和回归证据。
+协调器2502213/worker2546313持续active，未重复派发或改活动source/参数/物理。
+观察器23:20:46–23:30:46 UTC从14500/9501更新推进至16500/11501更新、
+10→12闭合回合，边界归档后退出0；现有训练继续。
+
+只读compatibility probe发现：原未启动的occupancy登记可与四方法base匹配，
+当前stream登记却触发“Occupancy migration changed other frozen source”。
+旧校验器未识别已登记的存储迁移新增helper和trainer边界hook，后续选择会被误拒绝；
+不是正在运行worker的训练故障，也不是学习不收敛根因。
+修改`tools/goal_selected_continuation_20261016.py`：先验证storage seal、前驱登记hash、
+训练祖先和parameter manifest，再仅归一化已审阅且严格hash锁定的trainer/storage helper；
+其他冻结source仍逐项一致。新选定阶段复制精确storage helper依赖，保留奖励身份和原checkpoint。
+不将任意trainer变化泛化豁免为“存储”，不把策略来源、reward或replay混合。
+实际stream登记修复后compatible通过，活动source/parameter manifest与登记hash保持。
+当前pair仍运行，因此尚未实际选择/派发新训练；新阶段仍需独立存储登记和恢复预检。
+
+新增两项回归覆盖stream选择→隔离snapshot导入→后续阶段、精确继承44000/55000步和奖励，
+以及trainer/helper/physics source与祖先篡改拒绝。相关22项测试全部通过：
+selected continuation7、occupancy continuation7、prospective storage8。
+首次证据打包错误假定活动快照旧checker等于修复前仓库checker，1.034秒退出1；
+此前真实兼容检查和22项测试已通过。失败脚本/收据保留，不重跑或重启训练。
+随后从开工commit提取旧checker并核对与原probe hash一致，260ms完成证据打包，
+峰29,294,592字节/1GiB、OOM/swap0；原误拒绝和打包失败均保留。
+
+训练前12回合均1375步/55秒、physical_valid、carry，Task/Strict0/12。
+新增ep10/repair_train_017、ep11/repair_train_012的return −27.879664331/−28.144475447，
+物块最终XY误差92.242572/110.815609 mm，无物理abort。
+前12回合return均值−27.641139524、标准差.431209532，含warmup；失败平台不是收敛。
+16500交互/11501更新连续有限，奖励分解、AUDIT/trace、cp16500成员hash和新增原始远端归档通过。
+末temperature .003555267、critic loss7.409366。worker峰2,676,830,208/max3,221,225,472字节，
+OOM/max事件/swap0；磁盘余56,158,629,888字节，高于50GiB；GPU42°C/1439MiB。
+归档助手CPU6/1GiB/swap0，5.685秒退出0，服务器只存储/传输/hash。
+
+证据`BENCH/outputs/rl_goal_stream_window_20261017T2335`含修复前probe、22项测试、
+修复前后源码/测试与登记快照、打包失败收据、WINDOW/TRAINING_SCREEN/日志。
+独立SSH核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T2335/evidence.tar.gz`，
+8,961,349字节，SHA256
+`7e50e99e091289ef632f7a8246c5dba00fa5fe31ad1b3e300e97edae6b9a15a8`。
+归档内本轮修复源码按内容hash标识，不冒充活动worker代码。
+
+按sii-research-sync同步三份进度，提交/push源码、测试和文档；保留无关meeting文件。
+Goal active，继续occupancy登记44k，双方结束再做匹配条件/相同暴露比较；
+控制组0/32，四族均未证明收敛，最终acceptance未执行。
+全部失败保留，冻结物理/MJB/gate/canonical48/filter/执行器/dt5e-5保持，本机计算/服务器仅归档。
+
+
 ## 2026-10-17 07:18 CST — 已核验等待：occupancy十回合/13750步
 
 开工查询/fetch/read main `5bd16b99e9d61bfbb5ddad0d24571ec2d2ae9386`、
