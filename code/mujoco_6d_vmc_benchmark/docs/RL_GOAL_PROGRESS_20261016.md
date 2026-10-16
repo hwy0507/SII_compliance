@@ -1,5 +1,34 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 04:42 CST — 已验证等待：控制组20完整回合，仍无Task/Strict成功
+
+本轮按sii-research-sync查询/fetch/read main `f27b1bcb640afb646f927060946f2bd44165d2c9`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读AGENTS与两份RL进度，
+收工重读AGENTS。上一轮完成诊断发布；本轮为同一活动进程的已验证等待。
+协调器2502213与worker2502235持续active，无重复worker、重启或活动配置修改。
+观察从26,750步/21,751更新至27,500步/22,501更新，20闭合回合及边界归档完成后观察器正常退出。
+
+`rl_goal_stream_occupancy_20261017_v2/impedance_control`完成44k预算62.5%。
+20回合均1375步/55秒且physical_valid，Task/Strict均0/20；return均值−25.432941878、
+标准差.452107735。新增ep18/19（repair_train_021/018）return分别−24.761643577/
+−25.618699595，结束阶段carry/retreat；进入retreat不等于物块稳定放置成功。
+27,500条交互与22,501次更新连续且有限，20回合reward分解/总和、AUDIT/trace、
+checkpoint27500成员hash通过；末temperature .001423736、critic loss6.719837。
+occupancy组仍未启动，不能推断奖励调整收益；四族均未证明收敛，最终acceptance未执行。
+
+归档时worker峰值2,905,554,944字节、上限3,221,225,472，OOM/max事件/swap0；
+磁盘剩余57,937,117,184字节，50GiB保护保持。收工GPU41°C/1438MiB。
+CPU6/1GiB/swap0核验归档助手6.311秒正常退出，训练继续使用本机CPU1/单线程/CUDA0/UTD1。
+冻结物理/MJB/gate/canonical48/filter/执行器/dt5e-5保持，所有失败保留，服务器仅存储/hash。
+
+本地证据 `BENCH/outputs/rl_goal_stream_window_20261017T2040`；
+共享归档已再次核验大小与SHA：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T2040/evidence.tar.gz`，
+11,802,356字节，SHA `4f485c207b277f5494f38fa1526247057430bce5eb8a13698ed7f44a3f82f7f2`。
+含新增原始归档映射与完整失败收据。继续登记44k×2对照，Goal active；
+三份进度同步并提交/push main，保留无关meeting文件。
+
+
 ## 2026-10-17 04:35 CST — retreat失败定位：物块在carry末段下落，奖励记录并未遗漏
 
 上一轮增加18回合证据与retreat失败判据核查；本轮沿ep16的新失败现象诊断原生时间线。
