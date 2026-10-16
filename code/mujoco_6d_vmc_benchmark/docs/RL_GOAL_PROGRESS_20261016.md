@@ -4,6 +4,61 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 18:10 CST：Stage01全部闭合，四族CUDA预检通过，实际GPU训练接续
+
+开工main `4076420f0d1166acfe10cbb6a66dfb5cbc6c2063`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已查询/fetch/read，AGENTS开工及收工重读。
+10:02:17Z原协调器自然结束，四族最终检查点核验通过。本段结果：
+
+|方法|累计steps/updates|本段完整55秒回合|Task/Strict|physical_valid|
+|---|---:|---:|---:|---:|
+|Direct|61531/95189|8|0/8|3/8|
+|Impedance|11000/6001|8|0/8|8/8|
+|Admittance|11000/6001|8|0/8|8/8|
+|VMC|11000/6001|8|0/8|8/8|
+
+VMC第7/8return−25.203426841/−25.389355820，八回合mean−25.261000130、std .067965733，
+奖励重算一致。低波动失败平台不是收敛，training_complete=false；不把有限段完成当1M完成。
+最后两checkpoint9625/11000逐文件及tar成员hash通过，全部失败保留。
+旧trainer没有最终resource_snapshot，收尾收据明确null，不把服务结束后的缺失值写成零。
+最后在途观测10:00:26Z OOM/kill0、swap0，max2082为回收计数。
+收尾包（末两原始轨迹/checkpoint、全VMC日志、四族检查点核验、reward/carry/收敛筛查）位于：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stage01-close-20261016T1002/evidence.tar.gz`
+529,918,496字节，SHA256 `e8274358f90e0bfc895d7cb41e5fb2be331a76516937d79b623bd590e66a0642`。
+
+下一阶段已实际登记/预检/启动，不再只是准备方案：
+`outputs/rl_goal_gpu_preflight_20261016/REGISTRATION.json` SHA256
+`98585360903c2164979d36129a273e719da79f0298ffaafa44ab0b2b2df49a11`，来源commit4076420。
+四族按原顺序各新增1375步，总5500，Direct61531→62906，其他11000→12375；仍1M optimizer日程。
+精确恢复各自网络、optimizer、replay、RNG、normalizer，仅学习后端CPU→CUDA；不声明浮点逐位等价。
+物理/worker/参数源码、reward、gate/canonical48/filter/执行器/dt5e-5保持，带入此前磁盘保留线修复。
+CPU1/单模拟器/单线程/3GiB/swap0/UTD1，CUDA0 allocator .125/不预分配；该比例不是总显存硬上限。
+新派发保护截止2026-10-17T10:02:48.913556Z，停止入口本阶段STOP_REQUESTED。
+
+四族各一次丢弃更新的CUDA恢复预检全部exit0、指标有限、terminal window与replay检查通过，
+原checkpoint未变；峰值依次1,331,314,688/1,287,548,928/1,293,856,768/1,292,156,928字节，
+OOM/max0。这四次不计入实际训练，也不代替完整回合验证。
+协调器`sii-rl-goal-stage-7418f4a6bd92.service`10:08:06Z启动，Direct
+`sii-rl-goal-96db82156770.service` trainer2392601、worker2392639，无重复模拟器。
+10:10:04Z优化器日志61912步/95570更新，相对起点新增381/381；execution快照61750较慢，
+二者时间语义分别保留。实际JAX0.7.2/cuda:0/RTX5080 Laptop，亲和[1]。
+内存current/peak1,905,750,016，上限3GiB，OOM/max0、swap0；GPU45°C/1430MiB。
+
+冻结源码、登记、四族预检和上述启动快照（非新完整回合）已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-launch-20261016T1010/evidence.tar.gz`
+2,164,534字节，SHA256 `15e0f26aea078cb9bff45175d0953ab0f6cfee6d55a800bb69e583dcae11cc1f`。
+GPU阶段实际训练轨迹尚在本机，完成边界后归档；服务器只存储/hash。Goal active。
+接下来核验四族实际完整55秒GPU循环与最终资源，再启动已准备的Direct/阻抗奖励对照；
+不同奖励总分不直接比较，检查Task/Strict与物理跟踪。未做最终acceptance或独立子步审计。
+
+18:13 CST复查：Direct首个完整55秒GPU回合结束，62906/96564，新增1375交互/1375更新；
+cp62906九文件hash通过。10:08:11.387742Z至10:13:04.311458Z约293秒含初始化，
+不同条件/初始化不能直接作CPU-GPU因果吞吐比较。return−38.733161806，Task/Strict均false、
+physical_valid=false（全55秒、无提前abort）；训练链路通过不代表任务或安全成功。
+final memory_peak2,306,428,928/current1,724,055,552，OOM/max0、swap0，training_complete=false。
+协调器已接续阻抗`sii-rl-goal-a95889cd0106.service`。Direct本次新轨迹/checkpoint暂仅本地，
+尚未纳入10:10启动归档；下一安全边界保全。其余三族GPU完整回合仍待完成。
+
 ## 17:40 CST：VMC第6回合闭合，第7回合继续学习
 
 开工main `d18ab1b41d6bc9fd0a7c9136daa5b2d4867cfc3b`、baseline

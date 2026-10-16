@@ -1,5 +1,34 @@
 # 更新日志
 
+## 2026-10-16 18:10 CST — 四族首段闭合，CUDA恢复预检通过并实际启动训练
+
+- 开工查询/fetch/read main `4076420f0d1166acfe10cbb6a66dfb5cbc6c2063`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS/Goal进度；收工重读AGENTS。
+  VMC原服务自然结束，协调器10:02:17Z闭合finite_stage_complete。VMC11000步/6001更新、
+  8完整55秒，physical_valid8/8、Task/Strict0/8，return均值−25.261000130、std .067965733。
+  Direct61531/95189，另三族均11000/6001；本段各8回合Task/Strict0/8，四族均未证明收敛。
+- 四族最终checkpoint、VMC最后两checkpoint及tar成员hash、八回合reward重算通过。
+  最后两回合return−25.203426841/−25.389355820，失败保留。旧trainer最终资源字段缺失记null，
+  不补造零；10:00:26Z在途OOM/kill0、swap0。收尾原始轨迹/检查点/完整日志/诊断已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stage01-close-20261016T1002/evidence.tar.gz`，
+  529,918,496字节，SHA256 `e8274358f90e0bfc895d7cb41e5fb2be331a76516937d79b623bd590e66a0642`。
+- 实际准备并启动`outputs/rl_goal_gpu_preflight_20261016`，登记SHA256
+  `98585360903c2164979d36129a273e719da79f0298ffaafa44ab0b2b2df49a11`。各族精确接续自己的
+  n25 checkpoint/optimizer/replay/RNG，保持reward/物理/gate等冻结项，各新增1375步、总5500步，
+  派发保护截止2026-10-17T10:02:48.913556Z。四个CUDA单次丢弃更新预检均exit0、OOM0、
+  原checkpoint不变；峰值1.287–1.331GB。四次预检不计入训练，不冒充完整GPU循环验证。
+- 协调器`sii-rl-goal-stage-7418f4a6bd92.service`于10:08:06Z启动，Direct trainer2392601/
+  单worker2392639。10:10:04Z真实GPU新增381步/381更新，到61912/95570；JAX0.7.2实际cuda:0，
+  RTX5080 Laptop，CPU亲和1、3GiB/swap0/UTD1，内存current/peak1,905,750,016、OOM0、GPU45°C/1430MiB。
+  仍是首回合在途，不宣称完整循环/吞吐收益或收敛。源码、登记、四族预检和启动快照核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-launch-20261016T1010/evidence.tar.gz`，
+  2,164,534字节，SHA256 `15e0f26aea078cb9bff45175d0953ab0f6cfee6d55a800bb69e583dcae11cc1f`。
+  Goal active；四族GPU完整回合通过后启动已准备的奖励对照。最终acceptance未运行，服务器仅归档。
+- 18:13 CST交付前复查：Direct GPU首个完整55秒回合结束，62906步/96564更新，新增1375/1375，
+  cp62906九个文件hash通过，耗时约293秒（含初始化，不是同条件CPU/GPU因果速度比较）。
+  return−38.733161806，Task/Strict=false、physical_valid=false，保留失败；内存峰值2,306,428,928，
+  OOM/max0、swap0。协调器自动接续阻抗，Direct新轨迹/checkpoint暂仅本地待下一边界归档。
+
 ## 2026-10-16 17:40 CST — VMC第6完整回合保全，真实更新继续至3501次
 
 - 开工实时查询/fetch/read main `d18ab1b41d6bc9fd0a7c9136daa5b2d4867cfc3b`、baseline

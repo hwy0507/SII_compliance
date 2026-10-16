@@ -1,5 +1,21 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 18:10 CST 四族首段结束，GPU实际接续训练
+
+Stage01四族各8完整回合Task/Strict0/8；Direct61531/95189，另三族11000/6001（steps/updates）。
+VMC均值−25.261000130/std .067965733，physical_valid8/8；失败平台不算收敛，Goal active。
+四族最终checkpoint及VMC末两原始回合/奖励/日志已核验归档至服务器runs/main/
+`rl-goal-stage01-close-20261016T1002/evidence.tar.gz`（完整主机根同下），SHA256
+`e8274358f90e0bfc895d7cb41e5fb2be331a76516937d79b623bd590e66a0642`。
+新GPU阶段各1375步，四族各一次CUDA恢复预检均通过；10:08Z实际启动，Direct由61531推进至
+61912步、95570更新（新增381/381），OOM0/swap0，首回合在途。保持单模拟器/3GiB/冻结物理等，
+不是GPU完整回合验证已通过。源码/登记/预检/真实启动收据已核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-launch-20261016T1010/evidence.tar.gz`，
+SHA256 `15e0f26aea078cb9bff45175d0953ab0f6cfee6d55a800bb69e583dcae11cc1f`。后续完整循环通过后运行奖励对照，未最终验收。
+18:13复查Direct GPU首个55秒完整回合结束62906/96564，cp九文件hash通过；return−38.73316，
+Task/Strict与physical_valid均false，保留失败。峰值2,306,428,928字节、OOM0/swap0。
+协调器已自动接续阻抗；Direct新轨迹/checkpoint暂仅本地待后续归档，不冒充已进入启动包。
+
 ## 2026-10-16 17:40 CST VMC六完整回合，学习更新继续
 
 VMC原PID2375301推进至8500步/3501更新，第7回合在途；6完整55秒physical_valid6/6、
