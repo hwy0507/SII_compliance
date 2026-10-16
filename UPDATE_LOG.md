@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-16 11:32 CST — 实查训练bug、完成恢复入口与真实checkpoint诊断
+
+- 用户要求修复后，核对远端main `a6f45496fdd6be40fbfdce1469aa0cdf18e66e43`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS与运行证据。定位v2在11,000步
+  保存卡住约21小时、无子模拟器仍占约1.1GiB；v3b两路实际仍在训练，早期退出记录不准确。
+- 完善独立恢复trainer：真实UTD循环、每结束回合保存、拒绝无硬限cgroup、标明训练是否完成。
+  新恢复控制器使用独立systemd service，3GiB/禁swap/单CPU，派发前核验进程、内存余量、
+  原截止与checkpoint/source/config hash，防重复并禁止自动acceptance。旧在途源码不改。
+- 5项回归测试通过；真实43,656步checkpoint恢复action一致、单次梯度确实更新actor，重复
+  重载+更新结果一致且指标有限。只读历史replay诊断，无模拟器，无新交互，不写回checkpoint；
+  峰值1,557,102,592字节、OOM0、exit0。首轮诊断metrics展开错误及修复后成功收据均保留。
+- 恢复登记和命令已准备于`outputs/rl_tuned_20261015_v4/recovery_20261016_1140b/`，但未启动。
+  旧进程处理请求被自动审批拒绝（可能干扰共享训练，需明确授权）；未绕过或执行信号操作。
+  当前仍未收敛或验收，详情见`docs/RL_V4_REPAIR_20261016.md`；原派发截止12:33:19不延长。
+- 修复/测试/诊断及登记证据已归档核验：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-v4-repair-20261016T0332/repair-evidence.tar.gz`，
+  SHA256 `945072b9fb82c88e3132903fd01a68ce4f456aa5ef28bc29d5cf165cb5ca8027`。
+
 ## 2026-10-16 11:06 CST — v4 无新交互，继续等待恢复资源
 
 - 已实测/fetch远端main `f6522a0e5abdb93741e74ce4554914ac31c0ec97`、baseline

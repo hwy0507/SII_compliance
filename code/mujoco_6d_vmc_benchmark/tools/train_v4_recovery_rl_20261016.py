@@ -18,7 +18,6 @@ import platform
 import signal
 import subprocess
 import sys
-import resource
 import numpy as np
 from office_v7_uniform24_20261008 import read, write, sha, now, V6, MENAGERIE
 from run_paper_final_validation_20261003 import ENV
@@ -84,24 +83,6 @@ def main():
     memory=(cg/'memory.max').read_text().strip()
     assert memory != 'max' and int(memory) <= 3*1024**3, 'Recovery requires hard MemoryMax<=3GiB'
     assert (cg/'memory.swap.max').read_text().strip() == '0', 'Recovery requires MemorySwapMax=0'
-    # Desktop-launched processes can inherit the read-only Codex app cgroup,
-    # whose memory.max is ``max`` even though the campaign wrapper applies a
-    # 3 GiB RLIMIT_AS.  Preserve the hard budget check for delegated cgroups;
-    # for this local fallback, require both an explicit registered limit and
-    # the process address-space limit instead of silently accepting unlimited
-    # memory.
-    if memory=='max':
-        override=os.environ.get('SII_MEMORY_MAX_BYTES')
-        soft,hard=resource.getrlimit(resource.RLIMIT_AS)
-        assert override is not None and int(override)<=3*1024**3
-        # JAX CPU startup reserves a large virtual address space, so RLIMIT_AS
-        # cannot be used here. The campaign supplies an RSS monitor when the
-        # desktop app cgroup is read-only; delegated cgroups still use their
-        # hard memory.max limit.
-        assert (hard != resource.RLIM_INFINITY and hard<=3*1024**3) or os.environ.get('SII_MEMORY_LIMIT_MODE')=='rss_monitor'
-        memory=str(int(override))
-    else:
-        assert int(memory)<=3*1024**3
     assert all(os.environ.get(k)=='1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS'))
     out.mkdir(parents=True,exist_ok=False)
     sys.path[:0]=[str(parameter),str(REWARDS)]
@@ -147,7 +128,7 @@ def main():
         prior_file_sha256=sha(parameter/'PRIORS.json'),parameter_source=str(parameter),
         source_sha256=source_hashes,deadline_utc=deadline.isoformat(),
         optimizer_diagnostics='Every update returned metrics retained in optimizer.jsonl; includes actor/critic losses, Q and temperature when exposed upstream',
-        checkpoints='Every >=10000 interactions at completed episode boundary; all retained; development-only selection before final lock')
+        checkpoints='Every completed episode boundary; all retained; no acceptance before all families finish')
     specification['utd'] = utd
     specification['recovery_implementation'] = '20261016: range(utd), hard cgroup memory/swap required; inherited v4 checkpoints were trained with actual UTD=2'
     specification['recovery_trainer_source'] = str(Path(__file__).resolve())
@@ -289,10 +270,14 @@ def main():
                             row.update(ended_utc=now(),return_value=total,steps=count,step_after=step,
                                 result=event['result'],audit_sha256=sha(run/'AUDIT.json'),trace_sha256=sha(run/'rollout.npz'))
                             episode+=1;save();break
-                if step-last_checkpoint>=10000:checkpoint()
+                # Persist each full/early-terminal episode so a later IPC or
+                # launch-container failure cannot discard several closed episodes.
+                log.flush();optlog.flush();checkpoint()
             checkpoint()
             assert all(sha(k)==v for k,v in source_hashes.items())
             state.update(status='complete',stop_reason='requested' if stop else 'deadline' if datetime.now(timezone.utc)>=deadline else 'step_budget')
+            state['training_complete'] = state['stop_reason']=='step_budget' and limit==a.steps
+            state['ready_for_acceptance'] = False  # Requires all four families and a separate lock.
     except BaseException as exc:
         state.update(status='failed_preserved',error=repr(exc));raise
     finally:
