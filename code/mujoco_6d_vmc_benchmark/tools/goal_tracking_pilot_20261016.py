@@ -16,6 +16,7 @@ from rl_goal_stage_20261016 import (BENCH, read, write, digest, manifest, verify
     completed_stage_checkpoints)
 from rl_recovery_control_20261016 import verify_checkpoint
 from goal_tracking_reward_20261016 import CONFIG, tracking_terms
+from goal_compute_backend_20261016 import backend, runtime_info
 
 
 def validate_pair(reg):
@@ -65,7 +66,8 @@ def prepare(previous, destination, checkpoint, reward_receipt):
     shutil.copytree(old['source'], source, ignore=ignore)
     shutil.copytree(old['parameter_source'], parameter, ignore=ignore)
     for name in ('rl_goal_stage_20261016.py','train_v4_recovery_rl_20261016.py',
-                 'goal_tracking_reward_20261016.py','goal_tracking_pilot_20261016.py'):
+                 'goal_tracking_reward_20261016.py','goal_tracking_pilot_20261016.py',
+                 'goal_compute_backend_20261016.py'):
         shutil.copy2(BENCH/'tools'/name, source/'tools'/name)
     jobs = []
     for name in ('direct_control','direct_tracking'):
@@ -109,6 +111,9 @@ def verify_pilot_preflight(reg):
     assert result['source_checkpoint_hashes'] == reg['pilot_probe']['hashes']
     assert result['reward_receipt_sha256'] == reg['pilot_probe']['reward_receipt_sha256']
     assert set(result['arms']) == {j['name'] for j in reg['jobs']}
+    if backend(reg) == 'cuda':
+        assert result['compute_runtime']['learning_backend'] == 'cuda'
+        assert result['compute_runtime']['platforms'] == ['gpu']
     for job in reg['jobs']:
         arm = result['arms'][job['name']]
         assert arm['fresh_before'] and arm['n_step'] == 25 and arm['finite_update']
@@ -130,6 +135,8 @@ def preflight(root):
         reward_receipt_sha256=probe['reward_receipt_sha256'])
     write(out,result)
     try:
+        if backend(reg) == 'cuda':
+            result['compute_runtime'] = runtime_info(reg, expected_cpu=6)
         import numpy as np
         from flax import serialization
         sys.path.insert(0,reg['parameter_source'])

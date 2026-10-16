@@ -1,5 +1,16 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 15:26 CST 显式GPU接续实现并通过资源guard预检
+
+新增四族GPU完整循环验证阶段入口：前序正常闭合后，各最多1375新交互，完成四个完整回合
+且实际设备/亲和性/内存检查通过才允许常规续训。当前提前prepare被正确拒绝，没有GPU训练。
+40项Goal＋5项恢复测试通过；真实CUDA guard102次丢弃更新有限、峰值1.293GB、OOM0、
+checkpoint不变。原CPU阻抗9750步/4751更新、7完整回合Task/Strict0/7；第8在途。
+第6/7轨迹及cp8250/9625和实现证据已核验归档至服务器独立目录
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-backend-implementation-20261016T0724/`，
+534,028,451字节，SHA256 `84534fda395ebba80b0b97ec9dbfaea450f2799f2c81313974e64e03d6b60f0e`。
+详见[Goal进度](RL_GOAL_PROGRESS_20261016.md)。
+
 ## 2026-10-16 15:10 CST 发现可用GPU更新加速，阻抗仍未过carry
 
 同一阻抗训练已8000步/3001更新、5完整回合Task/Strict0/5；第五回合/cp6875已核验归档。

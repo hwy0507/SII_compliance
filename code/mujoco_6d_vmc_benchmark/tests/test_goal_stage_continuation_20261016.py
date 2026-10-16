@@ -32,7 +32,8 @@ class StageContinuationTests(unittest.TestCase):
             source=str(old/'source'),source_manifest=manifest(old/'source'),
             parameter_source=str(old/'parameter_n25'),parameter_manifest=manifest(old/'parameter_n25'),
             parent_root=str(parent),parent_protocol_sha256=digest(parent/'PROTOCOL.json'),
-            compute_host='airpig',jobs=jobs,new_interactions_per_family=11000,optimizer_schedule_steps=1000000)
+            compute_host='airpig',jobs=jobs,new_interactions_per_family=11000,optimizer_schedule_steps=1000000,
+            resources=dict(cpu='1',simulators=1,numerical_threads=1,memory_max=3*1024**3,swap_max=0))
         write(old/'REGISTRATION.json',reg)
         state=dict(status='finite_stage_complete',active=None,
             registration_sha256=digest(old/'REGISTRATION.json'),jobs=[])

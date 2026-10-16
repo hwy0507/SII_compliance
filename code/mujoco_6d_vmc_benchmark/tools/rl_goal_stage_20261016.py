@@ -15,6 +15,7 @@ import subprocess
 import sys
 
 from rl_recovery_control_20261016 import active_workers, verify_checkpoint, dispatch_reason
+from goal_compute_backend_20261016 import backend, environment, GPU_RESOURCES, gpu_snapshot, gpu_admission_reason
 
 BENCH = Path(__file__).resolve().parents[1]
 GIB = 1024 ** 3
@@ -63,7 +64,13 @@ def validate_training_job(args, protocol, protocol_hash):
                        ('seed', args.seed), ('limit', args.stop_at_step)]:
         assert job[key] == value, key
     assert job['checkpoint'] == (str(args.resume_checkpoint.resolve()) if args.resume_checkpoint else None)
-    assert job['limit'] - job['inherited_steps'] == reg['new_interactions_per_family'] == 11000
+    budget = 1375 if reg.get('experiment_kind') == 'gpu_training_preflight' else 11000
+    assert job['limit'] - job['inherited_steps'] == reg['new_interactions_per_family'] == budget
+    if budget == 1375:
+        assert backend(reg) == 'cuda' and job['checkpoint']
+    if backend(reg) == 'cuda':
+        verify_inputs(reg)
+        verify_preflight(reg)
     return reg, job
 
 
@@ -164,7 +171,7 @@ def completed_stage_checkpoints(reg, state):
     return checkpoints
 
 
-def prepare_next(previous, destination):
+def prepare_next(previous, destination, gpu_preflight=False):
     """Prepare one finite continuation; never dispatch or restart a fresh model."""
     assert platform.node() == 'airpig'
     assert not destination.exists(), 'Never reuse a stage directory'
@@ -173,9 +180,17 @@ def prepare_next(previous, destination):
     state = read(previous / 'execution.json')
     assert state['registration_sha256'] == digest(previous / 'REGISTRATION.json')
     checkpoints = completed_stage_checkpoints(old, state)
-    # Keep the original 11k stage budget and one-million optimizer schedule.
-    # A different budget or hyperparameter treatment needs a separate registration.
-    assert old['new_interactions_per_family'] == 11000 and old['optimizer_schedule_steps'] == 1000000
+    # Normal continuation retains11k; explicit GPU full-loop validation uses1375.
+    # Both retain the one-million optimizer schedule and existing rewards.
+    if old.get('experiment_kind') == 'gpu_training_preflight':
+        if not gpu_preflight:
+            validate_gpu_training_closure(old, state)
+    else:
+        assert old['new_interactions_per_family'] == 11000
+    assert old['optimizer_schedule_steps'] == 1000000
+    if gpu_preflight:
+        assert (backend(old) == 'cpu' and not old.get('experiment_kind')) or (
+            backend(old) == 'cuda' and old.get('experiment_kind') == 'gpu_training_preflight')
     assert all(cp['step'] + 11000 <= 1000000 for cp in checkpoints.values()), 'Final remainder requires explicit registration'
     destination.mkdir(parents=True)
     ignore = shutil.ignore_patterns('__pycache__', '*.pyc')
@@ -183,34 +198,66 @@ def prepare_next(previous, destination):
     parameter = destination / 'parameter_n25'
     shutil.copytree(old['source'], source, ignore=ignore)
     shutil.copytree(old['parameter_source'], parameter, ignore=ignore)
-    # Preserve the frozen trainer, worker, evaluator and physics code byte-for-byte.
-    for name in ('rl_goal_stage_20261016.py', 'probe_goal_credit_20261016.py'):
+    # Ordinary continuation keeps the trainer; explicit GPU validation replaces
+    # its backend plumbing only. Physics/worker/parameter snapshots stay frozen.
+    for name in ('rl_goal_stage_20261016.py', 'probe_goal_credit_20261016.py', 'goal_compute_backend_20261016.py'):
         shutil.copy2(BENCH / 'tools' / name, source / 'tools' / name)
+    if gpu_preflight:
+        shutil.copy2(BENCH/'tools/train_v4_recovery_rl_20261016.py', source/'tools/train_v4_recovery_rl_20261016.py')
     started = datetime.now(timezone.utc)
     reg = dict(old)
     reg.pop('parent_checkpoint_hashes', None)
+    reg.pop('experiment_kind', None)
+    budget = 1375 if gpu_preflight else 11000
     jobs = []
     for job in old['jobs']:
         cp = checkpoints[job['name']]
         output = destination / job['name']
-        jobs.append(dict(job, inherited_steps=cp['step'], limit=cp['step']+11000,
+        jobs.append(dict(job, inherited_steps=cp['step'], limit=cp['step']+budget,
             checkpoint=cp['path'], checkpoint_hashes=cp['hashes'], credit_migration=False,
+            backend_migration=gpu_preflight and backend(old) == 'cpu',
             parent_execution_sha256=digest(Path(job['output']) / 'execution.json'),
             output=str(output), unit='sii-rl-goal-'+hashlib.sha256(str(output).encode()).hexdigest()[:12]))
     reg.update(registered_utc=started.isoformat(), run_root=str(destination), source=str(source),
         parameter_source=str(parameter), source_manifest=manifest(source), parameter_manifest=manifest(parameter),
         source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=BENCH,text=True).strip(),
-        source_worktree_state='Parent frozen source retained; only dispatcher and preflight copied from current worktree. Content manifests authoritative.',
+        source_worktree_state='Parent frozen source retained; dispatcher, backend guard and replay preflight copied from current worktree. Content manifests authoritative.',
         previous_stage=dict(root=str(previous),registration_sha256=digest(previous/'REGISTRATION.json'),
             execution_sha256=digest(previous/'execution.json')),
         dispatch_deadline_utc=(started+timedelta(hours=24)).isoformat(),
         stop_file=str(destination/'STOP_REQUESTED'),jobs=jobs,
         coordinator_unit='sii-rl-goal-stage-'+hashlib.sha256(str(destination).encode()).hexdigest()[:12],
         preflight_required_jobs=[job['name'] for job in jobs],
+        new_interactions_per_family=budget, maximum_new_interactions=4*budget,
         credit_migration='None: all four families resume their own exact n25 checkpoints with raw replay, optimizer, normalizers and RNG.',
         evidence_basis='Exact continuation of a completed finite stage; no new treatment and no convergence claim.')
+    if gpu_preflight:
+        reg.update(experiment_kind='gpu_training_preflight',
+            resources=dict(old['resources'], **GPU_RESOURCES),
+            source_worktree_state='Parent physics/worker/parameter retained. Trainer, dispatcher, backend guard and replay preflight updated for explicit CPU-to-CUDA migration.',
+            evidence_basis='Local disposable fixed-batch CPU/CUDA probe passed. Four-family one-full-episode stage validates actual training loop; no full-loop speedup claim yet.',
+            backend_migration='Portable weights, optimizer, RNG, normalizers and replay retained. CUDA floating point differs; no bitwise trajectory-equivalence claim.')
+    elif old.get('experiment_kind') == 'gpu_training_preflight':
+        reg['gpu_training_validation'] = dict(root=str(previous),
+            registration_sha256=digest(previous/'REGISTRATION.json'), execution_sha256=digest(previous/'execution.json'))
     write(destination/'REGISTRATION.json',reg)
     return reg
+
+
+def validate_gpu_training_closure(reg, state):
+    assert reg['experiment_kind'] == 'gpu_training_preflight' and backend(reg) == 'cuda'
+    completed_stage_checkpoints(reg, state)
+    for job in reg['jobs']:
+        training = read(Path(job['output'])/'execution.json')
+        info = training['compute_runtime']
+        assert info['learning_backend'] == 'cuda' and info['platforms'] == ['gpu']
+        assert info['cpu_affinity'] == [int(reg['resources']['cpu'])]
+        assert len(training['rows']) == 1 and training['rows'][0]['result']['full_task_horizon_completed']
+        assert training['steps']-job['inherited_steps'] == 1375
+        resources = training['resource_snapshot']
+        assert resources['memory_events']['oom'] == resources['memory_events']['oom_kill'] == 0
+        assert resources['memory_swap_current'] == 0
+        assert resources['memory_peak'] <= 3*GIB
 
 
 def verify_inputs(reg):
@@ -218,6 +265,12 @@ def verify_inputs(reg):
     assert digest(Path(reg['parent_root']) / 'PROTOCOL.json') == reg['parent_protocol_sha256']
     assert manifest(Path(reg['source'])) == reg['source_manifest'], 'Frozen source changed'
     assert manifest(Path(reg['parameter_source'])) == reg['parameter_manifest'], 'Parameter source changed'
+    backend(reg)
+    if backend(reg) == 'cuda' and reg.get('experiment_kind') != 'gpu_training_preflight':
+        validated = reg['gpu_training_validation']; previous = Path(validated['root'])
+        assert digest(previous/'REGISTRATION.json') == validated['registration_sha256']
+        assert digest(previous/'execution.json') == validated['execution_sha256']
+        validate_gpu_training_closure(read(previous/'REGISTRATION.json'), read(previous/'execution.json'))
     if reg.get('previous_stage'):
         previous = reg['previous_stage']
         root = Path(previous['root'])
@@ -250,6 +303,9 @@ def verify_preflight(reg):
             assert result['checkpoint_hashes_unchanged'] and result['inherited_steps'] == job['inherited_steps']
             assert result['actual_n_step'] == 25 and result['restored_raw_replay_count'] == job['inherited_steps']
             assert result['finite_update_metrics'] and result['terminal_windows_match'] and result['no_cross_episode_bootstrap']
+            if backend(reg) == 'cuda':
+                assert result['compute_runtime']['learning_backend'] == 'cuda'
+                assert result['compute_runtime']['platforms'] == ['gpu']
     return preflight
 
 
@@ -269,6 +325,9 @@ def seal_preflight(root):
         assert result['inherited_steps'] == job['inherited_steps']
         assert result['actual_n_step'] == 25 and result['restored_raw_replay_count'] == job['inherited_steps']
         assert result['finite_update_metrics'] and result['terminal_windows_match'] and result['no_cross_episode_bootstrap']
+        if backend(reg) == 'cuda':
+            assert result['compute_runtime']['learning_backend'] == 'cuda'
+            assert result['compute_runtime']['platforms'] == ['gpu']
         receipts[name] = digest(path)
     write(root/'CREDIT_PREFLIGHT.json',dict(status='passed',registration_sha256=digest(root/'REGISTRATION.json'),
         jobs=receipts,simulation=False,gradient_updates=len(receipts),model_saved=False))
@@ -281,6 +340,7 @@ def worker_command(reg, job):
         JAX_PLATFORMS='cpu', SII_RL_UTD='1', XLA_PYTHON_CLIENT_PREALLOCATE='false',
         SII_REWARD_PAYLOAD_TELEMETRY='1', SII_LOCAL_RUNTIME=str(runtime),
         MUJOCO_MENAGERIE_PATH=str(runtime / 'menagerie'))
+    env.update(environment(reg))
     cmd = ['systemd-run', '--user', '--wait', '--pipe', '--unit=' + job['unit'],
         '--property=MemoryMax=3G', '--property=MemorySwapMax=0', '--property=CPUQuota=100%',
         '--property=CPUAffinity=1', '--property=TasksMax=256', '--working-directory=' + reg['source']]
@@ -325,6 +385,8 @@ def run(root):
                     reason = 'cooperative_stop'
                 if shutil.disk_usage(root).free < reg['minimum_free_disk']:
                     reason = 'disk_reserve'
+                if backend(reg) == 'cuda' and not reason:
+                    reason = gpu_admission_reason(reg, gpu_snapshot())
                 if reason:
                     state.update(status='stopped_before_dispatch', reason=reason)
                     break
@@ -383,7 +445,7 @@ def launch(root):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('mode', choices=('prepare', 'prepare-next', 'seal-preflight', 'launch', 'run'))
+    parser.add_argument('mode', choices=('prepare', 'prepare-next', 'prepare-gpu-preflight', 'seal-preflight', 'launch', 'run'))
     parser.add_argument('--root', type=Path, required=True)
     parser.add_argument('--parent', type=Path)
     parser.add_argument('--checkpoint', type=Path)
@@ -391,8 +453,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.mode == 'prepare':
         print(json.dumps(prepare(args.parent.resolve(), args.root.resolve(), args.checkpoint.resolve()), indent=2))
-    elif args.mode == 'prepare-next':
-        print(json.dumps(prepare_next(args.previous_stage.resolve(), args.root.resolve()), indent=2))
+    elif args.mode in ('prepare-next', 'prepare-gpu-preflight'):
+        print(json.dumps(prepare_next(args.previous_stage.resolve(), args.root.resolve(),
+                                     gpu_preflight=args.mode == 'prepare-gpu-preflight'), indent=2))
     elif args.mode == 'seal-preflight':
         seal_preflight(args.root.resolve())
     elif args.mode == 'launch':

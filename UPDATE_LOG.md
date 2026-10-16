@@ -1,5 +1,33 @@
 # 更新日志
 
+## 2026-10-16 15:26 CST — 实现显式GPU训练接续与四族完整循环验证门槛
+
+- 开工查询/fetch/read main `3c9b58b60787344d46b31792e9f32942e7b3e51b`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS/Goal进度；上一轮GPU实测为进展。
+  当前同一CPU阻抗trainer2344947/协调器2329290继续至9750步/4751更新、7完整回合，
+  Task/Strict0/7、physical_valid7/7；第6/7return−25.130285/−26.364999，第8在途。
+- 新`goal_compute_backend_20261016.py`与trainer/dispatcher支持显式CPU→CUDA恢复，
+  验证实际JAX平台及CPU亲和性；保留模拟器CPU、3GiB主存硬限、swap0、UTD1。
+  GPU0准入需空闲≥4096MiB、温度<80°C，JAX不预分配且allocator fraction=.125；该fraction
+  仅约束JAX池，不冒充全进程显存硬限。GPU异常保留失败，回合边界资源不满足则停新派发。
+- 新`prepare-gpu-preflight`只在四族前序正常闭合/逐checkpoint核验后创建独立阶段，
+  各最多1375新交互、合计5500、24h派发保护，逐族必须GPU replay预检。四族实际完整55秒
+  回合、GPU平台、亲和性、无OOM/swap且内存≤3GiB之后才允许常规11k接续。短回合保留，
+  只能另登记有限GPU验证重试，不能当完整循环通过。训练目标/物理/actor/filter/gate均未改。
+- 当前在途stage01被真实prepare检查正确拒绝，目标目录未创建；活动快照与已准备CPU
+  tracking pilot未更改。40项Goal测试＋5项恢复测试通过，trainer等编译检查通过。
+  真实CUDA资源guard预检102次丢弃更新通过，CPUAffinity6，峰值1,293,684,736字节、
+  OOM/max0/swap0、checkpoint hash未变；GPU48°C/1425MiB整机快照，无仿真/模型保存。
+  该102更新不是完整训练验证或收敛证据，正式GPU训练尚未派发。
+- 第6/7原始回合与cp8250/9625、源码/测试/登记/guard预检已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-backend-implementation-20261016T0724/evidence.tar.gz`，
+  534,028,451字节，SHA256 `84534fda395ebba80b0b97ec9dbfaea450f2799f2c81313974e64e03d6b60f0e`。
+  incoming及最终独立目录hash一致，服务器仅归档；第8回合尚未纳入此包。
+  训练快照内存3,047,575,552/3,221,225,472字节，峰值触及硬限、max事件477，OOM0/swap0；
+  继续观察回收压力，未放宽保护。Goal active，导纳/VMC尚未启动，未统一验收。
+  收尾复核同一user服务仍active，真实推进至10500步/5501更新，temperature=.00606476；
+  memory.max事件565、OOM/kill0，当前内存3,176,308,736字节。第8回合在途，未判收敛。
+
 ## 2026-10-16 15:10 CST — 阻抗5回合仍失败；实测GPU更新吞吐并修正探针绑核
 
 - 开工核对/fetch/read main `5fbc2cbce35d2e923405fee9952b9478592f7850`、baseline

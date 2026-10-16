@@ -34,6 +34,9 @@ def main():
         cg = Path('/sys/fs/cgroup') / Path('/proc/self/cgroup').read_text().strip().split('::')[1].lstrip('/')
         assert int((cg/'memory.max').read_text()) <= 3*1024**3
         assert (cg/'memory.swap.max').read_text().strip() == '0'
+        from goal_compute_backend_20261016 import backend, runtime_info
+        if backend(reg) == 'cuda':
+            result['compute_runtime'] = runtime_info(reg, expected_cpu=6)
         sys.path.insert(0, reg['parameter_source'])
         import numpy as np
         from official_parameter_agent import OfficialParameterAgent

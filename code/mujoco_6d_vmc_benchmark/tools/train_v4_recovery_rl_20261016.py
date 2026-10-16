@@ -27,6 +27,8 @@ from research72_checkpoint_20261003 import checkpoint_hashes
 from baseline_repair_rl_diagnostics_20261008 import flatten_metrics
 from baseline_repair_reward_clock_20261009 import TIME_BASE, SERVO_DT, remaining_slew_bound
 from goal_tracking_reward_20261016 import validate_guidance, check_reward_resume, tracking_terms
+from goal_compute_backend_20261016 import (backend, check_backend_resume, runtime_info,
+    gpu_snapshot, gpu_admission_reason)
 
 
 def main():
@@ -62,6 +64,7 @@ def main():
     assert 1375<=limit<=a.steps
     deadline=datetime.fromisoformat(protocol['training_dispatch_deadline_utc'])
     continuation = None
+    goal = None
     goal_job = None
     if a.goal_registration:
         assert not a.continuation_registration
@@ -91,6 +94,7 @@ def main():
         # Reject objective changes before allocating replay or creating output.
         check_reward_resume(read(a.resume_checkpoint.resolve().parent/'PROTOCOL.json'),
                             dict(tracking_guidance=guidance))
+        check_backend_resume(read(a.resume_checkpoint.resolve().parent/'PROTOCOL.json'), goal, goal_job)
     assert datetime.now(timezone.utc)<deadline
     assert sha(root/'CONDITIONS.json')==protocol['condition_file_sha256']
     conditions=[c for c in read(root/'CONDITIONS.json')['conditions'] if c['role']=='train']
@@ -100,6 +104,11 @@ def main():
     assert memory != 'max' and int(memory) <= 3*1024**3, 'Recovery requires hard MemoryMax<=3GiB'
     assert (cg/'memory.swap.max').read_text().strip() == '0', 'Recovery requires MemorySwapMax=0'
     assert all(os.environ.get(k)=='1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS'))
+    compute_runtime = None
+    if goal:
+        compute_runtime = runtime_info(goal, expected_cpu=int(goal['resources']['cpu']))
+        if backend(goal) == 'cuda':
+            assert not gpu_admission_reason(goal, gpu_snapshot()), 'GPU admission failed'
     out.mkdir(parents=True,exist_ok=False)
     sys.path[:0]=[str(parameter),str(REWARDS)]
     from official_parameter_agent import OfficialParameterAgent,BATCH_SIZE
@@ -146,6 +155,9 @@ def main():
         optimizer_diagnostics='Every update returned metrics retained in optimizer.jsonl; includes actor/critic losses, Q and temperature when exposed upstream',
         checkpoints='Every completed episode boundary; all retained; no acceptance before all families finish')
     specification['utd'] = utd
+    specification['learning_backend'] = backend(goal)
+    specification['compute_runtime'] = compute_runtime
+    specification['backend_migration'] = bool(goal_job and goal_job.get('backend_migration'))
     specification['recovery_implementation'] = '20261016: range(utd), hard cgroup memory/swap required; inherited v4 checkpoints were trained with actual UTD=2'
     specification['recovery_trainer_source'] = str(Path(__file__).resolve())
     specification['hyperparameter_id'] = a.hyperparameter_id
@@ -169,7 +181,8 @@ def main():
     write(out/'PROTOCOL.json',specification)
     step=episode=last_checkpoint=0;pending=None;colored=np.zeros(dimension);stop=False;process=None
     state=dict(status='running',started_utc=now(),host=platform.node(),python=sys.executable,
-               memory_max=memory,rows=[],checkpoint_rows=[],steps=0,episodes=0)
+               memory_max=memory,rows=[],checkpoint_rows=[],steps=0,episodes=0,
+               compute_runtime=compute_runtime)
     if a.resume_checkpoint:
         cp=a.resume_checkpoint.resolve();parent=read(cp.parent/'PROTOCOL.json')
         assert parent.get('reward_variant','original')==a.reward_variant,'Reward changes require explicit replay rebuild'
@@ -204,6 +217,10 @@ def main():
     signal.signal(signal.SIGTERM,request_stop);signal.signal(signal.SIGUSR1,request_stop)
     def save():
         state.update(steps=step,episodes=episode,updates=agent.updates,diagnostics=agent.diagnostics(),stop_requested=stop)
+        state['resource_snapshot'] = dict(memory_current=int((cg/'memory.current').read_text()),
+            memory_peak=int((cg/'memory.peak').read_text()),
+            memory_swap_current=int((cg/'memory.swap.current').read_text()),
+            memory_events={k:int(v) for k,v in (line.split() for line in (cg/'memory.events').read_text().splitlines())})
         write(out/'execution.json',state)
     def checkpoint():
         nonlocal last_checkpoint
@@ -220,6 +237,13 @@ def main():
     try:
         with (out/'training.jsonl').open('x') as log,(out/'optimizer.jsonl').open('x') as optlog:
             while step+1375<=limit and datetime.now(timezone.utc)<deadline and not stop:
+                if backend(goal) == 'cuda':
+                    state['gpu_snapshot'] = gpu_snapshot()
+                    gpu_reason = gpu_admission_reason(goal, state['gpu_snapshot'])
+                    if gpu_reason:
+                        stop=True
+                        state['resource_stop_reason']=gpu_reason
+                        break
                 # A marker requests episode-boundary shutdown without sending
                 # a signal to the simulator child or killing its terminal data.
                 if stop_file and stop_file.exists():

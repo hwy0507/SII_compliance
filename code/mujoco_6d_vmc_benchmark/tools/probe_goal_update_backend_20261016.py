@@ -45,6 +45,13 @@ def main():
     write(a.output, result)
     try:
         assert result['cpu_affinity'] == [reg['cpu']], 'Require actual CPU affinity, not only systemd AllowedCPUs'
+        if reg.get('resources'):
+            import goal_compute_backend_20261016 as guard
+            assert digest(Path(guard.__file__)) == reg['backend_guard_source_sha256']
+            assert guard.backend(reg) == a.backend
+            result['compute_runtime'] = guard.runtime_info(reg, expected_cpu=reg['cpu'])
+            guard.check_backend_resume(spec, reg, {'backend_migration': True})
+            assert not guard.gpu_admission_reason(reg, guard.gpu_snapshot())
         sys.path.insert(0, spec['parameter_source'])
         import numpy as np
         import jax

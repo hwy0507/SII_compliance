@@ -4,6 +4,60 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 15:26 CST：GPU训练路径已实现，等待现有阶段安全闭合后验证完整循环
+
+开工核对main `3c9b58b60787344d46b31792e9f32942e7b3e51b`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`与AGENTS/日志。上一轮GPU探针是实质进展。
+同一CPU阻抗trainer2344947与协调器2329290活跃；9750步/4751更新、7完整55秒回合，
+Task/Strict0/7、physical_valid7/7，第8在途。新两回合return−25.1302849/−26.3649992，
+cp8250/9625 hash与冻结source/parameter manifest通过；其他方法状态未冒称成功。
+
+新增后端模块与显式登记路径：普通历史CPU行为保持；GPU必须登记资源、实际JAX平台为gpu、
+实际亲和性等于登记CPU（训练1，丢弃预检6）。CPU checkpoint跨到CUDA必须有明确迁移字段，
+不偷偷降级回CPU。weights/optimizer/RNG/normalizer/raw replay保留，但浮点轨迹不保证逐位相同。
+训练PROTOCOL/execution记录learning_backend、compute_runtime与内核memory快照；模拟器
+子进程仍显式JAX_PLATFORMS=cpu，物理/MJB/dt5e-5、actor48、filter、gate、奖励/UTD1不变。
+GPU0要求入场free≥4096MiB/温度<80°C，回合边界重新检查；JAX_PREALLOCATE=false、
+MEM_FRACTION=.125仅为JAX池限制，不是整个GPU进程的硬显存封顶。主存3GiB/swap0硬限保留。
+
+`rl_goal_stage_20261016.py prepare-gpu-preflight`须等待前序四方法均正常闭合并逐checkpoint
+核验，才创建全新目录/源码快照/登记，各最多1375新增交互、合计5500、24小时派发保护。
+逐族`probe_goal_credit_20261016.py --root <GPU阶段> --job <name>`必须实际CUDA、CPU6、
+正确env下执行；正常检查25步终止窗口、原始replay、一次有限丢弃更新与cp hash后封存四族
+预检，仍沿用全局仿真锁/单路/内存磁盘准入，不能从prepared直接冒充已派发。
+这四回合是实际训练并保存独立checkpoint；只有四族各完整1375步/55秒、实际GPU/亲和性
+匹配、OOM/kill0、swap0、峰值≤3GiB，才可用prepare-next准备常规11k续训。短回合/物理
+提前失败保留，只能另登记有限GPU验证阶段继续，不以短回合推断完整循环内存通过。
+普通GPU续训绑定完整循环验证的registration/execution hashes；后端切换不是奖励或最终gate变化。
+
+当前真正调用prepare-gpu-preflight被活动stage01正确拒绝，
+`outputs/rl_goal_gpu_preflight_20261016`不存在；没有GPU训练或额外等待服务。
+既有`rl_goal_tracking_pilot_20261016`保持原CPU登记与冻结来源，未改写它的内容；新代码也为
+未来显式GPU的fresh pair增加了真实GPU预检检查，但现有pair没有转换。下一步先完成在途
+stage01；之后做独立GPU完整循环验证，再依据结果登记后续训练/奖励比较。
+
+40项Goal测试＋5项恢复测试通过，覆盖未登记GPU/环境漂移/假绑核/未授权恢复拒绝，
+GPU命令资源边界、父源与物理保持、全四族完整回合/无OOM门槛、短回合拒绝常规续训及有限
+重试；trainer/dispatcher/后端编译通过。真实`GPU_BACKEND_GUARD_REGISTRATION_20261016T0721.json`
+另登记102次CUDA丢弃更新，绑定backend guard源码hash
+`60ffe466ae747b1cd7198faca20454e098958016ff5ce326d2eb4cd91a1f981d`，
+同6875 cp、CPU6/2GiB/swap0/180秒，无仿真/模型写回。guard实际平台/设备/亲和性检查通过，
+102更新有限、cp hash不变、exit0，主存峰值1,293,684,736，OOM/max0，GPU快照48°C/1425MiB。
+计时286.83更新/秒为另一时点固定batch测量，不能把差异因果归到allocator fraction，也不是
+完整训练循环或成功策略证明。guard预检已退出；CPU原训练持续推进。
+
+第6/7原始回合、cp8250/9625、所有本轮源码/测试与GPU guard登记/结果和
+`GPU_BACKEND_IMPLEMENTATION_20261016T0724.json`快照打包为
+`/tmp/rl-goal-gpu-backend-implementation-20261016T0724.tar.gz`，534,028,451字节，
+SHA256 `84534fda395ebba80b0b97ec9dbfaea450f2799f2c81313974e64e03d6b60f0e`。
+已核验incoming大小/hash并发布至不存在的独立最终目录，再次核对最终SHA256一致：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-gpu-backend-implementation-20261016T0724/evidence.tar.gz`。
+服务器仅传输/归档/hash。快照9625步/4626更新，memory.current
+3,047,575,552、peak3,221,225,472、memory.max事件477、OOM0/swap0。内存回收压力增加，
+没有放宽限制或重启。第8回合仍仅本机，Goal active，尚无收敛/最终验收。
+收尾复核systemctl --user与实际PID一致，同一trainer推进至10500步/5501更新，temperature
+.00606476；memory.current3,176,308,736、max事件565、OOM/kill0，第8回合仍在途。
+
 ## 15:10 CST：GPU丢弃更新探针通过，下一阶段可准备完整循环验证
 
 开工核对main `5fbc2cbce35d2e923405fee9952b9478592f7850`、baseline
