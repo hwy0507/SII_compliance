@@ -1,5 +1,37 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 05:39 CST — 已验证等待：控制组28完整回合，38,500步
+
+本轮承接active Goal；查询/fetch/read远端main `71360524abc3f15988ebeb57712063c285bcb65e`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读AGENTS/两份RL进度，收工重读AGENTS。
+同一协调器2502213/worker2502235保持active；观察从36,750步/31,751更新至
+38,500步/33,501更新，28回合边界归档完成后观察器正常退出，约7.5分钟。
+未重启、重复派发或修改活动配置。冻结协调器确认control完成、末checkpoint有效且
+stop_reason=step_budget后才接续occupancy；处理组仍未开始。
+
+控制组完成44k预算87.5%；28回合均1375步/55s、physical_valid，Task/Strict0/28。
+新增ep26（repair_train_003）return −25.217369295，carry，最终放置XY误差.093071702m；
+ep27（repair_train_026）return −26.596496000，retreat，最终XY误差.214070391m。
+进入retreat不等于放置成功，本轮尚未诊断ep27具体掉落过程，不外推此前两条失败的因果解释。
+28回合平均return −25.427662569、标准差.502685825，不能将失败平台称为收敛。
+38,500交互与33,501更新连续且有限，闭合reward分解/总和、AUDIT/trace、cp38500成员hash通过；
+末temperature .001441916、critic loss6.800612。无奖励处理收益结论，四族未证明收敛，
+最终acceptance及独立物理/filter replay均未执行。
+
+本机CPU1/单线程/CUDA0/UTD1保持；worker峰3,052,421,120/max3,221,225,472字节，
+OOM/max事件/swap0；归档时磁盘余57,422,405,632字节，高于50GiB保护。
+沙箱内nvidia-smi设备不可见，主机只读重查正常42°C/1437MiB，未修改驱动或训练。
+CPU6/1GiB/swap0证据助手6.980秒退出0；本地证据
+`BENCH/outputs/rl_goal_stream_window_20261017T2140`，全部失败及新增原始归档映射保留。
+已上传且独立SSH复核大小/SHA：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T2140/evidence.tar.gz`，
+15,080,497字节，SHA `2313c3825e22e0d1cc93c38a4b04b90c9c897d3a1c29240984801b330466b8a4`。
+本机缺jq，改用Python结构化读取证据统计；仅检查工具回退，无训练修改。
+物理/MJB/gate/canonical48/filter/执行器/dt5e-5保持，服务器只存储/hash。
+Goal active，继续登记44k×2对照；按sii-research-sync同步三份进度并提交/push main，
+保留无关meeting文件。下一步观察control剩余4回合及协调器自动接续。
+
+
 ## 2026-10-17 05:27 CST — 已验证等待：控制组26完整回合，35,750步
 
 按sii-research-sync开工查询/fetch/read main `dc821e27b9a7c42bd5c4866c5a872c311c17a5ac`、
