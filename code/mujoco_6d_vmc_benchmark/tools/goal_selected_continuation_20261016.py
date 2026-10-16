@@ -8,7 +8,7 @@ from pathlib import Path
 import shutil
 
 from rl_goal_stage_20261016 import (BENCH, read, write, digest, manifest,
-    prepare_next, verify_inputs, completed_stage_checkpoints, job_parameter_source)
+    prepare_next, verify_inputs, completed_stage_checkpoints, job_parameter_source, require_stream_destination)
 from rl_recovery_control_20261016 import verify_checkpoint
 
 FAMILIES = {None, 'impedance', 'admittance', 'vmc'}
@@ -240,7 +240,17 @@ def prepare_selected(base, selection, destination, interactions_per_family=11000
         # models use older objectives; each selected job still clears its field.
         occupancy_origins=[base_reg['payload_occupancy_origin']]
     assert not occupancy_origins or all(origin==occupancy_origins[0] for origin in occupancy_origins), 'Mixed occupancy origins require a new explicit protocol'
-    reg = prepare_next(base, destination, interactions_per_family=interactions_per_family)
+    storage_parents = [parent for parent in [base_reg, *(value[0] for value in cache.values())]
+                       if parent.get('working_set_policy')]
+    if storage_parents:
+        from goal_prospective_storage_20261017 import SCHEMA
+        require_stream_destination(destination)
+        for parent in storage_parents:
+            assert parent['working_set_policy'] == SCHEMA
+            assert parent['storage_resources'] == dict(cpu=6,memory_max_bytes=1024**3,swap_max_bytes=0)
+            assert all(parent['source_manifest'].get(key)==value for key,value in STORAGE_MIGRATION_HASHES.items())
+    reg = prepare_next(base, destination, interactions_per_family=interactions_per_family,
+                       _defer_storage_seal=True)
     reg.pop('previous_stage')
     reg.update(selected_lineages=lineages, selection_basis=selection['decision'],
         evidence_basis='Explicit four-method checkpoint selection from closed sources; preserved objectives, replay, optimizer, normalizers and RNG. No convergence claim.')
@@ -255,7 +265,7 @@ def prepare_selected(base, selection, destination, interactions_per_family=11000
             shutil.copy2(Path(pilot['source'])/key,Path(reg['source'])/key)
         if pilot.get('storage_predecessor'):
             # Preserve the exact optional trainer dependency in the new source
-            # snapshot. This does not retrofit storage policy onto old runs.
+            # snapshot. Only the new stage is enrolled below; old runs stay intact.
             shutil.copy2(Path(pilot['source'])/STORAGE_HELPER,Path(reg['source'])/STORAGE_HELPER)
     for job in reg['jobs']:
         item = chosen[job['name']]
@@ -283,7 +293,15 @@ def prepare_selected(base, selection, destination, interactions_per_family=11000
                  'goal_actor_regularization_pilot_20261016.py','goal_actor_regularization_20261016.py'):
         shutil.copy2(BENCH/'tools'/name,Path(reg['source'])/'tools'/name)
     reg['source_manifest'] = manifest(Path(reg['source']))
+    if storage_parents:
+        # Enroll only this new, still-unlaunched stage. Never reuse a parent's
+        # seal or roundtrip preflight, which bind different outputs and hashes.
+        assert all(reg['source_manifest'].get(key)==value for key,value in STORAGE_MIGRATION_HASHES.items())
+        reg.update(working_set_policy=SCHEMA,storage_resources=dict(storage_parents[0]['storage_resources']))
     write(destination/'REGISTRATION.json', reg)
+    if reg.get('working_set_policy'):
+        from goal_prospective_storage_20261017 import seal
+        seal(destination)
     verify_inputs(reg)
     return reg
 

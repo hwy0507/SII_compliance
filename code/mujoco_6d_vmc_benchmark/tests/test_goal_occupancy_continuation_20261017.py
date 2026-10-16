@@ -50,7 +50,7 @@ class OccupancyContinuationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             base=Path(tmp);old,pair=self.fixture(base,stream=True)
             before=(manifest(old),manifest(pair))
-            selected=base/'selected'
+            selected=base/'outputs/rl_goal_stream_selected'
             reg=prepare_selected(old,self.selection(old,pair),selected)
             self.assertEqual((manifest(old),manifest(pair)),before)
             self.assertEqual(training_source(reg),training_source(read(old/'REGISTRATION.json')))
@@ -58,20 +58,29 @@ class OccupancyContinuationTests(unittest.TestCase):
             self.assertEqual(reg['jobs'][1]['inherited_steps'],44000)
             self.assertEqual(reg['jobs'][1]['payload_occupancy_guidance'],CONFIG)
             self.assertFalse((selected/'LAUNCH.json').exists())
+            from goal_prospective_storage_20261017 import validate,verify_preflight as storage_preflight
+            _,policy=validate(selected)
+            self.assertEqual(policy['registration_sha256'],digest(selected/'REGISTRATION.json'))
+            self.assertTrue(all(not Path(j['output']).exists() for j in reg['jobs']))
+            with self.assertRaises(FileNotFoundError):storage_preflight(selected)
             check=subprocess.run([sys.executable,'-I','-c',
                 'import sys;sys.path.insert(0,sys.argv[1]);from rl_goal_stage_20261016 import read,verify_inputs;verify_inputs(read(sys.argv[2]))',
                 str(selected/'source/tools'),str(selected/'REGISTRATION.json')],cwd=base,
                 env=dict(os.environ,PYTHONPATH=''),capture_output=True,text=True,timeout=20)
             self.assertEqual(check.returncode,0,check.stderr)
             self.close(selected)
-            later=prepare_next(selected,base/'later');verify_inputs(later)
+            later_root=base/'outputs/rl_goal_stream_later'
+            later=prepare_next(selected,later_root);verify_inputs(later)
+            _,later_policy=validate(later_root)
+            self.assertNotEqual(policy['registration_sha256'],later_policy['registration_sha256'])
+            with self.assertRaises(FileNotFoundError):storage_preflight(later_root)
             self.assertEqual(later['jobs'][1]['inherited_steps'],55000)
             self.assertEqual(later['jobs'][1]['payload_occupancy_guidance'],CONFIG)
 
     def test_storage_migration_does_not_hide_source_or_ancestry_tamper(self):
         with tempfile.TemporaryDirectory() as tmp:
             base=Path(tmp);old,pair=self.fixture(base,stream=True)
-            reg=prepare_selected(old,self.selection(old,pair),base/'selected')
+            reg=prepare_selected(old,self.selection(old,pair),base/'outputs/rl_goal_stream_selected')
             for key in (TRAINER,STORAGE_HELPER,OCCUPANCY_HELPER,'tools/baseline_repair_worker_20261008.py'):
                 bad=deepcopy(reg);bad['source_manifest'][key]='changed'
                 with self.assertRaises(AssertionError):training_source(bad)
@@ -80,6 +89,37 @@ class OccupancyContinuationTests(unittest.TestCase):
             changed=read(path);changed['pilot_predecessor']['registration_sha256']='changed'
             write(path,changed)
             with self.assertRaisesRegex(AssertionError,'Storage predecessor changed'):training_source(reg)
+
+    def test_storage_stage_rejects_nonstream_destination_before_creation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base=Path(tmp);old,pair=self.fixture(base,stream=True)
+            for destination in (base/'selected',base/'outputs/selected',base/'rl_goal_stream_bad'):
+                with self.assertRaisesRegex(ValueError,'prospective stream roots'):
+                    prepare_selected(old,self.selection(old,pair),destination)
+                self.assertFalse(destination.exists())
+            selected=base/'outputs/rl_goal_stream_selected'
+            prepare_selected(old,self.selection(old,pair),selected);self.close(selected)
+            with self.assertRaisesRegex(ValueError,'prospective stream roots'):
+                prepare_next(selected,base/'later')
+            self.assertFalse((base/'later').exists())
+
+    def test_reselection_keeps_base_storage_even_with_legacy_checkpoints(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base=Path(tmp);old,pair=self.fixture(base,stream=True)
+            selected=base/'outputs/rl_goal_stream_selected'
+            prepare_selected(old,self.selection(old,pair),selected);self.close(selected)
+            before=(manifest(old),manifest(pair),manifest(selected))
+            choice=dict(decision='Explicit synthetic old checkpoint selection',methods={
+                j['name']:dict(root=str(old),job=j['name'],rationale='Original untreated checkpoint')
+                for j in read(old/'REGISTRATION.json')['jobs']})
+            root=base/'outputs/rl_goal_stream_reselected'
+            reg=prepare_selected(selected,choice,root)
+            from goal_prospective_storage_20261017 import validate,verify_preflight as storage_preflight
+            validate(root);verify_inputs(reg)
+            self.assertEqual(reg['storage_resources'],dict(cpu=6,memory_max_bytes=1024**3,swap_max_bytes=0))
+            self.assertNotIn('payload_occupancy_guidance',reg['jobs'][1])
+            self.assertEqual((manifest(old),manifest(pair),manifest(selected)),before)
+            with self.assertRaises(FileNotFoundError):storage_preflight(root)
 
     def close(self,root,fresh_cp=None):
         reg=read(root/'REGISTRATION.json');sha=digest(root/'REGISTRATION.json')

@@ -1,5 +1,48 @@
 # 更新日志
 
+## 2026-10-17 07:47 CST — 接续阶段继承存储保护，occupancy十四回合
+
+开工查询/fetch/read main `f08ce92a44002cb57ed432cef9c731838c405020`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS和两份进度；
+收工重读AGENTS，发布前复查远端未前进。本轮沿用已开启的Goal，不创建重复worker。
+
+修复未来阶段的存储登记遗漏：原selected continuation只复制storage-aware trainer/helper，
+从旧base选择stream策略时未继承working_set_policy；普通prepare_next继承policy字段却不生成
+新STORAGE_POLICY，导致后续校验失败。现在新选定阶段从base/所选闭合来源保留精确策略与
+CPU6/1GiB/swap0资源，核对已审阅trainer/helper hash，在最终登记写完后生成独立seal；
+普通接续也生成新seal。非规范outputs/rl_goal_stream_*目标在创建前拒绝。
+不复用父级seal或STORAGE_PREFLIGHT；新阶段仍须真实归档/恢复和四路replay预检。
+活动snapshot、冻结物理、reward、actor输入/filter/执行器/dt5e-5均未修改。
+这是续训资源正确性修复，不是不收敛根因或学习改善的证据。
+
+首批23测试通过，补充旧checkpoint重新选择路径和共享调度器回归后37测试通过：
+selected7、occupancy9、storage8、ordinary continuation5、stage4、regularized4。
+覆盖新seal身份、缺失新存储预检仍拒绝、旧source/checkpoint不变、隔离snapshot导入、
+奖励及44000→55000步历史保留、重新选择旧目标仍保留存储保护、非法目标不留目录。
+本机受限测试1.482秒退出0，峰38,264,832字节/1GiB，OOM/swap0；两次记录均保留。
+当前pair尚未结束，未实际选择下一训练阶段，也未启动额外仿真。
+
+观察器23:34:48–23:45:18 UTC记录17250→19250步、12251→14251更新、12→14闭合回合，
+新边界归档后退出0，协调器2502213/worker2546313继续active。
+前14回合均1375步/55秒、physical_valid、carry，Task/Strict0/14；新增ep12/13 return
+−27.390283956/−26.759521963。均值−27.560248586、标准差.461354462（含warmup），
+不能把失败平台当收敛，也不比较不同奖励定义的总return。19250条交互、14251更新连续有限，
+奖励分解、AUDIT/trace、cp19250成员hash和新增原始归档通过。
+末temperature .002817736、critic loss6.692233。worker峰2,707,271,680/max3,221,225,472字节，
+OOM/max事件/swap0；磁盘余56,055,189,504字节，高于50GiB。另查GPU42°C/1437MiB。
+归档助手CPU6/1GiB/swap0，5.869秒退出0；服务器只存储/传输/hash，无服务器计算。
+
+本轮代码前后副本、测试记录、WINDOW/TRAINING_SCREEN/连续日志位于
+BENCH/outputs/rl_goal_stream_window_20261017T2350；已独立SSH核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T2350/evidence.tar.gz`，
+9,784,137字节，SHA256
+`2b43deae7edca5efe6e6b8abe93da6fc39c7bce58bf01006fea0d231d88117e0`。
+归档修复源码以内容hash标识，不冒充正在运行的冻结代码。按sii-research-sync同步三份进度、
+提交/push main，保留无关meeting文件。Goal active；继续44k匹配试验，双方完成再比较。
+控制组0/32，四方法均未验证收敛，最终acceptance未执行，所有失败/未完成收据保留。
+
+
+
 ## 2026-10-17 07:32 CST — 修复归档迁移后的接续误拒绝，occupancy十二回合
 
 开工查询/fetch/read main `dec11ea216d26559ccffca456f6e862ee7b315ae`、

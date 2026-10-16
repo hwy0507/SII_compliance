@@ -198,7 +198,16 @@ def completed_stage_checkpoints(reg, state):
     return checkpoints
 
 
-def prepare_next(previous, destination, gpu_preflight=False, interactions_per_family=11000):
+def require_stream_destination(destination):
+    """Reject an invalid prospective storage root before creating any files."""
+    destination = Path(destination)
+    if (not destination.is_absolute() or destination.resolve() != destination or
+            destination.parent.name != 'outputs' or not destination.name.startswith('rl_goal_stream_')):
+        raise ValueError('Only distinct prospective stream roots are supported')
+
+
+def prepare_next(previous, destination, gpu_preflight=False, interactions_per_family=11000,
+                 _defer_storage_seal=False):
     """Prepare one finite continuation; never dispatch or restart a fresh model."""
     assert platform.node() == 'airpig'
     assert not destination.exists(), 'Never reuse a stage directory'
@@ -206,6 +215,8 @@ def prepare_next(previous, destination, gpu_preflight=False, interactions_per_fa
     assert not gpu_preflight or interactions_per_family == 11000, 'GPU preflight budget remains 1375'
     old = read(previous / 'REGISTRATION.json')
     verify_inputs(old)
+    if old.get('working_set_policy'):
+        require_stream_destination(destination)
     state = read(previous / 'execution.json')
     assert state['registration_sha256'] == digest(previous / 'REGISTRATION.json')
     checkpoints = completed_stage_checkpoints(old, state)
@@ -285,6 +296,9 @@ def prepare_next(previous, destination, gpu_preflight=False, interactions_per_fa
         reg['gpu_training_validation'] = dict(root=str(previous),
             registration_sha256=digest(previous/'REGISTRATION.json'), execution_sha256=digest(previous/'execution.json'))
     write(destination/'REGISTRATION.json',reg)
+    if reg.get('working_set_policy') and not _defer_storage_seal:
+        from goal_prospective_storage_20261017 import seal
+        seal(destination)
     return reg
 
 
