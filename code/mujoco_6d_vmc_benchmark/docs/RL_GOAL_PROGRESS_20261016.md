@@ -1,5 +1,44 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 22:40 CST：Direct闭合，actor正则化在线接续已验证但尚未派发
+
+开工实时查询/fetch/read main `610cdbc5a94369b6ac3c9e2ed8358dcf7212cef5`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工读AGENTS。Goal继续active。
+stage02_v2 Direct于14:29:45Z结束21,262交互/16,263更新，新增10,269次交互/更新连续有限。
+本段10回合，7完整55秒、3因穿透>2mm短终止，physical_valid6/10，Task且Strict0/10。
+episode12–17 return依次−21.670135、−21.675998、−21.702363、−21.742310、−41.427858、−21.657791；
+其中episode16仅191步/7.64秒，其余完整。最后temperature .002418325；失败reward平台不是收敛。
+Direct峰值3,221,225,472字节，memory.max事件1330、OOM/swap0。协调器2447861自动转至阻抗worker2455377，
+观测14,000交互/9,001更新；首个新完整回合13750 checkpoint、return−25.729180、physical_valid=true、Task/Strict=false。
+阻抗峰值2,309,435,392字节，max/OOM/swap0。导纳/VMC本阶段仍排队，已有历史cp12375不等于本阶段已训练。
+
+新实验根`outputs/rl_goal_actor_regularization_online_20261016`，登记SHA
+`1be1942c09c6f03b5b361b0c694e9449331edd36aa0febd451e6055601a87f45`。
+两组共享最新闭合Direct cp21262，原始模型/optimizer/replay/normalizer/RNG保留，训练seed及reward相同。
+control alpha0、处理alpha1，仅使用上游SimbaV2已有actor replay-action正则项；各新增最多11000交互至32262，
+1M优化日程保持。旧离线256更新探针来自cp12821；它只提供候选动机，不能当成cp21262在线效果。
+处理组`parameter_bc1`独立快照，加载只允许指定路径和全部hash绑定的alpha0→1迁移；
+后续alpha1保存模型走普通严格恢复。所有其他配置、物理、MJB、gate、48维/filter/执行器及dt5e-5不变。
+
+86项Goal unittest通过，覆盖额外配置变更/错误cp或hash拒绝、alpha1普通重载、配对参数/证据篡改、
+前置运行/错误登记禁止launch/run、独立快照导入。实际隔离导入和两组trainer准入也通过。
+两组真实CUDA replay预检各一次丢弃更新，全部4个网络/优化器完整序列化hash与源相同；
+归一化数组、计数、JAX RNG精确相同，21262原始replay恢复、末25步终止求和检查通过，源cp hash未变。
+control/处理峰值1,328,312,320/1,564,688,384字节，CPU6/3GiB/swap0、OOM/max0。
+额外处理组保存/重新加载无仿真/无更新探针通过，网络/优化器、normalizer、RNG/计数均保留，
+峰值1,633,832,960字节/2GiB、OOM0。`disposable_roundtrip_model`仅测试产物，未部署、未替换正式cp。
+实际提前launch被拒绝且没有LAUNCH/execution；两组已seal预检，必须等待前置四族阶段全闭合。
+随后重新核算空间（目前free约62.93GB，保护50GiB）再派发，不用本阶段旧空间估算替代新pair预算。
+
+尾6个Direct原始回合/cp15571/16946/18321/19696/19887/21262、完整连续日志、pair源码/测试/登记/
+预检/roundtrip已打包，本地`/tmp/rl-goal-bc-online-ready-20261016T1440.tar.gz`，
+1,611,100,590字节，SHA256 `da29a35e1835a90b48e7a684bb09f79da6e750a413a6844b55f4fc799533b806`。
+已核验共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-bc-online-ready-20261016T1440/evidence.tar.gz`，
+本地/服务器暂存/最终目录大小及hash一致，服务器仅文件归档。本轮未删除任何数据，传输缓存保留。
+收工阻抗14,750步/9,751更新，服务持续active、OOM/swap0；新阻抗轨迹/cp仍仅本地待同步。
+此轮完成可审计修复候选准备，不是正则化闭环收益证明。在线结果后若采用alpha1，需补齐选型接续与
+分支收敛统计支持。四族均未证实收敛，最终acceptance仍未运行。
+
 ## 22:15 CST：Direct动作偏移证据与上游正则化候选对照
 
 开工main `cc193663d626ad6e9f935fa54994ed45c78186ac`、baseline

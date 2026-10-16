@@ -188,6 +188,7 @@ def main():
         specification['goal_registration_sha256']=sha(a.goal_registration)
         specification['goal_registration']=str(a.goal_registration.resolve())
         specification['credit_horizon_migration']=goal_job.get('credit_migration',False)
+        specification['actor_regularization_migration']=goal_job.get('actor_regularization_migration',False)
         specification['credit_horizon_caveat']='25-step off-policy returns introduce behavior-policy bias; finite registered experiment, not guaranteed improvement'
     if a.reward_variant=='task_safety':
         specification['task_safety_definition']='Original Task terminal +20/-20, plus20*increments of excess/(1+excess); excess=max(0,external_peak/.0002-1). Early failure charges unused worst-case safety peak budget. Original Strict evaluation unchanged.'
@@ -207,6 +208,9 @@ def main():
         if migration:
             from goal_rl_credit_adapter_20261016 import check_credit_migration
             check_credit_migration(parent['agent_config'],specification['agent_config'])
+        elif goal_job and goal_job.get('actor_regularization_migration'):
+            from goal_actor_regularization_20261016 import check_actor_regularization_migration
+            check_actor_regularization_migration(parent['agent_config'],specification['agent_config'])
         else:
             assert parent['agent_config']==specification['agent_config'],'agent_config'
         if a.reward=='metric':

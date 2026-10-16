@@ -1,5 +1,23 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 22:40 CST Direct闭合与actor正则化配对接续预检
+
+stage02_v2 Direct完成有限段21,262步/16,263更新，新增10回合=7完整+3穿透短终止；
+physical_valid6/10、Task/Strict0/10，全部10,269新增更新连续有限、reward和/cp hash核验。
+自动接续阻抗2455377，观测14,000步/9,001更新，首个新完整回合return−25.729180仍失败。
+新online pair从Direct最终cp21262共享恢复，alpha0/1各新增11k；仅迁移原生actor_bc_alpha，
+optimizer/replay/normalizer/RNG和冻结物理/reward/输入保留。86项Goal测试、隔离导入和两组trainer准入通过。
+两组真实CUDA预检验证完整网络/优化器hash及统计/RNG精确恢复，各一次丢弃更新有限；
+处理组额外保存/重载验证通过，无仿真/部署。前置四族尚未闭合，实际launch被拒且未创建派发记录。
+登记`1be1942c09c6f03b5b361b0c694e9449331edd36aa0febd451e6055601a87f45`；
+运行根`outputs/rl_goal_actor_regularization_online_20261016`，只完成预检，不证明正则化在线收益。
+Direct峰值3GiB/max事件1330但OOM/swap0；两组预检峰约1.33/1.56GB，roundtrip1.63GB，均OOM0。
+尾6Direct原始回合/cp及pair证据本地包1,611,100,590字节，SHA
+`da29a35e1835a90b48e7a684bb09f79da6e750a413a6844b55f4fc799533b806`，本地/服务器hash一致，已核验共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-bc-online-ready-20261016T1440/evidence.tar.gz`。
+服务器仅存储/hash；本轮未删除数据。收工阻抗14,750步/9,751更新，OOM/swap0，仍正常运行。
+main610cdbc/baseline f6e8f8c实时查询/fetch/read、收工重读AGENTS；四族未收敛，Goal active、未最终acceptance。
+
 ## 2026-10-16 22:15 CST Direct只读信用诊断与动作正则化探针
 
 stage02_v2原训练进程持续16250步/11251更新；新增5闭合、3完整、physical_valid2/5、Task/Strict0/5。

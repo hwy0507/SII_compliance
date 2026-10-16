@@ -55,7 +55,7 @@ def interaction_budget(reg):
     if kind == 'gpu_training_preflight':
         assert 'finite_continuation_budget' not in reg
         return 1375
-    if kind in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot'):
+    if kind in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot', 'resumed_actor_regularization_pilot'):
         assert 'finite_continuation_budget' not in reg
         return 11000
     assert kind is None, 'Unknown experiment budget kind'
@@ -79,7 +79,7 @@ def validate_training_job(args, protocol, protocol_hash):
     assert reg['server_compute'] is False and reg['acceptance_allowed'] is False
     assert args.steps == reg['optimizer_schedule_steps'] == protocol['budgets']['rl_steps_per_family_seed']
     job = next(j for j in reg['jobs'] if j['output'] == str(args.output.resolve()))
-    assert str(args.parameter_source.resolve()) == reg['parameter_source']
+    assert str(args.parameter_source.resolve()) == job_parameter_source(reg, job)
     for key, value in [('controller', args.controller), ('reward', args.reward),
                        ('reward_variant', args.reward_variant), ('hp', args.hyperparameter_id),
                        ('seed', args.seed), ('limit', args.stop_at_step)]:
@@ -296,6 +296,9 @@ def verify_inputs(reg):
     assert manifest(Path(reg['source'])) == reg['source_manifest'], 'Frozen source changed'
     assert manifest(Path(reg['parameter_source'])) == reg['parameter_manifest'], 'Parameter source changed'
     backend(reg)
+    if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot':
+        from goal_actor_regularization_pilot_20261016 import validate_pair
+        validate_pair(reg)
     if reg.get('selected_lineages'):
         from goal_selected_continuation_20261016 import verify_selected_lineages
         verify_selected_lineages(reg)
@@ -336,6 +339,9 @@ def verify_preflight(reg):
             assert result['checkpoint_hashes_unchanged'] and result['inherited_steps'] == job['inherited_steps']
             assert result['actual_n_step'] == 25 and result['restored_raw_replay_count'] == job['inherited_steps']
             assert result['finite_update_metrics'] and result['terminal_windows_match'] and result['no_cross_episode_bootstrap']
+            if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot':
+                from goal_actor_regularization_pilot_20261016 import verify_restoration
+                verify_restoration(reg,job,result)
             if backend(reg) == 'cuda':
                 assert result['compute_runtime']['learning_backend'] == 'cuda'
                 assert result['compute_runtime']['platforms'] == ['gpu']
@@ -358,6 +364,9 @@ def seal_preflight(root):
         assert result['inherited_steps'] == job['inherited_steps']
         assert result['actual_n_step'] == 25 and result['restored_raw_replay_count'] == job['inherited_steps']
         assert result['finite_update_metrics'] and result['terminal_windows_match'] and result['no_cross_episode_bootstrap']
+        if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot':
+            from goal_actor_regularization_pilot_20261016 import verify_restoration
+            verify_restoration(reg,job,result)
         if backend(reg) == 'cuda':
             assert result['compute_runtime']['learning_backend'] == 'cuda'
             assert result['compute_runtime']['platforms'] == ['gpu']
@@ -365,6 +374,13 @@ def seal_preflight(root):
     write(root/'CREDIT_PREFLIGHT.json',dict(status='passed',registration_sha256=digest(root/'REGISTRATION.json'),
         jobs=receipts,simulation=False,gradient_updates=len(receipts),model_saved=False))
     verify_preflight(reg)
+
+
+def job_parameter_source(reg, job):
+    if job.get('parameter_source') is not None:
+        assert reg.get('experiment_kind') == 'resumed_actor_regularization_pilot'
+        return job['parameter_source']
+    return reg['parameter_source']
 
 
 def worker_command(reg, job):
@@ -379,7 +395,7 @@ def worker_command(reg, job):
         '--property=CPUAffinity=1', '--property=TasksMax=256', '--working-directory=' + reg['source']]
     cmd += ['--setenv=' + k + '=' + v for k, v in env.items()]
     cmd += [reg['python'], str(Path(reg['source']) / 'tools/train_v4_recovery_rl_20261016.py'),
-        '--root', reg['parent_root'], '--output', job['output'], '--parameter-source', reg['parameter_source'],
+        '--root', reg['parent_root'], '--output', job['output'], '--parameter-source', job_parameter_source(reg, job),
         '--seed', str(job['seed']), '--steps', str(reg['optimizer_schedule_steps']), '--stop-at-step', str(job['limit']),
         '--reward', job['reward'], '--reward-variant', job['reward_variant'], '--hyperparameter-id', job['hp'],
         '--goal-registration', str(Path(reg['run_root']) / 'REGISTRATION.json')]
@@ -392,6 +408,9 @@ def worker_command(reg, job):
 
 def run(root):
     reg = read(root / 'REGISTRATION.json')
+    if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot':
+        from goal_actor_regularization_pilot_20261016 import require_predecessor_complete
+        require_predecessor_complete(reg)
     if reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot'):
         from goal_tracking_pilot_20261016 import require_predecessor_complete
         require_predecessor_complete(reg)
@@ -460,6 +479,9 @@ def run(root):
 
 def launch(root):
     reg = read(root / 'REGISTRATION.json')
+    if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot':
+        from goal_actor_regularization_pilot_20261016 import require_predecessor_complete
+        require_predecessor_complete(reg)
     if reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot'):
         from goal_tracking_pilot_20261016 import require_predecessor_complete
         require_predecessor_complete(reg)

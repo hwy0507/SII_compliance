@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2026-10-16 22:40 CST — Direct阶段闭合与保留优化器的actor正则化在线对照准备
+
+- 实时查询/fetch/read main `610cdbc5a94369b6ac3c9e2ed8358dcf7212cef5`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工读取AGENTS。Goal保持active。
+  stage02_v2 Direct于14:29:45Z安全结束21,262步/16,263更新，本段10,269新增交互/更新，
+  10结束回合=7完整+3穿透短终止、physical_valid6/10、Task/Strict0/10。全部连续有限更新、逐回合reward和及cp hash核验。
+  协调器2447861自动接续阻抗2455377，观测14,000步/9,001更新、首个完整回合return−25.729180、Task/Strict失败。
+- 新`goal_actor_regularization_20261016.py`与`goal_actor_regularization_pilot_20261016.py`只允许登记cp上的
+  n25 actor_bc_alpha0→1迁移，其余配置严格相同；保留网络/优化器/归一化/RNG/原始replay，处理组独立参数快照。
+  新在线pair从Direct最终cp21262开始，两组各新增最多11k，1M学习率日程、seed/reward/物理/gate/48维/filter不变。
+  登记SHA `1be1942c09c6f03b5b361b0c694e9449331edd36aa0febd451e6055601a87f45`。
+  旧离线证据来自cp12821，本次使用最新闭合cp21262做新配对，不冒称同一批在线收益已被验证。
+- 86项Goal测试通过；实际隔离快照导入/两组trainer准入通过。两次CUDA预检验证4个网络/优化器序列化hash、
+  归一化数组/计数/RNG精确恢复，replay末25步与独立求和一致，各一次丢弃更新有限，原cp不变；
+  峰值1,328,312,320/1,564,688,384字节，CPU6/3GiB/swap0、OOM/max0。
+  处理组另做无更新保存/重新加载检查通过，峰值1,633,832,960字节/2GiB、OOM0；仅保存可丢弃测试模型，不部署。
+  实际提前launch被四族未闭合检查拒绝，未创建LAUNCH/execution/重复worker；在线对照尚未派发。
+- Direct峰值触及3GiB、memory.max事件1330，但OOM/swap0；阻抗观测峰2,309,435,392字节、max/OOM/swap0。
+  Direct最后完整return−21.657791、temperature .0024183，失败平台不是收敛。保持单模拟器/UTD1/学习CUDA0。
+  本轮新增Direct尾6回合/cp15571–21262、完整日志、对照源码/登记/预检/roundtrip已打包，
+  1,611,100,590字节，SHA256 `da29a35e1835a90b48e7a684bb09f79da6e750a413a6844b55f4fc799533b806`；
+  已核验共享至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-bc-online-ready-20261016T1440/evidence.tar.gz`，
+  本地/暂存/最终目录hash一致；服务器仅文件归档。本地传输缓存保留，未删除数据。收工阻抗14,750步/9,751更新、OOM/swap0。
+  下一步继续当前阻抗→导纳→VMC，阶段闭合后重检50GiB磁盘保护再启动在线对照；后续采用处理组需要补齐
+  四族选型接续及收敛统计支持。四族均未证实收敛、最终acceptance未运行，保留无关用户文档。
+
 ## 2026-10-16 22:15 CST — Direct信用/动作诊断与同checkpoint正则化有限对照
 
 - 开工查询/fetch/read main `cc193663d626ad6e9f935fa54994ed45c78186ac`、baseline
