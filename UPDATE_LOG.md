@@ -1,5 +1,47 @@
 # 更新日志
 
+## 2026-10-17 04:00 CST — 已验证等待：控制组十四回合，连续更新与归档通过
+
+上一轮完成12回合证据发布；本轮对真实存活PID2502235有界观察约9.5分钟，
+从17,750步/12,751更新推进至19,250步/14,251更新，协调器2502213持续active。
+按sii-research-sync查询/fetch/read main `57b9f4a1ad5a2967ad399ede6abb7d4d3131db90`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS/进度，收工重读AGENTS。
+无研究源码或训练配置改动，无重复训练；观察器达到14回合且归档完成后正常退出，worker继续。
+
+`rl_goal_stream_occupancy_20261017_v2/impedance_control`的14回合均1375步/55秒、
+physical_valid14/14，Task/Strict0/14；平均return −25.497926591、标准差.427819936。
+新增ep12/13（repair_train_006/031）return −24.775301155/−24.998685579，均carry失败。
+ep12原生RMSE23.551309mm、峰矩35.941719Nm、峰速.388448807m/s、穿透.156059713mm、
+放置XY误差.085631292m；只是训练原生记录，不是独立验收。回报变高不等于任务完成。
+19,250交互及14,251更新序号连续且指标有限，14回合reward分解/总和、AUDIT/trace hash、
+cp19250成员hash通过；末temperature .002821193、critic loss7.599995。
+控制44k预算已完成43.75%；occupancy尚未启动，没有奖励处理收益结论。
+已读冻结协调器逻辑：仅正常step_budget结束且checkpoint通过才接续另一组，异常保留失败。
+
+归档时worker MemoryCurrent2,359,603,200字节、peak2,812,641,280、max3,221,225,472，
+memory.max事件/OOM/oom_kill/swap均0；磁盘可用58,265,899,008字节，50GiB保护保持。
+收工服务仍active，GPU40°C/1440MiB；CPU1/单线程/CUDA0/.125/UTD1保持。
+归档助手本机CPU6/1GiB/swap0、9.652秒正常退出。服务器仅归档/大小/hash核验。
+
+本轮证据已独立归档核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T1950/evidence.tar.gz`，
+9,334,574字节，SHA `01a170160822793de10863b19f0c266ce17cac213350af2ab94bd2e1781e5f2f`。
+本地缓存BENCH/outputs/rl_goal_stream_window_20261017T1950，含观察、闭合日志、训练screen、
+实际脚本与归档映射。新增原始轨迹/checkpoint已重核，同主机共同根
+`/home/arm1/sii_shared/SII_compliance/runs/main/`：
+
+- `goal-stream-ecb2188a818f31ec636cf4d4/evidence.tar.gz`，270,561,939字节，
+  SHA `862cd135df5f53b3e28c3ed2ad1e317f8370d7415585b41c74593723e42039b7`。
+- `goal-stream-4fb246fb459d819256748ab1/evidence.tar.gz`，271,347,558字节，
+  SHA `5f60956e721ad39b47d574b756353e1776fae91e42903f510c20c885b779e183`。
+
+活动代码仍f788fcb，登记SHA d37b16975a6f8e6408e951ec5bf69f14294b718dca7dc951ad56e9ba1c5e3aa6。
+物理/MJB、最终gate、canonical48/filter/执行器/dt5e-5保持；全部失败保留。
+本轮是已验证等待，四族尚未证明收敛，最终acceptance/独立物理与filter重放尚未执行。
+Goal active；继续44k×2登记对照，之后按配对任务/原生指标选择调整，不将小预算pilot当最终完成。
+仅提交三份进度，保留无关meeting文档；diff检查后正常push main。
+
+
 ## 2026-10-17 03:48 CST — 已验证等待：控制组十二回合，奖励对照继续
 
 本轮承接同一PID2502235从14,500步推进至16,500步的观察与归档；协调器2502213保持active。
