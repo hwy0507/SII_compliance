@@ -1,5 +1,6 @@
 """Continuation must preserve four distinct checkpoints and reject partial stages."""
 from copy import deepcopy
+import argparse
 import json
 from pathlib import Path
 import sys
@@ -8,7 +9,8 @@ import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 from rl_goal_stage_20261016 import (completed_stage_checkpoints, digest, manifest,
-    prepare_next, read, seal_preflight, verify_inputs, verify_preflight, write)
+    interaction_budget, prepare_next, read, seal_preflight, validate_training_job,
+    verify_inputs, verify_preflight, write)
 
 
 class StageContinuationTests(unittest.TestCase):
@@ -92,6 +94,59 @@ class StageContinuationTests(unittest.TestCase):
             write(path,execution)
             with self.assertRaises(AssertionError):
                 completed_stage_checkpoints(reg,state)
+
+    def test_explicit_full_condition_cycle_retains_each_checkpoint(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base=Path(tmp)
+            old,reg,state=self.fixture(base)
+            before=manifest(old)
+            new=prepare_next(old,base/'longer',interactions_per_family=44000)
+            self.assertEqual(manifest(old),before)
+            self.assertEqual(interaction_budget(new),44000)
+            self.assertEqual(new['maximum_new_interactions'],176000)
+            self.assertEqual(new['parameter_manifest'],reg['parameter_manifest'])
+            self.assertEqual(new['resources'],reg['resources'])
+            self.assertEqual(new['optimizer_schedule_steps'],1000000)
+            self.assertFalse((base/'longer/LAUNCH.json').exists())
+            for job in new['jobs']:
+                self.assertEqual(job['limit'],55000)
+                self.assertEqual(job['inherited_steps'],11000)
+                self.assertEqual(Path(job['checkpoint']).parent.name,job['name'])
+            # Exercise the actual trainer admission path, not just the preparation result.
+            new.update(server_compute=False,acceptance_allowed=False)
+            job=new['jobs'][0]
+            args=argparse.Namespace(goal_registration=base/'longer/REGISTRATION.json',
+                root=Path(new['parent_root']),steps=1000000,output=Path(job['output']),
+                parameter_source=Path(new['parameter_source']),controller=job['controller'],
+                reward=job['reward'],reward_variant=job['reward_variant'],hyperparameter_id=job['hp'],
+                seed=job['seed'],stop_at_step=job['limit'],resume_checkpoint=Path(job['checkpoint']))
+            proto=read(Path(new['parent_root'])/'PROTOCOL.json')
+            write(args.goal_registration,new)
+            validate_training_job(args,proto,new['parent_protocol_sha256'])
+            unregistered=deepcopy(new);unregistered.pop('finite_continuation_budget')
+            write(args.goal_registration,unregistered)
+            with self.assertRaises(AssertionError):
+                validate_training_job(args,proto,new['parent_protocol_sha256'])
+            oversized=deepcopy(new)
+            oversized['jobs'][0].update(inherited_steps=990000,limit=1034000)
+            args.stop_at_step=1034000
+            write(args.goal_registration,oversized)
+            with self.assertRaises(AssertionError):
+                validate_training_job(args,proto,new['parent_protocol_sha256'])
+            for mutation in (dict(new,finite_continuation_budget=1000000),
+                             dict(new,maximum_new_interactions=176001),
+                             dict(new,jobs=new['jobs'][:-1]),
+                             dict(new,previous_stage=None),
+                             dict(new,experiment_kind='fresh_direct_tracking_pilot')):
+                with self.assertRaises(AssertionError):
+                    interaction_budget(mutation)
+            for invalid in (0, True, 44001, 1000000):
+                with self.assertRaises(AssertionError):
+                    prepare_next(old,base/'bad',interactions_per_family=invalid)
+                self.assertFalse((base/'bad').exists())
+            with self.assertRaises(AssertionError):
+                prepare_next(old,base/'gpu_bad',gpu_preflight=True,interactions_per_family=44000)
+            self.assertFalse((base/'gpu_bad').exists())
 
     def test_rejects_checkpoint_tamper(self):
         with tempfile.TemporaryDirectory() as tmp:

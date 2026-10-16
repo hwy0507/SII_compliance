@@ -1,5 +1,17 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 20:40 CST Direct热身与有限接续预算
+
+Direct原进程3250步/0更新，两个完整55秒Task/Strict0/2、physical_valid2/2；5000热身尚未结束。
+首回合/cp1375核验通过。后续prepare-next新增显式22k/33k/44k预算能力，保留四族各自cp、
+1M上限和资源保护，59项Goal测试通过；新长阶段未派发，活动Direct快照未改。
+14个本地/远端重新核验的重复/tmp传输包已移除，释放5,461,537,291字节，服务器可完整恢复；
+原始实验/轨迹/cp/失败不删，长期存储仍需继续处理。
+首回合、缓存回收与代码/测试证据已核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-first-storage-20261016T1240/evidence.tar.gz`，
+189,850,878字节，SHA256 `7c74a262eb65e4121a5ab0b5b4fcc0e663dd3af71d1e2689f858d7914b29b6ad`。
+Goal active，继续Direct对照；四方法未证明收敛或最终验收。
+
 ## 2026-10-16 20:28 CST 阻抗对照结束，Direct v2接续
 
 阻抗control/tracking各11000步/6001更新、8完整55秒、physical_valid8/8、Task/Strict0/8。

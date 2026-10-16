@@ -1,5 +1,35 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 20:40 CST：Direct3250热身，较长接续预算实现与缓存回收
+
+开工main `cda3106f8155620f7895894bc965f5fb14bbc215`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`查询/fetch/read，AGENTS开工/收工读取；上一轮为进展。
+Direct原trainer2424017/协调器2424012未重启，12:38:27Z3250步/0更新，符合5000热身；
+两完整55秒return−23.2592843239/−23.2647493885，physical_valid2/2、Task/Strict0/2。
+首cp1375源与tar成员hash核验，保存1375交互/0更新；前1375条日志序号/回报和一致。
+当前current2,467,450,880/peak2,536,906,752字节、max/OOM0、swap0，第三回合在途。
+
+后续阶段原固定11k预算已扩展为显式有限登记，prepare-next可传`--interactions-per-family`
+11000/22000/33000/44000，默认不变；22k以上须finite_continuation_budget字段并匹配四族总量。
+保留完整四族前序/独立cp恢复/1M总上限/24h派发保护/资源与奖励/优化日程，pilot和GPU预检不扩容。
+测试检查旧source与各族cp保持、实际trainer准入、遗漏登记和超过1M等拒绝路径，59项Goal unittest通过。
+当前活动Direct源hash仍匹配冻结登记，未应用新代码；没有准备或派发较长阶段，也未选择奖励胜者。
+44k对应32个完整55秒回合的交互量；短回合/失败仍按真实记录，不据此推断条件覆盖或收敛。
+待Direct完整对照后按结果和存储空间选择接续长度，避免反复fresh热身取代持续训练。
+
+清理14个明确列出的重复/tmp传输包，check/apply均核验远端大小/SHA256，逐项校验本地
+普通文件/所有者/单硬链接/inode/mtime/hash，先落日志后移除，逻辑回收5,461,537,291字节。
+结果free73,903,075,328字节；只删除可由服务器完全恢复的传输缓存，原始实验/轨迹/cp/失败全部保留。
+恢复scp命令见TRANSFER_CACHE_CHECK_20261016T1235.json，移除日志/结果同步保存。
+历史归档服务器路径仍有效，但本次列出的14个旧/tmp tar缓存已不存在；勿按旧记录重复使用本地缓存。
+50GiB保护线不变，长期四族各1M仍需要增量归档和明确离线保留，不把缓存回收称为完整存储方案。
+
+首原始回合/cp、1375步日志、缓存核验/移除/恢复收据、新预算源码/测试及复现脚本已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-first-storage-20261016T1240/evidence.tar.gz`
+189,850,878字节，SHA256 `7c74a262eb65e4121a5ab0b5b4fcc0e663dd3af71d1e2689f858d7914b29b6ad`。
+incoming及最终目录大小/hash通过，服务器仅存储/hash。第二回合/cp2750仍本地待同步。
+Goal active，继续Direct既定control→tracking及后续四族接续；尚无收敛/最终验收证据。
+
 ## 20:28 CST：阻抗完整对照结束，Direct v2已实际推进
 
 开工main `536e6c941d08c5a2a9841a3fd47687a42cf688b7`、baseline

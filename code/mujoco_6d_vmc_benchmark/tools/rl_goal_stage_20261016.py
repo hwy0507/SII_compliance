@@ -49,6 +49,27 @@ def manifest(folder):
             if p.is_file() and '__pycache__' not in p.parts and p.suffix != '.pyc'}
 
 
+def interaction_budget(reg):
+    """Keep historical pilots fixed; larger four-family continuations are explicit."""
+    kind = reg.get('experiment_kind')
+    if kind == 'gpu_training_preflight':
+        assert 'finite_continuation_budget' not in reg
+        return 1375
+    if kind in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot'):
+        assert 'finite_continuation_budget' not in reg
+        return 11000
+    assert kind is None, 'Unknown experiment budget kind'
+    if 'finite_continuation_budget' not in reg:
+        return 11000
+    budget = reg['finite_continuation_budget']
+    assert type(budget) is int and budget in (11000, 22000, 33000, 44000)
+    assert reg.get('previous_stage'), 'Larger stages require exact completed lineage'
+    assert len(reg['jobs']) == 4 and {j['controller'] for j in reg['jobs']} == {
+        None, 'impedance', 'admittance', 'vmc'}
+    assert reg['maximum_new_interactions'] == 4 * budget
+    return budget
+
+
 def validate_training_job(args, protocol, protocol_hash):
     reg = read(args.goal_registration)
     assert reg['schema'] == 'sii-rl-persistent-goal-stage-v1'
@@ -64,8 +85,9 @@ def validate_training_job(args, protocol, protocol_hash):
                        ('seed', args.seed), ('limit', args.stop_at_step)]:
         assert job[key] == value, key
     assert job['checkpoint'] == (str(args.resume_checkpoint.resolve()) if args.resume_checkpoint else None)
-    budget = 1375 if reg.get('experiment_kind') == 'gpu_training_preflight' else 11000
+    budget = interaction_budget(reg)
     assert job['limit'] - job['inherited_steps'] == reg['new_interactions_per_family'] == budget
+    assert 0 <= job['inherited_steps'] < job['limit'] <= reg['optimizer_schedule_steps']
     if budget == 1375:
         assert backend(reg) == 'cuda' and job['checkpoint']
     if backend(reg) == 'cuda':
@@ -171,27 +193,30 @@ def completed_stage_checkpoints(reg, state):
     return checkpoints
 
 
-def prepare_next(previous, destination, gpu_preflight=False):
+def prepare_next(previous, destination, gpu_preflight=False, interactions_per_family=11000):
     """Prepare one finite continuation; never dispatch or restart a fresh model."""
     assert platform.node() == 'airpig'
     assert not destination.exists(), 'Never reuse a stage directory'
+    assert type(interactions_per_family) is int and interactions_per_family in (11000, 22000, 33000, 44000)
+    assert not gpu_preflight or interactions_per_family == 11000, 'GPU preflight budget remains 1375'
     old = read(previous / 'REGISTRATION.json')
     verify_inputs(old)
     state = read(previous / 'execution.json')
     assert state['registration_sha256'] == digest(previous / 'REGISTRATION.json')
     checkpoints = completed_stage_checkpoints(old, state)
-    # Normal continuation retains11k; explicit GPU full-loop validation uses1375.
-    # Both retain the one-million optimizer schedule and existing rewards.
+    # Default11k; explicit continuation may cover one32-condition cycle.
+    # GPU validation stays1375; optimizer schedule and rewards stay unchanged.
     if old.get('experiment_kind') == 'gpu_training_preflight':
         if not gpu_preflight:
             validate_gpu_training_closure(old, state)
     else:
-        assert old['new_interactions_per_family'] == 11000
+        assert old['new_interactions_per_family'] == interaction_budget(old)
     assert old['optimizer_schedule_steps'] == 1000000
     if gpu_preflight:
         assert (backend(old) == 'cpu' and not old.get('experiment_kind')) or (
             backend(old) == 'cuda' and old.get('experiment_kind') == 'gpu_training_preflight')
-    assert all(cp['step'] + 11000 <= 1000000 for cp in checkpoints.values()), 'Final remainder requires explicit registration'
+    budget = 1375 if gpu_preflight else interactions_per_family
+    assert all(cp['step'] + budget <= 1000000 for cp in checkpoints.values()), 'Final remainder requires explicit registration'
     destination.mkdir(parents=True)
     ignore = shutil.ignore_patterns('__pycache__', '*.pyc')
     source = destination / 'source'
@@ -209,7 +234,9 @@ def prepare_next(previous, destination, gpu_preflight=False):
     reg = dict(old)
     reg.pop('parent_checkpoint_hashes', None)
     reg.pop('experiment_kind', None)
-    budget = 1375 if gpu_preflight else 11000
+    reg.pop('finite_continuation_budget', None)
+    if not gpu_preflight and budget != 11000:
+        reg['finite_continuation_budget'] = budget
     jobs = []
     for job in old['jobs']:
         cp = checkpoints[job['name']]
@@ -451,12 +478,18 @@ if __name__ == '__main__':
     parser.add_argument('--parent', type=Path)
     parser.add_argument('--checkpoint', type=Path)
     parser.add_argument('--previous-stage', type=Path)
+    parser.add_argument('--interactions-per-family', type=int, default=11000,
+                        choices=(11000, 22000, 33000, 44000),
+                        help='Explicit finite prepare-next budget; defaults to11000. No change to existing registrations.')
     args = parser.parse_args()
+    if args.mode != 'prepare-next' and args.interactions_per_family != 11000:
+        parser.error('--interactions-per-family applies only to prepare-next')
     if args.mode == 'prepare':
         print(json.dumps(prepare(args.parent.resolve(), args.root.resolve(), args.checkpoint.resolve()), indent=2))
     elif args.mode in ('prepare-next', 'prepare-gpu-preflight'):
         print(json.dumps(prepare_next(args.previous_stage.resolve(), args.root.resolve(),
-                                     gpu_preflight=args.mode == 'prepare-gpu-preflight'), indent=2))
+                                     gpu_preflight=args.mode == 'prepare-gpu-preflight',
+                                     interactions_per_family=args.interactions_per_family), indent=2))
     elif args.mode == 'seal-preflight':
         seal_preflight(args.root.resolve())
     elif args.mode == 'launch':

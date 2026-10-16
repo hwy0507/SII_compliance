@@ -1,5 +1,29 @@
 # 更新日志
 
+## 2026-10-16 20:40 CST — Direct热身推进，补充较长有限接续预算并回收重复传输缓存
+
+- 开工查询/fetch/read main `cda3106f8155620f7895894bc965f5fb14bbc215`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工读取AGENTS；上一轮为进展。
+  Direct原trainer2424017/协调器2424012持续运行，12:38:27Z3250步/0更新（5000热身），
+  两完整55秒return−23.259284/−23.264749、physical_valid2/2、Task/Strict0/2；未改活动快照。
+- `rl_goal_stage_20261016.py`新增prepare-next显式11k/22k/33k/44k每方法有限接续预算，
+  默认11k、既有pilot11k/GPU预检1375保持。较长阶段需登记finite_continuation_budget，
+  四方法完整前序/各自checkpoint、总预算一致及每方法≤1M；仍24小时派发保护、原资源/奖励/优化日程。
+  44k仅对应32个完整55秒回合的交互量，不代表收敛，也不是已派发的新训练。
+  新增测试走实际trainer准入、拒绝缺失登记/超1M/非法预算/缺方法/总量不符，保留旧source与各族cp；
+  全部59项Goal unittest通过。较长阶段尚未登记/启动，须结合完整Direct对照和存储预算选择。
+- 14个明确列出的/tmp传输包经过本地与远端大小/hash复核，删除前再次核验本地inode/mtime/hash
+  和远端副本，仅移除重复缓存5,461,537,291字节；原始实验/轨迹/checkpoint/失败收据未删除。
+  回收后free73,903,075,328字节，逐项可用收据内scp命令从服务器恢复；仍保持50GiB保护线。
+  这不是四方法各1M所需长期存储方案已完成，后续仍须增量归档/明确离线保留策略。
+- Direct首回合/cp1375源和tar成员hash、1375条训练序号与reward求和、cp更新数0核验通过。
+  首回合/cp、缓存核验/移除收据/恢复路径、候选预算源码与测试已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-first-storage-20261016T1240/evidence.tar.gz`，
+  189,850,878字节，SHA256 `7c74a262eb65e4121a5ab0b5b4fcc0e663dd3af71d1e2689f858d7914b29b6ad`。
+  incoming/最终目录大小hash一致，服务器只存储/hash。第二回合仍本地待后续归档。
+- 最新current2,467,450,880/peak2,536,906,752字节，max/OOM0、swap0；继续Direct既定对照。
+  Goal active，四方法尚无收敛证据，未最终acceptance；只提交本轮源码/测试/进度，保留无关文件。
+
 ## 2026-10-16 20:28 CST — 阻抗奖励对照完整结束，Direct v2真实接续
 
 - 查询/fetch/read main `536e6c941d08c5a2a9841a3fd47687a42cf688b7`、baseline
