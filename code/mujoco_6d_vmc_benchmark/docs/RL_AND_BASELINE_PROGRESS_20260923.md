@@ -1,5 +1,50 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-17 05:50 CST — 第三条retreat失败诊断；控制组30回合/41,250步
+
+开工查询/fetch/read main `853b605fadf205d7a4f4724c960ea91f1858e7bb`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS/两份RL进度并收工重读。
+上一轮为已验证等待；本轮新增原生失败诊断，并持续观察同一协调器2502213/worker2502235，
+从39,250步/34,251更新推进至41,250步/36,251更新，30回合归档后观察器退出0。
+未重启、重复派发、改活动snapshot或执行独立物理/filter replay。
+
+ep27/repair_train_026的原生25Hz轨迹及接触/参数记录逐文件与原始归档成员hash核对一致，
+读前后hash不变，原始远端归档重核通过。12.00s最高点(.590319,−.228441,.577239)m；
+14.48s最接近目标XY仍差.115712m；15.04s物块z=.441679m，手物距离.237700m，
+尚在carry。16.92/17.52/18.04s才进入stage5/6/7，此时物块已回到桌面；
+最终XY误差.214070m，hold0，release_supported/placement_complete/Task/Strict均false。
+payload-corner接触14.76910–14.90990s，峰54.079N；接触与掉落接近不证明因果。
+与ep16/19不同，最高点前后±.4s的21个参数样本有13个energy_scale<.999999；
+stiffness767.288–1248.098，中位1242.479，而14.88–15.12s掉落邻域energy_scale已为1。
+冻结ParameterShield源码确认scale缩放log参数增量，并非全部力矩乘该比例。
+故不支持统一“刚度过低”或“过滤器直接压低全部力矩导致掉落”，也无依据放宽filter。
+冻结任务阶段按机器人位姿推进，实际payload支撑/位置/稳定时间由最终判据另外检查；
+掉落后retreat不是成功统计bug，不改冻结规划/输入/gate。
+参数过滤源码SHA `aa3374afdbf6a9c3333a2cb365299ac6e4d21c3e5fba97b335432cc3e0524e70`；
+任务源码SHA `60fc1bc868a04e5a8e27c887b91a9ba4ffeaed6cd073379be589780d59fcabd5`。
+诊断助手CPU6/1GiB/swap0，3.762秒退出0，峰29,974,528字节；没有仿真或梯度更新。
+证据 `BENCH/outputs/rl_goal_retreat_third_20261017T2145`；
+已独立SSH复核归档
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-retreat-third-20261017T2145/evidence.tar.gz`，
+2,221,415字节，SHA `828a62ee22ce5d05b27a50ca8020be2c274c710b5dc135fe5dc74bc8996fc58f`。
+
+控制组完成44k预算93.75%；30回合均1375步/55s、physical_valid，Task/Strict0/30。
+新增ep28/29（repair_train_016/005）return−27.964723652/−26.205297268，均retreat失败，
+最终XY误差.179658137/.286577530m；未据阶段标签断言成功或具体掉落机制。
+全30回合mean return−25.538152428、std .677016974，四族均未证明收敛。
+41,250交互/36,251更新连续有限，闭合reward分解、AUDIT/trace及cp41250成员hash通过；
+temperature .001511186、critic loss6.664773。occupancy仍排队，尚无处理收益结论。
+worker峰3,116,797,952/max3,221,225,472字节，OOM/max事件/swap0；
+磁盘余57,282,682,880字节，高于50GiB保留线，GPU43°C/1438MiB。
+CPU6/1GiB核验归档助手10.846秒退出0；证据 `BENCH/outputs/rl_goal_stream_window_20261017T2150`，
+已独立SSH复核
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T2150/evidence.tar.gz`，
+15,977,224字节，SHA `7d8c915d8b00b73177c6373f40c32abd9c8abcaafb561066f0750e5b6f5de604`。
+按sii-research-sync保存/同步两份独立证据及三份进度，提交/push main。
+Goal active，继续control最后2回合并核对协调器自动接续occupancy；全部失败保留，
+本机计算/服务器只归档，物理/MJB/gate/canonical48/filter/执行器/dt5e-5保持，最终acceptance未执行。
+
+
 ## 2026-10-17 05:39 CST — 已验证等待：控制组28完整回合，38,500步
 
 本轮承接active Goal；查询/fetch/read远端main `71360524abc3f15988ebeb57712063c285bcb65e`、
