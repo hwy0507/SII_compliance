@@ -4,6 +4,28 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 13:55 CST：五个完整失败回合，补齐大型证据归档
+
+实时核对main `436552af7c5417c9033ffd87dfb26ce8e5707559`与baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、两分支日志及AGENTS；Goal仍active。
+同一协调器PID2329290、trainer2329294真实运行；57,750步/91,408更新，阶段新增7219/7219。
+五个完整55秒回合依次return−21.667945、−34.277519、−39.487075、−21.871979、−35.653907；
+Task/Strict联合0/5、physical_valid2/5，第6回合repair_train_017在途。其他三方法仍排队。
+57,406 checkpoint hash核验通过；第5回合原生训练AUDIT同样停在approach，max_lift0、
+目标XY误差192.09mm、RMSE803.36mm。不同条件的回报不能直接证明n25有效或无效；
+目前无成功样本，不能称收敛。未执行最终统一acceptance或独立最终审计。
+
+worker MemoryCurrent3,151,167,488字节/MemoryMax3GiB，memory.events max434，OOM/kill0、
+swap0。此前增长有较多file缓存；现已出现硬限回收压力，继续观察实际吞吐和OOM，不移除保护。
+本轮完成episode38–40全部原始轨迹和checkpoint53281/54656/56031的归档，附05:46Z
+execution/收敛统计/优化器奖励窗口/训练AUDIT/资源快照及生成脚本；source/parameter manifest
+和这三个checkpoint均已核验。服务器最终文件大小与SHA256一致：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-episodes38-40-20261016T0545/evidence.tar.gz`，
+835,219,332字节，SHA256 `77b7fca926a438e8c83a96ae2e01a0c1f075420aae69e1340916112dc61860e4`。
+episode37此前已独立归档；episode41及之后仍仅本机、待同步。服务器无计算，无重复训练。
+本轮为运行核查与失败证据保全，未新增训练算法修复；下一步看有限阶段完整结果与自动接续，
+再依据已有动作外推/approach失败证据登记后续调整，持续Goal不因本轮结束而完成。
+
 ## 13:39 CST：收敛统计检查落地，训练仍未满足判据
 
 本轮核对main `dee4c4ba65b5866d1e31fe0d15122c34da47d384`、baseline

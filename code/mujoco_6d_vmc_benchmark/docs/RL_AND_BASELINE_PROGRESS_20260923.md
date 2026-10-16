@@ -1,5 +1,13 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 13:55 CST 五个完整回合与失败产物归档
+
+Goal active；Stage01 Direct57,750步/91,408更新，新增7219/7219，5完整回合Task/Strict0/5、
+physical_valid2/5；第5回合return−35.653907、仍停approach，第6回合在途，其余三方法排队。
+57,406 checkpoint hash通过，OOM0/swap0，但内存已触及硬限回收，继续观察。
+episode38–40原始轨迹及三个checkpoint已核验归档，835,219,332字节；episode41之后待同步。
+未收敛、未最终验收，详细hash/服务器位置见[Goal进度](RL_GOAL_PROGRESS_20261016.md)。
+
 ## 2026-10-16 13:39 CST 收敛统计可复核，第四回合继续
 
 Stage01 Direct optimizer已到55,804步/89,462更新，54,656 checkpoint hash通过；3完整回合

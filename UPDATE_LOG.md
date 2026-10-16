@@ -1,5 +1,24 @@
 # 更新日志
 
+## 2026-10-16 13:55 CST — Goal持续运行，失败轨迹与checkpoint补齐归档
+
+- 实时查询/fetch/read main `436552af7c5417c9033ffd87dfb26ce8e5707559`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/专题进度；Goal仍active。
+  同一协调器2329290/Direct trainer2329294保持运行，没有重复启动。
+- Direct持久化57,750步/91,408更新，相对阶段起点新增7219/7219。5个完整55秒回合，
+  Task/Strict联合0/5、physical_valid2/5；第5个return−35.653907，仍停在approach，
+  原生训练AUDIT记录RMSE803.36mm、物体目标XY误差192.09mm、max_lift0。
+  57,406步checkpoint实际hash核验通过，第6回合在途，另外三方法尚未派发。
+  条件不同，不把回合顺序当调参因果证据；当前没有收敛或最终验收成功。
+- worker内存3,151,167,488/3,221,225,472字节，memory.events max434、OOM/kill0、swap0；
+  已发生硬限缓存回收压力，继续观察，不能仅以占用上升断言内存泄漏或移除限制。
+- episode38–40原始失败轨迹、53,281/54,656/56,031 checkpoint、协议和05:46Z完整监视快照
+  已上传并核验大小/hash，发布至
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-episodes38-40-20261016T0545/evidence.tar.gz`，
+  835,219,332字节，SHA256 `77b7fca926a438e8c83a96ae2e01a0c1f075420aae69e1340916112dc61860e4`。
+  服务器仅传输/归档/hash；episode41及之后产物仍本机待同步。冻结输入、活动源码未修改，
+  未运行最终acceptance或独立最终审计。下一步核对该有限阶段的完整结果和自动接续。
+
 ## 2026-10-16 13:39 CST — 落实训练收敛统计，拒绝失败平台与累计计数冒充成功
 
 - 查询/fetch/read main `dee4c4ba65b5866d1e31fe0d15122c34da47d384`、baseline
