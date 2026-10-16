@@ -63,7 +63,7 @@ def interaction_budget(reg):
         return 11000
     budget = reg['finite_continuation_budget']
     assert type(budget) is int and budget in (11000, 22000, 33000, 44000)
-    assert reg.get('previous_stage'), 'Larger stages require exact completed lineage'
+    assert reg.get('previous_stage') or reg.get('selected_lineages'), 'Larger stages require exact completed lineage'
     assert len(reg['jobs']) == 4 and {j['controller'] for j in reg['jobs']} == {
         None, 'impedance', 'admittance', 'vmc'}
     assert reg['maximum_new_interactions'] == 4 * budget
@@ -232,6 +232,8 @@ def prepare_next(previous, destination, gpu_preflight=False, interactions_per_fa
         shutil.copy2(BENCH/'tools/goal_tracking_reward_20261016.py', source/'tools/goal_tracking_reward_20261016.py')
     started = datetime.now(timezone.utc)
     reg = dict(old)
+    reg.pop('selected_lineages', None)
+    reg.pop('selection_basis', None)
     reg.pop('parent_checkpoint_hashes', None)
     reg.pop('experiment_kind', None)
     reg.pop('finite_continuation_budget', None)
@@ -294,6 +296,9 @@ def verify_inputs(reg):
     assert manifest(Path(reg['source'])) == reg['source_manifest'], 'Frozen source changed'
     assert manifest(Path(reg['parameter_source'])) == reg['parameter_manifest'], 'Parameter source changed'
     backend(reg)
+    if reg.get('selected_lineages'):
+        from goal_selected_continuation_20261016 import verify_selected_lineages
+        verify_selected_lineages(reg)
     if backend(reg) == 'cuda' and reg.get('experiment_kind') != 'gpu_training_preflight':
         validated = reg['gpu_training_validation']; previous = Path(validated['root'])
         assert digest(previous/'REGISTRATION.json') == validated['registration_sha256']

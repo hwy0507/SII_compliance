@@ -3,6 +3,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+import shutil
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 from screen_goal_rl_convergence_20261016 import collect,read_bound,screen
@@ -147,6 +148,106 @@ class ConvergenceScreenTests(unittest.TestCase):
             write(path,spec)
             with self.assertRaisesRegex(AssertionError,'different training treatments'):
                 collect(root)
+
+    def selected_fixture(self, base):
+        root=self.make_lineage(base)
+        previous=base/'stage0'
+        reg,_=read_bound(root/'REGISTRATION.json')
+        pilot=base/'pilot';pilot.mkdir()
+        prototype=deepcopy(reg['jobs'][0])
+        pilot_jobs=[]
+        for name in ('control','tracking'):
+            output=pilot/name
+            shutil.copytree(previous/'direct',output)
+            pilot_jobs.append(dict(prototype,name=name,output=str(output),inherited_steps=0))
+        pilot_reg=dict(schema=reg['schema'],run_root=str(pilot),jobs=pilot_jobs,
+            experiment_kind='fresh_direct_tracking_pilot',training_convergence=CRITERIA)
+        write(pilot/'REGISTRATION.json',pilot_reg)
+        write(pilot/'execution.json',{'status':'finite_stage_complete'})
+        for job in pilot_jobs:
+            path=Path(job['output'])/'PROTOCOL.json'
+            spec,_=read_bound(path)
+            spec['goal_registration_sha256']=read_bound(pilot/'REGISTRATION.json')[1]
+            if job['name']=='control':spec['reward']={'different':'not selected'}
+            write(path,spec)
+        # A selected historical failure must still count; the unselected arm's
+        # differing objective and duplicate episode IDs must never be pooled.
+        path=pilot/'tracking/execution.json'
+        history,_=read_bound(path)
+        history['rows'][0]['result'].update(task_success=False,strict_success=False)
+        write(path,history)
+        reg.pop('previous_stage')
+        reg['selected_lineages']={}
+        for job in reg['jobs']:
+            parent=pilot if job['controller'] is None else previous
+            parent_name='tracking' if job['controller'] is None else job['name']
+            reg['selected_lineages'][job['name']]=dict(root=str(parent),job=parent_name,
+                registration_sha256=read_bound(parent/'REGISTRATION.json')[1],
+                execution_sha256=read_bound(parent/'execution.json')[1],
+                protocol_sha256=read_bound(parent/parent_name/'PROTOCOL.json')[1])
+        write(root/'REGISTRATION.json',reg)
+        for job in reg['jobs']:
+            path=Path(job['output'])/'PROTOCOL.json'
+            spec,_=read_bound(path);spec['goal_registration_sha256']=read_bound(root/'REGISTRATION.json')[1]
+            write(path,spec)
+            path=Path(job['output'])/'execution.json'
+            state,_=read_bound(path)
+            parent=reg['selected_lineages'][job['name']]
+            state['resumed_from']['parent_execution_sha256']=read_bound(
+                Path(parent['root'])/parent['job']/'execution.json')[1]
+            write(path,state)
+        return root,pilot
+
+    def test_selected_lineage_counts_failures_without_pooling_other_arm(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root,pilot=self.selected_fixture(Path(tmp))
+            result=collect(root)
+            direct=result['methods']['direct']
+            self.assertEqual(direct['screen']['closed']['count'],96)
+            self.assertEqual(direct['screen']['closed']['joint'],95)
+            self.assertEqual(direct['evidence'][0]['source_job'],'tracking')
+            self.assertEqual(len(direct['evidence']),2)
+            self.assertFalse(result['goal_complete'])
+            self.assertFalse(result['acceptance_performed'])
+
+    def test_selected_history_cannot_disappear_or_change_objective(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root,pilot=self.selected_fixture(Path(tmp))
+            path=pilot/'tracking/execution.json';path.rename(path.with_name('preserved.json'))
+            with self.assertRaisesRegex(AssertionError,'parent method evidence is missing'):
+                collect(root)
+        with tempfile.TemporaryDirectory() as tmp:
+            root,pilot=self.selected_fixture(Path(tmp))
+            path=root/'direct/PROTOCOL.json';spec,_=read_bound(path)
+            spec['tracking_guidance']={'changed':True};write(path,spec)
+            with self.assertRaisesRegex(AssertionError,'different training treatments'):
+                collect(root)
+
+    def test_normal_stage_after_selection_follows_each_ancestry(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base=Path(tmp);root,pilot=self.selected_fixture(base)
+            child=base/'later';child.mkdir()
+            reg,_=read_bound(root/'REGISTRATION.json')
+            reg.pop('selected_lineages')
+            reg['run_root']=str(child)
+            reg['previous_stage']=dict(root=str(root),registration_sha256=read_bound(root/'REGISTRATION.json')[1],
+                                      execution_sha256=read_bound(root/'execution.json')[1])
+            for job in reg['jobs']:
+                job.update(output=str(child/job['name']),inherited_steps=96*1375)
+            write(child/'REGISTRATION.json',reg)
+            for job in reg['jobs']:
+                output=Path(job['output']);output.mkdir()
+                spec,_=read_bound(root/job['name']/'PROTOCOL.json')
+                spec['goal_registration_sha256']=read_bound(child/'REGISTRATION.json')[1]
+                write(output/'PROTOCOL.json',spec)
+                state=dict(status='complete',steps=144*1375,rows=rows(144)[96:],
+                    resumed_from=dict(inherited_steps=96*1375,
+                        parent_execution_sha256=read_bound(root/job['name']/'execution.json')[1]))
+                write(output/'execution.json',state)
+            result=collect(child)
+            self.assertEqual(result['methods']['direct']['screen']['closed']['count'],144)
+            self.assertEqual(result['methods']['direct']['screen']['closed']['joint'],143)
+            self.assertEqual(len(result['methods']['direct']['evidence']),3)
 
 
 if __name__=='__main__':

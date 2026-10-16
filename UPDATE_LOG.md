@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2026-10-16 21:35 CST — 逐方法精确接续入口与分支收敛统计完成，Direct tracking真实学习
+
+- 查询/fetch/read main `ee494302b9eda843782204cc6d1f758477aa81fd`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工读取AGENTS；上一轮为实质进展。
+  原tracking worker2432993/协调器2424012持续，归档快照7000步/2001更新、5完整55秒，Task/Strict0/5。
+  cp2750/4125/5500源及tar成员hash、5500交互/4回合reward和、501条连续有限更新核验通过；
+  actor/critic相对热身改变。peak3GiB/max512、OOM0/swap0，未重启或改活动快照。
+- 新`goal_selected_continuation_20261016.py`接收显式四方法来源/理由，要求每个来源整个stage/pair已闭合，
+  核对各自最终checkpoint、协议/执行hash、奖励/hp/seed/控制族及相同冻结源/parameter/runtime/resources。
+  保留各自optimizer/replay/normalizer/RNG，默认每族新增11k，可显式22k/33k/44k但仍受1M总上限约束。
+  只准备登记，仍需四路丢弃更新预检、现有锁/资源准入及独立launch；不自动选择奖励胜者。
+  后续prepare-next使用新阶段各自末cp，清除旧selection入口而保留正常父阶段链，避免重用过时cp。
+- 收敛screen新增逐方法真实来源链，包含选中pilot历史与后续正常stage，不混入未选中的奖励定义，
+  不丢弃选中历史失败。原96回合/双32条件窗口/Task且Strict/回报稳定门槛不变。
+  全78项Goal unittest通过，覆盖运行中/缺族/跨族/改reward/篡改cp或协议/冻结源码不符/超预算、
+  实际trainer准入、复制快照独立进程import+verify、后续接续及分支历史计数；未进行真实新阶段训练。
+- 真实只读兼容核验：GPU四族、阻抗pair、Direct pair的受保护源manifest零差异，资源/参数实现一致；
+  已闭合来源cp全部核验，运行中的Direct整体被正确拒绝。尚未创建实际选择/新stage或启动预检。
+  配对当前3热身/1混合/1学习；首完整学习tracking−control RMSE+241.535mm、峰矩+10.129753Nm，
+  峰速−.134038m/s、穿透−.015579mm、放置XY−2.261262mm，仍失败，未证明有效改善。
+- tracking第2–4回合/cp、学习记录、兼容收据与候选代码/测试已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-learning-selection-20261016T1335/evidence.tar.gz`，
+  648,113,768字节，SHA256 `9c2e566639765d54913205185058758431faaa1a450ced8536878259fef3d8d6`。
+  包中候选源以hash标识，不冒称活动源；服务器仅存储/hash。第5回合/cp6875仍本地待归档。
+  继续完整Direct对照，再依据完整证据和存储预算登记接续；Goal active，四方法未证明收敛，未最终验收。
+
 ## 2026-10-16 21:15 CST — Direct对照安全失败闭合，tracking实际奖励与存储离线保留核验
 
 - 查询/fetch/read main `8eaccb4fc0762ced11b4e90f3537e2ddd73ff087`、baseline

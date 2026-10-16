@@ -1,5 +1,17 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 21:35 CST 逐方法接续实现与Direct tracking学习
+
+tracking原worker7000步/2001更新，5完整Task/Strict0/5；cp2750/4125/5500及501条连续有限更新核验。
+首全学习配对RMSE+241.535mm、峰矩+10.129753Nm，仍失败，不能声称加tracking权重已修复。
+新增显式四族来源选择接续，保留各自cp/奖励/optimizer/replay/RNG，拒绝未闭合来源/跨族/变更冻结源；
+下一普通stage沿新末cp接续。收敛统计沿真实分支保留失败、不混不同奖励历史，原门槛不变。
+78项Goal测试通过，真实GPU/阻抗/Direct冻结源兼容；Direct running被正确拒绝，尚未实际选择或派发新stage。
+学习轨迹/cp、兼容证据和候选实现已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-learning-selection-20261016T1335/evidence.tar.gz`，
+648,113,768字节，SHA256 `9c2e566639765d54913205185058758431faaa1a450ced8536878259fef3d8d6`。
+peak3GiB/max512、OOM0/swap0；继续完整Direct对照，随后按证据/存储预算接续。Goal active，未收敛/未最终验收。
+
 ## 2026-10-16 21:15 CST Direct末回合安全失败保全，tracking自动接续
 
 Direct control实际10993步/5994连续有限更新，7完整55秒+1短回合，Task/Strict0/8；

@@ -1,5 +1,51 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 21:35 CST：逐方法来源接续可用，tracking进入学习且首配对仍失败
+
+开工main `ee494302b9eda843782204cc6d1f758477aa81fd`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`查询/fetch/read，开工/收工读AGENTS；上一轮为进展。
+原tracking worker2432993/协调器2424012继续推进，归档快照7000交互/2001更新，5完整55秒，Task/Strict0/5。
+前4return−23.6473104406/−23.6542294571/−23.8243342856/−24.2314521733；cp2750/4125/5500逐文件
+与tar成员hash通过，前5500交互序号/回合reward和一致，step5000–5500的501条更新连续有限，
+actor/critic相对热身hash改变。首末critic loss9.23200989→8.95285416、temperature .010000→.009595596。
+这些仅证明学习链路，非收敛。memory peak3GiB/max512、OOM0/swap0；原进程/活动source未改。
+
+本轮补齐从有限pilot接续到四方法的实现：`tools/goal_selected_continuation_20261016.py`。
+入口为`--base <已闭合四族root> --selection <选择JSON> --root <独立新root>`，默认每族新增11000；
+可显式传`--interactions-per-family 22000|33000|44000`，仍每族累计≤1M/24小时派发保护/原资源。
+选择JSON含decision以及methods：以四族base的job名为键，每项root、job、rationale；每族必须显式指定。
+来源可以是已闭合四族stage或已闭合两臂pilot，但整个来源根必须finite_stage_complete且无active。
+不能在Direct control已结束、tracking仍运行时提前接纳整个pair。检查最终cp与协调器/训练收据一致，
+锁定实际reward/variant/hp/seed/controller/tracking配置，所有非派发/预检源码及完整parameter manifest相同。
+运行主机/解释器/runtime/父协议/优化日程/资源/收敛标准必须一致；不会刷新物理/学习算法或重新初始化。
+准备出的每个job从其自己的checkpoint恢复model/optimizer/replay/normalizer/RNG，四族仍须各自执行
+现有丢弃更新预检并seal，然后正常锁与资源准入launch。下一普通prepare-next只沿新阶段末cp接续，
+不把原selection指向的旧cp继续拿来用。不自动把pilot当四族完成，不按不同reward总值选优。
+
+`screen_goal_rl_convergence_20261016.py`支持逐方法分支来源以及之后的正常stage：
+只累积选中方法自身的连续episode/step历史，检查每段协议与执行hash、奖励fingerprint和实际resumed_from；
+未选臂保留在其原收据但不混入返回窗口，选中历史中的失败不丢弃。96回合、双32条件窗口、
+两窗≥90%Task且Strict和既定稳定性标准完全不变，screen仍不等同最终acceptance。
+78项Goal unittest通过：新增6项接续测试和3项分支统计测试，覆盖复制快照在独立进程中import+verify、
+实际trainer参数准入、四族独立cp/目标保持、拒绝running/缺族/跨族/篡改/源码不符/超预算、
+下一阶段不重用旧cp、失败计数和不混奖励历史。未对正在运行的快照应用新代码。
+
+真实兼容检查在CPU6/512MiB/swap0进行：GPU四族、阻抗pair、Direct pair的受保护源差异均为空，
+资源与完整参数实现相同；GPU四cp和阻抗两cp均通过实际hash核验；Direct仍running，closed-source入口正确拒绝。
+收据为`SELECTED_CONTINUATION_COMPATIBILITY_20261016T1330.json`。尚无真实选择文件/新stage/preflight/launch，
+要等完整Direct结果后才能决定来源；存储容量仍须独立安排，不因代码支持44k就直接派发。
+
+当前配对3热身/1混合/1全学习。热身原生指标完全一致；混合tracking−control RMSE+11.298344mm、
+放置XY+71.680544mm。第1全学习RMSE+241.535270mm、峰矩+10.129753Nm、峰速−.134038m/s、
+穿透−.015579mm、放置XY−2.261262mm，双方仍失败；单对非改善结论，也不等于长期无效证明。
+完整早期失败仍在报告；不同定义reward总值不排名，control末回合安全失败不被删掉。
+
+tracking第2–4原始回合/cp2750/4125/5500、前5500学习日志、配对/兼容收据、候选代码/测试已核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-learning-selection-20261016T1335/evidence.tar.gz`
+648,113,768字节，SHA256 `9c2e566639765d54913205185058758431faaa1a450ced8536878259fef3d8d6`。
+第5回合/cp6875仍本地待同步。包内候选代码以内容hash绑定，不冒充当前训练source或干净提交。
+Goal active，继续tracking剩余回合和完整对照，再进行有依据的精确接续；四方法仍无可验证收敛，未最终验收。
+
 ## 21:15 CST：Direct control闭合且末回合安全失败，tracking奖励已实际写入replay
 
 开工main `8eaccb4fc0762ced11b4e90f3537e2ddd73ff087`、baseline

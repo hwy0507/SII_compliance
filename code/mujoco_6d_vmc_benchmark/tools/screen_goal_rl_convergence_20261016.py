@@ -99,6 +99,8 @@ def collect(root):
             assert reg_hash == expected_reg, 'Parent registration changed'
             parent_state,parent_hash = read_bound(cursor/'execution.json')
             assert parent_hash == expected_execution and parent_state['status'] == 'finite_stage_complete'
+        if reg.get('selected_lineages'):
+            return collect_selected(root)
         stages.append((reg,reg_hash))
         previous = reg.get('previous_stage')
         if not previous:
@@ -153,6 +155,87 @@ def collect(root):
         all_training_candidates=all(m['screen']['training_candidate'] for m in methods.values()),
         acceptance_performed=False,goal_complete=False,
         interpretation='Training-only prospective screen, not final acceptance or a causal treatment comparison. Count this n25 lineage only; all early/failed closed rows remain in denominators. Incomplete episodes remain explicit. Service liveness is checked separately. Final physical/replay/checkpoint audits remain required.')
+
+
+def collect_selected(root):
+    """Follow each selected method's actual ancestry, including later stages.
+
+    A pilot contributes only the selected arm; its other reward definition never
+    enters that method's return windows. Historical failures are not dropped.
+    """
+    latest, _ = read_bound(root/'REGISTRATION.json')
+    assert len(latest['jobs']) == 4
+    assert len({j['name'] for j in latest['jobs']}) == 4
+    assert {j['controller'] for j in latest['jobs']} == {None,'impedance','admittance','vmc'}
+    criteria = latest['training_convergence']
+    methods, stage_roots = {}, []
+    for final_job in latest['jobs']:
+        chain, seen = [], set()
+        cursor, name = root, final_job['name']
+        expected = None
+        while True:
+            assert cursor not in seen, 'Stage lineage cycle'
+            seen.add(cursor)
+            reg, reg_hash = read_bound(cursor/'REGISTRATION.json')
+            assert reg['schema'] == 'sii-rl-persistent-goal-stage-v1' and Path(reg['run_root']) == cursor
+            assert reg['training_convergence'] == criteria, 'Do not mix convergence criteria'
+            if expected:
+                assert reg_hash == expected['registration_sha256'], 'Parent registration changed'
+                state, state_hash = read_bound(cursor/'execution.json')
+                assert state_hash == expected['execution_sha256'] and state['status'] == 'finite_stage_complete'
+            matches = [j for j in reg['jobs'] if j['name'] == name]
+            assert len(matches) == 1, 'Selected parent method missing or duplicated'
+            job = matches[0]
+            assert job['controller'] == final_job['controller']
+            chain.append((reg, reg_hash, job, expected))
+            if reg.get('selected_lineages'):
+                assert not reg.get('previous_stage')
+                assert set(reg['selected_lineages']) == {j['name'] for j in reg['jobs']}
+                expected = reg['selected_lineages'][name]
+                name = expected['job']
+            else:
+                expected = reg.get('previous_stage')
+            if not expected:
+                break
+            cursor = Path(expected['root']).resolve()
+        entry = dict(rows=[], evidence=[], fingerprint=None, conditions=None,
+                     reported_status='not_started', cumulative_steps=chain[-1][2]['inherited_steps'])
+        for index, (reg, reg_hash, job, expected) in enumerate(reversed(chain)):
+            if reg['run_root'] not in stage_roots:
+                stage_roots.append(reg['run_root'])
+            output = Path(job['output'])
+            if not (output/'execution.json').exists():
+                assert index == len(chain)-1, 'Completed parent method evidence is missing'
+                continue
+            execution, execution_hash = read_bound(output/'execution.json')
+            spec, spec_hash = read_bound(output/'PROTOCOL.json')
+            if expected and expected.get('protocol_sha256'):
+                assert spec_hash == expected['protocol_sha256'], 'Selected parent protocol changed'
+            assert spec['goal_registration_sha256'] == reg_hash
+            assert spec['controller'] == job['controller'] and spec['seed'] == job['seed']
+            fingerprint = {key:spec[key] for key in ('protocol_sha256','seed','controller','agent_config',
+                'reward','reward_variant','utd','prior_file_sha256','training_conditions')}
+            fingerprint['tracking_guidance'] = spec.get('tracking_guidance')
+            if entry['fingerprint'] is not None:
+                assert entry['fingerprint'] == fingerprint, 'Do not pool different training treatments'
+                assert execution['resumed_from']['inherited_steps'] == entry['cumulative_steps']
+                assert execution['resumed_from']['parent_execution_sha256'] == entry['evidence'][-1]['execution_sha256']
+            entry['fingerprint'], entry['conditions'] = fingerprint, spec['training_conditions']
+            if execution['rows']:
+                assert execution['rows'][0]['step_before'] == job['inherited_steps']
+            entry['rows'].extend(execution['rows'])
+            entry.update(reported_status=execution['status'], cumulative_steps=execution['steps'])
+            entry['evidence'].append(dict(execution_path=str(output/'execution.json'),execution_sha256=execution_hash,
+                protocol_sha256=spec_hash,registration_sha256=reg_hash,source_job=job['name'],
+                execution_snapshot=execution,protocol_snapshot=spec))
+        entry['screen'] = screen(entry['rows'],entry['conditions'],criteria) if entry['conditions'] else dict(
+            training_candidate=False,reasons=['not_started'],acceptance=False,goal_complete=False)
+        entry.pop('rows'); entry.pop('fingerprint')
+        methods[final_job['name']] = entry
+    return dict(criteria=criteria,methods=methods,stage_roots=stage_roots,
+        all_training_candidates=all(m['screen']['training_candidate'] for m in methods.values()),
+        acceptance_performed=False,goal_complete=False,
+        interpretation='Training-only screen of each exact selected lineage. Nonselected pilot arms remain in original receipts and are never pooled. All selected-lineage failures remain counted; final acceptance and independent audits still required.')
 
 
 def main():
