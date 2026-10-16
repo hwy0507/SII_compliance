@@ -1,5 +1,57 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 03:04 CST — 阻抗早期学习链路核验通过，完整回合仍停滞于carry
+
+按sii-research-sync查询/fetch/read远端main `9f4b8747dfea25e66e1007941b32678d5e31d6de`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/进度；收工重读AGENTS。
+Goal工具确认active。本轮观察同一worker PID2502235从6500推进至8250，协调器PID2502213保持；
+观察器在两个全程学习回合闭合后正常退出，训练未停止。收工optimizer实测9228步/4229更新。
+未重复派发、重启或修改活动source；occupancy处理组仍排队。
+
+已封存分析覆盖8250条连续交互与3251条连续优化更新，全部优化指标有限。6个完整55秒
+回合均physical_valid=true、Task/Strict0/6。前三回合warmup，第四混合，第五/六全程学习；
+后两回合return −25.633716548/−25.106000635。六回合总体return均值−25.395017、
+标准差.379481，仅为早期描述，失败平台不算收敛；不足96回合和两个完整32条件窗口。
+step8250 temperature .007397509、actor loss−.3102534、critic loss8.802989。
+
+本轮新增训练链路核验：checkpoint经验池action与控制器收到的5维raw_action逐项一致；
+reward与final_reward在浮点精度内一致；terminal恰在6个闭合边界；parameter_actions与
+parameter_trace一致；各回合reward分解/terminal/potential求和通过；cp6875/8250全部成员
+hash通过。没有发现“优化更新但动作未连接”证据。这里是原生记录/文件一致性核对，
+没有执行新的独立物理子步或action/filter重放，最终acceptance未运行。
+
+两全程学习回合末10秒各250采样均处于carry waypoint20/28，无采样cursor变化。
+重建目标残差0；radius/rejoin-plane readiness均0，rotation/speed readiness均250/250。
+位置误差中位数12.769655/12.639503mm，冻结门槛12mm未改；该结果定位停滞，
+不能独自证明根因或任务不可行。原生记录的rate-limit比例从warmup约.608–.623升至
+两个学习回合均1.0，energy-limit均0；这不是因果结论，也不是放宽公共filter的依据。
+两回合实际刚度均值约269.986/268.013、末段中位数189.317/178.695，合法范围150–1800，
+无刚度硬上界导致不可行的证据。继续既定44k control/44k occupancy同seed对照；
+处理组尚未训练，不跨奖励定义比较总return来宣称改善。
+
+当前worker MemoryCurrent约2,351,947,776字节，峰2,656,804,864，硬限3GiB；
+memory.max/OOM/oom_kill/swap均0，GPU43°C/1439MiB，磁盘余58,563,842,048字节。
+CPU1/线程1、CUDA0/.125/UTD1、50GiB余量及全部冻结物理/gate/输入/执行器保持。
+分析在airpig CPU6/1GiB/swap0完成；服务器仅归档/hash。训练源码仍f788fcb，
+登记SHA `d37b16975a6f8e6408e951ec5bf69f14294b718dca7dc951ad56e9ba1c5e3aa6`。
+
+本轮报告、闭合日志、6回合原生诊断、观察与归档收据/脚本已独立归档，收工重新核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-early-learning-20261017/evidence.tar.gz`，
+14,095,897字节，SHA `7888eaeb0accadfacce3b4f5f3d1ab7a6fc97fd72d18158ff12911786117283f`。
+全部6个原始回合/checkpoint远端归档均在分析中重核大小/hash；新增ep4/5位于同主机、
+共同根`/home/arm1/sii_shared/SII_compliance/runs/main/`：
+
+- `goal-stream-8c0e92f011ff3f8c38099b4c/evidence.tar.gz`，266,364,943字节，
+  SHA `1b60e738d486843d3073478c25413d53186dfb8a86c34b585a0185664f0dc4b4`。
+- `goal-stream-92f5dd52122e58bc89788efb/evidence.tar.gz`，266,072,999字节，
+  SHA `bcb1ce09417b792be0aafc5d9d3db368ff12fc8b55854ebd4c95e7f97f43ffda`。
+
+本地报告缓存为BENCH/outputs/rl_goal_stream_early_learning_20261017。
+两回合归档约35.5/37.4秒后原worker自动继续。历史数据未删除，全部失败收据保留。
+本轮未改研究代码，不重复无关测试；文档diff检查后按约定提交/push main。
+Direct/阻抗/导纳/VMC均尚无收敛证明；继续诊断和登记实验，Goal保持active。
+
+
 ## 2026-10-17 02:47 CST — 阻抗进入真实优化更新，旧checkpoint远端恢复验证通过
 
 按sii-research-sync开工查询/fetch/read main `f788fcb9f74dfced22180ddd421184a5048249c8`、
