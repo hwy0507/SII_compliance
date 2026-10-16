@@ -4,6 +4,36 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 17:05 CST：区分新旧终端窗口，VMC完成两次热身回合
+
+本轮核对远端main `f1f7630985f107101b12bed3f3d8275cc3c2c927`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS。上一轮为归档/发布进展。
+VMC原PID2375301与协调器2329290保持active，1500→3500步，5000步前仍0更新；
+前两完整55秒回合physical_valid2/2、Task/Strict0/2、return−25.242069151/−25.237350308，
+第三回合worker2378145在途。checkpoint1375/2750逐文件及tar成员hash核验通过，未重启或重复仿真。
+
+导纳cp11000只读诊断1159条，temperature .0058060978，末25步平均绝对TD残差.544058，
+非末窗口.030548。诊断脚本新增latest/earlier terminal window两个分组：最新25条残差3.840848，
+旧七回合175条.073088。读取MultiStepReplay.valid_count/at和trainer更新顺序确认，末n条
+只在终端出现后成为terminal-backed可采样窗口；立即边界保存前仅有终端step的更新机会。
+因此汇总末段残差不应被解读为旧数据整体未学会。旧窗口actor−behavior Q均差2.630814，
+仍不是独立真实Q高估或实际更优动作的证明。不能据此扩张UTD、改冻结gate或声称收敛。
+
+两次有界诊断exit0；原分组数值逐项完全相同，25+175=200、加权残差复算通过，模型统计/
+RNG/checkpoint hash未变，峰值903,589,888字节、OOM0。新分组诊断源码编译/diff通过。
+VMC两回合奖励重算一致；末10秒carry cursor18–20/28、误差约12–19mm，位置/重入0/250，
+姿态/速度250/250，参数实际变化且energy_scale1。不同condition和25Hz采样不支持因果改善或全子步结论。
+快照3000步current1,923,268,608、peak2,026,209,280字节，上限3GiB，max/OOM/kill0、swap0；
+主机swap接近满不等于该worker使用swap。GPU主机查询42°C/524MiB；沙箱内NVML查询失败，
+主机只读查询成功后确认驱动可用，未变更驱动/显示。当前RL仍CPU。
+
+已核验服务器归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-credit-vmc-20261016T0900/evidence.tar.gz`
+（387,069,253字节，SHA256 `45e732d9d9780e1504d679fb4141bf1272b9657c57e64e6113b903e86ae2b9d4`），
+含前两VMC回合/两个checkpoint、reward/carry快照、导纳两份critic诊断/新源码及复现脚本。
+无最终acceptance；四族未证明收敛。后续仍先收完VMC，执行四族GPU完整循环验证，再执行已登记
+奖励配对实验；不因本轮诊断而增加新实验队列或改运行快照。Goal active。
+
 ## 16:50 CST：导纳有限段完成，原协调器自动接续VMC
 
 开工main `c9ba42295443028db43206c6398d4f31f9d3cd7c`、baseline

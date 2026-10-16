@@ -133,9 +133,13 @@ def main():
             assert np.isfinite(x).all()
             return dict(n=int(x.size),mean=float(x.mean()),mean_absolute=float(np.abs(x).mean()),
                 minimum=float(x.min()),maximum=float(x.max()),p10=float(np.quantile(x,.1)),p90=float(np.quantile(x,.9)))
+        latest = ids>(terminals[-2] if len(terminals)>1 else -1)
+        terminal_window = distance[ids]<n
         groups = dict(all=np.ones(len(ids),bool),terminal=distance[ids]==0,
             within_n_step_terminal=distance[ids]<n,far_from_terminal=distance[ids]>=n,
-            latest_episode=ids>(terminals[-2] if len(terminals)>1 else -1))
+            latest_episode=latest,
+            latest_episode_terminal_window=latest & terminal_window,
+            earlier_episode_terminal_windows=~latest & terminal_window)
         result.update(status='passed', actual_n_step=n,temperature=temperature,
             sample_count=len(ids),replay_count=count,replay_episodes=len(terminals),
             diagnostics=before,groups={group:{key:stats(x[mask]) for key,x in values.items()}
@@ -143,6 +147,7 @@ def main():
             diagnostics_unchanged=before==agent.diagnostics(),
             rng_unchanged=bool(np.array_equal(rng_before,np.asarray(agent.raw_agent._rng))),
             checkpoint_hashes_unchanged=all(digest(cp/key)==value for key,value in checked['hashes'].items()),
+            terminal_window_caveat='The last n transitions become terminal-backed only when the terminal is observed. At an immediate episode-boundary checkpoint they have had only the terminal-step update opportunity. Earlier versus latest terminal windows separate replay exposure from pooled fitting error; neither group proves policy success.',
             interpretation='Frozen train-only diagnostic. Targets use sampled current actor and saved target critic, with exact clipped support expectation; not an independent true-Q estimate. MC is historical behavior return without entropy and is not soft-Q ground truth. Saturation alone is not proof of a defect. No causal comparison or convergence claim.')
         assert result['diagnostics_unchanged'] and result['rng_unchanged'] and result['checkpoint_hashes_unchanged']
     except BaseException as exc:

@@ -1,5 +1,14 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 17:05 CST 导纳critic诊断分层，VMC两完整热身回合
+
+VMC原trainer到3500步/0更新（5000热身），两完整55秒回合Task/Strict0/2、physical_valid2/2，
+return−25.24207/−25.23735；第三在途。导纳cp11000末窗口残差拆分为最新25条3.84085、
+旧175条.07309，避免把仅有一次更新机会的新终端窗口当成整体拟合失败；仍无成功/收敛证据。
+只读诊断exit0、原统计不变、checkpoint/RNG未改；VMC前两回合和cp1375/2750、诊断收据归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-credit-vmc-20261016T0900/evidence.tar.gz`，
+SHA256 `45e732d9d9780e1504d679fb4141bf1272b9657c57e64e6113b903e86ae2b9d4`。Goal active，后续GPU验证/奖励对照不变。
+
 ## 2026-10-16 16:50 CST 导纳11k有限段结束，VMC真实接续
 
 导纳11000步/6001更新、8完整55秒回合，physical_valid8/8、Task/Strict0/8，reward均值

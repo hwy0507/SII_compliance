@@ -1,5 +1,26 @@
 # 更新日志
 
+## 2026-10-16 17:05 CST — 导纳critic残差按入库时间拆分，VMC前两回合保全
+
+- 开工实时查询/fetch/read main `f1f7630985f107101b12bed3f3d8275cc3c2c927`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS/Goal进度。上一轮为进展。
+  原VMC trainer2375301及协调器2329290仍active，1500→3500步，0更新符合5000步热身；
+  前两完整55秒回合return−25.242069151/−25.237350308，physical_valid2/2、Task/Strict0/2，第三回合在途。
+- 导纳cp11000只读Bellman诊断1159条样本，temperature .00580610，末25步窗口平均绝对TD残差
+  .54406，非末窗口.03055。新增诊断分组后确认最新回合25条为3.84085、之前七回合175条为.07309；
+  n25末段在终端出现时才完整可采样，保存前只有终端那一步更新机会，不把刚入库数据混成整体
+  critic故障。旧末窗口actor−behavior Q均差2.63081，仅为模型估计，不是独立真实Q高估证明。
+  两次诊断均exit0，新增分组前后原统计完全一致、25+175分区/加权统计通过，checkpoint/模型统计/RNG未变；
+  峰值903,589,888字节、OOM0，无梯度/模拟器。编译/diff通过，运行冻结源码未改。
+- VMC两回合reward重算通过，末10秒位置误差约12–19mm，carry cursor18–20/28，
+  位置/重入均0/250，姿态/速度均250/250；参数变化且energy_scale1。这是25Hz训练诊断，非最终审计。
+  归档快照3000步：memory.current1,923,268,608、peak2,026,209,280/上限3GiB，OOM/max0、swap0。
+  主机swap接近满但该worker swap0；主机GPU查询42°C/524MiB，当前训练仍CPU。
+- 前两VMC原始回合/checkpoint1375与2750、reward/carry收据、导纳新旧分组诊断和源码已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-credit-vmc-20261016T0900/evidence.tar.gz`，
+  387,069,253字节，SHA256 `45e732d9d9780e1504d679fb4141bf1272b9657c57e64e6113b903e86ae2b9d4`。
+  本机计算、服务器仅归档；Goal active。先收完VMC，再执行已登记GPU完整循环与奖励对照；未收敛、未最终验收。
+
 ## 2026-10-16 16:50 CST — 导纳11k有限段完成，VMC自动接续并产生真实交互
 
 - 开工查询/fetch/read main `c9ba42295443028db43206c6398d4f31f9d3cd7c`、baseline
