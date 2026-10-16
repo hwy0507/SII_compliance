@@ -1,5 +1,74 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 02:16 CST — Direct正则化对照关闭，新阻抗44k对照以预登记工作副本策略接续
+
+开工查询/fetch并读取main `474f80d100c301b1c195716a6442f860de8e0a58`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`与AGENTS；普通沙箱fetch连接失败后，
+宿主机fetch成功，两分支未前进。继续现有Goal，不重复创建或把阶段完成记成收敛。
+
+Direct正则化组自然关闭32,262步/27,263更新，本段11,000次连续有限更新，8回合全部
+1375步/55秒、physical_valid=true、Task/Strict0/8。return为−21.856347/−21.845347/
+−21.867770/−21.850740/−21.849019/−21.782428/−21.832327/−21.775935，最终temperature
+.006969546。峰值3GiB、memory.max505，OOM/oom_kill/swap0。全部8个checkpoint成员hash、
+AUDIT、reward逐项复算通过。协调器2489803/worker2494519均自然退出，未重启健康进程。
+
+控制组仍为30,984步/25,985更新，8尝试中7完整/6physical_valid、Task/Strict0/8。
+严格相同condition和训练暴露的完整配对只有ep18/19：正则化reward分别低.016929/.159174；
+RMSE分别59.631636→36.605086mm、486.685389→42.111425mm，穿透均略增。
+从ep20开始，控制的97步提前失败使两组暴露不同，后续保留而不混作等预算配对。
+全组物理有效率的差异是单seed训练观察，不能推出总体调参有效；两组都没有任务成功，
+稳定的失败reward不是收敛。完整PAIR_REPORT及全部失败保留，最终acceptance未运行。
+
+服务器独立归档已逐一核验大小/SHA，本机airpig计算，服务器仅文件传输/归档/hash：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-actor-regularized-close-20261017/evidence.tar.gz`，
+1,893,048,841字节，SHA `87ab1ea077c1bbb9d48c2161aafaf3a2d646842bd44fd8677c11b5f592d1eeff`。
+含正则化ep19–25原始轨迹/checkpoint（ep18已有上一轮独立归档）、完整11k日志、比较/筛查，
+以及新存储源码快照、预检与失败记录。当前历史原始轨迹和checkpoint删除0。
+仅在重核远端hash后释放3个/tmp重复tar，共4,183,705,513字节，CACHE_RELEASE收据保留恢复地址；
+此前历史100文件删除拒绝未绕过。
+
+新工具goal_prospective_storage_20261017仅接受全新rl_goal_stream_*目录，必须在任何job
+输出/LAUNCH/execution出现前封存STORAGE_POLICY；旧run不可追认。每个完整或提前失败回合
+先保存checkpoint，再用CPU6/1GiB/swap0辅助服务打包、逐成员核验、独立服务器目录发布并
+核验最终hash，落盘恢复收据后才释放该新批次四个大临时文件。最新两个checkpoint留本地，
+较早checkpoint也必须先核验各自远端副本才释放工作副本；小轨迹/日志/全部失败收据保留。
+restore只写缺失的原始字节，拒绝覆盖不同文件，不重编译MJB。断网/hash不符/容量不足则
+保留现有副本并在已保存checkpoint边界报告失败，不继续派发或创建重复进程。
+该前瞻策略不授权删除历史数据，不修改活动旧训练源码。
+
+109项Goal测试通过，其中8项新测试覆盖历史/在途/软链接拒绝、断网、篡改、释放中断恢复、
+最近两checkpoint保留及精确恢复。全新合成文件完成真实服务器上传/下载/逐字节恢复，
+不是仿真结果。首次CUDA预检因仅用AllowedCPUs而affinity检查不符，0更新失败保留在
+rl_goal_stream_occupancy_20261017；改为显式taskset后使用独立_v2，不覆盖失败。
+新CUDA预检2次丢弃更新通过、初始网络一致、reward normalizer和n25 terminal复算通过，
+原cp hash未变；峰1,609,830,400字节、OOM0。
+
+新批次本地根`outputs/rl_goal_stream_occupancy_20261017_v2`，登记SHA
+`d37b16975a6f8e6408e951ec5bf69f14294b718dca7dc951ad56e9ba1c5e3aa6`。
+保留已准备occupancy科学对照：两组fresh、同seed/配置/44,000步，差异仅
+4*(1−measured payload phi)*dt/55训练附加成本；不把不同reward总值差当改进。
+源码/预检重新冻结，单模拟器CPU1/单线程/3GiB/swap0、CUDA0/.125/UTD1、1M优化器日程、
+物理/MJB/最终gate/canonical48/filter/执行器/dt5e-5保持。
+根据原cp体积与工作副本上限，额外空间估计4,543,866,268字节（含2GiB余量）；
+仍保留50GiB每回合保护。估计不是最坏情况保证。
+18:15:32 UTC启动协调器`sii-rl-goal-stage-51973845a385.service`及control
+`sii-rl-goal-03c22cf08c22.service`，实际PID2502213/2502235；第二组排队。
+18:22:11 UTC首个repair_train_008闭合1375步/55秒，physical_valid=true、Task/Strict=false，
+return−25.493412。仍是5000步warmup，更新0，不是学习有效性证据。1375条连续reward日志、
+原生audit与cp1375全部hash通过。自动归档辅助服务28.924秒成功，四个新大工作副本释放后
+第二回合接续；本地cp1375仍完整。首次真实原始归档为
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/goal-stream-a963f5309264e9830049c265/evidence.tar.gz`，
+193,117,060字节，SHA `0cb14189dd735e55136ce8875431905b69ecc6c506d8e74110c52fde90b81709`。
+另从服务器下载该包，核对全包及所有原始/模型成员hash一致，下载重复缓存核验后释放。
+这只验证文件完整性和归档链路，不是独立物理重放；真实较早checkpoint释放仍待第3回合验证。
+首回合运行证据/闭合日志/新工具和8项测试已独立归档核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-first-episode-20261017/evidence.tar.gz`，
+340,777字节，SHA `0e4158cf7726e31f41f9ad032bb64ba62acafffb8a2679a1ddf68d41c14fb203`。
+收工18:25 UTC观察1750步/0更新，第二回合在途；worker当前约1.89GB、峰1.98GB，
+OOM/max/swap均0；GPU上次宿主观测40°C/1115MiB。本地free58,865,954,816字节。
+按sii-research-sync收工重读AGENTS；两分支复核仍为开工SHA，保留无关未跟踪meeting文档。
+四方法均未证明收敛，Goal保持active；没有统一acceptance或独立最终物理/action重放。
+
 ## 2026-10-17 01:43 CST — Direct控制组关闭，正则化组已接续并取得首个对应回合
 
 开工实时查询/fetch/read main `6b069036afe2fcf2ab24e739a3465b8792c14cb4`、baseline

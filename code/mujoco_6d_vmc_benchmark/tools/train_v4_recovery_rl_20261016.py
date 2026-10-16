@@ -126,6 +126,9 @@ def main():
     assert all(os.environ.get(k)=='1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS'))
     compute_runtime = None
     if goal:
+        if goal.get('working_set_policy'):
+            from goal_prospective_storage_20261017 import validate as validate_storage, boundary as storage_boundary
+            validate_storage(Path(goal['run_root']))
         compute_runtime = runtime_info(goal, expected_cpu=int(goal['resources']['cpu']))
         if backend(goal) == 'cuda':
             assert not gpu_admission_reason(goal, gpu_snapshot()), 'GPU admission failed'
@@ -181,6 +184,9 @@ def main():
     specification['compute_runtime'] = compute_runtime
     specification['effective_min_free_disk_bytes'] = minimum_disk
     specification['backend_migration'] = bool(goal_job and goal_job.get('backend_migration'))
+    if goal and goal.get('working_set_policy'):
+        specification['working_set_policy_sha256']=sha(Path(goal['run_root'])/'STORAGE_POLICY.json')
+        specification['checkpoints']='Every episode; latest two local, all archived exactly before releasing older temporary copies'
     specification['recovery_implementation'] = '20261016: range(utd), hard cgroup memory/swap required; inherited v4 checkpoints were trained with actual UTD=2'
     specification['recovery_trainer_source'] = str(Path(__file__).resolve())
     specification['hyperparameter_id'] = a.hyperparameter_id
@@ -369,6 +375,8 @@ def main():
                 # Persist each full/early-terminal episode so a later IPC or
                 # launch-container failure cannot discard several closed episodes.
                 log.flush();optlog.flush();checkpoint()
+                if goal and goal.get('working_set_policy'):
+                    storage_boundary(Path(goal['run_root']),run,sys.executable)
             checkpoint()
             assert all(sha(k)==v for k,v in source_hashes.items())
             state.update(status='complete',stop_reason='requested' if stop else 'deadline' if datetime.now(timezone.utc)>=deadline else 'step_budget')

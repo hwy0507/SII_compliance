@@ -310,6 +310,9 @@ def verify_inputs(reg):
     assert manifest(Path(reg['source'])) == reg['source_manifest'], 'Frozen source changed'
     assert manifest(Path(reg['parameter_source'])) == reg['parameter_manifest'], 'Parameter source changed'
     backend(reg)
+    if reg.get('working_set_policy'):
+        from goal_prospective_storage_20261017 import validate as validate_storage
+        validate_storage(Path(reg['run_root']))
     if any(job.get('payload_occupancy_guidance') for job in reg['jobs']) and reg.get('experiment_kind')!='fresh_parameter_occupancy_pilot':
         assert reg.get('payload_occupancy_origin'), 'Occupancy continuation requires its exact registered source origin'
     if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot':
@@ -353,6 +356,9 @@ def verify_inputs(reg):
 
 
 def verify_preflight(reg):
+    if reg.get('working_set_policy'):
+        from goal_prospective_storage_20261017 import verify_preflight as verify_storage_preflight
+        verify_storage_preflight(Path(reg['run_root']))
     if reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot', 'fresh_parameter_occupancy_pilot'):
         from goal_tracking_pilot_20261016 import verify_pilot_preflight
         return verify_pilot_preflight(reg)
