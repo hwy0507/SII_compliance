@@ -1,5 +1,28 @@
 # 更新日志
 
+## 2026-10-16 22:15 CST — Direct信用/动作诊断与同checkpoint正则化有限对照
+
+- 开工查询/fetch/read main `cc193663d626ad6e9f935fa54994ed45c78186ac`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工读AGENTS；上一轮为实际修复与训练接续。
+  原协调器2447861/Direct2447875保持active，快照16250步/11251更新，新增5闭合、3完整、physical_valid2/5、
+  Task/Strict0/5。已核验前4回合/cp11333/11446/12821/14196和3203条连续有限新更新及回报和；未重启/重复派发。
+- cp12821的只读train-replay诊断1239样本：较早250个末端窗口绝对TD残差均值.0056435，
+  当前动作Q减历史动作Q均值.681024、动作差绝对值均值.784079；最新25末端窗口残差2.456717。
+  总体裁剪概率质量均值.0000248693，temperature .00496861。不把当前critic估值当真实Q，
+  最新末端更新曝光不足单列；该结果支持调查动作分布偏移，未证明具体实现错误。
+- 新`probe_goal_actor_regularization_20261016.py`登记同cp/同256批训练replay/同1024诊断索引，
+  上游actor_bc_alpha=0与1分别256次丢弃更新，仅改变内存中的原生actor正则系数，保存模型0、仿真0。
+  两组初始计数/checkpoint/索引相同，GPU诊断数值最大初始差2.81483e-5，未声称逐位一致。
+  更新后动作历史MSE .557015→.230609、动作RMS .589605→.247419、饱和比例4.8131%→.1116%；
+  Q差 .036300→.024182。仅离线训练数据趋势，不证明Task/Strict、实际闭环安全或泛化，尚未部署该处理。
+- 81项Goal unittest通过；两探针峰值1,316,466,688/1,318,391,808字节，2GiB/swap0/CPU6/CUDA0、OOM0，
+  主训练仍单模拟器CPU1/thread1/3GiB/UTD1，峰值2,785,837,056、max/oom/swap0，冻结接口未改。
+  原始失败前4回合/cp、只读诊断、探针对照/源码/测试已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-credit-regularization-20261016T1415/evidence.tar.gz`，
+  867,927,269字节，SHA256 `a2af18129ff12927befd61ee26f0f48c07ddd985051271d2175f2ad3f92dd2e8`。
+  第5回合/cp15571仍仅本地待同步；本轮未删除数据。继续当前四族队列，准备有依据的后续在线正则化验证，
+  不把离线动作收缩当训练收敛；Goal active，未最终验收。
+
 ## 2026-10-16 22:05 CST — Direct配对完成，修复独立快照依赖缺失并实际接续四族训练
 
 - 开工查询/fetch/read main `ce97607603593cae53e899c9b14ca6a5c5d9fedd`、baseline

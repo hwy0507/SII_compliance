@@ -1,5 +1,59 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 22:15 CST：Direct动作偏移证据与上游正则化候选对照
+
+开工main `cc193663d626ad6e9f935fa54994ed45c78186ac`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已实时查询/fetch/read，开工/收工读AGENTS。
+上一轮为实质进展。原stage02_v2协调器2447861、Direct2447875确认存活且持续推进：
+归档快照16250交互/11251更新，新增5闭合（episode8–12），3完整、physical_valid2/5、Task且Strict0/5。
+前4闭合cp11333/11446/12821/14196逐文件与tar成员hash核验；10994–14196的3203条新训练记录、
+update5995–9197连续有限，逐回合reward和一致，含两个穿透短失败与一个完整物理失败，不删失败。
+episode11/12 return−21.666452/−21.670135仍任务失败，不能称reward收敛；第5回合/cp15571仅本地待归档。
+
+对cp12821运行已有只读`diagnose_goal_rl_credit`，固定1024均匀索引+各回合末25步去重1239样本，
+无梯度/仿真/模型写回，normalizer、RNG和checkpoint不变。CPU6/2GiB/swap0，实测峰985,444,352字节。
+
+|样本组|样本数|历史动作Q均值|投影目标均值|绝对TD残差均值|当前动作Q−历史动作Q|
+|---|---:|---:|---:|---:|---:|
+|较早回合末25步|250|−2.168825|−2.168796|.005644|.681024|
+|最新回合末25步|25|.653371|−1.803346|2.456717|−.001081|
+|距离末端至少25步|964|.066354|.094637|.044654|.030762|
+
+较早末端当前/历史动作差绝对值均值.784079，当前饱和维比例17.94%、历史3.71%。
+总体裁剪概率质量均值.0000248693（约.00249%），不支持支持集截断是主要解释。
+最新末端窗口刚获得终止信息、更新曝光不足，不与较早窗口混成拟合结论；soft-Q不是历史MC或真实最优Q。
+证据提示动作分布偏移及当前策略估值问题值得处理，并不单独证明学习代码bug。
+
+新增有限探针`tools/probe_goal_actor_regularization_20261016.py`，根
+`outputs/rl_goal_actor_regularization_probe_20261016/`含REGISTRATION、alpha_0/1、COMPARISON。
+从同cp12821恢复完整模型/优化器/normalizer/RNG，实际使用上游SimbaV2已有
+`actor_loss += alpha * stop_gradient(mean(abs(Q))) * mean((sampled_action-replay_action)^2)`。
+只把内存actor_bc_alpha由0改为1；对照仍0，两组同seed/256×256训练索引和1024诊断索引。
+未修改任何活动source/参数/reward、未保存探针模型、未启动模拟器，训练数据允许与诊断样本重叠。
+运行前两个安全边界测试与全部81项Goal测试通过；实际两组均完成256次有限更新，cp hashes/normalizer计数不变。
+
+|1024训练replay诊断样本，256更新后|alpha0|alpha1|
+|---|---:|---:|
+|策略与历史动作MSE|.557015|.230609|
+|策略动作RMS|.589605|.247419|
+|abs(action)>.95维度比例|4.8131%|.1116%|
+|当前动作Q−历史动作Q|.036300|.024182|
+
+两组初始诊断最大数值差2.81482935e-5，源checkpoint/计数/索引相同，但不同CUDA进程不声称逐位一致。
+warmup和learned子组MSE差分别−.277936/−.358249。结果支持正则化确实限制动作偏移，但也可能
+主要收缩随机动作幅度；没有闭环安全、推进或成功证据，不能直接当最终算法或验收结果。
+两进程CPU6/2GiB/swap0/CUDA0/.125依次运行，峰值1,316,466,688/1,318,391,808字节，OOM/max0。
+主训练持续CPU1单模拟器/thread1/3GiB/swap0/UTD1，峰值2,785,837,056、OOM/max0，没有重启或改变快照。
+
+前4新增原始回合/4cp、完整边界学习日志、只读诊断、候选探针源码/测试/登记/全部结果已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-credit-regularization-20261016T1415/evidence.tar.gz`，
+867,927,269字节，SHA256 `a2af18129ff12927befd61ee26f0f48c07ddd985051271d2175f2ad3f92dd2e8`。
+本地重复传输缓存`/tmp/rl-goal-direct-credit-regularization-20261016T1415.tar.gz`本轮仍保留。
+候选探针源SHA256 `f9a92fe5e2f21653fa616a3a8071d3c842e9aae8c2c21225f14ccd205ee3c99b`，
+包内基于cc19366但尚未提交状态如实标注；服务器仅存储/hash。
+下一步继续四族当前有限阶段，按完整证据登记在线正则化接续/对照并验证配置迁移，不更改运行中模型；
+同步新增回合并复核50GiB保留线。Goal active，四族无可验证收敛，未统一acceptance或最终独立审计。
+
 ## 22:05 CST：完整Direct对照无成功，独立快照bug修复后四族实际接续
 
 开工main `ce97607603593cae53e899c9b14ca6a5c5d9fedd`、baseline

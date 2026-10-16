@@ -1,5 +1,19 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 22:15 CST Direct只读信用诊断与动作正则化探针
+
+stage02_v2原训练进程持续16250步/11251更新；新增5闭合、3完整、physical_valid2/5、Task/Strict0/5。
+前4回合/cp11333/11446/12821/14196和3203连续更新/回报和核验，第5回合/cp15571仅本地待同步。
+cp12821较早250末端窗口absTD .005644但当前动作Q高.681024，最新25末端absTD2.456717；
+clip概率质量均值.0000248693，支持继续调查动作偏移，不证明真实Q或实现bug。
+新增同cp/同批次alpha0/1各256丢弃更新探针，使用原生SimbaV2 actor_bc_alpha，仅内存修改、无仿真/模型保存。
+动作历史MSE .557015→.230609，饱和4.8131%→.1116%，只是训练replay诊断；未部署处理/未证明任务收益。
+81项Goal测试通过；探针峰值约1.32GB/2GiB、主训练峰2.786GB/3GiB，OOM/swap0。
+诊断/探针/前4原始回合及cp已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-credit-regularization-20261016T1415/evidence.tar.gz`，
+867,927,269字节，SHA256 `a2af18129ff12927befd61ee26f0f48c07ddd985051271d2175f2ad3f92dd2e8`。
+按sii-research-sync读取两分支与AGENTS，保留失败和活动快照；Goal active，无收敛或最终验收结论。
+
 ## 2026-10-16 22:05 CST Direct配对闭合与四方法接续修复
 
 完整Direct control/tracking均0/8；tracking11000步/6001更新、8完整physical_valid7/8，
