@@ -95,14 +95,26 @@ def regular(path):
 
 
 def verify_members(archive, records):
-    with tarfile.open(archive, 'r:gz') as tar:
-        for record in records:
-            matches = [m for m in tar.getmembers() if m.name == record['member']]
-            if len(matches) != 1 or not matches[0].isfile() or matches[0].size != record['bytes']:
+    # A compressed tar cannot seek backwards cheaply. Scan it once, including
+    # the tail, so a later duplicate is still rejected without repeatedly
+    # decompressing every checkpoint between the requested episode members.
+    expected = {record['member']: record for record in records}
+    if len(expected) != len(records):
+        raise ValueError('Duplicate requested archive member')
+    seen = set()
+    with tarfile.open(archive, 'r|gz') as tar:
+        for member in tar:
+            if member.name not in expected:
+                continue
+            record = expected[member.name]
+            if member.name in seen or not member.isfile() or member.size != record['bytes']:
                 raise ValueError('Missing, duplicate, linked or wrong-sized archive member')
-            with tar.extractfile(matches[0]) as stream:
+            with tar.extractfile(member) as stream:
                 if hashlib.file_digest(stream, 'sha256').hexdigest() != record['sha256']:
                     raise ValueError('Archive member bytes differ from original')
+            seen.add(member.name)
+    if seen != set(expected):
+        raise ValueError('Missing archive member')
 
 
 def plan(episode, archive, remote, digest, bench=BENCH):

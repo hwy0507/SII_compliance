@@ -1,5 +1,37 @@
 # 更新日志
 
+## 2026-10-16 23:58 CST — 导纳持续推进、归档核验提速与存储保留审批
+
+开工实时核对main `50af442b2b75ff6351eff48114aae54b6a11d7d2`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及两分支日志，开工/收工重读AGENTS。
+持续Goal保持active；协调器2447861和导纳2467890未重启。15:58 UTC execution为20,250步/15,251更新，
+optimizer已到20,287步/15,288更新，temperature .002585187；真实推进。当前段5个结束回合均完整55秒、
+physical_valid，Task/Strict0/5，return依次−25.493493、−25.264967、−25.422910、−25.312598、−25.247658；
+第6回合在途，VMC尚待本段接续。导纳峰3GiB、memory.max483、OOM/oom_kill/swap0，GPU38°C；
+本地free67,053,481,984字节，保持50GiB保护。Direct/阻抗仅有限段结束，四方法均未证实收敛，未最终acceptance。
+
+离线归档核验helper改为一次顺序解压扫描，仍扫描全尾部并拒绝重复/链接/缺失/大小或hash不符成员；
+10项既有保留/恢复unittest通过。只读盘点首次目录层级识别错误得到0候选，修正后重新核验25个已结束历史回合；
+两份盘点收据均保留，未据错误结果删除数据。已生成25份逐回合计划，精确列出100文件共3,655,768,123字节及
+原件inode/mtime/hash、服务器包/member/hash；另记915个checkpoint及其他文件的保留前hash。
+自动审批拒绝批量本地移除：AGENTS规定“历史数据不自动迁移或删除”，本批缺少明确删除授权。
+拒绝发生在进程创建之前，无evict服务、无RESULT/删除journal；随后100原件全部重新hash确认在本地。
+`outputs/rl_goal_storage_20261016T1550_v2/OFFLINE_RETENTION/REVIEW.md`是可审阅方案，
+READY.json链接精确清单，BLOCKED.json保留拒绝证据；等待用户批准，不能拆分或绕过拒绝。
+
+不受阻的缓存清理已完成：重新核验服务器和本地hash/大小/身份后，仅释放16份重复/tmp传输包，
+6,630,480,093字节，free61,298,081,792→67,928,477,696；原始轨迹/checkpoint删除0。
+收据TRANSFER_CACHE_RELEASE_20261016T1555.json保存逐文件恢复地址；T1252缓存实际映射T1116归档，
+查证后才释放。后续经批准的离线保留/恢复须先重新下载相应已移除缓存，不能跳过归档核验。
+
+源码、测试、盘点/计划/拒绝/缓存收据和导纳ep11/12原始回合、cp16500/17875及截至17875的5500条连续有限更新
+已核验到独立目录：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-storage-delivery-20261016T1600/evidence.tar.gz`，
+548,097,492字节，SHA256 `4c5c1cdcd3d3232ac2017ff9e9fcc57432f65e1071e08f74d3980e42f9836d0a`，
+本地/暂存/最终一致；逐回合reward和、checkpoint成员hash已验证。服务器仅文件/hash。
+cp19250及其后新产物仍仅本地、待下一安全边界归档。已准备Direct正则化pair和阻抗occupancy pair均未派发；
+继续现有导纳→VMC，四族阶段闭合并满足资源准入后才开展后续登记对照。预检不代表在线改善或收敛。
+
 ## 2026-10-16 23:40 CST — 物块进度奖励对照准备与真实CUDA预检
 
 - 开工实时查询/fetch/read main `a63ff29a290ce36fd73f1c9954bf695c9610e4e8`、baseline
