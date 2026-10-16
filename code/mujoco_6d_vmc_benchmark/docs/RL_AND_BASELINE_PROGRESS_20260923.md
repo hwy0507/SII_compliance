@@ -1,5 +1,50 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-17 07:03 CST — occupancy八回合与原生动作/路径点诊断
+
+开工查询/fetch/read远端main `bbf94039ec95e242117ccfbb88bb5a98f56e1383`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读AGENTS和两份RL进度；
+收工重新读取AGENTS。上一轮为已核验等待；本轮新增原生动作/路径点证据。
+同一协调器2502213/worker2546313真实存活，观察器22:51:25–23:01:55 UTC记录
+9000→11000步、4001→6001更新、6→8闭合，归档完成后退出0；未重启、重复派发或改活动snapshot。
+
+occupancy前8回合均1375步/55秒、physical_valid，Task/Strict0/8、均carry。
+新增ep6/repair_train_022、ep7/repair_train_000的return为−28.275457426/−27.978447800，
+最终物块XY误差88.471501/95.549554 mm；前8回合return均值−27.623737904、
+标准差.434456110。包含warmup，不构成收敛或奖励处理收益。
+11000条交互/6001条更新连续有限，闭合奖励分解、AUDIT/trace与cp11000成员hash通过，
+新增两回合原始远端归档复核通过；末temperature .005778676、critic loss8.609760。
+
+新增诊断固定此前完整学习ep4/5：cp8250经验池的2750条原始动作与控制器记录逐元素一致，
+reward与训练final_reward一致、terminal恰在两回合末；checkpoint读前后全部hash保持。
+parameter_actions与parameter_trace一致，复制的原生输入逐文件hash一致。
+复用冻结来源及前/后步时间对齐检查，两回合末10秒各250样本均停在carry waypoint20/28，
+位置误差中位12.850325/12.572138 mm，半径门槛12 mm保持；位置/rejoin readiness0，
+旋转和速度readiness均250/250。目标重建残差0、无观测cursor推进。
+末段5维raw action标准差分别约[.494,.248,.448,.483,.583]、
+[.420,.222,.166,.133,.547]，实际参数各维标准差也非零；并非动作完全恒定或未接入。
+全回合每维abs(raw)>.95比例3.35%–7.93%；至少一维触发原生rate-limit的tick比例
+100%/99.8545%，energy-limit0。末段第一维刚度中位180.577027/185.064195。
+这些是原生25Hz描述，不能证明探索充分、filter导致失败或提高刚度必然有效；
+不将低刚度观察外推全部条件。无仿真/梯度/独立物理子步/action-filter replay。
+诊断工具577ms退出0，峰73,154,560字节/1GiB/swap0/OOM0。
+
+训练worker峰2,639,867,904/max3,221,225,472字节，OOM/max事件/swap0；
+归档时磁盘余56,316,026,880字节，高于50GiB，GPU42°C/1435MiB。
+归档助手CPU6/1GiB/swap0，6.689秒退出0。证据目录
+`BENCH/outputs/rl_goal_stream_window_20261017T2310`含OCCUPANCY_CARRY、原生输入、
+实际诊断脚本、WINDOW/TRAINING_SCREEN和完整日志；服务器只存储/传输/hash。
+已独立SSH核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T2310/evidence.tar.gz`，
+11,621,775字节，SHA256
+`fda97147da8d430c82f8f59910ff851610a8ddb044240bf0bccaf00cee6e424e`。
+
+按sii-research-sync更新三份进度并提交/push main，保留无关meeting文件。
+Goal active，继续occupancy登记44k预算，双方完成后再做匹配条件/相同暴露比较；
+不对不同定义reward总分排名。四族仍未证明收敛，控制组0/32不变，最终acceptance未执行。
+全部失败保留；冻结物理/MJB/gate/canonical48/filter/执行器/dt5e-5及本机计算约束保持。
+
+
 ## 2026-10-17 06:49 CST — occupancy新增两个完整学习回合，8250步/3251更新
 
 本轮接续已完成开工核查的同一任务：远端main
