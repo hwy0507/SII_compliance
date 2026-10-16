@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-16 09:26 CST — v4 Direct 43.7k 末期监视
+
+- `direct_task_safety` 第 31 回合已结束于 `43,656` 步，但 `task_success=false`、
+  `strict_success=false`、`physical_valid=false`；按安全边界生成 checkpoint `checkpoint_0043656`。
+  第 32 回合在途，当前约 `43,686` live steps、`77,380` optimizer updates；失败收据保留，
+  不再新派发其余三路。
+- 最近 1,000 步 reward 均值约 `-0.02060`，温度约 `0.000192`，critic loss 约 `7.40`，actor
+  entropy 约 `-4.02`。Task/Strict 仍没有成功，尚未收敛或开始 acceptance；系统 swap 仍占满
+  2 GiB，worker 登记保持禁 swap，未见 OOM 收据。
+
 ## 2026-10-16 09:06 CST — v4 Direct 42.5k 末期监视
 
 - `direct_task_safety` 已完成第 30 回合至 `42,281` 步，`physical_valid=true` 但
