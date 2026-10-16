@@ -164,9 +164,12 @@ def prepare_gpu_pilot(cpu_pilot, validation, destination):
     source=destination/'source'; parameter=destination/'parameter_n25'
     shutil.copytree(old['source'],source,ignore=ignore)
     shutil.copytree(old['parameter_source'],parameter,ignore=ignore)
-    # Refresh trainer resource bookkeeping for both fresh arms. Reward module,
-    # physical worker and parameter controller remain the paired CPU snapshot.
-    for name in ('goal_tracking_pilot_20261016.py','train_v4_recovery_rl_20261016.py'):
+    # Old CPU pilots can predate CUDA dispatch and the shared reward interface.
+    # Refresh the cooperating entrypoints together. validate_pair keeps the
+    # registered reward weights fixed; physical/parameter sources stay frozen.
+    for name in ('goal_tracking_pilot_20261016.py','train_v4_recovery_rl_20261016.py',
+                 'rl_goal_stage_20261016.py','goal_compute_backend_20261016.py',
+                 'goal_tracking_reward_20261016.py'):
         shutil.copy2(BENCH/'tools'/name,source/'tools'/name)
     started=datetime.now(timezone.utc)
     jobs=[]
@@ -181,7 +184,7 @@ def prepare_gpu_pilot(cpu_pilot, validation, destination):
         coordinator_unit='sii-rl-goal-stage-'+hashlib.sha256(str(destination).encode()).hexdigest()[:12],
         resources=dict(old['resources'],**GPU_RESOURCES),
         source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=BENCH,text=True).strip(),
-        source_worktree_state='Original fresh CPU pair physics/parameter/reward retained; preparation entry point and trainer refreshed for per-episode Goal disk reserve and accurate reward-weight metadata. Content manifests authoritative.',
+        source_worktree_state='Original fresh CPU pair physics/parameter and registered reward configuration retained; pilot, trainer, dispatcher, backend guard and reward helper refreshed together for compatible CUDA entrypoints. Content manifests authoritative.',
         gpu_training_validation=dict(root=str(validation),registration_sha256=digest(validation/'REGISTRATION.json'),
             execution_sha256=digest(validation/'execution.json')),
         derived_from_cpu_pilot=dict(root=str(cpu_pilot),registration_sha256=digest(cpu_pilot/'REGISTRATION.json'),

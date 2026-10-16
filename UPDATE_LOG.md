@@ -1,5 +1,27 @@
 # 更新日志
 
+## 2026-10-16 18:50 CST — 修复旧Direct快照的GPU准备依赖遗漏，真实预检通过
+
+- 开工查询/fetch/read main `6c5e2df121b18b5d181a3fb49393aa3081fb0de7`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，AGENTS/Goal进度重读，上一轮为进展。
+  阻抗control原trainer2400811持续推进750→2250步，0更新符合5000热身；首个55秒回合
+  return−25.493411918、physical_valid=true、Task/Strict=false，cp1375核验通过，第二回合在途。
+- 实测发现Direct旧CPU快照早于CUDA支持，prepare_gpu_pilot只刷新pilot/trainer，导致独立
+  预检ImportError（缺validate_gpu_training_closure；旧快照也缺backend模块/PARAMETER_CONFIG）。
+  首次失败在import阶段，无仿真/更新；保留原目录和错误收据。修复为五个协作模块一起刷新，
+  保持物理/parameter快照与登记reward配置。新增独立子进程入口回归先失败，修复后52项Goal测试通过。
+- 在新`outputs/rl_goal_direct_tracking_gpu_20261016_v2`实际重新准备和CUDA预检，登记SHA256
+  `109bf618dcc7f34e8d5d74d2940ab6704787bdabcf7a6c7c619890b53c9e4e06`。两组fresh初值一致，
+  两次丢弃更新有限、旧checkpoint未变、峰值1,464,209,408字节/OOM0；未LAUNCH，不与阻抗抢模拟器。
+  新旧Direct奖励辅助函数在1375个真实训练区间逐项一致；这是兼容修复，不更改奖励实验处理。
+- 阻抗首热身回合与同seed/同条件历史CPU热身的rollout/parameter_actions文件hash完全相同，
+  29个数组及缺失掩码一致、actor输入有限。首个只读比较因np.array_equal默认把相同NaN判不同而失败；
+  确认仅48个搬运前carry_load缺失值，修正比较后通过，保留原脚本/journal，不填补缺失或冒称学习等价。
+- 修复源码/测试、失败及新Direct快照/预检、阻抗首原始回合/cp1375/奖励重算/热身比较已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-preflight-fix-20261016T1048/evidence.tar.gz`，
+  197,775,860字节，SHA256 `86cf7d09e6693291a4a251bc3fee4833621b253f5006a0f909ed583dae9ec421`。
+  本机计算，服务器仅归档/hash；活动阻抗快照未改。Goal active，仍无收敛/最终验收。
+
 ## 2026-10-16 18:40 CST — 四族GPU完整循环闭合，阻抗奖励权重对照正式开训
 
 - 开工查询/fetch/read main `3aa0ca2d0f677155c6d67fd4aa7a86ae67f9fbb7`、baseline

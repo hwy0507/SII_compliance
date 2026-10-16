@@ -4,6 +4,50 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 18:50 CST：修复旧Direct快照依赖，预检通过；阻抗首热身回合保全
+
+开工main `6c5e2df121b18b5d181a3fb49393aa3081fb0de7`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已查询/fetch/read，AGENTS开工及收工重读。
+上一轮为进展。原阻抗control trainer2400811/协调器2400799持续运行，750→2250步/0更新；
+5000热身期间无梯度更新符合登记。首回合1375步、完整55秒，Task/Strict=false、physical_valid=true，
+return−25.493411918，cp1375全部hash通过；第二回合在途。最近execution资源峰值2,122,006,528、
+current1,966,460,928，OOM/max0、swap0。没有改动活动源码或增加模拟器。
+
+本轮发现并实际修复准备链路缺陷：Direct CPU pilot创建较早，冻结dispatcher缺少CUDA闭合接口，
+backend模块不存在，reward helper只有旧Direct接口。prepare_gpu_pilot只拷贝新版pilot/trainer，
+生成的混合版本入口在import阶段失败；原`outputs/rl_goal_direct_tracking_gpu_20261016`保留，
+新增PREFLIGHT_IMPORT_FAILURE收据，服务`sii-goal-direct-tracking-gpu-preflight-20261016.service`
+exit1、零仿真/零更新。该故障未影响同时运行的阻抗训练。
+
+修复仓库`goal_tracking_pilot_20261016.py`，将pilot/trainer/dispatcher/backend guard/reward helper
+作为配套模块刷新；validate_pair仍锁定登记权重，物理worker/参数controller快照保留。新增测试用
+旧dispatcher/旧reward/缺backend快照，在独立子进程导入准备后的入口；修复前失败，修复后52项
+Goal测试通过，diff检查通过。活动阻抗使用原快照，不会被仓库修复热修改。
+
+新目录`outputs/rl_goal_direct_tracking_gpu_20261016_v2`已prepare并实际CUDA预检通过，登记SHA256
+`109bf618dcc7f34e8d5d74d2940ab6704787bdabcf7a6c7c619890b53c9e4e06`。登记来源6c5e2df加本轮
+尚未提交的准备工具修复，内容manifest为准；不伪称完全等于旧commit。Direct控制组无额外跟踪成本，
+处理组额外weight4，fresh同seed2026101421、各11k；CPU1/单模拟器/3GiB/swap0/UTD1/n25不变。
+派发截止2026-10-17T10:44:49.950861Z，协调器`sii-rl-goal-stage-bb18f8d17dfd.service`尚未启动，
+两worker名为`sii-rl-goal-edf740b23fa9`与`sii-rl-goal-185982a6fdbe`。等待阻抗配对结束再派发，
+不得启动已保留的失败目录或并行第二模拟器。
+新预检CPU6/2GiB/swap0/CUDA实际exit0，两组初始网络hash一致、各一次有限丢弃更新、旧checkpoint
+hash未变，峰值1,464,209,408字节、OOM/max0。没有正式训练/LAUNCH，预检不计入步数。
+新旧reward helper在1375个记录区间的Direct tracking项完全一致，刷新接口没有改变该处理的数学定义。
+
+首个阻抗GPU热身与stage01同seed/repair_train_008 CPU热身：rollout.npz SHA256均
+`7370775a5d2ca67f55ff14b8adf73a046f7fbc2ace16fe47c3f006da77ba1f9e`，parameter_actions.npz均
+`de68f112eca4d2e413f77250a930ce76113c8b08b5e61166ed0436a5d788aa76`；24+5数组及缺失掩码一致。
+首次比较因默认array_equal将相同NaN判不同而退出，定位为48个搬运前阶段0/1/2/3的carry_load缺失，
+所有有限值相等、actor observations全有限；修正missing-mask比较后只读归档exit0。原失败脚本与journal
+一起保留，不填补缺失。这只验证随机热身一致，不推断学习后CPU/CUDA等价、治疗效应或收敛。
+
+以上首回合/cp1375/reward诊断、失败/新Direct源码快照与预检、代码/测试/复现及失败收据已核验至：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-preflight-fix-20261016T1048/evidence.tar.gz`
+197,775,860字节，SHA256 `86cf7d09e6693291a4a251bc3fee4833621b253f5006a0f909ed583dae9ec421`。
+服务器仅存储/hash。Goal active；阻抗control→tracking继续，Direct配对已完成预检、待后续启动；
+尚无奖励改善或收敛证据，最终acceptance与独立审计仍未运行。
+
 ## 18:40 CST：四族GPU验证完成，阻抗4对40奖励实验已开始
 
 开工main `3aa0ca2d0f677155c6d67fd4aa7a86ae67f9fbb7`、baseline

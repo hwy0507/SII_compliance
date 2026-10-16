@@ -1,5 +1,15 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 18:50 CST 修复Direct GPU准备依赖遗漏，阻抗热身继续
+
+旧Direct快照转GPU只刷新部分模块，实测入口ImportError；修复为配套刷新五模块，保留原失败目录。
+回归先复现失败，修复后52项Goal测试通过。Direct新v2目录实际CUDA预检通过、OOM0，未启动仿真。
+原阻抗trainer2400811继续2250步/0更新，首1375步完整热身Task/Strict失败、physical_valid=true，
+return−25.49341，cp核验通过；同seed历史CPU热身两轨迹文件hash一致，不能据此声称学习改善。
+首比较对匹配NaN误判的失败也保留。修复/预检/失败/首回合与checkpoint已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-preflight-fix-20261016T1048/evidence.tar.gz`，
+SHA256 `86cf7d09e6693291a4a251bc3fee4833621b253f5006a0f909ed583dae9ec421`。Goal active，尚未收敛/最终验收。
+
 ## 2026-10-16 18:40 CST 四族GPU完整验证闭合，阻抗奖励对照已开训
 
 四族各新增1375步/1375更新、完整55秒，checkpoint/奖励/资源检查通过，OOM0/swap0。

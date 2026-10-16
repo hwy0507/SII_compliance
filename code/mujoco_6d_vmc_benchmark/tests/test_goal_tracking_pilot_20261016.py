@@ -4,6 +4,8 @@ import sys
 import tempfile
 import unittest
 import shutil
+import os
+import subprocess
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 from goal_tracking_pilot_20261016 import (validate_pair, require_predecessor_complete,
@@ -15,6 +17,30 @@ import test_goal_compute_backend_20261016 as gpu_fixtures
 
 
 class TrackingPilotTests(unittest.TestCase):
+    def test_legacy_cpu_snapshot_produces_importable_standalone_gpu_entrypoint(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base=Path(tmp);cpu,gpu=self.gpu_pair_fixture(base)
+            source=cpu/'source/tools'
+            (source/'rl_goal_stage_20261016.py').write_text('LEGACY_DISPATCHER = True\n')
+            (source/'goal_tracking_reward_20261016.py').write_text('CONFIG = '+repr(CONFIG)+'\n')
+            shutil.copy2(Path(__file__).resolve().parents[1]/'tools/rl_recovery_control_20261016.py',
+                         source/'rl_recovery_control_20261016.py')
+            self.assertFalse((source/'goal_compute_backend_20261016.py').exists())
+            reg=read(cpu/'REGISTRATION.json');reg['source_manifest']=manifest(cpu/'source')
+            write(cpu/'REGISTRATION.json',reg)
+            receipt=read(cpu/'CREDIT_PREFLIGHT.json')
+            receipt['registration_sha256']=digest(cpu/'REGISTRATION.json')
+            write(cpu/'CREDIT_PREFLIGHT.json',receipt);before=manifest(cpu)
+            result=prepare_gpu_pilot(cpu,gpu,base/'cuda_pair')
+            command=[sys.executable,str(base/'cuda_pair/source/tools/goal_tracking_pilot_20261016.py'),'--help']
+            check=subprocess.run(command,cwd=base,env=dict(os.environ,PYTHONPATH=''),
+                                 capture_output=True,text=True,timeout=20)
+            self.assertEqual(check.returncode,0,check.stderr)
+            self.assertEqual(manifest(cpu),before)
+            self.assertEqual(result['parameter_manifest'],reg['parameter_manifest'])
+            self.assertEqual(digest(source/'baseline_repair_worker_20261008.py'),
+                             digest(base/'cuda_pair/source/tools/baseline_repair_worker_20261008.py'))
+
     def gpu_pair_fixture(self, base):
         gpu,reg,state=gpu_fixtures.BackendTests().gpu_closure(base)
         reg.update(runtime='/runtime',python=sys.executable,dispatch_lock='/unused/test-lock')
