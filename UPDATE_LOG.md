@@ -1,5 +1,33 @@
 # 更新日志
 
+## 2026-10-16 13:07 CST — 持续Goal启用，四类RL有限阶段已启动
+
+- 用户明确开启持续Goal，允许自主排查/修复与有记录的训练调参；旧15小时run不回写，后续
+  按独立有限阶段推进。开工查询/fetch/read main `11809cb960cb4acdcb6ebe1a431d622979d2a3ec`、
+  baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS；保留无关未跟踪文档。
+- 旧恢复最终50,531步/84,189更新，本段新增6875交互/6875更新、5个完整55秒回合，
+  Task/Strict各0/5、physical_valid2/5；最终checkpoint逐文件hash通过。正常截止结束不等于
+  training_complete，更不是收敛。所有失败保留。
+- 新增有限阶段协调器、严格n1→n25 checkpoint/replay迁移与真实checkpoint预检，扩展恢复
+  trainer识别Goal阶段授权。Stage01四方法串行各新增最多11k，Direct续50,531至61,531；
+  其余三类从零至11k，优化器日程仍为各1M。只改回报信用窗口，reward/物理/gate/接口不变。
+  25步离策略偏差及继承/从零曝光差异明确记录，不宣称优于1步；未来阶段须另登记接续。
+- 9项恢复/阶段测试、4项多步replay测试通过。真实50,531 checkpoint预检：25步terminal回报
+  独立求和一致、未跨回合bootstrap、一次更新有限、原文件hash未变；峰值1,161,908,224字节。
+- `outputs/rl_goal_20261016_stage01/`协调器与Direct worker真实active；13:07读到51,250步/
+  84,908更新，即新增719/719，UTD1；worker内存1,971,478,528字节、硬限3GiB、swap0、OOM0。
+  当前尚无新完整回合，其他三方法排队。独立冻结源码快照，单模拟器；阶段截止10月17日13:00
+  CST用于有限派发保护，Goal仍active。新收敛筛选要求两32回合窗口覆盖训练条件并同时满足
+  reward稳定及Task AND Strict≥90%；不足样本不判成功，最终统一acceptance/独立审计未运行。
+- 详细入口、局限与后续计划见`code/mujoco_6d_vmc_benchmark/docs/RL_GOAL_PROGRESS_20261016.md`。
+  13:11补充：首个完整55秒回合新增1375/1375，到51,906步/85,564更新，新checkpoint hash
+  通过、保存n_step25；return−21.667945、physical_valid=true、Task/Strict0/1，第二回合继续。
+- 新源码快照/登记/预检/启动/13:07监视收据，以及旧恢复5回合原始数据与最终50,531 checkpoint，
+  已归档核验至
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stage01-20261016T0507/evidence.tar.gz`，
+  750,006,095字节，SHA256 `a65bf3966e17f1a38beb244cfa7983a40a7e9bb54f7f5b8f851ee3dda38ff13a`。
+  服务器仅归档/hash；新阶段51,906 checkpoint及新回合仍仅本地，既有物理runtime依赖未全量打包。
+
 ## 2026-10-16 12:12 CST — 用户授权清理旧作业，修复版RL真实恢复并完成首回合
 
 - 开工核对远端main `ce516ca45beac86d0e86d2fb2e1bde4a7fb0ce98`、baseline

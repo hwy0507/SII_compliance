@@ -1,6 +1,15 @@
 # v4 宿主机核验与恢复交接（2026-10-16 10:33 CST）
 
-## 12:04 CST 恢复入口更新（最新）
+## 13:07 CST 持续Goal交接（最新）
+
+旧恢复已按原截止在50,531步安全结束，5个新完整回合Task/Strict均0/5。
+用户新授权开启持续Goal；当前唯一活动训练在`outputs/rl_goal_20261016_stage01/`，
+协调器`sii-rl-goal-stage-3ced1757b345.service`，Direct worker
+`sii-rl-goal-2dc62bfe00c9.service`。已到51,250步/84,908更新，新交互719/新更新719。
+其余三方法已登记串行排队；旧execution仅作历史，勿重复启动。
+后续以[Goal进度](RL_GOAL_PROGRESS_20261016.md)和新阶段execution为准。未收敛、未验收。
+
+## 12:04 CST 恢复入口更新（历史）
 
 用户已明确授权清理与恢复；不再受11:32时刻审批拒绝阻挡。旧v2/v3b进程已按确认边界处理，
 失败与有效checkpoint均保留。唯一当前训练为

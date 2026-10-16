@@ -1,5 +1,14 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 13:02 CST 持续Goal接续，Stage01已启动
+
+用户明确开启持续Goal，旧15小时截止不再作为后续工作的终止授权；旧run保持原始收据。
+旧恢复结束于50,531步，本段5个完整回合Task/Strict0/5，最终checkpoint hash通过。
+新`outputs/rl_goal_20261016_stage01/`已登记四方法串行、各新增最多11k、25步回报、UTD1，
+Direct保留旧checkpoint及原始replay，仅作明确的信用窗口迁移。13项测试与真实checkpoint
+预检通过；协调器与Direct worker已启动，其余三方法排队，未收敛、未验收。
+后续优先检查该阶段execution/service；详情与完成判据见[Goal进度](RL_GOAL_PROGRESS_20261016.md)。
+
 ## 2026-10-16 12:04 CST 已授权修复落地，恢复训练完成首个回合
 
 用户明确授权后，旧v2保存卡死进程已退出，partial checkpoint保留；旧v3b两路收完在途回合，

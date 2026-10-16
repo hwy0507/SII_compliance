@@ -42,6 +42,8 @@ def main():
     p.add_argument('--resume-checkpoint',type=Path)
     p.add_argument('--continuation-registration',type=Path,
                    help='New local continuation authority; preserves original scientific protocol hash')
+    p.add_argument('--goal-registration',type=Path,
+                   help='Explicit finite stage under the user-authorized persistent RL goal')
     p.add_argument('--hyperparameter-id', default='historical',
                    help='Registered exploration configuration; never selected using final outcomes')
     a=p.parse_args();root=a.root.resolve();out=a.output.resolve();parameter=a.parameter_source.resolve()
@@ -59,6 +61,13 @@ def main():
     assert 1375<=limit<=a.steps
     deadline=datetime.fromisoformat(protocol['training_dispatch_deadline_utc'])
     continuation = None
+    goal_job = None
+    if a.goal_registration:
+        assert not a.continuation_registration
+        from rl_goal_stage_20261016 import validate_training_job
+        goal, goal_job = validate_training_job(a, protocol, pdigest)
+        deadline=datetime.fromisoformat(goal['dispatch_deadline_utc'])
+        stop_file=Path(goal['stop_file'])
     if a.continuation_registration:
         continuation=read(a.continuation_registration)
         assert continuation['schema']=='sii-local-rl-convergence-v2'
@@ -137,6 +146,11 @@ def main():
         specification['continuation_registration_sha256']=sha(a.continuation_registration)
         specification['continuation_registration']=str(a.continuation_registration.resolve())
     specification['reward_variant'] = a.reward_variant
+    if goal_job is not None:
+        specification['goal_registration_sha256']=sha(a.goal_registration)
+        specification['goal_registration']=str(a.goal_registration.resolve())
+        specification['credit_horizon_migration']=goal_job.get('credit_migration',False)
+        specification['credit_horizon_caveat']='25-step off-policy returns introduce behavior-policy bias; finite registered experiment, not guaranteed improvement'
     if a.reward_variant=='task_safety':
         specification['task_safety_definition']='Original Task terminal +20/-20, plus20*increments of excess/(1+excess); excess=max(0,external_peak/.0002-1). Early failure charges unused worst-case safety peak budget. Original Strict evaluation unchanged.'
     if a.reward_variant=='payload_shaping':
@@ -148,15 +162,26 @@ def main():
     if a.resume_checkpoint:
         cp=a.resume_checkpoint.resolve();parent=read(cp.parent/'PROTOCOL.json')
         assert parent.get('reward_variant','original')==a.reward_variant,'Reward changes require explicit replay rebuild'
-        for k in ('protocol_sha256','seed','controller','agent_config','reward','prior_file_sha256'):
+        for k in ('protocol_sha256','seed','controller','reward','prior_file_sha256'):
             assert parent[k]==specification[k],k
+        migration = bool(goal_job and goal_job.get('credit_migration'))
+        if migration:
+            from goal_rl_credit_adapter_20261016 import check_credit_migration
+            check_credit_migration(parent['agent_config'],specification['agent_config'])
+        else:
+            assert parent['agent_config']==specification['agent_config'],'agent_config'
         if a.reward=='metric':
             assert parent.get('torque_slew_initial_sample')==specification['torque_slew_initial_sample'], 'Reward boundary correction requires explicit replay rebuild'
             assert parent.get('torque_slew_time_base')==TIME_BASE, 'Servo-time reward correction requires explicit replay rebuild'
         runner=read(cp/'office_runner.json');old=read(cp.parent/'execution.json')
         entry=next(r for r in old['checkpoint_rows'] if r['path']==str(cp))
         assert checkpoint_hashes(cp)==entry['hashes'] and runner['episode_boundary']
-        agent.load(cp);replay.restore(cp/'office_replay.npz',runner['replay'])
+        agent.load(cp)
+        replay_metadata=runner['replay']
+        if migration:
+            from goal_rl_credit_adapter_20261016 import migrated_replay_metadata
+            replay_metadata=migrated_replay_metadata(replay_metadata,runner['step'],agent.config['gamma'])
+        replay.restore(cp/'office_replay.npz',replay_metadata)
         step=runner['step'];episode=runner['episode'];last_checkpoint=step
         rng.bit_generator.state=runner['exploration_rng'];colored=np.asarray(runner['colored_noise'])
         assert step==replay.count==agent.interactions==agent.reward_samples
