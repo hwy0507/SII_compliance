@@ -1,5 +1,18 @@
 # v4 宿主机核验与恢复交接（2026-10-16 10:33 CST）
 
+## 12:04 CST 恢复入口更新（最新）
+
+用户已明确授权清理与恢复；不再受11:32时刻审批拒绝阻挡。旧v2/v3b进程已按确认边界处理，
+失败与有效checkpoint均保留。唯一当前训练为
+`sii-rl-v4-recovery-recovery-20261016-1140b.service`，运行目录
+`outputs/rl_tuned_20261015_v4/recovery_20261016_1140b/direct_task_safety/`。
+父目录`RECOVERY_CURRENT.json`为导航，具体进展以该新execution及宿主机进程为准。
+
+首个恢复完整回合新增1375步/1375更新，45,031步checkpoint通过；return−22.1773，
+Task/Strict均false；3GiB/swap0硬限生效，峰值约2.27GiB、OOM0。第二回合继续，其他三方法
+未启动。截止仍12:33:19 CST，trainer会收完在途回合保存；未验收、未声称收敛。
+不要更改活动源码，不重复启动旧协调器。详见[修复报告](RL_V4_REPAIR_20261016.md)。
+
 ## 11:06 CST 复查补充
 
 远端main `f6522a0e5abdb93741e74ce4554914ac31c0ec97`、baseline

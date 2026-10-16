@@ -1,5 +1,19 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 12:04 CST 已授权修复落地，恢复训练完成首个回合
+
+用户明确授权后，旧v2保存卡死进程已退出，partial checkpoint保留；旧v3b两路收完在途回合，
+阻抗112,750步、Direct73,365步checkpoint均校验通过，末尾历史源码变更导致的失败收据保留。
+确认子进程退出才结束旧协调器。新独立service已从v4的43,656步checkpoint恢复：新增1375步/
+1375更新，45,031步checkpoint hash通过，真实UTD1、3GiB硬限、swap0、OOM0，源码hash一致。
+首个55秒回合return−22.1773，Task/Strict均false，尚未收敛；下一回合已运行。其余三方法
+未启动，未做统一acceptance。原派发截止12:33:19 CST仍有效，结束在途回合后保存退出。
+
+**后续监视入口改为**父目录`RECOVERY_CURRENT.json`与
+`outputs/rl_tuned_20261015_v4/recovery_20261016_1140b/direct_task_safety/execution.json`，
+service为`sii-rl-v4-recovery-recovery-20261016-1140b.service`；旧execution保留为历史，不得
+重复启动旧协调器。详细故障、reward分项与只读critic诊断见[修复报告](RL_V4_REPAIR_20261016.md)。
+
 ## 2026-10-16 11:32 CST 修复进展
 
 已实查v2保存卡死、v3b遗留并发和UTD失配；完善独立硬限恢复入口与每回合checkpoint，

@@ -1,5 +1,27 @@
 # 更新日志
 
+## 2026-10-16 12:12 CST — 用户授权清理旧作业，修复版RL真实恢复并完成首回合
+
+- 开工核对远端main `ce516ca45beac86d0e86d2fb2e1bde4a7fb0ce98`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并fetch/read日志、AGENTS。用户明确授权后，
+  先保持旧协调器存活但停止派发，再请求v3b trainer回合末退出；无模拟器的v2保存死锁中断。
+  v2 partial checkpoint与失败保留；v3b阻抗112,750步/Direct73,365步新checkpoint hash通过，
+  两者末尾历史源码一致性失败均保留。子进程退出后才结束旧协调器，未广播停止模拟器。
+- 独立`sii-rl-v4-recovery-recovery-20261016-1140b.service`从43,656步恢复：首个完整55秒
+  回合新增1375步/1375更新，到45,031步/78,689更新，新checkpoint hash通过，证明真实UTD1。
+  cgroup硬限3GiB/禁swap生效，首回合峰值2,432,258,048字节、OOM0；source/config hash一致。
+  首回合return−22.1773、Task/Strict均false；12:11已推进至46,000步/79,658更新。
+- 只读critic诊断（无仿真、无更新）显示行为Q与历史行为回报差异，多数terminal目标已拟合；
+  作为信用分配线索，不据此断言实现bug、收敛或成功。正常闭环/保存恢复不等于策略学会。
+  当前仅Direct运行，其他三方法未启动，统一acceptance未运行，原派发截止12:33:19不延长。
+- 更新RL进度、监视入口与`docs/RL_V4_REPAIR_20261016.md`。后续读取
+  `outputs/rl_tuned_20261015_v4/RECOVERY_CURRENT.json`及`recovery_20261016_1140b/`，
+  不以旧execution的running重复启动。当前源代码仍为ce516ca，本次仅提交报告/交接。
+- 修复source/测试、登记、两套checkpoint、首个完整回合原始数据、资源与诊断收据已归档核验：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-v4-recovery-20261016T0353/evidence.tar.gz`，
+  431,405,754字节，SHA256 `cc93180c70721b0ceae8cafc25392d1bfb430cf87af004b22abd317af8f0d63a`。
+  服务器仅归档/hash；后续在途轨迹及旧批次全量失败轨迹仍保留本机，不宣称已全量共享。
+
 ## 2026-10-16 11:32 CST — 实查训练bug、完成恢复入口与真实checkpoint诊断
 
 - 用户要求修复后，核对远端main `a6f45496fdd6be40fbfdce1469aa0cdf18e66e43`、baseline
