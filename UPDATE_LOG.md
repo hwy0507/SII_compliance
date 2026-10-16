@@ -1,5 +1,25 @@
 # 更新日志
 
+## 2026-10-16 16:00 CST — 导纳开始梯度更新；核验并清理重复传输缓存，保留全部训练证据
+
+- 开工查询/fetch/read main `25c904e1567e3e76f596c524c0f7adcd1ada40a9`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/Goal进度。上一轮奖励干预实现属进展。
+  原导纳PID2360933从4000推进至5250步/251更新，5000步产生第1次更新；3个完整热身回合
+  Task/Strict0/3、physical_valid3/3，return−25.378512/−25.374600/−25.322366，第4在途。
+- 前三回合末10秒训练轨迹核查：第1/3分别停carry cursor17/18，位置误差14.23–16.21mm/
+  15.34–17.13mm；第2窗口跨cursor18–21，不能说三条都完全静止。25Hz采样不等于物理子步
+  gate审计，不据此推定所有方法同一原因。cp2750/4125与冻结source/parameter清单hash通过。
+- 本地剩余约78GiB、服务器共享盘约3.3TiB可用。重新逐包核验9个本任务/tmp传输压缩包与
+  服务器最终归档大小/SHA256相同，再次核对本地inode/size/hash后仅删除这9个重复临时文件，
+  共5,077,083,233字节（4.73GiB），可用空间约82GiB；本地原始轨迹/所有checkpoint/source均未动。
+  逐文件恢复命令、check/removal/result收据已保留；旧日志所述这些/tmp包现已清理，服务器地址不变。
+  首次检查用系统Python因无hashlib.file_digest在删除前失败；改用冻结项目解释器后check/apply均exit0。
+- 新包含导纳第2/3原始回合与cp2750/4125、前三carry诊断、5000步快照、存储清单及清理收据：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-admittance-storage-20261016T0800/evidence.tar.gz`，
+  396,011,348字节，SHA256 `6628bdf7dfa89cf61bfe3b62e8eed136dceaed3b1f333c95ee82f79cc95e6890`。
+  传输结束后incoming/最终目录hash均通过。快照memory.current2,778,599,424/peak2,808,971,264，
+  OOM/max0/swap0。训练/奖励/保护限制未改，GPU训练及两奖励pilot尚未派发；Goal active。
+
 ## 2026-10-16 15:50 CST — 实现并登记阻抗跟踪权重4→40的新鲜配对训练，完成真实预检
 
 - 开工查询/fetch/read main `b0e61c671691fc0e33d5193d3b9a00611fa46e2e`、baseline

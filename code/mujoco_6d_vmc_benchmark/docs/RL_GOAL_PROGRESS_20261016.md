@@ -4,6 +4,42 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 16:00 CST：导纳进入优化阶段，释放已核验的重复传输缓存
+
+开工核对main `25c904e1567e3e76f596c524c0f7adcd1ada40a9`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS与远端日志。上一轮为实质进展。
+同一导纳PID2360933从4000推进至5250步/251更新（5000步第1次更新），原协调器2329290继续。
+3个完整55秒热身回合return−25.378512382/−25.374599982/−25.322365699，Task/Strict0/3，
+physical_valid3/3；第4回合在途，VMC排队。不能把热身均值稳定当作收敛。
+
+前三回合末10秒25Hz轨迹：第1在cursor17/28，误差14.230–16.205mm；第3在cursor18/28，
+误差15.337–17.132mm。第2窗口跨cursor18/19/20/21，计数49/86/86/29，误差18.864–23.463mm；
+不能概括成三回合完全静止或照搬阻抗的cursor20结论。每个采样点位置/重入条件均未满足，
+但25Hz无法证明采样之间的物理子步条件，更不能据此宣称planner错误或进行最终gate审计。
+cp2750/4125与冻结source/parameter清单通过；没有新仿真、奖励调整或重复进程。
+
+本地磁盘检查约78GiB可用、训练保留线50GiB，服务器共享盘约3.3TiB可用。明确枚举9个本任务
+临时传输包，逐一重新检查本地/服务器最终归档的大小与SHA256，确认本地为非symlink/单硬链接
+的普通文件；执行前再核对全部inode/device/mtime/size/hash，然后仅unlink精确/tmp文件。
+已清理stage01-0507、credit-0518、episodes38-40-0545、direct-close-0623、impedance-0649、
+impedance-learning-0704、gpu-backend-implementation-0724、impedance-close-0738、
+impedance-weight-pilot-0750九包，均带完整rl-goal前缀和20261016日期，详见收据逐文件路径。
+释放5,077,083,233字节（4.73GiB）；free_before82,924,175,360、free_after88,000,159,744字节，
+期间训练仍在写入。保留了本地所有原始训练目录/checkpoint/source和服务器全部归档，
+没有递归删除/历史实验迁移。旧日志称这些/tmp包保留是当时状态，现以此条及删除日志为准。
+完整恢复命令在`TRANSFER_CACHE_CHECK_20261016T0800.json`；删除journal逐文件fsync，
+结果在`TRANSFER_CACHE_RESULT_20261016T0800.json`。第一次read-only检查因系统Python缺少
+hashlib.file_digest而exit1，未生成检查收据、未删除；冻结项目Python在独立服务复核/执行均exit0。
+本轮仅回收临时冗余，长期1M训练仍需按阶段归档/监视增长，未降低50GiB保护线。
+
+导纳第2/3原始回合与cp2750/4125、前三carry结果、5000步/1更新快照、存储清单与cache收据
+已核验服务器最终归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-admittance-storage-20261016T0800/evidence.tar.gz`，
+396,011,348字节，SHA256 `6628bdf7dfa89cf61bfe3b62e8eed136dceaed3b1f333c95ee82f79cc95e6890`。
+第1回合在上一轮0750包；本轮第4及后续新数据仅本机。归档快照memory.current2,778,599,424、
+peak2,808,971,264/3GiB，OOM/max0/swap0。服务器只文件传输/大小/hash检查，无服务器计算。
+Goal active，未收敛/未最终验收；原GPU/Direct奖励/阻抗奖励的准备状态不变，未派发。
+
 ## 15:50 CST：阻抗权重对照实现、登记和真实预检完成，现有导纳继续
 
 开工核对main `b0e61c671691fc0e33d5193d3b9a00611fa46e2e`、baseline
