@@ -1,5 +1,43 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 20:55 CST：Direct越过热身真实更新，归档恢复实测通过
+
+开工main `f29614ca5b75b525b067513339f1d6386cf003fe`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`查询/fetch/read，开工/收工读取AGENTS。
+原Direct trainer2424017/协调器2424012继续；12:52归档快照7000交互/2001更新，5完整55秒，
+physical_valid5/5、Task/Strict0/5。前四return−23.2592843239/−23.2647493885/
+−23.4519602502/−23.3572739030，第五−21.7656862410；不同训练条件，不能当作收敛趋势。
+cp2750/4125/5500源与tar成员hash一致；5500条交互序号/回合reward求和正确，
+cp5500保存501次step5000–5500连续有限更新，actor/critic相对热身文件hash改变。
+首末critic loss9.23203087→8.94854164、temperature .010000→.009595258，仅证明学习链路。
+快照memory current3,074,641,920/peak3,221,225,472、max383、OOM0/swap0；GPU44°C/1436MiB。
+保持3GiB限制与50GiB磁盘保护，未重复启动或改活动快照。
+
+新增`tools/offline_goal_episode_20261016.py`的plan/evict/restore：仅已完成训练臂的闭合Goal回合，
+移除白名单为research_substeps.npz、independent_contacts.npz、rollout_metrics/substep_metrics.npz、
+rollout.mjb；checkpoint/动作/25与250Hz轨迹/小收据留本地，失败与成功一视同仁。
+plan记录原件inode/device/mtime/size/SHA和登记/执行/audit身份，核验服务器独立最终目录tar及各成员；
+evict再次核验全部目标/远端后写fsync日志再逐文件移除；restore不用tar.extract，按白名单独占落盘，
+原始MJB逐字节恢复、已有相同文件允许、不同内容拒绝覆盖，链接/重复成员/活跃臂等拒绝。
+10项安全/恢复测试及全部69项Goal unittest通过。现有trainer接续只依赖checkpoint及冻结运行源，
+未发现上述四个回合大文件的恢复依赖；独立审计使用前仍须恢复原始文件，不把缺失文件忽略掉。
+
+真实演练选择已结束阻抗control的`episode_00004_repair_train_002`：
+从服务器重新下载既有`rl-goal-pair-report-20261016T1116/evidence.tar.gz`，大小266,677,855，
+SHA256 `6c16b1005c956b60e11604f29b1c7d8e9deb199096c2efa7a0fbb2709c193093`，再次核验远端。
+4文件144,291,728字节先移除再恢复；33个回合文件全部hash一致、cp6875的9文件hash一致。
+最终离线文件0，当前没有任何回合原始文件留在缺失状态。收据位于阻抗root：
+`OFFLINE_ROUNDTRIP_PLAN_20261016T1252.json`、`OFFLINE_ROUNDTRIP_REMOVAL_20261016T1252.jsonl`、
+`OFFLINE_ROUNDTRIP_RESULT_20261016T1252.json`。将来恢复使用工具restore模式并传对应receipt/archive；
+本次restore可重复核对，但恢复后inode改变，不能复用旧plan再次evict，必须重新plan。
+尚未登记/执行批量离线，不将这次零净释放演练说成长期空间问题已彻底解决。
+
+本轮第2–4原始回合、cp2750/4125/5500、学习日志、工具/测试、实测恢复证据已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-learning-offline-20261016T1255/evidence.tar.gz`
+647,988,847字节，SHA256 `7d96b43f7bc0b9edd606baef6d4297f1e7a5deec30872f9f871a850f7458adea`。
+服务器仅存储/hash，第5回合/cp6875尚本地待同步。继续当前Direct control→tracking完整对照，
+之后根据证据登记较长四族接续与保留方案；不因短pilot失败再反复重置学习。四族未证明收敛，未最终验收。
+
 ## 20:40 CST：Direct3250热身，较长接续预算实现与缓存回收
 
 开工main `cda3106f8155620f7895894bc965f5fb14bbc215`、baseline

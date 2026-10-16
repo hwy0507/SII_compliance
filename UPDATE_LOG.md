@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2026-10-16 20:55 CST — Direct真实学习核验，闭合回合归档恢复工具通过实测
+
+- 开工查询/fetch/read main `f29614ca5b75b525b067513339f1d6386cf003fe`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工读取AGENTS。原Direct trainer2424017
+  与协调器2424012持续推进；归档快照7000步/2001更新，5完整55秒、physical_valid5/5、Task/Strict0/5。
+  前四回合return−23.259284/−23.264749/−23.451960/−23.357274，第五−21.765686；条件不同，
+  单个较高return不能当收敛。未改活动source、物理/gate或运行资源，未启动重复模拟器。
+- cp2750/4125/5500源及tar成员hash核验；cp5500的501条更新step5000–5500连续且全部有限，
+  actor/critic相对热身hash改变；5500条交互和四回合reward求和一致。critic loss9.232031→8.948542，
+  temperature .010000→.00959526，仅证明学习链路工作。快照内存peak3GiB/max383、OOM0/swap0。
+- 新增`offline_goal_episode_20261016.py`：只处理已完成训练臂中的已闭合回合，限定四个大文件，
+  绑定登记/execution/audit身份、原文件inode/mtime/hash、独立最终服务器包大小/hash及tar成员字节。
+  所有目标预核验后写持久日志逐文件移除；恢复只写明确成员、不解压路径、不覆盖冲突文件。
+  checkpoint、25/250Hz诊断轨迹和失败收据均保留；恢复原始MJB字节，不重新编译模型。
+  10项安全/恢复测试通过，包括运行中、篡改cp路径、坏hash、重复/链接成员、原件变化、远端失败、
+  符号链接和覆盖冲突；全部69项Goal unittest通过。
+- 已完成阻抗control第5回合实测暂时移除4文件144,291,728字节，再从既有服务器包恢复，
+  33个回合文件及9个checkpoint文件hash全部保持；最终离线文件0，所有原始文件均已恢复。
+  原包`runs/main/rl-goal-pair-report-20261016T1116/evidence.tar.gz`独立大小/hash复核通过；
+  恢复清单/逐次移除日志/结果永久保留。当前Direct和其他回合未移除，尚未启用批量离线保留。
+- 第2–4原始回合、cp2750/4125/5500、截断到安全边界的学习日志、源码/测试和恢复收据已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-learning-offline-20261016T1255/evidence.tar.gz`，
+  647,988,847字节，SHA256 `7d96b43f7bc0b9edd606baef6d4297f1e7a5deec30872f9f871a850f7458adea`。
+  第5回合/cp6875仍本地待归档，服务器仅存储/hash。继续Direct完整control→tracking对照，
+  再登记后续四方法较长接续；存储工具尚不等于长期自动归档已全面完成。Goal active，无收敛/最终验收结论。
+
 ## 2026-10-16 20:40 CST — Direct热身推进，补充较长有限接续预算并回收重复传输缓存
 
 - 开工查询/fetch/read main `cda3106f8155620f7895894bc965f5fb14bbc215`、baseline

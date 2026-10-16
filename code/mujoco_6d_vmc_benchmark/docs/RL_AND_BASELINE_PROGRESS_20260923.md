@@ -1,5 +1,17 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 20:55 CST Direct真实更新与原始归档恢复
+
+Direct原worker归档快照7000步/2001更新，5完整55秒physical_valid5/5、Task/Strict0/5。
+cp5500有501条连续有限更新，actor/critic hash改变；cp2750/4125/5500及5500条训练记录核验通过。
+新增已闭合训练回合四类大文件离线/恢复工具，10安全测试及全部69项Goal测试通过。
+已完成阻抗失败回合暂移4文件144,291,728字节并恢复，33回合文件与9checkpoint文件hash保持；
+最终零离线文件，未删当前Direct数据，尚未批量执行长期保留。内存peak3GiB/max383，OOM0/swap0。
+新轨迹/cp、工具/测试与实测收据已核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-learning-offline-20261016T1255/evidence.tar.gz`，
+647,988,847字节，SHA256 `7d96b43f7bc0b9edd606baef6d4297f1e7a5deec30872f9f871a850f7458adea`。
+第5回合/cp6875仍本地待归档；继续Direct完整对照及后续较长训练。Goal active，四族均无收敛结论，未最终验收。
+
 ## 2026-10-16 20:40 CST Direct热身与有限接续预算
 
 Direct原进程3250步/0更新，两个完整55秒Task/Strict0/2、physical_valid2/2；5000热身尚未结束。
