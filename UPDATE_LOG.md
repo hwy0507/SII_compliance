@@ -1,5 +1,28 @@
 # 更新日志
 
+## 2026-10-16 14:35 CST — Direct阶段证据归档补齐，阻抗两完整热身回合仍未放置
+
+- 查询/fetch/read main `9358461c2daae6e8cd629eeca3592342d133cdcb`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS与Goal进度；上一轮登记/预检属于进展。
+  本轮完成大型失败证据归档和最终阶段checkpoint只读诊断，没有修改活动训练代码。
+- Direct8个完整回合的原生训练AUDIT全部停approach，物体目标XY误差190.62–220.24mm；
+  Task/Strict0/8、physical_valid3/8。补齐episode41–44原始轨迹、checkpoint57406/58781/
+  60156/61531及全部Direct训练/优化器日志、终态execution、汇总快照；实际hash核验通过。
+- 最终61,531 checkpoint只读训练replay诊断：2127样本（含末端增采样），终止附近1125样本
+  absTD均值0.1050，当前动作Q−历史动作Q均值1.7980；最新回合50样本absTD1.9206。
+  支持继续关注新数据学习/动作外推，未证明真实Q高估或n25因果效果。模型/RNG/归一化不变，
+  无梯度/仿真/最终验收；诊断exit0、峰值1,077,571,584字节、OOM0。
+- 阻抗同一PID2344947保持active，14:34持久化3000步/0更新（5000步热身）；2个完整55秒
+  回合return−25.493412/−26.067121，physical_valid2/2、Task/Strict0/2，第三回合继续。
+  首回合已抬升160.36mm但停carry，目标XY误差90.17mm；不能把热身进展当收敛。
+  2750 checkpoint hash通过，内存1,650,655,232字节/3GiB、此前OOM0/swap0。
+- 新完整归档目录：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-close-20261016T0623/`。
+  `evidence.tar.gz` 1,108,637,123字节，SHA256 `eeac5a2a0fe96e3c418a28873958525af94a4b11d2648a65412f2aa7b9c52062`；
+  `final_credit.tar.gz` 8,496字节，SHA256 `8ecd59850acb138616b03e0c8c037d00261a0b862bc26778f50781f49f5342da`。
+  均已核验最终远端hash。初次上传审批超时后按提示重试成功；服务器仅归档/hash。
+  原stage01 Direct8回合现分三包归档齐全，阻抗新产物仅本机待同步；Goal active，未收敛/未验收。
+
 ## 2026-10-16 14:21 CST — Direct有限阶段结束并自动接续阻抗，奖励对照已登记预检
 
 - 查询/fetch/read main `80c0b6133b48ae5c24f682b0c5f0ba30e02a83d0`、baseline

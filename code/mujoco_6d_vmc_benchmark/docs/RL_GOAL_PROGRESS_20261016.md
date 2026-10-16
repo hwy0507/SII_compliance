@@ -4,6 +4,40 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 14:35 CST：Direct完整阶段证据保全，阻抗继续热身
+
+核对main `9358461c2daae6e8cd629eeca3592342d133cdcb`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS及日志。上一轮登记/真实预检为进展；
+本轮真实服务仍active，补齐归档并读取闭合训练诊断，未重复训练或改活动快照。
+Direct8回合都停approach，native AUDIT的目标XY误差190.62–220.24mm，Task/Strict0/8。
+补齐最后四回合episode41–44及cp57406/58781/60156/61531、整个阶段training/optimizer logs、
+PROTOCOL/最终execution；所有checkpoint hash和source/parameter manifest通过。
+`DIRECT_CLOSE_20261016T0623.json`包含终态Direct、已有8个训练AUDIT、当时阻抗750步
+快照、cgroup与收敛检查；它不是独立最终审计。
+
+最终61,531 checkpoint的只读诊断完成：2127条样本=1024均匀抽样与全部45回合末25步的
+去重并集，末端被故意增采样，不是总体无偏平均。终止45条absTD0.09649；末25步1125条
+absTD0.10500、当前动作Q比历史动作高1.79795；远离终止1002条Q均值0.74485、target0.75985。
+最新回合50条absTD1.92057，表明新数据仍未充分拟合。温度0.00093858，全部样本裁剪概率
+质量约0.0009%；不能据此宣称真实Q高估、收敛或n25优于n1（前后样本组成不同）。
+诊断服务`sii-rl-credit-final-20261016-0628.service` exit0，峰值1,077,571,584字节/OOM0；
+无梯度更新/模型保存，checkpoint hash、RNG与归一化统计均未变；没有final/heldout访问。
+
+14:34阻抗同一trainer PID2344947仍active，3000步/0梯度更新，尚在5000步探索热身。
+已完成2个完整55秒回合，return−25.4934119/−26.0671207，physical_valid2/2、Task/Strict0/2，
+第三回合在途。首回合抬升160.36mm但停carry、目标XY误差90.17mm、RMSE23.29mm；
+属于原生训练诊断，不是最终独立指标，不能把早期阶段进展当成功。2750 checkpoint hash通过。
+内存1,650,655,232字节/3GiB，此前OOM0/swap0。admittance/VMC尚未开始；fresh tracking
+pilot保持prepared，等待原四族阶段全部结束，未新增等待服务或派发。
+
+服务器独立目录：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-close-20261016T0623/`。
+`evidence.tar.gz` 1,108,637,123字节，SHA256 `eeac5a2a0fe96e3c418a28873958525af94a4b11d2648a65412f2aa7b9c52062`；
+`final_credit.tar.gz` 8,496字节，SHA256 `8ecd59850acb138616b03e0c8c037d00261a0b862bc26778f50781f49f5342da`。
+两包最终远端hash均核验；首次传输自动审批超时，按提示重试完成，没有把超时当拒绝授权。
+结合此前credit包的episode37、episodes38–40包，stage01 Direct全部8回合及checkpoint现已共享；
+这不是更早所有历史训练的全量归档。阻抗新回合仍仅本机、待同步。Goal继续，未收敛/未验收。
+
 ## 14:21 CST：Direct阶段0/8，阻抗自动接续；fresh奖励对照预检完成
 
 开工核对main `80c0b6133b48ae5c24f682b0c5f0ba30e02a83d0`、baseline

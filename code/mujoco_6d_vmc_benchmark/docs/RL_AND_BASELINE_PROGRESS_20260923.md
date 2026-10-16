@@ -1,5 +1,13 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 14:35 CST Direct失败证据归档齐全，阻抗继续推进
+
+Direct阶段8回合均停approach，Task/Strict0/8；最后4回合/4 checkpoint与完整日志已归档核验，
+本阶段8回合现分三包共享。最终checkpoint只读诊断显示最新回合TD残差仍大，未证明收敛。
+阻抗真实3000步/0更新（热身），2完整回合physical_valid2/2但Task/Strict0/2，第三回合在途；
+2750 checkpoint hash通过。新tracking对照已准备，仍等待四族阶段闭合。详见
+[Goal进度](RL_GOAL_PROGRESS_20261016.md)中的服务器路径/hash与诊断局限。
+
 ## 2026-10-16 14:21 CST Direct阶段结束，阻抗已自动接续
 
 Direct61,531步/95,189更新，本阶段8完整回合Task/Strict0/8、physical_valid3/8，最终hash通过。
