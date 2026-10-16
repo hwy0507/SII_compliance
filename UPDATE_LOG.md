@@ -1,5 +1,54 @@
 # 更新日志
 
+## 2026-10-17 04:30 CST — 控制组十八回合：出现retreat但物块未放置成功
+
+上一轮为已验证等待；本轮同一PID2502235从22,500步/17,501更新推进至24,750步/
+19,751更新，观察约11.5分钟，协调器2502213保持active。开工查询/fetch/read
+main `175a00679d5a63348833cb2b524c598b8febd411`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/两份进度，收工重读AGENTS。
+没有重启、重复派发或研究源码修改。观察器目标18回合并归档后正常结束，训练继续。
+
+`rl_goal_stream_occupancy_20261017_v2/impedance_control`已完成44k预算56.25%。
+18回合均1375步/55秒、physical_valid18/18，Task/Strict0/18；平均return
+−25.459916354、标准差.446578570。ep16/17（repair_train_013/011）回报
+−25.510348452/−24.790855485，分别终止于retreat/carry。
+24,750条交互、19,751次更新连续且指标有限，18回合reward分解/总和、AUDIT/trace hash、
+cp24750成员hash通过。末temperature .001785144、critic loss7.017396。
+occupancy组尚未启动，没有奖励处理收益或收敛结论。
+
+ep16首次在本control闭合记录中进入retreat，需区分手部阶段与真实物块成功。
+读取原生rollout与冻结判据：48.36秒进入load_transfer、49.04秒release、49.56秒retreat；
+max_lift .153743m，但最终物块(.470675,−.265030,.424997)m，目标(.69,−.31,.545)m，
+XY误差.223887940m，placement_hold_s=0、release_supported=false、placement_complete=false。
+因此完整时长/物理有效并不满足稳定放置要求，Task/Strict失败与原生判据一致；
+contact_coverage=false仅为诊断，不能拿它当本回合Task失败原因。未进行独立物理重放。
+rollout.json SHA `9bf2355bb0afe52a515b8a69d748f8bc5381c4ed284902d5e953d9bc7180a277`、
+AUDIT SHA `21ec2b7690e74e753c4f6cd12ef474a7352ac0e7e8e6d509a8c39d22bc943750`
+均与已核验原始归档member大小/hash一致；冻结gate来源hash与原生记录一致。
+不能将进入retreat当成功，也不据此断言掉落时点、原因或控制器修复已奏效。
+
+归档时worker current2,433,253,376字节、peak2,888,511,488、max3,221,225,472；
+memory.max事件/OOM/oom_kill/swap0，free58,046,984,192字节，50GiB保护保持。
+收工worker仍active、current2,530,291,712，GPU43°C/1437MiB。
+本机CPU1/单线程/CUDA0/.125/UTD1保持；CPU6/1GiB/swap0归档助手6.622秒正常退出。
+服务器仅归档及hash，全部失败保留，冻结物理/MJB/gate/canonical48/filter/执行器/dt5e-5不变。
+
+本轮证据独立归档并再次远端核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T2015/evidence.tar.gz`，
+10,992,222字节，SHA `0422d9f425663d07775b076a8c01eafe53c135c2a0401ab8c64ac936cc320cba`。
+本地缓存BENCH/outputs/rl_goal_stream_window_20261017T2015，含闭合日志、训练screen、观察/归档映射。
+新增原始轨迹/checkpoint于同主机共同根 `/home/arm1/sii_shared/SII_compliance/runs/main/`：
+
+- `goal-stream-9a5268aec7cb8c6b635403a2/evidence.tar.gz`，272,023,530字节，
+  SHA `e4d00bf98d46b2b696ffe613500cd1ec98b5883083648b337327470e0fdaa8a0`。
+- `goal-stream-eb6481cac4f4201d9a6bc278/evidence.tar.gz`，271,401,316字节，
+  SHA `833699740d082565804768ac77645f784450b2d722048ef0a5f16bcba7db3068`。
+
+Goal active；继续44k×2对照并保留这类“手部推进但真实物块失败”的区别，四族均未证明收敛。
+最终acceptance与独立物理/action-filter审计尚未执行。按sii-research-sync更新三份进度、
+diff检查后提交/push main，保留无关meeting文件。
+
+
 ## 2026-10-17 04:14 CST — 已验证等待：控制组22k步，十六完整回合尚无成功
 
 上一轮完成原生动作/停滞诊断；本轮确认同一协调器2502213/worker2502235存活后，
