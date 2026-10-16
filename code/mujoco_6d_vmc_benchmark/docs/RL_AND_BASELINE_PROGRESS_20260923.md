@@ -1,5 +1,17 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 16:50 CST 导纳11k有限段结束，VMC真实接续
+
+导纳11000步/6001更新、8完整55秒回合，physical_valid8/8、Task/Strict0/8，reward均值
+−25.37961、std.06605，未收敛。cp11000核验通过，原协调器自动启动VMC PID2375301，
+已750步/0更新、仍热身，无重复训练。末回合/最终checkpoint/完整日志与八回合诊断归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-admittance-close-20261016T0850/`，
+包SHA256 `ad63cc832e472ea8aaca5f05023710262d5afecb9ee8a958ec0315776e6c8532`。
+摘要脚本在归档完成后因旧记录缺resource_snapshot报错，独立服务逐成员复核归档完整；
+错误sidecar保留、缺失最终导纳内存值不补造。VMC交接实测OOM0/swap0。Goal active。
+16:56 CST复查VMC1500步/0更新，首完整回合return−25.242069151、Task/Strict0/1、
+physical_valid1/1；第二回合在途，新数据仍在本机，热身期不判收敛。
+
 ## 2026-10-16 16:40 CST Goal磁盘保留线修复，导纳第7回合归档
 
 导纳9701步/4702更新，7完整55秒physical_valid7/7、Task/Strict0/7；第8在途。修复trainer

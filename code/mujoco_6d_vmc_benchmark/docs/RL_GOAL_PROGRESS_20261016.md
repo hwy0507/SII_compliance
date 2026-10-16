@@ -4,6 +4,47 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 16:50 CST：导纳有限段完成，原协调器自动接续VMC
+
+开工main `c9ba42295443028db43206c6398d4f31f9d3cd7c`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已实时查询/fetch/read，AGENTS重读。
+原导纳PID2360933从10129步持续推进，于08:48:28.608451Z正常结束11000步/6001更新，
+8个完整55秒回合、cp11000逐文件hash通过。原协调器2329290在08:48:29Z派发VMC，
+trainer PID2375301/worker2375327，已750步/0更新，仍在5000步热身、首回合在途。
+没有人工重启/重复服务，冻结source/parameter清单通过；Direct/阻抗/导纳的有限段闭合
+不是完整1M训练完成。VMC是第四族实际训练，不是四族已收敛。
+
+导纳八回合physical_valid8/8、Task/Strict0/8，return均值−25.379613331、总体标准差
+.066046870，末回合−25.520884983。八回合奖励重算一致，折扣tracking成本.12158–.16440、
+峰矩成本1.60827–1.79107。末回合末10秒仍carry cursor18/28、误差12.294–19.963mm，
+位置/重入0/250、姿态250/250、速度245/250，参数变化且energy_scale1。不同condition及
+25Hz采样限制保持，不推断因果改善或逐物理子步gate。完整训练筛查training_candidate=false，
+不足96回合/两个32条件窗口；训练Task/Strict0/8也不支持成功。training_complete=false。
+
+收尾服务`sii-goal-admittance-close-0850`的receipt与tar已完整关闭，但之后控制台摘要读取
+`state['resource_snapshot']`产生KeyError，exit1。stage01冻结trainer早于该字段新增；
+不将最新源码字段倒推为旧运行已有统计。保留原脚本/归档，独立`0850b`服务只读tar逐一
+核验全部checkpoint成员hash和receipt相同，exit0；没有重跑训练或覆盖旧结果。最终导纳
+memory计数缺失，明确null；最后运行时观察OOM0仍仅是当时快照。VMC584步实测current/peak
+均1,333,866,496字节，上限3GiB、OOM/max0、swap0，随后execution到750步，实际交互得到核验。
+
+末回合原始数据/cp11000、完整训练与optimizer日志、八回合reward/carry、四族训练筛查
+归档已核验至：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-admittance-close-20261016T0850/evidence.tar.gz`，
+277,322,329字节，SHA256 `ad63cc832e472ea8aaca5f05023710262d5afecb9ee8a958ec0315776e6c8532`。
+同目录`ADMITTANCE_CLOSE_READOUT_FAILURE_20261016T0850.json` SHA256
+`7f8b40513ac30de2a472e964def20dac1807153cc19eb9e716854982bebd976f`；
+`VMC_HANDOFF_20261016T0850.json` SHA256
+`11c33820d3d53907f60b6c5c24c6b236ac50d56480bd20981d7fed9e48e8c208`；两个对应复核脚本也已上传核验。
+前7回合及checkpoint在此前分包，VMC新轨迹仍本机。Goal保持active；先收完VMC，再执行
+真实四族GPU完整循环验证和已登记奖励干预，尚无最终acceptance/成功收敛结论。
+
+16:56 CST收工复查：原VMC trainer2375301继续至1500步/0更新，第一个完整55秒回合
+return−25.242069151、Task/Strict0/1、physical_valid1/1，已登记checkpoint1375。
+第二回合worker2376349在途；仍仅一个模拟器，memory.current1,620,836,352字节，
+max/OOM/kill0、swap0，磁盘可用84,296,880,128字节。首回合与新checkpoint仍在本机，
+不属于0850归档；零更新符合5000步热身，不能从热身return判断学习收敛。
+
 ## 16:40 CST：修复每回合磁盘保护遗漏，导纳第7回合保全
 
 开工main `681a1a3f55a18063a2622410889dafb83c5e9f77`、baseline

@@ -1,5 +1,28 @@
 # 更新日志
 
+## 2026-10-16 16:50 CST — 导纳11k有限段完成，VMC自动接续并产生真实交互
+
+- 开工查询/fetch/read main `c9ba42295443028db43206c6398d4f31f9d3cd7c`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/Goal进度。持续核验原PID2360933，
+  导纳于08:48:28Z正常闭合11000步/6001更新、8完整55秒回合，cp11000全部hash通过；
+  原协调器2329290于08:48:29Z接续VMC PID2375301，已有750步/0更新，处于5000步热身，
+  尚无完整回合。仅一个trainer及其worker2375327，无重复启动。
+- 导纳physical_valid8/8、Task/Strict0/8；return均值−25.379613331、标准差.066046870，
+  末回合−25.520884983。八回合奖励重算通过；末回合末10秒仍carry cursor18/28，
+  位置误差12.294–19.963mm，位置/重入0/250、姿态250/250、速度245/250，参数变化且energy_scale1。
+  25Hz诊断不是最终物理审计。训练筛查不通过，training_complete=false，不能把11k闭合称收敛。
+- 收尾脚本在receipt和tar完整关闭后的摘要输出因旧冻结trainer无resource_snapshot而exit1；
+  保留原脚本/产物，独立0850b服务逐成员核验tar内全部checkpoint hash及receipt后exit0。
+  没有重跑训练/覆盖归档，缺失的最终导纳内存计数明确为null。VMC584步实测current/peak
+  均1,333,866,496字节，上限3GiB，OOM/max0、swap0。错误收据和VMC真实交接快照作为独立sidecar保存。
+- 末回合原始轨迹/cp11000、完整训练/优化器日志、八回合reward/carry/收敛筛查已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-admittance-close-20261016T0850/evidence.tar.gz`，
+  277,322,329字节，SHA256 `ad63cc832e472ea8aaca5f05023710262d5afecb9ee8a958ec0315776e6c8532`；
+  同目录错误收据/VMC交接JSON与两个复核脚本也逐一hash核验。服务器仅归档；Goal active。
+  当前三族有限段闭合、VMC运行；四族都未证明收敛，GPU完整循环和奖励对照仍待本阶段完成。
+  16:56 CST收工复查VMC已1500步/0更新，首个55秒回合完成、return−25.242069151、
+  Task/Strict0/1、physical_valid1/1，checkpoint1375已登记，第二回合在途；这部分新数据仍在本机。
+
 ## 2026-10-16 16:40 CST — 修复Goal每回合磁盘保留线遗漏，导纳进入第8回合
 
 - 开工查询/fetch/read main `681a1a3f55a18063a2622410889dafb83c5e9f77`、baseline
