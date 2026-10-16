@@ -1,5 +1,52 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-17 02:47 CST — 阻抗进入真实优化更新，旧checkpoint远端恢复验证通过
+
+按sii-research-sync开工查询/fetch/read main `f788fcb9f74dfced22180ddd421184a5048249c8`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS与Goal progress。
+普通沙箱网络失败后宿主核验成功；收工再次fetch/查远端，两分支未前进，并重读AGENTS。
+上一轮为真实启动/修复进展；本轮对已确认存活的同一PID2502235持续观察15分钟，
+协调器PID2502213保持，未重启、重复派发或改活动源码/冻结协议。只读观察器已正常结束。
+
+`rl_goal_stream_occupancy_20261017_v2/impedance_control`前四个回合已闭合到5500步/501更新：
+repair_train_008/029/001/007均1375步/55秒、physical_valid=true、Task/Strict0/4。
+return依次−25.493412/−26.067121/−25.072284/−24.997567；均值−25.407596、标准差.425116。
+前三回合全部warmup，第四回合跨过5000步开始学习，不能把这些早期不同condition的return
+或小方差当收敛/奖励改进。训练筛查为false：不足96个回合及两个完整32-condition窗口。
+occupancy处理组仍排队，尚无本轮奖励对照结果；四类Goal均未证明收敛，最终acceptance未运行。
+
+5500条交互按step1..5500连续、501条optimizer按step5000..5500/update1..501连续，
+所有优化指标有限；四回合reward逐项/terminal/potential求和、AUDIT和checkpoint hash通过。
+step5500的actor loss−.0813624、critic loss8.985741、temperature .00956446，均为训练诊断。
+收工实测5750步/751更新，第五回合在途；worker峰2,621,403,136字节、3GiB硬限，
+memory.max事件/OOM/oom_kill/swap均0，GPU43°C/1439MiB；free58,647,646,208字节。
+CPU1/单线程、CUDA0/.125/UTD1、50GiB余量、44k×2预算和全部冻结输入/物理/gate保持。
+
+真实第三/第四回合的工作副本管理已执行，最新cp4125/5500逐成员hash通过。
+cp1375及2750的大本地工作副本在各自远端核验后释放；原始完整版本和失败收据保留远端。
+实际下载cp1375所在包，在独立一次性/tmp目录重建其全部9个成员，再用原checkpoint
+验证器检查episode_boundary、step及成员hash，全通过；没有重编译模型或写入活动训练目录。
+验证后的重复下载/重建临时副本已清理，可由下述归档精确恢复。历史其他run未删除。
+各回合归档耗时约26–43秒，成功后同一worker自动继续；这些文件核验不是独立物理/action重放。
+
+本轮闭合日志、501次更新、reward分解、训练筛查、15分钟PID/steps观察、旧cp重建证据、
+原始归档完整地址/hash索引和脚本已上传并核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-learning-start-20261017/evidence.tar.gz`，
+1,095,611字节，SHA `2759b6956042f538b06ae924cfa04c050f2049222c7011321699968a4561cd88`。
+新增ep1/2/3原始数据与各自checkpoint已由训练流程独立归档，并在本轮重核远端大小/SHA：
+服务器主机`arm1@192.168.31.70`，共同根`/home/arm1/sii_shared/SII_compliance/runs/main/`：
+
+- `goal-stream-fe6f4f3f05ceab4f6bb4c2cf/evidence.tar.gz`，193,801,251字节，
+  SHA `2ee94fff6cefa084b816fb92b73cbb6422f551dfc3205e30418da6b059d294ef`。
+- `goal-stream-0e675db8295f38c5685cc3b8/evidence.tar.gz`，194,069,554字节，
+  SHA `662964169a614e6678b15c7d281b9fbb692ec431d897619c336252988883945d`。
+- `goal-stream-43fd4f7a9d13c4e41b185c6a/evidence.tar.gz`，264,820,990字节，
+  SHA `bc1650addd7572742cc81299614e6aced420584f6f804aeb461f3c9b6eb85afc`。
+
+计算/重建/分析均在airpig，服务器仅文件/归档/hash。运行登记仍为d37b16975a6f…；
+完整冻结source及Python依赖见上一轮归档，当前研究代码提交f788fcb未改动。
+继续健康control到登记边界并核对处理组接续，再按完整数据决定四类下一阶段；Goal保持active。
+
 ## 2026-10-17 02:16 CST — Direct正则化对照关闭，新阻抗44k对照以预登记工作副本策略接续
 
 开工查询/fetch并读取main `474f80d100c301b1c195716a6442f860de8e0a58`、baseline
