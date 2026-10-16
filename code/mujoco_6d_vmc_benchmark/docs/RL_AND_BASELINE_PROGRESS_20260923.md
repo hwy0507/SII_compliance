@@ -1,5 +1,52 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-17 01:09 CST — 四族阶段关闭，Direct正则化在线对照已真实接续
+
+开工实时查询/fetch/read main `f3b38923f05a2a318bb51805dae4fe9235934cec`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，按sii-research-sync开工/收工重读AGENTS。
+上一轮是归档进展；本轮持续核对同一VMC真实PID/步骤，直到协调器和worker均MainPID0/inactive，
+再启动已准备的有限对照。没有重复训练、未修改活动/冻结源码或协议，Goal继续active。
+
+VMC在17:03 UTC正常关闭23,375步/18,376更新；本段8回合全部1375步/55秒、physical_valid，
+Task/Strict0/8。11,000条连续有限optimizer更新、逐回合reward求和、AUDIT与checkpoint成员hash通过。
+八次return为−25.216931/−25.206806/−25.658431/−25.216424/−24.923777/−25.304485/−24.912112/−25.323514；
+峰3GiB、memory.max2650为硬限回收事件，OOM/oom_kill/swap0。四族stage02_v2终态finite_stage_complete。
+所选lineage的Direct/阻抗/导纳/VMC分别18/17/17/17闭合回合，联合Task AND Strict均0；
+Direct完整14/physical13，另外三类各17完整/physical。均不足收敛所需回合和两个完整窗口，
+不能把参数RL的稳定失败reward视为收敛，未运行最终acceptance。
+
+新增只读VMC失败诊断覆盖捕获时前4个完整训练回合：末10秒均carry，
+位置误差中位15.872/12.393/16.009/12.350mm，对应路径点17–18，仍高于12mm门槛；
+参数速率限制tick占99.42%–100%、能量限制0。与其他参数方法的carry停滞表现相似，
+不构成限速导致失败的因果证据，不放宽冻结限制；未做独立action/filter或物理重放。
+
+本轮核验并释放5个明确/tmp重复传输tar，共2,613,878,367字节，服务器原包逐一重新核对大小/hash，
+原始轨迹和checkpoint删除0。CACHE_RELEASE.json列出完整恢复地址；此前被拒绝的历史100文件操作未执行。
+Direct容量估计使用最近10尝试平均1026.9步/尝试，预计两组22次尝试，包含剩余VMC、replay增长和2GiB余量：
+free65,288,507,392，估计新增11,429,325,176，剩53,859,182,216字节，略高于50GiB保护。
+这不是最坏情况保证；更短失败会增加checkpoint，逐回合磁盘检查不变。收工free62,677,520,384。
+
+17:05:28 UTC按原登记启动Direct alpha0/1对照：
+`sii-rl-goal-stage-210cab565c96.service` PID2489803，
+控制组`sii-rl-goal-c05f012de695.service` PID2489819，正则化组尚排队。
+准入可用内存7,941,910,528字节、GPU宿主核验36°C/15303MiB空闲，无旧RL worker；
+单模拟器CPU1/单线程、3GiB/swap0、CUDA0/.125/UTD1保持。原cp21262、相同reward/seed，
+每组最多新增11k至32262、1M优化日程，登记SHA `1be1942c09c6f03b5b361b0c694e9449331edd36aa0febd451e6055601a87f45`不变。
+启动证据核验21,590步/16,591更新、328次连续有限新更新，原checkpoint恢复hash一致；
+收工optimizer已22,000步/17,001更新，max/OOM/swap0。尚无本轮完整回合收益结论，不能预称正则有效。
+
+已核验共享（本地/暂存/最终大小与SHA一致，服务器仅存储/hash）：
+- `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stage02-close-20261016T1705/evidence.tar.gz`：
+  1,336,207,540字节，SHA `3e5e76e408cc07d153282e95727aa546cd10e7539d04e7bf605eb821e4745775`。
+  含VMC cp17875/19250/20625/22000/23375与对应5回合原始数据、完整11k日志、
+  四族screen/终态、容量/缓存释放收据及前4回合诊断、全部本轮脚本。
+- `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-actor-pair-launch-20261016T1708/evidence.tar.gz`：
+  206,410字节，SHA `6655309c511f9111d9f4a42680ab511aa4f4ec0cda28e85f65b738798ec65af3`。
+  含真实launch/恢复快照、登记和预检收据、328次连续新更新前缀及pair报告。后续训练原始数据仍本地，待闭合归档。
+
+下一步继续真实Direct两组在线对照，按完整失败/成功与相同条件、训练暴露核对结果；
+阻抗occupancy对照仍需容量，尚未派发。四方法最终收敛与统一测试仍未完成，不缩小Goal范围。
+
 ## 2026-10-17 00:38 CST — VMC真实推进与Direct在线对照接续核验
 
 开工查询/fetch/read远端main `f9969c69a396b94c6663cd05c6a048a9cfc91b0b`、
