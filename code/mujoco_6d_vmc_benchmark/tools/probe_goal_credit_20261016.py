@@ -54,7 +54,7 @@ def main():
             initial_temperature=cfg['temp_initial_value'], action_dimension=cfg['action_dimension'])
         agent.load(cp)
         assert agent.config['n_step'] == agent.raw_agent._cfg.n_step == 25
-        if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot':
+        if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot' or reg.get('actor_regularization_origin'):
             import hashlib
             from flax.serialization import to_bytes
             result['restored_agent_config']=dict(agent.config)

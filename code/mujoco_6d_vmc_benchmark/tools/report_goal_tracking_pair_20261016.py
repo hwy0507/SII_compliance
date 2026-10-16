@@ -1,4 +1,4 @@
-"""Compare registered training reward pilots; never rank different reward totals.
+"""Compare registered training pilots; never rank different reward totals.
 
 Metrics are native training audits, not independent final acceptance. Every
 attempt remains visible, including missing, partial, short, or invalid receipts.
@@ -11,7 +11,7 @@ import math
 from pathlib import Path
 from statistics import median
 
-from rl_goal_stage_20261016 import read, digest, verify_inputs
+from rl_goal_stage_20261016 import read, digest, verify_inputs, verify_preflight, job_parameter_source
 from goal_tracking_pilot_20261016 import validate_pair, verify_pilot_preflight
 
 METRICS = ('rmse_mm', 'peak_torque_nm', 'peak_speed_mps', 'penetration_mm',
@@ -128,9 +128,14 @@ def validate_protocol(protocol, job, registration_sha):
 
 def report(root):
     reg = read(root/'REGISTRATION.json')
-    validate_pair(reg)
+    regularized=reg.get('experiment_kind')=='resumed_actor_regularization_pilot'
+    if regularized:
+        from goal_actor_regularization_pilot_20261016 import validate_pair as validate_regularized_pair
+        validate_regularized_pair(reg)
+    else:
+        validate_pair(reg)
     verify_inputs(reg)
-    verify_pilot_preflight(reg)
+    verify_preflight(reg) if regularized else verify_pilot_preflight(reg)
     registration_sha = digest(root/'REGISTRATION.json')
     arms, records, protocols = {}, [], []
     for job in reg['jobs']:
@@ -138,10 +143,20 @@ def report(root):
         if path.exists():
             protocol = read(path.parent/'PROTOCOL.json')
             validate_protocol(protocol, job, registration_sha)
+            if regularized:
+                parent=read(Path(job['checkpoint']).parent/'PROTOCOL.json')
+                assert protocol['agent_config']==dict(parent['agent_config'],actor_bc_alpha=job['actor_bc_alpha'])
+                assert protocol['reward']==parent['reward'] and protocol['prior_file_sha256']==parent['prior_file_sha256']
+                assert protocol['parameter_source']==job_parameter_source(reg,job)
+                assert protocol['actor_regularization_migration']==job['actor_regularization_migration']
             protocols.append(protocol)
             # Read once so the embedded snapshot and its digest describe identical bytes.
             blob = path.read_bytes()
             state = json.loads(blob)
+            if regularized:
+                assert state['resumed_from']['checkpoint']==job['checkpoint']
+                assert state['resumed_from']['inherited_steps']==job['inherited_steps']
+                assert state['resumed_from']['hashes']==job['checkpoint_hashes']
             conditions = protocol['training_conditions']
             if any(row['condition_id'] != conditions[row['episode'] % len(conditions)]
                    for row in state['rows']):
@@ -157,10 +172,15 @@ def report(root):
         records.append(items)
     if len(protocols) == 2 and protocols[0]['training_conditions'] != protocols[1]['training_conditions']:
         raise ValueError('Pilot arms have different training conditions')
+    comparison=compare(*records)
+    if regularized:
+        for pair in comparison['pairs']:
+            if pair['comparable']:
+                pair['same_reward_return_delta_treatment_minus_control']=pair['treatment']['return_value']-pair['control']['return_value']
     return dict(observed_utc=datetime.now(timezone.utc).isoformat(),
         registration_sha256=registration_sha, arms=arms,
-        comparison=compare(*records), convergence_proven=False, final_acceptance=False,
-        limitations='Single-seed online training pilot. Matched identities and equal step windows only; policies keep changing within episodes. Different reward totals are shown only as arm-local records and never subtracted or ranked. Native metrics are not an independent physics/action replay audit. Missing, failed, short and invalid attempts remain visible; no success claim from low error alone.')
+        comparison=comparison, same_reward_definition=regularized,convergence_proven=False, final_acceptance=False,
+        limitations='Single-seed online training pilot. Matched identities and equal step windows only; policies keep changing within episodes. Return differences are allowed only for the registered same-reward actor-regularization pair. Different reward totals are never subtracted or ranked. Native metrics are not an independent physics/action replay audit. Missing, failed, short and invalid attempts remain visible; no success claim from low error alone.')
 
 
 if __name__ == '__main__':

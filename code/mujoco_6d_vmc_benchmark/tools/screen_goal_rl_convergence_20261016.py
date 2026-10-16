@@ -99,7 +99,7 @@ def collect(root):
             assert reg_hash == expected_reg, 'Parent registration changed'
             parent_state,parent_hash = read_bound(cursor/'execution.json')
             assert parent_hash == expected_execution and parent_state['status'] == 'finite_stage_complete'
-        if reg.get('selected_lineages'):
+        if reg.get('selected_lineages') or reg.get('experiment_kind')=='resumed_actor_regularization_pilot':
             return collect_selected(root)
         stages.append((reg,reg_hash))
         previous = reg.get('previous_stage')
@@ -164,9 +164,14 @@ def collect_selected(root):
     enters that method's return windows. Historical failures are not dropped.
     """
     latest, _ = read_bound(root/'REGISTRATION.json')
-    assert len(latest['jobs']) == 4
-    assert len({j['name'] for j in latest['jobs']}) == 4
-    assert {j['controller'] for j in latest['jobs']} == {None,'impedance','admittance','vmc'}
+    pair_scope=latest.get('experiment_kind')=='resumed_actor_regularization_pilot'
+    if pair_scope:
+        from goal_actor_regularization_pilot_20261016 import validate_pair
+        validate_pair(latest)
+    else:
+        assert len(latest['jobs']) == 4
+        assert len({j['name'] for j in latest['jobs']}) == 4
+        assert {j['controller'] for j in latest['jobs']} == {None,'impedance','admittance','vmc'}
     criteria = latest['training_convergence']
     methods, stage_roots = {}, []
     for final_job in latest['jobs']:
@@ -200,6 +205,16 @@ def collect_selected(root):
             cursor = Path(expected['root']).resolve()
         entry = dict(rows=[], evidence=[], fingerprint=None, conditions=None,
                      reported_status='not_started', cumulative_steps=chain[-1][2]['inherited_steps'])
+        first_reg,_,first_job,_=chain[-1]
+        if first_reg.get('experiment_kind')=='resumed_actor_regularization_pilot':
+            from goal_actor_regularization_pilot_20261016 import validate_pair
+            validate_pair(first_reg)
+            cp=Path(first_job['checkpoint'])
+            inherited,history_hash=read_bound(cp.parent/'execution.json')
+            entry['inherited_experimental_history']=dict(checkpoint=str(cp),checkpoint_hashes=first_job['checkpoint_hashes'],
+                execution_path=str(cp.parent/'execution.json'),execution_sha256=history_hash,execution_snapshot=inherited,
+                included_in_return_windows=False,
+                reason='Both paired arms start their prospective experimental windows at the registered checkpoint. Pre-treatment failures remain in this source receipt and its ancestry; optimizer/exposure are retained, not reset. Do not pool alpha0 history into alpha1 convergence windows.')
         for index, (reg, reg_hash, job, expected) in enumerate(reversed(chain)):
             if reg['run_root'] not in stage_roots:
                 stage_roots.append(reg['run_root'])
@@ -233,9 +248,10 @@ def collect_selected(root):
         entry.pop('rows'); entry.pop('fingerprint')
         methods[final_job['name']] = entry
     return dict(criteria=criteria,methods=methods,stage_roots=stage_roots,
-        all_training_candidates=all(m['screen']['training_candidate'] for m in methods.values()),
+        four_family_scope=not pair_scope,
+        all_training_candidates=not pair_scope and all(m['screen']['training_candidate'] for m in methods.values()),
         acceptance_performed=False,goal_complete=False,
-        interpretation='Training-only screen of each exact selected lineage. Nonselected pilot arms remain in original receipts and are never pooled. All selected-lineage failures remain counted; final acceptance and independent audits still required.')
+        interpretation='Training-only screen of each exact selected lineage. Nonselected pilot arms remain in original receipts and are never pooled. Fixed-treatment failures remain counted; inherited pre-treatment history is separately preserved when starting a resumed experimental pair. Final acceptance and independent audits still required.')
 
 
 def main():

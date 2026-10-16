@@ -8,21 +8,47 @@ from pathlib import Path
 import shutil
 
 from rl_goal_stage_20261016 import (BENCH, read, write, digest, manifest,
-    prepare_next, verify_inputs, completed_stage_checkpoints)
+    prepare_next, verify_inputs, completed_stage_checkpoints, job_parameter_source)
 from rl_recovery_control_20261016 import verify_checkpoint
 
 FAMILIES = {None, 'impedance', 'admittance', 'vmc'}
 # Only dispatch/preflight tooling may differ. Every other frozen source and the
-# entire parameter implementation must agree, including trainer and reward code.
+# shared parameter implementation must agree. A job-specific loss adapter must
+# match its explicitly selected parent; the trainer migration is pinned below.
 PLUMBING = {'tools/' + name for name in (
     'rl_goal_stage_20261016.py', 'probe_goal_credit_20261016.py',
     'goal_compute_backend_20261016.py', 'goal_tracking_pilot_20261016.py',
-    'goal_selected_continuation_20261016.py')}
+    'goal_selected_continuation_20261016.py', 'goal_actor_regularization_pilot_20261016.py',
+    'goal_actor_regularization_20261016.py')}
 JOB_FIELDS = ('controller', 'seed', 'reward', 'reward_variant', 'hp')
+ACTOR_PILOT = 'resumed_actor_regularization_pilot'
+TRAINER = 'tools/train_v4_recovery_rl_20261016.py'
 
 
 def frozen(manifest_data):
     return {k: v for k, v in manifest_data.items() if k not in PLUMBING}
+
+
+def regularization_origin(reg):
+    if reg.get('experiment_kind') == ACTOR_PILOT:
+        return dict(root=reg['run_root'],registration_sha256=digest(Path(reg['run_root'])/'REGISTRATION.json'))
+    return reg.get('actor_regularization_origin')
+
+
+def training_source(reg):
+    """Normalize only the pinned loss-migration plumbing, never physics/reward."""
+    data=dict(reg['source_manifest'])
+    origin=regularization_origin(reg)
+    if origin:
+        root=Path(origin['root'])
+        assert digest(root/'REGISTRATION.json')==origin['registration_sha256']
+        pilot=read(root/'REGISTRATION.json')
+        from goal_actor_regularization_pilot_20261016 import validate_pair
+        validate_pair(pilot)
+        assert data[TRAINER]==pilot['source_manifest'][TRAINER], 'Unregistered trainer change'
+        parent=read(Path(pilot['pilot_predecessor']['root'])/'REGISTRATION.json')
+        data[TRAINER]=parent['source_manifest'][TRAINER]
+    return frozen(data)
 
 
 def closed_source(root):
@@ -33,7 +59,11 @@ def closed_source(root):
     state = read(root/'execution.json')
     assert state['registration_sha256'] == digest(root/'REGISTRATION.json')
     assert state['status'] == 'finite_stage_complete' and state.get('active') is None
-    if reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot'):
+    if reg.get('experiment_kind') == ACTOR_PILOT:
+        from goal_actor_regularization_pilot_20261016 import require_predecessor_complete
+        require_predecessor_complete(reg)
+        checked = {}
+    elif reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot'):
         from goal_tracking_pilot_20261016 import validate_pair
         validate_pair(reg)
         checked = {}
@@ -63,8 +93,13 @@ def closed_source(root):
             assert spec[key] == job[field]
         assert spec['reward']['mode'] == job['reward']
         assert spec.get('tracking_guidance') == job.get('tracking_guidance')
+        if regularization_origin(reg):
+            assert spec['agent_config']['actor_bc_alpha']==job.get('actor_bc_alpha',0.)
         result[job['name']] = dict(job=job, checkpoint=cp,
-            execution_sha256=digest(output/'execution.json'), protocol_sha256=digest(output/'PROTOCOL.json'))
+            execution_sha256=digest(output/'execution.json'), protocol_sha256=digest(output/'PROTOCOL.json'),
+            parameter_source=job_parameter_source(reg,job),
+            parameter_manifest=manifest(Path(job_parameter_source(reg,job))),
+            regularization_origin=regularization_origin(reg))
     return reg, result
 
 
@@ -73,7 +108,7 @@ def compatible(current, parent):
                 'optimizer_schedule_steps','resources','training_convergence'):
         assert current[key] == parent[key], f'Incompatible lineage {key}'
     assert current['parameter_manifest'] == parent['parameter_manifest'], 'Parameter implementation differs'
-    assert frozen(current['source_manifest']) == frozen(parent['source_manifest']), 'Frozen training source differs'
+    assert training_source(current) == training_source(parent), 'Frozen training source differs'
 
 
 def verify_selected_lineages(reg):
@@ -97,6 +132,9 @@ def verify_selected_lineages(reg):
         old, cp = selected['job'], selected['checkpoint']
         assert all(job[k] == old[k] for k in JOB_FIELDS), 'Selected training objective/identity changed'
         assert job.get('tracking_guidance') == old.get('tracking_guidance'), 'Selected reward changed'
+        assert manifest(Path(job_parameter_source(reg,job)))==selected['parameter_manifest'], 'Selected agent implementation changed'
+        assert job.get('actor_bc_alpha',0.)==old.get('actor_bc_alpha',0.)
+        assert not job.get('actor_regularization_migration'), 'A selected checkpoint is already migrated'
         assert job['checkpoint'] == cp['path'] and job['checkpoint_hashes'] == cp['hashes']
         assert job['inherited_steps'] == cp['step']
         assert job['parent_execution_sha256'] == selected['execution_sha256']
@@ -130,10 +168,16 @@ def prepare_selected(base, selection, destination, interactions_per_family=11000
         lineages[base_job['name']] = dict(root=str(root),job=choice['job'],rationale=choice['rationale'],
             registration_sha256=digest(root/'REGISTRATION.json'),execution_sha256=digest(root/'execution.json'),
             protocol_sha256=item['protocol_sha256'])
+    origins=[item['regularization_origin'] for item in chosen.values() if item['regularization_origin']]
+    assert not origins or all(origin==origins[0] for origin in origins), 'Mixed migration origins require a new explicit protocol'
     reg = prepare_next(base, destination, interactions_per_family=interactions_per_family)
     reg.pop('previous_stage')
     reg.update(selected_lineages=lineages, selection_basis=selection['decision'],
         evidence_basis='Explicit four-method checkpoint selection from closed sources; preserved objectives, replay, optimizer, normalizers and RNG. No convergence claim.')
+    if origins:
+        reg['actor_regularization_origin']=origins[0]
+        pilot=read(Path(origins[0]['root'])/'REGISTRATION.json')
+        shutil.copy2(Path(pilot['source'])/TRAINER,Path(reg['source'])/TRAINER)
     for job in reg['jobs']:
         item = chosen[job['name']]
         old, cp = item['job'], item['checkpoint']
@@ -141,12 +185,20 @@ def prepare_selected(base, selection, destination, interactions_per_family=11000
         job.pop('tracking_guidance', None)
         if old.get('tracking_guidance') is not None:
             job['tracking_guidance'] = old['tracking_guidance']
+        job.pop('parameter_source',None);job.pop('parameter_manifest',None)
+        if item['parameter_manifest']!=reg['parameter_manifest']:
+            parameter=destination/'selected_parameter_by_job'/job['name']
+            shutil.copytree(item['parameter_source'],parameter,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
+            job.update(parameter_source=str(parameter),parameter_manifest=item['parameter_manifest'])
+        if reg.get('actor_regularization_origin'):
+            job.update(actor_bc_alpha=old.get('actor_bc_alpha',0.),actor_regularization_migration=False)
         job.update(checkpoint=cp['path'],checkpoint_hashes=cp['hashes'],inherited_steps=cp['step'],
             limit=cp['step']+interactions_per_family,parent_execution_sha256=item['execution_sha256'],
             credit_migration=False,backend_migration=False)
     # A four-family base can predate the pilot tooling. Selected ancestors are
     # validated at runtime, so their dispatch validator must travel with us too.
-    for name in ('goal_selected_continuation_20261016.py','goal_tracking_pilot_20261016.py'):
+    for name in ('goal_selected_continuation_20261016.py','goal_tracking_pilot_20261016.py',
+                 'goal_actor_regularization_pilot_20261016.py','goal_actor_regularization_20261016.py'):
         shutil.copy2(BENCH/'tools'/name,Path(reg['source'])/'tools'/name)
     reg['source_manifest'] = manifest(Path(reg['source']))
     write(destination/'REGISTRATION.json', reg)

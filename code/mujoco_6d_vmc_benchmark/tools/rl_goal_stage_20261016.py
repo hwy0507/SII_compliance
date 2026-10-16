@@ -227,6 +227,10 @@ def prepare_next(previous, destination, gpu_preflight=False, interactions_per_fa
     # its backend plumbing only. Physics/worker/parameter snapshots stay frozen.
     for name in ('rl_goal_stage_20261016.py', 'probe_goal_credit_20261016.py', 'goal_compute_backend_20261016.py'):
         shutil.copy2(BENCH / 'tools' / name, source / 'tools' / name)
+    if old.get('actor_regularization_origin'):
+        for name in ('goal_selected_continuation_20261016.py','goal_actor_regularization_pilot_20261016.py',
+                     'goal_actor_regularization_20261016.py'):
+            shutil.copy2(BENCH/'tools'/name,source/'tools'/name)
     if gpu_preflight:
         shutil.copy2(BENCH/'tools/train_v4_recovery_rl_20261016.py', source/'tools/train_v4_recovery_rl_20261016.py')
         shutil.copy2(BENCH/'tools/goal_tracking_reward_20261016.py', source/'tools/goal_tracking_reward_20261016.py')
@@ -248,6 +252,11 @@ def prepare_next(previous, destination, gpu_preflight=False, interactions_per_fa
             backend_migration=gpu_preflight and backend(old) == 'cpu',
             parent_execution_sha256=digest(Path(job['output']) / 'execution.json'),
             output=str(output), unit='sii-rl-goal-'+hashlib.sha256(str(output).encode()).hexdigest()[:12]))
+        if job.get('parameter_source'):
+            alternate=destination/'parameter_by_job'/job['name']
+            shutil.copytree(job_parameter_source(old,job),alternate,ignore=ignore)
+            jobs[-1].update(parameter_source=str(alternate),parameter_manifest=manifest(alternate),
+                           actor_regularization_migration=False)
     reg.update(registered_utc=started.isoformat(), run_root=str(destination), source=str(source),
         parameter_source=str(parameter), source_manifest=manifest(source), parameter_manifest=manifest(parameter),
         source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=BENCH,text=True).strip(),
@@ -302,6 +311,12 @@ def verify_inputs(reg):
     if reg.get('selected_lineages'):
         from goal_selected_continuation_20261016 import verify_selected_lineages
         verify_selected_lineages(reg)
+    if reg.get('actor_regularization_origin'):
+        from goal_selected_continuation_20261016 import training_source
+        training_source(reg)
+        for job in reg['jobs']:
+            if job.get('parameter_source'):
+                assert manifest(Path(job_parameter_source(reg,job)))==job['parameter_manifest']
     if backend(reg) == 'cuda' and reg.get('experiment_kind') != 'gpu_training_preflight':
         validated = reg['gpu_training_validation']; previous = Path(validated['root'])
         assert digest(previous/'REGISTRATION.json') == validated['registration_sha256']
@@ -316,6 +331,13 @@ def verify_inputs(reg):
             cp = Path(job['checkpoint'])
             assert digest(cp.parent/'execution.json') == job['parent_execution_sha256']
             assert verify_checkpoint(cp)['hashes'] == job['checkpoint_hashes']
+            if reg.get('actor_regularization_origin'):
+                parent=read(root/'REGISTRATION.json')
+                original=next(j for j in parent['jobs'] if j['name']==job['name'])
+                assert reg['actor_regularization_origin']==parent['actor_regularization_origin']
+                assert manifest(Path(job_parameter_source(reg,job)))==manifest(Path(job_parameter_source(parent,original)))
+                assert job.get('actor_bc_alpha',0.)==original.get('actor_bc_alpha',0.)
+                assert not job.get('actor_regularization_migration')
 
 
 def verify_preflight(reg):
@@ -339,7 +361,7 @@ def verify_preflight(reg):
             assert result['checkpoint_hashes_unchanged'] and result['inherited_steps'] == job['inherited_steps']
             assert result['actual_n_step'] == 25 and result['restored_raw_replay_count'] == job['inherited_steps']
             assert result['finite_update_metrics'] and result['terminal_windows_match'] and result['no_cross_episode_bootstrap']
-            if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot':
+            if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot' or reg.get('actor_regularization_origin'):
                 from goal_actor_regularization_pilot_20261016 import verify_restoration
                 verify_restoration(reg,job,result)
             if backend(reg) == 'cuda':
@@ -364,7 +386,7 @@ def seal_preflight(root):
         assert result['inherited_steps'] == job['inherited_steps']
         assert result['actual_n_step'] == 25 and result['restored_raw_replay_count'] == job['inherited_steps']
         assert result['finite_update_metrics'] and result['terminal_windows_match'] and result['no_cross_episode_bootstrap']
-        if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot':
+        if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot' or reg.get('actor_regularization_origin'):
             from goal_actor_regularization_pilot_20261016 import verify_restoration
             verify_restoration(reg,job,result)
         if backend(reg) == 'cuda':
@@ -378,7 +400,8 @@ def seal_preflight(root):
 
 def job_parameter_source(reg, job):
     if job.get('parameter_source') is not None:
-        assert reg.get('experiment_kind') == 'resumed_actor_regularization_pilot'
+        assert reg.get('experiment_kind') == 'resumed_actor_regularization_pilot' or (
+            reg.get('actor_regularization_origin') and (reg.get('selected_lineages') or reg.get('previous_stage')))
         return job['parameter_source']
     return reg['parameter_source']
 

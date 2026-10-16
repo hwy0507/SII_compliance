@@ -1,5 +1,50 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 23:00 CST：分支可接续与统计隔离完成，阻抗仍在真实学习
+
+开工main `e19fedae55647bc71bfad01df66d25b36a93104b`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已实时查询/fetch/read；开工/收工读AGENTS，上一轮为实质进展。
+原stage02_v2协调器2447861、阻抗2455377持续active。归档快照17,000交互/12,001更新，
+收工18,250交互/13,251更新；新增4个完整55秒回合均physical_valid，但Task/Strict全失败。
+return为−25.729180、−27.340559、−26.037487、−25.273970。前三个checkpoint13750/15125/16500
+及4125条连续有限更新/逐回合reward和/hash已核验，第四个cp17875及其原始轨迹仍仅本地待归档。
+最新峰值3GiB、memory.max事件287、OOM/swap0；没有重启或改动活动冻结source。
+
+`goal_selected_continuation`现在支持已完成的actor正则化pair：必须两组均闭合，显式选型，
+四方法来源各自绑定登记/执行/协议/checkpoint hash，参数实现跟随实际选中分支。
+alpha1策略后续恢复使用普通严格加载，不重复alpha0→1迁移；`prepare_next`复制并验证方法专属参数快照。
+迁移trainer必须等于原登记pair快照，归一化来源只用于核对这一已登记的迁移入口，其余物理和reward源码仍逐hash一致。
+显式选择原alpha0来源时必须重写alpha元数据，避免沿用四族模板中的alpha1标记。
+当前没有实际采用任何pair分支，pair和正在运行的stage快照完全未动。
+
+配对报告支持新same-reward alpha0/1试验，只在完整回合身份及训练步窗口一致时比较指标和return；
+要求实际reward完整定义/prior/config/恢复checkpoint匹配。短失败、不完整、无效或缺少对应回合全部保留。
+收敛screen可查看两组但不会把两组Direct标成四族全部候选；选型后的统计跟随真实分支。
+两组的前处理训练历史另存完整源execution及checkpoint hash，不混入试验起点后的固定配置窗口；
+处理后的失败仍全部计入分母，试验前失败仍可追溯，恢复的optimizer和交互计数并未清零。
+原96回合/两个32条件窗口/稳定回报且每窗Task AND Strict≥90%的筛选要求不变。
+
+90项Goal unittest通过：合成闭合pair→四族alpha1选型→再接续、隔离snapshot导入、
+错误alpha/参数/训练源码/reward拒绝、未结束pair不允许选型、改回原alpha0不保留旧标记、历史失败保留。
+这不是实际alpha1后续回合验证；真实在线pair仍两组not_started，无LAUNCH/execution。
+真实四族screen保留Direct18闭合/14完整/13物理有效/0joint；阻抗快照12闭合/12完整/0joint及1在途；
+导纳与VMC各9历史闭合/0joint，本阶段仍排队。所有方法training_candidate=false，最终acceptance未运行。
+
+本轮证据根`outputs/rl_goal_regularized_lineage_tools_20261016`包含pair未开始报告/screen、四族screen、
+监视及前三个阻抗cp/完整原始回合证据。服务器已核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-regularized-lineage-20261016T1455/`。
+`evidence.tar.gz`808,823,865字节，SHA256 `1553ff87d7c62ad6f5c0e18e6b95eb905504debb36b9c1ebcdb7019602182122`。
+打包后进一步收紧完整reward定义比较、补充回归测试；最终代码见同目录`source_final.tar.gz`，
+21,964字节，SHA256 `d31acdcb7af0d0e0d53fa381b68b9288cf1cbad34939d8a95fc8333efa1bc98f`。
+代码按未提交内容快照标识，不冒称原base commit已含新实现；本地/服务器最终hash一致，服务器只归档。
+
+重复传输缓存`/tmp/rl-goal-direct-credit-regularization-20261016T1415.tar.gz`和
+`/tmp/rl-goal-bc-online-ready-20261016T1440.tar.gz`经重新核验本地/远端大小/hash后移除，共2,479,027,859字节。
+对应服务器包仍完整，原始回合和checkpoint未删除；下载各自服务器`evidence.tar.gz`可恢复缓存。
+释放收据`TRANSFER_CACHE_RELEASE_20261016T1500.json`保留本地并同步服务器；free61.18→63.66GB，50GiB保护保持。
+下一步继续当前阻抗→导纳→VMC，完成后重检磁盘和前置闭合状态再启动alpha0/1在线对照。
+本轮没有修改奖励、actor输入、物理/gate或活动训练快照，没有重复worker；Goal active。
+
 ## 22:40 CST：Direct闭合，actor正则化在线接续已验证但尚未派发
 
 开工实时查询/fetch/read main `610cdbc5a94369b6ac3c9e2ed8358dcf7212cef5`、baseline

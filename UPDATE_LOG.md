@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2026-10-16 23:00 CST — 正则化分支跨阶段接续、独立统计与阻抗真实推进
+
+- 开工实时查询/fetch/read main `e19fedae55647bc71bfad01df66d25b36a93104b`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工重读AGENTS；上一轮属于实质进展。
+  原协调器2447861/阻抗2455377持续active，17,000步/12,001更新归档快照；收工18,250步/13,251更新。
+  新4完整回合均physical_valid、Task/Strict0/4，return−25.729180/−27.340559/−26.037487/−25.273970。
+  前3回合/cp13750/15125/16500及4125条连续有限更新、逐回合reward和/hash核验；第4回合仍仅本地待归档。
+- 补齐actor正则化pair的显式选型与四族接续：只接受两组均结束的来源，绑定迁移来源/实际参数快照，
+  保留模型与optimizer/replay/normalizer/RNG；后续恢复不再次迁移。既有冻结trainer只允许替换为已登记pair中的
+  迁移版本，其余物理/reward源码仍精确一致。支持后续普通阶段复制各方法参数快照；显式改选alpha0时清除旧alpha1元数据。
+  没有实际选型、没有启动新worker、没有改动已预检pair或活动stage快照。
+- 配对报告支持同reward的alpha0/1比较，要求实际reward完整定义、prior、配置、恢复来源均匹配；
+  不同reward仍不作return差。收敛screen单列两组，选型后追踪真正分支；前处理历史失败保留为源收据，
+  不混入处理后的固定配置回报窗口。两组Direct试验不能冒充四族全部候选。
+  90项Goal测试通过，含alpha1选型→再接续两阶段、隔离快照导入、错误来源/参数/reward拒绝、失败不丢失。
+  这些接续测试使用合成闭合收据，不声称已实际训练alpha1。真实pair report为两组not_started；四族screen均未收敛。
+- 实际证据与前三个阻抗回合/cp已核验服务器目录：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-regularized-lineage-20261016T1455/`。
+  `evidence.tar.gz`808,823,865字节，SHA `1553ff87d7c62ad6f5c0e18e6b95eb905504debb36b9c1ebcdb7019602182122`；
+  最终源码/测试补包`source_final.tar.gz`21,964字节，SHA `d31acdcb7af0d0e0d53fa381b68b9288cf1cbad34939d8a95fc8333efa1bc98f`，
+  含打包后追加的完整reward定义检查和回归测试，以该补包为最终代码；本地/暂存/最终hash一致，服务器仅存储/hash。
+- 核验远端副本后释放T1415/T1440两份重复传输tar缓存，共2,479,027,859字节；原始回合/checkpoint均未删除，
+  可从各自服务器evidence.tar.gz恢复缓存。free61.18→63.66GB，保持50GiB保护；释放收据另行保存/同步。
+  阻抗最新峰值3GiB/max事件287、OOM/swap0，未重启健康进程。Goal active；继续阻抗→导纳→VMC，
+  完成后重新核对空间和前置状态再派发已预检对照。最终acceptance尚未运行，不把失败平台或工具测试当收敛。
+
 ## 2026-10-16 22:40 CST — Direct阶段闭合与保留优化器的actor正则化在线对照准备
 
 - 实时查询/fetch/read main `610cdbc5a94369b6ac3c9e2ed8358dcf7212cef5`、baseline

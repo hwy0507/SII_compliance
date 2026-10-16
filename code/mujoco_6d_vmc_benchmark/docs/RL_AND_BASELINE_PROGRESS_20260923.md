@@ -1,5 +1,20 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 23:00 CST 正则化分支接续与失败统计保持
+
+原阻抗worker2455377未重启，归档快照17,000步/12,001更新，收工18,250步/13,251更新。
+新增4完整55秒回合、physical_valid4/4、Task/Strict0/4；前三回合/cp13750/15125/16500及4125连续有限更新已核验归档。
+补齐已完成正则化pair→显式选型→四族接续→后续普通阶段入口，保留各方法实际参数快照/optimizer/replay，
+不重复迁移；分支前失败另存源收据，处理后固定配置窗口不混用旧回报，短失败和在途回合仍明确计数。
+90项Goal测试通过，跨阶段测试为合成闭合收据；真实pair仍未开始，未选赢家、未修改任何活动source。
+同reward配对报告要求完整reward/prior/config/恢复来源相符；只有等身份/等曝光的完整回合作比较。
+证据服务器目录`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-regularized-lineage-20261016T1455/`，
+evidence.tar.gz SHA `1553ff87d7c62ad6f5c0e18e6b95eb905504debb36b9c1ebcdb7019602182122`（808,823,865字节），
+最终代码source_final.tar.gz SHA `d31acdcb7af0d0e0d53fa381b68b9288cf1cbad34939d8a95fc8333efa1bc98f`（21,964字节），本地/远端一致。
+核验远端后移除T1415/T1440两份重复传输缓存2,479,027,859字节，可从服务器恢复；原始回合/checkpoint零删除。
+free升至63.66GB；阻抗峰3GiB/max287、OOM/swap0。开工main e19feda/baseline f6e8f8c已查询/fetch/read，收工重读AGENTS。
+Goal active，继续四族队列及后续在线验证，所有方法未证实收敛，未最终acceptance。
+
 ## 2026-10-16 22:40 CST Direct闭合与actor正则化配对接续预检
 
 stage02_v2 Direct完成有限段21,262步/16,263更新，新增10回合=7完整+3穿透短终止；
