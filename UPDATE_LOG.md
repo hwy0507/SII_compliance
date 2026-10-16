@@ -1,5 +1,25 @@
 # 更新日志
 
+## 2026-10-16 17:20 CST — VMC跨过热身，首次学习checkpoint与501次更新核验
+
+- 开工实时查询/fetch/read main `8cb0812f2ec6ccc4551e602d71190581f5ee8038`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/Goal进度。上一轮为诊断修正与归档进展。
+  原VMC PID2375301、协调器2329290持续active；本轮4750/0→6000/1001（steps/updates），
+  第5回合worker2380589在途。仅一个trainer/模拟器，没有重复启动或修改运行快照。
+- 完成4个55秒回合，physical_valid4/4、Task/Strict0/4。第3/4 return分别−25.243592718/
+  −25.284312267，前四reward独立求和通过。cp4125与5500逐文件及tar成员hash通过；
+  第4回合末501条optimizer记录连续对应step5000–5500、update1–501，所有指标有限。
+  保存状态updates0→501，actor/critic/target critic/temperature四类文件hash均变化；
+  证明真实学习并落盘，不证明策略改善或收敛。step5500 temperature .00958600。
+- 第3/4回合末10秒carry cursor18–20/28、位置误差约12–19mm，位置/重入0/250，
+  姿态/速度250/250；实际参数变化且energy_scale1。不同条件与25Hz采样不支持因果改善或最终子步审计。
+  归档快照current3,096,887,296、peak3,147,325,440/上限3GiB，max/OOM/kill0、swap0；
+  主机GPU42°C/511MiB，训练仍CPU。归档检查服务exit0，未执行梯度或新仿真。
+- 第3/4原始回合、cp4125/5500、前四reward诊断、501条更新及资源/源码收据已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-vmc-learning-20261016T0915/evidence.tar.gz`，
+  461,230,645字节，SHA256 `bce8ae27d12b34b3097b19045d61bccb73359cf8d6dfc6108832593d075b1c79`。
+  本机计算、服务器仅归档。Goal active；VMC继续既定11k段，随后GPU完整循环/奖励对照，未做最终验收。
+
 ## 2026-10-16 17:05 CST — 导纳critic残差按入库时间拆分，VMC前两回合保全
 
 - 开工实时查询/fetch/read main `f1f7630985f107101b12bed3f3d8275cc3c2c927`、baseline

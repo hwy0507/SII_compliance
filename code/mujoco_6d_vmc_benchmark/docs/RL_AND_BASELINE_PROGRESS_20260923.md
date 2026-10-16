@@ -1,5 +1,14 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 17:20 CST VMC学习更新与checkpoint实际变化通过核验
+
+VMC原PID2375301推进至6000步/1001更新，4个完整55秒回合Task/Strict0/4、physical_valid4/4，
+第4 return−25.284312267。cp4125→5500中updates0→501，四类网络文件hash变化，501条更新
+连续且指标有限；首次学习已落盘但尚无收敛。第5在途，OOM0/swap0，冻结源/限制不变。
+第3/4回合、两checkpoint及更新/奖励/资源证据已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-vmc-learning-20261016T0915/evidence.tar.gz`，
+SHA256 `bce8ae27d12b34b3097b19045d61bccb73359cf8d6dfc6108832593d075b1c79`。Goal active，训练继续。
+
 ## 2026-10-16 17:05 CST 导纳critic诊断分层，VMC两完整热身回合
 
 VMC原trainer到3500步/0更新（5000热身），两完整55秒回合Task/Strict0/2、physical_valid2/2，

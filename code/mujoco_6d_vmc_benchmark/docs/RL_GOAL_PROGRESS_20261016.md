@@ -4,6 +4,33 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 17:20 CST：VMC从热身进入真实梯度学习，首次学习checkpoint保全
+
+本轮开工main `8cb0812f2ec6ccc4551e602d71190581f5ee8038`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已实时查询/fetch/read，AGENTS/本进度重读。
+上一轮为进展；本轮核验原服务/进程并等待实际热身切换。PID2375301与协调器2329290不变，
+4750步/0更新→6000步/1001更新；第5回合worker2380589在途，仅一个模拟器，未重启或改冻结源。
+
+前四完整55秒回合physical_valid4/4、Task/Strict0/4；第3/4 return−25.243592718/
+−25.284312267。cp4125/5500所有hash及归档内成员通过，前四回合reward独立重算一致。
+step5000–5500对应501条连续有限optimizer记录，保存的agent updates从0变501，
+actor/critic/target critic/temperature四类文件都变化。step5500温度.0095859971，
+critic loss8.947832、actor loss−.106940；只证明更新与保存真实发生，不是loss越小越成功的判据。
+第3/4回合末10秒carry cursor18–20/28，位置误差分别12.008–18.755mm及12.071–18.073mm，
+位置/重入0/250、姿态/速度250/250，参数变化且energy_scale1。第4后段已包含学习动作，
+但不同condition/早期曝光不能作因果改善结论，25Hz也不替代最终物理子步审计。
+
+归档快照5500/501：memory.current3,096,887,296，peak3,147,325,440，max3,221,225,472字节，
+memory.events.max/OOM/kill均0、swap0。随后仍真实推进，未把接近上限本身当作重启理由。
+主机GPU42°C/511MiB仅资源观察，当前训练仍CPU。只读核验/压缩服务exit0，没有梯度或额外仿真。
+
+核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-vmc-learning-20261016T0915/evidence.tar.gz`
+（461,230,645字节，SHA256 `bce8ae27d12b34b3097b19045d61bccb73359cf8d6dfc6108832593d075b1c79`），
+含第3/4回合与两个checkpoint、前四reward诊断、501条更新、网络hash变化与资源/执行快照/复现脚本。
+前两回合另见0900包；后续在途数据仍在本机。Goal active，继续完成VMC既定段，再执行真实四族GPU
+完整循环与已登记奖励对照。四族尚未证明收敛，没有统一acceptance或最终审计通过结论。
+
 ## 17:05 CST：区分新旧终端窗口，VMC完成两次热身回合
 
 本轮核对远端main `f1f7630985f107101b12bed3f3d8275cc3c2c927`、baseline
