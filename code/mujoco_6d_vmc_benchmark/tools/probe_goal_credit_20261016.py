@@ -8,6 +8,7 @@ import sys
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--root', type=Path, required=True)
+    parser.add_argument('--job', help='Required per-family preflight for exact continuation stages')
     args = parser.parse_args()
     root = args.root.resolve()
     sys.path.insert(0, str(root / 'source/tools'))
@@ -16,9 +17,17 @@ def main():
     from baseline_repair_rl_diagnostics_20261008 import flatten_metrics
     reg = read(root / 'REGISTRATION.json')
     verify_inputs(reg)
-    out = root / 'CREDIT_PREFLIGHT.json'
+    if reg.get('preflight_required_jobs'):
+        assert args.job in reg['preflight_required_jobs']
+        job = next(j for j in reg['jobs'] if j['name'] == args.job)
+        out = root / f'CREDIT_PREFLIGHT_{args.job}.json'
+    else:
+        assert args.job is None
+        job = reg['jobs'][0]
+        out = root / 'CREDIT_PREFLIGHT.json'
     assert not out.exists()
     result = dict(status='running', simulation=False, gradient_updates=1, model_saved=False,
+                  job=job['name'], checkpoint=job['checkpoint'],
                   registration_sha256=digest(root / 'REGISTRATION.json'))
     write(out, result)
     try:
@@ -29,8 +38,10 @@ def main():
         import numpy as np
         from official_parameter_agent import OfficialParameterAgent
         from multistep_rl_replay_20261009 import MultiStepReplay
-        job = reg['jobs'][0]
         cp = Path(job['checkpoint'])
+        expected_hashes = job.get('checkpoint_hashes', reg.get('parent_checkpoint_hashes'))
+        assert expected_hashes and all(digest(cp/k)==v for k,v in expected_hashes.items())
+        result['checkpoint_hashes'] = expected_hashes
         spec = read(cp.parent / 'PROTOCOL.json')
         cfg = spec['agent_config']
         agent = OfficialParameterAgent(seed=job['seed'], total_steps=reg['optimizer_schedule_steps'],
@@ -41,20 +52,31 @@ def main():
         runner = read(cp/'office_runner.json')
         replay = MultiStepReplay(reg['optimizer_schedule_steps'], cfg['action_dimension'],
             job['seed']+53, n_step=25, gamma=cfg['gamma'])
-        replay.restore(cp/'office_replay.npz', migrated_replay_metadata(runner['replay'],runner['step'],cfg['gamma']))
-        ids = np.arange(runner['step']-25, runner['step'])
+        metadata = runner['replay']
+        if job['credit_migration']:
+            metadata = migrated_replay_metadata(metadata,runner['step'],cfg['gamma'])
+        replay.restore(cp/'office_replay.npz', metadata)
+        # Include the final window even when a short safety-aborted episode is
+        # shorter than25: independently stop each sum at its first true terminal.
+        ids = np.arange(max(0,runner['step']-25), runner['step'])
         batch = replay.at(ids)
-        expected = [sum(cfg['gamma']**j*float(replay.data['reward'][i+j])
-                        for j in range(runner['step']-i)) for i in ids]
+        expected, ends = [], []
+        for i in ids:
+            total = 0.
+            for j in range(25):
+                total += cfg['gamma']**j*float(replay.data['reward'][i+j])
+                if replay.data['terminated'][i+j]:
+                    break
+            expected.append(total)
+            ends.append(i+j)
         np.testing.assert_allclose(batch['reward'], expected, atol=2e-6, rtol=2e-6)
-        np.testing.assert_array_equal(batch['terminated'], np.ones(25))
-        np.testing.assert_array_equal(batch['next_observation'],
-            np.repeat(replay.data['next_observation'][runner['step']-1][None,:],25,axis=0))
+        np.testing.assert_array_equal(batch['terminated'], np.ones(len(ids)))
+        np.testing.assert_array_equal(batch['next_observation'], replay.data['next_observation'][ends])
         before = agent.updates
         metrics = flatten_metrics(agent.update(replay.sample(256)))
         assert agent.updates == before+1
         assert all(np.isfinite(v) for v in metrics.values())
-        assert all(digest(cp/k)==v for k,v in reg['parent_checkpoint_hashes'].items())
+        assert all(digest(cp/k)==v for k,v in expected_hashes.items())
         result.update(status='passed', inherited_steps=runner['step'], actual_n_step=25,
             terminal_windows_match=True, no_cross_episode_bootstrap=True,
             restored_raw_replay_count=replay.count, finite_update_metrics=True, metrics=metrics,

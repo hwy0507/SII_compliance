@@ -1,5 +1,24 @@
 # 更新日志
 
+## 2026-10-16 13:31 CST — 补齐四类RL精确接续与逐方法恢复预检
+
+- 查询/fetch/read main `24fd0bd0dc6fda266053bcee6b7ddf7dd23dcd1b`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/Goal进度；同一训练服务真实active，
+  54,500步/88,158更新，新增3969/3969。两结束回合Task/Strict0/2，第三回合在途，其他三类排队。
+- 阶段工具新增prepare-next，要求四族上一阶段全部闭合，逐一核对各自最终checkpoint、
+  trainer/协调器状态和父execution hash；保留各自网络/优化器/RNG/raw replay，单族仍新增
+  11k/总日程1M。沿用上一冻结trainer/worker/物理/parameter，只更新协调器与预检脚本。
+  四方法真实预检各自通过并封存hash后才允许新阶段launch；当前没有建立stage02或重复派发。
+- 15项相关测试通过。当前running stage真实提前接续被拒绝且无新目录；真实53,281步n25
+  checkpoint/replay恢复、采样RNG重复性及一次丢弃更新通过，原文件hash未改。探针exit0、
+  峰值1,128,882,176字节、OOM0；不包含新仿真或模型保存，不冒充其余三方法真实预检通过。
+- 13:31训练worker内存2,604,490,752字节、峰值2,685,267,968，硬限3GiB/swap0、OOM0。
+  Goal继续，四方法收敛/最终acceptance和独立审计均未完成；新阶段启动仍需本阶段完成证据。
+- 本轮源码/测试/恢复探针与运行检查脚本/收据归档核验至
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-continuation-20261016T0530/evidence.tar.gz`，
+  14,259字节，SHA256 `bcde86e186923ad2679e97160ee328eb8018216cb0a5d405928c4f0c0b466ea9`。
+  服务器只归档/hash，53,281及之后checkpoint/原始轨迹仍本机待同步。
+
 ## 2026-10-16 13:22 CST — RL真实推进，补齐只读Bellman目标和动作外推诊断
 
 - 开工查询/fetch/read main `02053647aba71bc623b0c53fe65d60fc002a8f5b`、baseline

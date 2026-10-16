@@ -1,5 +1,13 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 13:31 CST 精确接续入口完成，第三回合继续
+
+Stage01 Direct已到54,500步/88,158更新，保持UTD1；2个结束回合Task/Strict0/2，第三回合在途。
+补齐四方法各自checkpoint的prepare-next及逐方法预检封存，避免后续阶段误从零重训。
+15项测试通过；真实53,281步n25 checkpoint/replay/RNG恢复与一次丢弃更新通过（峰值1.13GB/OOM0）。
+当前running阶段被正确拒绝提前接续，未建立stage02，活动冻结源码不变。其他三类排队，
+其真实接续预检待checkpoint生成后执行；未收敛/未验收。入口见[Goal进度](RL_GOAL_PROGRESS_20261016.md)。
+
 ## 2026-10-16 13:22 CST Goal训练继续，完成只读Bellman/动作诊断
 
 同一Stage01 Direct worker已完成2个完整回合，到53,281步/86,939更新，新增2750/2750；

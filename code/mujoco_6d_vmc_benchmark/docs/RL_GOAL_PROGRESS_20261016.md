@@ -4,6 +4,40 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 13:31 CST：四方法精确接续能力完成，当前阶段继续
+
+开工核对main `24fd0bd0dc6fda266053bcee6b7ddf7dd23dcd1b`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS和两分支日志。上一轮新增真实诊断证据，
+属于进展；本轮同一stage/worker仍active，持久化54,500步/88,158更新，新增3969/3969。
+已结束2回合Task/Strict0/2，第三回合在途；另外三类排队。13:31 worker内存2,604,490,752
+字节、峰值2,685,267,968，3GiB/swap0，OOM0。较早快照中约645MB为文件缓存；不能仅凭
+memory.current上升就断言模型内存泄漏，也不能忽略后续硬限压力。
+
+此前阶段工具只支持Direct从n1迁移、其他三类从零启动，不能用它反复重开来代表累计训练。
+现增加`prepare-next`：必须四类都完成上一有限阶段、无未结束回合、trainer与协调器终态
+一致、各自最终checkpoint和父execution hash匹配，才准备独立新目录。每类从自己的n25
+checkpoint保留原始replay、网络/优化器/RNG/normalizer，仍各新增11k/1M日程，24h派发保护。
+复制上一阶段的冻结trainer/worker/物理代码与parameter；仅替换协调器和预检工具，内容清单
+重新登记。不同超参数、最终不足11k的尾段或异常恢复，须另按证据登记，不能混入这个精确接续入口。
+
+后续工作顺序：`rl_goal_stage_20261016.py prepare-next --previous-stage <已完成阶段> --root <新目录>`；
+在同样硬限的独立本机预检服务中，按新目录冻结工具依次运行
+`probe_goal_credit_20261016.py --root <新目录> --job <四种方法各自name>`；
+四份真实预检收据齐全后`seal-preflight`，最后才允许`launch`。预检只做一次丢弃的更新、
+不保存新模型；登记hash、checkpoint hash和方法身份逐一绑定，缺任何一类就不能launch。
+每个新阶段由Goal根据上一阶段证据决定，不自动建立无界队列，也没有acceptance入口。
+
+15项相关测试通过，新增4项覆盖四族独立继承、活动/失败/缺失/未闭合父阶段、checkpoint篡改、
+四份预检及hash绑定。对当前真实running stage调用prepare-next，正确拒绝，未创建stage02。
+独立53,281步checkpoint的同配置n25恢复探针通过：53,281条raw replay、恢复后采样RNG逐项
+可重复、一次更新指标有限、原checkpoint hash不变；exit0、峰值1,128,882,176字节、OOM0。
+这只是Direct真实恢复验证；另外三类尚无本阶段checkpoint，其真实预检尚未完成。
+活动stage01继续使用原冻结快照，当前未创建或派发下一阶段，未证明收敛、未做最终验收。
+本轮源码/测试/两项真实检查脚本与收据已归档核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-continuation-20261016T0530/evidence.tar.gz`，
+14,259字节，SHA256 `bcde86e186923ad2679e97160ee328eb8018216cb0a5d405928c4f0c0b466ea9`。
+服务器只归档/hash，53,281 checkpoint本体及后续原始轨迹仍在本机待同步。
+
 ## 13:22 CST：目标分布与动作外推诊断
 
 本轮核对远端main `02053647aba71bc623b0c53fe65d60fc002a8f5b`、baseline

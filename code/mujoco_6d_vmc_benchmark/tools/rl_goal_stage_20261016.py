@@ -133,11 +133,143 @@ def prepare(parent, destination, checkpoint):
     return reg
 
 
+def completed_stage_checkpoints(reg, state):
+    """Only exact closed final checkpoints of all four registered jobs qualify."""
+    assert state['status'] == 'finite_stage_complete' and state.get('active') is None
+    names = {job['name'] for job in reg['jobs']}
+    assert len(reg['jobs']) == 4 and len(names) == 4
+    assert {job['controller'] for job in reg['jobs']} == {None, 'impedance', 'admittance', 'vmc'}
+    assert len(state['jobs']) == 4 and {row['job'] for row in state['jobs']} == names
+    checkpoints = {}
+    for job in reg['jobs']:
+        row = next(row for row in state['jobs'] if row['job'] == job['name'])
+        assert row['returncode'] == 0 and row['stop_reason'] == 'step_budget'
+        output = Path(job['output'])
+        execution = read(output / 'execution.json')
+        assert execution['status'] == 'complete' and execution['stop_reason'] == 'step_budget'
+        assert execution['rows'] and all('ended_utc' in r for r in execution['rows'])
+        cp = verify_checkpoint(Path(execution['checkpoint_rows'][-1]['path']))
+        assert Path(cp['path']).parent == output
+        assert cp['step'] == execution['steps'] == row['steps']
+        assert cp == row['checkpoint'], 'Coordinator and trainer checkpoint disagree'
+        assert job['inherited_steps'] < cp['step'] <= job['limit']
+        assert job['limit'] - cp['step'] < 1375, 'Unexpected unfinished step budget'
+        spec = read(output / 'PROTOCOL.json')
+        assert spec['protocol_sha256'] == reg['parent_protocol_sha256']
+        assert spec['goal_registration_sha256'] == digest(Path(reg['run_root']) / 'REGISTRATION.json')
+        assert spec['agent_config']['n_step'] == 25 and spec['utd'] == 1
+        assert spec['controller'] == job['controller'] and spec['seed'] == job['seed']
+        assert spec['reward_variant'] == job['reward_variant'] and spec['hyperparameter_id'] == job['hp']
+        checkpoints[job['name']] = cp
+    return checkpoints
+
+
+def prepare_next(previous, destination):
+    """Prepare one finite continuation; never dispatch or restart a fresh model."""
+    assert platform.node() == 'airpig'
+    assert not destination.exists(), 'Never reuse a stage directory'
+    old = read(previous / 'REGISTRATION.json')
+    verify_inputs(old)
+    state = read(previous / 'execution.json')
+    assert state['registration_sha256'] == digest(previous / 'REGISTRATION.json')
+    checkpoints = completed_stage_checkpoints(old, state)
+    # Keep the original 11k stage budget and one-million optimizer schedule.
+    # A different budget or hyperparameter treatment needs a separate registration.
+    assert old['new_interactions_per_family'] == 11000 and old['optimizer_schedule_steps'] == 1000000
+    assert all(cp['step'] + 11000 <= 1000000 for cp in checkpoints.values()), 'Final remainder requires explicit registration'
+    destination.mkdir(parents=True)
+    ignore = shutil.ignore_patterns('__pycache__', '*.pyc')
+    source = destination / 'source'
+    parameter = destination / 'parameter_n25'
+    shutil.copytree(old['source'], source, ignore=ignore)
+    shutil.copytree(old['parameter_source'], parameter, ignore=ignore)
+    # Preserve the frozen trainer, worker, evaluator and physics code byte-for-byte.
+    for name in ('rl_goal_stage_20261016.py', 'probe_goal_credit_20261016.py'):
+        shutil.copy2(BENCH / 'tools' / name, source / 'tools' / name)
+    started = datetime.now(timezone.utc)
+    reg = dict(old)
+    reg.pop('parent_checkpoint_hashes', None)
+    jobs = []
+    for job in old['jobs']:
+        cp = checkpoints[job['name']]
+        output = destination / job['name']
+        jobs.append(dict(job, inherited_steps=cp['step'], limit=cp['step']+11000,
+            checkpoint=cp['path'], checkpoint_hashes=cp['hashes'], credit_migration=False,
+            parent_execution_sha256=digest(Path(job['output']) / 'execution.json'),
+            output=str(output), unit='sii-rl-goal-'+hashlib.sha256(str(output).encode()).hexdigest()[:12]))
+    reg.update(registered_utc=started.isoformat(), run_root=str(destination), source=str(source),
+        parameter_source=str(parameter), source_manifest=manifest(source), parameter_manifest=manifest(parameter),
+        source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=BENCH,text=True).strip(),
+        source_worktree_state='Parent frozen source retained; only dispatcher and preflight copied from current worktree. Content manifests authoritative.',
+        previous_stage=dict(root=str(previous),registration_sha256=digest(previous/'REGISTRATION.json'),
+            execution_sha256=digest(previous/'execution.json')),
+        dispatch_deadline_utc=(started+timedelta(hours=24)).isoformat(),
+        stop_file=str(destination/'STOP_REQUESTED'),jobs=jobs,
+        coordinator_unit='sii-rl-goal-stage-'+hashlib.sha256(str(destination).encode()).hexdigest()[:12],
+        preflight_required_jobs=[job['name'] for job in jobs],
+        credit_migration='None: all four families resume their own exact n25 checkpoints with raw replay, optimizer, normalizers and RNG.',
+        evidence_basis='Exact continuation of a completed finite stage; no new treatment and no convergence claim.')
+    write(destination/'REGISTRATION.json',reg)
+    return reg
+
+
 def verify_inputs(reg):
     assert platform.node() == reg['compute_host'] == 'airpig'
     assert digest(Path(reg['parent_root']) / 'PROTOCOL.json') == reg['parent_protocol_sha256']
     assert manifest(Path(reg['source'])) == reg['source_manifest'], 'Frozen source changed'
     assert manifest(Path(reg['parameter_source'])) == reg['parameter_manifest'], 'Parameter source changed'
+    if reg.get('previous_stage'):
+        previous = reg['previous_stage']
+        root = Path(previous['root'])
+        assert digest(root/'REGISTRATION.json') == previous['registration_sha256']
+        assert digest(root/'execution.json') == previous['execution_sha256']
+        for job in reg['jobs']:
+            cp = Path(job['checkpoint'])
+            assert digest(cp.parent/'execution.json') == job['parent_execution_sha256']
+            assert verify_checkpoint(cp)['hashes'] == job['checkpoint_hashes']
+
+
+def verify_preflight(reg):
+    root = Path(reg['run_root'])
+    digest_reg = digest(root/'REGISTRATION.json')
+    preflight = read(root/'CREDIT_PREFLIGHT.json')
+    assert preflight['status'] == 'passed' and preflight['registration_sha256'] == digest_reg
+    if reg.get('preflight_required_jobs'):
+        assert set(preflight['jobs']) == set(reg['preflight_required_jobs'])
+        for name in reg['preflight_required_jobs']:
+            receipt = root/f'CREDIT_PREFLIGHT_{name}.json'
+            result = read(receipt)
+            job = next(j for j in reg['jobs'] if j['name'] == name)
+            assert preflight['jobs'][name] == digest(receipt)
+            assert result['status'] == 'passed' and result['registration_sha256'] == digest_reg
+            assert result['job'] == name and result['checkpoint'] == job['checkpoint']
+            assert result['checkpoint_hashes'] == job['checkpoint_hashes']
+            assert result['checkpoint_hashes_unchanged'] and result['inherited_steps'] == job['inherited_steps']
+            assert result['actual_n_step'] == 25 and result['restored_raw_replay_count'] == job['inherited_steps']
+            assert result['finite_update_metrics'] and result['terminal_windows_match'] and result['no_cross_episode_bootstrap']
+    return preflight
+
+
+def seal_preflight(root):
+    reg = read(root/'REGISTRATION.json')
+    verify_inputs(reg)
+    assert not (root/'CREDIT_PREFLIGHT.json').exists()
+    assert reg.get('preflight_required_jobs')
+    receipts = {}
+    for name in reg['preflight_required_jobs']:
+        path = root/f'CREDIT_PREFLIGHT_{name}.json'
+        result = read(path)
+        job = next(j for j in reg['jobs'] if j['name'] == name)
+        assert result['status'] == 'passed' and result['registration_sha256'] == digest(root/'REGISTRATION.json')
+        assert result['job'] == name and result['checkpoint'] == job['checkpoint']
+        assert result['checkpoint_hashes'] == job['checkpoint_hashes'] and result['checkpoint_hashes_unchanged']
+        assert result['inherited_steps'] == job['inherited_steps']
+        assert result['actual_n_step'] == 25 and result['restored_raw_replay_count'] == job['inherited_steps']
+        assert result['finite_update_metrics'] and result['terminal_windows_match'] and result['no_cross_episode_bootstrap']
+        receipts[name] = digest(path)
+    write(root/'CREDIT_PREFLIGHT.json',dict(status='passed',registration_sha256=digest(root/'REGISTRATION.json'),
+        jobs=receipts,simulation=False,gradient_updates=len(receipts),model_saved=False))
+    verify_preflight(reg)
 
 
 def worker_command(reg, job):
@@ -167,9 +299,7 @@ def run(root):
     assert not (root / 'execution.json').exists(), 'Never retry in-place'
     assert len(list(Path('/proc').glob('[0-9]*'))) > 20, 'Host /proc required'
     verify_inputs(reg)
-    preflight = read(root / 'CREDIT_PREFLIGHT.json')
-    assert preflight['status'] == 'passed'
-    assert preflight['registration_sha256'] == digest(root / 'REGISTRATION.json')
+    verify_preflight(reg)
     with Path(reg['dispatch_lock']).open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         state = dict(status='running', started_utc=now(), jobs=[], active=None,
@@ -230,9 +360,7 @@ def run(root):
 def launch(root):
     reg = read(root / 'REGISTRATION.json')
     verify_inputs(reg)
-    preflight = read(root / 'CREDIT_PREFLIGHT.json')
-    assert preflight['status'] == 'passed'
-    assert preflight['registration_sha256'] == digest(root / 'REGISTRATION.json')
+    verify_preflight(reg)
     assert not (root / 'LAUNCH.json').exists() and not (root / 'execution.json').exists()
     assert not active_workers(), 'Another RL worker is active'
     assert Path(reg['python']).is_file()
@@ -246,13 +374,18 @@ def launch(root):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('mode', choices=('prepare', 'launch', 'run'))
+    parser.add_argument('mode', choices=('prepare', 'prepare-next', 'seal-preflight', 'launch', 'run'))
     parser.add_argument('--root', type=Path, required=True)
     parser.add_argument('--parent', type=Path)
     parser.add_argument('--checkpoint', type=Path)
+    parser.add_argument('--previous-stage', type=Path)
     args = parser.parse_args()
     if args.mode == 'prepare':
         print(json.dumps(prepare(args.parent.resolve(), args.root.resolve(), args.checkpoint.resolve()), indent=2))
+    elif args.mode == 'prepare-next':
+        print(json.dumps(prepare_next(args.previous_stage.resolve(), args.root.resolve()), indent=2))
+    elif args.mode == 'seal-preflight':
+        seal_preflight(args.root.resolve())
     elif args.mode == 'launch':
         launch(args.root.resolve())
     else:
