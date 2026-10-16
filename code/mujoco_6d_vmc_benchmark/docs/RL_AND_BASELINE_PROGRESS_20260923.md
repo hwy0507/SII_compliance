@@ -1,5 +1,52 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-17 01:43 CST — Direct控制组关闭，正则化组已接续并取得首个对应回合
+
+开工实时查询/fetch/read main `6b069036afe2fcf2ab24e739a3465b8792c14cb4`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS；按sii-research-sync收工重读。
+上一轮完成真实派发，本轮持续核对PID2489819直至正常退出，未中断健康worker或改活动源码/登记。
+同一协调器2489803于17:35 UTC自动接续正则化worker2494519，无重复模拟器，Goal继续active。
+
+Direct控制组有限段正常结束30,984步/25,985更新，新增9,722次连续有限更新。
+八次尝试：7完整、6physical_valid、Task/Strict0/8；第三次ep20/repair_train_030为97步/3.88秒，
+global_penetration_exceeded_2mm提前失败，return−41.398965；ep22/repair_train_024虽然完整，
+physical_valid仍false，return−39.207510，原生训练收据RMSE560.324mm、穿透1.373658mm，阶段align。
+其他六次return约−21.686至−21.865，仍是任务失败。余下预算不足容纳一个完整回合，
+按既定边界停在30,984而非强行凑32,262；不是异常暂停。峰3GiB/max2190，OOM/oom_kill/swap0。
+全8个checkpoint成员hash、AUDIT hash、reward逐步组件/求和与9,722条连续日志核验通过，
+保留短回合与完整但物理失败回合。尚未完成两组比较，更不代表Direct收敛。
+
+正则化组确认actor_bc_alpha=1、actor_regularization_migration=true，从同一原cp21262恢复，
+其余agent/reward/seed/physics/48维/filter保持。首个1375步/55秒回合已闭合至cp22637，
+对应控制组同一repair_train_021、同一21262→22637训练暴露，双方physical_valid=true、Task/Strict均false：
+- reward：控制−21.839418，正则化−21.856347，差−.016929，没有提升。
+- 原生训练RMSE：59.631636→36.605086mm；峰矩44.300316→37.913303Nm；
+  峰速.346483→.334012m/s，穿透.134222→.135829mm，放置XY误差.259996→.183428m。
+- 双方最终阶段仍approach。只是一对训练条件下的局部指标改善，不能推出整体调参有效、
+  收敛或最终验收通过；策略在回合内继续更新。全部未对应、短回合与失败项仍在PAIR_REPORT中。
+
+首个正则化回合1,375条连续有限更新、原checkpoint恢复hash、reward分项与新cp22637成员hash通过。
+收工真实optimizer23,466步/18,467更新，temperature .002711194；
+`sii-rl-goal-baf3c94bbf55.service` PID2494519 active，内存2,275,340,288字节，
+max/OOM/swap0、GPU42°C/1438MiB。CPU1/单线程/3GiB/swap0/CUDA0/.125/UTD1不变。
+第二回合在途，后续继续按原有限预算训练，不因单对局部改善提前选择策略或改协议。
+
+本轮仅释放已重新核验服务器最终副本的/tmp阶段关闭重复tar，1,336,207,540字节；
+原始轨迹/checkpoint删除0，CACHE_RELEASE.json保留精确恢复地址。历史100文件删除拒绝仍未绕过。
+free61,909,770,240→63,245,971,456（释放时）；收工59,031,752,704字节，50GiB保护保持。
+
+已核验服务器独立归档，本地/暂存/最终大小和SHA一致，服务器仅文件/hash：
+- `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-actor-control-close-20261016/evidence.tar.gz`，
+  2,020,110,510字节，SHA `645294b33182491fe654a8c6a3991fe12964ab4c514c87e6213200c49ccb2983`。
+  全控制组8尝试及cp、完整training/optimizer日志、原生失败收据、reward复算、
+  pair/screen快照、缓存释放收据与本轮脚本。
+- `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-actor-first-pair-20261016T1742/evidence.tar.gz`，
+  270,546,162字节，SHA `8b7dfe9bd2d352503724be6ff91a8a4bbbd9eada5fe8d7f01e3e9f402865d237`。
+  正则化首个完整回合/cp22637/1375更新、首对比较、登记及脚本。之后新数据仅本地，待安全边界归档。
+
+继续正则化组至登记边界，再依据全部证据比较两组。阻抗occupancy试验仍未派发、容量待解决。
+四方法尚无可验证收敛，未进行统一acceptance或独立最终物理/action审计；Goal范围与完成标准不变。
+
 ## 2026-10-17 01:09 CST — 四族阶段关闭，Direct正则化在线对照已真实接续
 
 开工实时查询/fetch/read main `f3b38923f05a2a318bb51805dae4fe9235934cec`、
