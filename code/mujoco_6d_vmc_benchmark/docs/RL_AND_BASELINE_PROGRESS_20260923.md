@@ -1,5 +1,48 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-17 06:08 CST — 控制组44k预算完成，occupancy奖励组自动接续
+
+开工查询/fetch/read main `7e3abb95f099832fb8f047421330de3be078d260`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS/两份RL进度，收工重读AGENTS。
+上一轮为新增诊断与已验证等待；本轮完成control有限阶段证据核验并验证自动交接。
+未重复启动训练、重启健康worker或修改活动源码/配置。仅新增临时只读完成观察器，
+区分正常退出与异常，保留cgroup消失前的带时间戳资源观测；观察器正常退出0。
+
+impedance_control从18:15:38.112110UTC训练至22:04:03.982761UTC，44,000步/39,001更新，
+32个1375步/55s完整回合，全部physical_valid，Task/Strict0/32；27回合carry、5回合retreat。
+mean return−25.530207948、std .659400224；新增ep30/31（repair_train_004/009）
+return−25.153143068/−25.668938414，均carry失败。完整交互/更新连续有限、
+全部闭合reward分解、AUDIT/trace及最终cp44000成员hash通过；
+末temperature .001180375、critic loss6.666161。执行状态complete/stop_reason=step_budget，
+但只是44k先导预算完成，training_complete=false，未达成1M目标、收敛或最终通过。
+
+协调器PID2502213保留，核实首job退出0/32回合/44k及checkpoint后自动启动第二job；
+原worker2502235已退出，occupancy worker为PID2546313、
+`sii-rl-goal-af59b75d7cc5.service`，active、MemoryMax3GiB/MemorySwapMax0。
+交接核验时execution250步/0更新，training.jsonl有362条连续完整交互；随后500步/0更新，
+处于登记5000步warmup，不能称学习更新或收益已验证。
+逐项比较两份实际PROTOCOL，唯一差异为registered_utc、payload_occupancy_guidance及其definition；
+模型配置、seed、条件、warmup、源码hash、资源设置均一致；两组从零开始、无teacher/BC，
+actor仍canonical48。未继承control回放；不同reward总分不直接比较。
+本轮没有matched-arm收益结论，等待occupancy完成同一44k预算再比较原生任务结果。
+
+control最后可读资源样本22:03:56.795985UTC：peak3,116,797,952/max3,221,225,472字节，
+OOM/max事件/swap0；cgroup正常退出后已移除，所报peak是最后观测值，不冒充退出后的内核读数。
+奖励组核验时current/peak1,670,729,728字节，OOM/max事件/swap0；后续GPU43°C/1127MiB。
+归档时磁盘余56,739,905,536字节，高于50GiB保护线。
+交接助手CPU6/1GiB，311ms退出0；完成核验归档助手同限额18.312秒退出0。
+证据 `BENCH/outputs/rl_goal_stream_window_20261017T2205` 含
+WINDOW、TRAINING_SCREEN、HANDOFF_VERIFICATION、两份协议/执行快照、检查器源码和失败原始归档映射。
+已上传且独立SSH复核
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T2205/evidence.tar.gz`，
+17,021,373字节，SHA `38528b5a849d6404b76abf3e4fb2ef3696a382290e914cbd2a5408edcda09c43`。
+为下轮准备只读`/tmp/sii_goal_occupancy_window_monitor.py`，绑定实际新PID/服务，
+首次核验目标至少4回合以覆盖warmup结束；未启动额外训练进程。
+按sii-research-sync更新三份进度并提交/push main，保留无关meeting文件。
+Goal active，四族仍未证明收敛，继续奖励组；物理/MJB/gate/canonical48/filter/执行器/dt5e-5保持，
+全部失败保留，服务器仅归档，未执行统一acceptance或独立物理/filter replay。
+
+
 ## 2026-10-17 05:50 CST — 第三条retreat失败诊断；控制组30回合/41,250步
 
 开工查询/fetch/read main `853b605fadf205d7a4f4724c960ea91f1858e7bb`、
