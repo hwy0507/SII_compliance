@@ -1,5 +1,37 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 19:35 CST：control完成11k，tracking由原协调器接续
+
+开工main `de07e3e3d06a241fce2cf24a4c76367a2ac399b7`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`查询/fetch/read，AGENTS开工/收工重读，上一轮为进展。
+本轮观察服务每45秒核对原control PID2400811、协调器2400799和cgroup，最终11:31:29确认
+control inactive、tracking active PID2413986，观察服务exit0。没有因触顶或观察等待而重启训练。
+
+control正常完成11000步/6001更新，8个完整55秒回合，physical_valid8/8、Task/Strict0/8。
+return依次−25.493411918、−26.067120701、−25.072283800、−24.997562068、−25.682297583、
+−25.389612508、−26.209323906、−26.290249859。只是有限对照段结束，training_complete=false，
+不是收敛；不得把失败reward窄幅波动当作完成Goal。6001条真实更新序号与steps完整连续、指标有限，
+cp8250/9625/11000及tar成员hash通过，协调器收据的最终cp一致。
+
+原协调器在11:30:45.516800Z启动impedance_tracking，服务`sii-rl-goal-7f55e47acca6.service`，
+trainer2413986；实际命令无resume-checkpoint，实际协议from scratch，跟踪总权重4+36=40。
+11:35:24Z已750步/0更新，仍处5000热身；同seed2026101421、原条件顺序/n25/UTD1/1M日程，
+本段11000交互预算、3GiB/swap0/CUDA0/单模拟器不变。current/peak1,716,035,584字节、OOM0/swap0。
+处理组首完整回合尚未结束，当前没有匹配的处理效果结论；不比较两个定义不同的reward总分。
+
+control第五、第六回合末10秒只读定位：两者carry cursor20/28固定，250采样的姿态/速度都满足，
+位置误差分别12.628–12.819mm、12.674–12.730mm，energy_scale=1且参数变化。
+仍支持已登记跟踪成本对照，不能单凭路点停滞证明实现bug或权重修复成功。
+control最终内存current2,566,287,360/peak3,221,225,472字节，max1828，OOM/oom_kill0、swap0。
+触顶期间anon约1.69GB、file约1.48GB、inactive_file约1.30GB；保持保护后自然闭合。
+
+末三回合原始轨迹/cp8250/9625/11000、完整training/optimizer日志、carry诊断、配对报告、
+全部观察/交接收据及复现脚本已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-control-close-20261016T1132/evidence.tar.gz`
+803,419,415字节，SHA256 `16f0082c6802fa746cb1e2a83342746458166d65821add63bee32d3e8a8cf0ae`。
+此前5回合分别见之前独立包，至此control8回合及全部checkpoint均已核验保全；未删除本地原件。
+服务器只存储/hash。tracking新轨迹仍本地待完整边界归档，Direct v2未派发；Goal active、无最终验收。
+
 ## 19:16 CST：配对报告可用，control首个全学习回合仍失败
 
 开工main `9456b51a798462f30328b93231dd1cab35b3caf9`、baseline

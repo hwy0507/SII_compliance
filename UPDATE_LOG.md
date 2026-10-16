@@ -1,5 +1,27 @@
 # 更新日志
 
+## 2026-10-16 19:35 CST — 阻抗control闭合，原协调器自动接续tracking处理组
+
+- 开工查询/fetch/read main `de07e3e3d06a241fce2cf24a4c76367a2ac399b7`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工重读AGENTS，上一轮为实质进展。
+  本轮只读观察原trainer2400811到11k，保留逐45秒systemd PID/状态/内存收据。control正常闭合
+  11000步/6001更新、8完整55秒；所有Task/Strict失败、physical_valid8/8，training_complete=false。
+  return范围−26.290250至−24.997562，末两条−26.209324/−26.290250，不能称失败平台收敛。
+- 6001条optimizer step5000–11000/update1–6001连续且指标有限；cp8250/9625/11000逐文件及
+  tar成员hash通过，协调器最终checkpoint匹配。原协调器2400799在11:30:45Z自动接续
+  `sii-rl-goal-7f55e47acca6.service`，新trainer2413986，无重复模拟器；命令无resume checkpoint、
+  实际协议from scratch、额外跟踪weight36+原4=40。11:35:24Z已750步/0更新，符合5000热身。
+- 两个全学习回合末10秒都停carry20/28，位置误差12.628–12.819及12.674–12.730mm，
+  姿态/速度各250/250采样满足、energy_scale1、参数变化。只支持继续既定奖励对照，不证明根因已修复。
+  control最终峰值3,221,225,472字节、memory.events.max1828、OOM/oom_kill0、swap0；
+  触顶时约1.69GB匿名内存/1.48GB文件缓存，原进程持续推进至安全闭合，未放宽上限或重启。
+- control最后三原始回合/cp、全训练与优化日志、carry诊断、配对报告、观察/交接/复现收据已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-control-close-20261016T1132/evidence.tar.gz`，
+  803,419,415字节，SHA256 `16f0082c6802fa746cb1e2a83342746458166d65821add63bee32d3e8a8cf0ae`。
+  加此前独立包，control八回合和全部边界checkpoint均有核验归档；服务器仅存储/hash。
+- tracking目前current/peak1,716,035,584字节、OOM0/swap0；Direct v2仍预检通过待当前配对完成。
+  所有四类尚无收敛证据；Goal active，继续处理组及配对结果，最终acceptance未运行。
+
 ## 2026-10-16 19:16 CST — 奖励配对报告工具完成，阻抗control真实推进至8000步
 
 - 查询/fetch/read main `9456b51a798462f30328b93231dd1cab35b3caf9`、baseline

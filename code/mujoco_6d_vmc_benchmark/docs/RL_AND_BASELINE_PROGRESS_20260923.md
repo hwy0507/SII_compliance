@@ -1,5 +1,16 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 19:35 CST 阻抗control11k闭合，tracking自动启动
+
+control11000步/6001连续有限更新、8完整55秒，Task/Strict0/8、physical_valid8/8，未收敛。
+原协调器自动启动tracking trainer2413986，实际from scratch、跟踪总weight40，现750步/0更新热身。
+control最后3回合/cp8250/9625/11000及完整日志/交接/诊断已核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-control-close-20261016T1132/evidence.tar.gz`，
+803,419,415字节，SHA256 `16f0082c6802fa746cb1e2a83342746458166d65821add63bee32d3e8a8cf0ae`。
+control共8回合及所有边界cp加此前包均已保全，服务器仅存储/hash；其最终内存max1828但OOM0/swap0。
+两个全学习回合末段仍carry20/28、位置约12.6–12.8mm，继续既定权重对照，不作改善结论。
+Direct v2待当前配对结束，Goal active，四类尚无收敛/最终验收证据。
+
 ## 2026-10-16 19:16 CST 阻抗8000步，配对报告与第五回合归档
 
 原trainer2400811到8000步/3001更新，五个完整回合Task/Strict0/5、physical_valid5/5。
