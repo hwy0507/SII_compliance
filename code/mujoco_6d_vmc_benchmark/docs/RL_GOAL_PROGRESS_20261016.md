@@ -4,6 +4,33 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 14:01 CST：奖励分解给出下一阶段调整依据
+
+核对main `ea271110dc9ef16da2047e2df8fa374eefa8cc28`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS与远端日志。上一轮归档为进展，
+本轮补齐`diagnose_goal_reward_signal_20261016.py`及3项针对性测试；只读训练数据。
+快照五个完整回合的奖励组件、gamma、终止label、逐步连续性和势函数抵消全部通过。
+每1375步只有1个Task reward非零（−20），n25中只有25/1375=1.818%窗口直接包含终止奖励；
+这不是说其余步没有shaping信号，也不是说多次bootstrap无法传播奖励。
+折扣shaping和都是−0.6249994097574，残差<1e-15；此抵消是有意设计，无需删除终止抵消。
+安全罚分依次0/−12.5152096/−17.7244568/0/−13.9713077，跟踪error项当前为0。
+两个零安全罚分回合的有界跟踪cost0.8902505与0.0720529，折扣总回报却相同；
+五回合reference potential最大值都停留在初始0.12499988，原生AUDIT都在approach。
+这表明当前训练目标在这些安全失败轨迹间无法持续奖励更好的跟踪；尚未证明是唯一根因。
+
+下一阶段优先检验已有有界密集tracking项（训练奖励），最终Task/Strict不变；但更换奖励
+不能直接续用旧raw reward replay/normalizer假装同目标精确恢复。须单独登记、重建或隔离
+旧奖励数据，并保留原处理组，不能把当前immutable stage就地改掉。尚未部署新reward。
+
+14:00同一worker仍active，58,781步/92,439更新、阶段新增8250/8250；6个完整回合Task/Strict
+0/6、physical_valid2/6，第6return−22.475132，第7在途，其他三方法未开始。58,781 checkpoint
+实际hash通过。memory.max事件1162，OOM0/swap0，继续监测硬限回收与实际吞吐。
+新诊断保存全部捕获execution/protocol/closed logs及已有AUDIT/hash，明确未完成回合。
+工具/测试/快照已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-reward-signal-20261016T0600/evidence.tar.gz`，
+1,225,327字节，SHA256 `30a9b7c1c8e615098a3d7d2596684e03e5a865e236fa7c74400f34e43e4db9c6`。
+第五回合之后原始大型产物仍仅本机、待同步；Goal active，未收敛、未最终验收。
+
 ## 13:55 CST：五个完整失败回合，补齐大型证据归档
 
 实时核对main `436552af7c5417c9033ffd87dfb26ce8e5707559`与baseline

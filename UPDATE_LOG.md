@@ -1,5 +1,26 @@
 # 更新日志
 
+## 2026-10-16 14:01 CST — 定位Direct训练奖励的任务区分不足，保留完整证据
+
+- 开工查询/fetch/read main `ea271110dc9ef16da2047e2df8fa374eefa8cc28`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS及Goal进度。上一轮为证据归档进展；
+  本轮新增闭合训练奖励分解工具与3项针对性测试，实际五回合全部通过一致性检查。
+- 五回合每个1375步仅末步有Task奖励−20，n25直接含终止奖励的窗口占1.818%；折扣势函数
+  和均为−0.62499941，抵消残差<1e-15，未发现这部分公式错误。安全罚分为0/−12.5152/
+  −17.7245/0/−13.9713。两个零安全罚分回合的有界跟踪cost为0.89025/0.07205，但折扣
+  总奖励相同，说明当前task_safety目标对安全失败间的跟踪质量缺少持续区分。
+  这不是n25无效或已证实根因的结论；下阶段应检验密集跟踪项，而非把失败平台当收敛。
+- 新工具严格校验奖励组件、gamma、终止语义和日志连续性，区分Task成功/Strict失败的训练
+  标签；拒绝多行/错位日志，活动末尾缓冲显式pending。完整execution/protocol/log快照随收据
+  保存，可复算。无新仿真、模型更新、最终acceptance或独立最终物理审计。
+- 同一worker/协调器持续推进至58,781步/92,439更新，新增8250/8250；6个完整回合Task/Strict
+  0/6、physical_valid2/6，第6return−22.475132，第7在途，其他三族排队。58,781 checkpoint
+  hash通过。OOM0/swap0，memory.max事件1162；继续观察回收压力，不改冻结源码/限制。
+- 工具/测试/五回合完整诊断快照已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-reward-signal-20261016T0600/evidence.tar.gz`，
+  1,225,327字节，SHA256 `30a9b7c1c8e615098a3d7d2596684e03e5a865e236fa7c74400f34e43e4db9c6`。
+  服务器只归档/hash；第五回合之后大型轨迹/checkpoint仍本机待同步。Goal保持active。
+
 ## 2026-10-16 13:55 CST — Goal持续运行，失败轨迹与checkpoint补齐归档
 
 - 实时查询/fetch/read main `436552af7c5417c9033ffd87dfb26ce8e5707559`、baseline
