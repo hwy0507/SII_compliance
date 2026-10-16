@@ -1,5 +1,47 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 06:35 CST — occupancy越过warmup，501次真实参数更新核验
+
+开工查询/fetch/read main `c28638499c93a4c3020e9961c1b880cd895c5535`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读AGENTS/两份RL进度并收工重读。
+上一轮新增首回合奖励公式证据；本轮从2250步/0更新观察同一worker2546313至
+5500步/501更新，约18分钟，4回合归档后观察器正常退出0。协调器2502213保持，
+无重复启动、重启或活动配置修改；5000步开始首次更新，符合登记UTD1。
+
+occupancy前4回合均1375步/55s、physical_valid，Task/Strict0/4，均carry。
+ep0..3条件repair_train_008/029/001/007，return分别
+−27.520973245/−28.096028074/−27.086804364/−27.014618488；
+平均−27.429606043、标准差.430753396。前三回合纯warmup，第四回合混合warmup/学习，
+不足以评价收敛或处理收益，不与control不同定义reward总分比较。
+5500交互与501条optimizer更新连续有限，reward分解、所有闭合AUDIT/trace及cp5500成员hash通过；
+末temperature .009566467、critic loss8.979347。控制组0/32结果保持，四族均未证明收敛。
+
+新增只读checkpoint参数检查：cp4125的saved updates=0，cp5500=501，配置完全相同，
+全部checkpoint成员读前后hash核对。按Flax portable msgpack格式直接解码NumPy数组，
+不导入JAX、不执行actor/optimizer或新增梯度；所有数值叶有限、参数shape/dtype一致。
+actor/critic/target_critic/temperature均有参数变化；
+最大绝对参数变化分别.032853909/.078507282/.043938220/.044424057。
+actor/critic/temperature的内部update_step由0变501；
+target_critic的update_step仍0，opt_state正常为None，其参数通过目标网络同步发生变化。
+这证明实际参数更新，不证明更优动作、正确真实Q值、任务成功或收敛。
+首次诊断把正常target opt_state=None当数值数组而失败，597ms退出1；
+已保留PARAMETER_CHECKER_ATTEMPT1.json及原脚本快照，修正只读检查器后703ms退出0，
+峰362,242,048字节/1GiB，swap/OOM0；不是训练故障，未改或重启worker。
+整体证据助手CPU6/1GiB/swap0，6.215秒退出0。
+
+worker峰2,590,826,496/max3,221,225,472字节，OOM/max事件/swap0，
+归档时磁盘余56,238,043,136字节，高于50GiB保护；GPU43°C/1436MiB。
+证据 `BENCH/outputs/rl_goal_stream_window_20261017T2235` 含参数更新报告、失败检查收据、
+修正前后脚本、WINDOW/TRAINING_SCREEN、训练与更新日志及原始归档映射；
+已上传且独立SSH复核
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T2235/evidence.tar.gz`，
+7,392,612字节，SHA `096d42f4ea0d7defb7bd850f1b5e29f970bfa874b03c825634e1cd50f3b01e3c`。
+按sii-research-sync同步三份进度并提交/push main，保留无关meeting文件。
+Goal active，继续同一occupancy worker完成登记44k预算，之后再做匹配条件比较；
+物理/MJB/gate/canonical48/filter/执行器/dt5e-5保持，本机计算、服务器只归档，
+全部失败保留，未做统一acceptance或独立物理/action/filter replay。
+
+
 ## 2026-10-17 06:13 CST — occupancy首完整回合：原生奖励公式逐区间核验
 
 开工查询/fetch/read main `32d344e3a828c65d482c856ab268bca256287eaa`、
