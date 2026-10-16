@@ -1,5 +1,37 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 06:49 CST — occupancy新增两个完整学习回合，8250步/3251更新
+
+本轮接续已完成开工核查的同一任务：远端main
+`2ad99d8f9fc4dcad1cd32146df947250e2ad57ce`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，已查询/fetch/read两分支日志、
+AGENTS与RL进度；收工再次读取AGENTS。Goal保持active。
+观察器22:37:03–22:48:03 UTC记录6250→8250步、1251→3251更新、4→6闭合回合，
+边界归档完成后正常退出0。协调器2502213/worker2546313保持，未重复启动或改活动配置。
+
+新增ep4/repair_train_002、ep5/repair_train_028均1375步/55秒、physical_valid，
+全程处于学习阶段；return分别−27.650366084、−27.367207751，Task/Strict均false、
+stage carry，最终物块XY误差89.382860/86.415408 mm，无物理abort。
+前6回合Task/Strict0/6，return均值−27.455999668、标准差.363006601；
+含3个warmup和1个混合回合，不能据此宣称收敛或奖励处理有效。
+8250条交互/3251条更新连续有限，全部闭合奖励分解、AUDIT/trace与cp8250成员hash通过，
+新增两回合原始远端归档复核通过。末temperature .007384279、critic loss8.767115。
+控制组44k/32回合0联合成功保持；待occupancy同预算结束再运行匹配条件/暴露比较，
+不比较不同奖励定义总分。四族均未证明收敛，未做最终acceptance/独立物理或action/filter replay。
+
+worker峰2,604,429,312/max3,221,225,472字节，OOM/max事件/swap0；
+归档时磁盘余56,173,322,240字节，高于50GiB；宿主GPU43°C/1436MiB。
+核验归档助手CPU6/1GiB/swap0，5.960秒退出0，服务器只存储传输/hash。
+本地证据`BENCH/outputs/rl_goal_stream_window_20261017T2250`含WINDOW、
+TRAINING_SCREEN、连续日志与边界收据；独立SSH核验服务器归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T2250/evidence.tar.gz`，
+6,189,492字节，SHA256
+`53d11314d4e2846ebe2aae52fbd2a883059b8e6c76bcaa2e4000839938ff42b8`。
+按sii-research-sync同步三份文档并提交/push main，保留无关meeting文档。
+下一步继续健康occupancy至登记44k边界，基于完整对照结果决定后续修复/调参阶段；
+保持冻结物理/MJB/gate/canonical48/filter/执行器/dt5e-5及本机计算约束。
+
+
 ## 2026-10-17 06:35 CST — occupancy越过warmup，501次真实参数更新核验
 
 开工查询/fetch/read main `c28638499c93a4c3020e9961c1b880cd895c5535`、
