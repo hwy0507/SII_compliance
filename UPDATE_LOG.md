@@ -1,5 +1,21 @@
 # 更新日志
 
+## 2026-10-16 11:06 CST — v4 无新交互，继续等待恢复资源
+
+- 已实测/fetch远端main `f6522a0e5abdb93741e74ce4554914ac31c0ec97`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读取日志、AGENTS及v4进度。
+- 宿主机v4/恢复进程仍为空，旧running收据不代表运行；日志保持47,448步/84,898更新。
+  34已结束回合中33完整、24 physical_valid，Task/Strict各0/34，1次穿透超过2mm早停；
+  索引34回合仍为未完成历史收据。其余三方法未启动，43,656步checkpoint全部登记hash通过。
+- 历史最近1000步reward均值−0.001225、最近1000更新temperature均值0.00032924，无新样本。
+  MemAvailable约3072MiB仅等于worker上限、无余量，swap已用2047MiB；旧v3b两路仍活动。
+  共享cgroup无限额、oom/oom_kill=0，不作为v4独立证明；GPU41°C、481MiB、4%。
+- 本轮不启动、不发信号、不改源码或冻结条件，修复版本未实际恢复；未验收、未收敛，
+  截止仍12:33:19 CST。更新RL进度，保留全部失败/未完成收据。
+- 收据归档核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-v4-monitor-20261016T0306/MONITOR.json`，
+  SHA256 `9e773054d6b809532dbc9445475c61e2622ace277b4aa2960f734b779d9496f8`。
+  服务器仅作归档；全量原始轨迹仍仅本地、待同步。
+
 ## 2026-10-16 10:46 CST — v4 中断后复查，资源准入仍不足
 
 - 已查询并 fetch 远端 main `f8cbb9b71f481ef614729b59c98abdc8dc7d3371`、baseline

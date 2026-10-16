@@ -1,5 +1,20 @@
 # v4 宿主机核验与恢复交接（2026-10-16 10:33 CST）
 
+## 11:06 CST 复查补充
+
+远端main `f6522a0e5abdb93741e74ce4554914ac31c0ec97`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已查询、fetch并读取日志。宿主机v4/恢复进程为空，
+47,448步/84,898更新和Task/Strict各0/34均无变化；其余三方法未启动。
+43,656步checkpoint全部登记hash再次匹配；最近1000步reward −0.001225和temperature
+0.00032924（最近1000次更新）仍为历史样本。MemAvailable约3072MiB仅等于worker上限，
+无余量，swap已用2047MiB；旧v3b模拟器PID2311744/2312815仍活动，未干预。共享cgroup
+memory.current=6,846,820,352字节、swap.current=191,475,712字节、两项max均无限额，
+oom/oom_kill=0；不将共享指标当作v4独立资源证明。GPU41°C、481/16303MiB、4%。
+本轮不启动恢复、不发信号、不改冻结条件、不验收；原派发截止12:33:19 CST不变。
+
+独立归档收据：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-v4-monitor-20261016T0306/MONITOR.json`，
+SHA256 `9e773054d6b809532dbc9445475c61e2622ace277b4aa2960f734b779d9496f8`。
+
 ## 10:46 CST 复查补充
 
 本轮宿主机检查未发现v4或恢复trainer；原execution仍显示running，但实际已中断，没有新
