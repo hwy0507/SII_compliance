@@ -1,5 +1,44 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-17 00:30 CST — 新奖励接续修复与真实CUDA保存恢复核验
+
+开工实时查询/fetch/read main `40bc1546ae10ae2aa1ea02c1cad916c62f763049`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，依sii-research-sync开工/收工读AGENTS。
+上一轮闭合导纳并找到错误放置失败类型，属于实际进展。当前协调器2447861/VMC2479454未重启；
+归档快照15,500步/10,501更新，收工16,091步/11,092更新。已完成前2个新回合均1375步/55秒、
+physical_valid、Task/Strict0/2，return−25.216931/−25.206806；cp13750/15125和2750条连续有限更新核验。
+VMC约2.81GB/max/OOM/swap0、GPU39°C，free63,482,564,608字节，50GiB保护继续。
+
+修复新reward已能独立试验但未完整接入四族选型/后续接续的缺口：
+`goal_selected_continuation`识别occupancy双组，逐job核对并保留payload_occupancy_guidance，
+记录原试验登记/hash来源，选回旧checkpoint时明确清除该job的新reward字段。
+只按已登记trainer/helper的精确hash识别可选实现迁移，其余冻结源码仍须一致；
+可与既有actor正则化实现共用同一冻结来源，不改active source或已准备pair。
+`rl_goal_stage`保留后续来源和必要依赖，拒绝缺失来源/悄然删改reward；
+`probe_goal_credit`在分配agent前核对checkpoint奖励定义，预检封存与再验证同时核对奖励身份。
+新fresh pair准备清除上一段的occupancy来源，防止错误继承。
+
+101项Goal unittest通过，新增5项覆盖选择后再接续、独立冻结入口、fresh历史计数、源码/奖励篡改、
+活动pair拒绝、显式旧模型重选及预检封存；修改收据hash也不能绕过奖励身份检查。
+合成48回合失败历史保持联合成功0，不因fixture阶段结束判为收敛。
+
+真实本机CPU6/2GiB/swap0/CUDA0预检通过：使用1375条既有训练replay重算已登记reward，
+丢弃一次更新后保存专用PROBE_ONLY检查点，再重载并核验4网络/优化器/RNG、归一化统计/计数、
+raw replay与下一次抽样完全一致，重载后另一次丢弃更新有限；原cp23375及三份登记hash不变。
+已登记四族/Direct正则化/occupancy源码兼容检查通过，删除或改reward权重被拒绝。
+峰2,137,206,784字节、max/OOM0。该检查点只有replay诊断用途，不是候选策略、没有在线训练或新增仿真；
+未来实际选中checkpoint仍必须完成四方法逐一预检，不能用本次fixture代替。
+
+源码/新增测试、真实CUDA保存恢复收据及诊断检查点、VMC前2完整回合/cp与2750连续日志已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-occupancy-continuation-20261016T1630/evidence.tar.gz`，
+666,344,069字节，SHA256 `f47bb1fc7ca8626479b4f7d06c466ed2dc2eb7541a0d904ead5d8a2eab79836f`，
+本地/暂存/最终大小和hash一致，VMC checkpoint成员hash核验通过。预检source保留当时4个新测试版本，
+delivery/source另收录最终第5个封存检查测试；运行时代码未在预检之后变化。服务器仅文件/hash。
+VMC cp16500及之后的新产物不在本包，待后续安全边界归档。
+
+Goal保持active，四方法仍未证实收敛、未运行最终acceptance。继续VMC至已登记边界，再按现有协议和资源检查
+推进Direct正则化对照；occupancy配对尚未派发。历史100原文件删除仍待明确授权，本轮未删除原件或checkpoint。
+
 ## 2026-10-17 00:15 CST — 导纳阶段关闭、VMC接续与错误放置诊断
 
 开工实时查询/fetch/read main `fd1b5660c87a88477507b306941105a307525987`、baseline

@@ -22,7 +22,9 @@ PLUMBING = {'tools/' + name for name in (
     'goal_actor_regularization_20261016.py')}
 JOB_FIELDS = ('controller', 'seed', 'reward', 'reward_variant', 'hp')
 ACTOR_PILOT = 'resumed_actor_regularization_pilot'
+OCCUPANCY_PILOT = 'fresh_parameter_occupancy_pilot'
 TRAINER = 'tools/train_v4_recovery_rl_20261016.py'
+OCCUPANCY_HELPER = 'tools/goal_payload_occupancy_reward_20261016.py'
 
 
 def frozen(manifest_data):
@@ -35,9 +37,45 @@ def regularization_origin(reg):
     return reg.get('actor_regularization_origin')
 
 
+def occupancy_origin(reg):
+    if reg.get('experiment_kind') == OCCUPANCY_PILOT:
+        return dict(root=reg['run_root'],registration_sha256=digest(Path(reg['run_root'])/'REGISTRATION.json'))
+    return reg.get('payload_occupancy_origin')
+
+
 def training_source(reg):
-    """Normalize only the pinned loss-migration plumbing, never physics/reward."""
+    """Compare frozen sources through exact registered optional-code migrations.
+
+    This normalizes implementation availability, never a job's reward setting.
+    The selected parent protocol and each reward field are checked separately.
+    """
     data=dict(reg['source_manifest'])
+    occupancy=occupancy_origin(reg)
+    if occupancy:
+        root=Path(occupancy['root'])
+        assert digest(root/'REGISTRATION.json')==occupancy['registration_sha256']
+        pilot=read(root/'REGISTRATION.json')
+        from goal_tracking_pilot_20261016 import validate_pair
+        validate_pair(pilot)
+        assert pilot['experiment_kind']==OCCUPANCY_PILOT
+        pred=pilot['pilot_predecessor'];parent_root=Path(pred['root'])
+        assert digest(parent_root/'REGISTRATION.json')==pred['registration_sha256']
+        parent=read(parent_root/'REGISTRATION.json')
+        for key in (TRAINER,OCCUPANCY_HELPER):
+            assert data[key]==pilot['source_manifest'][key], 'Unregistered occupancy implementation change'
+            if key in parent['source_manifest']:
+                data[key]=parent['source_manifest'][key]
+            else:
+                data.pop(key)
+        assert frozen(data)==frozen(parent['source_manifest']), 'Occupancy migration changed other frozen source'
+        normalized=training_source(parent)
+        actor=regularization_origin(reg)
+        if actor:
+            actor_root=Path(actor['root'])
+            assert digest(actor_root/'REGISTRATION.json')==actor['registration_sha256']
+            # Both registered optional paths must share the same frozen base.
+            assert training_source(read(actor_root/'REGISTRATION.json'))==normalized
+        return normalized
     origin=regularization_origin(reg)
     if origin:
         root=Path(origin['root'])
@@ -63,7 +101,7 @@ def closed_source(root):
         from goal_actor_regularization_pilot_20261016 import require_predecessor_complete
         require_predecessor_complete(reg)
         checked = {}
-    elif reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot'):
+    elif reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot', OCCUPANCY_PILOT):
         from goal_tracking_pilot_20261016 import validate_pair
         validate_pair(reg)
         checked = {}
@@ -93,13 +131,14 @@ def closed_source(root):
             assert spec[key] == job[field]
         assert spec['reward']['mode'] == job['reward']
         assert spec.get('tracking_guidance') == job.get('tracking_guidance')
+        assert spec.get('payload_occupancy_guidance') == job.get('payload_occupancy_guidance')
         if regularization_origin(reg):
             assert spec['agent_config']['actor_bc_alpha']==job.get('actor_bc_alpha',0.)
         result[job['name']] = dict(job=job, checkpoint=cp,
             execution_sha256=digest(output/'execution.json'), protocol_sha256=digest(output/'PROTOCOL.json'),
             parameter_source=job_parameter_source(reg,job),
             parameter_manifest=manifest(Path(job_parameter_source(reg,job))),
-            regularization_origin=regularization_origin(reg))
+            regularization_origin=regularization_origin(reg),occupancy_origin=occupancy_origin(reg))
     return reg, result
 
 
@@ -132,6 +171,7 @@ def verify_selected_lineages(reg):
         old, cp = selected['job'], selected['checkpoint']
         assert all(job[k] == old[k] for k in JOB_FIELDS), 'Selected training objective/identity changed'
         assert job.get('tracking_guidance') == old.get('tracking_guidance'), 'Selected reward changed'
+        assert job.get('payload_occupancy_guidance') == old.get('payload_occupancy_guidance'), 'Selected occupancy reward changed'
         assert manifest(Path(job_parameter_source(reg,job)))==selected['parameter_manifest'], 'Selected agent implementation changed'
         assert job.get('actor_bc_alpha',0.)==old.get('actor_bc_alpha',0.)
         assert not job.get('actor_regularization_migration'), 'A selected checkpoint is already migrated'
@@ -170,6 +210,12 @@ def prepare_selected(base, selection, destination, interactions_per_family=11000
             protocol_sha256=item['protocol_sha256'])
     origins=[item['regularization_origin'] for item in chosen.values() if item['regularization_origin']]
     assert not origins or all(origin==origins[0] for origin in origins), 'Mixed migration origins require a new explicit protocol'
+    occupancy_origins=[item['occupancy_origin'] for item in chosen.values() if item['occupancy_origin']]
+    if not occupancy_origins and base_reg.get('payload_occupancy_origin'):
+        # Retain already registered optional-code availability when all chosen
+        # models use older objectives; each selected job still clears its field.
+        occupancy_origins=[base_reg['payload_occupancy_origin']]
+    assert not occupancy_origins or all(origin==occupancy_origins[0] for origin in occupancy_origins), 'Mixed occupancy origins require a new explicit protocol'
     reg = prepare_next(base, destination, interactions_per_family=interactions_per_family)
     reg.pop('previous_stage')
     reg.update(selected_lineages=lineages, selection_basis=selection['decision'],
@@ -178,6 +224,11 @@ def prepare_selected(base, selection, destination, interactions_per_family=11000
         reg['actor_regularization_origin']=origins[0]
         pilot=read(Path(origins[0]['root'])/'REGISTRATION.json')
         shutil.copy2(Path(pilot['source'])/TRAINER,Path(reg['source'])/TRAINER)
+    if occupancy_origins:
+        reg['payload_occupancy_origin']=occupancy_origins[0]
+        pilot=read(Path(occupancy_origins[0]['root'])/'REGISTRATION.json')
+        for key in (TRAINER,OCCUPANCY_HELPER):
+            shutil.copy2(Path(pilot['source'])/key,Path(reg['source'])/key)
     for job in reg['jobs']:
         item = chosen[job['name']]
         old, cp = item['job'], item['checkpoint']
@@ -185,6 +236,9 @@ def prepare_selected(base, selection, destination, interactions_per_family=11000
         job.pop('tracking_guidance', None)
         if old.get('tracking_guidance') is not None:
             job['tracking_guidance'] = old['tracking_guidance']
+        job.pop('payload_occupancy_guidance',None)
+        if old.get('payload_occupancy_guidance') is not None:
+            job['payload_occupancy_guidance']=old['payload_occupancy_guidance']
         job.pop('parameter_source',None);job.pop('parameter_manifest',None)
         if item['parameter_manifest']!=reg['parameter_manifest']:
             parameter=destination/'selected_parameter_by_job'/job['name']

@@ -48,6 +48,9 @@ def main():
         assert expected_hashes and all(digest(cp/k)==v for k,v in expected_hashes.items())
         result['checkpoint_hashes'] = expected_hashes
         spec = read(cp.parent / 'PROTOCOL.json')
+        assert spec.get('payload_occupancy_guidance')==job.get('payload_occupancy_guidance'), 'Checkpoint occupancy objective differs'
+        assert spec.get('tracking_guidance')==job.get('tracking_guidance'), 'Checkpoint tracking objective differs'
+        result['checkpoint_reward_identity']={key:spec.get(key) for key in ('tracking_guidance','payload_occupancy_guidance')}
         cfg = spec['agent_config']
         agent = OfficialParameterAgent(seed=job['seed'], total_steps=reg['optimizer_schedule_steps'],
             utd=1, gamma=cfg['gamma'], entropy_coef=cfg['temp_target_entropy_coef'],

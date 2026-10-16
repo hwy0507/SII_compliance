@@ -111,7 +111,7 @@ def prepare(previous, destination, checkpoint, reward_receipt, controller=None, 
         jobs.append(job)
     reg = dict(old)
     for key in ('parent_checkpoint_hashes','previous_stage','preflight_required_jobs',
-                'selected_lineages','selection_basis','actor_regularization_origin','finite_continuation_budget'):
+                'selected_lineages','selection_basis','actor_regularization_origin','payload_occupancy_origin','finite_continuation_budget'):
         reg.pop(key, None)
     started = datetime.now(timezone.utc)
     reg.update(experiment_kind=settings['kind'], registered_utc=started.isoformat(),

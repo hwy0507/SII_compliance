@@ -232,9 +232,9 @@ def prepare_next(previous, destination, gpu_preflight=False, interactions_per_fa
     # its backend plumbing only. Physics/worker/parameter snapshots stay frozen.
     for name in ('rl_goal_stage_20261016.py', 'probe_goal_credit_20261016.py', 'goal_compute_backend_20261016.py'):
         shutil.copy2(BENCH / 'tools' / name, source / 'tools' / name)
-    if old.get('actor_regularization_origin'):
+    if old.get('actor_regularization_origin') or old.get('payload_occupancy_origin'):
         for name in ('goal_selected_continuation_20261016.py','goal_actor_regularization_pilot_20261016.py',
-                     'goal_actor_regularization_20261016.py'):
+                     'goal_actor_regularization_20261016.py','goal_tracking_pilot_20261016.py'):
             shutil.copy2(BENCH/'tools'/name,source/'tools'/name)
     if gpu_preflight:
         shutil.copy2(BENCH/'tools/train_v4_recovery_rl_20261016.py', source/'tools/train_v4_recovery_rl_20261016.py')
@@ -310,13 +310,15 @@ def verify_inputs(reg):
     assert manifest(Path(reg['source'])) == reg['source_manifest'], 'Frozen source changed'
     assert manifest(Path(reg['parameter_source'])) == reg['parameter_manifest'], 'Parameter source changed'
     backend(reg)
+    if any(job.get('payload_occupancy_guidance') for job in reg['jobs']) and reg.get('experiment_kind')!='fresh_parameter_occupancy_pilot':
+        assert reg.get('payload_occupancy_origin'), 'Occupancy continuation requires its exact registered source origin'
     if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot':
         from goal_actor_regularization_pilot_20261016 import validate_pair
         validate_pair(reg)
     if reg.get('selected_lineages'):
         from goal_selected_continuation_20261016 import verify_selected_lineages
         verify_selected_lineages(reg)
-    if reg.get('actor_regularization_origin'):
+    if reg.get('actor_regularization_origin') or reg.get('payload_occupancy_origin'):
         from goal_selected_continuation_20261016 import training_source
         training_source(reg)
         for job in reg['jobs']:
@@ -336,6 +338,11 @@ def verify_inputs(reg):
             cp = Path(job['checkpoint'])
             assert digest(cp.parent/'execution.json') == job['parent_execution_sha256']
             assert verify_checkpoint(cp)['hashes'] == job['checkpoint_hashes']
+            if reg.get('payload_occupancy_origin'):
+                parent=read(root/'REGISTRATION.json')
+                original=next(j for j in parent['jobs'] if j['name']==job['name'])
+                assert reg['payload_occupancy_origin']==parent['payload_occupancy_origin']
+                assert job.get('payload_occupancy_guidance')==original.get('payload_occupancy_guidance')
             if reg.get('actor_regularization_origin'):
                 parent=read(root/'REGISTRATION.json')
                 original=next(j for j in parent['jobs'] if j['name']==job['name'])
@@ -369,6 +376,8 @@ def verify_preflight(reg):
             if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot' or reg.get('actor_regularization_origin'):
                 from goal_actor_regularization_pilot_20261016 import verify_restoration
                 verify_restoration(reg,job,result)
+            if reg.get('payload_occupancy_origin'):
+                assert result['checkpoint_reward_identity']=={key:job.get(key) for key in ('tracking_guidance','payload_occupancy_guidance')}
             if backend(reg) == 'cuda':
                 assert result['compute_runtime']['learning_backend'] == 'cuda'
                 assert result['compute_runtime']['platforms'] == ['gpu']
@@ -394,6 +403,8 @@ def seal_preflight(root):
         if reg.get('experiment_kind') == 'resumed_actor_regularization_pilot' or reg.get('actor_regularization_origin'):
             from goal_actor_regularization_pilot_20261016 import verify_restoration
             verify_restoration(reg,job,result)
+        if reg.get('payload_occupancy_origin'):
+            assert result['checkpoint_reward_identity']=={key:job.get(key) for key in ('tracking_guidance','payload_occupancy_guidance')}
         if backend(reg) == 'cuda':
             assert result['compute_runtime']['learning_backend'] == 'cuda'
             assert result['compute_runtime']['platforms'] == ['gpu']
