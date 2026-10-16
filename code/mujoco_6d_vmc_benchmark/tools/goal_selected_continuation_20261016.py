@@ -144,8 +144,10 @@ def prepare_selected(base, selection, destination, interactions_per_family=11000
         job.update(checkpoint=cp['path'],checkpoint_hashes=cp['hashes'],inherited_steps=cp['step'],
             limit=cp['step']+interactions_per_family,parent_execution_sha256=item['execution_sha256'],
             credit_migration=False,backend_migration=False)
-    shutil.copy2(BENCH/'tools/goal_selected_continuation_20261016.py',
-                 Path(reg['source'])/'tools/goal_selected_continuation_20261016.py')
+    # A four-family base can predate the pilot tooling. Selected ancestors are
+    # validated at runtime, so their dispatch validator must travel with us too.
+    for name in ('goal_selected_continuation_20261016.py','goal_tracking_pilot_20261016.py'):
+        shutil.copy2(BENCH/'tools'/name,Path(reg['source'])/'tools'/name)
     reg['source_manifest'] = manifest(Path(reg['source']))
     write(destination/'REGISTRATION.json', reg)
     verify_inputs(reg)

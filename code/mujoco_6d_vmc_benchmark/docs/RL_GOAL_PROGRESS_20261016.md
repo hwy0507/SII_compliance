@@ -1,5 +1,51 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 22:05 CST：完整Direct对照无成功，独立快照bug修复后四族实际接续
+
+开工main `ce97607603593cae53e899c9b14ca6a5c5d9fedd`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已查询/fetch/read，开工/收工读AGENTS。
+Direct tracking11000步/6001连续有限更新、8完整、physical_valid7/8、Task且Strict0/8；
+回报−23.647310/−23.654229/−23.824334/−24.231452/−24.633473/−25.232520/−39.191037/−24.135839。
+最后4cp6875/8250/9625/11000及全部训练步序/更新序/回报和已核验。完整配对3热身/1混合/3学习；
+学习RMSE中位差+241.535270mm、峰矩+4.074654Nm、峰速−.134038m/s、穿透−.015579mm、放置XY−2.261262mm。
+control末短回合仍在报告，不能凑成第4个完整学习配对。双方都失败，额外tracking权重未证明收益。
+
+本次选择保持未加tracking目标：Direct接fresh-n25 control cp10993（保留其短安全失败），参数三族
+接既有GPU验证cp12375，不再fresh重置。每族新增11k，Direct限21993、其他限23375，优化日程1M。
+第一准备目录`outputs/rl_goal_selected_20261016_stage02`运行时缺pilot校验模块，协调器failed、无trainer输出；
+旧快照未改，新增DISPATCH_FAILURE_20261016T1400.json含journal。根因是base四族source不含pilot模块，
+预检的sys.path同时留着checkout/tools，掩盖了依赖缺失。原测试夹具也错误地预装模块。
+修复`goal_selected_continuation`复制pilot校验器，`probe_goal_credit`替换而非叠加入口目录；
+真实缺依赖夹具与禁止checkout回退测试先出现2失败，再全79项Goal测试通过。
+
+当前唯一训练根`outputs/rl_goal_selected_20261016_stage02_v2`，登记SHA
+`2f7401d5ed96c7ab3f70f62890de078d95399fa0b6b6eea94a0ad3d89c0c3b18`。
+独立Python -I导入/核验及四族实际CUDA replay末窗口/丢弃更新预检全部通过，原cp hash保持。
+13:59:23Z新协调器`sii-rl-goal-stage-51b5e2c65202` PID2447861，Direct
+`sii-rl-goal-2ea514600ebc` PID2447875；首实际新更新10994/5995，归档快照11333/6334，优化尾11369/6370。
+CPU1/thread1/3GiB/swap0/UTD1、CUDA0/.125，物理/gate/actor48/filter/执行器/dt5e-5未改。
+接续episode8/9分别340/113步（13.60/4.52秒），return−41.499027/−41.402112，均approach，
+穿透2.120478/2.027631mm触发global_penetration_exceeded_2mm；cp11333/11446及原始数据仅本地待归档。
+这些失败照常计入，后续episode10已派发；绝不能把工作流恢复当训练质量修复。
+
+真实分支screen最初包含Direct8闭合+在途、三参数族各9历史闭合，全部joint0，均非training_candidate；
+随后新短失败须继续累积。14:01资源快照peak2,441,695,232字节，max/oom/swap均0；持续查真实更新和失败趋势。
+存储估算以32完整回合、最大161.69MB轨迹/152.09MB cp、每新增步4KiB增长余量、备用cp和2GiB暂存计算，
+增量13,827,378,359字节，free68,724,199,424，估剩54,896,821,065，高于50GiB；短失败会增加cp数量，
+不把估算当硬上界，继续逐回合磁盘保护和归档管理。已核验后移除1,014,664,550字节重复tar缓存，
+原始数据和checkpoint留本地，服务器包完整可恢复。旧阻抗64文件离线保留状态不变。
+
+已核验服务器主机arm1@192.168.31.70，根`/home/arm1/sii_shared/SII_compliance/runs/main/`：
+
+- `rl-goal-direct-pair-selected-20261016T1350/evidence.tar.gz`：1,014,664,550字节，
+  SHA256 `4926680f57691f57adb2845fcb33882f8dd0f9e0a2cd5648b1333ecbb4cb64c2`，tracking尾4原始回合/cp和完整配对。
+- `rl-goal-selected-snapshot-fix-20261016T1400/evidence.tar.gz`：3,259,135字节，
+  SHA256 `c471f8b7da9a223097010736e7db974ee2dd2d59225175ad3610f923d778d0df`，首次失败journal、修复源/测试、
+  v2完整source/参数/登记/四预检/launch/真实推进/screen及缓存恢复地址。候选修复按内容hash标识。
+
+服务器仅存储/hash。继续现有worker，完成Direct后核对三参数族顺序接续；下一轮优先归档新短失败并复核容量。
+Goal active，四方法均未证明收敛，未做最终统一acceptance或独立最终审计。
+
 ## 21:35 CST：逐方法来源接续可用，tracking进入学习且首配对仍失败
 
 开工main `ee494302b9eda843782204cc6d1f758477aa81fd`、baseline

@@ -1,5 +1,23 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 22:05 CST Direct配对闭合与四方法接续修复
+
+完整Direct control/tracking均0/8；tracking11000步/6001更新、8完整physical_valid7/8，
+control10993步/7完整+1短失败。3个完整学习配对RMSE中位差+241.535mm，额外tracking权重未证明收益。
+选Direct fresh-n25 control cp10993和原GPU验证三参数cp12375，各新增11k，不重置学习。
+第一次selected stage在派发前缺pilot依赖失败，无trainer输出，完整保留；修复快照依赖及预检checkout回退，
+2回归先失败后通过，全部79项Goal测试通过。独立v2快照隔离核验与四族真实恢复预检通过。
+当前`rl_goal_selected_20261016_stage02_v2`，协调器2447861、Direct2447875，已真实恢复推进。
+归档快照11333/6334，随后前2接续回合13.60/4.52秒穿透终止、Task/Strict均false；cp11333/11446仅本地待归档。
+OOM0/swap0，原3GiB/单路资源和冻结接口不变，50GiB磁盘保护保持；短失败增加cp开销，需跟进归档。
+服务器已核验两包（主机arm1@192.168.31.70，根`/home/arm1/sii_shared/SII_compliance/runs/main/`）：
+`rl-goal-direct-pair-selected-20261016T1350/evidence.tar.gz`，1,014,664,550字节，
+SHA256 `4926680f57691f57adb2845fcb33882f8dd0f9e0a2cd5648b1333ecbb4cb64c2`；
+`rl-goal-selected-snapshot-fix-20261016T1400/evidence.tar.gz`，3,259,135字节，
+SHA256 `c471f8b7da9a223097010736e7db974ee2dd2d59225175ad3610f923d778d0df`。
+首包重复本地tar已移除，原始数据/cp保留，服务器可恢复；修复按快照内容hash标识。
+按sii-research-sync核对两分支并保留失败；Goal active，工作流恢复不等于策略收敛，无最终验收。
+
 ## 2026-10-16 21:35 CST 逐方法接续实现与Direct tracking学习
 
 tracking原worker7000步/2001更新，5完整Task/Strict0/5；cp2750/4125/5500及501条连续有限更新核验。

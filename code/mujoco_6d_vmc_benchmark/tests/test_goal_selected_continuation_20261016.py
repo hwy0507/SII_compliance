@@ -21,8 +21,10 @@ class SelectedContinuationTests(unittest.TestCase):
     def fixture(self, directory, pilot=False):
         directory.mkdir()
         root,reg,state=continuation_fixtures.StageContinuationTests().fixture(directory)
-        for name in ('rl_recovery_control_20261016.py','goal_tracking_pilot_20261016.py',
-                     'goal_tracking_reward_20261016.py'):
+        names=['rl_recovery_control_20261016.py','goal_tracking_reward_20261016.py']
+        if pilot:
+            names.append('goal_tracking_pilot_20261016.py')
+        for name in names:
             shutil.copy2(Path(__file__).resolve().parents[1]/'tools'/name,root/'source/tools'/name)
         reg['source_manifest']=manifest(root/'source')
         reg.update(runtime='/frozen/runtime',python=sys.executable,
@@ -79,6 +81,7 @@ class SelectedContinuationTests(unittest.TestCase):
     def test_four_distinct_lineages_keep_selected_reward_and_checkpoint(self):
         with tempfile.TemporaryDirectory() as tmp:
             base=Path(tmp);four,pair,selection=self.setup_selection(base)
+            self.assertFalse((four/'source/tools/goal_tracking_pilot_20261016.py').exists())
             before=(manifest(four),manifest(pair))
             reg=prepare_selected(four,selection,base/'new',22000)
             self.assertEqual((manifest(four),manifest(pair)),before)
@@ -89,11 +92,13 @@ class SelectedContinuationTests(unittest.TestCase):
             self.assertFalse((base/'new/LAUNCH.json').exists())
             self.assertFalse((base/'new/CREDIT_PREFLIGHT.json').exists())
             verify_inputs(reg)
-            check=subprocess.run([sys.executable,'-c',
+            check=subprocess.run([sys.executable,'-I','-c',
                 'import sys; sys.path.insert(0,sys.argv[1]); from rl_goal_stage_20261016 import read,verify_inputs; verify_inputs(read(sys.argv[2]))',
                 str(base/'new/source/tools'),str(base/'new/REGISTRATION.json')],cwd=base,
                 env=dict(os.environ,PYTHONPATH=''),capture_output=True,text=True,timeout=20)
             self.assertEqual(check.returncode,0,check.stderr)
+            self.assertEqual(reg['source_manifest']['tools/goal_tracking_pilot_20261016.py'],
+                digest(Path(__file__).resolve().parents[1]/'tools/goal_tracking_pilot_20261016.py'))
             for job in reg['jobs']:
                 args=argparse.Namespace(goal_registration=base/'new/REGISTRATION.json',
                     root=Path(reg['parent_root']),steps=1000000,output=Path(job['output']),
@@ -111,6 +116,16 @@ class SelectedContinuationTests(unittest.TestCase):
                 else:
                     self.assertNotIn('tracking_guidance',job)
                     self.assertEqual(Path(job['checkpoint']).parent,four/job['name'])
+
+    def test_preflight_cannot_fall_back_to_checkout_for_missing_snapshot_module(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            (root/'source/tools').mkdir(parents=True)
+            probe=Path(__file__).resolve().parents[1]/'tools/probe_goal_credit_20261016.py'
+            check=subprocess.run([sys.executable,str(probe),'--root',str(root)],
+                cwd=root,env=dict(os.environ,PYTHONPATH=''),capture_output=True,text=True,timeout=20)
+            self.assertNotEqual(check.returncode,0)
+            self.assertIn("ModuleNotFoundError: No module named 'rl_goal_stage_20261016'",check.stderr)
 
     def test_running_pilot_or_missing_family_rejected_before_destination(self):
         with tempfile.TemporaryDirectory() as tmp:

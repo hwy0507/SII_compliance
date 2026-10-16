@@ -11,7 +11,9 @@ def main():
     parser.add_argument('--job', help='Required per-family preflight for exact continuation stages')
     args = parser.parse_args()
     root = args.root.resolve()
-    sys.path.insert(0, str(root / 'source/tools'))
+    # Replace the entrypoint directory: leaving checkout/tools on sys.path can
+    # hide missing frozen dependencies which the standalone coordinator needs.
+    sys.path[0] = str(root / 'source/tools')
     from rl_goal_stage_20261016 import read, write, digest, verify_inputs
     from goal_rl_credit_adapter_20261016 import migrated_replay_metadata
     from baseline_repair_rl_diagnostics_20261008 import flatten_metrics

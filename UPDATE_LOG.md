@@ -1,5 +1,35 @@
 # 更新日志
 
+## 2026-10-16 22:05 CST — Direct配对完成，修复独立快照依赖缺失并实际接续四族训练
+
+- 开工查询/fetch/read main `ce97607603593cae53e899c9b14ca6a5c5d9fedd`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工读取AGENTS；上一轮完成推送核验。
+  Direct tracking自然结束11000步/6001连续有限更新，8完整55秒、physical_valid7/8、Task/Strict0/8；
+  control仍10993步、7完整+1短穿透终止、0/8。三对完整学习回合tracking−control的RMSE中位差
+  +241.535270mm、峰矩+4.074654Nm、峰速−.134038m/s；未证明新增tracking权重有效，不按异定义reward排名。
+- 显式选择Direct fresh-n25 control cp10993，避免旧n1优化历史；参数三族保留既有CUDA验证cp12375。
+  每族新增最多11000交互、1M优化日程、原冻结训练/物理/gate/48维/filter不变，不再次清零。
+  首次`rl_goal_selected_20261016_stage02`协调器在派发前因缺少`goal_tracking_pilot_20261016`退出，
+  无trainer输出。查明旧四族快照不含pilot模块，仓库预检回退导入掩盖缺依赖；旧目录/失败日志完整保留。
+  修复选择快照复制依赖、预检移除checkout导入回退；修正测试夹具并先复现2项失败，修复后79项Goal测试通过。
+- 新独立`rl_goal_selected_20261016_stage02_v2`实际隔离导入及四族CUDA丢弃更新预检通过，checkpoint不变，
+  replay终端窗口/有限梯度通过；登记SHA `2f7401d5ed96c7ab3f70f62890de078d95399fa0b6b6eea94a0ad3d89c0c3b18`。
+  13:59:23Z协调器2447861（sii-rl-goal-stage-51b5e2c65202）启动，worker2447875真实推进：
+  从10993/5994恢复，第一更新10994/5995，归档快照11333/6334，读取优化记录11369/6370。
+  Direct→阻抗→导纳→VMC单路，本机CPU1/thread1/3GiB/swap0/UTD1、学习CUDA0；派发截止2026-10-17T13:53:47.177876Z。
+  最新前2接续回合13.60/4.52秒穿透2.120478/2.027631mm终止，Task/Strict均失败，cp11333/11446及原始回合仅本地待归档。
+- 完整Direct尾4回合/cp与配对报告已核验服务器归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-direct-pair-selected-20261016T1350/evidence.tar.gz`，
+  1,014,664,550字节，SHA256 `4926680f57691f57adb2845fcb33882f8dd0f9e0a2cd5648b1333ecbb4cb64c2`。
+  旧派发失败/修复源/测试/新登记/四预检/真实推进/分支screen另归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-selected-snapshot-fix-20261016T1400/evidence.tar.gz`，
+  3,259,135字节，SHA256 `c471f8b7da9a223097010736e7db974ee2dd2d59225175ad3610f923d778d0df`。
+  活动修复快照按内容hash标识，包内不冒称已提交源码；服务器仅存储/hash。
+- 约1.01GB重复传输缓存核验后移除，原始回合/cp未移除，远端包可下载恢复。新阶段估算增量13.83GB、
+  free68.72GB、预计剩54.90GB，高于50GiB保护线；这是32完整回合估算，短失败可能增加cp数，需持续归档管理。
+  当前OOM0/swap0，第一独立report因漏WorkingDirectory退出2已保留并纠正。真实分支screen包含历史失败，
+  四族均非收敛候选；Goal active，未最终acceptance，保持无关用户文件。
+
 ## 2026-10-16 21:35 CST — 逐方法精确接续入口与分支收敛统计完成，Direct tracking真实学习
 
 - 查询/fetch/read main `ee494302b9eda843782204cc6d1f758477aa81fd`、baseline
