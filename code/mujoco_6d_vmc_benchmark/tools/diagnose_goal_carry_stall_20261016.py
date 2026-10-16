@@ -2,6 +2,9 @@
 
 Use the previous post-step hand position with the current pre-step observation.
 This is waypoint/gate bookkeeping, not a controller causality experiment.
+The planner updates BEFORE recording this observation: a reached intermediate
+waypoint may already have been replaced. Zero sampled readiness alone is not
+evidence of zero waypoint progress.
 """
 import argparse
 from datetime import datetime, timezone
@@ -53,6 +56,10 @@ def waypoint_evidence(hand_before, error, route, lateral_rejoin):
     finite = np.isfinite(forward)
     indices, counts = np.unique(cursor, return_counts=True)
     return dict(cursor_counts={str(int(k)): int(v) for k, v in zip(indices, counts)},
+                cursor_first=int(cursor[0]), cursor_last=int(cursor[-1]),
+                observed_cursor_increases=int((np.diff(cursor)>0).sum()),
+                observed_cursor_decreases=int((np.diff(cursor)<0).sum()),
+                sampled_cursor_unchanged=bool(np.all(cursor==cursor[0])),
                 route_length=len(route), target_match_max_m=float(residual.max()),
                 radius_ready_count=int(radius_ready.sum()),
                 rejoin_plane_ready_count=int(plane_ready.sum()),
@@ -85,6 +92,8 @@ def diagnose(episode, tail_seconds=10.):
         result = waypoint_evidence(z['hand'][:-1][mask], error, route,
                                    plan['allow_lateral_rejoin'])
         result.update(samples=int(mask.sum()),
+                      observation_order='After planner update, before action/physics; reached intermediate waypoint may already be replaced.',
+                      readiness_scope='Sampled current target only; zero readiness does not imply zero progress. Intermediate waypoint advancement uses position/rejoin and rotation, without the final-stage speed/dwell requirement.',
                       position_error_m=summarize(np.linalg.norm(error, axis=1)),
                       rotation_error_rad=summarize(z['task_rotation_error_rad'][1:][mask]),
                       speed_mps=summarize(z['task_speed_mps'][1:][mask]),
@@ -110,6 +119,7 @@ def main():
                    created_utc=datetime.now(timezone.utc).isoformat(),
                    scope='Closed training traces only; no final acceptance or physics replay',
                    limitations=['25Hz samples do not prove every physics substep gate state.',
+                                'Planner updates precede observations; zero sampled readiness cannot establish no waypoint advancement.',
                                 'Waypoint blockage does not establish controller cause or a successful fix.',
                                 'Do not relax the frozen gate based on this diagnostic.'],
                    script_sha256=sha(__file__), episodes=[diagnose(p) for p in args.episode])

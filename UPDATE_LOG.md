@@ -1,5 +1,26 @@
 # 更新日志
 
+## 2026-10-16 17:30 CST — 修正路点就绪诊断解释，VMC首个全学习回合仍未成功
+
+- 开工实时查询/fetch/read main `f296a7dffaabdfe79bbdadcd39815ff8bd09d8ae`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/Goal进度，上一轮为学习落盘核验进展。
+  原VMC PID2375301、协调器2329290 active；6500/1501推进至7250/2251，第6回合在途。
+  前5完整55秒physical_valid5/5、Task/Strict0/5，第5return−25.330025621；cp6875逐文件/tar成员hash通过。
+- 冻结源码复核确认task.update先于canonical observation，中间路点到达后会先切换目标。
+  因此0/250 sampled position-ready不能单独证明没有路点推进；中间路点切换也不要求最终阶段的速度/驻留条件。
+  只修改只读carry诊断，增加首末cursor、增加/减少次数和整窗cursor不变标志，保留旧数值并补采样语义。
+  5项测试（含切换后零就绪却推进的反例）、编译/diff通过，活动环境/actor/filter/gate/物理未改。
+- 对21个已闭合参数RL回合复核：阻抗8/8末10秒cursor20不变；导纳3/8仍推进（18→21、17→18、17→18），
+  其余5/8末窗不变；VMC5/5末窗仍推进1–2个路点（前3为18→20，第4为19→20，第5为18→19）。
+  所有样本就绪均0，证明不能从该计数独自推断停滞。更正此前可能的“统一卡死”解读，失败标签保持，
+  不把不同condition间cursor差异当作学习改善或因果结论。阻抗奖励对照依据仍成立。
+- 归档快照7000步/2001更新，memory.current3,102,957,568、peak/上限3GiB，max689为回收事件，
+  OOM/kill0、swap0；真实更新继续，无重启/扩容。只读诊断/归档服务exit0。
+  第5原始回合/cp6875、前5reward重算、21回合修正诊断/源码/测试已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-waypoint-progress-20261016T0930/evidence.tar.gz`，
+  264,801,479字节，SHA256 `79b7d1bacc2cb2383cc3fd5beb4ccd5dea5ded3fafb06f7ed3c2c650d13fabbf`。
+  本机计算、服务器仅归档。Goal active，VMC继续；GPU完整循环/奖励对照待前序闭合，未收敛/未最终验收。
+
 ## 2026-10-16 17:20 CST — VMC跨过热身，首次学习checkpoint与501次更新核验
 
 - 开工实时查询/fetch/read main `8cb0812f2ec6ccc4551e602d71190581f5ee8038`、baseline

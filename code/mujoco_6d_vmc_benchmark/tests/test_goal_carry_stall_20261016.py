@@ -11,6 +11,26 @@ spec.loader.exec_module(module)
 
 
 class CarryGateTests(unittest.TestCase):
+    def test_post_switch_samples_can_advance_without_ready_samples(self):
+        # At each hand position the old target was within 12mm. The planner
+        # switches to the next target before encoding the logged observation.
+        route = np.array([[0., 0., 0.], [.02, 0., 0.], [.04, 0., 0.]])
+        hand = np.array([[.005, 0., 0.], [.025, 0., 0.]])
+        result = module.waypoint_evidence(hand, route[1:]-hand, route, False)
+        self.assertEqual(result['position_or_rejoin_ready_count'], 0)
+        self.assertEqual((result['cursor_first'], result['cursor_last']), (1, 2))
+        self.assertEqual(result['observed_cursor_increases'], 1)
+        self.assertFalse(result['sampled_cursor_unchanged'])
+
+    def test_unchanged_target_is_reported_separately(self):
+        route = np.array([[0., 0., 0.], [.02, 0., 0.], [.04, 0., 0.]])
+        hand = np.array([[.005, 0., 0.], [.006, 0., 0.]])
+        result = module.waypoint_evidence(hand, route[1]-hand, route, False)
+        self.assertEqual(result['position_or_rejoin_ready_count'], 0)
+        self.assertEqual(result['observed_cursor_increases'], 0)
+        self.assertEqual(result['observed_cursor_decreases'], 0)
+        self.assertTrue(result['sampled_cursor_unchanged'])
+
     def test_plane_crossing_is_distinct_from_radius(self):
         route = np.array([[0., 0., 0.], [.1, 0., 0.], [.2, 0., 0.]])
         hand = np.array([[.095, .02, 0.], [.101, .02, 0.]])

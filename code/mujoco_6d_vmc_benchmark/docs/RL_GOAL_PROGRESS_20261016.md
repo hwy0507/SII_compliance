@@ -4,6 +4,37 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 17:30 CST：路点诊断增加推进证据，区分缓慢前进与末窗停滞
+
+开工main `f296a7dffaabdfe79bbdadcd39815ff8bd09d8ae`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`已实时查询/fetch/read，AGENTS与进度重读。
+上一轮为进展。原VMC PID2375301/协调器2329290 active，6500/1501→7250/2251，
+第6回合在途；前5完整55秒physical_valid5/5、Task/Strict0/5，第5return−25.330025621。
+cp6875逐文件及tar内成员hash通过，前5回合reward重算一致；未重复启动/更改运行快照。
+
+冻结validate_office_apparatus主循环先调用task.update，再生成canonical observation；
+PlannedCornerTask中间路点到达后先递增cursor并替换goal。因此观测误差是切换后的目标误差，
+即便末10秒所有观测position/rejoin-ready均0，也可能仍在推进。中间路点只检查位置/重入
+及姿态，不采用最终阶段速度/驻留条件。此前字段数值未错，但不能用0/250独自判停滞。
+诊断新增cursor_first/last、observed_cursor_increases/decreases、sampled_cursor_unchanged
+及采样顺序说明，不改环境、gate或训练。5项测试包含零就绪但实际换路点的反例及恒定目标对照，
+编译/diff通过；本机只读复核21个闭合参数RL回合exit0，无新仿真/梯度。
+
+末10秒复核结果（索引从0开始）：阻抗ep0–7全部cursor20不变；导纳ep1为18→21、ep4/5为17→18，
+另5回合末窗cursor不变；VMC ep0–2为18→20、ep3为19→20、ep4为18→19，全部仍有1–2次推进。
+各回合的sampled position/rejoin-ready都是0。更正任何把这些方法统一描述为完全卡死的解读：
+VMC当前更符合未在55秒内走完路径，阻抗仍有一致的末窗停滞证据；这不是不同条件之间学习改善
+或失败根因已确定的证明。最终Task/Strict失败标签不变，阻抗既定tracking奖励对照依据不变。
+
+归档快照7000/2001：memory.current3,102,957,568字节，peak=max=3,221,225,472，
+memory.events.max689、OOM/kill0、swap0。max为上限回收，非OOM；继续推进不重启。
+本轮已核验服务器归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-waypoint-progress-20261016T0930/evidence.tar.gz`
+（264,801,479字节，SHA256 `79b7d1bacc2cb2383cc3fd5beb4ccd5dea5ded3fafb06f7ed3c2c650d13fabbf`），
+含第5原始回合/cp6875、前5reward、21回合重新诊断/源码/测试/资源快照和复现脚本。
+旧轨迹仍在此前分包，诊断只新增不覆盖历史收据。Goal active，四族未证明收敛；VMC继续既定段，
+后续四族GPU验证/已登记奖励对照不变，未做统一acceptance/独立最终物理审计。
+
 ## 17:20 CST：VMC从热身进入真实梯度学习，首次学习checkpoint保全
 
 本轮开工main `8cb0812f2ec6ccc4551e602d71190581f5ee8038`、baseline

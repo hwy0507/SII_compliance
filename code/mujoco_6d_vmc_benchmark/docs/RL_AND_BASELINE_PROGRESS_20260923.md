@@ -1,5 +1,14 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 17:30 CST 纠正零路点就绪计数的含义，VMC五回合仍未成功
+
+VMC7250步/2251更新，5完整55秒physical_valid5/5、Task/Strict0/5，第5return−25.33003。
+规划器先换目标再记观测，0/250位置就绪不能单独证明停滞；只读诊断新增cursor推进计数，5测试通过。
+复核21回合：阻抗8/8末窗cursor20不变，导纳3/8末窗仍推进，VMC5/5末窗推进1–2个路点。
+失败标签不变、不推断因果改善；冻结环境/gate不改。第5回合/cp6875及修正诊断已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-waypoint-progress-20261016T0930/evidence.tar.gz`，
+SHA256 `79b7d1bacc2cb2383cc3fd5beb4ccd5dea5ded3fafb06f7ed3c2c650d13fabbf`。Goal active，VMC第6回合在途。
+
 ## 2026-10-16 17:20 CST VMC学习更新与checkpoint实际变化通过核验
 
 VMC原PID2375301推进至6000步/1001更新，4个完整55秒回合Task/Strict0/4、physical_valid4/4，
