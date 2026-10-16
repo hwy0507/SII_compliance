@@ -204,6 +204,7 @@ def prepare_next(previous, destination, gpu_preflight=False):
         shutil.copy2(BENCH / 'tools' / name, source / 'tools' / name)
     if gpu_preflight:
         shutil.copy2(BENCH/'tools/train_v4_recovery_rl_20261016.py', source/'tools/train_v4_recovery_rl_20261016.py')
+        shutil.copy2(BENCH/'tools/goal_tracking_reward_20261016.py', source/'tools/goal_tracking_reward_20261016.py')
     started = datetime.now(timezone.utc)
     reg = dict(old)
     reg.pop('parent_checkpoint_hashes', None)
@@ -283,7 +284,7 @@ def verify_inputs(reg):
 
 
 def verify_preflight(reg):
-    if reg.get('experiment_kind') == 'fresh_direct_tracking_pilot':
+    if reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot'):
         from goal_tracking_pilot_20261016 import verify_pilot_preflight
         return verify_pilot_preflight(reg)
     root = Path(reg['run_root'])
@@ -359,7 +360,7 @@ def worker_command(reg, job):
 
 def run(root):
     reg = read(root / 'REGISTRATION.json')
-    if reg.get('experiment_kind') == 'fresh_direct_tracking_pilot':
+    if reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot'):
         from goal_tracking_pilot_20261016 import require_predecessor_complete
         require_predecessor_complete(reg)
     assert not (root / 'execution.json').exists(), 'Never retry in-place'
@@ -427,7 +428,7 @@ def run(root):
 
 def launch(root):
     reg = read(root / 'REGISTRATION.json')
-    if reg.get('experiment_kind') == 'fresh_direct_tracking_pilot':
+    if reg.get('experiment_kind') in ('fresh_direct_tracking_pilot', 'fresh_parameter_tracking_pilot'):
         from goal_tracking_pilot_20261016 import require_predecessor_complete
         require_predecessor_complete(reg)
     verify_inputs(reg)

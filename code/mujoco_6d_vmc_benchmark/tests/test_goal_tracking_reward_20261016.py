@@ -4,11 +4,29 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'tools'))
-from goal_tracking_reward_20261016 import (CONFIG, validate_guidance, check_reward_resume,
+from goal_tracking_reward_20261016 import (CONFIG, PARAMETER_CONFIG, validate_guidance, check_reward_resume,
                                           tracking_terms, discounted_cost_tail)
 
 
 class TrackingRewardTests(unittest.TestCase):
+    def test_parameter_treatment_adds_only_nine_base_tracking_costs(self):
+        cfg = PARAMETER_CONFIG
+        self.assertEqual(validate_guidance({'tracking_guidance':cfg}, controller='impedance',
+            reward='metric', reward_variant='payload_shaping'), cfg)
+        cost = .01*.04/55
+        addition = sum(tracking_terms(cost,.04,.04,terminated=False,success=False,config=cfg).values())
+        self.assertAlmostEqual(-4*cost+addition,-40*cost)
+        with self.assertRaises(ValueError):
+            validate_guidance({'tracking_guidance':cfg},controller=None,reward='office_task',reward_variant='task_safety')
+        with self.assertRaises(ValueError):
+            check_reward_resume({'tracking_guidance':CONFIG},{'tracking_guidance':cfg})
+
+    def test_parameter_failure_tail_cannot_reward_early_abort(self):
+        cfg=PARAMETER_CONFIG; cost=.04/55
+        early=sum(tracking_terms(cost,.04,.04,terminated=True,success=False,config=cfg).values())
+        full=-36*cost*sum(cfg['gamma']**i for i in range(1375))
+        self.assertAlmostEqual(early,full,places=9)
+
     def test_dense_cost_prefers_lower_tracking_error(self):
         kw = dict(interval_s=.04, elapsed_s=.04, terminated=False, success=False, config=CONFIG)
         perfect = sum(tracking_terms(0., **kw).values())

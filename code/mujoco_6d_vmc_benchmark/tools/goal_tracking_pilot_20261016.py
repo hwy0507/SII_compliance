@@ -1,4 +1,4 @@
-"""Finite fresh Direct reward comparison, after the existing four-family stage.
+"""Finite fresh Direct or impedance reward comparison after a four-family stage.
 
 Preparation and discarded-update preflight may run while the predecessor trains.
 Launch/run require its four jobs to have closed successfully and the global lock.
@@ -15,24 +15,34 @@ import sys
 from rl_goal_stage_20261016 import (BENCH, read, write, digest, manifest, verify_inputs,
     completed_stage_checkpoints)
 from rl_recovery_control_20261016 import verify_checkpoint
-from goal_tracking_reward_20261016 import CONFIG, tracking_terms
+from goal_tracking_reward_20261016 import CONFIG, PARAMETER_CONFIG, tracking_terms
 from goal_compute_backend_20261016 import backend, runtime_info
 
 
+def pair_settings(controller):
+    if controller is None:
+        return dict(prefix='direct', reward='office_task', variant='task_safety',
+                    hp='direct_explore', config=CONFIG, kind='fresh_direct_tracking_pilot')
+    assert controller == 'impedance', 'Only the evidenced impedance treatment is registered'
+    return dict(prefix='impedance', reward='metric', variant='payload_shaping',
+                hp='parameter_balanced', config=PARAMETER_CONFIG, kind='fresh_parameter_tracking_pilot')
+
+
 def validate_pair(reg):
-    assert reg['experiment_kind'] == 'fresh_direct_tracking_pilot'
     assert len(reg['jobs']) == 2 and reg['maximum_new_interactions'] == 22000
     control, treatment = reg['jobs']
-    assert control['name'] == 'direct_control' and treatment['name'] == 'direct_tracking'
+    settings = pair_settings(control['controller'])
+    assert reg['experiment_kind'] == settings['kind']
+    assert control['name'] == settings['prefix']+'_control' and treatment['name'] == settings['prefix']+'_tracking'
     for job in reg['jobs']:
         assert job['checkpoint'] is None and job['inherited_steps'] == 0 and job['limit'] == 11000
-        assert job['controller'] is None and job['reward'] == 'office_task'
-        assert job['reward_variant'] == 'task_safety' and job['hp'] == 'direct_explore'
+        assert job['controller'] == control['controller'] and job['reward'] == settings['reward']
+        assert job['reward_variant'] == settings['variant'] and job['hp'] == settings['hp']
         assert not job['credit_migration']
     excluded = {'name','output','unit','tracking_guidance'}
     assert {k:v for k,v in control.items() if k not in excluded} == {
         k:v for k,v in treatment.items() if k not in excluded}, 'Only tracking reward may differ'
-    assert control.get('tracking_guidance') is None and treatment['tracking_guidance'] == CONFIG
+    assert control.get('tracking_guidance') is None and treatment['tracking_guidance'] == settings['config']
     assert reg['new_interactions_per_family'] == 11000 and reg['optimizer_schedule_steps'] == 1000000
 
 
@@ -46,17 +56,20 @@ def require_predecessor_complete(reg):
     return completed_stage_checkpoints(old, state)
 
 
-def prepare(previous, destination, checkpoint, reward_receipt):
+def prepare(previous, destination, checkpoint, reward_receipt, controller=None):
     assert not destination.exists(), 'Preserve every pilot attempt'
     old = read(previous/'REGISTRATION.json'); verify_inputs(old)
     assert len(old['jobs']) == 4 and not old.get('experiment_kind')
     cp = verify_checkpoint(checkpoint)
     receipt = read(reward_receipt)
-    assert receipt['protocol_snapshot']['controller'] is None
-    assert receipt['protocol_snapshot']['reward_variant'] == 'task_safety'
+    settings = pair_settings(controller)
+    assert receipt['protocol_snapshot']['controller'] == controller
+    assert receipt['protocol_snapshot']['reward_variant'] == settings['variant']
+    if controller:
+        assert receipt['protocol_snapshot']['reward']['error_weight'] == PARAMETER_CONFIG['base_error_weight']
     assert receipt['protocol_sha256'] == digest(checkpoint.parent/'PROTOCOL.json')
-    direct = next(j for j in old['jobs'] if j['controller'] is None)
-    assert checkpoint.parent == Path(direct['output'])
+    parent_job = next(j for j in old['jobs'] if j['controller'] == controller)
+    assert checkpoint.parent == Path(parent_job['output'])
     # Use one complete recorded training episode for a discarded-update preflight.
     row = next(r for r in receipt['execution_snapshot']['rows'] if 'ended_utc' in r)
     assert row['step_after'] <= cp['step']
@@ -70,19 +83,19 @@ def prepare(previous, destination, checkpoint, reward_receipt):
                  'goal_compute_backend_20261016.py'):
         shutil.copy2(BENCH/'tools'/name, source/'tools'/name)
     jobs = []
-    for name in ('direct_control','direct_tracking'):
+    for name in (settings['prefix']+'_control',settings['prefix']+'_tracking'):
         output = destination/name
-        job = dict(name=name,controller=None,reward='office_task',reward_variant='task_safety',
-            hp='direct_explore',seed=direct['seed'],inherited_steps=0,limit=11000,
+        job = dict(name=name,controller=controller,reward=settings['reward'],reward_variant=settings['variant'],
+            hp=settings['hp'],seed=parent_job['seed'],inherited_steps=0,limit=11000,
             checkpoint=None,credit_migration=False,output=str(output),
             unit='sii-rl-goal-'+hashlib.sha256(str(output).encode()).hexdigest()[:12])
-        if name == 'direct_tracking': job['tracking_guidance'] = dict(CONFIG)
+        if name.endswith('_tracking'): job['tracking_guidance'] = dict(settings['config'])
         jobs.append(job)
     reg = dict(old)
     for key in ('parent_checkpoint_hashes','previous_stage','preflight_required_jobs'):
         reg.pop(key, None)
     started = datetime.now(timezone.utc)
-    reg.update(experiment_kind='fresh_direct_tracking_pilot', registered_utc=started.isoformat(),
+    reg.update(experiment_kind=settings['kind'], registered_utc=started.isoformat(),
         run_root=str(destination),source=str(source),parameter_source=str(parameter),
         source_manifest=manifest(source),parameter_manifest=manifest(parameter),jobs=jobs,
         source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=BENCH,text=True).strip(),
@@ -94,8 +107,9 @@ def prepare(previous, destination, checkpoint, reward_receipt):
         pilot_probe=dict(checkpoint=str(checkpoint),hashes=cp['hashes'],reward_receipt=str(reward_receipt),
                          reward_receipt_sha256=digest(reward_receipt),episode=row['episode']),
         credit_migration='None: both arms fresh model/optimizer/replay/normalizers/RNG; same seed and warmup.',
-        evidence_basis='Recorded safe failures have equal discounted base return despite different tracking cost. Test additional bounded tracking cost in a fresh same-seed comparison.',
-        limitations='Single seed, eight full-horizon episodes per arm at most; pilot feasibility only, not convergence or four-family completion. Historical resumed Direct is not the matched control.',
+        evidence_basis=('Recorded Direct safe failures have equal discounted base return despite different tracking cost.' if controller is None else
+            'Eight closed impedance failures remain at carry waypoint20; discounted tracking cost around0.09 versus torque1.6-2.8. Test tenfold tracking weight4->40 with one added weight36 component; no gate or physical change.'),
+        limitations='Single seed, eight full-horizon episodes per arm at most; pilot feasibility only, not convergence or four-family completion. Historical training is not the matched control.',
         comparison='Report every Task/Strict result, stage reached and physical tracking cost on matched train identities; do not compare different-objective reward totals as improvement.')
     validate_pair(reg); write(destination/'REGISTRATION.json',reg)
     return reg
@@ -151,21 +165,22 @@ def preflight(root):
             raw = {key:data[key][row['step_before']:row['step_after']].copy() for key in data.files}
         np.testing.assert_allclose(raw['reward'],[e['terms']['final_reward'] for e in logs],rtol=1e-6,atol=1e-6)
         assert raw['terminated'][-1] and not raw['terminated'][:-1].any() and not raw['truncated'].any()
-        hp = read(Path(reg['parent_root'])/'PROTOCOL.json')['rl_hyperparameters']['direct_explore']
+        hp = read(Path(reg['parent_root'])/'PROTOCOL.json')['rl_hyperparameters'][reg['jobs'][0]['hp']]
+        dimension = receipt['protocol_snapshot']['agent_config']['action_dimension']
         initial_hashes = []
         for job in reg['jobs']:
             agent = OfficialParameterAgent(seed=job['seed'],total_steps=1000000,utd=1,gamma=.9995,
-                entropy_coef=hp['entropy_coef'],initial_temperature=hp['initial_temperature'],action_dimension=7)
+                entropy_coef=hp['entropy_coef'],initial_temperature=hp['initial_temperature'],action_dimension=dimension)
             assert agent.interactions == agent.updates == agent.reward_samples == 0
             initial_hashes.append({name:hashlib.sha256(serialization.to_bytes(getattr(agent.raw_agent,name))).hexdigest()
                 for name in ('_actor','_critic','_target_critic','_temperature')})
-            replay = MultiStepReplay(len(logs),7,job['seed']+53,n_step=25,gamma=.9995)
+            replay = MultiStepReplay(len(logs),dimension,job['seed']+53,n_step=25,gamma=.9995)
             previous_time = 0.
             for i, entry in enumerate(logs):
                 terms = entry['terms']; reward = float(raw['reward'][i]); elapsed = terms['elapsed_s']
                 if job.get('tracking_guidance'):
                     reward += sum(tracking_terms(terms['bounded_error_cost'],elapsed-previous_time,elapsed,
-                        terminated=terms['terminated'],success=terms['success'],config=CONFIG).values())
+                        terminated=terms['terminated'],success=terms['success'],config=job['tracking_guidance']).values())
                 agent.sample_action(raw['observation'][i],training=True)
                 agent.consume_transition(reward,bool(raw['terminated'][i]))
                 transition = {k:v[i] for k,v in raw.items()}; transition['reward'] = reward
@@ -201,8 +216,9 @@ if __name__ == '__main__':
     p.add_argument('--previous-stage',type=Path)
     p.add_argument('--checkpoint',type=Path)
     p.add_argument('--reward-receipt',type=Path)
+    p.add_argument('--controller',choices=('impedance',))
     a = p.parse_args()
     if a.mode == 'prepare':
-        prepare(a.previous_stage.resolve(),a.root.resolve(),a.checkpoint.resolve(),a.reward_receipt.resolve())
+        prepare(a.previous_stage.resolve(),a.root.resolve(),a.checkpoint.resolve(),a.reward_receipt.resolve(),a.controller)
     elif a.mode == 'preflight': preflight(a.root.resolve())
     else: require_predecessor_complete(read(a.root.resolve()/'REGISTRATION.json'))

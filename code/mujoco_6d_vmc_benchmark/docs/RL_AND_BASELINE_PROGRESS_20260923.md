@@ -1,5 +1,14 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 15:50 CST 阻抗新鲜配对奖励干预已准备，尚未在线训练
+
+根据8个失败回合的弱跟踪奖励证据，实现并登记权重4→40、其余一致的阻抗fresh两臂对照，
+各11k/同seed/n25/UTD1/CPU1/3GiB/swap0；43项Goal＋5项恢复测试和真实2次丢弃更新预检通过。
+初始网络相等、checkpoint不变、无OOM；stage01尚未完成，实际就绪检查拒绝新派发。
+导纳原训练已2750步/0更新、2完整回合Task/Strict0/2；冻结源码未改。新pilot与导纳首回合
+已核验归档至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-weight-pilot-20261016T0750/`。
+尚无干预效果/收敛结论，详见[Goal进度](RL_GOAL_PROGRESS_20261016.md)。
+
 ## 2026-10-16 15:40 CST 阻抗阶段结束但未收敛，导纳按原队列启动
 
 阻抗11000步/6001更新、8个完整55秒回合，Task/Strict0/8、physical_valid8/8，仍停carry。

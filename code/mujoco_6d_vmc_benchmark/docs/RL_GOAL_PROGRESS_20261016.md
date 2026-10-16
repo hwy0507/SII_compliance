@@ -4,6 +4,44 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 15:50 CST：阻抗权重对照实现、登记和真实预检完成，现有导纳继续
+
+开工核对main `b0e61c671691fc0e33d5193d3b9a00611fa46e2e`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS/远端日志。上一轮为实质进展。
+导纳PID2360933/原协调器2329290真实推进至2750步，仍处5000步热身、0更新；2完整55秒回合
+return−25.378512382/−25.374599982，Task/Strict0/2、physical_valid2/2，第3在途。VMC排队。
+
+新修复假设：已有阻抗8失败回合跟踪奖励约−.09，而峰矩约−1.6至−2.8，跟踪信号偏弱。
+把训练跟踪权重从4提升到40，使用同一物理子步积分的bounded_error_cost（尺度仍.12m）：
+保留原metric基础权重4，新增明确标记的tracking_guidance权重36；所有其他奖励项保持。
+提前失败补齐新增项的折扣最坏尾部；不改变最终物理/gate/actor48/filter，也不靠改门槛解卡。
+这是单变量训练假设，不能保证能克服接触/可达性问题；需看真实paired任务与安全结果。
+`goal_tracking_reward_20261016.py`与trainer拒绝未登记配置/不同奖励checkpoint混用；
+`goal_tracking_pilot_20261016.py`复用fresh比较流程，支持5维阻抗，与旧7维Direct保持隔离。
+
+新独立根`outputs/rl_goal_impedance_tracking_pilot_20261016`已prepared，登记SHA256
+`52884e47b1db9e4ea4a050940e70d1edcf81aa46482d44412ba2976b69472a16`；
+两臂impedance_control/impedance_tracking，同seed2026101421、各最多11000新交互/1M优化日程、
+5000热身、n25/UTD1、CPU1单路/3GiB/swap0，派发保护截止2026-10-17T07:46:01.068951Z。
+模型/optimizer/normalizer/replay均从零；cp11000只用于只读取历史replay预检，不用于训练初始化。
+真预检读取同一个1375步完整训练回合，两臂各做一次丢弃更新：初始网络hash完全相等、
+终端25步累计回报及mask正确、所有metrics有限、旧checkpoint hash不变，exit0。
+峰值1,365,557,248字节、OOM/max0；无仿真/模型保存。43项Goal＋5项恢复测试、编译/diff检查通过。
+
+`IMPEDANCE_TRACKING_WEIGHT_ARITHMETIC_20261016T0748.json`在相同8条旧轨迹上复算额外
+折扣罚分.830188–.866527；不是新策略回报/效果，不能用不同奖励定义的raw return比较优劣。
+真实require_predecessor_complete检查拒绝当前仍运行stage01；没有LAUNCH/后台等待服务/新模拟器。
+既有Direct pilot登记hash仍`42f101068a4185f7d920900de8b18f63720720436254fb3f2bbe4ab4cb7f3c91`。
+GPU完整循环验证仍先于后续训练对照；此新pilot是CPU登记，未冒称GPU实测或四族训练完成。
+
+已核验incoming大小/hash与最终独立目录hash：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-weight-pilot-20261016T0750/evidence.tar.gz`，
+198,505,376字节，SHA256 `de29e2588ac37a95b0c04b949b0acaab05e50dd1a9a9cf0b0ce153bbdc8b2a1f`。
+含完整pilot冻结source/parameter/REGISTRATION/CREDIT_PREFLIGHT、算术结果、测试、
+`PREPARATION_EVIDENCE_20261016T0750.json`及导纳首回合原始轨迹/cp1375/PROTOCOL。
+快照2750步、内存current1,745,911,808/peak1,989,345,280、OOM/max0/swap0；第2及后续回合
+仍仅本机，原模型/runtime仍依赖既有冻结路径。Goal active，尚无收敛或最终验收。
+
 ## 15:40 CST：阻抗11k闭合，导纳真实启动；8个失败回合完整保全
 
 开工核对main `d26bf9b139cad17ddc786cdb91be2505b6214c9a`、baseline

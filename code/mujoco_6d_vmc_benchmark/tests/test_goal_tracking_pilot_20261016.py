@@ -6,12 +6,25 @@ import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 from goal_tracking_pilot_20261016 import validate_pair, require_predecessor_complete, verify_pilot_preflight
-from goal_tracking_reward_20261016 import CONFIG
+from goal_tracking_reward_20261016 import CONFIG, PARAMETER_CONFIG
 from rl_goal_stage_20261016 import write, digest
 import test_goal_stage_continuation_20261016 as fixtures
 
 
 class TrackingPilotTests(unittest.TestCase):
+    def test_impedance_pair_is_fresh_and_only_extra_tracking_cost_differs(self):
+        reg=self.pair();reg['experiment_kind']='fresh_parameter_tracking_pilot'
+        for job in reg['jobs']:
+            job.update(name=job['name'].replace('direct','impedance'),controller='impedance',
+                       reward='metric',reward_variant='payload_shaping',hp='parameter_balanced')
+        reg['jobs'][1]['tracking_guidance']=dict(PARAMETER_CONFIG)
+        validate_pair(reg)
+        for key,value in (('seed',6),('checkpoint','/old/model'),('hp','direct_explore'),('controller','admittance')):
+            bad=deepcopy(reg);bad['jobs'][1][key]=value
+            with self.assertRaises(AssertionError):validate_pair(bad)
+        bad=deepcopy(reg);bad['jobs'][1]['tracking_guidance']=CONFIG
+        with self.assertRaises(AssertionError):validate_pair(bad)
+
     def pair(self):
         jobs = [dict(name=name,output='/'+name,unit=name,checkpoint=None,inherited_steps=0,
             limit=11000,controller=None,reward='office_task',reward_variant='task_safety',

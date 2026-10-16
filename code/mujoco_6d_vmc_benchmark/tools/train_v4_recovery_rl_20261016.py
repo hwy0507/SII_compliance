@@ -140,6 +140,8 @@ def main():
     source_hashes={str(f):sha(f) for folder in (parameter,REWARDS,source/'tools')
         for f in folder.rglob('*') if f.is_file() and f.suffix in ('.py','.json')}
     cfg=RewardConfig(mode=a.reward,error_transform='bounded',horizon_s=55,gamma=.9995,smooth_weight=0.)
+    if guidance and 'base_error_weight' in guidance:
+        assert cfg.error_weight == guidance['base_error_weight'], 'Additional tracking cost assumes the registered base weight'
     specification=dict(schema='sii-repair-rl-v1',registered_utc=now(),protocol_sha256=pdigest,
         seed=a.seed,controller=a.controller,agent_config=agent.config,utd=utd,reward=cfg.to_dict(),
         torque_slew_weight=1. if a.reward=='metric' else 0.,

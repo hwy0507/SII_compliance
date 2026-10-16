@@ -1,5 +1,30 @@
 # 更新日志
 
+## 2026-10-16 15:50 CST — 实现并登记阻抗跟踪权重4→40的新鲜配对训练，完成真实预检
+
+- 开工查询/fetch/read main `b0e61c671691fc0e33d5193d3b9a00611fa46e2e`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`与AGENTS/Goal进度；上一轮闭合/诊断属进展。
+  导纳同一PID2360933继续至2750步/0更新、2个完整55秒回合，return−25.378512/−25.374600，
+  Task/Strict0/2、physical_valid2/2；第3在途。5000步热身未过，VMC排队，无重复训练。
+- 针对阻抗跟踪罚约.09而峰矩罚1.6–2.8的证据，扩展现有tracking奖励/配对工具：
+  参数metric基础error_weight=4保持，额外减36倍同一原生物理bounded_error_cost，合计40。
+  提前失败补齐该额外项的折扣最坏尾部，不能靠早停避罚。其他奖励/物理/执行器/gate/48输入保持。
+  仅显式登记payload_shaping可用，旧checkpoint跨奖励恢复被拒；GPU准备路径同步依赖模块。
+- 新独立`outputs/rl_goal_impedance_tracking_pilot_20261016`：control/tracking两臂各最多11k、
+  同seed2026101421、fresh网络/optimizer/replay/normalizer、n25/UTD1、CPU1/3GiB/swap0，
+  截止2026-10-17T07:46:01.068951Z。登记SHA256
+  `52884e47b1db9e4ea4a050940e70d1edcf81aa46482d44412ba2976b69472a16`。
+  43项Goal＋5项恢复测试通过，真实2次丢弃更新预检exit0：初始网络hash相同、25步终端窗口
+  正确、metrics有限、checkpoint不变、峰值1,365,557,248字节、OOM/max0。未仿真/模型保存。
+- 同8条旧轨迹反事实计算新增折扣成本.83019–.86653，仅说明训练信号变化，不是新策略效果。
+  真实就绪检查因stage01尚在运行而拒绝，未创建LAUNCH/新模拟器。既有Direct pilot hash未变。
+  两臂不能冒充四族完成；后续先完成stage01/GPU完整循环验证，再按登记执行奖励对照。
+- pilot冻结源码/登记/预检、奖励算术、导纳首完整回合与cp1375已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-weight-pilot-20261016T0750/evidence.tar.gz`，
+  198,505,376字节，SHA256 `de29e2588ac37a95b0c04b949b0acaab05e50dd1a9a9cf0b0ce153bbdc8b2a1f`。
+  导纳快照memory.current1,745,911,808/peak1,989,345,280，OOM/max0/swap0；第2回合以后仍本机。
+  服务器仅归档/hash。Goal active，权重干预尚未在线训练，没有收敛/最终验收结论。
+
 ## 2026-10-16 15:40 CST — 阻抗11k阶段正常闭合，导纳自动接续；停滞证据与末端残差保全
 
 - 开工查询/fetch/read main `d26bf9b139cad17ddc786cdb91be2505b6214c9a`、baseline

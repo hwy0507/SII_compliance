@@ -11,16 +11,21 @@ import math
 CONFIG = dict(schema='sii-goal-bounded-tracking-v1', weight=4.,
               horizon_s=55., control_dt_s=.04, gamma=.9995,
               error_scale_m=.12)
+PARAMETER_CONFIG = dict(CONFIG, schema='sii-goal-parameter-tracking-weight-v1',
+                        weight=36., base_error_weight=4.)
 
 
 def validate_guidance(job, *, controller, reward, reward_variant):
     cfg = job.get('tracking_guidance') if job else None
     if cfg is None:
         return None
-    if cfg != CONFIG:
+    if cfg not in (CONFIG, PARAMETER_CONFIG):
         raise ValueError('Only the explicitly specified tracking treatment is implemented')
-    if controller is not None or reward != 'office_task' or reward_variant != 'task_safety':
-        raise ValueError('Tracking treatment is for Direct task_safety only; avoid duplicate metric costs')
+    if cfg == CONFIG:
+        if controller is not None or reward != 'office_task' or reward_variant != 'task_safety':
+            raise ValueError('Direct tracking treatment requires Direct task_safety')
+    elif controller not in ('impedance', 'admittance', 'vmc') or reward != 'metric' or reward_variant != 'payload_shaping':
+        raise ValueError('Additional metric tracking weight requires parameter payload_shaping')
     return dict(cfg)
 
 
@@ -43,7 +48,7 @@ def discounted_cost_tail(remaining_s, *, weight, horizon_s, control_dt_s, gamma)
 
 
 def tracking_terms(bounded_error_cost, interval_s, elapsed_s, *, terminated, success, config):
-    if config != CONFIG:
+    if config not in (CONFIG, PARAMETER_CONFIG):
         raise ValueError('Unregistered tracking treatment')
     horizon = config['horizon_s']
     if not all(math.isfinite(x) for x in (bounded_error_cost, interval_s, elapsed_s)):
@@ -77,9 +82,12 @@ def main():
     raw = args.receipt.read_bytes(); receipt = json.loads(raw)
     spec = receipt['protocol_snapshot']
     assert spec.get('tracking_guidance') is None, 'Do not double-charge existing guidance'
-    validate_guidance({'tracking_guidance': CONFIG}, controller=spec['controller'],
+    config = CONFIG if spec['controller'] is None else PARAMETER_CONFIG
+    validate_guidance({'tracking_guidance': config}, controller=spec['controller'],
                       reward=spec['reward']['mode'], reward_variant=spec['reward_variant'])
-    assert all(spec['reward'][key] == CONFIG[key] for key in ('gamma', 'horizon_s', 'control_dt_s', 'error_scale_m'))
+    assert all(spec['reward'][key] == config[key] for key in ('gamma', 'horizon_s', 'control_dt_s', 'error_scale_m'))
+    if config == PARAMETER_CONFIG:
+        assert spec['reward']['error_weight'] == config['base_error_weight']
     rows = []
     for row in receipt['execution_snapshot']['rows']:
         if 'ended_utc' not in row: continue
@@ -90,8 +98,8 @@ def main():
         for i, entry in enumerate(entries):
             t = entry['terms']; elapsed = t['elapsed_s']
             terms = tracking_terms(t['bounded_error_cost'], elapsed-previous_time, elapsed,
-                terminated=t['terminated'], success=t['success'], config=CONFIG)
-            value = sum(terms.values()); cost += value; discounted_cost += CONFIG['gamma']**i*value
+                terminated=t['terminated'], success=t['success'], config=config)
+            value = sum(terms.values()); cost += value; discounted_cost += config['gamma']**i*value
             previous_time = elapsed
         old_discounted = sum(original['discounted_components'].values())
         rows.append(dict(episode=row['episode'], condition=row['condition_id'],
@@ -100,7 +108,7 @@ def main():
             original_discounted_return=old_discounted,
             candidate_discounted_return=old_discounted+discounted_cost,
             added_discounted_tracking_return=discounted_cost))
-    result = dict(observed_utc=datetime.now(timezone.utc).isoformat(), config=CONFIG,
+    result = dict(observed_utc=datetime.now(timezone.utc).isoformat(), config=config,
         source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         receipt_path=str(args.receipt.resolve()), receipt_sha256=hashlib.sha256(raw).hexdigest(),
         rows=rows, simulation=False, gradient_updates=0, replay_modified=False, checkpoint_modified=False,
