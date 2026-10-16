@@ -1,5 +1,47 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 23:25 CST：阻抗闭合并交接导纳；局部误差加权假设修正
+
+实时核对main `fe07aa91d57935765dd3bee0e6d45a9fe66f533f`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`与两分支日志，开工/收工读AGENTS。Goal active。
+stage02_v2阻抗于15:21:35Z结束23,375步/18,376更新，新增11,000条更新连续有限，逐回合reward和核验。
+8个完整55秒回合、physical_valid8/8、Task且Strict0/8；return依次−25.729180/−27.340559/
+−26.037487/−25.273970/−26.085219/−26.521273/−25.033403/−25.320493，末temperature .001968527。
+峰值3GiB，memory.max3175、OOM/swap0。协调器2447861自动接续导纳2467890，
+单模拟器/CPU1/thread1/3GiB/swap0/UTD1、学习CUDA0保持；已观测12,500步/7,501更新、GPU38°C。
+导纳当前峰约2.55GB/max/OOM/swap0；VMC仍排队。主机已有swap约2GiB，不代表本批worker发生swap。
+
+cp19250只读critic诊断1332个固定训练样本，较早/最新末端窗口signed TD均值.01290561/.31250385，
+当前actorQ减历史动作Q .08137958/−.01916685，clipped mass近0；没有梯度、模型写入或仿真，checkpoint/RNG/normalizer不变。
+最新末端训练曝光有限，不用critic估值充当真实Q。探针CPU6/2GiB，峰1,251,819,520字节、OOM0。
+
+对ep9–13做reward/动作分解：末10秒位置误差中位12.6864/12.8307/15.8256/12.9607/13.2199mm，
+均在冻结12mm推进门槛外，旋转/速度采样均在阈值内。但ep11游标18→19有推进，不写成全部停滞。
+动作非零且变化、能量限制触发行0；误差成本−.1089…−.1185、峰矩成本−1.891…−3.955，任务−20/时间−1。
+折扣potential shaping −.5602385287565恰等于−5×初始phi，是设计性质，不是bug。
+99次路径点切换中97次局部误差成本上跳；原尺度.12/权重4的跳变中位.0644247，
+旧权重40为.6442473，假设尺度.012/权重4为.9257038。它们是25Hz相邻采样成本，非实际物理积分reward。
+因此暂不采用收紧局部误差尺度；这种修改可能更强地惩罚切换到下一个目标。
+
+新增prospective helper `goal_payload_occupancy_reward_20261016.py`：
+成本4×(1−已有reward-only measured payload phi)×dt/55，早失败补最坏折扣尾项；不新增actor输入或成功标签。
+这是明确的训练目标变更，不是potential shaping。scope/配置/非有限值/早失败补偿/恢复拒绝测试通过，全部93项Goal测试通过。
+同5条训练轨迹shadow额外成本−2.006519/−2.015082/−2.050623/−2.018314/−2.027786，
+同99次切换采样成本变化中位−.0001302209、30次正跳变（物理phi仍可能波动），无局部目标重置项。
+仅诊断：helper未接入trainer、未登记或部署处理、未修改replay/normalizer。phi包含手物距离项，真正任务成功时也不保证为1；
+可能带来新的偏好，必须经过独立有限配对和奖励一致的fresh replay/normalizer或完整核验的迁移，不能直接加到当前worker。
+
+服务器证据`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-payload-diagnosis-20261016T1520/evidence.tar.gz`，
+1,088,411,543字节，SHA `dc7f72746fd2c72f8371dade4b5292b0fe9586846d9a09ee64f365a8e3e8fa31`，本地/暂存/最终hash一致。
+含4份诊断、实际脚本/helper/tests快照、cp17875/19250/20625/22000及对应4原始回合，9625条累计连续更新。
+最后cp23375/回合及完整11000条训练/更新的补包267,249,973字节，SHA
+`0d6c9510a533779f87676215e7079e0c92d450b27f879ec69327cd095c043f86`，已核验同服务器runs/main下
+`rl-goal-impedance-stage02-close-20261016T1525/evidence.tar.gz`，本地/暂存/最终大小及hash一致。
+归档helper CPU6/1GiB，无新增仿真。未删除失败或传输缓存；free约61GB、保留50GiB。
+继续原四族训练；Direct alpha0/1 pair仍未派发，须等待本阶段全部结束和新资源检查。
+收工导纳13,250步/8,251更新、峰2,654,740,480字节，max/OOM/swap0；free60,999,487,488字节。
+当前四方法均未收敛，不做最终acceptance，也不以此有限段结束或93项测试代替成功。
+
 ## 23:00 CST：分支可接续与统计隔离完成，阻抗仍在真实学习
 
 开工main `e19fedae55647bc71bfad01df66d25b36a93104b`、baseline

@@ -1,5 +1,25 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 23:25 CST 阻抗阶段结束、导纳接续及reward诊断
+
+stage02_v2阻抗23,375步/18,376更新，本段11,000连续有限更新、8完整physical_valid回合、Task/Strict0/8；
+末return−25.320493、temperature .001968527。协调器自动接续导纳2467890，观测12,500步/7,501更新；VMC待运行。
+阻抗3GiB峰/max3175但OOM/swap0；导纳约2.55GB峰、OOM/swap0，GPU38°C。主机已有swap占用与worker区分。
+cp19250只读credit与5回合分解显示动作有变化、无能量限幅触发，末段位置误差约12.7–15.8mm，任务仍失败。
+99个路径点切换中97个局部误差成本上跳，收紧误差尺度可能加重推进惩罚；因此未采用该直觉候选。
+新增未部署物块进度occupancy成本helper和测试，93项Goal测试通过；shadow显示无局部参考切换项，
+但这只是不同reward的固定轨迹重算，不是新策略改善；未接入trainer/登记在线处理或重标历史replay。
+phi不保证成功时为1，需独立有限配对及奖励一致的训练历史。既有Direct actor正则化pair仍待四族阶段结束。
+4份诊断/源码与阻抗cp17875–22000和原始回合已核验共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-payload-diagnosis-20261016T1520/evidence.tar.gz`，
+1,088,411,543字节，SHA `dc7f72746fd2c72f8371dade4b5292b0fe9586846d9a09ee64f365a8e3e8fa31`。
+最后cp23375/回合及完整日志补包267,249,973字节，SHA
+`0d6c9510a533779f87676215e7079e0c92d450b27f879ec69327cd095c043f86`，已核验同服务器runs/main下
+`rl-goal-impedance-stage02-close-20261016T1525/evidence.tar.gz`，本地/暂存/最终一致。
+实时查询/fetch/read main fe07aa9/baseline f6e8f8c，收工重读AGENTS；本机计算、服务器仅文件/hash，free约61GB。
+收工导纳13,250步/8,251更新、峰2.65GB、max/OOM/swap0，free60.999GB。
+Goal active，未证实任何方法收敛、未最终验收，所有失败保留。详见RL_GOAL_PROGRESS_20261016.md本次条目。
+
 ## 2026-10-16 23:00 CST 正则化分支接续与失败统计保持
 
 原阻抗worker2455377未重启，归档快照17,000步/12,001更新，收工18,250步/13,251更新。

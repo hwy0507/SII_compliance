@@ -1,5 +1,37 @@
 # 更新日志
 
+## 2026-10-16 23:25 CST — 阻抗有限段闭合、导纳接续与奖励停滞诊断
+
+- 开工实时查询/fetch/read main `fe07aa91d57935765dd3bee0e6d45a9fe66f533f`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；开工/收工重读AGENTS，确认持续Goal仍active。
+  stage02_v2阻抗正常结束23,375步/18,376更新，本段11,000次连续有限更新、8完整55秒回合，
+  physical_valid8/8、Task且Strict0/8；最后return−25.320493、temperature .001968527。
+  原协调器2447861自动接续导纳2467890，已见12,500步/7,501更新；没有重启或重复worker。
+- 对阻抗cp19250做只读critic诊断：较早末端窗口signed TD均值.012906，最新末25步.312504；
+  clipped mass几乎为0，不支持分布裁剪是当前主要原因，critic估值也不是真实Q。
+  5个训练回合末10秒位置误差中位12.686–15.826mm，超过12mm路径推进门槛；其中ep11仍有18→19推进。
+  动作非零且变化，能量限制触发行0；原误差成本仅−.109…−.119，力矩成本−1.891…−3.955。
+  potential shaping折扣和恒为−.560238529，符合望远镜求和定义，不误判成实现bug。
+- 进一步发现99次路径点推进中97次局部误差成本上跳；假设把误差尺度从.12m收紧到.012m，
+  25Hz相邻采样成本跳变中位从.064425增至.925704。该值不是物理积分reward，也非因果干预结果；
+  因此未采用“直接收紧局部误差尺度”的候选，避免放大目标切换惩罚。
+- 新增未部署的`goal_payload_occupancy_reward_20261016.py`及3项测试：使用已有reward-only物块进度phi，
+  额外成本4×(1−phi)×dt/55，早失败补折扣最坏剩余成本；明确改变训练目标，禁止静默跨reward恢复。
+  93项Goal unittest通过。固定5回合shadow新增成本−2.0065…−2.0506；同99次推进的成本跳变中位−.0001302。
+  仅离线算术候选：未接入trainer、未登记/部署在线处理、未重标replay/normalizer；phi不保证任务成功时为1，
+  仍需独立有限配对与奖励一致的训练历史，不能把shadow结果称为改善或收敛。
+- 诊断、代码/测试快照、cp17875/19250/20625/22000及相应原始回合已核验服务器归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-payload-diagnosis-20261016T1520/evidence.tar.gz`，
+  1,088,411,543字节，SHA `dc7f72746fd2c72f8371dade4b5292b0fe9586846d9a09ee64f365a8e3e8fa31`。
+  cp23375/最后回合及完整日志补包267,249,973字节，SHA
+  `0d6c9510a533779f87676215e7079e0c92d450b27f879ec69327cd095c043f86`，已核验同一服务器runs/main下
+  `rl-goal-impedance-stage02-close-20261016T1525/evidence.tar.gz`，本地/暂存/最终大小及hash一致。
+- 阻抗峰值3GiB/max事件3175、OOM/swap0；导纳观测约2.55GB/max/OOM/swap0，GPU38°C。
+  主机既有swap占用约2GiB，与本批worker的swap0区分；不清理桌面进程、不改冻结条件。
+  归档后free约61GB，50GiB保护继续。四方法均未证实收敛、最终acceptance未运行；继续导纳→VMC，
+  四族阶段结束并重新检查资源后才派发已预检Direct alpha0/1在线对照。服务器只存储/hash，未删除失败。
+  收工导纳13,250步/8,251更新、峰2,654,740,480字节、max/OOM/swap0，free60,999,487,488字节。
+
 ## 2026-10-16 23:00 CST — 正则化分支跨阶段接续、独立统计与阻抗真实推进
 
 - 开工实时查询/fetch/read main `e19fedae55647bc71bfad01df66d25b36a93104b`、baseline
