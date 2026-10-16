@@ -1,5 +1,35 @@
 # 更新日志
 
+## 2026-10-16 15:10 CST — 阻抗5回合仍失败；实测GPU更新吞吐并修正探针绑核
+
+- 开工核对/fetch/read main `5fbc2cbce35d2e923405fee9952b9478592f7850`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、AGENTS/Goal进度。上一轮为实质诊断进展。
+  同一阻抗trainer2344947/协调器2329290继续；记录8000步/3001更新，optimizer8095/3096。
+  第5完整回合return−25.632926、Task/Strict0/5、physical_valid5/5，6875 checkpoint通过；
+  第6在途。第五回合末10秒仍carry cursor20/28、位置误差12.528–12.727mm、重入条件不满足。
+- 前四回合奖励复算通过：折扣payload potential合计均−0.56023853（预期终止抵消），
+  跟踪罚分约−0.0951至−0.0957，峰矩罚分−1.5898至−2.5828，回报差异主要来自峰矩；
+  不能当作任务改善。5500 cp只读1021样本诊断：末25步100样本absTD0.92890，远端921
+  样本absTD0.02553，末端当前actorQ−历史actionQ2.10443；温度0.00956434，裁剪质量
+  均值0.0251%。表明早期末端拟合不足，不是独立真实Q证明；无梯度/模型写回，hash不变。
+- 新`probe_goal_update_backend_20261016.py`进行有限丢弃更新CPU/CUDA对照：同6875 cp/
+  同256 replay索引，每端2次预热+100计时。现有JAX0.7.2/CUDA13插件可用，不改环境。
+  首次CPU探针只设AllowedCPUs，未核验亲和性且CPU时间显著高于wall，结果保留但排除比较；
+  修为CPUAffinity=6并进程内断言[6]，登记额外两端共204次，累计最多306次丢弃更新。
+- 正确单核对照：CPU3.88555更新/秒，CUDA191.41469，优化器部分49.263倍；GPU首次预热
+  45.80秒，100更新0.52243秒。峰值主存CPU1,395,916,800/GPU1,411,497,984字节，
+  OOM/max0/swap0；GPU快照46°C/1424MiB（整机）。初次metrics有约1e-4差异，不是逐位
+  等价或完整训练加速证明；全部更新丢弃、checkpoint hash不变、无仿真。活动CPU训练未改，
+  下一阶段需登记GPU后端并测完整循环再部署，不能直接改已冻结stage01或tracking pilot。
+- 两个包已核验最终服务器hash，均在
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/`：
+  `rl-goal-impedance-learning-20261016T0704/evidence.tar.gz` 267,168,254字节，
+  SHA256 `762955989867d078a223f6619a07eaecfdacefc6c50a76b95a658fcd414e549e`；
+  `rl-goal-backend-probe-20261016T0709/evidence.tar.gz` 11,214字节，
+  SHA256 `05d90a7d7c441719cdb68a3ee11d888661175f11a025fb0d16180e9173fa39e2`。
+  前包保全第5回合/cp6875与诊断，后包保全探针源码/登记/三次结果及初版源码。服务器仅归档。
+  Goal active，四方法尚未收敛，未统一acceptance；第6及后续轨迹仅本机待归档。
+
 ## 2026-10-16 14:53 CST — 阻抗梯度更新真实启动，定位carry路径点阻塞
 
 - 开工查询/fetch/read main `9348836f2d03fde25b3a8f5977340dbddfa1c663`、baseline

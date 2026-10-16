@@ -4,6 +4,54 @@
 尚未完成；旧15小时run正常按原截止收尾，新授权以独立有限阶段继续，不回写旧协议的截止。
 沿用sii-research-sync协作流程，训练与分析在airpig，服务器只归档。
 
+## 15:10 CST：GPU丢弃更新探针通过，下一阶段可准备完整循环验证
+
+开工核对main `5fbc2cbce35d2e923405fee9952b9478592f7850`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/日志。上一轮为实质进展；
+本轮继续同一阻抗PID2344947，execution8000步/3001更新、optimizer8095步/3096更新。
+第5回合完整55秒、return−25.6329256，Task/Strict0/5、physical_valid5/5；6875 checkpoint
+全部hash通过。第五回合是第一个全程过热身的回合，最后10秒仍cursor20/28，误差
+12.528–12.727mm，位置/重入均0/250通过，姿态/速度250/250通过；未解决carry阻塞。
+末10秒实际参数中位数约[281.68,76.47,1.482,.662,1.155]，energy_scale均1，参数确实在变化。
+Direct有限阶段0/8不变，导纳/VMC仍排队，fresh tracking pilot仍prepared；无最终验收。
+
+前四回合奖励诊断保存`IMPEDANCE_REWARD_20261016T0700.json`（第5当时尚在途，明确排除）：
+折扣payload势函数均−.56023853，抵消残差<4e-15是预期公式；折扣tracking罚约−.0951至
+−.0957，峰矩罚−1.5898至−2.5828。相近失败回合的return变化主要来自峰矩，不能当收敛。
+只读5500 checkpoint诊断`IMPEDANCE_CREDIT_0005500.json`共1021训练样本，含100个
+末25步样本，后者absTD.92890、actorQ−behaviorQ2.10443；远端921样本absTD.02553。
+终止4条absTD1.26775，温度.00956434；clip概率质量均值.00025095。早期末端拟合仍不足，
+但这不是独立真实Q或因果归因。无梯度/仿真/模型保存，RNG、normalizer、cp hashes不变，
+诊断exit0、峰值1,104,183,296字节；只包含501次已有训练更新的checkpoint。
+
+为解决当前CPU更新吞吐，新增`tools/probe_goal_update_backend_20261016.py`：
+读取同一6875 cp，用固定seed20261016抽同256索引，分别在CPU/CUDA加载后做2次预热和
+100次计时的丢弃更新；102次更新全部有限、原checkpoint不变，无模拟器、无模型保存。
+现有环境已有jax/jaxlib/jax-cuda13-plugin/pjrt均0.7.2，无依赖安装或环境修改。
+初版只设AllowedCPUs，未进程内验证，CPU时间62秒超过wall10.8秒，不作为单核对照；
+其原始源码和结果保留在包内`rl-update-probe-initial-20261016T0705.tar.gz`。
+登记修订`UPDATE_BACKEND_PROBE_20261016T0706.json`明确额外预算204，总计最多306次，
+CPUAffinity=6且进程内assert亲和性[6]，两端串行、2GiB/swap0/最长180秒，初次失败保留。
+
+修正后的CPU实测100更新25.7364秒（3.88555/s），CUDA100更新.52243秒（191.41469/s），
+优化器吞吐49.263倍；CPU首次预热4.165秒、GPU45.799秒（包含编译）。主存峰值分别
+1,395,916,800与1,411,497,984字节，OOM/max均0，swap0。GPU设备为RTX5080Laptop，
+快照46°C/1424MiB为整机显存占用。相同batch索引/checkpoint hashes通过核对；首更新
+critic loss差1.9e-6，actor entropy差约1.05e-4，不能声称逐位一致或同轨迹复现。
+这是固定batch吞吐，不含物理仿真、IPC、在线归一化、采样/完整训练循环，不能声称整体49倍。
+下一步应实现显式登记的GPU训练后端、验证完整训练回合和内存后在安全边界使用；
+当前stage01和既有fresh tracking pilot均未修改、未重启，不能改写它们的冻结配置冒充原实验。
+
+已核验归档（服务器只传输/大小/hash）：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-impedance-learning-20261016T0704/evidence.tar.gz`，
+267,168,254字节，SHA256 `762955989867d078a223f6619a07eaecfdacefc6c50a76b95a658fcd414e549e`；
+含第5原始回合/cp6875、奖励/credit/carry诊断与源码、当前快照。快照训练memory.current
+2,909,458,432，peak3,135,127,552/3GiB，OOM/max0/swap0。
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-backend-probe-20261016T0709/evidence.tar.gz`，
+11,214字节，SHA256 `05d90a7d7c441719cdb68a3ee11d888661175f11a025fb0d16180e9173fa39e2`；
+含完整初/修订探针源码、登记和三次结果。探针已全部正常退出，无后台探针或传输待收尾。
+第6及后续回合仍仅本机，待安全边界归档；Goal active，未收敛/未完成。
+
 ## 14:53 CST：阻抗进入梯度更新，carry停滞已有可复算定位
 
 开工核对main `9348836f2d03fde25b3a8f5977340dbddfa1c663`、baseline
