@@ -1,5 +1,34 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 19:43 CST：首次实际配对验证新增奖励已写入replay
+
+开工main `40eb81b3cce1d5ae3dd65c06acb2ea816539225c`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`查询/fetch/read，AGENTS开工/收工重读，上一轮为进展。
+原trainer2413986持续推进，11:42:36Z tracking2500步/0更新（5000热身），第二回合在途；
+首个repair_train_008完整55秒1375步、return−26.512955713、physical_valid=true、Task/Strict=false。
+
+与control同条件首回合匹配，rollout SHA256均
+`7370775a5d2ca67f55ff14b8adf73a046f7fbc2ace16fe47c3f006da77ba1f9e`，parameter_actions均
+`de68f112eca4d2e413f77250a930ce76113c8b08b5e61166ed0436a5d788aa76`。
+两组cp1375 hash核验通过，actor/critic/target_critic/temperature保存文件一致，updates均0。
+1375个区间原有reward分项完全相同，独立按control bounded_error_cost计算新增−36成本，
+与tracking记录逐项及总和匹配：总−1.019543795131，区间reward差最大误差3.423e-16，
+完整回合的额外早停补偿0。没有直接把两个不同目标的return差当作策略优劣。
+
+直接读取两组checkpoint replay：observation/action/terminated/truncated/next_observation
+五数组完全一致；reward分别匹配对应训练日志，最大float32误差3.789e-7/7.922e-7，
+二者reward差也匹配额外成本。该证据排除本首回合“只改配置而未将奖励送入replay”的问题；
+仍属未学习热身，不证明学习更好、CPU/GPU学习等价或最终收敛。
+奖励分解及配对报告通过，当前warmup1对、learned0对，Task/Strict均失败；没有新仿真或最终审计。
+
+tracking首回合原始轨迹/cp1375、完整奖励快照/分解、配对及replay核验、复现脚本已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-first-20261016T1142/evidence.tar.gz`
+193,524,455字节，SHA256 `ebc3e5cb64c190426c45684c0b376d5939f5588080bde14d3ae6d39d9a3b6a03`。
+cp源文件和tar成员hash通过，本机/远端整体hash/大小一致；control对应文件已有先前独立包。
+当前tracking current/peak2,283,864,064字节、OOM/max0、swap0，GPU43°C/约1115MiB。
+第二回合及后续checkpoint仍本地待闭合归档。继续tracking到11k及公平配对，随后Direct v2；
+不修改活动源码、物理或gate。Goal active，四类尚未证明收敛，最终acceptance未运行。
+
 ## 19:35 CST：control完成11k，tracking由原协调器接续
 
 开工main `de07e3e3d06a241fce2cf24a4c76367a2ac399b7`、baseline

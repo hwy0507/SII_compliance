@@ -1,5 +1,25 @@
 # 更新日志
 
+## 2026-10-16 19:43 CST — tracking首回合奖励实际进入replay，配对热身轨迹完全一致
+
+- 查询/fetch/read main `40eb81b3cce1d5ae3dd65c06acb2ea816539225c`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，开工/收工重读AGENTS，上一轮为进展。
+  原tracking trainer2413986继续至2500步/0更新，符合5000热身；首个55秒回合1375步，
+  return−26.512955713、physical_valid=true、Task/Strict=false，第二回合在途。未重复启动或改活动源码。
+- 同seed/repair_train_008 control与tracking的rollout、parameter_actions文件hash分别完全一致，
+  actor/critic/target_critic/temperature四个checkpoint文件hash一致，两组updates均0。
+  1375条区间逐一核对，原reward各分项相同，新增项精确等于−36*bounded_error_cost，
+  区间reward差复算最大误差3.423e-16，总新增成本−1.019543795131，早停补偿本完整回合为0。
+  replay除reward外五数组完全一致；两组replay奖励与日志最大误差3.789e-7/7.922e-7，
+  float32差额也匹配新增成本。证明登记处理实际进入训练数据，不是奖励优化效果或收敛证据。
+- 奖励分解与配对报告实际运行通过，warmup可比较1对、learned0对、Task/Strict均失败。
+  tracking首原始轨迹/cp1375、奖励日志快照/分解、配对和replay核验及复现脚本已核验归档：
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-first-20261016T1142/evidence.tar.gz`，
+  193,524,455字节，SHA256 `ebc3e5cb64c190426c45684c0b376d5939f5588080bde14d3ae6d39d9a3b6a03`。
+  checkpoint源文件/tar成员及远端大小/hash通过；control对应证据见先前已核验包，服务器仅存储/hash。
+- 11:42:36Z tracking current/peak2,283,864,064字节、OOM/max0、swap0；GPU43°C/约1115MiB。
+  继续已登记tracking学习与完整配对，Direct v2尚未派发；Goal active，四类均未证明收敛，未最终验收。
+
 ## 2026-10-16 19:35 CST — 阻抗control闭合，原协调器自动接续tracking处理组
 
 - 开工查询/fetch/read main `de07e3e3d06a241fce2cf24a4c76367a2ac399b7`、baseline

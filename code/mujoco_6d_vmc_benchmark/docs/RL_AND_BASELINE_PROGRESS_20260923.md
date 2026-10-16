@@ -1,5 +1,16 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-16 19:43 CST tracking首回合实际奖励/replay核验
+
+tracking2500步/0更新热身，首完整回合return−26.51296、Task/Strict失败、physical_valid=true。
+与control同条件首回合轨迹/动作及未更新网络hash完全一致；1375区间新增成本为−36*bounded_error，
+合计−1.019543795131，实际checkpoint replay奖励匹配，五个非reward数组一致。
+证明处理实际进入训练，不证明学习改善；当前只有1对热身、0对学习结果。原trainer健康，无OOM/swap。
+首轨迹/cp/奖励分解/配对与replay核验已核验归档：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-tracking-first-20261016T1142/evidence.tar.gz`，
+193,524,455字节，SHA256 `ebc3e5cb64c190426c45684c0b376d5939f5588080bde14d3ae6d39d9a3b6a03`。
+Goal active，继续处理组及后续Direct，尚未收敛/最终验收。
+
 ## 2026-10-16 19:35 CST 阻抗control11k闭合，tracking自动启动
 
 control11000步/6001连续有限更新、8完整55秒，Task/Strict0/8、physical_valid8/8，未收敛。
