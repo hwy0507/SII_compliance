@@ -1,5 +1,48 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 04:35 CST — retreat失败定位：物块在carry末段下落，奖励记录并未遗漏
+
+上一轮增加18回合证据与retreat失败判据核查；本轮沿ep16的新失败现象诊断原生时间线。
+开工查询/fetch/read main `6ddbe33b04f6c890ef660707c5ee6adb15448024`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及AGENTS/两份进度，收工重读AGENTS。
+同一协调器2502213/worker2502235保持active，优化实测26,072步/21,073更新；未重启或重复派发。
+
+固定诊断control ep16/repair_train_013，1375个40ms原生采样。输入rollout.npz/json、
+RL_INTERVALS、AUDIT、execution逐个匹配已核验归档member大小/hash，诊断前后保持一致。
+post-step time与pre-step neuron_time差.04s通过；使用已存手部/物块位置直接计算原有
+approach/lift/goal三项标量，与1375个记录payload_potential最大绝对差0，
+再与训练step22001–23375的next_potential逐点核对通过。没有模拟器、梯度、
+action/filter重放或独立物理子步审计；只是训练原生状态与奖励一致性诊断。
+
+结果显示本回合的下落早于放置/释放阶段：
+
+- 47.08s仍carry，物块高度.578742695m、XY目标误差.099549426m，这是该回合
+  最接近XY目标的采样，仍远大于25mm。手—物块距离.086835759m，payload phi=.530338833。
+- 47.16s开始的采样显示物块远离目标并降低；47.44s仍carry，高度.440473234m，
+  手—物块距离.251745420m、XY误差.225553099m，phi=.143480056。
+  .45m阈值仅用于描述时间，不是新门槛；40ms采样不能定位精确脱离接触时刻或力学原因。
+- 最大phi单步下降在47.40s，delta−.174050400、progress reward−.870710066；
+  47.36s的progress为−.539510401，说明奖励已记录实际退步，并非只奖励手部推进。
+- 进入load_transfer的48.36s之前物块已在约(.470675,−.265030,.424997)m；
+  release/retreat发生于49.04/49.56s，不能将此次失败归为仅在正常放手后没放稳。
+  55s参考进度.998572528，实际物块phi仅.085640495；训练使用后者。
+  最终reward−20.428932097，包含任务失败及potential终局抵消；Task/Strict均false。
+
+该证据把后续信用分配诊断定位到carry末段的真实物块退步；不证明接触原因、策略泛化、
+最终验收或奖励处理有效。继续已登记44k×2 occupancy对照，不更改活动配置或冻结条件。
+物理/MJB/gate/canonical48/filter/执行器/dt5e-5保持，四族均未证明收敛，全部失败保留。
+
+产物BENCH/outputs/rl_goal_retreat_payload_20261017T2035含TIMELINE、该回合训练日志、
+资源与归档收据；脚本/tmp/sii_goal_retreat_payload_20261017T2035.py随输入一并归档。
+本机CPU6/单线程/1GiB/swap0，峰38,301,696字节、OOM0，3.529秒正常完成。
+共享证据已核验且再次远端读取大小/SHA：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-retreat-payload-20261017T2035/evidence.tar.gz`，
+1,968,026字节，SHA `c50f52c4419357eddaf6f12afb31cfc570b54c0b2210c168fde05a6f35320822`。
+服务器仅归档/hash；收工worker内存2,674,917,376字节、GPU42°C/1439MiB。
+Goal active，最终acceptance尚未执行。按sii-research-sync更新三份进度、diff检查后提交/push main，
+保留无关meeting文件；本轮没有修改研究源码或活动snapshot。
+
+
 ## 2026-10-17 04:30 CST — 控制组十八回合：出现retreat但物块未放置成功
 
 上一轮为已验证等待；本轮同一PID2502235从22,500步/17,501更新推进至24,750步/
