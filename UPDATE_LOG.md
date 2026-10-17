@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-18 07:46 CST — direct episode 20 安全闭合但未通过
+
+- direct episode 20（`24012 → 25387`）return `-21.80105224804159`，`physical_valid=true`，
+  Task/Strict=`false/false`；checkpoint `0025387` 已核验，episode 21 已接续，当前
+  `25387 steps / 20388 updates`。
+- 最近三回合仍为 `0/3` Task/Strict 成功（两回合 physical-valid、一回合 invalid），没有收敛证据；
+  worker 继续按唯一 coordinator、CPU1/单线程/3 GiB/禁 swap 运行，未启动其他方法。
+
 ## 2026-10-18 07:36 CST — direct episode 19 物理失败
 
 - direct episode 19 安全闭合（`22637 → 24012`），return `-33.47931707409669`，

@@ -1,5 +1,13 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 07:46 CST — direct episode 20 仍失败，episode 21 在途
+
+- direct episode 20 已安全闭合（`24012 → 25387`）：return `-21.80105224804159`，
+  `physical_valid=true`、Task/Strict=`false/false`；episode 21 已接续。当前 execution
+  `25387 steps / 20388 updates`，checkpoint `0025387` 已写入并核验。
+- 最近三回合 return 为 `-21.85596`（valid）、`-33.47932`（invalid）、`-21.80105`（valid），
+  成功率仍为 0，窗口未显示收敛。worker active、资源约束和冻结物理/gate 未变。
+
 ## 2026-10-18 07:36 CST — direct episode 19 物理失败，继续 episode 20
 
 - direct episode 19 已安全闭合（`22637 → 24012`）：return `-33.47931707409669`，
