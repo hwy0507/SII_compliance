@@ -26,12 +26,13 @@
   25 个完整回合；最后四回合 return 为 `-24.782192822`, `-24.947542116`, `-25.430825464`,
   `-25.073407371`，均 physical_valid=true、Task/Strict=false/false，impedance 没有收敛或成功证据。
   其峰值约 3.14 GiB，OOM/oom_kill/swap=0。coordinator 已接续 admittance worker
-  `sii-rl-goal-bc165dcc6cf0`，已推进至 29,000 steps / 24,001 updates；episode 17
+  `sii-rl-goal-bc165dcc6cf0`，已推进至 30,500 steps / 25,501 updates；episode 17
   (`repair_train_011`) return `-25.600694688`、physical_valid=true、Task/Strict=false/false，
   episode 18 (`repair_train_021`) return `-25.247789140`、physical_valid=true、Task/Strict=false/false，
   episode 19 (`repair_train_018`) return `-25.303394755`、physical_valid=true、Task/Strict=false/false，
   episode 20 (`repair_train_030`) return `-25.357935330`、physical_valid=true、Task/Strict=false/false，
-  episode 21 在途；其峰值约 2.67 GiB，OOM/max/swap=0。当前没有
+  episode 21 (`repair_train_023`) return `-25.382542409`、physical_valid=true、Task/Strict=false/false；
+  episode 22 在途；其峰值约 2.89 GiB，OOM/max/swap=0。当前没有
   Task/Strict 成功证据。
 - 该 mixed stage 不是收敛或最终成功结论。旧 stage03 execution 未覆盖；四族完成后再按统一
   acceptance 和独立物理/动作/filter/hash/RMSE/峰值/穿透审计，Task 与 Strict 同时通过才计成功。
