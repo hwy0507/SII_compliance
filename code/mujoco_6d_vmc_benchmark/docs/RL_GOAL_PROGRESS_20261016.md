@@ -1,5 +1,12 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 15:51 CST — admittance episode 23 继续推进
+
+- 实时日志在只读轮询期间从约 `32590` 推进到 `32614/33000` 步，episode 23 模拟时间约
+  `39.56 s`，仍未到安全边界；顶层 execution 保持在途状态，未写入虚假的终局结果。
+- recovery cgroup 仍为单 worker、`MemoryMax=3 GiB`、无 OOM/oom_kill/swap/max 事件；VMC
+  handoff monitor 继续等待 admittance 完整预算，VMC 尚未创建 execution 或启动 worker。
+
 ## 2026-10-17 15:50 CST — 诊断 execution 延迟写回，确认不是重复派发或 OOM
 
 - 只读审计 recovery trainer 源码确认：训练中每 250 步刷新 `training/optimizer` 日志，顶层

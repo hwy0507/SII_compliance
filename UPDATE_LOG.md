@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-17 15:51 CST — admittance episode 23 实时推进
+
+只读轮询期间同一 recovery worker 从约 `32590` 推进到 `32614/33000` 步，episode 23 仍未闭合；
+没有重复派发。单 worker cgroup 仍受 `MemoryMax=3 GiB`、禁 swap 约束，OOM、oom_kill、max 均为0。
+VMC handoff 尚未满足 admittance 完成条件，VMC 与统一 acceptance 均未启动；当前仍无 Task/Strict
+成功或收敛证据。GitHub fetch 仍不可达，未声称已同步最新远端。
+
 ## 2026-10-17 15:50 CST — 诊断 admittance execution 写回时序
 
 审计 recovery trainer 源码后确认，顶层 `execution.json` 仅在每个完整回合边界保存 row/checkpoint，
