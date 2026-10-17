@@ -1,5 +1,20 @@
 # 更新日志
 
+## 2026-10-17 10:15 CST — stage03 CPU continuation 已启动
+
+GPU 继承预检因本机驱动不可用而保留失败收据；调度器新增显式本机 CUDA→CPU fallback，
+未修改 physics/MJB、gate、actor 输入、公共 filter、执行器限制或 `dt=5e-5`。从
+`rl_goal_selected_20261016_stage02_v2` 创建唯一根
+`outputs/rl_goal_selected_20261016_stage03_cpu_v1`，每族登记新增 11,000 interactions、
+CPU1/单线程/3 GiB/禁 swap，服务器不计算。
+
+四份 systemd 预检均成功（无仿真/无模型保存）：direct 继承 21,262 条 raw replay，
+其余三族各继承 23,375；四份 actual n-step=25、terminal window、hash unchanged 和
+single finite update 全部通过，预检峰值内存约 1.08–1.65 GiB。已 seal preflight 并启动
+唯一协调器 `sii-rl-goal-stage-870c5a306882.service`；首个 direct worker
+`sii-rl-goal-65d908491aa8` 正在 CPU1 cgroup 内真实推进，约 21,500 steps/16,501 updates，
+第 18 回合在途，尚无新完整回合可计成功。stage03 仍不是收敛结论，后续按安全回合边界继续。
+
 ## 2026-10-17 09:15 CST — occupancy阶段收口，准备四族精确接续
 
 开工读取 AGENTS.md；尝试查询 GitHub `main`/`baseline`，本轮网络不可达，未把缓存

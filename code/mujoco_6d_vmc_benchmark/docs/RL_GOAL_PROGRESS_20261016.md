@@ -1,5 +1,14 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 10:15 CST — stage03 CPU continuation 启动
+
+- GPU 继承预检因驱动不可用保留失败收据；已登记显式本机 CUDA→CPU fallback，冻结物理、
+  gate、canonical48、公共 filter、执行器限制及 dt=5e-5 不变。
+- `rl_goal_selected_20261016_stage03_cpu_v1` 四份 systemd 3 GiB/禁 swap/单线程预检通过：
+  direct 继承 21,262 条 raw replay，其余三族各 23,375，n-step=25、terminal window、
+  checkpoint hash 与单次更新均通过。协调器已启动并串行推进四族；首个 direct 当前约
+  21,500 steps/16,501 updates，第18回合在途，Task/Strict 尚无新成功证据。
+
 ## 2026-10-17 09:05 CST — occupancy二十四回合，仍在安全推进
 
 本轮开工重新读取 AGENTS、远端分支日志和现有进度。GitHub fetch 受网络限制未能取得更新；本地
