@@ -1,5 +1,17 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 15:44 CST — admittance recovery episode 23 仍在真实推进
+
+- 只读核对显示同一恢复服务继续写入 episode 23 `repair_train_014`：约 `32198/33000`
+  步（恢复总预算 `41250`），尚未到完整回合边界；实时 `training.jsonl` 与 `optimizer.jsonl`
+  仍在更新，不能把中途回合计入训练统计。
+- recovery cgroup 当前约 `2.83 GiB` 峰值、`MemoryMax=3 GiB`，`memory.max/oom/oom_kill/swap`
+  事件均为 0；没有发现新的异常或重复 worker。VMC handoff 仍等待 admittance 完整结束，VMC
+  尚未派发，最终 acceptance 未执行。
+- GitHub 本轮 `git fetch` 因网络不可达；仅使用缓存 main=`d4bdf1a`、baseline=`f6e8f8c`，未将
+  缓存 SHA 当作最新远端。冻结 physics/MJB、Task/Strict gate、canonical48、公共 action filter、
+  执行器限制和 `dt=5e-5` 均保持不变。
+
 ## 2026-10-17 15:33 CST — admittance recovery episode 22 已安全封口
 
 - recovery 从 `checkpoint_0030250` 继续到 step `31625`，episode 22 (`repair_train_024`) 完整结束，return `-25.24973103232766`，`physical_valid=true`，Task/Strict=`false/false`，无 abort；audit/trace hash 已写入 execution。

@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-17 15:44 CST — 持续Goal监视 admittance recovery episode 23
+
+本轮先读取 `AGENTS.md` 和缓存的 main/baseline 日志；GitHub `fetch` 因网络不可达失败，未把
+缓存 SHA 冒充最新远端。现有唯一 recovery cgroup 仍真实写入 episode 23，实时 training/optimizer
+日志约到 `32198/33000` 步，回合尚未闭合，恢复上限仍为 `41250`；未重复启动或改写旧
+`execution.json`。峰值内存约 `2.83 GiB/3 GiB`，OOM、oom_kill、swap、memory.max 事件均为0。
+VMC handoff 继续等待 admittance 完整结束；VMC 与统一 acceptance 均未启动。当前没有 Task/Strict
+成功或收敛证据，episode 23 中途数据保留为未完成收据。冻结 physics/MJB、gate、canonical48
+actor 输入、公共 action filter、执行器限制及 `dt=5e-5` 未改；服务器仍只做归档。
+
 ## 2026-10-17 15:33 CST — admittance episode 22 完整收据
 
 admittance recovery 在 `checkpoint_0030250` 后安全完成 episode 22 (`repair_train_024`) 到 step `31625`：return `-25.24973103232766`，physical_valid=true，Task/Strict=false/false，abort_reason=null；audit/trace hash 已落盘。episode 23 已由同一 worker 接续，仍未达到恢复上限41250。VMC handoff monitor 保持等待，未派发 VMC；该失败回合不构成收敛证据。
