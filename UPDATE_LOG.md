@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-17 15:58 CST — admittance episode 23 安全完成并接续 episode 24
+
+admittance recovery 的 episode 23 (`repair_train_014`) 已安全完成：`31625→33000` 步，return
+`-25.310757439397047`，`physical_valid=true`，Task/Strict=`false/false`，无 abort；完整 audit/trace
+收据保留。新 `checkpoint_0033000` 逐文件 SHA256 与 execution checkpoint row 全部一致；同一 worker
+已接续 episode 24 (`repair_train_020`)。恢复上限仍为 `41250`，VMC 未启动。当前 recovery 峰值约
+`3.11 GiB/3 GiB hard limit`（登记字节上限 `3221225472`），但 memory.max、OOM、oom_kill、swap
+事件均为0。该回合不构成收敛证据，最终 acceptance 未执行。
+
 ## 2026-10-17 15:56 CST — episode 23 最后阶段
 
 admittance recovery 实时日志核对到 `32906/33000` 步、模拟时间 `51.24 s`，回合仍未闭合；

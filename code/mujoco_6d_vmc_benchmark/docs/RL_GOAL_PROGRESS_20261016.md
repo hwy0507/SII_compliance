@@ -1,5 +1,15 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 15:58 CST — admittance episode 23 安全完成，episode 24 接续
+
+- recovery episode 23 (`repair_train_014`) 已在安全边界从 `31625` 到 `33000` 步完成，return
+  `-25.310757439397047`，`physical_valid=true`，Task/Strict=`false/false`，无 abort；完整
+  audit/trace 收据已落盘。
+- `checkpoint_0033000` 已写入，逐文件 SHA256 与 execution checkpoint row 全部核对一致。episode 24
+  (`repair_train_020`) 已由同一 worker 接续在途；admittance 恢复总上限仍为 `41250`。
+- recovery cgroup 峰值约 `3.11 GiB/3 GiB hard limit`（登记字节上限 `3221225472`），
+  `memory.max/oom/oom_kill/swap` 事件均为 0；VMC handoff 尚未满足启动条件，未重复派发。
+
 ## 2026-10-17 15:56 CST — episode 23 进入最后阶段
 
 - recovery 实时日志已推进到 `32906/33000` 步、episode 23 模拟时间 `51.24 s`；仍未闭合，
