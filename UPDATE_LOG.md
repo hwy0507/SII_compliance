@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-17 15:53 CST — admittance episode 23 接近边界
+
+实时日志核对到 `32692/33000` 步、episode 23 模拟时间约 `42.68 s`，但回合尚未闭合；因此没有
+写入终局 return、Task/Strict 或 checkpoint。cgroup 峰值约 `2.92 GiB/3 GiB`，OOM、oom_kill、
+memory.max、swap 均为0；VMC handoff 仍未满足条件。GitHub fetch 继续因网络不可达，结果只记为
+本地缓存状态。
+
 ## 2026-10-17 15:51 CST — admittance episode 23 实时推进
 
 只读轮询期间同一 recovery worker 从约 `32590` 推进到 `32614/33000` 步，episode 23 仍未闭合；
