@@ -1,5 +1,16 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 17:08 CST — admittance 完成，VMC 按登记协议唯一接续
+
+- admittance recovery 已到 `41250 steps / 36251 updates / 30` episode boundaries，
+  `status=complete`、`stop_reason=step_budget`；最后完整回合 return `-25.31984146798213`，
+  `physical_valid=true`、Task/Strict=`false/false`。旧 execution、checkpoint 和失败收据均保留，
+  未进行 acceptance。
+- handoff monitor 已重新核对 prerequisite、VMC `checkpoint_0023375` 的逐文件 hash 和活动 worker
+  列表，并唯一启动 `sii-rl-goal-5071854e2e76`。VMC 当前 execution 仍在继承边界 `23375`、
+  episode 17 在途；cgroup 当前约 `1.88 GiB`、峰值 `1.92 GiB`，OOM/max/swap 全 0。没有重复
+  VMC worker；VMC 必须到 `34375` 后，四族才可进入后续统一 acceptance 判断。
+
 ## 2026-10-17 16:55 CST — admittance episode 28 安全完成，episode 29 在途
 
 - episode 28 (`repair_train_020`) 已从 `38500` 到 `39875` 步结束，return

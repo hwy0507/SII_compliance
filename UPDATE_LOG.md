@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-17 17:08 CST — admittance 到达 41250，VMC handoff 唯一启动
+
+admittance recovery 已按登记预算完成 `41250 steps / 36251 updates / 30` episode boundaries，
+`stop_reason=step_budget`；最后 episode 29 (`repair_train_020`) return `-25.31984146798213`，
+`physical_valid=true`，Task/Strict=`false/false`。旧 recovery execution、checkpoint 和失败收据
+均保留，未做 acceptance。handoff monitor 已验证 admittance 完成、VMC checkpoint `0023375` hash
+和无活动 worker，并按登记协议唯一启动 VMC unit `sii-rl-goal-5071854e2e76`，当前 VMC
+`execution.json` 仍在起始边界 `23375`、episode 17 在途；没有重复 VMC。VMC cgroup 当前约
+`1.88 GiB`、峰值 `1.92 GiB`，`memory.events` 全 0。四类训练尚未收敛，VMC 和统一 acceptance
+仍未完成。
+
 ## 2026-10-17 16:55 CST — admittance episode 28 安全完成，接近登记终点
 
 episode 28 (`repair_train_020`) 已从 `38500→39875` 步安全闭合，return `-25.21522548831614`，
