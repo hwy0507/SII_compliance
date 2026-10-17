@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-18 04:44 CST — admittance 继续推进至 8,000 步
+
+- 轮询同一 historical UTD2 admittance worker，execution 安全写回 `8000 steps / 6002 updates /
+  5 episodes`，状态 `running`；训练与 optimizer 日志持续增长，没有重复 worker。
+- 已完成回合仍为 return 约 `-22.91..-22.95`、`physical_valid=false`、Task/Strict=`false/false`；
+  OOM、oom_kill、swap、memory.max 事件均为 0。该阶段未产生收敛或成功证据。
+- `11000` 步预算尚未完成，VMC 未启动，继续等待安全边界。保留所有失败收据，不修改冻结
+  physics/MJB、gate、canonical48、公共 filter、执行器限制或 `dt=5e-5`。
+
 ## 2026-10-18 04:36 CST — 持续 Goal 轮询 historical UTD2 admittance
 
 - 目的/文件：记录 `outputs/rl_goal_n1_historical_utd2_20261018_v1` 的唯一 admittance worker

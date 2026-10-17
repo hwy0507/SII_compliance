@@ -1,5 +1,14 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 04:44 CST — admittance 达到 8,000 步，仍未出现成功证据
+
+- 轮询同一登记 worker 后，admittance execution 已安全写回 `8000 steps / 6002 updates / 5`
+  个完整回合，状态仍为 `running`；未创建重复进程。实时训练和 optimizer 日志仍在增长。
+- 前 5 个完整回合 return 约 `-22.91..-22.95`，全部 `physical_valid=false`、Task/Strict=`false/false`；
+  当前仍不能称为收敛。资源快照的 OOM、oom_kill、swap、memory.max 事件均为 0。
+- 登记的 `11000` 步预算尚未完成，VMC 继续保持未启动。完成 admittance 后才核验
+  `status=complete + step_budget`、checkpoint/hash 和活动 worker，再按登记协议唯一接续 VMC。
+
 ## 2026-10-18 04:36 CST — historical UTD2 admittance 继续真实推进
 
 - 本轮重新核对 `AGENTS.md`、当前登记、唯一 admittance execution 和实时训练日志；没有启动第二个
