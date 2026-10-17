@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-17 15:10 CST — 保留异常收据并登记 admittance 安全恢复
+
+本轮重新读取 `AGENTS.md`、本地缓存 main=`d6e8de3`、baseline=`f6e8f8c` 及 stage04 execution；GitHub fetch 仍因网络不可达，未声称已核验最新远端。发现 stage04 admittance worker 在已验证的 `checkpoint_0030250` 后退出，顶层 execution 仍为 `running`，旧目录和未完成 episode 22 收据未改写；cgroup memory 事件显示 OOM/oom_kill/swap/max 均为0。
+
+新增 `code/mujoco_6d_vmc_benchmark/tools/prepare_goal_admittance_recovery_20261017.py`，创建唯一 `outputs/rl_goal_recovery_20261017_admittance_v1` 登记，仅从该安全边界续跑至 step 41250；新 systemd 服务 `sii-rl-goal-recovery-adm-20261017.service` 已真实启动，当前仍在第22回合，资源峰值约2.34GiB、无 OOM/swap/max 事件。恢复未完成前不接续 VMC、不做 acceptance、不把 reward 平台写成收敛。冻结 physics/MJB、Task/Strict gate、canonical48 actor 输入、公共 action filter、执行器限制和 dt=5e-5 均未改。
+
 ## 2026-10-17 11:24 CST — stage04 mixed continuation 已按安全边界恢复
 
 开工重新读取 `AGENTS.md`、本地缓存的 main/baseline 日志和 stage03 execution；本轮 GitHub

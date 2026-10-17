@@ -1,5 +1,12 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 15:10 CST — admittance异常退出后的唯一恢复已登记并启动
+
+- 开工重新核对 `AGENTS.md`、缓存 main/baseline 日志和现有 execution；GitHub 网络仍不可达，未把缓存 SHA 冒充最新远端。stage04 admittance 在第22回合的有效边界 `checkpoint_0030250` 后异常退出，旧 `execution.json` 保持 `running`，未发生 OOM、oom_kill、swap 或 memory.max 事件；该未完成收据保留且未原地修改。
+- 新增 `tools/prepare_goal_admittance_recovery_20261017.py`，创建唯一 `outputs/rl_goal_recovery_20261017_admittance_v1`，复制 stage04 的 source/parameter 快照，并登记仅 admittance 从 `checkpoint_0030250` 精确续跑至 step `41250` 的有限恢复。其他三族只在登记中保留，不派发；CPU1、单线程、3 GiB、禁 swap、UTD=1、服务器不计算均未改变。
+- 独立 systemd 服务 `sii-rl-goal-recovery-adm-20261017.service` 已启动并真实写入 training/optimizer 日志，当前仍在 episode 22，约从 `30250` 向前推进；服务峰值约 `2.34 GiB`，OOM/oom_kill/swap/max 均为 0。恢复完成前不宣称 admittance 收敛，也不接续 VMC。
+- 该恢复是对异常 worker 的安全边界修复，不是 stage04 原目录重试；四族仍需完成训练筛选和最终独立 acceptance，Task 与 Strict 同时通过才计成功。
+
 ## 2026-10-17 11:24 CST — mixed continuation 已启动
 
 - stage03 direct 在 `29,512` steps、24 个完整回合处因磁盘保留线安全停止；旧目录和全部失败
