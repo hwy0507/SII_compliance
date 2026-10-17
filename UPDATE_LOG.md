@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-18 07:31 CST — direct episode 18 安全闭合但未通过
+
+- 同一 stage05 v4 direct worker 安全完成 episode 18（`21262 → 22637`）：return
+  `-21.855956641768064`，`physical_valid=true`，Task/Strict=`false/false`；checkpoint
+  `checkpoint_0022637` 已写入并核验，episode 19 已由 coordinator 唯一接续。
+- 当前 execution `23000 steps / 18001 updates`，episode 19 在途。worker cgroup current 约
+  `2.26 GiB`、MemoryMax `3 GiB`，OOM/oom_kill/swap 全 0；无重复派发。该失败回合保留作为调参
+  证据，不能写成收敛或成功；impedance/admittance/VMC 尚未接续。
+
 ## 2026-10-18 07:21 CST — direct worker 继续真实推进
 
 - 轮询同一登记 `sii-rl-goal-stage-b56c7608ebd7.service` 与

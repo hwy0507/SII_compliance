@@ -1,5 +1,14 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 07:31 CST — direct episode 18 失败收据保留，episode 19 在途
+
+- direct 同一 worker 已安全闭合 episode 18：`step 21262 → 22637`、return
+  `-21.855956641768064`，`physical_valid=true`、`task_success=false`、`strict_success=false`；
+  checkpoint `checkpoint_0022637` 已写入并核验 hash，episode 19 已接续。
+- 当前 execution `23000 steps / 18001 updates`，episode 19 尚未闭合；worker
+  `active/running`，MemoryCurrent 约 `2.26 GiB`、MemoryMax `3 GiB`，memory.events 的
+  `oom/oom_kill/swap` 均为 0。该 return 明确作为失败收据，不能称为收敛；其余三路尚未启动。
+
 ## 2026-10-18 07:21 CST — direct worker 继续真实推进
 
 - 同一唯一 coordinator/worker 仍为 `active/running`，未重启或重复派发；direct 安全边界推进到
