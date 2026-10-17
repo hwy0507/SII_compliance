@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-17 17:31 CST — VMC episode 18 安全完成
+
+VMC episode 18 (`repair_train_021`) 已从 `24750→26125` 步完整结束，return
+`-25.251291674856915`，`physical_valid=true`，Task/Strict=`false/false`，无 abort；
+`checkpoint_0026125` 已写入，episode 19 已接续。VMC cgroup 的 `memory.events` 仍为全 0，
+无 OOM、memory.max 或 swap 压力。该回合仍是失败收据，VMC 尚未达到 `34375`，统一 acceptance
+和收敛结论继续等待。
+
 ## 2026-10-17 17:19 CST — VMC episode 17 安全完成
 
 VMC handoff worker 已从继承 checkpoint `0023375` 安全完成 episode 17 (`repair_train_011`) 到
