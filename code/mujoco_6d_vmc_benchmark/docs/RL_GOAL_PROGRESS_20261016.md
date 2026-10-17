@@ -3190,3 +3190,7 @@ return−21.667945，physical_valid=true，Task/Strict均false；checkpoint_0051
   先按登记协议进行四份 credit preflight，再以每族 11,000 interactions 的独立根启动。
   physics/MJB、最终 gate、canonical48 actor 输入、公共 filter、执行器限制和 dt=5e-5
   继续冻结；服务器仅归档。
+
+普通 Codex cgroup 预检暴露 `memory.max=max`，四份预检均以失败收据退出；本机 GPU 驱动也
+不可用。已在调度器中登记显式 CUDA→CPU 本机 fallback，训练仍必须通过 systemd 的
+3 GiB/禁 swap cgroup。旧 GPU 继承 stage03 未启动且保留，新 CPU continuation 改用唯一根目录。

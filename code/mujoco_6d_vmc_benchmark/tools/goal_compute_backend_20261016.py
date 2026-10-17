@@ -75,6 +75,8 @@ def runtime_info(reg, *, expected_cpu):
 
 def check_backend_resume(parent, reg, job):
     previous = parent.get('learning_backend', 'cpu')
-    if previous != backend(reg) and not (job and job.get('backend_migration') and
-                                         previous == 'cpu' and backend(reg) == 'cuda'):
-        raise ValueError('Backend change requires explicit CPU-to-CUDA migration registration')
+    explicit_migration = bool(job and job.get('backend_migration'))
+    allowed = ((previous == 'cpu' and backend(reg) == 'cuda') or
+               (previous == 'cuda' and backend(reg) == 'cpu'))
+    if previous != backend(reg) and not (explicit_migration and allowed):
+        raise ValueError('Backend change requires explicit registered local migration')

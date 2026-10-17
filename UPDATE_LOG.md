@@ -21,6 +21,12 @@ continuation，四份 `probe_goal_credit_20261016.py` 预检全部通过后才 s
 每族 11,000 interactions。冻结 physics/MJB、Task/Strict gate、canonical48 actor 输入、
 公共 action filter、执行器限制和 `dt=5e-5` 不变；服务器只做独立归档，最终 acceptance 未执行。
 
+随后四份预检先在普通 Codex cgroup 中运行，均保留了真实失败收据：当前 cgroup 的
+`memory.max=max`，不满足登记的 3 GiB hard limit；本机 `nvidia-smi` 也无法连接驱动。
+已修复调度器与 backend 检查：允许显式登记的本机 CUDA→CPU continuation，并保留 checkpoint、
+optimizer、RNG、normalizer 与 raw replay；没有绕过 cgroup 校验，也没有启动训练。原 GPU
+继承的 stage03 目录保留为未启动准备收据，新的 CPU continuation 使用另一唯一目录。
+
 ## 2026-10-17 09:05 CST — 持续Goal监视 occupancy 二十四回合
 
 重新读取 AGENTS、现有进度和缓存 remote-tracking 日志；GitHub fetch 本轮因网络不可达失败，未将缓存

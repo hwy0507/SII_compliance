@@ -207,7 +207,7 @@ def require_stream_destination(destination):
 
 
 def prepare_next(previous, destination, gpu_preflight=False, interactions_per_family=11000,
-                 _defer_storage_seal=False):
+                 learning_backend='inherit', _defer_storage_seal=False):
     """Prepare one finite continuation; never dispatch or restart a fresh model."""
     assert platform.node() == 'airpig'
     assert not destination.exists(), 'Never reuse a stage directory'
@@ -215,6 +215,9 @@ def prepare_next(previous, destination, gpu_preflight=False, interactions_per_fa
     assert not gpu_preflight or interactions_per_family == 11000, 'GPU preflight budget remains 1375'
     old = read(previous / 'REGISTRATION.json')
     verify_inputs(old)
+    assert learning_backend in ('inherit', 'cpu')
+    if learning_backend == 'cpu':
+        assert backend(old) == 'cuda' and not gpu_preflight
     if old.get('working_set_policy'):
         require_stream_destination(destination)
     state = read(previous / 'execution.json')
@@ -260,12 +263,14 @@ def prepare_next(previous, destination, gpu_preflight=False, interactions_per_fa
     if not gpu_preflight and budget != 11000:
         reg['finite_continuation_budget'] = budget
     jobs = []
+    cpu_fallback = learning_backend == 'cpu'
+    target_backend = 'cpu' if cpu_fallback else backend(old)
     for job in old['jobs']:
         cp = checkpoints[job['name']]
         output = destination / job['name']
         jobs.append(dict(job, inherited_steps=cp['step'], limit=cp['step']+budget,
             checkpoint=cp['path'], checkpoint_hashes=cp['hashes'], credit_migration=False,
-            backend_migration=gpu_preflight and backend(old) == 'cpu',
+            backend_migration=(gpu_preflight and backend(old) == 'cpu') or cpu_fallback,
             parent_execution_sha256=digest(Path(job['output']) / 'execution.json'),
             output=str(output), unit='sii-rl-goal-'+hashlib.sha256(str(output).encode()).hexdigest()[:12]))
         if job.get('parameter_source'):
@@ -273,6 +278,15 @@ def prepare_next(previous, destination, gpu_preflight=False, interactions_per_fa
             shutil.copytree(job_parameter_source(old,job),alternate,ignore=ignore)
             jobs[-1].update(parameter_source=str(alternate),parameter_manifest=manifest(alternate),
                            actor_regularization_migration=False)
+    if cpu_fallback:
+        resources = dict(old['resources'], learning_backend='cpu')
+        for key in ('gpu_device', 'gpu_admission_free_mib', 'gpu_max_temperature_c',
+                    'gpu_allocator_fraction'):
+            resources.pop(key, None)
+        reg['resources'] = resources
+        reg['backend_migration'] = ('Explicit local CUDA-to-CPU fallback: GPU runtime was '
+            'unavailable at preflight; portable checkpoint, optimizer, RNG, normalizers and '
+            'raw replay are retained. No bitwise trajectory-equivalence claim.')
     reg.update(registered_utc=started.isoformat(), run_root=str(destination), source=str(source),
         parameter_source=str(parameter), source_manifest=manifest(source), parameter_manifest=manifest(parameter),
         source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=BENCH,text=True).strip(),
@@ -567,15 +581,20 @@ if __name__ == '__main__':
     parser.add_argument('--interactions-per-family', type=int, default=11000,
                         choices=(11000, 22000, 33000, 44000),
                         help='Explicit finite prepare-next budget; defaults to11000. No change to existing registrations.')
+    parser.add_argument('--learning-backend', choices=('inherit', 'cpu'), default='inherit',
+                        help='Optionally register an explicit local CUDA-to-CPU continuation fallback.')
     args = parser.parse_args()
     if args.mode != 'prepare-next' and args.interactions_per_family != 11000:
         parser.error('--interactions-per-family applies only to prepare-next')
+    if args.mode != 'prepare-next' and args.learning_backend != 'inherit':
+        parser.error('--learning-backend applies only to prepare-next')
     if args.mode == 'prepare':
         print(json.dumps(prepare(args.parent.resolve(), args.root.resolve(), args.checkpoint.resolve()), indent=2))
     elif args.mode in ('prepare-next', 'prepare-gpu-preflight'):
         print(json.dumps(prepare_next(args.previous_stage.resolve(), args.root.resolve(),
                                      gpu_preflight=args.mode == 'prepare-gpu-preflight',
-                                     interactions_per_family=args.interactions_per_family), indent=2))
+                                     interactions_per_family=args.interactions_per_family,
+                                     learning_backend=args.learning_backend), indent=2))
     elif args.mode == 'seal-preflight':
         seal_preflight(args.root.resolve())
     elif args.mode == 'launch':
