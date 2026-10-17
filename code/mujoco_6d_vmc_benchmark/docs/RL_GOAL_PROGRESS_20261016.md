@@ -1,5 +1,16 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 17:54 CST — VMC episode 20 安全完成，episode 21 接续
+
+- 同一 VMC recovery worker 已从 `27500` 安全完成 episode 20 (`repair_train_030`) 到 `28875`，
+  return `-25.204936135575608`，`physical_valid=true`，Task/Strict=`false/false`，无 abort；
+  `checkpoint_0028875` 已写入，episode 21 (`repair_train_023`) 已接续。
+- 当前 execution 边界为 `28875 steps / 23876 updates / 21 episode boundaries`，状态仍为
+  `running`。资源快照 current `2503888896`、peak `3221225472` bytes，`memory.events.max=240`，
+  OOM、oom_kill、swap 均为0；资源 max 事件保留为压力证据，不能写成 OOM。
+- 该回合仍为失败收据，VMC 尚未到登记终点 `34375`；没有重复 worker、统一 acceptance 或
+  Task AND Strict 成功证据。
+
 ## 2026-10-17 17:49 CST — VMC 持续推进，当前无可验证收敛
 
 - 重新核对 `AGENTS.md`、本地 main/baseline 状态、唯一 VMC recovery execution 和实时日志；GitHub

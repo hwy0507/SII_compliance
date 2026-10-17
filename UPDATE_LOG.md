@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-17 17:54 CST — VMC episode 20 安全完成，episode 21 接续
+
+VMC recovery worker 在同一登记目录完成 episode 20 (`repair_train_030`)：`27500→28875`
+步、return `-25.204936135575608`，`physical_valid=true`，Task/Strict=`false/false`，无
+abort；`checkpoint_0028875` 已由训练器写入，episode 21 (`repair_train_023`) 已接续。执行
+边界为 `28875 steps / 23876 updates / 21 episode boundaries`，状态仍 `running`。资源快照
+为 current `2503888896`、peak `3221225472` bytes，`memory.events.max=240`，但 OOM、oom_kill、
+swap 均为 0；max 事件只记录资源压力。该回合仍是失败收据，VMC 未到 `34375`，未启动统一
+acceptance 或新的并行 worker。
+
 ## 2026-10-17 17:49 CST — 持续 Goal 轮询 VMC，确认训练器与资源状态
 
 本轮重新读取 `AGENTS.md`、本地缓存的 main/baseline 更新状态、RL Goal progress 和 VMC
