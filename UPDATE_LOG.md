@@ -1,5 +1,28 @@
 # 更新日志
 
+## 2026-10-17 11:24 CST — stage04 mixed continuation 已按安全边界恢复
+
+开工重新读取 `AGENTS.md`、本地缓存的 main/baseline 日志和 stage03 execution；本轮 GitHub
+网络仍不可达，未把缓存引用冒充最新远端状态。stage03 direct 在 `29,512` steps、24 个完整回合
+处因磁盘 50 GiB 保留线安全停止，所有 checkpoint、轨迹和失败收据保留。清理了可再生成的本机
+pip 下载缓存约 13.85 GiB，未触碰实验产物、源码或环境；磁盘可用空间由约 50 GiB 恢复到
+约 62.6 GiB。
+
+为避免原地重试，新增 `tools/prepare_mixed_goal_stage_20261017.py` 并创建唯一的
+`outputs/rl_goal_selected_20261016_stage04_mixed_cpu_v1`：direct 精确继承 stage03 的
+`checkpoint_0029512`，impedance/admittance/VMC 精确继承 stage02 各自 `checkpoint_0023375`，
+四族各登记新增 11,000 interactions，CPU1、单线程、3 GiB、禁 swap、UTD=1、服务器不计算。
+四份 checkpoint/replay preflight 均在独立 systemd 3 GiB 服务中通过，随后启动唯一 coordinator
+`sii-rl-goal-stage-86934caed9a9.service`。当前 direct worker
+`sii-rl-goal-d5c23cdd51d6` 正在真实推进，约 `30,250` steps / `25,251` updates，episode 24
+在途；当前无新完整回合可计成功。worker 观测峰值约 2.10 GiB，OOM/max/swap 均为 0，磁盘余量
+高于登记保留线。该阶段仍不是收敛结论，Task/Strict 必须在完整回合和最终验收中核对。
+
+stage03 的 `stopped_at_episode_boundary` 收据和 mixed lineage 已写入新 REGISTRATION；未覆盖旧
+execution，不重复 episode。训练完成前不做统一 acceptance；四族完成后仍需独立物理子步、
+action/filter replay、source/config/checkpoint hash、RMSE、峰值力矩/速度、穿透审计，Task 与
+Strict 同时通过才计成功。
+
 ## 2026-10-17 10:15 CST — stage03 CPU continuation 已启动
 
 GPU 继承预检因本机驱动不可用而保留失败收据；调度器新增显式本机 CUDA→CPU fallback，

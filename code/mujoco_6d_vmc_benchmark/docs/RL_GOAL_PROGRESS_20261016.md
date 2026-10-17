@@ -1,5 +1,20 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 11:24 CST — mixed continuation 已启动
+
+- stage03 direct 在 `29,512` steps、24 个完整回合处因磁盘保留线安全停止；旧目录和全部失败
+  收据保留。清理约 13.85 GiB 可再生成 pip 下载缓存后，磁盘可用空间约 62.6 GiB。
+- 新建唯一 `outputs/rl_goal_selected_20261016_stage04_mixed_cpu_v1`，使用
+  `tools/prepare_mixed_goal_stage_20261017.py` 记录逐族 lineage：direct 继承 stage03
+  `checkpoint_0029512`，impedance/admittance/VMC 继承 stage02 各自 `checkpoint_0023375`；
+  每族新增 11,000 interactions，CPU1/单线程/3 GiB/禁 swap/UTD=1。
+- 四份 n25 checkpoint/replay preflight 均通过；coordinator
+  `sii-rl-goal-stage-86934caed9a9.service` 已启动，direct worker
+  `sii-rl-goal-d5c23cdd51d6` 真实推进至约 `30,250` steps / `25,251` updates，episode 24
+  在途。峰值内存约 2.10 GiB，OOM/max/swap=0；当前没有 Task/Strict 成功证据。
+- 该 mixed stage 不是收敛或最终成功结论。旧 stage03 execution 未覆盖；四族完成后再按统一
+  acceptance 和独立物理/动作/filter/hash/RMSE/峰值/穿透审计，Task 与 Strict 同时通过才计成功。
+
 ## 2026-10-17 10:15 CST — stage03 CPU continuation 启动
 
 - GPU 继承预检因驱动不可用保留失败收据；已登记显式本机 CUDA→CPU fallback，冻结物理、
