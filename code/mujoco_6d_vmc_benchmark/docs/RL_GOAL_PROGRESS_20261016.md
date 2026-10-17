@@ -1,5 +1,15 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 16:33 CST — admittance episode 26 安全完成，继续 episode 27
+
+- episode 26 (`repair_train_003`) 已从 `35750` 到 `37125` 步完整结束，return
+  `-25.68095393250632`，`physical_valid=true`，Task/Strict=`false/false`，无 abort；
+  `checkpoint_0037125` 已逐文件核对，episode 27 已接续。
+- recovery 日志和 execution 继续真实推进。cgroup `memory_peak=3221225472`、
+  `memory.events.max=1370`，但 `oom/oom_kill/swap=0`；保留资源压力证据，不能把它解释为
+  收敛或成功。VMC handoff 继续等待 admittance 的 `41250` 步安全终点，VMC/最终 acceptance
+  未启动；当前完整回合 Task AND Strict 仍全 false。
+
 ## 2026-10-17 16:21 CST — admittance episode 25 安全完成，继续 episode 26
 
 - episode 25 (`repair_train_025`) 已从 `34375` 到 `35750` 步安全闭合，return

@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-17 16:33 CST — admittance episode 26 安全完成，继续 episode 27
+
+episode 26 (`repair_train_003`) 已从 `35750→37125` 步安全结束，return
+`-25.68095393250632`，`physical_valid=true`，Task/Strict=`false/false`，无 abort；
+`checkpoint_0037125` 已逐文件保存并核对，episode 27 已接续。recovery worker 的实时日志仍在
+更新，未重复启动。3 GiB cgroup 当前记录 `memory_peak=3221225472`、`memory.events.max=1370`，
+但 `oom=0`、`oom_kill=0`、`swap=0`；资源压力继续记录，不能算作训练成功。VMC handoff 仍等待
+admittance 完成 `41250` 步，VMC 和统一 acceptance 未启动；最近所有完整回合 Task AND Strict
+仍为 false。
+
 ## 2026-10-17 16:21 CST — admittance episode 25 安全完成，资源 max 事件上升但无 OOM
 
 admittance recovery 的 episode 25 (`repair_train_025`) 已从 `34375→35750` 步完整结束，return
