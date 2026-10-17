@@ -1,5 +1,14 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 05:51 CST — VMC 首批 optimizer 回合仍失败
+
+- VMC 唯一 worker 已推进到 `5500 steps / 501 updates / 4 episodes`，状态 `running`；
+  当前约 `2.25 GiB`、峰值约 `2.92 GiB`，OOM、oom_kill、swap 全为 0。
+- 四个完整回合 return 分别为 `-22.94402021863675`、`-22.966775420041188`、
+  `-22.964940890418067`、`-22.97292639664057`，均 `physical_valid=false`、Task/Strict=`false/false`，
+  terminal reason 为 `original_horizon_or_abort`。这明确记录为失败收据，不能称为收敛。
+- VMC 尚未到 `11000` 步安全预算，统一 acceptance 和下一调参阶段继续等待。
+
 ## 2026-10-18 05:47 CST — VMC 完成 warmup，进入 optimizer 阶段
 
 - 唯一 VMC worker 已推进到 `5000 steps / 1 update / 3 episodes`，状态 `running`；warmup 已结束，

@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-18 05:51 CST — VMC 首批 optimizer 回合统计
+
+- 唯一 VMC worker execution 为 `5500 steps / 501 updates / 4 episodes`、`running`；四回合
+  return `-22.9440/-22.9668/-22.9649/-22.9729`，全部 `physical_valid=false`、Task/Strict
+  `false/false`，terminal reason `original_horizon_or_abort`。
+- 内存 current 约 `2.25 GiB`、peak 约 `2.92 GiB`，OOM/oom_kill/swap 全 0；未启动 acceptance，
+  未声称收敛。继续保留失败收据和唯一 worker，冻结环境与 gate 未变。
+
 ## 2026-10-18 05:47 CST — VMC 进入 optimizer 阶段
 
 - VMC execution 已到 `5000 steps / 1 update / 3 episodes`，warmup 结束并开始记录 optimizer；
