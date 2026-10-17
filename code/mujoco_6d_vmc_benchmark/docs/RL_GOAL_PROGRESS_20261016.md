@@ -1,5 +1,13 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 17:19 CST — VMC episode 17 安全完成，继续 episode 18
+
+- VMC 从继承 checkpoint `0023375` 安全完成 episode 17 (`repair_train_011`) 到 `24750` 步，
+  return `-25.210425772095277`，`physical_valid=true`，Task/Strict=`false/false`，无 abort；
+  `checkpoint_0024750` 已写入并核对，episode 18 已接续。
+- VMC cgroup 当前约 `1.70 GiB`、峰值约 `2.37 GiB`，OOM/max/oom_kill/swap 全 0。该回合仍是
+  失败收据，不能把 reward 平台或达到步数当作收敛；统一 acceptance 等待 VMC 到 `34375`。
+
 ## 2026-10-17 17:08 CST — admittance 完成，VMC 按登记协议唯一接续
 
 - admittance recovery 已到 `41250 steps / 36251 updates / 30` episode boundaries，

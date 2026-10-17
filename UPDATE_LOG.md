@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-17 17:19 CST — VMC episode 17 安全完成
+
+VMC handoff worker 已从继承 checkpoint `0023375` 安全完成 episode 17 (`repair_train_011`) 到
+step `24750`，return `-25.210425772095277`，`physical_valid=true`，Task/Strict=`false/false`，
+无 abort；`checkpoint_0024750` hash 已写入 execution，episode 18 已接续。VMC cgroup 当前约
+`1.70 GiB`、峰值约 `2.37 GiB`，`memory.events` 的 max/oom/oom_kill/swap 均为 0。该回合仍是
+失败收据，四方法尚无收敛或 Task AND Strict 成功证据；统一 acceptance 未启动。
+
 ## 2026-10-17 17:08 CST — admittance 到达 41250，VMC handoff 唯一启动
 
 admittance recovery 已按登记预算完成 `41250 steps / 36251 updates / 30` episode boundaries，
