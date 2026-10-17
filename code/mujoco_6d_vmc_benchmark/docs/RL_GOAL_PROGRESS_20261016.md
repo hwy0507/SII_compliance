@@ -1,5 +1,14 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 16:55 CST — admittance episode 28 安全完成，episode 29 在途
+
+- episode 28 (`repair_train_020`) 已从 `38500` 到 `39875` 步结束，return
+  `-25.21522548831614`，`physical_valid=true`，Task/Strict=`false/false`，无 abort；
+  `checkpoint_0039875` 已写入，episode 29 已接续，距离登记终点 `41250` 还剩一个完整回合。
+- 该回合仍是失败收据，Task AND Strict 没有成功证据。cgroup `memory.events.max=2711`，但
+  `oom/oom_kill/swap=0`；继续保留资源压力证据并按原 3 GiB/禁 swap 约束运行。VMC handoff
+  仍等待 admittance 明确 `complete + step_budget + 41250`，VMC/最终 acceptance 未启动。
+
 ## 2026-10-17 16:44 CST — admittance episode 27 安全完成，继续 episode 28
 
 - episode 27 (`repair_train_003`) 已从 `37125` 到 `38500` 步完整结束，return

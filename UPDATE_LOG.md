@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-17 16:55 CST — admittance episode 28 安全完成，接近登记终点
+
+episode 28 (`repair_train_020`) 已从 `38500→39875` 步安全闭合，return `-25.21522548831614`，
+`physical_valid=true`，Task/Strict=`false/false`，无 abort；`checkpoint_0039875` 已写入，
+episode 29 已接续，距离登记终点 `41250` 还剩一个完整回合。该回合仍是失败收据，未形成
+Task AND Strict 成功或收敛证据。worker 继续按本机 CPU1、单线程、3 GiB、禁 swap 运行；
+`memory.events.max=2711`、`oom=0`、`oom_kill=0`、`swap=0`。VMC handoff 仍未触发，须等待
+admittance 明确 `complete + step_budget + 41250`。
+
 ## 2026-10-17 16:44 CST — admittance episode 27 安全完成，失败平台仍稳定
 
 episode 27 (`repair_train_003`) 已从 `37125→38500` 步结束，return `-25.75233309714781`，
