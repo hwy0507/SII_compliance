@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-18 07:58 CST — direct episode 21 安全闭合但未通过
+
+- direct episode 21（`25387 → 26762`）return `-21.712710806160278`，`physical_valid=true`，
+  Task/Strict=`false/false`；checkpoint `0026762` 已核验，episode 22 已接续，当前
+  `26762 steps / 21763 updates`。
+- 最近有效回合仍稳定在约 `-21.7…-21.9`，但 Task/Strict 成功率为 0；资源 current 约 `2.61 GiB`、
+  hard max 3 GiB、禁 swap，无 OOM/oom_kill/swap。未启动 impedance/admittance/VMC，继续保留失败收据。
+
 ## 2026-10-18 07:46 CST — direct episode 20 安全闭合但未通过
 
 - direct episode 20（`24012 → 25387`）return `-21.80105224804159`，`physical_valid=true`，
