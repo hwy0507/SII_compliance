@@ -10,8 +10,9 @@
   每族新增 11,000 interactions，CPU1/单线程/3 GiB/禁 swap/UTD=1。
 - 四份 n25 checkpoint/replay preflight 均通过；coordinator
   `sii-rl-goal-stage-86934caed9a9.service` 已启动，direct worker
-  `sii-rl-goal-d5c23cdd51d6` 真实推进至约 `30,250` steps / `25,251` updates，episode 24
-  在途。峰值内存约 2.10 GiB，OOM/max/swap=0；当前没有 Task/Strict 成功证据。
+  `sii-rl-goal-d5c23cdd51d6` 已真实推进至 `31,750` steps / `26,751` updates。episode 24
+  (`repair_train_020`) return `-38.757591452`、`physical_valid=false`、Task/Strict=false/false，
+  episode 25 在途。峰值内存约 2.43 GiB，OOM/max/swap=0；当前没有 Task/Strict 成功证据。
 - 该 mixed stage 不是收敛或最终成功结论。旧 stage03 execution 未覆盖；四族完成后再按统一
   acceptance 和独立物理/动作/filter/hash/RMSE/峰值/穿透审计，Task 与 Strict 同时通过才计成功。
 
