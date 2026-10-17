@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-18 06:15 CST — VMC 第六回合失败与资源压力
+
+- VMC execution 已到 `8250 steps / 3251 updates / 6 episodes`；第六回合 return
+  `-22.97352980381143`、`physical_valid=false`、Task/Strict=`false/false`，仍未收敛。
+- cgroup `memory.events.max=903` 但 OOM/oom_kill/swap 全 0；未修改资源限制或启动新 worker，
+  继续等待最后预算边界。
+
 ## 2026-10-18 06:05 CST — VMC 资源压力记录
 
 - 唯一 VMC worker 已到 `7000 steps / 2001 updates / 5 episodes`；第 5 回合 return

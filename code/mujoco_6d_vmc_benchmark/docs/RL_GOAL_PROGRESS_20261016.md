@@ -1,5 +1,13 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 06:15 CST — VMC 第六回合仍失败，资源压力上升但无 OOM
+
+- VMC 已到 `8250 steps / 3251 updates / 6 episodes`；第 6 回合 return
+  `-22.97352980381143`，`physical_valid=false`、Task/Strict=`false/false`，终止原因为
+  `original_horizon_or_abort`。
+- `memory.events.max=903`，但 OOM、oom_kill、swap 均为 0；继续保持登记的单 worker、CPU1、
+  单线程、3 GiB、禁 swap。VMC 尚未完成 `11000` 步，acceptance 继续等待。
+
 ## 2026-10-18 06:05 CST — VMC 继续训练，出现资源压力但无 OOM
 
 - VMC execution 已推进到 `7000 steps / 2001 updates / 5 episodes`。第 5 回合 return
