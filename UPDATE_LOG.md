@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-18 07:21 CST — direct worker 继续真实推进
+
+- 轮询同一登记 `sii-rl-goal-stage-b56c7608ebd7.service` 与
+  `sii-rl-goal-0ce91375a248.service`：均 active/running，无重复 worker。direct execution 安全边界为
+  `21,750 steps / 16,751 updates`，第18回合尚未闭合，训练/optimizer 日志持续增长。
+- cgroup 只读计数为 MemoryCurrent 约 1.93 GiB、MemoryMax 3 GiB、禁 swap，未见 OOM/oom_kill/swap。
+  其他三路尚未接续；没有 acceptance、Task/Strict 成功或收敛结论。保留当前所有失败/未完成收据。
+
 ## 2026-10-18 07:17 CST — stage05 v4 受控 CPU continuation 启动
 
 - 开工核对：`git ls-remote` 可见 main/baseline SHA，但随后 fetch 因 GitHub 网络不可达失败；本轮

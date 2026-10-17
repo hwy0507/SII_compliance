@@ -1,5 +1,13 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 07:21 CST — direct worker 继续真实推进
+
+- 同一唯一 coordinator/worker 仍为 `active/running`，未重启或重复派发；direct 安全边界推进到
+  `21,750 steps / 16,751 updates`，第 18 回合仍在途，`checkpoint_rows=0` 符合只在完整回合边界写回的
+  登记策略。训练与 optimizer 日志持续增长。
+- worker cgroup `MemoryCurrent≈1.93 GiB`、`MemoryMax=3 GiB`、`MemorySwapCurrent=0`，未见 OOM 或
+  swap；impedance/admittance/VMC 尚未接续。仍没有可用于宣称收敛或 Task/Strict 成功的证据。
+
 ## 2026-10-18 07:17 CST — stage05 v4 CPU continuation 已启动，direct 真实推进
 
 - 远端 `git fetch` 本轮因 GitHub 网络不可达失败；缓存分支状态未冒充最新远端。保留 stage05
