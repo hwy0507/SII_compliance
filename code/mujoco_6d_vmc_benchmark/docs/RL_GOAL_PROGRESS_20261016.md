@@ -1,5 +1,12 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 06:05 CST — VMC 继续训练，出现资源压力但无 OOM
+
+- VMC execution 已推进到 `7000 steps / 2001 updates / 5 episodes`。第 5 回合 return
+  `-22.963138393101254`，`physical_valid=false`、Task/Strict=`false/false`，仍是失败收据。
+- cgroup `memory.events.max=430` 记录资源压力，当前 OOM、oom_kill、swap 均为 0；worker 未停止，
+  未修改 3 GiB/禁 swap 限制。VMC 尚未完成 `11000` 步，继续等待安全终点。
+
 ## 2026-10-18 05:51 CST — VMC 首批 optimizer 回合仍失败
 
 - VMC 唯一 worker 已推进到 `5500 steps / 501 updates / 4 episodes`，状态 `running`；

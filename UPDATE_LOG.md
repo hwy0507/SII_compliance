@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-18 06:05 CST — VMC 资源压力记录
+
+- 唯一 VMC worker 已到 `7000 steps / 2001 updates / 5 episodes`；第 5 回合 return
+  `-22.963138393101254`、`physical_valid=false`、Task/Strict=`false/false`。
+- `memory.events.max=430` 仅表示 cgroup 资源压力，OOM/oom_kill/swap 均为 0；未重启、未放宽
+  3 GiB/禁 swap 约束。VMC 仍未到登记安全终点，acceptance 未启动。
+
 ## 2026-10-18 05:51 CST — VMC 首批 optimizer 回合统计
 
 - 唯一 VMC worker execution 为 `5500 steps / 501 updates / 4 episodes`、`running`；四回合
