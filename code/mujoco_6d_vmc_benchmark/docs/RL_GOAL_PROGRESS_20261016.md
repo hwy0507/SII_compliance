@@ -1,5 +1,24 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 07:06 CST — 四路 historical acceptance 完成，仍未收敛
+
+- 唯一 acceptance 根 `outputs/rl_goal_acceptance_n1_historical_utd2_20261018_v3` 已按
+  direct → impedance → admittance → VMC 串行完成；四路 execution 均 `complete`、returncode=0，
+  资源登记均为本机 CPU1、单线程、MemoryMax=3 GiB、MemorySwapMax=0、`dt=5e-5`。
+- 四路独立 acceptance 的 Task/Strict 均为 `false/false`，所以没有方法达到成功判据：
+  direct RMSE `6.3603287 mm`、峰矩 `30.4545078 Nm`、峰速 `0.1614718 m/s`、penetration
+  `0.1174281 mm`；impedance `22.4654804 mm`、`35.6502914 Nm`、`0.0825603 m/s`、edge
+  penetration `0.1434159 mm`；admittance `28.6014335 mm`、`39.6306381 Nm`、
+  `0.0616022 m/s`、penetration `0.0017105 mm`；VMC `25.9074661 mm`、`37.7564430 Nm`、
+  `0.0616022 m/s`、penetration `0.0016057 mm`、edge penetration `0.0632697 mm`。
+- source/config/checkpoint lineage、common filter replay（四路均 `0.0`）、normalization
+  unchanged 和每路独立 rollout/hash 收据均已落盘；历史 v1 acceptance 的四路失败收据不覆盖
+  stage02。stage02 selected 四族自身也已安全完成（direct `21262` steps，其他三族各 `23375`，
+  execution status=`complete`），但其训练回合 Task/Strict 仍为 `0`，training_complete=false。
+- 当前无活动 acceptance/RL worker。该 acceptance 结果只证明当前 checkpoint 在冻结物理和
+  最终 gate 下未通过，不把 reward、步数或完整运行写成收敛；Goal 继续 active，下一步依据
+  stage02 的 carry/approach 失败证据登记新的有限修复阶段，并重新做四路 acceptance。
+
 ## 2026-10-18 06:15 CST — VMC 第六回合仍失败，资源压力上升但无 OOM
 
 - VMC 已到 `8250 steps / 3251 updates / 6 episodes`；第 6 回合 return

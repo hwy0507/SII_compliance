@@ -1,5 +1,25 @@
 # 更新日志
 
+## 2026-10-18 07:06 CST — historical acceptance 四路完成但 Task/Strict 全部失败
+
+- `outputs/rl_goal_acceptance_n1_historical_utd2_20261018_v3` 的唯一串行 acceptance 已完成：
+  direct、impedance、admittance、VMC 均 `status=complete`、returncode=0；未重复启动，四路
+  均使用本机 CPU1、单线程、3 GiB、禁 swap、`dt=5e-5`。
+- 独立审计 Task/Strict 分别为 `0/1`、`0/1`：direct RMSE 6.3603 mm/峰矩 30.4545 Nm/峰速
+  0.16147 m/s/penetration 0.11743 mm；impedance 22.4655/35.6503/0.08256，edge penetration
+  0.14342 mm；admittance 28.6014/39.6306/0.06160，penetration 0.00171 mm；VMC
+  25.9075/37.7564/0.06160，penetration 0.00161 mm、edge 0.06327 mm。四路均保留完整
+  rollout、substep、action/filter replay、source/config/checkpoint hash 和失败收据。
+- acceptance 根 execution hash 为
+  `99cfff60728a17a04c8a7fcc50907ced064daeb3648d006b3429585ce74d9aca`；四路 AUDIT hash 依次为
+  `1e1b09a860e6b49ad563ab05d914553e46515b1c12581f58ebb18e0b6a5d6751`,
+  `edeba306afe6b8ba02238dcdd207f2724cfb3de239971b390d208250fc918c2b`,
+  `34f83967f0ded5dada35dd18113d5492b4843ede85f6f124471101f6910471c7`,
+  `acb84aee954e18454e66528518a7193a070bd97560b05336e001fac2fe35254f`。
+- stage02 selected 四族此前均已安全结束（direct 21262 steps，其余各 23375），但训练统计仍
+  `Task/Strict=0`、`training_complete=false`；本轮未把 acceptance 失败改写成训练成功，Goal
+  继续 active。网络 fetch/push 当前仍因不可达而未验证远端，未声称已推送。
+
 ## 2026-10-18 06:15 CST — VMC 第六回合失败与资源压力
 
 - VMC execution 已到 `8250 steps / 3251 updates / 6 episodes`；第六回合 return
