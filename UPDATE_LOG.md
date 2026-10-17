@@ -1,5 +1,46 @@
 # 更新日志
 
+## 2026-10-17 08:17 CST — 已核验等待：occupancy十八回合及replay容量核对
+
+开工实查/fetch/read main `8eb042664232ad9a0daacd1d4362f73e9c1d62ba`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS/两份进度，
+收工重读AGENTS并再次fetch核对分支未前进。上一轮新增动作覆盖诊断，本轮接续同一健康worker，
+无研究源码或活动配置修改、无重复派发。协调器2502213/worker2546313真实active。
+
+观察器00:02:34–00:14:04 UTC记录22500→24750步、17501→19751更新、16→18闭合回合，
+目标边界归档后退出0，训练继续。execution批次刷新时另读optimizer末行24734/19735，
+确认没有把记录间隔误当停滞。18回合均1375步/55秒、physical_valid，Task/Strict0/18；
+17carry/1retreat。新增ep16/17 return −27.637977570/−26.699794802。
+ep16首次进入retreat但物块最终XY误差223.214239mm、位置z .424996988m，仍任务失败；
+阶段推进不能替代物块放置/最终gate，不推断掉落的具体因果。
+全18回合return均值−27.526279550、标准差.543209955（含warmup/mixed）。
+纯学习ep4–17均值−27.553900552、标准差.568276159；
+最近8个ep10–17均值−27.475437173、标准差.652700227、范围[−28.537852285,−26.699794802]。
+这些窗口含不同条件和演化中策略，不证明收敛或处理收益。
+
+24750交互/19751更新连续有限，奖励分解、AUDIT/trace、cp24750成员hash与新增原始远端归档通过。
+末temperature .001809536、critic loss5.557659。worker峰2,774,876,160/max3,221,225,472字节，
+OOM/max事件/swap0；磁盘余55,849,672,704字节，高于50GiB；GPU实查43°C/1436MiB。
+归档助手CPU6/1GiB/swap0，6.135秒退出0，本机计算/服务器仅归档保持。
+
+另外只读cp22000的真实replay数组头和runner元数据，前后checkpoint hash一致：
+capacity1000000/count22000，48+48观测、5动作及3标量，float32，每条416字节；
+填充数组9,152,000字节，满容量原始数组416,000,000字节，余增量406,848,000字节。
+这不是进程RSS上界或百万步在3GiB内可运行的证明，仍需逐有限阶段核对实际峰值。
+本机CPU6/1GiB助手375ms退出0，无全容量分配、仿真、更新、replay修改或资源限额变更。
+
+证据BENCH/outputs/rl_goal_stream_window_20261017T0820含WINDOW/TRAINING_SCREEN、闭合日志、
+REPLAY_CAPACITY及检查脚本。已独立SSH核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T0820/evidence.tar.gz`，
+11,454,139字节，SHA256
+`67f2b170ec406a95e4b2c764a43f66dc5be3a79e93d2ac02f250593bb8c38ff5`。
+按sii-research-sync更新三份进度、提交/push main，保留无关meeting文件。
+Goal active，继续处理组44k，双方闭合后做匹配比较及四族接续；控制组0/32，
+四方法均未证明收敛，最终acceptance/独立物理与filter重放未执行，全部失败保留。
+冻结物理/MJB、最终gate、canonical48、公共filter、执行器限制及dt5e-5保持。
+
+
+
 ## 2026-10-17 08:02 CST — occupancy半程16回合，补充动作时间连续性诊断
 
 开工实查/fetch/read main `997853bad6b3911cc35f65b05c2c7ba33388596b`、
