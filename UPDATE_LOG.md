@@ -26,8 +26,10 @@ episode 29 (`repair_train_005`) return `-21.790978936`、`physical_valid=true`�
 episode 30 (`repair_train_004`) return `-21.714844084`、`physical_valid=true`、Task/Strict `false/false`；
 episode 31 (`repair_train_009`) return `-22.137743486`、`physical_valid=true`、Task/Strict `false/false`。
 direct worker 峰值达到 3.00 GiB hard limit，memory.max events=1542，但 OOM/oom_kill/swap=0。
-coordinator 已按登记协议接续 impedance worker `sii-rl-goal-96859867545`，从 `23,375` steps
-继续推进，episode 17 在途，当前峰值约 0.94 GiB，OOM/max/swap=0。磁盘余量高于登记保留线。
+coordinator 已按登记协议接续 impedance worker `sii-rl-goal-96859867545`，已推进至 `24,750`
+steps / `19,751` updates；episode 17 (`repair_train_011`) return `-26.022841297`、
+`physical_valid=true`、Task/Strict `false/false`，episode 18 在途。当前峰值约 2.32 GiB，
+OOM/max/swap=0。磁盘余量高于登记保留线。
 该阶段仍不是收敛结论，Task/Strict 必须在完整回合和最终验收中核对。
 
 stage03 的 `stopped_at_episode_boundary` 收据和 mixed lineage 已写入新 REGISTRATION；未覆盖旧
