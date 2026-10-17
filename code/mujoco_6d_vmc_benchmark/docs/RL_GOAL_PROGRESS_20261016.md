@@ -26,8 +26,9 @@
   25 个完整回合；最后四回合 return 为 `-24.782192822`, `-24.947542116`, `-25.430825464`,
   `-25.073407371`，均 physical_valid=true、Task/Strict=false/false，impedance 没有收敛或成功证据。
   其峰值约 3.14 GiB，OOM/oom_kill/swap=0。coordinator 已接续 admittance worker
-  `sii-rl-goal-bc165dcc6cf0`，从 23,375 steps 继续，episode 17 在途；其峰值约 0.97 GiB，
-  OOM/max/swap=0。当前没有
+  `sii-rl-goal-bc165dcc6cf0`，已推进至 24,750 steps / 19,751 updates；episode 17
+  (`repair_train_011`) return `-25.600694688`、physical_valid=true、Task/Strict=false/false，
+  episode 18 在途；其峰值约 2.40 GiB，OOM/max/swap=0。当前没有
   Task/Strict 成功证据。
 - 该 mixed stage 不是收敛或最终成功结论。旧 stage03 execution 未覆盖；四族完成后再按统一
   acceptance 和独立物理/动作/filter/hash/RMSE/峰值/穿透审计，Task 与 Strict 同时通过才计成功。

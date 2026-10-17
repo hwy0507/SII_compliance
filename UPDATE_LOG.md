@@ -30,8 +30,9 @@ coordinator 已按登记协议完成 impedance worker `sii-rl-goal-96859867545` 
 25 个完整回合；最后四回合 return 为 `-24.782192822`, `-24.947542116`, `-25.430825464`,
 `-25.073407371`，均 `physical_valid=true`、Task/Strict `false/false`，因此 impedance 也没有收敛
 或成功证据。其峰值约 3.14 GiB，OOM/oom_kill/swap=0。coordinator 已按登记协议接续 admittance
-worker `sii-rl-goal-bc165dcc6cf0`，从 `23,375` steps 继续，episode 17 在途，当前峰值约 0.97 GiB，
-OOM/max/swap=0。磁盘余量高于登记保留线。
+worker `sii-rl-goal-bc165dcc6cf0`，已推进至 `24,750 steps / 19,751 updates`；episode 17
+(`repair_train_011`) return `-25.600694688`、`physical_valid=true`、Task/Strict `false/false`，
+episode 18 在途，当前峰值约 2.40 GiB，OOM/max/swap=0。磁盘余量高于登记保留线。
 此前 impedance episode 17–23 的失败明细已随 execution 和 checkpoint 保留。
 该阶段仍不是收敛结论，Task/Strict 必须在完整回合和最终验收中核对。
 
