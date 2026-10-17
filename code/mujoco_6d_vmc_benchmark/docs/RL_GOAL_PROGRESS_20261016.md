@@ -1,5 +1,26 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 09:05 CST — occupancy二十四回合，仍在安全推进
+
+本轮开工重新读取 AGENTS、远端分支日志和现有进度。GitHub fetch 受网络限制未能取得更新；本地
+remote-tracking 的已核验 main 为 `e38bba9dd0705181182bcb6a8d4e003a286eda7a`，baseline 为
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，未把缓存引用冒充本轮远端新状态。唯一活动 worker
+仍是 `sii-rl-goal-af59b75d7cc5.service`，coordinator 仍登记 `impedance_occupancy`，没有重复派发。
+
+实时 execution/training/optimizer 交叉核对到约 `34,000` steps、`29,001` updates、24 个完整回合，
+第 25 回合随后在途；最近闭合回合 return 为 `-27.082338`、`-26.785106`，Task/Strict 仍为
+`0/24`，physical_valid 均为 true，不能称收敛。worker 记录的峰值内存 `2,802,864,128` bytes、
+硬限 `3,221,225,472`，memory.max/oom/oom_kill/swap 均为 0；GPU 38°C、空闲显存约 14,406 MiB，
+磁盘余 `55,527,899,136` bytes，高于 50 GiB 保留线。
+
+额外只读核验 episode 22 的 `parameter_trace.json`：raw action 五维标准差约 `[.575,.648,.648,.619,.662]`，
+applied parameter 也有非零变化，energy scale 全为 1.0；因此当前失败不能归因于 actor 完全不输出或
+参数 shield 把动作全部裁成零。`requested_action` 全零是阻抗执行动作字段的接口语义，不能代替 raw-action
+replay。冻结 physics/MJB、Task/Strict gate、canonical48、公共 filter、执行器限制及 dt=5e-5 未改。
+
+阶段仍按登记的 44k 安全边界继续；闭合后才归档最后回合、核对 treatment/control 匹配，再登记覆盖
+admittance/VMC/direct 的有限阶段。当前不做 acceptance，不把 occupancy reward 平台或早期失败回合写成收敛。
+
 ## 2026-10-17 08:46 CST — occupancy二十二回合，继续失败但资源稳定
 
 开工实查/fetch/read main `e38bba9dd0705181182bcb6a8d4e003a286eda7a`、baseline

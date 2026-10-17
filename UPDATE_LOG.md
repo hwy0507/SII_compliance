@@ -1,5 +1,19 @@
 # 更新日志
 
+## 2026-10-17 09:05 CST — 持续Goal监视 occupancy 二十四回合
+
+重新读取 AGENTS、现有进度和缓存 remote-tracking 日志；GitHub fetch 本轮因网络不可达失败，未将缓存
+SHA 当作新的远端状态。当前唯一活动 worker `sii-rl-goal-af59b75d7cc5.service` 仍真实推进，未重复启动。
+实时文件交叉核对约 34,000 steps / 29,001 updates / 24 个闭合回合，下一回合在途；最近两回合 return
+`-27.082338`、`-26.785106`，Task/Strict `0/24`，仍无收敛或成功证据。execution 记录峰值内存
+2,802,864,128 bytes / MemoryMax 3,221,225,472，OOM、memory.max、swap 均为 0；GPU 38°C、空闲显存
+约 14,406 MiB，磁盘余 55,527,899,136 bytes。只读 episode-22 parameter trace 显示 raw/applied 参数
+均在变化、energy scale=1；`requested_action` 全零属于阻抗执行字段，不是 actor 输出被吞掉的证据。
+
+本轮未修改活动 source、reward、physics/MJB、gate、canonical48、公共 filter、执行器限制或 dt=5e-5，
+未做 acceptance。继续到 44k 安全边界；闭合后保留失败收据并核对 control/treatment，再按登记协议接续
+四族阶段。当前远端最新状态因网络失败未能再次核验，服务器只作既有归档。
+
 ## 2026-10-17 08:46 CST — occupancy二十二回合，继续失败但资源稳定
 
 开工实查/fetch/read main `e38bba9dd0705181182bcb6a8d4e003a286eda7a`、baseline
