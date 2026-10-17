@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-18 05:47 CST — VMC 进入 optimizer 阶段
+
+- VMC execution 已到 `5000 steps / 1 update / 3 episodes`，warmup 结束并开始记录 optimizer；
+  memory current/peak 约 `2.55 GiB`，OOM/oom_kill/swap 全为 0。
+- 登记预算仍未完成，未运行 acceptance 或宣称收敛；继续保留唯一 worker、原始 handoff 失败收据和
+  retry 收据，冻结 physics/MJB、gate、canonical48、公共 filter、执行器限制和 `dt=5e-5`。
+
 ## 2026-10-18 05:34 CST — VMC warmup 已到 2,000 步
 
 - 唯一 VMC worker execution 真实推进至 `2000 steps / 0 updates / 1 episode`，仍在 warmup，
