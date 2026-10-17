@@ -1,5 +1,11 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 15:22 CST — VMC handoff 已预登记，等待 admittance 安全边界
+
+- admittance 恢复仍在第22回合，约 `30984/32000` 交互，尚未产生新的完整回合或 checkpoint；资源事件保持 OOM/oom_kill/swap/max 全为0。
+- 新增 `tools/prepare_goal_vmc_recovery_20261017.py`，创建唯一 `outputs/rl_goal_recovery_20261017_vmc_v1`，复制 stage04 source/parameter 快照并登记 VMC 从 stage02 精确 checkpoint `0023375` 到 `34375` 的有限续跑；VMC 未启动，须等 admittance recovery 完成后才派发。
+- VMC registration 的 trainer validation 已通过（controller=vmc、reward=metric、reward_variant=payload_shaping、hp=parameter_explore）；冻结 physics/MJB、gate、canonical48、公共 filter、执行器限制与 dt=5e-5 未改。
+
 ## 2026-10-17 15:10 CST — admittance异常退出后的唯一恢复已登记并启动
 
 - 开工重新核对 `AGENTS.md`、缓存 main/baseline 日志和现有 execution；GitHub 网络仍不可达，未把缓存 SHA 冒充最新远端。stage04 admittance 在第22回合的有效边界 `checkpoint_0030250` 后异常退出，旧 `execution.json` 保持 `running`，未发生 OOM、oom_kill、swap 或 memory.max 事件；该未完成收据保留且未原地修改。

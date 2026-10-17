@@ -1,5 +1,9 @@
 # 更新日志
 
+## 2026-10-17 15:22 CST — 预登记 VMC 安全接续
+
+admittance recovery 仍在第22回合、约30984 steps，未到安全边界；cgroup 仍无 OOM/oom_kill/swap/max 事件。为避免边界到达后再次出现空档，新增 `code/mujoco_6d_vmc_benchmark/tools/prepare_goal_vmc_recovery_20261017.py`，建立唯一 `outputs/rl_goal_recovery_20261017_vmc_v1`，从 stage02 的 VMC `checkpoint_0023375` 登记至 `34375`，仅作为等待 admittance 完成后的下游 handoff，当前没有启动 VMC。使用 immutable stage04 source/parameter、CPU1/单线程/3GiB/禁swap/UTD1；trainer validation 已通过。此预登记不代表收敛或成功。
+
 ## 2026-10-17 15:10 CST — 保留异常收据并登记 admittance 安全恢复
 
 本轮重新读取 `AGENTS.md`、本地缓存 main=`d6e8de3`、baseline=`f6e8f8c` 及 stage04 execution；GitHub fetch 仍因网络不可达，未声称已核验最新远端。发现 stage04 admittance worker 在已验证的 `checkpoint_0030250` 后退出，顶层 execution 仍为 `running`，旧目录和未完成 episode 22 收据未改写；cgroup memory 事件显示 OOM/oom_kill/swap/max 均为0。
