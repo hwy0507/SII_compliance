@@ -1,5 +1,12 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 15:55 CST — episode 23 仍在途，资源接近但未触限
+
+- admittance recovery 实时日志推进至约 `32762/33000` 步、episode 23 模拟时间 `45.48 s`；
+  尚未到完整回合边界，仍不计入收敛统计。
+- cgroup 当前约 `2.91 GiB`、峰值约 `2.94 GiB`，`MemoryMax=3 GiB`，OOM/oom_kill/max/swap
+  事件仍为 0。VMC handoff 继续等待，不重复启动或修改资源限制。
+
 ## 2026-10-17 15:53 CST — episode 23 接近回合边界但仍未闭合
 
 - recovery 实时日志已推进到 `32692/33000` 步、episode 23 模拟时间约 `42.68 s`；顶层
