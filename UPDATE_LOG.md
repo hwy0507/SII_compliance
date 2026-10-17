@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-17 16:44 CST — admittance episode 27 安全完成，失败平台仍稳定
+
+episode 27 (`repair_train_003`) 已从 `37125→38500` 步结束，return `-25.75233309714781`，
+`physical_valid=true`，Task/Strict=`false/false`，无 abort；`checkpoint_0038500` 已写入，
+episode 28 已接续。最近完整回合 reward 仍在约 `-25.7` 平台且没有 Task AND Strict 成功，
+因此这只是可复核失败/未完成收据，不是收敛证据。worker 继续在本机 CPU1、单线程、3 GiB、禁
+swap 约束下运行；cgroup `memory.events.max=2044`、`oom=0`、`oom_kill=0`、`swap=0`，资源
+压力保留。VMC handoff 仍等待 admittance 到 `41250` 步，尚未启动 VMC 或统一 acceptance。
+
 ## 2026-10-17 16:33 CST — admittance episode 26 安全完成，继续 episode 27
 
 episode 26 (`repair_train_003`) 已从 `35750→37125` 步安全结束，return
