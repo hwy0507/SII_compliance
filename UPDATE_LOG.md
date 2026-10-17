@@ -1,5 +1,19 @@
 # 更新日志
 
+## 2026-10-17 17:49 CST — 持续 Goal 轮询 VMC，确认训练器与资源状态
+
+本轮重新读取 `AGENTS.md`、本地缓存的 main/baseline 更新状态、RL Goal progress 和 VMC
+`execution.json`。GitHub `fetch` 仍因网络不可达失败，未把本地 remote-tracking SHA 冒充最新远端。
+唯一登记的 VMC recovery worker 仍在真实推进：`execution` 保持 `running`、最近完整边界
+`27500` 步 / `22591` 次更新 / 4 个恢复回合，实时 `training.jsonl` 已到约 `28246` 步，第
+20 回合在途；最近完整回合仍 `physical_valid=true`、Task/Strict=`false/false`，return 约
+`-25.18..-25.25`。动作 trace 非零，不能归因于 actor 恒零；训练器源码核对确认中途回合不写入
+终局 row，`payload_shaping` 只替换训练潜势，冻结 Task/Strict 判据未改变。VMC worker 的
+登记限制仍为本机 CPU1、单线程、MemoryMax 3 GiB、禁 swap、UTD=1；本轮未发现重复 worker、
+OOM、oom_kill 或 worker swap 事件。VMC 尚未到 `34375`，未运行统一 acceptance，也未把 reward
+平台写成收敛。下一步等待安全回合边界，核对最终 checkpoint/hash 和失败收据，再根据四族完整
+统计登记独立有限调参阶段。
+
 ## 2026-10-17 17:31 CST — VMC episode 18 安全完成
 
 VMC episode 18 (`repair_train_021`) 已从 `24750→26125` 步完整结束，return

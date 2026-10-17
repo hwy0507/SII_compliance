@@ -1,5 +1,20 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 17:49 CST — VMC 持续推进，当前无可验证收敛
+
+- 重新核对 `AGENTS.md`、本地 main/baseline 状态、唯一 VMC recovery execution 和实时日志；GitHub
+  fetch 因网络不可达失败，未冒充远端已同步。
+- VMC `rl_goal_recovery_20261017_vmc_v1` 仍为 `running`。顶层 execution 的最近安全边界为
+  `27500 steps / 22591 updates / 4 rows`，实时训练日志约 `28246` 步，episode 20 在途，
+  尚未写终局 return/checkpoint。最近完整 episode 17–19 均 physical-valid，Task/Strict 全为
+  `false/false`，return 约 `-25.18..-25.25`；动作请求保持非零。
+- 源码审计确认 checkpoint 仅在完整回合边界写回，训练器未把中途 reward 当成成功；当前
+  `payload_shaping` 仅改变训练潜势，最终 Task/Strict gate、canonical48、公共 filter、执行器
+  限制和 `dt=5e-5` 未改变。worker 仍遵循 CPU1、单线程、3 GiB、禁 swap、UTD=1；本轮没有
+  重复派发或 worker OOM/oom_kill/swap 证据。
+- VMC 尚未到登记终点 `34375`，四族尚无 Task AND Strict 成功；统一 acceptance 暂不启动。
+  安全完成后才登记下一有限调参阶段，保留本阶段全部失败收据。
+
 ## 2026-10-17 17:31 CST — VMC episode 18 安全完成，继续 episode 19
 
 - VMC episode 18 (`repair_train_021`) 已从 `24750` 到 `26125` 步结束，return
