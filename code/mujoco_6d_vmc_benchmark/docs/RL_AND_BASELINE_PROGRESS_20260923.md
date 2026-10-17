@@ -1,5 +1,41 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-17 08:31 CST — occupancy二十回合，首次retreat失稳时间线
+
+开工实查/fetch/read main `10d8ce3fb24262cd56b290d4c004d0ede1cdf62e`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS/两份进度，收工重读AGENTS。
+协调器2502213/worker2546313持续active，无重复派发、无活动代码/参数/物理修改。
+
+观察器00:16:45–00:28:15 UTC记录25250→27500步、20251→22501更新、18→20闭合回合，
+目标边界归档后退出0；处理组44k预算完成62.5%。20回合均1375步/55秒、physical_valid，
+Task/Strict0/20，18carry/2retreat；新增ep18/19 return −26.816303524/−27.118446107。
+全20回合return均值−27.470389076、标准差.544026937；纯学习ep4–19均值−27.480584835、
+标准差.568374653；最近8回合均值−27.214263405、标准差.593015047。窗口波动和阶段切换
+不构成收敛，未比较控制/处理收益，未执行最终acceptance。末temperature .001394340、
+critic loss5.198501。worker峰2,802,864,128/max3,221,225,472字节，OOM/max事件/swap0；
+磁盘余55,124,811,776字节，高于50GiB；GPU实查41°C/1436MiB。归档助手CPU6/1GiB/swap0，
+6.445秒退出0，服务器仅存储/传输/hash。
+
+对ep16首次retreat做原生40ms时间线诊断：物块最高点51.16s、z=.578209m、XY误差99.125mm；
+51.44s payload potential从.415322骤降至.263509，51.48s物块降至z=.444607m、XY误差
+212.187mm并远离手；52.48s才进入place，53.20s进入release，最终XY误差223.214mm，
+release_supported=false、placement_complete=false。故物块在carry阶段已经失稳，retreat阶段
+不是成功放置后的误报。原生contact摘要记录carry阶段unexpected edge 40.467s、峰62.29N，
+51.24295–51.33170s corner contact峰73.80N，最大穿透.121190mm；这些时间对齐和接触摘要
+不能单独证明因果控制原因，未改冻结接触/环境或gate。动作/实际参数和energy_scale=1仍保留。
+ep16 reward分解通过：terminal task=-20、payload_occupancy未折扣=-2.160844、
+终点potential=.086133、shaping residual5.2e-15，Task/Strict仍明确false。
+
+证据BENCH/outputs/rl_goal_stream_window_20261017T0835（12,321,386 bytes，
+SHA256 `966301758715043e9d547740a3605677e6ab7d24ace362450da6798d80be0fe7`）已独立SSH核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T0835/evidence.tar.gz`。
+retreat时间线证据也已独立核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-occupancy-retreat-20261017T0830/evidence.tar.gz`
+（2,315,441 bytes，SHA256 `04f88b51e61f50af3c7a3fd80042789e0a3f7a476545c9ea1a1a2d8c4f274180`）。
+所有失败/未完成回合保留；Goal active，继续处理组至44k，再做匹配对照并按证据决定四族后续调整。
+
+
+
 ## 2026-10-17 08:17 CST — 已核验等待：occupancy十八回合及replay容量核对
 
 开工实查/fetch/read main `8eb042664232ad9a0daacd1d4362f73e9c1d62ba`、
