@@ -1,5 +1,15 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 16:21 CST — admittance episode 25 安全完成，继续 episode 26
+
+- episode 25 (`repair_train_025`) 已从 `34375` 到 `35750` 步安全闭合，return
+  `-25.697303328664233`，`physical_valid=true`，Task/Strict=`false/false`，无 abort；
+  `checkpoint_0035750` 逐文件 hash 收据已落盘，episode 26 (`repair_train_003`) 已接续。
+- recovery cgroup 的 `memory_peak` 已触及硬上限 `3221225472` bytes，`memory.events.max=954`，
+  但 `oom/oom_kill/swap=0`；这是资源压力证据，不能当作 worker 完成或收敛。实时日志仍在
+  更新，worker 没有重复派发。VMC handoff 仍只等待 admittance 到 `41250` 步，VMC 和最终
+  acceptance 未启动，近期回合 Task AND Strict 仍全为 false。
+
 ## 2026-10-17 16:10 CST — admittance episode 24 安全完成，继续 episode 25
 
 - 重新核对共享文件后确认 recovery worker 仍在沙箱外运行；本地 `ps/cgroup.procs=0` 不能作为

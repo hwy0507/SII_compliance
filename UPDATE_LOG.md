@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-17 16:21 CST — admittance episode 25 安全完成，资源 max 事件上升但无 OOM
+
+admittance recovery 的 episode 25 (`repair_train_025`) 已从 `34375→35750` 步完整结束，return
+`-25.697303328664233`，`physical_valid=true`，Task/Strict=`false/false`，无 abort；
+`checkpoint_0035750` 逐文件收据已写入，episode 26 (`repair_train_003`) 已接续。worker 仍由
+systemd 在沙箱外运行，实时日志继续增长；未重复启动或改写历史 execution。cgroup 当前保存的
+峰值触及登记上限 `3221225472` bytes，`memory.events.max=954`，但 `oom=0`、`oom_kill=0`、
+`swap=0`；这记录为资源压力而不是成功或收敛。VMC handoff 继续等待 admittance 完成 `41250`
+步，VMC/统一 acceptance 尚未启动，最近回合仍无 Task AND Strict 成功。
+
 ## 2026-10-17 16:10 CST — admittance episode 24 安全完成，episode 25 接续
 
 本轮先重新读取 `AGENTS.md`、远端分支指针与当前 execution；GitHub fetch 仍受网络限制，未把缓存
