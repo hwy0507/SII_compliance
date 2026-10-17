@@ -1,5 +1,30 @@
 # 更新日志
 
+## 2026-10-17 08:46 CST — occupancy二十二回合，继续失败但资源稳定
+
+开工实查/fetch/read main `e38bba9dd0705181182bcb6a8d4e003a286eda7a`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS/两份进度，收工重读AGENTS。
+协调器2502213/worker2546313同一PID真实active，无重复派发、无活动配置或冻结source修改。
+
+观察器00:31:41–00:42:41 UTC记录28000→30250步、23001→25251更新、20→22闭合回合，
+目标边界归档后退出0；处理组44k预算完成约68.75%。22回合均1375步/55秒、physical_valid，
+Task/Strict0/22；20carry/2retreat。新增ep20/21 return −27.168395055/−27.486226574。
+全22回合return均值−27.457381962、标准差.522539051；纯学习ep4–21均值−27.463554388、
+标准差.540630782；最近8回合均值−27.277365369、标准差.572251558，仍无Task/Strict成功。
+这些是同一处理组不同训练条件的窗口，不能仅以reward平台宣称收敛。
+
+末temperature .001102521、critic loss5.174789；worker峰2,802,864,128/max3,221,225,472，
+OOM/max/swap0，归档时内存2,289,479,680；磁盘余55,601,889,280 bytes，高于50GiB。
+本机GPU/CPU约束和dt5e-5保持，服务器只传输/存储/hash。归档助手7.953秒退出0。
+
+本轮证据BENCH/outputs/rl_goal_stream_window_20261017T0900已独立SSH核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T0900/evidence.tar.gz`
+13,203,008 bytes，SHA256 `02433528207c5ab0489b9a207c5bfed978c85a9b730c832fdd8443cae03dce90`。
+此前ep16 carry失稳时间线归档仍保留。Goal active，继续处理组至44k；
+完成后再做控制/处理匹配、有限后续调整和四族接续，最终acceptance尚未执行。
+
+
+
 ## 2026-10-17 08:31 CST — occupancy二十回合，首次retreat失稳时间线
 
 开工实查/fetch/read main `10d8ce3fb24262cd56b290d4c004d0ede1cdf62e`、baseline
