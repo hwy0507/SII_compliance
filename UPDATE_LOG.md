@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-17 15:56 CST — episode 23 最后阶段
+
+admittance recovery 实时日志核对到 `32906/33000` 步、模拟时间 `51.24 s`，回合仍未闭合；
+未写入终局统计或新 checkpoint。cgroup 峰值约 `2.95 GiB/3 GiB`，OOM、oom_kill、memory.max、
+swap 均为0；VMC handoff 继续等待，当前无 Task/Strict 成功或收敛证据。远端 fetch 仍不可达。
+
 ## 2026-10-17 15:55 CST — admittance episode 23 仍在途
 
 实时日志到约 `32762/33000` 步、模拟时间 `45.48 s`，回合尚未闭合；cgroup 当前约 `2.91 GiB`、
