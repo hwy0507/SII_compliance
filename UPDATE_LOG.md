@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-17 15:50 CST — 诊断 admittance execution 写回时序
+
+审计 recovery trainer 源码后确认，顶层 `execution.json` 仅在每个完整回合边界保存 row/checkpoint，
+而 `training.jsonl`/`optimizer.jsonl` 每250步刷新；因此 execution 暂时为32250、实时训练已到约
+32454 是正常的边界一致性设计，不是重复 worker 或训练假进展。当前 recovery cgroup 峰值约2.89GiB、
+OOM/oom_kill/swap/max均为0，episode23仍在途；VMC handoff和最终acceptance继续等待。未修改活动
+source、reward、physics/MJB、gate、canonical48、公共filter、执行器限制或dt=5e-5。
+
 ## 2026-10-17 15:47 CST — admittance recovery 继续推进
 
 实时 `training.jsonl` 核对到同一 recovery worker 的 episode 23 约 `32346/33000` 步，回合仍未闭合；

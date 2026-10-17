@@ -1,5 +1,14 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 15:50 CST — 诊断 execution 延迟写回，确认不是重复派发或 OOM
+
+- 只读审计 recovery trainer 源码确认：训练中每 250 步刷新 `training/optimizer` 日志，顶层
+  `execution.json` 的 episode row 和 checkpoint 只在完整回合边界写回；因此它暂时停在
+  `32250` 而实时日志已到 `32454`，属于登记的安全边界写回策略，不是训练停滞或统计伪造。
+- 同一 recovery cgroup 仍 populated，峰值约 `2.89 GiB/3 GiB`，OOM/oom_kill/swap/max 全为 0；
+  episode 23 尚未闭合，VMC handoff 继续等待，未启动新 worker。未修改活动 source、reward、物理
+  或 gate，也未将中途 reward 当作收敛证据。
+
 ## 2026-10-17 15:47 CST — admittance recovery 继续推进，episode 23 未闭合
 
 - 同一已登记 recovery worker 的实时 `training.jsonl` 已推进到约 `32346/33000` 步、episode 23
