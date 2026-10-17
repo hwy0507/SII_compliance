@@ -9,16 +9,21 @@
   `checkpoint_0029512`，impedance/admittance/VMC 继承 stage02 各自 `checkpoint_0023375`；
   每族新增 11,000 interactions，CPU1/单线程/3 GiB/禁 swap/UTD=1。
 - 四份 n25 checkpoint/replay preflight 均通过；coordinator
-  `sii-rl-goal-stage-86934caed9a9.service` 已启动，direct worker
-  `sii-rl-goal-d5c23cdd51d6` 已真实推进至 `38,750` steps / `33,751` updates。episode 24
+  `sii-rl-goal-stage-86934caed9a9.service` 已启动。direct worker
+  `sii-rl-goal-d5c23cdd51d6` 已在安全预算边界完成 `40,512 steps / 35,513 updates`、32 个完整回合；
+  最后四回合 return 为 `-22.103423267`, `-21.790978936`, `-21.714844084`, `-22.137743486`，
+  均 physical_valid=true、Task/Strict=false/false，direct 没有收敛或成功证据。episode 24
   (`repair_train_020`) return `-38.757591452`、`physical_valid=false`、Task/Strict=false/false；
   episode 25 (`repair_train_025`) return `-21.788506946`、`physical_valid=true`、Task/Strict=false/false；
   episode 26 (`repair_train_003`) return `-27.024080870`、`physical_valid=false`、Task/Strict=false/false；
   episode 27 (`repair_train_026`) return `-22.112554771`、`physical_valid=true`、Task/Strict=false/false；
   episode 28 (`repair_train_016`) return `-22.103423267`、`physical_valid=true`、Task/Strict=false/false；
-  episode 29 (`repair_train_005`) return `-21.790978936`、`physical_valid=true`、Task/Strict=false/false，
-  episode 30 在途。峰值内存达到 3.00 GiB hard limit，memory.max events=613，但 OOM/oom_kill/swap=0；
-  当前没有 Task/Strict 成功证据。
+  episode 29 (`repair_train_005`) return `-21.790978936`、`physical_valid=true`、Task/Strict=false/false；
+  episode 30 (`repair_train_004`) return `-21.714844084`、`physical_valid=true`、Task/Strict=false/false；
+  episode 31 (`repair_train_009`) return `-22.137743486`、`physical_valid=true`、Task/Strict=false/false。
+  direct 峰值达到 3.00 GiB hard limit，memory.max events=1542，但 OOM/oom_kill/swap=0。
+  coordinator 已接续 impedance worker `sii-rl-goal-96859867545`，从 23,375 steps 继续，episode 17
+  在途；其峰值约 0.94 GiB，OOM/max/swap=0。当前没有 Task/Strict 成功证据。
 - 该 mixed stage 不是收敛或最终成功结论。旧 stage03 execution 未覆盖；四族完成后再按统一
   acceptance 和独立物理/动作/filter/hash/RMSE/峰值/穿透审计，Task 与 Strict 同时通过才计成功。
 

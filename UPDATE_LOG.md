@@ -13,16 +13,22 @@ pip 下载缓存约 13.85 GiB，未触碰实验产物、源码或环境；磁盘
 `checkpoint_0029512`，impedance/admittance/VMC 精确继承 stage02 各自 `checkpoint_0023375`，
 四族各登记新增 11,000 interactions，CPU1、单线程、3 GiB、禁 swap、UTD=1、服务器不计算。
 四份 checkpoint/replay preflight 均在独立 systemd 3 GiB 服务中通过，随后启动唯一 coordinator
-`sii-rl-goal-stage-86934caed9a9.service`。当前 direct worker
-`sii-rl-goal-d5c23cdd51d6` 已真实推进至 `38,750` steps / `33,751` updates；episode 24
+`sii-rl-goal-stage-86934caed9a9.service`。direct worker
+`sii-rl-goal-d5c23cdd51d6` 已在安全预算边界完成 `40,512 steps / 35,513 updates`、32 个完整回合；
+最后四回合 return 为 `-22.103423267`, `-21.790978936`, `-21.714844084`, `-22.137743486`，
+均 `physical_valid=true`、Task/Strict `false/false`，因此 direct 没有收敛或成功证据。episode 24
 （`repair_train_020`）return `-38.757591452`、`physical_valid=false`、Task/Strict `false/false`；
 episode 25 (`repair_train_025`) return `-21.788506946`、`physical_valid=true`、Task/Strict `false/false`；
 episode 26 (`repair_train_003`) return `-27.024080870`、`physical_valid=false`、Task/Strict `false/false`；
 episode 27 (`repair_train_026`) return `-22.112554771`、`physical_valid=true`、Task/Strict `false/false`；
 episode 28 (`repair_train_016`) return `-22.103423267`、`physical_valid=true`、Task/Strict `false/false`；
 episode 29 (`repair_train_005`) return `-21.790978936`、`physical_valid=true`、Task/Strict `false/false`，
-episode 30 在途。worker 观测峰值达到 3.00 GiB hard limit，memory.max events=613，但 OOM/oom_kill/swap=0，
-磁盘余量高于登记保留线。该阶段仍不是收敛结论，Task/Strict 必须在完整回合和最终验收中核对。
+episode 30 (`repair_train_004`) return `-21.714844084`、`physical_valid=true`、Task/Strict `false/false`；
+episode 31 (`repair_train_009`) return `-22.137743486`、`physical_valid=true`、Task/Strict `false/false`。
+direct worker 峰值达到 3.00 GiB hard limit，memory.max events=1542，但 OOM/oom_kill/swap=0。
+coordinator 已按登记协议接续 impedance worker `sii-rl-goal-96859867545`，从 `23,375` steps
+继续推进，episode 17 在途，当前峰值约 0.94 GiB，OOM/max/swap=0。磁盘余量高于登记保留线。
+该阶段仍不是收敛结论，Task/Strict 必须在完整回合和最终验收中核对。
 
 stage03 的 `stopped_at_episode_boundary` 收据和 mixed lineage 已写入新 REGISTRATION；未覆盖旧
 execution，不重复 episode。训练完成前不做统一 acceptance；四族完成后仍需独立物理子步、
