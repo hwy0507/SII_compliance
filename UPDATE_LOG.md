@@ -1,5 +1,9 @@
 # 更新日志
 
+## 2026-10-17 15:30 CST — 登记一次性 VMC 安全 handoff 监视器
+
+admittance recovery 当前 `31250/41250` steps，仍在 episode 内，资源事件 OOM/oom_kill/swap/max 均为0。新增 `code/mujoco_6d_vmc_benchmark/tools/launch_goal_vmc_after_admittance_20261017.py`，由独立低内存 systemd 服务等待 admittance 完成；它使用 dispatch lock、无活动 worker 检查和 VMC checkpoint hash 验证，仅在 `complete + step_budget + 41250 steps` 后启动预登记 VMC，异常写停止收据并保留旧产物。该监视器不做仿真；当前未启动 VMC，也未宣称收敛。
+
 ## 2026-10-17 15:22 CST — 预登记 VMC 安全接续
 
 admittance recovery 仍在第22回合、约30984 steps，未到安全边界；cgroup 仍无 OOM/oom_kill/swap/max 事件。为避免边界到达后再次出现空档，新增 `code/mujoco_6d_vmc_benchmark/tools/prepare_goal_vmc_recovery_20261017.py`，建立唯一 `outputs/rl_goal_recovery_20261017_vmc_v1`，从 stage02 的 VMC `checkpoint_0023375` 登记至 `34375`，仅作为等待 admittance 完成后的下游 handoff，当前没有启动 VMC。使用 immutable stage04 source/parameter、CPU1/单线程/3GiB/禁swap/UTD1；trainer validation 已通过。此预登记不代表收敛或成功。

@@ -1,5 +1,11 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 15:30 CST — 安全 VMC handoff 监视器已启动
+
+- admittance recovery 已推进到 `31250/41250` steps，仍在完整回合中；未发现 OOM、swap 或 memory.max 事件。
+- 新增 `tools/launch_goal_vmc_after_admittance_20261017.py`。该一次性本机 systemd 监视器持有恢复 dispatch lock，只在 admittance `status=complete`、`stop_reason=step_budget`、`steps=41250` 且无其他 worker 时验证 VMC `checkpoint_0023375` 并派发已登记的 `vmc_v1`；异常会写 `HANDOFF_STOP.json`，不会重复启动或覆盖输出。
+- 监视器本身不运行仿真；VMC 仍未启动，训练和最终 acceptance 仍未完成。
+
 ## 2026-10-17 15:22 CST — VMC handoff 已预登记，等待 admittance 安全边界
 
 - admittance 恢复仍在第22回合，约 `30984/32000` 交互，尚未产生新的完整回合或 checkpoint；资源事件保持 OOM/oom_kill/swap/max 全为0。
