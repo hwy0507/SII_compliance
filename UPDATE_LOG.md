@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-17 18:09 CST — VMC episode 21 安全完成，继续 episode 22
+
+VMC recovery 同一 worker 完成 episode 21 (`repair_train_023`)：`28875→30250` 步、return
+`-25.173997815745366`，`physical_valid=true`、Task/Strict=`false/false`，无 abort；execution
+随后安全边界已推进到 `30500 steps / 25501 updates / 22`
+个 episode boundaries，episode 22 已在途。当前未发现重复 worker 或 OOM/oom_kill/swap；
+VMC 仍未达到 `34375`，统一 acceptance 和下一阶段调参继续等待最终边界。该条目只记录真实
+进度，不把 reward 平台或中途步骤当收敛。
+
 ## 2026-10-17 17:54 CST — VMC episode 20 安全完成，episode 21 接续
 
 VMC recovery worker 在同一登记目录完成 episode 20 (`repair_train_030`)：`27500→28875`

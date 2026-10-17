@@ -1,5 +1,17 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 18:09 CST — VMC episode 21 安全完成，继续 episode 22
+
+- VMC 同一 recovery worker 已将 episode 21 (`repair_train_023`) 从 `28875` 推进至安全边界，
+  execution 随后显示 `30500 steps / 25501 updates / 22 episode boundaries`，episode 22 已接续；
+  完整回合的最终 return 以 `episode_00021.../execution.json` 收据为准，未提前填写未核对数值。
+- 本轮未启动第二个 VMC，也未发现 worker OOM/oom_kill/swap；VMC 尚未到登记终点 `34375`，
+  四族仍没有 Task AND Strict 成功或最终 acceptance 证据。
+- 只读历史对照发现 direct 在旧的 n-step=1、UTD=2、original office-task 训练中曾有物理有效
+  Strict 成功，而当前 v4 使用 n-step=25/UTD=1 且改动训练 reward；这提供了后续独立有限
+  n-step/reward 对照的依据，但不改变当前冻结物理、gate、canonical48、公共 filter、执行器或
+  `dt=5e-5`，也不把历史成功直接移植为当前阶段结果。
+
 ## 2026-10-17 17:54 CST — VMC episode 20 安全完成，episode 21 接续
 
 - 同一 VMC recovery worker 已从 `27500` 安全完成 episode 20 (`repair_train_030`) 到 `28875`，
