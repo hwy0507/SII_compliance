@@ -15,6 +15,10 @@ single finite update 全部通过，预检峰值内存约 1.08–1.65 GiB。已 
 `sii-rl-goal-65d908491aa8` 正在 CPU1 cgroup 内真实推进，约 21,500 steps/16,501 updates，
 第 18 回合在途，尚无新完整回合可计成功。stage03 仍不是收敛结论，后续按安全回合边界继续。
 
+随后核验 direct 第 18 回合已在安全边界结束：从 21,262 到 22,637 steps（1,375 新交互、
+1,375 updates），`physical_valid=true`，return `-21.855956642`，Task/Strict `false/false`，
+无 abort；checkpoint、audit 和 trace 收据已落盘。第 19 回合已由同一协调器接续在途，未重复启动。
+
 ## 2026-10-17 09:15 CST — occupancy阶段收口，准备四族精确接续
 
 开工读取 AGENTS.md；尝试查询 GitHub `main`/`baseline`，本轮网络不可达，未把缓存

@@ -8,6 +8,9 @@
   direct 继承 21,262 条 raw replay，其余三族各 23,375，n-step=25、terminal window、
   checkpoint hash 与单次更新均通过。协调器已启动并串行推进四族；首个 direct 当前约
   21,500 steps/16,501 updates，第18回合在途，Task/Strict 尚无新成功证据。
+- direct 第18回合随后安全结束于 step 22,637，新增 1,375 steps/updates，return
+  `-21.855956642`，`physical_valid=true`，Task/Strict `false/false`，无 abort；第19回合
+  已由同一协调器接续。该结果是失败收据，不是收敛证据。
 
 ## 2026-10-17 09:05 CST — occupancy二十四回合，仍在安全推进
 
