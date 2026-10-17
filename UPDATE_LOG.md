@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-18 07:17 CST — stage05 v4 受控 CPU continuation 启动
+
+- 开工核对：`git ls-remote` 可见 main/baseline SHA，但随后 fetch 因 GitHub 网络不可达失败；本轮
+  未把缓存或本地提交写成远端最新。重新读取 `AGENTS.md` 和 Goal progress，确认无旧活动 RL worker。
+- 保留 stage05 v2 的 `CREDIT_PREFLIGHT_direct_task_safety.json` 失败收据（外层 cgroup
+  `memory.max=max`），以及 stage05 v3 的 `execution.json` `stopped_before_dispatch/disk_reserve`；
+  未覆盖或删除历史收据。由 stage02 完成 checkpoint 另建独立
+  `code/mujoco_6d_vmc_benchmark/outputs/rl_goal_selected_20261018_stage05_cpu_v4`，安全磁盘保留
+  门槛登记为 16 GiB（当前可用约 31 GiB）。
+- 四份 preflight 均在显式 systemd `MemoryMax=3G`, `MemorySwapMax=0`, CPU1, 单线程 cgroup 内通过；
+  `CREDIT_PREFLIGHT.json` 已封存。唯一 coordinator
+  `sii-rl-goal-stage-b56c7608ebd7.service` 已启动；当前 direct worker
+  `sii-rl-goal-0ce91375a248.service` 真实推进至 `21,500 steps / 16,501 updates`，第18回合在途，
+  MemoryCurrent 约 1.73 GiB，MemoryMax 3 GiB；未发现重复进程、OOM 或 swap。训练尚未完成，未做
+  acceptance，也未声称收敛或 Task/Strict 成功。
+- 相关进度：`code/mujoco_6d_vmc_benchmark/docs/RL_GOAL_PROGRESS_20261016.md`。服务器仅作共享归档；
+  本轮暂无新服务器归档。
+
 ## 2026-10-18 07:06 CST — historical acceptance 四路完成但 Task/Strict 全部失败
 
 - `outputs/rl_goal_acceptance_n1_historical_utd2_20261018_v3` 的唯一串行 acceptance 已完成：

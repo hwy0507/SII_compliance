@@ -1,5 +1,22 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 07:17 CST — stage05 v4 CPU continuation 已启动，direct 真实推进
+
+- 远端 `git fetch` 本轮因 GitHub 网络不可达失败；缓存分支状态未冒充最新远端。保留 stage05
+  v2 的首份 `memory.max=max` 预检失败收据，以及 stage05 v3 的 `disk_reserve` 停止收据，均未覆盖。
+- 从已完成 stage02 的四个精确 checkpoint 重新登记独立
+  `outputs/rl_goal_selected_20261018_stage05_cpu_v4`；每族新增预算 `44,000` interactions，
+  CPU1、单线程、MemoryMax=3 GiB、MemorySwapMax=0、UTD=1、n-step=25，物理/MJB、canonical48、
+  公共 action filter、执行器限制和 `dt=5e-5` 保持冻结。因本机可用磁盘约 31 GiB，安全保留门槛
+  调整为 16 GiB；未删除任何历史产物。
+- 四份 systemd 受控 credit preflight 均 `passed`，checkpoint hash、raw replay、terminal window
+  和单次 update 均通过；峰值约 1.11–1.16 GiB。唯一 coordinator
+  `sii-rl-goal-stage-b56c7608ebd7.service` 已 active，当前唯一 worker
+  `sii-rl-goal-0ce91375a248.service` 为 direct，真实边界 `21,500 steps / 16,501 updates`，第
+  18 回合在途，MemoryCurrent 约 1.73 GiB、MemoryMax 3 GiB，无重复 worker。
+- 当前不能称为收敛或成功：stage05 v4 尚未完成四路预算，也没有新的 Task/Strict 通过证据；训练结束
+  后才做统一 acceptance 和独立审计。
+
 ## 2026-10-18 07:06 CST — 四路 historical acceptance 完成，仍未收敛
 
 - 唯一 acceptance 根 `outputs/rl_goal_acceptance_n1_historical_utd2_20261018_v3` 已按
