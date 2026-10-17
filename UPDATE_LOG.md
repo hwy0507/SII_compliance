@@ -19,6 +19,10 @@ single finite update 全部通过，预检峰值内存约 1.08–1.65 GiB。已 
 1,375 updates），`physical_valid=true`，return `-21.855956642`，Task/Strict `false/false`，
 无 abort；checkpoint、audit 和 trace 收据已落盘。第 19 回合已由同一协调器接续在途，未重复启动。
 
+direct 第 19 回合随后在安全边界结束：从 22,637 到 24,012 steps，return `-33.479317074`，
+`physical_valid=false`，Task/Strict `false/false`，无 abort；audit/trace/checkpoint 收据已落盘。
+第 20 回合已由同一 coordinator 接续，仍未达到收敛筛选条件。
+
 ## 2026-10-17 09:15 CST — occupancy阶段收口，准备四族精确接续
 
 开工读取 AGENTS.md；尝试查询 GitHub `main`/`baseline`，本轮网络不可达，未把缓存

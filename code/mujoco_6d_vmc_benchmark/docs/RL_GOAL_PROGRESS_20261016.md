@@ -11,6 +11,8 @@
 - direct 第18回合随后安全结束于 step 22,637，新增 1,375 steps/updates，return
   `-21.855956642`，`physical_valid=true`，Task/Strict `false/false`，无 abort；第19回合
   已由同一协调器接续。该结果是失败收据，不是收敛证据。
+- direct 第19回合在 step 24,012 安全结束，return `-33.479317074`，`physical_valid=false`，
+  Task/Strict `false/false`；第20回合已接续。该失败收据保留，当前策略仍不稳定。
 
 ## 2026-10-17 09:05 CST — occupancy二十四回合，仍在安全推进
 
