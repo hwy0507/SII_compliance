@@ -3179,3 +3179,14 @@ return−21.667945，physical_valid=true，Task/Strict均false；checkpoint_0051
 `a65bf3966e17f1a38beb244cfa7983a40a7e9bb54f7f5b8f851ee3dda38ff13a`，本机/远端一致。
 服务器只传输/归档/hash，没有训练或分析计算。新阶段51,906 checkpoint及新回合轨迹仍仅本地，
 留待下一次安全边界归档；原始物理runtime/MJB仍依赖登记的既有路径，此包不是完整环境镜像。
+## 2026-10-17 09:15 CST — occupancy阶段收口与四族接续准备
+
+- `rl_goal_stream_occupancy_20261017_v2` 的 control 与 occupancy 两臂均已完成 44,000
+  interactions、39,001 updates、32 个完整回合；两臂 Task/Strict 都是 0/32，未达到
+  training candidate 的 96 回合/双窗口/90% Task AND Strict 筛选条件，不能称收敛。
+- 当前无活动 RL worker 或服务。已保留全部失败回合、checkpoint、resource 和 storage
+  receipts；occupancy 只读报告脚本已通过编译。
+- 下一阶段将从 `rl_goal_selected_20261016_stage02_v2` 四类精确 n25 checkpoint 继续，
+  先按登记协议进行四份 credit preflight，再以每族 11,000 interactions 的独立根启动。
+  physics/MJB、最终 gate、canonical48 actor 输入、公共 filter、执行器限制和 dt=5e-5
+  继续冻结；服务器仅归档。

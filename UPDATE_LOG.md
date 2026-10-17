@@ -1,5 +1,26 @@
 # 更新日志
 
+## 2026-10-17 09:15 CST — occupancy阶段收口，准备四族精确接续
+
+开工读取 AGENTS.md；尝试查询 GitHub `main`/`baseline`，本轮网络不可达，未把缓存
+remote-tracking 引用冒充最新远端。可用缓存为 main `3d3fa53`（此前已知远端
+`e38bba9dd0705181182bcb6a8d4e003a286eda7a`）和 baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。
+本地工作区仅有本任务新增的 occupancy 报告脚本和用户无关的
+`docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md`，后者不纳入提交。
+
+occupancy 两臂已在 `outputs/rl_goal_stream_occupancy_20261017_v2` 完成 44,000 steps、
+39,001 updates、32/32 完整回合；control/occupancy 的 Task 与 Strict 均为 0/32，
+因此处理组没有训练收敛或成功证据。新报告脚本
+`code/mujoco_6d_vmc_benchmark/tools/report_goal_stream_occupancy_20261017.py` 已通过
+`py_compile`，只读检查 execution、reward 分解、native metrics、storage receipt 和 hash，
+不运行仿真或更新模型。
+
+当前无活动 RL worker、无可恢复服务；拒绝重复启动。下一步按登记协议以
+`outputs/rl_goal_selected_20261016_stage02_v2` 的四个精确 n25 checkpoint 创建唯一有限
+continuation，四份 `probe_goal_credit_20261016.py` 预检全部通过后才 seal/launch，预算先为
+每族 11,000 interactions。冻结 physics/MJB、Task/Strict gate、canonical48 actor 输入、
+公共 action filter、执行器限制和 `dt=5e-5` 不变；服务器只做独立归档，最终 acceptance 未执行。
+
 ## 2026-10-17 09:05 CST — 持续Goal监视 occupancy 二十四回合
 
 重新读取 AGENTS、现有进度和缓存 remote-tracking 日志；GitHub fetch 本轮因网络不可达失败，未将缓存
