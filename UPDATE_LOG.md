@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-18 05:34 CST — VMC warmup 已到 2,000 步
+
+- 唯一 VMC worker execution 真实推进至 `2000 steps / 0 updates / 1 episode`，仍在 warmup，
+  OOM/oom_kill/swap 全 0；没有重复派发或 acceptance。
+- VMC 尚未完成登记预算，继续保留在途状态和之前 handoff 失败/重试收据；不把 warmup 步数或
+  reward 写成收敛结论。
+
 ## 2026-10-18 05:30 CST — admittance 完成并唯一接续 VMC
 
 - admittance execution 已到 `11000 steps / 12002 updates / 8 episodes`，`complete`、

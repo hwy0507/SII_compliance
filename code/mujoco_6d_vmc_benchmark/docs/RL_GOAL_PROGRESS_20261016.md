@@ -1,5 +1,12 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 05:34 CST — VMC warmup 继续推进
+
+- 唯一登记的 historical UTD2 VMC worker 已从 warmup 起点推进到 `2000 steps / 0 updates / 1`
+  个 episode boundary，状态仍为 `running`；未发现重复 worker。
+- warmup 尚未结束，因此当前没有可用于判断收敛的 optimizer 统计；资源事件 OOM、oom_kill、swap
+  均为 0。VMC 尚未完成 11,000 步，统一 acceptance 继续等待全部四族训练结束。
+
 ## 2026-10-18 05:30 CST — admittance 完成，VMC 唯一接续启动
 
 - admittance 已安全完成登记预算：`11000 steps / 12002 updates / 8 episodes`，
