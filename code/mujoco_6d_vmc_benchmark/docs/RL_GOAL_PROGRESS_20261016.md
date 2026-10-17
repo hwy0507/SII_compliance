@@ -1,5 +1,18 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 05:30 CST — admittance 完成，VMC 唯一接续启动
+
+- admittance 已安全完成登记预算：`11000 steps / 12002 updates / 8 episodes`，
+  `status=complete`、`stop_reason=step_budget`；最后完整回合 return 为 `-25.438538642999607`，
+  `physical_valid=true`、Task/Strict=`false/false`。最后 checkpoint `checkpoint_0011000` 的
+  文件 hash 已核对，未把该失败回合写成收敛。
+- handoff 先因沙箱阻止 `systemd-run` 用户总线而失败；原始 `HANDOFF_RECEIPT.json` 保留为
+  `failed_preserved`。随后在不覆盖原收据的前提下登记 `HANDOFF_RETRY_001`，通过提升权限按同一
+  registration、CPU1、单线程、3 GiB、禁 swap、UTD=1 命令唯一启动 VMC。VMC execution 已真实
+  创建并推进至 `1250 steps / 0 updates / 0 episodes`（warmup 阶段），当前 OOM/oom_kill/swap
+  均为 0。
+- VMC 尚未完成，统一 acceptance 未启动；四类仍没有 Task AND Strict 成功或可复核收敛证据。
+
 ## 2026-10-18 04:44 CST — admittance 达到 8,000 步，仍未出现成功证据
 
 - 轮询同一登记 worker 后，admittance execution 已安全写回 `8000 steps / 6002 updates / 5`

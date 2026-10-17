@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-18 05:30 CST — admittance 完成并唯一接续 VMC
+
+- admittance execution 已到 `11000 steps / 12002 updates / 8 episodes`，`complete`、
+  `step_budget`；最后回合 return `-25.438538642999607`、`physical_valid=true`、Task/Strict
+  `false/false`，checkpoint `0011000` 已核对，保留失败收据。
+- 首次 VMC handoff 因沙箱 systemd 用户总线权限失败，原始失败收据保留；独立 retry receipt
+  `vmc_payload.HANDOFF_RETRY_001_LAUNCH.json` 随后按登记命令唯一启动 VMC。VMC execution
+  当前真实为 `1250 steps / 0 updates / 0 episodes`，OOM/oom_kill/swap 全 0。
+- 未启动 acceptance，未宣称收敛；冻结 physics/MJB、Task/Strict gate、canonical48、公共
+  action filter、执行器限制和 `dt=5e-5` 未修改。新增 handoff 工具保持失败重试收据可审计。
+
 ## 2026-10-18 04:44 CST — admittance 继续推进至 8,000 步
 
 - 轮询同一 historical UTD2 admittance worker，execution 安全写回 `8000 steps / 6002 updates /
