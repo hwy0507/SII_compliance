@@ -1,5 +1,50 @@
 # RL 与经典柔顺 baseline 工作记录（2026-09-23）
 
+## 2026-10-17 08:02 CST — occupancy半程16回合，补充动作时间连续性诊断
+
+开工实查/fetch/read main `997853bad6b3911cc35f65b05c2c7ba33388596b`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS/两份RL进度；
+收工重读AGENTS，发布前再次fetch核对未前进。上一轮是已发布接续修复；本轮核验现有等待并新增
+原生训练诊断，没有修改研究源码、活动snapshot、奖励、物理/gate/actor输入/filter/执行器/dt5e-5。
+
+协调器PID2502213/worker2546313真实active。观察器23:48:17–23:59:47 UTC记录
+19750→22000交互、14751→17001更新、14→16闭合回合，目标边界归档后退出0；
+训练继续，未重复启动。处理组44k预算完成50%，不是收敛或四方法训练完成。
+16回合均1375步/55秒、physical_valid、carry，Task/Strict0/16；
+新增ep14/15 return −28.537852285/−26.753927031，均无物理abort。
+全16回合return均值−27.570953720、标准差.535251168（含warmup/mixed）。
+连续22000条交互/17001更新有限，逐回合奖励分解、AUDIT/trace、cp22000成员hash、
+新增原始远端归档复核通过。末temperature .002244723、critic loss6.321387。
+worker峰2,748,755,968/max3,221,225,472字节，OOM/max事件/swap0；
+磁盘余55,948,918,784字节，高于50GiB。GPU实查41°C/1436MiB。
+
+对较晚学习回合ep12/13补充原生25Hz诊断：尾10秒各250采样仍在第20/28路径点，
+无采样路径点推进，位置误差中位13.169110/12.909078mm，超过冻结12mm；
+radius/rejoin readiness0，rotation/speed readiness250。动作及实际参数均变化，
+每tick至少一维rate-limited，energy-limited0。不是策略断接或能量缩放阻断的证据。
+尾10秒第一刚度请求p95为898.182/1308.093，实际p95仅215.712/257.148，
+实际中位182.607/188.949；原始第一动作lag1相关.0452/.1668，
+连续请求相对当前参数的方向相同占比.4538/.4096。
+这说明偶发大请求未形成同等范围的持续执行；后续应核对探索的时间连续性，
+不能仅凭原始动作方差认定实际参数探索充分。只是两个演化中策略回合的描述，
+未证明IID、filter因果关系、提高刚度必然有效或新探索方案有益；既往高刚度失败也须保留。
+当前配对未结束，未比较两臂、未登记新处理，不按该诊断放宽filter/gate。
+
+两项本机CPU6/1GiB/swap0诊断正常退出0（359ms/99ms），第一项峰38,109,184字节；
+核验原生输入hash、parameter trace与action文件一致并复制输入，未运行仿真/梯度更新/filter重放。
+归档助手8.387秒退出0。证据BENCH/outputs/rl_goal_stream_window_20261017T0805含
+LATE_CARRY、ACTION_PERSISTENCE、原生输入、两诊断脚本、WINDOW/TRAINING_SCREEN及闭合日志。
+服务器仅存储/传输/hash；已独立SSH核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl-goal-stream-window-20261017T0805/evidence.tar.gz`，
+14,653,725字节，SHA256
+`525e32b53b4aead0479810b058b0359e34a0f0e9abe3e07993f34e0f46907fbd`。
+
+按sii-research-sync更新三份进度并提交/push main，保留无关meeting文件及全部失败收据。
+Goal active，继续同一处理组至44k，再依据双方完整匹配条件/相同曝光结果决定调整和四族接续。
+控制组0/32，四方法均未证明收敛，最终acceptance和独立物理/filter replay未执行。
+
+
+
 ## 2026-10-17 07:47 CST — 接续阶段继承存储保护，occupancy十四回合
 
 开工查询/fetch/read main `f08ce92a44002cb57ed432cef9c731838c405020`、
