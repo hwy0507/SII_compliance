@@ -1,5 +1,20 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 04:36 CST — historical UTD2 admittance 继续真实推进
+
+- 本轮重新核对 `AGENTS.md`、当前登记、唯一 admittance execution 和实时训练日志；没有启动第二个
+  worker。admittance execution 的最近安全写回为 `7500 steps / 5002 updates / 5` 个完整回合，
+  状态仍为 `running`；实时日志继续增长，说明 worker 未停滞。
+- 已完成的 5 个回合 return 为 `-22.950335168135258`、`-22.921391707085416`、
+  `-22.95254944752747`、`-22.907466954868777`、`-22.947734398412265`；均为
+  `physical_valid=false`、Task/Strict=`false/false`，终止原因为 `original_horizon_or_abort`。
+  这组结果仍是失败收据，不能视为 reward 收敛。
+- 资源快照约 `memory_current=2.70 GiB`、峰值 `2.92 GiB`，`memory.events` 的 OOM、oom_kill、
+  swap 全为 0（max 也为 0）。登记的 11,000 步安全预算尚未完成，VMC 仍未启动；必须等待
+  admittance `complete + step_budget` 后才按登记协议唯一接续 VMC。
+- GitHub fetch 仍受网络限制；未把本地缓存的 main/baseline SHA 冒充最新远端。冻结的 physics/MJB、
+  Task/Strict gate、canonical48 actor 输入、公共 action filter、执行器限制和 `dt=5e-5` 未改变。
+
 ## 2026-10-17 18:09 CST — VMC episode 21 安全完成，继续 episode 22
 
 - VMC 同一 recovery worker 已将 episode 21 (`repair_train_023`) 从 `28875` 推进至安全边界，

@@ -1,5 +1,19 @@
 # 更新日志
 
+## 2026-10-18 04:36 CST — 持续 Goal 轮询 historical UTD2 admittance
+
+- 目的/文件：记录 `outputs/rl_goal_n1_historical_utd2_20261018_v1` 的唯一 admittance worker
+  真实推进；更新 `code/mujoco_6d_vmc_benchmark/docs/RL_GOAL_PROGRESS_20261016.md`。
+- 验证：execution 最近边界为 `7500 steps / 5002 updates / 5 episodes`、`running`；实时
+  `training.jsonl` 继续增长。5 个完整回合 return 约 `-22.91..-22.95`，全部
+  `physical_valid=false` 且 Task/Strict=`false/false`，没有成功或收敛证据。
+- 资源/限制：memory current 约 2.70 GiB、peak 约 2.92 GiB，OOM/oom_kill/swap/max 均为 0；
+  单 worker、CPU1、单线程、3 GiB、禁 swap。VMC 未启动，等待 admittance 11,000 步安全边界。
+  GitHub fetch 因网络不可达，本轮没有声称远端已同步；冻结 physics/MJB、gate、canonical48、
+  公共 filter、执行器限制和 `dt=5e-5` 未修改。
+- 局限/未完成：historical UTD2 admittance 尚未完成，四类尚无 Task AND Strict 成功；保留所有
+  失败收据，完成后再依据四路统计决定下一有限调参阶段。
+
 ## 2026-10-17 18:09 CST — VMC episode 21 安全完成，继续 episode 22
 
 VMC recovery 同一 worker 完成 episode 21 (`repair_train_023`)：`28875→30250` 步、return
