@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-17 15:47 CST — admittance recovery 继续推进
+
+实时 `training.jsonl` 核对到同一 recovery worker 的 episode 23 约 `32346/33000` 步，回合仍未闭合；
+`execution.json`、旧 stage 和失败收据均未改写。cgroup 峰值约 `2.86 GiB/3 GiB`，OOM、oom_kill、
+swap、`memory.max` 事件为0。VMC handoff 仍等待 admittance 完整预算，未重复启动，未做最终验收，
+当前没有 Task/Strict 成功或收敛证据。远端 fetch 仍因网络不可达，本轮只使用缓存引用并如实保留限制。
+
 ## 2026-10-17 15:44 CST — 持续Goal监视 admittance recovery episode 23
 
 本轮先读取 `AGENTS.md` 和缓存的 main/baseline 日志；GitHub `fetch` 因网络不可达失败，未把

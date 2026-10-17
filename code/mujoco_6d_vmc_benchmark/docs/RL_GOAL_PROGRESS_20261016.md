@@ -1,5 +1,12 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 15:47 CST — admittance recovery 继续推进，episode 23 未闭合
+
+- 同一已登记 recovery worker 的实时 `training.jsonl` 已推进到约 `32346/33000` 步、episode 23
+  模拟时间约 `28.84 s`；`execution.json` 仍在途，不能提前写入回合 return 或 Task/Strict 结果。
+- cgroup `MemoryMax=3 GiB`，峰值约 `2.86 GiB`，OOM、oom_kill、swap、`memory.max` 事件均为 0；
+  没有新 worker，也没有触发 VMC handoff。恢复上限仍为 `41250`，最终 acceptance 未执行。
+
 ## 2026-10-17 15:44 CST — admittance recovery episode 23 仍在真实推进
 
 - 只读核对显示同一恢复服务继续写入 episode 23 `repair_train_014`：约 `32198/33000`
