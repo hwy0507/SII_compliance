@@ -17,6 +17,8 @@
   Task/Strict `false/false`；第21回合已接续，仍无成功回合。
 - direct 第21回合在 step 26,762 安全结束，return `-21.712710806`，`physical_valid=true`，
   Task/Strict `false/false`；第22回合已接续，仍无成功回合。
+- direct 第22回合在 step 28,137 安全结束，return `-22.172865867`，`physical_valid=true`，
+  Task/Strict `false/false`；第23回合已接续，direct 仍无成功回合。
 
 ## 2026-10-17 09:05 CST — occupancy二十四回合，仍在安全推进
 
