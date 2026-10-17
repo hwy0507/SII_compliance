@@ -1,5 +1,10 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 15:33 CST — admittance recovery episode 22 已安全封口
+
+- recovery 从 `checkpoint_0030250` 继续到 step `31625`，episode 22 (`repair_train_024`) 完整结束，return `-25.24973103232766`，`physical_valid=true`，Task/Strict=`false/false`，无 abort；audit/trace hash 已写入 execution。
+- episode 23 (`repair_train_014`) 已由同一 worker 接续，恢复总预算仍为 step `41250`。该回合结果不能用于宣称收敛；handoff monitor 继续等待完整预算后才派发 VMC。
+
 ## 2026-10-17 15:30 CST — 安全 VMC handoff 监视器已启动
 
 - admittance recovery 已推进到 `31250/41250` steps，仍在完整回合中；未发现 OOM、swap 或 memory.max 事件。

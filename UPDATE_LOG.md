@@ -1,5 +1,9 @@
 # 更新日志
 
+## 2026-10-17 15:33 CST — admittance episode 22 完整收据
+
+admittance recovery 在 `checkpoint_0030250` 后安全完成 episode 22 (`repair_train_024`) 到 step `31625`：return `-25.24973103232766`，physical_valid=true，Task/Strict=false/false，abort_reason=null；audit/trace hash 已落盘。episode 23 已由同一 worker 接续，仍未达到恢复上限41250。VMC handoff monitor 保持等待，未派发 VMC；该失败回合不构成收敛证据。
+
 ## 2026-10-17 15:30 CST — 登记一次性 VMC 安全 handoff 监视器
 
 admittance recovery 当前 `31250/41250` steps，仍在 episode 内，资源事件 OOM/oom_kill/swap/max 均为0。新增 `code/mujoco_6d_vmc_benchmark/tools/launch_goal_vmc_after_admittance_20261017.py`，由独立低内存 systemd 服务等待 admittance 完成；它使用 dispatch lock、无活动 worker 检查和 VMC checkpoint hash 验证，仅在 `complete + step_budget + 41250 steps` 后启动预登记 VMC，异常写停止收据并保留旧产物。该监视器不做仿真；当前未启动 VMC，也未宣称收敛。
