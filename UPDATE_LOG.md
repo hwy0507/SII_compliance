@@ -26,16 +26,13 @@ episode 29 (`repair_train_005`) return `-21.790978936`、`physical_valid=true`�
 episode 30 (`repair_train_004`) return `-21.714844084`、`physical_valid=true`、Task/Strict `false/false`；
 episode 31 (`repair_train_009`) return `-22.137743486`、`physical_valid=true`、Task/Strict `false/false`。
 direct worker 峰值达到 3.00 GiB hard limit，memory.max events=1542，但 OOM/oom_kill/swap=0。
-coordinator 已按登记协议接续 impedance worker `sii-rl-goal-96859867545`，已推进至 `33,000`
-steps / `28,001` updates；episode 17 (`repair_train_011`) return `-26.022841297`、
-`physical_valid=true`、Task/Strict `false/false`；episode 18 (`repair_train_021`) return
-`-30.151722036`、`physical_valid=true`、Task/Strict `false/false`；episode 19 (`repair_train_018`)
-return `-25.332306513`、`physical_valid=true`、Task/Strict `false/false`；episode 20 (`repair_train_030`) return
-`-25.598980242`、`physical_valid=true`、Task/Strict `false/false`；episode 21 (`repair_train_023`) return
-`-24.782192822`、`physical_valid=true`、Task/Strict `false/false`；episode 22 (`repair_train_024`) return
-`-24.947542116`、`physical_valid=true`、Task/Strict `false/false`；episode 23 (`repair_train_014`) return
-`-25.430825464`、`physical_valid=true`、Task/Strict `false/false`，episode 24 在途。当前峰值约 3.13 GiB，
+coordinator 已按登记协议完成 impedance worker `sii-rl-goal-96859867545` 的 `34,375 steps / 29,376 updates`、
+25 个完整回合；最后四回合 return 为 `-24.782192822`, `-24.947542116`, `-25.430825464`,
+`-25.073407371`，均 `physical_valid=true`、Task/Strict `false/false`，因此 impedance 也没有收敛
+或成功证据。其峰值约 3.14 GiB，OOM/oom_kill/swap=0。coordinator 已按登记协议接续 admittance
+worker `sii-rl-goal-bc165dcc6cf0`，从 `23,375` steps 继续，episode 17 在途，当前峰值约 0.97 GiB，
 OOM/max/swap=0。磁盘余量高于登记保留线。
+此前 impedance episode 17–23 的失败明细已随 execution 和 checkpoint 保留。
 该阶段仍不是收敛结论，Task/Strict 必须在完整回合和最终验收中核对。
 
 stage03 的 `stopped_at_episode_boundary` 收据和 mixed lineage 已写入新 REGISTRATION；未覆盖旧

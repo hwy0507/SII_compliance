@@ -22,15 +22,12 @@
   episode 30 (`repair_train_004`) return `-21.714844084`、`physical_valid=true`、Task/Strict=false/false；
   episode 31 (`repair_train_009`) return `-22.137743486`、`physical_valid=true`、Task/Strict=false/false。
   direct 峰值达到 3.00 GiB hard limit，memory.max events=1542，但 OOM/oom_kill/swap=0。
-  coordinator 已接续 impedance worker `sii-rl-goal-96859867545`，已推进至 33,000 steps / 28,001
-  updates；episode 17 (`repair_train_011`) return `-26.022841297`、physical_valid=true、
-  Task/Strict=false/false；episode 18 (`repair_train_021`) return `-30.151722036`、physical_valid=true、
-  Task/Strict=false/false；episode 19 (`repair_train_018`) return `-25.332306513`、physical_valid=true、
-  Task/Strict=false/false；episode 20 (`repair_train_030`) return `-25.598980242`、physical_valid=true、
-  Task/Strict=false/false；episode 21 (`repair_train_023`) return `-24.782192822`、physical_valid=true、
-  Task/Strict=false/false；episode 22 (`repair_train_024`) return `-24.947542116`、physical_valid=true、
-  Task/Strict=false/false；episode 23 (`repair_train_014`) return `-25.430825464`、physical_valid=true、
-  Task/Strict=false/false，episode 24 在途；其峰值约 3.13 GiB，OOM/max/swap=0。当前没有
+  coordinator 已完成 impedance worker `sii-rl-goal-96859867545` 的 34,375 steps / 29,376 updates、
+  25 个完整回合；最后四回合 return 为 `-24.782192822`, `-24.947542116`, `-25.430825464`,
+  `-25.073407371`，均 physical_valid=true、Task/Strict=false/false，impedance 没有收敛或成功证据。
+  其峰值约 3.14 GiB，OOM/oom_kill/swap=0。coordinator 已接续 admittance worker
+  `sii-rl-goal-bc165dcc6cf0`，从 23,375 steps 继续，episode 17 在途；其峰值约 0.97 GiB，
+  OOM/max/swap=0。当前没有
   Task/Strict 成功证据。
 - 该 mixed stage 不是收敛或最终成功结论。旧 stage03 execution 未覆盖；四族完成后再按统一
   acceptance 和独立物理/动作/filter/hash/RMSE/峰值/穿透审计，Task 与 Strict 同时通过才计成功。
