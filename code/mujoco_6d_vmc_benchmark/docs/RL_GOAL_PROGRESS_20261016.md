@@ -1,5 +1,15 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 07:36 CST — direct episode 19 物理失败，继续 episode 20
+
+- direct episode 19 已安全闭合（`22637 → 24012`）：return `-33.47931707409669`，
+  `physical_valid=false`、Task/Strict=`false/false`；独立 AUDIT 的 RMSE `79.8657 mm`、峰值力矩
+  `52.3564 Nm`、穿透 `0.480823 mm`，完整回合和失败收据均保留。episode 20 已接续，当前 execution
+  `24012 steps / 19013 updates`。
+- 该回合表明当前 n-step=25 continuation 出现退化，不能称为 reward 收敛；不修改活动 worker 的
+  冻结物理、gate、actor 输入、公共 filter 或执行器限制，待登记 stage 完成后再根据完整窗口登记
+  有记录的参数修复阶段。当前 cgroup 仍无 OOM/oom_kill/swap。
+
 ## 2026-10-18 07:31 CST — direct episode 18 失败收据保留，episode 19 在途
 
 - direct 同一 worker 已安全闭合 episode 18：`step 21262 → 22637`、return

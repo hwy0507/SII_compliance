@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-18 07:36 CST — direct episode 19 物理失败
+
+- direct episode 19 安全闭合（`22637 → 24012`），return `-33.47931707409669`，
+  `physical_valid=false`、Task/Strict=`false/false`。AUDIT 核验 RMSE `79.8657 mm`、峰值力矩
+  `52.3564 Nm`、penetration `0.480823 mm`；episode 20 已由同一 worker 接续，当前
+  `24012 steps / 19013 updates`。
+- 这是当前 n-step=25 continuation 的明确退化收据，未把运行状态或 reward 当作收敛；活动 worker
+  仍按 CPU1/单线程/3 GiB/禁 swap 运行，冻结物理、gate、canonical48、公共 filter 和执行器限制
+  未改。待该登记 stage 完成后再依据窗口统计登记下一有限参数修复阶段。
+
 ## 2026-10-18 07:31 CST — direct episode 18 安全闭合但未通过
 
 - 同一 stage05 v4 direct worker 安全完成 episode 18（`21262 → 22637`）：return
