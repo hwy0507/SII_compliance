@@ -1,5 +1,17 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-17 16:10 CST — admittance episode 24 安全完成，继续 episode 25
+
+- 重新核对共享文件后确认 recovery worker 仍在沙箱外运行；本地 `ps/cgroup.procs=0` 不能作为
+  systemd 用户服务是否存在的证据，因此没有创建重试 worker 或覆盖旧 execution。episode 24
+  (`repair_train_020`) 已从 `33000` 到 `34375` 安全闭合，return `-25.33114975498416`，
+  `physical_valid=true`，Task/Strict=`false/false`，无 abort；`checkpoint_0034375` 的边界
+  收据已写入，episode 25 已接续。
+- 实时 `training/optimizer` 日志随后推进到约 `34478` 步，顶层 execution 暂存 `34375` 是
+  正常边界写回时序。recovery cgroup 当前约 `3.05 GiB`、峰值约 `3.11 GiB`，MemoryMax=3 GiB、
+  禁 swap，`memory.max/oom/oom_kill/swap=0`。VMC handoff 仍只等待 admittance 完成 `41250`
+  步；VMC 和最终 acceptance 未启动，四族仍没有 Task AND Strict 成功或可复核收敛证据。
+
 ## 2026-10-17 15:58 CST — admittance episode 23 安全完成，episode 24 接续
 
 - recovery episode 23 (`repair_train_014`) 已在安全边界从 `31625` 到 `33000` 步完成，return

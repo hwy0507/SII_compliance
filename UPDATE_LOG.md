@@ -1,5 +1,17 @@
 # 更新日志
 
+## 2026-10-17 16:10 CST — admittance episode 24 安全完成，episode 25 接续
+
+本轮先重新读取 `AGENTS.md`、远端分支指针与当前 execution；GitHub fetch 仍受网络限制，未把缓存
+引用冒充最新远端。共享日志核对显示 admittance recovery worker 仍在沙箱外真实推进，先前通过本地
+`ps/cgroup.procs=0` 得出的“已退出”判断是命名空间误判，未启动重试、未覆盖旧目录，也未改写
+`execution.json`。episode 24 (`repair_train_020`) 已在 `33000→34375` 安全闭合，return
+`-25.33114975498416`，`physical_valid=true`，Task/Strict=`false/false`，无 abort；
+`checkpoint_0034375` 已写入并接续 episode 25。实时日志随后推进到约 `34478` 步，execution 的
+边界写回为 `34375`，符合每250步日志、每完整回合保存的实现。worker cgroup 仍为 3 GiB、禁
+swap，当前/峰值约 `3.05/3.11 GiB`，`memory.max/oom/oom_kill/swap` 全为 0。VMC handoff
+继续等待 admittance 完成 `41250` 步；VMC 与统一 acceptance 均未启动，当前无收敛或成功证据。
+
 ## 2026-10-17 15:58 CST — admittance episode 23 安全完成并接续 episode 24
 
 admittance recovery 的 episode 23 (`repair_train_014`) 已安全完成：`31625→33000` 步，return
