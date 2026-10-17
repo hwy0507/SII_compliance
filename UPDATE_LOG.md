@@ -23,6 +23,10 @@ direct 第 19 回合随后在安全边界结束：从 22,637 到 24,012 steps，
 `physical_valid=false`，Task/Strict `false/false`，无 abort；audit/trace/checkpoint 收据已落盘。
 第 20 回合已由同一 coordinator 接续，仍未达到收敛筛选条件。
 
+direct 第 20 回合已在安全边界结束：从 24,012 到 25,387 steps，return `-21.801052248`，
+`physical_valid=true`，Task/Strict `false/false`，无 abort；checkpoint、audit 和 trace 收据
+已落盘。第 21 回合 `repair_train_023` 已由同一 coordinator 接续，当前仍无成功回合。
+
 ## 2026-10-17 09:15 CST — occupancy阶段收口，准备四族精确接续
 
 开工读取 AGENTS.md；尝试查询 GitHub `main`/`baseline`，本轮网络不可达，未把缓存
