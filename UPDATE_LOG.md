@@ -14,10 +14,11 @@ pip 下载缓存约 13.85 GiB，未触碰实验产物、源码或环境；磁盘
 四族各登记新增 11,000 interactions，CPU1、单线程、3 GiB、禁 swap、UTD=1、服务器不计算。
 四份 checkpoint/replay preflight 均在独立 systemd 3 GiB 服务中通过，随后启动唯一 coordinator
 `sii-rl-goal-stage-86934caed9a9.service`。当前 direct worker
-`sii-rl-goal-d5c23cdd51d6` 已真实推进至 `32,750` steps / `27,751` updates；episode 24
-（`repair_train_020`）return `-38.757591452`、`physical_valid=false`、Task/Strict `false/false`，
-episode 25 (`repair_train_025`) 随后安全结束，return `-21.788506946`、`physical_valid=true`、
-Task/Strict `false/false`，episode 26 在途。worker 观测峰值约 2.64 GiB，OOM/max/swap 均为 0，
+`sii-rl-goal-d5c23cdd51d6` 已真实推进至 `34,000` steps / `29,001` updates；episode 24
+（`repair_train_020`）return `-38.757591452`、`physical_valid=false`、Task/Strict `false/false`；
+episode 25 (`repair_train_025`) return `-21.788506946`、`physical_valid=true`、Task/Strict `false/false`；
+episode 26 (`repair_train_003`) return `-27.024080870`、`physical_valid=false`、Task/Strict `false/false`，
+episode 27 在途。worker 观测峰值约 2.82 GiB，OOM/max/swap 均为 0，
 磁盘余量高于登记保留线。该阶段仍不是收敛结论，Task/Strict 必须在完整回合和最终验收中核对。
 
 stage03 的 `stopped_at_episode_boundary` 收据和 mixed lineage 已写入新 REGISTRATION；未覆盖旧
