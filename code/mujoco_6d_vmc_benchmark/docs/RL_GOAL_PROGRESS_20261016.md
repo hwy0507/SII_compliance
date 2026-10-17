@@ -22,9 +22,10 @@
   episode 30 (`repair_train_004`) return `-21.714844084`、`physical_valid=true`、Task/Strict=false/false；
   episode 31 (`repair_train_009`) return `-22.137743486`、`physical_valid=true`、Task/Strict=false/false。
   direct 峰值达到 3.00 GiB hard limit，memory.max events=1542，但 OOM/oom_kill/swap=0。
-  coordinator 已接续 impedance worker `sii-rl-goal-96859867545`，已推进至 24,750 steps / 19,751
+  coordinator 已接续 impedance worker `sii-rl-goal-96859867545`，已推进至 27,000 steps / 22,001
   updates；episode 17 (`repair_train_011`) return `-26.022841297`、physical_valid=true、
-  Task/Strict=false/false，episode 18 在途；其峰值约 2.32 GiB，OOM/max/swap=0。当前没有
+  Task/Strict=false/false；episode 18 (`repair_train_021`) return `-30.151722036`、physical_valid=true、
+  Task/Strict=false/false，episode 19 在途；其峰值约 2.66 GiB，OOM/max/swap=0。当前没有
   Task/Strict 成功证据。
 - 该 mixed stage 不是收敛或最终成功结论。旧 stage03 execution 未覆盖；四族完成后再按统一
   acceptance 和独立物理/动作/filter/hash/RMSE/峰值/穿透审计，Task 与 Strict 同时通过才计成功。
