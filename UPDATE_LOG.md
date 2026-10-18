@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-18 20:30 CST — Goal 四类 RL 收口与独立 acceptance
+
+- 按用户最新判据，训练集完整回合 reward 稳定作为收敛判据；四路登记预算已完成：direct
+  `74,998/69,999`、impedance `41,250/36,251`、admittance `34,375/29,376`、VMC
+  `34,375/29,376`（steps/updates）。最近窗口 CV 分别为 `0.02479/0.02587/0.00167/0.00235`，
+  相邻窗口均值相对变化为 `-13.37%/+0.46%/-0.23%/-0.27%`；direct 的相邻变化受早期退化回合影响，
+  四路均已保存完整 reward 窗口和失败收据。
+- 新增 `code/mujoco_6d_vmc_benchmark/tools/run_goal_acceptance_20261018.py`，修复 manifest hash
+  传递和 systemd unit 唯一性后，独立 acceptance `outputs/rl_goal_acceptance_20261018_v3` 四路均
+  `returncode=0`。完整55秒物理审计指标：direct `291.2349 mm/40.9482 Nm/0.1870 m/s/0.0901 mm`；
+  impedance `24.8634/36.9413/0.1133/0.0052`；admittance `27.3733/37.3197/0.0616/0.0084`；
+  VMC `25.9786/37.6729/0.0616/0.0016`（RMSE/峰矩/峰速/穿透）。source/model/config/checkpoint
+  hash、公共 filter replay 和 raw actor replay 均通过；四路 Task/Strict 均 `false/false`，不能写成任务成功。
+- 当前训练和 acceptance 产物仅本地：服务器专属归档尝试被自动审批阻止，未声称远端已写入。v1 manifest
+  字段错误与 v2 systemd unit 冲突均作为 `failed_preserved` 收据保留；v3 是最终有效 acceptance。
+- 本轮开工缓存 refs：main=`d4bdf1adbb92619c62c213326371c03111915dac`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；
+  GitHub fetch/push 网络仍不可达。冻结 physics/MJB、canonical48、公共 filter、执行器限制、`dt=5e-5`、CPU1/3GiB/禁swap 未改。
+
 ## 2026-10-18 16:20 CST — impedance episode 27 reward 稳定，出现 hard-limit 压力事件
 
 - `repair_train_026` episode 27 完整 55 s，reward `-25.9115656124`，physical_valid=true，Task/Strict=`false/false`；RMSE `24.25999489 mm`、峰矩 `43.80223465 Nm`、峰速 `0.35892629 m/s`、穿透 `0.13769473 mm`、placement XY `0.23523223 m`。

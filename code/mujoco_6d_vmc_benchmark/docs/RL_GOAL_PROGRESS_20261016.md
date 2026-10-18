@@ -1,5 +1,29 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 20:30 CST — 四路训练完成，训练集 reward 稳定，独立 acceptance 完成
+
+- 本轮四路均按本机 CPU1、单线程、MemoryMax=3 GiB、禁 swap、UTD=1 完成登记预算；冻结
+  physics/MJB、canonical48 actor input、公共 action filter、执行器限制和 `dt=5e-5` 未改。
+  direct=`74,998 steps/69,999 updates`、impedance=`41,250/36,251`、admittance=`34,375/29,376`、
+  VMC=`34,375/29,376`；所有完整/失败回合及 checkpoint 收据均保留。
+- 训练集最近完整回合 reward 窗口：direct 最近4均值=`-22.447736`、CV=`0.02479`；impedance
+  最近6均值=`-25.769766`、CV=`0.02587`；admittance 最近6均值=`-25.322585`、CV=`0.00167`；
+  VMC 最近6均值=`-25.159660`、CV=`0.00235`。相邻等长窗口均值相对变化分别为 direct=`-13.37%`
+  （早期窗口含退化回合）、impedance=`+0.46%`、admittance=`-0.23%`、VMC=`-0.27%`；因此按用户
+  指定的“训练集完整回合 reward 稳定”判据，四路均有可复核稳定窗口。该判据不等于任务成功。
+- 四路独立 acceptance 已完成于 `outputs/rl_goal_acceptance_20261018_v3`，每路完整55 s、
+  `physical_seconds=55`，source/model/config/checkpoint hash、公共 filter replay
+  (`common_filter_replay_max_abs=0`)、raw actor replay (`0`) 和 normalization unchanged 均通过。
+  acceptance 审计：direct RMSE=`291.2349 mm`、峰矩=`40.9482 Nm`、峰速=`0.1870 m/s`、穿透=`0.0901 mm`；
+  impedance `24.8634 mm/36.9413 Nm/0.1133 m/s/0.0052 mm`；admittance
+  `27.3733 mm/37.3197 Nm/0.0616 m/s/0.0084 mm`；VMC `25.9786 mm/37.6729 Nm/0.0616 m/s/0.0016 mm`。
+- acceptance 四路 Task/Strict 均为 `false/false`，所以四路均不能称为任务成功；这与训练集 reward
+  稳定结论分开报告。VMC 训练峰值 memory=`3 GiB`、`memory.events.max=3215`，但 OOM/oom-kill/swap
+  均为0；压力事件和早期 acceptance 启动失败收据均保留在本地输出目录。
+- 独立 acceptance 目录服务器归档尝试被自动审批阻止；当前证据为本机完整产物，状态为“仅本地、待同步”，
+  未声称服务器已归档。远端 main/baseline 本轮仍为缓存核验：main=`d4bdf1adbb92619c62c213326371c03111915dac`、
+  baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，网络 fetch/push 不可达。
+
 ## 2026-10-18 16:20 CST — impedance episode 27 reward 稳定，记录 memory.max 压力
 
 - episode 27（`repair_train_026`）reward `-25.9115656124`，完整且 physical_valid=true；RMSE `24.25999489 mm`、峰矩 `43.80223465 Nm`、峰速 `0.35892629 m/s`、穿透 `0.13769473 mm`、placement XY `0.23523223 m`，Task/Strict=`false/false`。
