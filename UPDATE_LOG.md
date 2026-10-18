@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-18 15:00 CST — Goal stage06 retry2 direct 安全完成，impedance 已唯一接续
+
+- 开工按 `AGENTS.md` 和 `sii-research-sync` 核对仓库；`git fetch`/GitHub 仍因网络不可达失败，记录本地缓存状态，未将缓存冒充远端最新。远端 refs 可见：baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、main=`d4bdf1adbb92619c62c213326371c03111915dac`（本地 main 领先 67 个提交）。
+- `outputs/rl_goal_selected_20261018_stage06_retry2_cpu_v1` 的 direct 唯一 worker 已 `complete`，`step_budget`，`74,998 steps / 69,999 updates`，57 个完整回合；最后 `repair_train_025` 完整 55 s、`physical_valid=true`，但 Task/Strict=`false/false`、placement XY error `0.1920621426 m`，RMSE `667.3329774 mm`、峰值力矩 `63.09082794 Nm`、峰值速度 `0.34118586 m/s`、外部穿透 `0.08921768 mm`。actor/filter/trace/hash 收据已保留；该阶段不构成收敛或 acceptance。
+- coordinator 已核对 direct `complete + step_budget + checkpoint` 后唯一启动 `impedance_payload`，当前从登记 `checkpoint_0030250` 安全运行，execution `running`、`30,250 steps / 25,251 updates`，episode 22 在途；admittance/VMC 尚未启动。CPU1、单线程、MemoryMax 3 GiB、禁 swap、UTD=1、冻结 physics/MJB、canonical48 输入、公共 filter、执行器限制和 `dt=5e-5` 均未改。
+- stage06 的早期失败根（协议 hash 不一致、teacher 缺失）仍保留在 stage06_cpu_v1/retry_cpu_v1 收据中；retry2 使用登记脚本修复 lineage 并通过 preflight。当前四类训练未完成，统一 acceptance 暂不运行。
+
 ## 2026-10-18 13:06 CST — impedance episode 20 完整闭合，placement 反弹
 
 - stage05 impedance episode 20（`repair_train_030`）完整 55 s，`execution_complete=true`、`physical_valid=true`，外部最大穿透 `0.1840821940 mm`，无 early abort。

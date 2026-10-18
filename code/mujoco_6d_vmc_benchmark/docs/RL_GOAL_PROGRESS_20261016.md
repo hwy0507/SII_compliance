@@ -1,5 +1,11 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 15:00 CST — stage06 retry2 direct 完成，impedance 在途
+
+- 开工核对 `AGENTS.md`、本地 main/baseline refs；GitHub fetch 因网络不可达，未声称远端已更新。stage06 retry2 direct 唯一 worker `complete/step_budget`，`74,998/69,999` steps/updates、57 个完整回合；最后回合物理有效但 `Task/Strict=false/false`，placement XY `0.1920621426 m`、RMSE `667.3329774 mm`、峰矩 `63.09082794 Nm`、峰速 `0.34118586 m/s`、穿透 `0.08921768 mm`。不能称为收敛。
+- coordinator 按登记协议唯一接续 impedance，当前 `30,250/25,251` steps/updates、episode 22 在途；admittance/VMC 尚未启动。单路 CPU、1 线程、3 GiB、禁 swap、UTD=1 及冻结物理/gate/actor/filter/执行器/dt 保持不变。
+- stage06 retry2 之前两次失败收据保留；所有完整/失败回合和 checkpoint/hash 收据保留。下一步等待 impedance 到安全上限，随后核对 admittance→VMC handoff；四路完成前不做统一 acceptance。
+
 ## 2026-10-18 13:06 CST — impedance episode 20 完整但双门失败
 
 - `repair_train_030` episode 20 完整 55 s，physical_valid=true，外部穿透 `0.1840821940 mm`；Task/Strict=`false/false`，placement XY error `0.2475394701 m`。
