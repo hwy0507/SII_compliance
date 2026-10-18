@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-18 09:05 CST — direct episode 28 安全闭合，记录 memory.max 压力
+
+- direct episode 28（`35012 → 36387`）return `-22.103423267416865`，`physical_valid=true`，
+  Task/Strict=`false/false`；checkpoint `0036387` 已核验，episode 29 已接续，当前
+  `36500 steps / 31501 updates`。
+- worker cgroup current 约 `3.07 GiB`、hard max 3 GiB；`memory.events.max=345`，但
+  `oom/oom_kill/swap=0`。继续保持单 worker 和冻结限制，保留资源压力与失败统计，不宣称收敛。
+
 ## 2026-10-18 08:55 CST — direct episode 27 安全闭合但未通过
 
 - direct episode 27（`33637 → 35012`）return `-22.112554771110876`，`physical_valid=true`，

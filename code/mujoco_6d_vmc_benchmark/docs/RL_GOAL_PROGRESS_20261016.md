@@ -1,5 +1,13 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 09:05 CST — direct episode 28 有效但 memory.max 开始计数
+
+- direct episode 28 已安全闭合（`35012 → 36387`）：return `-22.103423267416865`，
+  `physical_valid=true`、Task/Strict=`false/false`；checkpoint `0036387` 已核验，episode 29
+  已接续。当前 execution `36500 steps / 31501 updates`。
+- cgroup current 约 `3.07 GiB`、MemoryMax `3 GiB`，`memory.events.max=345` 记录资源压力；
+  `oom/oom_kill/swap=0`。未重启或放宽限制，保留压力证据；最近有效回合仍无 Task/Strict 成功。
+
 ## 2026-10-18 08:55 CST — direct episode 27 有效但仍未通过
 
 - direct episode 27 已安全闭合（`33637 → 35012`）：return `-22.112554771110876`，
