@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-18 08:46 CST — direct episode 26 物理失败
+
+- direct episode 26（`32262 → 33637`）return `-27.024080870348993`，`physical_valid=false`，
+  Task/Strict=`false/false`；checkpoint `0033637` 已核验，episode 27 已接续，当前
+  `33750 steps / 28751 updates`。
+- current 约 `2.72 GiB`、hard max 3 GiB、禁 swap，OOM/oom_kill/swap/max 全 0；未重启或放宽限制，
+  继续保留该失败收据。
+
 ## 2026-10-18 08:35 CST — direct episode 25 安全闭合但未通过
 
 - direct episode 25（`30887 → 32262`）return `-21.788506945991138`，`physical_valid=true`，
