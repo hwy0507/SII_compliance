@@ -1,5 +1,11 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 11:05 CST — direct episode 41 align 失败，episode 42 在途
+
+- stage05 v4 direct 已安全闭合 episode 41（`52500 → 53545`，`repair_train_027`）：训练 reward 总和 `-22.23621762687208`，完整 55 秒且物理约束有效，但 placement 未完成，Task/Strict=`false/false`；独立审计 RMSE `113.99501214786228 mm`、峰值力矩 `49.24728012084961 Nm`、峰值速度 `0.2972960678259162 m/s`、外部穿透 `0.15328749815619352 mm`、placement XY error `0.1977695972858384 m`。完整失败收据和 checkpoint `checkpoint_0053545` 已保留并核验。
+- 当前 execution `53545 steps / 48546 updates`，协调器已唯一接续 episode 42；worker 仍真实运行。回合边界 `memory_current≈2.40 GiB`、MemoryMax `3 GiB`、swap `0`、OOM/oom_kill `0`，`memory.events.max=6420` 作为压力证据保留。
+- 最近完整回合仍无 Task AND Strict 成功；impedance/admittance/VMC 尚未接续，当前阶段没有收敛或最终 acceptance 证据。冻结 physics/MJB、最终 gate、canonical48 actor input、公共 action filter、执行器限制和 `dt=5e-5` 未改。
+
 ## 2026-10-18 10:55 CST — direct episode 40 penetration abort，episode 41 在途
 
 - stage05 v4 direct episode 40（`51512 → 52500`，`repair_train_010`）在 `26.32 s` 因 `global_penetration_exceeded_2mm` 提前终止，仅 `658` 条训练 transition；训练 reward 总和 `-41.80336983441076`，`physical_valid=false`、Task/Strict=`false/false`。独立审计 RMSE `139.53541074694033 mm`、峰值力矩 `58.42786407470703 Nm`、峰值速度 `0.4084943727866742 m/s`、外部/全局穿透 `3.385152594319335 mm`、placement XY error `0.19873588461193606 m`。完整失败收据和 checkpoint `checkpoint_0052500` 已保留并核验。
