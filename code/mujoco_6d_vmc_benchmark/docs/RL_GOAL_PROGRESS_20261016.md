@@ -1,5 +1,12 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 09:18 CST — direct episode 30 安全闭合，episode 31 在途
+
+- 本轮先重新读取 `AGENTS.md`；GitHub `fetch` 仍因网络不可达失败，不能声称已核对远端最新日志。
+- stage05 v4 唯一 direct worker 真实推进到 `39137 steps / 34138 updates`。episode 30（`37762 → 39137`，`repair_train_004`）return `-21.71484408432231`，`physical_valid=true`，Task/Strict=`false/false`；`checkpoint_0039137` hash 已登记并核验，episode 31（`repair_train_009`）已安全接续。
+- cgroup 资源：current 约 `2.42 GiB`、peak `3 GiB`、MemoryMax `3 GiB`、swap current `0`，`memory.events.max=855`、OOM/oom_kill/swap 均为 0。训练继续，无重复进程；其它三类尚未启动。
+- 最近连续完整回合仍没有 Task AND Strict 成功；该阶段没有收敛证据，统一 acceptance 和最终独立审计继续等待四类训练完成。
+
 ## 2026-10-18 09:05 CST — direct episode 28 有效但 memory.max 开始计数
 
 - direct episode 28 已安全闭合（`35012 → 36387`）：return `-22.103423267416865`，

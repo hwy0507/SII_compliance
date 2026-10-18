@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-18 09:18 CST — Goal 继续监视 direct episode 30 安全闭合
+
+- 开工已读取仓库 `AGENTS.md`；本轮 `git ls-remote` 可见 main/baseline，但 `git fetch` 因 GitHub 网络不可达失败，未把缓存 SHA 冒充远端最新状态。工作区用户未跟踪文件 `docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md` 保留不动。
+- 唯一登记 stage05 v4 worker 继续真实推进：direct episode 30（`37762 → 39137`）return `-21.71484408432231`，`physical_valid=true`，Task/Strict=`false/false`；`checkpoint_0039137` 已写入并核验 hash，episode 31 已接续，execution 当前 `39137 steps / 34138 updates`。
+- worker cgroup `MemoryCurrent≈2.42 GiB`、`MemoryPeak=3 GiB`、`MemoryMax=3 GiB`、`MemorySwapCurrent=0`；`memory.events.max=855`，`oom=0`、`oom_kill=0`、`swap=0`。没有重复启动、没有修改冻结 physics/MJB、最终 gate、canonical48、公共 action filter、执行器限制或 `dt=5e-5`。
+- 本回合是完整物理有效但 Task/Strict 双失败收据，不能称收敛；impedance/admittance/VMC 仍按 coordinator 排队，统一 acceptance 尚未允许运行。
+
 ## 2026-10-18 09:05 CST — direct episode 28 安全闭合，记录 memory.max 压力
 
 - direct episode 28（`35012 → 36387`）return `-22.103423267416865`，`physical_valid=true`，
