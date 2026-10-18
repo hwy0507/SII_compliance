@@ -1,5 +1,12 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 09:55 CST — direct episode 34 物理失败，episode 35 在途
+
+- stage05 v4 direct 已安全闭合 episode 34（`43262 → 44637`，`repair_train_001`）：训练 reward 总和 `-22.097350970690265`，`physical_valid=true` 但 placement 未完成，Task/Strict=`false/false`；独立审计 RMSE `598.491994844352 mm`、峰值力矩 `61.74088884153127 Nm`、峰值速度 `0.3748015290284962 m/s`、穿透 `0.1711538283485118 mm`，placement XY error `0.21765343104692766 m`。完整失败收据和 checkpoint `checkpoint_0044637` 已保留并核验。
+- 当前唯一 worker 已接续 episode 35，execution 约 `44637 steps / 39638 updates`；训练日志继续推进，未重启或重复派发。episode 35 尚未闭合。
+- worker 约束仍为单路、CPU1/单线程、MemoryMax `3 GiB`、禁 swap；本轮观测 `memory_current≈3.0 GiB`、`oom=0`、`oom_kill=0`。memory.events 的 max 计数继续作为硬限压力证据保留，不改写为 OOM 或成功。
+- 最近完整回合仍无 Task AND Strict 成功；impedance/admittance/VMC 尚未接续，当前阶段没有收敛或最终 acceptance 证据。冻结 physics/MJB、最终 gate、canonical48 actor input、公共 action filter、执行器限制和 `dt=5e-5` 未改。
+
 ## 2026-10-18 09:45 CST — direct episode 33 物理失败，episode 34 在途
 
 - stage05 v4 direct 真实推进到 `43262 steps / 38263 updates`。episode 33（`41887 → 43262`，`repair_train_029`）return `-32.99211158353711`，`physical_valid=false`、Task/Strict=`false/false`；`checkpoint_0043262` hash 已核验，episode 34（下一回合）已接续。
