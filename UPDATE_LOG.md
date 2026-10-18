@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-18 10:55 CST — Goal 继续 direct episode 40 穿透早停并安全接续 episode 41
+
+- 开工重新读取 `AGENTS.md`、本地缓存的 main/baseline refs 与更新日志；GitHub 访问仍因网络不可达失败，不能声称已核对远端最新状态。
+- stage05 v4 direct episode 40（`51512 → 52500`，`repair_train_010`）于 `26.32 s` 因 `global_penetration_exceeded_2mm` 提前终止，仅 `658` 条 transition，训练 reward 总和 `-41.80336983441076`，`physical_valid=false`、Task/Strict=`false/false`。独立审计给出 RMSE `139.53541074694033 mm`、峰值力矩 `58.42786407470703 Nm`、峰值速度 `0.4084943727866742 m/s`、穿透 `3.385152594319335 mm`、placement XY error `0.19873588461193606 m`；checkpoint `checkpoint_0052500` 已写入并核验，episode 41 已接续并仍在途。
+- worker 回合边界仍为 CPU1/单线程、单路、MemoryMax `3 GiB`、禁 swap；`memory_current≈2.38 GiB`、`oom=0`、`oom_kill=0`，`memory.events.max=5755`。没有重复启动或修改冻结条件。
+- 该回合保留为物理失败/早停收据，未混入完整回合收敛判断；最近完整回合仍无 Task AND Strict 成功，三类 payload 尚未接续，统一 acceptance 未运行。
+
 ## 2026-10-18 10:51 CST — Goal 继续 direct episode 39 lift 失败并安全接续 episode 40
 
 - 开工重新读取 `AGENTS.md`、本地缓存的 main/baseline refs 与更新日志；GitHub 访问仍因网络不可达失败，不能声称已核对远端最新状态。
