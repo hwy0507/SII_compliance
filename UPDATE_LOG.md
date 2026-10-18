@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-18 16:20 CST — impedance episode 27 reward 稳定，出现 hard-limit 压力事件
+
+- `repair_train_026` episode 27 完整 55 s，reward `-25.9115656124`，physical_valid=true，Task/Strict=`false/false`；RMSE `24.25999489 mm`、峰矩 `43.80223465 Nm`、峰速 `0.35892629 m/s`、穿透 `0.13769473 mm`、placement XY `0.23523223 m`。
+- stage06 impedance 最近 6 个完整回合 reward CV=`0.0257`，训练回报仍稳定。episode 28（`repair_train_016`）在途。
+- 资源峰值达到登记的 `3 GiB`，`memory.events.max=331`；OOM、oom-kill、swap 均为 0，未放宽限制、未重启 worker，压力收据保留。
+
 ## 2026-10-18 16:00 CST — impedance episode 26 reward 仍稳定
 
 - `repair_train_003` episode 26 完整 55 s，reward `-25.0389750758`，`physical_valid=true`，Task/Strict=`false/false`；独立审计 RMSE `23.84093574 mm`、峰矩 `42.18814468 Nm`、峰速 `0.36980618 m/s`、穿透 `0.16132135 mm`、placement XY `0.27947520 m`。
