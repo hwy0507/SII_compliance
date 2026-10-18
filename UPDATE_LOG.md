@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-18 12:01 CST — Goal 继续 direct episode 47 穿透早停并安全接续 episode 48
+
+- 开工重新读取 `AGENTS.md`、本地缓存的 main/baseline refs 与更新日志；GitHub 访问仍因网络不可达失败，不能声称已核对远端最新状态。
+- stage05 v4 direct episode 47（`60420 → 61248`，`repair_train_019`）于 `33.12 s` 因 `global_penetration_exceeded_2mm` 提前终止，仅 `828` 条 transition；训练 reward 总和 `-42.37089296701615`，`physical_valid=false`、Task/Strict=`false/false`。独立审计收据给出 RMSE `115.90421622918245 mm`、峰值力矩 `48.743011474609375 Nm`、峰值速度 `0.3710891252161003 m/s`、外部/全局穿透 `3.731625012201813 mm`、placement XY error `0.15338509742507045 m`；trace/checkpoint 链 hash 已核验，公共 filter replay 最大差异 `0.0`。
+- worker 回合边界仍为 CPU1/单线程、单路、MemoryMax `3 GiB`、禁 swap；最新 execution `61248 steps / 56249 updates`，`memory_current≈2.92 GiB`、`oom=0`、`oom_kill=0`、swap `0`，`memory.events.max=10113` 作为硬限压力证据保留。episode 48 已唯一接续并仍在途。
+- 该回合保留为物理失败/早停收据，未混入完整 55 秒回合收敛判断；最近完整回合仍无 Task AND Strict 成功，三类 payload 尚未接续，统一 acceptance 未运行。冻结 physics/MJB、最终 gate、canonical48 actor input、公共 action filter、执行器限制和 `dt=5e-5` 未改。
+
 ## 2026-10-18 11:54 CST — Goal 继续 direct episode 46 align 失败并安全接续 episode 47
 
 - 开工重新读取 `AGENTS.md`、本地缓存的 main/baseline refs 与更新日志；GitHub 访问仍因网络不可达失败，不能声称已核对远端最新状态。
