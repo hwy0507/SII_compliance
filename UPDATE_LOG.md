@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-18 20:45 CST — RL acceptance 小型 evidence 已归档并逐文件核验
+
+- 将最终 acceptance `outputs/rl_goal_acceptance_20261018_v3` 的小型证据（根/四方法
+  `execution.json`、`checkpoint_manifest.json`、独立 `AUDIT.json` 与适配 checkpoint）归档至
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_goal_acceptance_20261018_v3/evidence/`；未上传约568 MiB原始 rollout、物理子步或模型大文件。
+- 本地与远端逐文件 SHA256 已一致，远端清单保存在该目录的 `SHA256SUMS`；证据包约124 KiB。
+  四路 acceptance 仍为 returncode=0、完整55 s、Task/Strict=`false/false`；训练集 reward 稳定与任务失败严格分开。
+- 本轮只做传输/归档与哈希核验，服务器未执行训练或分析。保留 acceptance v1/v2 失败收据；冻结
+  physics/MJB、canonical48 actor input、公共 filter、执行器限制和 `dt=5e-5` 未改。
+
 ## 2026-10-18 20:30 CST — Goal 四类 RL 收口与独立 acceptance
 
 - 按用户最新判据，训练集完整回合 reward 稳定作为收敛判据；四路登记预算已完成：direct

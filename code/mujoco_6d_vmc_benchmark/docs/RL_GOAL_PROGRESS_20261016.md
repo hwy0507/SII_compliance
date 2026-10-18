@@ -1,5 +1,19 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 20:45 CST — acceptance evidence 服务器归档完成
+
+- 最终有效 acceptance `outputs/rl_goal_acceptance_20261018_v3` 的小型 evidence 已同步到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/rl_goal_acceptance_20261018_v3/evidence/`。
+  归档内容为根/四方法 `execution.json`、`checkpoint_manifest.json`、独立 `AUDIT.json` 和
+  `ADAPTED_RL_CHECKPOINT.json`，约124 KiB；568 MiB 原始 rollout 留在本地，未上传。
+- 远端 `SHA256SUMS` 与本地逐文件计算一致：根 execution=`db16cf39f6d741b3978c1b15c2fccae84027c224e5f21f7904c5ae20eefb53e6`；
+  direct AUDIT=`0cfae000478659a0e90b721a089b56c2b936d3be0c8f5d519e93c0e921ab9ff0`；
+  impedance AUDIT=`6aa5bd4e5c46d510512fd8ae4a9f886cc5ca1a45bd5cce484b8c0ccae8be1d74`；
+  admittance AUDIT=`c7370dc0e5761eb010ab6002e354c88a85ea273eaccbb6199178b36bc161d44c`；
+  VMC AUDIT=`28b643244a2ba1b6d5eb53673ed65c9131e09390d126f12b08712844f3791cf6`。
+- 服务器仅做共享归档和哈希核验；未在服务器计算。四路训练 reward 稳定证据和独立 acceptance
+  结果保持上一条记录：四路 Task/Strict=`false/false`，不能称任务成功。
+
 ## 2026-10-18 20:30 CST — 四路训练完成，训练集 reward 稳定，独立 acceptance 完成
 
 - 本轮四路均按本机 CPU1、单线程、MemoryMax=3 GiB、禁 swap、UTD=1 完成登记预算；冻结
