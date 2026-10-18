@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-18 09:27 CST — direct episode 31 安全闭合但仍未通过
+
+- stage05 v4 唯一 direct worker 继续真实推进：episode 31（`39137 → 40512`，`repair_train_009`）return `-22.137743486609715`，`physical_valid=true`，Task/Strict=`false/false`；`checkpoint_0040512` 已写入并核验 hash，episode 32 已接续，execution 当前 `40512 steps / 35513 updates`。
+- worker cgroup 回合边界 current 约 `2.31 GiB`、peak `3 GiB`、MemoryMax `3 GiB`、swap current `0`；`memory.events.max=1125`，`oom=0`、`oom_kill=0`、`swap=0`。max 计数上升只记录内存硬限压力，不改写为 OOM 或收敛。
+- 本回合完整且物理有效，但 Task/Strict 双失败；三类 payload worker 仍排队，统一 acceptance 未运行。冻结 physics/MJB、最终 gate、canonical48、公共 filter、执行器限制和 `dt=5e-5` 未改。
+
 ## 2026-10-18 09:18 CST — Goal 继续监视 direct episode 30 安全闭合
 
 - 开工已读取仓库 `AGENTS.md`；本轮 `git ls-remote` 可见 main/baseline，但 `git fetch` 因 GitHub 网络不可达失败，未把缓存 SHA 冒充远端最新状态。工作区用户未跟踪文件 `docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md` 保留不动。
