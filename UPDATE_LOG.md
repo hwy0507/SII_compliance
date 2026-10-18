@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-18 08:16 CST — direct episode 23 安全闭合但未通过
+
+- direct episode 23（`28137 → 29512`）return `-22.176615491163513`，`physical_valid=true`，
+  Task/Strict=`false/false`；checkpoint `0029512` 已核验，episode 24 已接续，当前
+  `29750 steps / 24751 updates`。
+- 最近有效回合仍无 Task/Strict 成功；MemoryCurrent 约 `2.79 GiB`、硬上限 3 GiB、禁 swap，
+  OOM/oom_kill/swap 全 0。尚未接续其他方法，继续保留所有失败/未完成收据。
+
 ## 2026-10-18 08:05 CST — direct episode 22 安全闭合但未通过
 
 - direct episode 22（`26762 → 28137`）return `-22.172866198672008`，`physical_valid=true`，
