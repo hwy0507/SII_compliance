@@ -1,5 +1,11 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 12:23 CST — direct stage05 安全完成，impedance 唯一接续
+
+- stage05 v4 direct 已完成登记安全预算：`status=complete`、`stop_reason=step_budget`、`63998 steps / 58999 updates`，最后完整 episode 49（`62623 → 63998`，`repair_train_011`）reward `-23.17844980895992`，physical_valid=true 但 placement 未完成，Task/Strict=`false/false`。独立审计 RMSE `41.78235200022407 mm`、峰值力矩 `47.68254852294922 Nm`、峰值速度 `0.37315973290061794 m/s`、外部穿透 `0.17627226572079716 mm`、edge 穿透 `0.23809605877076695 mm`、placement XY error `0.22902469616703416 m`；最后 checkpoint `checkpoint_0063998` 及全部失败收据 hash 已核验，公共 filter replay 最大差异 `0.0`。
+- direct 该阶段共 `32` 个完整回合，Task/Strict=`0/0`；其中 episode 47 的全局穿透早停保留为物理失败，不能将 step budget 或 reward 平台写成收敛。stage05 direct 不具备可验证 Task/Strict 成功或最终 acceptance 证据。
+- coordinator 已在 direct `returncode=0 + step_budget + checkpoint` 后按登记协议唯一接续 `impedance_payload`，其 execution 当前 `running`，从继承 checkpoint `23375` 安全推进到 `23500 steps / 18501 updates`、17 个历史回合，内存约 `2.03 GiB`、MemoryMax `3 GiB`、swap/OOM 均为 0。admittance/VMC 尚未启动，冻结 physics/MJB、最终 gate、canonical48 actor input、公共 filter、执行器限制和 `dt=5e-5` 未改。
+
 ## 2026-10-18 12:12 CST — direct episode 48 align 失败，episode 49 在途
 
 - stage05 v4 direct 已安全闭合 episode 48（`61248 → 62623`，`repair_train_013`）：训练 reward 总和 `-23.04404068170496`，完整 55 秒且物理约束有效，但 placement 未完成，Task/Strict=`false/false`；独立审计 RMSE `122.01575123139811 mm`、峰值力矩 `45.09836959838867 Nm`、峰值速度 `0.35822083995872994 m/s`、外部穿透 `0.15738012082257 mm`、placement XY error `0.31266814876600846 m`。失败收据、trace 和 checkpoint 链已保留并核验，`common_filter_replay_max_abs=0.0`。

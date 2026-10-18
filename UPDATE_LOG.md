@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-18 12:23 CST — Goal direct stage05 安全完成并按登记协议接续 impedance
+
+- 开工重新读取 `AGENTS.md`、本地缓存的 main/baseline refs 与更新日志；GitHub 访问仍因网络不可达失败，不能声称已核对远端最新状态。
+- direct stage05 v4 已安全完成：`status=complete`、`returncode=0`、`stop_reason=step_budget`、`63998 steps / 58999 updates`，最后完整 episode 49（`62623 → 63998`，`repair_train_011`）reward `-23.17844980895992`，physical_valid=true 但 placement 未完成，Task/Strict=`false/false`。独立审计收据给出 RMSE `41.78235200022407 mm`、峰值力矩 `47.68254852294922 Nm`、峰值速度 `0.37315973290061794 m/s`、外部穿透 `0.17627226572079716 mm`、edge 穿透 `0.23809605877076695 mm`、placement XY error `0.22902469616703416 m`；最后 checkpoint `checkpoint_0063998`、trace/checkpoint 链 hash 和公共 filter replay `0.0` 已核验。
+- direct stage05 共 32 个完整回合，Task/Strict=`0/0`；episode 47 的 `global_penetration_exceeded_2mm` 早停失败收据完整保留。该阶段只证明安全预算完成，不证明收敛或最终 acceptance 通过。
+- coordinator 已核对 direct 的 `returncode=0 + step_budget + checkpoint` 后唯一启动 `impedance_payload`。其 execution 当前真实 `running`，从 stage02 checkpoint `23375` 推进到 `23500 steps / 18501 updates`，17 个历史回合，`memory_current≈2.03 GiB`、MemoryMax `3 GiB`、swap `0`、OOM/oom_kill `0`。admittance/VMC 尚未接续，冻结 physics/MJB、最终 gate、canonical48 actor input、公共 action filter、执行器限制和 `dt=5e-5` 未改。
+
 ## 2026-10-18 12:12 CST — Goal 继续 direct episode 48 align 失败并安全接续 episode 49
 
 - 开工重新读取 `AGENTS.md`、本地缓存的 main/baseline refs 与更新日志；GitHub 访问仍因网络不可达失败，不能声称已核对远端最新状态。
