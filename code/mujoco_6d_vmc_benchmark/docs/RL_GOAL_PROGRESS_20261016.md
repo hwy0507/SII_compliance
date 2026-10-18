@@ -1,5 +1,10 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 15:38 CST — impedance episode 24 完整但双门失败
+
+- episode 24（`repair_train_020`）完整 55 s、physical_valid=true、return `-25.0734073710`；placement XY `0.0925720222 m`，RMSE `23.62694115 mm`，峰矩 `36.52885437 Nm`，峰速 `0.36988065 m/s`，穿透 `0.16244393 mm`。Task/Strict=`false/false`，不能计收敛。
+- impedance `34,750/29,751` steps/updates，episode 25 在途；资源峰值约 `2.97 GiB`，OOM/swap/max 均为 0。admittance/VMC 仍未接续。
+
 ## 2026-10-18 15:25 CST — impedance episode 23 局部改善，episode 24 在途
 
 - retry2 impedance 的 `repair_train_014` episode 23 完整 55 s、physical_valid=true、return `-25.4308254643`；placement XY `0.0900503496 m`，RMSE `23.54927312 mm`，峰矩 `36.50474548 Nm`，峰速 `0.35790685 m/s`，穿透 `0.13461189 mm`。Task/Strict=`false/false`，不计收敛。

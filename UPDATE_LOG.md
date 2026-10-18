@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-18 15:38 CST — stage06 impedance episode 24 仍未过双门
+
+- `repair_train_020` episode 24 完整 55 s，`physical_valid=true`，return `-25.0734073710`；Task/Strict=`false/false`，placement XY error `0.0925720222 m`。
+- 独立审计 RMSE `23.62694115 mm`、峰值力矩 `36.52885437 Nm`、峰值速度 `0.36988065 m/s`、外部穿透 `0.16244393 mm`。完整 audit/trace/hash 收据保留；局部低 placement 误差仍不足以计收敛。
+- impedance 当前 `34,750 steps / 29,751 updates`，episode 25（`repair_train_025`）在途；资源事件 `max/oom/oom-kill/swap=0`，峰值约 `2.97 GiB`。
+
 ## 2026-10-18 15:25 CST — stage06 impedance episode 23 placement 改善但双门仍失败
 
 - retry2 impedance episode 23（`repair_train_014`）完整 55 s，`physical_valid=true`，训练 return `-25.4308254643`；Task/Strict=`false/false`，placement XY error `0.0900503496 m`。
