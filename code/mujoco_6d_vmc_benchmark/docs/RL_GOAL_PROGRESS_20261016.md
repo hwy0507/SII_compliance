@@ -1,5 +1,13 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 08:35 CST — direct episode 25 恢复有效但仍未成功
+
+- direct episode 25 已安全闭合（`30887 → 32262`）：return `-21.788506945991138`，
+  `physical_valid=true`、Task/Strict=`false/false`；checkpoint `0032262` 已核验，episode 26
+  已接续。当前 execution `32262 steps / 27263 updates`。
+- 内存回落至约 `2.41 GiB`、MemoryMax `3 GiB`，`oom/oom_kill/swap/max=0`。最近窗口仍无
+  Task/Strict 成功；episode 24 的物理失败收据继续保留，尚未出现收敛证据。
+
 ## 2026-10-18 08:24 CST — direct episode 24 物理失败，资源接近上限
 
 - direct episode 24 已安全闭合（`29512 → 30887`）：return `-38.75759145229161`，

@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-18 08:35 CST — direct episode 25 安全闭合但未通过
+
+- direct episode 25（`30887 → 32262`）return `-21.788506945991138`，`physical_valid=true`，
+  Task/Strict=`false/false`；checkpoint `0032262` 已核验，episode 26 已接续，当前
+  `32262 steps / 27263 updates`。
+- worker 内存回落至约 `2.41 GiB`，MemoryMax 3 GiB、禁 swap；OOM/oom_kill/swap/max 全为 0。
+  继续保留 episode 24 物理失败收据，尚无 Task/Strict 成功或收敛证据。
+
 ## 2026-10-18 08:24 CST — direct episode 24 物理失败，接近内存上限
 
 - direct episode 24（`29512 → 30887`）return `-38.75759145229161`，`physical_valid=false`，
