@@ -6,6 +6,7 @@
 - stage05 v4 唯一 direct worker 真实推进并安全闭合 episode 34（`43262 → 44637`，`repair_train_001`）：训练 reward 总和 `-22.097350970690265`，`physical_valid=true` 但 placement 未完成，Task/Strict=`false/false`。独立审计收据给出 RMSE `598.491994844352 mm`、峰值力矩 `61.74088884153127 Nm`、峰值速度 `0.3748015290284962 m/s`、穿透 `0.1711538283485118 mm`、placement XY error `0.21765343104692766 m`；checkpoint `checkpoint_0044637` 已写入并核验，episode 35 已接续并仍在途。
 - worker 仍为 CPU1/单线程、单路、MemoryMax `3 GiB`、禁 swap；观测 current 约 `3.0 GiB`、`oom=0`、`oom_kill=0`，未重复启动。memory.events 的 max 计数仅记录硬限压力，保留原始收据，不伪称 OOM 或收敛。
 - 最近完整回合仍无 Task AND Strict 成功；三类 payload 尚未接续，统一 acceptance 未运行。冻结 physics/MJB、最终 gate、canonical48、公共 filter、执行器限制和 `dt=5e-5` 未改。
+- 本轮尝试核验共享归档主机 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/`，当前环境 SSH 被网络沙箱拒绝；episode 34 与 checkpoint 仍仅本地，未声称已归档。
 
 ## 2026-10-18 09:45 CST — direct episode 33 物理失败，安全接续 episode 34
 
