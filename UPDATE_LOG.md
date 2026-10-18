@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-18 08:05 CST — direct episode 22 安全闭合但未通过
+
+- direct episode 22（`26762 → 28137`）return `-22.172866198672008`，`physical_valid=true`，
+  Task/Strict=`false/false`；checkpoint `0028137` 已核验，episode 23 已接续，当前
+  `28500 steps / 23501 updates`。
+- cgroup current 约 `2.77 GiB`、peak `2.85 GiB`，硬上限 3 GiB、禁 swap；memory.events 的
+  `max/oom/oom_kill/swap` 全为 0。最近四回合仍无 Task/Strict 成功，继续保留失败收据并等待
+  direct 登记预算安全完成。
+
 ## 2026-10-18 07:58 CST — direct episode 21 安全闭合但未通过
 
 - direct episode 21（`25387 → 26762`）return `-21.712710806160278`，`physical_valid=true`，
