@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-18 13:06 CST — impedance episode 20 完整闭合，placement 反弹
+
+- stage05 impedance episode 20（`repair_train_030`）完整 55 s，`execution_complete=true`、`physical_valid=true`，外部最大穿透 `0.1840821940 mm`，无 early abort。
+- Task/Strict=`false/false`，placement XY error `0.2475394701 m`；独立审计 RMSE `24.56786820 mm`、峰值力矩 `46.04724750 Nm`、峰值速度 `0.40102188 m/s`。rollout、物理子步、action/filter 及 hash 收据保留。
+- impedance execution 已到 `28875 steps / 23876 updates`、21 个完整回合；MemoryCurrent 约 `2.51 GiB`、MemoryMax `3 GiB`，memory events max=`655` 但 OOM/oom-kill/swap=`0/0/0`。该回合不计收敛，admittance/VMC 尚未启动。
+
 ## 2026-10-18 12:55 CST — impedance episode 19 完整闭合，未过双门
 
 - stage05 impedance episode 19（`repair_train_018`）完整 55 s，`execution_complete=true`、`physical_valid=true`，外部最大穿透 `0.1437185159 mm`，无 early abort。
