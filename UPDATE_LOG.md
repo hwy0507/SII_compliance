@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-18 16:00 CST — impedance episode 26 reward 仍稳定
+
+- `repair_train_003` episode 26 完整 55 s，reward `-25.0389750758`，`physical_valid=true`，Task/Strict=`false/false`；独立审计 RMSE `23.84093574 mm`、峰矩 `42.18814468 Nm`、峰速 `0.36980618 m/s`、穿透 `0.16132135 mm`、placement XY `0.27947520 m`。
+- stage06 impedance 最近 5 个完整回合 reward 均值约 `-25.5656`、CV `0.0273`，支持训练集 reward 稳定；测试任务门仍单独失败，不能混写。
+- episode 27（`repair_train_026`）在途，execution `37,500/32,501` steps/updates，OOM/oom-kill/swap/max 均为 0，admittance/VMC 尚未接续。
+
 ## 2026-10-18 15:45 CST — 明确 baseline 收敛判据为训练集 reward 稳定
 
 - 用户补充判据：baseline 的“收敛”以训练集完整回合 reward 达到稳定窗口为主，测试集效果不作为是否收敛的必要条件；Task/Strict 仍单独保留并报告，不能与 reward 稳定混写。

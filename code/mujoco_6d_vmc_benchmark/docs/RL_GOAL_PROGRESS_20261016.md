@@ -1,5 +1,10 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 16:00 CST — impedance episode 26 reward 稳定
+
+- episode 26（`repair_train_003`）reward `-25.0389750758`，完整 55 s、physical_valid=true；RMSE `23.84093574 mm`、峰矩 `42.18814468 Nm`、峰速 `0.36980618 m/s`、穿透 `0.16132135 mm`、placement XY `0.27947520 m`，Task/Strict=`false/false`。
+- 最近5回合 reward CV=`0.0273`，训练回报稳定信号继续成立；episode27在途，impedance `37,500/32,501`，资源事件全为0。
+
 ## 2026-10-18 15:45 CST — reward 稳定作为 baseline 收敛主判据
 
 - 用户明确 baseline 收敛以训练集完整回合 reward 稳定为主；测试集效果和 Task/Strict 作为独立结果报告，不再把测试失败自动等同于训练未收敛。
