@@ -1,5 +1,11 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 12:35 CST — impedance episode 17 完整但 Task/Strict 失败
+
+- stage05 impedance 的 `repair_train_011` episode 17 已完成完整 55 s，`physical_valid=true`，外部穿透 `0.1795763851 mm`；Task/Strict=`false/false`，placement XY error `0.2389078682 m`。
+- 独立审计：RMSE `22.08346076 mm`、峰值力矩 `43.91260142 Nm`、峰值速度 `0.37893362 m/s`；完整 rollout、1.1M 物理子步、action/filter 相关收据和 hash 已保留。该回合不计收敛。
+- impedance 当前 `24750 steps / 19751 updates`、18 个完整回合，内存约 `1.99 GiB`、无 swap/OOM；同一 worker 继续运行。admittance/VMC 尚未接续。
+
 ## 2026-10-18 12:23 CST — direct stage05 安全完成，impedance 唯一接续
 
 - stage05 v4 direct 已完成登记安全预算：`status=complete`、`stop_reason=step_budget`、`63998 steps / 58999 updates`，最后完整 episode 49（`62623 → 63998`，`repair_train_011`）reward `-23.17844980895992`，physical_valid=true 但 placement 未完成，Task/Strict=`false/false`。独立审计 RMSE `41.78235200022407 mm`、峰值力矩 `47.68254852294922 Nm`、峰值速度 `0.37315973290061794 m/s`、外部穿透 `0.17627226572079716 mm`、edge 穿透 `0.23809605877076695 mm`、placement XY error `0.22902469616703416 m`；最后 checkpoint `checkpoint_0063998` 及全部失败收据 hash 已核验，公共 filter replay 最大差异 `0.0`。

@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-18 12:35 CST — impedance episode 17 安全闭合，未通过任务门
+
+- 同一 stage05 coordinator/worker 按登记协议继续运行；impedance episode 17（`repair_train_011`）已完整 55 s 闭合，`execution_complete=true`、`physical_valid=true`，外部最大穿透 `0.1795763851 mm`，无 early abort。
+- 该回合 `task_success=false`、`strict_success=false`，placement XY error `0.2389078682 m`；独立物理收据 RMSE `22.08346076 mm`、峰值力矩 `43.91260142 Nm`、峰值速度 `0.37893362 m/s`。完整 rollout/substep/audit/hash 收据保留。
+- impedance execution 已推进到 `24750 steps / 19751 updates`、18 个完整回合；MemoryCurrent 约 `1.99 GiB`、MemoryMax `3 GiB`、swap/OOM 均为 `0`。该结果不是收敛或 acceptance 证据，admittance/VMC 尚未启动。
+
 ## 2026-10-18 12:23 CST — Goal direct stage05 安全完成并按登记协议接续 impedance
 
 - 开工重新读取 `AGENTS.md`、本地缓存的 main/baseline refs 与更新日志；GitHub 访问仍因网络不可达失败，不能声称已核对远端最新状态。
