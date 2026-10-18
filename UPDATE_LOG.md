@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-18 09:36 CST — direct episode 32 安全闭合但仍未通过
+
+- stage05 v4 direct episode 32（`40512 → 41887`，`repair_train_008`）return `-22.11222727646045`，`physical_valid=true`，Task/Strict=`false/false`；`checkpoint_0041887` 已写入并核验 hash，episode 33 已接续，execution 当前 `41887 steps / 36888 updates`。
+- worker cgroup 回合边界 current 约 `2.33 GiB`、peak `3 GiB`、MemoryMax `3 GiB`、swap current `0`；`memory.events.max=1559`，`oom=0`、`oom_kill=0`、`swap=0`。max 计数记录硬限压力，不改写为 OOM 或成功。
+- 最近完整回合仍没有 Task AND Strict 成功；impedance/admittance/VMC 尚未接续，统一 acceptance 继续等待四族完成。冻结 physics/MJB、最终 gate、canonical48、公共 filter、执行器限制和 `dt=5e-5` 未改。
+
 ## 2026-10-18 09:27 CST — direct episode 31 安全闭合但仍未通过
 
 - stage05 v4 唯一 direct worker 继续真实推进：episode 31（`39137 → 40512`，`repair_train_009`）return `-22.137743486609715`，`physical_valid=true`，Task/Strict=`false/false`；`checkpoint_0040512` 已写入并核验 hash，episode 32 已接续，execution 当前 `40512 steps / 35513 updates`。
