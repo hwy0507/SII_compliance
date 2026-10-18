@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-18 12:45 CST — impedance episode 18 完整闭合，仍未过 Task/Strict
+
+- 同一 stage05 impedance worker 的 episode 18（`repair_train_021`）完整 55 s、`execution_complete=true`、`physical_valid=true`，外部最大穿透 `0.1453828183 mm`，无 early abort。
+- Task/Strict=`false/false`，placement XY error `0.2186105473 m`；独立物理指标 RMSE `19.85439081 mm`、峰值力矩 `44.25362992 Nm`、峰值速度 `0.36817849 m/s`。全部 rollout/substep/audit/hash 收据保留。
+- impedance execution 当前 `26250 steps / 21251 updates`、19 个完整回合；MemoryCurrent 约 `2.85 GiB`、MemoryMax `3 GiB`，swap/OOM=`0/0`。该回合不计收敛，admittance/VMC 尚未启动。
+
 ## 2026-10-18 12:35 CST — impedance episode 17 安全闭合，未通过任务门
 
 - 同一 stage05 coordinator/worker 按登记协议继续运行；impedance episode 17（`repair_train_011`）已完整 55 s 闭合，`execution_complete=true`、`physical_valid=true`，外部最大穿透 `0.1795763851 mm`，无 early abort。

@@ -1,5 +1,11 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 12:45 CST — impedance episode 18 完整但双门失败
+
+- `repair_train_021` episode 18 完整 55 s，physical_valid=true，外部穿透 `0.1453828183 mm`；Task/Strict=`false/false`，placement XY error `0.2186105473 m`。
+- 独立审计：RMSE `19.85439081 mm`、峰值力矩 `44.25362992 Nm`、峰值速度 `0.36817849 m/s`；收据及 hash 保留，不能把误差下降写成收敛。
+- impedance 当前 `26250/21251`（steps/updates）、19 个完整回合，MemoryCurrent 约 `2.85 GiB`、无 swap/OOM；同一 worker 继续，admittance/VMC 未接续。
+
 ## 2026-10-18 12:35 CST — impedance episode 17 完整但 Task/Strict 失败
 
 - stage05 impedance 的 `repair_train_011` episode 17 已完成完整 55 s，`physical_valid=true`，外部穿透 `0.1795763851 mm`；Task/Strict=`false/false`，placement XY error `0.2389078682 m`。
