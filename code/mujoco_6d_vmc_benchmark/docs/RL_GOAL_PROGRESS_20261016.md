@@ -1,5 +1,11 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 09:45 CST — direct episode 33 物理失败，episode 34 在途
+
+- stage05 v4 direct 真实推进到 `43262 steps / 38263 updates`。episode 33（`41887 → 43262`，`repair_train_029`）return `-32.99211158353711`，`physical_valid=false`、Task/Strict=`false/false`；`checkpoint_0043262` hash 已核验，episode 34（下一回合）已接续。
+- 回合边界 cgroup current 约 `2.39 GiB`、peak `3 GiB`、MemoryMax `3 GiB`、swap `0`；`memory.events.max=1931`，OOM/oom_kill/swap 均为 0。失败收据保留，未重启或重复派发。
+- 最近回合仍无 Task AND Strict 成功；三类 payload 尚未启动，当前阶段不具备收敛或最终 acceptance 证据。
+
 ## 2026-10-18 09:36 CST — direct episode 32 安全闭合，episode 33 在途
 
 - stage05 v4 direct 已到 `41887 steps / 36888 updates`。episode 32（`40512 → 41887`，`repair_train_008`）return `-22.11222727646045`，`physical_valid=true`、Task/Strict=`false/false`；`checkpoint_0041887` hash 已核验，episode 33 已接续。
