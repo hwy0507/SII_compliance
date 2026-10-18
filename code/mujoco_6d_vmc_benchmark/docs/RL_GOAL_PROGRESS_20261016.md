@@ -1,5 +1,13 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 08:55 CST — direct episode 27 有效但仍未通过
+
+- direct episode 27 已安全闭合（`33637 → 35012`）：return `-22.112554771110876`，
+  `physical_valid=true`、Task/Strict=`false/false`；checkpoint `0035012` 已核验，episode 28
+  已接续。当前 execution `35012 steps / 30013 updates`。
+- cgroup current 约 `2.98 GiB`、MemoryMax `3 GiB`，memory.events `max/oom/oom_kill/swap=0`。
+  最近有效回合仍无任务成功；继续保留 episode 26 物理失败收据和全部未完成证据。
+
 ## 2026-10-18 08:46 CST — direct episode 26 物理失败
 
 - direct episode 26 已安全闭合（`32262 → 33637`）：return `-27.024080870348993`，
