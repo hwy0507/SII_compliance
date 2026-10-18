@@ -1,5 +1,11 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 15:45 CST — reward 稳定作为 baseline 收敛主判据
+
+- 用户明确 baseline 收敛以训练集完整回合 reward 稳定为主；测试集效果和 Task/Strict 作为独立结果报告，不再把测试失败自动等同于训练未收敛。
+- 阶段窗口：direct stage06 最近4回合均值 `-22.4477`、CV `0.0248`；impedance stage06 已完成4回合均值 `-25.5656`、CV `0.0290`。该统计仍是阶段性，等四路完成后再统一计算相邻窗口和完整回报曲线。
+- impedance `36,000/31,001` steps/updates，episode26在途，资源事件全为0；admittance/VMC尚未接续。
+
 ## 2026-10-18 15:38 CST — impedance episode 24 完整但双门失败
 
 - episode 24（`repair_train_020`）完整 55 s、physical_valid=true、return `-25.0734073710`；placement XY `0.0925720222 m`，RMSE `23.62694115 mm`，峰矩 `36.52885437 Nm`，峰速 `0.36988065 m/s`，穿透 `0.16244393 mm`。Task/Strict=`false/false`，不能计收敛。

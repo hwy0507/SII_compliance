@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-18 15:45 CST — 明确 baseline 收敛判据为训练集 reward 稳定
+
+- 用户补充判据：baseline 的“收敛”以训练集完整回合 reward 达到稳定窗口为主，测试集效果不作为是否收敛的必要条件；Task/Strict 仍单独保留并报告，不能与 reward 稳定混写。
+- 只读窗口统计：direct stage06 最近 4 个完整回合 reward 均值 `-22.4477`、CV `0.0248`；impedance stage06 已完成 4 个回合 reward 均值 `-25.5656`、CV `0.0290`。这支持训练 reward 稳定的阶段性证据，但四族尚未完成统一统计和最终测试。
+- impedance 当前仍由唯一 worker 运行至 `36,000/41,250 steps`，episode 26 在途；MemoryCurrent 约 `2.61 GiB`、峰值约 `2.97 GiB`，OOM/oom-kill/swap/max 均为 0。
+
 ## 2026-10-18 15:38 CST — stage06 impedance episode 24 仍未过双门
 
 - `repair_train_020` episode 24 完整 55 s，`physical_valid=true`，return `-25.0734073710`；Task/Strict=`false/false`，placement XY error `0.0925720222 m`。
