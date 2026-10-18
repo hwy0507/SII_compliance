@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-18 10:16 CST — Goal 继续 direct episode 36 grasp 失败并安全接续 episode 37
+
+- 开工重新读取 `AGENTS.md`、本地缓存的 main/baseline refs 与更新日志；GitHub `ls-remote/fetch` 仍因网络不可达失败，不能声称已核对远端最新状态。
+- stage05 v4 direct episode 36（`46012 → 47387`，`repair_train_002`）训练 reward 总和 `-22.566989089964306`，物理约束有效但 placement 未完成，Task/Strict=`false/false`。独立审计收据给出 RMSE `130.65145770708352 mm`、峰值力矩 `40.14043426513672 Nm`、峰值速度 `0.3817050068084929 m/s`、外部穿透 `0.1866135111595336 mm`、placement XY error `0.327585590435652 m`；checkpoint `checkpoint_0047387` 已写入并核验，episode 37 已接续并仍在途。
+- worker 回合边界仍为 CPU1/单线程、单路、MemoryMax `3 GiB`、禁 swap；`memory_current≈2.36 GiB`、`oom=0`、`oom_kill=0`，`memory.events.max=3539`。没有重复启动或修改冻结条件。
+- 最近完整回合仍无 Task AND Strict 成功；三类 payload 尚未接续，统一 acceptance 未运行。episode 36 的 grasp 失败和全部原始收据保留，不能写成收敛。
+
 ## 2026-10-18 09:55 CST — Goal 继续 direct episode 34 placement 失败并安全接续 episode 35
 
 - 开工读取 `AGENTS.md`、本地缓存的 main/baseline refs 与更新日志；`git ls-remote/fetch` 因 GitHub 网络不可达，本轮不能声称已核对远端最新状态。未跟踪用户文件 `docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md` 保留不动。
