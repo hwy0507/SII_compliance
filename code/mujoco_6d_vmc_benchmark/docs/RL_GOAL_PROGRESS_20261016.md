@@ -1,5 +1,11 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 10:51 CST — direct episode 39 lift 失败，episode 40 在途
+
+- stage05 v4 direct 已安全闭合 episode 39（`50137 → 51512`，`repair_train_000`）：训练 reward 总和 `-23.071766596698623`，物理约束有效但 placement 未完成，Task/Strict=`false/false`；独立审计 RMSE `63.18109023748116 mm`、峰值力矩 `49.13493347167969 Nm`、峰值速度 `0.3899582927124073 m/s`、外部穿透 `0.14555245881640888 mm`、placement XY error `0.20144397410409232 m`。完整失败收据和 checkpoint `checkpoint_0051512` 已保留并核验。
+- 当前 execution `51512 steps / 46513 updates`，协调器已唯一接续 episode 40；worker 仍真实运行。回合边界 `memory_current≈2.39 GiB`、MemoryMax `3 GiB`、swap `0`、OOM/oom_kill `0`，`memory.events.max=5225` 作为压力证据保留。
+- 最近完整回合仍无 Task AND Strict 成功；impedance/admittance/VMC 尚未接续，当前阶段没有收敛或最终 acceptance 证据。冻结 physics/MJB、最终 gate、canonical48 actor input、公共 action filter、执行器限制和 `dt=5e-5` 未改。
+
 ## 2026-10-18 10:40 CST — direct episode 38 lift 失败，episode 39 在途
 
 - stage05 v4 direct 已安全闭合 episode 38（`48762 → 50137`，`repair_train_022`）：训练 reward 总和 `-22.941690075306578`，物理约束有效但 placement 未完成，Task/Strict=`false/false`；独立审计 RMSE `78.88479343808456 mm`、峰值力矩 `42.85557556152344 Nm`、峰值速度 `0.38144000632999375 m/s`、外部穿透 `0.17380413852597834 mm`、placement XY error `0.2626936073919649 m`。完整失败收据和 checkpoint `checkpoint_0050137` 已保留并核验。
