@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-18 11:23 CST — Goal 继续 direct episode 43 align 失败并安全接续 episode 44
+
+- 开工重新读取 `AGENTS.md`、本地缓存的 main/baseline refs 与更新日志；GitHub 访问仍因网络不可达失败，不能声称已核对远端最新状态。
+- stage05 v4 direct episode 43（`54920 → 56295`，`repair_train_012`）完整运行 55 秒，训练 reward 总和 `-22.174826750856035`，物理约束有效但 placement 未完成，Task/Strict=`false/false`。独立审计收据给出 RMSE `401.338819998968 mm`、峰值力矩 `62.64324188232422 Nm`、峰值速度 `0.38580133746345097 m/s`、外部穿透 `0.11523205667478324 mm`、placement XY error `0.17898362707377896 m`；trace/checkpoint 链 hash 已核验，公共 filter replay 最大差异 `0.0`。
+- worker 回合边界仍为 CPU1/单线程、单路、MemoryMax `3 GiB`、禁 swap；最新 execution `56295 steps / 51296 updates`，`memory_current≈2.41 GiB`、`oom=0`、`oom_kill=0`、swap `0`，`memory.events.max=7618` 作为硬限压力证据保留。episode 44 已唯一接续并仍在途。
+- 最近完整回合仍无 Task AND Strict 成功；三类 payload 尚未接续，统一 acceptance 未运行。episode 43 的 align 失败和全部原始收据保留，不能写成收敛；冻结 physics/MJB、最终 gate、canonical48 actor input、公共 action filter、执行器限制和 `dt=5e-5` 未改。
+
 ## 2026-10-18 11:15 CST — Goal 继续 direct episode 42 align 失败并安全接续 episode 43
 
 - 开工重新读取 `AGENTS.md`、本地缓存的 main/baseline refs 与更新日志；GitHub 访问仍因网络不可达失败，不能声称已核对远端最新状态。
