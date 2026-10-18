@@ -1,5 +1,10 @@
 # 持续Goal：四类RL训练与收敛修复
 
+## 2026-10-18 15:25 CST — impedance episode 23 局部改善，episode 24 在途
+
+- retry2 impedance 的 `repair_train_014` episode 23 完整 55 s、physical_valid=true、return `-25.4308254643`；placement XY `0.0900503496 m`，RMSE `23.54927312 mm`，峰矩 `36.50474548 Nm`，峰速 `0.35790685 m/s`，穿透 `0.13461189 mm`。Task/Strict=`false/false`，不计收敛。
+- impedance 当前 `33,000/28,001` steps/updates，episode 24 在途，资源无 OOM/swap/max；admittance/VMC 仍等待安全接续。完整收据和 hash 已保留。
+
 ## 2026-10-18 15:00 CST — stage06 retry2 direct 完成，impedance 在途
 
 - 开工核对 `AGENTS.md`、本地 main/baseline refs；GitHub fetch 因网络不可达，未声称远端已更新。stage06 retry2 direct 唯一 worker `complete/step_budget`，`74,998/69,999` steps/updates、57 个完整回合；最后回合物理有效但 `Task/Strict=false/false`，placement XY `0.1920621426 m`、RMSE `667.3329774 mm`、峰矩 `63.09082794 Nm`、峰速 `0.34118586 m/s`、穿透 `0.08921768 mm`。不能称为收敛。

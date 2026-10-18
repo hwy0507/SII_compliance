@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2026-10-18 15:25 CST — stage06 impedance episode 23 placement 改善但双门仍失败
+
+- retry2 impedance episode 23（`repair_train_014`）完整 55 s，`physical_valid=true`，训练 return `-25.4308254643`；Task/Strict=`false/false`，placement XY error `0.0900503496 m`。
+- 独立审计 RMSE `23.54927312 mm`、峰值力矩 `36.50474548 Nm`、峰值速度 `0.35790685 m/s`、外部穿透 `0.13461189 mm`；audit/trace/hash 收据已保留。placement 改善不能代替双门成功或收敛证据。
+- impedance execution 已推进到 `33,000 steps / 28,001 updates`，episode 24（`repair_train_020`）在途；MemoryCurrent 约 `2.25 GiB`、峰值约 `2.92 GiB`，OOM/oom-kill/swap/max 均为 0。admittance/VMC 尚未接续。
+
 ## 2026-10-18 15:00 CST — Goal stage06 retry2 direct 安全完成，impedance 已唯一接续
 
 - 开工按 `AGENTS.md` 和 `sii-research-sync` 核对仓库；`git fetch`/GitHub 仍因网络不可达失败，记录本地缓存状态，未将缓存冒充远端最新。远端 refs 可见：baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`、main=`d4bdf1adbb92619c62c213326371c03111915dac`（本地 main 领先 67 个提交）。
