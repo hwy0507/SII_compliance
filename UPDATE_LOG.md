@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-18 08:24 CST — direct episode 24 物理失败，接近内存上限
+
+- direct episode 24（`29512 → 30887`）return `-38.75759145229161`，`physical_valid=false`，
+  Task/Strict=`false/false`；checkpoint `0030887` 已核验，episode 25 已接续，当前
+  `31000 steps / 26001 updates`。
+- worker cgroup current 约 `3.02 GiB`、MemoryMax 3 GiB、禁 swap；`memory.events` 中
+  `max/oom/oom_kill/swap=0`。未重启、未修改冻结物理/gate/filter/执行器限制，保留该失败和资源压力证据。
+
 ## 2026-10-18 08:16 CST — direct episode 23 安全闭合但未通过
 
 - direct episode 23（`28137 → 29512`）return `-22.176615491163513`，`physical_valid=true`，
