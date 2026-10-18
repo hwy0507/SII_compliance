@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-18 10:40 CST — Goal 继续 direct episode 38 lift 失败并安全接续 episode 39
+
+- 开工重新读取 `AGENTS.md`、本地缓存的 main/baseline refs 与更新日志；GitHub 访问仍因网络不可达失败，不能声称已核对远端最新状态。
+- stage05 v4 direct episode 38（`48762 → 50137`，`repair_train_022`）训练 reward 总和 `-22.941690075306578`，物理约束有效但 placement 未完成，Task/Strict=`false/false`。独立审计收据给出 RMSE `78.88479343808456 mm`、峰值力矩 `42.85557556152344 Nm`、峰值速度 `0.38144000632999375 m/s`、外部穿透 `0.17380413852597834 mm`、placement XY error `0.2626936073919649 m`；checkpoint `checkpoint_0050137` 已写入并核验，episode 39 已接续并仍在途。
+- worker 回合边界仍为 CPU1/单线程、单路、MemoryMax `3 GiB`、禁 swap；`memory_current≈2.37 GiB`、`oom=0`、`oom_kill=0`，`memory.events.max=4641`。没有重复启动或修改冻结条件。
+- 最近完整回合仍无 Task AND Strict 成功；三类 payload 尚未接续，统一 acceptance 未运行。episode 38 的 lift 失败和全部原始收据保留，不能写成收敛。
+
 ## 2026-10-18 10:28 CST — Goal 继续 direct episode 37 lift 失败并安全接续 episode 38
 
 - 开工重新读取 `AGENTS.md`、本地缓存的 main/baseline refs 与更新日志；GitHub 访问仍因网络不可达失败，不能声称已核对远端最新状态。
