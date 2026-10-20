@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-20 — 发布已有未见条件 RL/ESN 对照结果
+
+- 新增 `docs/RL_ESN_UNSEEN_COMPARISON_20261020.md`，整理已完成的
+  `office_v7_uniform24_20261008` 384 条回合审计中的 ESN 与 5 个历史 RL 配置。
+- 同一 24 条未见条件上，ESN 为 Task `20/24`、Strict `16/24`；历史参数型 RL 和直接动作 RL
+  均为 Task/Strict `0/24`。参数型 RL 的部分物理指标较低，但不能抵消任务门全部失败。
+- 明确标注该比较使用 `office_rl_*_2026100301` 历史 checkpoint，不是最终
+  `rl_goal_acceptance_20261018_v3` checkpoint；因此结果可发布为历史 RL/ESN 对照，不能冒充
+  最终 RL 的未见泛化结论。最终 checkpoint 的 lineage-matched 测试仍是持续 Goal 的后续工作。
+
 ## 2026-10-18 20:45 CST — RL acceptance 小型 evidence 已归档并逐文件核验
 
 - 将最终 acceptance `outputs/rl_goal_acceptance_20261018_v3` 的小型证据（根/四方法
