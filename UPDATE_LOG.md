@@ -1,5 +1,37 @@
 # 更新日志
 
+## 2026-10-25 — critic重置全部接续、阶段审计与在线性能剖析
+
+- 最新补充：SAC Direct/Impedance均已在source09真实更新，剩两路仍排空；nominal57/120。
+  critic-reset后无辅助更新60样本/66.81s GPU均值57.17/47.87/28.50/33.22%，仍未四卡持续50%；
+  窗口背景/SAC Impedance实际启动收据时间另存证据，不声称独占稳态测试。
+
+- fetch核对main a52dfba/baseline f6e8f8c并读取两分支日志，保留本地未发布历史。
+- 四路critic-reset均完成父cycle5、真正启动新cycle6并产生新transition/update，协调器正常完成，
+  原父进程正常结束、所有cycle5 checkpoint归档无遗漏，early归档正常退出、常规归档接管。
+  父Task/Strict为0/0、18/17、13/13、17/17；仍无收敛。SAC Direct也已完成cache接续并更新，
+  其他SAC仍按原协调器排空，无重复派发。正式physics/actor合同/filter/gate/执行器/dt未改。
+- 增强只读诊断：验证固定奖励源码后报告必要soft-Q上界；分开父/新采样终端误差，校验网络不变，
+  明确hidden-clock混叠限制。新有限observer依次等父cycle5和新cycle6/7精确归档，0更新/0physics，
+  不用partial冒充整轮。父完整诊断/图已完成并目视核验，Q均值10913/6996/122752/68615，
+  critic loss持续恶化，不能拿actor loss下降当收敛。observer三小时期限仅限制观察派发，不停训练。
+- 早期新阶段只读诊断已完成：当时可用Impedance/VMC新增6000/4000transition，Q32.07/447.27，
+  无样本超过当时alpha的global上界；终端MAE32.30/440.51且全来自父replay，尚无新完整回合。
+  图已目视检查，VMC仍有Q增长/loss回升；不是修复有效、完整比较或收敛证明。
+- 独立安装py-spy0.4.1（未改正式env）剖析live Direct60s：14995样本、0错误；剔除11996空Python
+  栈后，更新60.32%、等待仿真25.21%、replay6.27%、checkpoint3.20%、actor3.00%。这是共享负载
+  Python栈占比，非CUDA核耗时或空栈=GPU空闲；checkpoint不是最大观测瓶颈，profiler已退出。
+- 新unused target梯度抑制候选保持actor动作梯度；两反转顺序×四接口共4096辅助更新，完整
+  learner/optimizer/alpha/RNG、采样RNG和非target梯度精确一致，只有unused target梯度按设计变化。
+  父状态不变、辅助权重丢弃、所有进程退出；提速1.009–1.197倍有顺序/共享负载波动，未部署正式
+  runtime，不宣称在线GPU利用达标。源码、只读observer、验证器和小型证据同步。
+- cycle3固定Direct三代表回合独立审计完成：均55s失败于carry、无机器安全违规，filter/力矩投影
+  通过；active-long接触阈值比例100%仍是失败。矩阵3/12继续Impedance；nominal55/120。
+  无最终共同SPT参考或指定ESN比较。详见docs/RL_PUBLISHED_DIAGNOSTICS_20261025.md；产物仍在
+  `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/`。
+  Goal保持活动，GitHub发布状态另行核验。
+
+
 ## 2026-10-25 — soft价值上界、actor反馈与独立critic重置验证
 
 - fetch核对远端main a52dfba/baseline f6e8f8c，读取两分支日志；保留本地未发布历史。

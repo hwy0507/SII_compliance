@@ -7,6 +7,40 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新补充：SAC Direct和Impedance均已迁入source09并真实更新，其余两路仍排空。nominal57/120。
+四路critic-reset启动后的60样本/66.81s GPU均值57.17/47.87/28.50/33.22%，min2/0/0/0，
+辅助更新和profiler已结束，含GPU1固定评估；SAC Impedance启动时间与窗口关系另存证据，不称稳态
+独占测量，四卡持续50%仍未实现。原始RESTART_ONLINE_GPU_60S_01.json。
+
+- **最新实际状态：critic-reset四路全部交接成功，原协调器已正常结束。** 当前run仍为
+  `runs/critic_reset_online_seed20261025_v1` / source_train08；新Direct1471404、Impedance981510、
+  Admittance1373289、VMC1099359已产生真实新steps/updates（行动前重验PID身份）。常规archiver1477077。
+  early归档已正常退出无遗漏，父cycle5四个checkpoint全部归档，父进程正常结束；不要恢复旧STOP或重启协调器。
+  当前cycle6，仍按登记运行两个新完整周期6/7；两轮结束需自主复核/继续Goal，不把阶段结束当收敛。
+- 父cycle5四路Task/Strict为0/0、18/17、13/13、17/17（各30），无健康收敛。新只读阶段审计器
+  PID900989，`runs/critic_restart_stage_audit_v1`（冻结runtime/critic_restart_audit_v1）已完成父cycle5
+  全报告/图，正等新cycle6/7精确归档；0更新/0physics，三小时仅是observer派发保护，不停训练。
+  父Q均值10913.10/6996.29/122751.82/68614.76，末1000更新critic loss约8.18万/13.22万/9008万/1225万。
+  网络不变和回合奖励核验通过，图已目视检查。不要把巨额Q解释为高任务回报。
+- `runs/critic_restart_early_health_v1`已经结束：当时仅Impedance/VMC有新checkpoint，分别新增
+  6000/4000transition、12000/8000更新，Q均值32.07/447.27，当前alpha上界120.64/4709.82，样本
+  无超界；in-bag终端MAE32.30/440.51，全来自父replay且当时无新完整回合。图已检查，VMC仍有Q
+  增长/loss回升，不是收敛或成功证明。诊断新增父/新终端分栏、精确reward源码上界合同和网络不变检查。
+- 60s live py-spy剖析完成：14995样本/0错误，11996空Python栈，2999可识别栈中更新60.32%、
+  等仿真25.21%、replay6.27%、checkpoint3.20%、actor3.00%；不能把空栈当GPU空闲或声称全卡提速。
+  profiler装在独立tools/py_spy_0_4_1，正式Python环境未改，profiler已退出。
+- 新候选 `published_target_gradients_20261025.py` 仅抑制unused target参数梯度，保留actor通过动作输入
+  的梯度；**未部署到正式runtime**。`runs/target_gradient_validation_v1`两顺序×四接口×256/arm，
+  4096辅助更新结束，完整learner/optimizer/alpha/RNG及所有非target梯度精确一致，只有unused target
+  梯度按设计不同。父状态不变、权重丢弃，进程都退出；两顺序提速1.009–1.197倍但共享负载/顺序波动，
+  不当在线提速或GPU50%证明。当前critic-reset科学试验的learner源码和其他设置保持。
+- cycle3固定中期矩阵3/12已审计：Direct三回合均55s失败于carry、无机器安全违规，physical/filter/
+  torque审计通过；active-long接触6.7698s、阈值比例100%，不能替代成功。当前CPU54评Impedance，
+  evaluator847406/协调器3686420（重验）。nominal本次55/120。SAC Direct已迁入source09新run并真实
+  更新，其他三个仍在原cache协调器2370128排空；不要重复派发。详情见最新诊断文档及
+  `PUBLISHED_RESTART_HEALTH_AND_PROFILE_20261025.json`。目标仍未完成，指定ESN仍缺。
+
+
 - **最新科学修复派发（优先于下方历史快照）**：`runs/critic_reset_online_seed20261025_v1`，
   `REGISTRATION_CHEQ_CRITIC_RESTART_V1.json`，协调器PID429389（行动前重验）。父CHEQ performance v3
   正在cycle5，STOP_REQUESTED是完整周期边界交接；勿恢复父进程或重复启动协调器。新阶段不是精确性能

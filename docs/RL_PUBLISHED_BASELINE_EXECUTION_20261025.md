@@ -472,3 +472,41 @@ Details, assumptions, auxiliary failure receipts and compact evidence are in
 Fresh-critic and feedback probes have ended; they are finite useful diagnostics,
 not permanent GPU occupancy. No final SPT reference, designated-ESN comparison,
 healthy convergence or sustained all-card50% GPU utilization is claimed.
+
+
+The critic-reset handoff has subsequently completed for all four interfaces.
+All replacement learners have real new steps/updates in cycle6; all original
+cycle5 checkpoints are archived, and the old learners ended normally. The new
+normal archive has taken over without missed boundaries. This confirms execution
+of the registered intervention, not improved control or convergence.
+
+A finite read-only stage observer now diagnoses exact parent cycle5 and new
+cycles6/7 separately. The parent report/plot has completed and still shows
+severe value/loss growth. Early partial Impedance/VMC snapshots after reset
+have lower Q values and no sampled global-bound violations, but no ended new
+episodes at capture; they do not establish recovery. The updated diagnostic
+checks its audited reward source and unchanged networks and distinguishes
+retained/new terminal rows. See the diagnostic report for hidden-clock limits.
+
+A60s live stack profile identifies learning updates and sampler waits as the
+main Python-stack categories. A separate unused-target-gradient suppression
+candidate passes4096 finite exact-used-state auxiliary updates in two reversed
+orders across all interfaces. It is not deployed to the active scientific
+trial; timings are shared-load measurements, not online GPU50% evidence.
+
+The fixed-cycle3 matrix is3/12 audited, with Direct failing all three at carry;
+Impedance is now on CPU54. Nominal is55/120. SAC Direct has actually moved to
+its cache runtime/source_train09; other SAC parents still drain through their
+existing coordinator. All earlier state paragraphs should be read as snapshots.
+
+
+The subsequent60-sample window after all four replacements started spans66.81s:
+GPU means57.17/47.87/28.50/33.22%, minima2/0/0/0. Auxiliary updates and profiling
+had ended; formal learners and the GPU1 fixed-policy evaluator were active.
+This is still below the sustained all-card50% target. Raw samples are
+`runs/RESTART_ONLINE_GPU_60S_01.json`; exact SAC Impedance startup-receipt timing
+relative to the window is separately recorded in the compact evidence, so the
+window is not assumed to have an isolated stationary background. At the latest
+check both SAC Direct and Impedance had genuinely resumed source_train09,
+while Admittance/VMC still drained. Nominal reached57/120. No final SPT/ESN
+comparison or convergence claim is available.

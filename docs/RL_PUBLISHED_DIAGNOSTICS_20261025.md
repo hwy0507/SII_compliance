@@ -1308,3 +1308,169 @@ the new restart coordinator is only waiting/preparing on CPU. This again falls
 short of sustained all-card50%. Raw samples are
 `runs/SOURCE08_ONLINE_GPU_60S_02.json`; do not count completed probes as current
 GPU load. New stages must be judged by real learning and evaluation, not load.
+
+
+## Critic restart is producing real transitions; first partial health snapshots
+
+The registered coordinator has now actually restarted Impedance, VMC and
+Admittance; Direct was still completing its original cycle5 at this capture.
+No duplicate learner or migration failure was found. Each replacement uses
+source_train08 and its own parent/restart checkpoint receipts. SAC Direct has
+also completed its separate cache migration and is updating source_train09;
+other SAC parents still drain through the existing coordinator.
+
+`runs/critic_restart_early_health_v1` completed a CPU-only, zero-update diagnosis
+of the two replacement snapshots available when it began. Their network tensors
+are unchanged, and the plot was visually checked. These partial snapshots have
+unequal new-transition counts and no completed new episode, so no new success
+rate or reward-plateau conclusion is available yet.
+
+| Interface | New transitions since reset | New optimizer updates | Sampled Q mean | Current-alpha global upper bound | Above-bound fraction | Alpha |
+|---|---:|---:|---:|---:|---:|---:|
+| Impedance |6000|12000|32.0672|120.6412|0%|0.0263244|
+| VMC |4000|8000|447.2673|4709.8162|0%|0.970808|
+
+In-bag terminal MAE is32.30/440.51 respectively, on retained parent terminal
+rows only (228 rows/interface); there are no new terminal rows yet. The VMC
+curve still shows growing Q and a critic-loss rebound after its initial drop.
+The reset has changed value scale; this does not demonstrate calibration or
+healthy convergence. Temperature changes also change the appropriate soft-value
+bound. The current success criterion is not merely being below that bound.
+
+The read-only diagnostic now verifies the exact audited reward/efficiency
+sources before applying the bound, verifies unchanged network tensors, and
+reports retained versus newly collected terminal errors when the replay has
+not wrapped. It explicitly warns that missing episode time can produce terminal
+aliasing. `runs/critic_restart_stage_audit_v1`, frozen in
+`runtime/critic_restart_audit_v1`, waits for exact parent cycle5 and new cycles6/7
+archives, then produces separate full reports and curves. It performs0 training
+updates/physics, has a three-hour observer deadline, and never substitutes a
+partial checkpoint for a complete cycle. The observer deadline does not stop
+training or cap the overall Goal; reports still require scientific review.
+
+## Live learner sampling identifies waiting and update overhead
+
+A separately installed py-spy0.4.1 binary under `sii_rl/tools/py_spy_0_4_1`
+sampled the live Direct parent for60 seconds at50Hz with idle stacks included.
+The training Python environment was not modified. There were14,995 samples and
+0 sampling errors:11,996 had empty Python stacks; the2,999 identifiable Python
+stacks predominantly had the trainer module as root, with an additional partial
+stack rooted in PyTorch named-members iteration. Percentages below condition on
+identifiable Python stacks, not on all native threads or GPU execution time.
+
+| Identifiable Python-stack category | Samples | Fraction |
+|---|---:|---:|
+| Published learner update |1809|60.32%|
+| Waiting for sampler events |756|25.21%|
+| Replay sampling |188|6.27%|
+| Checkpoint preparation/save |96|3.20%|
+| Actor inference/mixing |90|3.00%|
+| Other |60|2.00%|
+
+Checkpoint saving is not the largest observed bottleneck. Sampler waiting and
+update overhead both matter; late cycles also have fewer live physics samplers.
+This is one shared-load Direct window, not isolated CPU/CUDA kernel attribution
+or a demonstrated four-GPU utilization fix. Original raw stacks and profiler
+hash are in `runs/live_learner_profile_v1`.
+
+## Exact-state candidate: suppress unused target-parameter gradients
+
+The published CHEQ actor loss differentiates through target critics. Its target
+weights update through Polyak averaging, so their accumulated parameter gradients
+are unused. Freezing those parameter gradients still permits gradients through
+the critic's action input into the actor; it must not use no_grad or detach on
+the actor-loss forward path.
+
+`published_target_gradients_20261025.py` is a candidate helper, not deployed in
+the active science trial. `runs/target_gradient_validation_v1` completed two
+reverse-order trials for all four interfaces,256 updates/arm,4096 auxiliary
+updates total. Full learner/network/optimizer/alpha/RNG state, sampling RNG and
+all non-target gradients match exactly. Only the intentionally unused target
+parameter gradients differ. Parent checkpoints/replay are unchanged; auxiliary
+weights were discarded and every validation worker exited.
+
+| Interface | Observed speedup, first / reversed trial |
+|---|---:|
+| Direct |1.197 /1.044|
+| Impedance |1.144 /1.015|
+| Admittance |1.190 /1.066|
+| VMC |1.144 /1.009|
+
+The order dependence and shared GPU load limit timing conclusions. Exact used-
+state equivalence is supported; sustained online speedup or50% GPU utilization
+is not yet demonstrated. No active runtime or scientific setting was changed
+by this candidate validation.
+
+## Fixed-cycle3 Direct still fails all three representatives
+
+The cycle3 Direct cases are now independently audited (3/12 matrix complete).
+All run the full55s horizon, have Task/Strict false, fail at carry, and have no
+machine safety violation. Physical, public-filter and torque-projection audit
+receipts pass. The cycle1 counterpart failed at lift; reaching another stage
+still does not constitute task completion or prove convergence.
+
+| Condition0000 | Learned peak Nm | Nominal peak Nm | Learned / nominal contact compliance |
+|---|---:|---:|---:|
+| Passive |39.1198|38.5957|NA /NA|
+| Active-short |39.2055|47.0487|NA /NA|
+| Active-long |40.5029|46.6169|100% /100%|
+
+Active-long contact duration is6.76980s versus6.81705s. Nominal succeeds in both
+active cases (24.52s and28.80s), whereas the learned policy does not. Lower peak
+loads and100% contact threshold compliance cannot replace task completion;
+failed-case SPT remains0 regardless of the eventual shared reference. The
+matrix now evaluates Impedance on CPU54. Nominal is55/120 at capture. No final
+shared SPT reference, ESN comparison or convergence result is claimed.
+
+Compact evidence and source hashes are in
+`PUBLISHED_RESTART_HEALTH_AND_PROFILE_20261025.json`.
+
+
+## All four critic-reset learners resumed; exact parent cycle5 audit completed
+
+The coordinator now finished normally, all four replacements have real new
+transitions/updates, and normal archiver PID1477077 has taken over. The early
+archiver exited without misses. All four parent cycle5 checkpoints are archived,
+and original learners ended normally. The current replacement handles are
+Direct1471404, Impedance981510, Admittance1373289, VMC1099359; always revalidate
+identity before acting. The stage-audit observer has completed the parent report
+and now waits for full new cycle6 archives, then cycle7.
+
+| Interface | Parent retained transitions | Parent cycle5 Task / Strict, each /30 | Mean reward |
+|---|---:|---:|---:|
+| Direct |326694|0 /0|-32.951656|
+| Impedance |327221|18 /17|−2.258570|
+| Admittance |328070|13 /13|−10.366395|
+| VMC |328776|17 /17|−2.809056|
+
+The exact parent diagnosis performs0 updates/physics, verifies network tensors
+unchanged and reconstructs complete episode rewards. Its plot was visually
+checked. It shows continued growth before the registered reset:
+
+| Interface | Sampled Q mean | Above current-alpha global bound | In-bag terminal MAE | Last1000 updates mean critic loss |
+|---|---:|---:|---:|---:|
+| Direct |10913.10|84.45%|1289.43|81750.75|
+| Impedance |6996.29|59.34%|1822.38|132180.51|
+| Admittance |122751.82|57.81%|84910.74|90082761.25|
+| VMC |68614.76|41.67%|34594.98|12246919.20|
+
+These are parent snapshots, not evidence that the new trial has converged or
+already failed. New-stage performance needs complete episodes and cycles.
+The initial two-snapshot health report above is retained at its original
+capture; later-arriving methods are not silently inserted into it.
+
+
+The subsequent60-sample window after all four replacements started spans66.81s:
+GPU means57.17/47.87/28.50/33.22%, minima2/0/0/0. Auxiliary updates and profiling
+had ended; formal learners and the GPU1 fixed-policy evaluator were active.
+This is still below the sustained all-card50% target. Raw samples are
+`runs/RESTART_ONLINE_GPU_60S_01.json`; exact SAC Impedance startup-receipt timing
+relative to the window is separately recorded in the compact evidence, so the
+window is not assumed to have an isolated stationary background. At the latest
+check both SAC Direct and Impedance had genuinely resumed source_train09,
+while Admittance/VMC still drained. Nominal reached57/120. No final SPT/ESN
+comparison or convergence claim is available.
+
+The SAC Impedance startup receipt precedes that GPU window by43.15s. The raw
+file's context text described only Direct as migrated; the evidence records
+this correction explicitly. Raw utilization samples are unchanged.
