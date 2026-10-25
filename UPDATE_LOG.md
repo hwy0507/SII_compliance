@@ -6,6 +6,8 @@
 - 新增 `docs/EVALUATION_STANDARD_SPT_20261025.md`，正式将 SPT（Success-weighted Path Time）设为主效率指标；SPL 不再作为主效率指标。
 - 后续方法比较必须报告 Task success rate、Strict success rate、SPT、峰值广义力矩、实际人机交互期间的舒适力矩合规比例和机器安全违规率。低 reward、低力矩但未完成任务、以及无接触阶段的低力矩比例都不能替代成功指标。
 - `AGENTS.md` 已加入醒目入口，要求所有 agent 开工时读取该标准。此次只修改评估定义，未启动训练、未修改冻结 physics/MJB、gate、actor 输入、公共 filter、执行器限制或 `dt=5e-5`。
+- 开工核对的远端 SHA：`main=94e0833b5f1426fc2860ed26419fa00847840ebc`、`baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；提交后远端 `main=25a7bef3aa57625257919ab1ffeb84b82d9a671f`，已通过 `git ls-remote` 复核。
+- 验证：`git diff --check` 通过，标准文件、`AGENTS.md` 和本日志已提交并推送到 GitHub `main`。本轮没有服务器实验产物或训练结果需要归档。
 
 ## 2026-10-25 — 记录RL真实末段曲线并更正收敛结论，等待新目标
 
