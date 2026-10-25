@@ -7,6 +7,9 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新SAC Impedance完整3/187278只读audit完成、3712274退出勿重启：Task18/30 Strict17/30、分类0/9/8，短0600失Strict/长0300新增；loss2533→19285、Q2488→5252、terminalMAE519→1540，非健康收敛，原1557140进入4不改。30条件/terminal/MJB及冻结inputs/hash/reward/network和图核验，0physics/updates。runs/diagnosis_sac_impedance_cycle03_v1/REVIEW.json，docs/PUBLISHED_SAC_IMPEDANCE_CYCLE03_REVIEW_20261025.md/.json。
+新只读observer3759872仅等原SAC Admittance/VMC完整3，勿重复派发：runs/SAC_REMAINING_CYCLE03_AUDIT_V1.json；输出runs/sac_remaining_cycle03_audit_v1，冻结同名runtime。3h是观察期限，不停训练；报告形成后仍需科学review。原八learner、CHEQ11审计1346884/1346887继续。nominal117/120，slot1完成60项/2210515已退出勿重启，slot0原2210514继续剩余3；整矩阵审计/Tref仍待。source16未部署，目标未完成。
+
 最新同样本9→10只读Bellman诊断完成，3520396已退出勿重启：四接口各4096共同非终端/348终端、全replay字段及固定父next-actions相同，八checkpoint与输入hash重验、网络/零bootstrap/组件加和与图核验。0更新/physics，原live不改。固定父动作pair-all5差9.97/36.21/15.42/74.59→97.93/135.48/90.27/140.16；自身policy折扣目标差389.45/131.43/95.79/141.07，均大于平均熵项绝对值52.00/10.51/9.60/34.46。负Q允许，不称真实低估/因果证明，终端MAE前三升/VMC降；有符号TD近0不能替代绝对误差。runs/matched_bellman_targets_cycle09_10_v1/REVIEW.json及docs/PUBLISHED_MATCHED_BELLMAN_TARGETS_20261025.md/.json。原八learner与11审计继续；nominal116/120，原2210514/2210515继续。source16未部署，等完整10/11科学review；目标仍未完成。
 
 最新all5第10轮四路已完整归档且原audit/9→10 review完成，四learner均进入原11：steps532944/533471/534320/535026；Task5/18/15/17、Strict5/17/15/17（各30），父9 Strict10/18/15/17。120完整条件/terminal/model及checkpoint hash核验，奖励重建/网络不变通过，图已检查。末1000 critic loss194368/1133707/890992/1590253均较9增，Q−4093/−16747/−11522/−17506；terminalMAE2949/6869/9107/8213（VMC下降，其余升）。不把Q上界超限0/0/8.82/2.10%当校准或修复。原11保持，1346884/1346887继续等11，不提前部署source16/改算法。

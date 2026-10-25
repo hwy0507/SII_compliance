@@ -1,0 +1,331 @@
+{
+  "reviewed_unix": 1792967070.8238914,
+  "rows": [
+    {
+      "cycle": 2,
+      "steps": 146028,
+      "task": 17,
+      "strict": 17,
+      "strict_by_category": {
+        "passive_corner": 0,
+        "active_short": 10,
+        "active_long": 7
+      },
+      "mean_reward": -2.2372908518460686,
+      "critic_loss_last1000": 2532.787008178711,
+      "q_mean": 2488.459380219225,
+      "terminal_mae": 519.0775057954609,
+      "alpha": 1.1775097846984863,
+      "current_alpha_bound": 4084.4515688351894,
+      "above_bound_fraction": 0.025390625
+    },
+    {
+      "cycle": 3,
+      "steps": 187278,
+      "task": 18,
+      "strict": 17,
+      "strict_by_category": {
+        "passive_corner": 0,
+        "active_short": 9,
+        "active_long": 8
+      },
+      "mean_reward": -2.3575184582181095,
+      "critic_loss_last1000": 19284.80286816406,
+      "q_mean": 5252.209083838854,
+      "terminal_mae": 1540.2799299008707,
+      "alpha": 2.574035167694092,
+      "current_alpha_bound": 8893.026923013285,
+      "above_bound_fraction": 0.0335693359375
+    }
+  ],
+  "strict_membership_changes": {
+    "active_short_train_0600": {
+      "before": true,
+      "after": false
+    },
+    "active_long_train_0300": {
+      "before": false,
+      "after": true
+    }
+  },
+  "failure_stages": {
+    "carry": 12,
+    "retreat": 1
+  },
+  "all_30_terminal_models_and_inputs_verified": true,
+  "network_unchanged": true,
+  "plot_visually_reviewed": true,
+  "diagnostic_pid": 3712274,
+  "diagnostic_exited": true,
+  "optimizer_updates": 0,
+  "new_physics": 0,
+  "live_training_changed": false,
+  "registration_sha256": "ec3b8cc140a0fdb9dab3cbb680e97c39314a30cdcf4fedf2013bd6d77d11f793",
+  "diagnosis_sha256": "2b7ad4f6d1888085934af384ddedbbeb0128f451f40209fadcb77536cfd04ce7",
+  "plot_sha256": "31dc308339fceeffa0cfc63c13bf8204002f47ca54517af4a393ddb83a576285",
+  "previous_diagnosis": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/diagnosis_sac_latest_completed_v1/results/DIAGNOSIS.json",
+  "previous_diagnosis_sha256": "991653e8973e212f58f753f314591c27ddb138b73289913112a0c9dcadbf9aca",
+  "conclusion": "Task18/30 but Strict17/30; no healthy convergence: reward roughly flat while critic loss/Q/terminal MAE grow. Current source09 cycle4 continues unchanged.",
+  "limitations": [
+    "Training policies change within cycles; no fixed-policy acceptance or method ranking.",
+    "Different replay samples across checkpoints; current-alpha bound is necessary but not sufficient for calibration.",
+    "Terminal MAE may include missing-clock aliasing; zero MAE is not a hard convergence criterion."
+  ],
+  "registration": {
+    "registered_unix": 1792966995.7907379,
+    "purpose": "Read-only newly completed SAC Impedance cycle3 health/reward audit; 0 learning and physics.",
+    "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train09",
+    "runtime_sha256": "7b495650c8617b2404dd253895e6fa73545f36d7495ee7d787f12f7f0149a756",
+    "source_hashes": {
+      "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/sac_impedance_cycle03_diagnosis_v1/diagnose_published_value_bound_20261025.py": "2a5b04c7a4036d78775a7abb87170660a0e3b6b0111846f24d4a9245dc268245",
+      "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/sac_impedance_cycle03_diagnosis_v1/diagnose_published_training_20261025.py": "2286fbc75bef4fe04ac23512e075ecdb4ae0ba3b270072cf74e923ab9b1abe51"
+    },
+    "cycle": 3,
+    "steps": 187278,
+    "archive_receipt": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/cycle_archive/impedance/cycle_00003.json",
+    "archive_sha256": "7318d106832f13e45bb9fa77b383dc327bb574c6a252de062aec130212b20ae1",
+    "checkpoint_sha256": "38c7e9e7149bb3bc421cb5aff53f16cb42f85f80df720f2b835848851d5a9b7b",
+    "inputs": {
+      "transitions.jsonl": "f087a1e9075664bbc2192c24e2c0ffe514e2ac0a43a4bdc24f0a39495634dcc8",
+      "checkpoint_latest.pt": "38c7e9e7149bb3bc421cb5aff53f16cb42f85f80df720f2b835848851d5a9b7b",
+      "optimizer.jsonl": "16eb18f6e428512e446a0e7711f3e2cf53041dc76c7c5b62028016e4901a2279",
+      "EXECUTION.json": "585387738365d29ba5299ba37b7d2af68b01a51c033631862cb71fc9ea77d5ce",
+      "episodes.jsonl": "35872408d3d82b21b6222a19b9cdc6b8c92394dbf46942e342f426587e99c4df"
+    },
+    "row_counts": {
+      "episodes.jsonl": 30,
+      "transitions.jsonl": 41250,
+      "optimizer.jsonl": 82500
+    },
+    "terminal_receipts": {
+      "passive_corner_train_0100": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/passive_corner_train_0100/TERMINAL.json",
+        "sha256": "a575cc1a8209e9908d7ed46b0bc22400351c4587158963f8b336c114a01949b3",
+        "model_sha256": "8d67e2a973e747ab216b7e8e00a9f71893468c7b6f2f88c32c75230d6618eca4"
+      },
+      "passive_corner_train_0000": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/passive_corner_train_0000/TERMINAL.json",
+        "sha256": "3a1657381bb8a4612053dc56981cde13d7ca401af96da55c4fa3a496e15598d6",
+        "model_sha256": "608c40b99231ff311de6c2dd969d21fea037b0f839ea47232e6ce61885aee889"
+      },
+      "passive_corner_train_0200": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/passive_corner_train_0200/TERMINAL.json",
+        "sha256": "b27a577626a4d3f2a57d31fda3495170a100328fc1fb13d647f3dfc2e1f8df7d",
+        "model_sha256": "26aa6a429c0fb4e0e9197c8f74e6ff741220ea303393159248c40663d7760085"
+      },
+      "passive_corner_train_0300": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/passive_corner_train_0300/TERMINAL.json",
+        "sha256": "7da46d0c55dc35fb6c379223b2ebc8ee4a4852721c9d844ed32fa6894ddcc1b7",
+        "model_sha256": "52b95b0d0bf08dd8a53bf8e8aa3578705d4deb5416f1b92d5a1801f5bef888d4"
+      },
+      "passive_corner_train_0400": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/passive_corner_train_0400/TERMINAL.json",
+        "sha256": "b86d67f3414fc46fcf0bfb7cbe7fb5c860e08bc0d208be25796df96c90a61770",
+        "model_sha256": "3ecb3ad6489183ee11ad0ebaa99c42eeaf1e220a35c3ce686808d3cb35350d4b"
+      },
+      "passive_corner_train_0337": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/passive_corner_train_0337/TERMINAL.json",
+        "sha256": "62af4d05790d6d17fd3eb45fe06fce587d0ee31d2c89e60d6240151617a2a884",
+        "model_sha256": "24327785ad7f61e5f7c731039fa36b0c68e529bcd8e647afdc6a63e45cc6b1c8"
+      },
+      "passive_corner_train_0600": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/passive_corner_train_0600/TERMINAL.json",
+        "sha256": "d07cc689fe0edeaf69ee1b673128c5542a97b0b13cc25935b200f60bdabae74d",
+        "model_sha256": "1aab40dc700cb316910c75ffc484efe3be4c0fbe9cb73a038f07373364f43f4a"
+      },
+      "passive_corner_train_0500": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/passive_corner_train_0500/TERMINAL.json",
+        "sha256": "d9a5e16055368146d147a502f423be27c19e94246073c46ade025a1c19fe0dcc",
+        "model_sha256": "1a07efd7e4156203fd7a1a282b445c9d456a6cfd7093f81aea3173f29df58592"
+      },
+      "passive_corner_train_0900": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/passive_corner_train_0900/TERMINAL.json",
+        "sha256": "99eecd081bda0371e0e220f255323a85c31d83f1c61a779aa426f9d3345a0088",
+        "model_sha256": "b4b38d68efcb2efc512bca1f591399db4348f230a1b301beb04a5aeb8c7d0c9c"
+      },
+      "passive_corner_train_0671": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/passive_corner_train_0671/TERMINAL.json",
+        "sha256": "16a254df3b6ab7c2265493053059c172849d922e64c18009f7dc91edb8053899",
+        "model_sha256": "9d3de7fa6eab2b229feb915faef33c8dab92526c8a6f537da206fa52a172f37a"
+      },
+      "active_short_train_0000": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_short_train_0000/TERMINAL.json",
+        "sha256": "01ecd855bdec753493d7daebe723d811a1788ae574a51e9b4cb2fee54c86bced",
+        "model_sha256": "221c7a3d18da6d59c8e6980be329d40bd4b718fe803c0e4c5ac138b98202fcd6"
+      },
+      "active_short_train_0100": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_short_train_0100/TERMINAL.json",
+        "sha256": "6ca833a9c0a732891995c0ed3b3579fce9c822fda628854fb0603f3181dcaef6",
+        "model_sha256": "a4bff2841c8efa4d3d33aaf7dfd816c222b18fae7b6455c9c96513c90862c788"
+      },
+      "active_short_train_0200": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_short_train_0200/TERMINAL.json",
+        "sha256": "7c13fdb7ede47729879068a735973ea35529255feb9fa614ba309dcfb70fb8b6",
+        "model_sha256": "46f7800613e4f565220c97a00064cf2ad0ac8be8e09fba1551db742170e7866c"
+      },
+      "active_short_train_0300": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_short_train_0300/TERMINAL.json",
+        "sha256": "a4bf141ee673a2f0c8559bd002c30477cb62ded17c777aac4f191f885b49973b",
+        "model_sha256": "62e749dc6131c916bbc2c2dfbdccbb7101030f5bf8fed91334494fdff19f2608"
+      },
+      "active_short_train_0337": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_short_train_0337/TERMINAL.json",
+        "sha256": "2adc27e5b037cb047c3e83c443e40f499bd73f8c5690e8677948bf2080d6f76c",
+        "model_sha256": "0a44d5cb102f3b5635d5c234c825d7536d6c7f773c9b18b94b45ef62841be6ea"
+      },
+      "active_short_train_0400": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_short_train_0400/TERMINAL.json",
+        "sha256": "06947b899361d9f5a4e4267c30fb7270b3839c8860b58bd84921b0465c55c6e3",
+        "model_sha256": "f2bae81bc02adfb7660778f48470e773c95d44517001b8d28a66626f818d8ba9"
+      },
+      "active_short_train_0600": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_short_train_0600/TERMINAL.json",
+        "sha256": "ad16458868423a2d6bde55894d9c28c94f7e7d490c804cdce244cd75e463d462",
+        "model_sha256": "523c4219f6aee60511fdf85dcbb76ae2a0a43331fad252426d6861181ce7ef71"
+      },
+      "active_short_train_0500": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_short_train_0500/TERMINAL.json",
+        "sha256": "346bdac901b25f8dbd38edc9a81bf1ae5725246d219fc1900c4dc96290922950",
+        "model_sha256": "94cc39d39f3ce07b62c70ac2f443276f0cd87cb89b15d5d0ee10c607a88658d5"
+      },
+      "active_short_train_0671": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_short_train_0671/TERMINAL.json",
+        "sha256": "123deef0e55a53d14614430a35a0334b5b540ed28511e21a11c59159ba8e6589",
+        "model_sha256": "34fa455fecfe45d9e73d145342b884f53ccb21a274bb1e9f9b409c5050ec5673"
+      },
+      "active_short_train_0900": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_short_train_0900/TERMINAL.json",
+        "sha256": "d92973379a8f710324ef35b962383bb73ea8269b9875a5e8b9b7f6de926cebd9",
+        "model_sha256": "49943a2503b29e6b239017587cf9af758eb287ba508ddf46f03425c46277e0f8"
+      },
+      "active_long_train_0000": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_long_train_0000/TERMINAL.json",
+        "sha256": "3c63ace0823fd3e2c0ea296c9ebb1fe502e29b6b1fbdd2319c55c20984983a6d",
+        "model_sha256": "757eff72e7d889482134ceb282b8b20abaf4418642e3875bc83ebcf7eae085b7"
+      },
+      "active_long_train_0100": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_long_train_0100/TERMINAL.json",
+        "sha256": "3469c9a881a69786dbc7390c655bdf11f2bdfbe9af521994211f5fb7fc5a5dcb",
+        "model_sha256": "755de54360520797f9f5c6ae612f16aa1cb85fec12724f6c7778dcdf3ee383fa"
+      },
+      "active_long_train_0200": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_long_train_0200/TERMINAL.json",
+        "sha256": "eb89ec74eac712daf07bb1189fb74867281c37be9ef2e2debcb27f0ee7aa80f6",
+        "model_sha256": "ce4e3800876f6273656c5966be36a7a4162c13ab99e3bfeead2a1119bbe0163c"
+      },
+      "active_long_train_0300": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_long_train_0300/TERMINAL.json",
+        "sha256": "02bf670534fb65bce1a0ef131b52a8964dfd841b45172a6377b66413be22c4dd",
+        "model_sha256": "8240464b2a29b52d3f1cd8a62e0d6b5bf0c0c6c4f80278e0ee0adb6bc0f29847"
+      },
+      "active_long_train_0400": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_long_train_0400/TERMINAL.json",
+        "sha256": "d249019c0e318cfb251d17eef818ab08f90fa5f06b8e1d73108269a3f2316eef",
+        "model_sha256": "8eace4228c6ac6ee7dd8c67e17d9e8eb983bddefbc1920499518a8d2feee9bfa"
+      },
+      "active_long_train_0337": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_long_train_0337/TERMINAL.json",
+        "sha256": "59abd758d92663847a54447850c1ac473f3042d55aa0b1f51953de11f80f7c9f",
+        "model_sha256": "85b2512538a6ff4b8fc4ce31f05d2f89ede86fdd87875787bba8aef7a70e6217"
+      },
+      "active_long_train_0500": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_long_train_0500/TERMINAL.json",
+        "sha256": "9d5fae5c6443c89609e8f8b7c385e4510dd6411425466343f9b7877ccc6865ed",
+        "model_sha256": "0aa1deb55068633ef56fadf7acd57a8a175bd06bdcc74cc306c78dc8a9474c62"
+      },
+      "active_long_train_0600": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_long_train_0600/TERMINAL.json",
+        "sha256": "740867e1cafdc48a4a2a5b3c61eeb3902d977929beb154832dc307b0da24e97b",
+        "model_sha256": "0ec322695eca05cbf9bde7067079bd8b1fafa2045e605a847c7c837533d8bc54"
+      },
+      "active_long_train_0900": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_long_train_0900/TERMINAL.json",
+        "sha256": "97a8dc93952bcf43384abf069408092e537de60f964a8d8824671d8dd5065b03",
+        "model_sha256": "412950d346a5ce31c1a1e57da749c35393add5641fb38ae986f8dd7f5a3fc719"
+      },
+      "active_long_train_0671": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2/impedance/cycle_00003/active_long_train_0671/TERMINAL.json",
+        "sha256": "f372eb0ecee622ca8c07369ec5f0ba640b73f16c60fb42b77a27ce53234888ad",
+        "model_sha256": "181d30bff538a7afccc97272829914417b038e78ed978f130750c2aa4ebd53d5"
+      }
+    },
+    "training_registration": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cohort30_v2/REGISTRATION_SAC_PERFORMANCE_V2.json",
+    "training_registration_sha256": "162b2d4c5ede8711c0bb6de8dc3d5782ec617695b0d6ebb62afba4d988ab6fa4",
+    "optimizer_updates": 0,
+    "new_physics": 0,
+    "live_training_changed": false,
+    "cpu": 13
+  },
+  "next_observer_registration": {
+    "output": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_remaining_cycle03_audit_v1",
+    "cpu": 13,
+    "source_hashes": {
+      "audit_published_restart_stages_20261025.py": "e69d58dd2afbc619c838aac0d6adcfd4514cb38e79095d17327606ac05b5992a",
+      "diagnose_published_training_20261025.py": "2286fbc75bef4fe04ac23512e075ecdb4ae0ba3b270072cf74e923ab9b1abe51",
+      "diagnose_published_value_bound_20261025.py": "2a5b04c7a4036d78775a7abb87170660a0e3b6b0111846f24d4a9245dc268245"
+    },
+    "methods": [
+      "admittance",
+      "vmc"
+    ],
+    "stages": [
+      {
+        "name": "sac_remaining_cycle03",
+        "run": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2",
+        "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train09",
+        "runtime_sha256": "7b495650c8617b2404dd253895e6fa73545f36d7495ee7d787f12f7f0149a756",
+        "cycle": 3,
+        "archives": [
+          "cycle_archive"
+        ],
+        "training_registration": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cohort30_v2/REGISTRATION_SAC_PERFORMANCE_V2.json",
+        "training_registration_sha256": "162b2d4c5ede8711c0bb6de8dc3d5782ec617695b0d6ebb62afba4d988ab6fa4"
+      }
+    ],
+    "deadline_unix": 1792977880.8170888,
+    "registered_unix": 1792967080.8170905,
+    "scope": "Read-only once for two newly completed SAC cycle3 archives. Does not repeat Direct5 or Impedance3. Observer deadline never stops training.",
+    "training_changed": false,
+    "new_physics": 0,
+    "optimizer_updates": 0
+  },
+  "next_observer_launch": {
+    "pid": 3759872,
+    "command": [
+      "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+      "-B",
+      "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/sac_remaining_cycle03_audit_v1/audit_published_restart_stages_20261025.py",
+      "--registration",
+      "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/SAC_REMAINING_CYCLE03_AUDIT_V1.json"
+    ],
+    "registration_sha256": "74ca8ad94a1013a497df1efb6f6880fe6e9be682a44529aafd557677cddd4af0",
+    "started_unix": 1792967080.8191736
+  },
+  "source_and_artifact_root": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/diagnosis_sac_impedance_cycle03_v1",
+  "origin_main": "a52dfba4486af8d263d5cd0a976c3102482ff249",
+  "origin_baseline": "f6e8f8c2711a93f0b5dfc88c608bd82647084d5d",
+  "nominal_slots": {
+    "0": {
+      "pid": 2210514,
+      "cpu": 52,
+      "state": "physics_running",
+      "child_pid": 3807121,
+      "job": {
+        "controller": "direct",
+        "case_id": "active_long_train_0900"
+      },
+      "completed": 58,
+      "assigned": 60,
+      "updated_unix": 1792967162.9909177
+    },
+    "1": {
+      "pid": 2210515,
+      "cpu": 53,
+      "state": "complete",
+      "completed": 60,
+      "assigned": 60,
+      "ended_unix": 1792967056.0209765
+    }
+  },
+  "nominal_rows": 118
+}

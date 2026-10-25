@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-25 — SAC Impedance完整第3轮审计与其余两路第3轮观察登记
+
+- fetch/read main a52dfba、baseline f6e8f8c未变。SAC Impedance新完整3已归档187278步；Task18/30、Strict17/30，被动/短/长0/9/8，短0600失去Strict、长0300新增。平均reward−2.35752近前轮，但末1000 critic loss2533→19285、Q2488→5252、terminalMAE519→1540；非健康收敛，原1557140已进4不改。
+- 新只读3712274已退出：30条件/终端/MJB、41250 transition、82500 optimizer日志及冻结checkpoint/source/input hash核验，reward重建/网络不变通过，图已检查；0更新/physics。runs/diagnosis_sac_impedance_cycle03_v1保留登记、inputs、results、REVIEW，工具runtime/sac_impedance_cycle03_diagnosis_v1。
+- 新只读3759872仅等待原SAC Admittance/VMC完整3，不重复Direct5/Impedance3；冻结runtime/sac_remaining_cycle03_audit_v1，登记runs/SAC_REMAINING_CYCLE03_AUDIT_V1.json，输出runs/sac_remaining_cycle03_audit_v1。三小时为observer期限，不停训练，不做自动算法决策。
+- 原四CHEQ11/四SAC、CHEQ审计1346884/1346887继续；nominal117/120、slot1完成60项/2210515已退出勿重启，slot0原2210514继续；source16未部署，物理/控制合同不改。证据docs/PUBLISHED_SAC_IMPEDANCE_CYCLE03_REVIEW_20261025.md/.json。收敛、GPU50%、完整SPT/指定ESN比较仍未完成。
+
 ## 2026-10-25 — 第9/10轮同样本只读目标分解完成
 
 - main a52dfba/baseline f6e8f8c已重新fetch/read，远端未变。新增diagnose_published_matched_targets工具；冻结runtime/matched_bellman_targets_v1，原3520396已完成退出，0optimizer更新/0新增physics，live不改。
