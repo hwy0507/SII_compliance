@@ -7,6 +7,9 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+**最新实际训练优先于下方仅准备快照：** all5 Bellman在线stage10/11已启动于runs/bellman_minimum_online_seed20261025_v1/source14；四learner1325445/1328516/1333006/1338945真实更新10，dispatcher1316612正常退出、archive1349161。actor原pair及LR3e-5、权重/Adam/alpha/RNG/replay/gamma/batch16384/UTD2保留，仅Bellman目标2→5和新阶段聚合history变化；9worker每路不变。Impedance learner CPU54、workers14–22留CPU13给在途参数评估，其余原CPU。科学review BELLMAN_ONLINE_SCIENTIFIC_REVIEW_V1明确允许剩余固定9参数评估与新训练并行，父checkpoint不变，不取消/重选。无辅助权重/STOP，原SAC09继续。7资源阶段+2诊断target测试、首36MJB/dt/plan和父state保留核验通过。
+Direct9随机三seed×三代表条件9/9全55s三审计已完成，旧590268/9/70及evaluator退出勿重启；Task9/9 Strict7/9、两短期机器安全违规保留，长期三seed时间53.40/52.84/25.28s，舒适77.38/80.59/100%。原确定性0/3保留，图已检查，非完整cohort/收敛。审计1346884/reviewer1346887按实际target5等待完整10/11，3h仅observer保护。GPU正式窗口均值40.63/36.95/37.95/30.93%未达50%，无辅助学习；contact v2已9/12精确通过未部署。证据PUBLISHED_BELLMAN_ONLINE_STAGE_20261025.md/.json。source14manifest的prepared_only是构建时记录，不改冻结manifest；实际启动看新EXECUTION。目标仍未完成。
+
 最新source_train14 / bellman_resume_preparation_v1仅准备、未选/启动在线阶段：checkpoint显式all5 Bellman规则，原actor pair保留；6+8测试、四真实父9完整state/序列化恢复和下一更新精确等同离线候选验证通过（8辅助更新、0physics、无权重导入），1019496退出。父state/replay/moments/RNG不变，仅规则及新阶段聚合history变化；source14仅learner/trainer/helper三差异，全部hash与保护manifest核验。CANDIDATE_PROTOCOL缺最终科学decision，禁止自动派发，不称论文原样/等价优化。证据PUBLISHED_BELLMAN_RESUME_PREPARATION_20261025.md/.json；原四SAC09继续，source13亦未部署。
 Direct9随机短期三seed Task3/3、Strict1/3（先前“一成功两失败”指Strict）；seed41/43外穿透0.212277/0.223520mm超原0.2mm门槛，seed42为0.118590mm。均完整55s，原协调器后处理审计仍等三条件；长期继续，不覆盖原确定性失败。SHORT_FIRST_PHYSICAL_REVIEW.json留证。contact v2现8/12精确通过未部署，cycle9参数继续Admittance。目标仍active。
 

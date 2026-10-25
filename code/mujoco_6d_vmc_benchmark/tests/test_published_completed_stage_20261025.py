@@ -8,13 +8,23 @@ import unittest
 import numpy as np
 import torch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from continue_published_completed_stage_20261025 import prepare_state,verify_boundary
+from continue_published_completed_stage_20261025 import prepare_state,verify_boundary,continuation_cpu_allocations
 from validate_published_finite_check_20261025 import digest
 from train_published_compliance_20261025 import (validate_resume_protocol,
     validate_completed_stage_checkpoint, registered_stage_actor_rates)
 
 
 class CompletedStageTests(unittest.TestCase):
+    def test_cpu_relocation_preserves_capacity_and_excludes_overlap(self):
+        jobs=[dict(controller='direct',cpus=[0,1]),dict(controller='impedance',cpus=[2,3])]
+        stage=dict(cpu_allocations=dict(direct=[0,1],impedance=[4,3]))
+        self.assertEqual(continuation_cpu_allocations(jobs,stage,set(range(5))),stage['cpu_allocations'])
+        for allocation in [dict(direct=[0,1],impedance=[1,3]),
+                           dict(direct=[0,1],impedance=[4]),
+                           dict(direct=[0,1],impedance=[5,3]),dict(direct=[0,1])]:
+            with self.assertRaises(ValueError):
+                continuation_cpu_allocations(jobs,dict(cpu_allocations=allocation),set(range(5)))
+
     def test_bellman_preparation_changes_only_rule_and_stage_history(self):
         state=dict(boundary='complete_condition_cycle',cycle=9,cycles=[{'cycle':9}],
             replay={'actions':np.ones((5,7),np.float32)},learner=dict(algorithm='cheq',

@@ -27,6 +27,22 @@ def write(path,value):
     tmp=path.with_suffix('.tmp');tmp.write_text(json.dumps(value,indent=2,allow_nan=False)+'\n');tmp.replace(path)
 
 
+def continuation_cpu_allocations(jobs, stage, allowed):
+    """Allow an explicitly reviewed CPU relocation, preserving sampler counts."""
+    proposed=stage.get('cpu_allocations')
+    original={j['controller']:list(j['cpus']) for j in jobs}
+    if proposed is None:return original
+    if set(proposed)!=set(original):raise ValueError('CPU relocation requires every interface')
+    result={m:list(cpus) for m,cpus in proposed.items()}
+    used=set()
+    for method,cpus in result.items():
+        if (len(cpus)!=len(original[method]) or len(set(cpus))!=len(cpus)
+                or not set(cpus).issubset(allowed) or used.intersection(cpus)):
+            raise ValueError('CPU relocation changes sampler capacity, overlaps, or leaves allocation')
+        used.update(cpus)
+    return result
+
+
 def verify_boundary(state,finished,method,parent_digest,cycle,review_hash):
     if (state['boundary']!='complete_condition_cycle' or state['controller']!=method
         or state['protocol_sha256']!=parent_digest or state['cycle']!=cycle
@@ -99,9 +115,17 @@ def main(args):
     validate_resume_protocol(pdigest,p,sha(args.registration))
     jobs=json.loads((parent/'LAUNCH.json').read_text())['jobs']
     if sorted(j['controller'] for j in jobs)!=sorted(METHODS):raise ValueError('Expected four unique parent jobs')
+    allocations=continuation_cpu_allocations(jobs,stage,os.sched_getaffinity(0))
+    if stage.get('cpu_allocations') is not None and review['decision'].get('cpu_allocations')!=allocations:
+        raise ValueError('CPU relocation differs from explicit scientific/resource review')
+    for entry in stage.get('required_completed_evaluations',[]):
+        path=Path(entry['path'])
+        if sha(path)!=entry['sha256'] or not json.loads(path.read_text()).get('complete_interim_matrix'):
+            raise ValueError('Registered prerequisite evaluation is not complete')
     # Validate every parent before creating output or starting any replacement.
     parents={}
     for job in jobs:
+        job=dict(job,cpus=allocations[job['controller']])
         method=job['controller'];folder=parent/method;proc=Path('/proc',str(job['pid']),'cmdline')
         if proc.exists() and str(folder).encode() in proc.read_bytes():
             raise ValueError('Parent learner remains live: '+method)

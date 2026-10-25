@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-25 — Direct随机评估完整审计及all5目标在线10/11启动
+
+- fetch/read main a52dfba、baseline f6e8f8c未前进。Direct9三条件×三动作seed共9全55s已完成三审计：Task9/9、Strict7/9、机器安全违规2/9（短期0.2mm穿透gate），被动/短/长Strict3/1/3（各3）；长期时间53.40/52.84/25.28s、接触舒适77.38/80.59/100%。原确定性0/3保留，非完整30条件/收敛/最终排名，图已检查。
+- 明确科学决策BELLMAN_ONLINE_SCIENTIFIC_REVIEW_V1.json：基于完整优化审计和有限配对目标诊断，采用all5 Bellman目标进行两新完整周期10/11在线试验。剩余参数评估读取冻结9不受新训练影响，继续并行、不取消/重选，不再以等齐它们作为派发前提。Direct三seed全结束释放CPU后派发。
+- source14新四learner1325445/1328516/1333006/1338945已真实更新10；dispatcher1316612正常完成、archive1349161。actor原pair/LR3e-5，全部网络/Adam/alpha/RNG/replay/gamma/batch16384/UTD2保留，无辅助权重；算法敏感性，不称论文原样/等价优化。每路9worker不变，Impedance learner CPU13→54留13给评估；7阶段/资源+2target诊断测试通过。首36模型/dt/plan及四父state收据核验。
+- 60样本/67.47s正式负载GPU均值40.63/36.95/37.95/30.93%，min0/5/0/5，50%仍未达；新四路合计4552真实步/9104更新，原SAC继续，无辅助GPU学习。未为占用改batch/UTD。审计1346884/review1346887在等10/11，按实际all5规则诊断；3h是观察器保护，不停训练。
+- 运行runs/bellman_minimum_online_seed20261025_v1、source14、bellman_online_dispatch_v1/audit_v1；详见docs/PUBLISHED_BELLMAN_ONLINE_STAGE_20261025.md/.json。contact v2现9/12精确通过未部署；所有物理/控制合同未变，收敛/最终SPT/指定ESN比较未完成。
+
 ## 2026-10-25 — Bellman候选可恢复训练准备通过，未启动在线阶段
 
 - fetch/read远端main a52dfba、baseline f6e8f8c未前进。新source_train14仅准备：checkpoint显式保存/恢复all5 Bellman规则，actor仍原pair；旧state默认pair保持。续训只允许登记2→5、保留权重/Adam/alpha/RNG/replay/LR/gamma/batch/UTD，清空不同算法阶段的plateau历史。科学review占位不允许派发，source13亦未部署。

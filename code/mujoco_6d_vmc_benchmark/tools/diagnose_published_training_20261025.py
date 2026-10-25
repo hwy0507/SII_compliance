@@ -51,6 +51,17 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def registered_target_minimum(values, algorithm, count):
+    if algorithm not in ('sac', 'cheq') or count not in (2, 5):
+        raise ValueError('Unknown diagnostic Bellman rule')
+    if algorithm == 'sac' and count != 2:
+        raise ValueError('SAC diagnostic requires original pair')
+    expected = 5 if algorithm == 'cheq' else 2
+    if values.ndim != 2 or values.shape[0] != expected:
+        raise ValueError('Diagnostic critic ensemble shape mismatch')
+    return values[:count].min(dim=0).values
+
+
 def diagnose(args):
     torch.set_num_threads(1)
     if (args.cycle_archive is None) != (args.cycle is None):
@@ -166,7 +177,9 @@ def diagnose(args):
             actions = torch.as_tensor(arrays['actions'][sample])
             current_q = qs(obs, actions)
             next_action, log_pi = agent.get_action_and_log_prob(nxt)
-            target_q = qs(nxt, next_action, target=True)[:2].min(dim=0).values
+            target_count = state.get('bellman_target_count', 2)
+            target_q = registered_target_minimum(qs(nxt, next_action, target=True),
+                                                 state['algorithm'], target_count)
             target = torch.as_tensor(arrays['rewards'][sample].reshape(-1)) + (
                 1-torch.as_tensor(arrays['dones'][sample].reshape(-1))) * learner.learner.gamma * (
                 target_q-float(state['alpha'])*log_pi.reshape(-1))
@@ -180,7 +193,9 @@ def diagnose(args):
             metrics['soft_bound_limitation'] = (
                 'Necessary bound for frozen checkpoint policy/current alpha and spt_v1; '
                 'not a future changing-alpha bound, and satisfying it does not establish calibration.')
-            metrics['td_diagnostic_pair'] = 'critics0/1 fixed diagnostic; training samples critic pairs'
+            metrics['bellman_target_count'] = target_count
+            metrics['td_diagnostic_pair'] = ('all five critics; registered Bellman target rule'
+                if target_count == 5 else 'critics0/1 fixed diagnostic; CHEQ training samples critic pairs')
             policy_action, policy_log_pi = agent.get_action_and_log_prob(obs)
             low = torch.as_tensor(learner.spaces.action_space.low)
             high = torch.as_tensor(learner.spaces.action_space.high)
