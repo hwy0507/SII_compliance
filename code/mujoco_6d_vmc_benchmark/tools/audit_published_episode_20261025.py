@@ -29,6 +29,41 @@ class Recorder:
         self.limits = None
         self.filter_rows = []
         self.filter_metadata = None
+        self.torque_rows = []
+        self.torque_metadata = None
+
+    def bind_torque(self, env, backend):
+        """Observe the common torque projection before native adapters bind it."""
+        if self.torque_metadata is not None or env.execution_mode != 'twist':
+            raise ValueError('Torque audit requires one registered twist environment')
+        original = backend.safe_velocity_tracking_torque
+        source = Path(inspect.getfile(original))
+        self.torque_metadata = dict(config=asdict(env.safety_config),
+            source_file=str(source), source_sha256=sha(source),
+            initial_previous_torque=np.asarray(env.previous_torque).copy(),
+            torque_limits=np.asarray(env.torque_limits[:7]).copy(),
+            scope='Common velocity-servo torque projection after controller-specific command generation')
+
+        def observe(bias_torque, measured_joint_velocity, joint_velocity_command,
+                    previous_torque, dt, config, torque_limits=None):
+            current_config = asdict(config)
+            recorded_config = self.torque_metadata['config']
+            if (set(current_config) != set(recorded_config) or
+                    any(not np.array_equal(current_config[k], recorded_config[k]) for k in current_config) or
+                    torque_limits is None):
+                raise ValueError('Unregistered torque projection configuration')
+            if not np.array_equal(torque_limits, self.torque_metadata['torque_limits']):
+                raise ValueError('Torque limits changed during observational audit')
+            inputs = dict(time=float(env.data.time), dt=float(dt),
+                bias=np.asarray(bias_torque).copy(), measured=np.asarray(measured_joint_velocity).copy(),
+                command=np.asarray(joint_velocity_command).copy(), previous=np.asarray(previous_torque).copy(),
+                limits=np.asarray(torque_limits).copy())
+            result = original(bias_torque, measured_joint_velocity, joint_velocity_command,
+                previous_torque, dt, config, torque_limits=torque_limits)
+            self.torque_rows.append(dict(inputs, applied=np.asarray(result[0]).copy(), scale=float(result[1])))
+            return result
+
+        backend.safe_velocity_tracking_torque = observe
 
     def bind_filter(self, env):
         if self.filter_metadata is not None:
@@ -92,6 +127,15 @@ class Recorder:
                 receipt.update(filter_samples=len(self.filter_rows),
                     filter_metadata_sha256=sha(self.folder/'audit_filter.json'),
                     filter_trace_sha256=sha(self.folder/'audit_filter.npz'))
+            if self.torque_metadata is not None:
+                (self.folder/'audit_torque.json').write_text(json.dumps(
+                    self.torque_metadata, default=lambda x: x.tolist(), indent=2, allow_nan=False)+'\n')
+                np.savez_compressed(self.folder/'audit_torque.npz', **{
+                    key: np.asarray([row[key] for row in self.torque_rows])
+                    for key in ('time', 'dt', 'bias', 'measured', 'command', 'previous', 'limits', 'applied', 'scale')})
+                receipt.update(torque_samples=len(self.torque_rows),
+                    torque_metadata_sha256=sha(self.folder/'audit_torque.json'),
+                    torque_trace_sha256=sha(self.folder/'audit_torque.npz'))
             (self.folder/'AUDIT_EXTENSION.json').write_text(json.dumps(receipt, indent=2)+'\n')
 
 
@@ -112,14 +156,16 @@ def run(args):
     bind_seam = '            self.env = env'
     if original.count(bind_seam) != 1:
         raise ValueError('Policy construction seam changed')
-    patched = patched.replace(bind_seam, bind_seam+'\n            PUBLISHED_AUDIT_RECORDER.bind_filter(env)')
+    patched = patched.replace(bind_seam, bind_seam+'\n            PUBLISHED_AUDIT_RECORDER.bind_filter(env)'
+        +'\n            import audited_velocity_env as audit_backend'
+        +'\n            PUBLISHED_AUDIT_RECORDER.bind_torque(env, audit_backend)')
     recorder = Recorder(args.output.resolve())
     module.PUBLISHED_AUDIT_RECORDER = recorder
     exec(compile(patched, str(Path(__file__).resolve()), 'exec'), module.__dict__)
     receipt = dict(wrapper_sha256=sha(Path(__file__)), base_adapter_sha256=sha(source),
         base_function_sha256=hashlib.sha256(original.encode()).hexdigest(),
         instrumented_function_sha256=hashlib.sha256(patched.encode()).hexdigest(),
-        transformation='record substeps and observe original filter calls/returns; no assignment to physical or filter state',
+        transformation='record substeps and observe original filter/torque projection calls/returns; no assignment to physical or filter state',
         actor_receives_audit_data=False, physics_timestep_changed=False)
     completed = False
     try:

@@ -1,5 +1,24 @@
 # 更新日志
 
+## 2026-10-25 — 终端拟合第一复核seed完成，补登记下游力矩投影审计
+
+- 读取远端main/baseline最新日志，SHA仍为a52dfba/f6e8f8c；四CHEQ/四SAC learner均核对真实进程与
+  增长中的步数，持续Goal未完成。固定控制器矩阵继续推进，无重复派发。
+- 两seed固定标签复核中的2026102511四接口已完成。terminal10%相较uniform的in-bag终端MAE分别
+  14.983→.288、34.059→3.452、43.703→2.576、97.980→8.316；out-of-bag几乎不变，普通误差略升。
+  第二seed仍运行；不得将该结果解释为在线策略改善或据此改正式replay/重置learner。
+- 扩展独立审计wrapper记录公共力矩投影输入输出，新增replay工具检查幅值、slew、previous torque
+  递推、原执行器限制及80物理子步/servo输出关联；不改冻结训练runtime，不声称重建native wrench。
+- 9项filter/torque测试通过；包括1e-12输出、上一力矩、实际力矩篡改及时间/执行器限制负例。
+  测试发现并修正dataclass中NumPy数组不能直接dict比较的问题，未影响正式训练。
+- 完整55s透明性核查排队于 `runs/interim_impedance_torque_audited_v2`，wrapperv6；用相同42000步
+  阻抗checkpoint/active_long_train_0000/原cuda:1，待有限GPU复核成功结束才占CPU54。真实透明性及
+  力矩重放结果尚未完成。v1仅排队未启动physics，增加limits一致性校验前取消，旧登记保留。
+- 只读cycle1监视器已绑定四个原learner进程，待精确周期checkpoint归档后自动做mask诊断和同30条件
+  的cycle0/1训练回报比较，输出diagnosis_cheq_performance_cycle01；尚无第二周期完成结论。
+- 更新AGENTS、执行/诊断文档、首seed小型证据。正式训练、120回合固定矩阵、第二seed复核均继续；
+  不宣布收敛或ESN比较完成。GitHub读同步正常，本地提交后的写入结果单独核对。
+
 ## 2026-10-25 — 完整周期mask分层诊断、参数动作重放和性能接续落地
 
 - fetch确认远端main `a52dfba4486af8d263d5cd0a976c3102482ff249`、baseline

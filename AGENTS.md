@@ -32,6 +32,16 @@
 - `runs/parameter_cycle_audit_v1/results/AUDIT.json` 完成90回合、123750次参数shield精确重放，
   参数均非名义值；rate limit约53.87/70.23/53.32%，energy limit为0，不能归因为动作被能量约束抹掉。
   重放使用保存的storage state，不等于独立重建物理/native controller或全局被动性证明。
+- 只读完整cycle1诊断监视器 `runs/diagnosis_cycle01_dispatch_v1` 已启动，等待四路原learner的
+  `cycle_archive/*/cycle_00001.pt`后在CPU54跑冻结诊断工具，输出 `runs/diagnosis_cheq_performance_cycle01`，
+  并比较相同30条件cycle0/1的训练回报；仍非固定策略评估。检查该监视器FINISHED/FAILURE，不重复诊断。
+- 新力矩投影透明性核查已登记并排队：`runs/interim_impedance_torque_audited_v2`，
+  冻结wrapper `runtime/evaluation_audit_v6`，协调器等待四个terminal_fitting_replication_v2原进程
+  成功结束后才用CPU54跑同42000步阻抗checkpoint、同active_long_train_0000、原cuda:1。
+  9项filter/torque审计测试通过；真实55s透明性、actuator linkage尚未完成。v1只排队、未启动physics，
+  增加执行器限制一致性检查前取消，保留CANCELLED_BEFORE_PHYSICS；不要恢复或重复派发v1。
+- terminal_fitting_replication_v2的seed2026102511四接口均完成：terminal10%显著降低in-bag误差，
+  out-of-bag几乎不变，普通误差略升；seed2026102512仍在运行。仅固定标签拟合证据，正式采样不改。
 - 原公共filter审计 `interim_impedance_filter_audited_v2` 已完成，55s物理/actor/接触文件精确一致，
   1375次公共filter重放误差0；v1误用CPU推理的失败保留。原生力矩控制/执行器仍待独立重放。
   指定ESN权重仍缺；无充分收敛、完整最终矩阵或ESN比较结论。详见执行/诊断文档。

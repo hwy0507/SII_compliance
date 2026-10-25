@@ -459,3 +459,71 @@ A subsequent60s window during v2 replication measured54.30/55.47/57.35/49.10%
 (mean), with minima16/33/21/21%. Thus even auxiliary-inclusive all-card50% is
 not a persistent guarantee; GPU3 fell slightly below the requested average.
 Evidence: `runs/PERFORMANCE_WITH_TERMINAL_REPLICATION_GPU_60S_01.json`.
+
+
+## First additional fitting seed and queued torque projection audit
+
+The four seed2026102511 jobs in `runs/terminal_fitting_replication_v2` have
+completed, each with5,000 updates per variant. Seed2026102512 remains in flight.
+The completed seed separates fitted and deliberately withheld critic-row pairs:
+
+| Interface | In-bag terminal MAE: uniform → terminal10% | Out-of-bag terminal MAE: uniform → terminal10% | Ordinary MAE: uniform → terminal10% |
+|---|---:|---:|---:|
+| Direct |14.983403 →.288443|245.885208 →245.988007|.908590 →.969696|
+| Impedance |34.059044 →3.451669|119.043900 →119.539452|1.313104 →1.534171|
+| Admittance |43.703320 →2.576228|187.940735 →187.761276|.930885 →1.455883|
+| VMC |97.979637 →8.315726|514.435852 →513.732239|2.983827 →3.834315|
+
+Thus weighting changes fitted terminal predictions substantially, while held-out
+predictions remain far from their sampled terminal rewards. Both the mask
+interpretation and the finite-horizon/partial-observation caveat above still
+apply. Ordinary error also increases. This does not show policy improvement or
+justify modifying formal replay or resetting the online learners. Actor,
+targets and alpha remained exact; auxiliary critic weights and receipt hashes
+are archived. Small evidence:
+`code/mujoco_6d_vmc_benchmark/docs/evidence/PUBLISHED_TERMINAL_FITTING_MASKED_SEED11_20261025.json`.
+
+The extended `audit_published_episode_20261025.py` now records the common velocity-servo
+torque projection inputs/outputs. It binds before parameter controllers capture
+the projection, so native impedance's generated equivalent command is observed
+at the same shared safety boundary. It records original actuator limits and
+checks that they do not change. The projection's returned object is passed
+through unchanged. No training runtime or earlier audit snapshot is edited.
+
+`replay_published_torque_audit_20261025.py` replays that frozen projection,
+checks previous-output recurrence, amplitude/slew limits and per-call limits,
+and links each output to the80 physical substeps in its4ms servo interval.
+This is **not** reconstruction of native Cartesian reference, wrench, Jacobian
+or posture/friction generation. A successful result will close the downstream
+torque-projection scope only, not all native-controller implementation auditing.
+
+Nine focused filter/torque tests pass, including exact observational outputs
+and rejection of1e-12 output/previous-torque/physical-torque changes, clock
+misalignment and changed actuator limits. Initial testing caught NumPy arrays
+inside dataclass configuration comparison; this was fixed before any physical
+launch. No production training process was affected.
+
+The full55s transparency check is queued as
+`runs/interim_impedance_torque_audited_v2`, using frozen `runtime/evaluation_audit_v6`.
+It uses the exact42000-step Impedance checkpoint, original `source_train04`,
+registered active-long case and `cuda:1` from the already passing public-filter
+transparency pair. The coordinator waits for the four finite replication
+process identities to exit successfully before taking CPU54. It then checks
+full trajectory and contact-file equality, independent filter replay, torque
+replay and physical metrics. Formal training keeps52 cores and the nominal
+matrix keeps52/53. **No full-episode torque transparency result exists yet.**
+
+The first queue registration (`interim_impedance_torque_audited_v1`, wrapperv5)
+was cancelled while waiting, with no evaluation child or physical steps, to add
+explicit immutable actuator-limit equality. Its source/registration and
+CANCELLED_BEFORE_PHYSICS receipt are preserved. Only v2 is pending; it must not
+be duplicated. `run_published_torque_transparency_20261025.py` records original
+process start ticks, prerequisite completion, launch/failure and final receipts.
+
+A read-only monitor in `runs/diagnosis_cycle01_dispatch_v1` is also waiting on
+the four live CHEQ learner identities and their exact cycle1 archive files.
+It will run the frozen masked diagnostic on CPU54 and retain matched-condition
+cycle0/1 training-return changes. Output is
+`runs/diagnosis_cheq_performance_cycle01`; until FINISHED exists this is pending,
+not a second complete-cycle result. Analysis can temporarily share CPU54 with
+the bounded auxiliary jobs; it creates no simulation or learner updates.

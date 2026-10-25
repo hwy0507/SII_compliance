@@ -340,3 +340,13 @@ slightly below50%, so sustained/all-card utilization remains unresolved.
 Protected physics/MJB/gates/actor information/filter/actuator contracts were not
 changed by these diagnostics. No ESN checkpoint has become available, and no
 ESN comparison, full final SPT matrix or convergence claim has been completed.
+
+
+Additional torque-safety-path transparency work is registered in
+`runs/interim_impedance_torque_audited_v2` with frozen audit wrapperv6. Its
+coordinator waits for both finite auxiliary fitting seeds to finish before
+using CPU54; the primary learners and nominal matrix keep their allocations.
+This is one early-checkpoint/case instrumentation check, not a new final policy
+or altered training protocol. The v1 waiting-only registration was superseded
+before physics; do not launch it. Full55s transparency and actual actuator
+linkage are still pending. See the diagnostic document for tests and scope.

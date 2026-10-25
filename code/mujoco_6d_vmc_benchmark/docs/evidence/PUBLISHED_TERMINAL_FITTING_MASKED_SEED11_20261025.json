@@ -1,0 +1,376 @@
+{
+  "captured_unix": 1792936960.3837004,
+  "scope": "First completed additional seed; second seed still running. Fixed-label critic fitting, not online policy improvement.",
+  "convergence_claim": false,
+  "seed": 2026102511,
+  "methods": {
+    "direct": {
+      "receipt": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/terminal_fitting_replication_v2/2026102511/direct/FINISHED.json",
+      "receipt_sha256": "3e39b20cb0140f310fafa5765b1fc4dd4a7424ab79262eb5611a6eafcedfd9b3",
+      "controller": "direct",
+      "results": [
+        {
+          "name": "uniform",
+          "initial": {
+            "terminal_mae": 63.17396545410156,
+            "ordinary_fixed_label_mae": 1.1824719905853271,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 315,
+                "mae": 19.598472595214844
+              },
+              "out_of_bag": {
+                "count": 75,
+                "mae": 246.1910400390625
+              }
+            }
+          },
+          "final": {
+            "variant": "uniform",
+            "updates": 5000,
+            "loss": 7.461083889007568,
+            "terminal_mae": 59.38759231567383,
+            "ordinary_fixed_label_mae": 0.9085901379585266,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 315,
+                "mae": 14.983403205871582
+              },
+              "out_of_bag": {
+                "count": 75,
+                "mae": 245.8852081298828
+              }
+            },
+            "updated_unix": 1792936449.5438836
+          },
+          "auxiliary_critic_weights_sha256": "0a2afc58565466c1f5e041a18cb58fdde30332e687a13f066dccfd5b06fd702f",
+          "actor_targets_temperature_exact": true
+        },
+        {
+          "name": "terminal_10pct",
+          "initial": {
+            "terminal_mae": 63.17396545410156,
+            "ordinary_fixed_label_mae": 1.1824719905853271,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 315,
+                "mae": 19.598472595214844
+              },
+              "out_of_bag": {
+                "count": 75,
+                "mae": 246.1910400390625
+              }
+            }
+          },
+          "final": {
+            "variant": "terminal_10pct",
+            "updates": 5000,
+            "loss": 7.353219509124756,
+            "terminal_mae": 47.53836441040039,
+            "ordinary_fixed_label_mae": 0.9696955680847168,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 315,
+                "mae": 0.288443386554718
+              },
+              "out_of_bag": {
+                "count": 75,
+                "mae": 245.98800659179688
+              }
+            },
+            "updated_unix": 1792936813.36948
+          },
+          "auxiliary_critic_weights_sha256": "b54be8a7a20e28d3ef63bba1e9c175c5568365e5a09f16d1a55817aa327265d0",
+          "actor_targets_temperature_exact": true
+        }
+      ],
+      "checkpoint_sha256": "3352ffbd1d8135ce393ac24ba316fbebcc5f4ecb1fb4ff715d1116b672e54eb3",
+      "fixed_labels_sha256": "b250608da0663eccd1cef7a637b8cd4cb30592d517fcdeb7b36742196124cd5c",
+      "source_sha256": "71468ef2d68d78ed425c7c9da463376af72152826de1d1332c25559f0dc74648",
+      "registration_sha256": "6a291d820cd5130e80d88d20734d47b4b9812c8430a9660fd3af2582dd38559b",
+      "terminal_rows": 78,
+      "total_rows": 120444,
+      "target_pair": "frozen critics0/1; one sampled next action per replay row",
+      "actor_temperature_and_targets_updated": false,
+      "formal_policy_weights_changed": false,
+      "scope": "in_sample_fixed_label_critic_fitting_only",
+      "convergence_claim": false
+    },
+    "impedance": {
+      "receipt": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/terminal_fitting_replication_v2/2026102511/impedance/FINISHED.json",
+      "receipt_sha256": "70dedaddd75fbc3dd75afb5f60a5a2e58aa789a82900b5c5d8e717ab2e0c7a39",
+      "controller": "impedance",
+      "results": [
+        {
+          "name": "uniform",
+          "initial": {
+            "terminal_mae": 46.07963943481445,
+            "ordinary_fixed_label_mae": 1.5951272249221802,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 322,
+                "mae": 30.80607032775879
+              },
+              "out_of_bag": {
+                "count": 68,
+                "mae": 118.4044418334961
+              }
+            }
+          },
+          "final": {
+            "variant": "uniform",
+            "updates": 5000,
+            "loss": 91.12239074707031,
+            "terminal_mae": 48.876914978027344,
+            "ordinary_fixed_label_mae": 1.3131035566329956,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 322,
+                "mae": 34.059043884277344
+              },
+              "out_of_bag": {
+                "count": 68,
+                "mae": 119.04389953613281
+              }
+            },
+            "updated_unix": 1792936446.2254345
+          },
+          "auxiliary_critic_weights_sha256": "471b72abc1819ae83bb395ebdda6d484c88abcb525d944e0e8e34503a6525b41",
+          "actor_targets_temperature_exact": true
+        },
+        {
+          "name": "terminal_10pct",
+          "initial": {
+            "terminal_mae": 46.07963943481445,
+            "ordinary_fixed_label_mae": 1.5951272249221802,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 322,
+                "mae": 30.80607032775879
+              },
+              "out_of_bag": {
+                "count": 68,
+                "mae": 118.4044418334961
+              }
+            }
+          },
+          "final": {
+            "variant": "terminal_10pct",
+            "updates": 5000,
+            "loss": 85.98541259765625,
+            "terminal_mae": 23.692615509033203,
+            "ordinary_fixed_label_mae": 1.5341711044311523,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 322,
+                "mae": 3.4516689777374268
+              },
+              "out_of_bag": {
+                "count": 68,
+                "mae": 119.5394515991211
+              }
+            },
+            "updated_unix": 1792936806.6740742
+          },
+          "auxiliary_critic_weights_sha256": "3dd96e0f6388de3f2f366e9a578b3c45432ef48b8e9b229e3445dbeba931529f",
+          "actor_targets_temperature_exact": true
+        }
+      ],
+      "checkpoint_sha256": "f9368eb59b2cb38d9b5b08033914b445d852f5f141805312a787f4001557fc19",
+      "fixed_labels_sha256": "f6119745bd8e47ff6d2d47e182bd37663137152058909379e53c669f2a2ef532",
+      "source_sha256": "71468ef2d68d78ed425c7c9da463376af72152826de1d1332c25559f0dc74648",
+      "registration_sha256": "6a291d820cd5130e80d88d20734d47b4b9812c8430a9660fd3af2582dd38559b",
+      "terminal_rows": 78,
+      "total_rows": 121765,
+      "target_pair": "frozen critics0/1; one sampled next action per replay row",
+      "actor_temperature_and_targets_updated": false,
+      "formal_policy_weights_changed": false,
+      "scope": "in_sample_fixed_label_critic_fitting_only",
+      "convergence_claim": false
+    },
+    "admittance": {
+      "receipt": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/terminal_fitting_replication_v2/2026102511/admittance/FINISHED.json",
+      "receipt_sha256": "17cc1413f6ef70bc69c9b0a224cf93c4f38715814c3264490bfa18a829ddfc88",
+      "controller": "admittance",
+      "results": [
+        {
+          "name": "uniform",
+          "initial": {
+            "terminal_mae": 73.27761840820312,
+            "ordinary_fixed_label_mae": 1.100571870803833,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 324,
+                "mae": 49.906558990478516
+              },
+              "out_of_bag": {
+                "count": 66,
+                "mae": 188.00823974609375
+              }
+            }
+          },
+          "final": {
+            "variant": "uniform",
+            "updates": 5000,
+            "loss": 39.7902946472168,
+            "terminal_mae": 68.11273193359375,
+            "ordinary_fixed_label_mae": 0.9308853149414062,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 324,
+                "mae": 43.70331954956055
+              },
+              "out_of_bag": {
+                "count": 66,
+                "mae": 187.94073486328125
+              }
+            },
+            "updated_unix": 1792936450.9522948
+          },
+          "auxiliary_critic_weights_sha256": "6930b71b34b084ebf6145aaec82d689029088ebf2b601a6259bb380c3fe986a1",
+          "actor_targets_temperature_exact": true
+        },
+        {
+          "name": "terminal_10pct",
+          "initial": {
+            "terminal_mae": 73.27761840820312,
+            "ordinary_fixed_label_mae": 1.100571870803833,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 324,
+                "mae": 49.906558990478516
+              },
+              "out_of_bag": {
+                "count": 66,
+                "mae": 188.00823974609375
+              }
+            }
+          },
+          "final": {
+            "variant": "terminal_10pct",
+            "updates": 5000,
+            "loss": 50.349830627441406,
+            "terminal_mae": 33.91523361206055,
+            "ordinary_fixed_label_mae": 1.4558833837509155,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 324,
+                "mae": 2.576227903366089
+              },
+              "out_of_bag": {
+                "count": 66,
+                "mae": 187.7612762451172
+              }
+            },
+            "updated_unix": 1792936816.556395
+          },
+          "auxiliary_critic_weights_sha256": "649c5a757c3cd6b40df492df81d8c239896336b2bf7fe8f230e993ee81b4f3ed",
+          "actor_targets_temperature_exact": true
+        }
+      ],
+      "checkpoint_sha256": "ae6370f0d170b3543dcef01e7c7c3e7de390f919900c4ecacb13710ccdb104f9",
+      "fixed_labels_sha256": "132159c80e8d6bdd8f5a978d200ffdaf23059ff976ae5b2c064bd8937dc8939f",
+      "source_sha256": "71468ef2d68d78ed425c7c9da463376af72152826de1d1332c25559f0dc74648",
+      "registration_sha256": "6a291d820cd5130e80d88d20734d47b4b9812c8430a9660fd3af2582dd38559b",
+      "terminal_rows": 78,
+      "total_rows": 121820,
+      "target_pair": "frozen critics0/1; one sampled next action per replay row",
+      "actor_temperature_and_targets_updated": false,
+      "formal_policy_weights_changed": false,
+      "scope": "in_sample_fixed_label_critic_fitting_only",
+      "convergence_claim": false
+    },
+    "vmc": {
+      "receipt": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/terminal_fitting_replication_v2/2026102511/vmc/FINISHED.json",
+      "receipt_sha256": "ff9f43dbfe08615cdefc5fd232c095e824e1c0c9ffa34525c20cc250035fb420",
+      "controller": "vmc",
+      "results": [
+        {
+          "name": "uniform",
+          "initial": {
+            "terminal_mae": 185.05081176757812,
+            "ordinary_fixed_label_mae": 3.616800308227539,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 311,
+                "mae": 102.13489532470703
+              },
+              "out_of_bag": {
+                "count": 79,
+                "mae": 511.466552734375
+              }
+            }
+          },
+          "final": {
+            "variant": "uniform",
+            "updates": 5000,
+            "loss": 214.38650512695312,
+            "terminal_mae": 182.3387451171875,
+            "ordinary_fixed_label_mae": 2.9838273525238037,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 311,
+                "mae": 97.9796371459961
+              },
+              "out_of_bag": {
+                "count": 79,
+                "mae": 514.4358520507812
+              }
+            },
+            "updated_unix": 1792936452.477018
+          },
+          "auxiliary_critic_weights_sha256": "4758d391f9e521250b0a326d237a0392359a89137280e00d6eb39f874d0a23b2",
+          "actor_targets_temperature_exact": true
+        },
+        {
+          "name": "terminal_10pct",
+          "initial": {
+            "terminal_mae": 185.05081176757812,
+            "ordinary_fixed_label_mae": 3.616800308227539,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 311,
+                "mae": 102.13489532470703
+              },
+              "out_of_bag": {
+                "count": 79,
+                "mae": 511.466552734375
+              }
+            }
+          },
+          "final": {
+            "variant": "terminal_10pct",
+            "updates": 5000,
+            "loss": 345.7598876953125,
+            "terminal_mae": 110.69495391845703,
+            "ordinary_fixed_label_mae": 3.8343148231506348,
+            "terminal_mask_errors": {
+              "in_bag": {
+                "count": 311,
+                "mae": 8.315726280212402
+              },
+              "out_of_bag": {
+                "count": 79,
+                "mae": 513.7322387695312
+              }
+            },
+            "updated_unix": 1792936818.4974804
+          },
+          "auxiliary_critic_weights_sha256": "7b3692bfad6452f29b92ba6288b76b45405666fe32f543e37a031b38b6831d49",
+          "actor_targets_temperature_exact": true
+        }
+      ],
+      "checkpoint_sha256": "a2b345fd5df4599068b1c879368cb064f15c68e2d45fdbf1471f4975db90aa9f",
+      "fixed_labels_sha256": "7aea4dee057b5eef37da3f869b5584101a582a958970e7559e1ff52640bd9870",
+      "source_sha256": "71468ef2d68d78ed425c7c9da463376af72152826de1d1332c25559f0dc74648",
+      "registration_sha256": "6a291d820cd5130e80d88d20734d47b4b9812c8430a9660fd3af2582dd38559b",
+      "terminal_rows": 78,
+      "total_rows": 122526,
+      "target_pair": "frozen critics0/1; one sampled next action per replay row",
+      "actor_temperature_and_targets_updated": false,
+      "formal_policy_weights_changed": false,
+      "scope": "in_sample_fixed_label_critic_fitting_only",
+      "convergence_claim": false
+    }
+  }
+}
