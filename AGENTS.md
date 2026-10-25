@@ -7,6 +7,12 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新接触读取有限对照v1/v2均结束：三类×5状态，编号/顺序/dist/frame及读取前后积分状态精确一致。
+v2 CPU计时bulk IDs局部2.33–4.66倍、中位4.55；只测编号提取，不是完整物理/奖励/轨迹等价或GPU提速。
+v1 wall共享调度波动，已保留；共30 mj_forward、0 mj_step/更新，正式runtime未改。下一步可在
+独立候选验证完整循环/轨迹，不能凭microbenchmark部署。source12原8/9及SAC09继续，13仅准备。
+证据PUBLISHED_CONTACT_ACCESS_PROFILE_20261025.json；两probe进程1714191/1749461已退出。
+
 最新只读physical worker采样完成：60s/4895样本/0错误，Direct source12 active-short0600；
 observer inclusive53.50%、mj_step叶18.82%，默认排除idle，仅单worker采样分母，不当全局瓶颈或提速。
 未改physics/遥测/运行时，无新仿真/辅助更新。证据PUBLISHED_PHYSICAL_WORKER_PROFILE_20261025.json。

@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-25 — 接触读取微基准完成，未部署物理优化
+
+- fetch读取main a52dfba/baseline f6e8f8c，未前进；当前四CHEQ12、四SAC09及原审计/评估进程均继续，上一轮是已完成修复与性能证据的实质进展。
+- 新有限工具profile_published_contact_access_20261025.py，从已归档cycle3 Direct三类场景各取1/8/18/35/50s状态，比较原访问、复用contact容器、批量geom IDs。三方式接触编号/顺序一致，dist/frame逐字节一致，读取前后mjSTATE_INTEGRATION不变。
+- 首v1计时存在共享CPU调度离群；保留原结果，新v2增加process CPU clock。v2局部编号提取提速2.33–4.66倍、中位4.55；不推断完整worker/训练/GPU提速，未证明完整循环、轨迹或奖励等价，不部署。
+- 两有限进程均退出，共30次归档状态mj_forward重建、0 mj_step/新transition/优化器更新；重建未恢复全部历史warmstart，不宣称历史接触力重放。正式source12/09、physics/MJB/gate/actor/filter/执行器/dt均未改。
+- 原始证据在/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_access_profile_v1及v2；小型报告docs/PUBLISHED_CONTACT_ACCESS_PROFILE_20261025.json。当前actorLR第8/9轮继续完整试验，最终收敛/SPT/指定ESN比较仍未完成。
+
 ## 2026-10-25 — 物理worker只读性能采样
 
 - 再次fetch读取main a52dfba与baseline f6e8f8c，远端未前进。四CHEQ12、四SAC09及原audit/review/固定评估均核实在途；训练steps和updates持续增加。
