@@ -25,6 +25,17 @@ OBSERVATION_SCALE = np.r_[np.full(7, np.pi), np.full(7, 2.),
     [87.]*4+[12.]*3, [50.]*3+[5.]*3, [1.]*3].astype(np.float32)
 
 
+def assert_finite_parameters(agent):
+    named = list(agent.named_parameters())
+    # Keep every parameter/gradient check but transfer flags together. A host
+    # boolean conversion per tensor serializes the otherwise asynchronous GPU.
+    checks = [torch.isfinite(p).all() & (
+        torch.isfinite(p.grad).all() if p.grad is not None else True) for _, p in named]
+    valid = torch.stack(checks).cpu().tolist()
+    if not all(valid):
+        raise FloatingPointError('Nonfinite published parameter/gradient: '+named[valid.index(False)][0])
+
+
 class Spaces(gym.Env):
     def __init__(self, dimension, direct, context):
         self.horizon = 1375
@@ -36,7 +47,8 @@ class Spaces(gym.Env):
 
 
 class PublishedLearner:
-    def __init__(self, runtime, *, dimension, direct, seed, device, algorithm='sac'):
+    def __init__(self, runtime, *, dimension, direct, seed, device, algorithm='sac',
+                 critic_layer_norm=False, numerical_amendments=False):
         if algorithm not in ('sac', 'cheq'):
             raise ValueError(algorithm)
         self.runtime = Path(runtime)
@@ -44,6 +56,8 @@ class PublishedLearner:
             if hashlib.sha256((self.runtime/'published_cheq'/name).read_bytes()).hexdigest() != digest:
                 raise ValueError('Published learner source drift: '+name)
         self.algorithm = algorithm
+        self.critic_layer_norm = bool(critic_layer_norm)
+        self.numerical_amendments = bool(numerical_amendments)
         self.device = torch.device(device)
         random.seed(seed)
         np.random.seed(seed)
@@ -51,10 +65,17 @@ class PublishedLearner:
         self.rng = np.random.default_rng(seed+71)
         self.spaces = Spaces(dimension, direct, algorithm == 'cheq')
         sys.path.insert(0, str(self.runtime/'published_cheq'))
+        from agents.rl.policies import SACActor
+        self.numerical_patch_receipt = None
+        if self.numerical_amendments:
+            from published_compliance_numerics_20261025 import install
+            self.numerical_patch_receipt = install()
+        elif getattr(SACActor, '_sii_numerics_receipt', None) is not None:
+            raise ValueError('Cannot mix original and amended numerical methods in one process')
         common = dict(env=self.spaces, device=self.device, gamma=.9995, polyak_factor=.005,
                       policy_lr=3e-4, q_lr=3e-4, policy_frequency=2, target_network_frequency=1,
                       actor_hidden_dims=[256, 256], critic_hidden_dims=[256, 256],
-                      autotune=True, action_noise='white')
+                      autotune=True, action_noise='white', layer_norm_q=self.critic_layer_norm)
         if algorithm == 'sac':
             from agents.rl.sac import SAC
             self.learner = SAC(**common)
@@ -149,16 +170,16 @@ class PublishedLearner:
         metrics = self.learner.train(batch)
         metrics = {k: float(v.detach().cpu()) if torch.is_tensor(v) else float(v)
                    for k, v in metrics.items()}
-        for name, parameter in self.learner.agent.named_parameters():
-            if not torch.isfinite(parameter).all() or (parameter.grad is not None and not torch.isfinite(parameter.grad).all()):
-                raise FloatingPointError('Nonfinite published parameter/gradient: '+name)
+        assert_finite_parameters(self.learner.agent)
         if not all(np.isfinite(v) for v in metrics.values()):
             raise FloatingPointError('Nonfinite optimization diagnostics')
         return metrics
 
     def state_dict(self):
         learner = self.learner
-        return copy.deepcopy(dict(algorithm=self.algorithm, agent=learner.agent.state_dict(),
+        return copy.deepcopy(dict(algorithm=self.algorithm, critic_layer_norm=self.critic_layer_norm,
+            numerical_amendments=self.numerical_amendments, numerical_patch_receipt=self.numerical_patch_receipt,
+            agent=learner.agent.state_dict(),
             actor_optimizer=learner.actor_optimizer.state_dict(),
             q_optimizer=learner.q_optimizer.state_dict(),
             alpha_optimizer=learner.a_optimizer.state_dict(), log_alpha=learner.log_alpha.detach(),
@@ -167,11 +188,14 @@ class PublishedLearner:
             numpy_rng=np.random.get_state(), local_rng=self.rng.bit_generator.state,
             python_rng=random.getstate(), torch_rng=torch.get_rng_state(),
             cuda_rng=torch.cuda.get_rng_state_all() if torch.cuda.is_available() else [],
-            observation_scale=OBSERVATION_SCALE, boundary='completed_episode_only'))
+            observation_scale=OBSERVATION_SCALE, boundary='learner_state_only_environment_not_included'))
 
     def load_state_dict(self, state):
         if state['algorithm'] != self.algorithm or not np.array_equal(state['observation_scale'], OBSERVATION_SCALE):
             raise ValueError('Cannot resume changed learner or observation transform')
+        if (bool(state.get('critic_layer_norm', False)), bool(state.get('numerical_amendments', False))) != (
+                self.critic_layer_norm, self.numerical_amendments):
+            raise ValueError('Cannot silently resume changed critic architecture or numerical objective')
         learner = self.learner
         learner.agent.load_state_dict(state['agent'])
         learner.actor_optimizer.load_state_dict(state['actor_optimizer'])

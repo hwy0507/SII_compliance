@@ -37,6 +37,38 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def validate_resume_protocol(checkpoint_digest, protocol, current_digest):
+    if checkpoint_digest == current_digest:
+        return
+    parent = protocol.get('resume_parent_registration')
+    if not parent or checkpoint_digest != parent['sha256'] or sha(parent['path']) != parent['sha256']:
+        raise ValueError('Resume protocol mismatch without verified registered parent')
+    previous = json.loads(Path(parent['path']).read_text())
+    descriptive = {'runtime', 'runtime_sha256', 'resume_parent_registration',
+        'performance_amendment', 'registered_unix', 'restart_reason'}
+    if ({k: v for k, v in previous.items() if k not in descriptive}
+            != {k: v for k, v in protocol.items() if k not in descriptive}):
+        raise ValueError('Performance-only continuation changed the training contract')
+    if protocol.get('performance_amendment', {}).get('kind') != 'batched_finite_checks_only':
+        raise ValueError('Unrecognized registered continuation amendment')
+    old_root, new_root = Path(previous['runtime']), Path(protocol['runtime'])
+    for name in ('PARAMETER_HASHES.json', 'ROBOT_ASSET_HASHES.json', 'CHEQ_HASHES.json'):
+        if json.loads((old_root/name).read_text()) != json.loads((new_root/name).read_text()):
+            raise ValueError('Performance continuation changed runtime contract: '+name)
+    old_source = json.loads((old_root/'SOURCE_HASHES.json').read_text())
+    new_source = json.loads((new_root/'SOURCE_HASHES.json').read_text())
+    permitted = {'tools/'+name+'_20261025.py' for name in (
+        'published_compliance_learner', 'train_published_compliance',
+        'audit_published_episode', 'evaluate_published_compliance',
+        'probe_published_numerical_stability')}
+    for name in set(old_source) | set(new_source):
+        if old_source.get(name) == new_source.get(name):
+            continue
+        if name in permitted or (name not in old_source and name.startswith('tools/')):
+            continue
+        raise ValueError('Performance continuation changed protected runtime source: '+name)
+
+
 class Replay:
     def __init__(self, dimension, observation_dim, seed, capacity=1_000_000):
         self.capacity, self.size, self.cursor = capacity, 0, 0
@@ -119,7 +151,9 @@ def main(args):
     prior = json.loads((root/'parameter/PRIORS.json').read_text())
     dim = 7 if args.controller == 'direct' else prior['methods'][args.controller]['action_dimension']
     learner = PublishedLearner(root, dimension=dim, direct=args.controller == 'direct',
-                               seed=args.seed, device=args.device, algorithm=args.algorithm)
+                               seed=args.seed, device=args.device, algorithm=args.algorithm,
+                               critic_layer_norm=protocol.get('critic_layer_norm', False),
+                               numerical_amendments=protocol.get('numerical_amendments', False))
     replay = Replay(dim, 49 if args.algorithm == 'cheq' else 48, args.seed+53)
     steps, cycles, start_cycle = 0, [], 0
     pdigest = sha(args.registration)
@@ -134,8 +168,9 @@ def main(args):
         steps = replay.size
     if args.resume:
         checkpoint = torch.load(args.resume, map_location=args.device, weights_only=False)
-        if (checkpoint['protocol_sha256'], checkpoint['controller'], checkpoint['seed']) != (pdigest, args.controller, args.seed):
-            raise ValueError('Resume protocol/controller/seed mismatch')
+        validate_resume_protocol(checkpoint['protocol_sha256'], protocol, pdigest)
+        if (checkpoint['controller'], checkpoint['seed']) != (args.controller, args.seed):
+            raise ValueError('Resume controller/seed mismatch')
         learner.load_state_dict(checkpoint['learner'])
         replay.load_state_dict(checkpoint['replay'])
         steps, cycles, start_cycle = checkpoint['steps'], checkpoint['cycles'], checkpoint['cycle']+1
@@ -146,10 +181,14 @@ def main(args):
         gpu_uuid=str(getattr(torch.cuda.get_device_properties(learner.device), 'uuid', 'unavailable')),
         physics_dt_s=.00005, actor_period_s=.04, workers=args.workers,
         batch_size=batch_size, updates_per_transition=utd,
-        recovered_replay=imported_replay, fresh_optimizer_after_failed_attempt=bool(imported_replay and not args.resume),
+        recovered_replay=imported_replay, fresh_optimizer_with_imported_replay=bool(imported_replay and not args.resume),
+        restart_reason=protocol.get('restart_reason'), critic_layer_norm=learner.critic_layer_norm,
+        numerical_amendments=learner.numerical_amendments, numerical_patch_receipt=learner.numerical_patch_receipt,
         python=sys.executable, trainer_sha256=sha(__file__),
         learner_adapter_sha256=sha(Path(__file__).with_name('published_compliance_learner_20261025.py')),
-        resumed_from=str(args.resume) if args.resume else None))
+        resumed_from=str(args.resume) if args.resume else None,
+        resumed_checkpoint_sha256=sha(args.resume) if args.resume else None,
+        resumed_protocol_sha256=checkpoint['protocol_sha256'] if args.resume else None))
     episode_log = (out/'episodes.jsonl').open('x', buffering=1)
     optimizer_log = (out/'optimizer.jsonl').open('x', buffering=1)
     transition_log = (out/'transitions.jsonl').open('x', buffering=1)

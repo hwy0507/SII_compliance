@@ -1,5 +1,60 @@
 # 更新日志
 
+## 2026-10-25 — 公共filter透明性通过，登记保留学习状态的性能接续
+
+- 同42000步阻抗checkpoint和同主动长期条件：v1因误用CPU推理而与原cuda:1从首动作就产生
+  浮点差异，完整对照未通过且保留。v2恢复原cuda:1后，55s模型/journal/terminal逐字节一致，
+  物理数组及双精度接触/力矩文件完全一致；1375次公共filter状态/输出/标志独立重放误差0。
+  evaluator现在记录推理device。未放宽精度；原生力矩控制器/下游执行器层不在此审计范围。
+- 辅助作业完成后纯在线GPU60s均值51.83/40.78/44.20/41.33%，仍未全部达50%。定位每参数
+  GPU→CPU有限值检查造成同步等待；4接口各1000配对真实replay更新，合并检查后网络hash与
+  log-alpha相同，共享GPU有序试验耗时改善1.68–1.89倍，不冒充隔离吞吐或已上线增益。
+  剖析v1文件名profile.py遮蔽标准库导致更新前失败，修正为v2并保留失败记录。
+- 新增合并有限值检查和严格注册父协议恢复：不允许改reward/算法/科学配置/受保护物理源码；
+  四项回归通过，两个实际父协议验证通过。冻结source_train06，原source_train05未改。
+  两个协调器已发出完整周期边界迁移请求，将保留optimizer、target、温度、RNG、replay及cycle历史，
+  然后同CPU/GPU/worker配置启动 `cheq_performance_seed20261025_v1` / `sac_performance_seed20261025_v1`。
+  当前处于draining，未声称replacement已更新。先查MIGRATION状态，禁止重复派发。
+- 当前四路CHEQ与四路SAC仍有真实步/更新和checkpoint，无新增训练失败；Goal未完成。
+  接触舒适性/完整固定策略评估/充分收敛/指定ESN权重及配对比较仍待完成。
+- 最新源码/证据/未完成项已写AGENTS及两份执行诊断文档。大型产物仍仅在当前服务器SSD，
+  前缀 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/`。
+
+## 2026-10-25 — 完整周期诊断、接触对照与LayerNorm独立训练阶段
+
+- fetch确认main `a52dfba4486af8d263d5cd0a976c3102482ff249`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取两分支日志。
+- 旧CHEQ首个30条件周期已完整归档：Direct/Impedance/Admittance/VMC严格成功0/18/12/16，
+  被动10条件全部失败；这是变化策略的训练采集，非固定checkpoint最终成功率或学习改善。
+  终端Q误差108.38/31.06/49.42/58.53。旧SAC Direct的loss约6e7、alpha约109–120，
+  23242步保留checkpoint后停止，不能把数值有限称为优化健康。
+- 新增可移植有限离线诊断和显式数值适配：稳定tanh log-Jacobian、移除actor loss无用NxN广播
+  （保持平均目标/梯度等价）。3项回归已通过；不声称罕见饱和解释全部发散。原作者源码未改。
+  同数据3000更新SAC终端Q误差：batch16384无LN约41.67、有LN约5.20；CHEQ约56.23/27.50。
+  这支持启用作者critic LayerNorm选项，但不是在线收敛证据。
+- 冻结source_train05，新CHEQ `cheq_layernorm_seed20261025_v1`、SAC
+  `sac_layernorm_seed20261025_v2`已真实更新。精确保留旧物理replay，网络/优化器/RNG重新初始化，
+  不冒充连续optimizer恢复。参数来源/机器人assets/原作者代码hash不变，80ms模型复核一致，
+  四接口恢复下一更新参数/log-alpha误差0。reward、actor字段/缩放、公共filter、physics/gate未改。
+- SAC新阶段v1 launcher预建输出目录导致四路在新步/更新前失败，v2修正；失败保留。
+  正式训练52CPU核；CPU54只读完整周期归档，新monitor已启动，旧monitor无遗漏正常结束。
+  新联合在线GPU60s均值50.03/47.92/44.50/37.37%，未全部达到50%目标；启动CPU52/53有限
+  4接口×2seed×LN开关离线复核，每项3000更新，其权重不进入正式比较。
+- 实际人接触审计和固定阻抗同条件对照已结束：二者Task/Strict成功，完成时间20.48/20.52s，
+  峰矩51.572/52.256Nm，接触期间工程力矩阈值合规率5.45%/24.07%。不能据此宣称RL改善；
+  reward接触项与最终比例尚非直接等价目标。1100000子步/回合独立复算，完整filter replay仍待做。
+- 辅助复核运行期间另一个60s窗口四卡均值67.67/58.35/60.52/58.05%，瞬时最低49/28/16/30%；
+  此窗口均值达标但包含离线诊断，不能算纯在线吞吐。新CHEQ早期终端Q误差约20.77/17.86/22.37/31.70，
+  仍有大误差尾部，且数据/训练年龄不同，不能当作与旧首轮的严格配对改善。
+- 增加公共filter观察式记录与独立重放工具，三个回归通过；同42000步阻抗checkpoint/同条件的
+  55s透明性验证已在CPU54启动，独立evaluation_audit_v3冻结，未修改训练runtime。结果仍待完成。
+- 四接口×两seed的16项有限离线复核均已完成，8组配对终端误差均因LN降低；仍非策略收敛。
+  辅助进程已结束，CPU52/53释放，不把其利用率称为常驻在线负载。
+- 更新AGENTS、执行/诊断文档和小型证据。大型产物位于SSD
+  `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/`。
+  仍缺充分收敛、完整最终评估、指定ESN权重和配对结果；Goal保持进行中。
+  GitHub推送状态将在本地提交后核对，不声称此前未成功的发布已经完成。
+
 ## 2026-10-25 — 终端Q诊断、逐步接触审计与四卡联合利用率验证
 
 - fetch核对main `a52dfba4486af8d263d5cd0a976c3102482ff249`、baseline

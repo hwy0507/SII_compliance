@@ -45,6 +45,8 @@ def sha(path):
 
 def diagnose(args):
     torch.set_num_threads(1)
+    if (args.cycle_archive is None) != (args.cycle is None):
+        raise ValueError('Specify both cycle archive and cycle index, or neither')
     out, root = args.output.resolve(), args.runtime.resolve()
     out.mkdir(parents=True, exist_ok=False)
     adapter = root/'source/tools/published_compliance_learner_20261025.py'
@@ -57,10 +59,12 @@ def diagnose(args):
     report = dict(captured_unix=time.time(), run=str(args.run.resolve()),
         source_sha256=sha(Path(__file__)), runtime_manifest_sha256=sha(root/'RUNTIME.json'),
         convergence_claim=False, optimizer_updates_performed=0, methods={})
+    report.update(cycle_archive=str(args.cycle_archive) if args.cycle_archive else None, cycle=args.cycle)
     plot_rows = {}
     for method in ('direct', 'impedance', 'admittance', 'vmc'):
         folder = args.run/method
-        checkpoint_path = folder/'checkpoint_latest.pt'
+        checkpoint_path = (args.cycle_archive/method/f'cycle_{args.cycle:05d}.pt'
+            if args.cycle_archive else folder/'checkpoint_latest.pt')
         if not checkpoint_path.exists():
             report['methods'][method] = dict(status='no_checkpoint_yet')
             continue
@@ -70,13 +74,17 @@ def diagnose(args):
         checkpoint = torch.load(frozen, weights_only=False, map_location='cpu')
         if checkpoint['controller'] != method:
             raise ValueError('Checkpoint controller mismatch')
+        if args.cycle_archive and (checkpoint.get('boundary') != 'complete_condition_cycle'
+                or checkpoint['cycle'] != args.cycle):
+            raise ValueError('Archive is not the requested complete-cycle snapshot')
         execution = json.loads((folder/'EXECUTION.json').read_text())
         if checkpoint['protocol_sha256'] != execution['protocol_sha256']:
             raise ValueError('Checkpoint/execution registration mismatch')
         state = checkpoint['learner']
         dimension = 7 if method == 'direct' else prior['methods'][method]['action_dimension']
         learner = PublishedLearner(root, dimension=dimension, direct=method == 'direct',
-            seed=42, device='cpu', algorithm=state['algorithm'])
+            seed=42, device='cpu', algorithm=state['algorithm'],
+            **{key: state[key] for key in ('critic_layer_norm', 'numerical_amendments') if key in state})
         # Load policy/critics only. Do not restore optimizer or host CUDA RNG.
         learner.learner.agent.load_state_dict(state['agent'])
         agent = learner.learner.agent
@@ -192,4 +200,6 @@ if __name__ == '__main__':
     parser.add_argument('--runtime', type=Path, required=True)
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--cycle-archive', type=Path)
+    parser.add_argument('--cycle', type=int)
     diagnose(parser.parse_args())

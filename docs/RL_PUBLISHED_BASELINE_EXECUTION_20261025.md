@@ -3,6 +3,83 @@
 2026-10-25. This records a **new source-built training cohort**, not recovery of
 the historical office-v6 MJB or proof that any RL method has converged.
 
+## Pending performance continuation (latest status)
+
+Current learners still use source_train05. Registered source_train06 batches
+finite-value validation flags into one GPU-to-host transfer; it changes no
+learning updates or scientific settings. Four paired1,000-update profiles
+produced identical network/temperature values and observed1.68–1.89x speedups
+under shared load. Invalid-parameter/gradient and protocol/physics-drift checks
+pass. This is performance validation, not policy convergence.
+
+Coordinators in `runs/cheq_performance_seed20261025_v1` and
+`runs/sac_performance_seed20261025_v1` are now waiting for the old learners to
+finish complete condition cycles. They will preserve checkpoint/replay,
+optimizer/target/temperature/RNG and cycle history, then resume on the same
+CPU/GPU allocation. The old runs' STOP_REQUESTED files mean coordinated migration,
+not goal cancellation. Check MIGRATION_PROGRESS/FAILURE/FINISHED and actual
+learner counters; no replacement learners had started at this documentation
+snapshot. Both registrations are `REGISTRATION_{CHEQ,SAC}_PERFORMANCE_V1.json`
+in `runs/cohort30_v2`. The frozen coordinator is in `runtime/performance_dispatch_v1`.
+
+The finite auxiliary robustness and performance profiles have completed. Their
+high utilization is not a permanent online load. Latest pure-online60s GPU
+means51.83/40.78/44.20/41.33% still miss the all-card50% target; measure again after
+the performance continuation rather than assuming that a microbenchmark guarantees it.
+
+## Current stage: critic LayerNorm and numerical amendments
+
+Current server runs are `runs/cheq_layernorm_seed20261025_v1` and
+`runs/sac_layernorm_seed20261025_v2`, both using immutable `runtime/source_train05`.
+Registrations are `runs/cohort30_v2/REGISTRATION_CHEQ_LAYERNORM_V1.json` and
+`REGISTRATION_SAC_LAYERNORM_V1.json`. The earlier source_train04 runs described
+below are historical evidence and have been stopped with saved checkpoints.
+
+The new stage enables the authors' existing critic LayerNorm option and two
+explicit numerical amendments: a stable tanh log-Jacobian, and column-shaped Q
+in the actor loss to remove an unnecessary batch-by-batch allocation. The latter
+preserves the scalar mean objective and its gradients. The former preserves
+entropy gradients at floating-point tanh saturation. Saturation was rare in the
+examined old checkpoints, so neither amendment is claimed to fully explain the
+old divergence. See the diagnostics report for controlled offline evidence.
+
+Networks, optimizers, temperature and learner RNG restart from the registered
+seed. Physical replay fields are array-equal to the final old checkpoints;
+ensemble replay masks are freshly generated. This is **not exact optimizer
+continuation**. Imported transition counts, in Direct/Impedance/Admittance/VMC
+order, are79194/80515/80570/81276 for CHEQ and23242/22278/20515/21009 for SAC.
+Counters include these imported transitions; newly collected steps must be
+reported by subtracting the corresponding import count.
+
+No reward, canonical observation fields/scaling, controller mapping, common
+filter, actuator limit, timestep, nominal plan or task/safety gate changed in
+this migration. Parameter sources, published originals and robot assets are
+hash-identical. A real80ms probe reproduced the frozen first-condition model
+hash. All four new CHEQ interfaces passed next-update restoration with zero
+parameter and log-alpha error. This verifies implementation/restoration, not
+convergence. Batch16384, UTD2, gamma.9995 and LR3e-4 remain registered adaptations;
+upstream plain-SAC YAML uses LR1e-4, so the common3e-4 choice is not its default.
+
+CHEQ uses9 samplers per interface (40CPU cores); SAC uses2 (12cores), total52.
+A read-only cycle archive monitor occupies CPU54 and writes
+`runs/cheq_layernorm_cycle_archive_v1`. Its old counterpart archived all four
+complete cycle0 checkpoints and ended without missed boundaries. The finite
+auxiliary `runs/cheq_layernorm_robustness_probe_v1` shares CPU52/53 and uses each
+GPU for paired offline calibration over4 interfaces and2 independent seeds,
+LayerNorm on/off,3000 updates each. It is useful diagnostic training and never
+substitutes for online convergence. The latest joint online-only60s GPU means
+were50.03/47.92/44.50/37.37%; the all-card50% goal was not met in that window.
+
+The SAC layernorm v1 launcher mistakenly pre-created trainer output directories;
+all four exited before any update or physical step. Evidence remains in that
+run. The corrected v2 launcher leaves directory creation to the trainer; all
+four subsequently produced increasing real step/update counters. No data from
+the failed launch were counted as new transitions.
+
+Small evidence:
+[`PUBLISHED_COMPLIANCE_LAYERNORM_20261025.json`](../code/mujoco_6d_vmc_benchmark/docs/evidence/PUBLISHED_COMPLIANCE_LAYERNORM_20261025.json).
+Raw replay/checkpoints and physical substeps remain on this server, outside Git.
+
 ## Authorization and selected method
 
 The active user goal delegates method/interface adaptations, permits simulation
@@ -49,7 +126,7 @@ transitions instead of the upstream config's 15000; bounded uniform warmup;
 local parallel collection; correct next-state mixing context; finite-horizon
 terminal masks; full replay/optimizer/temperature/RNG resume. Networks remain
 256x256; actor/critic LR 3e-4, tau .005, replay capacity 1M. Initial v1 used
-batch256/UTD1; current registered v3 uses batch16384/UTD2 on all four interfaces
+batch256/UTD1; registered v3 and the subsequent LayerNorm stage use batch16384/UTD2 on all four interfaces
 following measured GPU throughput. These are adaptations, not paper defaults.
 Changing algorithm, reward or observation scaling requires a new registered run.
 
@@ -63,7 +140,7 @@ Base directory:
 
 - Interpreter: `env/bin/python`, isolated Python 3.11.17, MuJoCo 3.11.0,
   NumPy 2.2.6, Torch 2.8.0+cu128. Full dependencies are in each runtime lock.
-- `runtime/source_train04` (current v3; initial v1 used `source_train02`): frozen scripts/tools/assets, the published learner,
+- `runtime/source_train04` (historical v3; initial v1 used `source_train02`): frozen scripts/tools/assets, the published learner,
   complete hashes, and parameter sources recovered from baseline commit
   `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` with main's existing controller repairs.
 - Robot assets: Menagerie `f3b6013629c7b94f8ee93fd977b161fa8350f9bc`, 128 hashed

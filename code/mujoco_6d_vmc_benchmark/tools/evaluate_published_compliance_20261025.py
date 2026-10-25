@@ -67,7 +67,9 @@ def evaluate(args):
     dimension = 7 if controller == 'direct' else prior['methods'][controller]['action_dimension']
     os.sched_setaffinity(0, {args.learner_cpu})
     learner = PublishedLearner(root, dimension=dimension, direct=controller == 'direct',
-        seed=checkpoint['seed'], device=args.device, algorithm=algorithm)
+        seed=checkpoint['seed'], device=args.device, algorithm=algorithm,
+        **{key: checkpoint['learner'][key] for key in ('critic_layer_norm', 'numerical_amendments')
+           if key in checkpoint['learner']})
     learner.load_state_dict(checkpoint['learner'])
     initial_updates = learner.learner.num_gradient_steps
     receipt = dict(scope='training_conditions_independent_deterministic_evaluation',
@@ -78,7 +80,9 @@ def evaluate(args):
         deterministic=True, optimizer_updates_during_evaluation=0, convergence_claim=False,
         actor_dimension=49 if algorithm == 'cheq' else 48,
         source_sha256=sha(__file__), learner_adapter_sha256=sha(adapter),
-        learner_cpu=args.learner_cpu, physics_cpu=args.physics_cpu)
+        learner_cpu=args.learner_cpu, physics_cpu=args.physics_cpu,
+        inference_device=str(learner.device),
+        inference_gpu_name=torch.cuda.get_device_name(learner.device) if learner.device.type == 'cuda' else None)
     episode_adapter = root/'source/tools/published_compliance_episode_20261025.py'
     if args.audit_substeps:
         episode_adapter = Path(__file__).with_name('audit_published_episode_20261025.py')

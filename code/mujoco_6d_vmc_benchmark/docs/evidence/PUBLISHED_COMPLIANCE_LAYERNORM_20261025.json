@@ -1,0 +1,1093 @@
+{
+  "captured_unix": 1792931864.7105446,
+  "server_base": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl",
+  "convergence_claim": false,
+  "records": {
+    "runs/cheq_cycle_archive_v1/FIRST_CYCLE_SUMMARY.json": {
+      "sha256": "f255aec91c366f5baf16d164332d18c3be4b694f3f0506a0ba4f1469f12bafa8",
+      "data": {
+        "direct": {
+          "passive_corner": {
+            "episodes": 10,
+            "task": 0,
+            "strict": 0,
+            "reward_mean": -35.13179907370726
+          },
+          "active_short": {
+            "episodes": 10,
+            "task": 0,
+            "strict": 0,
+            "reward_mean": -33.650515344401754
+          },
+          "active_long": {
+            "episodes": 10,
+            "task": 0,
+            "strict": 0,
+            "reward_mean": -33.099297217868994
+          }
+        },
+        "impedance": {
+          "passive_corner": {
+            "episodes": 10,
+            "task": 0,
+            "strict": 0,
+            "reward_mean": -31.157931048528543
+          },
+          "active_short": {
+            "episodes": 10,
+            "task": 10,
+            "strict": 10,
+            "reward_mean": 19.900483967323417
+          },
+          "active_long": {
+            "episodes": 10,
+            "task": 8,
+            "strict": 8,
+            "reward_mean": 9.866533143154674
+          }
+        },
+        "admittance": {
+          "passive_corner": {
+            "episodes": 10,
+            "task": 0,
+            "strict": 0,
+            "reward_mean": -31.68282092218962
+          },
+          "active_short": {
+            "episodes": 10,
+            "task": 9,
+            "strict": 9,
+            "reward_mean": 12.815559065473312
+          },
+          "active_long": {
+            "episodes": 10,
+            "task": 3,
+            "strict": 3,
+            "reward_mean": -17.28741716038506
+          }
+        },
+        "vmc": {
+          "passive_corner": {
+            "episodes": 10,
+            "task": 0,
+            "strict": 0,
+            "reward_mean": -31.05241556553326
+          },
+          "active_short": {
+            "episodes": 10,
+            "task": 10,
+            "strict": 9,
+            "reward_mean": 13.651691917938734
+          },
+          "active_long": {
+            "episodes": 10,
+            "task": 7,
+            "strict": 7,
+            "reward_mean": 3.6828791127657903
+          }
+        }
+      }
+    },
+    "runs/interim_impedance_human_audited_v1/PHYSICAL_AUDIT.json": {
+      "sha256": "a999f03cc5e229ddc515b39b726a22e8bdf66ab2719469659ca570a316a210b5",
+      "data": {
+        "row": {
+          "method": "cheq_impedance",
+          "case_id": "active_long_train_0000",
+          "task_success": true,
+          "strict_success": true,
+          "full_horizon": true,
+          "machine_safety_violation": false,
+          "elapsed_s": 54.99999999999989,
+          "completion_time_s": 20.48000000126461,
+          "completion_time_definition": "final_stable_placement_certification",
+          "torque_thresholds_nm": [
+            43.5,
+            43.5,
+            43.5,
+            43.5,
+            6.0,
+            6.0,
+            6.0
+          ],
+          "peak_torque_nm_per_joint": [
+            18.27917393521123,
+            51.57192248618165,
+            13.777425321398434,
+            31.683726094311297,
+            5.982100596523954,
+            11.794493921716649,
+            6.710903406176172
+          ],
+          "human_contact_s": 7.750350000000003,
+          "human_below_threshold_s": 0.42245000000000016,
+          "human_compliance_ratio": 0.054507215803157275,
+          "final_task_stage": "retreat",
+          "abort_reason": null
+        },
+        "scope": "physical_telemetry_and_metric_alignment",
+        "filter_replay_verified": false,
+        "actor_input_and_executed_action_trace_equal": true,
+        "samples": 1100000,
+        "engineering_contact_force_onset_n": 0.05,
+        "threshold_status": "engineering_reference_not_validated_human_comfort",
+        "aggregate_errors": {
+          "elapsed_abs_s": 8.881784197001252e-13,
+          "contact_abs_s": 3.552713678800501e-15,
+          "compliant_abs_s": 0.0,
+          "peak_torque_abs_nm": 0.0,
+          "penetration_abs_m": 0.0
+        },
+        "source_sha256": "c78c3f5de8343fcfa31d3267dd33f52e2e9ead2c44adcccdf1e82b5add4f5ede",
+        "evidence_sha256": {
+          "TERMINAL.json": "db1ad1fb154485ec7ec50f9e47d5943ec0549af14093b5792a7eaafdaf068a99",
+          "rollout.json": "e15b92244f47db84cdec2e73030e82171208b62beeb68c351b67d1b2d5eab033",
+          "rollout.mjb": "757eff72e7d889482134ceb282b8b20abaf4418642e3875bc83ebcf7eae085b7",
+          "rollout.npz": "6f597aa4f67d1827d5fe228588d86005d02689d1f0eef5f74b643b3c07d10261",
+          "audit_substeps.npy": "c66c29b9d5044ea0d9f27071cc46a22a03fbd6b30d8d5fe8021e4db0fbb4b433",
+          "AUDIT_EXTENSION.json": "b150917543aed60e25f3873fe1d0ce6ef166750e2514c037da784550cfd348a4",
+          "actor_intervals.jsonl": "0c708ebf37ce99ad2262bb464cd33a77df7a2d4020c4b466da1a97ed5d6c8b06",
+          "rollout_metrics/substep_metrics.npz": "4b8c4bb162e676b44dbf211238d87757c8544240477b305e8e8bf9adde2d0041"
+        }
+      }
+    },
+    "runs/NOMINAL_IMPEDANCE_HUMAN_PHYSICAL_AUDIT.json": {
+      "sha256": "de1a85855ddfbfd9c40892342fdf7a2dfca3cbc6079cbba53c95590fe2d2c1fd",
+      "data": {
+        "row": {
+          "method": "nominal_impedance",
+          "case_id": "active_long_train_0000",
+          "task_success": true,
+          "strict_success": true,
+          "full_horizon": true,
+          "machine_safety_violation": false,
+          "elapsed_s": 54.99999999999989,
+          "completion_time_s": 20.52000000126461,
+          "completion_time_definition": "final_stable_placement_certification",
+          "torque_thresholds_nm": [
+            43.5,
+            43.5,
+            43.5,
+            43.5,
+            6.0,
+            6.0,
+            6.0
+          ],
+          "peak_torque_nm_per_joint": [
+            16.53708561524477,
+            52.25610448037429,
+            12.545610257570715,
+            31.191162843793308,
+            5.28449435235598,
+            11.376068537351598,
+            6.396493959727122
+          ],
+          "human_contact_s": 7.769200000000002,
+          "human_below_threshold_s": 1.8703500000000006,
+          "human_compliance_ratio": 0.24073907223394944,
+          "final_task_stage": "retreat",
+          "abort_reason": null
+        },
+        "scope": "physical_telemetry_and_metric_alignment",
+        "filter_replay_verified": false,
+        "actor_input_and_executed_action_trace_equal": true,
+        "samples": 1100000,
+        "engineering_contact_force_onset_n": 0.05,
+        "threshold_status": "engineering_reference_not_validated_human_comfort",
+        "aggregate_errors": {
+          "elapsed_abs_s": 8.881784197001252e-13,
+          "contact_abs_s": 2.6645352591003757e-15,
+          "compliant_abs_s": 6.661338147750939e-16,
+          "peak_torque_abs_nm": 0.0,
+          "penetration_abs_m": 0.0
+        },
+        "source_sha256": "c78c3f5de8343fcfa31d3267dd33f52e2e9ead2c44adcccdf1e82b5add4f5ede",
+        "evidence_sha256": {
+          "TERMINAL.json": "aef87559776b8494b2dc69e5d37da94c55868e8aae0697f85f04ddd058567520",
+          "rollout.json": "b98cd8377dc5e05c8ea8787a1458b193de50976a082e80a76758a71fc4b5645c",
+          "rollout.mjb": "757eff72e7d889482134ceb282b8b20abaf4418642e3875bc83ebcf7eae085b7",
+          "rollout.npz": "a8e262c798d018e6adfb86ef6efcbc17d7e2f9b2c15e293d22a6f45a92782d62",
+          "audit_substeps.npy": "40016fd2a72c11535b9af6116ab213104e5a51fc79974fde710d0ecb6a0443aa",
+          "AUDIT_EXTENSION.json": "0ad4e02e38419af17a9ab28a1675c637878e53a257ee814336739e51f3e1f939",
+          "actor_intervals.jsonl": "5470807cd621bd281a292bfd15d8e96eedd790a96982d90c37d9c71c5c13e921",
+          "rollout_metrics/substep_metrics.npz": "d470c11f61cd3e8950b544f3d744552996f1d4f5a75dca3e60a2204f83c7269b"
+        }
+      }
+    },
+    "runtime/source_train05/LEARNER_RESTART_VALIDATION.json": {
+      "sha256": "3bb265dd11ce96f42c9a0d35a7fed07e339b2136248dca7b193b6cb605845539",
+      "data": {
+        "direct": {
+          "next_update_max_parameter_error": 0.0,
+          "next_logalpha_error": 0.0,
+          "finite_updates": true,
+          "critic_layer_norm": true,
+          "numerical_amendments": true
+        },
+        "impedance": {
+          "next_update_max_parameter_error": 0.0,
+          "next_logalpha_error": 0.0,
+          "finite_updates": true,
+          "critic_layer_norm": true,
+          "numerical_amendments": true
+        },
+        "admittance": {
+          "next_update_max_parameter_error": 0.0,
+          "next_logalpha_error": 0.0,
+          "finite_updates": true,
+          "critic_layer_norm": true,
+          "numerical_amendments": true
+        },
+        "vmc": {
+          "next_update_max_parameter_error": 0.0,
+          "next_logalpha_error": 0.0,
+          "finite_updates": true,
+          "critic_layer_norm": true,
+          "numerical_amendments": true
+        }
+      }
+    },
+    "runtime/source_train05/PHYSICS_SOURCE_EQUIVALENCE.json": {
+      "sha256": "bbbe74c506af21edc84066fa2906d3813081d9e5268f532c9ad0e51521164b76",
+      "data": {
+        "parent_runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train04",
+        "unchanged_parameter_sources": true,
+        "unchanged_published_source": true,
+        "unchanged_robot_assets": true,
+        "changed_existing": [
+          "tools/published_compliance_learner_20261025.py",
+          "tools/train_published_compliance_20261025.py"
+        ],
+        "added": [
+          "tools/archive_published_cycle_checkpoints_20261025.py",
+          "tools/audit_published_episode_20261025.py",
+          "tools/compare_published_audit_trajectories_20261025.py",
+          "tools/diagnose_published_training_20261025.py",
+          "tools/evaluate_published_compliance_20261025.py",
+          "tools/probe_published_numerical_stability_20261025.py",
+          "tools/published_compliance_numerics_20261025.py",
+          "tools/recover_published_replay_20261025.py",
+          "tools/summarize_published_episode_audit_20261025.py"
+        ],
+        "physics_source_unchanged": true
+      }
+    },
+    "runs/cheq_layernorm_replay_v1/IMPORT.json": {
+      "sha256": "23006b1e6fd6b5e29ad588e1c16c33dcaaf2e6e55b54dae6dc0509d8d1395071",
+      "data": {
+        "direct": {
+          "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_layernorm_replay_v1/direct.npz",
+          "sha256": "3b16580c1499bd7bc7cee9cfbfc9b031eaa2121d1af6d532cfdc9672a99440de",
+          "transitions": 79194,
+          "parent_checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_four_interfaces_seed20261025_v3/direct/checkpoint_latest.pt",
+          "parent_checkpoint_sha256": "7bc3cc53cde5e6839f8ab75fc3262574b098a14aef2d60fab6024ad28dbb935e",
+          "parent_updates": 138388,
+          "physical_fields_exact": true,
+          "optimizer_actor_and_replay_masks_reinitialized": true
+        },
+        "impedance": {
+          "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_layernorm_replay_v1/impedance.npz",
+          "sha256": "2c9f60e54dc026097b44d2bd3fe8f7a9be38a53c100b59a38bec4fb724099c3d",
+          "transitions": 80515,
+          "parent_checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_four_interfaces_seed20261025_v3/impedance/checkpoint_latest.pt",
+          "parent_checkpoint_sha256": "047a0e9ab2670a54d9b76b0a79c39614deda96697f34526f578032595065b0f8",
+          "parent_updates": 141028,
+          "physical_fields_exact": true,
+          "optimizer_actor_and_replay_masks_reinitialized": true
+        },
+        "admittance": {
+          "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_layernorm_replay_v1/admittance.npz",
+          "sha256": "74337e0d201ad44acb079192aff018799516c17c80941510aa943649aa09d596",
+          "transitions": 80570,
+          "parent_checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_four_interfaces_seed20261025_v3/admittance/checkpoint_latest.pt",
+          "parent_checkpoint_sha256": "7d629c27de5dddc52e2fbc5c2de68aee943ddd5ae4a6c8a70d3f772fe63ec26c",
+          "parent_updates": 141136,
+          "physical_fields_exact": true,
+          "optimizer_actor_and_replay_masks_reinitialized": true
+        },
+        "vmc": {
+          "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_layernorm_replay_v1/vmc.npz",
+          "sha256": "95ba97ce2d4cb161e7d1840f74a9577878546e0df420bd2f75133a1e08d1b8fc",
+          "transitions": 81276,
+          "parent_checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_four_interfaces_seed20261025_v3/vmc/checkpoint_latest.pt",
+          "parent_checkpoint_sha256": "153a987a26cb7588531d48026981808b40d8fe2b1405f50db625be79dea5a9e0",
+          "parent_updates": 142550,
+          "physical_fields_exact": true,
+          "optimizer_actor_and_replay_masks_reinitialized": true
+        }
+      }
+    },
+    "runs/sac_layernorm_replay_v1/IMPORT.json": {
+      "sha256": "be29373f0e4b7eed33fd2dfd9b7e917e71dfbd570c500ffd0c41bbfad968778e",
+      "data": {
+        "direct": {
+          "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_layernorm_replay_v1/direct.npz",
+          "sha256": "74a139c48e79182f2d00f67984fef9c68cd2745f976ad9f4689d60283d5aa5ed",
+          "transitions": 23242,
+          "parent_checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_four_interfaces_seed20261025_v1/direct/checkpoint_latest.pt",
+          "parent_checkpoint_sha256": "6fa0eead1de11f4522cabc30ee1b288c27c6d932084022f6f5aa8935cc343a10",
+          "parent_updates": 36486,
+          "physical_fields_exact": true,
+          "optimizer_actor_and_replay_masks_reinitialized": true
+        },
+        "impedance": {
+          "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_layernorm_replay_v1/impedance.npz",
+          "sha256": "d86b9377ec027c74373ed2e2488e219363381808109b6374f9f82f8b025d3090",
+          "transitions": 22278,
+          "parent_checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_four_interfaces_seed20261025_v1/impedance/checkpoint_latest.pt",
+          "parent_checkpoint_sha256": "25d400929ca1eb12abcaaf4721b1e72c59317ade6a6335df660d097875cf9ecc",
+          "parent_updates": 34558,
+          "physical_fields_exact": true,
+          "optimizer_actor_and_replay_masks_reinitialized": true
+        },
+        "admittance": {
+          "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_layernorm_replay_v1/admittance.npz",
+          "sha256": "4ddad97cb7d18df5c31a7d73fa7d3de573d4f25a4ab15b7e0a11d1eca05d6689",
+          "transitions": 20515,
+          "parent_checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_four_interfaces_seed20261025_v1/admittance/checkpoint_latest.pt",
+          "parent_checkpoint_sha256": "b56373d7b110f074b218c353f5ce95dbd2f8d181f09de48aa61ffd1914ac6f47",
+          "parent_updates": 31032,
+          "physical_fields_exact": true,
+          "optimizer_actor_and_replay_masks_reinitialized": true
+        },
+        "vmc": {
+          "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_layernorm_replay_v1/vmc.npz",
+          "sha256": "794858e90435edb01cdd37579fbc631c2f1337594423c5c62d7f2b08d7dbdc22",
+          "transitions": 21009,
+          "parent_checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_four_interfaces_seed20261025_v1/vmc/checkpoint_latest.pt",
+          "parent_checkpoint_sha256": "97d13d9eab7f34f34aeb0129770ff603cc424480ef799da80e2688da86143d25",
+          "parent_updates": 32020,
+          "physical_fields_exact": true,
+          "optimizer_actor_and_replay_masks_reinitialized": true
+        }
+      }
+    },
+    "runs/LAYERNORM_JOINT_GPU_60S_01.json": {
+      "sha256": "45e621347fc6ea25d5c0a96c0360ba3aa9ead150360bfeeb1390e9462d247b2c",
+      "data": {
+        "runs": [
+          "cheq_layernorm_seed20261025_v1",
+          "sac_layernorm_seed20261025_v2"
+        ],
+        "summary": {
+          "0": {
+            "mean": 50.03333333333333,
+            "minimum": 12,
+            "maximum": 79
+          },
+          "1": {
+            "mean": 47.916666666666664,
+            "minimum": 24,
+            "maximum": 74
+          },
+          "2": {
+            "mean": 44.5,
+            "minimum": 0,
+            "maximum": 76
+          },
+          "3": {
+            "mean": 37.36666666666667,
+            "minimum": 3,
+            "maximum": 69
+          }
+        }
+      }
+    },
+    "runs/numerical_stability_probe_v2/fixed_b16384_ln0/FINISHED.json": {
+      "sha256": "b1e3a769a18e71c92a7754dd314be25668ecaa680f57105ed6238f7fec138140",
+      "data": {
+        "status": "completed_fixed_diagnostic_budget",
+        "updates": 3000,
+        "terminal_q_mae": 41.66969299316406,
+        "alpha": 0.4062069356441498,
+        "latest_metrics": {
+          "agent_train/qf1_values": 33.98646926879883,
+          "agent_train/qf2_values": 33.96815490722656,
+          "agent_train/qf1_loss": 1.200688123703003,
+          "agent_train/qf2_loss": 1.221096396446228,
+          "agent_train/q_loss": 2.4217844009399414,
+          "agent_train/entropy_coefficient_loss": -9.649625778198242,
+          "agent_train/actor_loss": -35.44004821777344,
+          "agent_train/actor_entropy": 3.714693069458008,
+          "agent_train/entropy_coefficient": 0.4062069356441498,
+          "agent_train/target_entropy": -7.0
+        },
+        "updated_unix": 1792930257.4641953,
+        "convergence_claim": false
+      }
+    },
+    "runs/numerical_stability_probe_v2/fixed_b16384_ln1/FINISHED.json": {
+      "sha256": "663345e556c08d12fe3bd36583a3862b201cdf6d3635224b57af7ac6582b6d94",
+      "data": {
+        "status": "completed_fixed_diagnostic_budget",
+        "updates": 3000,
+        "terminal_q_mae": 5.201898574829102,
+        "alpha": 0.40518876910209656,
+        "latest_metrics": {
+          "agent_train/qf1_values": 40.82548522949219,
+          "agent_train/qf2_values": 40.834590911865234,
+          "agent_train/qf1_loss": 0.36594000458717346,
+          "agent_train/qf2_loss": 0.319871187210083,
+          "agent_train/q_loss": 0.6858111619949341,
+          "agent_train/entropy_coefficient_loss": -9.919818878173828,
+          "agent_train/actor_loss": -42.43064498901367,
+          "agent_train/actor_entropy": 3.984145402908325,
+          "agent_train/entropy_coefficient": 0.40518876910209656,
+          "agent_train/target_entropy": -7.0
+        },
+        "updated_unix": 1792930260.254058,
+        "convergence_claim": false
+      }
+    },
+    "runs/numerical_stability_probe_v2/fixed_b256_ln0/FINISHED.json": {
+      "sha256": "cf0beb528eafbbc72f8f8409f30c181b0fb0b3f8d856fdd5247ce8b3e2017bd9",
+      "data": {
+        "status": "completed_fixed_diagnostic_budget",
+        "updates": 3000,
+        "terminal_q_mae": 52.518272399902344,
+        "alpha": 0.40496060252189636,
+        "latest_metrics": {
+          "agent_train/qf1_values": 33.580474853515625,
+          "agent_train/qf2_values": 33.59416198730469,
+          "agent_train/qf1_loss": 8.427075386047363,
+          "agent_train/qf2_loss": 7.89899206161499,
+          "agent_train/q_loss": 16.326066970825195,
+          "agent_train/entropy_coefficient_loss": -9.867878913879395,
+          "agent_train/actor_loss": -35.101951599121094,
+          "agent_train/actor_entropy": 3.9198122024536133,
+          "agent_train/entropy_coefficient": 0.40496060252189636,
+          "agent_train/target_entropy": -7.0
+        },
+        "updated_unix": 1792930262.9146757,
+        "convergence_claim": false
+      }
+    },
+    "runs/numerical_stability_probe_v2/fixed_b256_ln1/FINISHED.json": {
+      "sha256": "6e0711da34f75a8a6d84b704f4bb99efc9d134d8a5f3a0c5884b422af7fc411d",
+      "data": {
+        "status": "completed_fixed_diagnostic_budget",
+        "updates": 3000,
+        "terminal_q_mae": 50.62701416015625,
+        "alpha": 0.40496858954429626,
+        "latest_metrics": {
+          "agent_train/qf1_values": 40.24776077270508,
+          "agent_train/qf2_values": 40.25321960449219,
+          "agent_train/qf1_loss": 1.5417554378509521,
+          "agent_train/qf2_loss": 1.4068033695220947,
+          "agent_train/q_loss": 2.948558807373047,
+          "agent_train/entropy_coefficient_loss": -9.895639419555664,
+          "agent_train/actor_loss": -41.870086669921875,
+          "agent_train/actor_entropy": 3.9507718086242676,
+          "agent_train/entropy_coefficient": 0.40496858954429626,
+          "agent_train/target_entropy": -7.0
+        },
+        "updated_unix": 1792930264.4580517,
+        "convergence_claim": false
+      }
+    },
+    "runs/numerical_stability_probe_v2/original_b16384/FINISHED.json": {
+      "sha256": "aba5e4e631fa363810d800f8bc73ef4660bae281de977804b9f3ae62dc94415d",
+      "data": {
+        "status": "completed_fixed_diagnostic_budget",
+        "updates": 3000,
+        "terminal_q_mae": 41.562652587890625,
+        "alpha": 0.4061909317970276,
+        "latest_metrics": {
+          "agent_train/qf1_values": 33.989402770996094,
+          "agent_train/qf2_values": 33.966407775878906,
+          "agent_train/qf1_loss": 1.175473690032959,
+          "agent_train/qf2_loss": 1.2190667390823364,
+          "agent_train/q_loss": 2.394540309906006,
+          "agent_train/entropy_coefficient_loss": -9.65511703491211,
+          "agent_train/actor_loss": -35.439456939697266,
+          "agent_train/actor_entropy": 3.7203214168548584,
+          "agent_train/entropy_coefficient": 0.4061909317970276,
+          "agent_train/target_entropy": -7.0
+        },
+        "updated_unix": 1792930268.968197,
+        "convergence_claim": false
+      }
+    },
+    "runs/cheq_numerical_stability_probe_v1/fixed_b16384_ln0/FINISHED.json": {
+      "sha256": "d9768faee1dcde3a6274fb02aee62d6fcaa11b14d2b1b40f298c7d82b94d9604",
+      "data": {
+        "status": "completed_fixed_diagnostic_budget",
+        "updates": 3000,
+        "terminal_q_mae": 56.2263298034668,
+        "alpha": 0.40439069271087646,
+        "latest_metrics": {
+          "agent_train/q_loss": 7.986985206604004,
+          "agent_train/next_q_values": 33.97040557861328,
+          "agent_train/entropy_coefficient_loss": -9.988697052001953,
+          "agent_train/actor_loss": -34.044029235839844,
+          "agent_train/actor_entropy": 4.0363264083862305,
+          "agent_train/entropy_coefficient": 0.40439069271087646,
+          "agent_train/target_entropy": -7.0
+        },
+        "updated_unix": 1792930522.2276566,
+        "convergence_claim": false
+      }
+    },
+    "runs/cheq_numerical_stability_probe_v1/fixed_b16384_ln1/FINISHED.json": {
+      "sha256": "b2c932b5d815317460aa72a649830a1e0d206fd3ea890a2ca08edb37f98d5527",
+      "data": {
+        "status": "completed_fixed_diagnostic_budget",
+        "updates": 3000,
+        "terminal_q_mae": 27.4964656829834,
+        "alpha": 0.40475308895111084,
+        "latest_metrics": {
+          "agent_train/q_loss": 4.065589427947998,
+          "agent_train/next_q_values": 41.441993713378906,
+          "agent_train/entropy_coefficient_loss": -9.925748825073242,
+          "agent_train/actor_loss": -41.47288513183594,
+          "agent_train/actor_entropy": 3.977632999420166,
+          "agent_train/entropy_coefficient": 0.40475308895111084,
+          "agent_train/target_entropy": -7.0
+        },
+        "updated_unix": 1792930524.0851035,
+        "convergence_claim": false
+      }
+    },
+    "runs/LAYERNORM_WITH_PROBES_GPU_60S_01.json": {
+      "sha256": "18d5873a58a8351aee343570fd80d031233c29551e0c830ed4f4a13aa3c69d32",
+      "data": {
+        "runs": [
+          "cheq_layernorm_seed20261025_v1",
+          "sac_layernorm_seed20261025_v2",
+          "cheq_layernorm_robustness_probe_v1"
+        ],
+        "summary": {
+          "0": {
+            "mean": 67.66666666666667,
+            "minimum": 49,
+            "maximum": 90
+          },
+          "1": {
+            "mean": 58.35,
+            "minimum": 28,
+            "maximum": 84
+          },
+          "2": {
+            "mean": 60.516666666666666,
+            "minimum": 16,
+            "maximum": 85
+          },
+          "3": {
+            "mean": 58.05,
+            "minimum": 30,
+            "maximum": 89
+          }
+        }
+      }
+    },
+    "runs/diagnosis_cheq_layernorm_early01/DIAGNOSIS.json": {
+      "sha256": "47bc8a6aa5ebc4524510f1fbe676e8880117369524f637a502b4e6bfe1e1eaaf",
+      "methods": {
+        "direct": {
+          "steps": 89194,
+          "updates": 20000,
+          "terminal_count": 48,
+          "terminal_q_absolute_error": {
+            "count": 240,
+            "mean": 20.76937065124512,
+            "minimum": 0.007293701171875,
+            "maximum": 93.23191833496094,
+            "p50": 0.5959758758544922,
+            "p95": 90.58933143615722
+          },
+          "alpha": 0.00418285233899951
+        },
+        "impedance": {
+          "steps": 90515,
+          "updates": 20000,
+          "terminal_count": 48,
+          "terminal_q_absolute_error": {
+            "count": 240,
+            "mean": 17.862991174062092,
+            "minimum": 0.07211112976074219,
+            "maximum": 84.22113037109375,
+            "p50": 3.812356948852539,
+            "p95": 82.07181968688965
+          },
+          "alpha": 0.011071333661675453
+        },
+        "admittance": {
+          "steps": 90570,
+          "updates": 20000,
+          "terminal_count": 48,
+          "terminal_q_absolute_error": {
+            "count": 240,
+            "mean": 22.36751025915146,
+            "minimum": 0.0003032684326171875,
+            "maximum": 109.38430786132812,
+            "p50": 2.8933839797973633,
+            "p95": 102.47187881469726
+          },
+          "alpha": 0.01003142911940813
+        },
+        "vmc": {
+          "steps": 91276,
+          "updates": 20000,
+          "terminal_count": 48,
+          "terminal_q_absolute_error": {
+            "count": 240,
+            "mean": 31.69588048060735,
+            "minimum": 0.0046825408935546875,
+            "maximum": 128.27455139160156,
+            "p50": 6.9448933601379395,
+            "p95": 104.03296966552735
+          },
+          "alpha": 0.012676447629928589
+        }
+      }
+    },
+    "runs/cheq_layernorm_robustness_probe_v1/SUMMARY.json": {
+      "sha256": "0d665772d6347a83da380125f209c0881d89a83672bdb2ac407583aa3b764b50",
+      "data": {
+        "convergence_claim": false,
+        "all_16_completed": true,
+        "scope": "offline_terminal_value_calibration_on_fixed_replay",
+        "rows": [
+          {
+            "controller": "direct",
+            "seed": 2026102508,
+            "ln0_terminal_q_mae": 56.07560729980469,
+            "ln0_receipt_sha256": "7e9ffd047af4d27f67a32f4bde0f2768dcf8c3619a919c57a9a9933e395e89b7",
+            "ln1_terminal_q_mae": 28.451549530029297,
+            "ln1_receipt_sha256": "19cbb0a8f834a7d2bb08cfbf397f7252f173dbe1b6896867ffb6d86175947385"
+          },
+          {
+            "controller": "direct",
+            "seed": 2026102509,
+            "ln0_terminal_q_mae": 56.16519546508789,
+            "ln0_receipt_sha256": "84ee0ffd76f314c4ada2ddeb2092c2bcb54afe4aab7a082a663b1c57c33a26d6",
+            "ln1_terminal_q_mae": 30.48769187927246,
+            "ln1_receipt_sha256": "a0f3fe9f50bbb3b667bccddae4d4353188f3b22c2257f54dbed5c0cbe4be6534"
+          },
+          {
+            "controller": "impedance",
+            "seed": 2026102508,
+            "ln0_terminal_q_mae": 25.064428329467773,
+            "ln0_receipt_sha256": "78be6bb32a295109e691d690ef9ec6b90f6571fb6e84e02f15f9af3c3efb7eb4",
+            "ln1_terminal_q_mae": 19.231155395507812,
+            "ln1_receipt_sha256": "a9d497d220b2aab06a7faf483c864c98a072412dcdc7d0ff13b22d425087a84c"
+          },
+          {
+            "controller": "impedance",
+            "seed": 2026102509,
+            "ln0_terminal_q_mae": 24.911697387695312,
+            "ln0_receipt_sha256": "3cb27642138aa42836ee9647cb9cb8749e2f3af76f4db20f52c4de94165bc9f5",
+            "ln1_terminal_q_mae": 16.839866638183594,
+            "ln1_receipt_sha256": "b91ade70f57715c9598a3b28e302424836d7dfb264980b74e5958d00140f642b"
+          },
+          {
+            "controller": "admittance",
+            "seed": 2026102508,
+            "ln0_terminal_q_mae": 45.93885803222656,
+            "ln0_receipt_sha256": "6fa3229c7c431df18a39fde7d93f733ac032210833ccb3a4131cd562ca895c75",
+            "ln1_terminal_q_mae": 26.755901336669922,
+            "ln1_receipt_sha256": "308a1736e213986fa008b51dd632e07ad7ef2b87ad976eae6eb11a5aebf58c7c"
+          },
+          {
+            "controller": "admittance",
+            "seed": 2026102509,
+            "ln0_terminal_q_mae": 46.11785125732422,
+            "ln0_receipt_sha256": "ff23886a1e55b290a89a5b9110ed57d363d1373579285940455c14bbde0222c3",
+            "ln1_terminal_q_mae": 22.62703514099121,
+            "ln1_receipt_sha256": "1880a28ecf2c7020aefcade17bf56ca7423db97955599651fcd2712048634d6d"
+          },
+          {
+            "controller": "vmc",
+            "seed": 2026102508,
+            "ln0_terminal_q_mae": 39.69137954711914,
+            "ln0_receipt_sha256": "01185496ba0a30d9b814e479cce6103a12dd802ee9d6f315979d937927e1740a",
+            "ln1_terminal_q_mae": 31.321565628051758,
+            "ln1_receipt_sha256": "2d25396f1e45f60fac26e0fb00c68e41bfbb3a422678274765203af1ad0173f1"
+          },
+          {
+            "controller": "vmc",
+            "seed": 2026102509,
+            "ln0_terminal_q_mae": 39.773094177246094,
+            "ln0_receipt_sha256": "28cdfb51d0e2c4e5ed53e4ab495e2a2759c942bad4a02c7e1c5b57b3d1ab6e01",
+            "ln1_terminal_q_mae": 32.1473503112793,
+            "ln1_receipt_sha256": "71e463e9db0cb0dce6666d021f70f586cf5fc87c9eefe1b216f5aa16d9a5bf76"
+          }
+        ]
+      }
+    },
+    "runs/interim_impedance_filter_audited_v1/TRANSPARENCY.json": {
+      "sha256": "21984fef91a9432c7fbe2b333c9cdc981366f0451eefb24f3764af75f6aa9bc1",
+      "data": {
+        "original": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_impedance_human_audited_v1/active_long_train_0000",
+        "instrumented": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_impedance_filter_audited_v1/active_long_train_0000",
+        "identical_files": {
+          "rollout.mjb": true,
+          "actor_intervals.jsonl": false,
+          "TERMINAL.json": false
+        },
+        "checkpoint_identical": true,
+        "passed": false,
+        "source_sha256": "97b38fd1b1e3159f1b28c30420bffbf6bef5ed8b7144a1912f38d75d58476962"
+      }
+    },
+    "runs/interim_impedance_filter_audited_v2/TRANSPARENCY.json": {
+      "sha256": "df5948616dd5e03abb5445d172bb7b5ddb89c596b62384c2a579b0d6d3ff5037",
+      "data": {
+        "original": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_impedance_human_audited_v1/active_long_train_0000",
+        "instrumented": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_impedance_filter_audited_v2/active_long_train_0000",
+        "identical_files": {
+          "rollout.mjb": true,
+          "actor_intervals.jsonl": true,
+          "TERMINAL.json": true
+        },
+        "checkpoint_identical": true,
+        "passed": true,
+        "source_sha256": "97b38fd1b1e3159f1b28c30420bffbf6bef5ed8b7144a1912f38d75d58476962"
+      }
+    },
+    "runs/interim_impedance_filter_audited_v2/FILTER_REPLAY_AUDIT.json": {
+      "sha256": "2d122c360284346914ad459e5689cc08728769e2be48a4bddcf71274650159f9",
+      "data": {
+        "decisions": 1375,
+        "common_filter_replay_max_abs": 0.0,
+        "actor_journal_to_filter_inputs_exact": true,
+        "flags_exact": true,
+        "passed": true,
+        "filter_replay_verified": true,
+        "scope": "public filter inputs, state recurrence, clipping, slew limiting and returned values",
+        "native_controller_or_actuator_layer_replayed": false,
+        "downstream_wbc_authority_override_replayed": false,
+        "simulation_steps": 0,
+        "source_sha256": "7605318f545353dcfb5cdec62fabfa8757a7ced3c48725b02aeff9e45d894079",
+        "frozen_filter_source_sha256": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+        "evidence_sha256": {
+          "audit_filter.json": "d6e81943efd06d1c0e99c7a6e14b651ca5c26cebc8221afb5ae9cc4f95532fa5",
+          "audit_filter.npz": "ea64ccb5902bc693d16e7e971deec9aeede3f7ebe3b7db6b6f6c211d47731e22",
+          "AUDIT_EXTENSION.json": "6604b7fd5eff989419ee85cd910c31209d84fb737035663a9b1e3a6e8ee55143",
+          "actor_intervals.jsonl": "0c708ebf37ce99ad2262bb464cd33a77df7a2d4020c4b466da1a97ed5d6c8b06",
+          "rollout.npz": "6f597aa4f67d1827d5fe228588d86005d02689d1f0eef5f74b643b3c07d10261"
+        }
+      }
+    },
+    "runtime/source_train06/PERFORMANCE_CONTINUATION_VALIDATION.json": {
+      "sha256": "b7a48349c7f352c25a80d5e012500a34905d3f17ed76494cb0c2ac8ab6fdaa9a",
+      "data": {
+        "CHEQ": {
+          "parent_contract_equal": true,
+          "protected_physics_source_equal": true,
+          "registration_sha256": "f86a37e0d76bb196bdf717ea8fa8d139a7c049f3d30178ea03bce0967a35f4d6"
+        },
+        "SAC": {
+          "parent_contract_equal": true,
+          "protected_physics_source_equal": true,
+          "registration_sha256": "997b604c180864b2ccb8c53e2dc4232b3b4b228dee1af11aa12fc4129f9da5d9"
+        }
+      }
+    },
+    "runs/LAYERNORM_JOINT_GPU_60S_02.json": {
+      "sha256": "d990a877e235848f14d15645ee676673ecd3cf81686151145b5d79d80f0e1815",
+      "data": {
+        "runs": [
+          "cheq_layernorm_seed20261025_v1",
+          "sac_layernorm_seed20261025_v2"
+        ],
+        "summary": {
+          "0": {
+            "mean": 51.833333333333336,
+            "minimum": 27,
+            "maximum": 80
+          },
+          "1": {
+            "mean": 40.78333333333333,
+            "minimum": 27,
+            "maximum": 73
+          },
+          "2": {
+            "mean": 44.2,
+            "minimum": 27,
+            "maximum": 78
+          },
+          "3": {
+            "mean": 41.333333333333336,
+            "minimum": 13,
+            "maximum": 80
+          }
+        }
+      }
+    },
+    "runs/learner_validation_performance_probe_v2/admittance_FINISHED.json": {
+      "sha256": "767f6ab450981770dced8c1f0c3d106b010469615510a2aa7680f34c91a21f91",
+      "data": {
+        "controller": "admittance",
+        "gpu": 2,
+        "source_sha256": "e2f9cb89c30f2845ab5024a970449f6d0929d2d38121dfe172ceefcce30c9be3",
+        "scope": "offline_validation_overhead_profile_same_updates_no_formal_weight_changes",
+        "runs": [
+          {
+            "name": "original",
+            "updates": 1000,
+            "seconds": 115.44743902422488,
+            "agent_sha256": "2b687d3e1b4e6312706ee8bfc18dfefe5f00c373f9ea3f4fe16677b8d60a0f6b",
+            "log_alpha": -4.603967189788818,
+            "metrics": {
+              "agent_train/q_loss": 2.9021494388580322,
+              "agent_train/next_q_values": 78.65458679199219,
+              "agent_train/entropy_coefficient_loss": -1.0493621826171875,
+              "agent_train/actor_loss": -78.723876953125,
+              "agent_train/actor_entropy": -6.772070407867432,
+              "agent_train/entropy_coefficient": 0.010012037120759487,
+              "agent_train/target_entropy": -7.0
+            }
+          },
+          {
+            "name": "batched_finite_check",
+            "updates": 1000,
+            "seconds": 67.75981124863029,
+            "agent_sha256": "2b687d3e1b4e6312706ee8bfc18dfefe5f00c373f9ea3f4fe16677b8d60a0f6b",
+            "log_alpha": -4.603967189788818,
+            "metrics": {
+              "agent_train/q_loss": 2.9021494388580322,
+              "agent_train/next_q_values": 78.65458679199219,
+              "agent_train/entropy_coefficient_loss": -1.0493621826171875,
+              "agent_train/actor_loss": -78.723876953125,
+              "agent_train/actor_entropy": -6.772070407867432,
+              "agent_train/entropy_coefficient": 0.010012037120759487,
+              "agent_train/target_entropy": -7.0
+            }
+          }
+        ],
+        "agent_exact": true,
+        "log_alpha_exact": true,
+        "observed_speedup": 1.7037745072903898,
+        "timing_caveat": "Shared live GPUs and paired CPU cores; single ordered trial, not isolated throughput estimate"
+      }
+    },
+    "runs/learner_validation_performance_probe_v2/direct_FINISHED.json": {
+      "sha256": "e7430b0b583a96887fd29bdea9d301d98d719f2ef6eec668a11caad49a05f696",
+      "data": {
+        "controller": "direct",
+        "gpu": 0,
+        "source_sha256": "e2f9cb89c30f2845ab5024a970449f6d0929d2d38121dfe172ceefcce30c9be3",
+        "scope": "offline_validation_overhead_profile_same_updates_no_formal_weight_changes",
+        "runs": [
+          {
+            "name": "original",
+            "updates": 1000,
+            "seconds": 122.11889501754194,
+            "agent_sha256": "1aabb61ad87b62e01fa74dc88cc220b3cd02f96cb8bd6c1c0ad8272ef4cbaf31",
+            "log_alpha": -5.543662071228027,
+            "metrics": {
+              "agent_train/q_loss": 1.0952202081680298,
+              "agent_train/next_q_values": 62.960693359375,
+              "agent_train/entropy_coefficient_loss": -0.10831183195114136,
+              "agent_train/actor_loss": -63.03339767456055,
+              "agent_train/actor_entropy": -6.980462074279785,
+              "agent_train/entropy_coefficient": 0.003912174142897129,
+              "agent_train/target_entropy": -7.0
+            }
+          },
+          {
+            "name": "batched_finite_check",
+            "updates": 1000,
+            "seconds": 64.72728229034692,
+            "agent_sha256": "1aabb61ad87b62e01fa74dc88cc220b3cd02f96cb8bd6c1c0ad8272ef4cbaf31",
+            "log_alpha": -5.543662071228027,
+            "metrics": {
+              "agent_train/q_loss": 1.0952202081680298,
+              "agent_train/next_q_values": 62.960693359375,
+              "agent_train/entropy_coefficient_loss": -0.10831183195114136,
+              "agent_train/actor_loss": -63.03339767456055,
+              "agent_train/actor_entropy": -6.980462074279785,
+              "agent_train/entropy_coefficient": 0.003912174142897129,
+              "agent_train/target_entropy": -7.0
+            }
+          }
+        ],
+        "agent_exact": true,
+        "log_alpha_exact": true,
+        "observed_speedup": 1.8866680431561098,
+        "timing_caveat": "Shared live GPUs and paired CPU cores; single ordered trial, not isolated throughput estimate"
+      }
+    },
+    "runs/learner_validation_performance_probe_v2/impedance_FINISHED.json": {
+      "sha256": "39283b303b22b54c2e4f40cbfb3db43530b6e215d8c27029d60d685f81547be1",
+      "data": {
+        "controller": "impedance",
+        "gpu": 1,
+        "source_sha256": "e2f9cb89c30f2845ab5024a970449f6d0929d2d38121dfe172ceefcce30c9be3",
+        "scope": "offline_validation_overhead_profile_same_updates_no_formal_weight_changes",
+        "runs": [
+          {
+            "name": "original",
+            "updates": 1000,
+            "seconds": 112.57124760653824,
+            "agent_sha256": "1d163754da97ee788ee0c26edcc7d33fa1c7ad32493420dfc0d5d2fc24d82fa9",
+            "log_alpha": -4.294254779815674,
+            "metrics": {
+              "agent_train/q_loss": 1.6569020748138428,
+              "agent_train/next_q_values": 58.217140197753906,
+              "agent_train/entropy_coefficient_loss": 11.890955924987793,
+              "agent_train/actor_loss": -58.301177978515625,
+              "agent_train/actor_entropy": -7.768596172332764,
+              "agent_train/entropy_coefficient": 0.013646738603711128,
+              "agent_train/target_entropy": -5.0
+            }
+          },
+          {
+            "name": "batched_finite_check",
+            "updates": 1000,
+            "seconds": 67.02051542792469,
+            "agent_sha256": "1d163754da97ee788ee0c26edcc7d33fa1c7ad32493420dfc0d5d2fc24d82fa9",
+            "log_alpha": -4.294254779815674,
+            "metrics": {
+              "agent_train/q_loss": 1.6569020748138428,
+              "agent_train/next_q_values": 58.217140197753906,
+              "agent_train/entropy_coefficient_loss": 11.890955924987793,
+              "agent_train/actor_loss": -58.301177978515625,
+              "agent_train/actor_entropy": -7.768596172332764,
+              "agent_train/entropy_coefficient": 0.013646738603711128,
+              "agent_train/target_entropy": -5.0
+            }
+          }
+        ],
+        "agent_exact": true,
+        "log_alpha_exact": true,
+        "observed_speedup": 1.679653564103066,
+        "timing_caveat": "Shared live GPUs and paired CPU cores; single ordered trial, not isolated throughput estimate"
+      }
+    },
+    "runs/learner_validation_performance_probe_v2/vmc_FINISHED.json": {
+      "sha256": "c2d845d5577eeec8e8c84c8d0fc82597337687c2c7670cfad918c25c8e6fe688",
+      "data": {
+        "controller": "vmc",
+        "gpu": 3,
+        "source_sha256": "e2f9cb89c30f2845ab5024a970449f6d0929d2d38121dfe172ceefcce30c9be3",
+        "scope": "offline_validation_overhead_profile_same_updates_no_formal_weight_changes",
+        "runs": [
+          {
+            "name": "original",
+            "updates": 1000,
+            "seconds": 113.47915095183998,
+            "agent_sha256": "def1193b82178df94bf47c77631579899f694bceb6a7a18d462294181ea03f59",
+            "log_alpha": -4.1790056228637695,
+            "metrics": {
+              "agent_train/q_loss": 3.307173013687134,
+              "agent_train/next_q_values": 81.32140350341797,
+              "agent_train/entropy_coefficient_loss": 8.194538116455078,
+              "agent_train/actor_loss": -81.50237274169922,
+              "agent_train/actor_entropy": -8.960774421691895,
+              "agent_train/entropy_coefficient": 0.015313727781176567,
+              "agent_train/target_entropy": -7.0
+            }
+          },
+          {
+            "name": "batched_finite_check",
+            "updates": 1000,
+            "seconds": 67.26888547930866,
+            "agent_sha256": "def1193b82178df94bf47c77631579899f694bceb6a7a18d462294181ea03f59",
+            "log_alpha": -4.1790056228637695,
+            "metrics": {
+              "agent_train/q_loss": 3.307173013687134,
+              "agent_train/next_q_values": 81.32140350341797,
+              "agent_train/entropy_coefficient_loss": 8.194538116455078,
+              "agent_train/actor_loss": -81.50237274169922,
+              "agent_train/actor_entropy": -8.960774421691895,
+              "agent_train/entropy_coefficient": 0.015313727781176567,
+              "agent_train/target_entropy": -7.0
+            }
+          }
+        ],
+        "agent_exact": true,
+        "log_alpha_exact": true,
+        "observed_speedup": 1.6869485816997103,
+        "timing_caveat": "Shared live GPUs and paired CPU cores; single ordered trial, not isolated throughput estimate"
+      }
+    },
+    "runs/interim_impedance_filter_audited_v2/CONTACT_AUDIT_EQUIVALENCE.json": {
+      "sha256": "f5f7ce6489faa576abc93ef4f6486319d8c31b19c346284442563050d0762100",
+      "data": {
+        "original_sha256": "c66c29b9d5044ea0d9f27071cc46a22a03fbd6b30d8d5fe8021e4db0fbb4b433",
+        "new_sha256": "c66c29b9d5044ea0d9f27071cc46a22a03fbd6b30d8d5fe8021e4db0fbb4b433",
+        "exact": true
+      }
+    }
+  },
+  "cheq_layernorm_seed20261025_v1": {
+    "direct": {
+      "cycle": 0,
+      "steps": 108751,
+      "completed_conditions": 18,
+      "running": 9,
+      "pending": 3,
+      "updates": 59114,
+      "wall_time_utc": 1792933479.2735205
+    },
+    "impedance": {
+      "cycle": 0,
+      "steps": 111650,
+      "completed_conditions": 18,
+      "running": 9,
+      "pending": 3,
+      "updates": 62270,
+      "wall_time_utc": 1792933479.3013623
+    },
+    "admittance": {
+      "cycle": 0,
+      "steps": 111377,
+      "completed_conditions": 18,
+      "running": 9,
+      "pending": 3,
+      "updates": 61614,
+      "wall_time_utc": 1792933479.2439666
+    },
+    "vmc": {
+      "cycle": 0,
+      "steps": 112565,
+      "completed_conditions": 18,
+      "running": 9,
+      "pending": 3,
+      "updates": 62578,
+      "wall_time_utc": 1792933479.1165502
+    }
+  },
+  "sac_layernorm_seed20261025_v2": {
+    "direct": {
+      "cycle": 0,
+      "steps": 35499,
+      "completed_conditions": 8,
+      "running": 2,
+      "pending": 20,
+      "updates": 24514,
+      "wall_time_utc": 1792933479.0495174
+    },
+    "impedance": {
+      "cycle": 0,
+      "steps": 28895,
+      "completed_conditions": 4,
+      "running": 2,
+      "pending": 24,
+      "updates": 13234,
+      "wall_time_utc": 1792933478.9675424
+    },
+    "admittance": {
+      "cycle": 0,
+      "steps": 27526,
+      "completed_conditions": 4,
+      "running": 2,
+      "pending": 24,
+      "updates": 14022,
+      "wall_time_utc": 1792933479.0453806
+    },
+    "vmc": {
+      "cycle": 0,
+      "steps": 27610,
+      "completed_conditions": 4,
+      "running": 2,
+      "pending": 24,
+      "updates": 13202,
+      "wall_time_utc": 1792933478.8370569
+    }
+  },
+  "latest_status_unix": 1792933479.303916,
+  "performance_continuation_status": "registered and coordinated; old complete cycles draining; no new performance-stage updates yet"
+}

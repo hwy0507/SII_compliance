@@ -1,12 +1,13 @@
 """Add observational physical-substep telemetry to a frozen episode adapter.
 
-The sole source seam appends a recorder call after the existing reward telemetry
-sample. It changes no state/action/controller/physics/gate values. Exact source
-hashes are recorded; a paired deterministic replay must validate transparency.
+Source seams append a recorder after the existing reward telemetry sample and
+observe public-filter calls/returns. No physical or filter state is assigned.
+Exact hashes are recorded; paired deterministic replay validates transparency.
 """
 from __future__ import annotations
 
 import argparse
+from dataclasses import asdict
 import hashlib
 import importlib.util
 import inspect
@@ -26,6 +27,31 @@ class Recorder:
         self.data = None
         self.count = 0
         self.limits = None
+        self.filter_rows = []
+        self.filter_metadata = None
+
+    def bind_filter(self, env):
+        if self.filter_metadata is not None:
+            raise ValueError('Only one environment per observational audit')
+        filt = env.action_filter
+        original = filt.filter
+        self.filter_metadata = dict(config=asdict(filt.config),
+            initial_wbc_scale=float(filt.wbc_scale),
+            initial_yield_twist=filt.cartesian_yield_twist.copy(),
+            observation_mode=env.observation_mode, execution_mode=env.execution_mode,
+            source_file=inspect.getfile(type(filt)),
+            source_sha256=sha(Path(inspect.getfile(type(filt)))))
+
+        def observe(action, dt):
+            requested = np.asarray(action, float).copy()
+            result = original(action, dt)
+            self.filter_rows.append(dict(requested_action=requested, dt=float(dt),
+                wbc_scale=result.wbc_scale, yield_twist=result.cartesian_yield_twist.copy(),
+                clipped=result.raw_action_clipped.copy(),
+                amplitude_saturated=result.amplitude_saturated, slew_limited=result.slew_limited))
+            return result
+
+        filt.filter = observe
 
     def sample(self, env, stats, human_force):
         if self.data is None:
@@ -52,6 +78,20 @@ class Recorder:
             substeps_sha256=sha(self.folder/'audit_substeps.npy') if self.data is not None else None,
             note='Read only first samples rows; preallocated tail is not physical data')
         if self.folder.exists():
+            if self.filter_metadata is not None:
+                def encode(value):
+                    if isinstance(value, np.ndarray):
+                        return value.tolist()
+                    raise TypeError(type(value).__name__)
+                (self.folder/'audit_filter.json').write_text(json.dumps(
+                    self.filter_metadata, default=encode, indent=2, allow_nan=False)+'\n')
+                np.savez_compressed(self.folder/'audit_filter.npz', **{
+                    key: np.asarray([row[key] for row in self.filter_rows])
+                    for key in ('requested_action', 'dt', 'wbc_scale', 'yield_twist',
+                                'clipped', 'amplitude_saturated', 'slew_limited')})
+                receipt.update(filter_samples=len(self.filter_rows),
+                    filter_metadata_sha256=sha(self.folder/'audit_filter.json'),
+                    filter_trace_sha256=sha(self.folder/'audit_filter.npz'))
             (self.folder/'AUDIT_EXTENSION.json').write_text(json.dumps(receipt, indent=2)+'\n')
 
 
@@ -69,13 +109,17 @@ def run(args):
         raise ValueError('Observation-only telemetry seam changed')
     extension = seam+'\n        PUBLISHED_AUDIT_RECORDER.sample(env, stats, human_force)'
     patched = original.replace(seam, extension)
+    bind_seam = '            self.env = env'
+    if original.count(bind_seam) != 1:
+        raise ValueError('Policy construction seam changed')
+    patched = patched.replace(bind_seam, bind_seam+'\n            PUBLISHED_AUDIT_RECORDER.bind_filter(env)')
     recorder = Recorder(args.output.resolve())
     module.PUBLISHED_AUDIT_RECORDER = recorder
     exec(compile(patched, str(Path(__file__).resolve()), 'exec'), module.__dict__)
     receipt = dict(wrapper_sha256=sha(Path(__file__)), base_adapter_sha256=sha(source),
         base_function_sha256=hashlib.sha256(original.encode()).hexdigest(),
         instrumented_function_sha256=hashlib.sha256(patched.encode()).hexdigest(),
-        transformation='one recorder call after reward sample; no assignment to MuJoCo state',
+        transformation='record substeps and observe original filter calls/returns; no assignment to physical or filter state',
         actor_receives_audit_data=False, physics_timestep_changed=False)
     completed = False
     try:
