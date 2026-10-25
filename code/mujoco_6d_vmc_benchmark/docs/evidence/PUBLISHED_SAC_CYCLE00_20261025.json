@@ -1,0 +1,704 @@
+{
+  "captured_unix": 1792941844.2559674,
+  "run": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_layernorm_seed20261025_v2",
+  "source_sha256": "d7bb47c6ae610fa5512d3abeeeb6a65cf54313c7d157633db8f8e54374a63656",
+  "runtime_manifest_sha256": "257f38cf7440f1d5a2f27c46689b874d08d742365ee62aa01edd04d72767305d",
+  "convergence_claim": false,
+  "optimizer_updates_performed": 0,
+  "methods": {
+    "direct": {
+      "steps": 64492,
+      "updates": 82500,
+      "checkpoint_sha256": "9e5ae50c01a22b4663bd9f1d11dfb106d6568f6f3182fecf4da190577d44944f",
+      "boundary": "complete_condition_cycle",
+      "replay_size": 64492,
+      "terminal_count": 47,
+      "terminal_fraction": 0.0007287725609377907,
+      "alpha": 0.2422468513250351,
+      "target_entropy": -7,
+      "terminal_reward": {
+        "count": 47,
+        "mean": -25.725583867823826,
+        "minimum": -32.3232307434082,
+        "maximum": -25.287120819091797,
+        "p50": -25.47142791748047,
+        "p95": -25.322218322753905
+      },
+      "terminal_q_predictions": {
+        "count": 94,
+        "mean": 21.32253235958992,
+        "minimum": -67.79351043701172,
+        "maximum": 725.179443359375,
+        "p50": -24.33336639404297,
+        "p95": 639.770718383789
+      },
+      "terminal_q_absolute_error": {
+        "count": 94,
+        "mean": 56.18467087441302,
+        "minimum": 0.10604476928710938,
+        "maximum": 750.5533447265625,
+        "p50": 7.613900184631348,
+        "p95": 665.222134399414
+      },
+      "terminal_success_bonus_samples": 0,
+      "sampled_td_absolute_error": {
+        "count": 8192,
+        "mean": 2.8568351364228874,
+        "minimum": 0.000244140625,
+        "maximum": 26.1331787109375,
+        "p50": 2.25341796875,
+        "p95": 7.639407348632809
+      },
+      "sampled_q_values": {
+        "count": 8192,
+        "mean": 716.3943745263387,
+        "minimum": -36.66735076904297,
+        "maximum": 897.6748657226562,
+        "p50": 723.1733703613281,
+        "p95": 768.1304321289062
+      },
+      "td_diagnostic_pair": "critics0/1 fixed diagnostic; training samples critic pairs",
+      "sampled_policy_entropy": {
+        "count": 4096,
+        "mean": -6.926863485306967,
+        "minimum": -27.34329605102539,
+        "maximum": 5.723601818084717,
+        "p50": -6.771353006362915,
+        "p95": -1.0179465413093567
+      },
+      "near_action_limit_fraction": 0.0591169074177742,
+      "ended_episode_returns": {
+        "count": 30,
+        "mean": -34.43923171162431,
+        "minimum": -36.526419995416504,
+        "maximum": -32.98272669632018,
+        "p50": -34.33840185662167,
+        "p95": -33.536998485130006
+      },
+      "failure_stages": {
+        "approach": 30
+      },
+      "recent_optimizer": {
+        "agent_train/qf1_values": {
+          "count": 1000,
+          "mean": 709.408780456543,
+          "minimum": 701.337158203125,
+          "maximum": 717.3182373046875,
+          "p50": 709.2895812988281,
+          "p95": 716.0911651611328
+        },
+        "agent_train/qf2_values": {
+          "count": 1000,
+          "mean": 709.4089486083984,
+          "minimum": 701.2852783203125,
+          "maximum": 717.0979614257812,
+          "p50": 709.4076232910156,
+          "p95": 716.122607421875
+        },
+        "agent_train/qf1_loss": {
+          "count": 1000,
+          "mean": 21.631045978546144,
+          "minimum": 12.969175338745117,
+          "maximum": 102.77440643310547,
+          "p50": 15.053955554962158,
+          "p95": 45.7997652053833
+        },
+        "agent_train/qf2_loss": {
+          "count": 1000,
+          "mean": 23.025093224525452,
+          "minimum": 13.408756256103516,
+          "maximum": 104.99177551269531,
+          "p50": 15.081995487213135,
+          "p95": 46.45602684020995
+        },
+        "agent_train/q_loss": {
+          "count": 1000,
+          "mean": 44.65613918495178,
+          "minimum": 26.490217208862305,
+          "maximum": 207.76617431640625,
+          "p50": 30.45514965057373,
+          "p95": 90.11302375793457
+        },
+        "agent_train/entropy_coefficient_loss": {
+          "count": 1000,
+          "mean": 0.016672711888328196,
+          "minimum": -0.2731602191925049,
+          "maximum": 0.23151914775371552,
+          "p50": 0.018772052600979805,
+          "p95": 0.14976999014616008
+        },
+        "agent_train/actor_loss": {
+          "count": 1000,
+          "mean": -712.9365025024414,
+          "minimum": -720.758544921875,
+          "maximum": -705.328369140625,
+          "p50": -712.848876953125,
+          "p95": -706.1442260742188
+        },
+        "agent_train/actor_entropy": {
+          "count": 1000,
+          "mean": -7.011514345645905,
+          "minimum": -7.156619548797607,
+          "maximum": -6.814170837402344,
+          "p50": -7.012887477874756,
+          "p95": -6.914145040512085
+        },
+        "agent_train/entropy_coefficient": {
+          "count": 1000,
+          "mean": 0.23545260985195637,
+          "minimum": 0.2276894450187683,
+          "maximum": 0.2422468513250351,
+          "p50": 0.23649407923221588,
+          "p95": 0.23997211456298828
+        },
+        "agent_train/target_entropy": {
+          "count": 1000,
+          "mean": -7.0,
+          "minimum": -7.0,
+          "maximum": -7.0,
+          "p50": -7.0,
+          "p95": -7.0
+        }
+      },
+      "complete_cycle": {
+        "cycle": 0,
+        "steps": 64492,
+        "reward_mean": -34.43923171162431,
+        "reward_std": 0.8336354084572535,
+        "strict_success_rate": 0.0
+      },
+      "task_success_count": 0,
+      "strict_success_count": 0
+    },
+    "impedance": {
+      "steps": 63528,
+      "updates": 82500,
+      "checkpoint_sha256": "8a476c579a4dd999555a88f6f77980f9ccdcc1c79e6b08f2441e6d4a10b0212c",
+      "boundary": "complete_condition_cycle",
+      "replay_size": 63528,
+      "terminal_count": 46,
+      "terminal_fraction": 0.0007240901649666289,
+      "alpha": 0.051028452813625336,
+      "target_entropy": -5,
+      "terminal_reward": {
+        "count": 46,
+        "mean": -3.4662143458490786,
+        "minimum": -28.333681106567383,
+        "maximum": 25.596303939819336,
+        "p50": -27.399950981140137,
+        "p95": 25.585609912872314
+      },
+      "terminal_q_predictions": {
+        "count": 92,
+        "mean": 3.1557659377222476,
+        "minimum": -40.465538024902344,
+        "maximum": 114.95887756347656,
+        "p50": 0.8866820335388184,
+        "p95": 80.69785804748535
+      },
+      "terminal_q_absolute_error": {
+        "count": 92,
+        "mean": 13.882869927779488,
+        "minimum": 0.22331619262695312,
+        "maximum": 109.70802307128906,
+        "p50": 5.972855567932129,
+        "p95": 88.52542572021486
+      },
+      "terminal_success_bonus_samples": 21,
+      "sampled_td_absolute_error": {
+        "count": 8192,
+        "mean": 0.5958412550389767,
+        "minimum": 2.288818359375e-05,
+        "maximum": 8.84283447265625,
+        "p50": 0.348297119140625,
+        "p95": 2.01733283996582
+      },
+      "sampled_q_values": {
+        "count": 8192,
+        "mean": 113.58473685756326,
+        "minimum": 64.18922424316406,
+        "maximum": 139.52529907226562,
+        "p50": 118.76030349731445,
+        "p95": 127.90483856201172
+      },
+      "td_diagnostic_pair": "critics0/1 fixed diagnostic; training samples critic pairs",
+      "sampled_policy_entropy": {
+        "count": 4096,
+        "mean": -5.013971017913718,
+        "minimum": -23.935945510864258,
+        "maximum": 9.958083152770996,
+        "p50": -4.773921251296997,
+        "p95": 2.211302697658539
+      },
+      "near_action_limit_fraction": 0.04892577975988388,
+      "ended_episode_returns": {
+        "count": 30,
+        "mean": -4.173868342456251,
+        "minimum": -34.794104716198504,
+        "maximum": 20.962131647581074,
+        "p50": 19.37106366053451,
+        "p95": 20.689917245568235
+      },
+      "failure_stages": {
+        "carry": 12,
+        "retreat": 2
+      },
+      "recent_optimizer": {
+        "agent_train/qf1_values": {
+          "count": 1000,
+          "mean": 112.07222297668457,
+          "minimum": 110.70694732666016,
+          "maximum": 113.58021545410156,
+          "p50": 112.03529357910156,
+          "p95": 113.16548194885254
+        },
+        "agent_train/qf2_values": {
+          "count": 1000,
+          "mean": 112.07214163970947,
+          "minimum": 110.6779556274414,
+          "maximum": 113.54458618164062,
+          "p50": 112.02499389648438,
+          "p95": 113.16950263977051
+        },
+        "agent_train/qf1_loss": {
+          "count": 1000,
+          "mean": 1.0067173654735089,
+          "minimum": 0.4498017430305481,
+          "maximum": 3.493037462234497,
+          "p50": 0.8861078321933746,
+          "p95": 1.8924193680286407
+        },
+        "agent_train/qf2_loss": {
+          "count": 1000,
+          "mean": 1.0548699596524238,
+          "minimum": 0.4420410692691803,
+          "maximum": 3.8326525688171387,
+          "p50": 0.9256166517734528,
+          "p95": 1.9595565676689146
+        },
+        "agent_train/q_loss": {
+          "count": 1000,
+          "mean": 2.0615873256921766,
+          "minimum": 0.9153788089752197,
+          "maximum": 7.325690269470215,
+          "p50": 1.77838134765625,
+          "p95": 3.8212857723236078
+        },
+        "agent_train/entropy_coefficient_loss": {
+          "count": 1000,
+          "mean": 0.6142044444531203,
+          "minimum": -2.3392579555511475,
+          "maximum": 1.8498573303222656,
+          "p50": 0.7140189707279205,
+          "p95": 1.5356235146522517
+        },
+        "agent_train/actor_loss": {
+          "count": 1000,
+          "mean": -112.56973852539062,
+          "minimum": -114.17274475097656,
+          "maximum": -110.75519561767578,
+          "p50": -112.63394927978516,
+          "p95": -111.37314453125
+        },
+        "agent_train/actor_entropy": {
+          "count": 1000,
+          "mean": -5.199379371166229,
+          "minimum": -5.5891313552856445,
+          "maximum": -4.262402534484863,
+          "p50": -5.234498977661133,
+          "p95": -4.717461776733399
+        },
+        "agent_train/entropy_coefficient": {
+          "count": 1000,
+          "mean": 0.04505264945700765,
+          "minimum": 0.04086103290319443,
+          "maximum": 0.051028452813625336,
+          "p50": 0.044723521918058395,
+          "p95": 0.05038875341415405
+        },
+        "agent_train/target_entropy": {
+          "count": 1000,
+          "mean": -5.0,
+          "minimum": -5.0,
+          "maximum": -5.0,
+          "p50": -5.0,
+          "p95": -5.0
+        }
+      },
+      "complete_cycle": {
+        "cycle": 0,
+        "steps": 63528,
+        "reward_mean": -4.173868342456251,
+        "reward_std": 25.809908706439664,
+        "strict_success_rate": 0.5333333333333333
+      },
+      "task_success_count": 18,
+      "strict_success_count": 16
+    },
+    "admittance": {
+      "steps": 61765,
+      "updates": 82500,
+      "checkpoint_sha256": "9615717eada16a053eb6c82e6e8bea3aa42ad5ddd910cfaabda8fc51ce6d94ae",
+      "boundary": "complete_condition_cycle",
+      "replay_size": 61765,
+      "terminal_count": 44,
+      "terminal_fraction": 0.0007123775601068567,
+      "alpha": 0.46815356612205505,
+      "target_entropy": -7,
+      "terminal_reward": {
+        "count": 44,
+        "mean": -11.388049385764383,
+        "minimum": -28.561355590820312,
+        "maximum": 24.613616943359375,
+        "p50": -27.403976440429688,
+        "p95": 24.216339588165283
+      },
+      "terminal_q_predictions": {
+        "count": 88,
+        "mean": 71.81990885870023,
+        "minimum": -284.8001403808594,
+        "maximum": 932.4054565429688,
+        "p50": 17.905489921569824,
+        "p95": 396.8312744140608
+      },
+      "terminal_q_absolute_error": {
+        "count": 88,
+        "mean": 106.37420718236403,
+        "minimum": 1.2179985046386719,
+        "maximum": 960.0393676757812,
+        "p50": 47.564395904541016,
+        "p95": 397.9594390869129
+      },
+      "terminal_success_bonus_samples": 14,
+      "sampled_td_absolute_error": {
+        "count": 8192,
+        "mean": 7.225740156485699,
+        "minimum": 0.00213623046875,
+        "maximum": 960.0393676757812,
+        "p50": 4.92913818359375,
+        "p95": 19.679217529296874
+      },
+      "sampled_q_values": {
+        "count": 8192,
+        "mean": 1166.4971313091228,
+        "minimum": -97.81352996826172,
+        "maximum": 1594.89599609375,
+        "p50": 1260.0146484375,
+        "p95": 1511.6453735351563
+      },
+      "td_diagnostic_pair": "critics0/1 fixed diagnostic; training samples critic pairs",
+      "sampled_policy_entropy": {
+        "count": 4096,
+        "mean": -6.810127845135867,
+        "minimum": -32.033050537109375,
+        "maximum": 8.04835319519043,
+        "p50": -6.601948976516724,
+        "p95": 1.6836725771427155
+      },
+      "near_action_limit_fraction": 0.0379813052713871,
+      "ended_episode_returns": {
+        "count": 30,
+        "mean": -11.90091726355853,
+        "minimum": -34.816811017671334,
+        "maximum": 19.93434945790637,
+        "p50": -31.607461920263578,
+        "p95": 19.430712314446343
+      },
+      "failure_stages": {
+        "carry": 17,
+        "retreat": 1
+      },
+      "recent_optimizer": {
+        "agent_train/qf1_values": {
+          "count": 1000,
+          "mean": 1158.191021484375,
+          "minimum": 1144.4580078125,
+          "maximum": 1171.8759765625,
+          "p50": 1158.4862670898438,
+          "p95": 1166.8697204589844
+        },
+        "agent_train/qf2_values": {
+          "count": 1000,
+          "mean": 1158.1966177978516,
+          "minimum": 1143.9443359375,
+          "maximum": 1171.897705078125,
+          "p50": 1158.345703125,
+          "p95": 1166.7599487304688
+        },
+        "agent_train/qf1_loss": {
+          "count": 1000,
+          "mean": 129.06162313079835,
+          "minimum": 88.08936309814453,
+          "maximum": 399.1951904296875,
+          "p50": 117.7097282409668,
+          "p95": 195.468537902832
+        },
+        "agent_train/qf2_loss": {
+          "count": 1000,
+          "mean": 119.33655989074707,
+          "minimum": 85.04015350341797,
+          "maximum": 367.99139404296875,
+          "p50": 110.02052307128906,
+          "p95": 177.6167526245117
+        },
+        "agent_train/q_loss": {
+          "count": 1000,
+          "mean": 248.39818328857422,
+          "minimum": 176.78514099121094,
+          "maximum": 663.0737915039062,
+          "p50": 229.89706420898438,
+          "p95": 354.49986877441404
+        },
+        "agent_train/entropy_coefficient_loss": {
+          "count": 1000,
+          "mean": -0.01359094842057675,
+          "minimum": -0.3745936155319214,
+          "maximum": 0.25059109926223755,
+          "p50": -0.007956924848258495,
+          "p95": 0.13789549022912978
+        },
+        "agent_train/actor_loss": {
+          "count": 1000,
+          "mean": -1163.3012309570313,
+          "minimum": -1176.493896484375,
+          "maximum": -1148.4700927734375,
+          "p50": -1163.271240234375,
+          "p95": -1154.0301513671875
+        },
+        "agent_train/actor_entropy": {
+          "count": 1000,
+          "mean": -6.98150984287262,
+          "minimum": -7.345891952514648,
+          "maximum": -6.497475624084473,
+          "p50": -6.98927116394043,
+          "p95": -6.753489542007446
+        },
+        "agent_train/entropy_coefficient": {
+          "count": 1000,
+          "mean": 0.4820816890895367,
+          "minimum": 0.4671327769756317,
+          "maximum": 0.49471980333328247,
+          "p50": 0.48441505432128906,
+          "p95": 0.49390417635440825
+        },
+        "agent_train/target_entropy": {
+          "count": 1000,
+          "mean": -7.0,
+          "minimum": -7.0,
+          "maximum": -7.0,
+          "p50": -7.0,
+          "p95": -7.0
+        }
+      },
+      "complete_cycle": {
+        "cycle": 0,
+        "steps": 61765,
+        "reward_mean": -11.90091726355853,
+        "reward_std": 24.851483178898146,
+        "strict_success_rate": 0.4
+      },
+      "task_success_count": 13,
+      "strict_success_count": 12
+    },
+    "vmc": {
+      "steps": 62259,
+      "updates": 82500,
+      "checkpoint_sha256": "a4f69dad736ef2555b78676d507ce15a6d980ad2bcee1c15604060481c329f3d",
+      "boundary": "complete_condition_cycle",
+      "replay_size": 62259,
+      "terminal_count": 44,
+      "terminal_fraction": 0.0007067251321094139,
+      "alpha": 0.2747698128223419,
+      "target_entropy": -7,
+      "terminal_reward": {
+        "count": 44,
+        "mean": -6.548815857280385,
+        "minimum": -28.44400405883789,
+        "maximum": 24.726747512817383,
+        "p50": -27.397013664245605,
+        "p95": 24.624536514282227
+      },
+      "terminal_q_predictions": {
+        "count": 88,
+        "mean": 43.241772096942775,
+        "minimum": -95.90127563476562,
+        "maximum": 714.078857421875,
+        "p50": 13.360798835754395,
+        "p95": 207.23766098022455
+      },
+      "terminal_q_absolute_error": {
+        "count": 88,
+        "mean": 53.68974019180644,
+        "minimum": 0.23063087463378906,
+        "maximum": 691.2322387695312,
+        "p50": 17.08242416381836,
+        "p95": 234.99869308471673
+      },
+      "terminal_success_bonus_samples": 18,
+      "sampled_td_absolute_error": {
+        "count": 8192,
+        "mean": 1.7626910702092573,
+        "minimum": 9.1552734375e-05,
+        "maximum": 237.64675903320312,
+        "p50": 1.1982803344726562,
+        "p95": 4.92376708984375
+      },
+      "sampled_q_values": {
+        "count": 8192,
+        "mean": 420.92143135273363,
+        "minimum": -23.245100021362305,
+        "maximum": 715.3838500976562,
+        "p50": 426.70367431640625,
+        "p95": 705.643798828125
+      },
+      "td_diagnostic_pair": "critics0/1 fixed diagnostic; training samples critic pairs",
+      "sampled_policy_entropy": {
+        "count": 4096,
+        "mean": -7.347043700821814,
+        "minimum": -38.08995056152344,
+        "maximum": 7.575493812561035,
+        "p50": -9.932846069335938,
+        "p95": 4.929287672042847
+      },
+      "near_action_limit_fraction": 0.0666852667927742,
+      "ended_episode_returns": {
+        "count": 30,
+        "mean": -6.3434135918912435,
+        "minimum": -34.78003425045661,
+        "maximum": 20.02015085607036,
+        "p50": -6.419175696841558,
+        "p95": 19.877606694891703
+      },
+      "failure_stages": {
+        "carry": 13,
+        "retreat": 2
+      },
+      "recent_optimizer": {
+        "agent_train/qf1_values": {
+          "count": 1000,
+          "mean": 411.2416084594727,
+          "minimum": 400.13427734375,
+          "maximum": 421.9020690917969,
+          "p50": 411.43304443359375,
+          "p95": 418.7502380371094
+        },
+        "agent_train/qf2_values": {
+          "count": 1000,
+          "mean": 411.24288665771485,
+          "minimum": 400.01275634765625,
+          "maximum": 421.75640869140625,
+          "p50": 411.34754943847656,
+          "p95": 418.78657989501954
+        },
+        "agent_train/qf1_loss": {
+          "count": 1000,
+          "mean": 16.242616181373595,
+          "minimum": 6.166444778442383,
+          "maximum": 91.80271911621094,
+          "p50": 12.413801193237305,
+          "p95": 35.27512321472166
+        },
+        "agent_train/qf2_loss": {
+          "count": 1000,
+          "mean": 13.45684955883026,
+          "minimum": 6.316534519195557,
+          "maximum": 90.94009399414062,
+          "p50": 10.97276782989502,
+          "p95": 27.58078699111937
+        },
+        "agent_train/q_loss": {
+          "count": 1000,
+          "mean": 29.69946573829651,
+          "minimum": 12.84654426574707,
+          "maximum": 114.30401611328125,
+          "p50": 26.154446601867676,
+          "p95": 56.59953575134276
+        },
+        "agent_train/entropy_coefficient_loss": {
+          "count": 1000,
+          "mean": 0.03913306743465364,
+          "minimum": -0.5440146923065186,
+          "maximum": 0.628756046295166,
+          "p50": 0.02579403668642044,
+          "p95": 0.4011453568935391
+        },
+        "agent_train/actor_loss": {
+          "count": 1000,
+          "mean": -414.400920715332,
+          "minimum": -424.55816650390625,
+          "maximum": -404.56982421875,
+          "p50": -414.50079345703125,
+          "p95": -407.20111083984375
+        },
+        "agent_train/actor_entropy": {
+          "count": 1000,
+          "mean": -7.029426987171173,
+          "minimum": -7.467606544494629,
+          "maximum": -6.60346794128418,
+          "p50": -7.018807888031006,
+          "p95": -6.7792564868927006
+        },
+        "agent_train/entropy_coefficient": {
+          "count": 1000,
+          "mean": 0.2558313342630863,
+          "minimum": 0.2484736442565918,
+          "maximum": 0.2747698128223419,
+          "p50": 0.25521382689476013,
+          "p95": 0.270147442817688
+        },
+        "agent_train/target_entropy": {
+          "count": 1000,
+          "mean": -7.0,
+          "minimum": -7.0,
+          "maximum": -7.0,
+          "p50": -7.0,
+          "p95": -7.0
+        }
+      },
+      "complete_cycle": {
+        "cycle": 0,
+        "steps": 62259,
+        "reward_mean": -6.3434135918912435,
+        "reward_std": 25.435793143978305,
+        "strict_success_rate": 0.5
+      },
+      "task_success_count": 17,
+      "strict_success_count": 15
+    }
+  },
+  "cycle_archive": null,
+  "cycle": null,
+  "migration": {
+    "ended_unix": 1792941613.1613462,
+    "all_new_learners_updated": true,
+    "archive_pid": 1464151,
+    "parent_states": {
+      "direct": {
+        "steps": 64492,
+        "updates": 82500,
+        "cycle": 0,
+        "checkpoint_sha256": "9e5ae50c01a22b4663bd9f1d11dfb106d6568f6f3182fecf4da190577d44944f"
+      },
+      "impedance": {
+        "steps": 63528,
+        "updates": 82500,
+        "cycle": 0,
+        "checkpoint_sha256": "8a476c579a4dd999555a88f6f77980f9ccdcc1c79e6b08f2441e6d4a10b0212c"
+      },
+      "vmc": {
+        "steps": 62259,
+        "updates": 82500,
+        "cycle": 0,
+        "checkpoint_sha256": "a4f69dad736ef2555b78676d507ce15a6d980ad2bcee1c15604060481c329f3d"
+      },
+      "admittance": {
+        "steps": 61765,
+        "updates": 82500,
+        "cycle": 0,
+        "checkpoint_sha256": "9615717eada16a053eb6c82e6e8bea3aa42ad5ddd910cfaabda8fc51ce6d94ae"
+      }
+    },
+    "convergence_claim": false
+  },
+  "comparison_limitation": "SAC first complete cycle vs CHEQ third cycle is unequal training age and different imported replay size; no algorithm ranking."
+}

@@ -174,6 +174,14 @@ def diagnose(args):
         report['methods'][method] = metrics
         plot_rows[method] = episodes, optimizer
     (out/'DIAGNOSIS.json').write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
+    render_training_plot(out, plot_rows)
+    print(json.dumps({method: {k: data.get(k) for k in ('steps', 'terminal_count',
+        'terminal_q_absolute_error', 'sampled_td_absolute_error', 'alpha', 'failure_stages')}
+        for method, data in report['methods'].items()}, indent=2))
+
+
+def render_training_plot(out, plot_rows):
+    """Plot actual logged quantities; plain SAC does not log next-target Q."""
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
@@ -184,12 +192,20 @@ def diagnose(args):
         # Nonoverlapping100-update windows. Never smooth across methods/runs.
         for ax, key in zip([axes[0, 1], axes[1, 0], axes[1, 1], axes[2, 0], axes[2, 1]],
                 ['q_loss', 'actor_loss', 'actor_entropy', 'entropy_coefficient', 'next_q_values']):
-            groups = [rows[i:i+100] for i in range(0, len(rows), 100)]
+            label = key
+            values = rows
+            if key == 'next_q_values' and not any('agent_train/'+key in r for r in rows):
+                key = 'diagnostic_replay_q_mean'
+                label = 'SAC replay Q mean (not next target)'
+                values = [dict(r, **{'agent_train/'+key: (
+                    r['agent_train/qf1_values']+r['agent_train/qf2_values'])/2})
+                    for r in rows if 'agent_train/qf1_values' in r and 'agent_train/qf2_values' in r]
+            groups = [values[i:i+100] for i in range(0, len(values), 100)]
             valid = [[r for r in group if 'agent_train/'+key in r] for group in groups]
             valid = [group for group in valid if group]
             ax.plot([np.mean([r['step'] for r in group]) for group in valid],
                 [np.mean([r['agent_train/'+key] for r in group]) for group in valid], label=method)
-            ax.set_title(key+' (100-update means)')
+            ax.set_title(label+' (100-update means)')
     axes[0, 0].set_title('Ended training episodes; policy changes during collection')
     for ax in axes.flat:
         ax.set_xlabel('Logged transitions (includes recovered replay where registered)')
@@ -197,12 +213,9 @@ def diagnose(args):
         ax.legend(fontsize=8)
     axes[0, 1].set_yscale('log')
     axes[2, 0].set_yscale('log')
-    fig.suptitle('Early training diagnostics — no convergence or final-ranking claim')
+    fig.suptitle('Training diagnostics — no convergence or final-ranking claim')
     fig.savefig(out/'training_diagnostics.png', dpi=150)
     plt.close(fig)
-    print(json.dumps({method: {k: data.get(k) for k in ('steps', 'terminal_count',
-        'terminal_q_absolute_error', 'sampled_td_absolute_error', 'alpha', 'failure_stages')}
-        for method, data in report['methods'].items()}, indent=2))
 
 
 if __name__ == '__main__':

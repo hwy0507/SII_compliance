@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2026-10-25 — 第三整轮CHEQ、首轮SAC与Direct固定策略审计完成
+
+- 开工同步远端main/baseline仍为a52dfba/f6e8f8c并读两分支日志，保留本地未发布历史。
+- CHEQ第三整轮cycle2全部完成/归档无遗漏：Task/Strict分别3/3、17/16、12/11、17/17（各30）；
+  reward均值-27.8272/-4.2768/-13.7767/-2.8037。Direct首次取得3次严格成功，但参数方法改善不一致，
+  四路passive仍0/10。Impedance原2mm穿透门导致1次581步提前失败，保留在分母，非迁移丢步。
+- 四路CHEQ已全部迁入performance v2/source_train07并真正更新，正在cycle3；四路SAC也全部完成
+  父cycle0并迁入performance v1/source_train06，正在cycle1。两协调器正常完成、新归档器运行，
+  保留网络/optimizer/target/alpha/RNG/replay/masks/history，无重复训练派发。
+- SAC首轮严格成功0/16/12/15（各30），各82500更新；当前SAC/CHEQ训练曝光不同，不作为平预算排名。
+  两套完整checkpoint只读诊断/图完成。CHEQ Q/loss仍显著增长，尤其Admittance/VMC，不宣布收敛。
+- cycle1固定Direct的3个55s回合均失败于lift，physical/filter/torque审计通过；相同nominal的两个
+  active条件成功。RL低峰矩/active-long约99.97%接触阈值比例不能替代任务完成。中期矩阵继续
+  Impedance，3/12已审计；nominal矩阵本次26/120，继续运行，不选最终T_ref。
+- 新gamma敏感性工具执行四接口×(.99/.9995)×2000更新，共16000辅助更新，完整初态深复制匹配，
+  父状态不可变。低gamma降低Q但未消除终端误差；只改辅助Bellman discount、旧reward shaping未变，
+  不能称完整替代objective或正式修复。正式gamma/reward/uncertainty阈值未改，辅助权重隔离。
+- 辅助全部结束后60样本GPU均值38.33/30.98/30.08/32.22%，仍低于50%，不把性能微基准当在线达标。
+- 修正诊断图SAC未记录next-target Q造成的空白面板，改画有明确标签的双critic replay Q均值；
+  图标题已目视检查，保留旧图及修订来源收据。无新模型推理/更新用于重画。
+- 服务器基址 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`，
+  新结果在runs/diagnosis_cheq_cycle02_v1、diagnosis_sac_cycle00_v1、discount_sensitivity_cycle01_v1、
+  cycle02_complete_comparison_v1；源码/小型证据/AGENTS/执行诊断文档同步更新。
+  持续Goal未完成：仍需充分学习与优化稳定、完整固定策略比较及指定ESN；发布状态另行核验。
+
+
 ## 2026-10-25 — CHEQ混合权重/soft target诊断及逐元素检查性能接续
 
 - 远端main/baseline实时核对仍为a52dfba/f6e8f8c，读取两分支日志；持续Goal和八路在线learner继续，

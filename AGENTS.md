@@ -7,12 +7,26 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
-- 最新登记 `REGISTRATION_CHEQ_PERFORMANCE_V2.json` / `runtime/source_train07`，仅将全部参数/梯度
-  finite检查按device/dtype拼接，保留逐元素覆盖及失败名称；四接口各256步成对验证全部learner字段
-  （含optimizer/RNG）及梯度完全一致，5项测试通过，观察加速1.41–1.52x，不保证在线利用率。
-  `runs/cheq_performance_seed20261025_v2`协调器已启动，等待v1完整cycle2结束再同资源接续。
-  **v1的STOP_REQUESTED表示这次已登记迁移，不是取消Goal；先查两边LAUNCH/MIGRATION再派发。**
-  在新run真正steps/updates增长前，不称迁移完成；旧v1归档器仍负责当前周期边界。
+- 当前主训练已全部迁入 `runs/cheq_performance_seed20261025_v2` / `runtime/source_train07`，
+  四路已产生真实steps/updates，正在cycle3（第四整轮）。v1正常结束，cycle1/2全部归档无遗漏；
+  新归档器继续。迁移保留全部learner/optimizer/RNG/replay/masks/history，只优化finite检查。
+- 第三整轮cycle2的Task/Strict分别3/3、17/16、12/11、17/17（各30）；平均reward约
+  -27.8272/-4.2768/-13.7767/-2.8037。Direct首次成功但其他改善不一致；所有方法passive仍0/10。
+  Impedance active_long0000触发原2mm穿透abort，581步，完整周期新增40456步，其余41250；保留失败。
+  `runs/diagnosis_cheq_cycle02_v1`已完成只读诊断/图，Q和critic loss仍明显增大，不称健康收敛。
+- SAC四路也已全部完成旧cycle0并迁入 `runs/sac_performance_seed20261025_v1` / source_train06，
+  真正更新，正在cycle1；原cycle0严格成功0/16/12/15（各30），每路82500更新。
+  `runs/diagnosis_sac_cycle00_v1`已完成。它与CHEQ第三周期不是相同曝光，不能据当前数值排算法优劣。
+  **两套迁移均已完成；旧STOP_REQUESTED是已消费的迁移记录，禁止恢复旧进程或重复派发。**
+- `runs/discount_sensitivity_cycle01_v1`四接口×两gamma×2000更新全部完成，总16000辅助更新。
+  深复制完整恢复且父状态不变；.99降低Q但终端误差仍大，且1374步终奖折扣约1e-6，.9995约.503。
+  只改辅助Bellman gamma，stored reward仍含.9995 shaping；不是完整替代objective，不能选为正式修复。
+  正式gamma/reward/uncertainty阈值未变，辅助权重不得进入比较，所有辅助进程已结束。
+- Direct固定cycle1的3个中期回合均完整55s失败于lift，physical/filter/torque审计已通过；
+  active_short/long的nominal成功，不能用RL低峰矩/高接触比例替代完成。CPU54现评估Impedance，
+  整体3/12已审计；nominal矩阵本次26/120，继续CPU52/53。未选最终T_ref。
+- source07迁移后无辅助训练窗口GPU均值38.33/30.98/30.08/32.22%，50%目标仍未实现；
+  不能把finite-check微基准加速或已结束辅助作业写成在线达标。原始记录SOURCE07_ONLINE_GPU_60S_01.json。
 - `runs/soft_target_mixing_cycle01_v1`只读诊断已结束，0更新/0physics；cycle1样本四路CHEQ几乎
   全部映射到最低混合权重0.2，近期每路1000真实transition也全部context0.2。熵项平均为负，
   不可把巨大的正Q解释成该样本的正熵奖励。绝对uncertainty阈值的奖励尺度适配仍需验证，未修改。
@@ -22,19 +36,16 @@
   而未通过全状态等价；失败保留。v2 deep-copy每个恢复并检查父状态不可变，四路全部通过。
   旧terminal/batch辅助工具也缺同样防御复制，源码已修复；旧结果不再称optimizer完全一致的对照，
   未重写旧runtime/结果，也没有把辅助权重放进正式训练。source_train07只变finite helper。
-- 固定cycle1 Direct中期评估的passive0000/active_short0000已完成55s，两者Task/Strict均失败、
-  终止于lift；active_long接续。物理/filter/torque总审计等该接口三回合完成后再写，不能提前称已审计。
-  nominal矩阵本次观测21/120完成，CPU52/53继续运行；CPU54仍有中期物理评估。
 
-- 当前主训练 `runs/cheq_performance_seed20261025_v1` / `runtime/source_train06` 四路均已完成cycle1，
-  正在cycle2；完整cycle0/1历史保留。source_train06只减少有限值检查同步，不改学习更新。
+- 历史主训练 `runs/cheq_performance_seed20261025_v1` / `runtime/source_train06` 已在cycle2结束并迁出；
+  完整cycle0/1/2历史保留。source_train06只减少有限值检查同步，不改学习更新。
   性能迁移保留network/optimizer/target/alpha/RNG/replay/masks/history，区别于早期LayerNorm重启。
 - 第二完整周期（cycle1）严格成功0/17/13/16（各30），上一周期0/18/12/16；平均return约
   -33.0687/-2.2419/-10.4761/-4.6481。改善不一致，不能宣称充分学习/收敛。critic loss和Q仍增长。
   `runs/diagnosis_cycle01_dispatch_v1`已完成，结果在 `runs/diagnosis_cheq_performance_cycle01`，
   四路cycle1精确checkpoint已归档、无遗漏，不重复执行该监视器。
-- SAC Direct已由现有协调器迁入 `runs/sac_performance_seed20261025_v1/direct` / source_train06，
-  正在cycle1。另外三路仍在 `runs/sac_layernorm_seed20261025_v2`完成cycle0后按登记接续。
+- SAC四路已由原协调器迁入 `runs/sac_performance_seed20261025_v1` / source_train06，
+  正在cycle1。原 `runs/sac_layernorm_seed20261025_v2` 四路均正常结束，checkpoint和父收据保留。
   **旧run的STOP_REQUESTED是协调迁移，不是取消Goal；先查原进程、LAUNCH/MIGRATION收据，禁止重复派发。**
 - 正式训练占52核；CPU52/53继续执行 `runs/nominal_four_interfaces_cohort30_v1` 的120回合固定矩阵，
   不是空闲资源。逐回合physics/contact/filter/reward审计和失败保留，未完成矩阵不选最终T_ref。

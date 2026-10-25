@@ -5,71 +5,52 @@ the historical office-v6 MJB or proof that any RL method has converged.
 
 ## Current execution snapshot
 
-Performance continuation v2 is now registered from the still-running v1 CHEQ
-learners. The coordinator will drain complete cycle2 and resume the same
-allocation under `runtime/source_train07` in
-`runs/cheq_performance_seed20261025_v2`. Source_train07 changes only all-element
-finite-check batching by device/dtype. Four256-update paired validations matched
-all learner/optimizer/RNG state and gradients exactly; five focused tests pass.
-Observed1.41–1.52x auxiliary timing improvement is not an online utilization
-claim. Check MIGRATION_PROGRESS/FINISHED and real counters before claiming the
-new learners have started. The separate SAC v1 migration remains in progress.
+All four CHEQ learners now run in `runs/cheq_performance_seed20261025_v2` with
+`runtime/source_train07`, collecting cycle3 (fourth complete-condition cycle).
+All four have real new transitions and updates. Their v1 parents ended normally,
+with every cycle1/2 checkpoint archived and no missed boundaries. The new cycle
+archiver is active. Finite-check optimization preserved every learner state,
+optimizer/target/temperature/RNG, replay/mask and cycle-history field; it did
+not reset learning or change the objective, physics or public control chain.
 
-Read-only cycle0/1 diagnosis has also finished: current cycle1 CHEQ uncertainty
-almost always selects minimum RL mixing weight0.2; the captured most recent1000
-online transitions per method all use0.2. Sampled entropy target contributions
-are negative, whereas predicted positive future values dominate. This is a
-value/mixing calibration concern, not convergence or a demonstrated fix. The
-recent GPU window averaged42.13/47.35/37.87/39.71%, still below the all-card target.
+Cycle2 Task/Strict counts are3/3,17/16,12/11,17/17 out of30 for Direct/Impedance/
+Admittance/VMC. Mean returns are−27.8272/−4.2768/−13.7767/−2.8037. Direct has its
+first three strict successes, while changes across parameter methods disagree.
+All still have0/10 passive strict successes. One Impedance active-long episode
+hit the original2mm penetration abort at581 transitions and remains a failure.
+Complete-cycle Q/loss diagnostics show continuing value growth; no convergence
+or healthy-loss claim is made.
 
-The finite performance validator exposed CPU optimizer-step aliasing when an
-auxiliary script restores one in-memory state repeatedly without deepcopy.
-Corrected validation checks every state field and immutable parent. Earlier
-terminal-fitting/batch studies retain their results, but their claim of exact
-optimizer restoration is withdrawn; source fixes apply to future studies.
-Formal live learners were not reset by this diagnostic. Details and receipts
-are in the latest diagnostic report sections.
+All four plain-SAC learners also completed parent cycle0 and now update in
+`runs/sac_performance_seed20261025_v1` under source_train06, collecting cycle1.
+Their cycle0 strict counts were0/16/12/15 out of30, each with82,500 updates.
+These have different training age and imported replay exposure from CHEQ cycle2;
+current numbers are not an equal-budget algorithm ranking. Both migrations have
+finished. Old STOP_REQUESTED files are consumed migration records; do not restart
+old learners or duplicate coordinators.
 
-The fixed-cycle1 interim Direct passive/active-short0000 physical episodes both
-failed at lift after55s. Method-level independent audits await all three cases.
-Nominal matrix progress at this observation is21/120. These partial results do
-not choose the final SPT reference or replace the missing designated ESN.
+The finite discount sensitivity completed16,000 auxiliary updates with exact
+initial-state restoration. Changing only Bellman gamma to.99 reduced Q, but
+left substantial terminal error and discounts55s-end success credit to about
+1e-6 at the start. Stored rewards retained original.9995 shaping, so the probe
+is not a consistent alternative objective or online performance comparison.
+No formal gamma/reward/mixing threshold changed, and auxiliary weights remain
+ineligible for the final comparison. These auxiliary processes have ended.
 
-The following paragraphs describe the v1 parent while it drains:
+The independent fixed-cycle1 Direct subset finished three55s cases, with
+physical/public-filter/torque audits passing. All three learned cases failed
+at lift, while the matching nominal active-short/long cases succeeded. This
+older fixed checkpoint is distinct from the subsequent cycle2 stochastic
+successes. CPU54 now evaluates Impedance; the interim matrix has3/12 audited
+cases. The nominal matrix continues on52/53, with26/120 at this observation.
+No final SPT reference or designated-ESN comparison has been completed.
 
-All four primary learners now run in `runs/cheq_performance_seed20261025_v1`
-with `source_train06`. They have completed cycle1 (second full condition cycle)
-and continue into cycle2. Source_train06 preserved networks, optimizers, targets,
-alpha, RNG, replay masks and prior cycle history. Both complete cycles remain
-archived. The earlier LayerNorm restart described below did reset networks;
-these two events must not be confused.
-
-SAC Direct has completed its parent cycle0 and resumed under the existing
-`sac_performance_seed20261025_v1` coordinator. The other three SAC learners are
-still draining cycle0 in `sac_layernorm_seed20261025_v2`. Check live handles and
-migration receipts before launching anything; do not duplicate or restart them.
-
-Formal jobs retain52 cores; the nominal120-case matrix runs on CPUs52/53.
-The finite two-seed terminal-fitting replication and the full55s torque audit
-have completed. The latter passed exact trajectory/contact/filter/torque-output
-checks, but covers one early checkpoint/case, not final acceptance.
-The finite batch-size study has also completed. CPU54 now runs
-`interim_cheq_cycle01_representatives_v1`: four frozen cycle1 policies ×the first
-registered case of each category,12 audited episodes, with matching nominal
-rows retained. It is an interim subset, not final acceptance or an empirical
-SPT reference. Formal training settings remain unchanged.
-
-Cycle1 strict successes are0/17/13/16 out of30, versus0/18/12/16 in cycle0.
-Mean training returns changed by+.4468/-1.6866/+1.6351/-.0662. These changing-policy
-trajectories do not demonstrate consistent learning improvement or convergence.
-Critic values/losses continue to grow. See the latest sections of the diagnostic
-report for complete-cycle, fitted/withheld terminal and actual actuator evidence.
-
-A60s sample after the finite fitting jobs ended measured22.80/25.18/15.93/14.82%
-GPU use while each primary learner was finishing its final1–3 cycle episodes.
-This is not a steady full-concurrency measurement. It demonstrates why earlier
-auxiliary-inclusive utilization cannot stand in for persistent online usage.
-No claim of all-card sustained50%, final convergence or ESN comparison is made.
+After all finite discount jobs ended, source_train07 online training plus SAC
+and one GPU1 fixed-policy evaluator averaged38.33/30.98/30.08/32.22% GPU use in
+a60-sample window. The all-card50% target remains unmet. Auxiliary timing gains
+and lower validation overhead do not imply utilization success. Read-only
+cycle2 CHEQ and cycle0 SAC reports/plots are complete; see the latest sections
+of `RL_PUBLISHED_DIAGNOSTICS_20261025.md` and committed small evidence.
 
 ## Historical registration before performance continuation
 

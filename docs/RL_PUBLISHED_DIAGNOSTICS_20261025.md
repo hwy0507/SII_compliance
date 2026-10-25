@@ -792,3 +792,135 @@ in lift. Active_long0000 is next/in progress; the three-case method-level
 physical/filter/torque audits are written only after all three finish. Do not
 confuse a completed raw episode with completed independent audit or final
 acceptance. The nominal matrix had21/120 audited rows at this observation.
+
+
+## Third complete CHEQ cycle and completed performance migration
+
+All four cycle2 checkpoints are archived without misses. The v1 learners ended
+normally and all four source_train07 learners in
+`runs/cheq_performance_seed20261025_v2` have produced new transitions and updates.
+Networks, targets, optimizer/temperature/RNG, replay/masks and cycle history are
+retained. Migration is complete, not merely registered; the new archiver is live.
+
+| Interface | Cycle0 Strict /30 | Cycle1 Strict /30 | Cycle2 Task /30 | Cycle2 Strict /30 | Cycle2 mean reward |
+|---|---:|---:|---:|---:|---:|
+| Direct |0|0|3|3|−27.827238|
+| Impedance |18|17|17|16|−4.276838|
+| Admittance |12|13|12|11|−13.776704|
+| VMC |16|16|17|17|−2.803664|
+
+Each cycle contains the same30 conditions. Direct's first strict successes were
+active_short0000 at54.72s, active_short0500 at52.72s and active_long0900 at45.60s.
+Its mean reward improved by5.24145 from cycle1, while Impedance/Admittance
+worsened. All four still have0/10 passive strict successes. These changing-policy
+training episodes are not frozen-policy acceptance or a convergence claim.
+
+Impedance active_long0000 stopped after581 transitions because the original
+`global_penetration_exceeded_2mm` gate triggered. It remains a failed case in the
+30-case denominator. Consequently this cycle added40,456 transitions, versus
+41,250 for each other interface; the step-count difference is not a lost sample
+or migration defect. The complete category/failure-stage and paired-condition
+record is `runs/cycle02_complete_comparison_v1/SUMMARY.json`.
+
+Read-only exact-cycle2 diagnostics also completed, with138 terminal rows each:
+
+| Interface | In-bag terminal MAE | Out-of-bag terminal MAE | Mean sampled Q | Alpha | Last1000 mean critic loss |
+|---|---:|---:|---:|---:|---:|
+| Direct |183.39|2319.47|2288.15|0.50395|2145.53|
+| Impedance |613.80|2365.26|2583.02|0.80294|15308.55|
+| Admittance |4940.98|10631.12|6855.98|0.87315|490399.56|
+| VMC |4035.78|10618.07|7755.93|2.41286|172394.44|
+
+The plotted Q/loss growth is substantial, particularly for Admittance and VMC.
+Actual Direct successes do not establish healthy optimization. Withheld-mask
+errors, hidden finite-horizon time and moving replay distributions retain their
+previous caveats; a single terminal MAE threshold is not a convergence gate.
+Results and original plot: `runs/diagnosis_cheq_cycle02_v1/results/`.
+
+## Frozen cycle1 Direct: three independently audited cases
+
+The interim Direct subset finished all three55s episodes and physical, public
+filter and torque-projection/actual-actuator audits. No filter/projection
+mismatch or machine safety violation was found. The fixed checkpoint failed
+all three at lift; its later cycle2 stochastic successes must not be conflated
+with this earlier frozen policy.
+
+| Condition0000 | Learned Task/Strict | Nominal Task/Strict | Learned peak Nm | Nominal peak Nm | Learned contact-only ratio |
+|---|---|---|---:|---:|---:|
+| Passive |false/false|false/false|39.9144|38.5957|NA (0s contact)|
+| Active-short |false/false|true/true|40.3015|47.0487|NA (0s contact)|
+| Active-long |false/false|true/true|43.5290|46.6169|99.9684% (6.32655/6.32855s)|
+
+Nominal active-short/long completion times are24.52/28.80s. The active-long
+nominal contact ratio is100% over6.81705s. Lower learned peak torque and a near
+100% contact ratio do not compensate for task failure. The failed learned
+cases have SPT0 for any valid eventual reference; no final common reference is
+selected from this interim subset. The matrix now evaluates Impedance on CPU54;
+nominal evaluations continue on52/53 (26/120 at the latest recorded count).
+
+## Finite discount sensitivity and its limitations
+
+`runs/discount_sensitivity_cycle01_v1` finished four interfaces ×two discounts
+×2,000 full learner updates, with fixed cycle1 replay/batch16384/masks. Each arm
+deep-copies the same complete learner state, verifies all initial state fields
+match, and confirms the original parent state remains unchanged. Method order
+alternates which discount runs first. These16,000 auxiliary updates remain
+separate, with ineligible auxiliary weights clearly labeled by their actual
+Bellman discount. They do not modify any formal run.
+
+| Interface | Final replay Q mean, gamma.99 | Final replay Q mean, gamma.9995 | In-bag terminal MAE .99 / .9995 |
+|---|---:|---:|---:|
+| Direct |751.69|834.20|67.43 /69.75|
+| Impedance |1591.93|1766.43|385.77 /412.31|
+| Admittance |654.44|724.24|372.07 /419.24|
+| VMC |2271.38|2510.02|1106.64 /1274.98|
+
+Lower gamma reduces predicted values but does not eliminate calibration errors.
+Critically, this changes only the auxiliary Bellman discount: stored rewards
+still contain shaping built with gamma.9995. It is a target-sensitivity test,
+not a consistent alternate shaped-objective reproduction, a fresh-network
+experiment, or a valid online policy ranking. Terminal credit1374 steps earlier
+is approximately0.503 with.9995 but1.006e-6 with.99. A lower loss alone cannot
+justify that change for the55s task. Formal gamma, shaping and CHEQ uncertainty
+thresholds remain unchanged.
+
+After all discount auxiliary processes ended, a new60-sample GPU window with
+source_train07 CHEQ, SAC and one GPU1 fixed-policy evaluator measured means
+38.33/30.98/30.08/32.22% (minima12/0/12/0). This still misses all-card50%; reduced
+validation overhead is not evidence of meeting utilization. Full context and
+counters are `runs/SOURCE07_ONLINE_GPU_60S_01.json`. A CPU-only diagnostic was
+also active. Do not mix this window with the preceding auxiliary training.
+
+Combined small evidence: `PUBLISHED_CYCLE02_AND_INTERIM_20261025.json` under the
+benchmark evidence directory. No convergence, final SPT reference or ESN
+comparison is claimed.
+
+## First complete SAC cycle and all four continuations
+
+All four source_train05 SAC parents completed their30-condition cycle and
+resumed under the already-running source_train06 coordinator in
+`runs/sac_performance_seed20261025_v1`. Every new learner has produced real
+transitions and updates, with exact parent checkpoint receipts and a live cycle
+archiver. Do not restart the old parent jobs or launch another coordinator.
+
+| Interface | Retained transitions | Strict /30 | Mean reward | Terminal Q MAE | Alpha |
+|---|---:|---:|---:|---:|---:|
+| Direct |64492|0|−34.439232|56.1847|0.24225|
+| Impedance |63528|16|−4.173868|13.8829|0.05103|
+| Admittance |61765|12|−11.900917|106.3742|0.46815|
+| VMC |62259|15|−6.343414|53.6897|0.27477|
+
+Each parent has82,500 updates and41,250 newly collected transitions, with
+different imported replay counts. This first SAC cycle cannot be ranked against
+CHEQ's third cycle as equal training exposure. Read-only diagnostics and evidence
+are `runs/diagnosis_sac_cycle00_v1/results/` and
+`PUBLISHED_SAC_CYCLE00_20261025.json`.
+
+The diagnostic plot previously left a blank next-target-Q panel because the
+upstream plain SAC does not log that quantity. The renderer now plots the mean
+of its two logged replay-Q predictions and labels it explicitly, rather than
+implying a zero or inventing a target trace. Revised figures are in each
+CHEQ diagnostic run's `plot_revision_v1/` and SAC run's `plot_revision_v2/`,
+with source receipts (SAC v2 shortens a clipped title); original
+figures and numerical diagnostics remain preserved. CHEQ retains its actual
+logged next-target-Q trace. Both plots were visually reviewed.
