@@ -1,5 +1,27 @@
 # 更新日志
 
+## 2026-10-25 — 一致折扣率对照完成与被动条件退化复核
+
+- 最新边界：Impedance原两轮训练正常完成退出，cycle7归档409721步；Task18/30、Strict17/30，
+  被动仍0/10，reward −2.41005→−2.30143。其余三CHEQ继续7，SAC四路继续，等待整组审计再接续。
+
+- fetch读取main a52dfba / baseline f6e8f8c，两分支未前进。
+- 新fresh全learner一致折扣率对照：四路×两arm×5000=40,000辅助更新结束、进程均退出。
+  同cycle6完整30条件/41,250条独立replay副本，同时匹配Bellman/PBRS gamma .99或.9995；
+  原reward重建、折扣望远镜、mask/RNG/父状态保护通过，两项测试通过，报告/图已检查。
+- .99组Q与终端误差略小，但两组Q仍增、alpha仍变化；远期成功信号也大幅变弱，不能仅凭数值下降
+  改正式gamma。0physics、无保存或导入辅助权重，正式reward/replay/actor/critic未改。
+- 同被动0900训练轨迹：cycle3在37.32s Task/Strict成功，5停carry，6/7停lift；四次MJB、规划和条件
+  hash相同。7直到29.72s进入align，退化涉及早期接近；这是所选单条件、策略更新中的训练证据，
+  不证明固定checkpoint成功或reset因果。小幅reward改善也不等于任务改善。
+- 新工具/测试及docs/PUBLISHED_CONSISTENT_DISCOUNT_AND_PASSIVE_20261025.json、诊断文档已更新；
+  大产物在/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/下
+  consistent_discount_fresh_cycle06_v1与passive0900_training_regression_v1。
+- 混合负载60样本GPU均值50.28/12.17/36.73/21.85%，仍未四卡50%；辅助退出时刻逐样本保留，
+  不是纯正式训练吞吐。原始CONSISTENT_DISCOUNT_SHARED_GPU_60S_01.json。
+- 四路正式source08仍按原两轮cycle6/7试验推进，source09 SAC继续；source11不提前部署。
+  收敛/最终SPT/指定ESN比较未完成，Goal保持活动。物理/MJB/gate/actor合同/filter/限幅/dt未改。
+
 ## 2026-10-25 — 奖励尺度有限对照完成，正式第7轮继续
 
 - main a52dfba / baseline f6e8f8c，本轮已fetch读取；未覆盖原runtime或正式学习状态。

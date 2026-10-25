@@ -1782,3 +1782,86 @@ The requested four-card50% target remains unmet. Raw measurements are
 `runs/CYCLE07_POST_PROBE_GPU_60S_01.json`; source_train11 remains prepared only.
 The original two-cycle critic-reset study must finish and be reviewed before
 any scientific continuation. No early STOP or replacement learner was added.
+
+
+## Fresh consistent-discount probe and observed passive-task regression
+
+The earlier discount probe changed only the Bellman discount on inherited
+learner states, leaving stored PBRS at0.9995. A new registered finite study,
+`runs/consistent_discount_fresh_cycle06_v1`, removes those two limitations.
+Four interfaces × two arms ×5000 updates =40,000 auxiliary updates completed.
+Each arm resets the same entire fresh actor/critics/targets/optimizers/alpha/RNG
+(seed2026102531). A separate copy contains all41,250 transitions from the30
+full55s cycle6 episodes, paired with their original reward logs. This subset
+is different from the whole-replay reward-unit probe; do not rank across them.
+
+Both Bellman gamma and PBRS gamma are0.99 or0.9995. The helper reconstructs
+`5*(gamma*phi_next-phi)` with terminal phi_next0, checks original reward/log
+alignment and discounted telescoping, and rejects incomplete/early-abort
+inputs rather than silently retaining inconsistent failure-tail rewards. All
+30 conditions are full-horizon here; no failed conditions were discarded.
+Stored formal replay, masks, historical context and physical data are unchanged.
+Same batch16384, sampling streams, architecture, alpha initialization, and CHEQ
+uncertainty thresholds. Two focused tests and real all-condition reconstruction
+passed. The report completed and its plot was visually reviewed.
+
+| Interface | Q mean .99 /.9995 | In-bag terminal MAE .99 /.9995 | Last recorded critic loss .99 /.9995 |
+|---|---:|---:|---:|
+| Direct |44.1622 /52.2408|1.1394 /2.6338|1.8924 /1.7124|
+| Impedance |37.0254 /44.1145|11.2235 /15.3930|0.6161 /0.8008|
+| Admittance |52.4948 /62.2985|11.4927 /14.2350|1.0940 /1.2390|
+| VMC |51.8829 /61.5495|22.4809 /29.0146|2.4717 /3.2600|
+
+Alpha is approximately0.222 in all arms and is still changing. All sampled Q
+lie below the current-alpha conservative bound, but Q still grows in both
+arms. These short fresh states do not establish long-run calibration or online
+task quality. Low discount attenuates terminal credit1374 steps earlier to
+about1e-6 versus0.503 with0.9995; smaller Q alone cannot justify adopting it for
+this55s task. No formal gamma/reward change was made. All auxiliary workers
+exited, with no physics and no saved/promoted auxiliary weights.
+
+A separate read-only analysis examines the one observed Direct passive0900
+success from cycle3 against the same condition in cycles5/6/7. All four MJB,
+nominal-plan and physical-fixture hashes are identical; dt5e-5 and canonical48
+are verified. Reward components reconstruct, and each episode has1375 decisions.
+
+| Training cycle | Task/Strict | Completion s | Final stage | First align /lift /carry time s | Final placement XY error mm |
+|---|---|---:|---|---|---:|
+|3|true/true|37.32|release|0.16 /1.80 /3.68|4.26|
+|5|false/false|NA|carry|0.16 /1.92 /4.92|95.59|
+|6|false/false|NA|lift|9.16 /27.84 /not reached|177.41|
+|7|false/false|NA|lift|29.72 /36.52 /not reached|148.61|
+
+Cycle3/5 mixing context is always0.2; cycle6/7 means are0.23889/0.21098,
+maxima0.95991/0.85208. The commanded residuals also change. Later regression
+already affects early approach/grasp, so failure cannot be described only as
+getting stuck in late carry. However this is one selected condition, with
+changing policies and stochastic actions. It does not isolate causality,
+prove a fixed successful checkpoint, or replace independent safety acceptance.
+The isolated success is not generalized to the passive cohort.
+
+Case returns are19.77413,−31.92895,−31.67844,−31.52589. In the last two failures,
+slightly higher total reward coexists with much later first alignment; reduced
+penetration cost and changed undiscounted PBRS sums contribute. Episode return
+alone therefore does not certify task improvement. The PBRS term must also be
+interpreted with its discount, not as an undiscounted progress score.
+
+Compact evidence is `PUBLISHED_CONSISTENT_DISCOUNT_AND_PASSIVE_20261025.json`.
+Full artifacts are under
+`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_fresh_cycle06_v1`
+and `runs/passive0900_training_regression_v1`. No additional physics or
+training-state changes were made by the analyses. Formal source08 cycle7 and
+source09 SAC continue; source11 remains prepared only pending complete review.
+
+The60-sample/67.81s shared GPU window measured50.28/12.17/36.73/21.85% means,
+minima11/0/0/0. Auxiliary workers finish during/before this window; per-sample
+process presence is recorded. It is not formal-only throughput and still does
+not meet four-card50%. Original `runs/CONSISTENT_DISCOUNT_SHARED_GPU_60S_01.json`.
+
+Later boundary update: Impedance cycle7 completed at409721 retained transitions,
+with Task18/30, Strict17/30 (passive0, short9, long8), mean reward−2.30143463
+versus−2.41004916 in cycle6. The registered two-cycle learner exited normally
+and its exact cycle7 state is archived. Do not restart that old PID. The other
+three CHEQ learners still finish their original stage; SAC remains live. Existing
+auditor/reviewer wait for the full group. This boundary alone is not the
+scientific review required before choosing continuation or deploying source11.

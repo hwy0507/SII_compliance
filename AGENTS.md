@@ -7,6 +7,20 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新边界：Impedance完成cycle7/409721步、Task18/30 Strict17/30、被动0/10，原两轮预算正常退出，
+cycle7已归档。勿重启旧981510；其余三路source08仍完成7，四SAC09继续。原auditor900989/reviewer2655393
+等待整组；source11继续仅准备，整组科学复核尚未完成。详细证据见PUBLISHED_CONSISTENT_DISCOUNT_AND_PASSIVE_20261025.json。
+
+最新：consistent_discount_fresh_cycle06_v1全完成，四路×两arm×5000=40,000有限辅助更新，进程全退出。
+同fresh全learner/采样，对cycle6全部30个完整回合的独立副本匹配Bellman与PBRS gamma .99/.9995；
+两项测试和真实奖励重建通过。低gamma组Q/终端误差略低，但两组Q仍增、alpha仍适应，且远期成功
+信用骤减；不应用到正式训练。0physics/无权重保存或导入，原replay不变。报告图已检查。
+只读被动0900对比：cycle3曾37.32s成功，5carry失败，6/7lift失败；相同MJB/规划/fixture，7首align
+29.72s。单条件changing-policy证据，不当固定策略成功或因果结论。详见PUBLISHED_CONSISTENT_DISCOUNT_AND_PASSIVE_20261025.json。
+混合GPU60样本均值50.28/12.17/36.73/21.85%，仍不达四卡50%，记录辅助退出，不当纯正式吞吐。
+正式source08仍cycle7、SAC09继续；source11仅准备，不提前STOP/协调器，等全部7及原审计/review后继续。
+
+
 最新奖励尺度有限对照reward_units_fresh_cycle06_v1已完成：四路×两尺度×2500=20,000辅助更新，
 0physics/无保存或导入权重/父replay与正式训练不变，四辅助进程均退出。两项测试通过、报告和图已核验。
 scale1/.04同fresh actor/critic/alpha/RNG，仅sample reward不同；初始alpha相同导致相对熵压力改变。
