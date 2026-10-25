@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2026-10-25 — 已发表柔顺控制基线筛选与训练集经验SPT工具
+
+- 用户明确授权文献选型、奖励适配、参数/直接RL训练及训练集ESN比较；新要求T_ref取全部结果
+  最短成功时间，力矩阈值可经验登记/先行校准。本轮用独立SPT_empirical范围记录该覆盖，
+  保留旧标准及历史实验；未改变冻结MJB、physics、gate、actor、公共filter和执行器限制。
+- 新增 `docs/RL_PUBLISHED_BASELINE_SELECTION_20261025.md`：核对2023–2026发表记录、
+  论文及作者代码，重点候选CHEQ polishing（IFAC2025）、Portela ICRA2024、Zhang CoRL2023，
+  并比较DA-VIL、C-GMS、model-based VIC、历史VICES。列官方源码SHA和迁移差异，
+  不把仅使用SAC或history PPO当成完整论文复现；CHEQ额外context与冻结48维冲突待确认。
+- 新增独立 `training_comparison_metrics_20261025.py`，实现完整method×case矩阵校验、
+  共同事后最短严格成功时间、失败留分母、实际人接触时间加权力矩比例及完成效率reward helper。
+  helper尚未接入trainer；工具消费审计摘要，不能替代物理hash/replay核验，不能自动推算完成时刻。
+- 本机核查4张GPU空闲，但冻结runtime/当前参数源及指定ESN尚未定位；旧归档地址连接超时。
+  当前解释器缺训练依赖，user systemd offline；原hdd仅约11GB可用，同用户hdd2/ssd有空间。
+  依赖缺口已向用户询问，未伪造产物或重建模型。本轮训练步数0、仿真0、ESN评估0。
+- 验证：9项仅使用synthetic数据的标准库数值测试通过，覆盖共同参考、失败分母、安全成功、
+  无接触NA、采样时长、缺失/重复记录、错误完成时刻和效率奖励单调性；git diff --check通过。
+  项目源码与文档位于当前服务器实际checkout：
+  `/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/SII_compliance`。
+  没有新的物理run、checkpoint或训练曲线，没有向旧归档服务器传输产物。
+- 开工远端main `a1965543edd8302a95521bf71e3fb139c4a07c49`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，已读取两分支最新日志；干净main快进后修改。
+- 发布限制：本机未配置Git作者身份，使用本次命令专属的Codex/codex@localhost身份提交，
+  不改全局身份、不冒充用户。GitHub写入认证失败（现有VS Code askpass socket失效、远端拒绝
+  匿名写入），本轮保留本地提交，未声称已推送；不索要或记录token/私钥。
+
 ## 2026-10-25 — 整理两篇柔顺控制论文的 FR3 迁移边界
 
 - 新增 `docs/RL_TWO_PAPERS_TRANSFER_ASSESSMENT_20261025.md`，将用户提供的两篇文献笔记改写为
