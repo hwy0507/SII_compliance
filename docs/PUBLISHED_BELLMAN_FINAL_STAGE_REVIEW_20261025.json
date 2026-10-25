@@ -1,0 +1,1062 @@
+{
+  "captured_unix": 1792968885.0091798,
+  "host": "rltest-1025--a6ed2ff39b3c-s5gnp35dxg",
+  "stage_scientific_review": {
+    "reviewed_unix": 1792968612.5724902,
+    "all_four_methods_reviewed": true,
+    "diagnosis": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/bellman_minimum_stage_audit_v1/bellman_cycle11/results/DIAGNOSIS.json",
+      "sha256": "2bfd800b74ee26b9ba9297008703d95b2edb9860b612aeee55732affdd03fb14"
+    },
+    "training_receipts": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/bellman_minimum_online_seed20261025_v1/CYCLE11_ALL_TRAINING_REVIEW.json",
+      "sha256": "591b701c6f868c3399cbb6b8e0df7d0eb8adb4c747d2d310fa6592edcc59a912"
+    },
+    "comparisons": [
+      {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/bellman_minimum_paired_review_v1/parent09_to_bellman11/COMPARISON.json",
+        "sha256": "ee3061ea6c77140f14bb624c5f82919f8480a4fd2a79f49e3d7f30a508f1d565"
+      },
+      {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/bellman_minimum_paired_review_v1/bellman10_to_bellman11/COMPARISON.json",
+        "sha256": "e0510acab9424575c7e6e57e65ddd4d578aac1e68461f26871915dc01ab18987"
+      }
+    ],
+    "plots_visually_reviewed": true,
+    "methods": {
+      "direct": {
+        "steps": 574194,
+        "checkpoint_sha256": "a438c08b0aa0585dbbaf8199f7267e9564286d4bb7774c71cf0d75961cc4dcb6",
+        "archive_sha256": "880e698a89f95cb60d7f9f9635dc087a1b5fc7495643ab33f314f8dc0d464537",
+        "task": 0,
+        "strict": 0,
+        "strict_by_category": {
+          "passive_corner": 0,
+          "active_short": 0,
+          "active_long": 0
+        },
+        "reward_mean": -32.67271534910084,
+        "failure_stages": {
+          "lift": 22,
+          "approach": 8
+        },
+        "critic_loss_last1000": 2227461.24525,
+        "q_mean": -13795.138525151788,
+        "terminal_mae": 8371.951428577011,
+        "td_mae": 379.3074061784893,
+        "alpha": 28.97817039489746,
+        "current_alpha_bound_violation_fraction": 0.0
+      },
+      "impedance": {
+        "steps": 574721,
+        "checkpoint_sha256": "24bd67ca2f19f3188cb42a89ae823838b4d8a53c2369831c33962b5f436688bc",
+        "archive_sha256": "75705c9696ee5460635ed7fc8853d441836a165815ca73faeaa65280ba0d8db4",
+        "task": 18,
+        "strict": 18,
+        "strict_by_category": {
+          "passive_corner": 0,
+          "active_short": 10,
+          "active_long": 8
+        },
+        "reward_mean": -0.47112833514421804,
+        "failure_stages": {
+          "carry": 12
+        },
+        "critic_loss_last1000": 11732349.641,
+        "q_mean": -64348.88237445355,
+        "terminal_mae": 24772.39292674345,
+        "td_mae": 601.2494018793107,
+        "alpha": 10.138872146606445,
+        "current_alpha_bound_violation_fraction": 0.0
+      },
+      "admittance": {
+        "steps": 575570,
+        "checkpoint_sha256": "1feb1fc664ed5f992c12e455d14284f8c927412a29437a60d40e19d737c07145",
+        "archive_sha256": "684427956bc9825207e1d10c20184dd48be9ece8253a59d2cd3ac327397a53f0",
+        "task": 11,
+        "strict": 11,
+        "strict_by_category": {
+          "passive_corner": 0,
+          "active_short": 8,
+          "active_long": 3
+        },
+        "reward_mean": -13.768012164674307,
+        "failure_stages": {
+          "carry": 18,
+          "release": 1
+        },
+        "critic_loss_last1000": 9211282.3015,
+        "q_mean": -70726.02086268086,
+        "terminal_mae": 27268.29711410672,
+        "td_mae": 552.7877382241189,
+        "alpha": 6.285463333129883,
+        "current_alpha_bound_violation_fraction": 0.0
+      },
+      "vmc": {
+        "steps": 576276,
+        "checkpoint_sha256": "62e2100d8ca0f09af4d79bf720ef1218aac7141a3da961d0e743939f7e8efd28",
+        "archive_sha256": "1afb57ea3305af3f94477207f876427c1f90018576af6a3827a87b492d8a0dd2",
+        "task": 17,
+        "strict": 17,
+        "strict_by_category": {
+          "passive_corner": 0,
+          "active_short": 10,
+          "active_long": 7
+        },
+        "reward_mean": -2.801142107376598,
+        "failure_stages": {
+          "carry": 13
+        },
+        "critic_loss_last1000": 6770601.3495,
+        "q_mean": -67643.29022843475,
+        "terminal_mae": 19103.191352948954,
+        "td_mae": 547.4342556623742,
+        "alpha": 13.502341270446777,
+        "current_alpha_bound_violation_fraction": 0.0
+      }
+    },
+    "decision": {
+      "action": "do_not_extend_unchanged_all5_online_stage; extend_fresh_matched_discount_diagnostic",
+      "rationale": "Complete two-cycle all5 stage shows rising critic loss/terminal errors in all four interfaces and Direct/Admittance task regression. Negative Q alone is not an error; observed task and optimizer evidence do not support repair.",
+      "next_online_stage_selected": false,
+      "finite_probe": "Repeat original fresh cycle6 matched PBRS/Bellman gamma .99 vs .9995 protocol for 50000 updates per arm, four interfaces. Prior5000 updates ended with positive entropy around3.4\u20134.7 rather than target -dimension, so insufficient to assess later drift.",
+      "recomputed_prefix_disclosure": "Earlier probe saved no auxiliary weights; first5000 updates are intentionally recomputed, not counted as independent replication.",
+      "total_auxiliary_updates": 400000,
+      "new_physics": 0,
+      "weights_promoted": false,
+      "live_sac_changed": false,
+      "source16_deployed": false,
+      "selection_limits": "Lower gamma attenuates delayed task reward; healthy offline values alone cannot choose online gamma or establish policy success."
+    },
+    "convergence_claim": false,
+    "limitations": [
+      "Single-seed changing-policy training, not fixed-policy final ranking.",
+      "Current-alpha upper bound being satisfied after Q turns negative is not calibration.",
+      "Terminal MAE may include missing-time aliasing; zero is not a hard convergence gate."
+    ]
+  },
+  "nominal_matrix": {
+    "reviewed_unix": 1792968799.1580858,
+    "complete_matrix": true,
+    "episodes": 120,
+    "physical_substeps": 132000000,
+    "newly_reviewed_episodes": 60,
+    "reused_reviewed_episodes": 60,
+    "new_physics": 0,
+    "optimizer_updates": 0,
+    "final_spt_reference_selected": false,
+    "inputs": [
+      {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/nominal_completed_impedance_vmc_review_v1/COMPLETED_REVIEW.json",
+        "sha256": "6696f68aa0d885b9bc172b842a065db164b31bbf516cda5bca2ffe5e2d31e4ba"
+      },
+      {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/nominal_completed_direct_admittance_review_v1/REGISTRATION.json",
+        "sha256": "f2c6bc885903af73d4e828467e4e849f97a54d5556e574c160e790c4cd982efb"
+      },
+      {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/nominal_completed_direct_admittance_review_v1/results/REVIEW.json",
+        "sha256": "fd32cc722b102a03efc3eb80c5fe1d1dd2c807129b28ed9e2c6d14cb1440ed6d"
+      },
+      {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/nominal_four_interfaces_cohort30_v1/REGISTRATION.json",
+        "sha256": "a2d0b78b6c9b9e7dafcd4dcb3270b31a610d5349d832be51cb18021bf108d6d0"
+      }
+    ],
+    "methods": {
+      "impedance": {
+        "all": {
+          "episodes": 30,
+          "task": 18,
+          "strict": 18,
+          "machine_safety_violations": 0,
+          "mean_reward": -0.4513727561012908,
+          "peak_generalized_torque_nm": 59.244134706154185,
+          "strict_success_completion_time_s": [
+            12.96000000126477,
+            20.52000000126461,
+            12.96000000126477,
+            28.92000000126443,
+            13.040000001264769,
+            15.680000001264712,
+            13.00000000126477,
+            22.000000001264578,
+            13.320000001264763,
+            12.96000000126477,
+            18.880000001264644,
+            13.040000001264769,
+            23.080000001264555,
+            12.96000000126477,
+            19.48000000126463,
+            12.96000000126477,
+            12.96000000126477,
+            18.000000001264663
+          ],
+          "human_contact_s": 130.75934999999993,
+          "human_compliant_s": 41.81345000000001,
+          "contact_time_weighted_compliance": 0.3197740735174963,
+          "episodes_with_human_contact": 8,
+          "strict_failure_stages": {
+            "carry": 12
+          }
+        },
+        "passive_corner": {
+          "episodes": 10,
+          "task": 0,
+          "strict": 0,
+          "machine_safety_violations": 0,
+          "mean_reward": -31.139037033358864,
+          "peak_generalized_torque_nm": 41.70844680237886,
+          "strict_success_completion_time_s": [],
+          "human_contact_s": 0.0,
+          "human_compliant_s": 0.0,
+          "contact_time_weighted_compliance": null,
+          "episodes_with_human_contact": 0,
+          "strict_failure_stages": {
+            "carry": 10
+          }
+        },
+        "active_short": {
+          "episodes": 10,
+          "task": 10,
+          "strict": 10,
+          "machine_safety_violations": 0,
+          "mean_reward": 19.901705316877546,
+          "peak_generalized_torque_nm": 46.56223192109573,
+          "strict_success_completion_time_s": [
+            12.96000000126477,
+            12.96000000126477,
+            13.040000001264769,
+            13.00000000126477,
+            13.320000001264763,
+            12.96000000126477,
+            13.040000001264769,
+            12.96000000126477,
+            12.96000000126477,
+            12.96000000126477
+          ],
+          "human_contact_s": 0.0,
+          "human_compliant_s": 0.0,
+          "contact_time_weighted_compliance": null,
+          "episodes_with_human_contact": 0,
+          "strict_failure_stages": {}
+        },
+        "active_long": {
+          "episodes": 10,
+          "task": 8,
+          "strict": 8,
+          "machine_safety_violations": 0,
+          "mean_reward": 9.883213448177443,
+          "peak_generalized_torque_nm": 59.244134706154185,
+          "strict_success_completion_time_s": [
+            20.52000000126461,
+            28.92000000126443,
+            15.680000001264712,
+            22.000000001264578,
+            18.880000001264644,
+            23.080000001264555,
+            19.48000000126463,
+            18.000000001264663
+          ],
+          "human_contact_s": 130.75934999999993,
+          "human_compliant_s": 41.81345000000001,
+          "contact_time_weighted_compliance": 0.3197740735174963,
+          "episodes_with_human_contact": 8,
+          "strict_failure_stages": {
+            "carry": 2
+          }
+        }
+      },
+      "vmc": {
+        "all": {
+          "episodes": 30,
+          "task": 17,
+          "strict": 17,
+          "machine_safety_violations": 0,
+          "mean_reward": -2.8477708698176563,
+          "peak_generalized_torque_nm": 48.008841749903965,
+          "strict_success_completion_time_s": [
+            27.440000001264462,
+            31.880000001264367,
+            27.640000001264458,
+            29.280000001264423,
+            36.72000000126427,
+            26.480000001264482,
+            37.24000000126426,
+            21.0400000012646,
+            20.48000000126461,
+            30.240000001264402,
+            21.680000001264585,
+            44.6400000012641,
+            30.000000001264407,
+            31.24000000126438,
+            21.44000000126459,
+            33.16000000126434,
+            40.36000000126419
+          ],
+          "human_contact_s": 97.01005000000006,
+          "human_compliant_s": 69.94180000000003,
+          "contact_time_weighted_compliance": 0.7209747856021101,
+          "episodes_with_human_contact": 8,
+          "strict_failure_stages": {
+            "carry": 13
+          }
+        },
+        "passive_corner": {
+          "episodes": 10,
+          "task": 0,
+          "strict": 0,
+          "machine_safety_violations": 0,
+          "mean_reward": -31.053994119431103,
+          "peak_generalized_torque_nm": 38.34184871532362,
+          "strict_success_completion_time_s": [],
+          "human_contact_s": 0.0,
+          "human_compliant_s": 0.0,
+          "contact_time_weighted_compliance": null,
+          "episodes_with_human_contact": 0,
+          "strict_failure_stages": {
+            "carry": 10
+          }
+        },
+        "active_short": {
+          "episodes": 10,
+          "task": 10,
+          "strict": 10,
+          "machine_safety_violations": 0,
+          "mean_reward": 18.849450117583963,
+          "peak_generalized_torque_nm": 47.902972451208804,
+          "strict_success_completion_time_s": [
+            27.440000001264462,
+            27.640000001264458,
+            29.280000001264423,
+            26.480000001264482,
+            21.0400000012646,
+            20.48000000126461,
+            21.680000001264585,
+            30.000000001264407,
+            21.44000000126459,
+            33.16000000126434
+          ],
+          "human_contact_s": 0.0,
+          "human_compliant_s": 0.0,
+          "contact_time_weighted_compliance": null,
+          "episodes_with_human_contact": 0,
+          "strict_failure_stages": {}
+        },
+        "active_long": {
+          "episodes": 10,
+          "task": 7,
+          "strict": 7,
+          "machine_safety_violations": 0,
+          "mean_reward": 3.661231392394174,
+          "peak_generalized_torque_nm": 48.008841749903965,
+          "strict_success_completion_time_s": [
+            31.880000001264367,
+            36.72000000126427,
+            37.24000000126426,
+            30.240000001264402,
+            44.6400000012641,
+            31.24000000126438,
+            40.36000000126419
+          ],
+          "human_contact_s": 97.01005000000006,
+          "human_compliant_s": 69.94180000000003,
+          "contact_time_weighted_compliance": 0.7209747856021101,
+          "episodes_with_human_contact": 8,
+          "strict_failure_stages": {
+            "carry": 3
+          }
+        }
+      },
+      "direct": {
+        "all": {
+          "episodes": 30,
+          "task": 18,
+          "strict": 18,
+          "machine_safety_violations": 0,
+          "mean_reward": -0.9460296667188984,
+          "peak_generalized_torque_nm": 47.84618543030588,
+          "strict_success_completion_time_s": [
+            24.520000001264524,
+            28.800000001264433,
+            24.000000001264535,
+            38.00000000126424,
+            24.68000000126452,
+            32.160000001264365,
+            22.920000001264558,
+            33.76000000126433,
+            19.680000001264627,
+            19.60000000126463,
+            27.200000001264467,
+            20.400000001264612,
+            37.92000000126424,
+            25.400000001264505,
+            28.48000000126444,
+            20.52000000126461,
+            27.60000000126446,
+            33.960000001264326
+          ],
+          "human_contact_s": 105.68705000000006,
+          "human_compliant_s": 70.81430000000002,
+          "contact_time_weighted_compliance": 0.6700376252341226,
+          "episodes_with_human_contact": 8,
+          "strict_failure_stages": {
+            "carry": 12
+          }
+        },
+        "passive_corner": {
+          "episodes": 10,
+          "task": 0,
+          "strict": 0,
+          "machine_safety_violations": 0,
+          "mean_reward": -31.041064302264125,
+          "peak_generalized_torque_nm": 38.67568295739038,
+          "strict_success_completion_time_s": [],
+          "human_contact_s": 0.0,
+          "human_compliant_s": 0.0,
+          "contact_time_weighted_compliance": null,
+          "episodes_with_human_contact": 0,
+          "strict_failure_stages": {
+            "carry": 10
+          }
+        },
+        "active_short": {
+          "episodes": 10,
+          "task": 10,
+          "strict": 10,
+          "machine_safety_violations": 0,
+          "mean_reward": 19.081627737173115,
+          "peak_generalized_torque_nm": 47.64788128644453,
+          "strict_success_completion_time_s": [
+            24.520000001264524,
+            24.000000001264535,
+            24.68000000126452,
+            22.920000001264558,
+            19.680000001264627,
+            19.60000000126463,
+            20.400000001264612,
+            25.400000001264505,
+            20.52000000126461,
+            27.60000000126446
+          ],
+          "human_contact_s": 0.0,
+          "human_compliant_s": 0.0,
+          "contact_time_weighted_compliance": null,
+          "episodes_with_human_contact": 0,
+          "strict_failure_stages": {}
+        },
+        "active_long": {
+          "episodes": 10,
+          "task": 8,
+          "strict": 8,
+          "machine_safety_violations": 0,
+          "mean_reward": 9.121347564934315,
+          "peak_generalized_torque_nm": 47.84618543030588,
+          "strict_success_completion_time_s": [
+            28.800000001264433,
+            38.00000000126424,
+            32.160000001264365,
+            33.76000000126433,
+            27.200000001264467,
+            37.92000000126424,
+            28.48000000126444,
+            33.960000001264326
+          ],
+          "human_contact_s": 105.68705000000006,
+          "human_compliant_s": 70.81430000000002,
+          "contact_time_weighted_compliance": 0.6700376252341226,
+          "episodes_with_human_contact": 8,
+          "strict_failure_stages": {
+            "carry": 2
+          }
+        }
+      },
+      "admittance": {
+        "all": {
+          "episodes": 30,
+          "task": 16,
+          "strict": 15,
+          "machine_safety_violations": 1,
+          "mean_reward": -7.027993156723587,
+          "peak_generalized_torque_nm": 54.16451494853349,
+          "strict_success_completion_time_s": [
+            45.280000001264085,
+            42.480000001264145,
+            41.040000001264175,
+            46.76000000126405,
+            47.920000001264036,
+            40.80000000126418,
+            51.12000000126404,
+            25.440000001264504,
+            21.120000001264597,
+            38.96000000126422,
+            26.760000001264476,
+            52.60000000126404,
+            40.120000001264195,
+            22.560000001264566,
+            53.68000000126404
+          ],
+          "human_contact_s": 67.36800000000002,
+          "human_compliant_s": 48.65230000000001,
+          "contact_time_weighted_compliance": 0.7221870917943236,
+          "episodes_with_human_contact": 8,
+          "strict_failure_stages": {
+            "carry": 14,
+            "retreat": 1
+          }
+        },
+        "passive_corner": {
+          "episodes": 10,
+          "task": 0,
+          "strict": 0,
+          "machine_safety_violations": 0,
+          "mean_reward": -31.665352445172495,
+          "peak_generalized_torque_nm": 42.32346697935515,
+          "strict_success_completion_time_s": [],
+          "human_contact_s": 0.0,
+          "human_compliant_s": 0.0,
+          "contact_time_weighted_compliance": null,
+          "episodes_with_human_contact": 0,
+          "strict_failure_stages": {
+            "carry": 10
+          }
+        },
+        "active_short": {
+          "episodes": 10,
+          "task": 10,
+          "strict": 9,
+          "machine_safety_violations": 1,
+          "mean_reward": 12.64377353435576,
+          "peak_generalized_torque_nm": 53.93667303288011,
+          "strict_success_completion_time_s": [
+            45.280000001264085,
+            41.040000001264175,
+            46.76000000126405,
+            40.80000000126418,
+            25.440000001264504,
+            21.120000001264597,
+            26.760000001264476,
+            22.560000001264566,
+            53.68000000126404
+          ],
+          "human_contact_s": 0.0,
+          "human_compliant_s": 0.0,
+          "contact_time_weighted_compliance": null,
+          "episodes_with_human_contact": 0,
+          "strict_failure_stages": {
+            "retreat": 1
+          }
+        },
+        "active_long": {
+          "episodes": 10,
+          "task": 6,
+          "strict": 6,
+          "machine_safety_violations": 0,
+          "mean_reward": -2.0624005593540264,
+          "peak_generalized_torque_nm": 54.16451494853349,
+          "strict_success_completion_time_s": [
+            42.480000001264145,
+            47.920000001264036,
+            51.12000000126404,
+            38.96000000126422,
+            52.60000000126404,
+            40.120000001264195
+          ],
+          "human_contact_s": 67.36800000000002,
+          "human_compliant_s": 48.65230000000001,
+          "contact_time_weighted_compliance": 0.7221870917943236,
+          "episodes_with_human_contact": 8,
+          "strict_failure_stages": {
+            "carry": 4
+          }
+        }
+      }
+    },
+    "machine_safety_violation_cases": [
+      {
+        "method": "nominal_admittance",
+        "case_id": "active_short_train_0600",
+        "task_success": true,
+        "strict_success": false,
+        "full_horizon": true,
+        "machine_safety_violation": true,
+        "elapsed_s": 54.99999999999989,
+        "completion_time_s": 43.64000000126412,
+        "completion_time_definition": "final_stable_placement_certification",
+        "torque_thresholds_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "peak_torque_nm_per_joint": [
+          3.9628072702959134,
+          51.87804855480558,
+          2.9388950686478705,
+          28.186539303411234,
+          2.5015018624622813,
+          4.488412574351191,
+          0.6176229736346441
+        ],
+        "human_contact_s": 0.0,
+        "human_below_threshold_s": 0.0,
+        "human_compliance_ratio": null,
+        "final_task_stage": "retreat",
+        "abort_reason": null,
+        "category": "active_short",
+        "reward": -34.753339552035236,
+        "public_filter_replay_verified": true,
+        "episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/nominal_four_interfaces_cohort30_v1/admittance/active_short_train_0600"
+      }
+    ],
+    "safety_failure_detail": {
+      "case": "admittance/active_short_train_0600",
+      "external_penetration_m": 0.0002095670883856073,
+      "original_gate_m": 0.0002,
+      "task_success": true,
+      "strict_success": false,
+      "not_excluded": true
+    },
+    "limitations": [
+      "Complete selected nominal interfaces, not the final four-interface learned/ESN comparison.",
+      "Engineering torque thresholds; no clinical human-comfort validation.",
+      "Existing physical/filter replay verified; actual amplitude and subsequent-servo slew recomputed.",
+      "Original v4 has no torque-projection inputs or initial previous torque; full projection replay is not claimed.",
+      "No final Tref, SPT selection, policy ranking, new simulation or training."
+    ]
+  },
+  "extended_probe_registration": {
+    "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train08",
+    "runtime_sha256": "35a5ee2f2a0539876a155efe2b1d146a934cfa7606100bdcd005d06c1dec3b79",
+    "source_hashes": {
+      "probe_published_consistent_discount_20261025.py": "fe9b52a0f905a7cd3158d69c3879dcb442775e91833af0758594475f2d9d4364",
+      "diagnose_published_value_bound_20261025.py": "2a5b04c7a4036d78775a7abb87170660a0e3b6b0111846f24d4a9245dc268245",
+      "validate_published_finite_check_20261025.py": "02c0c995510bca67fabe2bc06b7380da3fd1489b98fd9a695147e489c0241acd"
+    },
+    "reward_sources": {
+      "spt_rl_reward_20261025.py": "c63deee3a17318703e17744245986d97d340a741623f03abe73af5aa43ffaebf",
+      "training_comparison_metrics_20261025.py": "24ee8166b9ade665290a6883bdf39ecf615e7cbf3f954c1404e1717e7a8b2e07"
+    },
+    "checkpoints": {
+      "direct": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/critic_reset_online_seed20261025_v1/cycle_archive/direct/cycle_00006.pt",
+        "sha256": "f0c8e701ba3a30d171a3e94db7a3373b2ca17c5a0bba9f6b991798be90eb035b",
+        "transitions": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_fresh_cycle06_v1/direct_cycle06.jsonl",
+        "transitions_sha256": "e9bb2e7263debd06a4fc60413aee5a673031c5cde8811504c71bbd585266e83b",
+        "rows": 41250
+      },
+      "impedance": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/critic_reset_online_seed20261025_v1/cycle_archive/impedance/cycle_00006.pt",
+        "sha256": "eaa586e539bbc7807b3cc8c2952d31599fdc7381646b6c3f8a9e21c80eee041c",
+        "transitions": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_fresh_cycle06_v1/impedance_cycle06.jsonl",
+        "transitions_sha256": "6fea247205b7d2d5c1ce86b28c5daa40c7e2ecd65a6aa13f56bdce4b24a31242",
+        "rows": 41250
+      },
+      "admittance": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/critic_reset_online_seed20261025_v1/cycle_archive/admittance/cycle_00006.pt",
+        "sha256": "33417425d5e62b373de3f69e3dcf9b07f805a7e3b64e56ca02bb7099f586cdd2",
+        "transitions": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_fresh_cycle06_v1/admittance_cycle06.jsonl",
+        "transitions_sha256": "5b234c5686eceb6674fd7e42a9c09d54f0fe9a35394416bbad8a17d1b222778a",
+        "rows": 41250
+      },
+      "vmc": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/critic_reset_online_seed20261025_v1/cycle_archive/vmc/cycle_00006.pt",
+        "sha256": "035d7c5eb63b47e0c70fe1e4b3e113f3541480078e10dad7596a60ecb0262b59",
+        "transitions": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_fresh_cycle06_v1/vmc_cycle06.jsonl",
+        "transitions_sha256": "f3c4ecea97683705aaa324d2c9ad8ed9e2c99b2fe0cb76030cca28cf9c0fee27",
+        "rows": 41250
+      }
+    },
+    "seed": 2026102531,
+    "cpus": {
+      "direct": 0,
+      "impedance": 14,
+      "admittance": 26,
+      "vmc": 39
+    },
+    "updates_per_arm": 50000,
+    "batch_size": 16384,
+    "record_every": 1000,
+    "diagnostic_samples": 4096,
+    "registered_unix": 1792968639.4173603,
+    "hypothesis": "Earlier5000 fresh updates ended before policy entropy reached target. Extend paired original-two-target gamma .99/.9995 with consistent PBRS to50000 per arm to assess whether lower discount attenuates later critic drift.",
+    "scope": "Finite fresh matched study, same cycle6 complete30 replay and seed as original; first5000 recomputed because no weights were saved. No independent replication claim, no online performance or weight promotion.",
+    "formal_training_changed": false,
+    "auxiliary_weights_saved": false,
+    "new_physics": 0,
+    "discount_order": {
+      "direct": [
+        0.9995,
+        0.99
+      ],
+      "impedance": [
+        0.99,
+        0.9995
+      ],
+      "admittance": [
+        0.9995,
+        0.99
+      ],
+      "vmc": [
+        0.99,
+        0.9995
+      ]
+    },
+    "original_registration": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_fresh_cycle06_v1/REGISTRATION.json",
+      "sha256": "ae4d68098c3811cb3f83ba19d0db1e3a876b049fc13bba71d1a1256431f114dc"
+    },
+    "scientific_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/BELLMAN_FINAL_SCIENTIFIC_REVIEW_V1.json",
+      "sha256": "5017736b0c516cbad49ade96275d11b21eaa3ec436a9a2fb4750f03f9510e188"
+    },
+    "total_updates": 400000
+  },
+  "extended_probe_launch": {
+    "started_unix": 1792968639.4280164,
+    "registration_sha256": "d81d9f16fd9093c1f3a947ef08b9b1689b3d6fca802940d8154045a69988a2e9",
+    "workers": {
+      "direct": {
+        "pid": 361333,
+        "command": [
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+          "-B",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/consistent_discount_extended_v1/probe_published_consistent_discount_20261025.py",
+          "--registration",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_extended_cycle06_v1/REGISTRATION.json",
+          "--controller",
+          "direct",
+          "--device",
+          "cuda:0",
+          "--output",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_extended_cycle06_v1/direct"
+        ],
+        "cpu": 0,
+        "device": "cuda:0"
+      },
+      "impedance": {
+        "pid": 361334,
+        "command": [
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+          "-B",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/consistent_discount_extended_v1/probe_published_consistent_discount_20261025.py",
+          "--registration",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_extended_cycle06_v1/REGISTRATION.json",
+          "--controller",
+          "impedance",
+          "--device",
+          "cuda:1",
+          "--output",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_extended_cycle06_v1/impedance"
+        ],
+        "cpu": 14,
+        "device": "cuda:1"
+      },
+      "admittance": {
+        "pid": 361335,
+        "command": [
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+          "-B",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/consistent_discount_extended_v1/probe_published_consistent_discount_20261025.py",
+          "--registration",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_extended_cycle06_v1/REGISTRATION.json",
+          "--controller",
+          "admittance",
+          "--device",
+          "cuda:2",
+          "--output",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_extended_cycle06_v1/admittance"
+        ],
+        "cpu": 26,
+        "device": "cuda:2"
+      },
+      "vmc": {
+        "pid": 361336,
+        "command": [
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+          "-B",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/consistent_discount_extended_v1/probe_published_consistent_discount_20261025.py",
+          "--registration",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_extended_cycle06_v1/REGISTRATION.json",
+          "--controller",
+          "vmc",
+          "--device",
+          "cuda:3",
+          "--output",
+          "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_extended_cycle06_v1/vmc"
+        ],
+        "cpu": 39,
+        "device": "cuda:3"
+      }
+    },
+    "live_sac_unchanged": true
+  },
+  "prefix_review": {
+    "reviewed_unix": 1792968723.7330418,
+    "purpose": "Check intentionally recomputed prefix against original finite probe; no new independent replication claim.",
+    "rows": {
+      "direct": {
+        "updates": 4000,
+        "gamma": 0.9995,
+        "metrics_exact": true,
+        "diagnostic_exact": true,
+        "max_metric_difference": 0.0
+      },
+      "impedance": {
+        "updates": 5000,
+        "gamma": 0.99,
+        "metrics_exact": true,
+        "diagnostic_exact": true,
+        "max_metric_difference": 0.0
+      },
+      "admittance": {
+        "updates": 4000,
+        "gamma": 0.9995,
+        "metrics_exact": true,
+        "diagnostic_exact": true,
+        "max_metric_difference": 0.0
+      },
+      "vmc": {
+        "updates": 5000,
+        "gamma": 0.99,
+        "metrics_exact": true,
+        "diagnostic_exact": true,
+        "max_metric_difference": 0.0
+      }
+    }
+  },
+  "gpu_window": {
+    "started_unix": 1792968693.998901,
+    "ended_unix": 1792968760.8505795,
+    "pid_start_ticks": {
+      "361333": "555757666",
+      "361334": "555757667",
+      "361335": "555757667",
+      "361336": "555757667",
+      "1010728": "553799738",
+      "1557140": "553878945",
+      "2758791": "554049849",
+      "2397784": "553997141"
+    },
+    "identities_unchanged": true,
+    "progress_before": {
+      "direct": {
+        "gamma": 0.9995,
+        "updates": 2000,
+        "metrics": {
+          "agent_train/q_loss": 2.768498659133911,
+          "agent_train/next_q_values": 32.54690933227539,
+          "agent_train/entropy_coefficient_loss": -6.679995536804199,
+          "agent_train/actor_loss": -32.578819274902344,
+          "agent_train/actor_entropy": 4.043367862701416,
+          "agent_train/entropy_coefficient": 0.5459723472595215,
+          "agent_train/target_entropy": -7.0
+        },
+        "diagnostic": {
+          "replay_q_mean": 32.540191650390625,
+          "in_bag_terminal_mae": 17.501317977905273,
+          "alpha": 0.5459723472595215,
+          "global_soft_bound": 2285.8981355255414,
+          "above_global_bound_fraction": 0.0,
+          "sampled_policy_entropy": 4.0474958419799805,
+          "uncertainty_mean": 0.15887869894504547,
+          "implied_minimum_rl_authority_fraction": 0.14013671875
+        },
+        "updated_unix": 1792968680.4094791
+      },
+      "impedance": {
+        "gamma": 0.99,
+        "updates": 3000,
+        "metrics": {
+          "agent_train/q_loss": 2.0572781562805176,
+          "agent_train/next_q_values": 31.352018356323242,
+          "agent_train/entropy_coefficient_loss": -7.614006996154785,
+          "agent_train/actor_loss": -31.719738006591797,
+          "agent_train/actor_entropy": 3.4086191654205322,
+          "agent_train/entropy_coefficient": 0.40421831607818604,
+          "agent_train/target_entropy": -5.0
+        },
+        "diagnostic": {
+          "replay_q_mean": 31.348480224609375,
+          "in_bag_terminal_mae": 9.43548583984375,
+          "alpha": 0.40421831607818604,
+          "global_soft_bound": 168.69033955570072,
+          "above_global_bound_fraction": 0.0,
+          "sampled_policy_entropy": 3.414496898651123,
+          "uncertainty_mean": 0.07096543908119202,
+          "implied_minimum_rl_authority_fraction": 0.038818359375
+        },
+        "updated_unix": 1792968693.8436732
+      },
+      "admittance": {
+        "gamma": 0.9995,
+        "updates": 2000,
+        "metrics": {
+          "agent_train/q_loss": 0.6608350276947021,
+          "agent_train/next_q_values": 38.812278747558594,
+          "agent_train/entropy_coefficient_loss": -7.127581596374512,
+          "agent_train/actor_loss": -38.84956359863281,
+          "agent_train/actor_entropy": 4.783414363861084,
+          "agent_train/entropy_coefficient": 0.545974612236023,
+          "agent_train/target_entropy": -7.0
+        },
+        "diagnostic": {
+          "replay_q_mean": 38.807586669921875,
+          "in_bag_terminal_mae": 12.606866836547852,
+          "alpha": 0.545974612236023,
+          "global_soft_bound": 2661.8920765213766,
+          "above_global_bound_fraction": 0.0,
+          "sampled_policy_entropy": 4.78020715713501,
+          "uncertainty_mean": 0.04690668731927872,
+          "implied_minimum_rl_authority_fraction": 0.011474609375
+        },
+        "updated_unix": 1792968679.5119944
+      },
+      "vmc": {
+        "gamma": 0.99,
+        "updates": 3000,
+        "metrics": {
+          "agent_train/q_loss": 6.125401020050049,
+          "agent_train/next_q_values": 43.91407775878906,
+          "agent_train/entropy_coefficient_loss": -10.642888069152832,
+          "agent_train/actor_loss": -44.40590286254883,
+          "agent_train/actor_entropy": 4.7615180015563965,
+          "agent_train/entropy_coefficient": 0.40446484088897705,
+          "agent_train/target_entropy": -7.0
+        },
+        "diagnostic": {
+          "replay_q_mean": 43.932350158691406,
+          "in_bag_terminal_mae": 25.839332580566406,
+          "alpha": 0.40446484088897705,
+          "global_soft_bound": 224.28489369724204,
+          "above_global_bound_fraction": 0.0,
+          "sampled_policy_entropy": 4.760993957519531,
+          "uncertainty_mean": 0.11292046308517456,
+          "implied_minimum_rl_authority_fraction": 0.05859375
+        },
+        "updated_unix": 1792968693.923938
+      }
+    },
+    "progress_after": {
+      "direct": {
+        "gamma": 0.9995,
+        "updates": 7000,
+        "metrics": {
+          "agent_train/q_loss": 0.4625483751296997,
+          "agent_train/next_q_values": 58.00389099121094,
+          "agent_train/entropy_coefficient_loss": -22.8411922454834,
+          "agent_train/actor_loss": -58.08198547363281,
+          "agent_train/actor_entropy": 3.871187210083008,
+          "agent_train/entropy_coefficient": 0.12228821218013763,
+          "agent_train/target_entropy": -7.0
+        },
+        "diagnostic": {
+          "replay_q_mean": 58.045684814453125,
+          "in_bag_terminal_mae": 0.8992553949356079,
+          "alpha": 0.12228821218013763,
+          "global_soft_bound": 535.2815426250752,
+          "above_global_bound_fraction": 0.0,
+          "sampled_policy_entropy": 3.87213134765625,
+          "uncertainty_mean": 0.061040811240673065,
+          "implied_minimum_rl_authority_fraction": 0.02294921875
+        },
+        "updated_unix": 1792968755.3848767
+      },
+      "impedance": {
+        "gamma": 0.99,
+        "updates": 7000,
+        "metrics": {
+          "agent_train/q_loss": 1.659324049949646,
+          "agent_train/next_q_values": 37.99830627441406,
+          "agent_train/entropy_coefficient_loss": -17.592693328857422,
+          "agent_train/actor_loss": -38.430198669433594,
+          "agent_train/actor_entropy": 3.360006809234619,
+          "agent_train/entropy_coefficient": 0.1218838170170784,
+          "agent_train/target_entropy": -5.0
+        },
+        "diagnostic": {
+          "replay_q_mean": 38.028297424316406,
+          "in_bag_terminal_mae": 8.08733081817627,
+          "alpha": 0.1218838170170784,
+          "global_soft_bound": 71.81925285437539,
+          "above_global_bound_fraction": 0.0,
+          "sampled_policy_entropy": 3.361032009124756,
+          "uncertainty_mean": 0.05201644450426102,
+          "implied_minimum_rl_authority_fraction": 0.01611328125
+        },
+        "updated_unix": 1792968751.486068
+      },
+      "admittance": {
+        "gamma": 0.9995,
+        "updates": 7000,
+        "metrics": {
+          "agent_train/q_loss": 0.8745598793029785,
+          "agent_train/next_q_values": 69.1597900390625,
+          "agent_train/entropy_coefficient_loss": -23.69803810119629,
+          "agent_train/actor_loss": -69.21827697753906,
+          "agent_train/actor_entropy": 4.29569673538208,
+          "agent_train/entropy_coefficient": 0.12266898900270462,
+          "agent_train/target_entropy": -7.0
+        },
+        "diagnostic": {
+          "replay_q_mean": 69.20209503173828,
+          "in_bag_terminal_mae": 13.011005401611328,
+          "alpha": 0.12266898900270462,
+          "global_soft_bound": 621.3306827013022,
+          "above_global_bound_fraction": 0.0,
+          "sampled_policy_entropy": 4.275924205780029,
+          "uncertainty_mean": 0.08224371820688248,
+          "implied_minimum_rl_authority_fraction": 0.0654296875
+        },
+        "updated_unix": 1792968753.3792577
+      },
+      "vmc": {
+        "gamma": 0.99,
+        "updates": 7000,
+        "metrics": {
+          "agent_train/q_loss": 3.4264981746673584,
+          "agent_train/next_q_values": 53.282501220703125,
+          "agent_train/entropy_coefficient_loss": -23.64501190185547,
+          "agent_train/actor_loss": -53.85698699951172,
+          "agent_train/actor_entropy": 4.2741899490356445,
+          "agent_train/entropy_coefficient": 0.12275509536266327,
+          "agent_train/target_entropy": -7.0
+        },
+        "diagnostic": {
+          "replay_q_mean": 53.300140380859375,
+          "in_bag_terminal_mae": 21.007883071899414,
+          "alpha": 0.12275509536266327,
+          "global_soft_bound": 88.96547299614693,
+          "above_global_bound_fraction": 0.0,
+          "sampled_policy_entropy": 4.248017311096191,
+          "uncertainty_mean": 0.1157364472746849,
+          "implied_minimum_rl_authority_fraction": 0.095458984375
+        },
+        "updated_unix": 1792968751.2714267
+      }
+    },
+    "load": "Four finite auxiliary discount-study learners plus four original SAC learners; CHEQ online10/11 stage completed. Not formal-training-only utilization.",
+    "mean_gpu_utilization_percent": [
+      63.53333333333333,
+      55.983333333333334,
+      60.56666666666667,
+      61.233333333333334
+    ],
+    "min_gpu_utilization_percent": [
+      44,
+      44,
+      49,
+      46
+    ]
+  },
+  "gpu_raw_receipt": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/consistent_discount_extended_cycle06_v1/GPU_60S_01.json",
+    "sha256": "c7057d2ebb00ac96bb57459927ef00d4af6a38572e73b4014ac85164765fc6a3"
+  },
+  "origin_main": "a52dfba4486af8d263d5cd0a976c3102482ff249",
+  "origin_baseline": "f6e8f8c2711a93f0b5dfc88c608bd82647084d5d",
+  "goal_complete": false
+}

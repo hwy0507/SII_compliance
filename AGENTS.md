@@ -7,6 +7,10 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新all5阶段10/11已全部结束并完整科学review，旧四learner1325445/1328516/1333006/1338945及audit1346884/reviewer1346887均退出勿重启。11 steps574194/574721/575570/576276，Task/Strict0/18/11/17各30；四loss/terminalMAE再增、Direct/Admittance退化，不原样延长all5。120终端/模型/hash、reward/network及图复核；runs/BELLMAN_FINAL_SCIENTIFIC_REVIEW_V1.json。source16仍prepared，尚未选下一在线stage，Goal未完。
+新有限extended discount四probe361333/361334/361335/361336在GPU0–3、CPU0/14/26/39实际更新：原fresh cycle6同seed数据，原random2目标，.99/.9995 Bellman和PBRS匹配，各arm50000共400000辅助updates、0physics、不保存推广权重。原5000末entropy仍正，延长查后期漂移；前4000/5000与原metrics/diagnostic精确相同（重算，不独立重复）。runs/consistent_discount_extended_cycle06_v1、runtime/consistent_discount_extended_v1。读原进程/PROGRESS/FINISHED，不重复启动。GPU60样本混合均值63.53/55.98/60.57/61.23，min44/44/49/46，非正式独立达标。原四SAC09及剩余cycle3观察3759872继续。
+名义矩阵120/120已全完成，旧2210514/2210515退出勿重启；新只读380039完成后60，复用前60，COMPLETE_MATRIX_REVIEW.json。Task18/18/16/17、Strict18/18/15/17；Admittance短0600穿透0.209567mm超原0.2mm安全失败保留，舒适67.00/31.98/72.22/72.10%，无接触NA，Tref未选。报告docs/PUBLISHED_BELLMAN_FINAL_STAGE_REVIEW_20261025.md/.json。物理/actor/filter/gate/执行器/dt未变，指定ESN仍缺。
+
 最新固定名义Impedance/VMC完整各30已复核，3919824只读进程退出勿重启：Task/Strict18/18和17/17，分类0/10/8与0/10/7，机器安全0/60、失败均carry；峰矩59.2441/48.0088Nm，实际接触各8回合、时间加权舒适31.9774%/72.0975%，无人接触NA、含失败分母、不选Tref。60例6600万原子步hash/模型/公共filter/零action/reward、实际幅值/相邻servo slew及接触复算通过，0新physics/updates。旧v4无投影内部trace/首previous torque，明确不称完整投影重放。source06/14保护manifest及5实际源文件相同已核验。runs/nominal_completed_impedance_vmc_review_v1/COMPLETED_REVIEW.json和docs/PUBLISHED_NOMINAL_IMPEDANCE_VMC_COHORT30_20261025.md/.json；后续整矩阵复用这60项，不重仿真。原slot1已结束，slot0/八learner/11审计/剩余SAC3观察仍继续；source16未部署，目标未完成。
 
 最新SAC Impedance完整3/187278只读audit完成、3712274退出勿重启：Task18/30 Strict17/30、分类0/9/8，短0600失Strict/长0300新增；loss2533→19285、Q2488→5252、terminalMAE519→1540，非健康收敛，原1557140进入4不改。30条件/terminal/MJB及冻结inputs/hash/reward/network和图核验，0physics/updates。runs/diagnosis_sac_impedance_cycle03_v1/REVIEW.json，docs/PUBLISHED_SAC_IMPEDANCE_CYCLE03_REVIEW_20261025.md/.json。

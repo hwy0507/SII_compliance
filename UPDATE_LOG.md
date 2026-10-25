@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-25 — all5两轮阶段完整复核、名义120完成与有限折扣延长诊断
+
+- fetch/read main a52dfba、baseline f6e8f8c未变。四CHEQ11结束，旧1325445/1328516/1333006/1338945退出勿重启；steps574194/574721/575570/576276，Task/Strict0/18/11/17（各30），父9 Strict10/18/15/17。120终端/MJB/checkpoint、奖励重建/网络不变及诊断/配对图核验。1346884/1346887原审计均结束。
+- 四critic loss/terminalMAE均再增，Direct和Admittance退化，否决原样延长all5。Q负号或上界超限0本身不证明错误/校准；新在线阶段未选，source16未部署。runs/BELLMAN_FINAL_SCIENTIFIC_REVIEW_V1.json。
+- 名义120/120完整，旧2210514/2210515退出；复用前60、新review380039完成后60，0新physics。Task18/18/16/17、Strict18/18/15/17；接触合规67.00/31.98/72.22/72.10%，NA保留。Admittance短0600穿透0.209567mm超0.2mm导致唯一安全违规，保留。原v4投影trace缺失限制不变，最终Tref未选。
+- 新有限extended discount四probe361333/361334/361335/361336实际更新，原fresh cycle6同state/seed/.99与.9995一致PBRS，每arm50000共400000更新，0physics/不导出权重；原5000末entropy仍正，故延长检查后期漂移。重算前缀已与原4000/5000 metrics/diagnostic精确相同，不称独立重复证据。runtime/consistent_discount_extended_v1、runs/consistent_discount_extended_cycle06_v1登记/启动/前缀收据。
+- GPU混合负载60样本/66.85s均值63.53/55.98/60.57/61.23%、min44/44/49/46；非正式训练独立/每时刻50%。原四SAC09和observer3759872继续，合同不改。报告docs/PUBLISHED_BELLMAN_FINAL_STAGE_REVIEW_20261025.md/.json，目标仍未完成。
+
 ## 2026-10-25 — 完整名义Impedance/VMC各30条件复核
 
 - fetch/read main a52dfba、baseline f6e8f8c未变。原nominal slot1结束，名义Impedance/VMC各30已复核：Task/Strict18/18和17/17；被动/短/长Strict0/10/8与0/10/7；机器安全违规0/60，失败均carry。RL相近训练成功数不能直接归功学习，最终需固定策略逐条件对照。
