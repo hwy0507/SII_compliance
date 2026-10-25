@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-25 — 完整名义Impedance/VMC各30条件复核
+
+- fetch/read main a52dfba、baseline f6e8f8c未变。原nominal slot1结束，名义Impedance/VMC各30已复核：Task/Strict18/18和17/17；被动/短/长Strict0/10/8与0/10/7；机器安全违规0/60，失败均carry。RL相近训练成功数不能直接归功学习，最终需固定策略逐条件对照。
+- 新只读review工具及冻结runtime/nominal_completed_review_v1，3919824已完成退出，0更新/新physics；60例6600万已有子步、原始audit引用hash/模型/cohort/零action/reward/公共filter核验；实际力矩幅值、相邻servo slew及接触指标重新核验通过。v4缺少投影输入和首servo previous torque，明确不称完整投影重放。
+- 全回合峰矩59.2441/48.0088Nm；真实接触各8回合，时长130.75935/97.01005s，合规41.81345/69.94180s，时间加权31.9774%/72.0975%。被动/短期无接触NA，含失败接触分母，不选最终Tref。source06/14两保护manifest及5实际控制/reward源文件相同、实际MJB逐项检查，不外推全部runtime等价。
+- 证据docs/PUBLISHED_NOMINAL_IMPEDANCE_VMC_COHORT30_20261025.md/.json，SSD sii_rl下runs/nominal_completed_impedance_vmc_review_v1/COMPLETED_REVIEW.json。原八learner/11审计/剩余SAC3观察/nominal slot0继续，slot1已结束勿重启；source16未部署。收敛、GPU50%、最终SPT/指定ESN对比未完成。
+
 ## 2026-10-25 — SAC Impedance完整第3轮审计与其余两路第3轮观察登记
 
 - fetch/read main a52dfba、baseline f6e8f8c未变。SAC Impedance新完整3已归档187278步；Task18/30、Strict17/30，被动/短/长0/9/8，短0600失去Strict、长0300新增。平均reward−2.35752近前轮，但末1000 critic loss2533→19285、Q2488→5252、terminalMAE519→1540；非健康收敛，原1557140已进4不改。

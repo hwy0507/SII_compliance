@@ -7,6 +7,8 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新固定名义Impedance/VMC完整各30已复核，3919824只读进程退出勿重启：Task/Strict18/18和17/17，分类0/10/8与0/10/7，机器安全0/60、失败均carry；峰矩59.2441/48.0088Nm，实际接触各8回合、时间加权舒适31.9774%/72.0975%，无人接触NA、含失败分母、不选Tref。60例6600万原子步hash/模型/公共filter/零action/reward、实际幅值/相邻servo slew及接触复算通过，0新physics/updates。旧v4无投影内部trace/首previous torque，明确不称完整投影重放。source06/14保护manifest及5实际源文件相同已核验。runs/nominal_completed_impedance_vmc_review_v1/COMPLETED_REVIEW.json和docs/PUBLISHED_NOMINAL_IMPEDANCE_VMC_COHORT30_20261025.md/.json；后续整矩阵复用这60项，不重仿真。原slot1已结束，slot0/八learner/11审计/剩余SAC3观察仍继续；source16未部署，目标未完成。
+
 最新SAC Impedance完整3/187278只读audit完成、3712274退出勿重启：Task18/30 Strict17/30、分类0/9/8，短0600失Strict/长0300新增；loss2533→19285、Q2488→5252、terminalMAE519→1540，非健康收敛，原1557140进入4不改。30条件/terminal/MJB及冻结inputs/hash/reward/network和图核验，0physics/updates。runs/diagnosis_sac_impedance_cycle03_v1/REVIEW.json，docs/PUBLISHED_SAC_IMPEDANCE_CYCLE03_REVIEW_20261025.md/.json。
 新只读observer3759872仅等原SAC Admittance/VMC完整3，勿重复派发：runs/SAC_REMAINING_CYCLE03_AUDIT_V1.json；输出runs/sac_remaining_cycle03_audit_v1，冻结同名runtime。3h是观察期限，不停训练；报告形成后仍需科学review。原八learner、CHEQ11审计1346884/1346887继续。nominal117/120，slot1完成60项/2210515已退出勿重启，slot0原2210514继续剩余3；整矩阵审计/Tref仍待。source16未部署，目标未完成。
 
