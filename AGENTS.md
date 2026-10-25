@@ -7,6 +7,10 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新采样/性能候选：live_bellman_profile_v1四路60s采样完成、1600842退出；每路14995样本中11996空栈/2999非空，REVIEW显式两分母，不把空栈当GPU空闲或非空栈当已识别主线程时间。正式resume map_location=CUDA使noncapturable Adam保留59个CUDA scalar step；_get_value同步开销可复现。独立adam_step_device_validation_v1四接口×两顺序×两arm×256=4096辅助更新已完成，1825205/6/7/8退出；仅step移CPU，完整数值state/agent gradients/RNG及其他位置精确相同，父replay不变，0physics/无权重导入。四helper+五profile测试通过。共享计时speedup0.9634–1.1772，不称普遍提速/50%达标。候选未接入正式adapter/runtime，当前10/11不改；后续边界需恢复/序列化入口验证。证据docs/PUBLISHED_ADAM_RESUME_PROFILE_20261025.md/.json。
+Admittance9三代表条件已完成九份审计及输入hash核验：Task/Strict2/3，被动carry失败；短/长45.04/45.32s、峰矩51.2252/52.6288Nm、接触NA/100%(5.03325s)，无机器安全违规。长比nominal42.48s慢，非完整cohort/收敛。ADMITTANCE_COMPLETED_REVIEW.json留证；evaluator RESULTS历史audit_completed=false早于后处理，未修改，以后续独立收据为准。原790746结束勿重启；参数矩阵6/9，4191390转VMC1836087 CPU13（重验）。contact v2现10/12精确通过、VMC短期1884386继续，未部署。四CHEQ14及四SAC09继续，auditor1346884/reviewer1346887等完整10/11；GPU50%、最终收敛/SPT/指定ESN比较仍未完成。
+
+
 **最新实际训练优先于下方仅准备快照：** all5 Bellman在线stage10/11已启动于runs/bellman_minimum_online_seed20261025_v1/source14；四learner1325445/1328516/1333006/1338945真实更新10，dispatcher1316612正常退出、archive1349161。actor原pair及LR3e-5、权重/Adam/alpha/RNG/replay/gamma/batch16384/UTD2保留，仅Bellman目标2→5和新阶段聚合history变化；9worker每路不变。Impedance learner CPU54、workers14–22留CPU13给在途参数评估，其余原CPU。科学review BELLMAN_ONLINE_SCIENTIFIC_REVIEW_V1明确允许剩余固定9参数评估与新训练并行，父checkpoint不变，不取消/重选。无辅助权重/STOP，原SAC09继续。7资源阶段+2诊断target测试、首36MJB/dt/plan和父state保留核验通过。
 Direct9随机三seed×三代表条件9/9全55s三审计已完成，旧590268/9/70及evaluator退出勿重启；Task9/9 Strict7/9、两短期机器安全违规保留，长期三seed时间53.40/52.84/25.28s，舒适77.38/80.59/100%。原确定性0/3保留，图已检查，非完整cohort/收敛。审计1346884/reviewer1346887按实际target5等待完整10/11，3h仅observer保护。GPU正式窗口均值40.63/36.95/37.95/30.93%未达50%，无辅助学习；contact v2已9/12精确通过未部署。证据PUBLISHED_BELLMAN_ONLINE_STAGE_20261025.md/.json。source14manifest的prepared_only是构建时记录，不改冻结manifest；实际启动看新EXECUTION。目标仍未完成。
 

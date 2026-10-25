@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-25 — 在线采样分母核验、Adam恢复同步候选及Admittance9完成审计
+
+- fetch/read main a52dfba、baseline f6e8f8c未前进。live_bellman_profile_v1已结束：四路请求60s/50Hz，每路14995样本含11996空栈及2999非空；新增只读review显式全/非空分母，五测试通过。非空栈Adam21.41–25.14%，_get_value约9.6–12.0%；不把类别重叠、空栈或进度时间差当GPU占用/主线程计时。
+- 定位正式resume的CUDA map_location把noncapturable Adam的59个scalar step也留在GPU；PyTorch加载保留step device，bias correction反复.item读取。独立候选只迁移step至CPU，四helper测试通过；冻结runtime/adam_step_device_validation_v1，四真实all5 parent×两顺序×两arm×256共4096辅助更新完成，完整数值state/agent gradients/RNG和其他tensor位置精确一致，父checkpoint/replay未变，0physics/无权重保存导入。四辅助进程1825205/6/7/8结束。
+- 共享负载speedup Direct1.1261/1.0566、Impedance1.1711/1.0468、Admittance1.1494/0.9634、VMC1.1772/1.1724；不声称稳定在线提速、SAC已验证或GPU50%达成。候选未部署、不改当前stage10/11，后续采用须边界科学复核及实际恢复/序列化验证。
+- Admittance9三个0000固定条件全55s、九份物理/filter/torque审计及输入hash核验完成：Task/Strict2/3，被动carry失败；主动短/长45.04/45.32s，峰矩51.2252/52.6288Nm，接触舒适NA/100%(5.03325s)，机器安全违规0/3。长期慢于nominal42.48s，不是全面改进/收敛/最终排名。原evaluator RESULTS早于后审计的false字段保留，首次复核误用该字段的判断已纠正，新REVIEW按实际后处理收据核验。
+- 参数9矩阵6/9已完成，4191390转VMC1836087 CPU13；contact v2已10/12精确通过，VMC短期继续，未部署。八learner均继续实际更新，CHEQ约50.7–50.9万步原10，SAC约15.6–25.6万步；原10/11审计等待完整归档，不重复派发。
+- 报告/小证据docs/PUBLISHED_ADAM_RESUME_PROFILE_20261025.md/.json；集群SSD sii_rl根目录下runs/live_bellman_profile_v1、adam_step_device_validation_v1及interim_cheq_cycle09_parameters_v1保留原始证据。物理/MJB/gate/actor/filter/执行器/dt不变；目标仍active，最终收敛/SPT/指定ESN对比未完成。
+
 ## 2026-10-25 — Direct随机评估完整审计及all5目标在线10/11启动
 
 - fetch/read main a52dfba、baseline f6e8f8c未前进。Direct9三条件×三动作seed共9全55s已完成三审计：Task9/9、Strict7/9、机器安全违规2/9（短期0.2mm穿透gate），被动/短/长Strict3/1/3（各3）；长期时间53.40/52.84/25.28s、接触舒适77.38/80.59/100%。原确定性0/3保留，非完整30条件/收敛/最终排名，图已检查。
