@@ -1,5 +1,12 @@
 # Data-Driven Compliance Control for FR3
 
+**Current handoff (2026-10-25):** [project overview and five-GPU RL server guide](docs/RL_SERVER_START_20261025.md),
+[reward and training protocol](docs/RL_SPT_TRAINING_HANDOFF_20261025.md), and
+[new SPT evaluation standard](docs/EVALUATION_STANDARD_SPT_20261025.md).
+The user now authorizes server computation (5 RTX 4090 GPUs, 55 CPU cores), superseding the historical
+local-only restriction below. New scripts support four interfaces × three seeds, up to 1M interactions
+per method/seed. This is a prepared training handoff, not completed training or a validated SPT evaluator.
+
 **In progress (2026-10-09):** [local-only RL baseline strengthening](code/mujoco_6d_vmc_benchmark/docs/BASELINE_LOCAL_RL_20261009.md).
 The [new 15-hour window](code/mujoco_6d_vmc_benchmark/docs/BASELINE_OVERNIGHT_15H_20261009.md)
 runs from Oct 9 21:21 to Oct 10 12:21 CST, with an active episode-boundary budget guard.

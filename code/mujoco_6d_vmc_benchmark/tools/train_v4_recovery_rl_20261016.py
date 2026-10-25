@@ -49,7 +49,7 @@ def main():
     p.add_argument('--parameter-source',type=Path,required=True)
     p.add_argument('--controller',choices=('vmc','admittance','impedance'))
     p.add_argument('--reward',choices=('metric','office_task'),required=True)
-    p.add_argument('--reward-variant',choices=('original','task_safety','payload_shaping'),default='original')
+    p.add_argument('--reward-variant',choices=('original','task_safety','payload_shaping','spt_v1'),default='original')
     p.add_argument('--seed',type=int,required=True)
     p.add_argument('--steps',type=int,default=200000)
     p.add_argument('--stop-at-step',type=int)
@@ -102,6 +102,16 @@ def main():
     minimum_disk = effective_disk_reserve(protocol, continuation, goal)
     guidance = validate_guidance(goal_job, controller=a.controller, reward=a.reward,
                                  reward_variant=a.reward_variant)
+    spt_config = None
+    if a.reward_variant == 'spt_v1':
+        from spt_rl_reward_20261025 import SPTReward, validate_config as validate_spt_config
+        spt_config = validate_spt_config(read(root/'REWARD_SPEC.json'))
+        assert sha(root/'REWARD_SPEC.json') == protocol['reward_spec_sha256']
+        assert int(os.environ.get('SII_RL_UTD', '0')) == 1
+        assert os.environ.get('SII_REWARD_PAYLOAD_TELEMETRY') == '1'
+        assert os.environ.get('SII_SPT_REWARD_TELEMETRY') == '1'
+        if guidance is not None or (goal_job or {}).get('payload_occupancy_guidance') is not None:
+            raise ValueError('spt_v1 cannot be combined with legacy reward overlays')
     occupancy = (goal_job or {}).get('payload_occupancy_guidance')
     parent_reward = read(a.resume_checkpoint.resolve().parent/'PROTOCOL.json') if a.resume_checkpoint else {}
     if occupancy is not None or parent_reward.get('payload_occupancy_guidance') is not None:
@@ -114,17 +124,24 @@ def main():
         # Reject objective changes before allocating replay or creating output.
         check_reward_resume(read(a.resume_checkpoint.resolve().parent/'PROTOCOL.json'),
                             dict(tracking_guidance=guidance))
-        check_backend_resume(read(a.resume_checkpoint.resolve().parent/'PROTOCOL.json'), goal, goal_job)
+        if spt_config is None:
+            check_backend_resume(read(a.resume_checkpoint.resolve().parent/'PROTOCOL.json'), goal, goal_job)
+        elif parent_reward.get('learning_backend', 'cpu') != protocol['resources']['learning_backend']:
+            raise ValueError('SPT resume cannot silently change registered compute backend')
     assert datetime.now(timezone.utc)<deadline
     assert sha(root/'CONDITIONS.json')==protocol['condition_file_sha256']
     conditions=[c for c in read(root/'CONDITIONS.json')['conditions'] if c['role']=='train']
     assert len(conditions)==32
     cg=Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
     memory=(cg/'memory.max').read_text().strip()
-    assert memory != 'max' and int(memory) <= 3*1024**3, 'Recovery requires hard MemoryMax<=3GiB'
+    memory_cap = protocol['resources']['memory_max_bytes'] if spt_config is not None else 3*1024**3
+    assert memory != 'max' and int(memory) <= memory_cap, 'Hard registered MemoryMax required'
     assert (cg/'memory.swap.max').read_text().strip() == '0', 'Recovery requires MemorySwapMax=0'
     assert all(os.environ.get(k)=='1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS'))
     compute_runtime = None
+    if spt_config is not None:
+        from spt_server_resources_20261025 import runtime_info as spt_runtime_info, boundary as spt_boundary
+        compute_runtime = spt_runtime_info(protocol['resources'])
     if goal:
         if goal.get('working_set_policy'):
             from goal_prospective_storage_20261017 import validate as validate_storage, boundary as storage_boundary
@@ -153,6 +170,8 @@ def main():
     assert utd in (1, 2), 'Only registered UTD arms 1 and 2 are allowed'
     agent=OfficialParameterAgent(seed=a.seed,total_steps=a.steps,utd=utd,gamma=.9995,
         entropy_coef=hp['entropy_coef'],initial_temperature=hp['initial_temperature'],action_dimension=dimension)
+    if spt_config is not None:
+        assert agent.config['n_step'] == 1, 'SPT v1 registers one-step returns'
     if agent.config['n_step']==1:replay=Replay(a.steps,dimension,a.seed+53)
     else:
         from multistep_rl_replay_20261009 import MultiStepReplay
@@ -180,7 +199,7 @@ def main():
         optimizer_diagnostics='Every update returned metrics retained in optimizer.jsonl; includes actor/critic losses, Q and temperature when exposed upstream',
         checkpoints='Every completed episode boundary; all retained; no acceptance before all families finish')
     specification['utd'] = utd
-    specification['learning_backend'] = backend(goal)
+    specification['learning_backend'] = protocol['resources']['learning_backend'] if spt_config is not None else backend(goal)
     specification['compute_runtime'] = compute_runtime
     specification['effective_min_free_disk_bytes'] = minimum_disk
     specification['backend_migration'] = bool(goal_job and goal_job.get('backend_migration'))
@@ -194,6 +213,15 @@ def main():
         specification['continuation_registration_sha256']=sha(a.continuation_registration)
         specification['continuation_registration']=str(a.continuation_registration.resolve())
     specification['reward_variant'] = a.reward_variant
+    if spt_config is not None:
+        specification['spt_reward_spec'] = spt_config
+        specification['reward'] = spt_config
+        specification['torque_slew_weight'] = spt_config['slew_weight']
+        specification['spt_reward_definition'] = (
+            'Payload potential/occupancy/time/physical safety/contact/slew with terminal bonus only for '
+            'Task AND Strict; physical/contact fields are reward-only telemetry and are '
+            'recorded for exact replay. SPT itself is computed only during frozen evaluation.')
+        specification['torque_slew_failure_continuation'] = 'SPT bounded dense-cost tail; see spt_reward_spec'
     if guidance is not None:
         assert guidance['gamma'] == cfg.gamma and guidance['horizon_s'] == cfg.horizon_s
         specification['tracking_guidance'] = guidance
@@ -220,6 +248,8 @@ def main():
     if a.resume_checkpoint:
         cp=a.resume_checkpoint.resolve();parent=read(cp.parent/'PROTOCOL.json')
         assert parent.get('reward_variant','original')==a.reward_variant,'Reward changes require explicit replay rebuild'
+        if spt_config is not None:
+            assert parent['spt_reward_spec'] == spt_config, 'SPT objective mismatch'
         for k in ('protocol_sha256','seed','controller','reward','prior_file_sha256'):
             assert parent[k]==specification[k],k
         migration = bool(goal_job and goal_job.get('credit_migration'))
@@ -235,6 +265,10 @@ def main():
             assert parent.get('torque_slew_initial_sample')==specification['torque_slew_initial_sample'], 'Reward boundary correction requires explicit replay rebuild'
             assert parent.get('torque_slew_time_base')==TIME_BASE, 'Servo-time reward correction requires explicit replay rebuild'
         runner=read(cp/'office_runner.json');old=read(cp.parent/'execution.json')
+        if spt_config is not None:
+            assert old['status'] == 'complete' and runner['pending_transition'] is None
+            assert runner['step'] == old['steps'] and runner['step']+1375 <= limit
+            np.testing.assert_array_equal(order, runner['condition_order'])
         entry=next(r for r in old['checkpoint_rows'] if r['path']==str(cp))
         assert checkpoint_hashes(cp)==entry['hashes'] and runner['episode_boundary']
         agent.load(cp)
@@ -274,6 +308,12 @@ def main():
     try:
         with (out/'training.jsonl').open('x') as log,(out/'optimizer.jsonl').open('x') as optlog:
             while step+1375<=limit and datetime.now(timezone.utc)<deadline and not stop:
+                if spt_config is not None and protocol['resources']['server_compute']:
+                    state['gpu_snapshot'], gpu_reason = spt_boundary(protocol['resources'])
+                    if gpu_reason:
+                        stop=True
+                        state['resource_stop_reason']=gpu_reason
+                        break
                 if backend(goal) == 'cuda':
                     state['gpu_snapshot'] = gpu_snapshot()
                     gpu_reason = gpu_admission_reason(goal, state['gpu_snapshot'])
@@ -305,7 +345,7 @@ def main():
                          started_utc=now(),step_before=step);state['rows'].append(row);save()
                 environment={**os.environ,**ENV,'JAX_PLATFORMS':'cpu','MUJOCO_MENAGERIE_PATH':str(MENAGERIE),
                     'SII_SOURCE_BASE_COMMIT':protocol['source_base_commit']}
-                rewarder=OfficeReward(cfg);total=0.;count=0
+                rewarder = (SPTReward(spt_config) if spt_config is not None else OfficeReward(cfg));total=0.;count=0
                 if a.reward_variant=='task_safety':
                     from decoupled_task_safety_reward_20261009 import TaskSafetyPenalty
                     safety_penalty=TaskSafetyPenalty()
@@ -314,8 +354,10 @@ def main():
                                              text=True,bufsize=1,env=environment)
                     event=read_event(process.stdout);assert event['kind']=='observation' and event['interval'] is None
                     obs=np.asarray(event['observation'],np.float32)
-                    potential_key='payload_potential' if a.reward_variant=='payload_shaping' else 'potential'
+                    potential_key='payload_potential' if a.reward_variant in ('payload_shaping', 'spt_v1') else 'potential'
                     phi=event[potential_key]
+                    if spt_config is not None:
+                        row['initial_payload_potential'] = phi
                     while True:
                         action=agent.sample_action(obs,previous_transition=pending,training=True);pending=None
                         if step<5000:
@@ -329,13 +371,22 @@ def main():
                         interval=IntervalMetrics(elapsed_s=iv['elapsed_s'],error_cost=iv['error_integral']/(55*.12**2),
                             bounded_error_cost=iv['bounded_error_integral']/55,peak_torque_ratio=iv['peak_torque_ratio'],
                             peak_torque_nm_per_joint=iv['peak_torque_nm_per_joint'],max_position_error_m=iv['max_position_error_m'],substeps=iv['substeps'])
-                        reward,terms=rewarder(interval,iv['executed_action'],current_potential=phi,next_potential=next_phi,
-                            terminated=done,success=success,failure=done and not success,
-                            terminal_reason=(('original_task_success' if a.reward_variant=='task_safety' else 'original_strict_success') if success else 'original_horizon_or_abort') if done else None)
-                        physical_smooth=specification['torque_slew_weight']*iv['torque_slew_cost']
-                        remaining=remaining_slew_bound(rewarder.elapsed_s) if done and not success and a.reward=='metric' else 0.
-                        reward-=physical_smooth+remaining
-                        terms.update(physical_slew=-physical_smooth,physical_slew_failure_continuation=-remaining,final_reward=reward)
+                        if spt_config is not None:
+                            reward, terms = rewarder(
+                                current_potential=phi, next_potential=next_phi, interval=iv,
+                                terminated=done,
+                                task_success=bool(done and event['result']['task_success']),
+                                strict_success=bool(done and event['result']['strict_success']),
+                                failure_reason=event.get('result', {}).get('abort_reason'))
+                            terms['interval'] = iv
+                        else:
+                            reward,terms=rewarder(interval,iv['executed_action'],current_potential=phi,next_potential=next_phi,
+                                terminated=done,success=success,failure=done and not success,
+                                terminal_reason=(('original_task_success' if a.reward_variant=='task_safety' else 'original_strict_success') if success else 'original_horizon_or_abort') if done else None)
+                            physical_smooth=specification['torque_slew_weight']*iv['torque_slew_cost']
+                            remaining=remaining_slew_bound(rewarder.elapsed_s) if done and not success and a.reward=='metric' else 0.
+                            reward-=physical_smooth+remaining
+                            terms.update(physical_slew=-physical_smooth,physical_slew_failure_continuation=-remaining,final_reward=reward)
                         if a.reward_variant=='task_safety':
                             penalty,safety_terms=safety_penalty(iv['external_penetration_peak_m'],
                                 terminated=done,elapsed_s=rewarder.elapsed_s)

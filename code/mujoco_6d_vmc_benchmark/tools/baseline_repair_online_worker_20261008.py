@@ -1,7 +1,8 @@
-"""Extend native IPC telemetry with true torque-slew cost and initial potential.
+"""Extend native IPC telemetry with reward-only safety signals.
 
 The observation/action path is unchanged. The template and exact instrumented
-source are archived so the new reward reducer can be independently replayed.
+source are archived so the reward reducer can be independently replayed. The
+optional SPT human-contact integrals never enter canonical48.
 """
 from pathlib import Path
 import hashlib
@@ -27,15 +28,21 @@ def main():
          "        assert CONTROL_DT==SERVO_DT\n"
          "        slew_cost=float(slew_cost_rows(signed_tau,rates,previous_tau).sum())\n"
          "        external_peak=float(metrics.research['external_penetration_m'][begin:end].max())\n"
-         "        return dict(payload_potential=measured_payload_potential(metrics.env),external_penetration_peak_m=external_peak,torque_slew_cost=slew_cost,elapsed_s=float(dt.sum()),error_integral=float(dt@e2),"),
+         "        spt_contact=None\n"
+         "        if __import__('os').environ.get('SII_SPT_REWARD_TELEMETRY')=='1':\n"
+         "            from spt_rl_reward_20261025 import contact_integrals\n"
+         "            spt_contact=contact_integrals(dt,signed_tau,limits,metrics.research['contact_force_sum'][begin:end,2])\n"
+         "        return dict(spt_contact=spt_contact,payload_potential=measured_payload_potential(metrics.env),external_penetration_peak_m=external_peak,torque_slew_cost=slew_cost,elapsed_s=float(dt.sum()),error_integral=float(dt@e2),"),
         ("send(dict(kind='observation',observation=observation,interval=iv,potential=potential(self.env)))",
          "send(dict(kind='observation',observation=observation,interval=iv,potential=potential(self.env),payload_potential=measured_payload_potential(self.env)))"),
         ("            iv=interval();self.intervals.append(iv)",
-         "            if not self.observations:self.initial_potential=potential(self.env)\n"
+         "            if not self.observations:\n"
+         "                self.initial_potential=potential(self.env)\n"
+         "                self.initial_payload_potential=measured_payload_potential(self.env)\n"
          "            iv=interval();self.intervals.append(iv)"),
         ("            worker.write(output/'RL_INTERVALS.json',self.intervals)",
          "            worker.write(output/'RL_INTERVALS.json',self.intervals)\n"
-         "            worker.write(output/'RL_REWARD_METADATA.json',dict(initial_potential=self.initial_potential,"
+         "            worker.write(output/'RL_REWARD_METADATA.json',dict(initial_potential=self.initial_potential,initial_payload_potential=self.initial_payload_potential,"
          "torque_slew_definition='sum_recorded_changes servo_dt/horizon * sum_j ((tau_j-tau_prev_j)/(servo_dt*max_rate_j))**2; servo_dt=.004; first recorded sample excluded because no preceding sample exists',"
          "torque_slew_time_base='executed_motor_torque_changes_at_250Hz_not_physics_dt',"
          "actor_input_unchanged=True,template_sha256=TEMPLATE_SHA))"),

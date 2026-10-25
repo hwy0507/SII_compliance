@@ -1,0 +1,62 @@
+{
+  "schema": "sii-rl-spt-training-registration-v1",
+  "reward_variant": "spt_v1",
+  "reward_spec": "tools/spt_rl_reward_20261025.py::CONFIG",
+  "actor_input": "canonical48",
+  "action_filter": "public_frozen_filter",
+  "physics_dt_s": 0.00005,
+  "horizon_s": 55.0,
+  "control_dt_s": 0.04,
+  "gamma": 0.9995,
+  "interaction_budget_steps_per_family_seed": 1000000,
+  "training_seeds": [20261025],
+  "controllers": ["direct", "impedance", "admittance", "vmc"],
+  "compute": {
+    "preferred_host": "user_server_5xRTX4090_55CPU_site_configured_by_server_agent",
+    "server_compute_authorized": true,
+    "server_max_parallel_jobs": 5,
+    "server_jobs_per_gpu": 1,
+    "simulators_per_job": 1,
+    "numerical_threads_per_simulator": 1,
+    "server_default_memory_max_bytes_per_job": 8589934592,
+    "swap_max_bytes": 0,
+    "server_learning_backend": "cuda",
+    "local_fallback": {"jobs": 1, "memory_max_bytes": 3221225472, "learning_backend": "cpu"},
+    "actual_assignment": "PROTOCOL.json resources, measured locally on the compute host"
+  },
+  "recommended_server_training_seeds": [20261025, 20261026, 20261027],
+  "selection": {
+    "development_only": true,
+    "order": ["strict_success_rate", "task_success_rate", "spt", "safety_violations", "comfort_torque_compliance"],
+    "test_selection_forbidden": true,
+    "success_definition": "task_success AND strict_success"
+  },
+  "required_reward_telemetry": [
+    "peak_torque_ratio",
+    "peak_torque_nm_per_joint",
+    "external_penetration_peak_m",
+    "spt_contact.human_contact_s",
+    "spt_contact.human_compliant_s",
+    "spt_contact.human_torque_cost_integral_s",
+    "spt_contact.human_force_cost_integral_s",
+    "torque_slew_cost",
+    "executed_action",
+    "initial_payload_potential",
+    "terminal_next_observation_no_bootstrap"
+  ],
+  "acceptance": {
+    "task_and_strict_required": true,
+    "spt_reference_time": "registered_per_condition",
+    "independent_physics_substep_replay": true,
+    "raw_action_and_filter_replay": true,
+    "source_config_checkpoint_hash": true
+  },
+  "status": "training_surrogate_implemented_formal_SPT_evaluator_pending",
+  "training_scales_not_human_safety_limits": {
+    "human_contact_torque_fraction_of_actuator_limit": 0.5,
+    "human_contact_force_scale_n": 15.0,
+    "human_contact_onset_n": 0.05
+  },
+  "initial_segment_steps": 11000,
+  "full_budget_is_not_a_convergence_claim": true
+}

@@ -1,5 +1,36 @@
 # 更新日志
 
+## 2026-10-25 — 发布 SPT 方向 RL reward、训练脚本与五卡服务器交接
+
+- 用户要求先发布项目介绍、reward/训练方案供服务器 agent 接手，并明确5张4090、55核CPU
+  可并行计算；本轮没有连接服务器或启动训练。README/AGENTS已新增入口，明确这次新授权
+  覆盖旧“本机计算、服务器仅归档”要求；服务器地址/路径由接手者当地确认。
+- `docs/RL_SERVER_START_20261025.md` 包含项目目标、ESN/RL比较关系、四接口×三seed、每方法
+  每seed最多百万步、五卡队列、环境/原始输入hash、启动/预检/续接和最终交付要求。
+  `docs/RL_SPT_TRAINING_HANDOFF_20261025.md` 给出完整reward公式、默认权重、优化器和收敛判据。
+- 新增 `spt_rl_reward_20261025.py`：物块potential/剩余进度、时间、人体接触物理子步负载、
+  峰矩/穿透/slew与Task AND Strict终奖；提前失败计剩余有界成本。人体接触分母仅用真实
+  human_robot通道，无接触为NA；0.5力矩比例和15N仅工程训练尺度，不是舒适阈值标定。
+  trainer/worker加入独立reward telemetry及首项potential，原actor48/物理/filter/gate/dt不变。
+- 新增 prepare/check/run/matrix 入口、服务器资源租约与有限并行队列；默认一卡一路最多五路，
+  GPU UUID/互斥CPU集、主机内存额度预留、禁swap、后台实际CUDA检查、温度回合边界检查。
+  复制的adapter仅重定位UPSTREAM并记录前后hash；不改历史运行时。队列失败停新派发，
+  保留在途作业和失败；没有自动重试或打开test。本机备用仍单路CPU/3GiB。
+- 新增 `audit_spt_reward_20261025.py` 做全部已闭合奖励/首项/原生interval重放，明确这不是
+  独立物理子步或actor/filter审计。新训练不得接旧reward/replay/归一化；需从头建立同目标cohort。
+- 验证：14项新单元/契约测试、5项既有reward诊断测试通过；7个相关工具编译通过。
+  使用真实本机父产物 prepare/check/impedance1375-step dry-run通过，未执行仿真/梯度。
+  临时检查位置 `/tmp/sii-spt-handoff-aXxSH0qp/publishrun`，协议SHA256
+  `6c68e8d2ddfb3a7283b9adcf30b6a89cb5db91092150d3240a29240a2e89c677`；此为未提交源码快照验证，
+  不是正式训练结果。服务器CUDA/五路负载、新MuJoCo回合和完整百万步均未验证。
+- 科学边界：这是SPT导向训练代理，正式gate一致完成时刻/T_ref、人体舒适阈值与最终评估集成
+  尚未完成；不能用固定55秒回合长度冒充完成时间，不能据reward认定任务成功。旧24条件已看过，
+  新最终未见组需另登记。checkpoint/物理日志存储量需在服务器预检后预算。
+- 开工及发布前实时fetch/读取两分支日志：`main=15fb54d7c79f8b20346ec55d2c3c2fc65fd24a74`、
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。main为新SPT标准/真实旧曲线；baseline
+  最新仍为接触指标探索，不据其旧结论改变冻结gate。本轮只向GitHub发布源码/文档，未生成或
+  声称已核验的服务器新实验目录；大型runtime/历史输入不在Git，交接已列缺失项。
+
 ## 2026-10-25 — 正式切换到 SPT 评估标准
 
 - 用户与导师重新确定项目目标：人机交互中避免人员撞击、避免机器危险载荷，并尽快完成任务。
