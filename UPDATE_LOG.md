@@ -63,6 +63,27 @@
   不改全局身份、不冒充用户。GitHub写入认证失败（现有VS Code askpass socket失效、远端拒绝
   匿名写入），本轮保留本地提交，未声称已推送；不索要或记录token/私钥。
 
+## 2026-10-25 — 非RL SPT 重评实时进度
+
+- `nonrl_spt_matrix_20261025_v4` 已完成 2/64 个物理回合，第三回合在真实 systemd scope 中运行；已完成回合均有 rollout、research substeps、replay/filter 审计和逐回合 execution 收据。
+- 资源观测：`MemoryCurrent` 约 1 GiB，`MemoryMax=3 GiB`，`MemorySwapMax=0`，单线程；当前未发生 OOM、swap 或重复 worker。最终指标矩阵、SPT 的 `T_ref`、图表和总审计仍待全部回合完成。
+
+## 2026-10-25 — 启动非RL新指标物理重评（进行中）
+
+- 新增 `code/mujoco_6d_vmc_benchmark/tools/run_nonrl_spt_matrix_20261025.py`，登记非RL的
+  Task/Strict、SPT、峰值广义力矩、实际人机接触期间舒适力矩合规率和机器安全违规率。
+  完成时刻按保存的25 Hz终态gate连续保持重建；`T_ref`按用户要求取本矩阵所有
+  Task AND Strict成功回合的最短gate crossing时间，若没有合格回合则明确记为NA。
+  舒适阈值固定为冻结执行器幅值的50%，接触分母仅用`human_robot_sum > 0.05 N`的dt；力矩
+  slew只作诊断，因为没有独立登记的slew上限。保留逐关节峰值、P95、穿透、非有限遥测、
+  worker中止和全部失败原因，并核对actor/filter replay及轨迹/子步/source hash。
+- 物理重评使用独立目录 `outputs/nonrl_spt_matrix_20261025_v4`，8方法×8条件=64回合，
+  `dt=5e-5`、原MJB/gate/canonical48/filter/执行器限制未改；由真实用户systemd scope施加
+  `MemoryMax=3G`、`MemorySwapMax=0`、单线程，并显式绑定冻结runtime Menagerie。当前已完成
+  1/64回合，首回合物理轨迹和独立接触审计已落盘；最终矩阵和图表尚未形成，不能宣称比较完成。
+- `v1`因错误phase、`v2`因缺失Menagerie路径、`v3`因协调器导入错误均保留独立失败收据且未产生
+  物理步；当前v4为修复后唯一在途评测。RL训练不在本轮修改范围。
+
 ## 2026-10-25 — 整理两篇柔顺控制论文的 FR3 迁移边界
 
 - 新增 `docs/RL_TWO_PAPERS_TRANSFER_ASSESSMENT_20261025.md`，将用户提供的两篇文献笔记改写为
