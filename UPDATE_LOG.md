@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-25 — 正式切换到 SPT 评估标准
+
+- 用户与导师重新确定项目目标：人机交互中避免人员撞击、避免机器危险载荷，并尽快完成任务。
+- 新增 `docs/EVALUATION_STANDARD_SPT_20261025.md`，正式将 SPT（Success-weighted Path Time）设为主效率指标；SPL 不再作为主效率指标。
+- 后续方法比较必须报告 Task success rate、Strict success rate、SPT、峰值广义力矩、实际人机交互期间的舒适力矩合规比例和机器安全违规率。低 reward、低力矩但未完成任务、以及无接触阶段的低力矩比例都不能替代成功指标。
+- `AGENTS.md` 已加入醒目入口，要求所有 agent 开工时读取该标准。此次只修改评估定义，未启动训练、未修改冻结 physics/MJB、gate、actor 输入、公共 filter、执行器限制或 `dt=5e-5`。
+
 ## 2026-10-25 — 记录RL真实末段曲线并更正收敛结论，等待新目标
 
 - 新增 `docs/RL_SNAPSHOT_20261025.md` 与 `docs/evidence/rl_snapshot_20261025/`，保存最终
