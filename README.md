@@ -1,9 +1,9 @@
 # Data-Driven Compliance Control for FR3
 
-**Current handoff (2026-10-25):** [project overview and five-GPU RL server guide](docs/RL_SERVER_START_20261025.md),
+**Current handoff (2026-10-25):** [project overview and four-GPU RL server guide](docs/RL_SERVER_START_20261025.md),
 [reward and training protocol](docs/RL_SPT_TRAINING_HANDOFF_20261025.md), and
 [new SPT evaluation standard](docs/EVALUATION_STANDARD_SPT_20261025.md).
-The user now authorizes server computation (5 RTX 4090 GPUs, 55 CPU cores), superseding the historical
+The user now authorizes server computation (4 RTX 4090 GPUs, 55 CPU cores), superseding the historical
 local-only restriction below. New scripts support four interfaces × three seeds, up to 1M interactions
 per method/seed. This is a prepared training handoff, not completed training or a validated SPT evaluator.
 

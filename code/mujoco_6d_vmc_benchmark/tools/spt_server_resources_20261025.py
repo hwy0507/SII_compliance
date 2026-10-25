@@ -1,6 +1,6 @@
 """Same-host, same-user GPU leases for SPT jobs; no SSH or environment installation.
 
-Five independent learners, at most one per GPU. Physics stays single-threaded
+Four independent learners, at most one per GPU. Physics stays single-threaded
 per learner. All checkouts on this host must use the same resource directory.
 """
 from contextlib import contextmanager
@@ -44,7 +44,7 @@ def register(device, cpus, memory_gib):
     return dict(server_compute=True, learning_backend='cuda', gpu_uuid=info['uuid'],
                 gpu_registration=info, cpus=ids, threads=1, simulators=1, utd=1,
                 memory_max_bytes=memory_gib*GIB, swap_max_bytes=0,
-                max_parallel_jobs=5, gpu_pool_fraction='0.8',
+                max_parallel_jobs=4, gpu_pool_fraction='0.8',
                 gpu_min_free_mib=8192, gpu_max_temperature_c=80,
                 # Fixed per-user host namespace: two checkouts cannot evade leases.
                 lease_directory=f'/tmp/sii-spt-gpu-leases-{os.getuid()}')
@@ -128,7 +128,7 @@ def lease(resources, root, family):
                 except BlockingIOError:
                     continue
             else:
-                raise ValueError('All five GPU job slots are occupied')
+                raise ValueError('All four GPU job slots are occupied')
             info = gpu_info(resources['gpu_uuid'])
             if info['free_mib'] < resources['gpu_min_free_mib'] or info['temperature_c'] >= resources['gpu_max_temperature_c']:
                 raise ValueError('GPU memory/temperature admission failed')

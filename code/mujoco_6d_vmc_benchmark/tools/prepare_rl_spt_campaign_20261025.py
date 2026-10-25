@@ -3,7 +3,7 @@
 No work runs without the explicit run subcommand. Preparation freezes source,
 parameter adapters, reward and parent conditions in a new directory. The
 systemd child acquires compute leases, then starts one trainer. Server jobs
-may share the legacy locks, but have exclusive GPU, CPU and five-slot leases.
+may share the legacy locks, but have exclusive GPU, CPU and four-slot leases.
 """
 import argparse
 import ast
@@ -259,7 +259,7 @@ def main():
         q.add_argument('--cpus',help='Server job CPU IDs, comma-separated, disjoint across concurrent jobs')
         q.add_argument('--memory-gib',type=int,default=8,help='Server job hard RAM limit; local remains 3 GiB')
         if mode=='matrix':
-            q.add_argument('--gpu-devices',default='0,1,2,3,4')
+            q.add_argument('--gpu-devices',default='0,1,2,3')
             q.add_argument('--cpu-lanes',required=True,help='Semicolon-separated CPU lists, one per GPU')
             q.add_argument('--seeds',default='20261025,20261026,20261027')
     q=sub.add_parser('check');q.add_argument('--root',type=Path,required=True)
@@ -274,7 +274,7 @@ def main():
         from copy import copy
         base=a.root.resolve();require(not base.exists(),'New matrix directory required')
         devices=a.gpu_devices.split(',');cpus=a.cpu_lanes.split(';');seeds=[int(x) for x in a.seeds.split(',')]
-        require(1<=len(devices)<=5 and len(cpus)==len(devices),'Need 1..5 GPUs with matching CPU lanes')
+        require(1<=len(devices)<=4 and len(cpus)==len(devices),'Need 1..4 GPUs with matching CPU lanes')
         require(1<=len(seeds)<=8 and len(set(seeds))==len(seeds),'Need 1..8 distinct seeds')
         resources=[server.register(d,c,a.memory_gib) for d,c in zip(devices,cpus)]
         require(len({r['gpu_uuid'] for r in resources})==len(resources),'Duplicate GPU')

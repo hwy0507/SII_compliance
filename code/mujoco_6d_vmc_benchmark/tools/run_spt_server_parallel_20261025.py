@@ -1,4 +1,4 @@
-"""Run a finite prepared job list, one serial lane per GPU, at most five lanes.
+"""Run a finite prepared job list, one serial lane per GPU, at most four lanes.
 
 Run on the server itself. No SSH, automatic retries, test-set access or nested
 distributed learning. A failed launch stops new jobs; in-flight jobs finish.
@@ -36,7 +36,7 @@ def jobs_by_gpu(jobs):
         if resume: argv += ['--resume-checkpoint',str(resume.resolve())]
         lanes.setdefault(gpu, []).append(dict(job=job, argv=argv, root=str(root),
             protocol_sha256=sha(root/'PROTOCOL.json'), status='queued'))
-    require(len(lanes) <= 5, 'Register at most five GPU lanes')
+    require(len(lanes) <= 4, 'Register at most four GPU lanes')
     return lanes
 
 

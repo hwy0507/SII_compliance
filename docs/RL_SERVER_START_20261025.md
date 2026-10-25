@@ -1,4 +1,4 @@
-# 服务器 agent 接手入口：项目背景、RL 训练与五卡并行
+# 服务器 agent 接手入口：项目背景、RL 训练与四卡并行
 
 2026-10-25。**先读本页，再读 [reward 与训练协议](RL_SPT_TRAINING_HANDOFF_20261025.md)。**
 用户要求的是把方案、代码和交接发布到 GitHub，由服务器上的 agent 执行。
@@ -47,27 +47,28 @@ seed 为 20261025、20261026、20261027；同 seed 的方法使用相同条件�
 
 ## 资源授权与并行策略
 
-用户明确提供 **5 张 RTX 4090、55 核 CPU** 并要求多跑并行。
+用户已更正为 **4 张 RTX 4090、55 核 CPU** 并要求多跑并行。
 这是新授权，覆盖历史文档“仅本机计算、服务器仅归档”的限制，**不需要为服务器训练再次询问许可**。
 旧批次的资源收据不修改；新 run 在服务器登记实际硬件、解释器、设备 UUID 和 hash。
 
-先对一组完成回合和至少一次实际 learner update 做资源/正确性检查，再扩大到五路。
-建议第一批 GPU0/1/2/3 分别跑 direct/impedance/admittance/vmc 的首个 seed，GPU4 跑
-direct 的第二 seed；每张卡有串行待办队列，空出后接下一 seed。12 个任务全部报告，不能只挑最好 seed。
+先对一组完成回合和至少一次实际 learner update 做资源/正确性检查，再扩大到四路。
+建议 GPU0/1/2/3 分别跑 direct/impedance/admittance/vmc；每张卡依次完成该方法的三个 seed。
+12 个任务全部报告，不能只挑最好 seed。
 
-发布的 `run_spt_server_parallel_20261025.py` 实现最多五路、一卡一 learner；每路绑定互不重叠
+发布的 `run_spt_server_parallel_20261025.py` 实现最多四路、一卡一 learner；每路绑定互不重叠
 CPU 集，内含一个单线程 MuJoCo worker。初始每路8 GiB主机内存硬上限、禁swap，启动时对
 全部活动作业尚未使用的内存额度作预留并保留4 GiB主机余量。不知道服务器内存容量，故不能
-仅凭55核就声称能开满五路。内存不足会保留失败并停新派发，调整登记后重新准备独立 run。
+仅凭55核就声称能开满四路。内存不足会保留失败并停新派发，调整登记后重新准备独立 run。
 JAX 限定 CUDA_VISIBLE_DEVICES 到 GPU UUID；实际后端不是GPU就报错，不能静默退回CPU。
 显存分配比例0.8只是 JAX 分配器设置，**不是总显存硬隔离**；仍须看 nvidia-smi。
 
-并行的是独立算法/seed，不是五卡分布式训练同一策略，也不是单策略多环境采样。
+并行的是独立算法/seed，不是四卡分布式训练同一策略，也不是单策略多环境采样。
 55核不应转成每个 BLAS 55线程：当前小网络和串行物理不一定受益。先记录完整回合的
-steps/s、updates/s、物理/学习/写盘时间、峰值RAM/显存、GPU温度和利用率，再比较1路/5路吞吐。
+steps/s、updates/s、物理/学习/写盘时间、峰值RAM/显存、GPU温度和利用率，再比较1路/4路吞吐。
 若仍受CPU仿真或写盘限制，接手 agent 可继续实现并登记多采样器/批量推理，核对回合边界、
 replay、UTD、真实样本数和确定性审计后扩大并发；不能只删锁开更多重复进程。
-五路是本入口初始实现上限，不是用户要求永久限制算力。
+四路是本入口初始实现上限，不是用户要求永久限制算力。
+若此前已按错误卡数准备未运行的 matrix，请拉取更正代码并在新目录重新准备，勿改写冻结快照。
 
 本入口每回合保存完整 replay/checkpoint 和物理记录；百万步时不能按小试验的磁盘量估算。
 仅约百万条float32 replay本身就约0.4 GB，约727个回合末全部留存会产生大量重复数据。
@@ -114,7 +115,7 @@ SimbaV2 Git commit         86899c277cdc697b2b02d827243de1ea93f20a1d
 ## 启动入口
 
 以下变量由服务器 agent 填为当地**真实绝对路径**；这里的占位路径不代表任何服务器已存在。
-CPU编号先看 `os.sched_getaffinity(0)`/当地CPU分配，示例用0..19，不假定55核一定编号0..54。
+CPU编号先看 `os.sched_getaffinity(0)`/当地CPU分配，示例用0..15，不假定55核一定编号0..54。
 
 ```bash
 cd /ACTUAL/CHECKOUT/SII_compliance/code/mujoco_6d_vmc_benchmark
@@ -126,8 +127,8 @@ SPT_RUN=/ACTUAL/NEW_RUNS/rl_spt_server_20261025_v1
 
 "$SII_PY" tools/prepare_rl_spt_campaign_20261025.py matrix \
   --root "$SPT_RUN" --parent "$SPT_PARENT" --parameter-source "$SPT_PARAMETER" \
-  --runtime "$SPT_RUNTIME" --gpu-devices 0,1,2,3,4 \
-  --cpu-lanes '0,1,2,3;4,5,6,7;8,9,10,11;12,13,14,15;16,17,18,19' \
+  --runtime "$SPT_RUNTIME" --gpu-devices 0,1,2,3 \
+  --cpu-lanes '0,1,2,3;4,5,6,7;8,9,10,11;12,13,14,15' \
   --memory-gib 8 --seeds 20261025,20261026,20261027 --steps 1000000 --dispatch-hours 72
 
 "$SII_PY" tools/run_spt_server_parallel_20261025.py \
@@ -176,4 +177,4 @@ temperature、回合条件和 Task/Strict。画完整历史和按相同条件配
 四方法训练完成后冻结模型，同新保留组的ESN比较，做独立物理子步、actor/filter和hash审计。
 按 AGENTS 更新根日志和进展，提交/push main；大型数据存当地独立run目录，并提供实际地址与hash。
 
-本次代码仅通过本机单元/契约测试和命令预检，**服务器CUDA、五卡并发与新MuJoCo回合尚未实测**。
+本次代码仅通过本机单元/契约测试和命令预检，**服务器CUDA、四卡并发与新MuJoCo回合尚未实测**。

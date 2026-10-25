@@ -4,8 +4,8 @@
 本次交付实现训练入口与奖励，没有启动新训练，也没有生成新的学习结果。
 先读根 `AGENTS.md`、`EVALUATION_STANDARD_SPT_20261025.md` 和本文件。
 本方案是可执行的 **SPT 导向训练代理目标**，不是已实现/已验证的正式 SPT benchmark。
-服务器 agent 从 [项目背景与五卡并行入口](RL_SERVER_START_20261025.md) 开始；用户已授权
-5张4090/55核服务器计算，旧“服务器仅归档”限制不再适用于这轮新run。
+服务器 agent 从 [项目背景与四卡并行入口](RL_SERVER_START_20261025.md) 开始；用户已授权
+4张4090/55核服务器计算，旧“服务器仅归档”限制不再适用于这轮新run。
 
 ## 1. 本轮科学问题和范围
 
@@ -28,7 +28,7 @@ Direct 输出原 action7；阻抗/导纳/VMC 每 40 ms 输出原在线参数（�
 - `tools/prepare_rl_spt_campaign_20261025.py`：prepare/check/run；冻结源码、配置和参数适配器，
   生成明确命令；每个run用 systemd 硬资源限制。本机单路；服务器模式使用GPU/CPU/并发槽租约。
 - `tools/prepare_rl_spt_campaign_20261025.py matrix` 与 `tools/run_spt_server_parallel_20261025.py`：
-  服务器四方法×三seed准备和五卡有限队列，详见服务器入口。
+  服务器四方法×三seed准备和四卡有限队列，详见服务器入口。
 - `tools/spt_rl_reward_20261025.py`：唯一 reward CONFIG、人体接触物理子步归约、reward reducer，
   以及需要真实完成时间的纯 SPT 数学函数。
 - `tools/train_v4_recovery_rl_20261016.py --reward-variant spt_v1`：实际在线 learner/worker 接入。
@@ -128,7 +128,7 @@ std=.10）；entropy coefficient=-.5、initial temperature=.01；pinned SimbaV2 
 1e-4→5e-5、actor 128、distributional twin critic 512、normalizer 按原实现。
 配置由 parameter adapter 实际 `agent.config` 落盘；n_step 非1时 spt_v1 拒绝启动。
 本机备用模式3 GiB hard MemoryMax、禁swap、CPU单核/单线程、单模拟器。
-服务器模式默认每路8 GiB、禁swap、GPU learner+CPU物理，最多五路独立作业；实际资源必须登记。
+服务器模式默认每路8 GiB、禁swap、GPU learner+CPU物理，最多四路独立作业；实际资源必须登记。
 checkpoint 每个回合保存，需监视磁盘并按既有独立归档/hash核验流程安排存储；不自动删除原始失败。
 百万步是有限最大预算，不是收敛保证；72小时是派发保护，也不是充分训练声明。
 
@@ -166,6 +166,6 @@ SPT、完成时间、逐关节峰矩、接触覆盖/舒适率、人体接触峰�
 
 ## 7. 本次验证与交接状态
 
-已完成：奖励/启动契约测试、prepare/check/dry-run；未做：服务器CUDA/五卡实测、新MuJoCo回合、梯度更新、百万步训练、
+已完成：奖励/启动契约测试、prepare/check/dry-run；未做：服务器CUDA/四卡实测、新MuJoCo回合、梯度更新、百万步训练、
 新物理子步一致性审计、最终SPT/舒适标定、未见组测试。这些都不能因脚本存在而写成已完成。
 本次源文件和规范推送 main；没有新增服务器实验产物。

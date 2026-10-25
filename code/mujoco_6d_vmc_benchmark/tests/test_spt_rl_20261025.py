@@ -195,7 +195,7 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(resource.memory_requirement(8*resource.GIB,[(8*resource.GIB,3*resource.GIB)]),
                          17*resource.GIB)
         with tempfile.TemporaryDirectory() as d:
-            r=dict(lease_directory=d,gpu_uuid='GPU-0123',cpus=[1],max_parallel_jobs=5,
+            r=dict(lease_directory=d,gpu_uuid='GPU-0123',cpus=[1],max_parallel_jobs=4,
                    memory_max_bytes=8*resource.GIB,gpu_min_free_mib=8192,gpu_max_temperature_c=80)
             with patch.object(resource,'gpu_info',return_value=dict(free_mib=22000,temperature_c=40)), \
                     patch.object(resource.subprocess,'check_output',return_value=''), \
