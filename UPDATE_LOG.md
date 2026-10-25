@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-25 — all5完整第10轮复核、SAC Direct5和冻结第9轮代表矩阵完成
+
+- fetch/read main a52dfba、baseline f6e8f8c未变。四CHEQ完整10已归档，steps532944/533471/534320/535026，Task5/18/15/17、Strict5/17/15/17（各30）；120条件/terminal/模型与checkpoint hash核验、奖励重建/网络不变及图通过。四路进入原11，原audit/reviewer继续，不重复派发。
+- all5首轮没有建立修复证据：Direct Strict10→5、reward−15.17→−23.87，参数Strict18/15/17→17/15/17；末1000 critic loss194368/1133707/890992/1590253均增，Q均值转负至−4093/−16747/−11522/−17506。terminalMAE前三增大、VMC下降，不能笼统说四路所有指标都变差。Q上界超限下降不等于校准；训练中变化策略/不同replay，不作为固定策略接受或因果证明。保持原11，之后整阶段科学复核。
+- 新SAC Direct完整5只读审计已完成、2862832退出：265240步，Task/Strict0/30、全approach，loss69660→216712、Q32510→59261、terminalMAE1738→3445，当前alpha上界超限99.9268%。冻结输入、30条件/模型/terminal、41250 transition/82500 optimizer行与奖励/网络不变核验，图检查通过；0physics/更新，原SAC6继续，其他三SAC未重复审计。
+- 冻结9参数矩阵9/9已结束，4191390/1836087退出；合并原Direct确定性3项形成12例完整代表矩阵，Task/Strict0/2/2/2（各3），三审计通过、无机器安全违规。新VMC短/长27.52/32.40s，峰矩47.1968/46.6636Nm，接触NA/100%(6.62165s)，被动carry失败。新VMC9份审计输入hash与四checkpoint/确定性模式核验；原Direct随机9项诊断单列保留，不挑模式/seed替代确定性失败。
+- 证据docs/PUBLISHED_BELLMAN_CYCLE10_REVIEW_20261025.md/.json；SSD sii_rl下runs/bellman_minimum_stage_audit_v1/bellman_cycle10/REVIEW.json、diagnosis_sac_direct_cycle05_v1/REVIEW.json、interim_cheq_cycle09_parameters_v1/COMPLETE_FOUR_INTERFACE_REVIEW.json。source16仍prepared_only，原物理/MJB/gate/actor/filter/执行器/dt不改。GPU50%、充分收敛、完整训练集SPT/指定ESN公平比较未完成。
+
 ## 2026-10-25 — 接触读取候选12项完整验证结束及组合runtime准备
 
 - fetch/read main a52dfba、baseline f6e8f8c未变。原contact_candidate_validation_v2正常结束，2530701/2249466退出；12/12全55s、1320万子步精确对照通过（复用1项、新增11项1210万子步）。COMPLETED_REVIEW核验FINISHED、注册/source和12条件集合，重读原始MJB/journal/terminal/substep字节hash；数组精确比较与完整result规范依据原冻结validator收据，保留早期v1失败，不重跑完成仿真。

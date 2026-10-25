@@ -7,6 +7,11 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新all5第10轮四路已完整归档且原audit/9→10 review完成，四learner均进入原11：steps532944/533471/534320/535026；Task5/18/15/17、Strict5/17/15/17（各30），父9 Strict10/18/15/17。120完整条件/terminal/model及checkpoint hash核验，奖励重建/网络不变通过，图已检查。末1000 critic loss194368/1133707/890992/1590253均较9增，Q−4093/−16747/−11522/−17506；terminalMAE2949/6869/9107/8213（VMC下降，其余升）。不把Q上界超限0/0/8.82/2.10%当校准或修复。原11保持，1346884/1346887继续等11，不提前部署source16/改算法。
+新SAC Direct完整5只读audit完成、2862832退出：265240步，Task/Strict0/30、全approach；loss69660→216712、Q32510→59261、terminalMAE1738→3445，非健康收敛。30条件/模型/terminal、冻结输入/奖励/网络不变及图核验；0physics/更新，原6继续。runs/diagnosis_sac_direct_cycle05_v1/REVIEW.json。
+冻结9参数矩阵已9/9结束，旧4191390/1836087退出勿重启；与原Direct确定性3例合成12例，Strict0/2/2/2（各3），全55s/三审计，无机器安全违规。新VMC短/长27.52/32.40s、47.1968/46.6636Nm、接触NA/100%(6.62165s)，被动carry失败；新VMC审计输入hash重验，四checkpoint/模式核验。COMPLETE_FOUR_INTERFACE_REVIEW.json留证。原Direct随机9例Task9 Strict7和2安全违规独立保留，不替代确定性0/3，不选最终Tref。报告docs/PUBLISHED_BELLMAN_CYCLE10_REVIEW_20261025.md/.json。目标仍未完成。
+
+
 最新contact v2原协调器2530701/末worker2249466已正常结束，勿重启：12/12完整55s对照全部精确通过，共1320万子步，复用1项/新增11项1210万子步。COMPLETED_REVIEW核验FINISHED/注册/source/12条件集合及原始MJB/journal/terminal/substep字节hash；原数组比较收据通过，set规范仅robot_parts。保留v1失败。当前source14三原接触文件与原07/15相同已确认。
 已准备source_train16但未部署：从15只替换已验证的3接触读取文件（audited_velocity_env、validate_office_apparatus、published_compliance_episode），内容与contact_candidate_v2精确相同；learner/Adam helper/trainer/Bellman保持15，780source hash及保护manifest核验，4接触测试通过。组合无新physics/updates，下一阶段须当前10/11完整科学review及独立登记，不自动派发/改live。产物runs/combined_performance_preparation_v1，证据docs/PUBLISHED_CONTACT_VALIDATION_COMPLETE_20261025.md/.json。
 GPU_60S_02含正式训练及固定VMC推理、不含辅助学习：60样本/77.19s均值35.13/39.40/30.07/33.97%，min全0；八PID身份及真实增量核验，50%未达。四CHEQ14仍10收尾；SAC Direct5已归档进入6，其余SAC3继续，非收敛。VMC9被动完整55s carry失败，其余在途/整组三审计仍待，参数矩阵6/9。目标仍未完成，指定ESN仍缺。
