@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-25 — 同状态动作价值诊断与Impedance固定策略审计
+
+- 延续已核对的远端main a52dfba/baseline f6e8f8c及两分支日志；本地保留未发布提交，不覆盖运行。
+- 新只读工具对四接口cycle1/2各1024相同非终端状态、12相同候选动作评估online/target ensemble，
+  校验replay prefix完全一致、全部网络张量不变，0更新/0physics。合成方差分解/偏置不变性检查通过。
+  cycle2跨critic方差中的动作均值偏置仅占12.24/32.72/17.83/28.74%；动作中心化后所有候选
+  uncertainty仍≥0.2，不能用共享价值偏移单独解释最低mixing。Q偏好仍只是预测，不是真实反事实回报。
+- 固定cycle1 Impedance三个代表回合完成，passive失败于carry，两个active Task/Strict通过；
+  active-long完成52.40s对nominal20.52s，实际接触阈值比例74.48%对24.07%，峰矩51.54对52.26Nm。
+  是效率/接触指标折衷，不宣布总体优越；无接触的两条件记NA，未选最终SPT参考。
+- 三回合各1375公共filter、13750力矩投影、1100000物理子步审计通过；分开保留physical/filter/
+  torque收据。中期矩阵6/12，继续Admittance/CPU54；nominal31/120，继续CPU52/53。
+- 八路正式learner继续，CHEQ cycle3、SAC cycle1，未改正式reward/gamma/mixing/physics/gate/
+  actor信息/filter/执行器。新25.8s诊断已结束，不能计为常驻辅助训练或GPU50%达标；该目标仍未解决。
+- 服务器基址 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`；
+  新来源runtime/action_value_diagnostic_v1，产物runs/action_value_cycle12_v1；源码、执行/诊断文档、
+  AGENTS和小型证据同步。尚无充分收敛、完整最终评估或指定ESN比较。GitHub发布状态另行核验。
+
 ## 2026-10-25 — 第三整轮CHEQ、首轮SAC与Direct固定策略审计完成
 
 - 开工同步远端main/baseline仍为a52dfba/f6e8f8c并读两分支日志，保留本地未发布历史。

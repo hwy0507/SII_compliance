@@ -37,13 +37,27 @@ is not a consistent alternative objective or online performance comparison.
 No formal gamma/reward/mixing threshold changed, and auxiliary weights remain
 ineligible for the final comparison. These auxiliary processes have ended.
 
-The independent fixed-cycle1 Direct subset finished three55s cases, with
-physical/public-filter/torque audits passing. All three learned cases failed
-at lift, while the matching nominal active-short/long cases succeeded. This
-older fixed checkpoint is distinct from the subsequent cycle2 stochastic
-successes. CPU54 now evaluates Impedance; the interim matrix has3/12 audited
-cases. The nominal matrix continues on52/53, with26/120 at this observation.
-No final SPT reference or designated-ESN comparison has been completed.
+The independent fixed-cycle1 matrix has6/12 audited cases. Direct failed all
+three at lift. Impedance failed passive at carry, but passed both active cases;
+active-short completed in12.92s versus nominal12.96s. Active-long completed in
+52.40s versus nominal20.52s, while its contact-only torque compliance was74.48%
+versus24.07%. Peak torques were51.54 versus52.26Nm. This is a comfort/efficiency
+tradeoff on one condition, not overall superiority. Every case ran55s with
+physical/public-filter/common-torque-projection audits; these engineering
+comfort thresholds differ from actuator limits and the original strict gate.
+CPU54 now evaluates Admittance. The nominal matrix continues on52/53, with31/120
+at this observation. No final SPT reference or designated-ESN comparison exists.
+
+New read-only action-value diagnostics compare cycle1/2 on1,024 identical
+earlier-cycle states per interface and12 shared candidate actions per state.
+The replay prefix is exact and all network weights remain unchanged. Ensemble
+disagreement is not mostly an action-independent offset: in cycle2, the
+per-critic action-mean offset explains only12.24/32.72/17.83/28.74% of aggregate
+variance for Direct/Impedance/Admittance/VMC. Centered action uncertainty still
+exceeds.2 for all sampled cycle2 candidates. Simple offset removal would not
+resolve the observed minimum mixing weight; no replacement mixing rule was
+introduced. The frozen25.8s analysis performed0 updates/0physics and has ended.
+Its candidate Q preferences are predictions, not actual counterfactual returns.
 
 After all finite discount jobs ended, source_train07 online training plus SAC
 and one GPU1 fixed-policy evaluator averaged38.33/30.98/30.08/32.22% GPU use in

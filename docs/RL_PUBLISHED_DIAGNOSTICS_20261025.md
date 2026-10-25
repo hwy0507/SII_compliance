@@ -924,3 +924,79 @@ CHEQ diagnostic run's `plot_revision_v1/` and SAC run's `plot_revision_v2/`,
 with source receipts (SAC v2 shortens a clipped title); original
 figures and numerical diagnostics remain preserved. CHEQ retains its actual
 logged next-target-Q trace. Both plots were visually reviewed.
+
+## Shared-state action preferences: disagreement is not just an offset
+
+`runs/action_value_cycle12_v1` completed a read-only comparison of all four
+interfaces' exact cycle1/2 checkpoints. Each uses1,024 nonterminal states from
+the earlier checkpoint's most recent complete cycle, with the replay prefix
+verified exactly against the later checkpoint. Both checkpoints evaluate the
+same12 candidates per state: stored action, zero nominal residual, each policy's
+deterministic action, and four stochastic actions from each policy. Inputs
+retain the recorded CHEQ context; these are raw-action value predictions.
+Both online and target ensembles are evaluated. No optimizer or physics runs.
+
+For critic i, state s and candidate a, decompose Q_i(s,a) into its candidate
+mean b_i(s) and centered value c_i(s,a). With equal candidate weights,
+mean_a Var_i(Q) = Var_i(b) + mean_a Var_i(c). The tool checks this identity in
+float64 and reports both components. Synthetic checks cover pure offsets,
+zero-mean action differences, offset invariance and invalid dimensions. This
+does not change CHEQ's uncertainty rule or calibrate an alternative rule.
+
+| Interface | Cycle2 offset fraction of total variance | Centered uncertainty mean cycle1 →2 | Cycle2 centered uncertainty ≥0.2 |
+|---|---:|---:|---:|
+| Direct |12.24%|6.407→17.844|100%|
+| Impedance |32.72%|11.897→21.932|100%|
+| Admittance |17.83%|14.143→96.485|100%|
+| VMC |28.74%|25.963→45.840|100%|
+
+These are online-ensemble statistics; target-ensemble results agree in direction
+and are retained in the JSON. Thus action-dependent disagreements account for
+most sampled variance; simply removing per-critic action-mean offsets would
+still leave the registered0.2 threshold exceeded. This rejects an offset-only
+explanation in the sampled cohort. It neither proves ground-truth action error
+nor justifies a new threshold. Candidate-set selection affects this decomposition.
+
+The cycle2 deterministic policy's predicted advantage over stored actions rises
+from−0.630/1.321/2.282/9.536 under cycle1 critics to19.249/24.032/70.222/59.540 under
+cycle2 critics. These are model predictions on the same candidates and states,
+not measured return improvement. The earlier policy and critic preferentially
+agree too; this cannot establish which policy actually performs better.
+All network tensors remain exact, with0 gradients/updates. The25.8s diagnostic
+finished; it is not persistent auxiliary training. Formal reward/gamma/mixing
+and all protected control/physics settings remain unchanged.
+
+## Fixed-cycle1 Impedance: audited efficiency/contact tradeoff
+
+The three registered Impedance representative cases are complete, bringing
+the interim matrix to6/12. All run the55s audit horizon, with exact filter replay
+(1,375 calls), exact common torque-projection replay (13,750 calls), and agreement
+with1,100,000 physical substeps per case. `PHYSICAL_AUDIT.json` alone explicitly
+does not certify filter replay; the separate FILTER/TORQUE audit receipts do.
+
+| Condition0000 | Learned / nominal strict success | Completion s learned / nominal | Peak Nm learned / nominal | Contact-only ratio learned / nominal |
+|---|---|---:|---:|---:|
+| Passive |false / false|NA / NA|41.3342 /40.5833|NA / NA|
+| Active-short |true / true|12.92 /12.96|45.9904 /45.3060|NA / NA|
+| Active-long |true / true|52.40 /20.52|51.5369 /52.2561|74.48% /24.07%|
+
+Passive fails at carry. In active-long, learned compliant contact time is
+5.89935 of7.92035s; nominal is1.87035 of7.76920s. This improvement in contact
+threshold compliance comes with much slower completion, not a general method
+win. The engineering comfort thresholds are below actuator safety limits;
+strict success is the original gate, not a claim of100% comfort compliance.
+No machine safety violation is reported in these three learned cases. No human
+contact occurred in passive or active-short, so their ratio remainsNA.
+
+CPU54 now evaluates Admittance; the120-case nominal matrix has31 audited rows
+and continues on52/53. Neither is the complete final comparison, and no common
+final SPT reference is selected. All eight formal learners continue; at the
+evidence capture CHEQ retained230,334/235,815/233,756/238,563 transitions in cycle3,
+and SAC101,749/71,389/67,144/68,174 in cycle1, respectively. These counters include
+registered imported replay and must not be described as all-new experience.
+
+Immutable source is `runtime/action_value_diagnostic_v1`; registration, reports
+and comparison snapshot are under `runs/action_value_cycle12_v1` at the existing
+SSD base. Small repository evidence is
+`PUBLISHED_ACTION_VALUES_AND_IMPEDANCE_20261025.json`. No convergence, all-GPU50%
+utilization, complete SPT result or designated-ESN comparison is claimed.

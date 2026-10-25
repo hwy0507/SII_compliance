@@ -7,6 +7,13 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+- 最新中期固定cycle1矩阵6/12审计完成：Direct三失败；Impedance passive失败于carry，两个active
+  Task/Strict通过。active-long完成52.40s对nominal20.52s，接触阈值比例74.48%对24.07%，峰矩
+  51.54对52.26Nm，是单条件效率/舒适折衷，非总体改善。CPU54现评估Admittance；nominal31/120。
+- `runs/action_value_cycle12_v1`已完成0更新/0physics只读诊断，进程已退出，不作常驻GPU负载。
+  cycle1/2同1024状态×12相同候选动作，replay prefix/网络不变；cycle2跨critic分歧中动作均值偏置
+  仅解释12.24/32.72/17.83/28.74%，去偏置后所有候选uncertainty仍>.2。不能把问题仅归于共享
+  价值偏移，也不能把Q偏好当真实动作改进。正式reward/gamma/mixing阈值未改，无替代修复被选定。
 - 当前主训练已全部迁入 `runs/cheq_performance_seed20261025_v2` / `runtime/source_train07`，
   四路已产生真实steps/updates，正在cycle3（第四整轮）。v1正常结束，cycle1/2全部归档无遗漏；
   新归档器继续。迁移保留全部learner/optimizer/RNG/replay/masks/history，只优化finite检查。
@@ -23,8 +30,8 @@
   只改辅助Bellman gamma，stored reward仍含.9995 shaping；不是完整替代objective，不能选为正式修复。
   正式gamma/reward/uncertainty阈值未变，辅助权重不得进入比较，所有辅助进程已结束。
 - Direct固定cycle1的3个中期回合均完整55s失败于lift，physical/filter/torque审计已通过；
-  active_short/long的nominal成功，不能用RL低峰矩/高接触比例替代完成。CPU54现评估Impedance，
-  整体3/12已审计；nominal矩阵本次26/120，继续CPU52/53。未选最终T_ref。
+  active_short/long的nominal成功，不能用RL低峰矩/高接触比例替代完成。CPU54现评估Admittance，
+  整体6/12已审计；nominal矩阵本次31/120，继续CPU52/53。未选最终T_ref。
 - source07迁移后无辅助训练窗口GPU均值38.33/30.98/30.08/32.22%，50%目标仍未实现；
   不能把finite-check微基准加速或已结束辅助作业写成在线达标。原始记录SOURCE07_ONLINE_GPU_60S_01.json。
 - `runs/soft_target_mixing_cycle01_v1`只读诊断已结束，0更新/0physics；cycle1样本四路CHEQ几乎
