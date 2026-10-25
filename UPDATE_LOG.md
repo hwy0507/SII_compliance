@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-25 — 完成actorLR第7/8轮soft-target分解，核实实际混合控制权
+
+- fetch核对远程main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，未前进；读取两分支日志。
+- 新只读有限诊断soft_target_mixing_actor_lr_cycle08_v1完成并退出：八个冻结7/8 checkpoint，每个4096非终端样本+全部终端、平均10 critic pairs，网络不变/终端bootstrap零验证通过，0更新/physics。沿用已验证工具，无正式trainer改动。
+- 8的后继Q均值528.14/2070.42/780.21/8046.32，平均熵贡献−0.473/−1.745/−0.787/−17.083；高正target主要来自预测后继价值。不同replay年龄/采样，不当LR因果证据或证明具体bug。
+- 8 implied最低RL权重比例99.9268/99.9756/100/100%；另存当前9各1000条实际行为context全0.2。需将CHEQ明确为混合控制器，不能把成功称为独立RL控制能力；SAC保持独立对照，无修改uncertainty阈值。
+- 接触候选v2新增Direct短期完整55s精确验证通过，累计2/12、每条110万子步，原协调器转长期；未部署、未重复首回合。四CHEQ12原9和四SAC09继续，审计/review仍等完整9。
+- 证据docs/PUBLISHED_ACTOR_LR_SOFT_TARGETS_20261025.json，详见RL_PUBLISHED_DIAGNOSTICS；完整产物位于本集群/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/soft_target_mixing_actor_lr_cycle08_v1。收敛、最终SPT与指定ESN对比仍未完成，四卡持续50%仍无证据。
+
 ## 2026-10-25 — Direct第8轮训练内成功提高，固定轨迹退化分析完成
 
 - 最新整组8审计及7→8配对review已完成，报告/图已检查，网络不变/回合reward重建通过，0诊断更新/physics。Q均值527.54/2091.51/775.46/8027.20，当前alpha上界超限99.91/42.74/28.93/35.59%；末1000critic loss231.43/37502.40/19218.17/309861.91，均较7增长。不称健康收敛；Impedance丢long0000、VMC丢short0600。原审计/复核进程转等9，正式9照常完成。证据PUBLISHED_ACTOR_LR_CYCLE08_REVIEW_20261025.json。

@@ -2077,3 +2077,23 @@ Four immutable checkpoints at450444/450971/451820/452526 steps were hash-verifie
 ## Full cycle8 diagnostic and7→8 review complete
 
 The original auditor and paired reviewer completed their reports and figures, now waiting for cycle9. Figures were visually inspected; all four networks remained unchanged and episode reward reconstruction passed. No diagnostic optimizer updates or physics were performed. Sampled Q means527.54/2091.51/775.46/8027.20 exceed the frozen-current-alpha bound in99.91/42.74/28.93/35.59% of samples. In-bag terminal MAE119.15/788.86/1402.85/6031.61; last1000 critic losses231.43/37502.40/19218.17/309861.91, all larger than cycle7. Direct task gains coexist with uncalibrated value estimates; parameter critics continue growing. Impedance loses long0000, VMC short0600; Admittance gains short0000/0600/0900. No health/convergence or causal actorLR conclusion. Continue original cycle9, no new intervention. The bound is specific to fixed policy/current alpha; terminal error can include hidden-clock aliasing. Compact evidence PUBLISHED_ACTOR_LR_CYCLE08_REVIEW_20261025.json.
+
+
+## Cycle7/8 soft-target decomposition after actor-LR continuation
+
+The finite read-only study `runs/soft_target_mixing_actor_lr_cycle08_v1` has finished and its process has exited. It reuses the validated soft-target diagnostic without modifying its source, on eight immutable complete-cycle checkpoints. This updates the earlier cycle0/1 evidence after the critic reset and actor-LR intervention; it performs zero optimizer updates and zero physics. Each snapshot samples4096 nonterminal replay rows plus all terminal rows and averages all ten distinct critic pairs. Network equality and exact zero terminal bootstrap passed for all eight snapshots.
+
+| Interface | Discounted successor-Q mean,7→8 | Discounted entropy mean,7→8 | Predicted policy−replay pair-min Q,7→8 | Implied minimum RL weight fraction,8 |
+|---|---:|---:|---:|---:|
+| Direct | 378.905→528.135 | -1.005→-0.473 | 3.437→1.189 | 99.9268% |
+| Impedance | 521.628→2070.421 | -0.593→-1.745 | 5.250→20.803 | 99.9756% |
+| Admittance | 384.057→780.208 | -0.329→-0.787 | 2.447→4.638 | 100.0000% |
+| Vmc | 4245.475→8046.319 | -8.942→-17.083 | 29.402→52.664 | 100.0000% |
+
+Immediate nonterminal mean rewards remain negative, about−0.0035 to−0.0045. Positive targets are dominated by successor value estimates, not positive mean entropy bonuses. Policy/replay gaps are predictions from the same critics, not measured advantages or causal evidence of extrapolation. Different replay ages and separately sampled states prevent a controlled actorLR conclusion. No new implementation defect was established by rereading the published update and current trainer.
+
+All four separately captured latest1000 cycle9 behavior transitions record mixing context0.2 exactly. This is actual recent behavior, distinct from implied weights computed on frozen historical replay. The CHEQ baseline remains20% raw RL plus80% nominal at these decisions; report it as a hybrid controller and keep plain SAC separate. Do not interpret training successes as learned standalone RL or healthy convergence. No uncertainty threshold was changed.
+
+The contact-reading candidate now passes2/12 full55s trajectories (Direct passive and short), each1,100,000 substeps: model, journal, terminal, trajectory/filter/torque arrays and full result comparison pass the registered checks. The original v2 coordinator has advanced to Direct long; the candidate remains undeployed. All eight formal learners and original cycle9 observers continue. Current trial must finish and be reviewed before another intervention.
+
+Compact evidence: `docs/PUBLISHED_ACTOR_LR_SOFT_TARGETS_20261025.json`; full registration, immutable source, eight reports and actual context captures are on the cluster at `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/soft_target_mixing_actor_lr_cycle08_v1`. GPU≥50% remains unproven, final convergence/SPT/ESN comparison incomplete.
