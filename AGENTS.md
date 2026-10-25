@@ -7,34 +7,34 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
-- 最新：`runs/cheq_performance_seed20261025_v1` 和 `runs/sac_performance_seed20261025_v1`
-  的协调器已启动，等待下列source_train05旧learner完成完整周期后保存全部状态，接续source_train06。
-  **旧run的STOP_REQUESTED是性能优化迁移，不是取消Goal；禁止另开重复训练。**
-  先读MIGRATION_PROGRESS/FAILURE/FINISHED、LAUNCH和进程。当前replacement尚未启动。
-  source_train06只合并有限值检查的GPU→CPU同步，4接口各1000配对更新网络/温度完全一致；
-  optimizer、RNG、replay及完整cycle历史将保留，不重新初始化。协议helper拒绝reward/physics漂移。
-  新阶段登记 `REGISTRATION_{CHEQ,SAC}_PERFORMANCE_V1.json`，源在runtime/performance_dispatch_v1。
-- 当前真实运行见 `docs/RL_PUBLISHED_BASELINE_EXECUTION_20261025.md`：SSD前缀
-  `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/`，
-  主训练 `runs/cheq_layernorm_seed20261025_v1`，SAC对照 `runs/sac_layernorm_seed20261025_v2`，
-  冻结runtime `source_train05`，正式任务共52/55核。先查各run的LAUNCH、PROGRESS、FAILURE、
-  实际进程及checkpoint，禁止重复派发。旧CHEQ v3和旧SAC v1已保留checkpoint后停止；
-  新阶段启用作者critic LayerNorm和登记数值修正，真实replay保留但网络/优化器重新初始化。
-  SAC layernorm v1因launcher提前建立目录而在新步/更新前失败，v2修正启动，旧记录保留。
-- 完整周期归档 `runs/cheq_cycle_archive_v1` 已结束且四方法cycle0无遗漏；新只读归档器
-  `runs/cheq_layernorm_cycle_archive_v1` 在CPU54运行。旧首轮严格成功0/18/12/16（各30），
-  全部被动条件失败，不能把类别切换引起的reward变化当作学习改善或固定策略评估。
-- 诊断见 `docs/RL_PUBLISHED_DIAGNOSTICS_20261025.md`：旧SAC Direct出现loss/temperature
-  数值恶化，LayerNorm离线对照支持新阶段，但不能证明在线收敛。首个主动长期条件独立审计：
-  早期阻抗RL和固定阻抗都成功，接触力矩合规率约5.45%和24.07%，不能归因为RL改善。
-  两个物理审计均已完成；有限离线稳定性复核
-  `runs/cheq_layernorm_robustness_probe_v1`（4接口×2seed×LN开关，每项3000更新）16项已全部完成，CPU52/53释放。
-  所有配对终端误差均改善，但其权重不得混入正式比较。纯在线GPU60s均值50.03/47.92/44.50/37.37%，未全部达50%目标；
-  辅助复核期间四卡均值67.67/58.35/60.52/58.05%，辅助作业现已结束，不能当作常驻负载。
-  `interim_impedance_filter_audited_v2` 审计已完成，55s物理/actor/接触文件精确一致、1375次公共filter重放误差0。
-  v1错用了CPU推理导致透明性失败，v2恢复原cuda:1，不放宽精度；原生力矩控制/执行器层仍未独立重放。
-  辅助性能剖析也已完成，CPU52/53释放。最新纯在线GPU均值51.83/40.78/44.20/41.33%，尚未全部达标。
-  旧实现较高利用率不能替代新测量。无充分收敛或ESN比较结论，指定ESN仍缺失。
+- 当前主训练已迁移至 `runs/cheq_performance_seed20261025_v1` / `runtime/source_train06`，
+  四路均真实更新；`MIGRATION_FINISHED.json`记录完整cycle0边界、不可变父checkpoint和状态保留。
+  原CHEQ LayerNorm四路正常结束。性能迁移保留network/optimizer/target/alpha/RNG/replay/masks/history，
+  不同于此前LayerNorm重新初始化阶段。新cycle归档器位于该run的`cycle_archive`，CPU54。
+- SAC仍为 `runs/sac_layernorm_seed20261025_v2` / source_train05；
+  `runs/sac_performance_seed20261025_v1`协调器仍等待各方法完成cycle0后自动接续source_train06。
+  **旧run的STOP_REQUESTED是协调迁移，不是取消Goal；先查进程、LAUNCH和MIGRATION收据，禁止重复派发。**
+  source_train06只合并有限值检查同步，4接口各1000配对更新网络/温度完全一致，协议拒绝科学设置漂移。
+- 正式训练占52核。CPU52/53现运行 `runs/nominal_four_interfaces_cohort30_v1` 的120回合固定控制器矩阵，
+  不是空闲资源；每回合含physics/contact/public-filter/reward独立审计，保留失败，不从部分结果选T_ref。
+  CPU54为轻量协调/归档、只读审计及有限离线GPU诊断共享。
+- 首个CHEQ LayerNorm完整30条件周期严格成功0/18/12/16，平均return -33.5155/-.5553/-12.1112/-4.5819；
+  未显示充分学习改善。最新mask分层终端诊断在 `runs/diagnosis_cheq_layernorm_cycle00_masked`。
+  CHEQ bootstrap mask会让每个critic有意留出部分样本，旧终端MAE混合拟合/留出误差；
+  新in-bag MAE仍19.60/30.81/49.91/102.13，不能据有限loss宣称健康或收敛。
+- `runs/terminal_fitting_probe_v1` 四路固定Bellman标签诊断均已完成；每variant5000更新，
+  terminal10%比uniform终端汇总误差降低，但普通误差略升。v1无mask分层端点，不冒称纯拟合误差。
+  `runs/terminal_fitting_replication_v2` 已启动两个新seed2026102511/12有限复核，增加mask分层与
+  辅助critic归档；其权重禁止混入正式比较。先查FINISHED/FAILURE/实际进程，不把有限辅助负载当常驻。
+  最近含v1辅助的60s GPU均值57.67/57.10/59.12/60.47%，瞬时最低34/23/40/6%；
+  纯在线迁移后窗口48.22/39.35/35.90/39.67%；最新v2辅助复核窗口54.30/55.47/57.35/49.10%，
+  GPU3仍略低于50%，不保证持续/纯在线四卡均≥50%。
+- `runs/parameter_cycle_audit_v1/results/AUDIT.json` 完成90回合、123750次参数shield精确重放，
+  参数均非名义值；rate limit约53.87/70.23/53.32%，energy limit为0，不能归因为动作被能量约束抹掉。
+  重放使用保存的storage state，不等于独立重建物理/native controller或全局被动性证明。
+- 原公共filter审计 `interim_impedance_filter_audited_v2` 已完成，55s物理/actor/接触文件精确一致，
+  1375次公共filter重放误差0；v1误用CPU推理的失败保留。原生力矩控制/执行器仍待独立重放。
+  指定ESN权重仍缺；无充分收敛、完整最终矩阵或ESN比较结论。详见执行/诊断文档。
 - 持续 Goal 的最新授权优先：用户已将论文选择、必要方法/接口适配、三类任务集上的仿真和
   四卡4090训练决策交给当前 agent，取消总训练步数上限，要求训练至改善后稳定并公平比较。
   不再就上述已授权事项重复询问。仍须保留原始任务/安全判据，记录新模型来源和所有适配，

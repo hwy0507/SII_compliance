@@ -114,6 +114,16 @@ def diagnose(args):
                 metrics['terminal_reward'] = summary(reward)
                 metrics['terminal_q_predictions'] = summary(predicted)
                 metrics['terminal_q_absolute_error'] = summary(abs(predicted-reward))
+                if state['algorithm'] == 'cheq':
+                    mask = arrays['masks'][terminal].T.astype(bool)
+                    if mask.shape != predicted.shape:
+                        raise ValueError('Terminal ensemble mask shape mismatch')
+                    error = abs(predicted-reward)
+                    metrics['terminal_q_in_bag_absolute_error'] = summary(error[mask])
+                    metrics['terminal_q_out_of_bag_absolute_error'] = summary(error[~mask])
+                    metrics['terminal_mask_interpretation'] = (
+                        'Mask1 rows train that critic; mask0 rows are intentionally withheld from its loss. '
+                        'Report fitting and held-out prediction separately; aggregate error mixes them.')
                 metrics['terminal_success_bonus_samples'] = int(np.sum(reward > 0))
             obs = torch.as_tensor(arrays['observations'][sample])
             nxt = torch.as_tensor(arrays['next_observations'][sample])

@@ -1,5 +1,34 @@
 # 更新日志
 
+## 2026-10-25 — 完整周期mask分层诊断、参数动作重放和性能接续落地
+
+- fetch确认远端main `a52dfba4486af8d263d5cd0a976c3102482ff249`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取两分支日志，未混用历史非RL结果。
+- CHEQ四路source_train06接续已真实更新，完整保留network/optimizer/RNG/replay/target/alpha/masks/cycle；
+  SAC继续等待已有协调器按完整周期交接。旧STOP_REQUESTED不是取消Goal，禁止重复启动。
+- LayerNorm完整周期每路新增41250真实步，严格成功0/18/12/16（各30）；未证实充分改善/收敛。
+  终端Q诊断新增bootstrap mask分层：in-bag MAE19.60/30.81/49.91/102.13；此前汇总混合刻意留出
+  与参与拟合的critic/样本对，不能全称拟合误差。保留旧数字和失败记录。
+- 终端误差不是独立收敛门槛：固定输入不含显式剩余时间，近似状态混叠尚未排除；不能要求每个
+  终端Q都精确等于该次sample reward或据此再重置learner。需结合完整周期学习和独立物理表现。
+- 固定Bellman标签的4接口×2采样方式×5000更新均完成：terminal10%降低终端汇总误差，普通误差
+  略升；actor/targets/temperature逐variant核对未变。v1无mask端点，明确局限；新两seed有限复核
+  增加mask统计和辅助critic归档，权重不得用于正式比较。正式reward/replay未改变。
+- 新参数动作审计对90回合123750更新精确重放，误差0；rate限制约53.87/70.23/53.32%，energy
+  限制0，参数都确实偏离名义值。Impedance零action7对应native gain调节，不能解释为忽略RL。
+  审计只重放保存的storage state，不冒称独立native torque/physics重建或全局被动性。
+- 固定控制器120回合共同条件矩阵在CPU52/53运行，当前6回合完成并通过逐回合物理/公共filter/reward
+  审计；首个active-short固定Direct/Impedance已成功，说明RL成功不能直接归因于学习。失败保留，
+  不从未完成矩阵确定最终T_ref。正式训练52核，CPU54协调/诊断，不重复分配空闲CPU52/53。
+- 含有限辅助诊断的60s GPU均值57.67/57.10/59.12/60.47%，瞬时最低34/23/40/6%；纯在线迁移后
+  均值48.22/39.35/35.90/39.67%；后续v2辅助窗口54.30/55.47/57.35/49.10%，第四卡略低目标。
+  只宣称首个辅助窗口平均达到50%，不承诺四卡持续或纯在线达标。
+- 验证：四工具语法/JSON及diff检查通过；90回合参数重放误差0，篡改applied parameter的负例被拒绝，
+  四路mask计数和加权误差精确还原旧汇总值（1e-10内）。
+- 更新AGENTS、执行/诊断文档，新增nominal matrix、固定标签诊断、参数动作审计工具及小型证据。
+  大型产物留在SSD `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/`。
+  指定ESN仍缺，无最终比较/收敛结论；Goal继续。GitHub只读可用，写入认证状态在提交后单独核对。
+
 ## 2026-10-25 — 公共filter透明性通过，登记保留学习状态的性能接续
 
 - 同42000步阻抗checkpoint和同主动长期条件：v1因误用CPU推理而与原cuda:1从首动作就产生

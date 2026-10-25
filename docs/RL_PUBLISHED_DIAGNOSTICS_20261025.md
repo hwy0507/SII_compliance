@@ -1,7 +1,8 @@
 # Published baseline learning diagnostics
 
 The first sections preserve the early CHEQ snapshot; later sections record the
-first complete condition cycle, numerical migration and contact audit. None is
+first complete condition cycle, numerical migration and contact audit.
+The latest complete-cycle/mask-stratified and parameter-action findings are at the end. None is
 a convergence claim. The early29000-step snapshot preceded a balanced30-condition
 cycle and included approximately10000 recovered transitions per interface.
 
@@ -311,3 +312,150 @@ exact terminal/nonterminal observation-action duplicates. It therefore does not
 establish irreducible observation aliasing as the cause of the remaining value
 error; no actor or critic information fields were changed on this hypothesis.
 Evidence stays in `runs/terminal_input_neighborhood_audit_v1`.
+
+
+## Complete LayerNorm cycle and bootstrap-mask correction
+
+All four CHEQ LayerNorm learners finished cycle0 normally, each collecting41,250
+new transitions (30 full55s episodes), in addition to imported replay. Mean
+returns were -33.51545828 / -.55531106 / -12.11115782 / -4.58189673, with strict
+success counts0/18/12/16, in Direct/Impedance/Admittance/VMC order. These are
+changing-policy training trajectories. The unchanged success counts versus the
+previous stage do not demonstrate learning improvement; network resets also
+prevent treating cross-stage curves as uninterrupted convergence evidence.
+
+An important diagnostic correction: CHEQ's fixed Bernoulli masks deliberately
+exclude some transition/critic pairs from that critic's training loss. Earlier
+terminal MAE pooled fitted and deliberately withheld predictions. That remains
+a valid ensemble prediction error, but must not be described entirely as
+training fit error. The new diagnostic preserves the pooled statistic and adds:
+
+| Interface | Pooled terminal MAE | In-bag MAE (pairs) | Out-of-bag MAE (pairs) | Alpha |
+|---|---:|---:|---:|---:|
+| Direct |63.173968|19.598477 (315)|246.191030 (75)|.044302|
+| Impedance |46.079629|30.806066 (322)|118.404441 (68)|.060335|
+| Admittance |73.277604|49.906551 (324)|188.008229 (66)|.023673|
+| VMC |185.050815|102.134920 (311)|511.466558 (79)|.142326|
+
+Each snapshot has78 terminal rows and5 critics (390 pairs). In-bag errors remain
+substantial. Out-of-bag means internal bootstrap withholding, **not unseen task
+conditions**. Critic loss rises after its earlier decline; finite arithmetic
+alone does not establish healthy optimization. Historical LayerNorm robustness
+probe errors also pooled both mask groups; their improvement is an ensemble
+prediction result, not a pure fitted-row calibration claim.
+
+Terminal sample error is also not a stand-alone convergence threshold. The fixed
+canonical observation does not explicitly contain remaining episode time, while
+horizon endings remove bootstrap. Similar physical observations can therefore
+have different time-dependent targets. The previous nearest-input search found
+no exact duplicates; that neither establishes nor rules out approximate state
+aliasing under the fixed inputs. Requiring every terminal prediction to equal
+its sampled reward, or resetting a learner on this metric alone, is unjustified.
+Assess repeated-cycle learning, finite/stable optimization and independent
+policy outcomes together. No time/privileged field has been added to the actor
+or critic, and no further learner reset is selected from this diagnostic.
+
+Immutable snapshots, plot, full reward decomposition and corrected diagnostics:
+`runs/diagnosis_cheq_layernorm_cycle00_masked/`. The original unstratified
+`runs/diagnosis_cheq_layernorm_cycle00/` remains preserved.
+
+## Finite fixed-label terminal fitting study
+
+`runs/terminal_fitting_probe_v1` completed4 interfaces ×2 sampling variants,
+5,000 critic-only updates per variant, batch16,384. Each variant restored the
+same checkpoint and optimizer. Labels were computed once from frozen target
+critics0/1 and one sampled next action per real replay row; terminal labels are
+exactly unbootstrapped rewards. Actor, target networks and temperature remained
+bit-identical, checked at each variant end. Original replay masks were retained.
+
+| Interface | Terminal MAE: uniform → terminal10% | Ordinary fixed-label MAE: uniform → terminal10% |
+|---|---:|---:|
+| Direct |54.431763 →48.330021|.930202 →1.021440|
+| Impedance |46.758320 →22.326107|1.329092 →1.505661|
+| Admittance |67.700394 →34.211300|.976086 →1.601816|
+| VMC |171.769775 →111.143280|3.003430 →3.915981|
+
+This is evidence that weighting matters for these fixed labels; it is not proof
+that oversampling improves online policy learning. Ordinary error increases,
+and substantial terminal error remains. v1 reports pooled errors only: the mask
+correction was discovered after its immutable source was launched. It saved no
+final critic weights, so no mask-specific endpoint is claimed retrospectively.
+Formal sampling, rewards and policies have not changed on this result.
+
+A bounded replication is now running in `runs/terminal_fitting_replication_v2`:
+two new seeds2026102511/2026102512, the same four checkpoints, two variants and
+5,000 updates each. It checks robustness to minibatch/next-action label sampling,
+adds mask-specific statistics, and saves auxiliary critic weights for analysis.
+It shares the four GPUs and CPU54; its weights are explicitly excluded from
+formal policy continuation. Completion/results must be checked in individual
+FINISHED/FAILURE receipts. These are useful finite auxiliary jobs, not an
+unbounded GPU occupancy loop or final baseline training.
+
+## Parameter action effect and exact shield replay
+
+`audit_published_parameter_cycle_20261025.py` independently replays saved virtual
+storage inputs through the frozen parameter shield for all90 completed parameter
+policy episodes. It checks exact journal/NPZ/trace action linkage, registered
+bounds/log-rate and source hashes. All123,750 updates match with max error0.
+
+| Interface | Updates | Rate-limited rows | Energy-limited rows | Non-nominal parameter rows |
+|---|---:|---:|---:|---:|
+| Impedance |41,250|22,222 (53.87%)|0|41,250|
+| Admittance |41,250|28,969 (70.23%)|0|41,250|
+| VMC |41,250|21,994 (53.32%)|0|41,250|
+
+Mean absolute applied log-parameter ratios relative to the nominal center are
+roughly .09–.11 by dimension. Changes are real; weak task improvement cannot
+be explained by the energy tank suppressing every action in this dataset.
+Impedance emits zero action7 intentionally while modifying its native Cartesian
+torque-law gains; zero action7 does not mean its RL parameters are ignored.
+Admittance/VMC emitted nonzero action7 on37,532/40,170 updates respectively.
+The result does not establish that larger changes would help, justify relaxing
+limits, reconstruct physical storage states, or prove global passivity.
+Evidence: `runs/parameter_cycle_audit_v1/results/AUDIT.json`.
+
+## Continuation and fixed-controller matrix status
+
+CHEQ performance migration has completed with four genuinely updating replacements
+in `runs/cheq_performance_seed20261025_v1` / `runtime/source_train06`. It preserved
+network/optimizer/targets/alpha/RNG/replay including masks and complete cycle
+history. Parent total steps were120444/121765/121820/122526, all at82,500 updates.
+This is exact learner continuation at a complete-cycle boundary; the earlier
+LayerNorm restart was not. Its cycle archiver is now active inside this run.
+SAC remains in `sac_layernorm_seed20261025_v2`, draining cycle0 before its already
+registered coordinator replaces each method. Do not launch duplicate learners.
+
+`runs/nominal_four_interfaces_cohort30_v1` uses CPU52/53 for120 fixed-controller
+cases (4 existing interfaces ×the same30 conditions). Zero normalized actions,
+physical/source hashes, raw contact audit, public-filter replay and reward
+reconstruction are checked per episode. Six cases had completed at this report
+snapshot; the matrix is ongoing. All four methods fail the first passive case
+at carry. On the first active-short case, fixed Direct and Impedance succeed
+at24.52s/12.96s, peaks47.0487/45.3060Nm, with no human contact (ratio NA).
+These partial results cannot define the final SPT reference or establish a
+ranking, but reinforce that successful RL trajectories alone do not prove a
+learning benefit. All task failures remain included.
+
+The60s GPU window with v1 terminal probes measured means57.67/57.10/59.12/60.47%
+and minima34/23/40/6%. A pure-online window after CHEQ migration but before these
+probes measured48.22/39.35/35.90/39.67%. All-card mean50% was achieved with
+auxiliary fitting in the measured window, not guaranteed for online training
+alone or every instant. Raw measurements remain in the two corresponding
+PERFORMANCE_*_GPU_60S_01.json files under `runs/`.
+
+Small numerical evidence and source receipts are committed as
+`code/mujoco_6d_vmc_benchmark/docs/evidence/PUBLISHED_COMPLIANCE_CYCLE_MASK_AUDIT_20261025.json`.
+No sufficient convergence, full fixed-policy comparison, final shared empirical
+SPT reference or designated-ESN comparison is claimed.
+
+Validation in this revision: all90 completed parameter episodes replayed with
+zero error; a separately altered applied-parameter record was rejected. For
+all four critics' reports, mask counts and weighted errors reconstruct the
+original pooled390-pair statistic to1e-10. Four analysis/runner scripts parse,
+and repository whitespace checks pass. Existing frozen physics runs and their
+source snapshots were not edited by these checks.
+
+A subsequent60s window during v2 replication measured54.30/55.47/57.35/49.10%
+(mean), with minima16/33/21/21%. Thus even auxiliary-inclusive all-card50% is
+not a persistent guarantee; GPU3 fell slightly below the requested average.
+Evidence: `runs/PERFORMANCE_WITH_TERMINAL_REPLICATION_GPU_60S_01.json`.

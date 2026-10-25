@@ -1,0 +1,595 @@
+{
+  "captured_unix": 1792936106.6344154,
+  "server_base": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl",
+  "convergence_claim": false,
+  "mask_diagnosis": {
+    "direct": {
+      "steps": 120444,
+      "updates": 82500,
+      "checkpoint_sha256": "3352ffbd1d8135ce393ac24ba316fbebcc5f4ecb1fb4ff715d1116b672e54eb3",
+      "terminal_count": 78,
+      "alpha": 0.04430191591382027,
+      "terminal_q_absolute_error": {
+        "count": 390,
+        "mean": 63.17396807548327,
+        "minimum": 0.000347137451171875,
+        "maximum": 332.2464904785156,
+        "p50": 7.45566463470459,
+        "p95": 292.3378372192382
+      },
+      "terminal_q_in_bag_absolute_error": {
+        "count": 315,
+        "mean": 19.598477221292164,
+        "minimum": 0.000347137451171875,
+        "maximum": 326.0120849609375,
+        "p50": 4.77522087097168,
+        "p95": 48.80029182434084
+      },
+      "terminal_q_out_of_bag_absolute_error": {
+        "count": 75,
+        "mean": 246.19102966308594,
+        "minimum": 198.0403594970703,
+        "maximum": 332.2464904785156,
+        "p50": 241.261962890625,
+        "p95": 314.65403442382814
+      }
+    },
+    "impedance": {
+      "steps": 121765,
+      "updates": 82500,
+      "checkpoint_sha256": "f9368eb59b2cb38d9b5b08033914b445d852f5f141805312a787f4001557fc19",
+      "terminal_count": 78,
+      "alpha": 0.06033501401543617,
+      "terminal_q_absolute_error": {
+        "count": 390,
+        "mean": 46.079628858810814,
+        "minimum": 0.10830116271972656,
+        "maximum": 262.2528991699219,
+        "p50": 15.075932502746582,
+        "p95": 148.04499664306638
+      },
+      "terminal_q_in_bag_absolute_error": {
+        "count": 322,
+        "mean": 30.80606608361191,
+        "minimum": 0.10830116271972656,
+        "maximum": 262.2528991699219,
+        "p50": 10.273445129394531,
+        "p95": 94.49608268737792
+      },
+      "terminal_q_out_of_bag_absolute_error": {
+        "count": 68,
+        "mean": 118.40444082372329,
+        "minimum": 91.52439880371094,
+        "maximum": 204.14817810058594,
+        "p50": 98.64581680297852,
+        "p95": 182.4659492492675
+      }
+    },
+    "admittance": {
+      "steps": 121820,
+      "updates": 82500,
+      "checkpoint_sha256": "ae6370f0d170b3543dcef01e7c7c3e7de390f919900c4ecacb13710ccdb104f9",
+      "terminal_count": 78,
+      "alpha": 0.023672694340348244,
+      "terminal_q_absolute_error": {
+        "count": 390,
+        "mean": 73.27760405662733,
+        "minimum": 0.013509750366210938,
+        "maximum": 305.2015686035156,
+        "p50": 9.091044902801514,
+        "p95": 256.02692489624025
+      },
+      "terminal_q_in_bag_absolute_error": {
+        "count": 324,
+        "mean": 49.90655087541651,
+        "minimum": 0.013509750366210938,
+        "maximum": 266.83404541015625,
+        "p50": 6.0657758712768555,
+        "p95": 250.0955009460449
+      },
+      "terminal_q_out_of_bag_absolute_error": {
+        "count": 66,
+        "mean": 188.00822876438951,
+        "minimum": 107.93209075927734,
+        "maximum": 305.2015686035156,
+        "p50": 196.52581787109375,
+        "p95": 263.69840240478516
+      }
+    },
+    "vmc": {
+      "steps": 122526,
+      "updates": 82500,
+      "checkpoint_sha256": "a2b345fd5df4599068b1c879368cb064f15c68e2d45fdbf1471f4975db90aa9f",
+      "terminal_count": 78,
+      "alpha": 0.1423255354166031,
+      "terminal_q_absolute_error": {
+        "count": 390,
+        "mean": 185.05081542822032,
+        "minimum": 0.017608642578125,
+        "maximum": 797.615234375,
+        "p50": 45.97025680541992,
+        "p95": 755.6248260498047
+      },
+      "terminal_q_in_bag_absolute_error": {
+        "count": 311,
+        "mean": 102.13491951614331,
+        "minimum": 0.017608642578125,
+        "maximum": 653.3513793945312,
+        "p50": 27.061758041381836,
+        "p95": 487.1131286621094
+      },
+      "terminal_q_out_of_bag_absolute_error": {
+        "count": 79,
+        "mean": 511.4665575631057,
+        "minimum": 179.12796020507812,
+        "maximum": 797.615234375,
+        "p50": 608.0169677734375,
+        "p95": 793.2679992675781
+      }
+    }
+  },
+  "parameter_cycle": {
+    "impedance": {
+      "rows": 41250,
+      "bound_limited_rows": 3171,
+      "rate_limited_rows": 22222,
+      "energy_limited_rows": 0,
+      "nonzero_executed_action_rows": 0,
+      "nonnominal_parameter_rows": 41250,
+      "episodes": 30,
+      "parameter_keys": [
+        "stiffness",
+        "rot_stiffness",
+        "zeta",
+        "rot_zeta",
+        "vertical_stiffness_ratio"
+      ],
+      "strict_successes": 18,
+      "shield_max_abs_error": 0.0,
+      "minimum_energy_scale": 1.0,
+      "minimum_tank_j": 0.5890692547819008,
+      "action_abs_mean_per_dimension": [
+        0.2187801940183126,
+        0.21829818645280077,
+        0.20911571021666725,
+        0.2018715842567555,
+        0.20721479836045562
+      ],
+      "parameter_abs_log_ratio_mean_per_dimension": [
+        0.10798334835855967,
+        0.10916258405641656,
+        0.10248495680873884,
+        0.09886844367948178,
+        0.09590083880369164
+      ],
+      "parameter_ratio_min_per_dimension": [
+        0.5723201764762762,
+        0.6428776059294476,
+        0.5379442801447193,
+        0.6140446967421928,
+        0.5131516355574802
+      ],
+      "parameter_ratio_max_per_dimension": [
+        1.5319250522879322,
+        1.884928699646792,
+        1.533698230303419,
+        1.4421946482030028,
+        1.4349454778334252
+      ]
+    },
+    "admittance": {
+      "rows": 41250,
+      "bound_limited_rows": 3237,
+      "rate_limited_rows": 28969,
+      "energy_limited_rows": 0,
+      "nonzero_executed_action_rows": 37532,
+      "nonnominal_parameter_rows": 41250,
+      "episodes": 30,
+      "parameter_keys": [
+        "stiffness",
+        "rot_stiffness",
+        "mass",
+        "inertia",
+        "zeta",
+        "rot_zeta",
+        "vertical_stiffness_ratio"
+      ],
+      "strict_successes": 12,
+      "shield_max_abs_error": 0.0,
+      "minimum_energy_scale": 1.0,
+      "minimum_tank_j": 0.7978166892283702,
+      "action_abs_mean_per_dimension": [
+        0.22303973594452758,
+        0.2092833705766518,
+        0.20619354216973107,
+        0.20391226820211059,
+        0.2087454013351335,
+        0.21188594862021357,
+        0.20603786436413973
+      ],
+      "parameter_abs_log_ratio_mean_per_dimension": [
+        0.10740424108471765,
+        0.10083692139835077,
+        0.1010342513935358,
+        0.09900950332482367,
+        0.09986440472408753,
+        0.1006174220194335,
+        0.09791376260499922
+      ],
+      "parameter_ratio_min_per_dimension": [
+        0.6051990054411803,
+        0.6448912657107361,
+        0.5821511195180792,
+        0.5714766380553604,
+        0.7414450642667815,
+        0.5930839728286148,
+        0.6162786666059985
+      ],
+      "parameter_ratio_max_per_dimension": [
+        1.8044999442293603,
+        1.7691464505382906,
+        1.7852480462554132,
+        1.6128897147038437,
+        1.7266260994455807,
+        1.6670886847236264,
+        1.6133514363888082
+      ]
+    },
+    "vmc": {
+      "rows": 41250,
+      "bound_limited_rows": 4342,
+      "rate_limited_rows": 21994,
+      "energy_limited_rows": 0,
+      "nonzero_executed_action_rows": 40170,
+      "nonnominal_parameter_rows": 41250,
+      "episodes": 30,
+      "parameter_keys": [
+        "k_xy_scale",
+        "k_z_scale",
+        "k_rot_scale",
+        "d_translation_scale",
+        "d_rotation_scale",
+        "velocity_weight",
+        "offset_gain"
+      ],
+      "strict_successes": 16,
+      "shield_max_abs_error": 0.0,
+      "minimum_energy_scale": 1.0,
+      "minimum_tank_j": 0.7953267528535514,
+      "action_abs_mean_per_dimension": [
+        0.19167916967898424,
+        0.1880521159499981,
+        0.1869658973259713,
+        0.19247153267070574,
+        0.1960354508495173,
+        0.18253129210451483,
+        0.19022061731444717
+      ],
+      "parameter_abs_log_ratio_mean_per_dimension": [
+        0.0991501275145101,
+        0.09717998659244163,
+        0.09529555509723121,
+        0.09756188976327072,
+        0.10176837562214244,
+        0.09035297590509939,
+        0.10320573465353657
+      ],
+      "parameter_ratio_min_per_dimension": [
+        0.5515674595058853,
+        0.5215812541386998,
+        0.5444142094954187,
+        0.6325977610860938,
+        0.506441168781375,
+        0.7901523695171362,
+        0.5712373225024113
+      ],
+      "parameter_ratio_max_per_dimension": [
+        1.604508010639563,
+        1.6929883306337803,
+        1.5772716697253684,
+        1.4267990281485512,
+        1.5065106506861266,
+        1.49850886052675,
+        1.5709026368816312
+      ]
+    }
+  },
+  "terminal_fixed_label_probe": {
+    "direct": {
+      "controller": "direct",
+      "results": [
+        {
+          "name": "uniform",
+          "initial": {
+            "terminal_mae": 63.17396545410156,
+            "ordinary_fixed_label_mae": 1.188223958015442
+          },
+          "final": {
+            "variant": "uniform",
+            "updates": 5000,
+            "loss": 7.149615287780762,
+            "terminal_mae": 54.4317626953125,
+            "ordinary_fixed_label_mae": 0.930202305316925,
+            "updated_unix": 1792935566.1429014
+          },
+          "actor_targets_temperature_exact": true
+        },
+        {
+          "name": "terminal_10pct",
+          "initial": {
+            "terminal_mae": 63.17396545410156,
+            "ordinary_fixed_label_mae": 1.188223958015442
+          },
+          "final": {
+            "variant": "terminal_10pct",
+            "updates": 5000,
+            "loss": 14.832275390625,
+            "terminal_mae": 48.330020904541016,
+            "ordinary_fixed_label_mae": 1.0214396715164185,
+            "updated_unix": 1792935929.5868354
+          },
+          "actor_targets_temperature_exact": true
+        }
+      ],
+      "checkpoint_sha256": "3352ffbd1d8135ce393ac24ba316fbebcc5f4ecb1fb4ff715d1116b672e54eb3",
+      "fixed_labels_sha256": "cd31375fb92683b4350a998e0f27f6fdba72b7f9dd924323b52c801df246ff80",
+      "source_sha256": "7088c3d16ce5bb4b411efa2e04386c8e15c1015561fc8438fc70ffededd12735",
+      "registration_sha256": "949ecb534616cb80c1483f6d73c1e1a0db51387175362df56633b8bef222242d",
+      "terminal_rows": 78,
+      "total_rows": 120444,
+      "target_pair": "frozen critics0/1; one sampled next action per replay row",
+      "actor_temperature_and_targets_updated": false,
+      "formal_policy_weights_changed": false,
+      "scope": "in_sample_fixed_label_critic_fitting_only",
+      "convergence_claim": false
+    },
+    "impedance": {
+      "controller": "impedance",
+      "results": [
+        {
+          "name": "uniform",
+          "initial": {
+            "terminal_mae": 46.07963943481445,
+            "ordinary_fixed_label_mae": 1.5601333379745483
+          },
+          "final": {
+            "variant": "uniform",
+            "updates": 5000,
+            "loss": 70.71906280517578,
+            "terminal_mae": 46.75831985473633,
+            "ordinary_fixed_label_mae": 1.3290916681289673,
+            "updated_unix": 1792935561.9477923
+          },
+          "actor_targets_temperature_exact": true
+        },
+        {
+          "name": "terminal_10pct",
+          "initial": {
+            "terminal_mae": 46.07963943481445,
+            "ordinary_fixed_label_mae": 1.5601333379745483
+          },
+          "final": {
+            "variant": "terminal_10pct",
+            "updates": 5000,
+            "loss": 48.76203155517578,
+            "terminal_mae": 22.326107025146484,
+            "ordinary_fixed_label_mae": 1.5056613683700562,
+            "updated_unix": 1792935925.1149602
+          },
+          "actor_targets_temperature_exact": true
+        }
+      ],
+      "checkpoint_sha256": "f9368eb59b2cb38d9b5b08033914b445d852f5f141805312a787f4001557fc19",
+      "fixed_labels_sha256": "cd865030a04ac396013d98979c866a799be445cd37df85d7cb66f80fa290616b",
+      "source_sha256": "7088c3d16ce5bb4b411efa2e04386c8e15c1015561fc8438fc70ffededd12735",
+      "registration_sha256": "949ecb534616cb80c1483f6d73c1e1a0db51387175362df56633b8bef222242d",
+      "terminal_rows": 78,
+      "total_rows": 121765,
+      "target_pair": "frozen critics0/1; one sampled next action per replay row",
+      "actor_temperature_and_targets_updated": false,
+      "formal_policy_weights_changed": false,
+      "scope": "in_sample_fixed_label_critic_fitting_only",
+      "convergence_claim": false
+    },
+    "admittance": {
+      "controller": "admittance",
+      "results": [
+        {
+          "name": "uniform",
+          "initial": {
+            "terminal_mae": 73.27761840820312,
+            "ordinary_fixed_label_mae": 1.166883111000061
+          },
+          "final": {
+            "variant": "uniform",
+            "updates": 5000,
+            "loss": 76.44084930419922,
+            "terminal_mae": 67.70039367675781,
+            "ordinary_fixed_label_mae": 0.976086437702179,
+            "updated_unix": 1792935567.2093709
+          },
+          "actor_targets_temperature_exact": true
+        },
+        {
+          "name": "terminal_10pct",
+          "initial": {
+            "terminal_mae": 73.27761840820312,
+            "ordinary_fixed_label_mae": 1.166883111000061
+          },
+          "final": {
+            "variant": "terminal_10pct",
+            "updates": 5000,
+            "loss": 50.85564041137695,
+            "terminal_mae": 34.211299896240234,
+            "ordinary_fixed_label_mae": 1.6018164157867432,
+            "updated_unix": 1792935930.850161
+          },
+          "actor_targets_temperature_exact": true
+        }
+      ],
+      "checkpoint_sha256": "ae6370f0d170b3543dcef01e7c7c3e7de390f919900c4ecacb13710ccdb104f9",
+      "fixed_labels_sha256": "cf7a64280c07ec0ad298ee0e1fb8c5ba4be7e7baed921777a5a28f0ec56281ae",
+      "source_sha256": "7088c3d16ce5bb4b411efa2e04386c8e15c1015561fc8438fc70ffededd12735",
+      "registration_sha256": "949ecb534616cb80c1483f6d73c1e1a0db51387175362df56633b8bef222242d",
+      "terminal_rows": 78,
+      "total_rows": 121820,
+      "target_pair": "frozen critics0/1; one sampled next action per replay row",
+      "actor_temperature_and_targets_updated": false,
+      "formal_policy_weights_changed": false,
+      "scope": "in_sample_fixed_label_critic_fitting_only",
+      "convergence_claim": false
+    },
+    "vmc": {
+      "controller": "vmc",
+      "results": [
+        {
+          "name": "uniform",
+          "initial": {
+            "terminal_mae": 185.05081176757812,
+            "ordinary_fixed_label_mae": 3.6424152851104736
+          },
+          "final": {
+            "variant": "uniform",
+            "updates": 5000,
+            "loss": 142.864013671875,
+            "terminal_mae": 171.769775390625,
+            "ordinary_fixed_label_mae": 3.003430128097534,
+            "updated_unix": 1792935566.00413
+          },
+          "actor_targets_temperature_exact": true
+        },
+        {
+          "name": "terminal_10pct",
+          "initial": {
+            "terminal_mae": 185.05081176757812,
+            "ordinary_fixed_label_mae": 3.6424152851104736
+          },
+          "final": {
+            "variant": "terminal_10pct",
+            "updates": 5000,
+            "loss": 230.86595153808594,
+            "terminal_mae": 111.14328002929688,
+            "ordinary_fixed_label_mae": 3.915980577468872,
+            "updated_unix": 1792935930.140498
+          },
+          "actor_targets_temperature_exact": true
+        }
+      ],
+      "checkpoint_sha256": "a2b345fd5df4599068b1c879368cb064f15c68e2d45fdbf1471f4975db90aa9f",
+      "fixed_labels_sha256": "9ba2e15d407753f8da115ffb69c516d77938e0fcee35acacc9d5e04d344c77fa",
+      "source_sha256": "7088c3d16ce5bb4b411efa2e04386c8e15c1015561fc8438fc70ffededd12735",
+      "registration_sha256": "949ecb534616cb80c1483f6d73c1e1a0db51387175362df56633b8bef222242d",
+      "terminal_rows": 78,
+      "total_rows": 122526,
+      "target_pair": "frozen critics0/1; one sampled next action per replay row",
+      "actor_temperature_and_targets_updated": false,
+      "formal_policy_weights_changed": false,
+      "scope": "in_sample_fixed_label_critic_fitting_only",
+      "convergence_claim": false
+    }
+  },
+  "cheq_migration": {
+    "ended_unix": 1792934646.321,
+    "all_new_learners_updated": true,
+    "archive_pid": 2473593,
+    "parent_states": {
+      "vmc": {
+        "steps": 122526,
+        "updates": 82500,
+        "cycle": 0,
+        "checkpoint_sha256": "a2b345fd5df4599068b1c879368cb064f15c68e2d45fdbf1471f4975db90aa9f"
+      },
+      "impedance": {
+        "steps": 121765,
+        "updates": 82500,
+        "cycle": 0,
+        "checkpoint_sha256": "f9368eb59b2cb38d9b5b08033914b445d852f5f141805312a787f4001557fc19"
+      },
+      "admittance": {
+        "steps": 121820,
+        "updates": 82500,
+        "cycle": 0,
+        "checkpoint_sha256": "ae6370f0d170b3543dcef01e7c7c3e7de390f919900c4ecacb13710ccdb104f9"
+      },
+      "direct": {
+        "steps": 120444,
+        "updates": 82500,
+        "cycle": 0,
+        "checkpoint_sha256": "3352ffbd1d8135ce393ac24ba316fbebcc5f4ecb1fb4ff715d1116b672e54eb3"
+      }
+    },
+    "convergence_claim": false
+  },
+  "gpu": {
+    "runs": [
+      "cheq_performance_seed20261025_v1",
+      "sac_layernorm_seed20261025_v2",
+      "terminal_fitting_probe_v1"
+    ],
+    "summary": {
+      "0": {
+        "mean": 57.666666666666664,
+        "minimum": 34,
+        "maximum": 82
+      },
+      "1": {
+        "mean": 57.1,
+        "minimum": 23,
+        "maximum": 81
+      },
+      "2": {
+        "mean": 59.11666666666667,
+        "minimum": 40,
+        "maximum": 83
+      },
+      "3": {
+        "mean": 60.46666666666667,
+        "minimum": 6,
+        "maximum": 83
+      }
+    }
+  },
+  "evidence": [
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/diagnosis_cheq_layernorm_cycle00_masked/DIAGNOSIS.json",
+      "sha256": "32d091a55759a674c70df6e7580752751eb8c2b2e82e03ee5d3cbaebac2706ea"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_cycle_audit_v1/results/AUDIT.json",
+      "sha256": "077f7412b1eacf7f3b534f07f7414a2d7fcdedc7258e1ec7ae7e20adbf106379"
+    }
+  ],
+  "limitations": [
+    "v1 terminal fitting errors aggregate in-bag and out-of-bag predictions; no per-mask endpoint is available for v1.",
+    "Frozen-label fitting does not establish policy improvement or convergence.",
+    "Parameter replay uses saved storage state; native controller and physical dynamics were not reconstructed.",
+    "GPU samples include finite auxiliary fitting, not only online training."
+  ],
+  "gpu_replication_window": {
+    "summary": {
+      "0": {
+        "mean": 54.3,
+        "minimum": 16,
+        "maximum": 84
+      },
+      "1": {
+        "mean": 55.46666666666667,
+        "minimum": 33,
+        "maximum": 85
+      },
+      "2": {
+        "mean": 57.35,
+        "minimum": 21,
+        "maximum": 81
+      },
+      "3": {
+        "mean": 49.1,
+        "minimum": 21,
+        "maximum": 76
+      }
+    },
+    "scope": "CHEQ source_train06 plus SAC source_train05 online and finite terminal fitting replication",
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/PERFORMANCE_WITH_TERMINAL_REPLICATION_GPU_60S_01.json",
+    "sha256": "dc8378e36911234de3bebcd20447118e579b553b241b8608d225df7206b9bfa5"
+  }
+}

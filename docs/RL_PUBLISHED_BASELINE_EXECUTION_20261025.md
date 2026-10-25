@@ -232,7 +232,7 @@ A second launch (`v2`) was cancelled before sampling or updates because replay
 import repeatedly decompressed NPZ arrays per row. Materializing the columns
 once repaired this startup problem. All attempts and failures remain on SSD.
 
-**Current primary run:** `runs/cheq_four_interfaces_seed20261025_v3`, registered
+**Historical primary run (superseded by the continuations below):** `runs/cheq_four_interfaces_seed20261025_v3`, registered
 by `runs/cohort30_v2/REGISTRATION_GPU_V4.json`, with frozen `source_train04`.
 Direct/GPU0, Impedance/GPU1, Admittance/GPU2, VMC/GPU3 each have nine physics
 samplers. Thirty-six samplers and four learner CPUs reserve40 cores. Optimizers
@@ -303,3 +303,40 @@ GitHub main read access works. Write access is unavailable in this session;
 local commits are preserved and are not described as pushed.
 
 Latest calibration and observational audit evidence: [learning diagnostics](RL_PUBLISHED_DIAGNOSTICS_20261025.md). The post-warmup joint GPU window reached mean utilization above50% on each card; terminal value calibration and full-cycle convergence remain incomplete.
+
+
+## Latest live continuation and resource state
+
+CHEQ has completed its source_train06 performance migration. Current primary:
+`runs/cheq_performance_seed20261025_v1`; immutable parents and all four active
+replacement receipts are in MIGRATION_FINISHED/LAUNCH. The cycle0 parents had
+120444/121765/121820/122526 retained transitions and82,500 optimizer updates;
+41,250 transitions per method were newly collected in that LayerNorm stage.
+Network, optimizers, targets, alpha, RNG, replay masks and cycle history are
+preserved in this migration. Cycle numbering continues at1. The new full-cycle
+archiver is inside this run. Original LayerNorm cycle0 archives are complete.
+
+SAC remains in `runs/sac_layernorm_seed20261025_v2`, with its existing
+`sac_performance_seed20261025_v1` coordinator waiting for complete-cycle parents.
+Read actual processes and migration receipts before dispatching: stop requests
+in those parent directories are controlled handoffs, not a user cancellation.
+
+Formal training reserves52 CPUs; CPUs52/53 now run the independently registered
+120-case fixed-controller matrix `runs/nominal_four_interfaces_cohort30_v1`.
+They are not free slots. CPU54 hosts lightweight coordination/archiving and
+bounded diagnostics. Four fixed-label fitting probes have finished in
+`terminal_fitting_probe_v1`; two-seed replication with explicit bootstrap-mask
+statistics runs in `terminal_fitting_replication_v2`. Auxiliary fitting cannot
+be described as online transitions or a final trained policy.
+
+The complete LayerNorm cycle has strict successes0/18/12/16 out of30 and no
+established learning improvement. Mask-stratified terminal calibration, exact
+parameter-shield replay and partial nominal comparisons are documented in
+[learning diagnostics](RL_PUBLISHED_DIAGNOSTICS_20261025.md). They identify
+remaining scientific checks; they do not end the training goal. One measured auxiliary-inclusive GPU window reached57.67/57.10/59.12/60.47%.
+The subsequent replication window was54.30/55.47/57.35/49.10%; GPU3 is again
+slightly below50%, so sustained/all-card utilization remains unresolved.
+
+Protected physics/MJB/gates/actor information/filter/actuator contracts were not
+changed by these diagnostics. No ESN checkpoint has become available, and no
+ESN comparison, full final SPT matrix or convergence claim has been completed.
