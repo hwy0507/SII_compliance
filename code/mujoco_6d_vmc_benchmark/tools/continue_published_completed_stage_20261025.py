@@ -8,6 +8,7 @@ import argparse
 import copy
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import subprocess
@@ -74,7 +75,7 @@ def main(args):
     diagnosed=json.loads(diagnosis.read_text())
     if diagnosed['cycle']!=stage['parent_cycle']:raise ValueError('Wrong diagnosed stage')
     sys.path.insert(0,str(runtime/'source/tools'))
-    from train_published_compliance_20261025 import validate_resume_protocol
+    from train_published_compliance_20261025 import validate_resume_protocol, registered_stage_actor_rates
     pdigest=p['resume_parent_registration']['sha256']
     validate_resume_protocol(pdigest,p,sha(args.registration))
     jobs=json.loads((parent/'LAUNCH.json').read_text())['jobs']
@@ -94,6 +95,11 @@ def main(args):
             raise ValueError('Parent archive not covered by invariant diagnosis')
         state=torch.load(checkpoint,map_location='cpu',weights_only=False)
         verify_boundary(state,finished,method,pdigest,stage['parent_cycle'],expected)
+        registered_before,_=registered_stage_actor_rates(stage)
+        actual_before=[g['lr'] for g in state['learner']['actor_optimizer']['param_groups']]
+        if (len(actual_before)!=len(registered_before)
+                or any(not math.isfinite(a) or abs(a-b)>1e-12 for a,b in zip(actual_before,registered_before))):
+            raise ValueError('Parent actor learning rate differs from registration: '+method)
         parents[method]=dict(checkpoint=str(checkpoint),sha256=expected,steps=state['steps'],
             updates=state['learner']['num_gradient_steps'],execution=execution,job=job)
         del state

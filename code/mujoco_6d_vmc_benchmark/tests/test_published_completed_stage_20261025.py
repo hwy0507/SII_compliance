@@ -10,10 +10,40 @@ import torch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 from continue_published_completed_stage_20261025 import prepare_state,verify_boundary
 from validate_published_finite_check_20261025 import digest
-from train_published_compliance_20261025 import validate_resume_protocol
+from train_published_compliance_20261025 import (validate_resume_protocol,
+    validate_completed_stage_checkpoint, registered_stage_actor_rates)
 
 
 class CompletedStageTests(unittest.TestCase):
+    def test_unchanged_lower_rate_retains_entire_cycle_history(self):
+        checkpoint=dict(boundary='complete_condition_cycle',cycle=9,
+            cycles=[dict(cycle=8,reward_mean=-3.),dict(cycle=9,reward_mean=-2.)],
+            learner=dict(actor_optimizer=dict(param_groups=[dict(lr=3e-5)],state={})))
+        stage=dict(parent_cycle=9,new_cycles=2,actor_learning_rate_factor=None,
+                   parent_actor_learning_rates=[3e-5])
+        prepared,receipt=prepare_state(checkpoint,None)
+        self.assertEqual(digest(prepared),digest(checkpoint))
+        self.assertFalse(receipt['cycle_history_cleared'])
+        validate_completed_stage_checkpoint(prepared,stage,2,[3e-5])
+        for rates in [[3e-4],[3e-6],[float('nan')],[],[3e-5,3e-5]]:
+            with self.assertRaisesRegex(ValueError,'learning rate'):
+                validate_completed_stage_checkpoint(prepared,stage,2,rates)
+        with self.assertRaisesRegex(ValueError,'boundary'):
+            validate_completed_stage_checkpoint(prepared,stage,0,[3e-5])
+
+    def test_first_intervention_compatible_but_not_compounded(self):
+        stage=dict(parent_cycle=7,new_cycles=2,actor_learning_rate_factor=.1)
+        self.assertEqual(registered_stage_actor_rates(stage)[0],[3e-4])
+        checkpoint=dict(boundary='complete_condition_cycle',cycle=7,cycles=[])
+        validate_completed_stage_checkpoint(checkpoint,stage,2,[3e-5])
+        with self.assertRaisesRegex(ValueError,'plateau history'):
+            validate_completed_stage_checkpoint(dict(checkpoint,cycles=[{'cycle':7}]),stage,2,[3e-5])
+        with self.assertRaisesRegex(ValueError,'compound'):
+            registered_stage_actor_rates(dict(stage,parent_actor_learning_rates=[3e-5]))
+        for rates in [[],[0.],[-1.],[float('nan')],[float('inf')]]:
+            with self.assertRaisesRegex(ValueError,'learning rates'):
+                registered_stage_actor_rates(dict(stage,parent_actor_learning_rates=rates))
+
     def test_scientific_lr_preparation_preserves_every_other_state(self):
         original=dict(cycles=[dict(cycle=7)],replay=dict(observations=np.ones((4,49),np.float32)),
             learner=dict(actor_optimizer=dict(param_groups=[dict(lr=3e-4)],state={0:dict(exp_avg=torch.ones(4),step=torch.tensor(4))}),

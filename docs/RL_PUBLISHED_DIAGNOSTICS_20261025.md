@@ -1990,3 +1990,46 @@ minima5/9/0/0. Four source12 CHEQ and four source09 SAC learners plus frozen
 cycle7 Direct inference were active; all auxiliary workers had exited. This
 shared window still fails the requested four-card50% target and is not an
 isolated speedup measurement. Raw `runs/ACTOR_LR_ONLINE_GPU_60S_01.json`.
+
+
+## Prepared unchanged-LR continuation after the current scientific trial
+
+A read-only follow-up found a future handoff limitation in source12: the
+unchanged-rate branch expected3e-4 unconditionally. It would reject a legitimate
+later continuation retaining the current3e-5, despite the checkpoint preparer
+already preserving the lower rate and history. This does not affect the live
+first LR-intervention stage8/9.
+
+The candidate source13 trainer now validates an explicitly registered list of
+parent actor learning rates. The dispatcher checks those rates against every
+reviewed parent checkpoint before launching any learner. With factorNone, the
+full optimizer state and cycle history remain exact; with the first0.1 factor,
+backward compatibility with the original3e-4→3e-5 trial is retained. Repeated
+compounding of the0.1 intervention is rejected. Boundary/budget, malformed or
+nonfinite rates, mismatched optimizer-group count, protected source/objective,
+and unlike-stage history checks remain enforced. Plateau criteria are unchanged.
+
+Five completed-stage tests and all eight existing performance-contract tests
+passed. Preparation against all four actual immutable lower-LR checkpoint
+states retained every field exactly, including weights, moments, RNG, replay
+and history. These are real archived preparation states from cycle7, not
+invented future cycle9 archives. The separately checked future protocol is
+only a structural candidate with an intentionally absent scientific review;
+it does not select or dispatch a new stage. No weights were saved or promoted,
+no optimizer updates or physics ran, and no STOP/continuation process started.
+
+`runtime/source_train13` and `runtime/completed_stage_dispatch_v2` are frozen
+candidates only. The sole source change relative to source12 is the trainer;
+learner, robot assets, parameter adapter and published implementation manifests
+are identical. Current four source12 learners and four SACsource09 learners
+remain live. They must finish and review the registered cycles8/9 before any
+new continuation decision. This preparation does not imply that their learning
+has converged. Evidence: `PUBLISHED_UNCHANGED_LR_PREPARATION_20261025.json`;
+full receipts under
+`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/unchanged_actor_lr_preparation_v1`.
+
+## Live physical-worker profile (read-only, 2026-10-25)
+
+A 60-second, 100 Hz py-spy sample of the existing source12 Direct active-short0600 worker produced 4,895 stacks and zero errors; PID/start ticks matched before and after. Observer-inclusive samples were 2,619 (53.50%); the mj_step call-site leaf had 921 (18.82%). These are recorded-stack shares, with idle threads excluded, no native unwinding, and one condition under shared load. They are neither all-system CPU shares nor evidence of a measured GPU speedup.
+
+Contact traversal and per-substep telemetry warrant further profiling. They implement frozen contact/safety/reward evidence and must retain every substep and numerical operation order. No optimization was deployed, no frozen runtime edited, no additional simulation process or auxiliary learner update started. The actor-LR trial continues its original cycles8/9; source13 is only prepared. Full receipt, source hashes, frame tables and live progress: PUBLISHED_PHYSICAL_WORKER_PROFILE_20261025.json; raw artifacts: /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/physical_worker_profile_v1.

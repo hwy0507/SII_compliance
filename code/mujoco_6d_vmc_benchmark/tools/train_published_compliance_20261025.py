@@ -37,6 +37,32 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def registered_stage_actor_rates(stage):
+    # Older first-intervention registrations implicitly start at 3e-4. Later
+    # unchanged continuations must explicitly retain the reviewed parent rate.
+    before = stage.get('parent_actor_learning_rates', [3e-4])
+    factor = stage['actor_learning_rate_factor']
+    if (not isinstance(before, list) or not before
+            or any(not isinstance(v, (float, int)) or not np.isfinite(v) or v <= 0 for v in before)
+            or factor not in (None, .1)):
+        raise ValueError('Invalid registered actor learning rates')
+    if factor is not None and any(abs(v-3e-4) > 1e-12 for v in before):
+        raise ValueError('Do not compound the first actor-rate intervention')
+    return before, [v * (1. if factor is None else factor) for v in before]
+
+
+def validate_completed_stage_checkpoint(checkpoint, stage, cycle_budget, actual_rates):
+    if (checkpoint is None or checkpoint['boundary'] != 'complete_condition_cycle'
+            or checkpoint['cycle'] != stage['parent_cycle'] or cycle_budget != stage['new_cycles']):
+        raise ValueError('Reviewed continuation requires its exact parent boundary and stage budget')
+    _, expected = registered_stage_actor_rates(stage)
+    if (len(actual_rates) != len(expected)
+            or any(not np.isfinite(a) or abs(a-e) > 1e-12 for a,e in zip(actual_rates, expected))):
+        raise ValueError('Prepared actor learning rate differs from scientific registration')
+    if stage['actor_learning_rate_factor'] is not None and checkpoint['cycles']:
+        raise ValueError('Changed optimizer stage must not pool prior plateau history')
+
+
 def validate_resume_protocol(checkpoint_digest, protocol, current_digest):
     if checkpoint_digest == current_digest:
         return
@@ -53,6 +79,7 @@ def validate_resume_protocol(checkpoint_digest, protocol, current_digest):
                 or not isinstance(stage.get('parent_cycle'), int)
                 or not stage.get('review', {}).get('sha256')):
             raise ValueError('Invalid explicit completed-stage continuation')
+        registered_stage_actor_rates(stage)
         descriptive.add('completed_stage_continuation')
     if ({k: v for k, v in previous.items() if k not in descriptive}
             != {k: v for k, v in protocol.items() if k not in descriptive}):
@@ -205,15 +232,8 @@ def main(args):
         steps, cycles, start_cycle = checkpoint['steps'], checkpoint['cycles'], checkpoint['cycle']+1
     stage = protocol.get('completed_stage_continuation')
     if stage is not None:
-        if (not args.resume or checkpoint['boundary'] != 'complete_condition_cycle'
-                or checkpoint['cycle'] != stage['parent_cycle'] or args.cycles != stage['new_cycles']):
-            raise ValueError('Reviewed continuation requires its exact parent boundary and stage budget')
-        factor = stage['actor_learning_rate_factor']
-        expected_lr = 3e-4 * (1. if factor is None else factor)
-        if any(abs(group['lr']-expected_lr) > 1e-12 for group in learner.learner.actor_optimizer.param_groups):
-            raise ValueError('Prepared actor learning rate differs from scientific registration')
-        if factor is not None and cycles:
-            raise ValueError('Changed optimizer stage must not pool prior plateau history')
+        validate_completed_stage_checkpoint(checkpoint if args.resume else None, stage, args.cycles,
+            [g['lr'] for g in learner.learner.actor_optimizer.param_groups])
     cache_enabled = protocol.get('performance_amendment', {}).get('replay_device_cache', False)
     if cache_enabled:
         if protocol['performance_amendment']['kind'] not in ('device_replay_cache_only', 'frozen_target_gradients_only'):

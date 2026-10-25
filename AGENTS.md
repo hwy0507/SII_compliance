@@ -7,6 +7,19 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新只读physical worker采样完成：60s/4895样本/0错误，Direct source12 active-short0600；
+observer inclusive53.50%、mj_step叶18.82%，默认排除idle，仅单worker采样分母，不当全局瓶颈或提速。
+未改physics/遥测/运行时，无新仿真/辅助更新。证据PUBLISHED_PHYSICAL_WORKER_PROFILE_20261025.json。
+四CHEQ12/四SAC09继续更新，原8/9阶段不得提前替换；GPU四卡50%仍无达成证据。
+
+最新后续准备：source_train13 / completed_stage_dispatch_v2已冻结但**未部署或派发**。修复source12
+后续factorNone固定要求3e-4的问题，显式登记/核对父LR可原样保留3e-5及完整周期历史，拒绝重复乘.1；
+不改plateau/actor/目标/物理合同。5+8共13测试和四个真实低LR准备状态全字段保留检查通过，
+0新physics/更新/权重导入，无STOP。证据PUBLISHED_UNCHANGED_LR_PREPARATION_20261025.json；
+runs/unchanged_actor_lr_preparation_v1/CANDIDATE_PROTOCOL.json仅结构候选、缺科学review，不是可执行的阶段登记。
+当前四CHEQ仍source12运行原8/9、四SAC09继续；必须完成并复核当前阶段，不能提前迁入13。
+
+
 最新source12在线GPU窗口：60样本/67.60s均值42.22/30.42/31.08/31.48%，min5/9/0/0，无辅助GPU
 更新、含固定Direct推理，四卡50%仍未达到。原始ACTOR_LR_ONLINE_GPU_60S_01.json。
 

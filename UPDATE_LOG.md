@@ -1,5 +1,29 @@
 # 更新日志
 
+## 2026-10-25 — 物理worker只读性能采样
+
+- 再次fetch读取main a52dfba与baseline f6e8f8c，远端未前进。四CHEQ12、四SAC09及原audit/review/固定评估均核实在途；训练steps和updates持续增加。
+- 对真实Direct source12 active_short0600 worker做60s、100Hz py-spy采样，PID及启动ticks前后相同，4895样本、0错误，profiler正常退出。单worker observer inclusive53.50%、mj_step叶18.82%；排除idle，无native展开，不推断整体GPU瓶颈或提速。
+- 接触遍历/逐子步遥测是候选分析方向，当前未删减审计、未修改physics/遥测/控制/运行时，无新仿真进程或辅助优化器更新。四卡50%目标仍未实现。
+- 小型证据docs/PUBLISHED_PHYSICAL_WORKER_PROFILE_20261025.json；原始产物在/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/physical_worker_profile_v1。接续修复及13项验证见下一条；source13仍仅准备。
+- 收敛、最终SPT和指定ESN比较仍未完成，Goal持续；现有低actorLR两轮8/9继续至完整审查边界。
+
+## 2026-10-25 — 后续保留低学习率与周期历史的接续准备
+
+- fetch确认main a52dfba/baseline f6e8f8c未前进，读取两分支日志；现有四CHEQ source12与四SAC09均
+  真实更新，第8轮尚未完整完成，没有新的收敛结论。
+- 发现source12的后续不改LR分支固定要求3e-4，会拒绝保留当前3e-5的合法接续。新增显式父LR列表
+  核验，dispatcher在任何启动前核对四父checkpoint实际LR；factorNone完整保留优化器和周期历史，
+  保留首次降LR兼容性，拒绝重复乘0.1。原actor/reward/gate/物理合同及plateau判据未改。
+- 5项完成阶段测试+8项原合同/性能测试通过。四个真实低LR归档准备状态逐字段完全相同；是现有
+  cycle7准备状态，不冒充未来cycle9。候选protocol仅结构检查、缺科学review，未选定下一阶段。
+- 新冻结source_train13与completed_stage_dispatch_v2仅准备，未部署、未启动、无STOP，无新仿真/
+  辅助更新或权重保存/导入。与source12相比仅trainer校验变动，learner和所有受保护manifest一致。
+  原source12继续完整8/9，完成并科学复核后再决定接续，不能提前替换或重启。
+- 新证据docs/PUBLISHED_UNCHANGED_LR_PREPARATION_20261025.json与诊断文档；完整产物：
+  /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/unchanged_actor_lr_preparation_v1。
+  cycle7独立评估仍在CPU54运行；最终收敛/SPT/ESN比较未完成，Goal继续。
+
 ## 2026-10-25 — critic重置完整复核，actor学习率新阶段已真实接续
 
 - 新阶段实际GPU窗口60样本/67.60s均值42.22/30.42/31.08/31.48%，min5/9/0/0；无辅助GPU更新，
