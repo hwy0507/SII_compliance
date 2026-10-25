@@ -200,9 +200,11 @@ registration/reference/model hashes, and runs deterministic actions through the
 same frozen adapter. It performs no optimizer/replay updates. A condition subset
 is explicitly diagnostic, not a complete comparison; physical substep audit is
 still required separately. One early Direct snapshot (21000 steps including10000
-imported transitions) is being checked on the first registered passive condition
-in `runs/interim_direct_deterministic_v1`; this is an integration/early-policy
-check, not final acceptance. It uses CPU52/53 while running, for54/55 total cores.
+imported transitions) completed the first registered passive condition in
+`runs/interim_direct_deterministic_v1`: full55s/1375 actions, physically valid,
+no abort, but Task/Strict false and final stage approach. This verifies one
+evaluation execution, not final acceptance or convergence. Its temporary CPU52/53
+allocation has finished; the eight training learners reserve52/55 cores.
 The first evaluator revision and learner source are archived with their exact
 execution hashes; subsequent launches resolve the learner from frozen runtime.
 

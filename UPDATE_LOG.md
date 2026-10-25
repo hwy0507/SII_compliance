@@ -23,12 +23,13 @@
   当前主机 `rltest-1025--a6ed2ff39b3c-s5gnp35dxg`。主训练 `runs/cheq_four_interfaces_seed20261025_v3`，
   注册 `runs/cohort30_v2/REGISTRATION_GPU_V4.json`。大型轨迹/模型/环境仅SSD，不提交Git。
 - 新增独立确定性评估入口：冻结checkpoint，核对注册/模型/参考hash，沿同一物理actor接点运行，
-  不更新网络；子集明确是诊断且仍需子步审计。21000步Direct在首个登记条件的接口检查运行中，
-  占用CPU52/53，暂时总54/55核。最初执行源码另存准确hash，后续入口直接加载冻结runtime的learner。
+  不更新网络；子集明确是诊断且仍需子步审计。21000步Direct已在首个登记条件完成55s/1375步，
+  无物理中止但Task/Strict失败、停在approach，不能称为收敛或最终acceptance；CPU52/53已释放。
+  最初执行源码另存准确hash，后续入口直接加载冻结runtime的learner。
 - 首批实际训练：Direct出现approach穿透中止，参数RL的完整55s被动条件暂时失败在carry，
   回报约-31。这是早期数据，非学习收敛证据；小型恢复/运行快照已存docs/evidence。
 - 无训练收敛、成功策略或ESN配对比较结论；指定ESN权重仍缺失。执行文档和AGENTS已更新，
-  旧证据作为历史快照保留。GitHub写权限此前不可用，本轮发布结果另行核对，不声称已推送。
+  旧证据作为历史快照保留。本地代码提交`c4b4f53`；本轮push因HTTPS认证不可用失败，未推送。
 
 ## 2026-10-25 — 恢复三类任务运行时，启动四GPU已发表CHEQ适配训练
 
