@@ -3,7 +3,43 @@
 2026-10-25. This records a **new source-built training cohort**, not recovery of
 the historical office-v6 MJB or proof that any RL method has converged.
 
-## Pending performance continuation (latest status)
+## Current execution snapshot
+
+All four primary learners now run in `runs/cheq_performance_seed20261025_v1`
+with `source_train06`. They have completed cycle1 (second full condition cycle)
+and continue into cycle2. Source_train06 preserved networks, optimizers, targets,
+alpha, RNG, replay masks and prior cycle history. Both complete cycles remain
+archived. The earlier LayerNorm restart described below did reset networks;
+these two events must not be confused.
+
+SAC Direct has completed its parent cycle0 and resumed under the existing
+`sac_performance_seed20261025_v1` coordinator. The other three SAC learners are
+still draining cycle0 in `sac_layernorm_seed20261025_v2`. Check live handles and
+migration receipts before launching anything; do not duplicate or restart them.
+
+Formal jobs retain52 cores; the nominal120-case matrix runs on CPUs52/53.
+The finite two-seed terminal-fitting replication and the full55s torque audit
+have completed. The latter passed exact trajectory/contact/filter/torque-output
+checks, but covers one early checkpoint/case, not final acceptance.
+The finite batch-size study has also completed. CPU54 now runs
+`interim_cheq_cycle01_representatives_v1`: four frozen cycle1 policies ×the first
+registered case of each category,12 audited episodes, with matching nominal
+rows retained. It is an interim subset, not final acceptance or an empirical
+SPT reference. Formal training settings remain unchanged.
+
+Cycle1 strict successes are0/17/13/16 out of30, versus0/18/12/16 in cycle0.
+Mean training returns changed by+.4468/-1.6866/+1.6351/-.0662. These changing-policy
+trajectories do not demonstrate consistent learning improvement or convergence.
+Critic values/losses continue to grow. See the latest sections of the diagnostic
+report for complete-cycle, fitted/withheld terminal and actual actuator evidence.
+
+A60s sample after the finite fitting jobs ended measured22.80/25.18/15.93/14.82%
+GPU use while each primary learner was finishing its final1–3 cycle episodes.
+This is not a steady full-concurrency measurement. It demonstrates why earlier
+auxiliary-inclusive utilization cannot stand in for persistent online usage.
+No claim of all-card sustained50%, final convergence or ESN comparison is made.
+
+## Historical registration before performance continuation
 
 Current learners still use source_train05. Registered source_train06 batches
 finite-value validation flags into one GPU-to-host transfer; it changes no
@@ -27,7 +63,7 @@ high utilization is not a permanent online load. Latest pure-online60s GPU
 means51.83/40.78/44.20/41.33% still miss the all-card50% target; measure again after
 the performance continuation rather than assuming that a microbenchmark guarantees it.
 
-## Current stage: critic LayerNorm and numerical amendments
+## Historical LayerNorm restart and numerical amendments
 
 Current server runs are `runs/cheq_layernorm_seed20261025_v1` and
 `runs/sac_layernorm_seed20261025_v2`, both using immutable `runtime/source_train05`.

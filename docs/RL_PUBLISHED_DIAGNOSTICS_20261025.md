@@ -527,3 +527,156 @@ cycle0/1 training-return changes. Output is
 `runs/diagnosis_cheq_performance_cycle01`; until FINISHED exists this is pending,
 not a second complete-cycle result. Analysis can temporarily share CPU54 with
 the bounded auxiliary jobs; it creates no simulation or learner updates.
+
+
+## Second full condition cycle, replication completion and actuator evidence
+
+The four exact cycle1 checkpoints were archived without misses. Each interface
+collected another41,250 real transitions and completed165,000 optimizer updates
+since the LayerNorm restart. The retained transition totals below include
+imported data. The performance migration preserved the full learner state.
+
+| Interface | Retained transitions | Cycle0 return | Cycle1 return | Strict cycle0 → cycle1 |
+|---|---:|---:|---:|---:|
+| Direct |161694|-33.515458|-33.068692|0/30 →0/30|
+| Impedance |163015|-.555311|-2.241907|18/30 →17/30|
+| Admittance |163070|-12.111158|-10.476058|12/30 →13/30|
+| VMC |163776|-4.581897|-4.648096|16/30 →16/30|
+
+These are same-condition changing-policy trajectories, not paired frozen-policy
+acceptance. They show mixed changes, not a consistent learning benefit. Direct
+now fails at carry17/grasp5/lift8, with no approach-stage failures in this cycle;
+that change is useful diagnostic information but still not task completion.
+
+| Interface | In-bag terminal MAE | Out-of-bag terminal MAE | Alpha | Last1000-update mean critic loss |
+|---|---:|---:|---:|---:|
+| Direct |73.5462|902.2080|.140087|210.864|
+| Impedance |487.2361|1714.3437|.508256|2996.435|
+| Admittance |403.3215|942.0583|.181348|3744.422|
+| VMC |1172.2398|3660.0721|1.074443|20072.472|
+
+Each snapshot has108 terminal rows (not the previous78), so terminal error
+changes are not a fixed-dataset paired test. The temporal plot nevertheless
+shows substantial critic loss/value drift within this cycle. The mask and
+partial-observation caveats still apply; finite arithmetic or nearly target
+entropy cannot establish healthy convergence. The live learners continue with
+unchanged reward/sampling settings. Evidence and inspected figure:
+`runs/diagnosis_cheq_performance_cycle01/`; matched-condition changes:
+`runs/diagnosis_cycle01_dispatch_v1/PAIRED_CYCLES.json`.
+
+Both additional fitting seeds have now finished all4×2 variants successfully.
+The second seed2026102512 reproduces the first seed's direction:
+
+| Interface | In-bag MAE: uniform → terminal10% | Out-of-bag MAE: uniform → terminal10% | Ordinary MAE: uniform → terminal10% |
+|---|---:|---:|---:|
+| Direct |9.564847 →1.038683|245.844543 →245.891830|.912737 →.992618|
+| Impedance |32.420273 →1.519159|118.788765 →119.127586|1.254683 →1.493922|
+| Admittance |42.537090 →2.613943|187.976990 →189.029999|.949631 →1.544698|
+| VMC |96.667976 →6.033612|515.230713 →514.104736|3.029513 →3.924508|
+
+All actor/target/temperature invariants passed. Full summary and source/weight
+receipts are in `runs/terminal_fitting_replication_v2/SUMMARY.json`. These jobs
+have ended. No further terminal-oversampling replication is currently queued;
+no formal replay distribution was changed from these offline results.
+
+The full55s audit in `runs/interim_impedance_torque_audited_v2` also finished.
+Original checkpoint/model/actor journal/physical trajectories and the raw contact
+archive match exactly. All1,375 public-filter calls replay exactly;13,750 common
+torque-projection calls match with max error0 and exact previous-output recurrence.
+Their output equals the actual actuator torques in all1,100,000 physical
+substeps. Maximum servo/substep clock mismatch is1.35e-13s (clock-only tolerance
+1e-9s); torque equality is exact. Original limits, amplitude and slew checks pass.
+The recorded projection scale stayed1 in this case, so active amplitude scaling
+is covered by the focused synthetic test, not claimed as exercised here.
+This closes the shared downstream projection scope for this one early case;
+native reference/wrench/Jacobian/posture construction remains outside the replay.
+It is not final acceptance of current trained policies. CPU54 has been released.
+
+## Batch-size sensitivity registered after cycle1
+
+The pinned author's `config/training/training.yaml` specifies batch[1,256];
+`config/rl/ensemble_sac.yaml` specifies LR3e-4, gamma.99, five256×256 critics,
+LayerNorm off and pink action noise. The current adapter explicitly differs:
+batch16384, two updates per new transition, gamma.9995, registered critic
+LayerNorm and white action noise. These are adaptations, not only a new reward.
+The official asynchronous trainer schedules updates from episode-length
+notifications, so its `[1,256]` setting alone is not a measured effective
+wall-clock UTD. This report does not claim an exact measured128× upstream
+training budget from multiplying batch and nominal UTD.
+
+Given continued critic drift, `runs/batch_sensitivity_cycle01_v1` freezes the
+four complete cycle1 checkpoints and compares batch256/16384 with2,000 full
+learner updates per variant. Each variant restores the same network, optimizer,
+target, alpha and RNG states; replay and masks remain fixed. This includes
+moving Bellman targets and actor/temperature updates, unlike the earlier
+critic-only fixed-label probe. Batch order is counterbalanced across interfaces;
+wall timing under shared GPUs is not an isolated performance benchmark.
+The four finite jobs share CPU54 and GPUs after the previous probes/audit ended.
+
+This is equal-update sensitivity with unequal sampled-row budgets, no new
+physical transitions and no online UTD comparison. Auxiliary learner states
+cannot enter the formal comparison. Results are pending; the experiment does
+not preselect a new formal batch size, reward, architecture or restart.
+Tool: `probe_published_batch_sensitivity_20261025.py`.
+
+The post-replication GPU window (online jobs plus the GPU1 deterministic audit)
+measured22.80/25.18/15.93/14.82% while primary cycles drained to1–3 samplers.
+This misses the requested50% target and does not describe full9-sampler operation.
+Raw samples: `runs/ONLINE_AND_TORQUE_AUDIT_GPU_60S_01.json`.
+Small combined evidence:
+`code/mujoco_6d_vmc_benchmark/docs/evidence/PUBLISHED_COMPLIANCE_CYCLE01_TORQUE_AUDIT_20261025.json`.
+
+A later60s window after full sampling concurrency resumed, with the finite
+batch probes active, measured50.20/50.03/50.92/55.85% (minima10/16/20/33%).
+This meets the average target in that auxiliary-inclusive window only.
+Raw samples: `runs/ONLINE_WITH_BATCH_PROBE_GPU_60S_01.json`.
+SAC Direct's completed LayerNorm cycle0 had0/30 strict successes and mean
+return-34.439232; it resumed from64,492 retained transitions and82,500 updates.
+The other SAC interfaces are still completing their parent cycle at this snapshot.
+
+
+## Completed batch sensitivity and started frozen-policy subset
+
+All eight2,000-update variants completed without nonfinite failures, restored
+initial diagnostic values exactly, and retained separate auxiliary states.
+In-bag terminal MAE after batch256 / batch16384 was:
+
+| Interface | Batch256 | Batch16384 |
+|---|---:|---:|
+| Direct |647.4896|68.2311|
+| Impedance |1668.2537|457.5714|
+| Admittance |880.7542|438.4452|
+| VMC |3590.1152|1245.8142|
+
+This short switch from a checkpoint already trained with a large batch does not
+support reducing the live batch as a demonstrated fix. It does not establish
+that256 is generally inferior, validate16384 as optimal, or reproduce fresh
+upstream training. Equal2,000 optimizer updates sample64 times as many rows in
+the16384 arm; ordinary replay Q/alpha also keep changing. Formal protocol stays
+unchanged. Full results: `runs/batch_sensitivity_cycle01_v1/SUMMARY.json`;
+small evidence: `PUBLISHED_BATCH_SENSITIVITY_CYCLE01_20261025.json` under the
+benchmark evidence directory. These finite auxiliary processes have ended.
+
+After their actual exit, `run_interim_published_matrix_20261025.py` started
+`runs/interim_cheq_cycle01_representatives_v1` on CPU54. It freezes all four
+exact cycle1 checkpoints and selects the lexicographically first registered
+condition in each of passive_corner, active_short and active_long (all0000),
+with the same selection for every interface. Each method uses its original
+GPU for deterministic inference, with no updates. Twelve corresponding nominal
+rows are copied immutably before the evaluation; all task failures are retained.
+
+Each completed method's three episodes are independently checked for physical
+metrics, public-filter replay and common torque projection/actual-actuator
+linkage using frozen wrapperv6. The matrix reports learned and nominal rows
+side by side, with no final SPT reference. This is an interim fixed-policy
+check to distinguish actual learned behavior from changing-policy training
+returns, not a full30-condition comparison or convergence proof. The first
+Direct physical episode is running; no completed interim matrix is claimed.
+Formal52-core training and the nominal matrix on52/53 continue independently.
+
+After all batch probes ended, another60s window with online training and the
+single GPU0 deterministic evaluation measured42.67/36.47/37.93/39.87%
+(minima9/25/0/0%). The all-card50% target remains unmet without auxiliary fitting.
+Initial/final sampler counts and raw samples are saved in
+`runs/POST_PROBE_ONLINE_GPU_60S_01.json`; earlier auxiliary-inclusive measurements
+must not be reported as the current online utilization.

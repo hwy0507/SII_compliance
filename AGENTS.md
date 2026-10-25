@@ -7,44 +7,42 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
-- 当前主训练已迁移至 `runs/cheq_performance_seed20261025_v1` / `runtime/source_train06`，
-  四路均真实更新；`MIGRATION_FINISHED.json`记录完整cycle0边界、不可变父checkpoint和状态保留。
-  原CHEQ LayerNorm四路正常结束。性能迁移保留network/optimizer/target/alpha/RNG/replay/masks/history，
-  不同于此前LayerNorm重新初始化阶段。新cycle归档器位于该run的`cycle_archive`，CPU54。
-- SAC仍为 `runs/sac_layernorm_seed20261025_v2` / source_train05；
-  `runs/sac_performance_seed20261025_v1`协调器仍等待各方法完成cycle0后自动接续source_train06。
-  **旧run的STOP_REQUESTED是协调迁移，不是取消Goal；先查进程、LAUNCH和MIGRATION收据，禁止重复派发。**
-  source_train06只合并有限值检查同步，4接口各1000配对更新网络/温度完全一致，协议拒绝科学设置漂移。
-- 正式训练占52核。CPU52/53现运行 `runs/nominal_four_interfaces_cohort30_v1` 的120回合固定控制器矩阵，
-  不是空闲资源；每回合含physics/contact/public-filter/reward独立审计，保留失败，不从部分结果选T_ref。
-  CPU54为轻量协调/归档、只读审计及有限离线GPU诊断共享。
-- 首个CHEQ LayerNorm完整30条件周期严格成功0/18/12/16，平均return -33.5155/-.5553/-12.1112/-4.5819；
-  未显示充分学习改善。最新mask分层终端诊断在 `runs/diagnosis_cheq_layernorm_cycle00_masked`。
-  CHEQ bootstrap mask会让每个critic有意留出部分样本，旧终端MAE混合拟合/留出误差；
-  新in-bag MAE仍19.60/30.81/49.91/102.13，不能据有限loss宣称健康或收敛。
-- `runs/terminal_fitting_probe_v1` 四路固定Bellman标签诊断均已完成；每variant5000更新，
-  terminal10%比uniform终端汇总误差降低，但普通误差略升。v1无mask分层端点，不冒称纯拟合误差。
-  `runs/terminal_fitting_replication_v2` 已启动两个新seed2026102511/12有限复核，增加mask分层与
-  辅助critic归档；其权重禁止混入正式比较。先查FINISHED/FAILURE/实际进程，不把有限辅助负载当常驻。
-  最近含v1辅助的60s GPU均值57.67/57.10/59.12/60.47%，瞬时最低34/23/40/6%；
-  纯在线迁移后窗口48.22/39.35/35.90/39.67%；最新v2辅助复核窗口54.30/55.47/57.35/49.10%，
-  GPU3仍略低于50%，不保证持续/纯在线四卡均≥50%。
-- `runs/parameter_cycle_audit_v1/results/AUDIT.json` 完成90回合、123750次参数shield精确重放，
-  参数均非名义值；rate limit约53.87/70.23/53.32%，energy limit为0，不能归因为动作被能量约束抹掉。
-  重放使用保存的storage state，不等于独立重建物理/native controller或全局被动性证明。
-- 只读完整cycle1诊断监视器 `runs/diagnosis_cycle01_dispatch_v1` 已启动，等待四路原learner的
-  `cycle_archive/*/cycle_00001.pt`后在CPU54跑冻结诊断工具，输出 `runs/diagnosis_cheq_performance_cycle01`，
-  并比较相同30条件cycle0/1的训练回报；仍非固定策略评估。检查该监视器FINISHED/FAILURE，不重复诊断。
-- 新力矩投影透明性核查已登记并排队：`runs/interim_impedance_torque_audited_v2`，
-  冻结wrapper `runtime/evaluation_audit_v6`，协调器等待四个terminal_fitting_replication_v2原进程
-  成功结束后才用CPU54跑同42000步阻抗checkpoint、同active_long_train_0000、原cuda:1。
-  9项filter/torque审计测试通过；真实55s透明性、actuator linkage尚未完成。v1只排队、未启动physics，
-  增加执行器限制一致性检查前取消，保留CANCELLED_BEFORE_PHYSICS；不要恢复或重复派发v1。
-- terminal_fitting_replication_v2的seed2026102511四接口均完成：terminal10%显著降低in-bag误差，
-  out-of-bag几乎不变，普通误差略升；seed2026102512仍在运行。仅固定标签拟合证据，正式采样不改。
-- 原公共filter审计 `interim_impedance_filter_audited_v2` 已完成，55s物理/actor/接触文件精确一致，
-  1375次公共filter重放误差0；v1误用CPU推理的失败保留。原生力矩控制/执行器仍待独立重放。
-  指定ESN权重仍缺；无充分收敛、完整最终矩阵或ESN比较结论。详见执行/诊断文档。
+- 当前主训练 `runs/cheq_performance_seed20261025_v1` / `runtime/source_train06` 四路均已完成cycle1，
+  正在cycle2；完整cycle0/1历史保留。source_train06只减少有限值检查同步，不改学习更新。
+  性能迁移保留network/optimizer/target/alpha/RNG/replay/masks/history，区别于早期LayerNorm重启。
+- 第二完整周期（cycle1）严格成功0/17/13/16（各30），上一周期0/18/12/16；平均return约
+  -33.0687/-2.2419/-10.4761/-4.6481。改善不一致，不能宣称充分学习/收敛。critic loss和Q仍增长。
+  `runs/diagnosis_cycle01_dispatch_v1`已完成，结果在 `runs/diagnosis_cheq_performance_cycle01`，
+  四路cycle1精确checkpoint已归档、无遗漏，不重复执行该监视器。
+- SAC Direct已由现有协调器迁入 `runs/sac_performance_seed20261025_v1/direct` / source_train06，
+  正在cycle1。另外三路仍在 `runs/sac_layernorm_seed20261025_v2`完成cycle0后按登记接续。
+  **旧run的STOP_REQUESTED是协调迁移，不是取消Goal；先查原进程、LAUNCH/MIGRATION收据，禁止重复派发。**
+- 正式训练占52核；CPU52/53继续执行 `runs/nominal_four_interfaces_cohort30_v1` 的120回合固定矩阵，
+  不是空闲资源。逐回合physics/contact/filter/reward审计和失败保留，未完成矩阵不选最终T_ref。
+  CPU54为只读诊断、轻量协调和有限辅助GPU作业共享。
+- `runs/terminal_fitting_replication_v2`两个seed2026102511/12、四接口、两采样variant均已完成，
+  SUMMARY.json已落盘，所有辅助dispatcher正常结束。terminal10%降低in-bag误差，out-of-bag基本不变，
+  普通误差略升；这是固定标签拟合，不是策略改善。权重不得混入正式比较，不再当常驻GPU负载。
+- `runs/batch_sensitivity_cycle01_v1` 四接口各两variant×2000更新均完成，SUMMARY.json已落盘。
+  同cycle1父状态直接切batch256使in-bag终端误差高于16384；是等更新非等采样、继承大batch状态的
+  离线敏感性，不能宣称官方小batch较差或在线最优，不改正式batch/reward/replay；辅助进程已结束。
+- 当前CPU54运行 `runs/interim_cheq_cycle01_representatives_v1`，冻结四个cycle1 checkpoint，
+  每接口在每类首个登记条件（passive_corner/active_short/active_long的0000）评估，共12回合，
+  配对固定nominal同条件记录，含physical/filter/torque审计。原训练52核和nominalCPU52/53保留。
+  这是中期固定策略诊断，不是完整30条件最终比较，不选择最终T_ref。先查LAUNCH/PROGRESS/FAILURE，
+  不把CPU54当空闲或另开重复评估。源码冻结 `runtime/interim_matrix_v1`、audit wrapperv6。
+- `runs/interim_impedance_torque_audited_v2` / wrapperv6完整55s透明性验证已通过：原checkpoint、
+  原cuda:1、同条件，物理/actor/接触精确一致，1375次filter及13750次公共力矩投影重放误差0，
+  与1100000物理子步实际执行器力矩精确对应；幅值/slew/原limits通过。该回合scale<1次数0，
+  激活幅值投影分支由单测覆盖。不是native reference/wrench/Jacobian重建，也不是最终策略验收。
+  v1仅排队未physics即取消，旧收据保留，不恢复；本次真实审计已结束、释放CPU54。
+- `runs/parameter_cycle_audit_v1`此前90回合123750次参数shield精确重放通过，rate限制约
+  53.87/70.23/53.32%、energy限制0；参数确实改变。重放保存的storage state不等于全局被动性证明。
+- 最近无辅助拟合的周期末尾60s GPU均值22.80/25.18/15.93/14.82%，当时每learner只剩1–3个回合；
+  最新完整并发加batch诊断60s均值50.20/50.03/50.92/55.85%，该窗口平均达标但含辅助作业。
+  batch辅助结束后最新在线加单次GPU0推理窗口42.67/36.47/37.93/39.87%，仍未达50%。
+  需区分完整并发/周期尾部/辅助负载，GPU性能问题未解决。
+  指定ESN仍缺；无充分收敛、完整最终矩阵或ESN比较结论。详见执行/诊断文档。
 - 持续 Goal 的最新授权优先：用户已将论文选择、必要方法/接口适配、三类任务集上的仿真和
   四卡4090训练决策交给当前 agent，取消总训练步数上限，要求训练至改善后稳定并公平比较。
   不再就上述已授权事项重复询问。仍须保留原始任务/安全判据，记录新模型来源和所有适配，

@@ -1,0 +1,967 @@
+{
+  "captured_unix": 1792938443.4624274,
+  "convergence_claim": false,
+  "cycle": 1,
+  "methods": {
+    "direct": {
+      "steps": 161694,
+      "updates": 165000,
+      "terminal_count": 108,
+      "alpha": 0.14008714258670807,
+      "terminal_q_in_bag_absolute_error": {
+        "count": 436,
+        "mean": 73.5461993108102,
+        "minimum": 0.001873016357421875,
+        "maximum": 1021.483642578125,
+        "p50": 25.599571228027344,
+        "p95": 249.3849220275879
+      },
+      "terminal_q_out_of_bag_absolute_error": {
+        "count": 104,
+        "mean": 902.2079708392804,
+        "minimum": 638.5835571289062,
+        "maximum": 1198.0433349609375,
+        "p50": 911.941162109375,
+        "p95": 1152.9640319824218
+      },
+      "ended_episode_returns": {
+        "count": 30,
+        "mean": -33.06869210998199,
+        "minimum": -34.99054515773646,
+        "maximum": -31.53635975412208,
+        "p50": -32.96467624748837,
+        "p95": -31.720677701720145
+      },
+      "failure_stages": {
+        "carry": 17,
+        "grasp": 5,
+        "lift": 8
+      },
+      "recent_optimizer": {
+        "agent_train/q_loss": {
+          "count": 1000,
+          "mean": 210.86377838897704,
+          "minimum": 127.98990631103516,
+          "maximum": 1001.7200317382812,
+          "p50": 171.53131103515625,
+          "p95": 414.2442413330077
+        },
+        "agent_train/next_q_values": {
+          "count": 1000,
+          "mean": 809.5905070800782,
+          "minimum": 801.376953125,
+          "maximum": 817.87353515625,
+          "p50": 809.5690002441406,
+          "p95": 814.9289306640625
+        },
+        "agent_train/entropy_coefficient_loss": {
+          "count": 1000,
+          "mean": 0.0199283028524369,
+          "minimum": -0.5244606733322144,
+          "maximum": 0.5444523096084595,
+          "p50": 0.013212393969297409,
+          "p95": 0.2983803927898406
+        },
+        "agent_train/actor_loss": {
+          "count": 1000,
+          "mean": -810.5308226318359,
+          "minimum": -818.5394287109375,
+          "maximum": -802.6300048828125,
+          "p50": -810.5411987304688,
+          "p95": -805.5785766601563
+        },
+        "agent_train/actor_entropy": {
+          "count": 1000,
+          "mean": -7.00997575378418,
+          "minimum": -7.27502965927124,
+          "maximum": -6.736738204956055,
+          "p50": -7.006699562072754,
+          "p95": -6.878429412841797
+        },
+        "agent_train/entropy_coefficient": {
+          "count": 1000,
+          "mean": 0.13758947664499283,
+          "minimum": 0.13392968475818634,
+          "maximum": 0.14149357378482819,
+          "p50": 0.13725824654102325,
+          "p95": 0.14127500355243683
+        },
+        "agent_train/target_entropy": {
+          "count": 1000,
+          "mean": -7.0,
+          "minimum": -7.0,
+          "maximum": -7.0,
+          "p50": -7.0,
+          "p95": -7.0
+        }
+      }
+    },
+    "impedance": {
+      "steps": 163015,
+      "updates": 165000,
+      "terminal_count": 108,
+      "alpha": 0.5082560777664185,
+      "terminal_q_in_bag_absolute_error": {
+        "count": 443,
+        "mean": 487.2360792052396,
+        "minimum": 0.38686180114746094,
+        "maximum": 2334.638427734375,
+        "p50": 251.87112426757812,
+        "p95": 1370.9249267578125
+      },
+      "terminal_q_out_of_bag_absolute_error": {
+        "count": 97,
+        "mean": 1714.3436578180372,
+        "minimum": 331.81524658203125,
+        "maximum": 2820.135986328125,
+        "p50": 1412.553466796875,
+        "p95": 2458.394873046875
+      },
+      "ended_episode_returns": {
+        "count": 30,
+        "mean": -2.2419073336049693,
+        "minimum": -34.679674728446315,
+        "maximum": 20.902600688252356,
+        "p50": 19.565962855073344,
+        "p95": 20.76782078854631
+      },
+      "failure_stages": {
+        "carry": 11,
+        "retreat": 1,
+        "load_transfer": 1
+      },
+      "recent_optimizer": {
+        "agent_train/q_loss": {
+          "count": 1000,
+          "mean": 2996.435022216797,
+          "minimum": 1200.6357421875,
+          "maximum": 8002.71875,
+          "p50": 2829.54345703125,
+          "p95": 4896.120092773437
+        },
+        "agent_train/next_q_values": {
+          "count": 1000,
+          "mean": 1771.901504638672,
+          "minimum": 1758.212646484375,
+          "maximum": 1783.3648681640625,
+          "p50": 1771.8690795898438,
+          "p95": 1777.6196899414062
+        },
+        "agent_train/entropy_coefficient_loss": {
+          "count": 1000,
+          "mean": -0.0322955241240561,
+          "minimum": -0.3701910972595215,
+          "maximum": 0.21580347418785095,
+          "p50": -0.027374105527997017,
+          "p95": 0.13050323948264117
+        },
+        "agent_train/actor_loss": {
+          "count": 1000,
+          "mean": -1774.6158603515626,
+          "minimum": -1786.036865234375,
+          "maximum": -1764.0650634765625,
+          "p50": -1774.5588989257812,
+          "p95": -1768.6927612304687
+        },
+        "agent_train/actor_entropy": {
+          "count": 1000,
+          "mean": -4.948138944625854,
+          "minimum": -5.315993309020996,
+          "maximum": -4.409842491149902,
+          "p50": -4.959616422653198,
+          "p95": -4.695643281936645
+        },
+        "agent_train/entropy_coefficient": {
+          "count": 1000,
+          "mean": 0.5170970422029495,
+          "minimum": 0.4989506006240845,
+          "maximum": 0.5610948204994202,
+          "p50": 0.506324052810669,
+          "p95": 0.5553864270448684
+        },
+        "agent_train/target_entropy": {
+          "count": 1000,
+          "mean": -5.0,
+          "minimum": -5.0,
+          "maximum": -5.0,
+          "p50": -5.0,
+          "p95": -5.0
+        }
+      }
+    },
+    "admittance": {
+      "steps": 163070,
+      "updates": 165000,
+      "terminal_count": 108,
+      "alpha": 0.1813478171825409,
+      "terminal_q_in_bag_absolute_error": {
+        "count": 454,
+        "mean": 403.3214683259636,
+        "minimum": 0.9602699279785156,
+        "maximum": 1818.4390869140625,
+        "p50": 89.91182708740234,
+        "p95": 1721.3812255859375
+      },
+      "terminal_q_out_of_bag_absolute_error": {
+        "count": 86,
+        "mean": 942.0583394072777,
+        "minimum": 110.4891128540039,
+        "maximum": 2076.0732421875,
+        "p50": 798.6809387207031,
+        "p95": 1861.6887817382812
+      },
+      "ended_episode_returns": {
+        "count": 30,
+        "mean": -10.476058250982438,
+        "minimum": -34.69791615628556,
+        "maximum": 19.831576261683175,
+        "p50": -31.63180671398365,
+        "p95": 19.207798079822783
+      },
+      "failure_stages": {
+        "carry": 15,
+        "retreat": 1,
+        "release": 1
+      },
+      "recent_optimizer": {
+        "agent_train/q_loss": {
+          "count": 1000,
+          "mean": 3744.4216556396486,
+          "minimum": 1558.1141357421875,
+          "maximum": 8027.1181640625,
+          "p50": 3603.97265625,
+          "p95": 5901.159179687499
+        },
+        "agent_train/next_q_values": {
+          "count": 1000,
+          "mean": 696.9065716552734,
+          "minimum": 674.3496704101562,
+          "maximum": 717.8492431640625,
+          "p50": 696.7592163085938,
+          "p95": 708.5976379394531
+        },
+        "agent_train/entropy_coefficient_loss": {
+          "count": 1000,
+          "mean": 0.05208028271049261,
+          "minimum": -0.6209901571273804,
+          "maximum": 0.7520228624343872,
+          "p50": 0.03866748325526714,
+          "p95": 0.42666455954313276
+        },
+        "agent_train/actor_loss": {
+          "count": 1000,
+          "mean": -698.7274313964843,
+          "minimum": -719.6011962890625,
+          "maximum": -676.086669921875,
+          "p50": -698.7447509765625,
+          "p95": -687.5660125732422
+        },
+        "agent_train/actor_entropy": {
+          "count": 1000,
+          "mean": -7.029787420272827,
+          "minimum": -7.430695533752441,
+          "maximum": -6.634573936462402,
+          "p50": -7.022716999053955,
+          "p95": -6.824956774711609
+        },
+        "agent_train/entropy_coefficient": {
+          "count": 1000,
+          "mean": 0.17655728700757026,
+          "minimum": 0.16867481172084808,
+          "maximum": 0.18293985724449158,
+          "p50": 0.17615995556116104,
+          "p95": 0.1822967529296875
+        },
+        "agent_train/target_entropy": {
+          "count": 1000,
+          "mean": -7.0,
+          "minimum": -7.0,
+          "maximum": -7.0,
+          "p50": -7.0,
+          "p95": -7.0
+        }
+      }
+    },
+    "vmc": {
+      "steps": 163776,
+      "updates": 165000,
+      "terminal_count": 108,
+      "alpha": 1.0744432210922241,
+      "terminal_q_in_bag_absolute_error": {
+        "count": 434,
+        "mean": 1172.2398144308872,
+        "minimum": 1.6424369812011719,
+        "maximum": 4821.265625,
+        "p50": 335.6736755371094,
+        "p95": 4663.052661132812
+      },
+      "terminal_q_out_of_bag_absolute_error": {
+        "count": 106,
+        "mean": 3660.0720675486436,
+        "minimum": 335.54949951171875,
+        "maximum": 4908.6884765625,
+        "p50": 4085.3150634765625,
+        "p95": 4860.154052734375
+      },
+      "ended_episode_returns": {
+        "count": 30,
+        "mean": -4.6480962083337705,
+        "minimum": -34.83295111094411,
+        "maximum": 20.004309572787694,
+        "p50": 18.313310004883604,
+        "p95": 19.560532951598844
+      },
+      "failure_stages": {
+        "carry": 13,
+        "retreat": 1
+      },
+      "recent_optimizer": {
+        "agent_train/q_loss": {
+          "count": 1000,
+          "mean": 20072.472032714842,
+          "minimum": 7412.392578125,
+          "maximum": 64270.04296875,
+          "p50": 19289.892578125,
+          "p95": 33714.026562499996
+        },
+        "agent_train/next_q_values": {
+          "count": 1000,
+          "mean": 2459.605011230469,
+          "minimum": 2425.5595703125,
+          "maximum": 2499.40478515625,
+          "p50": 2459.4603271484375,
+          "p95": 2480.8369873046877
+        },
+        "agent_train/entropy_coefficient_loss": {
+          "count": 1000,
+          "mean": 0.00251483450923115,
+          "minimum": -0.053891755640506744,
+          "maximum": 0.05695608630776405,
+          "p50": 0.002952608512714505,
+          "p95": 0.028381300345063205
+        },
+        "agent_train/actor_loss": {
+          "count": 1000,
+          "mean": -2463.5864243164065,
+          "minimum": -2503.2841796875,
+          "maximum": -2429.32470703125,
+          "p50": -2463.4866943359375,
+          "p95": -2442.1403198242188
+        },
+        "agent_train/actor_entropy": {
+          "count": 1000,
+          "mean": -6.975443043708801,
+          "minimum": -7.41422176361084,
+          "maximum": -6.5473246574401855,
+          "p50": -6.971245050430298,
+          "p95": -6.737076544761658
+        },
+        "agent_train/entropy_coefficient": {
+          "count": 1000,
+          "mean": 1.1195482206344605,
+          "minimum": 1.0744432210922241,
+          "maximum": 1.1454615592956543,
+          "p50": 1.1270261406898499,
+          "p95": 1.144499921798706
+        },
+        "agent_train/target_entropy": {
+          "count": 1000,
+          "mean": -7.0,
+          "minimum": -7.0,
+          "maximum": -7.0,
+          "p50": -7.0,
+          "p95": -7.0
+        }
+      }
+    }
+  },
+  "paired_training_cycles": {
+    "direct": {
+      "mean_reward_change": 0.4467661708255464,
+      "previous_strict": 0,
+      "current_strict": 0
+    },
+    "impedance": {
+      "mean_reward_change": -1.6865962717805913,
+      "previous_strict": 18,
+      "current_strict": 17
+    },
+    "admittance": {
+      "mean_reward_change": 1.6350995705294338,
+      "previous_strict": 12,
+      "current_strict": 13
+    },
+    "vmc": {
+      "mean_reward_change": -0.06619948034534673,
+      "previous_strict": 16,
+      "current_strict": 16
+    }
+  },
+  "torque_audit": {
+    "servo_calls": 13750,
+    "physical_substeps": 1100000,
+    "projection_replay_max_abs": 0.0,
+    "previous_torque_recurrence_exact": true,
+    "actuator_torque_linkage_exact": true,
+    "maximum_clock_alignment_error_s": 1.3500311979441904e-13,
+    "amplitude_and_slew_verified": true,
+    "scaled_projection_calls": 0,
+    "passed": true,
+    "simulation_steps": 0,
+    "source_sha256": "5ba2fbbd3abe86dfd34f6cd11bb5d6fe912e9be79e23c5cf66f7ef8298d91760",
+    "frozen_projection_sha256": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+    "scope": "Common torque projection, amplitude/slew, previous-output recurrence and physical torque linkage",
+    "native_reference_wrench_and_jacobian_reconstructed": false,
+    "evidence_sha256": {
+      "audit_torque.json": "13cd72c115dd054c234b133b20084575becfc4505fd671b3fa953aec2d1a2fc3",
+      "audit_torque.npz": "e2836b0fe3abf3867d9659989c837cc19e47d5256e98f1d9240e31e4ea6f0dca",
+      "AUDIT_EXTENSION.json": "1fe6466074ee60e8fc463e0ad6426a861b65bef2cb50587c330c68ec4fbb3f29",
+      "audit_substeps.npy": "c66c29b9d5044ea0d9f27071cc46a22a03fbd6b30d8d5fe8021e4db0fbb4b433"
+    }
+  },
+  "torque_transparency": {
+    "ended_unix": 1792938077.0389743,
+    "transparency_passed": true,
+    "public_filter_replay_passed": true,
+    "torque_projection_and_physical_linkage_passed": true,
+    "scope": "One early checkpoint/case transparency and safety-path audit; not final policy evaluation"
+  },
+  "fitting_replication": {
+    "completed": true,
+    "scope": "Fixed-label critic-only fitting; not online policy improvement",
+    "seeds": [
+      2026102511,
+      2026102512
+    ],
+    "methods": {
+      "direct": [
+        {
+          "seed": 2026102511,
+          "source_receipt": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/terminal_fitting_replication_v2/2026102511/direct/FINISHED.json",
+          "receipt_sha256": "3e39b20cb0140f310fafa5765b1fc4dd4a7424ab79262eb5611a6eafcedfd9b3",
+          "results": [
+            {
+              "name": "uniform",
+              "final": {
+                "variant": "uniform",
+                "updates": 5000,
+                "loss": 7.461083889007568,
+                "terminal_mae": 59.38759231567383,
+                "ordinary_fixed_label_mae": 0.9085901379585266,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 315,
+                    "mae": 14.983403205871582
+                  },
+                  "out_of_bag": {
+                    "count": 75,
+                    "mae": 245.8852081298828
+                  }
+                },
+                "updated_unix": 1792936449.5438836
+              },
+              "auxiliary_critic_weights_sha256": "0a2afc58565466c1f5e041a18cb58fdde30332e687a13f066dccfd5b06fd702f"
+            },
+            {
+              "name": "terminal_10pct",
+              "final": {
+                "variant": "terminal_10pct",
+                "updates": 5000,
+                "loss": 7.353219509124756,
+                "terminal_mae": 47.53836441040039,
+                "ordinary_fixed_label_mae": 0.9696955680847168,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 315,
+                    "mae": 0.288443386554718
+                  },
+                  "out_of_bag": {
+                    "count": 75,
+                    "mae": 245.98800659179688
+                  }
+                },
+                "updated_unix": 1792936813.36948
+              },
+              "auxiliary_critic_weights_sha256": "b54be8a7a20e28d3ef63bba1e9c175c5568365e5a09f16d1a55817aa327265d0"
+            }
+          ]
+        },
+        {
+          "seed": 2026102512,
+          "source_receipt": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/terminal_fitting_replication_v2/2026102512/direct/FINISHED.json",
+          "receipt_sha256": "3c3d9d908f6a66c51245bab9c1e59a6409043dd73ec31147ae82066c85b0cc22",
+          "results": [
+            {
+              "name": "uniform",
+              "final": {
+                "variant": "uniform",
+                "updates": 5000,
+                "loss": 7.7195940017700195,
+                "terminal_mae": 55.00324630737305,
+                "ordinary_fixed_label_mae": 0.9127368927001953,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 315,
+                    "mae": 9.564846992492676
+                  },
+                  "out_of_bag": {
+                    "count": 75,
+                    "mae": 245.84454345703125
+                  }
+                },
+                "updated_unix": 1792937208.4425604
+              },
+              "auxiliary_critic_weights_sha256": "04d4756e9c273bb19e681f8fc581782d15a2e37c2453c8e802878a20f0ecc252"
+            },
+            {
+              "name": "terminal_10pct",
+              "final": {
+                "variant": "terminal_10pct",
+                "updates": 5000,
+                "loss": 9.50522232055664,
+                "terminal_mae": 48.125823974609375,
+                "ordinary_fixed_label_mae": 0.9926176071166992,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 315,
+                    "mae": 1.0386829376220703
+                  },
+                  "out_of_bag": {
+                    "count": 75,
+                    "mae": 245.89183044433594
+                  }
+                },
+                "updated_unix": 1792937561.0012221
+              },
+              "auxiliary_critic_weights_sha256": "3753dee6bc96aea1626bc56d895d4410af825da02209f12b7dfa8028980846d0"
+            }
+          ]
+        }
+      ],
+      "impedance": [
+        {
+          "seed": 2026102511,
+          "source_receipt": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/terminal_fitting_replication_v2/2026102511/impedance/FINISHED.json",
+          "receipt_sha256": "70dedaddd75fbc3dd75afb5f60a5a2e58aa789a82900b5c5d8e717ab2e0c7a39",
+          "results": [
+            {
+              "name": "uniform",
+              "final": {
+                "variant": "uniform",
+                "updates": 5000,
+                "loss": 91.12239074707031,
+                "terminal_mae": 48.876914978027344,
+                "ordinary_fixed_label_mae": 1.3131035566329956,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 322,
+                    "mae": 34.059043884277344
+                  },
+                  "out_of_bag": {
+                    "count": 68,
+                    "mae": 119.04389953613281
+                  }
+                },
+                "updated_unix": 1792936446.2254345
+              },
+              "auxiliary_critic_weights_sha256": "471b72abc1819ae83bb395ebdda6d484c88abcb525d944e0e8e34503a6525b41"
+            },
+            {
+              "name": "terminal_10pct",
+              "final": {
+                "variant": "terminal_10pct",
+                "updates": 5000,
+                "loss": 85.98541259765625,
+                "terminal_mae": 23.692615509033203,
+                "ordinary_fixed_label_mae": 1.5341711044311523,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 322,
+                    "mae": 3.4516689777374268
+                  },
+                  "out_of_bag": {
+                    "count": 68,
+                    "mae": 119.5394515991211
+                  }
+                },
+                "updated_unix": 1792936806.6740742
+              },
+              "auxiliary_critic_weights_sha256": "3dd96e0f6388de3f2f366e9a578b3c45432ef48b8e9b229e3445dbeba931529f"
+            }
+          ]
+        },
+        {
+          "seed": 2026102512,
+          "source_receipt": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/terminal_fitting_replication_v2/2026102512/impedance/FINISHED.json",
+          "receipt_sha256": "2acd32c630140d5fa35ecbc2c9388911ad4bc1ef0007d7e021cdaf8a77ba51ec",
+          "results": [
+            {
+              "name": "uniform",
+              "final": {
+                "variant": "uniform",
+                "updates": 5000,
+                "loss": 85.45497131347656,
+                "terminal_mae": 47.479393005371094,
+                "ordinary_fixed_label_mae": 1.2546827793121338,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 322,
+                    "mae": 32.42027282714844
+                  },
+                  "out_of_bag": {
+                    "count": 68,
+                    "mae": 118.78876495361328
+                  }
+                },
+                "updated_unix": 1792937201.7489085
+              },
+              "auxiliary_critic_weights_sha256": "e9d7c8cf9ff4ed0cc6b9b30bd2181254edae3344c5dd4fc3cd868043e07820a6"
+            },
+            {
+              "name": "terminal_10pct",
+              "final": {
+                "variant": "terminal_10pct",
+                "updates": 5000,
+                "loss": 129.7406005859375,
+                "terminal_mae": 22.025243759155273,
+                "ordinary_fixed_label_mae": 1.4939218759536743,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 322,
+                    "mae": 1.5191588401794434
+                  },
+                  "out_of_bag": {
+                    "count": 68,
+                    "mae": 119.1275863647461
+                  }
+                },
+                "updated_unix": 1792937555.1357796
+              },
+              "auxiliary_critic_weights_sha256": "e3c090ad6f016bce9f39f87f1d7cd132097faee33dced6f951dc55eb6f69b9aa"
+            }
+          ]
+        }
+      ],
+      "admittance": [
+        {
+          "seed": 2026102511,
+          "source_receipt": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/terminal_fitting_replication_v2/2026102511/admittance/FINISHED.json",
+          "receipt_sha256": "17cc1413f6ef70bc69c9b0a224cf93c4f38715814c3264490bfa18a829ddfc88",
+          "results": [
+            {
+              "name": "uniform",
+              "final": {
+                "variant": "uniform",
+                "updates": 5000,
+                "loss": 39.7902946472168,
+                "terminal_mae": 68.11273193359375,
+                "ordinary_fixed_label_mae": 0.9308853149414062,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 324,
+                    "mae": 43.70331954956055
+                  },
+                  "out_of_bag": {
+                    "count": 66,
+                    "mae": 187.94073486328125
+                  }
+                },
+                "updated_unix": 1792936450.9522948
+              },
+              "auxiliary_critic_weights_sha256": "6930b71b34b084ebf6145aaec82d689029088ebf2b601a6259bb380c3fe986a1"
+            },
+            {
+              "name": "terminal_10pct",
+              "final": {
+                "variant": "terminal_10pct",
+                "updates": 5000,
+                "loss": 50.349830627441406,
+                "terminal_mae": 33.91523361206055,
+                "ordinary_fixed_label_mae": 1.4558833837509155,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 324,
+                    "mae": 2.576227903366089
+                  },
+                  "out_of_bag": {
+                    "count": 66,
+                    "mae": 187.7612762451172
+                  }
+                },
+                "updated_unix": 1792936816.556395
+              },
+              "auxiliary_critic_weights_sha256": "649c5a757c3cd6b40df492df81d8c239896336b2bf7fe8f230e993ee81b4f3ed"
+            }
+          ]
+        },
+        {
+          "seed": 2026102512,
+          "source_receipt": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/terminal_fitting_replication_v2/2026102512/admittance/FINISHED.json",
+          "receipt_sha256": "7a8c57a34e503aa3fe9ae4dcf19e109d744082d27d2309915499581a34c6343d",
+          "results": [
+            {
+              "name": "uniform",
+              "final": {
+                "variant": "uniform",
+                "updates": 5000,
+                "loss": 63.984535217285156,
+                "terminal_mae": 67.1500015258789,
+                "ordinary_fixed_label_mae": 0.9496307373046875,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 324,
+                    "mae": 42.53709030151367
+                  },
+                  "out_of_bag": {
+                    "count": 66,
+                    "mae": 187.97698974609375
+                  }
+                },
+                "updated_unix": 1792937217.1586545
+              },
+              "auxiliary_critic_weights_sha256": "01636d8ee0ec51bd9bc68296e2cf87d3cfea539f3c2a436865cd47d72208a4e1"
+            },
+            {
+              "name": "terminal_10pct",
+              "final": {
+                "variant": "terminal_10pct",
+                "updates": 5000,
+                "loss": 92.40616607666016,
+                "terminal_mae": 34.16127395629883,
+                "ordinary_fixed_label_mae": 1.5446983575820923,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 324,
+                    "mae": 2.613943338394165
+                  },
+                  "out_of_bag": {
+                    "count": 66,
+                    "mae": 189.02999877929688
+                  }
+                },
+                "updated_unix": 1792937568.9641216
+              },
+              "auxiliary_critic_weights_sha256": "81ba53dce3d2579783021f598acb77cb6375813c465fae386997bf32f24a0bd9"
+            }
+          ]
+        }
+      ],
+      "vmc": [
+        {
+          "seed": 2026102511,
+          "source_receipt": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/terminal_fitting_replication_v2/2026102511/vmc/FINISHED.json",
+          "receipt_sha256": "ff9f43dbfe08615cdefc5fd232c095e824e1c0c9ffa34525c20cc250035fb420",
+          "results": [
+            {
+              "name": "uniform",
+              "final": {
+                "variant": "uniform",
+                "updates": 5000,
+                "loss": 214.38650512695312,
+                "terminal_mae": 182.3387451171875,
+                "ordinary_fixed_label_mae": 2.9838273525238037,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 311,
+                    "mae": 97.9796371459961
+                  },
+                  "out_of_bag": {
+                    "count": 79,
+                    "mae": 514.4358520507812
+                  }
+                },
+                "updated_unix": 1792936452.477018
+              },
+              "auxiliary_critic_weights_sha256": "4758d391f9e521250b0a326d237a0392359a89137280e00d6eb39f874d0a23b2"
+            },
+            {
+              "name": "terminal_10pct",
+              "final": {
+                "variant": "terminal_10pct",
+                "updates": 5000,
+                "loss": 345.7598876953125,
+                "terminal_mae": 110.69495391845703,
+                "ordinary_fixed_label_mae": 3.8343148231506348,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 311,
+                    "mae": 8.315726280212402
+                  },
+                  "out_of_bag": {
+                    "count": 79,
+                    "mae": 513.7322387695312
+                  }
+                },
+                "updated_unix": 1792936818.4974804
+              },
+              "auxiliary_critic_weights_sha256": "7b3692bfad6452f29b92ba6288b76b45405666fe32f543e37a031b38b6831d49"
+            }
+          ]
+        },
+        {
+          "seed": 2026102512,
+          "source_receipt": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/terminal_fitting_replication_v2/2026102512/vmc/FINISHED.json",
+          "receipt_sha256": "f5c6e9068a149b652b8d1ea4b5996803c7a984e784aaa82d08b9e1392b7d672a",
+          "results": [
+            {
+              "name": "uniform",
+              "final": {
+                "variant": "uniform",
+                "updates": 5000,
+                "loss": 152.47634887695312,
+                "terminal_mae": 181.45376586914062,
+                "ordinary_fixed_label_mae": 3.029512882232666,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 311,
+                    "mae": 96.66797637939453
+                  },
+                  "out_of_bag": {
+                    "count": 79,
+                    "mae": 515.230712890625
+                  }
+                },
+                "updated_unix": 1792937217.4218504
+              },
+              "auxiliary_critic_weights_sha256": "261ba572dec6b458cb449be9af4a42cdf9051f1879f16c5ba1bea75bcb25d027"
+            },
+            {
+              "name": "terminal_10pct",
+              "final": {
+                "variant": "terminal_10pct",
+                "updates": 5000,
+                "loss": 274.32879638671875,
+                "terminal_mae": 108.9505844116211,
+                "ordinary_fixed_label_mae": 3.9245076179504395,
+                "terminal_mask_errors": {
+                  "in_bag": {
+                    "count": 311,
+                    "mae": 6.033612251281738
+                  },
+                  "out_of_bag": {
+                    "count": 79,
+                    "mae": 514.104736328125
+                  }
+                },
+                "updated_unix": 1792937568.2425244
+              },
+              "auxiliary_critic_weights_sha256": "d31220f968f037ba681a9862e8343c6697c520df57a2a9234b52701f0ebe1bbe"
+            }
+          ]
+        }
+      ]
+    },
+    "formal_weights_changed": false,
+    "convergence_claim": false
+  },
+  "gpu": {
+    "0": {
+      "mean": 22.8,
+      "minimum": 0,
+      "maximum": 59
+    },
+    "1": {
+      "mean": 25.183333333333334,
+      "minimum": 0,
+      "maximum": 60
+    },
+    "2": {
+      "mean": 15.933333333333334,
+      "minimum": 0,
+      "maximum": 74
+    },
+    "3": {
+      "mean": 14.816666666666666,
+      "minimum": 0,
+      "maximum": 54
+    }
+  },
+  "evidence": [
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/diagnosis_cheq_performance_cycle01/DIAGNOSIS.json",
+      "sha256": "12f4ab42939734a68a1b13d363accce1d8be6c3cd47e15d6f2e855018f684e11"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/diagnosis_cycle01_dispatch_v1/PAIRED_CYCLES.json",
+      "sha256": "a27b6b1fe876f715596fa7f8f8f7fbfa223172a6d5215b2d8918a2de783849f6"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_impedance_torque_audited_v2/TRANSPARENCY.json",
+      "sha256": "3c977b5e233207a4614d900e4ab9d3196397137d1d96d1863694ac7c860662e7"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/terminal_fitting_replication_v2/SUMMARY.json",
+      "sha256": "9c97afffeb14020956cff8b4b79715e5b2d9c9df470893fba0ecd91a7a644882"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/ONLINE_AND_TORQUE_AUDIT_GPU_60S_01.json",
+      "sha256": "8e7cbc77870650c00b90aa113ed53a0de07a3f38113d649dee346814b670530c"
+    }
+  ],
+  "gpu_with_batch_probe": {
+    "summary": {
+      "0": {
+        "mean": 50.2,
+        "minimum": 10,
+        "maximum": 75
+      },
+      "1": {
+        "mean": 50.03333333333333,
+        "minimum": 16,
+        "maximum": 82
+      },
+      "2": {
+        "mean": 50.916666666666664,
+        "minimum": 20,
+        "maximum": 84
+      },
+      "3": {
+        "mean": 55.85,
+        "minimum": 33,
+        "maximum": 81
+      }
+    },
+    "scope": "Online CHEQ and SAC plus finite batch-size sensitivity probe",
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/ONLINE_WITH_BATCH_PROBE_GPU_60S_01.json",
+    "sha256": "853bb45055ca447cddadb98efaaed7a3bc23996464486dbdbb5c01b34ccedd25"
+  },
+  "post_probe_online_gpu": {
+    "summary": {
+      "0": {
+        "mean": 42.666666666666664,
+        "minimum": 9,
+        "maximum": 69
+      },
+      "1": {
+        "mean": 36.46666666666667,
+        "minimum": 25,
+        "maximum": 73
+      },
+      "2": {
+        "mean": 37.93333333333333,
+        "minimum": 0,
+        "maximum": 67
+      },
+      "3": {
+        "mean": 39.86666666666667,
+        "minimum": 0,
+        "maximum": 73
+      }
+    },
+    "scope": "Online CHEQ and SAC plus one deterministic GPU0 evaluation; all finite batch and terminal probes ended",
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/POST_PROBE_ONLINE_GPU_60S_01.json",
+    "sha256": "761e735a665b2fc0fd7c04ab98b109be0b5d75df3a8d1bd229b1d9966c9a49c5",
+    "initial_sampler_counts": {
+      "direct": 9,
+      "impedance": 9,
+      "admittance": 9,
+      "vmc": 9
+    },
+    "final_sampler_counts": {
+      "direct": 9,
+      "impedance": 9,
+      "admittance": 9,
+      "vmc": 9
+    }
+  }
+}
