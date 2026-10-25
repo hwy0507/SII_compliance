@@ -127,6 +127,10 @@ class PublishedLearner:
                 # Compute lambda_(t+1) now, so replay's next observation and the
                 # next executed decision both contain that same context.
                 self.hybrid.update_mixing_parameter(step=step-warmup)
+                # The published linear branch returns a NumPy singleton array
+                # after warmup. Convert the scalar bridge explicitly before
+                # its next multiplication with a CUDA action tensor.
+                self.hybrid.weight = float(np.asarray(self.hybrid.weight).item())
         raw_action = action.cpu().numpy().reshape(-1)
         execution = mixed.cpu().numpy().reshape(-1)
         if not np.isfinite(execution).all() or np.any(execution < low-1e-6) or np.any(execution > high+1e-6):
@@ -134,7 +138,7 @@ class PublishedLearner:
         return obs, raw_action, execution, context
 
     def update(self, arrays):
-        # Arrays have batch dimension only. UTD=1 explicitly, as in registration.
+        # One upstream update per call; the trainer applies registered UTD.
         values = {k: torch.as_tensor(v, dtype=torch.float32, device=self.device)
                   for k, v in arrays.items()}
         if self.hybrid:

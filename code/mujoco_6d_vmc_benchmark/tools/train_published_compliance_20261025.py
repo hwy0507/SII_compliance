@@ -1,7 +1,8 @@
 """Concurrent physical samplers feeding one pinned published learner per GPU.
 
-Dispatch is grouped into complete, balanced condition cycles. Checkpoints are
-written only after all in-flight episodes finish, including failed episodes.
+Dispatch is grouped into complete, balanced condition cycles. Full learner and
+replay checkpoints are written periodically and at cycle boundaries; partial
+checkpoints restart physics episodes rather than claiming exact physics resume.
 There is no total-step cap. Stop requests drain the current cycle, save replay
 and all optimizer/RNG states, and never advertise convergence automatically.
 """
@@ -99,6 +100,10 @@ def main(args):
         raise ValueError('Unregistered method/seed')
     if args.algorithm not in protocol['algorithms']:
         raise ValueError('Unregistered published algorithm')
+    batch_size = int(protocol.get('learner_batch_size', 256))
+    utd = int(protocol.get('learner_updates_per_transition', 1))
+    if not 256 <= batch_size <= 32768 or not 1 <= utd <= 8:
+        raise ValueError('Unsupported registered learner workload')
     conditions = protocol['conditions']
     if sha(protocol['reference_plan']) != protocol['reference_plan_sha256']:
         raise ValueError('Frozen nominal reference plan drift')
@@ -118,6 +123,15 @@ def main(args):
     replay = Replay(dim, 49 if args.algorithm == 'cheq' else 48, args.seed+53)
     steps, cycles, start_cycle = 0, [], 0
     pdigest = sha(args.registration)
+    imported_replay = protocol.get('recovered_replay', {}).get(args.controller)
+    if imported_replay and not args.resume:
+        if sha(imported_replay['path']) != imported_replay['sha256']:
+            raise ValueError('Recovered physical replay drift')
+        with np.load(imported_replay['path'], allow_pickle=False) as archive:
+            columns = {k: archive[k] for k in replay.arrays if k != 'masks'}
+        for i in range(len(columns['rewards'])):
+            replay.add(**{k: column[i] for k, column in columns.items()})
+        steps = replay.size
     if args.resume:
         checkpoint = torch.load(args.resume, map_location=args.device, weights_only=False)
         if (checkpoint['protocol_sha256'], checkpoint['controller'], checkpoint['seed']) != (pdigest, args.controller, args.seed):
@@ -131,6 +145,8 @@ def main(args):
         device=args.device, gpu_name=torch.cuda.get_device_name(learner.device),
         gpu_uuid=str(getattr(torch.cuda.get_device_properties(learner.device), 'uuid', 'unavailable')),
         physics_dt_s=.00005, actor_period_s=.04, workers=args.workers,
+        batch_size=batch_size, updates_per_transition=utd,
+        recovered_replay=imported_replay, fresh_optimizer_after_failed_attempt=bool(imported_replay and not args.resume),
         python=sys.executable, trainer_sha256=sha(__file__),
         learner_adapter_sha256=sha(Path(__file__).with_name('published_compliance_learner_20261025.py')),
         resumed_from=str(args.resume) if args.resume else None))
@@ -141,6 +157,17 @@ def main(args):
     cycle = start_cycle
     children = {}
     selector = selectors.DefaultSelector()
+    last_checkpoint_step = steps
+
+    def checkpoint_now(boundary):
+        temporary = out/'checkpoint.tmp'
+        torch.save(dict(protocol_sha256=pdigest, controller=args.controller, seed=args.seed,
+            cycle=cycle, steps=steps, cycles=cycles, learner=learner.state_dict(),
+            replay=replay.state_dict(), boundary=boundary,
+            environment_state_saved=False,
+            resume_semantics='retain completed transitions and learner state; start new episodes after partial boundary'), temporary)
+        temporary.replace(out/'checkpoint_latest.pt')
+
     try:
         while not stop.exists():
             if shutil.disk_usage(out).free < 20*1024**3:
@@ -210,8 +237,13 @@ def main(args):
                         transition_log.write(json.dumps(dict(step=steps, cycle=cycle, condition=state['condition']['id'],
                             reward=value, done=done, context=previous['context'], reward_terms=terms), allow_nan=False)+'\n')
                         if steps >= 5000 and replay.size >= 256:
-                            metrics = learner.update(replay.sample())
-                            optimizer_log.write(json.dumps(dict(step=steps, **metrics), allow_nan=False)+'\n')
+                            for update_index in range(utd):
+                                metrics = learner.update(replay.sample(batch_size))
+                                optimizer_log.write(json.dumps(dict(step=steps, update_index=update_index,
+                                    **metrics), allow_nan=False)+'\n')
+                        if steps-last_checkpoint_step >= 1000:
+                            checkpoint_now('partial_episode_valid_replay_reset_environment_on_resume')
+                            last_checkpoint_step = steps
                     if done:
                         selector.unregister(key.fileobj)
                         rc = state['process'].wait(timeout=60)
@@ -243,11 +275,7 @@ def main(args):
             row = dict(cycle=cycle, steps=steps, reward_mean=float(np.mean(returns)),
                        reward_std=float(np.std(returns)), strict_success_rate=float(np.mean(successes)))
             cycles.append(row)
-            checkpoint = dict(protocol_sha256=pdigest, controller=args.controller, seed=args.seed,
-                cycle=cycle, steps=steps, cycles=cycles, learner=learner.state_dict(), replay=replay.state_dict())
-            temp = out/'checkpoint.tmp'
-            torch.save(checkpoint, temp)
-            temp.replace(out/'checkpoint_latest.pt')
+            checkpoint_now('complete_condition_cycle')
             write(out/'CYCLES.json', dict(cycles=cycles, plateau=plateau_status(cycles),
                  status='training', sufficient_convergence_claim=False))
             cycle += 1
@@ -257,6 +285,10 @@ def main(args):
               cycles_completed=cycle-start_cycle, convergence_claim=False))
     except BaseException as error:
         write(out/'FAILURE.json', dict(error=repr(error), steps=steps, cycle=cycle))
+        try:
+            checkpoint_now('failure_valid_replay_reset_environment_on_resume')
+        except BaseException as save_error:
+            write(out/'CHECKPOINT_FAILURE.json', dict(error=repr(save_error)))
         # Close only this run's action pipes. Each sampler retains its incomplete
         # episode evidence and exits at its next actor boundary.
         for state in children.values():

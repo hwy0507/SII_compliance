@@ -1,5 +1,35 @@
 # 更新日志
 
+## 2026-10-25 — 修复CHEQ自适应边界、恢复真实replay，启动独立SAC在线消融
+
+- 开工fetch确认main `a52dfba4486af8d263d5cd0a976c3102482ff249`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取两分支日志，保留原v6非RL重评边界。
+- v1四路约10009真实步时在CHEQ第二warmup边界失败：作者内部线性分支给出NumPy单元素数组，
+  与CUDA Tensor乘法报错。明确转float修复；3个stream跨4999/5000/9999/10000/10001/11000步
+  回归通过，另有环形replay恢复采样和“从头平坦不是收敛”两项测试通过。
+- 没有旧optimizer checkpoint可恢复；从原物理journal/transition恢复10000/10000/10001/10000
+  条非终端真实数据，reward复算误差0，raw-action浮点重建再混合误差0，排除不完整尾段。
+  新增可移植恢复工具并核验数组复现；不把数据恢复冒充旧策略/optimizer续训。
+- v2因逐行重复NPZ解压导致慢启动，在新采样/更新前取消；改为一次读取数组。v3/source_train04
+  已真实更新并落盘checkpoint，每1000步/周期末/异常保存完整learner/replay，明确不保存物理
+  中途状态，恢复时重开回合。原始失败、取消记录和旧产物均保留。
+- 用户要求GPU利用率≥50%并允许辅助项目训练。按实测登记四路batch16384/UTD2；正式独占
+  GPU两次60s均值分别52.98/46.47/51.62/49.71%和52.65/49.68/50.23/46.72%，不能宣称
+  四卡已持续达标。早期紧急真实数据更新已停止，未混入正式策略权重/结果。
+- 启动原计划作者plain-SAC在线消融 `sac_four_interfaces_seed20261025_v1`，各2采样器+1learner，
+  与CHEQ合计52/55CPU核，共享四卡；同物理/任务/reward，48输入，无CHEQ混合/ensemble，
+  独立fresh warmup/replay和产物。GPU共享对主训练吞吐的影响继续监测，其他seed未启动。
+- 主要产物前缀 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/`，
+  当前主机 `rltest-1025--a6ed2ff39b3c-s5gnp35dxg`。主训练 `runs/cheq_four_interfaces_seed20261025_v3`，
+  注册 `runs/cohort30_v2/REGISTRATION_GPU_V4.json`。大型轨迹/模型/环境仅SSD，不提交Git。
+- 新增独立确定性评估入口：冻结checkpoint，核对注册/模型/参考hash，沿同一物理actor接点运行，
+  不更新网络；子集明确是诊断且仍需子步审计。21000步Direct在首个登记条件的接口检查运行中，
+  占用CPU52/53，暂时总54/55核。最初执行源码另存准确hash，后续入口直接加载冻结runtime的learner。
+- 首批实际训练：Direct出现approach穿透中止，参数RL的完整55s被动条件暂时失败在carry，
+  回报约-31。这是早期数据，非学习收敛证据；小型恢复/运行快照已存docs/evidence。
+- 无训练收敛、成功策略或ESN配对比较结论；指定ESN权重仍缺失。执行文档和AGENTS已更新，
+  旧证据作为历史快照保留。GitHub写权限此前不可用，本轮发布结果另行核对，不声称已推送。
+
 ## 2026-10-25 — 恢复三类任务运行时，启动四GPU已发表CHEQ适配训练
 
 - 持续Goal已授权自主论文/接口适配、仿真、四卡4090训练并取消总步数上限。更新AGENTS，

@@ -8,7 +8,10 @@
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
 - 当前真实运行见 `docs/RL_PUBLISHED_BASELINE_EXECUTION_20261025.md`：当前服务器SSD的
-  `sii_rl/runs/cheq_four_interfaces_seed20261025_v1`，四GPU、每方法9采样器，共40CPU核。
+  `sii_rl/runs/cheq_four_interfaces_seed20261025_v3`，四GPU、每方法9采样器，共40CPU核。
+  v1在CHEQ自适应混合边界失败，v2导入慢且未采样，均保留；v3使用恢复replay和新optimizer。
+  另有 `sac_four_interfaces_seed20261025_v1` 在线消融，每方法2采样器/1learner，共用52/55核。
+  用户要求GPU利用率目标≥50%，允许有用的辅助训练；不得将辅助负载当成正式收敛证据。
   开工先查该目录 `LAUNCH.json`、各方法 `PROGRESS.json`/`FAILURE.json` 和真实进程，避免重复。
   这是新源码构建的30条件训练cohort，不能与历史v6结果直接拼表。仍无收敛或ESN比较结论。
 - 持续 Goal 的最新授权优先：用户已将论文选择、必要方法/接口适配、三类任务集上的仿真和
@@ -22,7 +25,7 @@
   `SPT_empirical`；明确事后参考及训练集范围，不重写旧实验或冒充预登记规划参考SPT。
   力矩参考阈值可经验登记/先行校准，但不按方法或最终排名反调；无人接触仍记NA。
 - 读 `docs/RL_PUBLISHED_BASELINE_SELECTION_20261025.md`：候选来源、官方代码SHA、
-  真实依赖缺口及新指标工具。当前无新训练结果，冻结MJB/参数runtime/指定ESN尚未定位；
+  真实依赖缺口及新指标工具。该筛选文档记录的是当时的依赖缺口；现在新source runtime和训练已启动，指定ESN仍未定位；
   不得重新生成不同模型充当归档模型。CHEQ的控制混合上下文属于算法适配，须明确登记；
   不引入障碍物真值等部署不可得actor输入。
 

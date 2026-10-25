@@ -48,7 +48,9 @@ Platform/training changes: gamma .99 to .9995 for the 55 s horizon; 5000 warmup
 transitions instead of the upstream config's 15000; bounded uniform warmup;
 local parallel collection; correct next-state mixing context; finite-horizon
 terminal masks; full replay/optimizer/temperature/RNG resume. Networks remain
-256x256; actor/critic LR 3e-4, tau .005, batch 256, UTD1, replay capacity 1M.
+256x256; actor/critic LR 3e-4, tau .005, replay capacity 1M. Initial v1 used
+batch256/UTD1; current registered v3 uses batch16384/UTD2 on all four interfaces
+following measured GPU throughput. These are adaptations, not paper defaults.
 Changing algorithm, reward or observation scaling requires a new registered run.
 
 ## Recovered runtime and physical preflight
@@ -61,7 +63,7 @@ Base directory:
 
 - Interpreter: `env/bin/python`, isolated Python 3.11.17, MuJoCo 3.11.0,
   NumPy 2.2.6, Torch 2.8.0+cu128. Full dependencies are in each runtime lock.
-- `runtime/source_train02`: frozen scripts/tools/assets, the published learner,
+- `runtime/source_train04` (current v3; initial v1 used `source_train02`): frozen scripts/tools/assets, the published learner,
   complete hashes, and parameter sources recovered from baseline commit
   `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` with main's existing controller repairs.
 - Robot assets: Menagerie `f3b6013629c7b94f8ee93fd977b161fa8350f9bc`, 128 hashed
@@ -132,23 +134,84 @@ reference is fed into training. Initial engineering torque thresholds are
 weighted only during actual human contact; no contact means NA. These thresholds
 are engineering references, not a validated human comfort certification.
 
-Primary training started in
-`runs/cheq_four_interfaces_seed20261025_v1/`: Direct/GPU0, Impedance/GPU1,
-Admittance/GPU2, VMC/GPU3. Each has nine physical samplers; 36 simulators and
-four learner CPUs reserve 40 CPU cores, within the user's 55-core allocation.
-Initial processes are in `LAUNCH.json`; current progress is each method's
-`PROGRESS.json`, failures in `FAILURE.json`, optimizer metrics in `optimizer.jsonl`.
-The initial 5000 real transitions per method are exploration, **zero updates
-during that interval**. Low GPU utilization during warmup is expected.
+Initial training `runs/cheq_four_interfaces_seed20261025_v1` failed on all four
+methods at about 10009 real transitions. At the second warmup boundary, the
+authors' interior uncertainty-to-weight branch returned a NumPy singleton array;
+multiplying it by a CUDA action tensor raised TypeError. The adapter now casts
+this scalar explicitly, without changing the uncertainty law. A regression test
+exercises steps4999/5000/9999/10000/10001/11000 on three independent samplers.
 
-There is no total-step cap. A complete balanced condition cycle closes before
-atomic checkpointing of replay and full learner state. `STOP_REQUESTED` inside
-one method directory drains its current complete cycle. A plateau candidate
-requires at least six cycles, improvement >=2 over the first two cycle means,
-and the last three cycle means within max(.5,2% of their absolute mean).
-It remains a **candidate requiring optimizer and deterministic-policy review**;
-neither stage completion nor actor-loss proximity to zero proves convergence.
-The two additional registered seeds and plain-SAC ablations are not yet running.
+There was no complete-cycle checkpoint before that failure: **the previous
+optimizer states were lost**, not resumed. `runs/recovered_replay_v1` retains
+10000/10000/10001/10000 completed nonterminal transitions. Recorded physical
+telemetry reproduced the rewards with max error0. Raw actions were reconstructed
+from nonzero mixed actions/weights with float32 rounding; reapplying the weight
+reproduced the recorded mixed action with max error0. Incomplete tails were
+excluded. The portable `recover_published_replay_20261025.py` reproduces these
+arrays and records source hashes; it is deliberately limited to this cycle-zero,
+zero-nominal recovery case. This is not exact optimizer recovery.
+
+A second launch (`v2`) was cancelled before sampling or updates because replay
+import repeatedly decompressed NPZ arrays per row. Materializing the columns
+once repaired this startup problem. All attempts and failures remain on SSD.
+
+**Current primary run:** `runs/cheq_four_interfaces_seed20261025_v3`, registered
+by `runs/cohort30_v2/REGISTRATION_GPU_V4.json`, with frozen `source_train04`.
+Direct/GPU0, Impedance/GPU1, Admittance/GPU2, VMC/GPU3 each have nine physics
+samplers. Thirty-six samplers and four learner CPUs reserve40 cores. Optimizers
+started fresh with the recovered real replay; progress `steps` includes imported
+transitions. New optimizer updates and per-method checkpoints were verified.
+Current progress is `PROGRESS.json`, failures `FAILURE.json`, and optimizer
+metrics `optimizer.jsonl`; do not infer running state from this dated document.
+
+Every1000 new transitions, at complete condition cycles, and on exceptions,
+atomic checkpoints retain learner, target critics, optimizers, temperature, RNG
+and replay. They explicitly state **environment_state_saved=false**: partial
+checkpoint recovery starts new episodes, not exact mid-physics continuation.
+`STOP_REQUESTED` inside a method directory drains its current complete cycle.
+There is no total-step cap. A plateau candidate requires at least six complete
+cycles, improvement >=2 over the first two cycle means, and the last three cycle
+means within max(.5,2% of their absolute mean). It remains a **candidate requiring
+optimizer and deterministic-policy review**, not an automatic convergence claim.
+
+User subsequently requested GPU utilization >=50% and authorized useful project
+training during analysis to protect against the cluster idle shutdown (<15%).
+A formal-only60s sample averaged52.98/46.47/51.62/49.71%; a second steady sample
+averaged52.65/49.68/50.23/46.72%, including a GPU3 instantaneous0% sample. Thus
+four-card sustained50% has **not** yet been demonstrated. Initial emergency
+updates on real project transitions were stopped at the formal handoff; they
+are not formal policy results. Raw measurements are `runs/FORMAL_GPU_UTILIZATION_60S.json`
+and `runs/FORMAL_GPU_STEADY_60S.json`.
+
+The planned authors' **plain-SAC online ablation** has now started separately as
+`runs/sac_four_interfaces_seed20261025_v1`, using
+`runs/cohort30_v2/REGISTRATION_SAC_ABLATION_V1.json`. Each method gets two physics
+samplers and one additional learner CPU, bringing combined allocation to52 of55
+cores. It uses the same30 conditions, physical runtime, reward, batch16384/UTD2,
+and seed; fresh initialization/replay,48 observations, no CHEQ mixing or ensemble.
+It has5000 warmup transitions before updates. Separate artifacts are retained;
+these jobs are actual online ablations, not no-op utilization loops. GPU sharing
+can reduce primary wall-clock throughput; compare physical steps and full-cycle
+learning evidence, not time alone. Additional seeds have not started.
+
+The independent `evaluate_published_compliance_20261025.py` entry point copies
+one atomic checkpoint to an immutable evaluation snapshot, validates the same
+registration/reference/model hashes, and runs deterministic actions through the
+same frozen adapter. It performs no optimizer/replay updates. A condition subset
+is explicitly diagnostic, not a complete comparison; physical substep audit is
+still required separately. One early Direct snapshot (21000 steps including10000
+imported transitions) is being checked on the first registered passive condition
+in `runs/interim_direct_deterministic_v1`; this is an integration/early-policy
+check, not final acceptance. It uses CPU52/53 while running, for54/55 total cores.
+The first evaluator revision and learner source are archived with their exact
+execution hashes; subsequent launches resolve the learner from frozen runtime.
+
+Early training evidence is now available: Direct exploration produced approach
+penetration aborts, while initial complete55s parameter-policy passive episodes
+failed at carry (rough episode return -31). These are initial learning data,
+not convergence or a fair final method ranking. Current source/status evidence
+is in `PUBLISHED_COMPLIANCE_RECOVERY_20261025.json`; its timestamp is a snapshot,
+not a continuously updated dashboard.
 
 No method is currently claimed converged. No ESN comparison or unseen test has
 been completed. The designated existing ESN checkpoint remains unavailable:
