@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-25 — SAC新增Direct7/VMC4完整周期独立只读复核
+
+- 复用新归档：Direct344824步/643164更新、Task/Strict0/0各30；VMC227259/412500、17/16各30。与旧Direct5/VMC3相比，loss216712→1722495、3062208→10207173，terminalMAE3445→11622、23290→39222；不支持健康收敛，保持已登记资源优先交接、不改fresh超参数。
+- Direct被动0200在663action/26.52s因2mm穿透abort，失败保留，组内29完整55s。VMC30完整；短0600Task真Strict假，保存interval独立归约外穿透0.223470mm超过原0.2mm，与rollout和冻结gate一致。
+- 60条件/terminal/MJB/dt/plan、不可变checkpoint/hash、reward重建/网络无变化通过，两张诊断图已看；只读进程结束，0新physics/updates。不是采样器因果实验或全子步安全/舒适审计，不选Tref或ESN排名。
+- 产物集群SSD根下runs/sac_post_reallocation_cycle_review_v1，报告docs/PUBLISHED_SAC_POST_REALLOCATION_REVIEW_20261025.md/.json。原fresh和SAC/协调1956030/审计1968149已核验live并推进，交接未完成；目标仍active。
+- fetch main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d不变；本轮仅新增报告/收据，不改训练源码、物理/MJB、actor/filter/gate/执行器/dt。
+
+
 ## 2026-10-25 — 核验新CHEQ学习启动，登记主训练采样资源优先交接
 
 - Direct/VMC6000步各1001更新已只读核验，网络/target改变、Adam有效、预热replay全部字段保留、日志步序与有限数值通过；三路9000行预热数据和全新初始化精确复核。当前仍第一个条件周期，不是收敛证据。

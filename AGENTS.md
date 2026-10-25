@@ -7,6 +7,8 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新SAC新run Direct7/VMC4只读复核完成，原诊断session21874已退出勿重启：Task/Strict0/0与17/16各30，loss1722495/10207173、terminalMAE11622/39222，较旧5/3继续恶化；不改fresh设置。D被动0200于663action/26.52s穿透abort，其余29完整55s；VMC30完整、短0600Task真Strict假，保存interval复算穿透.223470mm>.2mm。60terminal/MJB/奖励/checkpoint/网络和两图核验，非新全子步安全审计。runs/sac_post_reallocation_cycle_review_v1/REVIEW.json及VMC_STRICT_FAILURE_DETAIL.json，docs/PUBLISHED_SAC_POST_REALLOCATION_REVIEW_20261025.md/.json。原fresh三路和Imp原1557140实际推进，1956030/1968149仍等待，勿重复启动。
+
 最新fresh学习启动只读核验已完成：D/V6000步各1001updates，网络/target实际改变、Adam有效、旧replay字段精确保留；三路9000预热行与fresh初始化核验。不是收敛。D8385/Adm7171/V8480时均cycle0，Imp仍等原SAC1557140完整4。
 已登记并启动资源优先协调器1956030，runtime/fresh_sampling_priority_v1，runs/CHEQ_FRESH_SAMPLING_PRIORITY_V1.json；目前等待原fresh1146202与SAC691298四路更新并退出，尚无新STOP。之后自动完整周期停止SAC、CHEQ保存全state后2→12sampler，52核分配；六周期总预算扣除原已完成，不重计，source16/batch256/UTD1/奖励等不变。勿重复派发或提前绕过依赖。
 原只读observer1156327在无child/无完成stage时已明确替换为1968149，runs/CHEQ_FRESH_PRIORITY_AUDIT_V1.json/output fresh_priority_audit_v1，原0/1/3/5跨原run和新cheq_fresh_priority_seed20261025_v1真实归档。保留SUPERSEDED及首次pidfd_open不可用的信号前失败收据，不重启旧observer。7守卫测试和780source/24parameter/30条件/plan hash通过。最新纯正式GPU均值11.93/7.17/31.72/3.58%（部分SAC周期尾部），50%仍未达、扩容尚未生效。docs/PUBLISHED_FRESH_LEARNING_AND_RESOURCE_PRIORITY_20261025.md/.json；Goal、ESN仍未完。
