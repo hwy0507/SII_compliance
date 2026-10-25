@@ -7,6 +7,10 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新fresh学习启动只读核验已完成：D/V6000步各1001updates，网络/target实际改变、Adam有效、旧replay字段精确保留；三路9000预热行与fresh初始化核验。不是收敛。D8385/Adm7171/V8480时均cycle0，Imp仍等原SAC1557140完整4。
+已登记并启动资源优先协调器1956030，runtime/fresh_sampling_priority_v1，runs/CHEQ_FRESH_SAMPLING_PRIORITY_V1.json；目前等待原fresh1146202与SAC691298四路更新并退出，尚无新STOP。之后自动完整周期停止SAC、CHEQ保存全state后2→12sampler，52核分配；六周期总预算扣除原已完成，不重计，source16/batch256/UTD1/奖励等不变。勿重复派发或提前绕过依赖。
+原只读observer1156327在无child/无完成stage时已明确替换为1968149，runs/CHEQ_FRESH_PRIORITY_AUDIT_V1.json/output fresh_priority_audit_v1，原0/1/3/5跨原run和新cheq_fresh_priority_seed20261025_v1真实归档。保留SUPERSEDED及首次pidfd_open不可用的信号前失败收据，不重启旧observer。7守卫测试和780source/24parameter/30条件/plan hash通过。最新纯正式GPU均值11.93/7.17/31.72/3.58%（部分SAC周期尾部），50%仍未达、扩容尚未生效。docs/PUBLISHED_FRESH_LEARNING_AND_RESOURCE_PRIORITY_20261025.md/.json；Goal、ESN仍未完。
+
 最新SAC原Adm/VMC3只读observer3759872/child1319809已完成退出勿重启；60完整terminal/MJB、checkpoint/reward/network和图复核通过。Task/Strict12/12与18/18各30；loss2→3 146717→1790203、537785→3062208，Q18097→43734/28848→82018，terminalMAE3754→13778/11169→23290，不健康收敛。runs/sac_remaining_cycle03_audit_v1/REVIEW.json。三路SAC扩容生效后的正式GPU窗口36.45/5.78/23.38/25.58%，50%仍未达，无辅助GPUlearner。
 最新补充：Admittance旧2758791已正常结束3/185515/330000，SAC新1316018在4实际更新9worker；fresh新1314547真实采集预热。父checkpoint和首9/2模型/输入/dt/CPU通过。四路只有Impedance尚等原1557140完整周期；原observer3759872已派发只读1319809做Adm/VMC3整组，勿重复启动。
 最新extended discount四probe361333–361336已全部完成并退出勿重启：40万辅助updates、0physics、无权重保存/推广，8arm初始化/采样/输入hash、完整曲线和40个旧共同前缀精确核验、两图已看。低gamma降Q但非通用误差修复：终端MAE长/短 .165/1.113、.275/.744、5.240/.753、18.745/5.643；VMC两arm末段仍增长，.99起点终奖系数约1e-6。runs/consistent_discount_extended_cycle06_v1/COMPLETED_REVIEW.json。

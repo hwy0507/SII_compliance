@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-25 — 核验新CHEQ学习启动，登记主训练采样资源优先交接
+
+- Direct/VMC6000步各1001更新已只读核验，网络/target改变、Adam有效、预热replay全部字段保留、日志步序与有限数值通过；三路9000行预热数据和全新初始化精确复核。当前仍第一个条件周期，不是收敛证据。
+- 新资源协调器1956030等待原fresh1146202/SAC691298四路都已更新并正常结束；随后才在完整30条件边界停止旧SAC、保留CHEQ全状态并将采样2→12。原source16、batch256/UTD1/奖励及所有物理合同不改，六周期总预算减去原已完成；当前等待、扩容未生效、未发新STOP。
+- 原只读observer1156327在idle/no-child/no-completed-stage时被替换为1968149，仍检查0/1/3/5，但按真实原/新run追踪归档；不修改旧冻结脚本/协议。首次替换因无pidfd_open在信号前失败，已留证；身份核验后只替换一次，没有重复训练。
+- 7资源/边界/预算/身份/归档守卫测试及780源码/24参数/30条件/参考计划实际hash通过。真实启动进度D8385/3386、Adm7171/2172、V8480/3481，Imp未启动。无辅助GPU训练的60样本均值11.93/7.17/31.72/3.58%，部分SAC在周期尾部，50%仍未达。
+- 证据docs/PUBLISHED_FRESH_LEARNING_AND_RESOURCE_PRIORITY_20261025.md/.json；集群SSD根/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，runs/CHEQ_FRESH_SAMPLING_PRIORITY_V1.json、runtime/fresh_sampling_priority_v1、新等待run cheq_fresh_priority_seed20261025_v1、只读fresh_priority_audit_v1。学习启动产物runs/fresh_reduced_reuse_learning_onset_v1。
+- 已fetch/read main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，无远端新增。资源交接、完整周期科学review、健康收敛、固定矩阵/SPT/指定ESN比较未完成，Goal继续；大型产物仅集群保存。
+
+
 ## 2026-10-25 — 完整折扣诊断结束，启动fresh小批量CHEQ在线阶段
 
 - 四原probe全部结束，40万辅助更新/0physics/无权重推广；两arm完整state/sampling与不可变输入、曲线、40个共同前缀核验及两图复核。低gamma非通用修复，VMC末段仍增长；.99会将55s终奖起点权重降至约1e-6。

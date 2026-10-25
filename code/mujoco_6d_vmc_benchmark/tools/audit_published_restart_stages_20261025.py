@@ -1,8 +1,10 @@
-"""Finite read-only audit of the parent and two registered critic-restart cycles.
+"""Finite read-only audit of registered complete training cycles.
 
 Waits for immutable complete-cycle archives, never starts training or physics.
 Missing archives are not replaced with live partial checkpoints. The stage
 budget/deadline bounds this observer, not the persistent training objective.
+Optional additional runs resolve cycle archives after a resource handoff. Each
+method's report records its actual run; plots cover that run's log segment only.
 """
 import argparse
 import hashlib
@@ -23,6 +25,20 @@ def write(path, value):
     tmp = path.with_suffix('.tmp')
     tmp.write_text(json.dumps(value, indent=2, allow_nan=False)+'\n')
     tmp.replace(path)
+
+
+def locate_cycle(stage, method):
+    """Resolve an immutable cycle to its actual run after a resource handoff."""
+    runs = [Path(stage['run']), *map(Path, stage.get('additional_runs', []))]
+    found = []
+    for run in runs:
+        for archive in stage['archives']:
+            path = run/archive/method/f"cycle_{stage['cycle']:05d}.pt"
+            if path.exists():
+                found.append((run, path))
+    if len(found) > 1 and len({sha(path) for _, path in found}) != 1:
+        raise ValueError('Different checkpoints claim the same method/cycle')
+    return found[0] if found else None
 
 
 def main(registration):
@@ -48,16 +64,19 @@ def main(registration):
             target.mkdir()
             snapshots = target/'snapshots'
             snapshots.mkdir()
+            run_view = target/'run_view'
+            run_view.mkdir()
             while True:
                 paths = {}
                 for method in p['methods']:
-                    candidates = [run/a/method/f"cycle_{stage['cycle']:05d}.pt" for a in stage['archives']]
-                    found = next((path for path in candidates if path.exists()), None)
+                    found = locate_cycle(stage, method)
                     if found:
                         paths[method] = found
                 if len(paths) == len(p['methods']):
                     break
-                for failure in [run/'MIGRATION_FAILURE.json', *[run/m/'FAILURE.json' for m in p['methods']]]:
+                candidate_runs = [run, *map(Path, stage.get('additional_runs', []))]
+                for failure in [f for r in candidate_runs
+                                for f in [r/'MIGRATION_FAILURE.json', *[r/m/'FAILURE.json' for m in p['methods']]]]:
                     if failure.exists():
                         raise RuntimeError('Training failure while waiting for archives: '+str(failure))
                 write(out/'PROGRESS.json', dict(stage=stage['name'], state='waiting_for_complete_cycle_archives',
@@ -68,8 +87,8 @@ def main(registration):
             records = {}
             # Archive files are immutable; copy one complete state per method
             # into this audit before reading live append-only diagnostics.
-            for method, source in paths.items():
-                execution = json.loads((run/method/'EXECUTION.json').read_text())
+            for method, (actual_run, source) in paths.items():
+                execution = json.loads((actual_run/method/'EXECUTION.json').read_text())
                 if execution['protocol_sha256'] != stage['training_registration_sha256']:
                     raise ValueError('Unexpected training protocol: '+method)
                 dest = snapshots/method/source.name
@@ -78,10 +97,11 @@ def main(registration):
                 digest = sha(source)
                 if sha(dest) != digest:
                     raise ValueError('Archive copy mismatch')
-                records[method] = dict(source=str(source), sha256=digest)
+                (run_view/method).symlink_to((actual_run/method).resolve(), target_is_directory=True)
+                records[method] = dict(source=str(source), sha256=digest, actual_run=str(actual_run))
             write(target/'SNAPSHOTS.json', records)
             command = [sys.executable, '-B', str(Path(__file__).with_name('diagnose_published_training_20261025.py')),
-                '--runtime', str(root), '--run', str(run), '--output', str(target/'results'),
+                '--runtime', str(root), '--run', str(run_view), '--output', str(target/'results'),
                 '--cycle-archive', str(snapshots), '--cycle', str(stage['cycle'])]
             with (target/'diagnose.log').open('x') as log:
                 child = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
