@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-25 — 非RL SPT 重评实时进度（30/64）
+
+- v4 评测已真实闭合 30/64 条回合，当前唯一在途为
+  `historical_ordinary_rnn / prospective_20261013_acceptance_003`；`execution.json` 仍为
+  `running`，无重复 worker。
+- 在途 scope 的 `MemorySwapMax=0`，累计 `memory.events` 仍为 `oom=0`、`oom_kill=0`；内存约
+  3.02 GiB、CPU 计数持续增加。已完成回合均保留 rollout、独立接触子步、actor/filter replay
+  与逐文件 hash 收据。
+- 仍未运行最终 `finalize_nonrl_spt_report_20261025.py`；64 条完成前不发布正式方法排名，失败回合继续计入分母。
+
 ## 2026-10-25 — 非RL SPT 重评实时进度（24/64）
 
 - `outputs/nonrl_spt_matrix_20261025_v4/execution.json` 真实状态仍为 `running`，已闭合
