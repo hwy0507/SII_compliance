@@ -2,6 +2,7 @@
 
 **Current handoff (2026-10-25):** [project overview and four-GPU RL server guide](docs/RL_SERVER_START_20261025.md),
 [reward and training protocol](docs/RL_SPT_TRAINING_HANDOFF_20261025.md), and
+[two-paper transfer assessment](docs/RL_TWO_PAPERS_TRANSFER_ASSESSMENT_20261025.md), and
 [new SPT evaluation standard](docs/EVALUATION_STANDARD_SPT_20261025.md).
 The user now authorizes server computation (4 RTX 4090 GPUs, 55 CPU cores), superseding the historical
 local-only restriction below. New scripts support four interfaces × three seeds, up to 1M interactions

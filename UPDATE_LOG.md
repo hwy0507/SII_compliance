@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-25 — 整理两篇柔顺控制论文的 FR3 迁移边界
+
+- 新增 `docs/RL_TWO_PAPERS_TRANSFER_ASSESSMENT_20261025.md`，将用户提供的两篇文献笔记改写为
+  严谨的项目决策文档，并链接 CoRL 2023 在线导纳残差学习与 ICRA 2024 历史本体力控制论文。
+- 结论是有条件采纳：保留参数残差策略、物理参数正值/范围/变化率约束、canonical48 历史记忆、
+  以及 privileged critic 与部署 actor 的权限分栏；不直接采用论文平台的动作维度、外力场、
+  reward 权重、episode 长度、并行环境数、力阈值或成功率。论文结果不写成 FR3 结果。
+- 文档提出两个后续独立 variant：`parameter_residual_sac_v1` 和 `direct_history_ppo_v1`；
+  当前首轮 `spt_v1`、canonical48、action7/参数接口、public filter、冻结 MJB/gate、执行器限制
+  与 `dt=5e-5` 不变。在线 record-and-replay 残差适应暂不纳入统一排名。
+- 文档明确 direct-action 仍须保持当前 action7 合同，历史只作为独立记忆因素；privileged actor、
+  障碍物真值、未来接触标签和绕过公共 filter 均不允许进入正式比较。reward 仍以 Task/Strict、
+  SPT 导向训练代理和独立物理审计为准。
+- 这是文献分析和实验登记建议，不是新训练或复现实验结果。本轮验证为 Markdown 链接/格式检查、
+  现有 RL 交接文档一致性核对；未启动训练、未改变历史 checkpoint 或服务器产物。
+- 开工实时核对远端 `main=2aea153db26cc4c154d61b9c5bc57d5ca7511896`、
+  `baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，并读取两分支日志。
+
 ## 2026-10-25 — 更正服务器为四张4090，统一四路并行
 
 - 用户更正硬件为4张RTX4090、55核CPU。README、AGENTS、两份RL交接文档、训练配置、

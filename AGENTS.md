@@ -9,6 +9,9 @@
 
 - 接手 RL 先读 `docs/RL_SERVER_START_20261025.md`（项目介绍、4卡并行、当地启动入口），
   再读 `docs/RL_SPT_TRAINING_HANDOFF_20261025.md`（reward、优化器、收敛和审计）。
+- 关于两篇柔顺控制论文的迁移判断，继续读取
+  `docs/RL_TWO_PAPERS_TRANSFER_ASSESSMENT_20261025.md`：只采纳参数残差、历史本体输入和
+  privileged critic 分栏等设计原则；论文平台的动作、奖励、阈值和结果不能直接当作 FR3 配置。
 - 用户更正服务器有 **4张RTX4090、55核CPU**，要求尽量利用算力、多组并行；服务器 agent
   自行确认当地路径/设备并执行，无须向本机 agent 提供地址。**该新授权覆盖下文及旧 skill
   中“本机计算、服务器只归档”的限制。** 不因此修改旧run收据、物理/MJB、gate、actor输入或dt。
