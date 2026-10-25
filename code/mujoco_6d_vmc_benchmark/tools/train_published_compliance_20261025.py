@@ -49,8 +49,11 @@ def validate_resume_protocol(checkpoint_digest, protocol, current_digest):
     if ({k: v for k, v in previous.items() if k not in descriptive}
             != {k: v for k, v in protocol.items() if k not in descriptive}):
         raise ValueError('Performance-only continuation changed the training contract')
-    if protocol.get('performance_amendment', {}).get('kind') != 'batched_finite_checks_only':
+    amendment = protocol.get('performance_amendment', {})
+    if amendment.get('kind') not in ('batched_finite_checks_only', 'device_replay_cache_only'):
         raise ValueError('Unrecognized registered continuation amendment')
+    if amendment['kind'] == 'device_replay_cache_only' and amendment.get('replay_device_cache') is not True:
+        raise ValueError('Device replay continuation must explicitly enable the cache')
     old_root, new_root = Path(previous['runtime']), Path(protocol['runtime'])
     for name in ('PARAMETER_HASHES.json', 'ROBOT_ASSET_HASHES.json', 'CHEQ_HASHES.json'):
         if json.loads((old_root/name).read_text()) != json.loads((new_root/name).read_text()):
@@ -61,10 +64,14 @@ def validate_resume_protocol(checkpoint_digest, protocol, current_digest):
         'published_compliance_learner', 'train_published_compliance',
         'audit_published_episode', 'evaluate_published_compliance',
         'probe_published_numerical_stability')}
+    if amendment['kind'] == 'device_replay_cache_only':
+        permitted = {'tools/train_published_compliance_20261025.py',
+                     'tools/published_replay_device_cache_20261025.py'}
     for name in set(old_source) | set(new_source):
         if old_source.get(name) == new_source.get(name):
             continue
-        if name in permitted or (name not in old_source and name.startswith('tools/')):
+        if name in permitted or (amendment['kind'] == 'batched_finite_checks_only'
+                                 and name not in old_source and name.startswith('tools/')):
             continue
         raise ValueError('Performance continuation changed protected runtime source: '+name)
 
@@ -174,6 +181,12 @@ def main(args):
         learner.load_state_dict(checkpoint['learner'])
         replay.load_state_dict(checkpoint['replay'])
         steps, cycles, start_cycle = checkpoint['steps'], checkpoint['cycles'], checkpoint['cycle']+1
+    cache_enabled = protocol.get('performance_amendment', {}).get('replay_device_cache', False)
+    if cache_enabled:
+        if protocol['performance_amendment']['kind'] != 'device_replay_cache_only':
+            raise ValueError('Device replay requires its registered performance amendment')
+        from published_replay_device_cache_20261025 import DeviceReplayCache
+        replay = DeviceReplayCache(replay, learner.device)
     out.mkdir(parents=True, exist_ok=False)
     write(out/'EXECUTION.json', dict(status='running', pid=os.getpid(), protocol_sha256=pdigest,
         controller=args.controller, algorithm=args.algorithm, seed=args.seed, cpus=cpus,
@@ -181,6 +194,8 @@ def main(args):
         gpu_uuid=str(getattr(torch.cuda.get_device_properties(learner.device), 'uuid', 'unavailable')),
         physics_dt_s=.00005, actor_period_s=.04, workers=args.workers,
         batch_size=batch_size, updates_per_transition=utd,
+        replay_device_cache=bool(cache_enabled),
+        replay_device_cache_bytes=(sum(v.numel()*v.element_size() for v in replay.arrays.values()) if cache_enabled else 0),
         recovered_replay=imported_replay, fresh_optimizer_with_imported_replay=bool(imported_replay and not args.resume),
         restart_reason=protocol.get('restart_reason'), critic_layer_norm=learner.critic_layer_norm,
         numerical_amendments=learner.numerical_amendments, numerical_patch_receipt=learner.numerical_patch_receipt,

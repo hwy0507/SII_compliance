@@ -5,13 +5,39 @@ the historical office-v6 MJB or proof that any RL method has converged.
 
 ## Current execution snapshot
 
-All four CHEQ learners now run in `runs/cheq_performance_seed20261025_v2` with
-`runtime/source_train07`, collecting cycle3 (fourth complete-condition cycle).
-All four have real new transitions and updates. Their v1 parents ended normally,
-with every cycle1/2 checkpoint archived and no missed boundaries. The new cycle
-archiver is active. Finite-check optimization preserved every learner state,
-optimizer/target/temperature/RNG, replay/mask and cycle-history field; it did
-not reset learning or change the objective, physics or public control chain.
+Device-replay performance continuation has completed for CHEQ and remains in
+progress for SAC. CHEQ moved from
+`runs/cheq_performance_seed20261025_v2` / source_train07 to
+`runs/cheq_performance_seed20261025_v3` / source_train08; SAC moves from
+performance v1/source_train06 to `runs/sac_performance_seed20261025_v2` /
+source_train09. All four CHEQ learners produce real new transitions/updates
+in cycle4, with every parent cycle3 checkpoint archived and no misses. No new SAC learner had
+started at this capture: its Direct drains cycle2 and the other interfaces
+cycle1. Inspect the live coordinator receipts before any action; these
+STOP_REQUESTED files are active migration requests, not cancelled training.
+
+The cache retains authoritative CPU replay, sampling RNG, mask rejection and
+checkpoint format. Only synchronous sample gathers move to GPU, adding about
+0.40–0.42GiB per learner; batch/UTD/learning settings stay fixed. Two reversed-arm
+trials,6,144 auxiliary updates in total, preserve all learner/replay/RNG/gradient
+states exactly. Each frozen runtime changes only the trainer and new cache
+module, preserving its parent's respective learner implementation. Auxiliary
+weights are discarded; shared-load speedups do not prove online utilization.
+
+The initial coordinator launches referenced a nonexistent inherited-runtime
+script and exited before any STOP request or child learner. Failure receipts
+are preserved. The verified replacement is frozen separately in
+`runtime/device_replay_dispatch_v1`; both coordinators are now live. Migration
+archives follow each growing learner list until the normal archive starts,
+protecting early complete cycles while slower siblings drain.
+
+Fourth-cycle CHEQ Task/Strict results are6/6,18/17,13/13,17/17 out of30, with
+returns−22.61414/−2.24736/−10.43662/−2.81063 for Direct/Impedance/Admittance/VMC.
+Direct has its first passive strict success (1/10), plus5 active-short successes;
+the other three methods still have0/10 passive strict successes.
+SAC Direct's second cycle has0/30 successes and mean−35.57527, with two original
+2mm penetration aborts retained. Its exact-cycle Q/critic diagnostics worsen;
+see the diagnostics report. No healthy-convergence claim is made.
 
 Cycle2 Task/Strict counts are3/3,17/16,12/11,17/17 out of30 for Direct/Impedance/
 Admittance/VMC. Mean returns are−27.8272/−4.2768/−13.7767/−2.8037. Direct has its
@@ -21,13 +47,12 @@ hit the original2mm penetration abort at581 transitions and remains a failure.
 Complete-cycle Q/loss diagnostics show continuing value growth; no convergence
 or healthy-loss claim is made.
 
-All four plain-SAC learners also completed parent cycle0 and now update in
-`runs/sac_performance_seed20261025_v1` under source_train06, collecting cycle1.
+All four plain-SAC learners completed parent cycle0 and continue draining in
+`runs/sac_performance_seed20261025_v1` under source_train06 as described above.
 Their cycle0 strict counts were0/16/12/15 out of30, each with82,500 updates.
 These have different training age and imported replay exposure from CHEQ cycle2;
-current numbers are not an equal-budget algorithm ranking. Both migrations have
-finished. Old STOP_REQUESTED files are consumed migration records; do not restart
-old learners or duplicate coordinators.
+current numbers are not an equal-budget algorithm ranking. The earlier
+finite-check migrations finished; the newest cache migrations remain in progress.
 
 The finite discount sensitivity completed16,000 auxiliary updates with exact
 initial-state restoration. Changing only Bellman gamma to.99 reduced Q, but
@@ -45,7 +70,7 @@ versus24.07%. Peak torques were51.54 versus52.26Nm. This is a comfort/efficiency
 tradeoff on one condition, not overall superiority. Every case ran55s with
 physical/public-filter/common-torque-projection audits; these engineering
 comfort thresholds differ from actuator limits and the original strict gate.
-CPU54 now evaluates Admittance. The nominal matrix continues on52/53, with31/120
+CPU54 now evaluates Admittance. The nominal matrix continues on52/53, with35/120
 at this observation. No final SPT reference or designated-ESN comparison exists.
 
 New read-only action-value diagnostics compare cycle1/2 on1,024 identical
@@ -59,9 +84,10 @@ resolve the observed minimum mixing weight; no replacement mixing rule was
 introduced. The frozen25.8s analysis performed0 updates/0physics and has ended.
 Its candidate Q preferences are predictions, not actual counterfactual returns.
 
-After all finite discount jobs ended, source_train07 online training plus SAC
-and one GPU1 fixed-policy evaluator averaged38.33/30.98/30.08/32.22% GPU use in
-a60-sample window. The all-card50% target remains unmet. Auxiliary timing gains
+After the cache continuation, all four source_train08 CHEQ learners plus old SAC
+and one GPU2 fixed-policy evaluator averaged40.90/33.22/40.12/32.10% GPU use in
+a60-sample window (67.65s elapsed), with auxiliary updates ended. This first
+post-migration window is not an isolated benchmark. The all-card50% target remains unmet. Auxiliary timing gains
 and lower validation overhead do not imply utilization success. Read-only
 cycle2 CHEQ and cycle0 SAC reports/plots are complete; see the latest sections
 of `RL_PUBLISHED_DIAGNOSTICS_20261025.md` and committed small evidence.

@@ -32,17 +32,33 @@ def write(path, value):
 def main(args):
     torch.set_num_threads(1)
     args.output.mkdir(parents=True, exist_ok=False)
-    jobs = json.loads((args.run/'LAUNCH.json').read_text())['jobs']
+    launch = args.run/'LAUNCH.json'
+    jobs = json.loads(launch.read_text())['jobs'] if launch.exists() else []
+    if not jobs and not args.migration_only:
+        raise ValueError('No original learners to monitor')
     identities = {job['controller']: process_identity(job['pid']) for job in jobs}
     if any(identity is None for identity in identities.values()):
         raise ValueError('All original learner handles must be live at monitor start')
     source_hash = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     write(args.output/'MONITOR.json', dict(pid=os.getpid(), run=str(args.run.resolve()),
         started_unix=time.time(), source_sha256=source_hash, process_start_ticks=identities,
-        role='read-only learner observation and exact checkpoint archival'))
+        role='read-only learner observation and exact checkpoint archival',
+        migration_only=args.migration_only))
     archived, missed = {}, set()
     with (args.output/'EVENTS.jsonl').open('x', buffering=1) as events:
         while not (args.output/'MONITOR_STOP').exists():
+            if args.migration_only and launch.exists():
+                refreshed = json.loads(launch.read_text())['jobs']
+                for job in refreshed:
+                    method = job['controller']
+                    if method not in identities:
+                        identity = process_identity(job['pid'])
+                        if identity is None:
+                            raise ValueError('New migration learner is not live: '+method)
+                        identities[method] = identity
+                        events.write(json.dumps(dict(event='migration_learner_registered',
+                            method=method,pid=job['pid'],process_start_ticks=identity))+'\n')
+                jobs = refreshed
             active = {job['controller']: process_identity(job['pid']) == identities[job['controller']]
                 for job in jobs}
             for job in jobs:
@@ -87,7 +103,12 @@ def main(args):
                 del checkpoint
             write(args.output/'PROGRESS.json', dict(updated_unix=time.time(), active_original_processes=active,
                 archived=list(archived), missed=list(sorted(missed))))
-            if not any(active.values()):
+            # Cover early learners while siblings still drain. The original
+            # coordinator starts its normal archive before writing FINISHED.
+            if args.migration_only and (args.run/'MIGRATION_FINISHED.json').exists():
+                break
+            if not any(active.values()) and (not args.migration_only
+                    or (args.run/'MIGRATION_FAILURE.json').exists()):
                 break
             time.sleep(5)
     write(args.output/'FINISHED.json', dict(ended_unix=time.time(), archived=list(archived), missed=list(sorted(missed))))
@@ -97,4 +118,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--migration-only', action='store_true',
+        help='Follow growing LAUNCH.json until coordinator hands off to its normal archive')
     main(parser.parse_args())

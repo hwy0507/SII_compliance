@@ -71,6 +71,39 @@ class PerformanceContinuationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'verified registered parent'):
             validate_resume_protocol('old_digest', {}, 'new_digest')
 
+    def test_device_cache_continuation_preserves_learner_and_physics(self):
+        with tempfile.TemporaryDirectory() as directory:
+            old_root, new_root = Path(directory)/'old', Path(directory)/'new'
+            original = {'scripts/physics.py':'same', 'tools/published_compliance_learner_20261025.py':'same'}
+            for root in (old_root, new_root):
+                root.mkdir()
+                for name in ('PARAMETER_HASHES.json','ROBOT_ASSET_HASHES.json','CHEQ_HASHES.json'):
+                    (root/name).write_text('{}')
+                (root/'SOURCE_HASHES.json').write_text(json.dumps(original))
+            old = dict(runtime=str(old_root), runtime_sha256='old', reward={'success_bonus':25})
+            parent = Path(directory)/'parent.json'; parent.write_text(json.dumps(old))
+            digest = hashlib.sha256(parent.read_bytes()).hexdigest()
+            new = dict(old, runtime=str(new_root), runtime_sha256='new',
+                resume_parent_registration=dict(path=str(parent),sha256=digest),
+                performance_amendment=dict(kind='device_replay_cache_only',replay_device_cache=True))
+            allowed = dict(original, **{'tools/published_replay_device_cache_20261025.py':'new',
+                                       'tools/train_published_compliance_20261025.py':'new'})
+            (new_root/'SOURCE_HASHES.json').write_text(json.dumps(allowed))
+            validate_resume_protocol(digest,new,'new')
+            for name in original:
+                changed=dict(allowed); changed[name]='changed'
+                (new_root/'SOURCE_HASHES.json').write_text(json.dumps(changed))
+                with self.assertRaisesRegex(ValueError,'protected runtime source'):
+                    validate_resume_protocol(digest,new,'new')
+            (new_root/'SOURCE_HASHES.json').write_text(json.dumps(allowed))
+            new['reward']={'success_bonus':50}
+            with self.assertRaisesRegex(ValueError,'training contract'):
+                validate_resume_protocol(digest,new,'new')
+            new['reward']=old['reward']
+            new['performance_amendment']['replay_device_cache']=False
+            with self.assertRaisesRegex(ValueError,'explicitly enable'):
+                validate_resume_protocol(digest,new,'new')
+
 
 if __name__ == '__main__':
     unittest.main()

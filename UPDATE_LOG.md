@@ -1,5 +1,33 @@
 # 更新日志
 
+## 2026-10-25 — GPU replay精确缓存接续与SAC Direct第二轮诊断
+
+- 再次fetch并读取远端main a52dfba/baseline f6e8f8c日志，保留本地未发布提交与现有训练。
+- 新增同步device replay cache：CPU replay/采样RNG/掩码拒绝/存盘格式不变，GPU缓存采样，多占
+  432–448MB显存；不增batch/UTD。两轮反转顺序共6144辅助更新，四接口×CHEQ/SAC全部完整
+  learner/optimizer/target/alpha/RNG/replay/gradients一致、父状态不变；辅助权重丢弃，所有辅助进程结束。
+  共享负载加速有顺序波动，两轮均更快；不冒充在线吞吐或四卡50%达标。9项针对性软件测试通过。
+- 冻结source_train08（父07）/09（父06），各仅改trainer并新增cache，分别保留原learner/physics/
+  reward/gate/actor/filter/执行器/dt。登记CHEQ performance v3、SAC performance v2，在完整轮次边界
+  保留全部状态接续。四路CHEQ均已在新cycle4真实更新；SAC仍排空且尚无新learner，禁止重复派发。
+- 首次协调器启动误指向继承runtime中不存在的文件，解释器退出且未创建STOP/子任务；失败收据保留。
+  重验原进程后改用独立冻结runtime/device_replay_dispatch_v1，两个协调器真实运行。
+  新migration-only归档跟随逐步增加的learner，覆盖迁移期间早完成的周期，待常规归档接管后退出。
+- CHEQ第四轮四路Task/Strict为6/6、18/17、13/13、17/17（各30），reward均值−22.61414/−2.24736/
+  −10.43662/−2.81063，checkpoint全部归档无遗漏。Direct首次1个passive严格成功，另5个active-short，
+  参数三路passive仍0/10；不是收敛结论。SAC Direct第二轮0/30、均值−35.57527，全部失败于approach，
+  两个原2mm穿透abort保留，新增40978步。其只读诊断Q均值3401.98、终端MAE329.77、末1000更新
+  q_loss624.17，较首轮恶化；actor loss下降不能当收敛。诊断/图已完成且目视检查，无新更新或physics。
+- 四路cache CHEQ接续完成后60样本（67.65s）GPU均值40.90/33.22/40.12/32.10%，仍未达50%，
+  此时辅助更新已全部结束，含旧SAC和GPU2单固定策略推理；不把微基准加速当在线达标。
+- 随后完成第四轮CHEQ只读critic诊断/图：in-bag终端MAE358.05/1063.08/21892.57/8474.15，
+  Q均值4607.57/3691.79/32102.17/18220.59，critic继续恶化。0更新/0新physics，图已目视检查；
+  任务成功数增加不等于健康收敛，下一步重点是价值学习稳定性，尚未选择新科学修复。
+- 中期评估6/12继续Admittance，nominal35/120；仍无充分收敛、最终SPT参考、完整比较或指定ESN结果。
+  服务器基址 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`；新产物
+  runs/device_replay_validation_v1/v2、diagnosis_sac_direct_cycle01_v1及两新continuation run；
+  源码/测试/小证据/AGENTS/执行诊断文档同步，GitHub发布状态另行核验。
+
 ## 2026-10-25 — 同状态动作价值诊断与Impedance固定策略审计
 
 - 延续已核对的远端main a52dfba/baseline f6e8f8c及两分支日志；本地保留未发布提交，不覆盖运行。

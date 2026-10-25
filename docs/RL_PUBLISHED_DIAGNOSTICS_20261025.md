@@ -1000,3 +1000,139 @@ and comparison snapshot are under `runs/action_value_cycle12_v1` at the existing
 SSD base. Small repository evidence is
 `PUBLISHED_ACTION_VALUES_AND_IMPEDANCE_20261025.json`. No convergence, all-GPU50%
 utilization, complete SPT result or designated-ESN comparison is claimed.
+
+## Exact device replay cache and boundary continuation
+
+Earlier profiling attributed14.6% of learner call time to CPU replay sampling.
+`published_replay_device_cache_20261025.py` mirrors the authoritative CPU replay
+on GPU. CPU insertion, NumPy sampling RNG, mask generation/rejection and saved
+replay format remain unchanged. Each accepted index vector gathers contiguous
+device samples; synchronous row copies keep the mirror current. It adds
+432–448MB per learner (about0.40–0.42GiB), without increasing batch or UTD.
+All state changes must go through add/load; direct external array mutation is
+not supported by this cache.
+
+Two finite paired validations use immutable complete-cycle CHEQ and SAC states,
+all four interfaces, batch16384, and one copied replay-row insertion per two
+updates to exercise online cache maintenance. These inserted rows are test
+inputs, not new physical experience. Each arm deep-copies the full parent state,
+clears prior gradients and verifies parent immutability. The first trial uses
+128 updates/arm, the second256 with reversed order, totaling6,144 auxiliary
+updates. Every pair has identical full learner state, optimizer/target/alpha/
+RNG, replay and gradients. Auxiliary weights are discarded; all workers ended.
+Validation uses source_train07's learner implementation for both algorithms;
+the SAC continuation retains source_train06's older finite-check implementation,
+which is untouched by the cache and does not change the learning arithmetic.
+
+| Interface | CHEQ speedup trial1 / trial2 | SAC speedup trial1 / trial2 |
+|---|---:|---:|
+| Direct |1.580 /1.207|1.332 /1.211|
+| Impedance |1.020 /1.443|1.275 /1.285|
+| Admittance |1.560 /1.117|1.249 /1.255|
+| VMC |1.044 /1.452|1.292 /1.250|
+
+These are shared-load timing ratios, not isolated throughput guarantees. The
+order dependence prompted the second trial; both show a reduction in measured
+update time, but cannot establish all-card50% online utilization. Six protocol/
+finite-check tests, two CPU/CUDA replay tests (wraparound, restoration, mask
+rejection and RNG equivalence), and one migration-archive handoff test pass.
+
+Immutable source_train08 retains source_train07 and source_train09 retains
+source_train06. Each changes exactly two source files: the trainer and new cache.
+Parameter, robot assets, published learner, physics/controller/reward sources
+remain identical to its own parent. Registrations are
+`REGISTRATION_CHEQ_PERFORMANCE_V3.json` and `REGISTRATION_SAC_PERFORMANCE_V2.json`
+under runs/cohort30_v2. Coordinators preserve full states at complete-cycle
+boundaries, using the existing52-core allocation and same four GPUs.
+
+The first coordinator commands referenced a file absent from the inherited
+runtime. Both interpreters exited before any STOP request or child process;
+the failed launch/log receipts remain. After verifying the original learners
+were still live and untouched, dispatch was frozen separately in
+runtime/device_replay_dispatch_v1 and restarted with new retry receipts.
+At the evidence capture, VMC/Impedance had really resumed CHEQ cycle4 with cache
+enabled; Direct/Admittance and all SAC learners were still draining. Never
+restart these parents or dispatch another migration from an observation delay.
+
+Because siblings can migrate far apart in time, a new migration-only archive
+mode follows the growing LAUNCH list and preserves early complete boundaries.
+It exits after the coordinator starts its normal archive and writes
+MIGRATION_FINISHED. Its separate early_cycle_archive directory preserves this
+coverage without modifying learners or colliding with the normal archiver.
+Current fourth-cycle CHEQ Task/Strict counts are18/17 for Impedance and17/17 for
+VMC, with mean returns−2.247359/−2.810630; other interfaces are not complete yet.
+The previous VMC mean−2.803664 and17/30 strict count are similar, which alone
+does not establish stable optimization or sufficiently learned convergence.
+
+## SAC Direct's second complete cycle does not show learning success
+
+The exact cycle1 checkpoint has105,470 retained transitions, including40,978
+new transitions this cycle. All30 cases fail at approach. Two original2mm
+penetration aborts are retained: passive_corner0100 at1,282 steps and
+active_short0100 at1,196 steps. They explain the272-transition shortfall from
+30 full1,375-step episodes; this is not lost training data.
+
+Mean return worsens from−34.439232 to−35.575272. Sampled replay-Q mean grows
+from716.39 to3,401.98; terminal MAE from56.18 to329.77; last1,000-update mean
+critic loss from44.66 to624.17. Alpha grows from0.24225 to0.56530. These
+diagnostics sample each checkpoint's own replay (47 versus77 terminal rows),
+not an identical-state calibration comparison. The smooth decline in actor
+loss accompanies growing Q and failed tasks; it is not evidence of healthy
+convergence. The diagnostic plot was visually checked, including its explicit
+SAC replay-Q label.
+
+`runs/diagnosis_sac_direct_cycle01_v1` has completed0 updates/0physics. The other
+SAC cycle1 checkpoints were absent at capture and are marked missing, never
+substituted with another cycle. Latest intermediate evaluation remains6/12,
+with Admittance on CPU54; nominal has35/120. The shared SPT reference and ESN
+comparison remain incomplete. Small evidence is
+`PUBLISHED_DEVICE_REPLAY_CONTINUATION_20261025.json`; detailed validation is in
+runs/device_replay_validation_v1 and v2. No formal scientific setting changed.
+
+## Fourth CHEQ cycle completed; all four cache learners now updating
+
+Later in the same work period, all four parents completed cycle3 and their exact
+boundaries were archived with no misses. All four new source_train08 learners
+have real new transitions and updates. The coordinator finished, its normal
+archive started, and the migration-only archive exited normally without misses.
+SAC migration remains in progress, with no replacement learner yet at capture.
+
+| Interface | Task / Strict out of30 | Mean return cycle2 →3 | Passive / short / long strict counts, each /10 |
+|---|---:|---:|---:|
+| Direct |6 /6|−27.82724→−22.61414|1 /5 /0|
+| Impedance |18 /17|−4.27684→−2.24736|0 /9 /8|
+| Admittance |13 /13|−13.77670→−10.43662|0 /9 /4|
+| VMC |17 /17|−2.80366→−2.81063|0 /10 /7|
+
+Each cycle3 contributes41,250 new transitions; retained totals are244,194 /
+244,721 /245,570 /246,276. Direct's first passive success is useful changing-policy
+training evidence, not proof of a fixed successful policy or generalization.
+The parameter methods still have no passive strict success. The full late
+snapshot preserves all30 episode rows per method, not only successful cases.
+
+After all cache learners updated, the first60-sample online window (67.65s wall
+time) measured GPU means40.90/33.22/40.12/32.10%, minima0/0/8/0. No auxiliary
+updates were running. Old SAC learners and one GPU2 fixed-policy evaluator were
+active. The subsequent CPU-only cycle3 critic diagnosis started after this
+window. Cache timing gains therefore still do not establish the requested
+all-card50% utilization; this first post-migration window is not an isolated
+steady-state benchmark. Raw samples are `runs/SOURCE08_ONLINE_GPU_60S_01.json`.
+
+The exact cycle3 CPU-only critic diagnosis subsequently completed in
+`runs/diagnosis_cheq_cycle03_v1`, with0 optimizer updates and0 new physical steps.
+All168 terminal replay rows per method are included, with bootstrap masks
+separating trained from withheld critic/row pairs. The plot was visually checked.
+
+| Interface | In-bag terminal MAE | Out-of-bag terminal MAE | Sampled replay Q mean | Last1,000 updates mean critic loss |
+|---|---:|---:|---:|---:|
+| Direct |358.05|4530.54|4607.57|7676.61|
+| Impedance |1063.08|3084.58|3691.79|43584.80|
+| Admittance |21892.57|43966.29|32102.17|6642665.41|
+| VMC |8474.15|22293.34|18220.59|783913.95|
+
+These continue to worsen despite some task-success improvements. Out-of-bag
+means bootstrap withholding, not unseen tasks. Actor-loss descent largely
+tracks the growing Q scale, and finite losses do not establish stability.
+The next scientific priority is value-learning stability, not declaring a
+plateau sufficient or merely accumulating more transitions. No new scientific
+repair, reward/discount change or privileged critic input has been selected.

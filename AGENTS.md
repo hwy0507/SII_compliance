@@ -7,6 +7,28 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+- **最新GPU replay缓存接续：CHEQ已完成，SAC仍排空，勿重复启动。** CHEQ从performance v2/source_train07迁入
+  `runs/cheq_performance_seed20261025_v3` / source_train08；SAC从performance v1/source_train06迁往
+  `runs/sac_performance_seed20261025_v2` / source_train09。CHEQ协调器正常完成，SAC协调器PID2370128（重验）。
+  四路CHEQ已在新run实际更新cycle4；SAC尚无新learner，旧Direct在cycle2，其余cycle1。旧run的
+  STOP_REQUESTED是迁移请求，不可恢复。CHEQ第四轮全部归档无遗漏，新常规archiver PID2660326。
+  首次启动因误指向父runtime未包含的协调器文件而退出，未创建STOP/子作业；失败收据保留，
+  已用独立冻结runtime/device_replay_dispatch_v1修复。先查MIGRATION_PROGRESS/FAILURE和真实句柄。
+- source_train08/09各只改变trainer和新增device cache；分别保留07/06的原learner、算法、physics、
+  actor/filter/gate/dt。CPU replay/RNG/checkpoint仍权威，GPU只同步缓存/gather，多占约0.40–0.42GiB。
+  两轮反转顺序验证共6144辅助更新全部state/optimizer/target/alpha/RNG/replay/gradient精确一致；
+  辅助权重丢弃、进程已结束。9项协议/replay/归档软件测试通过，不把微基准加速当GPU50%达标。
+- 新run各有early_cycle_archive迁移期监视器，跟随逐步增加的learner列表，待协调器启动常规
+  cycle_archive后自行退出，避免先迁入learner完成周期时漏存；不是另一套训练。旧archiver继续保存父周期。
+- CHEQ第四轮四路Task/Strict为6/6、18/17、13/13、17/17（各30），均值−22.61414/−2.24736/
+  −10.43662/−2.81063。Direct首次1个passive严格成功，另5个active-short；参数三路passive仍0/10。
+  缓存接续后60样本GPU均值40.90/33.22/40.12/32.10%，仍未达50%；所有辅助更新进程已结束。
+  `runs/diagnosis_cheq_cycle03_v1`完整只读诊断/图已结束：四路in-bag终端MAE358.05/1063.08/
+  21892.57/8474.15，Q均值4607.57/3691.79/32102.17/18220.59，critic继续恶化；下一步重点是价值
+  学习稳定性，不能因Direct成功数增加就称收敛。未选定新的科学修复或改奖励/discount/critic信息。
+  SAC Direct第二轮0/30，均值−35.57527，全部
+  失败于approach，2个原2mm穿透abort，40978新增步。只读诊断Q均值3401.98、终端MAE329.77，
+  最近1000更新q_loss624.17，仍恶化；不是健康收敛。runs/diagnosis_sac_direct_cycle01_v1已结束。
 - 最新中期固定cycle1矩阵6/12审计完成：Direct三失败；Impedance passive失败于carry，两个active
   Task/Strict通过。active-long完成52.40s对nominal20.52s，接触阈值比例74.48%对24.07%，峰矩
   51.54对52.26Nm，是单条件效率/舒适折衷，非总体改善。CPU54现评估Admittance；nominal31/120。
@@ -14,7 +36,7 @@
   cycle1/2同1024状态×12相同候选动作，replay prefix/网络不变；cycle2跨critic分歧中动作均值偏置
   仅解释12.24/32.72/17.83/28.74%，去偏置后所有候选uncertainty仍>.2。不能把问题仅归于共享
   价值偏移，也不能把Q偏好当真实动作改进。正式reward/gamma/mixing阈值未改，无替代修复被选定。
-- 当前主训练已全部迁入 `runs/cheq_performance_seed20261025_v2` / `runtime/source_train07`，
+- 上次finite-check接续已全部迁入 `runs/cheq_performance_seed20261025_v2` / `runtime/source_train07`，
   四路已产生真实steps/updates，正在cycle3（第四整轮）。v1正常结束，cycle1/2全部归档无遗漏；
   新归档器继续。迁移保留全部learner/optimizer/RNG/replay/masks/history，只优化finite检查。
 - 第三整轮cycle2的Task/Strict分别3/3、17/16、12/11、17/17（各30）；平均reward约
@@ -24,7 +46,7 @@
 - SAC四路也已全部完成旧cycle0并迁入 `runs/sac_performance_seed20261025_v1` / source_train06，
   真正更新，正在cycle1；原cycle0严格成功0/16/12/15（各30），每路82500更新。
   `runs/diagnosis_sac_cycle00_v1`已完成。它与CHEQ第三周期不是相同曝光，不能据当前数值排算法优劣。
-  **两套迁移均已完成；旧STOP_REQUESTED是已消费的迁移记录，禁止恢复旧进程或重复派发。**
+  **这两套较早的finite-check迁移已完成；最新cache迁移状态看本节顶部，禁止重复派发。**
 - `runs/discount_sensitivity_cycle01_v1`四接口×两gamma×2000更新全部完成，总16000辅助更新。
   深复制完整恢复且父状态不变；.99降低Q但终端误差仍大，且1374步终奖折扣约1e-6，.9995约.503。
   只改辅助Bellman gamma，stored reward仍含.9995 shaping；不是完整替代objective，不能选为正式修复。
