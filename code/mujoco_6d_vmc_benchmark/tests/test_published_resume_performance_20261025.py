@@ -17,16 +17,31 @@ class PerformanceContinuationTests(unittest.TestCase):
         assert_finite_parameters(torch.nn.Linear(3, 2))
 
     def test_nonfinite_parameter_and_gradient_are_both_rejected(self):
-        for gradient in (False, True):
+        for gradient, value in ((False, float('inf')), (False, float('-inf')),
+                                (True, float('nan')), (True, float('inf'))):
             net = torch.nn.Linear(3, 2)
             with torch.no_grad():
                 if gradient:
                     net.weight.grad = torch.zeros_like(net.weight)
-                    net.weight.grad[0, 0] = float('nan')
+                    net.weight.grad[0, 0] = value
                 else:
-                    net.weight[0, 0] = float('inf')
+                    net.weight[0, 0] = value
             with self.assertRaisesRegex(FloatingPointError, 'weight'):
                 assert_finite_parameters(net)
+
+    def test_mixed_dtype_noncontiguous_and_failure_name(self):
+        net = torch.nn.Module()
+        net.register_parameter('first', torch.nn.Parameter(torch.ones(3, 2).T))
+        # Finite float64 values above float32 range must not be cast to infinity.
+        net.register_parameter('second', torch.nn.Parameter(torch.full((2,), 1e100, dtype=torch.float64)))
+        assert_finite_parameters(net)
+        net.second.grad = torch.tensor([0., float('-inf')], dtype=torch.float64)
+        with self.assertRaisesRegex(FloatingPointError, 'second'):
+            assert_finite_parameters(net)
+        with torch.no_grad():
+            net.first[0, 0] = float('nan')
+        with self.assertRaisesRegex(FloatingPointError, 'first'):
+            assert_finite_parameters(net)
 
     def test_registered_performance_continuation_rejects_reward_drift(self):
         with tempfile.TemporaryDirectory() as directory:

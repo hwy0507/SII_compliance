@@ -5,6 +5,7 @@ Equal optimizer updates are not equal sampled-row budgets or online experience.
 This diagnostic cannot establish a superior online policy or change live runs.
 """
 import argparse
+import copy
 import hashlib
 import json
 import os
@@ -68,7 +69,7 @@ def main(args):
 
     results, initial_reference = [], None
     for batch_size in protocol['batch_sizes'][args.controller]:
-        learner.load_state_dict(state)
+        learner.load_state_dict(copy.deepcopy(state))
         rng = np.random.default_rng(protocol['seed'])
         initial = diagnose()
         if initial_reference is None:

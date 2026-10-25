@@ -27,13 +27,23 @@ OBSERVATION_SCALE = np.r_[np.full(7, np.pi), np.full(7, 2.),
 
 def assert_finite_parameters(agent):
     named = list(agent.named_parameters())
-    # Keep every parameter/gradient check but transfer flags together. A host
-    # boolean conversion per tensor serializes the otherwise asynchronous GPU.
-    checks = [torch.isfinite(p).all() & (
-        torch.isfinite(p.grad).all() if p.grad is not None else True) for _, p in named]
-    valid = torch.stack(checks).cpu().tolist()
-    if not all(valid):
-        raise FloatingPointError('Nonfinite published parameter/gradient: '+named[valid.index(False)][0])
+    # Check every element as before, but launch reductions on concatenated
+    # buffers instead of hundreds of tiny parameter/gradient tensors. Group by
+    # device and dtype to avoid casts that could change nonfinite detection.
+    groups = {}
+    for _, parameter in named:
+        for value in (parameter, parameter.grad):
+            if value is not None:
+                groups.setdefault((value.device, value.dtype), []).append(value)
+    with torch.no_grad():
+        valid = all(bool(torch.isfinite(torch.cat([v.reshape(-1) for v in values])).all())
+                    for values in groups.values())
+    if not valid:
+        # Preserve the original first-parameter diagnostic on the failure path.
+        for name, parameter in named:
+            if not torch.isfinite(parameter).all() or (
+                    parameter.grad is not None and not torch.isfinite(parameter.grad).all()):
+                raise FloatingPointError('Nonfinite published parameter/gradient: '+name)
 
 
 class Spaces(gym.Env):

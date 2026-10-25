@@ -1,5 +1,31 @@
 # 更新日志
 
+## 2026-10-25 — CHEQ混合权重/soft target诊断及逐元素检查性能接续
+
+- 远端main/baseline实时核对仍为a52dfba/f6e8f8c，读取两分支日志；持续Goal和八路在线learner继续，
+  不宣布收敛。主CHEQ在第三完整周期cycle2；指定ESN、完整最终比较仍缺。
+- 新只读工具检查cycle0/1共8个固定checkpoint：全部critic pair平均，分解reward/entropy/future Q，
+  终端bootstrap严格为0，权重逐位不变。cycle1四路几乎总取CHEQ最低权重0.2，最新每路1000真实
+  transition均context0.2；熵贡献为负，正Q主要由预测未来值构成。未改uncertainty阈值或reward。
+- 66.5s在线进程采样：主learner各约99%单核，GPU均值42.13/47.35/37.87/39.71%，仍未达50%。
+  独立64辅助更新剖析不保存权重：finite检查约27.9%、CPU replay采样14.6%；不冒充在线加速。
+- 优化finite检查为按device/dtype拼接后逐元素检查，保留所有参数/梯度及首个失败名称。
+  五项有限值/混合dtype/注册合同测试通过。修正后的四路各256步成对验证全部network/target/
+  optimizer/alpha/RNG/metrics/gradient一致，父状态不可变，观察加速1.41–1.52x；不保证GPU50%。
+- 首个验证v1因CPU optimizer step tensor共享未通过全状态比较，证据保留；v2每次恢复深复制后通过。
+  旧terminal fitting/batch辅助脚本也修正同类恢复问题；撤回历史辅助对照“optimizer全部完全恢复”的
+  过强表述，保留原输出/旧runtime。正式训练未使用这些辅助权重，也未因本诊断重置。
+- 冻结source_train07，只改finite helper，其余source/physics/参数/官方源码/robot hashes保持。
+  CHEQ performance v2按新登记等待v1完整周期结束后精确接续，同资源，保留全部learner/replay历史；
+  STOP_REQUESTED是协调迁移。另一个SAC v1协调器继续工作，不重复派发。实际迁移状态看收据。
+- 固定cycle1 Direct中期passive0000/active_short0000均完整55s失败于lift；第三回合接续，总审计
+  等三回合完成后写。nominal矩阵本次21/120，继续CPU52/53运行，未选择最终T_ref。
+- 服务器基址 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`；
+  新证据在runs/soft_target_mixing_cycle01_v1、learner_profile_cycle01_v1、
+  concatenated_finite_check_validation_v2、cheq_performance_seed20261025_v2。
+  更新AGENTS、执行/诊断文档、小型数值证据和源码；GitHub发布状态提交后单独核验。
+
+
 ## 2026-10-25 — 第二完整周期归档、力矩执行链审计通过及batch敏感性登记
 
 - CHEQ四路完整cycle1归档无遗漏，继续cycle2；每路再新增41250真实步。严格成功0/17/13/16（各30），

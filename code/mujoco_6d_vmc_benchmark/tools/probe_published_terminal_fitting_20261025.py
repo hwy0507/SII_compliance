@@ -6,6 +6,7 @@ This isolates fitting/weighting from moving bootstrapped targets, not online
 performance or proof that a different replay distribution is better for RL.
 """
 import argparse
+import copy
 import hashlib
 import json
 import os
@@ -46,7 +47,7 @@ def main(args):
     learner = PublishedLearner(root, dimension=arrays['actions'].shape[1], direct=args.controller == 'direct',
         seed=protocol['seed'], device=args.device, algorithm=state['algorithm'],
         critic_layer_norm=state['critic_layer_norm'], numerical_amendments=state['numerical_amendments'])
-    learner.load_state_dict(state)
+    learner.load_state_dict(copy.deepcopy(state))
     agent = learner.learner.agent
     if state['algorithm'] != 'cheq':
         raise ValueError('This registered diagnostic requires the five-critic ensemble')
@@ -95,7 +96,7 @@ def main(args):
 
     results = []
     for fraction in protocol['terminal_sampling_fractions']:
-        learner.load_state_dict(state)
+        learner.load_state_dict(copy.deepcopy(state))
         rng = np.random.default_rng(protocol['seed'])
         initial = dict(terminal_mae=errors(terminal), ordinary_fixed_label_mae=errors(diagnostic),
             terminal_mask_errors=terminal_mask_errors())

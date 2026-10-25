@@ -7,6 +7,25 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+- 最新登记 `REGISTRATION_CHEQ_PERFORMANCE_V2.json` / `runtime/source_train07`，仅将全部参数/梯度
+  finite检查按device/dtype拼接，保留逐元素覆盖及失败名称；四接口各256步成对验证全部learner字段
+  （含optimizer/RNG）及梯度完全一致，5项测试通过，观察加速1.41–1.52x，不保证在线利用率。
+  `runs/cheq_performance_seed20261025_v2`协调器已启动，等待v1完整cycle2结束再同资源接续。
+  **v1的STOP_REQUESTED表示这次已登记迁移，不是取消Goal；先查两边LAUNCH/MIGRATION再派发。**
+  在新run真正steps/updates增长前，不称迁移完成；旧v1归档器仍负责当前周期边界。
+- `runs/soft_target_mixing_cycle01_v1`只读诊断已结束，0更新/0physics；cycle1样本四路CHEQ几乎
+  全部映射到最低混合权重0.2，近期每路1000真实transition也全部context0.2。熵项平均为负，
+  不可把巨大的正Q解释成该样本的正熵奖励。绝对uncertainty阈值的奖励尺度适配仍需验证，未修改。
+- `runs/learner_profile_cycle01_v1`有限64更新剖析已完成且不保存权重；finite检查约占27.9%、
+  replay采样约14.6%调用时间。最新66.5s GPU均值42.13/47.35/37.87/39.71%，未达50%。
+- `runs/concatenated_finite_check_validation_v1`因验证脚本反复恢复时共享CPU optimizer step tensor
+  而未通过全状态等价；失败保留。v2 deep-copy每个恢复并检查父状态不可变，四路全部通过。
+  旧terminal/batch辅助工具也缺同样防御复制，源码已修复；旧结果不再称optimizer完全一致的对照，
+  未重写旧runtime/结果，也没有把辅助权重放进正式训练。source_train07只变finite helper。
+- 固定cycle1 Direct中期评估的passive0000/active_short0000已完成55s，两者Task/Strict均失败、
+  终止于lift；active_long接续。物理/filter/torque总审计等该接口三回合完成后再写，不能提前称已审计。
+  nominal矩阵本次观测21/120完成，CPU52/53继续运行；CPU54仍有中期物理评估。
+
 - 当前主训练 `runs/cheq_performance_seed20261025_v1` / `runtime/source_train06` 四路均已完成cycle1，
   正在cycle2；完整cycle0/1历史保留。source_train06只减少有限值检查同步，不改学习更新。
   性能迁移保留network/optimizer/target/alpha/RNG/replay/masks/history，区别于早期LayerNorm重启。

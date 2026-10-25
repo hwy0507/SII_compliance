@@ -1,0 +1,87 @@
+{
+  "controller": "vmc",
+  "checkpoint_sha256": "6b91c2e725e4680c4a26dc54e1fc77051fd53f6bc1c8d1b0579e26e2a3ee762b",
+  "registration_sha256": "4f6a7953ab3be1f80dbbddfe0099e63b74cb726dbade802bd498d71814d8217f",
+  "started_unix": 1792940118.9572105,
+  "elapsed_s": 25.05789279937744,
+  "auxiliary_updates": 64,
+  "formal_state_changed": false,
+  "auxiliary_weights_saved": false,
+  "new_physical_transitions": 0,
+  "profiler_events": [
+    {
+      "name": "sii/replay_cpu_sample",
+      "calls": 16,
+      "self_cpu_us": 112097.49699999994,
+      "total_cpu_us": 112097.49699999994,
+      "self_device_us": 0,
+      "total_device_us": 0
+    },
+    {
+      "name": "sii/published_update_including_transfer_validation_metrics",
+      "calls": 16,
+      "self_cpu_us": 354512.04199998005,
+      "total_cpu_us": 1217124.1020000002,
+      "self_device_us": 0.0,
+      "total_device_us": 88727.59300000938
+    },
+    {
+      "name": "sii/published_update_including_transfer_validation_metrics",
+      "calls": 16,
+      "self_cpu_us": 0,
+      "total_cpu_us": 0,
+      "self_device_us": 1157261.83,
+      "total_device_us": 1157261.83
+    },
+    {
+      "name": "cudaStreamSynchronize",
+      "calls": 352,
+      "self_cpu_us": 42043.518999999564,
+      "total_cpu_us": 42043.518999999564,
+      "self_device_us": 0,
+      "total_device_us": 0
+    },
+    {
+      "name": "aten::addmm",
+      "calls": 624,
+      "self_cpu_us": 35425.68899999873,
+      "total_cpu_us": 40524.41399999763,
+      "self_device_us": 31269.276999999987,
+      "total_device_us": 31269.276999999987
+    },
+    {
+      "name": "cudaLaunchKernel",
+      "calls": 28328,
+      "self_cpu_us": 180793.25999999285,
+      "total_cpu_us": 185368.97599999292,
+      "self_device_us": 0.0,
+      "total_device_us": 2.75099999998929
+    },
+    {
+      "name": "aten::mm",
+      "calls": 704,
+      "self_cpu_us": 10893.446000001597,
+      "total_cpu_us": 17417.905000002298,
+      "self_device_us": 20926.91700000124,
+      "total_device_us": 20926.91700000124
+    },
+    {
+      "name": "aten::isfinite",
+      "calls": 3456,
+      "self_cpu_us": 40239.88400000328,
+      "total_cpu_us": 433610.3830000046,
+      "self_device_us": 0.0,
+      "total_device_us": 14895.152999998827
+    }
+  ],
+  "limitations": "Low-priority shared CPU/GPU; profiling adds overhead. No online speedup, convergence, or all-card utilization claim.",
+  "source_summary_sha256": "faa512ea990f363b57062ac9b0a30c149155e82fe33a1502aa85eb3cff46069c",
+  "python_profile": {
+    "total_s": 1.839,
+    "updates": 32,
+    "finite_check_cumulative_s": 0.513,
+    "replay_sample_cumulative_s": 0.268,
+    "upstream_train_cumulative_s": 0.915,
+    "note": "Rounded cProfile cumulative values; nested times must not be summed. Torch profiler GPU annotation ranges overlap kernels and must not be summed into utilization."
+  }
+}

@@ -680,3 +680,115 @@ single GPU0 deterministic evaluation measured42.67/36.47/37.93/39.87%
 Initial/final sampler counts and raw samples are saved in
 `runs/POST_PROBE_ONLINE_GPU_60S_01.json`; earlier auxiliary-inclusive measurements
 must not be reported as the current online utilization.
+
+
+## Read-only soft targets and actual CHEQ mixing
+
+`runs/soft_target_mixing_cycle01_v1` completed all eight frozen snapshots (four
+interfaces, complete cycles0/1), with zero optimizer updates or physics. Each
+snapshot samples4096 nonterminal replay rows and includes all terminal rows.
+All ten distinct critic pairs are averaged, matching the expectation of the
+uniform pair selection. Network state remains exactly unchanged. Scalar checks
+cover pair averaging, negative entropy sign, terminal masks and shape rejection.
+
+At cycle1 the nonterminal mean target components were:
+
+| Interface | Immediate reward | Discounted entropy contribution | Discounted target Q | Implied next mixing weight at0.2 |
+|---|---:|---:|---:|---:|
+| Direct |−0.004510|−0.999336|817.086768|100%|
+| Impedance |−0.002890|−2.576078|1766.578687|100%|
+| Admittance |−0.003790|−1.286649|715.970513|99.9756%|
+| VMC |−0.003593|−7.373715|2467.243329|100%|
+
+The entropy term is negative here. Large positive Q is not explained by a
+positive entropy bonus in these samples. The target is dominated by predicted
+future value. Policy-vs-replay action pair-minimum Q gaps average4.6955/8.0406/
+9.0690/16.8825. These are predictions from the same critic, not measured action
+advantages or proof of the cause of value drift. Terminal bootstrapping is
+exactly zero. Different cycles contain different replay ages; this is not a
+controlled experiment changing the discount or uncertainty threshold.
+
+CHEQ retains the published absolute uncertainty bounds0.02/0.2. At these
+snapshots ensemble disagreement almost always maps to the minimum RL authority
+0.2. A separate captured last1000 online transitions per method likewise all
+record context0.2. This confirms actual recent behavior, whereas the snapshot's
+implied weights use sampled current-policy actions on historical replay states.
+The deployed CHEQ action is therefore recently20% raw RL plus80% nominal action;
+plain SAC is a separate unmixed control. No threshold has been changed. The
+reward-scale sensitivity of these absolute thresholds now needs explicit
+calibration evidence before another scientific adaptation. It is not sufficient
+to label the near-minimum mixed policies as trained standalone RL controllers.
+
+The full report, sample-index hashes and captured online contexts are under the
+run above; committed evidence is `PUBLISHED_SOFT_TARGET_MIXING_20261025.json`.
+The finite read-only job initially starved at nice19 on physics CPU54. A renice
+request was denied and is recorded as unapplied; it completed at nice19 by
+sharing idle time on SAC learner CPU10, with no formal affinity changed.
+
+## CPU launch overhead and finite-check validation
+
+A66.50s process sample measured primary learner CPU use98.92–99.50% of one core,
+with GPU means42.13/47.35/37.87/39.71%. Existing SAC, nominal and interim jobs
+were active; the read-only diagnosis could also perform brief inference.
+`/proc` wait-channel values do not establish pipe-blocking time. This window
+still misses all-card50% and is distinct from prior auxiliary-training windows.
+
+`runs/learner_profile_cycle01_v1` completed64 finite auxiliary updates using a
+copied VMC cycle1 state. Weights were discarded. In the32-update cProfile
+segment, total time was1.839s; finite checks accounted for0.513s cumulative
+(27.9%) and replay sampling0.268s (14.6%). A separate16-update Torch profile
+recorded28,328 CUDA kernel launches and3,456 isfinite calls. Nested cumulative
+times and CUDA annotation ranges overlap; summing them is not GPU utilization.
+The low-priority shared-load profile identifies overhead, not an online speedup.
+Small evidence: `PUBLISHED_LEARNER_PROFILE_20261025.json`.
+
+The candidate finite check concatenates all parameters and existing gradients
+by device/dtype, checks every element, and preserves the original first-failing
+parameter name through a fallback. It does not omit target-critic gradients,
+reduce check frequency, cast mixed dtypes or change the update. Five focused
+tests pass, including NaN/Inf gradients, noncontiguous/mixed-dtype parameters,
+values beyond float32 range, and rejection of reward/physics/protocol drift.
+
+The first paired validator correctly rejected complete-state equality even
+though network values and gradients matched: repeated optimizer loading had
+aliased CPU step counters in the in-memory parent. Its failure remains in
+`runs/concatenated_finite_check_validation_v1`. The corrected v2 deep-copies
+each restore and verifies the original parent state remains unchanged. This is
+a diagnostic harness defect; live continuation loads its parent once and was
+not reset or changed by either validation arm.
+
+The same missing defensive deepcopy was present in the earlier terminal-fitting
+and batch-sensitivity auxiliary tools. Their source is corrected for future
+runs, but old immutable runtimes/results are preserved. Withdraw the blanket
+claim that every optimizer field was restored exactly between those old arms:
+CPU step counters can carry over. Their measured outputs remain historical
+observations, not fully verified optimizer-identical comparisons. No old
+auxiliary weights entered formal training. The new paired validator checks all
+network/target/optimizer/temperature/RNG/metric fields and gradients, rather
+than relying only on final network hashes or matching initial predictions.
+
+
+The corrected paired check completed256 updates per variant/interface. All
+learner state fields and gradients match exactly, and each immutable parent
+remains unchanged. Observed baseline/candidate elapsed-time ratios were1.5001,
+1.4782,1.4149,1.5151 for Direct/Impedance/Admittance/VMC. These are single ordered
+shared-load trials, not a promised online speedup or utilization improvement.
+The2,048 auxiliary updates produced no formal weights and no new physics.
+
+`runtime/source_train07` copies source_train06 with only the finite-check helper
+changed. All other source/physics, controller parameter, official-code and robot
+asset hashes match. `REGISTRATION_CHEQ_PERFORMANCE_V2.json` registers an exact
+full-cycle continuation from the existing CHEQ performance run. The existing
+coordinator implementation drains each old learner to its complete cycle before
+resuming the same CPU/GPU/sampler allocation in
+`runs/cheq_performance_seed20261025_v2`. Check migration receipts for actual
+new-learner starts; registration itself does not mean migration has completed.
+The separate SAC v1 migration continues independently and must not be duplicated.
+Evidence: `PUBLISHED_CONCAT_FINITE_CHECK_20261025.json`.
+
+The frozen cycle1 Direct interim evaluation has now completed its passive0000
+and active_short0000 physical episodes: both full55s, Task/Strict false, ending
+in lift. Active_long0000 is next/in progress; the three-case method-level
+physical/filter/torque audits are written only after all three finish. Do not
+confuse a completed raw episode with completed independent audit or final
+acceptance. The nominal matrix had21/120 audited rows at this observation.

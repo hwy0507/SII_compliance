@@ -5,6 +5,38 @@ the historical office-v6 MJB or proof that any RL method has converged.
 
 ## Current execution snapshot
 
+Performance continuation v2 is now registered from the still-running v1 CHEQ
+learners. The coordinator will drain complete cycle2 and resume the same
+allocation under `runtime/source_train07` in
+`runs/cheq_performance_seed20261025_v2`. Source_train07 changes only all-element
+finite-check batching by device/dtype. Four256-update paired validations matched
+all learner/optimizer/RNG state and gradients exactly; five focused tests pass.
+Observed1.41–1.52x auxiliary timing improvement is not an online utilization
+claim. Check MIGRATION_PROGRESS/FINISHED and real counters before claiming the
+new learners have started. The separate SAC v1 migration remains in progress.
+
+Read-only cycle0/1 diagnosis has also finished: current cycle1 CHEQ uncertainty
+almost always selects minimum RL mixing weight0.2; the captured most recent1000
+online transitions per method all use0.2. Sampled entropy target contributions
+are negative, whereas predicted positive future values dominate. This is a
+value/mixing calibration concern, not convergence or a demonstrated fix. The
+recent GPU window averaged42.13/47.35/37.87/39.71%, still below the all-card target.
+
+The finite performance validator exposed CPU optimizer-step aliasing when an
+auxiliary script restores one in-memory state repeatedly without deepcopy.
+Corrected validation checks every state field and immutable parent. Earlier
+terminal-fitting/batch studies retain their results, but their claim of exact
+optimizer restoration is withdrawn; source fixes apply to future studies.
+Formal live learners were not reset by this diagnostic. Details and receipts
+are in the latest diagnostic report sections.
+
+The fixed-cycle1 interim Direct passive/active-short0000 physical episodes both
+failed at lift after55s. Method-level independent audits await all three cases.
+Nominal matrix progress at this observation is21/120. These partial results do
+not choose the final SPT reference or replace the missing designated ESN.
+
+The following paragraphs describe the v1 parent while it drains:
+
 All four primary learners now run in `runs/cheq_performance_seed20261025_v1`
 with `source_train06`. They have completed cycle1 (second full condition cycle)
 and continue into cycle2. Source_train06 preserved networks, optimizers, targets,
