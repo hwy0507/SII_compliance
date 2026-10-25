@@ -1,5 +1,21 @@
 # 更新日志
 
+## 2026-10-25 — Direct第8轮训练内成功提高，固定轨迹退化分析完成
+
+- 最新整组8审计及7→8配对review已完成，报告/图已检查，网络不变/回合reward重建通过，0诊断更新/physics。Q均值527.54/2091.51/775.46/8027.20，当前alpha上界超限99.91/42.74/28.93/35.59%；末1000critic loss231.43/37502.40/19218.17/309861.91，均较7增长。不称健康收敛；Impedance丢long0000、VMC丢short0600。原审计/复核进程转等9，正式9照常完成。证据PUBLISHED_ACTOR_LR_CYCLE08_REVIEW_20261025.json。
+
+- 最新四路8全部完整归档并入原9：Task/Strict14/13、17/16、15/15、17/16（各30），reward−10.16369/−4.07799/−7.03086/−4.60589；Strict分被动/短期/长期3/6/4、0/9/7、0/10/5、0/9/7。四checkpoint hash及120条件terminal/model收据核验。改善不一致、不称收敛；原audit969396已派只读child2614571，review969397等报告。证据PUBLISHED_ACTOR_LR_CYCLE08_TRAINING_20261025.json。
+
+- 后续Impedance完成8/450971步并进入原9：Task17/30 Strict16/30（被动0/10、短期9/10、长期7/10），较父7 Strict17/30略降。整组未全部完成，不能把Direct改善推广到四路。
+- 接触候选v1首55s物理证据已精确匹配，但result JSON中由set生成的robot_parts顺序不同导致验证器拒绝；旧协调器/worker均已退出，失败保留。仅规范明确的stats.events.*.robot_parts集合，不改其他顺序/数值；4测试及首完整110万子步重审通过。新v2协调器2530701/短期worker2535538（重验）复用已完成首回合，只跑剩余11；candidate runtime及正式训练未变，无优化器更新，完整12条件尚未通过。证据PUBLISHED_CONTACT_VALIDATION_RESUME_20261025.json。
+
+- fetch读取main a52dfba/baseline f6e8f8c未前进；现有四CHEQ12/四SAC09和审计/评估/候选验证继续。
+- Direct actorLR cycle8完整450444步已归档并核验hash，30预登记条件及terminal/model收据匹配；Task14/30、Strict13/30（被动3、短期6、长期4，各10），平均reward−10.16369，对父7−32.91163。短期0600 Task真但physical/Strict假，保留失败。已进入原登记9，不新增/截短试验。
+- 首/末1000更新q_loss211.680→231.426，logged next_q_values380.305→527.141；共82500新增更新。成功提高不等于健康收敛或固定checkpoint成功，整组审计仍等完整8归档，继续观察9。
+- 新只读工具分析cycle3/7/nominal三类代表共9条冻结轨迹；模型、plan、fixture配对，reward源相同，nominal重建reward与独立审计吻合。完整报告/图已检查，进程2276546已退出，0physics/优化器更新。
+- 两主动nominal成功reward+18.260/+20.365，对7失败−34.221/−32.544；失败间小reward改善仍可伴随更差任务进度。7首10s公共filter+Y残差约25–29mm/s、WBC scale约0.91；最后记录手部位置误差23–34mm，高于相应阶段12mm阈值，非“完全没有抬起”。仅相关性/必要就绪条件，不改actor/filter/gate或作因果结论。
+- 证据docs/PUBLISHED_FIXED_DIRECT_AND_CYCLE08_20261025.json；完整产物/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/fixed_direct_regression_v1，以及actor_lr_online_seed20261025_v1/DIRECT_CYCLE08_FIRST_REVIEW.json。当前候选物理等价仍进行，未部署；最终收敛/SPT/指定ESN比较未完成。
+
 ## 2026-10-25 — 启动独立接触读取候选的完整物理等价验证
 
 - 补充新完成cycle7固定Direct3/12代表矩阵：全55s，Task/Strict全失败，终态lift/lift/release；同条件nominal两主动成功。三回合物理/filter/torque审计通过，无机器安全违规；长期人接触6.1773s、阈值比例100%，仍任务失败。不当当前actorLR结果或完整cohort排名。旧804667结束，coordinator803220已转Impedance evaluator1952370。证据PUBLISHED_FIXED_CYCLE07_DIRECT_20261025.json。

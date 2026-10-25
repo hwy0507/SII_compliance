@@ -1,0 +1,131 @@
+{
+  "captured_unix": 1792957644.6502311,
+  "old_failure": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v1/results/FAILURE.json",
+    "sha256": "b6c8eb31867eeeb47de475eea77ed0aa109b72de7e3863ad37adecf7e6bebc4f"
+  },
+  "old_processes_exited": true,
+  "reason": "The only residual rollout-result difference after registered hashes/output-prefix normalization was order of stats.events.office_v5_corner_face.robot_parts: hand/link7. Frozen evaluator constructs robot_parts with set().",
+  "comparison_change": "Normalize only stats.events.*.robot_parts to sorted unique string lists; reject duplicates/non-string entries. Preserve every other array/list order and exact numeric comparison.",
+  "software_tests_passed": 4,
+  "first_complete_case": {
+    "checks": {
+      "rollout.mjb": {
+        "sha256": "608c40b99231ff311de6c2dd969d21fea037b0f839ea47232e6ce61885aee889",
+        "exact": true
+      },
+      "actor_intervals.jsonl": {
+        "sha256": "d8a53c6488b91517607d66e5e424a6887d8b2da481896eaa13610fe515e87cf7",
+        "exact": true
+      },
+      "TERMINAL.json": {
+        "sha256": "185702077cb2d6ab528ca1c9c43c2356eef31de53fd4e2f7fa2698c96b66ad31",
+        "exact": true
+      },
+      "audit_substeps.npy": {
+        "sha256": "033c76264e5f5699b4ded862af752826b2a36917cdc33820694ffb53493fbdc3",
+        "exact": true
+      },
+      "rollout.npz": {
+        "arrays": [
+          "time",
+          "qpos",
+          "qvel",
+          "ctrl",
+          "mocap_pos",
+          "mocap_quat",
+          "hand",
+          "ball",
+          "ball_velocity",
+          "cup",
+          "stage",
+          "object_position",
+          "neuron_time",
+          "neuron_qpos",
+          "observation",
+          "applied_action",
+          "prior_contact_peak",
+          "prior_contact_impulse",
+          "task_ready_s",
+          "task_position_error_m",
+          "task_rotation_error_rad",
+          "task_speed_mps",
+          "task_carry_load"
+        ],
+        "exact": true
+      },
+      "audit_filter.npz": {
+        "arrays": [
+          "requested_action",
+          "dt",
+          "wbc_scale",
+          "yield_twist",
+          "clipped",
+          "amplitude_saturated",
+          "slew_limited"
+        ],
+        "exact": true
+      },
+      "audit_torque.npz": {
+        "arrays": [
+          "time",
+          "dt",
+          "bias",
+          "measured",
+          "command",
+          "previous",
+          "limits",
+          "applied",
+          "scale"
+        ],
+        "exact": true
+      },
+      "rollout.json": {
+        "exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order": true
+      }
+    },
+    "physical_substeps": 1100000,
+    "task": false,
+    "strict": false,
+    "captured_unix": 1792957550.961158,
+    "scope": "Re-review completed physical episode; original v1 failure retained; only known serialized set ordering normalized",
+    "validator_sha256": "a693be4ab2e2b567042aff0ec925f57b84544ff6d45451496370a4ef0b0598a4"
+  },
+  "first_case_receipt": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v1/FIRST_CASE_REVIEW_V2.json",
+    "sha256": "19cf988b851795abb39273dfffa6de2611355fe2ed6771be548c7350be94890b"
+  },
+  "new_registration": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/REGISTRATION.json",
+    "sha256": "c50c6b6ab9a9bae00002d62993a8fe25c34fc76018f7a7df6d6c12e9b282badd"
+  },
+  "new_launch": {
+    "pid": 2530701,
+    "command": [
+      "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+      "-B",
+      "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/validate_published_contact_candidate_20261025.py",
+      "--registration",
+      "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/REGISTRATION.json"
+    ],
+    "started_unix": 1792957571.178243
+  },
+  "progress": {
+    "controller": "direct",
+    "case_id": "active_short_train_0000",
+    "child_pid": 2535538,
+    "actions_verified": 156,
+    "completed_cases": 1,
+    "planned_cases": 12,
+    "updated_unix": 1792957644.3265667
+  },
+  "candidate_runtime_changed": false,
+  "formal_training_changed": false,
+  "reused_complete_episodes": 1,
+  "new_episodes_planned": 11,
+  "total_cases": 12,
+  "full_suite_passed": false,
+  "optimizer_updates": 0,
+  "final_spt_reference_selected": false,
+  "convergence_claim": false
+}

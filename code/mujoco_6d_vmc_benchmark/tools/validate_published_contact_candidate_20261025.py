@@ -4,6 +4,7 @@ Finite validation only: no learner, optimizer, replay write or training dispatch
 Observation timeouts poll the same child; a timeout never creates a replacement.
 """
 import argparse
+import copy
 import hashlib
 import json
 import os
@@ -37,6 +38,22 @@ def compare_npz(expected, actual):
         return dict(arrays=list(left.files), exact=True)
 
 
+def normalize_event_robot_sets(value):
+    """Evaluator creates these fields with set(); JSON list order is arbitrary.
+
+    Do not reorder trajectories, task events, or any other JSON list.
+    """
+    result = copy.deepcopy(value)
+    for event in result['stats']['events'].values():
+        if 'robot_parts' in event:
+            parts = event['robot_parts']
+            if (not isinstance(parts, list) or any(not isinstance(p, str) for p in parts)
+                    or len(parts) != len(set(parts))):
+                raise AssertionError('Invalid serialized robot_parts set')
+            event['robot_parts'] = sorted(parts)
+    return result
+
+
 def compare_episode(expected, actual, candidate):
     checks = {}
     for name in ('rollout.mjb', 'actor_intervals.jsonl', 'TERMINAL.json', 'audit_substeps.npy'):
@@ -57,13 +74,14 @@ def compare_episode(expected, actual, candidate):
             raise AssertionError('Unexpected reported source: '+name)
     before.pop('source_sha256')
     after.pop('source_sha256')
+    before, after = map(normalize_event_robot_sets, (before, after))
     # Only normalize the exact episode-output prefix; numeric/result fields
     # and other source/asset hashes retain exact comparison.
     def normalized(value, folder):
         return json.dumps(value, sort_keys=True, allow_nan=False).replace(str(folder), '<episode>')
     if normalized(before, expected) != normalized(after, actual):
         raise AssertionError('Full rollout result differs beyond registered provenance')
-    checks['rollout.json'] = dict(exact_except_registered_source_hashes_and_output_prefix=True)
+    checks['rollout.json'] = dict(exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order=True)
     before_audit = json.loads((expected/'AUDIT_EXTENSION.json').read_text())
     after_audit = json.loads((actual/'AUDIT_EXTENSION.json').read_text())
     if not after_audit['completed'] or after_audit['samples'] != before_audit['samples']:
@@ -87,6 +105,13 @@ def main(args):
     start = time.time()
     for case in protocol['cases']:
         expected = Path(case['reference_episode'])
+        if case.get('reused_candidate_episode'):
+            actual = Path(case['reused_candidate_episode'])
+            comparison = compare_episode(expected, actual, candidate)
+            results.append(dict(controller=case['controller'], case_id=case['case_id'],
+                candidate_episode=str(actual), reused_complete_physics=True, **comparison))
+            write(output/'RESULTS.json', dict(episodes=results, finished=False))
+            continue
         actual = output/case['controller']/case['case_id']
         actual.parent.mkdir(parents=True, exist_ok=True)
         tape = [json.loads(line) for line in (expected/'actor_intervals.jsonl').read_text().splitlines()]

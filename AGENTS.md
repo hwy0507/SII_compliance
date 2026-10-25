@@ -7,6 +7,35 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新8整组只读audit及7→8配对review完成、图已检查；原auditor969396/reviewer969397现等9。
+Q均值527.54/2091.51/775.46/8027.20，当前alpha上界超限99.91/42.74/28.93/35.59%；末1000
+critic loss231.43/37502.40/19218.17/309861.91，各较7增长，非健康收敛。Direct/Admittance
+训练Strict改善不替代价值校准，Impedance丢long0000、VMC丢short0600。保持原9，无新干预/部署。
+证据PUBLISHED_ACTOR_LR_CYCLE08_REVIEW_20261025.json；0更新/physics、网络不变与奖励重建核验。
+
+最新四路actorLR cycle8均完成并精确归档，全部进入原9：Task/Strict Direct14/13、Impedance17/16、
+Admittance15/15、VMC17/16（各30）；Strict分被动/短期/长期3/6/4、0/9/7、0/10/5、0/9/7。
+父7 Strict0/17/12/17→13/16/15/16，改善不一致；非固定策略接受/收敛。四checkpoint hash、
+120条件/terminal/model收据核验。原audit969396已启动child2614571读取8；review969397等报告，
+勿重复诊断或提前改9。证据PUBLISHED_ACTOR_LR_CYCLE08_TRAINING_20261025.json。
+
+最新contact验证v1正常物理完成首55s后因JSON robot_parts集合序列顺序误拒，旧2014112/2019617均
+退出，失败保留；只规范该明确set字段，不放宽其他数组/数值/顺序。4测试和首完整110万子步
+重审通过：MJB/journal/terminal/轨迹/filter/torque/逐子步精确一致，完整result除登记provenance及
+该set顺序一致。新runs/contact_candidate_validation_v2 coordinator2530701、Direct短期worker2535538
+（重验），复用首回合、只新增剩余11；runtime/contact_candidate_v2未变且未部署。勿重启旧v1。
+证据PUBLISHED_CONTACT_VALIDATION_RESUME_20261025.json。
+Impedance也完成8/450971步并入9，Task17/30 Strict16/30（被动0/10、短期9/10、长期7/10），
+较父7 Strict17/30略降；不要以Direct改善概括四路。其余8尾段继续，整组审计等待。
+
+最新Direct已完整完成actorLR cycle8/450444步，Task14/30 Strict13/30；被动3/10、短期6/10、长期4/10
+Strict，reward−10.16369（父7−32.91163）。真实归档sha8ca70658…已核验，30条件/terminal/model收据
+核验；已进入原登记cycle9，不停/重派。首/末1000更新q_loss211.68→231.43、logged nextQ380.30→527.14，
+未健康收敛；整组immutable审计仍等其他8归档。不把训练内成功当固定策略接受或LR因果证明。
+新只读fixed_direct_regression_v1已结束、0更新/physics，9条同模型/plan/fixture的固定3/7/nominal
+比较及图已检查；reward仍偏好两主动nominal成功，失败间小改善可伴随任务退化。7末记录手部
+误差23–34mm超过阶段12mm，不能据此放宽gate；不是当前8的失败诊断。证据PUBLISHED_FIXED_DIRECT_AND_CYCLE08_20261025.json。
+
 最新cycle7固定矩阵3/12：Direct三条件全55s、Task/Strict全失败，stage lift/lift/release；两主动
 nominal成功，低力矩不能当改善。物理/filter/torque审计通过，无机器安全违规。旧804667正常退出，
 coordinator803220已派Impedance evaluator1952370（重验），勿重启Direct。证据PUBLISHED_FIXED_CYCLE07_DIRECT_20261025.json。
