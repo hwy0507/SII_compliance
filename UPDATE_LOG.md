@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-25 — 完整折扣诊断结束，启动fresh小批量CHEQ在线阶段
+
+- 四原probe全部结束，40万辅助更新/0physics/无权重推广；两arm完整state/sampling与不可变输入、曲线、40个共同前缀核验及两图复核。低gamma非通用修复，VMC末段仍增长；.99会将55s终奖起点权重降至约1e-6。
+- 科学登记新source16 fresh CHEQ：batch256/UTD1、原pair、LR3e-4、gamma.9995/同奖励，空replay/全新网络与optimizer，六完整周期后review、不称收敛。派发器1146202等待原资源释放；Direct1215546/VMC1146204已真实采集预热，其他在等。只读observer1156327登记0/1/3/5健康审计。source16性能优化已有独立等价证据，本次未改冻结runtime。
+- 新派发器和2守卫测试；四构造预检、780source/24parameter/150upstream/128robot实际hash及首新环境模型/actor/dt/CPU通过；v1缺digest helper在创建learner前失败保留，v2通过。报告工具增加完整曲线/末点/输入检查、优化图及准确标注的5点末窗口统计。
+- 原SAC Direct完成6/304286后迁入新1215621/9worker；Admittance完成3/185515后迁入1316018/9worker，fresh Admittance1314547已采集，VMC新726082继续。其余Impedance交接由原691298推进；原3759872已派发只读1319809审计Adm/VMC3。纯正式GPU窗口均值4.42/4.88/2.65/33.27%，50%未达，不把旧辅助均值混用。
+- 原Adm/VMC3观察3759872及诊断1319809已结束且完成科学review：60完整终端/模型/奖励/网络/hash和图通过，Task/Strict12/12与18/18，但loss/Q/terminalMAE均显著增长，不称健康收敛。三路扩容后第二纯正式GPU窗口36.45/5.78/23.38/25.58%，仍未达50%。
+- 证据docs/PUBLISHED_EXTENDED_DISCOUNT_AND_FRESH_STAGE_20261025.md/.json；集群SSD根/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，下有runs/consistent_discount_extended_cycle06_v1、runs/cheq_fresh_reduced_reuse_seed20261025_v1及新训练/资源登记。原物理/MJB/gate/actor信息/filter/执行器/dt不变；收敛/最终矩阵/SPT/指定ESN比较仍未完成。
+- 已fetch/read main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；远端无新增变更。
+
 ## 2026-10-25 — SAC完整周期边界扩大真实采样并发（交接进行中）
 
 - 新增独立资源登记和协调器资源模式，保留原source_train09/训练协议全部字节；各SAC采样2→9，完整30条件边界才交接。协调器691298、迁移归档691379；VMC旧2397784正常结束，父186009步/330000更新，新726082已真实更新cycle4。另三路原进程仍完成当前周期，不重复启动。

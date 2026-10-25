@@ -7,6 +7,12 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新SAC原Adm/VMC3只读observer3759872/child1319809已完成退出勿重启；60完整terminal/MJB、checkpoint/reward/network和图复核通过。Task/Strict12/12与18/18各30；loss2→3 146717→1790203、537785→3062208，Q18097→43734/28848→82018，terminalMAE3754→13778/11169→23290，不健康收敛。runs/sac_remaining_cycle03_audit_v1/REVIEW.json。三路SAC扩容生效后的正式GPU窗口36.45/5.78/23.38/25.58%，50%仍未达，无辅助GPUlearner。
+最新补充：Admittance旧2758791已正常结束3/185515/330000，SAC新1316018在4实际更新9worker；fresh新1314547真实采集预热。父checkpoint和首9/2模型/输入/dt/CPU通过。四路只有Impedance尚等原1557140完整周期；原observer3759872已派发只读1319809做Adm/VMC3整组，勿重复启动。
+最新extended discount四probe361333–361336已全部完成并退出勿重启：40万辅助updates、0physics、无权重保存/推广，8arm初始化/采样/输入hash、完整曲线和40个旧共同前缀精确核验、两图已看。低gamma降Q但非通用误差修复：终端MAE长/短 .165/1.113、.275/.744、5.240/.753、18.745/5.643；VMC两arm末段仍增长，.99起点终奖系数约1e-6。runs/consistent_discount_extended_cycle06_v1/COMPLETED_REVIEW.json。
+已科学登记fresh reduced reuse新CHEQ阶段：FRESH_REDUCED_REUSE_SCIENTIFIC_DECISION_V1.json，source16现实际部署（冻结manifest的prepared是构建时记录不改）。batch256/UTD1、原pair目标、LR3e-4、gamma.9995/同奖励和LayerNorm、全新网络/Adam/alpha/RNG与空replay；6完整周期，不是收敛/总Goal上限。不导入辅助权重/旧replay。派发器1146202，runs/cheq_fresh_reduced_reuse_seed20261025_v1；VMC1146204、Direct1215546已真实采集、仍5000步预热updates0，其余等原SAC释放CPU。新CPU D0+11/12、I14+25/52、A26+37/38、V39+50/51，GPU0–3；不与SAC40核重叠。observer1156327等完整0/1/3/5，只读12h保护；勿重复派发。source16全hash与四构造预检、2派发守卫测试通过，v1缺helper失败保留、v2通过。
+SAC原Direct1010728已结束6/304286/562088，新1215621进入7实际更新9worker；父ck/首9模型输入dt通过。原VMC726082继续，资源协调691298仍等I/A，原observer3759872仍等Adm3。新Direct/VMC首2实际模型输入/CPU通过。辅助退出后的正式GPU均值4.42/4.88/2.65/33.27，50%未达；当时多路仍旧双worker/预热，不外推后续。docs/PUBLISHED_EXTENDED_DISCOUNT_AND_FRESH_STAGE_20261025.md/.json。Goal未完、ESN仍缺。
+
 最新SAC采样资源交接已登记派发，协调器691298、迁移archive691379；runs/SAC_SAMPLER_REALLOCATION_V1.json，冻结工具runtime/sac_sampler_reallocation_v1。原四SAC各STOP_REQUESTED仅在完整30条件周期边界交接，勿删除/重启原队列。VMC原2397784已正常结束cycle3/186009/330000，新726082在runs/sac_sampler_seed20261025_v1实际更新cycle4、9worker CPU40–48，learner49/GPU3。父ck 7a62caf0…字节与resume hash一致、首9模型/48obs/dt通过。其余原1010728/1557140/2758791仍收尾6/4/3，随后自动迁移。保持同source09和同training registration字节，单独资源登记workers2→9；未来采样顺序非逐位等价。新分配Direct10+1–9、Imp23+15–22/24、Adm36+27–35，避开四probe0/14/26/39、observer13、协调54。
 6守卫测试通过；原777source/24parameter/150upstream/128robot及30条件/plan实际hash重验。GPU混合60样本均值59.65/57.20/58.10/65.35、min20/43/12/10，不是正式独立达标。四原extended probe首arm50000已结束、第二arm进行中，勿重复启动；完整配对review待。原observer3759872已见VMC3仍等Adm3，source16未部署。docs/PUBLISHED_SAC_SAMPLER_REALLOCATION_20261025.md/.json；Goal未完，ESN仍缺。
 
