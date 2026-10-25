@@ -1,5 +1,42 @@
 # 更新日志
 
+## 2026-10-25 — 恢复三类任务运行时，启动四GPU已发表CHEQ适配训练
+
+- 持续Goal已授权自主论文/接口适配、仿真、四卡4090训练并取消总步数上限。更新AGENTS，
+  不再重复询问这些已授权事项；原始Task/Strict、公共filter、执行器限制及历史产物不改。
+- 新增六个published-compliance工具：固定来源runtime、逐回合物理/IPC接点、官方SAC/CHEQ
+  learner适配、真实数据optimizer检查、30条件冻结、并行采样trainer。主体直接使用作者
+  `polishing-cheq@1a3c1fee3332848068afdb127c4fa33eee420418`更新，保留ensemble/context/
+  uncertainty mixing及raw-action replay；明确FR3观察/动作、gamma、warmup和采集等适配，
+  不冒充仅换reward或复现原论文polishing结果。参数控制使用main已有单位/阻抗修复。
+- 本机新独立环境Python3.11.17/MuJoCo3.11.0/Torch2.8.0+cu128；完整源码/依赖/128个机器人
+  资产hash保存在SSD `sii_rl/runtime/source_train02`。初次EGL缺库改用纯物理disable模式，
+  未修改显示配置、系统服务或全局Python。新编译模型不冒充缺失的历史冻结MJB。
+- 真实验证：四接口80ms物理探针；四接口各10步非零CHEQ闭环；四GPU作者SAC真实梯度；
+  作者ensemble在完整1375步真实轨迹上更新；完整optimizer/temperature/RNG恢复后下一步
+  参数与log-alpha误差均0。两个55s名义控制回合Task/Strict成功，首个完成认证约24.64s。
+  这些是可行性/工程验证，不是训练后RL结果。9项已有指标数值测试通过；replay环形覆盖后
+  恢复采样一致，并验证拒绝从头平坦的reward。小型证据已提交到docs/evidence。
+- 三类各10条训练条件索引在结果前固定。首次cohort30_v1把扰动带入重新规划导致拒绝，
+  保留失败；v2统一加载独立成功reference的冻结名义路线，保留障碍/物理/gate，30条初始
+  物理探针通过。训练每回合核对source/asset/MJB，使用新cohort而非拼接历史结果。
+- 已启动 `sii_rl/runs/cheq_four_interfaces_seed20261025_v1`：四方法各一GPU、9采样器，
+  共36模拟器/40CPU核，无总步数上限；先5000真实步warmup再UTD1更新，整条件周期存完整
+  replay/target/optimizer/temperature/RNG。首批在真实推进，尚无收敛checkpoint结论；
+  其他两seed及plain-SAC消融未启动。奖励为共同spt_v1加严格成功完成时间bonus。
+- 任务说明/执行证据：`docs/RL_PUBLISHED_BASELINE_EXECUTION_20261025.md`。
+  当前计算主机 `rltest-1025--a6ed2ff39b3c-s5gnp35dxg`，上述 `sii_rl` 绝对前缀为
+  `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/`。
+  模型/轨迹/日志/环境仅存本机SSD，不提交Git、不伪称同步到旧归档服务器。
+- 指定现有ESN checkpoint仍缺失；GitHub release与Actions artifacts均为空，旧归档不通。
+  未替换/重训ESN，未做配对比较或未见测试。持续Goal保持未完成。
+- 开工重新fetch并读取两分支日志：main `a1965543edd8302a95521bf71e3fb139c4a07c49`，
+  baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；本地承接`0d71d56`。
+  GitHub写入认证仍不可用，保留本地commit并如实区分未推送状态。
+- 发布前远端已前进至 `a52dfba4486af8d263d5cd0a976c3102482ff249`：新增原v6的非RL
+  SPT重评/报告工具，当前记录2/64回合。已阅读其日志，安全整合源码；不把该旧MJB/8条件
+  非RL结果直接并入本轮新30条件的RL比较，运行中的独立冻结source不随仓库整合改变。
+
 ## 2026-10-25 — 已发表柔顺控制基线筛选与训练集经验SPT工具
 
 - 用户明确授权文献选型、奖励适配、参数/直接RL训练及训练集ESN比较；新要求T_ref取全部结果

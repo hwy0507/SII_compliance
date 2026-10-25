@@ -1,6 +1,8 @@
 # Data-Driven Compliance Control for FR3
 
 **Latest task clarification:** [published baseline selection and training-set comparison](docs/RL_PUBLISHED_BASELINE_SELECTION_20261025.md).
+
+**Running baseline work:** [published CHEQ adaptation, recovered runtime, physical preflight and four-GPU training](docs/RL_PUBLISHED_BASELINE_EXECUTION_20261025.md). This is a new source-built cohort; convergence and ESN comparison are not yet claimed.
 The user requests trained parameter/direct RL against the existing ESN on training conditions, with a shared empirical minimum-time SPT reference. This study is not yet running: frozen runtime/ESN artifacts and the faithful-method interface decision remain outstanding.
 
 **Current handoff (2026-10-25):** [project overview and four-GPU RL server guide](docs/RL_SERVER_START_20261025.md),
