@@ -7,6 +7,18 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新cycle7固定矩阵3/12：Direct三条件全55s、Task/Strict全失败，stage lift/lift/release；两主动
+nominal成功，低力矩不能当改善。物理/filter/torque审计通过，无机器安全违规。旧804667正常退出，
+coordinator803220已派Impedance evaluator1952370（重验），勿重启Direct。证据PUBLISHED_FIXED_CYCLE07_DIRECT_20261025.json。
+
+最新独立接触候选验证已启动：runtime/contact_candidate_v2，runs/contact_candidate_validation_v1；
+coordinator2014112、首Direct被动worker2019617（行动前重验）。仅验证12条cycle3冻结动作全55s，
+source07三文件读取替换；原字段源与live12一致，parameter/robot manifests一致。每次IPC比较obs/奖励
+遥测，最终严格比较MJB/journal/terminal/全轨迹/filter/torque/逐子步，失败停该验证，不动训练。
+2软件测试+真实归档自比较通过；首156完整interval/124800子步prefix精确一致，**不是完整通过**。
+CPU10 nice10单worker、无learner/优化器更新；候选未部署正式训练、无STOP。v1候选未运行保留。
+现有四CHEQ12原8/9及四SAC09继续，13仅准备。证据PUBLISHED_CONTACT_CANDIDATE_VALIDATION_20261025.json。
+
 最新接触读取有限对照v1/v2均结束：三类×5状态，编号/顺序/dist/frame及读取前后积分状态精确一致。
 v2 CPU计时bulk IDs局部2.33–4.66倍、中位4.55；只测编号提取，不是完整物理/奖励/轨迹等价或GPU提速。
 v1 wall共享调度波动，已保留；共30 mj_forward、0 mj_step/更新，正式runtime未改。下一步可在

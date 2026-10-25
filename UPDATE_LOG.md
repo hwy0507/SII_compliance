@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-25 — 启动独立接触读取候选的完整物理等价验证
+
+- 补充新完成cycle7固定Direct3/12代表矩阵：全55s，Task/Strict全失败，终态lift/lift/release；同条件nominal两主动成功。三回合物理/filter/torque审计通过，无机器安全违规；长期人接触6.1773s、阈值比例100%，仍任务失败。不当当前actorLR结果或完整cohort排名。旧804667结束，coordinator803220已转Impedance evaluator1952370。证据PUBLISHED_FIXED_CYCLE07_DIRECT_20261025.json。
+
+- fetch读取main a52dfba/baseline f6e8f8c未前进；四CHEQ12、四SAC09、原stage审计/固定评估继续。上一轮微基准是实质性能证据，本轮进入完整物理验证。
+- 新builder创建独立contact_candidate_v2，仅替换两处接触循环的字段读取与相应adapter seam；保留所有子步、接触力调用/顺序、浮点运算、物理参数/模型、gate、actor/filter/执行器/dt。原三文件与当前source12相同，参数/robot manifests完全一致。冻结parent/source12没有修改。
+- 2项软件测试检查数组值/dtype/shape/有符号零与源码seam拒绝；真实完整归档自比较通过（110万子步）。初始builder因末尾标记不匹配在创建输出前拒绝，已修正；v1候选保留未运行，v2去掉冗余float转换。
+- 独立有限12条物理重放已启动，四接口×三类、各55s，使用已完成cycle3动作序列和完全相同的审计wrapper；CPU10 nice10单worker，无learner/optimizer/正式replay改动。逐次检查obs/奖励遥测，回合结束比较MJB、actor journal、terminal、全NPZ轨迹、公共filter/torque投影及逐子步证据。观察超时只继续轮询原child。
+- coordinator2014112、首worker2019617（行动前重验）；首156完整interval/124800子步prefix精确一致，不当完整12回合通过或速度提升。候选未部署，原source12的8/9阶段照常继续，无STOP或新训练接续。
+- 产物/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v1；候选runtime/contact_candidate_v2；小型证据docs/PUBLISHED_CONTACT_CANDIDATE_VALIDATION_20261025.json。完整收敛/最终SPT/指定ESN比较仍未完成。
+
 ## 2026-10-25 — 接触读取微基准完成，未部署物理优化
 
 - fetch读取main a52dfba/baseline f6e8f8c，未前进；当前四CHEQ12、四SAC09及原审计/评估进程均继续，上一轮是已完成修复与性能证据的实质进展。
