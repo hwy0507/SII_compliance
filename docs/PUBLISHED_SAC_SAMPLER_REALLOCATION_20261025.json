@@ -1,0 +1,327 @@
+{
+  "recorded_unix": 1792969527.8039303,
+  "origin_main": "a52dfba4486af8d263d5cd0a976c3102482ff249",
+  "origin_baseline": "f6e8f8c2711a93f0b5dfc88c608bd82647084d5d",
+  "resource_registration": {
+    "kind": "same_runtime_sampler_reallocation",
+    "registered_unix": 1792969314.6381493,
+    "host": "rltest-1025--a6ed2ff39b3c-s5gnp35dxg",
+    "training_registration": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cohort30_v2/REGISTRATION_SAC_PERFORMANCE_V2.json",
+    "training_registration_sha256": "162b2d4c5ede8711c0bb6de8dc3d5782ec617695b0d6ebb62afba4d988ab6fa4",
+    "parent_run": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_performance_seed20261025_v2",
+    "parent_launch_sha256": "3af2050d0cecbbcbc93990ccd5a478235bd7cccc66a2d1bc44a5797ba397cb85",
+    "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train09",
+    "runtime_sha256": "7b495650c8617b2404dd253895e6fa73545f36d7495ee7d787f12f7f0149a756",
+    "coordinator_sha256": "d73d81df4563d8d711a51264a88c30f218d5df826073921a0491a09f388eeb18",
+    "archive_tool": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/sac_sampler_reallocation_v1/archive_published_cycle_checkpoints_20261025.py",
+    "archive_tool_sha256": "603a82ca2edf2ae3fc46c50672289b2ee0e9bcacdb0cb80cb2962145297d358d",
+    "parent_identities": {
+      "direct": {
+        "pid": 1010728,
+        "start_ticks": "553799738"
+      },
+      "impedance": {
+        "pid": 1557140,
+        "start_ticks": "553878945"
+      },
+      "vmc": {
+        "pid": 2397784,
+        "start_ticks": "553997141"
+      },
+      "admittance": {
+        "pid": 2758791,
+        "start_ticks": "554049849"
+      }
+    },
+    "allocations": {
+      "direct": {
+        "cpus": [
+          10,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "workers": 9,
+        "gpu": 0
+      },
+      "impedance": {
+        "cpus": [
+          23,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          24
+        ],
+        "workers": 9,
+        "gpu": 1
+      },
+      "admittance": {
+        "cpus": [
+          36,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35
+        ],
+        "workers": 9,
+        "gpu": 2
+      },
+      "vmc": {
+        "cpus": [
+          49,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48
+        ],
+        "workers": 9,
+        "gpu": 3
+      }
+    },
+    "reserved_cpus": [
+      0,
+      13,
+      14,
+      26,
+      39,
+      54
+    ],
+    "coordinator_cpu": 54,
+    "new_run": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_sampler_seed20261025_v1",
+    "unchanged_training_registration": true,
+    "retain": [
+      "weights",
+      "target_critics",
+      "Adam",
+      "temperature",
+      "learner_RNG",
+      "replay_RNG",
+      "replay",
+      "cycle_history"
+    ],
+    "scientific_limitations": [
+      "Concurrent collection/action RNG interleaving changes; future trajectories not bitwise identical.",
+      "Sampling throughput amendment is not a stability intervention.",
+      "SAC critic diagnostics are unhealthy; do not claim convergence from more steps."
+    ],
+    "reason": "CHEQ all5 and nominal jobs completed; reassign released CPU capacity to existing SAC real-physics sampling, 2 to 9 workers each.",
+    "no_physics_actor_filter_gate_reward_or_learner_changes": true
+  },
+  "preflight": {
+    "verified_unix": 1792969314.6389656,
+    "source_hash_counts": {
+      "SOURCE_HASHES.json": 777,
+      "PARAMETER_HASHES.json": 24,
+      "CHEQ_HASHES.json": 150,
+      "ROBOT_ASSET_HASHES.json": 128
+    },
+    "training_registration_sha256": "162b2d4c5ede8711c0bb6de8dc3d5782ec617695b0d6ebb62afba4d988ab6fa4",
+    "parent_identities": {
+      "direct": {
+        "pid": 1010728,
+        "start_ticks": "553799738"
+      },
+      "impedance": {
+        "pid": 1557140,
+        "start_ticks": "553878945"
+      },
+      "vmc": {
+        "pid": 2397784,
+        "start_ticks": "553997141"
+      },
+      "admittance": {
+        "pid": 2758791,
+        "start_ticks": "554049849"
+      }
+    },
+    "conditions_and_reference_hashes_verified": true,
+    "test_result": "6 migration guard tests passed; one initial test fixture overlap caught and corrected before dispatch",
+    "no_new_learner_runtime": true
+  },
+  "migration_progress": {
+    "updated_unix": 1792969523.1962724,
+    "launched": [
+      "vmc"
+    ],
+    "progress": {
+      "vmc": {
+        "cycle": 4,
+        "steps": 188083,
+        "completed_conditions": 0,
+        "running": 9,
+        "pending": 21,
+        "updates": 334148,
+        "wall_time_utc": 1792969523.1843598
+      }
+    },
+    "parent_states": {
+      "vmc": {
+        "steps": 186009,
+        "updates": 330000,
+        "cycle": 3,
+        "checkpoint_sha256": "7a62caf02e093c8bf222a67476f1e14d240ffb37a70e67d3c08c815f55f69fef"
+      }
+    }
+  },
+  "evidence": [
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/SAC_SAMPLER_REALLOCATION_V1.json",
+      "sha256": "82368b1f2f2bb3791752bed6cf9792494549b6fdabd74e592f8f840c79b5d17c"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/sac_sampler_reallocation_v1/PREFLIGHT.json",
+      "sha256": "56997c219126358d9f6c3941a57a3c30473e2eaaf5722b2305d68b4ed21214e7"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/sac_sampler_reallocation_v1/DISPATCH.json",
+      "sha256": "18256b68d3bfb2b9b05847b40e93f0dbab24f23bb967408f627750260e3d8762"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_sampler_seed20261025_v1/FIRST_MIGRATION_REVIEW.json",
+      "sha256": "a00573ee62c07ce3f94938acecf391f32c667754933c59dd0efc2cd1dc77f9e3"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_sampler_seed20261025_v1/GPU_60S_DURING_MIGRATION.json",
+      "sha256": "b8b807eba1704c433623ac2a53f97ee371cb0048adc48df775e25db75a468af7"
+    }
+  ],
+  "probe_progress": {
+    "direct": {
+      "gamma": 0.99,
+      "updates": 8000,
+      "metrics": {
+        "agent_train/q_loss": 0.1385498344898224,
+        "agent_train/next_q_values": 45.074275970458984,
+        "agent_train/entropy_coefficient_loss": -26.06019401550293,
+        "agent_train/actor_loss": -45.57115173339844,
+        "agent_train/actor_entropy": 3.8567795753479004,
+        "agent_train/entropy_coefficient": 0.09065806865692139,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": 45.08527755737305,
+        "in_bag_terminal_mae": 1.1441650390625,
+        "alpha": 0.09065806865692139,
+        "global_soft_bound": 67.3265569382871,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": 3.8670802116394043,
+        "uncertainty_mean": 0.05826186016201973,
+        "implied_minimum_rl_authority_fraction": 0.018310546875
+      },
+      "updated_unix": 1792969524.9602673
+    },
+    "impedance": {
+      "gamma": 0.9995,
+      "updates": 10000,
+      "metrics": {
+        "agent_train/q_loss": 2.5424535274505615,
+        "agent_train/next_q_values": 52.04713439941406,
+        "agent_train/entropy_coefficient_loss": -24.166013717651367,
+        "agent_train/actor_loss": -52.11932373046875,
+        "agent_train/actor_entropy": 3.064038038253784,
+        "agent_train/entropy_coefficient": 0.04993366822600365,
+        "agent_train/target_entropy": -5.0
+      },
+      "diagnostic": {
+        "replay_q_mean": 52.07996368408203,
+        "in_bag_terminal_mae": 16.299612045288086,
+        "alpha": 0.04993366822600365,
+        "global_soft_bound": 201.93372157706247,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": 3.0616769790649414,
+        "uncertainty_mean": 0.10837413370609283,
+        "implied_minimum_rl_authority_fraction": 0.084716796875
+      },
+      "updated_unix": 1792969519.2233875
+    },
+    "admittance": {
+      "gamma": 0.99,
+      "updates": 9000,
+      "metrics": {
+        "agent_train/q_loss": 0.4408784806728363,
+        "agent_train/next_q_values": 52.26647186279297,
+        "agent_train/entropy_coefficient_loss": -29.72953224182129,
+        "agent_train/actor_loss": -52.86793899536133,
+        "agent_train/actor_entropy": 4.057957649230957,
+        "agent_train/entropy_coefficient": 0.0679614394903183,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": 52.3310546875,
+        "in_bag_terminal_mae": 7.387129783630371,
+        "alpha": 0.0679614394903183,
+        "global_soft_bound": 62.645312304197084,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": 4.021400451660156,
+        "uncertainty_mean": 0.07834823429584503,
+        "implied_minimum_rl_authority_fraction": 0.1005859375
+      },
+      "updated_unix": 1792969513.6819022
+    },
+    "vmc": {
+      "gamma": 0.9995,
+      "updates": 10000,
+      "metrics": {
+        "agent_train/q_loss": 2.914419412612915,
+        "agent_train/next_q_values": 72.584716796875,
+        "agent_train/entropy_coefficient_loss": -31.1994571685791,
+        "agent_train/actor_loss": -72.66195678710938,
+        "agent_train/actor_entropy": 3.4865875244140625,
+        "agent_train/entropy_coefficient": 0.051023442298173904,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": 72.60880279541016,
+        "in_bag_terminal_mae": 27.06964874267578,
+        "alpha": 0.051023442298173904,
+        "global_soft_bound": 275.9605089537703,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": 3.432030439376831,
+        "uncertainty_mean": 0.1253942847251892,
+        "implied_minimum_rl_authority_fraction": 0.142578125
+      },
+      "updated_unix": 1792969524.4992304
+    }
+  },
+  "gpu_summary": {
+    "started_unix": 1792969367.6914003,
+    "ended_unix": 1792969434.218736,
+    "mean_utilization": [
+      59.65,
+      57.2,
+      58.1,
+      65.35
+    ],
+    "minimum_utilization": [
+      20,
+      43,
+      12,
+      10
+    ],
+    "scope": "Formal SAC plus four finite discount probes, while sampler migration drains parents; not formal-only throughput."
+  },
+  "all_training_complete": false,
+  "goal_complete": false,
+  "designated_esn_available": false
+}

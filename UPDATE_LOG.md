@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-25 — SAC完整周期边界扩大真实采样并发（交接进行中）
+
+- 新增独立资源登记和协调器资源模式，保留原source_train09/训练协议全部字节；各SAC采样2→9，完整30条件边界才交接。协调器691298、迁移归档691379；VMC旧2397784正常结束，父186009步/330000更新，新726082已真实更新cycle4。另三路原进程仍完成当前周期，不重复启动。
+- 6迁移守卫测试通过；原777源/24参数/150上游/128资产与30条件/参考计划hash核验，VMC父checkpoint副本/执行hash及首9个实际MJB/actor48/dt核验。没有更改physics、gate、公共filter、执行器、奖励或算法；并发会改变后续采样顺序，不称逐位等价训练。
+- 60样本/66.53s GPU混合均值59.65/57.20/58.10/65.35%，含四有限诊断，非正式训练独立50%或逐时达标。原折扣probe首arm50000均完成、第二arm进行中；完整配对review未完，不扩大预算/推广辅助权重。
+- 报告docs/PUBLISHED_SAC_SAMPLER_REALLOCATION_20261025.md/.json；集群产物根/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，资源协议runs/SAC_SAMPLER_REALLOCATION_V1.json、新run runs/sac_sampler_seed20261025_v1、冻结工具runtime/sac_sampler_reallocation_v1。
+- 已fetch/read main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d。剩余交接/健康审计/收敛/固定矩阵/SPT/指定ESN公平比较仍未完成，Goal持续。
+
 ## 2026-10-25 — all5两轮阶段完整复核、名义120完成与有限折扣延长诊断
 
 - fetch/read main a52dfba、baseline f6e8f8c未变。四CHEQ11结束，旧1325445/1328516/1333006/1338945退出勿重启；steps574194/574721/575570/576276，Task/Strict0/18/11/17（各30），父9 Strict10/18/15/17。120终端/MJB/checkpoint、奖励重建/网络不变及诊断/配对图核验。1346884/1346887原审计均结束。

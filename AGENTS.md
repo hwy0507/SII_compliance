@@ -7,6 +7,9 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新SAC采样资源交接已登记派发，协调器691298、迁移archive691379；runs/SAC_SAMPLER_REALLOCATION_V1.json，冻结工具runtime/sac_sampler_reallocation_v1。原四SAC各STOP_REQUESTED仅在完整30条件周期边界交接，勿删除/重启原队列。VMC原2397784已正常结束cycle3/186009/330000，新726082在runs/sac_sampler_seed20261025_v1实际更新cycle4、9worker CPU40–48，learner49/GPU3。父ck 7a62caf0…字节与resume hash一致、首9模型/48obs/dt通过。其余原1010728/1557140/2758791仍收尾6/4/3，随后自动迁移。保持同source09和同training registration字节，单独资源登记workers2→9；未来采样顺序非逐位等价。新分配Direct10+1–9、Imp23+15–22/24、Adm36+27–35，避开四probe0/14/26/39、observer13、协调54。
+6守卫测试通过；原777source/24parameter/150upstream/128robot及30条件/plan实际hash重验。GPU混合60样本均值59.65/57.20/58.10/65.35、min20/43/12/10，不是正式独立达标。四原extended probe首arm50000已结束、第二arm进行中，勿重复启动；完整配对review待。原observer3759872已见VMC3仍等Adm3，source16未部署。docs/PUBLISHED_SAC_SAMPLER_REALLOCATION_20261025.md/.json；Goal未完，ESN仍缺。
+
 最新all5阶段10/11已全部结束并完整科学review，旧四learner1325445/1328516/1333006/1338945及audit1346884/reviewer1346887均退出勿重启。11 steps574194/574721/575570/576276，Task/Strict0/18/11/17各30；四loss/terminalMAE再增、Direct/Admittance退化，不原样延长all5。120终端/模型/hash、reward/network及图复核；runs/BELLMAN_FINAL_SCIENTIFIC_REVIEW_V1.json。source16仍prepared，尚未选下一在线stage，Goal未完。
 新有限extended discount四probe361333/361334/361335/361336在GPU0–3、CPU0/14/26/39实际更新：原fresh cycle6同seed数据，原random2目标，.99/.9995 Bellman和PBRS匹配，各arm50000共400000辅助updates、0physics、不保存推广权重。原5000末entropy仍正，延长查后期漂移；前4000/5000与原metrics/diagnostic精确相同（重算，不独立重复）。runs/consistent_discount_extended_cycle06_v1、runtime/consistent_discount_extended_v1。读原进程/PROGRESS/FINISHED，不重复启动。GPU60样本混合均值63.53/55.98/60.57/61.23，min44/44/49/46，非正式独立达标。原四SAC09及剩余cycle3观察3759872继续。
 名义矩阵120/120已全完成，旧2210514/2210515退出勿重启；新只读380039完成后60，复用前60，COMPLETE_MATRIX_REVIEW.json。Task18/18/16/17、Strict18/18/15/17；Admittance短0600穿透0.209567mm超原0.2mm安全失败保留，舒适67.00/31.98/72.22/72.10%，无接触NA，Tref未选。报告docs/PUBLISHED_BELLMAN_FINAL_STAGE_REVIEW_20261025.md/.json。物理/actor/filter/gate/执行器/dt未变，指定ESN仍缺。
