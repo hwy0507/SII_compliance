@@ -224,3 +224,5 @@ newly fitted ESN or by historical performance numbers.
 
 GitHub main read access works. Write access is unavailable in this session;
 local commits are preserved and are not described as pushed.
+
+Latest calibration and observational audit evidence: [learning diagnostics](RL_PUBLISHED_DIAGNOSTICS_20261025.md). The post-warmup joint GPU window reached mean utilization above50% on each card; terminal value calibration and full-cycle convergence remain incomplete.

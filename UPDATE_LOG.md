@@ -1,5 +1,33 @@
 # 更新日志
 
+## 2026-10-25 — 终端Q诊断、逐步接触审计与四卡联合利用率验证
+
+- fetch核对main `a52dfba4486af8d263d5cd0a976c3102482ff249`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，八路真实训练保持运行，无重复派发。
+- 新增只读 `diagnose_published_training_20261025.py`：冻结checkpoint，逐项复算已结束回合
+  reward，单列终端Q误差、普通TD误差、entropy/temperature和动作饱和，输出图和JSON。
+  约29000步时各9个终端，仅占replay0.03%；终端Q平均绝对误差58.39/63.58/76.58/92.92，
+  不可据平均loss低或数值有限声称critic健康/收敛。工具在CPU54运行，未更新训练权重。
+- 后续首轮active-short条件已出现参数RL严格成功（一次检查8/8/7个），成功终端信号确实进入
+  replay；Direct仍未成功。这是未完成条件周期的训练数据，不能把类别切换当成学习改善。
+- 四路SAC均开始真实更新后，180s记录的末60s四GPU平均69.48/61.25/63.03/59.57%，
+  最低42/42/40/44%。此窗口均值达50%目标，不能保证瞬时值恒高于50%。正式训练合计52/55核。
+- 原source adapter缺少逐物理步human-force原始记录，只有actor间隔接触积分。新增评估专用
+  observational audit wrapper及metric汇总、轨迹对照工具；插入一次记录调用，不改MuJoCo状态、
+  actor输入、filter、执行器、gate或运行中的source_train04。新评估源码独立冻结在evaluation_audit_v2。
+- 同21000步Direct checkpoint、同首条被动条件的55s配对验证：模型/journal/terminal逐字节
+  相同，物理轨迹、actor动作和子步力矩逐值相同。原task_carry_load不适用NaN掩码单独核对；
+  保留初次NaN比较假阴性记录及纠正结果，不放宽物理非有限值检查。
+  三项回归测试通过：合法NA掩码一致可通过、物理状态NaN必须拒绝、1e-10力矩变化不能舍入通过。
+- 1100000子步独立审计通过，峰矩51.505995Nm，无机器安全违规但Task/Strict失败；无人接触，
+  合规率NA。仍未声称独立filter replay通过。已启动首个登记person主动长期条件的早期Impedance
+  审计以检查实际接触分支，非最终acceptance。暂用CPU52/53，训练配置与数据不变。
+- 报告 `docs/RL_PUBLISHED_DIAGNOSTICS_20261025.md`，小型证据docs/evidence；完整checkpoint、
+  图和轨迹在SSD `sii_rl/runs/diagnosis_cheq_v3_early01`、`interim_direct_deterministic_audited_v2`，
+  前缀 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/`。大型产物不入Git。
+- Goal仍进行中：未完成充分收敛、全条件最终评估或指定ESN配对。GitHub写认证此前仍失败，
+  本轮提交/推送结果另行核对；不声称源已发布。
+
 ## 2026-10-25 — 修复CHEQ自适应边界、恢复真实replay，启动独立SAC在线消融
 
 - 开工fetch确认main `a52dfba4486af8d263d5cd0a976c3102482ff249`、baseline

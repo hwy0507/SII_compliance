@@ -79,13 +79,18 @@ def evaluate(args):
         actor_dimension=49 if algorithm == 'cheq' else 48,
         source_sha256=sha(__file__), learner_adapter_sha256=sha(adapter),
         learner_cpu=args.learner_cpu, physics_cpu=args.physics_cpu)
+    episode_adapter = root/'source/tools/published_compliance_episode_20261025.py'
+    if args.audit_substeps:
+        episode_adapter = Path(__file__).with_name('audit_published_episode_20261025.py')
+    receipt.update(audit_substeps=args.audit_substeps, episode_entrypoint=str(episode_adapter),
+        episode_entrypoint_sha256=sha(episode_adapter))
     write(output/'EVALUATION.json', receipt)
     results = []
     for condition in conditions:
         learner.reset_episode()
         folder = output/condition['id']
         command = ['taskset', '-c', str(args.physics_cpu), sys.executable,
-            str(root/'source/tools/published_compliance_episode_20261025.py'),
+            str(episode_adapter),
             '--runtime', str(root), '--output', str(folder), '--fixture', condition['path'],
             '--reference-plan', protocol['reference_plan'], '--controller', controller, '--ipc']
         env = dict(os.environ, CUDA_VISIBLE_DEVICES='', OMP_NUM_THREADS='1',
@@ -150,4 +155,6 @@ if __name__ == '__main__':
     parser.add_argument('--learner-cpu', type=int, required=True)
     parser.add_argument('--physics-cpu', type=int, required=True)
     parser.add_argument('--case-id', action='append')
+    parser.add_argument('--audit-substeps', action='store_true',
+        help='Record coincident human contact/torque for independent physical audit')
     evaluate(parser.parse_args())

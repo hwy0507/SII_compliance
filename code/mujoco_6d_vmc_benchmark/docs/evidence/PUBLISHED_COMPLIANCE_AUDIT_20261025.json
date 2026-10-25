@@ -1,0 +1,112 @@
+{
+  "gpu": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/JOINT_TRAINING_GPU_180S.json",
+    "sha256": "c6a37f7523f20f398b8d846bc718506cc5b4f0d7299e14eb328c1f6811b7208d",
+    "result": {
+      "scope": "CHEQ_v3_plus_SAC_online_ablation; audit evaluation may share GPU0",
+      "last60_summary": {
+        "0": {
+          "mean": 69.48333333333333,
+          "minimum": 42,
+          "maximum": 93
+        },
+        "1": {
+          "mean": 61.25,
+          "minimum": 42,
+          "maximum": 85
+        },
+        "2": {
+          "mean": 63.03333333333333,
+          "minimum": 40,
+          "maximum": 91
+        },
+        "3": {
+          "mean": 59.56666666666667,
+          "minimum": 44,
+          "maximum": 89
+        }
+      },
+      "all_sac_updating_at_last60_start": true
+    }
+  },
+  "transparency": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_direct_deterministic_audited_v2/TRANSPARENCY_VERIFIED.json",
+    "sha256": "3b12e8f099c2eeae44a031c98c334e09d703b3603f505afffb13c9329f144221",
+    "result": {
+      "original": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_direct_deterministic_v1/passive_corner_train_0000",
+      "instrumented": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_direct_deterministic_audited_v2/passive_corner_train_0000",
+      "identical_files": {
+        "rollout.mjb": true,
+        "actor_intervals.jsonl": true,
+        "TERMINAL.json": true
+      },
+      "checkpoint_identical": true,
+      "passed": true,
+      "source_sha256": "97b38fd1b1e3159f1b28c30420bffbf6bef5ed8b7144a1912f38d75d58476962"
+    }
+  },
+  "physical_audit": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_direct_deterministic_audited_v2/PHYSICAL_AUDIT.json",
+    "sha256": "7343141488f362bc8b2630f7de8a0f36bedeac6936f38786fc9502257da8e775",
+    "result": {
+      "row": {
+        "method": "cheq_direct",
+        "case_id": "passive_corner_train_0000",
+        "task_success": false,
+        "strict_success": false,
+        "full_horizon": true,
+        "machine_safety_violation": false,
+        "elapsed_s": 54.99999999999989,
+        "completion_time_s": null,
+        "completion_time_definition": "final_stable_placement_certification",
+        "torque_thresholds_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "peak_torque_nm_per_joint": [
+          5.782967740614044,
+          51.50599471209516,
+          3.362595709383907,
+          27.679993999313833,
+          3.099880542982516,
+          5.206486154275822,
+          1.8250393338089428
+        ],
+        "human_contact_s": 0.0,
+        "human_below_threshold_s": 0.0,
+        "human_compliance_ratio": null,
+        "final_task_stage": "approach",
+        "abort_reason": null
+      },
+      "scope": "physical_telemetry_and_metric_alignment",
+      "filter_replay_verified": false,
+      "actor_input_and_executed_action_trace_equal": true,
+      "samples": 1100000,
+      "engineering_contact_force_onset_n": 0.05,
+      "threshold_status": "engineering_reference_not_validated_human_comfort",
+      "aggregate_errors": {
+        "elapsed_abs_s": 8.881784197001252e-13,
+        "contact_abs_s": 0.0,
+        "compliant_abs_s": 0.0,
+        "peak_torque_abs_nm": 0.0,
+        "penetration_abs_m": 0.0
+      },
+      "source_sha256": "c78c3f5de8343fcfa31d3267dd33f52e2e9ead2c44adcccdf1e82b5add4f5ede",
+      "evidence_sha256": {
+        "TERMINAL.json": "a9722f0dfde94224fc6e7aa54c90e7cd17d3a420c3e2479c168ecadc50c7ea84",
+        "rollout.json": "4bb7e4c9a891a72b46e431fdfd6786417b2b89007e41eec05a076f76cba3bbe3",
+        "rollout.mjb": "608c40b99231ff311de6c2dd969d21fea037b0f839ea47232e6ce61885aee889",
+        "rollout.npz": "b815ac727e170ce4600e7e8af9969f098b6a53a7f0fca1d36d6eff0a3addf637",
+        "audit_substeps.npy": "de97cfd90a8b4d8a7965f77e623c6a817fdf0c0ed11b46d7754ae4f7062729e7",
+        "AUDIT_EXTENSION.json": "4460242ddc13495974a0159f35b4089681091f5cfad2d0ac50d08cb9876e3414",
+        "actor_intervals.jsonl": "5f846edeaddef29887a864bb581eb43c39df525cc33bfaba8007521a940168a5",
+        "rollout_metrics/substep_metrics.npz": "3e1d7da67f992567b2b06a4150073cd15f1b3bc134748e28a19d1fd9b9688522"
+      }
+    }
+  }
+}
