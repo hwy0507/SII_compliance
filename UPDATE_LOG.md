@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-25 — 非RL SPT 重评实时进度（48/64）
+
+- v4 已闭合 48/64 条统一回合，当前唯一在途为
+  `esn_gradient_s2026101301 / prospective_20261013_acceptance_006`；execution 仍为 `running`，
+  未重复启动 worker。
+- 当前 cgroup 资源收据：`memory.current≈2.99 GiB`、`MemorySwapMax=0`，`oom=0`、`oom_kill=0`，
+  CPU 累计用时持续增长；所有已完成回合的失败和成功收据均保留。
+- 目标新增的 proposed 方法复核尚未开始；必须先完成 64 条矩阵、统一 finalizer 和审计，再依据主指标决定是否追加公平复杂场景。
+
 ## 2026-10-25 — 非RL SPT 重评实时进度（40/64）
 
 - v4 已闭合 40/64 条统一回合，当前唯一在途为
