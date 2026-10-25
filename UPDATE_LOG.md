@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-25 — 第9/10轮同样本只读目标分解完成
+
+- main a52dfba/baseline f6e8f8c已重新fetch/read，远端未变。新增diagnose_published_matched_targets工具；冻结runtime/matched_bellman_targets_v1，原3520396已完成退出，0optimizer更新/0新增physics，live不改。
+- 四接口各4096共同非终端+348共同终端样本，全部replay字段在两checkpoint逐字节相同；固定父next-actions、各自policy匹配seed分栏；八checkpoint/source/input hashes重验、网络/梯度/terminal零bootstrap及组件加和通过，四结果与SUMMARY一致，图已检查。
+- 同父next-action的pair-min减all5-min从9.97/36.21/15.42/74.59扩大至97.93/135.48/90.27/140.16；自身policy的折扣目标差389.45/131.43/95.79/141.07，大于平均熵项绝对值52.00/10.51/9.60/34.46。Q转负可能含负微分熵贡献，分歧值得追踪，但不是真实低估/因果证明；有符号TD均值近0不等于绝对误差小，终端MAE前三升/VMC降。
+- 原八learner继续，CHEQ11约55.3–55.7万步，审计/配对复核等待完整11；nominal116/120原进程继续。source16仍未部署，未改physics/MJB/gate/actor/filter/执行器/dt。GPU50%、收敛、最终SPT/指定ESN对比未完成，指定ESN仍缺。
+- 证据docs/PUBLISHED_MATCHED_BELLMAN_TARGETS_20261025.md/.json；集群SSD sii_rl下runs/matched_bellman_targets_cycle09_10_v1保留登记、原结果、REVIEW和图。未重复旧评估或自动选择下一算法干预。
+
 ## 2026-10-25 — all5完整第10轮复核、SAC Direct5和冻结第9轮代表矩阵完成
 
 - fetch/read main a52dfba、baseline f6e8f8c未变。四CHEQ完整10已归档，steps532944/533471/534320/535026，Task5/18/15/17、Strict5/17/15/17（各30）；120条件/terminal/模型与checkpoint hash核验、奖励重建/网络不变及图通过。四路进入原11，原audit/reviewer继续，不重复派发。
