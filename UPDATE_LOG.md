@@ -1,5 +1,28 @@
 # 更新日志
 
+## 2026-10-25 — 四路重置首轮完整复核与SAC第二轮价值诊断
+
+- fetch核对远端main a52dfba/baseline f6e8f8c并读取两分支日志。当前四路CHEQ及四路SAC真实运行。
+- CHEQ cycle6全部完整归档无遗漏，均进入原登记第二轮7；只读auditor完成报告/图和网络不变、
+  全奖励重建，paired reviewer完成5→6，图已目视核验。Task/Strict为1/1、18/17、16/16、17/16（各30）。
+  Direct严格成功0→1、Admittance13→16、Impedance17不变、VMC17→16；四路被动仍0/10。
+- 首轮Q均值133.87/123.41/326.08/1384.20，当前alpha保守上界超限0/37.95/99.50/0%；
+  后1000更新critic loss25.13/66.92/105.29/7189.25，VMC仍持续增长。不把reset数值下降、单轮成功
+  改善或condition顺序造成的reward上升当收敛。原两轮试验继续，source11仍未部署。
+- SAC第二完整周期四路归档只读诊断完成：Task/Strict0/0、17/16、14/13、18/18（各30），
+  全部被动0/10；Direct两个原2mm穿透abort保留。四路Q和critic loss较首轮显著增长，Direct
+  99.85%抽样Q超过保守上界；说明价值漂移也见于普通SAC，但未定位共同原因，不按不同曝光排算法名次。
+- SAC诊断报告/图已检查，复用冻结工具、0更新/0新physics，诊断进程已结束。新增两个小型证据JSON
+  与docs/RL_PUBLISHED_DIAGNOSTICS_20261025.md；原物理/MJB/gate/actor合同/filter/执行器/dt未改。
+- 固定cycle3矩阵9/12，Admittance被动/短期失败、长期成功，三回合physical/filter/torque审计通过，
+  无机器安全违规；长期42.88s/49.95Nm/100%对nominal42.48s/54.16Nm/100%。CPU54评VMC，
+  nominal64/120；这是较早checkpoint独立评估，不能当当前reset策略结果。
+- 全SAC cache接续后60样本/67.98s GPU均值39.28/32.17/10.87/28.77%，min12/0/0/0，含CHEQ
+  周期尾部/新周期开头和GPU2固定评估，未达四卡50%，不是独占稳态吞吐测量。原始ALL_SAC_CACHE_GPU_60S_01.json。
+- 产物基址 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/`：
+  diagnosis_sac_cycle01_all_v1、critic_restart_stage_audit_v1/restart_cycle06、critic_restart_paired_review_v1。
+  完整收敛与最终SPT/指定ESN比较尚未完成，Goal保持活动；发布状态另行核验。
+
 ## 2026-10-25 — 首个完整critic重置周期与逐条件复核
 
 - fetch核对main a52dfba/baseline f6e8f8c并读取两分支日志，保留本地未发布提交。

@@ -7,6 +7,20 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新固定评估：cycle3矩阵9/12，Admittance被动/主动短期失败、主动长期成功；三项审计通过、无机器
+安全违规。长期42.88s/49.95Nm/100%对nominal42.48s/54.16Nm/100%，短期低力矩仍失败。CPU54
+现评VMC，evaluator3248872（重验）；nominal64/120。与当前reset cycle6明确分开。
+
+最新：四路critic-reset cycle6全部完整归档、进入原登记第二轮7，auditor900989完成cycle6，
+reviewer2655393完成5→6，两者等7；0诊断更新/physics，图已检查。Task/Strict1/1、18/17、16/16、17/16
+（各30），Direct严格0→1、Admittance13→16、Impedance不变、VMC17→16，被动仍全0/10。
+Q133.87/123.41/326.08/1384.20，当前alpha上界超限0/37.95/99.50/0%；VMC critic仍增长。
+不是四路收敛或修复成功，继续原两轮试验，source11不提前部署/勿写STOP。详见PUBLISHED_RESTART_CYCLE06_REVIEW_20261025.json。
+SAC第二完整周期只读诊断diagnosis_sac_cycle01_all_v1已FINISHED并退出，Task/Strict0/0、17/16、
+14/13、18/18（各30），被动全0/10；Q/loss较首轮增长，Direct99.85%超保守上界，不与不同曝光CHEQ排名。
+SAC四路source09仍训练，最新全cache GPU窗口均值39.28/32.17/10.87/28.77%，仍未四卡50%；
+ALL_SAC_CACHE_GPU_60S_01.json，含CHEQ周期交替与GPU2评估。新证据PUBLISHED_SAC_SECOND_CYCLE_20261025.json。
+
 最新SAC接续完成：四路都在source09真实更新，MIGRATION_FINISHED已落盘，原协调器已结束。
 Direct1010728/Impedance1557140/VMC2397784/Admittance2758791，常规archiver2767227（重验）。
 不要重启旧SAC进程或迁移；下方Admittance仍排空是本轮稍早快照。

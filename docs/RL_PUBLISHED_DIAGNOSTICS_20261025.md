@@ -1619,3 +1619,117 @@ all four replacements have updated, and normal archiver PID2767227 has taken
 over. The coordinator has finished; no old SAC process or migration should be
 restarted. The exact receipt and current progress are appended to the compact
 evidence above, preserving the earlier VMC-only capture.
+
+
+## All-interface SAC second-cycle audit: value growth is not CHEQ-specific
+
+All four SAC cycle1 checkpoints are now immutable in
+`runs/sac_performance_seed20261025_v1/cycle_archive`. A registered read-only audit
+under `runs/SAC_CYCLE01_ALL_AUDIT_V1.json` reused the frozen auditor and produced
+`runs/diagnosis_sac_cycle01_all_v1/sac_cycle01/results/DIAGNOSIS.json` plus its
+training plot. The auditor exited normally; all report/checkpoint registration,
+reward reconstruction and network-invariance checks passed, with0 optimizer
+updates and0 new physics. The plot was visually reviewed.
+
+| Interface | Retained steps | Task / Strict, each /30 | Mean reward | Replay Q mean | Last1000 mean critic loss |
+|---|---:|---:|---:|---:|---:|
+| Direct |105470|0 /0|−35.575272|3401.98|624.17|
+| Impedance |104778|17 /16|−4.133093|858.16|401.61|
+| Admittance |103015|14 /13|−10.352139|5430.80|10654.33|
+| VMC |103509|18 /18|−1.172646|4105.49|14230.63|
+
+Every interface still has0/10 passive strict success. Direct aborted two
+conditions at the unchanged2mm global-penetration limit; failures remain in the
+denominator. The three parameter interfaces' short/long strict counts are
+9/7,7/6,10/8. This is the second full SAC cycle, not matched exposure to the
+later CHEQ cycles; do not rank the two algorithms from these rows.
+
+Cycle0 replay-Q means were716.39/113.58/1166.50/420.92; the corresponding last1000
+critic losses were44.66/2.06/248.40/29.70. All four increased substantially.
+The plots show sustained positive Q growth and worsening losses, despite entropy
+remaining near its dimensional target. Actor loss decreases together with the
+rising Q baseline; it is not a reliable improvement signal in this state.
+The fixed-policy/current-alpha conservative global-bound violation fractions
+are99.85%/0%/0.55%/0%. Direct is inconsistent with that necessary bound; satisfying
+the bound in the other methods does not prove value calibration. Terminal MAE
+is329.77/160.22/1124.75/1210.30, with the previously documented hidden-clock
+aliasing limitation.
+
+Value drift therefore also occurs without CHEQ's ensemble/context/mixing. This
+observation does not isolate a shared cause or establish a remedy. No reward,
+gamma, learning-rate, physics or mixing change was made by this audit. Compact
+evidence: `PUBLISHED_SAC_SECOND_CYCLE_20261025.json`. Existing SAC learners keep
+training under their registered source_train09 protocol; source_train11 remains
+prepared only, and the CHEQ two-cycle critic-reset trial continues.
+
+
+After all SAC cache handoffs,60 samples spanning67.98s measured mean GPU usage
+39.28/32.17/10.87/28.77%, minima12/0/0/0. No auxiliary GPU updates were running;
+this window includes CHEQ cycle6→7 transitions and GPU2 fixed Admittance
+inference. It is not stationary isolated throughput, and remains below the
+all-card50% target. Raw data: `runs/ALL_SAC_CACHE_GPU_60S_01.json`. Existing
+training remains live; the low window is not evidence that learners stopped.
+
+
+## All four first post-reset cycles completed and paired review verified
+
+All cycle6 checkpoints are archived without misses; the existing four learners
+entered cycle7. The stage auditor completed network-invariance and full reward
+reconstruction checks, then the paired-review observer completed5→6. Both wait
+for cycle7 now. The diagnosis and paired plots were visually checked. There
+were0 diagnostic optimizer updates and0 new diagnostic physics transitions.
+
+| Interface | Retained transitions | Task / Strict, each /30 | Mean reward | Strict change vs parent5 |
+|---|---:|---:|---:|---:|
+| Direct |367944|1 /1|−31.484336|0→1|
+| Impedance |368471|18 /17|−2.410049|17→17|
+| Admittance |369320|16 /16|−5.367201|13→16|
+| VMC |370026|17 /16|−4.586778|17→16|
+
+Every method still has0/10 passive strict success. Direct gains
+`active_long_train_0500`; Admittance gains active-long0300/0500/0600 with no
+lost successes. Impedance's success set is unchanged. VMC loses strict success
+on `active_short_train_0600`. Improvements therefore remain mixed and must not
+be summarized as four converged policies or a uniformly successful repair.
+
+| Interface | Replay Q mean | Current-alpha global bound | Sampled Q above bound | Last1000 mean critic loss | In-bag terminal MAE |
+|---|---:|---:|---:|---:|---:|
+| Direct |133.87|207.96|0%|25.13|44.42|
+| Impedance |123.41|129.56|37.95%|66.92|49.98|
+| Admittance |326.08|147.17|99.50%|105.29|115.70|
+| VMC |1384.20|2797.16|0%|7189.25|1080.71|
+
+Lower magnitudes than parent5 do not establish calibration. Impedance and
+Admittance already violate a necessary fixed-policy/current-alpha bound on
+many samples. VMC's critic loss and Q grow throughout the cycle; Direct's
+smaller loss and one successful episode are insufficient convergence evidence.
+The30 newly collected terminal rows per method separately have in-bag MAE
+86.30/59.61/135.87/1563.21. Hidden-clock observation aliasing still limits terminal
+error interpretation; neither zero terminal error nor mere bound satisfaction
+is asserted as a convergence criterion. The within-cycle reward trace also
+changes with condition category, so its rise is not itself learning evidence.
+
+Evidence is `PUBLISHED_RESTART_CYCLE06_REVIEW_20261025.json`, with original reports
+under `runs/critic_restart_stage_audit_v1/restart_cycle06` and
+`runs/critic_restart_paired_review_v1/parent05_to_restart06`. The registered
+second cycle remains live; source_train11 is not deployed, and no further
+scientific setting is silently selected from this single-cycle result.
+
+
+The separate frozen cycle3 matrix now has9/12 audited cases and evaluates VMC
+on CPU54 (evaluator PID3248872; verify identity). Admittance's three completed
+representatives pass physical, public-filter and torque-linkage audits, with
+no machine safety violation. These are older cycle3 policies, not the current
+critic-reset cycle6 checkpoints:
+
+| Admittance condition0000 | Learned / nominal Task and Strict | Completion s | Peak Nm | Human-contact threshold ratio |
+|---|---|---:|---:|---:|
+| Passive |failed /failed|NA /NA|40.9741 /40.7253|NA /NA|
+| Active-short |failed /passed|NA /45.28|40.9232 /53.9337|NA /NA|
+| Active-long |passed /passed|42.88 /42.48|49.9474 /54.1645|100% /100%|
+
+Active-long contact duration is5.6033s versus5.2098s. Active-short's lower torque
+is accompanied by failure and SPT0, so it is not a successful compliance result.
+Nominal matrix progress is64/120. No final shared SPT reference or ESN comparison
+has been produced. Rows and audit hashes are included as a separate section in
+`PUBLISHED_RESTART_CYCLE06_REVIEW_20261025.json`.
