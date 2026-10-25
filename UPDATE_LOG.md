@@ -1,5 +1,10 @@
 # 更新日志
 
+## 2026-10-25 — 非RL SPT 重评实时进度
+
+- `nonrl_spt_matrix_20261025_v4` 已完成 2/64 个物理回合，第三回合在真实 systemd scope 中运行；已完成回合均有 rollout、research substeps、replay/filter 审计和逐回合 execution 收据。
+- 资源观测：`MemoryCurrent` 约 1 GiB，`MemoryMax=3 GiB`，`MemorySwapMax=0`，单线程；当前未发生 OOM、swap 或重复 worker。最终指标矩阵、SPT 的 `T_ref`、图表和总审计仍待全部回合完成。
+
 ## 2026-10-25 — 启动非RL新指标物理重评（进行中）
 
 - 新增 `code/mujoco_6d_vmc_benchmark/tools/run_nonrl_spt_matrix_20261025.py`，登记非RL的
