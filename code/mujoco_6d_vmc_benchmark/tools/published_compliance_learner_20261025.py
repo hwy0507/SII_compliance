@@ -109,6 +109,8 @@ class PublishedLearner:
             self.hybrid = CHEQAgent(self.learner, Nominal(), uncertainty_min=.02,
                 uncertainty_max=.2, uncertainty_deque=1, weight_min=.2,
                 weight_warmup_max=.3, weight_max=1., warmup_steps=5000)
+        self.bellman_target_count = 2
+        self._original_train = self.learner.train
         self.mixers = {0: self.hybrid}
         self.reset_episode()
 
@@ -203,7 +205,9 @@ class PublishedLearner:
             numpy_rng=np.random.get_state(), local_rng=self.rng.bit_generator.state,
             python_rng=random.getstate(), torch_rng=torch.get_rng_state(),
             cuda_rng=torch.cuda.get_rng_state_all() if torch.cuda.is_available() else [],
-            observation_scale=OBSERVATION_SCALE, boundary='learner_state_only_environment_not_included'))
+            observation_scale=OBSERVATION_SCALE, boundary='learner_state_only_environment_not_included',
+            **({'bellman_target_count': self.bellman_target_count}
+               if self.bellman_target_count != 2 else {})))
 
     def load_state_dict(self, state):
         if state['algorithm'] != self.algorithm or not np.array_equal(state['observation_scale'], OBSERVATION_SCALE):
@@ -211,6 +215,14 @@ class PublishedLearner:
         if (bool(state.get('critic_layer_norm', False)), bool(state.get('numerical_amendments', False))) != (
                 self.critic_layer_norm, self.numerical_amendments):
             raise ValueError('Cannot silently resume changed critic architecture or numerical objective')
+        count = state.get('bellman_target_count', 2)
+        if count not in (2, 5) or (count == 5 and self.algorithm != 'cheq'):
+            raise ValueError('Unsupported checkpoint Bellman target rule')
+        self.learner.train = self._original_train
+        if count == 5:
+            from published_bellman_minimum_20261025 import install_bellman_minimum
+            install_bellman_minimum(self.learner, count)
+        self.bellman_target_count = count
         learner = self.learner
         learner.agent.load_state_dict(state['agent'])
         learner.actor_optimizer.load_state_dict(state['actor_optimizer'])

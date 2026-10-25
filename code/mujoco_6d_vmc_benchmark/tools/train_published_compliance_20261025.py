@@ -59,7 +59,12 @@ def validate_completed_stage_checkpoint(checkpoint, stage, cycle_budget, actual_
     if (len(actual_rates) != len(expected)
             or any(not np.isfinite(a) or abs(a-e) > 1e-12 for a,e in zip(actual_rates, expected))):
         raise ValueError('Prepared actor learning rate differs from scientific registration')
-    if stage['actor_learning_rate_factor'] is not None and checkpoint['cycles']:
+    if stage.get('bellman_target_count') is not None:
+        if stage['bellman_target_count'] != 5 or checkpoint['learner'].get('bellman_target_count',2) != 5:
+            raise ValueError('Prepared Bellman rule differs from scientific registration')
+    elif checkpoint.get('learner',{}).get('bellman_target_count',2) != 2:
+        raise ValueError('Unregistered Bellman target rule')
+    if (stage['actor_learning_rate_factor'] is not None or stage.get('bellman_target_count') is not None) and checkpoint['cycles']:
         raise ValueError('Changed optimizer stage must not pool prior plateau history')
 
 
@@ -80,6 +85,11 @@ def validate_resume_protocol(checkpoint_digest, protocol, current_digest):
                 or not stage.get('review', {}).get('sha256')):
             raise ValueError('Invalid explicit completed-stage continuation')
         registered_stage_actor_rates(stage)
+        if stage.get('bellman_target_count') is not None:
+            if (stage['bellman_target_count'] != 5 or stage['actor_learning_rate_factor'] is not None
+                    or stage.get('intervention') != 'bellman_minimum'
+                    or previous.get('completed_stage_continuation',{}).get('bellman_target_count',2) != 2):
+                raise ValueError('Invalid explicit pair-to-five Bellman continuation')
         descriptive.add('completed_stage_continuation')
     if ({k: v for k, v in previous.items() if k not in descriptive}
             != {k: v for k, v in protocol.items() if k not in descriptive}):
@@ -113,6 +123,8 @@ def validate_resume_protocol(checkpoint_digest, protocol, current_digest):
         permitted = {'tools/train_published_compliance_20261025.py',
                      'tools/published_compliance_learner_20261025.py',
                      'tools/published_target_gradients_20261025.py'}
+    if stage is not None and stage.get('bellman_target_count') == 5:
+        permitted.add('tools/published_bellman_minimum_20261025.py')
     for name in set(old_source) | set(new_source):
         if old_source.get(name) == new_source.get(name):
             continue
@@ -256,6 +268,7 @@ def main(args):
         numerical_amendments=learner.numerical_amendments, numerical_patch_receipt=learner.numerical_patch_receipt,
         python=sys.executable, trainer_sha256=sha(__file__),
         learner_adapter_sha256=sha(Path(__file__).with_name('published_compliance_learner_20261025.py')),
+        bellman_target_count=learner.bellman_target_count,
         resumed_from=str(args.resume) if args.resume else None,
         resumed_checkpoint_sha256=sha(args.resume) if args.resume else None,
         resumed_protocol_sha256=checkpoint['protocol_sha256'] if args.resume else None))

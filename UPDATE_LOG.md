@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-25 — Bellman候选可恢复训练准备通过，未启动在线阶段
+
+- fetch/read远端main a52dfba、baseline f6e8f8c未前进。新source_train14仅准备：checkpoint显式保存/恢复all5 Bellman规则，actor仍原pair；旧state默认pair保持。续训只允许登记2→5、保留权重/Adam/alpha/RNG/replay/LR/gamma/batch/UTD，清空不同算法阶段的plateau历史。科学review占位不允许派发，source13亦未部署。
+- 6阶段+8续训测试通过；四真实cycle9各两辅助更新，完整state/序列化恢复及下一更新与原离线候选精确相等，父checkpoint不变，0physics/无权重保存导入。source14逐文件hash验证；仅learner/trainer/helper差异，parameter/robot/published manifests相同。候选是算法敏感性，非等价性能优化/论文原样/收敛证明。
+- 证据runs/bellman_resume_preparation_v1/RESULT.json和CONTRACT_REVIEW.json；runtime/source_train14及runtime/bellman_resume_preparation_v1；8更新验证进程1019496已正常退出，未启动新在线learner。四SAC09、原固定评估继续。
+- Direct9随机策略短期三seed均Task真，但Strict仅1/3：seed41/43外部穿透0.212277/0.223520mm超原0.2mm阈值；seed42为0.118590mm。均55s/110万子步，后处理审计仍等各组三条件完成；不能用Task替代Strict，原确定性失败保留。SHORT_FIRST_PHYSICAL_REVIEW.json已冻结。
+- contact v2已8/12精确通过未部署，cycle9参数评估继续Admittance。报告docs/PUBLISHED_BELLMAN_RESUME_PREPARATION_20261025.md/.json；physics/MJB/gate/actor/filter/执行器/dt未改。最终目标仍未完成。
+
 ## 2026-10-25 — SAC最新完整周期审计与冻结Direct随机策略评估
 
 最新补充：Direct9固定随机诊断首个被动条件三seed均完整55s/1375动作、Task/Strict成功（原确定性该条件失败），但原协调器后处理审计仍待整组三条件结束，不推广其余条件/收敛。PASSIVE_FIRST_PHYSICAL_REVIEW.json留证。Impedance9三确定性条件现三审计全通过，无机器安全违规；被动失败、短/长13.04/20.04s成功，峰矩46.2532/51.7783Nm，接触舒适NA/22.0727%。IMPEDANCE_COMPLETED_REVIEW.json已冻结；剩余参数评估继续。

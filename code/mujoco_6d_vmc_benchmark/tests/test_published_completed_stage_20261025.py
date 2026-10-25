@@ -15,6 +15,29 @@ from train_published_compliance_20261025 import (validate_resume_protocol,
 
 
 class CompletedStageTests(unittest.TestCase):
+    def test_bellman_preparation_changes_only_rule_and_stage_history(self):
+        state=dict(boundary='complete_condition_cycle',cycle=9,cycles=[{'cycle':9}],
+            replay={'actions':np.ones((5,7),np.float32)},learner=dict(algorithm='cheq',
+            actor_optimizer=dict(param_groups=[dict(lr=3e-5)],state={}),
+            agent={'weight':torch.ones(3)},alpha=.5))
+        before=digest(state)
+        prepared,receipt=prepare_state(state,None,5)
+        self.assertEqual(prepared['learner']['bellman_target_count'],5)
+        self.assertEqual(prepared['cycles'],[])
+        self.assertEqual(digest(state),before)
+        restored=copy.deepcopy(prepared)
+        restored['cycles']=state['cycles']
+        restored['learner'].pop('bellman_target_count')
+        self.assertEqual(digest(restored),before)
+        stage=dict(parent_cycle=9,new_cycles=2,actor_learning_rate_factor=None,
+            parent_actor_learning_rates=[3e-5],bellman_target_count=5)
+        validate_completed_stage_checkpoint(prepared,stage,2,[3e-5])
+        with self.assertRaisesRegex(ValueError,'Bellman'):
+            validate_completed_stage_checkpoint(state,stage,2,[3e-5])
+        for count in [2,3,6]:
+            with self.assertRaises(ValueError):prepare_state(state,None,count)
+        with self.assertRaises(ValueError):prepare_state(prepared,None,5)
+
     def test_unchanged_lower_rate_retains_entire_cycle_history(self):
         checkpoint=dict(boundary='complete_condition_cycle',cycle=9,
             cycles=[dict(cycle=8,reward_mean=-3.),dict(cycle=9,reward_mean=-2.)],
@@ -81,6 +104,15 @@ class CompletedStageTests(unittest.TestCase):
             new=dict(old,completed_stage_continuation=stage,resume_parent_registration=dict(path=str(parent),sha256=h),
                      performance_amendment=dict(kind='frozen_target_gradients_only',replay_device_cache=True,freeze_target_gradients=True,algorithm_scope=['cheq']))
             validate_resume_protocol(h,new,'new')
+            bellman=dict(stage,actor_learning_rate_factor=None,
+                         parent_actor_learning_rates=[3e-5],bellman_target_count=5,
+                         intervention='bellman_minimum')
+            validate_resume_protocol(h,dict(new,completed_stage_continuation=bellman),'new')
+            for key,value in [('bellman_target_count',3),('intervention','unknown'),
+                              ('actor_learning_rate_factor',.1)]:
+                with self.assertRaises(ValueError):
+                    validate_resume_protocol(h,dict(new,
+                        completed_stage_continuation=dict(bellman,**{key:value})),'new')
             for key,value in [('gamma',.99),('reward',{'success':50})]:
                 with self.assertRaisesRegex(ValueError,'training contract'):validate_resume_protocol(h,dict(new,**{key:value}),'new')
             for key,value in [('actor_learning_rate_factor',.5),('new_cycles',0),('review',{}),('kind','other')]:

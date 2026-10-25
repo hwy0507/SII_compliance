@@ -35,7 +35,7 @@ def verify_boundary(state,finished,method,parent_digest,cycle,review_hash):
     if review_hash is None:raise ValueError('Missing reviewed checkpoint identity')
 
 
-def prepare_state(state,factor):
+def prepare_state(state,factor,target_count=None):
     result=copy.deepcopy(state)
     before=digest(state)
     groups=result['learner']['actor_optimizer']['param_groups']
@@ -46,13 +46,28 @@ def prepare_state(state,factor):
         for group in groups:group['lr']*=factor
         # Prevent pooling unlike objective/optimizer stages in plateau summaries.
         result['cycles']=[]
+    if target_count is not None:
+        if (target_count != 5 or factor is not None
+                or state['learner'].get('bellman_target_count', 2) != 2
+                or state['learner'].get('algorithm') != 'cheq'):
+            raise ValueError('Only explicit CHEQ pair-to-five target intervention is supported')
+        result['learner']['bellman_target_count'] = target_count
+        result['cycles'] = []
     check=copy.deepcopy(result)
+    if target_count is not None:
+        if 'bellman_target_count' in state['learner']:
+            check['learner']['bellman_target_count'] = state['learner']['bellman_target_count']
+        else:
+            check['learner'].pop('bellman_target_count')
     check['cycles']=copy.deepcopy(state['cycles'])
     for new,old in zip(check['learner']['actor_optimizer']['param_groups'],state['learner']['actor_optimizer']['param_groups']):
         new['lr']=old['lr']
     if digest(check)!=before or digest(state)!=before:raise AssertionError('Unexpected learning-state mutation')
     receipt.update(actor_lr_after=[g['lr'] for g in groups],all_other_state_exact=True,
-        cycle_history_cleared=factor is not None,prepared_full_state_sha256=digest(result))
+        cycle_history_cleared=factor is not None or target_count is not None,
+        bellman_target_count_before=state['learner'].get('bellman_target_count',2),
+        bellman_target_count_after=result['learner'].get('bellman_target_count',2),
+        prepared_full_state_sha256=digest(result))
     return result,receipt
 
 
@@ -67,7 +82,11 @@ def main(args):
     review_path=Path(stage['review']['path'])
     if sha(review_path)!=stage['review']['sha256']:raise ValueError('Scientific review receipt drift')
     review=json.loads(review_path.read_text());factor=stage['actor_learning_rate_factor']
-    if (review['decision']['action']!='continue_registered_stage' or review['cycle']!=stage['parent_cycle']
+    target_count=stage.get('bellman_target_count')
+    expected_action='continue_registered_bellman_stage' if target_count is not None else 'continue_registered_stage'
+    if target_count is not None and review['decision'].get('bellman_target_count') != target_count:
+        raise ValueError('Bellman stage does not match scientific review')
+    if (review['decision']['action']!=expected_action or review['cycle']!=stage['parent_cycle']
         or review['decision']['actor_learning_rate_factor']!=factor or not review['all_four_methods_reviewed']):
         raise ValueError('Continuation does not match explicit full-stage review')
     diagnosis=Path(review['diagnosis']['path'])
@@ -111,7 +130,7 @@ def main(args):
         for method in METHODS:
             parent_info=parents[method];job=parent_info['job'];execution=parent_info['execution']
             state=torch.load(parent_info['checkpoint'],map_location='cpu',weights_only=False)
-            prepared,receipt=prepare_state(state,factor)
+            prepared,receipt=prepare_state(state,factor,target_count)
             path=args.output/'parent_checkpoints'/(method+'.pt');torch.save(prepared,path)
             receipt.update(parent_checkpoint_sha256=parent_info['sha256'],prepared_checkpoint_sha256=sha(path),
                 no_auxiliary_weights=True,review_sha256=sha(review_path))

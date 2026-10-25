@@ -7,6 +7,9 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新source_train14 / bellman_resume_preparation_v1仅准备、未选/启动在线阶段：checkpoint显式all5 Bellman规则，原actor pair保留；6+8测试、四真实父9完整state/序列化恢复和下一更新精确等同离线候选验证通过（8辅助更新、0physics、无权重导入），1019496退出。父state/replay/moments/RNG不变，仅规则及新阶段聚合history变化；source14仅learner/trainer/helper三差异，全部hash与保护manifest核验。CANDIDATE_PROTOCOL缺最终科学decision，禁止自动派发，不称论文原样/等价优化。证据PUBLISHED_BELLMAN_RESUME_PREPARATION_20261025.md/.json；原四SAC09继续，source13亦未部署。
+Direct9随机短期三seed Task3/3、Strict1/3（先前“一成功两失败”指Strict）；seed41/43外穿透0.212277/0.223520mm超原0.2mm门槛，seed42为0.118590mm。均完整55s，原协调器后处理审计仍等三条件；长期继续，不覆盖原确定性失败。SHORT_FIRST_PHYSICAL_REVIEW.json留证。contact v2现8/12精确通过未部署，cycle9参数继续Admittance。目标仍active。
+
 最新补充：Direct9固定随机诊断首个被动条件三seed均完整55s/1375动作、Task/Strict成功（原确定性该条件失败），但原协调器后处理审计仍待整组三条件结束，不推广其余条件/收敛。PASSIVE_FIRST_PHYSICAL_REVIEW.json留证。Impedance9三确定性条件现三审计全通过，无机器安全违规；被动失败、短/长13.04/20.04s成功，峰矩46.2532/51.7783Nm，接触舒适NA/22.0727%。IMPEDANCE_COMPLETED_REVIEW.json已冻结；剩余参数评估继续。
 
 最新SAC完整归档只读审计已结束：Direct4、其余2（步223990/146028/144265/144759），Task/Strict0/0、17/17、11/11、17/16；120条件terminal/model及奖励/网络不变验证，图已检查。四critic loss/Q较cycle1增加，不称健康收敛；原四SAC09仍运行，无STOP或新优化干预。审计runs/diagnosis_sac_latest_completed_v1/REVIEW.json。
