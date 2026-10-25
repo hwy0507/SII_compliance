@@ -1,5 +1,17 @@
 # 更新日志
 
+## 2026-10-25 — 非RL SPT 重评实时进度（24/64）
+
+- `outputs/nonrl_spt_matrix_20261025_v4/execution.json` 真实状态仍为 `running`，已闭合
+  24/64 条回合，当前唯一在途回合为 `esn_gradient_s2026101301 /
+  prospective_20261013_acceptance_003`；未启动重复 worker。
+- 本轮 cgroup 观测约 `MemoryCurrent=2.83 GiB`、`MemoryMax=3 GiB`、`MemorySwapMax=0`，
+  `memory.events` 的 `oom=0`、`oom_kill=0`、`swap=0`；CPU 累计用时仍在增长，确认在途回合真实推进。
+- 中间 `REPORT.json` 已按新定义更新，当前 `T_ref=46.20 s`（所有已完成 Task AND Strict
+  成功回合的最短 gate crossing）；该值和中间成功率/SPT 仅供进度观察，64 条全部完成前不作最终比较结论。
+- 开工核对：本地 `main` 工作树基于缓存 `origin/main`，GitHub `main`/`baseline` 实时查询因网络不可达，
+  本轮未将缓存 refs 冒充远端最新；既有失败目录和当前执行收据均保留。最终审计、图表和 push 待矩阵完成。
+
 ## 2026-10-25 — 非RL SPT 重评实时进度
 
 - `nonrl_spt_matrix_20261025_v4` 已完成 2/64 个物理回合，第三回合在真实 systemd scope 中运行；已完成回合均有 rollout、research substeps、replay/filter 审计和逐回合 execution 收据。
