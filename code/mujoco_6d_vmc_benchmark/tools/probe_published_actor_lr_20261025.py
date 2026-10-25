@@ -1,6 +1,6 @@
-"""Finite actor/critic learning-rate sensitivity from matched learner states.
+"""Finite learning-rate or Bellman-minimum sensitivity on matched states.
 
-Only the registered actor or critic Adam learning rate changes (1 or0.1).
+Only the registered learning rate or target minimum changes in independent arms.
 Actor/critic/alpha weights, other optimizers, replay/masks, RNG and objective
 start identical. No online policy-quality claim or auxiliary weight promotion.
 """
@@ -46,6 +46,9 @@ def set_actor_learning_rate(learner, factor):
 
 def main(args):
     p=json.loads(args.registration.read_text())
+    intervention = p.get('intervention', 'learning_rate')
+    if intervention not in ('learning_rate', 'bellman_minimum'):
+        raise ValueError('Unknown registered intervention')
     optimizer = p.get('optimizer', 'actor')
     expected_cycle = p.get('expected_cycle', 6)
     if optimizer not in ('actor', 'critic'):
@@ -75,6 +78,7 @@ def main(args):
     learner=PublishedLearner(root,dimension=arrays['actions'].shape[1],direct=args.controller=='direct',
         seed=p['seed'],device=args.device,algorithm='cheq',critic_layer_norm=state['critic_layer_norm'],
         numerical_amendments=state['numerical_amendments'])
+    original_train = learner.learner.train
     initial=copy.deepcopy(state)
     replay=Replay(arrays['actions'].shape[1],arrays['observations'].shape[1],p['seed'])
     replay.load_state_dict(copy.deepcopy(ck['replay']));cache=DeviceReplayCache(replay,args.device)
@@ -82,7 +86,8 @@ def main(args):
     ordinary=np.flatnonzero(arrays['dones'][:,0]==0)
     sample=np.random.default_rng(p['seed']).choice(ordinary,p['diagnostic_samples'],replace=False)
     factors=p['factor_order'][args.controller]
-    if len(factors)!=2 or set(factors)!={1.,.1}:raise ValueError('Expected registered learning-rate factors')
+    expected_factors = {1., .1} if intervention == 'learning_rate' else {2, 5}
+    if len(factors)!=2 or set(factors)!=expected_factors:raise ValueError('Expected registered arm values')
     args.output.mkdir(exist_ok=False)
 
     def diagnose():
@@ -113,16 +118,24 @@ def main(args):
 
     results=[];initial_reference=None
     for factor in factors:
+        learner.learner.train = original_train
         learner.load_state_dict(copy.deepcopy(initial))
         for param in learner.learner.agent.parameters():param.grad=None
         restored=digest(learner.state_dict())
         if initial_reference is None:initial_reference=restored
         elif restored!=initial_reference:raise AssertionError('Arms have unequal restored full states')
         replay.rng=np.random.default_rng(p['seed'])
-        rates=set_learning_rate(learner.learner,factor,optimizer)
+        rates=[]
+        patch=None
+        if intervention == 'learning_rate':
+            rates=set_learning_rate(learner.learner,factor,optimizer)
+        else:
+            from published_bellman_minimum_20261025 import install_bellman_minimum
+            patch=install_bellman_minimum(learner.learner,factor)
         entry=dict(factor=factor,optimizer=optimizer,learning_rates=rates,
+                   intervention=intervention,patch=patch,
                    initial_full_state_sha256=restored,initial=diagnose(),curve=[])
-        if optimizer == 'actor':
+        if intervention == 'learning_rate' and optimizer == 'actor':
             entry['actor_learning_rates'] = rates
         start=time.time()
         for update in range(p['updates_per_arm']):
@@ -141,14 +154,16 @@ def main(args):
         results.append(entry);write(args.output/f'factor_{factor:g}.json',entry)
     if results[0]['sampling_rng_sha256']!=results[1]['sampling_rng_sha256']:
         raise AssertionError('Unequal replay sampling streams')
+    learner.learner.train = original_train
     write(args.output/'FINISHED.json',dict(controller=args.controller,results=results,
         checkpoint_sha256=item['sha256'],registration_sha256=sha(args.registration),optimizer=optimizer,
+        intervention=intervention,
         updates=2*p['updates_per_arm'],new_physics=0,auxiliary_weights_saved=False,formal_training_changed=False,
         fresh_entire_learner=False,parent_unchanged=True,finished_unix=time.time(),
         limitations=['Frozen historical behavior/context; no online success or safety conclusion.',
-            f'Same complete cycle{expected_cycle} state/RNG and sampling; only {optimizer} Adam learning rate differs.',
+            f'Same complete cycle{expected_cycle} state/RNG and sampling; registered intervention: {intervention}.',
             'One parent seed per interface and finite update budget; no convergence or transfer claim.',
-            'Slower optimization may delay useful learning as well as reduce harmful feedback.',
+            'Slower optimization or pessimistic targets may impede useful learning; no presumed benefit.',
             'CHEQ absolute uncertainty thresholds unchanged; implied mixing is diagnostic only.']))
 
 

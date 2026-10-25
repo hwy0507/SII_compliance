@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-25 — actorLR四接口阶段复核及all5 Bellman有限诊断完成
+
+- main a52dfba / baseline f6e8f8c已fetch读取日志，无新远端变更。actorLR原8/9全部正常结束：9步数491694/492221/493070/493776；Task12/18/15/17、Strict10/18/15/17（各30）。四路末1000 critic loss4194/337248/144169/973518，均继续增长，不称收敛。完整120条件及四checkpoint收据、原整组value诊断和7→9/8→9图已复核；科学review ACTOR_LR_FINAL_SCIENTIFIC_REVIEW_V1.json。
+- Direct固定9三代表条件全部55s、Task/Strict全false、approach失败；物理/filter/torque审计通过。长期虽7.1099s接触100%舒适仍任务失败，SPT0。其余三接口固定9已在CPU13顺序评估，原7矩阵继续，不重复Direct。
+- 新Bellman-only候选保留actor原随机pair，仅target改all5 min；三新测试+三LR测试通过，真实checkpoint两更新独立loss精确、终端mask验证通过。四接口同完整state/RNG/replay各2×5000有限更新已结束，父state/replay/采样hash通过、0physics/无权重导入，图已检查。all5末Q1065.74/5445.43/1974.45/11270.86，相对pair均低；但terminal MAE296.48/2153.96/3933.32/9771.59仍高，Admittance比父增长，最低CHEQ权重比例仍100%。不宣称修复/收敛，不自动部署或启动下一在线阶段；这属于算法敏感性，非论文原样复现。
+- runtime/bellman_minimum_probe_v1、runs/bellman_minimum_cycle09_v1在集群SSD sii_rl根目录；四辅助PID343783/343785/343787/343805均退出。四SAC09继续（最近步数234658/156973/144790/148706）；contact v2已6/12精确通过未部署，nominal96/120。
+- GPU60样本/67.54s均值61.03/54.87/56.73/54.52%，最低12/0/12/1；包含辅助更新，不当正式吞吐或持续最低负载保证。辅助已按预算退出。
+- 报告/小证据docs/PUBLISHED_ACTOR_LR_FINAL_AND_BELLMAN_PROBE_20261025.md/.json。所有physics/MJB/gate/actor/filter/执行器/dt未改；最终收敛/SPT/指定ESN比较仍未完成。未导入source13或接触候选。GitHub写认证仍需以实际push结果为准。
+
 ## 2026-10-25 — Direct完成原第9轮并启动固定终点独立评估
 
 - 最新Impedance也完成9/492221并正常退出，Task/Strict18/18（各30）、被动/短/长0/10/8，reward−0.49960；ck及30 terminal/model收据核验。原audit已有Direct/Impedance，尚等Admittance/VMC。证据已补入PUBLISHED_DIRECT_CYCLE09_AND_EVALUATION_20261025.json。

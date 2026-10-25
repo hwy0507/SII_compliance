@@ -7,6 +7,11 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新actorLR8/9四接口及原整组audit/reviewer已全部正常结束，旧四learner勿重启；9 Task12/18/15/17、Strict10/18/15/17（各30），四critic loss继续增加。完整review为runs/ACTOR_LR_FINAL_SCIENTIFIC_REVIEW_V1.json。
+新bellman_minimum_cycle09_v1有限all5目标诊断完成、四辅助343783/343785/343787/343805退出，40000更新/0physics/无权重导入、同state/RNG/replay/采样验证与图通过；真实两更新preflight通过。all5相对pair降低四Q/MAE，但Admittance MAE仍高于父，CHEQ最低权重比例仍100%，不是修复。未选/启动下一在线CHEQ阶段，不自动用source13；作为算法消融候选，不称论文原样。四SAC09继续。
+Direct固定9三代表全55s/Task Strict全失败于approach，三审计通过；原3574939已退出，勿重启。剩余三接口固定9 coordinator4191390/Impedance4192870 CPU13顺序运行（重验），source12/audit_v6、checkpoint/MJB/dt原合同。原7矩阵9/12、VMC继续CPU54。contact v2现6/12精确通过，未部署；nominal96/120。
+GPU含辅助60样本均值61.03/54.87/56.73/54.52%、min12/0/12/1；非正式纯训练吞吐且辅助已结束。证据PUBLISHED_ACTOR_LR_FINAL_AND_BELLMAN_PROBE_20261025.md/.json。指定ESN仍缺，收敛/最终对比未完成。
+
 最新Impedance也完成原9/492221并正常退出，旧923788勿重启；Task/Strict18/18（各30）、被动/短/长0/10/8，reward−0.49960。ck sha4851052f…及30条件terminal/model已核验。原audit已收Direct/Impedance，尚等Admittance/VMC，不把Direct回落推广四路。
 
 最新Direct9有限criticLR诊断完成、3798731退出：同完整state/moments/RNG/replay，criticLR
