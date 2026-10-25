@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-25 — 接触读取候选12项完整验证结束及组合runtime准备
+
+- fetch/read main a52dfba、baseline f6e8f8c未变。原contact_candidate_validation_v2正常结束，2530701/2249466退出；12/12全55s、1320万子步精确对照通过（复用1项、新增11项1210万子步）。COMPLETED_REVIEW核验FINISHED、注册/source和12条件集合，重读原始MJB/journal/terminal/substep字节hash；数组精确比较与完整result规范依据原冻结validator收据，保留早期v1失败，不重跑完成仿真。
+- 采用已验证的3接触读取源文件，准备source_train16：从15只替换audited_velocity_env、validate_office_apparatus、published_compliance_episode，均与contact候选精确相同；原07/当前14/15的替换前文件相同，learner/Adam helper/trainer/Bellman保持15，780source hash、保护manifest核验，4接触测试及语法检查通过。组合0新physics/updates、未部署；当前10/11及SAC09不改，下一阶段仍需完整科学复核/登记。
+- 正式负载新60样本/77.19s，GPU均值35.13/39.40/30.07/33.97%，最低全0；含固定VMC9推理，无辅助学习。八原PID/start ticks核验，CHEQ增步1186/1621/1289/1232、SAC573/344/300/529。未达50%，不是未部署source16的性能证据。
+- 四CHEQ约53.1–53.3万步原10收尾；SAC Direct完整5已归档进入6，其余SAC3继续。固定VMC9被动完整55s carry失败，其余两条件/整组三审计继续，参数矩阵仍6/9。无收敛/最终排名结论。
+- 报告docs/PUBLISHED_CONTACT_VALIDATION_COMPLETE_20261025.md/.json；集群SSD sii_rl下runs/contact_candidate_validation_v2/COMPLETED_REVIEW.json、runtime/source_train16及runs/combined_performance_preparation_v1留证。物理参数/MJB/gate/actor/filter/执行器/dt不变；最终收敛、SPT和指定ESN公平比较仍未完成。
+
 ## 2026-10-25 — Adam性能候选实际adapter及再次恢复验证
 
 - fetch/read main a52dfba、baseline f6e8f8c未前进。source_train15仅准备未部署：相对冻结14只修改CHEQ load_state_dict迁移59个scalar step至CPU并新增helper；SAC不改。原/候选779/780份source、各24parameter/150上游/128机器人资产逐文件hash通过，保护manifests、dt/actor period/horizon相同。

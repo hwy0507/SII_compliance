@@ -296,8 +296,11 @@ def run(a):
         f=drive_joint('office_v5_push_rod_joint',target,160.,12.,c['force_limit'])
         stats['max_rod_drive_n']=max(stats['max_rod_drive_n'],abs(f))
         resultant={};touch_ball=False;corner_target_force=0.;edge_force=0.;pair_forces={}
+        contact_records=d.contact
+        contact_geom1,contact_geom2=contact_records.geom1,contact_records.geom2
+        contact_dist,contact_frame=contact_records.dist,contact_records.frame
         for i in range(d.ncon):
-            ct=d.contact[i];g1,g2=int(ct.geom1),int(ct.geom2)
+            g1,g2=int(contact_geom1[i]),int(contact_geom2[i])
             if tool_contact and (ball_geom in (g1,g2) or gid('office_v5_push_rod_geom') in (g1,g2)):
                 wf=np.zeros(6);mujoco.mj_contactForce(m,d,i,wf)
                 names=[mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_GEOM,g) or f'geom_{g}' for g in (g1,g2)]
@@ -305,27 +308,27 @@ def run(a):
                 pair_forces[key]=pair_forces.get(key,0.)+float(np.linalg.norm(wf[:3]))
                 if key not in pair_stats:
                     pair_stats[key]=dict(bodies=[mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_BODY,int(m.geom_bodyid[g])) for g in (g1,g2)],first_s=None,last_s=None,duration_s=0.,peak_n=0.,impulse_ns=0.,max_penetration_m=0.)
-                pair_stats[key]['max_penetration_m']=max(pair_stats[key]['max_penetration_m'],-float(ct.dist))
+                pair_stats[key]['max_penetration_m']=max(pair_stats[key]['max_penetration_m'],-float(contact_dist[i]))
             if unexpected_edge and edge_geom in (g1,g2) and (g2 if g1==edge_geom else g1) in (robot|{target_geom}):
                 edge_wrench=np.zeros(6);mujoco.mj_contactForce(m,d,i,edge_wrench)
                 edge_force+=float(np.linalg.norm(edge_wrench[:3]))
-                stats['unexpected_edge']['max_penetration_m']=max(stats['unexpected_edge']['max_penetration_m'],-float(ct.dist))
+                stats['unexpected_edge']['max_penetration_m']=max(stats['unexpected_edge']['max_penetration_m'],-float(contact_dist[i]))
             if target_geom in (g1,g2) and (g2 if g1==target_geom else g1) in corner_contact_geoms:
                 corner_wrench=np.zeros(6);mujoco.mj_contactForce(m,d,i,corner_wrench)
                 corner_target_force+=float(np.linalg.norm(corner_wrench[:3]))
-            if m.geom_bodyid[g1]!=m.geom_bodyid[g2] and -ct.dist>stats['max_penetration_m']:
-                stats['max_penetration_m']=-float(ct.dist)
+            if m.geom_bodyid[g1]!=m.geom_bodyid[g2] and -float(contact_dist[i])>stats['max_penetration_m']:
+                stats['max_penetration_m']=-float(contact_dist[i])
                 stats['worst_pair']=[mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_GEOM,g) or str(g) for g in (g1,g2)]
             if (g1 in robot)==(g2 in robot):continue
             other=g2 if g1 in robot else g1
-            if is_external_contact(m,robot,target_body,g1,g2) and -ct.dist>stats['max_external_penetration_m']:
-                stats['max_external_penetration_m']=-float(ct.dist)
+            if is_external_contact(m,robot,target_body,g1,g2) and -float(contact_dist[i])>stats['max_external_penetration_m']:
+                stats['max_external_penetration_m']=-float(contact_dist[i])
                 stats['worst_external_pair']=[mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_GEOM,g) or str(g) for g in (g1,g2)]
             name=mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_GEOM,other) or str(other)
             if not name.startswith('office_v5'):continue
             key='ball' if other==ball_geom else 'person_hand' if 'human_' in name else 'rod' if 'push_rod' in name else 'cup' if 'cup' in name else 'other_person_body' if any(s in name for s in ('person','arm')) else name
             f=np.zeros(6);mujoco.mj_contactForce(m,d,i,f)
-            world=ct.frame.reshape(3,3).T@f[:3]*(1 if g2 in robot else -1)
+            world=contact_frame[i].reshape(3,3).T@f[:3]*(1 if g2 in robot else -1)
             if np.linalg.norm(world)>.05:
                 rg=g1 if g1 in robot else g2
                 robot_part=mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_BODY,int(m.geom_bodyid[rg])) or str(rg)

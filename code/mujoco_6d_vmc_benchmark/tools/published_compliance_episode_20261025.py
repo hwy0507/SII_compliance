@@ -207,9 +207,9 @@ def run(args):
         ("    result['metrics']=metrics.save(",
          "    result['baseline_policy']=external_policy.finish(a.output.parent)\n    result['metrics']=metrics.save("),
         ('        resultant={};touch_ball=False;', '        human_force_sum=0.\n        resultant={};touch_ball=False;'),
-        ('            world=ct.frame.reshape(3,3).T@f[:3]*(1 if g2 in robot else -1)',
+        ('            world=contact_frame[i].reshape(3,3).T@f[:3]*(1 if g2 in robot else -1)',
          "            if key in ('person_hand','other_person_body'):human_force_sum+=float(np.linalg.norm(f[:3]))\n"
-         '            world=ct.frame.reshape(3,3).T@f[:3]*(1 if g2 in robot else -1)'),
+         '            world=contact_frame[i].reshape(3,3).T@f[:3]*(1 if g2 in robot else -1)'),
         ('        metrics.sample()', '        metrics.sample();PUBLISHED_SAMPLE(env,stats,human_force_sum)'),
     ]
     if fixture:

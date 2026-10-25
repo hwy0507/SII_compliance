@@ -7,6 +7,11 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新contact v2原协调器2530701/末worker2249466已正常结束，勿重启：12/12完整55s对照全部精确通过，共1320万子步，复用1项/新增11项1210万子步。COMPLETED_REVIEW核验FINISHED/注册/source/12条件集合及原始MJB/journal/terminal/substep字节hash；原数组比较收据通过，set规范仅robot_parts。保留v1失败。当前source14三原接触文件与原07/15相同已确认。
+已准备source_train16但未部署：从15只替换已验证的3接触读取文件（audited_velocity_env、validate_office_apparatus、published_compliance_episode），内容与contact_candidate_v2精确相同；learner/Adam helper/trainer/Bellman保持15，780source hash及保护manifest核验，4接触测试通过。组合无新physics/updates，下一阶段须当前10/11完整科学review及独立登记，不自动派发/改live。产物runs/combined_performance_preparation_v1，证据docs/PUBLISHED_CONTACT_VALIDATION_COMPLETE_20261025.md/.json。
+GPU_60S_02含正式训练及固定VMC推理、不含辅助学习：60样本/77.19s均值35.13/39.40/30.07/33.97%，min全0；八PID身份及真实增量核验，50%未达。四CHEQ14仍10收尾；SAC Direct5已归档进入6，其余SAC3继续，非收敛。VMC9被动完整55s carry失败，其余在途/整组三审计仍待，参数矩阵6/9。目标仍未完成，指定ESN仍缺。
+
+
 最新source_train15准备完成但未部署：只在CHEQ实际load_state_dict把59个Adam scalar step归CPU，SAC分支不改。独立adam_resume_preparation_v1进程2122767已结束，四真实all5 parent按CUDA入口恢复、更新间保存/重载、后续两更新的完整数值state/metrics/agent与alpha梯度均精确相等；16辅助更新、0physics、父checkpoint/replay不变、无权重保存导入。真实SAC Direct4恢复对照不变（0更新），不外推SAC提速。原/候选779/780 source及24parameter/150上游/128robot资产全hash核验，仅learner及新增helper差异。CANDIDATE_PROTOCOL是准备状态，需当前10/11完整科学review再登记下一阶段；不是等待新用户许可，不自动派发。当前CHEQ14、SAC09及原评估继续，50%/收敛/最终比较未完成。证据docs/PUBLISHED_ADAM_RESUME_PREPARATION_20261025.md/.json，产物runs/adam_resume_preparation_v1。
 
 

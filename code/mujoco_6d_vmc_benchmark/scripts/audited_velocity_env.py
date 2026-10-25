@@ -1503,9 +1503,11 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
             push_resultant = np.zeros(3)
             push_all_resultant = np.zeros(3)
             push_all_contact = False
+            contact_records = data.contact
+            contact_geom1, contact_geom2 = contact_records.geom1, contact_records.geom2
+            contact_dist, contact_frame = contact_records.dist, contact_records.frame
             for contact_index in range(data.ncon):
-                contact = data.contact[contact_index]
-                pair = (int(contact.geom1), int(contact.geom2))
+                pair = (int(contact_geom1[contact_index]), int(contact_geom2[contact_index]))
                 if any(g in self._audit_table_ids for g in pair) and any(
                         g in self._end_effector_geom_ids for g in pair):
                     wrench = np.zeros(6)
@@ -1519,18 +1521,18 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                             body_names=[mujoco.mj_id2name(model,mujoco.mjtObj.mjOBJ_BODY,int(model.geom_bodyid[g])) or f'body_{int(model.geom_bodyid[g])}' for g in pair],
                             hand_position=data.xpos[self._hand_id].tolist(),
                             object_position=data.xpos[self._target_body_id].tolist(),
-                            contact_dist=float(contact.dist),
-                            include_margin=float(contact.includemargin),
-                            solref=contact.solref.tolist(),solimp=contact.solimp.tolist(),
+                            contact_dist=float(contact_dist[contact_index]),
+                            include_margin=float(contact_records[contact_index].includemargin),
+                            solref=contact_records[contact_index].solref.tolist(),solimp=contact_records[contact_index].solimp.tolist(),
                             geom_margins=[float(model.geom_margin[g]) for g in pair])
-                    penetration = max(0., -float(contact.dist))
+                    penetration = max(0., -float(contact_dist[contact_index]))
                     if penetration > audit['max_robot_table_penetration_m']:
                         audit['max_robot_table_penetration_m'] = penetration
                         audit['table_penetration_detail'] = dict(time_s=float(data.time),
                             geom1=mujoco.mj_id2name(model,mujoco.mjtObj.mjOBJ_GEOM,pair[0]),
                             geom2=mujoco.mj_id2name(model,mujoco.mjtObj.mjOBJ_GEOM,pair[1]))
-                if self._rod_geom_id in (int(contact.geom1), int(contact.geom2)):
-                    other_id = int(contact.geom2) if int(contact.geom1) == self._rod_geom_id else int(contact.geom1)
+                if self._rod_geom_id in (int(contact_geom1[contact_index]), int(contact_geom2[contact_index])):
+                    other_id = int(contact_geom2[contact_index]) if int(contact_geom1[contact_index]) == self._rod_geom_id else int(contact_geom1[contact_index])
                     if other_id in self._end_effector_geom_ids:
                         substep_rod_contact = True
                         substep_time_s = float(
@@ -1542,40 +1544,40 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                         wrench = np.zeros(6, dtype=float)
                         mujoco.mj_contactForce(model, data, contact_index, wrench)
                         substep_force = max(substep_force, float(np.linalg.norm(wrench[:3])))
-                        penetration = max(0.0, -float(contact.dist))
+                        penetration = max(0.0, -float(contact_dist[contact_index]))
                         substep_peak_penetration = max(substep_peak_penetration, penetration)
                         if penetration > self.peak_impactor_penetration:
                             self.peak_impactor_penetration = penetration
                             self.peak_impactor_contact_detail = {
                                 "time_s": float(time_s + (substep_index + 1) * model.opt.timestep),
-                                "dist_m": float(contact.dist),
-                                "geom1": mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, int(contact.geom1)),
-                                "geom2": mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, int(contact.geom2)),
+                                "dist_m": float(contact_dist[contact_index]),
+                                "geom1": mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, int(contact_geom1[contact_index])),
+                                "geom2": mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, int(contact_geom2[contact_index])),
                             }
-                if self._push_rod_geom_id in (int(contact.geom1), int(contact.geom2)):
+                if self._push_rod_geom_id in (int(contact_geom1[contact_index]), int(contact_geom2[contact_index])):
                     other_id = (
-                        int(contact.geom2)
-                        if int(contact.geom1) == self._push_rod_geom_id
-                        else int(contact.geom1)
+                        int(contact_geom2[contact_index])
+                        if int(contact_geom1[contact_index]) == self._push_rod_geom_id
+                        else int(contact_geom1[contact_index])
                     )
                     if other_id in self._push_audit_robot_geom_ids or other_id in self._end_effector_geom_ids:
                         wrench = np.zeros(6, dtype=float)
                         mujoco.mj_contactForce(model, data, contact_index, wrench)
-                        world_force = np.asarray(contact.frame).reshape(3,3).T @ wrench[:3]
+                        world_force = np.asarray(contact_frame[contact_index]).reshape(3,3).T @ wrench[:3]
                         # mj_contactForce reports the force on geom2.
-                        if int(contact.geom2) == self._push_rod_geom_id:
+                        if int(contact_geom2[contact_index]) == self._push_rod_geom_id:
                             world_force = -world_force
                     if other_id in self._push_audit_robot_geom_ids:
-                        push_all_contact = push_all_contact or float(contact.dist) <= 0.
+                        push_all_contact = push_all_contact or float(contact_dist[contact_index]) <= 0.
                         push_all_resultant += world_force
                         self.push_rod_peak_all_robot_point_force_n = max(
                             self.push_rod_peak_all_robot_point_force_n, float(np.linalg.norm(world_force)))
-                        depth = max(0.0, -float(contact.dist))
+                        depth = max(0.0, -float(contact_dist[contact_index]))
                         if depth > self.peak_push_all_robot_penetration_m:
                             self.peak_push_all_robot_penetration_m = depth
                             self.peak_push_all_robot_contact_detail = {
                                 "time_s": float(time_s + (substep_index + 1) * model.opt.timestep),
-                                "dist_m": float(contact.dist),
+                                "dist_m": float(contact_dist[contact_index]),
                                 "geom": mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, other_id),
                                 "body": mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_BODY, int(model.geom_bodyid[other_id])),
                             }
@@ -1583,17 +1585,17 @@ class PandaWBCVelocityResidualEnv(gym.Env[np.ndarray, np.ndarray]):
                         push_contact = True
                         push_resultant += world_force
                         push_force = max(push_force, float(np.linalg.norm(wrench[:3])))
-                        penetration = max(0.0, -float(contact.dist))
+                        penetration = max(0.0, -float(contact_dist[contact_index]))
                         push_penetration = max(push_penetration, penetration)
                         if penetration > self.peak_push_rod_penetration_m:
                             self.peak_push_rod_penetration_m = penetration
                             self.peak_push_rod_contact_detail = {
                                 "time_s": float(time_s + (substep_index + 1) * model.opt.timestep),
-                                "dist_m": float(contact.dist),
+                                "dist_m": float(contact_dist[contact_index]),
                                 "geom1": mujoco.mj_id2name(
-                                    model, mujoco.mjtObj.mjOBJ_GEOM, int(contact.geom1)),
+                                    model, mujoco.mjtObj.mjOBJ_GEOM, int(contact_geom1[contact_index])),
                                 "geom2": mujoco.mj_id2name(
-                                    model, mujoco.mjtObj.mjOBJ_GEOM, int(contact.geom2)),
+                                    model, mujoco.mjtObj.mjOBJ_GEOM, int(contact_geom2[contact_index])),
                             }
             substep_time_s = float(time_s + (substep_index + 1) * model.opt.timestep)
             if push_all_contact and self.push_rod_hold_end_s is not None and substep_time_s <= self.push_rod_hold_end_s:

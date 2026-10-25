@@ -1,0 +1,1360 @@
+{
+  "captured_unix": 1792965261.5613546,
+  "hostname": "rltest-1025--a6ed2ff39b3c-s5gnp35dxg",
+  "base": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl",
+  "origin_main": "a52dfba4486af8d263d5cd0a976c3102482ff249",
+  "origin_baseline": "f6e8f8c2711a93f0b5dfc88c608bd82647084d5d",
+  "evidence": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/COMPLETED_REVIEW.json": "940a1c202cba069f545b412969f665e7a832842d221239675cba74981cef3a04",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/combined_performance_preparation_v1/CONTRACT_REVIEW.json": "61890585e07ad973e05f30394283599c9da6ee3212d3b88e478c9ee7211855d3",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/bellman_minimum_online_seed20261025_v1/GPU_60S_02.json": "fabb0d979acdc5300563b7535bb242081c92ae1ed36578c3977dc0cf90a6d804"
+  },
+  "contact_validation": {
+    "captured_unix": 1792965118.2770717,
+    "finished_receipt_sha256": "7e76b367bd496e584e4973ee0237140bd47ebeeb8a00a634592706ad8b0cc00c",
+    "registration_sha256": "c50c6b6ab9a9bae00002d62993a8fe25c34fc76018f7a7df6d6c12e9b282badd",
+    "rows": [
+      {
+        "controller": "direct",
+        "case_id": "passive_corner_train_0000",
+        "physical_substeps": 1100000,
+        "task": false,
+        "strict": false,
+        "reused_complete_physics": true,
+        "candidate_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v1/results/direct/passive_corner_train_0000",
+        "reference_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_cheq_cycle03_representatives_v1/direct/passive_corner_train_0000",
+        "complete_comparison_checks": {
+          "rollout.mjb": {
+            "sha256": "608c40b99231ff311de6c2dd969d21fea037b0f839ea47232e6ce61885aee889",
+            "exact": true
+          },
+          "actor_intervals.jsonl": {
+            "sha256": "d8a53c6488b91517607d66e5e424a6887d8b2da481896eaa13610fe515e87cf7",
+            "exact": true
+          },
+          "TERMINAL.json": {
+            "sha256": "185702077cb2d6ab528ca1c9c43c2356eef31de53fd4e2f7fa2698c96b66ad31",
+            "exact": true
+          },
+          "audit_substeps.npy": {
+            "sha256": "033c76264e5f5699b4ded862af752826b2a36917cdc33820694ffb53493fbdc3",
+            "exact": true
+          },
+          "rollout.npz": {
+            "arrays": [
+              "time",
+              "qpos",
+              "qvel",
+              "ctrl",
+              "mocap_pos",
+              "mocap_quat",
+              "hand",
+              "ball",
+              "ball_velocity",
+              "cup",
+              "stage",
+              "object_position",
+              "neuron_time",
+              "neuron_qpos",
+              "observation",
+              "applied_action",
+              "prior_contact_peak",
+              "prior_contact_impulse",
+              "task_ready_s",
+              "task_position_error_m",
+              "task_rotation_error_rad",
+              "task_speed_mps",
+              "task_carry_load"
+            ],
+            "exact": true
+          },
+          "audit_filter.npz": {
+            "arrays": [
+              "requested_action",
+              "dt",
+              "wbc_scale",
+              "yield_twist",
+              "clipped",
+              "amplitude_saturated",
+              "slew_limited"
+            ],
+            "exact": true
+          },
+          "audit_torque.npz": {
+            "arrays": [
+              "time",
+              "dt",
+              "bias",
+              "measured",
+              "command",
+              "previous",
+              "limits",
+              "applied",
+              "scale"
+            ],
+            "exact": true
+          },
+          "rollout.json": {
+            "exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order": true
+          }
+        },
+        "final_raw_file_hashes_reverified": true
+      },
+      {
+        "controller": "direct",
+        "case_id": "active_short_train_0000",
+        "physical_substeps": 1100000,
+        "task": false,
+        "strict": false,
+        "reused_complete_physics": false,
+        "candidate_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/results/direct/active_short_train_0000",
+        "reference_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_cheq_cycle03_representatives_v1/direct/active_short_train_0000",
+        "complete_comparison_checks": {
+          "rollout.mjb": {
+            "sha256": "221c7a3d18da6d59c8e6980be329d40bd4b718fe803c0e4c5ac138b98202fcd6",
+            "exact": true
+          },
+          "actor_intervals.jsonl": {
+            "sha256": "3786e85dab1410d402f72986b2056ce9d4a18e340535b4f9f4451acba9adf679",
+            "exact": true
+          },
+          "TERMINAL.json": {
+            "sha256": "df7d1571f209c71846c4637eccdac4bb595f2124f3fe3e4a06891bb68ef20993",
+            "exact": true
+          },
+          "audit_substeps.npy": {
+            "sha256": "583fda7aeaa122a5d7d6ae361f2614a280f33467beb0f3f7f4de41608d2144fa",
+            "exact": true
+          },
+          "rollout.npz": {
+            "arrays": [
+              "time",
+              "qpos",
+              "qvel",
+              "ctrl",
+              "mocap_pos",
+              "mocap_quat",
+              "hand",
+              "ball",
+              "ball_velocity",
+              "cup",
+              "stage",
+              "object_position",
+              "neuron_time",
+              "neuron_qpos",
+              "observation",
+              "applied_action",
+              "prior_contact_peak",
+              "prior_contact_impulse",
+              "task_ready_s",
+              "task_position_error_m",
+              "task_rotation_error_rad",
+              "task_speed_mps",
+              "task_carry_load"
+            ],
+            "exact": true
+          },
+          "audit_filter.npz": {
+            "arrays": [
+              "requested_action",
+              "dt",
+              "wbc_scale",
+              "yield_twist",
+              "clipped",
+              "amplitude_saturated",
+              "slew_limited"
+            ],
+            "exact": true
+          },
+          "audit_torque.npz": {
+            "arrays": [
+              "time",
+              "dt",
+              "bias",
+              "measured",
+              "command",
+              "previous",
+              "limits",
+              "applied",
+              "scale"
+            ],
+            "exact": true
+          },
+          "rollout.json": {
+            "exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order": true
+          }
+        },
+        "final_raw_file_hashes_reverified": true
+      },
+      {
+        "controller": "direct",
+        "case_id": "active_long_train_0000",
+        "physical_substeps": 1100000,
+        "task": false,
+        "strict": false,
+        "reused_complete_physics": false,
+        "candidate_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/results/direct/active_long_train_0000",
+        "reference_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_cheq_cycle03_representatives_v1/direct/active_long_train_0000",
+        "complete_comparison_checks": {
+          "rollout.mjb": {
+            "sha256": "757eff72e7d889482134ceb282b8b20abaf4418642e3875bc83ebcf7eae085b7",
+            "exact": true
+          },
+          "actor_intervals.jsonl": {
+            "sha256": "df3d95efbea8b81ac19241aa56fc8b05d8f102d7b76765532b5f74ad3e76e580",
+            "exact": true
+          },
+          "TERMINAL.json": {
+            "sha256": "941eed8a33eec0c0315b9d5169cb1bcbd0724af287fd4c625ae47184bddfe4a6",
+            "exact": true
+          },
+          "audit_substeps.npy": {
+            "sha256": "dc0dbc6d7a83fa172faa16e280ebb0c57dc31caf8a53c757a25d6e491e07444e",
+            "exact": true
+          },
+          "rollout.npz": {
+            "arrays": [
+              "time",
+              "qpos",
+              "qvel",
+              "ctrl",
+              "mocap_pos",
+              "mocap_quat",
+              "hand",
+              "ball",
+              "ball_velocity",
+              "cup",
+              "stage",
+              "object_position",
+              "neuron_time",
+              "neuron_qpos",
+              "observation",
+              "applied_action",
+              "prior_contact_peak",
+              "prior_contact_impulse",
+              "task_ready_s",
+              "task_position_error_m",
+              "task_rotation_error_rad",
+              "task_speed_mps",
+              "task_carry_load"
+            ],
+            "exact": true
+          },
+          "audit_filter.npz": {
+            "arrays": [
+              "requested_action",
+              "dt",
+              "wbc_scale",
+              "yield_twist",
+              "clipped",
+              "amplitude_saturated",
+              "slew_limited"
+            ],
+            "exact": true
+          },
+          "audit_torque.npz": {
+            "arrays": [
+              "time",
+              "dt",
+              "bias",
+              "measured",
+              "command",
+              "previous",
+              "limits",
+              "applied",
+              "scale"
+            ],
+            "exact": true
+          },
+          "rollout.json": {
+            "exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order": true
+          }
+        },
+        "final_raw_file_hashes_reverified": true
+      },
+      {
+        "controller": "impedance",
+        "case_id": "passive_corner_train_0000",
+        "physical_substeps": 1100000,
+        "task": false,
+        "strict": false,
+        "reused_complete_physics": false,
+        "candidate_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/results/impedance/passive_corner_train_0000",
+        "reference_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_cheq_cycle03_representatives_v1/impedance/passive_corner_train_0000",
+        "complete_comparison_checks": {
+          "rollout.mjb": {
+            "sha256": "608c40b99231ff311de6c2dd969d21fea037b0f839ea47232e6ce61885aee889",
+            "exact": true
+          },
+          "actor_intervals.jsonl": {
+            "sha256": "cf08ae54b1876b3e1707802130e29099ffec10d2620be80a924aeda6f420329d",
+            "exact": true
+          },
+          "TERMINAL.json": {
+            "sha256": "3f4f12abb5e92e7b69a964a4dc74f851444bc9e62a63e495516190e14e062281",
+            "exact": true
+          },
+          "audit_substeps.npy": {
+            "sha256": "d163b2235a556c284767dffda387973f846aacae336d0ca53b65496dfaa532a5",
+            "exact": true
+          },
+          "rollout.npz": {
+            "arrays": [
+              "time",
+              "qpos",
+              "qvel",
+              "ctrl",
+              "mocap_pos",
+              "mocap_quat",
+              "hand",
+              "ball",
+              "ball_velocity",
+              "cup",
+              "stage",
+              "object_position",
+              "neuron_time",
+              "neuron_qpos",
+              "observation",
+              "applied_action",
+              "prior_contact_peak",
+              "prior_contact_impulse",
+              "task_ready_s",
+              "task_position_error_m",
+              "task_rotation_error_rad",
+              "task_speed_mps",
+              "task_carry_load"
+            ],
+            "exact": true
+          },
+          "audit_filter.npz": {
+            "arrays": [
+              "requested_action",
+              "dt",
+              "wbc_scale",
+              "yield_twist",
+              "clipped",
+              "amplitude_saturated",
+              "slew_limited"
+            ],
+            "exact": true
+          },
+          "audit_torque.npz": {
+            "arrays": [
+              "time",
+              "dt",
+              "bias",
+              "measured",
+              "command",
+              "previous",
+              "limits",
+              "applied",
+              "scale"
+            ],
+            "exact": true
+          },
+          "rollout.json": {
+            "exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order": true
+          }
+        },
+        "final_raw_file_hashes_reverified": true
+      },
+      {
+        "controller": "impedance",
+        "case_id": "active_short_train_0000",
+        "physical_substeps": 1100000,
+        "task": true,
+        "strict": true,
+        "reused_complete_physics": false,
+        "candidate_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/results/impedance/active_short_train_0000",
+        "reference_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_cheq_cycle03_representatives_v1/impedance/active_short_train_0000",
+        "complete_comparison_checks": {
+          "rollout.mjb": {
+            "sha256": "221c7a3d18da6d59c8e6980be329d40bd4b718fe803c0e4c5ac138b98202fcd6",
+            "exact": true
+          },
+          "actor_intervals.jsonl": {
+            "sha256": "283f1678af86079e17cbc1c46a5fb414e6c20da36c66adb4be2170713a8b3698",
+            "exact": true
+          },
+          "TERMINAL.json": {
+            "sha256": "c48cce5e53f353da124287a772a25d4fbbe6f22e1696da9c43314c5f1fedd462",
+            "exact": true
+          },
+          "audit_substeps.npy": {
+            "sha256": "911c229a19157af1b9c65a364a686aa1ea7bbe1ad109446563ca02fe211b1d25",
+            "exact": true
+          },
+          "rollout.npz": {
+            "arrays": [
+              "time",
+              "qpos",
+              "qvel",
+              "ctrl",
+              "mocap_pos",
+              "mocap_quat",
+              "hand",
+              "ball",
+              "ball_velocity",
+              "cup",
+              "stage",
+              "object_position",
+              "neuron_time",
+              "neuron_qpos",
+              "observation",
+              "applied_action",
+              "prior_contact_peak",
+              "prior_contact_impulse",
+              "task_ready_s",
+              "task_position_error_m",
+              "task_rotation_error_rad",
+              "task_speed_mps",
+              "task_carry_load"
+            ],
+            "exact": true
+          },
+          "audit_filter.npz": {
+            "arrays": [
+              "requested_action",
+              "dt",
+              "wbc_scale",
+              "yield_twist",
+              "clipped",
+              "amplitude_saturated",
+              "slew_limited"
+            ],
+            "exact": true
+          },
+          "audit_torque.npz": {
+            "arrays": [
+              "time",
+              "dt",
+              "bias",
+              "measured",
+              "command",
+              "previous",
+              "limits",
+              "applied",
+              "scale"
+            ],
+            "exact": true
+          },
+          "rollout.json": {
+            "exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order": true
+          }
+        },
+        "final_raw_file_hashes_reverified": true
+      },
+      {
+        "controller": "impedance",
+        "case_id": "active_long_train_0000",
+        "physical_substeps": 1100000,
+        "task": true,
+        "strict": true,
+        "reused_complete_physics": false,
+        "candidate_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/results/impedance/active_long_train_0000",
+        "reference_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_cheq_cycle03_representatives_v1/impedance/active_long_train_0000",
+        "complete_comparison_checks": {
+          "rollout.mjb": {
+            "sha256": "757eff72e7d889482134ceb282b8b20abaf4418642e3875bc83ebcf7eae085b7",
+            "exact": true
+          },
+          "actor_intervals.jsonl": {
+            "sha256": "90c8a06f8827441cd267eff99ae1d230d3f1edaf7df8bb0fe764b4f3cded5f25",
+            "exact": true
+          },
+          "TERMINAL.json": {
+            "sha256": "8934f25b7325aeb380a3b20bb7b468e079e56a3970fb9588eef1714f9456b603",
+            "exact": true
+          },
+          "audit_substeps.npy": {
+            "sha256": "a622dd07f7f2a2425265f080472f78df3f96146f39d9355fc8117c15214ba636",
+            "exact": true
+          },
+          "rollout.npz": {
+            "arrays": [
+              "time",
+              "qpos",
+              "qvel",
+              "ctrl",
+              "mocap_pos",
+              "mocap_quat",
+              "hand",
+              "ball",
+              "ball_velocity",
+              "cup",
+              "stage",
+              "object_position",
+              "neuron_time",
+              "neuron_qpos",
+              "observation",
+              "applied_action",
+              "prior_contact_peak",
+              "prior_contact_impulse",
+              "task_ready_s",
+              "task_position_error_m",
+              "task_rotation_error_rad",
+              "task_speed_mps",
+              "task_carry_load"
+            ],
+            "exact": true
+          },
+          "audit_filter.npz": {
+            "arrays": [
+              "requested_action",
+              "dt",
+              "wbc_scale",
+              "yield_twist",
+              "clipped",
+              "amplitude_saturated",
+              "slew_limited"
+            ],
+            "exact": true
+          },
+          "audit_torque.npz": {
+            "arrays": [
+              "time",
+              "dt",
+              "bias",
+              "measured",
+              "command",
+              "previous",
+              "limits",
+              "applied",
+              "scale"
+            ],
+            "exact": true
+          },
+          "rollout.json": {
+            "exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order": true
+          }
+        },
+        "final_raw_file_hashes_reverified": true
+      },
+      {
+        "controller": "admittance",
+        "case_id": "passive_corner_train_0000",
+        "physical_substeps": 1100000,
+        "task": false,
+        "strict": false,
+        "reused_complete_physics": false,
+        "candidate_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/results/admittance/passive_corner_train_0000",
+        "reference_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_cheq_cycle03_representatives_v1/admittance/passive_corner_train_0000",
+        "complete_comparison_checks": {
+          "rollout.mjb": {
+            "sha256": "608c40b99231ff311de6c2dd969d21fea037b0f839ea47232e6ce61885aee889",
+            "exact": true
+          },
+          "actor_intervals.jsonl": {
+            "sha256": "82904fdb1960ffacb4e5640edffda2db74e60860bb2fb5b22016b1045788980c",
+            "exact": true
+          },
+          "TERMINAL.json": {
+            "sha256": "60197b20b3fad35c8adfbd62a501fb10a70ebafb9da6846b25e13ef18cca5a7a",
+            "exact": true
+          },
+          "audit_substeps.npy": {
+            "sha256": "a7ab30755dab078ab9fb259ff56a199595d26c708698174f1a8de70a3c163030",
+            "exact": true
+          },
+          "rollout.npz": {
+            "arrays": [
+              "time",
+              "qpos",
+              "qvel",
+              "ctrl",
+              "mocap_pos",
+              "mocap_quat",
+              "hand",
+              "ball",
+              "ball_velocity",
+              "cup",
+              "stage",
+              "object_position",
+              "neuron_time",
+              "neuron_qpos",
+              "observation",
+              "applied_action",
+              "prior_contact_peak",
+              "prior_contact_impulse",
+              "task_ready_s",
+              "task_position_error_m",
+              "task_rotation_error_rad",
+              "task_speed_mps",
+              "task_carry_load"
+            ],
+            "exact": true
+          },
+          "audit_filter.npz": {
+            "arrays": [
+              "requested_action",
+              "dt",
+              "wbc_scale",
+              "yield_twist",
+              "clipped",
+              "amplitude_saturated",
+              "slew_limited"
+            ],
+            "exact": true
+          },
+          "audit_torque.npz": {
+            "arrays": [
+              "time",
+              "dt",
+              "bias",
+              "measured",
+              "command",
+              "previous",
+              "limits",
+              "applied",
+              "scale"
+            ],
+            "exact": true
+          },
+          "rollout.json": {
+            "exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order": true
+          }
+        },
+        "final_raw_file_hashes_reverified": true
+      },
+      {
+        "controller": "admittance",
+        "case_id": "active_short_train_0000",
+        "physical_substeps": 1100000,
+        "task": false,
+        "strict": false,
+        "reused_complete_physics": false,
+        "candidate_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/results/admittance/active_short_train_0000",
+        "reference_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_cheq_cycle03_representatives_v1/admittance/active_short_train_0000",
+        "complete_comparison_checks": {
+          "rollout.mjb": {
+            "sha256": "221c7a3d18da6d59c8e6980be329d40bd4b718fe803c0e4c5ac138b98202fcd6",
+            "exact": true
+          },
+          "actor_intervals.jsonl": {
+            "sha256": "ca14b5a514610e3b51401602d1e12d4a3748b891b5d7416abe3bd140b1dee5cb",
+            "exact": true
+          },
+          "TERMINAL.json": {
+            "sha256": "33f02a174a274ed83ba61591004fa02fd9271d144f246a8a010a918292523137",
+            "exact": true
+          },
+          "audit_substeps.npy": {
+            "sha256": "a10bf2e2626508ff70056192289708fe45a89d1e48b9ad118e473572563d3700",
+            "exact": true
+          },
+          "rollout.npz": {
+            "arrays": [
+              "time",
+              "qpos",
+              "qvel",
+              "ctrl",
+              "mocap_pos",
+              "mocap_quat",
+              "hand",
+              "ball",
+              "ball_velocity",
+              "cup",
+              "stage",
+              "object_position",
+              "neuron_time",
+              "neuron_qpos",
+              "observation",
+              "applied_action",
+              "prior_contact_peak",
+              "prior_contact_impulse",
+              "task_ready_s",
+              "task_position_error_m",
+              "task_rotation_error_rad",
+              "task_speed_mps",
+              "task_carry_load"
+            ],
+            "exact": true
+          },
+          "audit_filter.npz": {
+            "arrays": [
+              "requested_action",
+              "dt",
+              "wbc_scale",
+              "yield_twist",
+              "clipped",
+              "amplitude_saturated",
+              "slew_limited"
+            ],
+            "exact": true
+          },
+          "audit_torque.npz": {
+            "arrays": [
+              "time",
+              "dt",
+              "bias",
+              "measured",
+              "command",
+              "previous",
+              "limits",
+              "applied",
+              "scale"
+            ],
+            "exact": true
+          },
+          "rollout.json": {
+            "exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order": true
+          }
+        },
+        "final_raw_file_hashes_reverified": true
+      },
+      {
+        "controller": "admittance",
+        "case_id": "active_long_train_0000",
+        "physical_substeps": 1100000,
+        "task": true,
+        "strict": true,
+        "reused_complete_physics": false,
+        "candidate_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/results/admittance/active_long_train_0000",
+        "reference_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_cheq_cycle03_representatives_v1/admittance/active_long_train_0000",
+        "complete_comparison_checks": {
+          "rollout.mjb": {
+            "sha256": "757eff72e7d889482134ceb282b8b20abaf4418642e3875bc83ebcf7eae085b7",
+            "exact": true
+          },
+          "actor_intervals.jsonl": {
+            "sha256": "535d81a6125394b589ac6fe32a14cb0461acbcce200d8caa2a43734b5f4073d6",
+            "exact": true
+          },
+          "TERMINAL.json": {
+            "sha256": "9d1cfdb798fb2a7bebc23689e4fd5015d8d2a58588afd69032cf2ff7991f9b0b",
+            "exact": true
+          },
+          "audit_substeps.npy": {
+            "sha256": "405563eb5faed7fbf1c9b6c4e4740ff9570bd63038b00d9bfd88d16a27955abb",
+            "exact": true
+          },
+          "rollout.npz": {
+            "arrays": [
+              "time",
+              "qpos",
+              "qvel",
+              "ctrl",
+              "mocap_pos",
+              "mocap_quat",
+              "hand",
+              "ball",
+              "ball_velocity",
+              "cup",
+              "stage",
+              "object_position",
+              "neuron_time",
+              "neuron_qpos",
+              "observation",
+              "applied_action",
+              "prior_contact_peak",
+              "prior_contact_impulse",
+              "task_ready_s",
+              "task_position_error_m",
+              "task_rotation_error_rad",
+              "task_speed_mps",
+              "task_carry_load"
+            ],
+            "exact": true
+          },
+          "audit_filter.npz": {
+            "arrays": [
+              "requested_action",
+              "dt",
+              "wbc_scale",
+              "yield_twist",
+              "clipped",
+              "amplitude_saturated",
+              "slew_limited"
+            ],
+            "exact": true
+          },
+          "audit_torque.npz": {
+            "arrays": [
+              "time",
+              "dt",
+              "bias",
+              "measured",
+              "command",
+              "previous",
+              "limits",
+              "applied",
+              "scale"
+            ],
+            "exact": true
+          },
+          "rollout.json": {
+            "exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order": true
+          }
+        },
+        "final_raw_file_hashes_reverified": true
+      },
+      {
+        "controller": "vmc",
+        "case_id": "passive_corner_train_0000",
+        "physical_substeps": 1100000,
+        "task": false,
+        "strict": false,
+        "reused_complete_physics": false,
+        "candidate_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/results/vmc/passive_corner_train_0000",
+        "reference_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_cheq_cycle03_representatives_v1/vmc/passive_corner_train_0000",
+        "complete_comparison_checks": {
+          "rollout.mjb": {
+            "sha256": "608c40b99231ff311de6c2dd969d21fea037b0f839ea47232e6ce61885aee889",
+            "exact": true
+          },
+          "actor_intervals.jsonl": {
+            "sha256": "de0d3a2e9eb0efb7a7afcec26dac091a0afda7b2655058131ae0742e57ec3f84",
+            "exact": true
+          },
+          "TERMINAL.json": {
+            "sha256": "c281cec320ad56f688bd6a65bb2eaaee98ab0a157315fcae4c476eecf2cb9dfb",
+            "exact": true
+          },
+          "audit_substeps.npy": {
+            "sha256": "b6b40d918e0243abb02e49924ec27d53c9dfb8dc4c591ba33fb7bd1084fc132a",
+            "exact": true
+          },
+          "rollout.npz": {
+            "arrays": [
+              "time",
+              "qpos",
+              "qvel",
+              "ctrl",
+              "mocap_pos",
+              "mocap_quat",
+              "hand",
+              "ball",
+              "ball_velocity",
+              "cup",
+              "stage",
+              "object_position",
+              "neuron_time",
+              "neuron_qpos",
+              "observation",
+              "applied_action",
+              "prior_contact_peak",
+              "prior_contact_impulse",
+              "task_ready_s",
+              "task_position_error_m",
+              "task_rotation_error_rad",
+              "task_speed_mps",
+              "task_carry_load"
+            ],
+            "exact": true
+          },
+          "audit_filter.npz": {
+            "arrays": [
+              "requested_action",
+              "dt",
+              "wbc_scale",
+              "yield_twist",
+              "clipped",
+              "amplitude_saturated",
+              "slew_limited"
+            ],
+            "exact": true
+          },
+          "audit_torque.npz": {
+            "arrays": [
+              "time",
+              "dt",
+              "bias",
+              "measured",
+              "command",
+              "previous",
+              "limits",
+              "applied",
+              "scale"
+            ],
+            "exact": true
+          },
+          "rollout.json": {
+            "exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order": true
+          }
+        },
+        "final_raw_file_hashes_reverified": true
+      },
+      {
+        "controller": "vmc",
+        "case_id": "active_short_train_0000",
+        "physical_substeps": 1100000,
+        "task": true,
+        "strict": true,
+        "reused_complete_physics": false,
+        "candidate_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/results/vmc/active_short_train_0000",
+        "reference_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_cheq_cycle03_representatives_v1/vmc/active_short_train_0000",
+        "complete_comparison_checks": {
+          "rollout.mjb": {
+            "sha256": "221c7a3d18da6d59c8e6980be329d40bd4b718fe803c0e4c5ac138b98202fcd6",
+            "exact": true
+          },
+          "actor_intervals.jsonl": {
+            "sha256": "1d21e2878e3f65d301a001f39ee259a6d9cb13687270d380252b3d8a535a373e",
+            "exact": true
+          },
+          "TERMINAL.json": {
+            "sha256": "4ecdbd72c19d3adcb392c3c86f4e7e4d6c7fdc6da179bc7a29aaa263ac2ebe95",
+            "exact": true
+          },
+          "audit_substeps.npy": {
+            "sha256": "5b463235fee7664859735aa2f92a87c41ef4910022a7004029bb048bb4196d0a",
+            "exact": true
+          },
+          "rollout.npz": {
+            "arrays": [
+              "time",
+              "qpos",
+              "qvel",
+              "ctrl",
+              "mocap_pos",
+              "mocap_quat",
+              "hand",
+              "ball",
+              "ball_velocity",
+              "cup",
+              "stage",
+              "object_position",
+              "neuron_time",
+              "neuron_qpos",
+              "observation",
+              "applied_action",
+              "prior_contact_peak",
+              "prior_contact_impulse",
+              "task_ready_s",
+              "task_position_error_m",
+              "task_rotation_error_rad",
+              "task_speed_mps",
+              "task_carry_load"
+            ],
+            "exact": true
+          },
+          "audit_filter.npz": {
+            "arrays": [
+              "requested_action",
+              "dt",
+              "wbc_scale",
+              "yield_twist",
+              "clipped",
+              "amplitude_saturated",
+              "slew_limited"
+            ],
+            "exact": true
+          },
+          "audit_torque.npz": {
+            "arrays": [
+              "time",
+              "dt",
+              "bias",
+              "measured",
+              "command",
+              "previous",
+              "limits",
+              "applied",
+              "scale"
+            ],
+            "exact": true
+          },
+          "rollout.json": {
+            "exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order": true
+          }
+        },
+        "final_raw_file_hashes_reverified": true
+      },
+      {
+        "controller": "vmc",
+        "case_id": "active_long_train_0000",
+        "physical_substeps": 1100000,
+        "task": true,
+        "strict": true,
+        "reused_complete_physics": false,
+        "candidate_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/results/vmc/active_long_train_0000",
+        "reference_episode": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_cheq_cycle03_representatives_v1/vmc/active_long_train_0000",
+        "complete_comparison_checks": {
+          "rollout.mjb": {
+            "sha256": "757eff72e7d889482134ceb282b8b20abaf4418642e3875bc83ebcf7eae085b7",
+            "exact": true
+          },
+          "actor_intervals.jsonl": {
+            "sha256": "d97c0508dcf51cbaabe4fac648037cfe329e84c32d37616b87132e89e333229b",
+            "exact": true
+          },
+          "TERMINAL.json": {
+            "sha256": "1bb3f66b682b01955f364a29c39b2b1badcbd84c1515fc58f7045c41a12e3698",
+            "exact": true
+          },
+          "audit_substeps.npy": {
+            "sha256": "ea70c2c104d21bf0c2be9c600fb65743ed3790470cd3ce2ecef18d9871b233ad",
+            "exact": true
+          },
+          "rollout.npz": {
+            "arrays": [
+              "time",
+              "qpos",
+              "qvel",
+              "ctrl",
+              "mocap_pos",
+              "mocap_quat",
+              "hand",
+              "ball",
+              "ball_velocity",
+              "cup",
+              "stage",
+              "object_position",
+              "neuron_time",
+              "neuron_qpos",
+              "observation",
+              "applied_action",
+              "prior_contact_peak",
+              "prior_contact_impulse",
+              "task_ready_s",
+              "task_position_error_m",
+              "task_rotation_error_rad",
+              "task_speed_mps",
+              "task_carry_load"
+            ],
+            "exact": true
+          },
+          "audit_filter.npz": {
+            "arrays": [
+              "requested_action",
+              "dt",
+              "wbc_scale",
+              "yield_twist",
+              "clipped",
+              "amplitude_saturated",
+              "slew_limited"
+            ],
+            "exact": true
+          },
+          "audit_torque.npz": {
+            "arrays": [
+              "time",
+              "dt",
+              "bias",
+              "measured",
+              "command",
+              "previous",
+              "limits",
+              "applied",
+              "scale"
+            ],
+            "exact": true
+          },
+          "rollout.json": {
+            "exact_except_registered_source_hashes_output_prefix_and_robot_part_set_order": true
+          }
+        },
+        "final_raw_file_hashes_reverified": true
+      }
+    ],
+    "complete_episodes": 12,
+    "compared_physical_substeps": 13200000,
+    "new_physics_episodes": 11,
+    "reused_complete_physics_episodes": 1,
+    "new_physics_substeps": 12100000,
+    "protected_manifests_equal_live14": true,
+    "original_changed_fields_equal_live14": true,
+    "candidate_runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/contact_candidate_v2",
+    "candidate_runtime_sha256": "ca9ad25c40cf1385117ae3fc369478e95679e09174006bfc032978ce3f675b4a",
+    "optimizer_updates": 0,
+    "deployed": false,
+    "limitation": "Twelve finite archived action trajectories. Array equivalence checked by original completed validator; raw byte-equal inputs independently rehashed here. No general equivalence, speedup, convergence or new policy-performance claim."
+  },
+  "combined_runtime": {
+    "captured_unix": 1792965180.5345588,
+    "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train16",
+    "runtime_sha256": "868ef83cbbe752e31dea8a2653e9cb55a2b3d0da49da7633f6cc436a4115dd9c",
+    "parent_runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train15",
+    "parent_runtime_sha256": "868f5987d7cc886a23c59b1a2636601fda298c6da7ee2b441f8de9a47d17db35",
+    "contact_review": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/contact_candidate_validation_v2/COMPLETED_REVIEW.json",
+    "contact_review_sha256": "940a1c202cba069f545b412969f665e7a832842d221239675cba74981cef3a04",
+    "adam_resume_review": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/adam_resume_preparation_v1/RESULT.json",
+    "adam_resume_review_sha256": "d0b709e60b0adc0dc5ee55f160300e5f750bd835cea2fe625a7d43eeaaf7d69b",
+    "source_files_verified": 780,
+    "changed_from_parent": [
+      "scripts/audited_velocity_env.py",
+      "scripts/validate_office_apparatus_v5_20260917.py",
+      "tools/published_compliance_episode_20261025.py"
+    ],
+    "source_hashes": {
+      "scripts/audited_velocity_env.py": "abaa095d17dd1c2967e9c17e48d39b6b77049cb75e910deeb2842f907effcfbe",
+      "scripts/validate_office_apparatus_v5_20260917.py": "b0131e9ee1ac063d0368bed704fba9dbe4e25d380bcbef09133e1b9ccb26e3f4",
+      "tools/published_compliance_episode_20261025.py": "fde03ac0f1be6af9aab829777ba791683a7829cb37a3d8d7bb9f11921e1c8a3b"
+    },
+    "unchanged_learner_trainer_bellman_vs15": true,
+    "exact_contact_files_vs_validated_candidate": true,
+    "protected_manifests_equal_live14": true,
+    "new_physics": 0,
+    "optimizer_updates": 0,
+    "online_deployed": false,
+    "limitation": "Combined runtime assembled from exact independently validated source components; not an online throughput or convergence claim."
+  },
+  "gpu": {
+    "started_unix": 1792964529.3428094,
+    "ended_unix": 1792964606.528151,
+    "elapsed_s": 77.18534183502197,
+    "mean_gpu_utilization": [
+      35.13333333333333,
+      39.4,
+      30.066666666666666,
+      33.96666666666667
+    ],
+    "min_gpu_utilization": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "before": {
+      "bellman_minimum_online_seed20261025_v1": {
+        "direct": {
+          "cycle": 10,
+          "steps": 519828,
+          "completed_conditions": 18,
+          "running": 9,
+          "pending": 3,
+          "updates": 881268,
+          "wall_time_utc": 1792964529.2850084
+        },
+        "impedance": {
+          "cycle": 10,
+          "steps": 520939,
+          "completed_conditions": 18,
+          "running": 9,
+          "pending": 3,
+          "updates": 880848,
+          "wall_time_utc": 1792964529.3015983
+        },
+        "admittance": {
+          "cycle": 10,
+          "steps": 521351,
+          "completed_conditions": 18,
+          "running": 9,
+          "pending": 3,
+          "updates": 881562,
+          "wall_time_utc": 1792964529.2880447
+        },
+        "vmc": {
+          "cycle": 10,
+          "steps": 521743,
+          "completed_conditions": 17,
+          "running": 9,
+          "pending": 4,
+          "updates": 880934,
+          "wall_time_utc": 1792964529.310488
+        }
+      },
+      "sac_performance_seed20261025_v2": {
+        "direct": {
+          "cycle": 5,
+          "steps": 260959,
+          "completed_conditions": 26,
+          "running": 2,
+          "pending": 2,
+          "updates": 475434,
+          "wall_time_utc": 1792964529.3183177
+        },
+        "impedance": {
+          "cycle": 3,
+          "steps": 176175,
+          "completed_conditions": 21,
+          "running": 2,
+          "pending": 7,
+          "updates": 307794,
+          "wall_time_utc": 1792964529.1497016
+        },
+        "admittance": {
+          "cycle": 3,
+          "steps": 158929,
+          "completed_conditions": 10,
+          "running": 2,
+          "pending": 18,
+          "updates": 276828,
+          "wall_time_utc": 1792964529.0688794
+        },
+        "vmc": {
+          "cycle": 3,
+          "steps": 163082,
+          "completed_conditions": 12,
+          "running": 2,
+          "pending": 16,
+          "updates": 284146,
+          "wall_time_utc": 1792964529.2235737
+        }
+      }
+    },
+    "after": {
+      "bellman_minimum_online_seed20261025_v1": {
+        "direct": {
+          "cycle": 10,
+          "steps": 521014,
+          "completed_conditions": 18,
+          "running": 9,
+          "pending": 3,
+          "updates": 883640,
+          "wall_time_utc": 1792964606.4353483
+        },
+        "impedance": {
+          "cycle": 10,
+          "steps": 522560,
+          "completed_conditions": 18,
+          "running": 9,
+          "pending": 3,
+          "updates": 884090,
+          "wall_time_utc": 1792964606.479942
+        },
+        "admittance": {
+          "cycle": 10,
+          "steps": 522640,
+          "completed_conditions": 18,
+          "running": 9,
+          "pending": 3,
+          "updates": 884140,
+          "wall_time_utc": 1792964606.5117345
+        },
+        "vmc": {
+          "cycle": 10,
+          "steps": 522975,
+          "completed_conditions": 18,
+          "running": 9,
+          "pending": 3,
+          "updates": 883398,
+          "wall_time_utc": 1792964606.508678
+        }
+      },
+      "sac_performance_seed20261025_v2": {
+        "direct": {
+          "cycle": 5,
+          "steps": 261532,
+          "completed_conditions": 26,
+          "running": 2,
+          "pending": 2,
+          "updates": 476580,
+          "wall_time_utc": 1792964606.5106459
+        },
+        "impedance": {
+          "cycle": 3,
+          "steps": 176519,
+          "completed_conditions": 22,
+          "running": 2,
+          "pending": 6,
+          "updates": 308482,
+          "wall_time_utc": 1792964606.366248
+        },
+        "admittance": {
+          "cycle": 3,
+          "steps": 159229,
+          "completed_conditions": 10,
+          "running": 2,
+          "pending": 18,
+          "updates": 277428,
+          "wall_time_utc": 1792964606.2944243
+        },
+        "vmc": {
+          "cycle": 3,
+          "steps": 163611,
+          "completed_conditions": 12,
+          "running": 2,
+          "pending": 16,
+          "updates": 285204,
+          "wall_time_utc": 1792964606.4795916
+        }
+      }
+    },
+    "verified_process_start_ticks": {
+      "1325445": "555182829",
+      "1328516": "555183538",
+      "1333006": "555184210",
+      "1338945": "555184940",
+      "1010728": "553799738",
+      "1557140": "553878945",
+      "2758791": "554049849",
+      "2397784": "553997141"
+    },
+    "source_sha256": "8db4dfdf63573da8fd1e3b83489b3f96f1e62bd19243bd89ca5f464f543bd3e9",
+    "auxiliary_learning_in_window": false,
+    "scope": "Current formal CHEQ14 and SAC09 plus registered fixed VMC9 GPU inference; sampling only, no new optimizer updates or physics. Shared-load snapshot, not candidate performance validation."
+  },
+  "training_progress": {
+    "bellman_minimum_online_seed20261025_v1": {
+      "direct": {
+        "cycle": 10,
+        "steps": 530954,
+        "completed_conditions": 27,
+        "running": 3,
+        "pending": 0,
+        "updates": 903520,
+        "wall_time_utc": 1792965261.3630097
+      },
+      "impedance": {
+        "cycle": 10,
+        "steps": 532509,
+        "completed_conditions": 27,
+        "running": 3,
+        "pending": 0,
+        "updates": 903988,
+        "wall_time_utc": 1792965261.5080614
+      },
+      "admittance": {
+        "cycle": 10,
+        "steps": 532396,
+        "completed_conditions": 27,
+        "running": 3,
+        "pending": 0,
+        "updates": 903652,
+        "wall_time_utc": 1792965261.3859873
+      },
+      "vmc": {
+        "cycle": 10,
+        "steps": 532899,
+        "completed_conditions": 27,
+        "running": 3,
+        "pending": 0,
+        "updates": 903246,
+        "wall_time_utc": 1792965261.4709635
+      }
+    },
+    "sac_performance_seed20261025_v2": {
+      "direct": {
+        "cycle": 6,
+        "steps": 266285,
+        "completed_conditions": 0,
+        "running": 2,
+        "pending": 28,
+        "updates": 486086,
+        "wall_time_utc": 1792965261.4010386
+      },
+      "impedance": {
+        "cycle": 3,
+        "steps": 179732,
+        "completed_conditions": 24,
+        "running": 2,
+        "pending": 4,
+        "updates": 314908,
+        "wall_time_utc": 1792965261.420167
+      },
+      "admittance": {
+        "cycle": 3,
+        "steps": 161902,
+        "completed_conditions": 12,
+        "running": 2,
+        "pending": 16,
+        "updates": 282774,
+        "wall_time_utc": 1792965261.445831
+      },
+      "vmc": {
+        "cycle": 3,
+        "steps": 167225,
+        "completed_conditions": 16,
+        "running": 2,
+        "pending": 12,
+        "updates": 292432,
+        "wall_time_utc": 1792965261.1727328
+      }
+    }
+  },
+  "software_tests_passed": 4,
+  "convergence_claim": false,
+  "formal_training_changed": false,
+  "final_spt_reference_selected": false
+}
