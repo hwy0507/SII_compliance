@@ -1,6 +1,6 @@
-"""Finite actor-learning-rate sensitivity from matched complete learner states.
+"""Finite actor/critic learning-rate sensitivity from matched learner states.
 
-Only actor Adam learning rate changes (1 or0.1 times the registered parent).
+Only the registered actor or critic Adam learning rate changes (1 or0.1).
 Actor/critic/alpha weights, other optimizers, replay/masks, RNG and objective
 start identical. No online policy-quality claim or auxiliary weight promotion.
 """
@@ -27,18 +27,29 @@ def write(path,value):
     tmp=path.with_suffix('.tmp');tmp.write_text(json.dumps(value,indent=2,allow_nan=False)+'\n');tmp.replace(path)
 
 
-def set_actor_learning_rate(learner, factor):
+def set_learning_rate(learner, factor, optimizer):
+    if optimizer not in ('actor', 'critic'):
+        raise ValueError('Expected actor or critic optimizer')
     if not np.isfinite(factor) or factor<=0:
         raise ValueError('Positive finite learning-rate factor required')
     rates=[]
-    for group in learner.actor_optimizer.param_groups:
+    selected = learner.actor_optimizer if optimizer == 'actor' else learner.q_optimizer
+    for group in selected.param_groups:
         before=group['lr'];group['lr']=before*factor
         rates.append(dict(before=before,after=group['lr']))
     return rates
 
 
+def set_actor_learning_rate(learner, factor):
+    return set_learning_rate(learner, factor, 'actor')
+
+
 def main(args):
     p=json.loads(args.registration.read_text())
+    optimizer = p.get('optimizer', 'actor')
+    expected_cycle = p.get('expected_cycle', 6)
+    if optimizer not in ('actor', 'critic'):
+        raise ValueError('Unregistered optimizer selection')
     for name,expected in p['source_hashes'].items():
         if sha(Path(__file__).with_name(name))!=expected:raise ValueError('Frozen probe source drift')
     os.sched_setaffinity(0,{p['cpus'][args.controller]});os.nice(10);torch.set_num_threads(1)
@@ -57,9 +68,9 @@ def main(args):
     item=p['checkpoints'][args.controller]
     if sha(item['path'])!=item['sha256']:raise ValueError('Immutable checkpoint drift')
     ck=torch.load(item['path'],map_location='cpu',weights_only=False)
-    if (ck['controller']!=args.controller or ck['cycle']!=6
+    if (ck['controller']!=args.controller or ck['cycle']!=expected_cycle
             or ck['boundary']!='complete_condition_cycle' or ck['learner']['algorithm']!='cheq'):
-        raise ValueError('Expected registered complete CHEQ cycle6')
+        raise ValueError('Expected registered complete CHEQ cycle'+str(expected_cycle))
     state,arrays=ck['learner'],ck['replay']['arrays'];parent_digest=digest(state);replay_digest=digest(ck['replay'])
     learner=PublishedLearner(root,dimension=arrays['actions'].shape[1],direct=args.controller=='direct',
         seed=p['seed'],device=args.device,algorithm='cheq',critic_layer_norm=state['critic_layer_norm'],
@@ -71,7 +82,7 @@ def main(args):
     ordinary=np.flatnonzero(arrays['dones'][:,0]==0)
     sample=np.random.default_rng(p['seed']).choice(ordinary,p['diagnostic_samples'],replace=False)
     factors=p['factor_order'][args.controller]
-    if len(factors)!=2 or set(factors)!={1.,.1}:raise ValueError('Expected registered actor learning-rate factors')
+    if len(factors)!=2 or set(factors)!={1.,.1}:raise ValueError('Expected registered learning-rate factors')
     args.output.mkdir(exist_ok=False)
 
     def diagnose():
@@ -108,8 +119,11 @@ def main(args):
         if initial_reference is None:initial_reference=restored
         elif restored!=initial_reference:raise AssertionError('Arms have unequal restored full states')
         replay.rng=np.random.default_rng(p['seed'])
-        rates=set_actor_learning_rate(learner.learner,factor)
-        entry=dict(factor=factor,actor_learning_rates=rates,initial_full_state_sha256=restored,initial=diagnose(),curve=[])
+        rates=set_learning_rate(learner.learner,factor,optimizer)
+        entry=dict(factor=factor,optimizer=optimizer,learning_rates=rates,
+                   initial_full_state_sha256=restored,initial=diagnose(),curve=[])
+        if optimizer == 'actor':
+            entry['actor_learning_rates'] = rates
         start=time.time()
         for update in range(p['updates_per_arm']):
             metrics=learner.update(cache.sample(p['batch_size']))
@@ -121,20 +135,20 @@ def main(args):
             raise AssertionError('Immutable parent or original replay changed')
         # Cache sampling/scaling must not mutate the authoritative CPU replay.
         retained=replay.state_dict();retained['rng']=copy.deepcopy(ck['replay']['rng'])
-        if digest(retained)!=replay_digest:raise AssertionError('Reward study modified stored replay')
+        if digest(retained)!=replay_digest:raise AssertionError('Learning-rate study modified stored replay')
         entry.update(final=diagnose(),elapsed_s=time.time()-start,
             sampling_rng_sha256=digest(replay.rng.bit_generator.state),parent_unchanged=True)
         results.append(entry);write(args.output/f'factor_{factor:g}.json',entry)
     if results[0]['sampling_rng_sha256']!=results[1]['sampling_rng_sha256']:
         raise AssertionError('Unequal replay sampling streams')
     write(args.output/'FINISHED.json',dict(controller=args.controller,results=results,
-        checkpoint_sha256=item['sha256'],registration_sha256=sha(args.registration),
+        checkpoint_sha256=item['sha256'],registration_sha256=sha(args.registration),optimizer=optimizer,
         updates=2*p['updates_per_arm'],new_physics=0,auxiliary_weights_saved=False,formal_training_changed=False,
         fresh_entire_learner=False,parent_unchanged=True,finished_unix=time.time(),
         limitations=['Frozen historical behavior/context; no online success or safety conclusion.',
-            'Same complete cycle6 state/RNG and sampling; only actor Adam learning rate differs.',
+            f'Same complete cycle{expected_cycle} state/RNG and sampling; only {optimizer} Adam learning rate differs.',
             'One parent seed per interface and finite update budget; no convergence or transfer claim.',
-            'A slower actor may delay useful learning as well as reduce harmful feedback.',
+            'Slower optimization may delay useful learning as well as reduce harmful feedback.',
             'CHEQ absolute uncertainty thresholds unchanged; implied mixing is diagnostic only.']))
 
 

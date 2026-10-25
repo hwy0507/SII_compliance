@@ -1,5 +1,18 @@
 # 更新日志
 
+## 2026-10-25 — Direct完成原第9轮并启动固定终点独立评估
+
+- 最新Impedance也完成9/492221并正常退出，Task/Strict18/18（各30）、被动/短/长0/10/8，reward−0.49960；ck及30 terminal/model收据核验。原audit已有Direct/Impedance，尚等Admittance/VMC。证据已补入PUBLISHED_DIRECT_CYCLE09_AND_EVALUATION_20261025.json。
+
+- 补充有限criticLR对照已完成：critic_lr_direct_cycle09_v1，Direct9同完整state/moments/RNG/replay，criticLR3e-4/3e-5各5000更新，actorLR3e-5/alphaLR3e-4不变；副本内actor/alpha仍学习。3测试、实际状态/采样hash及父replay不变验证通过，3798731退出，0physics/无辅助权重保存导入，图已检查。末Q1335.07/1311.73、terminal MAE375.82/307.13，但两组Q均增、上界超限不一致，不部署为修复、不推广四接口。证据PUBLISHED_CRITIC_LR_DIRECT_PROBE_20261025.json。
+- Direct结束后、辅助probe之前60样本GPU窗口均值8.25/22.75/30.50/40.27%，各卡min0，四卡50%仍未实现。窗口含正式learner及固定推理，不能与辅助GPU活动混为稳态吞吐。
+
+- fetch main a52dfba / baseline f6e8f8c未前进。Direct原两轮actorLR阶段正常退出：9/491694步，Task12/30 Strict10/30、分被动/短期/长期6/4/0；相对8 Strict13→10，gain6/loss9，四个此前长期成功全丢。短期0100/0600 Task真但physical/Strict假，保留失败。
+- checkpoint sha a9b11de191584fbde3851e0235630f9e5a4338ca607fe8a0119b480bf52f309c及全部30条件terminal/model收据核验；reward−15.174827（8为−10.163688），82500新更新首/末1000 critic loss230.751→4194.208、logged nextQ526.481→1224.275。不称收敛；其余三路原9与原auditor/reviewer继续，无新训练/干预。
+- 使用Direct释放的CPU0启动interim_cheq_cycle09_direct_v1，原冻结评估器source12/evaluation_audit_v6，GPU0推理，同三预选0000条件、全55s及物理/filter/torque审计。coordinator3574939/evaluator3575318（行动前重验）；启动checkpoint/MJB/dt核验，首回合已347次完整动作，尚无完整结果。其余三接口同9同条件已前瞻登记，待完整归档后派发，不按结果选择、不重复Direct。
+- 原cycle7矩阵继续CPU54，不替换；contact candidate v2已3/12完整精确通过（Direct三类各110万子步），原coordinator2530701转Impedance被动child3472390，候选未部署。
+- 证据docs/PUBLISHED_DIRECT_CYCLE09_AND_EVALUATION_20261025.json；集群产物/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/interim_cheq_cycle09_direct_v1，Direct初审在actor_lr_online_seed20261025_v1/DIRECT_CYCLE09_FIRST_REVIEW.json。最终收敛/SPT/指定ESN对比未完成，source13仍只准备。
+
 ## 2026-10-25 — 冻结Impedance独立评估与接触奖励排序差异
 
 - fetch main a52dfba4486af8d263d5cd0a976c3102482ff249 / baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d未前进。原固定cycle7矩阵完成Impedance三条件，已6/12并转Admittance evaluator2887423（行动前重验）。

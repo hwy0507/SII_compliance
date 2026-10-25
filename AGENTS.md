@@ -7,6 +7,25 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新Impedance也完成原9/492221并正常退出，旧923788勿重启；Task/Strict18/18（各30）、被动/短/长0/10/8，reward−0.49960。ck sha4851052f…及30条件terminal/model已核验。原audit已收Direct/Impedance，尚等Admittance/VMC，不把Direct回落推广四路。
+
+最新Direct9有限criticLR诊断完成、3798731退出：同完整state/moments/RNG/replay，criticLR
+3e-4/3e-5各5000辅助更新；actorLR3e-5/alphaLR3e-4不变但actor/alpha仍在副本学习。3测试及
+实际恢复/采样hash、父replay不变验证通过，0physics/无权重保存导入，图已检查。Q1335.07/1311.73、
+terminal MAE375.82/307.13，两个Q均增、上界超限不一致；不据此部署criticLR或推广四接口。
+证据PUBLISHED_CRITIC_LR_DIRECT_PROBE_20261025.json；runtime/critic_lr_probe_v1，正式9未改。
+辅助前GPU60样本8.25/22.75/30.50/40.27%，四卡50%未达。原整组9审计仍待其余归档。
+
+最新Direct完成原actorLR9/491694，旧919723正常退出，勿重启；9checkpoint已归档sha a9b11de1…，
+Task12/30 Strict10/30、被动/短/长6/4/0，8→9 Strict13→10。首/末1000 critic loss230.75→4194.21，
+非健康收敛。30条件terminal/model与hash核验；其余三路原9、四SAC09、原audit/reviewer继续。
+新独立interim_cheq_cycle09_direct_v1使用释放CPU0/GPU0推理，coordinator3574939/evaluator3575318
+（重验），source12/原audit_v6，同3个预选0000条件；首MJB/dt/ck核验、347动作，尚无完整结果。
+该登记前瞻指定其余三接口同cycle9同条件，完整归档后派发，不重复Direct；原cycle7矩阵仍CPU54。
+contact候选v2现3/12完整精确通过（Direct三类），原2530701转Impedance被动child3472390（重验），
+未部署；source13仍只准备。完整group9审计前无新trainer/奖励/阈值干预。
+证据PUBLISHED_DIRECT_CYCLE09_AND_EVALUATION_20261025.json；下一步须完成原整组review和余三接口固定9评估。
+
 最新冻结cycle7 Impedance三条件评估完成、矩阵6/12，原coordinator803220已转Admittance evaluator
 2887423（重验）。被动carry失败、两主动成功；全55s/物理filtertorque审计通过/无机器安全违规。
 长期19.72s/51.2546Nm/4.7492%接触合规，nominal24.0739%、cycle3 37.2665%。不是当前actorLR结果。
