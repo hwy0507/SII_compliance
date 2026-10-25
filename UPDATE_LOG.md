@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-25 — Adam性能候选实际adapter及再次恢复验证
+
+- fetch/read main a52dfba、baseline f6e8f8c未前进。source_train15仅准备未部署：相对冻结14只修改CHEQ load_state_dict迁移59个scalar step至CPU并新增helper；SAC不改。原/候选779/780份source、各24parameter/150上游/128机器人资产逐文件hash通过，保护manifests、dt/actor period/horizon相同。
+- 独立adam_resume_preparation_v1已完成，2122767退出：四真实all5 parent按正式CUDA加载入口，原/候选各两更新，中间保存/再次CUDA加载，完整数值state、metrics、agent参数梯度和log_alpha.grad精确一致；父checkpoint/replay不变。共16辅助更新、0physics、无权重保存/导入；另用真实SAC Direct4 checkpoint验证实际恢复状态/device不受影响，未做SAC更新或性能宣称。
+- CANDIDATE_PROTOCOL仅准备，无下一阶段选择或自动派发；用户已经授权自主决策，完成当前10/11及科学复核后再登记部署。当前四CHEQ14及四SAC09继续；本轮没有改live runtime、训练预算/算法/奖励或physics/MJB/gate/actor/filter/执行器限制。
+- 报告docs/PUBLISHED_ADAM_RESUME_PREPARATION_20261025.md/.json；集群SSD sii_rl下runtime/source_train15、runtime/adam_resume_preparation_v1和runs/adam_resume_preparation_v1保存源及证据。没有重复上轮性能诊断，四卡持续50%、收敛/完整训练集SPT/指定ESN比较仍未完成。
+
 ## 2026-10-25 — 在线采样分母核验、Adam恢复同步候选及Admittance9完成审计
 
 - fetch/read main a52dfba、baseline f6e8f8c未前进。live_bellman_profile_v1已结束：四路请求60s/50Hz，每路14995样本含11996空栈及2999非空；新增只读review显式全/非空分母，五测试通过。非空栈Adam21.41–25.14%，_get_value约9.6–12.0%；不把类别重叠、空栈或进度时间差当GPU占用/主线程计时。

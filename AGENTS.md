@@ -7,6 +7,9 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新source_train15准备完成但未部署：只在CHEQ实际load_state_dict把59个Adam scalar step归CPU，SAC分支不改。独立adam_resume_preparation_v1进程2122767已结束，四真实all5 parent按CUDA入口恢复、更新间保存/重载、后续两更新的完整数值state/metrics/agent与alpha梯度均精确相等；16辅助更新、0physics、父checkpoint/replay不变、无权重保存导入。真实SAC Direct4恢复对照不变（0更新），不外推SAC提速。原/候选779/780 source及24parameter/150上游/128robot资产全hash核验，仅learner及新增helper差异。CANDIDATE_PROTOCOL是准备状态，需当前10/11完整科学review再登记下一阶段；不是等待新用户许可，不自动派发。当前CHEQ14、SAC09及原评估继续，50%/收敛/最终比较未完成。证据docs/PUBLISHED_ADAM_RESUME_PREPARATION_20261025.md/.json，产物runs/adam_resume_preparation_v1。
+
+
 最新采样/性能候选：live_bellman_profile_v1四路60s采样完成、1600842退出；每路14995样本中11996空栈/2999非空，REVIEW显式两分母，不把空栈当GPU空闲或非空栈当已识别主线程时间。正式resume map_location=CUDA使noncapturable Adam保留59个CUDA scalar step；_get_value同步开销可复现。独立adam_step_device_validation_v1四接口×两顺序×两arm×256=4096辅助更新已完成，1825205/6/7/8退出；仅step移CPU，完整数值state/agent gradients/RNG及其他位置精确相同，父replay不变，0physics/无权重导入。四helper+五profile测试通过。共享计时speedup0.9634–1.1772，不称普遍提速/50%达标。候选未接入正式adapter/runtime，当前10/11不改；后续边界需恢复/序列化入口验证。证据docs/PUBLISHED_ADAM_RESUME_PROFILE_20261025.md/.json。
 Admittance9三代表条件已完成九份审计及输入hash核验：Task/Strict2/3，被动carry失败；短/长45.04/45.32s、峰矩51.2252/52.6288Nm、接触NA/100%(5.03325s)，无机器安全违规。长比nominal42.48s慢，非完整cohort/收敛。ADMITTANCE_COMPLETED_REVIEW.json留证；evaluator RESULTS历史audit_completed=false早于后处理，未修改，以后续独立收据为准。原790746结束勿重启；参数矩阵6/9，4191390转VMC1836087 CPU13（重验）。contact v2现10/12精确通过、VMC短期1884386继续，未部署。四CHEQ14及四SAC09继续，auditor1346884/reviewer1346887等完整10/11；GPU50%、最终收敛/SPT/指定ESN比较仍未完成。
 

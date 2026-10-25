@@ -228,6 +228,14 @@ class PublishedLearner:
         learner.actor_optimizer.load_state_dict(state['actor_optimizer'])
         learner.q_optimizer.load_state_dict(state['q_optimizer'])
         learner.a_optimizer.load_state_dict(state['alpha_optimizer'])
+        if self.algorithm == 'cheq':
+            # CUDA checkpoint loading also relocates Adam's scalar counters.
+            # Noncapturable/nonfused Adam reads them as CPU scalars every step.
+            # Keep their values/moments intact and normalize placement on each
+            # restore, including a checkpoint saved by this adapter itself.
+            from published_adam_step_device_20261025 import move_adam_steps_to_cpu
+            for optimizer in (learner.actor_optimizer, learner.q_optimizer, learner.a_optimizer):
+                move_adam_steps_to_cpu(optimizer)
         with torch.no_grad():
             learner.log_alpha.copy_(state['log_alpha'])
         for key in ('alpha', 'num_gradient_steps', 'parameters_updated', 'step_metrics'):

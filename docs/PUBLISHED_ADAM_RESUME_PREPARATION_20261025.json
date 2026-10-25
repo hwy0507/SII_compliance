@@ -1,0 +1,533 @@
+{
+  "captured_unix": 1792964319.70933,
+  "hostname": "rltest-1025--a6ed2ff39b3c-s5gnp35dxg",
+  "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train15",
+  "output": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/adam_resume_preparation_v1",
+  "origin_main": "a52dfba4486af8d263d5cd0a976c3102482ff249",
+  "origin_baseline": "f6e8f8c2711a93f0b5dfc88c608bd82647084d5d",
+  "receipts": {
+    "REGISTRATION.json": "0d9d39aaddf995ad8816df0ff8498a18fed12d7ebdc3a77a279f1064e946cf4f",
+    "RESULT.json": "d0b709e60b0adc0dc5ee55f160300e5f750bd835cea2fe625a7d43eeaaf7d69b",
+    "CONTRACT_REVIEW.json": "d0821881ebbed50e7cab015a94aeaeae5d37ff6b38217575632fc2cade447fcc",
+    "CANDIDATE_PROTOCOL.json": "789f389024c455eb1ee630060dead5bf6c017753265de4db9c993fb266f02d12",
+    "LAUNCH.json": "49f6bff68d1dfc4853fbfa42e440ff0bfed7c639d9ea2762ca8dcf24f04b7f92"
+  },
+  "validation": {
+    "methods": {
+      "direct": {
+        "parent_sha256": "1460d38bc55080386dc3c4a1dc352176ffdada3874edb3d346a9d77eb57ac414",
+        "initial_and_intermediate_restore_exact": true,
+        "two_updates_exact": true,
+        "agent_and_alpha_gradients_exact": true,
+        "original_step_device": "cuda:0",
+        "candidate_step_device": "cpu",
+        "step_tensors": 59,
+        "parent_unchanged": true,
+        "branches": {
+          "original": [
+            {
+              "update": 0,
+              "metrics": {
+                "agent_train/q_loss": 7116.8037109375,
+                "agent_train/next_q_values": 651.1699829101562,
+                "agent_train/entropy_coefficient_loss": -4.791577339172363,
+                "agent_train/actor_loss": -732.8466796875,
+                "agent_train/actor_entropy": -0.8981198668479919,
+                "agent_train/entropy_coefficient": 0.4554196894168854,
+                "agent_train/target_entropy": -7.0
+              },
+              "state": "46079f23da7e247de2348d2c4fb7f34d401eebce2858f49f9501a7ccb65ed7a4",
+              "agent_gradients": "b83d9b61379b1dc7e6ceed2c8cb13be5ebb0103b471f5cb24dc643d4e2954e61",
+              "alpha_gradient": "55090b9ac39e56a9cdb6c79f516d4b68fa3de3866ad75a861ffb8916f463fcba"
+            },
+            {
+              "update": 1,
+              "metrics": {
+                "agent_train/q_loss": 80635.7265625,
+                "agent_train/next_q_values": 650.8221435546875,
+                "agent_train/entropy_coefficient_loss": -4.791577339172363,
+                "agent_train/actor_loss": -732.8466796875,
+                "agent_train/actor_entropy": -0.8981198668479919,
+                "agent_train/entropy_coefficient": 0.4554196894168854,
+                "agent_train/target_entropy": -7.0
+              },
+              "state": "83532b09fd0124539968ff19b5cf90f4d7eba5b1513961343548e4feaa29739a",
+              "agent_gradients": "6ef97d98b96a810153e04d2a736540aee887aab5d56f24cced8351c1ba548808",
+              "alpha_gradient": "a51ad9ee4c1a460069eb1e05d3a1ed269248ccad439b710ccc2095ab03bd169f"
+            }
+          ],
+          "candidate": [
+            {
+              "update": 0,
+              "metrics": {
+                "agent_train/q_loss": 7116.8037109375,
+                "agent_train/next_q_values": 651.1699829101562,
+                "agent_train/entropy_coefficient_loss": -4.791577339172363,
+                "agent_train/actor_loss": -732.8466796875,
+                "agent_train/actor_entropy": -0.8981198668479919,
+                "agent_train/entropy_coefficient": 0.4554196894168854,
+                "agent_train/target_entropy": -7.0
+              },
+              "state": "46079f23da7e247de2348d2c4fb7f34d401eebce2858f49f9501a7ccb65ed7a4",
+              "agent_gradients": "b83d9b61379b1dc7e6ceed2c8cb13be5ebb0103b471f5cb24dc643d4e2954e61",
+              "alpha_gradient": "55090b9ac39e56a9cdb6c79f516d4b68fa3de3866ad75a861ffb8916f463fcba"
+            },
+            {
+              "update": 1,
+              "metrics": {
+                "agent_train/q_loss": 80635.7265625,
+                "agent_train/next_q_values": 650.8221435546875,
+                "agent_train/entropy_coefficient_loss": -4.791577339172363,
+                "agent_train/actor_loss": -732.8466796875,
+                "agent_train/actor_entropy": -0.8981198668479919,
+                "agent_train/entropy_coefficient": 0.4554196894168854,
+                "agent_train/target_entropy": -7.0
+              },
+              "state": "83532b09fd0124539968ff19b5cf90f4d7eba5b1513961343548e4feaa29739a",
+              "agent_gradients": "6ef97d98b96a810153e04d2a736540aee887aab5d56f24cced8351c1ba548808",
+              "alpha_gradient": "a51ad9ee4c1a460069eb1e05d3a1ed269248ccad439b710ccc2095ab03bd169f"
+            }
+          ]
+        }
+      },
+      "impedance": {
+        "parent_sha256": "ad6ea4daf9e3a0be176309f2f1ed906ffb83af61212a46fe660cd55151c40c66",
+        "initial_and_intermediate_restore_exact": true,
+        "two_updates_exact": true,
+        "agent_and_alpha_gradients_exact": true,
+        "original_step_device": "cuda:0",
+        "candidate_step_device": "cpu",
+        "step_tensors": 59,
+        "parent_unchanged": true,
+        "branches": {
+          "original": [
+            {
+              "update": 0,
+              "metrics": {
+                "agent_train/q_loss": 1988213.25,
+                "agent_train/next_q_values": 10934.115234375,
+                "agent_train/entropy_coefficient_loss": 0.7422166466712952,
+                "agent_train/actor_loss": -12067.52734375,
+                "agent_train/actor_entropy": -9.496810913085938,
+                "agent_train/entropy_coefficient": 0.8488773107528687,
+                "agent_train/target_entropy": -5.0
+              },
+              "state": "4c3507d34f37ed12b4f8ccede93390407e7be1383f9376038340f52587c62905",
+              "agent_gradients": "362c831de0b30e8d5c3477dd4d2853be97ae54d5cc564b653e46a7ee15f543b5",
+              "alpha_gradient": "74589398304a2227100e8cac4d243f42a482adb62953dddf4543f238bab6f46a"
+            },
+            {
+              "update": 1,
+              "metrics": {
+                "agent_train/q_loss": 19938858.0,
+                "agent_train/next_q_values": 10931.5478515625,
+                "agent_train/entropy_coefficient_loss": 0.7422166466712952,
+                "agent_train/actor_loss": -12067.52734375,
+                "agent_train/actor_entropy": -9.496810913085938,
+                "agent_train/entropy_coefficient": 0.8488773107528687,
+                "agent_train/target_entropy": -5.0
+              },
+              "state": "2bed3302e901dcca0f2bdf2373313abb7840c96d13817bd5d686b6687d2400e1",
+              "agent_gradients": "b455c9de1ccaff55dbcf1bde6a810b3f697686dd818d8ed55d8c23a0d4f76923",
+              "alpha_gradient": "a51ad9ee4c1a460069eb1e05d3a1ed269248ccad439b710ccc2095ab03bd169f"
+            }
+          ],
+          "candidate": [
+            {
+              "update": 0,
+              "metrics": {
+                "agent_train/q_loss": 1988213.25,
+                "agent_train/next_q_values": 10934.115234375,
+                "agent_train/entropy_coefficient_loss": 0.7422166466712952,
+                "agent_train/actor_loss": -12067.52734375,
+                "agent_train/actor_entropy": -9.496810913085938,
+                "agent_train/entropy_coefficient": 0.8488773107528687,
+                "agent_train/target_entropy": -5.0
+              },
+              "state": "4c3507d34f37ed12b4f8ccede93390407e7be1383f9376038340f52587c62905",
+              "agent_gradients": "362c831de0b30e8d5c3477dd4d2853be97ae54d5cc564b653e46a7ee15f543b5",
+              "alpha_gradient": "74589398304a2227100e8cac4d243f42a482adb62953dddf4543f238bab6f46a"
+            },
+            {
+              "update": 1,
+              "metrics": {
+                "agent_train/q_loss": 19938858.0,
+                "agent_train/next_q_values": 10931.5478515625,
+                "agent_train/entropy_coefficient_loss": 0.7422166466712952,
+                "agent_train/actor_loss": -12067.52734375,
+                "agent_train/actor_entropy": -9.496810913085938,
+                "agent_train/entropy_coefficient": 0.8488773107528687,
+                "agent_train/target_entropy": -5.0
+              },
+              "state": "2bed3302e901dcca0f2bdf2373313abb7840c96d13817bd5d686b6687d2400e1",
+              "agent_gradients": "b455c9de1ccaff55dbcf1bde6a810b3f697686dd818d8ed55d8c23a0d4f76923",
+              "alpha_gradient": "a51ad9ee4c1a460069eb1e05d3a1ed269248ccad439b710ccc2095ab03bd169f"
+            }
+          ]
+        }
+      },
+      "admittance": {
+        "parent_sha256": "7dee0b7f29474e809a779941cd6c45fff2df634cb15f46cb531d9ab1527e2324",
+        "initial_and_intermediate_restore_exact": true,
+        "two_updates_exact": true,
+        "agent_and_alpha_gradients_exact": true,
+        "original_step_device": "cuda:0",
+        "candidate_step_device": "cpu",
+        "step_tensors": 59,
+        "parent_unchanged": true,
+        "branches": {
+          "original": [
+            {
+              "update": 0,
+              "metrics": {
+                "agent_train/q_loss": 1133.861328125,
+                "agent_train/next_q_values": -251.88671875,
+                "agent_train/entropy_coefficient_loss": 0.2435629963874817,
+                "agent_train/actor_loss": 244.4962615966797,
+                "agent_train/actor_entropy": -7.181773662567139,
+                "agent_train/entropy_coefficient": 0.26183706521987915,
+                "agent_train/target_entropy": -7.0
+              },
+              "state": "c21b51a7b420b72a83f6141cf573f981c29e23b9ce04f9d2531ef86a2bb95443",
+              "agent_gradients": "a9ec9fba622fbf294b90382776ec27e7f5122cc4bd32d9e9e8f0294c8a192492",
+              "alpha_gradient": "ccdc4d7d9eb25a9b4f77ad6af15de6ec63671ba6aabd8205bd080eec3f337f17"
+            },
+            {
+              "update": 1,
+              "metrics": {
+                "agent_train/q_loss": 1115.94677734375,
+                "agent_train/next_q_values": -251.6500244140625,
+                "agent_train/entropy_coefficient_loss": 0.2435629963874817,
+                "agent_train/actor_loss": 244.4962615966797,
+                "agent_train/actor_entropy": -7.181773662567139,
+                "agent_train/entropy_coefficient": 0.26183706521987915,
+                "agent_train/target_entropy": -7.0
+              },
+              "state": "5e641b47cd4c3d798555875567c9ed1b1e8667f8f350b6e74f2fae5aeb802ac3",
+              "agent_gradients": "2d6a15c91d78158630a9ecf9875e5b8fae5589e3baa54e459e7cc6658694c034",
+              "alpha_gradient": "a51ad9ee4c1a460069eb1e05d3a1ed269248ccad439b710ccc2095ab03bd169f"
+            }
+          ],
+          "candidate": [
+            {
+              "update": 0,
+              "metrics": {
+                "agent_train/q_loss": 1133.861328125,
+                "agent_train/next_q_values": -251.88671875,
+                "agent_train/entropy_coefficient_loss": 0.2435629963874817,
+                "agent_train/actor_loss": 244.4962615966797,
+                "agent_train/actor_entropy": -7.181773662567139,
+                "agent_train/entropy_coefficient": 0.26183706521987915,
+                "agent_train/target_entropy": -7.0
+              },
+              "state": "c21b51a7b420b72a83f6141cf573f981c29e23b9ce04f9d2531ef86a2bb95443",
+              "agent_gradients": "a9ec9fba622fbf294b90382776ec27e7f5122cc4bd32d9e9e8f0294c8a192492",
+              "alpha_gradient": "ccdc4d7d9eb25a9b4f77ad6af15de6ec63671ba6aabd8205bd080eec3f337f17"
+            },
+            {
+              "update": 1,
+              "metrics": {
+                "agent_train/q_loss": 1115.94677734375,
+                "agent_train/next_q_values": -251.6500244140625,
+                "agent_train/entropy_coefficient_loss": 0.2435629963874817,
+                "agent_train/actor_loss": 244.4962615966797,
+                "agent_train/actor_entropy": -7.181773662567139,
+                "agent_train/entropy_coefficient": 0.26183706521987915,
+                "agent_train/target_entropy": -7.0
+              },
+              "state": "5e641b47cd4c3d798555875567c9ed1b1e8667f8f350b6e74f2fae5aeb802ac3",
+              "agent_gradients": "2d6a15c91d78158630a9ecf9875e5b8fae5589e3baa54e459e7cc6658694c034",
+              "alpha_gradient": "a51ad9ee4c1a460069eb1e05d3a1ed269248ccad439b710ccc2095ab03bd169f"
+            }
+          ]
+        }
+      },
+      "vmc": {
+        "parent_sha256": "51548e8fcd2b4f516dd53b2148a6adeba48abd60ff4de97e3bba4eedb1754fed",
+        "initial_and_intermediate_restore_exact": true,
+        "two_updates_exact": true,
+        "agent_and_alpha_gradients_exact": true,
+        "original_step_device": "cuda:0",
+        "candidate_step_device": "cpu",
+        "step_tensors": 59,
+        "parent_unchanged": true,
+        "branches": {
+          "original": [
+            {
+              "update": 0,
+              "metrics": {
+                "agent_train/q_loss": 8122280.0,
+                "agent_train/next_q_values": 3152.72900390625,
+                "agent_train/entropy_coefficient_loss": 6.64682674407959,
+                "agent_train/actor_loss": -4877.5146484375,
+                "agent_train/actor_entropy": -2.3434386253356934,
+                "agent_train/entropy_coefficient": 4.163485050201416,
+                "agent_train/target_entropy": -7.0
+              },
+              "state": "8f725475bbffc41280f51f33473e08ec35c64c6721e27b1545504306256364ba",
+              "agent_gradients": "e24f4535f79d2ab84f24ab786204a6abe267ba4a98d57e7369b80ed43d5e16b5",
+              "alpha_gradient": "f33beae7f8ba7394ef4a8245c9e95880363caa7752563b3bebada8eac15ca5d9"
+            },
+            {
+              "update": 1,
+              "metrics": {
+                "agent_train/q_loss": 63489864.0,
+                "agent_train/next_q_values": 3156.76123046875,
+                "agent_train/entropy_coefficient_loss": 6.64682674407959,
+                "agent_train/actor_loss": -4877.5146484375,
+                "agent_train/actor_entropy": -2.3434386253356934,
+                "agent_train/entropy_coefficient": 4.163485050201416,
+                "agent_train/target_entropy": -7.0
+              },
+              "state": "48504e170bf5556e607b21fced708685b56143e6ad54282cbb869c87f61390ab",
+              "agent_gradients": "a9e69e2205503da2878535778dc9ebe294c9952f845526c0ada28b4002a7cfd0",
+              "alpha_gradient": "a51ad9ee4c1a460069eb1e05d3a1ed269248ccad439b710ccc2095ab03bd169f"
+            }
+          ],
+          "candidate": [
+            {
+              "update": 0,
+              "metrics": {
+                "agent_train/q_loss": 8122280.0,
+                "agent_train/next_q_values": 3152.72900390625,
+                "agent_train/entropy_coefficient_loss": 6.64682674407959,
+                "agent_train/actor_loss": -4877.5146484375,
+                "agent_train/actor_entropy": -2.3434386253356934,
+                "agent_train/entropy_coefficient": 4.163485050201416,
+                "agent_train/target_entropy": -7.0
+              },
+              "state": "8f725475bbffc41280f51f33473e08ec35c64c6721e27b1545504306256364ba",
+              "agent_gradients": "e24f4535f79d2ab84f24ab786204a6abe267ba4a98d57e7369b80ed43d5e16b5",
+              "alpha_gradient": "f33beae7f8ba7394ef4a8245c9e95880363caa7752563b3bebada8eac15ca5d9"
+            },
+            {
+              "update": 1,
+              "metrics": {
+                "agent_train/q_loss": 63489864.0,
+                "agent_train/next_q_values": 3156.76123046875,
+                "agent_train/entropy_coefficient_loss": 6.64682674407959,
+                "agent_train/actor_loss": -4877.5146484375,
+                "agent_train/actor_entropy": -2.3434386253356934,
+                "agent_train/entropy_coefficient": 4.163485050201416,
+                "agent_train/target_entropy": -7.0
+              },
+              "state": "48504e170bf5556e607b21fced708685b56143e6ad54282cbb869c87f61390ab",
+              "agent_gradients": "a9e69e2205503da2878535778dc9ebe294c9952f845526c0ada28b4002a7cfd0",
+              "alpha_gradient": "a51ad9ee4c1a460069eb1e05d3a1ed269248ccad439b710ccc2095ab03bd169f"
+            }
+          ]
+        }
+      }
+    },
+    "sac_restore_control": {
+      "unchanged": true,
+      "checkpoint_sha256": "31e66e0ee18dabb75617c37a4173f8c246da9389f1f56d4a8ec6ad93417c2410",
+      "rows": [
+        {
+          "state": "92fd09dcae397aedd29daf9cc9ddd04f1dd4e1f56ae270974527cca690aeb0f5",
+          "counter_devices": [
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0"
+          ]
+        },
+        {
+          "state": "92fd09dcae397aedd29daf9cc9ddd04f1dd4e1f56ae270974527cca690aeb0f5",
+          "counter_devices": [
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0",
+            "cuda:0"
+          ]
+        }
+      ]
+    },
+    "auxiliary_updates": 16,
+    "new_physics": 0,
+    "auxiliary_weights_saved": false,
+    "candidate_deployed": false,
+    "finished_unix": 1792964245.685662,
+    "registration_sha256": "0d9d39aaddf995ad8816df0ff8498a18fed12d7ebdc3a77a279f1064e946cf4f"
+  },
+  "contract": {
+    "captured_unix": 1792964227.177019,
+    "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train15",
+    "runtime_sha256": "868f5987d7cc886a23c59b1a2636601fda298c6da7ee2b441f8de9a47d17db35",
+    "parent_runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train14",
+    "parent_runtime_sha256": "216cd29dad2caaa7761d9fb2702788258f0c215858b94f0a50d7a3da09e5a0fe",
+    "verified_files": {
+      "source_train14": {
+        "SOURCE_HASHES.json": 779,
+        "PARAMETER_HASHES.json": 24,
+        "CHEQ_HASHES.json": 150,
+        "ROBOT_ASSET_HASHES.json": 128
+      },
+      "source_train15": {
+        "SOURCE_HASHES.json": 780,
+        "PARAMETER_HASHES.json": 24,
+        "CHEQ_HASHES.json": 150,
+        "ROBOT_ASSET_HASHES.json": 128
+      }
+    },
+    "changed_source": [
+      "tools/published_compliance_learner_20261025.py"
+    ],
+    "added_source": [
+      "tools/published_adam_step_device_20261025.py"
+    ],
+    "protected_manifests_identical": true,
+    "physics_dt_s": 5e-05,
+    "actor_period_s": 0.04,
+    "horizon_s": 55.0,
+    "online_deployed": false
+  },
+  "progress": {
+    "bellman_minimum_online_seed20261025_v1": {
+      "direct": {
+        "cycle": 10,
+        "steps": 516270,
+        "completed_conditions": 13,
+        "running": 9,
+        "pending": 8,
+        "updates": 874152,
+        "wall_time_utc": 1792964319.6951761
+      },
+      "impedance": {
+        "cycle": 10,
+        "steps": 517154,
+        "completed_conditions": 15,
+        "running": 9,
+        "pending": 6,
+        "updates": 873278,
+        "wall_time_utc": 1792964319.6993911
+      },
+      "admittance": {
+        "cycle": 10,
+        "steps": 517613,
+        "completed_conditions": 13,
+        "running": 9,
+        "pending": 8,
+        "updates": 874086,
+        "wall_time_utc": 1792964319.7013237
+      },
+      "vmc": {
+        "cycle": 10,
+        "steps": 518126,
+        "completed_conditions": 12,
+        "running": 9,
+        "pending": 9,
+        "updates": 873700,
+        "wall_time_utc": 1792964319.6864166
+      }
+    },
+    "sac_performance_seed20261025_v2": {
+      "direct": {
+        "cycle": 5,
+        "steps": 259377,
+        "completed_conditions": 24,
+        "running": 2,
+        "pending": 4,
+        "updates": 472270,
+        "wall_time_utc": 1792964319.5139003
+      },
+      "impedance": {
+        "cycle": 3,
+        "steps": 174818,
+        "completed_conditions": 20,
+        "running": 2,
+        "pending": 8,
+        "updates": 305080,
+        "wall_time_utc": 1792964319.7005253
+      },
+      "admittance": {
+        "cycle": 3,
+        "steps": 158038,
+        "completed_conditions": 9,
+        "running": 2,
+        "pending": 19,
+        "updates": 275046,
+        "wall_time_utc": 1792964319.5849845
+      },
+      "vmc": {
+        "cycle": 3,
+        "steps": 162006,
+        "completed_conditions": 12,
+        "running": 2,
+        "pending": 16,
+        "updates": 281994,
+        "wall_time_utc": 1792964319.4951506
+      }
+    }
+  },
+  "contact_validation_progress": {
+    "controller": "vmc",
+    "case_id": "active_short_train_0000",
+    "child_pid": 1884386,
+    "actions_verified": 1204,
+    "completed_cases": 10,
+    "planned_cases": 12,
+    "updated_unix": 1792964319.6666703
+  },
+  "parameter_evaluation_progress": {
+    "controller": "vmc",
+    "child_pid": 1836087,
+    "state": "physics_running",
+    "audited_cases": 6,
+    "planned_cases": 9,
+    "started_unix": 1792963715.0967593
+  },
+  "formal_training_changed": false,
+  "convergence_claim": false,
+  "final_comparison_complete": false
+}
