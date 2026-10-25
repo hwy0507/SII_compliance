@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-25 — 冻结Impedance独立评估与接触奖励排序差异
+
+- fetch main a52dfba4486af8d263d5cd0a976c3102482ff249 / baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d未前进。原固定cycle7矩阵完成Impedance三条件，已6/12并转Admittance evaluator2887423（行动前重验）。
+- Impedance被动失败于carry，两主动Task/Strict成功；全部55s、物理/filter/torque审计通过、无机器安全违规。长期19.72s/51.2546Nm/4.7492%接触合规，对nominal20.52s/52.2561Nm/24.0739%；短期无实际人接触，合规NA。这不是当前actorLR策略结果。
+- 新只读fixed_impedance_contact_tradeoff_v2完成并退出，三个冻结长期回合各110万子步独立复算、模型/plan/fixture/dt配对、1375interval奖励重建、物理舒适积分与reward核对通过。3计算测试通过，PNG/PDF已检查，0新增physics/更新。
+- 第7轮joint2/joint6接触超阈值比例92.1094%/79.3886%，存在重叠。第3→7轮合规37.2665%→4.7492%，但bounded超幅积分0.958712→0.531545s，舒适惩罚−0.034862→−0.019329反而减轻。平滑超幅积分与阈值以下接触时间比例不等价；不是新实现bug，也不宣称总reward更好（总return20.9788→20.5439）。
+- 原v1在登记/启动前因nominal缺TORQUE_REPLAY_AUDIT被拒，失败保留；v2明确nominal只具物理/filter审计，learned要求三审计，不伪造缺失证据。
+- 当前source12原9、SAC09、原auditor/reviewer及接触候选验证继续。9完成后科学复核需同时考虑critic校准和接触目标一致性；未选择/部署新奖励或阈值，未改变正式physics/MJB/gate/actor/filter/执行器/dt。
+- 证据docs/PUBLISHED_FIXED_IMPEDANCE_CONTACT_TRADEOFF_20261025.json；集群完整产物/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/fixed_impedance_contact_tradeoff_v2。收敛/最终SPT/指定ESN对比仍未完成。
+
 ## 2026-10-25 — 完成actorLR第7/8轮soft-target分解，核实实际混合控制权
 
 - fetch核对远程main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，未前进；读取两分支日志。

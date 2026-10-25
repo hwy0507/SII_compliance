@@ -7,6 +7,16 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新冻结cycle7 Impedance三条件评估完成、矩阵6/12，原coordinator803220已转Admittance evaluator
+2887423（重验）。被动carry失败、两主动成功；全55s/物理filtertorque审计通过/无机器安全违规。
+长期19.72s/51.2546Nm/4.7492%接触合规，nominal24.0739%、cycle3 37.2665%。不是当前actorLR结果。
+新只读fixed_impedance_contact_tradeoff_v2完成、3304773退出：3计算测试、3×110万子步独立复算、
+模型/plan/fixture/dt配对及奖励重建通过，图已检查，0physics/更新。joint2/6超阈92.1/79.4%
+有重叠；cycle3→7 bounded超幅积分反降.9587→.5315s，舒适惩罚减轻但时间合规变差。
+现reward平滑超幅与条件时间比例不等价；总reward7仍更差，不作因果/bug结论。9完成科学review
+应同时考虑目标一致性与critic健康，当前9未改奖励/阈值/训练。v1准备缺nominal torque审计未启动，
+v2明确nominal缺该项、只验证其物理/filter，勿说三者都有torque重放。证据PUBLISHED_FIXED_IMPEDANCE_CONTACT_TRADEOFF_20261025.json。
+
 最新7/8 soft-target只读诊断已完成、PID2916267退出：八checkpoint网络不变、终端bootstrap零，
 0更新/physics。8后继Q528.14/2070.42/780.21/8046.32、平均熵贡献全负；高正target主要来自预测
 后继值，无新实现bug结论。8 implied最低权重99.9268/99.9756/100/100%；当前9另存各1000
