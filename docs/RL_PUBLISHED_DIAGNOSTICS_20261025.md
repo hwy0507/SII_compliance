@@ -1474,3 +1474,80 @@ comparison or convergence claim is available.
 The SAC Impedance startup receipt precedes that GPU window by43.15s. The raw
 file's context text described only Direct as migrated; the evidence records
 this correction explicitly. Raw utilization samples are unchanged.
+
+
+## Actual target-gradient runtime validation and prepared continuation
+
+`runs/target_gradient_validation_v2` tested the actual source_train08 and
+source_train10 adapters, using immutable parent cycle5 checkpoints. Four
+interfaces × two reverse-order trials × two arms ×256 updates produced4096
+finite auxiliary updates and0 physics transitions. Full learner state,
+optimizers, temperature, RNG, replay sampling RNG and all non-target gradients
+matched exactly. The constructors were separately checked: original targets
+trainable, candidate targets frozen. Actor gradients still pass through target
+Q to the action input. No auxiliary weights were saved/promoted; all four
+validation processes exited.
+
+| Interface | Shared-load speedup, first / reversed order |
+|---|---:|
+| Direct |1.1574 /1.2932|
+| Impedance |1.1159 /1.0489|
+| Admittance |1.0683 /0.9723|
+| VMC |1.2629 /1.0463|
+
+These are finite equivalence and timing results, not guaranteed online speedup
+or GPU utilization. One Admittance arm is slightly slower under shared load.
+
+The first real registration check rejected source_train10 before launch:
+the parent umbrella registration lists both CHEQ and SAC, whereas the initial
+guard incorrectly required the entire algorithm list to equal CHEQ only.
+`PREPARATION_V1_FAILURE.json` preserves this failure, and the original candidate
+runtime/registration remain unchanged. The corrected code scopes the amendment
+to CHEQ separately and rejects SAC execution of this continuation. Eight
+software tests passed, including preservation of actor gradients, Polyak
+updates, umbrella registration and rejection of protected-contract changes.
+
+`runtime/source_train11` is a new frozen candidate: its learner/helper are
+byte-identical to the validated source_train10; only its trainer scope guard
+changes. All source hashes and protected manifest bytes were checked, and the
+actual continuation protocol validated successfully. The registration is
+`runs/cohort30_v2/REGISTRATION_CHEQ_TARGET_GRADIENT_PREPARED_V2.json`, with receipt
+`runs/target_gradient_validation_v2/PREPARATION_V2.json`. **Prepared only: no
+STOP request, coordinator or replacement training was launched.** Keep the
+source_train08 critic-reset trial running its two complete cycles6/7, review
+its scientific results, then decide continuation. Do not deploy the old
+performance coordinator early because it would request a cycle-boundary stop
+before that trial has finished. All learning states would be preserved; the
+performance candidate does not perform another critic reset.
+
+## Cycle3 Impedance representative evaluation completed
+
+The frozen matrix reached6/12 audited cases and now evaluates Admittance.
+Impedance uses the same three prespecified conditions and nominal rows as the
+cycle1 evaluation. Every case completes55s; public-filter replay and torque
+projection/physical linkage checks pass, with no machine safety violation.
+
+| Condition0000 | Learned / nominal Task and Strict | Completion s | Peak Nm | Actual-human-contact threshold ratio |
+|---|---|---:|---:|---:|
+| Passive |failed /failed|NA /NA|40.9212 /40.5833|NA /NA|
+| Active-short |passed /passed|12.84 /12.96|45.5225 /45.3060|NA /NA|
+| Active-long |passed /passed|20.64 /20.52|51.6602 /52.2561|37.27% /24.07%|
+
+Active-long human contact lasts7.7182s versus7.7692s. These are engineering
+thresholds, not validated human-comfort limits. This single condition shows a
+small time/torque tradeoff; it does not establish overall superiority or
+convergence. The failed passive case remains in the denominator and hasSPT0;
+no final shared SPT reference has been selected. Nominal is59/120 at capture.
+Current training has not produced a complete post-reset cycle yet, so partial
+condition mixes are not compared as whole-cohort success rates. The Goal and
+ESN comparison remain unfinished; the designated ESN checkpoint is still
+unavailable. Compact evidence: `PUBLISHED_TARGET_RUNTIME_VALIDATION_20261025.json`.
+
+
+After auxiliary workers exited, a new60-sample/67.64s online window measured
+GPU means50.48/23.65/31.15/43.10%, minima13/0/0/0. This includes the existing
+CHEQ/SAC learners and GPU2 Admittance fixed-policy inference; source11 is not
+running. Four-card sustained50% remains unmet. Raw samples are
+`runs/RESTART_ONLINE_GPU_60S_02.json`; this window is preserved separately from
+the earlier57.17/47.87/28.50/33.22% window. No claim of prevented shutdown is
+made from utilization samples alone.

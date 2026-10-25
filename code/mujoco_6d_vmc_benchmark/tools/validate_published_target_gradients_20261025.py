@@ -8,6 +8,7 @@ No weights are saved or promoted and no physical transitions are generated.
 import argparse
 import copy
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -62,6 +63,30 @@ def main(args):
     learner = PublishedLearner(root, dimension=arrays['actions'].shape[1], direct=args.controller=='direct',
         seed=p['seed'], device=args.device, algorithm='cheq',
         critic_layer_norm=state['critic_layer_norm'], numerical_amendments=state['numerical_amendments'])
+    actual_adapters = None
+    if p.get('candidate_runtime'):
+        candidate_root = Path(p['candidate_runtime'])
+        if sha(candidate_root/'RUNTIME.json') != p['candidate_runtime_sha256']:
+            raise ValueError('Candidate runtime manifest drift')
+        candidate_source = candidate_root/'source/tools/published_compliance_learner_20261025.py'
+        candidate_hashes = json.loads((candidate_root/'SOURCE_HASHES.json').read_text())
+        for name in ('published_compliance_learner_20261025.py','published_target_gradients_20261025.py'):
+            if sha(candidate_root/'source/tools'/name) != candidate_hashes['tools/'+name]:
+                raise ValueError('Candidate adapter/helper drift')
+        if sha(candidate_root/'source/tools/published_target_gradients_20261025.py') != sha(
+                Path(__file__).with_name('published_target_gradients_20261025.py')):
+            raise ValueError('Validation helper differs from candidate runtime')
+        spec = importlib.util.spec_from_file_location('actual_target_freeze_candidate', candidate_source)
+        candidate_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(candidate_module)
+        candidate = candidate_module.PublishedLearner(candidate_root, dimension=arrays['actions'].shape[1],
+            direct=args.controller=='direct', seed=p['seed'], device=args.device, algorithm='cheq',
+            critic_layer_norm=state['critic_layer_norm'], numerical_amendments=state['numerical_amendments'])
+        if any(v.requires_grad for v in candidate.learner.agent.ensemble_targets.parameters()):
+            raise AssertionError('Candidate constructor did not freeze target parameters')
+        if not all(v.requires_grad for v in learner.learner.agent.ensemble_targets.parameters()):
+            raise AssertionError('Original constructor unexpectedly freezes target parameters')
+        actual_adapters = {'original':learner, 'frozen_targets':candidate}
     replay = Replay(arrays['actions'].shape[1], arrays['observations'].shape[1], p['seed'])
     replay.load_state_dict(copy.deepcopy(ck['replay']))
     cache = DeviceReplayCache(replay, args.device)
@@ -71,12 +96,15 @@ def main(args):
     for trial, order in enumerate([['original', 'frozen_targets'], ['frozen_targets', 'original']]):
         rows = []
         for variant in order:
-            for param in learner.learner.agent.ensemble_targets.parameters():
-                param.requires_grad_(True)
+            if actual_adapters is not None:
+                learner = actual_adapters[variant]
+            else:
+                for param in learner.learner.agent.ensemble_targets.parameters():
+                    param.requires_grad_(True)
             learner.load_state_dict(copy.deepcopy(state))
             for param in learner.learner.agent.parameters():
                 param.grad = None
-            if variant == 'frozen_targets':
+            if variant == 'frozen_targets' and actual_adapters is None:
                 freeze_target_parameters(learner.learner)
             before = digest(learner.state_dict())
             if initial_digest is None:
@@ -120,6 +148,7 @@ def main(args):
         finished_unix=time.time(), registration_sha256=sha(args.registration),
         checkpoint_sha256=item['sha256'], updates=4*p['updates_per_arm'], new_physics=0,
         parent_unchanged=True, auxiliary_weights_saved=False, formal_training_changed=False,
+        actual_candidate_runtime_tested=p.get('candidate_runtime'),
         limitation='Shared-load timing, two orders, finite exact-state evidence; not online throughput or GPU50% proof'))
 
 

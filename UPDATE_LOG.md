@@ -1,5 +1,25 @@
 # 更新日志
 
+## 2026-10-25 — target梯度实际运行时等价验证与Impedance独立评估
+
+- 重新fetch核对main a52dfba/baseline f6e8f8c并读取两分支日志；保留未发布本地提交。
+- source08与source10实际adapter、四接口父cycle5 checkpoint，两反转顺序共4096辅助更新：
+  全部learner/optimizer/alpha/RNG、采样RNG与非target梯度精确一致，构造器目标参数标志核验；
+  0physics、无权重导入、四辅助进程退出。共享负载提速0.972–1.293倍，不保证在线提速或GPU达标。
+- 实际接续登记先因父协议同时列CHEQ/SAC、错误guard要求仅CHEQ而拒绝，尚未启动；失败收据保留。
+  改为amendment独立限定CHEQ并拒绝SAC执行，8项针对测试通过。新冻结source11保留相同已验证
+  learner/helper，只修trainer guard；全部source/保护manifest核验、实际协议验证通过。source10不覆盖。
+- REGISTRATION_CHEQ_TARGET_GRADIENT_PREPARED_V2仅准备，未写STOP/启动协调器或替代learner。
+  当前source08 critic-reset仍须完成cycle6/7并复核，禁止提前用performance协调器截短原试验。
+- cycle3矩阵6/12：Impedance被动失败、两主动Task/Strict成功，三回合filter/torque审计通过、无机器
+  安全违规；长期20.64s对nominal20.52s，峰矩51.66对52.26Nm，真实人接触阈值比例37.27%对24.07%。
+  单条件折衷不是整体优越或收敛；nominal59/120。正式物理/MJB/gate/actor合同/filter/执行器/dt未改。
+- 辅助退出后60样本/67.64s四卡均值50.48/23.65/31.15/43.10%，最低13/0/0/0，持续50%仍未达到；
+  原始RESTART_ONLINE_GPU_60S_02.json，含GPU2固定评估，source11未运行。
+- 产物位于 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/`，
+  详见docs/RL_PUBLISHED_DIAGNOSTICS_20261025.md及PUBLISHED_TARGET_RUNTIME_VALIDATION_20261025.json。
+  当前训练继续，四路收敛、最终SPT/指定ESN比较仍未完成；GitHub发布状态另行核验。
+
 ## 2026-10-25 — critic重置全部接续、阶段审计与在线性能剖析
 
 - 最新补充：SAC Direct/Impedance均已在source09真实更新，剩两路仍排空；nominal57/120。

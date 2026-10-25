@@ -50,10 +50,17 @@ def validate_resume_protocol(checkpoint_digest, protocol, current_digest):
             != {k: v for k, v in protocol.items() if k not in descriptive}):
         raise ValueError('Performance-only continuation changed the training contract')
     amendment = protocol.get('performance_amendment', {})
-    if amendment.get('kind') not in ('batched_finite_checks_only', 'device_replay_cache_only'):
+    if amendment.get('kind') not in ('batched_finite_checks_only', 'device_replay_cache_only',
+                                     'frozen_target_gradients_only'):
         raise ValueError('Unrecognized registered continuation amendment')
     if amendment['kind'] == 'device_replay_cache_only' and amendment.get('replay_device_cache') is not True:
         raise ValueError('Device replay continuation must explicitly enable the cache')
+    if amendment['kind'] == 'frozen_target_gradients_only':
+        if (amendment.get('freeze_target_gradients') is not True
+                or amendment.get('algorithm_scope') != ['cheq']):
+            raise ValueError('Target-gradient continuation must explicitly enable the CHEQ-only optimization')
+        if amendment.get('replay_device_cache', False) != previous.get('performance_amendment', {}).get('replay_device_cache', False):
+            raise ValueError('Target-gradient continuation changed replay cache setting')
     old_root, new_root = Path(previous['runtime']), Path(protocol['runtime'])
     for name in ('PARAMETER_HASHES.json', 'ROBOT_ASSET_HASHES.json', 'CHEQ_HASHES.json'):
         if json.loads((old_root/name).read_text()) != json.loads((new_root/name).read_text()):
@@ -67,6 +74,10 @@ def validate_resume_protocol(checkpoint_digest, protocol, current_digest):
     if amendment['kind'] == 'device_replay_cache_only':
         permitted = {'tools/train_published_compliance_20261025.py',
                      'tools/published_replay_device_cache_20261025.py'}
+    if amendment['kind'] == 'frozen_target_gradients_only':
+        permitted = {'tools/train_published_compliance_20261025.py',
+                     'tools/published_compliance_learner_20261025.py',
+                     'tools/published_target_gradients_20261025.py'}
     for name in set(old_source) | set(new_source):
         if old_source.get(name) == new_source.get(name):
             continue
@@ -139,6 +150,9 @@ def main(args):
         raise ValueError('Unregistered method/seed')
     if args.algorithm not in protocol['algorithms']:
         raise ValueError('Unregistered published algorithm')
+    if (protocol.get('performance_amendment', {}).get('kind') == 'frozen_target_gradients_only'
+            and args.algorithm != 'cheq'):
+        raise ValueError('Target-gradient continuation is registered for CHEQ only')
     batch_size = int(protocol.get('learner_batch_size', 256))
     utd = int(protocol.get('learner_updates_per_transition', 1))
     if not 256 <= batch_size <= 32768 or not 1 <= utd <= 8:
@@ -183,7 +197,7 @@ def main(args):
         steps, cycles, start_cycle = checkpoint['steps'], checkpoint['cycles'], checkpoint['cycle']+1
     cache_enabled = protocol.get('performance_amendment', {}).get('replay_device_cache', False)
     if cache_enabled:
-        if protocol['performance_amendment']['kind'] != 'device_replay_cache_only':
+        if protocol['performance_amendment']['kind'] not in ('device_replay_cache_only', 'frozen_target_gradients_only'):
             raise ValueError('Device replay requires its registered performance amendment')
         from published_replay_device_cache_20261025 import DeviceReplayCache
         replay = DeviceReplayCache(replay, learner.device)

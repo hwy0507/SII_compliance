@@ -94,6 +94,11 @@ class PublishedLearner:
             from agents.rl.sac_ensemble import SACEnsemble
             from agents.hybrid.hybrid_agent_cheq import CHEQAgent
             self.learner = SACEnsemble(**common, ensemble_size=5)
+            # Target parameters move only through Polyak updates. Preserve the
+            # actor gradient through target-Q action inputs, while avoiding
+            # accumulation of unused gradients in the target parameters.
+            from published_target_gradients_20261025 import freeze_target_parameters
+            freeze_target_parameters(self.learner)
             device = self.device
 
             class Nominal:

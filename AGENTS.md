@@ -7,6 +7,21 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新GPU窗口：辅助退出后60样本/67.64s均值50.48/23.65/31.15/43.10%，min13/0/0/0，
+仍未持续四卡50%；RESTART_ONLINE_GPU_60S_02.json，含GPU2固定评估，source11未运行。
+
+最新：target-gradient实际运行时v2验证完成，四接口两顺序4096辅助更新全used-state/非target梯度
+精确一致，0physics/无权重导入，所有辅助进程退出；共享负载提速0.972–1.293倍，不保证在线提速。
+source10首次接续协议检查因umbrella含CHEQ/SAC而被错误CHEQ-only guard拒绝，未启动，失败保留。
+已新冻结source11（不覆盖10），learner/helper与已验证10完全相同，仅trainer改amendment作用域；
+8项软件测试和实际协议验证通过。REGISTRATION_CHEQ_TARGET_GRADIENT_PREPARED_V2仅准备，
+**没有STOP/协调器/替代训练**。保持source08原critic-reset两轮cycle6/7，完成科学复核后决定是否采用；
+不要提前运行performance协调器截短试验。source11优化不再重置critic，全部学习状态保留。
+cycle3矩阵6/12，Impedance两主动通过、被动失败；长期20.64s/51.66Nm/37.27%对nominal
+20.52s/52.26Nm/24.07%，三个物理/filter/torque审计通过，无机器安全违规；仍非整体或收敛结论。
+CPU54现评Admittance，nominal59/120；原四路CHEQ和四路SAC继续，行动前重验真实进程。
+详情docs/RL_PUBLISHED_DIAGNOSTICS_20261025.md及PUBLISHED_TARGET_RUNTIME_VALIDATION_20261025.json。
+
 最新补充：SAC Direct和Impedance均已迁入source09并真实更新，其余两路仍排空。nominal57/120。
 四路critic-reset启动后的60样本/66.81s GPU均值57.17/47.87/28.50/33.22%，min2/0/0/0，
 辅助更新和profiler已结束，含GPU1固定评估；SAC Impedance启动时间与窗口关系另存证据，不称稳态
