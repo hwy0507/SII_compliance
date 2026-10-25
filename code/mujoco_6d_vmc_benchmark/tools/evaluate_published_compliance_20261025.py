@@ -10,6 +10,9 @@ import argparse
 import hashlib
 import json
 import os
+import random
+
+import numpy as np
 from pathlib import Path
 import selectors
 import shutil
@@ -26,7 +29,24 @@ def write(path, data):
     path.write_text(json.dumps(data, indent=2, allow_nan=False)+'\n')
 
 
+def seed_evaluation_actions(learner, action_seed, case_id):
+    """Seed action sampling independently of condition order and physics seed."""
+    if action_seed < 0:
+        raise ValueError('Nonnegative evaluation action seed required')
+    effective = int.from_bytes(hashlib.sha256(
+        f'{action_seed}:{case_id}'.encode()).digest()[:4], 'little')
+    random.seed(effective)
+    np.random.seed(effective)
+    torch.manual_seed(effective)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(effective)
+    learner.rng = np.random.default_rng(effective)
+    return effective
+
+
 def evaluate(args):
+    if args.stochastic != (args.action_seed is not None):
+        raise ValueError('Stochastic evaluation requires an explicit action seed; deterministic evaluation does not use one')
     torch.set_num_threads(1)
     root, output = args.runtime.resolve(), args.output.resolve()
     protocol = json.loads(args.registration.read_text())
@@ -72,12 +92,17 @@ def evaluate(args):
            if key in checkpoint['learner']})
     learner.load_state_dict(checkpoint['learner'])
     initial_updates = learner.learner.num_gradient_steps
-    receipt = dict(scope='training_conditions_independent_deterministic_evaluation',
+    receipt = dict(scope=('training_conditions_independent_stochastic_diagnostic' if args.stochastic
+                          else 'training_conditions_independent_deterministic_evaluation'),
         controller=controller, algorithm=algorithm, training_steps=checkpoint['steps'],
         checkpoint_sha256=sha(snapshot), registration_sha256=sha(args.registration),
         runtime_manifest_sha256=sha(root/'RUNTIME.json'), case_ids=[c['id'] for c in conditions],
         complete_registered_matrix=len(conditions) == len(protocol['conditions']),
-        deterministic=True, optimizer_updates_during_evaluation=0, convergence_claim=False,
+        deterministic=not args.stochastic, action_seed=args.action_seed,
+        action_seed_by_case=({c['id']: int.from_bytes(hashlib.sha256(
+            f"{args.action_seed}:{c['id']}".encode()).digest()[:4], 'little') for c in conditions}
+            if args.stochastic else {}),
+        optimizer_updates_during_evaluation=0, convergence_claim=False,
         actor_dimension=49 if algorithm == 'cheq' else 48,
         source_sha256=sha(__file__), learner_adapter_sha256=sha(adapter),
         learner_cpu=args.learner_cpu, physics_cpu=args.physics_cpu,
@@ -91,6 +116,8 @@ def evaluate(args):
     write(output/'EVALUATION.json', receipt)
     results = []
     for condition in conditions:
+        if args.stochastic:
+            seed_evaluation_actions(learner, args.action_seed, condition['id'])
         learner.reset_episode()
         folder = output/condition['id']
         command = ['taskset', '-c', str(args.physics_cpu), sys.executable,
@@ -130,7 +157,7 @@ def evaluate(args):
                     if actions == 0 and sha(folder/'rollout.mjb') != condition['model_sha256']:
                         raise ValueError('Frozen model mismatch before first action')
                     _, _, action, _ = learner.act(event['observation'],
-                        step=checkpoint['steps'], deterministic=True)
+                        step=checkpoint['steps'], deterministic=not args.stochastic)
                     child.stdin.write(json.dumps(dict(action=action.tolist()))+'\n')
                     child.stdin.flush()
                     actions += 1
@@ -159,6 +186,9 @@ if __name__ == '__main__':
     parser.add_argument('--learner-cpu', type=int, required=True)
     parser.add_argument('--physics-cpu', type=int, required=True)
     parser.add_argument('--case-id', action='append')
+    parser.add_argument('--stochastic', action='store_true',
+        help='Registered action-sampling diagnostic; leaves physical fixture seeds unchanged')
+    parser.add_argument('--action-seed', type=int)
     parser.add_argument('--audit-substeps', action='store_true',
         help='Record coincident human contact/torque for independent physical audit')
     evaluate(parser.parse_args())

@@ -50,6 +50,8 @@ def main(args):
                 '--runtime', p['runtime'], '--registration', p['training_registration'],
                 '--checkpoint', job['checkpoint'], '--output', str(folder), '--device', job['device'],
                 '--learner-cpu', str(p['cpu']), '--physics-cpu', str(p['cpu']), '--audit-substeps']
+            if p.get('stochastic', False):
+                command.extend(['--stochastic', '--action-seed', str(p['action_seed'])])
             for case in p['case_ids']:
                 command.extend(['--case-id', case])
             with (out/(method+'.log')).open('xb') as log:
@@ -79,7 +81,7 @@ def main(args):
         write(out/'FINISHED.json', dict(ended_unix=time.time(), cases=len(rows),
             complete_interim_matrix=True, complete_registered_training_cohort=False,
             final_spt_reference_selected=False, convergence_claim=False,
-            scope='Three prespecified representative training cases per interface, not final ranking'))
+            scope=p.get('scope', 'Three prespecified representative training cases per interface, not final ranking')))
     except BaseException as error:
         write(out/'FAILURE.json', dict(error=repr(error), audited_cases=len(rows)))
         raise

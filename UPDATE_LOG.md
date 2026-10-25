@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2026-10-25 — SAC最新完整周期审计与冻结Direct随机策略评估
+
+最新补充：Direct9固定随机诊断首个被动条件三seed均完整55s/1375动作、Task/Strict成功（原确定性该条件失败），但原协调器后处理审计仍待整组三条件结束，不推广其余条件/收敛。PASSIVE_FIRST_PHYSICAL_REVIEW.json留证。Impedance9三确定性条件现三审计全通过，无机器安全违规；被动失败、短/长13.04/20.04s成功，峰矩46.2532/51.7783Nm，接触舒适NA/22.0727%。IMPEDANCE_COMPLETED_REVIEW.json已冻结；剩余参数评估继续。
+
+- fetch/read main a52dfba、baseline f6e8f8c未前进。四SAC09最新完整归档Direct4/223990、Impedance2/146028、Admittance2/144265、VMC2/144759已独立审计；120条件terminal/model、冻结输入、奖励重建、网络不变验证通过，0更新/physics，图已检查。Task/Strict0/0、17/17、11/11、17/16（各30），被动均失败；Direct3例原穿透gate中止保留。
+- 四路critic loss较cycle1增至69660/2533/146717/537785，Q32510/2488/18097/28848，非健康收敛；不同完整周期/步数不做横向排名。原四训练继续，未重启或改学习率。证据runs/diagnosis_sac_latest_completed_v1/REVIEW.json。
+- evaluator新增显式stochastic/action-seed选项，默认确定性不变。真实Direct9预检64观测/320推理验证同seed精确、异seed不同、确定性seed无关/网络不变，0更新/physics。独立fixed_direct_cycle09_stochastic_v1登记同3条件×3动作seed共9回合；固定9 checkpoint/条件seed/MJB/dt，保留原确定性0/3对照，不选最好seed、不替代最终口径。
+- 三coordinator590268/590269/590270与evaluator590314/590313/590312已运行CPU0/1/2（重验），冻结runtime/stochastic_evaluation_v1；启动model/dt/ck及首253/262/305journal核验，尚无完整结果。源及产物位于集群SSD sii_rl根目录，原live runtime未改。
+- 旧cycle7固定矩阵12/12已完成、803220退出；Strict0/2/2/2（各3）、三审计通过，无机器安全违规，非当前9或全30比较。新VMC短/长27.48/31.88s、47.1963/46.6762Nm，接触NA/100%，被动失败。当前9参数评估继续；contact v2已7/12精确通过未部署。
+- 报告及小证据docs/PUBLISHED_SAC_HEALTH_AND_STOCHASTIC_EVALUATION_20261025.md/.json；未改变physics/MJB/gate/actor/filter/执行器/dt，最终收敛/SPT/指定ESN比较未完成。
+
 ## 2026-10-25 — actorLR四接口阶段复核及all5 Bellman有限诊断完成
 
 - main a52dfba / baseline f6e8f8c已fetch读取日志，无新远端变更。actorLR原8/9全部正常结束：9步数491694/492221/493070/493776；Task12/18/15/17、Strict10/18/15/17（各30）。四路末1000 critic loss4194/337248/144169/973518，均继续增长，不称收敛。完整120条件及四checkpoint收据、原整组value诊断和7→9/8→9图已复核；科学review ACTOR_LR_FINAL_SCIENTIFIC_REVIEW_V1.json。

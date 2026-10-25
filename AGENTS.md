@@ -7,6 +7,12 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新补充：Direct9固定随机诊断首个被动条件三seed均完整55s/1375动作、Task/Strict成功（原确定性该条件失败），但原协调器后处理审计仍待整组三条件结束，不推广其余条件/收敛。PASSIVE_FIRST_PHYSICAL_REVIEW.json留证。Impedance9三确定性条件现三审计全通过，无机器安全违规；被动失败、短/长13.04/20.04s成功，峰矩46.2532/51.7783Nm，接触舒适NA/22.0727%。IMPEDANCE_COMPLETED_REVIEW.json已冻结；剩余参数评估继续。
+
+最新SAC完整归档只读审计已结束：Direct4、其余2（步223990/146028/144265/144759），Task/Strict0/0、17/17、11/11、17/16；120条件terminal/model及奖励/网络不变验证，图已检查。四critic loss/Q较cycle1增加，不称健康收敛；原四SAC09仍运行，无STOP或新优化干预。审计runs/diagnosis_sac_latest_completed_v1/REVIEW.json。
+新固定Direct9随机动作诊断fixed_direct_cycle09_stochastic_v1已启动，三seed2026102541/42/43×原三0000条件共9全55s，原确定性0/3保留对照。coordinator590268/590269/590270、evaluator590314/590313/590312，CPU0/1/2（重验）；source stochastic_evaluation_v1，原live runtime未改。真实checkpoint预检同seed精确/异seed不同/确定性seed无关/网络不变通过；启动MJB/dt/ck和首journal已核验，尚无完整结果。勿按新模式挑最好seed替代确定性评估。
+旧cycle7矩阵已12/12完成、803220退出勿重启，Strict0/2/2/2（各3）、三审计通过；新VMC短/长27.48/31.88s、47.1963/46.6762Nm、舒适NA/100%。当前cycle9参数评估仍运行；contact v2已7/12精确通过未部署。证据PUBLISHED_SAC_HEALTH_AND_STOCHASTIC_EVALUATION_20261025.md/.json。最终目标仍未完成。
+
 最新actorLR8/9四接口及原整组audit/reviewer已全部正常结束，旧四learner勿重启；9 Task12/18/15/17、Strict10/18/15/17（各30），四critic loss继续增加。完整review为runs/ACTOR_LR_FINAL_SCIENTIFIC_REVIEW_V1.json。
 新bellman_minimum_cycle09_v1有限all5目标诊断完成、四辅助343783/343785/343787/343805退出，40000更新/0physics/无权重导入、同state/RNG/replay/采样验证与图通过；真实两更新preflight通过。all5相对pair降低四Q/MAE，但Admittance MAE仍高于父，CHEQ最低权重比例仍100%，不是修复。未选/启动下一在线CHEQ阶段，不自动用source13；作为算法消融候选，不称论文原样。四SAC09继续。
 Direct固定9三代表全55s/Task Strict全失败于approach，三审计通过；原3574939已退出，勿重启。剩余三接口固定9 coordinator4191390/Impedance4192870 CPU13顺序运行（重验），source12/audit_v6、checkpoint/MJB/dt原合同。原7矩阵9/12、VMC继续CPU54。contact v2现6/12精确通过，未部署；nominal96/120。
