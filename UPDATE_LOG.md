@@ -1,5 +1,21 @@
 # 更新日志
 
+## 2026-10-25 — 奖励尺度有限对照完成，正式第7轮继续
+
+- main a52dfba / baseline f6e8f8c，本轮已fetch读取；未覆盖原runtime或正式学习状态。
+- 新奖励尺度工具/报告/两项测试：四接口×两尺度×2500=20,000辅助更新结束，所有辅助进程退出。
+  同一全fresh learner、同replay采样/RNG，仅sample reward乘1或0.04；父checkpoint/replay不变，
+  0新physics、不保存或导入辅助权重。两个针对测试通过，报告生成且图已检查。
+- 原奖励单位下，scale0.04组Q/终端MAE更大；两组初始alpha相同，故相对熵压力不同且温度仍适应。
+  本短窗口不支持把reward-only缩放作为价值修复，不推断长期效果或奖励缩放普遍无效。正式reward未改。
+- 证据docs/PUBLISHED_REWARD_UNITS_PROBE_20261025.json及RL_PUBLISHED_DIAGNOSTICS_20261025.md；
+  大产物在/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/reward_units_fresh_cycle06_v1。
+- 辅助退出后60样本/67.96s四卡GPU均值38.97/43.38/27.17/34.73%，min均0，尚未达四卡50%；
+  原始CYCLE07_POST_PROBE_GPU_60S_01.json。四CHEQ source08 cycle7与四SAC source09均继续真实更新。
+  source11仍未部署，没有提前STOP或重复派发；完整两轮结束后复核再继续Goal。
+- 四路收敛、最终共同SPT和指定ESN比较仍未完成；物理/MJB/gate/actor合同/filter/执行器/dt未改。
+  只提交源码与小型证据，GitHub发布状态须另行核验。
+
 ## 2026-10-25 — 四路重置首轮完整复核与SAC第二轮价值诊断
 
 - fetch核对远端main a52dfba/baseline f6e8f8c并读取两分支日志。当前四路CHEQ及四路SAC真实运行。

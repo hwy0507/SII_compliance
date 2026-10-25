@@ -7,6 +7,15 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新奖励尺度有限对照reward_units_fresh_cycle06_v1已完成：四路×两尺度×2500=20,000辅助更新，
+0physics/无保存或导入权重/父replay与正式训练不变，四辅助进程均退出。两项测试通过、报告和图已核验。
+scale1/.04同fresh actor/critic/alpha/RNG，仅sample reward不同；初始alpha相同导致相对熵压力改变。
+换回原奖励单位后缩放组Q/终端MAE更大；温度仍在适应，无长期/在线优劣结论，不应用为正式修复。
+证据PUBLISHED_REWARD_UNITS_PROBE_20261025.json。最新60样本GPU均值38.97/43.38/27.17/34.73%，
+min均0，四卡50%未实现；CYCLE07_POST_PROBE_GPU_60S_01.json。四CHEQ source08仍cycle7、四SAC09
+继续；source11仅准备，原cycle6/7完成并复核前不写STOP/启动performance协调器。
+
+
 最新固定评估：cycle3矩阵9/12，Admittance被动/主动短期失败、主动长期成功；三项审计通过、无机器
 安全违规。长期42.88s/49.95Nm/100%对nominal42.48s/54.16Nm/100%，短期低力矩仍失败。CPU54
 现评VMC，evaluator3248872（重验）；nominal64/120。与当前reset cycle6明确分开。

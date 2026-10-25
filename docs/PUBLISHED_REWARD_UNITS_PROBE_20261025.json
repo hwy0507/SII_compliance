@@ -1,0 +1,1893 @@
+{
+  "captured_unix": 1792953218.5398474,
+  "registration": {
+    "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train08",
+    "runtime_sha256": "35a5ee2f2a0539876a155efe2b1d146a934cfa7606100bdcd005d06c1dec3b79",
+    "source_hashes": {
+      "probe_published_reward_units_20261025.py": "a5425df0ea93f7ba5fd4c32353fb7827494fe28898c3656db91efbab8dbc81e9",
+      "diagnose_published_value_bound_20261025.py": "2a5b04c7a4036d78775a7abb87170660a0e3b6b0111846f24d4a9245dc268245",
+      "validate_published_finite_check_20261025.py": "02c0c995510bca67fabe2bc06b7380da3fd1489b98fd9a695147e489c0241acd"
+    },
+    "reward_sources": {
+      "spt_rl_reward_20261025.py": "c63deee3a17318703e17744245986d97d340a741623f03abe73af5aa43ffaebf",
+      "training_comparison_metrics_20261025.py": "24ee8166b9ade665290a6883bdf39ecf615e7cbf3f954c1404e1717e7a8b2e07"
+    },
+    "checkpoints": {
+      "direct": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/critic_reset_online_seed20261025_v1/cycle_archive/direct/cycle_00006.pt",
+        "sha256": "f0c8e701ba3a30d171a3e94db7a3373b2ca17c5a0bba9f6b991798be90eb035b"
+      },
+      "impedance": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/critic_reset_online_seed20261025_v1/cycle_archive/impedance/cycle_00006.pt",
+        "sha256": "eaa586e539bbc7807b3cc8c2952d31599fdc7381646b6c3f8a9e21c80eee041c"
+      },
+      "admittance": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/critic_reset_online_seed20261025_v1/cycle_archive/admittance/cycle_00006.pt",
+        "sha256": "33417425d5e62b373de3f69e3dcf9b07f805a7e3b64e56ca02bb7099f586cdd2"
+      },
+      "vmc": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/critic_reset_online_seed20261025_v1/cycle_archive/vmc/cycle_00006.pt",
+        "sha256": "035d7c5eb63b47e0c70fe1e4b3e113f3541480078e10dad7596a60ecb0262b59"
+      }
+    },
+    "seed": 2026102530,
+    "cpus": {
+      "direct": 10,
+      "impedance": 23,
+      "admittance": 36,
+      "vmc": 49
+    },
+    "scale_order": {
+      "direct": [
+        1.0,
+        0.04
+      ],
+      "impedance": [
+        0.04,
+        1.0
+      ],
+      "admittance": [
+        1.0,
+        0.04
+      ],
+      "vmc": [
+        0.04,
+        1.0
+      ]
+    },
+    "updates_per_arm": 2500,
+    "batch_size": 16384,
+    "record_every": 250,
+    "diagnostic_samples": 4096,
+    "registered_unix": 1792952792.7173233,
+    "hypothesis": "Fixed success-unit reward scaling may change value calibration and absolute CHEQ uncertainty behavior; normalized metrics required",
+    "scope": "Fresh complete learner in each auxiliary arm; same seed/initialization/alpha/replay; only sample reward scale differs. Frozen historical context, no online success claims.",
+    "scale_rationale": ".04 is reciprocal of existing success bonus25; selected before outcomes, not fitted to a target loss",
+    "formal_training_changed": false,
+    "auxiliary_weights_saved": false,
+    "new_physics": 0
+  },
+  "files": [
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/reward_units_fresh_cycle06_v1/REGISTRATION.json",
+      "sha256": "7db534d205bad0e2a31571a74ee2fb9444304f1bba21753b0de7e6e75369c508"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/reward_units_fresh_cycle06_v1/EXECUTION.json",
+      "sha256": "fc70a80c401b73937dddd74e317f0831e1b2c256d1cd7515ce9502f5d210f93b"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/reward_units_fresh_cycle06_v1/report/SUMMARY.json",
+      "sha256": "a58a6136bd726c1e9b016b92de01d9c20bbba25a6b12eb41982a8c31e9f630ea"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/reward_units_fresh_cycle06_v1/report/reward_units.png",
+      "sha256": "d7f4091a33552ff1a8427ee70846a6172bc4f9bca7e0051dc24ab7b5d9353b0d"
+    }
+  ],
+  "methods": {
+    "direct": {
+      "receipt": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/reward_units_fresh_cycle06_v1/direct/FINISHED.json",
+        "sha256": "b3440b98bc5dd84b043b7e3dac8c13f5a529e207a03e8256edde208dab9b7cce"
+      },
+      "arms": [
+        {
+          "scale": 1.0,
+          "initial_full_state_sha256": "9e8f585f6964e9b09961e8a3fbf2fd662b2b8140c4e9cb6df7706a1709785b05",
+          "sampling_rng_sha256": "5f292c31172c87262ed58bd5b02ec050d56fc12fa58f2d39985c47c5cec407df",
+          "final": {
+            "replay_q_mean": 36.60762023925781,
+            "replay_q_mean_original_reward_units": 36.60762023925781,
+            "in_bag_terminal_mae": 60.55424118041992,
+            "in_bag_terminal_mae_original_reward_units": 60.55424118041992,
+            "alpha": 0.46953192353248596,
+            "alpha_original_reward_units": 0.46953192353248596,
+            "global_soft_bound": 1970.0546496234367,
+            "global_soft_bound_original_reward_units": 1970.0546496234367,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": 4.077328681945801,
+            "uncertainty_mean": 0.08752137422561646,
+            "implied_minimum_rl_authority_fraction": 0.060791015625
+          }
+        },
+        {
+          "scale": 0.04,
+          "initial_full_state_sha256": "9e8f585f6964e9b09961e8a3fbf2fd662b2b8140c4e9cb6df7706a1709785b05",
+          "sampling_rng_sha256": "5f292c31172c87262ed58bd5b02ec050d56fc12fa58f2d39985c47c5cec407df",
+          "final": {
+            "replay_q_mean": 37.04800033569336,
+            "replay_q_mean_original_reward_units": 926.200008392334,
+            "in_bag_terminal_mae": 37.68849182128906,
+            "in_bag_terminal_mae_original_reward_units": 942.2122955322266,
+            "alpha": 0.46949368715286255,
+            "alpha_original_reward_units": 11.737342178821564,
+            "global_soft_bound": 1941.0966610770668,
+            "global_soft_bound_original_reward_units": 48527.41652692667,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": 4.087819576263428,
+            "uncertainty_mean": 0.03876517713069916,
+            "implied_minimum_rl_authority_fraction": 0.010498046875
+          }
+        }
+      ],
+      "limitations": [
+        "Frozen historical behavior/context and no online collection; not policy-quality evidence.",
+        "Same initial alpha in both arms; reward scaling changes initial relative entropy pressure.",
+        "Normalize Q/error/alpha by reward scale before interpretation; lower raw loss is not a remedy.",
+        "One fresh seed per interface and finite update budget; no convergence or online transfer claim.",
+        "CHEQ absolute uncertainty thresholds remain unchanged; implied mixing is only a frozen-data diagnostic."
+      ]
+    },
+    "impedance": {
+      "receipt": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/reward_units_fresh_cycle06_v1/impedance/FINISHED.json",
+        "sha256": "ec5a312604c39270051933fab76d5467909612c560046d324ea2bd913f7b480e"
+      },
+      "arms": [
+        {
+          "scale": 0.04,
+          "initial_full_state_sha256": "a81cad11b230fbfa5e17b5ba015152c2a70c5f03be8d6f56e7d03926c357f9c5",
+          "sampling_rng_sha256": "c944f6dfb02a0cb287e7236ac0720d6ba26abe978823a2de597afe79ab761dea",
+          "final": {
+            "replay_q_mean": 31.272480010986328,
+            "replay_q_mean_original_reward_units": 781.8120002746582,
+            "in_bag_terminal_mae": 31.1387882232666,
+            "in_bag_terminal_mae_original_reward_units": 778.469705581665,
+            "alpha": 0.46965643763542175,
+            "alpha_original_reward_units": 11.741410940885544,
+            "global_soft_bound": 1618.3409402530547,
+            "global_soft_bound_original_reward_units": 40458.52350632637,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": 3.4177823066711426,
+            "uncertainty_mean": 0.021672485396265984,
+            "implied_minimum_rl_authority_fraction": 0.000732421875
+          }
+        },
+        {
+          "scale": 1.0,
+          "initial_full_state_sha256": "a81cad11b230fbfa5e17b5ba015152c2a70c5f03be8d6f56e7d03926c357f9c5",
+          "sampling_rng_sha256": "c944f6dfb02a0cb287e7236ac0720d6ba26abe978823a2de597afe79ab761dea",
+          "final": {
+            "replay_q_mean": 31.15266990661621,
+            "replay_q_mean_original_reward_units": 31.15266990661621,
+            "in_bag_terminal_mae": 29.2919921875,
+            "in_bag_terminal_mae_original_reward_units": 29.2919921875,
+            "alpha": 0.4696701765060425,
+            "alpha_original_reward_units": 0.4696701765060425,
+            "global_soft_bound": 1647.188246514341,
+            "global_soft_bound_original_reward_units": 1647.188246514341,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": 3.4146649837493896,
+            "uncertainty_mean": 0.039150115102529526,
+            "implied_minimum_rl_authority_fraction": 0.008544921875
+          }
+        }
+      ],
+      "limitations": [
+        "Frozen historical behavior/context and no online collection; not policy-quality evidence.",
+        "Same initial alpha in both arms; reward scaling changes initial relative entropy pressure.",
+        "Normalize Q/error/alpha by reward scale before interpretation; lower raw loss is not a remedy.",
+        "One fresh seed per interface and finite update budget; no convergence or online transfer claim.",
+        "CHEQ absolute uncertainty thresholds remain unchanged; implied mixing is only a frozen-data diagnostic."
+      ]
+    },
+    "admittance": {
+      "receipt": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/reward_units_fresh_cycle06_v1/admittance/FINISHED.json",
+        "sha256": "3c60707dfb615ffb33e59c205accde290fa427c22d88cb8cfc4495de2806c471"
+      },
+      "arms": [
+        {
+          "scale": 1.0,
+          "initial_full_state_sha256": "2ecded0b8b5c2ca4beec6b0644cd4bec2858d1a5f5f28a7a887fef8f49d07425",
+          "sampling_rng_sha256": "a39d1d85c9da548ca556e3cdd1f17f27c68f9fbba4fb860483b3ca948dd2d400",
+          "final": {
+            "replay_q_mean": 43.80500030517578,
+            "replay_q_mean_original_reward_units": 43.80500030517578,
+            "in_bag_terminal_mae": 49.1347541809082,
+            "in_bag_terminal_mae_original_reward_units": 49.1347541809082,
+            "alpha": 0.46970316767692566,
+            "alpha_original_reward_units": 0.46970316767692566,
+            "global_soft_bound": 2294.2225803559595,
+            "global_soft_bound_original_reward_units": 2294.2225803559595,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": 4.7816243171691895,
+            "uncertainty_mean": 0.04607825726270676,
+            "implied_minimum_rl_authority_fraction": 0.0078125
+          }
+        },
+        {
+          "scale": 0.04,
+          "initial_full_state_sha256": "2ecded0b8b5c2ca4beec6b0644cd4bec2858d1a5f5f28a7a887fef8f49d07425",
+          "sampling_rng_sha256": "a39d1d85c9da548ca556e3cdd1f17f27c68f9fbba4fb860483b3ca948dd2d400",
+          "final": {
+            "replay_q_mean": 43.960018157958984,
+            "replay_q_mean_original_reward_units": 1099.0004539489746,
+            "in_bag_terminal_mae": 43.962646484375,
+            "in_bag_terminal_mae_original_reward_units": 1099.066162109375,
+            "alpha": 0.4697006642818451,
+            "alpha_original_reward_units": 11.742516607046127,
+            "global_soft_bound": 2265.4105126415834,
+            "global_soft_bound_original_reward_units": 56635.26281603958,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": 4.782603740692139,
+            "uncertainty_mean": 0.021572671830654144,
+            "implied_minimum_rl_authority_fraction": 0.000732421875
+          }
+        }
+      ],
+      "limitations": [
+        "Frozen historical behavior/context and no online collection; not policy-quality evidence.",
+        "Same initial alpha in both arms; reward scaling changes initial relative entropy pressure.",
+        "Normalize Q/error/alpha by reward scale before interpretation; lower raw loss is not a remedy.",
+        "One fresh seed per interface and finite update budget; no convergence or online transfer claim.",
+        "CHEQ absolute uncertainty thresholds remain unchanged; implied mixing is only a frozen-data diagnostic."
+      ]
+    },
+    "vmc": {
+      "receipt": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/reward_units_fresh_cycle06_v1/vmc/FINISHED.json",
+        "sha256": "48207016f8adb6f10f0a58cb16f943e9be80fb06a2b12da9ecd77c0060e5f2ff"
+      },
+      "arms": [
+        {
+          "scale": 0.04,
+          "initial_full_state_sha256": "2ecded0b8b5c2ca4beec6b0644cd4bec2858d1a5f5f28a7a887fef8f49d07425",
+          "sampling_rng_sha256": "354908632a3a3d8e51cf258ad0475210b88ff98f1e5b1531095f23e1e034751c",
+          "final": {
+            "replay_q_mean": 43.91154861450195,
+            "replay_q_mean_original_reward_units": 1097.7887153625488,
+            "in_bag_terminal_mae": 43.71816635131836,
+            "in_bag_terminal_mae_original_reward_units": 1092.954158782959,
+            "alpha": 0.4696916341781616,
+            "alpha_original_reward_units": 11.74229085445404,
+            "global_soft_bound": 2265.3669826718706,
+            "global_soft_bound_original_reward_units": 56634.17456679676,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": 4.782361030578613,
+            "uncertainty_mean": 0.022708017379045486,
+            "implied_minimum_rl_authority_fraction": 0.00048828125
+          }
+        },
+        {
+          "scale": 1.0,
+          "initial_full_state_sha256": "2ecded0b8b5c2ca4beec6b0644cd4bec2858d1a5f5f28a7a887fef8f49d07425",
+          "sampling_rng_sha256": "354908632a3a3d8e51cf258ad0475210b88ff98f1e5b1531095f23e1e034751c",
+          "final": {
+            "replay_q_mean": 43.83753967285156,
+            "replay_q_mean_original_reward_units": 43.83753967285156,
+            "in_bag_terminal_mae": 43.81394577026367,
+            "in_bag_terminal_mae_original_reward_units": 43.81394577026367,
+            "alpha": 0.46969369053840637,
+            "alpha_original_reward_units": 0.46969369053840637,
+            "global_soft_bound": 2294.1768954372506,
+            "global_soft_bound_original_reward_units": 2294.1768954372506,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": 4.781116485595703,
+            "uncertainty_mean": 0.04015979915857315,
+            "implied_minimum_rl_authority_fraction": 0.005126953125
+          }
+        }
+      ],
+      "limitations": [
+        "Frozen historical behavior/context and no online collection; not policy-quality evidence.",
+        "Same initial alpha in both arms; reward scaling changes initial relative entropy pressure.",
+        "Normalize Q/error/alpha by reward scale before interpretation; lower raw loss is not a remedy.",
+        "One fresh seed per interface and finite update budget; no convergence or online transfer claim.",
+        "CHEQ absolute uncertainty thresholds remain unchanged; implied mixing is only a frozen-data diagnostic."
+      ]
+    }
+  },
+  "updates": 20000,
+  "new_physics": 0,
+  "formal_training_changed": false,
+  "auxiliary_weights_saved": false,
+  "convergence_claim": false,
+  "workers": [
+    {
+      "controller": "direct",
+      "pid": 3626078,
+      "proc_exists": false
+    },
+    {
+      "controller": "impedance",
+      "pid": 3626080,
+      "proc_exists": false
+    },
+    {
+      "controller": "admittance",
+      "pid": 3626081,
+      "proc_exists": false
+    },
+    {
+      "controller": "vmc",
+      "pid": 3626084,
+      "proc_exists": false
+    }
+  ],
+  "gpu_window": {
+    "file": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/CYCLE07_POST_PROBE_GPU_60S_01.json",
+      "sha256": "f857d49139c5c823575c0bb371ca3878176a6285adb2f899d80f4f861f2dadd9"
+    },
+    "data": {
+      "start": 1792953049.4176981,
+      "end": 1792953117.3812613,
+      "samples": [
+        {
+          "time": 1792953049.5500855,
+          "gpus": [
+            [
+              0,
+              41,
+              2568
+            ],
+            [
+              1,
+              41,
+              2544
+            ],
+            [
+              2,
+              41,
+              2574
+            ],
+            [
+              3,
+              46,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953050.683288,
+          "gpus": [
+            [
+              0,
+              45,
+              2568
+            ],
+            [
+              1,
+              47,
+              2544
+            ],
+            [
+              2,
+              37,
+              2574
+            ],
+            [
+              3,
+              44,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953051.9341934,
+          "gpus": [
+            [
+              0,
+              32,
+              2568
+            ],
+            [
+              1,
+              47,
+              2544
+            ],
+            [
+              2,
+              32,
+              2574
+            ],
+            [
+              3,
+              41,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953053.0621312,
+          "gpus": [
+            [
+              0,
+              30,
+              2568
+            ],
+            [
+              1,
+              38,
+              2544
+            ],
+            [
+              2,
+              3,
+              2574
+            ],
+            [
+              3,
+              18,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953054.175877,
+          "gpus": [
+            [
+              0,
+              37,
+              2568
+            ],
+            [
+              1,
+              41,
+              2544
+            ],
+            [
+              2,
+              15,
+              2574
+            ],
+            [
+              3,
+              29,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953055.248413,
+          "gpus": [
+            [
+              0,
+              39,
+              2568
+            ],
+            [
+              1,
+              46,
+              2544
+            ],
+            [
+              2,
+              23,
+              2574
+            ],
+            [
+              3,
+              7,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953056.358388,
+          "gpus": [
+            [
+              0,
+              32,
+              2568
+            ],
+            [
+              1,
+              46,
+              2544
+            ],
+            [
+              2,
+              42,
+              2574
+            ],
+            [
+              3,
+              49,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953057.4660153,
+          "gpus": [
+            [
+              0,
+              56,
+              2568
+            ],
+            [
+              1,
+              46,
+              2544
+            ],
+            [
+              2,
+              47,
+              2574
+            ],
+            [
+              3,
+              31,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953058.601581,
+          "gpus": [
+            [
+              0,
+              47,
+              2568
+            ],
+            [
+              1,
+              46,
+              2544
+            ],
+            [
+              2,
+              40,
+              2574
+            ],
+            [
+              3,
+              44,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953059.7346513,
+          "gpus": [
+            [
+              0,
+              24,
+              2568
+            ],
+            [
+              1,
+              41,
+              2544
+            ],
+            [
+              2,
+              34,
+              2574
+            ],
+            [
+              3,
+              0,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953060.8669496,
+          "gpus": [
+            [
+              0,
+              39,
+              2568
+            ],
+            [
+              1,
+              51,
+              2544
+            ],
+            [
+              2,
+              17,
+              2574
+            ],
+            [
+              3,
+              50,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953061.9956388,
+          "gpus": [
+            [
+              0,
+              50,
+              2568
+            ],
+            [
+              1,
+              58,
+              2544
+            ],
+            [
+              2,
+              12,
+              2574
+            ],
+            [
+              3,
+              29,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953063.1369078,
+          "gpus": [
+            [
+              0,
+              17,
+              2568
+            ],
+            [
+              1,
+              62,
+              2544
+            ],
+            [
+              2,
+              26,
+              2574
+            ],
+            [
+              3,
+              52,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953064.2764006,
+          "gpus": [
+            [
+              0,
+              36,
+              2568
+            ],
+            [
+              1,
+              47,
+              2544
+            ],
+            [
+              2,
+              17,
+              2574
+            ],
+            [
+              3,
+              51,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953065.411241,
+          "gpus": [
+            [
+              0,
+              37,
+              2568
+            ],
+            [
+              1,
+              44,
+              2544
+            ],
+            [
+              2,
+              24,
+              2574
+            ],
+            [
+              3,
+              53,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953066.5443559,
+          "gpus": [
+            [
+              0,
+              3,
+              2568
+            ],
+            [
+              1,
+              46,
+              2544
+            ],
+            [
+              2,
+              48,
+              2574
+            ],
+            [
+              3,
+              60,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953067.6838872,
+          "gpus": [
+            [
+              0,
+              29,
+              2568
+            ],
+            [
+              1,
+              30,
+              2544
+            ],
+            [
+              2,
+              36,
+              2574
+            ],
+            [
+              3,
+              43,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953068.815925,
+          "gpus": [
+            [
+              0,
+              47,
+              2568
+            ],
+            [
+              1,
+              30,
+              2544
+            ],
+            [
+              2,
+              39,
+              2574
+            ],
+            [
+              3,
+              38,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953069.956561,
+          "gpus": [
+            [
+              0,
+              67,
+              2568
+            ],
+            [
+              1,
+              54,
+              2544
+            ],
+            [
+              2,
+              44,
+              2574
+            ],
+            [
+              3,
+              38,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953071.090208,
+          "gpus": [
+            [
+              0,
+              72,
+              2568
+            ],
+            [
+              1,
+              86,
+              2544
+            ],
+            [
+              2,
+              42,
+              2574
+            ],
+            [
+              3,
+              17,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953072.2225058,
+          "gpus": [
+            [
+              0,
+              53,
+              2568
+            ],
+            [
+              1,
+              47,
+              2544
+            ],
+            [
+              2,
+              29,
+              2574
+            ],
+            [
+              3,
+              0,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953073.3316262,
+          "gpus": [
+            [
+              0,
+              21,
+              2568
+            ],
+            [
+              1,
+              31,
+              2544
+            ],
+            [
+              2,
+              15,
+              2574
+            ],
+            [
+              3,
+              0,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953074.471754,
+          "gpus": [
+            [
+              0,
+              29,
+              2568
+            ],
+            [
+              1,
+              40,
+              2544
+            ],
+            [
+              2,
+              0,
+              2574
+            ],
+            [
+              3,
+              27,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953075.6047447,
+          "gpus": [
+            [
+              0,
+              30,
+              2568
+            ],
+            [
+              1,
+              0,
+              2544
+            ],
+            [
+              2,
+              6,
+              2574
+            ],
+            [
+              3,
+              34,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953076.7359562,
+          "gpus": [
+            [
+              0,
+              60,
+              2568
+            ],
+            [
+              1,
+              0,
+              2544
+            ],
+            [
+              2,
+              15,
+              2574
+            ],
+            [
+              3,
+              0,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953077.9549897,
+          "gpus": [
+            [
+              0,
+              11,
+              2568
+            ],
+            [
+              1,
+              61,
+              2544
+            ],
+            [
+              2,
+              16,
+              2574
+            ],
+            [
+              3,
+              55,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953079.089955,
+          "gpus": [
+            [
+              0,
+              1,
+              2568
+            ],
+            [
+              1,
+              64,
+              2544
+            ],
+            [
+              2,
+              8,
+              2574
+            ],
+            [
+              3,
+              54,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953080.2082043,
+          "gpus": [
+            [
+              0,
+              14,
+              2568
+            ],
+            [
+              1,
+              54,
+              2544
+            ],
+            [
+              2,
+              37,
+              2574
+            ],
+            [
+              3,
+              41,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953081.315632,
+          "gpus": [
+            [
+              0,
+              0,
+              2568
+            ],
+            [
+              1,
+              62,
+              2544
+            ],
+            [
+              2,
+              40,
+              2574
+            ],
+            [
+              3,
+              34,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953082.4546926,
+          "gpus": [
+            [
+              0,
+              0,
+              2568
+            ],
+            [
+              1,
+              61,
+              2544
+            ],
+            [
+              2,
+              25,
+              2574
+            ],
+            [
+              3,
+              31,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953083.5422175,
+          "gpus": [
+            [
+              0,
+              11,
+              2568
+            ],
+            [
+              1,
+              48,
+              2544
+            ],
+            [
+              2,
+              21,
+              2574
+            ],
+            [
+              3,
+              44,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953084.6804483,
+          "gpus": [
+            [
+              0,
+              35,
+              2568
+            ],
+            [
+              1,
+              37,
+              2544
+            ],
+            [
+              2,
+              44,
+              2574
+            ],
+            [
+              3,
+              65,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953085.7489913,
+          "gpus": [
+            [
+              0,
+              46,
+              2568
+            ],
+            [
+              1,
+              65,
+              2544
+            ],
+            [
+              2,
+              38,
+              2574
+            ],
+            [
+              3,
+              47,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953086.8631563,
+          "gpus": [
+            [
+              0,
+              56,
+              2568
+            ],
+            [
+              1,
+              30,
+              2544
+            ],
+            [
+              2,
+              38,
+              2574
+            ],
+            [
+              3,
+              40,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953087.994516,
+          "gpus": [
+            [
+              0,
+              62,
+              2568
+            ],
+            [
+              1,
+              30,
+              2544
+            ],
+            [
+              2,
+              37,
+              2574
+            ],
+            [
+              3,
+              43,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953089.125849,
+          "gpus": [
+            [
+              0,
+              45,
+              2568
+            ],
+            [
+              1,
+              25,
+              2544
+            ],
+            [
+              2,
+              31,
+              2574
+            ],
+            [
+              3,
+              24,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953090.2573743,
+          "gpus": [
+            [
+              0,
+              24,
+              2568
+            ],
+            [
+              1,
+              43,
+              2544
+            ],
+            [
+              2,
+              12,
+              2574
+            ],
+            [
+              3,
+              29,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953091.395891,
+          "gpus": [
+            [
+              0,
+              41,
+              2568
+            ],
+            [
+              1,
+              45,
+              2544
+            ],
+            [
+              2,
+              0,
+              2574
+            ],
+            [
+              3,
+              45,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953092.5228474,
+          "gpus": [
+            [
+              0,
+              44,
+              2568
+            ],
+            [
+              1,
+              67,
+              2544
+            ],
+            [
+              2,
+              13,
+              2574
+            ],
+            [
+              3,
+              43,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953093.6556754,
+          "gpus": [
+            [
+              0,
+              54,
+              2568
+            ],
+            [
+              1,
+              49,
+              2544
+            ],
+            [
+              2,
+              29,
+              2574
+            ],
+            [
+              3,
+              63,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953094.7935574,
+          "gpus": [
+            [
+              0,
+              60,
+              2568
+            ],
+            [
+              1,
+              40,
+              2544
+            ],
+            [
+              2,
+              30,
+              2574
+            ],
+            [
+              3,
+              43,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953095.9262323,
+          "gpus": [
+            [
+              0,
+              56,
+              2568
+            ],
+            [
+              1,
+              37,
+              2544
+            ],
+            [
+              2,
+              39,
+              2574
+            ],
+            [
+              3,
+              34,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953097.0604122,
+          "gpus": [
+            [
+              0,
+              72,
+              2568
+            ],
+            [
+              1,
+              37,
+              2544
+            ],
+            [
+              2,
+              36,
+              2574
+            ],
+            [
+              3,
+              39,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953098.1490407,
+          "gpus": [
+            [
+              0,
+              39,
+              2568
+            ],
+            [
+              1,
+              37,
+              2544
+            ],
+            [
+              2,
+              38,
+              2574
+            ],
+            [
+              3,
+              56,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953099.2833993,
+          "gpus": [
+            [
+              0,
+              35,
+              2568
+            ],
+            [
+              1,
+              49,
+              2544
+            ],
+            [
+              2,
+              27,
+              2574
+            ],
+            [
+              3,
+              43,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953100.4157517,
+          "gpus": [
+            [
+              0,
+              74,
+              2568
+            ],
+            [
+              1,
+              78,
+              2544
+            ],
+            [
+              2,
+              35,
+              2574
+            ],
+            [
+              3,
+              46,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953101.663194,
+          "gpus": [
+            [
+              0,
+              48,
+              2568
+            ],
+            [
+              1,
+              32,
+              2544
+            ],
+            [
+              2,
+              3,
+              2574
+            ],
+            [
+              3,
+              16,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953102.792208,
+          "gpus": [
+            [
+              0,
+              38,
+              2568
+            ],
+            [
+              1,
+              31,
+              2544
+            ],
+            [
+              2,
+              29,
+              2574
+            ],
+            [
+              3,
+              14,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953103.9282138,
+          "gpus": [
+            [
+              0,
+              53,
+              2568
+            ],
+            [
+              1,
+              35,
+              2544
+            ],
+            [
+              2,
+              31,
+              2574
+            ],
+            [
+              3,
+              12,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953105.063375,
+          "gpus": [
+            [
+              0,
+              46,
+              2568
+            ],
+            [
+              1,
+              26,
+              2544
+            ],
+            [
+              2,
+              36,
+              2574
+            ],
+            [
+              3,
+              29,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953106.1772773,
+          "gpus": [
+            [
+              0,
+              39,
+              2568
+            ],
+            [
+              1,
+              41,
+              2544
+            ],
+            [
+              2,
+              44,
+              2574
+            ],
+            [
+              3,
+              34,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953107.310299,
+          "gpus": [
+            [
+              0,
+              23,
+              2568
+            ],
+            [
+              1,
+              63,
+              2544
+            ],
+            [
+              2,
+              35,
+              2574
+            ],
+            [
+              3,
+              32,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953108.4434829,
+          "gpus": [
+            [
+              0,
+              62,
+              2568
+            ],
+            [
+              1,
+              28,
+              2544
+            ],
+            [
+              2,
+              23,
+              2574
+            ],
+            [
+              3,
+              27,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953109.5806863,
+          "gpus": [
+            [
+              0,
+              66,
+              2568
+            ],
+            [
+              1,
+              41,
+              2544
+            ],
+            [
+              2,
+              36,
+              2574
+            ],
+            [
+              3,
+              23,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953110.7163324,
+          "gpus": [
+            [
+              0,
+              13,
+              2568
+            ],
+            [
+              1,
+              61,
+              2544
+            ],
+            [
+              2,
+              22,
+              2574
+            ],
+            [
+              3,
+              36,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953111.8503163,
+          "gpus": [
+            [
+              0,
+              47,
+              2568
+            ],
+            [
+              1,
+              65,
+              2544
+            ],
+            [
+              2,
+              21,
+              2574
+            ],
+            [
+              3,
+              0,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953112.959575,
+          "gpus": [
+            [
+              0,
+              37,
+              2568
+            ],
+            [
+              1,
+              62,
+              2544
+            ],
+            [
+              2,
+              29,
+              2574
+            ],
+            [
+              3,
+              0,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953114.182976,
+          "gpus": [
+            [
+              0,
+              30,
+              2568
+            ],
+            [
+              1,
+              22,
+              2544
+            ],
+            [
+              2,
+              9,
+              2574
+            ],
+            [
+              3,
+              57,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953115.246413,
+          "gpus": [
+            [
+              0,
+              31,
+              2568
+            ],
+            [
+              1,
+              11,
+              2544
+            ],
+            [
+              2,
+              11,
+              2574
+            ],
+            [
+              3,
+              65,
+              3063
+            ]
+          ]
+        },
+        {
+          "time": 1792953116.3811467,
+          "gpus": [
+            [
+              0,
+              52,
+              2568
+            ],
+            [
+              1,
+              1,
+              2544
+            ],
+            [
+              2,
+              23,
+              2574
+            ],
+            [
+              3,
+              19,
+              3063
+            ]
+          ]
+        }
+      ],
+      "means": [
+        38.96666666666667,
+        43.38333333333333,
+        27.166666666666668,
+        34.733333333333334
+      ],
+      "minimum": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cheq_progress_start": {
+        "direct": {
+          "cycle": 7,
+          "steps": 390147,
+          "completed_conditions": 10,
+          "running": 9,
+          "pending": 11,
+          "updates": 621906,
+          "wall_time_utc": 1792953049.3966699
+        },
+        "impedance": {
+          "cycle": 7,
+          "steps": 401527,
+          "completed_conditions": 18,
+          "running": 9,
+          "pending": 3,
+          "updates": 642024,
+          "wall_time_utc": 1792953049.3596373
+        },
+        "admittance": {
+          "cycle": 7,
+          "steps": 384325,
+          "completed_conditions": 9,
+          "running": 9,
+          "pending": 12,
+          "updates": 607510,
+          "wall_time_utc": 1792953049.398688
+        },
+        "vmc": {
+          "cycle": 7,
+          "steps": 394589,
+          "completed_conditions": 13,
+          "running": 9,
+          "pending": 8,
+          "updates": 626626,
+          "wall_time_utc": 1792953049.3526065
+        }
+      },
+      "context": "All reward-unit auxiliary workers verified exited; four CHEQ source08 cycle7, four SAC source09 and fixed VMC inference GPU3. No auxiliary GPU updates; shared online window."
+    }
+  },
+  "interpretation": "No support in this finite fresh-learner window for reward-only rescaling as a value-calibration repair. Equal initial alpha changes relative entropy pressure; no general or long-run conclusion. No auxiliary weight promotion."
+}

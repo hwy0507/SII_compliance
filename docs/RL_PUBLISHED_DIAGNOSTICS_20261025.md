@@ -1733,3 +1733,52 @@ is accompanied by failure and SPT0, so it is not a successful compliance result.
 Nominal matrix progress is64/120. No final shared SPT reference or ESN comparison
 has been produced. Rows and audit hashes are included as a separate section in
 `PUBLISHED_RESTART_CYCLE06_REVIEW_20261025.json`.
+
+
+## Finite reward-unit study, original versus reciprocal success bonus
+
+The registered `runs/reward_units_fresh_cycle06_v1` study completed four
+interfaces × two scales × 2500 updates = 20,000 auxiliary updates. Both arms
+start from the same entirely fresh actor, critics, targets, optimizers,
+alpha and RNG (seed2026102530), sampling the same immutable cycle6 replay.
+Only sampled reward tensors are multiplied by1 or0.04; stored replay,
+terminal masks and historical context remain unchanged. The scale0.04 was
+chosen before outcomes as the reciprocal of the existing success bonus25.
+Batch16384, gamma0.9995, architecture and initial alpha1 are unchanged.
+Consequently this deliberately changes relative entropy pressure; it is not
+a change of units applied consistently to the entire soft objective.
+
+| Interface | Q mean, scale1 /0.04 | In-bag terminal MAE, scale1 /0.04 | Alpha, scale1 /0.04 |
+|---|---:|---:|---:|
+| Direct |36.6076 /926.2000|60.5542 /942.2123|0.46953 /11.73734|
+| Impedance |31.1527 /781.8120|29.2920 /778.4697|0.46967 /11.74141|
+| Admittance |43.8050 /1099.0005|49.1348 /1099.0662|0.46970 /11.74252|
+| VMC |43.8375 /1097.7887|43.8139 /1092.9542|0.46969 /11.74229|
+
+All table values are converted to original reward units, including alpha.
+Raw Q magnitudes remain similar, so lower reward units alone do not establish
+better value calibration. Temperature is still adapting. All sampled Q are
+below the current-alpha conservative bound at these short fresh states;
+this is not calibration or convergence. Implied minimum-authority fractions
+are6.0791%/1.0498%,0.8545%/0.0732%,0.7812%/0.0732%,0.5127%/0.0488%
+respectively, with unchanged absolute CHEQ uncertainty thresholds. These are
+frozen-data diagnostics, not observed online task or safety outcomes.
+
+This window does not justify applying reward-only rescaling as a repair;
+it does not show that reward scaling is generally harmful. No formal reward
+or training state changed, no physics ran, and no auxiliary weights were
+saved or promoted. All four auxiliary processes exited. Two focused tests
+passed (reward-copy/mask preservation and entropy-temperature bound units);
+the registered reporter completed and its plot was visually checked.
+Evidence, source/registration/report/plot hashes and limitations are in
+`PUBLISHED_REWARD_UNITS_PROBE_20261025.json`. Full artifacts remain at
+`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/reward_units_fresh_cycle06_v1`.
+
+After auxiliary exit, a60-sample window over67.96s measured GPU means
+38.97/43.38/27.17/34.73%, with instantaneous minima0/0/0/0. This includes
+four CHEQsource08 cycle7 learners, four SACsource09 learners and fixed VMC
+inference onGPU3; it is a shared online window, not isolated throughput.
+The requested four-card50% target remains unmet. Raw measurements are
+`runs/CYCLE07_POST_PROBE_GPU_60S_01.json`; source_train11 remains prepared only.
+The original two-cycle critic-reset study must finish and be reviewed before
+any scientific continuation. No early STOP or replacement learner was added.
