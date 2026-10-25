@@ -439,3 +439,36 @@ This is one early-checkpoint/case instrumentation check, not a new final policy
 or altered training protocol. The v1 waiting-only registration was superseded
 before physics; do not launch it. Full55s transparency and actual actuator
 linkage are still pending. See the diagnostic document for tests and scope.
+
+
+## Current update: fifth cycle, diagnostics and critic-only restart trial
+
+The earlier live-state paragraphs are historical snapshots. CHEQ now uses
+source_train08/performance_v3; all four cycle4 boundaries are archived and
+cycle5 is collecting. Direct regressed from6/30 strict success to0/30;
+Impedance/Admittance/VMC have16/14/17 out of30. Necessary soft-value bounds and
+controlled feedback tests still do not establish healthy optimization.
+
+A two-cycle scientific critic-only restart is registered in
+`runs/cohort30_v2/REGISTRATION_CHEQ_CRITIC_RESTART_V1.json` and draining parents
+through `runs/critic_reset_online_seed20261025_v1`. It preserves actor/alpha,
+their optimizers, RNG, replay, all hyperparameters and physical contracts;
+critics/targets/critic Adam are freshly initialized from a registered seed.
+This is explicitly not an exact-state performance migration. Original parents
+and histories are preserved; new-stage plateau history is empty. CHEQ mixing
+may change as a consequence of new uncertainty. No auxiliary weights enter
+training. Real-network preservation tests and a complete Direct parent
+preflight passed; consult MIGRATION/LAUNCH receipts before claiming new updates.
+The overall convergence Goal stays active after this bounded repair trial.
+
+SAC's separately registered cache migration is still draining through its
+original coordinator. Do not restore STOP_REQUESTED parents or launch duplicates.
+The cycle1 fixed-policy representative matrix finished12/12 with all physical,
+filter and torque checks; a new exact-cycle3 matrix now occupies CPU54.
+The nominal matrix has47/120 audited cases at capture and keeps CPUs52/53.
+Details, assumptions, auxiliary failure receipts and compact evidence are in
+[learning diagnostics](RL_PUBLISHED_DIAGNOSTICS_20261025.md).
+
+Fresh-critic and feedback probes have ended; they are finite useful diagnostics,
+not permanent GPU occupancy. No final SPT reference, designated-ESN comparison,
+healthy convergence or sustained all-card50% GPU utilization is claimed.

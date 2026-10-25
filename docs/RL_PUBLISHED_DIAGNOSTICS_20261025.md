@@ -1136,3 +1136,175 @@ tracks the growing Q scale, and finite losses do not establish stability.
 The next scientific priority is value-learning stability, not declaring a
 plateau sufficient or merely accumulating more transitions. No new scientific
 repair, reward/discount change or privileged critic input has been selected.
+
+
+## Fifth CHEQ cycle: Direct regression and continued optimization concerns
+
+All four cycle4 boundaries (the fifth complete cycle) are archived without
+misses in `runs/cheq_performance_seed20261025_v3/cycle_archive`. Every method adds
+41,250 new transitions this cycle; retained totals include earlier imported data.
+
+| Interface | Retained transitions | Task / Strict, each /30 | Mean reward | Passive / short / long strict, each /10 |
+|---|---:|---:|---:|---:|
+| Direct |285444|0 /0|−32.889049|0 /0 /0|
+| Impedance |285971|17 /16|−4.035049|0 /9 /7|
+| Admittance |286820|15 /14|−8.756420|0 /9 /5|
+| VMC |287526|17 /17|−2.836609|0 /10 /7|
+
+Direct regressed from6 strict successes in cycle3 to0. The parameter methods'
+results fluctuate or remain similar; this is not learned convergence. All
+four were subsequently verified collecting cycle5 transitions. The complete
+120 episode summaries, cycle history and archive snapshot are in
+`PUBLISHED_VALUE_BOUND_AND_FEEDBACK_20261025.json`.
+
+## Necessary upper bound: current positive values are not calibrated soft returns
+
+`runs/value_bound_cycle03_v1` audits all120 cycle3 episodes, reconstructs every
+reward term and the discounted shaping telescope, and aligns rewards/dones with
+the immutable replay. For fixed checkpoint policy and fixed current alpha,
+all running costs are nonpositive, shaping telescopes to −5 phi(initial), and
+the sole terminal plus efficiency reward is at most30. Differential entropy is
+at most log(V), where V is the action-space volume. A relaxed, time-independent
+necessary bound on Q is therefore:
+
+`Q <= 30 + alpha * log(V) * sum(gamma**k for k in 1..1374)`.
+
+Using the full horizon rather than hidden remaining time makes this a valid
+upper bound even for a critic averaging over an unobserved episode clock.
+Direct has log(V)=6 log(2), Impedance5 log(2), Admittance/VMC7 log(2).
+The analysis is about the frozen-policy/current-alpha return, not a future
+changing temperature schedule. All network tensors remain unchanged;0 updates
+and0 physics. Four mathematical regression tests pass.
+
+| Interface | Conservative global upper bound | Sampled online critic values above bound |
+|---|---:|---:|
+| Direct |3404.053884|99.4873%|
+| Impedance |3654.932061|51.0498%|
+| Admittance |15887.996124|57.6416%|
+| VMC |18637.881140|62.7881%|
+
+Fractions use5 critics times4096 sampled rows, with0.01 numerical tolerance;
+they are not a whole-population estimate. A violation establishes failure to
+represent the corresponding soft return, not a specific software bug or its
+repair. Values below the bound are not automatically correct. The separately
+computed remaining-time threshold is only contextual: an aliased critic can
+legitimately exceed a particular hidden-time value. Likewise, raw terminal
+MAE is a useful diagnostic but cannot be required to vanish when the critic
+cannot distinguish a terminal-time observation from similar earlier states.
+
+## Actor and temperature feedback: finite controlled intervention
+
+`runs/policy_feedback_cycle03_v1` restores identical full cycle3 state for three
+arms, each1000 updates: ordinary full learning; moving actor with fixed alpha;
+and frozen actor/alpha with moving critics and targets. All use the same replay
+sampling stream. Per-update NumPy/CUDA reseeding couples critic pairs and next
+policy standard-normal samples; it intentionally differs from the formal RNG
+stream. Actor/optimizer and alpha/optimizer invariance are checked for frozen
+arms; critic updates and immutable parents are checked for all arms. All12,000
+auxiliary updates completed, and weights were discarded.
+
+| Interface | Initial Q mean | Full final | Moving actor, fixed alpha | Frozen actor and alpha |
+|---|---:|---:|---:|---:|
+| Direct |4769.2334|4778.0337|4777.3706|4770.4580|
+| Impedance |3455.6023|3482.2039|3481.1443|3479.1492|
+| Admittance |33116.6094|33576.2891|33556.2266|33533.4219|
+| VMC |17964.0820|18083.9727|18084.2793|17967.6582|
+
+Fixing the actor reduces short-window growth strongly for Direct/VMC; it does
+not eliminate growth for Impedance/Admittance. Fixing alpha alone is insufficient.
+This does not identify a unique cause or prove long-run online improvement.
+Initial actual optimizer rows also have negative target means in all four
+methods; do not assert they all began with positive entropy-driven targets.
+
+## Fresh-critic fixed-policy evaluation and a separate online repair trial
+
+`runs/fresh_critic_evaluation_cycle03_v2` completed24,000 auxiliary updates:
+four interfaces, batch16384 versus256,3000 updates each. Actor, alpha and their
+optimizers remain fixed at the same cycle3 checkpoint. Both arms start with
+identical fresh critics, matching targets and empty critic Adam state. Replay,
+reward, gamma and masks stay unchanged. This is equal updates, not equal sampled
+rows (a64-fold difference); it cannot rank online batch settings. All protected
+state assertions pass and auxiliary weights are discarded.
+
+| Interface | Q mean at3000 updates, batch16384 /256 | In-bag terminal MAE,16384 /256 |
+|---|---:|---:|
+| Direct |−124.2667 /−119.8012|87.1947 /82.0219|
+| Impedance |−87.7786 /−84.2734|89.0208 /79.4748|
+| Admittance |−170.9697 /−173.5242|294.6170 /290.5739|
+| VMC |−253.0531 /−249.8849|312.8596 /309.8316|
+
+No sampled Q exceeds the positive global bound, but values are still moving
+and terminal errors remain. Starting near zero also reduces value magnitude
+mechanically; this is not a convergence or repair claim. The failedv1 run is
+retained: its actor-invariance assertion compared CPU and CUDA tensors directly
+and exited before any optimizer updates or physics. v2 compares on CPU.
+
+A separate bounded online critic-reset trial is now registered in
+`runs/cohort30_v2/REGISTRATION_CHEQ_CRITIC_RESTART_V1.json`. It isolates critic
+initialization: published learner updates, batch16384, UTD2, gamma, actor,
+alpha, their optimizers, replay/masks, RNG and all physical contracts remain.
+Fresh critics/targets and a new empty critic optimizer are created from the
+registered seed2026102528 at a complete parent-cycle boundary. No auxiliary
+weights are imported. The CHEQ uncertainty/mixing output can change as a
+consequence of changing critics; the mixing rule and actor inputs stay fixed.
+
+The new stage runs exactly two complete30-condition cycles per interface for
+review; that budget is not a convergence criterion or a cap on the overall Goal.
+Original checkpoints and their cycle histories are preserved. New-stage plateau
+detection starts with an empty history, so it cannot combine pre-reset and
+post-reset cycles. Real-network tests verify actor/alpha/optimizer/RNG preservation,
+empty critic optimizer, target equality, restoration, parent immutability and
+rejection of unintended optimizer/target changes. Runtime source_train08 is
+unchanged; preparation/dispatch code is separately frozen in
+`runtime/critic_restart_dispatch_v1`. Consult dispatch receipts for actual launch
+state; registration alone does not establish that a new learner has updated.
+
+## All12 fixed-cycle1 representatives completed; cycle3 comparison started
+
+`runs/interim_cheq_cycle01_representatives_v1/FINISHED.json` confirms12/12 audited
+cases. All four passive cases fail; Direct also fails both active cases.
+Impedance, Admittance and VMC pass both active cases. Original55s audit horizon,
+physical substeps, public filter and common torque projection checks pass;
+no machine safety violations are reported. This is three cases per method,
+not the full30-condition final comparison.
+
+The additional completed Admittance/VMC rows are:
+
+| Interface / condition0000 | Learned / nominal completion s | Learned / nominal peak Nm | Contact-only compliance |
+|---|---:|---:|---:|
+| Admittance passive |fail /fail|40.5852 /40.7253|NA /NA|
+| Admittance short |46.40 /45.28|52.4769 /53.9337|NA /NA|
+| Admittance long |40.08 /42.48|50.7246 /54.1645|100% /100%|
+| VMC passive |fail /fail|38.2458 /38.2857|NA /NA|
+| VMC short |27.28 /27.44|47.2052 /47.2274|NA /NA|
+| VMC long |31.64 /31.88|46.6635 /46.6593|100% /100%|
+
+Admittance long contact duration is5.07970s versus5.20980s; VMC6.64985s versus
+6.64235s. The previously reported Impedance long comfort/efficiency tradeoff
+remains:52.40s versus20.52s,74.48% versus24.07% contact compliance. A favorable
+single row does not establish a method winner.
+
+The independent cycle3 matrix uses the same12 prespecified cases and the same
+copied nominal rows, exact archived cycle3 checkpoints, source_train07 and
+wrapperv6. Its coordinator is frozen in `runtime/interim_matrix_cycle03_v1`,
+with an explicit `cheq_cycle03_` label prefix. Registration hashes checkpoints,
+runtime, training protocol, audit helpers and nominal snapshot. It is running
+on CPU54, not an extra full-cohort final test. The nominal matrix has47/120
+completed rows at this evidence capture and continues on CPUs52/53. No final
+common empirical SPT reference or designated-ESN comparison is available yet.
+
+
+At the later dispatch check, the critic-reset coordinator PID429389 and its
+migration-period archiver PID500618 are live; all four parent stop requests
+refer to this registered boundary handoff. No replacement learner has launched
+yet, and there is no migration failure. SAC's existing cache migration also
+still has no replacement at this capture. The original learners continue
+collecting real transitions. The nominal matrix has subsequently reached49/120.
+
+After all finite auxiliary updates ended, a new60-sample window spanning66.75s
+measured GPU means34.43/38.67/34.88/39.22%, with at least one0% instantaneous
+sample on each card. It includes formal CHEQ/SAC and fixed-policy GPU0 inference;
+the new restart coordinator is only waiting/preparing on CPU. This again falls
+short of sustained all-card50%. Raw samples are
+`runs/SOURCE08_ONLINE_GPU_60S_02.json`; do not count completed probes as current
+GPU load. New stages must be judged by real learning and evaluation, not load.

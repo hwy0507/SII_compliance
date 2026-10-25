@@ -1,5 +1,34 @@
 # 更新日志
 
+## 2026-10-25 — soft价值上界、actor反馈与独立critic重置验证
+
+- fetch核对远端main a52dfba/baseline f6e8f8c，读取两分支日志；保留本地未发布历史。
+- CHEQ第五完整轮全部归档：Task/Strict为0/0、17/16、15/14、17/17（各30），均值
+  −32.889049/−4.035049/−8.756420/−2.836609。Direct从6/30退至0/30，不能称收敛。
+- 新必要soft-Q上界审计重建120回合奖励/势能望远镜，replay对齐、网络不变，0更新/0physics。
+  四路5critic×4096样本超global上界99.49/51.05/57.64/62.79%；只针对固定policy/current alpha，
+  不能定位代码bug。hidden-clock阈值和terminal MAE需考虑无时钟观测混叠。4项数学测试通过。
+- 三arm反馈干预12000辅助更新完成，actor/温度冻结显著减弱Direct/VMC增长，另两路仍增长；
+  不是长期因果或在线改善证明。fresh critic两batch干预24000更新完成，无巨额正Q但仍不稳定，
+  不按此宣称小batch更优。固定actor/alpha/optimizer、父状态/replay不变均检查，辅助权重丢弃。
+  fresh v1因CPU/CUDA张量比较错误在0更新/0physics失败，v2修复比较设备，失败收据保留。
+- 登记独立critic-reset在线短阶段：仅重置critic/target/critic optimizer，保留actor/alpha及其
+  optimizer、RNG、replay、reward、gamma、batch16384/UTD2和physics/control合同；不导入辅助权重。
+  先完成父cycle5，再每接口运行两个完整30条件周期复核；不当作Goal总预算或收敛门。CHEQ mixing
+  输出可能随critic变化而改变，规则未改。重置前history保存，新阶段plateau history清空。
+  三种接口真实网络回归（含拒绝越界改动）与实际Direct完整checkpoint准备通过；协调器已启动排空，
+  实际替代learner更新须继续核验，尚不能称在线修复有效。source_train08未变，dispatch独立冻结。
+- 旧cycle1固定矩阵12/12完成物理/filter/力矩审计；Direct三失败、参数三路各两个active成功，
+  passive全失败；无机器安全违规。新cycle3同12条件配对矩阵已启动，nominal47/120继续；无最终SPT/ESN比较。
+- 后续nominal达49/120；critic-reset协调器429389/early归档500618已写父边界交接STOP，
+  尚无替代learner，无迁移失败。无辅助更新窗口60样本/66.75s GPU均值34.43/38.67/34.88/39.22%，
+  各卡含瞬时0，仍未满足持续50%；不把结束的辅助训练当当前负载。
+- 修改诊断/重置工具、对应测试、可配置中期标签、诊断/执行文档、AGENTS及小型证据JSON。
+  服务器基址 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`；
+  新运行详见docs/RL_PUBLISHED_DIAGNOSTICS_20261025.md。目标未完成，四卡持续50%未证明；
+  GitHub发布状态另行核验，不把本地commit写成已push。
+
+
 ## 2026-10-25 — GPU replay精确缓存接续与SAC Direct第二轮诊断
 
 - 再次fetch并读取远端main a52dfba/baseline f6e8f8c日志，保留本地未发布提交与现有训练。

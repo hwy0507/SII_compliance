@@ -61,7 +61,7 @@ def main(args):
                     raise RuntimeError('Physical evaluation failed; retain all evidence: '+method)
             for case in p['case_ids']:
                 episode = folder/case
-                physical = summarize(episode, 'cheq_cycle01_'+method, case)
+                physical = summarize(episode, p.get('method_label_prefix', 'cheq_cycle01_')+method, case)
                 filtered, torque = filter_audit(episode), torque_audit(episode)
                 write(episode/'PHYSICAL_AUDIT.json', physical)
                 write(episode/'FILTER_REPLAY_AUDIT.json', filtered)

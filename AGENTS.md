@@ -7,6 +7,40 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+- **最新科学修复派发（优先于下方历史快照）**：`runs/critic_reset_online_seed20261025_v1`，
+  `REGISTRATION_CHEQ_CRITIC_RESTART_V1.json`，协调器PID429389（行动前重验）。父CHEQ performance v3
+  正在cycle5，STOP_REQUESTED是完整周期边界交接；勿恢复父进程或重复启动协调器。新阶段不是精确性能
+  接续：仅重置critic/target/critic Adam，保留actor/alpha/它们的optimizer、RNG、replay/masks、reward、
+  gamma、batch16384/UTD2和全部physics/control合同。新seed2026102528，每路两个新完整30条件周期后复核。
+  不导入辅助权重；critic变化会改变CHEQ uncertainty/mixing输出，规则未改。新阶段cycle history清空，
+  父history和checkpoint保留在restart receipt，不能跨reset拼接收敛曲线。初始仅排空，须读MIGRATION/
+  LAUNCH/PROGRESS确认实际更新。source_train08未改，准备/协调器冻结runtime/critic_restart_dispatch_v1。
+  三种真实接口网络的软件回归和实际Direct完整checkpoint准备通过；这不是已证明的优化修复。
+- CHEQ第五完整轮cycle4四路Task/Strict为0/0、17/16、15/14、17/17（各30），平均reward
+  −32.889049/−4.035049/−8.756420/−2.836609；全部归档无遗漏。Direct由6/30退化至0/30，
+  四路passive仍0/10，不称学习收敛。正式SAC仍由原cache协调器排空，禁止另开迁移。
+- `runs/value_bound_cycle03_v1`完成0更新/0physics：120回合奖励/势能望远镜及replay对齐通过，
+  四路固定alpha的保守global soft-Q上界3404.05/3654.93/15888.00/18637.88；5critic×4096样本
+  超界99.49/51.05/57.64/62.79%。说明该固定policy/alpha价值未校准，不定位某个bug。hidden-clock
+  阈值仅作上下文诊断；无时钟critic的terminal MAE也可能含观测混叠误差，不能要求其必然归零。
+- `runs/policy_feedback_cycle03_v1`三arm×四接口×1000更新全部结束：冻结actor/alpha显著减弱
+  Direct/VMC的短窗增长，但Impedance/Admittance仍增长。固定alpha单独无效，非长期因果证明。
+  `runs/fresh_critic_evaluation_cycle03_v2`两batch×四接口×3000=24000辅助更新也全部结束；冷critic
+  Q转负且无正global超界，但仍移动、终端误差未消除，不能说恢复收敛或batch256更优。等更新不等采样。
+  两批辅助权重丢弃，不作常驻GPU负载。fresh v1因CPU/CUDA不变性比较错误在0更新/0physics退出，
+  v2修复比较设备，保留失败；新在线仅reset一因素，未改变batch或引入新的奖励/信息。
+- cycle1固定中期矩阵已FINISHED，12/12审计完成：四路passive失败，Direct两个active也失败，
+  三参数方法两个active通过；无机器安全违规，不是完整30条件最终比较。新cycle3同12条件/同nominal
+  矩阵 `runs/interim_cheq_cycle03_representatives_v1` 正在CPU54，协调器3686420、Direct evaluator3686874
+  （重验）；标签前缀改为cheq_cycle03_，无重复cycle1评估。nominal本次47/120，继续CPU52/53。
+  没有最终共同SPT参考、指定ESN或完成比较；GPU持续四卡50%仍未证明。
+
+最新补充：critic-reset early archiver PID500618；协调器已写四路边界交接STOP，尚无替代learner，
+无MIGRATION_FAILURE。nominal后续49/120。辅助更新结束后的60样本/66.75s GPU均值
+34.43/38.67/34.88/39.22%，各卡有瞬时0，仍未达持续50%。原始SOURCE08_ONLINE_GPU_60S_02.json。
+
+以下条目保留此前阶段证据；发生状态冲突时以上方最新条目和真实进程/收据为准。
+
 - **最新GPU replay缓存接续：CHEQ已完成，SAC仍排空，勿重复启动。** CHEQ从performance v2/source_train07迁入
   `runs/cheq_performance_seed20261025_v3` / source_train08；SAC从performance v1/source_train06迁往
   `runs/sac_performance_seed20261025_v2` / source_train09。CHEQ协调器正常完成，SAC协调器PID2370128（重验）。
