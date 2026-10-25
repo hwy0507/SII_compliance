@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-25 — 非RL SPT 重评实时进度（40/64）
+
+- v4 已闭合 40/64 条统一回合，当前唯一在途为
+  `esn_gradient_s2026101301 / prospective_20261013_acceptance_005`；execution 仍为 `running`，
+  未创建重复 worker。
+- cgroup 继续满足 `MemorySwapMax=0`；最新资源收据为 `memory.current≈2.93 GiB`、
+  `oom=0`、`oom_kill=0`，CPU 用时持续增加。已完成失败回合仍保留并进入最终分母。
+- 中间 `REPORT.json` 只作进度观察；最终 `T_ref`、SPT、指标图表和 proposed/baseline 判断待 64/64
+  闭合后由只读 finalizer 统一生成。
+
 ## 2026-10-25 — 非RL SPT 重评实时进度（30/64）
 
 - v4 评测已真实闭合 30/64 条回合，当前唯一在途为
