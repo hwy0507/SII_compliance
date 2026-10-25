@@ -46,6 +46,14 @@ def validate_resume_protocol(checkpoint_digest, protocol, current_digest):
     previous = json.loads(Path(parent['path']).read_text())
     descriptive = {'runtime', 'runtime_sha256', 'resume_parent_registration',
         'performance_amendment', 'registered_unix', 'restart_reason'}
+    stage = protocol.get('completed_stage_continuation')
+    if stage is not None:
+        if (stage.get('kind') != 'reviewed_complete_stage' or stage.get('new_cycles') != 2
+                or stage.get('actor_learning_rate_factor') not in (None, .1)
+                or not isinstance(stage.get('parent_cycle'), int)
+                or not stage.get('review', {}).get('sha256')):
+            raise ValueError('Invalid explicit completed-stage continuation')
+        descriptive.add('completed_stage_continuation')
     if ({k: v for k, v in previous.items() if k not in descriptive}
             != {k: v for k, v in protocol.items() if k not in descriptive}):
         raise ValueError('Performance-only continuation changed the training contract')
@@ -195,6 +203,17 @@ def main(args):
         learner.load_state_dict(checkpoint['learner'])
         replay.load_state_dict(checkpoint['replay'])
         steps, cycles, start_cycle = checkpoint['steps'], checkpoint['cycles'], checkpoint['cycle']+1
+    stage = protocol.get('completed_stage_continuation')
+    if stage is not None:
+        if (not args.resume or checkpoint['boundary'] != 'complete_condition_cycle'
+                or checkpoint['cycle'] != stage['parent_cycle'] or args.cycles != stage['new_cycles']):
+            raise ValueError('Reviewed continuation requires its exact parent boundary and stage budget')
+        factor = stage['actor_learning_rate_factor']
+        expected_lr = 3e-4 * (1. if factor is None else factor)
+        if any(abs(group['lr']-expected_lr) > 1e-12 for group in learner.learner.actor_optimizer.param_groups):
+            raise ValueError('Prepared actor learning rate differs from scientific registration')
+        if factor is not None and cycles:
+            raise ValueError('Changed optimizer stage must not pool prior plateau history')
     cache_enabled = protocol.get('performance_amendment', {}).get('replay_device_cache', False)
     if cache_enabled:
         if protocol['performance_amendment']['kind'] not in ('device_replay_cache_only', 'frozen_target_gradients_only'):
@@ -208,6 +227,8 @@ def main(args):
         gpu_uuid=str(getattr(torch.cuda.get_device_properties(learner.device), 'uuid', 'unavailable')),
         physics_dt_s=.00005, actor_period_s=.04, workers=args.workers,
         batch_size=batch_size, updates_per_transition=utd,
+        actual_actor_learning_rates=[g['lr'] for g in learner.learner.actor_optimizer.param_groups],
+        completed_stage_continuation=stage,
         replay_device_cache=bool(cache_enabled),
         replay_device_cache_bytes=(sum(v.numel()*v.element_size() for v in replay.arrays.values()) if cache_enabled else 0),
         recovered_replay=imported_replay, fresh_optimizer_with_imported_replay=bool(imported_replay and not args.resume),

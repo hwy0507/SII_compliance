@@ -1865,3 +1865,128 @@ and its exact cycle7 state is archived. Do not restart that old PID. The other
 three CHEQ learners still finish their original stage; SAC remains live. Existing
 auditor/reviewer wait for the full group. This boundary alone is not the
 scientific review required before choosing continuation or deploying source11.
+
+
+## Completed critic-reset trial and registered actor learning-rate continuation
+
+All four original source08 learners completed their two registered cycles6/7,
+saved exact complete-cycle archives and exited normally. The existing read-only
+auditor and paired reviewer finished, verified reward reconstruction/network
+invariance, and produced5→7 and6→7 comparisons. All three figures were visually
+reviewed. This is the scientific review required before any further stage.
+
+| Interface | Cycle7 transitions | Task /Strict out of30 | Mean reward | Strict cycle5 →6 →7 |
+|---|---:|---:|---:|---|
+| Direct |409194|0 /0|−32.911626|0 →1 →0|
+| Impedance |409721|18 /17|−2.301435|17 →17 →17|
+| Admittance |410570|14 /12|−11.980507|13 →16 →12|
+| VMC |411276|17 /17|−2.837811|17 →16 →17|
+
+Every passive cohort remains0/10 strict. Direct loses active-long0500 versus6;
+Admittance loses active-long0500 and active-short0000/0600/0900 versus6. VMC
+regains active-short0600; Impedance's strict-success set is unchanged. Direct's
+failures now include16lift,2align,3approach,6carry and3load-transfer cases.
+These outcomes do not establish sustained task improvement from critic reset.
+
+| Interface | Cycle7 Q mean | Current-alpha bound | Samples above bound | Last1000 mean critic loss | In-bag terminal MAE |
+|---|---:|---:|---:|---:|---:|
+| Direct |381.25|613.43|3.24%|194.85|92.56|
+| Impedance |514.69|434.52|43.72%|1216.17|152.52|
+| Admittance |382.32|254.47|76.33%|1083.08|343.23|
+| VMC |4230.62|6139.30|27.28%|57826.03|2677.72|
+
+All four late critic losses grow. Lower values than the very large pre-reset
+cycle5 do not establish calibration. The two-cycle intervention did not fix
+optimizer health or deliver four converged controllers. The fixed-current-alpha
+bound is necessary, not sufficient; hidden-clock aliasing still limits terminal
+error interpretation. No new critic reset was selected.
+
+A finite actor-rate probe followed the earlier frozen-actor feedback evidence:
+`runs/actor_lr_cycle06_v1`, four methods ×two factors ×10,000updates=80,000
+auxiliary updates. Both arms restore the same full cycle6 learner/optimizer/RNG
+and replay sampling stream. Only actor Adam LR changes3e-4→3e-5; all moments,
+critic/alpha settings and rewards stay unchanged initially. The four processes
+exited; no physics, auxiliary weights saved, or weight promotion. Two focused
+actor-LR tests passed, and the report/plot were checked.
+
+| Interface | Q mean original /0.1LR | In-bag terminal MAE original /0.1LR |
+|---|---:|---:|
+| Direct |140.04 /137.14|38.53 /37.22|
+| Impedance |166.34 /162.45|63.99 /62.26|
+| Admittance |321.68 /317.11|133.70 /121.28|
+| VMC |1738.80 /1722.66|1277.43 /1259.54|
+
+These modest reductions do not remove drift; VMC keeps growing, and bound
+violations are not uniformly reduced because alpha also evolves. A slower actor
+can delay useful learning. This evidence supports only a bounded online
+sensitivity trial, not a proven repair or guaranteed convergence.
+
+The explicit decision receipt `runs/CRITIC_RESTART_FINAL_SCIENTIFIC_REVIEW_V1.json`
+and registration `runs/cohort30_v2/REGISTRATION_CHEQ_ACTOR_LR_CONTINUATION_V1.json`
+therefore select two new full cycles8/9 with actor LR3e-5 for all four methods.
+All weights, critic/target/alpha, Adam moments, RNG, replay/masks, gamma0.9995,
+batch16384/UTD2 and physical/control contracts are retained. The stage's old
+cycle-summary list is cleared to avoid pooling unlike optimizer stages; prior
+logs/checkpoints remain archived. The inherited `critic_restart` registration
+field is provenance only and does not trigger another reset.
+
+New frozen source_train12 keeps the previously validated source11 learner and
+unused-target-gradient optimization. Its trainer adds explicit reviewed-stage,
+parent-boundary, stage-budget and actual-actor-LR checks and execution receipts.
+The new completed-stage dispatcher validates all four finished archived parents
+and the full scientific-review hashes before launching; it issues no STOP
+requests and never reuses the live-parent-only migration coordinator. Three
+new stage tests and all eight existing performance-contract tests passed.
+Real complete Impedance checkpoint preparation verified exact preservation of
+all non-LR/history fields, and both protocol branches passed. Actual launch
+then verified this invariant separately for all four parents.
+
+`runs/actor_lr_online_seed20261025_v1` is genuinely updating cycle8 on GPUs0–3,
+with9samplers per interface and the original CPU allocation. Learner PIDs are
+919723/923788/927495/932939 (reverify before action). Startup coordinator911732
+finished normally; archive941236 tracks boundaries. No auxiliary weights were
+imported. Four SACsource09 learners continue independently. Source11 remains
+an unused preparation; source12 is the actually deployed continuation.
+
+Read-only auditor969396 and reviewer969397 now wait for complete cycles8/9,
+using `ACTOR_LR_STAGE_AUDIT_V1.json` and `ACTOR_LR_PAIRED_REVIEW_V1.json`. The
+review compares7→8,7→9 and8→9, reusing the completed cycle7 report. Their3h
+observation deadline does not stop training. No conclusion is automated from
+a stage ending. Evidence and provenance are in
+`PUBLISHED_ACTOR_LR_CONTINUATION_20261025.json`; server base remains
+`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`.
+
+## Frozen cycle3 representative matrix completed; cycle7 matrix started
+
+The older cycle3 matrix finished12/12 registered representatives. All physical,
+public-filter and actuator-torque projection audits passed; no machine safety
+violation was recorded. Strict successes are Direct0/3, Impedance2/3,
+Admittance1/3 and VMC2/3. All four passive representatives fail. These are
+three prespecified cases per method, not the full30-condition final comparison.
+
+The newly completed VMC rows are:
+
+| Case0000 | Learned /nominal Task and Strict | Completion s learned /nominal | Peak Nm learned /nominal | Contact threshold ratio |
+|---|---|---:|---:|---|
+| Passive |fail /fail|NA /NA|38.0997 /38.2857|NA /NA|
+| Active-short |pass /pass|27.40 /27.44|47.2304 /47.2274|NA /NA|
+| Active-long |pass /pass|31.64 /31.88|46.7528 /46.6593|100% /100%|
+
+Active-long human contact is6.6629s/6.64235s. Small timing differences are not
+an overall superiority claim. Failed cases remain in the denominator and
+haveSPT0; no final shared empirical T_ref is selected from this interim matrix.
+Compact all12-row/audit evidence is `PUBLISHED_FIXED_CYCLE03_COMPLETE_20261025.json`.
+The nominal full matrix has75/120 completed at capture, still on CPUs52/53.
+
+After all exact cycle7 archives became available and the previous matrix
+processes exited, `runs/interim_cheq_cycle07_representatives_v1` was registered
+for the same12 cases and same frozen nominal rows. Its coordinator803220 and
+Direct evaluator804667 are live on CPU54/GPU0 inference (reverify). It uses
+source08 policies from cycle7, not the new actor-LR learners. No duplicate
+cycle3 evaluation, final SPT selection, or designated ESN comparison occurred.
+
+After actor-LR startup,60samples over67.60s measured GPU means42.22/30.42/31.08/31.48%,
+minima5/9/0/0. Four source12 CHEQ and four source09 SAC learners plus frozen
+cycle7 Direct inference were active; all auxiliary workers had exited. This
+shared window still fails the requested four-card50% target and is not an
+isolated speedup measurement. Raw `runs/ACTOR_LR_ONLINE_GPU_60S_01.json`.

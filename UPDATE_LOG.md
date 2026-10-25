@@ -1,5 +1,34 @@
 # 更新日志
 
+## 2026-10-25 — critic重置完整复核，actor学习率新阶段已真实接续
+
+- 新阶段实际GPU窗口60样本/67.60s均值42.22/30.42/31.08/31.48%，min5/9/0/0；无辅助GPU更新，
+  含四CHEQ12/四SAC09与冻结Direct推理，仍未四卡50%，不称独占性能提速。原始ACTOR_LR_ONLINE_GPU_60S_01.json。
+
+- fetch读取main a52dfba/baseline f6e8f8c，远端未前进；本地继续保留未发布提交。
+- 原四路cycle6/7全部完成并正常退出，精确归档与原audit/review结束，reward重建和网络不变检查通过，
+  诊断及两张比较图已目视复核。cycle7 Task/Strict：0/0、18/17、14/12、17/17（各30），被动全0/10；
+  Direct丢失6的一次成功，Admittance strict16→12；四路末段critic loss均增长，未证明重置修复或收敛。
+- actor学习率有限对照四路×两arm×10000=80,000辅助更新结束、进程全退出。相同父cycle6完整状态/
+  replay/RNG，仅actor Adam LR3e-4→3e-5，Q/终端误差小幅下降但漂移未消除；不导入任何辅助权重。
+- 根据完整科学复核登记新的两轮8/9在线敏感性试验：四路统一actor LR3e-5，保留其余权重、critic/
+  alpha、Adam moments、RNG、replay/masks、gamma、batch/UTD及所有物理/control合同；不再次reset。
+  清空新阶段cycle摘要避免跨设置拼接收敛，父曲线/产物完整保留。此调整未被称为已验证修复。
+- 新source_train12冻结后部署：沿用已验证target-gradient等价优化，trainer新增review/parent/LR/预算
+  检查；新完成阶段dispatcher不发STOP，不使用要求父进程存活的旧迁移器。2+3+8共13项测试通过；
+  实际完整checkpoint准备和四路启动收据证实除LR/history外状态精确保留，实际LR均3e-5。
+- runs/actor_lr_online_seed20261025_v1四路真实更新cycle8，PIDs919723/923788/927495/932939；
+  coordinator911732正常完成、archive941236。SAC09四路继续。新audit969396/reviewer969397等8/9；
+  所有PID行动前重验。旧source08四learner/audit/review已正常结束，source11不再作为待启动入口。
+- 原cycle3固定矩阵12/12完成，Task/Strict成功数0/2/1/2（各3），所有物理/filter/torque审计通过，
+  无机器安全违规。VMC长期31.64s/46.75Nm/100%对nominal31.88s/46.66Nm/100%；被动失败保留。
+  nominal75/120。新cycle7同12条件独立矩阵已启动CPU54，coordinator803220/evaluator804667，
+  是冻结cycle7策略，不能混为新actorLR阶段结果；未选最终T_ref。
+- 证据docs/PUBLISHED_ACTOR_LR_CONTINUATION_20261025.json、PUBLISHED_FIXED_CYCLE03_COMPLETE_20261025.json
+  及诊断文档；大产物基址/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。
+  四路充分收敛和最终SPT/指定ESN比较仍未完成，Goal保持活动；physics/MJB/gate/actor合同/filter/
+  执行器/dt未改。新GPU窗口与GitHub发布状态另行核验。
+
 ## 2026-10-25 — 一致折扣率对照完成与被动条件退化复核
 
 - 最新边界：Impedance原两轮训练正常完成退出，cycle7归档409721步；Task18/30、Strict17/30，

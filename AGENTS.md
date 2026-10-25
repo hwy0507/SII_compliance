@@ -7,6 +7,26 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新source12在线GPU窗口：60样本/67.60s均值42.22/30.42/31.08/31.48%，min5/9/0/0，无辅助GPU
+更新、含固定Direct推理，四卡50%仍未达到。原始ACTOR_LR_ONLINE_GPU_60S_01.json。
+
+**当前实际训练：actor LR新阶段已启动，优先于下方旧快照。** 原critic-reset cycle6/7四路及旧audit/
+review全部正常结束并复核：cycle7 Task/Strict0/0、18/17、14/12、17/17，各30，被动全0/10，
+四路critic末段loss仍增；不称修复/收敛。新科学review为runs/CRITIC_RESTART_FINAL_SCIENTIFIC_REVIEW_V1.json。
+80,000次actor LR有限辅助更新已结束、四辅助进程退出，0physics/无权重导入；小幅数值收益仅支持在线试验。
+新runs/actor_lr_online_seed20261025_v1 / source_train12真正更新cycle8，actor LR统一3e-5，
+其余权重/critic/alpha/Adam moments/RNG/replay/masks/目标/物理合同保留，不再resetcritic。旧critic_restart
+字段仅历史来源。两新完整周期8/9后复核；不是总训练预算或收敛门槛。PIDs Direct919723、Impedance923788、
+Admittance927495、VMC932939；coordinator911732正常完成、archive941236（行动前重验）。
+source12沿用已证明等价target梯度优化，新完成阶段dispatcher无STOP、必须读完整父归档及科学review。
+13测试和真实完整checkpoint/四路状态保留检查通过。不要重启旧source08或live-parent旧迁移器，source11未用。
+SAC09四路仍继续。新只读audit969396/reviewer969397等8/9，登记ACTOR_LR_STAGE_AUDIT_V1与
+ACTOR_LR_PAIRED_REVIEW_V1；3h仅observer保护，不停训练。证据PUBLISHED_ACTOR_LR_CONTINUATION_20261025.json。
+cycle3固定矩阵12/12完成，全部物理/filter/torque审计通过、无机器安全违规，Strict0/2/1/2（各3），
+不当完整cohort排名。新cycle7同12条件矩阵已在CPU54运行，coordinator803220、Direct evaluator804667；
+冻结source08 cycle7，不是新actorLR策略。nominal75/120，CPU52/53继续。详见PUBLISHED_FIXED_CYCLE03_COMPLETE_20261025.json。
+
+
 最新边界：Impedance完成cycle7/409721步、Task18/30 Strict17/30、被动0/10，原两轮预算正常退出，
 cycle7已归档。勿重启旧981510；其余三路source08仍完成7，四SAC09继续。原auditor900989/reviewer2655393
 等待整组；source11继续仅准备，整组科学复核尚未完成。详细证据见PUBLISHED_CONSISTENT_DISCOUNT_AND_PASSIVE_20261025.json。
