@@ -1551,3 +1551,71 @@ running. Four-card sustained50% remains unmet. Raw samples are
 `runs/RESTART_ONLINE_GPU_60S_02.json`; this window is preserved separately from
 the earlier57.17/47.87/28.50/33.22% window. No claim of prevented shutdown is
 made from utilization samples alone.
+
+
+## First full post-reset Impedance cycle: unchanged success, slower completion
+
+Impedance completed cycle6 at368471 retained transitions, with41250 new physical
+transitions. Its immutable archive SHA256 is
+`eaa586e539bbc7807b3cc8c2952d31599fdc7381646b6c3f8a9e21c80eee041c`.
+The existing learner entered cycle7, the second registered repair-trial cycle.
+All30 episode rewards were reconstructed from41250 logged transition components
+and checked against the archive receipt. This is a complete single-interface
+training cohort, not a frozen-policy test or the all-interface critic report.
+
+| Metric | Parent cycle5 | Post-reset cycle6 |
+|---|---:|---:|
+| Task success /30 |18|18|
+| Strict success /30 |17|17|
+| Mean reward |−2.25856995697|−2.41004915544|
+| Passive strict /10 |0|0|
+| Active-short strict /10 |9|9|
+| Active-long strict /10 |8|8|
+| Mean completion over the same17 strict successes, s |16.6517647071|19.3788235307|
+
+There are no gained or lost strict-success conditions. All failed passive
+conditions still end at carry. The paired reward change is−0.15147919846;
+−0.14048484848 comes from reduced completion-efficiency bonus. The same17
+successful conditions finish2.72705882353s later on average. This conditional
+time statistic does not remove failures from success/reward denominators.
+The first new cycle does not support a task-performance benefit from the reset;
+the second cycle and full critic-health audit remain necessary. No convergence
+or repair-success claim is made. Evidence:
+`PUBLISHED_RESTART_FIRST_CYCLE_20261025.json`.
+
+A new read-only paired-review tool validates complete condition membership,
+category identity, reward reconstruction, immutable-cycle boundary and explicit
+network-invariance evidence before comparing reports. It reports gained/lost
+successes, category summaries, reward component deltas and separate before/after
+critic diagnostics; it does not concatenate training across the reset or decide
+convergence automatically. Four software tests passed. Actual parent cycle5
+self-comparison was a schema/integration check only, not scientific evidence.
+An attempted historical cycle3→5 comparison was correctly rejected because
+that older report lacks explicit `network_state_unchanged` evidence; its log
+is retained, no guard was relaxed and no old diagnostics were rewritten.
+The initial ad-hoc aggregation used system Python without NumPy and exited at
+import before output; rerunning with the registered project Python completed.
+
+`runs/CRITIC_RESTART_PAIRED_REVIEW_V1.json` registers a finite observer
+PID2655393, frozen under `runtime/critic_restart_paired_review_v1`. It verifies
+the existing stage-auditor PID900989 and process start ticks while waiting, then
+checks finished report hashes and compares5→6,5→7 and6→7. It adds0 physics and0
+optimizer updates, does not stop/restart learners, and leaves training unchanged
+if the auditor disappears or its observation deadline expires. Check actual
+process identity before acting. At this capture it waits for complete cycle6
+reports across all four methods; no comparison plots from those stages exist yet.
+
+SAC VMC has also completed its existing cache handoff and is really updating
+source_train09 as PID2397784. Direct/Impedance are already there; Admittance still
+drains source_train06 under the original coordinator. Do not launch a duplicate
+migration. The prepared source_train11 target-gradient optimization remains
+undeployed. Physics, actor contract, gates, filter, actuator limits and dt remain
+unchanged; the persistent training/convergence/ESN-comparison Goal remains active.
+
+
+Subsequent live verification: SAC Admittance also completed its boundary handoff
+and now updates source_train09 as PID2758791. `MIGRATION_FINISHED.json` confirms
+all four replacements have updated, and normal archiver PID2767227 has taken
+over. The coordinator has finished; no old SAC process or migration should be
+restarted. The exact receipt and current progress are appended to the compact
+evidence above, preserving the earlier VMC-only capture.

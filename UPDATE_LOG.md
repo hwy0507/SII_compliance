@@ -1,5 +1,24 @@
 # 更新日志
 
+## 2026-10-25 — 首个完整critic重置周期与逐条件复核
+
+- fetch核对main a52dfba/baseline f6e8f8c并读取两分支日志，保留本地未发布提交。
+- Impedance完成cycle6并归档：368471保留步、新增41250；30回合/transition reward分项重建与归档
+  收据一致。Task18/30、Strict17/30均与父cycle5相同，成功条件名单无增减；被动仍0/10。
+  平均reward −2.25857→−2.41005，主要因效率奖励减少；同17个严格成功条件平均完成时间
+  16.6518→19.3788s。首轮未显示任务收益，不能用重置后的loss下降宣称修复成功或收敛。
+- 新逐条件比较工具与有限只读review observer：完整cycle/同30条件/奖励重建/网络不变证据检查，
+  分开报告成功增减、reward分项与critic健康。4项测试及真实parent自比较集成检查通过；旧cycle3
+  报告缺network-invariance证据被正确拒绝，失败日志保留，未放宽检查或重算旧实验。
+- review PID2655393（行动前重验）等待既有audit900989的cycle6/7整组报告，再生成5→6、5→7、
+  6→7配对比较；0physics/0更新，不停训练。原四路critic-reset按两轮登记继续，source11未部署。
+- SAC四路已全部真实接续source09，VMC2397784/Admittance2758791，原协调器完成，
+  常规archiver2767227接管；均有新增steps/updates，不重复派发。全部物理/MJB/gate/actor合同/
+  filter/执行器/dt未改；最终收敛/SPT/ESN比较未完成。
+- 源码、测试、docs/RL_PUBLISHED_DIAGNOSTICS_20261025.md及PUBLISHED_RESTART_FIRST_CYCLE_20261025.json
+  已更新。服务器基址 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`；
+  新登记runs/CRITIC_RESTART_PAIRED_REVIEW_V1.json，GitHub发布状态另行核验。
+
 ## 2026-10-25 — target梯度实际运行时等价验证与Impedance独立评估
 
 - 重新fetch核对main a52dfba/baseline f6e8f8c并读取两分支日志；保留未发布本地提交。

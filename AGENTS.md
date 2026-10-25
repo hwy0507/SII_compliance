@@ -7,6 +7,20 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新SAC接续完成：四路都在source09真实更新，MIGRATION_FINISHED已落盘，原协调器已结束。
+Direct1010728/Impedance1557140/VMC2397784/Admittance2758791，常规archiver2767227（重验）。
+不要重启旧SAC进程或迁移；下方Admittance仍排空是本轮稍早快照。
+
+最新完整周期：Impedance已完成critic-reset cycle6，368471保留步/41250新增，Task18/30、Strict17/30，
+与父5相同且成功条件名单无增减；reward −2.25857→−2.41005，同17成功条件平均时间16.65→19.38s。
+被动仍0/10，首轮无任务收益证据；当前进入原登记第二轮7，其他方法6尚未全部完成，勿提前截短试验。
+新只读配对review PID2655393，runs/CRITIC_RESTART_PAIRED_REVIEW_V1.json，冻结runtime/
+critic_restart_paired_review_v1；等原auditor900989生成完整6/7报告，自动比较5→6、5→7、6→7，
+0physics/0更新、不管训练生命周期。观察失败不等于训练失败。4项测试与实际parent自比较通过。
+历史cycle3报告因缺明确网络不变证据被拒，日志保留，不放宽guard。详情PUBLISHED_RESTART_FIRST_CYCLE_20261025.json。
+SAC VMC也已迁入source09并更新，新PID2397784；Direct/Impedance同样在09，Admittance仍旧06排空。
+原协调器2370128继续，禁止重复迁移。以上PID行动前必须重验。source11仍仅准备，未部署。
+
 最新GPU窗口：辅助退出后60样本/67.64s均值50.48/23.65/31.15/43.10%，min13/0/0/0，
 仍未持续四卡50%；RESTART_ONLINE_GPU_60S_02.json，含GPU2固定评估，source11未运行。
 
