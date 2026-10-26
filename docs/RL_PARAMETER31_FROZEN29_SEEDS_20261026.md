@@ -88,3 +88,5 @@ I末loss升高、A/V回落，A/V必要soft上界超出比例.001220703/.00161132
 纯20/31新固定60样本observer258985已登记，待冻结29退出且两正式startup通过后采集，逐样本只允许四正式GPU PID；先查B/runs/batch20_parameter31_gpu_profile_20261026_v1/PROFILE.json，不重采或挑窗口。
 
 冻结29退出后的纯正式20/31固定窗口已完成（原258985退出）：60样本、67.982567秒，四卡均值56.5833% / 69.3833% / 74.2333% / 74.7667%，逐样本GPU PID恰46632/3783467/3783468/3783469且learner身份存活；保存均值独立复核。它是此次运行窗口，不保证每瞬时≥50%，不隐藏阶段衔接空闲。正式最新实际进度与全部原句柄见小证据FINAL_LIVE_STATUS.json。
+
+归档与发布：科学提交7467875ecdf5067ede467c70ea86d5bcff21405d本地完成，push因GitHub Username认证失败未发布。129成员完整小证据SSD B/repository/RL_PARAMETER31_FROZEN29_20261026_235542/FULL_SMALL_EVIDENCE.tar.gz，1608684字节，SHA256 0031eda33a9dce621a996188492b958f2ee1794cf108c3e4cc22ca2cd69adf1f，逐成员大小/hash通过。HDD sii_shutdown_backup_20261026_v1/RL_PARAMETER31_FROZEN29_STATUS_20261026_235542/HANDOFF.md及LATEST_RL_HANDOFF.md已更新核验；大产物仍SSD，非全量HDD/arm1备份。收据docs/evidence/rl_parameter29_frozen_seeds_20261026/ARCHIVE_RECEIPT.json。
