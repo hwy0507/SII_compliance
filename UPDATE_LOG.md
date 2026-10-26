@@ -1,3 +1,10 @@
+## 2026-10-26 — 新30条最终报告入口准备，原108回合评测继续
+
+- 上轮第八条件审计/前72条原件共享/GitHub发布属实质进展；本轮开工查询并fetch/read main=12c44c4664dbff5865537d85e6eceb8b1087ffdc、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，读取AGENTS/新30协议。原服务86607 active，74/108，第九条件MLP144177真实仿真18.04→47.04秒/CPU2:07→5:11，OOM0、swap0，无重复派发。
+- 现有自动REPORT.md沿用旧日期标题且仅按9模型列数，新增独立tools/present_nonrl_new30_final_20261026.py，用最终REPORT.json生成三方法六指标PNG/PDF、3seed均值±样本标准差/逐模型Markdown表和hash收据，保留失败、接触分母、最坏峰矩和方法比较局限。未改运行中的冻结训练/物理源码，也未使用局部结果排方法名次。
+- 入口强制同run最终审计final_audit_passed、report/lock/registration hash一致、execution complete和108格覆盖；单条件/训练审计不能代替最终审计，输出目录不得已存在。AST检查、当前真实未完成矩阵拒绝检查通过，Matplotlib3.11.2可导入。完整结果渲染/目视验图尚未执行，待108回合与默认最终审计完成后开展，不能称最终图或评测已完成。
+- 原始训练和前72条轨迹服务器位置保持上一条已核验归档；新报告工具纳入GitHub交接，最终图/报告/小证据将随最终产物归档，尚不存在可宣称的新服务器结果。Goal active，完整矩阵/SPT/最终审计/最终交付仍待。收工复读AGENTS，只提交本任务文件。
+
 ## 2026-10-26 — 新30条第八条件核验，前72条完整轨迹已共享
 
 - 开工查询真实远端并fetch/read main=3d7db5a8d6c871f09b322e0f78f47dd6de521749、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，读取AGENTS和非RL协议；另一任务RL更新不改变本机冻结实验。原协调器86607仍运行，无重复派发或新调参。
