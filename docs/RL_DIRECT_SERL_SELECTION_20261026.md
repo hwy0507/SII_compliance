@@ -40,6 +40,15 @@
 
 以上是来源证据，不是已经冻结的本项目超参数或训练预算。
 
+## GPU 利用率目标（用户 2026-10-26 补充）
+
+用户要求：**恢复正式训练后，GPU 利用率最好不要低于 50%，尽量充分利用已分配算力。** 这是资源效率目标，不是收敛或任务成功判据，也不是当前恢复计算的指令。
+
+- 对参与训练的每张 GPU 记录利用率，优先看稳定训练阶段的连续 60 秒窗口均值，同时记录整体均值；区分启动、回合/周期收尾、评估和保存 checkpoint 的短暂低谷。
+- 若持续低于 50%，优先排查 CPU/MuJoCo 采样、经验传输、同步等待和 learner 更新瓶颈，在已登记预算内优化并发、批处理与数据管线。改变 batch size、UTD 等学习设置时另行记录，不能仅为提高占用而静默改变算法。
+- 正式训练和有研究用途的辅助任务分别报告；混合占用达到 50% 不等于正式训练达到 50%。不重复已完成任务或无界追加计算来制造占用；未达目标时如实记录实测值和瓶颈。
+- 当前 Goal 仍 paused。以上要求在用户明确恢复后执行，本次不启动训练、仿真、测试、服务或辅助 GPU 任务。
+
 ## 下次恢复后的适配范围
 
 1. **当前从空 replay 开始，不等待示范。**以下仅为将来明确启用已有数据时的审计要求：核对训练身份、机器人/physics、dt、观测与动作定义、时间顺序、next observation、termination/truncation 和 reward 可重算字段。仅有 `(observation, teacher_action)` 的行为克隆样本不自动等同 RL transition；动作若不是实际执行动作，不能搭配该轨迹的 next observation 冒充 transition。不得读取验证/未见条件充当先验经验；不得静默补采示范。
@@ -63,4 +72,4 @@
 
 ## 给下次会话的提示词
 
-> 请继续原柔顺控制 RL Goal。先读取 AGENTS.md、docs/RL_SHUTDOWN_RECOVERY_20261026.md 以及 docs/RL_DIRECT_SERL_SELECTION_20261026.md。本次最新路线是：Impedance/Admittance/VMC 在线调参继续 CHEQ；Direct 改用 SERL（ICRA 2024）支持的纯状态 SAC 从零训练路线，不再以 CHEQ 为主方案。随机初始化、空 replay、零示范，不加载旧 CHEQ 权重或 replay，不新增人工纠正或示范采集。保留全部旧 checkpoint 和失败证据，不把旧 CHEQ 权重冒称 SERL。先核验零示范启动、接口映射与公平性，再登记新 Direct 适配阶段；参数 CHEQ 按原学习状态与部分 cycle 语义恢复。最终按相同条件比较 ESN，报告 Task/Strict、SPT_empirical、峰矩、接触期阈下比例和机器违规。除非我在新消息中明确要求恢复计算，Goal 保持 paused，禁止训练、仿真、测试与辅助 GPU 占用任务。
+> 请继续原柔顺控制 RL Goal。先读取 AGENTS.md、docs/RL_SHUTDOWN_RECOVERY_20261026.md 以及 docs/RL_DIRECT_SERL_SELECTION_20261026.md。本次最新路线是：Impedance/Admittance/VMC 在线调参继续 CHEQ；Direct 改用 SERL（ICRA 2024）支持的纯状态 SAC 从零训练路线，不再以 CHEQ 为主方案。随机初始化、空 replay、零示范，不加载旧 CHEQ 权重或 replay，不新增人工纠正或示范采集。保留全部旧 checkpoint 和失败证据，不把旧 CHEQ 权重冒称 SERL。先核验零示范启动、接口映射与公平性，再登记新 Direct 适配阶段；参数 CHEQ 按原学习状态与部分 cycle 语义恢复。正式训练期间GPU利用率尽量不低于50%，按各卡稳定窗口监测并区分正式/辅助占用。最终按相同条件比较 ESN，报告 Task/Strict、SPT_empirical、峰矩、接触期阈下比例和机器违规。除非我在新消息中明确要求恢复计算，Goal 保持 paused，禁止训练、仿真、测试与辅助 GPU 占用任务。

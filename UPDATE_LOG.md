@@ -1,3 +1,9 @@
+## 2026-10-26 — 记录恢复训练后的 GPU 50% 利用率目标
+
+- 用户要求在MD中写明GPU利用率最好不低于50%；已更新AGENTS、Direct选择文档、关机交接及恢复提示词。
+- 规定参与训练各卡稳定60秒窗口监测、持续不足时排查采样/传输/更新瓶颈，区分正式与辅助占用；资源目标不替代收敛，不解除paused。本轮仅文档，未启动训练/仿真/测试/服务。
+- 开工fetch/read main=ca597e940a70305bb48429ac1006402f34815299、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d。仅做diff静态检查；HDD新增GPU_UTILIZATION_TARGET_20261026.md补充，不改历史快照。
+
 ## 2026-10-26 — SERL Direct 改为零示范从零训练的恢复方案
 
 - 用户不想再采数据，询问SERL能否从零训练；静态确认原文4.1与官方async_sac_state_sim支持空replay、随机初始采样、仅自主在线经验。优先选择SERL-state/SAC from scratch adaptation，不加载示范/旧CHEQ权重或replay，无新增人工纠正；参数CHEQ续训状态保留。
