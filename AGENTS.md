@@ -12,6 +12,8 @@ Direct16原1387783、归档1387835/review1387837，B/runs/serl_multistep_batch65
 
 纯正式GPU窗口完成：180样本/208.235546s，GPU均值58.6278/73.5111/71.7167/73.2222%，D/I/A/V吞吐10.7619/24.1169/24.7748/24.8084steps/s。逐样本GPU PID集合恰四正式且原learner全live，无辅助GPU。原2085988结束勿重采；仅此固定窗口均值≥50%，不保证每瞬时或隐去轮次尾部/恢复检查的空闲。
 
+收尾科学提交16b56236e98cd1a6da77b7ce8ac5d29e70fa41cd仅本地，push仍HTTPS用户名认证失败；重新fetch远端main dbb1d76/baseline f6e8f8c未变。完整82成员小证据SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER24_REPLAY_CAPACITY_20261026_194123/FULL_SMALL_EVIDENCE.tar.gz逐成员hash核验，1243364字节，SHA256 402af5ef2f73a996e73fcf77bea92c7d40c7df01e7d4ded80413dc1b46303a2d。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER24_REPLAY_CAPACITY_STATUS_20261026_194123/HANDOFF.md与收据/LATEST入口已验证；大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。FINAL_LIVE_STATUS确认四原16/24、归档/完整review及跨界检查仍live；准备/observer已退出。实际跨1001000审查完成状态=False，下一轮先核原2362754及capacity_boundary/REVIEW.json，不能重复启动。Goal active。
+
 ## 最新RL状态：2026-10-26 参数23 / Direct16 / 温度后继对照完成
 
 原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER23_SERL16_TEMPERATURE_PROBE_20261026.md)覆盖下方22/15。无子agent，冻结物理/SPT与全部正式state保持。
