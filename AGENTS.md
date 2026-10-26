@@ -1,5 +1,17 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 参数24容量扩展 / Direct16继续
+
+原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER24_SERL16_REPLAY_CAPACITY_20261026.md)覆盖下方23/16。无子agent，冻结物理/SPT/正式全部学习state保持。
+参数23完整I987000/982001、A986000/981001、V987000/982001；Task/Strict18/17、12/12、17/17，reward−2.189907/−11.953313/−2.852282，末loss1.433691/1.395008/.476056、terminalMAE.869074/.729539/.438888，inbag .329739/.311489/.162799，Q−4.313361/+11.401338/+17.363041。全30完整55s无abort，全部旧prefix/history/marker/finite、新reward0误差及health/图通过。导纳loss较22回落但Strict14→12，仍波动。旧23 learner1064168/1064173/1064175、归档1064231/review1064233已完勿重启。
+正式24 I2362748/A2362749/V2362750，B/runs/parameter_capacity_pool30_cycle24_20261026_v1；准确最新完整23全state接续一个周期，GPU1/2/3/原30pool共享12CPU/batch65536/UTD1/terminal128/projection/Imin+A-Vmean/actor min/LR保持。仅回放1m→2m、append不覆盖并持久replay_capacity_extension，超过原1m时仍采样旧数据，分布不同于环形覆盖，不能称整个学习等价。新2m满前拒绝写入/RNG消耗；后续必须capacity driver/strict marker，不用旧默认Replay恢复。
+三check-only完整learner/重复恢复、旧replay/RNG/下一65536精确、继承与容量负守卫通过；实际各1000新增capacity/marker/旧987000、986000、987000全prefix/history/优化器/30MJB/action/clock/reward0误差通过。归档2362755、完整review2362756；真实跨1001000检查2362754在等原进度，结果在capacity_boundary/REVIEW.json，先查原进程，不能把合成跨界当实际通过。没有自动25。
+容量准备B/runs/parameter_capacity_preparation_20261026_v1原1890114因构造49维而严格拒绝参数实际50维，失败源/登记保留。v2原1919323已完成：三完整22回放/原learner digest保持，重复恢复/1、32、256、65536 CPU cache采样和RNG精确，每路6负守卫；合成999998→1000002原prefix/cache/恢复与下批精确，新2m上限写/RNG之前拒绝。0优化/physics/不存权重，不重跑；正式采用的是最新23而非准备父22。
+Direct16原1387783、归档1387835/review1387837，B/runs/serl_multistep_batch65536_cycle16_20261026_v1/direct继续；官方10critic/random2 bootstrap/actor all10mean/noentropy/8:1/batch65536/32步/gather+transfer保持。最新完整15仍648282/5146264、0/30，无自动17。上一轮温度probe已全完成且不支持部署，勿重复/导入辅助权重。
+新纯正式profile2085988，B/runs/batch16_parameter24_gpu_profile_20261026_v1，预登记180样本，等24startup及恰四正式GPU PID后采样。先查原PROFILE勿重采。远端main dbb1d76/baseline f6e8f8c未变，GitHub认证待恢复用户已被问勿重复；大产物SSD/HDD小交接收据，非arm1/HDD全备份。优先查看原24实际跨界审查与完整24/16结果后衔接。
+
+纯正式GPU窗口完成：180样本/208.235546s，GPU均值58.6278/73.5111/71.7167/73.2222%，D/I/A/V吞吐10.7619/24.1169/24.7748/24.8084steps/s。逐样本GPU PID集合恰四正式且原learner全live，无辅助GPU。原2085988结束勿重采；仅此固定窗口均值≥50%，不保证每瞬时或隐去轮次尾部/恢复检查的空闲。
+
 ## 最新RL状态：2026-10-26 参数23 / Direct16 / 温度后继对照完成
 
 原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER23_SERL16_TEMPERATURE_PROBE_20261026.md)覆盖下方22/15。无子agent，冻结物理/SPT与全部正式state保持。

@@ -1,3 +1,15 @@
+## 2026-10-26 — 参数24回放容量扩展与真实启动通过，Direct16继续
+
+- 开工重验原四learner/归档/完整review live，fetch/read真实main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d未变，起点6d3b448。无子agent，物理/SPT与正式学习state保持；交接docs/RL_PARAMETER24_SERL16_REPLAY_CAPACITY_20261026.md。
+- 参数23完整I987000/A986000/V987000，Task/Strict18/17、12/12、17/17，reward−2.189907/−11.953313/−2.852282，末loss1.433691/1.395008/.476056，terminalMAE.869074/.729539/.438888。全30完整55s无abort、新reward0误差/全旧prefix/history/markers/finite与health/图通过；导纳loss回落但任务退步，仍未健康收敛。
+- 24将跨原1m环形容量，新增parameter_replay_capacity helper：2m/append不覆盖/严格持久marker，仅精确登记未覆盖父可迁移；新上限在写入/RNG之前拒绝覆盖。过原1m后保留旧数据改变相对环形的采样分布，明确为协议变化、不声称后续学习等价。未改physics/reward/目标/优化器/batch/UTD等。
+- 准备v1误将参数50维按Direct49构造，strict loader拒绝，原失败和源码保留，无正式影响。v2三完整22父所有旧array/RNG/learner digest保持、重复恢复及CPU cache 1/32/256/65536采样精确、每路6负守卫通过；合成999998→1000002保留prefix/cache/恢复与下批，2m满拒绝write/RNG。0优化/physics/不存权重，原1919323结束勿重复；只支持实现与保留，不证明任务改善。
+- 新capacity continuation driver严格最新完整23进入和历史batch/pool/容量证据链，持久marker；三CPU52/53/54并行check-only完整learner/重复恢复、旧replay与下一65536/RNG精确、容量与既有负守卫通过。正式24 I2362748/A2362749/V2362750，原GPU1/2/3/30pool/batch65536/UTD1/terminal128/projection/Imin+A-Vmean/actor min/LR保持，实际各1000新交互marker/全旧prefix/history/优化器/30MJB/action/clock/reward0误差通过。
+- 归档2362755/完整review2362756、实际跨1001000只读检查2362754已接，后者未完成时不能称实际跨界验证通过；无自动25。Direct16原1387783/归档1387835/review1387837继续全部设置，无自动17。新纯正式180样本profile2085988等24startup后逐样本恰四正式GPU PID，结果见收尾；没有辅助GPU占用。
+- 三新源码AST/diff及上述全state/缓存/边界/真实启动检查通过，小证据docs/evidence/rl_parameter24_serl16_capacity_20261026/SOURCES.json。B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，大checkpoint/replay/raw和完整证据SSD，HDD小交接/收据，非arm1/HDD全备份。GitHub认证待恢复、不重复问，Goal active。
+
+纯正式GPU窗口完成：180样本/208.235546s，GPU均值58.6278/73.5111/71.7167/73.2222%，D/I/A/V吞吐10.7619/24.1169/24.7748/24.8084steps/s。逐样本GPU PID集合恰四正式且原learner全live，无辅助GPU。原2085988结束勿重采；仅此固定窗口均值≥50%，不保证每瞬时或隐去轮次尾部/恢复检查的空闲。
+
 ## 2026-10-26 — 参数23与Direct16接续、温度后继候选有限对照完成
 
 - 本轮fetch/read实际远端main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，无新变；起点b20eba43。无子agent，冻结物理/SPT和全部正式state保持；交接docs/RL_PARAMETER23_SERL16_TEMPERATURE_PROBE_20261026.md。
