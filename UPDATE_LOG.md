@@ -1,3 +1,16 @@
+## 2026-10-26 — 目标Q投影有限对照、参数cycle11与Direct6冻结核验
+
+- 本轮fetch/read main=5170ce75a9467012d31f5a227bc7c9ba6c2fbdda、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；上一轮实质进展续接，无子agent，另一主机非RL任务不动。最新docs/RL_TARGET_PROJECTION_CYCLE11_20261026.md。
+- 参数10三路30完整、Task/Strict I18/16 A11/10 V17/16，reward−4.163/−15.491/−4.540；termMAE7.242/2.692/47.789，加权末loss95.344/742.015/7760.742，整体未修复。父全prefix/history/配置/41250新reward重建/30terminal/MJB通过。原10health脚本漏VMC，独立补遗漏并保留原件，合并来源hash齐；图已看，不冒称原FINISHED覆盖三路health。
+- Direct6完整285867/2246944、0/30、reward−31.389，29完整+long0000第1149动作穿透abort保留，新增41024全部动作/obs/nextstate/reward重建通过；termMAE1.738、只读完整state不变。新冻结6三预指定代表330万子步/4125动作、filter/torque/物理指标审查全部完成，0/3且均approach，无人体接触/舒适NA；原评估PID结束勿重启。
+- Direct438669已从正式6全state续有限7/8、30sampler共享CPU1–12、官方8:1和batch不变。真实启动新增10000/80000与全父prefix/30亲和性/MJB/动作映射/reward重建通过。归档438672、7/8只读855997/855998已登记。
+- 收尾Direct7完整327117/2576944、30完整无abort、0/30、reward−31.159；全新增41250映射/reward重建及父prefix/MJB通过，termMAE2.422/p95=41.246、Qmean15.854仍偏，state不变/图已看。7只读855997结束，原438669进入登记8；SHA a460207c21d86513c68c6e0d31a738852611b415458a476b74af4e121aad7c07。
+- 新三路cycle10上界投影同parent/state/RNG/样本两臂各5000，共30000辅助+2入口更新完成；不保存/推广权重。32组独立上界与舍入、terminal/RNG检查、关闭投影一次全state更新完全相同通过。termMAE I7.203→3.305/A2.840→2.036/V56.356→7.221，absQp95 1027→66/316→312/3615→418；A负向漂移仍在，I in-bag无改善，非在线恢复。预算/20点/全state/父replay不变/图通过，旧辅助已完勿重复。
+- 新三正式parameter_projection_cycle11_20261026_v1 I1110503/A1110504/V1110505，从正式10保留所有网络/Adam/replay/RNG/history续一个cycle11，仅投影target Q于熵项之前，terminal128/pair/batch32768/UTD1/原actorLR保持。checkpoint持久化投影marker，未来须projected_class恢复。三check-only仅加marker完整state相同/正负守卫及真实各1000新交互、全父prefix/history/配置/12亲和性/MJB/clock/reward重建通过。
+- 新归档1110506、11只读1131662等待准确边界，health显式三路且标明未投影fixed-pair TD诊断范围，无自动12。新纯正式GPU54.68/41.33/40.87/40.47%，每卡50%仍未达；辅助窗口56.13/57.28/56.75/57.88不代替正式。Goal active，持续在线效果/健康收敛/最终冻结比较/ESN/SPT和GPU要求未完。
+- 小证据docs/evidence/rl_projection_cycle11_20261026/SOURCES.json；大型产物本集群SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl；源文件/配置/证据逐hash核验，原环境与物理协议不改。
+- 本轮小文档/源码/证据备份：/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PROJECTION11_STATUS_20261026_113650；只备份本轮小产物，大型checkpoint/轨迹仍SSD。
+
 ## 2026-10-26 — 终端拟合诊断与三参数cycle10在线检验，Direct5/VMC9完整审查
 
 - 开工fetch/read main=236c24f17376aeadf221d03474ae6290cad5e1d3、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，上一轮为实质progress。最新docs/RL_TERMINAL_WEIGHT_CYCLE10_20261026.md，未干预另一主机非RL任务。

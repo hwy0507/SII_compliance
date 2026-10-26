@@ -1,5 +1,30 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 目标Q投影参数11与Direct7/8（覆盖下方历史快照）
+
+原Goal active，未健康收敛；最新[完整交接](docs/RL_TARGET_PROJECTION_CYCLE11_20261026.md)。
+参数10全30完整/I18/16 A11/10 V17/16，reward−4.163/−15.491/−4.540；termMAE7.242/2.692/47.789，
+加权末loss95.344/742.015/7760.742，终端加权未修复整体Q。原3818446/8/50及3965208已完勿重启。
+原10health漏VMC已独立补齐到parameter_terminal128_cycle10_vmc_health_20261026_v1，原文件保留，合并索引有hash。
+Direct6完整285867/2246944、0/30、reward−31.389，29完整+long0000第1149动作global穿透abort保留；
+termMAE1.738、全部41024新映射/reward重建通过。新冻结6三固定代表330万子步/4125动作独立审查完，
+Task/Strict0/3、均approach、人接触0/舒适NA，平均slowdown.5972；原507630/507861已结束勿重跑。
+Direct438669/GPU0/learnerCPU0/30worker共享1–12仍在serl_pool30_cycle07_08_20261026_v1/direct，
+官方8:1/batch32768/全state保持，仅有限7/8。启动10000/80000核验通过；归档438672，7/8只读855997/855998。
+收尾7已完整327117/2576944、0/30、reward−31.159、30完整无abort；全新41250映射/reward重建通过，
+termMAE2.422/p95=41.246、Qmean15.854仍偏；855997已完勿重启，438669进入8。
+新有限cycle10目标Q上界投影3路×2臂×5000=30000辅助+2gate全部完，不推广权重勿重复填占用；
+termMAE对照→投影I7.203→3.305/A2.840→2.036/V56.356→7.221，absQp95 1027→66/316→312/3615→418。
+A负向漂移仍在，I in-bag无改善，V uncertainty大；不是在线恢复。32上界对比/disabled完整更新相同通过。
+新正式parameter_projection_cycle11_20261026_v1 I1110503/A1110504/V1110505，GPU1/2/3与原CPU组各12sampler，
+从正式10完整state/history续1周期11；保留terminal128/pair/batch32768/UTD1/原actorLR，仅投影target Q于熵项之前。
+checkpoint保存terminal_loss_weight和finite_target_projection，后续必须projected_class恢复，原loader会丢目标。
+三check-only全state仅加marker逐项相等/正负守卫通过；实际各1000新增、父prefix/history/优化器/12MJB/亲和性/
+参数输入/clock/reward0误差核验通过。归档1110506，11只读1131662等待精确边界，无自动12。
+新纯正式GPU54.68/41.33/40.87/40.47%，每卡50%未达；辅助窗口56.13/57.28/56.75/57.88不能替代正式。
+物理/SPT/gates/MJB/dt不改；无子agent，大产物SSD，HDD只小证据。最终收敛/冻结比较/ESN/SPT仍待。
+
+
 ## 最新RL状态：2026-10-26 终端加权参数10与Direct5（覆盖下方旧运行状态）
 
 原Goal active，未健康收敛。最新[交接](docs/RL_TERMINAL_WEIGHT_CYCLE10_20261026.md)。
