@@ -1,5 +1,18 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 参数17、Direct batch65536第13周期运行中
+
+原Goal active，未健康收敛；最新交接[RL_PARAMETER17_SERL_BATCH13_20261026.md](docs/RL_PARAMETER17_SERL_BATCH13_20261026.md)。本段覆盖下方16/12快照。无子agent，物理/SPT与完整正式state保持。
+完整参数16三路各+41250、30完整无abort，I18/18、A11/9、V17/17各30；reward−.533626/−17.182676/−2.825392，末1000loss1.869/6.085/1.976，termMAE1.063/.745/.829，Q均−8.378/+13.613/+26.576。全旧prefix/history/markers/MJB与新reward精确，health/图完成；导纳退步，未收敛。旧4072251/2/5及归档/审查已结束。
+完整Direct12 524532steps/4156264critic，0/30、reward−31.019692、30完整无abort；全新单步/32步目标精确、旧483282raw/derived/ready/history保留、pending0。terminalMAE.093513/max2.961039，32步TD.079125，末loss.020545，Q−20.592；全state不变与图审查通过，仍全部approach。旧4121413与归档/审查已结束。
+正式参数17 I1280294/A1280295/V1280296，GPU1/2/3、原CPU组各12sampler，B/runs/parameter_batch65536_cycle17_20261026_v1，从准确完整16全state接续一个17、设置不变。通用driver校验连续登记链至13；三check-only/实际各1000新增全prefix/history/marker/MJB/action/clock/reward0误差通过。归档1328339、完整17审查1328342，无自动18，必须pair_class恢复。
+正式Direct13 PID1280297，GPU0/CPU0、30sampler共享1–12，B/runs/serl_multistep_batch65536_cycle13_20261026_v1/direct，从准确完整12全state接续；仅batch32768→65536，官方8:1/10critic/random2/noentropy/32步/actor48与gather+transfer保持。依据已完成正式11两臂probe，非辅助权重推广。check-only全state/下批/RNG/两构造相等与负守卫通过；真实1000新增/8000critic、旧524532全prefix和145mature+855pending/30MJB精确。归档1328360、完整13审查1328362，无自动14。
+预登记纯正式180样本193.549秒GPU58.45/75.71/74.89/74.27%，四原learner全live；D/I/A/V10.628/24.779/25.348/25.213steps/s。该窗口均值全≥50%，非瞬时或永久保证。Direct吞吐较旧23.416下降54.6%，不能称提速。profile1364508已完勿重采，后续混合推理不替代。
+冻结参数15九条全部审查完成，三路Task/Strict2/3、被动carry失败，动作误差0/fullstate不变/物理filter torque通过；原协调/评估全部结束勿重跑。I/A/V长期完成53.08/38.08/31.48s，接触合规14.96/100/100%，被动/短期无接触NA，非最终排名。
+新配对只读1462229已完：导纳丢Strict短0100/0000/0900及长0400，无新增；短0000/新Task成功0600物理无效。Direct11/12均30approach，前160public0 .4518→.3571，0是nominal、更大减慢WBC；非因果证据。
+新冻结随机Direct12协调1521445/evaluator1535401，B/runs/serl_cycle12_stochastic_representatives_20261026_v1；等待纯正式profile后已实际启动，GPU0低优先级/CPU52、原三代表最多330万子步0优化。独立seed2026102612，同seed动作相同/异seed不同/fullstate不变gate通过；最终物理/动作/折扣回报与Q诊断待完成，不重复。不是无偏期望回报校准证明。
+远端仍dbb1d76（baseline f6e8f8c）；此前573d0469/ac6a028仅本地，GitHub认证待恢复，用户已被询问勿重复。HDD配额满，仅小交接/收据；完整小证据和大产物在SSD，不称HDD/arm1全备份。先查原17/13与随机评估，完成审查后及时衔接最新正式全state。
+
 ## 最新RL状态：2026-10-26 参数16、Direct单次传输12运行中
 
 原Goal active，未健康收敛；最新[完整交接](docs/RL_PARAMETER16_SERL_TRANSFER12_20261026.md)。本段覆盖下方15/11运行中快照。无子agent，物理/SPT与完整正式state保持。
