@@ -1,3 +1,11 @@
+## 2026-10-26 — 新30条完整候选训练产物归档，闭环评测保持运行
+
+- 实时fetch/read main=bd6193872ea68683244be513869c892f6f60273b、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，核对AGENTS与原服务/真实worker。原Goal继续非RL；不恢复服务器RL、不重启训练或改冻结模型/协议。
+- 75拟合/108候选产物、新30条NPZ、9模型锁、1357项登记源码与正式MJB已打包归档：arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_training_bundle_0749/TRAINING_BUNDLE.tar.gz。
+- 包285495369字节，SHA c8affcee0e67343f985b5716dd2eb2adf037c81d9455ffed07df3259d18c0e85；1995个载荷文件、605458060字节。来源hash/打包前后/包内重读/服务器暂存与发布后hash和大小全部核验；收据docs/evidence/nonrl_new30_20261026/TRAINING_BUNDLE_ARCHIVE_0749.json。
+- 排除未登记的嵌套旧输出；不包含原始采集轨迹、全部外部runtime与Python环境，不声称可直接异机启动。当前物理轨迹/最终报告未归档，本机文件保留，服务器无训练仿真。
+- 07:50 UTC闭环完成5/108，第二seed的MLP正在推进；worker无OOM/swap。近期RNN完整回合未完成任务，动作/filter重放通过，失败保留；不做部分矩阵排名。108回合及最终独立审计仍待完成。
+
 ## 2026-10-26 — 新30条非RL完整训练与9模型选模审计通过，闭环评测继续
 
 - 开工实时fetch/read main=fad16f5a23952ce1713c90c18efb4135df9c86a5、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；服务器RL暂停与本机非RL Goal分开，未恢复服务器训练。
