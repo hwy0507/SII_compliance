@@ -9,6 +9,8 @@ Direct15原2870244/归档2870381/审查2870384继续，B/runs/serl_multistep_bat
 新纯正式180样本208.240s，GPU59.0333/74.1167/74.2389/74.4167%，D/I/A/V10.7664/24.4910/25.1008/25.1633steps/s，四原learner全live/GPU PID逐样本恰四正式，B/runs/batch15_parameter22_gpu_profile_20261026_v1，3752747完成勿重采。温度诊断等窗口结束才启动，非瞬时永久保证。
 远端main dbb1d76/baseline f6e8f8c，凭据待恢复用户已被问勿重复；大产物SSD，HDD小交接/收据，非arm1/HDD全备份。先核原22/15完整review，及时衔接并推进温度状态候选验证。
 
+收尾科学提交a5a8aae86e2ced8dd5a233755edc44be994aaf04仅本地，push仍HTTPS用户名认证失败；远端main dbb1d76/baseline f6e8f8c重新fetch无变。完整114成员小证据SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER22_ENTROPY_STATE_20261026_183920/FULL_SMALL_EVIDENCE.tar.gz，逐成员hash已核验，1487888字节，SHA256 2774dd726304b4e7829c837847bf182c27f09a70399bd68f8d0671978a5f2e46。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER22_ENTROPY_STATE_STATUS_20261026_183920/HANDOFF.md及收据/LATEST入口已核验，大checkpoint/replay/raw与诊断梯度NPZ仍SSD，非HDD/arm1全备份。FINAL_LIVE_STATUS核验四原15/22持续推进、归档/审查live、全部有限诊断/观察进程已退出。
+
 ## 2026-10-26 参数21 / Direct15 / 128对起始探索完成
 
 原Goal active，未健康收敛。最新[交接](docs/RL_PARAMETER21_SERL15_PREFIX_20261026.md)承接20/14。无子agent，冻结物理/SPT及正式全部state保持。
