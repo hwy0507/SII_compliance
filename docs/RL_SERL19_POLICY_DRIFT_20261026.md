@@ -53,3 +53,5 @@ public0=(raw0+1)/2，0为nominal、越大越减慢WBC。mode为官方API tanh(lo
 本轮查询/fetch/read真实main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d未变。按已读sii-research-sync提交与归档，GitHub认证仍失败，不重复问用户。小证据docs/evidence/rl_serl19_policy_drift_20261026；HDD小交接/收据、checkpoint/replay/raw仍SSD，非HDD/arm1全备份。
 
 纯正式19/29资源窗口已完成：60样本/68.572054秒，四GPU均值58.1500/75.3500/66.5167/69.1667%，逐样本GPU PID恰四正式且原learner身份/live保持，无辅助GPU。仅本窗口均值，不保证每瞬时或过渡期；原1785987已退出勿重采。
+
+本轮科学提交e07903bc8f73600ab41af1c97aae95595ebe423e仅本地，push认证失败。完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL19_POLICY_DRIFT_20261026_225138/FULL_SMALL_EVIDENCE.tar.gz，47成员逐hash/大小核验，3022648字节，SHA256 1e330da1d73176fdd4f94f57aa5dfa90289eef648ec347a669e53b55b1cdda1c。HDD最新/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_SERL19_POLICY_DRIFT_STATUS_20261026_225138/HANDOFF.md及收据/LATEST已核验；大产物仍SSD，非HDD/arm1全备份。新增30准备等待2031399与原29审查CPU调度2031400，不自动训练；原19/29和固定稳定性审计继续。Goal active。
