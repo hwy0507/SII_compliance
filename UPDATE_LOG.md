@@ -10,6 +10,8 @@
 - 新准确Direct10冻结三代表已完成，原协调3165841/evaluator3166321退出，0优化；各1375动作/110万子步/完整55秒，Task/Strict0/3、全部approach，无abort/无人接触。全部动作重放误差0、MJB/物理/filter/torque与完整learner/optimizer/RNG不变通过；平均public0 .1314/.1329/.1314，舒适NA，非全30最终比较。四正式持续推进，不重复旧探针填占用；Goal active，未健康收敛、最终冻结/ESN/SPT和每卡50%尚待。
 - 五源码AST检查及相应恢复/在线启动/有限等价gate已通过；小证据docs/evidence/rl_parameter15_gather11_20261026/SOURCES.json。实际计算与大型产物在本集群B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl；仓库B/repository/SII_compliance由原HDD路径链接。HDD配额仍限制备份，不宣称arm1或HDD全量共享。
 
+- 最终发布61c3e3e38d79ca586328ea503517df8ccc927a5e已push并查询远端核验。107文件完整小证据包SSD B/repository/RL_PARAMETER15_GATHER11_20261026_145131/FULL_SMALL_EVIDENCE.tar.gz逐项hash验证，691350字节/SHA89d97163e5c91ffe920cf6408af70f67522e8ba0fe3b5fe75d7f7a025d78ccfb。HDD本次连17272字节最小源码包也因配额失败，仅HANDOFF/收据/LATEST入口可写；删除本次不完整副本，不宣称源码包已HDD。新FINAL_LIVE_STATUS保留收尾进度。
+
 ## 2026-10-26 — 新30条最终报告入口准备，原108回合评测继续
 
 - 上轮第八条件审计/前72条原件共享/GitHub发布属实质进展；本轮开工查询并fetch/read main=12c44c4664dbff5865537d85e6eceb8b1087ffdc、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，读取AGENTS/新30协议。原服务86607 active，74/108，第九条件MLP144177真实仿真18.04→47.04秒/CPU2:07→5:11，OOM0、swap0，无重复派发。
