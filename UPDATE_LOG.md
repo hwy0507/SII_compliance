@@ -1,5 +1,28 @@
 # 更新日志
 
+## 2026-10-26 — 非 RL 九拟合完成、解析 ESN 最优性核验；新闭环受存储限制
+
+- 读取 AGENTS、同步 skill、实时 fetch main=`50613a5a4c65da02fd2f06c96f890b5251dddb61`、
+  baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d` 及两分支日志，无新远端冲突。
+  原 64 回合矩阵及其 hash 清单保持；非 RL Goal 继续 active，RL 不在本轮范围。
+- 已核验恒定 LR 六拟合 complete；新增独立 cosine32k 三拟合 complete，各 family 相同数据、
+  split、初始化和预算，LR 由原值降至 1%。末四个全训练目标相对极差 ESN/RNN/MLP 分别
+  0.201%/0.458%/0.197%，通过有限窗口 plateau；ESN/RNN 最佳验证 MSE 略差于恒定32k，
+  MLP略好，不声称全面提升或闭环成功。新无平滑 loss 图与九份训练证据已发布。
+- 独立核验固定 ESN 的 ridge 正规方程：保存解析解相对残差4.19e-15；旧梯度8k目标比最优
+  高166.11%，global恒定32k高78.19%，cosine32k仍高80.95%。证明有限plateau不等于优化充分；
+  不能把这一点推成数据无问题或解析ESN闭环必胜。报告 `docs/NONRL_OPTIMIZATION_AUDIT_20261026.md`。
+- 新 model lock 固定7模型×8已见条件=56回合，包含constant/cosine32k及解析ESN；所有方法
+  共用新矩阵全局T_ref，保留全部失败，不将已见条件冒充未见测试。入口/审计器支持登记网格、
+  lineage/hash核验、全局锁、3GiB/禁swap和磁盘准入。8项指标/梯度/调度/lineage测试通过，
+  脚本编译通过，真实loss图已目视核对。
+- 新物理组尚未启动：磁盘可用约4.41GiB，完整56回合保守准入11.5GiB，dry-run明确拒绝。
+  `docs/evidence/nonrl_learning_repair_20261026/PHYSICS_PREFLIGHT.json` 保留该事实。
+  本机cosine服务单线程/3GiB/禁swap；在途观测memory peak1,332,572,160 bytes，max/oom/kill均0，
+  此峰值为观测时刻值，不冒充全程最终峰值。未删除历史产物或使用服务器计算。
+- 原始数据/checkpoint仍仅本地，尚无核验服务器归档。此前自动审批拒绝整批原始轨迹导出，
+  未重试或绕过；需解决持久存储后再启动56回合。GitHub发布限于源码/小型证据，保留无关草稿。
+
 ## 2026-10-26 — 非 RL 新矩阵 64/64 完成并审计，继续数据/学习修复 Goal
 
 - `nonrl_spt_matrix_20261025_v4` 的 execution/REPORT 均为 complete；64 条证据链、188 项执行

@@ -1,4 +1,4 @@
-"""Finite six-fit diagnostic; no physics, RL, test-based selection or resume."""
+"""Finite matched fit diagnostic; no physics, RL, test-based selection or resume."""
 from __future__ import annotations
 
 import argparse
@@ -39,7 +39,10 @@ def main():
     p.add_argument('--parent', type=Path, required=True)
     p.add_argument('--matrix', type=Path, required=True)
     p.add_argument('--root', type=Path, required=True)
+    p.add_argument('--budgets', type=int, nargs='+', default=[8000,32000])
+    p.add_argument('--learning-rate-schedule', choices=('constant','cosine'), default='constant')
     a = p.parse_args()
+    assert len(set(a.budgets)) == len(a.budgets) and all(0 < b <= 32000 for b in a.budgets)
     a.parent = a.parent.resolve(); a.matrix = a.matrix.resolve(); root = a.root.resolve()
     assert read(a.matrix/'execution.json')['status'] == 'complete', 'Wait for current physics grid'
     assert read(a.matrix/'FINAL_AUDIT.json')['status'] == 'passed', 'Audit grid first'
@@ -55,7 +58,7 @@ def main():
     source_hashes = {str(f.relative_to(source)):sha(f) for f in sorted(source.rglob('*.py'))}
     write(root/'SOURCE_HASHES.json', source_hashes)
     jobs = [dict(family=family, rate=rate, updates=updates, seed=2026101301)
-            for updates in (8000,32000) for family,rate in (
+            for updates in a.budgets for family,rate in (
                 ('esn_gradient',1e-5),('rnn_scratch',1e-5),('mlp_scratch',1e-4))]
     registration = dict(created_utc=now(), jobs=jobs,
         authority='User ongoing goal: diagnose data then learning and repair non-RL comparison',
@@ -64,12 +67,13 @@ def main():
         source_hashes_sha256=sha(root/'SOURCE_HASHES.json'),
         parent_matrix_sha256=sha(a.matrix/'REPORT.json'),
         changes=['fixed global importance normalization including short-tail regularization',
-                 'full-training-set objective and MSE every 1000 updates', '8k versus 32k budget'],
+                 'full-training-set objective and MSE every 1000 updates'],
+        budgets=a.budgets, learning_rate_schedule=a.learning_rate_schedule,
         unchanged=['data','44/11 trajectory split','actor fields','initialization seed',
                    'preselected family learning rates','feature transform','filter','physical gates'],
         selection='Per-fit best imitation validation MSE; no selection by current 8-condition scores',
         convergence='Descriptive evidence only: >=10% full-train objective reduction and last 4 logged values range/mean <=1%; report validation trends separately. Budget exhausted alone is not convergence.',
-        scope='Six finite offline fits, no simulation or new data. One seed pilot, not final fair multi-seed comparison. Current 8 conditions are seen diagnostic data after inspection; next confirmatory test must be newly registered.',
+        scope='Finite offline fits, no simulation or new data. One seed pilot, not final fair multi-seed comparison. Current 8 conditions are seen diagnostic data after inspection; next confirmatory test must be newly registered.',
         resources=dict(threads=1,memory_max_bytes=3*1024**3,swap_max_bytes=0,concurrent_fits=1),
         python=sys.executable)
     write(root/'REGISTRATION.json',registration)
@@ -82,7 +86,8 @@ def main():
             cmd=[sys.executable,str(trainer),'--data',registration['data'],
                  '--metadata',str(a.parent/'data/DATA_COMPLETE.json'),'--output',str(dest),
                  '--family',j['family'],'--seed',str(j['seed']),'--learning-rate',str(j['rate']),
-                 '--updates',str(j['updates']),'--objective-normalization','global','--full-training-diagnostics']
+                 '--updates',str(j['updates']),'--objective-normalization','global','--full-training-diagnostics',
+                 '--learning-rate-schedule',a.learning_rate_schedule]
             receipt=dict(**j,name=name,command=cmd,started_utc=now())
             state['jobs'].append(receipt);write(root/'execution.json',state)
             with (root/(name+'.log')).open('x') as log:

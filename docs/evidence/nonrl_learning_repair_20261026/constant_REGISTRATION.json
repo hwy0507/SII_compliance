@@ -1,0 +1,72 @@
+{
+  "created_utc": "2026-10-26T03:24:06.940217+00:00",
+  "jobs": [
+    {
+      "family": "esn_gradient",
+      "rate": 1e-05,
+      "updates": 8000,
+      "seed": 2026101301
+    },
+    {
+      "family": "rnn_scratch",
+      "rate": 1e-05,
+      "updates": 8000,
+      "seed": 2026101301
+    },
+    {
+      "family": "mlp_scratch",
+      "rate": 0.0001,
+      "updates": 8000,
+      "seed": 2026101301
+    },
+    {
+      "family": "esn_gradient",
+      "rate": 1e-05,
+      "updates": 32000,
+      "seed": 2026101301
+    },
+    {
+      "family": "rnn_scratch",
+      "rate": 1e-05,
+      "updates": 32000,
+      "seed": 2026101301
+    },
+    {
+      "family": "mlp_scratch",
+      "rate": 0.0001,
+      "updates": 32000,
+      "seed": 2026101301
+    }
+  ],
+  "authority": "User ongoing goal: diagnose data then learning and repair non-RL comparison",
+  "data": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/data/training_data.npz",
+  "data_sha256": "f00edd388a476879e56e51cf91c9cc04425a91d1df649eb9b78bf6197f33ddd6",
+  "metadata_sha256": "2fa13f51a216eaf59f60568ae45e8f771771e6d1a67079a14f6b6e83f60f6af9",
+  "source_hashes_sha256": "ac19cfff7097cfedf49f6efa00ad39374661c585641a42f1a802e34c51ff2a35",
+  "parent_matrix_sha256": "9308bc2452294b476bf1e267e64cf465f5089072b1165701180f6d16f3b1b1bd",
+  "changes": [
+    "fixed global importance normalization including short-tail regularization",
+    "full-training-set objective and MSE every 1000 updates",
+    "8k versus 32k budget"
+  ],
+  "unchanged": [
+    "data",
+    "44/11 trajectory split",
+    "actor fields",
+    "initialization seed",
+    "preselected family learning rates",
+    "feature transform",
+    "filter",
+    "physical gates"
+  ],
+  "selection": "Per-fit best imitation validation MSE; no selection by current 8-condition scores",
+  "convergence": "Descriptive evidence only: >=10% full-train objective reduction and last 4 logged values range/mean <=1%; report validation trends separately. Budget exhausted alone is not convergence.",
+  "scope": "Six finite offline fits, no simulation or new data. One seed pilot, not final fair multi-seed comparison. Current 8 conditions are seen diagnostic data after inspection; next confirmatory test must be newly registered.",
+  "resources": {
+    "threads": 1,
+    "memory_max_bytes": 3221225472,
+    "swap_max_bytes": 0,
+    "concurrent_fits": 1
+  },
+  "python": "/home/airpig/桌面/hwy/compliance_control/.venv-rl/bin/python"
+}

@@ -6,7 +6,7 @@ from pathlib import Path
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from train_fair_students_20261013 import loss_mass
+from train_fair_students_20261013 import loss_mass, scheduled_rate
 
 
 class ObjectiveTest(unittest.TestCase):
@@ -30,6 +30,13 @@ class ObjectiveTest(unittest.TestCase):
     def test_legacy_denominator_unchanged(self):
         w = torch.tensor([1., 2., 9.])
         self.assertEqual(float(loss_mass(w, 'legacy_batch', 123.)), 12.)
+
+    def test_cosine_rate_endpoints_and_monotonicity(self):
+        rates = [scheduled_rate(1e-5, i, 32, 'cosine') for i in range(32)]
+        self.assertAlmostEqual(rates[0], 1e-5)
+        self.assertAlmostEqual(rates[-1], 1e-7)
+        self.assertTrue(all(a >= b for a,b in zip(rates, rates[1:])))
+        self.assertEqual(scheduled_rate(1e-5, 31, 32, 'constant'), 1e-5)
 
 
 if __name__ == '__main__':

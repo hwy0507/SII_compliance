@@ -7,6 +7,7 @@ matrices learn. Analytic ESN and its RNN fine-tune are separate mechanism rows.
 import argparse
 import copy
 import json
+import math
 import os
 from pathlib import Path
 import platform
@@ -101,6 +102,13 @@ def loss_mass(weight, mode, mean_train_importance):
     weighted objective. Legacy per-chunk normalization is retained for replay.
     """
     return 512 * mean_train_importance if mode == 'global' else weight.sum()
+
+
+def scheduled_rate(base, update, updates, mode):
+    if mode == 'constant':
+        return base
+    phase = update / max(updates - 1, 1)
+    return base * (.01 + .99 * .5 * (1 + math.cos(math.pi * phase)))
 
 
 def check_split(ep, train):
@@ -206,6 +214,9 @@ def fit(a):
                     for dest, src in zip(padded, arrays): dest[i, :len(seq[int(e)])] = src[seq[int(e)]]
                 hidden = None
                 for offset in range(0, length, 64):
+                    rate = scheduled_rate(a.learning_rate, update, updates, a.learning_rate_schedule)
+                    for group_params in optimizer.param_groups:
+                        group_params['lr'] = rate
                     values = [torch.from_numpy(v[:, offset:offset+64]) for v in padded]
                     pred, hidden = model(*values[:4], state=hidden)
                     y, weight = values[4:]
@@ -224,7 +235,7 @@ def fit(a):
                     if update % 1000 == 0 or update == updates:
                         score, raw_score = validation()
                         history.append(dict(update=update, validation_mse=score, validation_raw_mse=raw_score,
-                                            last_train_loss=float(loss.detach())))
+                                            last_train_loss=float(loss.detach()), learning_rate=rate))
                         if a.full_training_diagnostics:
                             history[-1].update(training_diagnostics())
                         write(out/'training_progress.json', history[-1])
@@ -275,6 +286,7 @@ def fit(a):
             duration_s=time.monotonic()-started, raw_linear_objective=True, readout_ridge=RIDGE,
             objective_normalization=a.objective_normalization,
             full_training_diagnostics=a.full_training_diagnostics,
+            learning_rate_schedule=a.learning_rate_schedule,
             objective=('fixed chunk mass preserves global weighted squared-error gradients; common ridge penalty'
                        if a.objective_normalization == 'global' else
                        'legacy per-chunk weight normalization; not identical to global weighted ridge objective'),
@@ -297,6 +309,7 @@ def main():
     p.add_argument('--updates', type=int, default=8000)
     p.add_argument('--objective-normalization', choices=('legacy_batch', 'global'), default='legacy_batch')
     p.add_argument('--full-training-diagnostics', action='store_true')
+    p.add_argument('--learning-rate-schedule', choices=('constant','cosine'), default='constant')
     a = p.parse_args(); assert 0 < a.updates <= 32000 and 0 < a.learning_rate <= .001
     fit(a)
 
