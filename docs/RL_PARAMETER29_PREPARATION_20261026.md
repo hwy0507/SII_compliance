@@ -23,3 +23,13 @@ Direct19原等待3088320和审查CPU调整3269262保持；只等完整18后check
 之前完整小证据包B/repository/RL_PARAMETER28_TERMINAL_20261026_215524/FULL_SMALL_EVIDENCE.tar.gz（94成员）仍是本轮补充的依赖，SHA256 5c4ae048b5459ee9f8e886fba680a25caf8cead71b84e0e7110e99b1ee430aec。新归档仅准备/调度补充，不宣称新的完整科学包或HDD/arm1全量备份。大checkpoint/replay/raw仍SSD。
 
 本轮准备提交38d1397161e87e461a5d347a7eb8f744aa47077d仅本地，push仍HTTPS用户名认证失败；准备补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER29_PREPARATION_20261026_215919/PREPARATION_SUPPLEMENT.tar.gz逐成员hash核验，13成员/460058字节，SHA256 c77af62452945ec93bf0ac121bfe946dcf9394d89bf1ddd04e4e606af5b7d877。HDD最新交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER29_PREPARATION_STATUS_20261026_215919/HANDOFF.md与收据/LATEST已核验；补充包依赖前轮完整28科学证据，不是大产物全备份。原18/28与冻结16持续，4005782/4005783为新原等待进程，Goal active。
+
+## 下一固定回报稳定性窗口：27–29
+
+本轮另登记B/runs/parameter_capacity27_29_reward_stability_20261026_v1，原等待PID4175982。PLAN在27完整、28运行、29未启动时冻结：固定27–29，接在已完成24–26后的下一不重叠三轮窗口；27是回顾性基准，28/29完整结果尚未知，不称全部前瞻实验。预先固定原seed2026102627、三类各10条件内5000次配对bootstrap、近零均值1 reward保护及5%描述判据，原27全部protocol/review/health/episodes/optimizer输入hash已封存。
+
+原等待器最长7200秒，仅当27/28/29全部FINISHED及REVIEW通过才冻结后续输入hash并运行CPU52保存日志分析。三轮协议/模型/容量历史入口23/算法参数一致性必须通过，每方法每轮完整30条件及41250个优化记录逐步号/finite核查；统计相邻及首尾reward变化、条件配对差/斜率/组成敏感性区间、整轮/首末1000/最大loss、alpha/terminal/inbag/TD。不是新训练、神经前向或物理仿真，不重复旧24–26审计。
+
+新源码audit_parameter27_29_reward_stability_20261026.py复用旧审计的算术，仅固定窗口/标签/局限说明变化，diff及AST已核。等待器确认原27封存hash、检查原训练/review失败并保留WAIT_FAILURE；不自动启动29、不自动停训、不解锁test、不宣称收敛。5%或数值finite通过也不能代替优化健康及冻结验证。实际分析尚未执行，先查4175982与原REVIEW/WAIT_FAILURE，勿重复。
+
+小证据docs/evidence/rl_parameter27_29_stability_20261026含PLAN、source、原PID/源hash；冻结16此时24/30，原1749189/1749193/1749197继续，未全30完成。Goal active。
