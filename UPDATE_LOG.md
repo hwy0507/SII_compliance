@@ -1,3 +1,14 @@
+## 2026-10-26 — 四接口时钟候选进入真实在线训练
+
+- fetch main64fe259567d40329b25ea04dc3ae5f1351e0acc9、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，工作区干净后继续；上一轮属于实质进展。
+- 12跨周期critic对照正常结束勿重启；cycle1终端MAE无/有D81.322/49.061、I57.908/87.011、A183.942/44.849、V160.909/99.770。Imp3seed全变差、V2/3改善，非通用修复；完整review与图已核验，不推广辅助权重。
+- 四接口单55s时钟预检全部完成；逐条1375replay/时钟/模型/fixture/plan/reward/actor49/critic50核验，0updates，不称学习成功。contact_math全部12回合1320万子步独立精确复核完成，未证明整体提速。
+- 独立source_train17_clock合并5时钟+3性能文件；runs/clock_online_control_v1决策/登记后启动runs/cheq_clock_online_seed20261025_v1。四路1729888/1729892/1729893/1729897，CPU0–51各12sampler+1learner、GPU0–3，fresh/空replay、不导入预检或辅助权重，6×30有限阶段/非收敛上限。
+- 实际四6000-step快照各1001update、actor参数与时钟列已更新；全replay时钟、模型/输入/optimizer核验通过。归档1729901/CPU52和诊断1729905/CPU53继续周期0/1/3/5，旧固定矩阵3148346/CPU54继续，不重复派发。
+- 真实在线GPU60s平均6.27/5.87/6.27/6.47%，50%仍未达；不拿已结束辅助拟合98–99%冒充正式利用率，不改变live UTD/batch/dt。
+- 旧周期3固定Imp/Adm各3条件完整物理/filter/torque复核，learned/nominal均2/3；两方法共1320万归档子步。Imp长期舒适12.61%对24.07%，Adm长期100%两者，不能笼统说全面改善；VMC仍在途。
+- 报告docs/PUBLISHED_CLOCK_ONLINE_STAGE_20261026.md/.json；集群主产物 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`，未向其他主机归档，Goal/充分收敛/最终ESN比较未完成。
+
 ## 2026-10-26 — GPU恢复、六轮末组复核与独立critic时钟候选
 
 - 开工fetch main50613a5a4c65da02fd2f06c96f890b5251dddb61、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收尾main更新64fe259567d40329b25ea04dc3ae5f1351e0acc9，已读非RL九拟合/ridge审计并合并，保留双方日志；冻结运行时不变。

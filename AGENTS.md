@@ -7,6 +7,9 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新在线阶段已实际启动：runs/cheq_clock_online_seed20261025_v1，runtime/source_train17_clock，登记/决策runs/clock_online_control_v1。四learner1729888/1729892/1729893/1729897，CPU0–51各12sampler+1learner/GPU0–3；fresh/空replay、同30条件、6周期有限阶段。四6000-step/1001updates快照startup_review session34643已完整通过，actor参数、critic时钟列已更新、全部replay时钟/12model/input核验；不要重启。归档1729901/CPU52、诊断1729905/CPU53监视周期0/1/3/5，固定矩阵3148346/CPU54继续。正式GPU60s均值6.27/5.87/6.27/6.47，50%未达；辅助12全结束勿重启或为占用延长。
+跨周期review完成：D81.322/49.061、I57.908/87.011、A183.942/44.849、V160.909/99.770，无/有时钟cycle1终端MAE；Imp3seed全变差、V2/3改善，非通用修复。预检四完整55s与逐replay核验通过、0updates，不能称学习成功。contact_math12/12独立精确复核1320万子步，COMPLETE_REVIEW.json，source17合并仅此3性能+5时钟文件，不是整体提速证明。固定Imp/Adm三代表复核已完（runs/fresh_cycle03_parameter_fixed_review_v1），各learned/nominal2/3，Imp长期舒适12.61%对24.07%、Adm100%双方；V仍在途。报告PUBLISHED_CLOCK_ONLINE_STAGE_20261026，Goal active；接下来继续新在线stage周期0证据及原VMC固定矩阵，最终ESN仍未指定。
+
 收尾fetch/合并远端64fe259非RL九拟合与ridge审计（56物理回合因airpig存储未启动）；本地2294dd9实现，HTTPS push认证失败仍未发布。contact_math结果实际在results/FINISHED.json，已存在；未复核后四例勿称全部独立通过。
 
 最新本轮：原fresh三初始化八重复及seed27均已结束勿重启；完整review/图已通过，终端MAE无/钟17.760/8.487、30.606/11.354、69.204/19.699、74.311/25.806，非未见/在线证据。末组5完整review图核验0/0、18/17、13/13、17/16各30，V短0600穿透.214652mm，全部旧formal停止。新12路runs/fresh_critic_clock_withheld_cycle_v1仍在跑，CPU0–11/GPU每卡3、有限120万辅助更新，PID见LAUNCH；60s平均98.07/98.27/98.90/98.50%，不要为占用延长。新增可选critic_clock代码四接口真实upstream验证及17测试通过；runtime/critic_clock_candidate_v1冻结五文件改动，actor49/critic50，mixing间接受时钟影响。runs/critic_clock_candidate_preflight_v1四single55s预检1312002–1312005/CPU12–19已推进，0updates，未选/启动正式在线阶段；预检/12辅助结束后复核再登记。报告PUBLISHED_CLOCK_CANDIDATE_AND_GPU_RECOVERY_20261026。固定cycle3协调3148346已转VMC，contact coordinator已退出须读results子目录再判断完成，原独立收据1–8保留、9–12仍待复核。Goal active，未完成最终ESN/SPT比较。
