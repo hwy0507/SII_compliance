@@ -1,0 +1,88 @@
+{
+  "verified_utc": "2026-10-26T04:42:43.663070+00:00",
+  "manifest_integrity": [
+    {
+      "path": "docs/evidence/storage_cleanup_20261026/DELETE_MANIFEST.jsonl.gz",
+      "rows": 27711,
+      "compressed_sha256": "2cb000ef72708495d44c40c0beafd07e3d7b64fa9596a027e9fead0f5c466903",
+      "decoded_sha256": "5a9903b705f3b398993864df4a185913bb0ed154691338cc1dcadd295ead2269"
+    },
+    {
+      "path": "docs/evidence/storage_cleanup_20261026/RETAINED_INVENTORY.jsonl.gz",
+      "rows": 281321,
+      "compressed_sha256": "012438bf8ba81a22f00002f1c28440ae613ceb381c84a32ea4286097793622ce",
+      "decoded_sha256": "d0c09909ac012c4570afa573a2a74b10238096f7e7fd04198045d901d302f82a"
+    },
+    {
+      "path": "docs/evidence/storage_cleanup_20261026/DELETED.jsonl.gz",
+      "rows": 27711,
+      "compressed_sha256": "2bbc99da28a905e1c50042a93fd106326cc7daa4b61daab3167b2245539bb593",
+      "decoded_sha256": "f8dff6c4aa2fc6e2e9b1f668aa39faf85c800dba7008432e41d9e456d57579aa"
+    },
+    {
+      "path": "docs/evidence/storage_cleanup_checkpoints_20261026/DELETE_MANIFEST.jsonl.gz",
+      "rows": 11249,
+      "compressed_sha256": "4f93cc273fa02348947dff9b253ec20cb76253a68b98db5158da43af3071639d",
+      "decoded_sha256": "e92f6bbca1375d9ff16189fe3dc1c42bee74bdcf203fad132e777309d94f1a1a"
+    },
+    {
+      "path": "docs/evidence/storage_cleanup_checkpoints_20261026/RETAINED_INVENTORY.jsonl.gz",
+      "rows": 270072,
+      "compressed_sha256": "768477169fc72f46bd92de1e374170c1c63b5d64b4fec7dee090d319b1e75a56",
+      "decoded_sha256": "e56ebab15fb48677ce483110650eb6c431f3e26d51fd8a730e5d5b58d0bf287e"
+    },
+    {
+      "path": "docs/evidence/storage_cleanup_checkpoints_20261026/DELETED.jsonl.gz",
+      "rows": 11249,
+      "compressed_sha256": "61df10d0782f6c3ae54e5cdc601cba2bd141284c0dece660fa3a7921da64b136",
+      "decoded_sha256": "d2547b3da28e92031e6dcc0901eab2513444c73a8e0a5459514a2846fe61d6da"
+    }
+  ],
+  "preserved_key_hashes": {
+    "fair_comparison_20261013_v2/data/training_data.npz": "f00edd388a476879e56e51cf91c9cc04425a91d1df649eb9b78bf6197f33ddd6",
+    "rl_tuned_20261015_v4/PROTOCOL.json": "61d379a9e514d99f59fb5f5262b9e7b0770ee0c8baabb3b413f4d93a746fa9db",
+    "rl_tuned_20261015_v4/CONDITIONS.json": "591d2e71a4c0fde428292ed70b479574ea87700eff04ded4826e2de2aee407a4",
+    "rl_tuned_20261015_v4/teacher.json": "294c6461957cadcc934616375635c82df4dc99cd2e46f1ec4a4513d9b805f317",
+    "rl_tuned_20261015_v4/parameter_fullrange/PRIORS.json": "36a510b0f700cffa539eab8ef272c6c7d7fabda134b458c149730a8f6592eb37",
+    "baseline_local_rl_20261009/runtime/v6/construction/rollout.mjb": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+    "nonrl_spt_matrix_20261025_v4/SHA256SUMS": "a629a11f4a1e0ddca0d7412c1b69dd1c8281bb0a30116b79ffa018297ea19446"
+  },
+  "seven_model_checkpoint_and_metadata_hashes_match": true,
+  "full_64_episode_manifest_check": {
+    "command": "sha256sum -c --quiet SHA256SUMS",
+    "cwd": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_spt_matrix_20261025_v4",
+    "entries": 2280,
+    "exit_code": 0,
+    "note": "Executed separately after phase 1; phase 2 excludes this entire root and verified all retained file identities."
+  },
+  "physical_dry_run": {
+    "root": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_learning_closed_loop_20261026_v1",
+    "episodes": 56,
+    "methods": [
+      "esn_gradient_constant_32000",
+      "rnn_scratch_constant_32000",
+      "mlp_scratch_constant_32000",
+      "esn_gradient_cosine_32000",
+      "rnn_scratch_cosine_32000",
+      "mlp_scratch_cosine_32000",
+      "esn_ridge_s2026101301"
+    ],
+    "conditions": [
+      "prospective_20261013_acceptance_000",
+      "prospective_20261013_acceptance_001",
+      "prospective_20261013_acceptance_002",
+      "prospective_20261013_acceptance_003",
+      "prospective_20261013_acceptance_004",
+      "prospective_20261013_acceptance_005",
+      "prospective_20261013_acceptance_006",
+      "prospective_20261013_acceptance_007"
+    ],
+    "disk_free_bytes": 450820362240,
+    "disk_required_bytes": 12348030976,
+    "disk_admitted": true
+  },
+  "physics_started": false,
+  "final_disk_available_bytes": 450820362240,
+  "raw_artifacts_uploaded": false,
+  "external_backup_verified": false
+}

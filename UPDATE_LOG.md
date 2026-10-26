@@ -1,5 +1,7 @@
 ## 2026-10-26 — 时钟第二周期完整复核与首固定回合物理审查
 
+收尾fetch main新增c3124ba322853c1e561657b58c4204ed2a64a1b6：已读并合并另一airpig主机用户授权旧产物清理/存储解除报告；保留双方UPDATE_LOG追加块。该清理未发生在本集群，不删除或变更当前RL产物，尚无新的指定ESN物理结果。本轮在线报告提交bbc8513，push仍因HTTPS认证失败未发布。
+
 - fetch main6dc2b241215d1898f8e07916153f3e0754dfb3db、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；上一轮为实质进展，本轮等原快照未重启。
 - clock cycle1完整复核（session39167已完）：D/I/A/V TaskStrict0/0、17/16、12/11、17/16各30，119完整55s+1早停；累计328939replay时钟/done、781source、四ck/120terminal/model/reward通过。Qloss19.000/5.638/13.131/26.072、累计terminalMAE63.818/22.995/53.802/74.074；尚无健康收敛证据。
 - Imp长期0500第314动作12.56s release触发global穿透中止，保存global66.9357mm/external.01257mm；done1/bootstrap0、nextclock1061/1375、terminal−25/tail−13.111核验，失败保留。I/A/V短0600 external.229218/.210770/.206726mm超原.2mm，Task真Strict假保留。
@@ -60,6 +62,24 @@
   此处只同步Git里的小型证据，不冒充原始物理数据独立复验，也未在本服务器启动非RL作业。
 - 澄清AGENTS的“仅非RL Goal”指该非RL会话，当前本会话RL目标不变；评估标准首句与既有
   empirical说明统一，所有冻结运行时、物理、gate、actor、公共filter和执行器限制保持不变。
+
+## 2026-10-26 — 用户授权清理旧实验产物，释放约416GiB
+
+- 实时核对main=`6dc2b241215d1898f8e07916153f3e0754dfb3db`、
+  baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及两分支日志，读同步skill/AGENTS；
+  本机无活动sii服务/训练worker，持有全局计算锁按明确清单操作。无关草稿未动。
+- 用户明确要求只保留当前新指标研究所需产物。删除27,711项旧物理轨迹/逐子步记录/MJB副本等，
+  再删除11,249项被后继checkpoint替代的旧RL中间二进制状态；总38,960项。
+  两阶段实际释放446,155,206,656 bytes（415.51GiB），最终可用约419.86GiB，使用率53%。
+- 保留当前全部nonrl结果、fair comparison源/数据/全部候选、teacher示范/来源、共享runtime、
+  RL新交接来源及此前最终四模型；历史各训练父目录的最后checkpoint保留。未删任何Git跟踪文件、
+  环境或项目外数据；历史报告/失败结论仍留存，不按结果成败选择删除。
+- 清理前清单登记path/device/inode/size/mtime/blocks/nlink，删除前与逐文件操作时双重核对；
+  两阶段保留文件身份复核均无变化。当前64回合2280项SHA校验通过；七模型/metadata、数据、
+  共享MJB及RL协议hash通过。56回合dry-run改为准入，尚未启动物理复测，Goal未完成。
+- 发布 `docs/STORAGE_CLEANUP_20261026.md`、两阶段压缩逐文件清单及核验收据；AGENTS与
+  非RL优化交接已注明旧原始路径/中间checkpoint可能不再可用，不能靠旧审计声称原始数据齐全。
+  清理在本机执行，无服务器上传或删除；被删大文件无本轮核验备份，可能不可恢复。
 
 ## 2026-10-26 — 非 RL Goal 存储阻碍复核与交接
 

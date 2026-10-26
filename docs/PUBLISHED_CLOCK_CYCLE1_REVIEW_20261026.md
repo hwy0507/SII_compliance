@@ -58,3 +58,5 @@ Task/Strict假、approach失败、完整55s、机器安全违规假，峰值广�
 辅助return拟合已结束，不继续创建重复辅助工作。当前正式GPU50%目标仍未解决；不沿用旧混合高利用率。
 目标仍active：健康收敛、最终冻结策略矩阵、SPT_empirical和指定ESN比较未完成。
 原始产物仅本集群`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`；小型证据见同名JSON，未宣称已传至其他主机。
+
+收尾fetch main新增c3124ba322853c1e561657b58c4204ed2a64a1b6：已读并合并另一airpig主机用户授权旧产物清理/存储解除报告；保留双方UPDATE_LOG追加块。该清理未发生在本集群，不删除或变更当前RL产物，尚无新的指定ESN物理结果。本轮在线报告提交bbc8513，push仍因HTTPS认证失败未发布。

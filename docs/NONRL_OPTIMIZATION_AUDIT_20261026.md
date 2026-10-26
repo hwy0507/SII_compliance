@@ -62,11 +62,18 @@ Task AND Strict 成功最短完成时间作为 T_ref。旧 64 回合与新 56 �
 入口支持独立诊断 model lock、检查元数据/数据/模型 hash、全局计算锁、3 GiB/禁 swap
 和磁盘准入；审计器按登记的完整笛卡尔积验证，不接受缺失条件或重复回合。
 
-当前磁盘可用约 **4.41 GiB**。根据上一轮单回合最高约 152 MiB，准入按每回合
+首次登记时磁盘可用约 **4.41 GiB**。根据上一轮单回合最高约 152 MiB，准入按每回合
 192 MiB 加 1 GiB余量计算，56 回合需 **11.5 GiB**。dry-run 的 `disk_admitted=false`，
 `PHYSICS_PREFLIGHT.json` 记录 `blocked_storage` 和 `execution_started=false`。
 因此尚未创建 `nonrl_learning_closed_loop_20261026_v1` 物理运行，没有声称新模型 SPT 已提升。
-不使用内存盘替代持久存储，不删除旧回合，也不绕过待授权的原始轨迹导出。
+当时未使用内存盘替代持久存储，未删除旧回合，也未绕过待授权的原始轨迹导出。
+
+**2026-10-26清理后更新**：用户另行明确授权删除当前研究不再使用的旧实验输出。
+已按依赖保护清理约416GiB，当前可用约420GiB，新dry-run的 `disk_admitted=true`。
+当前64回合矩阵、全部学习/数据依赖与共享runtime均保留并核验。
+详见 [清理报告](STORAGE_CLEANUP_20261026.md) 和其中的新准入证据；
+原 `PHYSICS_PREFLIGHT.json` 保留历史 blocked_storage 事实，不覆盖改写。
+空间阻碍已解除，本轮清理未启动56回合物理组，尚无修复后闭环效果结论。
 
 存储解决后在仓库根目录使用唯一新 unit 执行（若已有进程或执行收据，先核验）：
 
