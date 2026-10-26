@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 最新RL续接：Direct19启动，18回报退步与策略变化已核验
+
+最新[交接](docs/RL_SERL19_POLICY_DRIFT_20261026.md)覆盖下方Direct18仍运行快照。完整18为772032/6136264，Task/Strict0/30、reward−32.239452（17为−30.984684）、30完整无abort；旧730782 raw/derived/history保持，新41250精确、pending0。570终端×10critic MAE.048109/32步TD.064623、Q−20.565374、alpha.000588874，fullreview/health/图通过；不能因低loss就称整体健康稳定。
+准确完整18父SHA f5cc09541af8f61a136687a86f81143e17274a33b5cadd14528ab499902d5a85。19check-only全state/下一65536/RNG与负守卫通过；正式learner1326215，原官方10critic随机2/min bootstrap、actor全10均值/noentropy/8:1/batch65536/32步保持。实际首1000新增通过：773032/6144264，全旧772032 raw/derived/history/优化器/marker保留，147mature+853pending精确，30MJB/sampler与reward0误差。startup1326256结束、归档1326258/review1326260继续，无自动20。原18和准备3088320/调度3269262均退出勿重跑。
+新只读17→18分项原1439233完成：平均退步−1.254768、penetration−1.229067占净下降97.9517%，26条件退步/4改善，0新物理/优化。固定输入16–18策略原1439232完成：510初始行只有1唯一actor输入；public0 .935059→.982342→.999163、初始熵−22.248→−22.869→−29.320，17→18初始/uniform mode平均绝对差.221485/.141227。全state/replay/RNG/hash只读不变，默认精度；保存值另核/图已看。不是因果证明或新增收敛阈值，未改正式算法，不重复旧温度/floor候选。
+参数29原946578/946579/946580及归档946583/review946584继续，固定27–29审计4175982仍等待完整29，无自动30；冻结16全30已完成勿重跑。纯19/29 observer1785987先查原结果勿重复。Goal active。
+
 ## 最新续接：完整参数28通过，正式29启动
 
 [最新交接](docs/RL_FROZEN16_FULL30_PARAMETER29_20261026.md)覆盖下方28仍运行/29未启动快照。完整28 I/V1193250/1188251、A1192250/1187251，Task/Strict18/17、14/14、17/17，reward−2.369572/−8.690925/−2.814531，末loss1.455426/1.398469/.764321。全30×55秒无abort，全旧prefix/history/2m marker/finite、新41250 reward0误差、health与图通过；A/V少量Q超过必要soft上界，尚未健康收敛。
@@ -1176,3 +1183,5 @@ Direct18实际首1000新增startup已通过：731782/5814264，旧730782 raw/der
 正式29实际启动检查已通过：impedance新增1000至1194250、admittance新增1000至1193250、vmc新增2000至1195250；全部旧replay字段/history/优化器配置/2m历史marker/30MJB/30sampler/action/clock和新reward0误差通过。原946582完成勿重复，归档946583/完整review946584继续。
 
 本轮最终科学提交9912e081ee4c7bbbb400ffda0bbaac17ee2696e7仅本地，push仍HTTPS用户名认证失败；重新fetch main dbb1d76/baseline f6e8f8c未变。完整本轮小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_FROZEN16_FULL30_PARAMETER29_20261026_222836/FULL_SMALL_EVIDENCE.tar.gz，103成员逐hash核验、1140684字节，SHA256 d53d8b6fabc738333b1f9b13a53a46111dca310f000bfba5e9c8a784ef69eeb4。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_FROZEN16_FULL30_PARAMETER29_STATUS_20261026_222836/HANDOFF.md及收据/LATEST已核验；大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。Goal active，原Direct18/参数29持续，固定27–29审计等待4175982保持。
+
+纯正式19/29资源窗口已完成：60样本/68.572054秒，四GPU均值58.1500/75.3500/66.5167/69.1667%，逐样本GPU PID恰四正式且原learner身份/live保持，无辅助GPU。仅本窗口均值，不保证每瞬时或过渡期；原1785987已退出勿重采。
