@@ -1,3 +1,11 @@
+## 2026-10-26 — 新30条第七条件核验，63/108回合完成
+
+- 开工fetch/read main=78c47ae0d2f1f12fd88820ea702aa6149dca29e3、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，复读AGENTS；上一轮核实等待，本轮持续检查原86607协调器从57推进到63/108并接续第八条件，未重启或重复派发。收尾已读取并快进整合远端bca5d6662a4426e3e54ea8d53ad2d7a04898ce32的独立RL更新，保留双方记录，不改变本机冻结实验。
+- 13:34:34 UTC条件006全部9×55秒/990万子步独立核验通过：1357源文件、完整训练与9锁模/验证重放、MJB/config/checkpoint/轨迹hash、原actor/filter审计收据及原始峰矩/接触合规/穿透/机器安全复算一致；单核/3GiB/禁swap，4.635秒退出0。证据SEVENTH_CONDITION_PHYSICS_AUDIT.json；未重新仿真或修改原始记录。
+- 单条件Task ESN2/3、RNN3/3、MLP0/3；Task AND Strict为2/3、2/3、0/3。ESN第二/三seed53.32/44.92秒双通过，首seed虽retreat但Task=false；RNN首/三seed49.36/50.44秒双通过，第二seed47.28秒完成但穿透.233791mm导致Strict失败。三MLP均carry失败，接触合规100%不能替代任务成功。全部完整55秒、无abort，失败保留，不计算局部T_ref/SPT或最终排名。
+- 4文件小证据包33471字节已核验至arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_seventh_condition_1334/SEVENTH_CONDITION_AUDIT.tar.gz，SHA 8b0640be6ccd5f843cae9414b1bb07dcb91c37624230b0767f67fdeb219417d4；包内逐项与本地一致、服务器暂存与最终SHA/大小一致，收据SEVENTH_CONDITION_ARCHIVE_1334.json。第七条件原始轨迹仍仅本机，前54条物理原件及完整训练另已共享；未删原件，服务器不训练/仿真。
+- 原服务active，第八条件worker138884真实CPU时间推进、内存约1.25GiB/上限3GiB、OOM事件0/swap0。完整108回合、共同T_ref/SPT、三seed最终汇总和最终独立审计仍待，Goal active；未改模型/候选/物理协议。
+
 ## 2026-10-26 — 参数target-pair均值有限对照、正式13与Direct critic-clock9
 
 - 开工fetch/read main d6f48179054e94bb3a35e0785bf908f25cee5165、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；旧PID退出/四卡0%核验后才新派发。上一轮为实质进展；无子agent、不干预独立非RL。最新docs/RL_PAIR_MEAN_CYCLE13_AND_SERL_CLOCK09_20261026.md。
