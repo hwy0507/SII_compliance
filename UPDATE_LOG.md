@@ -11,6 +11,8 @@
 - 新冻结参数15九代表协调I354445/A354448/V354759，I/A evaluator354447/354805已实际仿真；CPU52/53/54 nice19、GPU1/2/3推理，V已在上述probe审查完成后启动evaluator544452使用54。严格pair_class恢复完整正式15与markers，同原冻结11各类0000、最多990万子步、0更新/无新nominal；最终独立物理/filter/torque/动作/全state审查尚待，非全30最终结论。
 - 五新源码AST及相应恢复/真实启动/动作诊断通过；有界小证据docs/evidence/rl_parameter16_transfer12_20261026/SOURCES.json，原始大型checkpoint/replay/物理轨迹仍本集群SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，非arm1/HDD全备份。Goal active，健康收敛、最终冻结/ESN/SPT和持续每卡50%未完成。
 
+- 本地实验提交ac6a028d671d1950a4de3c1cba77f6d2c3b3b3e5，push因编辑器GitHub用户名/密码认证等待而未完成，远端最后核验仍dbb1d76；已停止仅该认证阻塞的push进程树，训练不受影响。用户已被请求恢复编辑器登录，未索要任何密码/token。完整117文件小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER16_TRANSFER12_20261026_151820/FULL_SMALL_EVIDENCE.tar.gz逐项hash核验，SHA6258d6401b9295710c95c0fc02d19b12b313b3035f117dcc52634a32c3c96d75。HDD配额仍限制源码包，本次仅小交接与收据（见BACKUP_RECEIPT.json），大产物仅SSD；不称HDD/arm1全备份。
+
 ## 2026-10-26 — 参数15接续、Direct10完整审查与等价gather正式11
 
 - 开工fetch/read main3d7db5a8d6c871f09b322e0f78f47dd6de521749、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收尾重新fetch/read并快进整合独立非RL main9dd59f2f0fb6be04fce255bd7c395b50d029d9ee，两条非RL更新保留，未影响其冻结运行。无子agent。交接docs/RL_PARAMETER15_SERL_GATHER11_20261026.md。

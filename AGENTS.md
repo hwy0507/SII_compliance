@@ -11,7 +11,7 @@ Direct11已完整483282/3826264，0/30、reward−31.241907、30完整无abort�
 只读正式11动作偏好诊断已完成，1024近期固定状态、0更新/物理；mode比replay Q均值高.0192、比公共全零高.0319、critic std.0438，七通道Q梯度绝对均值.0086–.0103。未执行候选、非因果物理效果，不改动作/nominal混合。原105292已完。
 新有限batch32768/65536对照B/runs/serl_cycle11_batch65536_probe_20261026_v1：probe231521、独立review266278，准确11全state/replay/RNG每臂2000outer，共32000critic+4000actor、0新物理/不保存推广权重。两臂与独立审查均完成、原231521/266278退出、图已看。末termMAE .07618→.07228、max4.189→3.509、32步TD .07052→.07081、平均outer .04270→.11405s（约2.67倍，首编译单列）；候选未部署12，非在线收益，不重复。
 冻结参数15三固定代表：B/runs/parameter_pair15_fixed_20261026_v1，I354445/A354448/V354759协调，I/A evaluator354447/354805，CPU52/53/54 nice19、GPU1/2/3推理，每路3例最多330万子步0优化。V已接续evaluator544452使用54，三个原协调继续，勿重复。新evaluate_pair_parameter严格pair_class/全部markers与全state恢复；最终物理/filter/torque/动作/状态审查尚待，非全30最终排名。
-HDD配额仍满；完整小证据GitHub/SSD，大产物仅SSD。不要宣称HDD或arm1全备份；后续先收原16/12/有限probe/冻结15。
+本轮实验提交ac6a028仅本地，push因编辑器GitHub凭据提示阻塞，远端最后核验仍dbb1d76；用户已被请求恢复登录，勿宣称本轮GitHub已发布。HDD配额仍满；本轮完整小证据SSD，大产物仅SSD。不要宣称HDD或arm1全备份；后续先收原16/12/有限probe/冻结15。
 
 ## 最新RL状态：2026-10-26 参数15、Direct等价gather11运行中
 

@@ -93,3 +93,5 @@ PID4121413，GPU0/learnerCPU0/30sampler共享1–12；`B/runs/serl_multistep_tra
 
 参数16与Direct12四正式运行，完整边界审查已派发。有限batch对照已完成，先收冻结15以及完整16/12结果；后续父必须最新完整正式checkpoint，禁止回退或引入辅助权重。
 每卡持续50%、reward稳定且价值/loss健康、任务行为改善、最终完整冻结比较与ESN/SPT交付仍待。不能以局部低loss、窗口占用或有限阶段结束完成Goal。
+
+- 本地实验提交ac6a028d671d1950a4de3c1cba77f6d2c3b3b3e5，push因编辑器GitHub用户名/密码认证等待而未完成，远端最后核验仍dbb1d76；已停止仅该认证阻塞的push进程树，训练不受影响。用户已被请求恢复编辑器登录，未索要任何密码/token。完整117文件小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER16_TRANSFER12_20261026_151820/FULL_SMALL_EVIDENCE.tar.gz逐项hash核验，SHA6258d6401b9295710c95c0fc02d19b12b313b3035f117dcc52634a32c3c96d75。HDD配额仍限制源码包，本次仅小交接与收据（见BACKUP_RECEIPT.json），大产物仅SSD；不称HDD/arm1全备份。
