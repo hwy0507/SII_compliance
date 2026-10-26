@@ -1,5 +1,17 @@
 # 本仓库的持续工作约定
 
+## 最新RL续接：参数29完整审查、27–29稳定性完成、正式30启动
+
+[完整交接](docs/RL_PARAMETER30_STABILITY_20261026.md)覆盖下面29运行快照。29三路全30×55秒无abort，I/A/V Task/Strict18/18、13/12、17/16，reward−.563485/−11.994308/−4.585944，末loss1.305692/1.773821/1.214965；旧prefix/history/2m marker、新41250 reward0误差和health/图通过。固定27–29原4175982完成：I近零保护禁用百分比，A/V相邻波动明显，尚未健康稳定，勿重跑。
+正式30 I2344423/A2344425/V2344430从完整29全state接续一个原设置周期，三check-only精确通过；startup2344568/归档2344573/review2344575，无自动31。实际startup尚待时先查原REVIEW。原29及2031400已退出；原30等待2031399路径替换错、0训练，已停止并保留失败源码，修正根路径后prepare2313197完成；不重启旧waiter。
+Direct19 1326215及归档/review继续；20等待2086366/CPU调度2086367保持，不自动训练。新纯19/30 observer2368299固定一次60样本，先查原结果。Goal active，无子agent。
+
+
+## 最新接续准备：参数30与Direct20等待完整父审查
+
+[准备交接](docs/RL_NEXT_CYCLE_PREPARATION_20261026.md)：参数30等待2031399/原29 CPU调度2031400；Direct20等待2086366/原19 CPU调度2086367。只完整父FINISHED/REVIEW后prepare+check-only，等待7200秒，不自动训练。新prepare/launch/monitor及当前review/startup适配AST通过，实际恢复尚待；正式state/物理/算法保持，20终端预期630。原19/29和固定27–29审计继续，先查原结果，不重复派发。Goal active。
+
+
 ## 最新RL续接：Direct19启动，18回报退步与策略变化已核验
 
 最新[交接](docs/RL_SERL19_POLICY_DRIFT_20261026.md)覆盖下方Direct18仍运行快照。完整18为772032/6136264，Task/Strict0/30、reward−32.239452（17为−30.984684）、30完整无abort；旧730782 raw/derived/history保持，新41250精确、pending0。570终端×10critic MAE.048109/32步TD.064623、Q−20.565374、alpha.000588874，fullreview/health/图通过；不能因低loss就称整体健康稳定。
@@ -1187,3 +1199,7 @@ Direct18实际首1000新增startup已通过：731782/5814264，旧730782 raw/der
 纯正式19/29资源窗口已完成：60样本/68.572054秒，四GPU均值58.1500/75.3500/66.5167/69.1667%，逐样本GPU PID恰四正式且原learner身份/live保持，无辅助GPU。仅本窗口均值，不保证每瞬时或过渡期；原1785987已退出勿重采。
 
 本轮科学提交e07903bc8f73600ab41af1c97aae95595ebe423e仅本地，push认证失败。完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL19_POLICY_DRIFT_20261026_225138/FULL_SMALL_EVIDENCE.tar.gz，47成员逐hash/大小核验，3022648字节，SHA256 1e330da1d73176fdd4f94f57aa5dfa90289eef648ec347a669e53b55b1cdda1c。HDD最新/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_SERL19_POLICY_DRIFT_STATUS_20261026_225138/HANDOFF.md及收据/LATEST已核验；大产物仍SSD，非HDD/arm1全备份。新增30准备等待2031399与原29审查CPU调度2031400，不自动训练；原19/29和固定稳定性审计继续。Goal active。
+
+参数30实际启动审查已通过：I/A新增1000至1235500/1234500、V新增2000至1236500；全部旧1234500/1233500/1234500行回放字段/history/优化器配置/2m marker/30MJB/30sampler/action/clock及新reward0误差通过。原2344568已结束勿重跑，归档2344573/完整review2344575继续。
+
+纯正式19/30原observer2368299已完成勿重采：固定60样本/68.477124秒，四GPU平均57.3000/67.9833/67.9000/69.1333%，D/I/A/V吞吐10.2516/22.3870/22.8982/23.0880 steps/s；逐样本GPU PID恰四正式且原身份/live保持。仅该运行窗口均值，不保证每瞬时或抹去29→30审查/恢复及路径修正空档。
