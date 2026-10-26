@@ -173,3 +173,26 @@ checkpoint/轨迹hash、原动作/filter审计收据、接触合规比例、峰�
 条件001的Task成功数为ESN3/3、RNN2/3、MLP0/3；Task AND Strict为ESN2/3、RNN0/3、MLP0/3。
 两个双通过ESN分别完成于42.84秒和48.56秒。未通过记录保留；上述仅为单条件描述，
 不计算局部T_ref/SPT或最终排名。最终仍等待完整12条件与整体审计。
+
+## 2026-10-26：锁定模型的真实学习曲线
+
+新增只读绘图工具`tools/plot_nonrl_new30_learning_20261026.py`，从本次MODEL_LOCK定位六个
+神经终态候选，先核对checkpoint/metadata hash、32000终态更新及最终验证MSE，再读取history。
+未重新选模、追加更新或访问闭环结果来调整训练。每个模型485个验证记录、26个全训练集部署
+MSE记录，全部实际采样点保留、不平滑；稀疏训练点间仅画直线连接，不冒充逐步记录。
+
+![本次锁定模型的学习曲线](evidence/nonrl_new30_20261026/learning_diagnostics/selected_learning_curves.png)
+
+这是部署requested-action的模仿误差，不是RL reward，也不是随机mini-batch优化loss。
+三seed的RNN全训练MSE从首个记录update66的0.00932/0.01088/0.00944降至
+0.00008775/0.00009427/0.00011979；MLP从0.00525/0.00550/0.00512降至
+0.00079624/0.00078996/0.00078858。MLP在本预算末段较平坦，RNN仍有下降和波动。
+末10%更新仅4个全训练MSE采样，极差/均值RNN为3.79%/12.44%/3.57%、MLP为
+0.237%/0.271%/0.227%；该描述没有预登记收敛检验，且cosine学习率已降至初值1%，
+不能据此证明充分收敛或增加测试后调参预算。
+
+![三方法的终态验证误差](evidence/nonrl_new30_20261026/learning_diagnostics/terminal_validation_mse.png)
+
+ESN使用解析ridge，无优化器迭代曲线，只展示已核验的终态验证误差。RNN离线验证MSE较低
+并不证明其任务成功率/SPT更优；这里的6条是选模验证身份，完整108回合的独立闭环评测仍待完成。
+`LEARNING_CURVE_EVIDENCE.json`保存所有绘图数值、模型/历史/脚本/图片hash，便于逐点核对。

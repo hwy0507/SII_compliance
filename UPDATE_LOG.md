@@ -1,3 +1,12 @@
+## 2026-10-26 — 新30条锁定模型学习曲线与来源核验
+
+- 开工实时fetch/read main=d8dd13e44e567e2aa9b160cf83ba40c0c88a8cbc、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，重新读取AGENTS；原协调器86607与worker113689持续运行，未改冻结运行时或重复派发。
+- 新只读绘图工具从MODEL_LOCK定位全部9模型，核对checkpoint/metadata hash及6神经候选终态32000更新/验证MSE；6份history各485个验证点、26个全训练部署MSE点直接作图，不平滑、不补造逐步采样。解析ridge ESN仅画终态验证值，无reward或梯度曲线。
+- 六神经模型均有真实误差下降；MLP末段平坦、RNN仍有下降与波动。末10%只有4个全训练采样点，且cosine LR降至1%，不据此宣称充分收敛。选模验证MSE不替代最终成功率/SPT，未按闭环结果重新选模或加预算。
+- 两张PNG已目视检查，LEARNING_CURVE_EVIDENCE保存全部绘图值及源/模型/历史/图hash，diff检查通过。报告docs/NONRL_NEW30_FAIR_COMPARISON_20261026.md新增学习诊断。
+- 5文件诊断包364831字节已核验到arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_learning_diagnostics_0926/LEARNING_DIAGNOSTICS.tar.gz，SHA c02350321b809130d78ef68d9dea79ef56c9b7c2757b0f69ed56b017f416f74c；收据LEARNING_DIAGNOSTICS_ARCHIVE.json。本地包逐项比对与服务器暂存/发布后SHA和大小一致，服务器无计算。
+- 09:25 UTC快照闭环21/108，第三条件第二seed ESN真实推进至42.04秒；完整108矩阵/最终SPT与整体审计仍待，Goal active。此记录为进度，不宣称最终结果。
+
 ## 2026-10-26 — 非RL第二条件9回合核验，原矩阵18/108完成
 
 - 实时fetch/read main=54146577702f1893cdca07845de71a8be7bca450、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；已安全快进远端另一会话RL更新，澄清AGENTS任务边界，不改变本机冻结运行时。
