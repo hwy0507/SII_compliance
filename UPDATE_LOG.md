@@ -5,8 +5,10 @@
 - Direct12完整524532/4156264critic、0/30、reward−31.019692、30完整无abort；全新单步/32步目标精确、旧483282raw/derived/ready/history保留、pending0。termMAE.093513/max2.961039、32步TD.079125、末loss.020545、Q−20.592，state不变/图审查通过。新正式13 PID1280297仅batch32768→65536，保留官方8:1/10critic/random2/noentropy/actor48/32步和gather+transfer；准确父12与历史probe父11分别hash绑定，未导入辅助权重。check-only/真实1000新增与145mature+855pending审查通过；归档1328360/审查1328362，无自动14。
 - 预登记180样本193.549秒纯四正式GPU58.45/75.71/74.89/74.27%，窗口均值全≥50%、所有原learner全live。D/I/A/V10.628/24.779/25.348/25.213steps/s；Direct较旧23.416下降约54.6%，资源达标有吞吐代价，不证明学习改善或持续所有瞬时均≥50%。原profile已完不重采。
 - 冻结参数15九条全部完成：每路2/3Task/Strict，均被动carry失败，4125actions/330万子步/0优化，动作重放0误差/全state/物理filter torque通过。I/A/V长期完成53.08/38.08/31.48s、接触合规14.96/100/100%，被动/短期无人接触NA。非全30排名，不取最终Tref/SPT。配对15→16定位A丢四Strict，无新Strict；Direct11/12均30approach，前160public0 .4518→.3571，非因果干预。
-- 新冻结Direct12随机诊断协调1521445/evaluator1535401在纯正式profile后实际启动，独立动作seed2026102612、GPU0低优先级/CPU52，原三代表最多330万子步/0优化。新评估器同seed精确/异seed不同/fullstate不变入口gate通过；最终完整物理/动作/折扣实际回报与critic比较仍待，单轨迹不当期望回报置信区间。
+- 新冻结Direct12随机诊断协调1521445/evaluator1535401在纯正式profile后实际启动，独立动作seed2026102612、GPU0低优先级/CPU52，原三代表最多330万子步/0优化。新评估器同seed精确/异seed不同/fullstate不变入口gate通过；最终完整审查已完成：三完整55秒/4125动作/330万子步，Task/Strict0/3均approach，无abort/机器违规/人接触，动作0误差与fullstate/物理filter torque通过，图已看。初始Q与折扣实际回报接近（−17.05～−17.08 vs−16.98～−16.99），全轨迹MAE .07975/.07193/.08962，提示该访问轨迹价值已拟合失败回报；单轨迹不当期望回报置信区间。原协调/评估/独立review2105519均结束勿重跑。
 - 三新工具AST与对应恢复/启动/随机入口检查通过；小证据docs/evidence/rl_parameter17_batch13_20261026/SOURCES.json逐hash核验。实际计算与完整大产物仍本集群SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。GitHub认证此前失效、用户恢复登录请求仍待；HDD配额满，不称全量备份或arm1共享。Goal active，健康收敛/最终冻结矩阵/ESN/SPT仍待。
+
+- 本轮实验提交019d3d2已本地完成；禁交互push退出128（HTTPS用户名不可读取），远端仍dbb1d76，未发布。收尾只读快照：四路最近各1000完整优化记录均finite，参数I/A/V末loss1.542/2.496/1.290、Direct .01928；不是完整17/13审查或收敛证据。
 
 ## 2026-10-26 — 参数16与SERL等价传输12，完整15/11审查及长窗口GPU证据
 

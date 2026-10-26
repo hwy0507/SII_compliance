@@ -87,9 +87,17 @@ B/runs/cycle16_parameter_and_direct12_behavior_audit_20261026_v1/REVIEW.json已�
 
 新B/runs/serl_cycle12_stochastic_representatives_20261026_v1，协调1521445、实际evaluator1535401。等待上述纯正式profile完成后才启动；GPU0低优先级，CPU52，精确正式12冻结权重，原三个代表最多3×55秒/330万子步，0优化。
 
-动作独立外部seed2026102612，每case由SHA256取前4字节little-endian；每动作split独立JAX key，官方sample_actions和原公共映射不变，不改变训练action_rng。实际EXTERNAL_ACTION_RNG_GATE已通过：同seed精确、不同seed有差异、完整state不变。评估仍进行中，最终审查待完成，不能把入口gate写成最终通过。
+动作独立外部seed2026102612，每case由SHA256取前4字节little-endian；每动作split独立JAX key，官方sample_actions和原公共映射不变，不改变训练action_rng。实际EXTERNAL_ACTION_RNG_GATE已通过：同seed精确、不同seed有差异、完整state不变。评估与独立最终审查已全部完成；原协调1521445/evaluator1535401及review2105519已退出，勿重跑。
 
-自动review将独立逐动作重放、重建SPT reward与gamma.9995折扣实际回报，比较实际访问状态/动作的10critic预测；同时审查物理/filter/torque/MJB与完整state不变。输出FINAL_SCIENTIFIC_REVIEW、value_vs_realized_return.png和FINISHED。每条件仅一条随机轨迹，相关状态不是独立样本；不可当期望回报置信区间或完整校准证明。保留原句柄，不按等待时长重启。
+独立review已逐动作重放4125actions（误差0）、重建SPT reward与gamma.9995折扣实际回报，比较实际访问状态/动作的10critic预测；330万子步物理/filter/torque/MJB与完整state不变全部通过。FINAL_SCIENTIFIC_REVIEW和FINISHED齐全，value_vs_realized_return.png已目视检查。三条各完整55秒，Task/Strict0/3，均approach，无abort/机器安全违规，无人接触（合规率NA）。
+
+| 代表 | 初始10critic均值 | 初始实际折扣回报 | 全轨迹均值Q与实际回报MAE | 未折扣reward |
+|---|---:|---:|---:|---:|
+| 被动 | −17.051441 | −16.983772 | .079748 | −30.973016 |
+| 主动短期 | −17.078608 | −16.991653 | .071932 | −30.986507 |
+| 主动长期 | −17.050270 | −16.976093 | .089618 | −30.963434 |
+
+这些访问轨迹上的预测接近实际失败回报，未见足以解释任务失败的大幅价值高估。证据提示下一步需关注策略如何探索到成功行为及动作改进信号；不能仅继续降低已很小的TD loss并称任务收敛。每条件仅一条随机轨迹，相关状态不是独立样本；不可当期望回报置信区间或完整校准证明。保留原句柄，不按等待时长重启。
 
 ## 发布、证据与接续
 
@@ -97,4 +105,4 @@ B/runs/cycle16_parameter_and_direct12_behavior_audit_20261026_v1/REVIEW.json已�
 
 本轮源码三文件AST与对应恢复/启动/随机入口检查通过。小证据在docs/evidence/rl_parameter17_batch13_20261026，SOURCES.json逐文件hash记录来源；LIVE_STATUS为带时间快照，实时状态以原run为准。末1000loss与冻结15汇总仅重用已完成证据。收尾提交/无提示push结果与SSD包/HDD收据见UPDATE_LOG及最新备份入口。
 
-后续先核对原17/13进程、自动完整审查与新随机评估。若某路完成，在完整review/health核验后从其**最新正式全state**衔接下一有限周期，避免空闲；不得跳过未完成审查、回退到16/12、重置学习或导入辅助权重。不改冻结物理/MJB/gate/filter/actuator/dt5e-5/30条件/SPT。原Goal保持active，健康收敛/最终全矩阵/指定ESN与最终SPT仍未完成。
+后续先核对原17/13进程与自动完整审查；新随机评估已完成勿重跑。若某路完成，在完整review/health核验后从其**最新正式全state**衔接下一有限周期，避免空闲；不得跳过未完成审查、回退到16/12、重置学习或导入辅助权重。不改冻结物理/MJB/gate/filter/actuator/dt5e-5/30条件/SPT。原Goal保持active，健康收敛/最终全矩阵/指定ESN与最终SPT仍未完成。

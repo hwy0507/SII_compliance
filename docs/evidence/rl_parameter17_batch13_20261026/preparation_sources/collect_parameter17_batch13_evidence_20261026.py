@@ -51,7 +51,7 @@ for name in names:
         rel = path.relative_to(root)
         if len(rel.parts) > 3 or any(v in rel.parts for v in ('train', 'direct', '__pycache__')):
             continue
-        if path.suffix in ('.json', '.py', '.png') and path.stat().st_size < 12_000_000:
+        if (path.suffix in ('.json', '.py', '.png') or (len(rel.parts) == 1 and path.name.endswith('_value_return.npz'))) and path.stat().st_size < 12_000_000:
             # Evaluation trajectories/partial results remain at the run path.
             if 'evaluation' in rel.parts and path.name not in ('EVALUATION.json', 'EXTERNAL_ACTION_RNG_GATE.json', 'POLICY_UNCHANGED.json', 'RESULTS.json'):
                 continue

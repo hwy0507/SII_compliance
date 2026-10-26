@@ -10,7 +10,7 @@
 预登记纯正式180样本193.549秒GPU58.45/75.71/74.89/74.27%，四原learner全live；D/I/A/V10.628/24.779/25.348/25.213steps/s。该窗口均值全≥50%，非瞬时或永久保证。Direct吞吐较旧23.416下降54.6%，不能称提速。profile1364508已完勿重采，后续混合推理不替代。
 冻结参数15九条全部审查完成，三路Task/Strict2/3、被动carry失败，动作误差0/fullstate不变/物理filter torque通过；原协调/评估全部结束勿重跑。I/A/V长期完成53.08/38.08/31.48s，接触合规14.96/100/100%，被动/短期无接触NA，非最终排名。
 新配对只读1462229已完：导纳丢Strict短0100/0000/0900及长0400，无新增；短0000/新Task成功0600物理无效。Direct11/12均30approach，前160public0 .4518→.3571，0是nominal、更大减慢WBC；非因果证据。
-新冻结随机Direct12协调1521445/evaluator1535401，B/runs/serl_cycle12_stochastic_representatives_20261026_v1；等待纯正式profile后已实际启动，GPU0低优先级/CPU52、原三代表最多330万子步0优化。独立seed2026102612，同seed动作相同/异seed不同/fullstate不变gate通过；最终物理/动作/折扣回报与Q诊断待完成，不重复。不是无偏期望回报校准证明。
+新冻结随机Direct12协调1521445/evaluator1535401，B/runs/serl_cycle12_stochastic_representatives_20261026_v1；等待纯正式profile后已实际启动，GPU0低优先级/CPU52、原三代表最多330万子步0优化。独立seed2026102612，同seed动作相同/异seed不同/fullstate不变gate通过；最终审查已完成：三完整55秒/4125动作/330万子步，0/3均approach，无abort/无人接触NA，动作误差0/fullstate与物理filter torque通过，图已看。初始Q−17.051/−17.079/−17.050 vs实际折扣回报−16.984/−16.992/−16.976，全轨迹MAE.07975/.07193/.08962；访问轨迹价值接近失败回报，不能再只靠低TD宣称任务改善。原协调/evaluator/review2105519已退出，勿重跑；单轨迹不作期望回报校准证明。
 远端仍dbb1d76（baseline f6e8f8c）；此前573d0469/ac6a028仅本地，GitHub认证待恢复，用户已被询问勿重复。HDD配额满，仅小交接/收据；完整小证据和大产物在SSD，不称HDD/arm1全备份。先查原17/13与随机评估，完成审查后及时衔接最新正式全state。
 
 ## 最新RL状态：2026-10-26 参数16、Direct单次传输12运行中
