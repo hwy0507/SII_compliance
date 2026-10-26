@@ -1,3 +1,12 @@
+## 2026-10-26 — 新30条第八条件核验，前72条完整轨迹已共享
+
+- 开工查询真实远端并fetch/read main=3d7db5a8d6c871f09b322e0f78f47dd6de521749、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，读取AGENTS和非RL协议；另一任务RL更新不改变本机冻结实验。原协调器86607仍运行，无重复派发或新调参。
+- 14:28:39 UTC条件007的9×55秒/990万子步独立核验通过：1357冻结源文件、完整训练/选模/9锁模与验证重放、MJB/config/checkpoint/轨迹hash、原actor/filter重放收据，以及原始子步峰矩/接触合规/穿透/机器安全复算一致；单核/3GiB/禁swap检查4.625秒退出0。证据EIGHTH_CONDITION_PHYSICS_AUDIT.json，不是重新仿真。
+- 单条件Task ESN1/3、RNN3/3、MLP1/3；Task AND Strict为1/3、0/3、1/3。第二seed ESN51.40秒双通过，首seed MLP49.48秒双通过；三个RNN任务完成但穿透.461520/.480506/.792629mm导致Strict失败。其余ESN/MLP任务失败，九条均完整55秒无abort，失败全部保留；不计算局部T_ref/SPT或最终排名。
+- 第七、八条件18条完整轨迹421源文件2754341683字节已核验归档到arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_physics_006_007_1429/PHYSICS_BUNDLE.tar.gz，2204253882字节、SHA f503ae6b6eb7a9b3c1154b80b4e9a447fe908f03071ae2bc55fdae3b3455238b；收据PHYSICS_006_007_ARCHIVE.json。
+- 本机单核/3GiB/禁swap/Nice10打包60.638秒退出0，源文件前后/包内逐项hash、服务器暂存及最终包SHA/大小一致；独立目标目录此前不存在。累计前72条物理原件已共享，完整训练另有归档；本机原件未删，后续轨迹仍仅本机，服务器只归档不训练/仿真。
+- 原服务active、73/108完成，第九条件RNN实际仿真时间从17.04推进至53.04秒；核验内存约1.42GiB/上限3GiB，OOM事件0、swap0。全108回合、共同T_ref/SPT、三seed汇总与默认最终独立审计仍待，Goal保持active。收工复读AGENTS，只发布本任务记录。
+
 ## 2026-10-26 — 参数65536正式14、SERL32步正式10与GPU瓶颈核验
 
 - 开工fetch/read main bca5d6662a4426e3e54ea8d53ad2d7a04898ce32、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；上一目标回合仅文档核对属无进展，本轮重验旧作业退出/四卡0%后实际推进。无子agent，不干预另一主机非RL。最新docs/RL_BATCH14_AND_SERL_MULTISTEP10_20261026.md。
