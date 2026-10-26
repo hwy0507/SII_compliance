@@ -2,6 +2,8 @@
 
 --progress audits only completed fits from one coordinator snapshot. It never
 selects a partial-grid winner or reports a partial physics matrix as final.
+--replay-completed additionally checks completed candidates on the six existing
+selection identities; it does not expose new conditions or change model choice.
 Without --progress, all75 fit processes/108 hyperparameter candidates, nine
 locked models and108 physical episodes are required.
 """
@@ -41,7 +43,19 @@ def actor_class(root, family):
     return module.OfficeVMCMemoryESN if family == 'esn' else module.OfficeMLPRNN
 
 
-def audit(root, progress):
+def replay_validation(root, family, checkpoint, obs, ep, train, target):
+    actor=actor_class(root,family)(checkpoint)
+    per_episode=[]; squared_error=0.; count=0
+    for e in np.unique(ep[~train]):
+        ids=np.flatnonzero(ep==e)
+        require(not train[ids].any(),'Validation history includes training frames')
+        actor.reset(); pred=np.asarray([actor.act(o) for o in obs[ids]])
+        se=float(np.sum((pred-target[ids])**2));squared_error+=se;count+=target[ids].size
+        per_episode.append(dict(episode=int(e),frames=len(ids),action_mse=se/target[ids].size))
+    return dict(validation_mse=squared_error/count,episodes=per_episode)
+
+
+def audit(root, progress, replay_completed=False):
     reg = read(root/'REGISTRATION.json')
     state_bytes = (root/'execution.json').read_bytes()
     state = json.loads(state_bytes)
@@ -120,7 +134,15 @@ def audit(root, progress):
                 complete_fit_processes=len(fits),complete_by_family=dict(Counter(f['family'] for f in fits)),
                 expected_fit_processes=75,expected_hyperparameter_candidates=108,completed_fits=rows,
                 verified_source_files=len(reg['source_sha256'])+len(reg['physics_source_sha256']))
-    if progress:return result
+    if progress:
+        if replay_completed:
+            result['completed_candidate_validation_replay']=[]
+            for row in rows:
+                replay=replay_validation(root,row['family'],root/'learning'/row['name']/'checkpoint.npz',obs,ep,train,target)
+                equal_number(replay['validation_mse'],row['validation_mse'],'Completed candidate validation mismatch')
+                result['completed_candidate_validation_replay'].append(dict(name=row['name'],**replay))
+            result['replay_scope']='Completed candidates only, same six model-selection identities. No partial-grid model selection or new-condition exposure.'
+        return result
     require(state['status']=='complete' and len(fits)==75,'Training/evaluation not yet complete')
     require(Counter(f['family'] for f in fits)=={'esn':3,'rnn':36,'mlp':36},'Training coverage mismatch')
     require(seen_neural=={(family,seed,*pair) for family in ('rnn','mlp') for seed in reg['seeds'] for pair in neural_grid}, 'Incomplete neural grid')
@@ -137,16 +159,9 @@ def audit(root, progress):
         best=min(choices,key=lambda r:(r['validation_mse'],r['name']))
         require(best['name']==model['selected_trial'] and best['checkpoint_sha256']==model['checkpoint_sha256'],'Wrong locked selection')
         require(sha(Path(model['checkpoint']))==model['checkpoint_sha256'],'Locked checkpoint changed')
-        actor=actor_class(root,model['family'])(model['checkpoint'])
-        per_episode=[]; squared_error=0.; count=0
-        for e in np.unique(ep[~train]):
-            ids=np.flatnonzero(ep==e);require(not train[ids].any(),'Validation history includes training frames')
-            actor.reset(); pred=np.asarray([actor.act(o) for o in obs[ids]])
-            se=float(np.sum((pred-target[ids])**2));squared_error+=se;count+=target[ids].size
-            per_episode.append(dict(episode=int(e),frames=len(ids),action_mse=se/target[ids].size))
-        score=squared_error/count
-        equal_number(score,model['validation_mse'],'Independent deployment validation MSE mismatch')
-        validation.append(dict(method=model['name'],validation_mse=score,episodes=per_episode))
+        replay=replay_validation(root,model['family'],model['checkpoint'],obs,ep,train,target)
+        equal_number(replay['validation_mse'],model['validation_mse'],'Independent deployment validation MSE mismatch')
+        validation.append(dict(method=model['name'],**replay))
     conditions={c['id']:c for c in read(root/'CONDITIONS.json')['conditions']}
     physics=report['rows']
     require(len(physics)==108 and {(r['method'],r['condition']) for r in physics}==set((m,c) for m in models for c in conditions),'Incomplete/duplicate physical grid')
@@ -236,11 +251,13 @@ def main():
     p.add_argument('--root',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--progress',action='store_true')
+    p.add_argument('--replay-completed',action='store_true')
     a=p.parse_args();require(not a.output.exists(),'Never overwrite an audit')
-    result=audit(a.root.resolve(),a.progress)
+    require(not a.replay_completed or a.progress,'--replay-completed requires --progress')
+    result=audit(a.root.resolve(),a.progress,a.replay_completed)
     a.output.parent.mkdir(parents=True,exist_ok=True)
     a.output.write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
-    print(json.dumps({k:v for k,v in result.items() if k not in ['completed_fits','contact_supplement','validation_replay']},ensure_ascii=False))
+    print(json.dumps({k:v for k,v in result.items() if k not in ['completed_fits','contact_supplement','validation_replay','completed_candidate_validation_replay']},ensure_ascii=False))
 
 
 if __name__=='__main__':main()

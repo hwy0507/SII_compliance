@@ -1,5 +1,22 @@
 # 更新日志
 
+## 2026-10-26 — 新增30条候选验证误差独立部署重放
+
+- 上轮属于实质进展（新增独立验收器并验证），本轮继续同一active Goal。实时fetch/read
+  main=`9bbd820667b2725d6aa96c725ec25ef41557351f`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。
+  训练服务MainPID86607与真实子进程持续运行；结束前ESN36、RNN9/36、MLP9/36候选完成，
+  下个RNN候选已到26136/32000更新。MemoryCurrent769454080 bytes，未发现OOM或worker swap。
+- 独立检查器增加`--progress --replay-completed`，共用最终验收的部署动作重放代码。
+  06:07 UTC快照内20模型×6选模验证身份重放均匹配训练MSE，最大绝对差2.17e-19；
+  单核/3GiB/禁swap审计2.329秒退出0，编译/diff检查通过。原始训练快照、数据和选模规则未改。
+- 固定首候选的全训练集部署MSE（update66→32000）：RNN 0.0076912→0.000198563，
+  MLP 0.00786814→0.000853701，确认有学习变化；不据此宣称收敛、最终选模或方法优越。
+  物理0/108，仍待完整网格后锁模型并统一评测；选模验证误差不冒充未见测试结果。
+- 三份小型源码/证据/说明53292 bytes已逐hash核验共享至
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_validation_replay_0607/`；
+  见`docs/evidence/nonrl_new30_20261026/VALIDATION_REPLAY_ARCHIVE_0607.json`。原始数据/模型仅本地。
+  重新读取AGENTS，保留无关会议草稿；没有重复派发、服务器计算或改变实验范围，Goal未完成。
+
 ## 2026-10-26 — 新增30条公平训练持续推进与独立进度审计
 
 - 实时fetch/read main=`896d0a44a3f3b0d5fca0b3e070443c940744fd0f`、
