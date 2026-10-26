@@ -1,3 +1,10 @@
+## 收尾接续：Direct16完整完成，正式17已启动
+
+本节覆盖本文前面的Direct16在运行/17尚未执行快照。Direct16完整689532/5476264，Task/Strict0/30、reward−30.932129，全部30完整55s、无abort。新增41250单步/32步派生目标精确，旧648282全部raw/derived/history/ready保持，pending0。510终端×10critic MAE.051144/max4.309624，32步TD.048439，Qmean−20.577059，alpha.000670934620；完整review/DIAGNOSIS/FINISHED及图通过，网络/优化器/RNG只读不变，仍未健康收敛。
+准确完整16父B/runs/serl_multistep_batch65536_cycle16_archive_20261026_v1/direct/cycle_00016.pt，SHAd2ee183f0ebbafa44dabb8dc318cc2091dfc031145a2192bd9a313f989067c5b。原1387783、1387835、1387837已退出勿重启。
+等待准备3805535已正常完成，17check-only完整learner/重复恢复/原replay/下一65536/RNG精确、继承负守卫通过。正式17 learner4158035已启动，B/runs/serl_multistep_batch65536_cycle17_20261026_v1/direct；准确最新完整16全state接续一个周期，GPU0/CPU0/30sampler共享CPU1–12/batch65536/32步/gather+transfer/官方10critic、random2 bootstrap、actor all10mean/noentropy/8:1保持。原历史batch/gather证据链未重标，未部署actor floor或温度候选。启动4158037、归档4158038、完整review4158039；无自动18。
+当前参数25 I3775564/A3775566/V3775568继续，无自动26；旧16/25纯正式GPU窗口是此前固定观测，不冒称新17/25窗口。
+
 ## 2026-10-26 — 参数24完整跨界与25接续、actor熵下限有限对照
 
 原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER25_SERL16_ACTOR_FLOOR_20261026.md)覆盖下方24/16。无子agent，物理/SPT与全部正式state保持。
@@ -9021,3 +9028,5 @@ cp19250及其后新产物仍仅本地、待下一安全边界归档。已准备D
 新纯正式16/25窗口已完成：180样本/207.870721s，GPU均值58.0778/72.3389/71.8056/73.2500%，D/I/A/V吞吐10.6172/23.8898/24.4383/24.5345steps/s。逐样本GPU PID集合恰四正式、原learner全部live，无辅助GPU；3524318完成勿重采。仅此固定窗口均值≥50%，不保证每瞬时，不隐去轮次尾部及恢复检查空闲。
 
 收尾科学提交77b28bcb979ba9d3b59c214c6d161098ab4eef9d仅本地；push仍GitHub认证失败，远端main dbb1d76/baseline f6e8f8c重新fetch未变。完整119成员小证据SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_ACTOR_FLOOR_PARAMETER25_20261026_201558/FULL_SMALL_EVIDENCE.tar.gz，逐成员hash核验，1612910字节，SHA256 5948b7a9484e67b826537089941d6b88d08b70d31c9dfc4e1de0c4689cf7e445。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_ACTOR_FLOOR_PARAMETER25_STATUS_20261026_201558/HANDOFF.md及收据/LATEST入口已核验，大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。FINAL_LIVE_STATUS记录原16/新25与监视进程；Direct16完整review=False，17check-only=False，先核原3805535，不重复准备。Goal active。
+
+Direct17实际首1000新增检查通过：690532/5484264，全部旧689532 raw/derived/history/优化器/marker保持，135新mature+865pending精确，30MJB/30sampler/action/clock/reward0误差通过。原4158037 startup已退出；四正式17/25和归档/完整review均live，最新FINAL_LIVE_STATUS已更新。无自动18/26。
