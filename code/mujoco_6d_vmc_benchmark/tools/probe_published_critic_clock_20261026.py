@@ -114,7 +114,14 @@ def main(args):
         seed=p['seeds'][0], device=p['device'], algorithm='cheq',
         critic_layer_norm=state['critic_layer_norm'], numerical_amendments=state['numerical_amendments'])
     agent = learner.learner.agent
+    fresh_critics = copy.deepcopy(agent.ensemble.state_dict()) if p.get('fresh_critics', False) else None
     agent.load_state_dict(state['agent'])
+    if fresh_critics is not None:
+        agent.ensemble.load_state_dict(fresh_critics)
+        agent.ensemble_targets.load_state_dict(fresh_critics)
+    if not all(torch.equal(v.detach().cpu(), state['agent']['actor.'+k])
+               for k, v in agent.actor.state_dict().items()):
+        raise AssertionError('Frozen checkpoint actor mismatch')
     agent.requires_grad_(False)
     original_agent_digest = digest(agent.state_dict())
     alpha, gamma = float(state['alpha']), learner.learner.gamma
@@ -174,6 +181,8 @@ def main(args):
     write(args.output/'STARTED.json', dict(pid=os.getpid(), source_sha256=sha(__file__),
         registration_sha256=sha(args.registration), checkpoint_sha256=item['checkpoint_sha256'],
         replay_sha256=replay_digest, actor_dimension=49, raw_observation_dimension=48,
+        critic_initialization='fresh' if fresh_critics is not None else 'parent',
+        frozen_actor_sha256=digest(agent.actor.state_dict()),
         new_physics=0, initial_critic_sha256=initial_hash, cpu=item['cpu'], device=p['device'],
         alpha=alpha, gamma=gamma, global_soft_upper_bound=bound, started_unix=time.time()))
     for seed in p['seeds']:

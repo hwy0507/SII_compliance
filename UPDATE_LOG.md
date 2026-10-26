@@ -1,5 +1,20 @@
 # 更新日志
 
+## 2026-10-26 — 复核固定Direct失败并确认Impedance六周期结束
+
+- 新报告 `docs/PUBLISHED_DIRECT_FIXED_AND_IMPEDANCE_FINAL_20261026.md/.json`：Direct三代表全失败，
+  同接口nominal两主动成功；660万保存子步、公共filter/learned torque投影和配对来源核验。
+  末段残差与名义方向相反是描述性证据，不作因果或最终方法结论。
+- Impedance原3849956正常结束，246984步，末轮Task18/Strict17各30，短0600穿透失败保留。
+  30terminal/reward/replay/hash通过，末1000critic loss10690.257；不把reward平稳当健康收敛，不自动原样续训。
+- 原full-replay四shard1结束、shard0继续；依已完成同seed对照，新登记fresh critic初始化×时钟检查，
+  4进程/40万有限辅助critic更新、0physics/actor，不推广权重，首4000更新核验，三守卫测试通过。
+- 新GPU60秒混合负载均值89.18/89.25/92.47/89.38%、最低87/87/89/88，不是纯在线训练吞吐。
+- contact第7/8例完整精确复核，8/12独立通过，原验证未部署；固定参数评估和原cycle5整组审计继续。
+- 实时fetch两分支与日志，main `a52dfba4486af8d263d5cd0a976c3102482ff249`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；Goal、最终SPT和指定ESN比较仍未完成。
+
+
 ## 2026-10-26 — 完成有限critic时钟诊断并启动四卡完整回放对照
 
 - 新增诊断工具/三个守卫测试及 `docs/PUBLISHED_CRITIC_CLOCK_DIAGNOSIS_20261026.md/.json`。

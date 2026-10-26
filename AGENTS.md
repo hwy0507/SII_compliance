@@ -7,6 +7,10 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新固定fresh3 Direct三代表完整复核完成session92211，0/0各3（nominal2/2），都carry；六归档660万子步、learned三filter/torque、nominal物理/filter、MJB/fixture/plan/dt/hash一致，nominal无torque投影重放声明。最后10s residual与obs nominal方向余弦−.94至−.95，描述非因果；长期真实接触5.9546s舒适100%但Task假、其余NA。runs/fresh_cycle03_direct_fixed_review_v1。原3148346继续参数。
+Imp3849956已正常六周期结束勿重启，246984/241985；final ck437c2625…与archive一致、30完整terminal/MJB/reward/replay核验，Task18 Strict17（被动0/0短10/9长8/8），短0600穿透.230442mm保留；loss10690.257/targetQ1053.831，reward−2.274513/改善1.0498<2，非健康收敛。session8822/runs/fresh_impedance_final_cycle05_review_v1已完；不自动原样延长，原2472115仍等整组5。
+完整回放原shard1四PID4005367/4005615/4005949/4006167均已结束勿重启，shard0继续第三seed。部分配对未显示通用clock修复；新同seed20261027 fresh critic初始化×clock对照已登记实际更新：runs/fresh_initialization_critic_clock_v1、同名runtime，PID391155–391158，CPU1/3/5/7/GPU0–3。每臂50k共40万辅助critic、0physics/actor，不推广权重/不延长；actor逐tensor同父、data/alpha/gamma同、critic新hash不同，首4000核验，3测试通过。不要重复启动。第7/8 contact完整精确复核假/假，SEVENTH/EIGHTH收据、8/12独立完成、原2273688继续未部署。新混合GPU60秒均值89.18/89.25/92.47/89.38%、最低87/87/89/88。VMC原阶段也已247500结束（恢复5+父0），Admittance收尾，原2472115已见D/I/V三final仍待A。报告PUBLISHED_DIRECT_FIXED_AND_IMPEDANCE_FINAL_20261026.md/.json。Goal未完，后续须完整辅助/整组5证据再定在线阶段。
+
 最新固定actor/alpha critic时钟诊断已完成：runs/fresh_critic_clock_probe_v2，3666074/3666075/session73879退出勿重启；12万辅助更新/0physics/0actor，配对初始化/采样/hash与图复核。D/V后一轮终端MAE无/有时钟130.799/123.232、150.348/138.577，均较起点变差，非修复/不推广。v1缺依赖、0更新失败保留。
 用户再次紧急要求提高利用率后，已依据此结果登记完整回放四方法时间/零对照：runs/fresh_full_replay_critic_clock_v1、同名runtime，8进程4005286/4005367/4005526/4005615/4005732/4005949/4006084/4006167，CPU0–7/GPU0–3每卡2，3seed分片2+1、每臂50k、总120万辅助critic更新/0physics/0actor；full replay两周期全拟合、无heldout，fresh Adam/固定actor alpha，原正式不动。不保存推广辅助权重，不自动延长。八项启动核验各7000更新，读原PROGRESS/FINISHED勿重启。新增FIFTH/SIXTH contact收据完整精确通过，两Imp主动TaskStrict真；6/12独立复核，协调已7继续。固定cycle3 Direct3条件失败，原协调已3审计转Imp3897988。新混合GPU60秒均值89.37/91.87/94.62/96.12%、最低88/88/89/89%，非纯正式吞吐。报告PUBLISHED_CRITIC_CLOCK_DIAGNOSIS_20261026.md/.json；原三formal/cycle5审计继续，Goal/最终比较未完。
 
