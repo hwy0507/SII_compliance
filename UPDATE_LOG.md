@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-26 — 接触计算独立候选启动全轨迹验证，Direct暂时成功复核
+
+- 新构建器prepare_published_contact_math_20261026.py只创建独立runtime/contact_math_candidate_v1，
+  保持父source_train16；3个候选文件仅改变接触数组读取及限定float64三维范数。3项守卫测试通过，
+  780source/24parameter/150CHEQ/128robot实际hash核验；三个保护manifest不变。
+  初次本地helper防重复判断在创建候选前拒绝，已修复并测试，未产生失败物理步。
+- 已登记四接口×三场景12条55s完整动作重放，共1320万子步、0optimizer更新，914输入hash。
+  runs/contact_math_validation_v1/REGISTRATION.json hash84015ef9…；协调2273688/首child2273849，
+  CPU53/nice10/CUDA禁用，与原52核训练分开；启动核验537动作前缀一致、实际模型/adapter/dt通过。
+  尚0/12完整验证，不称整体等价/加速，不部署候选、不修改原runtime/协议；后续poll原进程勿重复派发。
+- 新只读Direct cycle2/3复核60完整55s终端/模型：第三轮Task/Strict2/2，第四轮0/0，各30。
+  第三轮短0100/0000在54.040/54.160s成功，原gate及1375保存区间穿透峰值核验；不是原子步重审或
+  固定checkpoint成功证明。reward−29.59422→−33.25034，短暂成功后退化，非充分学习/收敛。
+  产物runs/fresh_direct_cycle23_terminal_review_v1，0新physics/updates。原四learner及2471936/2472115/2472286继续。
+- 报告docs/PUBLISHED_CONTACT_MATH_CANDIDATE_20261026.md/.json；全部原始产物基址
+  `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/`。Goal/完整验证/GPU50%/ESN仍未完。
+  fetch/read两分支日志确认main=a52dfba4486af8d263d5cd0a976c3102482ff249，baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d。
+
 ## 2026-10-26 — Fresh第二轮完整复核与接触局部计算探针
 
 - 四路同cycle1的120个回合均完整55s；Task/Strict分别0/0、18/17、13/13、17/17，各30。

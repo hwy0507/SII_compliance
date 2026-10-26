@@ -7,6 +7,9 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新接触math完整候选已独立构建并启动有限验证，未部署：runtime/contact_math_candidate_v1（父source16），runs/contact_math_validation_v1/REGISTRATION.json hash84015ef9…；冻结工具runtime/contact_math_validation_v1。3守卫测试、780/24/150/128实际hash通过；12×55s动作重放/1320万新子步、0updates，CPU53/nice10/CUDA禁用。协调2273688/首child2273849已live，首例537动作前缀观测/区间/潜势与MJB/adapter/dt通过；尚0/12完整验证，勿称通过/整体加速/自动部署，poll原PROGRESS/RESULTS/FAILURE/FINISHED，勿因超时重启。原训练52核/配置未动。
+Direct cycle2/3只读60终端/model完整复核完成：2/2→0/0各30、均55s，reward−29.59422→−33.25034；短0100/0000在54.040/54.160s成功（阶段release但原gate真），1375保存区间穿透峰值一致且≤.2mm。不是原子步重审/固定策略成功，成功随下一轮消失，不称收敛。runs/fresh_direct_cycle23_terminal_review_v1，0新physics/updates。报告docs/PUBLISHED_CONTACT_MATH_CANDIDATE_20261026.md/.json。原四learner/2471936/2472115/2472286继续，Goal/GPU50%/最终矩阵/ESN未完。
+
 最新fresh cycle1完整科学复核完成，runs/fresh_cycle01_scientific_review_v1，0新physics/updates：120完整55s，D/I/A/V Task/Strict0/0、18/17、13/13、17/17各30，被动全0/10。loss25.869/53.403/79.790/49.420、terminalMAE72.259/81.622/115.690/104.931均较0增；非健康收敛。Imp原DIAGNOSIS含0/1两轮，其他恢复后只含1，统一filter cycle1后Imp reward−2.396327。4ck/hash/120terminal/MJB/reward/780source核验，图已看；Imp短0600外穿透.2276335mm>.2mm，1375区间核验。原2472115继续等3/5，不重复派发。
 接触math微探针1566953/session9489已完成勿重启：runs/contact_math_probe_v1/VERIFIED_SUMMARY.json；30MJB269020几何对、65536+5+8715范数逐字节一致，仅连续float64(3,)。局部CPU比geometry3.399/norm1.460；18mj_forward、0mj_step/新transition/updates，非全轨迹/整体加速。未准备/部署完整环境候选，live未改。新GPU60s正式均值5.63/5.73/6.15/2.58%，50%未达，无辅助任务。报告docs/PUBLISHED_FRESH_CYCLE01_AND_CONTACT_MATH_20261026.md/.json。原四learner/2471936/2472286继续；Goal/最终矩阵/ESN未完。
 
