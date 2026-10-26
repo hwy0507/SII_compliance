@@ -1,3 +1,11 @@
+## 2026-10-26 — 新30条第五条件独立核验，45/108回合完成
+
+- 开工实查main=5170ce75a9467012d31f5a227bc7c9ba6c2fbdda、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；上一轮为核实等待，本轮持续观察原86607协调器从39推进到45/108并进入第六条件，未重启或重复派发。收尾复读AGENTS并读取、快进整合远端a8bf20d3b955018abf95f27f3bf951f98625d148的另一任务RL更新，不改变本机冻结运行时。
+- 11:46:46 UTC条件004的9×55秒/990万子步独立核验通过：1357源文件、完整训练和9锁模/验证重放、MJB/config/checkpoint/轨迹hash、原actor/filter审计收据及原始峰矩/人体接触合规/穿透/机器安全分类一致。单核/3GiB/禁swap，4.592秒退出0；证据FIFTH_CONDITION_PHYSICS_AUDIT.json。未新增仿真，也不把检查已有重放收据称为独立重建物理动力学。
+- 单条件Task ESN1/3、RNN1/3、MLP0/3；Task AND Strict为1/3、0/3、0/3。第二seed ESN51.28秒双通过；第三seed RNN47.88秒完成但穿透.323634mm导致Strict失败。第一seed ESN任务失败且穿透.747769mm；第三seed虽retreat但Task仍false。三MLP在carry结束，接触合规100%不能替代成功。所有失败完整保留，不计算局部T_ref/SPT或最终排名。
+- 4文件小证据包32549字节已核验至arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_fifth_condition_1146/FIFTH_CONDITION_AUDIT.tar.gz，SHA b92e0b76d97a6bf4644654d70b3df55c12d1466d458f275d4234afc8af58feb9；包内逐项与本地一致，服务器暂存/发布后SHA与大小一致，收据FIFTH_CONDITION_ARCHIVE_1146.json。第五条件原始轨迹仍仅本机，前36条原始轨迹及完整训练包另已共享；未删本机原件，服务器不训练/仿真。
+- 原服务active，第六条件worker128063真实CPU时间推进、内存约1.59GiB/上限3GiB、OOM事件0/swap0。完整108矩阵、共同T_ref/SPT、三seed最终汇总与整体审计仍待，Goal active。报告和归档证据已核验；未改算法/候选/物理协议。
+
 ## 2026-10-26 — 目标Q投影有限对照、参数cycle11与Direct6冻结核验
 
 - 本轮fetch/read main=5170ce75a9467012d31f5a227bc7c9ba6c2fbdda、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；上一轮实质进展续接，无子agent，另一主机非RL任务不动。最新docs/RL_TARGET_PROJECTION_CYCLE11_20261026.md。
