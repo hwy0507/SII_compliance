@@ -9019,3 +9019,5 @@ cp19250及其后新产物仍仅本地、待下一安全边界归档。已准备D
 新25固定前5000条optimizer日志只读审计已完成（first5000_loss_audit/REVIEW.json），步号连续且均有限；该固定前缀末1000 q_loss为I1.517167/A1.275529/V.726304。相较完整24末段略低，仅新轮早期诊断，不代表稳定、任务收益或收敛；全部尖峰保留。
 
 新纯正式16/25窗口已完成：180样本/207.870721s，GPU均值58.0778/72.3389/71.8056/73.2500%，D/I/A/V吞吐10.6172/23.8898/24.4383/24.5345steps/s。逐样本GPU PID集合恰四正式、原learner全部live，无辅助GPU；3524318完成勿重采。仅此固定窗口均值≥50%，不保证每瞬时，不隐去轮次尾部及恢复检查空闲。
+
+收尾科学提交77b28bcb979ba9d3b59c214c6d161098ab4eef9d仅本地；push仍GitHub认证失败，远端main dbb1d76/baseline f6e8f8c重新fetch未变。完整119成员小证据SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_ACTOR_FLOOR_PARAMETER25_20261026_201558/FULL_SMALL_EVIDENCE.tar.gz，逐成员hash核验，1612910字节，SHA256 5948b7a9484e67b826537089941d6b88d08b70d31c9dfc4e1de0c4689cf7e445。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_ACTOR_FLOOR_PARAMETER25_STATUS_20261026_201558/HANDOFF.md及收据/LATEST入口已核验，大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。FINAL_LIVE_STATUS记录原16/新25与监视进程；Direct16完整review=False，17check-only=False，先核原3805535，不重复准备。Goal active。
