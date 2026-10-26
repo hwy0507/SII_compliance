@@ -1,3 +1,11 @@
+## 2026-10-26 — 新30条前两条件18条完整物理轨迹已共享
+
+- 实时fetch/read main=d9de51c93057e7842ed5c079a9a040012f84a914、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，复读AGENTS并核对原协调器86607/真实worker，未改变冻结模型、源码或评测协议。
+- 新归档工具仅接收完整9模型且已有独立审计的条件，核对model lock/轨迹/metrics hash、全部文件打包前后hash及包内逐项SHA/大小。条件000/001共18回合、421源文件2751583137字节打包成功，包含所有失败、MJB/checkpoint/trace/chain/子步/执行与配置，另附manifest/审计结果行/执行快照。
+- 已核验归档arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_physics_000_001_0938/PHYSICS_BUNDLE.tar.gz，2201829494字节、SHA ac879373696ab35a7db5666761dc8ba9e4d73ab55fe7e109c14bd2f72db1ffd2；暂存和发布后均一致。收据docs/evidence/nonrl_new30_20261026/PHYSICS_000_001_ARCHIVE.json。
+- 本机归档单核/3GiB/禁swap/Nice10，60.265秒退出0；服务器只归档，无训练或仿真，本机源文件保留。只包含前两条件，后续原始轨迹仍仅本机；完整训练源和模型另有训练包，未承诺完整Python环境或可移植执行。
+- 当前闭环24/108，第三条件第三seed ESN116332正常推进，服务active/无OOM/swap；不重复派发，不按部分结果计算最终SPT或排名。完整108矩阵与整体审计仍未完，Goal active。差异检查通过。
+
 ## 2026-10-26 — 新30条锁定模型学习曲线与来源核验
 
 - 开工实时fetch/read main=d8dd13e44e567e2aa9b160cf83ba40c0c88a8cbc、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，重新读取AGENTS；原协调器86607与worker113689持续运行，未改冻结运行时或重复派发。
