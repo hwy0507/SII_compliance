@@ -7,6 +7,8 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新本轮报告PUBLISHED_CLOCK_CYCLE0_AND_GPU_WORK_20261026：新clock首周期完整复核各41250/36251，TaskStrict D0/0 I18/16 A13/13 V17/16各30，非收敛；原在线四路和1729901/1729905继续。旧固定cycle3矩阵全部结束勿重启（12learned+12nominal/2640万子步）。新runtime profile正式GPU5.30/7.77/7.27/7.48%。用户紧急要求后登记四有限辅助return拟合2751144/2751146/2751148/2751151，runs/clock_cycle00_return_capacity_v1，四卡各一、CPU52–54共享nice10、总16万updates/0actor/0physics，不推广或自动延长。全部已启动，首混合60样本均值68.63/52.15/33.28/35.78%，非纯正式/未四卡50%。固定标签不含熵且父已见留出条件，不能作SAC Q或未见policy评估。完成后复核，不重复派发；Goal仍active。
+
 收尾main已同步6dc2b24（非RL原始链30条审计与存储受阻交接）；那是另一会话Goal，不暂停本服务器RL。在线报告提交d81e531。
 
 最新在线阶段已实际启动：runs/cheq_clock_online_seed20261025_v1，runtime/source_train17_clock，登记/决策runs/clock_online_control_v1。四learner1729888/1729892/1729893/1729897，CPU0–51各12sampler+1learner/GPU0–3；fresh/空replay、同30条件、6周期有限阶段。四6000-step/1001updates快照startup_review session34643已完整通过，actor参数、critic时钟列已更新、全部replay时钟/12model/input核验；不要重启。归档1729901/CPU52、诊断1729905/CPU53监视周期0/1/3/5，固定矩阵3148346/CPU54继续。正式GPU60s均值6.27/5.87/6.27/6.47，50%未达；辅助12全结束勿重启或为占用延长。

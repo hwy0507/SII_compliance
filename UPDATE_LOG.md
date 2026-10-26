@@ -1,3 +1,13 @@
+## 2026-10-26 — 时钟首周期完整复核与紧急 GPU 辅助工作
+
+- fetch main6dc2b241215d1898f8e07916153f3e0754dfb3db、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，无新远端提交。
+- 新clock cycle0四路各41250steps/36251updates，120完整55s；Task/Strict D0/0、I18/16、A13/13、V17/16各30，被动均0/10。781源码/四checkpoint/120终端与165000replay clock/done复核；穿透Strict失败保留，非收敛或固定策略结果。
+- 旧无clock cycle3固定12learned+12nominal全完成，2640万子步独立复核；D0/3 vs2/3、其余2/3 vs2/3；nominal不作缺失扩展的torque投影重放声明。原协调已结束勿重启。
+- source17外部profile完成，无lag/error；采样physics88.31%、正式GPU均值5.30/7.77/7.27/7.48%，仍未达50%。不改live UTD/batch/dt。
+- 用户再次要求防关机后，新增有限固定return容量诊断，四GPU进程2751144/2751146/2751148/2751151，runs/clock_cycle00_return_capacity_v1；24/6条件、parent/fresh两臂、总16万辅助更新，0actor/physics，不推广权重/不自动延长。全部已真实更新；辅助CPU52–54共享nice10，原在线0–51不改。
+- 首60样本混合GPU均值68.63/52.15/33.28/35.78%，非纯正式且未四卡50%；有限辅助不保证永久防关机。报告docs/PUBLISHED_CLOCK_CYCLE0_AND_GPU_WORK_20261026.md/.json。
+- 原四在线1729888/1729892/1729893/1729897及1729901/1729905继续；下一cycle1审计已有原进程，不重启。Goal/充分收敛/最终指定ESN比较未完成，产物仅本集群SSD。
+
 ## 2026-10-26 — 四接口时钟候选进入真实在线训练
 
 - 开工fetch main64fe259567d40329b25ea04dc3ae5f1351e0acc9、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收尾main6dc2b241215d1898f8e07916153f3e0754dfb3db，已读并合并非RL数据契约与存储受阻交接，保留双方日志。该非RL阻碍不暂停本服务器RL训练；上一轮属于实质进展。
