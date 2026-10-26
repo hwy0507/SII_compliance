@@ -10,6 +10,8 @@ Direct14完整607032/4816264，0/30，reward−31.033155，30完整无abort，�
 新纯正式180样本207.974s，GPU57.6111/73.8056/73.1556/74.1833%，D/I/A/V10.6455/24.3924/25.0848/25.1329steps/s，四原learner全样本live且GPU PID集合逐次恰四正式；B/runs/batch15_parameter21_gpu_profile_20261026_v1，2673023完成勿重采。非瞬时永久保证，等待/尾部低占用不隐去。
 远端main仍dbb1d76/baseline f6e8f8c，GitHub凭据待恢复且用户已被问勿重复。大产物SSD、HDD小交接/收据，非arm1/HDD全备份；先查原15/21完整review后衔接，不重启旧14/20/探针。
 
+收尾科学提交1dd86077f2bd9b7a3d83da3b51add7dfc8c0fe2f仅本地；push仍HTTPS用户名认证失败。完整89成员小证据SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER21_SERL15_PREFIX_20261026_180832/FULL_SMALL_EVIDENCE.tar.gz，逐成员hash已核验，1510906字节，SHA256 f203453494eff627c112643334d8be39eb384092f63da08f9630dba649b78fce。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER21_SERL15_PREFIX_STATUS_20261026_180832/HANDOFF.md与收据及LATEST入口已核验；大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。FINAL_LIVE_STATUS记录四原15/21仍在推进及归档/审查live。
+
 ## 最新RL状态：2026-10-26 参数20与Direct起始覆盖诊断
 
 原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER20_SERL_INITIAL_COVERAGE_20261026.md)，覆盖下方19/14。无子agent，冻结物理/SPT与完整正式state保持。
