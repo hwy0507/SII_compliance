@@ -1,5 +1,33 @@
 # 更新日志
 
+## 2026-10-26 — 非 RL 新矩阵 64/64 完成并审计，继续数据/学习修复 Goal
+
+- `nonrl_spt_matrix_20261025_v4` 的 execution/REPORT 均为 complete；64 条证据链、188 项执行
+  源码及 checkpoint/config/actor/filter/子步 hash 核验通过。T_ref=40.72 s，按用户授权的
+  全矩阵双门成功最短完成时间定义；标准文档/AGENTS 已同步该规则与经验舒适阈值。
+- 新结果：公平重训单 seed ESN Task/Strict 0/8，RNN 和 MLP 各 1/8；历史 ESN 为 7/8、5/8，
+  SPT=0.5763，历史 matched RNN 同为 7/8、5/8、SPT=0.5529。不能宣称 proposed 全面优越，
+  不能跨历史/新重训组声称等预算比较。报告 `docs/NONRL_SPT_RESULTS_20261026.md` 和
+  `docs/evidence/nonrl_spt_20261026/` 含三张新图、完整矩阵、补充接触审计和2280文件hash清单。
+- 数据诊断：44/11整轨迹 split、75,625帧未见跨组完全重复轨迹；55条训练/验证示范全部成功，
+  失败恢复覆盖不足仍需验证。ESN末2000/8000更新验证MSE下降18.2%，不能认定充分收敛。
+  闭环ESN约55.77%帧的18维状态最近邻距离超过teacher验证P95，八条都停在carry；此为分布偏移线索，非因果证明。
+- 修正可选训练目标归一化：旧逐时间块weight.sum()归一化不完全等价于登记的全局加权目标，
+  新global模式保持块间重要性并修正短尾块正则系数，所有primary方法同样应用；旧默认和运行快照保留。
+  新增完整训练集目标/MSE记录，3项SPT与2项加权目标测试通过，相关工具编译通过，图表已目视核对。
+- 新登记离线阶段 `outputs/nonrl_learning_repair_20261026_v1` 六次有限拟合（ESN/RNN/MLP，8k/32k），
+  `sii-nonrl-learning-repair-20261026-v1.service` 已唯一启动。当前3/6完成、ESN32k在途，
+  三个8k组尚未满足新诊断plateau；未做新闭环成功声明。单路CPU、单线程、3GiB、worker禁swap。
+  后续先按数据/学习诊断分支推进，当前8条件已见，不再冒充新算法的未见测试集；Goal仍active。
+- 更正早期资源表述：3 GiB=3,221,225,472 bytes；此前约3.02/2.99数字是GB而非GiB。
+  memory.events.max是硬限压力事件，非high事件；结束前peak达到3 GiB、max=6845，OOM/kill=0。
+  worker swap=0不代表整机未使用swap。
+- 原始9.1GiB产物仅本地。自动审批拒绝向既有arm1主机上传整批原始轨迹，理由是未确认该payload
+  的导出授权；未传输/未绕过。远端仅创建空incoming目录，未声称已核验runs归档。
+- 本轮通过受授权外网连接实时fetch并读取main=`a52dfba4486af8d263d5cd0a976c3102482ff249`、
+  baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`日志；早期受限连接失败并非证明远端不可用。
+  发布只含代码/文档/小型证据，保留无关 `docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md`。
+
 ## 2026-10-25 — 非RL SPT 重评实时进度（48/64）
 
 - v4 已闭合 48/64 条统一回合，当前唯一在途为
