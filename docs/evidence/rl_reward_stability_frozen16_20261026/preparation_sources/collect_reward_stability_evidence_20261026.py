@@ -30,7 +30,7 @@ for name,methods in [('serl_multistep_batch65536_cycle18_20261026_v1',['direct']
   if log.exists():
    parsed=[json.loads(l) for l in log.read_text().splitlines() if l.startswith('{')]
    dest=out/name/m;dest.mkdir(parents=True,exist_ok=True);(dest/'CHECK_ONLY_RESULT.json').write_text(json.dumps(dict(source=str(log),sha256=sha(log),results=parsed),indent=2)+'\n')
-for pattern in ['*parameter_capacity27*20261026.py','*serl_batch18*20261026.py','collect_reward_stability_evidence_20261026.py','archive_reward_stability_20261026.py','audit_parameter27_first5000_20261026.py','audit_admittance26_terminal_loss_20261026.py','serl18_preparation_cpu_decision.json']:
+for pattern in ['*parameter_capacity27*20261026.py','*serl_batch18*20261026.py','collect_reward_stability_evidence_20261026.py','archive_reward_stability_20261026.py','audit_parameter27_first5000_20261026.py','audit_admittance26_terminal_loss_20261026.py','serl18_preparation_cpu_decision.json','assign_serl17_review_released_cpu_20261026.py','assign_serl17_review_released_cpu_LAUNCH.json']:
  for p in (B/'runtime').glob(pattern):cp(p,Path('preparation_sources')/p.name)
 live={}
 for name,method in [('serl_multistep_batch65536_cycle17_20261026_v1','direct'),('serl_multistep_batch65536_cycle18_20261026_v1','direct')]+[(f'parameter_capacity_pool30_cycle{c}_20261026_v1',m) for c in [26,27] for m in ['impedance','admittance','vmc']]:

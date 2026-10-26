@@ -74,3 +74,11 @@ Direct18准备/启动/监视脚本已写入B/runtime/*serl_batch18*20261026.py�
 新A26终端与loss时序审计B/runs/admittance26_terminal_loss_20261026_v1原2457889已完，0优化/物理，不重跑。25→26丢Strict的5条件为active_short0900、active_short0600、active_long0300/0500/0200，无新增Strict成功。short0600第1103001步（本轮index34500）任务仍成功但Strict失败，终端reward−28.4719、全回合16.7071→−34.7528；此前1000 loss1.22215、从该步起1000 loss2.60524，时序与末段抬升相邻。窗口重叠/策略变化，未追踪实际抽到的replay批，不能当单条终端导致尖峰的因果证明，不据此改terminal128或LR。
 
 Direct18准备尚未执行前，已将准备/check-only设为释放CPU0，并加原4158035退出守卫，仍须完整17 review后执行，避免争用冻结物理CPU54；decision在B/runtime/serl18_preparation_cpu_decision.json。正式18是否已启动以新LAUNCH为准。冻结16目前两分片各已完成3条，全部矩阵尚未完成，不能提前写全state最终不变/独立物理审计完成。
+
+## 最新续接：Direct17完整审查通过，正式18已启动
+
+完整17为730782交互步/5806264critic更新，30完整55秒无abort、Task/Strict0/30，reward−30.984683957。新增41250单步reward和32步派生目标精确，旧689532 raw/derived/history/ready保持、pending0，网络/优化器/RNG只读诊断不变。540终端×10critic MAE.042508710/max1.10391998，32步TD MAE.045479108，Qmean−20.566160，alpha.000626324676；REVIEW/DIAGNOSIS/FINISHED及图通过。原4158035/4158038/4158039已退出，原18准备等待1660818及临时CPU调整2563734已完成，不重复。
+
+准确最新17父B/runs/serl_multistep_batch65536_cycle17_archive_20261026_v1/direct/cycle_00017.pt，SHA1e47098fea960f972d8f74cff894d8a46d798fb711426b936dd67caee0d83e89。18check-only完整learner/所有replay/下一65536与RNG精确、负守卫通过；正式18 learner2732254于21:26:24 UTC启动，B/runs/serl_multistep_batch65536_cycle18_20261026_v1/direct。GPU0/CPU0/30sampler共享1–12，原batch65536/官方10critic随机2 bootstrap、actor all10 mean/noentropy/8:1/32步/gather+transfer保持，无候选推广。startup2732256、归档2732257/完整review2732258，无自动19。18终端预期570，实际启动审查须查startup/REVIEW.json，不能把check-only当真实1000新增通过。
+
+当前四正式为Direct18 2732254、参数27 2286139/2286140/2286141；冻结16原1749189/1749193及review1749197继续，仍非完整完成。GPU0含冻结推理，不能混报纯正式窗口。新完整小证据收据及HDD最新入口会覆盖21:21的17仍运行快照。
