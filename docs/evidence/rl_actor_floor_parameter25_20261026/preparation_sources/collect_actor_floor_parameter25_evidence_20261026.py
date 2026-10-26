@@ -55,5 +55,6 @@ if root.exists():
    dest=out/root.name/m;dest.mkdir(exist_ok=True,parents=True)
    (dest/'CHECK_ONLY_RESULT.json').write_text(json.dumps(dict(source=str(log),sha256=sha(log),results=parsed),indent=2)+'\n')
  cp(root/'startup/REVIEW.json',Path(root.name)/'startup/REVIEW.json')
+ cp(root/'first5000_loss_audit/REVIEW.json',Path(root.name)/'first5000_loss_audit/REVIEW.json')
 
 (out/'LIVE_STATUS.json').write_text(json.dumps(live,indent=2)+'\n');(out/'SOURCES.json').write_text(json.dumps(sources,indent=2)+'\n');print(len(sources),out)
