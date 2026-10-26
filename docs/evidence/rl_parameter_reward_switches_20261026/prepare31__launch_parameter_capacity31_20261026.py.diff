@@ -1,0 +1,26 @@
+--- launch_parameter_capacity30_20261026.py
++++ launch_parameter_capacity31_20261026.py
+@@ -1,14 +1,14 @@
+ from pathlib import Path
+ import json,os,subprocess,time
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+-out=B/'runs/parameter_capacity_pool30_cycle30_20261026_v1'
+-review=B/'runs/parameter_capacity_pool30_cycle29_review_20261026_v1'
++out=B/'runs/parameter_capacity_pool30_cycle31_20261026_v1'
++review=B/'runs/parameter_capacity_pool30_cycle30_review_20261026_v1'
+ assert json.loads((review/'FINISHED.json').read_text())['completed']
+ assert json.loads((review/'REVIEW.json').read_text())['passed']
+ assert json.loads((out/'CHECK_ONLY_COMPLETE.json').read_text())['passed']
+ assert json.loads((out/'PRELAUNCH_SCIENTIFIC_REVIEW.json').read_text())['passed']
+ assert not (out/'LAUNCH.json').exists()
+-for pid in [946578,946579,946580]:assert not Path(f'/proc/{pid}').exists()
++for pid in [2344423,2344425,2344430]:assert not Path(f'/proc/{pid}').exists()
+ env=dict(os.environ,OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1',NUMEXPR_NUM_THREADS='1')
+ launched=[]
+ for job in json.loads((out/'COMMANDS.json').read_text())['jobs']:
+@@ -17,4 +17,4 @@
+  launched.append(dict(**job,pid=proc.pid,time=time.time()))
+ (out/'LAUNCH.json').write_text(json.dumps(dict(jobs=launched),indent=2)+'\n')
+ print(json.dumps(launched),flush=True)
+-subprocess.run(['python',str(B/'runtime/setup_parameter_capacity30_monitors_20261026.py')],check=True)
++subprocess.run(['python',str(B/'runtime/setup_parameter_capacity31_monitors_20261026.py')],check=True)
