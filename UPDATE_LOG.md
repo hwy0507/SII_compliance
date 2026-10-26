@@ -8,6 +8,8 @@
 - 新预登记纯正式180样本profile2680231在固定噪声评估完整结束后采集参数18+Direct13，逐样本核验无其他GPU PID；已完成180样本206.623秒，GPU均值54.94/70.57/69.74/68.58%，D/I/A/V10.047/23.153/23.555/23.555steps/s；每样本四原learner live且GPU PID集合恰为四正式，无辅助。该固定窗口均值均≥50%，非所有瞬时/未来保证，原2680231结束不重采。四正式持续推进，不用已完成探针占用。健康收敛、最终全矩阵/指定ESN/SPT未完成，Goal active。
 - 本轮源码语法、实际18恢复/启动与新噪声入口/全回合审查、调度有限准备通过；小证据docs/evidence/rl_parameter18_exploration_20261026/SOURCES.json。实际计算与大产物在本集群SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，HDD仅小交接/收据，无核验arm1完整副本。GitHub认证未恢复，发布结果收尾另记，不称已push。
 
+- 科学提交6f32e5100fa11b52eff058ff4ef94c91a6cedc85仅本地；禁交互push退出128，HTTPS用户名不可读取，远端仍dbb1d76。79成员本轮小证据包SSD B/repository/RL_PARAMETER18_EXPLORATION_20261026_162828/FULL_SMALL_EVIDENCE.tar.gz逐项hash验证，1562212字节/SHA 00cbb6e34d926db519c06df4f3ce9303c26cb95100a4d2fbd6fe8c9c7010a554。HDD新RL_PARAMETER18_EXPLORATION_STATUS_20261026_162828只含交接与收据，LATEST原子更新并核验；未复制完整包/权重/回放。四正式、归档/审查和超时guard收尾仍live，见FINAL_LIVE_STATUS；Goal active。
+
 ## 2026-10-26 — 参数16/Direct12完整审查，参数17与Direct batch65536第13周期接续
 
 - 开工与恢复上下文后fetch/read真实main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；保留已有本地未发布573d0469/ac6a028，无子agent。最新交接docs/RL_PARAMETER17_SERL_BATCH13_20261026.md。
