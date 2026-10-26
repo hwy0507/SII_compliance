@@ -7,6 +7,10 @@
 本约定适用于本仓库后续任务，覆盖旧进度文档中“保持未提交／不发布”的历史要求；用户后续
 明确变更指令时，以新指令为准。
 
+## 2026-10-26 暂停期间的新基线决策（优先于下方旧四路 CHEQ 恢复叙述）
+
+用户将两路分开：参数 RL（Impedance/Admittance/VMC）可继续 CHEQ；Direct 改用顶会已发表方法的适配。用户明确只接受已有示范，不新增人工纠正。已选择 **SERL（ICRA 2024，DOI 10.1109/ICRA57147.2024.10610040）** 的 RLPD/SAC 直接运动目标学习思路，未实现或启动。先读 [Direct SERL 选择与交接](docs/RL_DIRECT_SERL_SELECTION_20261026.md)。不能把无在线纠正版本称为完整 HIL-SERL（Science Robotics 2025）。原 Goal 继续 paused；下次明确恢复后先审计已有数据是否为合法 RL transitions、输入/动作/公共执行层适配，再建立独立 Direct run；不能直接恢复旧 CHEQ Direct 充当新方法。旧 Direct 产物全部保留，参数 CHEQ 的 optimizer/replay/RNG 延续要求保持。此次只改文档，不改变 physics/MJB/gate/filter/执行器/dt，不启动训练、仿真、测试或 GPU 占用任务。
+
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
 收尾更新：temporal_return首四任务已全部完成勿重启，REVIEW/图核验8臂16万/648点；迁移MAE parent/fresh D.562/.748 I6.572/7.931 A7.592/7.496 V5.872/5.579，非softQ。新独立两seed重复runs/clock_temporal_return_replications_v1八PID602548/602550/602552/602553/602556/602558/602560/602562、每卡2路/共享52–54/nice10、32万更新/0physics/actor、不推广不自动延长，八启动核验通过；三seed总48万。收完再评估，勿复制已完任务。

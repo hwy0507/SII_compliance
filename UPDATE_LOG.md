@@ -1,3 +1,11 @@
+## 2026-10-26 — Direct 选择 SERL（ICRA 2024），参数 CHEQ 保留，继续暂停
+
+- 用户澄清参数 RL 可用 CHEQ，Direct 换顶会/顶刊已发表机械臂方法；进一步明确“仅接受已有示范，不新增人工纠正”。选择 SERL（ICRA 2024，DOI 10.1109/ICRA57147.2024.10610040），不把删除纠正的方案冒称完整 HIL-SERL。
+- 核验正式发表、公开全文与官方源码 SHA 1fa2af7496be042e43d36120a7c8d1b71f1bfb59：RLPD/SAC、先验/在线对半采样、LayerNorm、纯状态 agent 路径、直接运动目标与底层阻抗 reference limiting。作者三任务各100次成功评测不等于本项目成功或人体舒适性证明；官方仓库已标弃用/转向HIL-SERL，需固定来源版本。
+- 新文档 docs/RL_DIRECT_SERL_SELECTION_20261026.md 记录证据、已有示范 transition 审计、公共执行层差异、独立新 Direct run 与恢复提示词；AGENTS 和关机交接增加优先说明。仅文档改动，未实现迁移、启动训练/仿真/测试/服务或改冻结合同；Goal继续paused，旧产物保留。
+- fetch/read main=c1175326a607159cfa4966560ef9b4119909a326、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；另一主机的非RL拟合/验证重放不代表本集群恢复，也非已指定最终ESN。本地原HEAD16351ad含未发布历史提交，未合并远端源码。
+- 验证仅文献/源码静态阅读与文档差异检查；不运行项目测试。工作副本 /inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/SII_compliance；新交接独立复制到同级 sii_shutdown_backup_20261026_v1/DIRECT_SERL_ADDENDUM_20261026.md，原bundle/manifest不改。GitHub发布状态以本轮最终回复为准，不能将本地commit当作已推送。
+
 ## 2026-10-26 — 时钟Impedance固定审查与四路完整状态恢复核验
 
 - fetch mainc3124ba322853c1e561657b58c4204ed2a64a1b6、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；无新更新。上一轮实质进展，原四在线继续。

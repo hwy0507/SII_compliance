@@ -1,5 +1,9 @@
 # 用户要求关机前暂停：RL恢复交接（2026-10-26）
 
+## 暂停后的路线更新：Direct 选 SERL
+
+**下次开机先读 [RL_DIRECT_SERL_SELECTION_20261026.md](RL_DIRECT_SERL_SELECTION_20261026.md)。** 用户允许参数 RL 继续 CHEQ，要求 Direct 换顶会方法，且明确“仅接受已有示范，不新增人工纠正”。已选 SERL（ICRA 2024）的 RLPD/SAC 思路作 Direct 适配来源。下文“四路 CHEQ”描述是暂停时的历史状态，不再是 Direct 自动续训指令。旧 Direct checkpoint 全部保留；新 Direct 须独立协议/初始化，不能冒充原 CHEQ continuation；参数 CHEQ 保留恢复状态。Goal 仍 paused，本次没有训练、仿真、测试或配置变更。
+
 ## 权威状态
 
 用户明确要求暂停训练/评估，待开机回到本会话再恢复。持续Goal已通过工具置为 **paused**；不是完成，不得在用户恢复前派发任何计算。四正式learner、采样子进程、归档器与自动审查器已退出；八辅助任务在暂停信号发送前已全部正常完成。扫描/proc没有仍指向本项目SSD目录的Python任务。
