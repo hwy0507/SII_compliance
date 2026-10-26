@@ -1,0 +1,169 @@
+{
+  "schema": "sii-nonrl-spt-matrix-20261025-v1",
+  "created_utc": "2026-10-25T10:16:43.309682+00:00",
+  "authorization": "User requested a new non-RL physical comparison under Task/Strict/SPT/torque/comfort/safety metrics",
+  "source_run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2",
+  "methods": [
+    "esn_gradient_s2026101301",
+    "rnn_scratch_s2026101301",
+    "mlp_scratch_s2026101301",
+    "historical_esn",
+    "historical_matched_rnn",
+    "historical_matched_mlp",
+    "historical_ordinary_rnn",
+    "historical_ordinary_mlp"
+  ],
+  "conditions": [
+    "prospective_20261013_acceptance_000",
+    "prospective_20261013_acceptance_001",
+    "prospective_20261013_acceptance_002",
+    "prospective_20261013_acceptance_003",
+    "prospective_20261013_acceptance_004",
+    "prospective_20261013_acceptance_005",
+    "prospective_20261013_acceptance_006",
+    "prospective_20261013_acceptance_007"
+  ],
+  "physics_dt": 5e-05,
+  "horizon_s": 55.0,
+  "server_compute": false,
+  "unchanged": [
+    "MJB",
+    "geometry",
+    "Task/Strict gates",
+    "canonical48 actor input",
+    "common action filter",
+    "actuator limits"
+  ],
+  "spt": {
+    "t_ref_rule": "minimum sampled final-placement gate crossing over Task AND Strict successes in this matrix",
+    "post_hoc": true
+  },
+  "comfort": {
+    "ratio_of_actuator_limit": 0.5,
+    "human_force_threshold_n": 0.05,
+    "denominator": "actual human contact dt only"
+  },
+  "machine_safety": {
+    "penetration_limit_mm": 0.2,
+    "torque_epsilon": 1e-06
+  },
+  "models": [
+    {
+      "name": "esn_gradient_s2026101301",
+      "family": "esn_gradient",
+      "seed": 2026101301,
+      "rate": 1e-05,
+      "worker_kind": "office",
+      "config": {},
+      "checkpoint": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_spt_matrix_20261025_v4/checkpoints/esn_gradient_s2026101301.npz",
+      "checkpoint_sha256": "3d9a7e5c2f9da18085089093a56d07dbf0c6073693c5584daafddd2881cd3b83",
+      "validation_mse": 0.0006441719549672763,
+      "metadata": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/learning/esn_gradient_s2026101301_lr1e-05/TRAINING_COMPLETE.json",
+      "metadata_sha256": "4a858c355b73a44768ace0ea75e7daad86ae8739cdbf83da45e29ee1170de658",
+      "selected_update": 8000,
+      "effective_recurrent_update": false,
+      "trainable_parameters": 3780,
+      "stored_float_scalars": 41887,
+      "duration_s": 28.87626019900199,
+      "group": "primary"
+    },
+    {
+      "name": "rnn_scratch_s2026101301",
+      "family": "rnn_scratch",
+      "seed": 2026101301,
+      "rate": 1e-05,
+      "worker_kind": "office",
+      "config": {},
+      "checkpoint": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_spt_matrix_20261025_v4/checkpoints/rnn_scratch_s2026101301.npz",
+      "checkpoint_sha256": "9df447c9bba8e29028ff55363583362c33f9ea849112cd18c80946239985270c",
+      "validation_mse": 0.0004353713036867772,
+      "metadata": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/learning/rnn_scratch_s2026101301_lr1e-05/TRAINING_COMPLETE.json",
+      "metadata_sha256": "e1684d38abd9464408c5cc008986f48a13279ce8cf053c3c965f4e4074251b15",
+      "selected_update": 7000,
+      "effective_recurrent_update": true,
+      "trainable_parameters": 40132,
+      "stored_float_scalars": 41887,
+      "duration_s": 62.93565293296706,
+      "group": "primary"
+    },
+    {
+      "name": "mlp_scratch_s2026101301",
+      "family": "mlp_scratch",
+      "seed": 2026101301,
+      "rate": 0.0001,
+      "worker_kind": "office",
+      "config": {},
+      "checkpoint": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_spt_matrix_20261025_v4/checkpoints/mlp_scratch_s2026101301.npz",
+      "checkpoint_sha256": "969a0faed0b26c0dadba7867106cd081ef6778739b0df1cf7fa4b571cbdd056e",
+      "validation_mse": 0.0014820264749905796,
+      "metadata": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/learning/mlp_scratch_s2026101301_lr0.0001/TRAINING_COMPLETE.json",
+      "metadata_sha256": "0018404517ea4182fcfabfba6446b69643aca6c410ff4c868ef6445029411959",
+      "selected_update": 8000,
+      "effective_recurrent_update": false,
+      "trainable_parameters": 23748,
+      "stored_float_scalars": 41887,
+      "duration_s": 25.30826754507143,
+      "group": "primary"
+    },
+    {
+      "name": "historical_esn",
+      "family": "esn",
+      "group": "historical_system",
+      "config": {},
+      "origin_run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/esn__repair_development_000",
+      "origin_audit_sha256": "257366ee5d071a331d5f6cb1354becec70302bfdd49e41d510200e6f62f4c2e8",
+      "worker_kind": "office",
+      "training_regime": "Historical frozen reference, unequal prior training; not primary matched architecture comparison",
+      "checkpoint": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_spt_matrix_20261025_v4/checkpoints/historical_esn.npz",
+      "checkpoint_sha256": "acd3b27e37c3e7d7690570df5276f52492d6597951643bf5011ad8ac2aee2ec7"
+    },
+    {
+      "name": "historical_matched_rnn",
+      "family": "matched_rnn",
+      "group": "historical_system",
+      "config": {},
+      "origin_run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/matched_rnn__repair_development_000",
+      "origin_audit_sha256": "f7692c60fccc4fd816c0ec6ea86ddadbc699422e6ee04dfb7222e696106124e0",
+      "worker_kind": "office",
+      "training_regime": "Historical frozen reference, unequal prior training; not primary matched architecture comparison",
+      "checkpoint": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_spt_matrix_20261025_v4/checkpoints/historical_matched_rnn.npz",
+      "checkpoint_sha256": "eec045b36ee3cfd88405856305ab99ed21c63c3ef1cd6f74bd94c6f2a35cc8c0"
+    },
+    {
+      "name": "historical_matched_mlp",
+      "family": "matched_mlp",
+      "group": "historical_system",
+      "config": {},
+      "origin_run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/matched_mlp__repair_development_000",
+      "origin_audit_sha256": "93610db5a1a90ecd31d8b1a8f9cd80a58e90a05dc96183fecf5dd3ffa166ec6e",
+      "worker_kind": "office",
+      "training_regime": "Historical frozen reference, unequal prior training; not primary matched architecture comparison",
+      "checkpoint": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_spt_matrix_20261025_v4/checkpoints/historical_matched_mlp.npz",
+      "checkpoint_sha256": "786079a6576a46ce25022e23e41aa8ad0921d073b2aeb9e2c60adc02a6183562"
+    },
+    {
+      "name": "historical_ordinary_rnn",
+      "family": "ordinary_rnn",
+      "group": "historical_system",
+      "config": {},
+      "origin_run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_rnn__repair_development_000",
+      "origin_audit_sha256": "ceb90c189f7bab110683c5f9c9f502d94a5108fc787621049d99d77a7a3d2e45",
+      "worker_kind": "office",
+      "training_regime": "Historical frozen reference, unequal prior training; not primary matched architecture comparison",
+      "checkpoint": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_spt_matrix_20261025_v4/checkpoints/historical_ordinary_rnn.npz",
+      "checkpoint_sha256": "6f3df0b65da56926214b523f7d431a3773f5b03632cb595d8f9008f642f1a910"
+    },
+    {
+      "name": "historical_ordinary_mlp",
+      "family": "ordinary_mlp",
+      "group": "historical_system",
+      "config": {},
+      "origin_run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/paired_baseline_development_20261012_v2/episodes/ordinary_mlp__repair_development_000",
+      "origin_audit_sha256": "06e816ba59a16bdd98c828152b7e79ec5160deea8582c29f26ea051874af3822",
+      "worker_kind": "office",
+      "training_regime": "Historical frozen reference, unequal prior training; not primary matched architecture comparison",
+      "checkpoint": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_spt_matrix_20261025_v4/checkpoints/historical_ordinary_mlp.npz",
+      "checkpoint_sha256": "50bb22dd179e34af387f7e3375a9c7214e0eaa524df34c33a16562f52a03ea07"
+    }
+  ]
+}

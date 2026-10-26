@@ -1,0 +1,642 @@
+{
+  "dataset_sha256": "f00edd388a476879e56e51cf91c9cc04425a91d1df649eb9b78bf6197f33ddd6",
+  "metadata_sha256": "2fa13f51a216eaf59f60568ae45e8f771771e6d1a67079a14f6b6e83f60f6af9",
+  "model_lock_sha256": "4da573485533ad1d7a7d0a026ee8a33a46812e6f7dcb517ae3b2c632a652f3ab",
+  "frames": 75625,
+  "train_episodes": 44,
+  "validation_episodes": 11,
+  "cross_split_duplicate_trajectories": [],
+  "lineage_task_successes": 55,
+  "lineage_strict_successes": 55,
+  "teacher_configs": [
+    "294c6461957cadcc934616375635c82df4dc99cd2e46f1ec4a4513d9b805f317",
+    "352d6d75662aecceb2777aaa2ac5d8e3b0b576a54635930fca8d081cc879c787"
+  ],
+  "data_limitations": "Positive demonstrations only; failures retained. Existing local disturbance ranges, no broad-world claim. Multiple teacher policies if selected config differs; no teacher identity is an actor input.",
+  "zero_target_frame_fraction": 0.14450247933884297,
+  "models": [
+    {
+      "name": "esn_gradient_s2026101301",
+      "checkpoint_sha256": "3d9a7e5c2f9da18085089093a56d07dbf0c6073693c5584daafddd2881cd3b83",
+      "history_sha256": "c2a1c0cfced27d19cd7b7c14ddef216c545c00c6e70ad19f0582499c5aa44033",
+      "replay_sha256": "7846566366de7c85c2f728bebb1ae3c1e7f1ea7d88c2e7083aafa0b320b46709",
+      "selected_update": 8000,
+      "history": [
+        {
+          "update": 0,
+          "validation_mse": 0.013306251240188149,
+          "validation_raw_mse": 0.013364376749067838
+        },
+        {
+          "update": 1000,
+          "validation_mse": 0.0025230186514007334,
+          "validation_raw_mse": 0.0025230668964063264,
+          "last_train_loss": 0.0025911532272054295
+        },
+        {
+          "update": 2000,
+          "validation_mse": 0.0015111290144585135,
+          "validation_raw_mse": 0.0015155302877626036,
+          "last_train_loss": 5.449808260683812e-06
+        },
+        {
+          "update": 3000,
+          "validation_mse": 0.0011656096595763867,
+          "validation_raw_mse": 0.0011740796541673331,
+          "last_train_loss": 0.0013803307140150757
+        },
+        {
+          "update": 4000,
+          "validation_mse": 0.0011126439800198146,
+          "validation_raw_mse": 0.0011233740134108743,
+          "last_train_loss": 0.0006342112963085957
+        },
+        {
+          "update": 5000,
+          "validation_mse": 0.00084329698168105,
+          "validation_raw_mse": 0.0008555977967486771,
+          "last_train_loss": 0.0004589915069168148
+        },
+        {
+          "update": 6000,
+          "validation_mse": 0.0007873519519413844,
+          "validation_raw_mse": 0.0008034183173726182,
+          "last_train_loss": 0.0004601023876849372
+        },
+        {
+          "update": 7000,
+          "validation_mse": 0.0007042889788375549,
+          "validation_raw_mse": 0.0007203337663330582,
+          "last_train_loss": 0.0022443972904500663
+        },
+        {
+          "update": 8000,
+          "validation_mse": 0.0006441719549672763,
+          "validation_raw_mse": 0.0006590920818854172,
+          "last_train_loss": 0.0003436518427791189
+        }
+      ],
+      "last_2k_validation_relative_change": -0.18185005653579345,
+      "strata": {
+        "train": {
+          "all": {
+            "frames": 60500,
+            "mse": 0.000574526701778367,
+            "mse_by_action": [
+              0.0004963790819225442,
+              0.001986072354463157,
+              0.0004992772805357494,
+              0.0005522239212923782,
+              0.00011398602220283013,
+              0.00026858446974567144,
+              0.00010516378228624813
+            ]
+          },
+          "force_estimate_gt_1N": {
+            "frames": 30612,
+            "mse": 0.0009587147287610996,
+            "mse_by_action": [
+              0.0008839317968971734,
+              0.0033591129998522436,
+              0.0008654804657395154,
+              0.0007812790742267685,
+              0.00019220310282751585,
+              0.0004429401438984679,
+              0.00018605551788601656
+            ]
+          },
+          "force_estimate_le_1N": {
+            "frames": 29888,
+            "mse": 0.00018103219287862735,
+            "mse_by_action": [
+              9.943837960712658e-05,
+              0.0005797714900141778,
+              0.00012420327406298807,
+              0.000317620189305373,
+              3.387422910583888e-05,
+              9.000524406427627e-05,
+              2.23125439906083e-05
+            ]
+          }
+        },
+        "validation": {
+          "all": {
+            "frames": 15125,
+            "mse": 0.0006441719549672761,
+            "mse_by_action": [
+              0.0005673571788825145,
+              0.0023354991191149935,
+              0.0005775523022352571,
+              0.0005113277762511802,
+              0.00011880042177279398,
+              0.0002836938616576844,
+              0.0001149730248565068
+            ]
+          },
+          "force_estimate_gt_1N": {
+            "frames": 7720,
+            "mse": 0.001083949795507777,
+            "mse_by_action": [
+              0.0010032413580779143,
+              0.003952611908794895,
+              0.001005298401435173,
+              0.0007518464167385353,
+              0.00019895466449191916,
+              0.0004714867349656304,
+              0.00020420908405036214
+            ]
+          },
+          "force_estimate_le_1N": {
+            "frames": 7405,
+            "mse": 0.0001856864817771795,
+            "mse_by_action": [
+              0.00011293099881654516,
+              0.0006495962512785387,
+              0.00013161038652650313,
+              0.00026057775537847923,
+              3.523651174016124e-05,
+              8.791250015365666e-05,
+              2.1940968546370913e-05
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "rnn_scratch_s2026101301",
+      "checkpoint_sha256": "9df447c9bba8e29028ff55363583362c33f9ea849112cd18c80946239985270c",
+      "history_sha256": "2e045bff973689c8914bd62a7a625435854b05afd434b1e36dca10500938274a",
+      "replay_sha256": "fbd68cbf9265c4f39d1b1619d7b812a70a43f8f3d9242faac6b979227288614f",
+      "selected_update": 7000,
+      "history": [
+        {
+          "update": 0,
+          "validation_mse": 0.013306251240188149,
+          "validation_raw_mse": 0.013364376749067838
+        },
+        {
+          "update": 1000,
+          "validation_mse": 0.0020573257641564127,
+          "validation_raw_mse": 0.0020573608974813204,
+          "last_train_loss": 0.00208849734715709
+        },
+        {
+          "update": 2000,
+          "validation_mse": 0.0010778918598034982,
+          "validation_raw_mse": 0.0010829517983034357,
+          "last_train_loss": 5.231161156456215e-06
+        },
+        {
+          "update": 3000,
+          "validation_mse": 0.0007633816837658424,
+          "validation_raw_mse": 0.0007694464413749029,
+          "last_train_loss": 0.0007309621905260928
+        },
+        {
+          "update": 4000,
+          "validation_mse": 0.0007198122818485314,
+          "validation_raw_mse": 0.0007293809776846479,
+          "last_train_loss": 0.00038564509962375667
+        },
+        {
+          "update": 5000,
+          "validation_mse": 0.0005165127235172728,
+          "validation_raw_mse": 0.0005248550840195514,
+          "last_train_loss": 0.00030010808035651907
+        },
+        {
+          "update": 6000,
+          "validation_mse": 0.0005510216912245516,
+          "validation_raw_mse": 0.0005616157115300864,
+          "last_train_loss": 0.0003531634514314662
+        },
+        {
+          "update": 7000,
+          "validation_mse": 0.0004353713036867772,
+          "validation_raw_mse": 0.00044365561206402755,
+          "last_train_loss": 0.0013948638681757477
+        },
+        {
+          "update": 8000,
+          "validation_mse": 0.0004362138910444934,
+          "validation_raw_mse": 0.0004435055255765573,
+          "last_train_loss": 0.00025295342415436115
+        }
+      ],
+      "last_2k_validation_relative_change": -0.2083544114659397,
+      "strata": {
+        "train": {
+          "all": {
+            "frames": 60500,
+            "mse": 0.00039096148097295553,
+            "mse_by_action": [
+              0.0004232741580974891,
+              0.0010725913075129237,
+              0.0004266587729335466,
+              0.0003859705496134274,
+              0.00010500226401385897,
+              0.00022418658800832825,
+              9.904672663110906e-05
+            ]
+          },
+          "force_estimate_gt_1N": {
+            "frames": 30612,
+            "mse": 0.0006618623189264933,
+            "mse_by_action": [
+              0.0007475307904781638,
+              0.001873936690964267,
+              0.0007577097633256197,
+              0.0005247767513084381,
+              0.0001776653097786304,
+              0.0003757394090585661,
+              0.0001756775175717552
+            ]
+          },
+          "force_estimate_le_1N": {
+            "frames": 29888,
+            "mse": 0.0001134984037702758,
+            "mse_by_action": [
+              9.116280804271617e-05,
+              0.00025183431881468346,
+              8.758847991019279e-05,
+              0.00024380193858935268,
+              3.0579045432784745e-05,
+              6.896258646958872e-05,
+              2.0559649132614673e-05
+            ]
+          }
+        },
+        "validation": {
+          "all": {
+            "frames": 15125,
+            "mse": 0.0004353713036867772,
+            "mse_by_action": [
+              0.0004852655445690009,
+              0.0012409454284795765,
+              0.0004910717832461086,
+              0.00036736974018094294,
+              0.00011231262689985985,
+              0.0002405613323521153,
+              0.00011007267007984191
+            ]
+          },
+          "force_estimate_gt_1N": {
+            "frames": 7720,
+            "mse": 0.0007429286832198349,
+            "mse_by_action": [
+              0.0008565378517082029,
+              0.002151766260596411,
+              0.0008773537693494451,
+              0.0005248785028227846,
+              0.00018916999091561718,
+              0.00040457206311634864,
+              0.000196222344030041
+            ]
+          },
+          "force_estimate_le_1N": {
+            "frames": 7405,
+            "mse": 0.00011473079457196222,
+            "mse_by_action": [
+              9.819974968518389e-05,
+              0.0002913793482713435,
+              8.835781528962602e-05,
+              0.0002031607398305009,
+              3.218584091719303e-05,
+              6.957377779439957e-05,
+              2.0258290215488436e-05
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "mlp_scratch_s2026101301",
+      "checkpoint_sha256": "969a0faed0b26c0dadba7867106cd081ef6778739b0df1cf7fa4b571cbdd056e",
+      "history_sha256": "920004a425016c4c0bd0cfa969aa12ab4b3e2df3d20a5d691ca138271ace747a",
+      "replay_sha256": "2377b1357ccfa27e169d54974e8db740ba19d73fe8d4f73d41ad76040d3f7410",
+      "selected_update": 8000,
+      "history": [
+        {
+          "update": 0,
+          "validation_mse": 0.013348404920595138,
+          "validation_raw_mse": 0.013400740796539183
+        },
+        {
+          "update": 1000,
+          "validation_mse": 0.00208939842766754,
+          "validation_raw_mse": 0.0021016404706344053,
+          "last_train_loss": 0.0030803134738091455
+        },
+        {
+          "update": 2000,
+          "validation_mse": 0.002520897857321082,
+          "validation_raw_mse": 0.002565538813667564,
+          "last_train_loss": 1.1048174071085774e-08
+        },
+        {
+          "update": 3000,
+          "validation_mse": 0.001839940375861425,
+          "validation_raw_mse": 0.0018463429958201188,
+          "last_train_loss": 0.0015461389689364364
+        },
+        {
+          "update": 4000,
+          "validation_mse": 0.002023411530226261,
+          "validation_raw_mse": 0.002030662317593372,
+          "last_train_loss": 0.0016639201391087678
+        },
+        {
+          "update": 5000,
+          "validation_mse": 0.0021332506701087373,
+          "validation_raw_mse": 0.0021371475407499316,
+          "last_train_loss": 0.003897551442651833
+        },
+        {
+          "update": 6000,
+          "validation_mse": 0.0018720567395515634,
+          "validation_raw_mse": 0.0018835188002708733,
+          "last_train_loss": 0.000859494433985492
+        },
+        {
+          "update": 7000,
+          "validation_mse": 0.0014985863237666757,
+          "validation_raw_mse": 0.0015102251860463223,
+          "last_train_loss": 0.007334513305925569
+        },
+        {
+          "update": 8000,
+          "validation_mse": 0.0014820264749905796,
+          "validation_raw_mse": 0.0014864368869674492,
+          "last_train_loss": 0.001056499486784902
+        }
+      ],
+      "last_2k_validation_relative_change": -0.20834318550324094,
+      "strata": {
+        "train": {
+          "all": {
+            "frames": 60500,
+            "mse": 0.0012993183620639613,
+            "mse_by_action": [
+              0.0005104444046463665,
+              0.00473252771863403,
+              0.000883265904329839,
+              0.0011573627608494489,
+              0.0002694682681430546,
+              0.0012719766010769143,
+              0.0002701828767680506
+            ]
+          },
+          "force_estimate_gt_1N": {
+            "frames": 30612,
+            "mse": 0.0020352692656579433,
+            "mse_by_action": [
+              0.0007955617005930534,
+              0.007832033169782935,
+              0.0014391772191705554,
+              0.0012124293935733997,
+              0.0004511019639704781,
+              0.002043698165950181,
+              0.00047288324656495926
+            ]
+          },
+          "force_estimate_le_1N": {
+            "frames": 29888,
+            "mse": 0.000545539953979816,
+            "mse_by_action": [
+              0.0002184204932598493,
+              0.0015579405642386483,
+              0.0003138883223603545,
+              0.0011009622067492755,
+              8.343471967312459e-05,
+              0.0004815610314870829,
+              6.25723400903576e-05
+            ]
+          }
+        },
+        "validation": {
+          "all": {
+            "frames": 15125,
+            "mse": 0.0014820264749905792,
+            "mse_by_action": [
+              0.0006068065020237306,
+              0.005768091754330577,
+              0.0009924310049825571,
+              0.0010822460328724416,
+              0.00027451482718367166,
+              0.001360550309561789,
+              0.0002895448939792822
+            ]
+          },
+          "force_estimate_gt_1N": {
+            "frames": 7720,
+            "mse": 0.0023712762187851322,
+            "mse_by_action": [
+              0.000972022526232421,
+              0.009620804008846061,
+              0.001638642473724735,
+              0.0012419750387172269,
+              0.0004512841134853193,
+              0.002170869110612773,
+              0.0005033362598773945
+            ]
+          },
+          "force_estimate_le_1N": {
+            "frames": 7405,
+            "mse": 0.000554949091858378,
+            "mse_by_action": [
+              0.00022605461723087972,
+              0.0017514896469896686,
+              0.00031873045958220625,
+              0.0009157223427817302,
+              9.022598312577713e-05,
+              0.000515761498742931,
+              6.665909455545885e-05
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "interpretation": "Offline imitation diagnostics; no proof of closed-loop success or convergence. Force estimate strata are not actual human contact masks.",
+  "coverage": {
+    "fields": [
+      14,
+      15,
+      16,
+      20,
+      21,
+      22,
+      26,
+      27,
+      28,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47
+    ],
+    "train_only_scale": [
+      0.016251649514039915,
+      0.010148119633360887,
+      0.028171747761977936,
+      0.009738028083609613,
+      0.005,
+      0.03796310889787419,
+      0.01941996644079709,
+      0.012140898682071796,
+      0.025636105559114445,
+      2.5937132063920534,
+      1.1262187420141057,
+      1.9757466864972286,
+      0.15580978065825268,
+      0.29986511631961305,
+      0.21537027656834207,
+      0.4661829276816458,
+      0.31272172907486173,
+      0.5626146426912554
+    ],
+    "validation_distance_p95": 0.9666852907955578,
+    "definition": "Nearest train observation Euclidean distance in 18 train-standardized actor fields; ignores history and is descriptive, not a safety gate.",
+    "matrix_sha256": "9308bc2452294b476bf1e267e64cf465f5089072b1165701180f6d16f3b1b1bd",
+    "methods": [
+      {
+        "name": "esn_gradient_s2026101301",
+        "frames": 11000,
+        "distance_p50": 1.048160179323987,
+        "distance_p95": 2.316166716577836,
+        "fraction_above_teacher_validation_p95": 0.5577272727272727,
+        "terminal_stage_counts": {
+          "4": 8
+        },
+        "receipts": [
+          {
+            "condition": "prospective_20261013_acceptance_000",
+            "trace_sha256": "0cd1f903daa54eabc0009a2bb99b3df13f6eeeff20dd704b369cba99f05d26ca"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_001",
+            "trace_sha256": "a952e8d5877f7166fc64e386443e60dd69817c5de1b71cc450ffc9c04db8de98"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_002",
+            "trace_sha256": "d93da57e7fe52df29f059f8b88c694efe7cb34f2ce3e1940de4e01fbcb634bf0"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_003",
+            "trace_sha256": "3f11fde7f0ffafb5ee716538bfada2a42273b5ff1bdc337f2c4813813b78ff34"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_004",
+            "trace_sha256": "921fe88edcff4ad805b9749dacd542eeaa23b6610703e02c9f4c8c484a12da32"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_005",
+            "trace_sha256": "d8f0b33e6e37f6f5935040f18342db7f967f343eefda1d7b26d9abb99d7ececf"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_006",
+            "trace_sha256": "bb04c400a7ba861b5278312d14ab9c9bb34721c79174c31dc197742850aee7db"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_007",
+            "trace_sha256": "3cb3b7f0a02e8edaa6699799106d70e5bc2de0cadb4f270041a66241a82deae9"
+          }
+        ]
+      },
+      {
+        "name": "rnn_scratch_s2026101301",
+        "frames": 11000,
+        "distance_p50": 0.8294302693086828,
+        "distance_p95": 1.7126734275602442,
+        "fraction_above_teacher_validation_p95": 0.35972727272727273,
+        "terminal_stage_counts": {
+          "4": 7,
+          "6": 1
+        },
+        "receipts": [
+          {
+            "condition": "prospective_20261013_acceptance_000",
+            "trace_sha256": "bff5b62cd255acc2a7bff7bb0d07baf2d891e8a8a485fd84f0f9c87f96ba824b"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_001",
+            "trace_sha256": "d611413fe7d100017929ac348d5cfa18358088a94e0bb1195e95ff3f35c02e44"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_002",
+            "trace_sha256": "711e09e60c99679de4ce0fdad25da572b6e03847459379792b0e3ac4d279b00f"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_003",
+            "trace_sha256": "2ffc48bba8616c4cac172716b2e2d83eb00167098918b3ca9556155cd4c2c936"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_004",
+            "trace_sha256": "97226123db874de23d0173e71c12bc296b0d2dd3a3d6cbb775b21778fbce95b5"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_005",
+            "trace_sha256": "c986ace88f5a00dd3e053a3d091f188f7402a53c94c298fef73bdf615cbff61e"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_006",
+            "trace_sha256": "5f9b1cbe949a31a630b36219e04d1a414e55e057661951b8df658ace4cfbc592"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_007",
+            "trace_sha256": "68feecc856781991d316df90bc6c7ecc85c5f0d480413f2fbbc2c42af6a2932b"
+          }
+        ]
+      },
+      {
+        "name": "mlp_scratch_s2026101301",
+        "frames": 11000,
+        "distance_p50": 1.0050363998270666,
+        "distance_p95": 1.9534631176003154,
+        "fraction_above_teacher_validation_p95": 0.5313636363636364,
+        "terminal_stage_counts": {
+          "4": 7,
+          "7": 1
+        },
+        "receipts": [
+          {
+            "condition": "prospective_20261013_acceptance_000",
+            "trace_sha256": "f9b4391cbc9399c1fbfb1ed92b83846da378e81b928978798bd5f218fcb76f63"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_001",
+            "trace_sha256": "cf5c2fe2ff2e9b4279e1ca2d233d11345f291fb504c5a87270614f8e6cbd64e7"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_002",
+            "trace_sha256": "b0e52801075e5e7e1267ebfc38593287d11dd73512f137d39f95c43b1f525c91"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_003",
+            "trace_sha256": "9c83c119d1a1635762b66aad7fe685d94b4b1e910a774b93bb41f9fe7e43a4a3"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_004",
+            "trace_sha256": "5072a9e78fbed802202d2b78e1d9b7647148e9fb2e66949b3de2f115309e802b"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_005",
+            "trace_sha256": "89bd2f34350253aba8b3d4ff81fe2dd2b213522c0f7b34e2ebc4b6b1068cc4fe"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_006",
+            "trace_sha256": "da47260da80484a43af7ea35e76e21b0e06ae66e53f7a4081ad9ed449554d8db"
+          },
+          {
+            "condition": "prospective_20261013_acceptance_007",
+            "trace_sha256": "361fa721fc4842f2a0b8fcc97479647e14fb0810d7d23954d8d113432a256f45"
+          }
+        ]
+      }
+    ]
+  }
+}

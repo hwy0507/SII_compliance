@@ -66,10 +66,11 @@ def history_features(actor, obs, episode):
 class RawNetwork(Network):
     """Train pre-clipping outputs; clipping remains identical at deployment.
 
-    This makes the fixed-reservoir ridge solution and gradient learners share
-    exactly the weighted squared-error/readout-regularization objective, without
-    an output clamp eliminating gradients. No temporal loss is applied to one
-    family only. Last twelve context-only readout rows stay identically zero.
+    Global normalization preserves the fixed-reservoir ridge weighted objective
+    across chunks. Legacy per-chunk normalization is retained as an explicit
+    compatibility mode. No output clamp eliminates training gradients, and no
+    temporal loss applies to only one family. Last twelve context-only readout
+    rows stay identically zero.
     """
     def forward(self, drive, force, cross, context, state=None):
         projection = drive @ self.win.T
@@ -90,6 +91,16 @@ class RawNetwork(Network):
 
 def bounded(value):
     return np.c_[np.clip(value[:, :1], 0, 1), np.clip(value[:, 1:], -1, 1)]
+
+
+def loss_mass(weight, mode, mean_train_importance):
+    """Global mode preserves importance across chunks, including short tails.
+
+    Each normal batch contains 8 histories x 64 frames. A constant denominator
+    makes the sum of chunk gradients proportional to the registered full-data
+    weighted objective. Legacy per-chunk normalization is retained for replay.
+    """
+    return 512 * mean_train_importance if mode == 'global' else weight.sum()
 
 
 def check_split(ep, train):
@@ -165,14 +176,26 @@ def fit(a):
             raw = np.concatenate(list(predictions(val_ids).values()))
             y = np.concatenate([target[seq[int(e)]] for e in val_ids])
             return float(np.mean((bounded(raw)-y)**2)), float(np.mean((raw-y)**2))
+        def training_diagnostics():
+            raw = np.concatenate(list(predictions(train_ids).values()))
+            ids = np.concatenate([seq[int(e)] for e in train_ids])
+            mass = float(importance[ids].sum())
+            weighted = float(np.sum((raw-target[ids])**2 * importance[ids, None])/(7*mass))
+            regularizer = RIDGE/(7*mass)*float((model.coeff*model.mask).detach().square().sum())
+            return dict(full_train_raw_weighted_mse=weighted,
+                        full_train_objective=weighted+regularizer,
+                        full_train_clipped_mse=float(np.mean((bounded(raw)-target[ids])**2)))
         score, raw_score = validation()
         best = score; selected = 0; best_state = copy.deepcopy(model.state_dict())
         history = [dict(update=0, validation_mse=score, validation_raw_mse=raw_score)]
+        if a.full_training_diagnostics:
+            history[-1].update(training_diagnostics())
         schedule = []; gradients = {}; update = epoch = 0
         params = [p for p in model.parameters() if p.requires_grad]
         optimizer = torch.optim.Adam(params, lr=a.learning_rate)
         rng = np.random.default_rng(a.seed+2000)
         total_mass = float(importance[train].sum())
+        mean_train_importance = total_mass / int(train.sum())
         updates = 0 if a.family == 'esn_ridge' else a.updates
         while update < updates:
             order = rng.permutation(train_ids)
@@ -186,8 +209,10 @@ def fit(a):
                     values = [torch.from_numpy(v[:, offset:offset+64]) for v in padded]
                     pred, hidden = model(*values[:4], state=hidden)
                     y, weight = values[4:]
-                    loss = ((pred-y).square()*weight[..., None]).sum()/(7*weight.sum())
-                    loss += RIDGE/(7*total_mass)*(model.coeff*model.mask).square().sum()
+                    denominator = loss_mass(weight, a.objective_normalization, mean_train_importance)
+                    loss = ((pred-y).square()*weight[..., None]).sum()/(7*denominator)
+                    regularization_fraction = (weight > 0).sum()/512 if a.objective_normalization == 'global' else 1.
+                    loss += regularization_fraction*RIDGE/(7*total_mass)*(model.coeff*model.mask).square().sum()
                     assert torch.isfinite(loss)
                     optimizer.zero_grad(set_to_none=True); loss.backward()
                     if update == 0:
@@ -200,6 +225,8 @@ def fit(a):
                         score, raw_score = validation()
                         history.append(dict(update=update, validation_mse=score, validation_raw_mse=raw_score,
                                             last_train_loss=float(loss.detach())))
+                        if a.full_training_diagnostics:
+                            history[-1].update(training_diagnostics())
                         write(out/'training_progress.json', history[-1])
                         if score < best:
                             best = score; selected = update; best_state = copy.deepcopy(model.state_dict())
@@ -246,7 +273,11 @@ def fit(a):
             train_identities=[int(e) for e in train_ids], validation_identities=[int(e) for e in val_ids],
             numpy_torch_max_abs=parity, unused_field_isolation_pass=True, zero_load_equilibrium_pass=True,
             duration_s=time.monotonic()-started, raw_linear_objective=True, readout_ridge=RIDGE,
-            objective='sum(weight*raw_action_error^2)/(7*train_weight_mass) + .1*sum(normalized_readout^2)/(7*train_weight_mass)',
+            objective_normalization=a.objective_normalization,
+            full_training_diagnostics=a.full_training_diagnostics,
+            objective=('fixed chunk mass preserves global weighted squared-error gradients; common ridge penalty'
+                       if a.objective_normalization == 'global' else
+                       'legacy per-chunk weight normalization; not identical to global weighted ridge objective'),
             limitation='Same width/mechanisms, not equal trainable parameters or FLOPs. Ridge/fine-tune are auxiliary; update0 retained and explicitly reported.')
         write(out/'TRAINING_COMPLETE.json', result)
         state.update(status='complete', selected_update=selected, checkpoint_sha256=result['checkpoint_sha256'])
@@ -264,7 +295,9 @@ def main():
     p.add_argument('--seed', type=int, required=True)
     p.add_argument('--learning-rate', type=float, default=1e-4)
     p.add_argument('--updates', type=int, default=8000)
-    a = p.parse_args(); assert 0 < a.updates <= 8000 and 0 < a.learning_rate <= .001
+    p.add_argument('--objective-normalization', choices=('legacy_batch', 'global'), default='legacy_batch')
+    p.add_argument('--full-training-diagnostics', action='store_true')
+    a = p.parse_args(); assert 0 < a.updates <= 32000 and 0 < a.learning_rate <= .001
     fit(a)
 
 

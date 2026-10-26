@@ -1,5 +1,84 @@
 # 更新日志
 
+## 2026-10-26 — 同步远端非RL完成报告并保留服务器RL证据
+
+- 收尾实时fetch发现main新增5提交，最新 `50613a5`：非RL64/64矩阵与学习修复阶段；已读取报告、
+  数据诊断和标准更新。合并保留双方源码/报告，UPDATE_LOG冲突仅合并两个独立追加块，无记录丢弃。
+- 非RL公平重训ESN0/8及历史ESN5/8 Strict是远端报告结论，不与本服务器30条件RL矩阵混排；
+  Tref40.72s仅属该8条件非RL矩阵，不用于当前尚未完成的RL/ESN共同矩阵。
+- 远端非RL新32k拟合仍在修复，未得到用户指定最终ESN checkpoint；原始9.1GiB未传到本服务器，
+  此处只同步Git里的小型证据，不冒充原始物理数据独立复验，也未在本服务器启动非RL作业。
+- 澄清AGENTS的“仅非RL Goal”指该非RL会话，当前本会话RL目标不变；评估标准首句与既有
+  empirical说明统一，所有冻结运行时、物理、gate、actor、公共filter和执行器限制保持不变。
+
+## 2026-10-26 — 非 RL 新矩阵 64/64 完成并审计，继续数据/学习修复 Goal
+
+- `nonrl_spt_matrix_20261025_v4` 的 execution/REPORT 均为 complete；64 条证据链、188 项执行
+  源码及 checkpoint/config/actor/filter/子步 hash 核验通过。T_ref=40.72 s，按用户授权的
+  全矩阵双门成功最短完成时间定义；标准文档/AGENTS 已同步该规则与经验舒适阈值。
+- 新结果：公平重训单 seed ESN Task/Strict 0/8，RNN 和 MLP 各 1/8；历史 ESN 为 7/8、5/8，
+  SPT=0.5763，历史 matched RNN 同为 7/8、5/8、SPT=0.5529。不能宣称 proposed 全面优越，
+  不能跨历史/新重训组声称等预算比较。报告 `docs/NONRL_SPT_RESULTS_20261026.md` 和
+  `docs/evidence/nonrl_spt_20261026/` 含三张新图、完整矩阵、补充接触审计和2280文件hash清单。
+- 数据诊断：44/11整轨迹 split、75,625帧未见跨组完全重复轨迹；55条训练/验证示范全部成功，
+  失败恢复覆盖不足仍需验证。ESN末2000/8000更新验证MSE下降18.2%，不能认定充分收敛。
+  闭环ESN约55.77%帧的18维状态最近邻距离超过teacher验证P95，八条都停在carry；此为分布偏移线索，非因果证明。
+- 修正可选训练目标归一化：旧逐时间块weight.sum()归一化不完全等价于登记的全局加权目标，
+  新global模式保持块间重要性并修正短尾块正则系数，所有primary方法同样应用；旧默认和运行快照保留。
+  新增完整训练集目标/MSE记录，3项SPT与2项加权目标测试通过，相关工具编译通过，图表已目视核对。
+- 新登记离线阶段 `outputs/nonrl_learning_repair_20261026_v1` 六次有限拟合（ESN/RNN/MLP，8k/32k），
+  `sii-nonrl-learning-repair-20261026-v1.service` 已唯一启动。当前3/6完成、ESN32k在途，
+  三个8k组尚未满足新诊断plateau；未做新闭环成功声明。单路CPU、单线程、3GiB、worker禁swap。
+  后续先按数据/学习诊断分支推进，当前8条件已见，不再冒充新算法的未见测试集；Goal仍active。
+- 更正早期资源表述：3 GiB=3,221,225,472 bytes；此前约3.02/2.99数字是GB而非GiB。
+  memory.events.max是硬限压力事件，非high事件；结束前peak达到3 GiB、max=6845，OOM/kill=0。
+  worker swap=0不代表整机未使用swap。
+- 原始9.1GiB产物仅本地。自动审批拒绝向既有arm1主机上传整批原始轨迹，理由是未确认该payload
+  的导出授权；未传输/未绕过。远端仅创建空incoming目录，未声称已核验runs归档。
+- 本轮通过受授权外网连接实时fetch并读取main=`a52dfba4486af8d263d5cd0a976c3102482ff249`、
+  baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`日志；早期受限连接失败并非证明远端不可用。
+  发布只含代码/文档/小型证据，保留无关 `docs/MEETING_FLOWCHART_IMAGE_PROMPTS.md`。
+
+## 2026-10-25 — 非RL SPT 重评实时进度（48/64）
+
+- v4 已闭合 48/64 条统一回合，当前唯一在途为
+  `esn_gradient_s2026101301 / prospective_20261013_acceptance_006`；execution 仍为 `running`，
+  未重复启动 worker。
+- 当前 cgroup 资源收据：`memory.current≈2.99 GiB`、`MemorySwapMax=0`，`oom=0`、`oom_kill=0`，
+  CPU 累计用时持续增长；所有已完成回合的失败和成功收据均保留。
+- 目标新增的 proposed 方法复核尚未开始；必须先完成 64 条矩阵、统一 finalizer 和审计，再依据主指标决定是否追加公平复杂场景。
+
+## 2026-10-25 — 非RL SPT 重评实时进度（40/64）
+
+- v4 已闭合 40/64 条统一回合，当前唯一在途为
+  `esn_gradient_s2026101301 / prospective_20261013_acceptance_005`；execution 仍为 `running`，
+  未创建重复 worker。
+- cgroup 继续满足 `MemorySwapMax=0`；最新资源收据为 `memory.current≈2.93 GiB`、
+  `oom=0`、`oom_kill=0`，CPU 用时持续增加。已完成失败回合仍保留并进入最终分母。
+- 中间 `REPORT.json` 只作进度观察；最终 `T_ref`、SPT、指标图表和 proposed/baseline 判断待 64/64
+  闭合后由只读 finalizer 统一生成。
+
+## 2026-10-25 — 非RL SPT 重评实时进度（30/64）
+
+- v4 评测已真实闭合 30/64 条回合，当前唯一在途为
+  `historical_ordinary_rnn / prospective_20261013_acceptance_003`；`execution.json` 仍为
+  `running`，无重复 worker。
+- 在途 scope 的 `MemorySwapMax=0`，累计 `memory.events` 仍为 `oom=0`、`oom_kill=0`；内存约
+  3.02 GiB、CPU 计数持续增加。已完成回合均保留 rollout、独立接触子步、actor/filter replay
+  与逐文件 hash 收据。
+- 仍未运行最终 `finalize_nonrl_spt_report_20261025.py`；64 条完成前不发布正式方法排名，失败回合继续计入分母。
+
+## 2026-10-25 — 非RL SPT 重评实时进度（24/64）
+
+- `outputs/nonrl_spt_matrix_20261025_v4/execution.json` 真实状态仍为 `running`，已闭合
+  24/64 条回合，当前唯一在途回合为 `esn_gradient_s2026101301 /
+  prospective_20261013_acceptance_003`；未启动重复 worker。
+- 本轮 cgroup 观测约 `MemoryCurrent=2.83 GiB`、`MemoryMax=3 GiB`、`MemorySwapMax=0`，
+  `memory.events` 的 `oom=0`、`oom_kill=0`、`swap=0`；CPU 累计用时仍在增长，确认在途回合真实推进。
+- 中间 `REPORT.json` 已按新定义更新，当前 `T_ref=46.20 s`（所有已完成 Task AND Strict
+  成功回合的最短 gate crossing）；该值和中间成功率/SPT 仅供进度观察，64 条全部完成前不作最终比较结论。
+- 开工核对：本地 `main` 工作树基于缓存 `origin/main`，GitHub `main`/`baseline` 实时查询因网络不可达，
+  本轮未将缓存 refs 冒充远端最新；既有失败目录和当前执行收据均保留。最终审计、图表和 push 待矩阵完成。
 ## 2026-10-26 — 复核固定Direct失败并确认Impedance六周期结束
 
 - 后续同轮补充：原四formal均已正常六轮结束，原cycle5工具已产出，科学复核待；没有据此宣称收敛。
