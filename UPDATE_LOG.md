@@ -1,3 +1,8 @@
+## 2026-10-26 — SERL 文档发布隔离整合
+
+- 文档提交 ec99874 的首次正常push因non-fast-forward拒绝，非训练失败。为保持活动工作副本和冻结runtime不变，在 /tmp/sii_serl_publication_20261026 隔离worktree整合 origin/main c117532。
+- 保留两侧UPDATE_LOG记录；AGENTS保留服务器RL暂停/SERL新路线及另一主机非RL新30条任务，明确作用域。未运行导入的代码、训练、仿真或测试。只做冲突标记与差异静态检查；后续正常push结果以最终交付为准，不force push。
+
 ## 2026-10-26 — Direct 选择 SERL（ICRA 2024），参数 CHEQ 保留，继续暂停
 
 - 用户澄清参数 RL 可用 CHEQ，Direct 换顶会/顶刊已发表机械臂方法；进一步明确“仅接受已有示范，不新增人工纠正”。选择 SERL（ICRA 2024，DOI 10.1109/ICRA57147.2024.10610040），不把删除纠正的方案冒称完整 HIL-SERL。
@@ -101,6 +106,65 @@
   此处只同步Git里的小型证据，不冒充原始物理数据独立复验，也未在本服务器启动非RL作业。
 - 澄清AGENTS的“仅非RL Goal”指该非RL会话，当前本会话RL目标不变；评估标准首句与既有
   empirical说明统一，所有冻结运行时、物理、gate、actor、公共filter和执行器限制保持不变。
+
+## 2026-10-26 — 新增30条候选验证误差独立部署重放
+
+- 上轮属于实质进展（新增独立验收器并验证），本轮继续同一active Goal。实时fetch/read
+  main=`9bbd820667b2725d6aa96c725ec25ef41557351f`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。
+  训练服务MainPID86607与真实子进程持续运行；结束前ESN36、RNN9/36、MLP9/36候选完成，
+  下个RNN候选已到26136/32000更新。MemoryCurrent769454080 bytes，未发现OOM或worker swap。
+- 独立检查器增加`--progress --replay-completed`，共用最终验收的部署动作重放代码。
+  06:07 UTC快照内20模型×6选模验证身份重放均匹配训练MSE，最大绝对差2.17e-19；
+  单核/3GiB/禁swap审计2.329秒退出0，编译/diff检查通过。原始训练快照、数据和选模规则未改。
+- 固定首候选的全训练集部署MSE（update66→32000）：RNN 0.0076912→0.000198563，
+  MLP 0.00786814→0.000853701，确认有学习变化；不据此宣称收敛、最终选模或方法优越。
+  物理0/108，仍待完整网格后锁模型并统一评测；选模验证误差不冒充未见测试结果。
+- 三份小型源码/证据/说明53292 bytes已逐hash核验共享至
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_validation_replay_0607/`；
+  见`docs/evidence/nonrl_new30_20261026/VALIDATION_REPLAY_ARCHIVE_0607.json`。原始数据/模型仅本地。
+  重新读取AGENTS，保留无关会议草稿；没有重复派发、服务器计算或改变实验范围，Goal未完成。
+
+## 2026-10-26 — 新增30条公平训练持续推进与独立进度审计
+
+- 实时fetch/read main=`896d0a44a3f3b0d5fca0b3e070443c940744fd0f`、
+  baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，重读AGENTS及同步skill。
+  Goal保持active，同一v2服务/真实子进程持续推进，没有重复训练、修改冻结实验或启动旧组。
+- 06:01 UTC独立快照通过：完成15/75拟合进程（ESN36候选、RNN6、MLP6），物理0/108。
+  交付前进度继续推进到RNN7/36、MLP7/36，当前下一RNN候选17226/32000更新；
+  服务active、MemoryCurrent735203328/3221225472 bytes，cgroup无OOM、worker swap0。
+- 新审计器核验1357冻结源码hash、数据/协议、完整候选网格、终态选模约束、导出与优化器身份隔离；
+  只读进度检查退出0，未完成最终矩阵拒绝检查通过。首版检查重复构造集合导致低效，35.4秒后
+  只停止该审计进程并优化，重跑0.263秒通过；正式训练未中断。编译/diff检查通过。
+- 最终审计代码还覆盖9锁定模型的验证动作重放、108回合来源、SPT/峰矩/接触合规/机器安全与seed统计；
+  该完整分支尚未执行，不写成最终通过。后续分别报告6选模示范误差和12新条件闭环结果，
+  不把离线MSE、完成32k更新或部分候选当作闭环成功/收敛/ESN优越。
+- 三份源码/方案/进度证据32768 bytes已逐hash核验归档到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_progress_0601/`，
+  见`docs/evidence/nonrl_new30_20261026/PROGRESS_ARCHIVE_0601.json`。原始产物仅本地；
+  方案入口`docs/NONRL_NEW30_FAIR_COMPARISON_20261026.md`，无关会议草稿保持未提交。
+
+## 2026-10-26 — 启动新增30条的历史ridge ESN与RNN/MLP公平对比
+
+- 实时核对/fetch/read main=`ce467b1773adeddfdfb82b8ccc424b97af23240b`、
+  baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；读取同步skill/AGENTS，确认无活动实验。
+  用户采用历史ESN训练思路并限定新增30条，覆盖旧梯度ESN主路线；RL继续交由其他agent。
+- 新run `nonrl_new30_fair_20261026_v2` 抽取并核验24train/6val、41250帧，无旧25数据/权重。
+  数据hash `4b4a734bc5adb008fa3b93348c8efbd4b99cff1f49326892e3626cfa12594eca`。
+  登记三方法×三seed×12候选；ESN原12组解析ridge，普通RNN/MLP各4LR×3正则、32k更新。
+  相同6验证身份的终态部署动作MSE选模；记录不同计算量、参数数和特征映射，不声称等FLOPs。
+- 新协调器快照源码/数据/协议，冻结12个新条件，全部拟合后锁9模型，自动执行完整108回合。
+  统一全矩阵T_ref与接触期50%执行器阈值；物理/MJB/gate/filter/dt不改，不选择性丢失败。
+  神经训练器新增可选终态选模、cosine/正则/无delta损失/global归一化与slowdown裁剪前训练损失，
+  原默认动作行为保留；新增2项契约测试通过，RNN/MLP8更新预检导出差异3.05e-16/2.78e-16。
+- 准备v1的actor版本差异和一次相对路径预检归档失败已隔离保留；v2对齐历史actor、正式argv全绝对路径。
+  仿真固定`.venv-sii-local-rl`/MuJoCo3.11.0，神经拟合`.venv-rl`仅训练，不用其MuJoCo3.14跑物理。
+- 服务`sii-nonrl-new30-fair-20261026-v2.service`已启动，本机单核/单线程/3GiB/禁worker swap。
+  首次核验3个ESN种子36候选已完成，验证MSE约2.707e-4–2.788e-4；RNN首候选正在训练。
+  尚无物理结果，不声称训练充分、优于baseline或完成Goal。方案见`docs/NONRL_NEW30_FAIR_COMPARISON_20261026.md`。
+  11份小型协议/来源/预检/源码已逐SHA256核验归档到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_registration/`，
+  见`docs/evidence/nonrl_new30_20261026/ARCHIVE_VERIFICATION.json`。原始数据/训练产物留本机；
+  AGENTS已指明新主路线与旧56回合组不自动接续，保留无关草稿。
 
 ## 2026-10-26 — 原25条与扩展55条示范的新指标比较
 

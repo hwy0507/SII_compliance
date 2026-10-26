@@ -2,6 +2,7 @@
 import argparse
 import copy
 import json
+import math
 import os
 from pathlib import Path
 import platform
@@ -60,8 +61,10 @@ class Network(nn.Module):
             hidden = torch.tanh(self.core(x))
         raw = self.head(hidden)
         residual = torch.tanh(raw[..., 1:])
+        slowdown = (raw[..., :1] if self.training and getattr(self, 'raw_slowdown_loss', False)
+                    else raw[..., :1].clamp(0, 1))
         scale = (torch.linalg.vector_norm(residual, dim=-1, keepdim=True)/np.sqrt(6)
-                 if self.norm_slowdown else raw[..., :1].clamp(0, 1))
+                 if self.norm_slowdown else slowdown)
         action = torch.cat((scale, residual), -1)
         return action, state
 
@@ -95,7 +98,16 @@ def main():
     p.add_argument('--precision',choices=('float32','float64'),default='float32',
                    help='Train/export with matched arithmetic; float64 avoids long recurrent replay drift')
     p.add_argument('--tbptt-steps',type=int,default=64,help='Sequence length per optimizer update; actual exposure is recorded')
+    p.add_argument('--action-delta-weight',type=float,default=.25)
+    p.add_argument('--weight-decay',type=float,default=1e-5)
+    p.add_argument('--lr-schedule',choices=('constant','cosine'),default='constant')
+    p.add_argument('--selection',choices=('best','final'),default='best',
+                   help='Final uses only the terminal checkpoint as a hyperparameter candidate')
+    p.add_argument('--global-loss',action='store_true',help='Constant batch mass; do not overweight short tail chunks')
+    p.add_argument('--raw-slowdown-loss',action='store_true',help='Avoid zero gradient below slowdown clamp during training only')
     a = p.parse_args()
+    if not 0<=a.action_delta_weight<=2 or not 0<=a.weight_decay<=1 or a.updates<1:
+        raise ValueError('Invalid loss/decay/update budget')
     if not 16<=a.tbptt_steps<=2048:raise ValueError('TBPTT steps must be 16..2048')
     a.output.mkdir(parents=True, exist_ok=False)
     cg = Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::', 1)[1].lstrip('/')
@@ -132,6 +144,7 @@ def main():
         seq = {int(ep): np.flatnonzero(episode == ep) for ep in np.unique(episode)}
         assert all(np.unique(train[ids]).size == 1 for ids in seq.values())
         model = Network(a.kind, features.shape[1], a.seed, a.norm_slowdown,a.modular)
+        model.raw_slowdown_loss = a.raw_slowdown_loss
         if not 0<=a.drift_weight<=2:raise ValueError('Invalid integrated-action loss weight')
         parent_sha=None
         if a.initialize_checkpoint is not None:
@@ -147,14 +160,17 @@ def main():
                 model.head.weight.copy_(torch.from_numpy(z['output_w']))
                 if a.kind=='rnn':model.core.weight_hh_l0.copy_(torch.from_numpy(z['recurrent_w']))
         if not 0<a.learning_rate<=.01:raise ValueError('Invalid learning rate')
-        optimizer = torch.optim.AdamW(model.parameters(), lr=a.learning_rate, weight_decay=1e-5)
+        optimizer = torch.optim.AdamW(model.parameters(), lr=a.learning_rate, weight_decay=a.weight_decay)
         rng = np.random.default_rng(a.seed+2000)
         def predict_all(ids):
             values = {}
+            was_training = model.training
+            model.eval()
             with torch.no_grad():
                 for ep in ids:
                     index = seq[int(ep)]
                     values[int(ep)] = model(torch.from_numpy(features[index])[None])[0][0].numpy()
+            model.train(was_training)
             return values
         history, schedule = [], []
         best, best_state, best_step = float('inf'), None, None
@@ -187,11 +203,12 @@ def main():
                 for offset in range(0, length, a.tbptt_steps):
                     xx, yy, ww = [torch.from_numpy(v[:, offset:offset+a.tbptt_steps]) for v in (x, y, w)]
                     prediction, hidden = model(xx, hidden)
-                    loss = (((prediction-yy)**2)*ww[..., None]).sum()/(7*ww.sum())
+                    mass = 8*a.tbptt_steps*float(importance[train].mean()) if a.global_loss else ww.sum()
+                    loss = (((prediction-yy)**2)*ww[..., None]).sum()/(7*mass)
                     pair_w = torch.minimum(ww[:, 1:], ww[:, :-1])
                     delta = ((prediction[:, 1:]-prediction[:, :-1])-(yy[:, 1:]-yy[:, :-1]))**2
                     delta_loss = (delta*pair_w[..., None]).sum()/(7*pair_w.sum().clamp_min(1))
-                    total = loss+.25*delta_loss
+                    total = loss+a.action_delta_weight*delta_loss
                     if a.drift_weight and prediction.shape[1]>=16:
                         residual=prediction[...,1:]-yy[...,1:]
                         accumulated=residual.unfold(1,16,1).sum(-1)*proxy_scale
@@ -203,6 +220,11 @@ def main():
                     optimizer.zero_grad(set_to_none=True)
                     total.backward()
                     nn.utils.clip_grad_norm_(model.parameters(), 1.)
+                    rate = a.learning_rate
+                    if a.lr_schedule == 'cosine':
+                        rate *= .01+.99*.5*(1+math.cos(math.pi*update/max(a.updates-1,1)))
+                    for group_param in optimizer.param_groups:
+                        group_param['lr'] = rate
                     optimizer.step()
                     if hidden is not None:
                         hidden = hidden.detach()
@@ -216,8 +238,15 @@ def main():
             validation_mse,validation_integral,score=validation_score(values)
             history.append(dict(update=update, epoch=epoch, last_train_loss=float(total.detach()), validation_mse=validation_mse,
                                 validation_integrated_proxy=validation_integral,selection_score=score))
-            if score < best:
+            if epoch % 20 == 0 or update == a.updates:
+                tv = predict_all(train_ids)
+                history[-1]['full_train_deployed_mse'] = float(np.mean(np.concatenate([
+                    tv[int(e)]-target[seq[int(e)]] for e in train_ids])**2))
+            if score < best or a.selection == 'final':
                 best, best_state, best_step = score, copy.deepcopy(model.state_dict()), update
+            write(a.output/'progress.json',dict(update=update,epoch=epoch,learning_rate=rate,
+                                               latest=history[-1],selected_update=best_step))
+            write(a.output/'history.json',history)
             epoch += 1
         model.load_state_dict(best_state)
         np.savez_compressed(a.output/'checkpoint.npz', **model.export(fields, scale,a.absolute_inputs))
@@ -259,7 +288,9 @@ def main():
                       exported_replay_sha256=sha(a.output/'exported_replay.npz'), groups=groups,
                       numpy_torch_max_abs=max_error, unused_field_isolation_pass=True, zero_input_equilibrium_pass=True,
                       batch_size=8, tbptt_steps=a.tbptt_steps, actual_nonpadding_observations=sum(s[3] for s in schedule),
-                      action_delta_weight=.25, source_sha256=source_hash,
+                      action_delta_weight=a.action_delta_weight,weight_decay=a.weight_decay,
+                      lr_schedule=a.lr_schedule,checkpoint_selection=a.selection,
+                      global_loss=a.global_loss,raw_slowdown_loss=a.raw_slowdown_loss, source_sha256=source_hash,
                       validation_split=metadata.get('selection_split','Legacy synthetic identity holdout'),
                       limitation='Data provenance and whole-history split declared in dataset metadata; physical success measured separately. No runtime teacher/controller. Width-matched, not parameter-matched.')
         assert all(sha(ROOT/k) == v for k, v in source_hash.items())
