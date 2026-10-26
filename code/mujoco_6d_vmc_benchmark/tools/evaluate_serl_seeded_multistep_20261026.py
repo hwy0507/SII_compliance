@@ -36,21 +36,27 @@ def case_action_seed(action_seed, case_id):
     return int.from_bytes(hashlib.sha256(f'{action_seed}:{case_id}'.encode()).digest()[:4], 'little')
 
 
-def seeded_action(learner, raw_observation, index, key):
+def seeded_action(learner, raw_observation, index, key, noise_schedule='independent'):
     from serl_state_adapter_20261026 import OBSERVATION_SCALE, execution_action
     raw_observation = np.asarray(raw_observation, np.float32)
     if raw_observation.shape != (48,) or not np.isfinite(raw_observation).all() or not 0 <= index < 1375:
         raise ValueError('Expected finite canonical48 and valid known action index')
     observations = dict(state=np.ascontiguousarray(raw_observation / OBSERVATION_SCALE),
                         clock=np.array([(1375-index)/1375],np.float32))
-    key, sample_key = learner.jax.random.split(key)
+    if noise_schedule not in ('independent', 'episode_constant'):
+        raise ValueError('Unknown registered noise schedule')
+    next_key, sample_key = learner.jax.random.split(key)
     raw_action = np.asarray(learner.agent.sample_actions(observations, seed=sample_key))
-    return execution_action(raw_action), key
+    # Constant base noise still passes through the state-dependent policy at
+    # every action. It does not hold the public action or inject nominal control.
+    return execution_action(raw_action), next_key if noise_schedule == 'independent' else key
 
 
 def evaluate(args):
     if args.stochastic != (args.action_seed is not None) or (args.action_seed is not None and args.action_seed < 0):
         raise ValueError('Stochastic evaluation needs an explicit nonnegative external seed')
+    if not args.stochastic and args.noise_schedule != 'independent':
+        raise ValueError('A noise schedule applies only to stochastic evaluation')
     torch.set_num_threads(1)
     root, output = args.runtime.resolve(), args.output.resolve()
     protocol = json.loads(args.registration.read_text())
@@ -115,14 +121,19 @@ def evaluate(args):
         left=right=learner.jax.random.PRNGKey(case_action_seed(args.action_seed,conditions[0]['id']))
         actions_left=[]
         for index in range(3):
-            action,left=seeded_action(learner,raw_observation,index,left)
-            again,right=seeded_action(learner,raw_observation,index,right)
+            action,left=seeded_action(learner,raw_observation,index,left,args.noise_schedule)
+            again,right=seeded_action(learner,raw_observation,index,right,args.noise_schedule)
             np.testing.assert_array_equal(action,again)
             actions_left.append(action)
         other,_=seeded_action(learner,raw_observation,0,learner.jax.random.PRNGKey(case_action_seed(args.action_seed+1,conditions[0]['id'])))
         assert not np.array_equal(actions_left[0],other)
+        if args.noise_schedule == 'episode_constant':
+            for action in actions_left[1:]:
+                np.testing.assert_array_equal(action, actions_left[0])
+        else:
+            assert not np.array_equal(actions_left[0], actions_left[1])
         assert digest(learner.state_dict())==initial_state
-        write(output/'EXTERNAL_ACTION_RNG_GATE.json',dict(passed=True,same_seed_actions_exact=True,different_seed_changes_actions=True,full_state_unchanged=True,optimizer_updates=0,new_physics=0))
+        write(output/'EXTERNAL_ACTION_RNG_GATE.json',dict(passed=True,same_seed_actions_exact=True,different_seed_changes_actions=True,noise_schedule=args.noise_schedule,temporal_sampling_gate_passed=True,full_state_unchanged=True,optimizer_updates=0,new_physics=0))
 
     receipt = dict(scope=('training_conditions_independent_stochastic_diagnostic' if args.stochastic
                           else 'training_conditions_independent_deterministic_evaluation'),
@@ -130,7 +141,7 @@ def evaluate(args):
         checkpoint_sha256=sha(snapshot), registration_sha256=sha(args.registration),
         runtime_manifest_sha256=sha(root/'RUNTIME.json'), case_ids=[c['id'] for c in conditions],
         complete_registered_matrix=len(conditions) == len(protocol['conditions']),
-        deterministic=not args.stochastic, action_seed=args.action_seed,
+        deterministic=not args.stochastic, action_seed=args.action_seed, noise_schedule=args.noise_schedule,
         action_seed_by_case=({c['id']: int.from_bytes(hashlib.sha256(
             f"{args.action_seed}:{c['id']}".encode()).digest()[:4], 'little') for c in conditions}
             if args.stochastic else {}),
@@ -190,7 +201,7 @@ def evaluate(args):
                     if actions == 0 and sha(folder/'rollout.mjb') != condition['model_sha256']:
                         raise ValueError('Frozen model mismatch before first action')
                     if args.stochastic:
-                        action, external_key = seeded_action(learner, event['observation'], actions, external_key)
+                        action, external_key = seeded_action(learner, event['observation'], actions, external_key, args.noise_schedule)
                     else:
                         _, _, action, _ = learner.act(event['observation'], step=checkpoint['steps'], deterministic=True)
                     child.stdin.write(json.dumps(dict(action=action.tolist()))+'\n')
@@ -233,6 +244,7 @@ if __name__ == '__main__':
     parser.add_argument('--stochastic', action='store_true',
         help='Registered action-sampling diagnostic; leaves physical fixture seeds unchanged')
     parser.add_argument('--action-seed', type=int)
+    parser.add_argument('--noise-schedule', choices=['independent', 'episode_constant'], default='independent')
     parser.add_argument('--audit-substeps', action='store_true',
         help='Record coincident human contact/torque for independent physical audit')
     evaluate(parser.parse_args())

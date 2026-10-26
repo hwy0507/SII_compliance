@@ -1,0 +1,31 @@
+{
+  "time": 1793030908.3980815,
+  "source_sha256": "7615a655b77d2841cc2fe21f5557b5827b3427536fd0de3e8c79de180d1fa8d4",
+  "original_review": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle13_review_20261026_v1",
+  "replacement_review": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle13_review_20261026_v2",
+  "checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle13_archive_20261026_v1/direct/cycle_00013.pt",
+  "training_run": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle13_20261026_v1/direct",
+  "coordinator_pid": 1328362,
+  "reviewer_pid": 1328394,
+  "learner_pid": 1280297,
+  "review_sources": {
+    "diagnose.py": "9e6078c94fcdd4d982910a66dcc413e8a93f2c23d0c5eac59e13ef0e7b2e434d",
+    "review.py": "1a8b3896334eacd59c4b45cfd59cb0d98cd464895c1130e0cfa6123f789678d8",
+    "coordinator.py": "0550493f2f4d917550dfb047e3af672bae70d5f60f7a4781dabe8a45a5af8c14"
+  },
+  "reason": "Batch65536 profile10.63 transitions/s predicts about65min for41250 transitions, exceeding the original60min audit wait. Keep original live observer; only after it is terminal with the specific timeout and exact complete checkpoint exists, run its identical read-only audit in a new directory. No training restart or repeated successful audit.",
+  "new_physics": 0,
+  "new_optimizer_updates": 0,
+  "coordinator_identity": {
+    "start": "573017599",
+    "command": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle13_review_20261026_v1/coordinator.py "
+  },
+  "reviewer_identity": {
+    "start": "573017603",
+    "command": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle13_review_20261026_v1/review.py "
+  },
+  "learner_identity": {
+    "start": "573010677",
+    "command": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/serl_env/bin/python /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_multistep_batch65536_cycle13_20261026_v1/resume_serl_multistep_batch65536_stage_20261026.py --runtime /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock --registration /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle13_20261026_v1/REGISTRATION.json --resume /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_transfer_cycle12_archive_20261026_v1/direct/cycle_00012.pt --output /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle13_20261026_v1/direct --serl-upstream /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_upstream_1fa2af7 --serl-manifest /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/SERL_UPSTREAM_1fa2af7_HASHES.json --sampler-python /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python --device cuda:0 --cpus 0,1,2,3,4,5,6,7,8,9,10,11,12 --workers 30 "
+  }
+}

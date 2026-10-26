@@ -1,3 +1,13 @@
+## 2026-10-26 — 参数17完整审查与18接续，Direct固定噪声诊断及共享采样池准备
+
+- 上轮属实质进展，本轮开工fetch/read真实main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，本地307a37a。无子agent；新交接docs/RL_PARAMETER18_AND_SERL_EXPLORATION_20261026.md。
+- 完整参数17三路各+41250、30完整55s无abort，I/A/V Task/Strict18/18、12/12、17/17，reward−.612733/−12.190258/−2.836349，末1000loss1.453/1.629/1.231，termMAE1.017/.625/.643、Q均−6.154/+14.556/+26.588。新reward/旧prefix/history/markers/MJB/finite审查通过、health与图完成；导纳13→9→12 Strict尚未稳定。准确17完整state续一个18，2652800/2/4原GPU/CPU/12sampler与所有学习设置保持；三check-only、实际各1000新增审查通过，归档2652915/完整审查2652985，无自动19。
+- Direct13原1280297继续，不改batch65536/官方8:1/10critic/random2/noentropy/32步/actor48/零示范纠正与nominal混合。因约65min预测周期超过原60min只读等待，新guard2542683保留原审查1328362/子1328394；仅原observer已终止且明确timeout、准确完整13已归档、训练无FAILURE时，在新review_v2运行原相同只读源码。原成功不重复，任何情况下不重启训练。
+- 去重正式SERL0–12历史390episode均无Task成功。新增冻结12整回合固定基础Gaussian噪声诊断，原三个代表/外部seed2026102612，首obs/action与上轮独立噪声精确一致；0优化/不写replay/不保存推广权重。三完整55秒/4125actions/330万子步已全部独立审查，动作0误差/完整state/MJB/物理filter torque通过，图已看；Task/Strict仍0/3、均approach，无abort/机器违规/人接触NA。短期峰矩59.64→69.85Nm，未证明任务改善，不部署；改变后续策略的回报差不能当原Q校准误差。原2427730/2427731及review已结束勿重跑。
+- 参数17尾部只剩6个物理worker，部分GPU瞬时不足50%。新增共享CPU的30sampler调度候选，仅变换trainer两处调度接口、不改学习与物理。有限准备2872195已通过：准确17三父×两恢复×65交错动作=390，30独立mixing/各流clock/context隔离、重复动作与fullstate相同、各9负守卫通过，0优化/仿真/无权重保存。未部署当前18，尚无新pool正式driver/登记/在线吞吐证据；后续须最新完整18或更晚父，不回退17。
+- 新预登记纯正式180样本profile2680231在固定噪声评估完整结束后采集参数18+Direct13，逐样本核验无其他GPU PID；已完成180样本206.623秒，GPU均值54.94/70.57/69.74/68.58%，D/I/A/V10.047/23.153/23.555/23.555steps/s；每样本四原learner live且GPU PID集合恰为四正式，无辅助。该固定窗口均值均≥50%，非所有瞬时/未来保证，原2680231结束不重采。四正式持续推进，不用已完成探针占用。健康收敛、最终全矩阵/指定ESN/SPT未完成，Goal active。
+- 本轮源码语法、实际18恢复/启动与新噪声入口/全回合审查、调度有限准备通过；小证据docs/evidence/rl_parameter18_exploration_20261026/SOURCES.json。实际计算与大产物在本集群SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，HDD仅小交接/收据，无核验arm1完整副本。GitHub认证未恢复，发布结果收尾另记，不称已push。
+
 ## 2026-10-26 — 参数16/Direct12完整审查，参数17与Direct batch65536第13周期接续
 
 - 开工与恢复上下文后fetch/read真实main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；保留已有本地未发布573d0469/ac6a028，无子agent。最新交接docs/RL_PARAMETER17_SERL_BATCH13_20261026.md。

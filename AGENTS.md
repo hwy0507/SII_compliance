@@ -1,5 +1,15 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 参数18接续、Direct13继续与探索诊断完成
+
+原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER18_AND_SERL_EXPLORATION_20261026.md)，覆盖下方17/13快照。无子agent，冻结物理/SPT与正式全state保持。
+参数17已完整审查：I739500/734501、A738500/733501、V739500/734501，Task/Strict18/18、12/12、17/17，reward−.612733/−12.190258/−2.836349，末loss1.453/1.629/1.231。三路各41250新交互、30完整55s无abort、新reward0误差/旧prefix/history/markers/MJB/finite通过。termMAE1.017/.625/.643、Q均−6.154/+14.556/+26.588，图与health/state不变审查完成；导纳较16恢复但15→16→17 Strict13→9→12未稳定。旧1280294/5/6、1328339/1328342已完勿重启。
+正式参数18 I2652800/A2652802/V2652804，GPU1/2/3、原CPU组各12sampler；B/runs/parameter_batch65536_cycle18_20261026_v1，准确17全state续一个18，设置保持。三check-only完整state/重复恢复/负守卫与真实各1000新增prefix/history/marker/MJB/action/clock/reward0误差通过。归档2652915、完整18审查2652985，无自动19，必须pair_class恢复。
+Direct13原1280297/归档1328360/审查1328362（子1328394）仍继续，batch65536/官方8:1/10critic/random2/noentropy/32步/actor48/gather+transfer保持。新只读超时兜底2542683，B/runs/serl_multistep_batch65536_cycle13_review_deadline_guard_20261026_v1：原审查60min可能短于约65min周期；保留原句柄，只在原审查已退出且明确timeout、训练无FAILURE、准确完整13已归档后，用相同源码到review_v2审查。原成功不重复，绝不重启训练；先读guard结果决定review_v1/v2准确位置。
+固定基础噪声探索诊断B/runs/serl_cycle12_constant_noise_representatives_20261026_v1已全部审查完成，原2427730/2427731及review结束勿重跑。准确正式12/同原seed2026102612/首obs与动作精确对齐；每回合相同base Gaussian噪声，仍每步state-dependent动作。三完整55s/4125动作/330万子步、Task/Strict0/3均approach，无abort/机器违规/人接触NA；全动作误差0/fullstate/物理filter torque通过，图已看。短期峰矩59.64→69.85Nm；未证明改善、不部署。不同时间相关性行为策略的实际回报差不作原Q校准误差。
+参数30sampler共享原12CPU候选仅准备：新parameter_shared_sampler_pool_20261026.py两处调度变换，B/runs/parameter_pool30_preparation_20261026_v1/REVIEW通过，2872195结束。正式17三父各两恢复/65交错动作，共390次、30独立mixing/clock隔离、重复动作与state相同、负守卫通过，0optimizer/physics/无保存权重。未部署18，尚无新pool正式driver/登记/在线吞吐验证；后续采用须最新完整18或更晚父，不能回退17。
+新纯正式180样本profile2680231在B/runs/batch13_parameter18_gpu_profile_20261026_v1，等待新18启动与固定噪声评估完整退出后采样，逐样本核验GPU PID只属于四正式；原PROFILE已完成、2680231结束：180样本206.623秒，四卡均值54.94/70.57/69.74/68.58%，D/I/A/V10.047/23.153/23.555/23.555steps/s；所有样本四正式live且GPU PID集合恰为四正式，无辅助。该窗口均值达标，勿重采挑选。17尾部曾低于50%，不能掩盖或保证每瞬时达标。远端仍dbb1d76/baseline f6e8f8c，GitHub认证待恢复，用户已被问勿重复。HDD配额满，仅小交接/收据；大产物SSD，非arm1/HDD全备份。
+
 ## 最新RL状态：2026-10-26 参数17、Direct batch65536第13周期运行中
 
 原Goal active，未健康收敛；最新交接[RL_PARAMETER17_SERL_BATCH13_20261026.md](docs/RL_PARAMETER17_SERL_BATCH13_20261026.md)。本段覆盖下方16/12快照。无子agent，物理/SPT与完整正式state保持。
