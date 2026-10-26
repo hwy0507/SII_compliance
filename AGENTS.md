@@ -7,6 +7,8 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新：clock Direct三代表完整复核session30235已完，learned0/3 vsnominal2/3，330万learned子步/4125动作重放误差0，均无人体接触NA，方向余弦约−.999非因果。runs/clock_direct_fixed_review_v1。评估已资源交接：旧2960898有意终止勿重启，原Imp3479276/CPU54保留，3825230只读接管；新runs/clock_fixed_parallel_v2中A协调3825231/eval3825618/CPU52、V3825232/3825634/CPU53，3996089汇总，仍原12回合预算。原目录HANDOFF_TO_PARALLEL_V2指新登记。核验器首亲和性断言错已保留，v2正确验证learner首核0/13/26/39、A/V各100动作误差0（session25486已完）。正式四learner和1729901/1729905继续，source不变；报告PUBLISHED_CLOCK_DIRECT_FIXED_AND_PARALLEL_20261026，Goalactive。
+
 收尾fetch main新增c3124ba322853c1e561657b58c4204ed2a64a1b6：已读并合并另一airpig主机用户授权旧产物清理/存储解除报告；保留双方UPDATE_LOG追加块。该清理未发生在本集群，不删除或变更当前RL产物，尚无新的指定ESN物理结果。本轮在线报告提交bbc8513，push仍因HTTPS认证失败未发布。
 
 最新clock cycle1完整复核已完（session39167勿重启）：TaskStrict D0/0 I17/16 A12/11 V17/16各30，Qloss19.000/5.638/13.131/26.072，非收敛。Imp长0500第314动作global穿透abort，nextclock1061/1375与零bootstrap通过；119完整+1早停留分母。runs/clock_cycle01_scientific_review_v1；原四在线与1729901/1729905继续cycle3/5。新固定首Direct被动完整110万子步物理/filter/torque独立通过但任务假/approach、峰39.5586、人接触0/NA；runs/clock_first_fixed_case_review_v1。原2960898/2961606继续矩阵，短期也失败、长期在途，不重启。报告PUBLISHED_CLOCK_CYCLE1_REVIEW_20261026，Goalactive/正式GPU50%及最终ESN未完。

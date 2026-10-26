@@ -1,3 +1,11 @@
+## 2026-10-26 — 时钟Direct固定复核与剩余矩阵三核并行
+
+- fetch mainc3124ba322853c1e561657b58c4204ed2a64a1b6、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；上一轮实质进展，原在线仍live。
+- 新clock cycle0 Direct三代表全部独立物理/filter/torque复核，learned0/3 vsnominal2/3；330万learned子步（本轮新220万+前轮110万hash复用）、4125确定性动作重放误差0/clock正确/网络不变。全部无实际人接触/舒适NA；末10s residual与nominal方向余弦约−.999，描述非因果，非收敛或最终比较。
+- 新runs/clock_fixed_parallel_v2资源交接：只停旧协调2960898勿重启，原Imp3479276/CPU54保留；3825230接管其结束后审计。新Adm3825231/3825618/CPU52、V3825232/3825634/CPU53执行原剩余6回合，总预算仍12×55s。3996089有限汇总完整12行，不重启/新增physics。
+- 启动核验首次错误期待learner占整个13核组，实际一直首核0/13/26/39；失败保留、只修核验器。新A/V各100动作重放误差0、模型/clock/输入/dt通过；正式亲和性/配置未变。新工具只接管/汇总评估，不改冻结runtime。
+- 报告docs/PUBLISHED_CLOCK_DIRECT_FIXED_AND_PARALLEL_20261026.md/.json；原四在线和1729901/1729905继续cycle3/5；Direct日志第三周期Strict0/30、reward−33.253961尚未全审。Goal/收敛/最终ESN/GPU50%未完。
+
 ## 2026-10-26 — 时钟第二周期完整复核与首固定回合物理审查
 
 收尾fetch main新增c3124ba322853c1e561657b58c4204ed2a64a1b6：已读并合并另一airpig主机用户授权旧产物清理/存储解除报告；保留双方UPDATE_LOG追加块。该清理未发生在本集群，不删除或变更当前RL产物，尚无新的指定ESN物理结果。本轮在线报告提交bbc8513，push仍因HTTPS认证失败未发布。
