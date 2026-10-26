@@ -11,6 +11,8 @@ Direct14原3955892/归档3955895/审查3955896继续，B/runs/serl_multistep_bat
 新有限早期replay候选B/runs/serl_cycle13_early_replay_probe_20261026_v1，协调1191698/结果review1231275。等纯正式profile结束已开始，准确完整13同全state/RNG、一个2000outer/16000critic+2000actor、batch65536/32步；每批奇数行用已存前32步均匀重采，50%early与原uniform交错，独立earlyseed2026102615。复用已完成warm13 horizon32对照不重跑；必须原始uniformdraw摘要/初始state/RNG相同，实际候选draw不同。改变经验分布无importancecorrection，不是同一目标无偏优化。0physics/无demo/nominalmix/不保存推广权重，正式14不变；最终REVIEW/FINISHED/独立review/图/FINAL_SCIENTIFIC_REVIEW齐全，原1191698/evaluator1369467/1231275退出勿重跑。13440early行；共同状态terminalMAE control.056348→候选.074165、32步TD.065922→.071064；候选自己earlyTD.137355→.151933、early残差幅度.558644→.591516，没有拟议改善、不部署。不同采样分布训练loss不直接比较，正式14不改。
 远端仍dbb1d76/baseline f6e8f8c，凭据待恢复、前轮已问勿重复；HDD仅小交接/收据，大产物和完整证据SSD非arm1/HDD全备份。后续先查原20/14/earlyprobe句柄，在完整审查后衔接最新父，避免长空闲。
 
+收尾841b2fc科学提交仅本地、push凭据失败。102成员完整证据SSD RL_PARAMETER20_INITIAL_COVERAGE_20261026_173441/FULL_SMALL_EVIDENCE.tar.gz，SHA a33f8feae4e8eecbd1a273ff3d0ba8e1dc52515eed9544d0412f4ad71dbe9923；HDD RL_PARAMETER20_INITIAL_COVERAGE_STATUS_20261026_173441/HANDOFF.md和LATEST入口核验，非大产物备份。
+
 ## 最新RL状态：2026-10-26 参数共享池19、Direct14与暖目标对照
 
 原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER19_SERL14_WARM_TARGET_20261026.md)，覆盖下方18/13。无子agent，冻结物理/SPT/完整正式state保持。

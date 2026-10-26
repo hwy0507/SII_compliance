@@ -9,6 +9,8 @@
 - 有限early-replay候选协调1191698/只读review1231275，准确formal13完整state、2000outer/16000critic+2000actor，same65536/32步/官方8:1，仅半批交错已有前32步行，原uniformdraw/RNG可与已完成warm13 control逐项对照。直接复用已完成control不重跑，0physics/no demonstrations/no nominal mixing/不保存推广权重。改变经验分布无importancecorrection。最终完整预算、初始state/原uniformdraw/RNG匹配与独立receipt/图审查通过；共同状态terminalMAE .056348→.074165、32步TD .065922→.071064，候选自身earlyTD .137355→.151933、early残差.558644→.591516，没有拟议改善，不部署。原1191698/evaluator1369467/1231275均结束勿重跑，正式14不变。
 - 实际服务器B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl；仓库B/repository/SII_compliance，准确run/hash/命令与小证据docs/evidence/rl_parameter20_initial_coverage_20261026。HDD仅交接/收据，不称完整大产物备份；GitHub凭据未恢复，不重复索要或宣称push成功。
 
+- 收尾科学提交841b2fc0a74381c92a84baa1e14a8dfbd097cd51仅本地。重新fetch确认远端main dbb1d76/baseline f6e8f8c无变，push仍HTTPS认证失败。完整102成员小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER20_INITIAL_COVERAGE_20261026_173441/FULL_SMALL_EVIDENCE.tar.gz逐成员hash验证，1795730字节，SHA256 a33f8feae4e8eecbd1a273ff3d0ba8e1dc52515eed9544d0412f4ad71dbe9923。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER20_INITIAL_COVERAGE_STATUS_20261026_173441/HANDOFF.md与收据已核验，LATEST_RL_HANDOFF.md原子更新；大型checkpoint/replay/raw仍SSD，非HDD/arm1全备份。
+
 ## 2026-10-26 — 参数共享30采样池19、Direct14接续与暖状态目标对照
 
 - 实际查询并fetch/read main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；本地起点522d53c。无子agent。完整交接docs/RL_PARAMETER19_SERL14_WARM_TARGET_20261026.md。
