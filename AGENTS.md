@@ -1,5 +1,31 @@
 # 本仓库的持续工作约定
 
+## 冻结29四种子诊断完整结束
+冻结29退出后的纯正式20/31固定窗口已完成（原258985退出）：60样本、67.982567秒，四卡均值56.5833% / 69.3833% / 74.2333% / 74.7667%，逐样本GPU PID恰46632/3783467/3783468/3783469且learner身份存活；保存均值独立复核。它是此次运行窗口，不保证每瞬时≥50%，不隐藏阶段衔接空闲。正式最新实际进度与全部原句柄见小证据FINAL_LIVE_STATUS.json。
+
+
+[当前交接](docs/RL_PARAMETER31_FROZEN29_SEEDS_20261026.md)：原3280414/3280415/3280416及根3341627均完成退出，12×55秒/16500动作/13200000子步，0优化，勿重跑。I/A/V Task4/2/4、Strict2/2/0（各4），机器违规2/2/4、无abort/无人接触NA；全部learner/replay/RNG/source/parent不变、动作重放0与物理/filter/torque通过，保存算术/hash和图另审查。固定I/A权重仍有成败切换，不据此估计历史因果份额；V四次失败不代表成功概率为0，非全30最终验证。
+Direct20及参数31四正式继续，21/32仅恢复准备；固定30–32等待2830862保持。新纯20/31窗口258985先查原PROFILE，不重复。Goal active。
+
+## 最新续接：Direct20启动与17–19回报稳定性已核验
+
+[交接](docs/RL_PARAMETER31_FROZEN29_SEEDS_20261026.md)覆盖下方Direct19仍运行快照。完整19为813282/6466264，30完整无abort、Task0、reward−31.581990、terminalMAE.045845/TD32.042494；旧prefix/history与新增41250精确、完整审查/health/图通过。20从准确完整19全state续一个有限原设置周期，learner46632、startup46742已通过首1000、归档46745/review46750继续。21准备等待87882/原20 CPU调度87883，仅完整20后check-only，不自动训练。
+只读17–19原150716完成，原5%描述检查通过（4.0496%/2.0393%，首尾1.9277%），末loss .014546→.013881→.013402有限下降；16→19回报30条件均退步、配对均值−.649860。承认描述性稳定，不以Task0新增收敛门槛，也不称任务学会。图/保存算术已审查，不重复。
+参数31原3783467/8/9继续，首1000/2000启动审查通过；32准备3878413/调度3878414、固定30–32等待2830862保持。冻结29原四种子诊断仍以根REVIEW为准；不重启已完成方法。Goal active，无子agent。
+
+## 最新续接：完整参数30审查通过，正式31启动
+
+[交接](docs/RL_PARAMETER31_FROZEN29_SEEDS_20261026.md)覆盖下方30运行快照。30全三路30×55秒无abort，I/A/V Task/Strict18/17、13/13、17/16，reward−2.345185/−10.241593/−4.565541，末loss2.244240/1.297072/.808988；旧prefix/history/2m marker、新41250 reward0误差、health/图通过，尚未健康稳定。旧30和31准备2801577/调度2801579均结束。
+正式31 I3783467/A3783468/V3783469，准确最新完整30全state，一个原设置有限周期；三check-only精确通过，startup3783471/归档3783472/review3783473，实际startup先查原结果，无自动32。新32准备3878413/原31 CPU调度3878414，仅完整31后check-only，静态通过；固定30–32等待2830862保持。
+Direct19及20原2086366/2086367继续。冻结29原3280414/3280415/3280416及根review3341627继续：三首seed完整审查通过，I第二seed亦通过；固定I29两seed已见Strict假/真、穿透.231028/.189356mm，全动作重放0与state不变，不能估历史因果份额或提前结束12回合。Goal active。
+
+
+## 新冻结诊断：完整参数29的short0600四动作seed
+
+[新交接](docs/RL_PARAMETER31_FROZEN29_SEEDS_20261026.md)：B/runs/parameter29_seeded_short0600_20261026_v1原I3280414/A3280415/V3280416，CPU52/53/54与GPU1/2/3，只冻结推理/原物理、0优化。每方法固定4动作seed2026102633–36，同short0600/物理seed，12×55s/最多13200000子步，不延长/挑种子，不替代全30验证。三check-only及实际startup完整learner/replay/2m marker精确，外部随机流vs原生3步逐值、不同seed/负守卫/state不变通过。首种子真实推进，完整结果与逐回合物理/filter/torque/原生动作重放尚待；根review3341627原等待7200秒，先查原进程勿重复。
+原正式19/30及归档/review继续，Direct20等待2086366/2086367、参数31等待2801577/2801579、固定30–32等待2830862保持。当前GPU1–3含冻结推理，不能冒充纯正式占用。Goal active，无子agent。
+
+
 ## 最新推进：参数奖励切换定位、31准备与30–32窗口登记
 
 [最新报告](docs/RL_PARAMETER_REWARD_SWITCHES_20261026.md)。只读原2727830已完成：27–29三方法全部371250保存transition/270episode/576输入hash核验，28→29阻抗净增99.8459%来自short0600 Strict假→真，VMC净降98.8254%来自同条件真→假；导纳short0600/0900贡献−3.376112，其他条件+.072729。保存峰值在原.2mm附近，terminal平均项+1.666667/−3.333333/−1.666667；0新物理/前向/优化，非随机性或学习漂移因果证明，不改gate/reward。独立保存算术和图通过，勿重跑。
@@ -1213,3 +1239,7 @@ Direct18实际首1000新增startup已通过：731782/5814264，旧730782 raw/der
 本轮科学提交b6be49f3bbbc22106a5e9e69e857baa9bab49b10仅本地，GitHub认证失败；完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER30_STABILITY_20261026_230528/FULL_SMALL_EVIDENCE.tar.gz逐成员核验，68成员/1365195字节，SHA256 218eef185969016dc00d575d0d3827863063e1eabe9dd852a1b702de87c15bcc。HDD最新/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER30_STABILITY_STATUS_20261026_230528/HANDOFF.md及收据/LATEST已核验；大产物SSD，非全量HDD/arm1备份。四正式19/30和Direct20两原准备进程继续，Goal active。
 
 本轮科学提交8867d28026d4b5a68c9f0ee6420517b5f78d3c85仅本地，push认证失败。完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER_REWARD_SWITCHES_20261026_231602/FULL_SMALL_EVIDENCE.tar.gz，30成员逐hash/大小核验，755979字节，SHA256 2a0e8588c6cf955e31b04a8590dd08d21f2721874c796e909509e18e8a4c84dd。HDD最新/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER_REWARD_SWITCHES_STATUS_20261026_231602/HANDOFF.md及收据/LATEST已核验，大产物仍SSD，非HDD/arm1全备份。原19/30和20/31准备、固定30–32等待继续，Goal active。
+
+三路首动作seed2026102633均完整完成并审查：各1375动作/110万子步，全部原生随机动作重放误差0、物理/filter/torque与完整learner state不变通过。I/A/V Task真/假/真，Strict均假；穿透.231028/.205819/.205658mm，均超过原.2mm，无abort但保留原物理有效性失败/机器违规标签。其余3seed仍在途，不能据单seed推总体变化或提前结束预算。
+
+参数31实际启动审查已通过：I/A新增1000至1276750/1275750、V新增2000至1277750；全部旧1275750/1274750/1275750行replay字段/history/优化器配置/2m marker/30MJB/30sampler/action/clock及新reward0误差通过。原startup3783471已完成，归档3783472/完整review3783473继续。

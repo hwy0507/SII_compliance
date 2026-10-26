@@ -1,0 +1,29 @@
+--- setup_serl_batch20_monitors_20261026.py
++++ setup_serl_batch21_monitors_20261026.py
+@@ -1,21 +1,21 @@
+ from pathlib import Path
+ import ast,json,os,subprocess,time
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+-out=B/'runs/serl_multistep_batch65536_cycle20_20261026_v1'
++out=B/'runs/serl_multistep_batch65536_cycle21_20261026_v1'
+ rt=B/'runtime'/out.name
+-archive=B/'runs/serl_multistep_batch65536_cycle20_archive_20261026_v1'
++archive=B/'runs/serl_multistep_batch65536_cycle21_archive_20261026_v1'
+ view=B/'runs'/(archive.name+'_view');view.mkdir();(view/'direct').symlink_to(out/'direct')
+ launch=json.loads((out/'LAUNCH.json').read_text())
+ (view/'LAUNCH.json').write_text(json.dumps(dict(jobs=[dict(controller='direct',**launch)]),indent=2)+'\n')
+ parent_registration=json.loads((out/'REGISTRATION.json').read_text())
+ oldreview=Path(parent_registration['reviewed_continuation_stage']['cycle_review']['path']).parent
+ assert (oldreview/'FINISHED.json').exists()
+-review=B/'runs/serl_multistep_batch65536_cycle20_review_20261026_v1';review.mkdir()
++review=B/'runs/serl_multistep_batch65536_cycle21_review_20261026_v1';review.mkdir()
+ def adapt(source):
+-    return source.replace('cycle_00019','cycle_00020').replace('cycle19','cycle20').replace("['cycle']==19","['cycle']==20").replace('terminal)==600','terminal)==630').replace('terminal_count=600','terminal_count=630').replace('Cycle19 archive unavailable','Cycle20 archive unavailable')
++    return source.replace('cycle_00020','cycle_00021').replace('cycle20','cycle21').replace("['cycle']==20","['cycle']==21").replace('terminal)==630','terminal)==660').replace('terminal_count=630','terminal_count=660').replace('Cycle20 archive unavailable','Cycle21 archive unavailable')
+ for path in oldreview.glob('*.py'):
+     source=adapt(path.read_text());ast.parse(source);(review/path.name).write_text(source)
+-source=adapt((B/'runs/serl_multistep_batch65536_cycle19_20261026_v1/startup_review.py').read_text());ast.parse(source)
++source=adapt((B/'runs/serl_multistep_batch65536_cycle20_20261026_v1/startup_review.py').read_text());ast.parse(source)
+ (out/'startup_review.py').write_text(source)
+ env=dict(os.environ,OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1',NUMEXPR_NUM_THREADS='1',CUDA_VISIBLE_DEVICES='0',XLA_PYTHON_CLIENT_PREALLOCATE='false',JAX_COMPILATION_CACHE_DIR=str(B/'runtime/jax_compilation_cache'))
+ def start(command,log):
