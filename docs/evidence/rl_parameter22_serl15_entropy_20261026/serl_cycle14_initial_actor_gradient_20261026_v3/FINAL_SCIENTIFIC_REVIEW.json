@@ -1,0 +1,29 @@
+{
+  "time": 1793039489.3057158,
+  "passed": true,
+  "diagnostic": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle14_initial_actor_gradient_20261026_v3/REVIEW.json",
+    "sha256": "ebfbac3e44766353a802f32c98c9cb02f8b778e2000bc2573fd91372a675dd81"
+  },
+  "arithmetic_review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle14_initial_actor_gradient_20261026_v3/INDEPENDENT_REVIEW.json",
+    "sha256": "d1efbb9d5691a1474506cf6623639f1a85dd02f6f20ff67bb7fcc83576ccfd74"
+  },
+  "temperature_coverage": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle14_initial_actor_gradient_20261026_v3/TEMPERATURE_STATE_COVERAGE.json",
+    "sha256": "dfa3f9793f24c697da431e8b95074054d3072040e2542605ed35f6a10630a601"
+  },
+  "plot": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle14_initial_actor_gradient_20261026_v3/initial_actor_gradients.png",
+    "sha256": "890e15ac7bb62176adf77b45bf16db812f8d33e60ed7110582ee6a0b7436764f"
+  },
+  "plot_visually_reviewed": true,
+  "initial_q_to_entropy_gradient_norm_ratio": 80.50042341607843,
+  "initial_uniform_gradient_cosine": 0.048913873189110474,
+  "decision": "No formal change from this diagnostic alone. Initial exploration is much narrower than uniform replay and initial gradients are nearly orthogonal to uniform gradients, not negatively aligned. Q term dominates initial actor gradient. Full replay confirms32-step temperature successors exclude first32 states. Next finite read-only comparison tests official temperature-gradient direction on current/raw-one-step/derived32 states using common noise.",
+  "numerical_review": "v1/v2 failed loss parity at .00050926/.00155067 and remain preserved. v3 diagnostic-only highest float32 matmul precision passes original tolerances; current formal precision was not changed. Separate compile paths differed under default precision; no isolated attribution to one compiler optimization and no claim of deployed numerical-gradient equivalence.",
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "auxiliary_weights_imported": false,
+  "convergence_claim": false
+}

@@ -1,0 +1,26 @@
+{
+  "time": 1793039131.8178127,
+  "passed": true,
+  "checkpoint": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle14_archive_20261026_v1/direct/cycle_00014.pt",
+    "sha256": "d47def4626a3cdb8e783403d2a0152c916593e36ef30675e353e699ff35bf410"
+  },
+  "rows": 607032,
+  "current_initial_rows": 450,
+  "current_first32_rows": 14400,
+  "derived_next_initial_rows": 0,
+  "derived_next_first32_rows": 0,
+  "maximum_derived_next_clock": 0.9767272472381592,
+  "earliest_next_action_index": 32.00003433227539,
+  "source": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_upstream_1fa2af7/serl_launcher/serl_launcher/agents/continuous/sac.py",
+    "sha256": "fd14dd24683fc897b0066b0caa36d63b96ecf1913cbcc448b33c18b05d8c83d8"
+  },
+  "audit_source": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/audit_serl14_temperature_coverage_20261026.py",
+    "sha256": "2c5383398389d7c117a0326f5c632b97d4d0f1942fcf44ed88aed222c334330f"
+  },
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "interpretation": "Pinned official temperature_loss_fn obtains actions from _compute_next_actions on batch next_observations. Deployed multistep replay replaces next_observations with the32-step endpoint. Current actor-state and temperature-state coverage therefore differ; all mature replay rows audited here. This is not a bootstrap bug, does not establish causality, and does not change the formal official temperature objective."
+}

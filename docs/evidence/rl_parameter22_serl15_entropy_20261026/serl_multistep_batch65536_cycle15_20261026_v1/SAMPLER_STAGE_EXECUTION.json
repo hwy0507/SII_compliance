@@ -1,0 +1,79 @@
+{
+  "time": 1793037696.154812,
+  "driver_sha256": "333e41c0e3984e22402f5e35c7d11cf5250d64ad6023868045110151fba31a0e",
+  "parent_checkpoint": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle14_archive_20261026_v1/direct/cycle_00014.pt",
+    "sha256": "d47def4626a3cdb8e783403d2a0152c916593e36ef30675e353e699ff35bf410"
+  },
+  "prepared_checkpoint": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle14_archive_20261026_v1/direct/cycle_00014.pt",
+    "sha256": "d47def4626a3cdb8e783403d2a0152c916593e36ef30675e353e699ff35bf410"
+  },
+  "multistep_stage": {
+    "marker": {
+      "version": 1,
+      "horizon": 32,
+      "gamma": 0.9995,
+      "rewards": "discounted_behavior_rewards",
+      "bootstrap": "gamma_power_k_times_terminal_mask",
+      "sampling": "uniform_mature_rows",
+      "original_replay_retained": true,
+      "importance_correction": false
+    },
+    "auxiliary_weights_imported": false,
+    "prepared_checkpoint": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle14_archive_20261026_v1/direct/cycle_00014.pt",
+      "sha256": "d47def4626a3cdb8e783403d2a0152c916593e36ef30675e353e699ff35bf410"
+    },
+    "equivalence_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_gather_microbench_20261026_v1/REVIEW.json",
+      "sha256": "c1a041d930551df354fc75c382594ea22038edf89a0af860f95e45c43356d4bc"
+    },
+    "update_gate": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_gather_microbench_20261026_v1/FULL_UPDATE_GATE.json",
+      "sha256": "486d470e39e506e2b0b7d3c1b82539910e08a63620e05e9d8dc9403bf64d168d"
+    },
+    "source_hashes": {
+      "serl_multistep_state_adapter_20261026.py": "395eb3c618d37d6e3dad338478a7017d3fc273d7368bb2a8a8c488cfcdd840de",
+      "serl_clock_state_adapter_20261026.py": "938743a6efb324a5a9fae99e05d7232e937bd9c5d2f97f7863e5a05aaa004c1e",
+      "serl_critic_clock_extension_20261026.py": "e6e7e0b2c5083e30aae722f8f439533158f86092c091ded10702bd1415d610c2",
+      "resume_serl_multistep_gather_stage_20261026.py": "4060e35622f3d8f46decc1f32ea86a1487adfe1012f9d8204f6d5969a40688d9",
+      "serl_multistep_replay_gather_20261026.py": "fe06527cf35a492ed48538dae739f859726aa31dd5f8a801157530c537553c87",
+      "resume_serl_multistep_transfer_stage_20261026.py": "d236d448b01bd236d1042406fba2a867bfe0b3925d0002029740971031437a17",
+      "serl_multistep_batch_transfer_20261026.py": "8163acf910d36829116af91fc9919c59b9d99ddabf0f1af0eab23ed3b0f525c8",
+      "resume_serl_multistep_batch65536_stage_20261026.py": "6b64fb32e39b30f367af214cde9f1d42c0e4e6368f3edb578460c8a697acea0b",
+      "resume_serl_batch65536_reviewed_continuation_20261026.py": "333e41c0e3984e22402f5e35c7d11cf5250d64ad6023868045110151fba31a0e"
+    },
+    "transfer_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_transfer_probe_20261026_v1/REVIEW.json",
+      "sha256": "85aa05a2ba377b1103bc70c61205c7a83f90160d1590be905fb92c5311d2037c"
+    }
+  },
+  "protocol_sha256": "2fefe406c7fd21b3edf0d4900370f536227dba5135148c10036e49c6913ac0a3",
+  "batch_change": {
+    "previous": 65536,
+    "current": 65536
+  },
+  "critic_actor_ratio": 8,
+  "new_cycles": 1,
+  "auxiliary_weights_imported": false,
+  "sampler_pool": {
+    "kind": "shared_physical_cpu_set",
+    "workers": 30,
+    "learner_cpu": 0,
+    "physical_cpus": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+}

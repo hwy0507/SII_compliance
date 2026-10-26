@@ -1,3 +1,14 @@
+## 2026-10-26 参数22 / Direct15 / 起始熵与温度状态诊断
+
+原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER22_SERL15_ENTROPY_STATE_20261026.md)，承接21/15。无子agent，冻结物理/SPT/正式全部state保持。
+参数21完整I904500/899501、A903500/898501、V904500/899501；Task/Strict18/17、13/13、17/17，reward−2.288688/−10.308804/−2.803177，末loss1.293/1.048/.611，terminalMAE.792/.676/.578。全部30完整无abort，新reward0误差/旧prefix/history/marker/finite与health/图通过，仍未收敛。旧2558774/6/7与归档2558780/审查2558781结束勿重启。
+正式22 I3849186/A3849188/V3849190，B/runs/parameter_pool30_cycle22_20261026_v1；准确完整21全state续一个22，原30sampler共享12CPU/GPU1/2/3/batch65536/UTD1/terminal128/projection/Imin+A-Vmean/actor min/LR不变。三check-only/实际各1000新增prefix/history/marker/MJB/action/clock/reward0误差通过；归档3849245、完整审查3849248，无自动23，必须pair_class恢复。
+Direct15原2870244/归档2870381/审查2870384继续，B/runs/serl_multistep_batch65536_cycle15_20261026_v1/direct；原GPU0/CPU0/30sampler共享1–12/官方10critic、critic random2-min、actor all10mean、8:1/batch65536/32步/gather+transfer保持。最新完整父仍14，不能用未完整15，无自动16。gamma^(k−1)mask由learner再乘gamma正确；public0=0 nominal、更大减慢WBC。
+新只读完整14梯度B/runs/serl_cycle14_initial_actor_gradient_20261026_v3已完，3704320/3704321结束勿重跑。三组8192行initial/early32/uniform熵−23.3417/−15.3162/−3.6653；初始Q项梯度norm5.8918 vs熵项.07319（80.50倍），initial/uniform cosine.04891，近乎正交并非负向冲突。全state/replay/RNG/父SHA不变、0优化/physics，独立保存梯度算术/行hash和图通过。v1/v2原3409186/3563038因目标差.00050926/.00155067失败保留；v3仅诊断highest FP32下原容差通过，未改正式精度，不冒充部署数值更新。
+全607032行审计current有450initial/14400early32，而32步next两者均0。官方temperature_loss_fn使用next，温度与actor状态分布不同。新B/runs/serl_cycle14_temperature_states_20261026_v1已完、4020314退出，复用uniform8192同噪声current/rawnext1/derivednext32熵−3.639658/−3.655493/−3.476145，target−3.5，温度参数负梯度方向前两者增、32步减；正式state不变，0优化/physics，独立输入hash/softplus导数算术/图通过。非实际Adam步或任务效果。支持下一步仅温度使用rawnext1、critic仍32步的有限同父同draw对照；候选实现/更新验证/部署均未做，正式15保持，不重复旧probe或导入辅助权重。
+新纯正式180样本208.240s，GPU59.0333/74.1167/74.2389/74.4167%，D/I/A/V10.7664/24.4910/25.1008/25.1633steps/s，四原learner全live/GPU PID逐样本恰四正式，B/runs/batch15_parameter22_gpu_profile_20261026_v1，3752747完成勿重采。温度诊断等窗口结束才启动，非瞬时永久保证。
+远端main dbb1d76/baseline f6e8f8c，凭据待恢复用户已被问勿重复；大产物SSD，HDD小交接/收据，非arm1/HDD全备份。先核原22/15完整review，及时衔接并推进温度状态候选验证。
+
 ## 2026-10-26 参数21 / Direct15 / 128对起始探索完成
 
 原Goal active，未健康收敛。最新[交接](docs/RL_PARAMETER21_SERL15_PREFIX_20261026.md)承接20/14。无子agent，冻结物理/SPT及正式全部state保持。
