@@ -69,3 +69,5 @@ Direct18原2732254、归档2732257/review2732258继续，实际首1000检查已�
 参数28实际启动检查已通过：I1153000/A1152000/V1154000，分别新增1000/1000/2000，旧I/V1152000、A1151000所有回放字段/history/优化器超参/2m历史marker/30MJB/30sampler/action/clock及新增reward0误差；原3733613已结束勿重复。四正式18/28及归档/完整review继续。
 
 新18/28运行占用窗口30样本/31.663424秒，四GPU均值61.8333/69.4333/68.7667/69.0333%；逐样本四正式及两冻结evaluator均live。它包含冻结16推理，不是纯正式吞吐，也不保证每瞬时≥50%或覆盖先前交接空档；原一次观测已结束勿重复。
+
+本轮科学提交495d577cc1676caf35eac1c2fb609de8eb0de797仅本地；重新fetch远端main dbb1d76/baseline f6e8f8c未变，push仍HTTPS用户名认证失败。完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER28_TERMINAL_20261026_215524/FULL_SMALL_EVIDENCE.tar.gz，94成员逐hash核验、1576516字节，SHA256 5c4ae048b5459ee9f8e886fba680a25caf8cead71b84e0e7110e99b1ee430aec。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER28_TERMINAL_STATUS_20261026_215524/HANDOFF.md及收据/LATEST已核验，大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。Goal active，原四正式训练与冻结验证继续。
