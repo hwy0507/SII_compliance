@@ -6,6 +6,17 @@
 - 两张PNG已目视检查，LEARNING_CURVE_EVIDENCE保存全部绘图值及源/模型/历史/图hash，diff检查通过。报告docs/NONRL_NEW30_FAIR_COMPARISON_20261026.md新增学习诊断。
 - 5文件诊断包364831字节已核验到arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_learning_diagnostics_0926/LEARNING_DIAGNOSTICS.tar.gz，SHA c02350321b809130d78ef68d9dea79ef56c9b7c2757b0f69ed56b017f416f74c；收据LEARNING_DIAGNOSTICS_ARCHIVE.json。本地包逐项比对与服务器暂存/发布后SHA和大小一致，服务器无计算。
 - 09:25 UTC快照闭环21/108，第三条件第二seed ESN真实推进至42.04秒；完整108矩阵/最终SPT与整体审计仍待，Goal active。此记录为进度，不宣称最终结果。
+- 收尾读取并整合远端bca082135c8f8fe2ed82371bcbb67cd4aeddd7cc的独立RL更新，保留双方追加日志和最新AGENTS；不运行其代码、不改变本机冻结评测。
+
+## 2026-10-26 — 完整审查SERL2/参数6及I/A7，冻结三代表核验并继续有限在线训练
+
+- fetch/read main=d8dd13e44e567e2aa9b160cf83ba40c0c88a8cbc、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；快进另一主机非RL更新，未干预其任务。最新报告docs/RL_CYCLE06_AND_SERL02_REVIEW_20261026.md，覆盖旧交接中的实时状态。
+- Direct2 123196steps/945576critic更新，0/30、reward−33.5245、终端Q MAE2.348但p95 37.19；短0500于997动作global穿透abort失败保留。全40872新transition/reward重建0误差及父prefix、30terminal/MJB核验，非原始子步重算。只读官方Q诊断state/RNG不变、图已看。
+- 参数6全30完整：I18/17 A15/14 V17/16，reward−2.293/−8.591/−4.536，终端MAE2.942/2.412/29.319；各41250新reward重建0误差。V all5 Q均值降低但loss/终端校准恶化，非修复。I/A7随后完成全审查：18/17、15/15，reward−2.349/−6.900，终端MAE3.649/1.951、末loss3.505/5.866，仍非健康收敛。
+- 新官方SERL冻结评估入口只支持确定性、准确源码/完整checkpoint及模型守卫；三代表55秒全部完成，330万子步/4125动作、公共filter和torque审查通过，动作误差0、完整state digest不变、0updates。策略仍0/3全approach且人体无接触/舒适NA，不当成功。原协调后处理CLI缺参，只替换父协调，保留原评估和物理回合，失败/移交收据保留。
+- Direct新521120/GPU0全state/history续2周期3/4，设置不变；新wrapper仅允许有限阶段元数据变化，正负守卫通过，真实新增1000步/8000更新及父123196prefix/12MJB核验。I/A新806847/806849续2周期8/9，原LR/完整state/history不变，父cycle7独立审查和原trainer入口校验通过，真实新增3000/4000时父prefix/history/LR/12MJB通过；准备首次系统python缺torch导入失败未派发，冻结解释器重试通过。
+- VMC原3419078仍cycle7，未批准自动延长；441621只读等其完成后统一周期7审查。新SERL归档533451、I/A归档806853仅跟踪准确原PID。最新60样本GPU62.53/23.48/27.33/48.10%，阶段切换/尾部无辅助，四卡50%未达。
+- 小证据docs/evidence/rl_cycle06_serl02_20261026/SOURCES.json映射SHA；大型产物仅本集群SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，不称已归档arm1或HDD全快照。Goal active；VMC完整7及后续决策、所有充分收敛和最终完整冻结/ESN/SPT未完成。
 
 ## 2026-10-26 — 非RL第二条件9回合核验，原矩阵18/108完成
 

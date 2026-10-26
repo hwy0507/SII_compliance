@@ -1,5 +1,25 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 cycle6/SERL2与I/A cycle7审查（覆盖下方旧运行状态）
+
+原Goal active、未收敛。最新[完整审查与续训](docs/RL_CYCLE06_AND_SERL02_REVIEW_20261026.md)。
+官方SERL cycle2已完成勿重启3339709：123196steps/945576critic更新，Task/Strict0/30，reward−33.5245，
+29完整+短0500在997动作global穿透abort保留；全新reward重建误差0，终端Q MAE2.348但p95 37.19。
+三固定代表已完整330万子步/4125动作核验，动作/filter/torque通过，fullstate digest不变；仍Task/Strict0/3，
+全approach、人接触0/舒适NA。评估144056与后处理215406已结束勿重启。原父协调CLI缺参已保留并交接修复。
+新SERL521120/GPU0/CPU0–12在runs/serl_reviewed_cycle03_04_20261026_v1/direct，完整父state/history保留，
+batch32768/官方8critic:1actor不变，2周期3/4；启动新增1000/8000、父123196prefix/12MJB通过。
+新归档533451跟原PID，不派发训练。三参数cycle6 I18/17 A15/14 V17/16，reward−2.293/−8.591/−4.536；
+终端Q MAE2.942/2.412/29.319，VMC all5仅降低Q均值而loss/终端误差更差，非修复。
+I/A cycle7也已全审查：327000/326000steps，18/17与15/15，reward−2.349/−6.900，终端MAE3.649/1.951，
+末loss3.505/5.866上升仍需观察。旧3070037/3070069已结束勿重启。新I806847/A806849 GPU1/2、原CPU组，
+runs/clock_parameter_reviewed_cycle08_09_20261026_v1/{method}/train，2周期8/9、全state/history直续无新参数变化；
+归档806853。新I/A真实新增3000/4000时父prefix/history/LR/12MJB核验通过。准备时系统python缺torch错误发生于导入前，无训练影响，收据保留。V3419078仍cycle7，未派新阶段。
+只读441621在runs/reviewed_cycle07_audit_20261026_v1已审查I/A，待V后统一health；原归档3494331继续。
+新60样本GPU62.53/23.48/27.33/48.10%，含真实阶段切换及GPU0冻结推理、无辅助训练，仍未四卡50%。
+不用重复已完成辅助填占用。原物理/MJB/gates/filter/dt/SPT不变，无子agent，大产物SSD，HDD仅文档备份。
+
+
 ## 当前续训状态：2026-10-26完整cycle5/SERL1审查后（覆盖下方早期run状态）
 
 原Goal active，未收敛。最新报告[cycle5审查与续训](docs/RL_CYCLE05_REVIEW_AND_CONTINUATION_20261026.md)。
