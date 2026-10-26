@@ -8,6 +8,16 @@
 - v1准备漏校验依赖、v2 CPU预检发现仅CUDA RNG.1因延迟初始化变化，均未启动；v3先初始化全部generator再恢复，三路严格相等通过。启动审查初版误比参数向量与7维运动输出，保留失败，第二版按接口核验通过；未重启训练，未宣称独立重放导纳/VMC动态。
 - 归档3818454/10只读3965208等待精确边界，不派发下一阶段。纯正式GPU56.48/43.85/40.92/40.08%，无辅助；混合诊断窗口60.55/63.42/59.68/66.77不能代替正式，持续50%仍未达。
 - 小证据docs/evidence/rl_terminal128_cycle10_20261026/SOURCES.json逐SHA；大型产物本集群SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。Goal active；全周期在线效果、非终端Q漂移、健康收敛、最终冻结验证/ESN/SPT及GPU要求仍未完。
+- 收尾读取并整合远端0b0a9c3c91f0d13e109ee5c1bd3f5c706158df44的独立非RL第四条件/前36条物理归档更新，保留双方完整日志与产物，不改变本集群冻结运行时。
+
+## 2026-10-26 — 新30条第四条件核验，前36条原始物理记录已共享
+
+- 实时fetch/read main=236c24f17376aeadf221d03474ae6290cad5e1d3、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，复读AGENTS；原协调器86607完成第四条件后自动进入第五条件，未重复派发或改变冻结源码/模型/协议。
+- 10:51:53 UTC条件003全部9×55秒/990万子步独立核验通过，1357源文件、9模型锁/验证重放、物理来源/hash、原actor/filter收据及原始峰矩/接触合规/穿透/机器安全复算一致；单核/3GiB/禁swap，4.606秒退出0。证据FOURTH_CONDITION_PHYSICS_AUDIT.json。
+- 该条件Task ESN3/3、RNN3/3、MLP1/3；双通过3/3、2/3、1/3。第三seed RNN虽然41.36秒完成任务，穿透.411261mm导致Strict失败；其余失败也保留。不计算局部T_ref/SPT，不外推全矩阵排名。
+- 条件002/003的18条完整原始轨迹共421源文件2735022932字节已核验打包并共享至arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_physics_002_003_1052/PHYSICS_BUNDLE.tar.gz，2184900745字节，SHA913ea1a8b6f8c84744598633ed65103f7cd249a6e0d746bafbaa98d4657d46f3；收据PHYSICS_002_003_ARCHIVE.json。
+- 源文件前后/包内逐项hash、服务器暂存和发布后SHA/大小一致。归档本机单核/3GiB/禁swap/Nice10，59.842秒退出0；服务器只归档，不训练仿真。累计前36条物理原件已有独立服务器副本，本机原件未改/未删；后续物理轨迹仍仅本机，完整训练包另已共享。
+- 归档期间原服务继续至37/108，第五条件RNN123760在途，active且无OOM/swap。完整108矩阵、共同T_ref/SPT及整体审计仍待，Goal active。报告与diff检查通过。
 
 ## 2026-10-26 — 参数9健康审查、Direct4审查修正与30路采样续训
 
