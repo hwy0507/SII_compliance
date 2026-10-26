@@ -2,7 +2,7 @@
 
 原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER26_SERL17_PHYSICAL_PREFIX_20261026.md)覆盖下方25/17。无子agent，冻结物理/SPT与全部正式state保持。
 参数25完整I/V1069500/1064501、A1068500/1063501，Task/Strict18/17、16/16、17/16，reward−2.318779/−5.344773/−4.615704，末loss1.856296/1.199879/1.629220，termMAE.838634/.625643/.692525。全部30完整无abort、旧prefix/history/markers/finite、新reward0误差/health/图通过；导纳改善但I/V loss上涨，未稳定。原25 learner3775564/6/8、归档3775663/review3775665已退出。
-正式26 I904989/A904991/V904993，B/runs/parameter_capacity_pool30_cycle26_20261026_v1；准确最新25全state接续一个周期，原GPU/CPU/30pool/batch65536/UTD1/terminal128/projection/pair/LR保持，2m容量与历史入口23不变，必须capacity replay+pair learner。三check-only通过；startup905056/归档905057/完整review905060，无自动27。等待准备243874完成勿重复。
+正式26 I904989/A904991/V904993，B/runs/parameter_capacity_pool30_cycle26_20261026_v1；准确最新25全state接续一个周期，原GPU/CPU/30pool/batch65536/UTD1/terminal128/projection/pair/LR保持，2m容量与历史入口23不变，必须capacity replay+pair learner。三check-only及实际各1000新增startup通过，全旧prefix/history/marker/MJB/action/clock/reward0误差；startup905056退出，归档905057/完整review905060继续，无自动27。等待准备243874完成勿重复。
 Direct17原4158035、归档4158038/review4158039继续，完整父仍16；原官方10critic/random2 bootstrap/actor all10mean/noentropy/8:1/32步保持，无自动18。
 新B/runs/serl_cycle16_actor_floor_physical_prefix_20261026_v1原400736/reviewer400737已完整结束勿重复。新完整16同state/draw/RNG两臂各200outer/1600critic后，3原条件×8配对seed×2.56s，共48条/3072动作/2457600子步；无abort/机器违规，各条件两臂均0/8离开初始approach。原evaluator逐动作重放精确，物理前后learner/optimizer/RNG不变，独立保存物理/filter/torque/预算/hash审查与图完成；独立review不重算已丢弃权重的神经推理或动力学。0正式replay写入/不存推广权重。
 200更新后原alpha/floor初始熵−22.407059/1.472282，termMAE.053164/.078361，TD32.072936/.094357；实际三条件残差幅度原.460/.443/.451、候选.528/.531/.530。探索增大未观察到短前缀收益，不部署0.1、不增加种子/时长；不外推全30/完整任务或真实概率为0。它是新16有限物理问题，不是重跑/延长已完成15的2000更新离线实验。
@@ -9044,3 +9044,5 @@ Direct17实际首1000新增检查通过：690532/5484264，全部旧689532 raw/d
 最终17/25科学提交50aabc40be6e8d40567e5c4db29a9a33426ce671；更新后的完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_ACTOR_FLOOR_PARAMETER25_20261026_202151/FULL_SMALL_EVIDENCE.tar.gz，142成员逐hash核验、1876872字节、SHA256 670902a81be9467e40a66ad6ff0d8c286533ab3c0fad2043fa070c256041bfcc。最新HDD入口/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_ACTOR_FLOOR_PARAMETER25_STATUS_20261026_202151/HANDOFF.md与收据/LATEST已验证，覆盖前一20:15的16/25交接快照；大产物仍SSD。GitHub认证失败，未发布；Goal active。
 
 正式26实际各1000新增startup通过：I/V1070500、A1069500，旧I/V1069500、A1068500所有回放字段/history/优化器/2m marker/30MJB/30sampler/action/clock及新reward0误差通过。原905056已退出，勿重跑；四正式17/26及归档/完整review继续。
+
+纯正式17/26窗口已完成：180样本/208.441719s，四GPU均值56.5278/72.6278/71.0000/71.6111%，D/I/A/V吞吐10.4969/23.9395/24.4625/24.4769steps/s。逐样本GPU PID集合恰四正式且原learner全live、无辅助GPU；454710已退出勿重采，仅此固定窗口均值≥50%，不保证每瞬时，不隐去回合尾部与检查恢复等待。
