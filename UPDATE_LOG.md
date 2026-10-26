@@ -1,3 +1,10 @@
+## 2026-10-26 — 非RL第二条件9回合核验，原矩阵18/108完成
+
+- 实时fetch/read main=54146577702f1893cdca07845de71a8be7bca450、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；已安全快进远端另一会话RL更新，澄清AGENTS任务边界，不改变本机冻结运行时。
+- 09:05 UTC条件001完整9×55秒/990万子步独立审计通过；模型/来源/运行时/hash、原动作/filter收据、接触合规/峰矩/穿透/机器安全复算一致。证据docs/evidence/nonrl_new30_20261026/SECOND_CONDITION_PHYSICS_AUDIT.json，检查器4.524秒正常退出。
+- 该条件Task ESN3/3、RNN2/3、MLP0/3，双通过ESN2/3、RNN0/3、MLP0/3；失败保留，不计算局部T_ref/SPT或最终排名。累计18/108，原协调器86607继续条件002，完整矩阵与最终审计未完，Goal active。
+- 两文件72762字节已核验归档：arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_second_condition_0905/；收据SECOND_CONDITION_ARCHIVE_0905.json。完整训练包已归档，原始物理轨迹仍仅本机。
+
 ## 2026-10-26 — 复核参数cycle5/SERL1并继续四路登记训练
 
 - 上轮为实质progress：官方SERL真实启动/首轮审查、参数状态恢复与批量试验、代码证据推送；本轮重新核实原进程后收取完成结果。fetch/read并快进main b245607（另一主机非RL条件审计），baseline仍f6e8f8c；不改变其冻结任务。
