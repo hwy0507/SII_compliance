@@ -7,6 +7,8 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新clock cycle1完整复核已完（session39167勿重启）：TaskStrict D0/0 I17/16 A12/11 V17/16各30，Qloss19.000/5.638/13.131/26.072，非收敛。Imp长0500第314动作global穿透abort，nextclock1061/1375与零bootstrap通过；119完整+1早停留分母。runs/clock_cycle01_scientific_review_v1；原四在线与1729901/1729905继续cycle3/5。新固定首Direct被动完整110万子步物理/filter/torque独立通过但任务假/approach、峰39.5586、人接触0/NA；runs/clock_first_fixed_case_review_v1。原2960898/2961606继续矩阵，短期也失败、长期在途，不重启。报告PUBLISHED_CLOCK_CYCLE1_REVIEW_20261026，Goalactive/正式GPU50%及最终ESN未完。
+
 收尾Direct完整cycle1复核：82500steps/77501updates，30完整55s Task/Strict0/0、平均reward−32.920646（cycle0−32.788830，无改善）；失败approach24/align6。全82500 replay reward/done/current-next clock、30终端/模型/fixture/plan/dt核验，通过已保存回放证据而非raw-substep复审。原learner已进入cycle2，不重启。证据runs/clock_direct_cycle01_terminal_review_v1/REVIEW.json，未选新算法或奖励。
 
 最新：四return_capacity辅助全完成勿重启；REVIEW.json与图复核，parent/fresh留出MAE D.300/.349 I12.438/12.610 A3.462/4.073 V9.149/9.979，非softQ/策略改善，不延长。新clock_cycle00_fixed_representatives_v1协调2960898/首2961606、CPU54，四cycle0×三代表12×55s固定复测已启动；首165action重放误差0/clock维度模型通过，尚无完整回合。原在线四路与1729901/1729905继续，勿重复派发。报告PUBLISHED_CLOCK_FIXED_EVAL_AND_RETURN_REVIEW_20261026，Goalactive/最终ESN与GPU50%未完。

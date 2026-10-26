@@ -1,3 +1,11 @@
+## 2026-10-26 — 时钟第二周期完整复核与首固定回合物理审查
+
+- fetch main6dc2b241215d1898f8e07916153f3e0754dfb3db、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；上一轮为实质进展，本轮等原快照未重启。
+- clock cycle1完整复核（session39167已完）：D/I/A/V TaskStrict0/0、17/16、12/11、17/16各30，119完整55s+1早停；累计328939replay时钟/done、781source、四ck/120terminal/model/reward通过。Qloss19.000/5.638/13.131/26.072、累计terminalMAE63.818/22.995/53.802/74.074；尚无健康收敛证据。
+- Imp长期0500第314动作12.56s release触发global穿透中止，保存global66.9357mm/external.01257mm；done1/bootstrap0、nextclock1061/1375、terminal−25/tail−13.111核验，失败保留。I/A/V短0600 external.229218/.210770/.206726mm超原.2mm，Task真Strict假保留。
+- 新固定Direct被动0000全部110万子步独立物理/filter/torque复算通过：TaskStrict假、approach、峰矩39.5586Nm、机器安全违规假、人接触0/舒适NA；nominal复用旧独立证据，不新增其torque声明。短期也完整失败但本收据未独立重审，长期继续原2960898/2961606。
+- 原四learner及1729901/1729905进入后续周期，继续原六周期与cycle3/5诊断，不改live设置。辅助均已结束，不重复；GPU50%/充分收敛/最终ESN比较未完。报告docs/PUBLISHED_CLOCK_CYCLE1_REVIEW_20261026.md/.json，产物本集群SSD。
+
 ## 2026-10-26 — 辅助固定回报完成与时钟策略冻结复测
 
 收尾Direct完整cycle1复核：82500steps/77501updates，30完整55s Task/Strict0/0、平均reward−32.920646（cycle0−32.788830，无改善）；失败approach24/align6。全82500 replay reward/done/current-next clock、30终端/模型/fixture/plan/dt核验，通过已保存回放证据而非raw-substep复审。原learner已进入cycle2，不重启。证据runs/clock_direct_cycle01_terminal_review_v1/REVIEW.json，未选新算法或奖励。
