@@ -82,3 +82,5 @@ Direct16原1387783、归档1387835、review1387837继续，B/runs/serl_multistep
 当前参数25 I3775564/A3775566/V3775568继续，无自动26；旧16/25纯正式GPU窗口是此前固定观测，不冒称新17/25窗口。
 
 Direct17实际首1000新增检查通过：690532/5484264，全部旧689532 raw/derived/history/优化器/marker保持，135新mature+865pending精确，30MJB/30sampler/action/clock/reward0误差通过。原4158037 startup已退出；四正式17/25和归档/完整review均live，最新FINAL_LIVE_STATUS已更新。无自动18/26。
+
+最终17/25科学提交50aabc40be6e8d40567e5c4db29a9a33426ce671；更新后的完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_ACTOR_FLOOR_PARAMETER25_20261026_202151/FULL_SMALL_EVIDENCE.tar.gz，142成员逐hash核验、1876872字节、SHA256 670902a81be9467e40a66ad6ff0d8c286533ab3c0fad2043fa070c256041bfcc。最新HDD入口/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_ACTOR_FLOOR_PARAMETER25_STATUS_20261026_202151/HANDOFF.md与收据/LATEST已验证，覆盖前一20:15的16/25交接快照；大产物仍SSD。GitHub认证失败，未发布；Goal active。
