@@ -1,3 +1,13 @@
+## 2026-10-26 — GPU恢复、六轮末组复核与独立critic时钟候选
+
+- 远端fetch main50613a5a4c65da02fd2f06c96f890b5251dddb61、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，日志核对；未有新远端改动。
+- 原正式四路全正常结束；末组120终端/780source/模型/reward/replay/四checkpoint与图核验，D/I/A/V TaskStrict0/0、18/17、13/13、17/16各30；Q loss390.695/10690.257/2995.150/3487.720，不能称收敛、不原样延长。
+- fresh critic三独立初始化完整24臂120万辅助更新复核；全回放终端MAE无/有时钟D17.760/8.487、I30.606/11.354、A69.204/19.699、V74.311/25.806；全拟合、非未见或在线改善。
+- 登记并启动12路跨周期critic对照，runs/fresh_critic_clock_withheld_cycle_v1：仅cycle0拟合/cycle1不参与本次critic拟合，父actor此前见过cycle1；每卡3任务、CPU0–11，有限120万辅助更新/0actor/0physics，实际启动12/12通过。GPU60s均值98.07/98.27/98.90/98.50%、最低94/97/98/97，非正式吞吐。
+- 独立可选critic_clock实现，actor49/critic50，计数仅已知动作时间、早停保留真实剩余时间；时钟会间接影响CHEQ mixing，明确算法适配。四接口真实upstream隔离/梯度/恢复/默认精确测试及17项回归通过。
+- runtime/critic_clock_candidate_v1仅五文件变动、physics/filter/reward/gate未改；runs/critic_clock_candidate_preflight_v1四单回合已开始，PID1312002–1312005，CPU12–19，4×55s有限预检/0updates，非正式新阶段。勿修改快照或重复启动。
+- 报告 docs/PUBLISHED_CLOCK_CANDIDATE_AND_GPU_RECOVERY_20261026.md/.json；原始证据均在本机集群 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`，未向其他主机归档。Goal/正式收敛/最终ESN比较未完。
+
 # 更新日志
 
 ## 2026-10-26 — 同步远端非RL完成报告并保留服务器RL证据

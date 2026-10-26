@@ -106,7 +106,7 @@ def diagnose(args):
         dimension = 7 if method == 'direct' else prior['methods'][method]['action_dimension']
         learner = PublishedLearner(root, dimension=dimension, direct=method == 'direct',
             seed=42, device='cpu', algorithm=state['algorithm'],
-            **{key: state[key] for key in ('critic_layer_norm', 'numerical_amendments') if key in state})
+            **{key: state[key] for key in ('critic_layer_norm', 'numerical_amendments', 'critic_clock') if key in state})
         # Load policy/critics only. Do not restore optimizer or host CUDA RNG.
         learner.learner.agent.load_state_dict(state['agent'])
         agent = learner.learner.agent
@@ -169,7 +169,9 @@ def diagnose(args):
                                 in_bag_mae=summary(selected_error[selected_mask]),
                                 out_of_bag_mae=summary(selected_error[~selected_mask]))
                 metrics['terminal_error_limitation'] = (
-                    'Observation lacks remaining time; terminal MAE can include hidden-clock aliasing. '
+                    ('Critic includes known remaining time; actor does not receive the clock feature. '
+                     if state.get('critic_clock', False) else
+                     'Observation lacks remaining time; terminal MAE can include hidden-clock aliasing. ') +
                     'It is a diagnostic, not a required zero-error convergence gate.')
                 metrics['terminal_success_bonus_samples'] = int(np.sum(reward > 0))
             obs = torch.as_tensor(arrays['observations'][sample])

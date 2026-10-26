@@ -88,7 +88,7 @@ def evaluate(args):
     os.sched_setaffinity(0, {args.learner_cpu})
     learner = PublishedLearner(root, dimension=dimension, direct=controller == 'direct',
         seed=checkpoint['seed'], device=args.device, algorithm=algorithm,
-        **{key: checkpoint['learner'][key] for key in ('critic_layer_norm', 'numerical_amendments')
+        **{key: checkpoint['learner'][key] for key in ('critic_layer_norm', 'numerical_amendments', 'critic_clock')
            if key in checkpoint['learner']})
     learner.load_state_dict(checkpoint['learner'])
     initial_updates = learner.learner.num_gradient_steps

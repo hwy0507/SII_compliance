@@ -58,9 +58,15 @@ class Spaces(gym.Env):
 
 class PublishedLearner:
     def __init__(self, runtime, *, dimension, direct, seed, device, algorithm='sac',
-                 critic_layer_norm=False, numerical_amendments=False):
+                 critic_layer_norm=False, numerical_amendments=False, critic_clock=False):
         if algorithm not in ('sac', 'cheq'):
             raise ValueError(algorithm)
+        if critic_clock and algorithm != 'cheq':
+            raise ValueError('Critic clock currently requires CHEQ')
+        self.critic_clock = bool(critic_clock)
+        self.episode_actions = {}
+        self.actor_observation_dimension = 49 if algorithm == 'cheq' else 48
+        self.replay_observation_dimension = self.actor_observation_dimension + int(self.critic_clock)
         self.runtime = Path(runtime)
         for name, digest in json.loads((self.runtime/'CHEQ_HASHES.json').read_text()).items():
             if hashlib.sha256((self.runtime/'published_cheq'/name).read_bytes()).hexdigest() != digest:
@@ -109,12 +115,16 @@ class PublishedLearner:
             self.hybrid = CHEQAgent(self.learner, Nominal(), uncertainty_min=.02,
                 uncertainty_max=.2, uncertainty_deque=1, weight_min=.2,
                 weight_warmup_max=.3, weight_max=1., warmup_steps=5000)
+        if self.critic_clock:
+            from published_critic_clock_20261026 import install as install_clock
+            install_clock(self.learner)
         self.bellman_target_count = 2
         self._original_train = self.learner.train
         self.mixers = {0: self.hybrid}
         self.reset_episode()
 
     def reset_episode(self, stream=0):
+        self.episode_actions[stream] = 0
         if stream not in self.mixers:
             if self.algorithm == 'cheq':
                 from agents.hybrid.hybrid_agent_cheq import CHEQAgent
@@ -137,9 +147,21 @@ class PublishedLearner:
         value = value / OBSERVATION_SCALE
         if self.hybrid:
             value = np.r_[value, self.hybrid.get_mixing_parameter()].astype(np.float32)
+        if self.critic_clock:
+            value = np.r_[value, (1375-self.episode_actions[stream])/1375].astype(np.float32)
+        return value
+
+    def terminal_observation(self, previous, stream=0):
+        value = np.asarray(previous, np.float32).copy()
+        if self.critic_clock:
+            if value.shape != (50,):
+                raise ValueError('Expected clock replay observation')
+            value[-1] = (1375-self.episode_actions[stream])/1375
         return value
 
     def act(self, raw, *, step, deterministic=False, warmup=5000, stream=0):
+        if self.critic_clock and self.episode_actions[stream] >= 1375:
+            raise ValueError('Action beyond registered 55-second horizon')
         obs = self.observation(raw, stream=stream)
         tensor = torch.as_tensor(obs, device=self.device).unsqueeze(0)
         low, high = self.spaces.action_space.low, self.spaces.action_space.high
@@ -173,6 +195,8 @@ class PublishedLearner:
         execution = mixed.cpu().numpy().reshape(-1)
         if not np.isfinite(execution).all() or np.any(execution < low-1e-6) or np.any(execution > high+1e-6):
             raise FloatingPointError('Published actor produced invalid action')
+        if self.critic_clock:
+            self.episode_actions[stream] += 1
         return obs, raw_action, execution, context
 
     def update(self, arrays):
@@ -206,6 +230,7 @@ class PublishedLearner:
             python_rng=random.getstate(), torch_rng=torch.get_rng_state(),
             cuda_rng=torch.cuda.get_rng_state_all() if torch.cuda.is_available() else [],
             observation_scale=OBSERVATION_SCALE, boundary='learner_state_only_environment_not_included',
+            **({'critic_clock': True} if self.critic_clock else {}),
             **({'bellman_target_count': self.bellman_target_count}
                if self.bellman_target_count != 2 else {})))
 
@@ -215,6 +240,8 @@ class PublishedLearner:
         if (bool(state.get('critic_layer_norm', False)), bool(state.get('numerical_amendments', False))) != (
                 self.critic_layer_norm, self.numerical_amendments):
             raise ValueError('Cannot silently resume changed critic architecture or numerical objective')
+        if bool(state.get('critic_clock', False)) != self.critic_clock:
+            raise ValueError('Cannot resume changed critic time information')
         count = state.get('bellman_target_count', 2)
         if count not in (2, 5) or (count == 5 and self.algorithm != 'cheq'):
             raise ValueError('Unsupported checkpoint Bellman target rule')

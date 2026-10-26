@@ -221,8 +221,9 @@ def main(args):
     learner = PublishedLearner(root, dimension=dim, direct=args.controller == 'direct',
                                seed=args.seed, device=args.device, algorithm=args.algorithm,
                                critic_layer_norm=protocol.get('critic_layer_norm', False),
-                               numerical_amendments=protocol.get('numerical_amendments', False))
-    replay = Replay(dim, 49 if args.algorithm == 'cheq' else 48, args.seed+53)
+                               numerical_amendments=protocol.get('numerical_amendments', False),
+                               critic_clock=protocol.get('critic_clock', False))
+    replay = Replay(dim, learner.replay_observation_dimension, args.seed+53)
     steps, cycles, start_cycle = 0, [], 0
     pdigest = sha(args.registration)
     imported_replay = protocol.get('recovered_replay', {}).get(args.controller)
@@ -265,6 +266,8 @@ def main(args):
         replay_device_cache_bytes=(sum(v.numel()*v.element_size() for v in replay.arrays.values()) if cache_enabled else 0),
         recovered_replay=imported_replay, fresh_optimizer_with_imported_replay=bool(imported_replay and not args.resume),
         restart_reason=protocol.get('restart_reason'), critic_layer_norm=learner.critic_layer_norm,
+        critic_clock=learner.critic_clock, actor_observation_dimension=learner.actor_observation_dimension,
+        replay_observation_dimension=learner.replay_observation_dimension,
         numerical_amendments=learner.numerical_amendments, numerical_patch_receipt=learner.numerical_patch_receipt,
         python=sys.executable, trainer_sha256=sha(__file__),
         learner_adapter_sha256=sha(Path(__file__).with_name('published_compliance_learner_20261025.py')),
@@ -350,7 +353,8 @@ def main(args):
                             completion_time_s=event['completion_time_s']) if done and labels['strict_success'] else 0.
                         value += bonus
                         terms.update(completion_efficiency=bonus, final_reward=value)
-                        nxt = previous['observation'] if done else learner.observation(event['observation'], stream=slot)
+                        nxt = (learner.terminal_observation(previous['observation'], stream=slot) if done
+                               else learner.observation(event['observation'], stream=slot))
                         replay.add(observations=previous['observation'], actions=previous['raw_action'],
                                    next_observations=nxt, rewards=[value], dones=[float(done)])
                         steps += 1
