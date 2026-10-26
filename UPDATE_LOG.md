@@ -10,6 +10,8 @@
 
 - 本轮实验提交019d3d2已本地完成；禁交互push退出128（HTTPS用户名不可读取），远端仍dbb1d76，未发布。收尾只读快照：四路最近各1000完整优化记录均finite，参数I/A/V末loss1.542/2.496/1.290、Direct .01928；不是完整17/13审查或收敛证据。
 
+- 最终科学提交746ad79bbd3d83a27bf56ed577ec67625c1e28b4仍仅本地。211成员完整本轮小证据SSD包B/repository/RL_PARAMETER17_BATCH13_20261026_155831/FULL_SMALL_EVIDENCE.tar.gz逐项hash核验，1898638字节/SHA a2cb7761fd72915391bb307e4e770251f1d9fa900d8da695e12134fc821e6dcf。HDD仅新RL_PARAMETER17_BATCH13_STATUS_20261026_155831/HANDOFF.md与收据、LATEST入口写入并hash核验；不称完整源码或大产物已HDD。收尾原四正式仍运行，参数17已20/22/22条件、Direct13仍30并行；结束评估不再占GPU。
+
 ## 2026-10-26 — 参数16与SERL等价传输12，完整15/11审查及长窗口GPU证据
 
 - 开工真实查询/fetch/read main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；上一轮冻结审查/发布属实质进展。本轮核验原15/11仍live，完成原周期审查后才接续，无重复训练/子agent。详见docs/RL_PARAMETER16_SERL_TRANSFER12_20261026.md。

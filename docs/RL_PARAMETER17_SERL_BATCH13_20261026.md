@@ -106,3 +106,5 @@ B/runs/cycle16_parameter_and_direct12_behavior_audit_20261026_v1/REVIEW.json已�
 本轮源码三文件AST与对应恢复/启动/随机入口检查通过。小证据在docs/evidence/rl_parameter17_batch13_20261026，SOURCES.json逐文件hash记录来源；LIVE_STATUS为带时间快照，实时状态以原run为准。末1000loss与冻结15汇总仅重用已完成证据。收尾提交/无提示push结果与SSD包/HDD收据见UPDATE_LOG及最新备份入口。
 
 后续先核对原17/13进程与自动完整审查；新随机评估已完成勿重跑。若某路完成，在完整review/health核验后从其**最新正式全state**衔接下一有限周期，避免空闲；不得跳过未完成审查、回退到16/12、重置学习或导入辅助权重。不改冻结物理/MJB/gate/filter/actuator/dt5e-5/30条件/SPT。原Goal保持active，健康收敛/最终全矩阵/指定ESN与最终SPT仍未完成。
+
+收尾科学提交746ad79bbd3d83a27bf56ed577ec67625c1e28b4仅本地；本轮211成员小证据包位于B/repository/RL_PARAMETER17_BATCH13_20261026_155831/FULL_SMALL_EVIDENCE.tar.gz，SHA a2cb7761fd72915391bb307e4e770251f1d9fa900d8da695e12134fc821e6dcf，逐项hash验证通过。HDD最新小交接入口已更新，配额限制下未复制完整包或大产物。
