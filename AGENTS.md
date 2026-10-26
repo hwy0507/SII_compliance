@@ -1,5 +1,36 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 参数11/12等价流水线与Direct8 critic-clock审查
+
+原Goal active，未健康收敛；最新[完整交接](docs/RL_EXACT_PIPELINE_CYCLE12_AND_SERL_CLOCK_20261026.md)。
+参数11三路全部完成：I18/17 A15/15 V17/16，各30完整55s；reward−2.357/−6.918/−4.587，
+termMAE1.948/1.427/1.807，Qmean−24.052/−217.564/−67.944，A负向漂移仍在。
+旧1110503/4/5及归档1110506/审查1131662结束勿重启。准确checkpoint见报告。
+新前32二值mask接受检查+foreach Polyak：4896辅助更新、三路六次最终全state/sampleRNG逐项相同，
+微基准+6.21/13.76/14.06%，不证明在线增益；旧probe已完勿重复填占用。
+正式parameter_exact_pipeline_cycle12_20261026_v1：I2261725/A2261728/V2261730，原GPU1/2/3、CPU组各12sampler，
+从完整正式11全部state/history续一个12，仅等价执行改动；terminal128/上界projection/pair2/batch32768/UTD1/原actorLR保持。
+必须exact_class/projected_class恢复两个marker，禁止原loader静默丢目标；check-only全state不变/负守卫及实际启动1000步审查通过。
+归档2261734、只读2261752在parameter_exact_pipeline_cycle12_review_20261026_v1等精确边界，无自动13。
+收尾12已全部完成、无自动13：I533250/528251 A532250/527251 V533250/528251，Task/Strict18/17、17/17、17/17，
+reward−2.214/−3.544/−2.842，termMAE1.953/1.021/1.283，Qmean−20.614/−232.570/−77.636、末loss5.476/115.199/98.975。
+I终端最大误差94.267，A/V仍负漂移；全部新reward/父prefix/30MJB、三health与图完成。
+原三正式2261725/8/30、归档2261734、审查2261752已结束勿重启。下一参数父为exact_pipeline_archive下准确12。
+当前无正式learner运行，无参数13/Direct9登记，原Goal仍active，不是用户暂停或达标。
+新冻结正式11三方法×三个代表共9完整55s/990万子步审查全完，三路Task/Strict均2/3，被动失败；
+参数动作误差0、完整learner state不变、MJB/clock/filter/torque/raw-substep通过。原2337200/6/10及evaluator已完勿重跑。
+I长主动接触舒适60.83%，A/V100%，被动/短主动无接触NA，非最终排名。
+Direct8完整366962/2895704、0/30、reward−33.248、25完整+5穿透abort，termMAE2.165/max42.604；
+全部新映射/reward0误差/父state审查通过。原438669/438672/855998结束勿重启，无正式9。
+新critic-clock历史366962行重建已审查，v1 Q入口失败/v2 actor入口失败均0更新保留；
+v3独立state48+clock叶，旧全部参数/Adam/counter/RNG可恢复，仅8新零叶，入口Q差异0、随机/确定actor精确通过。
+v3同正式8两臂各2000outer共32000critic+4000actor辅助更新完成，0physics/未保存推广权重，图与独立审查通过。
+clock/control终端MAE.985/1.171但p951.188/.854、max均43、Q均约17；局部改善非修复。
+无正式clock持久adapter/迁移或Direct9登记，后续必须另验证完整state恢复，不得导入辅助权重。
+新正式12 GPU观察0/40.13/38.67/40.17%，每卡50%未达、在线提速未证明；GPU0 Direct已停，勿重复旧辅助填占用。
+物理/SPT/MJB/gates/filter/dt不改，无子agent，大产物SSD，HDD仅小证据。健康收敛/最终比较/ESN/SPT仍待。
+
+
 ## 最新RL状态：2026-10-26 目标Q投影参数11与Direct7/8（覆盖下方历史快照）
 
 原Goal active，未健康收敛；最新[完整交接](docs/RL_TARGET_PROJECTION_CYCLE11_20261026.md)。

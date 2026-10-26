@@ -1,0 +1,419 @@
+{
+  "methods": {
+    "impedance": {
+      "total_samples": 14995,
+      "raw_sha256": "2140c6c778825af7c6a7dfa758c0f9b86608c49719b5bd5b8d2fceda02c0f464",
+      "top_leaf_frames": [
+        {
+          "frame": "",
+          "samples": 11996,
+          "fraction": 0.8
+        },
+        {
+          "frame": "_engine_run_backward (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/autograd/graph.py:829)",
+          "samples": 264,
+          "fraction": 0.01760586862287429
+        },
+        {
+          "frame": "sample (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/source/tools/published_replay_device_cache_20261025.py:36)",
+          "samples": 263,
+          "fraction": 0.017539179726575524
+        },
+        {
+          "frame": "_save (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/serialization.py:1213)",
+          "samples": 172,
+          "fraction": 0.011470490163387796
+        },
+        {
+          "frame": "forward (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/nn/modules/linear.py:125)",
+          "samples": 150,
+          "fraction": 0.010003334444814937
+        },
+        {
+          "frame": "train (<registered_finite_target_projection>:53)",
+          "samples": 118,
+          "fraction": 0.007869289763254418
+        },
+        {
+          "frame": "update_target_networks (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/published_cheq/agents/rl/sac_ensemble.py:318)",
+          "samples": 108,
+          "fraction": 0.007202400800266756
+        },
+        {
+          "frame": "__init__ (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/distributions/distribution.py:76)",
+          "samples": 104,
+          "fraction": 0.00693564521507169
+        },
+        {
+          "frame": "_sum (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/numpy/_core/_methods.py:52)",
+          "samples": 98,
+          "fraction": 0.006535511837279093
+        },
+        {
+          "frame": "update_target_networks (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/published_cheq/agents/rl/sac_ensemble.py:317)",
+          "samples": 94,
+          "fraction": 0.006268756252084028
+        },
+        {
+          "frame": "train (<registered_finite_target_projection>:43)",
+          "samples": 88,
+          "fraction": 0.0058686228742914305
+        },
+        {
+          "frame": "<listcomp> (<registered_finite_target_projection>:42)",
+          "samples": 87,
+          "fraction": 0.005801933977992664
+        },
+        {
+          "frame": "_save (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/serialization.py:1215)",
+          "samples": 51,
+          "fraction": 0.003401133711237079
+        },
+        {
+          "frame": "_multi_tensor_adam (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/optim/adam.py:773)",
+          "samples": 45,
+          "fraction": 0.0030010003334444814
+        },
+        {
+          "frame": "layer_norm (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/nn/functional.py:2905)",
+          "samples": 44,
+          "fraction": 0.0029343114371457152
+        },
+        {
+          "frame": "<listcomp> (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/source/tools/published_compliance_learner_20261025.py:39)",
+          "samples": 43,
+          "fraction": 0.002867622540846949
+        },
+        {
+          "frame": "relu (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/nn/functional.py:1701)",
+          "samples": 40,
+          "fraction": 0.00266755585195065
+        },
+        {
+          "frame": "_multi_tensor_adam (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/optim/adam.py:689)",
+          "samples": 32,
+          "fraction": 0.00213404468156052
+        },
+        {
+          "frame": "tanh_log_jacobian (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/source/tools/published_compliance_numerics_20261025.py:15)",
+          "samples": 31,
+          "fraction": 0.002067355785261754
+        },
+        {
+          "frame": "wrapped (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/_tensor.py:39)",
+          "samples": 29,
+          "fraction": 0.0019339779926642214
+        }
+      ],
+      "inclusive_fractions": {
+        "adam_step": 0.021473824608202734,
+        "learner_update": 0.1427142380793598,
+        "policy_action": 0.009536512170723575,
+        "backward": 0.01960653551183728,
+        "checkpoint": 0.015938646215405135,
+        "replay_sampling": 0.027142380793597865,
+        "finite_check": 0.007869289763254418
+      },
+      "before": {
+        "cycle": 11,
+        "steps": 480189,
+        "completed_conditions": 14,
+        "running": 12,
+        "pending": 4,
+        "updates": 475190,
+        "wall_time_utc": 1793015057.6045902
+      },
+      "after": {
+        "cycle": 11,
+        "steps": 481227,
+        "completed_conditions": 14,
+        "running": 12,
+        "pending": 4,
+        "updates": 476228,
+        "wall_time_utc": 1793015118.1649828
+      },
+      "observed_new_steps": 1038,
+      "observed_new_updates": 1038,
+      "target_identity_verified": true
+    },
+    "admittance": {
+      "total_samples": 14995,
+      "raw_sha256": "b7c33f79cba25694ea6e41e19c67f5dfd81d3a353e33771ff553986677eadabf",
+      "top_leaf_frames": [
+        {
+          "frame": "",
+          "samples": 11996,
+          "fraction": 0.8
+        },
+        {
+          "frame": "sample (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/source/tools/published_replay_device_cache_20261025.py:36)",
+          "samples": 273,
+          "fraction": 0.018206068689563187
+        },
+        {
+          "frame": "_engine_run_backward (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/autograd/graph.py:829)",
+          "samples": 271,
+          "fraction": 0.018072690896965657
+        },
+        {
+          "frame": "forward (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/nn/modules/linear.py:125)",
+          "samples": 213,
+          "fraction": 0.014204734911637212
+        },
+        {
+          "frame": "_save (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/serialization.py:1213)",
+          "samples": 191,
+          "fraction": 0.012737579193064355
+        },
+        {
+          "frame": "__init__ (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/distributions/distribution.py:76)",
+          "samples": 118,
+          "fraction": 0.007869289763254418
+        },
+        {
+          "frame": "train (<registered_finite_target_projection>:53)",
+          "samples": 116,
+          "fraction": 0.007735911970656885
+        },
+        {
+          "frame": "update_target_networks (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/published_cheq/agents/rl/sac_ensemble.py:317)",
+          "samples": 95,
+          "fraction": 0.006335445148382794
+        },
+        {
+          "frame": "update_target_networks (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/published_cheq/agents/rl/sac_ensemble.py:318)",
+          "samples": 93,
+          "fraction": 0.006202067355785262
+        },
+        {
+          "frame": "<listcomp> (<registered_finite_target_projection>:42)",
+          "samples": 90,
+          "fraction": 0.006002000666888963
+        },
+        {
+          "frame": "train (<registered_finite_target_projection>:43)",
+          "samples": 88,
+          "fraction": 0.0058686228742914305
+        },
+        {
+          "frame": "_sum (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/numpy/_core/_methods.py:52)",
+          "samples": 81,
+          "fraction": 0.005401800600200067
+        },
+        {
+          "frame": "layer_norm (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/nn/functional.py:2905)",
+          "samples": 62,
+          "fraction": 0.004134711570523508
+        },
+        {
+          "frame": "relu (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/nn/functional.py:1701)",
+          "samples": 58,
+          "fraction": 0.0038679559853284427
+        },
+        {
+          "frame": "<listcomp> (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/source/tools/published_compliance_learner_20261025.py:39)",
+          "samples": 35,
+          "fraction": 0.002334111370456819
+        },
+        {
+          "frame": "log_prob (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/distributions/normal.py:98)",
+          "samples": 32,
+          "fraction": 0.00213404468156052
+        },
+        {
+          "frame": "_multi_tensor_adam (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/optim/adam.py:773)",
+          "samples": 32,
+          "fraction": 0.00213404468156052
+        },
+        {
+          "frame": "_save (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/serialization.py:1215)",
+          "samples": 31,
+          "fraction": 0.002067355785261754
+        },
+        {
+          "frame": "wrapped (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/_tensor.py:39)",
+          "samples": 31,
+          "fraction": 0.002067355785261754
+        },
+        {
+          "frame": "_multi_tensor_adam (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/optim/adam.py:689)",
+          "samples": 27,
+          "fraction": 0.001800600200066689
+        }
+      ],
+      "inclusive_fractions": {
+        "learner_update": 0.1413137712570857,
+        "adam_step": 0.017339113037679228,
+        "policy_action": 0.012670890296765588,
+        "backward": 0.01960653551183728,
+        "finite_check": 0.005935311770590197,
+        "replay_sampling": 0.025341780593531177,
+        "checkpoint": 0.016138712904301435
+      },
+      "before": {
+        "cycle": 11,
+        "steps": 477933,
+        "completed_conditions": 12,
+        "running": 12,
+        "pending": 6,
+        "updates": 472934,
+        "wall_time_utc": 1793015057.6264904
+      },
+      "after": {
+        "cycle": 11,
+        "steps": 479000,
+        "completed_conditions": 12,
+        "running": 12,
+        "pending": 6,
+        "updates": 474001,
+        "wall_time_utc": 1793015118.251505
+      },
+      "observed_new_steps": 1067,
+      "observed_new_updates": 1067,
+      "target_identity_verified": true
+    },
+    "vmc": {
+      "total_samples": 14995,
+      "raw_sha256": "3f69635b4e269e2eb817f2d55e079931af60a2736a128a514db208d3f3dbf050",
+      "top_leaf_frames": [
+        {
+          "frame": "",
+          "samples": 11996,
+          "fraction": 0.8
+        },
+        {
+          "frame": "_engine_run_backward (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/autograd/graph.py:829)",
+          "samples": 291,
+          "fraction": 0.01940646882294098
+        },
+        {
+          "frame": "sample (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/source/tools/published_replay_device_cache_20261025.py:36)",
+          "samples": 247,
+          "fraction": 0.016472157385795265
+        },
+        {
+          "frame": "_save (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/serialization.py:1213)",
+          "samples": 184,
+          "fraction": 0.01227075691897299
+        },
+        {
+          "frame": "forward (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/nn/modules/linear.py:125)",
+          "samples": 179,
+          "fraction": 0.011937312437479159
+        },
+        {
+          "frame": "__init__ (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/distributions/distribution.py:76)",
+          "samples": 148,
+          "fraction": 0.009869956652217406
+        },
+        {
+          "frame": "train (<registered_finite_target_projection>:53)",
+          "samples": 122,
+          "fraction": 0.008136045348449483
+        },
+        {
+          "frame": "update_target_networks (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/published_cheq/agents/rl/sac_ensemble.py:318)",
+          "samples": 104,
+          "fraction": 0.00693564521507169
+        },
+        {
+          "frame": "<listcomp> (<registered_finite_target_projection>:42)",
+          "samples": 99,
+          "fraction": 0.006602200733577859
+        },
+        {
+          "frame": "update_target_networks (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/published_cheq/agents/rl/sac_ensemble.py:317)",
+          "samples": 99,
+          "fraction": 0.006602200733577859
+        },
+        {
+          "frame": "_sum (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/numpy/_core/_methods.py:52)",
+          "samples": 81,
+          "fraction": 0.005401800600200067
+        },
+        {
+          "frame": "train (<registered_finite_target_projection>:43)",
+          "samples": 75,
+          "fraction": 0.005001667222407469
+        },
+        {
+          "frame": "layer_norm (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/nn/functional.py:2905)",
+          "samples": 50,
+          "fraction": 0.003334444814938313
+        },
+        {
+          "frame": "<listcomp> (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock/source/tools/published_compliance_learner_20261025.py:39)",
+          "samples": 47,
+          "fraction": 0.003134378126042014
+        },
+        {
+          "frame": "relu (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/nn/functional.py:1701)",
+          "samples": 46,
+          "fraction": 0.0030676892297432476
+        },
+        {
+          "frame": "_save (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/serialization.py:1215)",
+          "samples": 32,
+          "fraction": 0.00213404468156052
+        },
+        {
+          "frame": "log_prob (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/distributions/normal.py:98)",
+          "samples": 30,
+          "fraction": 0.0020006668889629878
+        },
+        {
+          "frame": "_group_tensors_by_device_and_dtype (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/utils/_foreach_utils.py:47)",
+          "samples": 29,
+          "fraction": 0.0019339779926642214
+        },
+        {
+          "frame": "wrapped (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/_tensor.py:39)",
+          "samples": 28,
+          "fraction": 0.0018672890963654552
+        },
+        {
+          "frame": "_multi_tensor_adam (/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/site-packages/torch/optim/adam.py:704)",
+          "samples": 27,
+          "fraction": 0.001800600200066689
+        }
+      ],
+      "inclusive_fractions": {
+        "learner_update": 0.14138046015338446,
+        "policy_action": 0.01300433477825942,
+        "backward": 0.02100700233411137,
+        "adam_step": 0.018406135378459487,
+        "finite_check": 0.006402134044681561,
+        "checkpoint": 0.01547182394131377,
+        "replay_sampling": 0.024474824941647214,
+        "selector_wait": 6.668889629876625e-05
+      },
+      "before": {
+        "cycle": 11,
+        "steps": 478453,
+        "completed_conditions": 13,
+        "running": 12,
+        "pending": 5,
+        "updates": 473454,
+        "wall_time_utc": 1793015057.6124766
+      },
+      "after": {
+        "cycle": 11,
+        "steps": 479551,
+        "completed_conditions": 14,
+        "running": 12,
+        "pending": 4,
+        "updates": 474552,
+        "wall_time_utc": 1793015118.278249
+      },
+      "observed_new_steps": 1098,
+      "observed_new_updates": 1098,
+      "target_identity_verified": true
+    }
+  },
+  "registration_sha256": "6805b16a8bd759e334fe571a384a4a5ca2d49baeb5ac1df3d617f178e653bc15",
+  "completed_unix": 1793015118.2911348,
+  "diagnostic_optimizer_updates": 0,
+  "new_physics_processes": 0,
+  "training_configuration_changed": false,
+  "scope": "External Python-stack sampling including idle threads; inclusive categories overlap. Frame presence is not CUDA kernel timing or proof of a throughput optimization. Sampling overhead and shared workload limit timing interpretation."
+}

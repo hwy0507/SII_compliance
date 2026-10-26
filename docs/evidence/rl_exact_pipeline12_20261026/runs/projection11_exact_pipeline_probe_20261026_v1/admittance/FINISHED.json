@@ -1,0 +1,90 @@
+{
+  "passed": true,
+  "controller": "admittance",
+  "checkpoint_sha256": "82d192479e174665d3577b9ca673ee1335bc8d37f90f7e30101db3e8ef2e1bc4",
+  "registration_sha256": "fbca76fe0f8b6ba1b38bd43cc5e804adcd15ea635685d55f60e6dec3c518cbeb",
+  "results": [
+    {
+      "repeat": 0,
+      "arm": "original",
+      "elapsed_s": 6.482445470057428,
+      "updates_per_s": 39.49126933384479,
+      "final_state_sha256": "fd4c65453baa43d79da8f76ce77ec16b0c904b31c68b8a103c3da82bbd029400",
+      "sampling_rng_sha256": "9d6fcec16cca53b7ebff2d42878dd777a6e71f01e5492c5dc9def97f3d0235c9",
+      "full_state_identical": true,
+      "patch": null
+    },
+    {
+      "repeat": 0,
+      "arm": "cache_only",
+      "elapsed_s": 5.951989735476673,
+      "updates_per_s": 43.01082686250599,
+      "final_state_sha256": "fd4c65453baa43d79da8f76ce77ec16b0c904b31c68b8a103c3da82bbd029400",
+      "sampling_rng_sha256": "9d6fcec16cca53b7ebff2d42878dd777a6e71f01e5492c5dc9def97f3d0235c9",
+      "full_state_identical": true,
+      "patch": null
+    },
+    {
+      "repeat": 0,
+      "arm": "cache_and_foreach",
+      "elapsed_s": 5.679291498847306,
+      "updates_per_s": 45.07604514611706,
+      "final_state_sha256": "fd4c65453baa43d79da8f76ce77ec16b0c904b31c68b8a103c3da82bbd029400",
+      "sampling_rng_sha256": "9d6fcec16cca53b7ebff2d42878dd777a6e71f01e5492c5dc9def97f3d0235c9",
+      "full_state_identical": true,
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    {
+      "repeat": 1,
+      "arm": "cache_and_foreach",
+      "elapsed_s": 5.69044273160398,
+      "updates_per_s": 44.987712217576544,
+      "final_state_sha256": "fd4c65453baa43d79da8f76ce77ec16b0c904b31c68b8a103c3da82bbd029400",
+      "sampling_rng_sha256": "9d6fcec16cca53b7ebff2d42878dd777a6e71f01e5492c5dc9def97f3d0235c9",
+      "full_state_identical": true,
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    {
+      "repeat": 1,
+      "arm": "cache_only",
+      "elapsed_s": 5.958607196807861,
+      "updates_per_s": 42.963060249573765,
+      "final_state_sha256": "fd4c65453baa43d79da8f76ce77ec16b0c904b31c68b8a103c3da82bbd029400",
+      "sampling_rng_sha256": "9d6fcec16cca53b7ebff2d42878dd777a6e71f01e5492c5dc9def97f3d0235c9",
+      "full_state_identical": true,
+      "patch": null
+    },
+    {
+      "repeat": 1,
+      "arm": "original",
+      "elapsed_s": 6.45144335180521,
+      "updates_per_s": 39.68104283646347,
+      "final_state_sha256": "fd4c65453baa43d79da8f76ce77ec16b0c904b31c68b8a103c3da82bbd029400",
+      "sampling_rng_sha256": "9d6fcec16cca53b7ebff2d42878dd777a6e71f01e5492c5dc9def97f3d0235c9",
+      "full_state_identical": true,
+      "patch": null
+    }
+  ],
+  "mask_acceptance_edge_cases": 4,
+  "parent_unchanged": true,
+  "replay_unchanged": true,
+  "new_physics": 0,
+  "auxiliary_weights_saved": false,
+  "auxiliary_updates": 1632,
+  "limitations": [
+    "Shared GPU with formal learner; two reversed repeats are finite microbenchmark, not online speedup.",
+    "No sampler scheduling, policy timing, update ratio or batch changes."
+  ]
+}

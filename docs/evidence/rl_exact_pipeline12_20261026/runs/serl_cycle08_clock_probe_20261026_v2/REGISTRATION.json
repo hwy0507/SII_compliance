@@ -1,0 +1,38 @@
+{
+  "created_unix": 1793016665.7751408,
+  "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+  "upstream": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_upstream_1fa2af7",
+  "upstream_manifest": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/SERL_UPSTREAM_1fa2af7_HASHES.json",
+  "adapter_runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_state_adapter_20261026_v1",
+  "source_hashes": {
+    "probe_serl_critic_clock_20261026.py": "8751b56bf564bce837e963334fd42b407a07d5551f671053ea78702d3cdf7119",
+    "serl_critic_clock_extension_20261026.py": "b50bd262afcae6cd676f5b53bc1c82cee536c7bb5b3b029f6d68ea28ee601eba"
+  },
+  "checkpoint": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_pool30_cycle07_08_archive_20261026_v1/direct/cycle_00008.pt",
+    "sha256": "f3399b01b550d8c3f4cac6b32f8cd49ca57f53beb68275aebbf3fe4d5a1d5b90"
+  },
+  "review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_pool30_cycle08_review_20261026_v1/REVIEW.json",
+    "sha256": "764412b3c0ebf39c76ba48930b217260c458fdbd8bdea880d3e9e62a5031f36e"
+  },
+  "clock": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle08_clock_probe_20261026_v1/replay_clock.npy",
+    "sha256": "c04f6c8aeaaa4f5e506cf7285d587ef16487c0b580065c8e757e2ad5fcb58ec0"
+  },
+  "outer_updates_per_arm": 2000,
+  "record_every": 100,
+  "seed": 20261026,
+  "auxiliary_weights_promoted": false,
+  "automatic_extension": false,
+  "new_physics": 0,
+  "arms": [
+    "critic_clock",
+    "original"
+  ],
+  "total_critic_updates": 32000,
+  "total_actor_updates": 4000,
+  "previous_failed_gate": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle08_clock_probe_20261026_v1/probe/FAILURE.json",
+  "previous_auxiliary_updates": 0,
+  "reason": "Retain original55-input critic GEMM; add zero clock branch into same first hidden layer. No relaxation of initial-output gate."
+}

@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "source_sha256": "137ee333fdc7e0e176f531cd97b0035b0a9532c78245d283125c87b299d1d0e5",
+  "registration_sha256": "08e2053726f16ad89fa4cec808ca185e970927ad4632d7c8f76a091255626028",
+  "finished_sha256": "1d22cf949a2b98ac944e6af1391b1ab2165f8b7c54a79b0899ddcda55a01f839",
+  "gate_sha256": "3c67ce3c9783edf03a20141499624c8dc51cf3955f78b6250ce085822ed4333c",
+  "plot_sha256": "7dad656d1da97b3f34df0b43c876e5cc00d3941179ef82adbf6a89046cdda742",
+  "checkpoint_verified_unchanged": true,
+  "same_initial_diagnostics": true,
+  "same_sampling_rng": true,
+  "records_per_arm": 20,
+  "auxiliary_critic_updates": 32000,
+  "auxiliary_actor_updates": 4000,
+  "new_review_optimizer_updates": 0,
+  "new_review_physics": 0,
+  "final": {
+    "critic_clock": {
+      "terminal_mae": 0.9853659272193909,
+      "terminal_p95": 1.1882927417755127,
+      "terminal_max": 43.271575927734375,
+      "replay_q_mean": 16.990985870361328,
+      "replay_q_abs_p95": 17.95585823059082,
+      "replay_q_min": 12.718870162963867,
+      "replay_q_max": 19.047767639160156,
+      "td_mae": 0.03258466720581055,
+      "temperature": 0.0008847140124998987
+    },
+    "original": {
+      "terminal_mae": 1.1708322763442993,
+      "terminal_p95": 0.8539061546325684,
+      "terminal_max": 43.35759353637695,
+      "replay_q_mean": 16.966882705688477,
+      "replay_q_abs_p95": 17.951078414916992,
+      "replay_q_min": 13.019759178161621,
+      "replay_q_max": 19.125106811523438,
+      "td_mae": 0.0346984788775444,
+      "temperature": 0.0010167162399739027
+    }
+  },
+  "conclusion": "Mean terminal error improves modestly; p95 worsens versus control, maximum error and Q bias persist. No online or convergence claim."
+}

@@ -1,3 +1,18 @@
+## 2026-10-26 — 参数11完整审查、等价执行cycle12与Direct8时钟诊断
+
+- 开工核对main a8bf20d3b955018abf95f27f3bf951f98625d148，收尾fetch/read并快进另一主机非RL更新35c2f788b0001c8fbb0618ed0bde2472efa899e1；baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d。无子agent，独立非RL任务不动。最新docs/RL_EXACT_PIPELINE_CYCLE12_AND_SERL_CLOCK_20261026.md。
+- 参数11全30完整、I18/17 A15/15 V17/16、reward−2.357/−6.918/−4.587；termMAE1.948/1.427/1.807，Qmean−24.052/−217.564/−67.944，A负漂移仍在。全父prefix/history/optimizer配置、新reward重建0误差、30MJB/terminal核验，三路health和图完成；未投影TD诊断不等同投影训练loss。
+- 新Python栈剖析+等价mask接受/foreach Polyak微基准4896辅助更新完成，六次完整state和sampleRNG相同、mask对抗检查通过。I/A/V微基准+6.21/13.76/14.06%，无权重保存推广；不当在线提速证据，不重复已完probe。
+- 正式12 I2261725/A2261728/V2261730从准确11全state续一个周期，原GPU/CPU组各12sampler，目标/UTD/batch/actorLR不改。三check-only全state不变/正负守卫及真实启动1000新增、全父prefix/history/marker/12MJB/亲和性/clock/input/reward通过；归档2261734、12只读2261752，无自动13。
+- 新冻结正式11九条完整55s/990万子步全部审查通过，各方法Task/Strict2/3、被动失败。参数动作重放误差0、完整learner state不变、clock/MJB/filter/torque/raw-substep通过；I长主动接触舒适60.83%，A/V100%，其余无接触NA。未新跑nominal或作最终排名，全部相关评估进程已结束。
+- Direct8完整366962/2895704、0/30、reward−33.248、25完整+5global穿透abort保留；全新增39845映射/obs/nextstate/reward0误差/父prefix/30MJB通过，termMAE2.165、max42.604、Qmean16.526，非收敛。旧438669/438672/855998结束，无正式Direct9。
+- critic-clock replay366962行由五正式journal精确重建。v1 Q入口失败、v2 actor入口失败均0更新并保留。v3独立state48+clock保留原GEMM与全部旧网络/Adam/counter/RNG、只加8零叶，入口Q差异0、确定性/随机actor精确和clock不影响actor通过；不放松入口标准。
+- v3同正式8全state同抽样流两臂各2000outer、共32000critic+4000actor辅助更新完成，0新物理、不保存/推广权重。独立检查来源/正式checkpoint未变/20记录预算/RNG/有限值及图完成。clock/control终端MAE.985/1.171，但p951.188/.854、max均43、Q约17；局部改善不能宣称修复，未实现正式clock adapter或派发9。
+- GPU约64.49秒窗口0/40.13/38.67/40.17%，GPU0正式Direct结束、入口失败阶段无更新，后三卡正式12+低优先级冻结推理。持续每卡50%未达，在线提速未证明，不以微基准或辅助占用替代正式要求。
+- 收尾正式12全部完成并审查：I533250/528251 A532250/527251 V533250/528251，Task/Strict18/17、17/17、17/17，reward−2.214/−3.544/−2.842；termMAE1.953/1.021/1.283，Qmean−20.614/−232.570/−77.636，末loss5.476/115.199/98.975。I终端最大误差94.267，A/V负偏差未修复；全父prefix/41250新reward/30MJB/三路health/图通过。正式PID/归档/审查均结束，当前无新参数13/Direct9，Goal仍active。
+- 小证据docs/evidence/rl_exact_pipeline12_20261026/SOURCES.json逐项SHA；大型原件仍本集群SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。7个新增源码AST通过，实际对照/入口/启动验证见收据。Goal active，健康收敛/最终冻结比较/ESN/SPT/GPU要求均未完。
+- 本轮小源码/文档/证据备份：/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_EXACT_PIPELINE12_STATUS_20261026_122934；逐项hash核验，完整大型checkpoint/轨迹仍SSD。
+
 ## 2026-10-26 — 新30条第五条件独立核验，45/108回合完成
 
 - 开工实查main=5170ce75a9467012d31f5a227bc7c9ba6c2fbdda、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；上一轮为核实等待，本轮持续观察原86607协调器从39推进到45/108并进入第六条件，未重启或重复派发。收尾复读AGENTS并读取、快进整合远端a8bf20d3b955018abf95f27f3bf951f98625d148的另一任务RL更新，不改变本机冻结运行时。

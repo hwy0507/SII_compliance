@@ -1,0 +1,90 @@
+{
+  "passed": true,
+  "controller": "vmc",
+  "checkpoint_sha256": "b32d8569c46b332c051e734ff175e563002ff9d3e39e7f83f501f0d9add0f207",
+  "registration_sha256": "fbca76fe0f8b6ba1b38bd43cc5e804adcd15ea635685d55f60e6dec3c518cbeb",
+  "results": [
+    {
+      "repeat": 0,
+      "arm": "original",
+      "elapsed_s": 6.542796817608178,
+      "updates_per_s": 39.126998306144074,
+      "final_state_sha256": "63fdd5cd5d9a12a073569624c7dd59175dad16bd148b67ed3439e9375c48ef45",
+      "sampling_rng_sha256": "8e9650809653d57094dee246d53fb2b4c9b701703effde2f24671fad8182e465",
+      "full_state_identical": true,
+      "patch": null
+    },
+    {
+      "repeat": 0,
+      "arm": "cache_only",
+      "elapsed_s": 6.00337175745517,
+      "updates_per_s": 42.64270319126771,
+      "final_state_sha256": "63fdd5cd5d9a12a073569624c7dd59175dad16bd148b67ed3439e9375c48ef45",
+      "sampling_rng_sha256": "8e9650809653d57094dee246d53fb2b4c9b701703effde2f24671fad8182e465",
+      "full_state_identical": true,
+      "patch": null
+    },
+    {
+      "repeat": 0,
+      "arm": "cache_and_foreach",
+      "elapsed_s": 5.8029376687482,
+      "updates_per_s": 44.1155867275107,
+      "final_state_sha256": "63fdd5cd5d9a12a073569624c7dd59175dad16bd148b67ed3439e9375c48ef45",
+      "sampling_rng_sha256": "8e9650809653d57094dee246d53fb2b4c9b701703effde2f24671fad8182e465",
+      "full_state_identical": true,
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    {
+      "repeat": 1,
+      "arm": "cache_and_foreach",
+      "elapsed_s": 5.763503991998732,
+      "updates_per_s": 44.417423906601904,
+      "final_state_sha256": "63fdd5cd5d9a12a073569624c7dd59175dad16bd148b67ed3439e9375c48ef45",
+      "sampling_rng_sha256": "8e9650809653d57094dee246d53fb2b4c9b701703effde2f24671fad8182e465",
+      "full_state_identical": true,
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    {
+      "repeat": 1,
+      "arm": "cache_only",
+      "elapsed_s": 6.0582664124667645,
+      "updates_per_s": 42.25631270906154,
+      "final_state_sha256": "63fdd5cd5d9a12a073569624c7dd59175dad16bd148b67ed3439e9375c48ef45",
+      "sampling_rng_sha256": "8e9650809653d57094dee246d53fb2b4c9b701703effde2f24671fad8182e465",
+      "full_state_identical": true,
+      "patch": null
+    },
+    {
+      "repeat": 1,
+      "arm": "original",
+      "elapsed_s": 6.649675061926246,
+      "updates_per_s": 38.49812173015311,
+      "final_state_sha256": "63fdd5cd5d9a12a073569624c7dd59175dad16bd148b67ed3439e9375c48ef45",
+      "sampling_rng_sha256": "8e9650809653d57094dee246d53fb2b4c9b701703effde2f24671fad8182e465",
+      "full_state_identical": true,
+      "patch": null
+    }
+  ],
+  "mask_acceptance_edge_cases": 4,
+  "parent_unchanged": true,
+  "replay_unchanged": true,
+  "new_physics": 0,
+  "auxiliary_weights_saved": false,
+  "auxiliary_updates": 1632,
+  "limitations": [
+    "Shared GPU with formal learner; two reversed repeats are finite microbenchmark, not online speedup.",
+    "No sampler scheduling, policy timing, update ratio or batch changes."
+  ]
+}
