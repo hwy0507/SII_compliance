@@ -4,7 +4,9 @@
 selects a partial-grid winner or reports a partial physics matrix as final.
 --replay-completed additionally checks completed candidates on the six existing
 selection identities; it does not expose new conditions or change model choice.
-Without --progress, all75 fit processes/108 hyperparameter candidates, nine
+--training-only verifies the complete grid and nine locked selections while
+physical evaluation is pending; it never reports final physical results.
+Without either stage flag, all75 fit processes/108 hyperparameter candidates, nine
 locked models and108 physical episodes are required.
 """
 from __future__ import annotations
@@ -55,7 +57,8 @@ def replay_validation(root, family, checkpoint, obs, ep, train, target):
     return dict(validation_mse=squared_error/count,episodes=per_episode)
 
 
-def audit(root, progress, replay_completed=False):
+def audit(root, progress, replay_completed=False, training_only=False):
+    require(not (progress and training_only), 'Audit stages are mutually exclusive')
     reg = read(root/'REGISTRATION.json')
     state_bytes = (root/'execution.json').read_bytes()
     state = json.loads(state_bytes)
@@ -143,14 +146,13 @@ def audit(root, progress, replay_completed=False):
                 result['completed_candidate_validation_replay'].append(dict(name=row['name'],**replay))
             result['replay_scope']='Completed candidates only, same six model-selection identities. No partial-grid model selection or new-condition exposure.'
         return result
-    require(state['status']=='complete' and len(fits)==75,'Training/evaluation not yet complete')
+    require(state['status'] in (('evaluation','complete') if training_only else ('complete',)) and len(fits)==75,
+            'Training/evaluation not yet complete')
     require(Counter(f['family'] for f in fits)=={'esn':3,'rnn':36,'mlp':36},'Training coverage mismatch')
     require(seen_neural=={(family,seed,*pair) for family in ('rnn','mlp') for seed in reg['seeds'] for pair in neural_grid}, 'Incomplete neural grid')
-    lock=read(root/'MODEL_LOCK.json'); report=read(root/'REPORT.json')
+    lock=read(root/'MODEL_LOCK.json')
     require(lock['status']=='frozen' and len(lock['models'])==9,'Model lock incomplete')
-    require(state['model_lock_sha256']==report['model_lock_sha256']==sha(root/'MODEL_LOCK.json'),'Model lock changed')
-    require(state['report_sha256']==sha(root/'REPORT.json') and report['status']=='complete','Report mismatch')
-    require(report['registration_sha256']==sha(root/'REGISTRATION.json'),'Report provenance mismatch')
+    require(state['model_lock_sha256']==sha(root/'MODEL_LOCK.json'),'Model lock changed')
     validation=[]
     models={m['name']:m for m in lock['models']}
     require(set(models)=={f'{f}_s{s}' for f in reg['families'] for s in reg['seeds']},'Model grid mismatch')
@@ -162,6 +164,15 @@ def audit(root, progress, replay_completed=False):
         replay=replay_validation(root,model['family'],model['checkpoint'],obs,ep,train,target)
         equal_number(replay['validation_mse'],model['validation_mse'],'Independent deployment validation MSE mismatch')
         validation.append(dict(method=model['name'],**replay))
+    if training_only:
+        result.update(status='training_and_selection_audit_passed_physics_not_audited',
+                      validation_replay=validation,model_lock_sha256=sha(root/'MODEL_LOCK.json'),
+                      limitation='Complete training and model selection only. Closed-loop evaluation and final physical audit are not certified by this receipt.')
+        return result
+    report=read(root/'REPORT.json')
+    require(report['model_lock_sha256']==sha(root/'MODEL_LOCK.json'),'Report model lock changed')
+    require(state['report_sha256']==sha(root/'REPORT.json') and report['status']=='complete','Report mismatch')
+    require(report['registration_sha256']==sha(root/'REGISTRATION.json'),'Report provenance mismatch')
     conditions={c['id']:c for c in read(root/'CONDITIONS.json')['conditions']}
     physics=report['rows']
     require(len(physics)==108 and {(r['method'],r['condition']) for r in physics}==set((m,c) for m in models for c in conditions),'Incomplete/duplicate physical grid')
@@ -250,11 +261,13 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--progress',action='store_true')
+    stage=p.add_mutually_exclusive_group()
+    stage.add_argument('--progress',action='store_true')
+    stage.add_argument('--training-only',action='store_true')
     p.add_argument('--replay-completed',action='store_true')
     a=p.parse_args();require(not a.output.exists(),'Never overwrite an audit')
     require(not a.replay_completed or a.progress,'--replay-completed requires --progress')
-    result=audit(a.root.resolve(),a.progress,a.replay_completed)
+    result=audit(a.root.resolve(),a.progress,a.replay_completed,a.training_only)
     a.output.parent.mkdir(parents=True,exist_ok=True)
     a.output.write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
     print(json.dumps({k:v for k,v in result.items() if k not in ['completed_fits','contact_supplement','validation_replay','completed_candidate_validation_replay']},ensure_ascii=False))

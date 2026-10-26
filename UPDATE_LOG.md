@@ -1,3 +1,12 @@
+## 2026-10-26 — 新30条非RL完整训练与9模型选模审计通过，闭环评测继续
+
+- 开工实时fetch/read main=fad16f5a23952ce1713c90c18efb4135df9c86a5、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；服务器RL暂停与本机非RL Goal分开，未恢复服务器训练。
+- 原nonrl_new30_fair_20261026_v2完成75拟合/108候选，9模型已锁；同新增30条24/6划分、3seed与每seed12候选。全部75拟合部署验证重放通过，独立完整网格/9选模与动作重放审计通过，1357冻结源码核验。
+- 审计新增--training-only，明确只认证训练/选模；默认最终入口仍拒绝未完成物理矩阵，实际拒绝检查和diff检查通过。未改运行中的冻结源码、模型、gate/filter/物理参数。
+- 三seed验证动作MSE：ESN .00027425/.00027883/.00027072，RNN .00018099/.00017750/.00020400，MLP .00109565/.00110556/.00111807。属于选模集，不是未见成功率或收敛证明；完整比较报告见docs/NONRL_NEW30_FAIR_COMPARISON_20261026.md。
+- 07:23 UTC原服务active，闭环完成1/108、第二回合推进。首ESN Task真/Strict假，外部穿透.293744mm，失败保留；不作部分SPT排名。最终108回合与独立物理审计未完，Goal继续active。
+- 小型证据/审计代码4文件155225字节已归档并逐SHA/大小核验：arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_selection_0725/；收据docs/evidence/nonrl_new30_20261026/TRAINING_SELECTION_ARCHIVE_0725.json。完整数据、模型与物理轨迹仍仅本机，未声称全量服务器备份。
+
 ## 2026-10-26 — 记录恢复训练后的 GPU 50% 利用率目标
 
 - 用户要求在MD中写明GPU利用率最好不低于50%；已更新AGENTS、Direct选择文档、关机交接及恢复提示词。
