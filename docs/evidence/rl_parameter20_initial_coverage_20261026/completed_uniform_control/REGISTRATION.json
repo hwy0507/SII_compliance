@@ -1,0 +1,43 @@
+{
+  "checkpoint": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle13_archive_20261026_v1/direct/cycle_00013.pt",
+    "sha256": "a03e2d6e859d4299115dad8d59011914db1a40aef984b1bcb595528c72e659b0"
+  },
+  "cycle_review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle13_review_20261026_v2/REVIEW.json",
+    "sha256": "cb70e124d549d8697d158fec274a35deebada0f44c6be0e5be9be98d54d203fd"
+  },
+  "health_review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle13_review_20261026_v2/DIAGNOSIS.json",
+    "sha256": "b613b04161e7ba89515e5e834f873f90a1b0f612f00a96ac719c89a21ab18da8"
+  },
+  "outer_updates_per_arm": 2000,
+  "record_every": 100,
+  "auxiliary_weights_promoted": false,
+  "seed": 2026102614,
+  "adapter_runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_multistep_batch65536_cycle14_20261026_v1",
+  "base_adapter_runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_state_adapter_20261026_v1",
+  "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+  "upstream": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_upstream_1fa2af7",
+  "upstream_manifest": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/SERL_UPSTREAM_1fa2af7_HASHES.json",
+  "source_hashes": {
+    "probe_serl_warm_target_horizon_20261026.py": "5868ca60143a1dff9f89ee554e66a2efd94e6437a63abf7f7f725e374c35e255"
+  },
+  "adapter_hashes": {
+    "serl_state_adapter_20261026.py": "a761b5dc10f89c332f16fb418685738f0ec559bdf6c8ef5f64b5c3f7eadb2040",
+    "serl_multistep_state_adapter_20261026.py": "395eb3c618d37d6e3dad338478a7017d3fc273d7368bb2a8a8c488cfcdd840de",
+    "serl_clock_state_adapter_20261026.py": "938743a6efb324a5a9fae99e05d7232e937bd9c5d2f97f7863e5a05aaa004c1e",
+    "serl_critic_clock_extension_20261026.py": "e6e7e0b2c5083e30aae722f8f439533158f86092c091ded10702bd1415d610c2",
+    "serl_multistep_replay_gather_20261026.py": "fe06527cf35a492ed48538dae739f859726aa31dd5f8a801157530c537553c87",
+    "serl_multistep_batch_transfer_20261026.py": "8163acf910d36829116af91fc9919c59b9d99ddabf0f1af0eab23ed3b0f525c8",
+    "validate_serl_state_20261026.py": "06ad1daca7664e660a6c4cd53c74119c35ddcae7f32ece62bf15d246f46ad62a"
+  },
+  "reason": "Formal13 predicts failure and has0/30 task success after32-step learning. Compare returning to official one-step backup from this warm full state against continued32-step; equal65536 row draws and2000 official8:1 outer updates per arm. Diagnostic gradients are not causal task improvement; no auxiliary promotion.",
+  "time": 1793033635.5201921,
+  "horizons": [
+    32,
+    1
+  ],
+  "batch_size": 65536,
+  "wait_for_profile": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/batch14_parameter19_gpu_profile_20261026_v1/PROFILE.json"
+}

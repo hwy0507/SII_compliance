@@ -1,3 +1,14 @@
+## 2026-10-26 — 参数20接续、Direct初始就绪覆盖与早期回放候选
+
+- 上轮为实质进展，本轮实际fetch/read main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，无远端更新；本地起点0bcbe52。无子agent。交接docs/RL_PARAMETER20_SERL_INITIAL_COVERAGE_20261026.md。
+- 参数19完整30无abort，各41250新增、全旧state/replay/history/markers/MJB保持、新reward0误差。I/A/V Task-Strict18/18、11/11、17/17，reward−.551137/−13.804757/−2.832320，末loss1.233/1.019/.692；health/图通过。导纳退步、V值继续移动，未收敛，不将pool改动称因果改善。
+- 准确完整19全state续一个不改设置的20，I1127927/A1127928/V1127929，GPU1/2/3与原CPU组30sampler共享12CPU；新通用pool继续driver严格最新连续链和历史准备，全部学习设置保持。三check-only/真实各1000新增全prefix/history/marker/MJB/action/clock/reward0误差/亲和性通过；归档1127932/review1127933，无自动21。Direct14原3955892持续，归档3955895/review3955896，无自动15。
+- 新纯正式180样本207.645494s四卡56.1611/73.6389/73.5278/73.4611%，D/I/A/V10.2242/24.4262/25.2401/25.0330steps/s。四原learner全样本live且GPU PID逐样本核验，无辅助；profile1152868已完不重复，不保证瞬时永久达标。
+- 新只读120既有轨迹审查：Direct13全部30全approach，参数18三路各30只初始4行approach；Direct初始近零误差随后离开，首秒图已看，速度/位置约.08s/.16–.20s越原就绪阈值。全程位置误差中位数跨条件均值.582197m，三阈值同时满足占比.001455，最多连续2行。记录在task.update后，非独立gate/dwell重放；没有以参数输出构造Direct示范或nominal混合。
+- Direct全部折扣reward项重建与PBRS恒等式通过，progress−.560239、occupancy−2.690276、terminal−12.574916；phi初始.112048、每条件最大均.112049、终止.068898，几乎没有推进势。occupancy仍含approach信号，不能说失败回报全部常量；冻结奖励不改。B/runs/serl_cycle13_approach_coverage_20261026_v1已完成，原885121结束。
+- 有限early-replay候选协调1191698/只读review1231275，准确formal13完整state、2000outer/16000critic+2000actor，same65536/32步/官方8:1，仅半批交错已有前32步行，原uniformdraw/RNG可与已完成warm13 control逐项对照。直接复用已完成control不重跑，0physics/no demonstrations/no nominal mixing/不保存推广权重。改变经验分布无importancecorrection。最终完整预算、初始state/原uniformdraw/RNG匹配与独立receipt/图审查通过；共同状态terminalMAE .056348→.074165、32步TD .065922→.071064，候选自身earlyTD .137355→.151933、early残差.558644→.591516，没有拟议改善，不部署。原1191698/evaluator1369467/1231275均结束勿重跑，正式14不变。
+- 实际服务器B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl；仓库B/repository/SII_compliance，准确run/hash/命令与小证据docs/evidence/rl_parameter20_initial_coverage_20261026。HDD仅交接/收据，不称完整大产物备份；GitHub凭据未恢复，不重复索要或宣称push成功。
+
 ## 2026-10-26 — 参数共享30采样池19、Direct14接续与暖状态目标对照
 
 - 实际查询并fetch/read main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；本地起点522d53c。无子agent。完整交接docs/RL_PARAMETER19_SERL14_WARM_TARGET_20261026.md。
