@@ -78,3 +78,5 @@ Direct17原4158035及归档4158038/review4158039继续，最新完整父16，无
 ## 下一步判据核对
 
 本轮复读原RL_SPT_TRAINING_HANDOFF_20261025.md第5节与关机交接：要求同身份配对回报改善、末3轮均值变化≤5%及斜率/不确定区间、无新增数值/温度异常，并有冻结策略验证；完全无改善的平坦只能叫停滞。任务成功率与回报稳定必须分开，不要求baseline任务成功才算回报稳定。原32条件建议应按当前正式30条件登记落实，不能偷偷改分母或把建议写成已执行。后续优先量化Direct完整同协议周期的配对改善和稳定性，而不是仅凭0/30无限否决；参数扩容24后应等待至少3个完整同容量轮次，26尚未完整，I/V loss上升尚待诊断。原指定ESN仍未获得，前次已询问，不重复追问或拿旧ESN替代。
+
+收尾科学提交aa5cac72c965cd2dfb772ff99330c1acacf930dc仅本地，GitHub push仍认证失败，实际fetch远端main dbb1d76/baseline f6e8f8c未变。完整616成员小证据SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER26_PHYSICAL_PREFIX_20261026_205039/FULL_SMALL_EVIDENCE.tar.gz，逐成员hash核验，1932527字节，SHA256 2d5eac7addada82b9c14f1b31a86486ef75fbd81f7aec6a62e40b250332425c8。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER26_PHYSICAL_PREFIX_STATUS_20261026_205039/HANDOFF.md及收据/LATEST入口已核验；大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。FINAL_LIVE_STATUS确认原Direct17/新参数26及归档/完整review继续，有限物理probe/review/observer/准备进程均退出。Goal active；下一轮先核原26/17，不重跑已完成实验，并落实原交接的配对回报/末3轮稳定性判据。
