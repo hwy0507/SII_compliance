@@ -67,6 +67,14 @@
 
 # 更新日志
 
+## 2026-10-26 — 用户要求关机前暂停，完整状态快照与恢复交接
+
+- 用户明确暂停，Goal已paused；先复制原子落盘checkpoint，再SIGINT四learner并关闭其采样，停止archive/auditor/等待review。/proc核验无项目Python任务。中断FAILURE是KeyboardInterrupt，不自动解释为算法崩溃。
+- 保存四周期性完整学习状态快照D213000/I162000/A161000/V162000及各最后完整周期备用；torch.load/finite/replay长度、八文件SHA/HDD备份核验通过。物理中途状态未保存；恢复须新回合，partial-cycle编号/覆盖需独立登记，不能声称无缝或默默丢弃更新。
+- HDD备份与具体paths/hash、当前算法/合同、全部关键进度、恢复步骤见docs/RL_SHUTDOWN_RECOVERY_20261026.md/.json；不含全SSD/环境/原始轨迹。
+- A/V固定代表三例各330万子步/4125动作独立复核通过；八temporal重复已自然完成但三seed最终汇总未做。统一cycle3审查未完成，已停止等待；不重启已完成任务。
+- 原四充分收敛/完整最终矩阵/SPT/指定ESN仍未完成。服务器重开并收到用户恢复指令后继续原Goal。远端main ce467b1/baseline f6e8f8c，本地此前fe2c7b9；HTTPS push仍受认证限制。
+
 ## 2026-10-26 — 紧急GPU资源恢复与跨周期回报迁移诊断
 
 - 收尾原四辅助全完成，8臂16万/648点/图与hash复核。新增独立两seed迁移稳健性复核，clock_temporal_return_replications_v1八进程（见AGENTS），新32万更新/0actor/physics；各已真实更新，不自动延期。首组结束曾导致GPU回落，完整窗口保留。新八路一分钟均值49.87/61.13/56.90/56.93%、最低31/40/41/36%；混合整体56.21%，不是纯在线吞吐。

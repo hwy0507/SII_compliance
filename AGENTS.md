@@ -1,5 +1,7 @@
 # 本仓库的持续工作约定
 
+**当前最高优先状态：用户2026-10-26要求服务器关机前暂停。Goal已paused，全部本项目训练/仿真/审查进程退出；未获恢复指令前禁止重启。先读docs/RL_SHUTDOWN_RECOVERY_20261026.md/.json。HDD备份 /inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1；快照D213000/I162000/A161000/V162000，均部分周期，MuJoCo物理状态未保存；完整边界备用分别206250/122689/123750/123750。恢复必须独立run并审查部分cycle记账，保留optimizer/replay/RNG，不fresh reset。八temporal重复已全完成勿重跑、最终三seed汇总待做；A/V固定3例独立审查均已完，12例统一汇总待做；cycle3统一review等待已停止且未完成。原PID全部历史信息，不据旧进度重启。**
+
 用户于 2026-09-30 明确授权并要求：**每次对话结束前，将本次文件改动 commit 并 push 到
 `https://github.com/hwy0507/SII_compliance` 的 `main`，同时维护根目录 `UPDATE_LOG.md`。**
 本约定适用于本仓库后续任务，覆盖旧进度文档中“保持未提交／不发布”的历史要求；用户后续
