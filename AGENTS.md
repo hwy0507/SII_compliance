@@ -7,6 +7,8 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新fresh Direct完整cycle0只读诊断已完成，session29414/52532均退出勿重复：41250/36251，Task/Strict0/0各30、全55s；loss9.334、TD MAE.401、终端MAE36.201。精确重建41250mask/最终replay RNG、36251采样含6346终端抽取；最后1条未抽，另2条≤20次，>100次20条in-bag MAE4.84、out-of-bag97.60。不能把整体终端误差全部解释成发散，也不是健康收敛；继续原阶段不改mask/设置。30terminal/MJB/reward/network与两图核验，0physics/updates。runs/fresh_direct_cycle00_diagnosis_v1、docs/PUBLISHED_FRESH_DIRECT_FIRST_CYCLE_20261026.md/.json。原四learner与2471936/2472115/2472286继续；原四路完整审计还会按原计划做，别重复派发训练。Goal/ESN/GPU50%仍未完。
+
 最新2026-10-26：四原SAC均正常结束勿重启；Imp1557140最后cycle4/228528/412500、Task17/Strict16各30、30完整55s，final/archive fb4786b3…核验。新Imp3849956直接12worker已实际学习，4000步fresh初始化及15000/10001onset核验，14fixture/MJB/plan/dt通过；首只读断言错把executed7维当参数5维，失败收据保留，只修核验器，训练未动。runs/impedance_fresh_start_review_v1。
 Direct原1215546也正常结束cycle0/41250/36251，Task/Strict0/0、reward−32.96638；新4055508由原协调自动12worker全state续余五周期。父15eb2266…/复制/EXECUTION一致，新46250/41251父replay/history精确、Adam连续及首12模型输入核验；runs/direct_fresh_resource_resume_review_v1。原A1314547/V1146204仍首轮，2471936/2472115/2472286继续，勿重复派发；接续以resumed_from/hash为准，registration restart_reason仍描述整个fresh阶段起源。
 最新纯正式GPU60秒均值10.02/6.13/1.18/1.05%，仅D/I已12worker，50%未达，无辅助GPUjob。文档PUBLISHED_INDEPENDENT_RESOURCE_HANDOFF_20261026补充；0新增核验physics/updates，不改live设置，不是收敛/最终比较。Goal active，指定ESN仍缺。

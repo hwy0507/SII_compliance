@@ -1,0 +1,1113 @@
+{
+  "created_unix": 1792976460.4206665,
+  "host": "rltest-1025--a6ed2ff39b3c-s5gnp35dxg",
+  "run": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/fresh_direct_cycle00_diagnosis_v1",
+  "main": "a52dfba4486af8d263d5cd0a976c3102482ff249",
+  "baseline": "f6e8f8c2711a93f0b5dfc88c608bd82647084d5d",
+  "diagnosis": {
+    "steps": 41250,
+    "updates": 36251,
+    "checkpoint_sha256": "15eb22664e7e3f4c8db3eaf4566f33f7b34bf08c596b58f21bebb6eda04cbfba",
+    "boundary": "complete_condition_cycle",
+    "replay_size": 41250,
+    "terminal_count": 30,
+    "terminal_fraction": 0.0007272727272727272,
+    "alpha": 0.015294644050300121,
+    "target_entropy": -7,
+    "terminal_reward": {
+      "count": 30,
+      "mean": -26.188879903157552,
+      "minimum": -27.43733024597168,
+      "maximum": -25.393224716186523,
+      "p50": -25.67834186553955,
+      "p95": -25.402048969268797
+    },
+    "terminal_q_predictions": {
+      "count": 150,
+      "mean": 9.259144665400187,
+      "minimum": -39.4683837890625,
+      "maximum": 91.03729248046875,
+      "p50": -21.269822120666504,
+      "p95": 69.28538246154784
+    },
+    "terminal_q_absolute_error": {
+      "count": 150,
+      "mean": 36.20117663701375,
+      "minimum": 0.06608009338378906,
+      "maximum": 118.42800903320312,
+      "p50": 6.120957374572754,
+      "p95": 96.6917510986328
+    },
+    "terminal_q_in_bag_absolute_error": {
+      "count": 121,
+      "mean": 22.67738806511745,
+      "minimum": 0.06608009338378906,
+      "maximum": 92.92840576171875,
+      "p50": 3.1882495880126953,
+      "p95": 91.1270523071289
+    },
+    "terminal_q_out_of_bag_absolute_error": {
+      "count": 29,
+      "mean": 92.62801860940867,
+      "minimum": 71.61875915527344,
+      "maximum": 118.42800903320312,
+      "p50": 91.96837615966797,
+      "p95": 112.99424743652341
+    },
+    "terminal_mask_interpretation": "Mask1 rows train that critic; mask0 rows are intentionally withheld from its loss. Report fitting and held-out prediction separately; aggregate error mixes them.",
+    "terminal_error_limitation": "Observation lacks remaining time; terminal MAE can include hidden-clock aliasing. It is a diagnostic, not a required zero-error convergence gate.",
+    "terminal_success_bonus_samples": 0,
+    "sampled_td_absolute_error": {
+      "count": 20480,
+      "mean": 0.4013361885212362,
+      "minimum": 7.62939453125e-06,
+      "maximum": 92.92840576171875,
+      "p50": 0.26671600341796875,
+      "p95": 0.9693008422851559
+    },
+    "sampled_q_values": {
+      "count": 20480,
+      "mean": 67.44448637431488,
+      "minimum": -27.639822006225586,
+      "maximum": 92.10188293457031,
+      "p50": 66.22618103027344,
+      "p95": 75.60009574890137
+    },
+    "fixed_alpha_soft_q_global_bound": 93.19579951216502,
+    "sampled_q_above_global_bound_fraction": 0.0,
+    "soft_bound_limitation": "Necessary bound for frozen checkpoint policy/current alpha and spt_v1; not a future changing-alpha bound, and satisfying it does not establish calibration.",
+    "bellman_target_count": 2,
+    "td_diagnostic_pair": "critics0/1 fixed diagnostic; CHEQ training samples critic pairs",
+    "sampled_policy_entropy": {
+      "count": 4096,
+      "mean": -7.131711883979733,
+      "minimum": -35.23200225830078,
+      "maximum": 7.5044264793396,
+      "p50": -6.301406145095825,
+      "p95": 0.3493446707725525
+    },
+    "near_action_limit_fraction": 0.1011788472533226,
+    "network_state_unchanged": true,
+    "ended_episode_returns": {
+      "count": 30,
+      "mean": -32.96638163701394,
+      "minimum": -35.148954407853545,
+      "maximum": -31.850526743401524,
+      "p50": -32.8274015312321,
+      "p95": -31.88528728773272
+    },
+    "failure_stages": {
+      "carry": 9,
+      "lift": 1,
+      "approach": 19,
+      "align": 1
+    },
+    "recent_optimizer": {
+      "agent_train/q_loss": {
+        "count": 1000,
+        "mean": 9.33413506692648,
+        "minimum": 0.6900794506072998,
+        "maximum": 178.59088134765625,
+        "p50": 1.4327127933502197,
+        "p95": 83.47987823486318
+      },
+      "agent_train/next_q_values": {
+        "count": 1000,
+        "mean": 67.0841510772705,
+        "minimum": 65.82487487792969,
+        "maximum": 68.40312194824219,
+        "p50": 67.08607482910156,
+        "p95": 67.77912368774415
+      },
+      "agent_train/entropy_coefficient_loss": {
+        "count": 1000,
+        "mean": 1.0164531924724578,
+        "minimum": -5.405892848968506,
+        "maximum": 7.157466888427734,
+        "p50": 0.9897362589836121,
+        "p95": 4.289782381057736
+      },
+      "agent_train/actor_loss": {
+        "count": 1000,
+        "mean": -67.20452697753906,
+        "minimum": -68.33456420898438,
+        "maximum": -66.11695861816406,
+        "p50": -67.18901824951172,
+        "p95": -66.58604431152344
+      },
+      "agent_train/actor_entropy": {
+        "count": 1000,
+        "mean": -7.239900933265686,
+        "minimum": -8.686623573303223,
+        "maximum": -5.706690311431885,
+        "p50": -7.235405445098877,
+        "p95": -6.396379971504212
+      },
+      "agent_train/entropy_coefficient": {
+        "count": 1000,
+        "mean": 0.014944185980595649,
+        "minimum": 0.013704344630241394,
+        "maximum": 0.01540817879140377,
+        "p50": 0.015200026333332062,
+        "p95": 0.015394033398479223
+      },
+      "agent_train/target_entropy": {
+        "count": 1000,
+        "mean": -7.0,
+        "minimum": -7.0,
+        "maximum": -7.0,
+        "p50": -7.0,
+        "p95": -7.0
+      }
+    }
+  },
+  "terminal_exposure": {
+    "created_unix": 1792976343.7993217,
+    "checkpoint_sha256": "15eb22664e7e3f4c8db3eaf4566f33f7b34bf08c596b58f21bebb6eda04cbfba",
+    "seed": 20261025,
+    "all_41250_bootstrap_masks_exact": true,
+    "final_replay_rng_exact": true,
+    "rejected_batches": 0,
+    "reconstructed_updates": 36251,
+    "total_terminal_draws": 6346,
+    "groups": {
+      "zero_draws": {
+        "terminal_rows": 1,
+        "in_bag_predictions": 3,
+        "in_bag_mae": 92.19024658203125,
+        "out_of_bag_mae": 91.91555786132812
+      },
+      "one_to_twenty_draws": {
+        "terminal_rows": 2,
+        "in_bag_predictions": 8,
+        "in_bag_mae": 91.04673767089844,
+        "out_of_bag_mae": 91.83065032958984
+      },
+      "over_twenty_draws": {
+        "terminal_rows": 27,
+        "in_bag_predictions": 110,
+        "in_bag_mae": 15.809266090393066,
+        "out_of_bag_mae": 92.74880981445312
+      },
+      "over_hundred_draws": {
+        "terminal_rows": 20,
+        "in_bag_predictions": 83,
+        "in_bag_mae": 4.8443756103515625,
+        "out_of_bag_mae": 97.6025390625
+      }
+    },
+    "cases": [
+      {
+        "condition": "passive_corner_train_0100",
+        "collected_step": 2749,
+        "age_transitions": 38501,
+        "accepted_replay_draws": 535,
+        "distinct_update_batches": 530,
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          -27.639822006225586,
+          -27.208110809326172,
+          -26.73272705078125,
+          -26.725730895996094,
+          -26.165143966674805
+        ],
+        "reward": -27.38802719116211,
+        "in_bag_mae": 0.5944381952285767,
+        "out_of_bag_mae": null
+      },
+      {
+        "condition": "passive_corner_train_0000",
+        "collected_step": 2751,
+        "age_transitions": 38499,
+        "accepted_replay_draws": 588,
+        "distinct_update_batches": 580,
+        "mask": [
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "q": [
+          -29.45469093322754,
+          -23.030282974243164,
+          69.13053131103516,
+          69.41207885742188,
+          -27.5153751373291
+        ],
+        "reward": -27.406368255615234,
+        "in_bag_mae": 2.177804946899414,
+        "out_of_bag_mae": 96.67767333984375
+      },
+      {
+        "condition": "passive_corner_train_0200",
+        "collected_step": 5424,
+        "age_transitions": 35826,
+        "accepted_replay_draws": 540,
+        "distinct_update_batches": 534,
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          -24.966060638427734,
+          -21.191648483276367,
+          -18.01744842529297,
+          -21.08158302307129,
+          -22.07285499572754
+        ],
+        "reward": -27.390840530395508,
+        "in_bag_mae": 5.92492151260376,
+        "out_of_bag_mae": null
+      },
+      {
+        "condition": "passive_corner_train_0300",
+        "collected_step": 5624,
+        "age_transitions": 35626,
+        "accepted_replay_draws": 492,
+        "distinct_update_batches": 488,
+        "mask": [
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          69.6467056274414,
+          -26.94748878479004,
+          -24.409561157226562,
+          -24.798542022705078,
+          -24.448726654052734
+        ],
+        "reward": -27.38397979736328,
+        "in_bag_mae": 2.2329001426696777,
+        "out_of_bag_mae": 97.03068542480469
+      },
+      {
+        "condition": "passive_corner_train_0337",
+        "collected_step": 8188,
+        "age_transitions": 33062,
+        "accepted_replay_draws": 431,
+        "distinct_update_batches": 425,
+        "mask": [
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "q": [
+          -28.42574119567871,
+          -27.230480194091797,
+          69.46656799316406,
+          69.73062896728516,
+          -26.871084213256836
+        ],
+        "reward": -27.43733024597168,
+        "in_bag_mae": 0.5871689915657043,
+        "out_of_bag_mae": 97.03593444824219
+      },
+      {
+        "condition": "passive_corner_train_0400",
+        "collected_step": 8363,
+        "age_transitions": 32887,
+        "accepted_replay_draws": 470,
+        "distinct_update_batches": 468,
+        "mask": [
+          1,
+          0,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          -30.394824981689453,
+          69.87483215332031,
+          -27.10959815979004,
+          -26.83905029296875,
+          -28.600128173828125
+        ],
+        "reward": -27.411991119384766,
+        "in_bag_mae": 1.2615761756896973,
+        "out_of_bag_mae": 97.28681945800781
+      },
+      {
+        "condition": "passive_corner_train_0500",
+        "collected_step": 10924,
+        "age_transitions": 30326,
+        "accepted_replay_draws": 338,
+        "distinct_update_batches": 333,
+        "mask": [
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "q": [
+          -24.202468872070312,
+          -21.34799575805664,
+          -23.65225601196289,
+          91.03729248046875,
+          90.97662353515625
+        ],
+        "reward": -27.390718460083008,
+        "in_bag_mae": 4.323144912719727,
+        "out_of_bag_mae": 118.39767456054688
+      },
+      {
+        "condition": "passive_corner_train_0600",
+        "collected_step": 11130,
+        "age_transitions": 30120,
+        "accepted_replay_draws": 379,
+        "distinct_update_batches": 378,
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          -25.070558547973633,
+          -24.242862701416016,
+          -24.164339065551758,
+          -21.990589141845703,
+          -22.02214241027832
+        ],
+        "reward": -27.413963317871094,
+        "in_bag_mae": 3.915864944458008,
+        "out_of_bag_mae": null
+      },
+      {
+        "condition": "passive_corner_train_0671",
+        "collected_step": 13468,
+        "age_transitions": 27782,
+        "accepted_replay_draws": 277,
+        "distinct_update_batches": 277,
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          -26.23050308227539,
+          -27.263330459594727,
+          -26.184953689575195,
+          -27.203588485717773,
+          -28.014766693115234
+        ],
+        "reward": -27.396780014038086,
+        "in_bag_mae": 0.6645461916923523,
+        "out_of_bag_mae": null
+      },
+      {
+        "condition": "passive_corner_train_0900",
+        "collected_step": 14217,
+        "age_transitions": 27033,
+        "accepted_replay_draws": 230,
+        "distinct_update_batches": 230,
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          -30.50181007385254,
+          -27.097414016723633,
+          -28.47176170349121,
+          -27.276927947998047,
+          -28.325014114379883
+        ],
+        "reward": -27.433908462524414,
+        "in_bag_mae": 1.098067045211792,
+        "out_of_bag_mae": null
+      },
+      {
+        "condition": "active_short_train_0000",
+        "collected_step": 16041,
+        "age_transitions": 25209,
+        "accepted_replay_draws": 248,
+        "distinct_update_batches": 245,
+        "mask": [
+          1,
+          1,
+          0,
+          1,
+          1
+        ],
+        "q": [
+          -25.255868911743164,
+          -22.117488861083984,
+          66.16523742675781,
+          -24.239978790283203,
+          -24.866455078125
+        ],
+        "reward": -25.605846405029297,
+        "in_bag_mae": 1.485898494720459,
+        "out_of_bag_mae": 91.77108764648438
+      },
+      {
+        "condition": "active_short_train_0100",
+        "collected_step": 16970,
+        "age_transitions": 24280,
+        "accepted_replay_draws": 208,
+        "distinct_update_batches": 208,
+        "mask": [
+          1,
+          1,
+          0,
+          1,
+          1
+        ],
+        "q": [
+          -28.991310119628906,
+          -26.237863540649414,
+          66.39873504638672,
+          -25.146759033203125,
+          -25.503562927246094
+        ],
+        "reward": -25.569643020629883,
+        "in_bag_mae": 1.1447129249572754,
+        "out_of_bag_mae": 91.96837615966797
+      },
+      {
+        "condition": "active_short_train_0200",
+        "collected_step": 18785,
+        "age_transitions": 22465,
+        "accepted_replay_draws": 216,
+        "distinct_update_batches": 216,
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          -27.46466827392578,
+          -29.290895462036133,
+          -26.46714210510254,
+          -27.69289207458496,
+          -25.00742530822754
+        ],
+        "reward": -25.767486572265625,
+        "in_bag_mae": 1.7211425304412842,
+        "out_of_bag_mae": null
+      },
+      {
+        "condition": "active_short_train_0300",
+        "collected_step": 19736,
+        "age_transitions": 21514,
+        "accepted_replay_draws": 187,
+        "distinct_update_batches": 186,
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          -22.407501220703125,
+          -25.950721740722656,
+          -26.780620574951172,
+          -27.791749954223633,
+          -24.889972686767578
+        ],
+        "reward": -25.67666244506836,
+        "in_bag_mae": 1.5097911357879639,
+        "out_of_bag_mae": null
+      },
+      {
+        "condition": "active_short_train_0337",
+        "collected_step": 21518,
+        "age_transitions": 19732,
+        "accepted_replay_draws": 179,
+        "distinct_update_batches": 177,
+        "mask": [
+          1,
+          1,
+          0,
+          1,
+          1
+        ],
+        "q": [
+          -17.207273483276367,
+          -19.398723602294922,
+          79.5024185180664,
+          -12.778987884521484,
+          -19.6748104095459
+        ],
+        "reward": -25.432191848754883,
+        "in_bag_mae": 8.167243003845215,
+        "out_of_bag_mae": 104.93460845947266
+      },
+      {
+        "condition": "active_short_train_0400",
+        "collected_step": 22474,
+        "age_transitions": 18776,
+        "accepted_replay_draws": 144,
+        "distinct_update_batches": 142,
+        "mask": [
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "q": [
+          -27.958698272705078,
+          -24.21981430053711,
+          66.17667388916016,
+          66.20114135742188,
+          -25.709949493408203
+        ],
+        "reward": -25.812057495117188,
+        "in_bag_mae": 1.2803306579589844,
+        "out_of_bag_mae": 92.00096130371094
+      },
+      {
+        "condition": "active_short_train_0500",
+        "collected_step": 24304,
+        "age_transitions": 16946,
+        "accepted_replay_draws": 154,
+        "distinct_update_batches": 153,
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          40.99814224243164,
+          14.823789596557617,
+          24.297170639038086,
+          -23.96906852722168,
+          22.708925247192383
+        ],
+        "reward": -25.450057983398438,
+        "in_bag_mae": 41.22184753417969,
+        "out_of_bag_mae": null
+      },
+      {
+        "condition": "active_short_train_0600",
+        "collected_step": 25258,
+        "age_transitions": 15992,
+        "accepted_replay_draws": 114,
+        "distinct_update_batches": 114,
+        "mask": [
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "q": [
+          -26.2183780670166,
+          -24.22062873840332,
+          -25.27295684814453,
+          66.67166900634766,
+          66.45938110351562
+        ],
+        "reward": -25.7221736907959,
+        "in_bag_mae": 0.8156554102897644,
+        "out_of_bag_mae": 92.28770446777344
+      },
+      {
+        "condition": "active_short_train_0671",
+        "collected_step": 26995,
+        "age_transitions": 14255,
+        "accepted_replay_draws": 105,
+        "distinct_update_batches": 105,
+        "mask": [
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          66.12928771972656,
+          -26.80841636657715,
+          -25.81338119506836,
+          -22.830970764160156,
+          -26.153398513793945
+        ],
+        "reward": -25.56291389465332,
+        "in_bag_mae": 1.204599380493164,
+        "out_of_bag_mae": 91.69219970703125
+      },
+      {
+        "condition": "active_short_train_0900",
+        "collected_step": 28000,
+        "age_transitions": 13250,
+        "accepted_replay_draws": 109,
+        "distinct_update_batches": 109,
+        "mask": [
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          66.2237548828125,
+          -8.303718566894531,
+          -34.72405242919922,
+          -23.54492950439453,
+          -24.65692710876465
+        ],
+        "reward": -25.53577995300293,
+        "in_bag_mae": 7.322509288787842,
+        "out_of_bag_mae": 91.75953674316406
+      },
+      {
+        "condition": "active_long_train_0000",
+        "collected_step": 29714,
+        "age_transitions": 11536,
+        "accepted_replay_draws": 84,
+        "distinct_update_batches": 84,
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        "q": [
+          35.93186950683594,
+          -11.4097900390625,
+          -8.407690048217773,
+          -25.50200653076172,
+          65.20613098144531
+        ],
+        "reward": -25.608509063720703,
+        "in_bag_mae": 23.26160430908203,
+        "out_of_bag_mae": 90.81463623046875
+      },
+      {
+        "condition": "active_long_train_0100",
+        "collected_step": 30784,
+        "age_transitions": 10466,
+        "accepted_replay_draws": 74,
+        "distinct_update_batches": 74,
+        "mask": [
+          1,
+          1,
+          0,
+          1,
+          1
+        ],
+        "q": [
+          -12.491081237792969,
+          -6.704775333404541,
+          59.68971252441406,
+          -11.034990310668945,
+          10.530467987060547
+        ],
+        "reward": -25.400897979736328,
+        "in_bag_mae": 20.47580337524414,
+        "out_of_bag_mae": 85.09060668945312
+      },
+      {
+        "condition": "active_long_train_0200",
+        "collected_step": 32455,
+        "age_transitions": 8795,
+        "accepted_replay_draws": 67,
+        "distinct_update_batches": 67,
+        "mask": [
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          50.65287780761719,
+          50.81744384765625,
+          48.85321807861328,
+          48.9318962097168,
+          49.236534118652344
+        ],
+        "reward": -25.412450790405273,
+        "in_bag_mae": 74.41967010498047,
+        "out_of_bag_mae": 76.14761352539062
+      },
+      {
+        "condition": "active_long_train_0300",
+        "collected_step": 33570,
+        "age_transitions": 7680,
+        "accepted_replay_draws": 44,
+        "distinct_update_batches": 44,
+        "mask": [
+          1,
+          1,
+          1,
+          0,
+          1
+        ],
+        "q": [
+          45.31074142456055,
+          45.410194396972656,
+          46.307884216308594,
+          46.22553634643555,
+          46.26906967163086
+        ],
+        "reward": -25.393224716186523,
+        "in_bag_mae": 71.21769714355469,
+        "out_of_bag_mae": 71.61875915527344
+      },
+      {
+        "condition": "active_long_train_0337",
+        "collected_step": 35224,
+        "age_transitions": 6026,
+        "accepted_replay_draws": 59,
+        "distinct_update_batches": 59,
+        "mask": [
+          1,
+          0,
+          1,
+          0,
+          1
+        ],
+        "q": [
+          57.728736877441406,
+          58.42512512207031,
+          57.21437454223633,
+          58.54536437988281,
+          57.163726806640625
+        ],
+        "reward": -25.40345573425293,
+        "in_bag_mae": 82.77240753173828,
+        "out_of_bag_mae": 83.88870239257812
+      },
+      {
+        "condition": "active_long_train_0400",
+        "collected_step": 36274,
+        "age_transitions": 4976,
+        "accepted_replay_draws": 32,
+        "distinct_update_batches": 32,
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        "q": [
+          -39.4683837890625,
+          56.67616271972656,
+          64.96525573730469,
+          64.821044921875,
+          66.21473693847656
+        ],
+        "reward": -25.665559768676758,
+        "in_bag_mae": 69.31549072265625,
+        "out_of_bag_mae": 91.88029479980469
+      },
+      {
+        "condition": "active_long_train_0500",
+        "collected_step": 37976,
+        "age_transitions": 3274,
+        "accepted_replay_draws": 28,
+        "distinct_update_batches": 28,
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          -22.51009750366211,
+          3.2751035690307617,
+          -15.549670219421387,
+          60.03202819824219,
+          -25.873044967651367
+        ],
+        "reward": -25.719039916992188,
+        "in_bag_mae": 25.655506134033203,
+        "out_of_bag_mae": null
+      },
+      {
+        "condition": "active_long_train_0600",
+        "collected_step": 39053,
+        "age_transitions": 2197,
+        "accepted_replay_draws": 9,
+        "distinct_update_batches": 9,
+        "mask": [
+          1,
+          0,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          64.99842834472656,
+          66.2574234008789,
+          65.33439636230469,
+          65.44702911376953,
+          65.32534790039062
+        ],
+        "reward": -25.680021286010742,
+        "in_bag_mae": 90.9563217163086,
+        "out_of_bag_mae": 91.93744659423828
+      },
+      {
+        "condition": "active_long_train_0671",
+        "collected_step": 40672,
+        "age_transitions": 578,
+        "accepted_replay_draws": 5,
+        "distinct_update_batches": 5,
+        "mask": [
+          1,
+          1,
+          1,
+          0,
+          1
+        ],
+        "q": [
+          65.30221557617188,
+          65.70262908935547,
+          65.5974349975586,
+          66.12522888183594,
+          65.5518569946289
+        ],
+        "reward": -25.598623275756836,
+        "in_bag_mae": 91.13715362548828,
+        "out_of_bag_mae": 91.7238540649414
+      },
+      {
+        "condition": "active_long_train_0900",
+        "collected_step": 41250,
+        "age_transitions": 0,
+        "accepted_replay_draws": 0,
+        "distinct_update_batches": 0,
+        "mask": [
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "q": [
+          66.25875854492188,
+          66.38056182861328,
+          67.33251190185547,
+          66.28508758544922,
+          66.16544342041016
+        ],
+        "reward": -25.59589385986328,
+        "in_bag_mae": 92.19024658203125,
+        "out_of_bag_mae": 91.91555786132812
+      }
+    ],
+    "new_physics": 0,
+    "optimizer_updates": 0,
+    "network_unchanged": true,
+    "scope": "Exact replay selection reconstruction for original uninterrupted first cycle, not counterfactual learning or a causal intervention",
+    "decision": "Continue registered stage; distinguish withheld and recently collected terminal errors from repeatedly sampled in-bag errors; do not change masks or sampling"
+  },
+  "review": {
+    "verified_unix": 1792976374.2957852,
+    "cases": [
+      {
+        "condition": "passive_corner_train_0100",
+        "terminal_sha256": "783a853d1069a59617d44a21d4c09addefd566a4457d2ea6b85eca64f4889bc9",
+        "model_sha256": "8d67e2a973e747ab216b7e8e00a9f71893468c7b6f2f88c32c75230d6618eca4"
+      },
+      {
+        "condition": "passive_corner_train_0000",
+        "terminal_sha256": "0d2877354b14b9dfe7c1ddbbb909ea863df4457b1a13495a65fb709885988141",
+        "model_sha256": "608c40b99231ff311de6c2dd969d21fea037b0f839ea47232e6ce61885aee889"
+      },
+      {
+        "condition": "passive_corner_train_0200",
+        "terminal_sha256": "b3a3bd3853eb3e509172bf5b28449d971686bc79c8bc02e6ac17d6e675d40b67",
+        "model_sha256": "26aa6a429c0fb4e0e9197c8f74e6ff741220ea303393159248c40663d7760085"
+      },
+      {
+        "condition": "passive_corner_train_0300",
+        "terminal_sha256": "4e6f663cf78c47a793945aad29cb33eff085876981b8022eb3d7172eedb2611d",
+        "model_sha256": "52b95b0d0bf08dd8a53bf8e8aa3578705d4deb5416f1b92d5a1801f5bef888d4"
+      },
+      {
+        "condition": "passive_corner_train_0337",
+        "terminal_sha256": "ea70d51362fe60d55dd02128ed4d6ce70be9eb5d4358a79535278f52acf3db8e",
+        "model_sha256": "24327785ad7f61e5f7c731039fa36b0c68e529bcd8e647afdc6a63e45cc6b1c8"
+      },
+      {
+        "condition": "passive_corner_train_0400",
+        "terminal_sha256": "370269140f781e9cb74d85bdf86f7b4e8d9561943e05161040833f8fbfb47db7",
+        "model_sha256": "3ecb3ad6489183ee11ad0ebaa99c42eeaf1e220a35c3ce686808d3cb35350d4b"
+      },
+      {
+        "condition": "passive_corner_train_0500",
+        "terminal_sha256": "5051ba8844ab03590c92b084e488fa4594f9aa3eb6b62a907d6452311d2af061",
+        "model_sha256": "1a07efd7e4156203fd7a1a282b445c9d456a6cfd7093f81aea3173f29df58592"
+      },
+      {
+        "condition": "passive_corner_train_0600",
+        "terminal_sha256": "a2d2058fbf97e0b11fc2292e5b7a45d62067b815919d692ec177f4c654ce5fd2",
+        "model_sha256": "1aab40dc700cb316910c75ffc484efe3be4c0fbe9cb73a038f07373364f43f4a"
+      },
+      {
+        "condition": "passive_corner_train_0671",
+        "terminal_sha256": "926d9464f95381b1a454e2afdb66141c0773c4e711c903fd0f941d1257c8eadc",
+        "model_sha256": "9d3de7fa6eab2b229feb915faef33c8dab92526c8a6f537da206fa52a172f37a"
+      },
+      {
+        "condition": "passive_corner_train_0900",
+        "terminal_sha256": "affc10ffa77df7230ac360c1b4c6b053136f4c7b7ef629261c5761e7a8f36ccf",
+        "model_sha256": "b4b38d68efcb2efc512bca1f591399db4348f230a1b301beb04a5aeb8c7d0c9c"
+      },
+      {
+        "condition": "active_short_train_0000",
+        "terminal_sha256": "89a6d0bdfd29b108b1b014aec31ab39e38c221536203789c1a53e96f0e5e6bfc",
+        "model_sha256": "221c7a3d18da6d59c8e6980be329d40bd4b718fe803c0e4c5ac138b98202fcd6"
+      },
+      {
+        "condition": "active_short_train_0100",
+        "terminal_sha256": "ac98b86a6331f441e4364b2fcf4a942c0d79f37e195afc0b12d4d896cc2c33c0",
+        "model_sha256": "a4bff2841c8efa4d3d33aaf7dfd816c222b18fae7b6455c9c96513c90862c788"
+      },
+      {
+        "condition": "active_short_train_0200",
+        "terminal_sha256": "2b619bbc0ddc973cfeb9c350d626b5ce4abce4bf266a2b005522aaf20c7b3a4c",
+        "model_sha256": "46f7800613e4f565220c97a00064cf2ad0ac8be8e09fba1551db742170e7866c"
+      },
+      {
+        "condition": "active_short_train_0300",
+        "terminal_sha256": "fb31648d87cf8ac82c19a2dc002b4138f639098f60703bb0e0cb2a326e747d94",
+        "model_sha256": "62e749dc6131c916bbc2c2dfbdccbb7101030f5bf8fed91334494fdff19f2608"
+      },
+      {
+        "condition": "active_short_train_0337",
+        "terminal_sha256": "2456a75c2385a74013f5e177873be712341039d46e3f554b42ba3a3701d48a55",
+        "model_sha256": "0a44d5cb102f3b5635d5c234c825d7536d6c7f773c9b18b94b45ef62841be6ea"
+      },
+      {
+        "condition": "active_short_train_0400",
+        "terminal_sha256": "f305f0576bc8a9aa0390d2b871586a9d2961b9914a433e1af8de73fc01067757",
+        "model_sha256": "f2bae81bc02adfb7660778f48470e773c95d44517001b8d28a66626f818d8ba9"
+      },
+      {
+        "condition": "active_short_train_0500",
+        "terminal_sha256": "faffa19135128db7574b4c1ec61514f4d85fb65930bcf548d6d3d4dfbc468c0c",
+        "model_sha256": "94cc39d39f3ce07b62c70ac2f443276f0cd87cb89b15d5d0ee10c607a88658d5"
+      },
+      {
+        "condition": "active_short_train_0600",
+        "terminal_sha256": "41552328c732cb034ff03d3bdb590250088c0bfd4e663d69c615031447df338f",
+        "model_sha256": "523c4219f6aee60511fdf85dcbb76ae2a0a43331fad252426d6861181ce7ef71"
+      },
+      {
+        "condition": "active_short_train_0671",
+        "terminal_sha256": "129b42024bab395de50ffe1928abbcec0fdbce4b0fa48fb1352a44dc06f3500f",
+        "model_sha256": "34fa455fecfe45d9e73d145342b884f53ccb21a274bb1e9f9b409c5050ec5673"
+      },
+      {
+        "condition": "active_short_train_0900",
+        "terminal_sha256": "845851d3c68eb4dba0b601b80608841f94af35e68eef8e1a0db0a537d6d5e05c",
+        "model_sha256": "49943a2503b29e6b239017587cf9af758eb287ba508ddf46f03425c46277e0f8"
+      },
+      {
+        "condition": "active_long_train_0000",
+        "terminal_sha256": "048971f4c05673b229bbefe2a0fb4c39286332b27d4349901da59f9ed99f375f",
+        "model_sha256": "757eff72e7d889482134ceb282b8b20abaf4418642e3875bc83ebcf7eae085b7"
+      },
+      {
+        "condition": "active_long_train_0100",
+        "terminal_sha256": "23affab799b61ddd7fc3de80c543f639af5b2efc2c5e3cfe5668ce23cd4718ed",
+        "model_sha256": "755de54360520797f9f5c6ae612f16aa1cb85fec12724f6c7778dcdf3ee383fa"
+      },
+      {
+        "condition": "active_long_train_0200",
+        "terminal_sha256": "8b0c854ffa406e863e06fcd7dcc941932bf972a4e65e256bc3fc36578e51478f",
+        "model_sha256": "ce4e3800876f6273656c5966be36a7a4162c13ab99e3bfeead2a1119bbe0163c"
+      },
+      {
+        "condition": "active_long_train_0300",
+        "terminal_sha256": "9489e1de850710486d3be315d45f0669d5b86bf9f88b48aaf667d5939c7f4e16",
+        "model_sha256": "8240464b2a29b52d3f1cd8a62e0d6b5bf0c0c6c4f80278e0ee0adb6bc0f29847"
+      },
+      {
+        "condition": "active_long_train_0337",
+        "terminal_sha256": "301a7ae723c9e10bdfe2497433686f894543fdc5d8b555e01a8d3d890e8e3036",
+        "model_sha256": "85b2512538a6ff4b8fc4ce31f05d2f89ede86fdd87875787bba8aef7a70e6217"
+      },
+      {
+        "condition": "active_long_train_0400",
+        "terminal_sha256": "00a0ef06a5d1593e7b08f9c658b16546a967ee2934a6522940133858e6d0b0d7",
+        "model_sha256": "8eace4228c6ac6ee7dd8c67e17d9e8eb983bddefbc1920499518a8d2feee9bfa"
+      },
+      {
+        "condition": "active_long_train_0500",
+        "terminal_sha256": "5442cd99ad4259276654d20be987e668274b50d3d22051216c42830c755d3a46",
+        "model_sha256": "0aa1deb55068633ef56fadf7acd57a8a175bd06bdcc74cc306c78dc8a9474c62"
+      },
+      {
+        "condition": "active_long_train_0600",
+        "terminal_sha256": "8afc17a0f182e1abaf6efa79efc17a37e45ae525d6d0dedfd500f3a65d3b497f",
+        "model_sha256": "0ec322695eca05cbf9bde7067079bd8b1fafa2045e605a847c7c837533d8bc54"
+      },
+      {
+        "condition": "active_long_train_0671",
+        "terminal_sha256": "b4354ff757314d9d881705211c54ccd95ecde4caa8cd058fb81650bfb0510fc2",
+        "model_sha256": "181d30bff538a7afccc97272829914417b038e78ed978f130750c2aa4ebd53d5"
+      },
+      {
+        "condition": "active_long_train_0900",
+        "terminal_sha256": "c284c7798cd99fef611ead07a7b3b5d9d3f7f84bcba6aa762ebf6d44ee04a5d4",
+        "model_sha256": "412950d346a5ce31c1a1e57da749c35393add5641fb38ae986f8dd7f5a3fc719"
+      }
+    ],
+    "artifacts": {
+      "results/DIAGNOSIS.json": "6e030b2ed17944b95226b0ebe6159251958f465486dc8111e69daef7b7b9cb8f",
+      "results/training_diagnostics.png": "734dfe83fa6b8d4dd37feb6b0e51cb7e49de9b2a62ecc309093b8b07c8eae637",
+      "TERMINAL_EXPOSURE_REVIEW.json": "f906fc09eda7455a80e13f74987e4485305fa2818813d88a6956b30764999b84",
+      "terminal_exposure.py": "9f84b15e786136e354db6756988255fc8b4f2b062a8cc71098d4f66b755f5824",
+      "terminal_exposure.png": "dd853420100e81336b101f91f12ff2d788aa9a3ca5f058ab976faf351a1e7ac9"
+    },
+    "checkpoint_sha256": "15eb22664e7e3f4c8db3eaf4566f33f7b34bf08c596b58f21bebb6eda04cbfba",
+    "episodes": 30,
+    "full55s": 30,
+    "task": 0,
+    "strict": 0,
+    "plot_reviewed": true,
+    "reward_components_verified_by_diagnostic": true,
+    "replay_rng_reconstruction_verified": true,
+    "new_physics": 0,
+    "new_optimizer_updates": 0,
+    "live_training_unchanged": true,
+    "convergence_claim": false,
+    "limitation": "Saved terminal and actual model checks; not a fresh atomic-substep safety audit or fixed-policy evaluation"
+  },
+  "source_diagnostic": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/fresh_ready_methods_v2/diagnose_published_training_20261025.py",
+  "source_diagnostic_sha256": "2286fbc75bef4fe04ac23512e075ecdb4ae0ba3b270072cf74e923ab9b1abe51",
+  "artifacts": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/fresh_direct_cycle00_diagnosis_v1/results/DIAGNOSIS.json": "6e030b2ed17944b95226b0ebe6159251958f465486dc8111e69daef7b7b9cb8f",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/fresh_direct_cycle00_diagnosis_v1/REVIEW.json": "baf2f082bb7a9e103bb00b45a29af14676ed6d5f3f1aff43d76fc1db97c54d69",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/fresh_direct_cycle00_diagnosis_v1/TERMINAL_EXPOSURE_REVIEW.json": "f906fc09eda7455a80e13f74987e4485305fa2818813d88a6956b30764999b84",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/fresh_direct_cycle00_diagnosis_v1/terminal_exposure.py": "9f84b15e786136e354db6756988255fc8b4f2b062a8cc71098d4f66b755f5824",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/fresh_direct_cycle00_diagnosis_v1/results/training_diagnostics.png": "734dfe83fa6b8d4dd37feb6b0e51cb7e49de9b2a62ecc309093b8b07c8eae637",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/fresh_direct_cycle00_diagnosis_v1/terminal_exposure.png": "dd853420100e81336b101f91f12ff2d788aa9a3ca5f058ab976faf351a1e7ac9"
+  },
+  "decision": "Continue existing registered six-cycle stage. No settings changed; sparse/in-bag/withheld terminal metrics retained, no convergence or fixed-policy claim."
+}

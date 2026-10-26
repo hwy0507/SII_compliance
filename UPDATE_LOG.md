@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2026-10-26 — Fresh Direct首轮完整诊断与终端抽样精确重建
+
+- Direct首轮41250步/36251update、30完整55s、Task/Strict0/0，失败approach19/carry9/lift1/align1。reward均值−32.96638；末1000 critic loss9.334、抽样TD MAE.401、终端MAE36.201，无收敛结论。
+- 从seed精确重建41250个mask及36251次replay抽样，最终RNG与checkpoint完全一致；终端共6346次抽取。0次/1–20次/>20次终端1/2/27个，in-bag MAE92.19/91.05/15.81；>100次子集20个MAE4.84、被mask留出预测97.60。保留所有样本，描述性分组不是新gate，不把总MAE等同发散或较低in-bag误差等同健康收敛。
+- 30terminal/时长/实际MJB、reward分量、checkpoint与网络不变核验，两图已看；0physics/updates。独立产物SSD根runs/fresh_direct_cycle00_diagnosis_v1，报告docs/PUBLISHED_FRESH_DIRECT_FIRST_CYCLE_20261026.md/.json。继续原六周期及原observer，不改live配置、不导入权重、不重复训练。
+- 四learner4055508/3849956/1314547/1146204和协调2471936/审计2472115/归档2472286均实际live且steps推进；原A/V仍首轮待完整边界扩容。main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d已fetch读日志未变。GPU50%/充分收敛/固定策略最终矩阵/SPT/指定ESN仍未完成。
+
 ## 2026-10-26 — Impedance全新学习核验与Direct十二采样器完整接续
 
 - 原Impedance SAC1557140已正常完成cycle4/228528步/412500更新，Task17/Strict16各30、全部55s；final/archive hash fb4786b3…一致。四原SAC全部退出勿重启，末轮统计不代表critic健康或最终比较。
