@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-26 — Impedance全新学习核验与Direct十二采样器完整接续
+
+- 原Impedance SAC1557140已正常完成cycle4/228528步/412500更新，Task17/Strict16各30、全部55s；final/archive hash fb4786b3…一致。四原SAC全部退出勿重启，末轮统计不代表critic健康或最终比较。
+- 新Impedance3849956直接12worker从fresh开始；4000步/0update与fresh构造所选网络/optimizer/alpha/scale字段精确一致，4000条replay奖励/done/context精确核验。15000步/10001update的actor/critic/target均改变且有限，旧replay全字段保留。14实际fixture/MJB/plan/dt核验；首次只读断言误把下游7维当5维，保留ATTEMPT1_FAILURE，只修核验器，未改训练。
+- 原Direct1215546正常完成cycle0/41250步/36251update，Task/Strict0/0各30，reward均值−32.96638；协调2471936自动启动4055508，12worker接续余五周期。父hash15eb2266…一致，新46250/41251核验父replay/history完整、Adam连续和首12模型/输入通过。原A/V仍首轮，观察2472115/归档2472286继续，勿重复派发。
+- 纯正式GPU60秒均值10.02/6.13/1.18/1.05%，50%仍未达到；D/I已扩容，A/V仍双worker，不外推四路稳态。没有辅助占用训练，没有改batch/UTD或物理合同。
+- 更新docs/PUBLISHED_INDEPENDENT_RESOURCE_HANDOFF_20261026.md/.json与AGENTS；SSD根 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl` 下impedance_fresh_start_review_v1、direct_fresh_resource_resume_review_v1和新run收据/hash留证。核验本身0新增physics/updates；已登记训练持续，收敛/最终SPT/ESN比较未完成。
+- 已实际fetch并读取main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d日志，无远端新提交。此前HTTPS推送认证失败，未声称已发布。
+
 ## 2026-10-26 — Direct与VMC原SAC完整收尾，剩Impedance继续
 
 - Direct原1215621正常结束cycle8/384621步/722758更新，Task/Strict0/0各30；28完整55s，被动0671/0400分别395/902action穿透abort，失败保留。VMC原726082正常结束cycle5/268509/495000，Task/Strict17/17各30，全部55s。勿重启已退出原learner。

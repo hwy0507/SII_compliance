@@ -7,6 +7,10 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新2026-10-26：四原SAC均正常结束勿重启；Imp1557140最后cycle4/228528/412500、Task17/Strict16各30、30完整55s，final/archive fb4786b3…核验。新Imp3849956直接12worker已实际学习，4000步fresh初始化及15000/10001onset核验，14fixture/MJB/plan/dt通过；首只读断言错把executed7维当参数5维，失败收据保留，只修核验器，训练未动。runs/impedance_fresh_start_review_v1。
+Direct原1215546也正常结束cycle0/41250/36251，Task/Strict0/0、reward−32.96638；新4055508由原协调自动12worker全state续余五周期。父15eb2266…/复制/EXECUTION一致，新46250/41251父replay/history精确、Adam连续及首12模型输入核验；runs/direct_fresh_resource_resume_review_v1。原A1314547/V1146204仍首轮，2471936/2472115/2472286继续，勿重复派发；接续以resumed_from/hash为准，registration restart_reason仍描述整个fresh阶段起源。
+最新纯正式GPU60秒均值10.02/6.13/1.18/1.05%，仅D/I已12worker，50%未达，无辅助GPUjob。文档PUBLISHED_INDEPENDENT_RESOURCE_HANDOFF_20261026补充；0新增核验physics/updates，不改live设置，不是收敛/最终比较。Goal active，指定ESN仍缺。
+
 最新Direct/VMC原SAC也已完整结束勿重启：1215621 cycle8/384621steps/722758updates，Task/Strict0/0；726082 cycle5/268509/495000，17/17，各30。D28完整55s、被动0671/0400于395/902action穿透abort保留；V30完整。60terminal/MJB/时长/replay及final ck与archive hash核验，ad62c3f1…/2643cb15…。新run DIRECT_SAC_DRAIN_REVIEW.json、VMC_SAC_DRAIN_REVIEW.json；文档PUBLISHED_INDEPENDENT_RESOURCE_HANDOFF_20261026已补充。原SAC仅Imp1557140继续，三fresh原PID仍cycle0；2471936/2472115/2472286继续等待各自完整边界，尚无新恢复learner。不是critic健康/收敛/最终接受。
 
 最新首路SAC收尾确认：Admittance1316018正常结束cycle4/226765steps/412500updates，勿重启；30完整55s条件、Task/Strict13/13，terminal/MJB/时长与replay核验，最终ck与migration_archive cycle00004 hash06925f84…一致。新run ADMITTANCE_SAC_DRAIN_REVIEW.json。fresh Adm1314547仍cycle0，2471936继续等其完整边界后才12worker恢复；尚无新learner派发。此为完整停止证据，不是critic健康/收敛；文档PUBLISHED_INDEPENDENT_RESOURCE_HANDOFF_20261026已补充。

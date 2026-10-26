@@ -1,5 +1,7 @@
 # 按方法独立完成周期并交接采样资源
 
+> 最新状态（2026-10-26 UTC）：四路原SAC已全部完整收尾。新Impedance已从全新state以12worker开始学习；Direct已从完整cycle0以12worker接续cycle1。Admittance/VMC仍完成各自原cycle0，之后由原协调器自动交接。以下启动时记录保留其历史时点；本次补充详见文末。GPU50%、健康收敛和最终比较均未完成。
+
 ## 实际改变
 
 取消旧资源交接的“四路新CHEQ都预热并开始更新”统一等待条件，改为各方法独立交接。
@@ -102,3 +104,57 @@ VMC最终hash `2643cb155f92937ec4def6ef63b663f5167d13074b0453bf52e08594c9d1d791`
 原SAC现仅Impedance1557140仍在收尾。三fresh learner继续各自cycle0，逐方法协调器
 2471936/审计2472115/归档2472286仍活跃，尚无新恢复learner。17/30训练成功不能替代
 固定策略评估、收敛或相对名义控制的学习改善；各方法此处周期不同，不作统一排名。
+
+## Impedance实际开始学习，Direct完整状态恢复（2026-10-26 UTC补充）
+
+原Impedance SAC1557140已正常结束cycle4，228528步/412500updates，30完整55秒条件，
+Task17/Strict16；最终checkpoint与原run的cycle_archive/impedance/cycle_00004.pt相同，
+hash `fb4786b3b581aad7bfa656019d1fe84dc71b2c8b30b7ad63914642f32c74b85a`。
+新run IMPEDANCE_SAC_DRAIN_REVIEW.json保留终端/model/时长/replay及归档核验。
+至此四路原SAC均正常停止，不应重启。这些各自末轮结果不是统一预算的固定策略比较，
+本次没有重新诊断它们最终critic健康，也不能用训练成功数取代收敛。
+
+新Impedance **3849956** 按原登记从全新网络、Adam、温度和空replay启动，未导入SAC权重。
+12个实际worker绑定15–25/52，learner14/GPU1；同source16、batch256、UTD1、六周期。
+保留的4000步/0update快照与相同seed的CPU fresh构造比较：agent、三optimizer、log_alpha、
+alpha、num_gradient_steps和observation_scale精确相同，optimizer state为空。4000条replay
+奖励、done和自身混合context与真实日志精确对应。探索已消耗的RNG不与未采样构造器相等，
+不将所选字段核验外推为全运行状态逐位相同。
+
+15000步快照已有10001次更新；actor、五critic及target网络都发生变化，网络/Adam/日志
+数值有限，早期4000条replay全部字段精确保留，optimizer日志步数连续。
+前100/末100次critic loss均值2.23095/0.08127，仅描述学习启动，不证明收敛或Q校准。
+核验时已生成的14个场景的fixture、实际MJB、reference plan、dt以及首条输入/动作符合登记。
+
+首次只读核验误把journal的executed_action断言为5维，实际是公共7维控制动作；
+原5维参数动作经ParameterController.act映射后才记录executed_action。
+正确维度为canonical原始观测48、Impedance参数动作5、下游公共动作7；CHEQ网络另接
+自身混合context成为49维。修正的只有新只读核验器，训练/actor/controller没有修改或重启。
+ATTEMPT1_FAILURE.json保留错误，原4000步warmup.pt未被替换。
+
+Direct原1215546完成cycle0后正常退出，41250步/36251updates、30完整55秒，
+Task/Strict0/0，平均回合reward −32.96638。原协调器已自动启动 **4055508**，
+learnerCPU0/GPU0、12worker CPU1–12，从完整父checkpoint恢复剩余五周期。
+父checkpoint原文件、复制文件和EXECUTION记录hash一致：
+`15eb22664e7e3f4c8db3eaf4566f33f7b34bf08c596b58f21bebb6eda04cbfba`。
+46250步/41251updates新快照核验：全部41250条父replay字段及cycle历史精确保留，
+三Adam计数延续增长、actor实际改变、网络和日志有限，新增5000条更新步连续。
+父文件保留网络/target/optimizer/温度/归一化/RNG/replay，既有load_state_dict恢复这些字段；
+worker数改变后未来采样和RNG交织不同，不称未来逐位一致。首12个新模型及48/7/7输入动作核验。
+原协议的restart_reason描述整个fresh阶段起源；本次Direct实际接续以resumed_from/hash字段为准。
+
+纯正式CHEQ的60秒、60样本GPU均值 **10.02/6.13/1.18/1.05%**，最小7/1/0/0%，
+不含辅助GPU训练，尚未达50%。窗口内D/I已12worker，A/V仍旧双worker，
+不是四路全部扩容后的稳定窗口；不据占用率加大batch/UTD改变当前科学设置。
+三观察/协调PID2471936/2472115/2472286继续，完整cycle0科学诊断仍等待四路归档。
+
+只读核验产物（上述SSD根下）：
+
+- `runs/impedance_fresh_start_review_v1/`：失败说明、原warmup、学习后snapshot、两份review及核验脚本。
+- `runs/direct_fresh_resource_resume_review_v1/`：接续后snapshot、REVIEW和核验脚本。
+- `runs/cheq_fresh_ready_seed20261025_v2/GPU_60S_FIRST_IMPEDANCE_12WORKERS.json`：完整GPU测量。
+
+本轮复核没有新增仿真或optimizer update，实际在途训练按原授权继续；未修改冻结runtime、
+protocol、physics/MJB、actor信息、公共filter、gate、执行器限制或dt。报告JSON记录收据与脚本
+hash、当时进度。下一步仍是完成原六周期阶段并据完整周期证据审查reward、critic/actor、
+固定策略结果；指定ESN比较、最终SPT和接触审计未完成。Goal保持active。
