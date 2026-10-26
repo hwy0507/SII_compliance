@@ -150,4 +150,6 @@ HDD目录 `/inspire/hdd/project/long-range-embodied-collaborative-intelligence/k
 - admittance: `80cb74644785e222677623541c8ac4252a466a70bcbcc6a0b04500323460382d`
 - vmc: `d41df3bbfafdbeb14eff5b65e492d6fea2c7727483e9e72e6add9bd1e9209d5a`
 
-原参数learner1254686/1254688/1254691及归档1286930已结束，勿重启。完整周期REVIEW已通过，健康诊断协调1286970仍在收尾；下一步先读取health/DIAGNOSIS和FINISHED，再决定参数15。Direct1595728继续登记10，尚未结束，不另派发。未登记参数15或Direct11；Goal继续active。
+原参数learner1254686/1254688/1254691及归档1286930已结束，勿重启。完整周期REVIEW及健康诊断均已完成，原协调1286970已结束；下一步依据完整14决定参数15。Direct1595728继续登记10，尚未结束，不另派发。未登记参数15或Direct11；Goal继续active。
+
+最终14健康诊断和图也已完成：termMAE I1.2971718/A.8347549/V1.3141919，Qmean−13.366478/−44.671682/+19.407584，末1000 q_loss3.389481/30.122532/6.025501；I终端max113.209595。A/V价值仍明显移动，reward均退步，未收敛。原1286970已结束勿重启。
