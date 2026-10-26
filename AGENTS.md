@@ -7,6 +7,8 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+收尾main已同步6dc2b24（非RL原始链30条审计与存储受阻交接）；那是另一会话Goal，不暂停本服务器RL。在线报告提交d81e531。
+
 最新在线阶段已实际启动：runs/cheq_clock_online_seed20261025_v1，runtime/source_train17_clock，登记/决策runs/clock_online_control_v1。四learner1729888/1729892/1729893/1729897，CPU0–51各12sampler+1learner/GPU0–3；fresh/空replay、同30条件、6周期有限阶段。四6000-step/1001updates快照startup_review session34643已完整通过，actor参数、critic时钟列已更新、全部replay时钟/12model/input核验；不要重启。归档1729901/CPU52、诊断1729905/CPU53监视周期0/1/3/5，固定矩阵3148346/CPU54继续。正式GPU60s均值6.27/5.87/6.27/6.47，50%未达；辅助12全结束勿重启或为占用延长。
 跨周期review完成：D81.322/49.061、I57.908/87.011、A183.942/44.849、V160.909/99.770，无/有时钟cycle1终端MAE；Imp3seed全变差、V2/3改善，非通用修复。预检四完整55s与逐replay核验通过、0updates，不能称学习成功。contact_math12/12独立精确复核1320万子步，COMPLETE_REVIEW.json，source17合并仅此3性能+5时钟文件，不是整体提速证明。固定Imp/Adm三代表复核已完（runs/fresh_cycle03_parameter_fixed_review_v1），各learned/nominal2/3，Imp长期舒适12.61%对24.07%、Adm100%双方；V仍在途。报告PUBLISHED_CLOCK_ONLINE_STAGE_20261026，Goal active；接下来继续新在线stage周期0证据及原VMC固定矩阵，最终ESN仍未指定。
 

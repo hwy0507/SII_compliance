@@ -3,6 +3,8 @@
 本任务仅涉及 proposed ESN、MLP、RNN 和后续非 RL 对照，RL 由其他 agent 负责。
 最新进度见 [学习率对照、解析最优性审计及新闭环登记](NONRL_OPTIMIZATION_AUDIT_20261026.md)：
 六次恒定 LR 和三次 cosine 拟合已完成；新 56 回合闭环组因持久存储不足尚未启动。
+随后完成 [示范执行链及分阶段误差复核](NONRL_DATA_CONTRACT_AUDIT_20261026.md)：
+30 条本地源轨迹重放通过，25 条远端原始链本轮未重验；搬运已有大量示范，恢复覆盖仍待验证。
 先保留 `nonrl_spt_matrix_20261025_v4` 的完整新指标矩阵，再判断优化路径；不能为得到
 有利结果删除失败、改变 gate 或降低安全阈值。新标准见 [评估标准](EVALUATION_STANDARD_SPT_20261025.md)。
 

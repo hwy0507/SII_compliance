@@ -84,3 +84,5 @@ VMC固定矩阵仍在途（原协调3148346），不重复启动。
 实际主机 `rltest-1025--a6ed2ff39b3c-s5gnp35dxg`，主产物在 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`；源码snapshot、原始轨迹、checkpoint留SSD，Git仅存报告和必要小型证据。
 fetch核对main64fe259、baseline f6e8f8c；未出现新的指定最终ESN。另一非RL会话的8条件/56回合计划不能替代此处30条件公平比较。
 下一步继续这四路真实训练和周期0诊断，不因辅助任务结束创建无限诊断循环。收敛、最终冻结策略矩阵、SPT_empirical及指定ESN比较仍未完成。
+
+收尾同步main6dc2b24：已读取并合并非RL示范链审计及存储受阻交接（30条原始链重放通过、25条未读）。这些是远端报告，未在本服务器重复原始数据审计。另一非RL Goal等待存储/归档授权，此处四路RL仍实际运行，不能混为本Goal受阻。在线阶段报告提交d81e531。
