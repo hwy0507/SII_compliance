@@ -1,3 +1,13 @@
+## 2026-10-26 — 辅助固定回报完成与时钟策略冻结复测
+
+收尾Direct完整cycle1复核：82500steps/77501updates，30完整55s Task/Strict0/0、平均reward−32.920646（cycle0−32.788830，无改善）；失败approach24/align6。全82500 replay reward/done/current-next clock、30终端/模型/fixture/plan/dt核验，通过已保存回放证据而非raw-substep复审。原learner已进入cycle2，不重启。证据runs/clock_direct_cycle01_terminal_review_v1/REVIEW.json，未选新算法或奖励。
+
+- fetch main6dc2b241215d1898f8e07916153f3e0754dfb3db、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，无新提交；上一轮为实质进展。
+- 四return_capacity辅助进程全正常结束，16万更新/0actor/0physics；独立lfilter目标hash、四checkpoint、8臂328诊断点/图核验。parent/fresh留出MAE D.300/.349、I12.438/12.610、A3.462/4.073、V9.149/9.979；固定无熵行为标签、父已见留出条件，非softQ真值或policy改进。无权重推广、不重复或延长。
+- 新clock_cycle00_fixed_representatives_v1已登记启动12×55s有限固定策略矩阵，四首周期checkpoint×原三代表条件，复用12nominal；协调2960898/首评估2961606、CPU54。完整source/assets/fixture/nominal核验，首165action独立重放误差0、actor49/critic50/时钟/模型/dt通过，未完成完整回合，不选最终Tref。
+- 原四在线1729888/1729892/1729893/1729897与归档1729901/审计1729905继续；继续等原完整cycle1，不改live设置。辅助已结束不能沿用此前高GPU混合窗口；正式50%/充分收敛/最终ESN比较未完成。
+- 报告docs/PUBLISHED_CLOCK_FIXED_EVAL_AND_RETURN_REVIEW_20261026.md/.json；主产物本集群SSD，无其他主机归档声明。上一b836477推送因现有HTTPS认证失败未发布。
+
 ## 2026-10-26 — 时钟首周期完整复核与紧急 GPU 辅助工作
 
 - fetch main6dc2b241215d1898f8e07916153f3e0754dfb3db、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，无新远端提交。

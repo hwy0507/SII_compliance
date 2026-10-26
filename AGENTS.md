@@ -7,6 +7,10 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+收尾Direct完整cycle1复核：82500steps/77501updates，30完整55s Task/Strict0/0、平均reward−32.920646（cycle0−32.788830，无改善）；失败approach24/align6。全82500 replay reward/done/current-next clock、30终端/模型/fixture/plan/dt核验，通过已保存回放证据而非raw-substep复审。原learner已进入cycle2，不重启。证据runs/clock_direct_cycle01_terminal_review_v1/REVIEW.json，未选新算法或奖励。
+
+最新：四return_capacity辅助全完成勿重启；REVIEW.json与图复核，parent/fresh留出MAE D.300/.349 I12.438/12.610 A3.462/4.073 V9.149/9.979，非softQ/策略改善，不延长。新clock_cycle00_fixed_representatives_v1协调2960898/首2961606、CPU54，四cycle0×三代表12×55s固定复测已启动；首165action重放误差0/clock维度模型通过，尚无完整回合。原在线四路与1729901/1729905继续，勿重复派发。报告PUBLISHED_CLOCK_FIXED_EVAL_AND_RETURN_REVIEW_20261026，Goalactive/最终ESN与GPU50%未完。
+
 最新本轮报告PUBLISHED_CLOCK_CYCLE0_AND_GPU_WORK_20261026：新clock首周期完整复核各41250/36251，TaskStrict D0/0 I18/16 A13/13 V17/16各30，非收敛；原在线四路和1729901/1729905继续。旧固定cycle3矩阵全部结束勿重启（12learned+12nominal/2640万子步）。新runtime profile正式GPU5.30/7.77/7.27/7.48%。用户紧急要求后登记四有限辅助return拟合2751144/2751146/2751148/2751151，runs/clock_cycle00_return_capacity_v1，四卡各一、CPU52–54共享nice10、总16万updates/0actor/0physics，不推广或自动延长。全部已启动，首混合60样本均值68.63/52.15/33.28/35.78%，非纯正式/未四卡50%。固定标签不含熵且父已见留出条件，不能作SAC Q或未见policy评估。完成后复核，不重复派发；Goal仍active。
 
 收尾main已同步6dc2b24（非RL原始链30条审计与存储受阻交接）；那是另一会话Goal，不暂停本服务器RL。在线报告提交d81e531。
