@@ -1,5 +1,18 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 参数15、Direct等价gather11运行中
+
+原Goal active，未收敛；最新交接[RL_PARAMETER15_SERL_GATHER11_20261026.md](docs/RL_PARAMETER15_SERL_GATHER11_20261026.md)。本段覆盖下方14/10运行中旧快照，无子agent，物理/SPT/完整正式state不变。
+参数正式15：I2763218/A2763219/V2763220，GPU1/2/3、原CPU组各12sampler；B/runs/parameter_batch65536_cycle15_20261026_v1，准确完整14全state续一周期，batch65536/UTD1/terminal128/projection/Imin+A-Vmean/actor min/原LR不变。三check-only与真实启动prefix/history/marker/MJB/action/clock/reward审查通过，归档2860572、完整15只读2860589；无自动16。最新各24/30条件完成，先查原PID，不重复。
+Direct10已完整并审查：442032steps/3496264critic、Task/Strict0/30，reward−32.757649，29完整+passive0500第1222动作global穿透abort。全部41097新单步与多步目标精确、原prefix/history保持、pending0。termMAE.097123/max5.88913、Qmean−20.76551，任务仍失败非收敛。旧1595728/1621561/1660936已退出，勿重启。
+Direct正式11 PID2858708/GPU0/CPU0、30sampler共享1–12，在B/runs/serl_multistep_gather_cycle11_20261026_v1/direct，从准确完整10全state接续；只部署上一轮等价gather，官方10/2/noentropy/8:1/batch32768/32步/actor48保持。新check-only完整state/replay/下一采样精确；真实7000新增、旧442032单步/派生前缀与全部新映射/clock/reward/6070mature+930pending通过。归档3078520、完整11只读3078535，无自动12。
+Direct须SerlMultistepLearner+replay_class保留clock/multistep markers、成熟顺序与pending；完整父ready按成熟顺序，不必天然sorted，审查须保留顺序并验证全覆盖，不能改采样器。
+纯正式60样本64.30秒GPU49.05/78.42/74.13/72.20%，D/I/A/V23.716/25.504/25.053/24.711steps/s；Direct仍未达50%，后续冻结/辅助占用不替代。
+新单次batch传输候选serl_multistep_batch_transfer：6批pytree/11负输入/完整下一8:1更新state与metrics精确，16critic+2actor辅助不保存权重；5轮微基准5.135→4.666ms，未部署11，不证明在线达标。原3236999已完勿重复。
+只读条件配对：参数13→14退步来自少数主动条件，三路passive0/10；Direct9/10全30均approach，前160动作public0均值.432→.584（增大减慢WBC），非因果证据。原3354962已完。
+冻结正式10三固定代表：B/runs/serl_cycle10_fixed_representatives_20261026_v1，协调3165841/evaluator3166321，GPU0低优先级、CPU54、0优化；已完成，原两PID退出，FINAL_SCIENTIFIC_REVIEW/FINISHED齐全；三例各1375动作/110万子步/完整55秒，Task/Strict0/3、均approach、无abort/无人接触。全部动作误差0与物理/filter/torque/MJB/完整state不变通过，不重跑、不当全30最终结论。
+仓库仍SSD链接；HDD配额受限，完整小证据在GitHub/SSD，大型checkpoint/轨迹仅SSD，不能称HDD全备份。远端独立非RL main9dd59f2已快进保留。
+
 ## 最新RL状态：2026-10-26 参数14已完成、Direct多步目标10继续
 
 收尾覆盖下方运行中快照：三参数14全30完整无abort，Task/Strict I17/16、A11/11、V17/16，reward−4.076/−13.729/−4.559，较13均退步。全新reward/旧prefix/history/配置/markers/MJB审查通过；健康诊断1286970也已完成退出，termMAE1.297/.835/1.314、Qmean−13.366/−44.672/+19.408、末loss3.389/30.123/6.026、Itermmax113.210，未收敛。三正式1254686/1254688/1254691与归档1286930已结束，勿重启；下一参数父为parameter_batch65536_archive_20261026_v1下准确14，SHA见交接文末。Direct1595728仍运行10，无参数15/Direct11登记，Goal active。

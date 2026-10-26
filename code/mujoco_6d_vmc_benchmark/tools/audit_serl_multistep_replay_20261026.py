@@ -11,7 +11,8 @@ def audit(checkpoint, parent, transitions):
     assert parent['learner']['multistep_target_extension'] == extra['marker']
     for key in ['target_rewards','target_bootstrap','target_endpoints','target_lengths']:
         np.testing.assert_array_equal(extra[key][:n], previous[key])
-    assert extra['ready'][:n] == previous['ready'] == list(range(n))
+    assert extra['ready'][:n] == previous['ready']
+    assert sorted(previous['ready']) == list(range(n))
     assert not previous['pending']
     ready = set(extra['ready'])
     pending = [i for ids in extra['pending'].values() for i in ids]

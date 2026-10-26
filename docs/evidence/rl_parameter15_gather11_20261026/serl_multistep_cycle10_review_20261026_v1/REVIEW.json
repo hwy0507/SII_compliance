@@ -1,0 +1,54 @@
+{
+  "time": 1793024549.4270165,
+  "methods": {
+    "direct": {
+      "multistep_replay": {
+        "passed": true,
+        "retained_derived_rows": 400935,
+        "new_mature_rows": 41097,
+        "new_pending_rows": 0,
+        "all_new_derived_targets_exact": true,
+        "uniform_sampling_domain": "mature rows only; pending excluded"
+      },
+      "steps": 442032,
+      "updates": 3496264,
+      "checkpoint_sha256": "ed5790843b1fef76efb371a4ac12ceb4b9b47093fbdb73d603a0372f18f9dc54",
+      "new_transitions": 41097,
+      "retained_replay_rows": 400935,
+      "retained_replay_all_fields_exact": true,
+      "conditions": 30,
+      "task": 0,
+      "strict": 0,
+      "reward_mean": -32.7576487639476,
+      "full_horizon_count": 29,
+      "aborts": [
+        {
+          "cycle": 10,
+          "condition": "passive_corner_train_0500",
+          "category": "passive_corner",
+          "steps": 1222,
+          "total_steps": 440943,
+          "reward": -39.9076717358972,
+          "task_success": false,
+          "strict_success": false,
+          "abort_reason": "global_penetration_exceeded_2mm",
+          "full_task_horizon_completed": false,
+          "physical_valid": false,
+          "final_task_stage": "approach",
+          "completion_time_s": null,
+          "model_sha256": "1a07efd7e4156203fd7a1a282b445c9d456a6cfd7093f81aea3173f29df58592",
+          "episode_path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_cycle10_20261026_v1/direct/cycle_00010/passive_corner_train_0500"
+        }
+      ],
+      "max_reward_reconstruction_error": 0.0,
+      "reward_audit_scope": "Reconstructed every new reward from physical interval journal with frozen reward implementation; not independent raw-substep physics reconstruction",
+      "source_parent_sha256": "6bf4ec143049657f5a071569ce24d22ecca906e1446d23c1e9b6b88be4ccc44f",
+      "stage_resumed_parent_sha256": "6bf4ec143049657f5a071569ce24d22ecca906e1446d23c1e9b6b88be4ccc44f",
+      "optimizer_and_network_finite": true,
+      "convergence_claim": false
+    }
+  },
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "passed": true
+}

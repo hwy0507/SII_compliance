@@ -1,3 +1,15 @@
+## 2026-10-26 — 参数15接续、Direct10完整审查与等价gather正式11
+
+- 开工fetch/read main3d7db5a8d6c871f09b322e0f78f47dd6de521749、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收尾重新fetch/read并快进整合独立非RL main9dd59f2f0fb6be04fce255bd7c395b50d029d9ee，两条非RL更新保留，未影响其冻结运行。无子agent。交接docs/RL_PARAMETER15_SERL_GATHER11_20261026.md。
+- 完整参数14准确父接续一个不改设置的15，I2763218/A2763219/V2763220，原GPU1/2/3与CPU组12sampler，batch65536/UTD1/terminal128/projection/Imin+A-Vmean/actor min/原LR和全部state/history保留。首次大batch14任务退步，因此15用于检验稳定性，不宣称已改善。三恢复/重复加载/负守卫0更新通过，真实启动旧prefix/history/marker/MJB/参数input/clock/reward0误差。归档2860572/只读2860589运行，无自动16。
+- Direct10完整442032/3496264，Task/Strict0/30、reward−32.757649；29完整55秒，passive0500第1222动作global穿透abort保留。全41097新增单步奖励与32步派生精确，旧400935前缀/history/config保持，pending0。330历史terminal×10critic MAE.097123/p95.254248/max5.889130、Qmean−20.765509，1步/32步TD .116139/.100568；完整state只读不变、图已看。旧learner/归档/审查已退出，价值改善未转为任务成功。
+- 正式Direct11 PID2858708从完整10全state接续一个周期，GPU0/CPU0/30sampler共享1–12；仅部署已通过28批与完整下一8:1更新等价的gather，原官方10/2/noentropy/8:1/batch32768/32步目标/actor48不变。新check-only全state/replay/下批/RNG精确0更新；真实7000新增/56000critic、全部旧raw/derived前缀及新动作/clock/reward/30MJB、6070新mature+930pending通过。完整父ready顺序按成熟时间，修正只读审查的错误天然有序假设，覆盖/唯一性/旧顺序保留。归档3078520/只读3078535运行，无自动12。
+- 纯正式60样本64.30秒GPU49.05/78.42/74.13/72.20%，D/I/A/V23.716/25.504/25.053/24.711steps/s。Direct仍不足50%；相对旧窗口吞吐约+11.8%并非严格因果对照，后续冻结/辅助负载不作正式达标。
+- 新单次batch传输候选：准确10父、6批大小pytree精确、11错误输入两臂拒绝、完整下一8:1更新state/metrics精确；16critic+2actor辅助不保存权重。5轮交替微基准5.1346→4.6664ms，约减9.1%；与正式及冻结推理共享GPU，不证明在线提速，尚未部署11。原probe3236999结束勿重复。
+- 新0物理/优化条件配对审查：参数13→14的任务退步集中少数主动条件，三路被动均0/10；Direct9/10全30停approach，前160动作public0 .4323→.5837、其余通道饱和4.36%→11.88%，不同状态/RNG非因果结论。原3354962结束。
+- 新准确Direct10冻结三代表已完成，原协调3165841/evaluator3166321退出，0优化；各1375动作/110万子步/完整55秒，Task/Strict0/3、全部approach，无abort/无人接触。全部动作重放误差0、MJB/物理/filter/torque与完整learner/optimizer/RNG不变通过；平均public0 .1314/.1329/.1314，舒适NA，非全30最终比较。四正式持续推进，不重复旧探针填占用；Goal active，未健康收敛、最终冻结/ESN/SPT和每卡50%尚待。
+- 五源码AST检查及相应恢复/在线启动/有限等价gate已通过；小证据docs/evidence/rl_parameter15_gather11_20261026/SOURCES.json。实际计算与大型产物在本集群B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl；仓库B/repository/SII_compliance由原HDD路径链接。HDD配额仍限制备份，不宣称arm1或HDD全量共享。
+
 ## 2026-10-26 — 新30条最终报告入口准备，原108回合评测继续
 
 - 上轮第八条件审计/前72条原件共享/GitHub发布属实质进展；本轮开工查询并fetch/read main=12c44c4664dbff5865537d85e6eceb8b1087ffdc、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，读取AGENTS/新30协议。原服务86607 active，74/108，第九条件MLP144177真实仿真18.04→47.04秒/CPU2:07→5:11，OOM0、swap0，无重复派发。
