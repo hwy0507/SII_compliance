@@ -1,5 +1,15 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：参数27完成、28启动与固定终端恢复
+
+原Goal active，未整体健康收敛。最新[交接](docs/RL_PARAMETER28_TERMINAL_CONCENTRATION_20261026.md)覆盖下方旧快照。无子agent，冻结物理/SPT/全部正式state保持。
+参数27全三路30×55秒无abort，旧prefix/history/2m marker、41250新增reward0误差/finite/health/图审查通过。I/A/V Task/Strict18/17、13/13、17/16；reward−2.280262/−10.333075/−4.588804，末loss1.563278/1.387414/1.214168。A有恢复但仍波动，V退一步，A/V少量Q超过必要soft上界，未健康稳定。
+正式28 I3733553/A3733556/V3733557于21:51:31 UTC启动，B/runs/parameter_capacity_pool30_cycle28_20261026_v1，准确最新完整27全state续一个原设置周期；三check-only通过，startup3733613、归档3733614/完整review3733617。必须capacity replay+pair learner、2m历史入口23保持；无自动29。原27 learner/归档/review、28准备3057098和CPU调度3269264均结束勿重复。
+新导纳25/26终端集中度v2原3292216完成：终端贡献.0879478→.7292925（8.2923倍），short0600新失败占终端部分41.6861%，非全部在线loss。v1因浮点减法顺序MAE守卫失败保留，v2复现原float32减法、1e-9守卫不变。没有相反标签完全同critic输入，不据此改特征/terminal128/LR。
+预登记固定804终端跟踪27原3440440已完成：同804 masked SSE5527.899475→683.216563（下降87.64%），重点1103000 SSE2303.516289→115.118200；旧分母贡献仍显著下降，非稀释。原26预测复用，27只恢复agent权重CPU前向，0优化/物理/replay，agent/RNG/hash不变；保存算术另核验，不重复。
+Direct18原2732254、归档2732257/review2732258继续，首1000已过；19等待准备3088320只完整18后check-only，不自动训练。CPU调度3269262等原18退出后用CPU0。冻结16原1749189/1749193/review1749197目前20/30，待完整不重复。指定ESN仍缺，已问勿重复或替代。
+大产物SSD/HDD小交接；远端main dbb1d76/baseline f6e8f8c重新fetch/read未变，GitHub认证已问勿重复。GPU占用需区分冻结推理混合窗口和正式训练，并保留轮次交接空档事实。
+
 ## 最新RL状态：回报稳定性审计完成，参数27启动，冻结16完整矩阵运行
 
 原Goal active，未整体健康收敛。最新[交接](docs/RL_REWARD_STABILITY_AND_FROZEN16_20261026.md)覆盖下方参数26/Direct17快照；无子agent，所有冻结物理/SPT/正式state保持。
@@ -1135,3 +1145,7 @@ Direct18准备尚未执行前，已将准备/check-only设为释放CPU0，并加
 Direct18实际首1000新增startup已通过：731782/5814264，旧730782 raw/derived/history/优化器/marker全部保留，140新mature+860pending精确，30MJB/30sampler/action/clock与新reward0误差；原2732256已完成勿重跑。至21:29 UTC正式18已732536步，三参数27持续运行，冻结16两原evaluator/review继续；仍无自动19/28，Goal active。
 
 本轮最终科学提交7730b3556a776aa02ebfc2dd15300e9bc6308cc3仅本地，push仍HTTPS用户名认证失败；重新fetch远端main dbb1d76/baseline f6e8f8c未变。完整123成员小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_REWARD_STABILITY_FROZEN16_20261026_213014/FULL_SMALL_EVIDENCE.tar.gz逐成员hash核验，1787660字节，SHA256 d5383e00641190d8483b457fff3bb5817317abffcd4630cc786f0358ff1fb98e。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_REWARD_STABILITY_FROZEN16_STATUS_20261026_213014/HANDOFF.md及收据/LATEST已核验，覆盖21:21旧快照；大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。四正式18/27、冻结16原进程和归档/完整review继续，startup及有限审计/observer已结束；Goal active。
+
+参数28实际启动检查已通过：I1153000/A1152000/V1154000，分别新增1000/1000/2000，旧I/V1152000、A1151000所有回放字段/history/优化器超参/2m历史marker/30MJB/30sampler/action/clock及新增reward0误差；原3733613已结束勿重复。四正式18/28及归档/完整review继续。
+
+新18/28运行占用窗口30样本/31.663424秒，四GPU均值61.8333/69.4333/68.7667/69.0333%；逐样本四正式及两冻结evaluator均live。它包含冻结16推理，不是纯正式吞吐，也不保证每瞬时≥50%或覆盖先前交接空档；原一次观测已结束勿重复。

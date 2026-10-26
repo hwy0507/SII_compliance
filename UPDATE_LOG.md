@@ -1,3 +1,13 @@
+## 2026-10-26 — 参数28接续、完整27恢复与终端集中度核验
+
+- 开工及续接实际查询/fetch/read main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d未变。无子agent，交接docs/RL_PARAMETER28_TERMINAL_CONCENTRATION_20261026.md。
+- 导纳25/26只读终端贡献审计v2完成，.087947846→.729292495、8.2923倍；最大short0600失败占26终端部分41.6861%，非全部在线loss/历史batch因果证明。v1浮点减法顺序导致1e-9 MAE守卫失败保留；v2按原float32减法复现health且不放宽守卫。全部输入/agent/RNG hash保持，0训练/物理。保存值独立核验及图完成。
+- 预登记固定804条终端追踪完整27完成，原26预测复用，27 CPU前向只恢复agent权重、未恢复优化器，0优化/物理/replay写入；同输入mask平方误差5527.899475→683.216563（−87.64%），重点旧失败2303.516289→115.118200。旧26分母下贡献仍降低，排除仅分母稀释；保持原terminal128/LR/特征。独立保存算术与hash核验通过，不重复前向。
+- 完整27三路各30×55秒无abort，旧prefix/history/marker/finite、新reward0误差及health/图通过。I/A/V Task/Strict18/17、13/13、17/16；reward−2.280262/−10.333075/−4.588804，末loss1.563278/1.387414/1.214168。A恢复但波动、V回落，A/V少量Q越必要上界，不能宣称健康收敛。
+- 21:51:31 UTC正式28 I3733553/A3733556/V3733557，准确最新27全state续一个原设置周期；三恢复check-only全state/下一65536/RNG精确与负守卫通过，startup3733613、归档3733614/完整review3733617。原27与准备等待均结束勿重跑，2m历史入口23/capacity replay+pair learner保持，无自动29。
+- Direct18原2732254与归档/review继续；19等待准备3088320只完整18后check-only。冻结16原1749189/1749193/review1749197已20/30仍运行，固定预算/原独立动作seed，不重复、不称最终验证完成。
+- 三新源码AST和实际有限审计验证；证据在B/repository/SII_compliance/docs/evidence/rl_parameter28_terminal_concentration_20261026，B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。大产物SSD、HDD只小交接，非arm1/HDD全备份；GitHub认证待恢复。Goal active。
+
 ## 2026-10-26 — 回报稳定性量化、参数27接续与正式16全30冻结验证
 
 - 按sii-research-sync再次查询/fetch/read真实main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，未变；无子agent。交接docs/RL_REWARD_STABILITY_AND_FROZEN16_20261026.md。实际集群B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，大产物SSD，非arm1/HDD全备份。
@@ -9063,3 +9073,7 @@ Direct17实际首1000新增检查通过：690532/5484264，全部旧689532 raw/d
 收尾科学提交aa5cac72c965cd2dfb772ff99330c1acacf930dc仅本地，GitHub push仍认证失败，实际fetch远端main dbb1d76/baseline f6e8f8c未变。完整616成员小证据SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER26_PHYSICAL_PREFIX_20261026_205039/FULL_SMALL_EVIDENCE.tar.gz，逐成员hash核验，1932527字节，SHA256 2d5eac7addada82b9c14f1b31a86486ef75fbd81f7aec6a62e40b250332425c8。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER26_PHYSICAL_PREFIX_STATUS_20261026_205039/HANDOFF.md及收据/LATEST入口已核验；大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。FINAL_LIVE_STATUS确认原Direct17/新参数26及归档/完整review继续，有限物理probe/review/observer/准备进程均退出。Goal active；下一轮先核原26/17，不重跑已完成实验，并落实原交接的配对回报/末3轮稳定性判据。
 
 本轮最终科学提交7730b3556a776aa02ebfc2dd15300e9bc6308cc3仅本地，push仍HTTPS用户名认证失败；重新fetch远端main dbb1d76/baseline f6e8f8c未变。完整123成员小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_REWARD_STABILITY_FROZEN16_20261026_213014/FULL_SMALL_EVIDENCE.tar.gz逐成员hash核验，1787660字节，SHA256 d5383e00641190d8483b457fff3bb5817317abffcd4630cc786f0358ff1fb98e。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_REWARD_STABILITY_FROZEN16_STATUS_20261026_213014/HANDOFF.md及收据/LATEST已核验，覆盖21:21旧快照；大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。四正式18/27、冻结16原进程和归档/完整review继续，startup及有限审计/observer已结束；Goal active。
+
+参数28实际启动检查已通过：I1153000/A1152000/V1154000，分别新增1000/1000/2000，旧I/V1152000、A1151000所有回放字段/history/优化器超参/2m历史marker/30MJB/30sampler/action/clock及新增reward0误差；原3733613已结束勿重复。四正式18/28及归档/完整review继续。
+
+新18/28运行占用窗口30样本/31.663424秒，四GPU均值61.8333/69.4333/68.7667/69.0333%；逐样本四正式及两冻结evaluator均live。它包含冻结16推理，不是纯正式吞吐，也不保证每瞬时≥50%或覆盖先前交接空档；原一次观测已结束勿重复。
