@@ -1,3 +1,12 @@
+## 2026-10-26 — 新30条第三条件核验，27/108完成及最终汇总完整性修复
+
+- 实时fetch/read main=64ddfef046e9b63e5658329ae0ddc548ab39506f、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，复读AGENTS；只读监视原协调器86607完成第三条件并自动接续第四条件，未重启或改冻结模型/环境。
+- 09:58:43 UTC条件002的9×55秒/990万子步独立审计通过；1357源文件、模型锁/验证重放、物理MJB/config/checkpoint/轨迹hash和原动作/filter收据核对，原始峰矩/接触合规/穿透/机器安全复算一致。单核/3GiB/禁swap，4.822秒退出0，证据THIRD_CONDITION_PHYSICS_AUDIT.json。
+- 单条件Task ESN3/3、RNN1/3、MLP0/3，双通过2/3、1/3、0/3；双通过ESN43.04/48.64秒、RNN41.56秒。第三seed ESN虽完成任务但穿透.357605mm，Strict失败保留。不是完整矩阵排名，不计算局部T_ref/SPT。
+- 修复独立最终审计遗漏字段可能跳过的缺口，强制三方法族/六指标及per_seed/mean/sample_sd完整；3项回归测试验证有效数据与无接触NA、缺项、错序/种子数、错误均值/SD。测试通过，只改审计器，运行源码不改；默认108回合最终审计仍未执行。
+- 四文件小证据包31483字节已核验到arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_third_condition_0958/THIRD_CONDITION_AUDIT.tar.gz，SHA b7cd8729e1aaf1f167a6ae270d4fa58ee36df64d41dc3d05e4e0f535991b5206；收据THIRD_CONDITION_ARCHIVE_0958.json。该条件原始轨迹仍仅本机，前两条件原始包另已共享。
+- 原服务继续第四条件；全108回合、共同T_ref/SPT、最终汇总与整体审计仍待完成，Goal active。diff检查通过，失败全部保留。
+
 ## 2026-10-26 — 新30条前两条件18条完整物理轨迹已共享
 
 - 实时fetch/read main=d9de51c93057e7842ed5c079a9a040012f84a914、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，复读AGENTS并核对原协调器86607/真实worker，未改变冻结模型、源码或评测协议。

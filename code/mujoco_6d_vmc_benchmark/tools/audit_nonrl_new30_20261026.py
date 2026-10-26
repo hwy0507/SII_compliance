@@ -39,6 +39,25 @@ def equal_number(actual, expected, label):
         require(math.isclose(actual, expected, rel_tol=1e-10, abs_tol=1e-10), label)
 
 
+def verify_family_summary(methods, summary, families, seeds):
+    """Reject omitted families/metrics as well as incorrect replicate statistics."""
+    require(set(summary)==set(families), 'Family summary coverage mismatch')
+    required_metrics={'task_success','strict_success','spt_mean','peak_torque_mean_nm',
+        'human_comfort_torque_compliance_contact_time_weighted','machine_safety_violation_rate'}
+    for family,stats in summary.items():
+        require(set(stats)==required_metrics, f'Family metric coverage mismatch: {family}')
+        for key,stat in stats.items():
+            require(set(stat)=={'per_seed','mean','sample_sd'}, 'Replicate statistic fields mismatch')
+            values=[methods[f'{family}_s{seed}'][key]/12 if key in ('task_success','strict_success')
+                    else methods[f'{family}_s{seed}'][key] for seed in sorted(seeds)]
+            require(len(stat['per_seed'])==len(seeds)==3, 'Missing replicate statistics')
+            for actual,expected in zip(stat['per_seed'],values):
+                equal_number(actual,expected,'Per-seed aggregate mismatch')
+            finite=all(v is not None for v in values)
+            equal_number(stat['mean'],float(np.mean(values)) if finite else None,'Family mean mismatch')
+            equal_number(stat['sample_sd'],float(np.std(values,ddof=1)) if finite else None,'Family sample SD mismatch')
+
+
 def actor_class(root, family):
     name = 'office_vmc_memory_esn_20260927' if family == 'esn' else 'office_mlp_rnn_20261002'
     spec = importlib.util.spec_from_file_location('audit_'+name, root/'physics_source/scripts'/f'{name}.py')
@@ -263,14 +282,7 @@ def audit(root, progress, replay_completed=False, training_only=False, completed
             human_comfort_torque_compliance_contact_time_weighted=compliant/duration if duration else None,
             machine_safety_violation_rate=sum(r['comfort']['machine_safety_violation'] for r in group)/12)
         for key,value in expected.items():equal_number(method[key],value,f'Method aggregate mismatch: {name}/{key}')
-    for family,stats in report['family_summary'].items():
-        for key,stat in stats.items():
-            values=[methods[f'{family}_s{seed}'][key]/12 if key in ('task_success','strict_success') else methods[f'{family}_s{seed}'][key] for seed in sorted(reg['seeds'])]
-            require(len(stat['per_seed'])==3, 'Missing replicate statistics')
-            for actual,expected in zip(stat['per_seed'],values):equal_number(actual,expected,'Per-seed aggregate mismatch')
-            finite=all(v is not None for v in values)
-            equal_number(stat['mean'],float(np.mean(values)) if finite else None,'Family mean mismatch')
-            equal_number(stat['sample_sd'],float(np.std(values,ddof=1)) if finite else None,'Family sample SD mismatch')
+    verify_family_summary(methods,report['family_summary'],reg['families'],reg['seeds'])
     result.update(status='final_audit_passed',validation_replay=validation,verified_physical_episodes=108,
                   report_sha256=sha(root/'REPORT.json'),model_lock_sha256=sha(root/'MODEL_LOCK.json'),
                   t_ref_s=ref,contact_supplement=supplement,
