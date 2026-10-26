@@ -1,3 +1,13 @@
+## 2026-10-26 — 参数9健康审查、Direct4审查修正与30路采样续训
+
+- 开工fetch/read main=a3670e267f546bd6c0b1905a923fca5ba36f91f9、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，读另一主机非RL27/108审计，未干预。最新docs/RL_CYCLE09_AND_SERL_POOL_20261026.md。
+- Direct4完整203962/1591704、0/30、reward−32.559，29完整+1被动0900第873动作global穿透abort保留；全40748新增映射/reward重建0误差、父prefix及30terminal/MJB通过。旧只读v1粗替换将30改40而失败，训练/归档无失败；独立v2修正显式30并通过，原错误源码/日志保留。termMAE1.217、TDMAE.02008，非任务收敛。
+- I/A9各新增41250、30完整：Task/Strict18/17与15/14、reward−2.223/−8.672；termMAE15.377/7.494、末loss49.780/274.789，健康继续恶化。原正式和9审查已结束勿重启，无cycle10。VMC8完整17/17、reward−2.820，但termMAE51.755/末loss725.854、Qp951935.85；原1497979继续登记9，pair非修复。
+- 新Direct2818100从准确4全state/history续5/6，30sampler共享原CPU1–12、learnerCPU0/GPU0，batch32768/官方8:1不变。新wrapper只替换main两处调度，逆变换逐字节相同，运行base+patch源码/hash披露；v1轮转单核候选仅准备未启动，独立v2共享集合实际启动。正负守卫和真实新增2000/16000、父203962全prefix/30亲和性/MJB及动作/reward重建通过。归档2833375、5/6只读2946490/2946491等待。
+- 新I/A batch健康诊断准确cycle9全state两臂32768vs256各5000，总20000辅助更新全部结束；0physics、不保存/推广权重。I终端MAE13.088vs27.043、A7.605vs10.452，未找到恢复证据；相同初始fullstate与seed但非等sample条数，20点/预算/原checkpoint不变及图核验通过，勿重复派发。
+- 新60样本GPU58.28/57.87/55.18/52.72%，GPU1/2为有限诊断，非四正式；辅助结束即时59/0/0/55%，持续每卡50%未达。Direct30worker28.82steps/s对旧12worker29.34，未证实提速，尾部待测。
+- 小证据docs/evidence/rl_cycle09_and_serl_pool_20261026/SOURCES.json逐项hash；大型产物仍本集群SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，非HDD全备份/arm1归档。健康收敛、价值网络异常原因、最终冻结验证/ESN/SPT及GPU要求未完，Goal active。
+
 ## 2026-10-26 — 新30条第三条件核验，27/108完成及最终汇总完整性修复
 
 - 实时fetch/read main=64ddfef046e9b63e5658329ae0ddc548ab39506f、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，复读AGENTS；只读监视原协调器86607完成第三条件并自动接续第四条件，未重启或改冻结模型/环境。

@@ -1,5 +1,28 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 参数9、Direct4与30路采样试验（覆盖下方旧运行状态）
+
+原Goal active，未健康收敛；最新[完整交接](docs/RL_CYCLE09_AND_SERL_POOL_20261026.md)。
+Direct4正式203962/1591704、Task/Strict0/0、reward−32.559，29完整+1被动0900穿透abort保留；
+原521120和归档533451均完成勿重启。旧审查2062387实际失败：粗替换把30回合写成40，
+v1源码/错误保留；独立v2修正显式30并完整只读通过，termMAE1.217、state/RNG不变。
+新Direct2818100/GPU0/learnerCPU0，runs/serl_pool30_cycle05_06_20261026_v2/direct，
+2周期5/6、30sampler共享CPU1–12，保留完整state/history/batch32768/官方8:1/十critic、零示范。
+只替换固定main两处调度，base+patch/hash收据齐；v1轮转单核候选只准备未启动，勿误作在线run。
+新2000步/16000更新、父203962全prefix、30真实亲和性/MJB、新动作/nextstate/reward重建0误差通过。
+归档2833375，5/6只读2946490/2946491等待精确边界，无后续自动派发。
+I/A9已结束，原806847/806849/2062385勿重启：409500/408500steps、18/17与15/14，reward−2.223/−8.672；
+termMAE15.377/7.494、末loss49.780/274.789继续恶化，尚无正式cycle10。
+VMC8已完整审查368250/363251，17/17、reward−2.820、termMAE51.755、末loss725.854，pair非修复。
+原1497979继续登记9、2062386只读等待，核实实际状态后操作，勿因历史快照/审查超时重启。
+新I/A准确cycle9 batch32768vs256各5000共20000辅助更新已全部完成，不保存/推广权重，勿重复填占用。
+两臂全state初始一致、sample初始seed一致但batch不同抽样条数不同；I终端MAE13.088vs27.043，
+A7.605vs10.452，小batch无修复；全部预算/20点/原checkpoint不变核验与图通过。
+新66.63秒GPU均值58.28/57.87/55.18/52.72%，GPU1/2是有限辅助非正式；结束后即时59/0/0/55%。
+Direct30worker28.82steps/s对旧12worker29.34，无提速证据；尾部效果待测。持续每卡50%未达。
+大产物SSD，HDD只小文档副本；原物理/MJB/gates/filter/dt/SPT不改，无子agent。最终冻结验证/ESN/SPT仍待。
+
+
 ## 最新RL状态：2026-10-26 VMC7恢复pair、SERL3及I/A8（覆盖下方旧状态）
 
 原Goal active，未健康收敛。最新[审查与恢复](docs/RL_CYCLE07_VMC_RECOVERY_AND_SERL03_20261026.md)。
