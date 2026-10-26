@@ -124,3 +124,10 @@ prepared9 SHA `6bf4ec143049657f5a071569ce24d22ecca906e1446d23c1e9b6b88be4ccc44f`
 持续每卡GPU≥50%、健康收敛、最终冻结比较和ESN/SPT交付均未完成。原Goal保持active。
 
 收尾fetch/read并快进整合远端main `0a6189c5fcdbea8db6c1dcafd34c2ed05693ec33` 的独立非RL第七条件/63回合审查更新，双方记录完整保留，不改变另一主机运行。
+
+
+## 独立备份的实际范围（收尾更正）
+
+仓库迁移后HDD配额依然受限：未压缩小证据副本和完整压缩包两次写入均失败，不能称HDD完整证据备份已完成。仅删除本次失败的不完整副本，所有源文件、SSD完整压缩包、GitHub提交均保留。
+HDD目录 `/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_BATCH14_MULTISTEP10_STATUS_20261026_140709` 中，`ESSENTIAL_BACKUP.tar.gz` 只包含本轮10个新增源码及本报告，包内逐项SHA和整体SHA核验通过，另有 `HANDOFF.md` 与 `BACKUP_RECEIPT.json`。
+完整本轮133文件证据包已在SSD `B/repository/RL_BATCH14_MULTISTEP10_29d142e8.tar.gz` 逐项核验，并已发布GitHub提交29d142e；它没有完整复制到HDD。最新交接入口已更新，明确这些范围。大型checkpoint/replay/物理轨迹仍未得到HDD/arm1全量副本。

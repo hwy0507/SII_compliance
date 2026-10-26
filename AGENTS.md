@@ -19,6 +19,7 @@ check-only全prepared state不变/负守卫通过；真实1000新增/8000critic�
 纯四正式60样本63.92秒GPU44.53/70.62/73.53/74.87%，全原PID live，D/I/A/V21.213/23.419/25.171/25.312steps每秒。后三卡达50%，Direct仍未达，不以混合辅助替代。
 Direct45秒外部栈发现回放索引/复制约28%叶样本；新跳过随后覆盖的单步reward/nextobs gather候选28批全字段/RNG相同，5轮CPU微基准11.147→7.600ms，0optimizer/physics。另16critic+2actor有限gate证明完整下一update的全state/metrics/RNG相同，无权重保存；未部署当前10，下一完整边界登记及在线吞吐仍待。
 HDD4GiB配额写入失败，完整仓库7296文件逐hash复制验证后迁至SSD B/repository/SII_compliance，原HDD仓库路径为目录链接，Git历史不丢；B/repository/RELOCATION.json。HDD仅独立小证据备份，大产物仍SSD非arm1全备份。
+收尾HDD未压缩/完整压缩备份仍受配额阻止；仅10新增源码+报告的ESSENTIAL_BACKUP.tar.gz与HANDOFF.md已在HDD核验，完整133文件包在SSD repository/RL_BATCH14_MULTISTEP10_29d142e8.tar.gz及GitHub。勿称全证据HDD备份。
 收尾四正式仍运行，最新LIVE_STATUS见证据目录。先收完整14/10审查再决定下一阶段；后续父必须最新正式归档，不能回退。健康收敛/最终冻结/ESN/SPT/四卡要求仍待。
 
 ## 最新RL状态：2026-10-26 参数13与Direct critic-clock9均已完整审查

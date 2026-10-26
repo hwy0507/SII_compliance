@@ -16,6 +16,8 @@
 
 - 本轮独立小文件备份：/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_BATCH14_MULTISTEP10_STATUS_20261026_140709；仅本轮源码/文档/证据，逐项hash另存manifest，大型checkpoint/replay/物理轨迹仍SSD。
 
+- 备份范围更正：迁移后HDD配额仍限制未压缩/完整压缩副本；本轮HDD仅10个源码+报告的ESSENTIAL_BACKUP.tar.gz、HANDOFF.md与收据已核验。完整133文件包在SSD B/repository/RL_BATCH14_MULTISTEP10_29d142e8.tar.gz逐项核验并已GitHub发布，未完整复制HDD；只删除本轮失败的不完整重复副本。
+
 ## 2026-10-26 — 新30条第七条件核验，63/108回合完成
 
 - 开工fetch/read main=78c47ae0d2f1f12fd88820ea702aa6149dca29e3、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，复读AGENTS；上一轮核实等待，本轮持续检查原86607协调器从57推进到63/108并接续第八条件，未重启或重复派发。收尾已读取并快进整合远端bca5d6662a4426e3e54ea8d53ad2d7a04898ce32的独立RL更新，保留双方记录，不改变本机冻结实验。
