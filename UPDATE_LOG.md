@@ -1,3 +1,14 @@
+## 2026-10-26 — VMC完整7失败审查、恢复pair续训及SERL3/I/A8核验
+
+- 开工main=bca082135c8f8fe2ed82371bcbb67cd4aeddd7cc、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；读并快进另一主机d9de51c/64ddfef非RL学习曲线和物理归档，未干预其任务。最新报告docs/RL_CYCLE07_VMC_RECOVERY_AND_SERL03_20261026.md。
+- VMC7全30完整，327000steps/322001updates、Task/Strict17/16、reward−4.602，父prefix/41250新reward重建误差0/全部terminal/MJB核验。termMAE29.32→54.90、末loss394.57、Q−1236至1426，all5试验失败，原3419078结束勿重启；统一7审查和图已完整核验。
+- 新三臂同cycle7全state/RNG/replay各5000共15000辅助更新，0physics、不推广权重；all5/pair/pair+criticLR.1终端MAE47.25/33.04/42.27，pair尾部仍扩大/末loss920，非修复。新probe实际运行、20点/臂/抽样流/digest/父不变核验和图通过，全部已结束。
+- V新1497979从正式cycle7完整state仅恢复原pair，原网络/Adam/replay/RNG/LR保留，2周期8/9，新聚合history单列。启动新增3000时父327000prefix/target2/optimizer配置/12MJB通过；无辅助权重导入。准备v1错找方法LAUNCH路径，在state准备校验后、派发前失败；改读root LAUNCH且重验hash后启动，原失败/修正收据保留。
+- Direct3完整审查163214/1265720，0/30、reward−34.198，26完整+4global穿透abort保留；全40018新transition映射/reward重建0误差，termMAE1.005但策略无成功。原521120继续登记4。I/A8全审查各41250新增：18/17与13/13，reward−2.272/−10.356，termMAE9.121/3.926、末loss13.585/29.514，A早期改善未持续；原806847/806849继续9，无新延长。
+- 新只读实际mixing核验cycle7最低0.2比例I29.11/A54.47/V99.34%，被动均0/10 carry失败；描述性证据，不改阈值或作因果结论。V归档1497983、cycle8只读1566165；I/A9/V9/D4只读2062385/2062386/2062387等待准确边界。
+- 混合GPU窗口49.85/55.40/46.43/67.48最后一张卡为有限辅助；四正式窗口60.93/26.83/20.55/40.97，无辅助。新只读流水线66秒60.80/5.18/16.40/42.68，I尾部2→1worker、V12worker使用10.32核/32.1steps每秒；原PID全样本live。尚未部署采样/尾部调度修改，四卡50%未满足。
+- 小证据docs/evidence/rl_cycle07_recovery_20261026/SOURCES.json逐SHA；大产物仅本集群SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，无arm1传输或HDD完整快照声明。Goal active；充分收敛/稳定loss、最终冻结完整比较/指定ESN/SPT未完成。
+
 ## 2026-10-26 — 新30条前两条件18条完整物理轨迹已共享
 
 - 实时fetch/read main=d9de51c93057e7842ed5c079a9a040012f84a914、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，复读AGENTS并核对原协调器86607/真实worker，未改变冻结模型、源码或评测协议。
