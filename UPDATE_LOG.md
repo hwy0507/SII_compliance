@@ -1,5 +1,23 @@
 # 更新日志
 
+## 2026-10-26 — Fresh replay已知时钟核验与接触候选首例完整通过
+
+- 四cycle1 checkpoint共329484条transition/240回合，原fresh和恢复日志前缀按global step精确连接：
+  reward/done/context、同回合next-observation连续性与终端自拷贝均通过，未发现回合索引错接。
+  独立生成known_clock数组，仅按冻结55s/40ms，不改正式replay/actor/learner。Imp首轮859步中止
+  仍保留next剩余516/1375，避免用未来中止时间构造时钟；正常239回合均1375步。
+- 终端与此前250条的最近输入检查没有精确相同obs或obs+action；近邻尺度不能证明/排除隐藏时钟
+  混叠，未选择或训练时间critic。v1只读断言误把累计reward elapsed_s当单步时长，失败保留；
+  v2修正核验器后通过，0新physics/updates，不能写成修复正式reward clock。
+- 原接触math验证首例Direct/passive0000完整55s/110万子步通过，Task/Strict仍假；MJB/journal/
+  terminal/substeps字节与rollout/filter/torque数组精确复核。第二例active_short也完整精确通过，现2/12/220万子步；
+  不是全验证/整体加速/部署。原协调2273688继续，active_long子2792032在途，旧2536553已退出勿重启。原四learner/2471936/2472115/2472286继续。
+- 基址`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/`，产物
+  runs/fresh_cycle01_clock_review_v2（v1保留失败）、runs/contact_math_validation_v1/FIRST_CASE_REVIEW.json；
+  报告docs/PUBLISHED_REPLAY_CLOCK_REVIEW_20261026.md/.json，hash/JSON/diff检查。Goal、完整性能验证、
+  GPU50%、健康收敛、最终SPT/指定ESN仍待。fetch/read确认main=a52dfba4486af8d263d5cd0a976c3102482ff249、
+  baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；真实push结果另报。
+
 ## 2026-10-26 — 接触计算独立候选启动全轨迹验证，Direct暂时成功复核
 
 - 新构建器prepare_published_contact_math_20261026.py只创建独立runtime/contact_math_candidate_v1，

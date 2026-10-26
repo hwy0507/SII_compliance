@@ -7,6 +7,9 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新只读replay clock核验完成，runs/fresh_cycle01_clock_review_v2，session47719退出勿重启：四cycle1共329484transition/240episode，日志前缀globalstep与replay reward/done/context及nextobs连续精确；独立known_clock仅55s/40ms，Imp859步早停next仍516/1375，不编码未来中止。v1/session82442错误断言累计elapsed为单步时长，失败保留，非训练clock缺陷。240终端近邻无精确obs或obs+action重复，距离不是混叠因果证据，未选/训练时间critic；0physics/updates，正式输入/learner不变。
+contact math原2273688首例Direct/passive0000完整55s/110万子步已复核精确通过（Task/Strict假），runs/contact_math_validation_v1/FIRST_CASE_REVIEW.json；第二例active_short也已完整精确复核，SECOND_CASE_REVIEW.json，现2/12/220万子步，非整体通过/加速/部署。旧2536553退出，active_long新child2792032继续，读PROGRESS更新身份，不重启。原四learner和2471936/2472115/2472286继续。报告docs/PUBLISHED_REPLAY_CLOCK_REVIEW_20261026.md/.json；Goal/GPU50%/最终比较仍未完。
+
 最新接触math完整候选已独立构建并启动有限验证，未部署：runtime/contact_math_candidate_v1（父source16），runs/contact_math_validation_v1/REGISTRATION.json hash84015ef9…；冻结工具runtime/contact_math_validation_v1。3守卫测试、780/24/150/128实际hash通过；12×55s动作重放/1320万新子步、0updates，CPU53/nice10/CUDA禁用。协调2273688/首child2273849已live，首例537动作前缀观测/区间/潜势与MJB/adapter/dt通过；尚0/12完整验证，勿称通过/整体加速/自动部署，poll原PROGRESS/RESULTS/FAILURE/FINISHED，勿因超时重启。原训练52核/配置未动。
 Direct cycle2/3只读60终端/model完整复核完成：2/2→0/0各30、均55s，reward−29.59422→−33.25034；短0100/0000在54.040/54.160s成功（阶段release但原gate真），1375保存区间穿透峰值一致且≤.2mm。不是原子步重审/固定策略成功，成功随下一轮消失，不称收敛。runs/fresh_direct_cycle23_terminal_review_v1，0新physics/updates。报告docs/PUBLISHED_CONTACT_MATH_CANDIDATE_20261026.md/.json。原四learner/2471936/2472115/2472286继续，Goal/GPU50%/最终矩阵/ESN未完。
 
