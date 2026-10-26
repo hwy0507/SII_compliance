@@ -1,0 +1,125 @@
+{
+  "captured_unix": 1793001463.095471,
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "scope": "Saved replay against action journals and transition logs; no raw-substep physical re-audit",
+  "methods": {
+    "direct": {
+      "steps": 16000,
+      "checkpoint_sha256": "516b9feec31366033145e7097e5170d40d81cbca9220ec87e8a8b7f1c2015273",
+      "critic_updates": 88008,
+      "outer_updates": 11001,
+      "critic_shapes": {
+        "/Dense_0/bias": [
+          10,
+          1
+        ],
+        "/Dense_0/kernel": [
+          10,
+          256,
+          1
+        ],
+        "/network/Dense_0/bias": [
+          10,
+          256
+        ],
+        "/network/Dense_0/kernel": [
+          10,
+          55,
+          256
+        ],
+        "/network/Dense_1/bias": [
+          10,
+          256
+        ],
+        "/network/Dense_1/kernel": [
+          10,
+          256,
+          256
+        ],
+        "/network/LayerNorm_0/bias": [
+          10,
+          256
+        ],
+        "/network/LayerNorm_0/scale": [
+          10,
+          256
+        ],
+        "/network/LayerNorm_1/bias": [
+          10,
+          256
+        ],
+        "/network/LayerNorm_1/scale": [
+          10,
+          256
+        ]
+      },
+      "transitions_verified": 16000,
+      "model_count": 12,
+      "fixtures_verified": 30,
+      "terminal_rows": 0,
+      "raw_action_affine_map_exact": true,
+      "canonical48_scale_exact": true,
+      "next_observations_rewards_dones_exact": true,
+      "optimizer_and_network_finite": true,
+      "first_optimizer_row": {
+        "step": 5000,
+        "update_index": 0,
+        "serl/actor/actor_loss": 0.29769468307495117,
+        "serl/actor/entropy": -5.083363056182861,
+        "serl/actor/temperature": 0.010000010952353477,
+        "serl/actor_lr": 1.200009137392044e-06,
+        "serl/critic/critic_loss": 2.0351290702819824,
+        "serl/critic/predicted_qs": -0.10744800418615341,
+        "serl/critic/target_qs": -0.6947190761566162,
+        "serl/critic_lr": 1.200009137392044e-06,
+        "serl/temperature/temperature_loss": -0.015510919503867626,
+        "serl/temperature_lr": 0.0003000000142492354,
+        "serl/outer_updates": 1
+      },
+      "last_optimizer_row": {
+        "step": 16000,
+        "update_index": 0,
+        "serl/actor/actor_loss": -17.153064727783203,
+        "serl/actor/entropy": -3.590364933013916,
+        "serl/actor/temperature": 0.00039570871740579605,
+        "serl/actor_lr": 0.0003000000142492354,
+        "serl/critic/critic_loss": 0.00019652614719234407,
+        "serl/critic/predicted_qs": 17.136699676513672,
+        "serl/critic/target_qs": 17.136499404907227,
+        "serl/critic_lr": 0.0003000000142492354,
+        "serl/temperature/temperature_loss": -6.4402256612083875e-06,
+        "serl/temperature_lr": 0.0003000000142492354,
+        "serl/outer_updates": 11001
+      }
+    },
+    "impedance": {
+      "steps": 215250,
+      "checkpoint_sha256": "0d4e2eaf07cee068396c68453f429af4e24a1a4e63cf330c8d035c874517b437",
+      "parent_checkpoint_sha256": "d4b332781a44666113b5ee229268685401a27233dc479c2342aef193825116d8",
+      "retained_replay_rows": 203250,
+      "retained_replay_all_fields_exact": true,
+      "added_updates": 12000,
+      "optimizer_and_network_finite": true
+    },
+    "admittance": {
+      "steps": 214250,
+      "checkpoint_sha256": "0d597d1fa2dd27c9582b17f1c86ba363489114079cb8c9eb0b42dc09654c7d8d",
+      "parent_checkpoint_sha256": "7ce7b36f27cb7e8273eeed9e9618abf13f528d5034f1f8926ed00c651c1b3ac1",
+      "retained_replay_rows": 202250,
+      "retained_replay_all_fields_exact": true,
+      "added_updates": 12000,
+      "optimizer_and_network_finite": true
+    },
+    "vmc": {
+      "steps": 215250,
+      "checkpoint_sha256": "eb3168a46c3f04e43f28a9254d449da618cc322f920f584846fa6185bf11fa18",
+      "parent_checkpoint_sha256": "85e81ab3916dedf98c3de8bbbdb082a4a2b4ea5529a402e5225da35e71130543",
+      "retained_replay_rows": 203250,
+      "retained_replay_all_fields_exact": true,
+      "added_updates": 12000,
+      "optimizer_and_network_finite": true
+    }
+  },
+  "passed": true
+}

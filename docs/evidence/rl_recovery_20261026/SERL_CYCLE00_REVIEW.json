@@ -1,0 +1,134 @@
+{
+  "captured_unix": 1793001972.0994816,
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "scope": "Saved replay against action journals and transition logs; no raw-substep physical re-audit",
+  "methods": {
+    "direct": {
+      "steps": 41250,
+      "checkpoint_sha256": "d8d3765b9ef770dad7cd28996c34fef9119e0b1879918f0e951ec2b1e217a76b",
+      "critic_updates": 290008,
+      "outer_updates": 36251,
+      "critic_shapes": {
+        "/Dense_0/bias": [
+          10,
+          1
+        ],
+        "/Dense_0/kernel": [
+          10,
+          256,
+          1
+        ],
+        "/network/Dense_0/bias": [
+          10,
+          256
+        ],
+        "/network/Dense_0/kernel": [
+          10,
+          55,
+          256
+        ],
+        "/network/Dense_1/bias": [
+          10,
+          256
+        ],
+        "/network/Dense_1/kernel": [
+          10,
+          256,
+          256
+        ],
+        "/network/LayerNorm_0/bias": [
+          10,
+          256
+        ],
+        "/network/LayerNorm_0/scale": [
+          10,
+          256
+        ],
+        "/network/LayerNorm_1/bias": [
+          10,
+          256
+        ],
+        "/network/LayerNorm_1/scale": [
+          10,
+          256
+        ]
+      },
+      "transitions_verified": 41250,
+      "model_count": 30,
+      "fixtures_verified": 30,
+      "terminal_rows": 30,
+      "raw_action_affine_map_exact": true,
+      "canonical48_scale_exact": true,
+      "next_observations_rewards_dones_exact": true,
+      "optimizer_and_network_finite": true,
+      "first_optimizer_row": {
+        "step": 5000,
+        "update_index": 0,
+        "serl/actor/actor_loss": 0.29769468307495117,
+        "serl/actor/entropy": -5.083363056182861,
+        "serl/actor/temperature": 0.010000010952353477,
+        "serl/actor_lr": 1.200009137392044e-06,
+        "serl/critic/critic_loss": 2.0351290702819824,
+        "serl/critic/predicted_qs": -0.10744800418615341,
+        "serl/critic/target_qs": -0.6947190761566162,
+        "serl/critic_lr": 1.200009137392044e-06,
+        "serl/temperature/temperature_loss": -0.015510919503867626,
+        "serl/temperature_lr": 0.0003000000142492354,
+        "serl/outer_updates": 1
+      },
+      "last_optimizer_row": {
+        "step": 41250,
+        "update_index": 0,
+        "serl/actor/actor_loss": -23.045265197753906,
+        "serl/actor/entropy": -3.8704190254211426,
+        "serl/actor/temperature": 0.000541708548553288,
+        "serl/actor_lr": 0.0003000000142492354,
+        "serl/critic/critic_loss": 0.17477701604366302,
+        "serl/critic/predicted_qs": 23.009105682373047,
+        "serl/critic/target_qs": 23.004512786865234,
+        "serl/critic_lr": 0.0003000000142492354,
+        "serl/temperature/temperature_loss": -0.00019631288887467235,
+        "serl/temperature_lr": 0.0003000000142492354,
+        "serl/outer_updates": 36251
+      },
+      "condition_count": 30,
+      "task": 0,
+      "strict": 0,
+      "reward_mean": -34.223282408334995,
+      "complete_horizon_count": 30,
+      "failure_stages": {
+        "approach": 30
+      },
+      "first_1000_optimizer_mean": {
+        "serl/actor/actor_loss": 0.010032899232814089,
+        "serl/actor/entropy": 0.01113944485038519,
+        "serl/actor/temperature": 0.0068740124255418774,
+        "serl/actor_lr": 0.0002667832641018322,
+        "serl/critic/critic_loss": 0.04292878706683405,
+        "serl/critic/predicted_qs": -0.08015630861278623,
+        "serl/critic/target_qs": -0.08507036433706526,
+        "serl/critic_lr": 0.0002667832641018322,
+        "serl/temperature/temperature_loss": 0.02460675458192236,
+        "serl/temperature_lr": 0.0003000000142492354,
+        "serl/outer_updates": 500.5
+      },
+      "last_1000_optimizer_mean": {
+        "serl/actor/actor_loss": -23.195078840255736,
+        "serl/actor/entropy": -3.2376044893264773,
+        "serl/actor/temperature": 0.0007358088035252877,
+        "serl/actor_lr": 0.0003000000142492354,
+        "serl/critic/critic_loss": 0.013558203560998664,
+        "serl/critic/predicted_qs": 23.145625078201295,
+        "serl/critic/target_qs": 23.145588682174683,
+        "serl/critic_lr": 0.0003000000142492354,
+        "serl/temperature/temperature_loss": 0.00018067211231636904,
+        "serl/temperature_lr": 0.0003000000142492354,
+        "serl/outer_updates": 35751.5
+      }
+    }
+  },
+  "passed": true,
+  "convergence_claim": false,
+  "source_checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_and_batch_cycle_archive_20261026_v1/direct/cycle_00000.pt"
+}

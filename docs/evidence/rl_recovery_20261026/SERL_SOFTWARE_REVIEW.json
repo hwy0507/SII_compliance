@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "source": {
+    "commit": "1fa2af7496be042e43d36120a7c8d1b71f1bfb59",
+    "root": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_upstream_1fa2af7",
+    "manifest_sha256": "6fe7820a01b189190f97bca9a6f98f05557c5f2ee0006865625cef315d12c6ed"
+  },
+  "config": {
+    "critic_ensemble_size": 10,
+    "critic_subsample_size": 2,
+    "discount": 0.9995,
+    "soft_target_update_rate": 0.005,
+    "target_entropy": -3.5,
+    "backup_entropy": false
+  },
+  "actual_critic_shape": [
+    10,
+    2048
+  ],
+  "terminal_bootstrap_zero": true,
+  "independent_bellman_loss": 2.203838586807251,
+  "upstream_bellman_loss": 2.203838586807251,
+  "affine_action_mapping": true,
+  "exact_state_roundtrip": true,
+  "subsequent_stochastic_action_and_update_exact": true,
+  "initial_params_sha256": "4cf628a0da00188172b25f765e09a0bc37be9f49801c5fe8e630316339b543dd",
+  "updated_params_sha256": "9482ec2d01494669db114ba011c0ffebf92ab686e854de3695ba44a9b2d419ec",
+  "synthetic_critic_updates": 32,
+  "promoted_weights": false,
+  "physics_steps": 0,
+  "duration_s": 68.23715877532959,
+  "metrics": [
+    {
+      "serl/actor/actor_loss": 0.029201865196228027,
+      "serl/actor/entropy": -2.666137933731079,
+      "serl/actor/temperature": 0.010000010952353477,
+      "serl/actor_lr": 1.200009137392044e-06,
+      "serl/critic/critic_loss": 2.2448267936706543,
+      "serl/critic/predicted_qs": -0.0024739967193454504,
+      "serl/critic/target_qs": -0.2329670488834381,
+      "serl/critic_lr": 1.200009137392044e-06,
+      "serl/temperature/temperature_loss": 0.008893596939742565,
+      "serl/temperature_lr": 0.0003000000142492354,
+      "serl/outer_updates": 1
+    },
+    {
+      "serl/actor/actor_loss": 0.02865787222981453,
+      "serl/actor/entropy": -2.6771836280822754,
+      "serl/actor/temperature": 0.009991133585572243,
+      "serl/actor_lr": 2.549990313127637e-06,
+      "serl/critic/critic_loss": 2.2720162868499756,
+      "serl/critic/predicted_qs": -0.0029943417757749557,
+      "serl/critic/target_qs": -0.19175970554351807,
+      "serl/critic_lr": 2.549990313127637e-06,
+      "serl/temperature/temperature_loss": 0.008298259228467941,
+      "serl/temperature_lr": 0.0003000000142492354,
+      "serl/outer_updates": 2
+    },
+    {
+      "serl/actor/actor_loss": 0.02661016955971718,
+      "serl/actor/entropy": -2.57218337059021,
+      "serl/actor/temperature": 0.00998202059417963,
+      "serl/actor_lr": 3.9000005926936865e-06,
+      "serl/critic/critic_loss": 2.2738242149353027,
+      "serl/critic/predicted_qs": -0.004013725556433201,
+      "serl/critic/target_qs": -0.22446958720684052,
+      "serl/critic_lr": 3.9000005926936865e-06,
+      "serl/temperature/temperature_loss": 0.008327634073793888,
+      "serl/temperature_lr": 0.0003000000142492354,
+      "serl/outer_updates": 3
+    }
+  ],
+  "limitations": [
+    "Synthetic update/resume validation, not a physical preflight or convergence evidence"
+  ]
+}

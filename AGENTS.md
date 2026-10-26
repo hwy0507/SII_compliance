@@ -1,6 +1,35 @@
 # 本仓库的持续工作约定
 
-**当前最高优先状态：用户2026-10-26要求服务器关机前暂停。Goal已paused，全部本项目训练/仿真/审查进程退出；未获恢复指令前禁止重启。先读docs/RL_SHUTDOWN_RECOVERY_20261026.md/.json。HDD备份 /inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1；快照D213000/I162000/A161000/V162000，均部分周期，MuJoCo物理状态未保存；完整边界备用分别206250/122689/123750/123750。恢复必须独立run并审查部分cycle记账，保留optimizer/replay/RNG，不fresh reset。八temporal重复已全完成勿重跑、最终三seed汇总待做；A/V固定3例独立审查均已完，12例统一汇总待做；cycle3统一review等待已停止且未完成。原PID全部历史信息，不据旧进度重启。**
+## 2026-10-26 本会话明确恢复后的新状态（覆盖下方历史 paused）
+
+用户重新设置 active Goal 并明确要求恢复两类 RL 直至收敛。当前记录见
+[恢复与 SERL 实现](docs/RL_RESUMED_SERL_IMPLEMENTATION_20261026.md)。参数 CHEQ 从部分
+快照保留全学习状态，在 `runs/recovery_cheq_resume_20261026_v1/{impedance,admittance,vmc}/train`
+已完成 cycle4；cycle3仍是不完整历史，不能计完整。三路全状态与后续 RNG/抽样独立核验通过。
+本轮最初 Direct 名为 SERL 的 run 实际调用旧 CHEQ 作者双 critic SAC，已明确排除为 SERL
+结果并在首周期收完后停止；不能续作正式 Direct。真正 SERL 使用固定官方源码
+`1fa2af7496be042e43d36120a7c8d1b71f1bfb59` 已启动：`runs/serl_official_state_online_20261026_v1/direct`，
+PID1809418，GPU0，零示范/随机初始化/空replay，官方十critic、高UTD8critic:1actor，2完整周期。
+软件target/全状态恢复/后续随机更新验证通过；真实16000transition全部动作映射、观测缩放、
+reward/done/nextstate及12模型核验，88008critic更新；当时0终端，不冒称终端物理审查。
+三参数cycle4 Task/Strict18/17、14/13、17/17各30；Q终端误差12.42/9.54/44.50，VMC漂移未解决。
+已独立登记1完整cycle5 batch-only试验：`runs/cheq_batch32768_online_20261026_v1`，
+PID1809422/1809423/1809425，GPU1/2/3。batch256→32768、UTD1，保留完整learner/replay/RNG，
+不导入1536更新有限吞吐probe权重；三路实际新增12000更新且父replay前缀精确核验。
+batch改变梯度统计，不是等价优化或已证实改善。新run nice0；旧run已结束勿重启。
+原周期归档器PID2135157在`runs/serl_and_batch_cycle_archive_20261026_v1`只读保存边界，
+身份检查后随四learner结束；请查看实际PROGRESS而非按旧PID重启。更新阶段66秒GPU均值
+14.88/45.33/41.95/44.57%，无辅助训练，仍未达50%。原Goal继续active，未达收敛。
+无子agent。旧runtime和关机快照不覆盖。HDD只剩约688MiB，大产物写SSD。
+
+收尾SERL完整cycle0已通过全41250journal/replay与30terminal/MJB标签审查，Task/Strict0/30、
+reward−34.2233，全部approach；290008critic更新。末1000loss.01356但terminal Q MAE9.95，
+不是收敛；真实nextstate占位/mask0已查、非raw-substep物理重审。归档cycle0 sha d8d3765b…，
+只读诊断图已看，原1809418继续登记cycle1。参数cycle5只读收尾协调2515639/CPU54在
+`runs/cheq_batch_cycle05_review_20261026_v1`等三FINISHED后审查/CPU诊断，不派发下一训练阶段。
+
+
+**历史关机暂停记录（已被顶部本会话恢复授权覆盖）：用户2026-10-26要求服务器关机前暂停。Goal已paused，全部本项目训练/仿真/审查进程退出；未获恢复指令前禁止重启。先读docs/RL_SHUTDOWN_RECOVERY_20261026.md/.json。HDD备份 /inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1；快照D213000/I162000/A161000/V162000，均部分周期，MuJoCo物理状态未保存；完整边界备用分别206250/122689/123750/123750。恢复必须独立run并审查部分cycle记账，保留optimizer/replay/RNG，不fresh reset。八temporal重复已全完成勿重跑、最终三seed汇总待做；A/V固定3例独立审查均已完，12例统一汇总待做；cycle3统一review等待已停止且未完成。原PID全部历史信息，不据旧进度重启。**
 
 用户于 2026-09-30 明确授权并要求：**每次对话结束前，将本次文件改动 commit 并 push 到
 `https://github.com/hwy0507/SII_compliance` 的 `main`，同时维护根目录 `UPDATE_LOG.md`。**
