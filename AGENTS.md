@@ -7,6 +7,10 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+收尾更新：temporal_return首四任务已全部完成勿重启，REVIEW/图核验8臂16万/648点；迁移MAE parent/fresh D.562/.748 I6.572/7.931 A7.592/7.496 V5.872/5.579，非softQ。新独立两seed重复runs/clock_temporal_return_replications_v1八PID602548/602550/602552/602553/602556/602558/602560/602562、每卡2路/共享52–54/nice10、32万更新/0physics/actor、不推广不自动延长，八启动核验通过；三seed总48万。收完再评估，勿复制已完任务。
+
+最新紧急GPU：新runs/clock_temporal_return_transfer_v1四辅助375116/375119/375120/375122，cycle0拟合/cycle1迁移、parent0/fresh、batch8192、总16万更新/0actor/physics，不推广或自动延长。共享52–54/nice10/线程亲和性已补齐；原A/V固定评估子树nice19继续，在线0–51不变。四正式仍活跃，勿重启。报告PUBLISHED_TEMPORAL_RETURN_GPU_RECOVERY_20261026；原AGENTS上方摘要的旧进度非实时。远端ce467b1示范25/55审计已读合并de7ac97，Goal active。
+
 最新：Imp原3479276与接管3825230已正常完成勿重启，三固定回合独立330万子步/4125动作重放误差0，learned/nominal2/3；长期峰46.41vs52.26、时间20vs20.52但舒适13.00%vs24.07%更差。runs/clock_parameter_fixed_review_v1/impedance（session2111已完）。四真实cycle1全state/replay/RNG恢复v2通过，runs/clock_full_state_resume_review_v2（session80301已完），0updates/physics、不派发下一阶段；v1缺support失败留存。新matrix6/12，A/V及3996089继续，原四在线+1729901/1729905继续。报告PUBLISHED_CLOCK_IMPEDANCE_AND_RESUME_REVIEW_20261026；Goalactive。
 
 最新：clock Direct三代表完整复核session30235已完，learned0/3 vsnominal2/3，330万learned子步/4125动作重放误差0，均无人体接触NA，方向余弦约−.999非因果。runs/clock_direct_fixed_review_v1。评估已资源交接：旧2960898有意终止勿重启，原Imp3479276/CPU54保留，3825230只读接管；新runs/clock_fixed_parallel_v2中A协调3825231/eval3825618/CPU52、V3825232/3825634/CPU53，3996089汇总，仍原12回合预算。原目录HANDOFF_TO_PARALLEL_V2指新登记。核验器首亲和性断言错已保留，v2正确验证learner首核0/13/26/39、A/V各100动作误差0（session25486已完）。正式四learner和1729901/1729905继续，source不变；报告PUBLISHED_CLOCK_DIRECT_FIXED_AND_PARALLEL_20261026，Goalactive。

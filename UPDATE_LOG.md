@@ -67,6 +67,14 @@
 
 # 更新日志
 
+## 2026-10-26 — 紧急GPU资源恢复与跨周期回报迁移诊断
+
+- 收尾原四辅助全完成，8臂16万/648点/图与hash复核。新增独立两seed迁移稳健性复核，clock_temporal_return_replications_v1八进程（见AGENTS），新32万更新/0actor/physics；各已真实更新，不自动延期。首组结束曾导致GPU回落，完整窗口保留。新八路一分钟均值49.87/61.13/56.90/56.93%、最低31/40/41/36%；混合整体56.21%，不是纯在线吞吐。
+- fetch/read并合并main ce467b1（另一主机25/55示范指标审计）、baseline f6e8f8c；保留双方日志。前轮固定Imp/完整恢复报告已提交a91cf98，合并de7ac97。
+- 原四正式learner继续；新增独立有限四路clock_temporal_return_transfer_v1，cycle0拟合/cycle1回报迁移、parent0/fresh、batch8192、共16万辅助critic更新，无actor/physics/权重推广。不是SAC Q或未见policy评估，不自动延长。
+- 四任务375116/375119/375120/375122；共享CPU52–54/nice10/单线程，A/V固定评估降nice19继续；原在线0–51不变。nice提升尝试被OS拒绝且未修改，收据保留。实际GPU窗口/启动核验见独立run；正式训练收敛与最终ESN/SPT未完成。
+- 新源码/报告PUBLISHED_TEMPORAL_RETURN_GPU_RECOVERY_20261026，服务器绝对路径见报告。未修改physics/MJB、任务gate、actor输入、公共filter或执行器限制。
+
 ## 2026-10-26 — 同步远端非RL完成报告并保留服务器RL证据
 
 - 收尾实时fetch发现main新增5提交，最新 `50613a5`：非RL64/64矩阵与学习修复阶段；已读取报告、

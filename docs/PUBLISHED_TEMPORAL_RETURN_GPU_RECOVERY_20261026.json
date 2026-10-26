@@ -1,0 +1,1345 @@
+{
+  "recorded_unix": 1792992411.599902,
+  "run": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1",
+  "records": {
+    "REGISTRATION.json": {
+      "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+      "runtime_sha256": "26d8b9671a55f12702313dfc4a705bc3a9272b402d9611635b44266982177b1c",
+      "source_sha256": "50736acae1d5cf3b59bf814905d30fc999726180d853aa2bc043c65798e8fb5b",
+      "seed": 20261026,
+      "gamma": 0.9995,
+      "learning_rate": 0.0003,
+      "batch_size": 8192,
+      "updates_per_arm": 20000,
+      "record_every": 250,
+      "methods": {
+        "direct": {
+          "checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_clock_online_seed20261025_v1/cycle_archive/direct/cycle_00001.pt",
+          "checkpoint_sha256": "b348de7b88c9a3800065d1b8de826cca46f8254c7601cc008f49a5452b8c655c",
+          "transitions": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/direct_transitions.jsonl",
+          "transitions_sha256": "98f4ac350941947bb9bebd0f0362d0070f04db9d8e0b7a44f5cdf0faac8d5e18",
+          "cpu": 52,
+          "device": "cuda:0",
+          "output": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/direct",
+          "parent_checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_clock_online_seed20261025_v1/cycle_archive/direct/cycle_00000.pt",
+          "parent_checkpoint_sha256": "1c90efe387f964c70ca27fe1c6162e0f73f81c350bf67f9fe78224e34d6be883"
+        },
+        "impedance": {
+          "checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_clock_online_seed20261025_v1/cycle_archive/impedance/cycle_00001.pt",
+          "checkpoint_sha256": "ae9458d29a69776af379bd78706ed7f82718bbec6763950ef621f3055216ce86",
+          "transitions": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/impedance_transitions.jsonl",
+          "transitions_sha256": "d575f839a769015d15bc01a3bfa9ad9ae93f15137c0f2f2faee865ff73f900fc",
+          "cpu": 53,
+          "device": "cuda:1",
+          "output": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/impedance",
+          "parent_checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_clock_online_seed20261025_v1/cycle_archive/impedance/cycle_00000.pt",
+          "parent_checkpoint_sha256": "aa435af85e086cbe13ad589387af44fa37d2352823704aed5a91e75184252f06"
+        },
+        "admittance": {
+          "checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_clock_online_seed20261025_v1/cycle_archive/admittance/cycle_00001.pt",
+          "checkpoint_sha256": "35136dc27530e870bc0b8146a4fffb9f3c42bc38795e1e203675f07703fa3805",
+          "transitions": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/admittance_transitions.jsonl",
+          "transitions_sha256": "0ec10ffb79d4121d9d4510c1c3c6611ba8ef46a9f33cab40e07f49d426b90e36",
+          "cpu": 54,
+          "device": "cuda:2",
+          "output": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/admittance",
+          "parent_checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_clock_online_seed20261025_v1/cycle_archive/admittance/cycle_00000.pt",
+          "parent_checkpoint_sha256": "75b7721825249237454c430e39c69c0c49fb126e240d54b502f076b3879fad08"
+        },
+        "vmc": {
+          "checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_clock_online_seed20261025_v1/cycle_archive/vmc/cycle_00001.pt",
+          "checkpoint_sha256": "bd3d1c3f88bb919f73965206f44c227a0e0f10db42c5c9fffd2f5943575d2f30",
+          "transitions": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/vmc_transitions.jsonl",
+          "transitions_sha256": "863eaf693bdce78f05dcd1f44b6255cfef21690f8a16605db0cec374359e4eaf",
+          "cpu": 54,
+          "device": "cuda:3",
+          "output": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/vmc",
+          "parent_checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_clock_online_seed20261025_v1/cycle_archive/vmc/cycle_00000.pt",
+          "parent_checkpoint_sha256": "5dfedd215b65bc69b1c4c64700302a5adeb4eeea2ef0c60463883fed82b212bc"
+        }
+      },
+      "arm_order": {
+        "direct": [
+          "parent",
+          "fresh"
+        ],
+        "impedance": [
+          "fresh",
+          "parent"
+        ],
+        "admittance": [
+          "parent",
+          "fresh"
+        ],
+        "vmc": [
+          "fresh",
+          "parent"
+        ]
+      },
+      "purpose": "Train only on cycle0 recorded entropy-free behavior returns, evaluate later cycle1 same conditions: temporal transfer and representation drift; parent initialized from cycle0, not cycle1; no softQ or unseen-policy claim",
+      "max_auxiliary_updates": 160000,
+      "new_physics": 0,
+      "new_actor_updates": 0,
+      "weights_promoted": false,
+      "automatic_extension": false,
+      "created_unix": 1792992116.8494978,
+      "gpu_inventory": "0, GPU-dea0cc79-7203-3daf-3b74-291b3a8c5970, NVIDIA GeForce RTX 4090, 49140 MiB\n1, GPU-a1369bbf-4645-8f3a-5132-0d1f16e16897, NVIDIA GeForce RTX 4090, 49140 MiB\n2, GPU-e7553643-e8dc-8ce2-e3d0-1dde95e1e796, NVIDIA GeForce RTX 4090, 49140 MiB\n3, GPU-923fb223-e0ae-3959-7b7b-e6d3ef6cb22a, NVIDIA GeForce RTX 4090, 49140 MiB\n",
+      "cpu_policy": "four single-thread auxiliary workers share cores52-54 at nice10; online CPU0-51 unchanged"
+    },
+    "LAUNCH.json": {
+      "started_unix": 1792992123.069398,
+      "jobs": [
+        {
+          "method": "direct",
+          "pid": 375116,
+          "args": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "-B",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_temporal_return_transfer_v1/probe_temporal_return_transfer_20261026.py",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/REGISTRATION.json",
+            "--method",
+            "direct"
+          ]
+        },
+        {
+          "method": "impedance",
+          "pid": 375119,
+          "args": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "-B",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_temporal_return_transfer_v1/probe_temporal_return_transfer_20261026.py",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/REGISTRATION.json",
+            "--method",
+            "impedance"
+          ]
+        },
+        {
+          "method": "admittance",
+          "pid": 375120,
+          "args": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "-B",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_temporal_return_transfer_v1/probe_temporal_return_transfer_20261026.py",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/REGISTRATION.json",
+            "--method",
+            "admittance"
+          ]
+        },
+        {
+          "method": "vmc",
+          "pid": 375122,
+          "args": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "-B",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_temporal_return_transfer_v1/probe_temporal_return_transfer_20261026.py",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/REGISTRATION.json",
+            "--method",
+            "vmc"
+          ]
+        }
+      ],
+      "registration_sha256": "12cb421a93ae714b3e24a6592b72cede3910999fc9f7533900c7da798d0877fd"
+    },
+    "RESOURCE_BALANCE.json": {
+      "time": 1792992197.3028655,
+      "reason": "Pinned auxiliary workers starved by existing physics on cores52/53; share three reserved cores; online0-51 unchanged",
+      "priority_attempt": "setpriority 10 to 0 denied with PermissionError before any change; retained nice10",
+      "changes": [
+        {
+          "pid": 375116,
+          "method": "direct",
+          "before": {
+            "affinity": [
+              52
+            ],
+            "nice": 10
+          },
+          "after": {
+            "affinity": [
+              52,
+              53,
+              54
+            ],
+            "nice": 10
+          }
+        },
+        {
+          "pid": 375119,
+          "method": "impedance",
+          "before": {
+            "affinity": [
+              53
+            ],
+            "nice": 10
+          },
+          "after": {
+            "affinity": [
+              52,
+              53,
+              54
+            ],
+            "nice": 10
+          }
+        },
+        {
+          "pid": 375120,
+          "method": "admittance",
+          "before": {
+            "affinity": [
+              54
+            ],
+            "nice": 10
+          },
+          "after": {
+            "affinity": [
+              52,
+              53,
+              54
+            ],
+            "nice": 10
+          }
+        },
+        {
+          "pid": 375122,
+          "method": "vmc",
+          "before": {
+            "affinity": [
+              54
+            ],
+            "nice": 10
+          },
+          "after": {
+            "affinity": [
+              52,
+              53,
+              54
+            ],
+            "nice": 10
+          }
+        }
+      ],
+      "scientific_settings_unchanged": true
+    },
+    "EVALUATION_PRIORITY_HANDOFF.json": {
+      "time": 1792992248.5928576,
+      "reason": "Urgent user request: prioritize finite GPU diagnostic jobs over reserved-core frozen evaluation; evaluations continue at nice19, original online CPU0-51 unchanged; no restart or scientific change",
+      "changes": [
+        {
+          "pid": 178610,
+          "command": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_cycle00_fixed_representatives_v1/audit/audit_published_episode_20261025.py --runtime /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock --output /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_fixed_parallel_v2/admittance/admittance/active_long_train_0000 --fixture /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cohort30_v2/fixtures/active_long_train_0000.json --reference-plan /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cohort30_v2/REFERENCE_PLAN.json --controller admittance --ipc ",
+          "affinity": [
+            52
+          ],
+          "old_nice": 0,
+          "new_nice": 19
+        },
+        {
+          "pid": 201176,
+          "command": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_cycle00_fixed_representatives_v1/audit/audit_published_episode_20261025.py --runtime /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock --output /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_fixed_parallel_v2/vmc/vmc/active_long_train_0000 --fixture /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cohort30_v2/fixtures/active_long_train_0000.json --reference-plan /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cohort30_v2/REFERENCE_PLAN.json --controller vmc --ipc ",
+          "affinity": [
+            53
+          ],
+          "old_nice": 0,
+          "new_nice": 19
+        },
+        {
+          "pid": 3825231,
+          "command": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python -B /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_fixed_parallel_v2/run_interim_published_matrix_20261025.py --registration /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_fixed_parallel_v2/admittance/REGISTRATION.json ",
+          "affinity": [
+            52
+          ],
+          "old_nice": 0,
+          "new_nice": 19
+        },
+        {
+          "pid": 3825232,
+          "command": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python -B /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_fixed_parallel_v2/run_interim_published_matrix_20261025.py --registration /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_fixed_parallel_v2/vmc/REGISTRATION.json ",
+          "affinity": [
+            53
+          ],
+          "old_nice": 0,
+          "new_nice": 19
+        },
+        {
+          "pid": 3825618,
+          "command": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python -B /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_cycle00_fixed_representatives_v1/audit/evaluate_published_compliance_20261025.py --runtime /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock --registration /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_online_control_v1/REGISTRATION.json --checkpoint /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_clock_online_seed20261025_v1/cycle_archive/admittance/cycle_00000.pt --output /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_fixed_parallel_v2/admittance/admittance --device cuda:2 --learner-cpu 52 --physics-cpu 52 --audit-substeps --case-id passive_corner_train_0000 --case-id active_short_train_0000 --case-id active_long_train_0000 ",
+          "affinity": [
+            52
+          ],
+          "old_nice": 0,
+          "new_nice": 19
+        },
+        {
+          "pid": 3825634,
+          "command": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python -B /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_cycle00_fixed_representatives_v1/audit/evaluate_published_compliance_20261025.py --runtime /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock --registration /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_online_control_v1/REGISTRATION.json --checkpoint /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_clock_online_seed20261025_v1/cycle_archive/vmc/cycle_00000.pt --output /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_fixed_parallel_v2/vmc/vmc --device cuda:3 --learner-cpu 53 --physics-cpu 53 --audit-substeps --case-id passive_corner_train_0000 --case-id active_short_train_0000 --case-id active_long_train_0000 ",
+          "affinity": [
+            53
+          ],
+          "old_nice": 0,
+          "new_nice": 19
+        }
+      ]
+    },
+    "THREAD_AFFINITY_BALANCE.json": {
+      "time": 1792992274.9414449,
+      "reason": "Include pre-existing CUDA host threads in same reserved three-core pool; intraop remains1",
+      "changes": [
+        {
+          "pid": 375116,
+          "tid": 375116,
+          "before": [
+            52,
+            53,
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375116,
+          "tid": 405477,
+          "before": [
+            52
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375116,
+          "tid": 406207,
+          "before": [
+            52
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375116,
+          "tid": 406208,
+          "before": [
+            52
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375116,
+          "tid": 407449,
+          "before": [
+            52
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375116,
+          "tid": 417553,
+          "before": [
+            52
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375116,
+          "tid": 417554,
+          "before": [
+            52
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375116,
+          "tid": 417555,
+          "before": [
+            52
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375116,
+          "tid": 417556,
+          "before": [
+            52
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375119,
+          "tid": 375119,
+          "before": [
+            52,
+            53,
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375119,
+          "tid": 405518,
+          "before": [
+            53
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375119,
+          "tid": 406756,
+          "before": [
+            53
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375119,
+          "tid": 406757,
+          "before": [
+            53
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375119,
+          "tid": 407448,
+          "before": [
+            53
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375119,
+          "tid": 417559,
+          "before": [
+            53
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375119,
+          "tid": 417560,
+          "before": [
+            53
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375119,
+          "tid": 417561,
+          "before": [
+            53
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375119,
+          "tid": 417562,
+          "before": [
+            53
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375120,
+          "tid": 375120,
+          "before": [
+            52,
+            53,
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375120,
+          "tid": 381243,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375120,
+          "tid": 381247,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375120,
+          "tid": 381248,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375120,
+          "tid": 381353,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375120,
+          "tid": 384119,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375120,
+          "tid": 384120,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375120,
+          "tid": 384121,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375120,
+          "tid": 384122,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375122,
+          "tid": 375122,
+          "before": [
+            52,
+            53,
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375122,
+          "tid": 381244,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375122,
+          "tid": 381245,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375122,
+          "tid": 381246,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375122,
+          "tid": 381334,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375122,
+          "tid": 384126,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375122,
+          "tid": 384127,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375122,
+          "tid": 384128,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "pid": 375122,
+          "tid": 384129,
+          "before": [
+            54
+          ],
+          "after": [
+            52,
+            53,
+            54
+          ]
+        }
+      ]
+    },
+    "STARTUP_REVIEW.json": {
+      "time": 1792992311.1261141,
+      "registration_sha256": "12cb421a93ae714b3e24a6592b72cede3910999fc9f7533900c7da798d0877fd",
+      "methods": {
+        "direct": {
+          "independent_lfilter_target_hash_exact": true,
+          "rows": 82500,
+          "episodes": 60,
+          "early_episodes": [],
+          "train_cycle": 0,
+          "evaluation_cycle": 1,
+          "parent_cycle": 0,
+          "checkpoint_sha256": "b348de7b88c9a3800065d1b8de826cca46f8254c7601cc008f49a5452b8c655c",
+          "parent_checkpoint_sha256": "1c90efe387f964c70ca27fe1c6162e0f73f81c350bf67f9fe78224e34d6be883",
+          "observed_progress": {
+            "method": "direct",
+            "arm": "parent",
+            "update": 11500,
+            "loss": 0.12951678037643433,
+            "metrics": {
+              "fit_cycle0": {
+                "mae": 0.22571443021297455,
+                "rmse": 0.3629228472709656
+              },
+              "transfer_cycle1": {
+                "mae": 0.5453635454177856,
+                "rmse": 0.8166987299919128
+              }
+            },
+            "updated_unix": 1792992296.3533332
+          }
+        },
+        "impedance": {
+          "independent_lfilter_target_hash_exact": true,
+          "rows": 81439,
+          "episodes": 60,
+          "early_episodes": [
+            {
+              "cycle": 1,
+              "condition": "active_long_train_0500",
+              "actions": 314
+            }
+          ],
+          "train_cycle": 0,
+          "evaluation_cycle": 1,
+          "parent_cycle": 0,
+          "checkpoint_sha256": "ae9458d29a69776af379bd78706ed7f82718bbec6763950ef621f3055216ce86",
+          "parent_checkpoint_sha256": "aa435af85e086cbe13ad589387af44fa37d2352823704aed5a91e75184252f06",
+          "observed_progress": {
+            "method": "impedance",
+            "arm": "fresh",
+            "update": 11750,
+            "loss": 36.928279876708984,
+            "metrics": {
+              "fit_cycle0": {
+                "mae": 2.9894139766693115,
+                "rmse": 6.309999942779541
+              },
+              "transfer_cycle1": {
+                "mae": 7.145984172821045,
+                "rmse": 14.12584400177002
+              }
+            },
+            "updated_unix": 1792992301.0815065
+          }
+        },
+        "admittance": {
+          "independent_lfilter_target_hash_exact": true,
+          "rows": 82500,
+          "episodes": 60,
+          "early_episodes": [],
+          "train_cycle": 0,
+          "evaluation_cycle": 1,
+          "parent_cycle": 0,
+          "checkpoint_sha256": "35136dc27530e870bc0b8146a4fffb9f3c42bc38795e1e203675f07703fa3805",
+          "parent_checkpoint_sha256": "75b7721825249237454c430e39c69c0c49fb126e240d54b502f076b3879fad08",
+          "observed_progress": {
+            "method": "admittance",
+            "arm": "fresh",
+            "update": 750,
+            "loss": 22.008712768554688,
+            "metrics": {
+              "fit_cycle0": {
+                "mae": 2.5733649730682373,
+                "rmse": 4.728463172912598
+              },
+              "transfer_cycle1": {
+                "mae": 8.115644454956055,
+                "rmse": 13.83145523071289
+              }
+            },
+            "updated_unix": 1792992304.9974725
+          }
+        },
+        "vmc": {
+          "independent_lfilter_target_hash_exact": true,
+          "rows": 82500,
+          "episodes": 60,
+          "early_episodes": [],
+          "train_cycle": 0,
+          "evaluation_cycle": 1,
+          "parent_cycle": 0,
+          "checkpoint_sha256": "bd3d1c3f88bb919f73965206f44c227a0e0f10db42c5c9fffd2f5943575d2f30",
+          "parent_checkpoint_sha256": "5dfedd215b65bc69b1c4c64700302a5adeb4eeea2ef0c60463883fed82b212bc",
+          "observed_progress": {
+            "method": "vmc",
+            "arm": "parent",
+            "update": 1750,
+            "loss": 65.12203216552734,
+            "metrics": {
+              "fit_cycle0": {
+                "mae": 5.160551071166992,
+                "rmse": 8.28793716430664
+              },
+              "transfer_cycle1": {
+                "mae": 6.563161849975586,
+                "rmse": 10.449016571044922
+              }
+            },
+            "updated_unix": 1792992309.582183
+          }
+        }
+      },
+      "physics_added": 0,
+      "online_jobs_changed": false,
+      "limitation": "Auxiliary behavior-return transfer, not soft-Q calibration, not unseen-condition policy evaluation; startup validation does not establish convergence"
+    }
+  },
+  "GPU_WINDOW_STARTUP.json": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/GPU_WINDOW_STARTUP.json",
+    "sha256": "049de18c376cf861aae5f65b6015007a213f553a7522ec698450c0d21e5af7ba",
+    "mean_utilization": [
+      14.0,
+      10.183333333333334,
+      37.46666666666667,
+      35.4
+    ],
+    "scope": "combined online learners, frozen evaluations, finite temporal-transfer critic fitting"
+  },
+  "GPU_WINDOW_BALANCED.json": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1/GPU_WINDOW_BALANCED.json",
+    "sha256": "1e5dde01075080fcb13ea0c5ce0a06239b15cde1981f61c6d4293ea5753aceb5",
+    "mean_utilization": [
+      61.733333333333334,
+      53.28333333333333,
+      48.35,
+      46.68333333333333
+    ],
+    "min_utilization": [
+      30,
+      18,
+      26,
+      18
+    ],
+    "scope": "mixed online and finite auxiliary, evaluations low priority"
+  },
+  "first_seed_review": {
+    "time": 1792992531.4503381,
+    "registration_sha256": "12cb421a93ae714b3e24a6592b72cede3910999fc9f7533900c7da798d0877fd",
+    "startup_review_sha256": "b6670cba4f50f4533601aafdf54ed2a899d3d9eae61f414264251022039fa20c",
+    "plot_sha256": "341b0aac32b8c260b572be4276e13ebcf0b770e9272c337215c1a5caea85b379",
+    "methods": {
+      "direct": {
+        "parent": {
+          "fit_cycle0": {
+            "mae": 0.14794185757637024,
+            "rmse": 0.23502232134342194
+          },
+          "transfer_cycle1": {
+            "mae": 0.5620161890983582,
+            "rmse": 0.8377670645713806
+          }
+        },
+        "fresh": {
+          "fit_cycle0": {
+            "mae": 0.1085074320435524,
+            "rmse": 0.15258771181106567
+          },
+          "transfer_cycle1": {
+            "mae": 0.748227596282959,
+            "rmse": 1.1572917699813843
+          }
+        }
+      },
+      "impedance": {
+        "fresh": {
+          "fit_cycle0": {
+            "mae": 2.750882387161255,
+            "rmse": 5.627890110015869
+          },
+          "transfer_cycle1": {
+            "mae": 7.931462287902832,
+            "rmse": 15.499127388000488
+          }
+        },
+        "parent": {
+          "fit_cycle0": {
+            "mae": 2.9913618564605713,
+            "rmse": 6.0905070304870605
+          },
+          "transfer_cycle1": {
+            "mae": 6.571644306182861,
+            "rmse": 13.027735710144043
+          }
+        }
+      },
+      "admittance": {
+        "parent": {
+          "fit_cycle0": {
+            "mae": 1.1710693836212158,
+            "rmse": 2.8480141162872314
+          },
+          "transfer_cycle1": {
+            "mae": 7.592125415802002,
+            "rmse": 14.420662879943848
+          }
+        },
+        "fresh": {
+          "fit_cycle0": {
+            "mae": 0.5211430191993713,
+            "rmse": 1.0327117443084717
+          },
+          "transfer_cycle1": {
+            "mae": 7.495852947235107,
+            "rmse": 14.329387664794922
+          }
+        }
+      },
+      "vmc": {
+        "fresh": {
+          "fit_cycle0": {
+            "mae": 0.80905681848526,
+            "rmse": 1.4945110082626343
+          },
+          "transfer_cycle1": {
+            "mae": 5.5788726806640625,
+            "rmse": 11.348618507385254
+          }
+        },
+        "parent": {
+          "fit_cycle0": {
+            "mae": 1.6571569442749023,
+            "rmse": 3.4081270694732666
+          },
+          "transfer_cycle1": {
+            "mae": 5.871676921844482,
+            "rmse": 10.80984878540039
+          }
+        }
+      }
+    },
+    "total_updates": 160000,
+    "curve_points": 648,
+    "complete": true,
+    "convergence_claim": false,
+    "limitation": "Changing behavior returns, same conditions; gap includes changed policy/trajectory distribution and finite function approximation, no causal attribution to critic drift; auxiliary weights not promoted"
+  },
+  "GPU_WINDOW_STEADY.json": {
+    "mean_utilization": [
+      54.583333333333336,
+      58.916666666666664,
+      32.86666666666667,
+      29.033333333333335
+    ],
+    "min_utilization": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "scope": "mixed online and finite auxiliary, following independent startup review completion"
+  },
+  "replications": {
+    "REGISTRATION.json": {
+      "created_unix": 1792992474.9032886,
+      "purpose": "Two independent constructor/sampling seeds to assess robustness of cross-cycle return transfer gap to critic initialization and sampling noise. Existing first seed retained; no weights promoted; no further automatic replication.",
+      "seeds": [
+        20261027,
+        20261028
+      ],
+      "parent": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_transfer_v1",
+      "parent_registration_sha256": "12cb421a93ae714b3e24a6592b72cede3910999fc9f7533900c7da798d0877fd",
+      "source_sha256": "50736acae1d5cf3b59bf814905d30fc999726180d853aa2bc043c65798e8fb5b",
+      "max_auxiliary_updates": 320000,
+      "physics": 0,
+      "actor_updates": 0,
+      "automatic_extension": false
+    },
+    "LAUNCH.json": {
+      "time": 1792992474.9151921,
+      "jobs": [
+        {
+          "seed": 20261027,
+          "method": "direct",
+          "pid": 602548,
+          "args": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "-B",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_temporal_return_transfer_v1/probe_temporal_return_transfer_20261026.py",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_replications_v1/20261027/REGISTRATION.json",
+            "--method",
+            "direct"
+          ]
+        },
+        {
+          "seed": 20261027,
+          "method": "impedance",
+          "pid": 602550,
+          "args": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "-B",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_temporal_return_transfer_v1/probe_temporal_return_transfer_20261026.py",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_replications_v1/20261027/REGISTRATION.json",
+            "--method",
+            "impedance"
+          ]
+        },
+        {
+          "seed": 20261027,
+          "method": "admittance",
+          "pid": 602552,
+          "args": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "-B",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_temporal_return_transfer_v1/probe_temporal_return_transfer_20261026.py",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_replications_v1/20261027/REGISTRATION.json",
+            "--method",
+            "admittance"
+          ]
+        },
+        {
+          "seed": 20261027,
+          "method": "vmc",
+          "pid": 602553,
+          "args": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "-B",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_temporal_return_transfer_v1/probe_temporal_return_transfer_20261026.py",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_replications_v1/20261027/REGISTRATION.json",
+            "--method",
+            "vmc"
+          ]
+        },
+        {
+          "seed": 20261028,
+          "method": "direct",
+          "pid": 602556,
+          "args": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "-B",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_temporal_return_transfer_v1/probe_temporal_return_transfer_20261026.py",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_replications_v1/20261028/REGISTRATION.json",
+            "--method",
+            "direct"
+          ]
+        },
+        {
+          "seed": 20261028,
+          "method": "impedance",
+          "pid": 602558,
+          "args": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "-B",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_temporal_return_transfer_v1/probe_temporal_return_transfer_20261026.py",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_replications_v1/20261028/REGISTRATION.json",
+            "--method",
+            "impedance"
+          ]
+        },
+        {
+          "seed": 20261028,
+          "method": "admittance",
+          "pid": 602560,
+          "args": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "-B",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_temporal_return_transfer_v1/probe_temporal_return_transfer_20261026.py",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_replications_v1/20261028/REGISTRATION.json",
+            "--method",
+            "admittance"
+          ]
+        },
+        {
+          "seed": 20261028,
+          "method": "vmc",
+          "pid": 602562,
+          "args": [
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+            "-B",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/clock_temporal_return_transfer_v1/probe_temporal_return_transfer_20261026.py",
+            "--registration",
+            "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_temporal_return_replications_v1/20261028/REGISTRATION.json",
+            "--method",
+            "vmc"
+          ]
+        }
+      ]
+    },
+    "STARTUP_REVIEW.json": {
+      "time": 1792992579.629866,
+      "checks": [
+        {
+          "seed": 20261027,
+          "method": "direct",
+          "pid": 602548,
+          "targets_match_independently_verified_first_seed": true,
+          "observed_progress": {
+            "method": "direct",
+            "arm": "parent",
+            "update": 7750,
+            "loss": 0.17918157577514648,
+            "metrics": {
+              "fit_cycle0": {
+                "mae": 0.2760106921195984,
+                "rmse": 0.42374667525291443
+              },
+              "transfer_cycle1": {
+                "mae": 0.5566926598548889,
+                "rmse": 0.8568087816238403
+              }
+            },
+            "updated_unix": 1792992578.1505783
+          }
+        },
+        {
+          "seed": 20261027,
+          "method": "impedance",
+          "pid": 602550,
+          "targets_match_independently_verified_first_seed": true,
+          "observed_progress": {
+            "method": "impedance",
+            "arm": "fresh",
+            "update": 8000,
+            "loss": 52.277809143066406,
+            "metrics": {
+              "fit_cycle0": {
+                "mae": 3.395735263824463,
+                "rmse": 7.008807182312012
+              },
+              "transfer_cycle1": {
+                "mae": 7.12567663192749,
+                "rmse": 13.98929500579834
+              }
+            },
+            "updated_unix": 1792992577.5863094
+          }
+        },
+        {
+          "seed": 20261027,
+          "method": "admittance",
+          "pid": 602552,
+          "targets_match_independently_verified_first_seed": true,
+          "observed_progress": {
+            "method": "admittance",
+            "arm": "parent",
+            "update": 8750,
+            "loss": 12.339339256286621,
+            "metrics": {
+              "fit_cycle0": {
+                "mae": 1.473317265510559,
+                "rmse": 3.4403738975524902
+              },
+              "transfer_cycle1": {
+                "mae": 7.671235084533691,
+                "rmse": 14.151198387145996
+              }
+            },
+            "updated_unix": 1792992579.3889441
+          }
+        },
+        {
+          "seed": 20261027,
+          "method": "vmc",
+          "pid": 602553,
+          "targets_match_independently_verified_first_seed": true,
+          "observed_progress": {
+            "method": "vmc",
+            "arm": "fresh",
+            "update": 7500,
+            "loss": 8.820422172546387,
+            "metrics": {
+              "fit_cycle0": {
+                "mae": 1.5084915161132812,
+                "rmse": 3.196110963821411
+              },
+              "transfer_cycle1": {
+                "mae": 5.751924991607666,
+                "rmse": 11.221527099609375
+              }
+            },
+            "updated_unix": 1792992577.4312603
+          }
+        },
+        {
+          "seed": 20261028,
+          "method": "direct",
+          "pid": 602556,
+          "targets_match_independently_verified_first_seed": true,
+          "observed_progress": {
+            "method": "direct",
+            "arm": "parent",
+            "update": 7500,
+            "loss": 0.191743403673172,
+            "metrics": {
+              "fit_cycle0": {
+                "mae": 0.27965402603149414,
+                "rmse": 0.42820513248443604
+              },
+              "transfer_cycle1": {
+                "mae": 0.5568382740020752,
+                "rmse": 0.8500191569328308
+              }
+            },
+            "updated_unix": 1792992577.4614234
+          }
+        },
+        {
+          "seed": 20261028,
+          "method": "impedance",
+          "pid": 602558,
+          "targets_match_independently_verified_first_seed": true,
+          "observed_progress": {
+            "method": "impedance",
+            "arm": "fresh",
+            "update": 8500,
+            "loss": 46.38219451904297,
+            "metrics": {
+              "fit_cycle0": {
+                "mae": 3.231898307800293,
+                "rmse": 6.762262344360352
+              },
+              "transfer_cycle1": {
+                "mae": 6.858528137207031,
+                "rmse": 13.489209175109863
+              }
+            },
+            "updated_unix": 1792992577.8098505
+          }
+        },
+        {
+          "seed": 20261028,
+          "method": "admittance",
+          "pid": 602560,
+          "targets_match_independently_verified_first_seed": true,
+          "observed_progress": {
+            "method": "admittance",
+            "arm": "parent",
+            "update": 7500,
+            "loss": 11.361409187316895,
+            "metrics": {
+              "fit_cycle0": {
+                "mae": 1.521060824394226,
+                "rmse": 3.524698257446289
+              },
+              "transfer_cycle1": {
+                "mae": 7.701300621032715,
+                "rmse": 14.125054359436035
+              }
+            },
+            "updated_unix": 1792992578.140119
+          }
+        },
+        {
+          "seed": 20261028,
+          "method": "vmc",
+          "pid": 602562,
+          "targets_match_independently_verified_first_seed": true,
+          "observed_progress": {
+            "method": "vmc",
+            "arm": "fresh",
+            "update": 7500,
+            "loss": 10.143696784973145,
+            "metrics": {
+              "fit_cycle0": {
+                "mae": 1.5536518096923828,
+                "rmse": 3.258754253387451
+              },
+              "transfer_cycle1": {
+                "mae": 5.836210250854492,
+                "rmse": 11.303343772888184
+              }
+            },
+            "updated_unix": 1792992577.0507896
+          }
+        }
+      ],
+      "online_unchanged": true,
+      "not_completed": true
+    },
+    "GPU_WINDOW.json": {
+      "mean_utilization": [
+        49.86666666666667,
+        61.13333333333333,
+        56.9,
+        56.93333333333333
+      ],
+      "min_utilization": [
+        31,
+        40,
+        41,
+        36
+      ],
+      "scope": "mixed online and finite temporal-transfer replications"
+    }
+  }
+}
