@@ -51,3 +51,5 @@ Direct19原1326215/归档1326258/review1326260继续；准确完整父18与策�
 参数30实际启动审查已通过：I/A新增1000至1235500/1234500、V新增2000至1236500；全部旧1234500/1233500/1234500行回放字段/history/优化器配置/2m marker/30MJB/30sampler/action/clock及新reward0误差通过。原2344568已结束勿重跑，归档2344573/完整review2344575继续。
 
 纯正式19/30原observer2368299已完成勿重采：固定60样本/68.477124秒，四GPU平均57.3000/67.9833/67.9000/69.1333%，D/I/A/V吞吐10.2516/22.3870/22.8982/23.0880 steps/s；逐样本GPU PID恰四正式且原身份/live保持。仅该运行窗口均值，不保证每瞬时或抹去29→30审查/恢复及路径修正空档。
+
+本轮科学提交b6be49f3bbbc22106a5e9e69e857baa9bab49b10仅本地，GitHub认证失败；完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER30_STABILITY_20261026_230528/FULL_SMALL_EVIDENCE.tar.gz逐成员核验，68成员/1365195字节，SHA256 218eef185969016dc00d575d0d3827863063e1eabe9dd852a1b702de87c15bcc。HDD最新/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER30_STABILITY_STATUS_20261026_230528/HANDOFF.md及收据/LATEST已核验；大产物SSD，非全量HDD/arm1备份。四正式19/30和Direct20两原准备进程继续，Goal active。
