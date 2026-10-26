@@ -1,3 +1,10 @@
+## 2026-10-26 — 参数29恢复入口准备，原18/28与冻结16继续
+
+- 上轮实质进展已核；本轮实际/proc命令/PROGRESS确认四正式18/28、归档/review和冻结16存活推进，冻结已22/30。未启动重复训练/仿真/已完成诊断。Goal active。
+- 新29 prepare/launch/setup逐项diff和AST通过，准确父28/历史容量入口23不变，生成review源码静态检查通过；实际29 check-only未执行。等待准备4005782仅完整28审查后prepare+check-only，7200秒有限等待，不自动训练。
+- 审查调度4005783只在原28三learner退出后将原review3733617及子进程移到释放CPU13，核/proc路径并写收据，避免与冻结物理CPU53争用。正式训练及所有物理/算法/state不变，无自动30。
+- 实际query/fetch/read main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d未变；按已读sii-research-sync，无子agent。交接docs/RL_PARAMETER29_PREPARATION_20261026.md，小证据docs/evidence/rl_parameter29_preparation_20261026；B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，大产物仍SSD。
+
 ## 2026-10-26 — 参数28接续、完整27恢复与终端集中度核验
 
 - 开工及续接实际查询/fetch/read main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d未变。无子agent，交接docs/RL_PARAMETER28_TERMINAL_CONCENTRATION_20261026.md。

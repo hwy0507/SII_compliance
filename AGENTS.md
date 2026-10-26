@@ -1,5 +1,9 @@
 # 本仓库的持续工作约定
 
+## 新接续准备：29等待恢复，原18/28与冻结16继续
+
+最新补充[交接](docs/RL_PARAMETER29_PREPARATION_20261026.md)：29 prepare/launch/setup静态核验通过，原等待4005782只完整28 FINISHED/REVIEW后prepare+check-only，尚未执行恢复检查/训练；原审查调度4005783仅28三个learner退出后复用CPU13给原3733617及子进程，7200秒截止，先查原进程勿重复。准确父28、2m历史入口23/全部state保持，无自动29训练或30。原四正式18/28及归档/review继续，冻结16原1749189/1749193/review1749197目前22/30。Direct19原3088320/3269262不变。Goal active，完整科学状态以下方28交接为准，不能把静态准备当运行通过。
+
 ## 最新RL状态：参数27完成、28启动与固定终端恢复
 
 原Goal active，未整体健康收敛。最新[交接](docs/RL_PARAMETER28_TERMINAL_CONCENTRATION_20261026.md)覆盖下方旧快照。无子agent，冻结物理/SPT/全部正式state保持。

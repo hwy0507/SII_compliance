@@ -1,0 +1,23 @@
+# 参数29恢复准备与原18/28续训（2026-10-26）
+
+Goal active。前轮属于实质进展：完整27审查、正式28启动/实际新增检查和固定终端恢复证据已完成。本轮先核对原四learner/归档/review与冻结evaluator在/proc中的实际命令及进度，确认运行后才新增衔接准备；没有重复实验。完整科学状态见[参数28交接](RL_PARAMETER28_TERMINAL_CONCENTRATION_20261026.md)。
+
+B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。当前正式Direct18原2732254、归档2732257/review2732258；参数28原I3733553/A3733556/V3733557、归档3733614/review3733617。startup3733613已完成：I/A新增1000、V新增2000，全旧prefix/history/优化器配置/marker/MJB/action/clock、新reward0误差。四路PROGRESS继续增长，不能把仅进程live当收敛。冻结16原1749189/1749193/review1749197已22/30，仍在原30×55秒/固定外部seed2026102626预算内。
+
+## 新29衔接准备
+
+B/runtime/prepare_parameter_capacity29_20261026.py、launch_parameter_capacity29_20261026.py、setup_parameter_capacity29_monitors_20261026.py已经准备并逐项diff/AST核验。准确父必须完整28，预备输出B/runs/parameter_capacity_pool30_cycle29_20261026_v1目前不存在。保持2m容量/历史入口23/capacity replay+pair learner/50维critic输入，以及原GPU1–3、CPU分配、30pool/batch65536/UTD1/terminal128/projection/target Imin+A-Vmean/actor min/LR和全部state；仅续一个有限周期。无任何候选权重推广或收敛声明。
+
+等待准备原PID4005782，源码B/runtime/wait_prepare_parameter_capacity29_20261026.py；7200秒有限等待，只在28 FINISHED/REVIEW通过后启动prepare+三check-only，不自动训练。prepare另守卫三个原28learner均退出，使用释放CPU13，三check-only用13/26/39；历史capacity入口23没有被重标28。实际check-only尚未执行，不能将AST和生成文本检查当运行通过。
+
+一次审查CPU调度原PID4005783，源码B/runtime/assign_parameter28_review_released_cpu_20261026.py；等待原三个28learner自然退出后，将原3733617及其review子进程设到释放CPU13，核/proc命令路径才调整，保留TRANSITION_CPU_ASSIGNMENT.json，7200秒有限截止。只改变审查CPU亲和性，不改运行source/state/精度。检查原结果勿再派发同一等待器。
+
+完整28可用后，应先查看REVIEW、health/DIAGNOSIS、loss与回报及图，再据科学结果决定继续；检查通过后直接运行B/env/bin/python B/runtime/launch_parameter_capacity29_20261026.py，不需重复向用户索要已有续训授权。若结果异常则先诊断，不为占用GPU跳过审查。无自动30。
+
+Direct19原等待3088320和审查CPU调整3269262保持；只等完整18后check-only，无自动19训练。已完成导纳终端集中度、固定804跟踪和GPU短窗口不重跑。指定ESN仍缺，已问不重复、不以历史ESN替代。
+
+## 证据与发布
+
+新小证据docs/evidence/rl_parameter29_preparation_20261026包含5脚本、2原PID启动收据、静态准备核验、源hash及带/proc命令的LIVE_STATUS。本轮实际查询/fetch/read main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d未变；无子agent。GitHub认证仍待恢复，不影响原训练；不重复问凭据。
+
+之前完整小证据包B/repository/RL_PARAMETER28_TERMINAL_20261026_215524/FULL_SMALL_EVIDENCE.tar.gz（94成员）仍是本轮补充的依赖，SHA256 5c4ae048b5459ee9f8e886fba680a25caf8cead71b84e0e7110e99b1ee430aec。新归档仅准备/调度补充，不宣称新的完整科学包或HDD/arm1全量备份。大checkpoint/replay/raw仍SSD。
