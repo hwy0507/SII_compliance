@@ -1,3 +1,16 @@
+## 2026-10-26 — 参数16与SERL等价传输12，完整15/11审查及长窗口GPU证据
+
+- 开工真实查询/fetch/read main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；上一轮冻结审查/发布属实质进展。本轮核验原15/11仍live，完成原周期审查后才接续，无重复训练/子agent。详见docs/RL_PARAMETER16_SERL_TRANSFER12_20261026.md。
+- 参数15完整：I657000/652001、A656000/651001、V657000/652001，Task/Strict17/17、13/13、17/17，reward−2.227365/−10.361746/−2.855253。三路30完整无abort、全新reward0误差、旧prefix/history/config/markers/MJB通过；health与图已检查，termMAE1.108/.853/1.375、Qmean−10.207/+1.427/+23.785、末loss2.339/18.577/3.443，A/V仍移动，不能称稳定。原三learner/归档/审查退出。
+- 参数16 I4072251/A4072252/V4072255从准确15全state续一周期，原GPU1/2/3、CPU组各12sampler；batch65536/UTD1/terminal128/projection/Imin+A-Vmean/actor min/原LR保持。新driver沿hash核验的父登记链绑定历史13 batch probe，不冒充新父上重做。三check-only完整state/重复恢复/负守卫0更新通过；真实I/A2000、V3000新增旧prefix/history/配置/marker/12MJB/动作/clock/reward0误差。归档4140193、完整16只读4140196，无自动17。
+- Direct11完整483282/3826264、0/30、reward−31.241907、30完整55秒无abort；全41250新单步/32步派生精确、旧442032raw/derived/ready顺序/history保持、pending0。360terminal×10critic MAE.078471/p95.207200/max4.312935、Qmean−20.636024、1步/32步TD .098616/.068467，完整state只读不变，图已看；value/loss改善仍无任务成功。旧learner/归档/审查已完。
+- Direct12 PID4121413/GPU0/CPU0/30sampler共享1–12，从准确11全state续一个12，仅部署已核验等价的单次batch传输。官方10/2/noentropy/8:1、batch32768、32步、actor48/gather保持；新check-only全state/replay/下批两构造/RNG一致0更新，真实1000新增/8000critic、旧483282全前缀与动作/clock/reward/30MJB、184mature+816pending精确。归档4140210、完整12只读4140212，无自动13。
+- 预登记180样本194.016秒纯正式窗口，全部原learner全live，GPU48.43/75.82/74.29/74.28%、D/I/A/V23.416/24.967/25.518/25.333steps/s。Direct仍不足50%；与前短窗口比较没有新在线提速证据，不重复窗口挑有利结果，后续混合辅助/冻结负载不替代正式达标。
+- 新只读同状态动作偏好审查完成：准确11近期1024状态、9候选，0更新/物理、完整state/父文件不变。mode比replay Q高.019239，比公共全零高.031885，mode critic std.043798，raw各通道Q梯度绝对均值.00857–.01027。官方actor是10critic均值加entropy；小预测差不证明校准、物理因果优势或nominal混合依据，候选未执行。原协调105292结束。
+- 新有限batch32768/65536对照probe231521/review266278运行，准确11父每臂完整state/replay/RNG恢复，各2000outer、总32000critic+4000actor、20诊断点，0物理/不存推广权重。两臂与独立审查均完成、原231521/266278退出、图已看：末terminalMAE .076180→.072278/max4.189→3.509，32步TD .070519→.070815，末loss.023475→.023212。排除首编译平均outer .042698→.114047s约2.67倍；首65536编译101.75s另列。等更新非等抽样、共享GPU非隔离吞吐，不能预判任务收益。当前正式12设置不变。
+- 新冻结参数15九代表协调I354445/A354448/V354759，I/A evaluator354447/354805已实际仿真；CPU52/53/54 nice19、GPU1/2/3推理，V已在上述probe审查完成后启动evaluator544452使用54。严格pair_class恢复完整正式15与markers，同原冻结11各类0000、最多990万子步、0更新/无新nominal；最终独立物理/filter/torque/动作/全state审查尚待，非全30最终结论。
+- 五新源码AST及相应恢复/真实启动/动作诊断通过；有界小证据docs/evidence/rl_parameter16_transfer12_20261026/SOURCES.json，原始大型checkpoint/replay/物理轨迹仍本集群SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，非arm1/HDD全备份。Goal active，健康收敛、最终冻结/ESN/SPT和持续每卡50%未完成。
+
 ## 2026-10-26 — 参数15接续、Direct10完整审查与等价gather正式11
 
 - 开工fetch/read main3d7db5a8d6c871f09b322e0f78f47dd6de521749、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收尾重新fetch/read并快进整合独立非RL main9dd59f2f0fb6be04fce255bd7c395b50d029d9ee，两条非RL更新保留，未影响其冻结运行。无子agent。交接docs/RL_PARAMETER15_SERL_GATHER11_20261026.md。

@@ -1,5 +1,18 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 参数16、Direct单次传输12运行中
+
+原Goal active，未健康收敛；最新[完整交接](docs/RL_PARAMETER16_SERL_TRANSFER12_20261026.md)。本段覆盖下方15/11运行中快照。无子agent，物理/SPT与完整正式state保持。
+参数15已完整审查：I657000/652001、A656000/651001、V657000/652001，Task/Strict17/17、13/13、17/17，reward−2.227365/−10.361746/−2.855253；30完整无abort、新reward0误差/全旧prefix/history/markers/MJB通过。termMAE1.108/.853/1.375，Qmean−10.207/+1.427/+23.785、末loss2.339/18.577/3.443，A/V值仍移动，未收敛。旧2763218/9/20、归档2860572/审查2860589结束勿重启。
+正式参数16 I4072251/A4072252/V4072255，GPU1/2/3与原CPU组各12sampler，B/runs/parameter_batch65536_cycle16_20261026_v1；准确15全state续一个16，不改batch65536/UTD1/terminal128/projection/Imin+A-Vmean/actor min/原LR。三check-only全state/重复恢复/负守卫通过；真实I/A2000、V3000新增全旧state/replay/history/marker/12MJB/动作/clock/reward0误差。归档4140193、完整16只读4140196；无自动17，必须pair_class恢复。
+Direct11已完整483282/3826264，0/30、reward−31.241907、30完整无abort；全41250新增单步与派生目标精确，旧442032raw/derived/ready顺序/history保持、pending0。termMAE.078471/max4.312935，Qmean−20.636024，32步TD .068467；完整state只读不变/图已看，任务仍失败。旧2858708/3078520/3078535结束勿重启。准确11父SHA bd4e5de51a8e9cebe63fa7240a1e79427b1c81b1c0510be6dc51a0adee491195。
+正式Direct12 PID4121413/GPU0/CPU0/30sampler共享1–12，B/runs/serl_multistep_transfer_cycle12_20261026_v1/direct，准确11全state续一个12，仅部署已等价核验的单次batch传输，gather与官方10/2/noentropy/8:1/batch32768/32步/actor48保持。新check-only全state/replay/下一批两batch构造/RNG相同0更新；真实1000新增/8000critic、旧483282前缀与新actor/action/clock/reward/30MJB及184mature+816pending全通过。归档4140210、完整12只读4140212，无自动13；须保留clock/multistep markers完整成熟顺序。
+预登记180样本194.016秒纯四正式GPU48.43/75.82/74.29/74.28%，D/I/A/V23.416/24.967/25.518/25.333steps/s；原PID全live，Direct仍未50%、传输优化未显示新在线提速。观察4170654结束，不重采挑好结果；后续混合负载不替代。
+只读正式11动作偏好诊断已完成，1024近期固定状态、0更新/物理；mode比replay Q均值高.0192、比公共全零高.0319、critic std.0438，七通道Q梯度绝对均值.0086–.0103。未执行候选、非因果物理效果，不改动作/nominal混合。原105292已完。
+新有限batch32768/65536对照B/runs/serl_cycle11_batch65536_probe_20261026_v1：probe231521、独立review266278，准确11全state/replay/RNG每臂2000outer，共32000critic+4000actor、0新物理/不保存推广权重。两臂与独立审查均完成、原231521/266278退出、图已看。末termMAE .07618→.07228、max4.189→3.509、32步TD .07052→.07081、平均outer .04270→.11405s（约2.67倍，首编译单列）；候选未部署12，非在线收益，不重复。
+冻结参数15三固定代表：B/runs/parameter_pair15_fixed_20261026_v1，I354445/A354448/V354759协调，I/A evaluator354447/354805，CPU52/53/54 nice19、GPU1/2/3推理，每路3例最多330万子步0优化。V已接续evaluator544452使用54，三个原协调继续，勿重复。新evaluate_pair_parameter严格pair_class/全部markers与全state恢复；最终物理/filter/torque/动作/状态审查尚待，非全30最终排名。
+HDD配额仍满；完整小证据GitHub/SSD，大产物仅SSD。不要宣称HDD或arm1全备份；后续先收原16/12/有限probe/冻结15。
+
 ## 最新RL状态：2026-10-26 参数15、Direct等价gather11运行中
 
 原Goal active，未收敛；最新交接[RL_PARAMETER15_SERL_GATHER11_20261026.md](docs/RL_PARAMETER15_SERL_GATHER11_20261026.md)。本段覆盖下方14/10运行中旧快照，无子agent，物理/SPT/完整正式state不变。

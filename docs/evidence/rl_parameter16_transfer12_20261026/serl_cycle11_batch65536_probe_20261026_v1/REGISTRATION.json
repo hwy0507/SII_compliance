@@ -1,0 +1,41 @@
+{
+  "checkpoint": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_gather_cycle11_archive_20261026_v1/direct/cycle_00011.pt",
+    "sha256": "bd4e5de51a8e9cebe63fa7240a1e79427b1c81b1c0510be6dc51a0adee491195"
+  },
+  "cycle_review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_gather_cycle11_review_20261026_v1/REVIEW.json",
+    "sha256": "76c10d327eb2d643367de0c850c6fe238898fe96c73ca9c59a08fcc7a4a0017f"
+  },
+  "health_review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_gather_cycle11_review_20261026_v1/DIAGNOSIS.json",
+    "sha256": "14d6fcd08bb48e36729e1c0e9aa949146052de2d03ff36b1487f2b94c5a444b8"
+  },
+  "batches": [
+    32768,
+    65536
+  ],
+  "outer_updates_per_arm": 2000,
+  "record_every": 100,
+  "auxiliary_weights_promoted": false,
+  "seed": 2026102613,
+  "adapter_runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_multistep_transfer_cycle12_20261026_v1",
+  "base_adapter_runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_state_adapter_20261026_v1",
+  "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+  "upstream": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_upstream_1fa2af7",
+  "upstream_manifest": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/SERL_UPSTREAM_1fa2af7_HASHES.json",
+  "source_hashes": {
+    "probe_serl_multistep_batch65536_20261026.py": "3eb41b1904389318dd815271f2ab1e8b87cccd1144a780d27528066e7dc02080"
+  },
+  "adapter_hashes": {
+    "serl_state_adapter_20261026.py": "a761b5dc10f89c332f16fb418685738f0ec559bdf6c8ef5f64b5c3f7eadb2040",
+    "serl_multistep_state_adapter_20261026.py": "395eb3c618d37d6e3dad338478a7017d3fc273d7368bb2a8a8c488cfcdd840de",
+    "serl_clock_state_adapter_20261026.py": "938743a6efb324a5a9fae99e05d7232e937bd9c5d2f97f7863e5a05aaa004c1e",
+    "serl_critic_clock_extension_20261026.py": "e6e7e0b2c5083e30aae722f8f439533158f86092c091ded10702bd1415d610c2",
+    "serl_multistep_replay_gather_20261026.py": "fe06527cf35a492ed48538dae739f859726aa31dd5f8a801157530c537553c87",
+    "serl_multistep_batch_transfer_20261026.py": "8163acf910d36829116af91fc9919c59b9d99ddabf0f1af0eab23ed3b0f525c8",
+    "validate_serl_state_20261026.py": "06ad1daca7664e660a6c4cd53c74119c35ddcae7f32ece62bf15d246f46ad62a"
+  },
+  "reason": "Pure formal transfer12 window still GPU0 48.43%; compare useful larger-batch update quality and cost before any formal workload change. Equal update clocks, different sampled-row budgets; no task benefit claimed.",
+  "time": 1793027227.539172
+}
