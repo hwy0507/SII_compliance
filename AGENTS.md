@@ -1,5 +1,15 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 参数21 / Direct15 / 128对起始探索完成
+
+原Goal active，未健康收敛。最新[交接](docs/RL_PARAMETER21_SERL15_PREFIX_20261026.md)覆盖下方20/14。无子agent，冻结物理/SPT及正式全部state保持。
+参数20完整：I863250/858251、A862250/857251、V863250/858251；Task/Strict18/17、12/12、17/16，reward−2.275413/−12.060595/−4.589517，末loss1.111/1.239/1.221，terminalMAE.799/.842/.704。30完整无abort，全prefix/history/markers/reward0误差/finite、health/图通过。I/V同short0600任务完成但物理不合规，导纳短0000/0200新增、长0500丢失；未收敛。
+正式参数21 I/A/V PID2558774/2558776/2558777，B/runs/parameter_pool30_cycle21_20261026_v1；准确20全state一个21，原30sampler共享CPU和GPU1/2/3、batch65536/UTD1/terminal128/projection/target Imin+A-Vmean/actor min/LR不变。三check-only/各真实1000新增全部prefix/history/marker/MJB/action/clock/reward0误差通过，历史pool来源保持；归档2558780/完整审查2558781，无自动22，必须pair_class恢复。
+Direct14完整607032/4816264，0/30，reward−31.033155，30完整无abort，全新单步/32步精确、旧565782 prefix/history/ready保持、pending0。完整REVIEW/DIAGNOSIS/FINISHED/图通过，SHA d47def4626a3cdb8e783403d2a0152c916593e36ef30675e353e699ff35bf410。正式15 learner2870244，B/runs/serl_multistep_batch65536_cycle15_20261026_v1；准确14全state续一个15，原GPU0/CPU0/30sampler共享1–12/batch65536/32步/官方8:1等不变。check-only和实际1000新增通过；归档2870381/完整审查2870384，无自动16。
+新128对起始noise实验B/runs/serl_cycle13_initial_noise_gate_20261026_v1全部完成，原2176229/2286328退出勿重跑。准确冻结13/单原条件/固定128对种子，每条6动作/.24s、共1228800子步；independent与episode_constant均0/128离开初始approach，Wilson95上界2.9137%，全无abort/机器违规，动作误差0/fullstate不变/物理filter torque复算通过，图已看。非完整任务成功、非动力学重模拟、不外推全30，未支持constantnoise、不部署；无seed扩展/示范/nominalmix/replay注入或辅助权重。
+新纯正式180样本207.974s，GPU57.6111/73.8056/73.1556/74.1833%，D/I/A/V10.6455/24.3924/25.0848/25.1329steps/s，四原learner全样本live且GPU PID集合逐次恰四正式；B/runs/batch15_parameter21_gpu_profile_20261026_v1，2673023完成勿重采。非瞬时永久保证，等待/尾部低占用不隐去。
+远端main仍dbb1d76/baseline f6e8f8c，GitHub凭据待恢复且用户已被问勿重复。大产物SSD、HDD小交接/收据，非arm1/HDD全备份；先查原15/21完整review后衔接，不重启旧14/20/探针。
+
 ## 最新RL状态：2026-10-26 参数20与Direct起始覆盖诊断
 
 原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER20_SERL_INITIAL_COVERAGE_20261026.md)，覆盖下方19/14。无子agent，冻结物理/SPT与完整正式state保持。
