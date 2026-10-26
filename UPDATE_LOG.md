@@ -1,5 +1,24 @@
 # 更新日志
 
+## 2026-10-26 — 新增30条公平训练持续推进与独立进度审计
+
+- 实时fetch/read main=`896d0a44a3f3b0d5fca0b3e070443c940744fd0f`、
+  baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，重读AGENTS及同步skill。
+  Goal保持active，同一v2服务/真实子进程持续推进，没有重复训练、修改冻结实验或启动旧组。
+- 06:01 UTC独立快照通过：完成15/75拟合进程（ESN36候选、RNN6、MLP6），物理0/108。
+  交付前进度继续推进到RNN7/36、MLP7/36，当前下一RNN候选17226/32000更新；
+  服务active、MemoryCurrent735203328/3221225472 bytes，cgroup无OOM、worker swap0。
+- 新审计器核验1357冻结源码hash、数据/协议、完整候选网格、终态选模约束、导出与优化器身份隔离；
+  只读进度检查退出0，未完成最终矩阵拒绝检查通过。首版检查重复构造集合导致低效，35.4秒后
+  只停止该审计进程并优化，重跑0.263秒通过；正式训练未中断。编译/diff检查通过。
+- 最终审计代码还覆盖9锁定模型的验证动作重放、108回合来源、SPT/峰矩/接触合规/机器安全与seed统计；
+  该完整分支尚未执行，不写成最终通过。后续分别报告6选模示范误差和12新条件闭环结果，
+  不把离线MSE、完成32k更新或部分候选当作闭环成功/收敛/ESN优越。
+- 三份源码/方案/进度证据32768 bytes已逐hash核验归档到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_progress_0601/`，
+  见`docs/evidence/nonrl_new30_20261026/PROGRESS_ARCHIVE_0601.json`。原始产物仅本地；
+  方案入口`docs/NONRL_NEW30_FAIR_COMPARISON_20261026.md`，无关会议草稿保持未提交。
+
 ## 2026-10-26 — 启动新增30条的历史ridge ESN与RNN/MLP公平对比
 
 - 实时核对/fetch/read main=`ce467b1773adeddfdfb82b8ccc424b97af23240b`、
