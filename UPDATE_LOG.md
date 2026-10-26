@@ -1,3 +1,10 @@
+## 2026-10-26 — SERL Direct 改为零示范从零训练的恢复方案
+
+- 用户不想再采数据，询问SERL能否从零训练；静态确认原文4.1与官方async_sac_state_sim支持空replay、随机初始采样、仅自主在线经验。优先选择SERL-state/SAC from scratch adaptation，不加载示范/旧CHEQ权重或replay，无新增人工纠正；参数CHEQ续训状态保留。
+- 修改选择文档、AGENTS和关机交接，旧已有示范方案保留历史语境但不再是启动前置。明确无先验则无对半采样、原20示范成功率不可移植、ESN示范量与RL在线交互量须分别披露。
+- 已确认上一轮文档/隔离整合提交59ffddff5a313d5a746aabc730e27f58b91b2243推送到远端main；活动工作副本快进同步该既有提交，没有执行其非RL代码。baseline仍f6e8f8c。当前新增仅文档，未训练/仿真/测试，Goal仍paused。
+- 交付静态diff检查；新增HDD独立补充DIRECT_SERL_SCRATCH_ADDENDUM_20261026.md，不覆盖前一交接、checkpoint、bundle或manifest。
+
 ## 2026-10-26 — SERL 文档发布隔离整合
 
 - 文档提交 ec99874 的首次正常push因non-fast-forward拒绝，非训练失败。为保持活动工作副本和冻结runtime不变，在 /tmp/sii_serl_publication_20261026 隔离worktree整合 origin/main c117532。

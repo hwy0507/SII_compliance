@@ -2,11 +2,17 @@
 
 日期：2026-10-26。状态：**文献核验与迁移决策；训练、仿真、测试、服务均未启动。原 Goal 继续 paused。**
 
+## 后续澄清：Direct 默认从零训练，零示范
+
+用户随后说明不想再采数据，并询问能否从零训练。静态核验确认 SERL 论文第4.1节明确支持 from scratch，官方 `examples/async_sac_state_sim/async_sac_state_sim.py` 不使用 demo buffer：随机动作采集初始经验、在线 replay 达到启动量后更新 actor/critic。故迁移默认路线为 **SERL-state/SAC from scratch adaptation**：随机初始化、空 replay，仅自主在线交互，不加载已有示范、不加载旧 CHEQ 权重或 replay、不新增人工纠正。本文较早的已有示范方案是历史备选，不再是启动前置条件；若未来改用示范，须另行明确并保留零示范结果。
+
+这保留 SERL 支持的状态输入学习路线，但不包含 RLPD 的先验/在线对半采样，因为当前没有先验数据。不能声称复现了原论文“20条示范”的高成功率结果，也不能保证长时域本项目仅靠稀疏终端成功奖励即可学会。恢复后 reward 适配可保留任务进度引导，终端严格使用原 gate；不得用降低力矩但停滞的平坦 reward 判收敛。采用已有任务/安全反馈不等同增加 actor 的 privileged input。与使用示范的 ESN 比较时，需要分别报告示范量和在线交互量，不宣称两者训练数据预算相等。
+
 ## 用户最新约束与路线
 
 - 在线调参的 Impedance / Admittance / VMC 允许继续 CHEQ。
 - Direct 不再以 CHEQ 为后续主基线，改为顶会/顶刊已验证的机械臂接触控制方法适配。
-- 用户明确选择：**仅接受已有示范，不新增人工纠正**。不得启动人工接管流程，也不得把新生成的 teacher/ESN 轨迹称为已有示范。
+- 用户先明确“仅接受已有示范，不新增人工纠正”，随后要求优先从零训练、避免采数据；以顶部零示范路线为当前默认。不得启动人工接管或额外示范采集。
 - 本轮选定参考：**SERL: A Software Suite for Sample-Efficient Robotic Reinforcement Learning**，ICRA 2024，pp. 16961–16969，DOI `10.1109/ICRA57147.2024.10610040`。
 - 这是 2024 年论文，不是 2025–2026 年论文；选择理由是其训练机制更符合上述数据约束。2025 年顶刊后继 HIL-SERL 需要另行区分，不能借用后继的发表信息给 SERL 标注顶刊。
 
@@ -36,8 +42,8 @@
 
 ## 下次恢复后的适配范围
 
-1. **已有示范审计优先。**核对训练身份、机器人/physics、dt、观测与动作定义、时间顺序、next observation、termination/truncation 和 reward 可重算字段。仅有 `(observation, teacher_action)` 的行为克隆样本不自动等同 RL transition；动作若不是实际执行动作，不能搭配该轨迹的 next observation 冒充 transition。不得读取验证/未见条件充当先验经验；不得静默补采示范。
-2. 使用 SERL/RLPD 学习与数据机制，保留已有合法示范和自主在线经验的分离。无需在线人工纠正；不让 CHEQ 名义策略混合继续充当新的 Direct 输出层。
+1. **当前从空 replay 开始，不等待示范。**以下仅为将来明确启用已有数据时的审计要求：核对训练身份、机器人/physics、dt、观测与动作定义、时间顺序、next observation、termination/truncation 和 reward 可重算字段。仅有 `(observation, teacher_action)` 的行为克隆样本不自动等同 RL transition；动作若不是实际执行动作，不能搭配该轨迹的 next observation 冒充 transition。不得读取验证/未见条件充当先验经验；不得静默补采示范。
+2. 使用 SERL 状态输入的 SAC 系学习机制，当前所有批次来自自主在线 replay，无示范对半采样，无在线人工纠正；不让 CHEQ 名义策略混合继续充当新的 Direct 输出层。
 3. 优先使用现有 canonical48 的部署可得信息与公共执行动作接口。旧 CHEQ actor 的额外 mixing context 不属于 SERL 原接口；其移除、旧 critic 时钟是否保留、normalizer 与动作头均须在独立适配协议中说明，**本轮未修改**。
 4. 原论文视觉输入换成本项目本体状态，是明确的 observation adaptation；代码存在 state-only 路径支持这种实现，但不能称视觉原系统逐项复现。
 5. 公共 physics/MJB、Task/Strict gate、filter、执行器限制和 dt 保持冻结。SERL 的原生阻抗 reference limiting 与本项目执行层不自动等价；恢复后先写接口映射与差异表。如必须改底层合同，应先明确变更，不静默替换。新版本宜称 **SERL/RLPD-based Direct adaptation**。
@@ -47,7 +53,7 @@
 9. 与 ESN 对齐可用部署信息、动作权限、任务条件、先验数据身份与选择规则；明确 RL 额外在线交互量。该比较是不同学习/控制方案比较，不能把差异全部归因于“直接动作与调参”或“ESN 网络结构”。
 10. 收敛证据需要 reward 从学习改善进入稳定区、优化诊断及独立冻结策略任务成功验证。平坦失败 reward 或数值较小的 critic loss 均不足以宣布完成。
 
-尚未确认：可用于 RLPD 的已有完整 transition 数据具体清单、最终比较的 ESN checkpoint、公共执行层与论文控制器之间的适配细节、训练预算及资源计划。当前不设新步数、不选新 checkpoint、不运行预检；待用户开机明确恢复后处理。
+尚未确认：最终比较的 ESN checkpoint、公共执行层与论文控制器之间的适配细节、训练预算及资源计划。已有示范清单不是当前零示范路线的前置条件。当前不设新步数、不选新 checkpoint、不运行预检；待用户开机明确恢复后处理。
 
 ## 仓库与备份状态
 
@@ -57,4 +63,4 @@
 
 ## 给下次会话的提示词
 
-> 请继续原柔顺控制 RL Goal。先读取 AGENTS.md、docs/RL_SHUTDOWN_RECOVERY_20261026.md 以及 docs/RL_DIRECT_SERL_SELECTION_20261026.md。本次最新路线是：Impedance/Admittance/VMC 在线调参继续 CHEQ；Direct 改用 SERL（ICRA 2024）的 RLPD/SAC 与已有示范学习思路，不再以 CHEQ 为主方案。只接受已有示范，不新增人工纠正。保留全部旧 checkpoint 和失败证据，不把旧 CHEQ 权重冒称 SERL。先核验已有示范是否具备合法 RL transitions、接口映射与公平性，再登记新 Direct 适配阶段；参数 CHEQ 按原学习状态与部分 cycle 语义恢复。最终按相同条件比较 ESN，报告 Task/Strict、SPT_empirical、峰矩、接触期阈下比例和机器违规。除非我在新消息中明确要求恢复计算，Goal 保持 paused，禁止训练、仿真、测试与辅助 GPU 占用任务。
+> 请继续原柔顺控制 RL Goal。先读取 AGENTS.md、docs/RL_SHUTDOWN_RECOVERY_20261026.md 以及 docs/RL_DIRECT_SERL_SELECTION_20261026.md。本次最新路线是：Impedance/Admittance/VMC 在线调参继续 CHEQ；Direct 改用 SERL（ICRA 2024）支持的纯状态 SAC 从零训练路线，不再以 CHEQ 为主方案。随机初始化、空 replay、零示范，不加载旧 CHEQ 权重或 replay，不新增人工纠正或示范采集。保留全部旧 checkpoint 和失败证据，不把旧 CHEQ 权重冒称 SERL。先核验零示范启动、接口映射与公平性，再登记新 Direct 适配阶段；参数 CHEQ 按原学习状态与部分 cycle 语义恢复。最终按相同条件比较 ESN，报告 Task/Strict、SPT_empirical、峰矩、接触期阈下比例和机器违规。除非我在新消息中明确要求恢复计算，Goal 保持 paused，禁止训练、仿真、测试与辅助 GPU 占用任务。

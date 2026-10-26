@@ -1,5 +1,9 @@
 # 用户要求关机前暂停：RL恢复交接（2026-10-26）
 
+## 更晚更新：Direct 采用零示范 SERL 路线
+
+用户不希望再采数据；已确认 SERL 支持纯状态、无示范从零训练。下一次默认随机初始化和空 replay，不加载示范、旧 CHEQ 权重或旧 replay，不新增人工纠正。下方先前允许已有示范的路线仅作历史备选。详见选择文档顶部澄清；不声称复现原论文20示范结果。参数 CHEQ 仍保留旧学习状态。Goal保持paused，未启动任何新计算。
+
 ## 暂停后的路线更新：Direct 选 SERL
 
 **下次开机先读 [RL_DIRECT_SERL_SELECTION_20261026.md](RL_DIRECT_SERL_SELECTION_20261026.md)。** 用户允许参数 RL 继续 CHEQ，要求 Direct 换顶会方法，且明确“仅接受已有示范，不新增人工纠正”。已选 SERL（ICRA 2024）的 RLPD/SAC 思路作 Direct 适配来源。下文“四路 CHEQ”描述是暂停时的历史状态，不再是 Direct 自动续训指令。旧 Direct checkpoint 全部保留；新 Direct 须独立协议/初始化，不能冒充原 CHEQ continuation；参数 CHEQ 保留恢复状态。Goal 仍 paused，本次没有训练、仿真、测试或配置变更。

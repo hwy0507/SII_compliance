@@ -7,6 +7,10 @@
 本约定适用于本仓库后续任务，覆盖旧进度文档中“保持未提交／不发布”的历史要求；用户后续
 明确变更指令时，以新指令为准。
 
+## 2026-10-26 更晚澄清：SERL Direct 优先零示范从零训练
+
+用户不想再采数据，询问从零训练；已静态确认 SERL 原文与官方纯状态示例支持。当前默认 **SERL-state/SAC from scratch adaptation**：随机初始化、空 replay，仅自主在线交互；不加载旧 CHEQ 权重/replay、已有示范，不新增示范/人工纠正。下方已有示范叙述是较早备选，不再是数据前置条件。无先验数据则不做RLPD对半采样，不冒称复现论文20示范实验；公平比较披露ESN示范量和RL在线交互量。Goal仍paused，此次仅文档，待明确恢复再登记/实现/验证。
+
 ## 2026-10-26 暂停期间的新基线决策（优先于下方旧四路 CHEQ 恢复叙述）
 
 用户将两路分开：参数 RL（Impedance/Admittance/VMC）可继续 CHEQ；Direct 改用顶会已发表方法的适配。用户明确只接受已有示范，不新增人工纠正。已选择 **SERL（ICRA 2024，DOI 10.1109/ICRA57147.2024.10610040）** 的 RLPD/SAC 直接运动目标学习思路，未实现或启动。先读 [Direct SERL 选择与交接](docs/RL_DIRECT_SERL_SELECTION_20261026.md)。不能把无在线纠正版本称为完整 HIL-SERL（Science Robotics 2025）。原 Goal 继续 paused；下次明确恢复后先审计已有数据是否为合法 RL transitions、输入/动作/公共执行层适配，再建立独立 Direct run；不能直接恢复旧 CHEQ Direct 充当新方法。旧 Direct 产物全部保留，参数 CHEQ 的 optimizer/replay/RNG 延续要求保持。此次只改文档，不改变 physics/MJB/gate/filter/执行器/dt，不启动训练、仿真、测试或 GPU 占用任务。
