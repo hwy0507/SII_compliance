@@ -1129,3 +1129,7 @@ Direct18准备尚未执行前，已将准备/check-only设为释放CPU0，并加
 准确最新17父B/runs/serl_multistep_batch65536_cycle17_archive_20261026_v1/direct/cycle_00017.pt，SHA1e47098fea960f972d8f74cff894d8a46d798fb711426b936dd67caee0d83e89。18check-only完整learner/所有replay/下一65536与RNG精确、负守卫通过；正式18 learner2732254于21:26:24 UTC启动，B/runs/serl_multistep_batch65536_cycle18_20261026_v1/direct。GPU0/CPU0/30sampler共享1–12，原batch65536/官方10critic随机2 bootstrap、actor all10 mean/noentropy/8:1/32步/gather+transfer保持，无候选推广。startup2732256、归档2732257/完整review2732258，无自动19。18终端预期570，实际启动审查须查startup/REVIEW.json，不能把check-only当真实1000新增通过。
 
 当前四正式为Direct18 2732254、参数27 2286139/2286140/2286141；冻结16原1749189/1749193及review1749197继续，仍非完整完成。GPU0含冻结推理，不能混报纯正式窗口。新完整小证据收据及HDD最新入口会覆盖21:21的17仍运行快照。
+
+新18/27短运行窗口B/runs/batch18_parameter27_mixed_gpu_20261026_v1已完成：预登记30样本/31.596516秒，GPU均值60.5/69.533333/66.533333/69.266667%，逐样本四正式learner及两个冻结evaluator原PID均live。此窗口是正式18/27加冻结16推理的混合占用，不是纯正式吞吐测试，不保证每瞬时，不包含此前交接空闲。原一次observer已结束勿重复；完整PROFILE和源码已入小证据。
+
+Direct18实际首1000新增startup已通过：731782/5814264，旧730782 raw/derived/history/优化器/marker全部保留，140新mature+860pending精确，30MJB/30sampler/action/clock与新reward0误差；原2732256已完成勿重跑。至21:29 UTC正式18已732536步，三参数27持续运行，冻结16两原evaluator/review继续；仍无自动19/28，Goal active。

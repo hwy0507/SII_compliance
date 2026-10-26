@@ -7,6 +7,8 @@
 - Direct17原4158035继续；18准备等待1660818仅等完整17后check-only，不自动训练。冻结完整16新30训练条件矩阵1749189/1749193及独立保存物理/filter/torque审查1749197运行：30x55s、外部动作seed2026102626、最多33000000子步，完整state恢复/seed gate通过，0优化/replay写入。不得把部分分片写成全矩阵完成，不是held-out/独立训练seed/确定性mode/最终ESN比较。
 - 27真实首1000 startup全部通过；首5000固定前缀只读审计完成，末1000 loss I1.353320/A1.708645/V.777713，A早期回落但仍高于25末。新A26终端时序诊断发现short0600丢Strict入库附近loss1.222→2.605，仅时间关联，未据此改terminal128/LR。Direct18准备改用其父退出后释放CPU0，保持完整17审查守卫。
 - 收尾Direct17完整730782/5806264、30无abort、reward−30.984684/Task0，terminalMAE.042509/TD32.045479、全部旧raw/derived/history及新reward0误差通过；准确17父SHA1e47098f。18恢复/下一65536/RNG检查通过，正式18 PID2732254启动，2732256/7/8负责startup/归档/review，无自动19；参数27三原learner继续。
+- 新18/27混合冻结推理窗口30样本31.5965秒，四卡均值60.5/69.5333/66.5333/69.2667%；原六PID逐样本live，不冒充纯正式或每瞬时保证，不隐去交接空闲。
+- Direct18实际首1000新增startup通过：旧730782 raw/derived/history/marker保持，140mature+860pending、新reward0误差及30sampler/MJB检查通过。2732256结束，四正式18/27与冻结16继续。
 - 四新工具AST及已完成真实日志审计通过；小证据docs/evidence/rl_reward_stability_frozen16_20261026。源/输入hash与预登记保存。Goal active；最终冻结矩阵、健康稳定和指定ESN仍待。GitHub认证先前失败，未重复索要；最终commit/push与归档收据另记。
 
 ## 最新RL状态：2026-10-26 参数26 / Direct17 / 短物理前缀完成
