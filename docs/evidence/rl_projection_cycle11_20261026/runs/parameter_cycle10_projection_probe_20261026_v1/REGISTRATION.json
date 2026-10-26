@@ -1,0 +1,67 @@
+{
+  "created_unix": 1793013769.2514877,
+  "purpose": "Cycle10 terminal weighting improves fitting but Q tails and TD errors remain abnormal. Matched finite upper projection on target Q before entropy; not a lower bound or guaranteed recovery.",
+  "optimizer": "finite_projection",
+  "expected_cycle": 10,
+  "source_hashes": {
+    "published_finite_target_projection_20261026.py": "d63d08bac2ed95b9ab268a83abb46781e721beffb7c7b3a0d3162c5ee98afa77",
+    "published_terminal_loss_weight_20261026.py": "f1961484c588bdc0ac5ee747ddabb6c58c1aa11b97107cca832f3d529b66a46d",
+    "diagnose_published_value_bound_20261025.py": "2a5b04c7a4036d78775a7abb87170660a0e3b6b0111846f24d4a9245dc268245",
+    "validate_published_finite_check_20261025.py": "02c0c995510bca67fabe2bc06b7380da3fd1489b98fd9a695147e489c0241acd",
+    "probe_parameter_target_projection_20261026.py": "6ab78214b0a3f24d5f14d5b165d4ed7b6158b4f4c0f6265bed654d0e85226d28",
+    "validate_parameter_target_projection_20261026.py": "96a56a704f33d87a5f15ece5575f98db048ba1be53d5c7ece7faf2a428c1b1e3"
+  },
+  "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+  "runtime_sha256": "26d8b9671a55f12702313dfc4a705bc3a9272b402d9611635b44266982177b1c",
+  "reward_sources": {
+    "spt_rl_reward_20261025.py": "c63deee3a17318703e17744245986d97d340a741623f03abe73af5aa43ffaebf",
+    "training_comparison_metrics_20261025.py": "24ee8166b9ade665290a6883bdf39ecf615e7cbf3f954c1404e1717e7a8b2e07"
+  },
+  "cpus": {
+    "impedance": 13,
+    "admittance": 26,
+    "vmc": 39
+  },
+  "seed": 20261026,
+  "diagnostic_samples": 4096,
+  "updates_per_arm": 5000,
+  "record_every": 250,
+  "total_auxiliary_updates": 30000,
+  "new_physics": 0,
+  "auxiliary_weight_promotion": false,
+  "automatic_extension": false,
+  "parent_review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_terminal128_cycle10_review_20261026_v3/REVIEW.json",
+    "sha256": "e3abfb3e2b54544c22107e9ad9b840e8fcfe51e329750cb8114428c85b6b732a"
+  },
+  "parent_health": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_cycle10_projection_probe_20261026_v1/PARENT_HEALTH.json",
+    "sha256": "18db6671fab4d1346caedc9d44cb08e2a65cbd40b76875e5ebbbae871b3b1460"
+  },
+  "checkpoints": {
+    "impedance": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_terminal128_archive_20261026_v3/impedance/cycle_00010.pt",
+      "sha256": "7ed5d338a8c1157f8363a702c4db51a9bdc80682a8aa8aff291f020f796b913c"
+    },
+    "admittance": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_terminal128_archive_20261026_v3/admittance/cycle_00010.pt",
+      "sha256": "95cb6544f08690887140fe875e6db3030791e0d74b83c59387a5e24f006163d8"
+    },
+    "vmc": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_terminal128_archive_20261026_v3/vmc/cycle_00010.pt",
+      "sha256": "17001598bd584121237f29823263c6b66d221ebd263dcf7c6973531baaa683ce"
+    }
+  },
+  "arms": [
+    {
+      "name": "weighted_control",
+      "batch_size": 32768,
+      "projection": false
+    },
+    {
+      "name": "projected_target",
+      "batch_size": 32768,
+      "projection": true
+    }
+  ]
+}
