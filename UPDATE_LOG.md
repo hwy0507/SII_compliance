@@ -1,3 +1,11 @@
+## 2026-10-26 — 新30条首个完整条件9回合/990万子步核验，继续原矩阵
+
+- 实时fetch/read main=6ed6a318dbfc63d8f88f943c4fbcf641d960c716、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，核对AGENTS、原协调器86607与真实子进程；没有重复启动或改冻结训练/物理源码。
+- 审计器新增--completed-condition ID，必须一个登记条件9模型齐全才核验；不输出局部T_ref/SPT或最终排名。默认最终入口仍要求108回合；两类未完成覆盖拒绝检查通过。
+- 08:10 UTC首条件000独立审计通过，9×55秒/990万子步、1357源文件、9锁模与验证重放、MJB/config/checkpoint/轨迹hash与原动作/filter审计一致；峰矩、接触合规、穿透、机器安全复算一致。证据docs/evidence/nonrl_new30_20261026/FIRST_CONDITION_PHYSICS_AUDIT.json。
+- 该条件Task ESN2/3、RNN1/3、MLP0/3；Strict全0/3，失败均保留。此为记录正确性核验，不是方法通过；不能以低峰矩/高合规但任务失败声称优越。原协调器已接续条件001，完整108矩阵/最终SPT和审计仍未完。
+- 新小型代码/证据3文件94611字节已核验归档：arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_first_condition_0810/，收据FIRST_CONDITION_ARCHIVE_0810.json。原始物理轨迹仍仅本机；先前完整训练包仍为已核验服务器副本。Goal保持active。
+
 ## 2026-10-26 — 新30条完整候选训练产物归档，闭环评测保持运行
 
 - 实时fetch/read main=bd6193872ea68683244be513869c892f6f60273b、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，核对AGENTS与原服务/真实worker。原Goal继续非RL；不恢复服务器RL、不重启训练或改冻结模型/协议。

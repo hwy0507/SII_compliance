@@ -6,7 +6,9 @@ selects a partial-grid winner or reports a partial physics matrix as final.
 selection identities; it does not expose new conditions or change model choice.
 --training-only verifies the complete grid and nine locked selections while
 physical evaluation is pending; it never reports final physical results.
-Without either stage flag, all75 fit processes/108 hyperparameter candidates, nine
+--completed-condition ID audits all nine completed physical episodes for one
+registered condition, without computing a partial T_ref, SPT or final ranking.
+Without a stage flag, all75 fit processes/108 hyperparameter candidates, nine
 locked models and108 physical episodes are required.
 """
 from __future__ import annotations
@@ -57,8 +59,9 @@ def replay_validation(root, family, checkpoint, obs, ep, train, target):
     return dict(validation_mse=squared_error/count,episodes=per_episode)
 
 
-def audit(root, progress, replay_completed=False, training_only=False):
-    require(not (progress and training_only), 'Audit stages are mutually exclusive')
+def audit(root, progress, replay_completed=False, training_only=False, completed_condition=None):
+    require(sum((bool(progress),bool(training_only),completed_condition is not None))<=1,
+            'Audit stages are mutually exclusive')
     reg = read(root/'REGISTRATION.json')
     state_bytes = (root/'execution.json').read_bytes()
     state = json.loads(state_bytes)
@@ -146,7 +149,7 @@ def audit(root, progress, replay_completed=False, training_only=False):
                 result['completed_candidate_validation_replay'].append(dict(name=row['name'],**replay))
             result['replay_scope']='Completed candidates only, same six model-selection identities. No partial-grid model selection or new-condition exposure.'
         return result
-    require(state['status'] in (('evaluation','complete') if training_only else ('complete',)) and len(fits)==75,
+    require(state['status'] in (('evaluation','complete') if training_only or completed_condition is not None else ('complete',)) and len(fits)==75,
             'Training/evaluation not yet complete')
     require(Counter(f['family'] for f in fits)=={'esn':3,'rnn':36,'mlp':36},'Training coverage mismatch')
     require(seen_neural=={(family,seed,*pair) for family in ('rnn','mlp') for seed in reg['seeds'] for pair in neural_grid}, 'Incomplete neural grid')
@@ -169,16 +172,26 @@ def audit(root, progress, replay_completed=False, training_only=False):
                       validation_replay=validation,model_lock_sha256=sha(root/'MODEL_LOCK.json'),
                       limitation='Complete training and model selection only. Closed-loop evaluation and final physical audit are not certified by this receipt.')
         return result
-    report=read(root/'REPORT.json')
-    require(report['model_lock_sha256']==sha(root/'MODEL_LOCK.json'),'Report model lock changed')
-    require(state['report_sha256']==sha(root/'REPORT.json') and report['status']=='complete','Report mismatch')
-    require(report['registration_sha256']==sha(root/'REGISTRATION.json'),'Report provenance mismatch')
     conditions={c['id']:c for c in read(root/'CONDITIONS.json')['conditions']}
-    physics=report['rows']
-    require(len(physics)==108 and {(r['method'],r['condition']) for r in physics}==set((m,c) for m in models for c in conditions),'Incomplete/duplicate physical grid')
-    qualified=[r['completion_time_s'] for r in physics if r['task_success'] and r['strict_success']]
-    require(all(t is not None and math.isfinite(t) and t>0 for t in qualified),'Invalid completion time')
-    ref=min(qualified) if qualified else None;equal_number(ref,report['t_ref_s'],'Wrong global T_ref')
+    if completed_condition is not None:
+        require(completed_condition in conditions,'Unknown registered condition')
+        partial_bytes=(root/'PARTIAL_ROWS.json').read_bytes()
+        partial=json.loads(partial_bytes)
+        require(partial['status']=='incomplete_not_final_ranking','Wrong partial snapshot status')
+        physics=[r for r in partial['rows'] if r['condition']==completed_condition]
+        require(len(physics)==9 and {r['method'] for r in physics}==set(models),
+                'Selected condition has not completed all nine models')
+        result['partial_rows_snapshot_sha256']=hashlib.sha256(partial_bytes).hexdigest()
+    else:
+        report=read(root/'REPORT.json')
+        require(report['model_lock_sha256']==sha(root/'MODEL_LOCK.json'),'Report model lock changed')
+        require(state['report_sha256']==sha(root/'REPORT.json') and report['status']=='complete','Report mismatch')
+        require(report['registration_sha256']==sha(root/'REGISTRATION.json'),'Report provenance mismatch')
+        physics=report['rows']
+        require(len(physics)==108 and {(r['method'],r['condition']) for r in physics}==set((m,c) for m in models for c in conditions),'Incomplete/duplicate physical grid')
+        qualified=[r['completion_time_s'] for r in physics if r['task_success'] and r['strict_success']]
+        require(all(t is not None and math.isfinite(t) and t>0 for t in qualified),'Invalid completion time')
+        ref=min(qualified) if qualified else None;equal_number(ref,report['t_ref_s'],'Wrong global T_ref')
     supplement=[];verified_sources=set()
     for r in physics:
         run=Path(r['run']);m=models[r['method']]
@@ -202,8 +215,9 @@ def audit(root, progress, replay_completed=False, training_only=False):
                 require(sha(root/'physics_source'/relative)==digest,'Physical execution source mismatch')
                 verified_sources.add((relative,digest))
         equal_number(completion_time(run),r['completion_time_s'],'Completion extraction mismatch')
-        expected=ref/max(r['completion_time_s'],ref) if ref is not None and r['task_success'] and r['strict_success'] else 0.
-        equal_number(expected,r['spt'],'SPT mismatch')
+        if completed_condition is None:
+            expected=ref/max(r['completion_time_s'],ref) if ref is not None and r['task_success'] and r['strict_success'] else 0.
+            equal_number(expected,r['spt'],'SPT mismatch')
         with np.load(run/'rollout_metrics/substep_metrics.npz') as z:
             dt=z['dt'];torque=np.abs(z['qfrc_actuator'][:,:7]).astype(float)
         with np.load(run/'research_substeps.npz') as z:
@@ -230,6 +244,13 @@ def audit(root, progress, replay_completed=False, training_only=False):
             comfort_exceed_duration_s=float(dt[contact&~within].sum()),
             comfort_excess_integral_nm_s_by_joint=(np.maximum(torque[contact]-threshold,0)*dt[contact,None]).sum(0).tolist(),
             failure_stage=audit_row.get('stage') if not r['task_success'] else None,abort_reason=audit_row.get('abort_reason')))
+    if completed_condition is not None:
+        result.update(status='completed_condition_physics_audit_passed_not_final',
+                      condition=completed_condition,verified_physical_episodes=9,
+                      verified_physical_rows=physics,contact_supplement=supplement,
+                      validation_replay=validation,model_lock_sha256=sha(root/'MODEL_LOCK.json'),
+                      limitation='One complete registered condition only. No partial T_ref, SPT, final ranking or full-cohort certification. No model or protocol change.')
+        return result
     methods={m['method']:m for m in report['methods']}
     require(len(report['methods'])==9 and set(methods)==set(models), 'Aggregate method coverage mismatch')
     for name,method in methods.items():
@@ -264,13 +285,14 @@ def main():
     stage=p.add_mutually_exclusive_group()
     stage.add_argument('--progress',action='store_true')
     stage.add_argument('--training-only',action='store_true')
+    stage.add_argument('--completed-condition')
     p.add_argument('--replay-completed',action='store_true')
     a=p.parse_args();require(not a.output.exists(),'Never overwrite an audit')
     require(not a.replay_completed or a.progress,'--replay-completed requires --progress')
-    result=audit(a.root.resolve(),a.progress,a.replay_completed,a.training_only)
+    result=audit(a.root.resolve(),a.progress,a.replay_completed,a.training_only,a.completed_condition)
     a.output.parent.mkdir(parents=True,exist_ok=True)
     a.output.write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
-    print(json.dumps({k:v for k,v in result.items() if k not in ['completed_fits','contact_supplement','validation_replay','completed_candidate_validation_replay']},ensure_ascii=False))
+    print(json.dumps({k:v for k,v in result.items() if k not in ['completed_fits','contact_supplement','validation_replay','completed_candidate_validation_replay','verified_physical_rows']},ensure_ascii=False))
 
 
 if __name__=='__main__':main()
