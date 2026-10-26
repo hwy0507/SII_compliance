@@ -1,3 +1,10 @@
+## 2026-10-26 — 时钟Impedance固定审查与四路完整状态恢复核验
+
+- fetch mainc3124ba322853c1e561657b58c4204ed2a64a1b6、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；无新更新。上一轮实质进展，原四在线继续。
+- Imp原3479276/接管3825230正常完成勿重启；三代表独立330万子步物理/filter/torque及4125参数动作重放误差0，learned/nominal均TaskStrict2/3。长期20.00 vs20.52s、峰46.4127 vs52.2561Nm，但实际接触阈下13.0020% vs24.0739%更差；被动失败、无接触NA，不称全面改善。runs/clock_parameter_fixed_review_v1/impedance。
+- 四cycle1完整checkpoint恢复审查v2通过：learner所有状态/replay值hash相同、四路各3×256后续抽样与全部RNG draw精确、Adam counter保持、clock49/50及拒绝无时钟转换。0physics/updates，不派发接续；实际阶段末仍须评审。v1缺诊断support、参数复核脚本初次语法失败均保留，只修只读工具。
+- clock_fixed_parallel_v2已6/12，A/V原进程和3996089继续，旧2960898勿重启；正式四learner和1729901/1729905继续cycle3/5。报告docs/PUBLISHED_CLOCK_IMPEDANCE_AND_RESUME_REVIEW_20261026.md/.json；Goal/收敛/最终ESN/GPU50%仍未完。
+
 ## 2026-10-26 — 时钟Direct固定复核与剩余矩阵三核并行
 
 - fetch mainc3124ba322853c1e561657b58c4204ed2a64a1b6、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；上一轮实质进展，原在线仍live。

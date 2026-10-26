@@ -7,6 +7,8 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新：Imp原3479276与接管3825230已正常完成勿重启，三固定回合独立330万子步/4125动作重放误差0，learned/nominal2/3；长期峰46.41vs52.26、时间20vs20.52但舒适13.00%vs24.07%更差。runs/clock_parameter_fixed_review_v1/impedance（session2111已完）。四真实cycle1全state/replay/RNG恢复v2通过，runs/clock_full_state_resume_review_v2（session80301已完），0updates/physics、不派发下一阶段；v1缺support失败留存。新matrix6/12，A/V及3996089继续，原四在线+1729901/1729905继续。报告PUBLISHED_CLOCK_IMPEDANCE_AND_RESUME_REVIEW_20261026；Goalactive。
+
 最新：clock Direct三代表完整复核session30235已完，learned0/3 vsnominal2/3，330万learned子步/4125动作重放误差0，均无人体接触NA，方向余弦约−.999非因果。runs/clock_direct_fixed_review_v1。评估已资源交接：旧2960898有意终止勿重启，原Imp3479276/CPU54保留，3825230只读接管；新runs/clock_fixed_parallel_v2中A协调3825231/eval3825618/CPU52、V3825232/3825634/CPU53，3996089汇总，仍原12回合预算。原目录HANDOFF_TO_PARALLEL_V2指新登记。核验器首亲和性断言错已保留，v2正确验证learner首核0/13/26/39、A/V各100动作误差0（session25486已完）。正式四learner和1729901/1729905继续，source不变；报告PUBLISHED_CLOCK_DIRECT_FIXED_AND_PARALLEL_20261026，Goalactive。
 
 收尾fetch main新增c3124ba322853c1e561657b58c4204ed2a64a1b6：已读并合并另一airpig主机用户授权旧产物清理/存储解除报告；保留双方UPDATE_LOG追加块。该清理未发生在本集群，不删除或变更当前RL产物，尚无新的指定ESN物理结果。本轮在线报告提交bbc8513，push仍因HTTPS认证失败未发布。
