@@ -1,0 +1,40 @@
+{
+  "time": 1793053480.8440683,
+  "parent_cycle": 28,
+  "parent_review_sha256": "8ede77bc92b84baf8a098d398d7ecd8dead1132333debdd9d1e4e3bdb9b5d2bb",
+  "health_sha256": "86773bb17d53df85eaf9330116bb5456d4cf9114f89cc58165e5b225a0aa9774",
+  "health_plot_visually_reviewed": true,
+  "decision": "Continue one finite29 cycle using latest complete28 all-state; no learner setting changes or auxiliary weights.",
+  "rationale": "A and V full-cycle reward/Strict recovered; I Strict unchanged and loss tail improved. Terminal inbag errors improve, but reward is not globally stable and small A/V sampled necessary-bound exceedances remain. Complete fixed27-29 window under unchanged settings; no health/convergence claim.",
+  "methods": {
+    "impedance": {
+      "task": 18,
+      "strict": 17,
+      "reward": -2.3695724016391986,
+      "checkpoint_sha256": "7a85c929be8599e6b128e82b63fae05f60feccc4027a68e3f22b739b814f906d",
+      "q_loss_last1000": 1.455425530254841,
+      "inbag_mae": 0.21932218494333422,
+      "sampled_q_above_necessary_bound_fraction": 0.0
+    },
+    "admittance": {
+      "task": 14,
+      "strict": 14,
+      "reward": -8.690925125626924,
+      "checkpoint_sha256": "2acc0242f1fa0a464af5a19e1e75138725e7f59b5a643c74cab80a4b134ea87d",
+      "q_loss_last1000": 1.398468841135502,
+      "inbag_mae": 0.18141740840461792,
+      "sampled_q_above_necessary_bound_fraction": 0.0013671874767169356
+    },
+    "vmc": {
+      "task": 17,
+      "strict": 17,
+      "reward": -2.8145307582222383,
+      "checkpoint_sha256": "97de1ff4b520fdd7d19dda03e4c832befcbf50f62d593c2fb1ab43facb57d167",
+      "q_loss_last1000": 0.7643214639425278,
+      "inbag_mae": 0.3542848725712375,
+      "sampled_q_above_necessary_bound_fraction": 0.0021484375465661287
+    }
+  },
+  "launch_still_requires_check_only_passed": true,
+  "convergence_claim": false
+}

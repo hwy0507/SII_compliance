@@ -1,3 +1,17 @@
+## 2026-10-26 — 完整参数28通过，正式29接续
+
+- 完整28三路全30×55秒无abort，旧I/V1152000、A1151000所有replay/history/marker/finite保持、新41250 reward0误差、health/图通过。I/A/V Task/Strict18/17、14/14、17/17，reward−2.369572/−8.690925/−2.814531，末loss1.455426/1.398469/.764321，inbag MAE.219322/.181417/.354285。A/V抽样Q超过当前必要soft上界比例.001367/.002148，仍不能宣称整体健康稳定。
+- 29三check-only全learner/replay/下一65536/RNG精确，PRELAUNCH科学依据已记录。22:25:22 UTC正式29 I946578/A946579/V946580准确最新完整28全state续一个原设置周期；startup946582、归档946583/review946584，无自动30。2m历史入口23/capacity replay+pair learner/所有物理与学习设置保持，原28及准备/CPU调度已退出勿重复。
+- 固定27–29稳定性等待4175982继续，原Direct18与19准备保持。完整冻结16及纯18/28资源窗口已完成见下一条；Goal active。最新docs/RL_FROZEN16_FULL30_PARAMETER29_20261026.md及对应小证据。
+
+## 2026-10-26 — Direct16全30冻结验证及物理审查完成
+
+- 原1749189/1749193/review1749197完整退出，30×55秒、41250动作/33000000物理子步。Task/Strict0/30、三类各10条全部approach、无abort/机器违规。人体接触0、舒适NA，不将无接触当柔顺优秀；三类最大单关节峰矩45.962386/45.428634/47.023777Nm。
+- 原review全30保存物理指标/filter/torque重放通过，峰矩/穿透/接触统计及filter/torque projection误差0，elapsed误差≤8.882e−13秒。两个分片初末完整learner digest均87a2a606a399acd3d8314e40618a67fc7b17316a2f4284ed4d7ad9f63706bcb1，0优化/正式replay写入；父16 SHA d2ee183f0ebbafa44dabb8dc318cc2091dfc031145a2192bd9a313f989067c5b保持。另对30审查JSON逐hash汇总，不重跑推理/动力学。
+- 单训练seed/外部动作seed2026102626，全训练30条件，非held-out、多训练seed、确定性mode、指定ESN或最终SPT。证据支持冻结16任务未学会，不能仅因审查passed宣称整体收敛。交接docs/RL_FROZEN16_FULL30_PARAMETER29_20261026.md。
+- 冻结退出后一次纯正式18/28窗口645110完成，60样本68.317217秒，四GPU均值54.1/69.2333/74.9333/67.7333%，吞吐D/I/A/V10.3488/22.4980/25.6158/23.0103steps/s。每样本GPU PID恰四正式且原learner身份保持；参数28后段窗口，不是所有sampler稳态，不保证每瞬时或过渡期，无额外GPU负载。
+- 四正式18/28及归档/完整review继续；29准备4005782/审查CPU调度4005783、固定27–29稳定性等待4175982保持。小证据docs/evidence/rl_frozen16_full30_parameter29_20261026包含全30review/最终状态与关键源，完整runtime694源hash仍由原REGISTRATION保留。Goal active。
+
 ## 2026-10-26 — 固定参数27–29稳定性窗口，等待原完整结果
 
 - 本轮实际/proc与连续PROGRESS确认原Direct18/参数28、冻结16仍live；冻结推进到24/30，无原FAILURE。上轮29准备是实质进展；未重复训练或已完成诊断。
@@ -9095,3 +9109,5 @@ Direct17实际首1000新增检查通过：690532/5484264，全部旧689532 raw/d
 本轮科学提交495d577cc1676caf35eac1c2fb609de8eb0de797仅本地；重新fetch远端main dbb1d76/baseline f6e8f8c未变，push仍HTTPS用户名认证失败。完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER28_TERMINAL_20261026_215524/FULL_SMALL_EVIDENCE.tar.gz，94成员逐hash核验、1576516字节，SHA256 5c4ae048b5459ee9f8e886fba680a25caf8cead71b84e0e7110e99b1ee430aec。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER28_TERMINAL_STATUS_20261026_215524/HANDOFF.md及收据/LATEST已核验，大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。Goal active，原四正式训练与冻结验证继续。
 
 本轮准备提交38d1397161e87e461a5d347a7eb8f744aa47077d仅本地，push仍HTTPS用户名认证失败；准备补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER29_PREPARATION_20261026_215919/PREPARATION_SUPPLEMENT.tar.gz逐成员hash核验，13成员/460058字节，SHA256 c77af62452945ec93bf0ac121bfe946dcf9394d89bf1ddd04e4e606af5b7d877。HDD最新交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER29_PREPARATION_STATUS_20261026_215919/HANDOFF.md与收据/LATEST已核验；补充包依赖前轮完整28科学证据，不是大产物全备份。原18/28与冻结16持续，4005782/4005783为新原等待进程，Goal active。
+
+正式29实际启动检查已通过：impedance新增1000至1194250、admittance新增1000至1193250、vmc新增2000至1195250；全部旧replay字段/history/优化器配置/2m历史marker/30MJB/30sampler/action/clock和新reward0误差通过。原946582完成勿重复，归档946583/完整review946584继续。
