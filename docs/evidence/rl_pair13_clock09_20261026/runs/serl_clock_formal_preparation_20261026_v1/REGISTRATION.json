@@ -1,0 +1,48 @@
+{
+  "created_unix": 1793018336.1014812,
+  "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+  "upstream": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_upstream_1fa2af7",
+  "upstream_manifest": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/SERL_UPSTREAM_1fa2af7_HASHES.json",
+  "adapter_runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_state_adapter_20261026_v1",
+  "source_hashes": {
+    "serl_clock_state_adapter_20261026.py": "90f7f5f7c10759dc4d0e19145a9b9678246d518aaab6c9f9b5942fab99182b7a",
+    "serl_critic_clock_extension_20261026.py": "e6e7e0b2c5083e30aae722f8f439533158f86092c091ded10702bd1415d610c2",
+    "prepare_serl_clock_state_20261026.py": "31612fd994ed9955c2c40a92f2ee62b48187f40be46890c70b556a855e374aa1",
+    "serl_state_adapter_20261026.py": "a761b5dc10f89c332f16fb418685738f0ec559bdf6c8ef5f64b5c3f7eadb2040",
+    "validate_serl_state_20261026.py": "06ad1daca7664e660a6c4cd53c74119c35ddcae7f32ece62bf15d246f46ad62a"
+  },
+  "checkpoint": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_pool30_cycle07_08_archive_20261026_v1/direct/cycle_00008.pt",
+    "sha256": "f3399b01b550d8c3f4cac6b32f8cd49ca57f53beb68275aebbf3fe4d5a1d5b90"
+  },
+  "review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_pool30_cycle08_review_20261026_v1/REVIEW.json",
+    "sha256": "764412b3c0ebf39c76ba48930b217260c458fdbd8bdea880d3e9e62a5031f36e"
+  },
+  "clock": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle08_clock_probe_20261026_v1/replay_clock.npy",
+    "sha256": "c04f6c8aeaaa4f5e506cf7285d587ef16487c0b580065c8e757e2ad5fcb58ec0"
+  },
+  "outer_updates_per_arm": 2000,
+  "record_every": 100,
+  "seed": 20261026,
+  "auxiliary_weights_promoted": false,
+  "automatic_extension": false,
+  "new_physics": 0,
+  "arms": [
+    "critic_clock",
+    "original"
+  ],
+  "total_critic_updates": 32000,
+  "total_actor_updates": 4000,
+  "previous_failed_gate": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle08_clock_probe_20261026_v2/probe/FAILURE.json",
+  "previous_auxiliary_updates": 0,
+  "reason": "Keep canonical48 in separate contiguous state leaf, time in separate clock leaf; actor receives original48 buffer without slicing49-strided inputs. Preserve original initial-output gates.",
+  "probe_review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle08_clock_probe_20261026_v3/REVIEW.json",
+    "sha256": "27c48a2c0006d6c76f8f65b11a4cd696aa28eaf613f37eb2c76443694a34b2db"
+  },
+  "purpose": "Prepare exact formal8 clock migration only; no probe weights, no physics, gate next-update reproducibility.",
+  "auxiliary_critic_update_budget": 16,
+  "auxiliary_actor_update_budget": 2
+}

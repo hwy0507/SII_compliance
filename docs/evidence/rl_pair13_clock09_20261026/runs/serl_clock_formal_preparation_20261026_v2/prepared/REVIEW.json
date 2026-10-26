@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "time": 1793018570.9024591,
+  "checkpoint_sha256": "f3399b01b550d8c3f4cac6b32f8cd49ca57f53beb68275aebbf3fe4d5a1d5b90",
+  "prepared_checkpoint_sha256": "752480635ecd70000cfdff97b2a50b824e32b0eb0c0cc8a251e14c5dd08d0e18",
+  "registration_sha256": "0dc3616cc66717388f7c7edfb0158095449ff202a94bacdf1f3eda6585424fdf",
+  "marker": {
+    "version": 1,
+    "maximum_actions": 1375,
+    "actor_features": 48,
+    "critic_observation_features": 49,
+    "encoding": "separate_state_and_clock_leaves",
+    "branch": "zero_initialized_addition_to_first_critic_hidden",
+    "original_gemm_inputs": 55
+  },
+  "original_full_learner_recovered_exactly": true,
+  "added_zero_paths": [
+    "agent/opt_states/actor/inner_state/0/0/mu/modules_critic/network/clock_kernel",
+    "agent/opt_states/actor/inner_state/0/0/nu/modules_critic/network/clock_kernel",
+    "agent/opt_states/critic/inner_state/0/0/mu/modules_critic/network/clock_kernel",
+    "agent/opt_states/critic/inner_state/0/0/nu/modules_critic/network/clock_kernel",
+    "agent/opt_states/temperature/inner_state/0/0/mu/modules_critic/network/clock_kernel",
+    "agent/opt_states/temperature/inner_state/0/0/nu/modules_critic/network/clock_kernel",
+    "agent/params/modules_critic/network/clock_kernel",
+    "agent/target_params/modules_critic/network/clock_kernel"
+  ],
+  "old_replay_recovered_exactly": true,
+  "replay_rows": 366962,
+  "old_history_and_counters_unchanged": true,
+  "full_prepared_state_sha256": "0fccf489fb033ad58b09d71821e8b2291ce72ec7af995512c501ae0e0600841b",
+  "actor_deterministic_and_stochastic_exact": true,
+  "clock_full_horizon_and_stream_isolation": true,
+  "negative_marker_guards": true,
+  "next_official_update_exact_after_restore": true,
+  "auxiliary_critic_updates": 16,
+  "auxiliary_actor_updates": 2,
+  "formal_optimizer_updates": 0,
+  "auxiliary_weights_imported": false,
+  "new_physics": 0
+}

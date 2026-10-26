@@ -1,0 +1,361 @@
+{
+  "passed": true,
+  "new_physics": 0,
+  "total_new_auxiliary_updates": 30000,
+  "entry_gate_auxiliary_updates": 2,
+  "previous_failed_gate_auxiliary_updates": 1,
+  "methods": {
+    "impedance": {
+      "checkpoint_sha256": "6dfbe710b5e664bd4b385123f8b3ae0bce3a08d7dd879703f1e7eb6fbddac71c",
+      "arms": [
+        {
+          "arm": {
+            "name": "minimum_control",
+            "batch_size": 32768,
+            "mean_pair": false
+          },
+          "initial": {
+            "replay_q_mean": -19.56267738342285,
+            "replay_q_abs_mean": 30.354190826416016,
+            "replay_q_min": -89.50668334960938,
+            "replay_q_max": 44.214500427246094,
+            "replay_q_abs_p95": 67.92523956298828,
+            "terminal_mae": 1.9529612064361572,
+            "terminal_bias": 0.41477733850479126,
+            "out_of_bag_terminal_mae": 5.602122783660889,
+            "in_bag_terminal_mae": 1.0700997114181519,
+            "alpha": 0.0041063991375267506,
+            "global_soft_bound": 44.139327453378236,
+            "above_global_bound_fraction": 4.882812572759576e-05,
+            "sampled_policy_entropy": -5.000959396362305,
+            "uncertainty_mean": 0.46859899163246155,
+            "implied_minimum_rl_authority_fraction": 0.71337890625
+          },
+          "final": {
+            "replay_q_mean": -19.03868293762207,
+            "replay_q_abs_mean": 29.898523330688477,
+            "replay_q_min": -89.7823486328125,
+            "replay_q_max": 42.308570861816406,
+            "replay_q_abs_p95": 67.1511459350586,
+            "terminal_mae": 1.6347156763076782,
+            "terminal_bias": 0.18489742279052734,
+            "out_of_bag_terminal_mae": 5.304194450378418,
+            "in_bag_terminal_mae": 0.7469386458396912,
+            "alpha": 0.004276973195374012,
+            "global_soft_bound": 44.72665527470798,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": -4.982997894287109,
+            "uncertainty_mean": 0.41089946031570435,
+            "implied_minimum_rl_authority_fraction": 0.5380859375
+          },
+          "patch": {
+            "enabled": true,
+            "terminal_weight": 128,
+            "log_action_volume": 3.4657359027997265,
+            "weighted_base_sha256": "2bb73fcb6ab4050a9ca4200d5cfb066ee366f2306be7ab80c2272de697eb0b22",
+            "candidate_sha256": "5945e25f288b98eeb2f90f5709409d80837617b324dd6d795bd651d8a1da82b7",
+            "projection_position": "target critic Q before stochastic entropy term",
+            "terminal_cap": 30.0,
+            "gamma": 0.9995,
+            "target_pair_reduction": "minimum",
+            "actor_pair_reduction": "minimum",
+            "random_pair_selection_unchanged": true,
+            "source_transform_sha256": "06049b0b3f662e15259cf01c17a77d966fd3cd0fa0ed433a470e93658bbbecb7"
+          }
+        },
+        {
+          "arm": {
+            "name": "mean_pair_target",
+            "batch_size": 32768,
+            "mean_pair": true
+          },
+          "initial": {
+            "replay_q_mean": -19.56267738342285,
+            "replay_q_abs_mean": 30.354190826416016,
+            "replay_q_min": -89.50668334960938,
+            "replay_q_max": 44.214500427246094,
+            "replay_q_abs_p95": 67.92523956298828,
+            "terminal_mae": 1.9529612064361572,
+            "terminal_bias": 0.41477733850479126,
+            "out_of_bag_terminal_mae": 5.602122783660889,
+            "in_bag_terminal_mae": 1.0700997114181519,
+            "alpha": 0.0041063991375267506,
+            "global_soft_bound": 44.139327453378236,
+            "above_global_bound_fraction": 4.882812572759576e-05,
+            "sampled_policy_entropy": -5.000959396362305,
+            "uncertainty_mean": 0.46859899163246155,
+            "implied_minimum_rl_authority_fraction": 0.71337890625
+          },
+          "final": {
+            "replay_q_mean": -14.478683471679688,
+            "replay_q_abs_mean": 28.159534454345703,
+            "replay_q_min": -76.40704345703125,
+            "replay_q_max": 51.185142517089844,
+            "replay_q_abs_p95": 64.4140625,
+            "terminal_mae": 1.7951602935791016,
+            "terminal_bias": 0.14770865440368652,
+            "out_of_bag_terminal_mae": 5.492189407348633,
+            "in_bag_terminal_mae": 0.9007179737091064,
+            "alpha": 0.005416940897703171,
+            "global_soft_bound": 48.651840355283255,
+            "above_global_bound_fraction": 4.882812572759576e-05,
+            "sampled_policy_entropy": -5.137636661529541,
+            "uncertainty_mean": 0.4365091323852539,
+            "implied_minimum_rl_authority_fraction": 0.56982421875
+          },
+          "patch": {
+            "enabled": true,
+            "terminal_weight": 128,
+            "log_action_volume": 3.4657359027997265,
+            "weighted_base_sha256": "2bb73fcb6ab4050a9ca4200d5cfb066ee366f2306be7ab80c2272de697eb0b22",
+            "candidate_sha256": "5945e25f288b98eeb2f90f5709409d80837617b324dd6d795bd651d8a1da82b7",
+            "projection_position": "target critic Q before stochastic entropy term",
+            "terminal_cap": 30.0,
+            "gamma": 0.9995,
+            "target_pair_reduction": "mean",
+            "actor_pair_reduction": "minimum",
+            "random_pair_selection_unchanged": true,
+            "source_transform_sha256": "06049b0b3f662e15259cf01c17a77d966fd3cd0fa0ed433a470e93658bbbecb7"
+          }
+        }
+      ],
+      "online_recovery_proven": false,
+      "convergence_claim": false
+    },
+    "admittance": {
+      "checkpoint_sha256": "c1e7dd71f1a1b62c2278a1d3850af9fa4d1c66c846213ab0d1c42068d15ac0e1",
+      "arms": [
+        {
+          "arm": {
+            "name": "minimum_control",
+            "batch_size": 32768,
+            "mean_pair": false
+          },
+          "initial": {
+            "replay_q_mean": -227.3949737548828,
+            "replay_q_abs_mean": 228.757080078125,
+            "replay_q_min": -842.9265747070312,
+            "replay_q_max": 39.16019058227539,
+            "replay_q_abs_p95": 464.8914794921875,
+            "terminal_mae": 1.021286964416504,
+            "terminal_bias": -0.19712814688682556,
+            "out_of_bag_terminal_mae": 3.161404848098755,
+            "in_bag_terminal_mae": 0.5052793622016907,
+            "alpha": 0.005043917801231146,
+            "global_soft_bound": 54.31440400006478,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": -7.13459587097168,
+            "uncertainty_mean": 1.5918924808502197,
+            "implied_minimum_rl_authority_fraction": 0.98681640625
+          },
+          "final": {
+            "replay_q_mean": -227.0486602783203,
+            "replay_q_abs_mean": 228.39268493652344,
+            "replay_q_min": -817.9998779296875,
+            "replay_q_max": 39.433956146240234,
+            "replay_q_abs_p95": 461.1895446777344,
+            "terminal_mae": 0.9133526086807251,
+            "terminal_bias": 0.03838309273123741,
+            "out_of_bag_terminal_mae": 3.0624969005584717,
+            "in_bag_terminal_mae": 0.3951684832572937,
+            "alpha": 0.004983946681022644,
+            "global_soft_bound": 54.02531085807701,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": -7.079822540283203,
+            "uncertainty_mean": 1.6115047931671143,
+            "implied_minimum_rl_authority_fraction": 0.977783203125
+          },
+          "patch": {
+            "enabled": true,
+            "terminal_weight": 128,
+            "log_action_volume": 4.852030263919617,
+            "weighted_base_sha256": "2bb73fcb6ab4050a9ca4200d5cfb066ee366f2306be7ab80c2272de697eb0b22",
+            "candidate_sha256": "5945e25f288b98eeb2f90f5709409d80837617b324dd6d795bd651d8a1da82b7",
+            "projection_position": "target critic Q before stochastic entropy term",
+            "terminal_cap": 30.0,
+            "gamma": 0.9995,
+            "target_pair_reduction": "minimum",
+            "actor_pair_reduction": "minimum",
+            "random_pair_selection_unchanged": true,
+            "source_transform_sha256": "06049b0b3f662e15259cf01c17a77d966fd3cd0fa0ed433a470e93658bbbecb7"
+          }
+        },
+        {
+          "arm": {
+            "name": "mean_pair_target",
+            "batch_size": 32768,
+            "mean_pair": true
+          },
+          "initial": {
+            "replay_q_mean": -227.3949737548828,
+            "replay_q_abs_mean": 228.757080078125,
+            "replay_q_min": -842.9265747070312,
+            "replay_q_max": 39.16019058227539,
+            "replay_q_abs_p95": 464.8914794921875,
+            "terminal_mae": 1.021286964416504,
+            "terminal_bias": -0.19712814688682556,
+            "out_of_bag_terminal_mae": 3.161404848098755,
+            "in_bag_terminal_mae": 0.5052793622016907,
+            "alpha": 0.005043917801231146,
+            "global_soft_bound": 54.31440400006478,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": -7.13459587097168,
+            "uncertainty_mean": 1.5918924808502197,
+            "implied_minimum_rl_authority_fraction": 0.98681640625
+          },
+          "final": {
+            "replay_q_mean": -206.82608032226562,
+            "replay_q_abs_mean": 209.0622100830078,
+            "replay_q_min": -743.5703735351562,
+            "replay_q_max": 39.447532653808594,
+            "replay_q_abs_p95": 385.4900817871094,
+            "terminal_mae": 0.990955650806427,
+            "terminal_bias": 0.4135993421077728,
+            "out_of_bag_terminal_mae": 3.137451648712158,
+            "in_bag_terminal_mae": 0.47341006994247437,
+            "alpha": 0.0034573725424706936,
+            "global_soft_bound": 46.66640022481033,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": -6.888298988342285,
+            "uncertainty_mean": 1.5136587619781494,
+            "implied_minimum_rl_authority_fraction": 0.975341796875
+          },
+          "patch": {
+            "enabled": true,
+            "terminal_weight": 128,
+            "log_action_volume": 4.852030263919617,
+            "weighted_base_sha256": "2bb73fcb6ab4050a9ca4200d5cfb066ee366f2306be7ab80c2272de697eb0b22",
+            "candidate_sha256": "5945e25f288b98eeb2f90f5709409d80837617b324dd6d795bd651d8a1da82b7",
+            "projection_position": "target critic Q before stochastic entropy term",
+            "terminal_cap": 30.0,
+            "gamma": 0.9995,
+            "target_pair_reduction": "mean",
+            "actor_pair_reduction": "minimum",
+            "random_pair_selection_unchanged": true,
+            "source_transform_sha256": "06049b0b3f662e15259cf01c17a77d966fd3cd0fa0ed433a470e93658bbbecb7"
+          }
+        }
+      ],
+      "online_recovery_proven": false,
+      "convergence_claim": false
+    },
+    "vmc": {
+      "checkpoint_sha256": "4c48707ef4b39dcdb77dd4b4ed67f9412e01e35e60887f68a4861622f9ba558a",
+      "arms": [
+        {
+          "arm": {
+            "name": "minimum_control",
+            "batch_size": 32768,
+            "mean_pair": false
+          },
+          "initial": {
+            "replay_q_mean": -73.06082916259766,
+            "replay_q_abs_mean": 76.14281463623047,
+            "replay_q_min": -515.298095703125,
+            "replay_q_max": 41.0081901550293,
+            "replay_q_abs_p95": 299.1523742675781,
+            "terminal_mae": 1.2828314304351807,
+            "terminal_bias": 0.5069414973258972,
+            "out_of_bag_terminal_mae": 3.4892208576202393,
+            "in_bag_terminal_mae": 0.7003676891326904,
+            "alpha": 0.006644856184720993,
+            "global_soft_bound": 62.03179039876493,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": -7.295473098754883,
+            "uncertainty_mean": 1.246204137802124,
+            "implied_minimum_rl_authority_fraction": 0.988037109375
+          },
+          "final": {
+            "replay_q_mean": -75.3821029663086,
+            "replay_q_abs_mean": 77.93782043457031,
+            "replay_q_min": -515.7960815429688,
+            "replay_q_max": 43.292015075683594,
+            "replay_q_abs_p95": 281.88629150390625,
+            "terminal_mae": 1.3669047355651855,
+            "terminal_bias": -0.05752985551953316,
+            "out_of_bag_terminal_mae": 3.594614028930664,
+            "in_bag_terminal_mae": 0.778812825679779,
+            "alpha": 0.006219695787876844,
+            "global_soft_bound": 59.98228799585637,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": -7.428371429443359,
+            "uncertainty_mean": 1.2583537101745605,
+            "implied_minimum_rl_authority_fraction": 0.993408203125
+          },
+          "patch": {
+            "enabled": true,
+            "terminal_weight": 128,
+            "log_action_volume": 4.852030263919617,
+            "weighted_base_sha256": "2bb73fcb6ab4050a9ca4200d5cfb066ee366f2306be7ab80c2272de697eb0b22",
+            "candidate_sha256": "5945e25f288b98eeb2f90f5709409d80837617b324dd6d795bd651d8a1da82b7",
+            "projection_position": "target critic Q before stochastic entropy term",
+            "terminal_cap": 30.0,
+            "gamma": 0.9995,
+            "target_pair_reduction": "minimum",
+            "actor_pair_reduction": "minimum",
+            "random_pair_selection_unchanged": true,
+            "source_transform_sha256": "06049b0b3f662e15259cf01c17a77d966fd3cd0fa0ed433a470e93658bbbecb7"
+          }
+        },
+        {
+          "arm": {
+            "name": "mean_pair_target",
+            "batch_size": 32768,
+            "mean_pair": true
+          },
+          "initial": {
+            "replay_q_mean": -73.06082916259766,
+            "replay_q_abs_mean": 76.14281463623047,
+            "replay_q_min": -515.298095703125,
+            "replay_q_max": 41.0081901550293,
+            "replay_q_abs_p95": 299.1523742675781,
+            "terminal_mae": 1.2828314304351807,
+            "terminal_bias": 0.5069414973258972,
+            "out_of_bag_terminal_mae": 3.4892208576202393,
+            "in_bag_terminal_mae": 0.7003676891326904,
+            "alpha": 0.006644856184720993,
+            "global_soft_bound": 62.03179039876493,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": -7.295473098754883,
+            "uncertainty_mean": 1.246204137802124,
+            "implied_minimum_rl_authority_fraction": 0.988037109375
+          },
+          "final": {
+            "replay_q_mean": -60.19332504272461,
+            "replay_q_abs_mean": 65.25321197509766,
+            "replay_q_min": -442.8634033203125,
+            "replay_q_max": 50.13376998901367,
+            "replay_q_abs_p95": 252.15513610839844,
+            "terminal_mae": 1.3924669027328491,
+            "terminal_bias": 0.04369653761386871,
+            "out_of_bag_terminal_mae": 3.771501302719116,
+            "in_bag_terminal_mae": 0.7644269466400146,
+            "alpha": 0.006353659089654684,
+            "global_soft_bound": 60.6280633571864,
+            "above_global_bound_fraction": 0.0,
+            "sampled_policy_entropy": -7.614320278167725,
+            "uncertainty_mean": 1.3018560409545898,
+            "implied_minimum_rl_authority_fraction": 0.9892578125
+          },
+          "patch": {
+            "enabled": true,
+            "terminal_weight": 128,
+            "log_action_volume": 4.852030263919617,
+            "weighted_base_sha256": "2bb73fcb6ab4050a9ca4200d5cfb066ee366f2306be7ab80c2272de697eb0b22",
+            "candidate_sha256": "5945e25f288b98eeb2f90f5709409d80837617b324dd6d795bd651d8a1da82b7",
+            "projection_position": "target critic Q before stochastic entropy term",
+            "terminal_cap": 30.0,
+            "gamma": 0.9995,
+            "target_pair_reduction": "mean",
+            "actor_pair_reduction": "minimum",
+            "random_pair_selection_unchanged": true,
+            "source_transform_sha256": "06049b0b3f662e15259cf01c17a77d966fd3cd0fa0ed433a470e93658bbbecb7"
+          }
+        }
+      ],
+      "online_recovery_proven": false,
+      "convergence_claim": false
+    }
+  },
+  "plot_sha256": "783cd769665d9864b51db1b043fa61a8ec9eb9739f8f05271afa5b72b092940b"
+}

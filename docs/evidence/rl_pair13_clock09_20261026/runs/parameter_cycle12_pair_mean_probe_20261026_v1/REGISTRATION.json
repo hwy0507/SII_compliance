@@ -1,0 +1,71 @@
+{
+  "created_unix": 1793018047.6183312,
+  "purpose": "Projected cycle12 A/V still drift negative; test random-pair mean vs minimum, keeping actor min, terminal128 and upper bound. No arbitrary lower cap or promotion.",
+  "optimizer": "target_pair_mean",
+  "expected_cycle": 12,
+  "source_hashes": {
+    "published_target_pair_mean_20261026.py": "9b37ae99b1d89bed6a8e8ac090874de35890460b28979aa47c2e2e8587dfb51c",
+    "probe_parameter_pair_mean_20261026.py": "6ccea6740537014ea57faa42c938fdb43c9ac3b140ed4734d7d46f7cad7fdf68",
+    "validate_parameter_pair_mean_20261026.py": "4f2022430de274821bf7e1f761b2cc08742040ecf0eb7789ccaec38ea10e515a",
+    "published_exact_projected_learner_20261026.py": "1562d787155a82c6a2493bcb359ada3b59957ecc2449da56f6516776e56a0d07",
+    "published_exact_pipeline_20261026.py": "55edfe80f3269c4d417bfd63b5fe62ac9225bf385c5d2581814e5b9abf9d17b5",
+    "published_projected_terminal_learner_20261026.py": "f6d81d7e1ef4da4b16428b5c8160988547ac563d7937ad65b9e5f28f4dad2b9c",
+    "published_finite_target_projection_20261026.py": "d63d08bac2ed95b9ab268a83abb46781e721beffb7c7b3a0d3162c5ee98afa77",
+    "published_terminal_loss_weight_20261026.py": "f1961484c588bdc0ac5ee747ddabb6c58c1aa11b97107cca832f3d529b66a46d",
+    "diagnose_published_value_bound_20261025.py": "2a5b04c7a4036d78775a7abb87170660a0e3b6b0111846f24d4a9245dc268245",
+    "validate_published_finite_check_20261025.py": "02c0c995510bca67fabe2bc06b7380da3fd1489b98fd9a695147e489c0241acd"
+  },
+  "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+  "runtime_sha256": "26d8b9671a55f12702313dfc4a705bc3a9272b402d9611635b44266982177b1c",
+  "reward_sources": {
+    "spt_rl_reward_20261025.py": "c63deee3a17318703e17744245986d97d340a741623f03abe73af5aa43ffaebf",
+    "training_comparison_metrics_20261025.py": "24ee8166b9ade665290a6883bdf39ecf615e7cbf3f954c1404e1717e7a8b2e07"
+  },
+  "cpus": {
+    "impedance": 13,
+    "admittance": 26,
+    "vmc": 39
+  },
+  "seed": 20261026,
+  "diagnostic_samples": 4096,
+  "updates_per_arm": 5000,
+  "record_every": 250,
+  "total_auxiliary_updates": 30000,
+  "new_physics": 0,
+  "auxiliary_weight_promotion": false,
+  "automatic_extension": false,
+  "parent_review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_exact_pipeline_cycle12_review_20261026_v1/REVIEW.json",
+    "sha256": "e2e2ac450fc0e74a1229b87781e10ed0da73eba29d6c626da69d04148251bd6f"
+  },
+  "parent_health": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_exact_pipeline_cycle12_review_20261026_v1/health/DIAGNOSIS.json",
+    "sha256": "1fcb64c94ed4b2b15e5444dbce0f089a16b35333ecddfcd852cca01f8765d00d"
+  },
+  "checkpoints": {
+    "impedance": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_exact_pipeline_archive_20261026_v1/impedance/cycle_00012.pt",
+      "sha256": "6dfbe710b5e664bd4b385123f8b3ae0bce3a08d7dd879703f1e7eb6fbddac71c"
+    },
+    "admittance": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_exact_pipeline_archive_20261026_v1/admittance/cycle_00012.pt",
+      "sha256": "c1e7dd71f1a1b62c2278a1d3850af9fa4d1c66c846213ab0d1c42068d15ac0e1"
+    },
+    "vmc": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_exact_pipeline_archive_20261026_v1/vmc/cycle_00012.pt",
+      "sha256": "4c48707ef4b39dcdb77dd4b4ed67f9412e01e35e60887f68a4861622f9ba558a"
+    }
+  },
+  "arms": [
+    {
+      "name": "minimum_control",
+      "batch_size": 32768,
+      "mean_pair": false
+    },
+    {
+      "name": "mean_pair_target",
+      "batch_size": 32768,
+      "mean_pair": true
+    }
+  ]
+}

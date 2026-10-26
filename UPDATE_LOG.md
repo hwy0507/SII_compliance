@@ -1,3 +1,18 @@
+## 2026-10-26 — 参数target-pair均值有限对照、正式13与Direct critic-clock9
+
+- 开工fetch/read main d6f48179054e94bb3a35e0785bf908f25cee5165、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；旧PID退出/四卡0%核验后才新派发。上一轮为实质进展；无子agent、不干预独立非RL。最新docs/RL_PAIR_MEAN_CYCLE13_AND_SERL_CLOCK09_20261026.md。
+- 同正式12全state/实际抽样流的min-vs-mean target pair三方法两臂各5000，共30000辅助更新完成，0物理、不保存推广权重。A absQp95 461→385、V282→252，但termMAE min→mean I1.635→1.795/A.913→.991/V1.367→1.392，非全面改善。预算/20点/正式父digest/抽样RNG/父replay不变/图审查通过。
+- v1入口第二次load重复安装foreach误判源码，发生1辅助更新后；失败保留。保存原方法并恢复后重绑参数修复幂等性，v2pair数学/RNG、minimum一次完整更新全state/metrics/抽样RNG与原实现相同，另2辅助gate更新。原冻结12源码不覆盖。
+- 新正式13 I3841250/A3841253/V3841255从准确12全state/history续一个周期，原GPU1/2/3、CPU组各12sampler；I保持target min、A/V target mean，actor仍min，terminal128/projection/batch32768/UTD1/原actorLR保持。新增持久pair marker，后续须pair_class；三check-only仅加marker全state相同/重复加载/正负守卫及真实各1000新增、全父prefix/history/配置/12MJB/亲和性/参数input/clock/reward0误差通过。归档3882892/13审查4030423，无自动14。
+- Direct正式clock迁移v1在未加载正式state的随机模板gate失败0更新保留；v2先加载正式8后扩展，剥8零叶/marker严格恢复全部旧learner，剥时间列严格恢复366962旧replay及RNG/cursor/history。真实actor随机/确定输出精确、1375时钟/stream隔离/marker负守卫、两次恢复后完整8:1更新复现通过；16critic+2actor辅助入口更新不保存推广。prepared SHA752480635ecd70000cfdff97b2a50b824e32b0eb0c0cc8a251e14c5dd08d0e18，新建learner正式check-only全state不变通过。
+- 正式Direct3712508在serl_clock_cycle09_20261026_v1/direct，GPU0/learnerCPU0/30sampler共享1–12，仅一个9；固定官方10critic/随机2target/noentropy/8:1/batch32768、actor48、零示范保持。critic独立time叶进入首hidden，严格持久marker；无probe权重或旧CHEQ混入。
+- 早期6条160–164动作global穿透abort保留，是明确负面结果。startup v1错误要求仍有30live，失败保留；v2按24live+6完成核验并覆盖所有terminal。新增10000/80000、prepared父全prefix/history/配置、30MJB/实际亲和性/所有新动作/obs/clock/nextstate/reward0误差通过，非raw-substep物理重放。归档3882888/9只读4030422，无自动10。
+- 纯正式60样本63.80秒GPU49.93/40.67/46.27/40.93%，D/I/A/V约23.731/28.998/32.587/30.111 transitions/s，全部原PID全窗口live；有限辅助/冻结评估均已结束，持续每卡50%仍未达。不能把49.93向上取整称达标，采样/更新流水线仍待改善。
+- 收尾Direct9已完整审查：400935/3167488、新增33973、0/30、reward−33.041，24完整+6早穿透abort；全部新映射/clock/reward0误差/30MJB/父prefix/history通过。termMAE1.714但max65.252、Qmean27.636/max31.106，时钟未修复，完整state诊断不变/图已看。原3712508/3882888/4030422全部结束勿重启，准确9 SHAa1a26f285f990ee2308f70a2f178527c2fabfec2b0e6bb1c973e00115981a61d；无Direct10，参数13继续。
+- 10个新增/修正源码AST、冻结runtime源hash复核通过；小证据docs/evidence/rl_pair13_clock09_20261026/SOURCES.json。大型数据仍本集群SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。Goal active，完整周期效果/健康收敛/最终冻结比较/ESN/SPT/GPU要求均未完。
+- 收尾fetch/read并快进整合远端78c47ae0d2f1f12fd88820ea702aa6149dca29e3的独立非RL第六条件及前54条归档更新，双方日志保留，不改另一主机运行。
+- 本轮小源码/文档/证据备份：/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PAIR13_CLOCK09_STATUS_20261026_131031；逐项hash核验，大型权重/replay/轨迹仍SSD。
+
 ## 2026-10-26 — 新30条第六条件核验，前54条原始物理轨迹已共享
 
 - 开工实查main=35c2f788b0001c8fbb0618ed0bde2472efa899e1、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，复读AGENTS；上一轮核实等待，本轮跟踪原86607协调器从48推进到54/108并接续第七条件，未重复派发。后续fetch/read并快进整合d6f48179054e94bb3a35e0785bf908f25cee5165的独立RL更新，不改变本机冻结实验。

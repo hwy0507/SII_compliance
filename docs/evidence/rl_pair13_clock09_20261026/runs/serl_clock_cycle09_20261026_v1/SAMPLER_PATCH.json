@@ -1,0 +1,45 @@
+{
+  "base_trainer_sha256": "acdee3deda931c4311a9709a3f34517ead9297c9caaf198325bab339828f5063",
+  "base_main_sha256": "0f6f0710ad6f3a7e7658d438fc8706059f87711ac1e6b578e87b7a316e6f6c6a",
+  "candidate_main_sha256": "6214fe1c941172ab30366a4046c9774e0198c1f25c45d4f9728c1e898b873363",
+  "changes": [
+    "sampler-count guard",
+    "shared physical CPU-set affinity"
+  ],
+  "learner_source_changed": true,
+  "physics_source_changed": false,
+  "critic_clock_stage": {
+    "marker": {
+      "version": 1,
+      "maximum_actions": 1375,
+      "actor_features": 48,
+      "critic_observation_features": 49,
+      "encoding": "separate_state_and_clock_leaves",
+      "branch": "zero_initialized_addition_to_first_critic_hidden",
+      "original_gemm_inputs": 55
+    },
+    "prepared_checkpoint": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_clock_formal_preparation_20261026_v2/prepared/prepared_cycle08.pt",
+      "sha256": "752480635ecd70000cfdff97b2a50b824e32b0eb0c0cc8a251e14c5dd08d0e18"
+    },
+    "preparation_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_clock_formal_preparation_20261026_v2/prepared/REVIEW.json",
+      "sha256": "82c0a0fac973e5ad6769bec41f112ad20d937e5c9653c8f562db02ad38ab27d4"
+    },
+    "probe_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle08_clock_probe_20261026_v3/REVIEW.json",
+      "sha256": "27c48a2c0006d6c76f8f65b11a4cd696aa28eaf613f37eb2c76443694a34b2db"
+    },
+    "source_hashes": {
+      "resume_serl_clock_stage_20261026.py": "4bbaf32809067f9dfa97fcf2b42c5785d81f2b605ebcc823750e66d6c7d12c6d",
+      "resume_serl_pool_stage_20261026.py": "a6fa37b163cf67bde1dc6f5b70a3c4eb78db487449d44fb2c727a15231781791",
+      "serl_clock_state_adapter_20261026.py": "938743a6efb324a5a9fae99e05d7232e937bd9c5d2f97f7863e5a05aaa004c1e",
+      "serl_critic_clock_extension_20261026.py": "e6e7e0b2c5083e30aae722f8f439533158f86092c091ded10702bd1415d610c2",
+      "serl_state_adapter_20261026.py": "a761b5dc10f89c332f16fb418685738f0ec559bdf6c8ef5f64b5c3f7eadb2040",
+      "validate_serl_state_20261026.py": "06ad1daca7664e660a6c4cd53c74119c35ddcae7f32ece62bf15d246f46ad62a"
+    },
+    "auxiliary_weights_imported": false,
+    "observation_override": "Canonical48 actor, separate normalized remaining-time critic leaf; replay49 with audited historical-clock migration.",
+    "created_unix": 1793018624.7225811
+  }
+}

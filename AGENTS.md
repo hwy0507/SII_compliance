@@ -1,5 +1,32 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 参数13在运行、Direct critic-clock9已完整审查
+
+原Goal active，未健康收敛；最新[完整交接](docs/RL_PAIR_MEAN_CYCLE13_AND_SERL_CLOCK09_20261026.md)。
+本段覆盖下方“无正式learner”旧快照。物理/SPT/MJB/gates/filter/dt不改，无子agent，保留全部正式旧state/history。
+正式12同parent/state/抽样流的min-vs-mean target pair诊断30000辅助完，0physics/不存推广权重；
+A absQp95 461→385、V282→252，但termMAE min→mean I1.635→1.795/A.913→.991/V1.367→1.392，非全面修复。
+v1第二次恢复foreach检查误报，1辅助更新后失败保留；幂等修复后minimum完整更新state/RNG/metrics相同，v2另2gate更新。
+新正式parameter_pair_reduction_cycle13_20261026_v1 I3841250/A3841253/V3841255，原GPU1/2/3、各12sampler原CPU组；
+从正式完整12全state续一个13，I保留minimum、A/V target改mean，actor仍minimum；terminal128/projection/batch32768/UTD1/原LR不改。
+必须pair_class恢复新target_pair_reduction marker，旧exact/projected loader会丢新规则，禁止替代。
+三check-only除marker完整state不变/重复加载/负守卫通过；三路真实1000新增完整prefix/history/配置/markers/12MJB/亲和性/input/clock/reward0误差通过。
+归档3882892，parameter_pair_reduction_archive_20261026_v1；13只读4030423、三health齐全，无自动14。
+Direct clock正式迁移v1随机模板转换gate失败0更新保留；v2先加载正式8再扩展，全部旧state/Adam/RNG/history精确保留，
+仅8新零叶与replay追加时间列，旧366962行全字段可恢复；actor随机/确定输出相同、1375时钟/stream隔离/负守卫/恢复后更新复现通过。
+入口16critic+2actor辅助更新不推广，prepared正式8 SHA752480635ecd70000cfdff97b2a50b824e32b0eb0c0cc8a251e14c5dd08d0e18。
+严格SerlClockLearner持久critic_clock_extension；actor48、critic49结构化叶，官方10/2/noentropy/8:1、零示范保持。
+新Direct3712508/GPU0/CPU0、30sampler共享1–12在serl_clock_cycle09_20261026_v1/direct，只一个9，无自动10。
+已出现6次160–164动作global穿透abort，较8更早，全部保留。启动v1错误假设30live而失败，原文件保留；
+v2按24live+6完成核验，新增10000/80000、全部新动作/obs/当前nextclock/reward0误差、6terminal/30MJB/父prepared全prefix通过。
+归档3882888，serl_clock_cycle09_archive_20261026_v1；9只读4030422，须严格新clock loader，不重启旧8。
+收尾Direct9完整400935/3167488、新增33973、0/30、reward−33.041、24完整+上述6早abort；全新映射/clock/reward0误差/30MJB/父prefix通过。
+termMAE1.714但max65.252、Qmean27.636/max31.106，时钟单项未修复；完整state诊断不变/图已看。
+原Direct3712508/归档3882888/审查4030422均已完勿重启，无Direct10；准确9 SHAa1a26f285f990ee2308f70a2f178527c2fabfec2b0e6bb1c973e00115981a61d。
+新纯正式63.80s GPU49.93/40.67/46.27/40.93%，所有正式PID全窗口存活，每卡50%仍未达，不以辅助占用替代。
+大产物SSD，HDD只小证据；参数13完整结果、持续GPU优化/健康收敛/最终冻结比较/ESN/SPT仍待。
+
+
 ## 最新RL状态：2026-10-26 参数11/12等价流水线与Direct8 critic-clock审查
 
 原Goal active，未健康收敛；最新[完整交接](docs/RL_EXACT_PIPELINE_CYCLE12_AND_SERL_CLOCK_20261026.md)。

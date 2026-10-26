@@ -40,10 +40,15 @@ def cache_class(base):
 
 def install_foreach(wrapper):
     learner = wrapper.learner
-    source = inspect.getsource(learner.update_target_networks)
+    # A matched probe restores the same learner repeatedly. Validate the frozen
+    # original method again, then bind fresh parameter references after restore.
+    original = getattr(learner, '_sii_foreach_original_target_update',
+                       learner.update_target_networks)
+    source = inspect.getsource(original)
     if ('target_param.data.mul_(1 - self.polyak_factor)' not in source or
             'torch.add(target_param.data, param.data, alpha=self.polyak_factor, out=target_param.data)' not in source):
         raise ValueError('Unexpected target averaging implementation')
+    learner._sii_foreach_original_target_update = original
     online, target = [], []
     for current, delayed in zip(learner.agent.ensemble, learner.agent.ensemble_targets, strict=True):
         pairs = list(zip(current.parameters(), delayed.parameters(), strict=True))

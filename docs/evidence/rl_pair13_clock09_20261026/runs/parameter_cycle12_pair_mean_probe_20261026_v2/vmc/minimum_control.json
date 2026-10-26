@@ -1,0 +1,662 @@
+{
+  "arm": {
+    "name": "minimum_control",
+    "batch_size": 32768,
+    "mean_pair": false
+  },
+  "optimizer": "target_pair_mean",
+  "patch": {
+    "enabled": true,
+    "terminal_weight": 128,
+    "log_action_volume": 4.852030263919617,
+    "weighted_base_sha256": "2bb73fcb6ab4050a9ca4200d5cfb066ee366f2306be7ab80c2272de697eb0b22",
+    "candidate_sha256": "5945e25f288b98eeb2f90f5709409d80837617b324dd6d795bd651d8a1da82b7",
+    "projection_position": "target critic Q before stochastic entropy term",
+    "terminal_cap": 30.0,
+    "gamma": 0.9995,
+    "target_pair_reduction": "minimum",
+    "actor_pair_reduction": "minimum",
+    "random_pair_selection_unchanged": true,
+    "source_transform_sha256": "06049b0b3f662e15259cf01c17a77d966fd3cd0fa0ed433a470e93658bbbecb7"
+  },
+  "initial_full_state_sha256": "c3a80e136a40ad49a71c205941539f6045269ebc24d55bab64ce2fdd06cbc1f2",
+  "initial": {
+    "replay_q_mean": -73.06082916259766,
+    "replay_q_abs_mean": 76.14281463623047,
+    "replay_q_min": -515.298095703125,
+    "replay_q_max": 41.0081901550293,
+    "replay_q_abs_p95": 299.1523742675781,
+    "terminal_mae": 1.2828314304351807,
+    "terminal_bias": 0.5069414973258972,
+    "out_of_bag_terminal_mae": 3.4892208576202393,
+    "in_bag_terminal_mae": 0.7003676891326904,
+    "alpha": 0.006644856184720993,
+    "global_soft_bound": 62.03179039876493,
+    "above_global_bound_fraction": 0.0,
+    "sampled_policy_entropy": -7.295473098754883,
+    "uncertainty_mean": 1.246204137802124,
+    "implied_minimum_rl_authority_fraction": 0.988037109375
+  },
+  "curve": [
+    {
+      "updates": 250,
+      "metrics": {
+        "agent_train/q_loss": 97.2366943359375,
+        "agent_train/next_q_values": -73.02519226074219,
+        "agent_train/entropy_coefficient_loss": -1.4211068153381348,
+        "agent_train/actor_loss": 73.16438293457031,
+        "agent_train/actor_entropy": -6.716745376586914,
+        "agent_train/entropy_coefficient": 0.006622634828090668,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -73.389404296875,
+        "replay_q_abs_mean": 76.32984924316406,
+        "replay_q_min": -516.4884643554688,
+        "replay_q_max": 40.612735748291016,
+        "replay_q_abs_p95": 298.2657775878906,
+        "terminal_mae": 1.4329543113708496,
+        "terminal_bias": 0.6947554349899292,
+        "out_of_bag_terminal_mae": 3.646005392074585,
+        "in_bag_terminal_mae": 0.8487321138381958,
+        "alpha": 0.006622634828090668,
+        "global_soft_bound": 61.92467147577071,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -6.718289852142334,
+        "uncertainty_mean": 1.3059403896331787,
+        "implied_minimum_rl_authority_fraction": 0.992431640625
+      },
+      "updated_unix": 1793018213.73436
+    },
+    {
+      "updates": 500,
+      "metrics": {
+        "agent_train/q_loss": 74.73046875,
+        "agent_train/next_q_values": -74.13943481445312,
+        "agent_train/entropy_coefficient_loss": 0.06682498008012772,
+        "agent_train/actor_loss": 74.32159423828125,
+        "agent_train/actor_entropy": -7.013278484344482,
+        "agent_train/entropy_coefficient": 0.006523141171783209,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -73.64876556396484,
+        "replay_q_abs_mean": 76.6070556640625,
+        "replay_q_min": -516.4862670898438,
+        "replay_q_max": 40.4238395690918,
+        "replay_q_abs_p95": 297.8417663574219,
+        "terminal_mae": 1.299782633781433,
+        "terminal_bias": 0.2267114371061325,
+        "out_of_bag_terminal_mae": 3.578711986541748,
+        "in_bag_terminal_mae": 0.6981691718101501,
+        "alpha": 0.006523141171783209,
+        "global_soft_bound": 61.44505839517835,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -6.98302698135376,
+        "uncertainty_mean": 1.3138937950134277,
+        "implied_minimum_rl_authority_fraction": 0.994384765625
+      },
+      "updated_unix": 1793018218.0991719
+    },
+    {
+      "updates": 750,
+      "metrics": {
+        "agent_train/q_loss": 119.96534729003906,
+        "agent_train/next_q_values": -74.65390014648438,
+        "agent_train/entropy_coefficient_loss": -0.016176506876945496,
+        "agent_train/actor_loss": 74.76336669921875,
+        "agent_train/actor_entropy": -6.996793746948242,
+        "agent_train/entropy_coefficient": 0.0064391447231173515,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -73.72808074951172,
+        "replay_q_abs_mean": 76.57381439208984,
+        "replay_q_min": -515.1066284179688,
+        "replay_q_max": 41.5211181640625,
+        "replay_q_abs_p95": 296.77154541015625,
+        "terminal_mae": 1.4273515939712524,
+        "terminal_bias": 0.7150322198867798,
+        "out_of_bag_terminal_mae": 3.6304619312286377,
+        "in_bag_terminal_mae": 0.84575355052948,
+        "alpha": 0.0064391447231173515,
+        "global_soft_bound": 61.040150213103324,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -6.998498916625977,
+        "uncertainty_mean": 1.2437803745269775,
+        "implied_minimum_rl_authority_fraction": 0.98583984375
+      },
+      "updated_unix": 1793018222.471283
+    },
+    {
+      "updates": 1000,
+      "metrics": {
+        "agent_train/q_loss": 108.02647399902344,
+        "agent_train/next_q_values": -74.07085418701172,
+        "agent_train/entropy_coefficient_loss": 0.743111252784729,
+        "agent_train/actor_loss": 74.18626403808594,
+        "agent_train/actor_entropy": -7.146724700927734,
+        "agent_train/entropy_coefficient": 0.0063171060755848885,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -73.83039093017578,
+        "replay_q_abs_mean": 76.58849334716797,
+        "replay_q_min": -516.93701171875,
+        "replay_q_max": 40.484561920166016,
+        "replay_q_abs_p95": 295.39263916015625,
+        "terminal_mae": 1.3546345233917236,
+        "terminal_bias": -0.20768119394779205,
+        "out_of_bag_terminal_mae": 3.5501339435577393,
+        "in_bag_terminal_mae": 0.7750457525253296,
+        "alpha": 0.0063171060755848885,
+        "global_soft_bound": 60.451858116233396,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -7.121608734130859,
+        "uncertainty_mean": 1.2570910453796387,
+        "implied_minimum_rl_authority_fraction": 0.99169921875
+      },
+      "updated_unix": 1793018226.8264065
+    },
+    {
+      "updates": 1250,
+      "metrics": {
+        "agent_train/q_loss": 100.97904968261719,
+        "agent_train/next_q_values": -74.35994720458984,
+        "agent_train/entropy_coefficient_loss": -0.153898686170578,
+        "agent_train/actor_loss": 74.50579833984375,
+        "agent_train/actor_entropy": -6.969483375549316,
+        "agent_train/entropy_coefficient": 0.006453671492636204,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -74.00372314453125,
+        "replay_q_abs_mean": 76.6941146850586,
+        "replay_q_min": -518.1868896484375,
+        "replay_q_max": 41.55839157104492,
+        "replay_q_abs_p95": 295.0013427734375,
+        "terminal_mae": 1.4162440299987793,
+        "terminal_bias": -0.23287975788116455,
+        "out_of_bag_terminal_mae": 3.532167673110962,
+        "in_bag_terminal_mae": 0.8576624393463135,
+        "alpha": 0.006453671492636204,
+        "global_soft_bound": 61.11017707650918,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -6.922336101531982,
+        "uncertainty_mean": 1.2835314273834229,
+        "implied_minimum_rl_authority_fraction": 0.992431640625
+      },
+      "updated_unix": 1793018231.1868167
+    },
+    {
+      "updates": 1500,
+      "metrics": {
+        "agent_train/q_loss": 94.43792724609375,
+        "agent_train/next_q_values": -74.00334167480469,
+        "agent_train/entropy_coefficient_loss": 1.5230308771133423,
+        "agent_train/actor_loss": 74.13467407226562,
+        "agent_train/actor_entropy": -7.301316738128662,
+        "agent_train/entropy_coefficient": 0.0063806744292378426,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -73.70536804199219,
+        "replay_q_abs_mean": 76.50581359863281,
+        "replay_q_min": -516.978759765625,
+        "replay_q_max": 40.56265640258789,
+        "replay_q_abs_p95": 292.8252258300781,
+        "terminal_mae": 1.2456055879592896,
+        "terminal_bias": 0.15187548100948334,
+        "out_of_bag_terminal_mae": 3.5179178714752197,
+        "in_bag_terminal_mae": 0.6457390189170837,
+        "alpha": 0.0063806744292378426,
+        "global_soft_bound": 60.75829186342088,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -7.2686357498168945,
+        "uncertainty_mean": 1.322417974472046,
+        "implied_minimum_rl_authority_fraction": 0.99560546875
+      },
+      "updated_unix": 1793018235.5398135
+    },
+    {
+      "updates": 1750,
+      "metrics": {
+        "agent_train/q_loss": 80.77836608886719,
+        "agent_train/next_q_values": -74.06611633300781,
+        "agent_train/entropy_coefficient_loss": -0.5163453817367554,
+        "agent_train/actor_loss": 74.2135009765625,
+        "agent_train/actor_entropy": -6.8974809646606445,
+        "agent_train/entropy_coefficient": 0.006497267168015242,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -74.36629486083984,
+        "replay_q_abs_mean": 77.100341796875,
+        "replay_q_min": -512.3613891601562,
+        "replay_q_max": 39.455902099609375,
+        "replay_q_abs_p95": 292.8853759765625,
+        "terminal_mae": 1.3149076700210571,
+        "terminal_bias": 0.19649776816368103,
+        "out_of_bag_terminal_mae": 3.583627700805664,
+        "in_bag_terminal_mae": 0.7159895300865173,
+        "alpha": 0.006497267168015242,
+        "global_soft_bound": 61.32033174309849,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -6.906468391418457,
+        "uncertainty_mean": 1.2561283111572266,
+        "implied_minimum_rl_authority_fraction": 0.986572265625
+      },
+      "updated_unix": 1793018239.8893695
+    },
+    {
+      "updates": 2000,
+      "metrics": {
+        "agent_train/q_loss": 118.84136199951172,
+        "agent_train/next_q_values": -73.8411865234375,
+        "agent_train/entropy_coefficient_loss": -1.217368245124817,
+        "agent_train/actor_loss": 73.95726776123047,
+        "agent_train/actor_entropy": -6.758984565734863,
+        "agent_train/entropy_coefficient": 0.006401558872312307,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -74.38829803466797,
+        "replay_q_abs_mean": 77.0763931274414,
+        "replay_q_min": -515.2115478515625,
+        "replay_q_max": 40.07669448852539,
+        "replay_q_abs_p95": 292.5775146484375,
+        "terminal_mae": 1.5678577423095703,
+        "terminal_bias": 0.7354555130004883,
+        "out_of_bag_terminal_mae": 3.7577242851257324,
+        "in_bag_terminal_mae": 0.9897558689117432,
+        "alpha": 0.006401558872312307,
+        "global_soft_bound": 60.85896614207486,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -6.772995471954346,
+        "uncertainty_mean": 1.287623405456543,
+        "implied_minimum_rl_authority_fraction": 0.98974609375
+      },
+      "updated_unix": 1793018244.2586703
+    },
+    {
+      "updates": 2250,
+      "metrics": {
+        "agent_train/q_loss": 97.87325286865234,
+        "agent_train/next_q_values": -73.90461730957031,
+        "agent_train/entropy_coefficient_loss": -2.4241783618927,
+        "agent_train/actor_loss": 74.05148315429688,
+        "agent_train/actor_entropy": -6.5238494873046875,
+        "agent_train/entropy_coefficient": 0.006148019805550575,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -74.4059066772461,
+        "replay_q_abs_mean": 77.16059875488281,
+        "replay_q_min": -518.9038696289062,
+        "replay_q_max": 40.3984260559082,
+        "replay_q_abs_p95": 290.79156494140625,
+        "terminal_mae": 1.4786545038223267,
+        "terminal_bias": 0.5358890891075134,
+        "out_of_bag_terminal_mae": 3.496077537536621,
+        "in_bag_terminal_mae": 0.9460761547088623,
+        "alpha": 0.006148019805550575,
+        "global_soft_bound": 59.63677110599805,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -6.482065200805664,
+        "uncertainty_mean": 1.2657358646392822,
+        "implied_minimum_rl_authority_fraction": 0.984130859375
+      },
+      "updated_unix": 1793018248.6328402
+    },
+    {
+      "updates": 2500,
+      "metrics": {
+        "agent_train/q_loss": 137.95986938476562,
+        "agent_train/next_q_values": -75.02316284179688,
+        "agent_train/entropy_coefficient_loss": 0.9377455711364746,
+        "agent_train/actor_loss": 75.1386489868164,
+        "agent_train/actor_entropy": -7.184327125549316,
+        "agent_train/entropy_coefficient": 0.00617518275976181,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -74.17388916015625,
+        "replay_q_abs_mean": 76.93851470947266,
+        "replay_q_min": -515.7938842773438,
+        "replay_q_max": 39.98439025878906,
+        "replay_q_abs_p95": 289.1742858886719,
+        "terminal_mae": 1.227994680404663,
+        "terminal_bias": 0.17658968269824982,
+        "out_of_bag_terminal_mae": 3.426873207092285,
+        "in_bag_terminal_mae": 0.6475138068199158,
+        "alpha": 0.00617518275976181,
+        "global_soft_bound": 59.76771119434882,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -7.137701988220215,
+        "uncertainty_mean": 1.2346724271774292,
+        "implied_minimum_rl_authority_fraction": 0.98876953125
+      },
+      "updated_unix": 1793018253.0002766
+    },
+    {
+      "updates": 2750,
+      "metrics": {
+        "agent_train/q_loss": 123.9378662109375,
+        "agent_train/next_q_values": -74.12877655029297,
+        "agent_train/entropy_coefficient_loss": 0.6907206773757935,
+        "agent_train/actor_loss": 74.23648071289062,
+        "agent_train/actor_entropy": -7.136061191558838,
+        "agent_train/entropy_coefficient": 0.006243592593818903,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -74.8073501586914,
+        "replay_q_abs_mean": 77.4607162475586,
+        "replay_q_min": -511.9719543457031,
+        "replay_q_max": 38.8421630859375,
+        "replay_q_abs_p95": 288.8022766113281,
+        "terminal_mae": 1.4051967859268188,
+        "terminal_bias": -0.15270517766475677,
+        "out_of_bag_terminal_mae": 3.6120190620422363,
+        "in_bag_terminal_mae": 0.8226190209388733,
+        "alpha": 0.006243592593818903,
+        "global_soft_bound": 60.09748348810736,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -7.11847448348999,
+        "uncertainty_mean": 1.425213098526001,
+        "implied_minimum_rl_authority_fraction": 0.99609375
+      },
+      "updated_unix": 1793018257.354319
+    },
+    {
+      "updates": 3000,
+      "metrics": {
+        "agent_train/q_loss": 76.7193603515625,
+        "agent_train/next_q_values": -73.84024047851562,
+        "agent_train/entropy_coefficient_loss": -2.9672739505767822,
+        "agent_train/actor_loss": 73.96044921875,
+        "agent_train/actor_entropy": -6.413824081420898,
+        "agent_train/entropy_coefficient": 0.006329972296953201,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -74.09854888916016,
+        "replay_q_abs_mean": 76.77050018310547,
+        "replay_q_min": -511.09228515625,
+        "replay_q_max": 39.892333984375,
+        "replay_q_abs_p95": 286.3472900390625,
+        "terminal_mae": 1.1969244480133057,
+        "terminal_bias": 0.08606346696615219,
+        "out_of_bag_terminal_mae": 3.3541901111602783,
+        "in_bag_terminal_mae": 0.6274288296699524,
+        "alpha": 0.006329972296953201,
+        "global_soft_bound": 60.513880242015674,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -6.392177581787109,
+        "uncertainty_mean": 1.2254586219787598,
+        "implied_minimum_rl_authority_fraction": 0.982421875
+      },
+      "updated_unix": 1793018261.7244444
+    },
+    {
+      "updates": 3250,
+      "metrics": {
+        "agent_train/q_loss": 125.87263488769531,
+        "agent_train/next_q_values": -74.98267364501953,
+        "agent_train/entropy_coefficient_loss": -1.3913177251815796,
+        "agent_train/actor_loss": 75.09367370605469,
+        "agent_train/actor_entropy": -6.724712371826172,
+        "agent_train/entropy_coefficient": 0.006382941268384457,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -74.37454986572266,
+        "replay_q_abs_mean": 77.03932189941406,
+        "replay_q_min": -514.790771484375,
+        "replay_q_max": 39.72163009643555,
+        "replay_q_abs_p95": 286.3266296386719,
+        "terminal_mae": 1.372212290763855,
+        "terminal_bias": -0.013917664997279644,
+        "out_of_bag_terminal_mae": 3.567871570587158,
+        "in_bag_terminal_mae": 0.7925812005996704,
+        "alpha": 0.006382941268384457,
+        "global_soft_bound": 60.76921925061987,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -6.747262477874756,
+        "uncertainty_mean": 1.4345623254776,
+        "implied_minimum_rl_authority_fraction": 0.998046875
+      },
+      "updated_unix": 1793018266.074391
+    },
+    {
+      "updates": 3500,
+      "metrics": {
+        "agent_train/q_loss": 80.95716857910156,
+        "agent_train/next_q_values": -74.47035217285156,
+        "agent_train/entropy_coefficient_loss": -1.5047552585601807,
+        "agent_train/actor_loss": 74.64253997802734,
+        "agent_train/actor_entropy": -6.7041168212890625,
+        "agent_train/entropy_coefficient": 0.006184208206832409,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -74.54586029052734,
+        "replay_q_abs_mean": 77.11734008789062,
+        "replay_q_min": -516.8959350585938,
+        "replay_q_max": 39.209022521972656,
+        "replay_q_abs_p95": 285.26898193359375,
+        "terminal_mae": 1.288203477859497,
+        "terminal_bias": -0.2512737214565277,
+        "out_of_bag_terminal_mae": 3.589390993118286,
+        "in_bag_terminal_mae": 0.6807140111923218,
+        "alpha": 0.006184208206832409,
+        "global_soft_bound": 59.811218716676436,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -6.733583450317383,
+        "uncertainty_mean": 1.2232189178466797,
+        "implied_minimum_rl_authority_fraction": 0.988037109375
+      },
+      "updated_unix": 1793018270.42368
+    },
+    {
+      "updates": 3750,
+      "metrics": {
+        "agent_train/q_loss": 101.54093933105469,
+        "agent_train/next_q_values": -74.69805145263672,
+        "agent_train/entropy_coefficient_loss": 1.1298604011535645,
+        "agent_train/actor_loss": 74.82579803466797,
+        "agent_train/actor_entropy": -7.222954750061035,
+        "agent_train/entropy_coefficient": 0.006296808831393719,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -74.24864959716797,
+        "replay_q_abs_mean": 76.89205169677734,
+        "replay_q_min": -512.752197265625,
+        "replay_q_max": 40.76850128173828,
+        "replay_q_abs_p95": 283.8244323730469,
+        "terminal_mae": 1.249592661857605,
+        "terminal_bias": 0.4520435631275177,
+        "out_of_bag_terminal_mae": 3.4927167892456055,
+        "in_bag_terminal_mae": 0.6574313640594482,
+        "alpha": 0.006296808831393719,
+        "global_soft_bound": 60.35401445287481,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -7.139928817749023,
+        "uncertainty_mean": 1.2314131259918213,
+        "implied_minimum_rl_authority_fraction": 0.98876953125
+      },
+      "updated_unix": 1793018274.7692566
+    },
+    {
+      "updates": 4000,
+      "metrics": {
+        "agent_train/q_loss": 90.67677307128906,
+        "agent_train/next_q_values": -74.74383544921875,
+        "agent_train/entropy_coefficient_loss": 0.8943600654602051,
+        "agent_train/actor_loss": 74.87305450439453,
+        "agent_train/actor_entropy": -7.176600933074951,
+        "agent_train/entropy_coefficient": 0.006318431347608566,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -74.75723266601562,
+        "replay_q_abs_mean": 77.42874908447266,
+        "replay_q_min": -511.08734130859375,
+        "replay_q_max": 42.732051849365234,
+        "replay_q_abs_p95": 284.09844970703125,
+        "terminal_mae": 1.4098007678985596,
+        "terminal_bias": 0.7005141377449036,
+        "out_of_bag_terminal_mae": 3.4216039180755615,
+        "in_bag_terminal_mae": 0.8787057995796204,
+        "alpha": 0.006318431347608566,
+        "global_soft_bound": 60.45824664211021,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -7.133845329284668,
+        "uncertainty_mean": 1.3462746143341064,
+        "implied_minimum_rl_authority_fraction": 0.9931640625
+      },
+      "updated_unix": 1793018279.1403694
+    },
+    {
+      "updates": 4250,
+      "metrics": {
+        "agent_train/q_loss": 133.39163208007812,
+        "agent_train/next_q_values": -73.92259216308594,
+        "agent_train/entropy_coefficient_loss": -1.3542640209197998,
+        "agent_train/actor_loss": 74.00727081298828,
+        "agent_train/actor_entropy": -6.732269763946533,
+        "agent_train/entropy_coefficient": 0.00635707750916481,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -75.13995361328125,
+        "replay_q_abs_mean": 77.67982482910156,
+        "replay_q_min": -508.8059997558594,
+        "replay_q_max": 40.849647521972656,
+        "replay_q_abs_p95": 283.6157531738281,
+        "terminal_mae": 1.3932591676712036,
+        "terminal_bias": -0.3524739146232605,
+        "out_of_bag_terminal_mae": 3.7084195613861084,
+        "in_bag_terminal_mae": 0.7820812463760376,
+        "alpha": 0.00635707750916481,
+        "global_soft_bound": 60.644541982787835,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -6.719648361206055,
+        "uncertainty_mean": 1.2491742372512817,
+        "implied_minimum_rl_authority_fraction": 0.9873046875
+      },
+      "updated_unix": 1793018283.4916766
+    },
+    {
+      "updates": 4500,
+      "metrics": {
+        "agent_train/q_loss": 116.5263671875,
+        "agent_train/next_q_values": -75.11394500732422,
+        "agent_train/entropy_coefficient_loss": -1.7832293510437012,
+        "agent_train/actor_loss": 75.228759765625,
+        "agent_train/actor_entropy": -6.64619255065918,
+        "agent_train/entropy_coefficient": 0.006473291665315628,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -75.51385498046875,
+        "replay_q_abs_mean": 78.05574035644531,
+        "replay_q_min": -520.3603515625,
+        "replay_q_max": 41.88490676879883,
+        "replay_q_abs_p95": 283.9747619628906,
+        "terminal_mae": 1.2197542190551758,
+        "terminal_bias": 0.42567381262779236,
+        "out_of_bag_terminal_mae": 3.374568223953247,
+        "in_bag_terminal_mae": 0.6509060263633728,
+        "alpha": 0.006473291665315628,
+        "global_soft_bound": 61.204756890034716,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -6.633185386657715,
+        "uncertainty_mean": 1.305830478668213,
+        "implied_minimum_rl_authority_fraction": 0.99462890625
+      },
+      "updated_unix": 1793018287.8511498
+    },
+    {
+      "updates": 4750,
+      "metrics": {
+        "agent_train/q_loss": 86.30342102050781,
+        "agent_train/next_q_values": -74.45635986328125,
+        "agent_train/entropy_coefficient_loss": 1.4839885234832764,
+        "agent_train/actor_loss": 74.58370971679688,
+        "agent_train/actor_entropy": -7.293580055236816,
+        "agent_train/entropy_coefficient": 0.006378678604960442,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -74.85938262939453,
+        "replay_q_abs_mean": 77.46996307373047,
+        "replay_q_min": -514.1904296875,
+        "replay_q_max": 43.899757385253906,
+        "replay_q_abs_p95": 282.2725830078125,
+        "terminal_mae": 1.14567232131958,
+        "terminal_bias": 0.20409569144248962,
+        "out_of_bag_terminal_mae": 3.3971853256225586,
+        "in_bag_terminal_mae": 0.5512965321540833,
+        "alpha": 0.006378678604960442,
+        "global_soft_bound": 60.74867091405053,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -7.290500640869141,
+        "uncertainty_mean": 1.3844878673553467,
+        "implied_minimum_rl_authority_fraction": 0.9912109375
+      },
+      "updated_unix": 1793018292.204882
+    },
+    {
+      "updates": 5000,
+      "metrics": {
+        "agent_train/q_loss": 137.7689208984375,
+        "agent_train/next_q_values": -75.4915771484375,
+        "agent_train/entropy_coefficient_loss": 2.801976442337036,
+        "agent_train/actor_loss": 75.58340454101562,
+        "agent_train/actor_entropy": -7.5515336990356445,
+        "agent_train/entropy_coefficient": 0.006219695787876844,
+        "agent_train/target_entropy": -7.0
+      },
+      "diagnostic": {
+        "replay_q_mean": -75.3821029663086,
+        "replay_q_abs_mean": 77.93782043457031,
+        "replay_q_min": -515.7960815429688,
+        "replay_q_max": 43.292015075683594,
+        "replay_q_abs_p95": 281.88629150390625,
+        "terminal_mae": 1.3669047355651855,
+        "terminal_bias": -0.05752985551953316,
+        "out_of_bag_terminal_mae": 3.594614028930664,
+        "in_bag_terminal_mae": 0.778812825679779,
+        "alpha": 0.006219695787876844,
+        "global_soft_bound": 59.98228799585637,
+        "above_global_bound_fraction": 0.0,
+        "sampled_policy_entropy": -7.428371429443359,
+        "uncertainty_mean": 1.2583537101745605,
+        "implied_minimum_rl_authority_fraction": 0.993408203125
+      },
+      "updated_unix": 1793018296.5732164
+    }
+  ],
+  "final": {
+    "replay_q_mean": -75.3821029663086,
+    "replay_q_abs_mean": 77.93782043457031,
+    "replay_q_min": -515.7960815429688,
+    "replay_q_max": 43.292015075683594,
+    "replay_q_abs_p95": 281.88629150390625,
+    "terminal_mae": 1.3669047355651855,
+    "terminal_bias": -0.05752985551953316,
+    "out_of_bag_terminal_mae": 3.594614028930664,
+    "in_bag_terminal_mae": 0.778812825679779,
+    "alpha": 0.006219695787876844,
+    "global_soft_bound": 59.98228799585637,
+    "above_global_bound_fraction": 0.0,
+    "sampled_policy_entropy": -7.428371429443359,
+    "uncertainty_mean": 1.2583537101745605,
+    "implied_minimum_rl_authority_fraction": 0.993408203125
+  },
+  "elapsed_s": 88.04614520072937,
+  "sampling_rng_sha256": "880a3a8a0dd048e444a6934833e1eaf6394460e894d0f84f700a02887cd10770",
+  "parent_unchanged": true
+}
