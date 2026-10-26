@@ -7,6 +7,8 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新首路SAC收尾确认：Admittance1316018正常结束cycle4/226765steps/412500updates，勿重启；30完整55s条件、Task/Strict13/13，terminal/MJB/时长与replay核验，最终ck与migration_archive cycle00004 hash06925f84…一致。新run ADMITTANCE_SAC_DRAIN_REVIEW.json。fresh Adm1314547仍cycle0，2471936继续等其完整边界后才12worker恢复；尚无新learner派发。此为完整停止证据，不是critic健康/收敛；文档PUBLISHED_INDEPENDENT_RESOURCE_HANDOFF_20261026已补充。
+
 最新2026-10-26改为按方法独立完整周期交接，覆盖旧v1统一预热等待：旧协调1956030/fresh1146202/SAC691298已通过停止入口正常退出勿重启；新2471936，runs/CHEQ_FRESH_READY_METHODS_V2.json、runtime/fresh_ready_methods_v2、输出cheq_fresh_ready_seed20261025_v2。已向三fresh及三新SAC写完整周期STOP，原Imp1557140已有STOP字节不变；7原learner均live继续，尚无新learner恢复。D/A/V待各自fresh+SAC当前完整周期后全state resume，Imp待原SAC4后直接fresh12worker/六周期，不先派双worker。source16/batch256/UTD1/奖励等不变，六周期总预算扣原已完成，52核分配不变。
 旧只读1968149已在idle/nochild/no completed时替换为2472115，runs/CHEQ_FRESH_READY_METHODS_AUDIT_V2.json、fresh_ready_methods_audit_v2，继续0/1/3/5真实跨run审计；新archive2472286跟随空LAUNCH，旧early/migration在父全退出/保存后才停。4守卫测试、780source/24参数/30条件/7进程身份hash通过。启动D14431/A12271/V13153均cycle0、Imp旧215028/20条件；状态draining，扩容/收敛/GPU50%/ESN未完成。docs/PUBLISHED_INDEPENDENT_RESOURCE_HANDOFF_20261026.md/.json。
 

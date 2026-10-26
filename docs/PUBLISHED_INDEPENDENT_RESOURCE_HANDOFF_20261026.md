@@ -70,3 +70,16 @@ actor信息、gate、公共filter、执行器或dt，也没有重新开始已经
 健康收敛、固定策略训练集矩阵、SPT/接触舒适性和指定ESN比较；指定ESN缺口不变，Goal active。
 本轮fetch main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline
 f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，远端无新增。
+
+## 首路完整周期收尾已核验（2026-10-26 UTC补充）
+
+原Admittance SAC1316018已正常退出，不应重启。FINISHED为stopped_at_complete_cycle，
+cycle4/226765步/412500updates/replay226765；30条件完整集合、全部55秒、Task/Strict13/13各30。
+终端结果/时长/实际模型hash核对通过，最终checkpoint与独立cycle00004归档字节hash相同：
+`06925f845801f30cda2e9e78f9fd30e5f1e1ee279bb4fc2c4d5e27be00961998`。
+只读观察/复核没有新增physics/updates，不代表critic健康或固定策略接受。证据位于新run的
+ADMITTANCE_SAC_DRAIN_REVIEW.json，配套JSON含其hash与摘要。
+
+对应fresh Admittance1314547仍在完成自己的cycle0，原协调2471936仍存活、未启动任何恢复learner；
+只有该fresh也完整结束后才12worker接续。此次确认的是第一路SAC按计划正常收尾，
+不是整个资源交接结束。原启动快照的七learner全部live描述仅指当时，不代表此补充时点。

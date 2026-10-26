@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-26 — 确认Admittance SAC首路正常完成周期并保存
+
+- 原1316018从28/30持续推进至完整30条件后正常退出，FINISHED=stopped_at_complete_cycle，cycle4/226765steps/412500updates/replay226765。30回合均55秒、Task/Strict13/13；全部terminal/时长/实际MJB hash核对，final checkpoint与独立cycle00004归档同hash06925f84…。
+- 只读观察和完整边界复核0新增physics/updates，不把正常退出或训练成功计数当critic健康/收敛。fresh Admittance1314547仍在自己的cycle0；2471936继续等待其完整边界，尚未恢复12worker。不要重启已结束的SAC。
+- 补充docs/PUBLISHED_INDEPENDENT_RESOURCE_HANDOFF_20261026.md/.json；集群新run cheq_fresh_ready_seed20261025_v2/ADMITTANCE_SAC_DRAIN_REVIEW.json保存30终端/model收据。未修改源码、冻结配置或原实验数据。
+- main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d已fetch确认未变。完整交接/四路收敛/GPU50%/最终比较仍未完成。
+
+
 ## 2026-10-26 — 去除统一预热等待，逐方法完整周期交接资源
 
 - 原v1等待四路fresh均更新再请求STOP，会让较快方法可能多跑一整轮双sampler。新工具/独立协议按方法分别等待自己的fresh/SAC完整边界，不改学习设置；D/A/V全state接续剩余原六周期，尚未启动的Imp待原SAC4后直接fresh12sampler六周期。
