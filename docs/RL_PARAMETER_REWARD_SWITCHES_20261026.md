@@ -45,3 +45,5 @@ B/runs/parameter_capacity30_32_reward_stability_20261026_v1，原等待2830862�
 本轮真实远端查询/fetch/read main dbb1d76ed79177067c48ed49ff9f67f023c704aa和baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d未变；GitHub认证仍待，已问不重复。小证据docs/evidence/rl_parameter_reward_switches_20261026，包含原2727830完成结果、独立保存值检查/图、31准备和新窗口登记/等待记录与实际live快照。大产物SSD，HDD仅小交接/收据，非完整HDD/arm1备份。
 
 GPU沿用已完成纯19/30固定60样本：57.3/67.9833/67.9/69.1333%，本轮未重采或用额外任务补占用；启动审查/恢复空档事实保持。指定ESN仍缺，已问勿重复；健康收敛、最终冻结策略验证和最终比较仍未完成。
+
+本轮科学提交8867d28026d4b5a68c9f0ee6420517b5f78d3c85仅本地，push认证失败。完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER_REWARD_SWITCHES_20261026_231602/FULL_SMALL_EVIDENCE.tar.gz，30成员逐hash/大小核验，755979字节，SHA256 2a0e8588c6cf955e31b04a8590dd08d21f2721874c796e909509e18e8a4c84dd。HDD最新/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER_REWARD_SWITCHES_STATUS_20261026_231602/HANDOFF.md及收据/LATEST已核验，大产物仍SSD，非HDD/arm1全备份。原19/30和20/31准备、固定30–32等待继续，Goal active。
