@@ -716,6 +716,14 @@
     {
       "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_fresh_ready_seed20261025_v2/ADMITTANCE_SAC_DRAIN_REVIEW.json",
       "sha256": "677309dd107aee5b998bd0d997318490938020469997066f1f7bbc8fda608add"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_fresh_ready_seed20261025_v2/DIRECT_SAC_DRAIN_REVIEW.json",
+      "sha256": "c9c1072738dc170dc6669f5f72ef96617a4f0ef02930871a5f47ee6bec3e95b5"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_fresh_ready_seed20261025_v2/VMC_SAC_DRAIN_REVIEW.json",
+      "sha256": "ce04f41c1c7eb71843bc91551a1a1cd365cf27f891a5332efbb04fd93fcf0620"
     }
   ],
   "remote_main": "a52dfba4486af8d263d5cd0a976c3102482ff249",
@@ -788,5 +796,120 @@
     "scope": "Complete-cycle stop and intact final checkpoint/terminal evidence; not critic-health or final policy acceptance",
     "archive_path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_sampler_seed20261025_v1/migration_archive/admittance/cycle_00004.pt",
     "archive_matches_final_checkpoint": true
+  },
+  "direct_sac_drain": {
+    "verified_unix": 1792973649.2834413,
+    "original_pid": 1215621,
+    "original_start_ticks": "555936840",
+    "original_exited": true,
+    "finished": {
+      "status": "stopped_at_complete_cycle",
+      "steps": 384621,
+      "cycles_completed": 2,
+      "convergence_claim": false
+    },
+    "checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_sampler_seed20261025_v1/direct/checkpoint_latest.pt",
+    "checkpoint_sha256": "ad62c3f1219b484c00e2c28315e9ddd389b390f84288014c989414c37169bf9d",
+    "archive": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_sampler_seed20261025_v1/migration_archive/direct/cycle_00008.pt",
+    "archive_matches_final": true,
+    "boundary": "complete_condition_cycle",
+    "cycle": 8,
+    "steps": 384621,
+    "updates": 722758,
+    "replay_size": 384621,
+    "learner_state_fields": [
+      "actor_optimizer",
+      "agent",
+      "algorithm",
+      "alpha",
+      "alpha_optimizer",
+      "boundary",
+      "critic_layer_norm",
+      "cuda_rng",
+      "local_rng",
+      "log_alpha",
+      "num_gradient_steps",
+      "numerical_amendments",
+      "numerical_patch_receipt",
+      "numpy_rng",
+      "observation_scale",
+      "parameters_updated",
+      "python_rng",
+      "q_optimizer",
+      "step_metrics",
+      "torch_rng"
+    ],
+    "task": 0,
+    "strict": 0,
+    "conditions": 30,
+    "full55s": 28,
+    "shortened": [
+      {
+        "condition": "passive_corner_train_0671",
+        "steps": 395,
+        "abort_reason": "global_penetration_exceeded_2mm"
+      },
+      {
+        "condition": "passive_corner_train_0400",
+        "steps": 902,
+        "abort_reason": "global_penetration_exceeded_2mm"
+      }
+    ],
+    "new_physics": 0,
+    "optimizer_updates": 0,
+    "convergence_claim": false,
+    "scope": "Complete-cycle stopping and saved checkpoint/terminal evidence, not critic-health or final policy acceptance"
+  },
+  "vmc_sac_drain": {
+    "verified_unix": 1792974369.8041866,
+    "original_pid": 726082,
+    "original_start_ticks": "555833539",
+    "original_exited": true,
+    "finished": {
+      "status": "stopped_at_complete_cycle",
+      "steps": 268509,
+      "cycles_completed": 2,
+      "convergence_claim": false
+    },
+    "checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_sampler_seed20261025_v1/vmc/checkpoint_latest.pt",
+    "checkpoint_sha256": "2643cb155f92937ec4def6ef63b663f5167d13074b0453bf52e08594c9d1d791",
+    "archive": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/sac_sampler_seed20261025_v1/migration_archive/vmc/cycle_00005.pt",
+    "archive_matches_final": true,
+    "boundary": "complete_condition_cycle",
+    "cycle": 5,
+    "steps": 268509,
+    "updates": 495000,
+    "replay_size": 268509,
+    "learner_state_fields": [
+      "actor_optimizer",
+      "agent",
+      "algorithm",
+      "alpha",
+      "alpha_optimizer",
+      "boundary",
+      "critic_layer_norm",
+      "cuda_rng",
+      "local_rng",
+      "log_alpha",
+      "num_gradient_steps",
+      "numerical_amendments",
+      "numerical_patch_receipt",
+      "numpy_rng",
+      "observation_scale",
+      "parameters_updated",
+      "python_rng",
+      "q_optimizer",
+      "step_metrics",
+      "torch_rng"
+    ],
+    "task": 17,
+    "strict": 17,
+    "conditions": 30,
+    "full55s": 30,
+    "shortened": [],
+    "new_physics": 0,
+    "optimizer_updates": 0,
+    "convergence_claim": false,
+    "scope": "Complete-cycle stop and final checkpoint/terminal evidence, not critic-health or final acceptance"
   }
 }

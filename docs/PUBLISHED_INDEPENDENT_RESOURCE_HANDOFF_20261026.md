@@ -83,3 +83,22 @@ ADMITTANCE_SAC_DRAIN_REVIEW.json，配套JSON含其hash与摘要。
 对应fresh Admittance1314547仍在完成自己的cycle0，原协调2471936仍存活、未启动任何恢复learner；
 只有该fresh也完整结束后才12worker接续。此次确认的是第一路SAC按计划正常收尾，
 不是整个资源交接结束。原启动快照的七learner全部live描述仅指当时，不代表此补充时点。
+
+## Direct、VMC也已正常完成周期并退出（2026-10-26 UTC补充）
+
+| 原SAC | 结束周期 | 总步数 | 总更新 | Task/Strict，各30 | 完整55秒 |
+|---|---:|---:|---:|---:|---:|
+| Direct，原PID1215621 | 8 | 384621 | 722758 | 0/0 | 28 |
+| VMC，原PID726082 | 5 | 268509 | 495000 | 17/17 | 30 |
+
+两原进程均正常FINISHED=stopped_at_complete_cycle，勿重启。各30条件完整集合、终端结果、
+时长、实际MJB/replay和最终checkpoint与独立归档hash均核验。Direct被动0671/0400分别
+395/902action因穿透超限提前结束，两个失败保留；不把整组写成30个55秒回合。
+Direct最终hash `ad62c3f1219b484c00e2c28315e9ddd389b390f84288014c989414c37169bf9d`，
+VMC最终hash `2643cb155f92937ec4def6ef63b663f5167d13074b0453bf52e08594c9d1d791`。
+新run内DIRECT_SAC_DRAIN_REVIEW.json和VMC_SAC_DRAIN_REVIEW.json记录逐条件收据；
+本轮只读观察和核验0新增physics/updates，未改科学设置，也没有重新诊断最终critic健康。
+
+原SAC现仅Impedance1557140仍在收尾。三fresh learner继续各自cycle0，逐方法协调器
+2471936/审计2472115/归档2472286仍活跃，尚无新恢复learner。17/30训练成功不能替代
+固定策略评估、收敛或相对名义控制的学习改善；各方法此处周期不同，不作统一排名。

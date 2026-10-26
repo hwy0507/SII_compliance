@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-26 — Direct与VMC原SAC完整收尾，剩Impedance继续
+
+- Direct原1215621正常结束cycle8/384621步/722758更新，Task/Strict0/0各30；28完整55s，被动0671/0400分别395/902action穿透abort，失败保留。VMC原726082正常结束cycle5/268509/495000，Task/Strict17/17各30，全部55s。勿重启已退出原learner。
+- 60条件terminal/时长/实际MJB、replay及final checkpoint与独立cycle归档hash核验：D ad62c3f1…、V2643cb15…。只读0新physics/updates，完整停止不代表critic健康、策略收敛或固定策略接受。
+- 新run cheq_fresh_ready_seed20261025_v2/DIRECT_SAC_DRAIN_REVIEW.json与VMC_SAC_DRAIN_REVIEW.json留证，补充docs/PUBLISHED_INDEPENDENT_RESOURCE_HANDOFF_20261026.md/.json。原SAC仅Imp1557140仍收尾，三fresh仍cycle0，原协调2471936/审计2472115/归档2472286活跃，尚无恢复learner。
+- 已fetch main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，无新增；本轮无训练源码/配置/物理合同修改。四路充分收敛、GPU利用率、完整最终矩阵与ESN比较仍未完成。
+
+
 ## 2026-10-26 — 确认Admittance SAC首路正常完成周期并保存
 
 - 原1316018从28/30持续推进至完整30条件后正常退出，FINISHED=stopped_at_complete_cycle，cycle4/226765steps/412500updates/replay226765。30回合均55秒、Task/Strict13/13；全部terminal/时长/实际MJB hash核对，final checkpoint与独立cycle00004归档同hash06925f84…。

@@ -7,6 +7,8 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新Direct/VMC原SAC也已完整结束勿重启：1215621 cycle8/384621steps/722758updates，Task/Strict0/0；726082 cycle5/268509/495000，17/17，各30。D28完整55s、被动0671/0400于395/902action穿透abort保留；V30完整。60terminal/MJB/时长/replay及final ck与archive hash核验，ad62c3f1…/2643cb15…。新run DIRECT_SAC_DRAIN_REVIEW.json、VMC_SAC_DRAIN_REVIEW.json；文档PUBLISHED_INDEPENDENT_RESOURCE_HANDOFF_20261026已补充。原SAC仅Imp1557140继续，三fresh原PID仍cycle0；2471936/2472115/2472286继续等待各自完整边界，尚无新恢复learner。不是critic健康/收敛/最终接受。
+
 最新首路SAC收尾确认：Admittance1316018正常结束cycle4/226765steps/412500updates，勿重启；30完整55s条件、Task/Strict13/13，terminal/MJB/时长与replay核验，最终ck与migration_archive cycle00004 hash06925f84…一致。新run ADMITTANCE_SAC_DRAIN_REVIEW.json。fresh Adm1314547仍cycle0，2471936继续等其完整边界后才12worker恢复；尚无新learner派发。此为完整停止证据，不是critic健康/收敛；文档PUBLISHED_INDEPENDENT_RESOURCE_HANDOFF_20261026已补充。
 
 最新2026-10-26改为按方法独立完整周期交接，覆盖旧v1统一预热等待：旧协调1956030/fresh1146202/SAC691298已通过停止入口正常退出勿重启；新2471936，runs/CHEQ_FRESH_READY_METHODS_V2.json、runtime/fresh_ready_methods_v2、输出cheq_fresh_ready_seed20261025_v2。已向三fresh及三新SAC写完整周期STOP，原Imp1557140已有STOP字节不变；7原learner均live继续，尚无新learner恢复。D/A/V待各自fresh+SAC当前完整周期后全state resume，Imp待原SAC4后直接fresh12worker/六周期，不先派双worker。source16/batch256/UTD1/奖励等不变，六周期总预算扣原已完成，52核分配不变。
