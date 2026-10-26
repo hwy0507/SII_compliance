@@ -1,5 +1,27 @@
 # 更新日志
 
+## 2026-10-26 — Fresh第四轮完整复核、Direct六轮结束、固定策略诊断启动
+
+- 原2472115完成cycle3并等5；四路120个同轮55s终端/model/reward/4ck/hash及780source核验，图已看。
+  Task/Strict0/0、18/17、13/12、17/17各30，被动全0/10；loss119.043/1173.444/830.029/720.415、
+  terminalMAE144.124/247.539/332.196/431.386均较cycle1增，非健康收敛。Imp/Adm短0600穿透
+  .232502/.207465mm超原.2mm，1375保存区间核验，失败保留，非原始子步重审。
+- Direct4055508已正常结束原六轮，勿重启：247500/242501、最终30完整55s/TaskStrict0/0，
+  ck/archive/snapshot1f43dda8…、30terminal/MJB/reward及图核验。reward最近范围.476<容差.660，
+  但改善仅.09068<2、plateau false；loss390.695、terminalMAE247.853。不得称收敛或自动原样延长；
+  Goal继续，其余三路训练继续，下一阶段结合固定策略及完整证据另登记。0新增复核physics/updates。
+- 已预先固定cycle3和每类0000，原诊断完成后readiness3005171/session66123成功结束，启动新固定
+  12回合矩阵协调3148346、Direct评估3148347/physics3152099，CPU54、原GPU0–3串行推理；
+  runs/fresh_cycle03_fixed_representatives_v1、registration8ce8f780…，runtime/source_train16不变。
+  同条件名义12行从已审计120矩阵复用，0新nominalphysics，0optimizer。首实际ck/49actor/48raw/7common/
+  MJB/plan/dt/CPU核验；尚无完整矩阵，不选最终Tref，不代替指定ESN，不重启readiness或重复派发。
+- 接触math原2273688完成Direct三类55s精确验证，3/12/330万子步；新增THIRD_CASE_REVIEW，
+  随后Imp被动例也完整精确通过，FOURTH_CASE_REVIEW留证，现4/12/440万子步，Imp短期3298289继续。仍非整体通过/加速/部署。GPU50%未完，Direct已结束后不再称四路learner在训。
+- 产物基址`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/`；新runs
+  fresh_cycle03_scientific_review_v1、fresh_direct_final_cycle05_review_v1及上述矩阵/性能验证。
+  docs/PUBLISHED_FRESH_CYCLE03_AND_DIRECT_STAGE_20261026.md/.json；hash/JSON/diff检查，Goal未完成。
+  fetch/read确认main=a52dfba4486af8d263d5cd0a976c3102482ff249、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d。
+
 ## 2026-10-26 — Fresh replay已知时钟核验与接触候选首例完整通过
 
 - 四cycle1 checkpoint共329484条transition/240回合，原fresh和恢复日志前缀按global step精确连接：

@@ -7,6 +7,10 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新fresh cycle3四路完整复核完成(session26337退出)，Task/Strict0/0、18/17、13/12、17/17各30，被动全0/10；loss119.043/1173.444/830.029/720.415、terminalMAE144.124/247.539/332.196/431.386均较1增。120terminal/MJB/4ck/hash/reward/780source与图通过，Imp/Adm短0600穿透.232502/.207465mm>.2mm保留；runs/fresh_cycle03_scientific_review_v1。原2472115等5，别重复派发。
+Direct4055508原六轮已正常结束勿重启：247500/242501，final ck1f43dda8…，最终30完整55s/TaskStrict0/0；改善.09068<2、最近range.476<tol.660但plateau false，loss390.695、terminalMAE247.853。独立诊断session46540退出，30terminal/model/hash/reward及图核验，runs/fresh_direct_final_cycle05_review_v1。不自动原样延长，不称收敛，Goal继续/其余三learner在训；下一阶段依据完整证据另登记。
+新固定cycle3的4×3确定性矩阵已启动：runs/fresh_cycle03_fixed_representatives_v1，reg8ce8f780…，工具runtime/fresh_cycle03_fixed_representatives_v1；readiness3005171/session66123已结束勿重启。协调3148346、Direct评估3148347/首physics3152099，CPU54/GPU0–3串行推理、source16，预算12×55s/1320万子步、0updates，复用12名义行，不选Tref。首ck/actor49/raw48/common7/MJB/dt/CPU通过；尚未全完成，poll原PROGRESS。接触math2273688继续，Direct3/12/330万子步完整精确通过，第三收据THIRD_CASE_REVIEW；随后Imp被动也完整精确通过，FOURTH_CASE_REVIEW，现4/12/440万子步；旧3047099已退出，短期3298289继续，非整体加速/部署。报告docs/PUBLISHED_FRESH_CYCLE03_AND_DIRECT_STAGE_20261026.md/.json。GPU50%/充分收敛/最终SPT/指定ESN未完。
+
 最新只读replay clock核验完成，runs/fresh_cycle01_clock_review_v2，session47719退出勿重启：四cycle1共329484transition/240episode，日志前缀globalstep与replay reward/done/context及nextobs连续精确；独立known_clock仅55s/40ms，Imp859步早停next仍516/1375，不编码未来中止。v1/session82442错误断言累计elapsed为单步时长，失败保留，非训练clock缺陷。240终端近邻无精确obs或obs+action重复，距离不是混叠因果证据，未选/训练时间critic；0physics/updates，正式输入/learner不变。
 contact math原2273688首例Direct/passive0000完整55s/110万子步已复核精确通过（Task/Strict假），runs/contact_math_validation_v1/FIRST_CASE_REVIEW.json；第二例active_short也已完整精确复核，SECOND_CASE_REVIEW.json，现2/12/220万子步，非整体通过/加速/部署。旧2536553退出，active_long新child2792032继续，读PROGRESS更新身份，不重启。原四learner和2471936/2472115/2472286继续。报告docs/PUBLISHED_REPLAY_CLOCK_REVIEW_20261026.md/.json；Goal/GPU50%/最终比较仍未完。
 
