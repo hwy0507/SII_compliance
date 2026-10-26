@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2026-10-26 — 四路十二采样器交接完成，首轮统一诊断与安全失败保留
+
+- 原VMC1146204/Admittance1314547正常结束首轮勿重启；新511376/793968自动12worker续余五周期。各41250父→42250新snapshot核验全部replay/history精确、Adam计数连续、真实更新与首12模型/input/dt。原D4055508/I3849956继续，四路已真实扩容；只读196372/session4132已完成退出，不要重启。
+- 四路同首轮Task/Strict0/0、17/16、12/11、17/16各30；critic loss9.334/8.003/11.392/7.338，terminalMAE36.201/36.646/51.131/52.502，非收敛。120终端/model验证收据与checkpoint/archive hash核对、reward/network及统一图通过，四路被动均0/10。原2472115已完成cycle0、等待cycle1，协调2471936/归档2472286继续。
+- Imp首轮29完整55s+长期0000于859actions/34.36s全局穿透abort（记录峰值87.21165mm、物块/凸边），失败保留。三参数短期0600 Task真Strict假，外穿透I/A/V=.225314/.205722/.216555mm>原.2mm；interval复算，Imp终奖正确−25，无放宽gate。Direct第二轮仍0/30、reward−33.20797，暂未改善。
+- 四路扩容后正式GPU60秒均值6.07/6.80/5.83/5.98%、min均0，无辅助占用，50%未达。继续定位吞吐瓶颈，不改live batch/UTD以制造占用。
+- docs/PUBLISHED_FRESH_CYCLE_AND_HANDOFF_PROGRESS_20261026.md/.json与AGENTS留证；SSD根runs/remaining_fresh_resource_resume_review_v1存所有收据，统一诊断fresh_ready_methods_audit_v2/fresh_cycle_00。只读核验0physics/updates，正式原训练继续；物理/输入/filter/gate/限制/dt未改。原六周期、收敛、最终SPT/固定策略矩阵/指定ESN比较未完。
+- 已fetch读main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d日志，远端未变；先前push HTTPS认证失败，未声称发布。
+
 ## 2026-10-26 — Fresh Direct首轮完整诊断与终端抽样精确重建
 
 - Direct首轮41250步/36251update、30完整55s、Task/Strict0/0，失败approach19/carry9/lift1/align1。reward均值−32.96638；末1000 critic loss9.334、抽样TD MAE.401、终端MAE36.201，无收敛结论。

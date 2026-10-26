@@ -1,0 +1,628 @@
+{
+  "recorded_unix": 1792977258.7115939,
+  "main": "a52dfba4486af8d263d5cd0a976c3102482ff249",
+  "baseline": "f6e8f8c2711a93f0b5dfc88c608bd82647084d5d",
+  "direct_second_cycle": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/direct_CYCLE_01_REVIEW.json",
+    "sha256": "6729d561267429660f6aeb768266716d74f562749d4f044164c22aaf14eb3b2c",
+    "summary": {
+      "verified_unix": 1792977109.0826595,
+      "controller": "direct",
+      "cycle": 1,
+      "checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_fresh_ready_seed20261025_v2/migration_archive/direct/cycle_00001.pt",
+      "checkpoint_sha256": "595b10828a0bf8e068d9419bd6612aaf96cf731c24cbcfbe766f33ac33081ca5",
+      "steps": 82500,
+      "updates": 77501,
+      "replay_size": 82500,
+      "cycle_history": [
+        {
+          "cycle": 0,
+          "steps": 41250,
+          "reward_mean": -32.96638163701394,
+          "reward_std": 0.9758126412488469,
+          "strict_success_rate": 0.0
+        },
+        {
+          "cycle": 1,
+          "steps": 82500,
+          "reward_mean": -33.20797146355689,
+          "reward_std": 0.9295166204018328,
+          "strict_success_rate": 0.0
+        }
+      ],
+      "task": 0,
+      "strict": 0,
+      "conditions": 30,
+      "full55s": 30,
+      "groups": {
+        "active_short": {
+          "conditions": 10,
+          "task": 0,
+          "strict": 0
+        },
+        "passive_corner": {
+          "conditions": 10,
+          "task": 0,
+          "strict": 0
+        },
+        "active_long": {
+          "conditions": 10,
+          "task": 0,
+          "strict": 0
+        }
+      },
+      "shortened": [],
+      "new_physics": 0,
+      "new_updates": 0,
+      "convergence_claim": false,
+      "scope": "Complete training-cycle terminal/model/state verification; no new critic-health or fixed-policy evaluation claim"
+    }
+  },
+  "impedance_first_cycle": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/impedance_CYCLE_00_REVIEW.json",
+    "sha256": "88346b699ffc84bcb70a1e8325f2eb3038c024a30dba565e2a2ccbf4879fffe2",
+    "summary": {
+      "verified_unix": 1792977112.4854681,
+      "controller": "impedance",
+      "cycle": 0,
+      "checkpoint": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_fresh_ready_seed20261025_v2/migration_archive/impedance/cycle_00000.pt",
+      "checkpoint_sha256": "f8f6c209efe360fece16e3ff89f009885f187041b373f293e46f75b5fbe04ce6",
+      "steps": 40734,
+      "updates": 35735,
+      "replay_size": 40734,
+      "cycle_history": [
+        {
+          "cycle": 0,
+          "steps": 40734,
+          "reward_mean": -4.32956845827984,
+          "reward_std": 26.075726456004336,
+          "strict_success_rate": 0.5333333333333333
+        }
+      ],
+      "task": 17,
+      "strict": 16,
+      "conditions": 30,
+      "full55s": 29,
+      "groups": {
+        "active_short": {
+          "conditions": 10,
+          "task": 10,
+          "strict": 9
+        },
+        "passive_corner": {
+          "conditions": 10,
+          "task": 0,
+          "strict": 0
+        },
+        "active_long": {
+          "conditions": 10,
+          "task": 7,
+          "strict": 7
+        }
+      },
+      "shortened": [
+        {
+          "condition": "active_long_train_0000",
+          "steps": 859,
+          "duration_s": 34.360000000578864,
+          "abort_reason": "global_penetration_exceeded_2mm",
+          "global_penetration_mm": 87.21165278020771,
+          "external_penetration_mm": 0.07885803351400421,
+          "worst_global_pair": [
+            "office_v5_corner_top",
+            "target_object_geom"
+          ],
+          "rollout_sha256": "aace092f258a437b77812313a41ff6b7515fe0949281358413c37ca119a1eb0e"
+        }
+      ],
+      "new_physics": 0,
+      "new_updates": 0,
+      "convergence_claim": false,
+      "scope": "Complete training-cycle terminal/model/state verification; no new critic-health or fixed-policy evaluation claim"
+    }
+  },
+  "impedance_strict_failure": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/IMPEDANCE_STRICT_FAILURE_DETAIL.json",
+    "sha256": "d73a040a9d25162f63fa588a6f3c4e4da9ca1d663244a6cbb22f1d6602436b01",
+    "summary": {
+      "verified_unix": 1792976846.124526,
+      "condition": "active_short_train_0600",
+      "cycle": 0,
+      "task": true,
+      "strict": false,
+      "failure": "External penetration exceeds original 0.2 mm gate",
+      "peak_external_penetration_mm": 0.22531373265258556,
+      "gate_mm": 0.2,
+      "worst_pair": [
+        "office_v5_ball_geom",
+        "hand_collision"
+      ],
+      "intervals": 1375,
+      "represented_substeps": 1100000,
+      "episode_path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_fresh_ready_seed20261025_v2/impedance/cycle_00000/active_short_train_0600",
+      "new_physics": 0,
+      "new_updates": 0,
+      "scope": "Saved per-actor-interval peak reduction plus terminal; not a new raw-substep replay audit",
+      "gate_changed": false
+    }
+  },
+  "read_only_observer": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/EXECUTION.json",
+    "sha256": "3fa4fe16261b11c0208490d7396bed50893ffe8564827378c8e396673e94797e",
+    "summary": {
+      "pid": 196372,
+      "started_unix": 1792976595.6469944,
+      "deadline_unix": 1792978395.6469944,
+      "scope": "Read-only observation and full-state resume verification; no training or simulation dispatch",
+      "training_unchanged": true,
+      "methods": {
+        "vmc": {
+          "old_pid": 1146204,
+          "cpu": 39,
+          "workers": [
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51
+          ],
+          "gpu": 3
+        },
+        "admittance": {
+          "old_pid": 1314547,
+          "cpu": 26,
+          "workers": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38
+          ],
+          "gpu": 2
+        }
+      },
+      "script_sha256": "821617bc70d7b287849c025d24ba9b49797633f096ab3452108230e81400f756"
+    }
+  },
+  "convergence_claim": false,
+  "goal_complete": false,
+  "completed_handoff_unix": 1792978048.5186944,
+  "vmc_resume": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/vmc_REVIEW.json",
+    "sha256": "5fe620b0255c3222add1c9f20fb2e7c88c9fa9d88c474462c25afb0d4f553695",
+    "summary": {
+      "verified_unix": 1792977303.1562984,
+      "method": "vmc",
+      "old_pid": 1146204,
+      "old_exited": true,
+      "new_pid": 511376,
+      "parent_steps": 41250,
+      "parent_updates": 36251,
+      "parent_cycle": 0,
+      "parent_checkpoint_sha256": "62d054bafbd296898f7e2f3e3456b384f9486a9329d193c88fa6f18bf3595977",
+      "parent_history": [
+        {
+          "cycle": 0,
+          "steps": 41250,
+          "reward_mean": -4.579046182230326,
+          "reward_std": 25.244105487471856,
+          "strict_success_rate": 0.5333333333333333
+        }
+      ],
+      "parent_conditions": 30,
+      "parent_task": 17,
+      "parent_strict": 16,
+      "parent_full55s": 30,
+      "remaining_cycles": 5,
+      "steps": 42250,
+      "updates": 37251,
+      "snapshot_sha256": "35b990033a8874c7c78da280e233ef991e0de4a964229b6e226f98f147455938",
+      "all_parent_replay_fields_exact": true,
+      "history_preserved": true,
+      "optimizer_counts": {
+        "actor_optimizer": {
+          "before": 36252.0,
+          "after": 37252.0,
+          "states": 8
+        },
+        "q_optimizer": {
+          "before": 36251.0,
+          "after": 37251.0,
+          "states": 50
+        },
+        "alpha_optimizer": {
+          "before": 36252.0,
+          "after": 37252.0,
+          "states": 1
+        }
+      },
+      "network_finite": true,
+      "optimizer_logs_finite_and_steps_exact": true,
+      "new_physics": 0,
+      "new_optimizer_updates": 0,
+      "convergence_claim": false,
+      "training_unchanged": true
+    }
+  },
+  "admittance_resume": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/admittance_REVIEW.json",
+    "sha256": "d9060cb59f58523919f3636e4d1b164d807129f6cebdcb0f938d4ddac2dbea6f",
+    "summary": {
+      "verified_unix": 1792977838.2943485,
+      "method": "admittance",
+      "old_pid": 1314547,
+      "old_exited": true,
+      "new_pid": 793968,
+      "parent_steps": 41250,
+      "parent_updates": 36251,
+      "parent_cycle": 0,
+      "parent_checkpoint_sha256": "09b8415f6709615ed45c126c1212c0fd18ec5f55d596bc0b901fae219a1c6843",
+      "parent_history": [
+        {
+          "cycle": 0,
+          "steps": 41250,
+          "reward_mean": -13.789162216839662,
+          "reward_std": 24.290323742579755,
+          "strict_success_rate": 0.36666666666666664
+        }
+      ],
+      "parent_conditions": 30,
+      "parent_task": 12,
+      "parent_strict": 11,
+      "parent_full55s": 30,
+      "remaining_cycles": 5,
+      "steps": 42250,
+      "updates": 37251,
+      "snapshot_sha256": "f41e8a8888c861d8fc7fde83e9f7bb165e37b72148df8e933942a6850c669b0b",
+      "all_parent_replay_fields_exact": true,
+      "history_preserved": true,
+      "optimizer_counts": {
+        "actor_optimizer": {
+          "before": 36252.0,
+          "after": 37252.0,
+          "states": 8
+        },
+        "q_optimizer": {
+          "before": 36251.0,
+          "after": 37251.0,
+          "states": 50
+        },
+        "alpha_optimizer": {
+          "before": 36252.0,
+          "after": 37252.0,
+          "states": 1
+        }
+      },
+      "network_finite": true,
+      "optimizer_logs_finite_and_steps_exact": true,
+      "new_physics": 0,
+      "new_optimizer_updates": 0,
+      "convergence_claim": false,
+      "training_unchanged": true
+    }
+  },
+  "observer_finished": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/FINISHED.json",
+    "sha256": "359e28b74d944a4499f17e6f1fa59acda16761069ae2f561cb8c47a4dee77682",
+    "summary": {
+      "finished_unix": 1792977838.3461258,
+      "completed": [
+        "vmc",
+        "admittance"
+      ],
+      "training_unchanged": true,
+      "new_physics": 0,
+      "new_optimizer_updates": 0
+    }
+  },
+  "first_cycle_matrix": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/FIRST_CYCLE_MATRIX_REVIEW.json",
+    "sha256": "92d0692bd8946b819ee10607c06f30ecc2c0857e44ea8c782623dc49688c1a7a",
+    "summary": {
+      "verified_unix": 1792977901.3955736,
+      "matrix": {
+        "direct": {
+          "steps": 41250,
+          "updates": 36251,
+          "task": 0,
+          "strict": 0,
+          "conditions": 30,
+          "mean_reward": -32.96638163701394,
+          "q_loss_last1000": 9.33413506692648,
+          "sampled_q_mean": 67.44448637431488,
+          "terminal_mae": 36.20117663701375,
+          "in_bag_terminal_mae": 22.67738806511745,
+          "out_of_bag_terminal_mae": 92.62801860940867,
+          "categories": {
+            "passive_corner": {
+              "n": 10,
+              "task": 0,
+              "strict": 0
+            },
+            "active_short": {
+              "n": 10,
+              "task": 0,
+              "strict": 0
+            },
+            "active_long": {
+              "n": 10,
+              "task": 0,
+              "strict": 0
+            }
+          },
+          "failure_stages": {
+            "carry": 9,
+            "lift": 1,
+            "approach": 19,
+            "align": 1
+          }
+        },
+        "impedance": {
+          "steps": 40734,
+          "updates": 35735,
+          "task": 17,
+          "strict": 16,
+          "conditions": 30,
+          "mean_reward": -4.32956845827984,
+          "q_loss_last1000": 8.002951469182968,
+          "sampled_q_mean": 64.95860851850594,
+          "terminal_mae": 36.646252988179526,
+          "in_bag_terminal_mae": 32.38365167086242,
+          "out_of_bag_terminal_mae": 55.21901587077549,
+          "categories": {
+            "active_short": {
+              "n": 10,
+              "task": 10,
+              "strict": 9
+            },
+            "passive_corner": {
+              "n": 10,
+              "task": 0,
+              "strict": 0
+            },
+            "active_long": {
+              "n": 10,
+              "task": 7,
+              "strict": 7
+            }
+          },
+          "failure_stages": {
+            "carry": 11,
+            "retreat": 2,
+            "load_transfer": 1
+          }
+        },
+        "admittance": {
+          "steps": 41250,
+          "updates": 36251,
+          "task": 12,
+          "strict": 11,
+          "conditions": 30,
+          "mean_reward": -13.789162216839662,
+          "q_loss_last1000": 11.392423789858817,
+          "sampled_q_mean": 80.8278567512054,
+          "terminal_mae": 51.13115414301554,
+          "in_bag_terminal_mae": 40.09769664605459,
+          "out_of_bag_terminal_mae": 95.26498413085938,
+          "categories": {
+            "passive_corner": {
+              "n": 10,
+              "task": 0,
+              "strict": 0
+            },
+            "active_short": {
+              "n": 10,
+              "task": 9,
+              "strict": 8
+            },
+            "active_long": {
+              "n": 10,
+              "task": 3,
+              "strict": 3
+            }
+          },
+          "failure_stages": {
+            "carry": 16,
+            "retreat": 1,
+            "load_transfer": 1,
+            "lift": 1
+          }
+        },
+        "vmc": {
+          "steps": 41250,
+          "updates": 36251,
+          "task": 17,
+          "strict": 16,
+          "conditions": 30,
+          "mean_reward": -4.579046182230326,
+          "q_loss_last1000": 7.337649856030941,
+          "sampled_q_mean": 82.03503149310127,
+          "terminal_mae": 52.50248089472453,
+          "in_bag_terminal_mae": 38.087813692355375,
+          "out_of_bag_terminal_mae": 90.82440101809618,
+          "categories": {
+            "passive_corner": {
+              "n": 10,
+              "task": 0,
+              "strict": 0
+            },
+            "active_short": {
+              "n": 10,
+              "task": 10,
+              "strict": 9
+            },
+            "active_long": {
+              "n": 10,
+              "task": 7,
+              "strict": 7
+            }
+          },
+          "failure_stages": {
+            "carry": 12,
+            "retreat": 1,
+            "release": 1
+          }
+        }
+      },
+      "prior_terminal_model_verification": {
+        "direct": {
+          "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/fresh_direct_cycle00_diagnosis_v1/REVIEW.json",
+          "sha256": "baf2f082bb7a9e103bb00b45a29af14676ed6d5f3f1aff43d76fc1db97c54d69",
+          "checkpoint_sha256": "15eb22664e7e3f4c8db3eaf4566f33f7b34bf08c596b58f21bebb6eda04cbfba",
+          "reused_verified_terminal_model_cases": 30
+        },
+        "impedance": {
+          "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/impedance_CYCLE_00_REVIEW.json",
+          "sha256": "88346b699ffc84bcb70a1e8325f2eb3038c024a30dba565e2a2ccbf4879fffe2",
+          "checkpoint_sha256": "f8f6c209efe360fece16e3ff89f009885f187041b373f293e46f75b5fbe04ce6",
+          "reused_verified_terminal_model_cases": 30
+        },
+        "admittance": {
+          "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/admittance_REVIEW.json",
+          "sha256": "d9060cb59f58523919f3636e4d1b164d807129f6cebdcb0f938d4ddac2dbea6f",
+          "checkpoint_sha256": "09b8415f6709615ed45c126c1212c0fd18ec5f55d596bc0b901fae219a1c6843",
+          "reused_verified_terminal_model_cases": 30
+        },
+        "vmc": {
+          "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/vmc_REVIEW.json",
+          "sha256": "5fe620b0255c3222add1c9f20fb2e7c88c9fa9d88c474462c25afb0d4f553695",
+          "checkpoint_sha256": "62d054bafbd296898f7e2f3e3456b384f9486a9329d193c88fa6f18bf3595977",
+          "reused_verified_terminal_model_cases": 30
+        }
+      },
+      "source_report": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/fresh_ready_methods_audit_v2/fresh_cycle_00/results/DIAGNOSIS.json",
+      "source_report_sha256": "2e575c461bbc955a746e0c3334b59b529158a8bf41cacb130d7ce55ded4b305e",
+      "plot_path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/fresh_ready_methods_audit_v2/fresh_cycle_00/results/training_diagnostics.png",
+      "plot_sha256": "3e8718568e00985a2e4434962380ba83026483a24bc64c16d280210346256cf5",
+      "plot_reviewed": true,
+      "all_methods_complete_cycle0": true,
+      "all_120_conditions_retained": true,
+      "reward_components_reconstruction_passed": true,
+      "network_state_unchanged": true,
+      "new_physics": 0,
+      "new_optimizer_updates": 0,
+      "convergence_claim": false,
+      "decision": "Continue registered stage unchanged; first full condition cycle only. Examine later complete cycles and fixed-policy results before claiming convergence or learned improvement."
+    }
+  },
+  "vmc_strict_failure": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/VMC_STRICT_FAILURE_DETAIL.json",
+    "sha256": "8db0b49763d34ff9e99128f2b91e5572b9a4d04f5a605b6b33981467e702e19d",
+    "summary": {
+      "verified_unix": 1792977396.1792989,
+      "condition": "active_short_train_0600",
+      "cycle": 0,
+      "task": true,
+      "strict": false,
+      "peak_external_penetration_mm": 0.21655520387769803,
+      "gate_mm": 0.2,
+      "worst_pair": [
+        "office_v5_ball_geom",
+        "fr3_link6_collision"
+      ],
+      "intervals": 1375,
+      "represented_substeps": 1100000,
+      "episode_path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_fresh_reduced_reuse_seed20261025_v1/vmc/cycle_00000/active_short_train_0600",
+      "new_physics": 0,
+      "new_updates": 0,
+      "scope": "Saved interval peak reduction, not new raw-substep audit",
+      "gate_changed": false
+    }
+  },
+  "admittance_strict_failure": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/ADMITTANCE_STRICT_FAILURE_DETAIL.json",
+    "sha256": "6e3db6ca2764a236fd3d1d91acd11b55d5dee878e36a996187959493806993b9",
+    "summary": {
+      "condition": "active_short_train_0600",
+      "task": true,
+      "strict": false,
+      "peak_external_penetration_mm": 0.20572249903700018,
+      "gate_mm": 0.2,
+      "worst_pair": [
+        "office_v5_ball_geom",
+        "fr3_link6_collision"
+      ],
+      "intervals": 1375,
+      "represented_substeps": 1100000,
+      "episode_path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/cheq_fresh_reduced_reuse_seed20261025_v1/admittance/cycle_00000/active_short_train_0600",
+      "new_physics": 0,
+      "new_updates": 0,
+      "scope": "Saved interval peak reduction, not new raw-substep audit",
+      "gate_changed": false
+    }
+  },
+  "gpu_all_four_expanded": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/remaining_fresh_resource_resume_review_v1/GPU_60S_ALL_FOUR_12_WORKERS.json",
+    "sha256": "dfcdfbf6d16f82aa699a60812e2dfa3c482ed7dd14cefc83faaaed05e4ccb350",
+    "summary": {
+      "start_unix": 1792977818.5418801,
+      "end_unix": 1792977878.5465364,
+      "mean_utilization": [
+        6.066666666666666,
+        6.8,
+        5.833333333333333,
+        5.983333333333333
+      ],
+      "minimum_utilization": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scope": "Formal CHEQ training after all four methods migrated to 12 samplers; normal within-cycle sampler tails remain possible",
+      "auxiliary_gpu_training": false
+    }
+  },
+  "active_progress": {
+    "direct": {
+      "cycle": 2,
+      "steps": 117085,
+      "completed_conditions": 24,
+      "running": 6,
+      "pending": 0,
+      "updates": 112086,
+      "wall_time_utc": 1792978048.4703088
+    },
+    "impedance": {
+      "cycle": 1,
+      "steps": 78377,
+      "completed_conditions": 24,
+      "running": 6,
+      "pending": 0,
+      "updates": 73378,
+      "wall_time_utc": 1792978048.510253
+    },
+    "admittance": {
+      "cycle": 1,
+      "steps": 49977,
+      "completed_conditions": 0,
+      "running": 12,
+      "pending": 18,
+      "updates": 44978,
+      "wall_time_utc": 1792978048.516382
+    },
+    "vmc": {
+      "cycle": 1,
+      "steps": 67664,
+      "completed_conditions": 12,
+      "running": 12,
+      "pending": 6,
+      "updates": 62665,
+      "wall_time_utc": 1792978048.5105662
+    }
+  }
+}

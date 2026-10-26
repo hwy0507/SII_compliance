@@ -7,6 +7,10 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新四路12worker交接均已实际生效：D4055508/I3849956/A793968/V511376继续；原A1314547/V1146204已正常首轮结束勿重启。A/V各41250父→42250/37251新snapshot全replay/history/Adam连续及首12实际模型输入核验，父09b8415f…/62d054ba…。只读196372/session4132已FINISHED退出勿重启；runs/remaining_fresh_resource_resume_review_v1。DISPATCH_FINISHED不是六周期/Goal完成，2471936/2472286继续。
+原2472115四路同cycle0诊断已完整复核、现等cycle1；Task/Strict0/0、17/16、12/11、17/16各30，四路被动均0/10，loss9.334/8.003/11.392/7.338、terminalMAE36.201/36.646/51.131/52.502；120终端/model收据+ck/hash/reward/network与图核验。Imp29完整+长期0000 859actions/34.36s全局穿透abort（物块/凸边87.21165mm）；I/A/V短0600分别.225314/.205722/.216555mm超原.2mm，失败保留。D第二轮0/30、reward−33.20797；非收敛/名义改善结论。
+扩容后正式GPU60秒均值6.07/6.80/5.83/5.98%、min0，无辅助GPU训练，50%仍未达；后续需定位当前配置吞吐，不为占用率改live UTD/batch。文档PUBLISHED_FRESH_CYCLE_AND_HANDOFF_PROGRESS_20261026.md/.json。继续原六周期和1/3/5审计，Goal/最终固定策略矩阵/SPT/指定ESN仍未完。
+
 最新fresh Direct完整cycle0只读诊断已完成，session29414/52532均退出勿重复：41250/36251，Task/Strict0/0各30、全55s；loss9.334、TD MAE.401、终端MAE36.201。精确重建41250mask/最终replay RNG、36251采样含6346终端抽取；最后1条未抽，另2条≤20次，>100次20条in-bag MAE4.84、out-of-bag97.60。不能把整体终端误差全部解释成发散，也不是健康收敛；继续原阶段不改mask/设置。30terminal/MJB/reward/network与两图核验，0physics/updates。runs/fresh_direct_cycle00_diagnosis_v1、docs/PUBLISHED_FRESH_DIRECT_FIRST_CYCLE_20261026.md/.json。原四learner与2471936/2472115/2472286继续；原四路完整审计还会按原计划做，别重复派发训练。Goal/ESN/GPU50%仍未完。
 
 最新2026-10-26：四原SAC均正常结束勿重启；Imp1557140最后cycle4/228528/412500、Task17/Strict16各30、30完整55s，final/archive fb4786b3…核验。新Imp3849956直接12worker已实际学习，4000步fresh初始化及15000/10001onset核验，14fixture/MJB/plan/dt通过；首只读断言错把executed7维当参数5维，失败收据保留，只修核验器，训练未动。runs/impedance_fresh_start_review_v1。
