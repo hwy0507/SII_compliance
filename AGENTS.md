@@ -11,6 +11,8 @@ Direct13完整565782/4486264、0/30、reward−31.066473，30完整无abort，�
 新有限Direct暖状态目标probe B/runs/serl_cycle13_warm_horizon_probe_20261026_v1，协调3598/只读结果审查59003，准确完整13两臂32→1各2000outer/16000critic+2000actor，same65536及全部rowdraws、0physics/不保存权重、不推广；等纯正式窗口结束才启动。首完整control batch/终端1vs32相同/完整state恢复gate已通过，最终REVIEW/FINISHED/独立review/图/FINAL_SCIENTIFIC_REVIEW均已完成，原3598/evaluator94562/59003退出勿重复。32vs1末terminalMAE.056348/.363541、单步TD.081214/.039469、32步TD.065922/.102989，七通道平均|gradQ|.027682/.005896；候选梯度更弱且终端误差增加，不部署，正式14不改。32步bootstrap存gamma^(k−1)mask由learner再乘gamma，正确勿改；原reward势包含approach，occupancy也依赖phi，勿误说失败回报全部常量。
 远端仍dbb1d76/baseline f6e8f8c，GitHub凭据待恢复、此前已问勿重复。HDD配额满，仅小交接/收据；大state/raw与完整小证据SSD，不称arm1/HDD全备份。先收当前原19/14与暖probe结果，再完整边界衔接最新父，避免长空闲。
 
+收尾b66b61e科学提交仅本地，push仍认证失败。97成员完整小证据SSD RL_PARAMETER19_SERL14_20261026_170714/FULL_SMALL_EVIDENCE.tar.gz，SHA26cc158930e6b880638be8f8af7460cb2590e978b8dd56c75c11d475fea9cd82；HDD RL_PARAMETER19_SERL14_STATUS_20261026_170714/HANDOFF.md与LATEST入口已核验，非大产物备份。
+
 ## 最新RL状态：2026-10-26 参数18接续、Direct13继续与探索诊断完成
 
 原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER18_AND_SERL_EXPLORATION_20261026.md)，覆盖下方17/13快照。无子agent，冻结物理/SPT与正式全state保持。

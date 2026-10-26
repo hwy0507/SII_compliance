@@ -9,6 +9,8 @@
 - 新暖Direct13目标对照：等纯正式窗口后，32/1步各2000outer、各16000critic+2000actor、相同65536及所有rowdraws、同完整state/RNG，0physics/不保存推广权重。完整control第一批与真实采样器相同、terminal1/32批相同后开始。协调3598/evaluator94562/只读review59003均完成退出，REVIEW/独立receipt审查/图已完成；两臂全部rowdraw摘要相同、全正式源state不变。32vs1末terminalMAE.056348/.363541、单步TD.081214/.039469、32步TD.065922/.102989、mean|gradQ|.027682/.005896；单步候选梯度更弱且终端误差升高，不部署、不改正式14、不重复旧formal9探针，不将任一诊断作为物理任务改善。
 - 实际服务器B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl；源码仓库B/repository/SII_compliance，run路径及所有准确SHA见交接与docs/evidence/rl_parameter19_serl14_20261026/SOURCES.json。HDD仅小交接/收据，完整证据和大产物SSD，非arm1或HDD全备份。GitHub凭据仍待恢复，不反复索要或宣称push成功。
 
+- 收尾科学提交b66b61e4231c79e8ea54a9b4247e9afdbcc8a841仅本地；重新fetch确认远端main dbb1d76/baseline f6e8f8c无变，push仍HTTPS认证失败。97成员完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER19_SERL14_20261026_170714/FULL_SMALL_EVIDENCE.tar.gz逐成员hash验证，1570203字节，SHA256 26cc158930e6b880638be8f8af7460cb2590e978b8dd56c75c11d475fea9cd82。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER19_SERL14_STATUS_20261026_170714/HANDOFF.md和收据核验，LATEST_RL_HANDOFF.md已原子更新；大产物仍SSD，非HDD/arm1全备份。
+
 ## 2026-10-26 — 参数17完整审查与18接续，Direct固定噪声诊断及共享采样池准备
 
 - 上轮属实质进展，本轮开工fetch/read真实main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，本地307a37a。无子agent；新交接docs/RL_PARAMETER18_AND_SERL_EXPLORATION_20261026.md。
