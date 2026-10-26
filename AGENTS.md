@@ -1,5 +1,16 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 参数共享池19、Direct14与暖目标对照
+
+原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER19_SERL14_WARM_TARGET_20261026.md)，覆盖下方18/13。无子agent，冻结物理/SPT/完整正式state保持。
+参数18完整30无abort，新reward0误差/旧prefix/history/markers/MJB/finite通过：I780750/775751、A779750/774751、V780750/775751，Task/Strict18/18、14/13、17/17；reward−.578868/−10.470471/−2.820549，末loss1.369/1.165/.936，termMAE.919/.695/.605。图/health完成，导纳尚波动、I/V仍carry失败；旧18进程已完勿重启。
+Direct13完整565782/4486264、0/30、reward−31.066473，30完整无abort，全部新41250单步/32步目标精确、旧524532前缀/history/ready保留、pending0。termMAE.078464/max13.515680、32步TD.061994、Q−20.615。原review_v1明确等待超时，登记guard完成相同源review_v2，REVIEW/DIAGNOSIS/FINISHED与图已核验；准确SHA a03e2d6e859d4299115dad8d59011914db1a40aef984b1bcb595528c72e659b0，旧learner1280297等已完勿重启。
+正式Direct14 PID3955892，GPU0/CPU0/30sampler共享1–12，B/runs/serl_multistep_batch65536_cycle14_20261026_v1/direct；准确13全state一个14，batch65536/官方8:1/10critic/random2/noentropy/32步/actor48/gather+transfer不变。新通用driver严格历史注册链，原batchstage保持；check-only全state/replay/下批/RNG通过，真实1000新增/8000critic全旧前缀与139mature+861pending/action/clock/reward0误差/30MJB通过。归档3955895、完整审查3955896，无自动15。
+正式参数19 I3955897/A3955898/V3955899，B/runs/parameter_pool30_cycle19_20261026_v1/{method}/train；准确完整18全state，仅12→30sampler共享原12CPU，learner原13/26/39、GPU1/2/3保持，batch65536/UTD1/terminal128/projection/Imin+A-Vmean/actor min/原LR不变。三check-only通过；真实I3000/A4000/V4000新增全prefix/history/markers/MJB/action/clock/reward0误差/30sampler通过。原startup错误用tuple比较无序CPUset，实际集合准确；保留失败，startup_review_v2改frozenset通过，startup/REVIEW指向有出处成功结果；未重启训练。归档3955903、完整审查3955904，无自动20，必须pair_class恢复。
+预登记纯正式180样本208.835874秒GPU55.2222/73.0222/72.6556/72.8611%，D/I/A/V10.1371/24.3349/25.0915/24.9047steps/s；四原learner全样本live，逐样本GPU PID核验。B/runs/batch14_parameter19_gpu_profile_20261026_v1已完成，原4032685退出勿重采；非瞬时保证、非因果加速证明。
+新有限Direct暖状态目标probe B/runs/serl_cycle13_warm_horizon_probe_20261026_v1，协调3598/只读结果审查59003，准确完整13两臂32→1各2000outer/16000critic+2000actor，same65536及全部rowdraws、0physics/不保存权重、不推广；等纯正式窗口结束才启动。首完整control batch/终端1vs32相同/完整state恢复gate已通过，最终REVIEW/FINISHED/独立review/图/FINAL_SCIENTIFIC_REVIEW均已完成，原3598/evaluator94562/59003退出勿重复。32vs1末terminalMAE.056348/.363541、单步TD.081214/.039469、32步TD.065922/.102989，七通道平均|gradQ|.027682/.005896；候选梯度更弱且终端误差增加，不部署，正式14不改。32步bootstrap存gamma^(k−1)mask由learner再乘gamma，正确勿改；原reward势包含approach，occupancy也依赖phi，勿误说失败回报全部常量。
+远端仍dbb1d76/baseline f6e8f8c，GitHub凭据待恢复、此前已问勿重复。HDD配额满，仅小交接/收据；大state/raw与完整小证据SSD，不称arm1/HDD全备份。先收当前原19/14与暖probe结果，再完整边界衔接最新父，避免长空闲。
+
 ## 最新RL状态：2026-10-26 参数18接续、Direct13继续与探索诊断完成
 
 原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER18_AND_SERL_EXPLORATION_20261026.md)，覆盖下方17/13快照。无子agent，冻结物理/SPT与正式全state保持。

@@ -1,3 +1,14 @@
+## 2026-10-26 — 参数共享30采样池19、Direct14接续与暖状态目标对照
+
+- 实际查询并fetch/read main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；本地起点522d53c。无子agent。完整交接docs/RL_PARAMETER19_SERL14_WARM_TARGET_20261026.md。
+- 完整参数18三路各41250新交互、30完整55s无abort；I/A/V Task-Strict18/18、14/13、17/17，reward−.578868/−10.470471/−2.820549，末loss1.369/1.165/.936。全旧state/replay/history/markers和新reward0误差通过；health/state不变与图完成，导纳波动、任务未全成功，不称收敛。
+- 完整Direct13 565782steps/4486264critic，0/30、reward−31.066473，无abort；新32步/奖励精确、旧全部前缀保持、pending0。termMAE.078464/max13.515680、32步TD.061994，图已看。原review_v1等待超时；前轮登记guard按准确完整13归档触发相同源v2审查已成功，失败记录保留，不重启训练。
+- Direct14 PID3955892，准确13全state继续一个不改设置的14，官方8:1/10critic/random2/noentropy/batch65536/32步/canonical48/gather+transfer保持；新通用driver严格历史注册链。check-only完整state/replay/下批/RNG相同及负守卫通过，真实1000新增/8000critic和全部旧前缀、139mature+861pending、新动作/clock/reward0误差/30MJB通过。归档3955895/完整review3955896，无自动15。
+- 参数19 I3955897/A3955898/V3955899，准确18全state，一个19仅12→30sampler共享原12CPU，学习设置原样。三check-only通过，实际I3000/A4000/V4000新交互全prefix/history/markers/MJB/参数动作/clock/reward0误差。原只读startup错误tuple比较无序CPUset，v2改frozenset严格集合比较后通过，原失败与快照保留，训练不重启。归档3955903/review3955904，无自动20。
+- 新预登记纯正式180样本208.835874s，四GPU均值55.2222/73.0222/72.6556/72.8611%，D/I/A/V10.1371/24.3349/25.0915/24.9047steps/s；全原learner live，GPU PID集合逐样本核验，无辅助GPU作业。原观察4032685完成，不挑选窗口重采；非瞬时永久保证或严格因果提速。
+- 新暖Direct13目标对照：等纯正式窗口后，32/1步各2000outer、各16000critic+2000actor、相同65536及所有rowdraws、同完整state/RNG，0physics/不保存推广权重。完整control第一批与真实采样器相同、terminal1/32批相同后开始。协调3598/evaluator94562/只读review59003均完成退出，REVIEW/独立receipt审查/图已完成；两臂全部rowdraw摘要相同、全正式源state不变。32vs1末terminalMAE.056348/.363541、单步TD.081214/.039469、32步TD.065922/.102989、mean|gradQ|.027682/.005896；单步候选梯度更弱且终端误差升高，不部署、不改正式14、不重复旧formal9探针，不将任一诊断作为物理任务改善。
+- 实际服务器B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl；源码仓库B/repository/SII_compliance，run路径及所有准确SHA见交接与docs/evidence/rl_parameter19_serl14_20261026/SOURCES.json。HDD仅小交接/收据，完整证据和大产物SSD，非arm1或HDD全备份。GitHub凭据仍待恢复，不反复索要或宣称push成功。
+
 ## 2026-10-26 — 参数17完整审查与18接续，Direct固定噪声诊断及共享采样池准备
 
 - 上轮属实质进展，本轮开工fetch/read真实main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，本地307a37a。无子agent；新交接docs/RL_PARAMETER18_AND_SERL_EXPLORATION_20261026.md。

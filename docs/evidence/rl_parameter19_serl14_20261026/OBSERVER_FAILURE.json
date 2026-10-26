@@ -1,0 +1,7 @@
+{
+  "source": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_pool30_cycle19_20261026_v1/startup_review.log",
+  "sha256": "2cc3f725036a4964e01f20db2ba59d0f314ebc5189abb52f32ea967bf4d5cd6c",
+  "failure": "Traceback (most recent call last):\n  File \"/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_pool30_cycle19_20261026_v1/startup_review.py\", line 45, in <module>\n    pid=job['pid'];children=[int(v) for v in Path(f'/proc/{pid}/task/{pid}/children').read_text().split()];first={'impedance':13,'admittance':26,'vmc':39}[m];assert len(children)==30 and os.sched_getaffinity(pid)=={first};assert {tuple(os.sched_getaffinity(v)) for v in children}=={tuple(range(first+1,first+13))}\n                                                                                                                                                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "cause": "Tuple comparison on unordered CPU affinity sets; actual CPU sets correct.",
+  "remedy": "New startup_review_v2 uses frozensets; original evidence retained; no training restart."
+}
