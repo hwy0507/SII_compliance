@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+import fcntl
 import hashlib
 import json
 import os
@@ -60,6 +61,32 @@ def read(path: Path) -> Any:
 def write(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n")
+
+
+def load_diagnostic_models(path: Path) -> dict[str, Any]:
+    """Only separately frozen non-RL learned-model diagnostic grids are accepted."""
+    lock = read(path)
+    if lock.get('schema') != 'sii-nonrl-learning-diagnostic-lock-v1' or lock.get('status') != 'frozen':
+        raise ValueError('Expected frozen non-RL diagnostic model lock')
+    models = lock['models']; names = [m['name'] for m in models]
+    if not models or len(set(names)) != len(names):
+        raise ValueError('Empty or duplicate models')
+    for model in models:
+        if not model['name'].replace('_','').isalnum():
+            raise ValueError('Invalid model name')
+        if model['family'] not in ('esn_gradient','rnn_scratch','mlp_scratch','esn_ridge'):
+            raise ValueError('Not an allowed non-RL family')
+        if model['worker_kind'] != 'office' or model['config'] != {}:
+            raise ValueError('Diagnostic only changes learned checkpoint')
+        for key in ('checkpoint','metadata'):
+            if sha(Path(model[key])) != model[key+'_sha256']:
+                raise ValueError(f'{key} hash mismatch')
+        meta = read(Path(model['metadata']))
+        if (meta['family'] != model['family'] or meta['seed'] != model['seed'] or
+                meta['checkpoint_sha256'] != model['checkpoint_sha256'] or
+                meta['training_data_sha256'] != lock['training_data_sha256']):
+            raise ValueError('Training lineage mismatch')
+    return lock
 
 
 def completion_time(run: Path) -> float | None:
@@ -231,15 +258,27 @@ def prepare_and_run(args: argparse.Namespace) -> None:
         if prior.get("status") != "failed_preserved":
             raise RuntimeError(f"refusing to resume non-failed run: {prior.get('status')}")
         resume = True
-    lock = read(source_run / "MODEL_LOCK.json")
+    custom = getattr(args, 'model_lock', None)
+    if custom and resume:
+        raise ValueError('Custom diagnostic resume requires a separately reviewed boundary receipt')
+    lock = load_diagnostic_models(custom) if custom else read(source_run / "MODEL_LOCK.json")
+    methods = tuple(m['name'] for m in lock['models']) if custom else METHODS
     conditions = read(source_run / "CONDITIONS.json")["conditions"]
     models = {m["name"]: m for m in lock["models"]}
-    missing = [name for name in METHODS if name not in models]
+    missing = [name for name in methods if name not in models]
     if missing:
         raise KeyError(f"missing frozen model(s): {missing}")
     if args.dry_run:
-        print(json.dumps({"root": str(root), "episodes": len(METHODS) * len(conditions), "methods": METHODS, "conditions": [c["id"] for c in conditions]}, ensure_ascii=False, indent=2))
+        episodes = len(methods)*len(conditions)
+        free = shutil.disk_usage(source_run.parent).free
+        required = episodes*192*1024**2 + 1024**3
+        print(json.dumps({"root": str(root), "episodes": episodes, "methods": methods, "conditions": [c["id"] for c in conditions],
+                          "disk_free_bytes":free,"disk_required_bytes":required,"disk_admitted":free>=required}, ensure_ascii=False, indent=2))
         return
+    if custom:
+        required = len(methods)*len(conditions)*192*1024**2 + 1024**3
+        if shutil.disk_usage(root.parent).free < required:
+            raise RuntimeError(f'Insufficient disk for complete diagnostic grid; require {required} bytes including reserve')
     if not resume:
         root.mkdir(parents=True, exist_ok=False)
         (root / "evaluation").mkdir()
@@ -252,7 +291,7 @@ def prepare_and_run(args: argparse.Namespace) -> None:
     if not source.exists():
         shutil.copytree(source_run / "source", source)
     selected = []
-    for name in METHODS:
+    for name in methods:
         model = dict(models[name])
         cp = Path(model["checkpoint"])
         local_cp = root / "checkpoints" / (name + cp.suffix)
@@ -266,7 +305,7 @@ def prepare_and_run(args: argparse.Namespace) -> None:
         "created_utc": now(),
         "authorization": "User requested a new non-RL physical comparison under Task/Strict/SPT/torque/comfort/safety metrics",
         "source_run": str(source_run),
-        "methods": METHODS,
+        "methods": methods,
         "conditions": [c["id"] for c in conditions],
         "physics_dt": 5e-5,
         "horizon_s": 55.0,
@@ -277,9 +316,17 @@ def prepare_and_run(args: argparse.Namespace) -> None:
         "machine_safety": {"penetration_limit_mm": PENETRATION_LIMIT_MM, "torque_epsilon": TORQUE_EPSILON},
         "models": selected,
     }
+    if custom:
+        shutil.copy2(custom, root/'INPUT_MODEL_LOCK.json')
+        shutil.copy2(Path(__file__), root/'coordinator.py')
+        protocol.update(schema='sii-nonrl-spt-diagnostic-20261026-v1',
+                        model_lock_sha256=sha(root/'INPUT_MODEL_LOCK.json'),
+                        coordinator_sha256=sha(root/'coordinator.py'),
+                        interpretation='Seen 8-condition diagnostic; one seed, not unseen generalization or final superiority',
+                        comparison=lock['comparison'])
     if not resume:
         write(root / "REGISTRATION.json", protocol)
-    state = read(root / "execution.json") if resume else {"status": "running", "started_utc": now(), "expected": len(METHODS) * len(conditions), "completed": 0, "rows": [], "results": []}
+    state = read(root / "execution.json") if resume else {"status": "running", "started_utc": now(), "expected": len(methods) * len(conditions), "completed": 0, "rows": [], "results": []}
     state["status"] = "running"
     state["resumed_utc"] = now()
     state.setdefault("rows", [])
@@ -296,6 +343,10 @@ def prepare_and_run(args: argparse.Namespace) -> None:
             name = model["name"] + "__" + condition["id"]
             if name in completed_names:
                 continue
+            if custom and shutil.disk_usage(root).free < 1024**3 + 192*1024**2:
+                state.update(status='failed_preserved',error='disk guard at safe episode boundary')
+                write(root/'execution.json',state)
+                raise RuntimeError(state['error'])
             out = root / "evaluation" / name
             config = root / "configs" / (name + ".json")
             write(config, model.get("config", {}))
@@ -318,7 +369,8 @@ def prepare_and_run(args: argparse.Namespace) -> None:
                     suffix += 1
                 log_path = root / (name + f".retry{suffix}.log")
             with log_path.open("x") as log:
-                result = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, env=worker_env)
+                result = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, env=worker_env,
+                                        pass_fds=(args.compute_lock_fd,) if custom else ())
             row_state.update(returncode=result.returncode, ended_utc=now())
             if result.returncode != 0:
                 state["status"] = "failed_preserved"; state["error"] = f"{name} rc={result.returncode}"; write(root / "execution.json", state)
@@ -346,10 +398,20 @@ def main() -> None:
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--runtime", type=Path, required=True)
     parser.add_argument("--python", type=str)
+    parser.add_argument("--model-lock", type=Path, help="Frozen learned-model lock for a separate seen diagnostic grid")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--resume", action="store_true", help="resume a failed-preserved run at a safe boundary")
     args = parser.parse_args()
-    prepare_and_run(args)
+    if args.model_lock and not args.dry_run:
+        cg = Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
+        if int((cg/'memory.max').read_text()) > 3*1024**3 or int((cg/'memory.swap.max').read_text()) != 0:
+            raise RuntimeError('Diagnostic grid requires <=3 GiB and zero worker swap')
+        with (args.source_run.resolve().parent/'.local-rl-compute.lock').open('a') as lock:
+            fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+            args.compute_lock_fd = lock.fileno()
+            prepare_and_run(args)
+    else:
+        prepare_and_run(args)
 
 
 if __name__ == "__main__":

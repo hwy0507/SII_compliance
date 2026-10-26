@@ -1,0 +1,75 @@
+{
+  "status": "passed",
+  "data_sha256": "f00edd388a476879e56e51cf91c9cc04425a91d1df649eb9b78bf6197f33ddd6",
+  "source_sha256": "39babf9ca545e06c29af008de5091965406532878392203f585f0c236a7850e4",
+  "feature_source_sha256": "5b03256b390ba2a119122852651d325f6a5e30d86098ce19c06cd95020408c3a",
+  "definition": "sum_train importance*||raw_action-target||^2/(7*mass) + 0.1*||normalized_coeff||^2/(7*mass)",
+  "scope": "Fixed reservoir and seed only. Ridge is analytic global optimum for raw linear objective; does not prove closed-loop success or generalization. No checkpoint modification.",
+  "methods": [
+    {
+      "directory": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/learning/esn_ridge_s2026101301_lrNone",
+      "checkpoint_sha256": "19e7e7b6f50670310651577da2207aa397dae8ac1ceaa384f5a7b858b8c5b2f4",
+      "completion_sha256": "4c765e9313eae1a05feeb86312096a05bd7107d25b92dd84b1fced03c4dc58b1",
+      "selected_update": 0,
+      "full_train_objective": 0.00022033060299572358,
+      "optimum_objective": 0.0002203306029957502,
+      "objective_gap": 3.2512808574530044e-26,
+      "objective_relative_gap": 1.4756374344946155e-22,
+      "normal_equation_relative_residual": 4.1943635093042065e-15,
+      "train_clipped_mse": 0.00021677013906778252,
+      "validation_clipped_mse": 0.00026740088018560376
+    },
+    {
+      "directory": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/fair_comparison_20261013_v2/learning/esn_gradient_s2026101301_lr1e-05",
+      "checkpoint_sha256": "3d9a7e5c2f9da18085089093a56d07dbf0c6073693c5584daafddd2881cd3b83",
+      "completion_sha256": "4a858c355b73a44768ace0ea75e7daad86ae8739cdbf83da45e29ee1170de658",
+      "selected_update": 8000,
+      "full_train_objective": 0.0005863193590962291,
+      "optimum_objective": 0.0002203306029957502,
+      "objective_gap": 0.00036598875610044883,
+      "objective_relative_gap": 1.6610890685371933,
+      "normal_equation_relative_residual": 0.10407439342560065,
+      "train_clipped_mse": 0.000574526701778367,
+      "validation_clipped_mse": 0.0006441719549672762
+    },
+    {
+      "directory": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_learning_repair_20261026_v1/esn_gradient_s2026101301_u8000",
+      "checkpoint_sha256": "587883923268b62d0b06af19c5967245d5ac018b60c439800fe7083c7a015d1b",
+      "completion_sha256": "4e9d3b4906e1b9ff20520897dbde385856a81b617179e6370a0c31200645a729",
+      "selected_update": 7000,
+      "full_train_objective": 0.000605702616126685,
+      "optimum_objective": 0.0002203306029957502,
+      "objective_gap": 0.00038537201313090607,
+      "objective_relative_gap": 1.7490625809177276,
+      "normal_equation_relative_residual": 0.07681767210633433,
+      "train_clipped_mse": 0.0005940686787397527,
+      "validation_clipped_mse": 0.0006703531874083183
+    },
+    {
+      "directory": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_learning_repair_20261026_v1/esn_gradient_s2026101301_u32000",
+      "checkpoint_sha256": "0c509575ebd484dcaa85ebf17fe1400ce812abc738c878afec4e22cf39c1dde4",
+      "completion_sha256": "ee9c074787210094c185dfabfc8b42fd6466d9901da5644b7db751b366a865e7",
+      "selected_update": 25000,
+      "full_train_objective": 0.0003926159921221421,
+      "optimum_objective": 0.0002203306029957502,
+      "objective_gap": 0.00017228538912636977,
+      "objective_relative_gap": 0.7819403513804791,
+      "normal_equation_relative_residual": 0.026943933655187154,
+      "train_clipped_mse": 0.0003816825828379243,
+      "validation_clipped_mse": 0.0004248209447436698
+    },
+    {
+      "directory": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_learning_repair_20261026_cosine_v1/esn_gradient_s2026101301_u32000",
+      "checkpoint_sha256": "65bcde0bcaa597da72c707849ea5b8f45e8e47478cc41a13f6dc64b34fcd5536",
+      "completion_sha256": "12c3b6f8f1c0bd37233b88b27687d37e59757c14aadb302aba9b57bd269a7ce3",
+      "selected_update": 32000,
+      "full_train_objective": 0.00039868681945261095,
+      "optimum_objective": 0.0002203306029957502,
+      "objective_gap": 0.00017835621645682703,
+      "objective_relative_gap": 0.809493615647515,
+      "normal_equation_relative_residual": 0.0036582730859205667,
+      "train_clipped_mse": 0.00038758723030744944,
+      "validation_clipped_mse": 0.0004355785956637248
+    }
+  ]
+}

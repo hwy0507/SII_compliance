@@ -7,6 +7,8 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+收尾fetch/合并远端64fe259非RL九拟合与ridge审计（56物理回合因airpig存储未启动）；本地2294dd9实现，HTTPS push认证失败仍未发布。contact_math结果实际在results/FINISHED.json，已存在；未复核后四例勿称全部独立通过。
+
 最新本轮：原fresh三初始化八重复及seed27均已结束勿重启；完整review/图已通过，终端MAE无/钟17.760/8.487、30.606/11.354、69.204/19.699、74.311/25.806，非未见/在线证据。末组5完整review图核验0/0、18/17、13/13、17/16各30，V短0600穿透.214652mm，全部旧formal停止。新12路runs/fresh_critic_clock_withheld_cycle_v1仍在跑，CPU0–11/GPU每卡3、有限120万辅助更新，PID见LAUNCH；60s平均98.07/98.27/98.90/98.50%，不要为占用延长。新增可选critic_clock代码四接口真实upstream验证及17测试通过；runtime/critic_clock_candidate_v1冻结五文件改动，actor49/critic50，mixing间接受时钟影响。runs/critic_clock_candidate_preflight_v1四single55s预检1312002–1312005/CPU12–19已推进，0updates，未选/启动正式在线阶段；预检/12辅助结束后复核再登记。报告PUBLISHED_CLOCK_CANDIDATE_AND_GPU_RECOVERY_20261026。固定cycle3协调3148346已转VMC，contact coordinator已退出须读results子目录再判断完成，原独立收据1–8保留、9–12仍待复核。Goal active，未完成最终ESN/SPT比较。
 
 本轮收尾补充：原四formal六轮均已正常结束，A247500/原793968、V247500/511376勿重启；原整组5工具及child543487已完成，runs/fresh_ready_methods_audit_v2/fresh_cycle_05/FINISHED，科学复核尚待。原full-replay八probe全部结束勿重启，24臂120万/1200点review session40035完成、图已看；inbag MAE无/时钟D19.572/23.388、I21.235/19.720、A34.713/33.771、V65.896/73.352，非通用修复，runs/fresh_full_replay_critic_clock_v1/REVIEW.json。

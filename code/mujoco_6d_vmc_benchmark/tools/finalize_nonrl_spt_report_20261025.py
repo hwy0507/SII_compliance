@@ -44,6 +44,17 @@ def require(condition: bool, message: str) -> None:
         raise RuntimeError(message)
 
 
+def expected_grid(registration):
+    if registration.get('schema') == 'sii-nonrl-spt-diagnostic-20261026-v1':
+        methods = registration['methods']
+        require(bool(methods) and len(set(methods)) == len(methods), 'invalid diagnostic model grid')
+        require(set(methods) == {m['name'] for m in registration['models']}, 'registered models mismatch')
+        require(set(registration['conditions']) == EXPECTED_CONDITIONS, 'diagnostic conditions changed')
+        return set(methods), EXPECTED_CONDITIONS
+    require(registration.get('schema') == 'sii-nonrl-spt-matrix-20261025-v1', 'unknown matrix schema')
+    return EXPECTED_METHODS, EXPECTED_CONDITIONS
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, required=True)
@@ -60,13 +71,19 @@ def main() -> None:
     registration = read(root / "REGISTRATION.json")
     require(report.get("registration_sha256") == sha(root / "REGISTRATION.json"), "registration hash mismatch")
     models = {m["name"]: m for m in registration["models"]}
+    expected_methods, expected_conditions = expected_grid(registration)
+    diagnostic = registration['schema'] == 'sii-nonrl-spt-diagnostic-20261026-v1'
+    if diagnostic:
+        require(sha(root/'INPUT_MODEL_LOCK.json') == registration['model_lock_sha256'], 'model lock mismatch')
+        require(sha(root/'coordinator.py') == registration['coordinator_sha256'], 'coordinator mismatch')
     verified_sources: set[tuple[str, str]] = set()
     contact_supplement = []
     rows = report.get("rows", [])
-    require(len(rows) == 64, f"expected 64 rows, found {len(rows)}")
+    expected_count = len(expected_methods)*len(expected_conditions)
+    require(len(rows) == expected_count, f"expected {expected_count} rows, found {len(rows)}")
+    require(execution.get('expected') == expected_count and execution.get('completed') == expected_count, 'execution grid incomplete')
     keys = {(r.get("method"), r.get("condition")) for r in rows}
-    require({k[0] for k in keys} == EXPECTED_METHODS, "method grid mismatch")
-    require({k[1] for k in keys} == EXPECTED_CONDITIONS, "condition grid mismatch")
+    require(keys == {(m,c) for m in expected_methods for c in expected_conditions}, "method/condition grid mismatch")
     require(len(keys) == len(rows), "duplicate method/condition rows")
     qualified = [r["completion_time_s"] for r in rows if r["task_success"] and r["strict_success"]]
     require(all(t is not None and math.isfinite(t) and t > 0 for t in qualified), "invalid successful completion time")
@@ -140,7 +157,9 @@ def main() -> None:
     import matplotlib.pyplot as plt
 
     primary = ['esn_gradient_s2026101301', 'rnn_scratch_s2026101301', 'mlp_scratch_s2026101301']
-    methods = primary + sorted(EXPECTED_METHODS - set(primary))
+    methods = registration['methods'] if diagnostic else primary + sorted(EXPECTED_METHODS - set(primary))
+    subtitle = ('Seen diagnostic conditions; constant/cosine 32k controls + analytic ridge auxiliary'
+                if diagnostic else 'Left: matched one-seed controls | Right: historical auxiliary, unequal training')
     grouped = {m: [r for r in rows if r["method"] == m] for m in methods}
     labels = [m.replace("_s2026101301", "") for m in methods]
     def mean(m: str, key: str) -> float:
@@ -157,8 +176,8 @@ def main() -> None:
         for i, (label, values) in enumerate(series):
             ax.bar(x + (i - (len(series)-1)/2) * width, values, width, label=label)
         ax.set_xticks(x, labels, rotation=35, ha="right")
-        ax.axvline(2.5, color='black', linestyle='--', alpha=.5)
-        ax.set_ylabel(ylabel); ax.set_title(title + '\nLeft: matched one-seed controls | Right: historical auxiliary, unequal training'); ax.grid(axis="y", alpha=.25); ax.legend()
+        if not diagnostic: ax.axvline(2.5, color='black', linestyle='--', alpha=.5)
+        ax.set_ylabel(ylabel); ax.set_title(title + '\n' + subtitle); ax.grid(axis="y", alpha=.25); ax.legend()
         fig.tight_layout(); fig.savefig(root / name, dpi=180); plt.close(fig)
 
     draw("metrics_success_spt.png", "Non-RL Task/Strict success and SPT", [
@@ -174,11 +193,11 @@ def main() -> None:
     axes[1].set_ylim(0, 105)
     for ax in axes:
         ax.grid(axis="y", alpha=.25)
-        ax.axvline(2.5, color='black', linestyle='--', alpha=.5)
+        if not diagnostic: ax.axvline(2.5, color='black', linestyle='--', alpha=.5)
     axes[1].tick_params(axis="x", labelrotation=35)
     for label in axes[1].get_xticklabels():
         label.set_ha("right")
-    fig.suptitle("Peak torque and empirical comfort proxy\nLeft: matched one-seed controls | Right: historical auxiliary, unequal training")
+    fig.suptitle("Peak torque and empirical comfort proxy\n" + subtitle)
     fig.tight_layout()
     fig.savefig(root / "metrics_torque_comfort.png", dpi=180)
     plt.close(fig)
@@ -196,7 +215,7 @@ def main() -> None:
         "contact_supplement_sha256": sha(supplement_path),
         "t_ref_s": t_ref,
         "figures": ["metrics_success_spt.png", "metrics_torque_comfort.png", "metrics_machine_safety.png"],
-        "limitation": "T_ref is the post-hoc minimum successful Task AND Strict gate crossing requested by the user; historical methods are unequal-training auxiliary references, while the three s*_2026101301 methods are the matched primary cohort.",
+        "limitation": "T_ref is the post-hoc minimum Task AND Strict successful completion time. " + subtitle + '. Not final multi-seed superiority evidence.',
     }
     (root / "FINAL_AUDIT.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n")
     print(json.dumps(summary, ensure_ascii=False, indent=2))
