@@ -5,6 +5,20 @@
 - 08:10 UTC首条件000独立审计通过，9×55秒/990万子步、1357源文件、9锁模与验证重放、MJB/config/checkpoint/轨迹hash与原动作/filter审计一致；峰矩、接触合规、穿透、机器安全复算一致。证据docs/evidence/nonrl_new30_20261026/FIRST_CONDITION_PHYSICS_AUDIT.json。
 - 该条件Task ESN2/3、RNN1/3、MLP0/3；Strict全0/3，失败均保留。此为记录正确性核验，不是方法通过；不能以低峰矩/高合规但任务失败声称优越。原协调器已接续条件001，完整108矩阵/最终SPT和审计仍未完。
 - 新小型代码/证据3文件94611字节已核验归档：arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_first_condition_0810/，收据FIRST_CONDITION_ARCHIVE_0810.json。原始物理轨迹仍仅本机；先前完整训练包仍为已核验服务器副本。Goal保持active。
+- 收尾fetch发现远端a1d7d1293509681bfb116abb0ab8371a89d7c4d7新增服务器RL恢复记录，已读取并合并；保留双方日志与AGENTS最新作用域。该集群任务由另一会话执行，不改变本机非RL冻结运行时。
+
+## 2026-10-26 — 恢复参数CHEQ、纠正Direct算法身份并启动官方SERL
+
+- 收尾新增官方SERL完整cycle0审查：41250transition/290008critic updates、30完整回合，Task/Strict0/30、reward−34.2233、全部approach。全journal/replay映射/nextstate/reward/done及30terminal/MJB核验，非原始子步重建；末1000loss.01356而终端Q MAE9.95，未收敛。准确边界d8d3765b…已归档，图已看，原learner继续登记cycle1。参数cycle5只读收尾协调2515639已启动，尚待三FINISHED，不能提前称通过。
+- 用户明确恢复原active Goal，覆盖关机交接历史paused；四卡/CPU0–54，无子agent。开工fetch/read main=bd6193872ea68683244be513869c892f6f60273b、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，后续快进6ed6a318dbfc63d8f88f943c4fbcf641d960c716（另一主机非RL归档，不影响本集群RL）。
+- 参数三部分checkpoint全learner/optimizer/replay及后续RNG/抽样独立通过；完整恢复cycle4各新增41250条、父prefix精确保留，Task/Strict I18/17、A14/13、V17/17各30。cycle3仍部分不计完整。终端Q误差12.42/9.54/44.50，VMC Q继续上升，未收敛。
+- 本轮最初Direct错误使用旧CHEQ作者双critic SAC并命名SERL，已经明确排除，首周期34192步/Strict0收尾停止；保存身份纠正和所有证据，不导入其权重/replay。启动目录及CUDA RNG配置错误和首次stderr覆盖缺陷如实记录。
+- 新适配器实际调用官方SERL commit1fa2af7496be042e43d36120a7c8d1b71f1bfb59的SACAgent，十critic/随机双target/无熵backup/LayerNorm；canonical48缩放、动作仿射映射、gamma.9995、零示范随机初始化空replay。独立JAX环境，物理sampler用原环境，公共physics/gate/filter/dt不改。
+- 软件Bellman/终端mask/映射/全state恢复及下一随机动作和更新精确验证通过，32合成critic更新不推广。真正Direct PID1809418、GPU0/12sampler，2完整周期有限阶段；实际16000条journal/replay逐条映射、nextstate/reward/done、12模型和30fixture核验通过，88008critic更新。其时0终端，不称真实终端物理审查。
+- 三方法×四batch×128更新=1536有限吞吐probe完成，0physics/无权重推广；独立登记batch256→32768、UTD1、完整cycle5的在线试验，PID1809422/1809423/1809425、GPU1/2/3。实际各新增12000更新且全父replay前缀一致。batch改变梯度统计，非等价提速或有效性结论。
+- 既有12learned+12nominal固定矩阵与三seed24臂/1944点/48万已完成辅助更新汇总核验，不重跑或推广。GPU更新阶段66秒14.88/45.33/41.95/44.57%，仍未达50%，没有辅助训练混入；30秒只读栈profile保留空/非空分母，参数已有device replay cache。
+- 具体训练、诊断、注册、source/hash及限制见docs/RL_RESUMED_SERL_IMPLEMENTATION_20261026.md；小证据docs/evidence/rl_recovery_20261026。大型数据仅本集群 /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，未冒称arm1同步或HDD全量备份。四新工具与真实runtime逐字节一致，语法与diff检查通过。
+- 现有边界归档器PID2135157继续只读保存完整cycle；完整SERL/参数试验审查、进一步效率改进、健康收敛、最终冻结矩阵和指定ESN/SPT仍待完成。Goal保持active。
 
 ## 2026-10-26 — 新30条完整候选训练产物归档，闭环评测保持运行
 
