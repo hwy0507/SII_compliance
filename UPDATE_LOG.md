@@ -1,5 +1,20 @@
 # 更新日志
 
+## 2026-10-26 — 完成有限critic时钟诊断并启动四卡完整回放对照
+
+- 新增诊断工具/三个守卫测试及 `docs/PUBLISHED_CRITIC_CLOCK_DIAGNOSIS_20261026.md/.json`。
+  Direct/VMC三配对seed共12万辅助更新完成；时钟相对对照改善部分误差，但后一轮误差仍较初值增大，
+  不称修复或收敛。完整配对初始函数、采样、actor/replay不变与曲线核验；首次依赖失败保留。
+- 根据“只拟合旧回合后遗忘”证据及用户紧急资源要求，新登记完整两周期回放的四方法对照，
+  8进程/每卡2、CPU0–7、3seed两臂各50k、总120万有限critic更新，已实际推进；0physics/actor更新，
+  无heldout、不推广权重、不改正式训练。服务器 `sii_rl/runs/fresh_full_replay_critic_clock_v1/`。
+- 四卡60秒混合工作负载均值89.37/91.87/94.62/96.12%，最低88/88/89/89%，不是纯在线训练吞吐。
+- 接触math第5/6例独立精确复核通过，原验证继续；固定cycle3 Direct三例均失败、参数评估继续。
+  原三路formal/cycle5审计保留。未完成充分收敛、最终SPT/接触审计和指定ESN比较。
+- 实时fetch/ls-remote确认main `a52dfba4486af8d263d5cd0a976c3102482ff249`、baseline
+  `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取两分支日志；本地提交与远端发布分别记录。
+
+
 ## 2026-10-26 — Fresh第四轮完整复核、Direct六轮结束、固定策略诊断启动
 
 - 原2472115完成cycle3并等5；四路120个同轮55s终端/model/reward/4ck/hash及780source核验，图已看。
