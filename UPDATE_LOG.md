@@ -1,3 +1,21 @@
+## 2026-10-26 — 参数65536正式14、SERL32步正式10与GPU瓶颈核验
+
+- 开工fetch/read main bca5d6662a4426e3e54ea8d53ad2d7a04898ce32、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；上一目标回合仅文档核对属无进展，本轮重验旧作业退出/四卡0%后实际推进。无子agent，不干预另一主机非RL。最新docs/RL_BATCH14_AND_SERL_MULTISTEP10_20261026.md。
+- 准确参数13完整state、32768vs65536三方法两臂5000共30000辅助完成，0物理/不保存推广权重；termMAE1.650→1.351/.722→.668/1.197→1.109，耗时约1.9倍。初始state/RNG、不同batch抽样计数、原replay不变、20点/预算/marker/图独立审查通过，非在线收益。
+- 正式参数14 I1254686/A1254688/V1254691，从最新完整13续一个周期，仅batch65536，原UTD1/terminal128/projection/Imin+A-Vmean/actor minimum/LR与全state/history保持。三check-only全state/重复恢复/负守卫；真实各1000新增全prefix/history/配置/marker/12MJB/亲和性/参数input/clock/reward0误差通过。归档1286930、完整14只读1286970，无自动15。
+- Direct准确clock9同完整state同抽样流一/32步目标两臂各2000outer，总32000critic+4000actor辅助完，无物理/权重推广；400935行300episode全journal/clock/邻接/terminal、1步恒等及32步独立标量检查。termMAE.559→.315/max42.176→12.294/Qmean27.107→−20.761，1步TD.064→.136；离策略偏差和在线任务效果未解决，图与独立审查通过。
+- probe v1 float32乘法累加gate失败/v2缺CUDA_VISIBLE_DEVICES被严格守卫拒绝，均0更新；v3完成。review初用无JAX环境失败后serl_env只读重审通过。preparation v1先于review可用而0更新停止，失败都保留。
+- multistep持久adapter保留所有旧clock/网络/Adam/RNG、原单步replay和history，新增独立派生区/成熟索引/待处理流；actor48不使用未来奖励。v2 migration剥新字段还原全旧state/replay，400935派生匹配、105交错流在线/逐步恢复/负守卫、两次恢复下一8:1更新完全相同；16critic+2actor gate不推广。prepared9 SHA6bf4ec143049657f5a071569ce24d22ecca906e1446d23c1e9b6b88be4ccc44f。
+- 正式Direct10 PID1595728/GPU0/CPU0/30sampler共享1–12，仅一周期；官方10critic/随机2target/noentropy/8:1/batch32768、零示范与canonical48保持。check-only完整state相同，真实1000新增/8000critic、prepared全prefix/history/config/30MJB/亲和性/全部动作/clock/reward0误差及178mature+822pending逐项核验通过。归档1621561、完整10只读1660936，无自动11。
+- 新纯正式63.92秒60样本四原learner均live，GPU44.53/70.62/73.53/74.87%，D/I/A/V21.213/23.419/25.171/25.312steps/s；参数三卡达到50%，Direct仍未达，参数吞吐下降，不能称整体提速。外部45秒栈采样定位Direct回放gather约28%叶样本，不当CUDA kernel精确计时。
+- 新等价gather候选仅跳过随后被派生值覆盖的单步reward/nextobs复制，28批全字段/RNG相同，5轮交替CPU微基准11.147→7.600ms，0优化/物理。另16critic+2actor有限gate证明完整下一update全state/metrics/RNG相同，无权重保存；未部署当前10、未证明在线提速，须下一完整边界恢复验证及登记。
+- HDD配额触发写入失败后，完整仓库7296文件逐hash复制核验迁至本集群SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/SII_compliance，原HDD路径为目录链接，Git/文件完整；RELOCATION.json。大型产物仍同SSD B/runs，未arm1全量同步；HDD留独立小文件备份。
+- 新10个源码AST与实际有限对照/恢复/启动/派生回放检查通过。小证据docs/evidence/rl_batch14_multistep10_20261026/SOURCES.json。四路正式14/10持续运行、只读审查已派发；Goal active，未健康收敛，完整阶段结果/最终冻结比较/ESN/SPT/四卡要求仍待。
+
+- 收尾fetch/read并快进整合远端main 0a6189c5fcdbea8db6c1dcafd34c2ed05693ec33的独立非RL第七条件/63回合审查更新，双方记录保留，不改变另一主机运行。
+
+- 本轮独立小文件备份：/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_BATCH14_MULTISTEP10_STATUS_20261026_140709；仅本轮源码/文档/证据，逐项hash另存manifest，大型checkpoint/replay/物理轨迹仍SSD。
+
 ## 2026-10-26 — 新30条第七条件核验，63/108回合完成
 
 - 开工fetch/read main=78c47ae0d2f1f12fd88820ea702aa6149dca29e3、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，复读AGENTS；上一轮核实等待，本轮持续检查原86607协调器从57推进到63/108并接续第八条件，未重启或重复派发。收尾已读取并快进整合远端bca5d6662a4426e3e54ea8d53ad2d7a04898ce32的独立RL更新，保留双方记录，不改变本机冻结实验。

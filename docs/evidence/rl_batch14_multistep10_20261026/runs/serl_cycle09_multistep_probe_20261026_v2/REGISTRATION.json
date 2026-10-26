@@ -1,0 +1,46 @@
+{
+  "created_unix": 1793021799.2379367,
+  "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+  "upstream": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_upstream_1fa2af7",
+  "upstream_manifest": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/SERL_UPSTREAM_1fa2af7_HASHES.json",
+  "adapter_runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_state_adapter_20261026_v1",
+  "source_hashes": {
+    "probe_serl_multistep_20261026.py": "a63a8ad8c6aa4d7dfe3f417571be2299397d387b8803009443aef05cd4d55444",
+    "serl_clock_state_adapter_20261026.py": "938743a6efb324a5a9fae99e05d7232e937bd9c5d2f97f7863e5a05aaa004c1e",
+    "serl_critic_clock_extension_20261026.py": "e6e7e0b2c5083e30aae722f8f439533158f86092c091ded10702bd1415d610c2"
+  },
+  "checkpoint": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_clock_cycle09_archive_20261026_v1/direct/cycle_00009.pt",
+    "sha256": "a1a26f285f990ee2308f70a2f178527c2fabfec2b0e6bb1c973e00115981a61d"
+  },
+  "review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_clock_cycle09_review_20261026_v1/REVIEW.json",
+    "sha256": "e25b9fa70d10a3dc5cf4fe3db9a835ba784387225bca1f4d5dd9f731d19c9806"
+  },
+  "outer_updates_per_arm": 2000,
+  "record_every": 100,
+  "seed": 20261026,
+  "auxiliary_weights_promoted": false,
+  "automatic_extension": false,
+  "new_physics": 0,
+  "total_critic_updates": 32000,
+  "total_actor_updates": 4000,
+  "horizons": [
+    1,
+    32
+  ],
+  "purpose": "Test terminal reward propagation with off-policy multistep targets from exact clock9; no promotion.",
+  "journals": [
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_official_state_online_20261026_v1/direct/transitions.jsonl",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_batch32768_cycle02_20261026_v1/direct/transitions.jsonl",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_reviewed_cycle03_04_20261026_v1/direct/transitions.jsonl",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_pool30_cycle05_06_20261026_v2/direct/transitions.jsonl",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_pool30_cycle07_08_20261026_v1/direct/transitions.jsonl",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_clock_cycle09_20261026_v1/direct/transitions.jsonl"
+  ],
+  "previous_failure": {
+    "run": "serl_cycle09_multistep_probe_20261026_v1",
+    "optimizer_updates": 0,
+    "reason": "Vector term multiplied at float32 before float64 accumulation; scalar exact gate rejected. Cast terms to float64 before multiplication."
+  }
+}

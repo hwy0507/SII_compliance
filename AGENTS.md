@@ -1,5 +1,26 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 参数batch65536正式14与Direct多步目标正式10运行中
+
+原Goal active，未健康收敛。最新[完整交接](docs/RL_BATCH14_AND_SERL_MULTISTEP10_20261026.md)，覆盖下方“无正式learner”。无子agent，物理/SPT/MJB/gates/filter/dt不改。
+同准确正式13全state，batch32768vs65536三方法各两臂5000共30000辅助完成，不推广权重；termMAE I1.650→1.351/A.722→.668/V1.197→1.109，单更新耗时约1.9倍，非在线收益证明。原1076194/6/8及review1183654已完勿重跑。
+参数正式14 PID I1254686/A1254688/V1254691，GPU1/2/3、原CPU组各12sampler，从准确完整13全state续一周期；仅batch65536，UTD1/terminal128/projection/I min+A/V mean/actor min/原LR保持。必须pair_class恢复三marker。
+三check-only完整state/重复恢复/负守卫通过；真实各1000新交互全旧replay/history/配置/marker/12MJB/亲和性/参数input/clock/reward0误差审查通过。精确修改原trainer一处batch守卫，未改冻结原文件。
+归档1286930在parameter_batch65536_archive_20261026_v1，完整14只读1286970在parameter_batch65536_cycle14_review_20261026_v1；无自动15，先查原PID，不重启。
+Direct同准确clock9一/32步对照各2000outer，总32000critic+4000actor辅助完，0physics/不保存推广权重。400935行/300episode按6journal重建，全部clock/相邻state/terminal与1步还原、独立标量32步回报检查通过。
+termMAE对照.559→32步.315、max42.176→12.294、Qmean27.107→−20.761；1步TD .064→.136，非当前策略无偏回报，非在线恢复。原1200322已完勿重复。
+v1 float32乘法后累加与float64标量gate不符、v2缺CUDA_VISIBLE_DEVICES被单GPU守卫拒绝，均0更新保留；v3正确环境完成。独立review初用无JAX环境失败，serl_env只读重审通过，无重算。
+新serl_multistep_state_adapter持久multistep_target_extension；原全部网络/Adam/RNG不改、原单步replay全字段保留，另存32步reward/bootstrap/endpoint/length及mature/pending。在线按stream成熟/终端冲刷，只采mature；actor48不看未来奖励，clock marker仍保留。
+严格SerlMultistepLearner和replay_class恢复，旧clock/base loader会丢新目标，禁止替代。仅完整周期恢复，partial待处理流不可伪装新物理episode；本阶段容量环绕拒绝。
+preparation v1在probe review缺失时0更新退出；v2完整400935派生/剥新区后全旧state/replay精确、105交错流在线行/每步恢复与采样/负守卫/两次恢复下一8:1更新精确通过；16critic+2actor gate不推广。
+prepared9 SHA6bf4ec143049657f5a071569ce24d22ecca906e1446d23c1e9b6b88be4ccc44f，路径serl_multistep_preparation_20261026_v2/prepared_cycle09.pt，正式9无更新扩展。
+Direct正式1595728/GPU0/learnerCPU0/30sampler共享1–12在serl_multistep_cycle10_20261026_v1/direct，仅一个10，无自动11；官方10/2/noentropy/8:1/batch32768与零示范保持。
+check-only全prepared state不变/负守卫通过；真实1000新增/8000critic、全旧prefix/history/config/30MJB/亲和性/actor48/action7/clock/reward0误差、178新mature+822pending逐项审查通过，启动无terminal覆盖。归档1621561，完整10只读1660936。
+纯四正式60样本63.92秒GPU44.53/70.62/73.53/74.87%，全原PID live，D/I/A/V21.213/23.419/25.171/25.312steps每秒。后三卡达50%，Direct仍未达，不以混合辅助替代。
+Direct45秒外部栈发现回放索引/复制约28%叶样本；新跳过随后覆盖的单步reward/nextobs gather候选28批全字段/RNG相同，5轮CPU微基准11.147→7.600ms，0optimizer/physics。另16critic+2actor有限gate证明完整下一update的全state/metrics/RNG相同，无权重保存；未部署当前10，下一完整边界登记及在线吞吐仍待。
+HDD4GiB配额写入失败，完整仓库7296文件逐hash复制验证后迁至SSD B/repository/SII_compliance，原HDD仓库路径为目录链接，Git历史不丢；B/repository/RELOCATION.json。HDD仅独立小证据备份，大产物仍SSD非arm1全备份。
+收尾四正式仍运行，最新LIVE_STATUS见证据目录。先收完整14/10审查再决定下一阶段；后续父必须最新正式归档，不能回退。健康收敛/最终冻结/ESN/SPT/四卡要求仍待。
+
 ## 最新RL状态：2026-10-26 参数13与Direct critic-clock9均已完整审查
 
 原Goal active，未健康收敛；最新[完整交接](docs/RL_PAIR_MEAN_CYCLE13_AND_SERL_CLOCK09_20261026.md)。

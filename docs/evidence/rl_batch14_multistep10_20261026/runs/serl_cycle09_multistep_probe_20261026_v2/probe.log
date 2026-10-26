@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_multistep_probe_20261026_v2/probe_serl_multistep_20261026.py", line 197, in <module>
+    main(args)
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_multistep_probe_20261026_v2/probe_serl_multistep_20261026.py", line 123, in main
+    a = SerlClockLearner(Path(reg['runtime']), upstream=Path(reg['upstream']),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_multistep_probe_20261026_v2/serl_clock_state_adapter_20261026.py", line 27, in __init__
+    super().__init__(*args, critic_clock=False, **kwargs)
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_state_adapter_20261026_v1/serl_state_adapter_20261026.py", line 68, in __init__
+    raise RuntimeError('SERL process requires exactly one visible GPU')
+RuntimeError: SERL process requires exactly one visible GPU

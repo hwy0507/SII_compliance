@@ -1,0 +1,43 @@
+{
+  "base_trainer_sha256": "acdee3deda931c4311a9709a3f34517ead9297c9caaf198325bab339828f5063",
+  "base_main_sha256": "0f6f0710ad6f3a7e7658d438fc8706059f87711ac1e6b578e87b7a316e6f6c6a",
+  "candidate_main_sha256": "2f1226d44b6dfccb64e52c3be178c906060ccf8fae5fbaeac5d57ec1afd963e6",
+  "changes": [
+    "sampler-count guard",
+    "shared physical CPU-set affinity",
+    "explicit replay stream id"
+  ],
+  "learner_source_changed": true,
+  "physics_source_changed": false,
+  "multistep_stage": {
+    "marker": {
+      "version": 1,
+      "horizon": 32,
+      "gamma": 0.9995,
+      "rewards": "discounted_behavior_rewards",
+      "bootstrap": "gamma_power_k_times_terminal_mask",
+      "sampling": "uniform_mature_rows",
+      "original_replay_retained": true,
+      "importance_correction": false
+    },
+    "auxiliary_weights_imported": false,
+    "prepared_checkpoint": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_preparation_20261026_v2/prepared_cycle09.pt",
+      "sha256": "6bf4ec143049657f5a071569ce24d22ecca906e1446d23c1e9b6b88be4ccc44f"
+    },
+    "preparation_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_preparation_20261026_v2/REVIEW.json",
+      "sha256": "453960fcbf4e9d6adc5d38d294dab2224dbc85ecd342b0849d40d09133f47aa5"
+    },
+    "probe_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle09_multistep_probe_20261026_v3/REVIEW.json",
+      "sha256": "ad2b14dfea36adaff10ab8c948f120c7eaa59d71b6f0e90158647210fc548970"
+    },
+    "source_hashes": {
+      "serl_multistep_state_adapter_20261026.py": "395eb3c618d37d6e3dad338478a7017d3fc273d7368bb2a8a8c488cfcdd840de",
+      "serl_clock_state_adapter_20261026.py": "938743a6efb324a5a9fae99e05d7232e937bd9c5d2f97f7863e5a05aaa004c1e",
+      "serl_critic_clock_extension_20261026.py": "e6e7e0b2c5083e30aae722f8f439533158f86092c091ded10702bd1415d610c2",
+      "resume_serl_multistep_stage_20261026.py": "7d9df1aee60065d1a53e4601aede61fc8c74929bd261f46c23fafe3734dd0c7b"
+    }
+  }
+}
