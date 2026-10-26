@@ -7,6 +7,9 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新小batch外部profile完成，session41020/44666均退出勿重启：runs/fresh_small_batch_profile_v1 50Hz有13–14s滞后，保留不能作正常计时；v2 10Hz各主线程599样本无lag/Errors0。D/I/A/V selector等待78.80/49.92/45.58/65.78%，target1.00/3.51/3.84/2.84%，D5→0/V6→6尾部而I/A12稳定。代表Admittance sampler physics93.32%/等待动作5.01%/CPU93.61%；55核quota无新增throttling、窗口平均34.33核。不是CUDA计时/全局因果结论。
+最终SCIENTIFIC_REVIEW覆盖初步REVIEW的Polyak建议：优先调查采样循环与周期尾部，不优先Polyak、不改live batch/UTD/dt；未准备或部署性能候选。source780/parameter24 hash重验，0新physics/辅助updates。docs/PUBLISHED_SMALL_BATCH_THROUGHPUT_PROFILE_20261026.md/.json。四learner及2471936/2472115/2472286继续，Goal/GPU50%/最终比较未完。
+
 最新四路12worker交接均已实际生效：D4055508/I3849956/A793968/V511376继续；原A1314547/V1146204已正常首轮结束勿重启。A/V各41250父→42250/37251新snapshot全replay/history/Adam连续及首12实际模型输入核验，父09b8415f…/62d054ba…。只读196372/session4132已FINISHED退出勿重启；runs/remaining_fresh_resource_resume_review_v1。DISPATCH_FINISHED不是六周期/Goal完成，2471936/2472286继续。
 原2472115四路同cycle0诊断已完整复核、现等cycle1；Task/Strict0/0、17/16、12/11、17/16各30，四路被动均0/10，loss9.334/8.003/11.392/7.338、terminalMAE36.201/36.646/51.131/52.502；120终端/model收据+ck/hash/reward/network与图核验。Imp29完整+长期0000 859actions/34.36s全局穿透abort（物块/凸边87.21165mm）；I/A/V短0600分别.225314/.205722/.216555mm超原.2mm，失败保留。D第二轮0/30、reward−33.20797；非收敛/名义改善结论。
 扩容后正式GPU60秒均值6.07/6.80/5.83/5.98%、min0，无辅助GPU训练，50%仍未达；后续需定位当前配置吞吐，不为占用率改live UTD/batch。文档PUBLISHED_FRESH_CYCLE_AND_HANDOFF_PROGRESS_20261026.md/.json。继续原六周期和1/3/5审计，Goal/最终固定策略矩阵/SPT/指定ESN仍未完。

@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2026-10-26 — 小batch四路吞吐定位，保留高频测量干扰并完成低频复测
+
+- 四learner及一个Admittance sampler外部带线程ID采样。50Hz v1有13–14秒滞后/实际74.24秒，保留限制说明、不作正常耗时依据；10Hz v2无lag/Errors0，各主线程599样本，/proc窗口59.05秒。
+- D/I/A/V主线程selector等待78.80/49.92/45.58/65.78%，target更新1.00/3.51/3.84/2.84%；D/V在尾部5→0/6→6worker，I/A保持12。实际新增544/1818/1885/1032步及同数更新。代表Admittance sampler CPU93.61%、physics循环93.32%、等待动作5.01%；55核配额窗口无新增节流，平均34.33核。一次样本不外推全局，不把Python栈当CUDA kernel计时。
+- 低频证据更正高频下的初步learner/Polyak瓶颈判断：后续优先调查采样循环/周期尾部，不优先改Polyak，不改live UTD/batch/dt。未部署任何性能候选，原阶段继续；source780/parameter24实际hash核验。0新仿真/辅助updates。
+- docs/PUBLISHED_SMALL_BATCH_THROUGHPUT_PROFILE_20261026.md/.json，SSD根runs/fresh_small_batch_profile_v1/v2及runtime同名目录保存原始profile/遥测/代码/hash。session41020/44666均已完成勿重启；四原learner继续，GPU50%/收敛/最终SPT/ESN仍未完。
+- 已fetch读main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d日志，远端未变；此前HTTPS push认证失败，未声称已发布。
+
 ## 2026-10-26 — 四路十二采样器交接完成，首轮统一诊断与安全失败保留
 
 - 原VMC1146204/Admittance1314547正常结束首轮勿重启；新511376/793968自动12worker续余五周期。各41250父→42250新snapshot核验全部replay/history精确、Adam计数连续、真实更新与首12模型/input/dt。原D4055508/I3849956继续，四路已真实扩容；只读196372/session4132已完成退出，不要重启。
