@@ -1,5 +1,15 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 参数26 / Direct17 / 短物理前缀完成
+
+原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER26_SERL17_PHYSICAL_PREFIX_20261026.md)覆盖下方25/17。无子agent，冻结物理/SPT与全部正式state保持。
+参数25完整I/V1069500/1064501、A1068500/1063501，Task/Strict18/17、16/16、17/16，reward−2.318779/−5.344773/−4.615704，末loss1.856296/1.199879/1.629220，termMAE.838634/.625643/.692525。全部30完整无abort、旧prefix/history/markers/finite、新reward0误差/health/图通过；导纳改善但I/V loss上涨，未稳定。原25 learner3775564/6/8、归档3775663/review3775665已退出。
+正式26 I904989/A904991/V904993，B/runs/parameter_capacity_pool30_cycle26_20261026_v1；准确最新25全state接续一个周期，原GPU/CPU/30pool/batch65536/UTD1/terminal128/projection/pair/LR保持，2m容量与历史入口23不变，必须capacity replay+pair learner。三check-only通过；startup905056/归档905057/完整review905060，无自动27。等待准备243874完成勿重复。
+Direct17原4158035、归档4158038/review4158039继续，完整父仍16；原官方10critic/random2 bootstrap/actor all10mean/noentropy/8:1/32步保持，无自动18。
+新B/runs/serl_cycle16_actor_floor_physical_prefix_20261026_v1原400736/reviewer400737已完整结束勿重复。新完整16同state/draw/RNG两臂各200outer/1600critic后，3原条件×8配对seed×2.56s，共48条/3072动作/2457600子步；无abort/机器违规，各条件两臂均0/8离开初始approach。原evaluator逐动作重放精确，物理前后learner/optimizer/RNG不变，独立保存物理/filter/torque/预算/hash审查与图完成；独立review不重算已丢弃权重的神经推理或动力学。0正式replay写入/不存推广权重。
+200更新后原alpha/floor初始熵−22.407059/1.472282，termMAE.053164/.078361，TD32.072936/.094357；实际三条件残差幅度原.460/.443/.451、候选.528/.531/.530。探索增大未观察到短前缀收益，不部署0.1、不增加种子/时长；不外推全30/完整任务或真实概率为0。它是新16有限物理问题，不是重跑/延长已完成15的2000更新离线实验。
+新纯正式17/26 profile454710，B/runs/batch17_parameter26_gpu_profile_20261026_v1，预登记180样本、等26 startup与原辅助退出、逐样本严格四正式PID；先查原结果不重采。远端main dbb1d76/baseline f6e8f8c未变，GitHub认证待恢复用户已被问勿重复。大产物SSD/HDD小交接收据，非全备份。
+
 ## 收尾接续：Direct16完整完成，正式17已启动
 
 本节覆盖本文前面的Direct16在运行/17尚未执行快照。Direct16完整689532/5476264，Task/Strict0/30、reward−30.932129，全部30完整55s、无abort。新增41250单步/32步派生目标精确，旧648282全部raw/derived/history/ready保持，pending0。510终端×10critic MAE.051144/max4.309624，32步TD.048439，Qmean−20.577059，alpha.000670934620；完整review/DIAGNOSIS/FINISHED及图通过，网络/优化器/RNG只读不变，仍未健康收敛。
@@ -1089,3 +1099,5 @@ CPU54现评Admittance，nominal59/120；原四路CHEQ和四路SAC继续，行动
 Direct17实际首1000新增检查通过：690532/5484264，全部旧689532 raw/derived/history/优化器/marker保持，135新mature+865pending精确，30MJB/30sampler/action/clock/reward0误差通过。原4158037 startup已退出；四正式17/25和归档/完整review均live，最新FINAL_LIVE_STATUS已更新。无自动18/26。
 
 最终17/25科学提交50aabc40be6e8d40567e5c4db29a9a33426ce671；更新后的完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_ACTOR_FLOOR_PARAMETER25_20261026_202151/FULL_SMALL_EVIDENCE.tar.gz，142成员逐hash核验、1876872字节、SHA256 670902a81be9467e40a66ad6ff0d8c286533ab3c0fad2043fa070c256041bfcc。最新HDD入口/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_ACTOR_FLOOR_PARAMETER25_STATUS_20261026_202151/HANDOFF.md与收据/LATEST已验证，覆盖前一20:15的16/25交接快照；大产物仍SSD。GitHub认证失败，未发布；Goal active。
+
+正式26实际各1000新增startup通过：I/V1070500、A1069500，旧I/V1069500、A1068500所有回放字段/history/优化器/2m marker/30MJB/30sampler/action/clock及新reward0误差通过。原905056已退出，勿重跑；四正式17/26及归档/完整review继续。

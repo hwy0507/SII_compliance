@@ -1,0 +1,56 @@
+{
+  "samples": 51200,
+  "timestep_s": 5e-05,
+  "timestep_sample_counts": {
+    "5e-05": 51200
+  },
+  "rmse_weighting": "uniform physical samples (equivalent to time integral)",
+  "velocity_semantics": "post-integration J(qpos)@qvel on scratch kinematics",
+  "torque_semantics": "live qfrc_actuator/actuator_force retained from completed mj_step dynamics evaluation",
+  "timestamp_caveat": "force evaluation may precede post-integration state within the same physical step",
+  "raw_float_precision": "time float64; stage int16; raw vectors float32; peak/sum accumulators float64",
+  "linear_speed_peak_mps": 0.24515785371921386,
+  "generalized_actuator_torque_peak_nm": 40.61764398584733,
+  "generalized_actuator_torque_peak_by_joint_nm": [
+    4.019095849330297,
+    40.61764398584733,
+    4.816059967532119,
+    26.988683547633322,
+    2.286358416927362,
+    3.8921811410285176,
+    0.9420261447547941
+  ],
+  "actuator_force_peak_by_actuator": [
+    4.019095849330297,
+    40.61764398584733,
+    4.816059967532119,
+    26.988683547633322,
+    2.286358416927362,
+    3.8921811410285176,
+    0.9420261447547941
+  ],
+  "position_rmse_xyz_m": [
+    0.10478812060634145,
+    0.1564069641764192,
+    0.11279187546855521
+  ],
+  "position_rmse_3d_m": 0.21946684450004492,
+  "stages": {
+    "0": {
+      "count": 51200,
+      "duration_s": 2.560000000000703,
+      "error_peak_m": 0.3413713455751616,
+      "speed_peak_mps": 0.24515785371921386,
+      "qfrc_peak_nm": 40.61764398584733,
+      "first_s": 5e-05,
+      "last_s": 2.560000000000703,
+      "position_rmse_xyz_m": [
+        0.10478812060634145,
+        0.1564069641764192,
+        0.11279187546855521
+      ],
+      "position_rmse_3d_m": 0.21946684450004492,
+      "name": "approach"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "source": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle26_20261026_v1/admittance/check_only.log",
+  "sha256": "e1ab8310a307cb8e864063fdbd292aa902eb7b2b5e8fbc8f93dfb90bbb38ebac",
+  "results": [
+    {
+      "passed": true,
+      "controller": "admittance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "0b67e111ef772e8b7f60dbefd29f1f10dffe30066e3b0f829e612ba8430f5650",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    }
+  ]
+}
