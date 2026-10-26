@@ -1,5 +1,27 @@
 # 本仓库的持续工作约定
 
+## 当前续训状态：2026-10-26完整cycle5/SERL1审查后（覆盖下方早期run状态）
+
+原Goal active，未收敛。最新报告[cycle5审查与续训](docs/RL_CYCLE05_REVIEW_AND_CONTINUATION_20261026.md)。
+旧SERL两周期、参数batch试验均已结束勿重启：SERL1 Task/Strict0/30、reward−35.102，
+passive0500在1199动作global穿透提前终止，失败保留；参数5 I18/18、A13/12、V17/16各30，
+reward−.4647/−12.2195/−4.5981，终端Q MAE4.43/3.53/16.01，VMC Q仍增长。
+三actor-LR对照已完成3万辅助更新，I敏感性小、A降低LR拟合改善、V无修复；V再做critic LR
+5000和all5 target5000，复用原control，无权重推广。criticLR无修复；all5 Q下降但终端误差变差，
+只作为有限在线假设，非官方CHEQ原样或已修复。重复control误派已停，末记录1500更新、失败留存。
+当前四正式：Direct `runs/serl_batch32768_cycle02_20261026_v1/direct` PID3339709/GPU0，
+保留全state、仅batch2048→32768、官方8critic:1actor，1完整cycle2；三参数
+`runs/clock_parameter_reviewed_cycle06_07_20261026_v1/{method}/train` PID3070037/3070069/3419078，
+GPU1/2/3，2完整cycle6/7。I设置保留，A仅actorLR3e-5，V仅target min2→5、actor仍原pair。
+全部optimizer/moments/replay/RNG保留，A/V仅新阶段聚合history清空，父history仍完整保存。
+新启动全prefix/实际更新增量/LR/target/MJB和有限网络检查通过，`runs/reviewed_continuation_startup_20261026_v2`。
+v1只读浮点精确比较失败已修正并保留，不是训练失败。归档器3494331在
+`runs/reviewed_continuation_cycle_archive_20261026_v1`只读随原进程结束；请核实当前PID身份，勿重复派发。
+新正式66秒GPU64.73/55.35/46.67/42.27%，无辅助，四卡50%仍未全达。旧有限辅助已完勿重跑。
+SERL吞吐probe4632critic更新结束不推广；新wrapper准确父hash/源码/协议守卫正负检查通过。
+原物理/gate/filter/dt不改。完整新周期、冻结策略验证、最终ESN/SPT仍待；无子agent，大产物留SSD。
+
+
 ## 2026-10-26 本会话明确恢复后的新状态（覆盖下方历史 paused）
 
 用户重新设置 active Goal 并明确要求恢复两类 RL 直至收敛。当前记录见

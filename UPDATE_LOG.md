@@ -1,3 +1,14 @@
+## 2026-10-26 — 复核参数cycle5/SERL1并继续四路登记训练
+
+- 上轮为实质progress：官方SERL真实启动/首轮审查、参数状态恢复与批量试验、代码证据推送；本轮重新核实原进程后收取完成结果。fetch/read并快进main b245607（另一主机非RL条件审计），baseline仍f6e8f8c；不改变其冻结任务。
+- 参数cycle5三路各新增41250，Task/Strict I18/18、A13/12、V17/16各30，reward−.4647/−12.2195/−4.5981。全父replay、新reward/done、30terminal/MJB和条件审查通过，非原始子步重算；终端Q误差下降但VMC Q继续上升，非收敛。
+- 官方SERL两周期结束，累计82324transition/618600critic更新；cycle1 Task/Strict0/30、reward−35.102，29完整+1passive0500在1199动作global穿透abort，失败保留。全replay/journal/60terminal核验，当前终端Q MAE4.09、末loss.02661，仍全approach；图已检查。
+- 三方法actor LR同state/RNG/replay对照30000辅助更新完成；V降低criticLR新增5000仍Q增长，all5 target新增5000使Q251.79→241.53但in-bag终端MAE11.94→16.91，非修复。后两项复用原control；误派重复control的v1已停止，末记录1500更新、可能少量未记录，全丢弃不推广。证据失败保留。
+- 四正式继续：SERL3339709/GPU0，full-state仅batch2048→32768、8critic:1actor、1完整cycle2；I3070037/A3070069/V3419078 GPU1/2/3，2完整cycle6/7，I原设置、A仅actorLR3e-5、V仅target min2→5且actor原pair。V为已披露算法试验，不能称官方原样。A/V不清零learner，仅新聚合history单列。
+- SERL吞吐probe4632辅助critic更新/0physics完成，32768采样吞吐约111.57万行/s对2048的26.12万行/s，非有效性结论；无辅助权重推广。新wrapper校验准确checkpoint/源码/协议，正负守卫实际通过。四真实启动各新增9000/29000/28000/8000时全父prefix、更新计数、LR/target/网络/MJB审查通过；只读v1浮点比较失败已保留，v2通过。
+- 新纯正式66.48s GPU64.73/55.35/46.67/42.27%，仍未四卡50%；旧混合窗口3.43/66.92/53.87/62.72后三卡辅助，不混称正式。准确边界归档3494331继续，原已完成辅助不重复派发。
+- 报告docs/RL_CYCLE05_REVIEW_AND_CONTINUATION_20261026.md，小证据docs/evidence/rl_continuation_20261026/SOURCES.json逐SHA；大产物仅本集群 /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，非arm1归档。Goal active；完整新周期、健康收敛、冻结最终矩阵/指定ESN/SPT未完成。
+
 ## 2026-10-26 — 新30条首个完整条件9回合/990万子步核验，继续原矩阵
 
 - 实时fetch/read main=6ed6a318dbfc63d8f88f943c4fbcf641d960c716、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，核对AGENTS、原协调器86607与真实子进程；没有重复启动或改冻结训练/物理源码。

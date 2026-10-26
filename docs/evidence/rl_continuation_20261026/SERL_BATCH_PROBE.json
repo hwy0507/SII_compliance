@@ -1,0 +1,79 @@
+{
+  "results": [
+    {
+      "batch_size": 2048,
+      "critic_batch_size": 256,
+      "outer_updates": 192,
+      "duration_s": 1.5052501121535897,
+      "outer_updates_per_s": 127.55355302734506,
+      "sampled_rows_per_s": 261229.67660000268,
+      "finite_state": true,
+      "last_metrics": {
+        "serl/actor/actor_loss": -14.877599716186523,
+        "serl/actor/entropy": -4.214774131774902,
+        "serl/actor/temperature": 0.0004535828484222293,
+        "serl/actor_lr": 0.0003000000142492354,
+        "serl/critic/critic_loss": 0.005875914357602596,
+        "serl/critic/predicted_qs": 14.793635368347168,
+        "serl/critic/target_qs": 14.810440063476562,
+        "serl/critic_lr": 0.0003000000142492354,
+        "serl/temperature/temperature_loss": -0.00030400240211747587,
+        "serl/temperature_lr": 0.0003000000142492354,
+        "serl/outer_updates": 77517
+      },
+      "parent_state_unchanged": true
+    },
+    {
+      "batch_size": 8192,
+      "critic_batch_size": 1024,
+      "outer_updates": 192,
+      "duration_s": 2.057096595875919,
+      "outer_updates_per_s": 93.33543227134929,
+      "sampled_rows_per_s": 764603.8611668934,
+      "finite_state": true,
+      "last_metrics": {
+        "serl/actor/actor_loss": -14.82823371887207,
+        "serl/actor/entropy": -4.220149040222168,
+        "serl/actor/temperature": 0.0004687230393756181,
+        "serl/actor_lr": 0.0003000000142492354,
+        "serl/critic/critic_loss": 0.0029406649991869926,
+        "serl/critic/predicted_qs": 14.798788070678711,
+        "serl/critic/target_qs": 14.797607421875,
+        "serl/critic_lr": 0.0003000000142492354,
+        "serl/temperature/temperature_loss": -0.00032388983527198434,
+        "serl/temperature_lr": 0.0003000000142492354,
+        "serl/outer_updates": 77517
+      },
+      "parent_state_unchanged": true
+    },
+    {
+      "batch_size": 32768,
+      "critic_batch_size": 4096,
+      "outer_updates": 192,
+      "duration_s": 5.639079679735005,
+      "outer_updates_per_s": 34.04810907176658,
+      "sampled_rows_per_s": 1115688.4380636474,
+      "finite_state": true,
+      "last_metrics": {
+        "serl/actor/actor_loss": -14.8287353515625,
+        "serl/actor/entropy": -3.913353204727173,
+        "serl/actor/temperature": 0.0004804593336302787,
+        "serl/actor_lr": 0.0003000000142492354,
+        "serl/critic/critic_loss": 0.27931642532348633,
+        "serl/critic/predicted_qs": 14.786191940307617,
+        "serl/critic/target_qs": 14.78185749053955,
+        "serl/critic_lr": 0.0003000000142492354,
+        "serl/temperature/temperature_loss": -0.00019638858793769032,
+        "serl/temperature_lr": 0.0003000000142492354,
+        "serl/outer_updates": 77517
+      },
+      "parent_state_unchanged": true
+    }
+  ],
+  "total_auxiliary_critic_updates": 4632,
+  "compile_updates_included_in_budget": true,
+  "new_physics": 0,
+  "weights_saved": false,
+  "weight_promotion": false,
+  "limitation": "Short throughput/finite-state measurement. Different batch sizes change gradients; no policy or convergence conclusion."
+}
