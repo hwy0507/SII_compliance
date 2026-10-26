@@ -12,6 +12,7 @@
 - 10个新增/修正源码AST、冻结runtime源hash复核通过；小证据docs/evidence/rl_pair13_clock09_20261026/SOURCES.json。大型数据仍本集群SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。Goal active，完整周期效果/健康收敛/最终冻结比较/ESN/SPT/GPU要求均未完。
 - 收尾fetch/read并快进整合远端78c47ae0d2f1f12fd88820ea702aa6149dca29e3的独立非RL第六条件及前54条归档更新，双方日志保留，不改另一主机运行。
 - 本轮小源码/文档/证据备份：/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PAIR13_CLOCK09_STATUS_20261026_131031；逐项hash核验，大型权重/replay/轨迹仍SSD。
+- 最终收尾参数13三路全部完整审查：I574500/569501 A573500/568501 V574500/569501，Task/Strict18/17、13/13、17/17，reward−2.288/−10.232/−2.836；termMAE1.628/.899/1.141、Qmean−16.800/−116.201/+10.435、末loss5.380/28.202/25.630。全部新reward/父prefix/history/marker/30MJB/三health/图通过。A任务退步、V价值仍移动、I终端max106.805，非收敛。正式13/归档/审查PID全部退出，无参数14/Direct10，Goal继续active。补充收尾证据与备份FINAL_SYNC，不覆盖首批备份。
 
 ## 2026-10-26 — 新30条第六条件核验，前54条原始物理轨迹已共享
 

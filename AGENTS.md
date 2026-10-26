@@ -1,6 +1,6 @@
 # 本仓库的持续工作约定
 
-## 最新RL状态：2026-10-26 参数13在运行、Direct critic-clock9已完整审查
+## 最新RL状态：2026-10-26 参数13与Direct critic-clock9均已完整审查
 
 原Goal active，未健康收敛；最新[完整交接](docs/RL_PAIR_MEAN_CYCLE13_AND_SERL_CLOCK09_20261026.md)。
 本段覆盖下方“无正式learner”旧快照。物理/SPT/MJB/gates/filter/dt不改，无子agent，保留全部正式旧state/history。
@@ -24,7 +24,12 @@ v2按24live+6完成核验，新增10000/80000、全部新动作/obs/当前nextcl
 termMAE1.714但max65.252、Qmean27.636/max31.106，时钟单项未修复；完整state诊断不变/图已看。
 原Direct3712508/归档3882888/审查4030422均已完勿重启，无Direct10；准确9 SHAa1a26f285f990ee2308f70a2f178527c2fabfec2b0e6bb1c973e00115981a61d。
 新纯正式63.80s GPU49.93/40.67/46.27/40.93%，所有正式PID全窗口存活，每卡50%仍未达，不以辅助占用替代。
-大产物SSD，HDD只小证据；参数13完整结果、持续GPU优化/健康收敛/最终冻结比较/ESN/SPT仍待。
+最终收尾13也完整：I574500/569501 A573500/568501 V574500/569501，Task/Strict18/17、13/13、17/17，
+reward−2.288/−10.232/−2.836；termMAE1.628/.899/1.141，Qmean−16.800/−116.201/+10.435，末loss5.380/28.202/25.630。
+三路全30完整无abort、全部新reward/父prefix/marker/MJB/三health及图通过；A任务17→13恶化，V Q仍移动，I终端max106.805。
+原3841250/3/5、归档3882892、13审查4030423都已结束勿重启。当前无正式learner、无参数14/Direct10登记，Goal仍active。
+后续准确父为pair_reduction_archive下13与clock_cycle09_archive下9，必须保留新markers及全state。
+大产物SSD，HDD只小证据；持续GPU优化/健康收敛/最终冻结比较/ESN/SPT仍待。
 
 
 ## 最新RL状态：2026-10-26 参数11/12等价流水线与Direct8 critic-clock审查

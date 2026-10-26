@@ -1,6 +1,6 @@
 # 2026-10-26 参数target-pair均值对照与cycle13、Direct critic-clock cycle9
 
-原Goal继续active，尚未健康收敛，每卡GPU≥50%仍未达。上一轮完成12与冻结11审查，本轮推进四路正式训练；收尾Direct9已结束且审查完成，三参数13仍在运行。
+原Goal继续active，尚未健康收敛，每卡GPU≥50%仍未达。上一轮完成12与冻结11审查，本轮推进四路正式训练；最终收尾Direct9和三参数13均已结束且审查完成；当前无正式learner运行，未登记下一阶段。
 本报告覆盖 `RL_EXACT_PIPELINE_CYCLE12_AND_SERL_CLOCK_20261026.md` 的“当前无正式learner”状态。
 开工fetch/read main d6f48179054e94bb3a35e0785bf908f25cee5165、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；
 旧PID已退出、四卡0%实查后才登记新run，不重启旧作业。无子agent，不干预另一主机非RL。
@@ -149,3 +149,21 @@ TD MAE.053584、alpha.001395625。相比8的Qmean16.526与terminal max42.604，�
 准确父归档 `B/runs/serl_clock_cycle09_archive_20261026_v1/direct/cycle_00009.pt`，SHA
 `a1a26f285f990ee2308f70a2f178527c2fabfec2b0e6bb1c973e00115981a61d`。
 后续必须保留该正式9完整状态及clock marker，不得回退旧8来挑选结果或推广辅助权重。
+
+## 最终收尾快照：参数13也已完整审查
+
+三路各新增41250、30完整55秒，无abort；全父replay前缀/history/optimizer配置/新旧marker、新reward重建0误差、30terminal/MJB通过。三路health完整且网络状态不变，图已看。原3841250/3841253/3841255、归档3882892、审查4030423均已结束，勿重启。当前无正式learner运行，尚未登记参数14或Direct10；原Goal仍active，不是用户暂停或已收敛。
+
+| 方法 | steps / updates | Task / Strict，各30 | reward均值 | 终端MAE | Q均值 | 固定min-pair TD MAE | 末1000 q_loss |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| I | 574500 / 569501 | 18 / 17 | -2.288265 | 1.628360 | -16.800012 | 0.339665 | 5.380340 |
+| A | 573500 / 568501 | 13 / 13 | -10.231644 | 0.899015 | -116.200739 | 1.227537 | 28.201571 |
+| V | 574500 / 569501 | 17 / 17 | -2.835604 | 1.141412 | 10.435370 | 1.252683 | 25.629958 |
+
+A任务17→13/30、reward−3.544→−10.232，虽然负Q幅度和loss显著下降，任务表现恶化；不能称mean适配全面成功。V任务17/17保持，Q均值−77.636→+10.435，loss下降但价值仍在明显移动，未达稳定。I reward近似保持，但终端最大误差106.805（12为94.267），尾部仍异常。
+
+准确后续参数父 `B/runs/parameter_pair_reduction_archive_20261026_v1/{method}/cycle_00013.pt`：
+
+- impedance: `f93ef71f66d114daf587f9392d5731c357cac364930c94efb4f20d809804c979`
+- admittance: `e54f95fc4ba0595d3eb3389c4b58c26687179c2d97a4d6d5fd13c1b2b94742bd`
+- vmc: `3c075fdd3e734691bb8030ef004c6b323c5ba56f5fc86b224b254cb81415fb66`
