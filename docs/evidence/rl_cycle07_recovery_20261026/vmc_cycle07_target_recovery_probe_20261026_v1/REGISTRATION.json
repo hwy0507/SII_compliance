@@ -1,0 +1,60 @@
+{
+  "created_unix": 1793007157.997535,
+  "purpose": "All5 online cycles6/7 worsened terminal MAE29.32 to54.90 and Qloss394.6 with Q range -1236 to1426. Diagnose exact cycle7 recovery without resetting or promoting auxiliary state.",
+  "optimizer": "target_recovery",
+  "expected_cycle": 7,
+  "source_hashes": {
+    "diagnose_published_value_bound_20261025.py": "2a5b04c7a4036d78775a7abb87170660a0e3b6b0111846f24d4a9245dc268245",
+    "validate_published_finite_check_20261025.py": "02c0c995510bca67fabe2bc06b7380da3fd1489b98fd9a695147e489c0241acd",
+    "probe_vmc_target_recovery_20261026.py": "2da2a6060cc5a009a77c5493c7d7a76f0006788e735657a71729a3e0691627ae"
+  },
+  "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+  "runtime_sha256": "26d8b9671a55f12702313dfc4a705bc3a9272b402d9611635b44266982177b1c",
+  "reward_sources": {
+    "spt_rl_reward_20261025.py": "c63deee3a17318703e17744245986d97d340a741623f03abe73af5aa43ffaebf",
+    "training_comparison_metrics_20261025.py": "24ee8166b9ade665290a6883bdf39ecf615e7cbf3f954c1404e1717e7a8b2e07"
+  },
+  "cpus": {
+    "vmc": 54
+  },
+  "seed": 20261026,
+  "diagnostic_samples": 4096,
+  "updates_per_arm": 5000,
+  "record_every": 250,
+  "batch_size": 32768,
+  "total_auxiliary_updates": 15000,
+  "new_physics": 0,
+  "auxiliary_weight_promotion": false,
+  "automatic_extension": false,
+  "parent_review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/reviewed_cycle07_audit_20261026_v1/REVIEW.json",
+    "sha256": "6978b80f795b0696106ec3cacec32a4af747617438656970afcfa376be2662d7"
+  },
+  "parent_health": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/reviewed_cycle07_audit_20261026_v1/health/DIAGNOSIS.json",
+    "sha256": "2bb927e9aaac6e91d163e486b52a8f581ccf74d5efe15ffd89921d2ed0ae07f8"
+  },
+  "checkpoints": {
+    "vmc": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/reviewed_continuation_cycle_archive_20261026_v1/vmc/cycle_00007.pt",
+      "sha256": "aef5f5d6fcd1387edccf08eae97c008a2ea202b11962a4eaf5c438f39e263023"
+    }
+  },
+  "arms": [
+    {
+      "name": "all5_control",
+      "target_count": 5,
+      "critic_lr_factor": 1.0
+    },
+    {
+      "name": "pair",
+      "target_count": 2,
+      "critic_lr_factor": 1.0
+    },
+    {
+      "name": "pair_critic_lr01",
+      "target_count": 2,
+      "critic_lr_factor": 0.1
+    }
+  ]
+}

@@ -1,5 +1,27 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 VMC7恢复pair、SERL3及I/A8（覆盖下方旧状态）
+
+原Goal active，未健康收敛。最新[审查与恢复](docs/RL_CYCLE07_VMC_RECOVERY_AND_SERL03_20261026.md)。
+SERL3已审查：163214steps/1265720critic更新，0/30、reward−34.198，26完整+4global穿透abort保留，
+termMAE1.005但任务未改善；521120继续登记cycle4，533451归档。3审查1210386已完勿重跑。
+VMC all5原3419078已正常完成7勿重启：327000/322001，Task/Strict17/16，reward−4.602；termMAE54.90、
+末loss394.57、Q范围−1236至1426，试验失败。统一7审查441621/归档3494331均结束勿重启。
+新同cycle7全state三臂all5/pair/pair+criticLR.1各5000共15000辅助更新已全部结束，0physics、不推广权重；
+terminalMAE47.25/33.04/42.27，pair Q尾部扩大/末loss920，不能称修复。旧辅助勿重复派发。
+V新1497979/GPU3/CPU39–51/12sampler在runs/vmc_pair_recovery_cycle08_09_20261026_v1/vmc/train，
+只撤回all5恢复pair、保留全部网络/Adam/replay/RNG和原LR，2周期8/9。仅新聚合history单列，旧history父中完整保留。
+准备v1完成state校验后查错方法LAUNCH路径，命令生成失败未派发；改读原root LAUNCH并复核hash后实际启动，失败保留。
+真实新增3000时父327000prefix/target2/原optimizer配置/12MJB通过；归档1497983，8只读1566165等待。
+I/A8已审查：368250/367250steps，Task/Strict18/17与13/13，reward−2.272/−10.356；termMAE9.121/3.926，
+末loss13.585/29.514，早期A改善未持续。原806847/806849继续登记9，无更晚阶段；8只读1566163已完。
+I/A9只读2062385、V9只读2062386、Direct4只读2062387已等待相应精确边界，0训练/物理，不据等待超时重启。
+实际mixing7最低0.2占比I29.11%/A54.47%/V99.34%，被动各0/10 carry失败；无因果阈值修改。
+新纯正式窗口60.93/26.83/20.55/40.97%；另流水线66秒60.80/5.18/16.40/42.68，I尾部2→1workers，
+V12workers使用10.32核/32.1steps每秒，均无辅助。GPU每卡50%未达，需真实采样/尾部调度优化，尚未部署新调度。
+物理/MJB/gates/filter/dt/SPT不改，无子agent。大产物SSD，HDD仅文档副本，不能把有限诊断/低TDloss当收敛。
+
+
 ## 最新RL状态：2026-10-26 cycle6/SERL2与I/A cycle7审查（覆盖下方旧运行状态）
 
 原Goal active、未收敛。最新[完整审查与续训](docs/RL_CYCLE06_AND_SERL02_REVIEW_20261026.md)。
