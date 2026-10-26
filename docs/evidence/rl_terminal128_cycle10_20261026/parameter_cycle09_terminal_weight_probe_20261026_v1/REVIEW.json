@@ -1,0 +1,301 @@
+{
+  "passed": true,
+  "new_physics": 0,
+  "total_new_auxiliary_updates": 20000,
+  "entry_gate_auxiliary_updates": 2,
+  "methods": {
+    "impedance": {
+      "checkpoint_sha256": "e9fca1f0db39659ab33d30a5e93b328fd92a19612b3e1eef7b3c529827d23049",
+      "arms": [
+        {
+          "arm": {
+            "name": "batch32768_control",
+            "batch_size": 32768
+          },
+          "initial": {
+            "replay_q_mean": 53.00615310668945,
+            "replay_q_abs_mean": 61.62738037109375,
+            "replay_q_min": -84.27714538574219,
+            "replay_q_max": 1017.3297119140625,
+            "replay_q_abs_p95": 403.0974426269531,
+            "terminal_mae": 15.377357482910156,
+            "terminal_bias": -4.064436435699463,
+            "out_of_bag_terminal_mae": 30.751697540283203,
+            "in_bag_terminal_mae": 11.468404769897461,
+            "alpha": 0.008993950672447681,
+            "global_soft_bound": 60.9683519303147,
+            "above_global_bound_fraction": 0.214111328125,
+            "sampled_policy_entropy": -5.11379337310791,
+            "uncertainty_mean": 1.010696291923523,
+            "implied_minimum_rl_authority_fraction": 0.7607421875
+          },
+          "final": {
+            "replay_q_mean": 56.99190139770508,
+            "replay_q_abs_mean": 67.70982360839844,
+            "replay_q_min": -84.46106719970703,
+            "replay_q_max": 1090.2930908203125,
+            "replay_q_abs_p95": 463.29351806640625,
+            "terminal_mae": 13.088203430175781,
+            "terminal_bias": 0.17786212265491486,
+            "out_of_bag_terminal_mae": 29.09934425354004,
+            "in_bag_terminal_mae": 9.017342567443848,
+            "alpha": 0.009710007347166538,
+            "global_soft_bound": 63.43390860416618,
+            "above_global_bound_fraction": 0.21562500298023224,
+            "sampled_policy_entropy": -4.940046310424805,
+            "uncertainty_mean": 1.0850574970245361,
+            "implied_minimum_rl_authority_fraction": 0.78564453125
+          },
+          "patch": null
+        },
+        {
+          "arm": {
+            "name": "terminal128",
+            "batch_size": 32768,
+            "weight": 128
+          },
+          "initial": {
+            "replay_q_mean": 53.00615310668945,
+            "replay_q_abs_mean": 61.62738037109375,
+            "replay_q_min": -84.27714538574219,
+            "replay_q_max": 1017.3297119140625,
+            "replay_q_abs_p95": 403.0974426269531,
+            "terminal_mae": 15.377357482910156,
+            "terminal_bias": -4.064436435699463,
+            "out_of_bag_terminal_mae": 30.751697540283203,
+            "in_bag_terminal_mae": 11.468404769897461,
+            "alpha": 0.008993950672447681,
+            "global_soft_bound": 60.9683519303147,
+            "above_global_bound_fraction": 0.214111328125,
+            "sampled_policy_entropy": -5.11379337310791,
+            "uncertainty_mean": 1.010696291923523,
+            "implied_minimum_rl_authority_fraction": 0.7607421875
+          },
+          "final": {
+            "replay_q_mean": 56.509033203125,
+            "replay_q_abs_mean": 67.44537353515625,
+            "replay_q_min": -70.84820556640625,
+            "replay_q_max": 1080.121337890625,
+            "replay_q_abs_p95": 443.7744140625,
+            "terminal_mae": 7.5398359298706055,
+            "terminal_bias": 2.1487350463867188,
+            "out_of_bag_terminal_mae": 22.0317325592041,
+            "in_bag_terminal_mae": 3.8552472591400146,
+            "alpha": 0.010967307724058628,
+            "global_soft_bound": 67.76309851989373,
+            "above_global_bound_fraction": 0.19926758110523224,
+            "sampled_policy_entropy": -5.0897955894470215,
+            "uncertainty_mean": 1.1768546104431152,
+            "implied_minimum_rl_authority_fraction": 0.861572265625
+          },
+          "patch": {
+            "weight": 128,
+            "base_sha256": "3e27bbe122262f3ca1783624d71bb0490fdf41639ee28718378209b13e4adbe3",
+            "candidate_sha256": "2bb73fcb6ab4050a9ca4200d5cfb066ee366f2306be7ab80c2272de697eb0b22",
+            "actor_objective_unchanged": true,
+            "reward_unchanged": true
+          }
+        }
+      ],
+      "terminal_fitting_improved": true,
+      "q_tail_repaired": false,
+      "online_recovery_proven": false
+    },
+    "admittance": {
+      "checkpoint_sha256": "2a06d355cda30c3e47618d1fe232144aa251fec408a018f5cf0c2d1f45b1bb2b",
+      "arms": [
+        {
+          "arm": {
+            "name": "batch32768_control",
+            "batch_size": 32768
+          },
+          "initial": {
+            "replay_q_mean": -39.895572662353516,
+            "replay_q_abs_mean": 66.83052825927734,
+            "replay_q_min": -233.6395721435547,
+            "replay_q_max": 1770.1766357421875,
+            "replay_q_abs_p95": 148.54713439941406,
+            "terminal_mae": 7.494277477264404,
+            "terminal_bias": -4.427539825439453,
+            "out_of_bag_terminal_mae": 9.328140258789062,
+            "in_bag_terminal_mae": 7.03386116027832,
+            "alpha": 0.006161194294691086,
+            "global_soft_bound": 59.70027924869194,
+            "above_global_bound_fraction": 0.02592773549258709,
+            "sampled_policy_entropy": -7.1195502281188965,
+            "uncertainty_mean": 1.9722349643707275,
+            "implied_minimum_rl_authority_fraction": 0.9951171875
+          },
+          "final": {
+            "replay_q_mean": -47.828243255615234,
+            "replay_q_abs_mean": 74.13243865966797,
+            "replay_q_min": -233.68165588378906,
+            "replay_q_max": 1994.381103515625,
+            "replay_q_abs_p95": 160.35275268554688,
+            "terminal_mae": 7.605319976806641,
+            "terminal_bias": -3.991271495819092,
+            "out_of_bag_terminal_mae": 9.333939552307129,
+            "in_bag_terminal_mae": 7.171326160430908,
+            "alpha": 0.007212424650788307,
+            "global_soft_bound": 64.76777649637528,
+            "above_global_bound_fraction": 0.02719726599752903,
+            "sampled_policy_entropy": -7.274037837982178,
+            "uncertainty_mean": 2.246562957763672,
+            "implied_minimum_rl_authority_fraction": 0.9951171875
+          },
+          "patch": null
+        },
+        {
+          "arm": {
+            "name": "terminal128",
+            "batch_size": 32768,
+            "weight": 128
+          },
+          "initial": {
+            "replay_q_mean": -39.895572662353516,
+            "replay_q_abs_mean": 66.83052825927734,
+            "replay_q_min": -233.6395721435547,
+            "replay_q_max": 1770.1766357421875,
+            "replay_q_abs_p95": 148.54713439941406,
+            "terminal_mae": 7.494277477264404,
+            "terminal_bias": -4.427539825439453,
+            "out_of_bag_terminal_mae": 9.328140258789062,
+            "in_bag_terminal_mae": 7.03386116027832,
+            "alpha": 0.006161194294691086,
+            "global_soft_bound": 59.70027924869194,
+            "above_global_bound_fraction": 0.02592773549258709,
+            "sampled_policy_entropy": -7.1195502281188965,
+            "uncertainty_mean": 1.9722349643707275,
+            "implied_minimum_rl_authority_fraction": 0.9951171875
+          },
+          "final": {
+            "replay_q_mean": -47.64073944091797,
+            "replay_q_abs_mean": 73.53863525390625,
+            "replay_q_min": -227.9381866455078,
+            "replay_q_max": 1988.1124267578125,
+            "replay_q_abs_p95": 160.9110565185547,
+            "terminal_mae": 1.5854140520095825,
+            "terminal_bias": 0.19218115508556366,
+            "out_of_bag_terminal_mae": 4.3979034423828125,
+            "in_bag_terminal_mae": 0.8792995810508728,
+            "alpha": 0.008176236413419247,
+            "global_soft_bound": 69.41386897847386,
+            "above_global_bound_fraction": 0.02568359486758709,
+            "sampled_policy_entropy": -7.272378921508789,
+            "uncertainty_mean": 2.2530884742736816,
+            "implied_minimum_rl_authority_fraction": 0.994873046875
+          },
+          "patch": {
+            "weight": 128,
+            "base_sha256": "3e27bbe122262f3ca1783624d71bb0490fdf41639ee28718378209b13e4adbe3",
+            "candidate_sha256": "2bb73fcb6ab4050a9ca4200d5cfb066ee366f2306be7ab80c2272de697eb0b22",
+            "actor_objective_unchanged": true,
+            "reward_unchanged": true
+          }
+        }
+      ],
+      "terminal_fitting_improved": true,
+      "q_tail_repaired": false,
+      "online_recovery_proven": false
+    },
+    "vmc": {
+      "checkpoint_sha256": "7e29e027c16215ca9532f0a0bbfa9bfd023586ab6ef5ede4abe60ce822057aa7",
+      "arms": [
+        {
+          "arm": {
+            "name": "uniform_control",
+            "batch_size": 32768,
+            "weight": 1
+          },
+          "initial": {
+            "replay_q_mean": 570.9188842773438,
+            "replay_q_abs_mean": 781.7487182617188,
+            "replay_q_min": -854.750244140625,
+            "replay_q_max": 3289.483642578125,
+            "replay_q_abs_p95": 2929.849609375,
+            "terminal_mae": 96.2007064819336,
+            "terminal_bias": 46.18808364868164,
+            "out_of_bag_terminal_mae": 111.44868469238281,
+            "in_bag_terminal_mae": 92.19222259521484,
+            "alpha": 0.05383523553609848,
+            "global_soft_bound": 289.5148687680521,
+            "above_global_bound_fraction": 0.4044433534145355,
+            "sampled_policy_entropy": -6.8071136474609375,
+            "uncertainty_mean": 5.332548141479492,
+            "implied_minimum_rl_authority_fraction": 0.999267578125
+          },
+          "final": {
+            "replay_q_mean": 623.4814453125,
+            "replay_q_abs_mean": 837.4329223632812,
+            "replay_q_min": -890.5316772460938,
+            "replay_q_max": 3406.8818359375,
+            "replay_q_abs_p95": 2963.852783203125,
+            "terminal_mae": 114.5288314819336,
+            "terminal_bias": 17.898603439331055,
+            "out_of_bag_terminal_mae": 142.1719970703125,
+            "in_bag_terminal_mae": 107.2618179321289,
+            "alpha": 0.07089812308549881,
+            "global_soft_bound": 371.76718881627545,
+            "above_global_bound_fraction": 0.40825197100639343,
+            "sampled_policy_entropy": -7.326848983764648,
+            "uncertainty_mean": 6.973300933837891,
+            "implied_minimum_rl_authority_fraction": 1.0
+          },
+          "patch": null
+        },
+        {
+          "arm": {
+            "name": "terminal128",
+            "batch_size": 32768,
+            "weight": 128
+          },
+          "initial": {
+            "replay_q_mean": 570.9188842773438,
+            "replay_q_abs_mean": 781.7487182617188,
+            "replay_q_min": -854.750244140625,
+            "replay_q_max": 3289.483642578125,
+            "replay_q_abs_p95": 2929.849609375,
+            "terminal_mae": 96.2007064819336,
+            "terminal_bias": 46.18808364868164,
+            "out_of_bag_terminal_mae": 111.44868469238281,
+            "in_bag_terminal_mae": 92.19222259521484,
+            "alpha": 0.05383523553609848,
+            "global_soft_bound": 289.5148687680521,
+            "above_global_bound_fraction": 0.4044433534145355,
+            "sampled_policy_entropy": -6.8071136474609375,
+            "uncertainty_mean": 5.332548141479492,
+            "implied_minimum_rl_authority_fraction": 0.999267578125
+          },
+          "final": {
+            "replay_q_mean": 619.61474609375,
+            "replay_q_abs_mean": 835.3119506835938,
+            "replay_q_min": -868.6704711914062,
+            "replay_q_max": 3409.045166015625,
+            "replay_q_abs_p95": 2987.5810546875,
+            "terminal_mae": 14.89080810546875,
+            "terminal_bias": 8.684774398803711,
+            "out_of_bag_terminal_mae": 40.18348693847656,
+            "in_bag_terminal_mae": 8.241703033447266,
+            "alpha": 0.06690206378698349,
+            "global_soft_bound": 352.5040279121462,
+            "above_global_bound_fraction": 0.409912109375,
+            "sampled_policy_entropy": -7.018319606781006,
+            "uncertainty_mean": 7.189715385437012,
+            "implied_minimum_rl_authority_fraction": 0.999267578125
+          },
+          "patch": {
+            "weight": 128,
+            "base_sha256": "3e27bbe122262f3ca1783624d71bb0490fdf41639ee28718378209b13e4adbe3",
+            "candidate_sha256": "2bb73fcb6ab4050a9ca4200d5cfb066ee366f2306be7ab80c2272de697eb0b22",
+            "actor_objective_unchanged": true,
+            "reward_unchanged": true
+          }
+        }
+      ],
+      "terminal_fitting_improved": true,
+      "q_tail_repaired": false,
+      "online_recovery_proven": false
+    }
+  },
+  "plot_sha256": "59f74a9d4e38dbf413386496d0eef389f4f1d396d6c35090f29f80f29f231ce6"
+}

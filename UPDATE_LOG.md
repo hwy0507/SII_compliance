@@ -1,3 +1,14 @@
+## 2026-10-26 — 终端拟合诊断与三参数cycle10在线检验，Direct5/VMC9完整审查
+
+- 开工fetch/read main=236c24f17376aeadf221d03474ae6290cad5e1d3、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，上一轮为实质progress。最新docs/RL_TERMINAL_WEIGHT_CYCLE10_20261026.md，未干预另一主机非RL任务。
+- VMC9已完：409500/404501、17/17、reward−2.817，termMAE96.201/末loss1318.913、Qp952919.91，pair未修复；父prefix/原stage父/41250新reward重建0误差/30terminal/MJB通过。原1497979等已结束勿重启。Direct5完整244843/1918752、0/30、reward−33.469、29完整+被动0300第1006动作穿透abort保留，全40881新增映射/reward重建通过、termMAE1.719，原2818100继续登记6。
+- 新I/A固定target与固定target+actor/温度4臂共20000辅助完成，复用旧uniform对照，严格初始正式state/抽样流一致；固定目标抑制Q尾部增长但不修复已有拟合误差。冻结组件/Adam digest独立核验，图已看，未推广权重。
+- 新终端critic权重128对照I/A各5000、V9首次原设置/128各5000，总20000新辅助+2入口更新完成；权重1原实现完整更新state逐项相同，非法权重/独立masked标量分母通过。终端MAE原设置→128 I13.088→7.540/A7.605→1.585/V114.529→14.891，Q尾部仍异常，非修复；全部初state直接匹配正式父、同实际抽样流/预算/20点/父不变/图通过。两组辅助共40002新更新，旧对照复用不重复计数，勿重复派发填占用。
+- 新三正式I3818446/A3818448/V3818450在runs/parameter_terminal128_cycle10_20261026_v3，原GPU1/2/3与CPU分组各12sampler，仅1完整10；正式9全state/history直续，只改critic终端损失权重128，原pair/batch32768/UTD1/actorLR/物理/SPT保持，无辅助权重。目标加权明确算法适配，checkpoint保存标记，后续须用wrapper/helper。全state恢复/正负守卫及真实I+4000/A/V+5000更新、父prefix/history/optimizer参数/12MJB亲和性/参数输入和reward重建通过。
+- v1准备漏校验依赖、v2 CPU预检发现仅CUDA RNG.1因延迟初始化变化，均未启动；v3先初始化全部generator再恢复，三路严格相等通过。启动审查初版误比参数向量与7维运动输出，保留失败，第二版按接口核验通过；未重启训练，未宣称独立重放导纳/VMC动态。
+- 归档3818454/10只读3965208等待精确边界，不派发下一阶段。纯正式GPU56.48/43.85/40.92/40.08%，无辅助；混合诊断窗口60.55/63.42/59.68/66.77不能代替正式，持续50%仍未达。
+- 小证据docs/evidence/rl_terminal128_cycle10_20261026/SOURCES.json逐SHA；大型产物本集群SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。Goal active；全周期在线效果、非终端Q漂移、健康收敛、最终冻结验证/ESN/SPT及GPU要求仍未完。
+
 ## 2026-10-26 — 参数9健康审查、Direct4审查修正与30路采样续训
 
 - 开工fetch/read main=a3670e267f546bd6c0b1905a923fca5ba36f91f9、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，读另一主机非RL27/108审计，未干预。最新docs/RL_CYCLE09_AND_SERL_POOL_20261026.md。

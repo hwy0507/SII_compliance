@@ -1,0 +1,111 @@
+{
+  "created_unix": 1793011075.7742546,
+  "purpose": "Fixed targets suppress Q-tail growth but not existing terminal misfit. Terminal rows are0.072percent; test normalized critic terminal weight128 (effective fraction about8.4percent), unchanged uniform samples/actor/bootstrap. Reuse I/A cycle9 controls; first VMC9 uniform control.",
+  "optimizer": "terminal_weight",
+  "expected_cycle": 9,
+  "source_hashes": {
+    "probe_parameter_terminal_weight_20261026.py": "705e8d2d3155628fa0aef41a1ce510eb8913976857b8d5a6767da9766721d89b",
+    "published_terminal_loss_weight_20261026.py": "408bd1e64e36ef179a2f87921a99e7668e8b1ba6f240dd42969aee09711fed7c",
+    "diagnose_published_value_bound_20261025.py": "2a5b04c7a4036d78775a7abb87170660a0e3b6b0111846f24d4a9245dc268245",
+    "validate_published_finite_check_20261025.py": "02c0c995510bca67fabe2bc06b7380da3fd1489b98fd9a695147e489c0241acd"
+  },
+  "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+  "runtime_sha256": "26d8b9671a55f12702313dfc4a705bc3a9272b402d9611635b44266982177b1c",
+  "reward_sources": {
+    "spt_rl_reward_20261025.py": "c63deee3a17318703e17744245986d97d340a741623f03abe73af5aa43ffaebf",
+    "training_comparison_metrics_20261025.py": "24ee8166b9ade665290a6883bdf39ecf615e7cbf3f954c1404e1717e7a8b2e07"
+  },
+  "cpus": {
+    "impedance": 13,
+    "admittance": 26,
+    "vmc": 39
+  },
+  "seed": 20261026,
+  "diagnostic_samples": 4096,
+  "updates_per_arm": 5000,
+  "record_every": 250,
+  "total_auxiliary_updates": 20000,
+  "new_physics": 0,
+  "auxiliary_weight_promotion": false,
+  "automatic_extension": false,
+  "parent_review": {
+    "impedance": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_cycle09_ia_review_20261026_v1/REVIEW.json",
+      "sha256": "25eb4c988f8fa6c26182e4b904a796c3a75f68dba101d3dcd7f65ff17a5939ce"
+    },
+    "admittance": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_cycle09_ia_review_20261026_v1/REVIEW.json",
+      "sha256": "25eb4c988f8fa6c26182e4b904a796c3a75f68dba101d3dcd7f65ff17a5939ce"
+    },
+    "vmc": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_cycle09_vmc_review_20261026_v1/REVIEW.json",
+      "sha256": "e8457e7c498387bd1db69c675a0826fc521cbd0ac9746237df092168bd911a3c"
+    }
+  },
+  "parent_health": {
+    "impedance": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_cycle09_ia_review_20261026_v1/health/DIAGNOSIS.json",
+      "sha256": "be448c8d26ae307afb09db6fe686ea5084bc7c245509cfd8dbe005c699a61778"
+    },
+    "admittance": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_cycle09_ia_review_20261026_v1/health/DIAGNOSIS.json",
+      "sha256": "be448c8d26ae307afb09db6fe686ea5084bc7c245509cfd8dbe005c699a61778"
+    },
+    "vmc": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_cycle09_vmc_review_20261026_v1/health/DIAGNOSIS.json",
+      "sha256": "4ee8b1a7fcebdbd91530ed212f3473e1c9f59fcb9fcff07fe3bff161569266a7"
+    }
+  },
+  "checkpoints": {
+    "impedance": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_parameter_cycle08_09_archive_20261026_v1/impedance/cycle_00009.pt",
+      "sha256": "e9fca1f0db39659ab33d30a5e93b328fd92a19612b3e1eef7b3c529827d23049"
+    },
+    "admittance": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/clock_parameter_cycle08_09_archive_20261026_v1/admittance/cycle_00009.pt",
+      "sha256": "2a06d355cda30c3e47618d1fe232144aa251fec408a018f5cf0c2d1f45b1bb2b"
+    },
+    "vmc": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc_pair_recovery_archive_20261026_v1/vmc/cycle_00009.pt",
+      "sha256": "7e29e027c16215ca9532f0a0bbfa9bfd023586ab6ef5ede4abe60ce822057aa7"
+    }
+  },
+  "arms": {
+    "impedance": [
+      {
+        "name": "terminal128",
+        "batch_size": 32768,
+        "weight": 128
+      }
+    ],
+    "admittance": [
+      {
+        "name": "terminal128",
+        "batch_size": 32768,
+        "weight": 128
+      }
+    ],
+    "vmc": [
+      {
+        "name": "uniform_control",
+        "batch_size": 32768,
+        "weight": 1
+      },
+      {
+        "name": "terminal128",
+        "batch_size": 32768,
+        "weight": 128
+      }
+    ]
+  },
+  "completed_controls": {
+    "impedance": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_cycle09_batch_health_probe_20261026_v1/impedance/batch32768_control.json",
+      "sha256": "9793f121a3dcfe0f92f922bdd5e3d531b611c5ddb335ee2f9086d48f028421bf"
+    },
+    "admittance": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_cycle09_batch_health_probe_20261026_v1/admittance/batch32768_control.json",
+      "sha256": "0453499a37c06b605db40f43821f02702bddd3613d4b59fda92724445d0a7d24"
+    }
+  }
+}

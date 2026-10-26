@@ -1,5 +1,29 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 终端加权参数10与Direct5（覆盖下方旧运行状态）
+
+原Goal active，未健康收敛。最新[交接](docs/RL_TERMINAL_WEIGHT_CYCLE10_20261026.md)。
+V9已完勿重启1497979/1497983/2062386：409500/404501、17/17、reward−2.817，termMAE96.201、
+末loss1318.913、Qp952919.910，pair未修复。Direct5已完审查2946490：244843/1918752、0/30、
+reward−33.469，29完整+被动0300第1006动作穿透abort保留；termMAE1.719、全新增40881映射/reward重建通过。
+原Direct2818100/GPU0/30sampler继续登记6，归档2833375/6只读2946491，不重复派发。
+I/A固定target及固定target+actor/温度新4臂共20000辅助已完，复用旧uniform对照；Q尾部停止增长但term误差未修复。
+新终端critic权重128诊断I/A各5000、V9原设置/128各5000，共20000+入口2更新已完；同正式初state和抽样流。
+原设置→128终端MAE I13.088→7.540、A7.605→1.585、V114.529→14.891，Q尾部仍异常，不能称修复。
+两组辅助所有PID已结束、不存/推广权重、勿重复填占用；父state digest直接核对正式checkpoint通过，图均已看。
+新三正式runs/parameter_terminal128_cycle10_20261026_v3/{method}/train：I3818446/A3818448/V3818450，
+GPU1/2/3，原CPU13–25/26–38/39–51各12sampler，仅1完整cycle10；从正式9全state/history直续，
+只改critic终端权重128，原pair/batch32768/UTD1/actorLR保持，无辅助权重。该loss加权是算法适配非原CHEQ原样。
+checkpoint保存terminal_loss_weight=128，后续训练须用新wrapper/helper，勿用原loader静默丢弃目标标记。
+三check-only全state/RNG/Adam仅加标记严格相等、正负守卫通过；实际I新增4000/A/V5000、全父prefix/
+原optimizer配置/history/12亲和性/MJB/新参数输入与reward重建0误差通过，非公共动态或物理子步重放。
+准备v1漏校验依赖、v2 CPU恢复后CUDA延迟初始化改变单卡RNG，均未派发训练；v3预初始化全部generator修正。
+启动审查v1错把参数向量与7维运动输出比较，失败保留；v2分开核验参数输入与公共形状/边界，阻抗零桥接通过。
+新归档3818454/view parameter_terminal128_archive_view_20261026_v3；10只读3965208等精确边界，无自动延长。
+纯正式60样本GPU56.48/43.85/40.92/40.08%，后三路采样约10.2核，持续每卡50%未达；混合辅助窗口不代替正式。
+物理/MJB/gates/filter/dt/SPT不改，无子agent；大产物SSD，HDD仅文档；最终冻结验证/ESN/SPT与健康收敛仍待。
+
+
 ## 最新RL状态：2026-10-26 参数9、Direct4与30路采样试验（覆盖下方旧运行状态）
 
 原Goal active，未健康收敛；最新[完整交接](docs/RL_CYCLE09_AND_SERL_POOL_20261026.md)。
