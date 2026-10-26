@@ -2,6 +2,11 @@
 
 ## 2026-10-26 — 复核固定Direct失败并确认Impedance六周期结束
 
+- 后续同轮补充：原四formal均已正常六轮结束，原cycle5工具已产出，科学复核待；没有据此宣称收敛。
+  完整回放24臂/120万更新全复核并看图，clock没有四方法通用改善，旧八probe不重启。
+- fresh critic初始化检验补足三独立初始化：新增seed26/28八进程，原seed27复用，新增80万、合计120万
+  有限辅助预算；首12–13k更新及独立critic/同actor replay hash已核验，四卡瞬时99%。正式策略不变。
+
 - 新报告 `docs/PUBLISHED_DIRECT_FIXED_AND_IMPEDANCE_FINAL_20261026.md/.json`：Direct三代表全失败，
   同接口nominal两主动成功；660万保存子步、公共filter/learned torque投影和配对来源核验。
   末段残差与名义方向相反是描述性证据，不作因果或最终方法结论。

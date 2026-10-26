@@ -50,9 +50,12 @@ reward平稳及有限loss不证明健康收敛，更不能替代完整冻结策�
 
 ## critic初始化对照继续定位误差来源
 
-原完整回放时钟诊断的四个shard1已全部正常结束：4005367/4005615/4005949/4006167，勿重启；
-四个shard0继续最后一个seed。已完成的两配对seed没有显示时间输入对四方法的通用修复，
-部分Q后段负向移动；仅凭正负不能判断价值估计错误，也不能提前据部分seed选择赢家。
+原完整回放时钟诊断八进程现已全部正常结束，勿重启；24臂/120万辅助更新、1200诊断点
+的完整函数初始化/采样hash/actor与replay不变核验完成，review session40035退出，八面板图已看。
+三seed均值in-bag terminal MAE无/有时钟分别为Direct19.572/23.388、Impedance21.235/19.720、
+Admittance34.713/33.771、VMC65.896/73.352。Direct/Admittance/VMC两臂多呈先降后回升，
+不存在通用clock修复。部分Q后段负向移动；仅凭正负不能判断价值估计错误。
+这是全量拟合数据的诊断，没有heldout分数；不推广权重或判定在线策略收敛。
 
 新登记 `runs/fresh_initialization_critic_clock_v1/`，冻结工具同名runtime：
 固定同一checkpoint actor/alpha/data/masks和seed20261027，online/target critic改为上游新初始化，
@@ -66,6 +69,15 @@ checkpoint/replay/alpha/gamma相同，程序逐tensor确认actor严格保持父�
 三个时钟/输入/终端守卫测试再次通过。正式runtime、actor、reward、physics/MJB、gate、
 公共filter、执行器限制及dt均不变。此诊断未完成，不称修复或收敛；勿自动延长/重复派发。
 
+完成原对照后，为避免仅一次随机critic初始化误判，新增独立replication登记：
+`runs/fresh_initialization_replications_v1/`、同名runtime。seed20261026/20261028各自单独进程，
+因此构造时critic随机初始化也独立；复用原seed20261027，不重跑旧结果。新增8进程、每臂50k，
+增加80万预算，加原40万合计120万fresh-critic辅助更新，不是无限追加。
+8PID648950/648956/648962/648967/648975/648978/648983/648987；
+CPU8/9/10/11/12/14/15/16，GPU0–3各2，原seed27四任务继续。
+首12–13k更新已核验，逐方法3个初始critic hash彼此不同、actor/replay hash相同。
+正式physics/actor/learner不变；结果尚未全部完成，后续仍须审查，不自动推广。
+
 ## 接触候选进度和资源边界
 
 第7/8例Admittance被动/短期完整55s/各110万子步精确复核，Task/Strict均假，保留原失败。
@@ -73,8 +85,9 @@ checkpoint/replay/alpha/gamma相同，程序逐tensor确认actor严格保持父�
 原2273688继续，候选没有部署，不代表全矩阵验证或整体加速。
 新GPU60秒混合负载均值89.18/89.25/92.47/89.38%，最低87/87/89/88%；
 不能冒充纯在线训练吞吐，GPU_60S.json另存。VMC也已原阶段完成247500步，
-FINISHED的cycles_completed=5是恢复后五轮，另加父cycle0共六轮；整组网络审计仍由原2472115等待Admittance，
-本报告未据VMC阶段结束声称其收敛。
+FINISHED的cycles_completed=5是恢复后五轮，另加父cycle0共六轮。随后Admittance也已247500步结束，
+原2472115的cycle5工具结果已全部产出、child543487结束，整组**科学复核仍待完成**；
+不据阶段/工具结束声称策略收敛。新增replication实际更新后四卡瞬时均99%，不能外推持续保证。
 
 服务器基址 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/`。
 本报告及配套JSON记录原始产物地址/hash；大数据、环境和checkpoint不入Git。
