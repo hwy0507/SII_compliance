@@ -1,3 +1,13 @@
+## 2026-10-26 — 回报稳定性量化、参数27接续与正式16全30冻结验证
+
+- 按sii-research-sync再次查询/fetch/read真实main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，未变；无子agent。交接docs/RL_REWARD_STABILITY_AND_FROZEN16_20261026.md。实际集群B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，大产物SSD，非arm1/HDD全备份。
+- 新Direct13–16原始日志/协议/hash/配对审计通过：末3均值变化.0913%/.2345%/首尾.3255%，critic末loss.01848→.01523；13→16配对+.134343、28改善/2退步，条件敏感性区间跨零。分项审计明确改善主要减小穿透/峰矩惩罚，全30仍approach。承认回报趋稳，分开报告任务停滞，不自动停训或称整体收敛。原审计1643450/1910037已结束，图已看。
+- 完整参数26各30无abort、新reward0误差/全旧prefix/history/2m marker/finite/health与图通过；I/A/V Task/Strict18/17、12/11、17/17，reward−2.2314/−13.6579/−2.8079，末loss1.6984/2.1504/.8117。24–26同容量审计完成：I回报5%通过但均loss涨，A退步/末loss抬升，V改善未稳定；A/V小比例Q超过当前必要界保留，不宣称优化健康。
+- 正式27三恢复/下一65536/RNG检查通过，21:15:55 UTC启动I2286139/A2286140/V2286141，从准确完整26保留全部state续一个周期，2m历史入口23/pair learner/原算法设置保持；startup2286143、归档2286144/review2286145，无自动28。新固定首5000只读loss检查2339586待原日志，非完整稳定性。原26进程结束；交接只读审查临时用释放CPU13/26/39缩短与冻结物理争用，真实空闲不隐去。
+- Direct17原4158035继续；18准备等待1660818仅等完整17后check-only，不自动训练。冻结完整16新30训练条件矩阵1749189/1749193及独立保存物理/filter/torque审查1749197运行：30x55s、外部动作seed2026102626、最多33000000子步，完整state恢复/seed gate通过，0优化/replay写入。不得把部分分片写成全矩阵完成，不是held-out/独立训练seed/确定性mode/最终ESN比较。
+- 27真实首1000 startup全部通过；首5000固定前缀只读审计完成，末1000 loss I1.353320/A1.708645/V.777713，A早期回落但仍高于25末。新A26终端时序诊断发现short0600丢Strict入库附近loss1.222→2.605，仅时间关联，未据此改terminal128/LR。Direct18准备改用其父退出后释放CPU0，保持完整17审查守卫。
+- 四新工具AST及已完成真实日志审计通过；小证据docs/evidence/rl_reward_stability_frozen16_20261026。源/输入hash与预登记保存。Goal active；最终冻结矩阵、健康稳定和指定ESN仍待。GitHub认证先前失败，未重复索要；最终commit/push与归档收据另记。
+
 ## 最新RL状态：2026-10-26 参数26 / Direct17 / 短物理前缀完成
 
 原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER26_SERL17_PHYSICAL_PREFIX_20261026.md)覆盖下方25/17。无子agent，冻结物理/SPT与全部正式state保持。

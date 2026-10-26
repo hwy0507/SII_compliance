@@ -1,5 +1,15 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：回报稳定性审计完成，参数27启动，冻结16完整矩阵运行
+
+原Goal active，未整体健康收敛。最新[交接](docs/RL_REWARD_STABILITY_AND_FROZEN16_20261026.md)覆盖下方参数26/Direct17快照；无子agent，所有冻结物理/SPT/正式state保持。
+Direct完整13–16原始165000更新审计完成：末3轮相邻reward变化.0913%/.2345%、首尾.3255%，5%描述检查通过；loss末.018480→.015232。13→16配对+.134343、28改善/2退步，但条件bootstrap95区间[−.029627,+.404356]。分项82500条聚合证实改善主要穿透+.086422/峰矩+.050490，progress+.001410，13和16均30approach。报告回报趋稳与任务停滞，不以Task0否定稳定，也不以减惩罚宣称任务学会。
+参数26完整I/V1110750/1105751、A1109750/1104751；Task/Strict18/17、12/11、17/17，reward−2.231404/−13.657883/−2.807895，末loss1.698353/2.150401/.811671。所有30完整无abort、旧prefix/history/2m marker/finite、新reward0误差及health图通过。24–26容量阶段稳定性审计已完成原1811254退出：I回报5%检查通过但整轮loss均值上涨；A回报及末loss退步；V改善仍未稳定。A/V有小比例Q超过当前必要上界，不宣称优化健康。
+正式27 I2286139/A2286140/V2286141，B/runs/parameter_capacity_pool30_cycle27_20261026_v1，精确完整26全state续一个原设置周期；三check-only通过，startup2286143、归档2286144/完整review2286145。必须capacity replay+pair learner，2m容量历史入口23保持，无自动28。原26/归档/review及等待准备1633945退出勿重启。新27首5000只读loss检查2339586已登记，先查first5000_loss_audit原结果。
+Direct17原4158035及4158038/4158039继续。18 prepare/launch/setup已备，等待准备1660818只等完整17后check-only，不自动训练；终端17=540、18=570，CPU范围(1,13)不变，先查原结果。
+新完整冻结16 B/runs/serl_cycle16_frozen_full30_20261026_v1原evaluator1749189/1749193、review1749197仍运行；两分片各15条件、随机原策略/外部动作seed2026102626，30x55s/最多33000000子步，CPU52推理/53–54物理/GPU0。全state精确恢复/外部种子gate通过，尚未全30完成；无优化/正式replay写入、无floor/nominal混合。不是held-out、多训练seed、确定性mode或ESN最终比较。先查原进度，禁止重复派发。
+大产物SSD/HDD小交接收据，远端main dbb1d76/baseline f6e8f8c未变，GitHub认证已问勿重复。当前GPU0含冻结推理，不能混报纯正式占用；26→27审查恢复有实际空闲，已用释放CPU缩短争用。
+
 ## 最新RL状态：2026-10-26 参数26 / Direct17 / 短物理前缀完成
 
 原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER26_SERL17_PHYSICAL_PREFIX_20261026.md)覆盖下方25/17。无子agent，冻结物理/SPT与全部正式state保持。
@@ -1105,3 +1115,9 @@ Direct17实际首1000新增检查通过：690532/5484264，全部旧689532 raw/d
 纯正式17/26窗口已完成：180样本/208.441719s，四GPU均值56.5278/72.6278/71.0000/71.6111%，D/I/A/V吞吐10.4969/23.9395/24.4625/24.4769steps/s。逐样本GPU PID集合恰四正式且原learner全live、无辅助GPU；454710已退出勿重采，仅此固定窗口均值≥50%，不保证每瞬时，不隐去回合尾部与检查恢复等待。
 
 收尾科学提交aa5cac72c965cd2dfb772ff99330c1acacf930dc仅本地，GitHub push仍认证失败，实际fetch远端main dbb1d76/baseline f6e8f8c未变。完整616成员小证据SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER26_PHYSICAL_PREFIX_20261026_205039/FULL_SMALL_EVIDENCE.tar.gz，逐成员hash核验，1932527字节，SHA256 2d5eac7addada82b9c14f1b31a86486ef75fbd81f7aec6a62e40b250332425c8。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER26_PHYSICAL_PREFIX_STATUS_20261026_205039/HANDOFF.md及收据/LATEST入口已核验；大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。FINAL_LIVE_STATUS确认原Direct17/新参数26及归档/完整review继续，有限物理probe/review/observer/准备进程均退出。Goal active；下一轮先核原26/17，不重跑已完成实验，并落实原交接的配对回报/末3轮稳定性判据。
+
+27实际各1000新增startup已通过：旧I/V1110750、A1109750全字段prefix/history/优化器/2m marker/30MJB/30sampler/action/clock及新reward0误差，原2286143退出勿重跑。固定首5000只读检查2339586已完成，末1000 q_loss为I1.353320/A1.708645/V.777713；相较26末回落，但A仍高于25末1.199879，只是早期响应，不是完整健康稳定。
+
+新A26终端与loss时序审计B/runs/admittance26_terminal_loss_20261026_v1原2457889已完，0优化/物理，不重跑。25→26丢Strict的5条件为active_short0900、active_short0600、active_long0300/0500/0200，无新增Strict成功。short0600第1103001步（本轮index34500）任务仍成功但Strict失败，终端reward−28.4719、全回合16.7071→−34.7528；此前1000 loss1.22215、从该步起1000 loss2.60524，时序与末段抬升相邻。窗口重叠/策略变化，未追踪实际抽到的replay批，不能当单条终端导致尖峰的因果证明，不据此改terminal128或LR。
+
+Direct18准备尚未执行前，已将准备/check-only设为释放CPU0，并加原4158035退出守卫，仍须完整17 review后执行，避免争用冻结物理CPU54；decision在B/runtime/serl18_preparation_cpu_decision.json。正式18是否已启动以新LAUNCH为准。冻结16目前两分片各已完成3条，全部矩阵尚未完成，不能提前写全state最终不变/独立物理审计完成。
