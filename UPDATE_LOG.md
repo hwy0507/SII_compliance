@@ -1,5 +1,28 @@
 # 更新日志
 
+## 2026-10-26 — 启动新增30条的历史ridge ESN与RNN/MLP公平对比
+
+- 实时核对/fetch/read main=`ce467b1773adeddfdfb82b8ccc424b97af23240b`、
+  baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；读取同步skill/AGENTS，确认无活动实验。
+  用户采用历史ESN训练思路并限定新增30条，覆盖旧梯度ESN主路线；RL继续交由其他agent。
+- 新run `nonrl_new30_fair_20261026_v2` 抽取并核验24train/6val、41250帧，无旧25数据/权重。
+  数据hash `4b4a734bc5adb008fa3b93348c8efbd4b99cff1f49326892e3626cfa12594eca`。
+  登记三方法×三seed×12候选；ESN原12组解析ridge，普通RNN/MLP各4LR×3正则、32k更新。
+  相同6验证身份的终态部署动作MSE选模；记录不同计算量、参数数和特征映射，不声称等FLOPs。
+- 新协调器快照源码/数据/协议，冻结12个新条件，全部拟合后锁9模型，自动执行完整108回合。
+  统一全矩阵T_ref与接触期50%执行器阈值；物理/MJB/gate/filter/dt不改，不选择性丢失败。
+  神经训练器新增可选终态选模、cosine/正则/无delta损失/global归一化与slowdown裁剪前训练损失，
+  原默认动作行为保留；新增2项契约测试通过，RNN/MLP8更新预检导出差异3.05e-16/2.78e-16。
+- 准备v1的actor版本差异和一次相对路径预检归档失败已隔离保留；v2对齐历史actor、正式argv全绝对路径。
+  仿真固定`.venv-sii-local-rl`/MuJoCo3.11.0，神经拟合`.venv-rl`仅训练，不用其MuJoCo3.14跑物理。
+- 服务`sii-nonrl-new30-fair-20261026-v2.service`已启动，本机单核/单线程/3GiB/禁worker swap。
+  首次核验3个ESN种子36候选已完成，验证MSE约2.707e-4–2.788e-4；RNN首候选正在训练。
+  尚无物理结果，不声称训练充分、优于baseline或完成Goal。方案见`docs/NONRL_NEW30_FAIR_COMPARISON_20261026.md`。
+  11份小型协议/来源/预检/源码已逐SHA256核验归档到
+  `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_registration/`，
+  见`docs/evidence/nonrl_new30_20261026/ARCHIVE_VERIFICATION.json`。原始数据/训练产物留本机；
+  AGENTS已指明新主路线与旧56回合组不自动接续，保留无关草稿。
+
 ## 2026-10-26 — 原25条与扩展55条示范的新指标比较
 
 - 实时核对/fetch/read main=`c3124ba322853c1e561657b58c4204ed2a64a1b6`、
