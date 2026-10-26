@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2026-10-26 — 去除统一预热等待，逐方法完整周期交接资源
+
+- 原v1等待四路fresh均更新再请求STOP，会让较快方法可能多跑一整轮双sampler。新工具/独立协议按方法分别等待自己的fresh/SAC完整边界，不改学习设置；D/A/V全state接续剩余原六周期，尚未启动的Imp待原SAC4后直接fresh12sampler六周期。
+- 原1956030/1146202/691298经各自停止入口正常退出、已派发清单核验；新协调2471936已发六个完整周期STOP，原Imp1557140已有STOP字节不变。7learner保持PID/启动身份并继续，未强杀/重复启动，尚未恢复新learner。52核/GPU0–3分配保持。
+- 原idle只读1968149替换为2472115，仍0/1/3/5且能查真实新run；新archive2472286跟随LAUNCH到有限阶段结束。旧early归档待父全退出/状态保留后才停，不伪造历史结束记录。
+- 4新增守卫测试及实际780source/24parameter/30条件/plan/7parent身份与STOP检查通过；启动快照D14431/A12271/V13153均cycle0、Imp旧215028/20条件。当前只证明收尾已请求并继续，不称12worker生效/收敛/GPU达标。
+- 证据docs/PUBLISHED_INDEPENDENT_RESOURCE_HANDOFF_20261026.md/.json，集群SSD根下runtime/fresh_ready_methods_v2、runs/CHEQ_FRESH_READY_METHODS_V2.json、cheq_fresh_ready_seed20261025_v2、fresh_ready_methods_audit_v2。旧runtime/物理/MJB/gate/actor/filter/执行器/dt不改。
+- fetch main a52dfba4486af8d263d5cd0a976c3102482ff249、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d无新增。完整周期/健康收敛/固定矩阵/SPT/指定ESN仍待，Goal active。
+
+
 ## 2026-10-25 — SAC新增Direct7/VMC4完整周期独立只读复核
 
 - 复用新归档：Direct344824步/643164更新、Task/Strict0/0各30；VMC227259/412500、17/16各30。与旧Direct5/VMC3相比，loss216712→1722495、3062208→10207173，terminalMAE3445→11622、23290→39222；不支持健康收敛，保持已登记资源优先交接、不改fresh超参数。

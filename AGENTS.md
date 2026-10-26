@@ -7,6 +7,9 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新2026-10-26改为按方法独立完整周期交接，覆盖旧v1统一预热等待：旧协调1956030/fresh1146202/SAC691298已通过停止入口正常退出勿重启；新2471936，runs/CHEQ_FRESH_READY_METHODS_V2.json、runtime/fresh_ready_methods_v2、输出cheq_fresh_ready_seed20261025_v2。已向三fresh及三新SAC写完整周期STOP，原Imp1557140已有STOP字节不变；7原learner均live继续，尚无新learner恢复。D/A/V待各自fresh+SAC当前完整周期后全state resume，Imp待原SAC4后直接fresh12worker/六周期，不先派双worker。source16/batch256/UTD1/奖励等不变，六周期总预算扣原已完成，52核分配不变。
+旧只读1968149已在idle/nochild/no completed时替换为2472115，runs/CHEQ_FRESH_READY_METHODS_AUDIT_V2.json、fresh_ready_methods_audit_v2，继续0/1/3/5真实跨run审计；新archive2472286跟随空LAUNCH，旧early/migration在父全退出/保存后才停。4守卫测试、780source/24参数/30条件/7进程身份hash通过。启动D14431/A12271/V13153均cycle0、Imp旧215028/20条件；状态draining，扩容/收敛/GPU50%/ESN未完成。docs/PUBLISHED_INDEPENDENT_RESOURCE_HANDOFF_20261026.md/.json。
+
 最新SAC新run Direct7/VMC4只读复核完成，原诊断session21874已退出勿重启：Task/Strict0/0与17/16各30，loss1722495/10207173、terminalMAE11622/39222，较旧5/3继续恶化；不改fresh设置。D被动0200于663action/26.52s穿透abort，其余29完整55s；VMC30完整、短0600Task真Strict假，保存interval复算穿透.223470mm>.2mm。60terminal/MJB/奖励/checkpoint/网络和两图核验，非新全子步安全审计。runs/sac_post_reallocation_cycle_review_v1/REVIEW.json及VMC_STRICT_FAILURE_DETAIL.json，docs/PUBLISHED_SAC_POST_REALLOCATION_REVIEW_20261025.md/.json。原fresh三路和Imp原1557140实际推进，1956030/1968149仍等待，勿重复启动。
 
 最新fresh学习启动只读核验已完成：D/V6000步各1001updates，网络/target实际改变、Adam有效、旧replay字段精确保留；三路9000预热行与fresh初始化核验。不是收敛。D8385/Adm7171/V8480时均cycle0，Imp仍等原SAC1557140完整4。
