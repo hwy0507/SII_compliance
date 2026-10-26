@@ -7,6 +7,9 @@
 
 ## 新用户任务：已发表基线与训练集比较（2026-10-25 后续澄清）
 
+最新fresh cycle1完整科学复核完成，runs/fresh_cycle01_scientific_review_v1，0新physics/updates：120完整55s，D/I/A/V Task/Strict0/0、18/17、13/13、17/17各30，被动全0/10。loss25.869/53.403/79.790/49.420、terminalMAE72.259/81.622/115.690/104.931均较0增；非健康收敛。Imp原DIAGNOSIS含0/1两轮，其他恢复后只含1，统一filter cycle1后Imp reward−2.396327。4ck/hash/120terminal/MJB/reward/780source核验，图已看；Imp短0600外穿透.2276335mm>.2mm，1375区间核验。原2472115继续等3/5，不重复派发。
+接触math微探针1566953/session9489已完成勿重启：runs/contact_math_probe_v1/VERIFIED_SUMMARY.json；30MJB269020几何对、65536+5+8715范数逐字节一致，仅连续float64(3,)。局部CPU比geometry3.399/norm1.460；18mj_forward、0mj_step/新transition/updates，非全轨迹/整体加速。未准备/部署完整环境候选，live未改。新GPU60s正式均值5.63/5.73/6.15/2.58%，50%未达，无辅助任务。报告docs/PUBLISHED_FRESH_CYCLE01_AND_CONTACT_MATH_20261026.md/.json。原四learner/2471936/2472286继续；Goal/最终矩阵/ESN未完。
+
 最新小batch外部profile完成，session41020/44666均退出勿重启：runs/fresh_small_batch_profile_v1 50Hz有13–14s滞后，保留不能作正常计时；v2 10Hz各主线程599样本无lag/Errors0。D/I/A/V selector等待78.80/49.92/45.58/65.78%，target1.00/3.51/3.84/2.84%，D5→0/V6→6尾部而I/A12稳定。代表Admittance sampler physics93.32%/等待动作5.01%/CPU93.61%；55核quota无新增throttling、窗口平均34.33核。不是CUDA计时/全局因果结论。
 最终SCIENTIFIC_REVIEW覆盖初步REVIEW的Polyak建议：优先调查采样循环与周期尾部，不优先Polyak、不改live batch/UTD/dt；未准备或部署性能候选。source780/parameter24 hash重验，0新physics/辅助updates。docs/PUBLISHED_SMALL_BATCH_THROUGHPUT_PROFILE_20261026.md/.json。四learner及2471936/2472115/2472286继续，Goal/GPU50%/最终比较未完。
 

@@ -1,5 +1,27 @@
 # 更新日志
 
+## 2026-10-26 — Fresh第二轮完整复核与接触局部计算探针
+
+- 四路同cycle1的120个回合均完整55s；Task/Strict分别0/0、18/17、13/13、17/17，各30。
+  四路被动仍0/10，末1000critic loss25.869/53.403/79.790/49.420，终端MAE72.259/81.622/115.690/104.931，
+  均较首轮上升，不是健康收敛。统一按cycle1过滤原诊断：Impedance原图/回报含两轮，
+  其他三路恢复后只含第二轮；第二轮Imp平均reward−2.396327，不用两轮均值替代。
+- 4 checkpoint原/副本hash、120terminal/MJB/fixture/plan/dt、reward合计及780source hash通过，
+  图已查看。Imp短期0600外穿透.2276335mm超原.2mm，1375保存区间峰值一致，终奖−25/效率0。
+  全部失败保留；只读复核0新physics/updates，不是新增原子步安全重放。
+- 新工具probe_published_contact_math_20261026.py的已登记探针完成：30MJB/269020几何对一致；
+  65536随机+5特殊+8715记录/重建三维连续float64向量范数逐字节一致。局部CPU读取中位比3.399/1.460倍；
+  有18次mj_forward，0mj_step/transition/updates，不能写成零物理计算或整体加速。
+  未准备或部署完整环境候选，正式source16/协议/physics/actor/filter/gate/dt未改。
+- 原四learner及协调2471936/审计2472115/归档2472286继续，后续审计等cycle3/5；
+  新纯正式GPU60秒均值5.63/5.73/6.15/2.58%，仍未达50%，无辅助GPU任务。
+- 产物基址 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/`：
+  `runs/fresh_cycle01_scientific_review_v1/`、`runs/contact_math_probe_v1/`；文档及hash清单
+  `docs/PUBLISHED_FRESH_CYCLE01_AND_CONTACT_MATH_20261026.md/.json`。AST/JSON/diff检查；
+  探针源hash6903e814…、registration72bc53a7…，原probe已结束勿重启。
+- fetch和ls-remote确认main=a52dfba4486af8d263d5cd0a976c3102482ff249、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，
+  两分支日志已读。充分训练、最终固定策略/SPT/指定ESN比较仍待，Goal active；GitHub发布取决于push真实结果。
+
 ## 2026-10-26 — 小batch四路吞吐定位，保留高频测量干扰并完成低频复测
 
 - 四learner及一个Admittance sampler外部带线程ID采样。50Hz v1有13–14秒滞后/实际74.24秒，保留限制说明、不作正常耗时依据；10Hz v2无lag/Errors0，各主线程599样本，/proc窗口59.05秒。
