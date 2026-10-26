@@ -1,3 +1,12 @@
+## 2026-10-26 — 新30条第六条件核验，前54条原始物理轨迹已共享
+
+- 开工实查main=35c2f788b0001c8fbb0618ed0bde2472efa899e1、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，复读AGENTS；上一轮核实等待，本轮跟踪原86607协调器从48推进到54/108并接续第七条件，未重复派发。后续fetch/read并快进整合d6f48179054e94bb3a35e0785bf908f25cee5165的独立RL更新，不改变本机冻结实验。
+- 12:40:52 UTC条件005全部9×55秒/990万子步独立核验通过，1357源文件、完整训练与9锁模/验证重放、MJB/config/checkpoint/轨迹hash、原actor/filter审计收据与原始峰矩/接触合规/穿透/机器安全复算一致；单核/3GiB/禁swap，4.881秒退出0。证据SIXTH_CONDITION_PHYSICS_AUDIT.json；未重新运行物理仿真。
+- 单条件Task ESN2/3、RNN2/3、MLP1/3；Task AND Strict为1/3、2/3、1/3。首seed三方法43.12/43.84/51.16秒双通过；第二seed三方法carry失败；第三seed ESN42.04秒完成但随后穿透.293360mm未过Strict，RNN54.36秒双通过，MLP load_transfer但Task=false。全部完整55秒、无abort、失败保留，不计算局部T_ref/SPT或完整排名。
+- 条件004/005的18条完整轨迹421源文件2744771558字节已归档核验到arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_physics_004_005_1241/PHYSICS_BUNDLE.tar.gz，2194324004字节，SHA f6bf2d103ceef67fc8db83c2141806732d3f0574894f57b3889dde1e7a5ce257；收据PHYSICS_004_005_ARCHIVE.json。
+- 源文件前后/包内逐项hash和服务器暂存/最终包SHA/大小一致。归档本机单核/3GiB/禁swap/Nice10、59.867秒退出0；服务器只传输/归档/核验，不训练或仿真。累计前54条物理原件已有共享副本，本机未删；后续轨迹仍仅本机，完整训练产物另已共享。
+- 传输期间原服务继续至55/108，第七条件RNN真实推进；复核无OOM/swap，本机仍约540GiB可用。完整108回合、共同T_ref/SPT、三seed最终汇总和完整独立审计仍待，Goal active。未改变模型/候选/物理协议，报告与证据按真实范围发布。
+
 ## 2026-10-26 — 参数11完整审查、等价执行cycle12与Direct8时钟诊断
 
 - 开工核对main a8bf20d3b955018abf95f27f3bf951f98625d148，收尾fetch/read并快进另一主机非RL更新35c2f788b0001c8fbb0618ed0bde2472efa899e1；baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d。无子agent，独立非RL任务不动。最新docs/RL_EXACT_PIPELINE_CYCLE12_AND_SERL_CLOCK_20261026.md。
