@@ -1,5 +1,9 @@
 # 本仓库的持续工作约定
 
+## 最新RL状态：2026-10-26 参数14已完成、Direct多步目标10继续
+
+收尾覆盖下方运行中快照：三参数14全30完整无abort，Task/Strict I17/16、A11/11、V17/16，reward−4.076/−13.729/−4.559，较13均退步。全新reward/旧prefix/history/配置/markers/MJB审查通过；健康诊断1286970仍收尾。三正式1254686/1254688/1254691与归档1286930已结束，勿重启；下一参数父为parameter_batch65536_archive_20261026_v1下准确14，SHA见交接文末。Direct1595728仍运行10，无参数15/Direct11登记，Goal active。
+
 ## 最新RL状态：2026-10-26 参数batch65536正式14与Direct多步目标正式10运行中
 
 原Goal active，未健康收敛。最新[完整交接](docs/RL_BATCH14_AND_SERL_MULTISTEP10_20261026.md)，覆盖下方“无正式learner”。无子agent，物理/SPT/MJB/gates/filter/dt不改。

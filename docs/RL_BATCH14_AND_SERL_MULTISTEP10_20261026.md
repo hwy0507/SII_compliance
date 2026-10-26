@@ -131,3 +131,23 @@ prepared9 SHA `6bf4ec143049657f5a071569ce24d22ecca906e1446d23c1e9b6b88be4ccc44f`
 仓库迁移后HDD配额依然受限：未压缩小证据副本和完整压缩包两次写入均失败，不能称HDD完整证据备份已完成。仅删除本次失败的不完整副本，所有源文件、SSD完整压缩包、GitHub提交均保留。
 HDD目录 `/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_BATCH14_MULTISTEP10_STATUS_20261026_140709` 中，`ESSENTIAL_BACKUP.tar.gz` 只包含本轮10个新增源码及本报告，包内逐项SHA和整体SHA核验通过，另有 `HANDOFF.md` 与 `BACKUP_RECEIPT.json`。
 完整本轮133文件证据包已在SSD `B/repository/RL_BATCH14_MULTISTEP10_29d142e8.tar.gz` 逐项核验，并已发布GitHub提交29d142e；它没有完整复制到HDD。最新交接入口已更新，明确这些范围。大型checkpoint/replay/物理轨迹仍未得到HDD/arm1全量副本。
+
+
+## 收尾更新：参数14全部完成，任务表现未恢复
+
+三路14均已完整完成并归档，各新增41250交互、30完整55秒、无abort；全部新reward重建误差0、原replay前缀/history/优化器配置/三marker/30MJB审查通过。
+
+| 方法 | steps/updates | Task/Strict，各30 | reward均值 |
+|---|---:|---:|---:|
+| impedance | 615750/610751 | 17/16 | -4.075740 |
+| admittance | 614750/609751 | 11/11 | -13.729115 |
+| vmc | 615750/610751 | 17/16 | -4.559477 |
+
+相比13，I reward−2.288→−4.076、A−10.232→−13.729、V−2.836→−4.559；三个接口均没有在线reward改善，不能用有限probe终端误差或GPU利用率提高宣称训练收益。
+准确下一参数父为 `B/runs/parameter_batch65536_archive_20261026_v1/{method}/cycle_00014.pt`：
+
+- impedance: `b6e2f84016e7423eae0202bbe2148761b640d7600312f7edc658f7eb00282500`
+- admittance: `80cb74644785e222677623541c8ac4252a466a70bcbcc6a0b04500323460382d`
+- vmc: `d41df3bbfafdbeb14eff5b65e492d6fea2c7727483e9e72e6add9bd1e9209d5a`
+
+原参数learner1254686/1254688/1254691及归档1286930已结束，勿重启。完整周期REVIEW已通过，健康诊断协调1286970仍在收尾；下一步先读取health/DIAGNOSIS和FINISHED，再决定参数15。Direct1595728继续登记10，尚未结束，不另派发。未登记参数15或Direct11；Goal继续active。
