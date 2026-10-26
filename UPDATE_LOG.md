@@ -1,3 +1,13 @@
+## 2026-10-26 — 参数24完整跨界与25接续、actor熵下限有限对照
+
+原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER25_SERL16_ACTOR_FLOOR_20261026.md)覆盖下方24/16。无子agent，物理/SPT与全部正式state保持。
+参数24实际跨1m审查已通过，原2362754退出勿重跑；I/A1001000、V1002000时全部旧prefix/history/marker及新reward0误差。随后完整24 I/V1028250/1023251、A1027250/1022251，Task/Strict18/17、15/15、17/15，reward−2.269965/−6.918517/−6.375837，末loss1.604333/1.311808/.876321；全30完整无abort、旧prefix/新reward/finite/health/图通过。导纳改善，VMC两短条件丢Strict且loss/熵有波动；19–24保存结果汇总/图已完，非独立seed或收敛。
+正式25 I3775564/A3775566/V3775568，B/runs/parameter_capacity_pool30_cycle25_20261026_v1；准确最新24全state接续一个周期，原GPU1/2/3/30pool/batch65536/UTD1/terminal128/projection/pair/LR保持，2m容量及历史入口23保持；必须capacity replay+pair learner严格恢复。三check-only及实际各1000新增startup通过，全旧prefix/history/marker/MJB/action/clock/reward0误差；启动3775661已退出，归档3775663/完整review3775665继续，无自动26。原24及3177341准备/3315162六轮汇总已退出。
+Direct16原1387783/归档1387835/review1387837继续，最新完整父15仍0/30。17准备/启动/监视脚本已备，等待准备3805535只等完整16 review后check-only，不自动训练，先查原进程/结果勿重启。
+新actor floor0.1 gate原2875668已完：准确15全state/下一65536不变，零floor完整8:1逐位native，6负守卫/目标差/critic与温度两臂精确隔离/actor-only差异通过；18critic+4actor+4temp辅助丢弃。原温度dual不受约束，仅有效actor系数max(raw,.1)，不是约束dual等价实现，无正式持久marker/loader。
+有限两臂probe原3020505/reviewer3158348已完勿重复或延长：同完整15/同draw/RNG/default精度，各2000outer/16000critic，0physics/不存推广权重。末原alpha/候选：raw.000745655/.000122410，有效.000745655/.1；initial熵−22.421530/−2.346657，terminalMAE.047622/.092180，TD32.051011/.111292，public0 .944865/.929913，残差幅度.498157/.574491。熵上升但误差/残差增大，无任务收益证据；独立保存结果/图/FINAL科学review通过，决定不部署0.1，正式16不变。
+新纯正式profile3524318，B/runs/batch16_parameter25_gpu_profile_20261026_v1，等待25 startup通过后固定180样本/严格四正式PID，无辅助GPU，先查结果勿重采。远端main dbb1d76/baseline f6e8f8c未变，认证待恢复用户已被问勿重复；大产物SSD/HDD小交接收据，非全备份。
+
 ## 2026-10-26 — 参数24回放容量扩展与真实启动通过，Direct16继续
 
 - 开工重验原四learner/归档/完整review live，fetch/read真实main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d未变，起点6d3b448。无子agent，物理/SPT与正式学习state保持；交接docs/RL_PARAMETER24_SERL16_REPLAY_CAPACITY_20261026.md。
@@ -9003,3 +9013,5 @@ cp19250及其后新产物仍仅本地、待下一安全边界归档。已准备D
 - 从近期 `baseline_local_rl_20261009` 的 `optimizer.jsonl` 读取实际 `actor/loss`、`critic/loss`、`actor/entropy`、`temperature/value`；按真实训练步拼接 segment/extension/continuation/recovery，重复同一步优化记录先取均值，再按1000步分箱，粗线为约5000步移动平均。
 - 主图：`code/mujoco_6d_vmc_benchmark/outputs/reward_training_curves_20261013/loss_convergence_actor_critic.png/pdf`；辅助图：`loss_convergence_auxiliary.png/pdf`；说明：`LOSS_README.md`；脚本：`tools/plot_rl_loss_convergence_20261013.py`。
 - 图上可见 actor/critic loss 在约5万–8万步附近出现明显下降后进入平台，随后部分方法缓慢回升；这只能说明优化器诊断量的阶段性稳定，不能单独证明策略任务成功或严格收敛。旧PPO/SAC pilot的monitor/TensorBoard已核对但因协议不同单独保留，未混图。
+
+正式25实际启动检查已完成：三路各新增1000，旧I/V1028250、A1027250条所有字段完整保留；2m容量/历史marker/history/优化器超参/30MJB/30sampler/action/clock及新reward0误差通过。原startup3775661已退出，勿重跑。

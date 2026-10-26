@@ -1,0 +1,26 @@
+{
+  "time": 1793044794.8249748,
+  "original_review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle15_actor_entropy_floor_probe_20261026_v1/REVIEW.json",
+    "sha256": "83d4c6e448946692c753a7e75a08de829562447983e865fa43829aa4d1b19bcb"
+  },
+  "independent_saved_result_review": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle15_actor_entropy_floor_probe_20261026_v1/INDEPENDENT_REVIEW.json",
+    "sha256": "ae0a1f7283ebb7b21dd141a701a47a52c8d15cf47e6528e9ad3d682c199e7237"
+  },
+  "plot": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle15_actor_entropy_floor_probe_20261026_v1/actor_entropy_floor_comparison.png",
+    "sha256": "ac8a1d1cdf56eb4b5ab6e63a62cc7652363a4fedae1a5b908e08ab40a145611c"
+  },
+  "plot_visually_inspected": true,
+  "finite_probe_completed": true,
+  "formal_deployment": false,
+  "auxiliary_weights_saved_or_promoted": false,
+  "repeat_or_extend_probe": false,
+  "convergence_claim": false,
+  "finding": "Prespecified actor floor0.1 substantially increases initial entropy and pre-tanh standard deviation on saved states, but increases terminal and32-step TD errors, lowers sampled Q and increases initial residual mode magnitude. Original learned alpha continues downward under its unchanged dual loss. Public0 mode remains about0.93, with0 nominal/larger slowing WBC. No new task success or online interaction evidence.",
+  "terminal_mae_ratio": 1.935671514141395,
+  "td32_mae_ratio": 2.1817344768759788,
+  "initial_entropy_delta": 20.074872732162476,
+  "decision": "Retain this finite stress-test evidence; do not automatically deploy floor0.1 or sweep/extend it. Formal16 continues unchanged. Future objective changes require separately justified finite registration, latest complete formal parent and persistent full-state loading/validation; these auxiliary weights cannot be promoted."
+}
