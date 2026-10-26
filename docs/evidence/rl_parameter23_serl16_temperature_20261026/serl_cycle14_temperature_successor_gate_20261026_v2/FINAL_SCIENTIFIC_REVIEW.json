@@ -1,0 +1,41 @@
+{
+  "time": 1793041348.2308378,
+  "implementation_gate": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycle14_temperature_successor_gate_20261026_v2/REVIEW.json",
+    "sha256": "fd8bb2cc3b71595541f2cd693a38759ad2d72070c98a9f6ba490bc4803b81900"
+  },
+  "permit_finite_offline_probe": true,
+  "permit_formal_deployment": false,
+  "reviewed_default_max_abs": 2.9802322387695312e-08,
+  "native_alias_bitwise_equal": false,
+  "changed_leaves": [
+    {
+      "path": "opt_states/actor/inner_state/0/0/mu/modules_actor/Dense_1/kernel",
+      "elements": 1792,
+      "exact": false,
+      "max_abs": 2.2737367544323206e-10,
+      "max_value": 1.072217128239572e-05,
+      "rmse": 3.7558183123028345e-11,
+      "close_1e6_1e7": true
+    },
+    {
+      "path": "opt_states/actor/inner_state/0/0/nu/modules_actor/Dense_1/kernel",
+      "elements": 1792,
+      "exact": false,
+      "max_abs": 4.440892098500626e-16,
+      "max_value": 6.533018570564764e-10,
+      "rmse": 3.154796737954812e-17,
+      "close_1e6_1e7": true
+    },
+    {
+      "path": "params/modules_actor/Dense_1/kernel",
+      "elements": 1792,
+      "exact": false,
+      "max_abs": 2.9802322387695312e-08,
+      "max_value": 1.3425251245498657,
+      "rmse": 2.3353882659362127e-09,
+      "close_1e6_1e7": true
+    }
+  ],
+  "reason": "Default differences confined to one actor kernel and its Adam moments, max2.98e-8; metrics and nonfloat/counter/RNG exact. Highest-precision formula check and exact default critic/actor isolation pass. Both finite probe arms use the same wrapper and default precision, identical full formal14 state and row draws; only temperature successor differs. Preserve failed v1; this is numerical boundedness, not bitwise equivalence or deployment approval."
+}

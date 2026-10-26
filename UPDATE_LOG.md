@@ -1,3 +1,16 @@
+## 2026-10-26 — 参数23与Direct16接续、温度后继候选有限对照完成
+
+- 本轮fetch/read实际远端main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，无新变；起点b20eba43。无子agent，冻结物理/SPT和全部正式state保持；交接docs/RL_PARAMETER23_SERL16_TEMPERATURE_PROBE_20261026.md。
+- 参数22完整I945750/A944750/V945750，Task/Strict18/18、15/14、17/17，reward−.422626/−8.585905/−2.772431；完整30无abort、新reward0误差/旧prefix/history/marker/finite、health/图通过。导纳末1000loss3.150高于原约1，terminal训练内MAE.259→.635，23首5000末段loss1.958，仍未稳定；只读tail审计保存全部10个1000更新窗口，不作因果解释。
+- 正式23 I1064168/A1064173/V1064175，从准确22全state续一个原30pool/batch65536/UTD1/terminal128/projection/Imin+A-Vmean/actor min/LR周期，三check-only/首各1000真实交互全部旧prefix与新action/clock/reward0误差/MJB通过；归档1064231、review1064233，无自动24。
+- Direct15完整648282/5146264，0/30、reward−31.004831、30完整无abort，所有41250单步/32步目标精确、旧607032完整state保留、pending0；terminalMAE.055173、TD32.053895、Q−20.635448，全审查/图通过。正式16 learner1387783从最新15全state原设置续一个周期，官方10critic/random2 bootstrap/actor all10mean/8:1/batch65536/32步/gather+transfer保持；check-only和真实1000新增/全prefix/124mature+876pending/action/clock/reward0误差通过，归档1387835/review1387837，无自动17。
+- 新温度状态候选只覆盖官方temperature_loss_fn的输入，未改critic/actor/优化器/RNG，非正式marker/loader。v1完整8:1逐位gate失败保留；v2量化默认最大state差2.98e-8、仅actor一kernel与其Adam矩，metrics/counters/RNG精确，highest公式检查与默认critic/actor独立更新精确隔离通过，温度变化只限自身param/optimizer，7负守卫及完整state/replay不变通过。不伪称默认逐位一致，v2科学决定仅许可有限probe。
+- 两臂温度对照准确14同全state/65536 draws/default精度，各2000outer/16000critic/2000actor/temperature，0physics/不存权重；末alpha对照.000792780/候选.000839037，initial熵−23.741861/−23.744192，terminalMAE.056703/.058605，TD32.076244/.077213，public0 .961014/.966044、残差幅度.404125/.430945。完整预算/digest/RNG/源hash/独立保存结果审查与图通过，1200步两臂共同尖峰保留。未改善初始探索、不部署/不重复/不推广权重，原1094552/1162204结束；不是新任务成功评价或多seed结论。
+- 参数回放容量新只读审计：准确22阻抗父capacity1000000/size945750/cursor945750，base默认同为100万。23完整预期I/V987000、A986000，当前不会覆盖；24会跨100万，禁止盲目复用全prefix审查/旧driver。下一步优先验证独立登记容量扩展/持久marker/strict loader及合成跨界守卫，保留全部旧row/state/RNG/下批；超过原容量后相对环形丢弃的采样分布改变须明确披露。尚未实施或部署扩容，须核三路最新23父。
+- 新固定180样本纯正式profile1275249等待16 startup和全部probe GPU退出，逐样本恰四正式PID；结果见收尾，不以混合占用声称正式达标。四新源码AST/diff通过，完整实现gate及实际启动检查见证据；小证据docs/evidence/rl_parameter23_serl16_temperature_20261026/SOURCES.json。大产物B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，HDD仅小交接/收据，非arm1/HDD全备份。Goal active，未健康收敛。
+
+纯正式GPU观测已完成：180样本/209.097716秒，GPU均值58.5778/74.1556/71.5111/73.8944%，D/I/A/V吞吐10.7270/24.4049/24.5722/24.9214steps/s；逐样本GPU PID集合恰四正式、原learner全部live，无辅助GPU。原1275249完成勿重采；均值≥50%仅此固定窗口，非每瞬时/永久保证，周期检查和尾部空闲不隐去。
+
 ## 2026-10-26 参数22 / Direct15 / 起始熵与温度状态诊断
 
 原Goal active，未健康收敛；最新[交接](docs/RL_PARAMETER22_SERL15_ENTROPY_STATE_20261026.md)，承接21/15。无子agent，冻结物理/SPT/正式全部state保持。
