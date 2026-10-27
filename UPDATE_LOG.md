@@ -1,3 +1,9 @@
+## 2026-10-27 — 最新 ESN 最高SPT单回合原速视频
+
+- 按用户要求从完整最新矩阵中选Task AND Strict双通过且SPT最高的ESN回合，唯一最高者为 `esn_s2026102601__new30_prospective_20261026_acceptance_010`：完成39.40秒、SPT=1、峰矩49.563877Nm、接触期舒适代理99.1329%、最大外部穿透0.192784mm。此为事后选出的最佳展示样例，不代表平均效果或所有指标最优。
+- 查询/fetch/read main `029f8ac13470dcdbed118053eea3a990c059599c`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，原execution complete、最终审计final_audit_passed；源轨迹和MJB hash与最终报告一致。复用现有三视角渲染脚本、MuJoCo3.11.0，只播放保存状态，未重新仿真、训练或修改冻结参数。1375帧/25fps/原速55秒/1920×560；首尾目视与完整MP4解码通过。
+- 本地 benchmark `outputs/nonrl_new30_esn_best_spt_media_20261027_v1/`；服务器独立归档已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_esn_best_spt_media_20261027_v1/`。MP4 SHA256 `7ac73561dcce6379b15526164386233fe05ed80362a735dd2ea7828868a50d25`，manifest SHA256 `029bd7bae9ffbc61f248a9281d29285405150c7b90525d676c42e85f22aeb10a`。服务器仅归档。收工复读AGENTS，保留用户未跟踪的会议文件。
+
 ## 2026-10-27 — 最新新增30条 ESN 综合测试回放
 
 - 用户要求展示最新场景，直接使用 `nonrl_new30_fair_20261026_v2/evaluation/esn_s2026102601__new30_prospective_20261026_acceptance_000/rollout` 的原始 MJB 和状态轨迹生成三视角 GIF/MP4；不是此前展示的9月历史动图，也没有重新训练或仿真。
