@@ -1,3 +1,11 @@
+## 2026-10-27 — 新30条第九条件审计通过，81/108回合完成
+
+- 上轮核实等待，本轮开工真实查询并fetch/read main=13d44fb38696d3ada6324b56b1548c344a988794、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，读取AGENTS/进度；原worker151047仿真11.04→48.04秒、CPU同步推进，完成第81条后原协调器86607自动接续第十条件，未重复派发。
+- 03:26:38 UTC条件008的9×55秒/990万子步独立核验通过：1357冻结源码、完整训练/选模/9锁模与验证动作重放、物理MJB/config/checkpoint/轨迹hash、已有actor/filter重放收据及原始子步峰矩/接触合规/穿透/机器安全复算一致。单核/3GiB/禁swap检查4.745秒退出0，证据NINTH_CONDITION_PHYSICS_AUDIT.json；没有重新仿真。
+- 单条件Task ESN3/3、RNN2/3、MLP0/3；Task AND Strict为1/3、0/3、0/3。第二seed ESN50.64秒双通过；ESN第一/三seed穿透.619590/.227577mm、RNN第一/三seed穿透.257711/.410441mm，任务虽完成但Strict失败。RNN第二seed和全部MLP在carry结束未完成；全部55秒、无abort。MLP力矩合规100%仍伴随任务失败和359.89–427.94N人体接触峰力，不能据代理指标称整体安全/更优。
+- 小证据4文件包36382字节已核验至arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_ninth_condition_20261027_0326/NINTH_CONDITION_AUDIT.tar.gz，SHA af0d0d04c2a37e6c3600640048f53a0909ba140e4755b1d322b0bcbe5fcee0a3；收据NINTH_CONDITION_ARCHIVE_20261027_0326.json。包内与本地文件一致、服务器暂存/最终SHA及大小一致，目标此前不存在；本机原件与失败保留。第九条件原始轨迹仍仅本机，前72条及训练原件另有共享副本，服务器未训练/仿真。
+- 服务active，开工内存约1.10GiB/上限3GiB，OOM事件0/swap0；第十条件worker151532已存活。全108回合、共同T_ref/SPT、三seed汇总和默认最终审计仍待，不生成局部排名，Goal active。收工复读AGENTS，只发布本任务记录。
+
 ## 2026-10-27 — 新30条休眠停顿核实，原作业恢复推进至79/108
 
 - 上轮为原进程核实等待；本轮实查服务86607及worker146764，读取execution/progress与AGENTS。GitHub TLS恢复后fetch/read main=dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，安全快进保留另一任务记录，不改变冻结源码。
