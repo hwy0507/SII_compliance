@@ -1,3 +1,10 @@
+## 2026-10-27 — 非RL传统补测54/72，第九条件审计归档完成
+
+- 原协调179772完成条件008并进入009，归档188540完成第九包后等待下一组；各轮已核验原进程与真实物理推进，无重复实验或调参。查询fetch/read main `ecc0425a72029af28e21802e49cca10c3409426b`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并安全快进，保留并行RL记录，非RL源码和冻结协议未变。
+- 本组六回合完整55秒/660万子步审计通过，Task/Strict均失败、公共filter误差0、无机器安全违规；保留全部失败及独立经典actor/servo重建限制。六配置身份与收据hash核验通过，审计SHA `662132e6a4245339b48d12e48347c424dd99905dbc49ed4d7ef669bc0db5e2cf`；318文件原件前后及包内hash一致。
+- 729,297,611字节包已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics008/PHYSICS_BUNDLE.tar.gz`，SHA `afab41d1e39e6be2757b2a090bd962cc2af341ea175e49060a0106378a3a38db`，本地/远端临时/最终一致。小收据`CLASSICAL_CONDITION008_ARCHIVE.json`、`CONDITION008_PHYSICS_AUDIT.json`已整理；原108+新54原始数据已共享，服务器只归档/hash。
+- memory.max累计766、OOM/kill0、swap0，两原服务正常；观察65167在第九包核验后正常结束。收工复读AGENTS并保留会议文件；余18回合及最终180共同参考/比较/审计发布仍待，Goal active。
+
 ## 2026-10-27 — 完整48及46–48统计、正式49与VMC诊断
 
 [最新交接](docs/RL_PARAMETER49_PROGRESS_20261027.md)。48三路全30×55/noabort/旧replay和history保留/全reward含终端0误差，Task/Strict18/17、13/13、17/16，reward−2.430898/−10.331552/−4.567467。原46–48 I通过5%（首尾4.5442%），A首尾33.1977%未稳定，V相邻未过；保存算术/hash核对，不重跑bootstrap。VMC48最大loss132.715短暂尖峰，末1000 .666191；前瞻49首5000均值.614563/max6.557824、>10均0，独立保存复核通过，仅早期诊断非收敛。
