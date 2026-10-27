@@ -6,6 +6,13 @@
 43/26只读全review在原learner退出后移到释放CPU13/0，未改在途正式/物理；43→44退出到spawn I286–288/A347–349/V359–361秒，非GPU精确idle；26初观察已退出，lastlive错误初始化已保留原件并更正null，不造时长。冻结41原三评估继续，后续28须识别新recovery_continuation_stage/930pending。无子agent，Goal active。
 
 共享SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl；小证据docs/evidence/RL_PARAMETER44_SERL_TAKE27_20261027。main5edb997/baseline f6e8f8c真实查询fetch/read，原冻结源保持；归档/push另记。
+## 2026-10-27 — 非RL传统补测18/72，第三条件审计与原始归档核验完成
+
+- 前几轮为对原服务的有效等待，确认真实PID/CPU及物理时间持续增长；本轮原协调179772完成条件002并接续003，归档188540自动处理第三组，无重复仿真或归档。仍待余54回合和最终180汇总，不据局部结果宣称全组完成。
+- 重新查询并读取远端main由`4c75aa52570930e5bfd7f8fe688c6ea7ec8b8d0d`前进至`dc35b325982d12b5634501be534a5bd75876cc42`、baseline仍`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；安全快进保留另一任务RL记录。非RL测评/聚合/归档源码和协议未变化，原冻结运行不受影响，用户会议文件未纳入。
+- 第三组6回合完整55秒/660万子步的源码、模型、参数、原始物理指标及公共filter审计通过，filter最大误差0；Task/Strict均失败，完整失败保留。仍不声明独立经典actor/原生servo重建，也不将该组外推整个矩阵。
+- 318文件原件前后/包内hash检查通过。728,329,915字节原始包已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics002/PHYSICS_BUNDLE.tar.gz`，SHA `ff3750c2face9fa3cccacbed4ba3b6a02e74e6ece40124bcd7d58631cac675a5`，本地与远端临时/最终一致。收据见`docs/evidence/nonrl_classical_task_spt_20261027/CLASSICAL_CONDITION002_ARCHIVE.json`及`CONDITION002_PHYSICS_AUDIT.json`；原108+新18回合已原始共享，服务器只归档/hash。
+- 物理cgroup记录memory.max命中12次、OOM/kill0、swap0，随后内存回落约1.43GB；服务继续推进，未因正常回收误判失败或重启。收工复读AGENTS，更新专题进度；Goal保持active，完整矩阵审计、结果比较和最终发布未完成。
 
 ## 2026-10-27 — 参数44恢复准备、固定43–45与Direct27审查入口
 
