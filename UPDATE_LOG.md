@@ -6,6 +6,13 @@
 
 开工实际查询/fetch/read main74e2d160fac79d5591d3c9434391d75241de2715、baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d；共享SSD大产物保持，发布/归档另记。
 
+## 2026-10-27 — 非RL传统补测36/72，第六条件审计归档完成
+
+- 原协调179772完成条件005、进入006，归档188540自动完成第六组；前几轮均为对原服务/进程/真实物理时间的有效等待，无重复实验或调参。重新查询fetch/read main `0869a04513ae0e586d2b30fd24f1f41d64526811`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并安全快进，非RL源码和冻结协议不变。
+- 第六组6回合完整55秒/660万子步审计通过，Task/Strict均失败、公共filter误差0，保留全部失败与独立经典actor/servo重建限制。审计SHA `97e8cb525d05d618964961409ccfb6ad851663638cc61fdd233dd3e39636651f`；318文件原件前后/包内hash一致。
+- 730,059,188字节原始包已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics005/PHYSICS_BUNDLE.tar.gz`，SHA `34cd962ec19135b029981bf0176a0e7ee30132f0aa53b519f1f5ba7a7458049f`，本地/远端临时/最终一致。收据`CLASSICAL_CONDITION005_ARCHIVE.json`与`CONDITION005_PHYSICS_AUDIT.json`已整理到专题证据目录；原108+新36已原始共享，服务器只归档/hash。
+- memory.max累计增至13、OOM/kill0、swap0，原服务正常；观察会话在第六包核验后结束，不影响仿真和归档。收工复读AGENTS，保留用户会议文件。剩余36及完整180共同参考/比较/最终审计和发布仍待，Goal active，半程不记为目标完成。
+
 ## 2026-10-27 — 参数48双容量标记静态衔接准备
 
 [本轮补充](docs/RL_PARAMETER48_STATIC_20261027.md)。原四正式46/28及冻结41七PID持续推进，47/29原准备与两个固定窗口保持。新parameter48_static_preparation_20261027_v1含10个冻结运行源码：准确47→48 prepare/手动launch/setup、五审查模板、两候选；原entry23/2m marker保留，新4m followup绑定实际47全state。原依赖逐项保留且恰新增两文件，startup/fullreview双marker及current_replay_capacity符合46–48窗口。两health逐字节一致，reward/映射段仅周期路径差异；AST/hash/CPU/标签通过。首次静态比较未规范化周期路径的失败保留并更正。没有正式48目录、waiter或恢复/物理/优化，准确47恢复与真实2m边界仍待。
