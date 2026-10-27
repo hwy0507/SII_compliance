@@ -1,3 +1,5 @@
+> **当前RL：[参数44与Direct take27正式接续](docs/RL_PARAMETER44_SERL_TAKE27_20261027.md)。43/恢复26已完整审查，44/take27已启动；原冻结41继续，先核实际进度及take27 GPU结果，勿重复启动。Goal active。**
+
 > **最新接续准备：[参数44、固定43–45与Direct27审查入口](docs/RL_PARAMETER44_STABILITY43_45_20261027.md)。原Direct26/参数43/冻结41继续；44和27仅等待完整父恢复，未自动训练。Goal active。**
 
 > **当前RL补充：[完整参数42、正式43与Direct读取优化准备](docs/RL_PARAMETER43_TAKE_PREPARATION_20261027.md)。Goal active；Direct26/参数43/冻结41运行，43 actual startup已通过。旧中断25保留，take27仅准备。先核最新LIVE_STATUS和实际产物，禁止重复启动。**

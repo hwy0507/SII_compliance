@@ -5,6 +5,15 @@
 - 726,692,174字节原始包已核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics003/PHYSICS_BUNDLE.tar.gz`，SHA `c3a20533156f9bd0035e473e4e3f8fe6c67198b8828cc6c17d7616abb48e8acc`，本地/远端临时/最终一致。新增两份小收据在`docs/evidence/nonrl_classical_task_spt_20261027/`，原108与新24回合已原始共享；服务器只归档/hash。
 - 本机物理服务memory.max累计仍12、OOM/kill0、swap0；只读观察会话在第四包核验后正常结束，两原服务保持运行。尚待余48、最终180共同参考/比较/审计及发布；Goal active。收工复读AGENTS，保留无关会议文件。
 
+## 2026-10-27 — 参数43与恢复26完整审查，正式44与take27
+
+[最新交接](docs/RL_PARAMETER44_SERL_TAKE27_20261027.md)。完整43 I/A/V1811180/1811000/1812000，Task/Strict18/18、15/14、17/16，reward−.543031/−8.566882/−4.612703，末loss1.759946/1.138345/.585715；A末1000均值2.0165高于首1.46435，未健康收敛。全30/无abort/旧回放与新reward0误差、health/独立保存算术/图通过。
+正式44 I3195008/A3195009/V3195010，准确43全state/next65536和PRELAUNCH通过，实际startup新增1000/1000/2000通过；archive3195013/review3195014。45仅恢复3232655，原固定43–45 waiter2190600继续，无自动训练。
+恢复26完整1080540/8604328，30全55/noabort、Task0、reward−30.906703/末loss.01107406；旧1039290 raw/derived/history和930pending保留、新41250全成熟/目标reward精确，health/保存算术/图通过。正式take27 learner3712293（CPU0/GPU0），准确26三批/reload/完整state及原单更新等价gate通过，部署np.take，原算法/物理不变。startup3712297/archive3712299/review3712302；新GPU观察3746077等实际startup和+2000后取60样本，结果以收据为准，不提前称达50。
+43/26只读全review在原learner退出后移到释放CPU13/0，未改在途正式/物理；43→44退出到spawn I286–288/A347–349/V359–361秒，非GPU精确idle；26初观察已退出，lastlive错误初始化已保留原件并更正null，不造时长。冻结41原三评估继续，后续28须识别新recovery_continuation_stage/930pending。无子agent，Goal active。
+
+共享SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl；小证据docs/evidence/RL_PARAMETER44_SERL_TAKE27_20261027。main5edb997/baseline f6e8f8c真实查询fetch/read，原冻结源保持；归档/push另记。
+
 ## 2026-10-27 — 非RL传统补测18/72，第三条件审计与原始归档核验完成
 
 - 前几轮为对原服务的有效等待，确认真实PID/CPU及物理时间持续增长；本轮原协调179772完成条件002并接续003，归档188540自动处理第三组，无重复仿真或归档。仍待余54回合和最终180汇总，不据局部结果宣称全组完成。
@@ -9568,3 +9577,10 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮共享SSD小证据归档已逐成员大小/hash核验：/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_REBOOT_PARAMETER43_20261027_085435/FULL_SMALL_EVIDENCE.tar.gz，174成员、1666653字节，SHA256 2d3f81b4f1a19a3fd2a099a3083bcd991ce06248631740c0ea903264243843fa。收据docs/RL_REBOOT_SAVE_RECEIPT_20261027.json；包内准确源码commit b450bc1d1679b720212c3547300c7b6dcbcb1ae4。既有HDD LATEST已改指新active交接并回读验证。大checkpoint/raw仍原共享SSD，非HDD/arm1全备份；当前四正式与冻结41继续，Goal active。
 
 本轮科学提交0d70aa6，SSD准备补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER44_PREPARATION_20261027_091248/PREPARATION_SUPPLEMENT.tar.gz，35成员/559987字节，SHA256 509d0d1adfee7e92e15e226b57f83e1a126bf90e33b2bcdd0c9208eb77450d7e，全部成员大小/hash核验。新交接与完整收据仅SSD，既有HDD LATEST已更新回读；依赖前轮重启完整小包，大checkpoint/runtime仍SSD，非HDD/arm1全备份。Goal active。
+
+实际take27首1000 startup已通过：1081540steps/8612328critic，旧1080540 raw/derived/history、930历史pending保持，新144mature+856pending目标精确，30MJB/sampler/CPU affinity/clock/action及reward重建误差0；原startup3712297完成。新GPU observer3746077已进入原60样本采样，尚不提前给均值。
+
+实际take27首1000 startup通过，旧1080540 raw/derived/history与930pending保持，新144mature+856pending、新reward0误差。部署后原3746077窗口已完成60样本/119.2575秒，GPU0–3均值63.7167/63.5667/64.1833/58.6%，均超过50；保存算术/全部7原compute PID逐样本核验，GPU0仅正式Direct。不是每瞬时保证或纯因果速度比，勿重跑原窗口。
+科学1f3a8a0，远端2c1f639非RL18/72归档更新以6a37c0a安全合并；双方UPDATE_LOG逐行顺序保持。
+
+本轮科学1f3a8a0、远端合并6a37c0a、实际GPU/启动验证e2d7971均已正常push。共享SSD完整本轮小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER44_SERL_TAKE27_20261027_094943/FULL_SMALL_EVIDENCE.tar.gz，129成员/1486463字节，SHA256 5a1df2ecf293a2ee2c147ab7e8be7a376e01491b5a55afedca4be8aab80614dd，全部成员大小/hash核验；源码commit e2d79712c4281a371b64aff62073b2517c3fd1c4。现有HDD LATEST已指新active交接并回读，大产物仍共享SSD，非HDD/arm1全备份。Goal active。
