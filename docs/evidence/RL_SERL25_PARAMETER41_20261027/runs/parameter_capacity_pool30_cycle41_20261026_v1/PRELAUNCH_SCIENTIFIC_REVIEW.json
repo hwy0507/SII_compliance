@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "time": 1793079327.8292692,
+  "parent_cycle": 40,
+  "next_cycle": 41,
+  "parent_checkpoints": {
+    "impedance": "4a0b47956c1eb32aef76e3f560a1837b090d1a8c380298d3f30ee29e42136960",
+    "admittance": "60b6da86066aa759dc719d14c500ab39a0b9ba4b4c9a01088156f5c3c82ebdcf",
+    "vmc": "8a53c0571181ba1bd126301bd4b9bf5eb70c34f5aada2c6e2dc7d948004e7f7e"
+  },
+  "hashes": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle40_review_20261026_v1/REVIEW.json": "3c3f78365f0ff731646a3ce3c1b5e8f853aaba869570a1b08e323cac84462600",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle40_review_20261026_v1/FINISHED.json": "fc18c8ea2b3e6447aade3046a5bb7996e1deb25e5717c90960e00869b4211391",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle40_review_20261026_v1/health/DIAGNOSIS.json": "6637b57d3ac6eeca322cd6cc7a29bd58e29f566e4d8ab07e0f069bb62b1c5748",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle40_review_20261026_v1/health/training_diagnostics.png": "8eebc0543f2d740f967b387a84eb418fefacae455c225ffb90abc1026a35c75d",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle40_review_20261026_v1/SAVED_RESULTS_REVIEW.json": "f5e4a42e84d8b8919cceaf409382213d5b48bb70b74d4f0d28b0b4d2951f83ff",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle41_20261026_v1/CHECK_ONLY_COMPLETE.json": "593d772d98baa97f922d3f4083103711e8cf3148d4c76bf713b6ce4b47f860a1"
+  },
+  "loss": {
+    "impedance": {
+      "count": 41250,
+      "first1000": 2.6129955406188965,
+      "last1000": 2.045589182138443,
+      "mean": 2.3019489273620373,
+      "maximum": 22.795473098754883
+    },
+    "admittance": {
+      "count": 41250,
+      "first1000": 1.8720848095417022,
+      "last1000": 1.5846828271150588,
+      "mean": 1.5801278540293375,
+      "maximum": 33.18464279174805
+    },
+    "vmc": {
+      "count": 41250,
+      "first1000": 0.9696684431731701,
+      "last1000": 0.5670637147724629,
+      "mean": 0.6744713667912917,
+      "maximum": 10.366339683532715
+    }
+  },
+  "figure_reviewed": true,
+  "figure_findings": "All three last1000 losses decline versus39; impedance still fluctuates, admittance late jump with terminal inbagMAE increasing0.396 to0.721 despite smaller online loss, VMC loss/calibration improve. Positive finite native temperatures, unchanged diagnostic network states. Reward switches remain; no overall stable health claim.",
+  "rationale": "Full40 all30 full55/noabort, exact retained replay and new41250 rewards passed for all methods. Continue latest fullstate one finite unchanged41 to finish previously registered39-41 window and produce prospectively selected frozen41 endpoint. Preserve39 failures and original statistical definitions. No reset, auxiliary weights or learner/physics/reward modifications.",
+  "learner_settings_changed": false,
+  "automatic_next_training": false,
+  "convergence_claim": false
+}

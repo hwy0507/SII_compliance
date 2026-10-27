@@ -1,0 +1,81 @@
+{
+  "captured_unix": 1793079179.492961,
+  "checkpoint_sha256": "112eda44c8cda14c5f3b4b3ce934dab7882fa254ac516e1ca4e1b5e24fe852e4",
+  "optimizer_updates": 0,
+  "new_physics": 0,
+  "terminal_count": 750,
+  "terminal_reward": {
+    "count": 750,
+    "mean": -25.655717849731445,
+    "minimum": -39.50326919555664,
+    "maximum": -25.148805618286133,
+    "p50": -25.36248016357422,
+    "p95": -25.314538955688477
+  },
+  "terminal_q": {
+    "count": 7500,
+    "mean": -25.648866653442383,
+    "minimum": -39.92100143432617,
+    "maximum": -25.093748092651367,
+    "p50": -25.354721069335938,
+    "p95": -25.27617645263672
+  },
+  "terminal_q_absolute_error": {
+    "count": 7500,
+    "mean": 0.030861059203743935,
+    "minimum": 1.1444091796875e-05,
+    "maximum": 0.9578933715820312,
+    "p50": 0.017578125,
+    "p95": 0.10410335659980774
+  },
+  "sampled_q": {
+    "count": 40960,
+    "mean": -20.517383575439453,
+    "minimum": -35.01155471801758,
+    "maximum": -16.280229568481445,
+    "p50": -20.294511795043945,
+    "p95": -16.926687240600586
+  },
+  "sampled_td_absolute_error": {
+    "count": 40960,
+    "mean": 0.047449976205825806,
+    "minimum": 0.0,
+    "maximum": 5.726520538330078,
+    "p50": 0.012500762939453125,
+    "p95": 0.1390637755393982
+  },
+  "diagnostic_target_pair": [
+    7,
+    3
+  ],
+  "entropy": {
+    "count": 4096,
+    "mean": -3.83272647857666,
+    "minimum": -52.03589630126953,
+    "maximum": 10.526122093200684,
+    "p50": -1.0934842824935913,
+    "p95": 3.7841556072235107
+  },
+  "temperature": 0.00039930097409524024,
+  "network_optimizer_rng_unchanged": true,
+  "limitation": "Fixed diagnostic pair; sampled_td is one-step and sampled_multistep_td is the registered behavior-return target. Off-policy bias remains. Terminal state has no actor clock; terminal error is diagnostic, not required zero fitting error.",
+  "convergence_claim": false,
+  "sampled_multistep_td_absolute_error": {
+    "count": 40960,
+    "mean": 0.036469221115112305,
+    "minimum": 0.0,
+    "maximum": 3.351613998413086,
+    "p50": 0.013650894165039062,
+    "p95": 0.12336941063404083
+  },
+  "multistep_marker": {
+    "version": 1,
+    "horizon": 32,
+    "gamma": 0.9995,
+    "rewards": "discounted_behavior_rewards",
+    "bootstrap": "gamma_power_k_times_terminal_mask",
+    "sampling": "uniform_mature_rows",
+    "original_replay_retained": true,
+    "importance_correction": false
+  }
+}
