@@ -1,0 +1,124 @@
+{
+  "passed": true,
+  "time": 1793102424.3299696,
+  "parent_cycle": 47,
+  "new_cycle": 48,
+  "new_cycles": 1,
+  "capacity_before": 2000000,
+  "capacity_after": 4000000,
+  "historical_entry_cycle": 23,
+  "actual_crossing_not_yet_observed": true,
+  "maximum_new_actions_per_method": 41250,
+  "checks": {
+    "impedance": {
+      "passed": true,
+      "controller": "impedance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "minimum",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "replay_capacity_followup": {
+        "version": 1,
+        "previous_capacity": 2000000,
+        "capacity": 4000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite",
+        "historical_marker_preserved": true
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "20738dc6bc15c9da8442db3a0762f340b43b6b20be8c0b3d61b227af79f50831",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "admittance": {
+      "passed": true,
+      "controller": "admittance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "replay_capacity_followup": {
+        "version": 1,
+        "previous_capacity": 2000000,
+        "capacity": 4000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite",
+        "historical_marker_preserved": true
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "0e13b83354b1ebaad5ef4d1c2f9ff8efd80d91a6b4bc1fc0dfca8c90786f6334",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "vmc": {
+      "passed": true,
+      "controller": "vmc",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "replay_capacity_followup": {
+        "version": 1,
+        "previous_capacity": 2000000,
+        "capacity": 4000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite",
+        "historical_marker_preserved": true
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "8bd7b049e3be180f2e9a14e9c0fb57ecc133c0188278a684f18e3d916977c4e7",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    }
+  },
+  "evidence_sha256": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle47_review_20261026_v1/REVIEW.json": "9720649473377846fb44db13ce49f8ea3e7a95e38e72e3c9c0172518467357d5",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle47_review_20261026_v1/health/DIAGNOSIS.json": "dd29e70b2ded9665269c300e4f3a514468b371c0b7b3f0445b35db45a1e7ea93",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter47_saved_review_20261027_v1/REVIEW.json": "f35c59d6189e307049e4539dd5fcc8248d4704713bce8ee0935963537ed68294",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle48_20261026_v1/CHECK_ONLY_COMPLETE.json": "586dac3cb69af70790f5a86a9657d5f448f3bb158237f22e24899982f68536af",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle48_20261026_v1/SCIENTIFIC_DECISION.json": "74cbb1f24d7805781b83654eba4cb2c09ca1a47d7280197b8f6c0daed5301e12",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter43_45_stability_saved_review_20261027_v1/REVIEW.json": "084f24903aa3b69eb360540736db030475dee838513b45435c2fd26fa8cd1f63"
+  },
+  "plot_inspected": true,
+  "reason": "Complete47 fullstate/next65536 verified; fullreview/health/saved arithmetic inspected. Fixed43-45 failed and prospective46-48 is still pending; no joint healthy convergence claim. Continue one finite48 with registered2m-to4m append capacity expansion, retaining originalentry23 and both markers, all learner/replay/RNG/history and original algorithm; no auxiliary weights or physics/reward/gate changes.",
+  "convergence_claim": false
+}

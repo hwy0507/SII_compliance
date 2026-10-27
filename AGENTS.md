@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-27 — 参数47/Direct28完整、正式48/29与4m首次部署
+
+[最新交接](docs/RL_PARAMETER48_SERL29_20261027.md)。47 I/A/V1976180/1976000/1977000，Task/Strict18/17、13/12、17/17，reward−2.379693/−12.047563/−2.834140；全30×55/noabort/旧replay保留/新reward0误差，health/保存算术/图通过，三路首末1000loss下降仍有尖峰。Direct28完整1163040/9264328，Task0/reward−30.909500/末loss.01079538，旧1121790/930隔离保留，新41250成熟；fullreview/health/保存算术/图通过，非任务成功收敛。
+正式48 I359275/A359279/V359281，准确47全state/next65536/PRELAUNCH及actual startup1000/1000/2000通过，4m正式部署并保留entry23/47双marker和原算法物理。archive359361/review359363。Direct29 learner241542，准确28全state/三批/RNG/reload/PRELAUNCH及actual startup1000通过，148新成熟+852pending/930旧隔离；archive241547/review241549。
+真实48跨2m只读审计401313已登记等待2001000快照，尚未通过；参数49仅恢复准备401495保留4m/历史entry47，Direct30仅恢复准备464829，五模板900终端/930隔离、首次过严静态文字检查失败保留并修正，无自动训练。两个原固定窗口1908379/336744、冻结41三316550/316551/316552/root316553、冻结29仅恢复3802347继续。退出→spawn I约258–260/A318–320/V334–336/Direct275–277秒，非GPU精确idle。当前48/29训练继续，Goal active，无子agent。
+
+
 ## 2026-10-27 — Direct29恢复感知冻结入口与真实27恢复通过
 
 [本轮交接](docs/RL_SERL29_RECOVERY_FROZEN_20261027.md)。新独立evaluator/rootreview保留原随机动作/物理loop和filter/torque审查，专门验证partial25/连续26..29/930隔离及全learner/replay/history。真实完整27 check-only在600秒内通过，size1121790/2m/entry23、930原raw/derived/pending精确且仍不可采样；外部动作RNG通过，0物理优化。与原实际28恢复保存摘要及PRELAUNCH绑定交叉核验一致，703源码hash保持；原3577385/3577387完成退出。错误27物理请求在创建输出前拒绝。

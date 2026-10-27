@@ -1,0 +1,123 @@
+--- startup_review.py48
++++ startup_review.py49
+@@ -6,7 +6,7 @@
+ torch.set_num_threads(1)
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');OUT=Path(__file__).parent/'startup';OUT.mkdir(exist_ok=False)
+ sys.path.insert(0,str(B/'runtime/source_train17_clock/source/tools'))
+-sys.path.insert(0,str(B/'runtime/parameter_capacity_pool30_cycle48_20261026_v1'))
++sys.path.insert(0,str(B/'runtime/parameter_capacity_pool30_cycle49_20261026_v1'))
+ from parameter_replay_capacity_20261026 import MARKER as CAPACITY_MARKER
+ from parameter_replay_capacity4m_20261027 import MARKER as FOLLOWUP_MARKER
+ from validate_published_finite_check_20261025 import digest
+@@ -35,7 +35,7 @@
+  with cp.open('rb') as src,snapshot.open('xb') as dst:shutil.copyfileobj(src,dst)
+  x=torch.load(snapshot,map_location='cpu',weights_only=False);e=json.loads((run/'EXECUTION.json').read_text());parent=Path(e['resumed_from']);assert sha(parent)==e['resumed_checkpoint_sha256'];old=torch.load(parent,map_location='cpu',weights_only=False);n=old['replay']['size'];a=x['replay']['arrays'];s=x['learner'];original=old['learner']
+  assert x['replay']['capacity']==4_000_000 and x['replay']['replay_capacity_followup']==FOLLOWUP_MARKER and x['replay']['replay_capacity_extension']==CAPACITY_MARKER and x['replay']['cursor']==x['replay']['size']
+- assert old['replay']['capacity']==2_000_000 and old['replay']['replay_capacity_extension']==CAPACITY_MARKER
++ assert old['replay']['capacity']==4_000_000 and old['replay']['replay_capacity_extension']==CAPACITY_MARKER and old['replay']['replay_capacity_followup']==FOLLOWUP_MARKER
+  assert x['steps']>old['steps'] and x['replay']['size']==x['steps'] and x['cycles']==old['cycles']
+  assert s['num_gradient_steps']-original['num_gradient_steps']==x['steps']-old['steps']
+  for k,v in old['replay']['arrays'].items():np.testing.assert_array_equal(v,a[k][:n])
+@@ -48,9 +48,10 @@
+  assert sha(reg['resume_parent_registration']['path'])==reg['resume_parent_registration']['sha256']
+  assert reg['replay_capacity_stage']==previous['replay_capacity_stage'] and reg['replay_capacity_stage']['parent_cycle']==23
+  followup=reg['replay_capacity_followup_stage']
+- assert followup['marker']==FOLLOWUP_MARKER and followup['parent_cycle']==47 and old['cycle']==47
+- assert followup['entry_checkpoint']==dict(path=str(parent),sha256=sha(parent)) and followup['entry_replay_digest']==digest(old['replay'])
+- for name,expected in reg['batch_size_stage']['dependency_hashes'].items():assert sha(B/'runtime/parameter_capacity_pool30_cycle48_20261026_v1'/name)==expected
++ assert followup['marker']==FOLLOWUP_MARKER and followup['parent_cycle']==47 and old['cycle']==48
++ assert followup==previous['replay_capacity_followup_stage']
++ assert sha(followup['entry_checkpoint']['path'])==followup['entry_checkpoint']['sha256']
++ for name,expected in reg['batch_size_stage']['dependency_hashes'].items():assert sha(B/'runtime/parameter_capacity_pool30_cycle49_20261026_v1'/name)==expected
+  conditions={c['id']:c for c in reg['conditions']};models=0
+  for f in run.glob('cycle_*/*/rollout.mjb'):
+   assert sha(f)==conditions[f.parent.name]['model_sha256'];models+=1
+@@ -60,7 +61,7 @@
+  for t in ts:by[t['condition']].append(t)
+  err=0.
+  for name,rows in by.items():
+-  journal=list(lines(run/'cycle_00048'/name/'actor_intervals.jsonl'));reward=SPTReward()
++  journal=list(lines(run/'cycle_00049'/name/'actor_intervals.jsonl'));reward=SPTReward()
+   for i,t in enumerate(rows):
+    assert not t['done'];j,nxt=journal[i],journal[i+1];k=t['step']-1
+    value,_=reward(current_potential=j['payload_potential'],next_potential=nxt['payload_potential'],interval=nxt['interval'],terminated=False,task_success=False,strict_success=False);err=max(err,abs(value-t['reward']));assert err<1e-10
+--- review.py48
++++ review.py49
+@@ -7,7 +7,7 @@
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+ OUT=Path(__file__).parent
+ sys.path.insert(0,str(B/'runtime/source_train17_clock/source/tools'))
+-sys.path.insert(0,str(B/'runtime/parameter_capacity_pool30_cycle48_20261026_v1'))
++sys.path.insert(0,str(B/'runtime/parameter_capacity_pool30_cycle49_20261026_v1'))
+ from parameter_replay_capacity_20261026 import MARKER as CAPACITY_MARKER
+ from parameter_replay_capacity4m_20261027 import MARKER as FOLLOWUP_MARKER
+ from validate_published_finite_check_20261025 import digest
+@@ -28,11 +28,11 @@
+     return True
+ methods={}
+ for m in ['impedance', 'admittance', 'vmc']:
+-    run=B/'runs/parameter_capacity_pool30_cycle48_20261026_v1'/m/'train'
+-    cp=B/'runs/parameter_capacity_pool30_cycle48_archive_20261026_v1'/m/'cycle_00048.pt'
++    run=B/'runs/parameter_capacity_pool30_cycle49_20261026_v1'/m/'train'
++    cp=B/'runs/parameter_capacity_pool30_cycle49_archive_20261026_v1'/m/'cycle_00049.pt'
+     deadline=time.monotonic()+7200
+     while not cp.exists():
+-        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Cycle48 archive unavailable: '+m)
++        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Cycle49 archive unavailable: '+m)
+         time.sleep(2)
+     x=torch.load(cp,map_location='cpu',weights_only=False)
+     execution=read(run/'EXECUTION.json');parent=Path(execution['resumed_from'])
+@@ -41,11 +41,11 @@
+     # Exact stage parent is the formal cycle14 checkpoint already checked above.
+     old=torch.load(parent,map_location='cpu',weights_only=False)
+     assert x['replay']['capacity']==4_000_000 and x['replay']['replay_capacity_followup']==FOLLOWUP_MARKER and x['replay']['replay_capacity_extension']==CAPACITY_MARKER
+-    assert old['replay']['capacity']==2_000_000 and old['replay']['replay_capacity_extension']==CAPACITY_MARKER
++    assert old['replay']['capacity']==4_000_000 and old['replay']['replay_capacity_extension']==CAPACITY_MARKER and old['replay']['replay_capacity_followup']==FOLLOWUP_MARKER
+     assert x['replay']['size']==x['replay']['cursor']==x['steps'] and x['steps']>1_000_000
+-    assert x['cycle']==48 and x['boundary']=='complete_condition_cycle'
++    assert x['cycle']==49 and x['boundary']=='complete_condition_cycle'
+     assert x['learner']['target_pair_reduction']==dict(version=1,target={'impedance':'minimum','admittance':'mean','vmc':'mean'}[m],actor='minimum',sampled_targets=2)
+-    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==48
++    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==49
+     assert finite(x['learner']) and x['learner']['critic_clock']
+     assert x['learner']['terminal_loss_weight']==128
+     assert x['learner']['finite_target_projection']==dict(version=1,terminal_cap=30.,gamma=.9995,maximum_actions=1375,position='target critic Q before stochastic entropy term',upper_only=True)
+@@ -59,15 +59,15 @@
+     assert reg['replay_capacity_stage']==previous['replay_capacity_stage'] and reg['replay_capacity_stage']['parent_cycle']==23
+     followup=reg['replay_capacity_followup_stage']
+     assert followup['marker']==FOLLOWUP_MARKER and followup['parent_cycle']==47
+-    assert followup['entry_checkpoint']==dict(path=str(parent),sha256=sha(parent))
+-    assert followup['entry_replay_digest']==digest(old['replay']) and old['cycle']==47
++    assert followup==previous['replay_capacity_followup_stage']
++    assert sha(followup['entry_checkpoint']['path'])==followup['entry_checkpoint']['sha256'] and old['cycle']==48
+     baseline_deps=previous['batch_size_stage']['dependency_hashes'];deps=reg['batch_size_stage']['dependency_hashes']
+-    assert set(deps)-set(baseline_deps)=={'parameter_replay_capacity4m_20261027.py','resume_cheq_capacity4m_pool30_20261027.py'}
++    assert deps==baseline_deps
+     assert all(deps[k]==v for k,v in baseline_deps.items())
+-    for name,expected in deps.items():assert sha(B/'runtime/parameter_capacity_pool30_cycle48_20261026_v1'/name)==expected
++    for name,expected in deps.items():assert sha(B/'runtime/parameter_capacity_pool30_cycle49_20261026_v1'/name)==expected
+     n=old['replay']['size'];arr=x['replay']['arrays']
+     for k,v in old['replay']['arrays'].items():assert np.array_equal(v,arr[k][:n])
+-    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==48]
++    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==49]
+     assert len(transitions)==x['steps']-old['steps']
+     assert [t['step'] for t in transitions]==list(range(old['steps']+1,x['steps']+1))
+     assert x['learner']['num_gradient_steps']-old['learner']['num_gradient_steps']==len(transitions)
+@@ -75,7 +75,7 @@
+     np.testing.assert_array_equal(arr['dones'][n:,0],np.array([t['done'] for t in transitions],np.float32))
+     by_case=collections.defaultdict(list)
+     for t in transitions:by_case[t['condition']].append(t)
+-    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==48]
++    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==49]
+     assert len(episodes)==30 and {e['condition'] for e in episodes}==set(conditions)
+     max_reward_error=0.
+     for e in episodes:
+--- coordinator.py48
++++ coordinator.py49
+@@ -3,5 +3,5 @@
+ p=Path(__file__).parent;b=p.parents[1]
+ os.sched_setaffinity(0,{53})
+ subprocess.run([str(b/'env/bin/python'),str(p/'review.py')],check=True)
+-subprocess.run([str(b/'env/bin/python'),str(p/'diagnose_published_training_20261025.py'),'--runtime',str(b/'runtime/source_train17_clock'),'--run',str(b/'runs/parameter_capacity_pool30_cycle48_archive_20261026_v1_view'),'--output',str(p/'health'),'--cycle-archive',str(b/'runs/parameter_capacity_pool30_cycle48_archive_20261026_v1'),'--cycle','48'],check=True,env=dict(os.environ,PYTHONPATH=str(b/'runtime/source_train17_clock/source/tools')))
++subprocess.run([str(b/'env/bin/python'),str(p/'diagnose_published_training_20261025.py'),'--runtime',str(b/'runtime/source_train17_clock'),'--run',str(b/'runs/parameter_capacity_pool30_cycle49_archive_20261026_v1_view'),'--output',str(p/'health'),'--cycle-archive',str(b/'runs/parameter_capacity_pool30_cycle49_archive_20261026_v1'),'--cycle','49'],check=True,env=dict(os.environ,PYTHONPATH=str(b/'runtime/source_train17_clock/source/tools')))
+ (p/'FINISHED.json').write_text(json.dumps({'time':time.time(),'completed':True,'convergence_claim':False})+'\n')
