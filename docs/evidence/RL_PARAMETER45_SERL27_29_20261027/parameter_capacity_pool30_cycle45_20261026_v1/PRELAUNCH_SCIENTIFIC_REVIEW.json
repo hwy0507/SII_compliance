@@ -1,0 +1,92 @@
+{
+  "passed": true,
+  "time": 1793095466.8964689,
+  "parent_cycle": 44,
+  "new_cycle": 45,
+  "new_cycles": 1,
+  "maximum_new_actions_per_method": 41250,
+  "checks": {
+    "impedance": {
+      "passed": true,
+      "controller": "impedance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "minimum",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "2de1dae021c92f604173691144e589b670a754692d892c0fdcf8114fcd2f8e35",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "admittance": {
+      "passed": true,
+      "controller": "admittance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "fe93962a22c54475700aec83f5dea981fb280e208b53d91850f52ca88c982083",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "vmc": {
+      "passed": true,
+      "controller": "vmc",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "8d8ff0d83b5fcf751308ba12e5fc9848740328654fcbdb6417e5f87edec32f06",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    }
+  },
+  "evidence_sha256": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle44_review_20261026_v1/REVIEW.json": "3df369c7660a3291a0fcb04ac6497463cf949317509557f2f56c4f5d144ce282",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle44_review_20261026_v1/health/DIAGNOSIS.json": "bd3e73c5e3f74f91385a5db47c43ce85794325852c884204a81c27f7f7d5315a",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter44_saved_review_20261027_v1/REVIEW.json": "cf79685060254e4afea4d615eec9e64728619ddb6b78f3935220c25a0332717a",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle45_20261026_v1/CHECK_ONLY_COMPLETE.json": "fe88d102bb60c624d3ae9a027138be8b18ed1169d14f04d0795e398e775ea8f4",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle45_20261026_v1/SCIENTIFIC_DECISION.json": "b14b197ec722358d231d49b8d43de83da338fd38c7a33e68b07021121196b1a3"
+  },
+  "plot_inspected": true,
+  "reason": "Complete44 exact fullstate/next65536 verified; all three30x55/noabort and oldreplay/newreward exact. I strict18->17 and last1000loss1.90995->2.77234; A last1000loss2.25048->1.78222 and V .78331->.76434. Reward/task/loss not jointly converged. One unchanged finite45 completes prospectively fixed43-45 observation; no auxiliary weights or reward/gate change.",
+  "convergence_claim": false
+}

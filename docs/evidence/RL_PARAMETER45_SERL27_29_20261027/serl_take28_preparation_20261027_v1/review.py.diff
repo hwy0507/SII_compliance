@@ -1,0 +1,88 @@
+--- 27/review.py
++++ 28/review.py
+@@ -25,30 +25,30 @@
+     return True
+ methods={}
+ for m in ['direct']:
+-    run=B/'runs/serl_recovery26_take27_20261027_v1/direct'
+-    cp=B/'runs/serl_recovery26_take27_archive_20261027_v1'/m/'cycle_00027.pt'
++    run=B/'runs/serl_take_cycle28_20261027_v1/direct'
++    cp=B/'runs/serl_take_cycle28_archive_20261027_v1'/m/'cycle_00028.pt'
+     deadline=time.monotonic()+7200
+     while not cp.exists():
+-        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Take27 archive unavailable: '+m)
++        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Take28 archive unavailable: '+m)
+         time.sleep(2)
+     x=torch.load(cp,map_location='cpu',weights_only=False)
+     execution=read(run/'EXECUTION.json');parent=Path(execution['resumed_from'])
+     assert sha(parent)==execution['resumed_checkpoint_sha256']
+     stage_parent=parent
+     old=torch.load(parent,map_location='cpu',weights_only=False)
+-    assert x['cycle']==27 and x['boundary']=='complete_condition_cycle'
+-    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==27
++    assert x['cycle']==28 and x['boundary']=='complete_condition_cycle'
++    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==28
+     assert finite(x['learner']) and x['learner']['config']==old['learner']['config']
+     assert x['learner']['critic_clock_extension']==old['learner']['critic_clock_extension']
+     assert x['learner']['critic_actor_ratio']==8 and x['learner']['config']['critic_ensemble_size']==10
+     reg=read(run.parent/'REGISTRATION.json');conditions={r['id']:r for r in reg['conditions']}
+     assert x['protocol_sha256']==sha(run.parent/'REGISTRATION.json')
+-    sys.path.insert(0,str(B/'runtime/serl_recovery26_take27_20261027_v1'))
++    sys.path.insert(0,str(B/'runtime/serl_take_cycle28_20261027_v1'))
+     from serl_replay_capacity_20261027 import MARKER as CAPACITY_MARKER
+     assert reg['replay_capacity_stage']['marker']==CAPACITY_MARKER
+     assert x['replay']['replay_capacity_extension']==CAPACITY_MARKER
+     assert x['replay']['capacity']==2_000_000 and x['replay']['cursor']==x['replay']['size']==x['steps']
+-    assert old['cycle']==26 and old['boundary']=='complete_condition_cycle'
++    assert old['cycle']==27 and old['boundary']=='complete_condition_cycle'
+     assert old['replay']['capacity']==2_000_000 and old['replay']['size']==old['replay']['cursor']==old['steps']
+     assert old['replay']['replay_capacity_extension']==CAPACITY_MARKER
+     parent_ref=reg['recovery_continuation_stage']['parent_registration'];parent_reg_path=Path(parent_ref['path'])
+@@ -56,16 +56,18 @@
+     parent_reg=json.loads(parent_reg_path.read_text())
+     assert reg['replay_capacity_stage']==parent_reg['replay_capacity_stage']
+     assert reg['replay_capacity_stage']['parent_cycle']==23
+-    assert reg['recovery_continuation_stage']['parent_cycle']==26
++    assert reg['recovery_continuation_stage']['parent_cycle']==27
+     assert x['interruption_recovery']==old['interruption_recovery']==reg['interrupted_stream_recovery']
+     assert x['recovery_continuation']==reg['recovery_continuation_stage']
++    assert old['recovery_continuation']==parent_reg['recovery_continuation_stage']
++    assert reg['recovery_continuation_stage']['new_cycle']==28
+     assert reg['recovery_continuation_stage']['checkpoint']==dict(path=str(parent),sha256=sha(parent))
+     entry=reg['replay_capacity_stage']['entry_checkpoint'];assert sha(entry['path'])==entry['sha256']
+     capacity_review=dict(passed=True,historical_entry_cycle=23,inherited_stage_exact=True,old_capacity=2_000_000,new_capacity=2_000_000,marker=CAPACITY_MARKER,
+         old_size=old['replay']['size'],current_size=x['steps'],cursor=x['replay']['cursor'],crossed_old_capacity=x['steps']>1_000_000)
+     n=old['replay']['size'];arr=x['replay']['arrays']
+     for k,v in old['replay']['arrays'].items():assert np.array_equal(v,arr[k][:n])
+-    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==27]
++    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==28]
+     assert len(transitions)==x['steps']-old['steps']
+     assert [t['step'] for t in transitions]==list(range(old['steps']+1,x['steps']+1))
+     assert x['learner']['num_gradient_steps']-old['learner']['num_gradient_steps']==8*len(transitions)
+@@ -73,7 +75,7 @@
+     np.testing.assert_array_equal(arr['dones'][n:,0],np.array([t['done'] for t in transitions],np.float32))
+     by_case=collections.defaultdict(list)
+     for t in transitions:by_case[t['condition']].append(t)
+-    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==27]
++    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==28]
+     assert len(conditions)==30 and len(episodes)==30 and {e['condition'] for e in episodes}==set(conditions)
+     max_reward_error=0.
+     for e in episodes:
+@@ -107,13 +109,13 @@
+ 
+         assert abs(sum(t['reward'] for t in ts)-e['reward'])<1e-8
+     assert sha(reg['reference_plan'])==reg['reference_plan_sha256']
+-    sys.path.insert(0,str(B/'runtime/serl_recovery26_take27_20261027_v1'))
+-    sys.path.insert(0,'/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_recovery26_take27_20261027_v1/audit_source')
+-    from audit_serl_recovery27_replay_20261027 import audit
++    sys.path.insert(0,str(B/'runtime/serl_take_cycle28_20261027_v1'))
++    sys.path.insert(0,'/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_take_cycle28_20261027_v1/audit_source')
++    from audit_serl_take28_replay_20261027 import audit
+     multistep=audit(x,old,transitions)
+     assert multistep['new_pending_rows']==0
+     result=dict(replay_capacity=capacity_review,multistep_replay=multistep,steps=x['steps'],updates=x['learner']['num_gradient_steps'],checkpoint_sha256=sha(cp),
+-        complete_parent26=True,retained_interrupted25_exposure=True,quarantined_pending_rows=930,new_transitions=len(transitions),retained_replay_rows=n,retained_replay_all_fields_exact=True,
++        complete_parent27=True,retained_interrupted25_exposure=True,quarantined_pending_rows=930,new_transitions=len(transitions),retained_replay_rows=n,retained_replay_all_fields_exact=True,
+         conditions=30,task=sum(e['task_success'] for e in episodes),strict=sum(e['strict_success'] for e in episodes),
+         reward_mean=float(np.mean([e['reward'] for e in episodes])),
+         full_horizon_count=sum(e['full_task_horizon_completed'] for e in episodes),

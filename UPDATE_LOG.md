@@ -1,3 +1,12 @@
+## 2026-10-27 — 参数44完整审查、正式45与Direct27–29固定窗口
+
+[最新交接](docs/RL_PARAMETER45_SERL27_29_20261027.md)。完整44 I/A/V1852430/1852250/1853250，Task/Strict18/17、15/14、17/17，reward−2.358478/−8.735468/−2.848943；全30×55/noabort/旧回放与新reward0误差、health/独立保存算术/图通过。I末1000loss1.90995→2.77234，不称健康收敛。43→44保存配对原gate验证：I short0600穿透.191786→.244149mm丢Strict，V同条件.213012→.188304mm恢复，非loss因果证明。
+正式45 I417803/A417804/V417805，准确44全state/next65536/PRELAUNCH及实际startup新增1000/1000/2000均通过；archive417808/review417809。46仅准备504393，父45完整审查后check-only，无自动训练；初版静态父cycle替换失败在启动前拦截、草稿保留并修正。原参数43–45 waiter2190600继续。
+Direct原take27 learner3712293继续；新27–29固定窗口336744，在27零完整/28–29未启时登记，已知26基线、seed2026102746/5000/5%/近零1，2m/930pending不变，take边界披露，旧24–26不重启。通用28+新driver静态9+6负守卫通过，原28准备154584等待完整27后实际check-only，五模板/launcher准备，尚未部署28。
+44父退出后完整只读review移释放CPU13，正式与冻结未改；真实换轮有GPU低利用，后45单次四卡79/83/85/81%，不是窗口均值。冻结41原三评估继续。小证据docs/evidence/RL_PARAMETER45_SERL27_29_20261027；共享SSD归档/push另记，Goal active，无子agent。
+
+开工main c546baf/baseline f6e8f8c实际fetch/read，保留远端非RL24/72。源码及大产物共享SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。
+
 ## 2026-10-27 — 非RL传统补测24/72，第四条件原始归档完成
 
 - 重新查询/fetch/read main `2c1f6397dc74372423ba3f166c44db54f4799fd3`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并复读AGENTS。前几轮为对原PID/服务/物理时间的有效等待；原协调179772完成条件003并进入004，归档188540正常接续，未重复派发、修改冻结输入或调参。
