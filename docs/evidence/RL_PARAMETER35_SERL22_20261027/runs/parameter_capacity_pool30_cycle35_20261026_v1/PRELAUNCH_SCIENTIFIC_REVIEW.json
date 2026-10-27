@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "time": 1793066240.8349485,
+  "parent_cycle": 34,
+  "next_cycle": 35,
+  "parent_checkpoints": {
+    "impedance": "149618c8b54b3945e392df0f4f414e20c2ddf47422efa957b8d9a438f71b2d93",
+    "admittance": "8ff3f38801d28c885b3d12cda7ab17f1f4a496d1e93353708ecbec189b4cb6c9",
+    "vmc": "e6612fd8030a519b0710e7de68ff7712b9baf39f5f577733069266ea74a90e33"
+  },
+  "hashes": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle34_review_20261026_v1/REVIEW.json": "ebed242a715783a7e8c0514b70ecb2d23f3666fefad70eec99658fb0a7e95267",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle34_review_20261026_v1/FINISHED.json": "31b1270a3398c13d1e994de8093348d8477d6947a6f5dcc81ca421c32f700639",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle34_review_20261026_v1/health/DIAGNOSIS.json": "ed52c2bba3a9a81e42e621c8a55c1e1ffdf65e676731da12979f85e74d9fc63e",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle34_review_20261026_v1/health/training_diagnostics.png": "8da7144981121d89e36a79b0d704c51cbcc8cf2bf4ee7ab402bf7c96df44cfbc",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle35_20261026_v1/CHECK_ONLY_COMPLETE.json": "3edf113cb5dc3bf0602480e576a15817b0015b35e11ae8d76f500ff89bff0060"
+  },
+  "loss": {
+    "impedance": {
+      "first1000": 2.0499695119857786,
+      "last1000": 2.889142259836197,
+      "mean": 2.344578655124433,
+      "maximum": 46.89289093017578
+    },
+    "admittance": {
+      "first1000": 2.1384495670795443,
+      "last1000": 1.4590240796208382,
+      "mean": 1.671923197292559,
+      "maximum": 18.900564193725586
+    },
+    "vmc": {
+      "first1000": 0.8530149226784706,
+      "last1000": 0.7324616433978081,
+      "mean": 0.7133135920878613,
+      "maximum": 12.71292495727539
+    }
+  },
+  "figure_reviewed": true,
+  "figure_findings": "I loss increases late; A and V loss trend down with finite spikes. Entropy stays near method targets, temperatures positive, Q drifts smoothly. Returns remain mixed across conditions. No healthy convergence claim.",
+  "rationale": "All original 30 conditions complete without abort, retained replay and 41250 new rewards exact. Continue one finite unchanged cycle from exact full34 while original frozen32 and preregistered33-35 stability audits continue. Finite state alone is not convergence. No reset or auxiliary promotion.",
+  "learner_settings_changed": false,
+  "automatic_next_training": false,
+  "convergence_claim": false
+}

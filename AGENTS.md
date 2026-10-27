@@ -1,5 +1,14 @@
 # 本仓库的持续工作约定
 
+## 2026-10-27 — 参数34与Direct21完整审查通过，正式35/22接续
+
+[完整交接](docs/RL_PARAMETER35_SERL22_20261027.md)。三参数34各30完整无abort、新41250奖励0误差与全旧replay/history/2m marker保持；I/A/V Task/Strict18/17、11/11、17/17，reward−2.369303/−13.719218/−2.815623，末loss2.889142/1.459024/.732462。I后段loss升高，A/V下降，未健康稳定。三35原设置全state接续I1290927/A1290928/V1290929，实际首1000/1000/2000启动审查通过，archive1290932/review1290933。36准备1320079/调度1320131仅完整35后check-only，不自动训练。
+
+Direct21完整895782/7126264，30完整无abort、Task/Strict0、reward−30.907792、末critic loss.012554185、terminalMAE.034666643/TD32.041525416；完整REVIEW/health/图通过，低loss不代表任务学会。准确完整21父532f0939…全state续正式22 learner1584172、startup1584174/archive1584175/review1584176；实际首1000新增审查通过，全部旧895782 raw/derived保留、新136mature+864pending精确。23准备1605144/调度1605145仅完整22后check-only，不自动训练。原固定参数33–35/Direct20–22稳定性与冻结32原90回合继续，勿重复已完成诊断。混合22/35/冻结32原observer1628810完成60样本/65.476863秒，四卡均值58.85/64.0667/65.3167/69.0833%，保存均值/原身份核验通过；不是纯训练或每瞬时保证，勿重采。
+
+本轮重新查询/fetch/read远端main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d未变。五参数36与五Direct23准备入口AST/同时替换/准确父目标/历史阶段守卫通过，实际恢复尚待。小证据docs/evidence/RL_PARAMETER35_SERL22_20261027；大型数据仍SSD，本轮归档与HDD小交接收据另记，非全量备份。Goal active，无子agent。
+
+
 ## 参数32→33全部四条成败切换的保存轨迹诊断完成
 
 [诊断报告](docs/RL_PARAMETER33_FAILURE_MODES_20261027.md)。8条已保存轨迹/source/model hash核对，0物理/神经推理/优化。I short0600穿透.218649→.198514mm，A short0600 .183458→.232938，V short0000 .154151→.218823，三条Strict切换对应原.2mm门；A long0300物理有效但lift4.28→18.96s、carry6.32→20.84s，55s仍carry未释放。末控制记录误差12.927mm/ready0，非完整路点guard或因果重演，不改gate/时限。

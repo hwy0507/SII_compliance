@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "time": 1793066647.9402776,
+  "parent_cycle": 21,
+  "target_cycle": 22,
+  "parent_sha256": "532f0939051e36ed3b7fc4f81038b0501e994bcc0ce9a7f1d20ab43e168334a8",
+  "hashes": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle21_review_20261026_v1/REVIEW.json": "d4ca42f54f8d39d93a94ed5ba6a6c54ce501b2b521f9276a0def52e42aedd5d9",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle21_review_20261026_v1/DIAGNOSIS.json": "7d109dd309bc896c8033b1456614bb22df0f26480961f2d4fd994a53f632bae9",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle21_review_20261026_v1/FINISHED.json": "25605f5dab4c76748179e3c2727099af2cda835b778a889af371221c6a6c80c1",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle21_review_20261026_v1/training_diagnostics.png": "af341cec182892b76de01ce40b235d997bcb85204b96558e5305f9a1eddbe739",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle22_20261026_v1/CHECK_ONLY_COMPLETE.json": "397042ffdc91820fb98bcb3b8daa0fda23c3b2c4fb27b23f2db759bbbd983e41"
+  },
+  "loss_summary": {
+    "count": 41250,
+    "first1000": 0.012990236710757018,
+    "last1000": 0.012554185224696994,
+    "mean": 0.012792792799346375,
+    "maximum": 0.028461456298828125
+  },
+  "figure_reviewed": true,
+  "figure_findings": "Critic loss trends down without nonfinite values; Q varies smoothly in a narrow range; actor entropy stable; temperature positive and gradually declining.",
+  "rationale": "Full21 has30 complete horizons/noabort, retained854532 raw/derived rows/history and41250 new rewards exact. Mean return -30.907792 versus20 -30.912666, nearly unchanged; Task/Strict0/30. Low loss does not show task learning. Continue one finite unchanged22 to complete original partially prospective20-22 stability window; no invented success threshold, no auxiliary promotion.",
+  "automatic_next_training": false,
+  "convergence_claim": false
+}
