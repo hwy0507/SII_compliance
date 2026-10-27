@@ -59,3 +59,5 @@ I/A/V独立evaluator分别CPU52/53/54、GPU1/2/3，仅三个单核物理子进�
 参数32实际启动审查已通过：I/A新增1000到1318000/1317000，V新增2000到1319000；全旧1317000/1316000/1317000 replay字段/history/优化器设置/2m marker/30MJB/30sampler、动作映射/clock及新reward0误差通过。原startup980499已退出，归档980500/完整review980501继续。
 
 纯20/32固定窗口原1067099已完成：60样本/69.080351秒，四GPU均值56.15% / 66.9% / 65.9% / 66.45%，逐样本GPU PID恰四原正式、learner身份全程保持；保存均值独立核验通过。不是每瞬时或所有后续时段保证，换轮实际空闲保留，不重采挑结果。
+
+科学提交f4743773205b6061f4f06e525a4565c526af3817本地完成，push因GitHub Username认证失败未发布。53成员完整小证据SSD B/repository/RL_PARAMETER32_FROZEN_MATRIX_20261027_001426/FULL_SMALL_EVIDENCE.tar.gz，1059723字节，SHA256 329fa5c906a301ee5fa0b5c3069b61f3c446369ecab7ea890d07358fb5fb5583，逐成员size/hash核验通过。HDD最新入口已更新到RL_PARAMETER32_FROZEN_MATRIX_STATUS_20261027_001426/HANDOFF.md；大产物仍SSD，非HDD/arm1全备份。源码与Markdown空白检查通过；原始unified diff证据按原字节保留（其空白上下文行会被全路径git whitespace检查提示）。
