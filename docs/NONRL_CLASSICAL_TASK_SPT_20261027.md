@@ -126,6 +126,18 @@ SHA256 `c0b1e4f18c7b5fdaa796229db9526166d367ed9dcfc62524d5f1edd31ee0c070`。
 
 ### 单条件打包入口
 
+2026-10-27 10:26 UTC：第五条件004的6回合/660万子步审计及归档完成，累计30/72，
+原协调器已进入第六条件。该组六回合完整55秒、Task/Strict均失败、公共filter误差0，
+保留失败和独立经典actor/servo重建限制。318文件原件前后/包内hash一致，
+726,543,883字节包已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics004/PHYSICS_BUNDLE.tar.gz`，
+SHA256 `738d31a699901d40649b566119a9b0a3095ab13babb1a0f42c3073f639b8b589`，本地与远端临时/最终一致。
+收据`CLASSICAL_CONDITION004_ARCHIVE.json`和`CONDITION004_PHYSICS_AUDIT.json`。
+原108+新30回合已原始共享；余42和完整180比较仍待。memory.max累计12、OOM/kill0、swap0，
+本地可用空间约517GiB；两原服务正常，观察会话在第五包完成后正常退出。
+本轮先查询/fetch/read并安全快进main至`06df65e6fb9b527473c2b276d3109c5cf8809013`，
+baseline仍`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，非RL源码及冻结协议未变。
+
 2026-10-27 09:48 UTC：第四条件003全部6回合及660万子步审计通过，累计24/72，
 原协调器已进入第五条件；前三包保留。第四包318文件原件前后及包内hash一致，
 726,692,174字节已核验到
