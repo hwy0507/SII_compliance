@@ -9541,3 +9541,5 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮43 actual startup新增I1000/A1000/V2000通过，旧完整replay/history/optimizer/30MJB/sampler/clock/action与新reward0误差。收尾真实fetch/read main4c75aa5，baseline f6e8f8c不变；远端非RL12/72/归档服务是另一任务，运行中RL冻结源码不改。
 
 本轮科学提交563d974，安全合并远端非RL更新ef2fd49；正常push已成功（4c75aa5→ef2fd49），包括此前重启恢复与gather科学提交。双方UPDATE_LOG逐行顺序保留已核验。无需再索要GitHub凭据。
+
+本轮共享SSD小证据归档已逐成员大小/hash核验：/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_REBOOT_PARAMETER43_20261027_085435/FULL_SMALL_EVIDENCE.tar.gz，174成员、1666653字节，SHA256 2d3f81b4f1a19a3fd2a099a3083bcd991ce06248631740c0ea903264243843fa。收据docs/RL_REBOOT_SAVE_RECEIPT_20261027.json；包内准确源码commit b450bc1d1679b720212c3547300c7b6dcbcb1ae4。既有HDD LATEST已改指新active交接并回读验证。大checkpoint/raw仍原共享SSD，非HDD/arm1全备份；当前四正式与冻结41继续，Goal active。
