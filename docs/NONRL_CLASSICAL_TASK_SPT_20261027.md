@@ -126,6 +126,20 @@ SHA256 `c0b1e4f18c7b5fdaa796229db9526166d367ed9dcfc62524d5f1edd31ee0c070`。
 
 ### 单条件打包入口
 
+2026-10-27 09:10 UTC：原协调器完成第三条件002，累计18/72，已接续第四条件。
+归档服务自动完成第三组6回合/660万子步审计、318文件原件前后及包内hash检查，
+728,329,915字节包已核验到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics002/PHYSICS_BUNDLE.tar.gz`，
+SHA256 `ff3750c2face9fa3cccacbed4ba3b6a02e74e6ece40124bcd7d58631cac675a5`。
+远端临时及最终文件hash/大小均与本地一致，收据`CLASSICAL_CONDITION002_ARCHIVE.json`和
+`CONDITION002_PHYSICS_AUDIT.json`已发布。该组6回合完整55秒、Task/Strict均失败，
+公共filter重放最大误差0；保留失败，不以无机器违规或低矩代替Task成功，不作局部排名。
+审计范围仍不包含完整独立经典actor/servo重建。当前共享覆盖原108和新18回合，余54仍待。
+本机物理服务曾记录12次memory.max命中，但OOM/kill及swap均0，后续内存回落约1.43GB；
+这是内存上限触发记录，不记作OOM，也不据此重启正常推进的服务。
+已安全快进main至`dc35b325982d12b5634501be534a5bd75876cc42`，保留另一任务的RL交接；
+非RL源码/协议未变化，未修改现有冻结运行副本。
+
 按完整条件归档入口：先用 `audit_nonrl_classical_extension_20261027.py --progress --condition <id>`
 核查该条件全部6个完成回合，再用 `archive_nonrl_classical_condition_20261027.py --root <run>
 --audit <condition_audit.json> --output <new_directory>` 打包。审计现在绑定源run、模型锁及每回合
