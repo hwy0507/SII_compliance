@@ -8897,3 +8897,9 @@ cp19250及其后新产物仍仅本地、待下一安全边界归档。已准备D
 - 从近期 `baseline_local_rl_20261009` 的 `optimizer.jsonl` 读取实际 `actor/loss`、`critic/loss`、`actor/entropy`、`temperature/value`；按真实训练步拼接 segment/extension/continuation/recovery，重复同一步优化记录先取均值，再按1000步分箱，粗线为约5000步移动平均。
 - 主图：`code/mujoco_6d_vmc_benchmark/outputs/reward_training_curves_20261013/loss_convergence_actor_critic.png/pdf`；辅助图：`loss_convergence_auxiliary.png/pdf`；说明：`LOSS_README.md`；脚本：`tools/plot_rl_loss_convergence_20261013.py`。
 - 图上可见 actor/critic loss 在约5万–8万步附近出现明显下降后进入平台，随后部分方法缓慢回升；这只能说明优化器诊断量的阶段性稳定，不能单独证明策略任务成功或严格收敛。旧PPO/SAC pilot的monitor/TensorBoard已核对但因协议不同单独保留，未混图。
+
+## 2026-10-27 — 新30条公平比较继续推进至90/108
+
+- 本轮复核 `AGENTS.md`、`REGISTRATION.json`、`MODEL_LOCK.json` 与 `PARTIAL_ROWS.json`；实验仍严格采用新增30条数据（24 train/6 validation），ESN固定历史128储备池＋ridge，RNN/MLP从头训练，三方法各3个seed，锁定模型不变。远端GitHub查询本轮受网络限制，工作区保留本地 `main` HEAD `a3e9e0440506c60eea6c7bcfab9895846706e420`；未改冻结源码、数据划分、模型锁或物理协议。
+- 原协调器 `sii-nonrl-new30-fair-20261026-v2.service`（PID 86607）仍为 `active/running`，当前单worker PID 157623 正在执行条件010的 ESN seed1；`MemoryCurrent=2,504,249,344`、`MemoryMax=3,221,225,472`、swap上限0，CPU真实推进。第九条件完成最后两模型后，累计 `PARTIAL_ROWS.json` 已从89推进到90/108；不重复启动、不把中途回合计入结果。
+- 第九条件剩余模型已在完整回合边界完成；条件010/011仍待。全108回合、共同 `T_ref`/SPT、最终独立审计和最终图表仍未完成，Goal保持active。所有失败与未完成收据继续保留。
