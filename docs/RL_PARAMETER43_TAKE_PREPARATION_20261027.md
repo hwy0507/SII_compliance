@@ -39,3 +39,5 @@ GPU两个已完成窗口GPU0分别42.5%和42.7333%，未达50%；其他三卡稳
 原关机快照、恢复26/参数42全部大checkpoint、轨迹保留在共享SSD；HDD配额满，不声称HDD或arm1全备份。最终小证据MANIFEST覆盖本轮全目录，忽略的.log明确标记，仅本地档案保留，不声称已提交Git。Git提交/push与验证过的SSD归档收据另附。Goal保持active。
 
 收尾真实查询/fetch/read main更新到4c75aa52570930e5bfd7f8fe688c6ea7ec8b8d0d，baseline仍f6e8f8c2711a93f0b5dfc88c608bd82647084d5d。新增是另一主机非RL经典补测12/72与归档服务，不改变当前RL协议或运行源；合并保留双方日志。
+
+本轮科学提交563d974，安全合并远端非RL更新ef2fd49；正常push已成功（4c75aa5→ef2fd49），包括此前重启恢复与gather科学提交。双方UPDATE_LOG逐行顺序保留已核验。无需再索要GitHub凭据。

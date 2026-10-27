@@ -1,3 +1,5 @@
+> **当前RL补充：[完整参数42、正式43与Direct读取优化准备](docs/RL_PARAMETER43_TAKE_PREPARATION_20261027.md)。Goal active；Direct26/参数43/冻结41运行，43 actual startup已通过。旧中断25保留，take27仅准备。先核最新LIVE_STATUS和实际产物，禁止重复启动。**
+
 > **2026-10-27 用户已明确恢复，Goal active。最新运行与中断恢复语义见 [RL_REBOOT_RESUME_20261027.md](docs/RL_REBOOT_RESUME_20261027.md)，覆盖下方暂停与旧周期状态。先核原进程，不重复启动。**
 
 > **集群RL最新状态（2026-10-27）：用户关机暂停，Goal paused。入口：[RL_SHUTDOWN_RECOVERY_20261027.md](docs/RL_SHUTDOWN_RECOVERY_20261027.md)。此条仅针对集群RL，不改变其他机器非RL任务。**

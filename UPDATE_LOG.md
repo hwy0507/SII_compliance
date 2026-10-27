@@ -9539,3 +9539,5 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 - 未修改冻结模型锁、数据划分、物理/gate/filter或已完成回合；条件010剩余2个模型、条件011全部9个模型仍待。最终共同 `T_ref`/SPT、独立审计和报告仍需等108/108后执行，Goal保持active。
 
 本轮43 actual startup新增I1000/A1000/V2000通过，旧完整replay/history/optimizer/30MJB/sampler/clock/action与新reward0误差。收尾真实fetch/read main4c75aa5，baseline f6e8f8c不变；远端非RL12/72/归档服务是另一任务，运行中RL冻结源码不改。
+
+本轮科学提交563d974，安全合并远端非RL更新ef2fd49；正常push已成功（4c75aa5→ef2fd49），包括此前重启恢复与gather科学提交。双方UPDATE_LOG逐行顺序保留已核验。无需再索要GitHub凭据。
