@@ -71,6 +71,17 @@ comfort保持原经验阈值 `[43.5,43.5,43.5,43.5,6,6,6]Nm`，只在人机实�
 不是只有systemd active。按首回合粗估72回合约7.4小时，阻抗耗时可能不同，最终以实际进度为准。
 首回合未完成Task（carry结束），原始失败保留，不作全组排名；OOM事件0、worker swap0。
 
+2026-10-27 07:28 UTC：两套导纳在首条件已完成，原协调器接续阻抗01，未重复启动。
+新增 `tools/audit_nonrl_classical_extension_20261027.py` 为独立只读审计入口；
+`--progress --include-learned` 完成原108及首2经典回合的120,135,200个物理子步核验，
+源码/config/参数/checkpoint/MJB/轨迹hash、完整回合/保存hold与lift的Task reducer、
+Strict穿透门、完成时间、峰矩/速度/RMSE、接触合规与机器违规、公共filter重新重放均一致。
+审计1分10.09秒、单CPU2/3GiB/禁swap，没有新物理仿真。原完整actor重放仅继承匹配hash的
+学习组收据，经典仍不声明完整actor/servo重放；Task检查也不是重新构造全部支撑接触几何。
+证据 `ORIGINAL108_AND_FIRST2_AUDIT.json`；状态是progress，不是180最终验收。
+未完成72时默认最终审计拒绝测试通过。最终模式须全180身份齐全并逐行/逐方法重算共同参考、
+成功分母与条件SPT，最终分支等待实验结束后实际执行。
+
 ## 归档
 
 服务器只用于本轮归档，不计算。已核验登记包：
@@ -79,3 +90,8 @@ comfort保持原经验阈值 `[43.5,43.5,43.5,43.5,6,6,6]Nm`，只在人机实�
 含冻结coordinator/物理/经典控制器源码、参数/协议/条件及108新旧聚合报告。收据见
 `docs/evidence/nonrl_classical_task_spt_20261027/REGISTRATION_ARCHIVE.json`。
 未完成回合不复制为完整证据。全量最终原始产物在72回合结束和核验后另行归档。
+
+110回合审计与对应两版审计器源码独立共享包：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_audit110/PROGRESS110_AUDIT_BUNDLE.tar.gz`，
+18,690字节，SHA256 `aabca99f4ffb4ce981bc753f1ec4b85c98f96aeaa3769d14e9ae74b1db55c412`。
+只读收据已共享；本批新增原始物理轨迹仍仅本地。

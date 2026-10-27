@@ -1,3 +1,10 @@
+## 2026-10-27 — 非RL原108与首2经典回合独立子步核验完成
+
+- 上轮是实际进展：新指标/登记/服务启动已提交推送；本轮查询fetch/read main `26e7c9b938a04ba558a01760a5c2c3067522bed1`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，重读AGENTS。原协调179772和原worker真实存活推进，两套导纳已完成，自动接续阻抗01（181681），未重复仿真或调整参数。
+- 新增独立只读审计入口`audit_nonrl_classical_extension_20261027.py`。先2回合220万子步、再原108+2回合共120,135,200子步核验均通过，后者1分10.09秒/退出0/单CPU2/3GiB/禁swap。物理源码/config/锁模/checkpoint/MJB/轨迹hash、保存hold/lift的Task reducer、Strict穿透门、完成时间、原始峰矩/速度/RMSE、接触合规/机器安全与公共filter重放全部一致；保留原提前abort失败。
+- 审计范围诚实限制：没有重新仿真或完整经典actor/原生servo重建；Task reducer核查不是重新构建所有支撑接触几何；学习actor重放继承匹配hash的原收据。完整180尚未完成，progress通过不等于最终通过；默认最终入口正确拒绝未完成72矩阵，最终汇总分支仍待全量完成后实际执行。
+- 收据`docs/evidence/nonrl_classical_task_spt_20261027/ORIGINAL108_AND_FIRST2_AUDIT.json`；精确两版审计器/收据包18,690字节已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_audit110/PROGRESS110_AUDIT_BUNDLE.tar.gz`，SHA `aabca99f4ffb4ce981bc753f1ec4b85c98f96aeaa3769d14e9ae74b1db55c412`。服务器不计算，本批新增原始轨迹仍仅本地。持续Goal active，余70回合/最终对比/全量归档待；收工复读AGENTS，保留用户会议文件。
+
 ## 2026-10-27 — 非RL改用Task条件SPT，启动历史传统控制器同条件补测
 
 - 用户明确要求只统计Task成功回合的完成效率。新增`SPT_task_conditional=mean(T_ref/max(T,T_ref)|Task)`；失败排除效率分母、零成功NA，Strict单独报告。共同后验参考取完整矩阵所有Task成功时间最小值；不追改旧报告或另一会话RL协议。更新AGENTS/评估标准和交接`docs/NONRL_CLASSICAL_TASK_SPT_20261027.md`。
