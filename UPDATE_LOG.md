@@ -426,6 +426,63 @@ Direct14完整607032/4816264，0/30，reward−31.033155，30完整无abort，�
 - 五新源码AST及相应恢复/真实启动/动作诊断通过；有界小证据docs/evidence/rl_parameter16_transfer12_20261026/SOURCES.json，原始大型checkpoint/replay/物理轨迹仍本集群SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，非arm1/HDD全备份。Goal active，健康收敛、最终冻结/ESN/SPT和持续每卡50%未完成。
 
 - 本地实验提交ac6a028d671d1950a4de3c1cba77f6d2c3b3b3e5，push因编辑器GitHub用户名/密码认证等待而未完成，远端最后核验仍dbb1d76；已停止仅该认证阻塞的push进程树，训练不受影响。用户已被请求恢复编辑器登录，未索要任何密码/token。完整117文件小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER16_TRANSFER12_20261026_151820/FULL_SMALL_EVIDENCE.tar.gz逐项hash核验，SHA6258d6401b9295710c95c0fc02d19b12b313b3035f117dcc52634a32c3c96d75。HDD配额仍限制源码包，本次仅小交接与收据（见BACKUP_RECEIPT.json），大产物仅SSD；不称HDD/arm1全备份。
+## 2026-10-27 — 传统首条件6回合归档，补齐原学习组108原始共享副本
+
+- 上轮为实际进展（首阻抗独立审计/归档/push）；本轮查询fetch/read main `822e5da08322674666359d9d4d7d61c59598d111`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS。原协调179772未重启，当前完成9/72、第二条件阻抗02 worker187125真实推进16.04秒；内存约1.83GB/3GiB、OOM0/swap0。未改冻结物理/gates/coordinator/参数，无重复仿真、无RL。
+- 新按条件归档器`archive_nonrl_classical_condition_20261027.py`复用已有流式校验辅助；独立auditor增加完整6回合条件守卫和raw hash绑定。4项合成测试（完整包且原件不变、在途拒绝、改写轨迹拒绝、缺配置拒绝）通过；真实未完成条件拒绝。旧收据保持，旧精确审计源码仍存原包。
+- 首条件全部6×55秒/660万子步独立核验通过，Task/Strict均失败，保留全部记录，不作全矩阵排名。318文件原件前后hash、每个tar成员校验通过，15.378秒打包；729,714,755字节原始包共享至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics000/PHYSICS_BUNDLE.tar.gz`，SHA `3c7432b5610533a537d0e4749c9b17ae88c2f1dd385b1c9972ef0c3d86c4d80f`，本地/远端临时/最终一致。
+- 发现并补齐原108最后36回合的原始归档缺口：009–011原独立审计通过，复用008已有完整收据，837文件打包96.806秒且逐成员验证；4,317,470,894字节共享至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_physics_008_011_20261027/PHYSICS_BUNDLE.tar.gz`，SHA `a70370763742ee2978d5e11b5740a05ccc229dc49c3765f6d4a16c9b31e66ca7`，本地/临时/最终一致。前72四个旧原始包也重新读取远端SHA匹配，原学习组108已全部有共享物理原件。
+- 首次旧条件批审计因systemd命令变量展开得到无效编号而拒绝，0仿真、退出1；改用明确参数列表后三条件13.030秒退出0，原失败保留`ARCHIVE_AUDIT_COMMAND_RETRY.json`。原108的新条件SPT汇总另用独立算式核对九模型/三方法的Task分母、NA和共同参考一致。
+- 详见`docs/NONRL_CLASSICAL_TASK_SPT_20261027.md`和其证据目录的两份原始归档收据。服务器只归档/hash核验，本地原件未删；完整180最终比较仍待余63回合与最终审计/归档，Goal active。收工复读AGENTS，保留无关会议文件。
+
+## 2026-10-27 — 首原生阻抗回合完成并独立审计，传统补测3/72
+
+- 上轮实际进展为110回合独立审计和GitHub发布；本轮查询fetch/read main `643f0e68e1eac31e3dcdbda9e793dab9226e3102`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，复读AGENTS。原协调179772仍active，阻抗01原worker181681以完整55秒/398.31秒墙钟结束，自动接续阻抗02并推进，未重复派发。内存约1.28GiB/上限3GiB，OOM0、swap0。
+- 首阻抗Task/Strict=false、carry结束，峰矩34.936008Nm、外部穿透0.140350mm；完整失败保留，不把低矩且无穿透违规记为任务成功。仅首条件局部结果，不作全组排名。
+- 为核实尚未覆盖的原生阻抗后端，独立进程对首3回合330万物理子步执行已有审计，1.804秒退出0，源码/config/参数/MJB/轨迹hash、原始物理指标和公共filter重放一致；无完整原生actor/servo重建声明。收据`FIRST_IMPEDANCE_PHYSICS_AUDIT.json`。
+- 2898字节收据已上传核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_first_impedance/FIRST_IMPEDANCE_PHYSICS_AUDIT.json`，SHA `c6433ff7d775b92a1642e94d09e996142a9aac8423afdd1d45e4a7d7326e82cc`，本地/远端一致。对应审计源码在此前audit110包，服务器未计算。持续Goal active，仍待余69回合、全180共同参考和最终汇总/归档。收工复读AGENTS，保留无关会议文件。
+
+## 2026-10-27 — 非RL原108与首2经典回合独立子步核验完成
+
+- 上轮是实际进展：新指标/登记/服务启动已提交推送；本轮查询fetch/read main `26e7c9b938a04ba558a01760a5c2c3067522bed1`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，重读AGENTS。原协调179772和原worker真实存活推进，两套导纳已完成，自动接续阻抗01（181681），未重复仿真或调整参数。
+- 新增独立只读审计入口`audit_nonrl_classical_extension_20261027.py`。先2回合220万子步、再原108+2回合共120,135,200子步核验均通过，后者1分10.09秒/退出0/单CPU2/3GiB/禁swap。物理源码/config/锁模/checkpoint/MJB/轨迹hash、保存hold/lift的Task reducer、Strict穿透门、完成时间、原始峰矩/速度/RMSE、接触合规/机器安全与公共filter重放全部一致；保留原提前abort失败。
+- 审计范围诚实限制：没有重新仿真或完整经典actor/原生servo重建；Task reducer核查不是重新构建所有支撑接触几何；学习actor重放继承匹配hash的原收据。完整180尚未完成，progress通过不等于最终通过；默认最终入口正确拒绝未完成72矩阵，最终汇总分支仍待全量完成后实际执行。
+- 收据`docs/evidence/nonrl_classical_task_spt_20261027/ORIGINAL108_AND_FIRST2_AUDIT.json`；精确两版审计器/收据包18,690字节已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_audit110/PROGRESS110_AUDIT_BUNDLE.tar.gz`，SHA `aabca99f4ffb4ce981bc753f1ec4b85c98f96aeaa3769d14e9ae74b1db55c412`。服务器不计算，本批新增原始轨迹仍仅本地。持续Goal active，余70回合/最终对比/全量归档待；收工复读AGENTS，保留用户会议文件。
+
+## 2026-10-27 — 非RL改用Task条件SPT，启动历史传统控制器同条件补测
+
+- 用户明确要求只统计Task成功回合的完成效率。新增`SPT_task_conditional=mean(T_ref/max(T,T_ref)|Task)`；失败排除效率分母、零成功NA，Strict单独报告。共同后验参考取完整矩阵所有Task成功时间最小值；不追改旧报告或另一会话RL协议。更新AGENTS/评估标准和交接`docs/NONRL_CLASSICAL_TASK_SPT_20261027.md`。
+- 真实查询/fetch/read main `102ac709c875351414493144df7d2e61ceb99ed7`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS；原108协调器已退出且execution complete，保留无关未跟踪会议文档。原报告/锁模/冻结物理源码与6套经典依赖历史hash一致。
+- 直接重聚合已有108回合，未重训/重跑。Task参考34.36秒，ESN/RNN/MLP条件SPT为0.755738/0.744141/0.669989，成功平均完成45.774286/46.72/51.333333秒；Task为28/36、26/36、3/36。该表只对应完整108子矩阵，不能冒称加入传统组后的最终结果。旧双通过参考39.40秒及旧SPT保留。
+- 新独立run `nonrl_classical_task_spt_20261027_v1`登记6套历史固定导纳/阻抗/VMC×原12条件=72新回合，合并180。每类保留原两套finalists，无新调参、无RL、无重复确定性seed。原生阻抗力矩律保留；传统组是不同历史预算的系统基线，不是等预算模仿学习组。经典audit仅参数/策略轨迹一致性、公共filter及原始物理指标，未冒称完整独立经典actor重放。
+- 服务`sii-nonrl-classical-task-spt-20261027-v1.service`已启动，协调179772/首worker179776，单CPU1/单模拟器/单线程/MemoryMax3GiB/禁swap、全局计算锁；首导纳物理时间9.04→50.04秒真实推进。冻结physics/MJB/gates/filter/执行器/dt未改。完整72回合、最终共同参考/审计/全量归档待完成，非RL持续Goal active。
+- 首回合随后完成55秒和审计（369.42秒墙钟），Task/Strict失败、carry结束，保留原失败；协调器自动接续第二套导纳并真实推进4.04秒。cgroup OOM事件0/swap0。快照`LAUNCH_FIRST_EPISODE.json`，不是仅凭active判定有效运行。
+- 新指标4项单测通过：Task/Strict解耦、失败不入分母/全矩阵参考、零成功NA、异常时间/重复身份拒绝，历史输入不变。小型证据见`docs/evidence/nonrl_classical_task_spt_20261027/`。
+- 登记包2,001,510字节已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_registration/REGISTRATION_BUNDLE.tar.gz`；本地/远端临时/最终SHA均为`dc4f40656985e1fced46077ebab0d81e97380dc1070d6dfe1136ca79977c148b`。仅登记/源码/108重聚合已归档，未完成经典轨迹仍仅本地，服务器不计算。收工复读AGENTS。
+
+## 2026-10-27 — 最新 ESN 最高SPT单回合原速视频
+
+- 按用户要求从完整最新矩阵中选Task AND Strict双通过且SPT最高的ESN回合，唯一最高者为 `esn_s2026102601__new30_prospective_20261026_acceptance_010`：完成39.40秒、SPT=1、峰矩49.563877Nm、接触期舒适代理99.1329%、最大外部穿透0.192784mm。此为事后选出的最佳展示样例，不代表平均效果或所有指标最优。
+- 查询/fetch/read main `029f8ac13470dcdbed118053eea3a990c059599c`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，原execution complete、最终审计final_audit_passed；源轨迹和MJB hash与最终报告一致。复用现有三视角渲染脚本、MuJoCo3.11.0，只播放保存状态，未重新仿真、训练或修改冻结参数。1375帧/25fps/原速55秒/1920×560；首尾目视与完整MP4解码通过。
+- 本地 benchmark `outputs/nonrl_new30_esn_best_spt_media_20261027_v1/`；服务器独立归档已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_esn_best_spt_media_20261027_v1/`。MP4 SHA256 `7ac73561dcce6379b15526164386233fe05ed80362a735dd2ea7828868a50d25`，manifest SHA256 `029bd7bae9ffbc61f248a9281d29285405150c7b90525d676c42e85f22aeb10a`。服务器仅归档。收工复读AGENTS，保留用户未跟踪的会议文件。
+
+## 2026-10-27 — 最新新增30条 ESN 综合测试回放
+
+- 用户要求展示最新场景，直接使用 `nonrl_new30_fair_20261026_v2/evaluation/esn_s2026102601__new30_prospective_20261026_acceptance_000/rollout` 的原始 MJB 和状态轨迹生成三视角 GIF/MP4；不是此前展示的9月历史动图，也没有重新训练或仿真。
+- 开工查询/fetch/read main `902ce831755f364f2e4d71fa147d51d1b33ce0de` 与 baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；原 execution 已 complete、协调器已退出，无重复作业。收工复读 AGENTS。
+- 使用现有 `tools/render_office_threeview_20260929.py`，MuJoCo 3.11.0，stride=4/fps=12.5，345帧覆盖0.04–55秒，视频27.6秒（约2倍速）。Task=true、Strict=false，外部峰值穿透0.293744mm，如实标注；示例不代表全部方法成绩。首尾画面及GIF解码核验通过。
+- 媒体本地位于 benchmark `outputs/nonrl_new30_esn_media_20261027_v2/`，共享独立目录 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_esn_media_20261027_v2/`。GIF SHA256 `f159b93f80ed51362ab4c86372e534ca1cd41df3a64eb705ec853c844b051cf6`；MP4 `89a4ce12bd4499cc989d071758ec83fe6ad16bb26cde2f9aebc71c89e0260af8`；manifest保存源轨迹/MJB/脚本hash。
+- 初次默认解释器缺少imageio_ffmpeg，备用环境MuJoCo3.14与原MJB不兼容，均失败且未改原始数据；最终保持3.11解释器，仅从既有备用site-packages补充纯Python编码器模块。v1空输出目录保留，无系统显示或冻结环境修改。
+
+## 2026-10-27 — 新增30条 ESN/RNN/MLP 公平比较完成（108/108，最终审计通过）
+
+- 本轮开工核对远端 `main=7d69ac57974888d32f98d208f0097e7ec8f64426`、`baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，并重读 `AGENTS.md`。原登记协调器随后完成最后11个回合，未重复训练或修改数据、模型锁、冻结物理、gate、canonical48 输入、公共 filter、执行器限制或 `dt=5e-5`。
+- `nonrl_new30_fair_20261026_v2` 现为 `execution.json=status=complete`，75个拟合过程、108个候选、9个锁定模型、108/108闭环回合全部完成；中途的 stale `running` 标记已由原服务在安全边界自动恢复，失败与中断收据保留。
+- 独立最终审计 `docs/evidence/nonrl_new30_20261026/FINAL_AUDIT.json` 为 `final_audit_passed`：审计SHA `20f281de68ac410cb92e9667fa86012e398a91b8ae3c57898fda92be615b8bbe`，报告SHA `da9d4fb55ccea6b7eaa4ffa99ccfafaf6e9fe76d94e26b0a2f9f961bc201c7d0`，模型锁SHA `f0b9f8026294486c04998900858f557804dee1a5ef2b9a7e11931f41b41d6d7e`，共同后验 `T_ref=39.400000000746175 s`。验证动作重放、actor/filter、source/config/checkpoint hash、保存物理子步、峰值力矩、接触舒适和穿透/机器安全审计均通过。
+- 最终汇总 `docs/evidence/nonrl_new30_20261026/final_presentation_20261027/FINAL_COMPARISON.md`：ESN Task `77.778±12.729%`、Task+Strict `55.556±9.623%`、SPT `0.475±0.059`；RNN 为 `72.222±26.788%`、`33.333±22.048%`、`0.278±0.199`；MLP 为 `8.333±14.434%`、`8.333±14.434%`、`0.064±0.111`。平均峰值力矩分别 `50.468/49.240/42.877 Nm`，接触期舒适合规 `98.191/98.562/99.767%`，机器安全违规率 `30.556/38.889/0%`（ESN/RNN/MLP）。低力矩和零机器违规的MLP伴随任务失败，不能称整体更优。
+- 最终图表已目视检查：`final_metrics.png` SHA `6162ab575cd7936f36cb0ee1e3b32eccaea65d0cf78d05ccb5c89e73432693de`，PDF SHA `6b06e046a778b5eda85c0c6e48aed3a16b9ab2ba76d2f19344d223208d30e829`，Markdown SHA `0a3e4f1e7073caa04e39c747bb6a1c7bced3e77ba50bad7738cbf3b648000e6d`。结果限于新增30条和12个预登记条件，不作广泛泛化或人体舒适认证结论。
+- 最终小证据包339419字节已上传并核验到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_final_20261027/published/FINAL_EVIDENCE.tar.gz`，本地/服务器SHA均为 `3c7baad4ba335b835fcf53d5061618d872ccee0008cf31c246e50598375b7fc7`；收据 `docs/evidence/nonrl_new30_20261026/FINAL_ARCHIVE_20261027.json`。服务器未训练或仿真。GitHub `main` 已推送并核验为 `c2df77b7b52c15f04e271cf3d6c7d4ffbbd3869d`；`baseline` 对照为 `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。
+
 ## 2026-10-27 — 新30条第九条件审计通过，81/108回合完成
 
 - 上轮核实等待，本轮开工真实查询并fetch/read main=13d44fb38696d3ada6324b56b1548c344a988794、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，读取AGENTS/进度；原worker151047仿真11.04→48.04秒、CPU同步推进，完成第81条后原协调器86607自动接续第十条件，未重复派发。

@@ -407,6 +407,31 @@ Direct11已完整483282/3826264，0/30、reward−31.241907、30完整无abort�
 新有限batch32768/65536对照B/runs/serl_cycle11_batch65536_probe_20261026_v1：probe231521、独立review266278，准确11全state/replay/RNG每臂2000outer，共32000critic+4000actor、0新物理/不保存推广权重。两臂与独立审查均完成、原231521/266278退出、图已看。末termMAE .07618→.07228、max4.189→3.509、32步TD .07052→.07081、平均outer .04270→.11405s（约2.67倍，首编译单列）；候选未部署12，非在线收益，不重复。
 冻结参数15三固定代表：B/runs/parameter_pair15_fixed_20261026_v1，I354445/A354448/V354759协调，I/A evaluator354447/354805，CPU52/53/54 nice19、GPU1/2/3推理，每路3例最多330万子步0优化。V已接续evaluator544452使用54，三个原协调继续，勿重复。新evaluate_pair_parameter严格pair_class/全部markers与全state恢复；最终物理/filter/torque/动作/状态审查尚待，非全30最终排名。
 本轮实验提交ac6a028仅本地，push因编辑器GitHub凭据提示阻塞，远端最后核验仍dbb1d76；用户已被请求恢复登录，勿宣称本轮GitHub已发布。HDD配额仍满；本轮完整小证据SSD，大产物仅SSD。不要宣称HDD或arm1全备份；后续先收原16/12/有限probe/冻结15。
+## 2026-10-27 最新非RL口径：Task成功条件SPT与传统控制器扩展
+
+用户明确改为只在 **Task=true** 回合中计算时间效率均值，记为 `SPT_task_conditional`。
+Task失败不进入此指标分母，零成功为NA；Strict不是该指标的入选条件，Task/Strict成功率和
+安全指标仍用全部回合，必须同时报告。共同T_ref取完整登记矩阵所有Task成功回合的最短时间。
+这覆盖下方非RL“Task AND Strict、失败SPT=0”的旧口径；历史文件不改写，另一会话已冻结的RL
+协议不变。读 `docs/NONRL_CLASSICAL_TASK_SPT_20261027.md` 和评估标准最新修订。
+
+原108回合复用，新增 `nonrl_classical_task_spt_20261027_v1`：历史固定导纳/阻抗/VMC各两套
+锁定参数，共6×12=72新回合，合并180；不含RL，不重新选参数/训练，不重复确定性seed。
+本机服务 `sii-nonrl-classical-task-spt-20261027-v1.service`，单模拟器/单线程/3GiB/禁swap，
+先查execution、service和progress，禁止重复启动。历史原生阻抗力矩律保留；传统组只承诺
+参数/策略轨迹一致性、公共filter、物理子步审计，不能冒称完整独立经典actor重放。
+尚在运行，完整72及最终对比/归档审计待完成；当前Goal只包含本非RL扩展。
+原108学习组原始物理数据已全部共享（旧前72四包重核验，最后36补齐）；新经典首条件6回合
+也已原始归档。收据在 `docs/evidence/nonrl_classical_task_spt_20261027/`，其余条件不得冒称已归档。
+
+## 2026-10-27 非RL新增30条最终评测已完成
+
+`nonrl_new30_fair_20261026_v2` 已完成 75 个拟合过程、9 个锁定模型和 108/108 个独立
+闭环回合。最终独立审计状态为 `final_audit_passed`，共同后验 `T_ref=39.40 s`；最终
+证据见 `docs/evidence/nonrl_new30_20261026/FINAL_AUDIT.json` 与
+`docs/evidence/nonrl_new30_20261026/final_presentation_20261027/FINAL_COMPARISON.md`。
+该结果支持本次新增30条数据和12个预登记条件上的比较；SPT是矩阵内后验参考，舒适阈值是
+经验工程代理，不是人体舒适标定。
 
 ## 最新RL状态：2026-10-26 参数15、Direct等价gather11运行中
 

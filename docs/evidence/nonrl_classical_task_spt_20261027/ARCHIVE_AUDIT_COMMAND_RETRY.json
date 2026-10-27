@@ -1,0 +1,15 @@
+{
+  "status": "failed_invocation_preserved_then_corrected",
+  "first_unit": "sii-new30-last36-condition-audits-20261027.service",
+  "first_exit_code": 1,
+  "first_error": "RuntimeError: Unknown registered condition",
+  "cause": "The systemd-run shell-loop command used an environment-style condition suffix expansion. The resulting condition argument was rejected by the registered-condition guard.",
+  "first_physical_simulations": 0,
+  "retry_unit": "sii-new30-last36-condition-audits-20261027-v2.service",
+  "correction": "Python subprocess argument lists explicitly concatenate the registered009/010/011 suffixes; no shell environment expansion.",
+  "retry_exit_code": 0,
+  "retry_conditions": ["009", "010", "011"],
+  "retry_wall_seconds": 13.030,
+  "changed_physics_or_training": false,
+  "failure_log": "User journal for the first unit; error also retained here. No failed physical output was overwritten."
+}
