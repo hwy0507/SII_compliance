@@ -1,0 +1,11 @@
+--- 28/audit_serl_take28_replay_20261027.py
++++ 29/audit_serl_take29_replay_20261027.py
+@@ -22,7 +22,7 @@
+     assert sorted(extra['ready']+pending) == list(range(current['size']))
+     rows = defaultdict(list)
+     for row in transitions:
+-        assert row['cycle']==28 and row['recovery_stream'] in range(30,60)
++        assert row['cycle']==29 and row['recovery_stream'] in range(30,60)
+         rows[(row['cycle'],row['condition'])].append(row)
+     expected_pending = set(old_pending)
+     mature = 0

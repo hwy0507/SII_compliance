@@ -1,0 +1,93 @@
+{
+  "passed": true,
+  "time": 1793097795.6613548,
+  "parent_cycle": 45,
+  "new_cycle": 46,
+  "new_cycles": 1,
+  "maximum_new_actions_per_method": 41250,
+  "checks": {
+    "impedance": {
+      "passed": true,
+      "controller": "impedance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "minimum",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "db34a5b4f5e9352506ea2ae89c76ef858c4ab168cb8ce78add0caee64bbe31e9",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "admittance": {
+      "passed": true,
+      "controller": "admittance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "36e1112008af0ca17829b9371b05b25ac723dda303e3061ae7ed1dcec9305f6b",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "vmc": {
+      "passed": true,
+      "controller": "vmc",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "e78ef003743a4f6a19ec19139def6f198c195e55b799a9eaca71f4373bc9d901",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    }
+  },
+  "evidence_sha256": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle45_review_20261026_v1/REVIEW.json": "59a9c6fdebb6a6a3226fdf5bd4137cd8ea39afdedbe80185fbf87af8c1b702fd",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle45_review_20261026_v1/health/DIAGNOSIS.json": "5b4dc3f0c0d1fad6dcf80cbc363535cf5136dac9506f966bf658787e21cf164e",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter45_saved_review_20261027_v1/REVIEW.json": "aea2aa19c8748621508314a7d246ea5a333210aa13893fb76980ffd6eb03bdfe",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle46_20261026_v1/CHECK_ONLY_COMPLETE.json": "d77f303f1e13b596faee8f202d15fc88c5bc9a96274168bc03c4ddca0be34d8b",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle46_20261026_v1/SCIENTIFIC_DECISION.json": "808c773dc16791dbba45212155c9f65b5158f2620b2f2a215c83c9119901d8d9",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter43_45_stability_saved_review_20261027_v1/REVIEW.json": "084f24903aa3b69eb360540736db030475dee838513b45435c2fd26fa8cd1f63"
+  },
+  "plot_inspected": true,
+  "reason": "Complete45 fullstate/next65536 verified; fullreview/health/saved arithmetic inspected. Fixed43-45 reward check does not establish joint healthy convergence. Continue one finite46 with unchanged2m capacity, all learner/replay/RNG/history and original algorithm; no auxiliary weights or physics/reward/gate changes.",
+  "convergence_claim": false
+}

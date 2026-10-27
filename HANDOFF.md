@@ -1,3 +1,5 @@
+> **当前RL：[正式参数46与Direct28](docs/RL_PARAMETER46_SERL28_20261027.md)。完整45/27已审查、原43–45未稳定；46/28 actual startup通过。47/29仅准备、新46–48明确容量边界；原冻结41继续。Goal active，先核PID勿重复启动。**
+
 > **RL补充：[4m容量准备](docs/RL_PARAMETER_CAPACITY4M_20261027.md)。真实44迁移验证通过，当前45/take27/冻结41继续；扩容拟47→48，尚未正式部署，须实际47恢复和新48审查。Goal active。**
 
 > **当前RL：[参数45正式接续与Direct27–29窗口](docs/RL_PARAMETER45_SERL27_29_20261027.md)。45实际启动检查通过，原Direct27/冻结41继续；46和Direct28仅准备，无自动训练。先核实际PID，Goal active。**

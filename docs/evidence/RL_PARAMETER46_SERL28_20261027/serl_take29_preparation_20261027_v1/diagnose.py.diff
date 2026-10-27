@@ -1,0 +1,54 @@
+--- 28/diagnose.py
++++ 29/diagnose.py
+@@ -10,7 +10,7 @@
+ torch.set_num_threads(1)
+ B = Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+ OUT = Path(__file__).parent
+-sys.path.insert(0, str(B/'runtime/serl_take_cycle28_20261027_v1'))
++sys.path.insert(0, str(B/'runtime/serl_take_cycle29_20261027_v1'))
+ from serl_multistep_state_adapter_20261026 import SerlMultistepLearner as SerlStateLearner
+ from validate_serl_state_20261026 import digest
+ 
+@@ -20,7 +20,7 @@
+         raise RuntimeError('Review not ready within observation budget')
+     time.sleep(2)
+ review = json.loads((OUT/'REVIEW.json').read_text())
+-x = torch.load(B/'runs/serl_take_cycle28_archive_20261027_v1/direct/cycle_00028.pt', map_location='cpu', weights_only=False)
++x = torch.load(B/'runs/serl_take_cycle29_archive_20261027_v1/direct/cycle_00029.pt', map_location='cpu', weights_only=False)
+ a = SerlStateLearner(B/'runtime/source_train17_clock',
+     upstream=B/'runtime/serl_upstream_1fa2af7',
+     upstream_manifest=B/'runtime/SERL_UPSTREAM_1fa2af7_HASHES.json',
+@@ -30,7 +30,7 @@
+ assert before == digest(x['learner'])
+ arrays = x['replay']['arrays']
+ terminal = np.flatnonzero(arrays['dones'].reshape(-1))
+-assert len(terminal)==840
++assert len(terminal)==870
+ jax = a.jax
+ def stats(v):
+     v = np.asarray(v)
+@@ -40,7 +40,7 @@
+ batch = a.batch(dict({k:v[terminal] for k,v in arrays.items()}, _bootstrap=1-arrays['dones'][terminal,0]))
+ q = np.asarray(a.agent.forward_critic(batch['observations'], batch['actions'], rng=jax.random.PRNGKey(261)))
+ report = dict(captured_unix=time.time(), checkpoint_sha256=review['methods']['direct']['checkpoint_sha256'],
+-    optimizer_updates=0, new_physics=0, terminal_count=840, diagnostic_sampling_domain='mature rows;930 quarantined tails excluded',
++    optimizer_updates=0, new_physics=0, terminal_count=870, diagnostic_sampling_domain='mature rows;930 quarantined tails excluded',
+     terminal_reward=stats(batch['rewards']), terminal_q=stats(q),
+     terminal_q_absolute_error=stats(q-np.asarray(batch['rewards'])[None]) )
+ report['terminal_q_absolute_error'] = stats(np.abs(q-np.asarray(batch['rewards'])[None]))
+@@ -77,7 +77,7 @@
+ import matplotlib
+ matplotlib.use('Agg')
+ import matplotlib.pyplot as plt
+-run = B/'runs/serl_take_cycle28_20261027_v1/direct'
++run = B/'runs/serl_take_cycle29_20261027_v1/direct'
+ rows = [json.loads(s) for s in (run/'optimizer.jsonl').read_text().splitlines() if s.strip()]
+ rows = [r for r in rows if r['step']<=x['steps']]
+ groups = [rows[i:i+500] for i in range(0,len(rows),500)]
+@@ -86,5 +86,5 @@
+     ax.plot([np.mean([r['step'] for r in g]) for g in groups], [np.mean([r[key] for r in g]) for g in groups])
+     ax.set_title(key+' (500 updates/mean)');ax.set_xlabel('Online transitions');ax.grid(alpha=.2)
+ axes[0,0].set_yscale('log');axes[1,1].set_yscale('log')
+-fig.suptitle('Adapted SERL 32-step take28: optimizer diagnostics; no convergence claim')
++fig.suptitle('Adapted SERL 32-step take29: optimizer diagnostics; no convergence claim')
+ fig.savefig(OUT/'training_diagnostics.png',dpi=150)

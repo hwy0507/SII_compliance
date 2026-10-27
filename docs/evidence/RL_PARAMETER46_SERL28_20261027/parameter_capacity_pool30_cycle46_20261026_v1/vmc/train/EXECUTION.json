@@ -1,0 +1,83 @@
+{
+  "status": "running",
+  "pid": 1829726,
+  "protocol_sha256": "3f14999f6c3084d3054aed4daefed6b79421bec84ae82a1b4242d4848c08da4e",
+  "controller": "vmc",
+  "algorithm": "cheq",
+  "seed": 20261025,
+  "cpus": [
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ],
+  "device": "cuda:3",
+  "gpu_name": "NVIDIA GeForce RTX 4090",
+  "gpu_uuid": "8681fcbf-9126-f3ed-c536-cfb0308b9636",
+  "physics_dt_s": 5e-05,
+  "actor_period_s": 0.04,
+  "workers": 30,
+  "batch_size": 65536,
+  "updates_per_transition": 1,
+  "actual_actor_learning_rates": [
+    0.0003
+  ],
+  "completed_stage_continuation": {
+    "kind": "reviewed_complete_stage",
+    "new_cycles": 1,
+    "parent_cycle": 45,
+    "actor_learning_rate_factor": null,
+    "parent_actor_learning_rates": [
+      0.0003
+    ],
+    "review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle46_20261026_v1/SCIENTIFIC_DECISION.json",
+      "sha256": "808c773dc16791dbba45212155c9f65b5158f2620b2f2a215c83c9119901d8d9"
+    },
+    "bellman_target_count": null
+  },
+  "replay_device_cache": true,
+  "replay_device_cache_bytes": 912000000,
+  "recovered_replay": null,
+  "fresh_optimizer_with_imported_replay": false,
+  "restart_reason": "Independent fresh whole learner and empty replay; no preflight or auxiliary weights imported.",
+  "critic_layer_norm": true,
+  "critic_clock": true,
+  "actor_observation_dimension": 49,
+  "replay_observation_dimension": 50,
+  "numerical_amendments": true,
+  "numerical_patch_receipt": {
+    "actor": {
+      "original_sha256": "b6767bcea414a6b807d48899198dfb33b836fe058a571122961277a10f87d216",
+      "replacement_sha256": "5260c96bccb2a6eb5673bf4abb3ac5d60489d2ac217a6d67b16a6c40d42c22ed"
+    },
+    "sac": {
+      "original_sha256": "3c2024f79c86cc32f3f6d7680680dd5f335ca5f25898e981eacd94a37ec5009b",
+      "replacement_sha256": "596e9c2dd2d1f3f0744a3326784444fbcd9ee37d540ceb7a289f032d638767cf",
+      "old": "min_qf_pi = torch.min(qf1_pi, qf2_pi).view(-1)",
+      "new": "min_qf_pi = torch.min(qf1_pi, qf2_pi).view(-1, 1)"
+    },
+    "ensemble_sac": {
+      "original_sha256": "2761f9cc12d8daeab14b96058f53dbcbb7f80a1dbcf4ec12a9c83faefd4f0ca4",
+      "replacement_sha256": "3e27bbe122262f3ca1783624d71bb0490fdf41639ee28718378209b13e4adbe3",
+      "old": "min_q_pi = torch.min(q1_pi, q2_pi).view(-1)",
+      "new": "min_q_pi = torch.min(q1_pi, q2_pi).view(-1, 1)"
+    }
+  },
+  "python": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+  "trainer_sha256": "680a6aaae632be594cee18930255402efc1eb99bc94688aa63fd8fe35dd32812",
+  "learner_adapter_sha256": "af69a88150d8d2480c4f5201e00b2d9f8a8b2639f6baa19c123caa85d268b656",
+  "bellman_target_count": 2,
+  "resumed_from": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle45_archive_20261026_v1/vmc/cycle_00045.pt",
+  "resumed_checkpoint_sha256": "e78ef003743a4f6a19ec19139def6f198c195e55b799a9eaca71f4373bc9d901",
+  "resumed_protocol_sha256": "1c6aa65dd832ed936247ac058780ad0ca0bd81783b35544b788991ab71ea09b5"
+}

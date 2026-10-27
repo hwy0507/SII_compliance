@@ -1,0 +1,176 @@
+--- 
++++ 
+@@ -1,7 +1,7 @@
+-"""One complete26 ->27 continuation, retaining interrupted25 quarantine.
+-
+-Deploy the independently checked equivalent take gather only at this boundary.
+-This entry deliberately rejects partial26 and any other cycle or lineage.
++"""One reviewed finite continuation after complete take27.
++
++Retain the exact recovery26/take27 lineage, original930 quarantined tails,
++all learner/replay/RNG/history and verified take gather. Never resume partial.
+ """
+ from pathlib import Path
+ import argparse
+@@ -30,24 +30,29 @@
+     return json.loads(Path(ref['path']).read_text())
+ 
+ 
+-def validate_protocol(checkpoint_digest, protocol, current_digest):
++def validate_stage_contract(protocol, previous):
+     stage = protocol['recovery_continuation_stage']
+-    previous = read_ref(stage['parent_registration'])
+-    if checkpoint_digest != stage['parent_registration']['sha256']:
+-        raise ValueError('Exact complete26 parent registration required')
+-    if {k:v for k,v in protocol.items() if k != 'recovery_continuation_stage'} != previous:
++    earlier = previous['recovery_continuation_stage']
++    protected = lambda p: {k:v for k,v in p.items() if k != 'recovery_continuation_stage'}
++    if protected(protocol) != protected(previous):
+         raise ValueError('Protected original recovery contract changed')
+-    if (stage['parent_cycle'] != 26 or stage['new_cycle'] != 27
++    if (type(stage['parent_cycle']) is not int or stage['parent_cycle'] < 27
++            or stage['parent_cycle'] != earlier['new_cycle']
++            or stage['new_cycle'] != stage['parent_cycle']+1
+             or stage['new_cycles'] != 1 or stage['maximum_new_actions'] != 41250
+             or stage['maximum_physical_substeps'] != 33000000
+             or stage['automatic_followup'] or stage['auxiliary_weights_imported']
+             or stage['optimizer_settings_changed'] or stage['quarantined_pending'] != 930
+             or stage['active_streams'] != list(range(30,60))):
+-        raise ValueError('Expected one unchanged complete26 ->27 continuation')
+-    review = read_ref(stage['cycle_review'])
+-    health = read_ref(stage['health_review'])
+-    gate = read_ref(stage['gather_gate'])
+-    saved = read_ref(stage['gather_saved_review'])
++        raise ValueError('One consecutive unchanged complete cycle required')
++    for key in ['gather_gate','gather_saved_review','gather_sha256','sample_source_sha256']:
++        if stage[key] != earlier[key]:
++            raise ValueError('Historical equivalent-gather evidence changed: '+key)
++
++
++def validate_stage_evidence(stage):
++    review,health = read_ref(stage['cycle_review']),read_ref(stage['health_review'])
++    gate,saved = read_ref(stage['gather_gate']),read_ref(stage['gather_saved_review'])
+     if (not review['passed'] or not health['network_optimizer_rng_unchanged']
+             or review['methods']['direct']['checkpoint_sha256'] != stage['checkpoint']['sha256']
+             or health['checkpoint_sha256'] != stage['checkpoint']['sha256']
+@@ -55,26 +60,63 @@
+             or gate['candidate_sha256'] != stage['gather_sha256']
+             or gate['weights_saved'] or gate['new_physics'] != 0
+             or not saved['passed'] or saved['review_sha256'] != stage['gather_gate']['sha256']):
+-        raise ValueError('Missing exact-parent review or gather equivalence evidence')
+-    return previous
++        raise ValueError('Missing exact-parent review or original gather evidence')
++
++
++def validate_protocol(checkpoint_digest, protocol, current_digest):
++    import resume_serl_recovery26_take27_20261027 as entry
++    stage = protocol['recovery_continuation_stage']
++    if checkpoint_digest != stage['parent_registration']['sha256']:
++        raise ValueError('Exact latest complete parent registration required')
++    current,seen,first = protocol,set(),None
++    while current['recovery_continuation_stage']['parent_cycle'] >= 27:
++        stage = current['recovery_continuation_stage']
++        ref = stage['parent_registration']
++        if ref['path'] in seen:
++            raise ValueError('Cyclic continuation lineage')
++        seen.add(ref['path'])
++        previous = read_ref(ref)
++        if first is None:
++            first = previous
++        validate_stage_contract(current,previous)
++        validate_stage_evidence(stage)
++        current = previous
++    if first is None or current['recovery_continuation_stage']['parent_cycle'] != 26:
++        raise ValueError('Continuation must descend from the original take27 entry')
++    entry.validate_protocol(current['recovery_continuation_stage']['parent_registration']['sha256'],current,'')
++    return first
++
++
++def original_recovery_protocol(protocol):
++    current,seen = protocol,set()
++    while 'recovery_continuation_stage' in current:
++        ref = current['recovery_continuation_stage']['parent_registration']
++        if ref['path'] in seen:
++            raise ValueError('Cyclic original-recovery lineage')
++        seen.add(ref['path']);current = read_ref(ref)
++    return current
+ 
+ 
+ def validate_parent(ck, previous):
+     extra = ck['replay']['multistep_target_extension']
+-    original = previous['interrupted_stream_recovery']
+-    if (ck['cycle'] != 26 or ck['boundary'] != 'complete_condition_cycle'
++    stage = previous['recovery_continuation_stage']
++    cycle = stage['new_cycle']
++    complete_after_recovery = [c['cycle'] for c in ck['cycles'] if c['cycle'] >= 25]
++    if (type(cycle) is not int or cycle < 27 or ck['cycle'] != cycle
++            or ck['boundary'] != 'complete_condition_cycle'
+             or ck['controller'] != 'direct' or ck['seed'] != 20261026
+-            or ck['cycles'][-1]['cycle'] != 26 or ck['cycles'][-2]['cycle'] != 24
+-            or any(c['cycle'] == 25 for c in ck['cycles'])
+-            or ck['interruption_recovery'] != original
+-            or not 1039290 < ck['steps'] <= 1080540
++            or ck['cycles'][-1]['cycle'] != cycle
++            or complete_after_recovery != list(range(26,cycle+1))
++            or ck['interruption_recovery'] != previous['interrupted_stream_recovery']
++            or ck['recovery_continuation'] != stage
++            or not 1039290 < ck['steps'] <= 1039290+(cycle-25)*41250
+             or ck['replay']['size'] != ck['steps'] or ck['replay']['cursor'] != ck['steps']
+             or set(extra['pending']) != set(range(30))
+             or any(len(v) != 31 for v in extra['pending'].values())
+             or len(extra['ready']) != ck['steps']-930
+             or ck['learner']['outer_updates'] != 1034291+ck['steps']-1039290
+             or ck['learner']['num_gradient_steps'] != 8274328+8*(ck['steps']-1039290)):
+-        raise ValueError('Expected complete26 with original930 pending, no invented complete25')
++        raise ValueError('Expected complete parent with unchanged recovery history and930 pending')
+ 
+ 
+ def transform(source):
+@@ -83,7 +125,7 @@
+     old = 'partial25 retained; streams0-29 quarantined unchanged; fresh physical streams30-59 in separately budgeted complete26'
+     if source.count(old) != 1:
+         raise ValueError('Recovery metadata seam drifted')
+-    source = source.replace(old, 'complete26 to27; retain partial25 exposure and930 quarantined tails; reuse fully flushed streams30-59')
++    source = source.replace(old, 'reviewed complete-cycle continuation after take27; retain partial25 exposure and930 quarantined tails; reuse fully flushed streams30-59')
+     seam = "            interruption_recovery=protocol['interrupted_stream_recovery'],"
+     if source.count(seam) != 1:
+         raise ValueError('Recovery checkpoint seam drifted')
+@@ -98,7 +140,7 @@
+     stage = protocol['recovery_continuation_stage']
+     if (sha(__file__) != stage['driver_sha256'] or str(args.resume) != stage['checkpoint']['path']
+             or sha(args.resume) != stage['checkpoint']['sha256']):
+-        raise ValueError('Exact source and complete26 checkpoint required')
++        raise ValueError('Exact source and latest complete checkpoint required')
+     rt = Path(stage['runtime'])
+     for name, expected in stage['source_hashes'].items():
+         if sha(rt/name) != expected:
+@@ -115,7 +157,8 @@
+     previous = validate_protocol(ck['protocol_sha256'],protocol,sha(args.registration))
+     validate_parent(ck,previous)
+     # Verify each historical contract as itself, never relabel an incomplete25.
+-    interrupted = recovery.validate_protocol(previous['interrupted_stream_recovery']['parent_registration']['sha256'],previous,'')
++    original = original_recovery_protocol(previous)
++    interrupted = recovery.validate_protocol(original['interrupted_stream_recovery']['parent_registration']['sha256'],original,'')
+     old.validate(interrupted['resume_parent_registration']['sha256'],interrupted,'')
+     for name, expected in previous['interrupted_stream_recovery']['source_hashes'].items():
+         if sha(rt/name) != expected:
+@@ -172,16 +215,16 @@
+     if (not review['passed'] or review['checkpoint_sha256'] != sha(args.resume)
+             or review['registration_sha256'] != sha(args.registration)
+             or not prelaunch['passed'] or prelaunch['registration_sha256'] != sha(args.registration)):
+-        raise ValueError('Actual complete26 restore and prelaunch review required')
++        raise ValueError('Actual latest complete restore and prelaunch review required')
+     args.controller,args.algorithm,args.seed,args.cycles = 'direct','serl_state',20261026,1
+     module.PublishedLearner,module.Replay = cls,candidate
+     module.validate_resume_protocol = validate_protocol
+     module.__dict__.update(_validate_sampler_pool=old.validate_sampler_pool,_sampler_affinity=old.sampler_affinity,
+                            _recovery_stream=recovery.stream_id,_verify_initial_state=recovery.verify_initial_state)
+-    exec(compile(candidate_main,'<registered_complete26_take27>','exec'),module.__dict__)
++    exec(compile(candidate_main,'<registered_take_recovery_continuation>','exec'),module.__dict__)
+     write(args.output.parent/'CONTINUATION_EXECUTION.json',dict(time=time.time(),pid=os.getpid(),
+           checkpoint=stage['checkpoint'],registration_sha256=sha(args.registration),driver_sha256=sha(__file__),
+-          new_cycle=27,maximum_new_actions=41250,old_pending_quarantined=930,automatic_followup=False))
++          new_cycle=stage['new_cycle'],maximum_new_actions=41250,old_pending_quarantined=930,automatic_followup=False))
+     (args.output.parent/'SAMPLER_MAIN.py.txt').write_text(candidate_main)
+     del ck
+     module.main(args)
