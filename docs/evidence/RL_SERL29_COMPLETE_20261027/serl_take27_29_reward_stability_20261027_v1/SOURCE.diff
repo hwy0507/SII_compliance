@@ -1,0 +1,105 @@
+--- original24_26.py
++++ audit_serl_take27_29_reward_stability_20261027.py
+@@ -16,8 +16,8 @@
+     os.sched_setaffinity(0, {52})
+     import numpy as np
+     reg = json.loads(registration.read_text())
+-    assert reg['cycles'] == [23, 24, 25, 26] and reg['stability_window'] == [24, 25, 26]
+-    assert reg['bootstrap_seed'] == 2026102742 and reg['bootstrap_replicates'] == 5000
++    assert reg['cycles'] == [26, 27, 28, 29] and reg['stability_window'] == [27, 28, 29]
++    assert reg['bootstrap_seed'] == 2026102746 and reg['bootstrap_replicates'] == 5000
+     assert reg['relative_change_limit'] == .05 and reg['near_zero_guard'] == 1.
+     assert sha(Path(__file__)) == reg['source_sha256']
+     for group in reg['inputs'].values():
+@@ -46,17 +46,35 @@
+             for name in ['serl_multistep_state_adapter_20261026.py',
+                          'serl_multistep_replay_gather_20261026.py', 'serl_multistep_batch_transfer_20261026.py']:
+                 assert protocol['gather_stage']['source_hashes'][name] == protocols[0]['gather_stage']['source_hashes'][name]
+-        if cycle == 23:
+-            assert 'replay_capacity_stage' not in protocol
++        capacity = protocol['replay_capacity_stage']
++        assert capacity['marker'] == reg['capacity_marker']
++        assert capacity['parent_cycle'] == 23 and capacity['old_capacity'] == 1_000_000
++        assert capacity['new_capacity'] == 2_000_000 and capacity['auxiliary_weights_imported'] is False
++        assert method['replay_capacity']['passed'] and method['replay_capacity']['new_capacity'] == 2_000_000
++        assert method['replay_capacity']['marker'] == reg['capacity_marker']
++        multi = method['multistep_replay']
++        assert multi['passed'] and multi['quarantined_old_pending_rows'] == 930
++        assert multi['new_pending_rows'] == 0 and multi['all_new_derived_targets_exact']
++        assert method['retained_replay_all_fields_exact'] and method['max_reward_reconstruction_error'] == 0
++        if protocols:
++            assert capacity == protocols[0]['replay_capacity_stage']
++            assert protocol['interrupted_stream_recovery'] == protocols[0]['interrupted_stream_recovery']
++        if cycle == 26:
++            assert 'recovery_continuation_stage' not in protocol
+         else:
+-            capacity = protocol['replay_capacity_stage']
+-            assert capacity['marker'] == reg['capacity_marker']
+-            assert capacity['parent_cycle'] == 23 and capacity['old_capacity'] == 1_000_000
+-            assert capacity['new_capacity'] == 2_000_000 and capacity['auxiliary_weights_imported'] is False
+-            assert method['replay_capacity']['passed'] and method['replay_capacity']['new_capacity'] == 2_000_000
+-            assert method['replay_capacity']['marker'] == reg['capacity_marker']
+-            if cycle > 24:
+-                assert capacity == protocols[1]['replay_capacity_stage']
++            stage = protocol['recovery_continuation_stage']
++            assert stage['parent_cycle'] == cycle-1 and stage['new_cycle'] == cycle
++            assert stage['new_cycles'] == 1 and stage['quarantined_pending'] == 930
++            assert stage['active_streams'] == list(range(30,60))
++            assert stage['optimizer_settings_changed'] is False and stage['auxiliary_weights_imported'] is False
++            assert stage['checkpoint']['sha256'] == summaries[-1]['checkpoint_sha256']
++            assert stage['parent_registration'] == reg['inputs'][str(cycle-1)]['protocol']
++            for key in ['gather_gate','gather_saved_review']:
++                ref=stage[key]; assert sha(ref['path']) == ref['sha256']
++                assert json.loads(Path(ref['path']).read_text())['passed']
++            if cycle > 27:
++                for key in ['gather_gate','gather_saved_review','gather_sha256']:
++                    assert stage[key] == protocols[1]['recovery_continuation_stage'][key]
+         protocols.append(protocol)
+         episodes = [json.loads(line) for line in Path(refs['episodes']['path']).read_text().splitlines()]
+         assert len(episodes) == 30 and all(e['cycle'] == cycle for e in episodes)
+@@ -73,7 +91,7 @@
+         assert np.isfinite(rewards).all()
+         assert np.isclose(rewards.mean(), method['reward_mean'], rtol=0, atol=1e-10)
+         optimizer = [json.loads(line) for line in Path(refs['optimizer']['path']).read_text().splitlines()]
+-        assert len(optimizer) == method['new_transitions']
++        assert len(optimizer) == method['new_transitions'] == sum(e['steps'] for e in episodes)
+         assert [r['step'] for r in optimizer] == list(range(method['steps']-len(optimizer)+1, method['steps']+1))
+         assert all(np.isfinite(v) for r in optimizer for v in r.values() if isinstance(v, (float, int)))
+         loss = np.asarray([r['serl/critic/critic_loss'] for r in optimizer])
+@@ -110,13 +128,13 @@
+     selected = np.concatenate(draws, axis=1)
+     bootstrap_means = matrix[:, selected].mean(axis=2)
+     changes = bootstrap_means[-1]-bootstrap_means[0]
+-    x = np.asarray([24., 25., 26.]); x -= x.mean()
++    x = np.asarray([27., 28., 29.]); x -= x.mean()
+     slopes = (bootstrap_means[1:]*x[:, None]).sum(axis=0)/(x*x).sum()
+     paired = [dict(condition=key, category=episode_maps[0][key]['category'],
+-        rewards=matrix[:, i].tolist(), baseline23_to26_delta=float(delta[i])) for i, key in enumerate(ids)]
++        rewards=matrix[:, i].tolist(), baseline26_to29_delta=float(delta[i])) for i, key in enumerate(ids)]
+     result = dict(passed=True, time=time.time(), registration_sha256=sha(registration),
+-        cycles=summaries, paired_conditions=paired, baseline_cycle=23, stability_window=[24, 25, 26],
+-        baseline23_to26_mean_delta=float(delta.mean()),
++        cycles=summaries, paired_conditions=paired, baseline_cycle=26, stability_window=[27, 28, 29],
++        baseline26_to29_mean_delta=float(delta.mean()),
+         improved_conditions=int((delta > 0).sum()), worsened_conditions=int((delta < 0).sum()),
+         bootstrap_condition_sensitivity95_delta=np.quantile(changes, [.025, .975]).tolist(),
+         last3_mean_slope=float((last*x).sum()/(x*x).sum()),
+@@ -125,15 +143,15 @@
+         adjacent_relative_mean_changes=None if adjacent is None else adjacent.tolist(),
+         last3_endpoint_relative_change=endpoint,
+         descriptive_five_percent_check=bool(not near_zero and (adjacent <= .05).all() and endpoint <= .05),
+-        capacity_marker=reg['capacity_marker'], capacity_change_between_baseline_and_window=True,
++        capacity_marker=reg['capacity_marker'], capacity_change_between_baseline_and_window=False,
+         new_physics=0, optimizer_updates=0, automatic_stop=False, convergence_claim=False,
+-        limitation='Fixed24-26 capacity2m window with original-capacity23 as paired baseline, registered while23 had0 complete conditions and24-26 were not launched. Window outcomes are prospective;23 policy is already training. The23-to24 change expands retained replay capacity1m to2m; baseline deltas cannot isolate capacity from policy/time effects. Original5percent and nearzero1 criteria retained. Condition bootstrap measures composition sensitivity, not independent training seeds or frozen-policy performance. Safety failures remain in all30 denominators. Finite logs and5percent alone do not declare convergence or automatically stop training. Frozen validation and other methods remain separate requirements.')
++        limitation='Fixed27-29 window registered while27 had zero completed conditions and28-29 were not launched. Complete26 is an already observed paired baseline. All four retain identical2m capacity, historical entry23, original interrupted25 lineage and930 quarantined pending rows. Exact-equivalent take gather deployed at27 is disclosed with its gate; baseline deltas cannot isolate implementation from policy/time effects. Original5percent and nearzero1 criteria retained. Condition bootstrap measures composition sensitivity, not independent training seeds or frozen-policy performance. Safety failures remain in all30 denominators and actual episode lengths are checked. Finite logs and5percent alone do not declare convergence or automatically stop training. Frozen validation and other methods remain separate requirements.')
+     import matplotlib
+     matplotlib.use('Agg')
+     import matplotlib.pyplot as plt
+     fig, axes = plt.subplots(1, 3, figsize=(25, 4), constrained_layout=True)
+     axes[0].plot(reg['cycles'], means, marker='o'); axes[0].set(title='Complete-cycle reward means', xlabel='Cycle')
+-    axes[1].bar(range(30), delta); axes[1].axhline(0, color='grey'); axes[1].set(title='Paired reward change:26 minus23', xlabel='Fixed condition index')
++    axes[1].bar(range(30), delta); axes[1].axhline(0, color='grey'); axes[1].set(title='Paired reward change:29 minus26', xlabel='Fixed condition index')
+     for cycle, loss in zip(reg['cycles'], losses):
+         count = len(loss)//1000
+         axes[2].plot(np.arange(count), loss[:count*1000].reshape(count, 1000).mean(axis=1), label=str(cycle))
