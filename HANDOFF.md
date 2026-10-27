@@ -1,5 +1,11 @@
 > **当前RL：[正式参数46与Direct28](docs/RL_PARAMETER46_SERL28_20261027.md)。完整45/27已审查、原43–45未稳定；46/28 actual startup通过。47/29仅准备、新46–48明确容量边界；原冻结41继续。Goal active，先核PID勿重复启动。**
 
+## 2026-10-27 — 参数48双容量标记静态衔接准备
+
+[本轮补充](docs/RL_PARAMETER48_STATIC_20261027.md)。原四正式46/28及冻结41七PID持续推进，47/29原准备与两个固定窗口保持。新parameter48_static_preparation_20261027_v1含10个冻结运行源码：准确47→48 prepare/手动launch/setup、五审查模板、两候选；原entry23/2m marker保留，新4m followup绑定实际47全state。原依赖逐项保留且恰新增两文件，startup/fullreview双marker及current_replay_capacity符合46–48窗口。两health逐字节一致，reward/映射段仅周期路径差异；AST/hash/CPU/标签通过。首次静态比较未规范化周期路径的失败保留并更正。没有正式48目录、waiter或恢复/物理/优化，准确47恢复与真实2m边界仍待。
+原46 I1829718/A1829722/V1829726、Direct28 1978250，冻结41 316550/316551/316552；47准备1858092、29准备2044155、固定统计1908379/336744。勿重复启动。小证据docs/evidence/RL_PARAMETER48_STATIC_20261027；Goal active，无子agent，原大产物共享SSD。
+
+
 > **RL补充：[4m容量准备](docs/RL_PARAMETER_CAPACITY4M_20261027.md)。真实44迁移验证通过，当前45/take27/冻结41继续；扩容拟47→48，尚未正式部署，须实际47恢复和新48审查。Goal active。**
 
 > **当前RL：[参数45正式接续与Direct27–29窗口](docs/RL_PARAMETER45_SERL27_29_20261027.md)。45实际启动检查通过，原Direct27/冻结41继续；46和Direct28仅准备，无自动训练。先核实际PID，Goal active。**
@@ -588,3 +594,5 @@ python evaluate_direct_esn_post_contact.py \
 ## 10. 当前交接一句话
 
 **正式配方 = 稳定 reference 的 fixture 2 邻域 coverage 蒸馏（19+1 expert traces → BC），8/8 随机 reservoir 通过完整 selection gate（held-out −2.207±0.034 mm）；到此为止，不要再叠随机 pool DAgger（失败方向 F）。下一步是论文主实验图表与泛化扩展（OOD 强度 / impactor 变体），以及 recovery jerk 压低。不要回到单一 phase teacher，也不要把 VMC 混入 Direct ESN proposed 线。**
+
+本轮准备提交d0e6c2104e150d26075b9d2ef07686cf255ce585已push；共享SSD补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER48_STATIC_20261027_110541/PREPARATION_SUPPLEMENT.tar.gz，28成员/574510字节、SHA256 72d490144ea470e8bac05a10e823ca09f8bc012bd40036c8eadd81a30d8a0612，逐成员大小/hash核验。收据docs/RL_PARAMETER48_STATIC_SAVE_20261027.json；依赖前轮46/28完整小包和原共享SSD大产物，现有HDD LATEST已更新回读，非HDD/arm1全备份。48仍未部署，原四正式与冻结41继续，Goal active。
