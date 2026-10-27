@@ -92,6 +92,40 @@ Strict穿透门、完成时间、峰矩/速度/RMSE、接触合规与机器违�
 
 ## 归档
 
+### 独立归档接续服务
+
+`sii-classical-archive-pipeline-20261027-v1.service`于08:25 UTC启动，PID188540，单CPU2/
+单线程/3GiB/禁swap/Nice10；原物理服务PID179772/CPU1保持。入口
+`tools/watch_nonrl_classical_archives_20261027.py`，执行冻结副本位于run内
+`published/archive_pipeline_v1/source/`，自身登记/状态与原物理execution分离。
+
+它只等待登记的12个条件，每个条件六套配置都已完整结束才审计、打包和传输；不派发仿真、
+不改控制器、不自动重启主作业、不写Git。通过独立文件锁、拒绝重复run/prepare、独立远端
+目录和严格hash检查避免重复或覆盖；首条件已有包只重新核验后接管，不重新传输。
+重复run/prepare的真实拒绝检查通过。源/注册hash在每个条件前核对，失败保留并退出归档作业，
+原仿真继续由原协调器管理。`STOP_REQUESTED`放在pipeline目录时，在条件边界停止归档。
+
+查看pipeline自身`execution.json`、`logs/`及`ARCHIVE_000.json`至`ARCHIVE_011.json`。
+主仿真当前完成数以run根execution为准；pipeline的`campaign_completed`是上一次等待时的快照。
+12包全部核验且主run生成完整报告后，自动执行独立最终180审计。即使pipeline最终成功，
+状态仍为`raw_archives_and_final_audit_complete_pending_publication`，之后还需主agent检查并发布
+完整结果/最终证据；不能把服务active或首条件接管当作Goal完成。
+
+启动后已核验首包远端hash并写出`ARCHIVE_000.json`，随后真实等待并进入第二条件审计/归档。
+精确源码/登记/启动快照包13,129字节已共享到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_archive_pipeline_registration/ARCHIVE_PIPELINE_REGISTRATION.tar.gz`，
+SHA256 `f7f3b2099f3e17f5165a3fd03dbc860dea947988643c207836c0682e8bcb92b6`，本地/远端一致。
+
+第二条件001已由该作业实际完成全部流程：660万子步审计、318文件打包前后/包内hash核验、
+上传、远端临时及最终hash/大小验证，随后自动等待条件002。新包730,459,913字节，
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics001/PHYSICS_BUNDLE.tar.gz`，
+SHA256 `c0b1e4f18c7b5fdaa796229db9526166d367ed9dcfc62524d5f1edd31ee0c070`。
+收据 `CLASSICAL_CONDITION001_ARCHIVE.json`、`CONDITION001_PHYSICS_AUDIT.json`，
+快照 `ARCHIVE_PIPELINE_FIRST_NEW_CONDITION.json`。此时主仿真12/72完成且已进入第三条件；
+共享新经典原件12/72，未声称剩余60回合或最终180审计完成。两服务OOM事件0、swap0。
+
+### 单条件打包入口
+
 按完整条件归档入口：先用 `audit_nonrl_classical_extension_20261027.py --progress --condition <id>`
 核查该条件全部6个完成回合，再用 `archive_nonrl_classical_condition_20261027.py --root <run>
 --audit <condition_audit.json> --output <new_directory>` 打包。审计现在绑定源run、模型锁及每回合
