@@ -1,3 +1,9 @@
+## 2026-10-27 — 参数42完整、43接续与Direct等价take27准备
+
+报告[RL_PARAMETER43_TAKE_PREPARATION_20261027.md](docs/RL_PARAMETER43_TAKE_PREPARATION_20261027.md)。服务器共享SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。42三路30全程、旧state/replay/history、新41250reward0误差、finite/health/保存算术与图通过；Task/Strict18/17、13/13、17/16，未收敛。正式43准确42check-only全state/next65536通过，1732692/1732693/1732694启动，原算法/物理/2m不变、每路一个有限周期。
+Direct645388恢复26继续；take候选实际gate三批/RNG/reload/pytree与双臂各1outer完整network/Adam/RNG/metrics精确，16critic+2actor、0物理/不存权重，尚未部署。新完整26→27恢复driver保留930隔离pending和partial25历史，五项静态错误边界拒绝、sampler仅metadata差异；有界准备1705859等完整26实际恢复，无自动训练。冻结41原三任务继续。
+GPU0稳定42.7333%仍未达50%，原局部读取计时改善不当整体提速；42→43有审查恢复空档。main开工822e5da→已合并4c795d8，baseline f6e8f8c，收尾真实fetch另记。源码B/repository/SII_compliance；小证据docs/evidence/RL_REBOOT_RESUME_20261027，完整MANIFEST/LIVE更新；大产物SSD、HDD配额满。无子agent，Goal active，push/归档另记。
+
 ## 2026-10-27 — Direct持续低GPU定位与读取候选的有限等价检查
 
 - 同一原四learner与冻结41真实进度持续增长；Direct恢复首1000全state/旧930pending/新目标审查已通过，未重新启动。2000新步后的60样本仍GPU0–3均值42.7333/64.55/68.75/68.4%，不宣称四卡均达50%。
@@ -9523,3 +9529,5 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 
 - 条件010的 ESN seed3 已完成，原协调器 PID 86607 自动接续 RNN seed3（当前 worker PID 162844），`PARTIAL_ROWS.json` 已由96推进到97/108。`MemoryCurrent=2,778,894,336`、`MemoryMax=3,221,225,472`、swap上限0，worker真实运行。
 - 未修改冻结模型锁、数据划分、物理/gate/filter或已完成回合；条件010剩余2个模型、条件011全部9个模型仍待。最终共同 `T_ref`/SPT、独立审计和报告仍需等108/108后执行，Goal保持active。
+
+本轮43 actual startup新增I1000/A1000/V2000通过，旧完整replay/history/optimizer/30MJB/sampler/clock/action与新reward0误差。收尾真实fetch/read main4c75aa5，baseline f6e8f8c不变；远端非RL12/72/归档服务是另一任务，运行中RL冻结源码不改。

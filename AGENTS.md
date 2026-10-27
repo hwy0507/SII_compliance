@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-27 — 完整参数42、正式43与Direct take27准备（Goal active）
+
+最新补充：[RL_PARAMETER43_TAKE_PREPARATION_20261027.md](docs/RL_PARAMETER43_TAKE_PREPARATION_20261027.md)，恢复总背景仍RL_REBOOT_RESUME_20261027。参数42已完整审查/health/保存算术与图通过：I/A/V Task/Strict18/17、13/13、17/16，reward−2.374253/−10.227515/−4.602095，末loss3.075095/2.012984/.741982，均30全55/noabort、旧replay/history保留、新reward0误差，未健康稳定收敛。
+正式43 I1732692/A1732693/V1732694，GPU1–3原CPU组；准确42全state/next65536及PRELAUNCH通过，单有限周期，startup1732696/archive1732697/review1732698。实际startup新增1000/1000/2000已通过，旧回放/history及新reward0误差；勿重启42或重复43。
+Direct原恢复26 learner645388继续；take gather有限gate已通过三批/RNG/reload/pytree及各1outer后完整network/Adam/RNG/metrics精确，0物理/不存权重，未部署。新recovery26_take27入口静态五负边界与sampler metadata-only diff通过，准备1705859等待7200秒+900秒check-only，无自动训练；必须实际完整26review/health恢复后再审查部署，保留930旧pending和partial25历史。旧完整父25入口不能用。
+冻结41原316550/316551/316552继续，全90未完。GPU0已有稳定窗口42.7333%未达标，候选局部gather计时改善不等于正式提速或四卡达标。42→43有归档/审查/恢复空档，无假负载。无子agent，Goal active；大产物SSD，小证据docs/evidence/RL_REBOOT_RESUME_20261027。
+
 ## 2026-10-27 — 用户已重新开机明确恢复：Goal active（覆盖此前关机paused）
 
 最新恢复交接：[RL_REBOOT_RESUME_20261027.md](docs/RL_REBOOT_RESUME_20261027.md)。当前Direct独立恢复26 learner645388（partial25父1039290步，旧930pending显式封存保留、新stream30–59，原全state不变）；参数42 I351462/A351463/V351465；冻结41 I316550/A316551/V316552及review316553。全部PID须下轮重验身份与进度，勿重复启动。原旧Direct26完整父入口、24–26稳定等待及旧冻结26入口不能直接复用：25未完整、曝光增加且有隔离pending，必须恢复链专门审查。原25和关机快照不覆盖。

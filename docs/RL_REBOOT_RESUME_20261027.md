@@ -66,3 +66,5 @@
 独立有限gate：B/runs/serl_take_gather_gate_20261027_v1，原timeout进程1314855，600秒上限。真实首1000快照、3次65536采样与RNG/reload、完整batch pytree及每臂1outer更新（共16critic+2actor）做全network/Adam/RNG/metrics精确比较，0物理、不保存权重、不推广。检查实际REVIEW/FAILURE和进程身份再决定；此处登记不代表已通过。正式恢复26保持原实现，不在运行中改源码。后续只有通过gate与完整周期恢复审查才可在新登记阶段部署。
 
 本轮科学提交605c938；随后真实fetch得到远端4c795d8（另一非RL任务原始归档/经典补测），已阅读并以4b3b5ea合并。AGENTS/UPDATE_LOG冲突按双方完整添加区块保留，逐行子序列核验两父内容均未丢失/重排。运行中的冻结源码与协议不变，远端Task条件SPT不追改本RL奖励。
+
+最新补充：[完整参数42、正式43及Direct take27准备](RL_PARAMETER43_TAKE_PREPARATION_20261027.md)。上述take gate已完成并通过实际单更新等价检查，SAVED_REVIEW核验hash；参数42已完成、正式43启动。旧pending叙述与全部恢复边界保持，未正式部署Direct优化。

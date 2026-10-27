@@ -1,0 +1,91 @@
+{
+  "passed": true,
+  "time": 1793090819.428523,
+  "parent_cycle": 42,
+  "new_cycle": 43,
+  "new_cycles": 1,
+  "maximum_new_actions_per_method": 41250,
+  "checks": {
+    "impedance": {
+      "passed": true,
+      "controller": "impedance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "minimum",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "52e0381700dbb5cbc42d02413c89baf2bdd222fd3cc6a53a2cd819945678f0d9",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "admittance": {
+      "passed": true,
+      "controller": "admittance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "56003beaa2b8bfccdff9b67b808c7297c8b34d6aba2b4d6138069b3c42d8dc90",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "vmc": {
+      "passed": true,
+      "controller": "vmc",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "cef9b3468f02dbf37208c0c95e18905ee4421c195b10e86b1f72f880a92f1b14",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    }
+  },
+  "evidence_sha256": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle42_review_20261026_v1/REVIEW.json": "33114d275c275a26b28034a0fae81de671d7feecac6c4257f3a93685f6ef2937",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle42_review_20261026_v1/health/DIAGNOSIS.json": "031a41343a4c8c1a1e16ccd2cf6109e1c8cd94071913bc60c21c0bb62965638d",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle42_review_20261026_v1/SAVED_RESULTS_REVIEW.json": "8da5cdc7377dbceed0eeba5b37562241e6014b44af708ba370eeb01f743fdee8",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle43_20261026_v1/CHECK_ONLY_COMPLETE.json": "4f8358943f2226e0aa07d2e0e9236255b2bad895f80e1f38a8b51dc8511d5a2e",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle43_20261026_v1/SCIENTIFIC_DECISION.json": "84b494e32483d029cbd927204fc377ebb974984d69f25e95412665b740fd8f4f"
+  },
+  "reason": "Exact complete42 fullstate and next65536 restored.42 retains finite learner/optimizer and zero reward reconstruction error but reward/task fluctuations and terminal residuals preclude convergence.Continue one unchanged finite43 with original audits; no auxiliary weights.",
+  "convergence_claim": false
+}
