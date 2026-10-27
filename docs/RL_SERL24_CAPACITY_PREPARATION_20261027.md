@@ -1,0 +1,54 @@
+# Direct24容量入口准备完成，尚未正式迁移
+
+2026-10-27，Goal active、无子agent。本轮是实际容量恢复实现/有界更新验证/未来阶段登记，不是训练收敛或24已部署声明。完整前轮结果见[参数37/Direct23交接](RL_PARAMETER37_SERL23_CAPACITY_20261027.md)。本轮小证据docs/evidence/RL_SERL24_CAPACITY_PREPARATION_20261027。
+
+## 当前正式训练不变
+
+最后核验Direct23 learner257351、参数37 I112738/A112739/V112740与各archive/review均live；精确进度见FINAL_LIVE_STATUS.json。原38恢复等待140023/审查CPU调度140026、固定36–38稳定性2889814、冻结32 I2466385/A2466386/V2466387及根2466388继续。冻结32本轮快照20/21/21个完成条件，原90回合预算/动作seed不变、已完成回合不重跑。正式23/37实际startup前轮已通过，不重跑；本轮没有新GPU60秒观测，不重复前轮272271已完成窗口以挑选利用率。
+
+Direct23当前容量1m，可完成本轮；如果23剩余条件全程完成，其上限为977040行，24原预算将跨1m。原multistep driver在容量满时拒绝写入，必须提前准备。原完整22含一次保护早停、935790/7446328，以及固定20–22原5%描述检查通过的结论均保持；不能拿预计步数替代真实完整23父，也不把5%检查当整体健康收敛。
+
+## 新容量driver
+
+源码resume_serl_capacity_reviewed_continuation_20261027.py，隔离runtime/serl_capacity_driver_candidate_20261027_v1。在原有限续训入口上只增加replay_capacity_stage校验、2m回放class、check-only的扩展state恢复检查。实际编译的采样main SHA仍为b4cf9077f10748ce8e3ac5ab484a3c1f857b4a9ab8a7538a5ac4359a2a8782bb，逐字节等于正在运行23的SAMPLER_MAIN.py.txt；未更改物理循环、sampler资源、动作、clock、奖励或学习器算法。
+
+正式entry固定完整23：parent registration/checkpoint hash、boundary、size/cursor、原1m容量、准确replay digest都必须匹配。持久marker包含append不覆盖、均匀mature采样、原32步行为回报；之后恢复必须2m marker，历史入口23和准备证据不能重标。全state恢复检查覆盖learner/optimizer/RNG、旧raw/derived/ready/pending、下一65536 batch及设备pytree、扩展state再次恢复后的下一批和RNG。原30sampler与保护合同负守卫保留。
+
+容量变化仅扩展存储预算；原driver在1m停止，不存在已验证的旧driver跨界学习序列。不能称2m与假想环形覆盖策略等价。没有修改正在运行的23，没有导入辅助权重。
+
+## 完整22有界准备验证已结束
+
+新validate_serl_capacity_driver_20261027.py；原执行776433已完成，不重跑。结果runs/serl_capacity_driver_preparation_20261027_v1/REVIEW.json；隔离CPU52/GPU0、超时600秒。输入为不可变完整22父a80f2acd24519be4c99e8002d8cd2707e0eb525d984e76a46874668d2c97d4cd，935790行，不冒充完整23。
+
+两臂均恢复准确同一正式learner全state，一臂原1m、另一臂2m；原batch65536、UTD8critic:1actor。每臂只执行1次outer更新，总计16critic+2actor，0物理/权重保存/推广。下一batch/pytree/RNG精确，更新后完整网络/target/Adam/温度/计数器/随机状态和metrics逐值相同。新critic loss .01648833230137825是这一次辅助更新指标，不是在线趋势或收敛结果。
+
+扩展state再次恢复的下一65536及RNG精确；4个错误entry/持久marker守卫拒绝。旧真实checkpoint及源文件哈希前后不变。函数级fixture仅用真实22输入覆盖入口/后续恢复分支，完整正式validate_capacity仍要求23，未把fixture登记为训练或保存伪造checkpoint。前轮replay-only验证中的真实22 startup含864pending、交错轨迹105、独立target、16负守卫和1m/2m边界结果复用，不重跑。
+
+AST/--help、全部输入hash、原预算、采样main字节一致和sampler负守卫、未来monitor源码/hash/AST的独立保存核验通过（SAVED_PREPARATION_REVIEW.json）。**准确完整23的正式driver check-only尚未运行，实际24启动/跨界/完整周期审查尚未发生。**
+
+## 第24轮恢复等待已登记，不自动训练
+
+登记runs/serl24_capacity_preparation_registration_20261027_v1/REGISTRATION.json。原waiter1003919和释放CPU调度1003920已启动并核验live；7200秒有界等待原23 FINISHED/REVIEW/DIAGNOSIS和learner退出，然后才创建准确24注册并GPU0 check-only。它不会自动开训，正式launch还要求PRELAUNCH_SCIENTIFIC_REVIEW。
+
+准备脚本：runtime/prepare_serl_capacity24_20261027.py；正式预定run/runtime名为serl_capacity_batch65536_cycle24_20261027_v1。原始SERL上游/actor48/critic49/10critic/random2min/noentropybackup/8:1/32步/batch65536/30pool保持，原batch历史入口12不重标。新增容量历史入口23绑定未来准确完整23 checkpoint及replay digest；helper和driver必须与本次准备报告hash相同，准备报告的完整22必须对应原23登记里的前驱。
+
+其他入口：launch_serl_capacity24_20261027.py、setup_serl_capacity24_monitors_20261027.py、wait_prepare_serl_capacity24_20261027.py、assign_serl23_review_released_cpu_20261027.py。五文件hash、同时替换结果、parent23/target24/原65536/历史batch不变守卫已核验，不改旧23入口。正式启动时仍必须查看完整23科学结果、check-only和图，再写PRELAUNCH，不自动跳过。
+
+## 未来监控入口
+
+冻结runtime/serl_capacity24_monitor_templates_20261027_v1/MANIFEST.json绑定五模板；均由准确原23监控源码逐处改成24，AST/hash通过，未执行实际24监控。
+
+- startup：原实际新增快照全reward/动作/clock/30MJB/sampler/history/raw/derived检查，新增1m父→2m marker/size/cursor/entrycheckpoint核验。
+- full-cycle：保留完整30条件、允许原保护早停并完整保留分母、全部新reward/targets重建；新增容量marker和前缀检查。full health预期累计750终端，原只读网络/optimizer/RNG核验保持。
+- boundary：有界7200秒等实际保存快照达到1001000行，审查全部新prefix/target/reward/动作/marker；克隆保存的replay RNG读下一65536，报告旧父行和100万之后行的抽样数量，不更新正式随机流或learner。若有限周期未达到阈值，保留NOT_REACHED，不伪称跨界通过。与startup使用不同快照目录，不复用/覆盖原证据。
+- archive与完整coordinator仍使用原冻结工具；没有自动下一训练轮次。
+
+以上模板实际执行证据必须在24启动后另核，静态通过不等于物理回放通过，也不等于整个训练目标已完成。
+
+## 后续优先顺序
+
+先核原37/23与已有准备进程。参数37完成后按原完整审查/check-only衔接38；38准备已在，不重跑。Direct23完成后沿用1003919/1003920做容量恢复检查，阅读完整23结果后再启动一个有限24，检查实际startup与1001000边界。原冻结32全90回合和固定36–38窗口继续。不能为了GPU占用重复已完成辅助更新或延长预算。
+
+远端main/baseline本轮重新fetch/read；同步结果与归档收据另记。HDD配额已满，新小证据包/HANDOFF/收据放SSD，只更新既有LATEST指针并回读；大型checkpoint/replay/raw仍SSD，不称HDD/arm1全量备份。不重复索取GitHub凭据或指定ESN。
+
+远端本轮新增13d44fb与a3e9e0440506c60eea6c7bcfab9895846706e420，已阅读新30非RL第九条件/81of108与另一主机休眠恢复记录；这是另一任务，不能当当前RL或最终指定ESN比较完成。baseline仍f6e8f8c；合并时保留双方UPDATE_LOG，冻结运行时不变。

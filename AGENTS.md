@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-27 — Direct24容量入口有界验证完成，原23/37继续
+
+[新交接](docs/RL_SERL24_CAPACITY_PREPARATION_20261027.md)。新capacity driver和validator已实现；原完整22输入的两臂各1outer更新（共16critic+2actor、0物理/权重保存）776433已完成，完整nextbatch/pytree/更新后network/Adam/RNG/metrics精确，扩展state恢复精确、4负守卫通过。全部输入hash和保存证据核验，sampler main与正式23逐字节相同，原30pool负守卫通过；前轮replay-only结果复用。不是完整23迁移验证或正式部署，勿重跑辅助更新。
+新24仅恢复等待1003919/原23审查CPU调度1003920，7200秒、完整23 FINISHED/REVIEW/health与退出后check-only，不自动训练。run预定serl_capacity_batch65536_cycle24_20261027_v1；正式capacity入口固定23/2m marker和精确父digest，旧batch历史12不变。startup/fullcycle/1001000边界五模板已冻结AST/hash；750终端、真实reward/raw/derived/marker和保存nextbatch域检查准备，实际24审查尚未执行。下一步先沿用已有38/24准备、等完整父科学结果后续接。
+原四正式23/37及archive/review、38准备140023/140026、固定36–38 2889814、冻结32原三2466385/6/7和根2466388均核验live；最新冻结完成20/21/21。Goal active，无子agent、无新GPU窗口重采。HDD配额满，新交接/收据SSD，远端状态与push另记。
+
 ## 2026-10-27 — 参数37/Direct23接续、20–22稳定性与SERL容量候选
 
 [最新交接](docs/RL_PARAMETER37_SERL23_CAPACITY_20261027.md)。完整36三路30全程无abort、全旧replay/新reward/health/图通过，I/A/V Task/Strict18/17、15/14、17/17，reward−2.410359/−8.537314/−2.841404，末loss2.583627/2.338313/.670456。导纳末段loss升高，未健康收敛。37正式112738/112739/112740，实际+1000/+1000/+2000启动审查通过，archive112743/review112744。38仅恢复准备140023/调度140026，7200秒，无自动训练；原36–38稳定性2889814及冻结32原90回合继续。
@@ -1360,3 +1366,5 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮科学提交8db21e6ffa159cb547d1e031573902819378b2f5仅本地；SSD完整本轮小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER37_SERL23_CAPACITY_20261027_031739/FULL_SMALL_EVIDENCE.tar.gz，69成员逐大小/hash核验、1369149字节、SHA256 160dcaf56a5bfa9d8912c1d7a3f4eb1f112b750db894fb2b04ef368672247efc。新HANDOFF/收据仅SSD，现有HDD LATEST已更新并回读；大产物仍SSD，非HDD/arm1全量备份。四正式23/37、38仅恢复准备、原36–38与冻结32继续，Goal active。
 
 本轮实际push失败：fatal: could not read Username for https://github.com（terminal prompts disabled）；本地提交与SSD归档已保存，未发布到远端。未再次索取凭据。
+
+远端本轮新增13d44fb与a3e9e0440506c60eea6c7bcfab9895846706e420，已阅读新30非RL第九条件/81of108与另一主机休眠恢复记录；这是另一任务，不能当当前RL或最终指定ESN比较完成。baseline仍f6e8f8c；合并时保留双方UPDATE_LOG，冻结运行时不变。
