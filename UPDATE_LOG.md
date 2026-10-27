@@ -9341,3 +9341,9 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮科学提交30043b72e706e7c2f0e2e85d8ac0972a3de1e384仅本地，push仍HTTPS用户名认证失败；远端main a3e9e04/baseline f6e8f8c未变。SSD完整本轮小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER38_CAPACITY_WINDOW_20261027_035002/FULL_SMALL_EVIDENCE.tar.gz，45成员/1023454字节，SHA256 8b37ca0054ef47a6b5d4d4ed55b0cbd3a592fb1067f454d357380c3a4dc90a55，逐成员大小/hash核验。新HANDOFF/收据仅SSD，既有HDD LATEST已更新回读；大产物仍SSD，非HDD/arm1全量备份。正式23/38、24/39仅恢复准备、固定36–38/Direct24–26与冻结32原任务继续，Goal active。
 
 本轮科学提交3bb269c6050758997764ae3e386c1444b5b8467b仅本地，push仍HTTPS用户名认证失败；远端main a3e9e04/baseline f6e8f8c重新fetch未变。SSD小证据补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL25_INHERITED_PREPARATION_20261027_040223/PREPARATION_SUPPLEMENT.tar.gz，30成员逐大小/hash核验、515057字节、SHA256 fee50ee91475fae14da03e22042de594df88f04e8376728f5ce38cb96fb9db5c。新HANDOFF/收据仅SSD，现有HDD LATEST已更新回读；大数据仍SSD，非HDD/arm1全量备份。原四正式23/38、24/39准备、两固定窗口与冻结32继续；25仅静态准备、未启动，Goal active。
+
+## 2026-10-27 — 新30条公平比较继续推进至90/108
+
+- 本轮复核 `AGENTS.md`、`REGISTRATION.json`、`MODEL_LOCK.json` 与 `PARTIAL_ROWS.json`；实验仍严格采用新增30条数据（24 train/6 validation），ESN固定历史128储备池＋ridge，RNN/MLP从头训练，三方法各3个seed，锁定模型不变。远端GitHub查询本轮受网络限制，工作区保留本地 `main` HEAD `a3e9e0440506c60eea6c7bcfab9895846706e420`；未改冻结源码、数据划分、模型锁或物理协议。
+- 原协调器 `sii-nonrl-new30-fair-20261026-v2.service`（PID 86607）仍为 `active/running`，当前单worker PID 157623 正在执行条件010的 ESN seed1；`MemoryCurrent=2,504,249,344`、`MemoryMax=3,221,225,472`、swap上限0，CPU真实推进。第九条件完成最后两模型后，累计 `PARTIAL_ROWS.json` 已从89推进到90/108；不重复启动、不把中途回合计入结果。
+- 第九条件剩余模型已在完整回合边界完成；条件010/011仍待。全108回合、共同 `T_ref`/SPT、最终独立审计和最终图表仍未完成，Goal保持active。所有失败与未完成收据继续保留。
