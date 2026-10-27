@@ -1,5 +1,10 @@
 # 本仓库的持续工作约定
 
+## Direct20–22固定稳定性审计等待已登记
+
+[新补充](docs/RL_SERL20_22_STABILITY_REGISTRATION_20261027.md)：原waiter3124904，19配对baseline、20–22固定三轮，原5%/近零1/5000分类配对bootstrap seed2026102740，等待10800秒，仅完整21/22后只读分析，无自动训练/停训。登记时19/20已知、21零完成/22未启动，明确仅部分前瞻。已封存19/20输入hash；AST/窗口/--help通过，实际统计尚待。
+原四正式21/33、冻结32、22/34准备、参数33–35等待均核验live。冻结32首passive0000三路1375动作/55秒，Task/Strict均失败、无人接触NA；已有物理/filter/torque/native随机动作和state不变审查通过，0重跑。原90回合仍运行、未完成根REVIEW。Goal active。
+
 ## Direct20完整审查通过，21已接续
 
 此条覆盖下文Direct20运行快照。完整20为854532步/6796264 critic更新，30完整无abort，Task/Strict0/30、reward−30.912666（19为−31.581990）；保留813282旧raw/derived/history、新41250reward和32步目标精确、pending0。末1000 critic loss .0130094，整轮均值.0133141、最大.0259253；630终端×10critic MAE.0448714，32步TD MAE.0393848，Qmean−20.501648，alpha.000503776。完整REVIEW/DIAGNOSIS/FINISHED、网络/优化器/RNG不变及图通过；低loss不替代任务表现，原17–19描述稳定结论保留，不新增Task门槛。
