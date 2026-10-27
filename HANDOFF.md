@@ -1,3 +1,5 @@
+> **集群RL最新状态（2026-10-27）：用户关机暂停，Goal paused。入口：[RL_SHUTDOWN_RECOVERY_20261027.md](docs/RL_SHUTDOWN_RECOVERY_20261027.md)。此条仅针对集群RL，不改变其他机器非RL任务。**
+
 # SII Compliance / Direct ESN 项目交接文档
 
 - 最后更新：2026-08-17（v3，OOD 泛化扫描后更新）

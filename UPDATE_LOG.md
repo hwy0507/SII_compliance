@@ -1,3 +1,10 @@
+## 2026-10-27 — 用户再次要求关机暂停：Goal paused，禁止自动续训
+
+**最新权威交接：[RL_SHUTDOWN_RECOVERY_20261027.md](docs/RL_SHUTDOWN_RECOVERY_20261027.md)。用户将在重新开机后另行要求继续。当前覆盖下方全部active/继续训练历史记录，不为GPU占用重启任务。** 四learner/物理sampler及等待/归档/审查进程均已退出，Goal工具已paused，不是完成。
+独立快照B/runs/user_shutdown_pause_20261027_v1：Direct首选中断前原子快照1039290步/8274328critic，部分25、1038360成熟+930pending（30×31），无MuJoCo现场；需独立审查中断stream恢复，禁止直接用完整周期driver或fresh reset。额外保留中断后取证快照，完整24后备1018290，不授权自动回退。参数完整41 I1728680/A1728500/V1729500，完整40后备；8主/后备文件反序列化、replay元数据/finite/hash核验，完整optimizer/replay/RNG/history保留。
+参数41原review/health/FINISHED完成，Task/Strict18/18、12/11、17/16，reward−.585222/−13.768370/−4.610525，末loss2.042270/1.458501/.935056；未整体健康收敛。42、冻结41实际恢复/评测、导纳固定41跟踪、39–41统计及Direct26均未启动或未执行；旧等待任务已停止，恢复先查原产物而非旧PID。
+新大快照/源码配置结果归档仅共享SSD，HDD配额满，原LATEST入口回读指向新HANDOFF；非HDD/arm1全备份。用户新暂停授权优先于GPU50%偏好。恢复步骤、hash与未完事项见交接/O清单。
+
 ## 2026-10-27 — Direct26冻结全30前瞻登记、2m恢复入口验证
 
 本轮登记提交78c4167dcbf945d6cab214854dc378617b46ee9b仅本地，push仍HTTPS用户名认证失败。SSD包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL26_FROZEN_REGISTRATION_20261027_060525/FULL_SMALL_EVIDENCE.tar.gz，47成员逐大小/hash核验、581189字节、SHA256 21c13e961f806a1601553f1c5d59efcafbae81f403adf0063ae748477f76c5fd；HDD LATEST已覆盖回读，完整41接续仍待，非HDD/arm1全量备份。

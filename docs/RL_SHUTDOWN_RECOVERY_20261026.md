@@ -1,3 +1,5 @@
+> **已被2026-10-27最新暂停交接覆盖。先读 [RL_SHUTDOWN_RECOVERY_20261027.md](RL_SHUTDOWN_RECOVERY_20261027.md)。当前Direct已是SERL部分25，参数完整41，禁止根据本文历史“从零”叙述重置。Goal paused，等待用户重新授权恢复。**
+
 # 用户要求关机前暂停：RL恢复交接（2026-10-26）
 
 ## 更晚更新：Direct 采用零示范 SERL 路线
