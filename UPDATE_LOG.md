@@ -1,5 +1,7 @@
 ## 2026-10-27 — 完整24/40审查，正式Direct25/参数41启动通过
 
+本轮科学提交201bef1f2fcbd3201f0761f918fe28ce3c87a2b6仅本地，push仍HTTPS用户名认证失败。SSD小证据归档/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL25_PARAMETER41_20261027_054312/FULL_SMALL_EVIDENCE.tar.gz，493成员逐大小/hash验证、1880776字节、SHA256 af02f1486210f6e2d80cb608cd99f9f57c92b7113a2119b3a3ecf890d745bac8；包含冻结41前瞻登记和新25/41小证据。新HANDOFF/收据SSD，既有HDD LATEST覆盖回读通过；大数据仍SSD，非HDD/arm1全量备份。正式四路继续，Goal active。
+
 [最新交接](docs/RL_SERL25_PARAMETER41_20261027.md)。完整D24 1018290/8106328、Task/Strict0/0、reward−30.924965、末loss.01230372；参数40 I/A/V Task/Strict18/18、14/13、17/17，reward−.589016/−10.342627/−2.810016，末loss2.045589/1.584683/.567064。四路30全55无abort、全部旧replay/history/2m保留、新41250reward0误差与health/图/保存算术通过；A终端误差反升，未整体健康收敛。配对保存值不作loss因果解释。
 实际25 learner2350595、41 I2369246/A2369249/V2369250；准确完整父全state/check-only/PRELAUNCH通过，实际startup新增1000/1000/1000/2000通过，原设置有限周期继续。archive/review D2350598/2350599、参数2369305/2369308；新26仅准备2397737/调度2397769，42仅准备2397589/调度2397590，7200秒无自动训练，实际父恢复仍待。
 新纯25/41原observer2537747完成60样本/69.367771秒，四GPU均值58.3167/59.0833/58.7167/58.5%，恰四正式PID身份/source/保存算术通过，非每瞬时保证。原transition1739008结束，父退出→新spawn D164–166/I253–255/A303–305/V323–325秒，非整卡精确空闲时长。原Direct24–26/参数39–41窗口及冻结41准备1833369继续，不重跑旧诊断。
