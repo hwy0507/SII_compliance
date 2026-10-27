@@ -9360,3 +9360,7 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 
 - 同一登记协调器 `sii-nonrl-new30-fair-20261026-v2.service`（PID 86607）继续运行；第十条件 ESN seed1 已在完整回合边界完成，自动接续 RNN seed1（worker PID 158492），`PARTIAL_ROWS.json` 由90推进至91/108。当前 `MemoryCurrent=2,558,500,864`、`MemoryMax=3,221,225,472`、swap上限0，worker CPU真实推进。
 - 本轮只读复核未改模型锁、训练数据、验证划分、物理协议或已完成结果；不重复启动，不把部分回合计入矩阵。条件010剩余8个模型、条件011全部9个模型仍待完成，最终共同 `T_ref`/SPT、独立审计和最终图表仍未生成，Goal保持active。
+
+本轮科学提交3303b6c31528d0c3432f0f5f9f471b00ddb6383b仅本地，push仍HTTPS用户名认证失败。SSD完整本轮小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER39_SERL24_20261027_042957/FULL_SMALL_EVIDENCE.tar.gz，112成员逐大小/hash核验、1657958字节、SHA256 877815bfd4308b2e77646c03e09cd0916667e71125db4caeda83c1a318803639。新HANDOFF/收据仅SSD，原HDD LATEST已更新回读；大产物仍SSD，非HDD/arm1全量备份。原四正式24/39、25/40仅恢复准备、两固定窗口及冻结32继续，Goal active。
+
+最终fetch又获main565746a6e68167c9da80edd37e02889a2eec8fd5（另一主机非RL91/108），仅UPDATE_LOG四行，已读并通过8dcef8b953dd07088fef36836a97df80e2ad0249合并；冲突保留完整本地日志与原远端追加字节。baseline仍f6e8f8c。此最后同步补充在上述科学小证据包之后记录，不冒充包内已有最新远端内容。

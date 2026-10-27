@@ -65,3 +65,7 @@ I/A/V整轮loss均值2.579313/1.815535/.759219，最大34.112003/33.634403/36.80
 原GPU observer3448359已完成，60样本/65.993721秒，四GPU均值[61.61666666666667, 62.71666666666667, 67.06666666666666, 64.68333333333334]%；七原PID身份全程保持，source/hash/保存均值独立核验通过。混合正式24/39与冻结32推理，非纯训练吞吐或每瞬时50%保证，不抹去上文换轮间隔，勿重采。
 
 收尾fetch/read远端main新增d279535d07e862ea656955926eea0d109ae4076e，只更新另一主机非RL90/108进度，不是本机RL或最终指定ESN比较完成。已通过42f4a4d合并，UPDATE_LOG尾部冲突保留完整本地日志并逐字追加远端六行；冻结训练源码未改。baseline仍f6e8f8c。
+
+本轮科学提交3303b6c31528d0c3432f0f5f9f471b00ddb6383b仅本地，push仍HTTPS用户名认证失败。SSD完整本轮小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER39_SERL24_20261027_042957/FULL_SMALL_EVIDENCE.tar.gz，112成员逐大小/hash核验、1657958字节、SHA256 877815bfd4308b2e77646c03e09cd0916667e71125db4caeda83c1a318803639。新HANDOFF/收据仅SSD，原HDD LATEST已更新回读；大产物仍SSD，非HDD/arm1全量备份。原四正式24/39、25/40仅恢复准备、两固定窗口及冻结32继续，Goal active。
+
+最终fetch又获main565746a6e68167c9da80edd37e02889a2eec8fd5（另一主机非RL91/108），仅UPDATE_LOG四行，已读并通过8dcef8b953dd07088fef36836a97df80e2ad0249合并；冲突保留完整本地日志与原远端追加字节。baseline仍f6e8f8c。此最后同步补充在上述科学小证据包之后记录，不冒充包内已有最新远端内容。
