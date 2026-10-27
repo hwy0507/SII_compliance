@@ -9551,3 +9551,5 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮科学提交563d974，安全合并远端非RL更新ef2fd49；正常push已成功（4c75aa5→ef2fd49），包括此前重启恢复与gather科学提交。双方UPDATE_LOG逐行顺序保留已核验。无需再索要GitHub凭据。
 
 本轮共享SSD小证据归档已逐成员大小/hash核验：/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_REBOOT_PARAMETER43_20261027_085435/FULL_SMALL_EVIDENCE.tar.gz，174成员、1666653字节，SHA256 2d3f81b4f1a19a3fd2a099a3083bcd991ce06248631740c0ea903264243843fa。收据docs/RL_REBOOT_SAVE_RECEIPT_20261027.json；包内准确源码commit b450bc1d1679b720212c3547300c7b6dcbcb1ae4。既有HDD LATEST已改指新active交接并回读验证。大checkpoint/raw仍原共享SSD，非HDD/arm1全备份；当前四正式与冻结41继续，Goal active。
+
+本轮科学提交0d70aa6，SSD准备补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER44_PREPARATION_20261027_091248/PREPARATION_SUPPLEMENT.tar.gz，35成员/559987字节，SHA256 509d0d1adfee7e92e15e226b57f83e1a126bf90e33b2bcdd0c9208eb77450d7e，全部成员大小/hash核验。新交接与完整收据仅SSD，既有HDD LATEST已更新回读；依赖前轮重启完整小包，大checkpoint/runtime仍SSD，非HDD/arm1全备份。Goal active。

@@ -37,3 +37,5 @@ B/runs/parameter41_42_saved_outcomes_20261027_v1，独立只读保存结果配�
 本轮开工真实查询/fetch main dc35b325982d12b5634501be534a5bd75876cc42、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，远端未新增时沿用已读最新日志。运行中的冻结源未修改。小证据30文件约145KB，全部source path/size/hash与10原live身份保存，日志/大checkpoint不进Git。GPU0最近已完成稳定窗口42.7333%仍不足50，未再重复采样，也不制造假负载；等真实27部署后再评估读取优化的端到端效果。
 
 接手优先：查原43完整review及44准备、原Direct26完整review和27准备；核验实际完整父/check-only，完成各PRELAUNCH后启动对应单有限后继，随后查实际startup。43–45审计等待原进程，不重复启动；45仍需另登记。冻结41原全90尚未完成。新小归档与Git提交收据另附；大数据保留共享SSD、HDD配额满，不声称arm1或HDD全备份。无子agent。
+
+本轮科学提交0d70aa6，SSD准备补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER44_PREPARATION_20261027_091248/PREPARATION_SUPPLEMENT.tar.gz，35成员/559987字节，SHA256 509d0d1adfee7e92e15e226b57f83e1a126bf90e33b2bcdd0c9208eb77450d7e，全部成员大小/hash核验。新交接与完整收据仅SSD，既有HDD LATEST已更新回读；依赖前轮重启完整小包，大checkpoint/runtime仍SSD，非HDD/arm1全备份。Goal active。
