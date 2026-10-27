@@ -1,0 +1,253 @@
+{
+  "passed": true,
+  "time": 1793104884.2034373,
+  "peak": {
+    "step": 2010577,
+    "update_index": 0,
+    "agent_train/q_loss": 132.71499633789062,
+    "agent_train/next_q_values": 14.301837921142578,
+    "agent_train/entropy_coefficient_loss": 2.8217110633850098,
+    "agent_train/actor_loss": -14.326339721679688,
+    "agent_train/actor_entropy": -7.4115495681762695,
+    "agent_train/entropy_coefficient": 0.0010528193088248372,
+    "agent_train/target_entropy": -7.0
+  },
+  "peak_index": 33576,
+  "transition_at_peak": {
+    "step": 2010577,
+    "cycle": 48,
+    "condition": "active_long_train_0300",
+    "reward": -0.003382785170544275,
+    "done": false,
+    "context": 0.7296571731567383,
+    "reward_terms": {
+      "progress": -0.0017484829216324327,
+      "occupancy": -0.0009070294888455123,
+      "time": -0.0007272727272727274,
+      "comfort_torque": -0.0,
+      "contact_force": -0.0,
+      "torque_slew": -3.2793602599249e-11,
+      "penetration": -0.0,
+      "peak_torque": -0.0,
+      "terminal": 0.0,
+      "failure_tail": 0.0,
+      "current_potential": 0.6882142054870771,
+      "next_potential": 0.6882086132093552,
+      "effective_next_potential": 0.6882086132093552,
+      "task_success": false,
+      "strict_success": false,
+      "success": false,
+      "terminated": false,
+      "failure_reason": null,
+      "elapsed_s": 42.03999999999928,
+      "final_reward": -0.003382785170544275,
+      "completion_efficiency": 0.0
+    }
+  },
+  "windows": {
+    "before100": {
+      "first_step": 2010477,
+      "last_step": 2010576,
+      "count": 100,
+      "q_loss_mean": 1.5386792662739754,
+      "q_loss_max": 51.61686706542969,
+      "entropy_mean": -7.004070587158203,
+      "entropy_range": [
+        -7.4115495681762695,
+        -6.66709041595459
+      ],
+      "alpha_range": [
+        0.0010517570190131664,
+        0.0010538952192291617
+      ]
+    },
+    "after100": {
+      "first_step": 2010578,
+      "last_step": 2010677,
+      "count": 100,
+      "q_loss_mean": 1.1859300753474236,
+      "q_loss_max": 43.432777404785156,
+      "entropy_mean": -6.981332368850708,
+      "entropy_range": [
+        -7.731744289398193,
+        -6.614794731140137
+      ],
+      "alpha_range": [
+        0.0010517409536987543,
+        0.0010558905778452754
+      ]
+    },
+    "before1000": {
+      "first_step": 2009577,
+      "last_step": 2010576,
+      "count": 1000,
+      "q_loss_mean": 0.8388511422872543,
+      "q_loss_max": 51.61686706542969,
+      "entropy_mean": -7.127272566795349,
+      "entropy_range": [
+        -8.309045791625977,
+        -6.376091957092285
+      ],
+      "alpha_range": [
+        0.000991501729004085,
+        0.0010538952192291617
+      ]
+    },
+    "after1000": {
+      "first_step": 2010578,
+      "last_step": 2011577,
+      "count": 1000,
+      "q_loss_mean": 0.8599818700551987,
+      "q_loss_max": 43.432777404785156,
+      "entropy_mean": -7.07627223777771,
+      "entropy_range": [
+        -7.731744289398193,
+        -6.356770038604736
+      ],
+      "alpha_range": [
+        0.001041923533193767,
+        0.001110177836380899
+      ]
+    },
+    "last1000": {
+      "first_step": 2017251,
+      "last_step": 2018250,
+      "count": 1000,
+      "q_loss_mean": 0.6661911790370941,
+      "q_loss_max": 7.281682968139648,
+      "entropy_mean": -7.026305138111114,
+      "entropy_range": [
+        -7.917294502258301,
+        -6.022592544555664
+      ],
+      "alpha_range": [
+        0.0005574764800257981,
+        0.0005912252818234265
+      ]
+    },
+    "first1000": {
+      "first_step": 1977001,
+      "last_step": 1978000,
+      "count": 1000,
+      "q_loss_mean": 0.6708873462975025,
+      "q_loss_max": 3.736027479171753,
+      "entropy_mean": -6.976782998085022,
+      "entropy_range": [
+        -8.153834342956543,
+        -5.845004081726074
+      ],
+      "alpha_range": [
+        0.0006350892945192754,
+        0.000651737442240119
+      ]
+    }
+  },
+  "terminal_events_within2000_steps": [
+    {
+      "cycle": 48,
+      "condition": "active_short_train_0671",
+      "category": "active_short",
+      "steps": 1375,
+      "total_steps": 2008796,
+      "reward": 19.13791552691098,
+      "task_success": true,
+      "strict_success": true,
+      "abort_reason": null,
+      "full_task_horizon_completed": true,
+      "physical_valid": true,
+      "final_task_stage": "retreat",
+      "completion_time_s": 21.48000000126459,
+      "model_sha256": "34fa455fecfe45d9e73d145342b884f53ccb21a274bb1e9f9b409c5050ec5673",
+      "episode_path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle48_20261026_v1/vmc/train/cycle_00048/active_short_train_0671"
+    },
+    {
+      "cycle": 48,
+      "condition": "active_short_train_0900",
+      "category": "active_short",
+      "steps": 1375,
+      "total_steps": 2012313,
+      "reward": 18.864213063866146,
+      "task_success": true,
+      "strict_success": true,
+      "abort_reason": null,
+      "full_task_horizon_completed": true,
+      "physical_valid": true,
+      "final_task_stage": "retreat",
+      "completion_time_s": 32.44000000126436,
+      "model_sha256": "49943a2503b29e6b239017587cf9af758eb287ba508ddf46f03425c46277e0f8",
+      "episode_path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle48_20261026_v1/vmc/train/cycle_00048/active_short_train_0900"
+    },
+    {
+      "cycle": 48,
+      "condition": "active_short_train_0100",
+      "category": "active_short",
+      "steps": 1375,
+      "total_steps": 2012404,
+      "reward": 18.71705509965186,
+      "task_success": true,
+      "strict_success": true,
+      "abort_reason": null,
+      "full_task_horizon_completed": true,
+      "physical_valid": true,
+      "final_task_stage": "retreat",
+      "completion_time_s": 27.60000000126446,
+      "model_sha256": "a4bff2841c8efa4d3d33aaf7dfd816c222b18fae7b6455c9c96513c90862c788",
+      "episode_path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle48_20261026_v1/vmc/train/cycle_00048/active_short_train_0100"
+    }
+  ],
+  "changed_success_conditions": [
+    {
+      "condition": "active_short_train_0600",
+      "task": [
+        true,
+        true
+      ],
+      "strict": [
+        true,
+        false
+      ],
+      "reward": [
+        17.901172220879527,
+        -34.619824712430656
+      ],
+      "completion_time_s": [
+        30.040000001264406,
+        29.80000000126441
+      ],
+      "reward_delta": -52.52099693331019,
+      "contribution_to_mean": -1.7506998977770063,
+      "success_changed": true,
+      "saved_physics": [
+        {
+          "external_penetration_mm": 0.17847623101875362,
+          "peak_motor_torque_nm": 47.578563615035314,
+          "physical_valid": true,
+          "source_sha256": "8055fa94381a3096dcce73a405261ced4f2e3a37d6ea86250d230601a8303e9a",
+          "model_sha256": "523c4219f6aee60511fdf85dcbb76ae2a0a43331fad252426d6861181ce7ef71"
+        },
+        {
+          "external_penetration_mm": 0.20250345259756103,
+          "peak_motor_torque_nm": 47.47916547827608,
+          "physical_valid": false,
+          "source_sha256": "8055fa94381a3096dcce73a405261ced4f2e3a37d6ea86250d230601a8303e9a",
+          "model_sha256": "523c4219f6aee60511fdf85dcbb76ae2a0a43331fad252426d6861181ce7ef71"
+        }
+      ]
+    }
+  ],
+  "loss_counts": {
+    "over10": 16,
+    "over50": 2,
+    "over100": 1
+  },
+  "inputs": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle48_20261026_v1/vmc/train/optimizer.jsonl": "3fd7c443ce414900e737bba03a08ecb21e34a0a0c79bea4a410bd41836780ae4",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle48_20261026_v1/vmc/train/episodes.jsonl": "a0265eef4248a940c6808c8241d2180b5090aaf77451870e2fa8259200afa6f1",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle48_20261026_v1/vmc/train/transitions.jsonl": "5ee7b49314ebff17776dd530e621cb5dce12b5897a39d356d2c9113534bcd815"
+  },
+  "all_saved_optimizer_numbers_finite": true,
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "convergence_claim": false,
+  "limitation": "Posthoc saved temporal description around the largest loss, not a replay-batch log, causal terminal attribution, or a hyperparameter intervention. The transition logged at the same step need not be the row responsible for sampled loss. Fixed future49 first5000 follow-up is separate."
+}

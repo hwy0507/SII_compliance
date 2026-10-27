@@ -1,0 +1,43 @@
+{
+  "steps": 2017250,
+  "updates": 2012251,
+  "checkpoint_sha256": "d36159371d2e10dca094cb6f8ca32f8ba3084328f0471b1da2e4aa5de687960b",
+  "replay_capacity_extension": {
+    "version": 1,
+    "original_capacity": 1000000,
+    "capacity": 2000000,
+    "retention": "append_without_overwrite",
+    "sampling": "uniform_all_retained_rows",
+    "full_behavior": "raise_before_overwrite"
+  },
+  "replay_capacity_followup": {
+    "version": 1,
+    "previous_capacity": 2000000,
+    "capacity": 4000000,
+    "retention": "append_without_overwrite",
+    "sampling": "uniform_all_retained_rows",
+    "full_behavior": "raise_before_overwrite",
+    "historical_marker_preserved": true
+  },
+  "current_replay_capacity": 4000000,
+  "historical_entry_cycle": 23,
+  "crossed_second_capacity": true,
+  "rows_beyond_second_capacity": 17250,
+  "replay_size": 2017250,
+  "crossed_original_capacity": true,
+  "new_transitions": 41250,
+  "retained_replay_rows": 1976000,
+  "retained_replay_all_fields_exact": true,
+  "conditions": 30,
+  "task": 13,
+  "strict": 13,
+  "reward_mean": -10.331551500648889,
+  "full_horizon_count": 30,
+  "aborts": [],
+  "max_reward_reconstruction_error": 0.0,
+  "reward_audit_scope": "Reconstructed every new reward from physical interval journal with frozen reward implementation; not independent raw-substep physics reconstruction",
+  "source_parent_sha256": "0e13b83354b1ebaad5ef4d1c2f9ff8efd80d91a6b4bc1fc0dfca8c90786f6334",
+  "stage_resumed_parent_sha256": "0e13b83354b1ebaad5ef4d1c2f9ff8efd80d91a6b4bc1fc0dfca8c90786f6334",
+  "optimizer_and_network_finite": true,
+  "convergence_claim": false
+}
