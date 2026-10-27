@@ -460,7 +460,7 @@ Task失败不进入此指标分母，零成功为NA；Strict不是该指标的�
 先查execution、service和progress，禁止重复启动。历史原生阻抗力矩律保留；传统组只承诺
 参数/策略轨迹一致性、公共filter、物理子步审计，不能冒称完整独立经典actor重放。
 尚在运行，完整72及最终对比/归档审计待完成；当前Goal只包含本非RL扩展。
-原108学习组原始物理数据已全部共享（旧前72四包重核验，最后36补齐）；新经典前五条件30回合
+原108学习组原始物理数据已全部共享（旧前72四包重核验，最后36补齐）；新经典前六条件36回合
 也已原始归档。收据在 `docs/evidence/nonrl_classical_task_spt_20261027/`，其余条件不得冒称已归档。
 独立归档服务 `sii-classical-archive-pipeline-20261027-v1.service` 已接管完整条件的审计/传输，
 状态在run内 `published/archive_pipeline_v1/execution.json`。先查该服务和各 `ARCHIVE_*.json`，

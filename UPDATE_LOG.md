@@ -1,3 +1,10 @@
+## 2026-10-27 — 非RL传统补测36/72，第六条件审计归档完成
+
+- 原协调179772完成条件005、进入006，归档188540自动完成第六组；前几轮均为对原服务/进程/真实物理时间的有效等待，无重复实验或调参。重新查询fetch/read main `0869a04513ae0e586d2b30fd24f1f41d64526811`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并安全快进，非RL源码和冻结协议不变。
+- 第六组6回合完整55秒/660万子步审计通过，Task/Strict均失败、公共filter误差0，保留全部失败与独立经典actor/servo重建限制。审计SHA `97e8cb525d05d618964961409ccfb6ad851663638cc61fdd233dd3e39636651f`；318文件原件前后/包内hash一致。
+- 730,059,188字节原始包已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics005/PHYSICS_BUNDLE.tar.gz`，SHA `34cd962ec19135b029981bf0176a0e7ee30132f0aa53b519f1f5ba7a7458049f`，本地/远端临时/最终一致。收据`CLASSICAL_CONDITION005_ARCHIVE.json`与`CONDITION005_PHYSICS_AUDIT.json`已整理到专题证据目录；原108+新36已原始共享，服务器只归档/hash。
+- memory.max累计增至13、OOM/kill0、swap0，原服务正常；观察会话在第六包核验后结束，不影响仿真和归档。收工复读AGENTS，保留用户会议文件。剩余36及完整180共同参考/比较/最终审计和发布仍待，Goal active，半程不记为目标完成。
+
 ## 2026-10-27 — 完整45/27审查、43–45未稳定，正式46/28
 
 [最新交接](docs/RL_PARAMETER46_SERL28_20261027.md)。45 I/A/V1893680/1893500/1894500，Task/Strict18/17、12/12、17/17，reward−2.422921/−12.089458/−2.766779；全30×55/noabort、旧回放与新reward0误差、health/独立保存算术/图通过。原43–45统计完成：I近零保护，A首尾41.1185%/V40.0183%，均未稳定；保存算术/hash独立核验，不重跑bootstrap。A loss下降但Task15→12，保存配对成功变化贡献−3.33289/总−3.35399，非loss因果。
