@@ -1523,3 +1523,5 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮科学提交0d70aa6，SSD准备补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER44_PREPARATION_20261027_091248/PREPARATION_SUPPLEMENT.tar.gz，35成员/559987字节，SHA256 509d0d1adfee7e92e15e226b57f83e1a126bf90e33b2bcdd0c9208eb77450d7e，全部成员大小/hash核验。新交接与完整收据仅SSD，既有HDD LATEST已更新回读；依赖前轮重启完整小包，大checkpoint/runtime仍SSD，非HDD/arm1全备份。Goal active。
 
 实际take27首1000 startup已通过：1081540steps/8612328critic，旧1080540 raw/derived/history、930历史pending保持，新144mature+856pending目标精确，30MJB/sampler/CPU affinity/clock/action及reward重建误差0；原startup3712297完成。新GPU observer3746077已进入原60样本采样，尚不提前给均值。
+
+本轮科学1f3a8a0、远端合并6a37c0a、实际GPU/启动验证e2d7971均已正常push。共享SSD完整本轮小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER44_SERL_TAKE27_20261027_094943/FULL_SMALL_EVIDENCE.tar.gz，129成员/1486463字节，SHA256 5a1df2ecf293a2ee2c147ab7e8be7a376e01491b5a55afedca4be8aab80614dd，全部成员大小/hash核验；源码commit e2d79712c4281a371b64aff62073b2517c3fd1c4。现有HDD LATEST已指新active交接并回读，大产物仍共享SSD，非HDD/arm1全备份。Goal active。

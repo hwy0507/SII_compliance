@@ -9574,3 +9574,5 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 
 实际take27首1000 startup通过，旧1080540 raw/derived/history与930pending保持，新144mature+856pending、新reward0误差。部署后原3746077窗口已完成60样本/119.2575秒，GPU0–3均值63.7167/63.5667/64.1833/58.6%，均超过50；保存算术/全部7原compute PID逐样本核验，GPU0仅正式Direct。不是每瞬时保证或纯因果速度比，勿重跑原窗口。
 科学1f3a8a0，远端2c1f639非RL18/72归档更新以6a37c0a安全合并；双方UPDATE_LOG逐行顺序保持。
+
+本轮科学1f3a8a0、远端合并6a37c0a、实际GPU/启动验证e2d7971均已正常push。共享SSD完整本轮小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER44_SERL_TAKE27_20261027_094943/FULL_SMALL_EVIDENCE.tar.gz，129成员/1486463字节，SHA256 5a1df2ecf293a2ee2c147ab7e8be7a376e01491b5a55afedca4be8aab80614dd，全部成员大小/hash核验；源码commit e2d79712c4281a371b64aff62073b2517c3fd1c4。现有HDD LATEST已指新active交接并回读，大产物仍共享SSD，非HDD/arm1全备份。Goal active。
