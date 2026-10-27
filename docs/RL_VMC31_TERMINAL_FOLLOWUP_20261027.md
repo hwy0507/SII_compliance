@@ -39,3 +39,5 @@ Direct20 learner46632，归档46745/review46750，21准备87882/原20CPU调度87
 本轮原20/32持续推进，GPU1一次瞬时0后原learner与steps继续增长，随后四卡瞬时67/84/83/80%；没有据单次瞬时0重启训练或填负载。上一轮固定纯20/32窗口56.15/66.9/65.9/66.45%仍只代表当时，本轮未重复采窗口。
 
 重新query/fetch/read远端main dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d未变。三新源码AST，已完成真实CPU前向及独立保存值审查；跟踪32仅预登记，尚无完整32结果。小证据docs/evidence/rl_vmc31_terminal_followup_20261027含完整保存终端值、原输入hash、原PID、预登记与源diff（以JSON包裹原diff文本保留字节语义）。指定ESN仍缺、GitHub认证仍待，已问勿重复。Goal active。
+
+科学提交d76398570cd3b83852980a36f71f02c18311f68b本地完成，push仍GitHub Username认证失败未发布。24成员完整小证据SSD B/repository/RL_VMC31_TERMINAL_FOLLOWUP_20261027_002336/FULL_SMALL_EVIDENCE.tar.gz，965856字节，SHA256 995ff3b980e67bd535dd6ae8e68fc32d8ee47d0aaba33244a72c5f774784a615，逐成员size/hash核验通过。HDD RL_VMC31_TERMINAL_FOLLOWUP_STATUS_20261027_002336/HANDOFF.md与LATEST_RL_HANDOFF.md入口已核验，大state/raw仍SSD，非HDD/arm1全备份。

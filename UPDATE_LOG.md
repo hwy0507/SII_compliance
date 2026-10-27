@@ -1,5 +1,8 @@
 ## VMC31终端误差集中度完成，固定954样本跟踪32已登记
 
+科学提交d76398570cd3b83852980a36f71f02c18311f68b本地完成，push仍GitHub Username认证失败未发布。24成员完整小证据SSD B/repository/RL_VMC31_TERMINAL_FOLLOWUP_20261027_002336/FULL_SMALL_EVIDENCE.tar.gz，965856字节，SHA256 995ff3b980e67bd535dd6ae8e68fc32d8ee47d0aaba33244a72c5f774784a615，逐成员size/hash核验通过。HDD RL_VMC31_TERMINAL_FOLLOWUP_STATUS_20261027_002336/HANDOFF.md与LATEST_RL_HANDOFF.md入口已核验，大state/raw仍SSD，非HDD/arm1全备份。
+
+
 [最新报告](docs/RL_VMC31_TERMINAL_FOLLOWUP_20261027.md)：新只读1376756/保存值review1425189均完成，准确VMC30/31全部924/954终端×5critic、原health MAE/输入hash/网络RNG不变通过，0优化/物理。终端population项.270695→.559653（2.067倍），新增31的30终端占90.0457%、short0600 index1304222单条占70.0533%；同924旧行masked SSE2357.974→500.973（−78.754%），原30分母项亦下降，不是仅稀释。图/独立保存算术通过，不把终端项比例当全部在线loss因果份额，不改正式设置，不重跑。
 新固定954 follow32原等待1497589（7200秒）仅完整32后CPU52前向，复用31保存预测/固定全旧输入及focus1304222，预期984终端，0训练/物理。AST/准确cycle与count守卫通过，实际32诊断尚待。四正式20/32、21/33准备、30–32稳定性2830862、冻结32全30准备639955全部保持，Goal active。
 
