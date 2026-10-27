@@ -1,3 +1,11 @@
+## 2026-10-27 — 参数46完整、正式47及Direct29冻结前瞻计划
+
+[最新交接](docs/RL_PARAMETER47_FROZEN29_20261027.md)。46 I/A/V1934930/1934750/1935750，Task/Strict18/17、11/10、17/16，reward−2.325234/−15.465871/−4.626438；30全55/noabort、旧回放/history、新reward0误差、health/保存算术/图通过。三路末1000loss高于首1000，未健康收敛。45→46保存配对：A long0300/0900丢成功、short0600恢复Task但越.2mm失Strict；V short0600 .169418→.215310mm丢Strict，原gate/MJB核验，非loss因果。
+正式47 I3184892/A3184893/V3184894，准确46全state/next65536/PRELAUNCH及实际startup通过，2m/entry23/原设置不变；archive3184897/review3184898。新48仅准备3192792，绑定真实47身份和冻结10源码，7200秒等待+1000秒check-only，无自动训练/实际47恢复或4m部署。原observer2735669完成：I退出→spawn约228–230秒、A/V288–290秒，非GPU精确idle。
+新Direct29冻结PLAN在28 live、29未启时固定27–29窗口终点29，全30/同冻结16seed2026102626/最多41250动作，须原冻结41结束后用CPU52–54。仅前瞻计划，恢复感知evaluator/实际29恢复/物理仍待；保留原930pending/partial25，不盲用旧26。原Direct28 1978250、29准备2044155、两个统计336744/1908379及冻结41继续。小证据docs/evidence/RL_PARAMETER47_FROZEN29_20261027；Goal active，无子agent。
+
+开工实际查询/fetch/read main74e2d160fac79d5591d3c9434391d75241de2715、baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d；共享SSD大产物保持，发布/归档另记。
+
 ## 2026-10-27 — 参数48双容量标记静态衔接准备
 
 [本轮补充](docs/RL_PARAMETER48_STATIC_20261027.md)。原四正式46/28及冻结41七PID持续推进，47/29原准备与两个固定窗口保持。新parameter48_static_preparation_20261027_v1含10个冻结运行源码：准确47→48 prepare/手动launch/setup、五审查模板、两候选；原entry23/2m marker保留，新4m followup绑定实际47全state。原依赖逐项保留且恰新增两文件，startup/fullreview双marker及current_replay_capacity符合46–48窗口。两health逐字节一致，reward/映射段仅周期路径差异；AST/hash/CPU/标签通过。首次静态比较未规范化周期路径的失败保留并更正。没有正式48目录、waiter或恢复/物理/优化，准确47恢复与真实2m边界仍待。

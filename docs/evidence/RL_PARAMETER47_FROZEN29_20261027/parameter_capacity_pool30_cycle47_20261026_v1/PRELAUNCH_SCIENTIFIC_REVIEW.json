@@ -1,0 +1,93 @@
+{
+  "passed": true,
+  "time": 1793100097.2770035,
+  "parent_cycle": 46,
+  "new_cycle": 47,
+  "new_cycles": 1,
+  "maximum_new_actions_per_method": 41250,
+  "checks": {
+    "impedance": {
+      "passed": true,
+      "controller": "impedance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "minimum",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "13804db1e745272c15a335ad335ec20aaa4df1b6b12f50b8240528806033b334",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "admittance": {
+      "passed": true,
+      "controller": "admittance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "c3299dde6742ccada4a8a84eee41e534566eb88dec8f99c29acf65b1f4e37e4c",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "vmc": {
+      "passed": true,
+      "controller": "vmc",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "360395d03b2374f72dde250455c439b5e4aca713334986b56292cbe342e58cf2",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    }
+  },
+  "evidence_sha256": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle46_review_20261026_v1/REVIEW.json": "825ec7c311a9bcee0547f5fddcaa003290ca87001a4ffce9dcd66eae2549818e",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle46_review_20261026_v1/health/DIAGNOSIS.json": "bd70a7bdc8637c2dfda4375284cad196873b9b9c6980e1442ea5f5497ccb02e5",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter46_saved_review_20261027_v1/REVIEW.json": "cbad3d4da0dc64bea469e38e431e36e21107dbe32434024af4e0fc03645ba751",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle47_20261026_v1/CHECK_ONLY_COMPLETE.json": "80e08123957262a16872ef2932dd1e630e82a1492e86c1523fa3a5cb48f80e40",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle47_20261026_v1/SCIENTIFIC_DECISION.json": "e205a1056da9d38bd8dd0cfb5657c2018e47a3e693850aa69170ee896bb0e48a",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter43_45_stability_saved_review_20261027_v1/REVIEW.json": "084f24903aa3b69eb360540736db030475dee838513b45435c2fd26fa8cd1f63"
+  },
+  "plot_inspected": true,
+  "reason": "Complete46 fullstate/next65536 verified; fullreview/health/saved arithmetic inspected. Fixed43-45 failed and prospective46-48 is still pending; no joint healthy convergence claim. Continue one finite47 with unchanged2m capacity, all learner/replay/RNG/history and original algorithm; no auxiliary weights or physics/reward/gate changes.",
+  "convergence_claim": false
+}
