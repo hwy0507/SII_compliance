@@ -9240,3 +9240,5 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 34实际启动审查已通过：I1400500/A1399500/V1401500，新增1000/1000/2000；旧I/V1399500、A1398500所有replay字段/history/optimizer配置/2m历史marker/30MJB及sampler/action/clock和新reward0误差。startup3926670已完成，归档3926671/完整review3926672继续。
 
 实际34 startup之后的混合21/34/冻结32原observer3975586已完成：60样本/65.5114秒，四GPU均值55.2333% / 72.0333% / 68.7% / 74.1667%，逐样本七个正式/评估原PID身份保持，保存均值另核验。仅本窗口，不保证每瞬时，不是纯训练吞吐，不掩盖33→34切换空档，勿重采。
+
+本轮科学提交4d622ef9cee77e98f05fb6e5150a2729e9efa5ea仅本地，push仍HTTPS认证失败。SSD完整本轮小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER34_20261027_012545/FULL_SMALL_EVIDENCE.tar.gz，46成员逐大小/hash核验、989515字节、SHA256 b0e1abfa431a11298d6d5d456e72cfd2a4c87483ef39bbadb5db39e2867872c0。HDD最新/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER34_STATUS_20261027_012545/HANDOFF.md和收据/LATEST已核验，大产物仍SSD，非HDD/arm1全备份。四正式21/34、冻结32及22/35准备、两稳定性窗口继续，Goal active。
