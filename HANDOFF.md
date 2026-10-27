@@ -1,5 +1,12 @@
 > **当前RL：[正式参数46与Direct28](docs/RL_PARAMETER46_SERL28_20261027.md)。完整45/27已审查、原43–45未稳定；46/28 actual startup通过。47/29仅准备、新46–48明确容量边界；原冻结41继续。Goal active，先核PID勿重复启动。**
 
+## 2026-10-27 — Direct29完整、原27–29稳定通过、冻结29与有限30
+
+[最新交接](docs/RL_SERL29_COMPLETE_20261027.md)。完整29 1204290steps/9594328critic、全30×55/noabort、Task/Strict0、reward−30.909745861，旧1163040 raw/derived/history/930隔离保留，新41250全成熟/目标精确/reward0误差。fullreview/health/独立保存算术/hash与两图通过；首末1000loss.010189882/.009746882、max.022699149，terminalMAE.0250883/32TD.0272844。原27–29通过5%，首尾.004621185%，不重跑bootstrap；Task0单列不追加门槛，不否认reward稳定。
+准确29冻结恢复通过，原PLAN/同16seed2026102626/30条件保持，物理evaluator2559665/2559670、root2559674已启动，完整30仍待。有限30 learner2640251/startup2640255/archive2640257/review2640259，从29全state/三批/RNG精确恢复，观察平台延续且不增加强制门槛；冻结29checkpoint不随训练变化，没有自动31。实际startup见报告。
+原observer1132161完成，29退出→30spawn395.229–397.232秒，非GPU精确idle。三参数49原PID继续，50仅恢复1864402、49–51窗口2064574，新增49保存复核2350662（7200秒）。小证据docs/evidence/RL_SERL29_COMPLETE_20261027，原大产物共享SSD，Goal active，无子agent。
+
+
 ## 2026-10-27 — 完整48及46–48统计、正式49与VMC诊断
 
 [最新交接](docs/RL_PARAMETER49_PROGRESS_20261027.md)。48三路全30×55/noabort/旧replay和history保留/全reward含终端0误差，Task/Strict18/17、13/13、17/16，reward−2.430898/−10.331552/−4.567467。原46–48 I通过5%（首尾4.5442%），A首尾33.1977%未稳定，V相邻未过；保存算术/hash核对，不重跑bootstrap。VMC48最大loss132.715短暂尖峰，末1000 .666191；前瞻49首5000均值.614563/max6.557824、>10均0，独立保存复核通过，仅早期诊断非收敛。
@@ -652,3 +659,7 @@ python evaluate_direct_esn_post_contact.py \
 收尾远端main新增9b513d8（另一主机非RL48/72），已阅读其日志和报告并通过f45a548安全合并。UPDATE_LOG顶部冲突按双方新增原字节加共同历史解决，非RL与本机RL全部记录保留，冻结runtime未改；此前非快进push拒绝已解决，随后正常push成功，无force push。
 
 本轮科学提交d69b89ab3f54769b1b3ee8331c7136e59ef44752已push且远端核验；共享SSD完整本轮小证据/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER49_PROGRESS_20261027_125224/FULL_SMALL_EVIDENCE.tar.gz，104成员/1513540字节、SHA256 793edd336a541c1744116185ca699f9db66780f5a84af7fbd7209dd7ad64e3ff，逐成员大小/hash核验。收据docs/RL_PARAMETER49_PROGRESS_SAVE_20261027.json，既有HDD LATEST已更新回读，原大产物仍共享SSD，非HDD/arm1全备份。原SOURCE.diff/SOURCE_DIFF.txt保留上下文原始空格，排除这些原件后的whitespace检查通过。当前正式49/29继续，Goal active。
+
+本轮补充：Direct30实际首1000检查通过，旧1204290精确保留，新149mature+851pending、旧930隔离不变，动作/clock/reward0误差。混合30/49/冻结29 GPU观察2728080完成60样本/128.860秒，均值{'0': 63.6, '1': 60.05, '2': 65.9, '3': 59.666666666666664}%，逐样本六GPU PID身份与保存均值复核通过，只代表本窗口。远端新增6bb57e5非RL54/72已读，安全合并保留双方记录。
+
+本轮科学提交e4bf380d90c252f3dbf9786e67bfd5bc54dcb31c已push且远端核验；共享SSD完整本轮小证据/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL29_COMPLETE_20261027_131218/FULL_SMALL_EVIDENCE.tar.gz，100成员/1199254字节、SHA256 7c7aef32fa7498bfab3e1c52b1af58a71542a195ef6c733edc08f2fd4bed8a46，逐成员大小/hash核验。收据docs/RL_SERL29_COMPLETE_SAVE_20261027.json；既有HDD LATEST已更新回读，大checkpoint/raw/runtime仍共享SSD，非HDD/arm1全备份。当前正式30/49及冻结29继续，Goal active。
