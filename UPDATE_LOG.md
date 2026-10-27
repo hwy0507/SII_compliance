@@ -5,6 +5,13 @@
 - 726,543,883字节原始包已核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics004/PHYSICS_BUNDLE.tar.gz`，SHA `738d31a699901d40649b566119a9b0a3095ab13babb1a0f42c3073f639b8b589`，本地/远端临时/最终一致。小收据见`docs/evidence/nonrl_classical_task_spt_20261027/CLASSICAL_CONDITION004_ARCHIVE.json`及`CONDITION004_PHYSICS_AUDIT.json`；原108与新30已原始共享，服务器只归档/hash。
 - 内存事件无新增（memory.max累计12、OOM/kill0、swap0），本地可用空间约517GiB。只读观察会话在第五包核验后正常结束，原测评与归档服务持续。收工复读AGENTS并保留会议文件；余42回合、最终180共同参考/对比/审计与发布尚待，Goal active。
 
+## 2026-10-27 — 参数2m→4m候选与真实44回放验证（未部署）
+
+[容量准备](docs/RL_PARAMETER_CAPACITY4M_20261027.md)。原四正式45/take27及冻结41继续；按全程预算48将越2m，新增4m helper/有限driver/验证器，拟准确47→48进入，原45/43–45窗口保持2m。真实44三回放全字段/RNG/learner digest、再次restore、CPU缓存1/32/256/65536精确通过，7负guard/方法；合成1999998→2000002旧prefix/cache/重载精确，4m满拒绝且全state不变。额外11异常state守卫与最后slot写入/拒绝、driver11契约负guard及物理trainer尾部逐字节一致通过。原915470/915509有界CPU54验证已完成，0物理优化，无GPU假负载。
+4m保留历史entry23/原marker并新增followup，未部署；准确47实际全learner恢复、48双marker审查模板/协议/正式跨界仍待。系统python缺numpy的静态首次失败已记录，原env解释器完成，未改环境。当前原46准备504393、Direct28准备154584、两个固定窗口保持。小证据docs/evidence/RL_PARAMETER_CAPACITY4M_20261027；Goal active，无子agent。
+
+开工远端main06df65e/baselinef6e8f8c实际fetch/read；源码与原始产物共享SSD B，发布/归档另记。
+
 ## 2026-10-27 — 参数44完整审查、正式45与Direct27–29固定窗口
 
 [最新交接](docs/RL_PARAMETER45_SERL27_29_20261027.md)。完整44 I/A/V1852430/1852250/1853250，Task/Strict18/17、15/14、17/17，reward−2.358478/−8.735468/−2.848943；全30×55/noabort/旧回放与新reward0误差、health/独立保存算术/图通过。I末1000loss1.90995→2.77234，不称健康收敛。43→44保存配对原gate验证：I short0600穿透.191786→.244149mm丢Strict，V同条件.213012→.188304mm恢复，非loss因果证明。

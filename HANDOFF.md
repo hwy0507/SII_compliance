@@ -1,3 +1,5 @@
+> **RL补充：[4m容量准备](docs/RL_PARAMETER_CAPACITY4M_20261027.md)。真实44迁移验证通过，当前45/take27/冻结41继续；扩容拟47→48，尚未正式部署，须实际47恢复和新48审查。Goal active。**
+
 > **当前RL：[参数45正式接续与Direct27–29窗口](docs/RL_PARAMETER45_SERL27_29_20261027.md)。45实际启动检查通过，原Direct27/冻结41继续；46和Direct28仅准备，无自动训练。先核实际PID，Goal active。**
 
 > **当前RL：[参数44与Direct take27正式接续](docs/RL_PARAMETER44_SERL_TAKE27_20261027.md)。43/恢复26已完整审查，44/take27已启动；原冻结41继续，先核实际进度及take27 GPU结果，勿重复启动。Goal active。**
