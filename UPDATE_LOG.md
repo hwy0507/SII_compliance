@@ -1,3 +1,11 @@
+## 2026-10-27 — 最新新增30条 ESN 综合测试回放
+
+- 用户要求展示最新场景，直接使用 `nonrl_new30_fair_20261026_v2/evaluation/esn_s2026102601__new30_prospective_20261026_acceptance_000/rollout` 的原始 MJB 和状态轨迹生成三视角 GIF/MP4；不是此前展示的9月历史动图，也没有重新训练或仿真。
+- 开工查询/fetch/read main `902ce831755f364f2e4d71fa147d51d1b33ce0de` 与 baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；原 execution 已 complete、协调器已退出，无重复作业。收工复读 AGENTS。
+- 使用现有 `tools/render_office_threeview_20260929.py`，MuJoCo 3.11.0，stride=4/fps=12.5，345帧覆盖0.04–55秒，视频27.6秒（约2倍速）。Task=true、Strict=false，外部峰值穿透0.293744mm，如实标注；示例不代表全部方法成绩。首尾画面及GIF解码核验通过。
+- 媒体本地位于 benchmark `outputs/nonrl_new30_esn_media_20261027_v2/`，共享独立目录 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_esn_media_20261027_v2/`。GIF SHA256 `f159b93f80ed51362ab4c86372e534ca1cd41df3a64eb705ec853c844b051cf6`；MP4 `89a4ce12bd4499cc989d071758ec83fe6ad16bb26cde2f9aebc71c89e0260af8`；manifest保存源轨迹/MJB/脚本hash。
+- 初次默认解释器缺少imageio_ffmpeg，备用环境MuJoCo3.14与原MJB不兼容，均失败且未改原始数据；最终保持3.11解释器，仅从既有备用site-packages补充纯Python编码器模块。v1空输出目录保留，无系统显示或冻结环境修改。
+
 ## 2026-10-27 — 新增30条 ESN/RNN/MLP 公平比较完成（108/108，最终审计通过）
 
 - 本轮开工核对远端 `main=7d69ac57974888d32f98d208f0097e7ec8f64426`、`baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，并重读 `AGENTS.md`。原登记协调器随后完成最后11个回合，未重复训练或修改数据、模型锁、冻结物理、gate、canonical48 输入、公共 filter、执行器限制或 `dt=5e-5`。
