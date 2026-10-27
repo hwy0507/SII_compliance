@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "time": 1793076865.0295153,
+  "cycle": 39,
+  "fixed_anchor_rows": 1164,
+  "new_terminal_rows": 30,
+  "original_anchor_observations_actions_rewards_masks_exact": true,
+  "fixed1164_masked_sse_before": 7978.075798529621,
+  "fixed1164_masked_sse_after": 2066.3352462861767,
+  "fixed1164_masked_sse_ratio": 0.25900170648504084,
+  "terminal_population_contribution": 0.2422462755382008,
+  "retained1164_population_contribution": 0.18380362015739693,
+  "new30_population_contribution": 0.058442655380803864,
+  "fixed1164_contribution_using_old38_denominator": 0.18854621342853842,
+  "focus": {
+    "condition": "active_short_train_0600",
+    "replay_index": 1603101,
+    "reward": -28.432952880859375,
+    "masks": [
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "q_before": [
+      23.825912475585938,
+      17.82150650024414,
+      11.3516263961792,
+      19.786407470703125,
+      3.3905882835388184
+    ],
+    "q_after": [
+      22.570497512817383,
+      -10.79964828491211,
+      -26.423250198364258,
+      -3.4662303924560547,
+      -27.49485206604004
+    ],
+    "masked_sse_before": 7060.132245845106,
+    "masked_sse_after": 939.1896007971918,
+    "population_contribution_after": 0.08356167772519836
+  },
+  "values_sha256": "b6216be2a790132f3114628b90adec3c871e8f426da0d441c7742e5a5a35cec3",
+  "agent_weights_and_forward_rng_unchanged": true,
+  "optimizer_updates": 0,
+  "new_physics": 0,
+  "replay_writes": 0,
+  "convergence_claim": false,
+  "limitation": "Same1164 retained terminal rows under frozen38 and39 critic weights; mask-weighted SSE separates error change from replay-denominator growth. Includes no ordinary TD terms or historical minibatch replay. Only CPU forward weights are restored, not optimizer state. No training or method change. Frozen rollout performance remains separate."
+}

@@ -1,0 +1,70 @@
+{
+  "time": 1793074938.2782295,
+  "passed": true,
+  "methods": {
+    "direct": {
+      "steps": 1001040,
+      "updates": 7968328,
+      "added_steps": 24000,
+      "parent_sha256": "837d596275bf7a0e791aff9e40ecb5ba3765cbb7eadf90cea4eca4d389b87666",
+      "checkpoint_sha256": "d643a76d3f4c198f7200b4ef31a2ff08d458ca2b34a1b17ac13d755e1b025baf",
+      "retained_replay_all_fields_exact": true,
+      "retained_replay_rows": 977040,
+      "history_retained": true,
+      "optimizer_hyperparameters_retained": true,
+      "critic_clock_marker": {
+        "version": 1,
+        "maximum_actions": 1375,
+        "actor_features": 48,
+        "critic_observation_features": 49,
+        "encoding": "separate_state_and_clock_leaves",
+        "branch": "zero_initialized_addition_to_first_critic_hidden",
+        "original_gemm_inputs": 55
+      },
+      "model_count": 30,
+      "actual_live_sampler_count": 30,
+      "completed_at_affinity_observation": 0,
+      "registered_samplers": 30,
+      "new_transition_mapping_count": 24000,
+      "max_reward_reconstruction_error": 0.0,
+      "terminal_coverage_count": 0,
+      "aborts": [],
+      "mapping_scope": "All new canonical48 scaling, critic remaining-time current/next clocks, raw7-to-public7 mapping and journal rewards verified. Prepared replay prefix exact; not raw-substep dynamics replay."
+    }
+  },
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "replay_capacity": {
+    "passed": true,
+    "old_capacity": 1000000,
+    "new_capacity": 2000000,
+    "marker": {
+      "version": 1,
+      "original_capacity": 1000000,
+      "capacity": 2000000,
+      "retention": "append_without_overwrite",
+      "sampling": "uniform_mature_rows",
+      "derived_targets": "unchanged_32_step_behavior_returns",
+      "full_behavior": "raise_before_overwrite"
+    },
+    "old_size": 977040,
+    "current_size": 1001040,
+    "cursor": 1001040,
+    "crossed_old_capacity": true
+  },
+  "registered_threshold": 1001000,
+  "saved_next_sample_domain": {
+    "batch": 65536,
+    "retained_parent_draws": 64017,
+    "post_old_capacity_draws": 13,
+    "scope": "Read-only clone of persisted replay RNG; not a new learner update or live sample log"
+  },
+  "multistep_replay": {
+    "passed": true,
+    "retained_derived_rows": 977040,
+    "new_mature_rows": 23070,
+    "new_pending_rows": 930,
+    "all_new_derived_targets_exact": true,
+    "uniform_sampling_domain": "mature rows only; pending excluded"
+  }
+}

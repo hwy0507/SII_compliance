@@ -1,0 +1,81 @@
+impedance {"steps": 1646180, "updates": 1641181, "checkpoint_sha256": "60d9b0dfc4140f4057c75dbed07789edb3c2515942d8c751b7682af8d4aadcaa", "replay_capacity_extension": {"version": 1, "original_capacity": 1000000, "capacity": 2000000, "retention": "append_without_overwrite", "sampling": "uniform_all_retained_rows", "full_behavior": "raise_before_overwrite"}, "replay_size": 1646180, "crossed_original_capacity": true, "new_transitions": 40430, "retained_replay_rows": 1605750, "retained_replay_all_fields_exact": true, "conditions": 30, "task": 17, "strict": 17, "reward_mean": -2.5011478965655436, "full_horizon_count": 29, "aborts": [{"cycle": 39, "condition": "active_long_train_0000", "category": "active_long", "steps": 555, "total_steps": 1628835, "reward": -40.636338781339184, "task_success": false, "strict_success": false, "abort_reason": "global_penetration_exceeded_2mm", "full_task_horizon_completed": false, "physical_valid": false, "final_task_stage": "retreat", "completion_time_s": null, "model_sha256": "757eff72e7d889482134ceb282b8b20abaf4418642e3875bc83ebcf7eae085b7", "episode_path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle39_20261026_v1/impedance/train/cycle_00039/active_long_train_0000"}], "max_reward_reconstruction_error": 0.0, "reward_audit_scope": "Reconstructed every new reward from physical interval journal with frozen reward implementation; not independent raw-substep physics reconstruction", "source_parent_sha256": "50bb762d6c1f03e3ae7f5df165e62213e5e79e5a67504078dd0a735790eb86f1", "stage_resumed_parent_sha256": "50bb762d6c1f03e3ae7f5df165e62213e5e79e5a67504078dd0a735790eb86f1", "optimizer_and_network_finite": true, "convergence_claim": false}
+admittance {"steps": 1646000, "updates": 1641001, "checkpoint_sha256": "2784acd5d2f72bbebb9a0d87e69dbc3e94322753cf14b8addc3bb81a61e2f106", "replay_capacity_extension": {"version": 1, "original_capacity": 1000000, "capacity": 2000000, "retention": "append_without_overwrite", "sampling": "uniform_all_retained_rows", "full_behavior": "raise_before_overwrite"}, "replay_size": 1646000, "crossed_original_capacity": true, "new_transitions": 41250, "retained_replay_rows": 1604750, "retained_replay_all_fields_exact": true, "conditions": 30, "task": 15, "strict": 14, "reward_mean": -8.69432507663779, "full_horizon_count": 30, "aborts": [], "max_reward_reconstruction_error": 0.0, "reward_audit_scope": "Reconstructed every new reward from physical interval journal with frozen reward implementation; not independent raw-substep physics reconstruction", "source_parent_sha256": "b70aeaa2451b6c979b36ba555fff027e7394540d8daa54fd6122e3455d32cbf0", "stage_resumed_parent_sha256": "b70aeaa2451b6c979b36ba555fff027e7394540d8daa54fd6122e3455d32cbf0", "optimizer_and_network_finite": true, "convergence_claim": false}
+vmc {"steps": 1647000, "updates": 1642001, "checkpoint_sha256": "66be5ac5d61a6435c2a72fb1318d81445fe233643d9fac975d3bf6c693e41f1e", "replay_capacity_extension": {"version": 1, "original_capacity": 1000000, "capacity": 2000000, "retention": "append_without_overwrite", "sampling": "uniform_all_retained_rows", "full_behavior": "raise_before_overwrite"}, "replay_size": 1647000, "crossed_original_capacity": true, "new_transitions": 41250, "retained_replay_rows": 1605750, "retained_replay_all_fields_exact": true, "conditions": 30, "task": 17, "strict": 16, "reward_mean": -4.599549844902998, "full_horizon_count": 30, "aborts": [], "max_reward_reconstruction_error": 0.0, "reward_audit_scope": "Reconstructed every new reward from physical interval journal with frozen reward implementation; not independent raw-substep physics reconstruction", "source_parent_sha256": "afc59fdff00a5e81de110f65237865ba8f55c3ec394a54f5a36c6543ff919384", "stage_resumed_parent_sha256": "afc59fdff00a5e81de110f65237865ba8f55c3ec394a54f5a36c6543ff919384", "optimizer_and_network_finite": true, "convergence_claim": false}
+{
+  "impedance": {
+    "steps": 1646180,
+    "terminal_count": 1195,
+    "terminal_q_absolute_error": {
+      "count": 5975,
+      "mean": 0.7916982974766688,
+      "minimum": 0.0001125335693359375,
+      "maximum": 63.13505172729492,
+      "p50": 0.13318252563476562,
+      "p95": 1.401265716552736
+    },
+    "sampled_td_absolute_error": {
+      "count": 20480,
+      "mean": 0.2523079345985025,
+      "minimum": 3.814697265625e-06,
+      "maximum": 15.172414779663086,
+      "p50": 0.13994336128234863,
+      "p95": 0.8072338104248044
+    },
+    "alpha": 0.0022948968689888716,
+    "failure_stages": {
+      "retreat": 1,
+      "carry": 12
+    }
+  },
+  "admittance": {
+    "steps": 1646000,
+    "terminal_count": 1194,
+    "terminal_q_absolute_error": {
+      "count": 5970,
+      "mean": 0.8589527908082384,
+      "minimum": 6.29425048828125e-05,
+      "maximum": 55.894187927246094,
+      "p50": 0.21594524383544922,
+      "p95": 2.103042793273928
+    },
+    "sampled_td_absolute_error": {
+      "count": 20480,
+      "mean": 0.26503578916672266,
+      "minimum": 5.340576171875e-05,
+      "maximum": 10.715195655822754,
+      "p50": 0.15166902542114258,
+      "p95": 0.8839982032775872
+    },
+    "alpha": 0.0005571140209212899,
+    "failure_stages": {
+      "carry": 14,
+      "retreat": 1,
+      "lift": 1
+    }
+  },
+  "vmc": {
+    "steps": 1647000,
+    "terminal_count": 1194,
+    "terminal_q_absolute_error": {
+      "count": 5970,
+      "mean": 0.6197723668224647,
+      "minimum": 2.09808349609375e-05,
+      "maximum": 126.38522338867188,
+      "p50": 0.19403553009033203,
+      "p95": 1.3379610061645508
+    },
+    "sampled_td_absolute_error": {
+      "count": 20480,
+      "mean": 0.1851548853388522,
+      "minimum": 9.5367431640625e-06,
+      "maximum": 16.803457260131836,
+      "p50": 0.1352691650390625,
+      "p95": 0.46971187591552716
+    },
+    "alpha": 0.0006302014226093888,
+    "failure_stages": {
+      "carry": 13,
+      "retreat": 1
+    }
+  }
+}

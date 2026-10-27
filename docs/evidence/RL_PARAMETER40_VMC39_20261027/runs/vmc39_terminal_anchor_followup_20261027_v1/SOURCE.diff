@@ -1,0 +1,84 @@
+--- original32_tracker
++++ adapted39_tracker
+@@ -1,4 +1,4 @@
+-"""Track all954 fixed31 VMC terminal rows and the new32 terminals on complete32."""
++"""Track all1164 fixed38 VMC terminal rows and the new39 terminals on complete39."""
+ from pathlib import Path
+ import argparse
+ import hashlib
+@@ -19,8 +19,8 @@
+     import torch
+     torch.set_num_threads(1)
+     reg = json.loads((root/'REGISTRATION.json').read_text())
+-    assert reg['cycle'] == 32 and reg['anchor_cycle'] == 31
+-    assert reg['focus_replay_index'] == 1304222 and reg['expected_old_terminal_count'] == 954
++    assert reg['cycle'] == 39 and reg['anchor_cycle'] == 38
++    assert reg['focus_replay_index'] == 1603101 and reg['expected_old_terminal_count'] == 1164
+     assert sha(__file__) == reg['source_sha256']
+     for ref in reg['inputs'].values():
+         assert sha(ref['path']) == ref['sha256']
+@@ -33,19 +33,19 @@
+     from published_compliance_learner_20261025 import PublishedLearner
+     from validate_published_finite_check_20261025 import digest
+     assert sha(Path(origin['helper_runtime'])/'validate_published_finite_check_20261025.py') == origin['digest_helper_sha256']
+-    health = json.loads(Path(reg['inputs']['health32']['path']).read_text())['methods']['vmc']
+-    review = json.loads(Path(reg['inputs']['review32']['path']).read_text())
+-    assert review['passed'] and health['checkpoint_sha256'] == reg['inputs']['checkpoint32']['sha256']
+-    ck = torch.load(reg['inputs']['checkpoint32']['path'], map_location='cpu', weights_only=False)
+-    assert ck['cycle'] == 32 and ck['boundary'] == 'complete_condition_cycle' and ck['controller'] == 'vmc'
++    health = json.loads(Path(reg['inputs']['health39']['path']).read_text())['methods']['vmc']
++    review = json.loads(Path(reg['inputs']['review39']['path']).read_text())
++    assert review['passed'] and health['checkpoint_sha256'] == reg['inputs']['checkpoint39']['sha256']
++    ck = torch.load(reg['inputs']['checkpoint39']['path'], map_location='cpu', weights_only=False)
++    assert ck['cycle'] == 39 and ck['boundary'] == 'complete_condition_cycle' and ck['controller'] == 'vmc'
+     state, arrays = ck['learner'], ck['replay']['arrays']
+     assert state['terminal_loss_weight'] == 128 and state['target_pair_reduction']['target'] == 'mean'
+     terminal = np.flatnonzero(arrays['dones'][:, 0] == 1)
+-    assert len(terminal) == 984 == health['terminal_count']
++    assert len(terminal) == 1194 == health['terminal_count']
+     with np.load(reg['inputs']['anchor_values']['path'], allow_pickle=False) as old:
+         indices, old_q, rewards, masks, features = [old[k].copy() for k in ['replay_indices', 'q', 'rewards', 'masks', 'features']]
+         old_denominators = old['denominators'].copy()
+-    assert len(indices) == 954 and np.array_equal(terminal[:954], indices)
++    assert len(indices) == 1164 and np.array_equal(terminal[:1164], indices)
+     np.testing.assert_array_equal(arrays['observations'][indices], features[:, :50])
+     np.testing.assert_array_equal(arrays['actions'][indices], features[:, 50:])
+     np.testing.assert_array_equal(arrays['rewards'][indices, 0], rewards)
+@@ -70,20 +70,20 @@
+     error = q.astype(np.float64)-target.astype(np.float64)[None]
+     contribution = (128*mask*error**2/denominator[:, None]).sum(axis=0)
+     old_squared = masks*(old_q-rewards[None])**2
+-    retained_squared = masks*error[:, :954]**2
++    retained_squared = masks*error[:, :1164]**2
+     focus = int(np.flatnonzero(indices == reg['focus_replay_index'])[0])
+     assert digest(agent.state_dict()) == before and torch.equal(rng, torch.get_rng_state())
+-    values = root/'terminal32_values.npz'
++    values = root/'terminal39_values.npz'
+     np.savez_compressed(values, indices=terminal, q=q, rewards=target, masks=mask,
+         denominators=denominator, contributions=contribution)
+-    result = dict(passed=True, time=time.time(), cycle=32, fixed_anchor_rows=954, new_terminal_rows=30,
++    result = dict(passed=True, time=time.time(), cycle=39, fixed_anchor_rows=1164, new_terminal_rows=30,
+         original_anchor_observations_actions_rewards_masks_exact=True,
+-        fixed954_masked_sse_before=float(old_squared.sum()), fixed954_masked_sse_after=float(retained_squared.sum()),
+-        fixed954_masked_sse_ratio=float(retained_squared.sum()/old_squared.sum()),
++        fixed1164_masked_sse_before=float(old_squared.sum()), fixed1164_masked_sse_after=float(retained_squared.sum()),
++        fixed1164_masked_sse_ratio=float(retained_squared.sum()/old_squared.sum()),
+         terminal_population_contribution=float(contribution.sum()),
+-        retained954_population_contribution=float(contribution[:954].sum()),
+-        new30_population_contribution=float(contribution[954:].sum()),
+-        fixed954_contribution_using_old31_denominator=float((128*retained_squared/old_denominators[:, None]).sum()),
++        retained1164_population_contribution=float(contribution[:1164].sum()),
++        new30_population_contribution=float(contribution[1164:].sum()),
++        fixed1164_contribution_using_old38_denominator=float((128*retained_squared/old_denominators[:, None]).sum()),
+         focus=dict(condition='active_short_train_0600', replay_index=reg['focus_replay_index'],
+             reward=float(rewards[focus]), masks=masks[:, focus].tolist(),
+             q_before=old_q[:, focus].tolist(), q_after=q[:, focus].astype(float).tolist(),
+@@ -91,7 +91,7 @@
+             population_contribution_after=float(contribution[focus])),
+         values_sha256=sha(values), agent_weights_and_forward_rng_unchanged=True,
+         optimizer_updates=0, new_physics=0, replay_writes=0, convergence_claim=False,
+-        limitation='Same954 retained terminal rows under frozen31 and32 critic weights; mask-weighted SSE separates error change from replay-denominator growth. Includes no ordinary TD terms or historical minibatch replay. Only CPU forward weights are restored, not optimizer state. No training or method change. Frozen rollout performance remains separate.')
++        limitation='Same1164 retained terminal rows under frozen38 and39 critic weights; mask-weighted SSE separates error change from replay-denominator growth. Includes no ordinary TD terms or historical minibatch replay. Only CPU forward weights are restored, not optimizer state. No training or method change. Frozen rollout performance remains separate.')
+     for ref in reg['inputs'].values():
+         assert sha(ref['path']) == ref['sha256']
+     (root/'REVIEW.json').write_text(json.dumps(result, indent=2, allow_nan=False)+'\n')

@@ -1,3 +1,13 @@
+## 2026-10-27 — 参数39完整、固定VMC1164跟踪完成，正式40接续
+
+
+Direct24原首次容量边界3403965现已完成：实际1,001,040/7,968,328，原977,040 raw/derived/history精确保留，新增24,000=23,070成熟+930pending、全部目标/reward精确、2m无覆盖。原RNG克隆next65536含13条超过1m成熟行；非新learner更新。原report/不可变checkpoint hash另核，不重跑；完整24继续。
+
+[最新交接](docs/RL_PARAMETER40_VMC39_20261027.md)。39完整I1646180/A1646000/V1647000；I29全程+long0000第555步22.2秒原global2mm早停，A/V全30。Task/Strict17/17、15/14、17/16，reward−2.501148/−8.694325/−4.599550，末loss2.611422/2.036093/.921422；全部旧replay/history/2m、newreward0、finite/health/图与独立保存算术通过。I早停保存全局99.575073mm是payload/corner pair，外部机器人仅.075944mm，原gate/model绑定核验，无重算子步或改阈值。固定VMC1164原4150741跟踪与保存review/图完成：SSE7978.076→2066.335（−74.10%），focus7060.132→939.190，原分母项亦下降；非全loss因果/收敛。
+正式40 I691539/A691540/V691541，全state一个原设置周期；actual startup1000/1000/2000通过，archive691544/review691545。41仅恢复715346/调度715347，7200秒无自动训练；上下文替换AST/CPU39/历史entry23通过。原39–41和Direct24–26窗口继续，未完成稳定性结论不提前宣告。
+新纯24/40 observer724787已完成60样本/69.303144秒，均值53.5/60.3/58.0333/63.6167%，逐样本恰四正式与身份/hash/保存算术通过。原39退出→40spawn I245–247/A243–245/V251–253秒；另40启动后cxiWaitEventWait与SSD路径阻塞已恢复、未重启，确切存储等待起止未知，不冒充每瞬时达标。Direct24原3403962及1,001,000边界3403965、25原准备保持；validated driver/helper hash未变。
+前轮VMC38/冻结32提交74e035c、远端非RL92–94/108日志准确合并95f0777、SSD归档收据0c81030，push仍HTTPS认证失败。Goal active，无子agent；小证据docs/evidence/RL_PARAMETER40_VMC39_20261027，归档/边界结果另记。
+
 ## 2026-10-27 — VMC38终端误差定位、固定39跟踪与冻结32全矩阵完成
 
 [最新交接](docs/RL_VMC38_FROZEN32_20261027.md)。新VMC37/38完整1134/1164终端CPU52只读3946610已结束，0优化物理/replay写入；全source/checkpoint/hash/旧features/agent/RNG、health复现与独立保存算术/图通过。终端population贡献.073789→.727682（9.8617倍），同1134旧行SSE788.156→660.428（−16.21%）、原分母项亦下降；38新增30占91.72%，short0600 index1603101占88.495%。不是全部在线loss因果分解。该case保存穿透.187526→.203882mm跨原.2mm门，两轮Task真、38 Strict假，MJB/gate源码hash核对，0重演/阈值调整。

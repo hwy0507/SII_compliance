@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "time": 1793076945.3761473,
+  "parent_cycle": 39,
+  "next_cycle": 40,
+  "parent_checkpoints": {
+    "impedance": "60d9b0dfc4140f4057c75dbed07789edb3c2515942d8c751b7682af8d4aadcaa",
+    "admittance": "2784acd5d2f72bbebb9a0d87e69dbc3e94322753cf14b8addc3bb81a61e2f106",
+    "vmc": "66be5ac5d61a6435c2a72fb1318d81445fe233643d9fac975d3bf6c693e41f1e"
+  },
+  "hashes": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle39_review_20261026_v1/REVIEW.json": "4fe2084440b74255b3c91b4bae6b4291eb47552d2a6d556ea2c6215973c415e0",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle39_review_20261026_v1/FINISHED.json": "539d236e78afb2acc5f37db0744e47260b6dda1064e93a4e758b52fb7f8db22a",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle39_review_20261026_v1/health/DIAGNOSIS.json": "694e35c5086f7fdddab5754425cad5a943f5306a8a9da42ebc36f996304e8664",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle39_review_20261026_v1/health/training_diagnostics.png": "9c7657b20c274fe0d15913e71bb924a335a574785414e732ec690c4ec13121e4",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle39_review_20261026_v1/SAVED_RESULTS_REVIEW.json": "847b6ba8afda371476bffa4167b47910c8c5806cf0a48adb3fba8501739e2f97",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle39_review_20261026_v1/SAVED_ABORT_REVIEW.json": "eae3a3d08c3635e7dd046d9a5dda6d27c70f82e883a93adcca37e8791dbe1e32",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle40_20261026_v1/CHECK_ONLY_COMPLETE.json": "6a17b6a04b15956f2d5a95dedf247216d8bdd18b616a4e587deb62a9beec484b",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc39_terminal_anchor_followup_20261027_v1/REVIEW.json": "8a665bc22f25d8be44333d4c118d10f833606d09a98af2451bc15098f0472c96",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc39_terminal_anchor_followup_20261027_v1/SAVED_VALUE_REVIEW.json": "d3e263e12d44929c6fd1d87d2fc38d0911fa5ada73b61ea49f17cd33d867183e",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc39_terminal_anchor_followup_20261027_v1/fixed1164_follow39.png": "94e352710708b55160030bd2bc98d50fa9ee41c187eeabcdd2a533b3ab8868d1"
+  },
+  "loss": {
+    "impedance": {
+      "count": 40430,
+      "first1000": 2.2748325715065003,
+      "last1000": 2.6114221967458726,
+      "mean": 2.5236789545209697,
+      "maximum": 25.731502532958984
+    },
+    "admittance": {
+      "count": 41250,
+      "first1000": 2.1460119627714156,
+      "last1000": 2.0360926554203034,
+      "mean": 1.7826745198452112,
+      "maximum": 34.0800666809082
+    },
+    "vmc": {
+      "count": 41250,
+      "first1000": 1.4919461666643619,
+      "last1000": 0.9214215897619724,
+      "mean": 1.2193387430602853,
+      "maximum": 29.701641082763672
+    }
+  },
+  "figure_reviewed": true,
+  "figure_findings": "Impedance fluctuates and last1000 rises; admittance decreases then late rises; VMC last1000 decreases from1.613 in38 to0.921 in39, though cycle mean increases. Native positive temperatures and unchanged diagnostic network state. Fixed1164 SSE decreases74.10%; total online loss health not established.",
+  "rationale": "Continue latest full39 state for one unchanged finite40 within previously registered39-41 window. I retains original global2mm early-stop failure (29full+1abort,30denominator), not reset or excluded; A improves reward with several condition switches; V terminal anchors improve while Strict remains16. Full replay, all new rewards, finite states and check-only passed. No convergence claim or threshold changes.",
+  "learner_settings_changed": false,
+  "automatic_next_training": false,
+  "convergence_claim": false
+}
