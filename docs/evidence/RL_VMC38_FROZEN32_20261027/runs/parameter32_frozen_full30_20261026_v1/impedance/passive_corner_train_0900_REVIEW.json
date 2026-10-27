@@ -1,0 +1,115 @@
+{
+  "passed": true,
+  "action_seed": 2026102638,
+  "condition": "passive_corner_train_0900",
+  "actions": 1375,
+  "physical": {
+    "row": {
+      "method": "impedance",
+      "case_id": "passive_corner_train_0900",
+      "task_success": false,
+      "strict_success": false,
+      "full_horizon": true,
+      "machine_safety_violation": false,
+      "elapsed_s": 54.99999999999989,
+      "completion_time_s": null,
+      "completion_time_definition": "final_stable_placement_certification",
+      "torque_thresholds_nm": [
+        43.5,
+        43.5,
+        43.5,
+        43.5,
+        6.0,
+        6.0,
+        6.0
+      ],
+      "peak_torque_nm_per_joint": [
+        16.563605498969665,
+        47.92393711905008,
+        16.53712737154033,
+        25.964589777730467,
+        1.5212097876919761,
+        3.0169692989515937,
+        4.516250935574438
+      ],
+      "human_contact_s": 0.0,
+      "human_below_threshold_s": 0.0,
+      "human_compliance_ratio": null,
+      "final_task_stage": "carry",
+      "abort_reason": null
+    },
+    "scope": "physical_telemetry_and_metric_alignment",
+    "filter_replay_verified": false,
+    "actor_input_and_executed_action_trace_equal": true,
+    "samples": 1100000,
+    "engineering_contact_force_onset_n": 0.05,
+    "threshold_status": "engineering_reference_not_validated_human_comfort",
+    "aggregate_errors": {
+      "elapsed_abs_s": 8.881784197001252e-13,
+      "contact_abs_s": 0.0,
+      "compliant_abs_s": 0.0,
+      "peak_torque_abs_nm": 0.0,
+      "penetration_abs_m": 0.0
+    },
+    "source_sha256": "c78c3f5de8343fcfa31d3267dd33f52e2e9ead2c44adcccdf1e82b5add4f5ede",
+    "evidence_sha256": {
+      "TERMINAL.json": "a56a84998906daa4fe9dc5fe031161e9e81cd428b636b8d74de37e128c37ea76",
+      "rollout.json": "56b5dd97b3024ebccfc5fce487a5a463342456424feed869b7c2ed6951069240",
+      "rollout.mjb": "b4b38d68efcb2efc512bca1f591399db4348f230a1b301beb04a5aeb8c7d0c9c",
+      "rollout.npz": "b19c98324eef390d717db32f1c2390ae5b10b8cdae6f82931e10484f6b65c4d8",
+      "audit_substeps.npy": "0968e5d1ef251911ee2a5456ec37c7012a93fc8f7be97544254d04d107a3b2fc",
+      "AUDIT_EXTENSION.json": "866f1634d973a510139565530f7ebcd69f937fd9222f9421f201887ad14e9cbd",
+      "actor_intervals.jsonl": "ddb9152c28a21b8835beba1ebfbcf763f13b1c848f46ab972befcb0182bc0086",
+      "rollout_metrics/substep_metrics.npz": "07174752237e22153567077c59def63242c422c86ae0fede2b8c2c364d5ab9c0"
+    }
+  },
+  "filter": {
+    "decisions": 1375,
+    "common_filter_replay_max_abs": 0.0,
+    "actor_journal_to_filter_inputs_exact": true,
+    "flags_exact": true,
+    "passed": true,
+    "filter_replay_verified": true,
+    "scope": "public filter inputs, state recurrence, clipping, slew limiting and returned values",
+    "native_controller_or_actuator_layer_replayed": false,
+    "downstream_wbc_authority_override_replayed": false,
+    "simulation_steps": 0,
+    "source_sha256": "7605318f545353dcfb5cdec62fabfa8757a7ced3c48725b02aeff9e45d894079",
+    "frozen_filter_source_sha256": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+    "evidence_sha256": {
+      "audit_filter.json": "94c6e6d72ba1dfa0e651493024a39476247f352b026288e7862d4de3134d5693",
+      "audit_filter.npz": "ea64ccb5902bc693d16e7e971deec9aeede3f7ebe3b7db6b6f6c211d47731e22",
+      "AUDIT_EXTENSION.json": "866f1634d973a510139565530f7ebcd69f937fd9222f9421f201887ad14e9cbd",
+      "actor_intervals.jsonl": "ddb9152c28a21b8835beba1ebfbcf763f13b1c848f46ab972befcb0182bc0086",
+      "rollout.npz": "b19c98324eef390d717db32f1c2390ae5b10b8cdae6f82931e10484f6b65c4d8"
+    }
+  },
+  "torque": {
+    "servo_calls": 13750,
+    "physical_substeps": 1100000,
+    "projection_replay_max_abs": 0.0,
+    "previous_torque_recurrence_exact": true,
+    "actuator_torque_linkage_exact": true,
+    "maximum_clock_alignment_error_s": 1.3500311979441904e-13,
+    "amplitude_and_slew_verified": true,
+    "scaled_projection_calls": 0,
+    "passed": true,
+    "simulation_steps": 0,
+    "source_sha256": "5ba2fbbd3abe86dfd34f6cd11bb5d6fe912e9be79e23c5cf66f7ef8298d91760",
+    "frozen_projection_sha256": "54eac86973b367eebe7a96ed6fa99bbdd43ec9ee6e89f0f76bfb8bb99cf16b49",
+    "scope": "Common torque projection, amplitude/slew, previous-output recurrence and physical torque linkage",
+    "native_reference_wrench_and_jacobian_reconstructed": false,
+    "evidence_sha256": {
+      "audit_torque.json": "929aa926bdcb30cd159776eae9b690fd1ec494be334ebab112e327d63dda626a",
+      "audit_torque.npz": "5110ec09947dfc0bdaee5eade2fffeff9db69942d253fbd76c7eb858de259e1a",
+      "AUDIT_EXTENSION.json": "866f1634d973a510139565530f7ebcd69f937fd9222f9421f201887ad14e9cbd",
+      "audit_substeps.npy": "0968e5d1ef251911ee2a5456ec37c7012a93fc8f7be97544254d04d107a3b2fc"
+    }
+  },
+  "reward": -31.085820470473696,
+  "external_penetration_mm": 0.011323579682215822,
+  "native_stochastic_parameter_action_max_error": 0.0,
+  "full_learner_state_unchanged": true,
+  "new_optimizer_updates": 0,
+  "new_physics": 0
+}

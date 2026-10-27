@@ -1,0 +1,65 @@
+{
+  "time": 1793075601.8743193,
+  "cycles": [
+    37,
+    38
+  ],
+  "controller": "vmc",
+  "optimizer_updates": 0,
+  "new_physics": 0,
+  "expected_terminal_counts": [
+    1134,
+    1164
+  ],
+  "runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+  "runtime_sha256": "26d8b9671a55f12702313dfc4a705bc3a9272b402d9611635b44266982177b1c",
+  "helper_runtime": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter_capacity_pool30_cycle27_20261026_v1",
+  "digest_helper_sha256": "02c0c995510bca67fabe2bc06b7380da3fd1489b98fd9a695147e489c0241acd",
+  "source_sha256": "74f3314fadde3779a82874db7a894605e611a3d31527c3da42bd1d7cc1b17907",
+  "saved_review_source": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/vmc37_38_terminal_concentration_20261027_v1/review_vmc37_38_terminal_concentration_20261027.py",
+    "sha256": "3acb6664aea2b6e91101aa73510972562460508485403daac80892f119aa1057"
+  },
+  "inputs": {
+    "37": {
+      "checkpoint": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle37_archive_20261026_v1/vmc/cycle_00037.pt",
+        "sha256": "3a6afc2b6b1f47dedc29fe739480e6e85287a5b80b82cef31ac6a7700d39e9bc"
+      },
+      "transitions": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle37_20261026_v1/vmc/train/transitions.jsonl",
+        "sha256": "8c4392e625ac0809d6eecca3abd18026474f3152a8315361b928745b1485c290"
+      },
+      "health": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle37_review_20261026_v1/health/DIAGNOSIS.json",
+        "sha256": "c121f93bc5d442fdbff96907c9e978ff08b2c10d692789c2e18b028c03f926c1"
+      },
+      "review": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle37_review_20261026_v1/REVIEW.json",
+        "sha256": "53994f46c29143accdeb8a45e7f869ac0d3db1ad2aa9a18e9e42c7d11da9b095"
+      }
+    },
+    "38": {
+      "checkpoint": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle38_archive_20261026_v1/vmc/cycle_00038.pt",
+        "sha256": "afc59fdff00a5e81de110f65237865ba8f55c3ec394a54f5a36c6543ff919384"
+      },
+      "transitions": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle38_20261026_v1/vmc/train/transitions.jsonl",
+        "sha256": "3acca7442380a9dd946686ab838cd24b0696e8478395d66a66892cc708981fdb"
+      },
+      "health": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle38_review_20261026_v1/health/DIAGNOSIS.json",
+        "sha256": "c421009f89a899dc831cdfc2c17c96d5e6cc795d289e3765d75b211720d3eb2a"
+      },
+      "review": {
+        "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle38_review_20261026_v1/REVIEW.json",
+        "sha256": "0803c2b946a47fb9b59edf0ff5fa6330dd1b7336951d7a113d48f6cc0d6ef4a8"
+      }
+    }
+  },
+  "timeout_seconds": 600,
+  "device": "cpu",
+  "cpu": 52,
+  "reason": "Posthoc diagnostic of complete37/38 after VMC38 late q_loss rose .805686 to1.613083 and terminal inbag MAE rose .204816 to.301742. Evaluate all terminal rows once to distinguish old-row fitting drift and new-row contributions; not causal attribution to online loss or optimization of selected conditions."
+}
