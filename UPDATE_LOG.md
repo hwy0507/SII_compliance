@@ -8927,3 +8927,7 @@ cp19250及其后新产物仍仅本地、待下一安全边界归档。已准备D
 
 - 条件010的 MLP seed2 已完成，原协调器 PID 86607 自动接续 ESN seed3（当前 worker PID 162153），`PARTIAL_ROWS.json` 已由95推进到96/108。`MemoryCurrent=2,824,728,576`、`MemoryMax=3,221,225,472`、swap上限0，worker真实运行。
 - 未修改冻结模型锁、数据划分、物理/gate/filter或已完成回合；条件010剩余3个模型、条件011全部9个模型仍待。最终共同 `T_ref`/SPT、独立审计和最终报告必须等108/108后执行，Goal保持active。
+## 2026-10-27 — 新30条公平比较推进至97/108
+
+- 条件010的 ESN seed3 已完成，原协调器 PID 86607 自动接续 RNN seed3（当前 worker PID 162844），`PARTIAL_ROWS.json` 已由96推进到97/108。`MemoryCurrent=2,778,894,336`、`MemoryMax=3,221,225,472`、swap上限0，worker真实运行。
+- 未修改冻结模型锁、数据划分、物理/gate/filter或已完成回合；条件010剩余2个模型、条件011全部9个模型仍待。最终共同 `T_ref`/SPT、独立审计和报告仍需等108/108后执行，Goal保持active。
