@@ -1,0 +1,96 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_cycle16_frozen_full30_20261026_v1/evaluate_serl_seeded_multistep_20261026.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_cycle26_frozen_full30_20261027_v1/evaluate_serl_capacity_frozen_20261027.py
+@@ -57,6 +57,10 @@
+         raise ValueError('Stochastic evaluation needs an explicit nonnegative external seed')
+     if not args.stochastic and args.noise_schedule != 'independent':
+         raise ValueError('A noise schedule applies only to stochastic evaluation')
++    if not args.check_only and args.expected_cycle != 26:
++        raise ValueError('Physical evaluation is registered only for complete26')
++    if args.expected_cycle < 24:
++        raise ValueError('Expanded replay checkpoints only')
+     torch.set_num_threads(1)
+     root, output = args.runtime.resolve(), args.output.resolve()
+     protocol = json.loads(args.registration.read_text())
+@@ -99,9 +103,34 @@
+     checkpoint = torch.load(snapshot, map_location=args.device, weights_only=False)
+     if checkpoint['protocol_sha256'] != sha(args.registration):
+         raise ValueError('Checkpoint registration mismatch')
++    if checkpoint['cycle'] != args.expected_cycle:
++        raise ValueError('Exact registered checkpoint cycle required')
+     controller, algorithm = checkpoint['controller'], checkpoint['learner']['algorithm']
+     if controller != 'direct' or algorithm != 'serl_state' or checkpoint['boundary'] != 'complete_condition_cycle':
+         raise ValueError('Expected complete official SERL Direct checkpoint')
++    # Restore the persisted2m replay with the already validated strict loader.
++    # No sampling, insertion, legacy migration or optimization is performed.
++    from resume_serl_capacity_reviewed_continuation_20261027 import validate_capacity, capacity_replay
++    from train_serl_state_20261026 import Replay
++    previous_ref = protocol['resume_parent_registration']
++    if sha(previous_ref['path']) != previous_ref['sha256']:
++        raise ValueError('Previous registration hash changed')
++    previous = json.loads(Path(previous_ref['path']).read_text())
++    validate_capacity(protocol, previous)
++    if checkpoint['cycle'] != protocol['reviewed_continuation_stage']['parent_cycle'] + 1:
++        raise ValueError('Checkpoint and registered continuation do not match')
++    for name, expected in json.loads((root/'SOURCE_HASHES.json').read_text()).items():
++        if sha(root/'source'/name) != expected:
++            raise ValueError('Frozen source mismatch: '+name)
++    if checkpoint['replay'].get('replay_capacity_extension') != protocol['replay_capacity_stage']['marker']:
++        raise ValueError('Persisted capacity marker required; evaluation cannot migrate')
++    expanded = capacity_replay(Replay, protocol, checkpoint)
++    replay = expanded(7, 49, 20261079)
++    replay.load_state_dict(checkpoint['replay'])
++    replay_digest = digest(replay.state_dict())
++    if replay_digest != digest(checkpoint['replay']):
++        raise ValueError('Full expanded replay restoration changed state')
++    history_digest = digest(checkpoint.get('history'))
+     prior = json.loads((root/'parameter/PRIORS.json').read_text())
+     dimension = 7 if controller == 'direct' else prior['methods'][controller]['action_dimension']
+     os.sched_setaffinity(0, {args.learner_cpu})
+@@ -135,6 +164,22 @@
+         assert digest(learner.state_dict())==initial_state
+         write(output/'EXTERNAL_ACTION_RNG_GATE.json',dict(passed=True,same_seed_actions_exact=True,different_seed_changes_actions=True,noise_schedule=args.noise_schedule,temporal_sampling_gate_passed=True,full_state_unchanged=True,optimizer_updates=0,new_physics=0))
+ 
++    write(output/'FULL_STATE_RESTORE.json', dict(passed=True,
++        checkpoint_sha256=sha(snapshot), cycle=checkpoint['cycle'],
++        full_learner_state_exact=True, full_replay_state_exact=True,
++        learner_digest=initial_state, replay_digest=replay_digest,
++        history_digest=history_digest, replay_capacity=replay.capacity,
++        replay_size=replay.size, historical_capacity_entry=23,
++        optimizer_updates=0, new_physics=0, replay_writes=0))
++    if args.check_only:
++        assert digest(replay.state_dict()) == replay_digest
++        assert digest(learner.state_dict()) == initial_state
++        write(output/'CHECK_ONLY_REVIEW.json', dict(passed=True,
++            full_learner_state_exact=True, full_replay_state_exact=True,
++            external_action_rng_gate=bool(args.stochastic),
++            optimizer_updates=0, new_physics=0, replay_writes=0,
++            checkpoint_sha256=sha(snapshot), cycle=checkpoint['cycle']))
++        return
+     receipt = dict(scope=('training_conditions_independent_stochastic_diagnostic' if args.stochastic
+                           else 'training_conditions_independent_deterministic_evaluation'),
+         controller=controller, algorithm=algorithm, training_steps=checkpoint['steps'],
+@@ -218,10 +263,14 @@
+                 except subprocess.TimeoutExpired:
+                     child.terminate()
+                     child.wait(timeout=30)
++    replay_unchanged = digest(replay.state_dict()) == replay_digest
++    assert replay_unchanged and digest(checkpoint.get('history')) == history_digest
+     unchanged = digest(learner.state_dict()) == initial_state
+     write(output/'POLICY_UNCHANGED.json', dict(full_learner_state_unchanged=unchanged,
+         initial_state_digest=initial_state, final_state_digest=digest(learner.state_dict()),
+-        new_optimizer_updates=learner.learner.num_gradient_steps-initial_updates))
++        new_optimizer_updates=learner.learner.num_gradient_steps-initial_updates,
++        full_replay_state_unchanged=replay_unchanged, replay_writes=0,
++        replay_digest=replay_digest, history_digest=history_digest))
+     if not unchanged:
+         raise AssertionError('Deterministic evaluation modified learner state')
+     if learner.learner.num_gradient_steps != initial_updates:
+@@ -237,6 +286,8 @@
+     parser.add_argument('--registration', type=Path, required=True)
+     parser.add_argument('--checkpoint', type=Path, required=True)
+     parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--expected-cycle', type=int, required=True)
++    parser.add_argument('--check-only', action='store_true')
+     parser.add_argument('--device', default='cuda:0')
+     parser.add_argument('--learner-cpu', type=int, required=True)
+     parser.add_argument('--physics-cpu', type=int, required=True)

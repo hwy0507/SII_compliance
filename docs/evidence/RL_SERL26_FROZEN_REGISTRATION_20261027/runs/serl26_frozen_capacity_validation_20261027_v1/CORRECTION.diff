@@ -1,0 +1,20 @@
+--- initial
++++ corrected
+@@ -130,7 +130,7 @@
+     replay_digest = digest(replay.state_dict())
+     if replay_digest != digest(checkpoint['replay']):
+         raise ValueError('Full expanded replay restoration changed state')
+-    history_digest = digest(checkpoint.get('history'))
++    history_digest = digest(checkpoint['cycles'])
+     prior = json.loads((root/'parameter/PRIORS.json').read_text())
+     dimension = 7 if controller == 'direct' else prior['methods'][controller]['action_dimension']
+     os.sched_setaffinity(0, {args.learner_cpu})
+@@ -264,7 +264,7 @@
+                     child.terminate()
+                     child.wait(timeout=30)
+     replay_unchanged = digest(replay.state_dict()) == replay_digest
+-    assert replay_unchanged and digest(checkpoint.get('history')) == history_digest
++    assert replay_unchanged and digest(checkpoint['cycles']) == history_digest
+     unchanged = digest(learner.state_dict()) == initial_state
+     write(output/'POLICY_UNCHANGED.json', dict(full_learner_state_unchanged=unchanged,
+         initial_state_digest=initial_state, final_state_digest=digest(learner.state_dict()),

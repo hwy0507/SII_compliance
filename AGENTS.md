@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-27 — Direct26冻结全30前瞻登记、2m恢复入口验证
+
+[登记报告](docs/RL_SERL26_FROZEN_REGISTRATION_20261027.md)。在26未启/完整父不存在时固定原24–26窗口终点26、全30及冻结16同外部seed2026102626；30×55秒/最多41250动作33000000子步、0优化replay写入。PLAN SHA72882a42d0a32a3414363e8f8163f1d7169bb92f10ec8254ffe59e3dd65bf896，原准备3528782等待10800秒，仅完整26审查后check-only，不自动物理评估。物理launcher安排在参数冻结41原任务结束后，CPU52推理/53–54物理/GPU0，root审查21600秒。
+新capacity-aware evaluator真实24全learner/replay恢复与外部动作RNG gate v4通过，原3422452结束；size1018290/capacity2m/entry23/真实cycles历史不变，0优化物理，不是实际26恢复或重跑24。v1/v2 CPU后端不满足原SERL单GPU要求、v3错误暴露4GPU等失败与更正保留；v4单GPU0 native通过，正式训练未中断。继承helper/source hash、18个实际25共同模块、AST/help/预算/准确26检查通过。
+新参数41→42 observer3568920，每2秒/1800秒只读原三退出和42spawn，无自动训练/GPU负载；保存值review41已准备未执行。原四25/41、26/42仅恢复、两稳定窗口、冻结41和导纳固定1224跟踪继续，Goal active。远端main7d69ac5/baseline f6e8f8c真实fetch/read未变；41份小证据220162字节，SSD归档/完整41接续另记，无子agent。
+
 ## 2026-10-27 — 导纳40终端拟合退化定位、固定1224跟踪41
 
 [本轮交接](docs/RL_ADMITTANCE40_TERMINAL_20261027.md)。新CPU52只读2818635已完成退出，完整A39/40全部1194/1224终端×5critic，0优化/物理/replay。全输入/source/agent/RNG、原health复现、独立保存算术与图通过；终端贡献.447879→.742515（+65.78%），固定旧1194 masked SSE5035.582→7152.539（+42.04%），旧分母贡献亦升至.636419；新30仅占16.40%，旧1069行变差/125改善。critic0/3/4升、1/2降，非全在线loss因果分解或LR缺陷证明。
