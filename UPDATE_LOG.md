@@ -1,3 +1,11 @@
+## 2026-10-27 — 参数44恢复准备、固定43–45与Direct27审查入口
+
+[最新补充](docs/RL_PARAMETER44_STABILITY43_45_20261027.md)。原四正式Direct26/参数43和冻结41均重新核验live并推进，不重启。新44准备2190593（7200秒，仅完整43全state check-only），原27准备1705859继续；新增27五审查模板与手动launcher，静态正确26→27/810终端/930pending通过，实际27仍未启动。
+新43–45固定窗口2190600，在43零完成/44–45未启时登记，原5%/nearzero1/5000seed2026102745/真实episode长度，CPU54/7200秒，无自动训练停止；原39–41不变，不将已完成42纳入前瞻。源统计公式保持，图dpi140→144无关替换显式披露。
+41→42保存配对审查：I均值−1.789032主要short0600 Strict真→假贡献−1.804009，原外部穿透.192750→.222584mm跨.2mm；Task/完成12.8s保持。A两成功切换贡献+3.463715/总+3.540855，V无切换/总+.008430；全输入hash/MJB/原gate核验，0物理优化，非因果/收敛。小证据docs/evidence/RL_PARAMETER44_STABILITY43_45_20261027；原GPU0稳定42.7333%未达标，Goal active，无子agent。
+
+本轮真实fetch/read main dc35b32、baseline f6e8f8c。源/原始产物共享SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl；当前正式运行源不变。提交/push与归档收据另记。
+
 ## 2026-10-27 — 参数42完整、43接续与Direct等价take27准备
 
 报告[RL_PARAMETER43_TAKE_PREPARATION_20261027.md](docs/RL_PARAMETER43_TAKE_PREPARATION_20261027.md)。服务器共享SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。42三路30全程、旧state/replay/history、新41250reward0误差、finite/health/保存算术与图通过；Task/Strict18/17、13/13、17/16，未收敛。正式43准确42check-only全state/next65536通过，1732692/1732693/1732694启动，原算法/物理/2m不变、每路一个有限周期。

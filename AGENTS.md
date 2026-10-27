@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-27 — 参数44恢复准备、固定43–45与Direct27审查入口
+
+[最新补充](docs/RL_PARAMETER44_STABILITY43_45_20261027.md)。原四正式Direct26/参数43和冻结41均重新核验live并推进，不重启。新44准备2190593（7200秒，仅完整43全state check-only），原27准备1705859继续；新增27五审查模板与手动launcher，静态正确26→27/810终端/930pending通过，实际27仍未启动。
+新43–45固定窗口2190600，在43零完成/44–45未启时登记，原5%/nearzero1/5000seed2026102745/真实episode长度，CPU54/7200秒，无自动训练停止；原39–41不变，不将已完成42纳入前瞻。源统计公式保持，图dpi140→144无关替换显式披露。
+41→42保存配对审查：I均值−1.789032主要short0600 Strict真→假贡献−1.804009，原外部穿透.192750→.222584mm跨.2mm；Task/完成12.8s保持。A两成功切换贡献+3.463715/总+3.540855，V无切换/总+.008430；全输入hash/MJB/原gate核验，0物理优化，非因果/收敛。小证据docs/evidence/RL_PARAMETER44_STABILITY43_45_20261027；原GPU0稳定42.7333%未达标，Goal active，无子agent。
+
 ## 2026-10-27 — 完整参数42、正式43与Direct take27准备（Goal active）
 
 最新补充：[RL_PARAMETER43_TAKE_PREPARATION_20261027.md](docs/RL_PARAMETER43_TAKE_PREPARATION_20261027.md)，恢复总背景仍RL_REBOOT_RESUME_20261027。参数42已完整审查/health/保存算术与图通过：I/A/V Task/Strict18/17、13/13、17/16，reward−2.374253/−10.227515/−4.602095，末loss3.075095/2.012984/.741982，均30全55/noabort、旧replay/history保留、新reward0误差，未健康稳定收敛。
