@@ -1,3 +1,11 @@
+## 2026-10-27 — 冻结41全90及预登记32→41对照完成
+
+[最新评测交接](docs/RL_FROZEN41_COMPLETE_20261027.md)。原冻结41三316550/316551/316552与root316553已完成退出；90×55秒/123750动作/99000000子步，全部物理/filter/torque/原生动作与完整learner/replay不变审查通过，0优化。Task/Strict I18/18、A14/13、V17/17；A short0600穿透.212087mm，Task真/Strict假、机器安全违规1/30，失败保留。
+原41 PLAN预选32对照：相同30条件/seed2026102638、21共同模块hash一致，保存90+90算术与图完成，新782897退出，0新物理。I/V成功标签不变，reward差−.056570/−.117452；A13/12→14/13，short0900/long0900获成功、short0200丢成功，均值+1.496041。接触时长加权合规I17.7727%→15.5980%、A70.4870%→80.3453%、V67.2804%→68.4389%，每轮各8接触回合，非安全认证/全面优势或泛化收敛。
+四正式48/29原359275/359279/359281/241542继续；48跨2m审计401313、49/30仅恢复401495/464829、两固定窗口1908379/336744、冻结29仅恢复3802347保持。冻结29的原41完成依赖已满足，但准确完整29尚待，未自动物理。小证据docs/evidence/RL_FROZEN41_COMPLETE_20261027，原大产物共享SSD，Goal active，无子agent。
+
+本轮实际fetch/read main1db9430/baselinef6e8f8c未变，保留全部并行非RL记录；共享SSD归档/发布另记。
+
 ## 2026-10-27 — 参数47/Direct28完整、正式48/29与4m首次部署
 
 [最新交接](docs/RL_PARAMETER48_SERL29_20261027.md)。47 I/A/V1976180/1976000/1977000，Task/Strict18/17、13/12、17/17，reward−2.379693/−12.047563/−2.834140；全30×55/noabort/旧replay保留/新reward0误差，health/保存算术/图通过，三路首末1000loss下降仍有尖峰。Direct28完整1163040/9264328，Task0/reward−30.909500/末loss.01079538，旧1121790/930隔离保留，新41250成熟；fullreview/health/保存算术/图通过，非任务成功收敛。
@@ -9674,3 +9682,5 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮科学提交d127e4e6f3ae3082ffb461e62bab4933f5d9e62e已push；共享SSD准备包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL29_RECOVERY_FROZEN_20261027_114348/FROZEN_PREPARATION.tar.gz，35成员/652073字节、SHA256 987d4f132b688183edeb12bc7e6afbddd4f88cb4f291d6e6bc8427737081affa，逐成员大小/hash核验。收据docs/RL_SERL29_RECOVERY_FROZEN_SAVE_20261027.json。现有HDD LATEST已更新回读，大验证快照/checkpoint/raw/runtime仍原共享SSD，非HDD/arm1全备份；原四正式47/28、冻结41和既有恢复/统计继续，新3802347仅冻结29恢复准备，Goal active。
 
 本轮科学提交3080ab7501ef86f623aaa7726f62c4c59a9c08c0已push；共享SSD完整本轮小证据/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER48_SERL29_20261027_120810/FULL_SMALL_EVIDENCE.tar.gz，145成员/1534573字节、SHA256 01034c52e1ca581915a2b6d7ee71f028e69e85cd593b2081bbeddae444b9df3f，逐成员大小/hash核验。收据docs/RL_PARAMETER48_SERL29_SAVE_20261027.json；既有HDD LATEST已更新回读，大checkpoint/raw/runtime仍原共享SSD，非HDD/arm1全备份。当前四正式48/29与冻结41继续，49/30仅恢复准备，48实际跨界及两固定窗口待完成，Goal active。
+
+冻结41原三evaluator/rootreview全部退出后，固定纯正式29/48 GPU窗口已完成：60样本/73.962015秒，GPU0–3均值[59.21666666666667, 70.7, 57.583333333333336, 57.583333333333336]%；每个样本GPU进程集合恰四正式PID且身份保持，保存均值独立复算通过。只代表该窗口均值，不保证每瞬时或覆盖早先过渡空档；原observer936980已结束，不重复采样。证据/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl29_parameter48_pure_gpu_20261027_v1/PROFILE.json。
