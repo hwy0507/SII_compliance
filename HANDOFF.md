@@ -594,3 +594,5 @@ python evaluate_direct_esn_post_contact.py \
 ## 10. 当前交接一句话
 
 **正式配方 = 稳定 reference 的 fixture 2 邻域 coverage 蒸馏（19+1 expert traces → BC），8/8 随机 reservoir 通过完整 selection gate（held-out −2.207±0.034 mm）；到此为止，不要再叠随机 pool DAgger（失败方向 F）。下一步是论文主实验图表与泛化扩展（OOD 强度 / impactor 变体），以及 recovery jerk 压低。不要回到单一 phase teacher，也不要把 VMC 混入 Direct ESN proposed 线。**
+
+本轮准备提交d0e6c2104e150d26075b9d2ef07686cf255ce585已push；共享SSD补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER48_STATIC_20261027_110541/PREPARATION_SUPPLEMENT.tar.gz，28成员/574510字节、SHA256 72d490144ea470e8bac05a10e823ca09f8bc012bd40036c8eadd81a30d8a0612，逐成员大小/hash核验。收据docs/RL_PARAMETER48_STATIC_SAVE_20261027.json；依赖前轮46/28完整小包和原共享SSD大产物，现有HDD LATEST已更新回读，非HDD/arm1全备份。48仍未部署，原四正式与冻结41继续，Goal active。
