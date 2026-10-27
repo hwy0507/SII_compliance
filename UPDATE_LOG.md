@@ -1,3 +1,9 @@
+## 2026-10-27 — 参数37审查完成、正式38与Direct24–26固定窗口
+
+[最新交接](docs/RL_PARAMETER38_CAPACITY_WINDOW_20261027.md)。37三路30×55/noabort、旧replay/history/2m marker和新41250reward0误差、health/图通过；I/A/V Task/Strict18/17、13/11、17/17，reward−2.358542/−13.487784/−2.852236，末loss2.997857/2.325374/.805686，未整体健康收敛。36→37配对保存值：I均值+.051817但short0100/0600 Strict相反切换近抵消；A−4.950470来自long0200/short0900 Task失败和short0100 Strict失败三主要项；V无成败切换。0新物理/优化、全30/hash通过，不作因果解释。
+正式38 I1714249/A1714251/V1714253，startup1714318/archive1714320/review1714322；准确完整37全state续一个原设置周期。39仅恢复准备1752770/调度1752771、7200秒，无自动训练。原36–38审计2889814和冻结32继续。新混合23/38/冻结32 GPU observer1752772先查原PROFILE勿重采。
+新Direct24–26固定窗口等待1470790，baseline23、窗口24–26，原5%/近零1/5000分类配对bootstrap seed2026102742，21600秒、0训练物理/无自动启停。登记时23零完成/24–26未启动，容量23→24的1m→2m变化显式披露，不作无干预因果比较；24–26 marker/entry23必须一致。源码AST/--help/原定义/hash/原waiter live通过，实际统计尚待。Direct23原257351与24容量准备1003919/1003920保持，前轮辅助验证不重跑。Goal active，无子agent。
+
 ## 2026-10-27 — Direct24容量入口有界验证完成，原23/37继续
 
 [新交接](docs/RL_SERL24_CAPACITY_PREPARATION_20261027.md)。新capacity driver和validator已实现；原完整22输入的两臂各1outer更新（共16critic+2actor、0物理/权重保存）776433已完成，完整nextbatch/pytree/更新后network/Adam/RNG/metrics精确，扩展state恢复精确、4负守卫通过。全部输入hash和保存证据核验，sampler main与正式23逐字节相同，原30pool负守卫通过；前轮replay-only结果复用。不是完整23迁移验证或正式部署，勿重跑辅助更新。
@@ -9321,3 +9327,7 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 远端本轮新增13d44fb与a3e9e0440506c60eea6c7bcfab9895846706e420，已阅读新30非RL第九条件/81of108与另一主机休眠恢复记录；这是另一任务，不能当当前RL或最终指定ESN比较完成。baseline仍f6e8f8c；合并时保留双方UPDATE_LOG，冻结运行时不变。
 
 本轮准备提交eb324d0、远端合并484081d06991b6d577ba472ea2c211e588b4d0fe仅本地；push仍HTTPS用户名认证失败。SSD补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL24_CAPACITY_PREPARATION_20261027_033445/PREPARATION_SUPPLEMENT.tar.gz，29成员/523440字节、SHA256 a91a6a55b2f514aeabe48249cbd306aa43edef66fb4f283d885f8a342c41d53a，逐成员大小/hash核验。新HANDOFF/收据仅SSD，已有HDD LATEST已更新回读；依赖前轮完整37/23证据，大产物仍SSD，非HDD/arm1全备份。四正式37/23、原38和新24仅恢复准备及两原观察任务继续，Goal active。
+
+实际38 startup1714318已完成，I/A/V新增1000/1000/2000至1565500/1564500/1566500，旧1564500/1563500/1564500全部回放字段/history/optimizer配置/2m marker/30MJB/sampler/action/clock和新reward0误差通过。实际check-only与新增startup是两项核验，均已通过，勿重跑。
+
+混合23/38/冻结32原observer1752772已完成，60样本/65.766757秒，GPU0–3均值[54.8, 73.63333333333334, 73.86666666666666, 73.33333333333333]%，逐样本七原PID身份保持，保存均值独立核验通过。非纯正式吞吐或每瞬时50%保证，不抹去37→38空档；勿重采。远端main a3e9e04/baseline f6e8f8c本轮重新fetch/read未变。
