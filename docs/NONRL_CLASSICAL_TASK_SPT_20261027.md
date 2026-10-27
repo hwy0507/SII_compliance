@@ -82,6 +82,14 @@ Strict穿透门、完成时间、峰矩/速度/RMSE、接触合规与机器违�
 未完成72时默认最终审计拒绝测试通过。最终模式须全180身份齐全并逐行/逐方法重算共同参考、
 成功分母与条件SPT，最终分支等待实验结束后实际执行。
 
+2026-10-27 07:33 UTC：完成3/72，首原生阻抗01完整55秒后正常退出，协调器接续阻抗02。
+首阻抗任务仍失败（carry），峰矩34.936Nm、外部穿透0.140350mm；没有据低力矩计为成功。
+`FIRST_IMPEDANCE_PHYSICS_AUDIT.json`对已完成3回合330万子步审计通过，1.804秒/退出0。
+原生力矩后端的保存物理指标/源码/参数/hash和公共filter核查有效；仍不声称完整原生servo重建。
+收据共享至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_first_impedance/FIRST_IMPEDANCE_PHYSICS_AUDIT.json`，
+2898字节，SHA256 `c6433ff7d775b92a1642e94d09e996142a9aac8423afdd1d45e4a7d7326e82cc`；
+本地与远端一致。审计器精确源码已在audit110共享包中。完整矩阵仍在运行，不作局部排名。
+
 ## 归档
 
 服务器只用于本轮归档，不计算。已核验登记包：
