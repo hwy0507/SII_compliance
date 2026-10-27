@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-27 — Direct24监控入口更正、25继承2m准备
+
+[最新补充](docs/RL_SERL25_INHERITED_PREPARATION_20261027.md)。未执行24 launcher误调旧batch23 setup已改为capacity24；原文件/原登记与更正收据保留，更新launcher hash，真实调用路径/24输出/五模板hash与AST核验通过。validated driver/helper及当前训练不变，不重复辅助验证或原waiter。
+25三入口/四模板已准备登记，继承旧/新2m、历史entry23与batch历史12；父24 protocol/注册与checkpoint hash及stage一致守卫、全raw/derived/reward审查、780终端、稳定窗口replay_capacity字段保持。七脚本AST/调用路径与两模板各12错误元数据拒绝通过，0优化物理，仅静态/fixture；实际24父未可用，25无waiter/训练。待24真实LAUNCH后登记有界恢复等待，不能虚构PID/称部署。
+原四正式23/38、24/39准备、固定36–38/24–26和冻结32全部18进程核验live；04:00快照Direct965482，I/A/V1585488/1584789/1585956，冻结24/25/25完成。优先完整23→24与38→39接续，Goal active，无子agent。远端main a3e9e04/baseline f6e8f8c真实重新核验未变；新证据docs/evidence/RL_SERL25_INHERITED_PREPARATION_20261027，SSD归档收据另记。
+
 ## 2026-10-27 — 参数37审查完成、正式38与Direct24–26固定窗口
 
 [最新交接](docs/RL_PARAMETER38_CAPACITY_WINDOW_20261027.md)。37三路30×55/noabort、旧replay/history/2m marker和新41250reward0误差、health/图通过；I/A/V Task/Strict18/17、13/11、17/17，reward−2.358542/−13.487784/−2.852236，末loss2.997857/2.325374/.805686，未整体健康收敛。36→37配对保存值：I均值+.051817但short0100/0600 Strict相反切换近抵消；A−4.950470来自long0200/short0900 Task失败和short0100 Strict失败三主要项；V无成败切换。0新物理/优化、全30/hash通过，不作因果解释。
