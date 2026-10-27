@@ -5,7 +5,7 @@ Goal active。上一轮登记44恢复、43–45稳定窗口和27审查入口，�
 ## 当前正式运行
 
 - 参数44：B/runs/parameter_capacity_pool30_cycle44_20261026_v1，I3195008/A3195009/V3195010，2026-10-27 09:26:05 UTC启动；GPU1/2/3、原CPU13–51，各30sampler。准确完整43全learner/replay/next65536恢复、PRELAUNCH通过；实际startup新增1000/1000/2000、旧全部replay/history/optimizer、30MJB/sampler/clock/action及新reward0误差通过。归档3195013、完整review3195014继续，startup3195012完成。
-- Direct take27：B/runs/serl_recovery26_take27_20261027_v1，learner3712293/start_ticks28969795，09:39:41 UTC启动；GPU0/CPU0，30sampler共享CPU1–12。准确完整恢复26为父，原两臂单更新等价gate+实际完整26三批65536/reload全state检查均通过。正式部署已验证np.take读取，算法/采样分布/随机draw/字段顺序/optimizer不变。INITIAL_STATE_REVIEW通过；实际startup3712297、归档3712299、fullreview3712302以最新收据为准。
+- Direct take27：B/runs/serl_recovery26_take27_20261027_v1，learner3712293/start_ticks28969795，09:39:41 UTC启动；GPU0/CPU0，30sampler共享CPU1–12。准确完整恢复26为父，原两臂单更新等价gate+实际完整26三批65536/reload全state检查均通过。正式部署已验证np.take读取，算法/采样分布/随机draw/字段顺序/optimizer不变。INITIAL_STATE_REVIEW和实际首1000 startup均通过（旧1080540回放保留，新144mature+856pending，旧930pending保持，新reward0误差）；startup3712297已结束，归档3712299、fullreview3712302继续。
 - 冻结参数41原316550/316551/316552和review316553继续，全90尚未完成，勿重跑。
 - 参数45仅恢复准备3232655：B/runs/parameter45_preparation_20261027_v1，7200秒等完整44及review/health后check-only，不自动训练。原固定43–45 waiter2190600继续，不重复登记或改阈值；45正式尚未启动。
 
@@ -37,7 +37,7 @@ I43改善Strict、A43任务/回报改善，但A末段loss上升；末单点loss�
 
 43→44原有界观察2915615已完成，进程退出→新spawn范围I286.13–288.15秒、A346.60–348.61秒、V358.70–360.72秒；不等于整卡准确idle时长，不宣称每瞬时50%。26的第一次独立退出观察时进程已不存在，旧脚本把初始化时刻误写last_seen_alive，原件保留为OBSERVATION_ORIGINAL，已更正为null并说明缺少最后live时间；不能据此捏造精确衔接时长。
 
-新且仅一次部署后GPU观察B/runs/serl_take27_gpu_profile_20261027_v1，原observer3746077：要求实际startup通过且Direct新增至少2000步，再取60样本、间隔1秒（nvidia-smi开销另计），逐样本原7任务身份核验、记录GPU计算PID及真实Direct步数。基线是此前42.7333/64.55/68.75/68.4%混合窗口，不重跑旧窗口/额外训练，不把不同在线阶段和checkpoint时序的差异当纯因果速度提升。实际结果尚待GPU_PROFILE，不提前宣称GPU0达50%。
+新且仅一次部署后GPU观察B/runs/serl_take27_gpu_profile_20261027_v1，原observer3746077：要求实际startup通过且Direct新增至少2000步，再取60样本、间隔1秒（nvidia-smi开销另计），逐样本原7任务身份核验、记录GPU计算PID及真实Direct步数。基线是此前42.7333/64.55/68.75/68.4%混合窗口，不重跑旧窗口/额外训练，不把不同在线阶段和checkpoint时序的差异当纯因果速度提升。实际GPU_PROFILE与SAVED_RESULTS_REVIEW已完成：60样本/119.257508秒，GPU0–3均值63.716667/63.566667/64.183333/58.6%，本窗口均超过50。全部60样本恰7登记compute PID，GPU0仅正式Direct3712293；保存均值/1326新步和约11.1188steps/s独立算术核验。不是每瞬时保证，不将GPU0比此前高20.9833个百分点当严格因果提升；不重复该完成窗口。
 
 ## 接续与同步
 
@@ -48,3 +48,6 @@ I43改善Strict、A43任务/回报改善，但A末段loss上升；末单点loss�
 实际take27首1000 startup已通过：1081540steps/8612328critic，旧1080540 raw/derived/history、930历史pending保持，新144mature+856pending目标精确，30MJB/sampler/CPU affinity/clock/action及reward重建误差0；原startup3712297完成。新GPU observer3746077已进入原60样本采样，尚不提前给均值。
 
 收尾真实fetch/read远端main2c1f639（含aa1f4c3，另一非RL经典18/72与第三条件归档），baseline仍f6e8f8c；已读新增日志，运行中的RL冻结源/协议不变，双方记录保留。
+
+实际take27首1000 startup通过，旧1080540 raw/derived/history与930pending保持，新144mature+856pending、新reward0误差。部署后原3746077窗口已完成60样本/119.2575秒，GPU0–3均值63.7167/63.5667/64.1833/58.6%，均超过50；保存算术/全部7原compute PID逐样本核验，GPU0仅正式Direct。不是每瞬时保证或纯因果速度比，勿重跑原窗口。
+科学提交1f3a8a0后安全合并远端2c1f639，合并提交6a37c0a；UPDATE_LOG双方完整逐行顺序核验保留。

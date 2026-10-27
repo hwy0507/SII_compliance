@@ -4,7 +4,7 @@
 
 [最新交接](docs/RL_PARAMETER44_SERL_TAKE27_20261027.md)。完整43 I/A/V1811180/1811000/1812000，Task/Strict18/18、15/14、17/16，reward−.543031/−8.566882/−4.612703，末loss1.759946/1.138345/.585715；A末1000均值2.0165高于首1.46435，未健康收敛。全30/无abort/旧回放与新reward0误差、health/独立保存算术/图通过。
 正式44 I3195008/A3195009/V3195010，准确43全state/next65536和PRELAUNCH通过，实际startup新增1000/1000/2000通过；archive3195013/review3195014。45仅恢复3232655，原固定43–45 waiter2190600继续，无自动训练。
-恢复26完整1080540/8604328，30全55/noabort、Task0、reward−30.906703/末loss.01107406；旧1039290 raw/derived/history和930pending保留、新41250全成熟/目标reward精确，health/保存算术/图通过。正式take27 learner3712293（CPU0/GPU0），准确26三批/reload/完整state及原单更新等价gate通过，部署np.take，原算法/物理不变。startup3712297/archive3712299/review3712302；新GPU观察3746077等实际startup和+2000后取60样本，结果以收据为准，不提前称达50。
+恢复26完整1080540/8604328，30全55/noabort、Task0、reward−30.906703/末loss.01107406；旧1039290 raw/derived/history和930pending保留、新41250全成熟/目标reward精确，health/保存算术/图通过。正式take27 learner3712293（CPU0/GPU0），准确26三批/reload/完整state及原单更新等价gate通过，部署np.take，原算法/物理不变。startup3712297/archive3712299/review3712302；实际startup首1000通过；新GPU观察3746077已完成60样本/119.26秒，均值63.7167/63.5667/64.1833/58.6%，七原PID与保存算术核验，GPU0仅Direct，本窗口四卡≥50，非每瞬时保证。
 43/26只读全review在原learner退出后移到释放CPU13/0，未改在途正式/物理；43→44退出到spawn I286–288/A347–349/V359–361秒，非GPU精确idle；26初观察已退出，lastlive错误初始化已保留原件并更正null，不造时长。冻结41原三评估继续，后续28须识别新recovery_continuation_stage/930pending。无子agent，Goal active。
 
 ## 2026-10-27 — 参数44恢复准备、固定43–45与Direct27审查入口
