@@ -1,3 +1,10 @@
+## 2026-10-27 — Direct持续低GPU定位与读取候选的有限等价检查
+
+- 同一原四learner与冻结41真实进度持续增长；Direct恢复首1000全state/旧930pending/新目标审查已通过，未重新启动。2000新步后的60样本仍GPU0–3均值42.7333/64.55/68.75/68.4%，不宣称四卡均达50%。
+- 对实际Direct做一次30秒/50Hz非阻塞只读栈采样，1275有效样本/11错误，checkpoint调用约35.53%，原gather也占明显比例；非完整GPU因果分解。20组同快照配对读取全部字节一致，候选np.take局部中位0.091872s vs原0.191931s，CPU52共享计时有噪声，不外推整链加速。
+- 新候选和有限gate已登记：serl_take_gather_gate_20261027_v1，timeout1314855/600秒、3次采样+每臂1outer、共16critic/2actor、0物理、不保存权重、不部署。实际gate结果以REVIEW/FAILURE为准，未改当前正式driver。细节见RL_REBOOT_RESUME_20261027.md。
+- 科学605c938后fetch/read main4c795d8，非RL最新归档补充已读，以4b3b5ea安全合并；AGENTS/UPDATE_LOG完整保留双方新增区块并逐行核验。新容器Git身份缺失，沿用历史Codex<codex@localhost>只在仓库local配置恢复，未改全局身份。
+
 ## 2026-10-27 — 关机后恢复Direct部分25与参数42，启动冻结41
 
 - 用户明确恢复，Goal active；真实fetch/read main822e5da08322674666359d9d4d7d61c59598d111、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d。原任务全退出后首次新启动，无重复实验/子agent。

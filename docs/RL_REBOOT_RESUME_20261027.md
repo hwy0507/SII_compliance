@@ -56,3 +56,13 @@
 本轮真实查询/fetch/read main `822e5da08322674666359d9d4d7d61c59598d111`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。远端新增为另一主机非RL经典补测与Task条件SPT；其日志明确不追改另一RL协议。本RL仍原冻结物理/SPT协议，不能把另一机3/72或108完成当本RL收敛。
 
 下一轮先核验本轮原四learner、冻结41和审查进程及实际steps，避免重复。优先处理GPU0稳定窗口/真实瓶颈，收齐参数42与Direct恢复26完整checkpoint、full review/health后再登记有限后继；完成冻结41。Direct原24–26与旧26冻结入口继续禁用，重新审查恢复链后建立新的前瞻稳定性窗口和冻结评估。最终充分收敛、完整公平比较、泛化及指定ESN/SPT仍未完成，不索要此前已经问过的ESN或GitHub凭据。
+
+## Direct真实瓶颈定位与候选读取准备
+
+非阻塞py-spy0.4.1对实际learner645388只读30秒/50Hz采样完成，1275有效样本、11读取错误保留；保存检查点调用栈约35.53%，gather的主数组/next数组叶帧约11.45%/8.47%，更新调用约25.25%。这些是一个含checkpoint窗口的栈占用，重叠inclusive不可相加，也不是整段GPU时间归因。没有暂停或重启learner。
+
+固定首1000快照上的20组交替配对CPU读取对比全部字节一致，numpy fancy indexing中位0.191931秒、候选np.take中位0.091872秒。CPU52与冻结评估共享且nice19，此为有噪声局部wall-time证据，不保证整体2倍加速。新候选`serl_replay_take_gather_20261027.py`保留同一均匀随机抽样、字段和顺序，先检查有效索引再take；不更改batch/UTD/奖励/参数。
+
+独立有限gate：B/runs/serl_take_gather_gate_20261027_v1，原timeout进程1314855，600秒上限。真实首1000快照、3次65536采样与RNG/reload、完整batch pytree及每臂1outer更新（共16critic+2actor）做全network/Adam/RNG/metrics精确比较，0物理、不保存权重、不推广。检查实际REVIEW/FAILURE和进程身份再决定；此处登记不代表已通过。正式恢复26保持原实现，不在运行中改源码。后续只有通过gate与完整周期恢复审查才可在新登记阶段部署。
+
+本轮科学提交605c938；随后真实fetch得到远端4c795d8（另一非RL任务原始归档/经典补测），已阅读并以4b3b5ea合并。AGENTS/UPDATE_LOG冲突按双方完整添加区块保留，逐行子序列核验两父内容均未丢失/重排。运行中的冻结源码与协议不变，远端Task条件SPT不追改本RL奖励。
