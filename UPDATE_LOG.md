@@ -1,3 +1,15 @@
+## Direct20完整审查通过，21已接续
+
+此条覆盖下文Direct20运行快照。完整20为854532步/6796264 critic更新，30完整无abort，Task/Strict0/30、reward−30.912666（19为−31.581990）；保留813282旧raw/derived/history、新41250reward和32步目标精确、pending0。末1000 critic loss .0130094，整轮均值.0133141、最大.0259253；630终端×10critic MAE.0448714，32步TD MAE.0393848，Qmean−20.501648，alpha.000503776。完整REVIEW/DIAGNOSIS/FINISHED、网络/优化器/RNG不变及图通过；低loss不替代任务表现，原17–19描述稳定结论保留，不新增Task门槛。
+准确完整20父SHA c16481af41006b8bea48f734f1b3387bcf1a462c099719b74a4167bf926e099c。21check-only通过，PRELAUNCH科学审查后正式learner **2826774**，startup **2826820**、archive **2826823**、review **2826824**。原配置/全state接续一个有限周期，实际新增启动审查另见原startup/REVIEW，禁止把check-only当实际通过。
+22准备等待 **2851849**、原21审查CPU调度 **2851880**，7200秒，只完整21后check-only，不自动训练。限定同时替换/AST/准确父21与目标22/预期690终端守卫通过，实际恢复尚待。原20 learner46632/归档46745/review46750与21准备87882/调度87883均已完成，勿重启。正式21路径B/runs/serl_multistep_batch65536_cycle21_20261026_v1，22准备B/runs/serl22_preparation_registration_20261027_v1。
+
+## 2026-10-27 参数33启动、冻结32全30矩阵运行、固定954跟踪完成
+
+[最新交接](docs/RL_PARAMETER33_FROZEN32_20261027.md)。完整32全三路30×55秒无abort、旧prefix/history/2m marker/新reward0误差与finite/health/图通过；I/A/V reward−2.415532/−10.231849/−2.869316、Task/Strict18/17、13/13、17/17。固定30–32原审计结束，三路5%描述检查均未通过，未整体健康收敛。
+正式33 I2463296/A2463297/V2463300，startup2463353已通过首1000/1000/2000，归档2463355/完整review2463357继续。34准备2501606/调度2501611仅完整33后check-only，无自动训练；新33–35稳定性2585589固定登记等待。
+冻结32全30 I2466385/A2466386/V2466387、根review2466388，原先登记90×55s/单seed2026102638；三实际startup状态/随机动作守卫通过，物理回合推进中，非完成验证。VMC固定954跟踪32及独立保存算术/图完成，SSE5032.519→1491.624（−70.36%），focus1304222 SSE3525.548→29.827，非整体loss因果解释。Direct20原46632/21准备87882继续。原远端main dbb1d76/baseline f6e8f8c核验未变；GPU混合窗口与备份收据另记，Goal active。
+
 ## VMC31终端误差集中度完成，固定954样本跟踪32已登记
 
 科学提交d76398570cd3b83852980a36f71f02c18311f68b本地完成，push仍GitHub Username认证失败未发布。24成员完整小证据SSD B/repository/RL_VMC31_TERMINAL_FOLLOWUP_20261027_002336/FULL_SMALL_EVIDENCE.tar.gz，965856字节，SHA256 995ff3b980e67bd535dd6ae8e68fc32d8ee47d0aaba33244a72c5f774784a615，逐成员size/hash核验通过。HDD RL_VMC31_TERMINAL_FOLLOWUP_STATUS_20261027_002336/HANDOFF.md与LATEST_RL_HANDOFF.md入口已核验，大state/raw仍SSD，非HDD/arm1全备份。
@@ -9204,3 +9216,5 @@ Direct17实际首1000新增检查通过：690532/5484264，全部旧689532 raw/d
 三路首动作seed2026102633均完整完成并审查：各1375动作/110万子步，全部原生随机动作重放误差0、物理/filter/torque与完整learner state不变通过。I/A/V Task真/假/真，Strict均假；穿透.231028/.205819/.205658mm，均超过原.2mm，无abort但保留原物理有效性失败/机器违规标签。其余3seed仍在途，不能据单seed推总体变化或提前结束预算。
 
 参数31实际启动审查已通过：I/A新增1000至1276750/1275750、V新增2000至1277750；全部旧1275750/1274750/1275750行replay字段/history/优化器配置/2m marker/30MJB/30sampler/action/clock及新reward0误差通过。原startup3783471已完成，归档3783472/完整review3783473继续。
+
+资源补充：固定60样本/65.5720秒混合20/33/冻结32窗口，GPU均值55.60% / 74.8667% / 72.4333% / 68.2833%，逐样本七个原训练/评估PID身份保持，保存均值另核验。非纯正式窗口、不保证每瞬时、不隐藏32→33切换空档；原observer2560106已结束勿重复。
