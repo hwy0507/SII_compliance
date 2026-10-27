@@ -1,3 +1,14 @@
+## 2026-10-27 — 非RL改用Task条件SPT，启动历史传统控制器同条件补测
+
+- 用户明确要求只统计Task成功回合的完成效率。新增`SPT_task_conditional=mean(T_ref/max(T,T_ref)|Task)`；失败排除效率分母、零成功NA，Strict单独报告。共同后验参考取完整矩阵所有Task成功时间最小值；不追改旧报告或另一会话RL协议。更新AGENTS/评估标准和交接`docs/NONRL_CLASSICAL_TASK_SPT_20261027.md`。
+- 真实查询/fetch/read main `102ac709c875351414493144df7d2e61ceb99ed7`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS；原108协调器已退出且execution complete，保留无关未跟踪会议文档。原报告/锁模/冻结物理源码与6套经典依赖历史hash一致。
+- 直接重聚合已有108回合，未重训/重跑。Task参考34.36秒，ESN/RNN/MLP条件SPT为0.755738/0.744141/0.669989，成功平均完成45.774286/46.72/51.333333秒；Task为28/36、26/36、3/36。该表只对应完整108子矩阵，不能冒称加入传统组后的最终结果。旧双通过参考39.40秒及旧SPT保留。
+- 新独立run `nonrl_classical_task_spt_20261027_v1`登记6套历史固定导纳/阻抗/VMC×原12条件=72新回合，合并180。每类保留原两套finalists，无新调参、无RL、无重复确定性seed。原生阻抗力矩律保留；传统组是不同历史预算的系统基线，不是等预算模仿学习组。经典audit仅参数/策略轨迹一致性、公共filter及原始物理指标，未冒称完整独立经典actor重放。
+- 服务`sii-nonrl-classical-task-spt-20261027-v1.service`已启动，协调179772/首worker179776，单CPU1/单模拟器/单线程/MemoryMax3GiB/禁swap、全局计算锁；首导纳物理时间9.04→50.04秒真实推进。冻结physics/MJB/gates/filter/执行器/dt未改。完整72回合、最终共同参考/审计/全量归档待完成，非RL持续Goal active。
+- 首回合随后完成55秒和审计（369.42秒墙钟），Task/Strict失败、carry结束，保留原失败；协调器自动接续第二套导纳并真实推进4.04秒。cgroup OOM事件0/swap0。快照`LAUNCH_FIRST_EPISODE.json`，不是仅凭active判定有效运行。
+- 新指标4项单测通过：Task/Strict解耦、失败不入分母/全矩阵参考、零成功NA、异常时间/重复身份拒绝，历史输入不变。小型证据见`docs/evidence/nonrl_classical_task_spt_20261027/`。
+- 登记包2,001,510字节已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_registration/REGISTRATION_BUNDLE.tar.gz`；本地/远端临时/最终SHA均为`dc4f40656985e1fced46077ebab0d81e97380dc1070d6dfe1136ca79977c148b`。仅登记/源码/108重聚合已归档，未完成经典轨迹仍仅本地，服务器不计算。收工复读AGENTS。
+
 ## 2026-10-27 — 最新 ESN 最高SPT单回合原速视频
 
 - 按用户要求从完整最新矩阵中选Task AND Strict双通过且SPT最高的ESN回合，唯一最高者为 `esn_s2026102601__new30_prospective_20261026_acceptance_010`：完成39.40秒、SPT=1、峰矩49.563877Nm、接触期舒适代理99.1329%、最大外部穿透0.192784mm。此为事后选出的最佳展示样例，不代表平均效果或所有指标最优。

@@ -1,5 +1,20 @@
 # 本仓库的持续工作约定
 
+## 2026-10-27 最新非RL口径：Task成功条件SPT与传统控制器扩展
+
+用户明确改为只在 **Task=true** 回合中计算时间效率均值，记为 `SPT_task_conditional`。
+Task失败不进入此指标分母，零成功为NA；Strict不是该指标的入选条件，Task/Strict成功率和
+安全指标仍用全部回合，必须同时报告。共同T_ref取完整登记矩阵所有Task成功回合的最短时间。
+这覆盖下方非RL“Task AND Strict、失败SPT=0”的旧口径；历史文件不改写，另一会话已冻结的RL
+协议不变。读 `docs/NONRL_CLASSICAL_TASK_SPT_20261027.md` 和评估标准最新修订。
+
+原108回合复用，新增 `nonrl_classical_task_spt_20261027_v1`：历史固定导纳/阻抗/VMC各两套
+锁定参数，共6×12=72新回合，合并180；不含RL，不重新选参数/训练，不重复确定性seed。
+本机服务 `sii-nonrl-classical-task-spt-20261027-v1.service`，单模拟器/单线程/3GiB/禁swap，
+先查execution、service和progress，禁止重复启动。历史原生阻抗力矩律保留；传统组只承诺
+参数/策略轨迹一致性、公共filter、物理子步审计，不能冒称完整独立经典actor重放。
+尚在运行，完整72及最终对比/归档审计待完成；当前Goal只包含本非RL扩展。
+
 ## 2026-10-27 非RL新增30条最终评测已完成
 
 `nonrl_new30_fair_20261026_v2` 已完成 75 个拟合过程、9 个锁定模型和 108/108 个独立
