@@ -1,5 +1,7 @@
 ## 2026-10-27 — 用户再次要求关机暂停：Goal paused，禁止自动续训
 
+关机保存完成：8主/后备+1取证checkpoint共8.316GiB，源码配置/结果包5031成员819111777字节核验；独立Git bundle完整历史与交接提交a0136bb校验通过，收据docs/RL_SHUTDOWN_SAVE_RECEIPT_20261027.json。push仍HTTPS认证失败。全部项目进程与GPU计算进程已空，Goal paused；HDD LATEST回读指向新SSD交接。
+
 **最新权威交接：[RL_SHUTDOWN_RECOVERY_20261027.md](docs/RL_SHUTDOWN_RECOVERY_20261027.md)。用户将在重新开机后另行要求继续。当前覆盖下方全部active/继续训练历史记录，不为GPU占用重启任务。** 四learner/物理sampler及等待/归档/审查进程均已退出，Goal工具已paused，不是完成。
 独立快照B/runs/user_shutdown_pause_20261027_v1：Direct首选中断前原子快照1039290步/8274328critic，部分25、1038360成熟+930pending（30×31），无MuJoCo现场；需独立审查中断stream恢复，禁止直接用完整周期driver或fresh reset。额外保留中断后取证快照，完整24后备1018290，不授权自动回退。参数完整41 I1728680/A1728500/V1729500，完整40后备；8主/后备文件反序列化、replay元数据/finite/hash核验，完整optimizer/replay/RNG/history保留。
 参数41原review/health/FINISHED完成，Task/Strict18/18、12/11、17/16，reward−.585222/−13.768370/−4.610525，末loss2.042270/1.458501/.935056；未整体健康收敛。42、冻结41实际恢复/评测、导纳固定41跟踪、39–41统计及Direct26均未启动或未执行；旧等待任务已停止，恢复先查原产物而非旧PID。

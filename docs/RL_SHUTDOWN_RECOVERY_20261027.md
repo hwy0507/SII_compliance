@@ -101,3 +101,7 @@ HDD配额满，新快照与归档在共享SSD。既有HDD LATEST覆盖回读，�
 4. 完整41全state恢复check-only后科学判断参数42；为缩短空档，登记有限后续阶段并实测GPU。不能自动无界训练。
 5. 按原冻结41、Direct26计划完成实际恢复和有限评测；Direct26依赖完整25/26及中断窗口审查，不能跳过。
 6. 继续原目标：reward稳定且loss无异常、冻结验证和最终公平比较。完整学习无改善的平坦曲线应称停滞，不能宣布学会；保留失败，不改物理门或用GPU占用替代收敛。
+
+## 关机保存完成收据
+
+8份主/后备快照及1份中断后取证副本共8929265735字节（8.316GiB）；源码配置/关键结果包819111777字节、5031成员逐大小/hash核验，SHA256 6c0d2294fc32b420dc916fc196a7c8036c0dcef010c5994db84f899246588ebf。独立Git bundle 193419247字节、SHA256 14f2690991e3d90c7154c4f5d019482af87f17c36d48abfa9dfd67a1d674657a，git bundle verify通过、含完整历史及本轮交接提交a0136bb3ddb72261ef103cae685ecdc1778a5e98。GitHub push仍HTTPS用户名认证失败；以本地仓库/独立bundle和共享SSD快照为准。FINAL_STOP_STATUS确认项目任务与GPU计算进程为空，Goal paused。
