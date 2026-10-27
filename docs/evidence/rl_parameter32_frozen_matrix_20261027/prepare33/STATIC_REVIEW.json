@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "time": 1793059846.0704796,
+  "sources": [
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_parameter_capacity33_20261026.py",
+      "sha256": "1b0e810f18122f34aa1d20e46effa2b493f134c06d1516e75ad5339e68b55523"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/launch_parameter_capacity33_20261026.py",
+      "sha256": "5d4fa058fe4fc087938ccfacd62aabed03fe1c057137099a44b887d5e89075d3"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/setup_parameter_capacity33_monitors_20261026.py",
+      "sha256": "e5529dd0c44ff8288872ca125274bf33237e53ad4020a779c97dcada0e620bd9"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/wait_prepare_parameter_capacity33_20261026.py",
+      "sha256": "333f91b3123359daefbb8289c7a866cfec2eba559c595c1061d77c3b5668f242"
+    },
+    {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/assign_parameter32_review_released_cpu_20261026.py",
+      "sha256": "b357a537cbca38d661074407d97de9d98c62f7755ec2879cc413950680e85f8e"
+    }
+  ],
+  "corrections": [
+    {
+      "file": "prepare_parameter_capacity33_20261026.py",
+      "before_sha256": "b9523fc23be29b983a1093b447b0cdd4e8df685f0ce98f8c5bb9ca30a9b15e68",
+      "after_sha256": "1b0e810f18122f34aa1d20e46effa2b493f134c06d1516e75ad5339e68b55523",
+      "old": "assert ck['cycle']==33 and",
+      "new": "assert ck['cycle']==32 and"
+    },
+    {
+      "file": "setup_parameter_capacity33_monitors_20261026.py",
+      "before_sha256": "393b5388f17052c679fa5eb073dbfd63a838c2202e6f0777f5c4a9215c1c0e09",
+      "after_sha256": "e5529dd0c44ff8288872ca125274bf33237e53ad4020a779c97dcada0e620bd9",
+      "old": ".replace('Cycle31 archive','Cycle32 archive')",
+      "new": ".replace('Cycle32 archive','Cycle33 archive')"
+    }
+  ],
+  "parent32_checkpoint_assertion_checked": true,
+  "historical23_and_pool30_preserved": true,
+  "all_current32_review_adaptations_checked": true,
+  "actual33_preparation_executed": false,
+  "scope": "Initial AST-only review missed cascading cycle replacement; corrected parent checkpoint assertion and archive error label before any preparation executed. Original waiting PID1007211 unchanged; no training/state affected."
+}

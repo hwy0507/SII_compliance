@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "time": 1793059746.823589,
+  "inputs": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle31_review_20261026_v1/REVIEW.json": "667a391d0059830f87666969d29a94fc5295358b5bf088a49efd0202acd83077",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle31_review_20261026_v1/FINISHED.json": "d12d32277b7d025af0caa8aa0f41d066d29d4fc5d79e57beb8ee91bcfb6681a6",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle31_review_20261026_v1/health/DIAGNOSIS.json": "7809254f142ad35a67e2c0dbede3ac0ef03c9de3863db917c3c186256cd55cd8",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle31_review_20261026_v1/health/training_diagnostics.png": "271d0ec1686542e71cf38b7aa9897d66b8d189a557e38404839de57813ca69f0"
+  },
+  "methods": {
+    "impedance": {
+      "steps": 1317000,
+      "updates": 1312001,
+      "task": 18,
+      "strict": 16,
+      "reward": -4.148708670269972,
+      "checkpoint_sha256": "ce52ed59cf87904a58c8238654eb5716dfa6d51be41fac6603bb21feadd5cedd",
+      "last1000_q_loss": 2.3279776161909105,
+      "terminal_mae": 0.8908335610834092,
+      "in_bag_mae": 0.31091791797026197,
+      "q_above_necessary_soft_bound_fraction": 0.0
+    },
+    "admittance": {
+      "steps": 1316000,
+      "updates": 1311001,
+      "task": 13,
+      "strict": 12,
+      "reward": -11.848439432099106,
+      "checkpoint_sha256": "5fe0a98d1570590aaf37c7fcfdf77668cc3dcc951f0abc3164c3fbb60e6fec8d",
+      "last1000_q_loss": 1.542265204191208,
+      "terminal_mae": 0.8291094987897253,
+      "in_bag_mae": 0.4125883854352511,
+      "q_above_necessary_soft_bound_fraction": 0.0011230468517169356
+    },
+    "vmc": {
+      "steps": 1317000,
+      "updates": 1312001,
+      "task": 17,
+      "strict": 16,
+      "reward": -4.605202322096343,
+      "checkpoint_sha256": "b02923c5a0c97a8060327a0a825f94fdf3960cd10307899f8c6707eaa5025229",
+      "last1000_q_loss": 1.1684006166756153,
+      "terminal_mae": 0.6519202818160786,
+      "in_bag_mae": 0.3208498247288352,
+      "q_above_necessary_soft_bound_fraction": 0.0011230468517169356
+    }
+  },
+  "figure_visually_reviewed": true,
+  "decision": "One finite unchanged cycle32 from exact complete31 full state to finish the already registered30-32 stability window.31 I/A reward declined, V nearly unchanged; all three late q_losses exceed30, although finite without runaway. Do not claim healthy convergence; retain original2m capacity/history23 and all weights/optimizer/replay/RNG/history. No auxiliary promotion or threshold change.",
+  "new_cycles": 1,
+  "automatic33": false,
+  "check_only_required_before_launch": true
+}
