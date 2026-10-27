@@ -126,6 +126,20 @@ SHA256 `c0b1e4f18c7b5fdaa796229db9526166d367ed9dcfc62524d5f1edd31ee0c070`。
 
 ### 单条件打包入口
 
+2026-10-27 11:43 UTC：第七条件006全部6回合/660万子步审计和归档完成，累计42/72，
+原协调器179772已接续第八条件，归档188540等待下一完整条件；观察会话75999达到七包后正常结束。
+本组均完整55秒、Task/Strict失败、公共filter误差0、无机器安全违规；失败原件和经典actor/servo
+未独立重建的限制保留，不用低矩或高舒适比例代替任务成功。318文件原件前后及包内hash一致。
+729,155,476字节原始包已核验至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics006/PHYSICS_BUNDLE.tar.gz`，
+SHA256 `93cafd290bad5ad887cf026da76de789807cd0a3248c1098975b6bc200808478`，本地与远端临时/最终一致。
+收据`CLASSICAL_CONDITION006_ARCHIVE.json`、`CONDITION006_PHYSICS_AUDIT.json`逐字节复制验证；
+审计SHA `38ad1a8fc7c16442df9022b4eb490175f71834924093820dc6ac2b562239eb46`。
+原108+新42已原始共享；余30回合及最终180共同参考/比较/审计仍待。memory.max累计428，
+OOM/kill和swap0，原服务继续推进；这是内存上限回收记录，不据此重启。
+发布前核对并安全快进main至`31765d168aab8ba078602798bbfb641350e18344`，baseline仍
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，非RL源码和冻结协议未变。
+
 2026-10-27 11:05 UTC：第六条件005的6回合/660万子步审计和归档完成，累计36/72，
 原协调器进入第七条件；半程不是最终比较。该组六回合完整55秒、Task/Strict均失败、
 公共filter误差0，失败和经典actor/servo重建限制保留。318文件原件前后/包内hash一致，

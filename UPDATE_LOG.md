@@ -1,3 +1,10 @@
+## 2026-10-27 — 非RL传统补测42/72，第七条件审计归档完成
+
+- 原协调179772及归档188540持续推进，条件006完成后进入007；此前各轮为真实进程/物理时间的已核验等待，无重复实验或调参。重新查询fetch/read main `31765d168aab8ba078602798bbfb641350e18344`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并安全快进，保留并行RL记录，非RL源码及冻结协议未变。
+- 第七组六回合完整55秒/660万子步审计通过，Task/Strict均失败、公共filter误差0、无机器安全违规；保留全部失败与独立经典actor/servo重建限制。审计SHA `38ad1a8fc7c16442df9022b4eb490175f71834924093820dc6ac2b562239eb46`；318文件原件前后及包内hash一致。
+- 729,155,476字节包已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics006/PHYSICS_BUNDLE.tar.gz`，SHA `93cafd290bad5ad887cf026da76de789807cd0a3248c1098975b6bc200808478`，本地/远端临时/最终一致。专题证据收据`CLASSICAL_CONDITION006_ARCHIVE.json`、`CONDITION006_PHYSICS_AUDIT.json`逐字节复制验证；原108+新42已原始共享，服务器只归档/hash。
+- memory.max累计428、OOM/kill0、swap0，原服务正常；观察75999在第七包核验后正常结束，未停止实验。收工复读AGENTS并保留会议文件。剩余30回合及完整180最终比较、共同参考、审计和发布仍待，Goal active。
+
 ## 2026-10-27 — 参数46完整、正式47及Direct29冻结前瞻计划
 
 [最新交接](docs/RL_PARAMETER47_FROZEN29_20261027.md)。46 I/A/V1934930/1934750/1935750，Task/Strict18/17、11/10、17/16，reward−2.325234/−15.465871/−4.626438；30全55/noabort、旧回放/history、新reward0误差、health/保存算术/图通过。三路末1000loss高于首1000，未健康收敛。45→46保存配对：A long0300/0900丢成功、short0600恢复Task但越.2mm失Strict；V short0600 .169418→.215310mm丢Strict，原gate/MJB核验，非loss因果。
