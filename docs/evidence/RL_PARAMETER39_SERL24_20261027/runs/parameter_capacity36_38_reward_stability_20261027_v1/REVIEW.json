@@ -1,0 +1,984 @@
+{
+  "passed": true,
+  "time": 1793074746.437181,
+  "methods": {
+    "impedance": {
+      "cycles": [
+        {
+          "cycle": 36,
+          "reward_mean": -2.4103592315998212,
+          "task": 18,
+          "strict": 17,
+          "full_horizon": 30,
+          "aborts": [],
+          "checkpoint_sha256": "3022759fe24532486d73a3bb5097edb7c8c30c325c56e326abe8881a694052fc",
+          "q_loss_first1000": 2.819848109960556,
+          "q_loss_last1000": 2.5836270356178286,
+          "q_loss_maximum": 49.33549499511719,
+          "q_loss_mean": 2.666958733922785,
+          "alpha_last1000": 0.0017326957050245255,
+          "terminal_mae": 0.752927461166727,
+          "terminal_inbag_mae": 0.1926350952292356,
+          "q_mean": -19.514402956340927,
+          "td_mae": 0.2752572668130597
+        },
+        {
+          "cycle": 37,
+          "reward_mean": -2.358542363137271,
+          "task": 18,
+          "strict": 17,
+          "full_horizon": 30,
+          "aborts": [],
+          "checkpoint_sha256": "52d5fc29f83beee550895d9e57aa85c83386aa349d6e69aecf32aa3daa774aa5",
+          "q_loss_first1000": 2.5032403836250303,
+          "q_loss_last1000": 2.9978570291996003,
+          "q_loss_maximum": 27.16750717163086,
+          "q_loss_mean": 2.6052991759069037,
+          "alpha_last1000": 0.001893234452116303,
+          "terminal_mae": 0.9016733784612581,
+          "terminal_inbag_mae": 0.35037596235120977,
+          "q_mean": -20.704651135294988,
+          "td_mae": 0.2571181119376888
+        },
+        {
+          "cycle": 38,
+          "reward_mean": -2.337858148077293,
+          "task": 18,
+          "strict": 17,
+          "full_horizon": 30,
+          "aborts": [],
+          "checkpoint_sha256": "50bb762d6c1f03e3ae7f5df165e62213e5e79e5a67504078dd0a735790eb86f1",
+          "q_loss_first1000": 2.4910481849908828,
+          "q_loss_last1000": 2.351629151463509,
+          "q_loss_maximum": 34.112003326416016,
+          "q_loss_mean": 2.5793127054936957,
+          "alpha_last1000": 0.0016407706429017708,
+          "terminal_mae": 0.7380556591181284,
+          "terminal_inbag_mae": 0.18060680748023247,
+          "q_mean": -21.053459038097934,
+          "td_mae": 0.23216287070732733
+        }
+      ],
+      "near_zero_guard_triggered": false,
+      "absolute_range_of_cycle_means": 0.07250108352252971,
+      "adjacent_absolute_mean_changes": [
+        0.05181686846255218,
+        0.02068421505997753
+      ],
+      "adjacent_relative_mean_changes": [
+        0.021497570894509314,
+        0.008769914580827768
+      ],
+      "endpoint_relative_mean_change": 0.030078953614896944,
+      "descriptive_five_percent_check": true,
+      "paired36_to38_mean_delta": 0.07250108352252897,
+      "improved_conditions": 19,
+      "worsened_conditions": 11,
+      "slope": 0.036250541761264854,
+      "bootstrap_condition_sensitivity95_delta": [
+        -5.341457784756276,
+        5.495763303251072
+      ],
+      "bootstrap_condition_sensitivity95_slope": [
+        -2.670728892378138,
+        2.747881651625536
+      ],
+      "paired_conditions": [
+        {
+          "condition": "active_long_train_0000",
+          "rewards": [
+            17.668576724377782,
+            18.36672001488175,
+            18.11544430308885
+          ]
+        },
+        {
+          "condition": "active_long_train_0100",
+          "rewards": [
+            20.103336679354182,
+            20.24433377619176,
+            19.76310960232728
+          ]
+        },
+        {
+          "condition": "active_long_train_0200",
+          "rewards": [
+            20.806466257277613,
+            20.79284813925529,
+            20.811723746491793
+          ]
+        },
+        {
+          "condition": "active_long_train_0300",
+          "rewards": [
+            19.68718271489551,
+            19.657473523598842,
+            19.60345922691658
+          ]
+        },
+        {
+          "condition": "active_long_train_0337",
+          "rewards": [
+            -31.49477323747204,
+            -31.250912736437364,
+            -31.29569939224274
+          ]
+        },
+        {
+          "condition": "active_long_train_0400",
+          "rewards": [
+            20.39134277894887,
+            20.335833480841373,
+            20.50722439454972
+          ]
+        },
+        {
+          "condition": "active_long_train_0500",
+          "rewards": [
+            20.459960904656178,
+            20.49296085080738,
+            20.571761470613545
+          ]
+        },
+        {
+          "condition": "active_long_train_0600",
+          "rewards": [
+            19.811261177650856,
+            19.947392018080755,
+            19.804761789401976
+          ]
+        },
+        {
+          "condition": "active_long_train_0671",
+          "rewards": [
+            -31.948542570056418,
+            -31.948523219096025,
+            -32.02846575700209
+          ]
+        },
+        {
+          "condition": "active_long_train_0900",
+          "rewards": [
+            19.541472307397033,
+            19.954711696725568,
+            20.23872781365118
+          ]
+        },
+        {
+          "condition": "active_short_train_0000",
+          "rewards": [
+            19.839147339653724,
+            19.821859100169995,
+            19.941733467264484
+          ]
+        },
+        {
+          "condition": "active_short_train_0100",
+          "rewards": [
+            -34.58613157047428,
+            19.49141903583519,
+            19.807496747864526
+          ]
+        },
+        {
+          "condition": "active_short_train_0200",
+          "rewards": [
+            20.149667990903737,
+            19.963433107703864,
+            19.954074794807315
+          ]
+        },
+        {
+          "condition": "active_short_train_0300",
+          "rewards": [
+            19.867569162476006,
+            19.456601370143638,
+            19.49477745956399
+          ]
+        },
+        {
+          "condition": "active_short_train_0337",
+          "rewards": [
+            20.485213822403466,
+            20.48455228226845,
+            20.48484602672041
+          ]
+        },
+        {
+          "condition": "active_short_train_0400",
+          "rewards": [
+            20.06647899380905,
+            20.270965449617186,
+            19.988881376838528
+          ]
+        },
+        {
+          "condition": "active_short_train_0500",
+          "rewards": [
+            19.459739053374705,
+            19.606049097809244,
+            19.8499539974412
+          ]
+        },
+        {
+          "condition": "active_short_train_0600",
+          "rewards": [
+            19.41028410097735,
+            -34.827788839370065,
+            -34.785421942917466
+          ]
+        },
+        {
+          "condition": "active_short_train_0671",
+          "rewards": [
+            19.750749413307467,
+            19.78490252500699,
+            20.01637250790271
+          ]
+        },
+        {
+          "condition": "active_short_train_0900",
+          "rewards": [
+            20.332797589292213,
+            20.637923114020303,
+            20.335218425762484
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0000",
+          "rewards": [
+            -31.025879410015893,
+            -31.00916897421297,
+            -31.049767623503847
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0100",
+          "rewards": [
+            -31.431980120563495,
+            -31.361401512731458,
+            -31.253181739836027
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0200",
+          "rewards": [
+            -31.051136493466156,
+            -31.012797473127588,
+            -31.065274869126842
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0300",
+          "rewards": [
+            -31.032819088220236,
+            -30.996381941438777,
+            -31.011138856875384
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0337",
+          "rewards": [
+            -31.44011361275798,
+            -31.55285659875639,
+            -31.330413477496624
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0400",
+          "rewards": [
+            -31.395252643277328,
+            -31.373137614475773,
+            -31.17348162239619
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0500",
+          "rewards": [
+            -31.05456058627847,
+            -31.031782860273562,
+            -31.0424910039723
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0600",
+          "rewards": [
+            -31.135779360884914,
+            -31.044315597838867,
+            -31.027781390698646
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0671",
+          "rewards": [
+            -31.48710575600618,
+            -31.526974173226957,
+            -31.309317568830654
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0900",
+          "rewards": [
+            -31.057949509277027,
+            -31.13020793608991,
+            -31.052876348626565
+          ]
+        }
+      ]
+    },
+    "admittance": {
+      "cycles": [
+        {
+          "cycle": 36,
+          "reward_mean": -8.537313885811022,
+          "task": 15,
+          "strict": 14,
+          "full_horizon": 30,
+          "aborts": [],
+          "checkpoint_sha256": "5123cdf2e9720fec566105c781e286406d87f8359374ccdf1fdb5836a84300f8",
+          "q_loss_first1000": 1.515811373114586,
+          "q_loss_last1000": 2.3383126891851425,
+          "q_loss_maximum": 43.305702209472656,
+          "q_loss_mean": 1.4040780477971742,
+          "alpha_last1000": 0.00045327951820218007,
+          "terminal_mae": 0.7560861169428065,
+          "terminal_inbag_mae": 0.3625364608044247,
+          "q_mean": 10.451430310221621,
+          "td_mae": 0.2673538072427618
+        },
+        {
+          "cycle": 37,
+          "reward_mean": -13.487784161871156,
+          "task": 13,
+          "strict": 11,
+          "full_horizon": 30,
+          "aborts": [],
+          "checkpoint_sha256": "4fb05a82735694ab3f181345a92d4bb1dab08c7271ca0e49306dc7057f585726",
+          "q_loss_first1000": 2.2581318225860594,
+          "q_loss_last1000": 2.325373754620552,
+          "q_loss_maximum": 39.20279312133789,
+          "q_loss_mean": 1.8816031001307747,
+          "alpha_last1000": 0.0005060835726326331,
+          "terminal_mae": 0.9326200132016782,
+          "terminal_inbag_mae": 0.5163312332814278,
+          "q_mean": 11.293208703919664,
+          "td_mae": 0.2670501523254643
+        },
+        {
+          "cycle": 38,
+          "reward_mean": -13.723332248823803,
+          "task": 12,
+          "strict": 11,
+          "full_horizon": 30,
+          "aborts": [],
+          "checkpoint_sha256": "b70aeaa2451b6c979b36ba555fff027e7394540d8daa54fd6122e3455d32cbf0",
+          "q_loss_first1000": 2.9265917406082154,
+          "q_loss_last1000": 2.070689623594284,
+          "q_loss_maximum": 33.634403228759766,
+          "q_loss_mean": 1.8155347057718219,
+          "alpha_last1000": 0.0005545875701936893,
+          "terminal_mae": 0.7901365775013298,
+          "terminal_inbag_mae": 0.3331719483862675,
+          "q_mean": 11.588954108968029,
+          "td_mae": 0.2370319371889309
+        }
+      ],
+      "near_zero_guard_triggered": false,
+      "absolute_range_of_cycle_means": 5.18601836301278,
+      "adjacent_absolute_mean_changes": [
+        4.950470276060132,
+        0.2355480869526474
+      ],
+      "adjacent_relative_mean_changes": [
+        0.5798627463244372,
+        0.017463809038294243
+      ],
+      "endpoint_relative_mean_change": 0.6074531676329623,
+      "descriptive_five_percent_check": false,
+      "paired36_to38_mean_delta": -5.1860183630127805,
+      "improved_conditions": 17,
+      "worsened_conditions": 13,
+      "slope": -2.59300918150639,
+      "bootstrap_condition_sensitivity95_delta": [
+        -10.490177397978577,
+        -0.1127741760722785
+      ],
+      "bootstrap_condition_sensitivity95_slope": [
+        -5.245088698989289,
+        -0.05638708803613925
+      ],
+      "paired_conditions": [
+        {
+          "condition": "active_long_train_0000",
+          "rewards": [
+            19.607888669847963,
+            19.85379287603577,
+            19.67022665463783
+          ]
+        },
+        {
+          "condition": "active_long_train_0100",
+          "rewards": [
+            -31.930005259806435,
+            -31.94698120619502,
+            -31.738874961254215
+          ]
+        },
+        {
+          "condition": "active_long_train_0200",
+          "rewards": [
+            17.24579932197018,
+            -33.43437029990308,
+            -33.36547834431069
+          ]
+        },
+        {
+          "condition": "active_long_train_0300",
+          "rewards": [
+            18.066312903477527,
+            18.105221698522318,
+            17.20740071805556
+          ]
+        },
+        {
+          "condition": "active_long_train_0337",
+          "rewards": [
+            -32.425960127414285,
+            -31.83527985162574,
+            -32.7592423492473
+          ]
+        },
+        {
+          "condition": "active_long_train_0400",
+          "rewards": [
+            18.97672816188701,
+            19.01469075562298,
+            18.115403053339442
+          ]
+        },
+        {
+          "condition": "active_long_train_0500",
+          "rewards": [
+            -31.924107256165232,
+            -31.396320915603294,
+            -31.299332902930484
+          ]
+        },
+        {
+          "condition": "active_long_train_0600",
+          "rewards": [
+            18.952118362868397,
+            18.6049124511069,
+            18.647967561613363
+          ]
+        },
+        {
+          "condition": "active_long_train_0671",
+          "rewards": [
+            -32.16888338989557,
+            -32.08248502598773,
+            -32.03174601404292
+          ]
+        },
+        {
+          "condition": "active_long_train_0900",
+          "rewards": [
+            -33.04427335465944,
+            -31.784320301167206,
+            -32.79410801045558
+          ]
+        },
+        {
+          "condition": "active_short_train_0000",
+          "rewards": [
+            17.620443408014346,
+            17.174353003370374,
+            -34.972193293040185
+          ]
+        },
+        {
+          "condition": "active_short_train_0100",
+          "rewards": [
+            17.091141127421874,
+            -34.67311192696196,
+            18.319491565067608
+          ]
+        },
+        {
+          "condition": "active_short_train_0200",
+          "rewards": [
+            16.374590409043115,
+            17.815244631876077,
+            17.689143048637813
+          ]
+        },
+        {
+          "condition": "active_short_train_0300",
+          "rewards": [
+            18.700557812755232,
+            18.782027432366288,
+            16.825921510658045
+          ]
+        },
+        {
+          "condition": "active_short_train_0337",
+          "rewards": [
+            19.819290018750756,
+            19.8708062851232,
+            19.603876824996796
+          ]
+        },
+        {
+          "condition": "active_short_train_0400",
+          "rewards": [
+            18.876221584927737,
+            19.076587490981947,
+            18.61807530420446
+          ]
+        },
+        {
+          "condition": "active_short_train_0500",
+          "rewards": [
+            18.755238098939014,
+            18.989478986703634,
+            18.77420253190134
+          ]
+        },
+        {
+          "condition": "active_short_train_0600",
+          "rewards": [
+            -34.72765618751251,
+            -34.73696685757723,
+            -34.873166775788334
+          ]
+        },
+        {
+          "condition": "active_short_train_0671",
+          "rewards": [
+            19.637777912786483,
+            19.666786560169434,
+            18.725416422767644
+          ]
+        },
+        {
+          "condition": "active_short_train_0900",
+          "rewards": [
+            17.379693410445228,
+            -33.25383373837691,
+            -33.33204440173371
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0000",
+          "rewards": [
+            -31.693331281283047,
+            -31.691213410177046,
+            -31.690644175622907
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0100",
+          "rewards": [
+            -31.684540333275006,
+            -31.65636136016938,
+            -31.662761132423377
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0200",
+          "rewards": [
+            -31.74614964706951,
+            -31.64202104738414,
+            -31.673649740300487
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0300",
+          "rewards": [
+            -31.721451625225846,
+            -31.617037751609818,
+            -31.681775352137098
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0337",
+          "rewards": [
+            -31.60877932250176,
+            -31.629276556229847,
+            -31.59803029275722
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0400",
+          "rewards": [
+            -31.672988276308566,
+            -31.614941509032125,
+            -31.646504007370858
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0500",
+          "rewards": [
+            -31.714646892956665,
+            -31.649261084888288,
+            -31.68539388310883
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0600",
+          "rewards": [
+            -31.70230230410299,
+            -31.6669353218913,
+            -31.792366697766056
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0671",
+          "rewards": [
+            -31.69020497607343,
+            -31.62710015531485,
+            -31.645992763623475
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0900",
+          "rewards": [
+            -31.76793754321522,
+            -31.649608707918635,
+            -31.653787562680247
+          ]
+        }
+      ]
+    },
+    "vmc": {
+      "cycles": [
+        {
+          "cycle": 36,
+          "reward_mean": -2.8414037085264945,
+          "task": 17,
+          "strict": 17,
+          "full_horizon": 30,
+          "aborts": [],
+          "checkpoint_sha256": "46236be70d600abc4a01020f9e2f6d51146c510b4bb7c901cc160a46d796e296",
+          "q_loss_first1000": 0.6178725883960724,
+          "q_loss_last1000": 0.6704562093317509,
+          "q_loss_maximum": 27.805967330932617,
+          "q_loss_mean": 0.6723599594809793,
+          "alpha_last1000": 0.00042732052452629433,
+          "terminal_mae": 0.5350215854852096,
+          "terminal_inbag_mae": 0.2337939287933068,
+          "q_mean": 15.809782827919117,
+          "td_mae": 0.1761582123577682
+        },
+        {
+          "cycle": 37,
+          "reward_mean": -2.8522357838959755,
+          "task": 17,
+          "strict": 17,
+          "full_horizon": 30,
+          "aborts": [],
+          "checkpoint_sha256": "3a6afc2b6b1f47dedc29fe739480e6e85287a5b80b82cef31ac6a7700d39e9bc",
+          "q_loss_first1000": 0.7160630106031894,
+          "q_loss_last1000": 0.8056862471997738,
+          "q_loss_maximum": 8.434551239013672,
+          "q_loss_mean": 0.7246751579725381,
+          "alpha_last1000": 0.00040002321373322047,
+          "terminal_mae": 0.5087311998666699,
+          "terminal_inbag_mae": 0.20481646866836078,
+          "q_mean": 15.09126531185466,
+          "td_mae": 0.1775615108812417
+        },
+        {
+          "cycle": 38,
+          "reward_mean": -4.576257441238541,
+          "task": 17,
+          "strict": 16,
+          "full_horizon": 30,
+          "aborts": [],
+          "checkpoint_sha256": "afc59fdff00a5e81de110f65237865ba8f55c3ec394a54f5a36c6543ff919384",
+          "q_loss_first1000": 0.7606372169852257,
+          "q_loss_last1000": 1.6130833943784237,
+          "q_loss_maximum": 36.80869674682617,
+          "q_loss_mean": 0.7592186545610428,
+          "alpha_last1000": 0.0005255239544785581,
+          "terminal_mae": 0.5875003124840071,
+          "terminal_inbag_mae": 0.3017423821720883,
+          "q_mean": 14.197598719020608,
+          "td_mae": 0.15429284923302475
+        }
+      ],
+      "near_zero_guard_triggered": false,
+      "absolute_range_of_cycle_means": 1.7348537327120468,
+      "adjacent_absolute_mean_changes": [
+        0.010832075369481498,
+        1.7240216573425653
+      ],
+      "adjacent_relative_mean_changes": [
+        0.003812226800780392,
+        0.6044457008346132
+      ],
+      "endpoint_relative_mean_change": 0.6105622117357318,
+      "descriptive_five_percent_check": false,
+      "paired36_to38_mean_delta": -1.7348537327120463,
+      "improved_conditions": 12,
+      "worsened_conditions": 18,
+      "slope": -0.8674268663560234,
+      "bootstrap_condition_sensitivity95_delta": [
+        -5.24526493529481,
+        0.06986005623526194
+      ],
+      "bootstrap_condition_sensitivity95_slope": [
+        -2.622632467647405,
+        0.03493002811763097
+      ],
+      "paired_conditions": [
+        {
+          "condition": "active_long_train_0000",
+          "rewards": [
+            20.07186252681232,
+            20.071562519793776,
+            20.024965680418738
+          ]
+        },
+        {
+          "condition": "active_long_train_0100",
+          "rewards": [
+            -31.671240745226616,
+            -31.615260809227173,
+            -31.62077637517436
+          ]
+        },
+        {
+          "condition": "active_long_train_0200",
+          "rewards": [
+            18.38051062825427,
+            18.42216428682009,
+            18.358390452741578
+          ]
+        },
+        {
+          "condition": "active_long_train_0300",
+          "rewards": [
+            18.50330671000522,
+            18.377262219475288,
+            18.47334138795756
+          ]
+        },
+        {
+          "condition": "active_long_train_0337",
+          "rewards": [
+            -32.450361054648944,
+            -32.55010495569485,
+            -32.546628142645666
+          ]
+        },
+        {
+          "condition": "active_long_train_0400",
+          "rewards": [
+            19.219269815807834,
+            19.45267012232797,
+            19.41834609095636
+          ]
+        },
+        {
+          "condition": "active_long_train_0500",
+          "rewards": [
+            18.991219818083756,
+            18.97992369273641,
+            18.98195105143489
+          ]
+        },
+        {
+          "condition": "active_long_train_0600",
+          "rewards": [
+            19.058218989235428,
+            19.12772528388131,
+            19.122015208449973
+          ]
+        },
+        {
+          "condition": "active_long_train_0671",
+          "rewards": [
+            -32.076761853366854,
+            -32.176875087309554,
+            -32.05307191222277
+          ]
+        },
+        {
+          "condition": "active_long_train_0900",
+          "rewards": [
+            18.316458331206984,
+            18.425992118791616,
+            18.50105856741981
+          ]
+        },
+        {
+          "condition": "active_short_train_0000",
+          "rewards": [
+            18.490343588052866,
+            18.408292766890085,
+            18.864308340801557
+          ]
+        },
+        {
+          "condition": "active_short_train_0100",
+          "rewards": [
+            18.743709003241502,
+            18.7583016967569,
+            18.722258055457203
+          ]
+        },
+        {
+          "condition": "active_short_train_0200",
+          "rewards": [
+            18.75694047274895,
+            18.77520449461094,
+            18.54722424079406
+          ]
+        },
+        {
+          "condition": "active_short_train_0300",
+          "rewards": [
+            19.178067914828155,
+            19.33636346685575,
+            19.52118528616425
+          ]
+        },
+        {
+          "condition": "active_short_train_0337",
+          "rewards": [
+            20.21253273564274,
+            19.978683765744844,
+            20.087028618628384
+          ]
+        },
+        {
+          "condition": "active_short_train_0400",
+          "rewards": [
+            19.39104413384059,
+            19.2547709776074,
+            18.974209552803842
+          ]
+        },
+        {
+          "condition": "active_short_train_0500",
+          "rewards": [
+            19.09068468715726,
+            18.97518294289657,
+            18.64095873672094
+          ]
+        },
+        {
+          "condition": "active_short_train_0600",
+          "rewards": [
+            17.73455894561566,
+            17.74397993379575,
+            -34.634667232699
+          ]
+        },
+        {
+          "condition": "active_short_train_0671",
+          "rewards": [
+            18.645332933451662,
+            18.816749406106453,
+            19.198329847528946
+          ]
+        },
+        {
+          "condition": "active_short_train_0900",
+          "rewards": [
+            18.634869346607093,
+            18.409954181552752,
+            18.56780899367397
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0000",
+          "rewards": [
+            -30.96076888064826,
+            -30.958676352671073,
+            -30.966988733578795
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0100",
+          "rewards": [
+            -31.095114674148853,
+            -31.118417344388977,
+            -31.104660267665494
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0200",
+          "rewards": [
+            -31.059085021441796,
+            -31.045419183854115,
+            -31.062656987742116
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0300",
+          "rewards": [
+            -30.988230557620803,
+            -31.00943449245328,
+            -30.997185444604078
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0337",
+          "rewards": [
+            -31.11699573663395,
+            -31.11380223156435,
+            -31.097933287829118
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0400",
+          "rewards": [
+            -31.116570254314805,
+            -31.06489092586446,
+            -31.090635666541168
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0500",
+          "rewards": [
+            -31.021759704960665,
+            -31.070478824673398,
+            -31.030381379259268
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0600",
+          "rewards": [
+            -30.96537070649014,
+            -30.97921037878698,
+            -30.958245248647717
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0671",
+          "rewards": [
+            -31.121282574116766,
+            -31.140854190355967,
+            -31.124517979430006
+          ]
+        },
+        {
+          "condition": "passive_corner_train_0900",
+          "rewards": [
+            -31.01750007276868,
+            -31.03843261667899,
+            -31.002754691068734
+          ]
+        }
+      ]
+    }
+  },
+  "plot_sha256": "06efb1a24b6b0b5914353614a4d4445eb682d3069915bb1d7c90fab8caeaff52",
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "automatic_stop": false,
+  "convergence_claim": false,
+  "limitation": "Fixed36-38 window on30 registered training conditions, chosen while36 was ongoing with no completed conditions and37-38 not yet launched. All three complete outcomes are future at registration. All use2m retained replay beyond the old1m capacity, unlike the prior1m ring-buffer counterfactual. Online policies change; paired bootstrap intervals measure condition-composition sensitivity, not independent training seeds or frozen-policy performance. Finite losses do not establish optimizer health. Near-zero reward means disable percentage interpretation. The5% check alone does not declare convergence or unlock test."
+}

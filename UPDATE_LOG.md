@@ -1,3 +1,10 @@
+## 2026-10-27 — 完整38/23审查、36–38稳定性与正式39/容量24
+
+[最新交接](docs/RL_PARAMETER39_SERL24_20261027.md)。38三路30全55/noabort、全旧replay/新41250reward0误差与health/图通过；I/A/V Task/Strict18/17、12/11、17/16，reward−2.337858/−13.723332/−4.576257，末loss2.351629/2.070690/1.613083。原36–38审计完成，I通过原5%（首尾3.0079%），A/V未通过（60.7453%/61.0562%）；完整保存算术/hash/图核验、不重跑bootstrap。V末段loss反弹，整体未健康稳定。37→38 I无切换；A short0000失败与short0100 Strict恢复互抵，V short0600 Strict失败，保存值不作loss因果归因。
+正式39 I3314522/A3314523/V3314524、archive3314528/review3314529；actual startup首1000/1000/2000通过。40仅准备3416298/调度3416302、7200秒无自动训练；初版静态65536字面量检查错误已保留更正收据，实际父登记继承batch正确。新固定39–41 3482651在39零完成/40–41未启时登记，原5%/近零1/5000seed2026102743/7200秒，只读无自动启停。
+Direct23完整977040/7776328、30全程/noabort、Task0、reward−30.904079/末loss.012778872，旧935790/raw/derived保留与新目标精确，health/图通过。准确完整23实际24恢复全state/next65536/扩展reload精确，2m入口正式learner3403962、边界3403965/archive3403966/review3403967；修正后的setup已实际执行。actual startup1000至978040通过，旧977040完整保留，新reward0误差/2m marker正确；1,001,000边界尚待。25仅准备3448092/调度3448355、7200秒，不自动训练，继承历史entry23。
+新24/39+冻结32原GPU observer3448359已完成，60样本/65.993721秒、均值61.6167/62.7167/67.0667/64.6833%，身份/保存算术通过。另记录D/I/A/V原进程退出至新启动间隔约175–176/219–220/288–289/274–275秒，不冒充全部GPU空闲或每瞬时达标。原冻结32和Direct24–26原1470790继续；下一先查原边界/完整与VMC末loss，Goal active，无子agent。
+
 ## 2026-10-27 — Direct24监控入口更正、25继承2m准备
 
 [最新补充](docs/RL_SERL25_INHERITED_PREPARATION_20261027.md)。未执行24 launcher误调旧batch23 setup已改为capacity24；原文件/原登记与更正收据保留，更新launcher hash，真实调用路径/24输出/五模板hash与AST核验通过。validated driver/helper及当前训练不变，不重复辅助验证或原waiter。
@@ -9347,3 +9354,5 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 - 本轮复核 `AGENTS.md`、`REGISTRATION.json`、`MODEL_LOCK.json` 与 `PARTIAL_ROWS.json`；实验仍严格采用新增30条数据（24 train/6 validation），ESN固定历史128储备池＋ridge，RNN/MLP从头训练，三方法各3个seed，锁定模型不变。远端GitHub查询本轮受网络限制，工作区保留本地 `main` HEAD `a3e9e0440506c60eea6c7bcfab9895846706e420`；未改冻结源码、数据划分、模型锁或物理协议。
 - 原协调器 `sii-nonrl-new30-fair-20261026-v2.service`（PID 86607）仍为 `active/running`，当前单worker PID 157623 正在执行条件010的 ESN seed1；`MemoryCurrent=2,504,249,344`、`MemoryMax=3,221,225,472`、swap上限0，CPU真实推进。第九条件完成最后两模型后，累计 `PARTIAL_ROWS.json` 已从89推进到90/108；不重复启动、不把中途回合计入结果。
 - 第九条件剩余模型已在完整回合边界完成；条件010/011仍待。全108回合、共同 `T_ref`/SPT、最终独立审计和最终图表仍未完成，Goal保持active。所有失败与未完成收据继续保留。
+
+收尾fetch/read远端main新增d279535d07e862ea656955926eea0d109ae4076e，只更新另一主机非RL90/108进度，不是本机RL或最终指定ESN比较完成。已通过42f4a4d合并，UPDATE_LOG尾部冲突保留完整本地日志并逐字追加远端六行；冻结训练源码未改。baseline仍f6e8f8c。

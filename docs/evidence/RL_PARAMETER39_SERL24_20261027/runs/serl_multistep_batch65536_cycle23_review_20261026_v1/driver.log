@@ -1,0 +1,90 @@
+direct {"multistep_replay": {"passed": true, "retained_derived_rows": 935790, "new_mature_rows": 41250, "new_pending_rows": 0, "all_new_derived_targets_exact": true, "uniform_sampling_domain": "mature rows only; pending excluded"}, "steps": 977040, "updates": 7776328, "checkpoint_sha256": "837d596275bf7a0e791aff9e40ecb5ba3765cbb7eadf90cea4eca4d389b87666", "new_transitions": 41250, "retained_replay_rows": 935790, "retained_replay_all_fields_exact": true, "conditions": 30, "task": 0, "strict": 0, "reward_mean": -30.904079450782167, "full_horizon_count": 30, "aborts": [], "max_reward_reconstruction_error": 0.0, "reward_audit_scope": "Reconstructed every new reward from physical interval journal with frozen reward implementation; not independent raw-substep physics reconstruction", "source_parent_sha256": "a80f2acd24519be4c99e8002d8cd2707e0eb525d984e76a46874668d2c97d4cd", "stage_resumed_parent_sha256": "a80f2acd24519be4c99e8002d8cd2707e0eb525d984e76a46874668d2c97d4cd", "optimizer_and_network_finite": true, "convergence_claim": false}
+/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/serl_env/lib/python3.11/site-packages/flax/core/lift.py:310: RuntimeWarning: kwargs are not supported in vmap, so "train" is(are) ignored
+  warnings.warn(msg.format(name, ', '.join(kwargs.keys())), RuntimeWarning)
+/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/serl_env/lib/python3.11/site-packages/flax/core/lift.py:310: RuntimeWarning: kwargs are not supported in vmap, so "train" is(are) ignored
+  warnings.warn(msg.format(name, ', '.join(kwargs.keys())), RuntimeWarning)
+/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/serl_env/lib/python3.11/site-packages/flax/core/lift.py:310: RuntimeWarning: kwargs are not supported in vmap, so "train" is(are) ignored
+  warnings.warn(msg.format(name, ', '.join(kwargs.keys())), RuntimeWarning)
+/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/serl_env/lib/python3.11/site-packages/flax/core/lift.py:310: RuntimeWarning: kwargs are not supported in vmap, so "train" is(are) ignored
+  warnings.warn(msg.format(name, ', '.join(kwargs.keys())), RuntimeWarning)
+{
+  "captured_unix": 1793074810.5333707,
+  "checkpoint_sha256": "837d596275bf7a0e791aff9e40ecb5ba3765cbb7eadf90cea4eca4d389b87666",
+  "optimizer_updates": 0,
+  "new_physics": 0,
+  "terminal_count": 720,
+  "terminal_reward": {
+    "count": 720,
+    "mean": -25.667951583862305,
+    "minimum": -39.50326919555664,
+    "maximum": -25.148805618286133,
+    "p50": -25.3624267578125,
+    "p95": -25.314367294311523
+  },
+  "terminal_q": {
+    "count": 7200,
+    "mean": -25.69196319580078,
+    "minimum": -40.31891632080078,
+    "maximum": -25.059064865112305,
+    "p50": -25.393844604492188,
+    "p95": -25.299423217773438
+  },
+  "terminal_q_absolute_error": {
+    "count": 7200,
+    "mean": 0.04491591453552246,
+    "minimum": 1.9073486328125e-05,
+    "maximum": 0.83050537109375,
+    "p50": 0.035393714904785156,
+    "p95": 0.11430815607309341
+  },
+  "sampled_q": {
+    "count": 40960,
+    "mean": -20.537883758544922,
+    "minimum": -28.77943992614746,
+    "maximum": -16.31079864501953,
+    "p50": -20.22674560546875,
+    "p95": -17.001100540161133
+  },
+  "sampled_td_absolute_error": {
+    "count": 40960,
+    "mean": 0.06602929532527924,
+    "minimum": 3.814697265625e-06,
+    "maximum": 3.3009443283081055,
+    "p50": 0.042838096618652344,
+    "p95": 0.1526937633752823
+  },
+  "diagnostic_target_pair": [
+    7,
+    3
+  ],
+  "entropy": {
+    "count": 4096,
+    "mean": -3.55574369430542,
+    "minimum": -46.5155143737793,
+    "maximum": 9.706218719482422,
+    "p50": -0.8667902946472168,
+    "p95": 3.7015883922576904
+  },
+  "temperature": 0.000422323850216344,
+  "network_optimizer_rng_unchanged": true,
+  "limitation": "Fixed diagnostic pair; sampled_td is one-step and sampled_multistep_td is the registered behavior-return target. Off-policy bias remains. Terminal state has no actor clock; terminal error is diagnostic, not required zero fitting error.",
+  "convergence_claim": false,
+  "sampled_multistep_td_absolute_error": {
+    "count": 40960,
+    "mean": 0.06050931662321091,
+    "minimum": 3.814697265625e-06,
+    "maximum": 6.653102874755859,
+    "p50": 0.04498291015625,
+    "p95": 0.14010681211948395
+  },
+  "multistep_marker": {
+    "version": 1,
+    "horizon": 32,
+    "gamma": 0.9995,
+    "rewards": "discounted_behavior_rewards",
+    "bootstrap": "gamma_power_k_times_terminal_mask",
+    "sampling": "uniform_mature_rows",
+    "original_replay_retained": true,
+    "importance_correction": false
+  }
+}

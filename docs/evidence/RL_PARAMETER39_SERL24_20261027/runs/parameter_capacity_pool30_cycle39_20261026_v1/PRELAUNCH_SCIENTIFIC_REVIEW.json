@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "time": 1793074813.2761266,
+  "parent_cycle": 38,
+  "next_cycle": 39,
+  "parent_checkpoints": {
+    "impedance": "50bb762d6c1f03e3ae7f5df165e62213e5e79e5a67504078dd0a735790eb86f1",
+    "admittance": "b70aeaa2451b6c979b36ba555fff027e7394540d8daa54fd6122e3455d32cbf0",
+    "vmc": "afc59fdff00a5e81de110f65237865ba8f55c3ec394a54f5a36c6543ff919384"
+  },
+  "hashes": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle38_review_20261026_v1/REVIEW.json": "0803c2b946a47fb9b59edf0ff5fa6330dd1b7336951d7a113d48f6cc0d6ef4a8",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle38_review_20261026_v1/FINISHED.json": "b2f809cda44068396edb2a73b4e3e47cbc645e35ca84b68527b72a74582d0dc7",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle38_review_20261026_v1/health/DIAGNOSIS.json": "c421009f89a899dc831cdfc2c17c96d5e6cc795d289e3765d75b211720d3eb2a",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle38_review_20261026_v1/health/training_diagnostics.png": "1c2c9e65119c4e179be7bf1d4fe7b5a61deae17874feca4d2f2b6eb8bf25e99c",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle38_review_20261026_v1/SAVED_RESULTS_REVIEW.json": "704ec5b09eeaf7865709617db56158f16fae5d934d7b7f97cd18e55dfda3a4b9",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity36_38_reward_stability_20261027_v1/REVIEW.json": "5176365b75b01dee9977375c877ccab7ece99f96a183c80fd0137badec9f7217",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity36_38_reward_stability_20261027_v1/reward_stability.png": "06efb1a24b6b0b5914353614a4d4445eb682d3069915bb1d7c90fab8caeaff52",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity36_38_reward_stability_20261027_v1/SAVED_REVIEW.json": "e31f59d996e015548c3e68bda3f80dc9ac419a8520ebd551db763020e23b628d",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle39_20261026_v1/CHECK_ONLY_COMPLETE.json": "dede8f5289a0ad76cf6705669e0846e2d88241d4d6d47b00619481917c6f07e0"
+  },
+  "loss": {
+    "impedance": {
+      "count": 41250,
+      "first1000": 2.4910481849908828,
+      "last1000": 2.351629151463509,
+      "mean": 2.5793127054936957,
+      "maximum": 34.112003326416016
+    },
+    "admittance": {
+      "count": 41250,
+      "first1000": 2.9265917406082154,
+      "last1000": 2.070689623594284,
+      "mean": 1.8155347057718219,
+      "maximum": 33.634403228759766
+    },
+    "vmc": {
+      "count": 41250,
+      "first1000": 0.7606372169852257,
+      "last1000": 1.6130833943784237,
+      "mean": 0.7592186545610428,
+      "maximum": 36.80869674682617
+    }
+  },
+  "figure_reviewed": true,
+  "figure_findings": "Impedance fluctuates with modestly declining whole-cycle mean and improved terminal calibration; admittance declines then rises late; VMC pronounced late loss/temperature increase and lower entropy. Positive finite temperatures, unchanged diagnostic network state; no overall healthy convergence.",
+  "descriptive_five_percent_checks": {
+    "impedance": true,
+    "admittance": false,
+    "vmc": false
+  },
+  "rationale": "Full38 original30/noabort and exact retained replay/new rewards passed. Preserve original36-38 result: impedance passes5percent, admittance and VMC fail. VMC last1000 loss1.613 with terminal inbag error rising; reward switch short0600 Strict true-to-false is observed, not established cause of loss. Continue latest complete state one finite unchanged39 to assess persistence while frozen32 original matrix completes. No threshold invention, reset, auxiliary weights, or declared convergence.",
+  "learner_settings_changed": false,
+  "automatic_next_training": false,
+  "convergence_claim": false
+}

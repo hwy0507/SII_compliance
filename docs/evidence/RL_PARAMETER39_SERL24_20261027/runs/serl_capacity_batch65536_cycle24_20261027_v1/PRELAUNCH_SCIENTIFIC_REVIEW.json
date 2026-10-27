@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "time": 1793074933.463091,
+  "parent_cycle": 23,
+  "target_cycle": 24,
+  "parent_sha256": "837d596275bf7a0e791aff9e40ecb5ba3765cbb7eadf90cea4eca4d389b87666",
+  "hashes": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle23_review_20261026_v1/REVIEW.json": "c4d4dac3e41203052df5361e3c357cf403cffc7d9f18bc6eaa34bf34308ed9f7",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle23_review_20261026_v1/FINISHED.json": "b7262fbf67e95094748aaf52464569bcc93bf3952524619b3b94cdf1f4762cd1",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle23_review_20261026_v1/DIAGNOSIS.json": "b517362147b92bb684aaeea25e61fb06241b7f43b2fdc8ad21be12e51012515c",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle23_review_20261026_v1/training_diagnostics.png": "17f66e3663b610bc138f223f46b209bf0667da019637c3b6d9972eea24e96de5",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle23_review_20261026_v1/SAVED_RESULTS_REVIEW.json": "16edf2512deebd29e6a3e33e627a5b183511f441244fc11c2772514e5b21d17f",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_capacity_batch65536_cycle24_20261027_v1/CHECK_ONLY_COMPLETE.json": "fa2ea2f4e928b877a63a88f92e139322459283513db6beae4d4ff746cef1e673",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_capacity_batch65536_cycle24_20261027_v1/REGISTRATION.json": "91fdbc2ee2036d4c4a1ab8aba6a30814706d16ccf6689e6828ade90f20bb95c0",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl24_capacity_preparation_registration_20261027_v1/MONITOR_PATH_CORRECTION.json": "76568e06489676c12e4ab56d1eca8b30226e049fc1256e4c41ba2943aa3a08ee"
+  },
+  "loss_summary": {
+    "count": 41250,
+    "first1000": 0.01369248476345092,
+    "last1000": 0.012778872423805297,
+    "mean": 0.013286327065730637,
+    "maximum": 0.02602640725672245
+  },
+  "figure_reviewed": true,
+  "figure_findings": "Critic loss decreases across23, Q remains within narrow smooth drift, entropy near original target and temperature positive/falling. Terminal and32step TD errors not zero; Task/Strict0of30 remains.",
+  "rationale": "Complete23 all30 full horizons/noabort, exact new rewards and32step targets, all935790 old rows retained. One finite24 uses validated append-only1m-to2m capacity because977040+41250=1018290 exceeds old capacity. Actual immutable complete23 restore/fullstate/next65536/expanded reload exact; learner/targets/physics/reward unchanged and no auxiliary weights. Preserve preregistered24-26 window; capacity comparison is not equivalent to hypothetical ring overwrite. No whole-goal convergence claim.",
+  "old_capacity": 1000000,
+  "new_capacity": 2000000,
+  "next_max_steps": 1018290,
+  "first_boundary_monitor_threshold": 1001000,
+  "learner_settings_changed": false,
+  "automatic_next_training": false,
+  "convergence_claim": false
+}
