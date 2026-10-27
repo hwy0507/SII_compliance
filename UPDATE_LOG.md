@@ -1,3 +1,8 @@
+## 参数33完整审查通过，34已接续
+
+[最新交接](docs/RL_PARAMETER34_20261027.md)：完整33三方法30×55s无abort、旧prefix/history/2m marker及新增41250reward0误差、finite/health/图通过；I/A/V Task/Strict18/18、12/11、17/16，reward−.566095/−13.609943/−4.596229，末loss2.048515/2.092088/.872053。A/V后段loss和terminal误差升高，仍未健康稳定。
+正式34 I3926666/A3926667/V3926668，准确完整33全state续一个有限原设置周期，三check-only与prelaunch通过；startup3926670、归档3926671/review3926672。35准备3957991/调度3958081仅完整34后check-only，无自动训练。原Direct21/22准备、冻结32、固定Direct20–22与参数33–35审计继续；新混合21/34/冻结32 observer3975586等实际startup后固定60样本，先查原结果勿重复。Goal active。
+
 ## Direct20–22固定稳定性审计等待已登记
 
 [新补充](docs/RL_SERL20_22_STABILITY_REGISTRATION_20261027.md)：原waiter3124904，19配对baseline、20–22固定三轮，原5%/近零1/5000分类配对bootstrap seed2026102740，等待10800秒，仅完整21/22后只读分析，无自动训练/停训。登记时19/20已知、21零完成/22未启动，明确仅部分前瞻。已封存19/20输入hash；AST/窗口/--help通过，实际统计尚待。
@@ -9229,3 +9234,9 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮科学提交748785a9bd1447fdefbfc74e1a7aa29f22a1fcff仅本地，GitHub push仍HTTPS用户名认证失败。SSD完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER33_FROZEN32_20261027_005821/FULL_SMALL_EVIDENCE.tar.gz，134成员逐大小/hash核验，1711900字节，SHA256 beb754dc3a246f03c409524367c23c9f5e1fcdeb428295eec803caa677d3b2b1。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER33_FROZEN32_STATUS_20261027_005821/HANDOFF.md及收据/LATEST已核验；大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。四正式21/33、冻结32及22/34准备、固定33–35审计继续，Goal active。
 
 本轮登记提交1ab8064c991229df0c64df286f5c56d8d23438b8仅本地，push仍HTTPS认证失败。补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL20_22_STABILITY_20261027_010411/PREPARATION_SUPPLEMENT.tar.gz，14成员逐hash核验、482165字节、SHA256 2dd6aaf4657fe31ee4cd2aeaf93ed40d1bf613f0121f588af61031750f617cf4；HDD最新/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_SERL20_22_STABILITY_STATUS_20261027_010411/HANDOFF.md和收据已核验，仍依赖先前完整科学小证据，大产物仍SSD。Goal active。
+
+32→33保存结果配对核验：阻抗均值+1.849437中的+1.801082来自short0600 Strict假→真，其他条件+.048355。导纳均值−3.378094，long0300 Task/Strict真→假贡献−1.670583，short0600仅Strict真→假贡献−1.714609，其他条件+.007098。VMC均值−1.726913，主要是short0000（不是short0600）Strict真→假贡献−1.768759，其余+.041846。所有30条件和模型hash一致、分项贡献和与完整review均值差一致。只是保存回报/结果切换的算术归因，不证明随机性或策略学习漂移的因果份额；0新物理/优化。证据PAIRED32_33_OUTCOMES.json。
+
+34实际启动审查已通过：I1400500/A1399500/V1401500，新增1000/1000/2000；旧I/V1399500、A1398500所有replay字段/history/optimizer配置/2m历史marker/30MJB及sampler/action/clock和新reward0误差。startup3926670已完成，归档3926671/完整review3926672继续。
+
+实际34 startup之后的混合21/34/冻结32原observer3975586已完成：60样本/65.5114秒，四GPU均值55.2333% / 72.0333% / 68.7% / 74.1667%，逐样本七个正式/评估原PID身份保持，保存均值另核验。仅本窗口，不保证每瞬时，不是纯训练吞吐，不掩盖33→34切换空档，勿重采。
