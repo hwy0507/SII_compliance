@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-27 — 用户已重新开机明确恢复：Goal active（覆盖此前关机paused）
+
+最新恢复交接：[RL_REBOOT_RESUME_20261027.md](docs/RL_REBOOT_RESUME_20261027.md)。当前Direct独立恢复26 learner645388（partial25父1039290步，旧930pending显式封存保留、新stream30–59，原全state不变）；参数42 I351462/A351463/V351465；冻结41 I316550/A316551/V316552及review316553。全部PID须下轮重验身份与进度，勿重复启动。原旧Direct26完整父入口、24–26稳定等待及旧冻结26入口不能直接复用：25未完整、曝光增加且有隔离pending，必须恢复链专门审查。原25和关机快照不覆盖。
+Direct实际首1000 startup通过：旧1039290raw/derived/history精确，930旧pending不变、121新mature+879新pending，新reward0误差/30MJB/sampler/clock通过；参数42新增1000/1000/2000通过。当前均单有限周期，无自动无界后继。冻结41已actual check-only与物理启动，未完成全90。
+39–41统计原脚本固定41250假设失败保留，v2按真实episode总步数40430/41250修正，原seed5000/5%/nearzero1不变：I近零保护，A/V未通过。导纳固定1224 SSE8555.943→1413.843（−83.4753%），但A41回报变差，不能称健康收敛。
+新混合四正式+冻结41 GPU60样本均值42.5/69.45/61.1167/63.6667%，GPU0未达50；2000新步后稳定窗口仍42.7333/64.55/68.75/68.4%，已登记30秒非阻塞只读栈采样定位瓶颈。无GPU假负载。远端main822e5da/baseline f6e8f8c实际fetch/read；小证据docs/evidence/RL_REBOOT_RESUME_20261027，原始产物共享SSD。无子agent，保持物理/gate/filter/dt/SPT/算法约束。
+
+
 ## 2026-10-27 — 用户再次要求关机暂停：Goal paused，禁止自动续训
 
 **最新权威交接：[RL_SHUTDOWN_RECOVERY_20261027.md](docs/RL_SHUTDOWN_RECOVERY_20261027.md)。用户将在重新开机后另行要求继续。当前覆盖下方全部active/继续训练历史记录，不为GPU占用重启任务。** 四learner/物理sampler及等待/归档/审查进程均已退出，Goal工具已paused，不是完成。

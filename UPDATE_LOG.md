@@ -1,3 +1,11 @@
+## 2026-10-27 — 关机后恢复Direct部分25与参数42，启动冻结41
+
+- 用户明确恢复，Goal active；真实fetch/read main822e5da08322674666359d9d4d7d61c59598d111、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d。原任务全退出后首次新启动，无重复实验/子agent。
+- Direct新独立恢复26从1039290步首选部分25保留全network/Adam/RNG/replay/history，930旧pending显式隔离保留，新stream30–59；实际check-only/下一65536/reload/合成隔离及拒绝guard通过。正式645388已新增1000审查通过，旧raw/derived全保留，新reward0误差/30MJB/clock通过。旧24–26连续窗口与旧26入口不适用，不能伪造完整25。
+- 参数42三正式351462/351463/351465全state和actual startup1000/1000/2000通过；冻结41原前瞻全90 actual restore与外部RNG gate通过，三评估316550/316551/316552已运行，尚非全量完成。每阶段有限预算，完整收敛仍待。
+- 39–41统计原固定41250错误拒绝I39安全早停，原失败保留；独立v2改按实际episodes总步数，原输入/阈值/seed/5000bootstrap不变，实际统计与保存算术/图通过。I触发近零保护，A/V未过5%。导纳固定1224跟踪41完成：SSE8555.943→1413.843（−83.4753%），不能抵消A41任务回报退步。
+- 首60样本GPU混合均值42.5/69.45/61.1167/63.6667%；GPU0不足50；2000新步后稳定均值42.7333/64.55/68.75/68.4%，再登记30秒非阻塞只读栈采样，未制造负载或修改学习设置。详细恢复/预算/限制/下一步见docs/RL_REBOOT_RESUME_20261027.md；产物在共享SSD sii_rl/runs，仓库小证据docs/evidence/RL_REBOOT_RESUME_20261027。HDD/arm1未新增大数据副本，Git发布收据另记。
+
 ## 2026-10-27 — 用户再次要求关机暂停：Goal paused，禁止自动续训
 
 关机保存完成：8主/后备+1取证checkpoint共8.316GiB，源码配置/结果包5031成员819111777字节核验；独立Git bundle完整历史与交接提交a0136bb校验通过，收据docs/RL_SHUTDOWN_SAVE_RECEIPT_20261027.json。push仍HTTPS认证失败。全部项目进程与GPU计算进程已空，Goal paused；HDD LATEST回读指向新SSD交接。

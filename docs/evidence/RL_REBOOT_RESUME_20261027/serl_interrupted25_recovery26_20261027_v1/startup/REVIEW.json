@@ -1,0 +1,66 @@
+{
+  "time": 1793088958.7825415,
+  "passed": true,
+  "methods": {
+    "direct": {
+      "steps": 1040290,
+      "updates": 8282328,
+      "added_steps": 1000,
+      "parent_sha256": "f765ef4a5b256097e3c17365ee4305088d943cbdcdb7447a3edbfbeb24eda6ca",
+      "checkpoint_sha256": "be68774288b3322c6a036100090284e105bd6eaad5884e1852827ea514f139a4",
+      "retained_replay_all_fields_exact": true,
+      "retained_replay_rows": 1039290,
+      "history_retained": true,
+      "optimizer_hyperparameters_retained": true,
+      "critic_clock_marker": {
+        "version": 1,
+        "maximum_actions": 1375,
+        "actor_features": 48,
+        "critic_observation_features": 49,
+        "encoding": "separate_state_and_clock_leaves",
+        "branch": "zero_initialized_addition_to_first_critic_hidden",
+        "original_gemm_inputs": 55
+      },
+      "model_count": 30,
+      "actual_live_sampler_count": 30,
+      "completed_at_affinity_observation": 0,
+      "registered_samplers": 30,
+      "new_transition_mapping_count": 1000,
+      "max_reward_reconstruction_error": 0.0,
+      "terminal_coverage_count": 0,
+      "aborts": [],
+      "mapping_scope": "All new canonical48 scaling, critic remaining-time current/next clocks, raw7-to-public7 mapping and journal rewards verified. Prepared replay prefix exact; not raw-substep dynamics replay."
+    }
+  },
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "replay_capacity": {
+    "passed": true,
+    "historical_entry_cycle": 23,
+    "inherited_stage_exact": true,
+    "old_capacity": 2000000,
+    "new_capacity": 2000000,
+    "marker": {
+      "version": 1,
+      "original_capacity": 1000000,
+      "capacity": 2000000,
+      "retention": "append_without_overwrite",
+      "sampling": "uniform_mature_rows",
+      "derived_targets": "unchanged_32_step_behavior_returns",
+      "full_behavior": "raise_before_overwrite"
+    },
+    "old_size": 1039290,
+    "current_size": 1040290,
+    "cursor": 1040290,
+    "crossed_old_capacity": true
+  },
+  "multistep_replay": {
+    "passed": true,
+    "retained_derived_rows": 1039290,
+    "new_mature_rows": 121,
+    "new_pending_rows": 879,
+    "quarantined_old_pending_rows": 930,
+    "all_new_derived_targets_exact": true,
+    "uniform_sampling_domain": "mature rows only; pending excluded"
+  }
+}

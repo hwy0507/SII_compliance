@@ -1,0 +1,90 @@
+{
+  "passed": true,
+  "time": 1793088454.0129733,
+  "parent_cycle": 41,
+  "new_cycle": 42,
+  "new_cycles": 1,
+  "maximum_new_actions_per_method": 41250,
+  "checks": {
+    "impedance": {
+      "passed": true,
+      "controller": "impedance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "minimum",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "5348e1ccec12e1e58ecb28d5c85b2cdc7a965c54e98ca642facc085e9011b307",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "admittance": {
+      "passed": true,
+      "controller": "admittance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "3678581d424cf26110ab460bda212353e38954334f7724ffa84a8cc5b9e2aef9",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "vmc": {
+      "passed": true,
+      "controller": "vmc",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "494a516017696650cdf30661ba0a18a29becb5289147944c921e5fa97f256bea",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    }
+  },
+  "evidence_sha256": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle42_20261026_v1/SCIENTIFIC_DECISION.json": "a94aad2ce42be9d78e20e13e2ee5afdca952337e2a73d3e579fb9e03acb037e2",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle42_20261026_v1/CHECK_ONLY_COMPLETE.json": "73fc3b2e7cf5622d9f916404b1b2ea1a93f322f33de29ddc4952d73958ebdad9",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle41_review_20261026_v1/REVIEW.json": "25f190a216f7106fe74c7f8fbc1481d44b39bef6df7a22280262bf3408df80b1",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle41_review_20261026_v1/health/DIAGNOSIS.json": "876d2ac67cb3730de18620f76d5122a3d07b70cbae49950c4752e579b075aa74"
+  },
+  "reason": "User resumed; continue exact complete41 finite42 with all optimizer/replay/RNG/history intact.41 remains scientifically unconverged: A reward worsened and V late loss rose; finite states and exact restore permit one unchanged continuation under diagnostics, not a convergence claim.39-41 descriptive audit defect retained and being corrected for I39 legitimate safety abort.",
+  "convergence_claim": false
+}

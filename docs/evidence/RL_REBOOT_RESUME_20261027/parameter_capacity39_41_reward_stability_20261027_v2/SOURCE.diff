@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -13,7 +13,7 @@
+ 
+ 
+ def main(root):
+-    os.sched_setaffinity(0, {52})
++    os.sched_setaffinity(0, {0})
+     import numpy as np
+     import matplotlib
+     matplotlib.use('Agg')
+@@ -64,8 +64,10 @@
+             assert sum(e['task_success'] for e in episodes) == row['task']
+             assert sum(e['strict_success'] for e in episodes) == row['strict']
+             optimizer = [json.loads(line) for line in Path(refs['optimizer']['path']).read_text().splitlines()]
+-            assert len(optimizer) == row['new_transitions'] == 41250
+-            assert [v['step'] for v in optimizer] == list(range(row['steps']-41249, row['steps']+1))
++            assert len(optimizer) == row['new_transitions'] == sum(e['steps'] for e in episodes)
++            assert all(0 < e['steps'] <= 1375 for e in episodes)
++            assert sum(e['steps'] == 1375 for e in episodes) == row['full_horizon_count']
++            assert [v['step'] for v in optimizer] == list(range(row['steps']-row['new_transitions']+1, row['steps']+1))
+             assert all(np.isfinite(v) for record in optimizer for v in record.values() if isinstance(v, (float, int)))
+             loss = np.asarray([v['agent_train/q_loss'] for v in optimizer])
+             alpha = np.asarray([v['agent_train/entropy_coefficient'] for v in optimizer])

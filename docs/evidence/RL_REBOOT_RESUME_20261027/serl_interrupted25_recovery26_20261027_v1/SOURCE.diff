@@ -1,0 +1,58 @@
+--- 
++++ 
+@@ -58,6 +58,7 @@
+         learner.load_state_dict(checkpoint['learner'])
+         replay.load_state_dict(checkpoint['replay'])
+         steps, cycles, start_cycle = checkpoint['steps'], checkpoint['cycles'], checkpoint['cycle']+1
++        _verify_initial_state(learner, replay, checkpoint, out.parent)
+     stage = protocol.get('completed_stage_continuation')
+     if stage is not None:
+         validate_completed_stage_checkpoint(checkpoint if args.resume else None, stage, args.cycles,
+@@ -107,8 +108,9 @@
+         torch.save(dict(protocol_sha256=pdigest, controller=args.controller, seed=args.seed,
+             cycle=cycle, steps=steps, cycles=cycles, learner=learner.state_dict(),
+             replay=replay.state_dict(), boundary=boundary,
++            interruption_recovery=protocol['interrupted_stream_recovery'],
+             environment_state_saved=False,
+-            resume_semantics='retain completed transitions and learner state; start new episodes after partial boundary'), temporary)
++            resume_semantics='partial25 retained; streams0-29 quarantined unchanged; fresh physical streams30-59 in separately budgeted complete26'), temporary)
+         temporary.replace(out/'checkpoint_latest.pt')
+ 
+     try:
+@@ -136,7 +138,7 @@
+                                OPENBLAS_NUM_THREADS='1', MKL_NUM_THREADS='1', MUJOCO_GL='disable')
+                     child = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                         stderr=error, text=True, bufsize=1, env=env)
+-                    learner.reset_episode(stream=slot)
++                    learner.reset_episode(stream=_recovery_stream(slot))
+                     state = dict(process=child, error=error, condition=condition, folder=folder,
+                                  reward=SPTReward(), previous=None, episode_return=0., steps=0, last_event=time.monotonic())
+                     children[slot] = state
+@@ -171,14 +173,14 @@
+                             completion_time_s=event['completion_time_s']) if done and labels['strict_success'] else 0.
+                         value += bonus
+                         terms.update(completion_efficiency=bonus, final_reward=value)
+-                        nxt = (learner.terminal_observation(previous['observation'], stream=slot) if done
+-                               else learner.observation(event['observation'], stream=slot))
+-                        replay.add(stream=slot, observations=previous['observation'], actions=previous['raw_action'],
++                        nxt = (learner.terminal_observation(previous['observation'], stream=_recovery_stream(slot)) if done
++                               else learner.observation(event['observation'], stream=_recovery_stream(slot)))
++                        replay.add(stream=_recovery_stream(slot), observations=previous['observation'], actions=previous['raw_action'],
+                                    next_observations=nxt, rewards=[value], dones=[float(done)])
+                         steps += 1
+                         state['steps'] += 1
+                         state['episode_return'] += value
+-                        transition_log.write(json.dumps(dict(step=steps, cycle=cycle, condition=state['condition']['id'],
++                        transition_log.write(json.dumps(dict(step=steps, cycle=cycle, recovery_stream=_recovery_stream(slot), condition=state['condition']['id'],
+                             reward=value, done=done, context=previous['context'], reward_terms=terms), allow_nan=False)+'\n')
+                         if steps >= 5000 and replay.size >= batch_size:
+                             for update_index in range(utd):
+@@ -206,7 +208,7 @@
+                         free_slots.append(slot)
+                         launch()
+                     else:
+-                        obs, raw, action, context = learner.act(event['observation'], step=steps, stream=slot)
++                        obs, raw, action, context = learner.act(event['observation'], step=steps, stream=_recovery_stream(slot))
+                         state['previous'] = dict(observation=obs, raw_action=raw,
+                                                  potential=event['payload_potential'], context=context)
+                         state['process'].stdin.write(json.dumps(dict(action=action.tolist()))+'\n')
