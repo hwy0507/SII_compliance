@@ -1,5 +1,11 @@
 > **当前RL：[正式参数46与Direct28](docs/RL_PARAMETER46_SERL28_20261027.md)。完整45/27已审查、原43–45未稳定；46/28 actual startup通过。47/29仅准备、新46–48明确容量边界；原冻结41继续。Goal active，先核PID勿重复启动。**
 
+## 2026-10-27 — Direct29恢复感知冻结入口与真实27恢复通过
+
+[本轮交接](docs/RL_SERL29_RECOVERY_FROZEN_20261027.md)。新独立evaluator/rootreview保留原随机动作/物理loop和filter/torque审查，专门验证partial25/连续26..29/930隔离及全learner/replay/history。真实完整27 check-only在600秒内通过，size1121790/2m/entry23、930原raw/derived/pending精确且仍不可采样；外部动作RNG通过，0物理优化。与原实际28恢复保存摘要及PRELAUNCH绑定交叉核验一致，703源码hash保持；原3577385/3577387完成退出。错误27物理请求在创建输出前拒绝。
+原固定29 PLAN/全30/同冻结16seed2026102626不变；新仅准备3802347等10800秒，准确29完整后600秒check-only，无自动物理。SOURCE_FREEZE/prepare/手动launch与rootreview准备，正式物理须原冻结41三评测及rootreview完成；实际29恢复和全30评测未执行，旧26计划不复用。原47三3184892/3184893/3184894、Direct28 1978250、冻结41三316550/316551/316552、48/29训练准备3192792/2044155、两固定统计1908379/336744继续。小证据docs/evidence/RL_SERL29_RECOVERY_FROZEN_20261027；Goal active，无子agent。
+
+
 ## 2026-10-27 — 参数46完整、正式47及Direct29冻结前瞻计划
 
 [最新交接](docs/RL_PARAMETER47_FROZEN29_20261027.md)。46 I/A/V1934930/1934750/1935750，Task/Strict18/17、11/10、17/16，reward−2.325234/−15.465871/−4.626438；30全55/noabort、旧回放/history、新reward0误差、health/保存算术/图通过。三路末1000loss高于首1000，未健康收敛。45→46保存配对：A long0300/0900丢成功、short0600恢复Task但越.2mm失Strict；V short0600 .169418→.215310mm丢Strict，原gate/MJB核验，非loss因果。
@@ -605,3 +611,5 @@ python evaluate_direct_esn_post_contact.py \
 本轮准备提交d0e6c2104e150d26075b9d2ef07686cf255ce585已push；共享SSD补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER48_STATIC_20261027_110541/PREPARATION_SUPPLEMENT.tar.gz，28成员/574510字节、SHA256 72d490144ea470e8bac05a10e823ca09f8bc012bd40036c8eadd81a30d8a0612，逐成员大小/hash核验。收据docs/RL_PARAMETER48_STATIC_SAVE_20261027.json；依赖前轮46/28完整小包和原共享SSD大产物，现有HDD LATEST已更新回读，非HDD/arm1全备份。48仍未部署，原四正式与冻结41继续，Goal active。
 
 本轮科学提交ed0f9f2及远端合并b704574已push，归档源码f564f44b6fdb7506297ee16c44f1d2c3ac85de50；共享SSD完整本轮小证据/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER47_FROZEN29_20261027_112706/FULL_SMALL_EVIDENCE.tar.gz，69成员/1124587字节、SHA256 33bba9b9140e67d7779d5c6ea86527c192e14a21442a04718a0d773d83df1bd4，逐成员大小/hash核验。收据docs/RL_PARAMETER47_FROZEN29_SAVE_20261027.json；现有HDD LATEST已更新回读，大checkpoint/raw/runtime仍原共享SSD，非HDD/arm1全备份。原四正式47/28、冻结41、48/29仅恢复与两固定窗口继续，Direct29冻结仅计划，Goal active。
+
+本轮科学提交d127e4e6f3ae3082ffb461e62bab4933f5d9e62e已push；共享SSD准备包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL29_RECOVERY_FROZEN_20261027_114348/FROZEN_PREPARATION.tar.gz，35成员/652073字节、SHA256 987d4f132b688183edeb12bc7e6afbddd4f88cb4f291d6e6bc8427737081affa，逐成员大小/hash核验。收据docs/RL_SERL29_RECOVERY_FROZEN_SAVE_20261027.json。现有HDD LATEST已更新回读，大验证快照/checkpoint/raw/runtime仍原共享SSD，非HDD/arm1全备份；原四正式47/28、冻结41和既有恢复/统计继续，新3802347仅冻结29恢复准备，Goal active。
