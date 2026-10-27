@@ -1,0 +1,127 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/audit_vmc37_38_terminal_concentration_20261027.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/admittance39_40_terminal_concentration_20261027_v1/audit_admittance39_40_terminal_concentration_20261027.py
+@@ -1,4 +1,4 @@
+-"""Frozen VMC37/38 terminal error concentration and retained-row tracking, without updates.
++"""Frozen Admittance39/40 terminal error concentration and retained-row tracking, without updates.
+ 
+ Population terminal contributions use the actual per-critic mask/weight
+ denominators. They are not minibatch losses or estimates of nonterminal TD loss.
+@@ -23,7 +23,7 @@
+     import torch
+     torch.set_num_threads(1)
+     reg = json.loads((root/'REGISTRATION.json').read_text())
+-    assert reg['cycles'] == [37, 38] and reg['optimizer_updates'] == reg['new_physics'] == 0
++    assert reg['cycles'] == [39, 40] and reg['optimizer_updates'] == reg['new_physics'] == 0
+     assert sha(__file__) == reg['source_sha256']
+     for refs in reg['inputs'].values():
+         for ref in refs.values():
+@@ -40,12 +40,12 @@
+     maps, results = {}, []
+     for cycle in reg['cycles']:
+         refs = reg['inputs'][str(cycle)]
+-        health = json.loads(Path(refs['health']['path']).read_text())['methods']['vmc']
++        health = json.loads(Path(refs['health']['path']).read_text())['methods']['admittance']
+         review = json.loads(Path(refs['review']['path']).read_text())
+         assert review['passed'] and health['checkpoint_sha256'] == refs['checkpoint']['sha256']
+         ck = torch.load(refs['checkpoint']['path'], map_location='cpu', weights_only=False)
+         assert ck['cycle'] == cycle and ck['boundary'] == 'complete_condition_cycle'
+-        assert ck['controller'] == 'vmc' and ck['replay']['size'] == ck['steps']
++        assert ck['controller'] == 'admittance' and ck['replay']['size'] == ck['steps']
+         state, arrays = ck['learner'], ck['replay']['arrays']
+         assert state['terminal_loss_weight'] == 128
+         assert state['target_pair_reduction'] == dict(version=1, target='mean', actor='minimum', sampled_targets=2)
+@@ -62,7 +62,7 @@
+         assert before == digest(state['agent'])
+         random_before = torch.get_rng_state().clone()
+         terminal = np.flatnonzero(arrays['dones'][:, 0] == 1)
+-        assert len(terminal) == health['terminal_count'] == {37:1134,38:1164}[cycle]
++        assert len(terminal) == health['terminal_count'] == {39:1194,40:1224}[cycle]
+         with torch.no_grad():
+             obs = torch.as_tensor(arrays['observations'][terminal])
+             actions = torch.as_tensor(arrays['actions'][terminal])
+@@ -114,8 +114,8 @@
+                 fraction=float(contributions[i]/total), current_cycle=bool(current[i]),
+                 current_condition=next((case for case, item in terms.items() if item['replay_index'] == int(terminal[i])), None)))
+         retained_tracking = None
+-        if cycle == 38:
+-            with np.load(root/'cycle37_terminal_values.npz', allow_pickle=False) as previous:
++        if cycle == 40:
++            with np.load(root/'cycle39_terminal_values.npz', allow_pickle=False) as previous:
+                 count = len(previous['replay_indices'])
+                 np.testing.assert_array_equal(terminal[:count], previous['replay_indices'])
+                 np.testing.assert_array_equal(reward[:count], previous['rewards'])
+@@ -125,11 +125,11 @@
+                 now_sse = (mask[:, :count]*error[:, :count]**2).sum()
+                 old_denominator_contribution = (128*mask[:, :count]*error[:, :count]**2/previous['denominators'][:, None]).sum()
+                 retained_tracking = dict(retained_terminal_count=count,
+-                    masked_sse_at37=float(old_sse), masked_sse_at38=float(now_sse),
+-                    retained_loss_at38_using37_denominators=float(old_denominator_contribution),
+-                    retained_loss_at38_using38_denominators=float(contributions[:count].sum()),
+-                    new38_terminal_loss_contribution=float(contributions[count:].sum()),
+-                    new38_terminal_count=len(terminal)-count,
++                    masked_sse_at39=float(old_sse), masked_sse_at40=float(now_sse),
++                    retained_loss_at40_using39_denominators=float(old_denominator_contribution),
++                    retained_loss_at40_using40_denominators=float(contributions[:count].sum()),
++                    new40_terminal_loss_contribution=float(contributions[count:].sum()),
++                    new40_terminal_count=len(terminal)-count,
+                     retained_rewards_and_masks_exact=True)
+                 assert len(terminal)-count == 30
+         assert digest(agent.state_dict()) == before and torch.equal(random_before, torch.get_rng_state())
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/review_vmc37_38_terminal_concentration_20261027.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/admittance39_40_terminal_concentration_20261027_v1/review_admittance39_40_terminal_concentration_20261027.py
+@@ -1,4 +1,4 @@
+-"""Independently check saved VMC37/38 terminal arithmetic; no neural rerun."""
++"""Independently check saved Admittance39/40 terminal arithmetic; no neural rerun."""
+ from pathlib import Path
+ import argparse
+ import hashlib
+@@ -20,7 +20,7 @@
+     import matplotlib.pyplot as plt
+     reg = json.loads((root/'REGISTRATION.json').read_text())
+     report = json.loads((root/'REVIEW.json').read_text())
+-    assert reg['cycles'] == [37, 38] and reg['controller'] == 'vmc'
++    assert reg['cycles'] == [39, 40] and reg['controller'] == 'admittance'
+     assert report['passed'] and report['original_checkpoints_unchanged']
+     assert report['optimizer_updates'] == report['new_physics'] == report['replay_writes'] == 0
+     for group in reg['inputs'].values():
+@@ -53,23 +53,23 @@
+     new_sse = sum((new['masks'][i, :count]*(new['q'][i, :count]-new['rewards'][:count])**2).sum() for i in range(5))
+     old_denominator_new_loss = sum((128*new['masks'][i, :count]*(new['q'][i, :count]-new['rewards'][:count])**2/old['denominators'][i]).sum() for i in range(5))
+     tracking = report['cycles'][1]['retained_terminal_tracking']
+-    for key, actual in [('masked_sse_at37', old_sse), ('masked_sse_at38', new_sse),
+-                        ('retained_loss_at38_using37_denominators', old_denominator_new_loss),
+-                        ('retained_loss_at38_using38_denominators', new['contributions'][:count].sum()),
+-                        ('new38_terminal_loss_contribution', new['contributions'][count:].sum())]:
++    for key, actual in [('masked_sse_at39', old_sse), ('masked_sse_at40', new_sse),
++                        ('retained_loss_at40_using39_denominators', old_denominator_new_loss),
++                        ('retained_loss_at40_using40_denominators', new['contributions'][:count].sum()),
++                        ('new40_terminal_loss_contribution', new['contributions'][count:].sum())]:
+         assert np.isclose(actual, tracking[key], rtol=1e-14, atol=1e-14), key
+     totals = [row['terminal_population_loss_contribution'] for row in report['cycles']]
+     axes[0].set(title='Terminal contribution concentration', xlabel='Highest-contributing rows', ylabel='Cumulative fraction')
+     axes[0].legend()
+-    axes[1].bar(['37', '38'], [totals[0], new['contributions'][:count].sum()], label='Retained terminal rows')
+-    axes[1].bar(['38'], [new['contributions'][count:].sum()], bottom=[new['contributions'][:count].sum()], label='30 new terminal rows')
++    axes[1].bar(['39', '40'], [totals[0], new['contributions'][:count].sum()], label='Retained terminal rows')
++    axes[1].bar(['40'], [new['contributions'][count:].sum()], bottom=[new['contributions'][:count].sum()], label='30 new terminal rows')
+     axes[1].set(title='Frozen terminal population loss', xlabel='Complete checkpoint', ylabel='Weighted terminal contribution')
+     axes[1].legend(fontsize=8)
+-    axes[2].bar(['37', '38'], [old_sse, new_sse])
++    axes[2].bar(['39', '40'], [old_sse, new_sse])
+     axes[2].set(title=f'Same {count} retained terminal rows', xlabel='Complete checkpoint', ylabel='Masked squared error sum')
+     for axis in axes:
+         axis.grid(alpha=.2)
+-    fig.suptitle('VMC37/38 terminal diagnostics; excludes nonterminal TD and historical minibatches')
++    fig.suptitle('Admittance39/40 terminal diagnostics; excludes nonterminal TD and historical minibatches')
+     plot = root/'terminal_concentration.png'
+     fig.savefig(plot, dpi=140)
+     plt.close(fig)
+@@ -77,7 +77,7 @@
+         input_report_sha256=sha(root/'REVIEW.json'), plot_sha256=sha(plot),
+         terminal_population_contribution_ratio=totals[1]/totals[0],
+         retained_masked_sse_ratio=float(new_sse/old_sse),
+-        new38_terminal_fraction=float(new['contributions'][count:].sum()/totals[1]),
++        new40_terminal_fraction=float(new['contributions'][count:].sum()/totals[1]),
+         independent_scope='Saved-value arithmetic and hashes; no repeated neural inference or physics.',
+         limitation='Frozen endpoint terminal contribution is not the logged online minibatch loss or its causal attribution. Same-row tracking keeps previous labels/masks fixed; no learner setting change, automatic continuation, or convergence claim.',
+         new_physics=0, optimizer_updates=0, convergence_claim=False)

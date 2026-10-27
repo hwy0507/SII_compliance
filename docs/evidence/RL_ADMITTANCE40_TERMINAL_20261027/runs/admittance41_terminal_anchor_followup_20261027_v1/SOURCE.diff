@@ -1,0 +1,122 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/track_vmc39_terminal_anchors_20261027.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/track_admittance41_terminal_anchors_20261027.py
+@@ -1,4 +1,4 @@
+-"""Track all1164 fixed38 VMC terminal rows and the new39 terminals on complete39."""
++"""Track all1224 fixed40 Admittance terminal rows and the new41 terminals on complete41."""
+ from pathlib import Path
+ import argparse
+ import hashlib
+@@ -19,8 +19,8 @@
+     import torch
+     torch.set_num_threads(1)
+     reg = json.loads((root/'REGISTRATION.json').read_text())
+-    assert reg['cycle'] == 39 and reg['anchor_cycle'] == 38
+-    assert reg['focus_replay_index'] == 1603101 and reg['expected_old_terminal_count'] == 1164
++    assert reg['cycle'] == 41 and reg['anchor_cycle'] == 40
++    assert reg['focus_replay_index'] == 1687237 and reg['expected_old_terminal_count'] == 1224
+     assert sha(__file__) == reg['source_sha256']
+     for ref in reg['inputs'].values():
+         assert sha(ref['path']) == ref['sha256']
+@@ -33,19 +33,19 @@
+     from published_compliance_learner_20261025 import PublishedLearner
+     from validate_published_finite_check_20261025 import digest
+     assert sha(Path(origin['helper_runtime'])/'validate_published_finite_check_20261025.py') == origin['digest_helper_sha256']
+-    health = json.loads(Path(reg['inputs']['health39']['path']).read_text())['methods']['vmc']
+-    review = json.loads(Path(reg['inputs']['review39']['path']).read_text())
+-    assert review['passed'] and health['checkpoint_sha256'] == reg['inputs']['checkpoint39']['sha256']
+-    ck = torch.load(reg['inputs']['checkpoint39']['path'], map_location='cpu', weights_only=False)
+-    assert ck['cycle'] == 39 and ck['boundary'] == 'complete_condition_cycle' and ck['controller'] == 'vmc'
++    health = json.loads(Path(reg['inputs']['health41']['path']).read_text())['methods']['admittance']
++    review = json.loads(Path(reg['inputs']['review41']['path']).read_text())
++    assert review['passed'] and health['checkpoint_sha256'] == reg['inputs']['checkpoint41']['sha256']
++    ck = torch.load(reg['inputs']['checkpoint41']['path'], map_location='cpu', weights_only=False)
++    assert ck['cycle'] == 41 and ck['boundary'] == 'complete_condition_cycle' and ck['controller'] == 'admittance'
+     state, arrays = ck['learner'], ck['replay']['arrays']
+     assert state['terminal_loss_weight'] == 128 and state['target_pair_reduction']['target'] == 'mean'
+     terminal = np.flatnonzero(arrays['dones'][:, 0] == 1)
+-    assert len(terminal) == 1194 == health['terminal_count']
++    assert len(terminal) == 1254 == health['terminal_count']
+     with np.load(reg['inputs']['anchor_values']['path'], allow_pickle=False) as old:
+         indices, old_q, rewards, masks, features = [old[k].copy() for k in ['replay_indices', 'q', 'rewards', 'masks', 'features']]
+         old_denominators = old['denominators'].copy()
+-    assert len(indices) == 1164 and np.array_equal(terminal[:1164], indices)
++    assert len(indices) == 1224 and np.array_equal(terminal[:1224], indices)
+     np.testing.assert_array_equal(arrays['observations'][indices], features[:, :50])
+     np.testing.assert_array_equal(arrays['actions'][indices], features[:, 50:])
+     np.testing.assert_array_equal(arrays['rewards'][indices, 0], rewards)
+@@ -70,28 +70,28 @@
+     error = q.astype(np.float64)-target.astype(np.float64)[None]
+     contribution = (128*mask*error**2/denominator[:, None]).sum(axis=0)
+     old_squared = masks*(old_q-rewards[None])**2
+-    retained_squared = masks*error[:, :1164]**2
++    retained_squared = masks*error[:, :1224]**2
+     focus = int(np.flatnonzero(indices == reg['focus_replay_index'])[0])
+     assert digest(agent.state_dict()) == before and torch.equal(rng, torch.get_rng_state())
+-    values = root/'terminal39_values.npz'
++    values = root/'terminal41_values.npz'
+     np.savez_compressed(values, indices=terminal, q=q, rewards=target, masks=mask,
+         denominators=denominator, contributions=contribution)
+-    result = dict(passed=True, time=time.time(), cycle=39, fixed_anchor_rows=1164, new_terminal_rows=30,
++    result = dict(passed=True, time=time.time(), cycle=41, fixed_anchor_rows=1224, new_terminal_rows=30,
+         original_anchor_observations_actions_rewards_masks_exact=True,
+-        fixed1164_masked_sse_before=float(old_squared.sum()), fixed1164_masked_sse_after=float(retained_squared.sum()),
+-        fixed1164_masked_sse_ratio=float(retained_squared.sum()/old_squared.sum()),
++        fixed1224_masked_sse_before=float(old_squared.sum()), fixed1224_masked_sse_after=float(retained_squared.sum()),
++        fixed1224_masked_sse_ratio=float(retained_squared.sum()/old_squared.sum()),
+         terminal_population_contribution=float(contribution.sum()),
+-        retained1164_population_contribution=float(contribution[:1164].sum()),
+-        new30_population_contribution=float(contribution[1164:].sum()),
+-        fixed1164_contribution_using_old38_denominator=float((128*retained_squared/old_denominators[:, None]).sum()),
+-        focus=dict(condition='active_short_train_0600', replay_index=reg['focus_replay_index'],
++        retained1224_population_contribution=float(contribution[:1224].sum()),
++        new30_population_contribution=float(contribution[1224:].sum()),
++        fixed1224_contribution_using_old40_denominator=float((128*retained_squared/old_denominators[:, None]).sum()),
++        focus=dict(condition='active_long_train_0500', replay_index=reg['focus_replay_index'],
+             reward=float(rewards[focus]), masks=masks[:, focus].tolist(),
+             q_before=old_q[:, focus].tolist(), q_after=q[:, focus].astype(float).tolist(),
+             masked_sse_before=float(old_squared[:, focus].sum()), masked_sse_after=float(retained_squared[:, focus].sum()),
+             population_contribution_after=float(contribution[focus])),
+         values_sha256=sha(values), agent_weights_and_forward_rng_unchanged=True,
+         optimizer_updates=0, new_physics=0, replay_writes=0, convergence_claim=False,
+-        limitation='Same1164 retained terminal rows under frozen38 and39 critic weights; mask-weighted SSE separates error change from replay-denominator growth. Includes no ordinary TD terms or historical minibatch replay. Only CPU forward weights are restored, not optimizer state. No training or method change. Frozen rollout performance remains separate.')
++        limitation='Same1224 retained terminal rows under frozen40 and41 critic weights; mask-weighted SSE separates error change from replay-denominator growth. Includes no ordinary TD terms or historical minibatch replay. Only CPU forward weights are restored, not optimizer state. No training or method change. Frozen rollout performance remains separate.')
+     for ref in reg['inputs'].values():
+         assert sha(ref['path']) == ref['sha256']
+     (root/'REVIEW.json').write_text(json.dumps(result, indent=2, allow_nan=False)+'\n')
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/wait_vmc39_terminal_anchors_20261027.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/wait_admittance41_terminal_anchors_20261027.py
+@@ -1,28 +1,28 @@
+ from pathlib import Path
+ import json,hashlib,time,subprocess,os
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');OUT=B/'runs/vmc39_terminal_anchor_followup_20261027_v1';SOURCE=B/'runtime/track_vmc39_terminal_anchors_20261027.py'
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');OUT=B/'runs/admittance41_terminal_anchor_followup_20261027_v1';SOURCE=B/'runtime/track_admittance41_terminal_anchors_20261027.py'
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ def ref(p):return dict(path=str(p),sha256=sha(p))
+ def main():
+- os.sched_setaffinity(0,{52});assert sha(OUT/'PLAN.json')=='1387247fde9946a5792fd2b6ee9854b69735f4af948800f5c4f0b08a2d825786'
++ os.sched_setaffinity(0,{52});assert sha(OUT/'PLAN.json')=='383a02964a4ae005569e8e80307e9caa562e36434239937f32e891b7473ff4db'
+  plan=json.loads((OUT/'PLAN.json').read_text());assert sha(SOURCE)==plan['source_sha256']
+  for item in plan['inputs'].values():assert sha(item['path'])==item['sha256']
+- root=B/'runs/parameter_capacity_pool30_cycle39_review_20261026_v1';deadline=time.monotonic()+7200
++ root=B/'runs/parameter_capacity_pool30_cycle41_review_20261026_v1';deadline=time.monotonic()+7200
+  while not (root/'FINISHED.json').exists():
+   assert time.monotonic()<deadline, 'Registered wait expired; no automatic rerun/extension'
+-  assert not (B/'runs/parameter_capacity_pool30_cycle39_20261026_v1/vmc/train/FAILURE.json').exists()
++  assert not (B/'runs/parameter_capacity_pool30_cycle41_20261026_v1/admittance/train/FAILURE.json').exists()
+   time.sleep(5)
+  assert json.loads((root/'FINISHED.json').read_text())['completed']
+  assert json.loads((root/'REVIEW.json').read_text())['passed']
+  reg=dict(plan);reg['inputs']=dict(plan['inputs'])
+- reg['inputs'].update(health39=ref(root/'health/DIAGNOSIS.json'),review39=ref(root/'REVIEW.json'),checkpoint39=ref(B/'runs/parameter_capacity_pool30_cycle39_archive_20261026_v1/vmc/cycle_00039.pt'))
++ reg['inputs'].update(health41=ref(root/'health/DIAGNOSIS.json'),review41=ref(root/'REVIEW.json'),checkpoint41=ref(B/'runs/parameter_capacity_pool30_cycle41_archive_20261026_v1/admittance/cycle_00041.pt'))
+  (OUT/'REGISTRATION.json').write_text(json.dumps(reg,indent=2)+'\n')
+  env=dict(os.environ,CUDA_VISIBLE_DEVICES='',OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1',NUMEXPR_NUM_THREADS='1')
+  subprocess.run([str(B/'env/bin/python'),str(SOURCE),'--root',str(OUT)],check=True,env=env,timeout=600)
+  assert sha(plan['saved_review_source']['path'])==plan['saved_review_source']['sha256']
+  subprocess.run([str(B/'env/bin/python'),plan['saved_review_source']['path'],'--root',str(OUT)],check=True,env=env,timeout=120)
+- print('Complete39 fixed1164 terminal read-only follow-up complete.',flush=True)
++ print('Complete41 fixed1224 terminal read-only follow-up complete.',flush=True)
+ if __name__=='__main__':
+  try:main()
+  except BaseException as error:

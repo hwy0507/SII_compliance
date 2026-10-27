@@ -1,3 +1,9 @@
+## 2026-10-27 — 导纳40终端拟合退化定位、固定1224跟踪41
+
+[本轮交接](docs/RL_ADMITTANCE40_TERMINAL_20261027.md)。新CPU52只读2818635已完成退出，完整A39/40全部1194/1224终端×5critic，0优化/物理/replay。全输入/source/agent/RNG、原health复现、独立保存算术与图通过；终端贡献.447879→.742515（+65.78%），固定旧1194 masked SSE5035.582→7152.539（+42.04%），旧分母贡献亦升至.636419；新30仅占16.40%，旧1069行变差/125改善。critic0/3/4升、1/2降，非全在线loss因果分解或LR缺陷证明。
+新固定1224跟踪41原waiter2937574，B/runs/admittance41_terminal_anchor_followup_20261027_v1；原41已训练/完整父未可用时登记，7200秒wait+600秒CPU前向+120秒保存审查，0优化物理/无自动训练。全1224输入/标签/mask与40分母固定，辅助40最大行1687237仅6.32%贡献；AST/help/准确41/40/1224/1254/hash通过，实际跟踪仍待。
+原四正式25/41、26/42仅恢复准备与调度、两原稳定性窗口、冻结41准备全部核验live。原纯GPU窗口不重采，正式与辅助设置不变，Goal active，无子agent。远端main7d69ac5/baseline f6e8f8c真实fetch/read未变；24份小证据740662字节及manifest/live在docs/evidence/RL_ADMITTANCE40_TERMINAL_20261027，SSD归档另记。
+
 ## 2026-10-27 — 完整24/40审查，正式Direct25/参数41启动通过
 
 本轮科学提交201bef1f2fcbd3201f0761f918fe28ce3c87a2b6仅本地，push仍HTTPS用户名认证失败。SSD小证据归档/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL25_PARAMETER41_20261027_054312/FULL_SMALL_EVIDENCE.tar.gz，493成员逐大小/hash验证、1880776字节、SHA256 af02f1486210f6e2d80cb608cd99f9f57c92b7113a2119b3a3ecf890d745bac8；包含冻结41前瞻登记和新25/41小证据。新HANDOFF/收据SSD，既有HDD LATEST覆盖回读通过；大数据仍SSD，非HDD/arm1全量备份。正式四路继续，Goal active。

@@ -1,0 +1,95 @@
+{
+  "passed": true,
+  "time": 1793080086.3452232,
+  "source_sha256": "a3f3c1fab4122923fdccfeecf646736c39a3510f852daf5176a21a2d9755c968",
+  "input_report_sha256": "a25923df8f4a4aecb93dcf0f87456c27f2151e6f72b0db5a172c637d94e4e6d6",
+  "fixed_rows": 1194,
+  "per_critic": [
+    {
+      "critic": 0,
+      "masked_sse_before": 552.6304459899038,
+      "masked_sse_after": 2180.414157506556,
+      "delta": 1627.7837115166521,
+      "trained_terminal_cells": 939
+    },
+    {
+      "critic": 1,
+      "masked_sse_before": 2212.6178455340378,
+      "masked_sse_after": 434.31508199115706,
+      "delta": -1778.3027635428807,
+      "trained_terminal_cells": 977
+    },
+    {
+      "critic": 2,
+      "masked_sse_before": 1748.6269242779981,
+      "masked_sse_after": 778.6483240516864,
+      "delta": -969.9786002263118,
+      "trained_terminal_cells": 962
+    },
+    {
+      "critic": 3,
+      "masked_sse_before": 223.95349066595372,
+      "masked_sse_after": 2925.6340763505405,
+      "delta": 2701.6805856845867,
+      "trained_terminal_cells": 969
+    },
+    {
+      "critic": 4,
+      "masked_sse_before": 297.75291991848644,
+      "masked_sse_after": 833.5270634711596,
+      "delta": 535.7741435526732,
+      "trained_terminal_cells": 962
+    }
+  ],
+  "row_direction_counts": {
+    "improved": 125,
+    "worsened": 1069,
+    "unchanged": 0
+  },
+  "chronological_quartiles": [
+    {
+      "quartile": 1,
+      "rows": 299,
+      "first_replay_index": 15934,
+      "last_replay_index": 425146,
+      "sse_before": 408.0433071377847,
+      "sse_after": 1217.9314484968927,
+      "improved": 44,
+      "worsened": 255
+    },
+    {
+      "quartile": 2,
+      "rows": 299,
+      "first_replay_index": 425150,
+      "last_replay_index": 848955,
+      "sse_before": 399.86005024353653,
+      "sse_after": 1510.6886386582773,
+      "improved": 24,
+      "worsened": 275
+    },
+    {
+      "quartile": 3,
+      "rows": 298,
+      "first_replay_index": 848968,
+      "last_replay_index": 1261528,
+      "sse_before": 608.9670099682044,
+      "sse_after": 2751.9055070704217,
+      "improved": 25,
+      "worsened": 273
+    },
+    {
+      "quartile": 4,
+      "rows": 298,
+      "first_replay_index": 1261643,
+      "last_replay_index": 1645999,
+      "sse_before": 3618.7112590368542,
+      "sse_after": 1672.0131091455078,
+      "improved": 32,
+      "worsened": 266
+    }
+  ],
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "model_forward_calls": 0,
+  "limitation": "Descriptive saved-value drift for all retained terminal rows; not a causal decomposition of online loss or evidence for an LR/weight/feature change."
+}
