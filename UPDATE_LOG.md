@@ -1,3 +1,10 @@
+## 2026-10-27 — 非RL传统补测24/72，第四条件原始归档完成
+
+- 重新查询/fetch/read main `2c1f6397dc74372423ba3f166c44db54f4799fd3`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并复读AGENTS。前几轮为对原PID/服务/物理时间的有效等待；原协调179772完成条件003并进入004，归档188540正常接续，未重复派发、修改冻结输入或调参。
+- 第四组6回合完整55秒/660万物理子步审计通过，Task/Strict均失败，公共filter重放误差0；保存全部失败及经典actor/servo重建限制。318文件原件前后和包内hash通过，审计SHA `0af1f52c3c2007c8d8c2d38e879b3f323f49c16c3e821264fe4ef62a822d0725`。
+- 726,692,174字节原始包已核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics003/PHYSICS_BUNDLE.tar.gz`，SHA `c3a20533156f9bd0035e473e4e3f8fe6c67198b8828cc6c17d7616abb48e8acc`，本地/远端临时/最终一致。新增两份小收据在`docs/evidence/nonrl_classical_task_spt_20261027/`，原108与新24回合已原始共享；服务器只归档/hash。
+- 本机物理服务memory.max累计仍12、OOM/kill0、swap0；只读观察会话在第四包核验后正常结束，两原服务保持运行。尚待余48、最终180共同参考/比较/审计及发布；Goal active。收工复读AGENTS，保留无关会议文件。
+
 ## 2026-10-27 — 非RL传统补测18/72，第三条件审计与原始归档核验完成
 
 - 前几轮为对原服务的有效等待，确认真实PID/CPU及物理时间持续增长；本轮原协调179772完成条件002并接续003，归档188540自动处理第三组，无重复仿真或归档。仍待余54回合和最终180汇总，不据局部结果宣称全组完成。

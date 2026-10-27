@@ -126,6 +126,17 @@ SHA256 `c0b1e4f18c7b5fdaa796229db9526166d367ed9dcfc62524d5f1edd31ee0c070`。
 
 ### 单条件打包入口
 
+2026-10-27 09:48 UTC：第四条件003全部6回合及660万子步审计通过，累计24/72，
+原协调器已进入第五条件；前三包保留。第四包318文件原件前后及包内hash一致，
+726,692,174字节已核验到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics003/PHYSICS_BUNDLE.tar.gz`，
+SHA256 `c3a20533156f9bd0035e473e4e3f8fe6c67198b8828cc6c17d7616abb48e8acc`，远端临时/最终一致。
+收据`CLASSICAL_CONDITION003_ARCHIVE.json`、`CONDITION003_PHYSICS_AUDIT.json`。
+本组六回合完整55秒、Task/Strict均失败、公共filter误差0，仍保留全部失败与actor重放限制。
+原108+新24回合已原始共享；余48和最终180汇总尚待，不生成部分矩阵参考或排名。
+物理cgroup memory.max累计仍12次，OOM/kill及swap0，两原服务继续；只读观察在第四包
+核验后正常退出，不影响仿真或归档服务，不新增/重启作业。
+
 2026-10-27 09:10 UTC：原协调器完成第三条件002，累计18/72，已接续第四条件。
 归档服务自动完成第三组6回合/660万子步审计、318文件原件前后及包内hash检查，
 728,329,915字节包已核验到
