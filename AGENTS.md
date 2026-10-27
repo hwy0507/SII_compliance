@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 非RL 180回合最终审计已完成
+
+非RL最终目标已完成：原学习组108回合与6套历史传统控制器72回合共180/180，12条件各15回合，197,135,200个物理子步。主运行 `code/mujoco_6d_vmc_benchmark/outputs/nonrl_classical_task_spt_20261027_v1/execution.json` 为 `complete/completed=72`；独立 `published/archive_pipeline_v1/FINAL_AUDIT.json` 为 `final180_saved_physics_audit_passed`。180条回合身份唯一、本地运行目录齐全；Task 57/180、Strict 35/180、Task+Strict 35/180，公共filter重放最大误差0，机器安全违规25/180。共同 `T_ref` 取全部Task成功回合最短时间34.36000000126405秒。最终比较与远端归档索引见 `docs/evidence/nonrl_classical_task_spt_20261027/FINAL_COMPARISON_180.md` 和 `FINAL_AUDIT_INDEX.json`；009–011条件小收据已逐字节复制核验。归档服务旧execution快照的`campaign_completed=71`仅为等待时计数，不覆盖主运行72和最终180审计。
+
+本轮只读核验，无新仿真、训练、调参或冻结环境修改。传统控制器的历史参数预算与学习组不等价，且传统组没有完整独立actor/servo重放；失败回合和全部安全审计保留。远端GitHub fetch在本轮因网络不可达失败，未伪造远端状态；提交前仍需以可用网络执行fetch/push并用`git ls-remote`核验。
+
 ## 2026-10-27 — 完整48及46–48统计、正式49与VMC诊断
 
 [最新交接](docs/RL_PARAMETER49_PROGRESS_20261027.md)。48三路全30×55/noabort/旧replay和history保留/全reward含终端0误差，Task/Strict18/17、13/13、17/16，reward−2.430898/−10.331552/−4.567467。原46–48 I通过5%（首尾4.5442%），A首尾33.1977%未稳定，V相邻未过；保存算术/hash核对，不重跑bootstrap。VMC48最大loss132.715短暂尖峰，末1000 .666191；前瞻49首5000均值.614563/max6.557824、>10均0，独立保存复核通过，仅早期诊断非收敛。
