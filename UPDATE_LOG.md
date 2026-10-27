@@ -3,7 +3,7 @@
 - 只读复核主运行报告、独立最终审计及12个远端归档：原学习组108 + 历史传统控制器72 = 180/180，12条件各15回合，197,135,200物理子步；180条身份唯一且本地运行目录齐全。最终状态 `final180_saved_physics_audit_passed`，Task 57/180、Strict 35/180、Task+Strict 35/180，公共filter replay最大绝对误差0，机器安全违规25/180。
 - 最终共同 `T_ref=34.36000000126405s`，按 `mean(T_ref/max(T_i,T_ref) | Task_i=true)` 计算条件SPT；失败回合不进入SPT分母，Task成功但Strict失败仍计入。完整比较表已写入 `docs/evidence/nonrl_classical_task_spt_20261027/FINAL_COMPARISON_180.md`，独立hash/远端包索引写入 `FINAL_AUDIT_INDEX.json`。
 - 第009、010、011条件的ARCHIVE与physics audit收据已用`apply_patch`复制到专题证据目录，并与归档源逐字节`cmp`通过；12个远端独立目录和SHA256全部登记。主运行 `completed=72` 权威；归档服务旧`campaign_completed=71`只是等待快照，已明确标注而未被当作最终状态。
-- 保留限制：传统控制器历史有限搜索与学习训练预算不等价，传统组无完整独立actor/servo重放；无新物理/训练/调参，失败原件和安全指标保留。远端fetch本轮因GitHub网络不可达失败，待网络恢复后按AGENTS完成安全合并、提交、push和远端提交号核验。Goal仍 active，待GitHub发布确认后再完成。
+- 保留限制：传统控制器历史有限搜索与学习训练预算不等价，传统组无完整独立actor/servo重放；无新物理/训练/调参，失败原件和安全指标保留。首次默认网络请求失败后已用授权网络完成fetch、合并并推送；GitHub `main` 已由 `git ls-remote` 核验为 `2a9e79a628a9f5c584a1fbb63be363848a725700`，未强推。Goal的非RL交付目标已完成。
 
 ## 2026-10-27 — Direct29完整、原27–29稳定通过、冻结29与有限30
 

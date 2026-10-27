@@ -4,7 +4,7 @@
 
 非RL最终目标已完成：原学习组108回合与6套历史传统控制器72回合共180/180，12条件各15回合，197,135,200个物理子步。主运行 `code/mujoco_6d_vmc_benchmark/outputs/nonrl_classical_task_spt_20261027_v1/execution.json` 为 `complete/completed=72`；独立 `published/archive_pipeline_v1/FINAL_AUDIT.json` 为 `final180_saved_physics_audit_passed`。180条回合身份唯一、本地运行目录齐全；Task 57/180、Strict 35/180、Task+Strict 35/180，公共filter重放最大误差0，机器安全违规25/180。共同 `T_ref` 取全部Task成功回合最短时间34.36000000126405秒。最终比较与远端归档索引见 `docs/evidence/nonrl_classical_task_spt_20261027/FINAL_COMPARISON_180.md` 和 `FINAL_AUDIT_INDEX.json`；009–011条件小收据已逐字节复制核验。归档服务旧execution快照的`campaign_completed=71`仅为等待时计数，不覆盖主运行72和最终180审计。
 
-本轮只读核验，无新仿真、训练、调参或冻结环境修改。传统控制器的历史参数预算与学习组不等价，且传统组没有完整独立actor/servo重放；失败回合和全部安全审计保留。远端GitHub fetch在本轮因网络不可达失败，未伪造远端状态；提交前仍需以可用网络执行fetch/push并用`git ls-remote`核验。
+本轮只读核验，无新仿真、训练、调参或冻结环境修改。传统控制器的历史参数预算与学习组不等价，且传统组没有完整独立actor/servo重放；失败回合和全部安全审计保留。首次默认网络请求失败后已用授权网络完成fetch、合并并推送；GitHub `main` 已核验为提交 `2a9e79a628a9f5c584a1fbb63be363848a725700`，未强推。Goal 的非RL交付目标已完成。
 
 ## 2026-10-27 — Direct29完整、原27–29稳定通过、冻结29与有限30
 

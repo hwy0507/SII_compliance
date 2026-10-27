@@ -4,7 +4,7 @@
 
 主运行报告和独立最终审计已完成并交叉核验：原学习组108回合 + 传统控制器72回合 = 180/180，12个条件各15回合，197,135,200个物理子步；180条回合身份唯一且本地运行目录齐全。最终状态为 `final180_saved_physics_audit_passed`，Task成功57/180，Strict成功35/180，Task且Strict成功35/180，公共filter重放最大绝对误差0，机器安全违规25/180。共同 `T_ref` 为34.36000000126405秒，失败回合保留且不进入条件SPT分母。
 
-最终汇总和证据索引已发布到 `docs/evidence/nonrl_classical_task_spt_20261027/FINAL_COMPARISON_180.md` 与 `FINAL_AUDIT_INDEX.json`。第009、010、011条件的ARCHIVE及physics audit小收据已从归档目录逐字节复制并用`cmp`核验；12个远端 `PHYSICS_BUNDLE.tar.gz` 的路径、大小和SHA256均在索引中登记。归档服务旧 `execution.json` 的 `campaign_completed=71` 是等待时快照，不能覆盖主运行 `completed=72` 和最终180审计；该差异已在最终证据中明确记录。
+最终汇总和证据索引已发布到 `docs/evidence/nonrl_classical_task_spt_20261027/FINAL_COMPARISON_180.md` 与 `FINAL_AUDIT_INDEX.json`。第009、010、011条件的ARCHIVE及physics audit小收据已从归档目录逐字节复制并用`cmp`核验；12个远端 `PHYSICS_BUNDLE.tar.gz` 的路径、大小和SHA256均在索引中登记。归档服务旧 `execution.json` 的 `campaign_completed=71` 是等待时快照，不能覆盖主运行 `completed=72` 和最终180审计；该差异已在最终证据中明确记录。最终文档已推送到 GitHub `main`，提交为 `2a9e79a628a9f5c584a1fbb63be363848a725700`。
 
 ### 最终比较表
 
