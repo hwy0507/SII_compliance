@@ -1,0 +1,298 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_serl_capacity25_20261027.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_serl_capacity26_20261027.py
+@@ -2,30 +2,30 @@
+ import hashlib,json,shutil,subprocess,os,time
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+ R=B/'repository/SII_compliance'
+-oldname='serl_capacity_batch65536_cycle24_20261027_v1'
+-name='serl_capacity_batch65536_cycle25_20261027_v1'
++oldname='serl_capacity_batch65536_cycle25_20261027_v1'
++name='serl_capacity_batch65536_cycle26_20261027_v1'
+ OUT=B/'runs'/name;RT=B/'runtime'/name
+ def sha(p):
+     with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ def ref(p):return dict(path=str(p),sha256=sha(p))
+ def read(p):return json.loads(Path(p).read_text())
+ def write(p,d):p.write_text(json.dumps(d,indent=2)+'\n')
+-candidates=[B/'runs/serl_capacity_batch65536_cycle24_review_20261027_v1']
++candidates=[B/'runs/serl_capacity_batch65536_cycle25_review_20261027_v1']
+ complete=[p for p in candidates if (p/'FINISHED.json').exists()]
+-assert len(complete)==1,'Require exactly one completed full24 scientific review'
++assert len(complete)==1,'Require exactly one completed full25 scientific review'
+ review=complete[0];assert read(review/'FINISHED.json')['completed'] and read(review/'REVIEW.json')['passed']
+-cp=B/'runs/serl_capacity_batch65536_cycle24_archive_20261027_v1/direct/cycle_00024.pt'
++cp=B/'runs/serl_capacity_batch65536_cycle25_archive_20261027_v1/direct/cycle_00025.pt'
+ assert read(review/'REVIEW.json')['methods']['direct']['checkpoint_sha256']==sha(cp)==read(review/'DIAGNOSIS.json')['checkpoint_sha256']
+ assert read(review/'DIAGNOSIS.json')['network_optimizer_rng_unchanged']
+ parent_launch=read(B/'runs'/oldname/'LAUNCH.json')
+-assert not Path(f"/proc/{parent_launch['pid']}").exists(), 'Original24 learner must exit before reusing CPU0'
++assert not Path(f"/proc/{parent_launch['pid']}").exists(), 'Original25 learner must exit before reusing CPU0'
+ os.sched_setaffinity(0,{0})
+ OUT.mkdir();shutil.copytree(B/'runtime'/oldname,RT,ignore=shutil.ignore_patterns('__pycache__'))
+ driver='resume_serl_capacity_reviewed_continuation_20261027.py'
+ helper='serl_replay_capacity_20261027.py'
+ for filename in [driver,helper]:shutil.copyfile(R/'code/mujoco_6d_vmc_benchmark/tools'/filename,RT/filename)
+ parent=B/'runs'/oldname/'REGISTRATION.json';p=read(parent);p['resume_parent_registration']=ref(parent)
+-stage=p['reviewed_continuation_stage'];stage['parent_cycle']=24;stage['checkpoint']=ref(cp);stage['driver_sha256']=sha(RT/driver)
++stage=p['reviewed_continuation_stage'];stage['parent_cycle']=25;stage['checkpoint']=ref(cp);stage['driver_sha256']=sha(RT/driver)
+ stage['cycle_review']=ref(review/'REVIEW.json');stage['health_review']=ref(review/'DIAGNOSIS.json')
+ stage['patched_main_sha256']=sha(B/'runs'/oldname/'SAMPLER_MAIN.py.txt')
+ p['gather_stage']['prepared_checkpoint']=stage['checkpoint'];p['gather_stage']['source_hashes'][driver]=sha(RT/driver)
+@@ -36,7 +36,7 @@
+ sys.path.insert(0,str(RT))
+ from serl_replay_capacity_20261027 import MARKER
+ x=torch.load(cp,map_location='cpu',weights_only=False)
+-assert x['cycle']==24 and x['boundary']=='complete_condition_cycle'
++assert x['cycle']==25 and x['boundary']=='complete_condition_cycle'
+ assert x['steps']==x['replay']['size']==x['replay']['cursor']
+ assert x['steps']+41250<=2_000_000
+ assert x['replay']['capacity']==2_000_000 and x['replay']['replay_capacity_extension']==MARKER
+@@ -50,7 +50,7 @@
+ assert d['helper_sha256']==sha(RT/helper)
+ # Keep historical entry23 checkpoint/digest and validation evidence unchanged.
+ p['gather_stage']['source_hashes'][helper]=sha(RT/helper)
+-stage['decision']='One finite cycle25 from exact complete24; inherit2m replay, historical entry23 and all learner/optimizer/targets/physics/reward. No auxiliary weights or convergence claim.'
++stage['decision']='One finite cycle26 from exact complete25; inherit2m replay, historical entry23 and all learner/optimizer/targets/physics/reward. No auxiliary weights or convergence claim.'
+ del x
+ write(OUT/'REGISTRATION.json',p)
+ cmd=list(read(B/'runs'/oldname/'LAUNCH.json')['command']);cmd[1]=str(RT/driver)
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/launch_serl_capacity25_20261027.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/launch_serl_capacity26_20261027.py
+@@ -1,16 +1,16 @@
+ from pathlib import Path
+ import json,os,subprocess,time
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+-out=B/'runs/serl_capacity_batch65536_cycle25_20261027_v1'
+-review=B/'runs/serl_capacity_batch65536_cycle24_review_20261027_v1'
++out=B/'runs/serl_capacity_batch65536_cycle26_20261027_v1'
++review=B/'runs/serl_capacity_batch65536_cycle25_review_20261027_v1'
+ assert json.loads((review/'FINISHED.json').read_text())['completed']
+ assert json.loads((review/'REVIEW.json').read_text())['passed']
+ assert json.loads((out/'CHECK_ONLY_COMPLETE.json').read_text())['passed']
+ assert json.loads((out/'PRELAUNCH_SCIENTIFIC_REVIEW.json').read_text())['passed']
+-parent_launch=json.loads((B/'runs/serl_capacity_batch65536_cycle24_20261027_v1/LAUNCH.json').read_text())
++parent_launch=json.loads((B/'runs/serl_capacity_batch65536_cycle25_20261027_v1/LAUNCH.json').read_text())
+ assert not (out/'LAUNCH.json').exists() and not Path(f"/proc/{parent_launch['pid']}").exists()
+ env=dict(os.environ,CUDA_VISIBLE_DEVICES='0',XLA_PYTHON_CLIENT_PREALLOCATE='false',JAX_COMPILATION_CACHE_DIR=str(B/'runtime/jax_compilation_cache'),OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1',NUMEXPR_NUM_THREADS='1')
+ cmd=json.loads((out/'COMMAND.json').read_text())['command']
+ with (out/'train.log').open('x') as log:p=subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT,env=env,start_new_session=True)
+ (out/'LAUNCH.json').write_text(json.dumps(dict(command=cmd,pid=p.pid,time=time.time()),indent=2)+'\n');print('learner',p.pid,flush=True)
+-subprocess.run(['python',str(B/'runtime/setup_serl_capacity25_monitors_20261027.py')],check=True)
++subprocess.run(['python',str(B/'runtime/setup_serl_capacity26_monitors_20261027.py')],check=True)
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/setup_serl_capacity25_monitors_20261027.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/setup_serl_capacity26_monitors_20261027.py
+@@ -1,14 +1,14 @@
+ from pathlib import Path
+ import json,os,subprocess,time,hashlib,shutil
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');out=B/'runs/serl_capacity_batch65536_cycle25_20261027_v1';rt=B/'runtime'/out.name
+-templates=B/'runtime/serl_capacity25_monitor_templates_20261027_v1'
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');out=B/'runs/serl_capacity_batch65536_cycle26_20261027_v1';rt=B/'runtime'/out.name
++templates=B/'runtime/serl_capacity26_monitor_templates_20261027_v1'
+ manifest=json.loads((templates/'MANIFEST.json').read_text())
+ for name,expected in manifest['templates'].items():
+  with (templates/name).open('rb') as f:assert hashlib.file_digest(f,'sha256').hexdigest()==expected
+-archive=B/'runs/serl_capacity_batch65536_cycle25_archive_20261027_v1';view=B/'runs'/(archive.name+'_view');view.mkdir();(view/'direct').symlink_to(out/'direct')
++archive=B/'runs/serl_capacity_batch65536_cycle26_archive_20261027_v1';view=B/'runs'/(archive.name+'_view');view.mkdir();(view/'direct').symlink_to(out/'direct')
+ launch=json.loads((out/'LAUNCH.json').read_text())
+ (view/'LAUNCH.json').write_text(json.dumps(dict(jobs=[dict(controller='direct',**launch)]),indent=2)+'\n')
+-review=B/'runs/serl_capacity_batch65536_cycle25_review_20261027_v1';review.mkdir()
++review=B/'runs/serl_capacity_batch65536_cycle26_review_20261027_v1';review.mkdir()
+ for name in ['review.py','coordinator.py','diagnose.py']:shutil.copy2(templates/name,review/name)
+ for name in ['startup_review.py']:shutil.copy2(templates/name,out/name)
+ env=dict(os.environ,OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1',NUMEXPR_NUM_THREADS='1',CUDA_VISIBLE_DEVICES='0',XLA_PYTHON_CLIENT_PREALLOCATE='false',JAX_COMPILATION_CACHE_DIR=str(B/'runtime/jax_compilation_cache'))
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/wait_prepare_serl_capacity25_20261027.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/wait_prepare_serl_capacity26_20261027.py
+@@ -1,13 +1,13 @@
+ from pathlib import Path
+ import json,subprocess,time,os
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+-review=B/'runs/serl_capacity_batch65536_cycle24_review_20261027_v1'
++review=B/'runs/serl_capacity_batch65536_cycle25_review_20261027_v1'
+ limit=time.monotonic()+7200
+ while not (review/'FINISHED.json').exists():
+  assert time.monotonic()<limit
+- assert not (B/'runs/serl_capacity_batch65536_cycle24_20261027_v1/direct/FAILURE.json').exists()
++ assert not (B/'runs/serl_capacity_batch65536_cycle25_20261027_v1/direct/FAILURE.json').exists()
+  time.sleep(5)
+ assert json.loads((review/'FINISHED.json').read_text())['completed']
+ assert json.loads((review/'REVIEW.json').read_text())['passed']
+-subprocess.run([str(B/'serl_env/bin/python'),str(B/'runtime/prepare_serl_capacity25_20261027.py')],check=True,env=dict(os.environ,CUDA_VISIBLE_DEVICES=''))
+-print('Prepared25 only. Formal launch requires review inspection.',flush=True)
++subprocess.run([str(B/'serl_env/bin/python'),str(B/'runtime/prepare_serl_capacity26_20261027.py')],check=True,env=dict(os.environ,CUDA_VISIBLE_DEVICES=''))
++print('Prepared26 only. Formal launch requires review inspection.',flush=True)
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_capacity25_monitor_templates_20261027_v1/startup_review.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_capacity26_monitor_templates_20261027_v1/startup_review.py
+@@ -38,12 +38,12 @@
+  assert s['critic_clock_extension']==original['critic_clock_extension']
+  assert s['critic_clock_extension']['actor_features']==48 and s['critic_clock_extension']['critic_observation_features']==49
+  reg=json.loads((OUT.parent/'REGISTRATION.json').read_text());assert x['protocol_sha256']==e['protocol_sha256']==sha(OUT.parent/'REGISTRATION.json');assert e['batch_size']==65536
+- sys.path.insert(0,str(B/'runtime/serl_capacity_batch65536_cycle25_20261027_v1'))
++ sys.path.insert(0,str(B/'runtime/serl_capacity_batch65536_cycle26_20261027_v1'))
+  from serl_replay_capacity_20261027 import MARKER as CAPACITY_MARKER
+  assert reg['replay_capacity_stage']['marker']==CAPACITY_MARKER
+  assert x['replay']['replay_capacity_extension']==CAPACITY_MARKER
+  assert x['replay']['capacity']==2_000_000 and x['replay']['cursor']==x['replay']['size']==x['steps']
+- assert old['cycle']==24 and old['boundary']=='complete_condition_cycle'
++ assert old['cycle']==25 and old['boundary']=='complete_condition_cycle'
+  assert old['replay']['capacity']==2_000_000 and old['replay']['size']==old['replay']['cursor']==old['steps']
+  assert old['replay']['replay_capacity_extension']==CAPACITY_MARKER
+  parent_ref=reg['resume_parent_registration'];parent_reg_path=Path(parent_ref['path'])
+@@ -51,7 +51,7 @@
+  parent_reg=json.loads(parent_reg_path.read_text())
+  assert reg['replay_capacity_stage']==parent_reg['replay_capacity_stage']
+  assert reg['replay_capacity_stage']['parent_cycle']==23
+- assert reg['reviewed_continuation_stage']['parent_cycle']==24
++ assert reg['reviewed_continuation_stage']['parent_cycle']==25
+  assert reg['reviewed_continuation_stage']['checkpoint']==dict(path=str(parent),sha256=sha(parent))
+  entry=reg['replay_capacity_stage']['entry_checkpoint'];assert sha(entry['path'])==entry['sha256']
+  capacity_review=dict(passed=True,historical_entry_cycle=23,inherited_stage_exact=True,old_capacity=2_000_000,new_capacity=2_000_000,marker=CAPACITY_MARKER,
+@@ -68,9 +68,9 @@
+  for t in ts:by[t['condition']].append(t)
+  err=0.
+  for name,rows in by.items():
+-  journal=list(lines(run/'cycle_00025'/name/'actor_intervals.jsonl'));reward=SPTReward()
++  journal=list(lines(run/'cycle_00026'/name/'actor_intervals.jsonl'));reward=SPTReward()
+   for i,t in enumerate(rows):
+-   j=journal[i];nxt=json.loads((run/'cycle_00025'/name/'TERMINAL.json').read_text()) if t['done'] else journal[i+1];k=t['step']-1
++   j=journal[i];nxt=json.loads((run/'cycle_00026'/name/'TERMINAL.json').read_text()) if t['done'] else journal[i+1];k=t['step']-1
+    labels=nxt['result'] if t['done'] else dict(task_success=False,strict_success=False)
+    value,_=reward(current_potential=j['payload_potential'],next_potential=nxt['payload_potential'],interval=nxt['interval'],terminated=t['done'],task_success=labels['task_success'],strict_success=labels['strict_success'])
+    if t['done'] and labels['strict_success']:value+=completion_bonus(task_success=True,strict_success=True,completion_time_s=nxt['completion_time_s'])
+@@ -79,7 +79,7 @@
+    expected=a['actions'][k].copy();expected[0]=np.float32(.5)*(expected[0]+np.float32(1.))
+    np.testing.assert_array_equal(expected,np.asarray(j['action'],np.float32));np.testing.assert_array_equal(expected,np.asarray(j['executed_action'],np.float32));assert t['context'] is None
+    np.testing.assert_array_equal(a['next_observations'][k,:48],(a['observations'][k,:48] if t['done'] else np.asarray(nxt['observation'],np.float32)/s['observation_scale']));assert a['next_observations'][k,48]==np.float32((1374-i)/1375);assert a['rewards'][k,0]==np.float32(t['reward']) and a['dones'][k,0]==float(t['done'])
+- sys.path.insert(0,str(B/'runtime/serl_capacity_batch65536_cycle25_20261027_v1'))
++ sys.path.insert(0,str(B/'runtime/serl_capacity_batch65536_cycle26_20261027_v1'))
+  from audit_serl_multistep_replay_20261026 import audit
+  multistep=audit(x,old,ts)
+  report['multistep_replay']=multistep
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_capacity25_monitor_templates_20261027_v1/review.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_capacity26_monitor_templates_20261027_v1/review.py
+@@ -24,30 +24,30 @@
+     return True
+ methods={}
+ for m in ['direct']:
+-    run=B/'runs/serl_capacity_batch65536_cycle25_20261027_v1/direct'
+-    cp=B/'runs/serl_capacity_batch65536_cycle25_archive_20261027_v1'/m/'cycle_00025.pt'
++    run=B/'runs/serl_capacity_batch65536_cycle26_20261027_v1/direct'
++    cp=B/'runs/serl_capacity_batch65536_cycle26_archive_20261027_v1'/m/'cycle_00026.pt'
+     deadline=time.monotonic()+7200
+     while not cp.exists():
+-        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Cycle25 archive unavailable: '+m)
++        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Cycle26 archive unavailable: '+m)
+         time.sleep(2)
+     x=torch.load(cp,map_location='cpu',weights_only=False)
+     execution=read(run/'EXECUTION.json');parent=Path(execution['resumed_from'])
+     assert sha(parent)==execution['resumed_checkpoint_sha256']
+     stage_parent=parent
+     old=torch.load(parent,map_location='cpu',weights_only=False)
+-    assert x['cycle']==25 and x['boundary']=='complete_condition_cycle'
+-    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==25
++    assert x['cycle']==26 and x['boundary']=='complete_condition_cycle'
++    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==26
+     assert finite(x['learner']) and x['learner']['config']==old['learner']['config']
+     assert x['learner']['critic_clock_extension']==old['learner']['critic_clock_extension']
+     assert x['learner']['critic_actor_ratio']==8 and x['learner']['config']['critic_ensemble_size']==10
+     reg=read(run.parent/'REGISTRATION.json');conditions={r['id']:r for r in reg['conditions']}
+     assert x['protocol_sha256']==sha(run.parent/'REGISTRATION.json')
+-    sys.path.insert(0,str(B/'runtime/serl_capacity_batch65536_cycle25_20261027_v1'))
++    sys.path.insert(0,str(B/'runtime/serl_capacity_batch65536_cycle26_20261027_v1'))
+     from serl_replay_capacity_20261027 import MARKER as CAPACITY_MARKER
+     assert reg['replay_capacity_stage']['marker']==CAPACITY_MARKER
+     assert x['replay']['replay_capacity_extension']==CAPACITY_MARKER
+     assert x['replay']['capacity']==2_000_000 and x['replay']['cursor']==x['replay']['size']==x['steps']
+-    assert old['cycle']==24 and old['boundary']=='complete_condition_cycle'
++    assert old['cycle']==25 and old['boundary']=='complete_condition_cycle'
+     assert old['replay']['capacity']==2_000_000 and old['replay']['size']==old['replay']['cursor']==old['steps']
+     assert old['replay']['replay_capacity_extension']==CAPACITY_MARKER
+     parent_ref=reg['resume_parent_registration'];parent_reg_path=Path(parent_ref['path'])
+@@ -55,14 +55,14 @@
+     parent_reg=json.loads(parent_reg_path.read_text())
+     assert reg['replay_capacity_stage']==parent_reg['replay_capacity_stage']
+     assert reg['replay_capacity_stage']['parent_cycle']==23
+-    assert reg['reviewed_continuation_stage']['parent_cycle']==24
++    assert reg['reviewed_continuation_stage']['parent_cycle']==25
+     assert reg['reviewed_continuation_stage']['checkpoint']==dict(path=str(parent),sha256=sha(parent))
+     entry=reg['replay_capacity_stage']['entry_checkpoint'];assert sha(entry['path'])==entry['sha256']
+     capacity_review=dict(passed=True,historical_entry_cycle=23,inherited_stage_exact=True,old_capacity=2_000_000,new_capacity=2_000_000,marker=CAPACITY_MARKER,
+         old_size=old['replay']['size'],current_size=x['steps'],cursor=x['replay']['cursor'],crossed_old_capacity=x['steps']>1_000_000)
+     n=old['replay']['size'];arr=x['replay']['arrays']
+     for k,v in old['replay']['arrays'].items():assert np.array_equal(v,arr[k][:n])
+-    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==25]
++    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==26]
+     assert len(transitions)==x['steps']-old['steps']
+     assert [t['step'] for t in transitions]==list(range(old['steps']+1,x['steps']+1))
+     assert x['learner']['num_gradient_steps']-old['learner']['num_gradient_steps']==8*len(transitions)
+@@ -70,7 +70,7 @@
+     np.testing.assert_array_equal(arr['dones'][n:,0],np.array([t['done'] for t in transitions],np.float32))
+     by_case=collections.defaultdict(list)
+     for t in transitions:by_case[t['condition']].append(t)
+-    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==25]
++    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==26]
+     assert len(conditions)==30 and len(episodes)==30 and {e['condition'] for e in episodes}==set(conditions)
+     max_reward_error=0.
+     for e in episodes:
+@@ -104,7 +104,7 @@
+ 
+         assert abs(sum(t['reward'] for t in ts)-e['reward'])<1e-8
+     assert sha(reg['reference_plan'])==reg['reference_plan_sha256']
+-    sys.path.insert(0,str(B/'runtime/serl_capacity_batch65536_cycle25_20261027_v1'))
++    sys.path.insert(0,str(B/'runtime/serl_capacity_batch65536_cycle26_20261027_v1'))
+     from audit_serl_multistep_replay_20261026 import audit
+     multistep=audit(x,old,transitions)
+     assert multistep['new_pending_rows']==0
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_capacity25_monitor_templates_20261027_v1/diagnose.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/serl_capacity26_monitor_templates_20261027_v1/diagnose.py
+@@ -9,7 +9,7 @@
+ torch.set_num_threads(1)
+ B = Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+ OUT = Path(__file__).parent
+-sys.path.insert(0, str(B/'runtime/serl_capacity_batch65536_cycle25_20261027_v1'))
++sys.path.insert(0, str(B/'runtime/serl_capacity_batch65536_cycle26_20261027_v1'))
+ from serl_multistep_state_adapter_20261026 import SerlMultistepLearner as SerlStateLearner
+ from validate_serl_state_20261026 import digest
+ 
+@@ -19,7 +19,7 @@
+         raise RuntimeError('Review not ready within observation budget')
+     time.sleep(2)
+ review = json.loads((OUT/'REVIEW.json').read_text())
+-x = torch.load(B/'runs/serl_capacity_batch65536_cycle25_archive_20261027_v1/direct/cycle_00025.pt', map_location='cpu', weights_only=False)
++x = torch.load(B/'runs/serl_capacity_batch65536_cycle26_archive_20261027_v1/direct/cycle_00026.pt', map_location='cpu', weights_only=False)
+ a = SerlStateLearner(B/'runtime/source_train17_clock',
+     upstream=B/'runtime/serl_upstream_1fa2af7',
+     upstream_manifest=B/'runtime/SERL_UPSTREAM_1fa2af7_HASHES.json',
+@@ -29,7 +29,7 @@
+ assert before == digest(x['learner'])
+ arrays = x['replay']['arrays']
+ terminal = np.flatnonzero(arrays['dones'].reshape(-1))
+-assert len(terminal)==780
++assert len(terminal)==810
+ jax = a.jax
+ def stats(v):
+     v = np.asarray(v)
+@@ -39,7 +39,7 @@
+ batch = a.batch(dict({k:v[terminal] for k,v in arrays.items()}, _bootstrap=1-arrays['dones'][terminal,0]))
+ q = np.asarray(a.agent.forward_critic(batch['observations'], batch['actions'], rng=jax.random.PRNGKey(261)))
+ report = dict(captured_unix=time.time(), checkpoint_sha256=review['methods']['direct']['checkpoint_sha256'],
+-    optimizer_updates=0, new_physics=0, terminal_count=780,
++    optimizer_updates=0, new_physics=0, terminal_count=810,
+     terminal_reward=stats(batch['rewards']), terminal_q=stats(q),
+     terminal_q_absolute_error=stats(q-np.asarray(batch['rewards'])[None]) )
+ report['terminal_q_absolute_error'] = stats(np.abs(q-np.asarray(batch['rewards'])[None]))
+@@ -74,7 +74,7 @@
+ import matplotlib
+ matplotlib.use('Agg')
+ import matplotlib.pyplot as plt
+-run = B/'runs/serl_capacity_batch65536_cycle25_20261027_v1/direct'
++run = B/'runs/serl_capacity_batch65536_cycle26_20261027_v1/direct'
+ rows = [json.loads(s) for s in (run/'optimizer.jsonl').read_text().splitlines() if s.strip()]
+ rows = [r for r in rows if r['step']<=x['steps']]
+ groups = [rows[i:i+500] for i in range(0,len(rows),500)]
+@@ -83,5 +83,5 @@
+     ax.plot([np.mean([r['step'] for r in g]) for g in groups], [np.mean([r[key] for r in g]) for g in groups])
+     ax.set_title(key+' (500 updates/mean)');ax.set_xlabel('Online transitions');ax.grid(alpha=.2)
+ axes[0,0].set_yscale('log');axes[1,1].set_yscale('log')
+-fig.suptitle('Adapted SERL 32-step cycle25: optimizer diagnostics; no convergence claim')
++fig.suptitle('Adapted SERL 32-step cycle26: optimizer diagnostics; no convergence claim')
+ fig.savefig(OUT/'training_diagnostics.png',dpi=150)

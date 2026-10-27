@@ -1,3 +1,9 @@
+## 2026-10-27 — 阻抗39保存姿态碰撞检查、Direct26静态准备
+
+[最新补充](docs/RL_IMPEDANCE39_COLLISION_SERL26_20261027.md)。新CPU54/120秒有界原1277515已结束，完整38/39 long0000共1930保存姿态静态mj_forward，0动力学积分/优化/replay写入；同MJB/evaluator、输入/source hash保持，独立保存算术/图通过。静态pair峰值.053540/.067699mm，均无2mm超限；39最后40ms位移34.771378mm、末速度.569342m/s，原retreat接触力峰5864.176N。未重现原子步99.575mm不等于否定早停或引擎错误，25Hz姿态缺800子步中间状态，根因未定；原失败/gate不改。保存xpos与forward最大10.35/26.08µm差异按积分时序局限保留。
+Direct26八入口/模板静态通过，B/runs/serl26_static_preparation_20261027_v1；准确25→26/810终端/2m历史entry23/batch历史12/CPU0/真实setup路径保持，source diff/manifest保存。无26 waiter/调度/训练或实际父恢复；待实际25启动后登记有界准备，不重复validated driver/helper验证。
+四正式24/40、25/41原恢复准备与两固定窗口均重新核验live；完整24/40及整体收敛尚待。原百万边界、40startup、固定VMC1164、冻结32全90与GPU窗口均完成勿重跑，本轮无额外GPU负载。开工远端main7d69ac5/baseline f6e8f8c真实核验未变；Goal active，无子agent，SSD归档另记。
+
 ## 2026-10-27 — 参数39完整、固定VMC1164跟踪完成，正式40接续
 
 
