@@ -9293,3 +9293,7 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 实际启动补充：Direct23原startup257405已完成，新增1000至936790steps/7454328critic，旧935790 raw/derived/history/optimizer/clock保留，新143mature+857pending精确、30MJB/sampler/action/新reward0误差。原check-only与actual startup是两项不同核验，均已通过。四正式23/37持续，旧22/36及准备/启动审查已结束的不重启。
 
 新23/37/冻结32混合原observer272271已完成，60样本/65.789744秒，GPU0–3均值[60.15, 73.8, 72.98333333333333, 66.31666666666666]%，逐样本7原PID身份保持，保存均值独立核验通过。非纯正式吞吐、不是每瞬时50%保证，不抹去已发生换轮空档；勿重采。
+
+本轮科学提交8db21e6ffa159cb547d1e031573902819378b2f5仅本地；SSD完整本轮小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER37_SERL23_CAPACITY_20261027_031739/FULL_SMALL_EVIDENCE.tar.gz，69成员逐大小/hash核验、1369149字节、SHA256 160dcaf56a5bfa9d8912c1d7a3f4eb1f112b750db894fb2b04ef368672247efc。新HANDOFF/收据仅SSD，现有HDD LATEST已更新并回读；大产物仍SSD，非HDD/arm1全量备份。四正式23/37、38仅恢复准备、原36–38与冻结32继续，Goal active。
+
+本轮实际push失败：fatal: could not read Username for https://github.com（terminal prompts disabled）；本地提交与SSD归档已保存，未发布到远端。未再次索取凭据。
