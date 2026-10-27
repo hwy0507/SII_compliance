@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-27 — 参数41全30冻结验证前瞻登记
+
+[预登记报告](docs/RL_FROZEN41_REGISTRATION_20261027.md)。在正式40运行、41未启动/完整父不存在时，固定原39–41窗口终点41、全30条件及冻结32同外部seed2026102638，三方法90×55秒/最多123750动作、99000000子步；不是重跑完成32或择优checkpoint。原准备1833369等待7200秒，仅完整41审查后check-only，无自动物理评估。AST/CLI/准确41与entry23/预算、helper逐字节与正式40共同20模块hash检查通过；实际41父恢复尚待。
+新run B/runs/parameter41_frozen_full30_20261027_v1，PLAN SHA a541276ae23af43ac253d0bc0d6a3736fd5a601d8ba6d00307f727e3379df83a。0优化/正式replay写入，CPU52/53/54/GPU1/2/3；后续实际check-only和科学review后才启动固定90回合，不自动延期/加seed。训练条件单seed冻结比较不替代泛化/指定ESN/SPT/整体收敛。
+四正式24/40、原25/41准备与两固定窗口均核验live。新CPU54原衔接observer1739008每2秒/1800秒只记原四退出与25/41spawn，不自动训练或生成GPU负载；保存值review40/24已准备尚未执行。原完成诊断/物理/边界不重跑。远端main7d69ac5/baseline f6e8f8c开工真实读取未变；Goal active，无子agent。
+
+
 ## 2026-10-27 — 阻抗39保存姿态碰撞检查、Direct26静态准备
 
 [最新补充](docs/RL_IMPEDANCE39_COLLISION_SERL26_20261027.md)。新CPU54/120秒有界原1277515已结束，完整38/39 long0000共1930保存姿态静态mj_forward，0动力学积分/优化/replay写入；同MJB/evaluator、输入/source hash保持，独立保存算术/图通过。静态pair峰值.053540/.067699mm，均无2mm超限；39最后40ms位移34.771378mm、末速度.569342m/s，原retreat接触力峰5864.176N。未重现原子步99.575mm不等于否定早停或引擎错误，25Hz姿态缺800子步中间状态，根因未定；原失败/gate不改。保存xpos与forward最大10.35/26.08µm差异按积分时序局限保留。

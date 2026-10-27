@@ -1,0 +1,159 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter32_frozen_full30_20261026_v1/evaluate_parameter32_frozen_full30_20261026.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter41_frozen_full30_20261027_v1/evaluate_parameter41_frozen_full30_20261026.py
+@@ -1,4 +1,4 @@
+-"""Frozen complete32 parameter policies on all30 registered training conditions.
++"""Frozen complete41 parameter policies on all30 registered training conditions.
+ 
+ One external action seed per method; no optimization or formal replay writes.
+ Reuse the independently exercised external RNG and native replay implementation
+@@ -28,7 +28,7 @@
+     runtime = Path(reg['audit_runtime'])
+     for name, expected in reg['source_hashes'].items():
+         assert sha(runtime/name) == expected, name
+-    assert reg['parent_cycle'] == 32
++    assert reg['parent_cycle'] == 41
+     assert len(reg['case_ids']) == len(set(reg['case_ids'])) == 30
+     assert reg['action_seed'] == 2026102638
+     assert sha(reg['checkpoint']) == reg['checkpoint_sha256']
+@@ -52,7 +52,7 @@
+     from train_published_compliance_20261025 import Replay
+     from validate_published_finite_check_20261025 import digest
+     ck = torch.load(reg['checkpoint'], map_location='cpu', weights_only=False)
+-    assert ck['cycle'] == 32 and ck['boundary'] == 'complete_condition_cycle'
++    assert ck['cycle'] == 41 and ck['boundary'] == 'complete_condition_cycle'
+     assert ck['controller'] == reg['controller'] and ck['protocol_sha256'] == sha(reg['training_registration'])
+     assert ck['replay']['replay_capacity_extension'] == MARKER
+     assert protocol['replay_capacity_stage']['parent_cycle'] == 23
+@@ -86,7 +86,7 @@
+         checkpoint_sha256=sha(reg['checkpoint']), action_seed=reg['action_seed'], case_ids=reg['case_ids'],
+         full_learner_digest=initial, full_replay_digest=replay_digest, expected_episodes=30,
+         maximum_actions=41250, maximum_substeps=33000000, optimizer_updates=0,
+-        scope='Prospectively selected complete32 frozen policy on all30 training conditions, one external action seed; not independent training seeds, held-out tests or final ESN comparison'))
++        scope='Prospectively selected complete41 frozen policy on all30 training conditions, one external action seed; not independent training seeds, held-out tests or final ESN comparison'))
+     results = []
+     seed = reg['action_seed']
+     for case in reg['case_ids']:
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter32_frozen_full30_20261026_v1/review_parameter32_frozen_full30_20261026.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter41_frozen_full30_20261027_v1/review_parameter41_frozen_full30_20261026.py
+@@ -1,4 +1,4 @@
+-"""Collect the registered ninety frozen32 episodes without extending their budget."""
++"""Collect the registered ninety frozen41 episodes without extending their budget."""
+ from pathlib import Path
+ import argparse
+ import hashlib
+@@ -27,7 +27,7 @@
+     assert sha(__file__) == waiting['source_sha256']
+     assert sha(root/'PLAN.json') == waiting['plan_sha256']
+     assert plan['episodes'] == 90 and plan['maximum_substeps'] == 99000000
+-    assert plan['action_seed'] == 2026102638 and plan['parent_cycle'] == 32
++    assert plan['action_seed'] == 2026102638 and plan['parent_cycle'] == 41
+     assert len(plan['case_ids']) == len(set(plan['case_ids'])) == 30
+     deadline = time.monotonic()+21600
+     while True:
+@@ -105,7 +105,7 @@
+             checkpoint_sha256=reg['checkpoint_sha256'])
+         xs = np.arange(30)
+         axes[index, 0].scatter(xs, rewards)
+-        axes[index, 0].set(title=method+' frozen32 reward', ylabel='Episode return')
++        axes[index, 0].set(title=method+' frozen41 reward', ylabel='Episode return')
+         axes[index, 1].scatter(xs, peaks)
+         axes[index, 1].axhline(.2, color='red', linestyle='--', label='Original0.2mm limit')
+         axes[index, 1].set(title=method+' external penetration', ylabel='mm')
+@@ -117,7 +117,7 @@
+         for name in ['REGISTRATION.json', 'CHECK_ONLY_REVIEW.json', 'STARTUP_REVIEW.json', 'EVALUATION.json', 'RESULTS.json', 'FINISHED.json']:
+             path = directory/name
+             inputs[str(path)] = sha(path)
+-    fig.suptitle('Frozen32: all30 training conditions, one action seed per method')
++    fig.suptitle('Frozen41: all30 training conditions, one action seed per method')
+     plot = root/'frozen_full30_results.png'
+     fig.savefig(plot, dpi=140)
+     plt.close(fig)
+@@ -125,7 +125,7 @@
+         total_episodes=90, total_actions=sum(r['actions'] for m in results.values() for r in m['episodes']),
+         total_substeps=sum(r['substeps'] for m in results.values() for r in m['episodes']),
+         new_physics=0, new_optimizer_updates=0, neural_forward_passes=0, convergence_claim=False,
+-        limitation='Complete32 was chosen before its training began; all30 original training conditions and one external action seed per method were fixed in advance. Frozen full30 coverage does not by itself establish training convergence, generalization, independent training-seed robustness, or final SPT/ESN comparison. No condition exclusion, weight promotion, seed addition, or automatic extension.')
++        limitation='Complete41 was chosen before its training began; all30 original training conditions and one external action seed per method were fixed in advance. Frozen full30 coverage does not by itself establish training convergence, generalization, independent training-seed robustness, or final SPT/ESN comparison. No condition exclusion, weight promotion, seed addition, or automatic extension.')
+     (root/'REVIEW.json').write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
+ 
+ 
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_parameter32_frozen_full30_20261026.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_parameter41_frozen_full30_20261026.py
+@@ -1,8 +1,8 @@
+ from pathlib import Path
+ import json,hashlib,time,subprocess,os
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+-OUT=B/'runs/parameter32_frozen_full30_20261026_v1';RT=B/'runtime'/OUT.name
+-PLAN_SHA='fed53352d96604d5aad339b7ad537d042040e2105646e94e1721d0448a120797'
++OUT=B/'runs/parameter41_frozen_full30_20261027_v1';RT=B/'runtime'/OUT.name
++PLAN_SHA='a541276ae23af43ac253d0bc0d6a3736fd5a601d8ba6d00307f727e3379df83a'
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ def write(p,d):p.write_text(json.dumps(d,indent=2)+'\n')
+@@ -11,25 +11,25 @@
+  assert sha(OUT/'PLAN.json')==PLAN_SHA
+  plan=json.loads((OUT/'PLAN.json').read_text())
+  for n,h in plan['source_hashes'].items():assert sha(RT/n)==h
+- review=B/'runs/parameter_capacity_pool30_cycle32_review_20261026_v1'
++ review=B/'runs/parameter_capacity_pool30_cycle41_review_20261026_v1'
+  deadline=time.monotonic()+7200
+  while not (review/'FINISHED.json').exists():
+-  assert time.monotonic()<deadline, 'No complete32 within registered wait; retain failure, do not repeat automatically'
++  assert time.monotonic()<deadline, 'No complete41 within registered wait; retain failure, do not repeat automatically'
+   for m in plan['controllers']:
+-   assert not (B/'runs/parameter_capacity_pool30_cycle32_20261026_v1'/m/'train/FAILURE.json').exists()
++   assert not (B/'runs/parameter_capacity_pool30_cycle41_20261026_v1'/m/'train/FAILURE.json').exists()
+   time.sleep(5)
+  assert json.loads((review/'FINISHED.json').read_text())['completed']
+  complete=json.loads((review/'REVIEW.json').read_text());assert complete['passed']
+  commands=[]
+  for m in plan['controllers']:
+-  parent=B/'runs/parameter_capacity_pool30_cycle32_20261026_v1'/m/'REGISTRATION.json';protocol=json.loads(parent.read_text());assert protocol['conditions']==plan['conditions'];assert protocol['replay_capacity_stage']['parent_cycle']==23
+-  cp=B/'runs/parameter_capacity_pool30_cycle32_archive_20261026_v1'/m/'cycle_00032.pt';assert sha(cp)==complete['methods'][m]['checkpoint_sha256']
++  parent=B/'runs/parameter_capacity_pool30_cycle41_20261026_v1'/m/'REGISTRATION.json';protocol=json.loads(parent.read_text());assert protocol['conditions']==plan['conditions'];assert protocol['replay_capacity_stage']['parent_cycle']==23
++  cp=B/'runs/parameter_capacity_pool30_cycle41_archive_20261026_v1'/m/'cycle_00041.pt';assert sha(cp)==complete['methods'][m]['checkpoint_sha256']
+   old=B/'runs/parameter29_seeded_short0600_20261026_v1'/m/'REGISTRATION.json';reg=json.loads(old.read_text());reg.pop('case_id');reg.pop('action_seeds')
+-  gatecase='active_short_train_0600';journal=parent.parent/'train/cycle_00032'/gatecase/'actor_intervals.jsonl'
+-  reg.update(parent_cycle=32,case_ids=plan['case_ids'],action_seed=plan['action_seed'],gate_case_id=gatecase,gate_observations=str(journal),gate_observations_sha256=sha(journal),audit_runtime=str(RT),checkpoint=str(cp),checkpoint_sha256=sha(cp),training_registration=str(parent),training_registration_sha256=sha(parent),required_review=str(review/'REVIEW.json'),required_review_sha256=sha(review/'REVIEW.json'),source_hashes=plan['source_hashes'])
++  gatecase='active_short_train_0600';journal=parent.parent/'train/cycle_00041'/gatecase/'actor_intervals.jsonl'
++  reg.update(parent_cycle=41,case_ids=plan['case_ids'],action_seed=plan['action_seed'],gate_case_id=gatecase,gate_observations=str(journal),gate_observations_sha256=sha(journal),audit_runtime=str(RT),checkpoint=str(cp),checkpoint_sha256=sha(cp),training_registration=str(parent),training_registration_sha256=sha(parent),required_review=str(review/'REVIEW.json'),required_review_sha256=sha(review/'REVIEW.json'),source_hashes=plan['source_hashes'])
+   assert reg['runtime']==protocol['runtime'];assert reg['cpu']==plan['cpu_mapping'][m] and reg['device']==f"cuda:{plan['gpu_mapping'][m]}"
+   dest=OUT/m;dest.mkdir();write(dest/'REGISTRATION.json',reg)
+-  commands.append(dict(controller=m,command=[str(B/'env/bin/python'),str(RT/'evaluate_parameter32_frozen_full30_20261026.py'),'--registration',str(dest/'REGISTRATION.json')]))
++  commands.append(dict(controller=m,command=[str(B/'env/bin/python'),str(RT/'evaluate_parameter41_frozen_full30_20261026.py'),'--registration',str(dest/'REGISTRATION.json')]))
+  env=dict(os.environ,CUDA_VISIBLE_DEVICES='0,1,2,3',OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1',NUMEXPR_NUM_THREADS='1')
+  checks=[]
+  for job in commands:
+@@ -38,7 +38,7 @@
+  codes={m:p.wait() for m,p in checks};write(OUT/'CHECK_ONLY_EXIT_CODES.json',codes);assert all(v==0 for v in codes.values()),codes
+  for m in plan['controllers']:assert json.loads((OUT/m/'CHECK_ONLY_REVIEW.json').read_text())['passed']
+  write(OUT/'COMMANDS.json',dict(jobs=commands));write(OUT/'CHECK_ONLY_COMPLETE.json',dict(passed=True,time=time.time(),plan_sha256=PLAN_SHA,new_physics=0,new_optimizer_updates=0,automatic_evaluation=False))
+- print('Complete32 frozen full30 preparation only; inspect check-only before launch.',flush=True)
++ print('Complete41 frozen full30 preparation only; inspect check-only before launch.',flush=True)
+ if __name__=='__main__':
+  try:main()
+  except BaseException as e:
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/launch_parameter32_frozen_full30_20261026.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/launch_parameter41_frozen_full30_20261026.py
+@@ -1,10 +1,10 @@
+ from pathlib import Path
+ import json,hashlib,subprocess,os,time
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');OUT=B/'runs/parameter32_frozen_full30_20261026_v1';RT=B/'runtime'/OUT.name
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');OUT=B/'runs/parameter41_frozen_full30_20261027_v1';RT=B/'runtime'/OUT.name
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ def write(p,d):p.write_text(json.dumps(d,indent=2)+'\n')
+-assert sha(OUT/'PLAN.json')=='fed53352d96604d5aad339b7ad537d042040e2105646e94e1721d0448a120797'
++assert sha(OUT/'PLAN.json')=='a541276ae23af43ac253d0bc0d6a3736fd5a601d8ba6d00307f727e3379df83a'
+ assert json.loads((OUT/'CHECK_ONLY_COMPLETE.json').read_text())['passed']
+ assert json.loads((OUT/'PRELAUNCH_REVIEW.json').read_text())['passed']
+ assert not (OUT/'LAUNCH.json').exists()
+@@ -15,7 +15,7 @@
+  start=Path(f'/proc/{p.pid}/stat').read_text().rsplit(')',1)[1].split()[19]
+  jobs.append(dict(**job,pid=p.pid,start=start,time=time.time()))
+ write(OUT/'LAUNCH.json',dict(jobs=jobs))
+-source=RT/'review_parameter32_frozen_full30_20261026.py'
++source=RT/'review_parameter41_frozen_full30_20261026.py'
+ write(OUT/'REVIEW_REGISTRATION.json',dict(evaluators=jobs,source_sha256=sha(source),plan_sha256=sha(OUT/'PLAN.json'),time=time.time(),maximum_wait_seconds=21600))
+ with (OUT/'review.log').open('x') as log:p=subprocess.Popen([str(B/'env/bin/python'),str(source),'--root',str(OUT)],stdout=log,stderr=subprocess.STDOUT,env=env,start_new_session=True)
+ write(OUT/'REVIEW_LAUNCH.json',dict(pid=p.pid,time=time.time()));print(dict(evaluators={j['controller']:j['pid'] for j in jobs},review=p.pid),flush=True)
