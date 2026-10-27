@@ -336,6 +336,20 @@ Direct14完整607032/4816264，0/30，reward−31.033155，30完整无abort，�
 - 五新源码AST及相应恢复/真实启动/动作诊断通过；有界小证据docs/evidence/rl_parameter16_transfer12_20261026/SOURCES.json，原始大型checkpoint/replay/物理轨迹仍本集群SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，非arm1/HDD全备份。Goal active，健康收敛、最终冻结/ESN/SPT和持续每卡50%未完成。
 
 - 本地实验提交ac6a028d671d1950a4de3c1cba77f6d2c3b3b3e5，push因编辑器GitHub用户名/密码认证等待而未完成，远端最后核验仍dbb1d76；已停止仅该认证阻塞的push进程树，训练不受影响。用户已被请求恢复编辑器登录，未索要任何密码/token。完整117文件小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER16_TRANSFER12_20261026_151820/FULL_SMALL_EVIDENCE.tar.gz逐项hash核验，SHA6258d6401b9295710c95c0fc02d19b12b313b3035f117dcc52634a32c3c96d75。HDD配额仍限制源码包，本次仅小交接与收据（见BACKUP_RECEIPT.json），大产物仅SSD；不称HDD/arm1全备份。
+## 2026-10-27 — 新30条第九条件审计通过，81/108回合完成
+
+- 上轮核实等待，本轮开工真实查询并fetch/read main=13d44fb38696d3ada6324b56b1548c344a988794、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，读取AGENTS/进度；原worker151047仿真11.04→48.04秒、CPU同步推进，完成第81条后原协调器86607自动接续第十条件，未重复派发。
+- 03:26:38 UTC条件008的9×55秒/990万子步独立核验通过：1357冻结源码、完整训练/选模/9锁模与验证动作重放、物理MJB/config/checkpoint/轨迹hash、已有actor/filter重放收据及原始子步峰矩/接触合规/穿透/机器安全复算一致。单核/3GiB/禁swap检查4.745秒退出0，证据NINTH_CONDITION_PHYSICS_AUDIT.json；没有重新仿真。
+- 单条件Task ESN3/3、RNN2/3、MLP0/3；Task AND Strict为1/3、0/3、0/3。第二seed ESN50.64秒双通过；ESN第一/三seed穿透.619590/.227577mm、RNN第一/三seed穿透.257711/.410441mm，任务虽完成但Strict失败。RNN第二seed和全部MLP在carry结束未完成；全部55秒、无abort。MLP力矩合规100%仍伴随任务失败和359.89–427.94N人体接触峰力，不能据代理指标称整体安全/更优。
+- 小证据4文件包36382字节已核验至arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_ninth_condition_20261027_0326/NINTH_CONDITION_AUDIT.tar.gz，SHA af0d0d04c2a37e6c3600640048f53a0909ba140e4755b1d322b0bcbe5fcee0a3；收据NINTH_CONDITION_ARCHIVE_20261027_0326.json。包内与本地文件一致、服务器暂存/最终SHA及大小一致，目标此前不存在；本机原件与失败保留。第九条件原始轨迹仍仅本机，前72条及训练原件另有共享副本，服务器未训练/仿真。
+- 服务active，开工内存约1.10GiB/上限3GiB，OOM事件0/swap0；第十条件worker151532已存活。全108回合、共同T_ref/SPT、三seed汇总和默认最终审计仍待，不生成局部排名，Goal active。收工复读AGENTS，只发布本任务记录。
+
+## 2026-10-27 — 新30条休眠停顿核实，原作业恢复推进至79/108
+
+- 上轮为原进程核实等待；本轮实查服务86607及worker146764，读取execution/progress与AGENTS。GitHub TLS恢复后fetch/read main=dbb1d76ed79177067c48ed49ff9f67f023c704aa、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，安全快进保留另一任务记录，不改变冻结源码。
+- systemd-suspend日志明确本机北京时间10月26日23:03:50休眠、27日11:09:23返回、11:09:25结束；另有23:03:15–23:03:22短休眠。第九条件第三seed ESN的约12小时墙钟不是持续计算，纠正先前“只是跨夜持续运行”的表述。未改系统电源设置、未重启或重复派发。
+- 唤醒后原ESN仿真14.04→49.04秒持续推进，03:14:24 UTC完成第79条并自动接续第三seed RNN，worker150217真实存活/CPU推进。核验active、OOM事件0/swap0。下一完整条件边界81/108尚未到，不新增部分排名/SPT；Goal保持active，完整评测、最终审计和交付仍待。
+- 本轮只更新停顿与恢复记录，无新原始轨迹归档；前72条与训练产物的已核验服务器副本保持既有收据所述。收工复读AGENTS，提交本任务两份文档。
 
 ## 2026-10-26 — 参数15接续、Direct10完整审查与等价gather正式11
 
