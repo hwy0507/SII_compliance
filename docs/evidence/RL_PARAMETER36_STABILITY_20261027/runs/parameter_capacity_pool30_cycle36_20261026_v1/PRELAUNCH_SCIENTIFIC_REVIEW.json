@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "time": 1793068376.022799,
+  "parent_cycle": 35,
+  "next_cycle": 36,
+  "parent_checkpoints": {
+    "impedance": "5bdb040a7d8fa306907d1507d63ff55a3543a211090e2a08c325d2f98d775fc1",
+    "admittance": "666bd194b9619197dc27ae046b3614c4ead5d33cf7b20d243e5e5d4d42040da4",
+    "vmc": "1175917ae623b1daf0450409606da92563a02b34dc9f504e674fddfd54f2bba9"
+  },
+  "hashes": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle35_review_20261026_v1/REVIEW.json": "4eae5a0e4ddc4839497774854123030d5440ccf50218ea26fc15a7f33c8874de",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle35_review_20261026_v1/FINISHED.json": "a52337ed78e39764c804748111a6d35de51c2dceeff8f01071d5ae8fdc860681",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle35_review_20261026_v1/health/DIAGNOSIS.json": "e5bd14d2cfba16c14cd9e99238d7df52d5d441eaf5d2969d536182e6a024c08a",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle35_review_20261026_v1/health/training_diagnostics.png": "69d3817873791b5eae868a0e8008771cd78c31c2c046d450a3e315294e4a2aaf",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle36_20261026_v1/CHECK_ONLY_COMPLETE.json": "edc11536b2646e5977cef6f1bc125a99050fcca1d1367acd782455a4d9ba5faf",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity33_35_reward_stability_20261027_v1/REVIEW.json": "e0f535582f2e083d31fafbcb44586ee228afb630966da0c7c2459c4dceb1e5d0",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/impedance35_terminal_anchor_followup_20261027_v1/REVIEW.json": "231ffd8ddd81c99081c0526fac791869f6516952d1afce29c5a54917805d0f4c"
+  },
+  "loss": {
+    "impedance": {
+      "first1000": 2.457537817120552,
+      "last1000": 2.856129514336586,
+      "mean": 2.6500953279408543,
+      "maximum": 27.582183837890625
+    },
+    "admittance": {
+      "first1000": 1.4303763052225114,
+      "last1000": 1.4876975929141045,
+      "mean": 1.4949425193627675,
+      "maximum": 37.30332946777344
+    },
+    "vmc": {
+      "first1000": 0.6404631801843643,
+      "last1000": 0.5939363242685795,
+      "mean": 0.6428022073745727,
+      "maximum": 12.951667785644531
+    }
+  },
+  "figure_reviewed": true,
+  "figure_findings": "Loss finite with spikes. I remains elevated, A has a late increase followed by decline, V low oscillating losses. Entropies near original targets, positive temperatures, smooth Q drift. Not healthy convergence.",
+  "rationale": "Full35 original30 complete/noabort, old replay/history retained and41250 new rewards exact. Original33-35 descriptive stability fails: I near-zero guard, A13percent adjacent change, V38.7percent earlier change. I fixed1045 SSE worsens21.83percent although preselected worst row improves strongly; no cherry-picked overall improvement claim. Continue one finite unchanged36 from latest fullstate while original frozen32 completes, to assess persistence without resetting or importing weights.",
+  "learner_settings_changed": false,
+  "automatic_next_training": false,
+  "convergence_claim": false
+}
