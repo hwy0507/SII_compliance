@@ -1,5 +1,7 @@
 ## 2026-10-27 — 导纳40终端拟合退化定位、固定1224跟踪41
 
+本轮科学提交242e623e9abb107784e07601d5a064e786914b76仅本地，push仍HTTPS用户名认证失败。SSD归档/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_ADMITTANCE40_TERMINAL_20261027_055101/FULL_SMALL_EVIDENCE.tar.gz，35成员逐大小/hash验证、1167080字节、SHA256 a9c44859510f4161227162dbaef13b4445c05c25b7ce4695194974acc1fb618b；HANDOFF含新诊断及原25/41完整续接入口。既有HDD LATEST覆盖回读通过，非HDD/arm1全备份。
+
 [本轮交接](docs/RL_ADMITTANCE40_TERMINAL_20261027.md)。新CPU52只读2818635已完成退出，完整A39/40全部1194/1224终端×5critic，0优化/物理/replay。全输入/source/agent/RNG、原health复现、独立保存算术与图通过；终端贡献.447879→.742515（+65.78%），固定旧1194 masked SSE5035.582→7152.539（+42.04%），旧分母贡献亦升至.636419；新30仅占16.40%，旧1069行变差/125改善。critic0/3/4升、1/2降，非全在线loss因果分解或LR缺陷证明。
 新固定1224跟踪41原waiter2937574，B/runs/admittance41_terminal_anchor_followup_20261027_v1；原41已训练/完整父未可用时登记，7200秒wait+600秒CPU前向+120秒保存审查，0优化物理/无自动训练。全1224输入/标签/mask与40分母固定，辅助40最大行1687237仅6.32%贡献；AST/help/准确41/40/1224/1254/hash通过，实际跟踪仍待。
 原四正式25/41、26/42仅恢复准备与调度、两原稳定性窗口、冻结41准备全部核验live。原纯GPU窗口不重采，正式与辅助设置不变，Goal active，无子agent。远端main7d69ac5/baseline f6e8f8c真实fetch/read未变；24份小证据740662字节及manifest/live在docs/evidence/RL_ADMITTANCE40_TERMINAL_20261027，SSD归档另记。
