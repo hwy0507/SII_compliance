@@ -133,7 +133,9 @@ def audit_row(row, root, model, condition, filter_class, config_class, learned):
     near(np.abs(torque[:,:7]).max(axis=0),c['peak_torque_by_joint_nm'],'Per-joint torque')
     violation=bool(peak_penetration>.2+1e-12 or np.any(np.abs(torque[:,:7])>limits*(1+1e-6)) or result['abort_reason'])
     require(violation==c['machine_safety_violation'],'Machine-safety classification')
-    return dict(method=row['method'],condition=row['condition'],physical_substeps=len(dt),duration_s=duration,
+    return dict(method=row['method'],condition=row['condition'],run=str(run),
+                source_hashes={k:v for k,v in row.items() if k.endswith('_sha256')},
+                physical_substeps=len(dt),duration_s=duration,
                 task_success=task,strict_success=strict,completion_time_s=finish,rmse_mm=rmse,
                 peak_torque_nm=peak,peak_speed_mps=speed,max_penetration_mm=peak_penetration,
                 contact_duration_s=contact_s,comfort_ratio=ratio,common_filter_replay_max_abs=0.,
@@ -141,7 +143,7 @@ def audit_row(row, root, model, condition, filter_class, config_class, learned):
                 machine_safety_violation=violation)
 
 
-def audit(root,progress,include_learned=False):
+def audit(root,progress,include_learned=False,condition_id=None):
     reg=read(root/'REGISTRATION.json');state=read(root/'execution.json')
     if not progress:require(state['status']=='complete','Final audit requires complete72, not a running/partial matrix')
     require(sha(root/'REGISTRATION.json')==state['registration_sha256'],'Registration changed')
@@ -165,6 +167,11 @@ def audit(root,progress,include_learned=False):
     partial=read(root/'PARTIAL_ROWS.json')['rows'] if (root/'PARTIAL_ROWS.json').exists() else []
     new=[r for r in partial if r['method']+'__'+r['condition'] in complete]
     require(len(new)==len(complete),'Missing completed classical receipts')
+    if condition_id is not None:
+        require(progress and not include_learned,'Condition mode is classical progress only')
+        require(condition_id in conditions,'Unknown condition')
+        new=[r for r in new if r['condition']==condition_id]
+        require(len(new)==6 and {r['method'] for r in new}==set(models),'Condition audit requires all6 classical episodes complete')
     rows=new if progress and not include_learned else read(parent/'REPORT.json')['rows']+new
     ids={(r['method'],r['condition']) for r in rows}
     require(len(ids)==len(rows),'Duplicate episode receipts')
@@ -178,11 +185,14 @@ def audit(root,progress,include_learned=False):
                                  VelocityResidualSafetyConfig,r['method'] in learned))
     out=dict(status='progress_saved_physics_audit_passed' if progress else 'final180_saved_physics_audit_passed',
         created_utc=datetime.now(timezone.utc).isoformat(),auditor_sha256=sha(Path(__file__)),
+        root=str(root),model_lock_sha256=sha(root/'MODEL_LOCK.json'),
         registration_sha256=sha(root/'REGISTRATION.json'),classical_completed=len(new),
         audited_episodes=len(checked),physical_substeps=sum(r['physical_substeps'] for r in checked),rows=checked,
         limitations=['No new physics or independent classical actor/servo replay.',
                     'Task reducer checked from saved hold/lift; no independent reconstruction of all placement-contact geometry.',
                     'Learned actor replay inherited from matching original audit receipt; public filter freshly replayed.'])
+    if condition_id is not None:
+        out.update(status='completed_classical_condition_audit_passed_not_final',condition=condition_id)
     if not progress:
         report=read(root/'REPORT.json')
         require(sha(root/'REPORT.json')==state['report_sha256'],'Final report hash mismatch')
@@ -218,8 +228,9 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--root',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True);p.add_argument('--progress',action='store_true')
     p.add_argument('--include-learned',action='store_true',help='Also audit all original108 during progress; still not final approval')
+    p.add_argument('--condition',help='Progress only: require and audit all6 classical episodes for one condition')
     a=p.parse_args();require(not a.output.exists(),'Never overwrite audit receipts')
-    result=audit(a.root.resolve(),a.progress,a.include_learned)
+    result=audit(a.root.resolve(),a.progress,a.include_learned,a.condition)
     a.output.parent.mkdir(parents=True,exist_ok=True)
     a.output.write_text(json.dumps(result,indent=2,ensure_ascii=False,allow_nan=False)+'\n')
     print(json.dumps({k:v for k,v in result.items() if k!='rows'}))

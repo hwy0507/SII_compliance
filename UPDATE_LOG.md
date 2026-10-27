@@ -1,3 +1,12 @@
+## 2026-10-27 — 传统首条件6回合归档，补齐原学习组108原始共享副本
+
+- 上轮为实际进展（首阻抗独立审计/归档/push）；本轮查询fetch/read main `822e5da08322674666359d9d4d7d61c59598d111`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS。原协调179772未重启，当前完成9/72、第二条件阻抗02 worker187125真实推进16.04秒；内存约1.83GB/3GiB、OOM0/swap0。未改冻结物理/gates/coordinator/参数，无重复仿真、无RL。
+- 新按条件归档器`archive_nonrl_classical_condition_20261027.py`复用已有流式校验辅助；独立auditor增加完整6回合条件守卫和raw hash绑定。4项合成测试（完整包且原件不变、在途拒绝、改写轨迹拒绝、缺配置拒绝）通过；真实未完成条件拒绝。旧收据保持，旧精确审计源码仍存原包。
+- 首条件全部6×55秒/660万子步独立核验通过，Task/Strict均失败，保留全部记录，不作全矩阵排名。318文件原件前后hash、每个tar成员校验通过，15.378秒打包；729,714,755字节原始包共享至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics000/PHYSICS_BUNDLE.tar.gz`，SHA `3c7432b5610533a537d0e4749c9b17ae88c2f1dd385b1c9972ef0c3d86c4d80f`，本地/远端临时/最终一致。
+- 发现并补齐原108最后36回合的原始归档缺口：009–011原独立审计通过，复用008已有完整收据，837文件打包96.806秒且逐成员验证；4,317,470,894字节共享至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_physics_008_011_20261027/PHYSICS_BUNDLE.tar.gz`，SHA `a70370763742ee2978d5e11b5740a05ccc229dc49c3765f6d4a16c9b31e66ca7`，本地/临时/最终一致。前72四个旧原始包也重新读取远端SHA匹配，原学习组108已全部有共享物理原件。
+- 首次旧条件批审计因systemd命令变量展开得到无效编号而拒绝，0仿真、退出1；改用明确参数列表后三条件13.030秒退出0，原失败保留`ARCHIVE_AUDIT_COMMAND_RETRY.json`。原108的新条件SPT汇总另用独立算式核对九模型/三方法的Task分母、NA和共同参考一致。
+- 详见`docs/NONRL_CLASSICAL_TASK_SPT_20261027.md`和其证据目录的两份原始归档收据。服务器只归档/hash核验，本地原件未删；完整180最终比较仍待余63回合与最终审计/归档，Goal active。收工复读AGENTS，保留无关会议文件。
+
 ## 2026-10-27 — 首原生阻抗回合完成并独立审计，传统补测3/72
 
 - 上轮实际进展为110回合独立审计和GitHub发布；本轮查询fetch/read main `643f0e68e1eac31e3dcdbda9e793dab9226e3102`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，复读AGENTS。原协调179772仍active，阻抗01原worker181681以完整55秒/398.31秒墙钟结束，自动接续阻抗02并推进，未重复派发。内存约1.28GiB/上限3GiB，OOM0、swap0。

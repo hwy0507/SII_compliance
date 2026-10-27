@@ -92,6 +92,14 @@ Strict穿透门、完成时间、峰矩/速度/RMSE、接触合规与机器违�
 
 ## 归档
 
+按完整条件归档入口：先用 `audit_nonrl_classical_extension_20261027.py --progress --condition <id>`
+核查该条件全部6个完成回合，再用 `archive_nonrl_classical_condition_20261027.py --root <run>
+--audit <condition_audit.json> --output <new_directory>` 打包。审计现在绑定源run、模型锁及每回合
+原始文件hash；打包前后重哈希原件，并读取每个tar成员核对大小与SHA。缺配置、在途回合、
+改写轨迹、错误审计器版本都拒绝，不把活动execution快照称最终状态。四项小型合成文件测试
+通过（完整包验证且原件不变/在途回合拒绝/改写轨迹拒绝/缺配置拒绝）；真实未完成条件也被拒绝。
+旧审计收据不改写，对应旧版审计源码仍在其既有共享包中。
+
 服务器只用于本轮归档，不计算。已核验登记包：
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_registration/REGISTRATION_BUNDLE.tar.gz`。
 大小2,001,510字节，SHA256 `dc4f40656985e1fced46077ebab0d81e97380dc1070d6dfe1136ca79977c148b`，
@@ -103,3 +111,27 @@ Strict穿透门、完成时间、峰矩/速度/RMSE、接触合规与机器违�
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_audit110/PROGRESS110_AUDIT_BUNDLE.tar.gz`，
 18,690字节，SHA256 `aabca99f4ffb4ce981bc753f1ec4b85c98f96aeaa3769d14e9ae74b1db55c412`。
 只读收据已共享；本批新增原始物理轨迹仍仅本地。
+
+### 首条件原始物理包与原108归档补齐（覆盖前述仅本地快照）
+
+第一条件全部6套传统控制器完成55秒、660万子步审计，`CONDITION000_PHYSICS_AUDIT.json`
+状态为`completed_classical_condition_audit_passed_not_final`。6回合Task/Strict均失败，
+低矩/无穿透违规不替代任务成功；仅首条件，不计算局部SPT排名。归档器真实运行15.378秒，
+318个文件逐一核验，源码/参数/完整轨迹/失败/metrics均保留；冻结物理/coordinator未改。
+
+已共享原始包：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics000/PHYSICS_BUNDLE.tar.gz`，
+729,714,755字节，SHA256 `3c7432b5610533a537d0e4749c9b17ae88c2f1dd385b1c9972ef0c3d86c4d80f`。
+本地/远端临时/最终hash一致，收据 `CLASSICAL_CONDITION000_ARCHIVE.json`。
+
+另发现原108学习组只有前72原始回合此前已共享，最后36只有小型结果证据。
+本轮复用008旧完整条件审计、重新按既有入口核验009–011，补齐837文件/36回合物理原件：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_new30_fair_20261026_v2_physics_008_011_20261027/PHYSICS_BUNDLE.tar.gz`，
+4,317,470,894字节，SHA256 `a70370763742ee2978d5e11b5740a05ccc229dc49c3765f6d4a16c9b31e66ca7`。
+打包96.806秒，原件前后/每个tar成员/远端临时及最终hash一致。此前前72的四包远端hash也
+重新读取并匹配旧收据；因此原学习组108条原始物理数据已全部共享，不是只共享最终小表。
+收据 `LEARNED_LAST36_ARCHIVE.json`。本地原件未删，服务器未仿真或训练。
+
+初次009–011审计命令因条件编号的命令层变量展开失败，被未知条件守卫拒绝，未启动仿真；
+随后改为明确参数列表，三条件核验均通过，失败见 `ARCHIVE_AUDIT_COMMAND_RETRY.json`。
+目前传统组9/72完成、下一原阻抗worker继续；完整180汇总、剩余63回合及其原始归档待完成。
