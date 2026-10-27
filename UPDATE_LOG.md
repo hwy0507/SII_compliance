@@ -9371,3 +9371,15 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮科学提交3303b6c31528d0c3432f0f5f9f471b00ddb6383b仅本地，push仍HTTPS用户名认证失败。SSD完整本轮小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER39_SERL24_20261027_042957/FULL_SMALL_EVIDENCE.tar.gz，112成员逐大小/hash核验、1657958字节、SHA256 877815bfd4308b2e77646c03e09cd0916667e71125db4caeda83c1a318803639。新HANDOFF/收据仅SSD，原HDD LATEST已更新回读；大产物仍SSD，非HDD/arm1全量备份。原四正式24/39、25/40仅恢复准备、两固定窗口及冻结32继续，Goal active。
 
 最终fetch又获main565746a6e68167c9da80edd37e02889a2eec8fd5（另一主机非RL91/108），仅UPDATE_LOG四行，已读并通过8dcef8b953dd07088fef36836a97df80e2ad0249合并；冲突保留完整本地日志与原远端追加字节。baseline仍f6e8f8c。此最后同步补充在上述科学小证据包之后记录，不冒充包内已有最新远端内容。
+## 2026-10-27 — 新30条公平比较推进至92/108
+
+- 原登记协调器 PID 86607 继续运行；条件010的 RNN seed1 已完成并接续 MLP seed1（当前 worker PID 159215），`PARTIAL_ROWS.json` 已由91推进到92/108。`MemoryCurrent=2,605,715,456`、`MemoryMax=3,221,225,472`、swap上限0，worker CPU约100%真实推进。
+- 仅记录实时进展，未修改已锁模型、数据划分、物理/gate/filter或已完成回合；条件010剩余7个模型、条件011全部9个模型仍待。最终 `T_ref`/SPT、默认独立审计、报告和图表必须等108/108后执行，Goal保持active。
+## 2026-10-27 — 新30条公平比较推进至93/108
+
+- 条件010的 MLP seed1 已完成，原协调器 PID 86607 自动接续 ESN seed2（当前 worker PID 159954），`PARTIAL_ROWS.json` 已由92推进到93/108。`MemoryCurrent=2,582,441,984`、`MemoryMax=3,221,225,472`、swap上限0；服务与worker均真实运行。
+- 未修改冻结协议、模型锁、数据划分或已完成回合；条件010剩余6个模型、条件011全部9个模型仍待。最终共同 `T_ref`/SPT、独立审计、报告和图表仍未生成，Goal保持active。
+## 2026-10-27 — 新30条公平比较推进至94/108
+
+- 条件010的 ESN seed2 已完成，原协调器 PID 86607 自动接续 RNN seed2（当前 worker PID 160658），`PARTIAL_ROWS.json` 已由93推进到94/108。`MemoryCurrent=2,714,701,824`、`MemoryMax=3,221,225,472`、swap上限0，worker真实运行。
+- 未改冻结模型锁、数据划分、物理/gate/filter或已完成结果；条件010剩余5个模型、条件011全部9个模型仍待。最终 `T_ref`/SPT、独立审计与报告必须等108/108后执行，Goal保持active。
