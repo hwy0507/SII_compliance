@@ -1,5 +1,10 @@
 # 本仓库的持续工作约定
 
+## 2026-10-27 — 参数2m→4m候选与真实44回放验证（未部署）
+
+[容量准备](docs/RL_PARAMETER_CAPACITY4M_20261027.md)。原四正式45/take27及冻结41继续；按全程预算48将越2m，新增4m helper/有限driver/验证器，拟准确47→48进入，原45/43–45窗口保持2m。真实44三回放全字段/RNG/learner digest、再次restore、CPU缓存1/32/256/65536精确通过，7负guard/方法；合成1999998→2000002旧prefix/cache/重载精确，4m满拒绝且全state不变。额外11异常state守卫与最后slot写入/拒绝、driver11契约负guard及物理trainer尾部逐字节一致通过。原915470/915509有界CPU54验证已完成，0物理优化，无GPU假负载。
+4m保留历史entry23/原marker并新增followup，未部署；准确47实际全learner恢复、48双marker审查模板/协议/正式跨界仍待。系统python缺numpy的静态首次失败已记录，原env解释器完成，未改环境。当前原46准备504393、Direct28准备154584、两个固定窗口保持。小证据docs/evidence/RL_PARAMETER_CAPACITY4M_20261027；Goal active，无子agent。
+
 ## 2026-10-27 — 参数44完整审查、正式45与Direct27–29固定窗口
 
 [最新交接](docs/RL_PARAMETER45_SERL27_29_20261027.md)。完整44 I/A/V1852430/1852250/1853250，Task/Strict18/17、15/14、17/17，reward−2.358478/−8.735468/−2.848943；全30×55/noabort/旧回放与新reward0误差、health/独立保存算术/图通过。I末1000loss1.90995→2.77234，不称健康收敛。43→44保存配对原gate验证：I short0600穿透.191786→.244149mm丢Strict，V同条件.213012→.188304mm恢复，非loss因果证明。

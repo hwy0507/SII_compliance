@@ -1,0 +1,124 @@
+--- original_capacity2m.py
++++ resume_cheq_capacity4m_pool30_20261027.py
+@@ -1,4 +1,4 @@
+-"""One reviewed pool30 cycle with registered replay retention capacity extension.
++"""One reviewed pool30 cycle after explicit second replay capacity expansion.
+ 
+ All reviewed formal parent state retained; no auxiliary weights. Existing terminal128,
+ upper projection, actor minimum and exact execution remain in place.
+@@ -23,7 +23,7 @@
+     if sha(parent['path']) != parent['sha256'] or checkpoint_digest != parent['sha256']:
+         raise ValueError('Exact parent registration required')
+     previous = json.loads(Path(parent['path']).read_text())
+-    allowed = {'resume_parent_registration', 'completed_stage_continuation', 'batch_size_stage', 'learner_batch_size', 'sampler_pool', 'shared_sampler_stage', 'replay_capacity_stage'}
++    allowed = {'resume_parent_registration', 'completed_stage_continuation', 'batch_size_stage', 'learner_batch_size', 'sampler_pool', 'shared_sampler_stage', 'replay_capacity_stage', 'replay_capacity_followup_stage'}
+     if ({k:v for k,v in previous.items() if k not in allowed} !=
+             {k:v for k,v in protocol.items() if k not in allowed}):
+         raise ValueError('Protected contract changed')
+@@ -54,6 +54,7 @@
+         raise ValueError('Capacity migration entry is not the current parent')
+     if 'replay_capacity_stage' not in previous and preparation['methods'][protocol['batch_size_stage']['controller']]['checkpoint_sha256'] != previous['batch_size_stage']['checkpoint']['sha256']:
+         raise ValueError('Preparation must cover exact complete22 predecessor')
++    validate_followup(protocol, previous)
+     trial = protocol['batch_size_stage']
+     stage = protocol['completed_stage_continuation']
+     if (trial['parent_cycle'] < 19 or trial['parent_cycle'] != previous['batch_size_stage']['parent_cycle'] + 1 or trial['new_cycles'] != 1 or trial['projection'] is not True or trial['weight'] != 128
+@@ -125,6 +126,45 @@
+             or preparation['methods'][method]['checkpoint_sha256'] != original18['batch_size_stage']['checkpoint']['sha256']):
+         raise ValueError('Pool preparation must bind historical17; continuation parent is current complete cycle')
+ 
++
++
++def validate_followup_contract(stage, previous_stage, trial):
++    from parameter_replay_capacity4m_20261027 import MARKER
++    if (stage['marker'] != MARKER or stage['parent_cycle'] != 47
++            or stage['old_capacity'] != 2_000_000 or stage['new_capacity'] != 4_000_000
++            or stage['historical_entry_cycle'] != 23
++            or stage['auxiliary_weights_imported'] is not False
++            or stage['optimizer_settings_changed'] is not False
++            or trial['parent_cycle'] < 47):
++        raise ValueError('Unregistered second capacity expansion')
++    if previous_stage is None:
++        if trial['parent_cycle'] != 47 or stage['entry_checkpoint'] != trial['checkpoint']:
++            raise ValueError('Second capacity entry requires exact complete47')
++    elif stage != previous_stage:
++        raise ValueError('Historical second capacity stage changed')
++
++
++def validate_followup(protocol, previous):
++    stage = protocol['replay_capacity_followup_stage']
++    validate_followup_contract(stage, previous.get('replay_capacity_followup_stage'), protocol['batch_size_stage'])
++    for key in ['entry_checkpoint','preparation_review','malformed_state_review']:
++        ref = stage[key]
++        if sha(ref['path']) != ref['sha256']:
++            raise ValueError('Second capacity evidence drift: '+key)
++    prep = json.loads(Path(stage['preparation_review']['path']).read_text())
++    guards = json.loads(Path(stage['malformed_state_review']['path']).read_text())
++    if (not prep['passed'] or prep['helper_sha256'] != stage['helper_sha256']
++            or prep['optimizer_updates'] != 0 or prep['new_physics'] != 0
++            or prep['weights_saved'] or prep['deployed']
++            or set(prep['methods']) != {'impedance','admittance','vmc'}
++            or not guards['passed'] or guards['helper_sha256'] != stage['helper_sha256']
++            or not guards['full_refusal_preserved_first_rows_last_row_rng_size_cursor']):
++        raise ValueError('Second capacity migration must have verified read-only preparation')
++    for method in prep['methods'].values():
++        if (method['old_capacity'] != 2_000_000 or method['new_capacity'] != 4_000_000
++                or not method['all_old_arrays_and_rng_exact'] or not method['repeated_restore_exact']
++                or method['cpu_device_cache_batches_exact'] != [1,32,256,65536]):
++            raise ValueError('Incomplete preparation coverage')
+ 
+ 
+ def main(args):
+@@ -172,20 +212,28 @@
+     capacity_stage = p['replay_capacity_stage']
+     if sha(Path(__file__).with_name('parameter_replay_capacity_20261026.py')) != capacity_stage['helper_sha256']:
+         raise ValueError('Capacity helper drift')
+-    ReplayWithCapacity = replay_class(Replay, capacity_stage['legacy_replay_digest'])
++    from parameter_replay_capacity4m_20261027 import replay_class as followup_class, MARKER as FOLLOWUP_MARKER
++    followup = p['replay_capacity_followup_stage']
++    if sha(Path(__file__).with_name('parameter_replay_capacity4m_20261027.py')) != followup['helper_sha256']:
++        raise ValueError('Second capacity helper drift')
++    if 'replay_capacity_followup' not in ck['replay']:
++        if (trial['parent_cycle'] != 47 or followup['entry_checkpoint'] != trial['checkpoint']
++                or ck['replay']['capacity'] != 2_000_000
++                or digest(ck['replay']) != followup['entry_replay_digest']):
++            raise ValueError('Second capacity migration requires exact registered complete47 replay')
++    elif ck['replay']['replay_capacity_followup'] != FOLLOWUP_MARKER or ck['replay']['capacity'] != 4_000_000:
++        raise ValueError('Second capacity continuation marker changed')
++    ReplayWithCapacity = followup_class(Replay, followup['entry_replay_digest'])
+     capacity_replay = ReplayWithCapacity(ck['replay']['arrays']['actions'].shape[1], ck['replay']['arrays']['observations'].shape[1], 20261078)
+     capacity_replay.load_state_dict(ck['replay'])
+-    expected_replay = dict(ck['replay'], capacity=2_000_000, replay_capacity_extension=CAPACITY_MARKER)
++    expected_replay = dict(ck['replay'], capacity=4_000_000, replay_capacity_extension=CAPACITY_MARKER, replay_capacity_followup=FOLLOWUP_MARKER)
+     assert digest(capacity_replay.state_dict()) == digest(expected_replay)
+     capacity_replay.load_state_dict(capacity_replay.state_dict())
+     assert digest(capacity_replay.state_dict()) == digest(expected_replay)
+-    if 'replay_capacity_extension' not in ck['replay']:
+-        assert trial['parent_cycle'] == 23 and digest(ck['replay']) == capacity_stage['legacy_replay_digest']
+-    else:
+-        assert ck['replay']['replay_capacity_extension'] == CAPACITY_MARKER
++    assert ck['replay']['replay_capacity_extension'] == CAPACITY_MARKER
+     # All recorded draws, masks, and RNG remain exact before new interaction.
+-    ordinary = Replay(ck['replay']['arrays']['actions'].shape[1], ck['replay']['arrays']['observations'].shape[1], 20261078, capacity=2_000_000)
+-    plain = dict(expected_replay); plain.pop('replay_capacity_extension')
++    ordinary = Replay(ck['replay']['arrays']['actions'].shape[1], ck['replay']['arrays']['observations'].shape[1], 20261078, capacity=4_000_000)
++    plain = dict(expected_replay); plain.pop('replay_capacity_extension'); plain.pop('replay_capacity_followup')
+     ordinary.load_state_dict(plain)
+     assert digest(ordinary.sample(65536)) == digest(capacity_replay.sample(65536))
+     assert digest(ordinary.rng.bit_generator.state) == digest(capacity_replay.rng.bit_generator.state)
+@@ -227,9 +275,14 @@
+             try: validate(ck['protocol_sha256'], bad, sha(args.registration))
+             except ValueError: pass
+             else: raise AssertionError('Unregistered capacity change accepted')
++        for key, value in [('new_capacity',3_000_000),('old_capacity',1_000_000),('parent_cycle',46),('historical_entry_cycle',22),('optimizer_settings_changed',True),('auxiliary_weights_imported',True)]:
++            bad = copy.deepcopy(p); bad['replay_capacity_followup_stage'][key] = value
++            try:validate(ck['protocol_sha256'],bad,sha(args.registration))
++            except ValueError:pass
++            else:raise AssertionError('Unregistered second expansion accepted')
+         mappings = [sampler_affinity(args.controller, cpus, slot) for slot in range(30)]
+         assert all(set(map(int, value.split(','))) == set(cpus[1:]) for value in mappings)
+-        print(json.dumps(dict(passed=True, controller=args.controller, full_learner_state_unchanged=True, workers=30, reduction=trial['reduction'], replay_capacity_extension=CAPACITY_MARKER, exact_replay_and_next65536=True,
++        print(json.dumps(dict(passed=True, controller=args.controller, full_learner_state_unchanged=True, workers=30, reduction=trial['reduction'], replay_capacity_extension=CAPACITY_MARKER, replay_capacity_followup=FOLLOWUP_MARKER, exact_replay_and_next65536=True,
+             checkpoint_sha256=sha(args.resume), patch=learner.pipeline_receipt)))
+         return
+     del ck
