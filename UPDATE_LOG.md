@@ -9331,3 +9331,5 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 实际38 startup1714318已完成，I/A/V新增1000/1000/2000至1565500/1564500/1566500，旧1564500/1563500/1564500全部回放字段/history/optimizer配置/2m marker/30MJB/sampler/action/clock和新reward0误差通过。实际check-only与新增startup是两项核验，均已通过，勿重跑。
 
 混合23/38/冻结32原observer1752772已完成，60样本/65.766757秒，GPU0–3均值[54.8, 73.63333333333334, 73.86666666666666, 73.33333333333333]%，逐样本七原PID身份保持，保存均值独立核验通过。非纯正式吞吐或每瞬时50%保证，不抹去37→38空档；勿重采。远端main a3e9e04/baseline f6e8f8c本轮重新fetch/read未变。
+
+本轮科学提交30043b72e706e7c2f0e2e85d8ac0972a3de1e384仅本地，push仍HTTPS用户名认证失败；远端main a3e9e04/baseline f6e8f8c未变。SSD完整本轮小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER38_CAPACITY_WINDOW_20261027_035002/FULL_SMALL_EVIDENCE.tar.gz，45成员/1023454字节，SHA256 8b37ca0054ef47a6b5d4d4ed55b0cbd3a592fb1067f454d357380c3a4dc90a55，逐成员大小/hash核验。新HANDOFF/收据仅SSD，既有HDD LATEST已更新回读；大产物仍SSD，非HDD/arm1全量备份。正式23/38、24/39仅恢复准备、固定36–38/Direct24–26与冻结32原任务继续，Goal active。
