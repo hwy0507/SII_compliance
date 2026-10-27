@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-27 — 参数44恢复准备、固定43–45与Direct27审查入口
+
+[最新补充](docs/RL_PARAMETER44_STABILITY43_45_20261027.md)。原四正式Direct26/参数43和冻结41均重新核验live并推进，不重启。新44准备2190593（7200秒，仅完整43全state check-only），原27准备1705859继续；新增27五审查模板与手动launcher，静态正确26→27/810终端/930pending通过，实际27仍未启动。
+新43–45固定窗口2190600，在43零完成/44–45未启时登记，原5%/nearzero1/5000seed2026102745/真实episode长度，CPU54/7200秒，无自动训练停止；原39–41不变，不将已完成42纳入前瞻。源统计公式保持，图dpi140→144无关替换显式披露。
+41→42保存配对审查：I均值−1.789032主要short0600 Strict真→假贡献−1.804009，原外部穿透.192750→.222584mm跨.2mm；Task/完成12.8s保持。A两成功切换贡献+3.463715/总+3.540855，V无切换/总+.008430；全输入hash/MJB/原gate核验，0物理优化，非因果/收敛。小证据docs/evidence/RL_PARAMETER44_STABILITY43_45_20261027；原GPU0稳定42.7333%未达标，Goal active，无子agent。
+
 ## 2026-10-27 — 完整参数42、正式43与Direct take27准备（Goal active）
 
 最新补充：[RL_PARAMETER43_TAKE_PREPARATION_20261027.md](docs/RL_PARAMETER43_TAKE_PREPARATION_20261027.md)，恢复总背景仍RL_REBOOT_RESUME_20261027。参数42已完整审查/health/保存算术与图通过：I/A/V Task/Strict18/17、13/13、17/16，reward−2.374253/−10.227515/−4.602095，末loss3.075095/2.012984/.741982，均30全55/noabort、旧replay/history保留、新reward0误差，未健康稳定收敛。
@@ -1506,3 +1512,5 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 最终fetch又获main565746a6e68167c9da80edd37e02889a2eec8fd5（另一主机非RL91/108），仅UPDATE_LOG四行，已读并通过8dcef8b953dd07088fef36836a97df80e2ad0249合并；冲突保留完整本地日志与原远端追加字节。baseline仍f6e8f8c。此最后同步补充在上述科学小证据包之后记录，不冒充包内已有最新远端内容。
 
 本轮共享SSD小证据归档已逐成员大小/hash核验：/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_REBOOT_PARAMETER43_20261027_085435/FULL_SMALL_EVIDENCE.tar.gz，174成员、1666653字节，SHA256 2d3f81b4f1a19a3fd2a099a3083bcd991ce06248631740c0ea903264243843fa。收据docs/RL_REBOOT_SAVE_RECEIPT_20261027.json；包内准确源码commit b450bc1d1679b720212c3547300c7b6dcbcb1ae4。既有HDD LATEST已改指新active交接并回读验证。大checkpoint/raw仍原共享SSD，非HDD/arm1全备份；当前四正式与冻结41继续，Goal active。
+
+本轮科学提交0d70aa6，SSD准备补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER44_PREPARATION_20261027_091248/PREPARATION_SUPPLEMENT.tar.gz，35成员/559987字节，SHA256 509d0d1adfee7e92e15e226b57f83e1a126bf90e33b2bcdd0c9208eb77450d7e，全部成员大小/hash核验。新交接与完整收据仅SSD，既有HDD LATEST已更新回读；依赖前轮重启完整小包，大checkpoint/runtime仍SSD，非HDD/arm1全备份。Goal active。

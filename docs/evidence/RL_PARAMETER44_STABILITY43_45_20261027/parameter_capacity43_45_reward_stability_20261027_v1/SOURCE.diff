@@ -1,0 +1,53 @@
+--- 
++++ 
+@@ -1,4 +1,4 @@
+-"""Fixed capacity39-41 training stability; never an automatic stop gate."""
++"""Fixed capacity43-45 training stability; never an automatic stop gate."""
+ from pathlib import Path
+ import argparse
+ import hashlib
+@@ -13,13 +13,13 @@
+ 
+ 
+ def main(root):
+-    os.sched_setaffinity(0, {0})
++    os.sched_setaffinity(0, {54})
+     import numpy as np
+     import matplotlib
+     matplotlib.use('Agg')
+     import matplotlib.pyplot as plt
+     reg = json.loads((root/'REGISTRATION.json').read_text())
+-    assert reg['cycles'] == [39, 40, 41] and reg['seed'] == 2026102743
++    assert reg['cycles'] == [43, 44, 45] and reg['seed'] == 2026102745
+     assert reg['bootstrap_replicates'] == 5000 and reg['near_zero_guard'] == 1.
+     assert reg['relative_limit'] == .05 and sha(__file__) == reg['source_sha256']
+     for group in reg['inputs'].values():
+@@ -100,7 +100,7 @@
+             adjacent_absolute_mean_changes=np.abs(np.diff(means)).tolist(),
+             adjacent_relative_mean_changes=adjacent, endpoint_relative_mean_change=endpoint,
+             descriptive_five_percent_check=bool(not near_zero and max(adjacent+[endpoint]) <= .05),
+-            paired39_to41_mean_delta=float(delta.mean()), improved_conditions=int((delta > 0).sum()),
++            paired43_to45_mean_delta=float(delta.mean()), improved_conditions=int((delta > 0).sum()),
+             worsened_conditions=int((delta < 0).sum()), slope=float((means[-1]-means[0])/2),
+             bootstrap_condition_sensitivity95_delta=np.quantile(boot[-1]-boot[0], [.025, .975]).tolist(),
+             bootstrap_condition_sensitivity95_slope=np.quantile((boot[-1]-boot[0])/2, [.025, .975]).tolist(),
+@@ -111,16 +111,16 @@
+         axes[mi, 1].legend()
+     for axis in axes.flat:
+         axis.grid(alpha=.2)
+-    fig.suptitle('Capacity39-41: reward stability and optimizer diagnostics')
++    fig.suptitle('Capacity43-45: reward stability and optimizer diagnostics')
+     plot = root/'reward_stability.png'
+-    fig.savefig(plot, dpi=140)
++    fig.savefig(plot, dpi=144)
+     plt.close(fig)
+     for group in reg['inputs'].values():
+         for ref in group.values():
+             assert sha(ref['path']) == ref['sha256']
+     result = dict(passed=True, time=time.time(), methods=results, plot_sha256=sha(plot),
+         new_physics=0, optimizer_updates=0, automatic_stop=False, convergence_claim=False,
+-        limitation='Fixed39-41 window on30 registered training conditions, chosen while39 was ongoing with no completed conditions and40-41 not yet launched. All three complete outcomes are future at registration. All use2m retained replay beyond the old1m capacity, unlike the prior1m ring-buffer counterfactual. Online policies change; paired bootstrap intervals measure condition-composition sensitivity, not independent training seeds or frozen-policy performance. Finite losses do not establish optimizer health. Near-zero reward means disable percentage interpretation. The5% check alone does not declare convergence or unlock test.')
++        limitation='Fixed43-45 window on30 registered training conditions, chosen while43 was ongoing with no completed conditions and44-45 not yet launched. All three complete outcomes are future at registration. All use2m retained replay beyond the old1m capacity, unlike the prior1m ring-buffer counterfactual. Online policies change; paired bootstrap intervals measure condition-composition sensitivity, not independent training seeds or frozen-policy performance. Finite losses do not establish optimizer health. Near-zero reward means disable percentage interpretation. The5% check alone does not declare convergence or unlock test.')
+     (root/'REVIEW.json').write_text(json.dumps(result, indent=2, allow_nan=False)+'\n')
+ 
+ 

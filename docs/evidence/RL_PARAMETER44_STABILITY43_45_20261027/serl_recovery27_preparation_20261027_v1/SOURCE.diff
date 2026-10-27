@@ -1,0 +1,13 @@
+--- recovery26 main
++++ candidate27 main
+@@ -109,8 +109,9 @@
+             cycle=cycle, steps=steps, cycles=cycles, learner=learner.state_dict(),
+             replay=replay.state_dict(), boundary=boundary,
+             interruption_recovery=protocol['interrupted_stream_recovery'],
++            recovery_continuation=protocol['recovery_continuation_stage'],
+             environment_state_saved=False,
+-            resume_semantics='partial25 retained; streams0-29 quarantined unchanged; fresh physical streams30-59 in separately budgeted complete26'), temporary)
++            resume_semantics='complete26 to27; retain partial25 exposure and930 quarantined tails; reuse fully flushed streams30-59'), temporary)
+         temporary.replace(out/'checkpoint_latest.pt')
+ 
+     try:

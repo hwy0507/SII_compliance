@@ -6,6 +6,14 @@
 - 318文件原件前后/包内hash检查通过。728,329,915字节原始包已核验至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics002/PHYSICS_BUNDLE.tar.gz`，SHA `ff3750c2face9fa3cccacbed4ba3b6a02e74e6ece40124bcd7d58631cac675a5`，本地与远端临时/最终一致。收据见`docs/evidence/nonrl_classical_task_spt_20261027/CLASSICAL_CONDITION002_ARCHIVE.json`及`CONDITION002_PHYSICS_AUDIT.json`；原108+新18回合已原始共享，服务器只归档/hash。
 - 物理cgroup记录memory.max命中12次、OOM/kill0、swap0，随后内存回落约1.43GB；服务继续推进，未因正常回收误判失败或重启。收工复读AGENTS，更新专题进度；Goal保持active，完整矩阵审计、结果比较和最终发布未完成。
 
+## 2026-10-27 — 参数44恢复准备、固定43–45与Direct27审查入口
+
+[最新补充](docs/RL_PARAMETER44_STABILITY43_45_20261027.md)。原四正式Direct26/参数43和冻结41均重新核验live并推进，不重启。新44准备2190593（7200秒，仅完整43全state check-only），原27准备1705859继续；新增27五审查模板与手动launcher，静态正确26→27/810终端/930pending通过，实际27仍未启动。
+新43–45固定窗口2190600，在43零完成/44–45未启时登记，原5%/nearzero1/5000seed2026102745/真实episode长度，CPU54/7200秒，无自动训练停止；原39–41不变，不将已完成42纳入前瞻。源统计公式保持，图dpi140→144无关替换显式披露。
+41→42保存配对审查：I均值−1.789032主要short0600 Strict真→假贡献−1.804009，原外部穿透.192750→.222584mm跨.2mm；Task/完成12.8s保持。A两成功切换贡献+3.463715/总+3.540855，V无切换/总+.008430；全输入hash/MJB/原gate核验，0物理优化，非因果/收敛。小证据docs/evidence/RL_PARAMETER44_STABILITY43_45_20261027；原GPU0稳定42.7333%未达标，Goal active，无子agent。
+
+本轮真实fetch/read main dc35b32、baseline f6e8f8c。源/原始产物共享SSD /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl；当前正式运行源不变。提交/push与归档收据另记。
+
 ## 2026-10-27 — 参数42完整、43接续与Direct等价take27准备
 
 报告[RL_PARAMETER43_TAKE_PREPARATION_20261027.md](docs/RL_PARAMETER43_TAKE_PREPARATION_20261027.md)。服务器共享SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。42三路30全程、旧state/replay/history、新41250reward0误差、finite/health/保存算术与图通过；Task/Strict18/17、13/13、17/16，未收敛。正式43准确42check-only全state/next65536通过，1732692/1732693/1732694启动，原算法/物理/2m不变、每路一个有限周期。
@@ -9551,3 +9559,5 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮科学提交563d974，安全合并远端非RL更新ef2fd49；正常push已成功（4c75aa5→ef2fd49），包括此前重启恢复与gather科学提交。双方UPDATE_LOG逐行顺序保留已核验。无需再索要GitHub凭据。
 
 本轮共享SSD小证据归档已逐成员大小/hash核验：/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_REBOOT_PARAMETER43_20261027_085435/FULL_SMALL_EVIDENCE.tar.gz，174成员、1666653字节，SHA256 2d3f81b4f1a19a3fd2a099a3083bcd991ce06248631740c0ea903264243843fa。收据docs/RL_REBOOT_SAVE_RECEIPT_20261027.json；包内准确源码commit b450bc1d1679b720212c3547300c7b6dcbcb1ae4。既有HDD LATEST已改指新active交接并回读验证。大checkpoint/raw仍原共享SSD，非HDD/arm1全备份；当前四正式与冻结41继续，Goal active。
+
+本轮科学提交0d70aa6，SSD准备补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER44_PREPARATION_20261027_091248/PREPARATION_SUPPLEMENT.tar.gz，35成员/559987字节，SHA256 509d0d1adfee7e92e15e226b57f83e1a126bf90e33b2bcdd0c9208eb77450d7e，全部成员大小/hash核验。新交接与完整收据仅SSD，既有HDD LATEST已更新回读；依赖前轮重启完整小包，大checkpoint/runtime仍SSD，非HDD/arm1全备份。Goal active。
