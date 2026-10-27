@@ -1,5 +1,14 @@
 # 本仓库的持续工作约定
 
+## 2026-10-27 非RL新增30条最终评测已完成
+
+`nonrl_new30_fair_20261026_v2` 已完成 75 个拟合过程、9 个锁定模型和 108/108 个独立
+闭环回合。最终独立审计状态为 `final_audit_passed`，共同后验 `T_ref=39.40 s`；最终
+证据见 `docs/evidence/nonrl_new30_20261026/FINAL_AUDIT.json` 与
+`docs/evidence/nonrl_new30_20261026/final_presentation_20261027/FINAL_COMPARISON.md`。
+该结果支持本次新增30条数据和12个预登记条件上的比较；SPT是矩阵内后验参考，舒适阈值是
+经验工程代理，不是人体舒适标定。
+
 ## 最新RL状态：2026-10-26 参数15、Direct等价gather11运行中
 
 原Goal active，未收敛；最新交接[RL_PARAMETER15_SERL_GATHER11_20261026.md](docs/RL_PARAMETER15_SERL_GATHER11_20261026.md)。本段覆盖下方14/10运行中旧快照，无子agent，物理/SPT/完整正式state不变。
