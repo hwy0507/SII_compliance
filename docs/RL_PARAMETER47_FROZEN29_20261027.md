@@ -51,3 +51,5 @@ I/A/V末1000loss均高于首1000，VMC后段波动和均值增高尤其明显；
 原Direct28 1978250、29准备2044155、Direct27–29统计336744、参数46–48统计1908379继续；冻结41原316550/316551/316552继续，不重复启动。当前身份和进度见LIVE_STATUS；旧PID行动前必须重验。下一优先完整28审查→实际29接续、47→48真实扩容恢复、冻结41完整90审查，以及恢复感知的29冻结入口准备。
 
 小证据 `docs/evidence/RL_PARAMETER47_FROZEN29_20261027`，62文件逐大小/hash与Python AST核验。大checkpoint/raw/runtime仍共享SSD，HDD满仅更新已有LATEST指针；本轮小包/commit/push收据另记，不称HDD或arm1全备份。
+
+发布前远端前进到9f48bbe（非RL传统36/72）。已读取并通过b704574安全合并，保留非RL AGENTS修订、全部远端日志/收据；初次push非fast-forward拒绝后正常合并重试，未force push，正式运行源未变。
