@@ -9220,3 +9220,5 @@ Direct17实际首1000新增检查通过：690532/5484264，全部旧689532 raw/d
 资源补充：固定60样本/65.5720秒混合20/33/冻结32窗口，GPU均值55.60% / 74.8667% / 72.4333% / 68.2833%，逐样本七个原训练/评估PID身份保持，保存均值另核验。非纯正式窗口、不保证每瞬时、不隐藏32→33切换空档；原observer2560106已结束勿重复。
 
 Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，旧854532 raw/derived/history/optimizer/clock保持，新139 mature+861pending精确，30MJB/sampler与奖励重建0误差。startup2826820已完成，四正式21/33与冻结32继续。最新实际进度和原进程身份见小证据FINAL_LIVE_STATUS.json；原20/32/准备及诊断均已结束的句柄不重启。
+
+本轮科学提交748785a9bd1447fdefbfc74e1a7aa29f22a1fcff仅本地，GitHub push仍HTTPS用户名认证失败。SSD完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER33_FROZEN32_20261027_005821/FULL_SMALL_EVIDENCE.tar.gz，134成员逐大小/hash核验，1711900字节，SHA256 beb754dc3a246f03c409524367c23c9f5e1fcdeb428295eec803caa677d3b2b1。HDD小交接/inspire/hdd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_shutdown_backup_20261026_v1/RL_PARAMETER33_FROZEN32_STATUS_20261027_005821/HANDOFF.md及收据/LATEST已核验；大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。四正式21/33、冻结32及22/34准备、固定33–35审计继续，Goal active。
