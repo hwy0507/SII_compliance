@@ -35,3 +35,5 @@ startup与fullreview改为旧/新均2m，核对父REGISTRATION hash等于旧chec
 B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl。小证据在B/repository/SII_compliance/docs/evidence/RL_SERL25_INHERITED_PREPARATION_20261027，含更正前后原件、25三入口/四模板、验证脚本/登记/检查结果和现场状态。原capacity准备证据及38结果沿用[前轮交接](RL_PARAMETER38_CAPACITY_WINDOW_20261027.md)和[容量准备](RL_SERL24_CAPACITY_PREPARATION_20261027.md)。
 
 本轮真实ls-remote/fetch/read main=a3e9e0440506c60eea6c7bcfab9895846706e420、baseline=f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，未发现新远端更新。HDD配额满；新归档/HANDOFF在SSD，现有HDD LATEST仅更新指针。大checkpoint/replay/raw仍SSD，不宣称HDD/arm1全备份。提交、push与新归档收据另记。
+
+本轮科学提交3bb269c6050758997764ae3e386c1444b5b8467b仅本地，push仍HTTPS用户名认证失败；远端main a3e9e04/baseline f6e8f8c重新fetch未变。SSD小证据补充包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL25_INHERITED_PREPARATION_20261027_040223/PREPARATION_SUPPLEMENT.tar.gz，30成员逐大小/hash核验、515057字节、SHA256 fee50ee91475fae14da03e22042de594df88f04e8376728f5ce38cb96fb9db5c。新HANDOFF/收据仅SSD，现有HDD LATEST已更新回读；大数据仍SSD，非HDD/arm1全量备份。原四正式23/38、24/39准备、两固定窗口与冻结32继续；25仅静态准备、未启动，Goal active。
