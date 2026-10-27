@@ -8903,3 +8903,7 @@ cp19250及其后新产物仍仅本地、待下一安全边界归档。已准备D
 - 本轮复核 `AGENTS.md`、`REGISTRATION.json`、`MODEL_LOCK.json` 与 `PARTIAL_ROWS.json`；实验仍严格采用新增30条数据（24 train/6 validation），ESN固定历史128储备池＋ridge，RNN/MLP从头训练，三方法各3个seed，锁定模型不变。远端GitHub查询本轮受网络限制，工作区保留本地 `main` HEAD `a3e9e0440506c60eea6c7bcfab9895846706e420`；未改冻结源码、数据划分、模型锁或物理协议。
 - 原协调器 `sii-nonrl-new30-fair-20261026-v2.service`（PID 86607）仍为 `active/running`，当前单worker PID 157623 正在执行条件010的 ESN seed1；`MemoryCurrent=2,504,249,344`、`MemoryMax=3,221,225,472`、swap上限0，CPU真实推进。第九条件完成最后两模型后，累计 `PARTIAL_ROWS.json` 已从89推进到90/108；不重复启动、不把中途回合计入结果。
 - 第九条件剩余模型已在完整回合边界完成；条件010/011仍待。全108回合、共同 `T_ref`/SPT、最终独立审计和最终图表仍未完成，Goal保持active。所有失败与未完成收据继续保留。
+## 2026-10-27 — 新30条公平比较推进至91/108
+
+- 同一登记协调器 `sii-nonrl-new30-fair-20261026-v2.service`（PID 86607）继续运行；第十条件 ESN seed1 已在完整回合边界完成，自动接续 RNN seed1（worker PID 158492），`PARTIAL_ROWS.json` 由90推进至91/108。当前 `MemoryCurrent=2,558,500,864`、`MemoryMax=3,221,225,472`、swap上限0，worker CPU真实推进。
+- 本轮只读复核未改模型锁、训练数据、验证划分、物理协议或已完成结果；不重复启动，不把部分回合计入矩阵。条件010剩余8个模型、条件011全部9个模型仍待完成，最终共同 `T_ref`/SPT、独立审计和最终图表仍未生成，Goal保持active。
