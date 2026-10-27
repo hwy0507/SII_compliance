@@ -1,3 +1,10 @@
+## 2026-10-27 — 非RL传统补测30/72，第五条件审计归档完成
+
+- 前几轮有效等待已确认原服务、PID及物理时间持续推进；本轮完成条件004，原协调179772进入005，归档188540自动处理第五组，无重复派发/重启/调参。重新查询fetch/read main `06df65e6fb9b527473c2b276d3109c5cf8809013`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，安全快进保留另一任务记录，非RL源码/冻结协议不变。
+- 第五组6回合完整55秒/660万子步独立审计通过，Task/Strict均失败、公共filter误差0；保留全部失败与经典actor/servo完整重建限制。审计SHA `35f0bda5c0f05fe61ca6ad1895a555bbdda7d8b40906091426f6f4b3d6396c4c`，318文件原件前后及包内hash检查通过。
+- 726,543,883字节原始包已核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics004/PHYSICS_BUNDLE.tar.gz`，SHA `738d31a699901d40649b566119a9b0a3095ab13babb1a0f42c3073f639b8b589`，本地/远端临时/最终一致。小收据见`docs/evidence/nonrl_classical_task_spt_20261027/CLASSICAL_CONDITION004_ARCHIVE.json`及`CONDITION004_PHYSICS_AUDIT.json`；原108与新30已原始共享，服务器只归档/hash。
+- 内存事件无新增（memory.max累计12、OOM/kill0、swap0），本地可用空间约517GiB。只读观察会话在第五包核验后正常结束，原测评与归档服务持续。收工复读AGENTS并保留会议文件；余42回合、最终180共同参考/对比/审计与发布尚待，Goal active。
+
 ## 2026-10-27 — 参数2m→4m候选与真实44回放验证（未部署）
 
 [容量准备](docs/RL_PARAMETER_CAPACITY4M_20261027.md)。原四正式45/take27及冻结41继续；按全程预算48将越2m，新增4m helper/有限driver/验证器，拟准确47→48进入，原45/43–45窗口保持2m。真实44三回放全字段/RNG/learner digest、再次restore、CPU缓存1/32/256/65536精确通过，7负guard/方法；合成1999998→2000002旧prefix/cache/重载精确，4m满拒绝且全state不变。额外11异常state守卫与最后slot写入/拒绝、driver11契约负guard及物理trainer尾部逐字节一致通过。原915470/915509有界CPU54验证已完成，0物理优化，无GPU假负载。
