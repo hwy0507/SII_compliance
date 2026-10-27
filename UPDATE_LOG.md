@@ -439,6 +439,14 @@ Direct14完整607032/4816264，0/30，reward−31.033155，30完整无abort，�
 - 五新源码AST及相应恢复/真实启动/动作诊断通过；有界小证据docs/evidence/rl_parameter16_transfer12_20261026/SOURCES.json，原始大型checkpoint/replay/物理轨迹仍本集群SSD B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl，非arm1/HDD全备份。Goal active，健康收敛、最终冻结/ESN/SPT和持续每卡50%未完成。
 
 - 本地实验提交ac6a028d671d1950a4de3c1cba77f6d2c3b3b3e5，push因编辑器GitHub用户名/密码认证等待而未完成，远端最后核验仍dbb1d76；已停止仅该认证阻塞的push进程树，训练不受影响。用户已被请求恢复编辑器登录，未索要任何密码/token。完整117文件小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER16_TRANSFER12_20261026_151820/FULL_SMALL_EVIDENCE.tar.gz逐项hash核验，SHA6258d6401b9295710c95c0fc02d19b12b313b3035f117dcc52634a32c3c96d75。HDD配额仍限制源码包，本次仅小交接与收据（见BACKUP_RECEIPT.json），大产物仅SSD；不称HDD/arm1全备份。
+## 2026-10-27 — 非RL补测12/72，完整条件自动审计归档接续已验证
+
+- 上轮为实际进展（原108全部原始共享、首经典条件归档）；本轮查询fetch/read main `4c795d8014bce285336a085f360ed8c68cf2a312`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并复读AGENTS。原协调179772正常接续，12/72完成，第三条件worker188914存活且CPU推进，无重复仿真、无参数或冻结source修改。
+- 新增独立 `watch_nonrl_classical_archives_20261027.py`；服务 `sii-classical-archive-pipeline-20261027-v1.service`，PID188540/CPU2/Nice10/单线程/3GiB/禁swap，原物理服务CPU1保持。只等待12登记条件完成，依次只读审计/打包/SSH归档和核验，最后全180审计；不启动/重启仿真、不改策略、不写Git。冻结4份source并每条件核对，独立锁，失败收据保留；重复prepare/run真实拒绝检查通过。
+- 已实际复核接管首包且不重复上传；第二条件001六回合完整后自动通过660万子步审计、318文件前后和包内hash、上传与临时/最终远端hash/大小核验，随后等待条件002。新730,459,913字节包位于`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_physics001/PHYSICS_BUNDLE.tar.gz`，SHA `c0b1e4f18c7b5fdaa796229db9526166d367ed9dcfc62524d5f1edd31ee0c070`。新增经典原始归档覆盖12/72，原学习组仍108/108。
+- 归档作业精确4源码/登记/首接管收据与启动快照13,129字节独立包已核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_classical_task_spt_20261027_v1_archive_pipeline_registration/ARCHIVE_PIPELINE_REGISTRATION.tar.gz`，SHA `f7f3b2099f3e17f5165a3fd03dbc860dea947988643c207836c0682e8bcb92b6`，本地/远端一致。服务器只归档/hash；两本机服务OOM0/swap0。
+- 接手先查两个服务、run根execution与`published/archive_pipeline_v1/execution.json`，勿重复审计/归档同条件或改其冻结source；后者`campaign_completed`是最近等待时快照。即使将来pipeline状态成功，仍须主agent检查完整180结果并发布；当前60回合、最终审计/对比和最终发布均未完成，Goal active。收工复读AGENTS，保留无关会议文件。
+
 ## 2026-10-27 — 传统首条件6回合归档，补齐原学习组108原始共享副本
 
 - 上轮为实际进展（首阻抗独立审计/归档/push）；本轮查询fetch/read main `822e5da08322674666359d9d4d7d61c59598d111`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，读取AGENTS。原协调179772未重启，当前完成9/72、第二条件阻抗02 worker187125真实推进16.04秒；内存约1.83GB/3GiB、OOM0/swap0。未改冻结物理/gates/coordinator/参数，无重复仿真、无RL。
