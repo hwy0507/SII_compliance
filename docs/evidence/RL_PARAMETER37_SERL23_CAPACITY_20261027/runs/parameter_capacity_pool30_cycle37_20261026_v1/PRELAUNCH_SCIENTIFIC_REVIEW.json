@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "time": 1793070497.8291605,
+  "parent_cycle": 36,
+  "next_cycle": 37,
+  "parent_checkpoints": {
+    "impedance": "3022759fe24532486d73a3bb5097edb7c8c30c325c56e326abe8881a694052fc",
+    "admittance": "5123cdf2e9720fec566105c781e286406d87f8359374ccdf1fdb5836a84300f8",
+    "vmc": "46236be70d600abc4a01020f9e2f6d51146c510b4bb7c901cc160a46d796e296"
+  },
+  "hashes": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle36_review_20261026_v1/REVIEW.json": "3dd2191244b8724b7a8c9e9e17a64993dfcaa388f8f8c85aede08909da9422d9",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle36_review_20261026_v1/FINISHED.json": "fc166800400d9f64270f44ef2d73c915963e1303c905996d5530cd1220eee5af",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle36_review_20261026_v1/health/DIAGNOSIS.json": "056d2bf49055376b854d4b9ae94a19353fe91de0bce452376514f7841b007443",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle36_review_20261026_v1/health/training_diagnostics.png": "154dfad4bb282af86d41bf063581dd430771ef58050cefd9673955e4ebab7b38",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle37_20261026_v1/CHECK_ONLY_COMPLETE.json": "7306420364f3a831acf7660ef12e117baf2e57b5e0abc76c76ecb29c6d043c69"
+  },
+  "loss": {
+    "impedance": {
+      "first1000": 2.819848109960556,
+      "last1000": 2.5836270356178286,
+      "mean": 2.666958733922785,
+      "maximum": 49.33549499511719
+    },
+    "admittance": {
+      "first1000": 1.515811373114586,
+      "last1000": 2.3383126891851425,
+      "mean": 1.4040780477971742,
+      "maximum": 43.305702209472656
+    },
+    "vmc": {
+      "first1000": 0.6178725883960724,
+      "last1000": 0.6704562093317509,
+      "mean": 0.6723599594809793,
+      "maximum": 27.805967330932617
+    }
+  },
+  "figure_reviewed": true,
+  "figure_findings": "All finite. Impedance remains elevated with late rise then decline; admittance has marked late loss rise and temperature response; VMC low oscillation. Q smooth, entropy near registered targets. Not healthy convergence.",
+  "rationale": "Full36 original30/noabort and exact old replay/new rewards passed. Admittance reward improves but I worsens; prior stability failed and fixed36-38 window pending. Continue latest complete36 for one finite unchanged37 while original frozen32 finishes. No resets, auxiliary promotion, or convergence claim.",
+  "learner_settings_changed": false,
+  "automatic_next_training": false,
+  "convergence_claim": false
+}

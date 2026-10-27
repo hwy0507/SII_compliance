@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "time": 1793070385.8818192,
+  "real_snapshot": {
+    "rows": 896782,
+    "ready": 895918,
+    "pending": 864,
+    "legacy_replay_digest": "ddafb51b2156afcbef04db055f1d9fb568bbfc496be5784378d47b143ced61a9",
+    "sampled_batches": [
+      1,
+      32,
+      256,
+      65536
+    ]
+  },
+  "real_raw_derived_ready_pending_rng_preserved": true,
+  "synthetic_interleaved_rows": 105,
+  "pending_roundtrip_exact": true,
+  "independent_32step_targets_exact": true,
+  "rejected_malformed_states": 16,
+  "old_capacity_crossing_preserves_prefix": true,
+  "new_capacity_fills_last_slot_then_refuses_overwrite": true,
+  "new_physics": 0,
+  "learner_updates": 0,
+  "weights_saved": false,
+  "formal_deployment": false,
+  "marker": {
+    "version": 1,
+    "original_capacity": 1000000,
+    "capacity": 2000000,
+    "retention": "append_without_overwrite",
+    "sampling": "uniform_mature_rows",
+    "derived_targets": "unchanged_32_step_behavior_returns",
+    "full_behavior": "raise_before_overwrite"
+  },
+  "limitation": "Replay-only candidate validation. Real input is immutable Direct22 startup snapshot with pending rows, not a complete-cycle migration parent. No learner update equivalence or formal24 launch is claimed; exact complete23 registration and driver/monitor checks remain required. Beyond old capacity the previous driver raises, so no whole-algorithm ring-buffer equivalence is claimed."
+}

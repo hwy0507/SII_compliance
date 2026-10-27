@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "time": 1793070698.1043663,
+  "parent_cycle": 22,
+  "target_cycle": 23,
+  "parent_sha256": "a80f2acd24519be4c99e8002d8cd2707e0eb525d984e76a46874668d2c97d4cd",
+  "hashes": {
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle22_review_20261026_v1/REVIEW.json": "bb00aba70dc6303e36b6254b42f0b0de418083f706a0b9ffa5aa99e6c06749a7",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle22_review_20261026_v1/DIAGNOSIS.json": "219f47449606f16b00f325ee695c1390bbe9d4261cda4661522d7b8b5cc14e5d",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle22_review_20261026_v1/FINISHED.json": "9745da465ed847534d523f457b794234133ae9d8a5a1a0ec4a34bc40dda59faa",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle22_review_20261026_v1/training_diagnostics.png": "f696b52417835ddf28d767db94f3c1fbdb0de676d45385a26ce775962ba01300",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle23_20261026_v1/CHECK_ONLY_COMPLETE.json": "4799bbc89373bfc59a9f273a0eb23096dc1574789b1fa09d0f24569374de48c7",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycles20_22_reward_stability_20261027_v1/REVIEW.json": "4685cdc74bbf378e9d44ca63f4f5f2420baad2085fa8696dcea1f36a78ff61aa",
+    "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_cycles20_22_reward_stability_20261027_v1/reward_stability.png": "3b76df6dca048318efbf4e2119d096b7050c7e097c31dd33f1e7e99b43350659"
+  },
+  "loss_summary": {
+    "count": 40008,
+    "first1000": 0.012447711169719697,
+    "last1000": 0.013695120265707374,
+    "mean": 0.014403644977830211,
+    "maximum": 0.039113178849220276
+  },
+  "figure_reviewed": true,
+  "figure_findings": "Loss rises early then declines, remains above parent final; smooth narrow Q drift; positive falling temperature. Final plotted entropy point is partial block. No nonfinite values; low loss not task learning.",
+  "rationale": "Full condition-cycle22 reviewed with29 full horizons and one original safety abort at133steps/5.32s/2.710379mm. All30 retained in denominator, zero task success; mean reward worsens. Original20-22 descriptive5percent criterion passes and is explicitly retained; it alone does not prove objective achieved, especially new safety failure and pending frozen matrix. One finite unchanged23 from full learner/replay/RNG to assess persistence; no new success threshold/reset/auxiliary import.",
+  "descriptive_five_percent_check": true,
+  "abort_preserved": [
+    {
+      "cycle": 22,
+      "condition": "passive_corner_train_0200",
+      "category": "passive_corner",
+      "steps": 133,
+      "total_steps": 899317,
+      "reward": -40.59519843850496,
+      "task_success": false,
+      "strict_success": false,
+      "abort_reason": "global_penetration_exceeded_2mm",
+      "full_task_horizon_completed": false,
+      "physical_valid": false,
+      "final_task_stage": "approach",
+      "completion_time_s": null,
+      "model_sha256": "26aa6a429c0fb4e0e9197c8f74e6ff741220ea303393159248c40663d7760085",
+      "episode_path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_multistep_batch65536_cycle22_20261026_v1/direct/cycle_00022/passive_corner_train_0200"
+    }
+  ],
+  "next_max_steps": 977040,
+  "current_capacity": 1000000,
+  "capacity24_candidate_deployed": false,
+  "automatic_next_training": false,
+  "convergence_claim": false
+}

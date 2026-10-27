@@ -1,3 +1,9 @@
+## 2026-10-27 — 参数37/Direct23接续、20–22稳定性与SERL容量候选
+
+[最新交接](docs/RL_PARAMETER37_SERL23_CAPACITY_20261027.md)。完整36三路30全程无abort、全旧replay/新reward/health/图通过，I/A/V Task/Strict18/17、15/14、17/17，reward−2.410359/−8.537314/−2.841404，末loss2.583627/2.338313/.670456。导纳末段loss升高，未健康收敛。37正式112738/112739/112740，实际+1000/+1000/+2000启动审查通过，archive112743/review112744。38仅恢复准备140023/调度140026，7200秒，无自动训练；原36–38稳定性2889814及冻结32原90回合继续。
+Direct22准确935790/7446328，29全55s+passive0200第133步5.32s原2mm早停（峰2.710379mm），新增40008、全部30分母保留，Task0/reward−31.718349/末loss.013695120；完整REVIEW/health/图及保存abort核验通过。23正式257351、startup257405/archive257407/review257409，准确完整22全state续一个原设置周期。原20–22审计3124904完成，原5%描述检查通过（.015765%/2.622500%、首尾2.606322%），19→22均值−.136360/18改善12变差；不额外发明Task阈值，也非全目标收敛。保存算术/图通过，勿重跑。
+新SERL replay1m→2m候选隔离35329已完成，真实896782含864pending的next1/32/256/65536/RNG精确，交错105/中途恢复/独立target/16负守卫/两容量边界通过，0优化物理，未部署。23最大977040安全；24原预算跨1m，下一步优先capacity driver/完整23迁移登记与启动/完整/边界监控，不能用原1m入口或把replay-only当部署。新混合GPU observer272271先查原PROFILE勿重跑。Goal active，无子agent，HDD配额满；远端main/baseline核验未变。
+
 ## 2026-10-27 — 阻抗35保存终端输入与逐critic误差核验完成
 
 [新报告](docs/RL_IMPEDANCE35_INPUTS_20261027.md)。原保存值分析3501505已结束，0神经推理/优化/物理，8输入/source hash与scalar算术/最近邻穷尽核验和图通过。固定1045完整55维输入均不同，无精确重复冲突证据；不代表全replay无冲突或误差不可约。五critic SSE差+160.589/−280.250/−149.622/+284.088/+999.579，净增与原跟踪一致，非在线loss因果份额。
@@ -9283,3 +9289,7 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮科学提交f84eebc9873723e14a5fc4baa767c01205316d55仅本地，GitHub push仍HTTPS用户名认证失败；重新fetch远端main dbb1d76/baseline f6e8f8c未变。SSD本轮完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER36_STABILITY_20261027_024028/FULL_SMALL_EVIDENCE.tar.gz，57成员逐大小/hash核验、1427799字节、SHA256 13812e1a6ce6839932c5ca4c6dc7ca57d3ae36973e02d84778af2093cdc84342。HDD配额已满，本轮HANDOFF/收据仅SSD：/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER36_STABILITY_20261027_024028/HANDOFF.md；现有HDD LATEST_RL_HANDOFF.md已更新并核验。大checkpoint/replay/raw仍SSD，非HDD/arm1全备份。四正式36/22、37/23准备、固定36–38/Direct20–22审计及冻结32原进程继续，Goal active。
 
 本轮科学提交85f26a5cddc1ae6b9e10d677492f32a51e751038仅本地，GitHub push仍HTTPS用户名认证失败；重新fetch远端main dbb1d76/baseline f6e8f8c未变。SSD本轮完整小证据包/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_IMPEDANCE35_INPUTS_20261027_025159/FULL_SMALL_EVIDENCE.tar.gz，16成员逐大小/hash核验、814016字节、SHA256 3325c1e9b2ec3a71c2654876127f9e67d0067751e901213c6dd923bad9702514。HDD配额已满，本轮HANDOFF/收据仅SSD：/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_IMPEDANCE35_INPUTS_20261027_025159/HANDOFF.md；现有HDD LATEST_RL_HANDOFF.md已更新并核验。大数据仍SSD，非HDD/arm1全备份。四正式36/22、原37/23准备、两稳定性及冻结32继续，Goal active。
+
+实际启动补充：Direct23原startup257405已完成，新增1000至936790steps/7454328critic，旧935790 raw/derived/history/optimizer/clock保留，新143mature+857pending精确、30MJB/sampler/action/新reward0误差。原check-only与actual startup是两项不同核验，均已通过。四正式23/37持续，旧22/36及准备/启动审查已结束的不重启。
+
+新23/37/冻结32混合原observer272271已完成，60样本/65.789744秒，GPU0–3均值[60.15, 73.8, 72.98333333333333, 66.31666666666666]%，逐样本7原PID身份保持，保存均值独立核验通过。非纯正式吞吐、不是每瞬时50%保证，不抹去已发生换轮空档；勿重采。
