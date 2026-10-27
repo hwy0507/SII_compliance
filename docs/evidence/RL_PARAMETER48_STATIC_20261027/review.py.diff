@@ -1,0 +1,85 @@
+--- original46/review.py
++++ candidate48/review.py
+@@ -7,8 +7,10 @@
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+ OUT=Path(__file__).parent
+ sys.path.insert(0,str(B/'runtime/source_train17_clock/source/tools'))
+-sys.path.insert(0,str(B/'runtime/parameter_capacity_pool30_cycle46_20261026_v1'))
++sys.path.insert(0,str(B/'runtime/parameter_capacity_pool30_cycle48_20261026_v1'))
+ from parameter_replay_capacity_20261026 import MARKER as CAPACITY_MARKER
++from parameter_replay_capacity4m_20261027 import MARKER as FOLLOWUP_MARKER
++from validate_published_finite_check_20261025 import digest
+ from spt_rl_reward_20261025 import SPTReward
+ from training_comparison_metrics_20261025 import completion_bonus
+ def read(p):return json.loads(Path(p).read_text())
+@@ -26,11 +28,11 @@
+     return True
+ methods={}
+ for m in ['impedance', 'admittance', 'vmc']:
+-    run=B/'runs/parameter_capacity_pool30_cycle46_20261026_v1'/m/'train'
+-    cp=B/'runs/parameter_capacity_pool30_cycle46_archive_20261026_v1'/m/'cycle_00046.pt'
++    run=B/'runs/parameter_capacity_pool30_cycle48_20261026_v1'/m/'train'
++    cp=B/'runs/parameter_capacity_pool30_cycle48_archive_20261026_v1'/m/'cycle_00048.pt'
+     deadline=time.monotonic()+7200
+     while not cp.exists():
+-        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Cycle46 archive unavailable: '+m)
++        if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Cycle48 archive unavailable: '+m)
+         time.sleep(2)
+     x=torch.load(cp,map_location='cpu',weights_only=False)
+     execution=read(run/'EXECUTION.json');parent=Path(execution['resumed_from'])
+@@ -38,12 +40,12 @@
+     stage_parent=parent
+     # Exact stage parent is the formal cycle14 checkpoint already checked above.
+     old=torch.load(parent,map_location='cpu',weights_only=False)
+-    assert x['replay']['capacity']==2_000_000 and x['replay']['replay_capacity_extension']==CAPACITY_MARKER
++    assert x['replay']['capacity']==4_000_000 and x['replay']['replay_capacity_followup']==FOLLOWUP_MARKER and x['replay']['replay_capacity_extension']==CAPACITY_MARKER
+     assert old['replay']['capacity']==2_000_000 and old['replay']['replay_capacity_extension']==CAPACITY_MARKER
+     assert x['replay']['size']==x['replay']['cursor']==x['steps'] and x['steps']>1_000_000
+-    assert x['cycle']==46 and x['boundary']=='complete_condition_cycle'
++    assert x['cycle']==48 and x['boundary']=='complete_condition_cycle'
+     assert x['learner']['target_pair_reduction']==dict(version=1,target={'impedance':'minimum','admittance':'mean','vmc':'mean'}[m],actor='minimum',sampled_targets=2)
+-    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==46
++    assert x['cycles'][:-1]==old['cycles'] and x['cycles'][-1]['cycle']==48
+     assert finite(x['learner']) and x['learner']['critic_clock']
+     assert x['learner']['terminal_loss_weight']==128
+     assert x['learner']['finite_target_projection']==dict(version=1,terminal_cap=30.,gamma=.9995,maximum_actions=1375,position='target critic Q before stochastic entropy term',upper_only=True)
+@@ -52,9 +54,20 @@
+     assert execution['batch_size']==65536 and execution['updates_per_transition']==1
+     reg=read(run.parent/'REGISTRATION.json');conditions={r['id']:r for r in reg['conditions']}
+     assert x['protocol_sha256']==sha(run.parent/'REGISTRATION.json')
++    previous=read(reg['resume_parent_registration']['path'])
++    assert sha(reg['resume_parent_registration']['path'])==reg['resume_parent_registration']['sha256']
++    assert reg['replay_capacity_stage']==previous['replay_capacity_stage'] and reg['replay_capacity_stage']['parent_cycle']==23
++    followup=reg['replay_capacity_followup_stage']
++    assert followup['marker']==FOLLOWUP_MARKER and followup['parent_cycle']==47
++    assert followup['entry_checkpoint']==dict(path=str(parent),sha256=sha(parent))
++    assert followup['entry_replay_digest']==digest(old['replay']) and old['cycle']==47
++    baseline_deps=previous['batch_size_stage']['dependency_hashes'];deps=reg['batch_size_stage']['dependency_hashes']
++    assert set(deps)-set(baseline_deps)=={'parameter_replay_capacity4m_20261027.py','resume_cheq_capacity4m_pool30_20261027.py'}
++    assert all(deps[k]==v for k,v in baseline_deps.items())
++    for name,expected in deps.items():assert sha(B/'runtime/parameter_capacity_pool30_cycle48_20261026_v1'/name)==expected
+     n=old['replay']['size'];arr=x['replay']['arrays']
+     for k,v in old['replay']['arrays'].items():assert np.array_equal(v,arr[k][:n])
+-    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==46]
++    transitions=[t for t in lines(run/'transitions.jsonl') if t['cycle']==48]
+     assert len(transitions)==x['steps']-old['steps']
+     assert [t['step'] for t in transitions]==list(range(old['steps']+1,x['steps']+1))
+     assert x['learner']['num_gradient_steps']-old['learner']['num_gradient_steps']==len(transitions)
+@@ -62,7 +75,7 @@
+     np.testing.assert_array_equal(arr['dones'][n:,0],np.array([t['done'] for t in transitions],np.float32))
+     by_case=collections.defaultdict(list)
+     for t in transitions:by_case[t['condition']].append(t)
+-    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==46]
++    episodes=[e for e in lines(run/'episodes.jsonl') if e['cycle']==48]
+     assert len(episodes)==30 and {e['condition'] for e in episodes}==set(conditions)
+     max_reward_error=0.
+     for e in episodes:
+@@ -85,7 +98,7 @@
+         assert abs(sum(t['reward'] for t in ts)-e['reward'])<1e-8
+     assert sha(reg['reference_plan'])==reg['reference_plan_sha256']
+     result=dict(steps=x['steps'],updates=x['learner']['num_gradient_steps'],checkpoint_sha256=sha(cp),
+-        replay_capacity_extension=CAPACITY_MARKER, replay_size=x['replay']['size'], crossed_original_capacity=True, new_transitions=len(transitions),retained_replay_rows=n,retained_replay_all_fields_exact=True,
++        replay_capacity_extension=CAPACITY_MARKER, replay_capacity_followup=FOLLOWUP_MARKER, current_replay_capacity=4_000_000, historical_entry_cycle=23, crossed_second_capacity=x['replay']['size']>2_000_000, rows_beyond_second_capacity=max(0,x['replay']['size']-2_000_000), replay_size=x['replay']['size'], crossed_original_capacity=True, new_transitions=len(transitions),retained_replay_rows=n,retained_replay_all_fields_exact=True,
+         conditions=30,task=sum(e['task_success'] for e in episodes),strict=sum(e['strict_success'] for e in episodes),
+         reward_mean=float(np.mean([e['reward'] for e in episodes])),
+         full_horizon_count=sum(e['full_task_horizon_completed'] for e in episodes),

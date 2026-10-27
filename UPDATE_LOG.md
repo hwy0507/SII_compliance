@@ -1,3 +1,10 @@
+## 2026-10-27 — 参数48双容量标记静态衔接准备
+
+[本轮补充](docs/RL_PARAMETER48_STATIC_20261027.md)。原四正式46/28及冻结41七PID持续推进，47/29原准备与两个固定窗口保持。新parameter48_static_preparation_20261027_v1含10个冻结运行源码：准确47→48 prepare/手动launch/setup、五审查模板、两候选；原entry23/2m marker保留，新4m followup绑定实际47全state。原依赖逐项保留且恰新增两文件，startup/fullreview双marker及current_replay_capacity符合46–48窗口。两health逐字节一致，reward/映射段仅周期路径差异；AST/hash/CPU/标签通过。首次静态比较未规范化周期路径的失败保留并更正。没有正式48目录、waiter或恢复/物理/优化，准确47恢复与真实2m边界仍待。
+原46 I1829718/A1829722/V1829726、Direct28 1978250，冻结41 316550/316551/316552；47准备1858092、29准备2044155、固定统计1908379/336744。勿重复启动。小证据docs/evidence/RL_PARAMETER48_STATIC_20261027；Goal active，无子agent，原大产物共享SSD。
+
+开工实际查询/fetch/read main0869a04513ae0e586d2b30fd24f1f41d64526811、baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d，未变化；归档/push另记。
+
 ## 2026-10-27 — 完整45/27审查、43–45未稳定，正式46/28
 
 [最新交接](docs/RL_PARAMETER46_SERL28_20261027.md)。45 I/A/V1893680/1893500/1894500，Task/Strict18/17、12/12、17/17，reward−2.422921/−12.089458/−2.766779；全30×55/noabort、旧回放与新reward0误差、health/独立保存算术/图通过。原43–45统计完成：I近零保护，A首尾41.1185%/V40.0183%，均未稳定；保存算术/hash独立核验，不重跑bootstrap。A loss下降但Task15→12，保存配对成功变化贡献−3.33289/总−3.35399，非loss因果。

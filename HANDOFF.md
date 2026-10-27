@@ -1,5 +1,11 @@
 > **当前RL：[正式参数46与Direct28](docs/RL_PARAMETER46_SERL28_20261027.md)。完整45/27已审查、原43–45未稳定；46/28 actual startup通过。47/29仅准备、新46–48明确容量边界；原冻结41继续。Goal active，先核PID勿重复启动。**
 
+## 2026-10-27 — 参数48双容量标记静态衔接准备
+
+[本轮补充](docs/RL_PARAMETER48_STATIC_20261027.md)。原四正式46/28及冻结41七PID持续推进，47/29原准备与两个固定窗口保持。新parameter48_static_preparation_20261027_v1含10个冻结运行源码：准确47→48 prepare/手动launch/setup、五审查模板、两候选；原entry23/2m marker保留，新4m followup绑定实际47全state。原依赖逐项保留且恰新增两文件，startup/fullreview双marker及current_replay_capacity符合46–48窗口。两health逐字节一致，reward/映射段仅周期路径差异；AST/hash/CPU/标签通过。首次静态比较未规范化周期路径的失败保留并更正。没有正式48目录、waiter或恢复/物理/优化，准确47恢复与真实2m边界仍待。
+原46 I1829718/A1829722/V1829726、Direct28 1978250，冻结41 316550/316551/316552；47准备1858092、29准备2044155、固定统计1908379/336744。勿重复启动。小证据docs/evidence/RL_PARAMETER48_STATIC_20261027；Goal active，无子agent，原大产物共享SSD。
+
+
 > **RL补充：[4m容量准备](docs/RL_PARAMETER_CAPACITY4M_20261027.md)。真实44迁移验证通过，当前45/take27/冻结41继续；扩容拟47→48，尚未正式部署，须实际47恢复和新48审查。Goal active。**
 
 > **当前RL：[参数45正式接续与Direct27–29窗口](docs/RL_PARAMETER45_SERL27_29_20261027.md)。45实际启动检查通过，原Direct27/冻结41继续；46和Direct28仅准备，无自动训练。先核实际PID，Goal active。**
