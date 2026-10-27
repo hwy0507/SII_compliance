@@ -1,0 +1,123 @@
+--- evaluate_serl_capacity_frozen_20261027.py
++++ evaluate_serl_recovery_frozen_20261027.py
+@@ -57,10 +57,10 @@
+         raise ValueError('Stochastic evaluation needs an explicit nonnegative external seed')
+     if not args.stochastic and args.noise_schedule != 'independent':
+         raise ValueError('A noise schedule applies only to stochastic evaluation')
+-    if not args.check_only and args.expected_cycle != 26:
+-        raise ValueError('Physical evaluation is registered only for complete26')
+-    if args.expected_cycle < 24:
+-        raise ValueError('Expanded replay checkpoints only')
++    if not args.check_only and args.expected_cycle != 29:
++        raise ValueError('Physical evaluation is registered only for complete29')
++    if args.expected_cycle < 27:
++        raise ValueError('Complete recovered take27 or later checkpoints only')
+     torch.set_num_threads(1)
+     root, output = args.runtime.resolve(), args.output.resolve()
+     protocol = json.loads(args.registration.read_text())
+@@ -108,24 +108,66 @@
+     controller, algorithm = checkpoint['controller'], checkpoint['learner']['algorithm']
+     if controller != 'direct' or algorithm != 'serl_state' or checkpoint['boundary'] != 'complete_condition_cycle':
+         raise ValueError('Expected complete official SERL Direct checkpoint')
+-    # Restore the persisted2m replay with the already validated strict loader.
+-    # No sampling, insertion, legacy migration or optimization is performed.
+-    from resume_serl_capacity_reviewed_continuation_20261027 import validate_capacity, capacity_replay
++    # Validate recovery contracts as recorded; never relabel partial25 as complete.
++    import resume_serl_take_recovery_continuation_20261027 as continuation
++    import resume_serl_recovery26_take27_20261027 as entry
++    import resume_serl_interrupted25_20261027 as recovery
++    import resume_serl_capacity_reviewed_continuation_20261027 as old
+     from train_serl_state_20261026 import Replay
+-    previous_ref = protocol['resume_parent_registration']
+-    if sha(previous_ref['path']) != previous_ref['sha256']:
+-        raise ValueError('Previous registration hash changed')
+-    previous = json.loads(Path(previous_ref['path']).read_text())
+-    validate_capacity(protocol, previous)
+-    if checkpoint['cycle'] != protocol['reviewed_continuation_stage']['parent_cycle'] + 1:
+-        raise ValueError('Checkpoint and registered continuation do not match')
++    stage = protocol['recovery_continuation_stage']
++    validator = entry if stage['parent_cycle'] == 26 else continuation
++    previous = validator.validate_protocol(stage['parent_registration']['sha256'], protocol, sha(args.registration))
++    continuation.validate_parent(checkpoint, protocol)
++    original = continuation.original_recovery_protocol(protocol)
++    interrupted = recovery.validate_protocol(original['interrupted_stream_recovery']['parent_registration']['sha256'], original, '')
++    old.validate(interrupted['resume_parent_registration']['sha256'], interrupted, '')
++    old.validate_capacity(protocol, previous)
++    required_modules = ['resume_serl_recovery26_take27_20261027.py',
++        'resume_serl_interrupted25_20261027.py', 'resume_serl_capacity_reviewed_continuation_20261027.py',
++        'serl_replay_capacity_20261027.py', 'serl_multistep_state_adapter_20261026.py',
++        'serl_multistep_replay_gather_20261026.py', 'train_serl_state_20261026.py',
++        'validate_serl_state_20261026.py']
++    for name in required_modules:
++        if sha(Path(__file__).with_name(name)) != stage['source_hashes'][name]:
++            raise ValueError('Frozen recovery dependency drift: '+name)
++    for name, expected in stage['source_hashes'].items():
++        if sha(Path(stage['runtime'])/name) != expected:
++            raise ValueError('Original continuation dependency drift: '+name)
+     for name, expected in json.loads((root/'SOURCE_HASHES.json').read_text()).items():
+         if sha(root/'source'/name) != expected:
+             raise ValueError('Frozen source mismatch: '+name)
+     if checkpoint['replay'].get('replay_capacity_extension') != protocol['replay_capacity_stage']['marker']:
+         raise ValueError('Persisted capacity marker required; evaluation cannot migrate')
+-    expanded = capacity_replay(Replay, protocol, checkpoint)
+-    replay = expanded(7, 49, 20261079)
++    # Bind all930 quarantined tails to the original interrupted snapshot, not just their count.
++    interrupted_ref = protocol['interrupted_stream_recovery']['checkpoint']
++    if sha(interrupted_ref['path']) != interrupted_ref['sha256']:
++        raise ValueError('Original interrupted snapshot hash drift')
++    interrupted_checkpoint = torch.load(interrupted_ref['path'], map_location='cpu', weights_only=False)
++    recovery.validate_parent(interrupted_checkpoint, protocol['interrupted_stream_recovery'])
++    extra = checkpoint['replay']['multistep_target_extension']
++    old_extra = interrupted_checkpoint['replay']['multistep_target_extension']
++    if digest(extra['pending']) != digest(old_extra['pending']):
++        raise ValueError('Original930 pending queues changed')
++    pending_indices = np.asarray([i for rows in extra['pending'].values() for i in rows], dtype=np.int64)
++    if len(pending_indices) != 930 or len(np.unique(pending_indices)) != 930:
++        raise ValueError('Expected930 distinct quarantined rows')
++    for name, values in interrupted_checkpoint['replay']['arrays'].items():
++        np.testing.assert_array_equal(checkpoint['replay']['arrays'][name][pending_indices], values[pending_indices])
++    for name in ['target_rewards','target_bootstrap','target_endpoints','target_lengths']:
++        np.testing.assert_array_equal(extra[name][pending_indices], old_extra[name][pending_indices])
++    if not np.all(extra['target_endpoints'][pending_indices] == -1) or set(pending_indices).intersection(extra['ready']):
++        raise ValueError('Quarantined pending row became mature/sampleable')
++    if checkpoint['cycles'][:len(interrupted_checkpoint['cycles'])] != interrupted_checkpoint['cycles']:
++        raise ValueError('Pre-interruption complete-cycle history changed')
++    recovery_state = dict(quarantined_pending=930, original_pending_exact=True,
++        original_pending_raw_derived_exact=True, pending_not_mature_or_sampleable=True,
++        original_interrupted_checkpoint_sha256=interrupted_ref['sha256'],
++        pending_digest=digest(extra['pending']), complete25_invented=False,
++        complete_cycles_after_recovery=[c['cycle'] for c in checkpoint['cycles'] if c['cycle'] >= 25])
++    del interrupted_checkpoint, old_extra
++    expanded = old.capacity_replay(Replay, protocol, checkpoint)
++    guarded = recovery.quarantine_replay(expanded, extra['pending'])
++    replay = guarded(7, 49, 20261079)
+     replay.load_state_dict(checkpoint['replay'])
+     replay_digest = digest(replay.state_dict())
+     if replay_digest != digest(checkpoint['replay']):
+@@ -168,7 +210,7 @@
+         checkpoint_sha256=sha(snapshot), cycle=checkpoint['cycle'],
+         full_learner_state_exact=True, full_replay_state_exact=True,
+         learner_digest=initial_state, replay_digest=replay_digest,
+-        history_digest=history_digest, replay_capacity=replay.capacity,
++        history_digest=history_digest, recovery_state=recovery_state, replay_capacity=replay.capacity,
+         replay_size=replay.size, historical_capacity_entry=23,
+         optimizer_updates=0, new_physics=0, replay_writes=0))
+     if args.check_only:
+@@ -178,7 +220,7 @@
+             full_learner_state_exact=True, full_replay_state_exact=True,
+             external_action_rng_gate=bool(args.stochastic),
+             optimizer_updates=0, new_physics=0, replay_writes=0,
+-            checkpoint_sha256=sha(snapshot), cycle=checkpoint['cycle']))
++            checkpoint_sha256=sha(snapshot), cycle=checkpoint['cycle'], recovery_state=recovery_state))
+         return
+     receipt = dict(scope=('training_conditions_independent_stochastic_diagnostic' if args.stochastic
+                           else 'training_conditions_independent_deterministic_evaluation'),
+@@ -270,7 +312,7 @@
+         initial_state_digest=initial_state, final_state_digest=digest(learner.state_dict()),
+         new_optimizer_updates=learner.learner.num_gradient_steps-initial_updates,
+         full_replay_state_unchanged=replay_unchanged, replay_writes=0,
+-        replay_digest=replay_digest, history_digest=history_digest))
++        replay_digest=replay_digest, history_digest=history_digest, recovery_state=recovery_state))
+     if not unchanged:
+         raise AssertionError('Deterministic evaluation modified learner state')
+     if learner.learner.num_gradient_steps != initial_updates:

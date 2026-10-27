@@ -1,3 +1,10 @@
+## 2026-10-27 — Direct29恢复感知冻结入口与真实27恢复通过
+
+[本轮交接](docs/RL_SERL29_RECOVERY_FROZEN_20261027.md)。新独立evaluator/rootreview保留原随机动作/物理loop和filter/torque审查，专门验证partial25/连续26..29/930隔离及全learner/replay/history。真实完整27 check-only在600秒内通过，size1121790/2m/entry23、930原raw/derived/pending精确且仍不可采样；外部动作RNG通过，0物理优化。与原实际28恢复保存摘要及PRELAUNCH绑定交叉核验一致，703源码hash保持；原3577385/3577387完成退出。错误27物理请求在创建输出前拒绝。
+原固定29 PLAN/全30/同冻结16seed2026102626不变；新仅准备3802347等10800秒，准确29完整后600秒check-only，无自动物理。SOURCE_FREEZE/prepare/手动launch与rootreview准备，正式物理须原冻结41三评测及rootreview完成；实际29恢复和全30评测未执行，旧26计划不复用。原47三3184892/3184893/3184894、Direct28 1978250、冻结41三316550/316551/316552、48/29训练准备3192792/2044155、两固定统计1908379/336744继续。小证据docs/evidence/RL_SERL29_RECOVERY_FROZEN_20261027；Goal active，无子agent。
+
+开工实际查询/fetch/read main31765d168aab8ba078602798bbfb641350e18344、baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d；原正式冻结源保持，归档/push另记。
+
 ## 2026-10-27 — 参数46完整、正式47及Direct29冻结前瞻计划
 
 [最新交接](docs/RL_PARAMETER47_FROZEN29_20261027.md)。46 I/A/V1934930/1934750/1935750，Task/Strict18/17、11/10、17/16，reward−2.325234/−15.465871/−4.626438；30全55/noabort、旧回放/history、新reward0误差、health/保存算术/图通过。三路末1000loss高于首1000，未健康收敛。45→46保存配对：A long0300/0900丢成功、short0600恢复Task但越.2mm失Strict；V short0600 .169418→.215310mm丢Strict，原gate/MJB核验，非loss因果。
