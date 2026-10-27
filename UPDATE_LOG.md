@@ -1,3 +1,8 @@
+## 参数32→33全部四条成败切换的保存轨迹诊断完成
+
+[诊断报告](docs/RL_PARAMETER33_FAILURE_MODES_20261027.md)。8条已保存轨迹/source/model hash核对，0物理/神经推理/优化。I short0600穿透.218649→.198514mm，A short0600 .183458→.232938，V short0000 .154151→.218823，三条Strict切换对应原.2mm门；A long0300物理有效但lift4.28→18.96s、carry6.32→20.84s，55s仍carry未释放。末控制记录误差12.927mm/ready0，非完整路点guard或因果重演，不改gate/时限。
+原诊断REVIEW及executed_audit_v1.py保留；单独TIMESTAMP_CORRECTION_REVIEW更正初版limitation：time为区间末55s，neuron_time为区间初54.96s，差.04s。旧数值/图不变，提交脚本补充neuron_time/正确文案，不重跑。四正式21/34与冻结32、22/35准备和两稳定性等待均保持，Goal active。
+
 ## 参数33完整审查通过，34已接续
 
 [最新交接](docs/RL_PARAMETER34_20261027.md)：完整33三方法30×55s无abort、旧prefix/history/2m marker及新增41250reward0误差、finite/health/图通过；I/A/V Task/Strict18/18、12/11、17/16，reward−.566095/−13.609943/−4.596229，末loss2.048515/2.092088/.872053。A/V后段loss和terminal误差升高，仍未健康稳定。
