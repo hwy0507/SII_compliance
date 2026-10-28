@@ -1,3 +1,11 @@
+## 2026-10-29 — 非RL v8 ESN训练残差及ridge数学实现核验
+
+- [报告](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)。三组已完成ESN对全部24train/12600帧的冻结runtime重放与原导出完全相同，teacher动作也精确；独立重建540维训练设计/归一化/原ridge正规方程，保存权重相对残差≤2.821e−14、输出误差≤8.33e−15。没有refit/模型改写，排查实现而非宣称学生成功。
+- 仍有关键阶段拟合残差：棍垂向RMSE .00331486–.00334958、教师RMS .00558630；三seed最大2秒棍窗均rod01的8–10秒，球窗为ball02/02/07末2秒。全24/各通道/原事件窗口均保留，不按验证或测试挑窗；不能把小MSE当闭环修复。
+- 本轮新诊断初版浮点时间生成伪单帧尾窗，压缩原件保留；改为50帧互斥分组，500/750/325及时间漂移覆盖检查、实际全24复审通过。未改任何运行绑定源/原评测门，旧失败保留。
+- 21:19:25UTC原handoff1089228 active，17/75结束、RNN seed2026102802 candidate02更新23160；808775680bytes/3GiB/swap0/OOM0。无MODEL_LOCK/学生新18/108。Goal active，继续原队列并审查关键闭环；无RL/子agent/服务器计算/删除。
+- 开工实际fetch/read main4b413840/baselinef6e8f8c，重读AGENTS，保留无关文件。本轮新诊断仅本机/Git待共享，准确归档以后续收据为准；原完整v8物理及源码共享位置见前条V8_FULL_SHARED_RECEIPT。本轮实质progress，不将等待或教师通过称Goal完成。
+
 ## 2026-10-29 — 非RL v8全30资格通过及公平训练实际接续
 
 - 21:09:12UTC原1089228同PID active，9/75作业完成，RNN seed2026102801 candidate01到21624更新，内存1085460480bytes；非9最终模型锁定。科学63186fd7与安全合并1a2afabc已push/远端核验，双方日志逐字保留。完整v8物理614文件2802442240bytes/SHA76f23adc已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_full_collection_20261029_v1/`；同commit源码/小证据1193文件7726159bytes/SHAbf3e5ed2已核`runs/main/nonrl_v8_full_source_20261029_v1/`。收据V8_FULL_SHARED_RECEIPT，覆盖下文上传中快照；不含在途学生/后补收据，Goal active。

@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL v8 ESN训练误差定位，原训练继续
+
+- [最新诊断](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)：已完成三ESN在全部24train/12600帧上冻结runtime导出精确、teacher精确，独立540维ridge正规方程相对残差≤2.821e−14，无重新求解。仍有关键拟合残差：棍垂向RMSE约教师该通道RMS59–60%，球撞末2秒最大；不把数学审计当闭环通过。
+- 新诊断首版浮点时间产生伪单帧尾窗，原件保留；改为50样本互斥分窗并实际全24复审，全场景统计不变。仅诊断工具问题，未改绑定训练/物理/gate，不能解释旧学生退化。
+- 21:19:25UTC原handoff1089228 active，17/75完成，RNN seed2026102802 candidate02更新23160，808775680bytes/3GiB/swap0/OOM0，无MODEL_LOCK。继续原75→审计9模型→v8实际18及失败分析→108六指标；不重复/热改源，原12只回归。新诊断仅本机/Git待共享，后续收据覆盖；Goal active，无RL/子agent/服务器计算。
+
 ## 2026-10-29 — 非RL v8全30合格，公平训练已启动
 
 21:09:12UTC覆盖：原1089228同PID active，9/75完成，RNN seed2026102801 candidate01到21624更新；不是9模型锁定。科学63186fd7及合并1a2afabc已push核验。完整v8原物理2802442240bytes/SHA76f23adc已核共享`runs/main/nonrl_v8_full_collection_20261029_v1/`；同commit源码/小证据1193文件7726159bytes/SHAbf3e5ed2已核`runs/main/nonrl_v8_full_source_20261029_v1/`（均arm1共享根）。见V8_FULL_SHARED_RECEIPT，不含在途学生结果。Goal active。
