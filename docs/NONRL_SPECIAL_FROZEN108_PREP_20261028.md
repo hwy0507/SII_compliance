@@ -1,5 +1,21 @@
 # 三真实场景采集继续与冻结108入口准备
 
+## 原第四条件持续等待（13:05–13:15 UTC）
+
+21个真实样本索引0–20完整保存：原772606/start28001859、791378/start28239353
+身份保持，完成28→29/108，第四条件RNN seed1自然结束后接续MLP seed1
+worker863648/start29102030，末次54.04秒、carry。3GiB/swap0/OOM0，
+采样内存最大1,265,516,544字节，非内核全程峰值；MLP在途外部穿透
+.551646638mm保留，不能当完整回合指标。有限观察器正常退出0，科学服务继续，
+无重启或模型/测试/判据变更。完整108、六指标、图表、contact补充和全物理归档仍待，Goal active。
+
+[完整观察与命令](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/VERIFIED_WAIT_1305_1315.json)。
+单文件证据包逐成员字节及远端暂存/最终大小hash核验，3432字节，SHA256
+`8a6701db7b6c4e697c49e5a6f6a35b86221bf29ca3bad7a859d4d7752315833e`：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_wait_1305_1315_20261028_v1/special_scene_verified_wait_1305_1315_20261028_v1.tar.gz`。
+只包含观察证据，不含物理轨迹。开工/收尾真实fetch/read main58e9150c、baselinef6e8f8c，
+独立RL更新已fast-forward保留，无本任务协议变化或RL工作。
+
 ## 第三条件九模型完整复核（12:59 UTC，27/108）
 
 原772606/start28001859、791378/start28239353保持；12:37:16–12:59:16的45个
