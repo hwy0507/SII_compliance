@@ -1,0 +1,272 @@
+{
+  "host": "airpig",
+  "scenes": {
+    "corner": {
+      "run": "code/mujoco_6d_vmc_benchmark/outputs/video_reference_vmc_20261028_v1/corner",
+      "execution_summary": {
+        "status": "failed_preserved",
+        "started_utc": "2026-10-28T03:44:21.341790+00:00",
+        "ended_utc": "2026-10-28T03:44:44.567334+00:00",
+        "teacher_config_sha256": "352d6d75662aecceb2777aaa2ac5d8e3b0b576a54635930fca8d081cc879c787",
+        "model_sha256": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+        "trajectory_sha256": "15e8e9402a2ab89b6fe4c5526a5deaf33634280ad09b6e7d40ae2ea180548d09",
+        "wrapper_sha256": "ce7b0b4359891928adbceed5a8ca1be5f7e22d69db105a4906c1c36c18d6aaec",
+        "steps": 325,
+        "substeps": 260000,
+        "contacts": {
+          "table_side": {
+            "first_s": 5.3655499999941645,
+            "last_s": 6.82209999999077,
+            "duration_s": 0.6520999999999364,
+            "peak_force_n": 234.42102212211762,
+            "max_penetration_m": 0.0
+          },
+          "thick_table_top": {
+            "first_s": 8.147449999987682,
+            "last_s": 12.999999999976373,
+            "duration_s": 4.507749999996164,
+            "peak_force_n": 119.96609012052343,
+            "max_penetration_m": 0.001065014436254735
+          }
+        },
+        "peak_torque_nm": [
+          0.02584786717434017,
+          50.134838905140015,
+          0.515461291542081,
+          31.14609338857209,
+          0.7616065106709671,
+          7.282026628306586,
+          0.07293577727707719
+        ]
+      },
+      "audit": {
+        "status": "passed",
+        "physical_action_rows": 325,
+        "audit_only_suffix_rows": 326,
+        "original_execution_status": "failed_preserved",
+        "source_sha256": "4a0e08004c1597fda3ac8f014541f08c4db4d5c8106afef4f6d6cad97c5127b8",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "input_hashes": {
+          "trajectory.npz": "15e8e9402a2ab89b6fe4c5526a5deaf33634280ad09b6e7d40ae2ea180548d09",
+          "filter.npz": "415bb3d3fd5924d748e425f9654fa6b1f4aac299e97014575cbf4e2ba0ea887c",
+          "execution.json": "91e4514fe035fd5d54639642c0fe517a7fbd193456df05920a71f73c10732be0",
+          "teacher.json": "352d6d75662aecceb2777aaa2ac5d8e3b0b576a54635930fca8d081cc879c787"
+        },
+        "limitation": "This validates provenance/execution replay, not Task/Strict success or physical safety."
+      },
+      "media": {
+        "physics_rerun": false,
+        "all_gif_frames_decoded": true,
+        "mp4_full_decode": true,
+        "frames": 325,
+        "gif_frames": 163,
+        "fps": 25.0,
+        "playback_speed": 1.0,
+        "simulation_interval_s": [
+          0.04000000000000063,
+          12.999999999976373
+        ],
+        "model_sha256": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+        "trace_sha256": "15e8e9402a2ab89b6fe4c5526a5deaf33634280ad09b6e7d40ae2ea180548d09",
+        "render_source_sha256": "4023aceecc3dc491db05097db1dc6d3491dfb3c764a6fce6e6561969813a4ebd",
+        "media_sha256": {
+          ".gif": "43dd076db9a5edafc13fff5ed0cf447db92c8595ce13302ab2c969b2b2fc003d",
+          ".mp4": "d068086c07b4b46184feb56dcf9c591166b1e5bfe9b1865f1dcca6c0448a2f8e"
+        }
+      },
+      "legacy_result": {
+        "scenario_success": false,
+        "task_success": true,
+        "object_placed_on_table": false,
+        "failure_reasons": [
+          "placement_failure",
+          "physics_step_table_penetration_or_missing_audit"
+        ],
+        "placement_release_gate": {
+          "stable_s": 0.0,
+          "max_stable_s": 0.0,
+          "released": false,
+          "release_time_s": null,
+          "hover_stable_s": 4.400000000000003,
+          "max_hover_stable_s": 4.400000000000003,
+          "settle_relaxation_active": false,
+          "last_supported": false,
+          "last_target_speed_mps": 0.000617327929885524,
+          "last_target_bottom_m": 0.6993025065978044,
+          "last_table_surface_m": 0.6950000000000001,
+          "last_margin_xy_m": [
+            0.03692553083730559,
+            0.21492574511047383
+          ],
+          "last_support_gap_m": 0.00430250659780429
+        }
+      }
+    },
+    "rod": {
+      "run": "code/mujoco_6d_vmc_benchmark/outputs/video_reference_vmc_20261028_v2/rod",
+      "execution_summary": {
+        "status": "complete",
+        "started_utc": "2026-10-28T03:51:27.793917+00:00",
+        "ended_utc": "2026-10-28T03:53:05.747006+00:00",
+        "teacher_config_sha256": "352d6d75662aecceb2777aaa2ac5d8e3b0b576a54635930fca8d081cc879c787",
+        "model_sha256": "4fed2e4948a48bc1e766717519685d56b369052243ebbae9ce3f69bb2ecdff5e",
+        "trajectory_sha256": "6fa979d07d69afad557457543cf34cf1a873adcf5bb29371e32b51572bde17d5",
+        "wrapper_sha256": "396b3ae8d903b4688e59987c82a34ba625d3dd12316f8bf6e5b1f4ccad248d59",
+        "steps": 600,
+        "substeps": 480000,
+        "contacts": {
+          "push_rod_geom": {
+            "first_s": 0.4724999999999561,
+            "last_s": 15.529749999970477,
+            "duration_s": 2.575450000000667,
+            "peak_force_n": 338.28414803505535,
+            "max_penetration_m": 0.0001799485901657021
+          },
+          "push_back_guard": {
+            "first_s": 12.815249999976803,
+            "last_s": 14.18514999997361,
+            "duration_s": 0.11649999999999533,
+            "peak_force_n": 90.43023298302431,
+            "max_penetration_m": 1.17844876762993e-05
+          }
+        },
+        "peak_torque_nm": [
+          3.5081194733468126,
+          36.54068377948157,
+          3.7198941967572154,
+          28.69868638780236,
+          1.7769656232119335,
+          4.442454300684174,
+          0.9113572380312152
+        ]
+      },
+      "audit": {
+        "status": "passed",
+        "physical_action_rows": 600,
+        "audit_only_suffix_rows": 0,
+        "original_execution_status": "complete",
+        "source_sha256": "4a0e08004c1597fda3ac8f014541f08c4db4d5c8106afef4f6d6cad97c5127b8",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "input_hashes": {
+          "trajectory.npz": "6fa979d07d69afad557457543cf34cf1a873adcf5bb29371e32b51572bde17d5",
+          "filter.npz": "9ed4ec7e655c84c1d69b2a761ddbcb3b1d4aa15fcf46a2ac8298c0572e1eb72a",
+          "execution.json": "1ea7de74207fc200fe5f78def553e2154867487df3cae7070a5e785681e217f8",
+          "teacher.json": "352d6d75662aecceb2777aaa2ac5d8e3b0b576a54635930fca8d081cc879c787"
+        },
+        "limitation": "This validates provenance/execution replay, not Task/Strict success or physical safety."
+      },
+      "media": {
+        "physics_rerun": false,
+        "all_gif_frames_decoded": true,
+        "mp4_full_decode": true,
+        "frames": 600,
+        "gif_frames": 300,
+        "fps": 25.0,
+        "playback_speed": 1.0,
+        "simulation_interval_s": [
+          0.04000000000000063,
+          24.00000000023495
+        ],
+        "model_sha256": "4fed2e4948a48bc1e766717519685d56b369052243ebbae9ce3f69bb2ecdff5e",
+        "trace_sha256": "6fa979d07d69afad557457543cf34cf1a873adcf5bb29371e32b51572bde17d5",
+        "render_source_sha256": "4023aceecc3dc491db05097db1dc6d3491dfb3c764a6fce6e6561969813a4ebd",
+        "media_sha256": {
+          ".gif": "17d088c1e40d68625f473996b4fee05e5655aa563a135f24575d1b5c7ebcfe38",
+          ".mp4": "8bebd20fed32cc29ebc3036a2a1026c8365921cc0db210f34201de87e1af2058"
+        }
+      },
+      "legacy_result": {
+        "success": true,
+        "grasp_lift_success": true
+      }
+    },
+    "ball": {
+      "run": "code/mujoco_6d_vmc_benchmark/outputs/video_reference_vmc_20261028_v2/ball",
+      "execution_summary": {
+        "status": "complete",
+        "started_utc": "2026-10-28T03:53:06.069652+00:00",
+        "ended_utc": "2026-10-28T03:54:20.659670+00:00",
+        "teacher_config_sha256": "352d6d75662aecceb2777aaa2ac5d8e3b0b576a54635930fca8d081cc879c787",
+        "model_sha256": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+        "trajectory_sha256": "dfa8208bf08db7a0e1131ba18088edf7f59426ef93a92450ad72fa453530ae50",
+        "wrapper_sha256": "396b3ae8d903b4688e59987c82a34ba625d3dd12316f8bf6e5b1f4ccad248d59",
+        "steps": 750,
+        "substeps": 600000,
+        "contacts": {
+          "primitive_free_ball_geom": {
+            "first_s": 0.5061999999999525,
+            "last_s": 0.537949999999949,
+            "duration_s": 0.0318000000000004,
+            "peak_force_n": 180.75408895743365,
+            "max_penetration_m": 0.0
+          }
+        },
+        "peak_torque_nm": [
+          5.783041845553766,
+          47.497734101597715,
+          5.719940449220019,
+          27.646173538256534,
+          2.941847574250619,
+          3.9300959063285212,
+          1.1708497428499753
+        ]
+      },
+      "audit": {
+        "status": "passed",
+        "physical_action_rows": 750,
+        "audit_only_suffix_rows": 0,
+        "original_execution_status": "complete",
+        "source_sha256": "4a0e08004c1597fda3ac8f014541f08c4db4d5c8106afef4f6d6cad97c5127b8",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "input_hashes": {
+          "trajectory.npz": "dfa8208bf08db7a0e1131ba18088edf7f59426ef93a92450ad72fa453530ae50",
+          "filter.npz": "f61d07fc44169c829324b055bd6e229b57c5188401d6d3c000d9255b0ee170db",
+          "execution.json": "4a695231b6363f25557975f87c227dbff8fa250e406378fd11809f9a6084d2a7",
+          "teacher.json": "352d6d75662aecceb2777aaa2ac5d8e3b0b576a54635930fca8d081cc879c787"
+        },
+        "limitation": "This validates provenance/execution replay, not Task/Strict success or physical safety."
+      },
+      "media": {
+        "physics_rerun": false,
+        "all_gif_frames_decoded": true,
+        "mp4_full_decode": true,
+        "frames": 750,
+        "gif_frames": 375,
+        "fps": 25.0,
+        "playback_speed": 1.0,
+        "simulation_interval_s": [
+          0.04000000000000063,
+          30.00000000043413
+        ],
+        "model_sha256": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+        "trace_sha256": "dfa8208bf08db7a0e1131ba18088edf7f59426ef93a92450ad72fa453530ae50",
+        "render_source_sha256": "4023aceecc3dc491db05097db1dc6d3491dfb3c764a6fce6e6561969813a4ebd",
+        "media_sha256": {
+          ".gif": "1d1a776295edeab075687d0a0697646f18d8c2247850a0e07701c25b0ff6340b",
+          ".mp4": "3bb8312d18401963e74358f92ed4d8100cddcc7a6e8a4878ccb2856865ae8d74"
+        }
+      },
+      "legacy_result": {
+        "success": false,
+        "grasp_lift_success": false
+      }
+    }
+  },
+  "references": {
+    "棍子（有挡板）.mp4": {
+      "bytes": 411644,
+      "sha256": "0236edc7d20c9265bf8eb7cc448529fb2479f32f05b601e5fc91e7d8d0f13fd3"
+    },
+    "桌角.mp4": {
+      "bytes": 458200,
+      "sha256": "2f12464ca85e0a6a54047548ac03e98ab8524170970963c514861e77266b81c5"
+    },
+    "球（被弹开）.mp4": {
+      "bytes": 514818,
+      "sha256": "e939c50234937ed55f1dae93103c1303004025be237b27b4405155caaa6579c2"
+    }
+  }
+}

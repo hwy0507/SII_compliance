@@ -1,3 +1,11 @@
+## 2026-10-28 — 按用户三个参考视频恢复特化场景并运行最新VMC
+
+- 找回带挡板推杆、自由球、厚桌沿的历史场景/渲染代码。纠正之前“桌面凸起”替代用户“桌下抓取→竖直裙板接触→越边向桌面放置”的误解；原视频完整运行元数据缺失，只确认源码家族/布局/recipe匹配，不声称逐参数复刻。保留108/180正式比较及其他agent的RL工作。
+- 最新new30 teacher_lhs_0通过三个类AST一致性核验，替换原动作；新13/24/30秒轨迹完成。角抓取抬升后未释放/未放置、穿透1.065mm，杆原抓取抬升判据通过，球该判据失败；不冒充正式Task/Strict成功。三条独立actor/filter重放误差0；三MP4完整/三GIF全帧解码、关键帧目视核验通过。
+- v1校验器误经采集钩子向自身列表追加：角原325物理行独立重验通过，326校验后缀与原失败原件保留；杆在物理完成后校验循环OOM，完整actor来源未保存，明确排除。修复直接调用原filter，v2串行重跑杆/球成功退出，未调参掩盖任务失败。详见 `docs/VIDEO_REFERENCE_SCENES_VMC_20261028.md`、`docs/evidence/video_reference_vmc_20261028/`。
+- 已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/video_reference_vmc_20261028_delivery/SCENES.tar.gz`，190468315字节，SHA256 `2adb6691a0bb68331d7d17e12cbf0edfc3fdda36a86a967e9b6a64e8c74bc737`；84文件包内/本地hash一致、远端暂存/最终包hash一致。源码overlay、轨迹、媒体和失败全部归档；计算仅本机单模拟器/单线程/3GiB/禁swap。
+- 开工远端main `11af52479045acef7aba9114d12175704c444c46`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；收工fetch/read后main前进至 `0e59c278e96c852f1a46ae49c3574fc99c919a7d`，安全快进，baseline未变；重读AGENTS，保留他人未提交会议文档，仅提交本任务。
+
 ## 2026-10-28 — 33/53早期loss、导纳Strict门槛核验与34/54恢复准备
 
 - [补充交接](docs/RL_EARLY33_PARAMETER53_20261028.md)。实际查询/fetch/read main `d620fddfed28a31d1ac7ace90484b0a65b8c2bfd`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无新RL约束变化；原四learner与GPU守护身份核验live，训练持续推进。
