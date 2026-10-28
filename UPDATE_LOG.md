@@ -4,6 +4,13 @@
 - 新 `B/runtime/parameter61_loss_preparation_20261028_v1` 仅静态准备：完整61全loss/60→61原门配对/独立保存复算/等待脚本，父60逆变换/AST通过，完整49–60历史保留并追加61、条件0600不变。未创建61 loss运行目录/PLAN/进程，须实际61经科学审查启动后绑定真实jobs；非61结果、非新训练授权。
 - 准备包10成员/5939字节/SHAf7eff4df5ad15747ac0f0f4b60a8f69f56310a28901c7e61858f09b38ee17852逐字节/AST通过，收据docs/RL_PARAMETER61_LOSS_PREP_SAVE_20261028.json。大产物仍共享SSD，非HDD/arm1全备份；最新[交接](docs/RL_PARAMETER60_EARLY_ANCHOR_20261028.md)补充接续命令要求。实际fetch/read mainf67b4196、baselinef6e8f8c，无协议变化。Goal active，无子agent。
 
+## 2026-10-28 — 新训练实际学习图完成，首两条物理失败独立复核
+
+- 完整新训练日志生成实际六神经模型学习图及九模型验证点图，已逐原history数据点、math.fsum尾段统计和目视核验。RNN训练MSE下降545–590倍、MLP31.6–35.3倍；原cosine学习率末段降至1%，只描述趋稳，不冒称充分收敛。ESN解析ridge没有逐更新曲线，无reward伪图。图和证据见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
+- 原772606/791378仍运行，10:59完成2/108，MLP796016真实2.04→39.04秒；3GiB/swap0/OOM0，无重复启动。首两条共172万保存子步及来源/actor/filter链复核通过：ESN31秒全局穿透中止，RNN完整55秒停carry、末端XY误差87.04mm，均Task/Strict失败。RNN该回合低矩/舒适代理100%不代表任务成功或人体安全；不据测试改模型，不先算局部SPT。完整108与最终审计/六指标/接触补充/物理全归档待，Goal active。
+- 实际绘图数据、图、复核和源码5文件逐字节核验，462101字节/SHA256 `3d380edd700c25422420b7d33cb371e526755c7db51b2a496cdb59cfa8584159`已共享并回读核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_actual_learning_20261028_v1/nonrl_special_actual_learning_20261028_v1.tar.gz`，不含原始108轨迹。原自动绘图目录/快照保持，独立当前展示不影响原接续。
+- 已查询/fetch/read main `ffdf6c681c409f2c1ae0192284de5d10addc4df9`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无本任务协议变化；无RL改动、无子agent、无服务器计算。
+
 ## 2026-10-28 — 原60前5000与全1794终端对照准备
 
 - [最新交接](docs/RL_PARAMETER60_EARLY_ANCHOR_20261028.md)。60前5000逐字节/hash/全字段有限/连续及独立算术、实际图通过，critic首末1000 I2.341075→2.529303、A1.619543→1.448868、V1.192178→1.208481；尖峰和actor漂移保留，非完整60/收敛。登记在训练和前缀存在后，原全部窗口不改。

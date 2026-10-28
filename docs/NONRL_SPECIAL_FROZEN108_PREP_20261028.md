@@ -1,5 +1,41 @@
 # 三真实场景采集继续与冻结108入口准备
 
+## 实际新学习曲线与首两回合复核（10:59 UTC）
+
+原接续772606与协调器791378仍live，2/108完成，MLP seed1首条件worker796016
+从2.04推进到39.04物理秒。真实3GiB/swap0、OOM0，没有新训练或重复测试。
+本轮已查询/fetch/read main `ffdf6c681c409f2c1ae0192284de5d10addc4df9`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，没有本任务协议变化。
+
+训练已经完整，因此在独立输出目录提前生成了真实新学习图，不等待108才查看训练历史。
+原自动接续的`LEARNING_CURVES`路径未写入、原快照未修改，后续自动绘图保持原协议。
+两张PNG已目视检查，曲线每个数据点与所选候选原history逐项一致，尾段统计独立math.fsum核验；
+证据见[学习图与首两回合复核](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/ACTUAL_LEARNING_PLOT_REVIEW.json)。
+
+![本次新三场景训练的实际损失曲线](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/actual_learning/selected_learning_curves.png)
+
+六个神经模型均固定32000更新：RNN三seed全训练动作MSE从约8.3–9.2e-4降到
+1.49–1.65e-6（下降545–590倍），MLP从约7.9–8.6e-4降到2.44–2.72e-5（下降31.6–35.3倍）。
+最后10%区间仅有5个完整训练集读出点，其极差/均值为RNN3.31–4.06%、MLP1.24–1.90%。
+原cosine学习率从3e-4降至3e-6；末段变平受步长退火影响，不能据此独立认定充分收敛。
+没有平滑或伪造reward；ESN解析ridge只给终态验证误差，不构造梯度更新曲线。
+
+![九个锁定模型的实际验证误差](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/actual_learning/terminal_validation_mse.png)
+
+首两条物理回合共1720000保存子步和来源/config/checkpoint/actor/filter链复核通过。
+ESN首回合保持31秒全局穿透中止；RNN首回合完整55秒，无abort，仍停carry阶段，
+物体末端XY放置误差87.04mm，Task/Strict均失败。RNN该回合峰矩37.452694Nm、
+接触3.83025秒、舒适力矩代理100%、机器合规，但不能把这些值写成任务完成或人体安全认证。
+首两条均不进入双成功SPT；不提前计算局部T_ref或推断完整方法排名，不据测试调整模型。
+
+实际图、全部绘图数据点、复核收据及绘图来源共5文件逐字节核验，462101字节包SHA256
+`3d380edd700c25422420b7d33cb371e526755c7db51b2a496cdb59cfa8584159`已上传并回读核验发布：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_actual_learning_20261028_v1/nonrl_special_actual_learning_20261028_v1.tar.gz`。
+本包不含108原始物理轨迹；完整物理归档、六指标最终比较和contact补充仍待，Goal active。
+
+发布前原队列已3/108完整，ESN seed2首条件继续。远端新增 `f67b4196` 为另一RL任务，
+已读日志并安全合并；AGENTS/UPDATE_LOG顶部并行新增冲突逐段保留双方，原运行快照未变。
+
 ## 最新：训练完整，冻结108已运行，完整拟合档案已共享
 
 2026-10-28 10:52 UTC：新三场景30条示范的全部75作业/108候选已完成，

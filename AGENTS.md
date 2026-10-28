@@ -6,6 +6,10 @@
 - 新 `B/runtime/parameter61_loss_preparation_20261028_v1` 仅静态准备：完整61全loss/60→61原门配对/独立保存复算/等待脚本，父60逆变换/AST通过，完整49–60历史保留并追加61、条件0600不变。未创建61 loss运行目录/PLAN/进程，须实际61经科学审查启动后绑定真实jobs；非61结果、非新训练授权。
 - 准备包10成员/5939字节/SHAf7eff4df5ad15747ac0f0f4b60a8f69f56310a28901c7e61858f09b38ee17852逐字节/AST通过，收据docs/RL_PARAMETER61_LOSS_PREP_SAVE_20261028.json。大产物仍共享SSD，非HDD/arm1全备份；最新[交接](docs/RL_PARAMETER60_EARLY_ANCHOR_20261028.md)补充接续命令要求。实际fetch/read mainf67b4196、baselinef6e8f8c，无协议变化。Goal active，无子agent。
 
+## 2026-10-28 — 新训练实际曲线已核验，冻结108继续
+
+原772606/791378不变，10:59为2/108，MLP首条796016实测2.04→39.04物理秒，3GiB/swap0/OOM0。真实新曲线已从完整训练history生成并逐点/尾段独立求和/目视核验，RNN训练MSE降545–590倍、MLP31.6–35.3倍；学习率退火至1%，末段变平不是充分收敛证明。ESN解析ridge没有更新曲线，不伪造reward。首两回合172万保存子步复核通过，ESN全局穿透中止、RNN完整55秒停carry，均Task/Strict失败，不用低矩/高舒适代理代替任务成功。462101字节/SHA3d380edd实际图与证据包已核验共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_actual_learning_20261028_v1/`。原自动108/审计/绘图仍继续，勿重复派发；完整后另跑contact补充、全物理归档和最终六指标，Goal active。见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
+
 ## 2026-10-28 — 原60前5000与全1794终端对照准备
 
 - [最新交接](docs/RL_PARAMETER60_EARLY_ANCHOR_20261028.md)。60前5000逐字节/hash/全字段有限/连续及独立算术、实际图通过，critic首末1000 I2.341075→2.529303、A1.619543→1.448868、V1.192178→1.208481；尖峰和actor漂移保留，非完整60/收敛。登记在训练和前缀存在后，原全部窗口不改。

@@ -65,3 +65,5 @@ GPUv5实际 `/tmp/sii_gpu_util_guard_20261028_v5`，supervisor3256866/start37410
 `B/runtime/parameter61_loss_preparation_20261028_v1` 已准备audit.py、paired_gate.py、review_saved.py、wait.py，原60脚本逆变换精确/AST通过；保留完整49–60描述历史并追加61，60→61配对和原condition0600不变。当前**没有61 loss运行目录/PLAN/进程**。实际61通过完整60审查启动后，将四脚本复制到新 `B/runs/parameter61_loss_20261028_v1`，参照60的PLAN绑定真实61 LAUNCH jobs/source hashes，CPU54启动wait.py；FINISHED后执行review_saved.py并实际查看loss.png。此准备不启动61、不代替完整60或59–61的结果审查。
 
 10成员小包5939字节，SHA `f7eff4df5ad15747ac0f0f4b60a8f69f56310a28901c7e61858f09b38ee17852`，见[准备保存收据](RL_PARAMETER61_LOSS_PREP_SAVE_20261028.json)；逐字节/AST核验。训练与大产物仍原共享SSD，Goal active。
+
+61 loss准备发布前读取新main06babd39：另一主机非RL实际学习图与首两条物理失败复核，双方新增顶部日志按本轮准确前缀+完整远端保留，未改本机RL runtime。
