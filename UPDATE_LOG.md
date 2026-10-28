@@ -1,3 +1,11 @@
+## 2026-10-29 — 非RL v8完整拟合与九模型审计通过，学生18实际接续
+
+- [交接](docs/NONRL_V8_COMPLETED_FITS_STUDENT18_20261029.md)：原1089228在22:31:14UTC自然终止，75/75及9模型锁定SHA0bf736fd；54次真实观察从53→75，非观察超时重启。完整75/108候选预算/数据/源/曝光/验证选模审计SHA53345419通过，九模型各15750帧冻结actor导出误差0。
+- 验证requested-action MSE三seed范围：RNN1.061–1.121e−5，ESN2.586–3.082e−5，MLP8.190–8.924e−5；不是闭环排名。原24+6划分/每家每seed12候选保持，神经32000更新，非相同FLOPs或收敛认证。
+- 唯一学生18服务1160099/start32477328已在22:31:59实际开始，先fit审计通过后仿真，REG5d42f67a；单模拟器/线程1/CPU100%/3GiB/swap0。首ESN rod00原资格通过、actor/filter0，接触4.734/让位4.840/蹭过7.360/持续回位7.760<撤棍12.800；仅训练身份开发条件。原队列接续RNN，完整18及108均未完成，Goal active。
+- 全拟合900载荷+manifest、141956439bytes/SHAa670e2cd已逐成员及暂存/最终核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_complete_fits_20261029_v1/COMPLETE_FITS.tar.gz`。包含全部未选中候选/数据/训练源/收据，非在途18物理；其原始轨迹完成后另归档。
+- 开工main97c4dd88/baselinef6e8f8c实际fetch/read，上一轮verified wait、本轮完成训练/审计/真实闭环接续属progress。无RL/子agent/服务器计算/删除，旧失败完整保留；仍须18失败分析后推进108六指标，不把teacher或单棍成功当主矩阵修复。
+
 ## 2026-10-29 — 非RL原拟合十分钟核验41→49
 
 - 观察摘要2638bytes/SHA1055acd9已暂存及最终逐大小/hash核验共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_fit_observation_2150_20261029_v1/V8_FITTING_VERIFIED_WAIT_2150.json`；仅本轮观察，不含在途模型/源码全集，覆盖下条待共享快照。

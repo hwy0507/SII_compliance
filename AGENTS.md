@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL v8完整75/九模型审计通过，实际18启动
+
+- [当前交接](docs/NONRL_V8_COMPLETED_FITS_STUDENT18_20261029.md)。原1089228在22:31:14UTC自然结束，75complete/9锁定SHA0bf736fd；54次真实观察53→75。九模型各15750帧冻结actor导出误差0，75预算/数据/验证选择完整审计SHA53345419通过。本批不按18/108结果重选checkpoint；如需后继学习修复应另登记并保留本批。
+- 实际18唯一`sii-special-student-closure-v8-20261029.service` PID1160099/start32477328，22:31:59开始，REG5d42f67a、3GiB/swap0/单模拟器/线程1。首rod00 ESN合格：接触4.734/让位4.840/蹭过7.360/确认回位7.760<撤棍12.800，actor/filter0；已接续RNN。全18及108待，先收全18失败分析，勿重复或自动108。
+- 全拟合900载荷+manifest/141956439bytes/SHAa670e2cd已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_complete_fits_20261029_v1/COMPLETE_FITS.tar.gz`，包括全部未选中候选；不含在途18物理。Goal active，无RL/子agent/服务器计算。
+
 ## 2026-10-29 — 非RL原拟合十分钟核验41→49
 
 - 21:50:02–22:00:02UTC共21次原1089228/start31715901均live、active，完成41→49/75；末次seed03 RNN candidate07到27340更新。observer68681自然exit0，科学未停止；22:00:30原协调器1110985仍live，653361152bytes/3GiB/swap0/OOM0。
