@@ -1,5 +1,14 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 参数58完整、原56–58阻抗reward通过与准确续训59
+
+- [最新交接](docs/RL_PARAMETER58_COMPLETE_20261028.md)。完整58三路各30×55秒/41250新增/noabort，旧全replay/history/4m marker保持、新reward重算0、网络/优化器有限。完整loss独立算术/图通过；I/A/V reward−4.044914/−6.847757/−4.541539、Task/Strict17/16、15/15、17/16，critic末1000为2.261838/1.402060/1.260509。V末段loss抬升、short0600外穿透.176717→.221127mm跨原.2mm门失Strict，不隐去退化。
+- 原56–58完整/独立算术/图通过：I相邻4.16344%/3.83220%、首尾.17169%，原5%通过；A/V未过。原V53–55通过和后续平台改变均保留，不以有限数值或零终端误差作新门。bootstrap未独立重跑，整体仍未收敛。
+- V全部旧1734 masked SSE10684.465854→2441.892212（下降77.1454%），三个历史focus改善；新30贡献.374114301中short0600占84.9908%。精确旧输入/权重RNG不变、health复现、独立标量/图通过；新增全30事后分布诊断，非在线loss梯度因果。
+- 准确58全learner/replay/下一65536恢复三路退出0，有限59 I4084699/A4084701/V4084703 start均37574080、archive4084708/start37574081已启动。真实startup通过新增1000/1000/2000、旧全replay/history/optimizer保留、新reward0误差。完整loss4089956/start37575729；启动前登记连续59–61窗口4067967/start37570184、CPU54/14400秒，原seed/5%/5000和anchor55保持，无自动60。
+- 09:39原59约2432849/2433486/2434563steps；冻结55完整24/23/23，原身份继续。GPUv5实际/tmp守护原五进程保持、GPU77/97/92/91%含保活，科学结束仍继续；旧v4 STOP保留。Direct不启动34，Goal active，无子agent。
+- 开工fetch/read maine22724d4、baselinef6e8f8c；收尾mainb546441a非RL拟合进展已读并fast-forward保留。共享SSD小包140成员/1630442字节/SHA189a6647b27ff9e2d02e918aee0a6aeaec7dd8c1f5b8cbbb666381288bfe2dff逐字节/AST核验，收据docs/RL_PARAMETER58_COMPLETE_SAVE_20261028.json；现有HDD最新入口更新，大产物仍SSD，非HDD/arm1全备份。
+
 ## 2026-10-28 — 新场景学生拟合继续，八个完成神经候选重放通过
 
 发布前15/75，RNN seed1/candidate02在途，原服务3GiB/swap0/OOM0；八个已审神经候选完整产物归档已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_neural_prefix_20261028_v1/`，不含其他/在途候选。不要据部分验证MSE改预算或提前选模型。

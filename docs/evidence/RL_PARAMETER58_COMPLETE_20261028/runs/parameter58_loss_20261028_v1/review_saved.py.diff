@@ -1,0 +1,34 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter57_loss_20261028_v1/review_saved.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter58_loss_20261028_v1/review_saved.py
+@@ -1,4 +1,4 @@
+-"""Independently verify saved complete57 loss and paired statistics."""
++"""Independently verify saved complete58 loss and paired statistics."""
+ from pathlib import Path
+ import hashlib, json, math, os, time
+ os.sched_setaffinity(0, {54})
+@@ -19,7 +19,7 @@
+ methods={}
+ for m,report in r['methods'].items():
+     for source in report['inputs'].values(): assert sha(Path(source['path']))==source['sha256']
+-    root=B/f'runs/parameter_capacity_pool30_cycle57_20261026_v1/{m}/train'
++    root=B/f'runs/parameter_capacity_pool30_cycle58_20261026_v1/{m}/train'
+     logs=[json.loads(s) for s in (root/'optimizer.jsonl').read_text().splitlines()]
+     episodes=[json.loads(s) for s in (root/'episodes.jsonl').read_text().splitlines()]
+     assert len(episodes)==30 and len({e['condition'] for e in episodes})==30
+@@ -41,13 +41,13 @@
+     pr=paired['methods'][m]
+     for path,h in pr['inputs'].items(): assert sha(Path(path))==h
+     maps=[]
+-    for c in [56,57]:
++    for c in [57,58]:
+         p=B/f'runs/parameter_capacity_pool30_cycle{c}_20261026_v1/{m}/train/episodes.jsonl'
+         maps.append({e['condition']:e for e in map(json.loads,p.read_text().splitlines())})
+     assert len(pr['all30_paired'])==30 and {x['condition'] for x in pr['all30_paired']}==set(maps[0])==set(maps[1])
+     for v in pr['all30_paired']:
+-        assert v['reward56']==maps[0][v['condition']]['reward'] and v['reward57']==maps[1][v['condition']]['reward']
+-        near(v['reward57']-v['reward56'],v['delta'])
++        assert v['reward57']==maps[0][v['condition']]['reward'] and v['reward58']==maps[1][v['condition']]['reward']
++        near(v['reward58']-v['reward57'],v['delta'])
+     near(math.fsum(v['delta'] for v in pr['all30_paired'])/30,pr['mean_reward_delta'])
+     expected={k for k in maps[0] if any(maps[0][k][field]!=maps[1][k][field] for field in ['strict_success','abort_reason'])}
+     assert {v['condition'] for v in pr['changes']}==expected
