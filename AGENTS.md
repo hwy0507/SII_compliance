@@ -7,6 +7,15 @@
 - [最新补充](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)：全24train末2秒、三seed精确重放及72组独立标量核验。三阈值下近零估计负载尾窗rod8/ball7/corner0；ball02/07 teacher持续恢复而ESN低估，ball03/06却高估，rod teacher近零仍残留，不能仅统一拉长记忆或放大动作。固定leak与teacher按进展衰减存在表征差异，非已证唯一闭环原因；仍须原18/108。
 - 新诊断首试因旧actor无新版字段在输出前拒绝，改核checkpoint schema后3.696秒success；冻结模型/训练源不变。21:33:15原1089228/start31715901 live，29/75完成、seed02 RNN candidate04更新1428；十分钟原进程观察继续，未重复训练。新证据仅本机待共享，Goal active，无RL/子agent/服务器计算。
 
+## 2026-10-28 — 完整69审查与准确续训70
+
+- [交接](docs/RL_PARAMETER69_COMPLETE_20261028.md)。69三路各30×55/41250新增/noabort，旧68 replay/history保持、新reward重算0、网络/optimizer有限；全loss独立算术与实际图通过。reward I/A/V−.603698/−6.863821/−4.620539，TaskStrict18/18、15/15、17/16。I/A reward变化仍大、critic有限尖峰保留，尚未整体收敛。
+- 全180标签/90reward对通过：I long0000恢复TaskStrict、short0600恢复Strict(.196738mm)；A short0600恢复TaskStrict(.189866mm)；V该条件.219091mm仍失Strict。physical-valid30/30、30/30、29/30，无Task-only遗漏。
+- 全2064旧终端V SSE3854.502105→1654.889318（−57.066%），focus2050526 8.083281→120.416201退化、其余4改善，新30贡献.122886仍高；A829.837169→1186.567579（+42.988%），原66short0600 31.453106→55.213166。全数组/算术/实际图已审，不改focus/门槛或作因果声明。
+- 准确69全state/replay/next65536三路恢复通过，DECISION70绑定42证据/SHAf3336366；21:20:32有限70 I896042/A896043/V896044、archive896045启动，实际startup通过，21:25:40steps2885999/2886633/2887667。全70loss899342/PLANf6474649已部署；原68–70 waiter1085142保持，无自动71，Direct34false，Goal active。
+- 长observer exit143保留、原科学自然结束核验；未重启科学。322guard采样min66/56/63/61%、低于50[0, 0, 0, 0]，含合成保载、非瞬时保证；原v5科学完成也继续，非跨重启服务。
+- SSD包212成员/2403638字节/SHA0347956f逐字节/AST核验，收据docs/RL_PARAMETER69_COMPLETE_20261028_SAVE.json；大产物SSD，非HDD/arm1全备份。开工main5d26f186/baselinef6e8f8c实际fetch/read，无子agent。
+
 ## 2026-10-29 — 非RL v8 ESN训练误差定位，原训练继续
 
 21:23:11UTC覆盖：同1089228 active，21/75完成，RNN seed2026102801 candidate03更新1076，内存960634880bytes。科学5037e93a已push/远端核验；同commit源码/小证据1200文件7770548bytes/SHAf679ad46及准确报告已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_esn_diagnostic_source_20261029_v1/`，见V8_ESN_DIAGNOSTIC_SHARED_RECEIPT。非在途学生/完整物理归档，Goal active。
