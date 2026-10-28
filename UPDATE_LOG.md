@@ -1,3 +1,10 @@
+## 2026-10-28 — 原非RL108持续推进10→12，真实等待证据保存
+
+- 11:39–11:49原772606/791378身份保持，第二条件RNN seed1→MLP seed1→ESN seed2自然接续，完成10→12/108；末次824286/start28602824实测31.04秒。3GiB/swap0/OOM0，未重启；有限观察器exit0不是科学任务结束。保存20样本索引1–20，原初始0未收入文件，范围如实标注。
+- 原最终绘图/审计源码与live快照hash一致，静态确认零双成功SPT与无接触舒适为NA、失败保留在峰矩/机器合规分母；未修改执行源。完整108/最终六指标/实际图/contact补充/全归档仍待，Goal active，见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
+- 单证据包3678字节/SHA256 `da00071639a6103e861cfb862233f777b03f211dc6d9033e391703c2499c7710`逐字节/暂存及最终大小hash核验，已共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_wait_1139_1149_20261028_v1/special_scene_verified_wait_1139_1149_20261028_v1.tar.gz`，不含物理轨迹。
+- 开工查询/fetch/read mainc72f1427、baselinef6e8f8c；收尾main2ee8fd98独立RL记录已读并fast-forward保留。无RL修改、子agent或服务器计算。
+
 ## 2026-10-28 — 完整60、全1794终端改善与准确续训61
 
 - [最新交接](docs/RL_PARAMETER60_COMPLETE_20261028.md)。完整60各30×55秒/41250新增/noabort，全59 replay/history/optimizer保持、新reward0；网络/优化器有限。I/A/V reward−.628091/−8.555518/−2.855623，Task/Strict18/18、15/14、17/17。全loss独立算术/实际图通过，critic末1000为1.792392/1.676395/.880622；I/V下降、A后段burst，正向结果保留，有限尖峰/非零终端误差不新增门。
