@@ -1,5 +1,9 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 新三场景拟合37/75与六指标呈现准备
+
+原725995/start27488598、协调器746822/start27699608仍live，原队列29→37/75，09:58:21为RNN seed3/candidate05；3GiB/swap0/OOM0，不重复启动。全30来源/15750行观测动作/150文件hash/24+6不泄漏再次核验。新report_special_frozen108工具只接受完整新108审计，实际图仍待；小源码证据包10691字节/SHA40905ccd已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_report_preparation_20261028_v1/`。旧图不作新结果；完整75/9模型锁/108仍待，Goal active。见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)，不涉及RL，无子agent。
+
 ## 2026-10-28 — 新场景拟合继续与最终绘图兼容准备
 
 原725995/746822训练未重启，09:47附近已27/75，RNN seed1/candidate04实测16372更新；先读真实execution。194交接源/190拟合快照hash保持，真实3GiB/swap0/OOM0。绘图工具现支持新family/seed，需完整网格及锁定模型；实际未完成新run拒绝出图，旧九模型兼容图仅历史预检，不作新结果。小包357372字节/SHA dbbac8fd已核验归档 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_plot_readiness_20261028_v1/`。完整75、九模型审计和冻结108仍待，原30采集已完整勿重启。Goal active，无RL改动，见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。

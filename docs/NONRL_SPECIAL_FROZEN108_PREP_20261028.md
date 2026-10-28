@@ -1,5 +1,28 @@
 # 三真实场景采集继续与冻结108入口准备
 
+## 最终呈现入口与本轮来源复核（训练仍在进行）
+
+本轮小源码/准备证据包已核验发布至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_report_preparation_20261028_v1/special_report_preparation_20261028_v1.tar.gz`，
+10691字节，SHA256 `40905ccd7ea795d99f75330b5b79e0d595808892096a1fcb6de3c1bad3fe49ae`。
+不含新候选网格或测试结果；[准备收据](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/REPORT_PREPARATION.json)。
+09:58:21已37/75，当前RNN seed3/candidate05；原725995/start27488598、746822/start27699608
+保持live，实读OOM0/swap0/3GiB。收尾远端02dc99ea独立RL进展已读，运行源码不变。
+
+新增 `tools/report_special_frozen108_20261028.py --audit <完整108审计JSON> --output <新目录>`。
+仅接受真实完整108审计，核对其report/model lock/preparation/source hash，再从原108行重算
+聚合并与审计相等后生成六指标PNG与Markdown；各三seed散点、均值±样本SD同时保留，
+SPT双成功条件、全回合峰矩、接触dt舒适和机器合规分母明确。无双成功/无接触仍NA，
+不能以NA替换失败率；另列九模型Task/Strict/BOTH计数和实际接触时长，不作全新未见测试声称。
+目前仅AST/import与缺真实audit/错用采集完成收据的拒绝检查通过，**尚无新108图或渲染通过声称**。
+初次importlib预检未把tools加入模块搜索路径而失败；按命令行入口的实际同目录导入语义重试通过，
+没有改冻结执行器或模型。真正绘图和目视检查在完整108审计后执行。
+
+本轮还逐条核对全部30来源轨迹：150个lineage文件hash一致，训练数据全部15750行observation/action
+与原轨迹逐数组相同，且来源均为v5真实三场景；每场景8train/2validation、总12600训练帧，
+无回合跨划分。此检查不代替训练结束后的全75/九模型审计。原194登记运行源和冻结108准备输入
+均保持，不启动重复训练。29→33/75实测推进，09:53:21原服务PID725995保持，当前RNN seed1候选05。
+
 最新续接：原训练在09:47 UTC附近推进到27/75，`rnn_scratch_s2026102801_candidate04`
 实测16372更新。194交接源和190拟合快照hash保持；原服务3GiB/swap0、OOM0，未重启。
 全部75、最终九模型审计、冻结108及最终结果仍待，Goal active。
