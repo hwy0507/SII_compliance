@@ -1,5 +1,64 @@
 # v7完整采集与球撞末段稳定性修复
 
+## 20:28 UTC：七项完整通过，v8重采及公平学习接续已启动
+
+完整七项原始物理754文件/688650240bytes已逐成员核验，并在共享暂存和最终目录复核SHA256：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_vertical_damping_controls_20261029_v1/FULL_PROBE.tar`，
+SHA `8d32960b10a210afdd35d47030ff41f75dccb8b92f47cbbe31a3435a53c792d2`。
+[共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/VERTICAL_DAMPING_SHARED_RECEIPT.json)。
+包含完整七项/运行源，不包含在途v8/学生或后来准备代码；旧失败与本地副本未删除。
+
+原七项于20:23:13.547771 UTC自然结束，完整review确认六训练场景全部合格、
+office000完整55秒Task/Strict同时通过，末阶段retreat，动作/filter回放误差0。
+office RMSE32.732345mm、峰矩44.833782Nm、峰末端速度.363191m/s、外穿透.161989mm。
+四球训练尾段速度平方和.06049083598→.01466854611（下降75.7508%），
+ball00的RMS仍由.004457升到.006736，保留此退化，不宣称全面更优。
+棍00接触4.7444、让位4.84、蹭过7.72、持续回位8.16秒，早于12.80秒撤棍。
+[完整七项审查](evidence/NONRL_INTENT_RECOVERY_20261029/VERTICAL_DAMPING_COMPLETE_REVIEW.json)、
+[综合回归审计](evidence/NONRL_INTENT_RECOVERY_20261029/VERTICAL_DAMPING_OFFICE_AUDIT.json)。
+
+确认原服务inactive且无模拟器后，登记同一原30条件、seed及24train/6validation的新v8。
+`outputs/special_scene_vmc_collection_20261029_v8`，PLAN SHA
+`2ed3e2b9d407db4bb8186adbdc7a72d25deafdf3eb873453de62f9d059a4d252`；
+唯一`sii-special-collection-v8-20261029.service` parent1088910/start31713076，
+20:24:33.257379 UTC启动。20:27已rod00合格、rod01在途，非全30结论。
+单模拟器/线程1/CPU100%/3GiB/swap0，物理/MJB/filter/canonical48/执行器/原gate未改。
+实际新采集源hash含recollect工具，运行期间不得修改该绑定源。
+
+唯一接续`sii-special-learning-handoff-v8-20261029.service` parent1089228，
+20:25:01.506539 UTC启动，REG SHA
+`f7086a3fa174579f21bba34ff062b2220a5b1dd0b08fe906ae834b52307d1159`。
+全30独立资格通过后才构建`outputs/special_scene_retrain_20261029_v8`，
+共同数据/划分、三seed、每家每seed12候选、统一验证requested-action MSE选择规则；
+ESN固定储备池+解析ridge，普通RNN/MLP每候选32000更新，共75训练作业/9最终模型。
+当前仍等待采集，无新学生结果。v7失败原收据保留，不重启旧服务或复用旧准备。
+
+新18诊断准备`outputs/special_scene_student_closure_20261029_v8` SHA77fedd0e，
+新108准备`outputs/special_scene_frozen108_preparation_20261029_v8` SHA173e2abf。
+全部重新绑定v8，18/108均未启动。先完成模型审计/真实场景18与失败诊断再派发108，
+不按闭环结果重新挑选验证模型、不把office轨迹加入拟合。原12为已检查回归，非unseen。
+六指标保持Task、Strict、双成功条件SPT、全回合峰矩均值、接触dt舒适代理、机器合规率。
+
+本次续接实际fetch/read main0a882833、baselinef6e8f8c；独立RL更新与本任务无科学冲突，
+不操作RL/服务器计算/子agent。Goal active；教师有限对照修复不等于ESN或主矩阵修复。
+
+以下是保留的早期快照，运行状态以上述完整结果为准。
+
+20:19:55 UTC更新：原唯一七项服务1080783保持live，六训练场景全部合格，office55秒回归
+运行至25.04秒carry，完整结果待，OOM0。四球训练尾段速度平方和.060490836→.014668546
+（−75.75%），但ball00 RMS .004457→.006736退化仍保留；其余01/04/06均下降。
+新`recollect_vertical_damping_teacher_20261029.py`仅准备：必须真实完整七项review有资格且
+原服务inactive，才登记原30/同split/同gate的v8；实际当前缺review被拒绝且无v8目录。
+未启动v8/学生/108，不以六项替代全部七项。
+
+科学提交0f3e2c45已push并核验。完整v7物理归档现已核验共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v7_full_collection_20261029_v1/FULL_COLLECTION.tar`，
+2798858240bytes/SHAfa6eb5b9，包含全部30及ball08失败，覆盖下文上传中旧快照。
+同提交源码/小证据1170文件5967224bytes/SHA65673c16及另存报告SHA408786d0已核验到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v7_tail_source_20261029_v1/`。
+[完整共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/V7_FULL_AND_TAIL_SHARED_RECEIPT.json)。
+源码包不含后来recollect准备/本段后补或在途新七项物理；新教师结果仍以完整review为准。
+
 本轮Goal继续，前轮完整棍推审计/发布属于progress。本轮实际查询、fetch并读取main
 `2b41371d01cc1b766b6cfccade9311d1f966551a`、baseline
 `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。无RL操作、子agent或服务器计算。

@@ -1,6 +1,15 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL垂向阻尼七项通过，v8重采与接续
+
+- 完整七项754文件688650240bytes/SHA8d32960b已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_vertical_damping_controls_20261029_v1/FULL_PROBE.tar`；含完整物理/源/review，不含在途v8/学生。收据VERTICAL_DAMPING_SHARED_RECEIPT，保留全部旧失败。
+- [当前交接](docs/NONRL_V7_BALL_TAIL_REPAIR_20261029.md)。七项20:23:13完整结束：六train合格，office55秒TaskStrict true/retreat、actorfilter0。四球尾能量下降75.75%，ball00 RMS退化保留。不是ESN/主矩阵成功。
+- 原模拟器退出后，唯一v8采集`sii-special-collection-v8-20261029.service` parent1088910/start31713076于20:24:33启动，root`outputs/special_scene_vmc_collection_20261029_v8`/PLAN2ed3e2b9。同30真实场景/条件/seed/24+6/gates，仅teacher/output变化，3GiB/swap0/CPU100%/线程1；20:27 rod00合格、rod01在途。禁止重复或改绑定源。
+- 唯一学习接续`sii-special-learning-handoff-v8-20261029.service` parent1089228/REGf7086a3f，等全30审查通过才公平拟合三家各三seed/12候选，目标`special_scene_retrain_20261029_v8`。新v8学生18准备77fedd0e/108准备173e2abf均未运行。不要复用v7准备/重启其失败接续。仍须全30覆盖、模型审计、18诊断与108六指标，当前12非unseen，Goal active。
+
 ## 2026-10-29 — 非RL v7全30结束、球撞尾速失败与七项修复
+
+20:19:55UTC原七项1080783 live，六train全部合格、office25.04秒carry，完整结果待/OOM0；四球尾能量−75.75%但ball00 RMS退化保留。v8仅recollect入口准备，真实缺完整七项review拒绝无目录；不启动旧v7学生。0f3e2c45已push；完整v7物理2798858240bytes/SHAfa6eb5b9已核共享`runs/main/nonrl_v7_full_collection_20261029_v1/`，源码小证据/同commit报告已核`runs/main/nonrl_v7_tail_source_20261029_v1/`（均arm1共享根），见新收据。覆盖下文上传中状态，Goal active。
 
 - [当前交接](docs/NONRL_V7_BALL_TAIL_REPAIR_20261029.md)。原v7 20:04:10全30终止：rod10/ball9/corner10合格，validation ball08原末9速度.031113962>.02失败，接触/安全/回放通过。全30/原gate独立复算与8train尾段RMS审查完成。原handoff failed_preserved/无PID，正确阻止数据构建；无v7训练目录，不重启或复用v7绑定18/108。
 - 原8train球尾段亦波动，RMS前三04/06/01；不是用validation调参。唯一新垂向阻尼110→220、其余保持，七项rod00/ball00/04/06/01/corner00/office000，20:09:28启动`sii-special-teacher-vertical-damping-v1-20261029.service` parent1080783/start31622555，REG01d9abbf，3GiB/swap0/CPU100%/线程1。七项原资格+四球训练尾能量改善才有候选资格，无自动采集/拟合。完整后本工具`--review`；勿改绑定源/重复派发。

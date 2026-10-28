@@ -1,3 +1,11 @@
+## 2026-10-29 — 非RL七项教师修复完整通过并启动v8重采
+
+- 20:28UTC完整七项原物理754文件688650240bytes/SHA8d32960b已逐成员及共享暂存/最终大小/hash核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_vertical_damping_controls_20261029_v1/FULL_PROBE.tar`，收据VERTICAL_DAMPING_SHARED_RECEIPT。覆盖下文核验中快照；不含在途v8/学生或后来准备代码，无删除。
+- [交接](docs/NONRL_V7_BALL_TAIL_REPAIR_20261029.md)。七项20:23:13自然结束：六训练身份合格、office55秒TaskStrict true/retreat；actor/filter0，RMSE32.732345mm/峰矩44.833782Nm/峰速.363191m/s/穿透.161989mm。四球训练尾能量−75.7508%，ball00 RMS退化保留；未改gate，不声称学生成功。
+- 原服务inactive且无模拟器后，20:24:33启动唯一v8采集parent1088910/start31713076，PLAN2ed3e2b9；同原30真实场景条件/seed/24train6validation，3GiB/swap0/单线程。20:27 rod00合格、rod01在途；REGf7086a3f接续parent1089228 waiting。全30资格通过才进入有限75作业/9模型公平学习，失败保留，无自动测试。
+- 新v8专属18准备77fedd0e、108准备173e2abf，原12/MJB/dt5e−5/六指标保持，0物理积分；尚无学生结果。旧v7失败/全部历史保留，当前12仅回归非unseen。recollect实际完整七项正向登记通过，先前缺review拒绝仍记录。
+- 实际fetch/read main0a882833/baselinef6e8f8c，重读AGENTS；无RL/子agent/服务器计算。完整旧v7归档已核共享，收据V7_FULL_AND_TAIL_SHARED_RECEIPT。新七项完整754文件688650240bytes/SHA8d32960b本机已核，独立共享核验进行中；新v8在途仅本机。Goal active，主矩阵未完成。
+
 ## 2026-10-29 — 非RL棍推完整10条行为审计通过
 
 - 19:53:42UTC原服务同PID保持、15/30合格/ball05在途、接续waiting。科学797f46ea经安全整合另一任务4c952453至a431b2d0已push核验，双方新增/共同历史逐字保留。源码小证据1158文件5201198bytes/SHA3e2acc4a及同commit报告SHAa388ac5b已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v7_rod_source_20261029_v1/`；收据V7_ROD_SHARED_RECEIPT。未包含在途全30或学生结果，Goal active。
@@ -10478,6 +10486,7 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮科学提交e4bf380d90c252f3dbf9786e67bfd5bc54dcb31c已push且远端核验；共享SSD完整本轮小证据/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL29_COMPLETE_20261027_131218/FULL_SMALL_EVIDENCE.tar.gz，100成员/1199254字节、SHA256 7c7aef32fa7498bfab3e1c52b1af58a71542a195ef6c733edc08f2fd4bed8a46，逐成员大小/hash核验。收据docs/RL_SERL29_COMPLETE_SAVE_20261027.json；既有HDD LATEST已更新回读，大checkpoint/raw/runtime仍共享SSD，非HDD/arm1全备份。当前正式30/49及冻结29继续，Goal active。
 ## 2026-10-29 — 非RL v7全30完成、失败定位与垂向阻尼有限对照
 
+- 20:19:55UTC原七项1080783 live，六train已全合格，office25.04秒carry/完整55秒待；OOM0。四球训练尾能量.060490836→.014668546（−75.75%），ball00 RMS .004457→.006736退化保留。新v8 recollect入口仅准备，真实缺完整七项review被拒绝且无目录，不能提前采集。0f3e2c45已push/远端核验；完整v7原物理605文件2798858240bytes/SHAfa6eb5b9已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v7_full_collection_20261029_v1/`；同commit源码小证据1170文件5967224bytes/SHA65673c16及另存报告SHA408786d0已核`runs/main/nonrl_v7_tail_source_20261029_v1/`。收据V7_FULL_AND_TAIL_SHARED_RECEIPT，不含在途七项/学生/后补代码。
 - [当前报告](docs/NONRL_V7_BALL_TAIL_REPAIR_20261029.md)。原collector20:04:10自然结束，30条29合格：rod10/ball9/corner10，validation ball08末9速度.031113962>.02失败、安全/接触/回放通过。全30 hash审查、十球原gate独立标量复算及8train尾段RMS/精确actor/实际图完成；保持原失败，无gate修改。原handoff20:04:11 failed_preserved正确拒绝拟合，无v7数据集/模型，不重启。
 - 训练尾段RMS前三ball04/06/01为.009229/.008579/.007957m/s，峰值.037370/.030792/.024522；末窗口通过不代表全尾段稳定。完整训练图与动作分解已查看，不把关联写成单参数因果。validation只复算原门、不用于参数排名。
 - 唯一新七项垂向阻尼110→220，其余原offset/恢复/读出/物理/filter/input/gates保持；rod00/ball00/04/06/01/corner00/office000，20:09:28 service`sii-special-teacher-vertical-damping-v1-20261029` parent1080783/start31622555/REG01d9abbf，3GiB/swap0/单线程。独立8000虚拟子步0误差、静态差1.48e−17，非闭环证明。启动前祖先metadata继承纠正并重核source/hash，科学配置不变；完整七项与训练尾能量改善待，无自动新30/学习。
