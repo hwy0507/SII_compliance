@@ -1,3 +1,10 @@
+## 2026-10-29 — 非RL v8真实学习图与仅后处理接续
+
+- [交接](docs/NONRL_V8_LEARNING_CURVES_POSTPROCESS_20261029.md)。九锁定模型两张实际学习/末端验证图已生成、目视核验，六神经模型894/895原点及独立尾段算术通过。RNN末train6.75–7.27e−6、MLP8.63–9.08e−5，低同分布误差未转换原测试成功，优先实际覆盖/闭环修复；不是reward/新收敛认证或闭环排名。
+- 新后处理1201537于23:49:25UTC启动、REGfd8d90a1，已成图并等待原1172675/start32623702；CPU50%/线程1/3GiB/swap0、30秒检查/最长12h。仅完整108及原服务自然success后自动执行原全审、contact和六指标图；无新物理/训练/模型选择。旧handoff绑定历史尚未派发组，不能误用于当前v8；新目录兼容原完整归档器。
+- 3正/6负边界及真实未完成归档拒绝通过，8快照和有效八球v3源hash不变。23:51:12原108 active、12/108/689020928bytes，后处理active/11116544bytes。完整108审计/视觉/归档、八球及三场景公平重训待；Goal active，主矩阵仍未修复。
+- 开工maine0781ff5/baselinef6e8f8c实际fetch/read。新代码/图/小证据仅本机待共享，无RL/子agent/服务器计算/删除；保留两无关未跟踪文件。
+
 ## 2026-10-29 — 非RL首条件九模型独立核验与补采检查
 
 - 科学d05a6636的4文件增量源码/准确报告/审计，13179bytes/SHA6439c0f8，已逐Git blob及远端暂存/最终大小hash核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition000_20261029_v1/DELTA_SOURCE_AND_EVIDENCE.tar.gz`；见V8_CONDITION000_SHARED_RECEIPT。不是原108轨迹全集。收尾main9e4d6c57独立RL更新已读并经7c86b400安全合并，完整保留双方日志；冻结运行源未变。
