@@ -1,0 +1,81 @@
+{
+  "time": 1793178526.6832225,
+  "manual_low_observations_utc": [
+    "2026-10-28 09:03-09:04 UTC: GPU0/1/2/3 all0; repeated at09:04:09"
+  ],
+  "wchan_observed": "cxiWaitEventWait",
+  "affected_original_pids": [
+    1629438,
+    1629439,
+    1629440,
+    1629441,
+    1629442,
+    1846052,
+    1846053,
+    1846054
+  ],
+  "kernel_stack_read": "permission denied",
+  "memory_available_at_observation": "805GiB; no swap",
+  "original_guard_sample_gaps": [
+    {
+      "previous": 1793178162.963458,
+      "next": 1793178278.557077,
+      "seconds": 115.5936188697815,
+      "previous_gpus": [
+        {
+          "gpu": 0,
+          "utilization": 79,
+          "memory_mib": 2046,
+          "duty": 0.8
+        },
+        {
+          "gpu": 1,
+          "utilization": 71,
+          "memory_mib": 4453,
+          "duty": 0.7
+        },
+        {
+          "gpu": 2,
+          "utilization": 74,
+          "memory_mib": 4485,
+          "duty": 0.7
+        },
+        {
+          "gpu": 3,
+          "utilization": 70,
+          "memory_mib": 4477,
+          "duty": 0.7
+        }
+      ],
+      "next_gpus": [
+        {
+          "gpu": 0,
+          "utilization": 78,
+          "memory_mib": 2046,
+          "duty": 0.8
+        },
+        {
+          "gpu": 1,
+          "utilization": 98,
+          "memory_mib": 4453,
+          "duty": 0.7
+        },
+        {
+          "gpu": 2,
+          "utilization": 90,
+          "memory_mib": 4485,
+          "duty": 0.7
+        },
+        {
+          "gpu": 3,
+          "utilization": 93,
+          "memory_mib": 4477,
+          "duty": 0.7
+        }
+      ]
+    }
+  ],
+  "observed_original_jobs_recovered_without_restart": true,
+  "causal_claim": false,
+  "interpretation": "Shared-IO wait consistent with GPFS-mounted steady-state guard files; root cause not confirmed. Node-local guard avoids that recurring shared-file dependency."
+}
