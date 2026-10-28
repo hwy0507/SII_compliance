@@ -1,3 +1,10 @@
+## 2026-10-28 — 新三场景学生首条件九模型完整复核，原108继续
+
+- 原772606/791378保持，11:33达9/108，自动接续第二条件ESN seed1 worker817306/start28521986；3GiB/swap0/OOM0，无重启。有限观察器正常退出，保存14实际样本（索引0、6–18），不冒称完整连续日志或评测结束。
+- 新整条件审计入口拒绝真实8条未完成输入且未建输出，完整九条后通过；8917600保存子步、593物理源、模型/config/hash、actor/filter原收据与六指标算术核验。三家Task/Strict均0/3，双成功SPT为NA；ESN两条全局穿透中止，其余七条完整55秒未完成。E/R/M平均峰矩60.58755/38.47553/40.06575Nm，三seed等权舒适代理72.8020%/100%/100%，机器合规1/3、3/3、2/3；仅一个条件、不做总体排名、不据测试调参。完整108/最终报告/contact补充/物理全归档待，Goal active，详见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
+- 五文件小源码证据包17970字节/SHA256 `247328b015521c70d4d6f65fe16ac277c2ade64c0d689ebffabc14a93b6fac4a`逐成员及远端暂存/最终大小hash核验，已发布 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_condition000_review_20261028_v1/special_scene_condition000_review_20261028_v1.tar.gz`。不含完整物理轨迹，旧失败/历史结果保留。
+- 开工实际查询/fetch/read main`3bcb5550fab4331b6d8646e0f3cc240ab0472233`、baseline`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；无本任务协议改变，无RL修改、子agent或服务器计算。
+
 ## 2026-10-28 — 新采集与测试观测接口一致性、运动方向覆盖诊断
 
 - 原772606/791378持续运行，11:17已6/108、ESN seed3首条件在途。只读核验30条实际采集源码包/manifest/wrapper；共同力估计、运动学和公共filter的AST与文件hash匹配冻结测试，18使用字段顺序/单位一致，首五条observer参数一致。没有改模型、物理或新启仿真。

@@ -1,5 +1,48 @@
 # 三真实场景采集继续与冻结108入口准备
 
+## 第一个条件九模型完整复核（11:33 UTC，非完整108结果）
+
+原服务772606/start28001859、协调器791378/start28239353持续运行，已完成9/108，
+自动接续第二条件`acceptance_001`的ESN seed1，worker817306/start28521986。
+原有限观察器正常退出0，不代表科学任务结束。保存的14个实际观察样本包含索引0、6–18；
+索引1–5未写入此证据文件，不宣称完整连续日志。所有保存样本3GiB/swap0/OOM0。
+
+首条件`new30_prospective_20261026_acceptance_000`完整九模型共8,917,600保存子步，
+逐条复核来源/模型/config/hash、原actor/filter重放收据、Task/Strict、物理dt、RMSE/峰速、
+峰矩、接触时长与舒适比例、机器违规原因通过。全部593物理源码和模型锁保持。
+这属于保存证据的算术与来源审计，不是另一次动力学积分，也不是任务成功。
+新工具真实检查8条未完成输入时拒绝、未创建输出；九条完成后检查通过。
+
+| 方法（各3个seed，仅此条件） | Task | Strict | 双成功SPT | 平均回合峰矩 Nm | 舒适代理比例 | 机器合规 |
+|---|---:|---:|---:|---:|---:|---:|
+| ESN ridge | 0/3 | 0/3 | NA | 60.58755 | 72.8020% | 1/3 |
+| RNN | 0/3 | 0/3 | NA | 38.47553 | 100% | 3/3 |
+| MLP | 0/3 | 0/3 | NA | 40.06575 | 100% | 2/3 |
+
+舒适代理先逐seed按实际接触dt加权，再按三seed等权平均，与最终family呈现口径一致；
+不是把三seed所有接触子步合并加权。ESN/RNN/MLP接触时长分别为
+`[1.2179,.8399,.5902]`、`[3.83025,4.1394,3.9996]`、`[4.56575,2.14355,4.5832]`秒。
+低峰矩/舒适代理100%不代表任务完成或人体安全认证。
+ESN seed1/3分别31.00/29.88秒因`global_penetration_exceeded_2mm`中止；
+其余七条完整55秒但未完成任务。终态阶段按原AUDIT为ESN失败两条lift、MLP seed2 approach、
+其余carry；全局中止穿透和外部/edge最大穿透是不同量，不混用阈值解释。
+所有失败均保留，不能根据这一个条件下结论或改原模型/测试条件。
+
+复核工具为`code/mujoco_6d_vmc_benchmark/tools/audit_special_complete_condition_20261028.py`，
+在benchmark目录用既定仿真Python执行，参数：
+`--preparation outputs/special_scene_frozen108_preparation_20261028_v1 --condition new30_prospective_20261026_acceptance_000 --output <新的JSON路径>`。
+[九模型逐回合证据](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/CONDITION000_NINE_MODEL_AUDIT.json)
+SHA256 `2dd9cc45a7106884cd62d9dec137da9b4bd13c78433cac749aba7c9fbdcbdc74`；
+[实际观察样本](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/CONDITION000_OBSERVATION.json)。
+
+五文件源码与证据包已逐成员字节、暂存及最终服务器大小/SHA核验，17970字节，
+SHA256 `247328b015521c70d4d6f65fe16ac277c2ade64c0d689ebffabc14a93b6fac4a`：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_condition000_review_20261028_v1/special_scene_condition000_review_20261028_v1.tar.gz`。
+仅审计源码与小证据，不含原始物理轨迹；本轮轨迹仍仅本地，完整108后按原入口全归档。
+开工实际查询/fetch/read main`3bcb5550fab4331b6d8646e0f3cc240ab0472233`、
+baseline`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无本任务协议改变。
+Goal active；原108、最终六指标/图、contact补充、完整物理归档仍待，不重复启动。
+
 ## 观测接口与输入覆盖复核（11:17 UTC）
 
 原队列已推进至6/108，ESN seed3首条件在途，先读实际execution而非此快照。

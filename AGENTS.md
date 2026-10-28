@@ -1,5 +1,9 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 原108首条件九模型完整复核
+
+原772606/791378保持，11:33已9/108，自动接续acceptance_001 ESN seed1 worker817306；观察器已退出，不是科学任务结束，禁止重启。首条件九模型8917600保存子步/来源/hash/actor-filter收据/指标算术通过，Task/Strict三家均0/3，SPT为NA；ESN两条全局穿透中止，其余七条55秒未完成。平均峰矩E/R/M为60.58755/38.47553/40.06575Nm、机器合规1/3、3/3、2/3，不是总体排名。17970字节/SHA247328b0小证据源码包已核验共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_condition000_review_20261028_v1/`，不含原始物理。详见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。完整108/最终六指标/contact/全归档仍待，Goal active；不据部分测试改模型/条件，无RL或子agent工作。
+
 ## 2026-10-28 — 原108已6条，观测接口与覆盖差异复核
 
 原772606/791378队列继续，11:17已6/108、ESN seed3首条件在途，无重启。30条实际采集源码包共同observer/运动学/filter与冻结测试AST/文件hash一致，使用的18字段顺序和单位一致；首五条6275实际观测逐列范围/独立标量计数通过。路径方向Y训练仅[-.38075,.38075]、测试最低-.99028；这是覆盖差异而非已证明失败因果，不据测试回调数据/模型。43944字节/SHA2bf7bad7证据源码包已核验共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_observation_review_20261028_v1/`。完整108/最终六指标/contact/全归档待，Goal active；见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)，勿重复派发。
