@@ -1,5 +1,13 @@
 # v8 ESN训练残差定位：导出与ridge求解通过，闭环尚待
 
+21:23:11UTC更新：原1089228同PID active，21/75完成，RNN seed2026102801 candidate03
+更新1076；内存960634880bytes/3GiB/swap0。原训练继续，无最终学生闭环矩阵。
+科学提交5037e93a已push并核远端；源码/小证据1200文件、7770548bytes/SHAf679ad46，
+以及该commit准确报告5439bytes/SHAe3dd130c，已逐大小/SHA核验共享到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_esn_diagnostic_source_20261029_v1/`。
+[完整收据](evidence/NONRL_INTENT_RECOVERY_20261029/V8_ESN_DIAGNOSTIC_SHARED_RECEIPT.json)。
+覆盖下文“待共享”快照；不含在途学生/后补收据，不是模型或原物理全集。
+
 本轮检查三组已完成ESN的全部24条训练历史，共12,600帧；不等待神经网络全部结束才做
 这些只读数学核验，但没有提前启动学生仿真、重新选模型或改在途训练。
 主矩阵尚未修复完成，教师全30合格不能代替学生闭环成功。

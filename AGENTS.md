@@ -2,6 +2,8 @@
 
 ## 2026-10-29 — 非RL v8 ESN训练误差定位，原训练继续
 
+21:23:11UTC覆盖：同1089228 active，21/75完成，RNN seed2026102801 candidate03更新1076，内存960634880bytes。科学5037e93a已push/远端核验；同commit源码/小证据1200文件7770548bytes/SHAf679ad46及准确报告已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_esn_diagnostic_source_20261029_v1/`，见V8_ESN_DIAGNOSTIC_SHARED_RECEIPT。非在途学生/完整物理归档，Goal active。
+
 - [最新诊断](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)：已完成三ESN在全部24train/12600帧上冻结runtime导出精确、teacher精确，独立540维ridge正规方程相对残差≤2.821e−14，无重新求解。仍有关键拟合残差：棍垂向RMSE约教师该通道RMS59–60%，球撞末2秒最大；不把数学审计当闭环通过。
 - 新诊断首版浮点时间产生伪单帧尾窗，原件保留；改为50样本互斥分窗并实际全24复审，全场景统计不变。仅诊断工具问题，未改绑定训练/物理/gate，不能解释旧学生退化。
 - 21:19:25UTC原handoff1089228 active，17/75完成，RNN seed2026102802 candidate02更新23160，808775680bytes/3GiB/swap0/OOM0，无MODEL_LOCK。继续原75→审计9模型→v8实际18及失败分析→108六指标；不重复/热改源，原12只回归。新诊断仅本机/Git待共享，后续收据覆盖；Goal active，无RL/子agent/服务器计算。

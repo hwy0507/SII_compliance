@@ -1,5 +1,7 @@
 ## 2026-10-29 — 非RL v8 ESN训练残差及ridge数学实现核验
 
+- 21:23:11UTC原1089228同PID active，21/75完成，RNN seed2026102801 candidate03更新1076；内存960634880bytes/3GiB/swap0。5037e93a已push核验；同commit源码/小证据1200文件7770548bytes/SHAf679ad46及准确报告5439bytes/SHAe3dd130c均已逐大小/hash核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_esn_diagnostic_source_20261029_v1/`。见V8_ESN_DIAGNOSTIC_SHARED_RECEIPT；不含在途神经模型/物理全集/后补收据。覆盖待共享快照，Goal active。
+
 - [报告](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)。三组已完成ESN对全部24train/12600帧的冻结runtime重放与原导出完全相同，teacher动作也精确；独立重建540维训练设计/归一化/原ridge正规方程，保存权重相对残差≤2.821e−14、输出误差≤8.33e−15。没有refit/模型改写，排查实现而非宣称学生成功。
 - 仍有关键阶段拟合残差：棍垂向RMSE .00331486–.00334958、教师RMS .00558630；三seed最大2秒棍窗均rod01的8–10秒，球窗为ball02/02/07末2秒。全24/各通道/原事件窗口均保留，不按验证或测试挑窗；不能把小MSE当闭环修复。
 - 本轮新诊断初版浮点时间生成伪单帧尾窗，压缩原件保留；改为50帧互斥分组，500/750/325及时间漂移覆盖检查、实际全24复审通过。未改任何运行绑定源/原评测门，旧失败保留。
