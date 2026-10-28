@@ -1,0 +1,81 @@
+{
+  "passed": true,
+  "time": 1793175899.0197048,
+  "fixed_anchor_rows": 1704,
+  "new_terminal_rows": 30,
+  "original_fixed_observations_actions_rewards_masks_exact": true,
+  "old1704_sse_before": 6276.914539302591,
+  "old1704_sse_after": 10668.293991839028,
+  "old1704_sse_ratio": 1.6996079722035453,
+  "old1704_contribution_before": 0.392168661819143,
+  "old1704_contribution_after": 0.6531603913170909,
+  "old1704_after_using_old_denominator": 0.664766849453063,
+  "new30_contribution": 0.0009909761806802537,
+  "all_terminal_contribution": 0.654151367497771,
+  "focus": [
+    {
+      "replay_index": 2050526,
+      "reward": -28.417627334594727,
+      "masks": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "q_before": [
+        16.717069625854492,
+        -24.968721389770508,
+        -27.645063400268555,
+        -24.74260711669922,
+        -27.270376205444336
+      ],
+      "q_after": [
+        -26.08930206298828,
+        -16.230684280395508,
+        -28.432172775268555,
+        -33.93107986450195,
+        -30.07259750366211
+      ],
+      "sse_before": 2064.454635715727,
+      "sse_after": 187.07997620658352
+    },
+    {
+      "replay_index": 2299142,
+      "reward": -28.422405242919922,
+      "masks": [
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "q_before": [
+        17.0070743560791,
+        23.43840980529785,
+        25.27791404724121,
+        -26.275497436523438,
+        -29.90336036682129
+      ],
+      "q_after": [
+        -21.216482162475586,
+        23.772958755493164,
+        24.866085052490234,
+        -6.561139106750488,
+        -27.15191650390625
+      ],
+      "sse_before": 2070.6400578440443,
+      "sse_after": 531.4544261536694
+    }
+  ],
+  "weights_and_forward_rng_unchanged": true,
+  "health57_terminal_values_reproduced": true,
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "replay_writes": 0,
+  "convergence_claim": false,
+  "causal_claim": false,
+  "values_sha256": "3f4335853ecd8adf10e325e0d4ed4d7a22ae84021f7ecbd99239f6e10f63bc3c",
+  "limitation": "Complete56 vs complete57 frozen CPU critic forward on all1704 fixed56 terminal observations/actions/rewards/masks, plus all new30 terminals. Registered during57, before completion, not before training. Same old denominator and actual current denominator both retained. This is not online sampled loss or a causal gradient/minibatch analysis, and does not demonstrate state aliasing. No optimization, physics or replay mutation; not a new convergence gate.",
+  "plot_sha256": "04619f2d217eb667837c4a082e92c9032e7fdffa43f631b68d70baaae94d8cd6"
+}
