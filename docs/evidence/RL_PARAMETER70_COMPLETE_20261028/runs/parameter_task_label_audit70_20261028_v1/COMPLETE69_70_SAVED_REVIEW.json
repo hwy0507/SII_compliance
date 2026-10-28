@@ -1,0 +1,117 @@
+{
+  "passed": true,
+  "time": 1793226202.4394965,
+  "all90_reward_pairs_and_counts_match": true,
+  "strict_abort_changes_match_original": true,
+  "methods": {
+    "impedance": {
+      "counts": {
+        "69": {
+          "task": 18,
+          "strict": 18,
+          "physical_valid": 30
+        },
+        "70": {
+          "task": 18,
+          "strict": 18,
+          "physical_valid": 30
+        }
+      },
+      "changes": [],
+      "task_only_changes": []
+    },
+    "admittance": {
+      "counts": {
+        "69": {
+          "task": 15,
+          "strict": 15,
+          "physical_valid": 30
+        },
+        "70": {
+          "task": 16,
+          "strict": 15,
+          "physical_valid": 29
+        }
+      },
+      "changes": [
+        {
+          "condition": "active_long_train_0900",
+          "fields": [
+            "task",
+            "strict"
+          ],
+          "cases": [
+            {
+              "cycle": 69,
+              "task": false,
+              "strict": false,
+              "physical_valid": true,
+              "penetration_mm": 0.08230568703326323,
+              "reward": -33.0055483222203
+            },
+            {
+              "cycle": 70,
+              "task": true,
+              "strict": true,
+              "physical_valid": true,
+              "penetration_mm": 0.06758707926498429,
+              "reward": 18.127632847807533
+            }
+          ]
+        },
+        {
+          "condition": "active_short_train_0600",
+          "fields": [
+            "strict",
+            "physical_valid"
+          ],
+          "cases": [
+            {
+              "cycle": 69,
+              "task": true,
+              "strict": true,
+              "physical_valid": true,
+              "penetration_mm": 0.18986634441469974,
+              "reward": 16.90514305918952
+            },
+            {
+              "cycle": 70,
+              "task": true,
+              "strict": false,
+              "physical_valid": false,
+              "penetration_mm": 0.20333271302943634,
+              "reward": -34.67275267831938
+            }
+          ]
+        }
+      ],
+      "task_only_changes": []
+    },
+    "vmc": {
+      "counts": {
+        "69": {
+          "task": 17,
+          "strict": 16,
+          "physical_valid": 29
+        },
+        "70": {
+          "task": 17,
+          "strict": 16,
+          "physical_valid": 29
+        }
+      },
+      "changes": [],
+      "task_only_changes": []
+    }
+  },
+  "source": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_task_label_audit70_20261028_v1/COMPLETE69_70.json",
+    "sha256": "8d9de3ef6d271ef155533fc3b6087693614fa5d86cb62994fd56c09a800f52f0"
+  },
+  "reviewer_source": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter_task_label_audit70_20261028_v1/review_labels70.py",
+    "sha256": "48dea53a22e57374d1ac7a71c68e6e759fd44549e2abb730f72f2bcee3a57fcc"
+  },
+  "new_physics": 0,
+  "optimizer_updates": 0
+}
