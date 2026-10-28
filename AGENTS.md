@@ -1,5 +1,10 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL原拟合十分钟核验41→49
+
+- 21:50:02–22:00:02UTC共21次原1089228/start31715901均live、active，完成41→49/75；末次seed03 RNN candidate07到27340更新。observer68681自然exit0，科学未停止；22:00:30原协调器1110985仍live，653361152bytes/3GiB/swap0/OOM0。
+- [报告](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)及V8_FITTING_VERIFIED_WAIT_2150。仍须75/9审计→18失败定位→108；本轮verified wait，Goal active，无新拟合/仿真/RL/子agent/服务器计算。观察摘要2638bytes/SHA1055acd9已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_fit_observation_2150_20261029_v1/`，非在途模型全集。
+
 ## 2026-10-28 — 参数70早期loss及十分钟原进程核验
 
 - [交接](docs/RL_PARAMETER70_EARLY_LOSS_WAIT_20261028.md)。首5000原日志/连续步号/全数值有限/独立算术及真实图通过：critic首末1000 I1.886107→1.881169/A1.174038→1.151834/V.987459→.922681；有限max11.448020/3.613377/8.445606和I actor略升保留，仅前缀非完整70或收敛。

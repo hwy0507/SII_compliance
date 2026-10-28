@@ -1,5 +1,23 @@
 # v8 ESN训练残差定位：导出与ridge求解通过，闭环尚待
 
+## 22:00 UTC：原拟合连续核验，41→49/75
+
+21:50:02.519–22:00:02.673UTC共21次实际采样，原1089228/start31715901均live、
+service active、training；完成41→49/75，同一候选更新数严格增长。
+末次seed03 RNN candidate07到27340更新，内存663339008bytes。
+观察器68681正常exit0，未停止训练；22:00:30再次systemd/ps确认原协调器1110985继续，
+内存653361152bytes/3GiB/swap0/OOM0。
+[完整观察摘要](evidence/NONRL_INTENT_RECOVERY_20261029/V8_FITTING_VERIFIED_WAIT_2150.json)。
+
+本轮为verified wait，上一轮诊断分窗修复为progress。完整75/九模型锁定与审计、
+18真实场景学生失败定位、108六指标均未完成，Goal active。预先复核这些入口和分母，
+没有修改绑定源/模型/数据或提前测试。开工main4839ac49/baselinef6e8f8c实际fetch/read；
+收尾读取并fast-forward至另一任务新增0be97cc8，只有RL文档/证据更新，未操作其运行。
+本轮观察摘要2638bytes/SHA256 `1055acd9e1e4f43afcbf5cf97497d138ba3b10c7232a07304a7aa2246d8df7b2`
+已在暂存与最终路径逐大小/hash核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_fit_observation_2150_20261029_v1/V8_FITTING_VERIFIED_WAIT_2150.json`。
+仅本轮观察摘要，非源码/报告/在途模型全集；此前源码/数据归档保持。
+
 ## 21:46 UTC：闭环诊断分窗修正，原公平训练继续
 
 21:47:44UTC覆盖：原队列40/75完成、seed01 MLP candidate06已接续，训练未结束。

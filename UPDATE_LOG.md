@@ -1,3 +1,10 @@
+## 2026-10-29 — 非RL原拟合十分钟核验41→49
+
+- 观察摘要2638bytes/SHA1055acd9已暂存及最终逐大小/hash核验共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_fit_observation_2150_20261029_v1/V8_FITTING_VERIFIED_WAIT_2150.json`；仅本轮观察，不含在途模型/源码全集，覆盖下条待共享快照。
+
+- [报告](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)：21:50:02–22:00:02UTC共21次同1089228/start31715901 live、active，完成41→49/75且候选更新增长；末次seed03 RNN candidate07到27340更新、内存663339008bytes。observer68681自然exit0，未终止训练；22:00:30原1110985继续，653361152bytes/3GiB/swap0/OOM0。
+- 证据V8_FITTING_VERIFIED_WAIT_2150；本轮verified wait，上一轮分窗修复属progress。完整75/9审计、18失败定位、108六指标未完成，Goal active。开工main4839ac49/baselinef6e8f8c实际fetch/read，收尾读取0be97cc8独立RL文档/证据并fast-forward保留，未操作RL。新观察证据仅本机待共享，无重启/新仿真/子agent/服务器计算/删除。
+
 ## 2026-10-28 — 参数70早期loss及十分钟原进程核验
 
 - [交接](docs/RL_PARAMETER70_EARLY_LOSS_WAIT_20261028.md)。首5000原日志/连续步号/全数值有限/独立算术及真实图通过：critic首末1000 I1.886107→1.881169/A1.174038→1.151834/V.987459→.922681；有限max11.448020/3.613377/8.445606和I actor略升保留，仅前缀非完整70或收敛。
