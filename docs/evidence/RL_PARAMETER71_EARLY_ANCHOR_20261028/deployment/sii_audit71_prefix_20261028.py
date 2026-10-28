@@ -1,0 +1,22 @@
+from pathlib import Path
+import json,hashlib,ast,difflib,time,subprocess,os
+B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');old=B/'runs/parameter70_first5000_20261028_v1';new=B/'runs/parameter71_first5000_20261028_v1';new.mkdir(exist_ok=False)
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+read=lambda p:json.loads(p.read_text())
+changes={'parameter_capacity_pool30_cycle70_20261026_v1':'parameter_capacity_pool30_cycle71_20261026_v1',"plan['cycle']==70":"plan['cycle']==71",'Descriptive first5000 of70':'Descriptive first5000 of71','ongoing68-70 original plan unchanged.':'completed68-70 retained; ongoing71-73 original plan unchanged.'}
+files=[]
+for name in ['audit.py','review_saved.py']:
+ a=(old/name).read_text();s=a;counts={}
+ for before,after in changes.items():
+  counts[before]=s.count(before);assert after not in a;s=s.replace(before,after)
+ back=s
+ for before,after in changes.items():back=back.replace(after,before)
+ assert back==a;ast.parse(s);(new/name).write_text(s)
+ (new/(name+'.diff')).write_text(''.join(difflib.unified_diff(a.splitlines(True),s.splitlines(True),fromfile=str(old/name),tofile=str(new/name))))
+ files.append(dict(name=name,parent_sha256=sha(old/name),sha256=sha(new/name),counts=counts,inverse_exact=True))
+root=B/'runs/parameter_capacity_pool30_cycle71_20261026_v1';plan=read(old/'PLAN.json');plan.update(time=time.time(),cycle=71,source_sha256=sha(new/'audit.py'),parent_source_sha256=sha(old/'audit.py'))
+plan['registration']={m:dict(path=str(root/m/'REGISTRATION.json'),sha256=sha(root/m/'REGISTRATION.json')) for m in plan['methods']}
+(new/'PLAN.json').write_text(json.dumps(plan,indent=2)+'\n')
+(new/'SOURCE_REVIEW.json').write_text(json.dumps(dict(passed=True,time=time.time(),files=files,context_replacements=changes,ast_passed=True,original68_71_window_unchanged=True,automatic_training=False),indent=2)+'\n')
+env=dict(os.environ,OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1',NUMEXPR_NUM_THREADS='1')
+for name in ['audit.py','review_saved.py']:subprocess.run([str(B/'env/bin/python'),str(new/name)],check=True,env=env)

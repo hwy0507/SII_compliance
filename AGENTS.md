@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 参数71早期loss、全2124锚点与72仅恢复
+
+- [交接](docs/RL_PARAMETER71_EARLY_ANCHOR_20261028.md)。原71身份保持，22:40steps2935125/2935765/2936796，各30sampler无失败。前5000原字节/连续步号/有限值/独立算术及实际图通过；critic首末I1.762973→1.710395、A1.420316→1.428642、V1.327331→1.174747，有限尖峰保留，仅前缀非收敛。
+- 全70的2124×57 V/A锚点精确、独立SSE10788.124348/8555.136405，0新前向；包含70新增30，不与旧2094混用。V3247685/A3247693终端waiter已部署、原focus保持；71预期2154。标签3168755实际不完整拒绝，全审待；72仅恢复3191936，无72训练，真实缺DECISION72拒绝。
+- 原71全loss/71–73继续，launcher绑定当前PLAN但不提前要求73结果。近零保护是统计解释限制，不是将reward推离零的新目标；原阈值/窗口/68–70结论保持。Direct34false，Goal active。
+- 123guard采样最低76/59/65/62%、低于50全0；含合成保载，科学结束也继续，非跨重启服务。SSD包96成员/1912551字节/SHA084fec78逐字节/AST核验；大数据SSD，非HDD/arm1全备份。开工main6951a569，保存前d36a7990/baselinef6e8f8c实际fetch/read并保留非RL更新，无子agent。
+
 ## 2026-10-29 — 非RL v8完整75/九模型审计通过，实际18启动
 
 22:38:07UTC原1160099 active，3/18结束、rod08 ESN在途；rod00 ESN/RNN合格，MLP任务true但穿透0.244815881mm>0.2，40万子步max/源hash及actor/filter0已复核，保留失败。科学78b29b1d及合并5c96fde0已push；同科学源码小证据1218文件7820185bytes/SHAe800ac31与准确报告已核共享`runs/main/nonrl_v8_complete_fits_source_20261029_v1/`（arm1共享根），不含后补MLP收据/在途18物理。见V8_COMPLETED_FITS_SOURCE_SHARED_RECEIPT，Goal active。
