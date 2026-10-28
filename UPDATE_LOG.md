@@ -1,3 +1,11 @@
+## 2026-10-29 — 非RL原机制完整失败、保存状态定位与保留静态增益的阻尼对照
+
+- [交接](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。原恢复+归一化六项完整，五train合格、office55秒仍carry双失败，actor/filter回放0。末250z误差−13.334510mm，未采新30/拟合/108。完整733文件/608839680bytes/SHAdaa832c524b98a31409d454e853728443db92ab9fcdacc3275d301bfcdf48a54已逐成员、共享暂存和最终hash核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_legacy_units_controls_20261029_v1/FULL_PROBE.tar`，保留全部失败，无删除。
+- 新保存状态渲染固定24/46/54秒、同MJB/0物理积分，实际PNG已看：候选46/54秒物块顶边角，接触距离−.023102/−.029099mm；历史54秒已retreat。前向几何不替代力/动力学回放，保存hand重建最大差2.08微米。原v6与归一化三train ball配对及精确actor回放通过，ball01尾速.035079899→.003880211，ball04 .028606792→.000676317；ball00末窗口轻退化仍通过，完整保存。
+- 归一化降低动态和静态读出，新候选相对原v6只把平移虚拟阻尼加倍，保留历史稳态映射/恢复/velocity1/平均。8000子步独立积分0、恒输入静态动作差1.8e−16、孤立近零平衡点谱半径<1；非耦合稳定证明。相对直接前驱是归一化恢复+阻尼两变化，不冒充单参数。
+- 18:30:14UTC启动唯一有限六项`sii-special-teacher-damping-v1-20261029.service` parent1025522，root`outputs/special_teacher_damping_20261029_v1`、登记c7efd1d4，CPU100%/3GiB/swap0/线程1。18:34 rod00/ball00合格、ball01在途，棍8.88秒持续回位早于12.80撤棍。新reviewer实际拒绝在途审查；全六项通过才新30/公平三seed学习/真实场景闭环/108六指标，绑定源不改，Goal active。
+- 当前12已检查为回归，不叫unseen；office动作不入训练，验证08/09未用于调参，无RL/子agent/服务器计算。开工实际fetch/read maine6df2f8b/baselinef6e8f8c，初次网络失败后重试真实fetch成功；收工重新读AGENTS，新源/图尚待Git发布，不在legacy完整物理包内。
+
 ## 2026-10-29 — 非RL读出恢复完整失败，定位边角接触并恢复原teacher机制对照
 
 - full_velocity完整六项732文件/610129920字节已逐成员及远端暂存/最终hash核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_full_velocity_controls_20261029_v1/FULL_PROBE.tar`，SHA256 d4d4381469b3d43f1727b4c8158ca554d4750cad138eadaea98ab77eaac7b66c；包含所有失败与原始物理，不含新在途legacy，未删除本地。收尾远端2f0e14e1独立RL66完成/67启动已读，按双方内容保留整合。

@@ -3,7 +3,54 @@
 本轮沿用三真实特化场景、相同训练身份及原门槛，检查教师动作读出，而不是调整ESN以掩盖教师失败。
 目前没有新的合格30条数据、学生训练或108主矩阵结果；旧失败全部保留。
 
-## 18:14 UTC：读出恢复完整失败，定位持续边角接触
+## 18:34 UTC：原恢复机制仍失败，保存状态定位物块顶边角
+
+原恢复机制+匹配归一化的六项已完整结束，五train均合格，但office000完整55秒仍carry、
+Task/Strict均false，actor/filter回放0。[完整审查](evidence/NONRL_INTENT_RECOVERY_20261029/LEGACY_UNITS_COMPLETE_REVIEW.json)。
+末250帧平均z误差−13.334510mm，恢复记忆0.149669；恢复原机制也没有兼顾三场景与综合回归。
+此候选未推广到新30/拟合。完整733文件、608839680字节已核验共享到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_legacy_units_controls_20261029_v1/FULL_PROBE.tar`，
+SHA256 `daa832c524b98a31409d454e853728443db92ab9fcdacc3275d301bfcdf48a54`。
+[共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/LEGACY_UNITS_SHARED_RECEIPT.json)；无本地删除。
+
+从两条完整轨迹固定抽取24/46/54秒，保存qpos/mocap重建几何、侧面与俯视渲染，0物理积分步。
+实际PNG已目视检查，候选46/54秒重建到`target_object_geom`与`office_v5_unexpected_edge`接触，
+分离距离−0.023102/−0.029099mm；历史54秒已retreat。并非只有误差数字，而是携带物块顶住边角。
+模型hash相同，保存hand与重建hand最大差2.080微米。三帧无接触不证明整个回合无接触；
+这是几何重建，不是接触力或独立动力学回放，橙/绿仅显示颜色。
+[几何收据](evidence/NONRL_INTENT_RECOVERY_20261029/LEGACY_EDGE_STATES_REVIEW.json)，
+[真实保存状态图](evidence/NONRL_INTENT_RECOVERY_20261029/legacy_edge_states.png)。
+
+原v6与归一化版同三训练ball配对、MJB/seed/参数/actor回放核验通过。
+ball01原末窗口最大速度0.035079899→0.003880211m/s，最后10秒RMS0.016835373→0.006783650；
+ball04末窗口0.028606792→0.000676317；ball00末窗口0.002991014→0.004830989有退化，仍合格。
+原v6 ball00虽通过末窗口，较长尾段仍有速度峰，不能把短窗口资格等同全段稳定。
+[配对数值](evidence/NONRL_INTENT_RECOVERY_20261029/LEGACY_TRAIN_COMPARISON.json)，
+[实际曲线](evidence/NONRL_INTENT_RECOVERY_20261029/legacy_ball_speed.png)，不含验证集或学生结果。
+
+源码检查：两种设置的虚拟动力学近零平衡点子步Jacobian谱半径均小于1，未发现该局部积分发散。
+这不能排除与机器人/估计器/接触耦合后的不稳定。匹配归一化同时降低瞬态与静态柔顺读出；
+因此新有限对照恢复原v6读出/恢复/velocity1/平均，仅将平移虚拟阻尼[28,28,55]→[56,56,110]。
+旋转阻尼、质量、刚度、物理/公共filter/执行器/输入/gate/dt全保持，无新手工恢复机制。
+相对直接前驱同时恢复旧归一化并加阻尼；只相对原v6为单参数族变化。
+8000子步独立积分状态误差0，恒定小输入稳态动作差1.8041e−16；只是实现与静态映射检查。
+[算术检查](evidence/NONRL_INTENT_RECOVERY_20261029/DAMPING_ACTOR_CHECKS.json)。
+
+唯一队列`sii-special-teacher-damping-v1-20261029.service`，parent1025522，18:30:14.835 UTC启动，
+`outputs/special_teacher_damping_20261029_v1`登记SHA256
+`c7efd1d4ee74650d2c2e62a0883b36b59b31d55ae783047476367eb3b22b3fec`。
+CPU100%/3GiB/swap0/线程1，原队列已自然结束；同五train+已看office000，有限六项，无自动推广。
+18:34 rod00、ball00合格，ball01在途。棍推接触4.73275/让位4.84/蹭过7.80/持续回位8.88秒，早于12.80撤棍。
+[登记](evidence/NONRL_INTENT_RECOVERY_20261029/DAMPING_REGISTRATION.json)。
+完整后用`review_teacher_damping_control_20261029.py --root ...`，在途调用已实际拒绝且无REVIEW。
+只有全部六项原资格通过才用其`--collection-output`登记新30；旧legacy reviewer的recollect文字只针对归一化，
+不能用于阻尼版交接。新30全合格后再共同24+6/三seed/各12候选、真实场景闭环与108回归。
+目前主矩阵尚未修复；Goal active，无RL/子agent/服务器计算。当前12为已检查回归，不能叫unseen。
+
+本轮实际fetch/read main e6df2f8b、baseline f6e8f8c；初次fetch网络失败，后实际成功，未用缓存冒充最新。
+新源码/图与在途阻尼目前仅本机/待Git发布，不在上述完整legacy物理包中。
+
+## 前轮18:14 UTC：读出恢复完整失败，定位持续边角接触（在途状态已过时）
 
 `full_velocity`原六项于18:09:11 UTC完整结束：五训练条件均合格，ball00/01/04末段速度
 为0.000081655、0.000106471、0.000043462m/s；office000完整55秒仍carry，Task/Strict均false。

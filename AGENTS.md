@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL原机制完整失败，物块边角定位与阻尼对照
+
+- [交接](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。legacy_units完整六项五train合格、office55秒carry双失败，actor/filter0；末250z−13.334510mm。固定24/46/54秒保存状态渲染已目视检查：候选46/54物块与边角接触，历史54已retreat。同MJB/0积分；几何重建非力回放。原v6三train ball配对全部actor回放0，完整资格与较长尾段波动分开报告。
+- 唯一新`sii-special-teacher-damping-v1-20261029.service` parent1025522，18:30:14UTC，`outputs/special_teacher_damping_20261029_v1`登记c7efd1d4。相对原v6仅平移虚拟阻尼加倍，保留原静态读出/恢复/velocity1/平均；相对前驱同时恢复归一化，不能称相对前驱单参数。8000子步独立积分0、静态动作差1.8e−16，孤立局部稳定不保证耦合闭环。CPU100%/3GiB/swap0/线程1，绑定源勿改。
+- 18:34 rod00/ball00合格，ball01在途；棍接触4.73275/让位4.84/蹭过7.80/持续回位8.88<撤棍12.80。完整后用新`review_teacher_damping_control_20261029.py`审查与条件登记新30，不能用旧legacy recollect文字；在途提前审查已实际拒绝。全六项通过才新30全资格→公平24+6/三seed各12候选→真实场景学生闭环→108六指标。旧v6绑定18/108禁用，office不拟合/当前12非unseen，Goal active，未修复主矩阵。
+- legacy完整733文件/608839680bytes/SHAdaa832c5已共享并复核：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_legacy_units_controls_20261029_v1/FULL_PROBE.tar`，含全部失败/原始物理，不含稍后渲染或在途阻尼。开工实际fetch/read maine6df2f8b/baselinef6e8f8c；无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL读出恢复仍失败，持续边角接触与原机制对照
 
 - 最新[交接](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。full_velocity六项于18:09:11 UTC完整结束：五训练合格，office55秒仍carry/TaskStrict false、actor/filter回放0；不是权重恢复就修复。边角审计核验历史成功+四失败的共同MJB/evaluator/task：五扰动通道不含unexpected_edge，不能由五列0推断无接触。历史47.2397s结束边角接触/49.16s进入load_transfer，四失败均接触到末尾。
