@@ -1,0 +1,39 @@
+{
+  "status": "diagnostic_checks_completed_not_student_success",
+  "first_attempt": {
+    "service": "sii-v8-recovery-memory-audit-20261029.service",
+    "result": "exit-code",
+    "error": "AttributeError: frozen OfficeVMCMemoryESN has no state_delta_readout attribute",
+    "failure_before_output_creation": true,
+    "resolution": "Check the actual checkpoint schema for absent/false state_delta_readout rather than assuming the newer actor's attribute exists. Frozen actor and model files unchanged."
+  },
+  "completed_attempt": {
+    "service": "sii-v8-recovery-memory-audit-v2-20261029.service",
+    "result": "success",
+    "runtime_seconds_reported": 3.696,
+    "cpu_seconds_reported": 3.462,
+    "train_histories": 24,
+    "seeds": [2026102801, 2026102802, 2026102803],
+    "teacher_and_esn_export_exact_replay": true,
+    "new_simulation_or_fitting": false
+  },
+  "independent_scalar_verification": {
+    "implementation": "Separate math.fsum loops on original trajectory action and completed ESN exported replay; Python scalar maximum of abs(wrench/scale).",
+    "model_history_tails_checked": 72,
+    "teacher_tail_means_and_scaled_wrench_maxima_checked": 24,
+    "tail_frames_per_history": 50,
+    "bias_and_rmse_relative_tolerance": 1e-12,
+    "bias_and_rmse_absolute_tolerance": 1e-15,
+    "all_passed": true
+  },
+  "threshold_sensitivity": {
+    "dimensionless_thresholds": [0.0001, 0.000001, 0.00000001],
+    "all50_tail_frames_near_zero_counts_in_each_threshold": {
+      "rod": [8, 8, 8],
+      "ball": [7, 7, 7],
+      "corner": [0, 0, 0]
+    },
+    "interpretation": "Descriptive estimated-load classification, not physical contact or a new success gate."
+  },
+  "limitation": "No new student closed-loop result, no checkpoint reselection, no proof of a unique failure cause or a successful memory modification."
+}

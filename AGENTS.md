@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL恢复记忆全24训练历史定位
+
+21:35:45UTC：600秒观察正常结束，21次同1089228/start31715901 live，作业23→31；当前seed03 RNN candidate04更新1184/内存1147834368bytes。原训练仍运行，观察结束非训练结束；证据V8_FITTING_VERIFIED_WAIT_2125，勿重复启动。Goal active。
+
+- [最新补充](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)：全24train末2秒、三seed精确重放及72组独立标量核验。三阈值下近零估计负载尾窗rod8/ball7/corner0；ball02/07 teacher持续恢复而ESN低估，ball03/06却高估，rod teacher近零仍残留，不能仅统一拉长记忆或放大动作。固定leak与teacher按进展衰减存在表征差异，非已证唯一闭环原因；仍须原18/108。
+- 新诊断首试因旧actor无新版字段在输出前拒绝，改核checkpoint schema后3.696秒success；冻结模型/训练源不变。21:33:15原1089228/start31715901 live，29/75完成、seed02 RNN candidate04更新1428；十分钟原进程观察继续，未重复训练。新证据仅本机待共享，Goal active，无RL/子agent/服务器计算。
+
 ## 2026-10-29 — 非RL v8 ESN训练误差定位，原训练继续
 
 21:23:11UTC覆盖：同1089228 active，21/75完成，RNN seed2026102801 candidate03更新1076，内存960634880bytes。科学5037e93a已push/远端核验；同commit源码/小证据1200文件7770548bytes/SHAf679ad46及准确报告已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_esn_diagnostic_source_20261029_v1/`，见V8_ESN_DIAGNOSTIC_SHARED_RECEIPT。非在途学生/完整物理归档，Goal active。
