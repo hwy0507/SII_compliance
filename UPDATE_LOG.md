@@ -1,3 +1,10 @@
+## 2026-10-28 — 原训练持续47→63/75，补齐接触超阈值诊断读出
+
+- 10:12–10:31持续检查原725995/746822与接续772606：47→63/75，RNN seed1/candidate10实测22720更新；无重启或缩减网格。两服务3GiB/swap0/OOM0，194原运行来源/5接续快照hash保持；等待器未提前派发测试，Goal active。
+- 按评估标准补充实际接触时长、超阈值持续时间、逐关节和最大关节超额力矩积分、接触峰力/冲量。仅保存证据读出，不改六主指标/成功门。旧首条110万子步真实预检与math.fsum独立标量求和一致、篡改hash拒绝；旧矩阵108全有接触，初次假定存在无接触行的StopIteration已如实记录，未虚构该分支实测。新108计算尚待完整FINAL_AUDIT，须单独执行补充，live自动接续源码未改。
+- 准备源码/历史算术证据包11577字节，SHA256 `fe2176911d2ffa51aa86fe1d01ebf73f847176fa5cb043931bffe479064fe509`，已核验发布 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_contact_supplement_20261028_v1/special_contact_supplement_preparation_20261028_v1.tar.gz`；不是新科学结果包，不含新候选网格/测试。
+- 开工与收尾实际fetch/read main7b4aa7c1、baselinef6e8f8c，无新增协议变化。已重读AGENTS，无服务器计算、无子agent。[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)记录后续执行要求；完整九锁/108及图表归档仍待。
+
 ## 2026-10-28 — 原拟合45/75与冻结108有限接续实际启动
 
 - 原训练725995/746822保持，39→45/75推进，10:09:21为RNN seed1/candidate07。新增等待服务`sii-special-frozen108-handoff-v1-20261028.service` PID772606/start28001859，登记SHA429689c5；绑定原725995/start27488598，只在完整75/九锁/原服务成功退出后调用原冻结全拟合审计和108，随后真实审计/学习曲线/六指标呈现。当前测试目录未创建，禁止另外派发。Goal active。

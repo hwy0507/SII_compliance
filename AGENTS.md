@@ -1,5 +1,9 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 原拟合63/75与接触超阈值诊断准备
+
+原725995/746822与接续772606保持，10:12–10:31实际47→63/75，当前RNN seed1/candidate10；两服务真实3GiB/swap0/OOM0，194原源/5接续快照不变。**已有自动接续，勿另启108。** 标准要求的超阈值持续时间/超额积分补充脚本`supplement_special_contact_metrics_20261028.py`已写；旧单条110万子步/独立标量求和及hash拒绝预检通过，非新结果。该补充不在live快照中，需完整FINAL_AUDIT后单独执行一次，命令见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。11577字节准备包SHAfe217691已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_contact_supplement_20261028_v1/`。完整75/9锁/108/实际图表归档仍待，Goal active，不涉及RL或子agent。
+
 ## 2026-10-28 — 冻结108有限接续已启动，原拟合45/75
 
 原725995/746822继续，10:09:21已45/75、RNN seed1/candidate07。新增`sii-special-frozen108-handoff-v1-20261028.service` PID772606/start28001859，登记`outputs/special_scene_frozen108_handoff_20261028_v1` SHA429689c5，等待原完整75及成功退出后才调用原冻结准备的全拟合审计/108，随后保存证据审计和真实图表。**已有等待器，不要另启测试或手动调用原dispatcher。** 最多等待7200秒，3GiB/swap0/线程1，异常留档不重试；当前仅等待、尚无测试目录，Goal active。五来源快照/194原源hash、进程身份、OOM0均已核验。23806字节准备包SHA0a44ae3f已核验至 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_test_handoff_20261028_v1/`。完成后仍须目视/全训练测试归档/最终报告，见[最新交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。无RL改动、无子agent。

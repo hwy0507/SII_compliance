@@ -1,5 +1,26 @@
 # 三真实场景采集继续与冻结108入口准备
 
+## 接触超阈值诊断补充（完整108后再执行）
+
+10:12–10:31原训练实际47→63/75，RNN seed1/candidate10实测22720更新；原725995/746822
+及接续772606保持，两服务3GiB/swap0/OOM0。194原源码/5接续快照hash不变，测试尚未创建。
+本补充准备包11577字节/SHA256 `fe2176911d2ffa51aa86fe1d01ebf73f847176fa5cb043931bffe479064fe509`
+已核验发布至 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_contact_supplement_20261028_v1/special_contact_supplement_preparation_20261028_v1.tar.gz`，
+含工具/历史预检/准备说明，不含新结果。开工/收尾main7b4aa7c1、baselinef6e8f8c已fetch/read。
+
+评估标准第57行要求舒适阈值的超阈值持续时间及超额积分。新增独立读出
+`tools/supplement_special_contact_metrics_20261028.py --audit <新接续根>/FINAL_AUDIT.json --output <新接续根>/CONTACT_DIAGNOSTICS.json`，
+只接受完整108审计及不变report/model lock，逐回合验证子步hash；计算实际人体接触期间
+各关节`∫max(|tau_j|-threshold_j,0)dt`及`∫max_j max(|tau_j|-threshold_j,0)dt`，
+并给出接触峰力/冲量/超阈值时长。后者的容差与原舒适比例一致；积分使用名义阈值，
+全无接触仍NA。这是描述性附录，不更改六主指标/成功门、不作人体标定。
+
+该脚本不在已启动的冻结接续快照内，**接续完整结束后需单独执行一次**，不要修改或重启原服务。
+实际旧首条ESN110万子步预检：逐关节积分与独立math.fsum逐项累加一致，篡改hash拒绝；
+不是新108结果。初次测试假定旧矩阵有无接触行，实际108全有接触而StopIteration，未执行评测；
+改用实际首条接触轨迹通过，不虚构无接触实测。
+见[预检证据](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/CONTACT_SUPPLEMENT_PREFLIGHT.json)。
+
 ## 最新：原训练43/75，有限测试接续服务已启动
 
 发布前10:09:21已45/75，原训练与等待器保持。准备小包23806字节/SHA256
