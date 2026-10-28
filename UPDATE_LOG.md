@@ -10476,3 +10476,10 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮补充：Direct30实际首1000检查通过，旧1204290精确保留，新149mature+851pending、旧930隔离不变，动作/clock/reward0误差。混合30/49/冻结29 GPU观察2728080完成60样本/128.860秒，均值{'0': 63.6, '1': 60.05, '2': 65.9, '3': 59.666666666666664}%，逐样本六GPU PID身份与保存均值复核通过，只代表本窗口。远端新增6bb57e5非RL54/72已读，安全合并保留双方记录。
 
 本轮科学提交e4bf380d90c252f3dbf9786e67bfd5bc54dcb31c已push且远端核验；共享SSD完整本轮小证据/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL29_COMPLETE_20261027_131218/FULL_SMALL_EVIDENCE.tar.gz，100成员/1199254字节、SHA256 7c7aef32fa7498bfab3e1c52b1af58a71542a195ef6c733edc08f2fd4bed8a46，逐成员大小/hash核验。收据docs/RL_SERL29_COMPLETE_SAVE_20261027.json；既有HDD LATEST已更新回读，大checkpoint/raw/runtime仍共享SSD，非HDD/arm1全备份。当前正式30/49及冻结29继续，Goal active。
+## 2026-10-29 — 非RL v7全30完成、失败定位与垂向阻尼有限对照
+
+- [当前报告](docs/NONRL_V7_BALL_TAIL_REPAIR_20261029.md)。原collector20:04:10自然结束，30条29合格：rod10/ball9/corner10，validation ball08末9速度.031113962>.02失败、安全/接触/回放通过。全30 hash审查、十球原gate独立标量复算及8train尾段RMS/精确actor/实际图完成；保持原失败，无gate修改。原handoff20:04:11 failed_preserved正确拒绝拟合，无v7数据集/模型，不重启。
+- 训练尾段RMS前三ball04/06/01为.009229/.008579/.007957m/s，峰值.037370/.030792/.024522；末窗口通过不代表全尾段稳定。完整训练图与动作分解已查看，不把关联写成单参数因果。validation只复算原门、不用于参数排名。
+- 唯一新七项垂向阻尼110→220，其余原offset/恢复/读出/物理/filter/input/gates保持；rod00/ball00/04/06/01/corner00/office000，20:09:28 service`sii-special-teacher-vertical-damping-v1-20261029` parent1080783/start31622555/REG01d9abbf，3GiB/swap0/单线程。独立8000虚拟子步0误差、静态差1.48e−17，非闭环证明。启动前祖先metadata继承纠正并重核source/hash，科学配置不变；完整七项与训练尾能量改善待，无自动新30/学习。
+- 新完整18配对诊断入口只准备，检查teacher/student自身精确重放、teacher历史模仿与学生历史反事实，保留全部失败。实际历史三学生各500帧/新rod00 helper精确，真正未启动18入口拒绝无输出；未称新学生成功。旧v7绑定18/108不能直接接后继数据。
+- 实际fetch/read main2b41371d/baselinef6e8f8c；原进程17次有界观察真实17→30/自然终止，前轮progress。完整605文件/2798858240bytes/SHAfa6eb5b9物理归档本机核验，独立共享上传中；新七项在途仅本机，Goal active，无RL/子agent/服务器计算/删除。

@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL v7全30结束、球撞尾速失败与七项修复
+
+- [当前交接](docs/NONRL_V7_BALL_TAIL_REPAIR_20261029.md)。原v7 20:04:10全30终止：rod10/ball9/corner10合格，validation ball08原末9速度.031113962>.02失败，接触/安全/回放通过。全30/原gate独立复算与8train尾段RMS审查完成。原handoff failed_preserved/无PID，正确阻止数据构建；无v7训练目录，不重启或复用v7绑定18/108。
+- 原8train球尾段亦波动，RMS前三04/06/01；不是用validation调参。唯一新垂向阻尼110→220、其余保持，七项rod00/ball00/04/06/01/corner00/office000，20:09:28启动`sii-special-teacher-vertical-damping-v1-20261029.service` parent1080783/start31622555，REG01d9abbf，3GiB/swap0/CPU100%/线程1。七项原资格+四球训练尾能量改善才有候选资格，无自动采集/拟合。完整后本工具`--review`；勿改绑定源/重复派发。
+- 新18诊断reviewer准备，实际旧学生三家各500帧和新teacher helper精确回放、未启动18拒绝通过；不冒充完整新18。全30含失败原物理2798858240bytes/SHAfa6eb5b9本机核验，正在独立共享上传，尚未宣称最终归档。Goal active，无RL/子agent/服务器计算，全部旧失败保留。
+
 ## 2026-10-29 — 非RL完整棍推10/10顺序审计通过
 
 19:53:42UTC更新：原collector/handoff同PID live，15/30合格、ball05在途、学习waiting。797f46ea及安全合并a431b2d0已push/远端核验；本轮源码小证据1158文件5201198bytes/SHA3e2acc4a及同commit报告已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v7_rod_source_20261029_v1/`。见V7_ROD_SHARED_RECEIPT；不含在途全30/学生，不重复归档为完整结果，Goal active。
