@@ -1,5 +1,7 @@
 # 三真实场景采集继续与冻结108入口准备
 
+**最新：v5已于09:15:30 UTC完整30/30合格，原交接已启动公平拟合。** 下面“18/30、24/30、没有学生”是此前快照；正式九模型选择与108测试仍未完成。
+
 本轮继续原Goal，前轮是实质进展，本轮原采集已验证live且推进；不重启原服务。
 开工实际查询/fetch/read main `a13a92f6f71006bb51b4d33a00b6cf683c6a48c4` 与
 baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，两分支无新增本任务约束。
@@ -75,3 +77,38 @@ FIT_AUDIT或测试目录。准备成功不等于九模型审计或新108测试�
 09:13:25 UTC原服务仍active，24/30已完成，棍10/10、球10/10均合格，corner_04在途。
 采集MemoryCurrent1119170560、MemoryMax3221225472、swap上限0；交接等待完整30。
 这是进度快照，后续须读取真实状态；尚无新模型排名。
+
+## 全30完成与真实新学生训练启动
+
+v5自然完成，棍10/10、球10/10、角10/10；原交接实际执行全30审查和builder成功。
+数据15750帧：棍每条500、球750、角325；每场景8train/2val，合计12600训练帧、3150验证帧。
+同一教师，未混入旧综合场景。数据SHA256 `8824c24df3991b0783c9954b8e6b0e81a9db1c8c4cf4333dd7d39040c94e3d86`。
+`outputs/special_scene_retrain_readout05_20261028_v1` 已真实建立；190个fitting_source文件逐hash核验，
+基准commit `e22724d455a44a17e74c334574b5a43bdf0b4204`，实际字节由快照清单确定。
+原交接725995派生训练协调器746822，3GiB/swap0，OOM/OOM-kill均0；未重复启动新服务。
+
+三ESN作业已各完成全部12候选。独立复核36个checkpoint hash与验证最小值，
+三个所选模型各在完整15750观测上用旧冻结测试actor重放，全部逐数组相等、误差0。
+三seed验证action MSE分别4.806492199e-6、4.002228821e-6、3.626354846e-6。
+见[真实新ESN重放](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/NEW_ESN_REPLAY.json)。
+这只是示范模仿误差，不等于闭环Task/Strict成功，也不提前证明ESN优于未完成的MLP/RNN。
+
+首个RNN候选seed2026102801/candidate00已实际完成32000更新，验证MSE6.195590951e-6，
+NumPy/Torch导出差3.88578e-16。其余候选按原75作业计划继续；不据首个候选选择赢家，
+不把有限预算说成收敛。当前六指标测试仍未启动，全部拟合完成后的全九模型审计仍待。
+
+完整30 raw/全资格审查/新数据与拟合源码本地包
+`outputs/special_scene_v5_complete_and_dataset_20261028_v1.tar.gz`，1670057992字节，
+SHA256 `e6c2becee95f5eba53a3de1d6717a44dccdbf31eed41ca38fecdf0ea5281498c`；
+正在上传独立incoming，不含运行中拟合和尚未开始的测试；归档最终状态后续按真实核验追加。
+
+上述全量数据包及69314字节训练启动小证据包已传输完成，逐大小/SHA核验，无覆盖发布到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_v5_dataset_20261028_v1/`。
+小包SHA `62a6349e6e53683f9e322f61d261a6bee1c221693a3544c47348b2200ec1a3f3`，
+[完整范围收据](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/DATASET_ARCHIVE_RECEIPT.json)。
+本地完整包gzip测试通过。运行中学生checkpoint/history不在此包，后续独立归档；旧v4失败包仍保留。
+
+发布前原训练已完成8/75作业，当前`mlp_scratch_s2026102803_candidate00`，实测3836更新。
+原725995/746822身份保持；实际内存1360064512字节、上限3221225472、swap上限0、OOM/OOM-kill均0，
+全部190拟合源hash未变。完整九模型锁/全拟合审计/108闭环和最终图表仍未完成，Goal active。
+测试准备科学提交048b9027、整合远端RL进度e22724d4已push；非快进拒绝后正常合并，无force。
