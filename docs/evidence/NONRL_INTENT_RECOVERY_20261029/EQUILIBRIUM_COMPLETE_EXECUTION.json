@@ -1,0 +1,461 @@
+{
+  "status": "complete_pending_review",
+  "started_utc": "2026-10-28T17:11:28.428471+00:00",
+  "registration_sha256": "6297d8afe7a90ca0942e8d65651a0266c67d646e9e73f330df39c805285e468d",
+  "episodes": [
+    {
+      "id": "equilibrium_rod_00",
+      "returncode": 0,
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "qualified",
+        "scene": "rod",
+        "task_success": true,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "695b913cf6ba55b9cc0ba6456e03b2758d3697576a77a6a9f294aa23ee38c143",
+        "execution_sha256": "ed4605ac1df25e2dfb4c00664b48f670d95a5923946f465ff63016a452f5d2ef",
+        "input_hashes": {
+          "execution.json": "ed4605ac1df25e2dfb4c00664b48f670d95a5923946f465ff63016a452f5d2ef",
+          "legacy.json": "7406aa6cf601b744185c5446b42b9bf8f646e010952ae742d2d27da13222288e",
+          "teacher.json": "48489236bb9b5f422dfacd347d9cb3c6305a604cbd27848a292d7251a6068f96",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "695b913cf6ba55b9cc0ba6456e03b2758d3697576a77a6a9f294aa23ee38c143",
+          "filter.npz": "a1a4e299cbd04fe4cc387013979d41110b744179c86c4eac05d7cb2bf7817f4c",
+          "substeps.npz": "f30b8ef2ee8813d94b36491a7164149c2f7d57dfd7ffe13d96067f80a891389c",
+          "SOURCE_HASHES.json": "a406a605542a85776d6a6e4e9315b57de23ffe5b50ff205097d576cd33cbc7cc",
+          "source.tar.gz": "74075cbdced171c058e521ead5ad0923514d584518012c784fd730c5f1ff932d",
+          "INDEPENDENT_AUDIT.json": "6867d731fe3ef154a130734d63e6371b7b6696c395e58e5dd314c4bec2fee721",
+          "ROD_YIELD_REJOIN_AUDIT_V3.json": "6606649417de1b544c1ddb84846d5d133b0abc2c9e878e1f07e3f48d6eac46db"
+        },
+        "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+        "substeps": 400000,
+        "metrics": {
+          "peak_torque_nm": [
+            1.3438708943617446,
+            34.603666666610586,
+            1.4998111366323512,
+            27.61370677599815,
+            1.4984807981342907,
+            3.2905092885687584,
+            0.6418222888622848
+          ],
+          "peak_joint_velocity_radps": [
+            0.03127934130942931,
+            0.17080695585760897,
+            0.0360769111572081,
+            0.36769813355532144,
+            0.06596708584627546,
+            0.2174754703788834,
+            0.11628358753396115
+          ],
+          "max_external_penetration_m": 4.0079423183221626e-05,
+          "disturbance_contact_s": 0.027000000000000007,
+          "disturbance_contact_comfort_proxy": 1.0
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "fb84933d90293466ff5f447a2364b518e89fafca7f8e9034e4b257b6e8bffc27"
+    },
+    {
+      "id": "equilibrium_ball_00",
+      "returncode": 0,
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "qualified",
+        "scene": "ball",
+        "task_success": true,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "a0d3d619ccbc52f7ac14279116729d062657923306115b3d0815b24170282872",
+        "execution_sha256": "c45bf54b981d1e4f44ee9872ca1ed7522f4ea699f2c1a947252104bd8770a1f4",
+        "input_hashes": {
+          "execution.json": "c45bf54b981d1e4f44ee9872ca1ed7522f4ea699f2c1a947252104bd8770a1f4",
+          "legacy.json": "f955b8d2b9752634f71607ea34d64bb351902f38235ab158587d815b3075b9d7",
+          "teacher.json": "48489236bb9b5f422dfacd347d9cb3c6305a604cbd27848a292d7251a6068f96",
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "a0d3d619ccbc52f7ac14279116729d062657923306115b3d0815b24170282872",
+          "filter.npz": "199deae3b01a5c3e1af0d67f85a0acaf6e0433dde63272da914d56470ef6da4c",
+          "substeps.npz": "123b43d99726040c65e70e41a386282137eeb73b20498510a1cd842dd70d6a38",
+          "SOURCE_HASHES.json": "a406a605542a85776d6a6e4e9315b57de23ffe5b50ff205097d576cd33cbc7cc",
+          "source.tar.gz": "74075cbdced171c058e521ead5ad0923514d584518012c784fd730c5f1ff932d",
+          "INDEPENDENT_AUDIT.json": "f2ee68fe35c89eb13bcbd486991879b992f7aa6d5459508e0091f90598dfc593"
+        },
+        "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+        "substeps": 600000,
+        "metrics": {
+          "peak_torque_nm": [
+            4.410150324420887,
+            46.796526738655245,
+            4.454165298097916,
+            27.51365097967715,
+            2.3966821966692478,
+            3.7421213157927586,
+            1.0203072460337317
+          ],
+          "peak_joint_velocity_radps": [
+            0.14254256164267973,
+            0.27831629228702165,
+            0.16473165777519538,
+            0.4775057920731641,
+            0.556487010802136,
+            0.30379395101825596,
+            0.2083610129756861
+          ],
+          "max_external_penetration_m": 0.0,
+          "disturbance_contact_s": 0.019550000000000005,
+          "disturbance_contact_comfort_proxy": 1.0
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "621b30b96adfc1c422a7a9b597cd07239da1704026d39f008ddfd9035449385d"
+    },
+    {
+      "id": "equilibrium_ball_01",
+      "returncode": 0,
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "qualified",
+        "scene": "ball",
+        "task_success": true,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "bd5454aa35547658acd32f7bb61c03ac5e16f8ad2a5adf2e8ae31e50784bf7b3",
+        "execution_sha256": "678d3e0ebc5acb25ffa43dd25f935bd252c99d9108a7a849509685917c21238c",
+        "input_hashes": {
+          "execution.json": "678d3e0ebc5acb25ffa43dd25f935bd252c99d9108a7a849509685917c21238c",
+          "legacy.json": "2ed79d9afe136cda30acb3235193955eb5bee941f63ad80c2b1510808ebb043b",
+          "teacher.json": "48489236bb9b5f422dfacd347d9cb3c6305a604cbd27848a292d7251a6068f96",
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "bd5454aa35547658acd32f7bb61c03ac5e16f8ad2a5adf2e8ae31e50784bf7b3",
+          "filter.npz": "7f2f3425aef6b82f109f62077d2662102314730b702c67c7210112061aa93cb9",
+          "substeps.npz": "da41f164b3b441d9249dceb727bd76ecbd47c5259408b2b21e6da0f52e9f0a89",
+          "SOURCE_HASHES.json": "a406a605542a85776d6a6e4e9315b57de23ffe5b50ff205097d576cd33cbc7cc",
+          "source.tar.gz": "74075cbdced171c058e521ead5ad0923514d584518012c784fd730c5f1ff932d",
+          "INDEPENDENT_AUDIT.json": "1963094d822f57185019dabe0cf447509b97b35c9a15d6c828fc1e4b79f59043"
+        },
+        "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+        "substeps": 600000,
+        "metrics": {
+          "peak_torque_nm": [
+            6.847771536031551,
+            49.615597752685524,
+            6.9308047087343665,
+            27.470234529924717,
+            2.941837983983809,
+            4.104479185876521,
+            1.3581549018533192
+          ],
+          "peak_joint_velocity_radps": [
+            0.16001338175398508,
+            0.3596963228076493,
+            0.18755194016233553,
+            0.5703352316695733,
+            0.8034093456049173,
+            0.25769542976811327,
+            0.2518983426536891
+          ],
+          "max_external_penetration_m": 7.511555340825595e-05,
+          "disturbance_contact_s": 0.016900000000000002,
+          "disturbance_contact_comfort_proxy": 1.0
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "9654664a48adee1d68b2f7bd6dca066287376b4e391ca43309a38ffb22e3d2f2"
+    },
+    {
+      "id": "equilibrium_ball_04",
+      "returncode": 0,
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "failed_preserved",
+        "scene": "ball",
+        "task_success": false,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "34ab0358553e40ef63359b49b8841c8bdb7ddeb3eecf4be92b1d7e4e1a426bc5",
+        "execution_sha256": "e7dbceedc95ccd56bb037e8b3a3b41fc71a905967c0c784beca32dfac358face",
+        "input_hashes": {
+          "execution.json": "e7dbceedc95ccd56bb037e8b3a3b41fc71a905967c0c784beca32dfac358face",
+          "legacy.json": "4cc41c682f34229dc8c747818e3c915725f1417550a27fe5a6c0d71980046ae1",
+          "teacher.json": "48489236bb9b5f422dfacd347d9cb3c6305a604cbd27848a292d7251a6068f96",
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "34ab0358553e40ef63359b49b8841c8bdb7ddeb3eecf4be92b1d7e4e1a426bc5",
+          "filter.npz": "c911c54ef70e1767f99f3c056f4d9c3797d057acc2bad054703aae80e01ea189",
+          "substeps.npz": "31d9c462cdf32e5c9322092bdfbb485d933884300ed6b6188174347369cd3fb7",
+          "SOURCE_HASHES.json": "a406a605542a85776d6a6e4e9315b57de23ffe5b50ff205097d576cd33cbc7cc",
+          "source.tar.gz": "74075cbdced171c058e521ead5ad0923514d584518012c784fd730c5f1ff932d",
+          "INDEPENDENT_AUDIT.json": "e7ece4ec3967bfa92ebd46ce1fbc60016dbf2231ec7730bb6a6d27e208cab778"
+        },
+        "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+        "substeps": 600000,
+        "metrics": {
+          "peak_torque_nm": [
+            5.948516036452,
+            46.80717514445092,
+            5.889246327629244,
+            27.453192508784092,
+            2.941847574250619,
+            3.7860466487927673,
+            1.0777071929910402
+          ],
+          "peak_joint_velocity_radps": [
+            0.15239838576991185,
+            0.262504942176657,
+            0.17717789929236843,
+            0.46452048454099787,
+            0.6411516337705485,
+            0.23217025720409645,
+            0.20332143548178216
+          ],
+          "max_external_penetration_m": 0.0,
+          "disturbance_contact_s": 0.019450000000000002,
+          "disturbance_contact_comfort_proxy": 1.0
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "eac942aed2931fbd3feb07f5e4e352ceec622d8dab1c64f88cd85387ff88d7ad"
+    },
+    {
+      "id": "equilibrium_corner_00",
+      "returncode": 0,
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "qualified",
+        "scene": "corner",
+        "task_success": true,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "645b27fbb5894f59a5ea0817c394ad0932818401d72804333c561c8fcb8865cd",
+        "execution_sha256": "f038b691a8a2faa7087a4794b271569407bb38dd546dcf83657d414627ca7850",
+        "input_hashes": {
+          "execution.json": "f038b691a8a2faa7087a4794b271569407bb38dd546dcf83657d414627ca7850",
+          "legacy.json": "e9f0addcb5ce01629bb43c86033e16cbd9831c6f904ead2e4b34ca119c93f55f",
+          "teacher.json": "48489236bb9b5f422dfacd347d9cb3c6305a604cbd27848a292d7251a6068f96",
+          "scene.mjb": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+          "trajectory.npz": "645b27fbb5894f59a5ea0817c394ad0932818401d72804333c561c8fcb8865cd",
+          "filter.npz": "1f1a63ae33c119501f0ccd0e4aa537fc61f17f84cad7f447fdb6ad373bbc75d9",
+          "substeps.npz": "42f1de8196aaf88cf8f9f715a8315b70ca35d54516cc629910f0ea66825fb142",
+          "SOURCE_HASHES.json": "a406a605542a85776d6a6e4e9315b57de23ffe5b50ff205097d576cd33cbc7cc",
+          "source.tar.gz": "74075cbdced171c058e521ead5ad0923514d584518012c784fd730c5f1ff932d",
+          "INDEPENDENT_AUDIT.json": "55f2d08b3dacb9227f887ea2b7952a3a0d961675a875567c9abc485b156577f2"
+        },
+        "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+        "substeps": 260000,
+        "metrics": {
+          "peak_torque_nm": [
+            0.21133353226887397,
+            51.06939666338603,
+            0.5986187770515907,
+            29.58764407946501,
+            0.762784503354107,
+            7.156008373852423,
+            0.9184866653315616
+          ],
+          "peak_joint_velocity_radps": [
+            0.0021624089696615913,
+            0.34737174077768734,
+            0.001212003947816702,
+            0.7397943933657051,
+            0.0016907626067588681,
+            0.8197752996478092,
+            0.7960590801956071
+          ],
+          "max_external_penetration_m": 0.0,
+          "disturbance_contact_s": 0.0,
+          "disturbance_contact_comfort_proxy": null
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "aaac710d777a1f550e05564888a51c704e63e308866403874aef848b28ef0a00"
+    },
+    {
+      "id": "equilibrium_office000",
+      "returncode": 0,
+      "audit": {
+        "task_success": false,
+        "strict_success": false,
+        "memory_ablation": "none",
+        "full_horizon": true,
+        "stage": "carry",
+        "rmse_mm": 27.326755160028803,
+        "peak_torque_nm": 41.74506759643555,
+        "peak_speed_mps": 0.363453323248994,
+        "penetration_mm": 0.15292516161945993,
+        "edge_penetration_mm": 0.08396094643243861,
+        "worst_pair": [
+          "office_v5_ball_geom",
+          "hand_collision"
+        ],
+        "physical_seconds": 54.99999999999989,
+        "max_lift_m": 0.15901094465799576,
+        "object_final_position": [
+          0.5976796991140773,
+          -0.2384290909309763,
+          0.5790925209027465
+        ],
+        "placement_error_xy_m": 0.11681366778178723,
+        "abort_reason": null,
+        "action_replay_max_abs": 0.0,
+        "reservoir_replay_max_abs": null,
+        "stages": {
+          "0": {
+            "start_s": 0.04000000000000063,
+            "end_s": 0.15999999999999054,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "1": {
+            "start_s": 0.19999999999998613,
+            "end_s": 1.7200000000014175,
+            "mean_action": [
+              0.0017114816885123473,
+              -0.0009457622871238563,
+              0.0,
+              4.121142646912837e-05,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              1.0023406460619028e-06,
+              -3.538336467264066e-07,
+              2.597168912816592e-06,
+              2.2504515328893756e-07,
+              6.314821582951294e-07,
+              3.9307768374448705e-10
+            ]
+          },
+          "2": {
+            "start_s": 1.760000000001502,
+            "end_s": 2.040000000001915,
+            "mean_action": [
+              0.010544698015618232,
+              -0.0014826974896102684,
+              0.0,
+              0.000487137986801453,
+              -0.010955219416983769,
+              0.009020674678631987,
+              0.0
+            ],
+            "median_wrench": [
+              -0.14619405102564867,
+              -0.00037488415132948087,
+              0.22107970299378493,
+              -0.0038260647115853454,
+              0.023881151690428717,
+              0.0001150727478977636
+            ]
+          },
+          "3": {
+            "start_s": 2.0800000000018217,
+            "end_s": 10.439999999982339,
+            "mean_action": [
+              0.06336534802057067,
+              -0.06456862582436984,
+              0.016639270998576164,
+              -0.0068694295885006924,
+              0.0018371508600055534,
+              0.009309605193833847,
+              0.0005181350095228213
+            ],
+            "median_wrench": [
+              -1.6877022374940078,
+              0.46719518379011526,
+              -0.8656555142180198,
+              -0.0009887846546180184,
+              -0.0016142115588042155,
+              -0.00015904029887561788
+            ]
+          },
+          "4": {
+            "start_s": 10.479999999982246,
+            "end_s": 55.00000000126404,
+            "mean_action": [
+              0.038228140006662546,
+              -0.032684527484100064,
+              0.00537646511809841,
+              0.10017846748350957,
+              0.005178626564081201,
+              0.009401695292441264,
+              0.022406064802054877
+            ],
+            "median_wrench": [
+              -0.4709257957746815,
+              0.11230218689249692,
+              -0.3478977286519614,
+              0.019886543438281425,
+              0.03621135408841328,
+              0.021700769636945137
+            ]
+          }
+        },
+        "actor_replay_performed": true,
+        "common_filter_replay_max_abs": 0.0,
+        "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "trace_sha256": "4adeada5c4066d05f84c8a3475c644735e0143dcab650d7536379444b69fe23c",
+        "chain_sha256": "184467e379150f7004e765bf88973e1dab4d0a47ccd7e40086ae558edb299902",
+        "metrics_sha256": "fc5f43518426feb7647543da1cf76de0a9705ac64bcebe31d1c9b4dada9527d9"
+      },
+      "audit_sha256": "bb63fc182c05cbb9249e346836a7c4f8c06a5667b5061125d4317ee40909fdca"
+    }
+  ],
+  "current": "equilibrium_office000",
+  "updated_utc": "2026-10-28T17:17:44.730003+00:00",
+  "ended_utc": "2026-10-28T17:24:01.070274+00:00"
+}

@@ -1,8 +1,32 @@
 # 非RL teacher恢复项修复：独立版本与有限物理验证
 
-当前状态：第一版 `intent_scaled_recovery_v1` 六条对照已完整结束并审查，**未修复**。
-下一版 `intent_scaled_equilibrium_v1` 已完成2700步算术检查并实际启动相同六个条件。
+当前状态：整项混合版及仅平衡点版各六条对照均完整结束并审查，**尚未整体修复**。
+目前唯一活动队列是原平衡点机制的单字段`intent_velocity_mps .015→.03`六项对照。
 这不是新的主矩阵结果，也不是 ESN 已修复的结论。此前所有失败、v5学生和v6采集保留。
+
+## 17:25 UTC：第二版完整结果，单字段后续在途（覆盖下文在途描述）
+
+仅平衡点版五训练身份4/5合格：rod00、ball00、ball01、corner00；ball04仍失败。
+三个ball末段速度依次0.000271556、0.002132642、0.028225448m/s，原门0.02未变。
+office000完整55秒仍Task/Strict=false、carry；末250帧平均z误差−11.7927mm，
+但同时有x误差4.9484mm，不能拿单轴低于12mm替代三维位置门及持续保持。
+恢复记忆均值0.736907、z动作0.0744767，actor/filter回放0；完整物理及源归档核验通过。
+[全部六项审查](evidence/NONRL_INTENT_RECOVERY_20261029/EQUILIBRIUM_COMPLETE_REVIEW.json)。
+
+保存的末250帧沿路径指令中位数0.0079963m/s、范围0.0060369–0.0106051；
+原0.015归一化下平均intent仍0.5358745。当前只将这个已有参数改为0.03m/s，
+使相同历史的小指令偏置因子减半；它也同时改变既有记忆释放项，这一点明确保留，
+不能把它描述为仅改读出。其他参数、物理、gate、filter、actor输入、场景和seed不变。
+200步高指令对照下原/新动作及记忆精确一致，复制的冻结office源码逐文件相同；
+这不是新的物理成功或全局稳定保证。
+
+新本机缓存`outputs/special_equilibrium_intent030_20261029_v1`，登记SHA256
+`9d9f0904b64630e7d30a7f8d270cebf3a861b6bfd28ef358f6f4f32f88951355`；
+`sii-special-equilibrium-intent030-v1-20261029.service`，parent991347，
+17:25:58 UTC真实开始，3GiB/单线程/单模拟器/CPUQuota100%/swap0。
+原两个服务已自然结束，勿重启。新队列仍为原五train+office000，完整前不重采/拟合。
+完成后使用同审查器及该新root审六项；全部通过才登记新30，否则保留失败继续检查。
+旧v6的18/108准备不可使用，Goal active。
 
 ## 第一版完整结果与第二版实际接续
 
@@ -96,9 +120,15 @@ office000及当前12条件已被反复检查，后续只能称回归比较，不
 全部六项通过才独立登记新30采集。新30全部资格审查后，才以共同24+6划分、同候选预算、
 同验证规则和三seed重训ESN ridge/RNN/MLP；随后真实场景学生闭环检查、完整108及六指标审计。
 若teacher通过而学生失败，进一步分离模仿误差与闭环覆盖；不会用低训练loss替代真实行为。
-目前无新拟合/新主矩阵。Goal active；第二版在途产物仅本机，完整物理归档须在队列结束后核验。
+目前无新拟合/新主矩阵。Goal active；最新单字段队列在途产物仅本机，完整物理归档须在结束后核验。
 
 开工实际fetch/read main `a998343cad916c1758cf33151fa3c330dfe267c8`、
 baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。
 独立RL更新保留，无RL操作、服务器计算或子agent。
 收尾远端main新增`d4e8d136`（独立RL66）已读并fast-forward保留，冻结非RL源无变化。
+
+第一版修复提交`b77fd976470f0caf2fc9227884460f8327d1667f`已正常push并实际ls-remote核验。
+该commit的benchmark scripts/tools及选定报告/小证据1069文件、2324217字节逐内容核验并共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_intent_repair_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`，
+SHA256 `2153a0b71855a55edddffc3b3b78a9fa66c46014aac41dbfd61b44e986670d9a`。
+该源码包不是全仓库/原始物理，也不含随后单字段工具与本段进展。

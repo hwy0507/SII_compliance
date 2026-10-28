@@ -1,8 +1,8 @@
 # 新三场景模型退化：接口修复与教师／学生／场景对照
 
-> 2026-10-29最新接续见[恢复项修复](NONRL_INTENT_RECOVERY_20261029.md)：整项intent混合六对照完整失败，
-> 下一版仅缩平衡点偏置、保留反馈，已通过2700步检查并在原六条件顺序运行。
-> 唯一活动服务`sii-special-intent-equilibrium-v1-20261029.service`，parent984041，登记6297d8af。
+> 2026-10-29最新接续见[恢复项修复](NONRL_INTENT_RECOVERY_20261029.md)：两版各六对照完整，尚未整体修复；
+> 平衡点版五train4合格/ball04失败，office仍双失败。新单字段intent_velocity_mps .015→.03在原六条件运行。
+> 唯一活动服务`sii-special-equilibrium-intent030-v1-20261029.service`，parent991347，登记9d9f0904。
 > 新30/拟合/主矩阵尚未启动，旧失败完整保留，Goal active。下文其他在途描述为历史快照。
 
 2026-10-28，Goal active。用户明确要求定位并修复 ESN 的异常退化，而非接受全失败作为主结果。

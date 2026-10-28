@@ -21,6 +21,7 @@ def review(root):
             'intent_equilibrium_teacher_20261029.py', 'intent_equilibrium_office_driver_20261029.py'),
     }
     service, extension, driver = variants[reg['teacher_mechanism']]
+    service = reg.get('service', service)
     inactive(service)
     assert state['status'] == 'complete_pending_review'
     assert state['registration_sha256'] == sha(root/'REGISTRATION.json')
