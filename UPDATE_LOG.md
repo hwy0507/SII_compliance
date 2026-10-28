@@ -12,6 +12,14 @@
 - 小证据/工具/历史兼容图包357372字节，SHA256 `dbbac8fdfdcaeb42ed576112921c34fdb46dc7f46ca73a33ca03e9e301c94ca4`，已逐大小/hash核验至 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_plot_readiness_20261028_v1/special_plot_readiness_20261028_v1.tar.gz`；不含新学生网格/新测试。仅本机计算，无子agent。
 - 开工fetch/read main b546441a、baseline f6e8f8c；收尾读取新增main5714588b的独立RL进展并fast-forward完整保留，未动运行源码。具体证据及后续入口见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
 
+## 2026-10-28 — 参数59前5000、全1764终端锚点与60仅恢复准备
+
+- [最新交接](docs/RL_PARAMETER59_EARLY60_PREP_20261028.md)。59原前5000字节/hash/独立标量/全有限及实际图通过，critic首末1000 I2.567929→2.436369、A1.429878→1.347822、V1.167645→1.198585；V高位与尖峰延续，不称恢复/收敛。登记在训练及前缀存在之后，原窗口均保持。
+- 实际完整58全1764×57终端锚点捕获/独立保存复算通过，SHA55d2476e、masked SSE8649.382574；59对照waiter387806/start37657716、CPU53/7200秒。全部旧行保留，历史三focus加58 short0600失败/short0200成功，原waiter代码不变；实际59对照尚待，0优化/物理，无新停止门。
+- 60仅恢复waiter294526/start37642076，CPU53/14400秒，绑定原59身份，完整审查/退出后才check-only。父/新cycle含补零路径逆变换/AST/hash通过，原reward_window56_58键保留；无DECISION60实际调用拒绝且未建60 run，无自动训练，实际恢复尚待。
+- 09:49原59约2440136/2440779/2441875steps，冻结55完整25/25/24；原archive/loss/59–61窗口及v5五进程均身份live。GPU80/71/95/93%含保活，科学结束也继续；Direct不启动34，Goal active，无子agent。
+- 已查询/fetch/read main5714588b、baselinef6e8f8c，无科学协议变化。共享SSD包43成员/1291465字节/SHAa8f3aca9c15cedf8e35a4bd6f74c3fcc2e1566f6aedf398fdd287029226f6848逐字节/AST核验，含完整5000前缀和锚点；大产物仍SSD，非HDD/arm1全备份。
+
 ## 2026-10-28 — 参数58完整、原56–58阻抗reward通过与准确续训59
 
 - [最新交接](docs/RL_PARAMETER58_COMPLETE_20261028.md)。完整58三路各30×55秒/41250新增/noabort，旧全replay/history/4m marker保持、新reward重算0、网络/优化器有限。完整loss独立算术/图通过；I/A/V reward−4.044914/−6.847757/−4.541539、Task/Strict17/16、15/15、17/16，critic末1000为2.261838/1.402060/1.260509。V末段loss抬升、short0600外穿透.176717→.221127mm跨原.2mm门失Strict，不隐去退化。
