@@ -1,5 +1,8 @@
 ## 2026-10-29（UTC28日）— 非RL teacher末段稳定与恢复记忆定位，失败v6拒训
 
+- 16:35 UTC最终覆盖：release005六项已全结束，四train合格、ball04尾速.045488679超原.02而失败，office仍carry双失败。无在途模拟器、无v7/新拟合，Goal active；下文在途为历史快照。接下来应检查恢复自激活/近目标指令依赖与覆盖，不继续只缩release时间，不重启已完成队列，不把失败矩阵发布为主结果。
+- 最后release005完整132文件/607457280bytes/SHA1694801f亦逐成员及远端最终核验，共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_release005_controls_20261029_v1/FULL_PROBE.tar`。已读main0ae40daf的独立RL65更新，baseline仍f6e8f8c，无协议变化。
+
 - v6完整30：棍推10/10、桌角10/10、球撞6/10合格；ball01/04训练与08/09验证末段速度.0286–.0374m/s超原.02，安全/接触审计通过。全4失败保留，handoff-v3真实拒绝，未训练学生。新增18闭环和修复108入口可校验正确handoff服务/模型/输入hash，实际不完整拟合拒绝；原绑定v6的静态准备不能继续使用。
 - 四tail对照完整并逐hash审查：.5/不平均使两训练ball合格，但office000仍carry失败；1/平均office双通过。十midpoint训练对照随后完整：.75/不平均4/5，ball04 .020248537失败；.75/平均5/5，ball00/01/04末段速度.006086735/.001318248/.013152809。按预登记训练规则选择后者，随后单office完整55秒仍Task/Strict false、actor/filter replay0；未重采/拟合，不把训练通过当矩阵修复。
 - 真轨迹诊断：最后250帧竖直误差均值-15.8226mm，位置门12mm未持续满足，恢复记忆均值.4222785。新单字段release_s1.257675717→.25，保留.75/平均；同保存历史反事实记忆均值.1743622、z动作.0841568→.0351418，仅离线读出非执行。100次intent=1对照精确一致、原1375帧actor回放0。新六项有限物理`special_recovery_release_20261028_v1`登记be3bdcb9已启动，五训练身份全合格、原office在途；不改门/物理/actor输入，不用验证调参。见[交接](docs/NONRL_SPECIAL_REGRESSION_REPAIR_20261028.md)与真实末段图，ball04早期仍有波动，非全程稳定证明。

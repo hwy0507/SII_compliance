@@ -1,6 +1,8 @@
 # 本仓库的持续工作约定
 
-## 2026-10-29（UTC28日）— 非RL完整v6拒训，teacher末段与恢复记忆修复在途
+## 2026-10-29（UTC28日）— 非RL阶段诊断完整，teacher修复尚未完成
+
+16:35 UTC最终覆盖：release005原六项已完整结束，四train合格/ball04失败（尾速.045488679超.02），office仍carry双失败；无在途模拟器、无v7/拟合。下面“在途”均历史。Goal active，勿重启原队列或继续仅缩release时间；下一步隔离恢复自激活/近目标意图依赖与训练覆盖。新teacher若改须独立版本/旧actor保留/仅canonical48/真实场景与office一致回放，不改公共物理/filter/最终gate。完整收据见修复交接。
 
 以[最新修复交接](docs/NONRL_SPECIAL_REGRESSION_REPAIR_20261028.md)为准。v6全30结束：rod10/corner10合格、ball6合格，ball01/04/08/09末态速度超原.02m/s；原learning-handoff-v3已failed_preserved，未创建训练输出。绑定v6的18/108静态准备不得执行。旧35失败与所有历史保留，不放宽gate、不冒充最终矩阵。
 
