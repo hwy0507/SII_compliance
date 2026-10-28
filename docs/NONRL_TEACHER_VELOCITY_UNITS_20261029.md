@@ -110,3 +110,7 @@ office000以及当前12已被反复检查，只能称回归，不能称未见测
 
 本轮实际fetch/read远端main从60db98f9前进至ea21d0b2，baseline为f6e8f8c。
 新增独立RL日志已读并fast-forward保留，无RL操作或子agent。
+
+收尾远端新增482ff64f独立RL审查准备已读；与科学提交08fcce99的AGENTS/UPDATE_LOG顶部
+新增冲突按双方原内容全部保留处理，未改任何已绑定仿真源。新full_velocity首rod已合格，
+进入ball00，其余尚未完成；后续状态必须读取实际execution，不能把首条通过当作全部通过。

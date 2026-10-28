@@ -7,6 +7,13 @@
 - 两组完整物理共享均经本机逐成员及远端暂存/最终核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_intent030_controls_20261029_v1/FULL_PROBE.tar`，614789120字节/SHA c7626aa3；同根`nonrl_velocity_units_controls_20261029_v1/FULL_PROBE.tar`，608860160字节/SHA ceeb6262；各732成员，完整SHA见收据。新full_velocity与配对图仅本机/仓库，未假称全共享，无删除。
 - 开工实际fetch/read main60db98f9→ea21d0b2、baselinef6e8f8c；独立RL更新已fast-forward保留。收工重读AGENTS，源AST及diff通过。无RL操作、子agent、服务器计算、验证调参或office标签拟合，当前12仅回归不是unseen。
 
+## 2026-10-28 — 原66继续、排序对照独立复核与67 loss部署准备
+
+- 17:43 UTC原66三learner身份保持，steps2748455/2749377/2750480，无完整/失败；归档/全loss/全终端/全标签/67仅恢复/原65–67窗口/固定排名后续和五guard均live。Goal active，不重启或自动67。新有限观察2581680/start40500464，最多1200秒或完整审计就绪结束，观察退出不等于训练失败。
+- 17:33:47–17:43:42共117guard样本min75/67/70/69%、低于50全0/maxgap5.259778秒；17:43即时79/97/94/74%。含合成保载，非每瞬时保证/纯科学吞吐；科学完成后也继续guard，当前非跨重启服务。
+- 全1974固定65排名→66结果的独立保存复核脚本已准备（float64向量算术/全数组/原top2/全体贡献），SHA7da864a2；冻结audit/wait/PLAN不改，实际66结果仍待，不能提前写通过。67 loss部署脚本静态准备，逆变换/AST/原65–67范围保持，无67loss目录或等待器。
+- 共享SSD补充包10成员/8833字节/SHAbaea531c逐字节/AST/归档核验；收据docs/RL_PARAMETER66_REVIEWER_PREP_SAVE_20261028.json。[交接](docs/RL_PARAMETER66_EARLY_ANCHOR_20261028.md)补充，HDD仅重写既有入口，大产物SSD，非HDD/arm1全备份。实际fetch/read main60db98f9→本轮ea21d0b2、baselinef6e8f8c；前轮证据提交ea21d0b2已正常push/远端核验，首次核验TLS失败后重试成功。非RL更新完整保留，无子agent。
+
 ## 2026-10-28 — 原66连续十分钟推进与65终端误差集中诊断
 
 - 原66在17:23:44–17:33:44的21次实际观测中，三learner/归档/全loss/终端/标签/67仅恢复/原65–67窗口和五guard身份保持，steps2733155/2733931/2735075→2740891/2741523/2742687严格增长，无完整/失败。600秒observer正常结束，不重启科学任务，Goal active。
