@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 第71轮十分钟核验与原68–70 bootstrap复核
+
+- [交接](docs/RL_PARAMETER71_WAIT_BOOTSTRAP_20261028.md)：22:48:16–22:58:16UTC共21次原71三learner/archive/六等待器/五guard身份live，steps严格增至2948239/2949235/2950340；observer自然结束、科学继续，无重启。前后各三路1000日志原字节/全数值/连续步号/独立算术通过，仅在途样本。
+- 原68–70分层5000 bootstrap独立整数索引/标量均值/手写分位数复核通过，最大区间差1.78e−15；旧收据/阈值不变。I/A宽区间、V较窄，含0不证明稳定；原整体未收敛保持。全部draws/delta/slope无损NPZ回读，0新物理/更新。
+- 117guard样本min76/62/60/63%、低于50[0, 0, 0, 0]，含合成负载、科学完成也继续。SSD包29成员/905977字节/SHA1e8d272f逐字节/AST核验，大数据SSD非HDD/arm1全备份。开工mainf2198d05/baselinef6e8f8c实际fetch/read，无子agent；Goal active、Direct34false、无72训练。
+
 ## 2026-10-28 — 第71轮三分钟核验与72全loss准备
 
 - [交接](docs/RL_PARAMETER71_WAIT72_LOSS_PREP_20261028.md)：22:44:07–22:47:07UTC共7次原71三learner/archive/六等待器/五guard身份live，steps严格增长至2940030/2940733/2941745；observer自然完成、科学继续，无重启。

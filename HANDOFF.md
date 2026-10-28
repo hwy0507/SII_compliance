@@ -1,3 +1,5 @@
+> **RL最新：[71十分钟观察与68–70独立复核](docs/RL_PARAMETER71_WAIT_BOOTSTRAP_20261028.md)。原71继续，无72训练；GPU完成后仍保载，Goal active。**
+
 > **RL最新：[71连续观察与72全loss准备](docs/RL_PARAMETER71_WAIT72_LOSS_PREP_20261028.md)。原71/71–73继续，72仅恢复、无训练；GPU完成后仍保载，Goal active。**
 
 > **RL最新：[71早期检查与72仅恢复](docs/RL_PARAMETER71_EARLY_ANCHOR_20261028.md)。原71/71–73继续，无72训练；GPU科学完成后仍保载，Goal active。**
