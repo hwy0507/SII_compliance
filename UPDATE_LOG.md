@@ -1,3 +1,10 @@
+## 2026-10-29 — 非RL v8棍推完整审查通过与真实回放
+
+- [报告](docs/NONRL_V8_ROD_REVIEW_20261029.md)。v8十条棍推全部原资格/时序通过，回位提前1.80–5.19秒；相较v7四快六慢，rod01晚.76秒，全部保留。审查绑定实际teacher/场景/seed/源/资格hash，独立复算撤棍/接触/顺序/保持时间，未改门槛或用验证调参。
+- 新rod00实际轨迹500帧/20秒MP4与250帧GIF全解码，4.76/5.04/6.48/7.72/8.16/12.64秒双视角拼图已查看，棍未撤时完成越过。仅状态回放，右视角挡板仅渲染透明；渲染受限服务自然success，不新增物理积分。媒体8文件8519539bytes/SHAf9bb844c已逐字节/暂存及最终核到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_rod00_media_20261029_v1/MEDIA.tar.gz`，收据V8_ROD00_MEDIA_SHARED_RECEIPT，不含完整物理或学生。
+- 20:33:32–20:43:32共21观察原collector1088910/start31713076 live，完成5→10，正常结束不重启科学任务。20:44:21同PID为11/30合格、ball01在途，接续1089228 waiting；3GiB/swap0/OOM0保持。仍须全30/覆盖/公平模型/18/108六指标，Goal active，不称ESN或主矩阵修复。
+- 实际fetch/read maince38aa88/baselinef6e8f8c，重读AGENTS；前轮实质progress。本轮不改绑定代码/训练配置，无RL/子agent/服务器计算/删除，保留无关未跟踪文件。全30在途原物理仅本机，终止后统一归档。
+
 ## 2026-10-29 — 非RL七项教师修复完整通过并启动v8重采
 
 - 20:31UTC原v8两服务同PID active，4/30合格、rod04在途，学习waiting。已完成三条全部资格hash及194学习源绑定核验，未改源/重复派发。10cebe07及安全合并b5e5fed5已push/远端核验，双方日志新增/共同历史逐字保留。源码小证据1178文件6675768bytes/SHAf8a71776已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_start_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`，收据V8_START_SOURCE_SHARED_RECEIPT；不含在途v8/学生/后补收据，Goal active。
