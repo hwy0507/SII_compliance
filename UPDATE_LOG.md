@@ -1,3 +1,12 @@
+## 2026-10-28 — 原67前5000、全2004锚点及68仅恢复/未来窗口准备
+
+- [最新交接](docs/RL_PARAMETER67_EARLY_ANCHOR_20261028.md)。原67身份保持，18:24steps2772357/2773195/2774277，无完整/失败。固定前5000原字节/连续步号/全数值有限/独立算术及实际图通过；critic首末1000 I1.740569→1.747841、A1.633253→1.467583、V.725704→.846266，I/V actor稍升，非整轮或收敛。
+- 前缀准备曾先被历史窗口逆变换拒绝，后因路径token仍指旧66被PID检查拒绝，均保留；最终精确上下文替换/覆盖计数/逆变换修复，三路真实67前缀和独立复核通过。未写错误前缀/重启科学任务，原65–67说明保持。
+- 全66的2004×57锚点精确、独立SSE4313.479085，SHAf962326e；67对照3762995/start40739770/PLANf545a0b2。全标签3762991/start40739769/PLANd403cf72；68仅恢复3762989/start40739769/REG7a51ce2f。真实不完整标签和缺DECISION68启动均拒绝且无输出/68训练，实际完整结果待。
+- 68完整loss四脚本及review_labels67静态准备，49–67保持追加68/paired67→68/0600不变，无68loss运行目录/等待。提前登记条件性原68–70 PLANe3a50567，公式/5%/nearzero1/seed/5000/anchor55不变，只有67后仍需续训才启动等待；无未来训练。原65–67 waiter3549846/PLAN517dbefb继续，不提前pass、不移动端点，原失败/历史通过保留，Direct34false。
+- 150guard样本min71/66/66/68%、低于50全0/maxgap5.266580秒；18:24五guard原身份live、GPU79/94/96/94%。含合成保载、非每瞬时保证/纯科学吞吐；科学完成也继续guard，当前非跨重启服务。
+- SSD小包81成员/1345549字节/SHA5cd4b651逐字节/AST/归档核验，收据docs/RL_PARAMETER67_EARLY_ANCHOR_SAVE_20261028.json，含诊断原失败；HDD扩写配额失败后已原地恢复1506字节紧凑入口并逐字节核验，大产物SSD，非HDD/arm1全备份。实际fetch/read main2f0e14e1→e6df2f8b/baselinef6e8f8c，非RL新增报告已读并fast-forward保留，无本机冻结RL协议变化，无子agent，Goal active。
+
 ## 2026-10-29 — 非RL读出恢复完整失败，定位边角接触并恢复原teacher机制对照
 
 - full_velocity完整六项732文件/610129920字节已逐成员及远端暂存/最终hash核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_full_velocity_controls_20261029_v1/FULL_PROBE.tar`，SHA256 d4d4381469b3d43f1727b4c8158ca554d4750cad138eadaea98ab77eaac7b66c；包含所有失败与原始物理，不含新在途legacy，未删除本地。收尾远端2f0e14e1独立RL66完成/67启动已读，按双方内容保留整合。
