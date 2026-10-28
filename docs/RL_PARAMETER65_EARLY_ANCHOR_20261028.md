@@ -49,3 +49,41 @@ prepare66实际缺DECISION66启动拒绝且无训练目录；沿用普通读写/
 已核验共享SSD包 `B/repository/RL_PARAMETER65_EARLY_ANCHOR_20261028_161931/SMALL_EVIDENCE.tar.gz`，55成员/1322274字节/SHA256 `495c20dc4422c804a12891b7f7a21487d53177d861c07098285294d0ba2bdc4e`。逐字节、tar成员大小/hash、Python AST通过；[收据](RL_PARAMETER65_EARLY_ANCHOR_SAVE_20261028.json)、[清单](evidence/RL_PARAMETER65_EARLY_ANCHOR_20261028/MANIFEST.json)。大checkpoint/replay/raw仍原共享SSD；HDD配额满，仅重写既有LATEST入口，非HDD/arm1全备份。
 
 接续实际fetch/read main `3cd622f01462b7a7d60a6dc575cf883080b39c11`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，未见新的协议变化，非RL并行工作完整保留，无子agent。下一步继续原65，完成全loss/health/标签/固定终端的独立算术和实际图审，结合原65–67窗口判断；经完整证据及精确恢复后再决定有限66。Goal active。
+
+## 16:44 UTC补充：原65连续观测、66静态审计与固定新增30对照
+
+本补充覆盖上文“完整66 loss静态准备和65标签保存审查脚本仍待”：这两项脚本现已准备；实际65保存标签复核仍待完整输入。没有66训练或66loss运行目录/PLAN/waiter，不自动66。
+
+`B/runtime/parameter65_verified_wait_1633_20261028_v1` 完成16:33:43–16:43:43的21次真实观测，原三learner/归档/全loss/全1944终端/标签/66仅恢复/原65–67窗口/新增30对照及五guard身份保持，steps2701629/2702245/2703545→2709191/2710020/2711231严格增长，无完整或失败。独立保存检查通过；600秒有限observer自然结束，不代表训练完成，不重启科学任务。
+
+同区间guard117条实际采样min75/67/67/69%，mean78.93162393/88.95726496/90.08547009/89.51282051%，低于50全0，maxgap5.268607616秒。包含合成保活，不等于科学吞吐或每瞬时保证；科学完成后继续guard，历史0%保留。
+
+### 静态准备
+
+`B/runtime/parameter66_loss_preparation_20261028_v1` 四脚本audit.py/paired_gate.py/review_saved.py/wait.py已准备。精确字符串同时映射、逆变换/AST/实际diff已查，完整49–65历史保留并只追加66，paired65→66、原0600/日期/owner及原53–55窗口说明保持。须完整65审查、恢复并实际启动66后，才部署到66loss并绑定真实jobs；此时没有66loss运行目录/PLAN/进程。
+
+`B/runtime/prepare_parameter66_20261028_v1/review_labels65.py` 已按63→64/64→65同时数字边界映射准备，逆变换/AST通过。完整65标签与全loss保存复核通过后才执行，输出COMPLETE64_65_SAVED_REVIEW.json；目前没有结果，不把语法检查当作科学通过。
+
+### 完整64新增30终端描述性诊断
+
+`B/runs/vmc64_terminal_anchor_followup_20261028_v1/NEW_TERMINALS_REVIEW.json`、NEW_TERMINALS_LABEL_REVIEW.json已完成；读取既有values.npz，按实际total_steps−1映射全部30行，独立每head masked SSE/128权重贡献和全标签/原model/evaluator/rollout hash核验通过，0新前向/物理/优化。
+
+|条件 / replay index|对完整64终端loss贡献|Task / Strict|穿透mm|
+|---|---|---|---|
+|short0600 / 2670722|.325853820059|true / false|.223143467565|
+|short0200 / 2670774|.008171350083|true / true|.094674596981|
+|long0400 / 2670775|.006090560199|true / true|.080085551126|
+
+新增30总贡献.344211032334，short0600占94.666872775%。其terminal transition reward−28.416049957，episode总reward−34.815386430，二者分开；原mask为0的head2不算入SSE。全部30排序/标签保留，未改变原全1914改善/1371旧行退化、原五focus或全1944结论。不证明在线梯度因果，不剔除样本、不设新停止门。
+
+### 65之后固定对照
+
+`B/runs/vmc65_new64_terminal_followup_20261028_v1` 在65完整前固定全部64新增30，PLAN SHA256 `dc93590edff436d5aa5e38d613dd1f723fb199e6c609535b9de372a6c605b61c`；waiter434613/start40091385，CPU53/7200秒，绑定原全1944终端对照4103562/start39997944。待原对照FINISHED与SAVED_VALUES_REVIEW后，仅读取保存CPU Q，验证全1944旧数组精确，比较固定30的旧/新SSE、原/新denominator贡献。所有30都保留；仍须独立复核输出，不以这个子集替代全体。真实不完整65调用拒绝且无输出；实际65结果待。
+
+### 本补充归档与同步
+
+共享SSD包 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER65_WAIT66_PREP_20261028_164405/SMALL_EVIDENCE.tar.gz`，34成员/30683字节/SHA256 `3475bd67401ab069f51ceac814e32cf68c0367201ccf12422376a41d24335c42`，逐字节/AST/tar成员hash通过；[收据](RL_PARAMETER65_WAIT66_PREP_SAVE_20261028.json)、[清单](evidence/RL_PARAMETER65_WAIT66_PREP_20261028/MANIFEST.json)。大checkpoint/replay/raw仍原SSD，HDD只重写既有LATEST，非HDD/arm1全备份。
+
+开工main0ae40daf，收尾实际fetch/read main171534126e1e0b3a2d42b1eda5b68a95dc23c687、baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d；另一主机非RL有限teacher对照结束/未修复的日志和报告已读、fast-forward完整保留，没有改本机RL冻结runtime。下一步继续原65，完整loss/health/标签/终端/固定30实际复核和图审后，再决定有限66；原65–67窗口不变。Goal active，无子agent。
+
+推送前再次fetch/read main新增eebf096f47762823031f5bb57f7c8918491a2da1，仅非RL共享源码收据和日志/交接补充；已读，保留，baseline不变。
