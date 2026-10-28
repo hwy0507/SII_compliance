@@ -5,6 +5,13 @@
 - 全24train覆盖审查通过，6validation只核来源不入恢复诊断；rod/ball/corner激活>.5帧为0/4000、447/6000、171/2600，最长0/5.12/.64秒。仅描述覆盖，不证明学生可学习或闭环成功。完整物理614文件2802442240bytes/SHA76f23adc已本机核验，正向独立共享暂存传输，未提前宣称共享完成。
 - 原有界observer20:44:21–21:00:22确认同collector身份11→30及自然终止，非观察超时后重启。实际fetch/read maindd8ff343/baselinef6e8f8c，重读AGENTS；前轮棍审/媒体和本轮全数据/实际学习均为progress。仍须75fits/9models→18诊断→108六指标，当前12非unseen；Goal active，无RL/子agent/服务器计算/删除。
 
+## 2026-10-28 — 原69十分钟核验等待与在途loss检查
+
+- 20:45:19–20:55:19 UTC，原69三learner/归档/六等待器/五guard连续21次身份live，steps严格增加至2870751/2871785/2873145（增加7451/7586/7905）；无完整或失败。600秒observer自然结束，科学仍运行。属于verified wait，无重启或70训练。
+- 在途各1000条完整更新日志原字节保留、连续步号及保存算术核验；critic均值I1.637003/A1.202734/V.745161，actor/critic全部有限。只是20:45附近尾段检查，不是整轮69或收敛证据。
+- 同期117guard采样min70/59/66/66%、低于50计数[0, 0, 0, 0]；含合成保载，科学完成也继续，非瞬时保证或跨重启服务。原68–70窗口继续，Direct34false，Goal active。
+- [交接补充](docs/RL_PARAMETER69_WAIT70_DEPLOY_20261028.md)，证据docs/evidence/RL_PARAMETER69_VERIFIED_WAIT_20261028；SSD包10成员/143652字节/SHA3fa4c997逐字节核验，收据docs/RL_PARAMETER69_VERIFIED_WAIT_SAVE_20261028.json。开工main13589d6a/baselinef6e8f8c实际fetch/read，无协议变化，无子agent。
+
 ## 2026-10-29 — 非RL v8棍推完整审查通过与真实回放
 
 - [报告](docs/NONRL_V8_ROD_REVIEW_20261029.md)。v8十条棍推全部原资格/时序通过，回位提前1.80–5.19秒；相较v7四快六慢，rod01晚.76秒，全部保留。审查绑定实际teacher/场景/seed/源/资格hash，独立复算撤棍/接触/顺序/保持时间，未改门槛或用验证调参。
