@@ -1,5 +1,33 @@
 # 三真实场景采集继续与冻结108入口准备
 
+## 最新：原训练43/75，有限测试接续服务已启动
+
+发布前10:09:21已45/75，原训练与等待器保持。准备小包23806字节/SHA256
+`0a44ae3f56e8d1d8e9157fa13203b653254722b0576c1ed53b7b0227ecd03cf2`已核验发布到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_test_handoff_20261028_v1/special_frozen108_handoff_preparation_20261028_v1.tar.gz`；
+含不可变登记/五来源快照/启动证据，不含新训练网格和测试。开工main e6bd92c2/baseline f6e8f8c，
+收尾main3a19c133独立RL更新已读并fast-forward保留，原科学运行来源未变。
+
+**覆盖下文早期“没有等待器、需要手动派发”的状态。不要另外手动启动冻结108。**
+原训练725995/start27488598、协调器746822继续；10:07:11 UTC为43/75，RNN seed3候选06。
+新增 `sii-special-frozen108-handoff-v1-20261028.service`，PID772606/start28001859，
+目录`outputs/special_scene_frozen108_handoff_20261028_v1`，登记SHA
+`429689c5b5d61b32fd54e737d3eac304f9f4d3d5578046a133a48e1d5e34143f`。
+从10:06:01起最多等待7200秒；绑定原训练进程身份，等待时不持有全局仿真锁、无模拟器。
+真实3GiB/swap0/数值线程1，原训练与新服务均OOM0；194原源码/5新快照hash一致。
+
+原训练完整75、九模型锁且服务成功退出后，调用原准备目录内冻结dispatcher，先全拟合审计
+再执行同一108；随后运行已快照的独立保存证据审计、真实学习曲线和六指标报告工具。
+不提前使用候选、不新增测试条件、不重训；任何异常/超时保存失败收据并停止该接续，
+不停止原训练、不自动重试。全部子任务仍是原有限预算。
+输出最终状态只是`complete_pending_visual_review_and_archive`，不能自动宣称Goal完成。
+最终审计在新接续根`FINAL_AUDIT.json`，图在`LEARNING_CURVES/`和`PRESENTATION/`；
+尚未生成，仍需后续实际目视检查、完整训练/测试归档及最终比较发布。
+
+9项父进程转换控制检查通过；首次启动后立即读execution早于文件创建，随后同一772606
+真实复核active/等待时间推进，没有重启。当前测试目录未创建，非新测试成功。
+见[实际启动收据](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/TEST_HANDOFF_LAUNCH.json)。
+
 ## 最终呈现入口与本轮来源复核（训练仍在进行）
 
 本轮小源码/准备证据包已核验发布至

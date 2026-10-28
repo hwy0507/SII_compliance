@@ -1,3 +1,10 @@
+## 2026-10-28 — 原拟合45/75与冻结108有限接续实际启动
+
+- 原训练725995/746822保持，39→45/75推进，10:09:21为RNN seed1/candidate07。新增等待服务`sii-special-frozen108-handoff-v1-20261028.service` PID772606/start28001859，登记SHA429689c5；绑定原725995/start27488598，只在完整75/九锁/原服务成功退出后调用原冻结全拟合审计和108，随后真实审计/学习曲线/六指标呈现。当前测试目录未创建，禁止另外派发。Goal active。
+- 最多等7200秒，等待不持仿真锁，真实3GiB/swap0/线程1；异常保存并停止接续，不重启训练或重试测试。9父状态控制检查通过，5新快照及194原来源hash保持，两服务OOM0。初读execution早于创建返回1，同PID再次读取已正常且时间推进，没有重启；不是测试失败。全结果仍须实际目视、完整归档和最终比较。
+- 不可变登记/源码/启动证据包23806字节，SHA256 `0a44ae3f56e8d1d8e9157fa13203b653254722b0576c1ed53b7b0227ecd03cf2`，已逐大小/hash核验发布 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_test_handoff_20261028_v1/special_frozen108_handoff_preparation_20261028_v1.tar.gz`。不含新候选网格/测试，服务器仅存储。
+- 开工fetch/read main e6bd92c2、baseline f6e8f8c；收尾main3a19c133独立RL进展已读并fast-forward保留。未改运行源码/物理/gate，未启子agent。[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)顶部明确覆盖旧“无等待器”快照。
+
 ## 2026-10-28 — 冻结55独立复核准备，原59与评测继续
 
 - [最新交接](docs/RL_FROZEN55_REVIEW_PREP_20261028.md)。新增完整冻结报告独立标量/原门槛/来源审查及41→55全30配对工具，已实际用完整41全部90回合预检通过，非55结果。保留41 replay2m与55 replay4m/训练曝光差别，不作容量因果/泛化/收敛声明，无物理/优化。

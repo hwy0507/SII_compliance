@@ -1,5 +1,9 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 冻结108有限接续已启动，原拟合45/75
+
+原725995/746822继续，10:09:21已45/75、RNN seed1/candidate07。新增`sii-special-frozen108-handoff-v1-20261028.service` PID772606/start28001859，登记`outputs/special_scene_frozen108_handoff_20261028_v1` SHA429689c5，等待原完整75及成功退出后才调用原冻结准备的全拟合审计/108，随后保存证据审计和真实图表。**已有等待器，不要另启测试或手动调用原dispatcher。** 最多等待7200秒，3GiB/swap0/线程1，异常留档不重试；当前仅等待、尚无测试目录，Goal active。五来源快照/194原源hash、进程身份、OOM0均已核验。23806字节准备包SHA0a44ae3f已核验至 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_test_handoff_20261028_v1/`。完成后仍须目视/全训练测试归档/最终报告，见[最新交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。无RL改动、无子agent。
+
 ## 2026-10-28 — 冻结55独立复核准备，原59与评测继续
 
 - [最新交接](docs/RL_FROZEN55_REVIEW_PREP_20261028.md)。新增完整冻结报告独立标量/原门槛/来源审查及41→55全30配对工具，已实际用完整41全部90回合预检通过，非55结果。保留41 replay2m与55 replay4m/训练曝光差别，不作容量因果/泛化/收敛声明，无物理/优化。
