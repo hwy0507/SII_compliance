@@ -60,6 +60,9 @@ def worker(out, scene):
     folder = out/scene
     folder.mkdir(exist_ok=False)
     config = json.loads((PARENT/'TEACHER_CHOICE.json').read_text())['selected']['config']
+    override=os.environ.get('VMC_TEACHER_CONFIG')
+    if override:
+        config=json.loads(Path(override).read_text())
     write(folder/'teacher.json', config)
     actor = teacher_module.ParameterTeacher(config)
     actions, observations, states, chains = [], [], [], []
@@ -72,11 +75,16 @@ def worker(out, scene):
     original_filter = VelocityResidualActionFilter.filter
     filter_config = None
     manifest = dict(status='running', scene=scene, started_utc=datetime.now(timezone.utc).isoformat(),
-        teacher='new30 teacher_lhs_0; three actor classes AST-identical to collection source',
+        teacher=('development VMC configuration' if override else 'new30 teacher_lhs_0')+'; three actor classes AST-identical to collection source',
+        teacher_override_source=(str(Path(override).resolve()) if override else None),
         teacher_config_sha256=sha(folder/'teacher.json'), actor_input='canonical48 proprioception; no contact oracle/clock/geometry',
         legacy_actions_discarded=True, task_supervisor='original scene script; not office-v7 test task',
         python=sys.executable, mujoco=mujoco.__version__, wrapper_sha256=sha(Path(__file__)),
         limitations='Historical video family/source matched by on-screen titles and scene layout. Full original per-video runtime metadata is unavailable; exact historical parameter/trajectory identity is not claimed.')
+    cg=Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
+    manifest['resources']={name:((cg/name).read_text().strip() if (cg/name).exists() else None) for name in
+                           ('memory.max','memory.swap.max','cpu.max')}
+    manifest['resources']['cgroup']=str(cg)
     write(folder/'execution.json', manifest)
 
     def filter_capture(self, action, dt):
@@ -108,6 +116,7 @@ def worker(out, scene):
                 peak_torque[:] = np.maximum(peak_torque, np.abs(d.qfrc_actuator[:7]))
                 sample_count += 1
                 seen = set()
+                seen_body = set()
                 for i in range(d.ncon):
                     c = d.contact[i]
                     g1, g2 = int(c.geom1), int(c.geom2)
@@ -125,8 +134,17 @@ def worker(out, scene):
                     row['max_penetration_m'] = max(row['max_penetration_m'], -float(c.dist))
                     row['last_s'] = float(d.time)
                     seen.add(name)
+                    if np.linalg.norm(f[:3]) > .05:
+                        robot_g=g1 if g1 in robot else g2
+                        body=mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_BODY,int(m.geom_bodyid[robot_g]))
+                        body_row=row.setdefault('per_body',{}).setdefault(body,dict(first_s=float(d.time),last_s=float(d.time),duration_s=0.,peak_force_n=0.))
+                        body_row['last_s']=float(d.time)
+                        body_row['peak_force_n']=max(body_row['peak_force_n'],float(np.linalg.norm(f[:3])))
+                        seen_body.add((name,body))
                 for name in seen:
                     contact_stats[name]['duration_s'] += float(m.opt.timestep)
+                for name,body in seen_body:
+                    contact_stats[name]['per_body'][body]['duration_s'] += float(m.opt.timestep)
             # Panel's setter wraps callbacks with its own audit. Do not wrap
             # that audit twice when installing this additional observer.
             if hasattr(env, '_panel_observer'):
@@ -135,8 +153,12 @@ def worker(out, scene):
                 env.substep_observer = observe
             mujoco.mj_saveModel(m, str(folder/'scene.mjb'), None)
             mujoco.mj_saveLastXML(str(folder/'scene.xml'), m)
+            push_joint = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_JOINT, 'push_rod_slide')
             manifest.update(model_sha256=sha(folder/'scene.mjb'), physics_dt_s=float(m.opt.timestep),
-                            safety_config=asdict(env.safety_config))
+                            safety_config=asdict(env.safety_config),
+                            push_rod_qpos_index=(int(m.jnt_qposadr[push_joint]) if push_joint >= 0 else None),
+                            push_rod_stroke_m=(float(os.environ.get('PUSH_ROD_STROKE_M', '0'))
+                                               if scene == 'rod' else None))
             write(folder/'execution.json', manifest)
         command = env._wbc_command(env.step_count*.04)
         position = d.xpos[env._hand_id].copy()
@@ -184,8 +206,49 @@ def worker(out, scene):
                 # workstation furniture; its title is the non-workstation branch.
                 recipe['environment']['PANEL_CONFIG']['workstation'] = False
                 recipe['environment']['CORE_VMC_CONFIG'] = {}
+            if scene == 'rod':
+                # run_primitive_teacher_v7 writes these values into the
+                # audited environment when it builds the physical push rod;
+                # setting only outer environment variables would be silently
+                # overwritten by the recipe arguments.
+                # Fixed scene drive; behavior is measured independently and
+                # must finish before withdrawal STARTS. No success is assumed.
+                rod_press = float(os.environ.get('VMC_ROD_PRESS_S', '0.36'))
+                rod_hold = float(os.environ.get('VMC_ROD_HOLD_S', '2.00'))
+                rod_retract = float(os.environ.get('VMC_ROD_RETRACT_S', '0.36'))
+                rod_stroke = float(os.environ.get('VMC_ROD_STROKE_M', '0.20'))
+                rod_force = float(os.environ.get('VMC_ROD_PUSH_FORCE_N', '30.0'))
+                flags.update(push_press=rod_press, push_hold=rod_hold, push_retract=rod_retract,
+                             push_stroke=rod_stroke, push_force=rod_force,
+                             event_delay=float(os.environ.get('VMC_ROD_EVENT_DELAY_S', '.8')),
+                             push_height=float(os.environ.get('VMC_ROD_HEIGHT_M', '.65')),
+                             push_target_x=float(os.environ.get('VMC_ROD_TARGET_X_M', '.57')),
+                             duration=float(os.environ.get('VMC_SCENE_DURATION_S', '24')))
             for k, v in recipe['environment'].items():
                 os.environ[k] = json.dumps(v) if isinstance(v, dict) else str(v)
+            if scene == 'rod':
+                # The reference clip used a persistent rod, which only proves
+                # contact/hold. The collection contract requires the physical
+                # rod to reach its full stroke, remain there long enough to
+                # displace the hand, and retract only after the hand has
+                # crossed and rejoined the nominal path. This is the existing
+                # audited press-hold-retract apparatus in audited_velocity_env;
+                # it is a scene drive, never an actor input.
+                os.environ.update(
+                    PUSH_ROD_SCENE='1',
+                    PUSH_ROD_PRESS_S=str(rod_press),
+                    PUSH_ROD_HOLD_S=str(rod_hold),
+                    PUSH_ROD_RETRACT_S=str(rod_retract),
+                    PUSH_ROD_STROKE_M=str(rod_stroke),
+                )
+                manifest['rod_behavior_contract'] = dict(
+                    mode='full_stroke_press_hold_retract',
+                    stroke_m=rod_stroke, press_s=rod_press, hold_s=rod_hold, retract_s=rod_retract,
+                    drive_force_limit_n=rod_force,
+                    start_source='legacy.json fixture_trigger_time_s; never a hard-coded assumed time',
+                    required_order='hand contact -> yield -> geometric pass -> persistent rejoin < retract_start',
+                    actor_inputs='canonical48 only; rod state/contact/release time excluded',
+                )
             entry = ROOT/'scripts'/recipe['entrypoint']
             sys.argv = [str(entry)]
             for k,v in flags.items():
@@ -228,6 +291,8 @@ def worker(out, scene):
         write(folder/'SOURCE_HASHES.json', files)
         subprocess.run(['tar','-czf',str(folder/'source.tar.gz'),*files],cwd=ROOT,check=True)
         manifest['ended_utc']=datetime.now(timezone.utc).isoformat()
+        manifest['resources'].update({name:(cg/name).read_text().strip() for name in
+                                     ('memory.peak','memory.events','memory.swap.current')})
         write(folder/'execution.json', manifest)
 
 
@@ -237,6 +302,10 @@ def main():
     p.add_argument('--worker', choices=SCENES)
     p.add_argument('--scenes', nargs='+', choices=SCENES, default=SCENES)
     a=p.parse_args()
+    cg=Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
+    memory=(cg/'memory.max').read_text().strip()
+    if memory == 'max' or int(memory)>3*1024**3 or (cg/'memory.swap.max').read_text().strip()!='0':
+        raise RuntimeError('Actual cgroup MemoryMax<=3GiB and MemorySwapMax=0 required')
     out=a.output.resolve()
     if a.worker:
         worker(out,a.worker)
@@ -252,6 +321,8 @@ def main():
         rows.append(dict(scene=scene,returncode=rc))
         write(out/'execution.json',dict(status='running',rows=rows))
     write(out/'execution.json',dict(status='complete' if all(r['returncode']==0 for r in rows) else 'failures_preserved',rows=rows))
+    if any(r['returncode']!=0 for r in rows):
+        raise SystemExit(1)
 
 
 if __name__ == '__main__':

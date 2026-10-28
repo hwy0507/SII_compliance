@@ -66,7 +66,8 @@ def write(path: Path, value: Any) -> None:
 def load_diagnostic_models(path: Path) -> dict[str, Any]:
     """Only separately frozen non-RL learned-model diagnostic grids are accepted."""
     lock = read(path)
-    if lock.get('schema') != 'sii-nonrl-learning-diagnostic-lock-v1' or lock.get('status') != 'frozen':
+    if lock.get('schema') not in ('sii-nonrl-learning-diagnostic-lock-v1',
+                                  'sii-nonrl-special-scene-model-lock-v1') or lock.get('status') != 'frozen':
         raise ValueError('Expected frozen non-RL diagnostic model lock')
     models = lock['models']; names = [m['name'] for m in models]
     if not models or len(set(names)) != len(names):
@@ -74,7 +75,7 @@ def load_diagnostic_models(path: Path) -> dict[str, Any]:
     for model in models:
         if not model['name'].replace('_','').isalnum():
             raise ValueError('Invalid model name')
-        if model['family'] not in ('esn_gradient','rnn_scratch','mlp_scratch','esn_ridge'):
+        if model['family'] not in ('esn_gradient','rnn_scratch','mlp_scratch','esn_ridge','esn','rnn','mlp'):
             raise ValueError('Not an allowed non-RL family')
         if model['worker_kind'] != 'office' or model['config'] != {}:
             raise ValueError('Diagnostic only changes learned checkpoint')
@@ -82,9 +83,14 @@ def load_diagnostic_models(path: Path) -> dict[str, Any]:
             if sha(Path(model[key])) != model[key+'_sha256']:
                 raise ValueError(f'{key} hash mismatch')
         meta = read(Path(model['metadata']))
-        if (meta['family'] != model['family'] or meta['seed'] != model['seed'] or
-                meta['checkpoint_sha256'] != model['checkpoint_sha256'] or
-                meta['training_data_sha256'] != lock['training_data_sha256']):
+        metadata_family = meta.get('family', meta.get('kind', 'esn_ridge' if 'reservoir_width' in meta else None))
+        metadata_data_sha = meta.get('training_data_sha256', meta.get('data_sha256'))
+        family_ok = metadata_family == model['family'] or {
+            ('esn', 'esn_ridge'), ('rnn', 'rnn_scratch'), ('mlp', 'mlp_scratch')
+        }.__contains__((metadata_family, model['family']))
+        if (not family_ok or meta['seed'] != model['seed'] or
+            meta['checkpoint_sha256'] != model['checkpoint_sha256'] or
+            metadata_data_sha != lock['training_data_sha256']):
             raise ValueError('Training lineage mismatch')
     return lock
 
@@ -195,10 +201,12 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     t_ref = min(qualified_times) if qualified_times else None
     for r in rows:
         t = r["completion_time_s"]
-        r["spt"] = float(t_ref / max(t, t_ref)) if t_ref is not None and r["task_success"] and r["strict_success"] and t is not None else 0.0
+        r["spt"] = float(t_ref / max(t, t_ref)) if t_ref is not None and r["task_success"] and r["strict_success"] and t is not None else None
     methods = []
     for method in sorted({r["method"] for r in rows}):
         group = [r for r in rows if r["method"] == method]
+        qualified = [r for r in group if r['task_success'] and r['strict_success']]
+        scored = [r for r in qualified if r['spt'] is not None]
         contact = [r["comfort"]["human_contact_duration_s"] for r in group]
         compliant = [
             (r["comfort"]["human_comfort_torque_compliance"], r["comfort"]["human_contact_duration_s"])
@@ -211,13 +219,20 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "episodes": len(group),
             "task_success": sum(r["task_success"] for r in group),
             "strict_success": sum(r["strict_success"] for r in group),
-            "spt_mean": float(np.mean([r["spt"] for r in group])),
+            "both_success": len(qualified),
+            "task_success_rate": sum(r['task_success'] for r in group)/len(group),
+            "strict_success_rate": sum(r['strict_success'] for r in group)/len(group),
+            "spt_valid_episodes": len(scored),
+            "spt_missing_time_episodes": len(qualified)-len(scored),
+            "spt_mean": float(np.mean([r['spt'] for r in scored])) if scored else None,
+            "completion_time_mean_s_both": float(np.mean([r['completion_time_s'] for r in scored])) if scored else None,
             "completion_time_mean_s_task": float(np.mean([r["completion_time_s"] for r in group if r["completion_time_s"] is not None])) if any(r["completion_time_s"] is not None for r in group) else None,
             "peak_torque_mean_nm": float(np.mean([r["peak_torque_nm"] for r in group])),
             "peak_torque_worst_nm": float(np.max([r["peak_torque_nm"] for r in group])),
             "human_comfort_torque_compliance_contact_time_weighted": weighted,
             "human_contact_duration_s_total": float(sum(contact)),
             "machine_safety_violation_rate": float(np.mean([r["comfort"]["machine_safety_violation"] for r in group])),
+            "machine_compliance_rate": float(np.mean([not r['comfort']['machine_safety_violation'] for r in group])),
             "machine_safety_violation_episodes": sum(r["comfort"]["machine_safety_violation"] for r in group),
             "failure_reasons": sorted({reason for r in group for reason in r["comfort"]["machine_safety_violation_reasons"]}),
         })
@@ -225,7 +240,7 @@ def aggregate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "t_ref_s": float(t_ref) if t_ref is not None else None,
         "t_ref_definition": "minimum sampled final-placement gate crossing time among all Task AND Strict successes in this matrix",
         "t_ref_status": "post_hoc_exploratory_user_requested",
-        "spt_formula": "(Task AND Strict) * T_ref / max(T, T_ref); failures are 0",
+        "spt_formula": "mean(T_ref/max(T,T_ref) | Task AND Strict with measured T); failures excluded, empty subset = NA; missing T reported",
         "comfort_definition": "dt-weighted fraction of actual human contact substeps with max_j(abs(qfrc_actuator_j)/(0.5*actuator_limit_j)) <= 1",
         "machine_safety_definition": "episode violation if max external/edge penetration >0.2 mm, torque exceeds frozen actuator limit, nonfinite telemetry, or a registered worker abort; torque slew is reported diagnostically because no independent slew limit is registered",
         "methods": methods,
@@ -237,12 +252,13 @@ def render(summary: dict[str, Any]) -> str:
     lines = [
         "# Non-RL SPT 指标矩阵（2026-10-25）", "",
         "本报告基于新建物理评估回合；不含 RL。SPT 的 T_ref 按用户要求取本矩阵中所有 Task AND Strict 成功回合的最短采样终态 gate crossing 时间，因此是后验探索性指标，不是独立参考规划器基准。", "",
-        f"- T_ref: `{summary['t_ref_s']:.6f} s`" if summary['t_ref_s'] is not None else "- T_ref: `NA`（没有 Task AND Strict 成功回合；所有 SPT=0）", "- 舒适力矩阈值：每关节冻结执行器力矩上限的 0.5 倍；只在人机实际接触子步计分。", "- 机器安全违规：穿透超过 0.2 mm、力矩超过冻结上限或物理遥测非有限值。", "",
-        "| 方法 | 回合 | Task | Strict | SPT | 平均完成时间(s) | 峰值力矩(Nm) | 舒适力矩合规率 | 机器安全违规率 |", "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
+        f"- T_ref: `{summary['t_ref_s']:.6f} s`" if summary['t_ref_s'] is not None else "- T_ref: `NA`（没有可计时的双成功回合；SPT=NA）", "- SPT仅平均Task与Strict双成功且有完成时间的回合；失败不填零。", "- 舒适力矩阈值：每关节冻结执行器力矩上限的0.5倍，仅实际人接触时计分；这是代理指标，不是人体安全认证。", "",
+        "| 方法 | 回合 | Task | Strict | 双成功SPT | 双成功平均时间(s) | 平均峰值力矩(Nm) | 舒适力矩合规率 | 机器合规率 |", "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for m in summary["methods"]:
         def pct(v): return "NA" if v is None else f"{100*v:.2f}%"
-        lines.append(f"| {m['method']} | {m['episodes']} | {m['task_success']}/{m['episodes']} | {m['strict_success']}/{m['episodes']} | {m['spt_mean']:.4f} | {m['completion_time_mean_s_task'] if m['completion_time_mean_s_task'] is not None else 'NA'} | {m['peak_torque_mean_nm']:.3f} | {pct(m['human_comfort_torque_compliance_contact_time_weighted'])} | {100*m['machine_safety_violation_rate']:.2f}% |")
+        spt='NA' if m['spt_mean'] is None else f"{m['spt_mean']:.4f}"
+        lines.append(f"| {m['method']} | {m['episodes']} | {m['task_success']}/{m['episodes']} | {m['strict_success']}/{m['episodes']} | {spt} ({m['spt_valid_episodes']}回合) | {m['completion_time_mean_s_both'] if m['completion_time_mean_s_both'] is not None else 'NA'} | {m['peak_torque_mean_nm']:.3f} | {pct(m['human_comfort_torque_compliance_contact_time_weighted'])} | {pct(m['machine_compliance_rate'])} |")
     lines += ["", "逐回合结果、失败原因和 hash 见 `REPORT.json`；无人体接触的回合舒适合规率为 NA，不填零。"]
     return "\n".join(lines) + "\n"
 
@@ -264,6 +280,18 @@ def prepare_and_run(args: argparse.Namespace) -> None:
     lock = load_diagnostic_models(custom) if custom else read(source_run / "MODEL_LOCK.json")
     methods = tuple(m['name'] for m in lock['models']) if custom else METHODS
     conditions = read(source_run / "CONDITIONS.json")["conditions"]
+    if getattr(args, "condition_indices", None):
+        indices = [int(x) for x in args.condition_indices.split(",") if x != ""]
+        if any(i < 0 or i >= len(conditions) for i in indices):
+            raise IndexError("condition index outside source test set")
+        conditions = [conditions[i] for i in indices]
+    if getattr(args, "model_names", None):
+        requested = [x for x in args.model_names.split(",") if x]
+        methods = tuple(name for name in methods if name in requested)
+        if set(requested) != set(methods):
+            raise KeyError("requested model is absent from frozen model lock")
+    if not methods or not conditions:
+        raise ValueError("empty evaluation shard")
     models = {m["name"]: m for m in lock["models"]}
     missing = [name for name in methods if name not in models]
     if missing:
@@ -286,10 +314,25 @@ def prepare_and_run(args: argparse.Namespace) -> None:
         (root / "checkpoints").mkdir()
         shutil.copy2(source_run / "CONDITIONS.json", root / "CONDITIONS.json")
         shutil.copy2(source_run / "PROTOCOL.json", root / "PARENT_PROTOCOL.json")
-        shutil.copy2(source_run / "SOURCE_HASHES.json", root / "PARENT_SOURCE_HASHES.json")
+        source_hashes = source_run / "SOURCE_HASHES.json"
+        if source_hashes.exists():
+            shutil.copy2(source_hashes, root / "PARENT_SOURCE_HASHES.json")
+        else:
+            # Older fair-comparison runs recorded source manifests in the
+            # registration but did not emit this convenience file.  Recreate
+            # that manifest from the immutable source snapshots and preserve
+            # the omission explicitly in the evaluation receipt.
+            manifest = {}
+            for base in (source_run / "source", source_run / "physics_source"):
+                if base.exists():
+                    for path in sorted(base.rglob("*.py")):
+                        manifest[str(path.relative_to(source_run))] = sha(path)
+            write(root / "PARENT_SOURCE_HASHES.json", {"source_hashes_file_missing": True, "manifest": manifest})
     source = root / "source"
     if not source.exists():
-        shutil.copytree(source_run / "source", source)
+        # The current new30 matrix freezes physics separately from fitting.
+        physics_source = source_run/'physics_source'
+        shutil.copytree(physics_source if physics_source.exists() else source_run/'source', source)
     selected = []
     for name in methods:
         model = dict(models[name])
@@ -322,8 +365,8 @@ def prepare_and_run(args: argparse.Namespace) -> None:
         protocol.update(schema='sii-nonrl-spt-diagnostic-20261026-v1',
                         model_lock_sha256=sha(root/'INPUT_MODEL_LOCK.json'),
                         coordinator_sha256=sha(root/'coordinator.py'),
-                        interpretation='Seen 8-condition diagnostic; one seed, not unseen generalization or final superiority',
-                        comparison=lock['comparison'])
+                        interpretation=f'{len(conditions)} previously inspected conditions, {len(methods)} frozen models; not a fresh unseen test set',
+                        comparison=lock.get('comparison', 'Special-scene VMC retraining evaluated on the frozen current office test matrix'))
     if not resume:
         write(root / "REGISTRATION.json", protocol)
     state = read(root / "execution.json") if resume else {"status": "running", "started_utc": now(), "expected": len(methods) * len(conditions), "completed": 0, "rows": [], "results": []}
@@ -335,7 +378,10 @@ def prepare_and_run(args: argparse.Namespace) -> None:
     python = args.python or sys.executable
     worker_env = os.environ.copy()
     worker_env.update({"OMP_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1", "MKL_NUM_THREADS": "1",
-                       "MUJOCO_MENAGERIE_PATH": str(args.runtime / "menagerie")})
+                       "MUJOCO_MENAGERIE_PATH": str(args.runtime / "menagerie"),
+                       "SII_MEMORY_LIMIT_MODE": "cgroup",
+                       "SII_MEMORY_MAX_BYTES": os.environ.get("SII_MEMORY_MAX_BYTES", str(3*1024**3)),
+                       "SII_SWAP_MAX_BYTES": os.environ.get("SII_SWAP_MAX_BYTES", "0")})
     rows = list(state["results"])
     completed_names = {r["method"] + "__" + r["condition"] for r in state["rows"] if r.get("returncode") == 0}
     for condition in conditions:
@@ -343,6 +389,10 @@ def prepare_and_run(args: argparse.Namespace) -> None:
             name = model["name"] + "__" + condition["id"]
             if name in completed_names:
                 continue
+            if (root/'STOP_REQUESTED').exists():
+                state.update(status='stopped_at_episode_boundary',ended_utc=now())
+                write(root/'execution.json',state)
+                return
             if custom and shutil.disk_usage(root).free < 1024**3 + 192*1024**2:
                 state.update(status='failed_preserved',error='disk guard at safe episode boundary')
                 write(root/'execution.json',state)
@@ -401,10 +451,14 @@ def main() -> None:
     parser.add_argument("--model-lock", type=Path, help="Frozen learned-model lock for a separate seen diagnostic grid")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--resume", action="store_true", help="resume a failed-preserved run at a safe boundary")
+    parser.add_argument("--condition-indices", help="comma-separated zero-based source test condition indices for a disjoint shard")
+    parser.add_argument("--model-names", help="comma-separated frozen model names for a disjoint shard")
     args = parser.parse_args()
     if args.model_lock and not args.dry_run:
         cg = Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
-        if int((cg/'memory.max').read_text()) > 3*1024**3 or int((cg/'memory.swap.max').read_text()) != 0:
+        memory_text = (cg/'memory.max').read_text().strip()
+        swap_text = (cg/'memory.swap.max').read_text().strip()
+        if memory_text == 'max' or int(memory_text) > 3*1024**3 or swap_text != '0':
             raise RuntimeError('Diagnostic grid requires <=3 GiB and zero worker swap')
         with (args.source_run.resolve().parent/'.local-rl-compute.lock').open('a') as lock:
             fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)

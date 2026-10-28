@@ -1,3 +1,12 @@
+## 2026-10-28 — 三个真实特化场景重采集纠错，旧诊断不升为主结果
+
+- [本轮交接](docs/NONRL_REAL_SPECIAL_SCENES_RECOLLECTION_20261028.md)。用户只要带挡板棍推/自由球/厚桌角的VMC示范，再公平训ESN/MLP/RNN并重评当前12条件。旧new30结果归历史；新正式数据/训练/108仍待，Goal active，不含RL。
+- 推翻v5旧行为passed：真实触发0.8/回收开始3.16秒，只碰fr3_link6，3.24秒回位已晚。旧审计错误使用0.995及retract_end并把pass等同rejoin。新增v2/v3保留原件；v3按真实碰撞几何支撑平面和逐手身体接触时间判断，不放宽5mm/80ms回位。开发15手接触后腕部持续受阻；16同14MJB软x候选2.60秒手几何越过但仍未回位。两者独立actor/filter重放0误差；仍失败诊断，非完整物理审计通过。
+- 三轨迹v1/v2、九模型、四分片测试保留为diagnostic_only。发现不平衡场景划分、不合格角轨迹、12对4候选及资源约束未真实执行。只冻结本任务四协调器，最后子回合均自然退出后终止派发；不改旧execution，不动他人作业。恢复真实cgroup<=3GiB/swap0/单仿真锁、正确physics_source、边界STOP；保留此前中断/重复回合。
+- 修正SPT为双成功条件均值（无合格NA），独立Task/Strict率与机器合规率明确输出；3项算术回归通过，相关源码编译/whitespace通过。新builder要求30不同物理身份/每场景8train+2val/同教师/回放及资格证明；拟合框架改为每家每seed12候选、神经32k，不承诺收敛。采集计划绑定、资格执行器和端到端正式运行仍待，未声称已完成公平重训。
+- 开工实际fetch/read main `eca3efd4`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；安全快进整合main，保留远端RL记录与无关未跟踪文件。仅本地计算，无子agent。
+- 修正源码/245小收据共享包已逐SHA核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_real_special_scenes_correction_20261028_snapshot01/CORRECTION_EVIDENCE.tar.gz`，601545字节，SHA256 `32992308be3a9ad89917a53858c8a084e911b3c94249899c8130b358b92e9eb4`。新大型轨迹/模型/测试仍本地保留，非完整归档；包内为发布前源码快照，不能标为干净commit。
+
 ## 2026-10-28 — 未来56–58固定统计及56启动校验准备
 
 - [最新交接](docs/RL_PARAMETER56_WINDOW_PREP_20261028.md)。56/57/58未启动时固定下一连续窗口，原53–55仍须完整保留；原5%/nearzero1/5000bootstrap/30条件与真实episode长度不变，seed2026102855，公式片段一致。新增55注册SHA作为56科学配置锚点。最终waiter788599/start36203076，14400秒，无自动训练/停训。
