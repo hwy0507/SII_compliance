@@ -1,5 +1,36 @@
 # 三真实场景采集继续与冻结108入口准备
 
+## 11:03–11:09连续观察与最终物理归档入口
+
+原服务772606/start28001859、协调器791378/start28239353八次实际进程核验保持。
+ESN seed2首回合27.04→54.04物理秒后自然结束，队列3→4/108；
+原协调器自动接续RNN seed2 worker802891/start28367544，6.04→19.04秒。
+每次MemoryMax3GiB/swap0/OOM0；该观察进程正常退出0，不是科学任务结束。
+前四条Task/Strict均失败，继续保留全体并等完整矩阵，不提前选赢家。
+完整观察证据：[OBSERVATION_1103_1109.json](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/OBSERVATION_1103_1109.json)。
+
+新增`tools/archive_special_frozen108_20261028.py`只在原接续完成108及自动后处理后使用。
+它还要求`CONTACT_DIAGNOSTICS.json`已完整生成；核对108唯一方法/条件组合、最终审计与
+报告/model lock绑定、全部物理证据hash、593源清单、每回合checkpoint及两类实际绘图hash。
+将evaluation/preparation/handoff完整三根目录的轨迹、失败、来源、配置、审计和图一并打包，
+仅排除缓存/锁；逐源文件前后hash和tar逐成员大小/hash核验。完整训练与旧教师失败使用既有独立包。
+不启动新模拟器、不自动上传或删除、不代替最终目视和Goal完成审查。
+
+未来在完整108、contact补充和目视后执行（当前禁止提前打包）：
+
+```bash
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 /home/airpig/桌面/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/archive_special_frozen108_20261028.py --handoff outputs/special_scene_frozen108_handoff_20261028_v1 --output outputs/special_scene_final_archive_20261028_v1
+```
+
+已完成AST及真实未完成handoff拒绝检查，exit1且未创建目标目录；见
+[预检收据](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/FINAL_ARCHIVE_PREFLIGHT.json)。
+实际完整108打包正向验证尚待，不能把准备包称最终物理归档。
+5文件准备包10272字节/SHA256 `142d86797b36a081014499be88e7615348aece7e95b91ecca9eb6cd599d9e582`
+已逐字节核验并上传/回读发布至
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_final_archive_prep_20261028_v1/nonrl_special_final_archive_prep_20261028_v1.tar.gz`。
+开工main06babd39/baselinef6e8f8c实际fetch/read，收尾main857f0ca4独立RL更新已读并fast-forward保留。
+本任务无RL修改或子agent，原冻结接续快照不变；Goal active，最终六指标和完整归档仍未完成。
+
 ## 实际新学习曲线与首两回合复核（10:59 UTC）
 
 原接续772606与协调器791378仍live，2/108完成，MLP seed1首条件worker796016
