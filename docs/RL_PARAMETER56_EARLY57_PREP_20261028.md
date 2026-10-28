@@ -49,3 +49,13 @@ B=`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/s
 小证据`docs/evidence/RL_PARAMETER56_EARLY57_PREP_20261028`包含诊断源码/计划/独立保存审查/图、57适配diff与身份注册、当前进度。完整前5000 JSONL及三轮critic NPY保存在共享SSD小包，仓库manifest列原路径/大小/hash；大型checkpoint/raw/replay仍共享SSD，非HDD/arm1全备份。
 
 共享SSD包`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER56_EARLY57_PREP_20261028_064033/SMALL_EVIDENCE.tar.gz`，1665799字节、28来源成员加manifest，SHA256 `f6510914b86c45e53e4d2aab49066235271431e513929e49ef4f69ed5803dce6`，全部逐成员大小/hash核验。收据`RL_PARAMETER56_EARLY57_SAVE_20261028.json`。HDD原LATEST仅更新入口。
+
+## 后续补充：57启动路径与原进程观察
+
+本次续接开工已重新查询/fetch/read main `6e7864564496e3fa9f8af9d5a882ab240710c3aa`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`和日志；上一轮完成诊断与恢复准备，属于实质进展。原56/冻结55/归档/完整loss/固定统计/57恢复等待/GPUv4身份全部核验。
+
+`B/runtime/prepare_parameter57_20261028_v1/launch_parameter57.py`与`startup57.py`已从真实通过的56版本适配。父56/新57及补零cycle_00057路径同时替换后，逆变换精确还原原源码，AST/hash检查通过；启动器要求完整56 parent review/health/loss/paired gate/实际check-only证据SHA、图审查和显式DECISION57，然后仅派发一个57及归档/实际startup审查。实际缺决定的负向调用正确拒绝，57运行目录未产生、无训练派发；不能称实际57恢复或实际57 startup已经通过。
+
+原56观察时累计约2321237/2322000/2323000步；冻结55各2/30，第三例继续。原进程观察超时不意味着结束，不重启。下一步完整56结束后读取原审查，再审查实际57恢复与是否续训；整体Goal active、Direct不追加34、GPU独立守护持续。
+
+45秒实测原56三身份保持并分别推进656/511/515步，保存VERIFIED_WAIT；无重启。新启动准备小证据`docs/evidence/RL_PARAMETER57_LAUNCH_PREP_20261028`；共享SSD包`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER57_LAUNCH_PREP_20261028_064751/PREPARATION.tar.gz`，5949字节/7来源成员加manifest，SHA256 `181093de6c7e8f5c73489c3a560850a9016810279554f9554da81fe82d0608bd`，逐成员字节核验。不是新的完整56结果，也非HDD/arm1全备份。
