@@ -47,3 +47,5 @@ V原五focus2050526/2299142/2046571/2423133/2423122保持；A原66 short0600/ind
 共享SSD小包 `B/repository/RL_PARAMETER68_EARLY_ANCHOR_20261028_193032/SMALL_EVIDENCE.tar.gz`，80成员/1776479字节，SHA256 `b0359d98f975a7ad4754e23dd8ffcc5869d433f7876a846c30c6f9c1f086c404`，逐字节/AST/tar成员核验通过，含真实提前审查/缺决定拒绝证据。[收据](RL_PARAMETER68_EARLY_ANCHOR_SAVE_20261028.json)，[清单](evidence/RL_PARAMETER68_EARLY_ANCHOR_20261028/MANIFEST.json)。大checkpoint/replay/raw仍共享SSD；HDD配额满，只原地重写已有精简LATEST，非HDD/arm1全备份。
 
 开工实际fetch/read maincfeeb4fd35153af406113e3c0cb95a06d2485f31、baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d。非RL并行更新保留，无子agent，Goal active。
+
+收尾实际fetch新增main `dc4894922cca636d23c44102e15e9e4151566be4`，另一主机非RL恢复覆盖审计/offset五训练已合格、office在途及源码归档收据的新增日志与报告已读，正常合并保留全部代码/证据，没有修改本机冻结RL运行源。

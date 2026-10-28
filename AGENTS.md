@@ -7,7 +7,7 @@
 - 全标签68 waiter1603443/start41130372/PLAN5d8de11a，69仅恢复1603442/start41130372/REG56ec0ed5。真实不完整68标签及缺DECISION69启动均拒绝且无输出/69训练，证据保留。69全loss四脚本/独立全标签68 reviewer静态准备，49–68保留追加69、paired68→69/0600不变，无69loss run/PLAN/waiter；实际完整结果待。
 - 原68–70窗口1085142/PLANe3a50567继续，不提前pass、不移动端点、不自动69/70；原65–67 I/A失败与V描述性通过、旧失败和历史通过保留，Direct34false，Goal active。
 - 139guard采样min73/68/67/69%、低于50全0/maxgap5.300599秒，19:29原五guard live、GPU79/91/93/72%。含合成保载、非瞬时保证/纯训练吞吐；科学完成也继续v5，非跨重启服务。旧v4 STOP在共享SSD、v5控制在/tmp。
-- 共享SSD小包80成员/1776479字节/SHAb0359d98逐字节/AST/tar核验，收据docs/RL_PARAMETER68_EARLY_ANCHOR_SAVE_20261028.json；HDD仅原地已有精简入口，大产物SSD，非HDD/arm1全备份。实际fetch/read maincfeeb4fd/baselinef6e8f8c，非RL保持，无子agent。
+- 共享SSD小包80成员/1776479字节/SHAb0359d98逐字节/AST/tar核验，收据docs/RL_PARAMETER68_EARLY_ANCHOR_SAVE_20261028.json；HDD仅原地已有精简入口，大产物SSD，非HDD/arm1全备份。实际fetch/read maincfeeb4fd→dc489492/baselinef6e8f8c；非RL恢复覆盖审计/offset在途新报告已读并安全合并保留，无冻结RL源改动，无子agent。
 
 ## 2026-10-28 — 完整67、原65–67窗口与准确续训68
 
