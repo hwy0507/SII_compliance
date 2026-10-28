@@ -1,0 +1,19 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity68_70_reward_stability_20261028_v1/wait_register_and_audit.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity71_73_reward_stability_20261028_v1/wait_register_and_audit.py
+@@ -1,4 +1,4 @@
+-"""Wait for the registered68-70 window; no training or automatic stop."""
++"""Wait for the registered71-73 window; no training or automatic stop."""
+ from pathlib import Path
+ import hashlib
+ import json
+@@ -16,8 +16,8 @@
+ 
+ def main():
+     plan = json.loads((root/'PLAN.json').read_text())
+-    assert plan['cycles'] == [68, 69, 70]
+-    source = root/'audit_parameter68_70_reward_stability_20261028.py'
++    assert plan['cycles'] == [71, 72, 73]
++    source = root/'audit_parameter71_73_reward_stability_20261028.py'
+     assert sha(source) == plan['source_sha256']
+     deadline = time.monotonic() + plan['wait_deadline_seconds']
+     while True:

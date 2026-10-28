@@ -5,6 +5,14 @@
 - 23:40:56UTC原用户1172675 active、10/108，第二条件RNN seed1真实推进12.04s/approach；内存596717568bytes/3GiB/swap0/OOM0，无重复或修改在途源。第十条未含在首九独立审计；原完整108继续，Goal active，未宣称teacher/学生开发通过等于主矩阵修复。
 - 开工main80efd331/baselinef6e8f8c实际fetch/read；新代码及小审计仅本机待共享，后续补核验收据。无RL/子agent/服务器计算/删除，两个无关未跟踪文件保留。
 
+## 2026-10-28 — 完整71独立审查与准确有限72
+
+- [交接](docs/RL_PARAMETER71_COMPLETE_20261028.md)。三路完整71各30×55/41250/noabort，旧70 replay/history保持、新reward重算0、网络optimizer有限；全loss/标签/health/全2124终端及实际图已审。
+- 71 reward I/A/V−2.252442/−10.109684/−2.820383，TaskStrict17/17、13/13、17/17；I丢long0000，A丢long0200/long0900/short0900，A/V short0600恢复Strict，physical-valid全30。I末段critic升且max38.577110，尚未稳定。全2124 V/A旧SSE下降93.2140%/85.4841%，但V focus2423133退化，完整保留。
+- DECISION72绑定47证据，准确71全state/replay/next65536恢复通过，有限72实际启动/startup通过，23:34:29steps 2968395/2969021/2970053。全72loss已部署，原71–73保持，无自动73，Direct34false，Goal active。
+- 本轮observer自然完成58样本，全71审查/72仅恢复就绪；不以观察超时重启科学。399guard样本min79/62/64/63%、低于50[0, 0, 0, 0]，含合成占用、科研完成也继续，非跨重启服务。
+- SSD包240成员/2860976字节/SHAc877d802逐字节/AST核验，大数据SSD非HDD/arm1全备份；开工main72d92390/baselinef6e8f8c实际fetch/read，无子agent。原窗口/阈值及历史结论保持。
+
 ## 2026-10-29 — 非RL九模型同教师历史诊断与八球覆盖准备
 
 - 科学85704713已push/核远端；同commit源码小证据1240文件/7981599bytes/SHA8d4831bd，准确报告7084bytes/SHA14af8210及九模型完整预测数组1156614bytes/SHA31b0b8b1、旧准备说明等7文件已逐暂存/最终大小hash核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_matched_history_source_20261029_v1/`。收据V8_MATCHED_HISTORY_SHARED_RECEIPT；不含在途108物理。23:29:58原1172675 active，RNN seed3实际54.04s carry、7完成，Goal active，无新probe或训练。

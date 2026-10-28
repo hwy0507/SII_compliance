@@ -1,0 +1,22 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/admittance70_terminal_anchor_followup_20261028_v1/review_anchor.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/admittance71_terminal_anchor_followup_20261028_v1/review_anchor.py
+@@ -2,12 +2,12 @@
+ import json,hashlib,math,time,os
+ os.sched_setaffinity(0,{53})
+ import numpy as np
+-p=Path(__file__).parent;prior=p.parent/'admittance69_terminal_anchor_followup_20261028_v1';r=json.loads((p/'ANCHOR_REVIEW.json').read_text())
++p=Path(__file__).parent;prior=p.parent/'admittance70_terminal_anchor_followup_20261028_v1';r=json.loads((p/'ANCHOR_REVIEW.json').read_text())
+ def sha(x):return hashlib.sha256(x.read_bytes()).hexdigest()
+-assert sha(p/'anchor69.npz')==r['anchor_sha256']
+-with np.load(p/'anchor69.npz',allow_pickle=False) as a,np.load(prior/'values.npz',allow_pickle=False) as v:
+- assert a['features'].shape==(2094,57)
++assert sha(p/'anchor70.npz')==r['anchor_sha256']
++with np.load(p/'anchor70.npz',allow_pickle=False) as a,np.load(prior/'values.npz',allow_pickle=False) as v:
++ assert a['features'].shape==(2124,57)
+  for k in ['indices','rewards','masks','q_after','denominator']:np.testing.assert_array_equal(a[k],v[k])
+- sse=math.fsum(float(a['masks'][i,j])*(float(a['q_after'][i,j])-float(a['rewards'][j]))**2 for i in range(5) for j in range(2094));assert math.isclose(sse,r['groups']['all2094']['masked_sse_after'],rel_tol=1e-12,abs_tol=1e-12)
+-(p/'ANCHOR_SAVED_REVIEW.json').write_text(json.dumps(dict(passed=True,time=time.time(),all2094_saved_arrays_exact=True,independent_scalar_sse=sse,anchor_sha256=sha(p/'anchor69.npz'),source_sha256=sha(Path(__file__)),new_network_forward=0,new_physics=0,optimizer_updates=0),indent=2)+'\n')
+-print('All2094 exact arrays/scalar SSE passed:',sse)
++ sse=math.fsum(float(a['masks'][i,j])*(float(a['q_after'][i,j])-float(a['rewards'][j]))**2 for i in range(5) for j in range(2124));assert math.isclose(sse,r['groups']['all2124']['masked_sse_after'],rel_tol=1e-12,abs_tol=1e-12)
++(p/'ANCHOR_SAVED_REVIEW.json').write_text(json.dumps(dict(passed=True,time=time.time(),all2124_saved_arrays_exact=True,independent_scalar_sse=sse,anchor_sha256=sha(p/'anchor70.npz'),source_sha256=sha(Path(__file__)),new_network_forward=0,new_physics=0,optimizer_updates=0),indent=2)+'\n')
++print('All2124 exact arrays/scalar SSE passed:',sse)

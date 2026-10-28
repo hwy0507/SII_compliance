@@ -6,6 +6,14 @@
 - 新`review_ball_coverage_probe_20261029.py`完成实际轨迹的接近/carry/return方向与搬运目标差检查，八项失败保留，不仅检查环境配置。真实旧ball00正向与反向/缺阶段/错目标/NaN/实际未启动拒绝通过；0新物理，v3绑定源保持。真实新八球review尚待，不替代三场景公平训练。
 - 23:40:56UTC原1172675/start32623702继续、10/108、condition001 RNN seed1到12.04s；用户服务active/596717568bytes/3GiB/swap0/OOM0，不重启。第十条未含在首九独立审计。先完整108审计到原根FROZEN108_AUDIT.json并确认inactive，再有效八球v3 --run及新reviewer，后据真实结果修共同数据/学习。Goal active，无RL/子agent/服务器计算。
 
+## 2026-10-28 — 完整71独立审查与准确有限72
+
+- [交接](docs/RL_PARAMETER71_COMPLETE_20261028.md)。三路完整71各30×55/41250/noabort，旧70 replay/history保持、新reward重算0、网络optimizer有限；全loss/标签/health/全2124终端及实际图已审。
+- 71 reward I/A/V−2.252442/−10.109684/−2.820383，TaskStrict17/17、13/13、17/17；I丢long0000，A丢long0200/long0900/short0900，A/V short0600恢复Strict，physical-valid全30。I末段critic升且max38.577110，尚未稳定。全2124 V/A旧SSE下降93.2140%/85.4841%，但V focus2423133退化，完整保留。
+- DECISION72绑定47证据，准确71全state/replay/next65536恢复通过，有限72实际启动/startup通过，23:34:29steps 2968395/2969021/2970053。全72loss已部署，原71–73保持，无自动73，Direct34false，Goal active。
+- 本轮observer自然完成58样本，全71审查/72仅恢复就绪；不以观察超时重启科学。399guard样本min79/62/64/63%、低于50[0, 0, 0, 0]，含合成占用、科研完成也继续，非跨重启服务。
+- SSD包240成员/2860976字节/SHAc877d802逐字节/AST核验，大数据SSD非HDD/arm1全备份；开工main72d92390/baselinef6e8f8c实际fetch/read，无子agent。原窗口/阈值及历史结论保持。
+
 ## 2026-10-29 — 非RL九模型同教师历史诊断与八球覆盖准备
 
 科学85704713已push/核远端；同commit1240源码小证据/7981599bytes/SHA8d4831bd、准确报告及九模型完整预测数组等7文件均逐暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_matched_history_source_20261029_v1/`，见V8_MATCHED_HISTORY_SHARED_RECEIPT。23:29:58原1172675 active/725708800bytes，RNN seed3推进54.04s carry，7完成；无新probe或训练。
