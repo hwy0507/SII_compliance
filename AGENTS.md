@@ -2,6 +2,8 @@
 
 ## 2026-10-29 — 非RL完整棍推10/10顺序审计通过
 
+19:53:42UTC更新：原collector/handoff同PID live，15/30合格、ball05在途、学习waiting。797f46ea及安全合并a431b2d0已push/远端核验；本轮源码小证据1158文件5201198bytes/SHA3e2acc4a及同commit报告已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v7_rod_source_20261029_v1/`。见V7_ROD_SHARED_RECEIPT；不含在途全30/学生，不重复归档为完整结果，Goal active。
+
 19:51 UTC复核：原采集13/30合格（10rod+3ball），ball03在途，原handoff waiting；已完成13条资格全部输入hash、194个接续绑定源码与完整棍组10行证据hash均一致。宿主原PID/3GiB/swap0保持，无重启/新增模拟器。当前teacher固定回归修复不等于ESN修复。
 
 - [最新交接](docs/NONRL_V7_COLLECTION_AND_STUDENTS_20261029.md)。19:46:35原collector1056282/start31377244与handoff1056692宿主systemd/ps均live，棍10/10已完整合格，ball00在途，学习waiting。沙箱ps不可见后实际宿主核验，不误判死亡/重启。

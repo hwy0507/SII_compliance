@@ -1,5 +1,13 @@
 # v7真实场景重采与公平学生评测接续
 
+19:53:42 UTC：原采集15/30合格（10rod+5ball）、ball05在途，原接续waiting，两宿主PID保持。
+科学提交797f46ea及安全合并/格式保留至a431b2d0已push并核远端；保留另一任务4c952453全部记录。
+合并后双方新增与共同历史逐字核对通过，原始diff证据未改。
+源码/小证据1158文件5201198bytes/SHA256 `3e2acc4adf0c91c4d269fa9183e1858b9c8a109d92560b51ce40c94470f096f7`
+已核验共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v7_rod_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。
+同目录另存a431b2d0版本文，SHA256 `a388ac5b2f431b98a15f43e0fefd1cd4b7c3ae4f1da56f579abfc9a9418950d5`，不含本段后补。
+[共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/V7_ROD_SHARED_RECEIPT.json)。新30原始物理仍在采集，尚未打包为全数据；Goal active。
+
 19:51 UTC状态更新：原采集13/30合格（全部10rod及ball00–02），ball03在途，学习接续继续waiting。
 独立重核已完成13条资格的全部输入hash、194个接续绑定源码以及下方完整棍组10行证据hash均一致；
 原两服务同PID active、3GiB/swap0保持。没有重复派发或修改绑定源。

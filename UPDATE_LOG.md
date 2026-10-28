@@ -1,5 +1,6 @@
 ## 2026-10-29 — 非RL棍推完整10条行为审计通过
 
+- 19:53:42UTC原服务同PID保持、15/30合格/ball05在途、接续waiting。科学797f46ea经安全整合另一任务4c952453至a431b2d0已push核验，双方新增/共同历史逐字保留。源码小证据1158文件5201198bytes/SHA3e2acc4a及同commit报告SHAa388ac5b已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v7_rod_source_20261029_v1/`；收据V7_ROD_SHARED_RECEIPT。未包含在途全30或学生结果，Goal active。
 - 19:51UTC复核原采集13/30合格（10rod+3ball）、ball03在途，原handoff waiting；全部13条资格输入hash/194个绑定源码/棍组10行证据hash一致。原两服务同PID active，3GiB/swap0；新增review AST与diff检查通过。教师固定回归修复不等于ESN/主矩阵修复，继续原流程。
 - [完整交接](docs/NONRL_V7_COLLECTION_AND_STUDENTS_20261029.md)。原collector1056282/start31377244和handoff1056692宿主真实live，19:46:35已10/30，棍00–09均合格，原服务自然进入ball00，学习waiting。沙箱ps不可见后用宿主systemd/ps核实，无重复/重启。
 - 新`review_complete_rod_collection_block_20261029.py`核全部10条资格输入/几何审计/source、真实teacher/seed/参数与登记一致，独立复算接触首时刻和撤棍时刻，明确接触≤让位≤蹭过≤回位开始≤确认<撤棍及原.08秒保持。全8train+2validation通过，余量2.56–5.17秒；未齐10时实际拒绝且无输出，完整后审查all10_passed。证据`V7_COMPLETE_ROD_BLOCK_REVIEW.json`保留全10行。
