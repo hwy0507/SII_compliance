@@ -1,7 +1,44 @@
 # 非RL教师速度换算诊断与完整闭环对照
 
 本轮沿用三真实特化场景、相同训练身份及原门槛，检查教师动作读出，而不是调整ESN以掩盖教师失败。
-目前没有新的合格30条数据、学生训练或108主矩阵结果；旧失败全部保留。
+目前教师六项有限修复对照已全部通过，新30正在采集；尚无全30资格、学生训练或108主矩阵结果，旧失败全部保留。
+
+## 19:30 UTC：教师完整六项通过，新30与公平学习接续
+
+19:32:35UTC实测：新30已完成rod00/01两条且均合格，rod02在途；原学习接续仍waiting，
+全部登记源/hash保持。先前只读验证传相对路径被路径守卫拒绝，改用同一绝对计划路径验证通过，
+实际采集/接续一直使用绝对路径，未重启或改计划。此进度不代表全30通过。
+
+完整六项733文件/604119040bytes已逐成员、共享暂存与最终大小/hash核验，位置：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_clearance_offset_controls_20261029_v1/FULL_PROBE.tar`，
+SHA256 `d867a059a6140d2c1ea1192cf828433a3f34b7d20e8501b9baead8604d191540`。
+[共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/CLEARANCE_OFFSET_SHARED_RECEIPT.json)。含完整原始物理/源码/审查，
+不含在途新30或学生结果；没有删除本地或任何旧失败。
+
+offset六项19:25:46.917UTC自然结束，五train原资格全过，office000完整55秒Task/Strict true、
+末阶段retreat，actor/filter重放0。[完整审查](evidence/NONRL_INTENT_RECOVERY_20261029/CLEARANCE_OFFSET_COMPLETE_REVIEW.json)、
+[office审计](evidence/NONRL_INTENT_RECOVERY_20261029/CLEARANCE_OFFSET_OFFICE_AUDIT.json)。此前carry卡角在该固定回归解除；
+是开发教师控制修复，不是未见测试或ESN成功。末250恢复记忆.006767，父版.805656；不是只抬高不回归。
+RMSE30.395839mm、峰矩45.874306Nm、峰末端速度.354350m/s、外穿透.142253mm，原gate未改。
+三ball末窗最大速度.000605141/.010131934/.006807466m/s，均过原.02门；ball00/04相对父版退化仍保留。
+棍推轨迹与父版相同，持续回位8.88秒早于12.80撤棍。有限六项通过不保证全30或学生闭环。
+
+新`recollect_clearance_offset_teacher_20261029.py`复审全六项/源/config后保持原30三场景/seed/条件，
+各8train+2validation，只改teacher/output。首次把原`validation`误写为`val`的检查器在建目录前拒绝，
+按原协议修正后通过，未改划分或启动错误采集。[采集计划](evidence/NONRL_INTENT_RECOVERY_20261029/V7_COLLECTION_PLAN.json)。
+root`outputs/special_scene_vmc_collection_20261029_v7`，PLAN SHA256
+`8e2fc770bb66eec9bf641d43591394f31456009321a463b141bcfb41883e2013`。
+唯一`sii-special-collection-v7-20261029.service` parent1056282/start31377244，19:28:34.977UTC启动，
+原offset已inactive；单模拟器/线程1/CPU100%/MemoryMax3221225472/swap0核验。没有综合场景采集。
+
+有限接续`sii-special-learning-handoff-v7-20261029.service` parent1056692、19:29:20UTC启动，
+root`outputs/special_scene_learning_handoff_20261029_v7`、REG SHA256
+`c796f6630ee67ad6a99deac034d9abda667bf225e031b83eed273243a149f087`，绑定实际collector PID/start。
+[登记](evidence/NONRL_INTENT_RECOVERY_20261029/V7_LEARNING_HANDOFF_REGISTRATION.json)。全30独立资格通过才构建
+`outputs/special_scene_retrain_20261029_v7`并共同24+6/三seed/每家每seed12候选公平ESN解析ridge/普通RNN/MLP。
+任何失败/源漂移保留并阻止拟合，不重启采集、不自动测试。19:29:50实际waiting/采集rod00。
+全数据覆盖、9模型锁定/导出重放、真实场景学生闭环、当前12×9六指标仍待。office不拟合，当前12非unseen；
+Goal active，主矩阵未修复，无RL/子agent/服务器计算。完整物理包上传核验另记。
 
 ## 19:14 UTC：低速释放对照完整失败，定位剩余间隙并登记有限修复
 

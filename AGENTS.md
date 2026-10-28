@@ -1,5 +1,16 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL教师六项修复通过，新30及公平学习接续
+
+19:32:35UTC新30进度2/30（rod00/01合格），rod02在途，原学习接续waiting；全部登记源hash保持，勿重复派发。
+
+完整offset六项733文件/604119040bytes/SHA d867a059已逐成员及共享暂存/最终核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_clearance_offset_controls_20261029_v1/FULL_PROBE.tar`；包含原始物理/源/审查，不含在途新30/学生，旧失败全保留。下文待共享快照已过时。
+
+- [最新非RL交接](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。offset六项19:25:46自然结束，五train合格、office55秒TaskStrict true/retreat、actorfilter0，峰矩45.874306Nm/外穿透.142253mm。该固定回归carry失败已修复，ball00/04末速较父差仍合格且保留；不是ESN或主矩阵成功。
+- 唯一采集`sii-special-collection-v7-20261029.service` parent1056282/start31377244，19:28:34UTC，root`outputs/special_scene_vmc_collection_20261029_v7`、PLAN8e2fc770。原30真实三场景/seed/24train6validation/gates保持，仅teacher/output变化；原offset已inactive，3GiB/swap0/CPU100%/线程1，禁止重复或热改绑定源。
+- 接续`sii-special-learning-handoff-v7-20261029.service` parent1056692，root`outputs/special_scene_learning_handoff_20261029_v7`、REGc796f663，绑定真实采集PID/start。全30独立资格通过才构建`outputs/special_scene_retrain_20261029_v7`并三seed各12候选ESN/rnn/mlp；19:29:50仍waiting/rod00，失败保留且阻止拟合，不自动测试。全数据覆盖、9模型及学生闭环、108仍待，Goal active。
+- 新recollect初次`val`误拼在建目录前拒绝，按原`validation`修正，未改划分。全六项/office收据与计划已保存；完整物理包共享待最终核验。4bf5fe4c/812b59c5及合并dc489492已push，保留cfeeb4fd独立RL更新。无RL/子agent/服务器计算，当前12为回归/office不拟合。
+
 ## 2026-10-28 — 完整67、原65–67窗口与准确续训68
 
 - [最新交接](docs/RL_PARAMETER67_COMPLETE_20261028.md)。完整67三路自然结束，各30×55秒/41250新增/noabort，全66 replay/history保持，新reward复算0、网络/优化器有限。I/A/V reward−2.223995/−10.229907/−2.845608，Task/Strict17/17、13/13、17/17。全loss独立复算及真实loss/health图已审，I末段critic尖峰、三actor上移，尚未整体收敛。

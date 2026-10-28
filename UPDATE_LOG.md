@@ -1,3 +1,12 @@
+## 2026-10-29 — 非RL教师固定回归修复通过，新30与公平学习接续
+
+- 19:32:35UTC新30已2/30（rod00/01合格），rod02在途，原接续waiting；源/hash保持。只读验证先误传相对计划路径被守卫拒绝，按实际绝对路径重验通过，无采集/接续重启或协议更改。
+- 完整offset六项733文件/604119040bytes/SHA256 `d867a059a6140d2c1ea1192cf828433a3f34b7d20e8501b9baead8604d191540`已逐成员及共享暂存/最终hash核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_clearance_offset_controls_20261029_v1/FULL_PROBE.tar`。含原始物理/源/审查，不含在途新30/学生，旧失败全保留，无删除；覆盖下文上传中快照。
+- [完整报告](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。offset19:25:46完整六项全过：五train合格、office55秒TaskStrict true/retreat、actorfilter0，峰矩45.874306Nm/峰速.354350m/s/外穿透.142253mm。此前carry卡角在该固定回归解除，未改gate。棍8.88秒持续回位早于12.80撤棍；ball00/04相对父版末速退化仍合格且保留，不称全面更优/ESN成功。
+- 新recollect复核全六项并逐字段保留原30真实场景/seed/24train6validation/gates，只改teacher/output。首次`val`误拼检查在建目录前拒绝，按原`validation`修正，无划分/错误采集。唯一`sii-special-collection-v7-20261029.service` parent1056282/start31377244，19:28:34UTC、root`outputs/special_scene_vmc_collection_20261029_v7`、PLAN8e2fc770；原offset已inactive，3GiB/swap0/CPU100%/线程1。
+- 接续`sii-special-learning-handoff-v7-20261029.service` parent1056692/19:29:20，root`outputs/special_scene_learning_handoff_20261029_v7`、REGc796f663，绑定实际collector。全30独立资格通过才构建`outputs/special_scene_retrain_20261029_v7`并共同24+6/三seed/每家12候选ESN解析ridge/普通RNN/MLP；失败保留/阻止拟合、不自动测试。19:29:50仍waiting/rod00，后续需覆盖审查、锁模/导出、学生闭环及108六指标，Goal active。
+- 全六项/office审计及计划/接续证据已保存，完整604119040bytes/733文件/SHA d867a059包本机逐成员核验，正传独立暂存，最终核验前不称共享。开工mainc4b34cda/baselinef6e8f8c，收尾cfeeb4fd独立RL报告已读/合并保留，4bf5fe4c/812b59c5及dc489492已push核验。重读AGENTS，无RL/子agent/服务器计算，office不拟合/当前12非unseen；主矩阵未修复。
+
 ## 2026-10-28 — 完整67、原65–67窗口与准确续训68
 
 - [最新交接](docs/RL_PARAMETER67_COMPLETE_20261028.md)。完整67三路自然结束，各30×55秒/41250新增/noabort，全66 replay/history保持，新reward复算0、网络/优化器有限。I/A/V reward−2.223995/−10.229907/−2.845608，Task/Strict17/17、13/13、17/17。全loss独立复算及真实loss/health图已审，I末段critic尖峰、三actor上移，尚未整体收敛。
