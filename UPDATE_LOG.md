@@ -2,6 +2,7 @@
 
 - 16:35 UTC最终覆盖：release005六项已全结束，四train合格、ball04尾速.045488679超原.02而失败，office仍carry双失败。无在途模拟器、无v7/新拟合，Goal active；下文在途为历史快照。接下来应检查恢复自激活/近目标指令依赖与覆盖，不继续只缩release时间，不重启已完成队列，不把失败矩阵发布为主结果。
 - 最后release005完整132文件/607457280bytes/SHA1694801f亦逐成员及远端最终核验，共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_release005_controls_20261029_v1/FULL_PROBE.tar`。已读main0ae40daf的独立RL65更新，baseline仍f6e8f8c，无协议变化。
+- 科学提交95c485d0/81ea34d3与合并17153412已push；两处顶部冲突按双方完整新增及共同历史逐字保留验证。commit17153412的benchmark scripts/tools和交接小证据共1140文件/3700171bytes/SHAb1d5c7df，逐内容及远端最终核验共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_teacher_repair_handoff_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。原tar metadata比较因Git归档UID/GID/mtime不同，后逐内容核验通过，非数据改写。此包不含本条后续收据或完整物理；Goal仍active，全部诊断已自然结束，新teacher机制和主矩阵仍待。
 
 - v6完整30：棍推10/10、桌角10/10、球撞6/10合格；ball01/04训练与08/09验证末段速度.0286–.0374m/s超原.02，安全/接触审计通过。全4失败保留，handoff-v3真实拒绝，未训练学生。新增18闭环和修复108入口可校验正确handoff服务/模型/输入hash，实际不完整拟合拒绝；原绑定v6的静态准备不能继续使用。
 - 四tail对照完整并逐hash审查：.5/不平均使两训练ball合格，但office000仍carry失败；1/平均office双通过。十midpoint训练对照随后完整：.75/不平均4/5，ball04 .020248537失败；.75/平均5/5，ball00/01/04末段速度.006086735/.001318248/.013152809。按预登记训练规则选择后者，随后单office完整55秒仍Task/Strict false、actor/filter replay0；未重采/拟合，不把训练通过当矩阵修复。
