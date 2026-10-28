@@ -1,9 +1,10 @@
 # 非RL teacher恢复项修复：独立版本与有限物理验证
 
 **最新状态已转到[速度换算完整诊断与接续](NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。**
-下文在途均为历史：intent030六项已结束（ball01/office失败）；速度换算六项也已结束
-（五训练合格、office失败），完整失败均已归档。唯一新队列是full_velocity六项有限对照，
-parent1007482、17:56:42 UTC启动；尚未新30/拟合/108，Goal active。
+下文在途均为历史：intent030、速度换算和full_velocity六项均已结束，office仍失败。
+最新边角审计证明五个扰动通道为零不代表没有unexpected_edge接触。唯一新队列是legacy_units
+六项有限对照，parent1016229、18:12:54 UTC启动；原v6恢复机制加教师归一化修正。
+尚未新30/拟合/108，完整归档状态见最新报告，Goal active。
 
 当前状态：整项混合版及仅平衡点版各六条对照均完整结束并审查，**尚未整体修复**。
 目前唯一活动队列是原平衡点机制的单字段`intent_velocity_mps .015→.03`六项对照。

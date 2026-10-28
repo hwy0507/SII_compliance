@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL读出恢复仍失败，持续边角接触与原机制对照
+
+- 最新[交接](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。full_velocity六项于18:09:11 UTC完整结束：五训练合格，office55秒仍carry/TaskStrict false、actor/filter回放0；不是权重恢复就修复。边角审计核验历史成功+四失败的共同MJB/evaluator/task：五扰动通道不含unexpected_edge，不能由五列0推断无接触。历史47.2397s结束边角接触/49.16s进入load_transfer，四失败均接触到末尾。
+- 唯一新队列`sii-special-teacher-legacy-units-v1-20261029.service`，parent1016229，18:12:54 UTC开始，`outputs/special_teacher_legacy_units_20261029_v1`登记bf56be86。相对原v6仅修正教师动作归一化分母；保留原velocity1/平均/恢复机制/默认intent.015。相对直接前驱是撤回平衡点机制和.03，不能写单参数。400步独立算术/同历史状态及1375帧根/冻结副本一致通过。
+- 原五train+office000、3GiB/CPU100%/线程1/swap0；旧服务自然结束，无重复模拟器。绑定源勿改。完成后用新`review_legacy_units_controls_20261029.py`审root，全六项通过才新30/资格/共同24+6三seed公平学习/真实场景学生闭环/108回归六指标。原intent reviewer保持，旧v6绑定18/108禁用，office不拟合/当前12非unseen。Goal active，未主矩阵修复。
+- 已核验共享d1936511源码/选定证据1096文件/3048351字节/SHAfb556e5c，路径`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_velocity_units_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。不含新edge/legacy代码或在途物理，full_velocity完整物理归档另记；无删除。开工实际fetch/read maind1936511/baselinef6e8f8c，无RL/子agent/服务器计算。
+
 ## 2026-10-29 — 非RL速度换算完整对照，五训练合格但综合未修复
 
 - 最新[交接](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。intent030原六项已全结束，ball01尾速.025616929超.02、office双失败。九训练轨迹精确回放发现基础读出换算增益2/2/1.6；不单凭不同分母断言实现bug。只对齐教师归一化分母的新六项已完整：五训练全合格，ball01尾速降至.000245490，office55秒仍carry/TaskStrict false，无新30/拟合/108。

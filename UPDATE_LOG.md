@@ -1,3 +1,13 @@
+## 2026-10-29 — 非RL读出恢复完整失败，定位边角接触并恢复原teacher机制对照
+
+- full_velocity完整六项732文件/610129920字节已逐成员及远端暂存/最终hash核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_full_velocity_controls_20261029_v1/FULL_PROBE.tar`，SHA256 d4d4381469b3d43f1727b4c8158ca554d4750cad138eadaea98ab77eaac7b66c；包含所有失败与原始物理，不含新在途legacy，未删除本地。收尾远端2f0e14e1独立RL66完成/67启动已读，按双方内容保留整合。
+- [交接](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。full_velocity六项完整结束：五train合格，ball00/01/04尾速.000081655/.000106471/.000043462，office55秒仍carry双失败；x误差5.218761mm/z−11.856263mm、记忆.735522、actor/filter回放0，无新30/拟合/108。
+- 新边角接触审计核验历史成功+四失败同MJB/实际归档evaluator/task：prior_contact_peak五列不含unexpected_edge，零值不代表无边角接触。历史47.2397s结束该接触、49.16s转load_transfer；失败四版均有边角接触到末尾。速度换算版累计32.1872s/峰28.580736N/冲量90.404888Ns；只定位持续交互，未证明单项因果或独立动力学，无接触真值入actor/拟合。
+- 新原v6恢复机制+教师匹配归一化六项已登记启动：service`sii-special-teacher-legacy-units-v1-20261029.service`，parent1016229，18:12:54 UTC，登记bf56be86。相对原v6只改归一化分母；相对前驱同时撤回intent平衡点和.03阈值，保留原1/平均/恢复/default.015。400步实现算术0、同历史状态/记忆保持、1375帧根/冻结副本字节一致。原五train+已看office000、3GiB/CPU100%/线程1/swap0；全六项审查通过才新30。
+- 另建legacy driver与reviewer，原intent源/审查器不改。原失败全部保留，无RL/子agent/服务器计算，验证不调参、office不训练、当前12非unseen。Goal active，主矩阵未修复。
+- d1936511提交的源码与选定证据1096文件已逐Git blob/大小/模式及共享暂存/最终hash核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_velocity_units_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`，3048351字节/SHAfb556e5c，完整hash见收据；非全仓库/物理/模型备份，不含本轮稍后edge/legacy文件。full_velocity完整物理归档另记，无删除。
+- 开工实际fetch/read maind1936511/baselinef6e8f8c，收工重新读AGENTS并保留独立RL更新；新队列在途源不得编辑或重复启动。
+
 ## 2026-10-29 — 非RL教师速度换算对照完成，五训练通过但综合仍失败
 
 - [完整报告](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。intent030六项完整：ball01尾速.025616929m/s超原.02，office完整55秒双失败。九条实际训练轨迹actor回放0，发现教师内部归一化相对公共尺度产生2/2/1.6分量增益；仅此不能断言单位bug，未改公共filter/物理/执行器。

@@ -3,7 +3,55 @@
 本轮沿用三真实特化场景、相同训练身份及原门槛，检查教师动作读出，而不是调整ESN以掩盖教师失败。
 目前没有新的合格30条数据、学生训练或108主矩阵结果；旧失败全部保留。
 
-## 最新完整结果与唯一接续（覆盖下文在途快照）
+## 18:14 UTC：读出恢复完整失败，定位持续边角接触
+
+`full_velocity`原六项于18:09:11 UTC完整结束：五训练条件均合格，ball00/01/04末段速度
+为0.000081655、0.000106471、0.000043462m/s；office000完整55秒仍carry，Task/Strict均false。
+末250帧平均x误差5.218761mm、z误差−11.856263mm、恢复记忆0.735522，actor/filter回放0。
+[完整六项审查](evidence/NONRL_INTENT_RECOVERY_20261029/FULL_VELOCITY_COMPLETE_REVIEW.json)。
+恢复velocity_weight为1没有解决综合任务，禁止直接用此教师重采或拟合。
+
+该完整六项732文件/610129920字节已逐成员及共享暂存/最终hash核验，保存于
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_full_velocity_controls_20261029_v1/FULL_PROBE.tar`，
+SHA256 `d4d4381469b3d43f1727b4c8158ca554d4750cad138eadaea98ab77eaac7b66c`。
+[完整共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/FULL_VELOCITY_SHARED_RECEIPT.json)，无删除。
+
+本轮新增了[边角接触范围审计](evidence/NONRL_INTENT_RECOVERY_20261029/EDGE_PERSISTENCE_REVIEW.json)，
+核对历史成功与四个失败版本的相同MJB、实际归档evaluator/task源码、完整轨迹及原Task/Strict。
+`prior_contact_peak`的五个通道仅是ball/person_hand/rod/cup/pillar，不含另记的unexpected_edge。
+因此末250帧这五列为零，不能推断无边角接触或教师凭空抬升。
+
+历史成功教师的边角接触最后时刻47.239700s，49.16s进入load_transfer、49.80s release、53.04s retreat；
+而四个失败版本均有边角接触记录持续到回合末尾。以速度换算组为例，边角接触累计32.187200s、
+峰值28.580736N、冲量90.404888Ns。这将问题定位到实际脱离边角的过程，不能只按末段误差
+继续减小恢复偏置。事件摘要不证明整个时段连续接触，不是独立动力学积分，也不证明单一控制项因果。
+接触真值仅用于离线审计，未加进actor或拟合标签。
+
+新有限对照采用原v6教师：velocity_weight=1、平均输入、原恢复机制和原默认intent阈值.015。
+**相对原v6只增加教师归一化分母[.32,.32,.32,.6,.6,.6]**；相对直接前驱则同时撤回intent平衡点
+机制及.03释放阈值，明确不是相对前驱的单参数试验。v6原教师曾通过office，但完整30中有四ball失败；
+本次检验已观察到的归一化改善能否在保留原恢复机制时兼顾两者，未更改物理/场景/gate/filter。
+400步同历史状态/恢复记忆及独立动作算术通过；1375帧根源码与冻结副本actor输出字节hash均为
+`2e4a19a3d1c3915c6522c61884fd91c72fce276215a0dce026d0ad44e46799a8`。
+
+唯一新队列`sii-special-teacher-legacy-units-v1-20261029.service`，parent1016229，18:12:54 UTC开始，
+`outputs/special_teacher_legacy_units_20261029_v1`，登记SHA256
+`bf56be8626c04de939d8a7a4a1bbf8025fa98bc9593135b323926c1155a2c464`。
+仍为原五train+office000，实际单模拟器/单线程/CPU100%/3GiB/swap0。
+源副本原文件保持，仅增加完整记录wrapper来源的legacy driver；原intent reviewer保留，另建
+`review_legacy_units_controls_20261029.py`，完成后须用它审查此root，全六项通过才登记新30。
+[新登记](evidence/NONRL_INTENT_RECOVERY_20261029/LEGACY_UNITS_REGISTRATION.json)，
+[算术检查](evidence/NONRL_INTENT_RECOVERY_20261029/LEGACY_UNITS_ACTOR_CHECKS.json)。
+当前未新采30/拟合/108，Goal active；在途结果仅本机，不能称主矩阵修复。
+
+已发布源码d19365115e57f3a14941b5fba338ed657d94ea78的benchmark scripts/tools及选定小证据1096文件
+已逐Git blob/大小/可执行位核验，共3048351字节，SHA256
+`fb556e5cf498de657eb64e88aa061aa260dfeba072514d762d88e46c7b7b3577`，共享到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_velocity_units_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。
+[收据](evidence/NONRL_INTENT_RECOVERY_20261029/VELOCITY_SOURCE_SHARED_RECEIPT.json)；不是全仓库/物理/模型备份，
+不含本节稍后新增的边角审计与legacy准备。full_velocity完整物理归档状态另记，未删除本地。
+
+## 前一轮：速度换算完整结果与读出恢复接续（在途描述已过时）
 
 速度换算组已于17:52:51 UTC完整结束，五训练条件全合格，office000完整55秒仍carry、
 Task/Strict均false；因此不允许使用本候选重采新30或拟合。
