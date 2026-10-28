@@ -3,6 +3,86 @@
 本轮沿用三真实特化场景、相同训练身份及原门槛，检查教师动作读出，而不是调整ESN以掩盖教师失败。
 目前没有新的合格30条数据、学生训练或108主矩阵结果；旧失败全部保留。
 
+## 19:14 UTC：低速释放对照完整失败，定位剩余间隙并登记有限修复
+
+低速释放六项19:06:23 UTC自然结束：五训练身份均合格，但office000完整55秒仍carry，
+Task/Strict均false，actor/filter回放误差0。没有新30、学生拟合或修复后的108主矩阵。
+棍推实际接触4.73275、让位4.84、蹭过7.80、持续回位8.88秒，均早于12.80秒撤棍。
+ball00/01/04原末窗口速度最大值为.000233848/.016335146/.000322834m/s；ball01相对
+直接阻尼父版.012583474有退化，仍过原.02门。不能把末窗口通过称全尾段稳定。
+[完整六项](evidence/NONRL_INTENT_RECOVERY_20261029/SLOW_INTENT_COMPLETE_REVIEW.json)、
+[原v6三球配对](evidence/NONRL_INTENT_RECOVERY_20261029/SLOW_INTENT_TRAIN_COMPARISON.json)、
+[实际曲线，已目视检查](evidence/NONRL_INTENT_RECOVERY_20261029/slow_intent_ball_speed.png)。
+
+新增保存几何审计保留原三组，并加入本候选；四组相同MJB、各1375帧actor精确回放，0物理积分。
+候选45秒后carry的底面间隙为−4.211至−1.936mm，重建接触帧98.01%，投影重叠时正间隙0帧。
+相较阻尼父版−13.683至−8.142mm确有改善，但仍卡在边角。最后250帧恢复激活.798860，
+指令沿路径9.549mm/s、实际.951mm/s，名义z指令−.050655m/s与滤后z让位+.048978m/s近乎抵消。
+实际子步事件记录边角接触到55秒；不是无接触悬停，也未证明单一因果。
+[四组完整审计](evidence/NONRL_INTENT_RECOVERY_20261029/SLOW_INTENT_CLEARANCE_REVIEW.json)、
+[保存数组](evidence/NONRL_INTENT_RECOVERY_20261029/slow_intent_geometry_and_control.npz)。
+步末几何与步前控制分开解释；该审计不等于独立动力学或力回放，不把几何真值加入actor。
+
+唯一后继只把现有恢复平衡点offset从.026568199770793496加到.034568199770793496m，
+保留全部阻尼/恢复状态更新/.003意图尺度/速度上限/原v6平均读出。8mm增量是在剩余2–4mm
+间隙不足与约.8激活下登记的有限控制假设，不是实际位移预测或闭环稳定证明。它不改变环境、
+场景、gate、canonical48、公共filter、执行器或dt，也没有新增阶段/几何/时钟输入。
+原1375观测重放误差0，独立增量公式最大差1.110223e−16；虚拟状态、恢复记忆和非z动作完全相同。
+理论目标速度增量上限.021443379m/s，仍受原.156775659m/s恢复速度限幅；实际结果待完整回合。
+[算术核验](evidence/NONRL_INTENT_RECOVERY_20261029/CLEARANCE_OFFSET_ACTOR_CHECKS.json)。
+
+唯一服务`sii-special-teacher-clearance-offset-v1-20261029.service` parent1048018，
+19:13:44.789 UTC启动，root`outputs/special_teacher_clearance_offset_20261029_v1`，登记SHA256
+`7358b2584a09b885feb9e6c0f9ea4b9a693fd9da05f357431c1b0231cf5a1b12`。
+实际MemoryMax3221225472/swap0/CPUQuota100%/线程1核验，仍原五训练身份+office000，
+绑定源码禁止热改或重复启动。[登记](evidence/NONRL_INTENT_RECOVERY_20261029/CLEARANCE_OFFSET_REGISTRATION.json)。
+结束运行`teacher_clearance_offset_control_20261029.py --root ... --review`审全六项；
+只有全部通过才另登记原30重采，此脚本不会自动采集/训练。旧slow_intent recollect不适用于新配置。
+Goal active，office是已检查开发回归、动作不入拟合；当前12不能叫unseen。无RL/子agent/服务器计算。
+
+本段实际fetch/read main `c4b34cdaefed35d91c494ddb98a59846ee7cbebc`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，独立RL更新已fast-forward保留。
+
+slow_intent完整733文件/601774080bytes已逐成员及共享暂存/最终SHA核验到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_slow_intent_controls_20261029_v1/FULL_PROBE.tar`，
+SHA256 `ad041fa7822d7ba4cb2ebd6741cec8dcaa143b9d04f82b2c06a69c999b65fd1a`。
+[共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/SLOW_INTENT_SHARED_RECEIPT.json)。含完整失败与运行源，
+不含后出的配对图/几何目录，也不含在途offset控制；没有删除。后继rod00已完整合格，
+轨迹hash与父版一致，ball00在途。仍不能据第一项通过推断全六项结果。
+
+## 18:58 UTC：分离低速指令释放与实际前进衰减（在途描述已过时）
+
+本轮实际fetch/read main `e58baf9d34c6d47a262139991067788b0bb4e6ea`、baseline
+`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，确认旧阻尼服务inactive且无在途模拟器后推进。
+上一轮完整对照与几何证据改变了下一动作，属于progress；不是仅等待或复述状态。
+
+原progress恢复记忆有两个衰减项：实际正向速度/原旅行尺度，以及
+`(1-intent)/release_s`；其中intent是正向指令速度除以0.015m/s、裁剪后乘水平路径权重。
+在阻尼失败轨迹最后250帧，平均指令沿路径速度6.849mm/s、实际仅0.940mm/s；
+平均按旅行的衰减0.061701/s、按intent的释放0.456799/s。91.2%的帧后者大于前者，
+因此仍在缓慢推进的指令也会持续释放恢复记忆。并非整数/单位错误，是需要验证的控制设计耦合。
+
+原1375帧actor精确回放0，独立指数状态更新复算通过（绝对容差1e−14）。新候选**只将**
+现有`recovery.intent_velocity_mps`从默认0.015改为0.003m/s，保留此前平移阻尼加倍、
+原恢复读出/offset/上限/攻击/释放/旅行尺度，连证据项的0.015速度归一化也不改。
+该正阈值低于已经观察到的几毫米每秒的受阻指令，是明确披露的开发调参；不称未见测试选择。
+无新增接触/几何/阶段/时钟输入，无新手工恢复分支，物理/filter/gate/执行器/dt均不变。
+
+同一旧观测序列上，候选平均记忆0.871521而原为0.304315；这是离线反事实动作重放，
+不是新物理轨迹或改善预测。虚拟动力学状态、非竖直动作逐值保持；零指令及大于原阈值指令
+共500步的完整动作/记忆逐值一致，保留静止时释放。原资格和全部失败保持。
+[分解与检查](evidence/NONRL_INTENT_RECOVERY_20261029/SLOW_INTENT_ACTOR_CHECKS.json)。
+
+唯一有限队列`sii-special-teacher-slow-intent-v1-20261029.service` parent1038263，
+18:53:53.866 UTC启动，`outputs/special_teacher_slow_intent_20261029_v1`登记SHA256
+`b2798e4466dceb93749f2ad8cb8b0ea996beaca58bb3e4a62eff30306b450b24`。
+CPU100%/3GiB/swap0/单线程，原五train+已看office000，18:57棍推/ball00合格、ball01在途。
+[登记](evidence/NONRL_INTENT_RECOVERY_20261029/SLOW_INTENT_REGISTRATION.json)。不得热改绑定源/重复启动。
+完成用`review_teacher_slow_intent_20261029.py`审全部六项；在途调用已实际拒绝且无REVIEW。
+只有全六项通过才能用其`--collection-output`登记原30条件/seed/24+6新采集，旧damping/legacy
+recollect的版本声明不能替代。全30资格后公平三seed各12候选训练、真实场景学生闭环、108六指标仍待。
+Goal active，office仅回归不拟合，当前12不能叫unseen；无RL/子agent/服务器计算/删除。
+
 ## 18:48 UTC：阻尼完整六项未修复，越障间隙与恢复触发的直接证据
 
 阻尼六项于18:42:51.746 UTC自然结束，服务inactive、无在途模拟器。五train全部资格合格，
