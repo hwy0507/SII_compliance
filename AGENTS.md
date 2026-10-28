@@ -7,6 +7,16 @@
 - 原五train+office000、3GiB/CPU100%/线程1/swap0；旧服务自然结束，无重复模拟器。绑定源勿改。完成后用新`review_legacy_units_controls_20261029.py`审root，全六项通过才新30/资格/共同24+6三seed公平学习/真实场景学生闭环/108回归六指标。原intent reviewer保持，旧v6绑定18/108禁用，office不拟合/当前12非unseen。Goal active，未主矩阵修复。
 - 已核验共享d1936511源码/选定证据1096文件/3048351字节/SHAfb556e5c，路径`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_velocity_units_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。不含新edge/legacy代码或在途物理，full_velocity完整物理归档另记；无删除。开工实际fetch/read maind1936511/baselinef6e8f8c，无RL/子agent/服务器计算。
 
+## 2026-10-28 — 完整66评审、固定终端改善与准确续训67
+
+- [最新交接](docs/RL_PARAMETER66_COMPLETE_20261028.md)。完整66三路自然结束，各30×55秒/41250新增/noabort，全65 replay/history/optimizer保持、新reward复算0、网络/优化器有限。I/A/V reward−2.375254/−10.217502/−2.803236，Task/Strict18/17、14/13、17/17。全loss独立复算及真实loss/health图通过；A末段critic密集有限尖峰且A/V actor上移，尚未整体收敛。
+- 全180标签/90reward对独立复核：I long0000恢复；A long0200/0500恢复、short0200/0900失Task/Strict，short0600穿透.195247→.230422mm失Strict；V标签不变，无Task-only遗漏。原门/失败保留；65–67窗口仍待完整67，原62–64/59–61失败及历史通过保持。
+- 固定全1974 V终端SSE6761.694451→4299.918495（−36.4077%），旧贡献.227989/新30 .0007195/全2004 .228709；原五focus三改善两退化，2050526/2046571仍退化。固定原65排名全1974保存独立向量复核通过、1435改善/539退化，top2的2250.259572→1.451758及849.536296→12.126328改善不替代全体/原五focus。实际图/完整数组/标量复算通过，无新停止门或因果声称。
+- 准确66全state/replay/下一65536恢复exit0，DECISION67绑定29项证据后18:06:18启动有限67：I3260038/A3260039 start40649438，V3260040/archive3260041 start40649439。实际startup1000/1000/2000通过，所有旧2759148/2759750/2760750行/30sampler/MJB保持、新reward0。18:11steps2762737/2763457/2764475，无完整/失败；原配置不变，不自动68，Direct34false，Goal active。
+- 全67loss3264983/start40650657/PLAN553234b7，完整49–66保留追加67、paired66→67；原65–67窗口3549846/start39897958/PLAN517dbefb继续，完整结果待。67全标签/终端后续和68仅恢复尚未准备。
+- 原66连续41样本覆盖到三路自然结束，observer1200秒正常退出，235guard样本min76/67/67/69%、低于50全0；审查切换另122样本min74/67/68/67%、低于50全0。18:11原五guard身份live、GPU80/96/95/93%。含合成保载、非每瞬时保证/纯科学吞吐，科学完成也继续guard。
+- SSD小证据175成员/1891438字节/SHA0e7cef4d逐字节/AST/归档核验，收据docs/RL_PARAMETER66_COMPLETE_SAVE_20261028.json；HDD仅重写已有入口、大产物SSD，非HDD/arm1全备份。实际fetch/read main482ff64f→d1936511/baselinef6e8f8c，另一主机非RL速度换算完整失败/full_velocity在途报告已读并fast-forward保留，无冻结RL协议变化，无子agent。
+
 ## 2026-10-29 — 非RL速度换算完整对照，五训练合格但综合未修复
 
 - 最新[交接](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。intent030原六项已全结束，ball01尾速.025616929超.02、office双失败。九训练轨迹精确回放发现基础读出换算增益2/2/1.6；不单凭不同分母断言实现bug。只对齐教师归一化分母的新六项已完整：五训练全合格，ball01尾速降至.000245490，office55秒仍carry/TaskStrict false，无新30/拟合/108。
