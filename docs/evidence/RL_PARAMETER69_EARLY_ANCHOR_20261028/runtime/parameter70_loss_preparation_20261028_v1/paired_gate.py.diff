@@ -1,0 +1,20 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter69_loss_preparation_20261028_v1/paired_gate.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter70_loss_preparation_20261028_v1/paired_gate.py
+@@ -5,14 +5,14 @@
+  with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ for m in ['impedance','admittance','vmc']:
+  maps=[];refs={}
+- for c in [68,69]:
++ for c in [69,70]:
+   p=B/f'runs/parameter_capacity_pool30_cycle{c}_20261026_v1/{m}/train/episodes.jsonl';maps.append({e['condition']:e for e in map(json.loads,p.read_text().splitlines())});refs[str(p)]=sha(p)
+  assert len(maps[0])==len(maps[1])==30 and set(maps[0])==set(maps[1]);changes=[];paired=[]
+  for condition,new in maps[1].items():
+-  old=maps[0][condition];paired.append(dict(condition=condition,reward68=old['reward'],reward69=new['reward'],delta=new['reward']-old['reward']))
++  old=maps[0][condition];paired.append(dict(condition=condition,reward69=old['reward'],reward70=new['reward'],delta=new['reward']-old['reward']))
+   if old['strict_success']==new['strict_success'] and old['abort_reason']==new['abort_reason']:continue
+   cases=[]
+-  for c,e in zip([68,69],[old,new]):
++  for c,e in zip([69,70],[old,new]):
+    folder=Path(e['episode_path']);roll=json.loads((folder/'rollout.json').read_text());src=(folder/'executed_evaluator.py.txt').read_text();assert "physical_valid=abort_reason is None and stats['max_external_penetration_m']<=.0002" in src
+    physical=roll['abort_reason'] is None and roll['stats']['max_external_penetration_m']<=.0002;assert physical==roll['physical_valid'];assert bool(roll['task_success'] and physical)==roll['strict_success']==e['strict_success']
+    cases.append(dict(cycle=c,task=e['task_success'],strict=e['strict_success'],reward=e['reward'],step=e['total_steps'],actions=e['steps'],abort_reason=e['abort_reason'],global_penetration_mm=1000*roll['stats']['max_penetration_m'],worst_pair=roll['stats'].get('worst_pair'),penetration_mm=1000*roll['stats']['max_external_penetration_m'],physical_valid=physical,model_sha256=sha(folder/'rollout.mjb'),rollout=dict(path=str(folder/'rollout.json'),sha256=sha(folder/'rollout.json')),evaluator_sha256=sha(folder/'executed_evaluator.py.txt')))

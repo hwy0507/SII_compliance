@@ -1,5 +1,14 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 原69前5000、全2064锚点与70仅恢复准备
+
+- [最新交接](docs/RL_PARAMETER69_EARLY_ANCHOR_20261028.md)。原69三learner身份保持，20:31steps2852599/2853239/2854233，无完整/失败。实际前5000原字节/连续步号/全数值有限/独立算术与真实图通过：critic首末1000 I2.065084→1.713309、A1.210083→1.215135、V.911085→.925559；V有限尖峰max44.311295保留。I actor稍升、A/V稍降，非整轮或收敛。上下文映射逆变换/覆盖计数通过，原历史窗口保持。
+- 全68的2064×57 V/A锚点精确，独立SSE3854.502105/829.837169，anchor SHAeb5b6c1a/f343cbbf；0新前向。原V五focus与A原66short0600不变，69预期2094。V3545889/A3545890同start41509360、PLAN3d5b001f/d4cf33e2，CPU53/7200秒等待；实际完整69比较/图待，原68源和科学配置保持。
+- 全标签69 waiter3389722/start41481329/PLAN6afe4394；70仅恢复3373363/start41478491/REGe68f3757。真实在途69标签与缺DECISION70启动都拒绝、无完整标签输出或70训练目录，证据保留。70全loss四脚本及独立review_labels69静态准备，49–69历史保留追加70、paired69→70/0600不变，无70loss run/PLAN/waiter；deploy入口待，实际完整结果待。
+- 原68–70 waiter1085142/PLANe3a50567保持，不提前pass/移动端点/自动70训练。原65–67 I/A失败与V描述性通过、旧失败和历史通过保持，Direct34false，Goal active。
+- 122guard采样min70/66/66/66%、低于50全0/maxgap5.279606秒；20:31原五guard及所有科学/等待进程live、GPU79/94/73/71%。含合成保载、非瞬时保证/纯科学吞吐；科学完成也继续v5，非跨重启服务，旧v4 STOP在共享SSD。
+- SSD小包85成员/1772900字节/SHAc6a18571逐字节/AST/tar核验，收据docs/RL_PARAMETER69_EARLY_ANCHOR_SAVE_20261028.json；HDD仅原地已有紧凑入口，大产物SSD，非HDD/arm1全备份。实际fetch/read main0a882833→b5e5fed5/baselinef6e8f8c，非RL七项通过/v8重采及学习接续新报告已读并fast-forward保留，无冻结RL源变化，无子agent。
+
 ## 2026-10-29 — 非RL垂向阻尼七项通过，v8重采与接续
 
 - 完整七项754文件688650240bytes/SHA8d32960b已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_vertical_damping_controls_20261029_v1/FULL_PROBE.tar`；含完整物理/源/review，不含在途v8/学生。收据VERTICAL_DAMPING_SHARED_RECEIPT，保留全部旧失败。
