@@ -5,6 +5,24 @@
 
 ## 19:14 UTC：低速释放对照完整失败，定位剩余间隙并登记有限修复
 
+19:22UTC更新：offset五train已全部合格，原parent1048018继续唯一office000，实际进度18.04秒carry。
+完整55秒及动作/子步审计仍待；不提前生成完整REVIEW或采新30。此前仅rod完成的快照已过时。
+
+后续覆盖补查：对原五train+office共4450帧canonical观测逐帧精确actor重放，恢复激活>.5的帧数
+分别rod00=0/500、ball00=51/750、ball01=0/750、ball04=6/750、corner00=29/325，
+office=1002/1375。rod水平路径权重为0，原恢复项本就不激活；这解释本次offset变化未改变棍推轨迹。
+球与边角数据确有恢复记忆，不能说三场景完全缺失该机制；但持续强恢复状态的曝光明显不同。
+这仅是五训练探针的描述性证据，不是完整30条覆盖审查，也不证明学习失败因果或可学习性。
+教师全过后仍需检查真实新30状态覆盖、独立验证模仿误差与学生闭环，不能用低MSE代替。
+[完整覆盖审计](evidence/NONRL_INTENT_RECOVERY_20261029/SLOW_INTENT_RECOVERY_COVERAGE.json)。
+
+科学提交`4bf5fe4c6fcdfa5f0eebe2964e24796ee8424f13`已push并核远端；其源码/小证据1141文件、
+4997009bytes已逐Git blob及共享暂存/最终SHA核验到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_clearance_offset_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`，
+SHA256 `029f91d1a747b2482d98572dc549c0c607bccf0adea1ff26538f0db9cad181c1`。
+[源码收据](evidence/NONRL_INTENT_RECOVERY_20261029/CLEARANCE_OFFSET_SOURCE_SHARED_RECEIPT.json)。
+非全仓库/模型/环境/物理备份，不含后来coverage审计或在途offset物理。完整慢释放物理另见下文。
+
 低速释放六项19:06:23 UTC自然结束：五训练身份均合格，但office000完整55秒仍carry，
 Task/Strict均false，actor/filter回放误差0。没有新30、学生拟合或修复后的108主矩阵。
 棍推实际接触4.73275、让位4.84、蹭过7.80、持续回位8.88秒，均早于12.80秒撤棍。

@@ -22,6 +22,8 @@
 
 ## 2026-10-29 — 非RL低速释放完整对照与剩余间隙修复
 
+19:22UTC覆盖：新offset五train已全合格，office原服务继续，18.04秒carry，完整55秒结果待。新增4450保存帧精确actor重放，强恢复activation>.5训练五例86/3075、office1002/1375；rod水平路径权重0，因此offset不影响其轨迹。球/角确有恢复，不是机制完全缺失；仅五例覆盖线索，非全30/学习因果。4bf5fe4c已push/远端核验；其源码/小证据1141文件4997009bytes/SHA029f91d1已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_clearance_offset_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`，不含稍后coverage或在途offset物理。原Goal active，无新30/拟合/主矩阵修复。
+
 - [最新非RL交接](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。slow_intent六项19:06:23UTC完整：五train合格，office55秒carry双失败、actor/filter0。45秒后底面间隙−4.211至−1.936mm，接触98.01%、正间隙0帧，较阻尼改善但未脱离。ball01尾速.016335高于直接父.012583，失败/退化不隐去；全图/几何数组/审计已保存。
 - 唯一新`sii-special-teacher-clearance-offset-v1-20261029.service` parent1048018，19:13:44UTC，root`outputs/special_teacher_clearance_offset_20261029_v1`登记7358b258。只将现有offset+.008m，其他恢复/阻尼/原读出/冻结物理不改；1375旧观测actor0/独立增量差1.11e−16，非物理改善预测。3GiB/swap0/CPU100%/线程1；rod00已合格且轨迹hash与父版相同，ball00在途，全部六项结果待。禁止改绑定源/重复启动。
 - 完整后运行`teacher_clearance_offset_control_20261029.py --root ... --review`。全六项通过才另登记原30；该脚本不自动采集或学习，旧slow_intent recollect不能直接复用。新30全资格→公平24+6/三seed/12候选→真实场景学生闭环→108六指标仍未完成。office不拟合，当前12非unseen；Goal active，主矩阵未修复，无RL/子agent/服务器计算。
