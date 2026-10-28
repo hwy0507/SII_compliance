@@ -68,3 +68,8 @@ GPUv4原supervisor1629438/start35566457、workers1629439–1629442保持。57三
 本轮小证据`docs/evidence/RL_PARAMETER57_COMPLETE_20261028`；完整准备/57归档健康/loss与配对/终端跟踪/输入比较/58实际恢复与startup/后续loss准备及观察异常和live状态均包含。共享SSD包`B/repository/RL_PARAMETER57_COMPLETE_20261028_083425/SMALL_EVIDENCE.tar.gz`，101成员、888423字节，SHA256 `bfc840fa06220540747f9cd0e273d8131cc6f8f460b9c5e0cda686b52a09d678`，所有成员逐字节及Python AST核验。收据[RL_PARAMETER57_COMPLETE_SAVE_20261028.json](RL_PARAMETER57_COMPLETE_SAVE_20261028.json)。不含大checkpoint/replay/raw，非HDD/arm1全备份；现有HDD LATEST入口指向本文。
 
 收尾fetch/read远端main `05fa61c95b1064d83bf05bd05047e101b8b81bc5`，包含非RL原30完整、读出修正四例和v4重采及归档；其交接明确RL不在范围。已正常fast-forward保留并行工作，当前训练使用独立冻结runtime，未改变RL配置。
+
+
+## 08:36瞬时GPU低谷与固定复核
+
+08:36:29单次nvidia-smi输出55/0/95/0%，不能隐去或宣称全过程每瞬时≥50%。紧接复核86/94/94/70%，原supervisor及四worker身份全部保持；未发现guard失败文件、未重启。随后登记独立固定60次/间隔1秒检查，四卡最低73/67/70/61%，均值85.816667/90.25/92.516667/89.316667%，低于50计数均0，逐次PID/start保持。仅说明这次复核窗口没有持续低谷，不推断此前低谷原因或保证未来每瞬时。原触发采样和全部60次数据保存在`B/runtime/gpu_transient_check_20261028_v1`及本交接evidence下`gpu_transient_check`。此补充不包含在此前101成员主包，另有补充包收据。
