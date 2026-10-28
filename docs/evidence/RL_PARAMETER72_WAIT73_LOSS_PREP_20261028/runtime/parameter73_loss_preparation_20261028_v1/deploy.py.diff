@@ -1,0 +1,89 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter72_loss_preparation_20261028_v1/deploy.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter73_loss_preparation_20261028_v1/deploy.py
+@@ -1,4 +1,4 @@
+-"""Deploy the prepared full72 loss audit only after reviewed actual72 launch."""
++"""Deploy the prepared full73 loss audit only after reviewed actual73 launch."""
+ from pathlib import Path
+ import ast
+ import hashlib
+@@ -9,8 +9,8 @@
+ 
+ B = Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+ HERE = Path(__file__).resolve().parent
+-RUN = B / 'runs/parameter_capacity_pool30_cycle72_20261026_v1'
+-OUT = B / 'runs/parameter72_loss_20261028_v1'
++RUN = B / 'runs/parameter_capacity_pool30_cycle73_20261026_v1'
++OUT = B / 'runs/parameter73_loss_20261028_v1'
+ 
+ 
+ def read(path):
+@@ -35,10 +35,10 @@
+ 
+ 
+ def main():
+-    decision_path = B / 'runtime/prepare_parameter72_20261028_v1/DECISION72.json'
++    decision_path = B / 'runtime/prepare_parameter73_20261028_v1/DECISION73.json'
+     decision = read(decision_path)
+     assert decision['passed'] and decision['plot_inspected']
+-    assert decision['parent_cycle'] == 71 and decision['new_cycle'] == 72
++    assert decision['parent_cycle'] == 72 and decision['new_cycle'] == 73
+     assert not decision['convergence_claim'] and not decision['automatic_followup']
+     evidence = {Path(item['path']): item['sha256'] for item in decision['evidence'].values()}
+     required = [
+@@ -46,33 +46,33 @@
+         for name in ['REVIEW.json', 'SAVED_ARITHMETIC_REVIEW.json', 'PLOT_INSPECTION.json']
+     ]
+     required += [
+-        B / f'runs/{method}71_terminal_anchor_followup_20261028_v1' / name
++        B / f'runs/{method}72_terminal_anchor_followup_20261028_v1' / name
+         for method in ['vmc', 'admittance']
+         for name in ['REVIEW.json', 'SAVED_VALUES_REVIEW.json', 'PLOT_INSPECTION.json']
+     ]
+     required += [
+-        B / 'runs/parameter71_loss_20261028_v1' / name
++        B / 'runs/parameter72_loss_20261028_v1' / name
+         for name in ['REVIEW.json', 'PAIRED_GATE_REVIEW.json', 'SAVED_REVIEW.json', 'PLOT_INSPECTION.json']
+     ]
+     required += [
+-        B / 'runs/parameter_task_label_audit71_20261028_v1' / name
+-        for name in ['FINISHED71.json', 'COMPLETE70_71.json', 'COMPLETE70_71_SAVED_REVIEW.json']
++        B / 'runs/parameter_task_label_audit72_20261028_v1' / name
++        for name in ['FINISHED72.json', 'COMPLETE71_72.json', 'COMPLETE71_72_SAVED_REVIEW.json']
+     ]
+     required += [
+-        B / 'runs/parameter_capacity_pool30_cycle71_review_20261026_v1/REVIEW.json',
+-        B / 'runs/parameter_capacity_pool30_cycle71_review_20261026_v1/health/DIAGNOSIS.json',
+-        B / 'runs/parameter_capacity_pool30_cycle71_review_20261026_v1/health/PLOT_INSPECTION.json',
++        B / 'runs/parameter_capacity_pool30_cycle72_review_20261026_v1/REVIEW.json',
++        B / 'runs/parameter_capacity_pool30_cycle72_review_20261026_v1/health/DIAGNOSIS.json',
++        B / 'runs/parameter_capacity_pool30_cycle72_review_20261026_v1/health/PLOT_INSPECTION.json',
+         RUN / 'CHECK_ONLY_COMPLETE.json',
+         B / 'runs/parameter_capacity68_70_reward_stability_20261028_v1/PLAN.json',
+     ]
+-    # Require the original68-70 completed review before a reviewed72 audit deployment.
++    # Require the original68-70 completed review before a reviewed73 audit deployment.
+     required += [B / 'runs/parameter_capacity68_70_reward_stability_20261028_v1' / name
+                  for name in ['REVIEW.json', 'SAVED_ARITHMETIC_REVIEW.json', 'PLOT_INSPECTION.json']]
+     current_plan_path = B / 'runs/parameter_capacity71_73_reward_stability_20261028_v1/PLAN.json'
+     required.append(current_plan_path)
+     current_plan = read(current_plan_path)
+     assert current_plan['cycles'] == [71, 72, 73]
+-    assert set(required) <= evidence.keys(), 'Full71 loss, labels, health, terminals, restore and original68-70 completed review must be bound'
++    assert set(required) <= evidence.keys(), 'Full72 loss, labels, health, terminals, restore and original68-70 completed review must be bound'
+     for path, digest in evidence.items():
+         assert sha(path) == digest, str(path)
+     launch_path = RUN / 'LAUNCH.json'
+@@ -99,10 +99,10 @@
+                 static_prepared_before_training=True, parent_run=str(RUN), jobs=launch['jobs'],
+                 python=str(B / 'env/bin/python'), fixed_timeout_seconds=7200,
+                 automatic_training=False, convergence_claim=False, diagnostic_cpu=54,
+-                window='Complete72 actual episode lengths; full descriptive49-72; paired71-72. '
+-                       'Original65-67 and all historical windows retained; original68-70 reviewed before72; original71-73 fixed PLAN retained, results pending.',
++                window='Complete73 actual episode lengths; full descriptive49-73; paired72-73. '
++                       'Original65-67 and all historical windows retained; original68-70 reviewed before73; original71-73 fixed PLAN retained, results pending.',
+                 files={name: sha(OUT / name) for name in sources},
+-                actual_launch_sha256=sha(launch_path), decision72_sha256=sha(decision_path),
++                actual_launch_sha256=sha(launch_path), decision73_sha256=sha(decision_path),
+                 deployment_source_sha256=sha(Path(__file__)))
+     write_new(OUT / 'PLAN.json', plan)
+     env = dict(os.environ, OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1',

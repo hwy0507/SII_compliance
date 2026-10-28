@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 第72轮五分钟核验与73全loss准备
+
+- [交接](docs/RL_PARAMETER72_WAIT73_LOSS_PREP_20261028.md)：23:46:06–23:51:06UTC共11次原72三learner/archive/六等待器/五guard身份live，steps严格增至2980905/2981783/2982827，无完整/失败。observer自然结束，科学继续，无重启。
+- 73全loss四源/deploy静态就绪，完整49–72保留追加73/配对72→73；原65–67/68–70审查及原71–73准确PLAN/列表保持。逆映射/AST/hash/独立静态通过，真实缺DECISION73拒绝，无73loss run/waiter或训练，正向部署仍待。
+- 59guard样本min85/69/65/70%、低于50[0, 0, 0, 0]，含合成负载，科研完成也继续，非瞬时保证。SSD包24成员/21258字节/SHA8f396832逐字节/AST核验，大数据SSD非HDD/arm1全备份；开工maina39eab7b/baselinef6e8f8c实际fetch/read，无子agent。Goal active、Direct34false。
+
 ## 2026-10-29 — 非RL首条件九模型独立核验，主矩阵仍未修复
 
 科学d05a6636的4文件增量源码/准确报告/审计已逐Git blob及远端暂存/最终大小hash核验，13179bytes/SHA6439c0f8，`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition000_20261029_v1/DELTA_SOURCE_AND_EVIDENCE.tar.gz`，见V8_CONDITION000_SHARED_RECEIPT。9e4d6c57独立RL更新已安全合并，两份日志完整保留；无在途源修改。
