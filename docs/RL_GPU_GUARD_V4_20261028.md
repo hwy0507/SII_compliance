@@ -28,3 +28,11 @@ v4等四worker真实心跳后，按预写PLAN采60次，实际73.046秒。保存
 supervisor PID1629438，worker1629439/1629440/1629441/1629442；下次先核`LAUNCH.json`、`worker*.json`、真实/proc与`CONTROL.json`，勿重复运行旧版。停止该守护用`touch /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/gpu_util_guard_20261028_v4/STOP`，不停止正式训练。下次机器重启按交接重新检查后启动，不能拿旧PID当新进程。
 
 源码/政策/固定样本/算术证据在`docs/evidence/RL_GPU_GUARD_V4_20261028`；共享SSD归档`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_GPU_GUARD_V4_20261028_040202/SMALL_EVIDENCE.tar.gz`，13544字节，SHA256 `d9754d0046c7283f74152ea4f4fcd8cba41755fa663f119fd988b3b157a23b98`，14份源/样本成员逐大小/hash核验。守护不改变研究协议；完整训练和恢复准备见[主交接](RL_RESUME33_PARAMETER53_20261028.md)与[早期loss补充](RL_EARLY33_PARAMETER53_20261028.md)。
+
+## 正式任务结束后的独立守护验证
+
+VMC53已在2,224,500steps完整30条件结束，FINISHED为stopped_at_complete_cycle、原learner238632已退出。episode初步汇总Task17/Strict16、reward−4.568304136、全30完整55秒/noabort；完整checkpoint/replay/health审查仍由原monitor等待三方法齐备后执行，不把此初步汇总写成完整审查通过。
+
+利用这个真实结束点，新预写30样本观察PLAN：逐样本要求原VMClearner不存在，GPU3 compute PID集合恰为v4守护1629442。实际35.871秒GPU3平均70.8%、最低69%、最高75%，低于50为0/30，保存样本独立复算通过。这直接验证了当前环境中“训练结束后守护仍独立运行”的行为；仍不是永久保证。原其他三路继续。
+
+补充证据`docs/evidence/RL_GPU_GUARD_V4_20261028/post_vmc_complete`；共享SSD补充包`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_GPU_GUARD_V4_20261028_040202/VMC_FINISHED_SUPPLEMENT.tar.gz`，SHA256 `76eec6d2e0515469727b5e13f1e0438ff12aaa9b8d1925bf6b4ea464aabbf1f6`，5成员逐大小/hash核验。

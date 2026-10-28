@@ -14,6 +14,8 @@
 - 已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/video_reference_vmc_20261028_delivery/SCENES.tar.gz`，190468315字节，SHA256 `2adb6691a0bb68331d7d17e12cbf0edfc3fdda36a86a967e9b6a64e8c74bc737`；84文件包内/本地hash一致、远端暂存/最终包hash一致。源码overlay、轨迹、媒体和失败全部归档；计算仅本机单模拟器/单线程/3GiB/禁swap。
 - 开工远端main `11af52479045acef7aba9114d12175704c444c46`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；收工fetch/read后main前进至 `0e59c278e96c852f1a46ae49c3574fc99c919a7d`，安全快进，baseline未变；重读AGENTS，保留他人未提交会议文档，仅提交本任务。
 
+VMC53随后完整2224500steps/30条件退出（原238632已不存在），episode初步Task17/Strict16、reward−4.568304136、noabort；完整checkpoint审查仍待。新预写PLAN后30样本35.871秒逐次GPU3仅守护1629442，均值70.8%、最低69%、低于50为0，保存算术与PID集合复核通过。补充5成员包B/repository/RL_GPU_GUARD_V4_20261028_040202/VMC_FINISHED_SUPPLEMENT.tar.gz，SHA256 `76eec6d2e0515469727b5e13f1e0438ff12aaa9b8d1925bf6b4ea464aabbf1f6`，不把独立合成占用当科研进度。
+
 ## 2026-10-28 — 33/53早期loss、导纳Strict门槛核验与34/54恢复准备
 
 - [补充交接](docs/RL_EARLY33_PARAMETER53_20261028.md)。实际查询/fetch/read main `d620fddfed28a31d1ac7ace90484b0a65b8c2bfd`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无新RL约束变化；原四learner与GPU守护身份核验live，训练持续推进。
