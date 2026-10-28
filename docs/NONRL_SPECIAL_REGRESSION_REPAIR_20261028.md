@@ -22,6 +22,12 @@ Goal仍active，修复未完成；不能将该候选或原35失败作为新的�
 采集仍只允许三个真实场景，不使用office测试轨迹拟合学生，旧条件已看过须称回归比较。
 新30资格审查、公平三seed重训、学生18闭环及最终108/六指标/完整归档仍必须实际完成。
 
+源码及小证据交接包取自已推送commit `171534126e1e0b3a2d42b1eda5b68a95dc23c687`，
+1140文件/3700171字节，逐内容大小/SHA及服务器最终核验通过：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_teacher_repair_handoff_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。
+[共享收据](evidence/NONRL_SPECIAL_TEACHER_STABILITY_20261028/SOURCE_SHARED_RECEIPT.json)。
+此包为benchmark scripts/tools及本轮交接/小证据，不是全仓库或物理归档；各完整物理包地址见下文。
+
 ## 16:24 UTC 更新：0.25秒释放假设未修复office，0.05秒有限对照继续
 
 原六条全部结束：五个训练身份仍全部合格，但office完整55秒仍carry、Task/Strict false，
