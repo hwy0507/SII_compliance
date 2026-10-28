@@ -2,11 +2,19 @@
 
 ## 2026-10-29 — 非RL v8真实学习图与仅后处理接续
 
+23:55:37UTC原1172675和后处理1201537仍active，原矩阵13/108（后处理23:55:27核验）；未重启。远端9e7e44ce独立RL更新已读取，合并保留双方日志，冻结源不变。
+
 科学41a2e7f2的14文件（八源码/准确报告/登记/启动/两图/全绘图数值）已逐Git blob及暂存/最终大小hash核共享，462790bytes/SHA856c9691，`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_learning_postprocess_20261029_v1/SOURCE_AND_CURVES.tar.gz`，见V8_LEARNING_POSTPROCESS_SHARED_RECEIPT；非在途108或未来全审。
 
 - [当前交接](docs/NONRL_V8_LEARNING_CURVES_POSTPROCESS_20261029.md)。当前九锁定模型实际history生成两图，六神经模型全部894/895点原值、独立尾段算术及实际图核验通过。RNN最终train6.75–7.27e−6、MLP8.63–9.08e−5；低训练/选择验证误差仍未换来原测试成功。不是reward/闭环排名/新收敛认证，ESN解析ridge无梯度曲线。
 - 新唯一`sii-special-postprocess-v8-20261029.service` PID1201537，REGfd8d90a1、目录`outputs/special_scene_postprocess_20261029_v8`。已完成学习图，绑定原1172675/start32623702，30秒核验/最多12h/CPU50%/线程1/3GiB/swap0；无物理派发。仅原108完整+服务inactive/success后全审到原root/FROZEN108_AUDIT.json并复制FINAL_AUDIT，再原contact/report，最后待视觉/归档。不要另启动审计或旧handoff。
 - 原108在23:51:12UTC active、12/108/689020928bytes；后处理active/11116544bytes。3正/6负边界及真实未完成归档拒绝通过，8快照/v3源保持；完整108正向待。最终用原archive脚本`--handoff outputs/special_scene_postprocess_20261029_v8`归档，再推进八球v3、三场景共享数据/学习修复。Goal active，无RL/子agent/服务器计算。
+
+## 2026-10-28 — 第72轮五分钟核验与73全loss准备
+
+- [交接](docs/RL_PARAMETER72_WAIT73_LOSS_PREP_20261028.md)：23:46:06–23:51:06UTC共11次原72三learner/archive/六等待器/五guard身份live，steps严格增至2980905/2981783/2982827，无完整/失败。observer自然结束，科学继续，无重启。
+- 73全loss四源/deploy静态就绪，完整49–72保留追加73/配对72→73；原65–67/68–70审查及原71–73准确PLAN/列表保持。逆映射/AST/hash/独立静态通过，真实缺DECISION73拒绝，无73loss run/waiter或训练，正向部署仍待。
+- 59guard样本min85/69/65/70%、低于50[0, 0, 0, 0]，含合成负载，科研完成也继续，非瞬时保证。SSD包24成员/21258字节/SHA8f396832逐字节/AST核验，大数据SSD非HDD/arm1全备份；开工maina39eab7b/baselinef6e8f8c实际fetch/read，无子agent。Goal active、Direct34false。
 
 ## 2026-10-29 — 非RL首条件九模型独立核验，主矩阵仍未修复
 
