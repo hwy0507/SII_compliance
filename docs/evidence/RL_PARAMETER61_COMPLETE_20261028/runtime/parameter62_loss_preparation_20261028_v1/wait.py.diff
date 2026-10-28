@@ -1,0 +1,11 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter61_loss_20261028_v1/wait.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter62_loss_preparation_20261028_v1/wait.py
+@@ -18,7 +18,7 @@
+    elif live(j):ready=False
+    else:assert json.loads((p/'FINISHED.json').read_text())['status']=='stopped_at_complete_cycle'
+   if ready:break
+-  assert time.monotonic()<deadline,'Fixed full61 loss observation expired'
++  assert time.monotonic()<deadline,'Fixed full62 loss observation expired'
+   time.sleep(5)
+  for name in ['audit.py','paired_gate.py']:subprocess.run([plan['python'],str(OUT/name)],check=True)
+  (OUT/'FINISHED.json').write_text(json.dumps(dict(time=time.time(),completed=True)))

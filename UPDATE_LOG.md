@@ -1,3 +1,12 @@
+## 2026-10-28 — 完整61、原59–61窗口与准确续训62
+
+- [最新交接](docs/RL_PARAMETER61_COMPLETE_20261028.md)。完整61各30×55秒/41250新增/noabort，全60 replay/history/optimizer保持、新reward0、网络/优化器有限。I/A/V reward−2.430041/−7.003038/−2.811682，Task/Strict18/17、15/15、17/17。全loss独立算术/实际图通过；I末段burst/actor漂移，A/V critic改善，V actor末段回升，不称整体收敛。
+- 原全59–61稳定窗口完成且独立复算/图审：I近零保护，A相邻37.12%/18.15%及首尾48.53%，V相邻36.79%/1.54%及首尾37.76%，均未过原5%；原I56–58/V53–55通过保留。原窗口以REVIEW为结果，无FINISHED；不删59换端点。全180保存标签复核通过，此轮无Task-only；I short0600失Strict，A short0600恢复Strict、long0200退化、long0500恢复，V标签保持。
+- 全1824 V固定终端SSE4384.706013→1068.426726（−75.6329%），health复现/权重RNG不变、独立算术/实际图通过；focus2423133与2046571退化、2423122改善均保留，不设零误差门。
+- 三路准确61全state/replay/下一65536恢复exit0；12:44:29有限62 I1721611/A1721613/V1721615 start38718598，archive1721620/start38718599启动，无auto63。真实startup1000/1000/2000通过，旧2552898/2553500/2554500全行/history/optimizer/30sampler保持、新reward0。全62loss1758710/start38725354，原预登记62–64窗口1758711/start38725355按实际62启动后接续；PLAN不改，59–61结果保留。
+- 30次原61观测保持至A/V自然退出、FINISHED确认；后处理只读observer因错误等待不存在窗口FINISHED，已核验PID后仅停observer1605329（exit143），科学未停/重启。临时poll日期替换错路径亦已按真实62重查。12:50原62steps2557150/2557801/2558879、五guard原身份live、GPU78/93/92/90%，科学完成也继续guard；Direct不启动34，Goal active，无子agent。
+- 共享SSD小包166成员/1749050字节/SHA7c06d043逐字节/AST核验，收据docs/RL_PARAMETER61_COMPLETE_SAVE_20261028.json；HDD既有入口更新，大产物仍SSD，非HDD/arm1全备份。开工mainee219171、收尾main476a83fe与baselinef6e8f8c实际fetch/read，非RL并行更新已fast-forward完整保留。
+
 ## 2026-10-28 — 原非RL108第三条件继续，19→20真实等待保存
 
 - 12:22–12:32完整21样本0–20核验原772606/791378身份保持，RNN seed1自然结束后接续第三条件MLP seed1 worker844032/start28846348，完成19→20/108，末次53.04秒。3GiB/swap0/OOM0，采样内存最大1197109248字节；非内核全程峰值。MLP在途外部穿透.591576863mm保留，非完整结果；观察器exit0不代表科学结束，无重启。
