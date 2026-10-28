@@ -45,3 +45,5 @@ GPU实际v5运行`/tmp/sii_gpu_util_guard_20261028_v5`；supervisor3256866/start
 小证据`docs/evidence/RL_PARAMETER59_EARLY60_PREP_20261028`，共享SSD包`B/repository/RL_PARAMETER59_EARLY60_PREP_20261028_094937/SMALL_EVIDENCE.tar.gz`，43成员/1291465字节，SHA`a8f3aca9c15cedf8e35a4bd6f74c3fcc2e1566f6aedf398fdd287029226f6848`，全部成员逐字节和Python AST核验，含三个完整5000原前缀、锚点、源/计划/启动/拒绝及live身份。收据[保存记录](RL_PARAMETER59_EARLY60_PREP_SAVE_20261028.json)。大科学产物仍原共享SSD，非HDD/arm1全备份；现有HDD LATEST入口指本文。
 
 继续原59与冻结55。完整59结束后读完整loss/health/全1764终端对照与60check-only；手动运行完整loss59的review_saved.py并查看实际图，再决定有限60。原59–61窗口不可提前宣称通过；整体goal仍active。
+
+收尾再次fetch/read main `490785f3858a444031c6379b0384fdad539a2603`，新增非RL绘图兼容和拟合进度。AGENTS顶部并行新增冲突按双方原字节前缀加共同历史解决，其他文件自动合并；未改冻结训练源码。

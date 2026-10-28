@@ -8,6 +8,10 @@
 - 09:49原59约2440136/2440779/2441875steps，冻结55完整25/25/24；原archive/loss/59–61窗口及v5五进程均身份live。GPU80/71/95/93%含保活，科学结束也继续；Direct不启动34，Goal active，无子agent。
 - 已查询/fetch/read main5714588b、baselinef6e8f8c，无科学协议变化。共享SSD包43成员/1291465字节/SHAa8f3aca9c15cedf8e35a4bd6f74c3fcc2e1566f6aedf398fdd287029226f6848逐字节/AST核验，含完整5000前缀和锚点；大产物仍SSD，非HDD/arm1全备份。
 
+## 2026-10-28 — 新场景拟合继续与最终绘图兼容准备
+
+原725995/746822训练未重启，09:47附近已27/75，RNN seed1/candidate04实测16372更新；先读真实execution。194交接源/190拟合快照hash保持，真实3GiB/swap0/OOM0。绘图工具现支持新family/seed，需完整网格及锁定模型；实际未完成新run拒绝出图，旧九模型兼容图仅历史预检，不作新结果。小包357372字节/SHA dbbac8fd已核验归档 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_plot_readiness_20261028_v1/`。完整75、九模型审计和冻结108仍待，原30采集已完整勿重启。Goal active，无RL改动，见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
+
 ## 2026-10-28 — 参数58完整、原56–58阻抗reward通过与准确续训59
 
 - [最新交接](docs/RL_PARAMETER58_COMPLETE_20261028.md)。完整58三路各30×55秒/41250新增/noabort，旧全replay/history/4m marker保持、新reward重算0、网络/优化器有限。完整loss独立算术/图通过；I/A/V reward−4.044914/−6.847757/−4.541539、Task/Strict17/16、15/15、17/16，critic末1000为2.261838/1.402060/1.260509。V末段loss抬升、short0600外穿透.176717→.221127mm跨原.2mm门失Strict，不隐去退化。

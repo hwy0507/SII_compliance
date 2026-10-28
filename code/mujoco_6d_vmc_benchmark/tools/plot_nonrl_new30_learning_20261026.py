@@ -16,23 +16,52 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def family_name(value):
+    return {'esn': 'esn', 'esn_ridge': 'esn', 'rnn': 'rnn',
+            'rnn_scratch': 'rnn', 'mlp': 'mlp', 'mlp_scratch': 'mlp'}[value]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    state = json.loads((args.root / 'execution.json').read_text())
+    assert state['status'] == 'complete', 'Wait for the complete fitting grid'
     lock_path = args.root / "MODEL_LOCK.json"
     lock = json.loads(lock_path.read_text())
     assert lock["status"] == "frozen" and len(lock["models"]) == 9
+    dataset_sha = sha(args.root / 'data/training_data.npz')
+    data_receipt_path = args.root / 'data/DATA_COMPLETE.json'
+    data_receipt = json.loads(data_receipt_path.read_text())
+    assert dataset_sha == data_receipt['training_data_sha256']
+    registration_path = args.root / 'REGISTRATION.json'
+    registration = json.loads(registration_path.read_text())
+    if lock.get('schema') == 'sii-nonrl-special-scene-model-lock-v1':
+        assert dataset_sha == lock['training_data_sha256'] == registration['dataset_sha256']
+        assert sha(lock_path) == state['model_lock_sha256']
+    else:
+        # Legacy new30 locks pin metadata per model, not the dataset at top level.
+        assert 'schema' not in lock
+        assert lock['protocol_sha256'] == registration['protocol_sha256']
+        assert dataset_sha == registration['data_sha256']
+        assert sha(data_receipt_path) == registration['metadata_sha256']
+    seeds = sorted({m['seed'] for m in lock['models']})
+    assert len(seeds) == 3
+    assert len({m['name'] for m in lock['models']}) == 9
     records = []
     for model in lock["models"]:
         checkpoint, metadata = Path(model["checkpoint"]), Path(model["metadata"])
         assert sha(checkpoint) == model["checkpoint_sha256"]
         assert sha(metadata) == model["metadata_sha256"]
+        info = json.loads(metadata.read_text())
+        assert info.get('data_sha256', info.get('training_data_sha256')) == dataset_sha
+        assert info['seed'] == model['seed']
         record = {key: model[key] for key in (
             "name", "family", "seed", "selected_trial", "validation_mse",
             "checkpoint_sha256", "metadata_sha256")}
-        if model["family"] != "esn":
+        record['plot_family'] = family_name(model['family'])
+        if record['plot_family'] != "esn":
             history_path = metadata.parent / "history.json"
             history = json.loads(history_path.read_text())
             updates = [row["update"] for row in history]
@@ -53,17 +82,16 @@ def main():
                           tail_train_points=len(tail),
                           tail_train_relative_range=(max(tail)-min(tail))/(sum(tail)/len(tail)))
         records.append(record)
-    expected = {(family, seed) for family in ("esn", "rnn", "mlp")
-                for seed in (2026102601, 2026102602, 2026102603)}
-    assert {(r["family"], r["seed"]) for r in records} == expected
+    expected = {(family, seed) for family in ("esn", "rnn", "mlp") for seed in seeds}
+    assert {(r['plot_family'], r["seed"]) for r in records} == expected
     args.output.mkdir(parents=True, exist_ok=False)
     fig, axes = plt.subplots(2, 3, figsize=(12, 6.4), sharex=True, sharey=True,
                              layout="constrained")
     for record in records:
-        if record["family"] == "esn":
+        if record['plot_family'] == "esn":
             continue
-        row = ("rnn", "mlp").index(record["family"])
-        col = record["seed"] - 2026102601
+        row = ("rnn", "mlp").index(record['plot_family'])
+        col = seeds.index(record['seed'])
         ax = axes[row, col]
         curves = record["curves"]
         train = [p for p in curves if "full_train_deployed_mse" in p]
@@ -71,7 +99,7 @@ def main():
                     color="#c46b17", lw=1.25, label="Validation (6 episodes)")
         ax.semilogy([p["update"] for p in train], [p["full_train_deployed_mse"] for p in train],
                     color="#246b9d", marker=".", ms=3, lw=1.3, label="Full train (24 episodes)")
-        ax.set_title(f"{record['family'].upper()} | seed {record['seed']}\n{record['selected_trial'].split('_')[-1]}", fontsize=10)
+        ax.set_title(f"{record['plot_family'].upper()} | seed {record['seed']}\n{record['selected_trial'].split('_')[-1]}", fontsize=10)
         ax.grid(alpha=.2)
         ax.set_xlim(0, 32000)
         if row == 1:
@@ -79,12 +107,12 @@ def main():
         if col == 0:
             ax.set_ylabel("Deployed requested-action MSE (log)")
     axes[0, 0].legend(fontsize=8)
-    fig.suptitle("New 30 demonstrations | Locked terminal models | No smoothing", fontsize=12)
+    fig.suptitle(f"{args.root.name}\nLocked terminal models | No smoothing", fontsize=12)
     fig.savefig(args.output / "selected_learning_curves.png", dpi=160)
     plt.close(fig)
     fig, ax = plt.subplots(figsize=(7.2, 4.5), layout="constrained")
     for i, family in enumerate(("esn", "rnn", "mlp")):
-        selected = sorted((r for r in records if r["family"] == family), key=lambda r: r["seed"])
+        selected = sorted((r for r in records if r['plot_family'] == family), key=lambda r: r["seed"])
         for j, record in enumerate(selected):
             ax.scatter(i+(j-1)*.13, record["validation_mse"], marker=("o", "s", "^")[j],
                        color=("#246b9d", "#c46b17", "#4b8342")[j],
@@ -92,12 +120,15 @@ def main():
     ax.set_xticks(range(3), ["ESN (analytic ridge)", "RNN", "MLP"])
     ax.set_yscale("log")
     ax.set_ylabel("Terminal validation action MSE (log)")
-    ax.set_title("Same 6 selection-validation episodes; not closed-loop performance", fontsize=10)
+    ax.set_title(f"{args.root.name}\nSame 6 selection-validation episodes; not closed-loop performance", fontsize=9)
     ax.grid(axis="y", alpha=.2)
     ax.legend(fontsize=8)
     fig.savefig(args.output / "terminal_validation_mse.png", dpi=160)
     plt.close(fig)
     evidence = dict(created_utc=datetime.now(timezone.utc).isoformat(), root=str(args.root.resolve()),
+                    dataset_sha256=dataset_sha,
+                    registration_sha256=sha(registration_path),
+                    data_receipt_sha256=sha(data_receipt_path),
                     model_lock_sha256=sha(lock_path), script_sha256=sha(Path(__file__)), models=records,
                     notes=["Selected terminal models only; all candidates remain in the training archive.",
                            "No reward series: these are imitation learners.",
