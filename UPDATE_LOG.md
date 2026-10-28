@@ -1,5 +1,7 @@
 ## 2026-10-29 — 非RL完整18与原108首失败定位
 
+- 科学07ef6fbc已正常push/远端核验；同commit源码小证据1228文件7947820bytes/SHAaeab990e及准确报告6930bytes/SHA48790ef2已逐Git blob、暂存/最终大小SHA核验共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_complete18_source_20261029_v1/`，收据V8_COMPLETE18_SOURCE_SHARED_RECEIPT。不含在途108原物理或后补日志；原1172675保持active，ESN seed2真实推进54.04s carry，Goal active。
+
 - [交接](docs/NONRL_V8_COMPLETE18_REGRESSION_DIAGNOSIS_20261029.md)：18自然结束、review SHA3cde0be3，开发资格ESN6/6、RNN6/6、MLP4/6；两MLP棍穿透失败（08还缺手接触）保留。配对源/actor及全部分窗算术通过，非最终成功认证。
 - 原108唯一用户服务1172675/start32623702，22:56:19UTC启动，前置fit audit通过，REG173e2abf，3GiB/swap0/线程1/OOM0。23:05已3/108、ESN seed2在途；不重启。首ESN4.84秒lift碰柱中止，RNN/MLP完整55秒停approach，Task/Strict均false，主矩阵未修复。
 - 新prefix诊断独立核前两条子步指标/hash/actor/filter及仅12600训练帧范围，完整源清单/完成行不变/标量计数通过。路径Y训练±.38075、原测试初始−.99028；ESN后期受力超界，非唯一因果。继续原108；后继针对三真实场景方向/阶段/恢复覆盖，公平预算、不混测试标签、不改gate或在途源。

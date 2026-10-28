@@ -2,6 +2,8 @@
 
 ## 2026-10-29 — 非RL完整18与原108首失败定位
 
+科学07ef6fbc已push/核远端；同commit源码小证据1228文件7947820bytes/SHAaeab990e及准确报告已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_complete18_source_20261029_v1/`，收据V8_COMPLETE18_SOURCE_SHARED_RECEIPT。原1172675保持active，ESN seed2真实推进到54.04s carry；非完整108或成功。
+
 - [当前交接](docs/NONRL_V8_COMPLETE18_REGRESSION_DIAGNOSIS_20261029.md)。18自然结束、完整review SHA3cde0be3，ESN6/6、RNN6/6、MLP4/6；两MLP棍穿透失败保留，08还缺手接触。全部teacher/student源/actor及分窗算术通过；不是最终Task/Strict。
 - 唯一用户级`sii-special-frozen108-v8-20261029.service` PID1172675/start32623702，22:56:19UTC启动，前置fit audit通过，REG173e2abf；3GiB/swap0/单模拟器/线程1/OOM0。23:05已3/108、ESN seed2在途，勿重复。系统级同名显示inactive不等于用户服务退出。
 - 首ESN seed1在4.84秒lift碰柱/2.781482mm abort；RNN seed1完整55秒停approach，均Task/Strict=false。前两条独立保存子步/hash/actor/filter及12600训练帧范围标量核验通过；路径Y训练±.38075而初始测试−.99028，ESN后期受力超范围。非唯一因果或排名，主矩阵未修复。MLP seed1也停approach，仅原审计，前缀工具未复算第三条。
