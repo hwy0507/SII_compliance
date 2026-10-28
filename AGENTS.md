@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL九模型同教师历史诊断与八球覆盖准备
+
+- [当前交接](docs/NONRL_V8_MATCHED_HISTORY_AND_COVERAGE_20261029.md)。九锁定模型同成功teacher1375帧诊断完成，原teacher/source/条件相同及动作精确重放、五已完成学生首观测/首动作相同和全actor精确核验。ESN三seed MSE .250070/.075675/.184260，主要lift/carry；RNN/MLP首帧已有非教师残差，非闭环排名或唯一因果。
+- 六合成零载荷方向探针：teacher/ESN全0，RNN各seed最大.130110/.110023/.084461，MLP .273377/.195345/.235294；原全零输入检查不足以约束非零上下文。无合成标签拟合，不热改模型/gate。诊断首两次错误导入被源码检查在输出前拒绝，改绝对冻结actor路径后通过，非运行推理bug。
+- 已实现并准备`outputs/nonrl_ball_coverage_probe_20261029_v3`，REG2f008162，8个真实ball开发控制：四轴初始XY±50mm/Z−60mm、同方向carry85mm×球角±.8；原teacher/物理/gate/filter保持。默认task/layout精确、原gate函数不变、资格仅wrapper名字不同、非法参数和实际在途108拒绝通过。无新物理/训练；早期v1/v2仅准备已superseded勿运行，v2→v3仅去wrapper尾空行后重新绑定。
+- 必须完成原108并写`outputs/special_scene_frozen108_20261029_v8/FROZEN108_AUDIT.json`（原完整审计器）、确认原服务inactive后，才运行新probe --run；无自动派发。八项全审后再设计三场景共同数据，不以八球替代完整目标。23:24原1172675 active，7/108、RNN seed3在途，已七条Task/Strict全false待全审。Goal active，无RL/子agent/服务器计算。
+
 ## 2026-10-29 — 非RL完整18与原108首失败定位
 
 科学07ef6fbc已push/核远端；同commit源码小证据1228文件7947820bytes/SHAaeab990e及准确报告已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_complete18_source_20261029_v1/`，收据V8_COMPLETE18_SOURCE_SHARED_RECEIPT。原1172675保持active，ESN seed2真实推进到54.04s carry；非完整108或成功。
