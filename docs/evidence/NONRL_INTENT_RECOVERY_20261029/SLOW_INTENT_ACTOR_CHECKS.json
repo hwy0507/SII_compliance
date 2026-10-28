@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "replay_frames": 1375,
+  "original_actor_replay_max_abs": 0.0,
+  "independent_memory_atol": 1e-14,
+  "unchanged_nonvertical_actions_and_virtual_states": true,
+  "zero_and_high_command_exact_steps": 500,
+  "columns": [
+    "rise_per_s",
+    "travel_decay_per_s",
+    "intent_release_per_s",
+    "command_path_mps",
+    "actual_path_mps",
+    "intent",
+    "memory"
+  ],
+  "last250_mean": [
+    0.49683995654192165,
+    0.061701403629555465,
+    0.45679924613997025,
+    0.006849079470315841,
+    0.0009398139232707393,
+    0.4254946804078263,
+    0.3043147236074784
+  ],
+  "last250_release_exceeds_travel_fraction": 0.912,
+  "counterfactual_same_observation_last250_memory_mean": 0.8715208294801269,
+  "inputs": {
+    "rollout.npz": "8ffd4e56002831a22a219fe98ff910baeb3701536575430f32ecf7cfc9394214",
+    "execution_chain.npz": "22c462a6f299c28692476292c5479999e9ce5a0e592d57a5ecd8094eaeb8c302",
+    "AUDIT.json": "9cdbe06eb5133559c104aa5ba555ad2ded064df2fbd62673bc083d75542ea7c7"
+  },
+  "interpretation": "Disclosed inspected-office diagnosis; no fitting, contact oracle or new physics. Candidate replay is off-policy on the old trajectory, not a predicted physical outcome. Both virtual dynamics and rest/high-command release remain unchanged."
+}

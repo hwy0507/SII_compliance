@@ -1,0 +1,126 @@
+{
+  "reviewed_utc": "2026-10-28T19:07:07.835389+00:00",
+  "registration_sha256": "b2798e4466dceb93749f2ad8cb8b0ea996beaca58bb3e4a62eff30306b450b24",
+  "execution_sha256": "38278ec29efd3323fb50ad426f865d817e663f0b1a72a1dd8a4a4e1efd80e3db",
+  "rows": [
+    {
+      "id": "slow_intent_rod_00",
+      "kind": "scene",
+      "status": "qualified",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "qualification_sha256": "8c485af10feeb6ebf09d2157acba906f601121df6286397d37ed413b3d5fc6b8",
+      "rod_audit": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.732749999995639,
+        "yield_excursion_m": 0.015426918375963276,
+        "yield_start_s": 4.839999999995389,
+        "pass_s": 7.799999999988491,
+        "rejoin_start_s": 8.799999999986161,
+        "rejoin_confirmed_s": 8.879999999985975,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "f273db89190dbf19824be59ab655d1fd7d7ee5cead1f1835322554bbbd39f278",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "1b31ee45503f9ea6005ade56987dc0328162a125656a2c4e9f4ab4de1ffa4abc",
+          "recipe.json": "0fee6a8e2d31c0d810447ec59e5908a39463f94dd29d96f7f44957ffd89bad67",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      }
+    },
+    {
+      "id": "slow_intent_ball_00",
+      "kind": "scene",
+      "status": "qualified",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "qualification_sha256": "479dee7bb6c076544b92c3dcb6fd01b464d097739b6fb6d692519c27794b139e",
+      "tail_object_speed_max_mps": 0.00023384840354328414,
+      "original_motion_threshold_mps": 0.02
+    },
+    {
+      "id": "slow_intent_ball_01",
+      "kind": "scene",
+      "status": "qualified",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "qualification_sha256": "a63023b3507c5ea56e7d963165cf731cb3e7c18d8c5eb3bd91b3211ef0a1b78e",
+      "tail_object_speed_max_mps": 0.01633514551565064,
+      "original_motion_threshold_mps": 0.02
+    },
+    {
+      "id": "slow_intent_ball_04",
+      "kind": "scene",
+      "status": "qualified",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "qualification_sha256": "3007ca54388acc736183c5a8e5ff1d939a93c18ba84ddc7b4c61dadb262d4723",
+      "tail_object_speed_max_mps": 0.0003228335727439361,
+      "original_motion_threshold_mps": 0.02
+    },
+    {
+      "id": "slow_intent_corner_00",
+      "kind": "scene",
+      "status": "qualified",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "qualification_sha256": "0236c4052bf5b31373ce6ddc23bf99858fed232d9251bdbe482452eeb7a84c56"
+    },
+    {
+      "id": "slow_intent_office000",
+      "kind": "office",
+      "last250_pose_error_mean": [
+        0.002571933742409011,
+        -0.002806555450797537,
+        -0.022587871077093213,
+        -0.001768395529782982,
+        -0.00943419823871197,
+        -0.00353949080740832
+      ],
+      "last250_recovery_memory_mean": 0.8056562936453651,
+      "last250_z_action_mean": 0.15305540608781903,
+      "task": false,
+      "strict": false,
+      "stage": "carry",
+      "audit_sha256": "aadf319308b749ac5bbca1c4114e70501f2a9c908f906e8228579bb95585ef9b",
+      "action_replay_max_abs": 0.0,
+      "filter_replay_max_abs": 0.0
+    }
+  ],
+  "all_six_qualified": false,
+  "selection_rule": "One candidate fixed before physics; same five training identities and inspected office000, no sweep/validation tuning/automatic collection. All six original qualifications required before new30; all previous failures retained.",
+  "limitation": "Finite teacher controls only. Office is inspected development regression. No student training, all30 qualification, or repaired108 claim."
+}

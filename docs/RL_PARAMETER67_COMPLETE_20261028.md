@@ -82,3 +82,5 @@ VMC目录 `B/runs/vmc67_terminal_anchor_followup_20261028_v1`：旧2004 SSE **43
 快照准备曾误查/tmp下旧v4 STOP而被断言拒绝、未写快照；查原v5交接确认旧v4实际ROOT为共享SSD runtime/gpu_util_guard_20261028_v4，改正只读检查后通过。真实拒绝记录保留；没有修改STOP或任何进程，非科学失败。
 
 本轮共享SSD小包 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER67_COMPLETE_20261028_191822/SMALL_EVIDENCE.tar.gz`，898成员/3812266字节，SHA256 `ee8c66cd996d00efa6c60d9bce6f560e5d8d9035c9d531cc2b648d1822badaca`，逐字节/AST/tar成员核验通过，包含快照准备拒绝记录。[收据](RL_PARAMETER67_COMPLETE_SAVE_20261028.json)，[清单](evidence/RL_PARAMETER67_COMPLETE_20261028/MANIFEST.json)。
+
+收尾实际fetch新增main `4bf5fe4c6fcdfa5f0eebe2964e24796ee8424f13`：另一主机非RL slow_intent完整失败/clearance_offset在途的新日志与报告已读。与本轮科学提交39ee6751合并时AGENTS/UPDATE_LOG顶部同时新增发生冲突，按双方新增原字节加完整共同历史核验保留；冻结RL运行源未改，非RL新源与证据完整保留。

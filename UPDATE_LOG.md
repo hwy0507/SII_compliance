@@ -9,6 +9,14 @@
 - 原67完成边界23观测覆盖到三learner自然完成/审查齐全，130guard样本min75/66/68/65%、低于50全0；审查→68另96样本min77/68/69/67%、低于50全0。19:17五guard原身份live、GPU79/96/93/93%，含合成保载、非瞬时保证；科学完成也继续v5，非跨重启服务。快照准备误查/tmp旧v4 STOP被拒绝，按原交接改为共享SSD真实路径后通过，拒绝保留、未改进程/STOP，非科学失败。
 - SSD小包898成员/3812266字节/SHAee8c66cd逐字节/AST/tar核验，收据docs/RL_PARAMETER67_COMPLETE_SAVE_20261028.json；HDD仅原地紧凑入口，大产物SSD，非HDD/arm1全备份。实际fetch/read mainc4b34cda/baselinef6e8f8c，无协议变化，非RL保持，无子agent。
 
+## 2026-10-29 — 非RL低速恢复完整失败与有限间隙修复
+
+- [完整报告](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。slow_intent完整六项五train合格，office55秒carry/TaskStrict false、actorfilter0。四组全1375保存状态几何审计同MJB/精确actor/0积分；候选45秒后底面间隙−4.211至−1.936mm、接触98.01%、正间隙0帧，比父版改善但未清边角。ball01尾速.016335较直接父.012583退化仍过原门；实际三ball配对图已看，不能称全尾段稳定。
+- 原1375帧分解证实低速命令造成较强意图释放，.003单参数对照完整结果如上；没有因此直接重训。新独立候选只将现有恢复offset+.008m，保留全部恢复状态更新/阻尼/限幅/输入/filter/gate/物理/dt；旧观测actor0、独立增量最大1.11e−16、虚拟状态/记忆/非z动作不变，非物理预测。原全部失败保留，无接触真值入actor。
+- 唯一`sii-special-teacher-clearance-offset-v1-20261029.service` parent1048018，19:13:44UTC，root`outputs/special_teacher_clearance_offset_20261029_v1`，登记7358b258，实际3GiB/swap0/CPU100%/线程1。原rod00完整合格且轨迹hash与父相同，ball00在途；全部六项通过才新30，不改绑定源/重复启动。新工具`--review`审全六项，不能用旧recollect版本；尚无新30/学生拟合/108修复，Goal active。
+- 完整slow_intent733文件/601774080bytes/SHA256 `ad041fa7822d7ba4cb2ebd6741cec8dcaa143b9d04f82b2c06a69c999b65fd1a`已逐成员及共享暂存/最终hash核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_slow_intent_controls_20261029_v1/FULL_PROBE.tar`。含全部失败/原始物理/运行源，不含稍后图/几何审计与新在途offset；无删除。图与几何证据入Git，新在途物理仅本机。
+- 开工实际fetch/read mainc4b34cda/baselinef6e8f8c，保留独立RL更新fast-forward；收尾重读AGENTS。office为检查过的开发回归，动作不入拟合；当前12非unseen，无RL/子agent/服务器计算。主矩阵尚未修复。
+
 ## 2026-10-28 — 原67再十分钟推进与68 loss部署入口
 
 - [交接补充](docs/RL_PARAMETER67_WAIT_ADMITTANCE_20261028.md)。18:46:04–18:56:04共21观测，原67三learner、全部原等待器/新A67对照和五guard身份保持，steps2788600/2789595/2790714→2796143/2797108/2798257严格增加，无完整/失败。600秒观察自然结束，未重启科学任务，Goal active。

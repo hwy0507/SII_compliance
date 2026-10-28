@@ -15,7 +15,7 @@ from collect_special_scene_actions_20261028 import ROOT, read, sha, write
 from optimize_tool_contact_20261002 import ParameterTeacher
 
 
-def audit(output):
+def audit(output, candidate=None):
     assert not output.exists()
     lock = (ROOT/'outputs/.local-rl-compute.lock').open('a')
     fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -24,6 +24,12 @@ def audit(output):
         ('normalized', 'special_teacher_legacy_units_20261029_v1/legacy_units_office000'),
         ('damped', 'special_teacher_damping_20261029_v1/damping_office000'),
     ]
+    if candidate is not None:
+        # The completed original three remain in the comparison; an optional
+        # fourth folder never replaces them or rewrites their saved evidence.
+        candidate = candidate.resolve()
+        assert candidate not in [(ROOT/'outputs'/p).resolve() for _,p in paths]
+        paths.append(('candidate', str(candidate)))
     rows, vectors = [], {}
     model_hash = None
     for label, relative in paths:
@@ -94,4 +100,6 @@ def audit(output):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
-    audit(parser.parse_args().output.resolve())
+    parser.add_argument('--candidate', type=Path, help='Additional completed office folder; retains the three original controls')
+    args = parser.parse_args()
+    audit(args.output.resolve(), args.candidate)
