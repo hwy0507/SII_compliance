@@ -1,0 +1,236 @@
+{
+  "scene": {
+    "kind": "ball",
+    "yaw": 0.0,
+    "shift": 0.018,
+    "along": 0.0,
+    "width": 0.05,
+    "cup_mass": 0.3,
+    "ball_speed": 2.4,
+    "ball_mass": 0.5,
+    "ball_angle": 0.0,
+    "ball_height_offset": 0.0,
+    "ball_vertical_speed": 1.3,
+    "ball_target_x": 0.54,
+    "ball_target_y": 0.0,
+    "ball_target_z": 0.62,
+    "ball_radius": 0.06,
+    "ball_shell": 0.009,
+    "ball_contact_time": 0.012,
+    "ball_contact_damping": 0.75,
+    "push_angle": 0.0,
+    "push_height": 0.56,
+    "push_stroke": 0.12,
+    "push_target_x": 0.54,
+    "push_target_y": 0.0,
+    "corner_height": 0.7,
+    "corner_friction": 0.2,
+    "payload_mass": 0.1,
+    "seed": 800
+  },
+  "controller": "vmc",
+  "success": true,
+  "grasp_lift_success": true,
+  "cup_safe": true,
+  "cup_stable": true,
+  "cup_support_contact": false,
+  "real_contact": true,
+  "invalid_physics": false,
+  "upstream_contact": false,
+  "contact": {
+    "peak_force_n": 180.7540889574337,
+    "all_external_peak_force_n": 180.7540889574337,
+    "peak_body_resultant_n": 180.7540889574337,
+    "max_penetration_m": 0.0,
+    "all_external_max_penetration_m": 0.0,
+    "grasp_penetration_m": 4.6441142120667175e-05,
+    "duration_s": 0.019500000000000045,
+    "first_s": 0.5061999999999525,
+    "last_s": 0.5256499999999503,
+    "first_stage": 0,
+    "first_stage_name": "REACH / CONTACT RESPONSE",
+    "first_payload_held": false,
+    "contact_path_direction": [
+      0.0,
+      0.0,
+      -1.0
+    ],
+    "pairs": [
+      [
+        "primitive_free_ball_geom",
+        "hand_collision"
+      ]
+    ],
+    "robot_geoms": [
+      "hand_collision"
+    ],
+    "robot_bodies": [
+      "hand"
+    ],
+    "force": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "impulse_vector_ns": [
+      -0.28637051829211024,
+      1.2116374788751167,
+      0.06312209137147325
+    ],
+    "contact_impulse_ns": 1.247022255806414,
+    "ball_core_min_distance_m": 0.00025445949226007153,
+    "other_contacts": [],
+    "ball_shell_compression_m": 0.008745540507739928,
+    "rigid_core_overlap_m": 0.0
+  },
+  "events": [
+    {
+      "t": 2.200000000001542,
+      "stage": 1
+    },
+    {
+      "t": 3.5999999999982792,
+      "stage": 2
+    },
+    {
+      "t": 4.039999999997254,
+      "stage": 3
+    },
+    {
+      "t": 7.999999999988025,
+      "stage": 4
+    },
+    {
+      "t": 10.91999999998122,
+      "stage": 5
+    }
+  ],
+  "requested_event_stage": "approach",
+  "requested_event_stage_index": 0,
+  "fixture_triggered": true,
+  "fixture_trigger_time_s": 0.42,
+  "ball_launched": true,
+  "ball_launch_state": {
+    "time_s": 0.4399999999999597,
+    "launch_position_m": [
+      0.5583414229907747,
+      -0.3200374213769594,
+      0.549216197711395
+    ],
+    "target_position_m": [
+      0.5583414229907747,
+      -3.7421376959366506e-05,
+      0.6353495310447284
+    ],
+    "launch_velocity_mps": [
+      0.0,
+      2.4,
+      1.3000000000000005
+    ],
+    "requested_vertical_speed_mps": 1.3,
+    "launch_height_clamped_for_table_clearance": false,
+    "target_was_actual_hand_position": true
+  },
+  "final_stage": 5,
+  "endpoint_error_m": 0.007261004025486677,
+  "lift_m": 0.1477201855098123,
+  "cup_shift_m": 0.0,
+  "cup_tilt_deg": 0.0,
+  "impact_metrics": {
+    "max_lateral_displacement_m": 0.018100571066096156,
+    "max_total_displacement_m": 0.02973982858652017,
+    "recovery_time_s": 1.2000000000019106,
+    "contact_impulse_ns": 1.2466185673175454,
+    "accumulated_contact_impulse_ns": 1.247022255806414
+  },
+  "push_metrics": {
+    "contact_sample_fraction": 0.0,
+    "normal_yield_m": 0.0,
+    "tangential_travel_m": 0.0,
+    "path_progress_m": 0.0,
+    "stage_advanced_during_contact": false,
+    "error_reduction_during_contact_m": 0.0
+  },
+  "payload_top_support": false,
+  "peak_torque_nm": 47.51843124864088,
+  "speed_p95_mps": 0.059530850299264484,
+  "duration_s": 30.00000000043413,
+  "arguments": {
+    "scene": "ball",
+    "output": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_ball_dev01_20261028/ball/legacy",
+    "menagerie": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/menagerie",
+    "model": null,
+    "duration": 30.0,
+    "nominal_speed": 0.07,
+    "mixture": 0.0,
+    "seed": 800,
+    "yaw": 0.0,
+    "shift": 0.018,
+    "width": 0.05,
+    "along": null,
+    "cup_mass": 0.3,
+    "ball_mass": 0.5,
+    "ball_speed": 2.4,
+    "ball_angle": 0.0,
+    "ball_height_offset": 0.0,
+    "ball_vertical_speed": 1.3,
+    "ball_radius": 0.06,
+    "ball_shell": 0.009,
+    "ball_contact_time": 0.012,
+    "ball_contact_damping": 0.75,
+    "ball_target_x": null,
+    "ball_target_y": null,
+    "ball_target_z": null,
+    "push_hold": 3.0,
+    "push_angle": 0.0,
+    "push_height": 0.56,
+    "push_force": 15.0,
+    "push_target_x": null,
+    "push_target_y": null,
+    "push_stroke": 0.12,
+    "push_press": 1.4,
+    "push_retract": 1.2,
+    "corner_height": 0.7,
+    "corner_friction": 0.2,
+    "payload_mass": 0.1,
+    "event_stage": "approach",
+    "event_delay": 0.42,
+    "stiffness": 60.0,
+    "tangent_speed": 0.0,
+    "damping": 26.0,
+    "force_on": 0.3,
+    "contact_tau": 0.07,
+    "release_tau": 0.34,
+    "memory_tau": 0.85,
+    "teacher_force_source": "estimated",
+    "teacher_profile": "none",
+    "force_target": 0.7,
+    "normal_gain": 0.026,
+    "dt": 5e-05,
+    "settle_only": false,
+    "render": false
+  },
+  "teacher_config": {
+    "stiffness": 60.0,
+    "damping": 26.0,
+    "force_on": 0.3,
+    "tangent_speed": 0.0,
+    "contact_tau": 0.07,
+    "release_tau": 0.34,
+    "memory_tau": 0.85,
+    "profile": "none",
+    "force_target": 0.7,
+    "normal_gain": 0.026
+  },
+  "contract": "contact45_v2",
+  "cup_initial_position": null,
+  "simulation_timestep_s": 5e-05,
+  "student_mixture": 0.0,
+  "teacher_called": false,
+  "inputs": "q7,qdot7,nominal_twist6,pose_error6,twist_error6,estimated_joint_load7,estimated_force3,commanded_path_direction3",
+  "source_sha256": {
+    "run_primitive_teacher_v7_20260917.py": "c451135eb4d2bd799bf6a587895d1a2df6a749f8f2a91e41cb45032d7ff0258b",
+    "primitive_contact_scene_v7_20260917.py": "5abe637940618c687c12c37d72b5beebcc1253ff89b7df2244cc8d502a5d5517",
+    "contact_memory_vmc_20260916.py": "b9f3e8003a43d772d65289ccb21a52a8b73d20d150e4b0ef8060532abbecdd89"
+  }
+}

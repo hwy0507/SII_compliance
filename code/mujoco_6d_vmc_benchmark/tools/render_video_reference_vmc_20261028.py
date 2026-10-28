@@ -40,7 +40,7 @@ def main():
     renderer=mujoco.Renderer(model,height=480,width=640)
     proc=subprocess.Popen([str(a.ffmpeg),'-hide_banner','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24',
         '-s','1280x540','-r','25','-i','-','-an','-c:v','libx264','-crf','20','-threads','1',
-        '-pix_fmt','yuv420p','-movflags','+faststart',str(out/'new30_vmc.mp4')],stdin=subprocess.PIPE)
+        '-pix_fmt','yuv420p','-movflags','+faststart',str(out/'vmc_teacher.mp4')],stdin=subprocess.PIPE)
     frames=[]
     try:
         for i,t in enumerate(trace['time']):
@@ -58,7 +58,7 @@ def main():
                                 g.rgba[3]=.18
                 frame.paste(Image.fromarray(renderer.render()),(j*640,60))
             draw=ImageDraw.Draw(frame)
-            draw.text((12,7),f'new30 VMC teacher | {labels[kind]}',font=font,fill='white')
+            draw.text((12,7),f'VMC teacher | {labels[kind]}',font=font,fill='white')
             draw.text((12,33),f't={t:.2f}s | 1x | actual saved trajectory'+
                       (' | RIGHT: transparent guards (render only)' if kind=='rod' else ''),font=font,fill=(180,220,230))
             proc.stdin.write(np.asarray(frame).tobytes())
@@ -69,17 +69,18 @@ def main():
         proc.stdin.close()
         assert proc.wait()==0
         renderer.close()
-    frames[0].save(out/'new30_vmc.gif',save_all=True,append_images=frames[1:],duration=80,loop=0)
-    with Image.open(out/'new30_vmc.gif') as gif:
+    frames[0].save(out/'vmc_teacher.gif',save_all=True,append_images=frames[1:],duration=80,loop=0)
+    with Image.open(out/'vmc_teacher.gif') as gif:
         assert gif.n_frames==len(frames)
         for i in range(gif.n_frames):gif.seek(i);gif.load()
-    subprocess.run([str(a.ffmpeg),'-v','error','-threads','1','-i',str(out/'new30_vmc.mp4'),'-f','null','-'],check=True)
+    subprocess.run([str(a.ffmpeg),'-v','error','-threads','1','-i',str(out/'vmc_teacher.mp4'),'-f','null','-'],check=True)
     write(out/'manifest.json',dict(physics_rerun=False,all_gif_frames_decoded=True,mp4_full_decode=True,
         frames=len(trace['time']),gif_frames=len(frames),fps=25.,playback_speed=1.,
         simulation_interval_s=[float(trace['time'][0]),float(trace['time'][-1])],
         model_sha256=sha(folder/'scene.mjb'),trace_sha256=sha(folder/'trajectory.npz'),
+        teacher_config_sha256=sha(folder/'teacher.json'),teacher=manifest['teacher'],
         render_source_sha256=sha(Path(__file__)),
-        media_sha256={ext:sha(out/('new30_vmc'+ext)) for ext in ('.gif','.mp4')}))
+        media_sha256={ext:sha(out/('vmc_teacher'+ext)) for ext in ('.gif','.mp4')}))
 
 
 if __name__=='__main__':main()

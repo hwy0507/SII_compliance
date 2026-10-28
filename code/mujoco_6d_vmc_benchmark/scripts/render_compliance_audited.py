@@ -465,6 +465,19 @@ def main():
         if np.linalg.norm(place_residual(solution.x)[:3])>.001:
             raise RuntimeError(f'placement offset IK failed: residual={place_residual(solution.x).tolist()}')
         place=solution.x
+    # Optional fixed terminal wrist roll for real-scene demonstration design.
+    # A tilted gripper can otherwise drive its lower finger into the tabletop
+    # while opening. Roll around the tool approach axis so opening is lateral;
+    # this is a common nominal waypoint, never a contact-conditioned policy.
+    # Zero preserves all historical behavior; frozen evaluation uses its own
+    # archived source. Neither collision geometry nor release gates change.
+    place_tool_roll = float(os.environ.get('PLACE_TOOL_ROLL_DEG', '0.0'))
+    if not np.isfinite(place_tool_roll) or abs(place_tool_roll) > 90.0:
+        raise ValueError('PLACE_TOOL_ROLL_DEG must be within [-90, 90]')
+    if place_tool_roll:
+        place[6] += np.deg2rad(place_tool_roll)
+        if not env.model.jnt_range[6, 0] <= place[6] <= env.model.jnt_range[6, 1]:
+            raise ValueError('Terminal wrist roll exceeds the original joint limit')
     # Optional second, purely tangential placement waypoint.  The first
     # place pose establishes real payload/table support near the edge; this
     # waypoint then keeps the gripper closed and slides the supported payload
