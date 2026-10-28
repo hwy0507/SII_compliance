@@ -4,7 +4,14 @@
 - 全61的1854×57固定终端锚点逐数组/标量SSE1108.452722通过，SHAba08d00d；62对照2189980/start38803394、CPU53/7200秒，源逆变换/AST及不透明checkpoint hash保护通过，waiter字节不变。实际62结果待，无新停止门/优化/物理。
 - 全标签62等待2217098/start38807680，auditor与已验证180条原工具字节一致；63仅恢复等待2148110/start38795540，源码逆变换/AST、缺DECISION真实训练拒绝通过，不自动63。全62 loss/原62–64窗口继续，完整59–61失败/原历史通过保留，Goal active。
 - 五GPUv5原身份live，GPU78/96/93/95%含保活，科学完成也继续；Direct不启动34。共享SSD包50成员/1293724字节/SHAf68773f7逐字节/AST核验，收据docs/RL_PARAMETER62_EARLY_ANCHOR_SAVE_20261028.json；大产物仍SSD，非HDD/arm1全备份。
-- 开工/收尾实际fetch/read main818898f2、baselinef6e8f8c，无协议变化，无子agent。
+- 开工实际fetch/read main818898f2、baselinef6e8f8c；收尾main6e09bdc2非RL第三条件九模型全失败/27条评测更新已读，按本轮完整前缀加对方完整正文合并保留，无协议变化/子agent。
+
+## 2026-10-28 — 新三场景学生第三条件九模型审计，原108已27条
+
+- 12:37–12:59原772606/791378保持，45实际样本0–44完整保存，22→27/108；原协调器接续第四条件ESN seed1 worker858600/start29039674。3GiB/swap0/OOM0，观察器exit0不是科学结束，无重复启动。
+- 第三条件九模型8384800保存子步/593源/模型config/hash/原actor-filter收据/指标算术通过。Task/Strict三家均0/3，SPT为NA；E/R/M平均峰矩58.28593/38.58727/40.25385Nm、舒适代理三seed均值75.9040%/100%/100%、机器合规1/3、3/3、2/3。ESN seed2/3于8.80/25.44秒全局穿透中止，其余七条55秒未完成。前三条件27条全失败，不是完整12条件结论；失败保留、不据测试调参。原108/最终六指标/图/contact/全归档待，Goal active。[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
+- 两文件证据包11188字节/SHA256 `aad22475591733af78abc667c495de163df23bfae5799aa7af8ea670fcef4bba`逐成员及远端暂存/最终大小hash核验，已共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_condition002_review_20261028_v1/special_scene_condition002_review_20261028_v1.tar.gz`，不含原始物理。
+- 开工实际fetch/read main476a83fe、baselinef6e8f8c；收尾main818898f2独立RL记录已读并fast-forward保留。无模型/条件/门槛修改、子agent、RL或服务器计算。
 
 ## 2026-10-28 — 完整61、原59–61窗口与准确续训62
 

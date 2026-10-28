@@ -1,5 +1,40 @@
 # 三真实场景采集继续与冻结108入口准备
 
+## 第三条件九模型完整复核（12:59 UTC，27/108）
+
+原772606/start28001859、791378/start28239353保持；12:37:16–12:59:16的45个
+实际样本索引0–44完整保存，22→27/108，原协调器自动进入第四条件`acceptance_003`，
+ESN seed1 worker858600/start29039674，末次3.04秒。3GiB/swap0/OOM0；
+有限观察器正常退出0，原科学服务继续，不重复派发。
+
+第三条件`new30_prospective_20261026_acceptance_002`九模型共8,384,800保存子步，
+复用原审计工具核对593源码、模型/config/hash、原actor/filter收据、dt及指标算术通过。
+这是保存证据复核，不是独立动力学重积分；训练和执行源均未变。
+
+| 方法（各3个seed，仅第三条件） | Task | Strict | 双成功SPT | 平均回合峰矩 Nm | 舒适代理比例 | 机器合规 |
+|---|---:|---:|---:|---:|---:|---:|
+| ESN ridge | 0/3 | 0/3 | NA | 58.28593 | 75.9040% | 1/3 |
+| RNN | 0/3 | 0/3 | NA | 38.58727 | 100% | 3/3 |
+| MLP | 0/3 | 0/3 | NA | 40.25385 | 100% | 2/3 |
+
+舒适代理为逐seed按接触dt加权、再三seed等权平均。E/R/M接触秒数为
+`[1.27195,1.47665,3.49895]`、`[3.75185,4.1195,4.1973]`、`[4.6184,2.1106,4.5189]`。
+ESN seed2/3分别8.80/25.44秒因`global_penetration_exceeded_2mm`中止，seed1完整55秒
+仍在lift；其余六条55秒，MLP seed2停approach，其余carry，均未完成任务。
+前三个测试条件（总共12个）的27条Task/Strict均失败，不是最终完整比较；
+不把较低峰矩/高舒适代理等同任务成功，不据部分测试修改数据、模型或门槛。
+全局双成功SPT参考、完整图表及最终结论仍等待108完整结束。
+
+[第三条件九模型审计](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/CONDITION002_NINE_MODEL_AUDIT.json)
+SHA256 `36e6a85e9414a3a85a08764f0b93ea33ed5e850add97a903171454e9365c3fb2`；
+[45次实际观察](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/CONDITION002_OBSERVATION.json)。
+两文件包逐成员字节及远端暂存/最终大小hash核验，11188字节，
+SHA256 `aad22475591733af78abc667c495de163df23bfae5799aa7af8ea670fcef4bba`：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_condition002_review_20261028_v1/special_scene_condition002_review_20261028_v1.tar.gz`。
+仅小证据，不含原始物理；审计工具仍见首条件归档/Git。完整108、contact补充、全部物理归档
+与最终交付仍待，Goal active。开工实际fetch/read main476a83fe、baselinef6e8f8c；
+收尾main818898f2独立RL更新已读并fast-forward保留，无本任务协议改变或RL工作。
+
 ## 原第三条件继续（12:22–12:32 UTC）
 
 本轮为已核验等待，21个实际样本索引0–20完整保存：原772606/start28001859、

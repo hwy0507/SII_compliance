@@ -6,7 +6,11 @@
 - 全61的1854×57固定终端锚点逐数组/标量SSE1108.452722通过，SHAba08d00d；62对照2189980/start38803394、CPU53/7200秒，源逆变换/AST及不透明checkpoint hash保护通过，waiter字节不变。实际62结果待，无新停止门/优化/物理。
 - 全标签62等待2217098/start38807680，auditor与已验证180条原工具字节一致；63仅恢复等待2148110/start38795540，源码逆变换/AST、缺DECISION真实训练拒绝通过，不自动63。全62 loss/原62–64窗口继续，完整59–61失败/原历史通过保留，Goal active。
 - 五GPUv5原身份live，GPU78/96/93/95%含保活，科学完成也继续；Direct不启动34。共享SSD包50成员/1293724字节/SHAf68773f7逐字节/AST核验，收据docs/RL_PARAMETER62_EARLY_ANCHOR_SAVE_20261028.json；大产物仍SSD，非HDD/arm1全备份。
-- 开工/收尾实际fetch/read main818898f2、baselinef6e8f8c，无协议变化，无子agent。
+- 开工实际fetch/read main818898f2、baselinef6e8f8c；收尾main6e09bdc2非RL第三条件九模型全失败/27条评测更新已读，按本轮完整前缀加对方完整正文合并保留，无协议变化/子agent。
+
+## 2026-10-28 — 原108第三条件完整，27条已审计
+
+原772606/791378保持，12:59完成27/108并自动进入第四条件ESN seed1 worker858600。第三条件九模型8384800保存子步/593源/模型hash/原actor-filter收据及指标算术通过；Task/Strict三家均0/3，ESN seed2/3于8.80/25.44秒穿透中止，其余七条55秒失败。前三测试条件27条全失败不是完整12条件结论，不改模型或判据。45实际观察完整保存，3GiB/swap0/OOM0。11188字节/SHAaad22475小证据包核验共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_condition002_review_20261028_v1/`；非原始物理全归档。完整108/最终图表/contact/全归档仍待，Goal active，见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)，禁止重复派发。
 
 ## 2026-10-28 — 完整61、原59–61窗口与准确续训62
 
