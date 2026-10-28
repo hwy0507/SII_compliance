@@ -35,3 +35,17 @@ PLAN SHA ce5835d29d005870f7a2b8fc00e196562992807a15c877810765b5b065c404a7；REVI
 共享SSD小包 `B/repository/RL_PARAMETER67_WAIT_ADMITTANCE_20261028_184215/SMALL_EVIDENCE.tar.gz`，32成员/1003832字节，SHA256 `33bf8c25497f9dbfd6fca2b78f536490ccc15e52d5f3f5e3f5a1888cb2ad78f5`；逐字节、Python AST、tar成员核验通过。见[收据](RL_PARAMETER67_WAIT_ADMITTANCE_SAVE_20261028.json)与[清单](evidence/RL_PARAMETER67_WAIT_ADMITTANCE_20261028/MANIFEST.json)。这是观察/诊断与在途对照快照，不是完整67结果。大checkpoint/replay/raw仍共享SSD，非HDD或arm1全备份；HDD只原地重写≤1506字节既有LATEST入口。
 
 实际fetch/read main从d8131828到b79ac855832d226a4893482f93c8efe07b1e7903，baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d。已读非RL原机制失败/保存边角状态/阻尼六项在途的新报告并fast-forward完整保留，无本机冻结RL协议变化，无子agent。
+
+## 18:56 UTC补充：原67连续推进与68 loss部署准备
+
+`B/runtime/parameter67_verified_wait_1846_20261028_v1` 的21次观察/独立REVIEW/GUARD_REVIEW已完成。18:46:04–18:56:04原三learner步数2788600/2789595/2790714→2796143/2797108/2798257严格增加，全部原等待器、新A67终端对照与五guard身份保持，无完整/失败。600秒观察自然结束，没有重启科学任务。
+
+同期117guard样本min76/67/70/68%、mean78.982906/89.008547/89.307692/89.324786%、低于50均0，最大间隔5.284767秒。含合成保载，非每瞬时保证；科学完成也保持v5运行，当前非跨重启服务。
+
+`B/runtime/parameter68_loss_preparation_20261028_v1/deploy.py` 静态准备，SHA256 `ca9b5c57ffa137ecf448df3f2d3796e769101948155131394f74ead655ee3824`。只在真实DECISION68及真实68启动后，检查原65–67窗口和VMC/A67全终端报告/独立算术/实际图全部绑定、全部证据hash、三个实际learner PID/start及原四审查源hash，才复制到新的68loss目录、登记并运行7200秒CPU54等待；不启动训练、不重复覆盖。
+
+实际缺DECISION68调用非零拒绝且无68loss目录，AST和原四源hash通过。此时68仍未启动，不能把拒绝检查称为未来成功部署。DEPLOY_PREPARATION_REVIEW保存真实stderr和上述局限，没有虚构科学决定。原四审查源/其SOURCE_REVIEW未改。
+
+共享SSD包 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER67_WAIT68_DEPLOY_20261028_185651/SMALL_EVIDENCE.tar.gz`，12成员/11303字节/SHA256 `595b72635108d09b234fed8dfa1fac4f1ffb6b28292139e0ba5d32c2cef3e9c8`，逐成员字节/hash/AST/tar核验通过。[收据](RL_PARAMETER67_WAIT68_DEPLOY_SAVE_20261028.json)，[清单](evidence/RL_PARAMETER67_WAIT68_DEPLOY_20261028/MANIFEST.json)。仅小证据，非HDD/arm1全备份。
+
+实际fetch/read main40461e74→e58baf9d34c6d47a262139991067788b0bb4e6ea、baselinef6e8f8c，非RL阻尼完整失败/间隙审计新日志及报告已读、fast-forward保留，无本机冻结协议变化。Goal active。
