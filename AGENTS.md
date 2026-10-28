@@ -1,5 +1,15 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 冻结参数55全90前瞻登记，真实53的4m恢复通过
+
+- [最新交接](docs/RL_FROZEN55_REGISTRATION_20261028.md)。在54运行、55训练未启动/完整55不存在时固定原53–55终点55、三方法原30条件、同冻结41 seed2026102638，总90×55秒/123750动作/99000000子步；不按未来结果挑checkpoint/条件/seed，不修改稳定标准。比较41的2m与55的4m差异单列，不作容量因果或泛化结论。
+- 冻结41的21helper原字节保留，20个与当前54公共模块hash一致；新增正式4m helper，evaluator物理loop逐字节一致，严格校验entry23/47双marker和4m全replay。真实完整53三方法精确full learner/replay digest、外部RNG/三动作与native一致、状态不变通过，退出0/0/0，0物理/优化。53物理误请求与缺55check的launch均拒绝；不是实际55恢复。
+- 新冻结55仅恢复waiter3641528/start35932846，固定14400秒，等待未来原55完整归档/审查及退出后check-only；无自动物理。实际冻结拟用释放CPU0/1/2、root3、三方法GPU0，正式训练CPU13–51/GPU1–3不变。原训练55准备2450050、原53–55窗口514418、54归档2116861继续；勿混淆两个55准备。
+- Direct数值阶段完成、不追加34；三参数54原2116858/2116859/2116860继续，05:03完整条件18/17/19。GPUv4原守护保持，即时70/90/70/98%，含合成负载。Goal active，实际55训练/恢复/冻结均未开始。
+- 小证据docs/evidence/RL_FROZEN55_REGISTRATION_20261028；共享SSD包B/repository/RL_FROZEN55_REGISTRATION_20261028_050310/SMALL_EVIDENCE.tar.gz，50890字节、48来源成员逐hash核验，SHA256 `837c7f2fb441ca494722cf53ec86077241f71dad8a96ec5183df6001c99b4a86`。大产物仍共享SSD，非HDD/arm1全备份。
+- 本轮实际查询/fetch/read main `9e5a0aa41c0ccb91a47c7f82bc792475e7a247c2`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无新科学约束变化，无子agent。
+
+
 ## 2026-10-28 — Direct33完整，接受Direct数值收敛阶段，继续三参数54
 
 - [最新交接](docs/RL_DIRECT33_ASSESSMENT_20261028.md)。Direct33完整1369290steps/10914328critic、30×55/noabort；旧1328040 replay/history/930隔离保持，新41250全部成熟/reward重算0误差。archive与source逐SHA一致，fullreview/health/独立保存算术及两图通过。reward−30.902455898，Task/Strict0/0；critic首/末1000 .008725863/.008436733、max.016270868，terminalMAE.027468827/32步TD.025459949，未见loss异常。

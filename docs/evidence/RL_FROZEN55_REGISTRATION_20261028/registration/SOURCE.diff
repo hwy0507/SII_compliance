@@ -1,0 +1,137 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter41_frozen_full30_20261027_v1/evaluate_parameter41_frozen_full30_20261026.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter55_frozen_full30_20261028_v1/evaluate_parameter55_frozen_full30_20261028.py
+@@ -1,4 +1,4 @@
+-"""Frozen complete41 parameter policies on all30 registered training conditions.
++"""Frozen complete55 parameter policies on all30 registered training conditions.
+ 
+ One external action seed per method; no optimization or formal replay writes.
+ Reuse the independently exercised external RNG and native replay implementation
+@@ -17,7 +17,11 @@
+ )
+ 
+ 
+-def main(registration, check_only):
++def main(registration, check_only, expected_cycle=55):
++    if expected_cycle != 55 and not check_only:
++        raise ValueError("Only planned55 may execute physics; validation53 is check-only")
++    if expected_cycle not in (53, 55):
++        raise ValueError("Unregistered parent cycle")
+     reg = json.loads(registration.read_text())
+     os.sched_setaffinity(0, {reg['cpu']})
+     os.nice(10)
+@@ -28,7 +32,7 @@
+     runtime = Path(reg['audit_runtime'])
+     for name, expected in reg['source_hashes'].items():
+         assert sha(runtime/name) == expected, name
+-    assert reg['parent_cycle'] == 41
++    assert reg['parent_cycle'] == expected_cycle
+     assert len(reg['case_ids']) == len(set(reg['case_ids'])) == 30
+     assert reg['action_seed'] == 2026102638
+     assert sha(reg['checkpoint']) == reg['checkpoint_sha256']
+@@ -48,14 +52,22 @@
+     sys.path[:0] = [str(runtime), str(root/'source/tools')]
+     from published_compliance_learner_20261025 import PublishedLearner
+     from published_pair_reduction_learner_20261026 import pair_class, marker
+-    from parameter_replay_capacity_20261026 import replay_class, MARKER
++    from parameter_replay_capacity_20261026 import MARKER
++    from parameter_replay_capacity4m_20261027 import replay_class, MARKER as FOLLOWUP_MARKER
+     from train_published_compliance_20261025 import Replay
+     from validate_published_finite_check_20261025 import digest
+     ck = torch.load(reg['checkpoint'], map_location='cpu', weights_only=False)
+-    assert ck['cycle'] == 41 and ck['boundary'] == 'complete_condition_cycle'
++    assert ck['cycle'] == expected_cycle and ck['boundary'] == 'complete_condition_cycle'
+     assert ck['controller'] == reg['controller'] and ck['protocol_sha256'] == sha(reg['training_registration'])
+     assert ck['replay']['replay_capacity_extension'] == MARKER
+     assert protocol['replay_capacity_stage']['parent_cycle'] == 23
++    followup = protocol['replay_capacity_followup_stage']
++    assert followup['parent_cycle'] == 47 and followup['marker'] == FOLLOWUP_MARKER
++    assert followup['new_capacity'] == 4_000_000 and followup['old_capacity'] == 2_000_000
++    assert sha(runtime/'parameter_replay_capacity4m_20261027.py') == followup['helper_sha256']
++    assert sha(followup['entry_checkpoint']['path']) == followup['entry_checkpoint']['sha256']
++    assert ck['replay']['capacity'] == 4_000_000
++    assert ck['replay']['replay_capacity_followup'] == FOLLOWUP_MARKER
+     replay = replay_class(Replay)(ck['replay']['arrays']['actions'].shape[1], 50, 2026102638)
+     replay.load_state_dict(ck['replay'])
+     replay_digest = digest(replay.state_dict())
+@@ -75,7 +87,8 @@
+         observations = [json.loads(next(stream))['observation'] for _ in range(3)]
+     result = gate(learner, ck, observations, reg['action_seed'], reg['gate_case_id'], digest)
+     result.update(full_replay_restored_exact=True, replay_digest=replay_digest,
+-                  full_learner_digest=initial, checkpoint_sha256=sha(reg['checkpoint']))
++                  full_learner_digest=initial, checkpoint_sha256=sha(reg['checkpoint']),
++                  replay_capacity=4_000_000, historical_entry_cycle=23, followup_entry_cycle=47, validated_parent_cycle=expected_cycle)
+     write(output/('CHECK_ONLY_REVIEW.json' if check_only else 'STARTUP_REVIEW.json'), result)
+     if check_only:
+         assert digest(replay.state_dict()) == replay_digest
+@@ -86,7 +99,7 @@
+         checkpoint_sha256=sha(reg['checkpoint']), action_seed=reg['action_seed'], case_ids=reg['case_ids'],
+         full_learner_digest=initial, full_replay_digest=replay_digest, expected_episodes=30,
+         maximum_actions=41250, maximum_substeps=33000000, optimizer_updates=0,
+-        scope='Prospectively selected complete41 frozen policy on all30 training conditions, one external action seed; not independent training seeds, held-out tests or final ESN comparison'))
++        scope='Prospectively selected complete55 frozen policy on all30 training conditions, one external action seed; not independent training seeds, held-out tests or final ESN comparison'))
+     results = []
+     seed = reg['action_seed']
+     for case in reg['case_ids']:
+@@ -165,9 +178,10 @@
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--registration', type=Path, required=True)
+     parser.add_argument('--check-only', action='store_true')
++    parser.add_argument('--validation-cycle', type=int, choices=[53,55], default=55)
+     args = parser.parse_args()
+     try:
+-        main(args.registration, args.check_only)
++        main(args.registration, args.check_only, args.validation_cycle)
+     except BaseException as error:
+         write(args.registration.parent/('CHECK_ONLY_FAILURE.json' if args.check_only else 'FAILURE.json'),
+               dict(time=time.time(), error=repr(error)))
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter41_frozen_full30_20261027_v1/review_parameter41_frozen_full30_20261026.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter55_frozen_full30_20261028_v1/review_parameter55_frozen_full30_20261028.py
+@@ -1,4 +1,4 @@
+-"""Collect the registered ninety frozen41 episodes without extending their budget."""
++"""Collect the registered ninety frozen55 episodes without extending their budget."""
+ from pathlib import Path
+ import argparse
+ import hashlib
+@@ -21,13 +21,13 @@
+ 
+ 
+ def main(root):
+-    os.sched_setaffinity(0, {52})
++    os.sched_setaffinity(0, {3})
+     plan = json.loads((root/'PLAN.json').read_text())
+     waiting = json.loads((root/'REVIEW_REGISTRATION.json').read_text())
+     assert sha(__file__) == waiting['source_sha256']
+     assert sha(root/'PLAN.json') == waiting['plan_sha256']
+     assert plan['episodes'] == 90 and plan['maximum_substeps'] == 99000000
+-    assert plan['action_seed'] == 2026102638 and plan['parent_cycle'] == 41
++    assert plan['action_seed'] == 2026102638 and plan['parent_cycle'] == 55
+     assert len(plan['case_ids']) == len(set(plan['case_ids'])) == 30
+     deadline = time.monotonic()+21600
+     while True:
+@@ -105,7 +105,7 @@
+             checkpoint_sha256=reg['checkpoint_sha256'])
+         xs = np.arange(30)
+         axes[index, 0].scatter(xs, rewards)
+-        axes[index, 0].set(title=method+' frozen41 reward', ylabel='Episode return')
++        axes[index, 0].set(title=method+' frozen55 reward', ylabel='Episode return')
+         axes[index, 1].scatter(xs, peaks)
+         axes[index, 1].axhline(.2, color='red', linestyle='--', label='Original0.2mm limit')
+         axes[index, 1].set(title=method+' external penetration', ylabel='mm')
+@@ -117,7 +117,7 @@
+         for name in ['REGISTRATION.json', 'CHECK_ONLY_REVIEW.json', 'STARTUP_REVIEW.json', 'EVALUATION.json', 'RESULTS.json', 'FINISHED.json']:
+             path = directory/name
+             inputs[str(path)] = sha(path)
+-    fig.suptitle('Frozen41: all30 training conditions, one action seed per method')
++    fig.suptitle('Frozen55: all30 training conditions, one action seed per method')
+     plot = root/'frozen_full30_results.png'
+     fig.savefig(plot, dpi=140)
+     plt.close(fig)
+@@ -125,7 +125,7 @@
+         total_episodes=90, total_actions=sum(r['actions'] for m in results.values() for r in m['episodes']),
+         total_substeps=sum(r['substeps'] for m in results.values() for r in m['episodes']),
+         new_physics=0, new_optimizer_updates=0, neural_forward_passes=0, convergence_claim=False,
+-        limitation='Complete41 was chosen before its training began; all30 original training conditions and one external action seed per method were fixed in advance. Frozen full30 coverage does not by itself establish training convergence, generalization, independent training-seed robustness, or final SPT/ESN comparison. No condition exclusion, weight promotion, seed addition, or automatic extension.')
++        limitation='Complete55 was chosen before its training began; all30 original training conditions and one external action seed per method were fixed in advance. Frozen full30 coverage does not by itself establish training convergence, generalization, independent training-seed robustness, or final SPT/ESN comparison. No condition exclusion, weight promotion, seed addition, or automatic extension.')
+     (root/'REVIEW.json').write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
+ 
+ 
