@@ -1,3 +1,11 @@
+## 2026-10-28 — 完整70、原68–70审查与准确续训71
+
+- [交接](docs/RL_PARAMETER70_COMPLETE_20261028.md)。70三路自然完成30×55/41250新增/noabort，旧69 replay/history保持、新reward0、网络/optimizer有限，全loss独立算术及实际图通过。I/A/V reward−.570129/−6.801951/−4.596285，TaskStrict18/18、16/15、17/16。A long0900恢复而short0600 .203333mm失Strict，全180/90检查、physical-valid30/29/29，无Task-only遗漏。
+- 原68–70完整独立算术/图审：I近零保护未过，A相邻19.4496%/.9014%、首尾20.1757%未过，V相邻.3573%/.5249%、首尾.1695%描述性reward通过。末段critic尖峰和actor变化保留，尚未整体收敛；原65–67及全部历史保留。
+- 全2094旧终端V SSE4074.470065→3907.730986（−4.0923%），focus2050526改善、其余四退化；A1244.926690→2183.538874（+75.3950%），原66short0600 55.213166→69.519956。新30贡献.344597/.318841高于旧.195669/.109326；全部数组/算术/实际图通过，不作因果或零误差门。
+- 准确70全state/replay/next65536三路恢复通过，DECISION71绑定46证据/SHA cdb67f8b；22:25:14有限71 I2902207/A2902208/V2902211同start42203070、archive2902216启动，实际startup通过。22:30:12steps2927133/2927747/2928729。全71loss2909138/PLAN000ce694与原71–73 2909145/PLANc160b5d6已部署，无自动72，Direct34false，Goal active。
+- 原1200秒/41样本observer自然结束，原科学后续自然完成，未重启。398guard采样min55/61/64/57%、低于50[0, 0, 0, 0]，含合成保载非瞬时保证；科学完成也继续，非重启服务。SSD包241成员/2857652字节/SHA34e58fb4逐字节/AST核验，收据docs/RL_PARAMETER70_COMPLETE_20261028_SAVE.json；大数据SSD、非HDD/arm1全备份。开工main0be97cc8/baselinef6e8f8c实际fetch/read，无子agent。
+
 ## 2026-10-29 — 非RL原拟合十分钟核验41→49
 
 - 观察摘要2638bytes/SHA1055acd9已暂存及最终逐大小/hash核验共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_fit_observation_2150_20261029_v1/V8_FITTING_VERIFIED_WAIT_2150.json`；仅本轮观察，不含在途模型/源码全集，覆盖下条待共享快照。

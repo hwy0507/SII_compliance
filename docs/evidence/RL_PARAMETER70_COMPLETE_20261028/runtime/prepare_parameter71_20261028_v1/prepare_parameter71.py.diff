@@ -1,0 +1,48 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_parameter70_20261028_v1/prepare_parameter70.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_parameter71_20261028_v1/prepare_parameter71.py
+@@ -1,9 +1,9 @@
+ from pathlib import Path
+ import json, hashlib, shutil, subprocess, os, time
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+-old='parameter_capacity_pool30_cycle69_20261026_v1'; name='parameter_capacity_pool30_cycle70_20261026_v1'
++old='parameter_capacity_pool30_cycle70_20261026_v1'; name='parameter_capacity_pool30_cycle71_20261026_v1'
+ OUT=B/'runs'/name; RT=B/'runtime'/name
+-oldrun=B/'runs'/old; oldarc=B/'runs/parameter_capacity_pool30_cycle69_archive_20261026_v1'; prevreview=B/'runs/parameter_capacity_pool30_cycle69_review_20261026_v1'
++oldrun=B/'runs'/old; oldarc=B/'runs/parameter_capacity_pool30_cycle70_archive_20261026_v1'; prevreview=B/'runs/parameter_capacity_pool30_cycle70_review_20261026_v1'
+ def verified_copy(src, dst):
+  src,dst=Path(src),Path(dst)
+  data=src.read_bytes()
+@@ -29,7 +29,7 @@
+ OUT.mkdir()
+ # Scientific gate for one unchanged finite cycle.
+ decision=OUT/'SCIENTIFIC_DECISION.json'
+-write(decision, {'parent_cycle':69,'new_cycles':1,'learner_settings_unchanged':True,'capacity_before':4000000,'capacity_after':4000000,'auxiliary_weights_imported':False,'reason':'Continue latest complete69 for one finite cycle70, retaining 4m append replay and all persisted state/historical markers; no auxiliary weights or convergence claim.','required_review':ref(prevreview/'REVIEW.json'),'required_health':ref(prevreview/'health/DIAGNOSIS.json')})
++write(decision, {'parent_cycle':70,'new_cycles':1,'learner_settings_unchanged':True,'capacity_before':4000000,'capacity_after':4000000,'auxiliary_weights_imported':False,'reason':'Continue latest complete70 for one finite cycle71, retaining 4m append replay and all persisted state/historical markers; no auxiliary weights or convergence claim.','required_review':ref(prevreview/'REVIEW.json'),'required_health':ref(prevreview/'health/DIAGNOSIS.json')})
+ 
+ commands=[]
+ oldjobs=json.loads((oldrun/'LAUNCH.json').read_text())['jobs']
+@@ -37,13 +37,13 @@
+  m=job['controller']; dest=OUT/m; dest.mkdir()
+  parentreg=oldrun/m/'REGISTRATION.json'; p=json.loads(parentreg.read_text())
+  p['resume_parent_registration']=ref(parentreg)
+- p['completed_stage_continuation']['parent_cycle']=69
++ p['completed_stage_continuation']['parent_cycle']=70
+  p['completed_stage_continuation']['review']=ref(decision)
+- trial=p['batch_size_stage']; trial['parent_cycle']=69
+- cp=oldarc/m/'cycle_00069.pt'; assert cp.exists()
++ trial=p['batch_size_stage']; trial['parent_cycle']=70
++ cp=oldarc/m/'cycle_00070.pt'; assert cp.exists()
+  trial['checkpoint']=ref(cp)
+  trial['cycle_review']=ref(prevreview/'REVIEW.json'); trial['health_review']=ref(prevreview/'health/DIAGNOSIS.json')
+- trial['reason']='Latest complete69 fullstate; retain4m replay, all rows/RNG/history and learner settings; finite cycle70.'
++ trial['reason']='Latest complete70 fullstate; retain4m replay, all rows/RNG/history and learner settings; finite cycle71.'
+  write(dest/'REGISTRATION.json',p)
+  cmd=list(job['command'])
+  cmd[1]=str(RT/'resume_cheq_capacity4m_pool30_20261027.py')
+@@ -59,5 +59,5 @@
+ status={m:p.wait() for m,p in procs}; write(OUT/'CHECK_ONLY_EXIT_CODES.json',status)
+ if any(v!=0 for v in status.values()): raise SystemExit(status)
+ write(OUT/'CHECK_ONLY_COMPLETE.json',{'passed':True,'new_optimizer_updates':0,'time':time.time()})
+-write(OUT/'PREPARATION_REVIEW.json',dict(passed=True,time=time.time(),parent_cycle=69,new_cycle=70,convergence_claim=False,plot_inspected=False,checks='Complete69 replay/reward review and health diagnosis; exact70 restore check-only passed',check_only=ref(OUT/'CHECK_ONLY_COMPLETE.json')))
++write(OUT/'PREPARATION_REVIEW.json',dict(passed=True,time=time.time(),parent_cycle=70,new_cycle=71,convergence_claim=False,plot_inspected=False,checks='Complete70 replay/reward review and health diagnosis; exact71 restore check-only passed',check_only=ref(OUT/'CHECK_ONLY_COMPLETE.json')))
+ print(json.dumps({'out':str(OUT),'status':status,'jobs':commands},indent=2))

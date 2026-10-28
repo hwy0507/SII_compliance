@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "time": 1793223327.730005,
+  "mapping": {
+    "00069": "00070",
+    "00070": "00071",
+    "69": "70",
+    "70": "71"
+  },
+  "files": [
+    {
+      "parent": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_parameter70_20261028_v1/prepare_parameter70.py",
+      "parent_sha256": "5d0ff5bf2f5c7ab5081c0234df8d29d834179c112f1e0740860c779a6fe56edc",
+      "name": "prepare_parameter71.py",
+      "sha256": "f7f3d676bb7b2cd76b028445cf04398b7c0306c9929100033248a49dbb83cd7e",
+      "token_coverage": {
+        "00069": 1,
+        "00070": 0,
+        "69": 10,
+        "70": 5
+      },
+      "inverse_mapping_exact": true,
+      "pure_mapping_sha256": "f7f3d676bb7b2cd76b028445cf04398b7c0306c9929100033248a49dbb83cd7e",
+      "explicit_window_enforcement": false
+    },
+    {
+      "parent": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_parameter70_20261028_v1/wait_prepare.py",
+      "parent_sha256": "c4617a04fe06dfeee78236e2becf4b9fcd6857b5734d9215a798209067cb8c9f",
+      "name": "wait_prepare.py",
+      "sha256": "c4617a04fe06dfeee78236e2becf4b9fcd6857b5734d9215a798209067cb8c9f",
+      "token_coverage": {
+        "00069": 0,
+        "00070": 0,
+        "69": 0,
+        "70": 0
+      },
+      "inverse_mapping_exact": true,
+      "pure_mapping_sha256": "c4617a04fe06dfeee78236e2becf4b9fcd6857b5734d9215a798209067cb8c9f",
+      "explicit_window_enforcement": false
+    },
+    {
+      "parent": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_parameter70_20261028_v1/launch_parameter70.py",
+      "parent_sha256": "ec7fdaa20a5ed190059937abcf032faf81c6bc8851fb8dcd343e83fd7a37badd",
+      "name": "launch_parameter71.py",
+      "sha256": "709c6966eb30ca36247baa149bf6bc19aa56b0bc07e928a8d24cdba48b5a9769",
+      "token_coverage": {
+        "00069": 0,
+        "00070": 0,
+        "69": 2,
+        "70": 7
+      },
+      "inverse_mapping_exact": true,
+      "pure_mapping_sha256": "3c63fc372e36e732c6c993f188afaf13b0a27f88506a0291dde502839fb744b2",
+      "explicit_window_enforcement": true
+    },
+    {
+      "parent": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_parameter70_20261028_v1/startup70.py",
+      "parent_sha256": "c295665a77bd350d5c4caeff67d461107362373b5e6cdacd5d0c97a94a366e46",
+      "name": "startup71.py",
+      "sha256": "2de07ce95ea9050660c9b2347a58b7b1030d379ac20435b53f7f0006f7fb0eaf",
+      "token_coverage": {
+        "00069": 0,
+        "00070": 1,
+        "69": 1,
+        "70": 2
+      },
+      "inverse_mapping_exact": true,
+      "pure_mapping_sha256": "2de07ce95ea9050660c9b2347a58b7b1030d379ac20435b53f7f0006f7fb0eaf",
+      "explicit_window_enforcement": false
+    }
+  ],
+  "ast_passed": true,
+  "window_enforcement_added": "# Require the original68-70 window assessment before any finite71 dispatch.\nwindow=B/'runs/parameter_capacity68_70_reward_stability_20261028_v1'\nfor key,name in [('reward_window68_70','REVIEW.json'),('reward_window68_70_saved','SAVED_ARITHMETIC_REVIEW.json'),('reward_window68_70_plot','PLOT_INSPECTION.json')]:\n assert key in decision['evidence']\n assert Path(decision['evidence'][key]['path']).resolve()==(window/name).resolve()\nassert read(window/'SAVED_ARITHMETIC_REVIEW.json')['passed']\nassert read(window/'PLOT_INSPECTION.json')['actual_image_viewed']\n",
+  "scientific_threshold_changed": false,
+  "automatic_training": false
+}
