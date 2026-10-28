@@ -58,3 +58,5 @@ VMC/导纳从完整69保存值提取全部2094条终端，features2094×57，旧
 开工实际fetch/read main265859f88f73e9816c4868de3cb1e6886a94f12b/baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d，无冻结RL源变化，保留另一主机非RL工作。遵循仓库sii-research-sync，无子agent。
 
 共享SSD小包 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER70_ANCHOR_FOLLOWUPS_20261028_213746/SMALL_EVIDENCE.tar.gz`，78成员/979125字节，SHA256 `f748d285a94c0a66f20f55b0bd3a60555296d6d68eb6f56d91da1cf177c8ecf7`，逐成员字节与Python AST核验。[保存收据](RL_PARAMETER70_ANCHOR_FOLLOWUPS_20261028_SAVE.json)。大checkpoint/replay/raw仍在原共享SSD；HDD配额满，仅重写既有紧凑入口，未做HDD/arm1全备份。
+
+收尾实际fetch获main efe3c46e（新增非RL全24恢复记忆诊断与原学习观察），日志和专题更新已读。合并保留双方AGENTS/UPDATE_LOG新增原字节和共同历史，无冻结RL源改动；baseline仍f6e8f8c。该同步补充晚于小证据包，不冒充包内内容。

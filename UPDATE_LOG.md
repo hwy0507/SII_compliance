@@ -5,6 +5,15 @@
 - 原70全loss899342、原68–70窗口1085142继续；65–67失败/历史通过保留，Direct34false，Goal active。126guard样本min71/64/64/69%、低于50全部0；含合成保载非瞬时保证，科学完成也继续v5、非重启服务。
 - SSD包78成员/979125字节/SHAf748d285逐字节/AST核验，收据docs/RL_PARAMETER70_ANCHOR_FOLLOWUPS_20261028_SAVE.json；大产物仍共享SSD、非HDD/arm1全备份。开工main265859f8/baselinef6e8f8c实际fetch/read，无子agent。
 
+## 2026-10-29 — 非RL恢复记忆的低估与残留同时定位
+
+- 原21:25:45–21:35:45UTC有界观察正常结束，21次同1089228/start31715901 live、active，23→31/75且各候选更新增长；最后seed03 RNN candidate04到1184，内存1147834368bytes。观察器exit0，原科学继续，不因观察结束重启；完整摘要V8_FITTING_VERIFIED_WAIT_2125。
+
+- [报告补充](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)。实际全24train末50帧/三seed精确回放，独立math.fsum复算72组bias/RMSE及24组teacher均值/尺度负载最大值通过。三描述阈值均rod8/8、ball7/8、corner0/8整个尾窗近零估计负载，不作为接触或成功门。
+- ball02/07近零尾段分别12.32/11.04秒，teacher仍约.0703/.0783垂向归一化动作、ESN持续低估；ball03/06却高估、rod末teacher近零而ESN残留。全体正负结果保留，不据两个样本统一拉长记忆。已核ESN固定leak/禁止纯context读出与teacher按进展/意图衰减的状态机制不同；名义最长2秒不等于网络记忆上限，仍待真实闭环验证因果与修复。
+- 新诊断首试旧actor属性兼容检查在写输出前拒绝，改读真实checkpoint schema后自然success/3.696秒；无冻结源、模型、gate更改或refit。21:33:15原1089228/start31715901 active，29/75完成、RNN seed02 candidate04更新1428。原600秒观察在途，无新训练/仿真；仍须75/9审计→18→108六指标，Goal active。
+- 开工实际fetch/read maindd5d76da/baselinef6e8f8c，上一轮学习诊断属progress，本轮新全体记忆证据进一步改变排查方向。新证据仅本机待共享；原5037e93a源码/诊断共享不包含此后补充，归档以后续收据为准。无RL/子agent/服务器计算/删除，保留无关文件。
+
 ## 2026-10-28 — 完整69审查与准确续训70
 
 - [交接](docs/RL_PARAMETER69_COMPLETE_20261028.md)。69三路各30×55/41250新增/noabort，旧68 replay/history保持、新reward重算0、网络/optimizer有限；全loss独立算术与实际图通过。reward I/A/V−.603698/−6.863821/−4.620539，TaskStrict18/18、15/15、17/16。I/A reward变化仍大、critic有限尖峰保留，尚未整体收敛。
