@@ -7,6 +7,13 @@
 - 71全loss四源/deploy静态就绪，49–70保持追加71/配对70→71/原窗口保持，增加原68–70完整review+独立算术+实际图绑定；真实缺DECISION71拒绝，无71loss run或训练。原70/原68–70与71仅恢复继续，Direct34false，Goal active。
 - SSD补充包37成员/943450字节/SHA8c94db83逐字节/AST核验，收据docs/RL_PARAMETER70_EARLY_LOSS_WAIT_20261028_SAVE.json；大产物SSD，非HDD/arm1全备份。开工main74eaff89/baselinef6e8f8c实际fetch/read，无子agent。
 
+## 2026-10-29 — 非RL闭环诊断分窗修正
+
+21:47:44UTC原队列40/75完成、seed01 MLP candidate06接续。科学f5b4b647已push核远端；同commit1209文件7795179bytes/SHA8bf275f2源码小证据和准确报告已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_closure_window_source_20261029_v1/`，收据V8_CLOSURE_WINDOW_SHARED_RECEIPT。原训练继续，非学生闭环通过，Goal active。
+
+- [补充](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)：未绑定的18 reviewer改50帧互斥窗，旧源保留；9组漂移/全24train/独立标量算术及4负例通过，未启动18拒绝无输出，完整18正向待。不是旧闭环退化原因，不改历史hash或冻结源。
+- 21:46UTC原1089228 active、39/75完成，seed01 RNN candidate06到1040更新，3GiB/swap0/OOM0。原18准备196源码hash保持，勿重复训练；后续75/9审计→18失败分析→108。新代码/证据仅本机待共享，Goal active，无RL/子agent/服务器计算。
+
 ## 2026-10-28 — 参数70全2094终端基准与71仅恢复准备
 
 - [交接](docs/RL_PARAMETER70_ANCHOR_FOLLOWUPS_20261028.md)。原70三learner身份保持，21:36steps2894151/2894940/2895977，各30sampler、无完整/失败。新全69的2094×57 V/A锚点精确、独立SSE4074.470065/1244.926690，0新前向；原focus/历史保持，70预期2124。V1368498/start41899909、A1368511/start41899910等待完整70，PLAN da7e9b37/aa1f63b1、CPU53/7200秒，实际对比待。
