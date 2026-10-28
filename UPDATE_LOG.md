@@ -1,5 +1,8 @@
 ## 2026-10-29 — 非RL原机制完整失败、保存状态定位与保留静态增益的阻尼对照
 
+- 完整阻尼六项733文件/605859840bytes已本机逐成员及共享暂存/最终SHA核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_damping_controls_20261029_v1/FULL_PROBE.tar`，SHA842d5a475ff7a1b917ec165ace0f8b28f4acb4091501a063f42ea2eabef4a7d0，含全部失败/原始物理/运行源，不含稍后图与几何审计，无删除。
+- 18:48 UTC最终覆盖：阻尼六项18:42:51自然结束，五train合格、office55秒carry双失败/actorfilter0，无在途模拟器/新30/拟合/108。ball00/01/04尾速.000154439/.012583474/.000272113，ball01仍有较长尾段波动。三完整office全帧保存几何审计（原v6平均输入成功/归一化失败/阻尼失败），同MJB、各1375帧精确actor、0物理积分；原v6投影重叠时37帧正底面间隙，两失败0，阻尼末段carry底面低于边角8–14mm。失败接触帧的估计路径反向力多数低于原恢复阈值；定位恢复触发/间隙失配，非已证明单一因果。全部数组/原资格/实际图保留，不直接重训掩盖教师失败，Goal active。
+- 科学1be3c9e6和安全合并b79ac855已正常push/远端核验；保留远端d8131828独立RL更新，AGENTS/UPDATE_LOG顶部冲突按双方原字节+共同历史核验。源码/选定证据1119文件/3773152bytes/SHA18e4f8fc已逐Git blob/大小/模式及共享暂存/最终hash核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_damping_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。非全仓库/物理/模型备份，不含后来完整阻尼与几何审计；完整物理归档另记。
 - [交接](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。原恢复+归一化六项完整，五train合格、office55秒仍carry双失败，actor/filter回放0。末250z误差−13.334510mm，未采新30/拟合/108。完整733文件/608839680bytes/SHAdaa832c524b98a31409d454e853728443db92ab9fcdacc3275d301bfcdf48a54已逐成员、共享暂存和最终hash核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_legacy_units_controls_20261029_v1/FULL_PROBE.tar`，保留全部失败，无删除。
 - 新保存状态渲染固定24/46/54秒、同MJB/0物理积分，实际PNG已看：候选46/54秒物块顶边角，接触距离−.023102/−.029099mm；历史54秒已retreat。前向几何不替代力/动力学回放，保存hand重建最大差2.08微米。原v6与归一化三train ball配对及精确actor回放通过，ball01尾速.035079899→.003880211，ball04 .028606792→.000676317；ball00末窗口轻退化仍通过，完整保存。
 - 归一化降低动态和静态读出，新候选相对原v6只把平移虚拟阻尼加倍，保留历史稳态映射/恢复/velocity1/平均。8000子步独立积分0、恒输入静态动作差1.8e−16、孤立近零平衡点谱半径<1；非耦合稳定证明。相对直接前驱是归一化恢复+阻尼两变化，不冒充单参数。

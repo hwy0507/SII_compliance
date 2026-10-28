@@ -3,7 +3,46 @@
 本轮沿用三真实特化场景、相同训练身份及原门槛，检查教师动作读出，而不是调整ESN以掩盖教师失败。
 目前没有新的合格30条数据、学生训练或108主矩阵结果；旧失败全部保留。
 
-## 18:34 UTC：原恢复机制仍失败，保存状态定位物块顶边角
+## 18:48 UTC：阻尼完整六项未修复，越障间隙与恢复触发的直接证据
+
+阻尼六项于18:42:51.746 UTC自然结束，服务inactive、无在途模拟器。五train全部资格合格，
+office000仍完整55秒carry、Task/Strict false，actor/filter回放0；不能推广到新30/拟合。
+ball00/01/04末窗口最大速度为0.000154439、0.012583474、0.000272113m/s。
+ball01虽过原末窗口，较长尾段仍有波动，不能称整体稳定。保存轨迹配对及图已实际检查。
+[完整六项](evidence/NONRL_INTENT_RECOVERY_20261029/DAMPING_COMPLETE_REVIEW.json)，
+[三ball配对](evidence/NONRL_INTENT_RECOVERY_20261029/DAMPING_TRAIN_COMPARISON.json)，
+[实际曲线](evidence/NONRL_INTENT_RECOVERY_20261029/damping_ball_speed.png)。
+
+完整733文件、605859840字节已逐成员及共享暂存/最终大小和hash核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_damping_controls_20261029_v1/FULL_PROBE.tar`，
+SHA256 `842d5a475ff7a1b917ec165ace0f8b28f4acb4091501a063f42ea2eabef4a7d0`。
+[共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/DAMPING_SHARED_RECEIPT.json)。无删除，稍后图/几何审计另行版本化。
+
+新增三条完整office保存状态审计：**原v6平均输入成功教师**（不同于前节不平均的历史教师）、
+归一化失败教师、阻尼失败教师。MJB/hash一致，各1375帧actor精确回放；只用保存qpos/mocap
+重建前向几何，0物理积分，接触真值不进入actor或拟合。
+[完整几何与控制量](evidence/NONRL_INTENT_RECOVERY_20261029/PAYLOAD_CLEARANCE_REVIEW.json)，
+[全部数组](evidence/NONRL_INTENT_RECOVERY_20261029/payload_geometry_and_control.npz)。
+
+| 45秒后且仍carry | 原v6成功 | 归一化失败 | 阻尼失败 |
+|---|---:|---:|---:|
+| 帧数 | 189 | 251 | 251 |
+| 物块底面相对边角顶面的范围 mm | −16.111至+0.983 | −15.411至−14.341 | −13.683至−8.142 |
+| 重建物块—边角接触帧比例 | 53.44% | 100% | 89.64% |
+| 接触帧中估计路径反向力超过原阈值的比例 | 22.77% | 7.17% | 8.44% |
+
+原v6在carry且水平投影重叠时有37帧取得正垂直间隙（48.28–50.68秒内），两失败版0帧。
+负底面间隙本身不等于碰撞，表中接触另外由MuJoCo前向几何重建，时间对齐是保存步末几何与步前控制。
+原v6较早结束carry，三组窗口长度不同；这些是退化定位，非配对因果估计/独立动力学。
+
+本轮把问题进一步定位到**持续边角接触下的脱离间隙与恢复触发**：原恢复依据沿路径的估计反向力，
+但这两失败轨迹多数真实接触帧未超过该阈值，不能把接触真值或边角几何喂给actor掩盖问题。
+“成功依赖瞬态越障、稳定化改变接触过程”是待验证机制，不能仅凭关联定因果。
+后续先分解接触阶段的估计受力方向、参考位姿误差、恢复激活及抬升平衡；不继续无依据地全局降增益，
+不直接重训ESN。任何新控制更改需独立版本/有限登记/三场景原资格与回归审查，保留全部失败。
+新30、公平学生学习和108仍未开始，Goal active；不把旧矩阵或本轮局部通过称新主结果。
+
+## 前轮18:34 UTC：原恢复机制仍失败，保存状态定位物块顶边角（在途状态已过时）
 
 原恢复机制+匹配归一化的六项已完整结束，五train均合格，但office000完整55秒仍carry、
 Task/Strict均false，actor/filter回放0。[完整审查](evidence/NONRL_INTENT_RECOVERY_20261029/LEGACY_UNITS_COMPLETE_REVIEW.json)。
@@ -48,7 +87,13 @@ CPU100%/3GiB/swap0/线程1，原队列已自然结束；同五train+已看office
 目前主矩阵尚未修复；Goal active，无RL/子agent/服务器计算。当前12为已检查回归，不能叫unseen。
 
 本轮实际fetch/read main e6df2f8b、baseline f6e8f8c；初次fetch网络失败，后实际成功，未用缓存冒充最新。
-新源码/图与在途阻尼目前仅本机/待Git发布，不在上述完整legacy物理包中。
+科学提交`1be3c9e6f1a9515211d9ae8f1f477c5badaa3dbb`及保留远端独立RL更新的合并`b79ac855`已正常push并核远端。
+该科学提交源码/选定证据1119文件、3773152字节已逐Git blob/大小/可执行位及共享暂存/最终hash核验，
+保存于`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_damping_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`，
+SHA256 `18e4f8fc43ceeebe5183cf4863c16ff08bb6d674b816d4c15345ff00bc9d4455`。
+[源码共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/DAMPING_SOURCE_SHARED_RECEIPT.json)。
+不含在途阻尼物理，也不是全仓库/环境/模型备份。根源码与冻结副本在1375保存观测上输出字节一致，
+全部登记源保持，[重放收据](evidence/NONRL_INTENT_RECOVERY_20261029/DAMPING_FROZEN_ACTOR_REPLAY.json)。
 
 ## 前轮18:14 UTC：读出恢复完整失败，定位持续边角接触（在途状态已过时）
 
