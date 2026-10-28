@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL速度换算完整对照，五训练合格但综合未修复
+
+- 最新[交接](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。intent030原六项已全结束，ball01尾速.025616929超.02、office双失败。九训练轨迹精确回放发现基础读出换算增益2/2/1.6；不单凭不同分母断言实现bug。只对齐教师归一化分母的新六项已完整：五训练全合格，ball01尾速降至.000245490，office55秒仍carry/TaskStrict false，无新30/拟合/108。
+- 新棍推接触4.734、让位4.84、蹭过7.84、持续回位10.20秒，早于12.80秒撤棍。office末250帧位置门0、姿态1、速度.996，平均z误差−12.223260mm、恢复激活.605499；不能以特化通过冒充综合修复。两组全部原始物理/失败/源各732文件已共享核验，见交接收据；无删除。
+- 唯一新队列`sii-special-teacher-full-velocity-v1-20261029.service`，parent1007482，17:56:42 UTC开始；`outputs/special_teacher_full_velocity_20261029_v1`登记8579e7b7。只恢复velocity_weight .75→历史1，保留匹配尺度/平均/平衡点机制/intent.03/原release，400步同历史状态/记忆及读出算术通过。原五train+office000六项，CPU100%/3GiB/线程1/swap0，禁止改绑定源码或重复启动。
+- 六项完整后用通用reviewer审查；全部通过才新30→资格→共同24+6/12候选/三seed学习→真实场景学生闭环→当前12×9回归108/六指标。旧v6绑定18/108不得用，验证08/09不调参、office动作不训练，当前12非unseen。Goal active，主矩阵尚未修复，无RL/子agent/服务器计算。
+- 实际fetch/read main60db98f9→ea21d0b2、baselinef6e8f8c，独立RL更新fast-forward保留。归档路径均`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/`下独立目录；新full_velocity在途仅本机。
+
 ## 2026-10-28 — 原66连续十分钟推进与65终端误差集中诊断
 
 - 原66在17:23:44–17:33:44的21次实际观测中，三learner/归档/全loss/终端/标签/67仅恢复/原65–67窗口和五guard身份保持，steps2733155/2733931/2735075→2740891/2741523/2742687严格增长，无完整/失败。600秒observer正常结束，不重启科学任务，Goal active。

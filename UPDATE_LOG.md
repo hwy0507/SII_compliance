@@ -1,3 +1,12 @@
+## 2026-10-29 — 非RL教师速度换算对照完成，五训练通过但综合仍失败
+
+- [完整报告](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。intent030六项完整：ball01尾速.025616929m/s超原.02，office完整55秒双失败。九条实际训练轨迹actor回放0，发现教师内部归一化相对公共尺度产生2/2/1.6分量增益；仅此不能断言单位bug，未改公共filter/物理/执行器。
+- 对齐教师分母后完整六项：五训练合格，ball00/01/04尾速.000171074/.000245490/.000028759，ball01最后10秒RMS .011372676→.000447444；ball00微幅退化保留。棍推实际接触4.734/让位4.84/蹭过7.84/回位10.20<撤棍12.80。office仍carry、Task/Strict false，末250帧位置门0/姿态1/速度.996；actor/filter回放0，未宣称ESN或主矩阵修复。
+- 新只读配对图/指标审计与实际图目视检查完成。初次时间浮点容差1e−12过严拒绝，改为2e−11（远小于物理子步）后通过，未改资格门/物理重跑。所有旧失败保留，没有新30/拟合/108。
+- 唯一接续`sii-special-teacher-full-velocity-v1-20261029.service`，parent1007482，17:56:42 UTC开始，登记8579e7b7；只恢复velocity_weight .75→历史1，保留匹配尺度/平均/平衡点机制/intent.03/原release。400步同历史状态/记忆和读出算术通过，原五train+已看过office000有限六项，3GiB/CPU100%/单线程/swap0。六项全过才新30，禁止重复/绑定源热改，Goal active。
+- 两组完整物理共享均经本机逐成员及远端暂存/最终核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_intent030_controls_20261029_v1/FULL_PROBE.tar`，614789120字节/SHA c7626aa3；同根`nonrl_velocity_units_controls_20261029_v1/FULL_PROBE.tar`，608860160字节/SHA ceeb6262；各732成员，完整SHA见收据。新full_velocity与配对图仅本机/仓库，未假称全共享，无删除。
+- 开工实际fetch/read main60db98f9→ea21d0b2、baselinef6e8f8c；独立RL更新已fast-forward保留。收工重读AGENTS，源AST及diff通过。无RL操作、子agent、服务器计算、验证调参或office标签拟合，当前12仅回归不是unseen。
+
 ## 2026-10-28 — 原66连续十分钟推进与65终端误差集中诊断
 
 - 原66在17:23:44–17:33:44的21次实际观测中，三learner/归档/全loss/终端/标签/67仅恢复/原65–67窗口和五guard身份保持，steps2733155/2733931/2735075→2740891/2741523/2742687严格增长，无完整/失败。600秒observer正常结束，不重启科学任务，Goal active。
