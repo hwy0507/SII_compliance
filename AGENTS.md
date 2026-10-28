@@ -2,6 +2,8 @@
 
 ## 2026-10-29 — 非RL首条件九模型独立核验，主矩阵仍未修复
 
+科学d05a6636的4文件增量源码/准确报告/审计已逐Git blob及远端暂存/最终大小hash核验，13179bytes/SHA6439c0f8，`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition000_20261029_v1/DELTA_SOURCE_AND_EVIDENCE.tar.gz`，见V8_CONDITION000_SHARED_RECEIPT。9e4d6c57独立RL更新已安全合并，两份日志完整保留；无在途源修改。
+
 - [当前交接](docs/NONRL_V8_FIRST_CONDITION_REPAIR_PROGRESS_20261029.md)。原108首条件9/9全部Task/Strict=false，8,486,400保存子步/源hash/actor-filter收据/指标复算通过，审计SHA5359a9af；不是统计错误或完整108结论。两个ESN穿透abort完整保留，SPT仍NA/等待完整矩阵。
 - 新`review_ball_coverage_probe_20261029.py`完成实际轨迹的接近/carry/return方向与搬运目标差检查，八项失败保留，不仅检查环境配置。真实旧ball00正向与反向/缺阶段/错目标/NaN/实际未启动拒绝通过；0新物理，v3绑定源保持。真实新八球review尚待，不替代三场景公平训练。
 - 23:40:56UTC原1172675/start32623702继续、10/108、condition001 RNN seed1到12.04s；用户服务active/596717568bytes/3GiB/swap0/OOM0，不重启。第十条未含在首九独立审计。先完整108审计到原根FROZEN108_AUDIT.json并确认inactive，再有效八球v3 --run及新reviewer，后据真实结果修共同数据/学习。Goal active，无RL/子agent/服务器计算。

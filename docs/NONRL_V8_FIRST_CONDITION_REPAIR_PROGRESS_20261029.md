@@ -1,5 +1,13 @@
 # 非RL首条件九模型核验与后继补采检查
 
+本轮增量代码及小证据已逐Git blob、暂存及最终大小/SHA核验共享到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition000_20261029_v1/DELTA_SOURCE_AND_EVIDENCE.tar.gz`。
+科学commit `d05a66360c768530d963bce21a0f3a0d2432f993`，4文件/13179bytes，SHA
+`6439c0f81de71fba055dcd652396b2cb75dceb9981fe1b2213b6740e4f39c1f8`。
+见[收据](evidence/NONRL_INTENT_RECOVERY_20261029/V8_CONDITION000_SHARED_RECEIPT.json)。
+包内报告是该科学commit准确版本，不含本段后补说明/合并日志或在途108原轨迹。
+这覆盖文末“待同步”快照；依赖源码仍由原完整源码包和Git提供。
+
 **主矩阵尚未修复。** 原108继续，首条件九模型全部Task/Strict失败；本轮完成了该条件
 保存证据的独立复核，并补齐真实场景覆盖探针的结果检查入口，没有重新训练或重启仿真。
 承接[同教师历史诊断](NONRL_V8_MATCHED_HISTORY_AND_COVERAGE_20261029.md)。

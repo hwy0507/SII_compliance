@@ -1,5 +1,7 @@
 ## 2026-10-29 — 非RL首条件九模型独立核验与补采检查
 
+- 科学d05a6636的4文件增量源码/准确报告/审计，13179bytes/SHA6439c0f8，已逐Git blob及远端暂存/最终大小hash核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition000_20261029_v1/DELTA_SOURCE_AND_EVIDENCE.tar.gz`；见V8_CONDITION000_SHARED_RECEIPT。不是原108轨迹全集。收尾main9e4d6c57独立RL更新已读并经7c86b400安全合并，完整保留双方日志；冻结运行源未变。
+
 - [交接](docs/NONRL_V8_FIRST_CONDITION_REPAIR_PROGRESS_20261029.md)。九模型原条件000全部Task/Strict=false，保存8,486,400子步、source/config/checkpoint/MJB及actor/filter收据/六指标算术核验通过，审计SHA5359a9af。失败真实保留，主矩阵未修复；无BOTH成功故SPT NA，不提前全局T_ref/排名。
 - 新八球reviewer验证真实canonical方向和实际carry位移、阶段到达及原接触/安全资格；旧ball00正向和反向/缺阶段/错目标/NaN/实际未启动拒绝通过，v3绑定源未改、0新物理。八个新物理结果尚无；原108完成/全审/inactive后才执行有效v3，再review并决定三场景共同数据修复。
 - 23:40:56UTC原用户1172675 active、10/108，第二条件RNN seed1真实推进12.04s/approach；内存596717568bytes/3GiB/swap0/OOM0，无重复或修改在途源。第十条未含在首九独立审计；原完整108继续，Goal active，未宣称teacher/学生开发通过等于主矩阵修复。
