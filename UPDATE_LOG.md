@@ -1,3 +1,10 @@
+## 2026-10-28 — 参数70全2094终端基准与71仅恢复准备
+
+- [交接](docs/RL_PARAMETER70_ANCHOR_FOLLOWUPS_20261028.md)。原70三learner身份保持，21:36steps2894151/2894940/2895977，各30sampler、无完整/失败。新全69的2094×57 V/A锚点精确、独立SSE4074.470065/1244.926690，0新前向；原focus/历史保持，70预期2124。V1368498/start41899909、A1368511/start41899910等待完整70，PLAN da7e9b37/aa1f63b1、CPU53/7200秒，实际对比待。
+- 全标签70 waiter1235714/start41876142/PLAN37eb5e95已部署，通用auditor逐字节保持；真实不完整70拒绝且无输出。71仅恢复1393879/start41904388/REGdc665e2d，待完整70后全state/replay/next65536 check-only，无71训练。71启动入口额外绑定原68–70审查/独立算术/实际图，真实缺DECISION71拒绝。周期映射逆变换/AST/输入hash通过，原5%等科学阈值不变。
+- 原70全loss899342、原68–70窗口1085142继续；65–67失败/历史通过保留，Direct34false，Goal active。126guard样本min71/64/64/69%、低于50全部0；含合成保载非瞬时保证，科学完成也继续v5、非重启服务。
+- SSD包78成员/979125字节/SHAf748d285逐字节/AST核验，收据docs/RL_PARAMETER70_ANCHOR_FOLLOWUPS_20261028_SAVE.json；大产物仍共享SSD、非HDD/arm1全备份。开工main265859f8/baselinef6e8f8c实际fetch/read，无子agent。
+
 ## 2026-10-29 — 非RL恢复记忆的低估与残留同时定位
 
 - 21:38:20UTC同原1089228 active，33/75完成、seed01 RNN candidate05更新2616，1031184384bytes/3GiB/swap0/OOM0。科学a6150123经安全合并远端265859f8至efe3c46e已正常push并核远端，双方日志/共同历史逐字保留。准确科学commit1205文件7788848bytes/SHAe620bcee与9907bytes/SHA1626795d报告均已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_memory_diagnostic_source_20261029_v1/`，收据V8_MEMORY_DIAGNOSTIC_SHARED_RECEIPT；不含在途学生/后补收据。Goal active，主矩阵未完成。
