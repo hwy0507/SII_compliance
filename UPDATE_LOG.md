@@ -8,6 +8,17 @@
 - 训练入口新增190文件隔离源码快照、输入/候选/完成checkpoint哈希；实际trainer导入和故意破坏快照的负向预检通过。旧九checkpoint在新rod00的500观测新旧actor输出逐数组一致；冻结ESN差异为未启用state_delta分支，新九模型全重放仍待。新增全拟合审计覆盖数据重建/候选预算/神经曝光计划/选模/冻结actor，尚未冒称新正式审计已执行。
 - 开工实际查询/fetch/read main05fa61c95b1064d83bf05bd05047e101b8b81bc5、baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d，无非RL新约束。完整v4包1643845372字节/SHA1f64c6c23b063637a6a6eb221864face033a11666ef8dadd7dfea76b52aa7705，五例包287478102字节/SHAaa7230edb82d31de52588677a27be64dc82f9ef4c10d89b9349d0cd07a34acd7，本地保留/服务器归档核验待补，不含live v5 raw。无子agent、不动RL/无关文件。
 
+## 2026-10-28 — 参数57完整、VMC全旧终端误差转移、准确续训58
+
+- 发布后补充：08:36:29瞬时GPU55/0/95/0保留；立即复核86/94/94/70，原guard身份保持。固定60次再查最低73/67/70/61%、均值85.816667/90.25/92.516667/89.316667%，无再次低于50、无重启，不宣称永久瞬时保证；补充数据见最新交接。
+
+- [最新交接](docs/RL_PARAMETER57_COMPLETE_20261028.md)。完整57各30×55秒/41250新增/noabort，旧全replay/history/4m marker保持，reward重算0、网络/优化器有限；全loss独立算术与图通过。I/A/V reward−4.206100/−13.588546/−2.811774，Task/Strict18/16、13/11、17/17；critic末1000为2.759479/1.971112/.688306。A尾段退化、I尖峰仍在，原56–58待58，未收敛。
+- VMC全部旧1704固定终端SSE6276.914539→10668.293992（+69.9608%）；两个旧focus改善，但第49轮short0200成功样本critic4回归占净增量87.7055%。精确输入/权重RNG不变、health复现、独立保存算术/图通过。输入诊断显示49/55/56 canonical近但动作不同且56新成功critic0 mask0，不作完全状态混叠或直接梯度归因，零训练改动。
+- 准确57全learner/replay/下一65536恢复通过，有限58启动I1846052/A1846053 start37173515、V1846054/start37173516，archive1846055/start37173517。真实startup已通过新增1000/1000/2000，旧2387898/2388500/2389500全保留、新reward0误差、各30sampler。完整58 loss1862646/start37177502等待，无自动59。
+- 08:33原58约2391413/2392086/2393177steps，冻结55原三evaluator完整15/15/14继续，原56–58统计和GPUv4均身份live，GPU81/89/91/93%含保活。Direct不启动34，科学结束也保持guard，Goal active，无子agent。
+- 本轮只读观察session19485在08:21:50后返回143、原因未明，保留记录；科学57此前正常完整退出，其余原审查/恢复/guard独立复核live，未重启。开工main5780d89d/baselinef6e8f8c已fetch/read；收尾main05fa61c9非RL新增交接已读并fast-forward保留，不改RL runtime。
+- 共享SSD本轮小包101成员/888423字节、SHAbfc840fa06220540747f9cd0e273d8131cc6f8f460b9c5e0cda686b52a09d678逐成员/AST核验，收据docs/RL_PARAMETER57_COMPLETE_SAVE_20261028.json；大产物仍共享SSD，现有HDD最新入口已更新，非HDD/arm1全备份。
+
 ## 2026-10-28 — 原30完整诊断、棍推读出修正四例通过、同条件v4重采
 
 - 收尾补充：自动审批通道恢复后两份完整包上传、远端大小/SHA核验一致，已发布到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_recollection_20261028_v3/`，ARCHIVE_RECEIPT记录范围，不含live v4 raw。科学b4081df7已push；fetch/read新增main5780d89d的RL56/57/58记录后正常合并2c5b9bcb并push，完整保留双方日志，采集源码未改。下方“暂未归档”为此前故障时快照，已解决。
