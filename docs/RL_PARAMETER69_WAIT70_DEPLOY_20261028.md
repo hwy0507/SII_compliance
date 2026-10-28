@@ -1,5 +1,17 @@
 # 第69轮连续观察与第70轮loss部署准备
 
+## 20:55:19 UTC补充：十分钟连续等待与在途loss
+
+20:45:19–20:55:19，21次原15进程身份全保持、三路steps每次增加：I/A/V 2870751/2871785/2873145，新增7451/7586/7905。
+完整69仍未结束，无失败；本轮有限600秒observer已正常退出，正式learner/归档/原六等待器和五guard继续。上一轮为progress，本轮为verified wait并保存数值健康快照。
+20:45附近各最近1000条原始optimizer字节已保存并核其仍是原日志连续片段；critic均值1.637003/1.202734/.745161，最大7.845807/2.280715/5.904710，actor/critic无非有限值。
+这只是描述性在途尾段，不替代全69loss/health/原68–70稳定窗口。奖励/物理/优化器和历史失败保持，无70训练或重复审查。
+同期117条guard最低70/59/66/66%，低于50计数[0, 0, 0, 0]，最大间隔5.265257秒；含合成计算，科学结束也继续v5。
+
+[本轮证据](evidence/RL_PARAMETER69_VERIFIED_WAIT_20261028/MANIFEST.json)，[收据](RL_PARAMETER69_VERIFIED_WAIT_SAVE_20261028.json)。
+共享SSD包 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER69_VERIFIED_WAIT_20261028_2045/SMALL_EVIDENCE.tar.gz`，10成员/143652字节/SHA256 `3fa4c997a1748488699fbf4a4a0ff015698a3eb3336c309a1ee8d7a88d2f29b5`，逐字节验证；非HDD/arm1全量备份。
+开工实际fetch/read main13589d6a、baselinef6e8f8c，无新科学配置变动；无子agent，Goal active。
+
 2026-10-28 20:42:04 UTC，Goal active。主机 `rltest-1025--a6ed2ff39b3c-hsje5ateny`；共享SSD根
 `B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`，正式解释器 `B/env/bin/python`。前一轮为 verified wait，本轮完成新的部署准备及连续进度核验。
 
@@ -46,3 +58,5 @@ Direct33保留既有原训练条件下经验数值收敛结论、Task/Strict0/0�
 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER69_WAIT70_DEPLOY_20261028_204216/SMALL_EVIDENCE.tar.gz`，23成员/17366字节，SHA256 `0ee6b2170bd20c78a636b6c546383bdb4c4ecb8ea62915b6a7b060eb6ed5e0a8`，逐成员字节核验通过。
 大checkpoint/replay/raw仍共享SSD，HDD仅已有LATEST紧凑入口，不是HDD或arm1全备份。
 开工实际fetch/read main `0426cfb330ccc6b25f83ab01288c6a1a1622c646`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；另主机非RL v8重采4/30与共享报告已读，无冻结RL协议变化。无子agent。
+
+收尾fetch/read远端main `dd8ff343` 新增另一主机非RL v8全10棍推审查与实际状态回放/共享收据，报告已读；不改变冻结RL源。该远端同步晚于本轮小证据包，双方记录保留。

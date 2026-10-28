@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 原69十分钟核验等待与在途loss检查
+
+- 20:45:19–20:55:19 UTC，原69三learner/归档/六等待器/五guard连续21次身份live，steps严格增加至2870751/2871785/2873145（增加7451/7586/7905）；无完整或失败。600秒observer自然结束，科学仍运行。属于verified wait，无重启或70训练。
+- 在途各1000条完整更新日志原字节保留、连续步号及保存算术核验；critic均值I1.637003/A1.202734/V.745161，actor/critic全部有限。只是20:45附近尾段检查，不是整轮69或收敛证据。
+- 同期117guard采样min70/59/66/66%、低于50计数[0, 0, 0, 0]；含合成保载，科学完成也继续，非瞬时保证或跨重启服务。原68–70窗口继续，Direct34false，Goal active。
+- [交接补充](docs/RL_PARAMETER69_WAIT70_DEPLOY_20261028.md)，证据docs/evidence/RL_PARAMETER69_VERIFIED_WAIT_20261028；SSD包10成员/143652字节/SHA3fa4c997逐字节核验，收据docs/RL_PARAMETER69_VERIFIED_WAIT_SAVE_20261028.json。开工main13589d6a/baselinef6e8f8c实际fetch/read，无协议变化，无子agent。
+
 ## 2026-10-28 — 原69连续观察与70loss部署入口
 
 - [交接](docs/RL_PARAMETER69_WAIT70_DEPLOY_20261028.md)。20:39:04–20:42:04共7次原69三learner/归档/六等待器/五guard身份保持live，steps严格增加至2860700 / 2861603 / 2862789，无完整/失败。180秒observer自然结束，未重启科学任务。
