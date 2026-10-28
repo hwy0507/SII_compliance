@@ -9988,3 +9988,9 @@ Direct21实际首1000新增启动审查已通过：855532steps/6804264critic，�
 本轮补充：Direct30实际首1000检查通过，旧1204290精确保留，新149mature+851pending、旧930隔离不变，动作/clock/reward0误差。混合30/49/冻结29 GPU观察2728080完成60样本/128.860秒，均值{'0': 63.6, '1': 60.05, '2': 65.9, '3': 59.666666666666664}%，逐样本六GPU PID身份与保存均值复核通过，只代表本窗口。远端新增6bb57e5非RL54/72已读，安全合并保留双方记录。
 
 本轮科学提交e4bf380d90c252f3dbf9786e67bfd5bc54dcb31c已push且远端核验；共享SSD完整本轮小证据/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_SERL29_COMPLETE_20261027_131218/FULL_SMALL_EVIDENCE.tar.gz，100成员/1199254字节、SHA256 7c7aef32fa7498bfab3e1c52b1af58a71542a195ef6c733edc08f2fd4bed8a46，逐成员大小/hash核验。收据docs/RL_SERL29_COMPLETE_SAVE_20261027.json；既有HDD LATEST已更新回读，大checkpoint/raw/runtime仍共享SSD，非HDD/arm1全备份。当前正式30/49及冻结29继续，Goal active。
+## 2026-10-28 — 原新场景拟合推进与最终学习曲线准备
+
+- 原handoff725995/训练协调器746822保持，实际21→27/75作业，RNN seed1/candidate04第16372更新；不重复派发、不提前选模。194已登记源码及190拟合快照hash通过，3GiB/swap0、OOM0。完整新30早已合格，九模型/108仍待，Goal active。
+- 绘图工具支持esn_ridge/rnn_scratch/mlp_scratch与实际seed；增加完整训练、数据/登记/模型锁/checkpoint/metadata核验。旧锁没有顶层数据hash，明确依其登记和已锁metadata验证；新schema要求完整锁hash。实际旧九模型渲染/目视预检通过，明确是历史兼容性图；真实未完成新run拒绝且无输出目录，不冒充新学习结果。
+- 小证据/工具/历史兼容图包357372字节，SHA256 `dbbac8fdfdcaeb42ed576112921c34fdb46dc7f46ca73a33ca03e9e301c94ca4`，已逐大小/hash核验至 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_plot_readiness_20261028_v1/special_plot_readiness_20261028_v1.tar.gz`；不含新学生网格/新测试。仅本机计算，无子agent。
+- 开工fetch/read main b546441a、baseline f6e8f8c；收尾读取新增main5714588b的独立RL进展并fast-forward完整保留，未动运行源码。具体证据及后续入口见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。

@@ -1,5 +1,22 @@
 # 三真实场景采集继续与冻结108入口准备
 
+最新续接：原训练在09:47 UTC附近推进到27/75，`rnn_scratch_s2026102801_candidate04`
+实测16372更新。194交接源和190拟合快照hash保持；原服务3GiB/swap0、OOM0，未重启。
+全部75、最终九模型审计、冻结108及最终结果仍待，Goal active。
+
+最终绘图入口`tools/plot_nonrl_new30_learning_20261026.py`已支持新family与实际seed，
+先验证完整执行、数据hash和锁定checkpoint/metadata，图题写明实际run。旧锁没有顶层
+datahash，使用原登记数据hash、DATA_COMPLETE及已锁模型metadata交叉核验；新锁严格检查
+其datahash与execution记录的锁hash。真实旧九模型兼容渲染及学习曲线目视检查通过；
+**这些图只用于历史兼容性预检，不是新训练结果。** 当前新run实际调用已拒绝，未创建输出。
+检查详情见[PLOT_READINESS.json](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/PLOT_READINESS.json)。
+
+工具/检查证据/历史兼容图小包已逐大小/hash核验发布：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_plot_readiness_20261028_v1/special_plot_readiness_20261028_v1.tar.gz`，
+357372字节，SHA256 `dbbac8fdfdcaeb42ed576112921c34fdb46dc7f46ca73a33ca03e9e301c94ca4`。
+不含新学生网格或尚未执行的108。开工main b546441a/baseline f6e8f8c，收尾main5714588b
+独立RL进展已读并fast-forward保留，冻结运行来源未变。
+
 **最新：v5已于09:15:30 UTC完整30/30合格，原交接已启动公平拟合。** 下面“18/30、24/30、没有学生”是此前快照；正式九模型选择与108测试仍未完成。
 
 本轮继续原Goal，前轮是实质进展，本轮原采集已验证live且推进；不重启原服务。
