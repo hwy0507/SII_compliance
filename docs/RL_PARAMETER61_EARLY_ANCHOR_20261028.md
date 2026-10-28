@@ -1,5 +1,21 @@
 # 参数61前5000、全1824终端锚点及后续窗口登记
 
+## 12:17补充：原61继续、全标签复核与GPU实测
+
+本轮开工及收尾真实fetch/read main `d8d1c01f0c47821ab17d6129ed413cb798045cd1`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无协议变化。下文11:59登记继续有效。
+
+新增 `B/runtime/parameter_task_label_audit_20261028_v1/audit_labels.py`：全90条件对/180已保存rollout逐项核对Task、Strict、physical_valid、abort、原.2mm物理门、episode/rollout一致、条件模型与执行evaluator hash；保存全部条件和全部标签变化，特别包含Task变化而Strict未变。只读，无重仿真、优化或原训练脚本改动；是保存标签与物理统计/执行源核验，不是独立子步重算或任务轨迹重放，不新增收敛门。
+
+实际59→60回归 `B/runs/parameter_task_label_audit_20261028_v1/REGRESSION59_60.json` 全180通过；独立与既有报告对照全90 reward及Strict/abort变化均一致，A short0600 Task-only与physical_valid退化精确复现，I/V无Task-only变化。对当前未完整61的真实调用拒绝，未创建结果文件，记录INCOMPLETE61_REJECTION.json。
+
+新等待569099/start38483285已实际核验live，CPU53/7200秒、CUDA禁用；PLAN61 SHA `67c3318b7a53285d2a030ac26df88b4d605150f0432addbbeed009f6043ef4d3`，绑定真实61 learner/archive身份和两个源hash。等原61完整归档/learner自然退出后输出 `COMPLETE60_61.json`、`FINISHED61.json`，失败另记WAIT61_FAILURE.json。尚无完整61结果；不能因观察截止重新启动训练。该补充须纳入未来DECISION62审查，原完整loss/health/59–61统计仍必需。
+
+原61在12:05:47–12:15:50连续21观测，三learner和五guard/五审计等待身份保持，steps2530120/2530977/2532175→2537716/2538679/2539961逐次增长，无完整/失败标记；观察器自然exit0。12:16:43再次原身份live，steps2538547/2539287/2540576、GPU78/92/92/96%。原全61 loss、1824锚点对照、62仅恢复及59–61窗口继续，无auto62，Goal active。
+
+`B/runtime/parameter61_verified_wait_1205_20261028_v1`保存21条进程观测及区间内117条原guard采样。四卡min74/67/63/69%、mean78.75213675/89.38461538/89.07692308/89.24786325%，低于50计数均0，最大采样间隔5.28090453秒。事后实际样本、含合成负载，不代表连续瞬时保证或纯训练吞吐；历史共同0%异常保留。即使科学完成也继续v5保活，不是跨系统重启服务。
+
+[补充保存收据](RL_PARAMETER61_LABEL_WAIT_SAVE_20261028.json)、[清单](evidence/RL_PARAMETER61_LABEL_WAIT_20261028/MANIFEST.json)：13成员/32579字节，`B/repository/RL_PARAMETER61_LABEL_WAIT_20261028_121700/SMALL_EVIDENCE.tar.gz`，SHA256 `008a44c24c129d0522f07f4549e865ff155daac478beba34fa0b106d17bc43cb`，逐字节/所有Python AST核验。大产物仍共享SSD，非HDD/arm1全备份。
+
 2026-10-28 11:59 UTC，Goal active。主机 `rltest-1025--a6ed2ff39b3c-hsje5ateny`；共享SSD `B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`；仓库 `B/repository/SII_compliance`，Torch `B/env/bin/python`。完整60科学结果及61真实startup见[上一交接](RL_PARAMETER60_COMPLETE_20261028.md)。本轮实际fetch/read main `72d5d78402061838c1e2a86a3d0c120a6482d63d`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；main新增另一主机非RL108评测10→12/108等待证据，已fast-forward完整保留，无RL协议变化。
 
 ## 原61持续运行
