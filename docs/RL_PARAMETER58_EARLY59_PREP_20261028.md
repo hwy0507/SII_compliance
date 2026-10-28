@@ -43,3 +43,6 @@ GPUv4 supervisor1629438/start35566457及四worker原身份全部live，STOP不�
 小证据`docs/evidence/RL_PARAMETER58_EARLY59_PREP_20261028`。共享SSD包`B/repository/RL_PARAMETER58_EARLY59_PREP_20261028_085055/SMALL_EVIDENCE.tar.gz`，41成员、1266473字节、SHA256 `820035d2c3c1533f66c5c33f9184d5ea89350db296c56ecf41a5d87aeb84d680`，逐成员字节/AST核验。包括完整三路前5000日志、锚点输入、计划/源码/修订和进程收据。收据[RL_PARAMETER58_EARLY59_PREP_20261028_SAVE.json](RL_PARAMETER58_EARLY59_PREP_20261028_SAVE.json)。大checkpoint/replay/raw仍共享SSD，非HDD/arm1全备份，现有HDD LATEST入口指向本文。
 
 继续原58/冻结55及已有等待任务。完整58后核原loss、固定1734对照及图、原56–58统计与59恢复结果，再判断是否需要续训；不得因观察期限结束重启训练或替换固定统计窗口。
+
+
+收尾已fetch/read远端main `a13a92f6f71006bb51b4d33a00b6cf683c6a48c4`（含非RL v4球稳定性失败、0.5五例与v5重采/拟合交接），其报告明确不动RL；保留双方AGENTS/UPDATE_LOG新增原字节和共同历史，正常合并，无force push。当前RL使用独立冻结runtime，未改变配置。

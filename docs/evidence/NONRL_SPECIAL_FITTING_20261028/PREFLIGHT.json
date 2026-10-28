@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "scope": "Preparation only; not new-model fitting or test certification",
+  "fitting_snapshot": {
+    "directory": "code/mujoco_6d_vmc_benchmark/outputs/special_scene_fit_source_preflight_20261028_v1",
+    "copied_source_files": 190,
+    "repeat_manifest_check": "passed",
+    "isolated_esn_trainer_help_import": "exit 0",
+    "isolated_neural_trainer_help_import": "exit 0",
+    "deliberately_modified_snapshot_file": "scripts/office_mlp_rnn_20261002.py",
+    "negative_check": "ValueError: Fitting snapshot changed: scripts/office_mlp_rnn_20261002.py",
+    "negative_check_disposition": "Intentionally corrupted preflight copy retained; never used for fitting. Actual repository script unchanged."
+  },
+  "frozen_actor_compatibility": {
+    "historical_model_lock": "code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2/MODEL_LOCK.json",
+    "checkpoints": 9,
+    "trajectory": "code/mujoco_6d_vmc_benchmark/outputs/special_scene_vmc_collection_20261028_v4/rod_00/rod/trajectory.npz",
+    "trajectory_sha256": "cf71a6a4abb5aea14a67787fe4dca4aff9aeb6a06aca9aa64f79d5baed218ec4",
+    "observations_per_checkpoint": 500,
+    "current_and_frozen_output_array_equal": true,
+    "all_max_abs_error": 0.0,
+    "current_esn_source_sha256": "afcff76d7769d9453cd58a412d7c280a5d9355b4335fc7e318eec973d181c44a",
+    "frozen_esn_source_sha256": "5b03256b390ba2a119122852651d325f6a5e30d86098ce19c06cd95020408c3a",
+    "shared_neural_source_sha256": "0bc084dce6b5e890982c6fb4e1551b59ea0723839db22be26e250814167af8f4",
+    "limitation": "Old nine checkpoints only, one new training identity, no test trajectories. All future selected new checkpoints still require full-data replay with the frozen actor implementation."
+  }
+}

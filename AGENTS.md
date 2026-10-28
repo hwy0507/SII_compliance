@@ -8,6 +8,18 @@
 - 08:50原58约2403896/2404554/2405992steps，冻结55完整18/18/17条件；原archive/loss/窗口/guard和新等待身份均live，GPU79/79/95/96%含保活。Direct不启动34，Goal active，无子agent。
 - 已查询/fetch/read mainb633c70d0ef7bd7d71f97b33fb338b3580207ae6、baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d。共享SSD小包41成员/1266473字节、SHA820035d2c3c1533f66c5c33f9184d5ea89350db296c56ecf41a5d87aeb84d680逐字节/AST核验，大产物仍共享SSD，非HDD/arm1全备份。
 
+## 2026-10-28 — 非RL球撞末端不稳修正、v5重采与公平拟合交接
+
+[最新交接](docs/NONRL_SPECIAL_BALL_STABILITY_20261028.md)。v4完整棍10/10、球9/10、角10/10，ball_01末端物体速度0.033813m/s超过原0.02门；原训练交接v1正确失败留档，未建数据/启动拟合，不要重启。早先口述“球10条全合格”已按全部收据纠正。
+
+仅读出0.6→0.5的五训练条件对照全部合格，原MJB/参数/seed/门/时长不变；ball01末速0.000173m/s，rod00/04回位9.44/8.12秒均早于12.80撤回。`sii-special-collection-v5-20261028.service` 当前PID725751/start27486256，`outputs/special_scene_vmc_collection_20261028_v5`、计划SHA512f30c1；原30条件/24+6保持，统一教师SHA4dd91950，全量重采运行。
+
+`sii-special-learning-handoff-v2-20261028.service` 在等待同一原v5，登记 `outputs/special_scene_learning_handoff_20261028_v2` SHA0cc8a326；7200秒等待、全30合格且原服务退出才审查/构建 `outputs/special_scene_retrain_readout05_20261028_v1` 并执行原3seed/12候选网格。正式训练/108未完成，Goal active；先查真实状态，禁止重复启动或修改登记执行源码。拟合新增独立fitting_source快照及逐候选hash核验；旧九模型兼容性预检0误差不认证新模型，新全拟合审计工具待真实新九模型运行。
+
+原v4完整包/0.5五例完整包已本地保存，归档状态详见交接；下方v4运行/0.6新主教师为旧快照。无服务器计算、无子agent，不涉及RL。
+
+08:51UTC接续：三包已核验发布到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_readout05_20261028_v1/`，不含live v5 raw；原采集/交接仍active，前5完整合格，源码hash不变，OOM0。总指标标准已加本轮双成功条件SPT优先条款，后续以完整108共同T_ref计算。先读实际progress，不把本快照当当前完成数。
+
 ## 2026-10-28 — 参数57完整、VMC全旧终端误差转移、准确续训58
 
 - 发布后补充：08:36:29瞬时GPU55/0/95/0保留；立即复核86/94/94/70，原guard身份保持。固定60次再查最低73/67/70/61%、均值85.816667/90.25/92.516667/89.316667%，无再次低于50、无重启，不宣称永久瞬时保证；补充数据见最新交接。

@@ -7,6 +7,7 @@ import hashlib
 import itertools
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -41,6 +42,40 @@ def write(path: Path, value) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n")
 
 
+def freeze_fitting_source(root: Path) -> dict:
+    """Bind all candidates to one isolated source tree before the first fit."""
+    benchmark = Path(__file__).resolve().parents[1]
+    destination = root / 'fitting_source'
+    receipt = root / 'FITTING_SOURCE.json'
+    if not receipt.exists():
+        if destination.exists():
+            raise FileExistsError('Incomplete fitting snapshot; inspect before recovery')
+        sources = list((benchmark / 'scripts').glob('*.py')) + [
+            benchmark / 'tools' / name for name in (
+                'train_special_scene_models_20261028.py',
+                'train_paper_context_esn_20261003.py',
+                'train_office_mlp_rnn_20261002.py',
+                'optimize_tool_contact_20261002.py')]
+        hashes = {str(p.relative_to(benchmark)): sha(p) for p in sources}
+        for source in sources:
+            target = destination / source.relative_to(benchmark)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
+        manifest = dict(schema='sii-special-frozen-fitting-source-v1',
+                        created_utc=now(), source_hashes=hashes,
+                        base_commit=subprocess.check_output(
+                            ['git', 'rev-parse', 'HEAD'], cwd=benchmark, text=True).strip(),
+                        note='Content hashes identify executed bytes; base commit does not imply a clean worktree.')
+        write(receipt, manifest)
+    manifest = read(receipt)
+    for name, digest in manifest['source_hashes'].items():
+        if sha(destination / name) != digest:
+            raise ValueError(f'Fitting snapshot changed: {name}')
+    if sha(Path(__file__)) != manifest['source_hashes']['tools/train_special_scene_models_20261028.py']:
+        raise ValueError('Coordinator differs from registered fitting source')
+    return manifest
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--root", type=Path, required=True)
@@ -70,7 +105,21 @@ def main() -> None:
         raise RuntimeError('Require audited balanced 30-identity real-special-scene dataset v2; old diagnostics rejected')
     if sha(data) != expected:
         raise RuntimeError("dataset hash mismatch")
-    tools = Path(__file__).resolve().parent
+    registration = read(root / 'REGISTRATION.json')
+    if (registration['seeds'] != SEEDS or registration['candidates_per_family_seed'] != 12
+            or registration['neural_updates'] != UPDATES
+            or registration['neural_grid'] != dict(learning_rate=RATES, weight_decay=DECAYS)
+            or registration['esn_grid'] != dict(rho=[.5,.8], input_gain=[.08,.25,.6], ridge=[.001,.1])):
+        raise ValueError('Training budget differs from dataset registration')
+    if state['fits'] and not (root / 'FITTING_SOURCE.json').exists():
+        raise ValueError('Cannot introduce a new snapshot into an existing unfrozen fit')
+    fitting_source = freeze_fitting_source(root)
+    frozen = root / 'fitting_source'
+    tools = frozen / 'tools'
+    provenance = {name: sha(root / name) for name in (
+        'data/training_data.npz', 'data/DATA_COMPLETE.json', 'REGISTRATION.json', 'FITTING_SOURCE.json')}
+    if state.get('fitting_input_hashes', provenance) != provenance:
+        raise ValueError('Fitting inputs changed after launch')
     # The frozen fitting environment contains torch; the MuJoCo collection
     # environment intentionally does not. Both inherit the real cgroup limits.
     python = str(Path(__file__).resolve().parents[4] / ".venv-rl" / "bin" / "python")
@@ -78,7 +127,9 @@ def main() -> None:
         raise FileNotFoundError(python)
     env = os.environ.copy()
     env.update(OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1",
-               SII_MEMORY_MAX_BYTES=str(3 * 1024**3))
+               SII_MEMORY_MAX_BYTES=str(3 * 1024**3),
+               PYTHONPATH=str(frozen / 'scripts') + ':' + str(tools),
+               SII_SOURCE_BASE_COMMIT=fitting_source['base_commit'])
     data_args = ["--data", str(data), "--metadata", str(metadata)]
     jobs = []
     for seed in SEEDS:
@@ -98,12 +149,19 @@ def main() -> None:
                               "--action-delta-weight", "0", "--lr-schedule", "cosine",
                               "--global-loss", "--raw-slowdown-loss", "--selection", "final"]))
     state.update(status="training", started_utc=state.get("started_utc", now()), host=os.uname().nodename,
-                 data_sha256=expected, expected_jobs=len(jobs))
+                 data_sha256=expected, expected_jobs=len(jobs), fitting_input_hashes=provenance)
     write(state_path, state)
     completed = {x["name"] for x in state.get("fits", []) if x.get("status") == "complete"}
     try:
         for name, family, seed, command in jobs:
+            freeze_fitting_source(root)
+            if any(sha(root / name) != digest for name, digest in provenance.items()):
+                raise ValueError('Fitting input changed at candidate boundary')
             if name in completed:
+                row = next(r for r in state['fits'] if r['name'] == name and r['status'] == 'complete')
+                if (sha(Path(row['output']) / 'checkpoint.npz') != row['checkpoint_sha256']
+                        or sha(Path(row['output']) / 'TRAINING_COMPLETE.json') != row['metadata_sha256']):
+                    raise ValueError(f'Completed fit changed: {name}')
                 continue
             if (root/'STOP_REQUESTED').exists():
                 state.update(status='stopped_at_candidate_boundary',ended_utc=now())
@@ -112,7 +170,8 @@ def main() -> None:
             out = root / "learning" / name
             log = root / "logs" / f"{name}.log"
             out.parent.mkdir(parents=True, exist_ok=True); log.parent.mkdir(parents=True, exist_ok=True)
-            row = {"name": name, "family": family, "seed": seed, "output": str(out), "status": "running", "started_utc": now()}
+            row = {"name": name, "family": family, "seed": seed, "output": str(out), "status": "running", "started_utc": now(),
+                   "command": command + ["--output", str(out)]}
             state["current"] = name; state["fits"].append(row); write(state_path, state)
             start = time.monotonic()
             if out.exists():
@@ -129,6 +188,12 @@ def main() -> None:
             meta = read(complete)
             if meta.get("training_data_sha256",meta.get("data_sha256")) != expected:
                 raise RuntimeError(f"trainer lineage mismatch: {name}")
+            freeze_fitting_source(root)
+            if any(sha(root / item) != digest for item, digest in provenance.items()):
+                raise ValueError('Fitting input changed during candidate')
+            for item, digest in meta['source_sha256'].items():
+                if fitting_source['source_hashes'].get(item) != digest:
+                    raise ValueError(f'Candidate used unregistered source: {item}')
             row.update(status="complete", ended_utc=now(), wall_seconds=time.monotonic() - start,
                        metadata_sha256=sha(complete), checkpoint_sha256=sha(out / "checkpoint.npz"))
             write(state_path, state)
