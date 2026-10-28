@@ -1,3 +1,11 @@
+## 2026-10-29 — 非RL棍推完整10条行为审计通过
+
+- 19:51UTC复核原采集13/30合格（10rod+3ball）、ball03在途，原handoff waiting；全部13条资格输入hash/194个绑定源码/棍组10行证据hash一致。原两服务同PID active，3GiB/swap0；新增review AST与diff检查通过。教师固定回归修复不等于ESN/主矩阵修复，继续原流程。
+- [完整交接](docs/NONRL_V7_COLLECTION_AND_STUDENTS_20261029.md)。原collector1056282/start31377244和handoff1056692宿主真实live，19:46:35已10/30，棍00–09均合格，原服务自然进入ball00，学习waiting。沙箱ps不可见后用宿主systemd/ps核实，无重复/重启。
+- 新`review_complete_rod_collection_block_20261029.py`核全部10条资格输入/几何审计/source、真实teacher/seed/参数与登记一致，独立复算接触首时刻和撤棍时刻，明确接触≤让位≤蹭过≤回位开始≤确认<撤棍及原.08秒保持。全8train+2validation通过，余量2.56–5.17秒；未齐10时实际拒绝且无输出，完整后审查all10_passed。证据`V7_COMPLETE_ROD_BLOCK_REVIEW.json`保留全10行。
+- 不用验证回合结果调参、不改原gate/物理/filter/input/dt。0新动力学，仅保存40ms几何审计/子步接触摘要和时序复核；不是全30、office认证或学生效果。剩余球/角20条与覆盖/公平拟合/18/108仍待，Goal active。
+- 实际fetch/read main6820a1c6/baselinef6e8f8c，重读AGENTS，前轮属progress；原在途新30仅本机，完整后归档，未重复打包棍组冒充全数据。无RL/子agent/服务器计算/删除，保留无关未跟踪文件。
+
 ## 2026-10-29 — 非RL v7采集前缀核验与18/108准备
 
 - 19:42:35UTC原两服务同PID实际live，7/30合格、rod07在途/学习waiting，采集内存714416128bytes，接续8327168。科学2187ab1e已push并核远端；源码/小证据1155文件5189208bytes/SHA7045c32f逐Git blob及暂存/最终核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v7_preparation_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`，同目录报告SHA41dfc48d亦核验。非完整仓库/模型/环境，不含在途新30/学生，无删除，Goal active。

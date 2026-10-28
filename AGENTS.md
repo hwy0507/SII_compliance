@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL完整棍推10/10顺序审计通过
+
+19:51 UTC复核：原采集13/30合格（10rod+3ball），ball03在途，原handoff waiting；已完成13条资格全部输入hash、194个接续绑定源码与完整棍组10行证据hash均一致。宿主原PID/3GiB/swap0保持，无重启/新增模拟器。当前teacher固定回归修复不等于ESN修复。
+
+- [最新交接](docs/NONRL_V7_COLLECTION_AND_STUDENTS_20261029.md)。19:46:35原collector1056282/start31377244与handoff1056692宿主systemd/ps均live，棍10/10已完整合格，ball00在途，学习waiting。沙箱ps不可见后实际宿主核验，不误判死亡/重启。
+- 新完整棍组review逐条核资格/行为源/实际teacher/seed/参数hash，独立接触时刻/撤棍算术及接触≤让位≤蹭过≤回位开始≤确认<撤棍/原.08s保持均通过，回位比撤棍早2.56–5.17s。8train+2validation全保留；validation只验固定判据不调参。未齐10实际拒绝且无输出，完整后通过；0新动力学，不是全30/学生成功。
+- 原v7采集及条件学习接续继续，不动绑定源或复用v6；全24覆盖、9模型、真实场景学生18/108六指标尚待，Goal active。实际fetch/read main6820a1c6/baselinef6e8f8c，前轮属progress，无RL/子agent/服务器计算；新30在途仅本机，完整后归档。
+
 ## 2026-10-29 — 非RL v7采集继续，18/108独立准备
 
 19:42:35UTC覆盖：原服务同PID live，7/30合格、rod07在途，handoff等待。2187ab1e已push/远端核验；源码小证据1155文件5189208bytes/SHA7045c32f及同提交报告已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v7_preparation_source_20261029_v1/`，不含在途新30/学生；见共享收据。Goal active。
