@@ -1,0 +1,35 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc67_terminal_anchor_followup_20261028_v1/track.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/admittance67_terminal_anchor_followup_20261028_v1/track.py
+@@ -1,4 +1,4 @@
+-"""Read-only complete67 followup of all2004 fixed66 VMC terminal rows."""
++"""Read-only complete67 followup of all2004 fixed66 admittance terminal rows."""
+ from pathlib import Path
+ import hashlib,json,os,sys,time
+ os.sched_setaffinity(0,{53})
+@@ -24,7 +24,7 @@
+     idx,features,rewards,masks,oldq,oldden=[anchor[k].copy() for k in ['indices','features','rewards','masks','q_after','denominator']]
+ assert len(idx)==2004 and features.shape==(2004,57)
+ ck=torch.load(binding['checkpoint']['path'],map_location='cpu',weights_only=False)
+-assert ck['cycle']==67 and ck['boundary']=='complete_condition_cycle' and ck['controller']=='vmc'
++assert ck['cycle']==67 and ck['boundary']=='complete_condition_cycle' and ck['controller']=='admittance'
+ a=ck['replay']['arrays'];state=ck['learner'];terminal=np.flatnonzero(a['dones'][:,0]==1)
+ assert len(terminal)==2034 and np.array_equal(terminal[:2004],idx)
+ np.testing.assert_array_equal(a['observations'][idx],features[:,:50])
+@@ -42,7 +42,7 @@
+     q=torch.stack([agent.get_q_value(obs,action,i,target=False).reshape(-1) for i in range(5)]).numpy()
+ assert np.isfinite(q).all() and digest(agent.state_dict())==before and torch.equal(rng,torch.get_rng_state())
+ target=a['rewards'][terminal,0];mask=a['masks'][terminal].T.astype(float)
+-health=read(binding['health']['path'])['methods']['vmc'];assert health['terminal_count']==2034 and health['checkpoint_sha256']==binding['checkpoint']['sha256']
++health=read(binding['health']['path'])['methods']['admittance'];assert health['terminal_count']==2034 and health['checkpoint_sha256']==binding['checkpoint']['sha256']
+ err=np.abs(q-target[None]).astype(float)
+ assert np.isclose(err.mean(),health['terminal_q_absolute_error']['mean'],rtol=0,atol=1e-9)
+ assert np.isclose(err[mask.astype(bool)].mean(),health['terminal_q_in_bag_absolute_error']['mean'],rtol=0,atol=1e-9)
+@@ -76,7 +76,7 @@
+ for f in focus:
+     k=int(np.flatnonzero(idx==f['replay_index'])[0]);ax.scatter([x[k]],[y[k]],color='red');ax.annotate(str(f['replay_index']),(x[k],y[k]),fontsize=8)
+ limit=max(x.max(),y.max());ax.plot([0,limit],[0,limit],'--',color='gray')
+-ax.set_xlabel('Complete66 masked terminal SSE');ax.set_ylabel('Complete67 masked terminal SSE');ax.set_title('All 2004 fixed terminal rows\nHistorical and cycle58 focus rows marked')
++ax.set_xlabel('Complete66 masked terminal SSE');ax.set_ylabel('Complete67 masked terminal SSE');ax.set_title('All 2004 fixed terminal rows\nComplete66 short0600 focus marked')
+ fig.savefig(OUT/'follow67.png',dpi=130,bbox_inches='tight');report['plot_sha256']=sha(OUT/'follow67.png')
+ for v in list(plan['inputs'].values())+list(binding.values()):assert sha(v['path'])==v['sha256']
+ (OUT/'REVIEW.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
