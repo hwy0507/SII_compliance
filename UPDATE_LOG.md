@@ -1,3 +1,10 @@
+## 2026-10-29 — 非RL首条件九模型独立核验与补采检查
+
+- [交接](docs/NONRL_V8_FIRST_CONDITION_REPAIR_PROGRESS_20261029.md)。九模型原条件000全部Task/Strict=false，保存8,486,400子步、source/config/checkpoint/MJB及actor/filter收据/六指标算术核验通过，审计SHA5359a9af。失败真实保留，主矩阵未修复；无BOTH成功故SPT NA，不提前全局T_ref/排名。
+- 新八球reviewer验证真实canonical方向和实际carry位移、阶段到达及原接触/安全资格；旧ball00正向和反向/缺阶段/错目标/NaN/实际未启动拒绝通过，v3绑定源未改、0新物理。八个新物理结果尚无；原108完成/全审/inactive后才执行有效v3，再review并决定三场景共同数据修复。
+- 23:40:56UTC原用户1172675 active、10/108，第二条件RNN seed1真实推进12.04s/approach；内存596717568bytes/3GiB/swap0/OOM0，无重复或修改在途源。第十条未含在首九独立审计；原完整108继续，Goal active，未宣称teacher/学生开发通过等于主矩阵修复。
+- 开工main80efd331/baselinef6e8f8c实际fetch/read；新代码及小审计仅本机待共享，后续补核验收据。无RL/子agent/服务器计算/删除，两个无关未跟踪文件保留。
+
 ## 2026-10-29 — 非RL九模型同教师历史诊断与八球覆盖准备
 
 - 科学85704713已push/核远端；同commit源码小证据1240文件/7981599bytes/SHA8d4831bd，准确报告7084bytes/SHA14af8210及九模型完整预测数组1156614bytes/SHA31b0b8b1、旧准备说明等7文件已逐暂存/最终大小hash核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_matched_history_source_20261029_v1/`。收据V8_MATCHED_HISTORY_SHARED_RECEIPT；不含在途108物理。23:29:58原1172675 active，RNN seed3实际54.04s carry、7完成，Goal active，无新probe或训练。
