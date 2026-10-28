@@ -1,0 +1,105 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc66_ranked65_terminal_followup_20261028_v1/review_saved.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc68_ranked67_terminal_followup_20261028_v1/review_saved.py
+@@ -1,4 +1,4 @@
+-"""Independent array arithmetic for the fixed complete65 ranking at complete66."""
++"""Independent array arithmetic for the fixed complete67 ranking at complete68."""
+ from pathlib import Path
+ import hashlib
+ import json
+@@ -26,7 +26,7 @@
+ 
+ 
+ def main():
+-    assert read(OUT / 'FINISHED.json')['completed'], 'Incomplete ranked66 followup'
++    assert read(OUT / 'FINISHED.json')['completed'], 'Incomplete ranked68 followup'
+     report = read(OUT / 'REVIEW.json')
+     plan = read(OUT / 'PLAN.json')
+     root = Path(plan['parent_followup'])
+@@ -35,37 +35,37 @@
+     assert sha(root / 'LAUNCH.json') == plan['parent_launch_sha256']
+     assert read(root / 'FINISHED.json')['completed']
+     assert read(root / 'SAVED_VALUES_REVIEW.json')['passed']
+-    assert report['original66_review_sha256'] == sha(root / 'REVIEW.json')
+-    assert report['values66_sha256'] == sha(root / 'values.npz')
++    assert report['original68_review_sha256'] == sha(root / 'REVIEW.json')
++    assert report['values68_sha256'] == sha(root / 'values.npz')
+     for name, digest in plan['sources'].items():
+         assert sha(OUT / name) == digest
+     for item in plan['inputs'].values():
+         assert sha(item['path']) == item['sha256']
+-    ranking = read(plan['inputs']['ranked65']['path'])['all1974_ranked']
+-    rows = report['all1974_original_ranked_followup']
+-    assert len(rows) == len(ranking) == 1974
+-    assert [r['original65_rank'] for r in rows] == list(range(1, 1975))
++    ranking = read(plan['inputs']['ranked67']['path'])['all2034_ranked']
++    rows = report['all2034_original_ranked_followup']
++    assert len(rows) == len(ranking) == 2034
++    assert [r['original67_rank'] for r in rows] == list(range(1, 2035))
+     assert [r['replay_index'] for r in rows] == [r['replay_index'] for r in ranking]
+-    assert len({r['replay_index'] for r in rows}) == 1974
+-    with np.load(plan['inputs']['values65']['path'], allow_pickle=False) as a, np.load(root / 'values.npz', allow_pickle=False) as b:
+-        assert len(a['indices']) == 1974 and len(b['indices']) == 2004
++    assert len({r['replay_index'] for r in rows}) == 2034
++    with np.load(plan['inputs']['values67']['path'], allow_pickle=False) as a, np.load(root / 'values.npz', allow_pickle=False) as b:
++        assert len(a['indices']) == 2034 and len(b['indices']) == 2064
+         for key in ['indices', 'rewards']:
+-            np.testing.assert_array_equal(a[key], b[key][:1974])
+-        np.testing.assert_array_equal(a['masks'], b['masks'][:, :1974])
++            np.testing.assert_array_equal(a[key], b[key][:2034])
++        np.testing.assert_array_equal(a['masks'], b['masks'][:, :2034])
+         np.testing.assert_array_equal(a['q_after'], b['q_before'])
+         np.testing.assert_array_equal(a['denominator'], b['old_denominator'])
+         masks = a['masks'].astype(np.float64)
+         rewards = a['rewards'].astype(np.float64)[None, :]
+         old = masks * np.square(a['q_after'].astype(np.float64) - rewards)
+-        new = masks * np.square(b['q_after'][:, :1974].astype(np.float64) - rewards)
++        new = masks * np.square(b['q_after'][:, :2034].astype(np.float64) - rewards)
+         expected = {
+-            'sse65': old.sum(axis=0),
+-            'sse66': new.sum(axis=0),
+-            'contribution65': (128 * old / a['denominator'][:, None]).sum(axis=0),
+-            'contribution66': (128 * new / b['denominator'][:, None]).sum(axis=0),
+-            'contribution66_using65_denominator': (128 * new / a['denominator'][:, None]).sum(axis=0),
++            'sse67': old.sum(axis=0),
++            'sse68': new.sum(axis=0),
++            'contribution67': (128 * old / a['denominator'][:, None]).sum(axis=0),
++            'contribution68': (128 * new / b['denominator'][:, None]).sum(axis=0),
++            'contribution68_using67_denominator': (128 * new / a['denominator'][:, None]).sum(axis=0),
+         }
+-        expected['sse_change'] = expected['sse66'] - expected['sse65']
++        expected['sse_change'] = expected['sse68'] - expected['sse67']
+         positions = {int(index): i for i, index in enumerate(a['indices'])}
+         for row in rows:
+             i = positions[row['replay_index']]
+@@ -75,21 +75,21 @@
+             near(report['totals'][key], math.fsum(map(float, values)))
+         assert report['improve'] == int(np.sum(expected['sse_change'] < 0))
+         assert report['worsen'] == int(np.sum(expected['sse_change'] > 0))
+-    focus = [row for row in rows if row['replay_index'] in plan['fixed65_top2_indices']]
+-    assert focus == report['original65_top2']
+-    assert [r['replay_index'] for r in focus] == plan['fixed65_top2_indices']
++    focus = [row for row in rows if row['replay_index'] in plan['fixed67_top2_indices']]
++    assert focus == report['original67_top2']
++    assert [r['replay_index'] for r in focus] == plan['fixed67_top2_indices']
+     full = read(root / 'REVIEW.json')
+     for key, full_key in [
+-        ('sse65', 'old1974_sse_before'), ('sse66', 'old1974_sse_after'),
+-        ('contribution65', 'old1974_contribution_before'),
+-        ('contribution66', 'old1974_contribution_after'),
+-        ('contribution66_using65_denominator', 'old1974_after_using_old_denominator'),
++        ('sse67', 'old2034_sse_before'), ('sse68', 'old2034_sse_after'),
++        ('contribution67', 'old2034_contribution_before'),
++        ('contribution68', 'old2034_contribution_after'),
++        ('contribution68_using67_denominator', 'old2034_after_using_old_denominator'),
+     ]:
+         near(report['totals'][key], full[full_key])
+     result = dict(
+-        passed=True, time=time.time(), all1974_independent_vector_arithmetic=True,
+-        fixed65_ranking_and_top2_preserved=True, original_arrays_exact=True,
+-        full1974_totals_reproduced=True, review_sha256=sha(OUT / 'REVIEW.json'),
++        passed=True, time=time.time(), all2034_independent_vector_arithmetic=True,
++        fixed67_ranking_and_top2_preserved=True, original_arrays_exact=True,
++        full2034_totals_reproduced=True, review_sha256=sha(OUT / 'REVIEW.json'),
+         reviewer_sha256=sha(Path(__file__)), new_physics=0, new_forward=0,
+         optimizer_updates=0, replay_writes=0, convergence_claim=False,
+     )

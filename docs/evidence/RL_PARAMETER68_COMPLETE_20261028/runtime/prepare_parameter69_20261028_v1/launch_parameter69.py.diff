@@ -1,0 +1,39 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_parameter68_20261028_v1/launch_parameter68.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/prepare_parameter69_20261028_v1/launch_parameter69.py
+@@ -1,7 +1,7 @@
+-"""Dispatch one explicitly reviewed stage68; preserve all learned state."""
++"""Dispatch one explicitly reviewed stage69; preserve all learned state."""
+ from pathlib import Path
+ import json,hashlib,subprocess,os,shutil,time
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');root=Path(__file__).parent;out=B/'runs/parameter_capacity_pool30_cycle68_20261026_v1'
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');root=Path(__file__).parent;out=B/'runs/parameter_capacity_pool30_cycle69_20261026_v1'
+ def verified_copy(src, dst):
+  src,dst=Path(src),Path(dst)
+  data=src.read_bytes()
+@@ -18,21 +18,21 @@
+ def write(p,d):p.write_text(json.dumps(d,indent=2)+'\n')
+ assert not (out/'LAUNCH.json').exists()
+ for name,h in read(root/'LAUNCH_SOURCE_REVIEW.json')['files'].items():assert sha(root/name)==h
+-decision=read(root/'DECISION68.json');assert decision['passed'] and decision['plot_inspected'] and not decision['convergence_claim']
+-assert decision['parent_cycle']==67 and decision['new_cycle']==68
++decision=read(root/'DECISION69.json');assert decision['passed'] and decision['plot_inspected'] and not decision['convergence_claim']
++assert decision['parent_cycle']==68 and decision['new_cycle']==69
+ assert {'parent_review','health','loss','paired_gate','check_only','reward_window56_58'} <= set(decision['evidence'])
+ for x in decision['evidence'].values():assert sha(Path(x['path']))==x['sha256']
+ assert read(root/'parameter_FINISHED.json')['prepared']
+ assert read(out/'CHECK_ONLY_COMPLETE.json')['passed'];assert all(v==0 for v in read(out/'CHECK_ONLY_EXIT_CODES.json').values())
+-write(out/'PRELAUNCH_SCIENTIFIC_REVIEW.json',dict(decision,time=time.time(),parent_cycle=67,new_cycle=68,new_cycles=1,automatic_followup=False))
+-verified_copy(root/'startup68.py',out/'startup_review.py')
++write(out/'PRELAUNCH_SCIENTIFIC_REVIEW.json',dict(decision,time=time.time(),parent_cycle=68,new_cycle=69,new_cycles=1,automatic_followup=False))
++verified_copy(root/'startup69.py',out/'startup_review.py')
+ env=dict(os.environ,OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1',NUMEXPR_NUM_THREADS='1');jobs=read(out/'COMMANDS.json')['jobs']
+ for j in jobs:
+  p=subprocess.Popen(j['command'],stdout=(out/(j['controller']+'_driver.log')).open('x'),stderr=subprocess.STDOUT,env=env,start_new_session=True)
+  j.update(pid=p.pid,proc_start_ticks=Path(f'/proc/{p.pid}/stat').read_text().split(') ')[1].split()[19],time=time.time())
+ write(out/'LAUNCH.json',dict(time=time.time(),jobs=jobs,new_cycles=1,automatic_followup=False))
+ monitor=out/'archive_review.py';verified_copy(B/'runtime/resume_sources_20261028_v1/archive_review_next_20261028.py',monitor)
+-p=subprocess.Popen([str(B/'env/bin/python'),str(monitor),'parameter_capacity_pool30','68'],stdout=(out/'archive_review.log').open('x'),stderr=subprocess.STDOUT,env=env,start_new_session=True)
++p=subprocess.Popen([str(B/'env/bin/python'),str(monitor),'parameter_capacity_pool30','69'],stdout=(out/'archive_review.log').open('x'),stderr=subprocess.STDOUT,env=env,start_new_session=True)
+ write(out/'MONITOR_LAUNCH.json',dict(pid=p.pid,proc_start_ticks=Path(f'/proc/{p.pid}/stat').read_text().split(') ')[1].split()[19],time=time.time(),script_sha256=sha(monitor)));print(json.dumps(dict(jobs=jobs,monitor_pid=p.pid),indent=2))
+ 
+ p=subprocess.Popen([str(B/'env/bin/python'),str(out/'startup_review.py')],stdout=(out/'startup_review.log').open('x'),stderr=subprocess.STDOUT,env=env,start_new_session=True)
