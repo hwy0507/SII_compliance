@@ -7,6 +7,12 @@
 - 同期117guard采样min70/59/66/66%、低于50计数[0, 0, 0, 0]；含合成保载，科学完成也继续，非瞬时保证或跨重启服务。原68–70窗口继续，Direct34false，Goal active。
 - [交接补充](docs/RL_PARAMETER69_WAIT70_DEPLOY_20261028.md)，证据docs/evidence/RL_PARAMETER69_VERIFIED_WAIT_20261028；SSD包10成员/143652字节/SHA3fa4c997逐字节核验，收据docs/RL_PARAMETER69_VERIFIED_WAIT_SAVE_20261028.json。开工main13589d6a/baselinef6e8f8c实际fetch/read，无协议变化，无子agent。
 
+## 2026-10-29 — 非RL v8完整棍推10条通过与真实媒体
+
+- [当前交接](docs/NONRL_V8_ROD_REVIEW_20261029.md)。v8棍10/10原资格及独立时序通过，持续回位比撤棍早1.80–5.19秒；相比v7四条更快六条更慢，rod01晚.76秒，退化保留。新rod00实际500帧/20秒双视角MP4/GIF完整解码、六关键帧实际查看；仅状态回放，无物理重积分。完整球/角和学生尚待，不称ESN/主矩阵通过。
+- 媒体8文件8519539bytes/SHAf9bb844c已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_rod00_media_20261029_v1/MEDIA.tar.gz`，仅媒体/manifest，非原始物理全集。原采集1088910/start31713076与接续1089228保持，20:44:21为11/30合格、ball01在途，学习waiting；3GiB/swap0/OOM0，勿重复/改绑定源。
+- 原有限观察20:33:32–20:43:32的21次确认同身份5→10，正常结束而非作业终止。继续全30→train覆盖→75fits/9models→18诊断→108六指标，原12仅回归。Goal active，无RL/子agent/服务器计算。
+
 ## 2026-10-28 — 原69连续观察与70loss部署入口
 
 - [交接](docs/RL_PARAMETER69_WAIT70_DEPLOY_20261028.md)。20:39:04–20:42:04共7次原69三learner/归档/六等待器/五guard身份保持live，steps严格增加至2860700 / 2861603 / 2862789，无完整/失败。180秒observer自然结束，未重启科学任务。
