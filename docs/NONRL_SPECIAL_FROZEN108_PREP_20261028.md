@@ -1,5 +1,39 @@
 # 三真实场景采集继续与冻结108入口准备
 
+## 第二条件九模型完整复核（12:15 UTC，18/108）
+
+原772606/start28001859、791378/start28239353保持，11:54:07–12:15:37的44次
+实际观察完整保存（索引0–43）。完成数13→18，原协调器自动接续第三条件
+`acceptance_002`的ESN seed1 worker838081/start28778790，最后实测1.04秒。
+所有观察为3GiB/swap0/OOM0；有限观察器正常退出0，原科学服务继续，没有重启。
+
+第二条件`new30_prospective_20261026_acceptance_001`九模型、7,972,000保存子步复核通过：
+593源码、模型/配置/hash、原actor/filter重放收据、Task/Strict、dt及指标算术均保持。
+复用原整条件审计工具，未改运行中执行源；审查范围是保存证据，不是重新积分物理。
+
+| 方法（各3个seed，仅第二条件） | Task | Strict | 双成功SPT | 平均回合峰矩 Nm | 舒适代理比例 | 机器合规 |
+|---|---:|---:|---:|---:|---:|---:|
+| ESN ridge | 0/3 | 0/3 | NA | 46.59522 | 83.0846% | 1/3 |
+| RNN | 0/3 | 0/3 | NA | 38.31258 | 100% | 3/3 |
+| MLP | 0/3 | 0/3 | NA | 39.90477 | 99.9879% | 2/3 |
+
+舒适代理仍为逐seed接触dt加权后、三seed等权平均。E/R/M接触秒数分别
+`[.852,1.07085,.35735]`、`[3.734,4.0203,3.98175]`、`[4.25845,1.7702,4.43445]`。
+ESN seed1/3分别7.36/6.24秒发生`global_penetration_exceeded_2mm`，终态lift；
+其余七条55秒未完成，其中MLP seed2停approach，其余carry。短回合峰矩可能较低，
+不能把不同持续时间下的低峰矩解释成控制改善。前两条件18回合Task/Strict全失败，
+仍不是全12条件结论，不据测试调整数据、模型或判据；全局SPT参考仍待完整108。
+
+[第二条件九模型审计](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/CONDITION001_NINE_MODEL_AUDIT.json)
+SHA256 `8925c8998253cea60d69aea038cd90dd8107f7bb99238bece62f2dea08cd9062`；
+[44次实际观察](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/CONDITION001_OBSERVATION.json)。
+两文件证据包逐成员字节及远端暂存/最终大小hash核验，11166字节，
+SHA256 `232d4b1b4da4d7913eedf1884f83aecd158dc5f63bcf6f268c7b5367e9f74488`：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_condition001_review_20261028_v1/special_scene_condition001_review_20261028_v1.tar.gz`。
+仅小证据，不含原始物理；审计工具源码见首条件归档/Git。完整108、最终图表、contact补充、
+全物理归档仍待，Goal active。开工实际fetch/read main72d5d784、baselinef6e8f8c；
+收尾maind8d1c01f独立RL更新已读并fast-forward保留，无本任务协议或RL修改。
+
 ## 原评测持续推进（11:39–11:49 UTC）
 
 本轮是已核验等待：原772606/start28001859、791378/start28239353一直存活，

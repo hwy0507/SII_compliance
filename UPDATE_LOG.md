@@ -1,3 +1,10 @@
+## 2026-10-28 — 新三场景学生第二条件九模型审计，原108已18条
+
+- 11:54–12:15原772606/791378身份保持，44实际样本0–43完整保存，13→18/108；自动接续第三条件ESN seed1 worker838081/start28778790。3GiB/swap0/OOM0，有限观察器正常退出不代表科学结束，无重复启动。
+- 复用原整条件审计，第二条件九模型7972000保存子步/593源/模型config/hash/actor-filter收据及指标算术通过。Task/Strict三家均0/3，SPT为NA；E/R/M平均峰矩46.59522/38.31258/39.90477Nm、舒适代理三seed均值83.0846%/100%/99.9879%、机器合规1/3、3/3、2/3。ESN两种子7.36/6.24秒穿透中止，其余七条55秒失败；短回合低峰矩不视为改善。前两条件18条全失败仍非全12条件结论，不据测试调参，完整108/最终六指标/图/contact/全归档待，Goal active。[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
+- 两文件证据包11166字节/SHA256 `232d4b1b4da4d7913eedf1884f83aecd158dc5f63bcf6f268c7b5367e9f74488`逐成员及远端暂存/最终大小hash核验，已共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_condition001_review_20261028_v1/special_scene_condition001_review_20261028_v1.tar.gz`，不含原始物理，旧失败均保留。
+- 开工实际fetch/read main72d5d784、baselinef6e8f8c；收尾maind8d1c01f独立RL记录已读并fast-forward保留。无执行源/模型/条件变更、RL修改、子agent或服务器计算。
+
 ## 2026-10-28 — 原61前5000、全1824锚点及62–64预登记
 
 - [最新交接](docs/RL_PARAMETER61_EARLY_ANCHOR_20261028.md)。61前5000独立算术/实际图通过；critic首末1000 I2.360356→2.192203、A1.845287→1.695531、V.811884→1.005567，V滚动均值上升/尖峰及actor小漂移保留，非完整61或收敛。原learners身份保持，11:59 steps2525215/2526015/2527201，无失败/重启。
