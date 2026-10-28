@@ -2,6 +2,8 @@
 
 ## 2026-10-29 — 非RL恢复记忆全24训练历史定位
 
+21:38:20UTC覆盖：原1089228 active、33/75完成，seed01 RNN candidate05更新2616，内存1031184384bytes/3GiB/swap0/OOM0。科学a6150123及安全合并efe3c46e已push/远端核验；同科学commit的1205文件7788848bytes/SHAe620bcee源码小证据及准确报告已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_memory_diagnostic_source_20261029_v1/`，收据V8_MEMORY_DIAGNOSTIC_SHARED_RECEIPT。非在途学生全集，Goal active。
+
 21:35:45UTC：600秒观察正常结束，21次同1089228/start31715901 live，作业23→31；当前seed03 RNN candidate04更新1184/内存1147834368bytes。原训练仍运行，观察结束非训练结束；证据V8_FITTING_VERIFIED_WAIT_2125，勿重复启动。Goal active。
 
 - [最新补充](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)：全24train末2秒、三seed精确重放及72组独立标量核验。三阈值下近零估计负载尾窗rod8/ball7/corner0；ball02/07 teacher持续恢复而ESN低估，ball03/06却高估，rod teacher近零仍残留，不能仅统一拉长记忆或放大动作。固定leak与teacher按进展衰减存在表征差异，非已证唯一闭环原因；仍须原18/108。

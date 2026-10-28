@@ -1,5 +1,13 @@
 # v8 ESN训练残差定位：导出与ridge求解通过，闭环尚待
 
+21:38:20UTC最新：原1089228 active，33/75完成，seed01 RNN candidate05更新2616，
+内存1031184384bytes/3GiB/swap0/OOM0。恢复记忆补充和21次观察已随科学a6150123、
+合并efe3c46e正常push，双方日志/共同历史逐字保留；未改原训练或独立RL运行。
+本轮1205文件7788848bytes/SHAe620bcee源码/小证据及9907bytes/SHA1626795d准确报告，
+已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_memory_diagnostic_source_20261029_v1/`。
+[共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/V8_MEMORY_DIAGNOSTIC_SHARED_RECEIPT.json)。
+覆盖下文补充“待共享”状态，不含在途学生或此后收据；Goal active。
+
 21:23:11UTC更新：原1089228同PID active，21/75完成，RNN seed2026102801 candidate03
 更新1076；内存960634880bytes/3GiB/swap0。原训练继续，无最终学生闭环矩阵。
 科学提交5037e93a已push并核远端；源码/小证据1200文件、7770548bytes/SHAf679ad46，

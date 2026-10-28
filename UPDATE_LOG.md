@@ -1,5 +1,7 @@
 ## 2026-10-29 — 非RL恢复记忆的低估与残留同时定位
 
+- 21:38:20UTC同原1089228 active，33/75完成、seed01 RNN candidate05更新2616，1031184384bytes/3GiB/swap0/OOM0。科学a6150123经安全合并远端265859f8至efe3c46e已正常push并核远端，双方日志/共同历史逐字保留。准确科学commit1205文件7788848bytes/SHAe620bcee与9907bytes/SHA1626795d报告均已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_memory_diagnostic_source_20261029_v1/`，收据V8_MEMORY_DIAGNOSTIC_SHARED_RECEIPT；不含在途学生/后补收据。Goal active，主矩阵未完成。
+
 - 原21:25:45–21:35:45UTC有界观察正常结束，21次同1089228/start31715901 live、active，23→31/75且各候选更新增长；最后seed03 RNN candidate04到1184，内存1147834368bytes。观察器exit0，原科学继续，不因观察结束重启；完整摘要V8_FITTING_VERIFIED_WAIT_2125。
 
 - [报告补充](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)。实际全24train末50帧/三seed精确回放，独立math.fsum复算72组bias/RMSE及24组teacher均值/尺度负载最大值通过。三描述阈值均rod8/8、ball7/8、corner0/8整个尾窗近零估计负载，不作为接触或成功门。
