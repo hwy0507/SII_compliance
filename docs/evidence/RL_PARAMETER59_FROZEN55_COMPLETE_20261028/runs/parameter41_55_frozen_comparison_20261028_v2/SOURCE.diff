@@ -1,0 +1,37 @@
+--- v1
++++ v2
+@@ -53,7 +53,25 @@
+   result=audit(41);(OUT/'PREFLIGHT41.json').write_text(json.dumps(dict(passed=True,time=time.time(),cycle41_only=True,result=result,source_sha256=sha(Path(__file__)),actual55_review_completed=False),indent=2)+'\n');print('Complete frozen41 independent arithmetic and gates passed; no55 claim.');return
+  reg=read(OUT/'PLAN.json');assert sha(Path(__file__))==reg['sources']['review_compare.py']
+  before,after=audit(41),audit(55);plans=[read(ROOTS[c]/'PLAN.json') for c in [41,55]]
+- for key in ['controllers','case_ids','conditions','action_seed','maximum_actions','maximum_substeps','maximum_episode_seconds','runtime']:assert plans[0][key]==plans[1][key],key
++ for key in ['controllers','case_ids','conditions','action_seed','maximum_actions','maximum_substeps','maximum_episode_seconds']:assert plans[0][key]==plans[1][key],key
++ # Runtime is an output/source directory, intentionally distinct per cycle.
++ # Bind both exact planned paths and every registered source; compare all shared files.
++ runtimes=[Path(p['runtime']) for p in plans]
++ assert runtimes==[B/'runtime/parameter41_frozen_full30_20261027_v1',B/'runtime/parameter55_frozen_full30_20261028_v1']
++ source_binding={}
++ for cycle,runtime in zip([41,55],runtimes):
++  source_binding[str(cycle)]={}
++  for method in plans[0]['controllers']:
++   registration=read(ROOTS[cycle]/method/'REGISTRATION.json')
++   assert Path(registration['audit_runtime'])==runtime
++   for name,h in registration['source_hashes'].items():
++    assert sha(runtime/name)==h
++    source_binding[str(cycle)][name]=h
++ common=set(source_binding['41']) & set(source_binding['55'])
++ assert len(common)>=20
++ for name in common:assert source_binding['41'][name]==source_binding['55'][name],name
++ runtime_binding=dict(paths=[str(p) for p in runtimes],registered_sources=source_binding,common_sources_equal=sorted(common),distinct_wrappers_and_capacity_declared=True)
++
+  limits=read(ROOTS[55]/'COMPARISON_LIMITATIONS.json');assert limits['baseline_replay_capacity']==2000000 and limits['evaluation_replay_capacity']==4000000
+  methods={}
+  for method in plans[0]['controllers']:
+@@ -64,6 +82,6 @@
+    assert before['evaluators'][method][case]==after['evaluators'][method][case]
+    pairs.append(dict(condition=case,before41=x,after55=y,reward_delta=y['reward']-x['reward'],task_changed=x['task']!=y['task'],strict_changed=x['strict']!=y['strict']))
+   methods[method]=dict(all30=pairs,mean_reward_delta=math.fsum(p['reward_delta'] for p in pairs)/30,task41=sum(p['before41']['task'] for p in pairs),task55=sum(p['after55']['task'] for p in pairs),strict41=sum(p['before41']['strict'] for p in pairs),strict55=sum(p['after55']['strict'] for p in pairs),recovered_strict=[p['condition'] for p in pairs if not p['before41']['strict'] and p['after55']['strict']],lost_strict=[p['condition'] for p in pairs if p['before41']['strict'] and not p['after55']['strict']])
+- report=dict(passed=True,time=time.time(),methods=methods,before41=before,after55=after,comparison_limitations=limits,source_sha256=sha(Path(__file__)),new_physics=0,optimizer_updates=0,convergence_claim=False,plot_inspected=False,limitation='Complete90 each, same original30 training conditions/action seed/MJB/executed evaluator. Full report scalar/gate/source checks; original raw-substep/filter/torque audits retained, not independent physical resimulation. Replay2m vs4m and training exposure differ; no isolated capacity causality, generalization, seed robustness, or final ESN comparison.')
++ report=dict(runtime_binding=runtime_binding,passed=True,time=time.time(),methods=methods,before41=before,after55=after,comparison_limitations=limits,source_sha256=sha(Path(__file__)),new_physics=0,optimizer_updates=0,convergence_claim=False,plot_inspected=False,limitation='Complete90 each, same original30 training conditions/action seed/MJB/executed evaluator. Full report scalar/gate/source checks; original raw-substep/filter/torque audits retained, not independent physical resimulation. Replay2m vs4m and training exposure differ; no isolated capacity causality, generalization, seed robustness, or final ESN comparison.')
+  (OUT/'REVIEW.json').write_text(json.dumps(report,indent=2,allow_nan=False)+'\n');print(json.dumps({m:{k:v for k,v in r.items() if k!='all30'} for m,r in methods.items()},indent=2))
+ if __name__=='__main__':main()

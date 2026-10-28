@@ -1,5 +1,14 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 参数59完整、冻结55独立复核与准确续训60
+
+- [最新交接](docs/RL_PARAMETER59_FROZEN55_COMPLETE_20261028.md)。完整59三路各30×55秒/41250新增/noabort，全58 replay/history/optimizer保留、新reward0误差。I/A/V reward−.596953/−13.606295/−4.517594、Task/Strict18/18、12/11、17/16；全loss独立算术/图通过，但I actor漂移、A/V后段burst仍在，不称整体收敛。原I56–58/V53–55通过保留；59–61待60/61，I59近零保护不改。
+- VMC旧1764 masked SSE8649.382574→7126.144292（−17.61%），58 short0600失败改善、short0200成功退化；新30贡献.159778508。精确旧输入/权重RNG不变、health复现/独立算术/实际图通过，无因果或新停止门。
+- 冻结55完整90回合/123750动作/99000000子步，I18/18、A13/11、V17/17、0优化，全learner/replay不变。41→55独立全180复核及实际图通过，A Strict13→11退化保留。原比较v1因runtime目录字符串不同而失败保留；v2核对准确目录/全登记源/共有源/逐条件MJB/evaluator，原物理未改未重跑。replay2m/4m及曝光不同，非容量因果/泛化结论。
+- 准确59全state/replay/下一65536恢复exit0后，有限60 I2048394/A2048396/V2048399 start37968090启动；实际startup新增1000/1000/2000通过、旧全行保留/reward0。全60 loss2054688/start37969923，61仅恢复2162225/start37988230，原59–61统计继续；无auto61，Direct不启动34。61首次补零适配逆变换拒绝保留，修正后AST/逆变换及缺DECISION真实拒绝通过。
+- 10:44原60约2473507/2474163/2475183steps；GPUv5原五进程live、79/96/93/93%含保活，科学结束仍继续，非跨重启服务。Goal active，无子agent。
+- 实际fetch/read mainf9c757c2、baselinef6e8f8c，非RL并行更新已fast-forward保留。共享SSD包390成员/2447229字节/SHA9b7fa1d601592733a537c84f5d3971b45d19b93613ef874b32854899840e3a94逐字节/AST核验；收据与证据清单见交接，大产物仍SSD，非HDD/arm1全备份。
+
 ## 2026-10-28 — 原拟合63/75与接触超阈值诊断准备
 
 原725995/746822与接续772606保持，10:12–10:31实际47→63/75，当前RNN seed1/candidate10；两服务真实3GiB/swap0/OOM0，194原源/5接续快照不变。**已有自动接续，勿另启108。** 标准要求的超阈值持续时间/超额积分补充脚本`supplement_special_contact_metrics_20261028.py`已写；旧单条110万子步/独立标量求和及hash拒绝预检通过，非新结果。该补充不在live快照中，需完整FINAL_AUDIT后单独执行一次，命令见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。11577字节准备包SHAfe217691已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_contact_supplement_20261028_v1/`。完整75/9锁/108/实际图表归档仍待，Goal active，不涉及RL或子agent。
