@@ -1,5 +1,8 @@
 ## 2026-10-29 — 非RL v8完整拟合与九模型审计通过，学生18实际接续
 
+- 22:38:07UTC同1160099 active，3/18结束，rod08 ESN在途。rod00 ESN/RNN合格；MLP任务true、行为顺序满足，但穿透0.244815881mm>原0.2，40万子步max及hash/actor/filter0核验，失败完整保留。scene_contact_valid=false含安全判据，非无接触。完整18/108待，Goal active。
+- 科学78b29b1d及安全合并5c96fde0已正常push核远端；同科学commit源码小证据1218文件7820185bytes/SHAe800ac31和准确报告5502bytes/SHAd038543e已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_complete_fits_source_20261029_v1/`。收据V8_COMPLETED_FITS_SOURCE_SHARED_RECEIPT；不含后补MLP失败收据和在途18原物理，后者完整后独立归档。
+
 - [交接](docs/NONRL_V8_COMPLETED_FITS_STUDENT18_20261029.md)：原1089228在22:31:14UTC自然终止，75/75及9模型锁定SHA0bf736fd；54次真实观察从53→75，非观察超时重启。完整75/108候选预算/数据/源/曝光/验证选模审计SHA53345419通过，九模型各15750帧冻结actor导出误差0。
 - 验证requested-action MSE三seed范围：RNN1.061–1.121e−5，ESN2.586–3.082e−5，MLP8.190–8.924e−5；不是闭环排名。原24+6划分/每家每seed12候选保持，神经32000更新，非相同FLOPs或收敛认证。
 - 唯一学生18服务1160099/start32477328已在22:31:59实际开始，先fit审计通过后仿真，REG5d42f67a；单模拟器/线程1/CPU100%/3GiB/swap0。首ESN rod00原资格通过、actor/filter0，接触4.734/让位4.840/蹭过7.360/持续回位7.760<撤棍12.800；仅训练身份开发条件。原队列接续RNN，完整18及108均未完成，Goal active。

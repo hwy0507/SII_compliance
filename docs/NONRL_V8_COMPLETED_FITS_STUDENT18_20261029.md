@@ -1,5 +1,17 @@
 # v8公平拟合全部完成，九模型审计通过，真实场景18回合诊断已启动
 
+22:38:07UTC覆盖：原1160099继续，已3/18结束，正在rod08 ESN。rod00 MLP任务true、
+让位/蹭过/持续回位均满足，但穿透0.244815881mm超过原0.2mm，因此资格failed_preserved。
+40万保存子步独立取max、原输入hash及actor/filter重放0已复核；scene_contact_valid=false
+来自行为资格包含穿透检查，**不是没有棍—手接触**。不改门或换模型。
+[失败资格原件](evidence/NONRL_INTENT_RECOVERY_20261029/V8_STUDENT_ROD00_MLP_QUALIFICATION.json)。
+
+科学78b29b1d及安全合并5c96fde0已push/核远端，双方日志逐字保留；同科学commit源码/
+小证据1218文件7820185bytes/SHAe800ac31与当时准确报告5502bytes/SHAd038543e已核共享
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_complete_fits_source_20261029_v1/`。
+[源码共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/V8_COMPLETED_FITS_SOURCE_SHARED_RECEIPT.json)。
+该源码小包不含此后MLP失败收据或后补文本；在途18原物理仍本机，完整后独立归档。
+
 22:36:26UTC：原1160099活跃，已完成2/18，rod00 ESN与RNN均qualified，
 原队列继续rod00 MLP；内存656297984bytes/3GiB/swap0/OOM0。完整18仍待。
 
