@@ -1,0 +1,21 @@
+{
+  "input": "special_teacher_midpoint_office_20261028_v1/office_v075_avg1/rollout.npz; hash bound by RELEASE_DIAGNOSIS.json",
+  "changed_fields": ["recovery.release_s"],
+  "synthetic_check": {
+    "steps": 100,
+    "canonical_desired_x_mps": 0.03,
+    "canonical_actual_x_mps": 0.0,
+    "opposing_force_x_n": -3.0,
+    "intent": 1.0,
+    "action_and_recovery_memory_exactly_equal": true
+  },
+  "saved_history_replay": {
+    "frames": 1375,
+    "original_actor_max_abs_error": 0.0,
+    "last250_recovery_memory_mean_original": 0.4222784944872305,
+    "last250_recovery_memory_mean_release025": 0.17436219601418196,
+    "last250_requested_z_action_mean_original": 0.08415678559977456,
+    "last250_requested_z_action_mean_release025": 0.035141802210037806
+  },
+  "limitation": "New teacher readout on the unchanged original observation history only. Alternate actions were not executed, and are not imitation labels, a physical rollout, or proof of repaired task success. The separately registered six physical controls decide that."
+}

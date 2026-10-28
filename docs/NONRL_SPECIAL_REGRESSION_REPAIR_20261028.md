@@ -3,6 +3,135 @@
 2026-10-28，Goal active。用户明确要求定位并修复 ESN 的异常退化，而非接受全失败作为主结果。
 本页覆盖此前“原108继续等待”的交接指令。旧结果全部保留，不能把未完成矩阵或低力矩当作算法结论。
 
+## 16:24 UTC 更新：0.25秒释放假设未修复office，0.05秒有限对照继续
+
+原六条全部结束：五个训练身份仍全部合格，但office完整55秒仍carry、Task/Strict false，
+RMSE28.2307mm。末250帧竖直误差均值-18.1198mm、恢复记忆均值0.4804946，
+相比原`.75/平均`失败的0.4222785反而更大。缩短释放在同历史离线反事实中有效，
+**不代表实际闭环有效**；此实际回合否定了“.25秒足以修复”的假设。所有失败保留，
+未启动v7或重训。[完整复核](evidence/NONRL_SPECIAL_FAST_RELEASE_20261029/RELEASE025_COMPLETE_REVIEW.json)。
+
+这六项完整132文件/606750720字节，SHA256
+`d3c1892cdf0541a0c43fad225181603b1eb828efd9115a59a1fc9dc69e580c12`，
+逐成员及远端暂存/最终核验通过，已共享于
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_release025_controls_20261029_v1/FULL_PROBE.tar`。
+该包含office失败，不含后续release005对照。
+
+接续只改release_s .25→.05秒的一组固定六回合，仍先五train身份，再原office000，
+没有验证调参或自动采集/训练。服务`sii-special-recovery-release005-v1-20261029.service`，
+parent956881，登记SHA256 `71f654eff125d3188ea018f110b51fb23196fa2d3a872d2e136feaefcc824c77`；
+本机单模拟器/单线程/3GiB/swap0，实际OOM0。
+[登记](evidence/NONRL_SPECIAL_FAST_RELEASE_20261029/RELEASE005_REGISTRATION.json)。
+禁止改绑定源、重复启动或跳过完整回合结论；若仍失败须重新检查恢复触发/任务覆盖，
+不能把有限参数改动的离线改善当成成功。旧18/108静态准备依旧不可执行。
+
+补充只读输入检查：当前真实rod00的canonical path只为±Z，水平分量恒0，因此此例的
+水平progress恢复项不激活；棍推通过不能证明该恢复项在水平office搬运中正确。
+球撞有水平路径、桌角路径也不同。三真实场景与office的覆盖差异仍需在teacher/学生分层验证，
+不能只凭“棍推已好”认定整个主矩阵已好。这个检查没有新增actor输入或把office轨迹加入训练。
+
+16:29 UTC在途补充：`.05`五个train身份已结束，rod00/ball00/ball01/corner00合格，ball04失败，
+原office回归仍在途。因训练条件已有失败，本组不能进入全量采集，即使office后来通过也不例外。
+下一步应检查恢复触发的自激活、接近目标时的指令依赖与真实训练覆盖，不能继续单凭更短release_s
+推断修好；如需要新的teacher读出机制，必须独立登记、保留旧actor/源快照，明确改变的是teacher，
+保持公共物理/filter/输入/最终gate，并重新做actor/filter独立回放和全场景配对控制。当前未实现新机制。
+
+## 16:00 UTC 更新：中间权重训练检查通过，office仍失败；定位恢复记忆残留
+
+十项中间权重对照全部结束并逐收据/物理输入hash核验。`.75/不平均`4/5合格，
+ball04末10帧最大速度0.020248537m/s超原0.02而失败；`.75/平均`5/5合格，
+ball00/01/04末段最大速度0.006086735/0.001318248/0.013152809m/s。
+按预登记训练规则选择后者，全部失败保留。
+[完整审计](evidence/NONRL_SPECIAL_TEACHER_MIDPOINT_20261028/MIDPOINT_REVIEW.json)。
+保存训练身份球撞轨迹的实际末段图如下；最后0.36秒灰区才是原末10帧运动判据窗口，
+ball04此前仍有波动，不能把通过末段门写成全程稳定。
+
+![两个训练身份的teacher末段运动](evidence/NONRL_SPECIAL_TEACHER_MIDPOINT_20261028/plots/teacher_tail_motion.png)
+
+单条已看过office000回归随后跑满55秒，仍Task/Strict false，停在carry，
+actor/filter replay均0；没有自动进入v7采集。
+[完整失败](evidence/NONRL_SPECIAL_RECOVERY_RELEASE_20261028/MIDPOINT_OFFICE_COMPLETE.json)。
+末250帧（10秒）位置误差最小12.0023mm、中位16.5259mm，竖直有符号误差均值-15.8226mm；
+原位置门12mm未持续满足，姿态/速度并非该窗口主要问题。恢复记忆中位0.36513、均值0.42228，
+仍通过恢复项产生正向抬升动作。这支持“接近目标仍有恢复偏移”的机制线索，尚需单变量物理证实。
+历史1.0两配置虽通过office，也只有少数接近目标帧，不可把偶然越过门视为稳健完成。
+
+下一组有限六项已登记：保持`.75/平均`，只把原progress恢复项的`release_s`
+从1.257675717s改为0.25s。原衰减率是`max(progress,0)/distance+(1-intent)/release_s`，
+所以intent=1时该改动不改变更新；期望在接近目标、运动意图减弱时更快释放抬升记忆。
+依旧只用canonical48，未新增阶段/接触身份/目标oracle输入，未改公共filter、MJB或gate。
+固定rod00、ball00/01/04、corner00五个train身份，加原office000已看条件的回归，共六条，
+不使用验证08/09调参；全通过才可重新登记原30全量采集，失败保留、不自动拟合。
+服务`sii-special-recovery-release-v1-20261028.service`，本机单模拟器/单线程/3GiB/swap0，
+注册SHA `be3bdcb96f23a5db2e2f99d171d3d7ea752214232d9deb04b56c7df96da3f307`。
+[诊断](evidence/NONRL_SPECIAL_RECOVERY_RELEASE_20261028/RELEASE_DIAGNOSIS.json)、
+[登记](evidence/NONRL_SPECIAL_RECOVERY_RELEASE_20261028/RELEASE_REGISTRATION.json)。
+初次只读窗口准备因45秒浮点边界选到251帧而拒绝，在写目录/启动前结束；
+修为最后250帧并核对0.04s间隔，未改物理数据或判据，错误也已记录。
+
+十项中间权重对照完整214文件/907642880字节，
+SHA256 `47e6d16b787d93a1a7704890dcce67841429ef49b7f2fe167ec7f34e7cfc64a6`，
+逐成员及远端暂存/最终核验通过：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_teacher_midpoint_20261028_v1/FULL_PROBE.tar`。
+后续单条office失败27文件/149770240字节，SHA256
+`ecde9b55be285782f3b6929eee517c5073de5e18bc41958c84e961ce608de44b`，亦经逐成员及远端最终核验，
+共享于`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_midpoint_office_failure_20261028_v1/FULL_PROBE.tar`。
+四个新完整包的[共享收据](evidence/NONRL_SPECIAL_TEACHER_STABILITY_20261028/SHARED_ARCHIVES.json)，不含当前在途六项。
+新模型、完整主矩阵均未完成，Goal继续；不是“只改蹭棍就使ESN必然变差”的证据。
+
+## 15:36 UTC 更新：完整v6暴露teacher末段问题，重训已拒绝
+
+v6在15:04:31 UTC自然完成全部30条：棍推10/10合格、桌角10/10合格，球撞6/10合格。
+失败是ball01/04（train）及08/09（validation）；均通过保存子步安全/接触/动作回放检查，
+但末10帧物块最大速度分别为0.0350799、0.0286068、0.0373701、0.0297257m/s，
+超过原任务阈值0.02m/s。原阈值、物理、时长和全部条件不变，失败没有删掉或重标。
+[完整审查](evidence/NONRL_SPECIAL_TEACHER_STABILITY_20261028/V6_FULL_REVIEW.json)。
+原learning-handoff-v3于15:04:33拒绝不合格示范，状态failed_preserved；拟定训练目录不存在，
+不能说学生已经重训。已准备的18真实场景学生闭环/108评测仅静态，绑定失败v6后不可继续使用。
+实际不完整训练输入拒绝检查已通过，未产生新物理或模型输出。
+
+随后四项有限对照已全部结束并逐输入hash核验：
+
+| 对照 | 结果 |
+| --- | --- |
+| ball01，速度权重.5/不平均 | 合格，末段物块速度0.0005913m/s |
+| ball04，速度权重.5/不平均 | 合格，末段物块速度0.0187867m/s，接近原阈值 |
+| 原office000，.5/不平均 | 完整55秒，Task/Strict false，停在carry |
+| 原office000，1.0/平均 | 完整55秒，Task/Strict true，到retreat |
+
+[四项完整收据](evidence/NONRL_SPECIAL_TEACHER_STABILITY_20261028/TAIL_COMPLETE.json)、
+[复核与训练身份末段对照](evidence/NONRL_SPECIAL_TEACHER_STABILITY_20261028/TAIL_REVIEW.json)。
+两次office actor/filter replay均0；此前.5/平均失败、1.0/不平均通过，补全同条件2×2因素对照。
+这说明teacher读出改变确实影响任务完成及末段稳定，不能把故障全部推给ESN。
+但仅一个已看过的office条件，不是未见测试或全12成功证明；其轨迹不进入拟合。
+
+15:28:51 UTC已启动仅训练身份的十回合中间权重检查：速度权重固定.75、平均关/开，
+每种各跑rod00、ball00、ball01、ball04、corner00。阈值/条件/seed/几何/共同0.32不变。
+先完整检查两种，只有五条都合格才可候选，预登记优先不平均再平均；任一不合格不能直接重采30。
+首组五条已完成，ball04失败，其余四条合格；第二组在途。失败保留，不用验证08/09调参。
+服务`sii-special-teacher-midpoint-v1-20261028.service`，parent933116，单模拟器/单线程/3GiB/swap0。
+[登记](evidence/NONRL_SPECIAL_TEACHER_STABILITY_20261028/MIDPOINT_REGISTRATION.json)
+SHA256 `80815d48c297be9470208d8cfdecaedbe11e88dd5947b0360deedaf0bc50fb4d`。
+禁止改绑定源码或重复启动。没有自动重采/拟合/最终评测；完成后审查实际结果。
+
+v6全30原始物理、配置、源快照、资格收据共604文件/2804715520字节，
+SHA256 `4eff3fc1c46d89f7f4d82bb7e09b7c0cb63d7d3363f0df3fc8910544be8753ac`，
+本机逐成员与远端暂存/最终大小SHA核验通过，完整共享于
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_v6_failed_collection_20261028_v1/FULL_COLLECTION.tar`。
+该包不含后续FULL_COLLECTION_REVIEW、失败handoff和四项新对照，后续小证据见本节链接。
+
+四项tail-v2完整对照另包90文件/472432640字节，
+SHA256 `06f08d804d7e165e0812ac24aa2eca7caf60834d8d704decc5d8543f3f9ffc40`，
+本机逐成员及远端暂存/最终核验通过：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_teacher_tail_controls_20261028_v1/FULL_PROBE.tar`。
+[两包共享收据](evidence/NONRL_SPECIAL_TEACHER_STABILITY_20261028/SHARED_ARCHIVES.json)。
+不含在途中间权重对照；未删除本地或历史产物。
+
+首次tail-v1准备错误地要求所有失败身份属于train，断言拒绝；随后未检查该返回码而误启动，
+因REGISTRATION不存在在物理前退出。该基础设施错误及日志保留，v2才是真正四项对照。
+此错误没有产生物理或掩盖四条采集失败。后续已将准备成功验证和启动拆开执行。
+Goal仍active：teacher修复、新30、公平三seed重训、真实场景学生闭环、完整108及六指标均未完成。
+
 ## 14:29 UTC 更新：完成隔离对照，v6修复采集已启动
 
 十回合诊断已完整结束并逐输入hash核对，见

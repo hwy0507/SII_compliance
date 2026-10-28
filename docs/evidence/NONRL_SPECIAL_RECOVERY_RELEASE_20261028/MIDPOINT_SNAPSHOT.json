@@ -1,0 +1,93 @@
+{
+  "captured_utc": "2026-10-28T16:00:55.764371+00:00",
+  "service": "sii-special-recovery-release-v1-20261028.service",
+  "properties": {
+    "MainPID": "947352",
+    "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-recovery-release-v1-20261028.service",
+    "MemoryCurrent": "837079040",
+    "CPUQuotaPerSecUSec": "1s",
+    "MemoryMax": "3221225472",
+    "MemorySwapMax": "0",
+    "ActiveState": "active"
+  },
+  "execution": {
+    "status": "running",
+    "started_utc": "2026-10-28T15:58:51.779505+00:00",
+    "registration_sha256": "be3bdcb96f23a5db2e2f99d171d3d7ea752214232d9deb04b56c7df96da3f307",
+    "episodes": [
+      {
+        "id": "release025_rod_00",
+        "returncode": 0,
+        "qualification": {
+          "schema": "sii-real-special-demonstration-qualification-v1",
+          "status": "qualified",
+          "scene": "rod",
+          "task_success": true,
+          "safety_valid": true,
+          "scene_contact_valid": true,
+          "checks": {
+            "complete": true,
+            "finite": true,
+            "penetration_within_02mm": true,
+            "actuator_limits": true,
+            "actor_filter_replay": true,
+            "no_legacy_physics_failure": true
+          },
+          "trajectory_sha256": "695b913cf6ba55b9cc0ba6456e03b2758d3697576a77a6a9f294aa23ee38c143",
+          "execution_sha256": "169ec3bd4ce42206880d04069ce265491aa324202aff98a9e5330623ae2e35ff",
+          "input_hashes": {
+            "execution.json": "169ec3bd4ce42206880d04069ce265491aa324202aff98a9e5330623ae2e35ff",
+            "legacy.json": "e27b06cffded81c7329412899ee6c290d7c705951d5f52b58f10713a4019f3ec",
+            "teacher.json": "1d8eb393043058471d58e2436307160f1316a1e878c975655c3e46f08baeb37e",
+            "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+            "trajectory.npz": "695b913cf6ba55b9cc0ba6456e03b2758d3697576a77a6a9f294aa23ee38c143",
+            "filter.npz": "a1a4e299cbd04fe4cc387013979d41110b744179c86c4eac05d7cb2bf7817f4c",
+            "substeps.npz": "f30b8ef2ee8813d94b36491a7164149c2f7d57dfd7ffe13d96067f80a891389c",
+            "SOURCE_HASHES.json": "cc117f72abda8a3948e5eb5d262aac91cbfef7dff5aafe80069e1a279dbeb70a",
+            "source.tar.gz": "5356793e9e13f6537cee5d5aed75f0d581883336c48ced8730ca3d9e729e9ef6",
+            "INDEPENDENT_AUDIT.json": "ddb5ef86628a28bdf129760ac83e2d0723b13cf11b70624086902aa86f5b0b7d",
+            "ROD_YIELD_REJOIN_AUDIT_V3.json": "f33649d0d4d60e41f3d0e3896444a1ef351ad949e8b743132ba25e636775b62f"
+          },
+          "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+          "substeps": 400000,
+          "metrics": {
+            "peak_torque_nm": [
+              1.3438708943617446,
+              34.603666666610586,
+              1.4998111366323512,
+              27.61370677599815,
+              1.4984807981342907,
+              3.2905092885687584,
+              0.6418222888622848
+            ],
+            "peak_joint_velocity_radps": [
+              0.03127934130942931,
+              0.17080695585760897,
+              0.0360769111572081,
+              0.36769813355532144,
+              0.06596708584627546,
+              0.2174754703788834,
+              0.11628358753396115
+            ],
+            "max_external_penetration_m": 4.0079423183221626e-05,
+            "disturbance_contact_s": 0.027000000000000007,
+            "disturbance_contact_comfort_proxy": 1.0
+          },
+          "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+        },
+        "qualification_sha256": "6d67a2166ab2e76ec3b1cbb651cd8c9a808943b5bfb2f594dbeb27feb9d7beed"
+      }
+    ],
+    "current": "release025_ball_00",
+    "updated_utc": "2026-10-28T16:00:41.866651+00:00"
+  },
+  "parent_proc_stat": "947352 (python) S 2117 947352 947352 0 -1 4194304 4803 358574 1 619 4 0 10930 96 20 0 1 0 30118925 120430592 8429 18446744073709551615 101492127842304 101492130581965 140721642178064 0 0 0 0 16781312 2 1 0 0 17 1 0 0 0 0 0 101492132135840 101492132992816 101492503429120 140721642182444 140721642182624 140721642182624 140721642184623 0\n",
+  "children": "948244 ",
+  "cgroup": {
+    "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\n",
+    "memory.current": "837079040\n",
+    "memory.max": "3221225472\n",
+    "memory.swap.current": "0\n",
+    "memory.swap.max": "0\n"
+  }
+}

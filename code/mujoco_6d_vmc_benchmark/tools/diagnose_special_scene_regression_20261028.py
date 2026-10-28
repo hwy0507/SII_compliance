@@ -80,7 +80,7 @@ def prepare(root):
     print(json.dumps(dict(root=str(root), episodes=len(cases), registration_sha256=sha(root/'REGISTRATION.json'))))
 
 
-def run(root):
+def run(root, training=TRAINING):
     reg = read(root/'REGISTRATION.json')
     lock = (root/'.probe.lock').open('a')
     fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -101,7 +101,7 @@ def run(root):
                 assert sha(ROOT/name) == digest, name
             for name, digest in reg['config_sha256'].items():
                 assert sha(Path(name)) == digest, name
-            assert sha(TRAINING/'MODEL_LOCK.json') == reg['model_lock_sha256']
+            assert sha(training/'MODEL_LOCK.json') == reg['model_lock_sha256']
             env = {k: v for k, v in os.environ.items() if k in {'PATH', 'HOME', 'USER', 'LANG', 'LD_LIBRARY_PATH', 'MUJOCO_GL', 'TMPDIR'}}
             env.update(OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1', MKL_NUM_THREADS='1',
                        MUJOCO_MENAGERIE_PATH=str(RUNTIME/'menagerie'),

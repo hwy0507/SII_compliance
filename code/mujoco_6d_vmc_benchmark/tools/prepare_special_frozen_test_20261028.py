@@ -66,7 +66,8 @@ def formal_model_check(source, model_path, protocol):
                 simulation_steps=0, archive_modified=False, mujoco=mujoco.__version__)
 
 
-def prepare(root, training, evaluation, source, handoff):
+def prepare(root, training, evaluation, source, handoff,
+            handoff_service='sii-special-learning-handoff-v2-20261028.service', scene_regression=None):
     require(not root.exists() and not evaluation.exists(), 'Use new preparation/evaluation paths')
     parent = read(source / 'REGISTRATION.json')
     protocol = read(source / 'PROTOCOL.json')
@@ -81,8 +82,15 @@ def prepare(root, training, evaluation, source, handoff):
     model_check = formal_model_check(source, model, protocol)
     handoff_plan = read(handoff / 'REGISTRATION.json')
     require(Path(handoff_plan['training']) == training, 'Wrong fitting handoff')
+    if scene_regression is not None:
+        scene_plan = read(scene_regression / 'PREPARATION.json')
+        require(Path(scene_plan['training']) == training and Path(scene_plan['handoff']) == handoff,
+                'Scene closure uses different fitting inputs')
+        require(scene_plan['handoff_service'] == handoff_service, 'Scene closure service mismatch')
     files = [source / n for n in ('REGISTRATION.json', 'CONDITIONS.json', 'PROTOCOL.json')]
     files += [model, runtime / 'v6/PROTOCOL.json', runtime / 'v6/esn_original_v2/rollout.json', handoff / 'REGISTRATION.json']
+    if scene_regression is not None:
+        files.append(scene_regression / 'PREPARATION.json')
     root.mkdir(parents=True)
     snapshot = root / 'tools'
     snapshot.mkdir()
@@ -92,7 +100,8 @@ def prepare(root, training, evaluation, source, handoff):
     registration = dict(schema='sii-special-frozen108-preparation-v1',
         registered_utc=datetime.now(timezone.utc).isoformat(), training=str(training),
         evaluation=str(evaluation), source_run=str(source), handoff=str(handoff),
-        handoff_service='sii-special-learning-handoff-v2-20261028.service',
+        handoff_service=handoff_service,
+        scene_regression=str(scene_regression) if scene_regression is not None else None,
         runtime=str(runtime), python=parent['simulation_python'], expected_models=9, expected_episodes=108,
         conditions=[c['id'] for c in conditions], physics_source_sha256=parent['physics_source_sha256'],
         model_check=model_check,
@@ -135,6 +144,23 @@ def run(root):
     training = Path(reg['training'])
     require(sha(training / 'MODEL_LOCK.json') == handoff['model_lock_sha256'], 'Wrong fitting output')
     require(len(read(training / 'MODEL_LOCK.json')['models']) == 9, 'Need all nine models')
+    if reg.get('scene_regression'):
+        closure = Path(reg['scene_regression'])
+        closure_plan = read(closure / 'PREPARATION.json')
+        closure_registration = read(closure / 'REGISTRATION.json')
+        closure_state = read(closure / 'execution.json')
+        require(closure_registration['preparation_sha256'] == sha(closure / 'PREPARATION.json'), 'Changed closure plan')
+        require(closure_state['registration_sha256'] == sha(closure / 'REGISTRATION.json'), 'Changed closure registration')
+        require(closure_state['status'] == 'complete_pending_review'
+                and len(closure_state['episodes']) == closure_plan['maximum_episodes'] == 18,
+                'Complete real-scene18 closure required before repaired frozen108')
+        require(closure_registration['model_lock_sha256'] == handoff['model_lock_sha256'], 'Closure used different models')
+        for case, row in zip(closure_registration['cases'], closure_state['episodes']):
+            require(case['id'] == row['id'] and row['returncode'] == 0, 'Incomplete closure receipt')
+            folder = closure / case['id'] / case['scene']
+            require(sha(folder / 'DEMONSTRATION_QUALIFICATION.json') == row['qualification_sha256'], 'Changed closure qualification')
+            for name, digest in row['qualification']['input_hashes'].items():
+                require(sha(folder / name) == digest, 'Changed closure evidence: '+name)
     receipt = dict(status='auditing_fits', started_utc=datetime.now(timezone.utc).isoformat(),
                    registration_sha256=sha(root / 'REGISTRATION.json'))
     write(root / 'execution.json', receipt)
@@ -175,10 +201,13 @@ if __name__ == '__main__':
     p.add_argument('--evaluation', type=Path)
     p.add_argument('--source-run', type=Path)
     p.add_argument('--handoff', type=Path)
+    p.add_argument('--handoff-service', default='sii-special-learning-handoff-v2-20261028.service')
+    p.add_argument('--scene-regression', type=Path)
     p.add_argument('--run', action='store_true')
     a = p.parse_args()
     if a.run:
         run(a.root.resolve())
     else:
         require(all((a.training, a.evaluation, a.source_run, a.handoff)), 'Preparation needs all four input paths')
-        prepare(a.root.resolve(), a.training.resolve(), a.evaluation.resolve(), a.source_run.resolve(), a.handoff.resolve())
+        prepare(a.root.resolve(), a.training.resolve(), a.evaluation.resolve(), a.source_run.resolve(), a.handoff.resolve(),
+                a.handoff_service, a.scene_regression.resolve() if a.scene_regression else None)

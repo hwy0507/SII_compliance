@@ -1,0 +1,125 @@
+{
+  "schema": "sii-teacher-tail-complete-review-v1",
+  "reviewed_utc": "2026-10-28T15:27:33.549096+00:00",
+  "registration_sha256": "3882ee6bd110db3eae511a91517eab8c8e21433995954fd05b6af6b6123c1c4e",
+  "execution_sha256": "d811cab5e1406398b6b72967889a941257b1a5f764b7eb0b3da288d0636675a8",
+  "rows": [
+    {
+      "id": "ball_01_v05_avg0",
+      "task": true,
+      "qualified": "qualified",
+      "tail_object_speed_max_mps": 0.0005912579200033201,
+      "original_threshold_mps": 0.02,
+      "qualification_sha256": "8b73d557d008f64739b1567fb965a50fb43139bbb8a75cb1356cf6651cd14553",
+      "legacy_npz_sha256": "07fef7f1258df99c0c579797580ebb78e70d28a4d2e319e4b7e46dec28721c8d"
+    },
+    {
+      "id": "ball_04_v05_avg0",
+      "task": true,
+      "qualified": "qualified",
+      "tail_object_speed_max_mps": 0.018786680801609834,
+      "original_threshold_mps": 0.02,
+      "qualification_sha256": "488ca0d11474fe02e8ec3b45351e57765b3fc20cc142804073b75659e4a4954d",
+      "legacy_npz_sha256": "c31b6364950867a8a81504d34eefe8ee27926264b13595014a356a5164da3339"
+    },
+    {
+      "id": "office_v0.5_avg0",
+      "task": false,
+      "strict": false,
+      "stage": "carry",
+      "rmse_mm": 27.810463870509142,
+      "peak_torque_nm": 38.423316955566406,
+      "audit_sha256": "6735467a5659bacee257cc2f3f538d1b5aaaf33ed7e4309f1e0237c0ddd9dc20"
+    },
+    {
+      "id": "office_v1_avg1",
+      "task": true,
+      "strict": true,
+      "stage": "retreat",
+      "rmse_mm": 29.168183038376082,
+      "peak_torque_nm": 50.507572174072266,
+      "audit_sha256": "aaef6113aa3fbf7d6f3009171ab3140b7838ae80dc9ed781fa1738cc74b632a4"
+    }
+  ],
+  "train_tail_comparison": [
+    {
+      "id": "ball_01",
+      "v5": {
+        "tail_object_speed_max_mps": 0.00017323681612265977,
+        "last4s_action_std": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "last4s_force_std": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "legacy_npz_sha256": "92530e8c8b8cb6064cd972760eed16a57682c2de5c5e2b3ad6247e10146f29f7"
+      },
+      "v6": {
+        "tail_object_speed_max_mps": 0.03507989893337017,
+        "last4s_action_std": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "last4s_force_std": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "legacy_npz_sha256": "365a149311d43b3ea5fc0efed023dd5a194deb63eba73d19a64e6cfb288f1b84"
+      }
+    },
+    {
+      "id": "ball_04",
+      "v5": {
+        "tail_object_speed_max_mps": 0.0001783086348373412,
+        "last4s_action_std": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "last4s_force_std": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "legacy_npz_sha256": "8ae666b8506a93b2a4ec18f04ce2b6879fb8f04f57ca0388b3d8a4fac997cdc8"
+      },
+      "v6": {
+        "tail_object_speed_max_mps": 0.02860679189753078,
+        "last4s_action_std": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "last4s_force_std": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "legacy_npz_sha256": "7d6f1fb405850c2cb045de3978acfd28add58d58743963251ac3ea5b1ff3b99e"
+      }
+    }
+  ],
+  "interpretation": "Teacher velocity readout affects both tail stability and office completion. These are completed controlled observations, not proof of stability for all conditions or any student success."
+}

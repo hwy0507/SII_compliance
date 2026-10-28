@@ -1,4 +1,4 @@
-"""Archive the stopped35 and complete10 without pruning physical failures."""
+"""Archive terminal non-RL collections or controls, preserving every failure."""
 import argparse
 from datetime import datetime, timezone
 import hashlib
@@ -26,22 +26,73 @@ def read(path):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--old', type=Path, required=True)
-    p.add_argument('--controls', type=Path, required=True)
+    p.add_argument('--old', type=Path)
+    p.add_argument('--controls', type=Path)
+    p.add_argument('--collection', type=Path)
+    p.add_argument('--probe', type=Path)
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
-    old, controls, output = a.old.resolve(), a.controls.resolve(), a.output.resolve()
+    output = a.output.resolve()
     assert not output.exists()
-    assert output not in (old, controls) and old not in output.parents and controls not in output.parents
-    state = read(old/'execution.json')
-    assert state['status'] == 'stopped_at_episode_boundary'
-    assert state['completed'] == len(state['results']) == len(state['rows']) == 35
-    complete = read(controls/'execution.json')
-    assert complete['status'] == 'complete_pending_review' and len(complete['episodes']) == 10
-    review = read(controls/'REVIEW.json')
-    assert review['execution_sha256'] == sha(controls/'execution.json')
+    if a.probe:
+        assert a.old is None and a.controls is None and a.collection is None
+        probe = a.probe.resolve()
+        state, reg = read(probe/'execution.json'), read(probe/'REGISTRATION.json')
+        assert state['status'] == 'complete_pending_review'
+        assert state['registration_sha256'] == sha(probe/'REGISTRATION.json')
+        assert len(state['episodes']) == len(reg['cases']) == reg['maximum_episodes']
+        for case, row in zip(reg['cases'], state['episodes']):
+            assert case['id'] == row['id'] and row['returncode'] == 0
+            folder = probe/case['id']
+            if case['kind'] == 'scene':
+                folder /= case['scene']
+                q = read(folder/'DEMONSTRATION_QUALIFICATION.json')
+                assert sha(folder/'DEMONSTRATION_QUALIFICATION.json') == row['qualification_sha256']
+                for name, h in q['input_hashes'].items():
+                    assert sha(folder/name) == h
+            else:
+                assert sha(folder/'AUDIT.json') == row['audit_sha256']
+                for name, key in [('rollout.npz', 'trace_sha256'), ('rollout.mjb', 'model_sha256'),
+                                  ('execution_chain.npz', 'chain_sha256'),
+                                  ('rollout_metrics/substep_metrics.npz', 'metrics_sha256')]:
+                    assert sha(folder/name) == row['audit'][key]
+        roots = [('probe', probe)]
+        scope = 'Every terminal teacher probe identity, including failures, raw physical substeps, source snapshots, configurations and complete qualification/audit receipts. No in-flight successor or student training.'
+        filename = 'FULL_PROBE.tar'
+    elif a.collection:
+        assert a.old is None and a.controls is None
+        collection = a.collection.resolve()
+        state = read(collection/'COLLECTION_PROGRESS.json')
+        plan = read(collection/'COLLECTION_PLAN.json')
+        assert state['status'] in ('qualified_complete', 'finished_with_nonqualified_demonstrations')
+        assert len(state['episodes']) == len(plan['episodes']) == 30
+        assert state['plan_sha256'] == sha(collection/'COLLECTION_PLAN.json')
+        for entry, receipt in zip(plan['episodes'], state['episodes']):
+            assert entry['id'] == receipt['id']
+            folder = Path(entry['folder'])
+            q = read(folder/'DEMONSTRATION_QUALIFICATION.json')
+            assert q['status'] == receipt['status']
+            for name, h in q['input_hashes'].items():
+                assert sha(folder/name) == h
+        roots = [('collection30', collection)]
+        scope = 'All30 completed collection identities including every nonqualified demonstration; raw trajectories, physical substeps, source snapshots, configuration and qualifications. No student fitting or in-flight follow-up probes.'
+        filename = 'FULL_COLLECTION.tar'
+    else:
+        assert a.old is not None and a.controls is not None
+        old, controls = a.old.resolve(), a.controls.resolve()
+        state = read(old/'execution.json')
+        assert state['status'] == 'stopped_at_episode_boundary'
+        assert state['completed'] == len(state['results']) == len(state['rows']) == 35
+        complete = read(controls/'execution.json')
+        assert complete['status'] == 'complete_pending_review' and len(complete['episodes']) == 10
+        review = read(controls/'REVIEW.json')
+        assert review['execution_sha256'] == sha(controls/'execution.json')
+        roots = [('stopped35', old), ('controls10', controls)]
+        scope = 'All completed35 frozen-test failures plus complete10 matched diagnostic controls, including raw trajectories, physical substeps, checkpoints, sources, registrations, failure labels and review. No in-flight teacher-factor experiment.'
+        filename = 'FULL_REGRESSION.tar'
+    assert all(output != root and root not in output.parents for _,root in roots)
     files = {}
-    for prefix, root in (('stopped35', old), ('controls10', controls)):
+    for prefix, root in roots:
         for path in sorted(root.rglob('*')):
             assert not path.is_symlink(), path
             if path.is_file() and '__pycache__' not in path.parts and path.suffix != '.pyc':
@@ -50,11 +101,10 @@ def main():
     files['archive_tool.py'] = Path(__file__).resolve()
     manifest = {name: dict(bytes=path.stat().st_size, sha256=sha(path)) for name, path in files.items()}
     header = dict(created_utc=datetime.now(timezone.utc).isoformat(),
-                  scope='All completed35 frozen-test failures plus complete10 matched diagnostic controls, including raw trajectories, physical substeps, checkpoints, sources, registrations, failure labels and review. No in-flight teacher-factor experiment.',
-                  source_roots=[str(old), str(controls)], files=manifest)
+                  scope=scope, source_roots=[str(root) for _,root in roots], files=manifest)
     payload = (json.dumps(header, indent=2)+'\n').encode()
     output.mkdir(parents=True)
-    partial = output/'FULL_REGRESSION.tar.partial'
+    partial = output/(filename+'.partial')
     with tarfile.open(partial, 'w') as archive:
         for name, path in files.items():
             archive.add(path, arcname=name, recursive=False)
@@ -72,7 +122,7 @@ def main():
     assert seen == set(expected)
     for name, path in files.items():
         assert path.stat().st_size == manifest[name]['bytes'] and sha(path) == manifest[name]['sha256']
-    final = output/'FULL_REGRESSION.tar'
+    final = output/filename
     partial.rename(final)
     result = dict(status='locally_verified_pending_share', archive=str(final),
                   bytes=final.stat().st_size, sha256=sha(final), payload_files=len(files),

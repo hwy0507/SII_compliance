@@ -1,0 +1,222 @@
+{
+  "reviewed_utc": "2026-10-28T15:42:33.994318+00:00",
+  "registration_sha256": "80815d48c297be9470208d8cfdecaedbe11e88dd5947b0360deedaf0bc50fb4d",
+  "execution_sha256": "9fc578a31e5188729f7e76fb4f51fcd02662d69e7a3615b271259a382fb16abd",
+  "rows": [
+    {
+      "id": "v075_avg0_rod_00",
+      "identity": "rod_00",
+      "config": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_teacher_midpoint_20261028_v1/v075_avg0.json",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "status": "qualified",
+      "qualification_sha256": "978afa352d18eec4d5e8bc5ef5ecbd777992f07f7c34d8455680d9e3579967e1",
+      "rod_audit": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.741399999995619,
+        "yield_excursion_m": 0.012168728358153675,
+        "yield_start_s": 4.839999999995389,
+        "pass_s": 7.43999999998933,
+        "rejoin_start_s": 7.639999999988864,
+        "rejoin_confirmed_s": 7.719999999988677,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "bdfd9038a8fecaa0f2f9e3754a0f249881b0aa357f34c67b22a83a3041587a70",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "eb6cb9ec6041b604227e0c773c668897eaef603735dcb8014019563813f17c51",
+          "recipe.json": "9b98f3fe47589081ed98cbd0aa7e290b8bc0069eb3c7ae2ec9e5141345da635b",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      }
+    },
+    {
+      "id": "v075_avg0_ball_00",
+      "identity": "ball_00",
+      "config": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_teacher_midpoint_20261028_v1/v075_avg0.json",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "status": "qualified",
+      "qualification_sha256": "959022b4870d99011ca063084841bab51def8c3fcdacaee8b5a90662eee54d63",
+      "tail_object_speed_max_mps": 0.0002401792681029327,
+      "original_motion_threshold_mps": 0.02,
+      "legacy_npz_sha256": "5eaa1d02c50fca6f564ce38d642e1e5b50ddd79e5530e5383f759d92e04ee96b"
+    },
+    {
+      "id": "v075_avg0_ball_01",
+      "identity": "ball_01",
+      "config": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_teacher_midpoint_20261028_v1/v075_avg0.json",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "status": "qualified",
+      "qualification_sha256": "7de528b4018b6e75f8889cc9473b60d7641e9f85bf8f0da47d9d04b46b1b7ddd",
+      "tail_object_speed_max_mps": 0.003958666195916519,
+      "original_motion_threshold_mps": 0.02,
+      "legacy_npz_sha256": "0fb11fc539a80fba78338a3488e59a1fa006f759e8618a9e64b535f6c7fce7c2"
+    },
+    {
+      "id": "v075_avg0_ball_04",
+      "identity": "ball_04",
+      "config": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_teacher_midpoint_20261028_v1/v075_avg0.json",
+      "task": false,
+      "safety": true,
+      "contact": true,
+      "status": "failed_preserved",
+      "qualification_sha256": "46965037b8a65469860f620b80ca79f9a2e4282f6353fdc2ba3fa68f5f4dcf50",
+      "tail_object_speed_max_mps": 0.02024853720236961,
+      "original_motion_threshold_mps": 0.02,
+      "legacy_npz_sha256": "19e1bb715b392387764e14d44e4752908cbc9646d81c521094b8f0d066ec863c"
+    },
+    {
+      "id": "v075_avg0_corner_00",
+      "identity": "corner_00",
+      "config": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_teacher_midpoint_20261028_v1/v075_avg0.json",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "status": "qualified",
+      "qualification_sha256": "e8aeb6a4f8cb78162df9e9f0da8d1ad6fa04d023364657f4228b6b6c4f4a15a1"
+    },
+    {
+      "id": "v075_avg1_rod_00",
+      "identity": "rod_00",
+      "config": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_teacher_midpoint_20261028_v1/v075_avg1.json",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "status": "qualified",
+      "qualification_sha256": "a787d490b92406ac7f9d2303597927ea65adc191a14decd7c1e37b5702449028",
+      "rod_audit": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.754199999995589,
+        "yield_excursion_m": 0.011737311853210565,
+        "yield_start_s": 4.839999999995389,
+        "pass_s": 7.719999999988677,
+        "rejoin_start_s": 7.799999999988491,
+        "rejoin_confirmed_s": 7.879999999988304,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "695b913cf6ba55b9cc0ba6456e03b2758d3697576a77a6a9f294aa23ee38c143",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "0d23f875e1b27a3b94cb00e9bbdcf2a6af0c4798721a2f9793581af4da1f7ce5",
+          "recipe.json": "98461c68ccf72868962eb0f64200b07dce57b6421860cb7c9daab34a365704ad",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      }
+    },
+    {
+      "id": "v075_avg1_ball_00",
+      "identity": "ball_00",
+      "config": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_teacher_midpoint_20261028_v1/v075_avg1.json",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "status": "qualified",
+      "qualification_sha256": "d9f15d1c796edfbdcbcf4709eb6c2acf9c52397598d288d38a7ca6d08014bb3e",
+      "tail_object_speed_max_mps": 0.006086734826193885,
+      "original_motion_threshold_mps": 0.02,
+      "legacy_npz_sha256": "08128341d7e22a0575e03af4d857ee2b3a6aaa3f5a7829e6c41a69b88337cd46"
+    },
+    {
+      "id": "v075_avg1_ball_01",
+      "identity": "ball_01",
+      "config": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_teacher_midpoint_20261028_v1/v075_avg1.json",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "status": "qualified",
+      "qualification_sha256": "9aa2f21876771177b04798dbc755cd84ac8597cb8bd080dc9a8609a0205d83c9",
+      "tail_object_speed_max_mps": 0.0013182478635806235,
+      "original_motion_threshold_mps": 0.02,
+      "legacy_npz_sha256": "fe75b632c927fedd25d1a119c425d7906b97372fcb344c641320d0069f0a3f51"
+    },
+    {
+      "id": "v075_avg1_ball_04",
+      "identity": "ball_04",
+      "config": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_teacher_midpoint_20261028_v1/v075_avg1.json",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "status": "qualified",
+      "qualification_sha256": "acf616b8cb66376bc95699cbce1a56e8e0698c10ea99459ec2e60907b7e18fdb",
+      "tail_object_speed_max_mps": 0.013152809307133853,
+      "original_motion_threshold_mps": 0.02,
+      "legacy_npz_sha256": "0928052e5c5bad6aa61e74fec5fc56e4ab62f6a7fe255185ec82242ede67bb13"
+    },
+    {
+      "id": "v075_avg1_corner_00",
+      "identity": "corner_00",
+      "config": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_teacher_midpoint_20261028_v1/v075_avg1.json",
+      "task": true,
+      "safety": true,
+      "contact": true,
+      "status": "qualified",
+      "qualification_sha256": "b679b2f4a273a598ecf21541b983cafa40af0763541bb56f118360337aa46ca1"
+    }
+  ],
+  "eligibility": {
+    "v075_avg0": false,
+    "v075_avg1": true
+  },
+  "selected": "v075_avg1",
+  "selection_rule": "Both candidates complete all five training identities. Eligible only when all five qualify under unchanged task/contact/safety and rod pass-before-withdrawal gates; fixed priority v075_avg0 then v075_avg1. If neither eligible, diagnose, do not relabel or launch a full collection.",
+  "limitation": "Five training identities per setting only. Not all30 qualified, no student training, no final matrix; office is previously inspected."
+}

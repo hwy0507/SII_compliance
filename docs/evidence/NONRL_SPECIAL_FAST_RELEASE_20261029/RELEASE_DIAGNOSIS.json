@@ -1,0 +1,40 @@
+{
+  "source": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_teacher_midpoint_office_20261028_v1/office_v075_avg1",
+  "audit_sha256": "a4f47f3658912a3480fb91634a188124881bc246076ba9bbde4c6f194dde6fb1",
+  "trace_sha256": "4a77e6d9c4a22d86b7b814de6f3395194eeba5069640813b06a5d1c90368c34e",
+  "teacher_internal_sha256": "1d28c0fc21232e676fc2d460ed67f4db7d87c847929103ace55b3680281f8ead",
+  "frames": 250,
+  "position_error_quantiles_m": [
+    0.012002322935751928,
+    0.016525904316943507,
+    0.017256869984155442
+  ],
+  "signed_pose_error_mean": [
+    0.003058296614888204,
+    -0.0009517307301437201,
+    -0.01582264046248534,
+    0.0009761982761622664,
+    -0.003814726207692401,
+    -0.001788677445420326
+  ],
+  "recovery_memory_quantiles": [
+    0.05372505425346435,
+    0.3651296997885137,
+    0.641771556286716,
+    0.8813965252097116
+  ],
+  "intent_quantiles": [
+    0.27458654848193004,
+    0.37373619746753955,
+    0.7477071933541898,
+    0.9915640461904545
+  ],
+  "gates": {
+    "position_m": 0.012,
+    "rotation_rad": 0.12,
+    "speed_mps": 0.025,
+    "hold_s": 0.2
+  },
+  "interpretation": "Persistent recovery contributes a positive z action while near the nominal target; observed negative z pose error exceeds original position gate. Single-field physical control needed for causal conclusion.",
+  "preparation_failure_preserved": "First preparation expected250 frames from absolute time>=45, but floating-point boundary included251; assertion stopped before output/registration/physics. Corrected to the actual final250 frames and verified .04s spacing. No physical data or gate changed."
+}

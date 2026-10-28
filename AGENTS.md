@@ -1,5 +1,17 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29（UTC28日）— 非RL完整v6拒训，teacher末段与恢复记忆修复在途
+
+以[最新修复交接](docs/NONRL_SPECIAL_REGRESSION_REPAIR_20261028.md)为准。v6全30结束：rod10/corner10合格、ball6合格，ball01/04/08/09末态速度超原.02m/s；原learning-handoff-v3已failed_preserved，未创建训练输出。绑定v6的18/108静态准备不得执行。旧35失败与所有历史保留，不放宽gate、不冒充最终矩阵。
+
+后4对照完整：.5/不平均修复两训练ball但office失败；1/平均office双通过但完整v6四ball失败。再10有限训练对照：.75/不平均4/5、.75/平均5/5；后者单office回归仍carry失败。末10秒竖直误差均值-15.8226mm，位置门12mm未持续满足，恢复记忆均值.42228；同历史反事实改release_s=.25记忆均值.17436，非物理成功。100次intent=1合成对照动作/记忆精确一致，原actor回放0。
+
+原`.25`释放六项已完整：五train合格，office仍carry失败；实际末段恢复记忆均值.48049，否定离线改善等于物理修复。当前唯一物理队列改为`sii-special-recovery-release005-v1-20261029.service`，parent956881，登记SHA71f654ef、目录`outputs/special_recovery_release005_20261029_v1`，只改release_s .25→.05，六固定对照，完整前不全量重采/拟合。3GiB/单线程/单模拟器/swap0；禁止改绑定源/重复启动，不使用验证08/09调参或office轨迹训练，当前12已看过不能叫unseen。rod00路径±Z使水平恢复项不激活，棍推合格不能证实office水平恢复正确。
+
+16:29 UTC原release005五train已4合格/ball04失败，office在途；本组不得用于全量采集，即使office通过。完成登记回合后查恢复自激活/近目标指令依赖和覆盖，勿继续只缩release_s。新teacher机制尚未实现，若改须新登记/保留旧actor源/独立回放，不改公共物理/filter/输入/最终gate。
+
+v6完整604文件/2804715520bytes/SHA4eff3fc1、四tail对照90文件/472432640bytes/SHA06f08d80、十midpoint对照214文件/907642880bytes/SHA47e6d16b、单office失败27文件/149770240bytes/SHAecde9b55均本机逐成员与服务器incoming/最终hash核验。共享目录前缀`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/`，分别`nonrl_special_v6_failed_collection_20261028_v1`、`nonrl_special_teacher_tail_controls_20261028_v1`、`nonrl_special_teacher_midpoint_20261028_v1`、`nonrl_special_midpoint_office_failure_20261028_v1`；不含在途六项。Goal active，无RL/子agent/服务器计算。后续六项通过才登记新30→全资格审查→公平三seed拟合→真实场景学生闭环→冻结108/六指标/完整归档。
+
 ## 2026-10-28 — 完整64、原62–64窗口审查与准确续训65
 
 - [最新交接](docs/RL_PARAMETER64_COMPLETE_20261028.md)。完整64三路自然结束，各30×55秒/41250新增/noabort，全部63 replay/history/optimizer保持、新reward复算0、网络/优化器有限。I/A/V reward−.542027/−8.512810/−4.607564，Task/Strict18/18、14/14、17/16。全loss/health独立算术及实际图通过；actor持续移动、V末段critic burst，非整体收敛。

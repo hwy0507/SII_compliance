@@ -1,3 +1,15 @@
+## 2026-10-29（UTC28日）— 非RL teacher末段稳定与恢复记忆定位，失败v6拒训
+
+- v6完整30：棍推10/10、桌角10/10、球撞6/10合格；ball01/04训练与08/09验证末段速度.0286–.0374m/s超原.02，安全/接触审计通过。全4失败保留，handoff-v3真实拒绝，未训练学生。新增18闭环和修复108入口可校验正确handoff服务/模型/输入hash，实际不完整拟合拒绝；原绑定v6的静态准备不能继续使用。
+- 四tail对照完整并逐hash审查：.5/不平均使两训练ball合格，但office000仍carry失败；1/平均office双通过。十midpoint训练对照随后完整：.75/不平均4/5，ball04 .020248537失败；.75/平均5/5，ball00/01/04末段速度.006086735/.001318248/.013152809。按预登记训练规则选择后者，随后单office完整55秒仍Task/Strict false、actor/filter replay0；未重采/拟合，不把训练通过当矩阵修复。
+- 真轨迹诊断：最后250帧竖直误差均值-15.8226mm，位置门12mm未持续满足，恢复记忆均值.4222785。新单字段release_s1.257675717→.25，保留.75/平均；同保存历史反事实记忆均值.1743622、z动作.0841568→.0351418，仅离线读出非执行。100次intent=1对照精确一致、原1375帧actor回放0。新六项有限物理`special_recovery_release_20261028_v1`登记be3bdcb9已启动，五训练身份全合格、原office在途；不改门/物理/actor输入，不用验证调参。见[交接](docs/NONRL_SPECIAL_REGRESSION_REPAIR_20261028.md)与真实末段图，ball04早期仍有波动，非全程稳定证明。
+- v6全原始物理604文件/2804715520bytes/SHA4eff3fc1；四tail90文件/472432640bytes/SHA06f08d80；十midpoint214文件/907642880bytes/SHA47e6d16b；单office失败27文件/149770240bytes/SHAecde9b55，逐成员和远端暂存/最终大小hash均通过。共享根`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/`下独立目录依次为`nonrl_special_v6_failed_collection_20261028_v1`、`nonrl_special_teacher_tail_controls_20261028_v1`、`nonrl_special_teacher_midpoint_20261028_v1`、`nonrl_special_midpoint_office_failure_20261028_v1`。不含在途六项；未删除本地/历史。
+- tail-v1准备错误后误启动，在读取不存在REGISTRATION时退出，物理前失败保留；修复v2只使用失败train身份。release诊断初次浮点边界251帧断言在输出/物理前拒绝，修为末250帧核对dt。一次上传自动审批因并发限制未完成、未执行，原流程重试成功。源码AST/diff检查、完整证据hash通过；新主模型/108六指标仍待，Goal active，无RL/子agent/服务器计算。
+- 开工实际fetch/read main8086d335、baselinef6e8f8c，收尾main3cd622f0独立RL64/65文档更新已读并fast-forward保留；冻结源码未改。
+- 16:24 UTC追加：原release025六条已完整，五train全合格但office仍carry失败，实际恢复记忆均值.48049、竖直误差-18.1198mm，否定同历史反事实改善即物理修复。新release005单字段.25→.05有限六项已启动，parent956881/SHA71f654ef，3GiB/单线程/swap0/OOM0；完整前不重采/拟合。rod00输入路径仅±Z、水平恢复未激活，棍推合格不证明水平office恢复正确；场景覆盖问题保留。新18/108及主矩阵仍待，Goal active。
+- 16:29 UTC原release005五train已4合格/ball04失败，office仍在途；该候选不能全量重采。下一步核查恢复自激活与近目标意图依赖/覆盖，不继续仅缩release时间或把离线效果当物理成功；新teacher机制尚未实现。
+- release025六项完整132文件/606750720bytes/SHAd3c1892c逐成员及远端暂存/最终核验通过，共享于`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_release025_controls_20261029_v1/FULL_PROBE.tar`，含office失败，不含在途release005。
+
 ## 2026-10-28 — 完整64、原62–64窗口审查与准确续训65
 
 - [最新交接](docs/RL_PARAMETER64_COMPLETE_20261028.md)。完整64三路自然结束，各30×55秒/41250新增/noabort，全部63 replay/history/optimizer保持、新reward复算0、网络/优化器有限。I/A/V reward−.542027/−8.512810/−4.607564，Task/Strict18/18、14/14、17/16。全loss/health独立算术及实际图通过；actor持续移动、V末段critic burst，非整体收敛。
