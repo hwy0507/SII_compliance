@@ -2,6 +2,8 @@
 
 ## 2026-10-29 — 非RL垂向阻尼七项通过，v8重采与接续
 
+20:31UTC覆盖：原v8两服务同PID active，4/30合格、rod04在途、学习waiting。10cebe07及合并b5e5fed5已push核验，双方日志逐字保留；该commit源码小证据1178文件6675768bytes/SHAf8a71776已核共享到`runs/main/nonrl_v8_start_source_20261029_v1/`（arm1共享根）。见V8_START_SOURCE_SHARED_RECEIPT，不含在途v8/学生。Goal active。
+
 - 完整七项754文件688650240bytes/SHA8d32960b已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_vertical_damping_controls_20261029_v1/FULL_PROBE.tar`；含完整物理/源/review，不含在途v8/学生。收据VERTICAL_DAMPING_SHARED_RECEIPT，保留全部旧失败。
 - [当前交接](docs/NONRL_V7_BALL_TAIL_REPAIR_20261029.md)。七项20:23:13完整结束：六train合格，office55秒TaskStrict true/retreat、actorfilter0。四球尾能量下降75.75%，ball00 RMS退化保留。不是ESN/主矩阵成功。
 - 原模拟器退出后，唯一v8采集`sii-special-collection-v8-20261029.service` parent1088910/start31713076于20:24:33启动，root`outputs/special_scene_vmc_collection_20261029_v8`/PLAN2ed3e2b9。同30真实场景/条件/seed/24+6/gates，仅teacher/output变化，3GiB/swap0/CPU100%/线程1；20:27 rod00合格、rod01在途。禁止重复或改绑定源。
