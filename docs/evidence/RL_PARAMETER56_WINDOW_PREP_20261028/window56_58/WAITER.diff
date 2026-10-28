@@ -1,0 +1,42 @@
+--- wait53_55
++++ wait56_58
+@@ -1,4 +1,4 @@
+-"""Wait for the registered53-55 window; no training or automatic stop."""
++"""Wait for the registered56-58 window; no training or automatic stop."""
+ from pathlib import Path
+ import hashlib
+ import json
+@@ -16,8 +16,8 @@
+ 
+ def main():
+     plan = json.loads((root/'PLAN.json').read_text())
+-    assert plan['cycles'] == [53, 54, 55]
+-    source = root/'audit_parameter53_55_reward_stability_20261027.py'
++    assert plan['cycles'] == [56, 57, 58]
++    source = root/'audit_parameter56_58_reward_stability_20261028.py'
+     assert sha(source) == plan['source_sha256']
+     deadline = time.monotonic() + plan['wait_deadline_seconds']
+     while True:
+@@ -37,11 +37,11 @@
+                 assert json.loads((review/'REVIEW.json').read_text())['passed']
+         if complete:
+             break
+-        assert time.monotonic() < deadline, 'Fixed10800-second audit wait expired; no automatic extension'
++        assert time.monotonic() < deadline, 'Fixed14400-second audit wait expired; no automatic extension'
+         time.sleep(5)
+     reg = dict(cycles=plan['cycles'], seed=plan['bootstrap_seed'],
+                bootstrap_replicates=plan['replicates'], near_zero_guard=plan['near_zero_guard'],
+-               relative_limit=plan['relative_limit'], source_sha256=sha(source), followup_marker=plan['followup_marker'], inputs={})
++               relative_limit=plan['relative_limit'], source_sha256=sha(source), followup_marker=plan['followup_marker'], anchor_protocol55=plan['anchor_protocol55'], inputs={})
+     assert reg['source_sha256'] == plan['source_sha256']
+     for method in ['impedance', 'admittance', 'vmc']:
+         for cycle in plan['cycles']:
+@@ -52,8 +52,6 @@
+                         episodes=run/'train/episodes.jsonl', optimizer=run/'train/optimizer.jsonl')
+             reg['inputs'][f'{method}:{cycle}'] = {
+                 k: dict(path=str(p), sha256=sha(p)) for k, p in refs.items()}
+-            if cycle == 53:
+-                assert reg['inputs'][f'{method}:{cycle}']['protocol'] == plan['protocol53'][method]
+     with (root/'REGISTRATION.json').open('x') as stream:
+         stream.write(json.dumps(reg, indent=2)+'\n')
+     subprocess.run([str(B/'env/bin/python'), str(source), '--root', str(root)], check=True)
