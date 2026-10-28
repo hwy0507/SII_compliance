@@ -1,5 +1,16 @@
 # v7真实场景重采与公平学生评测接续
 
+19:42:35UTC最新快照：原collector1056282与handoff1056692保持live，7/30已合格、rod07在途，
+学习仍waiting；采集cgroup内存714416128bytes，接续8327168bytes。没有重复任务或源更改。
+
+本轮科学提交`2187ab1ec7f82af232f9cec7519ca6e6562da35e`已push并核远端。
+源码/小证据1155文件5189208bytes逐Git blob及共享暂存/最终hash核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v7_preparation_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`，
+SHA256 `7045c32f6244b461926d039b9a58bb537e4f2c3e616c409bf7d368934fa5fd48`。
+同目录另存该提交版本文，SHA256 `41dfc48d08e2ba6563efc3fbdc47260b50daf21e9419278cd0a733b3eb4aa7a9`，
+不含本段后补记录。[共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/V7_PREPARATION_SHARED_RECEIPT.json)。
+非完整仓库/环境/模型备份，不含在途新30或学生结果，无删除。
+
 当前Goal active；前轮已完成教师修复/六项实际对照/原始物理归档及新30派发，属于实际progress。
 本轮先核对远端main `9d13fbb923574e3104cbfd69001a88b843d72319`、baseline
 `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，原collector与learning handoff仍同PID活跃。

@@ -1,5 +1,6 @@
 ## 2026-10-29 — 非RL v7采集前缀核验与18/108准备
 
+- 19:42:35UTC原两服务同PID实际live，7/30合格、rod07在途/学习waiting，采集内存714416128bytes，接续8327168。科学2187ab1e已push并核远端；源码/小证据1155文件5189208bytes/SHA7045c32f逐Git blob及暂存/最终核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v7_preparation_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`，同目录报告SHA41dfc48d亦核验。非完整仓库/模型/环境，不含在途新30/学生，无删除，Goal active。
 - [最新报告](docs/NONRL_V7_COLLECTION_AND_STUDENTS_20261029.md)。原collector1056282/start31377244与handoff1056692实际live，19:37:50为5/30合格/rod05在途、学习waiting，3GiB/swap0/单模拟器保持。五条已完成棍推全部资格输入hash和实际接触—蹭过—持续回位审查通过，均早于撤棍；不把前缀当全30或重启。
 - 新18准备`outputs/special_scene_student_closure_20261029_v7` SHA3e7dd2b6，三场景00train+08validation×三family/seed2026102801；新108准备`outputs/special_scene_frozen108_preparation_20261029_v7` SHA6650157c，目标`outputs/special_scene_frozen108_20261029_v7`，绑定原12/physics及新v7训练/接续/18。formal MJB d4c28e40、dt5e−5保持、0积分，源/输入hash通过。真实提前调用拒绝原拟合不完整，无execution/评测目录。未部署自动108或学生模拟器，不能复用旧v6绑定准备。
 - 新`audit_special_training_recovery_coverage_20261029.py`只在真实全30合格后核来源与24train精确actor回放，保存恢复状态连续长度/指令/实际路径速度等；validation只核来源不用于调参。实际活跃采集拒绝且无输出，连续段空/离散算术通过；完整正向审查待，不能声称覆盖已通过。六指标口径复核为双成功条件SPT/全回合峰矩/接触dt舒适代理/机器合规，不改算法或门槛。
