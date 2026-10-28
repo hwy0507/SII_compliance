@@ -4,6 +4,11 @@
 目前唯一活动队列是原平衡点机制的单字段`intent_velocity_mps .015→.03`六项对照。
 这不是新的主矩阵结果，也不是 ESN 已修复的结论。此前所有失败、v5学生和v6采集保留。
 
+最新中间结果：intent030的rod00/ball00合格、ball01失败，其余仍在途。
+本候选已经不能用于新30或拟合，即使后续office通过也不改变这一点。
+收完登记六项，分析完整末段波动/阻尼与动作速度换算，不继续只按某个回合通过调小偏置。
+最新在途收据须直接读取原execution，不以本页早期快照代替。
+
 ## 17:25 UTC：第二版完整结果，单字段后续在途（覆盖下文在途描述）
 
 仅平衡点版五训练身份4/5合格：rod00、ball00、ball01、corner00；ball04仍失败。
@@ -12,6 +17,11 @@ office000完整55秒仍Task/Strict=false、carry；末250帧平均z误差−11.7
 但同时有x误差4.9484mm，不能拿单轴低于12mm替代三维位置门及持续保持。
 恢复记忆均值0.736907、z动作0.0744767，actor/filter回放0；完整物理及源归档核验通过。
 [全部六项审查](evidence/NONRL_INTENT_RECOVERY_20261029/EQUILIBRIUM_COMPLETE_REVIEW.json)。
+
+第二版完整物理/源码/收据732成员、615536640字节逐成员及远端暂存/最终大小hash核验通过，
+共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_equilibrium_controls_20261029_v1/FULL_PROBE.tar`，
+SHA256 `4e4a6af34cb9f27b2d2aff9b311063f3ca10b0567c75774d24bacf0b8bd6aea8`。
+[收据](evidence/NONRL_INTENT_RECOVERY_20261029/EQUILIBRIUM_SHARED_RECEIPT.json)，不含intent030在途数据，无删除。
 
 保存的末250帧沿路径指令中位数0.0079963m/s、范围0.0060369–0.0106051；
 原0.015归一化下平均intent仍0.5358745。当前只将这个已有参数改为0.03m/s，
@@ -132,3 +142,5 @@ baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_intent_repair_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`，
 SHA256 `2153a0b71855a55edddffc3b3b78a9fa66c46014aac41dbfd61b44e986670d9a`。
 该源码包不是全仓库/原始物理，也不含随后单字段工具与本段进展。
+第二版完整审查和单字段源码已通过科学提交c078a9b4及远端合并0dc08fe1428c62c14540bfee5b9b764ae6abe67d正常push并核验。
+并行RL66早期更新52b1e12d已读，双方AGENTS/UPDATE_LOG自动合并保留，非RL绑定代码未变。

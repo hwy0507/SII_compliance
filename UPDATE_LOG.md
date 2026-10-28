@@ -9,6 +9,9 @@
 
 ## 2026-10-29 — 非RL teacher恢复机制修复对照，失败完整保留
 
+- 最新intent030已完成rod00/ball00合格、ball01失败，其余在途；本候选不能新30/拟合，完成登记六项后继续检查末段波动/阻尼和动作速度换算。parent991347保持、源不改、不重复启动，Goal active，未宣称ESN或主矩阵修复。
+- 第二版完整732文件/615536640bytes/SHA4e4a6af3逐成员与远端暂存/最终核验共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_equilibrium_controls_20261029_v1/FULL_PROBE.tar`，包括ball04/office失败，非intent030在途归档。科学c078a9b4、合并0dc08fe1已push并ls-remote核验；远端52b1e12d独立RL66更新已读，双方记录完整自动合并。
+
 - 17:25 UTC覆盖：第二版平衡点六项完整，五train4合格/ball04尾速.028225448失败，office000完整55秒仍carry双失败；末250帧z误差−11.7927mm而x4.9484mm，未满足三维位置门。actor/filter回放0、源与物理hash通过。新单字段intent_velocity_mps .015→.03有限六项17:25:58实际启动，服务`sii-special-equilibrium-intent030-v1-20261029.service`、parent991347、登记9d9f0904，原资源/场景/seed/门不变；不重启终止队列，不重采/拟合。Goal active。
 - 末段名义沿路径指令中位数.007996m/s，原intent均值.5358745仍保留抬升偏置；新归一化同时影响平衡点与既有记忆释放，不误称仅读出改变。200步高指令原新动作/记忆一致，反事实因子减半不冒充物理改善。新完整结果待，所有失败保留。
 - 源码提交b77fd976已push并远端核验；该commit的benchmark scripts/tools及指定报告/小证据1069文件/2324217bytes/SHA2153a0b7逐内容与远端暂存/最终核验共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_intent_repair_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。非全仓库/原始物理，不含后续单字段工具和进展。

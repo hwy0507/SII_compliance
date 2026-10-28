@@ -11,6 +11,8 @@
 
 ## 2026-10-29 — 非RL恢复项独立版本：第一版失败保留，平衡点修复在途
 
+最新intent030中间结果：rod00/ball00合格，ball01失败，ball04/后续在途。该候选已不得用于新30/拟合，完成原登记六项再诊断末段波动/阻尼与动作速度换算，不只看局部通过。活动服务仍parent991347，绑定源禁止编辑，Goal active。
+
 17:25 UTC最新覆盖：平衡点版原六项已完整结束，五train4合格/ball04失败（尾速.028225448），office000完整55秒仍carry双失败，actor/filter回放0。末250帧z误差−11.7927mm、x4.9484mm，单轴小于12mm不能替代三维位置门。新唯一活动服务`sii-special-equilibrium-intent030-v1-20261029.service`，parent991347，17:25:58 UTC开始，`outputs/special_equilibrium_intent030_20261029_v1`登记9d9f0904；只改原intent_velocity_mps默认.015→.03，保留平衡点机制/反馈/.75平均/原release。200步高指令一致通过，原五train+office000、3GiB/线程1/swap0，不调门、不训练。原两版终止，不重启；全部六项通过才新30，Goal active。下文在途均历史。
 
 - 最新[非RL交接](docs/NONRL_INTENT_RECOVERY_20261029.md)。整项intent混合六回合完整：rod00/ball04/corner00合格，ball00/01尾速.025977549/.029739668超.02，office000完整55秒仍carry双失败；actor/filter回放0。末250帧z误差−15.0039mm、恢复记忆.753203。无新30/拟合，不能当主矩阵修复。
