@@ -1,5 +1,14 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 完整60、全1794终端改善与准确续训61
+
+- [最新交接](docs/RL_PARAMETER60_COMPLETE_20261028.md)。完整60各30×55秒/41250新增/noabort，全59 replay/history/optimizer保持、新reward0；网络/优化器有限。I/A/V reward−.628091/−8.555518/−2.855623，Task/Strict18/18、15/14、17/17。全loss独立算术/实际图通过，critic末1000为1.792392/1.676395/.880622；I/V下降、A后段burst，正向结果保留，有限尖峰/非零终端误差不新增门。
+- I标签保持，A恢复short0900/long0200 Task+Strict、short0000 Strict；另补查原Strict变化列表未列的short0600 Task-only恢复，同时外穿透.187946→.235474mm失physical_valid，Strict仍false。V short0600穿透.208327→.187236mm恢复Strict。原MJB/evaluator/.2mm门保持，无重仿真；A/V reward仍变化，原59–61待61及I近零保护不改。
+- V固定旧1794 SSE9821.147794→4367.670412（−55.5279%），五focus均改善，新30贡献.000993234、全部.255591425；旧输入精确/权重RNG不变、health复现、独立算术与实际图通过，无梯度因果/零误差门。原I56–58/V53–55通过保留。
+- 准确60全state/replay/下一65536恢复exit0后，有限61 I3949762/A3949764 start38336483、V3949767/start38336484、archive3949770启动。实际startup1000/1000/2000通过，旧全2511648/2512250/2513250保留、新reward0。完整61 loss3959253/start38338911绑定真实jobs，原59–61统计继续，无auto62，Direct不启动34。
+- 只读observer5024末次11:37:33后exit143原因未定，原60已自然完成；archive随后自然完成导致初读/proc缺失，重新按实际FINISHED核验；未重启科学任务。11:46原61约2514897/2515566/2516631steps，五guard原身份live、GPU79/96/94/93%含保活，科学结束仍继续。Goal active，无子agent。
+- 开工fetch/read maina704d4c9、baselinef6e8f8c；收尾mainc72f1427非RL更新已读并fast-forward保留。共享SSD包142成员/1300665字节/SHA2fcfa44f3bac89b37e3b70266d7a9f31272d31393820c280d9a079980a699b52逐字节/AST核验，收据docs/RL_PARAMETER60_COMPLETE_SAVE_20261028.json。HDD既有最新入口更新，大产物仍SSD，非HDD/arm1全备份。
+
 ## 2026-10-28 — 原108首条件九模型完整复核
 
 原772606/791378保持，11:33已9/108，自动接续acceptance_001 ESN seed1 worker817306；观察器已退出，不是科学任务结束，禁止重启。首条件九模型8917600保存子步/来源/hash/actor-filter收据/指标算术通过，Task/Strict三家均0/3，SPT为NA；ESN两条全局穿透中止，其余七条55秒未完成。平均峰矩E/R/M为60.58755/38.47553/40.06575Nm、机器合规1/3、3/3、2/3，不是总体排名。17970字节/SHA247328b0小证据源码包已核验共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_condition000_review_20261028_v1/`，不含原始物理。详见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。完整108/最终六指标/contact/全归档仍待，Goal active；不据部分测试改模型/条件，无RL或子agent工作。
