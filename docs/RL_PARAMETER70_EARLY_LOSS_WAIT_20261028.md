@@ -37,3 +37,5 @@
 共享SSD小包`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER70_EARLY_LOSS_WAIT_20261028_215332/SMALL_EVIDENCE.tar.gz`，37成员/943450字节，SHA256 `8c94db83c08c7e664f0bbc8a04d10fff5fe5d89b720b0623965b600653517a1c`，逐成员字节/AST核验。见[收据](RL_PARAMETER70_EARLY_LOSS_WAIT_20261028_SAVE.json)。大checkpoint/replay/raw仍共享SSD，非HDD/arm1全备份；HDD配额满只重写已有紧凑入口。该包补充而不替代上轮78成员终端基准包。
 
 收尾fetch/read获main4839ac49，新增另一主机非RL分窗审查修复及40/75拟合共享报告，已读日志/报告并合并保留双方AGENTS/UPDATE_LOG新增原字节。baseline仍f6e8f8c，无冻结RL源变化；此同步补充晚于小证据包。
+
+前瞻补充：[条件性71–73固定窗口](RL_PARAMETER71_73_PREREGISTRATION_20261028.md)。原70/原68–70继续，尚无71训练或新窗口waiter；当前完成边界observer2091343，先核实际状态。

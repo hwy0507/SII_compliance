@@ -5,6 +5,12 @@
 - [报告](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)：21:50:02–22:00:02UTC共21次同1089228/start31715901 live、active，完成41→49/75且候选更新增长；末次seed03 RNN candidate07到27340更新、内存663339008bytes。observer68681自然exit0，未终止训练；22:00:30原1110985继续，653361152bytes/3GiB/swap0/OOM0。
 - 证据V8_FITTING_VERIFIED_WAIT_2150；本轮verified wait，上一轮分窗修复属progress。完整75/9审计、18失败定位、108六指标未完成，Goal active。开工main4839ac49/baselinef6e8f8c实际fetch/read，收尾读取0be97cc8独立RL文档/证据并fast-forward保留，未操作RL。新观察证据仅本机待共享，无重启/新仿真/子agent/服务器计算/删除。
 
+## 2026-10-28 — 条件性71–73固定窗口前瞻登记
+
+- [登记](docs/RL_PARAMETER71_73_PREREGISTRATION_20261028.md)：原70运行、71/72/73未训练时固定下一非重叠窗口，PLANc160b5d6；原5%/近零1/seed2026102855/5000/anchor55/4m/CPU54不变，三个源逆变换/AST/hash通过。无新waiter/训练，须经完整70审查并真实71启动后才开14400秒等待。
+- 原68–70 PLANe3a50567与waiter1085142保持、必须完整报告，旧失败/历史通过保留。原70完成边界观察2091343/start42028788在途，1200秒/30秒；观察结束不等于科学结束，勿重启。GPU科学完成也继续，Goal active，Direct34false。
+- SSD登记包9成员/8517字节/SHA57390f39逐字节/AST核验，收据docs/RL_PARAMETER71_73_PREREGISTRATION_SAVE_20261028.json；大数据仍共享SSD、非HDD/arm1全备份。开工main0be97cc8/baselinef6e8f8c实际fetch/read，无子agent。
+
 ## 2026-10-28 — 参数70早期loss及十分钟原进程核验
 
 - [交接](docs/RL_PARAMETER70_EARLY_LOSS_WAIT_20261028.md)。首5000原日志/连续步号/全数值有限/独立算术及真实图通过：critic首末1000 I1.886107→1.881169/A1.174038→1.151834/V.987459→.922681；有限max11.448020/3.613377/8.445606和I actor略升保留，仅前缀非完整70或收敛。
