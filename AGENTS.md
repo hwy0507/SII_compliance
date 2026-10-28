@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL v7采集继续，18/108独立准备
+
+- 最新[非RL交接](docs/NONRL_V7_COLLECTION_AND_STUDENTS_20261029.md)。原collector1056282/start31377244与handoff1056692均live，19:37:50已5/30合格、rod05在途、学习waiting。五条实际棍接触/蹭过/持续回位早于撤棍与全部资格hash已复核，非全30结论，不重复派发/热改源。上一轮教师修复及重采启动属progress。
+- 新`outputs/special_scene_student_closure_20261029_v7`准备3e7dd2b6：原三场景00train+08validation×三family、seed2026102801共18。新`outputs/special_scene_frozen108_preparation_20261029_v7`登记6650157c，目标`outputs/special_scene_frozen108_20261029_v7`，绑定v7训练/接续/18和原12/physics；正式MJB d4c28e40/dt5e−5保持、0积分。两者只准备未启动，不用旧v6准备。真实提前108调用因原拟合不完整拒绝，未写execution/evaluation。
+- 新train-only覆盖审计工具要求真实全30qualified_complete，24train逐帧actor精确回放/恢复连续长度统计，6validation只核来源不入调参诊断。实际活跃采集拒绝且无输出，完整正向审计待；不是覆盖已合格。全数据/9模型/学生闭环/108六指标未完成，Goal active；当前12回归非unseen，无RL/子agent/服务器计算。
+- 本轮实际fetch/read main9d13fbb9/baselinef6e8f8c。前轮完整教师物理已共享，新在途30仅本机；新增准备/覆盖源尚待Git与共享发布，真实状态以后续收据为准。
+
 ## 2026-10-29 — 非RL教师六项修复通过，新30及公平学习接续
 
 19:32:35UTC新30进度2/30（rod00/01合格），rod02在途，原学习接续waiting；全部登记源hash保持，勿重复派发。

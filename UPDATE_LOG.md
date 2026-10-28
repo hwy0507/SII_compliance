@@ -1,3 +1,10 @@
+## 2026-10-29 — 非RL v7采集前缀核验与18/108准备
+
+- [最新报告](docs/NONRL_V7_COLLECTION_AND_STUDENTS_20261029.md)。原collector1056282/start31377244与handoff1056692实际live，19:37:50为5/30合格/rod05在途、学习waiting，3GiB/swap0/单模拟器保持。五条已完成棍推全部资格输入hash和实际接触—蹭过—持续回位审查通过，均早于撤棍；不把前缀当全30或重启。
+- 新18准备`outputs/special_scene_student_closure_20261029_v7` SHA3e7dd2b6，三场景00train+08validation×三family/seed2026102801；新108准备`outputs/special_scene_frozen108_preparation_20261029_v7` SHA6650157c，目标`outputs/special_scene_frozen108_20261029_v7`，绑定原12/physics及新v7训练/接续/18。formal MJB d4c28e40、dt5e−5保持、0积分，源/输入hash通过。真实提前调用拒绝原拟合不完整，无execution/评测目录。未部署自动108或学生模拟器，不能复用旧v6绑定准备。
+- 新`audit_special_training_recovery_coverage_20261029.py`只在真实全30合格后核来源与24train精确actor回放，保存恢复状态连续长度/指令/实际路径速度等；validation只核来源不用于调参。实际活跃采集拒绝且无输出，连续段空/离散算术通过；完整正向审查待，不能声称覆盖已通过。六指标口径复核为双成功条件SPT/全回合峰矩/接触dt舒适代理/机器合规，不改算法或门槛。
+- 实际fetch/read main9d13fbb9/baselinef6e8f8c，重读AGENTS，保留无关未跟踪文件。原教师完整物理归档保持；新准备仅本机/Git待发布，新30在途不归档为完整结果。无RL/子agent/服务器计算，当前12非unseen，Goal active，主矩阵未完成。
+
 ## 2026-10-29 — 非RL教师固定回归修复通过，新30与公平学习接续
 
 - 19:32:35UTC新30已2/30（rod00/01合格），rod02在途，原接续waiting；源/hash保持。只读验证先误传相对计划路径被守卫拒绝，按实际绝对路径重验通过，无采集/接续重启或协议更改。
