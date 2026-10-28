@@ -2,6 +2,8 @@
 
 ## 2026-10-29 — 非RL v8真实学习图与仅后处理接续
 
+科学41a2e7f2的14文件（八源码/准确报告/登记/启动/两图/全绘图数值）已逐Git blob及暂存/最终大小hash核共享，462790bytes/SHA856c9691，`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_learning_postprocess_20261029_v1/SOURCE_AND_CURVES.tar.gz`，见V8_LEARNING_POSTPROCESS_SHARED_RECEIPT；非在途108或未来全审。
+
 - [当前交接](docs/NONRL_V8_LEARNING_CURVES_POSTPROCESS_20261029.md)。当前九锁定模型实际history生成两图，六神经模型全部894/895点原值、独立尾段算术及实际图核验通过。RNN最终train6.75–7.27e−6、MLP8.63–9.08e−5；低训练/选择验证误差仍未换来原测试成功。不是reward/闭环排名/新收敛认证，ESN解析ridge无梯度曲线。
 - 新唯一`sii-special-postprocess-v8-20261029.service` PID1201537，REGfd8d90a1、目录`outputs/special_scene_postprocess_20261029_v8`。已完成学习图，绑定原1172675/start32623702，30秒核验/最多12h/CPU50%/线程1/3GiB/swap0；无物理派发。仅原108完整+服务inactive/success后全审到原root/FROZEN108_AUDIT.json并复制FINAL_AUDIT，再原contact/report，最后待视觉/归档。不要另启动审计或旧handoff。
 - 原108在23:51:12UTC active、12/108/689020928bytes；后处理active/11116544bytes。3正/6负边界及真实未完成归档拒绝通过，8快照/v3源保持；完整108正向待。最终用原archive脚本`--handoff outputs/special_scene_postprocess_20261029_v8`归档，再推进八球v3、三场景共享数据/学习修复。Goal active，无RL/子agent/服务器计算。

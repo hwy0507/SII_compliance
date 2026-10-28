@@ -1,5 +1,7 @@
 ## 2026-10-29 — 非RL v8真实学习图与仅后处理接续
 
+- 科学41a2e7f2的14文件（八源码/准确报告/登记/启动/两图/全绘图数值）已逐Git blob及暂存/最终大小hash核共享，462790bytes/SHA856c9691，`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_learning_postprocess_20261029_v1/SOURCE_AND_CURVES.tar.gz`，见V8_LEARNING_POSTPROCESS_SHARED_RECEIPT；不含在途108原数据或未来全审。
+
 - [交接](docs/NONRL_V8_LEARNING_CURVES_POSTPROCESS_20261029.md)。九锁定模型两张实际学习/末端验证图已生成、目视核验，六神经模型894/895原点及独立尾段算术通过。RNN末train6.75–7.27e−6、MLP8.63–9.08e−5，低同分布误差未转换原测试成功，优先实际覆盖/闭环修复；不是reward/新收敛认证或闭环排名。
 - 新后处理1201537于23:49:25UTC启动、REGfd8d90a1，已成图并等待原1172675/start32623702；CPU50%/线程1/3GiB/swap0、30秒检查/最长12h。仅完整108及原服务自然success后自动执行原全审、contact和六指标图；无新物理/训练/模型选择。旧handoff绑定历史尚未派发组，不能误用于当前v8；新目录兼容原完整归档器。
 - 3正/6负边界及真实未完成归档拒绝通过，8快照和有效八球v3源hash不变。23:51:12原108 active、12/108/689020928bytes，后处理active/11116544bytes。完整108审计/视觉/归档、八球及三场景公平重训待；Goal active，主矩阵仍未修复。

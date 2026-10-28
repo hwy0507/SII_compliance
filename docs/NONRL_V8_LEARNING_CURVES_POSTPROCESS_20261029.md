@@ -1,5 +1,13 @@
 # v8实际学习曲线与当前108后处理接续
 
+本轮14文件（八源码、准确报告、登记/启动快照、两张真实图及完整绘图数值）已逐Git blob、
+暂存/最终大小hash核验共享到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_learning_postprocess_20261029_v1/SOURCE_AND_CURVES.tar.gz`。
+科学commit `41a2e7f29c17da3b426cdf610e546800af9be172`，462790bytes，
+SHA `856c9691d722fa2254492dcef6ea6bd4b63a5010eeb2754964ae7bfa0177b929`。
+[完整收据](evidence/NONRL_INTENT_RECOVERY_20261029/V8_LEARNING_POSTPROCESS_SHARED_RECEIPT.json)。
+此处覆盖文末待共享快照；不含在途108原数据、未来全审或本段后补说明。
+
 本轮从**当前v8九个锁定模型的原始训练记录**生成两张图，并完成实际目视检查。
 没有新拟合、模型替换或仿真派发。原108从11推进到12，仍未完成；主矩阵未修复。
 承接[首条件九模型审计](NONRL_V8_FIRST_CONDITION_REPAIR_PROGRESS_20261029.md)。
