@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL恢复项独立版本：第一版失败保留，平衡点修复在途
+
+- 最新[非RL交接](docs/NONRL_INTENT_RECOVERY_20261029.md)。整项intent混合六回合完整：rod00/ball04/corner00合格，ball00/01尾速.025977549/.029739668超.02，office000完整55秒仍carry双失败；actor/filter回放0。末250帧z误差−15.0039mm、恢复记忆.753203。无新30/拟合，不能当主矩阵修复。
+- 新`intent_scaled_equilibrium_v1`仅把额外抬升offset乘以原canonical运动intent，保留恢复反馈/记忆及.75平均、原release。2700步独立算术、完整意图/竖直路径精确一致、根/冻结副本1375帧字节一致通过；无物理稳定证明。旧actor和全部失败源快照保留，物理/filter/gate/输入/执行器/dt不改。
+- 唯一活动队列`sii-special-intent-equilibrium-v1-20261029.service`，parent984041，17:11:28 UTC开始；`outputs/special_intent_equilibrium_20261029_v1`登记6297d8af，原五训练身份+已看过office000，3GiB/单线程/单模拟器/CPUQuota100%/swap0。不得修改绑定源码或重复启动；完成后用`review_intent_recovery_controls_20261029.py`审全部六项，全部通过才另登记新30。原intent-blend队列自然结束，不重启。
+- 后续仍须新30全部资格→共同24+6/12候选/三seed拟合→真实场景学生闭环→当前12×9回归108/六指标/全归档。验证08/09不调参，office轨迹不训练，当前12不能叫unseen。Goal active，无RL、子agent或服务器计算。独立RL66更新已fast-forward保留。
+
 ## 2026-10-28 — 完整65审查、固定终端对照与准确续训66
 
 - [最新交接](docs/RL_PARAMETER65_COMPLETE_20261028.md)。完整65三路自然结束，各30×55秒/41250新增/noabort，完整64 replay/history/optimizer保留、新reward复算0、网络/优化器有限。I/A/V reward−4.029249/−8.478570/−2.822723，Task/Strict17/16、14/14、17/17。全loss独立算术及实际loss/health图审通过；Iactor持续下降/A上升/V先降后升，尚未整体收敛。

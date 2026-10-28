@@ -1,3 +1,13 @@
+## 2026-10-29 — 非RL teacher恢复机制修复对照，失败完整保留
+
+- 第一版完整732文件/612792320bytes/SHA88018036，逐成员与远端暂存/最终大小hash均已核验，共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_intent_blend_controls_20261029_v1/FULL_PROBE.tar`；含所有失败与原始物理，不含第二版在途数据/新拟合，不删除本地。
+
+- [交接与证据](docs/NONRL_INTENT_RECOVERY_20261029.md)。第一版整项intent混合六回合完整结束：rod00/ball04/corner00合格，ball00/01末速.025977549/.029739668超原.02；office000完整55秒仍Task/Strict false、carry，actor/filter回放0、执行源码与原始子步hash通过。末250帧z误差−15.0039mm、恢复记忆.753203，否定离线反事实改善即物理修复。此前所有失败/v5/v6保留，不重采、不拟合失败teacher。
+- 下一版只对平衡点额外抬升offset乘原canonical intent，保留回位反馈/记忆/原release及.75平均。2700步独立算术/完整意图和竖直路径精确一致/reset/有限幅值通过；根和新冻结副本1375帧输出字节一致。原冻结office文件逐hash相同，仅新增独立actor与driver；两文件进入执行源归档。没有新oracle输入、gate/物理/filter/执行器改变或稳定性保证。
+- 原队列自然结束后17:11:28 UTC实际启动`sii-special-intent-equilibrium-v1-20261029.service`，parent984041，登记6297d8af；原五train+office000，3GiB/单线程/单模拟器/CPUQuota100%/swap0。首rod00和ball00已合格，其他在途；完整审查前不登记新30/拟合。当前12已经看过，只能作回归，验证08/09不调参、office动作不训练。
+- 第一版1200步实现检查和1375帧旧回放0通过，但物理失败照常保留；新第二版2700步检查不冒充物理成功。源语法/diff检查通过，学习代码复查未发现跨回合状态泄漏或验证标签参与ridge拟合；尚不能排除闭环覆盖/学习问题。旧35失败矩阵不作主结果，完整重训/108仍待，Goal active。
+- 开工实际fetch/read maina998343c/baselinef6e8f8c；收尾新增maind4e8d136独立RL66日志已读并fast-forward保留。无RL操作、子agent或服务器计算。本轮完整第一版物理包已本地逐成员核验，远端共享核验另记；第二版在途数据仅本机，未假称已全归档。
+
 ## 2026-10-28 — 完整65审查、固定终端对照与准确续训66
 
 - [最新交接](docs/RL_PARAMETER65_COMPLETE_20261028.md)。完整65三路自然结束，各30×55秒/41250新增/noabort，完整64 replay/history/optimizer保留、新reward复算0、网络/优化器有限。I/A/V reward−4.029249/−8.478570/−2.822723，Task/Strict17/16、14/14、17/17。全loss独立算术及实际loss/health图审通过；Iactor持续下降/A上升/V先降后升，尚未整体收敛。

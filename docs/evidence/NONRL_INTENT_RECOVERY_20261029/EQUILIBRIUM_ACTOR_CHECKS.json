@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "synthetic_steps": 2700,
+  "original_dynamics_and_memory_preserved": true,
+  "non_z_action_preserved": true,
+  "full_intent_and_vertical_exact": true,
+  "partial_intent_independent_feedback_plus_offset_arithmetic": true,
+  "reset_finite_bounds": true,
+  "config": {
+    "recovery": {
+      "threshold_n": 0.25873933901601237,
+      "attack_s": 0.10198773608427858,
+      "release_s": 1.257675717389726,
+      "offset_m": 0.026568199770793496,
+      "gain_per_s": 2.680422312515623,
+      "velocity_mps": 0.1567756593255339,
+      "activation_mode": "progress",
+      "progress_distance_m": 0.01659942039303537
+    },
+    "velocity_weight": 0.75,
+    "pair_average": true,
+    "teacher_mechanism": "intent_scaled_equilibrium_v1"
+  },
+  "source_sha256": {
+    "intent_equilibrium_teacher_20261029.py": "80f9f8d8d4b1ce6cc35176ed4c17356e4fa12bfb1e937af66c1ae52c6c5c2a6d",
+    "optimize_tool_contact_20261002.py": "9ed07eb219181ff1bcfd91cf6c4d10bb42472a716effa99f63c091f9cf9defa6",
+    "check_intent_equilibrium_20261029.py": "52f1bc37c47f6d907397d02885d936420eabffb9962ff204db3dcdd54b6df7fa"
+  },
+  "physical_tested": false,
+  "limitation": "Mathematical implementation checks, not a closed-loop stability proof. No new physical trials or fitting."
+}

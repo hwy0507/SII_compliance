@@ -28,8 +28,8 @@ COMMON_LINEAR_YIELD_MPS = .32
 def make_actor(config, checkpoint=None):
     """Use the same canonical observations for teacher and diagnostic students."""
     if checkpoint is None:
-        from optimize_tool_contact_20261002 import ParameterTeacher
-        return ParameterTeacher(config)
+        from intent_recovery_teacher_20261029 import make_teacher
+        return make_teacher(config)
     from current_student_policy_20260921 import load_current
 
     class StudentAdapter:
@@ -76,6 +76,7 @@ def worker(out, scene):
     import mujoco
     sys.path.insert(0, str(ROOT/'scripts'))
     import optimize_tool_contact_20261002 as teacher_module
+    from intent_recovery_teacher_20261029 import teacher_extension_path
     import audited_velocity_env as base
     from haptic_vmc_teacher_20260916 import JointLoadObserver, equivalent_tool_wrench
     from run_benchmark import body_jacobian, body_twist, so3_log
@@ -108,7 +109,10 @@ def worker(out, scene):
     original_filter = VelocityResidualActionFilter.filter
     filter_config = None
     manifest = dict(status='running', scene=scene, started_utc=datetime.now(timezone.utc).isoformat(),
-        teacher=(('development VMC configuration' if override else 'new30 teacher_lhs_0')+'; three actor classes AST-identical to collection source' if checkpoint is None else 'not a teacher: frozen student diagnostic'),
+        teacher=(('development VMC configuration' if override else 'new30 teacher_lhs_0')+'; three base actor classes AST-identical; any extension separately versioned' if checkpoint is None else 'not a teacher: frozen student diagnostic'),
+        teacher_mechanism=config.get('teacher_mechanism', 'legacy_parameter_teacher'),
+        teacher_extension_sha256=(sha(teacher_extension_path(config))
+                                  if config.get('teacher_mechanism') else None),
         controller_role='teacher' if checkpoint is None else 'student_diagnostic',
         student_checkpoint_sha256=sha(checkpoint) if checkpoint else None,
         action_contract=dict(linear_yield_mps=COMMON_LINEAR_YIELD_MPS, angular_yield_radps=.6,
@@ -378,6 +382,8 @@ def worker(out, scene):
                 trajectory_sha256=sha(folder/'trajectory.npz'))
         files={str(p.relative_to(ROOT)):sha(p) for p in (ROOT/'scripts').glob('*.py')}
         files['tools/optimize_tool_contact_20261002.py']=sha(ROOT/'tools/optimize_tool_contact_20261002.py')
+        files['tools/intent_recovery_teacher_20261029.py']=sha(ROOT/'tools/intent_recovery_teacher_20261029.py')
+        files['tools/intent_equilibrium_teacher_20261029.py']=sha(ROOT/'tools/intent_equilibrium_teacher_20261029.py')
         files['tools/collect_special_scene_actions_20261028.py']=sha(ROOT/'tools/collect_special_scene_actions_20261028.py')
         files[str(Path(__file__).relative_to(ROOT))]=sha(Path(__file__))
         if files[str(Path(__file__).relative_to(ROOT))]!=manifest['wrapper_sha256']:

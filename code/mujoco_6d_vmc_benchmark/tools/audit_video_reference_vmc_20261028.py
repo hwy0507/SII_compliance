@@ -21,6 +21,12 @@ def main():
     n=len(actions)
     assert len(obs)==n and n==record['steps']
     cfg=json.loads((f/'teacher.json').read_text())
+    if cfg.get('teacher_mechanism'):
+        from intent_recovery_teacher_20261029 import teacher_extension_path
+        extension=teacher_extension_path(cfg)
+        assert record['teacher_mechanism']==cfg['teacher_mechanism']
+        assert record['teacher_extension_sha256']==sha(extension)
+        assert json.loads((f/'SOURCE_HASHES.json').read_text())['tools/'+extension.name]==sha(extension)
     checkpoint = f/'student_checkpoint.npz' if record.get('controller_role') == 'student_diagnostic' else None
     if checkpoint:
         assert sha(checkpoint) == record['student_checkpoint_sha256']
