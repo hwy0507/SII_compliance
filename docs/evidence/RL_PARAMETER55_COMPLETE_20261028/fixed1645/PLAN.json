@@ -1,0 +1,136 @@
+{
+  "time": 1793165889.6091113,
+  "cycle": 55,
+  "anchor_cycle": 54,
+  "focus_replay_index": 2252691,
+  "expected_old_terminal_count": 1645,
+  "source_sha256": "867b789af36d51e667245ef20ee7697640b23903a1df5b307f038681a1bac05d",
+  "review_source_sha256": "907370a21c803b8e25741f5c72b5b3b20ebb2e1e2de836cf9acd201566b3df27",
+  "inputs": {
+    "anchor_registration": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/impedance53_54_terminal_concentration_20261028_v1/REGISTRATION.json",
+      "sha256": "26a642b4ab65ea1470f17208cc6b070c949e11fb838829386e6ff58779a296aa"
+    },
+    "anchor_values": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/impedance53_54_terminal_concentration_20261028_v1/cycle54_terminal_values.npz",
+      "sha256": "d46453a0ee048ee29321dba3ed2277e61b3a7233b6d8162ade673f0e5e2a32eb"
+    },
+    "anchor_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/impedance53_54_terminal_concentration_20261028_v1/REVIEW.json",
+      "sha256": "0c2cc32393972dfdacd4fb905fe32abb8afaa068205b57ec9565376f19fe5ab5"
+    },
+    "saved_value_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/impedance53_54_terminal_concentration_20261028_v1/SAVED_VALUE_REVIEW.json",
+      "sha256": "b8fa159a6577bd74723ebe5e4e6f1041e0b81858a2d19101cf244774194d0c51"
+    },
+    "focus_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/impedance53_54_terminal_concentration_20261028_v1/FOCUS_SAVED_REVIEW.json",
+      "sha256": "c0a3bc20a71c8647ba71013f082052f79a3689656c0c9d9d0ba312ed6ab5296f"
+    }
+  },
+  "registration_state": "Training55 running, full55 unavailable; all1645 anchor rows fixed before complete55. Focus54 abort observed already, not a pre-training registration.",
+  "registered_progress": {
+    "cycle": 55,
+    "steps": 2278506,
+    "completed_conditions": 0,
+    "running": 30,
+    "pending": 0,
+    "updates": 2273507,
+    "wall_time_utc": 1793165888.483173
+  },
+  "optimizer_updates": 0,
+  "new_physics": 0,
+  "wait_seconds": 7200,
+  "parent_run": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle55_20261026_v1",
+  "parent_launch": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle55_20261026_v1/LAUNCH.json",
+    "sha256": "f1d835c7983d89c4e1e806bc34fc2a76f57c33472c2324d113e1b57ad0811e7a"
+  },
+  "learners": [
+    {
+      "controller": "impedance",
+      "command": [
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter_capacity_pool30_cycle55_20261026_v1/resume_cheq_capacity4m_pool30_20261027.py",
+        "--runtime",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+        "--registration",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle55_20261026_v1/impedance/REGISTRATION.json",
+        "--resume",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle54_archive_20261026_v1/impedance/cycle_00054.pt",
+        "--output",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle55_20261026_v1/impedance/train",
+        "--controller",
+        "impedance",
+        "--cpus",
+        "13,14,15,16,17,18,19,20,21,22,23,24,25",
+        "--workers",
+        "30",
+        "--device",
+        "cuda:1"
+      ],
+      "pid": 4101991,
+      "proc_start_ticks": "36044802",
+      "time": 1793164731.9381218
+    },
+    {
+      "controller": "admittance",
+      "command": [
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter_capacity_pool30_cycle55_20261026_v1/resume_cheq_capacity4m_pool30_20261027.py",
+        "--runtime",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+        "--registration",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle55_20261026_v1/admittance/REGISTRATION.json",
+        "--resume",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle54_archive_20261026_v1/admittance/cycle_00054.pt",
+        "--output",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle55_20261026_v1/admittance/train",
+        "--controller",
+        "admittance",
+        "--cpus",
+        "26,27,28,29,30,31,32,33,34,35,36,37,38",
+        "--workers",
+        "30",
+        "--device",
+        "cuda:2"
+      ],
+      "pid": 4101994,
+      "proc_start_ticks": "36044802",
+      "time": 1793164731.9397774
+    },
+    {
+      "controller": "vmc",
+      "command": [
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter_capacity_pool30_cycle55_20261026_v1/resume_cheq_capacity4m_pool30_20261027.py",
+        "--runtime",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/source_train17_clock",
+        "--registration",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle55_20261026_v1/vmc/REGISTRATION.json",
+        "--resume",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle54_archive_20261026_v1/vmc/cycle_00054.pt",
+        "--output",
+        "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle55_20261026_v1/vmc/train",
+        "--controller",
+        "vmc",
+        "--cpus",
+        "39,40,41,42,43,44,45,46,47,48,49,50,51",
+        "--workers",
+        "30",
+        "--device",
+        "cuda:3"
+      ],
+      "pid": 4101996,
+      "proc_start_ticks": "36044802",
+      "time": 1793164731.9414382
+    }
+  ],
+  "monitor": {
+    "pid": 4102000,
+    "proc_start_ticks": "36044803",
+    "time": 1793164731.9454706,
+    "script_sha256": "dee40468371f0314cce40bb954a748b67a51c49b964c60e396734000423a45f4"
+  },
+  "reason": "Track all1645 exact fixed54 terminal inputs/actions/rewards/masks under complete55 weights, both old and new denominators. Abort row2252691 is a secondary fixed focus, not selected optimization. No training changes or historical minibatch causal claims."
+}

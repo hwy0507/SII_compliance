@@ -10,6 +10,29 @@
 
 完整开发档案含失败/raw/MJB/source/视频，510730648字节，SHAe356e5e19a2a927359ffde94839339890c74cf8b7274bdcc9f26531e8be9b4a6，已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_teacher_20261028_v2/special_scene_teacher_qualified_20261028_v1.tar.gz`。运行中的30条raw仍本地，不称全备份。开工main c036b8ed/baseline f6e8f8c，收尾main d50cf19b已fetch/read，保留RL并行更新，无子agent。
 
+## 2026-10-28 — 57启动路径准备、原56实测继续推进
+
+- [最新交接补充](docs/RL_PARAMETER56_EARLY57_PREP_20261028.md)。57 launcher/startup从已通过56版本适配，父56/新57与补零路径逆变换、AST/hash通过；缺DECISION57真实调用明确拒绝，无57运行目录或训练。等待完整56证据和实际57check-only后再决定，未冒称恢复/启动通过。
+- 45秒原56 PID/ticks保持，I/A/V各推进656/511/515步，末2323398/2324123/2325163；冻结55各2/30继续，原归档/完整loss/窗口/57恢复等待及GPUv4均live。Direct不追加34，Goal active，无子agent。
+- 开工fetch/read main6e7864564496e3fa9f8af9d5a882ab240710c3aa、baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d，无新协议变化；7来源成员小包逐字节核验，收据docs/RL_PARAMETER57_LAUNCH_SAVE_20261028.json，大产物仍共享SSD，非HDD/arm1全备份。
+
+## 2026-10-28 — 参数56前5000、VMC原53–55分布诊断与57仅恢复准备
+
+- [最新交接](docs/RL_PARAMETER56_EARLY57_PREP_20261028.md)。56固定前5000独立保存算术/原前缀逐字节/hash/图通过，critic首末1000 I3.063877→3.203606、A1.301958→1.291835、V1.013827→.975113，全部数值有限。56运行后登记，描述性，不是收敛或训练前预登记。
+- VMC原53–55共123750条完整loss及每轮42箱已独立复算/图检查；55首末5000均值.935060→1.089818、中位数.792209→.758679，末段大值群保留，不能全归于top1%。首个终端写入附近均值抬升仅时间关联，未重建历史minibatch/因果，不改变原5%/窗口，不宣称健康收敛。
+- 57仅恢复waiter2295170/start36500693，固定14400秒，绑定原56 learner/monitor身份；完整56审查及退出后才check-only，无自动训练。源码同时适配父56/新57及cycle_00056.pt，逆变换/AST/hash通过，旧waiter字节保持；实际57恢复未发生。
+- 原56 I/A/V约2318069/2318852/2319914steps、各30sampler，冻结55各1/30且第二例推进；archive1869171/完整loss2023556/未来窗口788599及GPUv4全部原身份live，GPU78/90/93/95%含保活。Direct不重启34，Goal active，无子agent。
+- main c036b8ed9a8246e27d967f61e441c4dacd6fa7ab、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d已fetch/read。共享SSD小包1665799字节/28来源成员加manifest，SHAf6510914b86c45e53e4d2aab49066235271431e513929e49ef4f69ed5803dce6逐内容核验，含完整早期原记录/critic数组，非HDD/arm1全备份。
+
+## 2026-10-28 — 参数55完整及原53–55统计、准确续训56与冻结55
+
+- [最新交接](docs/RL_PARAMETER55_COMPLETE_20261028.md)。完整55三方法各30×55秒/41250新增/noabort，旧replay全字段/history/4m双marker保持，reward重算0误差。I/A/V reward−2.366105/−10.213328/−4.575430，Task/Strict18/17、13/13、17/16；loss末1000为3.177660/1.279401/1.023333，阻抗高位/actor漂移和V末段尖峰保留，不宣称整体收敛。
+- 原53–55固定窗口完成并独立复算：I相邻51.2034%/61.1748%，A79.4844%/33.2500%，原5%未过；V0.28614%/0.12978%、首尾0.15599%，reward明确通过但整体loss健康仍跟踪。不改窗口/阈值，不删除54真实abort。固定原1645终端SSE29645.016→8845.031，下降70.1635%，0优化/物理/replay写入，不是在线loss因果分解。相关图与保存算术通过。
+- 准确55全state/replay/下一65536恢复退出0/0/0，有限56已启动I1869168/start36428762、A1869169/V1869170/start36428763，archive1869171。实际startup通过：首批1000/1000/2000、所有旧replay/history/原optimizer/30MJB与30sampler保持，新reward重算0。完整56 loss waiter2023556/start36455483（CPU54、7200秒）已挂，56启动后登记；不自动57，原56–58 waiter788599继续。
+- 实际冻结55全state/4m/随机动作恢复及真实startup通过，原90回合/seed2026102638/PLAN保持；I/A/V1869175/1869176/1869177、review1869178（start均36428775）在GPU0/CPU0–3推进。完整结果尚待，41的2m与55的4m差异单列，不宣称泛化/因果。
+- GPUv4原身份保持，用户要求科学结束仍保活；最新87/94/92/92%含合成负载。Direct不重启34，Goal active，无子agent。共享SSD小包1243598字节/100成员，SHA8654d771bf2ec337693363a154aa98f1ec0d159e104b4b08454d770352f3c4fa逐成员核验，收据docs/RL_PARAMETER55_COMPLETE_SAVE_20261028.json；大产物仍共享SSD，非HDD/arm1全备份。
+- 已fetch/read main eca3efd48288309648270b025fe9d5377c2ceb50、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d及日志，无新科学约束变化。
+
 ## 2026-10-28 — 非RL改为三个真实特化场景重新采集，仍在修正教师
 
 用户最新要求覆盖旧new30主路线：[交接](docs/NONRL_REAL_SPECIAL_SCENES_RECOLLECTION_20261028.md)。只在视频对应的带挡板棍推、自由球、厚桌角采集VMC action；旧综合场景/new30/180回合保留为历史。棍推须真实手接触、让位、蹭过并在开始撤回前持续回位。当前没有合格新主数据/新正式训练/新108结果，Goal active，勿以旧诊断模型顶替。
