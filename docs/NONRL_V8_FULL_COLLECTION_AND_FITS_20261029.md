@@ -1,5 +1,16 @@
 # v8全30合格、恢复覆盖与公平训练启动
 
+21:09:12UTC更新：原接续1089228同PID active，已9/75作业完成，
+seed2026102801 RNN candidate01到21624更新，内存1085460480bytes。
+完整数据及本轮代码/证据已核验共享，覆盖下文传输中快照：
+
+- 原物理全集：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_full_collection_20261029_v1/FULL_COLLECTION.tar`，2802442240bytes/SHA76f23adc。
+- commit`1a2afabc`源码/小证据：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_full_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`，1193文件7726159bytes/SHAbf3e5ed2。
+
+[完整共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/V8_FULL_SHARED_RECEIPT.json)。
+科学63186fd7及合并1a2afabc已push/远端核验，双方日志逐字保留。
+9/75是已结束训练作业数，不是九个最终模型已经锁定；没有学生闭环/最终矩阵结果。
+
 ## 实际完成范围
 
 三种真实特化场景的原30条示范于2026-10-28 20:59:59.156349 UTC全部结束，

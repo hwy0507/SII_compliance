@@ -1,5 +1,6 @@
 ## 2026-10-29 — 非RL v8全30资格通过及公平训练实际接续
 
+- 21:09:12UTC原1089228同PID active，9/75作业完成，RNN seed2026102801 candidate01到21624更新，内存1085460480bytes；非9最终模型锁定。科学63186fd7与安全合并1a2afabc已push/远端核验，双方日志逐字保留。完整v8物理614文件2802442240bytes/SHA76f23adc已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_full_collection_20261029_v1/`；同commit源码/小证据1193文件7726159bytes/SHAbf3e5ed2已核`runs/main/nonrl_v8_full_source_20261029_v1/`。收据V8_FULL_SHARED_RECEIPT，覆盖下文上传中快照；不含在途学生/后补收据，Goal active。
 - [报告](docs/NONRL_V8_FULL_COLLECTION_AND_FITS_20261029.md)。20:59:59原30全部结束，三场景各10合格，collector1088910自然inactive/success。原接续1089228全30审查后构建15750帧、24train/6validation共同数据，SHA527bb734；21:00:07实际开始75作业，21:03已5完成、第二seed RNN candidate00到5912更新，3GiB/swap0/OOM0。未重启/重复训练，无最终模型或主矩阵结论。
 - 原失败ball08末9速度.031113962→.000172226m/s，低于原.02；全10原gate及8train尾RMS独立math.dist/fsum复算、教师动作精确回放通过。全8train尾能量.060776420→.016318874（−73.1493%），ball00/05/07退化保留。新图已实际查看，原始数组保存；诊断绘图唯一改动是标题从固定v7改为实际collection名，未改数值/运行绑定源。
 - 全24train覆盖审查通过，6validation只核来源不入恢复诊断；rod/ball/corner激活>.5帧为0/4000、447/6000、171/2600，最长0/5.12/.64秒。仅描述覆盖，不证明学生可学习或闭环成功。完整物理614文件2802442240bytes/SHA76f23adc已本机核验，正向独立共享暂存传输，未提前宣称共享完成。
