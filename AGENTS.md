@@ -11,6 +11,15 @@
 - 接续`sii-special-learning-handoff-v7-20261029.service` parent1056692，root`outputs/special_scene_learning_handoff_20261029_v7`、REGc796f663，绑定真实采集PID/start。全30独立资格通过才构建`outputs/special_scene_retrain_20261029_v7`并三seed各12候选ESN/rnn/mlp；19:29:50仍waiting/rod00，失败保留且阻止拟合，不自动测试。全数据覆盖、9模型及学生闭环、108仍待，Goal active。
 - 新recollect初次`val`误拼在建目录前拒绝，按原`validation`修正，未改划分。全六项/office收据与计划已保存；完整物理包共享待最终核验。4bf5fe4c/812b59c5及合并dc489492已push，保留cfeeb4fd独立RL更新。无RL/子agent/服务器计算，当前12为回归/office不拟合。
 
+## 2026-10-28 — 原68前5000、全2034锚点与69仅恢复准备
+
+- [最新交接](docs/RL_PARAMETER68_EARLY_ANCHOR_20261028.md)。原68三learner身份保持，19:29steps2814222/2814965/2815999，无完整/失败；前5000原字节/连续步号/全数值有限/独立算术及真实图通过，critic首末1000 I1.894274→1.865852、A1.289236→1.265367、V.736125→.683748。I/V actor微升、A微降，非整轮或收敛。精确上下文替换/逆变换/覆盖计数通过，历史窗口保留。
+- 全67的2034×57 V/A锚点精确、独立SSE4748.245927/3370.449233，anchor SHAea7ef6f1/11555b63。原V五focus/A原66short0600保持；68预期2064。V1623519/start41134030/PLAN8dc639e5，A1623520/start41134031/PLANc2ea0daa，CPU53/7200秒；实际68比较/图待，未改原67源/科学配置。
+- 全标签68 waiter1603443/start41130372/PLAN5d8de11a，69仅恢复1603442/start41130372/REG56ec0ed5。真实不完整68标签及缺DECISION69启动均拒绝且无输出/69训练，证据保留。69全loss四脚本/独立全标签68 reviewer静态准备，49–68保留追加69、paired68→69/0600不变，无69loss run/PLAN/waiter；实际完整结果待。
+- 原68–70窗口1085142/PLANe3a50567继续，不提前pass、不移动端点、不自动69/70；原65–67 I/A失败与V描述性通过、旧失败和历史通过保留，Direct34false，Goal active。
+- 139guard采样min73/68/67/69%、低于50全0/maxgap5.300599秒，19:29原五guard live、GPU79/91/93/72%。含合成保载、非瞬时保证/纯训练吞吐；科学完成也继续v5，非跨重启服务。旧v4 STOP在共享SSD、v5控制在/tmp。
+- 共享SSD小包80成员/1776479字节/SHAb0359d98逐字节/AST/tar核验，收据docs/RL_PARAMETER68_EARLY_ANCHOR_SAVE_20261028.json；HDD仅原地已有精简入口，大产物SSD，非HDD/arm1全备份。实际fetch/read maincfeeb4fd→dc489492/baselinef6e8f8c；非RL恢复覆盖审计/offset在途新报告已读并安全合并保留，无冻结RL源改动，无子agent。
+
 ## 2026-10-28 — 完整67、原65–67窗口与准确续训68
 
 - [最新交接](docs/RL_PARAMETER67_COMPLETE_20261028.md)。完整67三路自然结束，各30×55秒/41250新增/noabort，全66 replay/history保持，新reward复算0、网络/优化器有限。I/A/V reward−2.223995/−10.229907/−2.845608，Task/Strict17/17、13/13、17/17。全loss独立复算及真实loss/health图已审，I末段critic尖峰、三actor上移，尚未整体收敛。
