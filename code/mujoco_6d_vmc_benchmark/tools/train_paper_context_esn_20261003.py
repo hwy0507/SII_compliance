@@ -26,7 +26,9 @@ def main():
     if not a.leak_gate and (a.gate_minimum!=.05 or a.gate_maximum!=2.):raise ValueError('Gate limits require gate')
     out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
     cg=Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
-    memory=(cg/'memory.max').read_text().strip();assert memory!='max' and int(memory)<=3*1024**3
+    memory=(cg/'memory.max').read_text().strip()
+    assert memory != 'max' and int(memory) <= 3*1024**3
+    assert (cg/'memory.swap.max').read_text().strip() == '0'
     assert all(os.environ.get(k)=='1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS'))
     metadata=json.loads(a.metadata.read_text());assert metadata['position_error_context']
     assert sha(a.data)==metadata['training_data_sha256']

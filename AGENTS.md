@@ -9,6 +9,16 @@
 - GPUv4原身份保持，用户要求科学结束仍保活；最新87/94/92/92%含合成负载。Direct不重启34，Goal active，无子agent。共享SSD小包1243598字节/100成员，SHA8654d771bf2ec337693363a154aa98f1ec0d159e104b4b08454d770352f3c4fa逐成员核验，收据docs/RL_PARAMETER55_COMPLETE_SAVE_20261028.json；大产物仍共享SSD，非HDD/arm1全备份。
 - 已fetch/read main eca3efd48288309648270b025fe9d5377c2ceb50、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d及日志，无新科学约束变化。
 
+## 2026-10-28 — 非RL改为三个真实特化场景重新采集，仍在修正教师
+
+用户最新要求覆盖旧new30主路线：[交接](docs/NONRL_REAL_SPECIAL_SCENES_RECOLLECTION_20261028.md)。只在视频对应的带挡板棍推、自由球、厚桌角采集VMC action；旧综合场景/new30/180回合保留为历史。棍推须真实手接触、让位、蹭过并在开始撤回前持续回位。当前没有合格新主数据/新正式训练/新108结果，Goal active，勿以旧诊断模型顶替。
+
+此前v5旧审计误用0.995触发和retract_end、pass=rejoin；真实触发0.8/撤回开始3.16，且只碰fr3_link6，旧passed作废但原件保留。三条轨迹v1/v2、九模型及四分片测试全为diagnostic_only；四协调器629828/629838/629856/629846已在最后子回合自然完成后终止，旧execution可能仍running，严禁恢复该四路派发。恢复实际cgroup<=3GiB/禁swap/全局单仿真锁，不以环境变量冒充约束。
+
+开发15/16增逐身体子步接触；15手滑离后腕部fr3_link7持续受阻，16软x候选2.60秒手部几何越过但撤回前仍未回位，两者独立actor/filter重放0误差。没有合格结论，不继续延迟撤回或放宽判据。v3审计使用MJB真实碰撞体包围盒越过与手接触时间，旧v1/v2保留；没有独立物理重放认证。先修正腕部受阻并验证三场景，再登记30身份（每场景8train/2val）、同VMC配置/三seed/每家12候选/神经32k更新；采集计划绑定与资格执行器尚待端到端实现。
+
+本次非RL指标：Task/Strict各全回合分母；SPT仅双成功、有时间回合平均，无双成功NA，完整108统一T_ref；平均回合峰矩、接触dt加权舒适代理、机器合规率。冻结当前12测试条件仅作已见重评，禁止测试选模型。不改变另一任务RL协议。源码、245份小收据归档已核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_real_special_scenes_correction_20261028_snapshot01/CORRECTION_EVIDENCE.tar.gz`，601545字节，SHA256 `32992308be3a9ad89917a53858c8a084e911b3c94249899c8130b358b92e9eb4`。大型新轨迹/诊断拟合仍本地保留，非全备份，无服务器计算。
+
 ## 2026-10-28 — 未来56–58固定统计及56启动校验准备
 
 - [最新交接](docs/RL_PARAMETER56_WINDOW_PREP_20261028.md)。56/57/58未启动时固定下一连续窗口，原53–55仍须完整保留；原5%/nearzero1/5000bootstrap/30条件与真实episode长度不变，seed2026102855，公式片段一致。新增55注册SHA作为56科学配置锚点。最终waiter788599/start36203076，14400秒，无自动训练/停训。

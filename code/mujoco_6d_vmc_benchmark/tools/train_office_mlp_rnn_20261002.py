@@ -113,6 +113,7 @@ def main():
     cg = Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::', 1)[1].lstrip('/')
     memory = (cg/'memory.max').read_text().strip()
     assert memory != 'max' and int(memory) <= 3*1024**3
+    assert (cg/'memory.swap.max').read_text().strip() == '0'
     assert all(os.environ.get(k) == '1' for k in ('OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS', 'MKL_NUM_THREADS'))
     torch.set_num_threads(1)
     torch.set_default_dtype(torch.float64 if a.precision=='float64' else torch.float32)

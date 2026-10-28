@@ -1,0 +1,47 @@
+{
+  "schema": "rod-yield-rejoin-audit-v3",
+  "status": "failed_preserved",
+  "checks": {
+    "hand_contact": true,
+    "hand_contact_time_measured": true,
+    "approached_from_before_rod": true,
+    "yielded_before_withdrawal": true,
+    "crossed_rod_while_held": true,
+    "persistent_rejoin_before_withdrawal": false,
+    "penetration_within_02mm": true
+  },
+  "actual_trigger_s": 0.0,
+  "retract_start_s": 8.5,
+  "contact_bodies": [
+    "fr3_link6",
+    "fr3_link7",
+    "hand"
+  ],
+  "hand_bodies": [
+    "hand",
+    "left_finger",
+    "right_finger"
+  ],
+  "hand_contact_first_s": 0.5552999999999471,
+  "yield_excursion_m": 0.022196750556779287,
+  "yield_start_s": 0.6799999999999333,
+  "pass_s": 2.60000000000061,
+  "rejoin_start_s": null,
+  "rejoin_confirmed_s": null,
+  "sample_period_s": 0.03999999999990678,
+  "criteria": {
+    "yield_m": 0.004,
+    "rejoin_tube_m": 0.005,
+    "hold_s": 0.08,
+    "gap_m": 0.002,
+    "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+  },
+  "hashes": {
+    "trajectory.npz": "fec0017b2a6237eaf720a1636d560323c88ee7beadd83300ec6b18e24216561e",
+    "scene.mjb": "ccaf62610674569b3cbb5086188ea0f065cddca0a1e7e3c830f790cdabf1ec04",
+    "legacy.json": "4607badf9b04e988171afdbdf51112687557fb8e218a0d309d337a917e1e94b9",
+    "recipe.json": "4092dd49c8d4db577e61f47d650495f491251765a666e4741879ebbd84f57ada",
+    "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+  },
+  "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+}
