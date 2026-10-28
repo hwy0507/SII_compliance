@@ -41,3 +41,15 @@ v5实际 `/tmp/sii_gpu_util_guard_20261028_v5`，supervisor3256866/start37410686
 继续原62；接手核对PID+start ticks与实际完成文件。观察超时不代表科学任务终止，禁止因此重启。62结束后审完整loss/health/全标签/固定终端，再决定63；62–64窗口须完整报告，原59–61失败和全部历史通过不覆盖。Goal active。
 
 发布前远端main新增6e09bdc2：另一主机非RL第三条件九模型全部Task/Strict失败、原108已27条并接续第四条件，相关日志/报告已读。AGENTS与UPDATE_LOG顶部同时新增产生冲突，已验证本轮仅为完整前缀追加，按本轮原前缀加对方完整正文安全合并，保留双方全部结果，无RL协议改变，不触碰其科学进程。
+
+## 13:26补充：原62持续等待与63全loss静态准备
+
+原62的31次真实观测（13:09:38–13:24:43）保存于 `B/runtime/parameter62_verified_wait_1308_20261028_v1`。三learner及归档/全loss/1854终端/全标签/63仅恢复/62–64窗口和五guard身份全部保持；steps2571520/2572333/2573490→2582984/2583903/2585262逐次增加，无完整/失败标记。有限观察器自然exit0，原科学任务继续，不能据观察结束重启。
+
+区间内原guard日志177条真实采样：四卡最低72/68/67/67%、均值78.73446328/89.19209040/89.44632768/89.79096045%，低于50计数均0，最大采样间隔5.27692318秒。包含合成保活，不是连续瞬时保证或纯训练吞吐；历史共同0%异常保留，科学完成也继续guard。
+
+`B/runtime/parameter63_loss_preparation_20261028_v1` 已静态准备audit.py/paired_gate.py/review_saved.py/wait.py，父62逆变换/AST通过，全49–62历史保留并追加63，条件0600未改。没有创建63loss运行目录、PLAN或等待进程。须完整62科学审查并真正启动63后，复制这四源到独立运行目录，绑定实际LAUNCH jobs与源hash，再启动CPU54/7200秒原等待；完成后独立保存复算和实际图审，另核对全Task-only变化。该准备不授权自动训练，原62与62–64预登记保持。
+
+[保存收据](RL_PARAMETER62_WAIT63_PREP_SAVE_20261028.json)、[清单](evidence/RL_PARAMETER62_WAIT63_PREP_20261028/MANIFEST.json)：14成员/13616字节，`B/repository/RL_PARAMETER62_WAIT63_PREP_20261028_132600/SMALL_EVIDENCE.tar.gz`，SHA256 `eeb5118933227ad763b6f9831f93c950d7ab1c151266ae015fb5f2d4c525ff7d`，逐成员字节和所有Python AST通过。HDD既有LATEST更新，大产物仍共享SSD，非HDD/arm1全备份。
+
+本轮开工真实fetch/read main58e9150c，收尾main4dcb9ca8/baselinef6e8f8c：另一主机非RL第四条件28→29/108等待进度已读并fast-forward完整保留，无协议变化。Goal active，无子agent。
