@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 原61前5000、全1824锚点及62–64预登记
+
+- [最新交接](docs/RL_PARAMETER61_EARLY_ANCHOR_20261028.md)。61前5000独立算术/实际图通过；critic首末1000 I2.360356→2.192203、A1.845287→1.695531、V.811884→1.005567，V滚动均值上升/尖峰及actor小漂移保留，非完整61或收敛。原learners身份保持，11:59 steps2525215/2526015/2527201，无失败/重启。
+- 完整60全1824终端锚点逐数组/独立标量SSE4384.706013通过，SHA7ba98a5d；61对照345459/start38443452已绑定真实jobs、CPU53/7200秒，待完整61。源码hash适配初次逆变换拒绝及PLAN monitor字段KeyError均保留，未影响训练；修正后真实身份/hash通过。
+- 62仅恢复等待156458/start38409347 live，缺DECISION实际训练拒绝；原59–61和完整61 loss继续，无auto62。62–64下一非重叠窗口已提前登记、原5%/近零1/seed/5000/anchor55不改，waiter须待经审查62真实启动后启动；原59–61全部结果必须保留。
+- 五GPUv5原身份live，11:59 GPU79/97/94/94%含保活，科学完成也继续；Direct不启动34，Goal active，无子agent。共享SSD包56成员/1287568字节/SHA81427c3d逐字节/AST通过，收据docs/RL_PARAMETER61_EARLY_ANCHOR_SAVE_20261028.json；大产物仍SSD，非HDD/arm1全备份。
+- 实际fetch/read main72d5d784、baselinef6e8f8c，非RL108等待10→12/108更新已fast-forward完整保留，无RL协议变化。
+
 ## 2026-10-28 — 完整60、全1794终端改善与准确续训61
 
 - [最新交接](docs/RL_PARAMETER60_COMPLETE_20261028.md)。完整60各30×55秒/41250新增/noabort，全59 replay/history/optimizer保持、新reward0；网络/优化器有限。I/A/V reward−.628091/−8.555518/−2.855623，Task/Strict18/18、15/14、17/17。全loss独立算术/实际图通过，critic末1000为1.792392/1.676395/.880622；I/V下降、A后段burst，正向结果保留，有限尖峰/非零终端误差不新增门。
