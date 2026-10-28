@@ -1,3 +1,10 @@
+## 2026-10-28 — 三参数53完整审查、准确全state续训54
+
+- [最新科学交接](docs/RL_PARAMETER53_COMPLETE_20261028.md)。三方法53独立归档/旧replay全字段/history/双容量marker/4m/新41250reward0误差通过，full30×55/noabort；健康诊断只读不改网络。I/A/V mean reward−4.030497/−8.524904/−4.568304，Task/Strict17/16、14/14、17/16；完整critic/actor均有限，但I末1000loss3.072625/max76.325、V末.833407，保留末段抬升和漂移，不宣称健康收敛。A末1.457763回落；A/V少量Q超过当前alpha理论界及held-out大误差如实保留。
+- 全30条件52→53 reward差值保留，Strict变化逐一按保存rollout/执行源码/同MJB及原0.2mm门槛核验。short0600 I穿透.192759→.205547mm、V.174974→.210618mm，Task仍成功但丢Strict；A.234536→.190214mm恢复Strict。解释标签与reward组成，不当作replay尖峰因果、不重算全物理、不改gate。
+- 53完整后原参数54恢复等待自动完成，三方法全state/replay/下一65536/RNG check-only退出0/0/0。读取完整loss/health图后登记有限54续训原53–55窗口，I/A/V PID2116858/2116859/2116860已启动，archive/review2116861，实际startup2158415仍须按最终REVIEW核验。首5000跟踪在54启动前登记，waiter2158459、3600秒、不自动停训或改算法；无自动55。
+- 证据docs/evidence/RL_PARAMETER53_COMPLETE_20261028；共享SSD包B/repository/RL_PARAMETER53_COMPLETE_20261028_041907/SMALL_EVIDENCE.tar.gz，686057字节、19源码/小证据成员逐hash核验并含两图，SHA256 `bd132b47c7b7c18811de5e6ebc04413e2588f4245f4b3831366d7a1a77c819db`。B=`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`。Direct33与34仅恢复、GPU守护v4继续，Goal active；大checkpoint/raw仍SSD，非HDD/arm1全备份。
+
 ## 2026-10-28 — GPU守护v4消除所测窗口低谷，四正式训练继续
 
 - [守护v4报告](docs/RL_GPU_GUARD_V4_20261028.md)。v2仍观测48%低谷后，v3缩短200→20ms周期、最小duty60→70%，固定60样本仍GPU0/3各4个低谷；原失败样本完整保留。核到两worker共用CPU52各约49%CPU、同步自旋争用，v4改阻塞CUDA事件等待并允许审查CPU52–54调度，workerCPU降至约8%–9%；正式CPU/算法/checkpoint未改。
