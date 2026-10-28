@@ -1,5 +1,7 @@
 # RL 恢复交接：Direct33／参数53与持续GPU守护（2026-10-28）
 
+> 后续更新：当前GPU守护为[v4](RL_GPU_GUARD_V4_20261028.md)，旧版已退出；下方v2占用与PID为原保存快照。早期loss与下一轮恢复准备见[补充交接](RL_EARLY33_PARAMETER53_20261028.md)。
+
 当前 Goal **active，未完成**。本文件覆盖此前“Direct32／参数52仍运行”以及更旧的暂停状态。用户已再次授权续训，且明确要求训练/评测完成后仍保持GPU负载。没有子agent。
 
 实际主机：`rltest-1025--a6ed2ff39b3c-hsje5ateny`。共享SSD根目录 B：`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`。仓库 R：`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/SII_compliance`。本轮基于main `9a78d280e7b622ad1e96a8aeb5e4cacbbcebf3d5`，baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；已读两分支日志，安全快进合入非RL180最终审计，保留其成果。冻结训练runtime没有随Git合并变化。

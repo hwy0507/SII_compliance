@@ -2,6 +2,8 @@
 
 ## 2026-10-28 — RL恢复Direct33／参数53，用户要求完成后继续GPU占用
 
+**当前GPU守护已升级v4**，见[RL_GPU_GUARD_V4_20261028.md](docs/RL_GPU_GUARD_V4_20261028.md)，覆盖下方v2为当前版本的历史表述。v1/2/3已停止；v3短周期仍有GPU0/3各4个低谷，共用CPU52且同步自旋饱和。v4使用阻塞CUDA事件、worker允许CPU52–54调度，正式CPU0–51不变；20ms周期/70%最小duty。固定60样本73.046秒四卡均值93.22/88.98/89.17/90.20%，最低85/69/70/69%，低于50均0/60，原正式身份全live并推进。独立保存样本算术核验通过；含合成负载、非永久保证或科研更新。运行B/runtime/gpu_util_guard_20261028_v4，supervisor1629438、worker1629439–1629442，原四训练/34与54恢复等待保持。新GPU小证据归档和SHA见报告。
+
 最新补充：[RL_EARLY33_PARAMETER53_20261028.md](docs/RL_EARLY33_PARAMETER53_20261028.md)。33/53固定前5000数值均有限，critic末1000 D/I/A/V为0.008638/2.111797/1.661932/0.714774；导纳从1.891回落但不能宣称收敛。A52 short0600 Task仍成功，穿透0.234536mm超过原0.2mm门槛而Strict失败，51为0.188776mm；终端前/后1000loss1.292099/1.912622，保存记录与gate算术通过，非独立物理或因果证明，不改门槛。有限下一轮恢复准备B/runtime/prepare34_parameter54_20261028_v1：Direct34 waiter1059038、参数54 waiter1059039均核验live；只在完整父review和原learner退出后check-only，未实际执行、无自动训练/PRELAUNCH批准。新小证据19成员/1304817字节包B/repository/RL_EARLY33_PARAMETER53_20261028_035157/SMALL_EVIDENCE.tar.gz，SHA256940fb8ea4e7d1886b62bc219270cb24847e581011090041ffa39b606927e1277，已逐成员核验。原训练/守护保持，Goal active。
 
 最新RL权威交接：[RL_RESUME33_PARAMETER53_20261028.md](docs/RL_RESUME33_PARAMETER53_20261028.md)。用户再次恢复，Goal active；覆盖旧暂停和32/52仍运行快照，不影响下方已完成非RL结果。完整Direct32/参数52已归档和审查；原49–51三参数均未通过5%稳定性，53–55已在53启动前登记。准确父全state/check-only通过，正式Direct33 PID259795，参数53 PID238630/238631/238632运行；四路实际startup旧replay/history/动作/clock/30MJB与新reward0误差通过。有限33/53归档审查monitor259815/238633，无自动34/54；先核身份及最新进度，勿重复启动。

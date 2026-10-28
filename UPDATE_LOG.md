@@ -1,3 +1,9 @@
+## 2026-10-28 — GPU守护v4消除所测窗口低谷，四正式训练继续
+
+- [守护v4报告](docs/RL_GPU_GUARD_V4_20261028.md)。v2仍观测48%低谷后，v3缩短200→20ms周期、最小duty60→70%，固定60样本仍GPU0/3各4个低谷；原失败样本完整保留。核到两worker共用CPU52各约49%CPU、同步自旋争用，v4改阻塞CUDA事件等待并允许审查CPU52–54调度，workerCPU降至约8%–9%；正式CPU/算法/checkpoint未改。
+- v4固定60样本73.046秒GPU均值93.2167/88.9833/89.1667/90.2%，最低85/69/70/69%，低于50均0/60；原四learner全窗口身份存活且推进。保存样本独立复算通过；含合成负载、0科研更新，非纯训练利用率或永久保证，不宣称训练提速。v1/2/3均已停，当前B/runtime/gpu_util_guard_20261028_v4继续至STOP/系统关机。
+- 源码、固定样本、CPU快照与验证在docs/evidence/RL_GPU_GUARD_V4_20261028；共享SSD包B/repository/RL_GPU_GUARD_V4_20261028_040202/SMALL_EVIDENCE.tar.gz，13544字节、14份源/样本成员逐hash核验，SHA256 `d9754d0046c7283f74152ea4f4fcd8cba41755fa663f119fd988b3b157a23b98`。原33/53训练与34/54恢复准备继续，Goal active，无子agent。
+
 ## 2026-10-28 — 33/53早期loss、导纳Strict门槛核验与34/54恢复准备
 
 - [补充交接](docs/RL_EARLY33_PARAMETER53_20261028.md)。实际查询/fetch/read main `d620fddfed28a31d1ac7ace90484b0a65b8c2bfd`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无新RL约束变化；原四learner与GPU守护身份核验live，训练持续推进。

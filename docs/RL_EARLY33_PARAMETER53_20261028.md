@@ -1,5 +1,7 @@
 # Direct33／参数53早期loss与下一轮恢复准备（2026-10-28）
 
+> 当前GPU守护已更新为[v4](RL_GPU_GUARD_V4_20261028.md)；下文v2是本次早期loss审查时的历史状态。
+
 Goal active。此前完整交接仍见[RL_RESUME33_PARAMETER53_20261028.md](RL_RESUME33_PARAMETER53_20261028.md)。本轮核远端main `d620fddfed28a31d1ac7ace90484b0a65b8c2bfd`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并fetch/read，未发现新的RL环境/gate变化。主机`rltest-1025--a6ed2ff39b3c-hsje5ateny`，B=`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`。
 
 ## 已完成的新证据
