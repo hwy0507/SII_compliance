@@ -1,0 +1,212 @@
+{
+  "created_utc": "2026-10-28T10:57:57.526588+00:00",
+  "scope": "Actual new completed learning plots and fixed first2 physical evidence; not final108",
+  "plot_evidence_sha256": "9da64c97178cf417d9d40ffa64a1ea8a0491157e790f896bc27f9bbd1d10d6aa",
+  "plot_hashes": {
+    "selected_learning_curves.png": "6a987b1f2340aa051b1996299d22dcc0a9ab63933614df793d594e11c43107f9",
+    "terminal_validation_mse.png": "e6dcfbbf3bd16b9b4a9483a106857834ce8d31e5a98315c441c0079b41424481"
+  },
+  "learning_stats": [
+    {
+      "name": "special_rnn_scratch_s2026102801",
+      "initial_train_mse": 0.0008783585403787124,
+      "terminal_train_mse": 1.4878644546564234e-06,
+      "terminal_validation_mse": 4.424520007622866e-06,
+      "training_reduction_factor": 590.3484941990514,
+      "last10percent_train_relative_range": 0.03621686559440125,
+      "tail_train_points": 5,
+      "base_learning_rate": 0.0003,
+      "terminal_learning_rate": 2.9999999999999997e-06
+    },
+    {
+      "name": "special_mlp_scratch_s2026102801",
+      "initial_train_mse": 0.0007918068963985392,
+      "terminal_train_mse": 2.498920392514227e-05,
+      "terminal_validation_mse": 3.45597491248243e-05,
+      "training_reduction_factor": 31.685959215446726,
+      "last10percent_train_relative_range": 0.015067286651488772,
+      "tail_train_points": 5,
+      "base_learning_rate": 0.0003,
+      "terminal_learning_rate": 2.9999999999999997e-06
+    },
+    {
+      "name": "special_rnn_scratch_s2026102802",
+      "initial_train_mse": 0.000832162717919696,
+      "terminal_train_mse": 1.5264345935867172e-06,
+      "terminal_validation_mse": 3.949442808114063e-06,
+      "training_reduction_factor": 545.1676222590933,
+      "last10percent_train_relative_range": 0.03305054496412709,
+      "tail_train_points": 5,
+      "base_learning_rate": 0.0003,
+      "terminal_learning_rate": 2.9999999999999997e-06
+    },
+    {
+      "name": "special_mlp_scratch_s2026102802",
+      "initial_train_mse": 0.0008584259451684965,
+      "terminal_train_mse": 2.7173817790769086e-05,
+      "terminal_validation_mse": 3.6761010861368895e-05,
+      "training_reduction_factor": 31.59018551526841,
+      "last10percent_train_relative_range": 0.012385783146060382,
+      "tail_train_points": 5,
+      "base_learning_rate": 0.0003,
+      "terminal_learning_rate": 2.9999999999999997e-06
+    },
+    {
+      "name": "special_rnn_scratch_s2026102803",
+      "initial_train_mse": 0.0009245181722277857,
+      "terminal_train_mse": 1.6457946955934824e-06,
+      "terminal_validation_mse": 4.190813121932147e-06,
+      "training_reduction_factor": 561.7457479375332,
+      "last10percent_train_relative_range": 0.040553937369949326,
+      "tail_train_points": 5,
+      "base_learning_rate": 0.0003,
+      "terminal_learning_rate": 2.9999999999999997e-06
+    },
+    {
+      "name": "special_mlp_scratch_s2026102803",
+      "initial_train_mse": 0.0008625233860949622,
+      "terminal_train_mse": 2.4425699917500867e-05,
+      "terminal_validation_mse": 3.397330664900527e-05,
+      "training_reduction_factor": 35.31212571218765,
+      "last10percent_train_relative_range": 0.019035224649396314,
+      "tail_train_points": 5,
+      "base_learning_rate": 0.0003,
+      "terminal_learning_rate": 2.9999999999999997e-06
+    }
+  ],
+  "curves_exactly_match_original_histories": true,
+  "tail_statistics_independent_math_fsum_verified": true,
+  "visual_review": "Both actual PNGs viewed: labels and nine models match current new run; six unsmoothed neural train/validation panels readable, ESN only analytic terminal dots. No historic result substitution.",
+  "limitation": "Cosine learning rate ends at 1 percent of base; flattening is descriptive and not independent convergence proof. No reward for imitation. Sparse full-train logs connected without interpolation of new observations.",
+  "prefix_episode_checks": [
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "substeps": 620000,
+      "rmse_mm": 365.14439142635206,
+      "peak_speed_mps": 0.8204424765499132,
+      "peak_torque_nm": 68.89143371582031,
+      "human_force_peak_n": 1315.1322021484375,
+      "human_contact_impulse_ns": 54.09991645584107,
+      "comfort_exceed_duration_s": 0.5103500000000002,
+      "failure_stage": "lift",
+      "abort_reason": "global_penetration_exceeded_2mm"
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "substeps": 1100000,
+      "rmse_mm": 30.29501742337228,
+      "peak_speed_mps": 0.34775820704241567,
+      "peak_torque_nm": 37.452693939208984,
+      "human_force_peak_n": 211.47500610351562,
+      "human_contact_impulse_ns": 38.888711982966214,
+      "comfort_exceed_duration_s": 0.0,
+      "failure_stage": "carry",
+      "abort_reason": null
+    }
+  ],
+  "prefix_rows": [
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_esn_ridge_s2026102801__new30_prospective_20261026_acceptance_000",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 31.00000000000003,
+      "peak_torque_nm": 68.89143371582031,
+      "comfort": {
+        "human_contact_duration_s": 1.2179000000000004,
+        "human_comfort_torque_compliance": 0.5809590278347976,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.8191208044687907,
+        "peak_torque_by_joint_nm": [
+          34.26669692993164,
+          68.89143371582031,
+          34.30137252807617,
+          67.33543395996094,
+          7.389030456542969,
+          9.829449653625488,
+          6.637008190155029
+        ],
+        "p95_torque_nm": 38.189186096191406,
+        "max_torque_slew_nm_per_s": 56000.06103515625,
+        "max_penetration_mm": 0.4072564518391265,
+        "machine_safety_violation": true,
+        "machine_safety_violation_reasons": [
+          "penetration_gt_0.2mm",
+          "episode_abort:global_penetration_exceeded_2mm"
+        ]
+      },
+      "metric_sha256": "db001f33b97f25ba5f21cbe27b8719eeb723186c73b5f1b0d40796db1df2d4ca",
+      "audit_sha256": "0990390c69a35f90369e7add5c6a868226afbc43908034249812710155d3340a",
+      "trace_sha256": "a70226cb843b4c272ef450a197987dbee3946f9592276db44fc7fffad1eb3f34",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "7ffaf500c9baccbf9047fa7f290e59b0dbed856f0b9cf8d28af8907dad19ea26",
+      "chain_sha256": "3985118e1d73b58a502bea582e405b761ba7e5eac2e71437d786657894be9450",
+      "substep_metrics_sha256": "8a7908b721c5866af333698277d3f5717f94fa613335b47d340e32283b3d6cbb",
+      "research_substeps_sha256": "5a711ce7832ab1141aec6565f02b61612220abb6aa3eef260fa0f6e2a1a7f434"
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_rnn_scratch_s2026102801__new30_prospective_20261026_acceptance_000",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 37.452693939208984,
+      "comfort": {
+        "human_contact_duration_s": 3.8302500000000013,
+        "human_comfort_torque_compliance": 1.0,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.4304907349334366,
+        "peak_torque_by_joint_nm": [
+          4.587082386016846,
+          37.452693939208984,
+          5.1028852462768555,
+          28.23358917236328,
+          2.2427306175231934,
+          4.203522682189941,
+          0.6615538597106934
+        ],
+        "p95_torque_nm": 29.879802703857422,
+        "max_torque_slew_nm_per_s": 56000.00023841858,
+        "max_penetration_mm": 0.14380045941437258,
+        "machine_safety_violation": false,
+        "machine_safety_violation_reasons": []
+      },
+      "metric_sha256": "973c52c20f9c1e8b55ddb0a9437386440e95011e41a385c109c67ee2ff6f1f7b",
+      "audit_sha256": "c06cb8195e1673c4d60277cd98883c909b4cfca9803de3a02729460c2719ba76",
+      "trace_sha256": "6249df5d6eac786633c4c540a394b9a59fb66bb3faa0fd56da6ddb4b65f58db3",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "09edcf831d2b4cfed82995d0f957a7f90a28e587a3ec5e3e55c4d5c2ca514f6d",
+      "chain_sha256": "ae44e47943c437803e0ec11a6b0ff2083094b7bfcedfff3343ca80a4a2300edd",
+      "substep_metrics_sha256": "dba6a34f6d01c0858df34f464d4fb8f301a52c2f87ac7d7bc4f097631b1a47b8",
+      "research_substeps_sha256": "517ab30c2939ae9c68df96e84160ed71b7605219251d56d8b2217041551248a1"
+    }
+  ],
+  "model_lock_sha256": "481c971ed0d5658ecbc18d9e4e1b34a42d5133bd13ee619c38939e0f807d2519",
+  "goal_status": "active"
+}

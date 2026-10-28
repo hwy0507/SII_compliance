@@ -1,3 +1,10 @@
+## 2026-10-28 — 新训练实际学习图完成，首两条物理失败独立复核
+
+- 完整新训练日志生成实际六神经模型学习图及九模型验证点图，已逐原history数据点、math.fsum尾段统计和目视核验。RNN训练MSE下降545–590倍、MLP31.6–35.3倍；原cosine学习率末段降至1%，只描述趋稳，不冒称充分收敛。ESN解析ridge没有逐更新曲线，无reward伪图。图和证据见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
+- 原772606/791378仍运行，10:59完成2/108，MLP796016真实2.04→39.04秒；3GiB/swap0/OOM0，无重复启动。首两条共172万保存子步及来源/actor/filter链复核通过：ESN31秒全局穿透中止，RNN完整55秒停carry、末端XY误差87.04mm，均Task/Strict失败。RNN该回合低矩/舒适代理100%不代表任务成功或人体安全；不据测试改模型，不先算局部SPT。完整108与最终审计/六指标/接触补充/物理全归档待，Goal active。
+- 实际绘图数据、图、复核和源码5文件逐字节核验，462101字节/SHA256 `3d380edd700c25422420b7d33cb371e526755c7db51b2a496cdb59cfa8584159`已共享并回读核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_actual_learning_20261028_v1/nonrl_special_actual_learning_20261028_v1.tar.gz`，不含原始108轨迹。原自动绘图目录/快照保持，独立当前展示不影响原接续。
+- 已查询/fetch/read main `ffdf6c681c409f2c1ae0192284de5d10addc4df9`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无本任务协议变化；无RL改动、无子agent、无服务器计算。
+
 ## 2026-10-28 — 新三场景公平训练全部完成，原冻结108自动接续
 
 - 75/75作业覆盖108候选，九模型共同验证集选择完成；完整拟合审计通过，每个所选模型全部15750新观测冻结actor重放0误差。只代表拟合/接口一致性，不作闭环优越或收敛声称。模型锁481c971e、审计0b75b131，详细hash/验证MSE见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)和实际收据。

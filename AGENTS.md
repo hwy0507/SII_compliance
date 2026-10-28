@@ -1,5 +1,9 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 新训练实际曲线已核验，冻结108继续
+
+原772606/791378不变，10:59为2/108，MLP首条796016实测2.04→39.04物理秒，3GiB/swap0/OOM0。真实新曲线已从完整训练history生成并逐点/尾段独立求和/目视核验，RNN训练MSE降545–590倍、MLP31.6–35.3倍；学习率退火至1%，末段变平不是充分收敛证明。ESN解析ridge没有更新曲线，不伪造reward。首两回合172万保存子步复核通过，ESN全局穿透中止、RNN完整55秒停carry，均Task/Strict失败，不用低矩/高舒适代理代替任务成功。462101字节/SHA3d380edd实际图与证据包已核验共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_actual_learning_20261028_v1/`。原自动108/审计/绘图仍继续，勿重复派发；完整后另跑contact补充、全物理归档和最终六指标，Goal active。见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
+
 ## 2026-10-28 — 新三场景训练完整，冻结108已开始
 
 原75作业/108候选全部完成、九模型锁481c971e；完整拟合审计0b75b131通过，每个模型全15750观测冻结actor重放0误差。原训练725995/746822自然退出勿重启。原接续772606/start28001859已实际启动108（10:45:36），dispatcher791342/协调器791378；**禁止另启测试**。10:52为1/108，首ESN31秒全局穿透中止、Task/Strict均失败，620000子步独立保存证据核验通过；RNN在途。3GiB/swap0/OOM0，593物理源保持。完整训练900文件/141512629字节包SHA319212a1已核验共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_complete_fits_20261028_v1/`，不含新108。最终审计/图/接触补充/物理全归档仍待，Goal active，无RL改动或子agent。见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
