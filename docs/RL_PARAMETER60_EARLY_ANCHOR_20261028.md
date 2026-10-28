@@ -55,3 +55,5 @@ GPUv5实际 `/tmp/sii_gpu_util_guard_20261028_v5`，supervisor3256866/start37410
 小证据包37成员/1292100字节，SHA256 `7d9ef0690a6fa07b69c7edf82d02fafacac7c0ba590a14f5521fcc0ed67d7413`；归档路径和逐成员验证见[收据](RL_PARAMETER60_EARLY_ANCHOR_SAVE_20261028.json)。包含前5000原字节、1794锚点、源码/登记/复核和59新终端补充；大checkpoint/replay/raw仍原共享SSD。HDD配额满，仅更新既有LATEST入口，不声称HDD/arm1全备份。
 
 继续同一原60，等待完整归档/loss/health和终端对照。先核对PID+start ticks及实际FINISHED；观察预算结束不代表科学任务终止。实际60完成后才审定后续一个有限61，保持原reward/gates/物理/LR/masks/65536/UTD1/终端128/全历史与随机状态。
+
+发布前再次fetch/read main `ffdf6c68`：另一主机非RL完整拟合及冻结108启动，首例失败保留；不是本机RL结果。AGENTS/UPDATE_LOG并发顶部冲突按本轮准确新增前缀加完整远端解决，双方历史/文件保留，冻结运行源码不变。
