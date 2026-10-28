@@ -36,6 +36,22 @@ def history(folder):
     return obs, action, time
 
 
+def diagnostic_windows(time, prediction, target):
+    """Partition verified 40ms samples once, including a partial final block."""
+    assert time.ndim == 1 and len(time) and np.isfinite(time).all()
+    assert len(prediction) == len(target) == len(time)
+    np.testing.assert_allclose(time[0], .04, rtol=0, atol=1e-8)
+    np.testing.assert_allclose(np.diff(time), .04, rtol=0, atol=1e-8)
+    windows = []
+    for start in range(0, len(time), 50):
+        end = min(start + 50, len(time))
+        windows.append(dict(start_s=start * .04, end_s=end * .04,
+                            start_index=start, end_index_exclusive=end,
+                            **error_stats(prediction[start:end], target[start:end])))
+    assert sum(w['frames'] for w in windows) == len(time)
+    return windows
+
+
 def teacher_replay(config, observations):
     teacher = ParameterTeacher(config)
     teacher.reset()
@@ -121,12 +137,7 @@ def review(root, output):
         actor.reset()
         imitation = np.asarray([actor.act(o) for o in tobs])
         counterfactual, _ = teacher_replay(config, sobs)
-        windows = []
-        for start in np.arange(0, float(ttime[-1]), 2.):
-            mask = (ttime > start) & (ttime <= start + 2. + 1e-8)
-            if mask.any():
-                windows.append(dict(start_s=float(start), end_s=float(start+2.),
-                                    **error_stats(imitation[mask], taction[mask])))
+        windows = diagnostic_windows(ttime, imitation, taction)
         active = activation > .5
         row = dict(id=case['id'], scene=case['scene'], split=case['split'],
             family=case['model']['family'], teacher_qualification=tq, student_qualification=sq,

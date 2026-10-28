@@ -1,5 +1,29 @@
 # v8 ESN训练残差定位：导出与ridge求解通过，闭环尚待
 
+## 21:46 UTC：闭环诊断分窗修正，原公平训练继续
+
+原训练1089228保持active，完成39/75，seed01 RNN candidate06已1040更新；
+21:45:34内存534114304bytes/3GiB、swap0、OOM及oom_kill0。仍无完整九模型锁定，
+不提前运行18或108，不用当前候选验证损失宣布最终效果。
+
+待用的18回合诊断reviewer也存在浮点时间边界重复/虚假单帧尾窗问题。已修为核验
+首帧.04秒、间隔.04秒后的50帧互斥分组，部分尾窗按实际帧数标注终点。
+500/750/325帧分别10/15/7窗，角场景最后25帧、12–13秒。原reviewer逐字节另存，
+原24训练历史诊断的历史hash保持；error_stats/history/teacher_replay/qualification
+四个共享函数AST逐一不变。修正只影响描述统计，不能解释此前学生失败。
+
+9组正负浮点漂移合成输入、全部24train真实时间轴、每窗独立标量MSE核验通过；
+空数组/错误起点/错误采样间隔/非有限时间均拒绝。真实尚未启动18的入口也拒绝且
+不产生结果。**完整18正向审查仍待**，合成误差不是真实学生动作。首试检查已过但
+收据目录缺失导致写出失败，补建目录后重跑成功，失败说明保留。
+[核验收据](evidence/NONRL_INTENT_RECOVERY_20261029/V8_CLOSURE_WINDOW_CHECKS.json)，
+[旧reviewer](evidence/NONRL_INTENT_RECOVERY_20261029/V8_CLOSURE_REVIEWER_BEFORE_WINDOW_FIX.py)。
+
+已确认修改文件不在handoff/18/108预登记绑定清单中；18准备的196个源码hash全部保持。
+冻结训练/teacher/模型/gate均未改。开工实际fetch/read main74eaff8970f276c934b97e1f83e5a1e87e6f837d、
+baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d；独立RL新记录只读，不进行RL操作。
+新代码及本节收据当前仅本机、待共享，后续追加共享核验。Goal active，主矩阵未完成。
+
 21:38:20UTC最新：原1089228 active，33/75完成，seed01 RNN candidate05更新2616，
 内存1031184384bytes/3GiB/swap0/OOM0。恢复记忆补充和21次观察已随科学a6150123、
 合并efe3c46e正常push，双方日志/共同历史逐字保留；未改原训练或独立RL运行。
