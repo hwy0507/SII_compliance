@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "time": 1793172146.0728953,
+  "groups": {
+    "old1674": {
+      "masked_sse_before": 1851.6867572134902,
+      "masked_sse_after": 6245.1908149189085,
+      "ratio": 3.3727037203187544,
+      "same_final_denominator_contribution_before": 0.11541493225162745,
+      "same_final_denominator_contribution_after": 0.3901877856392014
+    },
+    "new30": {
+      "masked_sse_before": 134.90975100175638,
+      "masked_sse_after": 31.723724383682566,
+      "ratio": 0.23514774987072326,
+      "same_final_denominator_contribution_before": 0.008418133695254227,
+      "same_final_denominator_contribution_after": 0.0019808761799416062
+    },
+    "all1704": {
+      "masked_sse_before": 1986.5965082152466,
+      "masked_sse_after": 6276.914539302591,
+      "ratio": 3.159632322590638,
+      "same_final_denominator_contribution_before": 0.12383306594688168,
+      "same_final_denominator_contribution_after": 0.392168661819143
+    }
+  },
+  "preterminal_steps": 2334000,
+  "final_steps": 2348250,
+  "preterminal_replay_prefix_exact": true,
+  "weights_and_forward_rng_unchanged": true,
+  "final_terminal_health_reproduced": true,
+  "new_physics": 0,
+  "optimizer_updates": 0,
+  "replay_writes": 0,
+  "convergence_claim": false,
+  "causal_claim": false,
+  "values_sha256": "0385dae82df125e48e37c14cfe71e8fc40e9c80876c79bcf97c95f104168525d",
+  "plot_sha256": "cf04e8153ed06c02546974479924bec8ebddfae9260cfbf1218e12cdc3d63e93",
+  "limitation": "Compare fixed terminal observations/actions/rewards/masks from complete56 under preterminal56 and final56 critic weights. New30 rows are absent from preterminal replay and evaluated retrospectively with frozen earlier weights. All contributions use the same final denominator; earlier contribution is counterfactual on final rows, not actual preterminal training loss. No ordinary TD terms, historical sampled batches or gradient causality reconstructed. CPU forward only, no optimization/physics/replay mutation. Not a new convergence gate."
+}

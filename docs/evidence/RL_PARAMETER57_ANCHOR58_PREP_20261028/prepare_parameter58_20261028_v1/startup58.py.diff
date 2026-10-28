@@ -1,0 +1,33 @@
+--- startup57.py
++++ startup58.py
+@@ -6,7 +6,7 @@
+ torch.set_num_threads(1)
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');OUT=Path(__file__).parent/'startup';OUT.mkdir(exist_ok=False)
+ sys.path.insert(0,str(B/'runtime/source_train17_clock/source/tools'))
+-sys.path.insert(0,str(B/'runtime/parameter_capacity_pool30_cycle57_20261026_v1'))
++sys.path.insert(0,str(B/'runtime/parameter_capacity_pool30_cycle58_20261026_v1'))
+ from parameter_replay_capacity_20261026 import MARKER as CAPACITY_MARKER
+ from parameter_replay_capacity4m_20261027 import MARKER as FOLLOWUP_MARKER
+ from validate_published_finite_check_20261025 import digest
+@@ -48,10 +48,10 @@
+  assert sha(reg['resume_parent_registration']['path'])==reg['resume_parent_registration']['sha256']
+  assert reg['replay_capacity_stage']==previous['replay_capacity_stage'] and reg['replay_capacity_stage']['parent_cycle']==23
+  followup=reg['replay_capacity_followup_stage']
+- assert followup['marker']==FOLLOWUP_MARKER and followup['parent_cycle']==47 and old['cycle']==56
++ assert followup['marker']==FOLLOWUP_MARKER and followup['parent_cycle']==47 and old['cycle']==57
+  assert followup==previous['replay_capacity_followup_stage']
+  assert sha(followup['entry_checkpoint']['path'])==followup['entry_checkpoint']['sha256']
+- for name,expected in reg['batch_size_stage']['dependency_hashes'].items():assert sha(B/'runtime/parameter_capacity_pool30_cycle57_20261026_v1'/name)==expected
++ for name,expected in reg['batch_size_stage']['dependency_hashes'].items():assert sha(B/'runtime/parameter_capacity_pool30_cycle58_20261026_v1'/name)==expected
+  conditions={c['id']:c for c in reg['conditions']};models=0
+  for f in run.glob('cycle_*/*/rollout.mjb'):
+   assert sha(f)==conditions[f.parent.name]['model_sha256'];models+=1
+@@ -61,7 +61,7 @@
+  for t in ts:by[t['condition']].append(t)
+  err=0.
+  for name,rows in by.items():
+-  journal=list(lines(run/'cycle_00057'/name/'actor_intervals.jsonl'));reward=SPTReward()
++  journal=list(lines(run/'cycle_00058'/name/'actor_intervals.jsonl'));reward=SPTReward()
+   for i,t in enumerate(rows):
+    assert not t['done'];j,nxt=journal[i],journal[i+1];k=t['step']-1
+    value,_=reward(current_potential=j['payload_potential'],next_potential=nxt['payload_potential'],interval=nxt['interval'],terminated=False,task_success=False,strict_success=False);err=max(err,abs(value-t['reward']));assert err<1e-10
