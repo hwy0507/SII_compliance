@@ -9,6 +9,16 @@
 - 最新57约2355111/2355766/2356855steps；冻结55原三evaluator各7/8/7完整条件继续。GPUv4原身份保持、80/90/95/94%含保活；Direct不启动34，Goal active，无子agent。大产物与新预终端快照仍共享SSD，小包1163737字节/77成员SHA dcc5725ae15cf11c7409fa96e7daeb68fa31276edc2780e037b6edf187610fc9逐字节核验，非HDD/arm1全备份。
 - 本轮开工fetch/read main d50cf19bc7cae24c877a9a18556d989cb319096d、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d及日志。约30分钟观察原56正常结束，观察预算结束后未重启原作业；实际归档、健康、57恢复及VMC对照随后完成。
 
+## 2026-10-28 — 非RL三真实场景教师开发通过，30条重采集运行
+
+[最新交接](docs/NONRL_SPECIAL_TEACHER_QUALIFIED_20261028.md)。同一平滑VMC配置SHA7a38352d在rod_dev20、ball_dev01、corner_dev05各有一条合格开发示范；不是完整数据或新学生结果。棍推4.9539秒手接触/17mm让位/8.08秒越过/9.32秒持续回位，12.90秒才撤回；厚角修正固定名义位置/滚转90°使夹爪横向打开，真实支撑后释放，机器人桌面穿透0。动作/filter与126万保存子步算术通过，不冒称独立积分或最终Task/Strict。
+
+`sii-special-collection-v3-20261028.service` 正在本机单路/1线程/真实3GiB/swap0采集；运行 `outputs/special_scene_vmc_collection_20261028_v3`，计划SHA54642b98f8c0a85fec133004f9a3dce750fb6077fe3ef3479d09b79380e33518，每场景8train+2val，同教师，执行绑定计划/id/seed。先读COLLECTION_PROGRESS和实际进程，禁止重复启动。首三条rod_01/02合格，rod_00虽完成抬升且滑过但撤回前未持续回位，失败保留，尚不能训练正式学生。后续全部30完整审查后再修复/采集，不删除失败或放宽判据；下方“尚待教师首次成功”等为历史。
+
+新增采集准备/顺序执行/资格审计；builder核验全输入hash。正式重训与108尚未开始，Goal active；ESN历史ridge/普通MLP/RNN，3seed、各12候选、同验证规则，六指标按用户最新双成功SPT口径。旧综合/三轨迹/九诊断模型仍不作新主结果，不影响另一任务RL。
+
+完整开发档案含失败/raw/MJB/source/视频，510730648字节，SHAe356e5e19a2a927359ffde94839339890c74cf8b7274bdcc9f26531e8be9b4a6，已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_teacher_20261028_v2/special_scene_teacher_qualified_20261028_v1.tar.gz`。运行中的30条raw仍本地，不称全备份。开工main c036b8ed/baseline f6e8f8c，收尾main d50cf19b已fetch/read，保留RL并行更新，无子agent。
+
 ## 2026-10-28 — 57启动路径准备、原56实测继续推进
 
 - [最新交接补充](docs/RL_PARAMETER56_EARLY57_PREP_20261028.md)。57 launcher/startup从已通过56版本适配，父56/新57与补零路径逆变换、AST/hash通过；缺DECISION57真实调用明确拒绝，无57运行目录或训练。等待完整56证据和实际57check-only后再决定，未冒称恢复/启动通过。

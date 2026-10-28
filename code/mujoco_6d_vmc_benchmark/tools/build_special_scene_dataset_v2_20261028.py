@@ -50,6 +50,10 @@ def build(plan_path, out):
         for name,digest in audit['input_hashes'].items():
             if sha(folder/name)!=digest: raise ValueError(f'Stale independent audit:{folder/name}')
         qualification=read(folder/'DEMONSTRATION_QUALIFICATION.json')
+        if qualification.get('schema')!='sii-real-special-demonstration-qualification-v1':
+            raise ValueError('Require saved-substep qualification, not a hand-written success label')
+        for name,digest in qualification['input_hashes'].items():
+            if sha(folder/name)!=digest: raise ValueError(f'Stale physical qualification:{folder/name}')
         if not all(qualification.get(k) is True for k in ('task_success','safety_valid','scene_contact_valid')):
             raise ValueError('Nonqualified demonstration; preserve and fix teacher before collecting replacement')
         if qualification['trajectory_sha256']!=sha(folder/'trajectory.npz') or qualification['execution_sha256']!=sha(folder/'execution.json'):

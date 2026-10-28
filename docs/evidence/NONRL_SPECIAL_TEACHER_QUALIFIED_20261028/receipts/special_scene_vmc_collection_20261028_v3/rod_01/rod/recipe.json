@@ -1,0 +1,43 @@
+{
+  "description": "Development workstation source recipe; fixed 6D VMC, sustained rod, raised local guards. Not a frozen paper test.",
+  "entrypoint": "run_panel_push_20260920.py",
+  "arguments": {
+    "scene": "push",
+    "duration": 20.0,
+    "nominal_speed": 0.08,
+    "seed": 2026102801,
+    "push_hold": 8.0,
+    "push_angle": -0.15,
+    "push_height": 0.6,
+    "push_force": 12.0,
+    "push_target_x": 0.572,
+    "push_stroke": 0.2,
+    "push_press": 0.5,
+    "push_retract": 0.36,
+    "payload_mass": 0.1,
+    "event_stage": "loaded_lift",
+    "event_delay": 2.1,
+    "teacher_force_source": "estimated",
+    "teacher_profile": "memory",
+    "dt": 5e-05,
+    "output": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_vmc_collection_20261028_v3/rod_01/rod/legacy",
+    "menagerie": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/menagerie"
+  },
+  "environment": {
+    "PANELS_ENABLED": "1",
+    "PANEL_CONFIG": {
+      "layout": "raised_hand_rim",
+      "pad_bottom_z": 0.55,
+      "pad_top_z": 0.71,
+      "pad_lower_y": -0.15,
+      "pad_upper_y": -0.085,
+      "front_inner_x": 0.595,
+      "back_inner_x": 0.5,
+      "pad_thickness": 0.015,
+      "workstation": false,
+      "end_effector_only": false,
+      "native_ccd": true
+    },
+    "CORE_VMC_CONFIG": {}
+  }
+}

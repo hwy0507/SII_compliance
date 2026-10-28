@@ -9,6 +9,15 @@
 
 - 收尾读取远端新增d43ff0ad（含cee97403非RL三场景教师资格/30身份采集）及其交接，确认其明确不改变本RL任务；本机全部训练/冻结评测使用独立已冻结runtime。正常合并双方新增日志，保留对方采集进度与本轮RL证据，不强推。
 
+## 2026-10-28 — 同VMC三真实场景开发资格通过，30身份采集已启动
+
+- [最新交接](docs/NONRL_SPECIAL_TEACHER_QUALIFIED_20261028.md)。统一配置7a38352d的rod_dev20/ball_dev01/corner_dev05各一条开发资格通过；棍推手接触4.9539秒、让位17mm、越过8.08秒、回位确认9.32秒，撤回12.90秒。球原30秒末端稳定/抬升通过；厚角修正固定名义放置姿态和90°腕滚转，避免张开下指擦入桌面，真实支撑后释放，外部穿透0。未改冻结测试物理/gate/filter/actor接口/执行器/dt。
+- 新保存126万物理子步、独立actor/filter误差0、源/MJB/配置/轨迹hash及力矩/穿透算术通过；不是独立动力学积分或冻结测试认证。旧原教师dev18/19逐字节复现；shared_dev04棍推仍失败，角dev01/04穿透、dev02/03 IK失败均保留。两新MP4/GIF全解码及实际画面检查通过。
+- 前瞻30身份plan SHA54642b98f8c0a85fec133004f9a3dce750fb6077fe3ef3479d09b79380e33518，每场景8train/2val、同教师、执行绑定plan/id/seed。服务sii-special-collection-v3-20261028本机单路/1线程/实际3GiB/swap0运行，首三条2合格1不合格（rod_00未持续回位），继续固定计划，不挑成功冒充完整数据。新采集/审计/builder链路实际运行；4项指标回归、编译及混合教师负向拒绝通过。正式学生拟合、新108均未开始，Goal active。
+- 完整十个开发目录（失败/raw/MJB/source/媒体）及计划归档510730648字节，SHAe356e5e19a2a927359ffde94839339890c74cf8b7274bdcc9f26531e8be9b4a6已核验到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_teacher_20261028_v2/special_scene_teacher_qualified_20261028_v1.tar.gz`。运行中采集raw不在此包；本地保留，无服务器计算。小证据docs/evidence/NONRL_SPECIAL_TEACHER_QUALIFIED_20261028。
+- 同一服务器独立目录的 `special_scene_dispatch_evidence_20261028_v1.tar.gz` 保存本次执行/资格/准备/采集源码、配置、报告和96份小收据；331343字节、SHA6860b1ef0e315df88551e8c846b7dd0744736c29f7a3f4a19980d53bc06bc459，远端大小/hash均核验一致。
+- 实际开工fetch/read main c036b8ed9a8246e27d967f61e441c4dacd6fa7ab、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收尾main d50cf19b的RL56/57更新已读，无非RL协议变化，正常整合双方进展。保留无关未跟踪文件，无子agent。
+
 ## 2026-10-28 — 57启动路径准备、原56实测继续推进
 
 - [最新交接补充](docs/RL_PARAMETER56_EARLY57_PREP_20261028.md)。57 launcher/startup从已通过56版本适配，父56/新57与补零路径逆变换、AST/hash通过；缺DECISION57真实调用明确拒绝，无57运行目录或训练。等待完整56证据和实际57check-only后再决定，未冒称恢复/启动通过。
