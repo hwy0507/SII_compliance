@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 非RL严重退化修复，原108已安全停止；以本条为准
+
+用户要求修复，不能把全失败作为主结论。发现厚桌角10条采集filter尺度0.16m/s，棍推/球撞20条及34条已完成测试均0.32；15750标签与实际prefilter请求精确一致。wrapper已统一0.32并添加显式契约，dataset拒绝旧混合尺度或学生诊断。原108通过STOP_REQUESTED在35回合安全停止，35条均Task/Strict false，无在途，原772606/791378已退出；上层failed_preserved是预期不足108，不重启或删除原结果。Goal仍active。
+
+[当前修复交接](docs/NONRL_SPECIAL_REGRESSION_REPAIR_20261028.md)。十回合教师/学生/场景控制已登记并启动：`sii-special-regression-controls-v2-20261028.service` parent883961/start29348650，目录`outputs/special_scene_regression_controls_20261028_v2`，3GiB/单模拟器/单线程/swap0。新教师condition000已完整55秒，Task/Strict false、carry、无abort、RMSE29.283mm，actor/filter replay0；不能仅归因ESN，历史教师对照继续。v1资源路径错误在物理前退出，失败保留，v2已补齐原环境变量。尺度修正物理效果和完整修复仍未验证；不得重复启动或改在途源。
+
+13文件76718字节/SHAb7f13b26源码与诊断包已核验共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_regression_repair_20261028_v1/`，不含旧35完整轨迹；新教师完成审计随后入Git。后续先完整审对照、修复教师/覆盖/学习，再仅三真实场景重采、公平重训、完整冻结108/六指标/图/全归档；不放宽gate、不恢复旧综合场景采集、不把已看测试称unseen。无RL工作或子agent。
+
 ## 2026-10-28 — 完整62退化证据保存与准确续训63
 
 - [最新交接](docs/RL_PARAMETER62_COMPLETE_20261028.md)。完整62三路自然结束，各30×55秒/41250新增/noabort；全61 replay/history保持、新reward复算0、网络/优化器有限。I/A/V reward−5.822772/−8.573957/−4.613582，Task/Strict17/15、14/14、17/16，全部较61退化。全loss独立算术与实际图通过，I actor持续下降、V末段critic burst，A critic较平，非收敛。

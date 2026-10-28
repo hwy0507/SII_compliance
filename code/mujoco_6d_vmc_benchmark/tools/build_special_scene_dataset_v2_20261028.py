@@ -39,6 +39,12 @@ def build(plan_path, out):
         if folder in seen: raise ValueError('Duplicate source folder')
         seen.add(folder)
         execution=read(folder/'execution.json')
+        if execution.get('controller_role') != 'teacher':
+            raise ValueError('Only explicitly identified teacher actions may enter a new dataset')
+        if execution.get('action_contract') != plan.get('action_contract') or not plan.get('action_contract'):
+            raise ValueError('Missing or mismatched registered action contract')
+        if execution['filter_config']['maximum_linear_yield_mps'] != .32:
+            raise ValueError('All three scenes must use the frozen test action scale 0.32 m/s')
         if execution['status']!='complete' or execution['scene']!=entry['scene']:
             raise ValueError('Incomplete or mismatched physical execution')
         if execution['physics_dt_s']!=.00005:

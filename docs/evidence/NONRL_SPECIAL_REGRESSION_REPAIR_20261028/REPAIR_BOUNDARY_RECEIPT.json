@@ -1,0 +1,1070 @@
+{
+  "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 /home/airpig/桌面/hwy/compliance_control/.venv-sii-local-rl/bin/python - <<'PY'\nimport json,subprocess,hashlib\nfrom pathlib import Path\nfrom datetime import datetime,timezone\nR=Path('outputs');old=R/'special_scene_frozen108_readout05_20261028_v1';probe=R/'special_scene_regression_controls_20261028_v2'\ndef read(p):return json.loads(p.read_text())\ndef sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()\ndef identity(pid):\n p=Path('/proc')/str(pid)\n if not p.exists():return None\n a=(p/'stat').read_text().rsplit(')',1)[1].split();return dict(pid=pid,state=a[0],startticks=int(a[19]),cmdline=(p/'cmdline').read_bytes().decode().replace('\\0',' '))\ns=read(old/'execution.json');x=read(probe/'execution.json');pid=883961;children=(Path('/proc')/str(pid)/'task'/str(pid)/'children').read_text().split()\nservice=subprocess.check_output(['systemctl','--user','show','sii-special-regression-controls-v2-20261028.service','-p','MainPID','-p','ActiveState','-p','MemoryCurrent','-p','MemoryMax','-p','MemorySwapMax'],text=True)\nprogress=probe/x['current']/'rollout.progress.json'\ncg=Path('/sys/fs/cgroup')/Path('/proc/883961/cgroup').read_text().strip().split('::',1)[1].lstrip('/')\nprint(json.dumps(dict(utc=datetime.now(timezone.utc).isoformat(),old=dict(status=s['status'],completed=s['completed'],results=len(s['results']),inflight=[r for r in s['rows'] if 'ended_utc' not in r],execution_sha256=sha(old/'execution.json'),stop_request=(old/'STOP_REQUESTED').read_text(),parent=identity(772606),coordinator=identity(791378)),probe=dict(state=x,registration_sha256=sha(probe/'REGISTRATION.json'),parent=identity(pid),children=[identity(int(c)) for c in children],progress=read(progress) if progress.exists() else None,service=service,memory={n:(cg/n).read_text().strip() for n in ('memory.current','memory.max','memory.swap.current','memory.events')}),preserved_infrastructure_failure=read(R/'special_scene_regression_controls_20261028_v1/execution.json')),indent=2))\nPY",
+  "live": {
+    "utc": "2026-10-28T13:51:51.905893+00:00",
+    "old": {
+      "status": "stopped_at_episode_boundary",
+      "completed": 35,
+      "results": 35,
+      "inflight": [],
+      "execution_sha256": "152f88f2c065f1ebb35c94b93806fb775a5c4752d1e5d251252e901e0302b1d9",
+      "stop_request": "2026-10-28: User explicitly requests diagnosing and repairing the severe non-RL regression before treating the matrix as a main result.\nUse the existing coordinator's safe episode-boundary stop. Finish and preserve the in-flight episode and its metric receipts; do not kill workers or alter frozen sources, models, conditions, or gates.\nConfirmed diagnostic issue: all 10 corner demonstrations used maximum_linear_yield_mps=0.16, whereas rod/ball demonstrations and completed current-test episodes used 0.32. Raw dataset labels match prefilter teacher requests exactly. Causality for the broad regression remains unproven; teacher/learner/scene controls are required.\nThis stops this evaluation dispatch only, not the active research goal. Preserve this incomplete run as a superseded diagnostic, and complete the corrected comparison in a separately registered run after repair validation.\n",
+      "parent": null,
+      "coordinator": null
+    },
+    "probe": {
+      "state": {
+        "status": "running",
+        "started_utc": "2026-10-28T13:50:29.000092+00:00",
+        "registration_sha256": "73e8b6b6e95476398869c4e5192ca5f79a82e763a25fa54d67e4f73b195d6184",
+        "episodes": [],
+        "current": "office_teacher_new",
+        "updated_utc": "2026-10-28T13:50:29.002272+00:00"
+      },
+      "registration_sha256": "73e8b6b6e95476398869c4e5192ca5f79a82e763a25fa54d67e4f73b195d6184",
+      "parent": {
+        "pid": 883961,
+        "state": "S",
+        "startticks": 29348650,
+        "cmdline": "/home/airpig/桌面/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/diagnose_special_scene_regression_20261028.py --root outputs/special_scene_regression_controls_20261028_v2 --run "
+      },
+      "children": [
+        {
+          "pid": 883963,
+          "state": "R",
+          "startticks": 29348654,
+          "cmdline": "/home/airpig/桌面/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/source/tools/baseline_repair_worker_20261008.py --research-protocol /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_new30_fair_20261026_v2/PROTOCOL.json --protocol-sha256 ed72068fcd7c30af00da532d253f36b7d427f129ca9c0ad78e4111780f051eaf --research-condition new30_prospective_20261026_acceptance_000 --phase acceptance --worker-kind office --v6-input /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6 --reference /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/baseline_local_rl_20261009/runtime/v6/esn_original_v2/rollout.json --config /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_regression_controls_20261028_v2/teacher_new.json --output /home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_regression_controls_20261028_v2/office_teacher_new --contact-audit --physics-dt .00005 "
+        }
+      ],
+      "progress": {
+        "time_s": 13.03999999997628,
+        "stage": "carry",
+        "position_error_m": 0.01598699959867289,
+        "external_penetration_mm": 0.14017760021666015
+      },
+      "service": "MainPID=883961\nMemoryCurrent=657678336\nMemoryMax=3221225472\nMemorySwapMax=0\nActiveState=active\n",
+      "memory": {
+        "memory.current": "657678336",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      }
+    },
+    "preserved_infrastructure_failure": {
+      "status": "failed_preserved",
+      "started_utc": "2026-10-28T13:49:01.188154+00:00",
+      "registration_sha256": "9da8014c3619230d7ad91c4f1ec7a528d7b8abf59a7dadcd2108f5d5f2e9a1e5",
+      "episodes": [
+        {
+          "id": "office_teacher_new",
+          "returncode": 1
+        }
+      ],
+      "current": "office_teacher_new",
+      "updated_utc": "2026-10-28T13:49:01.190292+00:00",
+      "error": "RuntimeError('Worker infrastructure failure: office_teacher_new')",
+      "ended_utc": "2026-10-28T13:49:01.744788+00:00"
+    }
+  },
+  "previous_observer": {
+    "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 /home/airpig/桌面/hwy/compliance_control/.venv-sii-local-rl/bin/python -u - <<'PY'\nimport json,time,subprocess\nfrom pathlib import Path\nfrom datetime import datetime,timezone\nroot=Path('outputs/special_scene_frozen108_readout05_20261028_v1')\ncg=Path('/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-handoff-v1-20261028.service')\ndef identity(pid):\n try:\n  a=(Path('/proc')/str(pid)/'stat').read_text().rsplit(')',1)[1].split()\n  return dict(pid=pid,state=a[0],startticks=int(a[19]),cpu_ticks=int(a[11])+int(a[12]))\n except FileNotFoundError:return None\nfor index in range(41):\n p,c=identity(772606),identity(791378)\n state=json.loads((root/'execution.json').read_text())\n service=dict(x.split('=',1) for x in subprocess.check_output(['systemctl','--user','show','sii-special-frozen108-handoff-v1-20261028.service','-p','MainPID','-p','ActiveState'],text=True).splitlines())\n children=[];f=Path('/proc/791378/task/791378/children')\n for child in f.read_text().split() if f.exists() else []:\n  item=identity(int(child))\n  if item:\n   try:\n    args=(Path('/proc')/child/'cmdline').read_bytes().decode().split('\\0')\n    item['output']=args[args.index('--output')+1] if '--output' in args else None\n   except FileNotFoundError:continue\n   children.append(item)\n current=[]\n for row in state['rows']:\n  if 'ended_utc' not in row:\n   f=root/'evaluation'/(row['method']+'__'+row['condition'])/'rollout.progress.json'\n   current.append(dict(method=row['method'],condition=row['condition'],progress=json.loads(f.read_text()) if f.exists() else None))\n print(json.dumps(dict(utc=datetime.now(timezone.utc).isoformat(),index=index,parent=p,coordinator=c,children=children,service=service,status=state['status'],completed=state['completed'],in_flight=current,memory={n:(cg/n).read_text().strip() for n in ('memory.current','memory.max','memory.swap.current','memory.events') if (cg/n).exists()})),flush=True)\n if state['status']!='running' or state['completed']>=36:break\n assert p and c and p['startticks']==28001859 and c['startticks']==28239353 and p['state']!='Z' and c['state']!='Z','Original identities changed; inspect without restarting'\n if index<40:time.sleep(30)\nPY",
+    "exit_code": 0,
+    "samples": [
+      {
+        "utc": "2026-10-28T13:32:14.881936+00:00",
+        "index": 0,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1614
+        },
+        "children": [
+          {
+            "pid": 874806,
+            "state": "R",
+            "startticks": 29236907,
+            "cpu_ticks": 2367,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_esn_ridge_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 33,
+        "in_flight": [
+          {
+            "method": "special_esn_ridge_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 4.039999999997254,
+              "stage": "lift",
+              "position_error_m": 0.11880787138710396,
+              "external_penetration_mm": 0.1642941282091238
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1184022528",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:32:44.888042+00:00",
+        "index": 1,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1614
+        },
+        "children": [
+          {
+            "pid": 874806,
+            "state": "R",
+            "startticks": 29236907,
+            "cpu_ticks": 5367,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_esn_ridge_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 33,
+        "in_flight": [
+          {
+            "method": "special_esn_ridge_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 10.039999999983271,
+              "stage": "lift",
+              "position_error_m": 0.5794423452604224,
+              "external_penetration_mm": 0.21440295552412802
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1212944384",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:33:14.892640+00:00",
+        "index": 2,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1614
+        },
+        "children": [
+          {
+            "pid": 874806,
+            "state": "R",
+            "startticks": 29236907,
+            "cpu_ticks": 8367,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_esn_ridge_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 33,
+        "in_flight": [
+          {
+            "method": "special_esn_ridge_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 17.040000000003904,
+              "stage": "lift",
+              "position_error_m": 1.2725199859491227,
+              "external_penetration_mm": 0.21440295552412802
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1257054208",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:33:44.897209+00:00",
+        "index": 3,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1614
+        },
+        "children": [
+          {
+            "pid": 874806,
+            "state": "R",
+            "startticks": 29236907,
+            "cpu_ticks": 11365,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_esn_ridge_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 33,
+        "in_flight": [
+          {
+            "method": "special_esn_ridge_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 25.040000000269476,
+              "stage": "lift",
+              "position_error_m": 1.2296576769230625,
+              "external_penetration_mm": 0.21440295552412802
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1294295040",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:34:14.902473+00:00",
+        "index": 4,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1614
+        },
+        "children": [
+          {
+            "pid": 874806,
+            "state": "R",
+            "startticks": 29236907,
+            "cpu_ticks": 14365,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_esn_ridge_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 33,
+        "in_flight": [
+          {
+            "method": "special_esn_ridge_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 32.04000000050185,
+              "stage": "lift",
+              "position_error_m": 1.0166401851648723,
+              "external_penetration_mm": 0.21440295552412802
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1323454464",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:34:44.906629+00:00",
+        "index": 5,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1614
+        },
+        "children": [
+          {
+            "pid": 874806,
+            "state": "R",
+            "startticks": 29236907,
+            "cpu_ticks": 17365,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_esn_ridge_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 33,
+        "in_flight": [
+          {
+            "method": "special_esn_ridge_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 39.040000000734224,
+              "stage": "lift",
+              "position_error_m": 1.2966243656935226,
+              "external_penetration_mm": 0.21440295552412802
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1355591680",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:35:14.910932+00:00",
+        "index": 6,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1614
+        },
+        "children": [
+          {
+            "pid": 874806,
+            "state": "R",
+            "startticks": 29236907,
+            "cpu_ticks": 20365,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_esn_ridge_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 33,
+        "in_flight": [
+          {
+            "method": "special_esn_ridge_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 47.0400000009998,
+              "stage": "lift",
+              "position_error_m": 1.2834562139973045,
+              "external_penetration_mm": 0.21440295552412802
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1371971584",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:35:44.914893+00:00",
+        "index": 7,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1614
+        },
+        "children": [
+          {
+            "pid": 874806,
+            "state": "R",
+            "startticks": 29236907,
+            "cpu_ticks": 23365,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_esn_ridge_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 33,
+        "in_flight": [
+          {
+            "method": "special_esn_ridge_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 54.04000000123217,
+              "stage": "lift",
+              "position_error_m": 0.9811409568876364,
+              "external_penetration_mm": 0.21440295552412802
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1371762688",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:36:14.919535+00:00",
+        "index": 8,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1657
+        },
+        "children": [
+          {
+            "pid": 876782,
+            "state": "R",
+            "startticks": 29260982,
+            "cpu_ticks": 2296,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 34,
+        "in_flight": [
+          {
+            "method": "special_rnn_scratch_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 4.039999999997254,
+              "stage": "lift",
+              "position_error_m": 0.054374844308546125,
+              "external_penetration_mm": 0.15281843354065963
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1242779648",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:36:44.924182+00:00",
+        "index": 9,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1657
+        },
+        "children": [
+          {
+            "pid": 876782,
+            "state": "R",
+            "startticks": 29260982,
+            "cpu_ticks": 5296,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 34,
+        "in_flight": [
+          {
+            "method": "special_rnn_scratch_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 8.039999999987932,
+              "stage": "carry",
+              "position_error_m": 0.0250305071965711,
+              "external_penetration_mm": 0.15281843354065963
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1264697344",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:37:14.928175+00:00",
+        "index": 10,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1657
+        },
+        "children": [
+          {
+            "pid": 876782,
+            "state": "R",
+            "startticks": 29260982,
+            "cpu_ticks": 8296,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 34,
+        "in_flight": [
+          {
+            "method": "special_rnn_scratch_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 12.03999999997861,
+              "stage": "carry",
+              "position_error_m": 0.013087608105199704,
+              "external_penetration_mm": 0.15281843354065963
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1287020544",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:37:44.934188+00:00",
+        "index": 11,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1657
+        },
+        "children": [
+          {
+            "pid": 876782,
+            "state": "R",
+            "startticks": 29260982,
+            "cpu_ticks": 11296,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 34,
+        "in_flight": [
+          {
+            "method": "special_rnn_scratch_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 17.040000000003904,
+              "stage": "carry",
+              "position_error_m": 0.01553854647935749,
+              "external_penetration_mm": 0.15281843354065963
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1114861568",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:38:14.939240+00:00",
+        "index": 12,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1657
+        },
+        "children": [
+          {
+            "pid": 876782,
+            "state": "R",
+            "startticks": 29260982,
+            "cpu_ticks": 14296,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 34,
+        "in_flight": [
+          {
+            "method": "special_rnn_scratch_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 21.04000000013669,
+              "stage": "carry",
+              "position_error_m": 0.015030023853682545,
+              "external_penetration_mm": 0.15281843354065963
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1128472576",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:38:44.944138+00:00",
+        "index": 13,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1657
+        },
+        "children": [
+          {
+            "pid": 876782,
+            "state": "R",
+            "startticks": 29260982,
+            "cpu_ticks": 17295,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 34,
+        "in_flight": [
+          {
+            "method": "special_rnn_scratch_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 26.040000000302673,
+              "stage": "carry",
+              "position_error_m": 0.012635490814036289,
+              "external_penetration_mm": 0.15281843354065963
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1138368512",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:39:14.949721+00:00",
+        "index": 14,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1657
+        },
+        "children": [
+          {
+            "pid": 876782,
+            "state": "R",
+            "startticks": 29260982,
+            "cpu_ticks": 20296,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 34,
+        "in_flight": [
+          {
+            "method": "special_rnn_scratch_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 30.04000000043546,
+              "stage": "carry",
+              "position_error_m": 0.018908280034914453,
+              "external_penetration_mm": 0.15281843354065963
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1149382656",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:39:44.955761+00:00",
+        "index": 15,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1657
+        },
+        "children": [
+          {
+            "pid": 876782,
+            "state": "R",
+            "startticks": 29260982,
+            "cpu_ticks": 23296,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 34,
+        "in_flight": [
+          {
+            "method": "special_rnn_scratch_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 35.04000000060144,
+              "stage": "carry",
+              "position_error_m": 0.0197008366884768,
+              "external_penetration_mm": 0.15281843354065963
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1138098176",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:40:14.961274+00:00",
+        "index": 16,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1657
+        },
+        "children": [
+          {
+            "pid": 876782,
+            "state": "R",
+            "startticks": 29260982,
+            "cpu_ticks": 26295,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 34,
+        "in_flight": [
+          {
+            "method": "special_rnn_scratch_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 39.040000000734224,
+              "stage": "carry",
+              "position_error_m": 0.012635370345497677,
+              "external_penetration_mm": 0.15281843354065963
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1133056000",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:40:44.964954+00:00",
+        "index": 17,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1657
+        },
+        "children": [
+          {
+            "pid": 876782,
+            "state": "R",
+            "startticks": 29260982,
+            "cpu_ticks": 29294,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 34,
+        "in_flight": [
+          {
+            "method": "special_rnn_scratch_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 44.04000000090021,
+              "stage": "carry",
+              "position_error_m": 0.015922575275781545,
+              "external_penetration_mm": 0.15281843354065963
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1048195072",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:41:14.972116+00:00",
+        "index": 18,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1657
+        },
+        "children": [
+          {
+            "pid": 876782,
+            "state": "R",
+            "startticks": 29260982,
+            "cpu_ticks": 32295,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 34,
+        "in_flight": [
+          {
+            "method": "special_rnn_scratch_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 48.04000000103299,
+              "stage": "carry",
+              "position_error_m": 0.013630311784294635,
+              "external_penetration_mm": 0.15281843354065963
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1053888512",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:41:44.977366+00:00",
+        "index": 19,
+        "parent": {
+          "pid": 772606,
+          "state": "S",
+          "startticks": 28001859,
+          "cpu_ticks": 26
+        },
+        "coordinator": {
+          "pid": 791378,
+          "state": "S",
+          "startticks": 28239353,
+          "cpu_ticks": 1657
+        },
+        "children": [
+          {
+            "pid": 876782,
+            "state": "R",
+            "startticks": 29260982,
+            "cpu_ticks": 35294,
+            "output": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_readout05_20261028_v1/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_003"
+          }
+        ],
+        "service": {
+          "MainPID": "772606",
+          "ActiveState": "active"
+        },
+        "status": "running",
+        "completed": 34,
+        "in_flight": [
+          {
+            "method": "special_rnn_scratch_s2026102803",
+            "condition": "new30_prospective_20261026_acceptance_003",
+            "progress": {
+              "time_s": 52.04000000116578,
+              "stage": "carry",
+              "position_error_m": 0.012846747516932457,
+              "external_penetration_mm": 0.15281843354065963
+            }
+          }
+        ],
+        "memory": {
+          "memory.current": "1074638848",
+          "memory.max": "3221225472",
+          "memory.swap.current": "0",
+          "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+        }
+      },
+      {
+        "utc": "2026-10-28T13:42:14.983870+00:00",
+        "index": 20,
+        "parent": null,
+        "coordinator": null,
+        "children": [],
+        "service": {
+          "MainPID": "0",
+          "ActiveState": "failed"
+        },
+        "status": "stopped_at_episode_boundary",
+        "completed": 35,
+        "in_flight": [],
+        "memory": {}
+      }
+    ]
+  }
+}

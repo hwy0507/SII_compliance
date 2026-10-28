@@ -6,7 +6,7 @@ the common filter. These are scene demonstrations, not the office test matrix.
 """
 import argparse
 import ast
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from datetime import datetime, timezone
 import fcntl
 import hashlib
@@ -14,6 +14,7 @@ import json
 import os
 from pathlib import Path
 import runpy
+import shutil
 import subprocess
 import sys
 
@@ -21,6 +22,30 @@ ROOT = Path(__file__).resolve().parents[1]
 PARENT = ROOT/'outputs/teacher_student_15h_20261012_v3'
 RUNTIME = ROOT/'outputs/baseline_local_rl_20261009/runtime'
 SCENES = ('corner', 'rod', 'ball')
+COMMON_LINEAR_YIELD_MPS = .32
+
+
+def make_actor(config, checkpoint=None):
+    """Use the same canonical observations for teacher and diagnostic students."""
+    if checkpoint is None:
+        from optimize_tool_contact_20261002 import ParameterTeacher
+        return ParameterTeacher(config)
+    from current_student_policy_20260921 import load_current
+
+    class StudentAdapter:
+        def __init__(self):
+            self.policy = load_current(checkpoint)
+            self.policy.reset()
+
+        def observe(self, observation):
+            self.observation = observation.copy()
+
+        def act(self, wrench, dt=.04):
+            if dt != .04:
+                raise ValueError('Frozen student actor clock must be 0.04 seconds')
+            return self.policy.act(self.observation)
+
+    return StudentAdapter()
 
 
 def sha(p):
@@ -64,7 +89,14 @@ def worker(out, scene):
     if override:
         config=json.loads(Path(override).read_text())
     write(folder/'teacher.json', config)
-    actor = teacher_module.ParameterTeacher(config)
+    checkpoint_source = os.environ.get('VMC_STUDENT_CHECKPOINT')
+    checkpoint = None
+    if checkpoint_source:
+        if os.environ.get('VMC_COLLECTION_PLAN'):
+            raise ValueError('A student diagnostic may not enter teacher collection')
+        checkpoint = folder/'student_checkpoint.npz'
+        shutil.copyfile(Path(checkpoint_source).resolve(), checkpoint)
+    actor = make_actor(config, checkpoint)
     actions, observations, states, chains = [], [], [], []
     sensor = None
     peak_torque = np.zeros(7)
@@ -76,7 +108,11 @@ def worker(out, scene):
     original_filter = VelocityResidualActionFilter.filter
     filter_config = None
     manifest = dict(status='running', scene=scene, started_utc=datetime.now(timezone.utc).isoformat(),
-        teacher=('development VMC configuration' if override else 'new30 teacher_lhs_0')+'; three actor classes AST-identical to collection source',
+        teacher=(('development VMC configuration' if override else 'new30 teacher_lhs_0')+'; three actor classes AST-identical to collection source' if checkpoint is None else 'not a teacher: frozen student diagnostic'),
+        controller_role='teacher' if checkpoint is None else 'student_diagnostic',
+        student_checkpoint_sha256=sha(checkpoint) if checkpoint else None,
+        action_contract=dict(linear_yield_mps=COMMON_LINEAR_YIELD_MPS, angular_yield_radps=.6,
+                             actor_dt_s=.04, label='unfiltered normalized requested action'),
         teacher_override_source=(str(Path(override).resolve()) if override else None),
         teacher_config_sha256=sha(folder/'teacher.json'), actor_input='canonical48 proprioception; no contact oracle/clock/geometry',
         legacy_actions_discarded=True, task_supervisor='original scene script; not office-v7 test task',
@@ -97,6 +133,8 @@ def worker(out, scene):
             raise ValueError('Collection identity/path/scene mismatch')
         if manifest['teacher_config_sha256'] != plan['teacher_config_sha256']:
             raise ValueError('Teacher changed after collection registration')
+        if plan.get('action_contract') != manifest['action_contract']:
+            raise ValueError('Collection must explicitly register the common action contract; old mixed-scale plans are not reusable')
         if any(os.environ.get(k) != str(v) for k,v in entry['scene_parameters'].items()):
             raise ValueError('Scene parameters differ from collection plan')
         if os.environ.get('VMC_SCENE_SEED') != str(entry['seed']):
@@ -125,6 +163,15 @@ def worker(out, scene):
         env_ref = env
         m, d = env.model, env.data
         if sensor is None:
+            # The corner constructor historically inherited the 0.16 default,
+            # while rod/ball and frozen office evaluation use 0.32. Correct
+            # the action conversion before the first physical policy step;
+            # keep geometry, task gates and all other safety settings intact.
+            manifest['constructor_linear_yield_mps'] = env.safety_config.maximum_linear_yield_mps
+            assert env.action_filter.config is env.safety_config
+            env.safety_config = replace(env.safety_config, maximum_linear_yield_mps=COMMON_LINEAR_YIELD_MPS)
+            env.action_filter.config = env.safety_config
+            assert env.safety_config.maximum_angular_yield_radps == .6
             substeps=np.empty((int(np.ceil(env.simulation_time_s/m.opt.timestep))+100,18),dtype=np.float64)
             sensor = JointLoadObserver(d.qvel.copy(), m.dof_frictionloss)
             mass = np.zeros((m.nv, m.nv))
@@ -297,7 +344,7 @@ def worker(out, scene):
         manifest.update(argv=sys.argv.copy(), entrypoint_sha256=sha(entry))
         write(folder/'execution.json', manifest)
         runpy.run_path(str(entry), run_name='__main__')
-        replay = teacher_module.ParameterTeacher(config)
+        replay = make_actor(config, checkpoint)
         pred = []
         for obs in observations:
             replay.observe(obs)
@@ -337,6 +384,8 @@ def worker(out, scene):
             manifest.update(status='failed_preserved',error='Wrapper source changed during run')
         if plan is not None and sha(plan_path) != manifest['collection_plan_sha256']:
             manifest.update(status='failed_preserved',error='Collection plan changed during run')
+        if checkpoint and sha(checkpoint) != manifest['student_checkpoint_sha256']:
+            manifest.update(status='failed_preserved',error='Diagnostic checkpoint changed during run')
         write(folder/'SOURCE_HASHES.json', files)
         subprocess.run(['tar','-czf',str(folder/'source.tar.gz'),*files],cwd=ROOT,check=True)
         manifest['ended_utc']=datetime.now(timezone.utc).isoformat()

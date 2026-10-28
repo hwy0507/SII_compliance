@@ -1,3 +1,12 @@
+## 2026-10-28 — 非RL主矩阵退化诊断：修复跨场景动作尺度，启动教师／学生对照
+
+- 用户明确要求修复退化。15750训练标签精确对应30条实际prefilter请求、dataset/150lineage及filter文件hash通过；发现10条厚桌角实际线速度尺度0.16，20条棍推/球撞与34条测试0.32，唯一filter配置差异。来源是桌角constructor默认参数，不能只看共同源码就认定配置一致；初次断言失败及差异均保存。仍未证明这是全矩阵退化唯一原因，训练方向覆盖差异也保留。
+- 已修wrapper在第一物理步前统一0.32、显式记录契约/constructor值；新dataset拒绝旧未登记契约/非教师/异尺度数据。新增同场景冻结学生诊断入口及独立actor/filter重放；语法、dataclass替换、实际尺度转换、三真实checkpoint推理通过，真实旧dataset调用拒绝且未建输出。物理修正效果仍待验证，未改门或旧文件。
+- 原108按已有STOP_REQUESTED在35完整回合后自然停止，均Task/Strict false，无在途，原772606/791378退出，上层不足108自然failed_preserved；不是完整比较、不重启，全部原始失败保留。Goal继续。[新交接](docs/NONRL_SPECIAL_REGRESSION_REPAIR_20261028.md)覆盖旧继续等待指令。
+- 十回合有限对照v2登记SHA73e8b6b6，服务parent883961/start29348650，3GiB/单模拟器/单线程/swap0。新教师当前condition000完整55秒仍carry、Task/Strict false、无abort，RMSE29.283021mm/峰矩38.164642Nm，actor/filter replay0；至少此条件下教师本身不能完成，不能只归因ESN学习。历史教师已自动接续；后续三个真实训练身份teacher/ESN及rod RNN/MLP对照待。v1缺资源路径在物理前退出已保留，v2补齐原路径，不覆盖原目录。
+- 13文件源码/证据包76718字节/SHA256 `b7f13b26b6864bbe5d4e4f404c169a72f83e07020134cb6be2ef9ad5d179ed8e`逐成员及远端暂存/最终核验，共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_regression_repair_20261028_v1/nonrl_special_regression_repair_20261028_v1.tar.gz`。不含旧35物理轨迹；首项教师审计后追加Git。完整修复、重采/重训、108/六指标/图/contact/全归档仍待，Goal active。
+- 开工main d1b1bf89、收尾main80553b71/baselinef6e8f8c真实fetch/read，独立RL更新已fast-forward保留，无RL/子agent/服务器计算。
+
 ## 2026-10-28 — 完整62退化证据保存与准确续训63
 
 - [最新交接](docs/RL_PARAMETER62_COMPLETE_20261028.md)。完整62三路自然结束，各30×55秒/41250新增/noabort；全61 replay/history保持、新reward复算0、网络/优化器有限。I/A/V reward−5.822772/−8.573957/−4.613582，Task/Strict17/15、14/14、17/16，全部较61退化。全loss独立算术与实际图通过，I actor持续下降、V末段critic burst，A critic较平，非收敛。

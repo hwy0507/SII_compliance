@@ -4,7 +4,7 @@ from dataclasses import fields
 import json
 from pathlib import Path
 import numpy as np
-from run_video_reference_vmc_20261028 import sha, write, verify_actor
+from run_video_reference_vmc_20261028 import sha, write, verify_actor, make_actor
 from optimize_tool_contact_20261002 import ParameterTeacher
 from wbc_velocity_residual_core import VelocityResidualActionFilter, VelocityResidualSafetyConfig
 
@@ -20,7 +20,11 @@ def main():
         chain={k:z[k] for k in z.files}
     n=len(actions)
     assert len(obs)==n and n==record['steps']
-    cfg=json.loads((f/'teacher.json').read_text());actor=ParameterTeacher(cfg)
+    cfg=json.loads((f/'teacher.json').read_text())
+    checkpoint = f/'student_checkpoint.npz' if record.get('controller_role') == 'student_diagnostic' else None
+    if checkpoint:
+        assert sha(checkpoint) == record['student_checkpoint_sha256']
+    actor=make_actor(cfg, checkpoint)
     pred=[]
     for o in obs:actor.observe(o);pred.append(actor.act(o[39:45],.04))
     np.testing.assert_array_equal(pred,actions)
@@ -47,7 +51,7 @@ def main():
     write(f/'INDEPENDENT_AUDIT.json',dict(status='passed',physical_action_rows=n,
         audit_only_suffix_rows=extra,original_execution_status=record['status'],
         source_sha256=sha(Path(__file__)),actor_replay_max_abs=0.,filter_replay_max_abs=0.,
-        input_hashes={name:sha(f/name) for name in ('trajectory.npz','filter.npz','execution.json','teacher.json')},
+        input_hashes={name:sha(f/name) for name in ('trajectory.npz','filter.npz','execution.json','teacher.json') + (('student_checkpoint.npz',) if checkpoint else ())},
         limitation='This validates provenance/execution replay, not Task/Strict success or physical safety.'))
 
 
