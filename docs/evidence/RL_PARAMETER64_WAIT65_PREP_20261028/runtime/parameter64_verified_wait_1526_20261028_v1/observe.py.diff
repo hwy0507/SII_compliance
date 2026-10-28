@@ -1,0 +1,21 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter63_verified_wait_1429_20261028_v1/observe.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runtime/parameter64_verified_wait_1526_20261028_v1/observe.py
+@@ -2,15 +2,15 @@
+ import json,time,subprocess,os
+ os.sched_setaffinity(0,{52})
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+-OUT=Path(__file__).parent;RUN=B/'runs/parameter_capacity_pool30_cycle63_20261026_v1'
++OUT=Path(__file__).parent;RUN=B/'runs/parameter_capacity_pool30_cycle64_20261026_v1'
+ jobs=json.loads((RUN/'LAUNCH.json').read_text())['jobs']
+-watchers=[(3732466,'39114602'),(3741519,'39117327'),(1758711,'38725355'),(17088,'39201010'),(53659,'39207398'),(53660,'39207399'),(3256866,'37410686'),(3256867,'37410690'),(3256868,'37410690'),(3256869,'37410691'),(3256870,'37410693')]
++watchers=[(1505869, '39497113'), (1522440, '39501622'), (1758711, '38725355'), (2178507, '39618553'), (2178510, '39618553'), (2458384, '39669245'), (3256866, '37410686'), (3256867, '37410690'), (3256868, '37410690'), (3256869, '37410691'), (3256870, '37410693')]
+ def identity(pid,ticks):
+     p=Path(f'/proc/{pid}/stat')
+     try:f=p.read_text().rsplit(')',1)[1].split()
+     except FileNotFoundError:return dict(pid=pid,expected_start=ticks,live=False)
+     return dict(pid=pid,expected_start=ticks,actual_start=f[19],state=f[0],live=f[19]==ticks and f[0]!='Z')
+-deadline=time.monotonic()+1200;index=0;reason='finite_observation_elapsed'
++deadline=time.monotonic()+600;index=0;reason='finite_observation_elapsed'
+ with (OUT/'SAMPLES.jsonl').open('x') as output:
+     while True:
+         learners=[]
