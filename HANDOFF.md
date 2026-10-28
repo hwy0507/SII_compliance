@@ -1,3 +1,5 @@
+> **RL最新补充：[69继续与70loss部署准备](docs/RL_PARAMETER69_WAIT70_DEPLOY_20261028.md)。原69运行，70未训练，GPU完成后继续，Goal active。**
+
 > **当前RL：[正式参数46与Direct28](docs/RL_PARAMETER46_SERL28_20261027.md)。完整45/27已审查、原43–45未稳定；46/28 actual startup通过。47/29仅准备、新46–48明确容量边界；原冻结41继续。Goal active，先核PID勿重复启动。**
 
 ## 2026-10-27 — Direct29完整、原27–29稳定通过、冻结29与有限30
