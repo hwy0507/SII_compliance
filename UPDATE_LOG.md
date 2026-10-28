@@ -1,3 +1,11 @@
+## 2026-10-28 — 原67连续十分钟推进与导纳66终端误差诊断
+
+- [最新交接](docs/RL_PARAMETER67_WAIT_ADMITTANCE_20261028.md)。18:31:54–18:41:54共21观测，原67三learner及所有原等待器/五guard身份保持，steps2777890/2778739/2779727→2785405/2786354/2787455严格增加，无完整/失败；600秒观察自然结束，不重启科学训练，Goal active。
+- 同期117guard采样min67/68/70/69%、低于50均0/maxgap5.261581秒，含合成保载、非每瞬时保证；科学全部完成也继续v5，当前非跨重启服务，Direct34false。
+- 完整66A全2004终端前向/独立标量及全30标签/optimizer时间线核验、实际图审完成。全SSE8178.095843，short0600/index2752093占67.46967%/新增30的90.58598%，Task真Strict假/穿透.230421531mm。轮内33594写入前后critic均值1.184861→1.661067、max4.668558→29.879505；时间对齐/末端集中不证明历史minibatch因果，无新门/优化更新。
+- 新A67固定全2004×57锚点及独立SSE通过，anchor SHA70d64ebf，waiter132612/start40839836/PLANd11fb5e2，CPU53/7200秒；66事后focus[2752093]在67完成前固定，全体保留、实际结果待，原VMC对照不改。完整67全loss/health/标签/V+A终端/原65–67/68恢复齐备才决定68，新A证据须纳入；无68训练。
+- SSD小包32成员/1003832字节/SHA33bf8c25，逐字节/AST/tar核验，收据docs/RL_PARAMETER67_WAIT_ADMITTANCE_SAVE_20261028.json；HDD仅原地≤1506字节入口，大产物SSD，非HDD/arm1全备份。实际fetch/read mainb79ac855/baselinef6e8f8c，非RL阻尼对照新报告已读并fast-forward保留，无冻结协议变化，无子agent。
+
 ## 2026-10-29 — 非RL原机制完整失败、保存状态定位与保留静态增益的阻尼对照
 
 - [交接](docs/NONRL_TEACHER_VELOCITY_UNITS_20261029.md)。原恢复+归一化六项完整，五train合格、office55秒仍carry双失败，actor/filter回放0。末250z误差−13.334510mm，未采新30/拟合/108。完整733文件/608839680bytes/SHAdaa832c524b98a31409d454e853728443db92ab9fcdacc3275d301bfcdf48a54已逐成员、共享暂存和最终hash核验到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_legacy_units_controls_20261029_v1/FULL_PROBE.tar`，保留全部失败，无删除。
