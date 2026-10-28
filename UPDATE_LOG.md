@@ -1,3 +1,10 @@
+## 2026-10-28 — 原新场景训练继续，八个神经候选冻结重放通过
+
+- 发布前已15/75、RNN seed1/candidate02，原服务active/3GiB/swap0/OOM0。八个已审神经候选完整产物包13314426字节/SHA00637462已核验到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_neural_prefix_20261028_v1/`；不含其他完成或在途候选，不冒称完整训练备份。
+- [交接补充](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。原725995/746822真实active，从9/75推进到12/75，当前MLP seed2/candidate01实测11060更新，内存约1.23GiB，未重启。前轮完整30新场景数据/归档保持，当前不是最终比较结果，Goal active。
+- 固定快照八个已完成RNN/MLP候选各32000最终更新；metadata/checkpoint/source/schedule hash和同seed曝光序列核验。各完整15750新观测用冻结旧actor重放逐数组一致、误差0，验证MSE独立复算通过。此为完成前缀的导出与预算核验，不据部分网格选模型，不宣称测试胜负；完整75作业/九模型锁/108仍待。
+- 开工实际fetch/read main2f494d5c、baselinef6e8f8c，无协议变化；不动已登记执行源码、物理/gate或另一任务RL。小证据归档状态见交接，无子agent、仅本机计算。
+
 ## 2026-10-28 — 棍推10条通过、冻结108入口与双成功指标审计准备
 
 - 全量归档完成：原30 raw/新数据/拟合源码1.67GB包SHAe6c2bece及训练启动小证据69314字节SHA62a6349e已逐大小/hash核验，无覆盖发布到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_v5_dataset_20261028_v1/`；live学生checkpoint未包含。发布前8/75作业完成，原725995/746822继续，MLP第三seed候选00实测3836更新，190源hash/3GiB/swap0/OOM0。完整训练/108/最终图表仍待，Goal active。048b9027及正常合并e22724d4已push，远端RL新增完整保留。

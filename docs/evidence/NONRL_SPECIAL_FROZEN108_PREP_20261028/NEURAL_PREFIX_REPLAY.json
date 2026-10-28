@@ -1,0 +1,28 @@
+{
+  "scope": "Eight completed new neural candidates from one live coordinator snapshot; no partial model selection, new physics or final ranking",
+  "execution_snapshot_sha256": "19109ad93ddbf61e590ffc228aa9bcb176c6d100d44260be580a22d985df4d21",
+  "training_data_sha256": "8824c24df3991b0783c9954b8e6b0e81a9db1c8c4cf4333dd7d39040c94e3d86",
+  "updates_each": 32000,
+  "observations_replayed_each": 15750,
+  "checkpoint_selection_each": "final",
+  "frozen_actor_max_abs_each": 0.0,
+  "checkpoint_metadata_source_schedule_hashes_verified": true,
+  "same_schedule_per_seed": true,
+  "schedule_sha256_by_seed": {
+    "2026102801": "29d7eef5b56990bd864e893ec029d40d5cc26ae6fc9ad3b548423dba665b203b",
+    "2026102802": "a2faff45f497f4b7327bcdf86342d83db3d79c3351d32804c40fa1d645035da0",
+    "2026102803": "d299bb9b656cb7ed04ac906954912e6af8724d6c018bbe3d27229aeabf08ce27"
+  },
+  "validation_mse": {
+    "rnn_scratch_s2026102801_candidate00": 6.195590950876761e-06,
+    "mlp_scratch_s2026102801_candidate00": 4.226516308589008e-05,
+    "rnn_scratch_s2026102802_candidate00": 6.295640381601846e-06,
+    "mlp_scratch_s2026102802_candidate00": 4.342894062591329e-05,
+    "rnn_scratch_s2026102803_candidate00": 6.684801292202199e-06,
+    "mlp_scratch_s2026102803_candidate00": 4.1850094420433014e-05,
+    "rnn_scratch_s2026102801_candidate01": 6.1950951943845135e-06,
+    "mlp_scratch_s2026102801_candidate01": 4.225908564837825e-05
+  },
+  "procedure": "Filter only completed neural rows from the snapshot; verify final32000 metadata, checkpoint/receipt/source/schedule hashes; reset frozen OfficeMLPRNN at each demonstration boundary and replay all15750 observations; require exact equality to saved exported_replay, independently recompute six-identity validation MSE within1e-12; require one schedule hash perseed. Complete-grid audit remains required.",
+  "frozen_actor_source": "outputs/nonrl_new30_fair_20261026_v2/physics_source/scripts/office_mlp_rnn_20261002.py"
+}

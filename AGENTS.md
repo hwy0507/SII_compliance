@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 新场景学生拟合继续，八个完成神经候选重放通过
+
+发布前15/75，RNN seed1/candidate02在途，原服务3GiB/swap0/OOM0；八个已审神经候选完整产物归档已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_neural_prefix_20261028_v1/`，不含其他/在途候选。不要据部分验证MSE改预算或提前选模型。
+
+[交接补充](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。原handoff725995/协调器746822继续active，已从9推进12/75，先读实际execution；禁止重复启动。固定前缀八RNN/MLP候选均32k、同seed曝光序列相同，完整15750新观测冻结actor重放0误差；只审查完成候选，不选部分网格赢家。全部75、九模型锁和108测试仍待，Goal active。原30/30采集与完整数据归档已完成，不重采原collection；冻结测试入口已有准备且未启动。无RL改动。
+
 ## 2026-10-28 — 棍推全10通过，冻结108入口准备（未启动测试）
 
 最新09:15:30：v5完整30/30合格，原交接725995已启动协调器746822公平拟合。新数据15750帧/24train6val，SHA8824c24d；3个ESN网格全部完成且各15750冻结actor重放0误差，首个RNN候选32k已完成。发布前8/75作业完成、第三seed MLP候选00实测3836更新，OOM0/swap0；其余继续，先读实际execution，不是最终模型选择或108结果。完整raw/新数据/拟合源码两包已核验到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_v5_dataset_20261028_v1/`，不含live学生checkpoint，见交接。原采集自然结束，禁止重启。

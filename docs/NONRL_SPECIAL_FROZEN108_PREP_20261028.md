@@ -112,3 +112,28 @@ SHA256 `e6c2becee95f5eba53a3de1d6717a44dccdbf31eed41ca38fecdf0ea5281498c`；
 原725995/746822身份保持；实际内存1360064512字节、上限3221225472、swap上限0、OOM/OOM-kill均0，
 全部190拟合源hash未变。完整九模型锁/全拟合审计/108闭环和最终图表仍未完成，Goal active。
 测试准备科学提交048b9027、整合远端RL进度e22724d4已push；非快进拒绝后正常合并，无force。
+
+## 原训练继续与首批神经候选重放
+
+接续开工实际查询/fetch/read main `2f494d5cae3fa71b386873ea40593cd79f180284`、
+baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无新增本任务约束。
+原725995/746822真实active；从9/75、RNN种子1候选01第23656更新推进到12/75、
+MLP种子2候选01第11060更新，内存1318264832字节，未重复启动。这一轮是原训练的
+已验证等待加完成候选审查，不因尚未完成而宣称阻塞或改小目标。
+
+已对固定快照中8个完整神经候选（candidate00两家×三seed，candidate01两家×seed1）
+逐一复核metadata/checkpoint/source/schedule hash、32000最终更新、同seed相同曝光序列。
+每个模型独立使用冻结旧推理实现重放全部15750新示范观测，均与导出动作逐数组相等，
+验证MSE独立复算一致。证据[NEURAL_PREFIX_REPLAY](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/NEURAL_PREFIX_REPLAY.json)。
+该快照的执行文件hash用于注明读取时刻；原执行文件继续更新，八份完整候选目录均保持原样。
+这不是完整网格或九模型最终选择，不从部分候选中挑赢家、不用于测试调参。
+旧综合场景结果仍历史保留，完整75候选作业、九模型审计及108测试继续待完成。
+
+这八个已完成神经候选的checkpoint、导出动作、完整history/schedule/source overlay及收据
+已打包并逐大小/SHA核验，发布到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_neural_prefix_20261028_v1/special_scene_neural_prefix_20261028_v1.tar.gz`。
+13314426字节、SHA256 `00637462d4b889742c8b6776512fd923988405a82d6aea4ae2413f9c6fd4b3b5`，
+[范围收据](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/NEURAL_PREFIX_ARCHIVE.json)。
+其他完成/在途候选尚未包含，不能称完整拟合备份。原数据另有完整归档，本地副本保留。
+发布前原训练推进到15/75，正在RNN seed1/candidate02；原服务active、内存1289695232字节、
+实际3GiB/swap0、OOM/OOM-kill均0。只继续原队列，尚无最终模型锁及物理测试。
