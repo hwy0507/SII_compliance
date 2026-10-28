@@ -84,3 +84,19 @@ waiter1692633/start40342791，CPU53/7200秒，PLAN SHA256 `97b840bb97dc0e4c35d26
 共享SSD小包 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER66_WAIT_RANKED65_20261028_173407/SMALL_EVIDENCE.tar.gz`，21成员/200460字节/SHA256 `4e741fbe841732e3de8438a1c3d06aeb08a70de4be465af6576836d2c36f981d`，普通读写/fsync/逐字节、tar成员大小/hash和Python AST通过；[收据](RL_PARAMETER66_WAIT_RANKED65_SAVE_20261028.json)、[清单](evidence/RL_PARAMETER66_WAIT_RANKED65_20261028/MANIFEST.json)。大checkpoint/replay/raw仍原SSD，HDD只重写既有LATEST入口，非HDD/arm1全备份。
 
 开工main52b1e12d、收尾实际fetch/read main60db98f9e07344bec72b60ddb4b36990b2f310bc、baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d；非RL intent030在途/失败保留日志和交接已读并fast-forward保留。原66/全loss/全终端/全标签/67仅恢复/原65–67窗口继续，完整67loss静态准备仍未部署，未改科学配置或启动67。Goal active，无子agent。
+
+## 17:43 UTC补充：继续原66与完整结果复核准备
+
+原66 I/A/V步数2748455/2749377/2750480，原PID/start ticks和所有审查等待器、五guard保持live，无完整/失败。有限观察器 `B/runtime/parameter66_verified_wait_1742_20261028_v1/observe.py`，PID2581680/start40500464，17:41:28启动、最多1200秒，若66完整loss/标签/终端/固定排名/67恢复就绪则提前自然结束；只观察，不启动科学任务。`HANDOFF_SNAPSHOT.json` 保存实际身份。后续须审其真实SAMPLES/FINISHED；观察器自然退出或超时不代表训练失败。
+
+17:33:47–17:43:42新增117条guard样本，min75/67/70/69%，mean79.0/88.76923077/89.70940171/89.35897436%，低于50全0，maxgap5.259778秒。即时GPU79/97/94/74%单独保留。包含合成保载，不能保证每瞬时或称为纯训练吞吐；用户要求科学完成也继续guard。
+
+`B/runs/vmc66_ranked65_terminal_followup_20261028_v1/review_saved.py` 已在实际66排名结果之前准备，SHA256 `7da864a209edfa59a3a313d264b79b6af929bb32ed4c92a51e21fe98f2f60c70`。其独立float64向量算术逐行核对全1974的SSE/贡献/变化、原排名/top2、原数组、完整66总量及输入hash，不调用audit算法。SAVED_REVIEW_SOURCE记录时间/hash；AST通过，实际执行须等FINISHED及REVIEW，当前不能声称保存复核通过。原冻结audit/wait/PLAN未改。
+
+`B/runtime/prepare_parameter67_20261028_v1/deploy_loss67.py` 静态准备完成；同时显式映射、逆变换/AST通过，原65–67窗口说明保留。实际66科学审查与准确恢复通过、67真实启动后才执行，生成全49–67历史/paired66→67的loss等待；当前未执行，无67loss运行目录/PLAN/waiter，未启动67。
+
+下一步继续原66，完整后运行full66 `review_saved.py`、实际查看loss/health/终端图，运行 `prepare_parameter67.../review_labels66.py` 和新排名独立复核；核验67 check-only全state/replay/下一65536后，根据实际66证据作DECISION67，保持原65–67窗口，不提前通过或移动端点。Direct34仍false，Goal active。
+
+共享SSD补充包 `B/repository/RL_PARAMETER66_REVIEWER_PREP_20261028_174345/SMALL_EVIDENCE.tar.gz`，10成员/8833字节/SHA256 `baea531c622634c5019e218cf9f92a6a1a6b01a874e108bf9c4477495864f9ab`；[收据](RL_PARAMETER66_REVIEWER_PREP_SAVE_20261028.json)、[清单](evidence/RL_PARAMETER66_REVIEWER_PREP_20261028/MANIFEST.json)。逐字节/AST/归档hash通过；不包含仍写入的完整观察SAMPLES，后续另保存。大产物SSD、HDD仅重写已有LATEST，非HDD/arm1全备份。
+
+前段证据提交 `ea21d0b2fe703203f83b2bbe891081b30e4d2cab` 正常push；首次远端查询TLS失败后实际重试成功。收尾再次fetch main仍ea21d0b2/baselinef6e8f8c，无新增协议变化，非RL记录保留，无子agent。
