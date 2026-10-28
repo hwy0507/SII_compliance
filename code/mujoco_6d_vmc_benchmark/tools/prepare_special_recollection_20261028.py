@@ -23,9 +23,10 @@ def prepare(original, probe, review, output):
     registration = read(probe / 'REGISTRATION.json')
     state = read(probe / 'execution.json')
     reviewed = read(review)
-    if state['status'] != 'complete' or len(state['episodes']) != 4:
-        raise ValueError('Require all four completed probe cases')
-    if not reviewed['probe']['all4_qualified']:
+    count = registration['maximum_episodes']
+    if state['status'] != 'complete' or len(state['episodes']) != len(registration['cases']) or len(state['episodes']) != count:
+        raise ValueError('Require all registered probe cases completed')
+    if not reviewed['probe'].get('all_cases_qualified', reviewed['probe'].get('all4_qualified', False)):
         raise ValueError('Probe did not qualify; no formal recollection')
     if registration['collection_plan_sha256'] != sha(original / 'COLLECTION_PLAN.json'):
         raise ValueError('Wrong original plan')

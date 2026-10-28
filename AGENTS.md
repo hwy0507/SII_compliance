@@ -1,5 +1,17 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 非RL球撞末端不稳修正、v5重采与公平拟合交接
+
+[最新交接](docs/NONRL_SPECIAL_BALL_STABILITY_20261028.md)。v4完整棍10/10、球9/10、角10/10，ball_01末端物体速度0.033813m/s超过原0.02门；原训练交接v1正确失败留档，未建数据/启动拟合，不要重启。早先口述“球10条全合格”已按全部收据纠正。
+
+仅读出0.6→0.5的五训练条件对照全部合格，原MJB/参数/seed/门/时长不变；ball01末速0.000173m/s，rod00/04回位9.44/8.12秒均早于12.80撤回。`sii-special-collection-v5-20261028.service` 当前PID725751/start27486256，`outputs/special_scene_vmc_collection_20261028_v5`、计划SHA512f30c1；原30条件/24+6保持，统一教师SHA4dd91950，全量重采运行。
+
+`sii-special-learning-handoff-v2-20261028.service` 在等待同一原v5，登记 `outputs/special_scene_learning_handoff_20261028_v2` SHA0cc8a326；7200秒等待、全30合格且原服务退出才审查/构建 `outputs/special_scene_retrain_readout05_20261028_v1` 并执行原3seed/12候选网格。正式训练/108未完成，Goal active；先查真实状态，禁止重复启动或修改登记执行源码。拟合新增独立fitting_source快照及逐候选hash核验；旧九模型兼容性预检0误差不认证新模型，新全拟合审计工具待真实新九模型运行。
+
+原v4完整包/0.5五例完整包已本地保存，归档状态详见交接；下方v4运行/0.6新主教师为旧快照。无服务器计算、无子agent，不涉及RL。
+
+08:51UTC接续：三包已核验发布到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_readout05_20261028_v1/`，不含live v5 raw；原采集/交接仍active，前5完整合格，源码hash不变，OOM0。总指标标准已加本轮双成功条件SPT优先条款，后续以完整108共同T_ref计算。先读实际progress，不把本快照当当前完成数。
+
 ## 2026-10-28 — 非RL原30完整、读出0.6修正通过、同条件v4重采运行
 
 [最新交接](docs/NONRL_SPECIAL_READOUT06_20261028.md)。原v3采集完整：棍7/10、球10/10、角10/10；rod_00/04/08未在撤回前持续回位，04还穿透0.222716mm，失败全部保留。四条有限训练/开发对照仅velocity_weight .3→.6，原MJB/条件/保持时间/判据不变，全部合格；00/04回位8.72/8.28秒早于12.80撤回，角峰矩46.19→52.36Nm代价保留。非冻结测试认证/独立动力学积分。

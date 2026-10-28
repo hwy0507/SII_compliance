@@ -84,7 +84,8 @@ def main():
         probe = args.probe.resolve()
         registration = read(probe / 'REGISTRATION.json')
         progress = read(probe / 'execution.json')
-        assert progress['status'] == 'complete' and len(progress['episodes']) == 4
+        count = registration['maximum_episodes']
+        assert progress['status'] == 'complete' and len(progress['episodes']) == len(registration['cases']) == count
         assert progress['registration_sha256'] == sha(probe / 'REGISTRATION.json')
         paired = []
         for entry, receipt in zip(registration['cases'], progress['episodes']):
@@ -98,13 +99,14 @@ def main():
             paired.append(dict(id=entry['id'], scene=entry['scene'], baseline=baseline, candidate=candidate))
         result['probe'] = dict(root=str(probe), registration_sha256=sha(probe / 'REGISTRATION.json'),
                                pairs=paired,
-                               all4_qualified=all(p['candidate']['status'] == 'qualified' for p in paired),
-                               scope='Two failed training rod conditions, first ball training condition, original corner development. No validation/test selection.')
+                               expected_cases=count,
+                               all_cases_qualified=all(p['candidate']['status'] == 'qualified' for p in paired),
+                               scope=registration['selection'])
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2, allow_nan=False) + '\n')
     print(json.dumps(dict(output=str(args.output), per_scene=result['per_scene'],
                           all30_qualified=result['all30_qualified'],
-                          probe_all4_qualified=result.get('probe', {}).get('all4_qualified'))))
+                          probe_all_qualified=result.get('probe', {}).get('all_cases_qualified'))))
 
 
 if __name__ == '__main__':

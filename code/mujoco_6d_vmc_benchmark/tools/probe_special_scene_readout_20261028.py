@@ -72,7 +72,8 @@ def run(root):
     progress=read(collection/'COLLECTION_PROGRESS.json')
     if progress['status'] not in ('qualified_complete','finished_with_nonqualified_demonstrations') or len(progress['episodes'])!=30:
         raise RuntimeError('Original30 collection still running or incomplete; do not interrupt/restart it')
-    if subprocess.run(['systemctl','--user','is-active','--quiet','sii-special-collection-v3-20261028.service']).returncode==0:
+    if subprocess.run(['systemctl','--user','is-active','--quiet',registration.get(
+            'collection_service','sii-special-collection-v3-20261028.service')]).returncode==0:
         raise RuntimeError('Original collection service is still active')
     candidate=Path(registration['candidate'])
     assert sha(candidate)==registration['candidate_file_sha256']
