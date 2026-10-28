@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 完整62退化证据保存与准确续训63
+
+- [最新交接](docs/RL_PARAMETER62_COMPLETE_20261028.md)。完整62三路自然结束，各30×55秒/41250新增/noabort；全61 replay/history保持、新reward复算0、网络/优化器有限。I/A/V reward−5.822772/−8.573957/−4.613582，Task/Strict17/15、14/14、17/16，全部较61退化。全loss独立算术与实际图通过，I actor持续下降、V末段critic burst，A critic较平，非收敛。
+- 全180保存标签与90reward对独立复核通过，无Task-only遗漏：I short0100穿透.200855mm、V short0000 .226159mm超原.2mm失Strict；I long0000及A三条件失Task/Strict，A另两条件恢复。全1854 V固定终端SSE1108.452722→2550.400600（+130.0865%），前三focus退化、后两改善；新30贡献.234366539，全1884 .378266267，算术/实际图通过。不设零误差门或有限尖峰新阈值，原59–61失败及历史通过保留。
+- 精确62全state/replay/下一65536恢复三路exit0，DECISION63绑定完整证据后13:50:29启动有限63：I3732463/A3732464/V3732465 start39114601，archive3732466/start39114602。实际startup各1000步通过，全旧2594148/2594750/2595750行/history/optimizer/30sampler保持、新reward0；无auto64。全63loss3741519/start39117327，原62–64窗口1758711继续，待63/64，Goal active。
+- 原62观察器20样本保持身份至V自然完成后exit0，未重启科学任务。13:29:36–13:52:39 guard271样本min70/61/67/65%、低于50全0/maxgap5.265177秒；含合成保活，非瞬时保证/科学吞吐。五guard原身份live，最近GPU77/92/93/91%；科学完成也继续，Direct不启动34。
+- 共享SSD小包131成员/1344615字节/SHAef30758f逐字节/AST核验，收据docs/RL_PARAMETER62_COMPLETE_SAVE_20261028.json；大产物仍SSD，非HDD/arm1全备份，HDD既有入口更新。开工main d1b1bf89、baseline f6e8f8c实际fetch/read，另一主机非RL31/108等待更新已fast-forward保留，无协议变化/子agent。
+
 ## 2026-10-28 — 原非RL108已31条，第四条件第二种子接续
 
 13:21–13:26原772606/791378身份保持，11真实样本0–10完整保存，30→31/108；ESN seed2自然结束后原协调器接续RNN869837/start29175791，末次40.04秒。3GiB/swap0/OOM0，观察器exit0非科学结束。2771字节/SHAd78176de小观察包已核验共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_wait_1321_1326_20261028_v1/`，非原始物理归档。完整108/六指标/图/contact/全归档待，Goal active；见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)，不重复派发或调模型/门。
