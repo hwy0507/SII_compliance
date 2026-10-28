@@ -57,3 +57,11 @@ GPUv5实际 `/tmp/sii_gpu_util_guard_20261028_v5`，supervisor3256866/start37410
 继续同一原60，等待完整归档/loss/health和终端对照。先核对PID+start ticks及实际FINISHED；观察预算结束不代表科学任务终止。实际60完成后才审定后续一个有限61，保持原reward/gates/物理/LR/masks/65536/UTD1/终端128/全历史与随机状态。
 
 发布前再次fetch/read main `ffdf6c68`：另一主机非RL完整拟合及冻结108启动，首例失败保留；不是本机RL结果。AGENTS/UPDATE_LOG并发顶部冲突按本轮准确新增前缀加完整远端解决，双方历史/文件保留，冻结运行源码不变。
+
+## 11:02补充：原60继续，61完整loss仅静态准备
+
+10:57–11:01已连续核验原三learner和五guard PID+start保持，三路步数继续增长至2486768/2487611/2488688，没有新失败标记；最近GPU79/92/93/94%。完整60结果尚待。只读观察session的1200秒预算与科学训练无关，结束不得重启原训练。
+
+`B/runtime/parameter61_loss_preparation_20261028_v1` 已准备audit.py、paired_gate.py、review_saved.py、wait.py，原60脚本逆变换精确/AST通过；保留完整49–60描述历史并追加61，60→61配对和原condition0600不变。当前**没有61 loss运行目录/PLAN/进程**。实际61通过完整60审查启动后，将四脚本复制到新 `B/runs/parameter61_loss_20261028_v1`，参照60的PLAN绑定真实61 LAUNCH jobs/source hashes，CPU54启动wait.py；FINISHED后执行review_saved.py并实际查看loss.png。此准备不启动61、不代替完整60或59–61的结果审查。
+
+10成员小包5939字节，SHA `f7eff4df5ad15747ac0f0f4b60a8f69f56310a28901c7e61858f09b38ee17852`，见[准备保存收据](RL_PARAMETER61_LOSS_PREP_SAVE_20261028.json)；逐字节/AST核验。训练与大产物仍原共享SSD，Goal active。
