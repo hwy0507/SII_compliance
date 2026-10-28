@@ -9,6 +9,7 @@
 
 ## 2026-10-29 — 非RL七项教师修复完整通过并启动v8重采
 
+- 20:31UTC原v8两服务同PID active，4/30合格、rod04在途，学习waiting。已完成三条全部资格hash及194学习源绑定核验，未改源/重复派发。10cebe07及安全合并b5e5fed5已push/远端核验，双方日志新增/共同历史逐字保留。源码小证据1178文件6675768bytes/SHAf8a71776已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_start_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`，收据V8_START_SOURCE_SHARED_RECEIPT；不含在途v8/学生/后补收据，Goal active。
 - 20:28UTC完整七项原物理754文件688650240bytes/SHA8d32960b已逐成员及共享暂存/最终大小/hash核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_vertical_damping_controls_20261029_v1/FULL_PROBE.tar`，收据VERTICAL_DAMPING_SHARED_RECEIPT。覆盖下文核验中快照；不含在途v8/学生或后来准备代码，无删除。
 - [交接](docs/NONRL_V7_BALL_TAIL_REPAIR_20261029.md)。七项20:23:13自然结束：六训练身份合格、office55秒TaskStrict true/retreat；actor/filter0，RMSE32.732345mm/峰矩44.833782Nm/峰速.363191m/s/穿透.161989mm。四球训练尾能量−75.7508%，ball00 RMS退化保留；未改gate，不声称学生成功。
 - 原服务inactive且无模拟器后，20:24:33启动唯一v8采集parent1088910/start31713076，PLAN2ed3e2b9；同原30真实场景条件/seed/24train6validation，3GiB/swap0/单线程。20:27 rod00合格、rod01在途；REGf7086a3f接续parent1089228 waiting。全30资格通过才进入有限75作业/9模型公平学习，失败保留，无自动测试。

@@ -1,5 +1,13 @@
 # v7完整采集与球撞末段稳定性修复
 
+20:31UTC：v8原采集1088910与接续1089228持续active，4/30合格、rod04在途，学习waiting。
+先完成三条全部资格输入hash及194个学习绑定源码核验，均一致；没有重复启动。
+科学10cebe07与安全合并b5e5fed5已push/远端核验，双方日志新增及共同历史逐字保留。
+源码/小证据1178文件6675768bytes/SHAf8a71776已核共享到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_start_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。
+[源码共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/V8_START_SOURCE_SHARED_RECEIPT.json)。
+不包含在途v8原始物理/学生；Goal active，全30资格和最终学生主矩阵仍待。
+
 ## 20:28 UTC：七项完整通过，v8重采及公平学习接续已启动
 
 完整七项原始物理754文件/688650240bytes已逐成员核验，并在共享暂存和最终目录复核SHA256：
