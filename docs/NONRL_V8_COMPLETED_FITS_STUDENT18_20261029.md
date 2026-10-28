@@ -1,5 +1,9 @@
 # v8公平拟合全部完成，九模型审计通过，真实场景18回合诊断已启动
 
+最新已完成18并启动108，见[完整诊断与回归失败定位](NONRL_V8_COMPLETE18_REGRESSION_DIAGNOSIS_20261029.md)。
+18开发资格ESN6/6、RNN6/6、MLP4/6；原108首ESN/RNN失败，主矩阵尚未修复。
+下文“18在途”等为保留的历史快照，不能据此重启。
+
 22:38:07UTC覆盖：原1160099继续，已3/18结束，正在rod08 ESN。rod00 MLP任务true、
 让位/蹭过/持续回位均满足，但穿透0.244815881mm超过原0.2mm，因此资格failed_preserved。
 40万保存子步独立取max、原输入hash及actor/filter重放0已复核；scene_contact_valid=false

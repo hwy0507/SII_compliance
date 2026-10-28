@@ -1,3 +1,11 @@
+## 2026-10-29 — 非RL完整18与原108首失败定位
+
+- [交接](docs/NONRL_V8_COMPLETE18_REGRESSION_DIAGNOSIS_20261029.md)：18自然结束、review SHA3cde0be3，开发资格ESN6/6、RNN6/6、MLP4/6；两MLP棍穿透失败（08还缺手接触）保留。配对源/actor及全部分窗算术通过，非最终成功认证。
+- 原108唯一用户服务1172675/start32623702，22:56:19UTC启动，前置fit audit通过，REG173e2abf，3GiB/swap0/线程1/OOM0。23:05已3/108、ESN seed2在途；不重启。首ESN4.84秒lift碰柱中止，RNN/MLP完整55秒停approach，Task/Strict均false，主矩阵未修复。
+- 新prefix诊断独立核前两条子步指标/hash/actor/filter及仅12600训练帧范围，完整源清单/完成行不变/标量计数通过。路径Y训练±.38075、原测试初始−.99028；ESN后期受力超界，非唯一因果。继续原108；后继针对三真实场景方向/阶段/恢复覆盖，公平预算、不混测试标签、不改gate或在途源。
+- 完整18原物理405载荷/1683322880bytes/SHA3b25449b逐成员及暂存/最终大小SHA核验共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_complete18_20261029_v1/FULL_PROBE.tar`。不含108或后补prefix；无删除。归档工具只修正scope文字为teacher/student兼容，运行逻辑未改。
+- 实际fetch/read main d36a7990→72d92390、baseline f6e8f8c；安全快进保留RL更新。本轮非RL完成诊断/归档并启动原108，Goal active，无RL操作/子agent/服务器计算。最终六指标/审计及有效修复仍待。
+
 ## 2026-10-28 — 第71轮十分钟核验与原68–70 bootstrap复核
 
 - [交接](docs/RL_PARAMETER71_WAIT_BOOTSTRAP_20261028.md)：22:48:16–22:58:16UTC共21次原71三learner/archive/六等待器/五guard身份live，steps严格增至2948239/2949235/2950340；observer自然结束、科学继续，无重启。前后各三路1000日志原字节/全数值/连续步号/独立算术通过，仅在途样本。

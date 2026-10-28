@@ -57,7 +57,7 @@ def main():
                                   ('rollout_metrics/substep_metrics.npz', 'metrics_sha256')]:
                     assert sha(folder/name) == row['audit'][key]
         roots = [('probe', probe)]
-        scope = 'Every terminal teacher probe identity, including failures, raw physical substeps, source snapshots, configurations and complete qualification/audit receipts. No in-flight successor or student training.'
+        scope = 'Every terminal registered probe identity (teacher controls or student diagnostics), including failures, raw physical substeps, source snapshots, configurations and complete qualification/audit receipts. Actor roles and model identities remain in the original execution records. No in-flight successor or student training.'
         filename = 'FULL_PROBE.tar'
     elif a.collection:
         assert a.old is None and a.controls is None

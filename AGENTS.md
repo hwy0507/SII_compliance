@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL完整18与原108首失败定位
+
+- [当前交接](docs/NONRL_V8_COMPLETE18_REGRESSION_DIAGNOSIS_20261029.md)。18自然结束、完整review SHA3cde0be3，ESN6/6、RNN6/6、MLP4/6；两MLP棍穿透失败保留，08还缺手接触。全部teacher/student源/actor及分窗算术通过；不是最终Task/Strict。
+- 唯一用户级`sii-special-frozen108-v8-20261029.service` PID1172675/start32623702，22:56:19UTC启动，前置fit audit通过，REG173e2abf；3GiB/swap0/单模拟器/线程1/OOM0。23:05已3/108、ESN seed2在途，勿重复。系统级同名显示inactive不等于用户服务退出。
+- 首ESN seed1在4.84秒lift碰柱/2.781482mm abort；RNN seed1完整55秒停approach，均Task/Strict=false。前两条独立保存子步/hash/actor/filter及12600训练帧范围标量核验通过；路径Y训练±.38075而初始测试−.99028，ESN后期受力超范围。非唯一因果或排名，主矩阵未修复。MLP seed1也停approach，仅原审计，前缀工具未复算第三条。
+- 完整18原物理405载荷/1683322880bytes/SHA3b25449b已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_complete18_20261029_v1/FULL_PROBE.tar`，不含108或后补前缀。保持九模型锁定，收完108后分离学习/三真实场景覆盖修复，禁止用测试轨迹拟合或改gate。Goal active，无RL/子agent/服务器计算。
+
 ## 2026-10-28 — 第71轮十分钟核验与原68–70 bootstrap复核
 
 - [交接](docs/RL_PARAMETER71_WAIT_BOOTSTRAP_20261028.md)：22:48:16–22:58:16UTC共21次原71三learner/archive/六等待器/五guard身份live，steps严格增至2948239/2949235/2950340；observer自然结束、科学继续，无重启。前后各三路1000日志原字节/全数值/连续步号/独立算术通过，仅在途样本。

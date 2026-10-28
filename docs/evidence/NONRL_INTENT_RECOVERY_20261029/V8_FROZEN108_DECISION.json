@@ -1,0 +1,18 @@
+{
+  "decision": "proceed_to_original_registered_frozen108_without_model_changes",
+  "reviewed_utc": "2026-10-28T22:55:37+00:00",
+  "complete18_review_sha256": "3cde0be3dc7ca12838394ffb480a6093df7a3656885c4a23e28ab1bfc64f42f4",
+  "complete18_execution_sha256": "1ef8766def959507d80761adf4cf709089c0da860671381f662757ac19aaac1e",
+  "model_lock_sha256": "0bf736fd0aa14455975752851dd22f6c902e116b1f0ca1940977970c769ee61c",
+  "frozen108_preparation_sha256": "173e2abfa083e71bbfedd642d2e20a4e16e9d84d23c70a356507d8ec77d14b06",
+  "qualified_per_family": {"esn_ridge": 6, "rnn_scratch": 6, "mlp_scratch": 4},
+  "episodes_per_family": 6,
+  "retained_failures": [
+    {"id": "rod_00_mlp_scratch", "task_success": true, "penetration_mm": 0.24481588127212642, "reason": "Exceeds original0.2mm penetration gate; contact/yield/pass/rejoin otherwise satisfied."},
+    {"id": "rod_08_mlp_scratch", "task_success": true, "penetration_mm": 0.23698722557521024, "reason": "Exceeds original0.2mm gate and lacks required physical hand contact; other crossing/rejoin checks do not override these failures."}
+  ],
+  "basis": "All18 completed; all paired geometry/config/seed and source hashes checked; exact teacher and student actor replays; actual diagnostic windows exhaustive/disjoint and scalar weighted MSE verified. No evidence of export/interface mismatch. ESN passed all six development closures. Baseline failures retained rather than changing the equal candidate budget or final checkpoints.",
+  "limits": "This is development diagnosis on train00/validation08 with one selected seed per family, not unseen confirmation or final Task/Strict acceptance. Counterfactual teacher predictions on student histories are not executed teacher dynamics or fitting labels. ESN ball counterfactual differences remain material; main108 is still required.",
+  "changes_to_models_data_physics_gates": "none",
+  "next": "Original12 conditions x nine locked models, all108 outcomes retained; BOTH-success conditional SPT/global BOTH T_ref, all-episode mean peak torque, actual human-contact-dt comfort proxy and machine compliance. Previously inspected12 are regression, not unseen. Review final evidence before any later separately registered repair."
+}
