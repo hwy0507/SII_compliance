@@ -1,5 +1,9 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 原108第三条件完整，27条已审计
+
+原772606/791378保持，12:59完成27/108并自动进入第四条件ESN seed1 worker858600。第三条件九模型8384800保存子步/593源/模型hash/原actor-filter收据及指标算术通过；Task/Strict三家均0/3，ESN seed2/3于8.80/25.44秒穿透中止，其余七条55秒失败。前三测试条件27条全失败不是完整12条件结论，不改模型或判据。45实际观察完整保存，3GiB/swap0/OOM0。11188字节/SHAaad22475小证据包核验共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_condition002_review_20261028_v1/`；非原始物理全归档。完整108/最终图表/contact/全归档仍待，Goal active，见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)，禁止重复派发。
+
 ## 2026-10-28 — 完整61、原59–61窗口与准确续训62
 
 - [最新交接](docs/RL_PARAMETER61_COMPLETE_20261028.md)。完整61各30×55秒/41250新增/noabort，全60 replay/history/optimizer保持、新reward0、网络/优化器有限。I/A/V reward−2.430041/−7.003038/−2.811682，Task/Strict18/17、15/15、17/17。全loss独立算术/实际图通过；I末段burst/actor漂移，A/V critic改善，V actor末段回升，不称整体收敛。
