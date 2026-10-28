@@ -2,6 +2,13 @@
 
 ## 21:46 UTC：闭环诊断分窗修正，原公平训练继续
 
+21:47:44UTC覆盖：原队列40/75完成、seed01 MLP candidate06已接续，训练未结束。
+科学f5b4b647已正常push并核远端；同commit源码/小证据1209文件7795179bytes/SHA8bf275f2，
+准确报告12488bytes/SHA3bb1aadc均已暂存和最终双重核验共享到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_closure_window_source_20261029_v1/`。
+[共享收据](evidence/NONRL_INTENT_RECOVERY_20261029/V8_CLOSURE_WINDOW_SHARED_RECEIPT.json)。
+覆盖本节“待共享”，不含在途模型/本段后补收据，Goal仍active。
+
 原训练1089228保持active，完成39/75，seed01 RNN candidate06已1040更新；
 21:45:34内存534114304bytes/3GiB、swap0、OOM及oom_kill0。仍无完整九模型锁定，
 不提前运行18或108，不用当前候选验证损失宣布最终效果。

@@ -1,5 +1,7 @@
 ## 2026-10-29 — 非RL闭环诊断分窗修正，原75拟合继续
 
+- 21:47:44UTC原队列40/75完成、seed01 MLP candidate06接续。科学f5b4b647已push/核远端；准确commit源码小证据1209文件7795179bytes/SHA8bf275f2和报告12488bytes/SHA3bb1aadc已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_closure_window_source_20261029_v1/`，收据V8_CLOSURE_WINDOW_SHARED_RECEIPT。非在途模型/原物理全集，Goal active。
+
 - [最新补充](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)：待用18 reviewer改为50帧互斥窗，修复浮点边界重复/伪尾窗；旧源原件保留，共享四函数AST不变。9组漂移边界及全24train时间轴、独立标量MSE通过，四类非法时间拒绝；真实未启动18拒绝无输出，完整18正向待。首试缺收据目录写出失败已记录，补mkdir后通过；不解释旧学生退化。
 - 21:46UTC原1089228 active、39/75完成，seed01 RNN candidate06到1040更新；21:45:34内存534114304bytes/3GiB/swap0/OOM0。18准备196源码hash保持，修改reviewer不在原handoff/18/108绑定清单；未重启或改冻结训练。
 - 仍须75/9审计→真实场景18及失败定位→108六指标；不以teacher30合格或小MSE代替ESN成功。原12仅回归，Goal active。本轮实质诊断修复，开工main74eaff89/baselinef6e8f8c实际fetch/read；新小证据仅本机待共享，无RL/子agent/服务器计算/删除。

@@ -2,6 +2,8 @@
 
 ## 2026-10-29 — 非RL闭环诊断分窗修正
 
+21:47:44UTC原队列40/75完成、seed01 MLP candidate06接续。科学f5b4b647已push核远端；同commit1209文件7795179bytes/SHA8bf275f2源码小证据和准确报告已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_closure_window_source_20261029_v1/`，收据V8_CLOSURE_WINDOW_SHARED_RECEIPT。原训练继续，非学生闭环通过，Goal active。
+
 - [补充](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)：未绑定的18 reviewer改50帧互斥窗，旧源保留；9组漂移/全24train/独立标量算术及4负例通过，未启动18拒绝无输出，完整18正向待。不是旧闭环退化原因，不改历史hash或冻结源。
 - 21:46UTC原1089228 active、39/75完成，seed01 RNN candidate06到1040更新，3GiB/swap0/OOM0。原18准备196源码hash保持，勿重复训练；后续75/9审计→18失败分析→108。新代码/证据仅本机待共享，Goal active，无RL/子agent/服务器计算。
 
