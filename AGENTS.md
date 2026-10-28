@@ -7,6 +7,10 @@
 - 10:01原59约2449141/2449955/2451139steps，冻结55完整27/26/25，原身份保持；GPUv5五进程live、76/68/95/93%含保活，科学结束仍继续。原59loss/全1764终端/60仅恢复/59–61窗口沿用，Direct不启动34，Goal active，无子agent。
 - 已查询/fetch/read main02dc99ea、baselinef6e8f8c，无协议变化。共享SSD包7成员/18825字节/SHA4201e9bdf12485c5d48e6160b1e60331010e594386980859ca134511d0ffcd5d逐字节/AST核验，大产物仍SSD，非HDD/arm1全备份。
 
+## 2026-10-28 — 新三场景拟合37/75与六指标呈现准备
+
+原725995/start27488598、协调器746822/start27699608仍live，原队列29→37/75，09:58:21为RNN seed3/candidate05；3GiB/swap0/OOM0，不重复启动。全30来源/15750行观测动作/150文件hash/24+6不泄漏再次核验。新report_special_frozen108工具只接受完整新108审计，实际图仍待；小源码证据包10691字节/SHA40905ccd已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_report_preparation_20261028_v1/`。旧图不作新结果；完整75/9模型锁/108仍待，Goal active。见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)，不涉及RL，无子agent。
+
 ## 2026-10-28 — 参数59前5000、全1764终端锚点与60仅恢复准备
 
 - [最新交接](docs/RL_PARAMETER59_EARLY60_PREP_20261028.md)。59原前5000字节/hash/独立标量/全有限及实际图通过，critic首末1000 I2.567929→2.436369、A1.429878→1.347822、V1.167645→1.198585；V高位与尖峰延续，不称恢复/收敛。登记在训练及前缀存在之后，原窗口均保持。
