@@ -1,0 +1,2280 @@
+{
+  "schema": "sii-complete-regression-control-review-v1",
+  "registration_sha256": "73e8b6b6e95476398869c4e5192ca5f79a82e763a25fa54d67e4f73b195d6184",
+  "execution_sha256": "159667a8ac68dc077be1025bf619b438a974c6bb06c7ba1e9a6409e24d633155",
+  "review_source_sha256": "783d1071d1b297a87fd540503e3c47b72c581a6ea68066bded3d9da664adbc01",
+  "rows": [
+    {
+      "id": "office_teacher_new",
+      "audit": {
+        "task_success": false,
+        "strict_success": false,
+        "memory_ablation": "none",
+        "full_horizon": true,
+        "stage": "carry",
+        "rmse_mm": 29.28302052072939,
+        "peak_torque_nm": 38.164642333984375,
+        "peak_speed_mps": 0.3530821472306785,
+        "penetration_mm": 0.14017760021666015,
+        "edge_penetration_mm": 0.08128441481992238,
+        "worst_pair": [
+          "office_v5_ball_geom",
+          "hand_collision"
+        ],
+        "physical_seconds": 54.99999999999989,
+        "max_lift_m": 0.15889840079070122,
+        "object_final_position": [
+          0.6015714811020199,
+          -0.24142218914404667,
+          0.5814200918444193
+        ],
+        "placement_error_xy_m": 0.11190406201870123,
+        "abort_reason": null,
+        "action_replay_max_abs": 0.0,
+        "reservoir_replay_max_abs": null,
+        "stages": {
+          "0": {
+            "start_s": 0.04000000000000063,
+            "end_s": 0.15999999999999054,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "1": {
+            "start_s": 0.19999999999998613,
+            "end_s": 1.5600000000010799,
+            "mean_action": [
+              0.0009877318609035311,
+              -0.0024073770568496843,
+              0.0,
+              0.0001895346036777377,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              1.0135196303016197e-06,
+              -3.5774679532005744e-07,
+              2.1544556415540923e-06,
+              2.5568993848736134e-07,
+              7.173953804491904e-07,
+              3.0669039587042117e-10
+            ]
+          },
+          "2": {
+            "start_s": 1.6000000000011643,
+            "end_s": 1.8800000000017552,
+            "mean_action": [
+              0.008384133878557486,
+              0.0014876070392092267,
+              0.0,
+              0.0026939565627553557,
+              -0.007426913657365478,
+              0.002001409101388239,
+              0.0
+            ],
+            "median_wrench": [
+              -0.1874852027046577,
+              -0.011828732841925487,
+              0.3872367385929496,
+              -0.006776905775818089,
+              0.013587452318100941,
+              0.00012772735895101171
+            ]
+          },
+          "3": {
+            "start_s": 1.9200000000018396,
+            "end_s": 10.55999999998206,
+            "mean_action": [
+              0.04826329372126571,
+              -0.06466033298858236,
+              0.016514463620126586,
+              -0.00782953016048135,
+              0.0056357437514571555,
+              0.022955893126940307,
+              0.0008702914732373864
+            ],
+            "median_wrench": [
+              -1.6368760668968763,
+              0.45923234993169904,
+              -0.9119570980947964,
+              -0.0003448791644400234,
+              0.0006229936337481534,
+              -0.00020159711937894897
+            ]
+          },
+          "4": {
+            "start_s": 10.599999999981966,
+            "end_s": 55.00000000126404,
+            "mean_action": [
+              0.017133859184529313,
+              -0.019411201915251187,
+              0.003071883606866145,
+              0.08120917323579506,
+              0.0019436346715735581,
+              0.004199044092055432,
+              0.018905294010329494
+            ],
+            "median_wrench": [
+              0.0036293334050985673,
+              -0.0006900710051268654,
+              0.007622839938803522,
+              0.006874974446740678,
+              0.020626873309744373,
+              0.007862734152810871
+            ]
+          }
+        },
+        "actor_replay_performed": true,
+        "common_filter_replay_max_abs": 0.0,
+        "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "trace_sha256": "0a76ebbbdd65d114985467f236cd42c6c60f5a8e37723b838861e6200a02a2b7",
+        "chain_sha256": "1a4ca1737f0a6823a1994929feaf012e339be5ed244ee6fd8548d6b9e38a4a6c",
+        "metrics_sha256": "6169e07cc42de43492682e64d681561177881b6c5415fcec309c135338d79975"
+      },
+      "audit_sha256": "34ce849b929782b6b4f56e0cd688ea042db13f1c63efb5858cd1f0d4164fe18d"
+    },
+    {
+      "id": "office_teacher_historical",
+      "audit": {
+        "task_success": true,
+        "strict_success": true,
+        "memory_ablation": "none",
+        "full_horizon": true,
+        "stage": "retreat",
+        "rmse_mm": 38.91715787609608,
+        "peak_torque_nm": 50.82277297973633,
+        "peak_speed_mps": 0.3701357387173078,
+        "penetration_mm": 0.13956012008214652,
+        "edge_penetration_mm": 0.08209198868305671,
+        "worst_pair": [
+          "office_v5_ball_geom",
+          "hand_collision"
+        ],
+        "physical_seconds": 54.99999999999989,
+        "max_lift_m": 0.16659228113876873,
+        "object_final_position": [
+          0.6921897904492381,
+          -0.3149547585115222,
+          0.5449969877369458
+        ],
+        "placement_error_xy_m": 0.005417085389679267,
+        "abort_reason": null,
+        "action_replay_max_abs": 0.0,
+        "reservoir_replay_max_abs": null,
+        "stages": {
+          "0": {
+            "start_s": 0.04000000000000063,
+            "end_s": 0.15999999999999054,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "1": {
+            "start_s": 0.19999999999998613,
+            "end_s": 2.000000000002008,
+            "mean_action": [
+              0.010271516357821505,
+              -0.008288734595583127,
+              0.0013812785789601135,
+              -0.0005552050462179784,
+              -0.0016693163988124719,
+              -0.01067795729289693,
+              0.0
+            ],
+            "median_wrench": [
+              -2.7433583180782612e-06,
+              9.67650125426175e-07,
+              1.9034538848840433e-06,
+              -5.050649909398485e-07,
+              -1.417794083773831e-06,
+              1.8001626536128496e-10
+            ]
+          },
+          "2": {
+            "start_s": 2.040000000001915,
+            "end_s": 2.560000000000703,
+            "mean_action": [
+              0.18094425439103112,
+              -0.09815420375824632,
+              0.02892036537372416,
+              -0.00010486404220067453,
+              0.008451566671980684,
+              0.0010167260939764591,
+              -0.00512810032119327
+            ],
+            "median_wrench": [
+              -0.981623048359574,
+              0.10807396525471158,
+              0.21389222635259247,
+              -0.01720639552549489,
+              -0.07810722235374953,
+              -0.004795378217454717
+            ]
+          },
+          "3": {
+            "start_s": 2.60000000000061,
+            "end_s": 11.639999999979542,
+            "mean_action": [
+              0.1431221377373435,
+              -0.03311176215782966,
+              0.00878739539537182,
+              -0.016241460863112955,
+              -0.009004151195428068,
+              -0.09159161785098442,
+              -0.03511386024059625
+            ],
+            "median_wrench": [
+              -0.4775654638234011,
+              0.07727335558515802,
+              -2.2708985351425035,
+              -0.002854859170833412,
+              -0.142426345849611,
+              -0.006800054966247915
+            ]
+          },
+          "4": {
+            "start_s": 11.679999999979449,
+            "end_s": 49.16000000107017,
+            "mean_action": [
+              0.050612873509995986,
+              -0.02154450552319091,
+              0.0019451903013689585,
+              0.1081760051260563,
+              0.006118825685903604,
+              0.014393181888371718,
+              0.02290082656219176
+            ],
+            "median_wrench": [
+              -0.0005093181014969102,
+              0.0008936365948946008,
+              -0.6586579110893188,
+              0.003718564564917334,
+              0.026001142251403028,
+              0.015543541187115928
+            ]
+          },
+          "5": {
+            "start_s": 49.2000000010715,
+            "end_s": 49.80000000109142,
+            "mean_action": [
+              0.09193505701597823,
+              0.02764316262665782,
+              -0.027406233818402355,
+              3.310830510485892e-05,
+              0.04842893622207965,
+              0.042545246135198056,
+              0.03442610430757354
+            ],
+            "median_wrench": [
+              0.060384226326623984,
+              -0.025999410682631965,
+              -0.8792261406946744,
+              -0.015195885485189534,
+              -0.04308607232791718,
+              0.009098646174138747
+            ]
+          },
+          "6": {
+            "start_s": 49.84000000109275,
+            "end_s": 53.040000001198976,
+            "mean_action": [
+              0.10720158951602596,
+              -0.004541469600364019,
+              -0.003510469652244407,
+              0.00018552174659255627,
+              0.0009263435521058843,
+              -0.025148968873275293,
+              0.005358602836232685
+            ],
+            "median_wrench": [
+              -0.467945901346327,
+              0.06839540570612031,
+              -0.10775726399406077,
+              0.0014985381246351848,
+              0.006729259188488949,
+              0.02819032906136687
+            ]
+          },
+          "7": {
+            "start_s": 53.080000001200304,
+            "end_s": 55.00000000126404,
+            "mean_action": [
+              0.10212631366144531,
+              -0.002357480304747352,
+              -0.0045757495208229755,
+              -0.00017080114623036107,
+              0.01908355485171577,
+              0.029460509642090463,
+              0.010883188559042209
+            ],
+            "median_wrench": [
+              -1.9409755734950749,
+              0.7548710919560047,
+              -0.9462416095368269,
+              -0.05706273032285758,
+              -0.119289774590713,
+              -0.03612283663247484
+            ]
+          }
+        },
+        "actor_replay_performed": true,
+        "common_filter_replay_max_abs": 0.0,
+        "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+        "trace_sha256": "5385bcac352e6fc4e74eeca64dd7773ad1c53e70a3c57289b89d9610ae9e5f80",
+        "chain_sha256": "9908a0690aa48c602820472f8c3b8ac822bdd95af53c45f5db008d48f858d067",
+        "metrics_sha256": "9aec0fb5e0d38d7c0e9277be6b7864fc0dd199ca0b641f85bb272f0a220da556"
+      },
+      "audit_sha256": "956a79196d7c36a2a7b72194e299384924e40a4ffb9aa8f0c2d1e802db05d581"
+    },
+    {
+      "id": "corner_teacher",
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "qualified",
+        "scene": "corner",
+        "task_success": true,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "ee3dcc7c4264dd77d45533f686af53ea656a02d743abc2c25cb59d1bbc31e724",
+        "execution_sha256": "b5c2d6496ac2946f234cc799db61bc72339b896cb635891f6f5cd92025757313",
+        "input_hashes": {
+          "execution.json": "b5c2d6496ac2946f234cc799db61bc72339b896cb635891f6f5cd92025757313",
+          "legacy.json": "9d1e9a631a6f5d0b2e1edae1481767c3afde6a5294f21b6298b4490b8fe9909e",
+          "teacher.json": "4dd9195007c52fb3be0225045be82a2aeb4b17b8633c0705b5f24879e3f5f435",
+          "scene.mjb": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+          "trajectory.npz": "ee3dcc7c4264dd77d45533f686af53ea656a02d743abc2c25cb59d1bbc31e724",
+          "filter.npz": "183f818e980b48f5532abd12e1c0df19692d590de5ac456181c1627a198b8c34",
+          "substeps.npz": "53dcdd40c997ad7c03f6aef7613c45f7f779c3809897af067d0f2d04af922c77",
+          "SOURCE_HASHES.json": "9eefce97ba6704495c2bf41ee5db3df521bbe38242e8b509e947e9ed0b111d62",
+          "source.tar.gz": "eaaa0452163e2b9b90cc031e0e74b352720d07fece66e80024983ad5d4c4ab89",
+          "INDEPENDENT_AUDIT.json": "6c5fc8a42ec8a1574341c069b11f38f4dcadd5939656663a53fae9e7dca79af3"
+        },
+        "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+        "substeps": 260000,
+        "metrics": {
+          "peak_torque_nm": [
+            0.1233462320896789,
+            51.38173246835269,
+            0.5925820761954038,
+            29.838198773632165,
+            0.7644554145520762,
+            6.132425117142921,
+            0.9185658312504531
+          ],
+          "peak_joint_velocity_radps": [
+            0.0017604873017411664,
+            0.3509764211296363,
+            0.0010300554001554769,
+            0.6672101626630829,
+            0.0014261627917295683,
+            0.7484976874707032,
+            0.796486806062995
+          ],
+          "max_external_penetration_m": 0.0,
+          "disturbance_contact_s": 0.0,
+          "disturbance_contact_comfort_proxy": null
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "aba98da00680e69573a3d17b1ea3950b7b31a102c065a4100c76b5e10176a11b",
+      "model_sha256": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402"
+    },
+    {
+      "id": "corner_esn_ridge",
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "failed_preserved",
+        "scene": "corner",
+        "task_success": false,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "6a6a605b0528dee02d9dd4055729283cb5761e33596fe088a5de80108b6e88a2",
+        "execution_sha256": "711f4a4a2fc0bd57c996565d44188911a5abb19c5b996e557ee4300fe0ef0791",
+        "input_hashes": {
+          "execution.json": "711f4a4a2fc0bd57c996565d44188911a5abb19c5b996e557ee4300fe0ef0791",
+          "legacy.json": "44b663fc02e2589dd540f415928bf91e794b38d3040d2c0d5a5d125229de47c2",
+          "teacher.json": "4dd9195007c52fb3be0225045be82a2aeb4b17b8633c0705b5f24879e3f5f435",
+          "scene.mjb": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+          "trajectory.npz": "6a6a605b0528dee02d9dd4055729283cb5761e33596fe088a5de80108b6e88a2",
+          "filter.npz": "0eeaa69ac3f7f02e095fc027076309d8bab5d3b5bc55d30feef6aa952f87b5ee",
+          "substeps.npz": "1426863bfbb428d7cb7bf305125979400f293c9d10bfde06b2e12a7cc339710e",
+          "SOURCE_HASHES.json": "9eefce97ba6704495c2bf41ee5db3df521bbe38242e8b509e947e9ed0b111d62",
+          "source.tar.gz": "eaaa0452163e2b9b90cc031e0e74b352720d07fece66e80024983ad5d4c4ab89",
+          "INDEPENDENT_AUDIT.json": "c522302a8b36bde2a2bc750b578226f0a19fc6bdffbb1ffd3ea9d25998cebd75"
+        },
+        "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+        "substeps": 260000,
+        "metrics": {
+          "peak_torque_nm": [
+            7.634698285110086,
+            87.0,
+            5.839185375165574,
+            49.17868702850115,
+            2.454337323343136,
+            8.468149473916537,
+            1.989850334468485
+          ],
+          "peak_joint_velocity_radps": [
+            0.24135743220812325,
+            1.3596090828617315,
+            0.20431888280572869,
+            1.3938837356590907,
+            0.5159394892986233,
+            1.2636225266094825,
+            1.0685989865243193
+          ],
+          "max_external_penetration_m": 0.0,
+          "disturbance_contact_s": 0.0,
+          "disturbance_contact_comfort_proxy": null
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "7d51e8933c5b510250aa2d9dec084e597c1479bb1bee8a6f18e3f2a1e7ae422d",
+      "model_sha256": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+      "student_on_new_teacher_history": {
+        "mse": 0.001978781792255821,
+        "max_abs": 0.6684456034763617,
+        "channel_rmse": [
+          0.022529511764403737,
+          0.09851152230923607,
+          0.03159424053890153,
+          0.04582988792476835,
+          0.0068588964410481795,
+          0.021100317735950978,
+          0.006966425653900228
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 1.6444467889391727e-13,
+            "max_abs": 3.230069889141453e-06
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 0.00016332121816587866,
+            "max_abs": 0.09779607921769441
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 0.009208777757916294,
+            "max_abs": 0.6684456034763617
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 0.0029171938495887646,
+            "max_abs": 0.25964798567768077
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 0.0003298304530381367,
+            "max_abs": 0.038971125436932146
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 0.00022494037257871785,
+            "max_abs": 0.03523377960217011
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 2.9503147698212688e-05,
+            "max_abs": 0.013445759377052547
+          }
+        ]
+      },
+      "teacher_counterfactual_on_student_history": {
+        "mse": 0.19658527387352137,
+        "max_abs": 2.0,
+        "channel_rmse": [
+          0.3240303982502985,
+          0.6802600058482828,
+          0.4434601900888307,
+          0.5867011072160513,
+          0.16565480138967179,
+          0.4383251737713985,
+          0.21886512280479015
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 1.6445570767090145e-13,
+            "max_abs": 3.2300291894348573e-06
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 0.17734047618601875,
+            "max_abs": 1.3370840065984468
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 0.3876282787432729,
+            "max_abs": 1.8620733944904881
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 0.6032289859796685,
+            "max_abs": 2.0
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 0.10062011384736184,
+            "max_abs": 1.0146014225527742
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 0.0049065949672923714,
+            "max_abs": 0.24087332910090223
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 0.0010660418607829232,
+            "max_abs": 0.09656521453139244
+          }
+        ]
+      },
+      "student_on_original_training_history": {
+        "mse": 1.1227906216828693e-06,
+        "max_abs": 0.011781807177895547,
+        "channel_rmse": [
+          0.0007149072058633857,
+          0.00235263058975649,
+          0.00046715673264395406,
+          0.0010752692678438133,
+          0.00015961152902002775,
+          0.0006345091625330297,
+          0.0001051390420742796
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 1.6444467889391727e-13,
+            "max_abs": 3.230069889141453e-06
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 1.7374381872214326e-06,
+            "max_abs": 0.011781807177895547
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 1.1501806713261567e-06,
+            "max_abs": 0.005301717869248934
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 2.179617365104605e-06,
+            "max_abs": 0.009520451131625862
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 1.5288235586204552e-06,
+            "max_abs": 0.009432563385988156
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 6.442451201246352e-07,
+            "max_abs": 0.00876043565702778
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 4.617042435042156e-08,
+            "max_abs": 0.0006739213912929903
+          }
+        ]
+      },
+      "baseline_trajectory_sha256": "b94b98d48eea747884dc856a033a0c993a5cc309bd5ffeeb2bc29b769708262f",
+      "checkpoint_sha256": "03550f4246dbea2170c5c1f9b39a6420c68e15be97bb21cda94a0f652a02e80e"
+    },
+    {
+      "id": "rod_teacher",
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "qualified",
+        "scene": "rod",
+        "task_success": true,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "e39377a869c3c0a4af5b699d732a21b30264e62c02eda5be0fb9aad2e5b2a919",
+        "execution_sha256": "1fb1316441b9f027290fcad17844aff4e4dd6f8f4be1df85b45e6b39df9a4f6b",
+        "input_hashes": {
+          "execution.json": "1fb1316441b9f027290fcad17844aff4e4dd6f8f4be1df85b45e6b39df9a4f6b",
+          "legacy.json": "b88ed687c86fa6041dd8be2c50740c6f00d5bbbcfefa7db980c69d202342c25a",
+          "teacher.json": "4dd9195007c52fb3be0225045be82a2aeb4b17b8633c0705b5f24879e3f5f435",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "e39377a869c3c0a4af5b699d732a21b30264e62c02eda5be0fb9aad2e5b2a919",
+          "filter.npz": "21cd269dc286b7b28bcbfe047e7a39ff0e7b2abd890a03b452ffb80ddfa0b6ef",
+          "substeps.npz": "95a3372a45d6df55fe99df7fb38638d785676f68aa42dbd07f031ab021019b6d",
+          "SOURCE_HASHES.json": "9eefce97ba6704495c2bf41ee5db3df521bbe38242e8b509e947e9ed0b111d62",
+          "source.tar.gz": "eaaa0452163e2b9b90cc031e0e74b352720d07fece66e80024983ad5d4c4ab89",
+          "INDEPENDENT_AUDIT.json": "44623fdded3bf759b92d8f26aef64dedcb90e8fa5489e0b0090468416534567c",
+          "ROD_YIELD_REJOIN_AUDIT_V3.json": "42649f438dc0cb2e4c2864178385a047420dc7bf0bc34494c867ae4e6ff43d6c"
+        },
+        "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+        "substeps": 400000,
+        "metrics": {
+          "peak_torque_nm": [
+            1.2471129539286832,
+            34.09209495780348,
+            1.436473806654173,
+            27.700881546191834,
+            1.2836043207677779,
+            3.2905092885687584,
+            0.6297028271153465
+          ],
+          "peak_joint_velocity_radps": [
+            0.0503932565017845,
+            0.1658283558329017,
+            0.062425326553582364,
+            0.3723152556882105,
+            0.059118143165200296,
+            0.21790973568925104,
+            0.15241187347124371
+          ],
+          "max_external_penetration_m": 0.00014569130360753184,
+          "disturbance_contact_s": 0.049650000000000014,
+          "disturbance_contact_comfort_proxy": 1.0
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "53366977738fedde61132f0d80c8ef017c434b9c990b37f90fa84836ea77fbae",
+      "model_sha256": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+      "rod_behavior": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "fr3_link7",
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.842699999995383,
+        "yield_excursion_m": 0.01667115705595486,
+        "yield_start_s": 4.879999999995296,
+        "pass_s": 7.919999999988211,
+        "rejoin_start_s": 9.359999999984856,
+        "rejoin_confirmed_s": 9.43999999998467,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "e39377a869c3c0a4af5b699d732a21b30264e62c02eda5be0fb9aad2e5b2a919",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "b88ed687c86fa6041dd8be2c50740c6f00d5bbbcfefa7db980c69d202342c25a",
+          "recipe.json": "fd4fea86d29691f48d2b948bd9c4ac6bfc05893921c0a89e7f0986dc055f4b81",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      }
+    },
+    {
+      "id": "rod_esn_ridge",
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "qualified",
+        "scene": "rod",
+        "task_success": true,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "cf07b102c4afe5b50e2aea3a0bce7505b5f8bc4c6a6ca3f559bad97915c11804",
+        "execution_sha256": "c3f2c683d748a2151771e7a71aa00bb7f15b0e032c80fbb67a3e73d38eadd234",
+        "input_hashes": {
+          "execution.json": "c3f2c683d748a2151771e7a71aa00bb7f15b0e032c80fbb67a3e73d38eadd234",
+          "legacy.json": "873fe50cf9c73030a0d7eb55046f7753f0548ac25c8a4082f516b76c402be006",
+          "teacher.json": "4dd9195007c52fb3be0225045be82a2aeb4b17b8633c0705b5f24879e3f5f435",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "cf07b102c4afe5b50e2aea3a0bce7505b5f8bc4c6a6ca3f559bad97915c11804",
+          "filter.npz": "955a726934402b45b85b5194dd33b0b8dcdac465c4e08e9dd23bdfb4376c987f",
+          "substeps.npz": "bbda55b1de6dbda88c4ab96ef63ef8736e2c3b1abe223de3a03f4921ec1f56db",
+          "SOURCE_HASHES.json": "9eefce97ba6704495c2bf41ee5db3df521bbe38242e8b509e947e9ed0b111d62",
+          "source.tar.gz": "eaaa0452163e2b9b90cc031e0e74b352720d07fece66e80024983ad5d4c4ab89",
+          "INDEPENDENT_AUDIT.json": "b7cf469072beded38dc5fa1d021a27d64ad9fed9ae8f273c661d6220cbe29d1d",
+          "ROD_YIELD_REJOIN_AUDIT_V3.json": "a4b79eecd4a271ec4bdd29c1972e2a191f83c8db00f02b6c155ae258d7be6e8f"
+        },
+        "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+        "substeps": 400000,
+        "metrics": {
+          "peak_torque_nm": [
+            1.1316267215897622,
+            34.513469448116794,
+            1.2976992722516445,
+            27.91759798087226,
+            1.2831232681894669,
+            3.2905088594116876,
+            0.6419979420649172
+          ],
+          "peak_joint_velocity_radps": [
+            0.04939069274077574,
+            0.1661912900974658,
+            0.06053623389913555,
+            0.3756524041546452,
+            0.059110974167689116,
+            0.21800122471586236,
+            0.1464751045033443
+          ],
+          "max_external_penetration_m": 0.00013987853290220505,
+          "disturbance_contact_s": 0.051150000000000015,
+          "disturbance_contact_comfort_proxy": 1.0
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "e15e3aa7a724f66859785c02a5e1a30d10e002c69e64ea9fb3384f2e3af19e17",
+      "model_sha256": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+      "student_on_new_teacher_history": {
+        "mse": 6.799134363858285e-07,
+        "max_abs": 0.012051142248070294,
+        "channel_rmse": [
+          0.0006412861137400218,
+          0.0015502626046944318,
+          0.000630808834278607,
+          0.0010038810601496599,
+          0.00015419761961773032,
+          0.000684662510967012,
+          0.0002158596844259836
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 6.528135772777117e-12,
+            "max_abs": 2.1773784774118136e-05
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 6.005951227682418e-07,
+            "max_abs": 0.004786899658830571
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 3.2463567228046892e-06,
+            "max_abs": 0.010990634684477002
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 1.5934740439015235e-06,
+            "max_abs": 0.012051142248070294
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 5.518064001925532e-07,
+            "max_abs": 0.0032159753193691763
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 4.20604115251855e-07,
+            "max_abs": 0.004099921263961043
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 2.400218839425927e-07,
+            "max_abs": 0.0015555428409990766
+          },
+          {
+            "start_s": 14.0,
+            "end_s": 16.0,
+            "mse": 1.0547779556857217e-07,
+            "max_abs": 0.0013035081480493238
+          },
+          {
+            "start_s": 16.0,
+            "end_s": 18.0,
+            "mse": 2.0293281560827458e-08,
+            "max_abs": 0.0003434624332313564
+          },
+          {
+            "start_s": 18.0,
+            "end_s": 20.0,
+            "mse": 8.578030750307106e-09,
+            "max_abs": 0.0002937001307008412
+          },
+          {
+            "start_s": 20.0,
+            "end_s": 22.0,
+            "mse": 5.426653932521088e-09,
+            "max_abs": 0.0001843328190435756
+          }
+        ]
+      },
+      "teacher_counterfactual_on_student_history": {
+        "mse": 4.581361587254614e-06,
+        "max_abs": 0.026475504629622365,
+        "channel_rmse": [
+          0.0021549042036354236,
+          0.0037263411889998676,
+          0.002210698547964807,
+          0.0025167863489867787,
+          0.0006719377555031896,
+          0.0013063691984491331,
+          0.00040099613558304044
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 6.528281147591907e-12,
+            "max_abs": 2.1773784774118136e-05
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 2.3903969404062645e-06,
+            "max_abs": 0.016655761425608907
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 2.2583160026517472e-05,
+            "max_abs": 0.026475504629622365
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 1.0133543031167796e-06,
+            "max_abs": 0.003210184992405128
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 1.899211320337434e-06,
+            "max_abs": 0.0045490606149656415
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 1.2451979164493024e-05,
+            "max_abs": 0.01561645857121223
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 5.1994509188912455e-06,
+            "max_abs": 0.014517856500807383
+          },
+          {
+            "start_s": 14.0,
+            "end_s": 16.0,
+            "mse": 1.7595955600066757e-07,
+            "max_abs": 0.001515339229638132
+          },
+          {
+            "start_s": 16.0,
+            "end_s": 18.0,
+            "mse": 3.905337658262405e-08,
+            "max_abs": 0.0006218450067970605
+          },
+          {
+            "start_s": 18.0,
+            "end_s": 20.0,
+            "mse": 1.338966303754238e-08,
+            "max_abs": 0.0003121223411362477
+          },
+          {
+            "start_s": 20.0,
+            "end_s": 22.0,
+            "mse": 7.813708886837081e-09,
+            "max_abs": 0.00017338160538644547
+          }
+        ]
+      },
+      "student_on_original_training_history": {
+        "mse": 6.799134363858285e-07,
+        "max_abs": 0.012051142248070294,
+        "channel_rmse": [
+          0.0006412861137400218,
+          0.0015502626046944318,
+          0.000630808834278607,
+          0.0010038810601496599,
+          0.00015419761961773032,
+          0.000684662510967012,
+          0.0002158596844259836
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 6.528135772777117e-12,
+            "max_abs": 2.1773784774118136e-05
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 6.005951227682418e-07,
+            "max_abs": 0.004786899658830571
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 3.2463567228046892e-06,
+            "max_abs": 0.010990634684477002
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 1.5934740439015235e-06,
+            "max_abs": 0.012051142248070294
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 5.518064001925532e-07,
+            "max_abs": 0.0032159753193691763
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 4.20604115251855e-07,
+            "max_abs": 0.004099921263961043
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 2.400218839425927e-07,
+            "max_abs": 0.0015555428409990766
+          },
+          {
+            "start_s": 14.0,
+            "end_s": 16.0,
+            "mse": 1.0547779556857217e-07,
+            "max_abs": 0.0013035081480493238
+          },
+          {
+            "start_s": 16.0,
+            "end_s": 18.0,
+            "mse": 2.0293281560827458e-08,
+            "max_abs": 0.0003434624332313564
+          },
+          {
+            "start_s": 18.0,
+            "end_s": 20.0,
+            "mse": 8.578030750307106e-09,
+            "max_abs": 0.0002937001307008412
+          },
+          {
+            "start_s": 20.0,
+            "end_s": 22.0,
+            "mse": 5.426653932521088e-09,
+            "max_abs": 0.0001843328190435756
+          }
+        ]
+      },
+      "baseline_trajectory_sha256": "e39377a869c3c0a4af5b699d732a21b30264e62c02eda5be0fb9aad2e5b2a919",
+      "checkpoint_sha256": "03550f4246dbea2170c5c1f9b39a6420c68e15be97bb21cda94a0f652a02e80e",
+      "rod_behavior": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "fr3_link7",
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.828449999995416,
+        "yield_excursion_m": 0.015251675770015523,
+        "yield_start_s": 4.839999999995389,
+        "pass_s": 7.919999999988211,
+        "rejoin_start_s": 9.279999999985042,
+        "rejoin_confirmed_s": 9.359999999984856,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "cf07b102c4afe5b50e2aea3a0bce7505b5f8bc4c6a6ca3f559bad97915c11804",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "873fe50cf9c73030a0d7eb55046f7753f0548ac25c8a4082f516b76c402be006",
+          "recipe.json": "946e750456ac1bb45b72dea28e5cf15b6ea16bb26959deb27dc3adfd0ca7e1de",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      }
+    },
+    {
+      "id": "ball_teacher",
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "qualified",
+        "scene": "ball",
+        "task_success": true,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "5b19f21b6db3009edf7c5a47f798239e2de600d8c60d8653970c47ad5205011b",
+        "execution_sha256": "57a0e22b63a72453ee869dc8c7317b980e70c8849f4c0f94579161605a1c4d7d",
+        "input_hashes": {
+          "execution.json": "57a0e22b63a72453ee869dc8c7317b980e70c8849f4c0f94579161605a1c4d7d",
+          "legacy.json": "1c416cb9b928f17c5aa8cf3ecf8e1c6ebf823d28229a63e7ba65866e78a65500",
+          "teacher.json": "4dd9195007c52fb3be0225045be82a2aeb4b17b8633c0705b5f24879e3f5f435",
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "5b19f21b6db3009edf7c5a47f798239e2de600d8c60d8653970c47ad5205011b",
+          "filter.npz": "e5a6d4a033bff1b4e9ba50dcab2d5d759d9c0fb477135f7878fd68270ac43646",
+          "substeps.npz": "59f9cb6bf019d3a9ce37e656786a5e26b393ef0c380a220eb46acbb54d5c9317",
+          "SOURCE_HASHES.json": "9eefce97ba6704495c2bf41ee5db3df521bbe38242e8b509e947e9ed0b111d62",
+          "source.tar.gz": "eaaa0452163e2b9b90cc031e0e74b352720d07fece66e80024983ad5d4c4ab89",
+          "INDEPENDENT_AUDIT.json": "a49e6ed9869e421ae28394d531b55d543b89c7ff212a6225eff59b94bd428ccd"
+        },
+        "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+        "substeps": 600000,
+        "metrics": {
+          "peak_torque_nm": [
+            4.414066283491611,
+            47.51915404156389,
+            4.45942272318464,
+            27.686403911694327,
+            2.3966821966692478,
+            3.6931839471242243,
+            1.0203072460337317
+          ],
+          "peak_joint_velocity_radps": [
+            0.1425995462122147,
+            0.26509279455794643,
+            0.16463631532515607,
+            0.3928022942918272,
+            0.5564968439439891,
+            0.17878609366719392,
+            0.20379354970205077
+          ],
+          "max_external_penetration_m": 0.0,
+          "disturbance_contact_s": 0.019550000000000005,
+          "disturbance_contact_comfort_proxy": 1.0
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "2fdfa0ba6361cefca287a4683d34df1b6fc106a51ee31ce6a29e984f3b0e27c7",
+      "model_sha256": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a"
+    },
+    {
+      "id": "ball_esn_ridge",
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "qualified",
+        "scene": "ball",
+        "task_success": true,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "cbc488aa2a0fd305a1cf7ccebf77249236a4f5324fa93bbfe15d53934f3fa352",
+        "execution_sha256": "1960d28f8a0fb4da4303b0e6e8c7dce5d91a8de5cd9d3e45fb49f020b1400fed",
+        "input_hashes": {
+          "execution.json": "1960d28f8a0fb4da4303b0e6e8c7dce5d91a8de5cd9d3e45fb49f020b1400fed",
+          "legacy.json": "f84356f4ac4751d4a0997c0dce00f91da9645c2c34c8c9770d5b539ac526a0b1",
+          "teacher.json": "4dd9195007c52fb3be0225045be82a2aeb4b17b8633c0705b5f24879e3f5f435",
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "cbc488aa2a0fd305a1cf7ccebf77249236a4f5324fa93bbfe15d53934f3fa352",
+          "filter.npz": "193183a87a7fb28ab70a03f6cae9f98c559a471d8a47d1c433d5ca759c6f639f",
+          "substeps.npz": "214fd3c8c121931adf68403ec9616f726a52e418fb77ba695614b4306f9178f2",
+          "SOURCE_HASHES.json": "9eefce97ba6704495c2bf41ee5db3df521bbe38242e8b509e947e9ed0b111d62",
+          "source.tar.gz": "eaaa0452163e2b9b90cc031e0e74b352720d07fece66e80024983ad5d4c4ab89",
+          "INDEPENDENT_AUDIT.json": "a5692861060cc2921f7cf3ed6c00ad7f2a8dae0772c7fbc3e09d958b03c74205"
+        },
+        "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+        "substeps": 600000,
+        "metrics": {
+          "peak_torque_nm": [
+            4.415038461073235,
+            48.90868347093974,
+            4.460422524459955,
+            27.572675136100912,
+            2.3966812836932023,
+            3.699789663091254,
+            1.0203089502990357
+          ],
+          "peak_joint_velocity_radps": [
+            0.1426009688039227,
+            0.34019657324967956,
+            0.16463447911230883,
+            0.5495218421916607,
+            0.5564954120718023,
+            0.17594038513030452,
+            0.20379476284066525
+          ],
+          "max_external_penetration_m": 0.0,
+          "disturbance_contact_s": 0.019550000000000005,
+          "disturbance_contact_comfort_proxy": 1.0
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "628aabf7ed5e79b15c16c7f70676f4b35e4401b651ce76e32f26556714a7df6e",
+      "model_sha256": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+      "student_on_new_teacher_history": {
+        "mse": 1.4651303329735728e-06,
+        "max_abs": 0.01653448691736738,
+        "channel_rmse": [
+          0.00098075981898045,
+          0.0020387623835415947,
+          0.0007387920611172007,
+          0.0019456519095337303,
+          0.00019169358566999985,
+          0.0008706987328604423,
+          0.00010598431445444853
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 1.3472167187444582e-06,
+            "max_abs": 0.008789389106762802
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 4.5249750067931745e-07,
+            "max_abs": 0.006125390845619455
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 2.385049649601813e-06,
+            "max_abs": 0.0076738782352420015
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 2.625532314416788e-07,
+            "max_abs": 0.003043780090731873
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 3.2835052475841805e-07,
+            "max_abs": 0.0030856926164319447
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 4.3729942642709255e-07,
+            "max_abs": 0.0047244268399607645
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 2.3562778854560467e-06,
+            "max_abs": 0.012780538792140906
+          },
+          {
+            "start_s": 14.0,
+            "end_s": 16.0,
+            "mse": 1.114546851161999e-05,
+            "max_abs": 0.01653448691736738
+          },
+          {
+            "start_s": 16.0,
+            "end_s": 18.0,
+            "mse": 2.470501306640843e-06,
+            "max_abs": 0.008517383827510404
+          },
+          {
+            "start_s": 18.0,
+            "end_s": 20.0,
+            "mse": 5.297855799135518e-07,
+            "max_abs": 0.004658608898507201
+          },
+          {
+            "start_s": 20.0,
+            "end_s": 22.0,
+            "mse": 1.4234882325373665e-07,
+            "max_abs": 0.0010704710443257934
+          },
+          {
+            "start_s": 22.0,
+            "end_s": 24.0,
+            "mse": 1.0380842346856515e-07,
+            "max_abs": 0.0010471037141059237
+          },
+          {
+            "start_s": 24.0,
+            "end_s": 26.0,
+            "mse": 2.0383364920670704e-08,
+            "max_abs": 0.00038309515028218087
+          },
+          {
+            "start_s": 26.0,
+            "end_s": 28.0,
+            "mse": 6.517504347509848e-09,
+            "max_abs": 0.0002762543982416065
+          },
+          {
+            "start_s": 28.0,
+            "end_s": 30.0,
+            "mse": 3.1889801034433663e-09,
+            "max_abs": 0.0001581614998043738
+          },
+          {
+            "start_s": 30.0,
+            "end_s": 32.0,
+            "mse": 5.727146494562573e-09,
+            "max_abs": 0.0001581614998043738
+          }
+        ]
+      },
+      "teacher_counterfactual_on_student_history": {
+        "mse": 0.0004604238503696147,
+        "max_abs": 0.14198066712807927,
+        "channel_rmse": [
+          0.005169902762889813,
+          0.009498934030616595,
+          0.005473460050298239,
+          0.05510243635768085,
+          0.0026365896455395354,
+          0.00563520979357945,
+          0.0010319197839280462
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 2.3025298955264828e-06,
+            "max_abs": 0.01265419216199215
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 5.389639335711922e-05,
+            "max_abs": 0.09928576227897376
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 0.00021714407887559058,
+            "max_abs": 0.10205342712641888
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 1.3199266550357385e-06,
+            "max_abs": 0.00457282939370264
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 1.0180698141004137e-06,
+            "max_abs": 0.003440541513024747
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 0.00010309804965239478,
+            "max_abs": 0.06338512618147359
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 1.6548594720633314e-05,
+            "max_abs": 0.030500813124814063
+          },
+          {
+            "start_s": 14.0,
+            "end_s": 16.0,
+            "mse": 8.754000826205595e-05,
+            "max_abs": 0.029860545601339536
+          },
+          {
+            "start_s": 16.0,
+            "end_s": 18.0,
+            "mse": 6.263313063762952e-05,
+            "max_abs": 0.023955404343049713
+          },
+          {
+            "start_s": 18.0,
+            "end_s": 20.0,
+            "mse": 2.68886038225946e-05,
+            "max_abs": 0.019278531002851998
+          },
+          {
+            "start_s": 20.0,
+            "end_s": 22.0,
+            "mse": 3.736543858609882e-05,
+            "max_abs": 0.03355077168292171
+          },
+          {
+            "start_s": 22.0,
+            "end_s": 24.0,
+            "mse": 0.0008832356062678917,
+            "max_abs": 0.11328350391409082
+          },
+          {
+            "start_s": 24.0,
+            "end_s": 26.0,
+            "mse": 0.0015886129721428184,
+            "max_abs": 0.13234647485128279
+          },
+          {
+            "start_s": 26.0,
+            "end_s": 28.0,
+            "mse": 0.0019631264965257736,
+            "max_abs": 0.14127816521267952
+          },
+          {
+            "start_s": 28.0,
+            "end_s": 30.0,
+            "mse": 0.0018508651063994666,
+            "max_abs": 0.14198066712807927
+          },
+          {
+            "start_s": 30.0,
+            "end_s": 32.0,
+            "mse": 0.0018587914301097055,
+            "max_abs": 0.11304892658794317
+          }
+        ]
+      },
+      "student_on_original_training_history": {
+        "mse": 1.4651303329735728e-06,
+        "max_abs": 0.01653448691736738,
+        "channel_rmse": [
+          0.00098075981898045,
+          0.0020387623835415947,
+          0.0007387920611172007,
+          0.0019456519095337303,
+          0.00019169358566999985,
+          0.0008706987328604423,
+          0.00010598431445444853
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 1.3472167187444582e-06,
+            "max_abs": 0.008789389106762802
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 4.5249750067931745e-07,
+            "max_abs": 0.006125390845619455
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 2.385049649601813e-06,
+            "max_abs": 0.0076738782352420015
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 2.625532314416788e-07,
+            "max_abs": 0.003043780090731873
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 3.2835052475841805e-07,
+            "max_abs": 0.0030856926164319447
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 4.3729942642709255e-07,
+            "max_abs": 0.0047244268399607645
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 2.3562778854560467e-06,
+            "max_abs": 0.012780538792140906
+          },
+          {
+            "start_s": 14.0,
+            "end_s": 16.0,
+            "mse": 1.114546851161999e-05,
+            "max_abs": 0.01653448691736738
+          },
+          {
+            "start_s": 16.0,
+            "end_s": 18.0,
+            "mse": 2.470501306640843e-06,
+            "max_abs": 0.008517383827510404
+          },
+          {
+            "start_s": 18.0,
+            "end_s": 20.0,
+            "mse": 5.297855799135518e-07,
+            "max_abs": 0.004658608898507201
+          },
+          {
+            "start_s": 20.0,
+            "end_s": 22.0,
+            "mse": 1.4234882325373665e-07,
+            "max_abs": 0.0010704710443257934
+          },
+          {
+            "start_s": 22.0,
+            "end_s": 24.0,
+            "mse": 1.0380842346856515e-07,
+            "max_abs": 0.0010471037141059237
+          },
+          {
+            "start_s": 24.0,
+            "end_s": 26.0,
+            "mse": 2.0383364920670704e-08,
+            "max_abs": 0.00038309515028218087
+          },
+          {
+            "start_s": 26.0,
+            "end_s": 28.0,
+            "mse": 6.517504347509848e-09,
+            "max_abs": 0.0002762543982416065
+          },
+          {
+            "start_s": 28.0,
+            "end_s": 30.0,
+            "mse": 3.1889801034433663e-09,
+            "max_abs": 0.0001581614998043738
+          },
+          {
+            "start_s": 30.0,
+            "end_s": 32.0,
+            "mse": 5.727146494562573e-09,
+            "max_abs": 0.0001581614998043738
+          }
+        ]
+      },
+      "baseline_trajectory_sha256": "5b19f21b6db3009edf7c5a47f798239e2de600d8c60d8653970c47ad5205011b",
+      "checkpoint_sha256": "03550f4246dbea2170c5c1f9b39a6420c68e15be97bb21cda94a0f652a02e80e"
+    },
+    {
+      "id": "rod_rnn_scratch",
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "qualified",
+        "scene": "rod",
+        "task_success": true,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "4d6c4eb48ca73fc3cbc6a1bfae9c22644188b89bb9ca32c96f65a0b4bbd4394c",
+        "execution_sha256": "b4bf74a91241d500b337f93fda5727f2dc76bb1f575a75a5a2a1c3970afffa1e",
+        "input_hashes": {
+          "execution.json": "b4bf74a91241d500b337f93fda5727f2dc76bb1f575a75a5a2a1c3970afffa1e",
+          "legacy.json": "25fea29b88893ca43b6cffe4314ac25fa4cc92620f5daeb7552273b3a93892f8",
+          "teacher.json": "4dd9195007c52fb3be0225045be82a2aeb4b17b8633c0705b5f24879e3f5f435",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "4d6c4eb48ca73fc3cbc6a1bfae9c22644188b89bb9ca32c96f65a0b4bbd4394c",
+          "filter.npz": "21c5ebfbb6dc1fa2216d889768f95263e45dabe61294ebeba026cabdfe06793b",
+          "substeps.npz": "5088aee1de25f9aa3dbe778f41cdee0c5930c11c4a7455ee21cd3af86a829580",
+          "SOURCE_HASHES.json": "9eefce97ba6704495c2bf41ee5db3df521bbe38242e8b509e947e9ed0b111d62",
+          "source.tar.gz": "eaaa0452163e2b9b90cc031e0e74b352720d07fece66e80024983ad5d4c4ab89",
+          "INDEPENDENT_AUDIT.json": "d16776f7c694db057043e62a42ba67044f43143e64696d358398f6dc5fb2553f",
+          "ROD_YIELD_REJOIN_AUDIT_V3.json": "e486e80a4526cc1921aebe3b3125b3cb61f0f0fb994ff8e89745d55785d41ac7"
+        },
+        "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+        "substeps": 400000,
+        "metrics": {
+          "peak_torque_nm": [
+            1.2077730486973344,
+            34.09350599446669,
+            1.282520209365988,
+            27.627653141035143,
+            1.5446112094830806,
+            3.2913105090340493,
+            0.6413199099413811
+          ],
+          "peak_joint_velocity_radps": [
+            0.059335390643454534,
+            0.16760312759185925,
+            0.07037901281180806,
+            0.37286346071867554,
+            0.08044403529483624,
+            0.2141073847996193,
+            0.14893959035103857
+          ],
+          "max_external_penetration_m": 6.899836092629001e-05,
+          "disturbance_contact_s": 0.055300000000000016,
+          "disturbance_contact_comfort_proxy": 1.0
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "38adc836e5e64cb9512d286798d3b2459ea1fbe4c2574e7ea469eb93ccf8fd60",
+      "model_sha256": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+      "student_on_new_teacher_history": {
+        "mse": 1.3558635493560256e-06,
+        "max_abs": 0.01652411356217208,
+        "channel_rmse": [
+          0.0010090724559094397,
+          0.001186500756721224,
+          0.0009918094556239316,
+          0.0011571883276935,
+          0.00125664324986766,
+          0.0013382063122875402,
+          0.0011714582215417444
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 3.817335136134228e-07,
+            "max_abs": 0.0024403833536121924
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 7.246264791388683e-07,
+            "max_abs": 0.0027350140974428724
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 7.956758088358853e-06,
+            "max_abs": 0.01652411356217208
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 1.4065948857445282e-06,
+            "max_abs": 0.007238885096266178
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 1.4330518527481702e-06,
+            "max_abs": 0.008525381182213786
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 1.1503718275448353e-06,
+            "max_abs": 0.0054049345876389255
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 3.2193014941016547e-07,
+            "max_abs": 0.0013425497217034504
+          },
+          {
+            "start_s": 14.0,
+            "end_s": 16.0,
+            "mse": 1.166238110106876e-07,
+            "max_abs": 0.0008021143354970449
+          },
+          {
+            "start_s": 16.0,
+            "end_s": 18.0,
+            "mse": 4.064284822099246e-08,
+            "max_abs": 0.0005321917407339554
+          },
+          {
+            "start_s": 18.0,
+            "end_s": 20.0,
+            "mse": 1.8726309727404265e-08,
+            "max_abs": 0.0003859680286796186
+          },
+          {
+            "start_s": 20.0,
+            "end_s": 22.0,
+            "mse": 1.490618446177107e-08,
+            "max_abs": 0.00029353529881973484
+          }
+        ]
+      },
+      "teacher_counterfactual_on_student_history": {
+        "mse": 9.637172337162205e-06,
+        "max_abs": 0.06833897855619328,
+        "channel_rmse": [
+          0.002225400627254921,
+          0.0031123246376488275,
+          0.005659571911753928,
+          0.003078584511715414,
+          0.0014412641615529878,
+          0.002722408006986011,
+          0.001350573655254046
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 4.2855129501837034e-07,
+            "max_abs": 0.002498865468487526
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 3.570880967043321e-06,
+            "max_abs": 0.008928683096581357
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 7.931830379672762e-05,
+            "max_abs": 0.06833897855619328
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 4.591760904758181e-06,
+            "max_abs": 0.010761342887838485
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 3.963533077893785e-06,
+            "max_abs": 0.011500893008641567
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 2.6511653476573538e-06,
+            "max_abs": 0.009436160896065495
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 1.157512467232494e-06,
+            "max_abs": 0.002950406981909428
+          },
+          {
+            "start_s": 14.0,
+            "end_s": 16.0,
+            "mse": 4.145936148123595e-07,
+            "max_abs": 0.0017636626177557806
+          },
+          {
+            "start_s": 16.0,
+            "end_s": 18.0,
+            "mse": 1.5150877219814306e-07,
+            "max_abs": 0.00108825046713128
+          },
+          {
+            "start_s": 18.0,
+            "end_s": 20.0,
+            "mse": 6.236388161745997e-08,
+            "max_abs": 0.0007262580278179553
+          },
+          {
+            "start_s": 20.0,
+            "end_s": 22.0,
+            "mse": 4.187489420991165e-08,
+            "max_abs": 0.0005140671996454201
+          }
+        ]
+      },
+      "student_on_original_training_history": {
+        "mse": 1.3558635493560256e-06,
+        "max_abs": 0.01652411356217208,
+        "channel_rmse": [
+          0.0010090724559094397,
+          0.001186500756721224,
+          0.0009918094556239316,
+          0.0011571883276935,
+          0.00125664324986766,
+          0.0013382063122875402,
+          0.0011714582215417444
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 3.817335136134228e-07,
+            "max_abs": 0.0024403833536121924
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 7.246264791388683e-07,
+            "max_abs": 0.0027350140974428724
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 7.956758088358853e-06,
+            "max_abs": 0.01652411356217208
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 1.4065948857445282e-06,
+            "max_abs": 0.007238885096266178
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 1.4330518527481702e-06,
+            "max_abs": 0.008525381182213786
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 1.1503718275448353e-06,
+            "max_abs": 0.0054049345876389255
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 3.2193014941016547e-07,
+            "max_abs": 0.0013425497217034504
+          },
+          {
+            "start_s": 14.0,
+            "end_s": 16.0,
+            "mse": 1.166238110106876e-07,
+            "max_abs": 0.0008021143354970449
+          },
+          {
+            "start_s": 16.0,
+            "end_s": 18.0,
+            "mse": 4.064284822099246e-08,
+            "max_abs": 0.0005321917407339554
+          },
+          {
+            "start_s": 18.0,
+            "end_s": 20.0,
+            "mse": 1.8726309727404265e-08,
+            "max_abs": 0.0003859680286796186
+          },
+          {
+            "start_s": 20.0,
+            "end_s": 22.0,
+            "mse": 1.490618446177107e-08,
+            "max_abs": 0.00029353529881973484
+          }
+        ]
+      },
+      "baseline_trajectory_sha256": "e39377a869c3c0a4af5b699d732a21b30264e62c02eda5be0fb9aad2e5b2a919",
+      "checkpoint_sha256": "48ad3e48e0f51f9ff0dfd32fbf4627b4c6e83d802c13a0ecef9be43f5231600f",
+      "rod_behavior": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.300000000001075,
+        "retract_start_s": 12.800000000001075,
+        "contact_bodies": [
+          "fr3_link7",
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.741499999995619,
+        "yield_excursion_m": 0.02004149286480687,
+        "yield_start_s": 4.839999999995389,
+        "pass_s": 7.879999999988304,
+        "rejoin_start_s": 10.719999999981686,
+        "rejoin_confirmed_s": 10.7999999999815,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "4d6c4eb48ca73fc3cbc6a1bfae9c22644188b89bb9ca32c96f65a0b4bbd4394c",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "25fea29b88893ca43b6cffe4314ac25fa4cc92620f5daeb7552273b3a93892f8",
+          "recipe.json": "5cc136852d1ddb6124ae5451872e4e99ead31fdb7cb39f1598a1eae42edb52a6",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      }
+    },
+    {
+      "id": "rod_mlp_scratch",
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "qualified",
+        "scene": "rod",
+        "task_success": true,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "39a78ac81e39042b8d4c9b51b0538218b5e976ca79dc374748a24390d8ee02fa",
+        "execution_sha256": "530f8e354a4ad166e0a33a7cc52fe2c301235c1ae08d39a97cd29cb57588763d",
+        "input_hashes": {
+          "execution.json": "530f8e354a4ad166e0a33a7cc52fe2c301235c1ae08d39a97cd29cb57588763d",
+          "legacy.json": "f08c9f695c0cf3828c8d7dbf5063084c1e83d64fa5a1f18e0134bdda3ead42e9",
+          "teacher.json": "4dd9195007c52fb3be0225045be82a2aeb4b17b8633c0705b5f24879e3f5f435",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "39a78ac81e39042b8d4c9b51b0538218b5e976ca79dc374748a24390d8ee02fa",
+          "filter.npz": "d1b3710f80779c593f1a7574629f88fc114ec65c864f8fdc455d2a93abf7cfbd",
+          "substeps.npz": "9d8dded13a0f262f7d1e7b60c537b0df46af0ff59d952aff64c9ca7256cb36be",
+          "SOURCE_HASHES.json": "9eefce97ba6704495c2bf41ee5db3df521bbe38242e8b509e947e9ed0b111d62",
+          "source.tar.gz": "eaaa0452163e2b9b90cc031e0e74b352720d07fece66e80024983ad5d4c4ab89",
+          "INDEPENDENT_AUDIT.json": "1b2ccb6dc673416c22435d4c1fffc043fae219cd56bb97f70facda3f09a227bc",
+          "ROD_YIELD_REJOIN_AUDIT_V3.json": "e1bb3c67f07eeece20dd24f3a9aba00d627d72907bff3d28efdb12226213127d"
+        },
+        "audit_source_sha256": "aa8cbebbc0b264c6a8e6468f63a98f1790a30a4f79c345a1670ee868153c1753",
+        "substeps": 400000,
+        "metrics": {
+          "peak_torque_nm": [
+            1.8561112881012907,
+            34.35698132394838,
+            1.9889588745262534,
+            27.489940789924795,
+            1.5424387368528505,
+            3.292473263622374,
+            0.6467050108508624
+          ],
+          "peak_joint_velocity_radps": [
+            0.0805813063196647,
+            0.20365466103988877,
+            0.09646340714027025,
+            0.3921243034391899,
+            0.08837058213258218,
+            0.24201051378349092,
+            0.18765480184033492
+          ],
+          "max_external_penetration_m": 9.153430836378918e-05,
+          "disturbance_contact_s": 0.08545000000000003,
+          "disturbance_contact_comfort_proxy": 1.0
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "363c8ec30e99950d776ad1d5d54882963f8efd6a45c31b0c7adb061f25157e3c",
+      "model_sha256": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+      "student_on_new_teacher_history": {
+        "mse": 1.4840986060588212e-05,
+        "max_abs": 0.05316973256728031,
+        "channel_rmse": [
+          0.0026003984709407086,
+          0.006841302341747449,
+          0.002920310246049823,
+          0.0030130971109204245,
+          0.0031302537908147387,
+          0.004472866935378413,
+          0.001705701889462361
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 3.085995447576561e-06,
+            "max_abs": 0.009992638345004972
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 3.9621279759437e-05,
+            "max_abs": 0.024449791772482667
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 7.593413266128384e-05,
+            "max_abs": 0.05316973256728031
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 1.5400206313890073e-05,
+            "max_abs": 0.03862101061460059
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 9.459235845116442e-06,
+            "max_abs": 0.02603088279992423
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 2.879685471898993e-06,
+            "max_abs": 0.013744297439988735
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 5.138244993100822e-07,
+            "max_abs": 0.0028374670534937157
+          },
+          {
+            "start_s": 14.0,
+            "end_s": 16.0,
+            "mse": 3.3596086463397955e-07,
+            "max_abs": 0.0011692029126442124
+          },
+          {
+            "start_s": 16.0,
+            "end_s": 18.0,
+            "mse": 2.4900543119066455e-07,
+            "max_abs": 0.0010418419643795176
+          },
+          {
+            "start_s": 18.0,
+            "end_s": 20.0,
+            "mse": 2.2601044388950727e-07,
+            "max_abs": 0.0009697706520964338
+          },
+          {
+            "start_s": 20.0,
+            "end_s": 22.0,
+            "mse": 2.3574482336873138e-07,
+            "max_abs": 0.0009697706520964338
+          }
+        ]
+      },
+      "teacher_counterfactual_on_student_history": {
+        "mse": 9.142958924199769e-05,
+        "max_abs": 0.10442253145666686,
+        "channel_rmse": [
+          0.005818310049433313,
+          0.016948740926782457,
+          0.00842351413732309,
+          0.011277269824951888,
+          0.0041029026970649425,
+          0.009999017437846683,
+          0.00198695960428476
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 3.5925335238268385e-06,
+            "max_abs": 0.009992638345004972
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 8.444374667880574e-05,
+            "max_abs": 0.07036537863420683
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 0.00039836444822716324,
+            "max_abs": 0.10442253145666686
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 0.00028439959133649617,
+            "max_abs": 0.07378680014703386
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 0.00010935567292053684,
+            "max_abs": 0.04193072624245667
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 7.361191464782054e-06,
+            "max_abs": 0.010591996838559875
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 2.3766555892472705e-05,
+            "max_abs": 0.020843062981755638
+          },
+          {
+            "start_s": 14.0,
+            "end_s": 16.0,
+            "mse": 3.647264252176893e-07,
+            "max_abs": 0.0013393300600021813
+          },
+          {
+            "start_s": 16.0,
+            "end_s": 18.0,
+            "mse": 3.4562332821400234e-07,
+            "max_abs": 0.0013945126024103435
+          },
+          {
+            "start_s": 18.0,
+            "end_s": 20.0,
+            "mse": 6.820656724849466e-07,
+            "max_abs": 0.0021777356755027393
+          },
+          {
+            "start_s": 20.0,
+            "end_s": 22.0,
+            "mse": 9.224744867649572e-07,
+            "max_abs": 0.0021777356755027393
+          }
+        ]
+      },
+      "student_on_original_training_history": {
+        "mse": 1.4840986060588212e-05,
+        "max_abs": 0.05316973256728031,
+        "channel_rmse": [
+          0.0026003984709407086,
+          0.006841302341747449,
+          0.002920310246049823,
+          0.0030130971109204245,
+          0.0031302537908147387,
+          0.004472866935378413,
+          0.001705701889462361
+        ],
+        "windows": [
+          {
+            "start_s": 0.0,
+            "end_s": 2.0,
+            "mse": 3.085995447576561e-06,
+            "max_abs": 0.009992638345004972
+          },
+          {
+            "start_s": 2.0,
+            "end_s": 4.0,
+            "mse": 3.9621279759437e-05,
+            "max_abs": 0.024449791772482667
+          },
+          {
+            "start_s": 4.0,
+            "end_s": 6.0,
+            "mse": 7.593413266128384e-05,
+            "max_abs": 0.05316973256728031
+          },
+          {
+            "start_s": 6.0,
+            "end_s": 8.0,
+            "mse": 1.5400206313890073e-05,
+            "max_abs": 0.03862101061460059
+          },
+          {
+            "start_s": 8.0,
+            "end_s": 10.0,
+            "mse": 9.459235845116442e-06,
+            "max_abs": 0.02603088279992423
+          },
+          {
+            "start_s": 10.0,
+            "end_s": 12.0,
+            "mse": 2.879685471898993e-06,
+            "max_abs": 0.013744297439988735
+          },
+          {
+            "start_s": 12.0,
+            "end_s": 14.0,
+            "mse": 5.138244993100822e-07,
+            "max_abs": 0.0028374670534937157
+          },
+          {
+            "start_s": 14.0,
+            "end_s": 16.0,
+            "mse": 3.3596086463397955e-07,
+            "max_abs": 0.0011692029126442124
+          },
+          {
+            "start_s": 16.0,
+            "end_s": 18.0,
+            "mse": 2.4900543119066455e-07,
+            "max_abs": 0.0010418419643795176
+          },
+          {
+            "start_s": 18.0,
+            "end_s": 20.0,
+            "mse": 2.2601044388950727e-07,
+            "max_abs": 0.0009697706520964338
+          },
+          {
+            "start_s": 20.0,
+            "end_s": 22.0,
+            "mse": 2.3574482336873138e-07,
+            "max_abs": 0.0009697706520964338
+          }
+        ]
+      },
+      "baseline_trajectory_sha256": "e39377a869c3c0a4af5b699d732a21b30264e62c02eda5be0fb9aad2e5b2a919",
+      "checkpoint_sha256": "c94859c6fedf24cfff360c43afb7ac8c03fd94de651bcf83faecf29c53847431",
+      "rod_behavior": {
+        "schema": "rod-yield-rejoin-audit-v3",
+        "status": "passed",
+        "checks": {
+          "hand_contact": true,
+          "hand_contact_time_measured": true,
+          "approached_from_before_rod": true,
+          "yielded_before_withdrawal": true,
+          "crossed_rod_while_held": true,
+          "persistent_rejoin_before_withdrawal": true,
+          "penetration_within_02mm": true
+        },
+        "actual_trigger_s": 4.260000000001169,
+        "retract_start_s": 12.760000000001169,
+        "contact_bodies": [
+          "fr3_link7",
+          "hand"
+        ],
+        "hand_bodies": [
+          "hand",
+          "left_finger",
+          "right_finger"
+        ],
+        "hand_contact_first_s": 4.698899999995718,
+        "yield_excursion_m": 0.02360109799461987,
+        "yield_start_s": 4.7999999999954825,
+        "pass_s": 8.239999999987466,
+        "rejoin_start_s": 12.519999999977491,
+        "rejoin_confirmed_s": 12.599999999977305,
+        "sample_period_s": 0.03999999999990678,
+        "criteria": {
+          "yield_m": 0.004,
+          "rejoin_tube_m": 0.005,
+          "hold_s": 0.08,
+          "gap_m": 0.002,
+          "crossing": "All physical hand/finger oriented bounding boxes beyond actual rod support plane by2mm; no guessed body-origin radius"
+        },
+        "hashes": {
+          "trajectory.npz": "39a78ac81e39042b8d4c9b51b0538218b5e976ca79dc374748a24390d8ee02fa",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "legacy.json": "f08c9f695c0cf3828c8d7dbf5063084c1e83d64fa5a1f18e0134bdda3ead42e9",
+          "recipe.json": "f134bc776253f7e8939f465ca157d032e625a0473fb179cbdc53f7e8e1d489c6",
+          "audit_rod_yield_rejoin_v3_20261028.py": "3f9eeb9fc930d9d1ae90b4e5eb7f572279ad045576f469eda6d43469b5fa8a98"
+        },
+        "limitations": "Development criterion, 40ms geometry samples plus substep contact summary. No integration or independent physics replay; not frozen-test Task/Strict."
+      }
+    }
+  ],
+  "office_pair_same_registered_command": true,
+  "limitations": "One identity per scene and one already-inspected office condition, not the final108 or unseen generalization. New corner teacher uses corrected scale, old ESN was fitted on mixed scales. Counterfactual teacher-on-student predictions are not physical teacher actions and never enter training."
+}

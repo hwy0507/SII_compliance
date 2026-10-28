@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 非RL teacher/接口退化定位，修复v6正在重新采集（覆盖下方等待对照）
+
+完整10对照已审计：同冻结office000新teacher .5/true Task/Strict false，历史1/false均true；同真实训练身份新teacher三场景合格，旧ESN棍推/球撞合格、桌角失败，RNN/MLP棍推也合格。桌角旧0.16与新0.32 teacher历史上ESN动作MSE1.12279e-6→1.97878e-3，不可用旧低loss宣称闭环已好。不是棍推行为本身全面失效。9回合因素对照完整，历史1/false球撞失败，其余三种组合在三个身份均合格；按开发恢复优先级选择1/true，保留平均、恢复历史速度权重。不是测试选学生或全12结论。
+
+v6采集14:29:05 UTC实际启动：`sii-special-collection-v6-20261028.service` parent903064，`outputs/special_scene_vmc_collection_20261028_v6`，计划SHAd20543be；原30条件/seed/24+6划分全保持、三场景重采、统一0.32、3GiB/单线程/swap0。采集器已添加source hash边界检查；禁止编辑该计划绑定源码或重复启动。原诊断883961、因素896071自然退出。旧35停止状态保留，不重启，不当新主结果。
+
+[最新交接](docs/NONRL_SPECIAL_REGRESSION_REPAIR_20261028.md)。旧35及完整10共1758文件/5923307520字节/SHA6d8a464d已逐成员和远端核验到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_regression_full_20261028_v1/FULL_REGRESSION.tar`，含原始物理，非仅小包；不含后9或在途v6。后9收据已Git准备，原始归档另行标注。下一步审30合格→公平三seed训练→三真实场景学生闭环检查→完整冻结108/六指标/图/全归档。teacher1/true尚未在office000复验，不能宣称矩阵修复；无旧综合场景采集/测试标签训练/放宽gate/服务器计算/子agent，Goal active。
+
 ## 2026-10-28 — 非RL严重退化修复，原108已安全停止；以本条为准
 
 用户要求修复，不能把全失败作为主结论。发现厚桌角10条采集filter尺度0.16m/s，棍推/球撞20条及34条已完成测试均0.32；15750标签与实际prefilter请求精确一致。wrapper已统一0.32并添加显式契约，dataset拒绝旧混合尺度或学生诊断。原108通过STOP_REQUESTED在35回合安全停止，35条均Task/Strict false，无在途，原772606/791378已退出；上层failed_preserved是预期不足108，不重启或删除原结果。Goal仍active。

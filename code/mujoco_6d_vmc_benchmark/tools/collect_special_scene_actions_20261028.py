@@ -46,6 +46,9 @@ def validate(plan_path):
     plan = read(plan_path)
     if plan.get('schema') != 'sii-three-real-scenes-collection-plan-v2':
         raise ValueError('Require prospective v2 plan')
+    for name, digest in plan.get('source_sha256', {}).items():
+        if sha(ROOT/name) != digest:
+            raise ValueError('Collection source changed after registration: '+name)
     entries = plan['episodes']
     if len(entries) != 30 or len({e['id'] for e in entries}) != 30:
         raise ValueError('Require 30 distinct identities')
@@ -98,6 +101,7 @@ def main():
             return
         if sha(plan_path) != digest:
             raise ValueError('Plan changed during collection')
+        validate(plan_path)
         output = Path(e['folder']).resolve().parent
         if output.exists():
             raise FileExistsError(f'Unreviewed partial identity, preserve and inspect: {output}')
@@ -118,6 +122,7 @@ def main():
         folder = Path(e['folder'])
         row = dict(id=e['id'], scene=e['scene'], returncode=rc, status='failed_preserved')
         if rc == 0:
+            validate(plan_path)
             scripts = ['audit_video_reference_vmc_20261028.py']
             if e['scene'] == 'rod':
                 scripts.append('audit_rod_yield_rejoin_v3_20261028.py')

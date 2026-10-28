@@ -1,3 +1,13 @@
+## 2026-10-28 — 非RL退化控制完成，恢复teacher速度权重并启动统一尺度v6重采
+
+- 完整10对照及每项hash/离线反事实诊断通过。同冻结office000，.5/true新teacher55秒carry、Task/Strict false；历史1/false55秒retreat、Task/Strict true、放置误差5.417mm，两者actor/filter replay0。不能只归因ESN。真实三训练身份teacher均合格，ESN仅桌角失败、棍推/球撞合格；RNN/MLP也通过棍推。ESN桌角原0.16历史MSE1.12279e-6、统一0.32后的teacher历史1.97878e-3；棍推/球撞新旧历史误差相同。采集任务合格不是正式测试Strict。
+- 另9回合补齐readout2×2因素控制，全部完成/源码/geometry/收据核对，失败保留。历史1/false球撞未满足末态物块运动条件；.5/false、1/true和原.5/true均通过三个真实身份。依恢复历史组件且三场景合格的开发优先级选择1/true，未用测试轨迹拟合或改变门。仅单身份/场景控制，非全30或最终矩阵成功。
+- 原诊断和因素服务自然退出；14:29:05 UTC启动v6重新采集，parent903064，计划SHAd20543be、原30条件/seed/24+6划分保持、统一0.32，本机单模拟器/单线程/3GiB/swap0。采集器新增开工及回合边界source hash核验；正确计划接受、错误hash拒绝、未完成对照拒绝通过。首条实际15秒/300000子步，不能冒充完整成功。禁止改在途源/重复启动。[交接](docs/NONRL_SPECIAL_REGRESSION_REPAIR_20261028.md)。
+- 旧35完整失败及前10对照全原始物理/源码/checkpoint/收据1758文件，5923307520字节/SHA256 `6d8a464d96ef8e6e7bd744d3970ec822624fecb06c124b710f862be5d54e6598`，逐成员、远端暂存/最终大小hash验证，已共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_regression_full_20261028_v1/FULL_REGRESSION.tar`。不含后9因素或在途v6。所有历史/失败保留。
+- 新30完整审查、公平重训、真实场景学生闭环回归及冻结108/六指标/图仍待；1/true尚未复验office000，不声称主矩阵已修复，Goal active。开工main c9245390/baselinef6e8f8c实际fetch/read，无RL/子agent/服务器计算。
+- 14:42:08 UTC原parent903064/start29580292保持，v6已7/30、rod00–06全部合格，各20秒/400000子步，7.72–9.72秒回位早于12.8–13.0秒撤棍；rod07在途。逐资格输入hash/源码再核对通过，不是学生重训或完整测试结果。
+- 后9因素对照全物理及修复源码/小证据另包842936320字节/SHAe1f4a361，本机tar比对、远端暂存/最终核验通过：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_teacher_factors_20261028_v1/special_teacher_factors_and_repair_20261028_v1.tar`。不含在途v6及随后在途收据/报告追加。收尾main5f0efa58独立RL文档更新已读，无运行源码变化，正常合并保留。
+
 ## 2026-10-28 — 非RL主矩阵退化诊断：修复跨场景动作尺度，启动教师／学生对照
 
 - 用户明确要求修复退化。15750训练标签精确对应30条实际prefilter请求、dataset/150lineage及filter文件hash通过；发现10条厚桌角实际线速度尺度0.16，20条棍推/球撞与34条测试0.32，唯一filter配置差异。来源是桌角constructor默认参数，不能只看共同源码就认定配置一致；初次断言失败及差异均保存。仍未证明这是全矩阵退化唯一原因，训练方向覆盖差异也保留。
