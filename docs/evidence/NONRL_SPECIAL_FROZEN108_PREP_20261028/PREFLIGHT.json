@@ -1,0 +1,41 @@
+{
+  "scope": "Frozen input checks and audit-tool preflight only; no new student model or test episode",
+  "preparation_registration_sha256": "51fdc49b05b202acdd3fdd919d316b8c1082f191303722cc9a856b15e51caebe",
+  "pinned_physics_python_files": 593,
+  "initial_rejection_preserved": {
+    "error": "Frozen MJB drift",
+    "cause": "Preflight incorrectly compared archived dt=1e-4 geometry bytes with dt=5e-5 formal bytes",
+    "resolution": "Follow original frozen loader: in-memory timestep setting and serialization, leaving archive bytes unchanged",
+    "simulation_steps": 0
+  },
+  "geometry_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+  "formal_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+  "mujoco": "3.11.0",
+  "early_dispatch": {
+    "returncode": 1,
+    "reason": "Original fitting handoff incomplete",
+    "execution_created": false,
+    "fit_audit_created": false,
+    "evaluation_created": false
+  },
+  "historical_single_episode_arithmetic": {
+    "method": "esn_s2026102601",
+    "condition": "new30_prospective_20261026_acceptance_000",
+    "substeps": 1100000,
+    "rmse_mm": 28.395402608937975,
+    "peak_speed_mps": 0.3753891867070059,
+    "peak_torque_nm": 51.491859436035156,
+    "human_force_peak_n": 209.42723083496094,
+    "human_contact_impulse_ns": 42.00165227398723,
+    "comfort_exceed_duration_s": 0.08995000000000003
+  },
+  "negative_checks": [
+    "Changed reported peak torque +1 rejected",
+    "Missing successful completion time rejected",
+    "Task-only faster episode excluded from BOTH-success T_ref",
+    "No human contact remains NA"
+  ],
+  "existing_handoff_registered_sources_unchanged": true,
+  "formal_new_fit_audit_completed": false,
+  "formal_new_frozen108_completed": false
+}
