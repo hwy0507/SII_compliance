@@ -1,5 +1,16 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 完整67、原65–67窗口与准确续训68
+
+- [最新交接](docs/RL_PARAMETER67_COMPLETE_20261028.md)。完整67三路自然结束，各30×55秒/41250新增/noabort，全66 replay/history保持，新reward复算0、网络/优化器有限。I/A/V reward−2.223995/−10.229907/−2.845608，Task/Strict17/17、13/13、17/17。全loss独立复算及真实loss/health图已审，I末段critic尖峰、三actor上移，尚未整体收敛。
+- 全180标签/90reward对独立核验：I long0000失TaskStrict、short0600穿透.204319→.197560mm恢复Strict；A long0200/0500失TaskStrict、short0200恢复、short0600穿透.230422→.189113mm恢复Strict；V不变，无Task-only遗漏，所有旧失败保留。
+- 原65–67完整固定窗口独立算术/实际图通过，I相邻41.0497/6.3681%及A20.5097/.1214%不满足原5%；V .6904/1.5115%、首尾.8107%通过描述性reward窗口。无nearzero、端点/公式不改；V不是整体收敛，原59–61/62–64失败及历史I56–58/V53–55通过保持。
+- 固定全2004 V终端SSE4313.479085→4729.287149（+9.6397%），原五focus两改善三退化，2423133升14.767521→1826.420823；A全2004 SSE8178.095843→3016.598082（−63.1137%），原66short0600 5517.734270→572.396931。独立标量/全数组/健康重现/实际图通过，0优化/物理/权重改写，不以子集/关联作收敛或历史minibatch因果。
+- 完整67准确state/replay/下一65536恢复三路exit0，DECISION68绑定37证据/SHA c9335010，19:10:27启动一个配置不变有限68：I1065436/A1065438/V1065440 start41034355，archive1065446/start41034356。实际startup1000/1000/2000通过，旧2800398/2801000/2802000行/history/optimizer/30sampler/MJB保持、新reward0。19:17steps2805233/2805835/2806895，无完整/失败；无自动69/70，Direct34false，Goal active。
+- 全68loss1077814/start41037602/PLANb19e2d06已部署，49–67保持追加68、paired67→68；已提前登记的68–70窗口1085142/start41039557/PLANe3a50567开始14400秒等待，原PLAN保持，无自动训练。68标签/V+A新锚点与69仅恢复尚未准备。
+- 原67完成边界23观测覆盖到三learner自然完成/审查齐全，130guard样本min75/66/68/65%、低于50全0；审查→68另96样本min77/68/69/67%、低于50全0。19:17五guard原身份live、GPU79/96/93/93%，含合成保载、非瞬时保证；科学完成也继续v5，非跨重启服务。快照准备误查/tmp旧v4 STOP被拒绝，按原交接改为共享SSD真实路径后通过，拒绝保留、未改进程/STOP，非科学失败。
+- SSD小包898成员/3812266字节/SHAee8c66cd逐字节/AST/tar核验，收据docs/RL_PARAMETER67_COMPLETE_SAVE_20261028.json；HDD仅原地紧凑入口，大产物SSD，非HDD/arm1全备份。实际fetch/read mainc4b34cda/baselinef6e8f8c，无协议变化，非RL保持，无子agent。
+
 ## 2026-10-29 — 非RL低速释放完整对照与剩余间隙修复
 
 19:22UTC覆盖：新offset五train已全合格，office原服务继续，18.04秒carry，完整55秒结果待。新增4450保存帧精确actor重放，强恢复activation>.5训练五例86/3075、office1002/1375；rod水平路径权重0，因此offset不影响其轨迹。球/角确有恢复，不是机制完全缺失；仅五例覆盖线索，非全30/学习因果。4bf5fe4c已push/远端核验；其源码/小证据1141文件4997009bytes/SHA029f91d1已核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_clearance_offset_source_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`，不含稍后coverage或在途offset物理。原Goal active，无新30/拟合/主矩阵修复。
