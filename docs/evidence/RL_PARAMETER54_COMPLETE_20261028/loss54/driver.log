@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter54_loss_20261028_v1/audit.py", line 14, in <module>
+    logs=[json.loads(l) for l in (root/'optimizer.jsonl').read_text().splitlines()];eps=[json.loads(l) for l in (root/'episodes.jsonl').read_text().splitlines()];assert len(logs)==41250 and len(eps)==30;assert [r['step'] for r in logs]==list(range(logs[0]['step'],logs[-1]['step']+1))
+                                                                                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+Traceback (most recent call last):
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter54_loss_20261028_v1/wait.py", line 23, in <module>
+    for name in ['audit.py','paired_gate.py']:subprocess.run([plan['python'],str(OUT/name)],check=True)
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/env/bin/python', '/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter54_loss_20261028_v1/audit.py']' returned non-zero exit status 1.

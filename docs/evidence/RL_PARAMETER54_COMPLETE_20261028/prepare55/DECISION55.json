@@ -1,0 +1,166 @@
+{
+  "passed": true,
+  "time": 1793164731.7826905,
+  "plot_inspected": true,
+  "convergence_claim": false,
+  "parent_cycle": 54,
+  "new_cycle": 55,
+  "evidence": {
+    "parent_review": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle54_review_20261026_v1/REVIEW.json",
+      "sha256": "2ce7a4b3d89cd1bb1d3547bf008773b18db280a9dc930a63fe1a1a4281d0549f"
+    },
+    "health": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle54_review_20261026_v1/health/DIAGNOSIS.json",
+      "sha256": "a49443e70594631483fb719947786d42ddd3d2ee14408bd166312eb627295101"
+    },
+    "health_plot": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle54_review_20261026_v1/health/training_diagnostics.png",
+      "sha256": "e0f87049ddcfe758b89b42be1465f05448b1e0d5bd2d1576f8d2ce92206f594d"
+    },
+    "loss": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter54_loss_20261028_v1/REVIEW.json",
+      "sha256": "e79db4090aca5237e41f15ee1780036da731e454d40567f620d2b6650cb97ffd"
+    },
+    "paired_gate": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter54_loss_20261028_v1/PAIRED_GATE_REVIEW.json",
+      "sha256": "d0c7c7333218e9b1ae12b874f3714ca13420906267eac59bd232b46c4a0bd593"
+    },
+    "abort": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter54_loss_20261028_v1/ABORT_REVIEW.json",
+      "sha256": "4a5555e89e96e693f2da8cbe3b86aa1d08dbb4683f2145bf3c013ad2501d954d"
+    },
+    "saved_loss": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter54_loss_20261028_v1/SAVED_REVIEW.json",
+      "sha256": "d096fcd30c085c717fa787fc6b2020dbb5583a24b5f3baf993a6fecd4aa5954c"
+    },
+    "check_only": {
+      "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity_pool30_cycle55_20261026_v1/CHECK_ONLY_COMPLETE.json",
+      "sha256": "2a2ec4016e595a58e2f0394ba6cbc6dbde2d0788068bbe3a1b2bfa3ac6daa585"
+    }
+  },
+  "restore_checks": {
+    "impedance": {
+      "passed": true,
+      "controller": "impedance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "minimum",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "replay_capacity_followup": {
+        "version": 1,
+        "previous_capacity": 2000000,
+        "capacity": 4000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite",
+        "historical_marker_preserved": true
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "419314b88864ed089984d59887ed2ddfe89830f3d3ff3b78072f2157fa78f5da",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "admittance": {
+      "passed": true,
+      "controller": "admittance",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "replay_capacity_followup": {
+        "version": 1,
+        "previous_capacity": 2000000,
+        "capacity": 4000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite",
+        "historical_marker_preserved": true
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "ab923e8db59bf691e69465f8beec8efe09478064fa482cb1d6262d4201ec240c",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    },
+    "vmc": {
+      "passed": true,
+      "controller": "vmc",
+      "full_learner_state_unchanged": true,
+      "workers": 30,
+      "reduction": "mean",
+      "replay_capacity_extension": {
+        "version": 1,
+        "original_capacity": 1000000,
+        "capacity": 2000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite"
+      },
+      "replay_capacity_followup": {
+        "version": 1,
+        "previous_capacity": 2000000,
+        "capacity": 4000000,
+        "retention": "append_without_overwrite",
+        "sampling": "uniform_all_retained_rows",
+        "full_behavior": "raise_before_overwrite",
+        "historical_marker_preserved": true
+      },
+      "exact_replay_and_next65536": true,
+      "checkpoint_sha256": "26ce20535667e85735ff8823950a823fb504be86e69d36d762338b1fc99f5da2",
+      "patch": {
+        "base_source_sha256": "c148edf6d1f9dd9f36ca89a017ff9e25867db2495417ab9f4d07017cfe073188",
+        "parameter_tensors": 50,
+        "formula": "target*(1-tau) + tau*online",
+        "batch_size_changed": false,
+        "update_frequency_changed": false
+      }
+    }
+  },
+  "decision": "Continue one unchanged finite cycle55 to complete the prospectively fixed53-55 window; no automatic56.",
+  "concerns": [
+    "Impedance54 global penetration abort at23.72s retained,40468 transitions and30-episode denominator.",
+    "Impedance/VMC late critic rise and all loss spikes retained; admittance reward regression. Finite state is not healthy convergence.",
+    "A/V sampled Q above fixed-alpha necessary bound fractions0.0010742188/0.0011230469; no calibration claim.",
+    "Unprojected fixed-minimum-pair TD diagnosis is not projected A/V mean training loss."
+  ],
+  "invariants": "Full optimizer,replay,RNG,history,4m entry23/47 preserved; batch65536,UTD1,terminal128,pair reduction,LR,reward,gates,physics unchanged.",
+  "stability_audit": {
+    "path": "/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_capacity53_55_reward_stability_20261028_v1/audit_parameter53_55_reward_stability_20261027.py",
+    "sha256": "4ee3cf0790c144cd25af9873ea5e0c463c1dc35df94142f3e47a1f298f92883f",
+    "variable_episode_lengths_supported": true,
+    "changes_required": false,
+    "cycles": [
+      53,
+      54,
+      55
+    ],
+    "threshold": 0.05,
+    "bootstrap": 5000,
+    "seed": 2026102852
+  },
+  "direct_restart": false
+}

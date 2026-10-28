@@ -1,0 +1,11 @@
+--- audit_initial_failed.py
++++ audit.py
+@@ -11,7 +11,7 @@
+  with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ for row,m in enumerate(['impedance','admittance','vmc']):
+  root=B/f'runs/parameter_capacity_pool30_cycle54_20261026_v1/{m}/train';assert json.loads((root/'FINISHED.json').read_text())['status']=='stopped_at_complete_cycle'
+- logs=[json.loads(l) for l in (root/'optimizer.jsonl').read_text().splitlines()];eps=[json.loads(l) for l in (root/'episodes.jsonl').read_text().splitlines()];assert len(logs)==41250 and len(eps)==30;assert [r['step'] for r in logs]==list(range(logs[0]['step'],logs[-1]['step']+1))
++ logs=[json.loads(l) for l in (root/'optimizer.jsonl').read_text().splitlines()];eps=[json.loads(l) for l in (root/'episodes.jsonl').read_text().splitlines()];assert len(eps)==30 and len({e['condition'] for e in eps})==30;assert len(logs)==sum(e['steps'] for e in eps) and 0<len(logs)<=41250;assert [r['step'] for r in logs]==list(range(logs[0]['step'],logs[-1]['step']+1))
+  stats={}
+  for col,k in enumerate(['agent_train/q_loss','agent_train/actor_loss']):
+   v=np.array([r[k] for r in logs]);assert np.isfinite(v).all();stats[k]=dict(count=len(v),first1000=float(v[:1000].mean()),last1000=float(v[-1000:].mean()),mean=float(v.mean()),maximum=float(v.max()),minimum=float(v.min()),nonfinite=0)

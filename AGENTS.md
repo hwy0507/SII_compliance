@@ -1,5 +1,15 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 参数54完整（含阻抗真实abort）、准确续训55
+
+- [最新交接](docs/RL_PARAMETER54_COMPLETE_20261028.md)。54三路完整归档/replay/reward/health通过，I仅40468新增、29/30完整55秒；A/V41250、30/30。I long0000在23.72秒全局穿透98.36444mm超过原2mm终止，全部失败/30分母保留，非全30noabort。reward I/A/V−6.094249/−15.300869/−4.581376，Task/Strict17/15、11/10、17/16。loss末1000 3.795605/1.521901/1.062000，I/V末段升高及尖峰保留，未收敛。
+- 初次loss审查错误假定41250已保留失败与原脚本；仅改实际episode长度核算和Strict-or-abort记录范围，恢复与保存算术通过。health/loss图已查看，不改gate/reward/physics、不作abort→loss因果解释。原53–55审计已支持真实长度，无需改代码；原窗口/5%/seed/bootstrap不变。
+- 准确54全state/replay/下一65536/RNG恢复三路退出0后，经明确问题审查有限55已启动：I4101991/A4101994/V4101996，start均36044802；archive4102000/startup4102002。原GPU1/2/3、每路30sampler和4m双marker保持；真实startup结果以run下REVIEW为准，无自动56。Direct数值阶段完成、不重启34。冻结55仅恢复3641528与原窗口514418继续。
+- 55实际startup已通过：新增1000/1000/2000，全部旧replay/history/4m双marker/原optimizer/30MJB和30sampler保持；新reward重算误差0。完整55保存审查45441已启动，不替代原窗口。
+- GPUv4原守护继续，用户要求科学工作结束也继续；即时79/70/74/72%，含合成负载，非永久保证。共享SSD原大产物保留，小证据docs/evidence/RL_PARAMETER54_COMPLETE_20261028，非HDD/arm1全备份。Goal active，无子agent。
+- 已重新查询/fetch/read main076b86aa549dfb1fd723e3c24f057c1f76071c04、baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d，无新科学约束变化。
+
+
 ## 2026-10-28 — 冻结参数55全90前瞻登记，真实53的4m恢复通过
 
 - [最新交接](docs/RL_FROZEN55_REGISTRATION_20261028.md)。在54运行、55训练未启动/完整55不存在时固定原53–55终点55、三方法原30条件、同冻结41 seed2026102638，总90×55秒/123750动作/99000000子步；不按未来结果挑checkpoint/条件/seed，不修改稳定标准。比较41的2m与55的4m差异单列，不作容量因果或泛化结论。
