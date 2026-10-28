@@ -1,5 +1,14 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 参数54固定前5000完成与55仅恢复准备
+
+- [最新交接](docs/RL_PARAMETER54_EARLY55_PREP_20261028.md)。54启动前登记的每方法前5000检查完成，原2158459退出；完整前缀hash/连续steps/独立算术/图通过，critic首→末1000 I2.838518→2.825043、A1.417623→1.423225、V.900831→.869901，全critic/actor有限。I仍偏高；短前缀不是收敛证明，原53–55窗口/5%与科学约束不变。
+- 新55仅恢复waiter2450050（start35724331），B/runtime/prepare_parameter55_20261028_v1，绑定原54三learner与monitor身份，固定14400秒。完整54 review/health及父退出后才check-only，源码diff/AST/hash通过；实际55恢复尚未执行，无自动训练或PRELAUNCH批准。
+- 四原Direct33/参数54身份均live并推进，各30sampler；33归档259815、34仅恢复1059038、54归档2116861和原窗口514418保持。GPU守护v4继续，含合成计算的即时四卡88/92/92/94%，不宣称永久保证，训练结束后仍保持守护。
+- 共享SSD小包B/repository/RL_PARAMETER54_EARLY55_PREP_20261028_042949/SMALL_EVIDENCE.tar.gz，926372字节，15来源成员逐hash/大小核验，SHA256 `a4817e6a72c3bd5277a60b3b58c3566f5e9d5513bad65148bf3ab609b410874e`；原前缀/图入包，小证据docs/evidence/RL_PARAMETER54_EARLY55_PREP_20261028。B=/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl；非HDD/arm1全备份。
+- 已查询/fetch/read main `1a3ae95c87ae33c771c92dcb99ee7b6c675ce73a`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无新RL约束变化。Goal active，无子agent。
+
+
 ## 2026-10-28 — 参数53完整、54已启动，Direct33继续
 
 当前最新科学交接：[RL_PARAMETER53_COMPLETE_20261028.md](docs/RL_PARAMETER53_COMPLETE_20261028.md)。三参数53全30完整55秒/noabort，旧replay/history/4m双marker保持，新41250reward重算0误差；archive/review/health已完成。I/A/V reward−4.030497/−8.524904/−4.568304，Task/Strict17/16、14/14、17/16；critic末1000为3.072625/1.457763/.833407，I尾部抬升及76.325峰值保留，非全部健康收敛。short0600三方法均Task成功，I/V穿透跨0.2mm门槛失Strict、A恢复Strict；只核已保存物理/gate，不改门槛。
