@@ -1,0 +1,17 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc59_terminal_anchor_followup_20261028_v1/review_new_terminals.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc62_terminal_anchor_followup_20261028_v1/review_new_terminals.py
+@@ -7,11 +7,11 @@
+ def sha(path):
+  with path.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ r=json.loads((p/'REVIEW.json').read_text());assert sha(p/'values.npz')==r['values_sha256']
+-ep=b/'runs/parameter_capacity_pool30_cycle59_20261026_v1/vmc/train/episodes.jsonl';es=list(map(json.loads,ep.read_text().splitlines()));byindex={e['total_steps']-1:e for e in es};assert len(byindex)==30
++ep=b/'runs/parameter_capacity_pool30_cycle62_20261026_v1/vmc/train/episodes.jsonl';es=list(map(json.loads,ep.read_text().splitlines()));byindex={e['total_steps']-1:e for e in es};assert len(byindex)==30
+ rows=[]
+ with np.load(p/'values.npz',allow_pickle=False) as v:
+- assert len(v['indices'])==1794
+- for k in range(1764,1794):
++ assert len(v['indices'])==1884
++ for k in range(1854,1884):
+   index=int(v['indices'][k]);e=byindex[index];target=float(v['rewards'][k]);q=[float(x) for x in v['q_after'][:,k]];m=[float(x) for x in v['masks'][:,k]]
+   sse=[mask*(x-target)**2 for x,mask in zip(q,m)];contribution=math.fsum(128*s/float(d) for s,d in zip(sse,v['denominator']))
+   rows.append(dict(replay_index=index,condition=e['condition'],episode_reward=e['reward'],terminal_reward=target,task=e['task_success'],strict=e['strict_success'],q=q,masks=m,per_critic_sse=sse,sse=math.fsum(sse),contribution=contribution))

@@ -8,6 +8,22 @@ v6采集14:29:05 UTC实际启动：`sii-special-collection-v6-20261028.service` 
 
 [最新交接](docs/NONRL_SPECIAL_REGRESSION_REPAIR_20261028.md)。旧35及完整10共1758文件/5923307520字节/SHA6d8a464d已逐成员和远端核验到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_regression_full_20261028_v1/FULL_REGRESSION.tar`，含原始物理，非仅小包；不含后9或在途v6。后9收据已Git准备，原始归档另行标注。下一步审30合格→公平三seed训练→三真实场景学生闭环检查→完整冻结108/六指标/图/全归档。teacher1/true尚未在office000复验，不能宣称矩阵修复；无旧综合场景采集/测试标签训练/放宽gate/服务器计算/子agent，Goal active。
 
+## 2026-10-28 — 原63连续等待、完整64 loss准备及VMC62新终端诊断
+
+- 原63在14:15:06–14:25:08的21次真实采样中，三learner/六归档或审计等待/五guard身份全部保持，steps2612291/2612997/2614083→2620080/2620731/2621795严格增长，无完整/失败。有限observer exit0，未重启科学任务，Goal active。
+- 同区间118条原guard采样min70/67/69/65%、mean78.6017/89.3898/89.6695/89.6525%，低于50全0、maxgap5.268639秒。即时独立查询GPU1曾66%，两采样时刻不同均保留；含合成负载，非每瞬时保证/纯科学吞吐，科学完成也继续guard。
+- 新runtime/parameter64_loss_preparation_20261028_v1仅静态准备，逆变换/AST/实际diff通过，全49–63历史保留追加64，原0600不变；没有64loss运行目录/PLAN/等待进程，须完整63审查和实际64启动后部署绑定。原63诊断和62–64窗口继续。
+- 完整62 V新增全30终端保存标量诊断完成，与独立全标签逐条一致：short0000/index2588236（Task真Strict假、原穿透失效）贡献.196767841，占新30的83.9573%；short0100 .017193699、short0600 .010526349居后，二者Strict真。全30和.234366539精确复现，保留所有行/原五focus/全1884锚点，不作在线梯度因果或新停止门；完整63后应对照这30固定旧行。
+- 共享SSD小包21成员/21752字节/SHA2b752d84逐字节/AST核验，收据docs/RL_PARAMETER63_WAIT64_PREP_SAVE_20261028.json；[交接](docs/RL_PARAMETER63_EARLY_ANCHOR_20261028.md)补充。开工收尾maine4cd8486/baselinef6e8f8c实际fetch/read，无新协议变化。大产物仍SSD，HDD既有入口更新，非HDD/arm1全备份，无子agent。
+
+## 2026-10-28 — 原63前5000、全1884终端锚点及64仅恢复准备
+
+- [最新交接](docs/RL_PARAMETER63_EARLY_ANCHOR_20261028.md)。原63三learner身份保持，14:09 steps2608076/2608722/2609739、每路30sampler、尚未完整。前5000逐字节/全字段有限/连续步数/独立算术和实际图通过；critic首末1000 I2.602483→2.513033、A1.289616→1.263167、V.957334→.915894，I/A actor较平、V持续下降，非完整63或收敛。
+- 完整62全1884×57固定终端锚点精确/独立标量SSE6702.415585通过，SHAb2a17d44；63对照17088/start39201010、CPU53/7200秒，绑定真实原任务。周期替换误改日期/owner两次准备失败及过早绑定拒绝均保留；数字边界/日期/hash保护修正、真实提取复算通过，无科学修改。实际63对照待。
+- 全标签63等待53660/start39207399，auditor原字节保持；64仅恢复等待53659/start39207398，缺DECISION64真实启动拒绝、无64训练。原全63loss与62–64窗口继续，待完整63/64；保留原59–61失败和历史通过，无新停止门，Goal active。
+- 五GPUv5原身份live，GPU75/90/92/71%含保活；科学完成也继续，Direct不启动34。共享SSD包82成员/1323410字节/SHA261457f1逐字节/AST核验，收据docs/RL_PARAMETER63_EARLY_ANCHOR_SAVE_20261028.json；大产物仍SSD，非HDD/arm1全备份，无子agent。
+- 开工main80553b71、收尾mainc9245390/baselinef6e8f8c实际fetch/read；非RL原108止于35条及独立动作尺度修复/教师对照报告已读并fast-forward保留，本机RL冻结配置不变。
+
 ## 2026-10-28 — 非RL严重退化修复，原108已安全停止；以本条为准
 
 用户要求修复，不能把全失败作为主结论。发现厚桌角10条采集filter尺度0.16m/s，棍推/球撞20条及34条已完成测试均0.32；15750标签与实际prefilter请求精确一致。wrapper已统一0.32并添加显式契约，dataset拒绝旧混合尺度或学生诊断。原108通过STOP_REQUESTED在35回合安全停止，35条均Task/Strict false，无在途，原772606/791378已退出；上层failed_preserved是预期不足108，不重启或删除原结果。Goal仍active。
