@@ -1,5 +1,33 @@
 # 三真实场景采集继续与冻结108入口准备
 
+## 观测接口与输入覆盖复核（11:17 UTC）
+
+原队列已推进至6/108，ESN seed3首条件在途，先读实际execution而非此快照。
+本轮只读检查新采集与当前冻结测试的观测构造：18个使用字段分别为世界系参考线速度
+14:17、位置误差20:23、线速度误差26:29、估计力/力矩39:45、参考路径方向45:48。
+两侧48维拼接的顺序/单位一致；30条实际collection源码包/manifest与wrapper hash已核验，
+从包内读取的JointLoadObserver、equivalent_tool_wrench、body_twist/body_jacobian/so3_log、
+VelocityResidualActionFilter与测试版本AST一致，所在三个源码文件hash也一致。
+已完成前五回合实际observer参数均为filter_tau=.04、friction_velocity_scale=.005，无接触真值输入。
+这是所检查观测接口的证据，不是全系统无bug保证；不同场景的任务监督器与几何按原方案保留。
+
+使用**仅12600训练帧**确定逐字段min/max，固定读取前五个完整测试回合6275条实际观测，
+其trace hash均保持；独立Python标量比较/求和复核18列、任一列及首2秒统计一致。
+发现参考方向Y训练范围`[-0.3807498053, 0.3807498053]`，五条测试最低均到`-0.9902828187`。
+RNN seed1/2分别有76.44%/74.76%的观测在该方向分量超出训练范围；同时其他列也有超范围，
+详细逐列数值及复现命令见[接口和范围证据](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/OBSERVATION_CONTRACT_AND_RANGE.json)、
+[独立标量复核](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/OBSERVATION_RANGE_SCALAR_REVIEW.json)。
+
+这说明新三场景数据对当前测试的运动方向覆盖存在差异；逐维区间不是联合分布检验，
+后期误差/载荷超范围也可能是闭环失败的结果，**不能据此证明失败因果或直接归咎某模型**。
+不根据已看过的测试回调训练数据/参数，不改变原108；仍完成原冻结比较并诚实报告局限。
+
+源码与证据7文件逐字节核验，43944字节/SHA256
+`2bf7bad7c958885ea83eaa535173e0ec4942926588ba3c8990f88f3d276b2269`已上传且回读核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_observation_review_20261028_v1/nonrl_special_observation_review_20261028_v1.tar.gz`。
+不是最终物理归档；完整108/六指标/接触补充及全归档仍待。开工mainfba512dc/baselinef6e8f8c
+已真实fetch/read，收尾maina704d4c9独立RL记录已读并fast-forward保留；Goal active，无RL或子agent工作。
+
 ## 11:03–11:09连续观察与最终物理归档入口
 
 原服务772606/start28001859、协调器791378/start28239353八次实际进程核验保持。

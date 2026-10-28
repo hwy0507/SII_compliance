@@ -1,3 +1,10 @@
+## 2026-10-28 — 新采集与测试观测接口一致性、运动方向覆盖诊断
+
+- 原772606/791378持续运行，11:17已6/108、ESN seed3首条件在途。只读核验30条实际采集源码包/manifest/wrapper；共同力估计、运动学和公共filter的AST与文件hash匹配冻结测试，18使用字段顺序/单位一致，首五条observer参数一致。没有改模型、物理或新启仿真。
+- 仅12600训练帧范围对照前五完整回合6275实际观测，trace hash保持；全部18列/任一列/首2秒超范围比例经独立标量计数核验。参考方向Y训练[-.3807498053,.3807498053]、测试最低-.9902828187，RNN seed1/2该列超训练范围76.44%/74.76%。这是覆盖差异的描述证据，不是联合分布或失败因果结论，也不据测试改训练；完整108及六指标仍待，Goal active。详见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
+- 7文件源码证据包43944字节/SHA256 `2bf7bad7c958885ea83eaa535173e0ec4942926588ba3c8990f88f3d276b2269`逐字节/远端大小hash核验，已发布 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_observation_review_20261028_v1/nonrl_special_observation_review_20261028_v1.tar.gz`；不含完整物理轨迹，最终contact补充/全归档待。
+- 开工实际fetch/read mainfba512dc、baselinef6e8f8c；收尾maina704d4c9独立RL记录已读并fast-forward保留。无RL改动、子agent或服务器计算。
+
 ## 2026-10-28 — 原60持续等待，GPU守护140条真实采样保存
 
 - 原60三learner/五guard在10:57–11:15连续核验身份保持，steps2483889/2484705/2485773→2497739/2498670/2499899；未完整、无失败，未重启，观察超时不代表科学任务结束。原完整60 loss/1794终端/61仅恢复/59–61统计继续，Goal active。
