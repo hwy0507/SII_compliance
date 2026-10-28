@@ -1,3 +1,12 @@
+## 2026-10-28 — 原66前5000、全1974终端锚点及67仅恢复准备
+
+- [最新交接](docs/RL_PARAMETER66_EARLY_ANCHOR_20261028.md)。原66身份保持，17:18steps2729399/2730136/2731235，无完整/失败。固定前5000原字节/连续步号/全数值有限/独立算术及实际图通过；critic首末1000 I2.097180→2.113459、A1.263244→1.209252、V.747720→.835391，三actor短前缀较平，不替代完整66或收敛结论。
+- 全65的1974×57终端锚点精确、独立SSE6761.694451，SHA7d4ce762；66对照1692633/start40342791/PLAN97b840bb，CPU53/7200秒，实际结果待，原五focus/全体保持。
+- 全标签66等待1669332/start40338178/PLANce7e513e；67仅恢复1669294/start40338171/REG42359c62。真实不完整66标签与缺DECISION67启动均拒绝，无输出/67训练；源码数字边界/零填充/逆变换/AST/日期/hash保护通过，原配置不变。
+- 完整67 loss四脚本及review_labels66已静态准备，全49–66保留追加67、paired66→67/原0600不变；无67loss运行目录/PLAN/进程，实际66保存复核仍待。原全66loss1286574/原65–67窗口3549846继续，PLAN517dbefb不变，原失败和历史通过保留。Direct不启动34，Goal active。
+- 本轮53条guard采样min74/69/69/70%、低于50全0/maxgap5.249742秒；17:16五guard身份live、GPU80/98/94/93%。含合成保活、非每瞬时保证/纯科学吞吐；科学完成也继续guard，当前非跨重启服务。
+- 共享SSD小包73成员/1343652字节/SHA3dcb8c30逐字节/AST/归档核验，收据docs/RL_PARAMETER66_EARLY_ANCHOR_SAVE_20261028.json。HDD只重写既有入口，大产物仍SSD，非HDD/arm1全备份。开工maind4e8d136、收尾mainb77fd976/baselinef6e8f8c实际fetch/read，非RL intent修复在途更新已fast-forward保留，无本机RL协议变化，无子agent。
+
 ## 2026-10-29 — 非RL teacher恢复机制修复对照，失败完整保留
 
 - 第一版完整732文件/612792320bytes/SHA88018036，逐成员与远端暂存/最终大小hash均已核验，共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_intent_blend_controls_20261029_v1/FULL_PROBE.tar`；含所有失败与原始物理，不含第二版在途数据/新拟合，不删除本地。
