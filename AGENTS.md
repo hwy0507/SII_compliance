@@ -6,7 +6,7 @@
 
 `sii-special-collection-v4-20261028.service` 已单路/1线程/真实3GiB/swap0重采原30条件，目录 `outputs/special_scene_vmc_collection_20261028_v4`，计划SHAf1f56cbac17d9c99a3b676bd09ab04ab2aa0a4b2d09cda470abb136994f1a871，教师SHAd9560652。逐字段保持原条件/seed/24+6划分，全部重新采集；先读实际progress/服务，禁止重复启动。原v3/probe均自然退出，不重启。下方“v3运行”是旧快照。
 
-新正式训练/108未开始，Goal active。待全30资格通过，沿原3seed/每家12候选/验证动作MSE规则训练，再以冻结physics_source评测双成功SPT等六指标，不用测试调参。新增诊断、四例探针、完整审查及继承条件重采准备器。完整原30包1.63GB、probe包234MB已本地保存，服务器创建目录遇自动审批并发故障尚未执行；具体hash和归档状态见交接。无子agent、不涉及RL。
+新正式训练/108未开始，Goal active。待全30资格通过，沿原3seed/每家12候选/验证动作MSE规则训练，再以冻结physics_source评测双成功SPT等六指标，不用测试调参。新增诊断、四例探针、完整审查及继承条件重采准备器。自动审批并发故障后重试成功，完整原30包1.63GB、probe包234MB已逐大小/SHA核验发布到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_recollection_20261028_v3/`；live v4 raw仍本地，具体hash见交接/ARCHIVE_RECEIPT。科学b4081df7及合并2c5b9bcb已push，保留远端RL56/57/58更新。无子agent、不涉及RL。
 
 ## 2026-10-28 — 原57继续，固定1704终端跟踪与58仅恢复准备
 

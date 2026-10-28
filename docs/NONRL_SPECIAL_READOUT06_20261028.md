@@ -49,3 +49,9 @@
 - `outputs/special_scene_readout06_probe_20261028_v1.tar.gz`：233686087字节，SHA256 `dc04b12e6ab374f10da29ce9023162236f00b7f54560a5845ca06d5e47959a8d`。完整4条probe、登记/审查、配置和新增工具源码、新30计划。**不含正在运行的v4原始轨迹**。
 
 本地副本保留。目前服务器归档待同步：SSH归档目录创建因自动审批通道报“Concurrency limit exceeded for user”而未执行，并非服务器已创建目录或数据已上传；没有服务器计算。后续核验成功时追加真实服务器路径/大小/hash，不覆盖历史收据。
+
+### 收尾同步补充：归档与GitHub已完成
+
+上述自动审批故障后重试成功，两份完整包已上传、远端SHA256/字节数逐一核验一致，再从incoming发布到此前不存在的独立目录：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_recollection_20261028_v3/`。最终路径大小再次核验，详见 [ARCHIVE_RECEIPT.json](evidence/NONRL_SPECIAL_READOUT06_20261028/ARCHIVE_RECEIPT.json)。修正配置和新增工具源码在第二包内，各实际仿真完整来源在对应case的source.tar.gz中；live v4 raw仍本地，不能称整项任务全备份。
+
+科学提交 `b4081df7` 已push main。收尾fetch/read main `5780d89dfebb4bc96cecbbfc89ae0e4ceefc8e27` 的RL56/57/58记录，无本任务源码变化；正常合并为 `2c5b9bcba27e13cdf57ed4c700ace62247455590` 并push，AGENTS/UPDATE_LOG冲突仅移除标记、完整保留双方新段落。未修改正在运行的采集源码。原v4 PID699296持续推进，第二轮前7条棍推合格；最终仍以实时progress为准。

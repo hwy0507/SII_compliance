@@ -1,5 +1,6 @@
 ## 2026-10-28 — 原30完整诊断、棍推读出修正四例通过、同条件v4重采
 
+- 收尾补充：自动审批通道恢复后两份完整包上传、远端大小/SHA核验一致，已发布到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_recollection_20261028_v3/`，ARCHIVE_RECEIPT记录范围，不含live v4 raw。科学b4081df7已push；fetch/read新增main5780d89d的RL56/57/58记录后正常合并2c5b9bcb并push，完整保留双方日志，采集源码未改。下方“暂未归档”为此前故障时快照，已解决。
 - [交接](docs/NONRL_SPECIAL_READOUT06_20261028.md)。原30完整：棍7/10、球10/10、角10/10；rod_00/04/08未及时持续回位，04穿透0.222716mm，全部失败保留。现有轨迹显示接触后残余偏移恢复慢，不未经证据断言程序bug。
 - 原采集自然结束后执行登记4例，唯一velocity_weight .3→.6，原MJB/seed/条件/保持时间/判据不变。训练rod00/04、ball00及原角开发全部合格；棍回位8.72/8.28秒均早于12.80撤回，穿透降至0.076365/0.042696mm。角峰矩46.1915→52.3570Nm，不宣称所有指标改善；保存子步/actor/filter通过，非独立动力学积分或正式测试成功。
 - v4于07:50:32 UTC启动，单仿真/BLAS1/实际3GiB/swap0；新计划SHAf1f56cba逐字段保留原30物理条件/seed/24train6val，统一新教师d9560652重新采集全部。首三条合格，最新看实际progress；新ESN/MLP/RNN正式训练及108仍待，Goal active。未改冻结测试来源或RL任务。
