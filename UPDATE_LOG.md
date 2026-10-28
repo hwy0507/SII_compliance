@@ -1,3 +1,12 @@
+## 2026-10-28 — 完整63审查、全固定终端退化与原64续训
+
+- [最新交接](docs/RL_PARAMETER63_COMPLETE_20261028.md)。完整63三路各30×55秒/41250新增/noabort，旧replay/history/optimizer保持、新reward复算0、网络/优化器有限。I/A/V reward−2.392742/−13.711201/−2.856740，Task/Strict18/17、12/11、17/17。全loss/health独立算术及实际图已审；I/V reward改善而A退化，actor仍移动，非整体收敛。
+- 全180标签/90reward对独立复核通过，无Task-only遗漏。全1884 V固定终端SSE6702.415585→9736.928658（+45.2749%）；原五focus三退化两改善。预登记新增62全30固定子集SSE4152.014984→316.331302，20改善/10退化；子集改善不替代全1884退化，不设零终端误差门。
+- 三路精确63全state/replay/下一65536检查exit0，完整证据绑定DECISION64后14:54:15启动原配置有限64：I1505861/A1505863/V1505865/archive1505869 start39497113。真实startup1000/1000/2000通过，旧2635398/2636000/2637000行/30sampler/MJB保持、新reward0。全64loss1522440/start39501622、原62–64窗口1758711/start38725355继续，待64；不自动65，Goal active。
+- 原63观察33样本保持至自然结束；guard188样本min72/65/66/65%、低于50全0/maxgap5.278491秒。15:06原64步数2643788/2644407/2645573增长、五guard身份通过、GPU74/92/91/93%。含合成保活，非每瞬时保证或纯训练吞吐；用户要求科学结束也继续guard，Direct不启动34。
+- 打包首次复制driver.log所得1228字节全零、源非零，失败/partial目录完整保留于prepare64/packaging_failure_v1，底层原因未知。改普通读写/fsync/逐字节复核后173成员小包通过，1384696字节/SHA d735f6c43526b82a19bffa353eaec2942498b02263c83a6378abfc62811b629c；收据docs/RL_PARAMETER63_COMPLETE_SAVE_20261028.json。大产物共享SSD，HDD既有LATEST重写，非HDD/arm1全备份。
+- 接续实际fetch/read main b980c26007870fa5a7471bfe48e7bf952ef69e24、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，非RL教师修复/v6在途完整保留；无训练配置更改或子agent。
+
 ## 2026-10-28 — 非RL退化控制完成，恢复teacher速度权重并启动统一尺度v6重采
 
 - 完整10对照及每项hash/离线反事实诊断通过。同冻结office000，.5/true新teacher55秒carry、Task/Strict false；历史1/false55秒retreat、Task/Strict true、放置误差5.417mm，两者actor/filter replay0。不能只归因ESN。真实三训练身份teacher均合格，ESN仅桌角失败、棍推/球撞合格；RNN/MLP也通过棍推。ESN桌角原0.16历史MSE1.12279e-6、统一0.32后的teacher历史1.97878e-3；棍推/球撞新旧历史误差相同。采集任务合格不是正式测试Strict。
