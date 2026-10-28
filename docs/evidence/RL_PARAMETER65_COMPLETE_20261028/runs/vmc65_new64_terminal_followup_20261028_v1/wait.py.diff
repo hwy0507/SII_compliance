@@ -1,0 +1,11 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc63_new62_terminal_followup_20261028_v1/wait.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc65_new64_terminal_followup_20261028_v1/wait.py
+@@ -8,7 +8,7 @@
+     except FileNotFoundError:return False
+     return f[19]==j['proc_start_ticks'] and f[0]!='Z'
+ try:
+-    plan=read(OUT/'PLAN.json');follow=Path(plan['follow63']);assert sha(OUT/'audit.py')==plan['audit_sha256'];assert sha(OUT/'wait.py')==plan['wait_sha256'];deadline=time.monotonic()+7200
++    plan=read(OUT/'PLAN.json');follow=Path(plan['follow65']);assert sha(OUT/'audit.py')==plan['audit_sha256'];assert sha(OUT/'wait.py')==plan['wait_sha256'];deadline=time.monotonic()+7200
+     while not (follow/'FINISHED.json').exists():
+         assert not (follow/'WAIT_FAILURE.json').exists()
+         assert live(plan['original_terminal_waiter']),'Original terminal audit vanished without FINISHED; do not restart science'
