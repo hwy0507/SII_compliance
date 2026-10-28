@@ -1,5 +1,22 @@
 # 三真实场景采集继续与冻结108入口准备
 
+## 第四条件第二种子接续（13:21–13:26 UTC）
+
+原772606/start28001859、791378/start28239353在11个实际样本0–10中身份保持，
+完成30→31/108。ESN seed2自然结束并经过指标后处理，自动接续RNN seed2
+worker869837/start29175791，末次40.04秒、carry。所有采样3GiB/swap0/OOM0；
+采样内存最大1,284,960,256字节，非内核全程峰值。有限观察器exit0，原科学服务继续。
+读取刚完成的ESN原AUDIT/metrics：55秒、carry、Task/Strict false、abort null，
+RMSE813.024182mm、峰矩69.012901Nm；本轮仅读取原结果，整条件独立审计待九条完成。
+未更改模型/条件/判据，不将正常退出等同任务成功，完整108/最终图表/contact/全归档仍待。
+
+[11次真实观察与命令](evidence/NONRL_SPECIAL_FROZEN108_PREP_20261028/VERIFIED_WAIT_1321_1326.json)
+已逐字节打包及远端暂存/最终大小hash核验：2771字节，SHA256
+`d78176de078492b9ba994e4c35430056f8d363db84489cfc8f5be777a9bc0cda`，
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_wait_1321_1326_20261028_v1/special_scene_verified_wait_1321_1326_20261028_v1.tar.gz`。
+仅观察证据，不含原始物理或新ESN指标文件，完整物理待最终归档。开工main4dcb9ca8、
+收尾main8c372016与baselinef6e8f8c已实际fetch/read，独立RL更新fast-forward保留；Goal active。
+
 ## 原第四条件持续等待（13:05–13:15 UTC）
 
 21个真实样本索引0–20完整保存：原772606/start28001859、791378/start28239353

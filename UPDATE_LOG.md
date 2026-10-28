@@ -1,3 +1,9 @@
+## 2026-10-28 — 原非RL108已31条，原进程持续等待
+
+- 13:21–13:26原772606/791378身份保持，11真实样本0–10完整保存，30→31/108；第四条件ESN seed2自然结束，经指标后处理后接续RNN seed2 worker869837/start29175791，末次40.04秒。3GiB/swap0/OOM0；采样内存最大1284960256字节。ESN原结果55秒carry、Task/Strict false、无abort、RMSE813.024182mm/峰矩69.012901Nm；仅读取原AUDIT，第四条件全九条独立审计待。有限observer exit0非科学结束。
+- 小观察包2771字节/SHA256 `d78176de078492b9ba994e4c35430056f8d363db84489cfc8f5be777a9bc0cda`逐成员及远端暂存/最终核验，共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_wait_1321_1326_20261028_v1/special_scene_verified_wait_1321_1326_20261028_v1.tar.gz`。非原始物理全归档；完整108/最终六指标/图/contact/全归档仍待，Goal active。[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
+- 开工main4dcb9ca8，收尾main8c372016/baselinef6e8f8c已实际fetch/read，独立RL更新已fast-forward保留；无模型/条件/判据修改，无RL工作、子agent或服务器计算。
+
 ## 2026-10-28 — 原62连续等待与完整63 loss静态准备
 
 - 原62在13:09:38–13:24:43的31次真实观测中，三learner/归档/全loss/1854终端/全标签/63仅恢复/62–64统计及五guard身份保持；steps2571520/2572333/2573490→2582984/2583903/2585262逐次增长，无完整/失败标记。有限观察器exit0，不重启原科学任务，Goal active。
