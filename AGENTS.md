@@ -4,6 +4,13 @@
 
 原772606/791378保持，12:15完成18/108并自动接续第三条件ESN seed1 worker838081。第二条件九模型7972000保存子步/593源/模型hash/原actor-filter收据/指标算术通过；Task/Strict三家均0/3，ESN两条7.36/6.24秒全局穿透中止，失败保留。前两条件全18失败不是全12条件结论，不改模型/条件。44实际观察完整保存，3GiB/swap0/OOM0。11166字节/SHA232d4b1b证据包已核验共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_condition001_review_20261028_v1/`，不含原始物理。完整108/最终六指标/图/contact/全归档仍待，Goal active；见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)，禁止重复派发。
 
+## 2026-10-28 — 原61连续等待与全部Task/Strict标签复核
+
+- 原61在12:05:47–12:15:50的21次真实观测中learner/全部10守护或审计等待身份保持，步数2530120/2530977/2532175→2537716/2538679/2539961严格增长，无完整/失败标记；观察器exit0，不重启科学任务。12:16再核对原三learnerlive、GPU78/92/92/96%。Goal active。
+- 新只读audit_labels.py核对全部90条件对/180保存rollout的Task/Strict/physical_valid/abort、原.2mm门、逐模型/evaluator hash；已完整59→60回归，全部reward及原Strict/abort变化一致，A short0600 Task-only及物理退化精确复现。实际未完整61输入拒绝且无输出，不改训练/门/原loss脚本。61等待569099/start38483285、CPU53/7200秒，PLAN67c3318b，完成归档/自然退出后才审，不自动62。
+- 同观察区间117条真实guard采样min74/67/63/69%、mean78.7521/89.3846/89.0769/89.2479%，低于50均0、maxgap5.280905秒。含合成保活，非连续瞬时保证/纯训练吞吐，历史0%异常不删除；用户要求科学完成后也继续guard。
+- 共享SSD包13成员/32579字节/SHA008a44c2逐字节/AST核验，收据docs/RL_PARAMETER61_LABEL_WAIT_SAVE_20261028.json；[最新交接](docs/RL_PARAMETER61_EARLY_ANCHOR_20261028.md)补充。开工及收尾fetch/read maind8d1c01f、baselinef6e8f8c，无协议变化；大产物仍SSD，非HDD/arm1全备份，无子agent。
+
 ## 2026-10-28 — 原61前5000、全1824锚点及62–64预登记
 
 - [最新交接](docs/RL_PARAMETER61_EARLY_ANCHOR_20261028.md)。61前5000独立算术/实际图通过；critic首末1000 I2.360356→2.192203、A1.845287→1.695531、V.811884→1.005567，V滚动均值上升/尖峰及actor小漂移保留，非完整61或收敛。原learners身份保持，11:59 steps2525215/2526015/2527201，无失败/重启。
