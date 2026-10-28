@@ -1,0 +1,11 @@
+--- review_initial_failed.py
++++ review.py
+@@ -110,7 +110,7 @@
+         assert abs(sum(t['reward'] for t in ts)-e['reward'])<1e-8
+     assert sha(reg['reference_plan'])==reg['reference_plan_sha256']
+     sys.path.insert(0,str(B/'runtime/serl_take_cycle33_20261027_v1'))
+-    sys.path.insert(0,'/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_take_cycle33_20261027_v1/audit_source')
++    sys.path.insert(0,str(OUT))
+     from audit_serl_take33_replay_20261027 import audit
+     multistep=audit(x,old,transitions)
+     assert multistep['new_pending_rows']==0

@@ -1,0 +1,76 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_take_cycle33_20261027_v1/startup_review_retry3.py
++++ startup34
+@@ -5,7 +5,7 @@
+ import numpy as np
+ import torch
+ torch.set_num_threads(1)
+-B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');OUT=Path(__file__).parent/'startup_retry3';OUT.mkdir(exist_ok=False)
++B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl');OUT=Path(__file__).parent/'startup';OUT.mkdir(exist_ok=False)
+ sys.path.insert(0,str(B/'runtime/source_train17_clock/source/tools'))
+ from spt_rl_reward_20261025 import SPTReward
+ from training_comparison_metrics_20261025 import completion_bonus
+@@ -29,8 +29,8 @@
+  while not cp.exists():
+   if time.monotonic()>deadline or (run/'FAILURE.json').exists():raise RuntimeError('Startup checkpoint unavailable: '+m)
+   time.sleep(2)
+- snapshot=OUT.parent/'startup_retry2'/(m+'.pt')
+- assert snapshot.exists()
++ snapshot=OUT/(m+'.pt')
++ with cp.open('rb') as src,snapshot.open('xb') as dst:shutil.copyfileobj(src,dst)
+  x=torch.load(snapshot,map_location='cpu',weights_only=False);e=json.loads((run/'EXECUTION.json').read_text());parent=Path(e['resumed_from']);assert sha(parent)==e['resumed_checkpoint_sha256'];old=torch.load(parent,map_location='cpu',weights_only=False);n=old['replay']['size'];a=x['replay']['arrays'];s=x['learner'];original=old['learner']
+  assert x['steps']>old['steps'] and x['replay']['size']==x['steps'] and x['cycles']==old['cycles']
+  assert s['num_gradient_steps']-original['num_gradient_steps']==8*(x['steps']-old['steps'])
+@@ -39,12 +39,12 @@
+  assert s['critic_clock_extension']==original['critic_clock_extension']
+  assert s['critic_clock_extension']['actor_features']==48 and s['critic_clock_extension']['critic_observation_features']==49
+  reg=json.loads((OUT.parent/'REGISTRATION.json').read_text());assert x['protocol_sha256']==e['protocol_sha256']==sha(OUT.parent/'REGISTRATION.json');assert e['batch_size']==65536
+- sys.path.insert(0,str(B/'runtime/serl_take_cycle33_20261027_v1'))
++ sys.path.insert(0,str(B/'runtime/serl_take_cycle34_20261027_v1'))
+  from serl_replay_capacity_20261027 import MARKER as CAPACITY_MARKER
+  assert reg['replay_capacity_stage']['marker']==CAPACITY_MARKER
+  assert x['replay']['replay_capacity_extension']==CAPACITY_MARKER
+  assert x['replay']['capacity']==2_000_000 and x['replay']['cursor']==x['replay']['size']==x['steps']
+- assert old['cycle']==32 and old['boundary']=='complete_condition_cycle'
++ assert old['cycle']==33 and old['boundary']=='complete_condition_cycle'
+  assert old['replay']['capacity']==2_000_000 and old['replay']['size']==old['replay']['cursor']==old['steps']
+  assert old['replay']['replay_capacity_extension']==CAPACITY_MARKER
+  parent_ref=reg['recovery_continuation_stage']['parent_registration'];parent_reg_path=Path(parent_ref['path'])
+@@ -52,11 +52,11 @@
+  parent_reg=json.loads(parent_reg_path.read_text())
+  assert reg['replay_capacity_stage']==parent_reg['replay_capacity_stage']
+  assert reg['replay_capacity_stage']['parent_cycle']==23
+- assert reg['recovery_continuation_stage']['parent_cycle']==32
++ assert reg['recovery_continuation_stage']['parent_cycle']==33
+  assert x['interruption_recovery']==old['interruption_recovery']==reg['interrupted_stream_recovery']
+  assert x['recovery_continuation']==reg['recovery_continuation_stage']
+  assert old['recovery_continuation']==parent_reg['recovery_continuation_stage']
+- assert reg['recovery_continuation_stage']['new_cycle']==33
++ assert reg['recovery_continuation_stage']['new_cycle']==34
+  assert reg['recovery_continuation_stage']['checkpoint']==dict(path=str(parent),sha256=sha(parent))
+  entry=reg['replay_capacity_stage']['entry_checkpoint'];assert sha(entry['path'])==entry['sha256']
+  capacity_review=dict(passed=True,historical_entry_cycle=23,inherited_stage_exact=True,old_capacity=2_000_000,new_capacity=2_000_000,marker=CAPACITY_MARKER,
+@@ -73,9 +73,9 @@
+  for t in ts:by[t['condition']].append(t)
+  err=0.
+  for name,rows in by.items():
+-  journal=list(lines(run/'cycle_00033'/name/'actor_intervals.jsonl'));reward=SPTReward()
++  journal=list(lines(run/'cycle_00034'/name/'actor_intervals.jsonl'));reward=SPTReward()
+   for i,t in enumerate(rows):
+-   j=journal[i];nxt=json.loads((run/'cycle_00033'/name/'TERMINAL.json').read_text()) if t['done'] else journal[i+1];k=t['step']-1
++   j=journal[i];nxt=json.loads((run/'cycle_00034'/name/'TERMINAL.json').read_text()) if t['done'] else journal[i+1];k=t['step']-1
+    labels=nxt['result'] if t['done'] else dict(task_success=False,strict_success=False)
+    value,_=reward(current_potential=j['payload_potential'],next_potential=nxt['payload_potential'],interval=nxt['interval'],terminated=t['done'],task_success=labels['task_success'],strict_success=labels['strict_success'])
+    if t['done'] and labels['strict_success']:value+=completion_bonus(task_success=True,strict_success=True,completion_time_s=nxt['completion_time_s'])
+@@ -84,9 +84,9 @@
+    expected=a['actions'][k].copy();expected[0]=np.float32(.5)*(expected[0]+np.float32(1.))
+    np.testing.assert_array_equal(expected,np.asarray(j['action'],np.float32));np.testing.assert_array_equal(expected,np.asarray(j['executed_action'],np.float32));assert t['context'] is None
+    np.testing.assert_array_equal(a['next_observations'][k,:48],(a['observations'][k,:48] if t['done'] else np.asarray(nxt['observation'],np.float32)/s['observation_scale']));assert a['next_observations'][k,48]==np.float32((1374-i)/1375);assert a['rewards'][k,0]==np.float32(t['reward']) and a['dones'][k,0]==float(t['done'])
+- sys.path.insert(0,str(B/'runtime/serl_take_cycle33_20261027_v1'))
+- sys.path.insert(0,'/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_take_cycle33_20261027_v1/audit_source_retry3')
+- from audit_serl_take33_replay_20261027 import audit
++ sys.path.insert(0,str(B/'runtime/serl_take_cycle34_20261027_v1'))
++ sys.path.insert(0,'/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_take_cycle34_20261027_v1/audit_source')
++ from audit_serl_take34_replay_20261027 import audit
+  multistep=audit(x,old,ts)
+  report['multistep_replay']=multistep
+  report['methods'][m]=dict(steps=x['steps'],updates=s['num_gradient_steps'],added_steps=x['steps']-old['steps'],parent_sha256=sha(parent),checkpoint_sha256=sha(snapshot),retained_replay_all_fields_exact=True,retained_replay_rows=n,history_retained=True,optimizer_hyperparameters_retained=True,critic_clock_marker=s['critic_clock_extension'],model_count=models,actual_live_sampler_count=len(children),completed_at_affinity_observation=len(finished_episodes),registered_samplers=30,new_transition_mapping_count=len(ts),max_reward_reconstruction_error=err,terminal_coverage_count=sum(t['done'] for t in ts),aborts=[e for e in finished_episodes if e['abort_reason']],mapping_scope='All new canonical48 scaling, critic remaining-time current/next clocks, raw7-to-public7 mapping and journal rewards verified. Prepared replay prefix exact; not raw-substep dynamics replay.')

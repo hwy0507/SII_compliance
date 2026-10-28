@@ -1,0 +1,11 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/serl_take_cycle33_20261027_v1/audit_source_retry3/audit_serl_take33_replay_20261027.py
++++ replay34
+@@ -22,7 +22,7 @@
+     assert sorted(extra['ready']+pending) == list(range(current['size']))
+     rows = defaultdict(list)
+     for row in transitions:
+-        assert row['cycle']==33 and row['recovery_stream'] in range(30,60)
++        assert row['cycle']==34 and row['recovery_stream'] in range(30,60)
+         rows[(row['cycle'],row['condition'])].append(row)
+     expected_pending = set(old_pending)
+     mature = 0

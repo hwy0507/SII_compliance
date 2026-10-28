@@ -1,3 +1,12 @@
+## 2026-10-28 — Direct33完整，接受Direct数值收敛阶段，继续三参数54
+
+- [最新交接](docs/RL_DIRECT33_ASSESSMENT_20261028.md)。Direct33完整1369290steps/10914328critic、30×55/noabort；旧1328040 replay/history/930隔离保持，新41250全部成熟/reward重算0误差。archive与source逐SHA一致，fullreview/health/独立保存算术及两图通过。reward−30.902455898，Task/Strict0/0；critic首/末1000 .008725863/.008436733、max.016270868，terminalMAE.027468827/32步TD.025459949，未见loss异常。
+- 重新核原27–29固定5%通过及冻结29全30审查身份/hash；结合完整33延续平台，接受Direct在原训练条件下的经验数值标准，**不启动34**。Task0照实披露，不新增成功率门槛；不等同任务成功/全局收敛/多seed泛化，冻结29不认证33。决定DIRECT_STAGE_DECISION：Direct数值阶段完成，整体Goal active，参数54与原53–55窗口继续。
+- 原33归档后的fullreview误导入旧cycle32 helper失败；保留原日志/失败源码，仅改导入自身正确33 helper。恢复3237350完成并写显式恢复FINISHED，checkpoint未改。原34仅恢复1059038因此退出，无实际34check-only，勿重启或盲目续训34。可选34脚本和拒绝缺失决定的验证保留；完整33loss2822749已完成。
+- 三参数54原2116858/2116859/2116860继续，归档2116861、55仅恢复2450050、原窗口514418均身份live。GPUv4保持；Direct退出后GPU0仅guard1629439即时69%，最终四卡70/96/92/92%，包含合成负载、非永久保证。
+- 共享SSD准备包B/repository/RL_DIRECT33_ASSESSMENT_20261028_043918/PREPARATION_EVIDENCE.tar.gz，12229字节/13来源成员/SHA `e02b943e9b54422aade466c4208061475b7ff4148a5ea1c1b946dba72fd4cdbd`；COMPLETE33_EVIDENCE.tar.gz，424498字节/26成员/SHA `6c2c6411b6756a2f1485b12c5afd8d1a2af5531fd8e23195cbfba13b4fc4fed6`，逐hash核验。大产物仍共享SSD，非HDD/arm1完整备份。
+- 已实时查询/fetch/read main `924ff3fb1e9b1a109259cd2177c065a47a93852a`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，原科学约束不变，无子agent。
+
 ## 2026-10-28 — 参数54固定前5000完成与55仅恢复准备
 
 - [最新交接](docs/RL_PARAMETER54_EARLY55_PREP_20261028.md)。54启动前登记的每方法前5000检查完成，原2158459退出；完整前缀hash/连续steps/独立算术/图通过，critic首→末1000 I2.838518→2.825043、A1.417623→1.423225、V.900831→.869901，全critic/actor有限。I仍偏高；短前缀不是收敛证明，原53–55窗口/5%与科学约束不变。
