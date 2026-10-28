@@ -1,3 +1,15 @@
+## 2026-10-28 — RL完整32/52归档，恢复33/53与持续GPU负载
+
+- [最新恢复交接](docs/RL_RESUME33_PARAMETER53_20261028.md)。开工核对main `9a78d280e7b622ad1e96a8aeb5e4cacbbcebf3d5`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读两分支日志，安全快进保留非RL180成果；冻结训练runtime不变。主机`rltest-1025--a6ed2ff39b3c-hsje5ateny`，共享SSD根目录`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`。
+- 接回时四训练均已完整退出、四卡0%；完整Direct32/参数52按checkpoint与SHA归档、完整回放/奖励审查和健康诊断结束。各30完整55秒/noabort，reward D/I/A/V −30.907576/−0.593692/−11.924950/−2.806195，Task/Strict 0/0、18/18、13/12、17/17。旧回放精确保留、新reward重算0误差；Direct930隔离不变。
+- 原预登记49–51稳定性审计从超时后恢复，旧失败保留；I近零保护、A/V相邻波动均未通过原5%。完整32/52 optimizer各41250条critic/actor有限，已看图；A52首/末1000 critic loss 1.335185→1.909094且max37.244198，明确末段升高，不将有限值冒充健康收敛。Direct loss0.008966→0.008772，原27–29稳定通过保持；原冻结29全30已完成且state不变，Task0单列，不重复物理评测。
+- 准确全state/next batch/RNG check-only后恢复正式33/53；实际startup D/I/A/V新增1000/2000/3000/5000，旧replay/history、原设置、30MJB、动作/clock与reward0误差通过。Direct审查接口与cycle断言迁移失败已修正并保留全部原件；未改训练算法。归档审查monitor已挂载，有限周期，无自动34/54。下一固定53–55窗口在53训练开始前登记，原公式不变。
+- 按用户“完成后仍保持GPU”新指令，安装独立合成负载守护`B/runtime/gpu_util_guard_20261028_v2`，与科学结果分开。v1过度退让后保留失败低占用窗口，v2提高保底；60采样80.23秒GPU均值80.57/88.47/86.75/83.70%，仍有5/3/3/6个低于50%样本，不保证瞬时/平台不关机。正式四路进程存活推进；包含合成负载，不是纯训练占用且有吞吐开销。
+- 小证据及执行源码`docs/evidence/RL_RESUME33_PARAMETER53_20261028`逐hash复制，原大checkpoint/replay/raw继续共享SSD；既有未提交32/52交接保留为历史。Goal active，无子agent；Git发布及SSD证据包/HDD入口更新另附收据。
+
+
+本轮共享SSD小证据包已逐成员核验：`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_RESUME33_PARAMETER53_20261028_033457/SMALL_EVIDENCE.tar.gz`，175成员、1,750,097字节、SHA256 `4ac8b8a17261b2d219eda3eae2e09e9eaa5b7a288c59aef9f9646a39d325e64f`。收据[RL_RESUME33_PARAMETER53_SAVE_20261028.json](docs/RL_RESUME33_PARAMETER53_SAVE_20261028.json)。HDD全文更新遇Errno122配额满，现有LATEST已成功写为简短指针并回读验证；全文仍在共享SSD仓库，非HDD完整备份。
+
 ## 2026-10-28 — 非RL 180回合最终审计、比较报告与证据发布
 
 - 只读复核主运行报告、独立最终审计及12个远端归档：原学习组108 + 历史传统控制器72 = 180/180，12条件各15回合，197,135,200物理子步；180条身份唯一且本地运行目录齐全。最终状态 `final180_saved_physics_audit_passed`，Task 57/180、Strict 35/180、Task+Strict 35/180，公共filter replay最大绝对误差0，机器安全违规25/180。

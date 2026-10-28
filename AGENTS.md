@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — RL恢复Direct33／参数53，用户要求完成后继续GPU占用
+
+最新RL权威交接：[RL_RESUME33_PARAMETER53_20261028.md](docs/RL_RESUME33_PARAMETER53_20261028.md)。用户再次恢复，Goal active；覆盖旧暂停和32/52仍运行快照，不影响下方已完成非RL结果。完整Direct32/参数52已归档和审查；原49–51三参数均未通过5%稳定性，53–55已在53启动前登记。准确父全state/check-only通过，正式Direct33 PID259795，参数53 PID238630/238631/238632运行；四路实际startup旧replay/history/动作/clock/30MJB与新reward0误差通过。有限33/53归档审查monitor259815/238633，无自动34/54；先核身份及最新进度，勿重复启动。
+
+用户明确要求全部完成后GPU也持续运行。本轮另启独立合成负载守护B/runtime/gpu_util_guard_20261028_v2，不读写正式checkpoint、0科研更新。v2固定60样本80.23秒混合占用均值80.57/88.47/86.75/83.70%，仍有低于50%瞬时样本，绝非纯训练利用率或永久保证；原v1证据保留。守护后台独立运行至STOP/关机，不是跨重启系统服务。训练科学指标不计入守护；不要误关或重复启动。最新进程/路径/hash在交接和docs/evidence/RL_RESUME33_PARAMETER53_20261028；大型产物仍共享SSD，非HDD/arm1全备份。无子agent。
+
 ## 2026-10-28 — 非RL 180回合最终审计已完成
 
 非RL最终目标已完成：原学习组108回合与6套历史传统控制器72回合共180/180，12条件各15回合，197,135,200个物理子步。主运行 `code/mujoco_6d_vmc_benchmark/outputs/nonrl_classical_task_spt_20261027_v1/execution.json` 为 `complete/completed=72`；独立 `published/archive_pipeline_v1/FINAL_AUDIT.json` 为 `final180_saved_physics_audit_passed`。180条回合身份唯一、本地运行目录齐全；Task 57/180、Strict 35/180、Task+Strict 35/180，公共filter重放最大误差0，机器安全违规25/180。共同 `T_ref` 取全部Task成功回合最短时间34.36000000126405秒。最终比较与远端归档索引见 `docs/evidence/nonrl_classical_task_spt_20261027/FINAL_COMPARISON_180.md` 和 `FINAL_AUDIT_INDEX.json`；009–011条件小收据已逐字节复制核验。归档服务旧execution快照的`campaign_completed=71`仅为等待时计数，不覆盖主运行72和最终180审计。
