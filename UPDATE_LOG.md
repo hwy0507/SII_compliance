@@ -1,3 +1,12 @@
+## 2026-10-28 — 完整69审查与准确续训70
+
+- [交接](docs/RL_PARAMETER69_COMPLETE_20261028.md)。69三路各30×55/41250新增/noabort，旧68 replay/history保持、新reward重算0、网络/optimizer有限；全loss独立算术与实际图通过。reward I/A/V−.603698/−6.863821/−4.620539，TaskStrict18/18、15/15、17/16。I/A reward变化仍大、critic有限尖峰保留，尚未整体收敛。
+- 全180标签/90reward对通过：I long0000恢复TaskStrict、short0600恢复Strict(.196738mm)；A short0600恢复TaskStrict(.189866mm)；V该条件.219091mm仍失Strict。physical-valid30/30、30/30、29/30，无Task-only遗漏。
+- 全2064旧终端V SSE3854.502105→1654.889318（−57.066%），focus2050526 8.083281→120.416201退化、其余4改善，新30贡献.122886仍高；A829.837169→1186.567579（+42.988%），原66short0600 31.453106→55.213166。全数组/算术/实际图已审，不改focus/门槛或作因果声明。
+- 准确69全state/replay/next65536三路恢复通过，DECISION70绑定42证据/SHAf3336366；21:20:32有限70 I896042/A896043/V896044、archive896045启动，实际startup通过，21:25:40steps2885999/2886633/2887667。全70loss899342/PLANf6474649已部署；原68–70 waiter1085142保持，无自动71，Direct34false，Goal active。
+- 长observer exit143保留、原科学自然结束核验；未重启科学。322guard采样min66/56/63/61%、低于50[0, 0, 0, 0]，含合成保载、非瞬时保证；原v5科学完成也继续，非跨重启服务。
+- SSD包212成员/2403638字节/SHA0347956f逐字节/AST核验，收据docs/RL_PARAMETER69_COMPLETE_20261028_SAVE.json；大产物SSD，非HDD/arm1全备份。开工main5d26f186/baselinef6e8f8c实际fetch/read，无子agent。
+
 ## 2026-10-29 — 非RL v8 ESN训练残差及ridge数学实现核验
 
 - [报告](docs/NONRL_V8_ESN_TRAINING_DIAGNOSTIC_20261029.md)。三组已完成ESN对全部24train/12600帧的冻结runtime重放与原导出完全相同，teacher动作也精确；独立重建540维训练设计/归一化/原ridge正规方程，保存权重相对残差≤2.821e−14、输出误差≤8.33e−15。没有refit/模型改写，排查实现而非宣称学生成功。
