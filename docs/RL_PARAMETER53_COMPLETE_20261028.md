@@ -39,3 +39,5 @@ Direct33原259795继续，Direct34恢复准备1059038仍等待完整父；原53�
 ## 保存
 
 小证据`docs/evidence/RL_PARAMETER53_COMPLETE_20261028`；包`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER53_COMPLETE_20261028_041907/SMALL_EVIDENCE.tar.gz`，686057字节，SHA256 `bd132b47c7b7c18811de5e6ebc04413e2588f4245f4b3831366d7a1a77c819db`，19源码/小证据成员逐大小/hash核验并含两张诊断图。大checkpoint/replay/raw继续共享SSD，不是HDD/arm1完整备份。HDD既有LATEST只保存入口。
+
+54实际startup随后已通过：I/A/V新增1000/1000/2000，旧2223680/2223500/2224500条replay全部字段/history保留、原optimizer配置/双容量marker/4m/30MJB/30sampler/动作与clock映射通过，新reward重算误差0；此次首批无终端，不代替完整54审查。最终证据docs/evidence/RL_PARAMETER53_COMPLETE_20261028/stage54/ACTUAL_STARTUP_REVIEW.json，补充包B/repository/RL_PARAMETER53_COMPLETE_20261028_041907/ACTUAL_STARTUP54.tar.gz逐内容核验，SHA256 `981f73e1138eb050d82b20acff42a84e886b1f971d42947734f66340d6e48a8d`。

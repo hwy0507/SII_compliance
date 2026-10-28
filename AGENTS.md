@@ -6,6 +6,9 @@
 
 准确53全state/replay/下一65536/RNG的54check-only三路通过，读完整loss/health图后有限54正式已启动：I2116858/A2116859/V2116860，原GPU1/2/3和30sampler；归档review2116861，startup2158415最终结果须读run下startup/REVIEW，不以check-only代替。启动前已登记54首5000固定跟踪2158459，B/runs/parameter54_first5000_20261028_v1，3600秒；原固定53–55 waiter514418继续，无自动55训练。Direct33原259795和34仅恢复1059038继续。GPU守护仍v4，不能误恢复旧v2/v3。Goal active，无子agent；下方33/53仍运行等为历史快照。
 
+
+54实际startup随后已通过：I/A/V新增1000/1000/2000，旧2223680/2223500/2224500条replay全部字段/history保留、原optimizer配置/双容量marker/4m/30MJB/30sampler/动作与clock映射通过，新reward重算误差0；此次首批无终端，不代替完整54审查。最终证据docs/evidence/RL_PARAMETER53_COMPLETE_20261028/stage54/ACTUAL_STARTUP_REVIEW.json，补充包B/repository/RL_PARAMETER53_COMPLETE_20261028_041907/ACTUAL_STARTUP54.tar.gz逐内容核验，SHA256 `981f73e1138eb050d82b20acff42a84e886b1f971d42947734f66340d6e48a8d`。
+
 ## 2026-10-28 — RL恢复Direct33／参数53，用户要求完成后继续GPU占用
 
 VMC53已完整退出：2224500steps/30条件，原238632不存在；episode初步Task17/Strict16、reward−4.568304136，完整review仍待原三路monitor。新固定30样本35.871秒逐样本GPU3 compute PID仅守护1629442，均值70.8%、最低69%、低于50为0，直接验证正式结束后持续负载。补充证据与包见v4报告；原D/I/A继续。
