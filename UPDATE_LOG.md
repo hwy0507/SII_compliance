@@ -1,5 +1,7 @@
 ## 2026-10-29 — 非RL九模型同教师历史诊断与八球覆盖准备
 
+- 科学85704713已push/核远端；同commit源码小证据1240文件/7981599bytes/SHA8d4831bd，准确报告7084bytes/SHA14af8210及九模型完整预测数组1156614bytes/SHA31b0b8b1、旧准备说明等7文件已逐暂存/最终大小hash核共享到`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_matched_history_source_20261029_v1/`。收据V8_MATCHED_HISTORY_SHARED_RECEIPT；不含在途108物理。23:29:58原1172675 active，RNN seed3实际54.04s carry、7完成，Goal active，无新probe或训练。
+
 - [交接](docs/NONRL_V8_MATCHED_HISTORY_AND_COVERAGE_20261029.md)。九模型同成功teacher1375帧重放，全部原源/hash/teacher动作及五已完成学生实际actor/首观测首动作精确核验、独立标量MSE/NPZ回读通过。ESN三seed全段MSE .250070/.075675/.184260，lift/carry偏差大；RNN/MLP首帧已非教师残差，不是闭环排名或因果认证。REVIEW SHA5c0bbeb7、数组SHA31b0b8b1，仅诊断不拟合。
 - 六方向零载荷合成检查：teacher/ESN均0，RNN/MLP最大.130110/.273377；原全零输入检查遗漏非零运动上下文。首两次诊断错误导入在输出前拒绝，显式冻结actor加载后通过，原运行无变化。
 - 新独立coverage runner/初始与carry配置、八回合driver及资格checker已实现；有效准备v3 REG2f008162，四轴approach/carry×两球角，实际三场景中的ball开发探针。默认task/layout精确、gate函数保持、资格逆替换仅wrapper字符串、四非法配置/八方向/原108绑定及真实未完成拒绝通过。未物理启动、无自动拟合，早期v1/v2保留superseded；v2→v3仅去wrapper尾空行后重新绑定及全静态复核。

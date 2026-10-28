@@ -2,6 +2,8 @@
 
 ## 2026-10-29 — 非RL九模型同教师历史诊断与八球覆盖准备
 
+科学85704713已push/核远端；同commit1240源码小证据/7981599bytes/SHA8d4831bd、准确报告及九模型完整预测数组等7文件均逐暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_matched_history_source_20261029_v1/`，见V8_MATCHED_HISTORY_SHARED_RECEIPT。23:29:58原1172675 active/725708800bytes，RNN seed3推进54.04s carry，7完成；无新probe或训练。
+
 - [当前交接](docs/NONRL_V8_MATCHED_HISTORY_AND_COVERAGE_20261029.md)。九锁定模型同成功teacher1375帧诊断完成，原teacher/source/条件相同及动作精确重放、五已完成学生首观测/首动作相同和全actor精确核验。ESN三seed MSE .250070/.075675/.184260，主要lift/carry；RNN/MLP首帧已有非教师残差，非闭环排名或唯一因果。
 - 六合成零载荷方向探针：teacher/ESN全0，RNN各seed最大.130110/.110023/.084461，MLP .273377/.195345/.235294；原全零输入检查不足以约束非零上下文。无合成标签拟合，不热改模型/gate。诊断首两次错误导入被源码检查在输出前拒绝，改绝对冻结actor路径后通过，非运行推理bug。
 - 已实现并准备`outputs/nonrl_ball_coverage_probe_20261029_v3`，REG2f008162，8个真实ball开发控制：四轴初始XY±50mm/Z−60mm、同方向carry85mm×球角±.8；原teacher/物理/gate/filter保持。默认task/layout精确、原gate函数不变、资格仅wrapper名字不同、非法参数和实际在途108拒绝通过。无新物理/训练；早期v1/v2仅准备已superseded勿运行，v2→v3仅去wrapper尾空行后重新绑定。
