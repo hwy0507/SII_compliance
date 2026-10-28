@@ -45,3 +45,15 @@ v5实际 `/tmp/sii_gpu_util_guard_20261028_v5` 五进程3256866–3256870，star
 [保存收据](RL_PARAMETER63_EARLY_ANCHOR_SAVE_20261028.json)、[清单](evidence/RL_PARAMETER63_EARLY_ANCHOR_20261028/MANIFEST.json)：82成员/1323410字节小包 `B/repository/RL_PARAMETER63_EARLY_ANCHOR_20261028_140922/SMALL_EVIDENCE.tar.gz`，SHA256 `261457f1696b3cc9dc117f07b2dee373a587a05eb82fd001a98e26f941ec955a`，逐成员字节及全部Python AST通过，包含已拒绝源与失败收据。大checkpoint/replay/raw留共享SSD；HDD配额满只更新已有LATEST，不是HDD/arm1完整备份。Goal active，无子agent。
 
 接手继续原63，完成全loss/health/全标签/固定终端审查，再决定64；原62–64待完整报告。各等待器只观察/审计或恢复检查，不代替科学决定。
+
+## 14:25补充：原63连续观察与完整64 loss准备
+
+`B/runtime/parameter63_verified_wait_1415_20261028_v1` 21次真实采样（14:15:06–14:25:08）核验原三learner、归档/全loss/全1884终端/全标签/64仅恢复/62–64窗口及五guard身份保持；steps2612291/2612997/2614083→2620080/2620731/2621795严格增长，无完整/失败标记。有限观察器exit0不是科学结束，未重启任何训练，Goal active。
+
+同区间原guard日志118条：min70/67/69/65%，mean78.60169492/89.38983051/89.66949153/89.65254237%，低于50计数全0、maxgap5.26863909秒。独立即时查询GPU1曾66%，采样时刻不同，不替换或抹掉；包含合成保活，不是每瞬时保证/纯训练吞吐。用户要求科学完成后也保持guard。
+
+`B/runtime/parameter64_loss_preparation_20261028_v1` audit.py/paired_gate.py/review_saved.py/wait.py仅静态准备；父63逆变换/AST/实际diff通过，AST再次确认完整49–63历史保留追加64，原condition0600保持。没有64loss运行目录/PLAN/等待器。完整63科学审查并实际64启动后，复制四源到独立run、绑定真实LAUNCH jobs和源hash，再启动CPU54/7200秒原等待；完成后独立复算/实际图/全标签审查。此准备不启动训练。
+
+`B/runs/vmc62_terminal_anchor_followup_20261028_v1/NEW_TERMINALS_REVIEW.json` 新增全30保存标量诊断，父59脚本仅周期/计数适配、逆变换/AST通过，无新forward/物理/优化。全部30实际total_steps−1映射及与全180独立标签审计的条件/reward/Task/Strict逐条通过，贡献总和.2343665392247155精确复现原REVIEW。最大short0000/index2588236，Task真Strict假、terminal reward−28.414209366，五mask均1，SSE3485.716113928、贡献.196767841011803，占新30 **83.95730963%**；它是原穿透.226158827mm失Strict回合。其次short0100/index2588237贡献.017193698667、short0600/index2588235 .010526348960，二者Task/Strict均真。失败与成功全30行均保留；这是冻结完整62保存数值的事后解释，不是在线minibatch/梯度因果，不据此排除样本或新增阈值。完整63固定终端对照后应检查这30旧行的全部改善和退化，原五focus及全1884输入锚点/PLAN不改。
+
+[本次保存收据](RL_PARAMETER63_WAIT64_PREP_SAVE_20261028.json)、[清单](evidence/RL_PARAMETER63_WAIT64_PREP_20261028/MANIFEST.json)：21成员/21752字节包 `B/repository/RL_PARAMETER63_WAIT64_PREP_20261028_142518/SMALL_EVIDENCE.tar.gz`，SHA256 `2b752d84fecd4007f4a7348027e6c91ff88161c2b06646e82a81f4f6318aeda0`，逐成员字节和Python AST通过。开工/收尾实际fetch/read maine4cd8486、baselinef6e8f8c，无新增协议变化；大产物仍共享SSD，非HDD/arm1全备份。原63和全部等待器继续，64仍须完整63审查后决定。
