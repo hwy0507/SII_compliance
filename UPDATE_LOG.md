@@ -1,3 +1,11 @@
+## 2026-10-28 — 33/53早期loss、导纳Strict门槛核验与34/54恢复准备
+
+- [补充交接](docs/RL_EARLY33_PARAMETER53_20261028.md)。实际查询/fetch/read main `d620fddfed28a31d1ac7ace90484b0a65b8c2bfd`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，无新RL约束变化；原四learner与GPU守护身份核验live，训练持续推进。
+- 保存各方法33/53固定前5000 optimizer原始行并hash，steps连续、全部数值metric有限；critic首/末1000 D0.008726→0.008638、I2.101266→2.111797、A1.891316→1.661932、V0.659883→0.714774。已查看图；这是回顾性早期诊断，非预登记完整稳定窗口或收敛证明，尖峰未删除。
+- 导纳52全30终端邻域保留；short0600相同MJB的51/52外部穿透0.188776/0.234536mm，原物理gate0.2mm不变，Task均成功、Strict true→false，回合reward15.690053→−34.966087。52终端step2179929前/后1000loss1.292099/1.912622。rollout/TERMINAL/执行源码hash与gate/标签/reward和算术通过；无独立物理重放或replay样本因果证明，不改gate/reward。
+- 下一轮仅恢复准备：B/runtime/prepare34_parameter54_20261028_v1，waiter1059038/1059039绑定原learner/archive monitor起始ticks，完整父审查与退出后才check-only，固定14400秒。源码diff/AST/hash与当前等待进程验证通过，尚未实际check-only，不写PRELAUNCH批准，不自动训练34/54。
+- 小证据docs/evidence/RL_EARLY33_PARAMETER53_20261028；完整前缀/图/源码归档B/repository/RL_EARLY33_PARAMETER53_20261028_035157/SMALL_EVIDENCE.tar.gz，19成员逐大小/hash核验，1304817字节，SHA256 `940fb8ea4e7d1886b62bc219270cb24847e581011090041ffa39b606927e1277`。B为`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`，实际主机`rltest-1025--a6ed2ff39b3c-hsje5ateny`；大checkpoint/raw仍SSD，非HDD/arm1全备份。Goal active，无子agent。
+
 ## 2026-10-28 — RL完整32/52归档，恢复33/53与持续GPU负载
 
 - [最新恢复交接](docs/RL_RESUME33_PARAMETER53_20261028.md)。开工核对main `9a78d280e7b622ad1e96a8aeb5e4cacbbcebf3d5`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读两分支日志，安全快进保留非RL180成果；冻结训练runtime不变。主机`rltest-1025--a6ed2ff39b3c-hsje5ateny`，共享SSD根目录`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl`。

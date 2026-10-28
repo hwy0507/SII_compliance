@@ -2,6 +2,8 @@
 
 ## 2026-10-28 — RL恢复Direct33／参数53，用户要求完成后继续GPU占用
 
+最新补充：[RL_EARLY33_PARAMETER53_20261028.md](docs/RL_EARLY33_PARAMETER53_20261028.md)。33/53固定前5000数值均有限，critic末1000 D/I/A/V为0.008638/2.111797/1.661932/0.714774；导纳从1.891回落但不能宣称收敛。A52 short0600 Task仍成功，穿透0.234536mm超过原0.2mm门槛而Strict失败，51为0.188776mm；终端前/后1000loss1.292099/1.912622，保存记录与gate算术通过，非独立物理或因果证明，不改门槛。有限下一轮恢复准备B/runtime/prepare34_parameter54_20261028_v1：Direct34 waiter1059038、参数54 waiter1059039均核验live；只在完整父review和原learner退出后check-only，未实际执行、无自动训练/PRELAUNCH批准。新小证据19成员/1304817字节包B/repository/RL_EARLY33_PARAMETER53_20261028_035157/SMALL_EVIDENCE.tar.gz，SHA256940fb8ea4e7d1886b62bc219270cb24847e581011090041ffa39b606927e1277，已逐成员核验。原训练/守护保持，Goal active。
+
 最新RL权威交接：[RL_RESUME33_PARAMETER53_20261028.md](docs/RL_RESUME33_PARAMETER53_20261028.md)。用户再次恢复，Goal active；覆盖旧暂停和32/52仍运行快照，不影响下方已完成非RL结果。完整Direct32/参数52已归档和审查；原49–51三参数均未通过5%稳定性，53–55已在53启动前登记。准确父全state/check-only通过，正式Direct33 PID259795，参数53 PID238630/238631/238632运行；四路实际startup旧replay/history/动作/clock/30MJB与新reward0误差通过。有限33/53归档审查monitor259815/238633，无自动34/54；先核身份及最新进度，勿重复启动。
 
 用户明确要求全部完成后GPU也持续运行。本轮另启独立合成负载守护B/runtime/gpu_util_guard_20261028_v2，不读写正式checkpoint、0科研更新。v2固定60样本80.23秒混合占用均值80.57/88.47/86.75/83.70%，仍有低于50%瞬时样本，绝非纯训练利用率或永久保证；原v1证据保留。守护后台独立运行至STOP/关机，不是跨重启系统服务。训练科学指标不计入守护；不要误关或重复启动。最新进程/路径/hash在交接和docs/evidence/RL_RESUME33_PARAMETER53_20261028；大型产物仍共享SSD，非HDD/arm1全备份。无子agent。
