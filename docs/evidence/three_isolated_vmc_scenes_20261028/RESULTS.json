@@ -1,0 +1,780 @@
+{
+  "purpose": "scene display only; not a new method comparison",
+  "base_main": "9a78d280e7b622ad1e96a8aeb5e4cacbbcebf3d5",
+  "base_baseline": "f6e8f8c2711a93f0b5dfc88c608bd82647084d5d",
+  "all_three_full55s": true,
+  "rows": [
+    {
+      "scene": "passive_corner",
+      "scene_provenance": {
+        "purpose": "isolated scene visualization only; not formal evaluation",
+        "scene": "passive_corner",
+        "parent_mjb_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+        "model_sha256": "8fc13d440dff2c275555f93c4594d56214fddf254dabbd83ebae8438a97fc3a8",
+        "inactive_geoms": [
+          "office_v5_pillar",
+          "office_v5_pillar_mount",
+          "office_v5_ball_geom",
+          "office_v5_person_torso",
+          "office_v5_person_head",
+          "office_v5_person_leg_-1",
+          "office_v5_person_foot_-1",
+          "office_v5_person_leg_1",
+          "office_v5_person_foot_1",
+          "office_v5_upper_arm_geom",
+          "office_v5_forearm_geom",
+          "office_v5_human_palm",
+          "office_v5_human_finger_0",
+          "office_v5_human_finger_1",
+          "office_v5_human_finger_2",
+          "office_v5_human_finger_3",
+          "office_v5_human_thumb",
+          "office_v5_push_rod_geom"
+        ],
+        "teacher_choice_sha256": "8878320015fa602deba9277349f618dbab13640c3982c136a53fc1f3a07ebea3",
+        "wrapper_sha256": "1e56c9444c8cee5f261927fed39d9a692a5dd9410a3a22ec6248fac260b280ae",
+        "teacher": "new30 teacher_lhs_0; exact frozen source/config"
+      },
+      "audit": {
+        "task_success": false,
+        "strict_success": false,
+        "memory_ablation": "none",
+        "full_horizon": true,
+        "stage": "carry",
+        "rmse_mm": 28.777991740808975,
+        "peak_torque_nm": 51.5364875793457,
+        "peak_speed_mps": 0.07260436413590966,
+        "penetration_mm": 0.0016056860191764639,
+        "edge_penetration_mm": 0.08833940198855668,
+        "worst_pair": [
+          "office_v5_corner_top",
+          "hand_collision"
+        ],
+        "physical_seconds": 54.99999999999989,
+        "max_lift_m": 0.18765174457236194,
+        "object_final_position": [
+          0.6700403109917206,
+          -0.2889972693286694,
+          0.6094142395533839
+        ],
+        "placement_error_xy_m": 0.028974193361674085,
+        "abort_reason": null,
+        "action_replay_max_abs": 0.0,
+        "reservoir_replay_max_abs": null,
+        "stages": {
+          "0": {
+            "start_s": 0.04000000000000063,
+            "end_s": 0.15999999999999054,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "1": {
+            "start_s": 0.19999999999998613,
+            "end_s": 2.000000000002008,
+            "mean_action": [
+              0.01027150442703484,
+              -0.00828868211816317,
+              0.001381258824299573,
+              -0.0005551963908109149,
+              -0.001669310808223777,
+              -0.01067794724446869,
+              0.0
+            ],
+            "median_wrench": [
+              -2.7433583109732494e-06,
+              9.676501234746706e-07,
+              1.9034539319141225e-06,
+              -5.050649870969812e-07,
+              -1.4177940733171298e-06,
+              1.8001645340315512e-10
+            ]
+          },
+          "2": {
+            "start_s": 2.040000000001915,
+            "end_s": 2.3200000000012624,
+            "mean_action": [
+              0.061620828099513345,
+              -0.022696552787142065,
+              -0.0005655369869112877,
+              0.0007900280478565218,
+              -0.05093438031451772,
+              -0.09125196103721621,
+              0.0
+            ],
+            "median_wrench": [
+              -0.4871705024693538,
+              0.11675541549259467,
+              -0.1738939026687233,
+              -0.1427970233815502,
+              -0.24580758324112933,
+              -0.0004649430793481346
+            ]
+          },
+          "3": {
+            "start_s": 2.360000000001169,
+            "end_s": 5.679999999993432,
+            "mean_action": [
+              0.011769277691927586,
+              0.0009292228530535357,
+              9.286558293270601e-06,
+              -0.003964768803500192,
+              0.002316534169692829,
+              0.0032533978629315165,
+              0.0
+            ],
+            "median_wrench": [
+              -0.0038696001294174984,
+              -0.0006835198597602288,
+              -0.7842681012811765,
+              0.0004035345190890934,
+              0.0007934591434374701,
+              -4.656846315204133e-05
+            ]
+          },
+          "4": {
+            "start_s": 5.719999999993338,
+            "end_s": 55.00000000126404,
+            "mean_action": [
+              0.08662881826795912,
+              -0.00454161868850911,
+              0.000896458506692762,
+              0.11396395792898925,
+              0.006383265767551396,
+              0.0060186579035015,
+              0.001998306927841803
+            ],
+            "median_wrench": [
+              -0.01640651553374736,
+              0.012621318724933855,
+              -0.17672436862175178,
+              0.014401051630570125,
+              0.018946066896828387,
+              0.006351177488243442
+            ]
+          }
+        },
+        "actor_replay_performed": true,
+        "common_filter_replay_max_abs": 0.0,
+        "model_sha256": "8fc13d440dff2c275555f93c4594d56214fddf254dabbd83ebae8438a97fc3a8",
+        "trace_sha256": "c25db1ff2a4e0320146c7a216695a5a63f7d981dfe3a8625c3645fdcf10b1590",
+        "chain_sha256": "d7f6ae5b4747b80bd4c7b274f883d5597a06dfa4e31d3d303acfc9acc03a5193",
+        "metrics_sha256": "a8ea770e4492f253593f7bb4e9577c663ffcf433bd2bd9c63991b970bd69b15c"
+      },
+      "media": {
+        "scene": "passive_corner",
+        "source": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/three_isolated_vmc_media_20261028_v2/passive_corner/run/rollout",
+        "render_only": true,
+        "clip_actual_time_s": [
+          0.04000000000000063,
+          24.840000000262837
+        ],
+        "fps": 12.499999999585043,
+        "playback_speed": 2.0,
+        "frames": 156,
+        "label": "Passive: rigid table edge",
+        "source_hashes": {
+          ".npz": "c25db1ff2a4e0320146c7a216695a5a63f7d981dfe3a8625c3645fdcf10b1590",
+          ".json": "c1c2d326a9f3e988e1b0a6e020396f8531d7541071ed5900c30a9303daeb888d",
+          ".mjb": "8fc13d440dff2c275555f93c4594d56214fddf254dabbd83ebae8438a97fc3a8"
+        },
+        "renderer_sha256": "8b684f1bdb3660524726e48a4341ece7b8a27dcab63aa936d3b81a11f6210be9",
+        "gif_decoded_all_frames": true,
+        "media_hashes": {
+          ".gif": "554fee7d3ffc61e2832b6e1da2a05c78fbda86edcb975e8607cbb34c2a0efa69",
+          ".mp4": "c70b06a29a214bbaeab3177a0624df24ad239b891d5eadde69fb82273b245565"
+        }
+      },
+      "contacts": {
+        "office_v5_corner_top": {
+          "first_s": 1.429800000000805,
+          "last_s": 1.4313500000008084,
+          "duration_s": 0.0015999999999999992,
+          "peak_n": 90.70531533626485,
+          "impulse_ns": 0.0789268124659329,
+          "robot_parts": [
+            "hand"
+          ]
+        }
+      }
+    },
+    {
+      "scene": "active_short",
+      "scene_provenance": {
+        "purpose": "isolated scene visualization only; not formal evaluation",
+        "scene": "active_short",
+        "parent_mjb_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+        "model_sha256": "421ca933abb3f31a93104d1318b54e0092be5249477b5ab5ca3db950c4bfd2b1",
+        "inactive_geoms": [
+          "office_v5_pillar",
+          "office_v5_pillar_mount",
+          "office_v5_corner_face",
+          "office_v5_unexpected_edge",
+          "office_v5_person_torso",
+          "office_v5_person_head",
+          "office_v5_person_leg_-1",
+          "office_v5_person_foot_-1",
+          "office_v5_person_leg_1",
+          "office_v5_person_foot_1",
+          "office_v5_upper_arm_geom",
+          "office_v5_forearm_geom",
+          "office_v5_human_palm",
+          "office_v5_human_finger_0",
+          "office_v5_human_finger_1",
+          "office_v5_human_finger_2",
+          "office_v5_human_finger_3",
+          "office_v5_human_thumb",
+          "office_v5_push_rod_geom"
+        ],
+        "teacher_choice_sha256": "8878320015fa602deba9277349f618dbab13640c3982c136a53fc1f3a07ebea3",
+        "wrapper_sha256": "1e56c9444c8cee5f261927fed39d9a692a5dd9410a3a22ec6248fac260b280ae",
+        "teacher": "new30 teacher_lhs_0; exact frozen source/config"
+      },
+      "audit": {
+        "task_success": true,
+        "strict_success": true,
+        "memory_ablation": "none",
+        "full_horizon": true,
+        "stage": "retreat",
+        "rmse_mm": 25.428282964599635,
+        "peak_torque_nm": 47.16010665893555,
+        "peak_speed_mps": 0.3840336583623817,
+        "penetration_mm": 0.15580208135178625,
+        "edge_penetration_mm": 0.0,
+        "worst_pair": [
+          "office_v5_ball_geom",
+          "hand_collision"
+        ],
+        "physical_seconds": 54.99999999999989,
+        "max_lift_m": 0.14912553424766767,
+        "object_final_position": [
+          0.6968731401674566,
+          -0.31396690275916295,
+          0.5449969877369469
+        ],
+        "placement_error_xy_m": 0.007935765449038975,
+        "abort_reason": null,
+        "action_replay_max_abs": 0.0,
+        "reservoir_replay_max_abs": null,
+        "stages": {
+          "0": {
+            "start_s": 0.04000000000000063,
+            "end_s": 0.15999999999999054,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "1": {
+            "start_s": 0.19999999999998613,
+            "end_s": 2.000000000002008,
+            "mean_action": [
+              0.010271516357821505,
+              -0.008288734595583127,
+              0.0013812785789601135,
+              -0.0005552050462179784,
+              -0.0016693163988124719,
+              -0.01067795729289693,
+              0.0
+            ],
+            "median_wrench": [
+              -2.7433583180782612e-06,
+              9.67650125426175e-07,
+              1.9034538848840433e-06,
+              -5.050649909398485e-07,
+              -1.417794083773831e-06,
+              1.8001626536128496e-10
+            ]
+          },
+          "2": {
+            "start_s": 2.040000000001915,
+            "end_s": 2.6400000000005166,
+            "mean_action": [
+              0.15078976313828388,
+              -0.049777556078195326,
+              0.013309019489722615,
+              -0.0060756710862921205,
+              0.008699035097228199,
+              -0.004284233351075439,
+              -0.004733517846023609
+            ],
+            "median_wrench": [
+              -0.5984042544670831,
+              0.10345816376460099,
+              -0.6615564753758434,
+              -0.024407978868042267,
+              -0.06531972241021462,
+              -0.0018717708644915773
+            ]
+          },
+          "3": {
+            "start_s": 2.6800000000004234,
+            "end_s": 6.359999999991847,
+            "mean_action": [
+              0.014634086934445354,
+              0.0019354702229782727,
+              3.505437171882814e-05,
+              -0.0037550482238056047,
+              0.0004534660708670125,
+              0.002827634932804452,
+              0.00015502108413745894
+            ],
+            "median_wrench": [
+              -0.001966131837213665,
+              -0.0015837612505405774,
+              -0.7855251309189495,
+              0.0015699878450215268,
+              0.0024459977869671495,
+              -4.500116785330355e-05
+            ]
+          },
+          "4": {
+            "start_s": 6.399999999991754,
+            "end_s": 19.800000000095526,
+            "mean_action": [
+              0.009255783415234671,
+              -7.171369303656897e-05,
+              4.467398720920358e-05,
+              0.025086914496295614,
+              -0.002699913591068963,
+              -0.01002186264710308,
+              2.094312020630981e-12
+            ],
+            "median_wrench": [
+              -0.011914696397611769,
+              0.008078001298362225,
+              -0.7903576430588436,
+              -0.001286063897210546,
+              0.015007297112039242,
+              -0.0030197184785627357
+            ]
+          },
+          "5": {
+            "start_s": 19.840000000096854,
+            "end_s": 20.440000000116772,
+            "mean_action": [
+              0.013000994726178912,
+              -0.0004360545792645816,
+              -5.4595454061878866e-76,
+              0.0003803217824947344,
+              0.011390518691715958,
+              0.02422215384941613,
+              1.595388282137586e-37
+            ],
+            "median_wrench": [
+              0.21445061518903835,
+              -0.13302833322738167,
+              -0.42797724006586924,
+              0.055086117937544185,
+              0.09276917288498997,
+              0.01238543511978335
+            ]
+          },
+          "6": {
+            "start_s": 20.4800000001181,
+            "end_s": 20.960000000134034,
+            "mean_action": [
+              0.013093089000584915,
+              -2.9367223942727873e-06,
+              -1.4919830434711956e-82,
+              -2.8410956709484136e-07,
+              0.0049683905855711285,
+              0.009971244378533197,
+              1.0385916842011033e-38
+            ],
+            "median_wrench": [
+              -0.02026788198313517,
+              -0.015033599271878395,
+              0.0002653436996808743,
+              0.033688709251948355,
+              0.04731547942733382,
+              0.005500385472099183
+            ]
+          },
+          "7": {
+            "start_s": 21.000000000135362,
+            "end_s": 55.00000000126404,
+            "mean_action": [
+              5.231028316849702e-05,
+              -1.7875443445222936e-13,
+              -8.94861237537345e-90,
+              -2.3538892888767816e-19,
+              -5.397123687424942e-05,
+              -0.00011617690277328062,
+              1.6664728613255088e-41
+            ],
+            "median_wrench": [
+              1.783396010290816e-188,
+              9.359647028761034e-183,
+              1.4802635092560524e-177,
+              -8.242452039439195e-184,
+              -2.8077057944816766e-186,
+              -1.3392436365542767e-183
+            ]
+          }
+        },
+        "actor_replay_performed": true,
+        "common_filter_replay_max_abs": 0.0,
+        "model_sha256": "421ca933abb3f31a93104d1318b54e0092be5249477b5ab5ca3db950c4bfd2b1",
+        "trace_sha256": "83dba14aeef616f041358f6b37d4eea01dd4707a79939f93d322ac00debd0c3d",
+        "chain_sha256": "de2b6a7ac20ce2a7a0428f58f2448bca870f38476e21340908cc0e72aae006b0",
+        "metrics_sha256": "e13d40f7b1af0227527644969a9b441e7f7a1035edf41a80a9d6b52f35ee7999"
+      },
+      "media": {
+        "scene": "active_short",
+        "source": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/three_isolated_vmc_media_20261028_v2/active_short/run/rollout",
+        "render_only": true,
+        "clip_actual_time_s": [
+          1.0399999999999825,
+          3.999999999997347
+        ],
+        "fps": 12.499999999585043,
+        "playback_speed": 0.5,
+        "frames": 75,
+        "label": "Active short: ball impact",
+        "source_hashes": {
+          ".npz": "83dba14aeef616f041358f6b37d4eea01dd4707a79939f93d322ac00debd0c3d",
+          ".json": "04d35550ff12b4cbf294ee98675103e22eeb7cb1b029dba793df298eb81d12df",
+          ".mjb": "421ca933abb3f31a93104d1318b54e0092be5249477b5ab5ca3db950c4bfd2b1"
+        },
+        "renderer_sha256": "8b684f1bdb3660524726e48a4341ece7b8a27dcab63aa936d3b81a11f6210be9",
+        "gif_decoded_all_frames": true,
+        "media_hashes": {
+          ".gif": "b61109bc37cb509a64d321a1b1f5781f03f50fc0437b58fd6b66aed6340efabb",
+          ".mp4": "ad09828f468c1a6241550f754efdd39985b047d76e50a23afe848a9808997498"
+        }
+      },
+      "contacts": {
+        "office_v5_corner_top": {
+          "first_s": 1.429800000000805,
+          "last_s": 2.8025500000001378,
+          "duration_s": 0.052650000000000995,
+          "peak_n": 584.0140848050344,
+          "impulse_ns": 1.6674970065854144,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "ball": {
+          "first_s": 2.066600000001853,
+          "last_s": 2.215000000001507,
+          "duration_s": 0.005549999999999994,
+          "peak_n": 6274.553219353456,
+          "impulse_ns": 2.4957812981241796,
+          "robot_parts": [
+            "hand"
+          ]
+        }
+      }
+    },
+    {
+      "scene": "active_long",
+      "scene_provenance": {
+        "purpose": "isolated scene visualization only; not formal evaluation",
+        "scene": "active_long",
+        "parent_mjb_sha256": "173e404bed4531cd193afc299f7c2243c276ce75797a169d8ea7c49d0bda8d11",
+        "model_sha256": "28264f23ee045c77e781405d8c22cb0f3ec7b909b5cebaa3c0e933b6e7e2e75f",
+        "inactive_geoms": [
+          "office_v5_pillar",
+          "office_v5_pillar_mount",
+          "office_v5_corner_face",
+          "office_v5_unexpected_edge",
+          "office_v5_ball_geom",
+          "office_v5_person_torso",
+          "office_v5_person_head",
+          "office_v5_person_leg_-1",
+          "office_v5_person_foot_-1",
+          "office_v5_person_leg_1",
+          "office_v5_person_foot_1",
+          "office_v5_upper_arm_geom",
+          "office_v5_forearm_geom",
+          "office_v5_human_palm",
+          "office_v5_human_finger_0",
+          "office_v5_human_finger_1",
+          "office_v5_human_finger_2",
+          "office_v5_human_finger_3",
+          "office_v5_human_thumb"
+        ],
+        "teacher_choice_sha256": "8878320015fa602deba9277349f618dbab13640c3982c136a53fc1f3a07ebea3",
+        "wrapper_sha256": "1e56c9444c8cee5f261927fed39d9a692a5dd9410a3a22ec6248fac260b280ae",
+        "teacher": "new30 teacher_lhs_0; exact frozen source/config"
+      },
+      "audit": {
+        "task_success": true,
+        "strict_success": true,
+        "memory_ablation": "none",
+        "full_horizon": true,
+        "stage": "retreat",
+        "rmse_mm": 28.979735128447135,
+        "peak_torque_nm": 48.35959243774414,
+        "peak_speed_mps": 0.09362262786493,
+        "penetration_mm": 0.07800313576298126,
+        "edge_penetration_mm": 0.0,
+        "worst_pair": [
+          "office_v5_push_rod_geom",
+          "hand_collision"
+        ],
+        "physical_seconds": 54.99999999999989,
+        "max_lift_m": 0.1566326423118966,
+        "object_final_position": [
+          0.6966242407406387,
+          -0.3150241223551484,
+          0.5449969877369469
+        ],
+        "placement_error_xy_m": 0.008313986458338711,
+        "abort_reason": null,
+        "action_replay_max_abs": 0.0,
+        "reservoir_replay_max_abs": null,
+        "stages": {
+          "0": {
+            "start_s": 0.04000000000000063,
+            "end_s": 0.15999999999999054,
+            "mean_action": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median_wrench": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "1": {
+            "start_s": 0.19999999999998613,
+            "end_s": 2.000000000002008,
+            "mean_action": [
+              0.01027150442703484,
+              -0.00828868211816317,
+              0.001381258824299573,
+              -0.0005551963908109149,
+              -0.001669310808223777,
+              -0.01067794724446869,
+              0.0
+            ],
+            "median_wrench": [
+              -2.7433583109732494e-06,
+              9.676501234746706e-07,
+              1.9034539319141225e-06,
+              -5.050649870969812e-07,
+              -1.4177940733171298e-06,
+              1.8001645340315512e-10
+            ]
+          },
+          "2": {
+            "start_s": 2.040000000001915,
+            "end_s": 2.3200000000012624,
+            "mean_action": [
+              0.061620828099513345,
+              -0.022696552787142065,
+              -0.0005655369869112877,
+              0.0007900280478565218,
+              -0.05093438031451772,
+              -0.09125196103721621,
+              0.0
+            ],
+            "median_wrench": [
+              -0.4871705024693538,
+              0.11675541549259467,
+              -0.1738939026687233,
+              -0.1427970233815502,
+              -0.24580758324112933,
+              -0.0004649430793481346
+            ]
+          },
+          "3": {
+            "start_s": 2.360000000001169,
+            "end_s": 5.679999999993432,
+            "mean_action": [
+              0.011769277691927586,
+              0.0009292228530535357,
+              9.286558293270601e-06,
+              -0.003964768803500192,
+              0.002316534169692829,
+              0.0032533978629315165,
+              0.0
+            ],
+            "median_wrench": [
+              -0.0038696001294174984,
+              -0.0006835198597602288,
+              -0.7842681012811765,
+              0.0004035345190890934,
+              0.0007934591434374701,
+              -4.656846315204133e-05
+            ]
+          },
+          "4": {
+            "start_s": 5.719999999993338,
+            "end_s": 27.120000000338525,
+            "mean_action": [
+              0.0521991382360849,
+              -0.04433855327565394,
+              0.004494808811650248,
+              0.0952794341606823,
+              0.005972275885857267,
+              0.006059936045462628,
+              0.045300793944845714
+            ],
+            "median_wrench": [
+              -0.08695418477311392,
+              0.022089642630520573,
+              -0.9023551173459425,
+              9.597979690811763e-06,
+              0.013452221683110534,
+              -5.330792239952031e-05
+            ]
+          },
+          "5": {
+            "start_s": 27.160000000339853,
+            "end_s": 27.76000000035977,
+            "mean_action": [
+              0.012664238077435554,
+              -0.004211740054357466,
+              4.657127065150752e-05,
+              0.0028679568563901806,
+              0.004882478323312162,
+              0.008499385532787158,
+              -3.1837898898506676e-14
+            ],
+            "median_wrench": [
+              0.21096664604634174,
+              -0.1339748960188531,
+              -0.4242807322416431,
+              0.0451235669553874,
+              0.07605953100635614,
+              0.012836225990138492
+            ]
+          },
+          "6": {
+            "start_s": 27.8000000003611,
+            "end_s": 28.280000000377033,
+            "mean_action": [
+              0.004005792126256235,
+              0.0017038955745704342,
+              -3.691923456452451e-05,
+              -0.0009556166989240188,
+              -0.001633192396587612,
+              -0.001923261355310693,
+              -2.072635070010679e-15
+            ],
+            "median_wrench": [
+              -0.09160994559959912,
+              0.04460933724029275,
+              0.15979217099491114,
+              6.527054938086776e-05,
+              0.0015272970370456777,
+              9.126593341135655e-05
+            ]
+          },
+          "7": {
+            "start_s": 28.32000000037836,
+            "end_s": 55.00000000126404,
+            "mean_action": [
+              8.946315887702001e-06,
+              7.283665016818631e-08,
+              -3.793980927912729e-12,
+              1.7558854148146271e-09,
+              -8.326030182833607e-06,
+              -2.0265148675295233e-05,
+              -4.236715918422924e-18
+            ],
+            "median_wrench": [
+              1.5802438128106193e-143,
+              4.882994119267752e-143,
+              4.33279370606673e-143,
+              -3.9919920717956397e-144,
+              -1.300536287447141e-146,
+              -2.5082427064779052e-144
+            ]
+          }
+        },
+        "actor_replay_performed": true,
+        "common_filter_replay_max_abs": 0.0,
+        "model_sha256": "28264f23ee045c77e781405d8c22cb0f3ec7b909b5cebaa3c0e933b6e7e2e75f",
+        "trace_sha256": "5ecc65d4a03bb3d95d290038f3766a098380bb1268e476751002bf77d6387129",
+        "chain_sha256": "0c8067fd5a2b41491c975e664150501b730e0ee4b7f87ccb9795230c9019fb03",
+        "metrics_sha256": "d9ba0ec01df4282245445fdc8ccee3471217c1b14afb89f8c9d01da4be32911f"
+      },
+      "media": {
+        "scene": "active_long",
+        "source": "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/three_isolated_vmc_media_20261028_v2/active_long/run/rollout",
+        "render_only": true,
+        "clip_actual_time_s": [
+          10.039999999983271,
+          23.960000000233624
+        ],
+        "fps": 12.499999999585043,
+        "playback_speed": 1.0,
+        "frames": 175,
+        "label": "Active long: sustained rod push",
+        "source_hashes": {
+          ".npz": "5ecc65d4a03bb3d95d290038f3766a098380bb1268e476751002bf77d6387129",
+          ".json": "951b8016735805e62f304d3a71f31c5d867922732b1ce98433e0218365ab5b17",
+          ".mjb": "28264f23ee045c77e781405d8c22cb0f3ec7b909b5cebaa3c0e933b6e7e2e75f"
+        },
+        "renderer_sha256": "8b684f1bdb3660524726e48a4341ece7b8a27dcab63aa936d3b81a11f6210be9",
+        "gif_decoded_all_frames": true,
+        "media_hashes": {
+          ".gif": "3d1c84e9b6e4fdf47fda70438c0a2cf1ff886c2923061a2a567db8753f93f7cb",
+          ".mp4": "cac082c8f8f553874e46dfea48b7f01d34ba78c565055aeb21e7113c6fb7804d"
+        }
+      },
+      "contacts": {
+        "office_v5_corner_top": {
+          "first_s": 1.429800000000805,
+          "last_s": 1.4313500000008084,
+          "duration_s": 0.0015999999999999992,
+          "peak_n": 90.70531533626485,
+          "impulse_ns": 0.0789268124659329,
+          "robot_parts": [
+            "hand"
+          ]
+        },
+        "rod": {
+          "first_s": 13.951549999974155,
+          "last_s": 20.460300000117446,
+          "duration_s": 5.3573999999941835,
+          "peak_n": 295.32072654400264,
+          "impulse_ns": 45.59450917899858,
+          "robot_parts": [
+            "hand"
+          ]
+        }
+      }
+    }
+  ]
+}

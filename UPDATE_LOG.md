@@ -10,6 +10,15 @@
 
 本轮共享SSD小证据包已逐成员核验：`/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_RESUME33_PARAMETER53_20261028_033457/SMALL_EVIDENCE.tar.gz`，175成员、1,750,097字节、SHA256 `4ac8b8a17261b2d219eda3eae2e09e9eaa5b7a288c59aef9f9646a39d325e64f`。收据[RL_RESUME33_PARAMETER53_SAVE_20261028.json](docs/RL_RESUME33_PARAMETER53_SAVE_20261028.json)。HDD全文更新遇Errno122配额满，现有LATEST已成功写为简短指针并回读验证；全文仍在共享SSD仓库，非HDD完整备份。
 
+收尾push遇远端并行前进11af5247（三类独立场景VMC teacher演示），已fetch/read并保留其脚本/文档/证据；仅UPDATE_LOG顶部追加冲突按双方原字节加共同历史合并。演示不是新RL训练集，不更改冻结runtime。正常合并后推送，不force push。
+
+## 2026-10-28 — 三类独立场景动图：new30 VMC teacher
+
+- 按用户“只看场景、用最新版VMC teacher”要求，新建静态边角、小球短撞、推杆长推三条独立55秒运行与GIF/MP4。由当前父MJB隔离干扰，非综合回合切片、非旧视频，不改正式108/180测评。Teacher沿用新增30条示范的冻结源码与teacher_lhs_0，配置hash和30条lineage全部精确一致。
+- 三条actor/filter replay误差均0；静态场景Task/Strict均失败并保留，小球及推杆均通过。小球实际接触0.00555秒，推杆5.3574秒。3个GIF全帧解码、3个MP4完整解码和代表帧目视检查通过。首次演示适配误匹配机器人碰撞几何，在出片前停止；v2修复准确匹配并校验保留几何不变，失败收据保留。
+- 本机单模拟器/单线程/3GiB/禁swap，服务器仅归档。已核验 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/three_isolated_vmc_media_20261028_v2_delivery/SCENES.tar.gz`，344361223字节，SHA256 `d50362b604135201b975c8b14cb14e391a0020f7ca3c15252bfd4079cc7ae150`。包含真实轨迹/物理记录/源码overlay/媒体/失败收据；小证据与说明见 `docs/THREE_ISOLATED_VMC_SCENES_20261028.md`。
+- 开工与收工远端fetch核验 main `9a78d280e7b622ad1e96a8aeb5e4cacbbcebf3d5`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；收工重读AGENTS，仅提交本次脚本/文档/证据。场景演示不作为新训练集或公平性能比较。
+
 ## 2026-10-28 — 非RL 180回合最终审计、比较报告与证据发布
 
 - 只读复核主运行报告、独立最终审计及12个远端归档：原学习组108 + 历史传统控制器72 = 180/180，12条件各15回合，197,135,200物理子步；180条身份唯一且本地运行目录齐全。最终状态 `final180_saved_physics_audit_passed`，Task 57/180、Strict 35/180、Task+Strict 35/180，公共filter replay最大绝对误差0，机器安全违规25/180。
