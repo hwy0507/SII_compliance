@@ -1,0 +1,412 @@
+{
+  "status": "verified_wait_original_frozen108_advancing",
+  "observation_exit_code": 0,
+  "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 /home/airpig/桌面/hwy/compliance_control/.venv-sii-local-rl/bin/python -u - <<'PY'\nimport json,time,subprocess\nfrom pathlib import Path\nfrom datetime import datetime,timezone\nroot=Path('outputs/special_scene_frozen108_readout05_20261028_v1')\ncgroup=Path('/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-handoff-v1-20261028.service')\ndef identity(pid):\n p=Path('/proc')/str(pid)/'stat'\n if not p.exists():return None\n a=p.read_text().rsplit(')',1)[1].split();return {'pid':pid,'state':a[0],'startticks':int(a[19]),'cpu_ticks':int(a[11])+int(a[12])}\nparent=identity(772606);coordinator=identity(791378)\nassert parent and parent['startticks']==28001859 and coordinator\nfor index in range(8):\n p,c=identity(772606),identity(791378)\n state=json.loads((root/'execution.json').read_text())\n service=dict(l.split('=',1) for l in subprocess.check_output(['systemctl','--user','show','sii-special-frozen108-handoff-v1-20261028.service','-p','MainPID','-p','ActiveState','-p','Result'],text=True).splitlines())\n live=[]\n for r in state['rows']:\n  if 'ended_utc' not in r:\n   f=root/'evaluation'/(r['method']+'__'+r['condition'])/'rollout.progress.json'\n   live.append({'method':r['method'],'condition':r['condition'],'progress':json.loads(f.read_text()) if f.exists() else None})\n children_file=Path('/proc/791378/task/791378/children')\n children=[identity(int(x)) for x in children_file.read_text().split()] if children_file.exists() else []\n memory={n:(cgroup/n).read_text().strip() for n in ('memory.current','memory.max','memory.swap.current','memory.events') if (cgroup/n).exists()}\n print(json.dumps({'utc':datetime.now(timezone.utc).isoformat(),'index':index,'service':service,'parent':p,'coordinator':c,'children':children,'status':state['status'],'completed':state['completed'],'expected':state['expected'],'in_flight':live,'memory':memory}),flush=True)\n if state['status']!='running':break\n assert p and c and p['startticks']==parent['startticks'] and c['startticks']==coordinator['startticks'],'Original process identity changed; inspect, do not restart'\n assert p['state']!='Z' and c['state']!='Z'\n if index<7:time.sleep(45)\nPY",
+  "started_utc": "2026-10-28T11:03:52.350112+00:00",
+  "ended_utc": "2026-10-28T11:09:07.387404+00:00",
+  "completed_before": 3,
+  "completed_after": 4,
+  "samples": [
+    {
+      "utc": "2026-10-28T11:03:52.350112+00:00",
+      "index": 0,
+      "service": {
+        "MainPID": "772606",
+        "Result": "success",
+        "ActiveState": "active"
+      },
+      "parent": {
+        "pid": 772606,
+        "state": "S",
+        "startticks": 28001859,
+        "cpu_ticks": 26
+      },
+      "coordinator": {
+        "pid": 791378,
+        "state": "S",
+        "startticks": 28239353,
+        "cpu_ticks": 139
+      },
+      "children": [
+        {
+          "pid": 799344,
+          "state": "R",
+          "startticks": 28331276,
+          "cpu_ticks": 17736
+        }
+      ],
+      "status": "running",
+      "completed": 3,
+      "expected": 108,
+      "in_flight": [
+        {
+          "method": "special_esn_ridge_s2026102802",
+          "condition": "new30_prospective_20261026_acceptance_000",
+          "progress": {
+            "time_s": 27.04000000033587,
+            "stage": "lift",
+            "position_error_m": 0.01743993513115451,
+            "external_penetration_mm": 0.13585104944856283
+          }
+        }
+      ],
+      "memory": {
+        "memory.current": "1171013632",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      }
+    },
+    {
+      "utc": "2026-10-28T11:04:37.354982+00:00",
+      "index": 1,
+      "service": {
+        "MainPID": "772606",
+        "Result": "success",
+        "ActiveState": "active"
+      },
+      "parent": {
+        "pid": 772606,
+        "state": "S",
+        "startticks": 28001859,
+        "cpu_ticks": 26
+      },
+      "coordinator": {
+        "pid": 791378,
+        "state": "S",
+        "startticks": 28239353,
+        "cpu_ticks": 139
+      },
+      "children": [
+        {
+          "pid": 799344,
+          "state": "R",
+          "startticks": 28331276,
+          "cpu_ticks": 22236
+        }
+      ],
+      "status": "running",
+      "completed": 3,
+      "expected": 108,
+      "in_flight": [
+        {
+          "method": "special_esn_ridge_s2026102802",
+          "condition": "new30_prospective_20261026_acceptance_000",
+          "progress": {
+            "time_s": 34.04000000056824,
+            "stage": "carry",
+            "position_error_m": 0.02451908834171695,
+            "external_penetration_mm": 0.13585104944856283
+          }
+        }
+      ],
+      "memory": {
+        "memory.current": "1130393600",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      }
+    },
+    {
+      "utc": "2026-10-28T11:05:22.359039+00:00",
+      "index": 2,
+      "service": {
+        "MainPID": "772606",
+        "Result": "success",
+        "ActiveState": "active"
+      },
+      "parent": {
+        "pid": 772606,
+        "state": "S",
+        "startticks": 28001859,
+        "cpu_ticks": 26
+      },
+      "coordinator": {
+        "pid": 791378,
+        "state": "S",
+        "startticks": 28239353,
+        "cpu_ticks": 139
+      },
+      "children": [
+        {
+          "pid": 799344,
+          "state": "R",
+          "startticks": 28331276,
+          "cpu_ticks": 26736
+        }
+      ],
+      "status": "running",
+      "completed": 3,
+      "expected": 108,
+      "in_flight": [
+        {
+          "method": "special_esn_ridge_s2026102802",
+          "condition": "new30_prospective_20261026_acceptance_000",
+          "progress": {
+            "time_s": 41.04000000080062,
+            "stage": "carry",
+            "position_error_m": 0.06175926639905788,
+            "external_penetration_mm": 0.13585104944856283
+          }
+        }
+      ],
+      "memory": {
+        "memory.current": "1115627520",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      }
+    },
+    {
+      "utc": "2026-10-28T11:06:07.363096+00:00",
+      "index": 3,
+      "service": {
+        "MainPID": "772606",
+        "Result": "success",
+        "ActiveState": "active"
+      },
+      "parent": {
+        "pid": 772606,
+        "state": "S",
+        "startticks": 28001859,
+        "cpu_ticks": 26
+      },
+      "coordinator": {
+        "pid": 791378,
+        "state": "S",
+        "startticks": 28239353,
+        "cpu_ticks": 139
+      },
+      "children": [
+        {
+          "pid": 799344,
+          "state": "R",
+          "startticks": 28331276,
+          "cpu_ticks": 31236
+        }
+      ],
+      "status": "running",
+      "completed": 3,
+      "expected": 108,
+      "in_flight": [
+        {
+          "method": "special_esn_ridge_s2026102802",
+          "condition": "new30_prospective_20261026_acceptance_000",
+          "progress": {
+            "time_s": 48.04000000103299,
+            "stage": "carry",
+            "position_error_m": 0.16179275528792686,
+            "external_penetration_mm": 0.13585104944856283
+          }
+        }
+      ],
+      "memory": {
+        "memory.current": "1135558656",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      }
+    },
+    {
+      "utc": "2026-10-28T11:06:52.372102+00:00",
+      "index": 4,
+      "service": {
+        "MainPID": "772606",
+        "Result": "success",
+        "ActiveState": "active"
+      },
+      "parent": {
+        "pid": 772606,
+        "state": "S",
+        "startticks": 28001859,
+        "cpu_ticks": 26
+      },
+      "coordinator": {
+        "pid": 791378,
+        "state": "S",
+        "startticks": 28239353,
+        "cpu_ticks": 139
+      },
+      "children": [
+        {
+          "pid": 799344,
+          "state": "R",
+          "startticks": 28331276,
+          "cpu_ticks": 35730
+        }
+      ],
+      "status": "running",
+      "completed": 3,
+      "expected": 108,
+      "in_flight": [
+        {
+          "method": "special_esn_ridge_s2026102802",
+          "condition": "new30_prospective_20261026_acceptance_000",
+          "progress": {
+            "time_s": 54.04000000123217,
+            "stage": "carry",
+            "position_error_m": 0.09721367213527787,
+            "external_penetration_mm": 0.13585104944856283
+          }
+        }
+      ],
+      "memory": {
+        "memory.current": "978853888",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      }
+    },
+    {
+      "utc": "2026-10-28T11:07:37.378777+00:00",
+      "index": 5,
+      "service": {
+        "MainPID": "772606",
+        "Result": "success",
+        "ActiveState": "active"
+      },
+      "parent": {
+        "pid": 772606,
+        "state": "S",
+        "startticks": 28001859,
+        "cpu_ticks": 26
+      },
+      "coordinator": {
+        "pid": 791378,
+        "state": "S",
+        "startticks": 28239353,
+        "cpu_ticks": 196
+      },
+      "children": [
+        {
+          "pid": 802891,
+          "state": "R",
+          "startticks": 28367544,
+          "cpu_ticks": 3964
+        }
+      ],
+      "status": "running",
+      "completed": 4,
+      "expected": 108,
+      "in_flight": [
+        {
+          "method": "special_rnn_scratch_s2026102802",
+          "condition": "new30_prospective_20261026_acceptance_000",
+          "progress": {
+            "time_s": 6.039999999992593,
+            "stage": "lift",
+            "position_error_m": 0.04846152202594417,
+            "external_penetration_mm": 0.1684599377040123
+          }
+        }
+      ],
+      "memory": {
+        "memory.current": "1031495680",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      }
+    },
+    {
+      "utc": "2026-10-28T11:08:22.383167+00:00",
+      "index": 6,
+      "service": {
+        "MainPID": "772606",
+        "Result": "success",
+        "ActiveState": "active"
+      },
+      "parent": {
+        "pid": 772606,
+        "state": "S",
+        "startticks": 28001859,
+        "cpu_ticks": 26
+      },
+      "coordinator": {
+        "pid": 791378,
+        "state": "S",
+        "startticks": 28239353,
+        "cpu_ticks": 196
+      },
+      "children": [
+        {
+          "pid": 802891,
+          "state": "R",
+          "startticks": 28367544,
+          "cpu_ticks": 8462
+        }
+      ],
+      "status": "running",
+      "completed": 4,
+      "expected": 108,
+      "in_flight": [
+        {
+          "method": "special_rnn_scratch_s2026102802",
+          "condition": "new30_prospective_20261026_acceptance_000",
+          "progress": {
+            "time_s": 13.03999999997628,
+            "stage": "carry",
+            "position_error_m": 0.015939792073100385,
+            "external_penetration_mm": 0.1684599377040123
+          }
+        }
+      ],
+      "memory": {
+        "memory.current": "1057091584",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      }
+    },
+    {
+      "utc": "2026-10-28T11:09:07.387404+00:00",
+      "index": 7,
+      "service": {
+        "MainPID": "772606",
+        "Result": "success",
+        "ActiveState": "active"
+      },
+      "parent": {
+        "pid": 772606,
+        "state": "S",
+        "startticks": 28001859,
+        "cpu_ticks": 26
+      },
+      "coordinator": {
+        "pid": 791378,
+        "state": "S",
+        "startticks": 28239353,
+        "cpu_ticks": 196
+      },
+      "children": [
+        {
+          "pid": 802891,
+          "state": "R",
+          "startticks": 28367544,
+          "cpu_ticks": 12959
+        }
+      ],
+      "status": "running",
+      "completed": 4,
+      "expected": 108,
+      "in_flight": [
+        {
+          "method": "special_rnn_scratch_s2026102802",
+          "condition": "new30_prospective_20261026_acceptance_000",
+          "progress": {
+            "time_s": 19.040000000070297,
+            "stage": "carry",
+            "position_error_m": 0.01806830198844367,
+            "external_penetration_mm": 0.1684599377040123
+          }
+        }
+      ],
+      "memory": {
+        "memory.current": "1080619008",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      }
+    }
+  ],
+  "limitation": "Finite read-only window; no guarantee beyond observations, no restart and not final comparison."
+}
