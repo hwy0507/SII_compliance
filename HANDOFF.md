@@ -1,3 +1,5 @@
+> **RL最新：[70早期loss与十分钟核验](docs/RL_PARAMETER70_EARLY_LOSS_WAIT_20261028.md)。原70继续、原68–70待，71未训练，GPU保载持续，Goal active。**
+
 > **RL最新：[70终端基准与71仅恢复准备](docs/RL_PARAMETER70_ANCHOR_FOLLOWUPS_20261028.md)。原70运行，原68–70待；71未训练，GPU完成后继续，Goal active。**
 
 > **RL最新：[完整69与实际70接续](docs/RL_PARAMETER69_COMPLETE_20261028.md)。70运行、startup通过，原68–70待，GPU继续，Goal active。**
