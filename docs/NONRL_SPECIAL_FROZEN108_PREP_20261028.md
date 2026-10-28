@@ -33,6 +33,9 @@ ESN首回合保持31秒全局穿透中止；RNN首回合完整55秒，无abort�
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_actual_learning_20261028_v1/nonrl_special_actual_learning_20261028_v1.tar.gz`。
 本包不含108原始物理轨迹；完整物理归档、六指标最终比较和contact补充仍待，Goal active。
 
+发布前原队列已3/108完整，ESN seed2首条件继续。远端新增 `f67b4196` 为另一RL任务，
+已读日志并安全合并；AGENTS/UPDATE_LOG顶部并行新增冲突逐段保留双方，原运行快照未变。
+
 ## 最新：训练完整，冻结108已运行，完整拟合档案已共享
 
 2026-10-28 10:52 UTC：新三场景30条示范的全部75作业/108候选已完成，
