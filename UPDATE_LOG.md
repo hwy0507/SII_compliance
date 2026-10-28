@@ -1,3 +1,10 @@
+## 2026-10-28 — 参数70全2094终端基准与71仅恢复准备
+
+- [交接](docs/RL_PARAMETER70_ANCHOR_FOLLOWUPS_20261028.md)。原70三learner身份保持，21:36steps2894151/2894940/2895977，各30sampler、无完整/失败。新全69的2094×57 V/A锚点精确、独立SSE4074.470065/1244.926690，0新前向；原focus/历史保持，70预期2124。V1368498/start41899909、A1368511/start41899910等待完整70，PLAN da7e9b37/aa1f63b1、CPU53/7200秒，实际对比待。
+- 全标签70 waiter1235714/start41876142/PLAN37eb5e95已部署，通用auditor逐字节保持；真实不完整70拒绝且无输出。71仅恢复1393879/start41904388/REGdc665e2d，待完整70后全state/replay/next65536 check-only，无71训练。71启动入口额外绑定原68–70审查/独立算术/实际图，真实缺DECISION71拒绝。周期映射逆变换/AST/输入hash通过，原5%等科学阈值不变。
+- 原70全loss899342、原68–70窗口1085142继续；65–67失败/历史通过保留，Direct34false，Goal active。126guard样本min71/64/64/69%、低于50全部0；含合成保载非瞬时保证，科学完成也继续v5、非重启服务。
+- SSD包78成员/979125字节/SHAf748d285逐字节/AST核验，收据docs/RL_PARAMETER70_ANCHOR_FOLLOWUPS_20261028_SAVE.json；大产物仍共享SSD、非HDD/arm1全备份。开工main265859f8/baselinef6e8f8c实际fetch/read，无子agent。
+
 ## 2026-10-28 — 完整69审查与准确续训70
 
 - [交接](docs/RL_PARAMETER69_COMPLETE_20261028.md)。69三路各30×55/41250新增/noabort，旧68 replay/history保持、新reward重算0、网络/optimizer有限；全loss独立算术与实际图通过。reward I/A/V−.603698/−6.863821/−4.620539，TaskStrict18/18、15/15、17/16。I/A reward变化仍大、critic有限尖峰保留，尚未整体收敛。
