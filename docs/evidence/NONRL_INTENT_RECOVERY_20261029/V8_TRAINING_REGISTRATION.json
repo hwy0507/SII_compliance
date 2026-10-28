@@ -1,0 +1,43 @@
+{
+  "schema": "sii-special-scene-retrain-v2",
+  "dataset_sha256": "527bb7341e19b2345f16c04bb48d9b6b9dd643e9d1beeda0b8bb8228cb520805",
+  "seeds": [
+    2026102801,
+    2026102802,
+    2026102803
+  ],
+  "candidates_per_family_seed": 12,
+  "neural_updates": 32000,
+  "esn_grid": {
+    "rho": [
+      0.5,
+      0.8
+    ],
+    "input_gain": [
+      0.08,
+      0.25,
+      0.6
+    ],
+    "ridge": [
+      0.001,
+      0.1
+    ]
+  },
+  "neural_grid": {
+    "learning_rate": [
+      0.0001,
+      0.0003,
+      0.001,
+      0.003
+    ],
+    "weight_decay": [
+      0,
+      1e-05,
+      0.0001
+    ]
+  },
+  "selection": "Fixed six validation identities, two per real scene; same requested-action MSE for all families",
+  "comparison": "Equal candidate count, not equal FLOPs or parameter count",
+  "metrics": "Task rate; Strict rate; conditional BOTH-success SPT; all-episode mean peak torque; actual human-contact weighted comfort; machine compliance",
+  "test_source": "outputs/nonrl_new30_fair_20261026_v2; 12 already inspected frozen conditions; 9 models=108 episodes"
+}

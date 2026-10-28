@@ -91,7 +91,8 @@ def audit(collection, output):
     axes[1].set_title(key+' = highest last250 speed RMS among 8 training identities')
     for ax in axes:
         ax.set_xlim(20,30);ax.set_xlabel('Saved physical time (s)');ax.grid(alpha=.2)
-    fig.suptitle('Actual v7 teacher training traces; terminal acceptance is not whole-tail stability')
+    fig.suptitle('Actual teacher training traces: '+collection.name+'\n'
+                 'Terminal acceptance is not whole-tail stability')
     fig.savefig(output/'training_ball_tail.png',dpi=160);plt.close(fig)
     result=dict(status='all10_gate_recomputed_failures_preserved',rows=rows,
         training_tail_rms_rank=[r['id'] for r in ranked],
