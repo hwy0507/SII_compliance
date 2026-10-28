@@ -7,6 +7,16 @@
 - 原模拟器退出后，唯一v8采集`sii-special-collection-v8-20261029.service` parent1088910/start31713076于20:24:33启动，root`outputs/special_scene_vmc_collection_20261029_v8`/PLAN2ed3e2b9。同30真实场景/条件/seed/24+6/gates，仅teacher/output变化，3GiB/swap0/CPU100%/线程1；20:27 rod00合格、rod01在途。禁止重复或改绑定源。
 - 唯一学习接续`sii-special-learning-handoff-v8-20261029.service` parent1089228/REGf7086a3f，等全30审查通过才公平拟合三家各三seed/12候选，目标`special_scene_retrain_20261029_v8`。新v8学生18准备77fedd0e/108准备173e2abf均未运行。不要复用v7准备/重启其失败接续。仍须全30覆盖、模型审计、18诊断与108六指标，当前12非unseen，Goal active。
 
+## 2026-10-28 — 完整68审查、旧终端改善与准确续训69
+
+- [最新交接](docs/RL_PARAMETER68_COMPLETE_20261028.md)。完整68三路自然结束，各30×55秒/41250新增/noabort，旧67 replay/history保持、新reward复算0、网络/优化器有限。I/A/V reward−4.020220/−8.521150/−4.604088、TaskStrict17/16、14/14、17/16。全loss独立复算/实际loss与health图已审，I/V末段critic尖峰、三actor净升；尚未整体收敛。
+- 全180标签/90reward对独立核验：I/V short0600失Strict（外穿透.243068/.204828mm）；A short0600失TaskStrict(.229946mm)、long0200与short0900恢复。无Task-only遗漏，三路physical-valid29/30，noabort不等于物理全合格；原门/失败保留。原68–70窗口待69/70，不提前结论，原65–67 I/A失败与V描述性通过保持。
+- 固定全2034 V终端SSE4748.245927→935.692794（−80.2939%），原五focus全部改善，但新30贡献.150377仍高；A3370.449233→804.199542（−76.1397%），原66short0600 572.396931→31.453106，区别新68失败。独立全数组/标量/实际图通过。原67排名全2034跟踪另独立验证1240改善794退化，原前2 1826.420823→74.557916、351.402854→6.108994；0额外前向，不替代全体或作梯度因果。
+- 准确68 fullstate/replay/下一65536恢复全exit0，DECISION69绑定42证据/SHA8ce8b0d3，20:15:53启动有限69：I3088968/A3088970/V3088972 start41426931，archive3088977/start41426932。实际startup1000/1000/2000通过，全旧2841648/2842250/2843250行/history/优化器保持、新reward0；20:20steps2844643/2845229/2846239，无完整/失败。无自动70，Direct34false，Goal active。
+- 全69loss3093145/start41428217/PLAN055ba0a0已实际部署，49–68保持追加69/paired68→69；原68–70 waiter1085142/PLANe3a50567继续。69标签/V+A新锚点与70仅恢复尚未准备。
+- 原68完成边界41样本覆盖三learner自然结束，1200秒observer正常结束未重启科学；234guard采样min71/66/66/65%、低于50全0。审查→69另92采样min72/68/69/68%、低于50全0；20:20五guard原身份live、GPU78/70/73/72%。含合成保载、非瞬时保证；科学完成也继续v5，非跨重启服务。
+- SSD小包197成员/2121265字节/SHA7817f3ff逐字节/AST/tar核验，收据docs/RL_PARAMETER68_COMPLETE_SAVE_20261028.json；HDD仅原地已有入口，大产物SSD，非HDD/arm1全备份。实际fetch/read main4c952453→0f3e2c45/baselinef6e8f8c，非RL v7完整一失败/阻止学习/垂向阻尼对照报告已读并fast-forward保留，无冻结RL源变化，无子agent。
+
 ## 2026-10-29 — 非RL v7全30结束、球撞尾速失败与七项修复
 
 20:19:55UTC原七项1080783 live，六train全部合格、office25.04秒carry，完整结果待/OOM0；四球尾能量−75.75%但ball00 RMS退化保留。v8仅recollect入口准备，真实缺完整七项review拒绝无目录；不启动旧v7学生。0f3e2c45已push；完整v7物理2798858240bytes/SHAfa6eb5b9已核共享`runs/main/nonrl_v7_full_collection_20261029_v1/`，源码小证据/同commit报告已核`runs/main/nonrl_v7_tail_source_20261029_v1/`（均arm1共享根），见新收据。覆盖下文上传中状态，Goal active。
