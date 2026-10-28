@@ -1,3 +1,10 @@
+## 2026-10-28 — 新三场景公平训练全部完成，原冻结108自动接续
+
+- 75/75作业覆盖108候选，九模型共同验证集选择完成；完整拟合审计通过，每个所选模型全部15750新观测冻结actor重放0误差。只代表拟合/接口一致性，不作闭环优越或收敛声称。模型锁481c971e、审计0b75b131，详细hash/验证MSE见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)和实际收据。
+- 原训练自然退出，原接续772606于10:45:36自动开始108，未重复启动。10:52为1/108，首ESN31秒全局穿透保护中止、Task/Strict均失败；620000保存子步/actor/filter/来源链独立核验通过，失败完整保留，不据中途测试调参。RNN首条件继续，真实3GiB/swap0/OOM0、593源不变；完整矩阵、最终六指标图/接触补充及全部物理归档尚待，Goal active。
+- 新增完整拟合打包工具，不完整75拒绝；900来源文件与tar成员逐大小/hash核验。141512629字节/SHA256 `319212a1d3605c4da4699ef25ca4bacd3f41b9c4baf49f0930bff929bd3dcd55` 已上传并回读核验发布到 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_complete_fits_20261028_v1/COMPLETE_FITS.tar.gz`，包含全部新数据/候选/锁/历史/来源/审计，不含新108物理轨迹；旧教师失败另归档，不使用服务器计算。
+- 本轮实际查询/fetch/read main `dbf7c3e5e6c41736578144ad290bf8b1475f6c57`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`，独立RL更新已安全fast-forward保留。本任务无RL修改或子agent。
+
 ## 2026-10-28 — 参数59完整、冻结55独立复核与准确续训60
 
 - [最新交接](docs/RL_PARAMETER59_FROZEN55_COMPLETE_20261028.md)。完整59三路各30×55秒/41250新增/noabort，全58 replay/history/optimizer保留、新reward0误差。I/A/V reward−.596953/−13.606295/−4.517594、Task/Strict18/18、12/11、17/16；全loss独立算术/图通过，但I actor漂移、A/V后段burst仍在，不称整体收敛。原I56–58/V53–55通过保留；59–61待60/61，I59近零保护不改。

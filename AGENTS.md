@@ -1,5 +1,9 @@
 # 本仓库的持续工作约定
 
+## 2026-10-28 — 新三场景训练完整，冻结108已开始
+
+原75作业/108候选全部完成、九模型锁481c971e；完整拟合审计0b75b131通过，每个模型全15750观测冻结actor重放0误差。原训练725995/746822自然退出勿重启。原接续772606/start28001859已实际启动108（10:45:36），dispatcher791342/协调器791378；**禁止另启测试**。10:52为1/108，首ESN31秒全局穿透中止、Task/Strict均失败，620000子步独立保存证据核验通过；RNN在途。3GiB/swap0/OOM0，593物理源保持。完整训练900文件/141512629字节包SHA319212a1已核验共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_special_complete_fits_20261028_v1/`，不含新108。最终审计/图/接触补充/物理全归档仍待，Goal active，无RL改动或子agent。见[交接](docs/NONRL_SPECIAL_FROZEN108_PREP_20261028.md)。
+
 ## 2026-10-28 — 参数59完整、冻结55独立复核与准确续训60
 
 - [最新交接](docs/RL_PARAMETER59_FROZEN55_COMPLETE_20261028.md)。完整59三路各30×55秒/41250新增/noabort，全58 replay/history/optimizer保留、新reward0误差。I/A/V reward−.596953/−13.606295/−4.517594、Task/Strict18/18、12/11、17/16；全loss独立算术/图通过，但I actor漂移、A/V后段burst仍在，不称整体收敛。原I56–58/V53–55通过保留；59–61待60/61，I59近零保护不改。
