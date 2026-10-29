@@ -1,3 +1,11 @@
+## 2026-10-29 — 新容器partial75精确恢复与完整76
+
+- [最新交接](docs/RL_RECOVERY75_PARTIAL_TO76_20261029.md)。05:30发现容器主机更换、旧75/全部等待/guardv5消失，无FINISHED75；旧21样本观察当时有效，不能冒充当前live。旧75明确中断，原74–76无法评定，旧canonical76准备全部superseded，勿重复启动。
+- 三partial75 checkpoint保留新增23000/24000/24000；完整旧回放/history、全新增物理间隔reward/action/clock及有限网络optimizer审查通过，reward误差0。全state/next65536检查及每路9拒绝通过；新独立76实际INITIAL_STATE与startup通过，当前steps3118043/3119533/3120901，无回退或伪造terminal/完整75。
+- 原科学参数/4m markers/65536/UTD1/terminal128保持，只登记一轮76无自动77；新76全loss/归档health和前瞻76–78窗口已部署，原5%/近零1/bootstrap/anchor55及全部历史结论保持。Direct34false、Goal active。
+- guardv6同v5源码独立恢复，约10.210秒后四卡≥50；其后227样本min75/70/69/66%、低于50[0, 0, 0, 0]，保留最初2空闲样本和重启空档，科研完成仍保载，非自启服务。
+- SSD包102成员/141890字节/SHA855ec9c5逐字节/AST核验，大数据SSD非HDD/arm1全备份；实际fetch/read main08437d86/baselinef6e8f8c，安全合并非RL双方日志，无子agent。GitHub此前认证缺失，发布须以实际push为准。
+
 ## 2026-10-29 — 非RL原108八分钟核验75→77
 
 - 05:20:33–05:28:33UTC共17样本原1172675/start32623702及1201537/start32942337保持loaded/active，75→77、ESN2→RNN2→MLP2。最高2346278912bytes/3GiB、OOM/实验swap0，全机swap仍近满。observer87760达77后自然exit0，科学继续，不重启。

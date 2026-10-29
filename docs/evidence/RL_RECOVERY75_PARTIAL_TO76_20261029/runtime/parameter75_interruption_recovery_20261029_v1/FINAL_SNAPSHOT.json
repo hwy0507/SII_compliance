@@ -1,0 +1,139 @@
+{
+  "time": 1793253013.920054,
+  "host": "rltest-1025--a6ed2ff39b3c-nvfdwjhzzw",
+  "learners": [
+    {
+      "pid": 360532,
+      "proc_start_ticks": "44757345",
+      "state": "R",
+      "controller": "impedance",
+      "progress": {
+        "cycle": 76,
+        "steps": 3118043,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3113044,
+        "wall_time_utc": 1793253013.5251038
+      },
+      "samplers": 30
+    },
+    {
+      "pid": 360533,
+      "proc_start_ticks": "44757345",
+      "state": "R",
+      "controller": "admittance",
+      "progress": {
+        "cycle": 76,
+        "steps": 3119533,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3114534,
+        "wall_time_utc": 1793253012.5405293
+      },
+      "samplers": 30
+    },
+    {
+      "pid": 360534,
+      "proc_start_ticks": "44757346",
+      "state": "R",
+      "controller": "vmc",
+      "progress": {
+        "cycle": 76,
+        "steps": 3120901,
+        "completed_conditions": 0,
+        "running": 30,
+        "pending": 0,
+        "updates": 3115902,
+        "wall_time_utc": 1793253012.6791306
+      },
+      "samplers": 30
+    }
+  ],
+  "waiters": {
+    "loss76": {
+      "pid": 436146,
+      "proc_start_ticks": "44768306",
+      "state": "S",
+      "plan_sha256": "434f09ceb0c3b91e41b5006eaa84dafb1b37d2f2f7b6d0ba004f7953c94410e2"
+    },
+    "window76_78": {
+      "pid": 436148,
+      "proc_start_ticks": "44768306",
+      "state": "S",
+      "plan_sha256": "57b3d6be84b8b384922a35879ddfd5cd1c6e7a6b71b35ca5652c2ddfc8cd4e85"
+    }
+  },
+  "guard": [
+    {
+      "pid": 78710,
+      "proc_start_ticks": "44694367",
+      "state": "S"
+    },
+    {
+      "pid": 78730,
+      "proc_start_ticks": "44694378",
+      "state": "S"
+    },
+    {
+      "pid": 78731,
+      "proc_start_ticks": "44694378",
+      "state": "S"
+    },
+    {
+      "pid": 78732,
+      "proc_start_ticks": "44694378",
+      "state": "S"
+    },
+    {
+      "pid": 78733,
+      "proc_start_ticks": "44694378",
+      "state": "S"
+    }
+  ],
+  "archive": {
+    "pid": 360535,
+    "proc_start_ticks": "44757346",
+    "state": "S"
+  },
+  "guard_review": {
+    "total_samples": 229,
+    "startup_samples": 2,
+    "first_all_above50": 1793251856.9284256,
+    "seconds_to_first_all_above50": 10.210064172744751,
+    "stable_samples": 227,
+    "stats": [
+      {
+        "gpu": 0,
+        "stable_min": 75,
+        "stable_mean": 79.12775330396475,
+        "stable_below50": 0,
+        "all_below50": 2
+      },
+      {
+        "gpu": 1,
+        "stable_min": 70,
+        "stable_mean": 89.51541850220265,
+        "stable_below50": 0,
+        "all_below50": 2
+      },
+      {
+        "gpu": 2,
+        "stable_min": 69,
+        "stable_mean": 83.1762114537445,
+        "stable_below50": 0,
+        "all_below50": 2
+      },
+      {
+        "gpu": 3,
+        "stable_min": 66,
+        "stable_mean": 86.3215859030837,
+        "stable_below50": 0,
+        "all_below50": 2
+      }
+    ],
+    "synthetic_guard_included": true,
+    "no_reboot_service": true
+  }
+}

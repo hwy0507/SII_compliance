@@ -1,0 +1,55 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter75_loss_20261028_v1/review_saved.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery76_loss_20261029_v1/review_saved.py
+@@ -1,10 +1,15 @@
+-"""Independently verify saved complete75 loss and paired statistics."""
++"""Independently verify saved complete76 loss and paired statistics."""
+ from pathlib import Path
+ import hashlib, json, math, os, time
+ os.sched_setaffinity(0, {54})
+ OUT=Path(__file__).resolve().parent
+ B=OUT.parents[1]
+ def read(p): return json.loads(p.read_text())
++def episode_file(c,m):
++    if c==75:raise ValueError('Interrupted75 has no complete-cycle reward')
++    if c==76:return B/f'runs/parameter_partial75_recovery_cycle76_20261029_v1/{m}/train/episodes.jsonl'
++    return B/f'runs/parameter_capacity_pool30_cycle{c}_20261026_v1/{m}/train/episodes.jsonl'
++
+ def sha(p):
+     with p.open('rb') as f: return hashlib.file_digest(f,'sha256').hexdigest()
+ def finite(value):
+@@ -19,7 +24,7 @@
+ methods={}
+ for m,report in r['methods'].items():
+     for source in report['inputs'].values(): assert sha(Path(source['path']))==source['sha256']
+-    root=B/f'runs/parameter_capacity_pool30_cycle75_20261026_v1/{m}/train'
++    root=B/f'runs/parameter_partial75_recovery_cycle76_20261029_v1/{m}/train'
+     logs=[json.loads(s) for s in (root/'optimizer.jsonl').read_text().splitlines()]
+     episodes=[json.loads(s) for s in (root/'episodes.jsonl').read_text().splitlines()]
+     assert len(episodes)==30 and len({e['condition'] for e in episodes})==30
+@@ -33,7 +38,7 @@
+     assert report['full_horizon']==sum(e['full_task_horizon_completed'] for e in episodes)
+     assert report['aborts']==[e for e in episodes if e['abort_reason']]
+     for h in report['reward_history']:
+-        p=B/f"runs/parameter_capacity_pool30_cycle{h['cycle']}_20261026_v1/{m}/train/episodes.jsonl"
++        p=episode_file(h['cycle'],m)
+         es=[json.loads(s) for s in p.read_text().splitlines()]
+         assert len(es)==30
+         near(math.fsum(e['reward'] for e in es)/30,h['reward_mean'])
+@@ -41,13 +46,13 @@
+     pr=paired['methods'][m]
+     for path,h in pr['inputs'].items(): assert sha(Path(path))==h
+     maps=[]
+-    for c in [74,75]:
+-        p=B/f'runs/parameter_capacity_pool30_cycle{c}_20261026_v1/{m}/train/episodes.jsonl'
++    for c in [74,76]:
++        p=episode_file(c,m)
+         maps.append({e['condition']:e for e in map(json.loads,p.read_text().splitlines())})
+     assert len(pr['all30_paired'])==30 and {x['condition'] for x in pr['all30_paired']}==set(maps[0])==set(maps[1])
+     for v in pr['all30_paired']:
+-        assert v['reward74']==maps[0][v['condition']]['reward'] and v['reward75']==maps[1][v['condition']]['reward']
+-        near(v['reward75']-v['reward74'],v['delta'])
++        assert v['reward74']==maps[0][v['condition']]['reward'] and v['reward76']==maps[1][v['condition']]['reward']
++        near(v['reward76']-v['reward74'],v['delta'])
+     near(math.fsum(v['delta'] for v in pr['all30_paired'])/30,pr['mean_reward_delta'])
+     expected={k for k in maps[0] if any(maps[0][k][field]!=maps[1][k][field] for field in ['strict_success','abort_reason'])}
+     assert {v['condition'] for v in pr['changes']}==expected

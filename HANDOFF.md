@@ -1,3 +1,5 @@
+> **RL最新：[新容器partial75恢复→76](docs/RL_RECOVERY75_PARTIAL_TO76_20261029.md)。旧75已中断，原74–76无法评定；当前独立76/76–78/guardv6运行，勿执行旧canonical76工具。Goal active。**
+
 > **RL最新：[75早期loss、全终端与76仅恢复](docs/RL_PARAMETER75_EARLY_ANCHOR_20261029.md)。原75/74–76继续，无76训练；科研完成仍GPU保载，Goal active。**
 
 > **RL最新：[完整74与有限75](docs/RL_PARAMETER74_COMPLETE_20261029.md)。75已实际接续，原74–76等待保持；GPU科研完成仍保载，Goal active。**
