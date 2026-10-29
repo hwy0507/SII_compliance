@@ -1,3 +1,11 @@
+## 2026-10-29 — 非RL实际载荷参数核验与原108推进
+
+- [报告](docs/NONRL_V8_SAVED_MODEL_PARAMETERS_20261029.md)。读取30条示范实际scene.mjb并逐execution hash核验，棍/球各0.1kg、角0.08kg；冻结测试0.08kg且角惯量相同。30示范dt5e−5与七ctrlrange均与原d4c28e40测试MJB一致。排除“测试载荷比所有示范重”的解释，不证明动态载荷、估计外力、任务或联合覆盖相同，不据此改质量/物理/gate。
+- 准确检查5b64c673、34589bytes含实际源码/31模型路径hash/参数。只读服务自然exit0，runtime5.655s/CPU3.485s；请求单CPU/线程1/128MiB/swap0，memory.peak达到134217728bytes（含缓存计费），不称额外内存余量或OOM计数0。无新仿真/拟合。
+- 03:21:16.798–03:31:16.978UTC21次原1172675/start32623702和1201537/start32942337 loaded/active，50→52/108、最大1597509632bytes、cgroup OOM/oom_kill/swap0；主机MemAvailable4492660–4763536kB，系统swap仍近满，两者不混淆。observer59582自然exit0，科学继续，收尾53/108；完整观察41164bytes/SHAfafffc55。
+- 两原件含源码已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_model_parameters_wait0321_20261029_v1/EVIDENCE.tar.gz`，6189bytes/SHA4eaabd90854290c486b64f39b5ff2cc6559b4a4e7414984b033f78f9dbd8dc10；不含在途物理全集。
+- 开工/收尾main9f9531d5c1b96171602eacb0ceead089dd0e32c9/baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d实际fetch/read。上一轮为审计准备progress，本轮新增参数诊断并verified wait。第五条件新审计仍待原用户问题回复，未重试；原108及完整后处理继续，唯一后继八球v5未启动，Goal active，主矩阵修复尚待。无RL/子agent/服务器计算/用户数据删除。
+
 ## 2026-10-29 — 非RL低内存分块审计准备完成
 
 - [报告](docs/NONRL_V8_STREAMING_AUDIT_PREPARATION_20261029.md)。新独立auditor按4096子步读取，完整遍历原轨迹；来源/标签/终态时间核验前缀逐字使用SHA锁定原函数，门槛/公式/分母及1e−10公差保持，原在途源不改。稳定部分和导致浮点顺序差，不称逐bit等价。

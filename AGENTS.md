@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL实际MJB参数核对与原108推进
+
+- [报告](docs/NONRL_V8_SAVED_MODEL_PARAMETERS_20261029.md)。读取30示范实际MJB并核execution hash：棍/球载荷各0.1kg、角0.08kg；原冻结测试0.08kg，角的惯量亦相同。30示范dt5e−5及七ctrlrange与测试一致。不能说测试载荷比所有示范更重；也不能据此说载荷×方向/阶段联合覆盖已足。未改质量/物理/gate、无积分/拟合。
+- 参数只读服务自然exit0，128MiB限额下peak134217728bytes（含缓存计费），不称有内存余量。03:21:16–03:31:16UTC21样本原1172675/start32623702及1201537/start32942337保持loaded/active，50→52/108，最大1597509632bytes/cgroup OOMswap0；主机可用4492660–4763536kB，系统swap仍近满。observer59582自然结束，科学继续，收尾53/108。
+- 两原件含源码，6189bytes/SHA4eaabd90已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_model_parameters_wait0321_20261029_v1/EVIDENCE.tar.gz`。第五条件新审计仍待原用户问题回复，未重试；原完整后处理继续，唯一待用八球v5未启动。Goal active，本轮参数诊断progress，无RL/子agent/服务器计算/用户数据删除。
+
 ## 2026-10-29 — 非RL低内存审计已验证，新增派发待回复
 
 - [当前交接](docs/NONRL_V8_STREAMING_AUDIT_PREPARATION_20261029.md)。新独立streaming auditor逐4096子步遍历，原来源/标签/终态时间检查前缀及门槛不改；10001行三chunk、五类非法数据和四条旧真实审计对照通过，最大差6.82e−13在原公差内。测试实际affinity=[6]/128MiB/swap0，峰37941248bytes、自然exit0；无物理/拟合，v5全部198源保持。
