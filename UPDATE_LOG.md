@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL第十一条件完整，原108到99
+
+- [交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)：第十一条件九条均55s/noabort/TaskStrictfalse，前十一99条runtime全失败，SPT NA。ESN3接触期舒适代理19.2668%，ESN1/MLP1无人体接触NA；ESN2/MLP2穿透超限。九AUDIT/metrics小文件hash匹配，不是新独立子步审计，004–010待原完整后处理。
+- 07:04–07:16UTC25样本原1172675/start32623702及1201537/start32942337 loaded/active，97→99并进入最后条件011；最高1952808960bytes/3GiB、OOM/实验swap0。observer23205自然exit0，原科学继续。71166bytes/SHA3626320e的完整条件/观察/源码已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition010_20261029_v1/V8_CONDITION010_COMPLETE_AND_WAIT.json`。
+- 开工main1f581096/baselinef6e8f8c实际fetch/read。无BOTH时报告保留SPT NA的源码处理已读，实际最终图尚待；Goal active、主矩阵未修复。原完整审查归档→唯一v6八球及实际运动核查→正式三场景补采/公平重训保持，无新物理/拟合/RL/子agent/服务器计算，可选004未重试。
+
 ## 2026-10-29 — 非RL原108连续观察93→96
 
 - 06:45:27–06:59:58UTC30次原1172675/start32623702及1201537/start32942337保持loaded/active，93→96并接续ESN3条件010。最高1923670016bytes/3GiB、OOM/实验swap0，全机swap近满。observer9093到96自然exit0，原科学继续，不重启。
