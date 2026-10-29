@@ -2,6 +2,7 @@
 
 ## 2026-10-29 — 非RL第四条件九模型全审
 
+- 科学0a1025e2的五成员审计源码/准确报告/审计/观察包16953bytes/SHAba79f0d7已逐成员与暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition003_20261029_v1/SCIENCE.tar.gz`。01:57:22UTC原两个PID/start仍active、37/108、第五条件RNN1在途；原科学继续。远端8a41d383已读且安全合并，双方日志完整，Goal active。
 - [报告](docs/NONRL_V8_CONDITION003_AUDIT_20261029.md)：第四条件九模型/8887200保存子步、hash和原actor/filter收据全审通过，Task/Strict全false。ESN1 4.36s global penetration abort，其他8×55s；ESN1/3、MLP2/3四条机器合规失败，ESN3舒适代理0%，ESN1/MLP1无人体接触NA，SPT仍NA。准确审计aa1ead01。
 - 01:39:19–01:51:49UTC26次原1172675/1201537 PID/start保持loaded/active，34→36/108，最大772517888bytes/OOMswap0；正确rollout.progress.json持续推进。observer71124因第四条件全齐自然exit0，原科学接续第五条件，不重启。第四审计01:52:55完成、CPU5.049s。
 - 本轮progress，原108/后处理继续，唯一八球v4未启动，完整审查归档后再三场景覆盖修复/公平重训。Goal active，无RL/子agent/服务器计算/删除。新证据暂本机待共享。

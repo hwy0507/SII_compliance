@@ -49,4 +49,10 @@ RNN1虽然该代理为100%，人体接触仅0.02975秒，且任务未完成；�
 - 开工实际fetch/read main `f7fde7a3ffa09b9241a2facfcdcfe5c96ec29e63`、baseline
   `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。上一轮verified wait，本轮完成整组审计属progress。
 
-新审计与观察暂本机，核验共享后补路径。Goal active；无RL、子agent、服务器计算或删除。
+科学commit `0a1025e2a37b4e0363a71d83f8148b233fff6779`的五文件包（两个原审计源码、此报告、
+准确审计及边界观察）已逐Git blob/本机以及暂存/最终大小hash核共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition003_20261029_v1/SCIENCE.tar.gz`。
+16953bytes，SHA256 `ba79f0d7bcee236d6c6e9bc5692cbfc60419dde7dd2b4958c113b8c3a208b379`。
+包不包含在途108物理全集或本段补记。01:57:22UTC复核原两个PID/start仍active，37/108，
+第五条件RNN seed1在途。远端main8a41d383独立RL更新已读并安全合并，双方日志新增及共同历史逐字保持。
+Goal active；无RL操作、子agent、服务器计算或删除。

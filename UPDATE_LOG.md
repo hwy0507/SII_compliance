@@ -1,5 +1,6 @@
 ## 2026-10-29 — 非RL第四条件九模型完整审计
 
+- 科学0a1025e2a37b4e0363a71d83f8148b233fff6779五成员审计源码/准确报告/审计/观察包16953bytes/SHAba79f0d7bcee236d6c6e9bc5692cbfc60419dde7dd2b4958c113b8c3a208b379已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition003_20261029_v1/SCIENCE.tar.gz`。01:57:22原1172675/1201537同start仍active，37/108、第五条件RNN seed1在途。远端8a41d383独立RL更新已读并安全合并，双方日志新增及共同历史逐字保持。原科学继续，Goal active，不声称修复成功。
 - [报告](docs/NONRL_V8_CONDITION003_AUDIT_20261029.md)：第四条件9模型/8887200保存子步/hash/原actor-filter收据全审通过aa1ead01，Task/Strict均false；ESN1 4.36s global penetration abort、其余8×55s。ESN1/3及MLP2/3四条机器合规失败，ESN3接触舒适代理0%，ESN1/MLP1无人体接触NA，SPT仍NA。不是全矩阵或修复成功，全部失败保留。
 - 原边界观察01:39:19–01:51:49UTC26次，34→36/108，原1172675/1201537身份loaded/active、正确rollout.progress.json真实推进；最大772517888bytes/OOMswap0。observer71124自然exit0，原科学接续第五条件；只读审计01:52:55完成、CPU5.049s，无新增物理。
 - 开工实际fetch/read mainf7fde7a3/baselinef6e8f8c。上一轮verified wait，本轮完成整组审计属progress；原108/后处理继续，v4八球未启动，主矩阵修复与三场景公平重训尚待。新小证据仅本机待核共享，Goal active；无RL/子agent/服务器计算/删除。
