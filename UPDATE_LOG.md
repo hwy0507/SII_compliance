@@ -1,3 +1,9 @@
+## 2026-10-30 — 全75训练与九模型审计完成；首条ESN开发棍推双通过
+
+- 原训练PID1829248自然inactive/PID0，75/75 complete、FIT_AUDIT passed、九模型已锁定。独立复核75 checkpoint/metadata hash和九模型共同validation最小值选模；原审计九模型各15750帧部署重放误差0、三seed神经曝光一致。新增小证据CONTACT_YIELD_ALL75_FIT_COMPLETION_20261030.json，含真实锁定/原审计及首条开发收据，非最终效果证明。
+- 原诊断PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b真实接续diagnosis_run、无OOM；首条ESN01 rod00完整500动作/400000子步、Task/Strict/machine true，接触4.73095→让位4.84→越棍7.20→回位确认7.28s<撤回12.80s，峰矩35.1269Nm、穿透0.070846mm；仅train身份开发证据，非全27/泛化。RNN01 rod已125动作/100000子步，final108原后继仍等待/零派发。详见NONRL_CONTACT_YIELD_STUDENT_DIAGNOSIS_20261030.md。
+- 开工fetch/read mainad1159a64e81e8c3521f3d9a8ff87efb0e2b5377/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，完整AGENTS开工/收尾重读；前轮verified wait，本轮实质完成全75复核及开发首条证据。Goal active，全27与必要修复/最终108/六指标与媒体待；三登记source一致，raw仅本地、无新归档/服务器计算/RL/删除，两个无关untracked保留。
+
 ## 2026-10-30 — 第十一组完成，原训练69/75且最后一组在途
 
 - 本轮verified wait：宿主多次核同PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab active，64→65→67→68→69完整fit；RNN03 candidate10观察16776update后自然完成，当前RNN01 candidate11观察16724update。无failed_preserved，三登记source逐hash一致，OOM/oom_kill/swap0、内存约1.56GB/3GiB。两个原后继仍等待/零派发，无重复启动或运行源/预算/选模/gate改动。

@@ -1,3 +1,9 @@
+## 2026-10-30：75拟合完成，固定27已实际接续
+
+全部75拟合完整完成，原训练服务自然inactive/PID0。FIT_AUDIT通过，九模型锁定hash `105f3dfd36d026980963ff8fa3c335af771b8b7e163f26f0bf9664e060f13091`。本轮逐文件核验75个checkpoint及metadata hash、九模型共同validation最小值选模；原FIT_AUDIT包含九模型各15750帧部署actor精确重放误差0，不是闭环成功证明。证据 `docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_ALL75_FIT_COMPLETION_20261030.json`。
+
+原诊断服务PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b已自动diagnosis_run。首条rod00/ESN seed2026102801完整20s、500动作/400000子步，保存审计Task/Strict/machine均true、actor/filter replay通过；接触4.73095s→让位4.84s→越棍7.20s→持续回位确认7.28s<撤回12.80s，峰矩35.1269Nm、穿透0.070846mm。完成时间8.84s使用终态13样本确认语义，不与棍回位80ms门混同。此条是训练身份开发回合，非全27、非unseen泛化；人体舒适通道缺测NA，接触代理不当真人舒适度。当前RNN seed01棍推已实际推进125动作/100000子步，最终108仍零派发。科学失败将保留并在完整27后定位修复，不重选模型。
+
 # 新teacher数据重训后的学生闭环诊断入口
 
 新脚本位于 `code/mujoco_6d_vmc_benchmark/experiments/diagnose_contact_yield_students_20261030.py`。仅准备完成，尚未登记或派发物理回合；完整采集和75个训练作业仍是前置条件。本轮没有读取未见测试条件文件或测试轨迹。
