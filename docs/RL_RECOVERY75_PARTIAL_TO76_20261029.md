@@ -46,3 +46,20 @@ DECISION_RECOVERY76绑定12项证据，SHA `4e87b3eeda51fb4588e3e484327bd825ac0c
 共享SSD证据包 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_RECOVERY75_PARTIAL_TO76_20261029_055014/SMALL_EVIDENCE.tar.gz`，102成员/141890字节，SHA `855ec9c5df886d49e673c49c4600979d0d8b0309a37307050df857d7f206de9a`，逐成员与Python AST核验。[收据](RL_RECOVERY75_PARTIAL_TO76_20261029_SAVE.json)。大partialcheckpoint/startup checkpoint/replay/raw均仍共享SSD，非HDD/arm1全备份；HDD最新入口已重写回读。
 
 下一步保持当前76和guardv6，补齐76全标签/基于partial75的全2244终端诊断；待完整76全审/真实图后再决定有限77。新76–78窗口保持原门槛，原75中断始终保留。Goal active。
+
+发布补充：恢复证据提交 a48d16cc、安全合并提交 359c6cebdfff466c103c21c907e560f86f22fd36 已保存在本地。重新 fetch/read main 9defd6a4（非RL77→79）与 baseline f6e8f8c，双方新增日志逐字保留。禁交互 push 返回128，缺GitHub HTTPS用户名认证；远端发布尚未完成。101项manifest均已与提交Git blob逐大小/SHA核验，SSD归档保持。
+
+
+## 05:55UTC后续：partial75终端基准和完整76标签等待已部署
+
+原76三learner、归档/health、完整loss及76–78等待身份持续保持；本次快照steps 3122627/3123989/3125869、每路30sampler，无训练失败。原75中断结论不变。新两个终端等待器与一个全标签等待器见 `docs/evidence/RL_RECOVERY76_TERMINAL_LABELS_20261029/runtime/parameter75_interruption_recovery_20261029_v1/FOLLOWUP_FINAL_SNAPSHOT.json`，均仅只读诊断，无新训练。
+
+partial75仍只有2244个terminal，与完整74的indices/57维feature/reward/masks全部精确相同，但权重和全replay分母已发生变化。以实际恢复的partial75 checkpoint重新CPU前向五critic，权重/前向RNG保持；独立scalar SSE VMC=475.481157404010，admittance=2078.809356364851。保留原VMC五focus和A2752093；76完整后检查2244旧+30新增=2274、原两分母贡献及独立保存算术，完整图仍待实际生成与查看。不是完整75结果或收敛证明。
+
+全标签工具明确比较完整74→恢复76，包含中途已保留partial75额外曝光，非连续完整周期。原180标签/90配对reward/模型/evaluator/物理0.2mm判据和Task-only变化检查保持，实际不完整76拒绝测试通过。等待完整归档与loss保存复核后自动运行交叉检查。
+
+诊断准备期间首次VMC anchor读方法级`passed`键产生KeyError；方法收据本无该键。已保留首次源码/PLAN/日志，改成要求总审计passed且方法收据逐值完全相同，之后两路通过；无科学重启。全标签等待器初版使用了错误的loss失败文件名，身份核验后仅停止该诊断等待器并重启修正版，原LAUNCH/PLAN/source保留；三learner/guard未动。
+
+GPU guardv6持续，排除最初2预热样本后301个样本各卡最低[75, 68, 66, 66]%，低于50次数[0, 0, 0, 0]；包含合成负载，科学完成后继续。当前系统重启仍会终止进程，未宣称重启自启。
+
+后续证据包 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_RECOVERY76_TERMINAL_LABELS_20261029/FOLLOWUP_EVIDENCE.tar.gz`，65成员/938013字节，SHA `5938fe7ca3e47c4063dc65d26a4030ddbe8ba11f72181ec8f86577987ff9f730`，逐成员与源码AST检查通过。大型产物仍SSD，非HDD/arm1全备份。GitHub缺HTTPS认证，恢复提交a48d16cc与合并359c6ceb已在本地，远端发布仍待；不影响训练。Goal active，尚无77训练，Direct34false。

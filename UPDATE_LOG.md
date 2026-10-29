@@ -1,3 +1,12 @@
+## 2026-10-29 — 恢复76全终端与标签后续
+
+- [交接](docs/RL_RECOVERY75_PARTIAL_TO76_20261029.md)。partial75的2244终端基准用真实恢复权重重新CPU前向并独立算术通过，V/A SSE 475.481157404/2078.809356365，旧feature/reward/masks精确、原focus与两分母保留。完整76两终端及全180标签等待已部署，真实不完整76拒绝，74→76额外partial75曝光明确；初次审计schema错误和等待器失败文件名修正原件保留，无科学重启。
+- 原76/归档/全loss/76–78/guard保持，steps3122627/3123989/3125869、各30sampler；guard预热后301样本min[75, 68, 66, 66]%、低于50[0, 0, 0, 0]，科研完成仍保载。证据65成员/938013字节/SHA5938fe7c已核SSD，非HDD/arm1全备份。main9defd6a4/baselinef6e8f8c已读，认证失败仅本地发布，Goal active、无77/Direct34/子agent。
+
+## 2026-10-29 — RL恢复证据本地保存与发布状态
+
+发布补充：恢复证据提交 a48d16cc、安全合并提交 359c6cebdfff466c103c21c907e560f86f22fd36 已保存在本地。重新 fetch/read main 9defd6a4（非RL77→79）与 baseline f6e8f8c，双方新增日志逐字保留。禁交互 push 返回128，缺GitHub HTTPS用户名认证；远端发布尚未完成。101项manifest均已与提交Git blob逐大小/SHA核验，SSD归档保持。
+
 ## 2026-10-29 — 非RL原108核验77→79
 
 - 05:31:37–05:36:07UTC共10样本原1172675/start32623702及1201537/start32942337 loaded/active，77→79、MLP2→ESN3→RNN3；最高2077904896bytes/3GiB、OOM/实验swap0。MLP2 runtime55s/carry失败，ESN3 runtime16.16s/lift/global penetration abort失败，全部保留；非新独立子步审计。observer61682自然exit0，科学继续。
