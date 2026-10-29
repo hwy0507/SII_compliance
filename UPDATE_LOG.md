@@ -1,3 +1,8 @@
+## 2026-10-29 — 非RL球示范真实搬运核查与后继复用
+
+- [报告](docs/NONRL_V8_BALL_ACTUAL_MOTION_20261029.md)：八train球实际物体搬运89.288–90.138mm，非仅目标移动；仍同一方向，不证明联合覆盖充分。新增独立实际位移/相对位置描述工具，八球v6原review后追加使用，正式数据亦可复用；不改变原198绑定源/资格/模型。
+- 四手算情形、四错误拒绝及真实32阶段标量核验通过，无新物理或拟合。四成员25290bytes/SHA6e070fc8已逐字节及暂存/最终核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_ball_actual_motion_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。
+- 开工main7445692e/baselinef6e8f8c实际fetch/read；06:03原1172675/1201537仍active，06:05原108到85、RNN2条件009在途；v6未启动。上一轮证据提交progress，本轮实际运动诊断progress，Goal active，主矩阵未修复；完整审查归档/覆盖补采/公平重训仍待，无RL/子agent/服务器计算，可选004审计未重试。
 ## 2026-10-29 — 恢复76早期审查与77仅恢复
 
 - [交接](docs/RL_RECOVERY76_PREFIX77_PREPARATION_20261029.md)。前5000原字节/连续步号/全数值/独立算术和实际图核验；I/V尖峰保留，仅前缀非收敛。原76steps3137135/3138193/3141366、各30sampler，原全loss/标签/终端/76–78继续。
