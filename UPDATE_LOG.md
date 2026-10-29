@@ -1,3 +1,8 @@
+## 2026-10-30 — 原训练第五组推进，当前29/75
+
+- 本轮verified wait：宿主确认同一PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab active，RNN01 candidate04从24728update继续并自然接续；当前29/75、rnn_scratch_s2026102802_candidate04观察update8236。无failed_preserved候选，OOM0/swap0；三注册源清单核验全部一致，两个原后继仍等待，无重复派发或运行源/预算/选模/gate变更。
+- 开工fetch/read main4c1a91fa96d307fd360b8c9f85314f29ea512b45/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，完整AGENTS开工及收尾重读。前轮与本轮均核实同活训练推进，非阻塞/完成；Goal active，全75/九模型审计/27与必要修复/108/六指标及媒体待。raw仅本地、无新归档/服务器计算/RL/删除；两个无关untracked保留。
+
 ## 2026-10-30 — 第四组完整训练结束，当前27/75
 
 - 本轮verified wait：同PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab多次宿主核实active，23→25→26→27个fit完整，第四组RNN/MLP三seed均自然完成；当前rnn_scratch_s2026102801_candidate04观察update12108。无failed_preserved候选，OOM0/swap0；三注册源清单全部一致，两个原后继等待，未重启/增派/改预算/选模/门槛。
