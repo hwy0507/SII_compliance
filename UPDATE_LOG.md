@@ -1,3 +1,9 @@
+## 2026-10-30 — 首组新MLP/RNN完整学习曲线与三模型离线误差已独立核验
+
+- 读[当前真实学习诊断](docs/NONRL_CONTACT_YIELD_CURRENT_LEARNING_20261030.md)。只使用新数据67c01021…，固定seed01首个candidate00，MLP/RNN均32000update/895条history；独立部署全15750帧episode reset重放与export精确一致，metadata/history/全train及val MSE重算一致。新增只读绘图source，PNG/PDF/JSON hash齐全且目视通过。全train曲线用整集部署MSE，未把末mini-batch raw训练目标冒充全train；无平滑，无旧图/测试数据。
+- RNN全train/val MSE2.02661e-5/4.05807e-5，MLP1.50751e-4/1.76038e-4，ESN01 1.14392e-5/3.84549e-5。ESN已搜索12格、神经仅首格，明确不可作为公平最终排名；图仅定位学习缺口。MLP首候选厚角及vx/wy误差较大，是线索而非闭环失败唯一根因。三模型输出导出本轮未见错误，不代表物理成功。
+- 开工宿主fetch/read main46f414761c26133773e46675bb47fec5ad583fa4/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d并完整AGENTS；三既有服务同PID/Invocation active，训练由首RNN推进至首MLP完成、RNN seed02在途，固定27/108零派发。前Goal轮为实质progress，本轮verified wait+实际离线诊断；不改变登记源或训练选模。Goal active，全75/九锁定/27与必要修复/108/六指标/媒体待。新raw仅本地，未绕过导出拒绝，无服务器计算/RL/删除/重复作业；收工重读完整AGENTS，两个无关untracked保留。
+
 ## 2026-10-30 — 新teacher全30独立通过；公平训练实际启动，三ESN导出精确重放
 
 - 读[全量与接续进度](docs/NONRL_CONTACT_YIELD_UNSEEN_ADAPTER_20261030.md)。原采集同PID真实19→23→26→29→30且自然inactive/PID0；完整独立review verified_all30_qualified、零失败，各场景10条。新纯teacher数据15750帧、24train/6开发val，SHA67c01021964857020a039a644a9ff6a5b67735c034d45bb7cc5c84b53cf0691b，逐轨迹obs/action/整轨迹划分精确复核，无旧综合数据。teacher开发使用过val rod09，非独立泛化证据。
