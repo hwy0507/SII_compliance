@@ -1,5 +1,24 @@
 # 原108结束后的临时服务回收衔接
 
+## 连续观察：06:45–06:59UTC，93→96
+
+30次采样中原1172675/start32623702及后处理1201537/start32942337均loaded/active，
+ESN2→RNN2→MLP2完整结束并接续ESN3条件010，末样本4.04s/lift。
+最高MemoryCurrent1923670016bytes/3GiB，全部OOM/oom_kill/实验swap0；主机swap仍近满。
+observer9093到96自然exit0，原科学继续，不重启。
+
+新增三条runtime均55s/无abort/TaskStrict=false；ESN2最终lift，峰矩55.770897Nm、外部
+穿透1.960532mm；RNN2最终carry，39.421005Nm/0.160610mm；MLP2最终carry，
+51.703655Nm/0.686113mm。三AUDIT小文件hash已核；不是新增独立子步审计或完整第十一条件结论。
+
+[30样本及源码](evidence/NONRL_INTENT_RECOVERY_20261029/V8_VERIFIED_WAIT_0645.json)，
+57867bytes，SHA256 `9ee085c1438247e009c0eacc462601b1865c6465a50b62e2dfb29f067392d856`。
+暂存及最终大小/hash已核共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0645_20261029_v1/V8_VERIFIED_WAIT_0645.json`。
+开工mainba9748b1/baselinef6e8f8c实际fetch/read；上一轮范围诊断progress，本轮verified wait。
+Goal active，主矩阵未修复；原完整审查归档→唯一v6八球及实际运动核查→正式三场景补采/
+公平重训保持，无新物理/拟合/绑定源修改，可选004未重试。
+
 ## 第十条件完整与接触范围解释，原108到93
 
 06:30:35.140–06:41:05.354UTC共22样本，原1172675/start32623702及后处理

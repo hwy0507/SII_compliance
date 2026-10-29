@@ -4,6 +4,12 @@
 - DECISION77绑定96证据，三路准确全state/replay/next65536和actual INITIAL_STATE/startup通过，当前steps3160279/3161595/3163135、各30sampler。原科学参数/75中断/76–78准确PLAN保持，无自动78、Direct34false，Goal active。77全loss和归档health已部署，77标签/2274锚点待补。
 - guard280样本min[75, 67, 62, 63]%、低于50[0, 0, 0, 0]，审查空档含合成保载、科研完成仍继续。SSD317成员/2677677字节/SHA9fe6df28逐成员/AST已核，大数据SSD非HDD/arm1全备份。main6492ab17后c1e2bf02/baselinef6e8f8c已读安全合并，认证发布待，无子agent。
 
+## 2026-10-29 — 非RL原108连续观察93→96
+
+- 06:45:27–06:59:58UTC30次原1172675/start32623702及1201537/start32942337保持loaded/active，93→96并接续ESN3条件010。最高1923670016bytes/3GiB、OOM/实验swap0，全机swap近满。observer9093到96自然exit0，原科学继续，不重启。
+- 新增三条完整55s/noabort/TaskStrictfalse；ESN2/MLP2外部穿透1.960532/0.686113mm，RNN2仍未完成搬运。三AUDIT小文件hash一致，非新独立子步审计或完整条件结论。57867bytes/SHA9ee085c1的观察及源码已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0645_20261029_v1/V8_VERIFIED_WAIT_0645.json`，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。
+- 开工mainba9748b1/baselinef6e8f8c实际fetch/read；上一轮progress，本轮verified wait，Goal active、主矩阵未修复。原完整审查归档→唯一v6八球及实际运动核查→正式三场景补采/公平重训保持，无新增物理/拟合/RL/子agent/服务器计算，可选004未重试。
+
 ## 2026-10-29 — 非RL第十条件完整与全局/外部穿透范围
 
 - [交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)：第十条件九条Task/Strict全false，ESN1/2分别46.68/17.56秒abort，其余七条55s；前十90条runtime均失败，SPT NA。九小型AUDIT/metrics hash一致，非新增独立子步审计，004–009待原完整后处理。
