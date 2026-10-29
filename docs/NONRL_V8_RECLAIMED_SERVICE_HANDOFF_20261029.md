@@ -1,5 +1,40 @@
 # 原108结束后的临时服务回收衔接
 
+## 最新完整条件：008九条runtime，累计81/108
+
+05:38:57.167–05:48:27.349UTC共20次采样，原1172675/start32623702及后处理1201537/start32942337
+均loaded/active，79→81，原协调器进入条件009。最大MemoryCurrent2084233216bytes/3GiB，
+所有样本oom/oom_kill/实验swap为0，主机swap仍近满。observer20511因第九条件完整自然exit0，
+原科学继续，没有重启或新增物理。
+
+第九条件九条runtime均Task/Strict=false；ESN1/3分别9.24/16.16秒global penetration abort，
+其余七条完整55秒。前九条件81条runtime Task/Strict/BOTH全0，SPT NA。
+九个AUDIT.json与metrics文件hash逐一匹配snapshot，metrics Task/Strict标签逐一一致；
+这是小型运行收据核对，不是新增独立子步审计。独立条件审计仍000–003，004–008待原完整后处理。
+
+| 方法/seed末位 | 时长 s | 最终阶段 | 峰矩 Nm | 接触期舒适代理 | 机器合规 |
+|---|---:|---|---:|---:|---|
+| ESN1 | 9.24 | lift / abort | 66.254478 | 88.1197% | 否 |
+| RNN1 | 55 | approach | 43.365974 | 100% | 是 |
+| MLP1 | 55 | approach | 36.664909 | NA | 是 |
+| ESN2 | 55 | carry | 59.493095 | 99.3750% | 否 |
+| RNN2 | 55 | carry | 38.273289 | 100% | 是 |
+| MLP2 | 55 | carry | 51.135124 | 100% | 否 |
+| ESN3 | 16.16 | lift / abort | 61.226051 | NA | 否 |
+| RNN3 | 55 | carry | 38.054447 | 100% | 是 |
+| MLP3 | 55 | carry | 43.793816 | 100% | 是 |
+
+ESN1/2/3与MLP2外部穿透峰值分别2.938752/1.532159/3.195633/0.453863mm。
+MLP1/ESN3无人体接触，NA不是100%；短回合不包装成完整55秒。全部失败保留，机器合规不替代任务成功。
+
+[20样本、九原始结果、前九条件计数及源码](evidence/NONRL_INTENT_RECOVERY_20261029/V8_CONDITION008_RUNTIME_AND_WAIT.json)，
+62390bytes，SHA256 `76a416136cad7727e516cd461a1578f37d600c0b7e24e4f865b90b8487a1cbe3`。
+已核暂存及最终大小/hash：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition008_runtime_20261029_v1/V8_CONDITION008_RUNTIME_AND_WAIT.json`。
+开工main9defd6a4/baselinef6e8f8c实际fetch/read。本轮保存完整条件失败及verified wait；Goal active，
+主矩阵未修复，原108/后处理继续，唯一v6未启动。完整审查归档→八球→正式补采/公平重训保持，
+无新拟合或绑定源修改，可选004审计未重试。
+
 ## 后续核验：05:31–05:36 UTC，77→79
 
 05:31:37.140–05:36:07.222UTC共10样本，原1172675/start32623702及1201537/start32942337
