@@ -1,0 +1,58 @@
+{
+  "status": "passed_zero_physics_final108_handoff_controls",
+  "coordinator_sha256": "20dbd9588ad74f189863340a56c8f1c56287d0b086424ed171e217f93de9343b",
+  "checker_sha256": "e6fc9bdf82e6bf09e829da8d30b731708c382473f981a9200dc700e00b1c61b0",
+  "cases": [
+    {
+      "case": "success",
+      "calls": [
+        "register",
+        "run",
+        "review"
+      ],
+      "status": "final108_verified_pending_delivery"
+    },
+    {
+      "case": "scientific_failure",
+      "calls": [],
+      "status": "development_not_qualified_no_final_dispatch"
+    },
+    {
+      "case": "stop",
+      "calls": [],
+      "status": "stopped_before_final_dispatch"
+    },
+    {
+      "case": "timeout",
+      "calls": [],
+      "status": "finite_wait_timeout_no_final_dispatch"
+    },
+    {
+      "case": "register_error",
+      "calls": [
+        "register"
+      ],
+      "status": "failed_preserved_no_retry"
+    },
+    {
+      "case": "run_error",
+      "calls": [
+        "register",
+        "run"
+      ],
+      "status": "failed_preserved_no_retry"
+    },
+    {
+      "case": "review_error",
+      "calls": [
+        "register",
+        "run",
+        "review"
+      ],
+      "status": "failed_preserved_no_retry"
+    }
+  ],
+  "no_final_conditions_read": true,
+  "physics_episodes": 0,
+  "scope": "Synthetic lifecycle and failure preservation only; no real final registration or results."
+}

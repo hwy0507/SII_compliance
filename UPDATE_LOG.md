@@ -1,3 +1,11 @@
+## 2026-10-30 — 新teacher全30独立通过；公平训练实际启动，三ESN导出精确重放
+
+- 读[全量与接续进度](docs/NONRL_CONTACT_YIELD_UNSEEN_ADAPTER_20261030.md)。原采集同PID真实19→23→26→29→30且自然inactive/PID0；完整独立review verified_all30_qualified、零失败，各场景10条。新纯teacher数据15750帧、24train/6开发val，SHA67c01021964857020a039a644a9ff6a5b67735c034d45bb7cc5c84b53cf0691b，逐轨迹obs/action/整轨迹划分精确复核，无旧综合数据。teacher开发使用过val rod09，非独立泛化证据。
+- 原训练等待器PID1829248已fair_training；三seed ESN各12候选完成，三checkpoint与部署actor全15750帧精确重放误差0，val动作MSE独立重算3.84549e-5/3.86894e-5/3.45983e-5；非闭环或success。完整证据CONTACT_YIELD_ALL30_DATASET_ESN_REPLAY_20261030.json。75fit中3完成，首RNN候选真实训练至至少12072/32000update；资源约2.17GB/3GiB/OOM0/swap0，真实快照CONTACT_YIELD_TRAINING_STARTED_20261030.json。不凭未完成单候选loss声称收敛。
+- 新唯一final108有限后继PID1843469 active/waiting_for_fixed27_review/零派发；固定27后继PID1838688仍等完整fits。新coordinator只在固定27完整review通过且inactive后调用adapter register/run/review；科学失败/基础设施失败/超时/STOP均不派发，不重选/自动重试。七生命周期/异常保留/重复run拒绝零物理控制及AST/diff通过，精确启动证据CONTACT_YIELD_FINAL_HANDOFF_LAUNCH_20261030.json。未读最终条件，最终注册目录不存在；单模拟器约束保持。
+- 前Goal轮为progress并verified wait；本轮实质完成全30与独立建集/三ESN导出检查、启动最终有限接续。Goal active，全部神经/九模型审计/固定27与必要修复/108/六指标/媒体待。冻结物理/门槛/接口不改，失败与旧历史保留，无RL/服务器计算/删除。新raw仅本地，未绕过先前自动审查导出拒绝。
+- 开工fetch/read main0afd14c8d449912cb549d8def8889d6a10fdaeed/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d及完整AGENTS；收工重读完整AGENTS，两个无关untracked保留。
+
 ## 2026-10-30 — 新采集前18条独立复核合格，球8/10完成
 
 - 前一Goal轮为实质progress（固定27后继实际启动、final来源adapter和控制已发布358c4257）；本轮宿主再次核main358c42578f9f893c16d791a3215bda8a97667ede/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d日志及完整AGENTS。三既有服务同PID/Invocation active，原采集由16条ball06推进到18条ball08；训练/固定27等待器仍零派发，无重复启动。
