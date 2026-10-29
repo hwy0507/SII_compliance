@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL第九条件完整，原矩阵81/108
+
+- 05:38:57–05:48:27UTC共20样本原1172675/start32623702及1201537/start32942337 loaded/active，79→81并接续条件009；最大2084233216bytes/3GiB、OOM/实验swap0。observer20511自然exit0，科学继续，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。
+- 第九九条runtime Task/Strict全false，ESN1/3分别9.24/16.16秒global penetration abort，其余七条55s；ESN2/MLP2另有穿透超限，MLP1/ESN3舒适NA。前九81条runtime全失败，SPT NA。九AUDIT/metrics小文件hash和标签一致，非新独立子步审计；004–008待原完整后处理，全部失败保留。
+- 20样本/九结果/计数/源码62390bytes/SHA76a41613已核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition008_runtime_20261029_v1/V8_CONDITION008_RUNTIME_AND_WAIT.json`。开工main9defd6a4/baselinef6e8f8c实际fetch/read，Goal active，主矩阵未修复，唯一v6未启动；后继完整审查归档/覆盖修复/补采/公平重训仍待。无新物理/拟合/RL/子agent/服务器计算，可选004审计未重试。
+
 ## 2026-10-29 — 非RL原108核验77→79
 
 - 05:31:37–05:36:07UTC共10样本原1172675/start32623702及1201537/start32942337 loaded/active，77→79、MLP2→ESN3→RNN3；最高2077904896bytes/3GiB、OOM/实验swap0。MLP2 runtime55s/carry失败，ESN3 runtime16.16s/lift/global penetration abort失败，全部保留；非新独立子步审计。observer61682自然exit0，科学继续。

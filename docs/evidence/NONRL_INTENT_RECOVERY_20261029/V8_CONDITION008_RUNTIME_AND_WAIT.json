@@ -1,0 +1,1590 @@
+{
+  "status": "verified_wait_original_science_continues",
+  "reason": "ninth_condition_completed",
+  "observer_source": "import datetime\nimport hashlib\nimport json\nfrom pathlib import Path\nimport subprocess\nimport time\n\nROOT = Path('/home/airpig/桌面/hwy/compliance_control/SII_compliance')\nBENCH = ROOT/'code/mujoco_6d_vmc_benchmark'\nOUTPUT = ROOT/'docs/evidence/NONRL_INTENT_RECOVERY_20261029/V8_CONDITION008_RUNTIME_AND_WAIT.json'\nIDENTITIES = [('sii-special-frozen108-v8-20261029.service', 1172675, 32623702),\n              ('sii-special-postprocess-v8-20261029.service', 1201537, 32942337)]\nassert not OUTPUT.exists()\nsamples = []\nbegan = time.monotonic()\nreason = 'bounded_observation_elapsed'\nwhile True:\n    row = {'utc': datetime.datetime.now(datetime.timezone.utc).isoformat()}\n    for unit, pid, ticks in IDENTITIES:\n        raw = subprocess.check_output(['systemctl', '--user', 'show', unit,\n            '-p', 'LoadState', '-p', 'ActiveState', '-p', 'MainPID',\n            '-p', 'MemoryCurrent', '-p', 'MemoryMax', '-p', 'ControlGroup'], text=True)\n        state = dict(line.split('=', 1) for line in raw.splitlines())\n        state['startticks'] = int(Path(f'/proc/{pid}/stat').read_text().rsplit(')', 1)[1].split()[19])\n        assert state['LoadState'] == 'loaded' and state['ActiveState'] == 'active'\n        assert state['MainPID'] == str(pid) and state['startticks'] == ticks\n        group = Path('/sys/fs/cgroup'+state['ControlGroup'])\n        state['memory_events'] = dict((a, int(b)) for a, b in\n                                      (line.split() for line in (group/'memory.events').read_text().splitlines()))\n        state['swap_current'] = int((group/'memory.swap.current').read_text())\n        row[unit] = state\n    raw = (BENCH/'outputs/special_scene_frozen108_20261029_v8/execution.json').read_bytes()\n    ex = json.loads(raw)\n    last = ex['rows'][-1]\n    cmd = last['command']\n    progress = Path(cmd[cmd.index('--output')+1])/'rollout.progress.json'\n    row.update(completed=ex['completed'], execution_sha256=hashlib.sha256(raw).hexdigest(),\n               method=last['method'], condition=last['condition'],\n               progress=json.loads(progress.read_text()) if progress.exists() else None)\n    row['host_memory'] = [line for line in Path('/proc/meminfo').read_text().splitlines()\n                          if line.startswith(('MemAvailable:', 'SwapTotal:', 'SwapFree:'))]\n    samples.append(row)\n    print(json.dumps({k:row[k] for k in ('utc','completed','method','progress')}), flush=True)\n    if ex['completed'] >= 81:\n        reason = 'ninth_condition_completed'\n        break\n    if time.monotonic()-began >= 600:\n        break\n    time.sleep(30)\nresult = dict(status='verified_wait_original_science_continues', reason=reason,\n              observer_source=Path(__file__).read_text(), samples=samples,\n              limitation='Only observer stopped; no science restart, simulation, fitting, or new audit. '\n                         'Runtime progress is not full matrix success or independent trajectory verification.')\nif ex['completed'] >= 81:\n    condition = 'new30_prospective_20261026_acceptance_008'\n    rows = [r for r in ex['results'] if r['condition'] == condition]\n    assert len(rows) == len({r['method'] for r in rows}) == 9\n    result['condition'] = condition\n    result['runtime_rows'] = rows\n    result['runtime_counts_first_nine_conditions'] = {\n        method: dict(episodes=len(selected),\n                     task=sum(r['task_success'] for r in selected),\n                     strict=sum(r['strict_success'] for r in selected),\n                     both=sum(r['task_success'] and r['strict_success'] for r in selected))\n        for method in sorted({r['method'] for r in rows})\n        for selected in [[r for r in ex['results'] if r['method'] == method\n                          and int(r['condition'].rsplit('_', 1)[1]) <= 8]]}\n    assert all(r['episodes'] == 9 for r in result['runtime_counts_first_nine_conditions'].values())\n    result['runtime_limitation'] = 'Stored runtime labels/metrics only, pending independent full saved-substep audit. No fitting or new physical simulation.'\nwith OUTPUT.open('x') as f:\n    json.dump(result, f, ensure_ascii=False, indent=2)\n    f.write('\\n')\nprint('observer_complete', reason, len(samples), str(OUTPUT), flush=True)\n\n\n",
+  "samples": [
+    {
+      "utc": "2026-10-29T05:38:57.166707+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "2014601216",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18300928",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 79,
+      "execution_sha256": "0dc74b517930c43e5d8e92a4fa4464cd1cc346df85f3518e8e3cc95c82cf8fef",
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 29.040000000402262,
+        "stage": "carry",
+        "position_error_m": 0.012642065121337575,
+        "external_penetration_mm": 0.16325208790036408
+      },
+      "host_memory": [
+        "MemAvailable:    4009740 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:            176 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:39:27.177507+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "2031665152",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18309120",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 79,
+      "execution_sha256": "0dc74b517930c43e5d8e92a4fa4464cd1cc346df85f3518e8e3cc95c82cf8fef",
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 33.040000000535045,
+        "stage": "carry",
+        "position_error_m": 0.012469340931835046,
+        "external_penetration_mm": 0.16325208790036408
+      },
+      "host_memory": [
+        "MemAvailable:    4009952 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:            176 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:39:57.188372+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "2038497280",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18305024",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 79,
+      "execution_sha256": "0dc74b517930c43e5d8e92a4fa4464cd1cc346df85f3518e8e3cc95c82cf8fef",
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 38.04000000070103,
+        "stage": "carry",
+        "position_error_m": 0.012667463052661766,
+        "external_penetration_mm": 0.16325208790036408
+      },
+      "host_memory": [
+        "MemAvailable:    4016140 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:            176 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:40:27.197689+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "2053779456",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18300928",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 79,
+      "execution_sha256": "0dc74b517930c43e5d8e92a4fa4464cd1cc346df85f3518e8e3cc95c82cf8fef",
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 42.040000000833814,
+        "stage": "carry",
+        "position_error_m": 0.014903920467934328,
+        "external_penetration_mm": 0.16325208790036408
+      },
+      "host_memory": [
+        "MemAvailable:    4010824 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:            176 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:40:57.207410+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "2068664320",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18317312",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 79,
+      "execution_sha256": "0dc74b517930c43e5d8e92a4fa4464cd1cc346df85f3518e8e3cc95c82cf8fef",
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 47.0400000009998,
+        "stage": "carry",
+        "position_error_m": 0.01872875248567916,
+        "external_penetration_mm": 0.16325208790036408
+      },
+      "host_memory": [
+        "MemAvailable:    3967184 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:            176 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:41:27.217630+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "2084233216",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18313216",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 79,
+      "execution_sha256": "0dc74b517930c43e5d8e92a4fa4464cd1cc346df85f3518e8e3cc95c82cf8fef",
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 52.04000000116578,
+        "stage": "carry",
+        "position_error_m": 0.013917415344433663,
+        "external_penetration_mm": 0.16325208790036408
+      },
+      "host_memory": [
+        "MemAvailable:    3914020 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:            176 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:41:57.227631+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "1874731008",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18313216",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 80,
+      "execution_sha256": "46fa0bd030741710ddcc247d6ecbd678125106b75119f027cedf82bc6ba6f890",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 0.04000000000000063,
+        "stage": "approach",
+        "position_error_m": 3.777556209603315e-08,
+        "external_penetration_mm": 0.0
+      },
+      "host_memory": [
+        "MemAvailable:    4129344 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:            176 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:42:27.241248+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "1906335744",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18325504",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 80,
+      "execution_sha256": "46fa0bd030741710ddcc247d6ecbd678125106b75119f027cedf82bc6ba6f890",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 5.039999999994923,
+        "stage": "lift",
+        "position_error_m": 0.0420811450970631,
+        "external_penetration_mm": 0.1402442208369201
+      },
+      "host_memory": [
+        "MemAvailable:    4116700 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:            176 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:42:57.250489+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "1936367616",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18341888",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 80,
+      "execution_sha256": "46fa0bd030741710ddcc247d6ecbd678125106b75119f027cedf82bc6ba6f890",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 10.039999999983271,
+        "stage": "lift",
+        "position_error_m": 0.05272559802296595,
+        "external_penetration_mm": 0.1402442208369201
+      },
+      "host_memory": [
+        "MemAvailable:    4120556 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:            184 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:43:27.259582+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "1962483712",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18337792",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 80,
+      "execution_sha256": "46fa0bd030741710ddcc247d6ecbd678125106b75119f027cedf82bc6ba6f890",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 14.039999999973949,
+        "stage": "carry",
+        "position_error_m": 0.009318657732521366,
+        "external_penetration_mm": 0.1402442208369201
+      },
+      "host_memory": [
+        "MemAvailable:    4047764 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:            184 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:43:57.266660+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "1981112320",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18341888",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 80,
+      "execution_sha256": "46fa0bd030741710ddcc247d6ecbd678125106b75119f027cedf82bc6ba6f890",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 18.0400000000371,
+        "stage": "carry",
+        "position_error_m": 0.016499316339319742,
+        "external_penetration_mm": 0.1402442208369201
+      },
+      "host_memory": [
+        "MemAvailable:    3854996 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:            184 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:44:27.274727+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "1981366272",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18337792",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 80,
+      "execution_sha256": "46fa0bd030741710ddcc247d6ecbd678125106b75119f027cedf82bc6ba6f890",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 23.040000000203083,
+        "stage": "carry",
+        "position_error_m": 0.018647375239824984,
+        "external_penetration_mm": 0.1402442208369201
+      },
+      "host_memory": [
+        "MemAvailable:    3852376 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:            256 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:44:57.284241+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "1984503808",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18341888",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 80,
+      "execution_sha256": "46fa0bd030741710ddcc247d6ecbd678125106b75119f027cedf82bc6ba6f890",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 27.04000000033587,
+        "stage": "carry",
+        "position_error_m": 0.01992892398895635,
+        "external_penetration_mm": 0.1402442208369201
+      },
+      "host_memory": [
+        "MemAvailable:    3836964 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:              0 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:45:27.292035+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "1994706944",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18337792",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 80,
+      "execution_sha256": "46fa0bd030741710ddcc247d6ecbd678125106b75119f027cedf82bc6ba6f890",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 32.04000000050185,
+        "stage": "carry",
+        "position_error_m": 0.023044818339789892,
+        "external_penetration_mm": 0.1402442208369201
+      },
+      "host_memory": [
+        "MemAvailable:    3872388 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:              8 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:45:57.305127+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "1977163776",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18337792",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 80,
+      "execution_sha256": "46fa0bd030741710ddcc247d6ecbd678125106b75119f027cedf82bc6ba6f890",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 37.04000000066783,
+        "stage": "carry",
+        "position_error_m": 0.0247377821059363,
+        "external_penetration_mm": 0.1402442208369201
+      },
+      "host_memory": [
+        "MemAvailable:    3886892 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:              4 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:46:27.312877+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "1989025792",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18341888",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 80,
+      "execution_sha256": "46fa0bd030741710ddcc247d6ecbd678125106b75119f027cedf82bc6ba6f890",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 41.04000000080062,
+        "stage": "carry",
+        "position_error_m": 0.025435525394271328,
+        "external_penetration_mm": 0.1402442208369201
+      },
+      "host_memory": [
+        "MemAvailable:    3933372 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:              4 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:46:57.323238+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "2004865024",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18337792",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 80,
+      "execution_sha256": "46fa0bd030741710ddcc247d6ecbd678125106b75119f027cedf82bc6ba6f890",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 46.0400000009666,
+        "stage": "carry",
+        "position_error_m": 0.043511826576373716,
+        "external_penetration_mm": 0.1402442208369201
+      },
+      "host_memory": [
+        "MemAvailable:    3940452 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:             32 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:47:27.332385+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "2017165312",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18341888",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 80,
+      "execution_sha256": "46fa0bd030741710ddcc247d6ecbd678125106b75119f027cedf82bc6ba6f890",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 51.04000000113258,
+        "stage": "carry",
+        "position_error_m": 0.01865496661213075,
+        "external_penetration_mm": 0.1402442208369201
+      },
+      "host_memory": [
+        "MemAvailable:    3919068 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:             32 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:47:57.340263+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "1412419584",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18341888",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 80,
+      "execution_sha256": "46fa0bd030741710ddcc247d6ecbd678125106b75119f027cedf82bc6ba6f890",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "progress": {
+        "time_s": 54.04000000123217,
+        "stage": "carry",
+        "position_error_m": 0.013662077694792255,
+        "external_penetration_mm": 0.1402442208369201
+      },
+      "host_memory": [
+        "MemAvailable:    4501060 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:             32 kB"
+      ]
+    },
+    {
+      "utc": "2026-10-29T05:48:27.348861+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "1730469888",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18337792",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 81,
+      "execution_sha256": "82bdc5be7c1cee6c9cadb16a63240fbd613fc8b9cd12051e07bb1cae14871af9",
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_009",
+      "progress": {
+        "time_s": 5.039999999994923,
+        "stage": "lift",
+        "position_error_m": 0.04129747825930379,
+        "external_penetration_mm": 0.1811772161598398
+      },
+      "host_memory": [
+        "MemAvailable:    4155140 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:             32 kB"
+      ]
+    }
+  ],
+  "limitation": "Only observer stopped; no science restart, simulation, fitting, or new audit. Runtime progress is not full matrix success or independent trajectory verification.",
+  "condition": "new30_prospective_20261026_acceptance_008",
+  "runtime_rows": [
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_esn_ridge_s2026102801__new30_prospective_20261026_acceptance_008",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 9.24,
+      "peak_torque_nm": 66.25447845458984,
+      "comfort": {
+        "human_contact_duration_s": 0.05345000000000001,
+        "human_comfort_torque_compliance": 0.8811973807296539,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.9048871199289957,
+        "peak_torque_by_joint_nm": [
+          18.57257843017578,
+          66.25447845458984,
+          18.564943313598633,
+          37.087650299072266,
+          10.288247108459473,
+          9.316184043884277,
+          10.85864543914795
+        ],
+        "p95_torque_nm": 31.155134201049805,
+        "max_torque_slew_nm_per_s": 56000.06103515625,
+        "max_penetration_mm": 2.938752498033127,
+        "machine_safety_violation": true,
+        "machine_safety_violation_reasons": [
+          "penetration_gt_0.2mm",
+          "episode_abort:global_penetration_exceeded_2mm"
+        ]
+      },
+      "metric_sha256": "5a1204ce88cc1bf56117c8125b574d963f667c3799c72fe59aa2f57cea5baeac",
+      "audit_sha256": "0e55c8c7a1572f01b857844ab8ce7d80f9338118369f6bde22a183a4fa29991b",
+      "trace_sha256": "05fc1557b8377e16bd1860795a9c3988711b6f884a79274904b43336e1ba7bad",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "5e6e64e2fa0615dec58a2e0dd9ed9614473d919d54a9909e46239b8c9b4fd0b7",
+      "chain_sha256": "35337efcad6be4a94c9a314ca9954c5774faf3c14dd846da186072639855aaff",
+      "substep_metrics_sha256": "05b1cfa3d58227237a2375129236706603c5dccfd1031d2f0a203f4e6cdb6f20",
+      "research_substeps_sha256": "526b6a2e58c5c24abe0084c1d7b8ed968c708f033ed032520f4d14fa92e4b09e"
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_rnn_scratch_s2026102801__new30_prospective_20261026_acceptance_008",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 43.36597442626953,
+      "comfort": {
+        "human_contact_duration_s": 0.6415500000000002,
+        "human_comfort_torque_compliance": 1.0,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.4984594761640176,
+        "peak_torque_by_joint_nm": [
+          3.65584659576416,
+          43.36597442626953,
+          2.484647750854492,
+          26.64246368408203,
+          1.7634814977645874,
+          4.158342361450195,
+          0.7007054090499878
+        ],
+        "p95_torque_nm": 33.90656280517578,
+        "max_torque_slew_nm_per_s": 43659.74426269531,
+        "max_penetration_mm": 0.10021839036549302,
+        "machine_safety_violation": false,
+        "machine_safety_violation_reasons": []
+      },
+      "metric_sha256": "63f8ce8430d4cf040431eef9a1a468aa9a511af46ad95b1034b8f4459b058561",
+      "audit_sha256": "aaebfa5d459c51eb7bcb56e3741a18a4475b6b365ad287087d83e848bbfe967d",
+      "trace_sha256": "259eb15dd5786c116598a2bb8be706a12cef03dfb98bc3f7e86c407ee0e56aea",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "397b1bd6e62ffd8e52012705e24e32cbe12caa624369c3f1820bde1d4ec0ef1c",
+      "chain_sha256": "c8ca5f64bdf16129dd91f5d92254c87398c5ef3d9627797dd971d511aacf7dd5",
+      "substep_metrics_sha256": "6e8ba27013de73e49184d41c20df2404eb17447298db1784e8bcf3871a769c46",
+      "research_substeps_sha256": "e228808f1a8a4c007193d5eff285eb173b907bcb51e1d18c2196cb4f7576f26a"
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_mlp_scratch_s2026102801__new30_prospective_20261026_acceptance_008",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 36.66490936279297,
+      "comfort": {
+        "human_contact_duration_s": 0.0,
+        "human_comfort_torque_compliance": null,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.42143573980221805,
+        "peak_torque_by_joint_nm": [
+          2.7209439277648926,
+          36.66490936279297,
+          2.8436474800109863,
+          25.376569747924805,
+          1.477018117904663,
+          2.972349166870117,
+          0.6076183915138245
+        ],
+        "p95_torque_nm": 25.246952056884766,
+        "max_torque_slew_nm_per_s": 55999.99859929085,
+        "max_penetration_mm": 0.0424009068318202,
+        "machine_safety_violation": false,
+        "machine_safety_violation_reasons": []
+      },
+      "metric_sha256": "f897a365b9b32e47dc55226170e696d841d8958ad1a841fd14ca08c40a20f9b0",
+      "audit_sha256": "a17270758345437a3e830787370885cc08160b9814494f498acda670f8db0d3c",
+      "trace_sha256": "7479e7e2f4b8d1137dee2f32f744356e0dd4f5de2f4515925e5dbad75502cf7a",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "7a21a22668f47d1dbb4a10cc7a6d94d6736b16f9bc90687e794250f602307277",
+      "chain_sha256": "fa7f426ce644e071321409b55580c1572f11c84c768b2f95838af02ea41bbdcc",
+      "substep_metrics_sha256": "413a9d647043fcd302442a8fb5f4df3b64ca52ed7759069774faec008aecf207",
+      "research_substeps_sha256": "aa29d8bdde6220ac1b47580711ffebece6135ce5fcf59eaddef09070f4ce39bc"
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_008",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 59.49309539794922,
+      "comfort": {
+        "human_contact_duration_s": 3.119850000000001,
+        "human_comfort_torque_compliance": 0.993749699504784,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.8867460091908773,
+        "peak_torque_by_joint_nm": [
+          53.960182189941406,
+          59.49309539794922,
+          40.90361404418945,
+          58.44606399536133,
+          6.978232383728027,
+          10.640952110290527,
+          7.542634963989258
+        ],
+        "p95_torque_nm": 33.31733703613281,
+        "max_torque_slew_nm_per_s": 56000.06103515625,
+        "max_penetration_mm": 1.532158682279132,
+        "machine_safety_violation": true,
+        "machine_safety_violation_reasons": [
+          "penetration_gt_0.2mm"
+        ]
+      },
+      "metric_sha256": "d029dca833154677ebef2e22dc3dd2c5f8436b70fd68263fd4780377d6acc43b",
+      "audit_sha256": "b9ac1c39f5a56aed9247d09911f9604faa84aeae8029a84e6d57f627578fe726",
+      "trace_sha256": "9f2f1c1113b94fba850b1dcac73fecf018ae9a51fa1504a8fed0d74eb6d5e182",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "b339861f4f7da099d51520f06e81d36705fbbd05166ea3d792e118cc8493465c",
+      "chain_sha256": "bbbbe50c98ecb89f97c18b58ddc1a9a0b35e3a3c05421b0359adac3f061fd986",
+      "substep_metrics_sha256": "9fce96c923497e4379cb0509d9af614a201a5e1f0275fb6f0576ff31adc02df0",
+      "research_substeps_sha256": "2aacf5bf1ff5f520429c688a7430480fcc76a4f3bd62b16ce1e098da55983a78"
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_rnn_scratch_s2026102802__new30_prospective_20261026_acceptance_008",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 38.27328872680664,
+      "comfort": {
+        "human_contact_duration_s": 3.9217000000000013,
+        "human_comfort_torque_compliance": 1.0,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.43992285892881194,
+        "peak_torque_by_joint_nm": [
+          4.120067596435547,
+          38.27328872680664,
+          4.584585189819336,
+          27.676652908325195,
+          2.4561569690704346,
+          4.531910419464111,
+          0.6490647196769714
+        ],
+        "p95_torque_nm": 30.884418487548828,
+        "max_torque_slew_nm_per_s": 56000.022888183594,
+        "max_penetration_mm": 0.1408652777659689,
+        "machine_safety_violation": false,
+        "machine_safety_violation_reasons": []
+      },
+      "metric_sha256": "dbce1d453f184152ed6af797a7962bf748949a1e3cc4daf8941bb3ecb2113958",
+      "audit_sha256": "cd7b9bbd256d3b810fa05734fc416250941fd341ac74bc800d31beaede63bba0",
+      "trace_sha256": "0555b161272b541f07bab0b680fddaed7b66559f7d29a357b64f9e2b718d0767",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "b52ce0d14cffcb363825e51d243684831b318382b84ddd608e9e1a31d730af98",
+      "chain_sha256": "413b6d543e8be4dccd38cfa018fe775a630f5abde780534137973e86f7c1e8cf",
+      "substep_metrics_sha256": "63f4d8fac60312ee9a934ac9c201efa287e562f366d86a71e958eed38edb9e09",
+      "research_substeps_sha256": "e776ed461b0b3c5e32e284c489d159f65ece018eb86460d1dc970ddedb3d60f0"
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_mlp_scratch_s2026102802__new30_prospective_20261026_acceptance_008",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 51.13512420654297,
+      "comfort": {
+        "human_contact_duration_s": 3.8913500000000014,
+        "human_comfort_torque_compliance": 1.0,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.5877600483510687,
+        "peak_torque_by_joint_nm": [
+          5.593321800231934,
+          51.13512420654297,
+          6.574371337890625,
+          32.442604064941406,
+          3.0229055881500244,
+          6.116147041320801,
+          0.9148401618003845
+        ],
+        "p95_torque_nm": 42.343849182128906,
+        "max_torque_slew_nm_per_s": 56000.00054575503,
+        "max_penetration_mm": 0.45386305075945615,
+        "machine_safety_violation": true,
+        "machine_safety_violation_reasons": [
+          "penetration_gt_0.2mm"
+        ]
+      },
+      "metric_sha256": "8cacb85b24f919ca996031026df08cc6fdb09f21710b977b337b7369963e71b6",
+      "audit_sha256": "765c0d691d4e4de081b67cc6e428aa44d10afc119c221b1c1945095b3ce392e5",
+      "trace_sha256": "eb42c8f909b5910ece3887ef7c34d78f62c847c5c712f9a6f9f2c3fb3a9ab630",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "2e7f7f8a134ac9a9f0e98eeacb557c18c96e986fcdad13b0bd4a65efbca20f3b",
+      "chain_sha256": "e4c72dd94316424b238d9a579910fe9e1ce1bc3150c13425219190909a9f1dbe",
+      "substep_metrics_sha256": "c30c8b5f5b30c765407dcf9948cd6fd016950ceb0def0cd03222ae6f19560c46",
+      "research_substeps_sha256": "f1819219a49f14573ab4466686cc750479f505e033fae223cd8f60626b217ea0"
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_esn_ridge_s2026102803__new30_prospective_20261026_acceptance_008",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 16.15999999999999,
+      "peak_torque_nm": 61.226051330566406,
+      "comfort": {
+        "human_contact_duration_s": 0.0,
+        "human_comfort_torque_compliance": null,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.703747716443292,
+        "peak_torque_by_joint_nm": [
+          18.217449188232422,
+          61.226051330566406,
+          8.648968696594238,
+          55.03337860107422,
+          4.574594974517822,
+          7.818211078643799,
+          7.517601490020752
+        ],
+        "p95_torque_nm": 35.079813766479056,
+        "max_torque_slew_nm_per_s": 56000.06103515625,
+        "max_penetration_mm": 3.1956326605127776,
+        "machine_safety_violation": true,
+        "machine_safety_violation_reasons": [
+          "penetration_gt_0.2mm",
+          "episode_abort:global_penetration_exceeded_2mm"
+        ]
+      },
+      "metric_sha256": "20a292b7f57058eeacb4e6d57d31669934a7a311c5cafe410df6004f809a8bdf",
+      "audit_sha256": "7fbad8912d281b9cdb2e5f80550069dbb4838c2b563081803ff41f798d23b138",
+      "trace_sha256": "7c5e0d639479fac823eb58c187077c7960edfccea0f8233d148faee4d499b8d0",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "75d1db3645314403a1a5531cd57c00278a59422f094c2cab70615fad6dca7426",
+      "chain_sha256": "b9ea3aa2cdfc755ea357b45949bb780aeb6f62d8a681dd804c2d4224f8acba8f",
+      "substep_metrics_sha256": "a9ffcbfc849eef03b41afc10c47920cb683d3294b7f9c63e4dfeddcc48c415c8",
+      "research_substeps_sha256": "50da315fbb3032d9cb443c3a5757e5be516b9244e5e12f81c0598fddf6772cfa"
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_008",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 38.054447174072266,
+      "comfort": {
+        "human_contact_duration_s": 3.542350000000001,
+        "human_comfort_torque_compliance": 1.0,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.4374074387824398,
+        "peak_torque_by_joint_nm": [
+          5.742239952087402,
+          38.054447174072266,
+          5.972817420959473,
+          28.14089012145996,
+          2.9392848014831543,
+          4.591826438903809,
+          1.0416159629821777
+        ],
+        "p95_torque_nm": 28.209217071533203,
+        "max_torque_slew_nm_per_s": 56000.022888183594,
+        "max_penetration_mm": 0.16325208790036408,
+        "machine_safety_violation": false,
+        "machine_safety_violation_reasons": []
+      },
+      "metric_sha256": "6ca4e150145222c4475d291f21cb6ca98af1a2a357847424009ea0903896fb89",
+      "audit_sha256": "2c602a786a05095942cc8c99d1d97eaef6fca22fa686d824b961f9f07079d6f4",
+      "trace_sha256": "773e6dd3918a18030f6ffff5e019e6beaa7431e5970c6c6808ba692e7bbfd796",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "6549b57e9d7aee8895470404c47657732e853a110cf07ce4c9fabf8fc8fc441e",
+      "chain_sha256": "ee98c6a55b211dd828f6186e43b6d9b0c4cda8ebaf6be3640b993fb5fb687690",
+      "substep_metrics_sha256": "3c708fc92624f5f69b7be867c8f992a923edd7bdd6be6140dbc6ef7a12d388d1",
+      "research_substeps_sha256": "14e68c4eb6923aa58d86dcb8f88d2119db0e6ee392aa42939824e11c770cd6b5"
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_mlp_scratch_s2026102803__new30_prospective_20261026_acceptance_008",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 43.79381561279297,
+      "comfort": {
+        "human_contact_duration_s": 3.289000000000001,
+        "human_comfort_torque_compliance": 1.0,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.5033771909516433,
+        "peak_torque_by_joint_nm": [
+          4.389191150665283,
+          43.79381561279297,
+          4.955239295959473,
+          30.250873565673828,
+          2.598782539367676,
+          4.956352710723877,
+          1.146140694618225
+        ],
+        "p95_torque_nm": 31.294448852539062,
+        "max_torque_slew_nm_per_s": 56000.022888183594,
+        "max_penetration_mm": 0.1970170727905152,
+        "machine_safety_violation": false,
+        "machine_safety_violation_reasons": []
+      },
+      "metric_sha256": "3fcdf79a3773884c029a628e6c5c62132fde99669eb0af7288ab28b978e0ecfb",
+      "audit_sha256": "e9d3a171075edc1b2d37cf76186db02487bd8dc9bcc8b629834a562778652756",
+      "trace_sha256": "51609dda73edb8deddf342761a478b3f26f3568dcf48c12b1bf0001a32a67e63",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "9b0788bf3a7c7df75043fa5dce0490b8d2f289a4fb1123599ae26d1ee62e441a",
+      "chain_sha256": "a17fcb608ea1d7a05dfbc909709afeb398715fe7d208d09002e2382db451bc0b",
+      "substep_metrics_sha256": "2090f46d39fe3980d12cd2877dacf745362c625a194c88d9e41889c3e66523c4",
+      "research_substeps_sha256": "e994d247b38b508a182fabe94aceafd1a86a8f0deeed81b24637b30ffad620ba"
+    }
+  ],
+  "runtime_counts_first_nine_conditions": {
+    "special_esn_ridge_s2026102801": {
+      "episodes": 9,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_esn_ridge_s2026102802": {
+      "episodes": 9,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_esn_ridge_s2026102803": {
+      "episodes": 9,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_mlp_scratch_s2026102801": {
+      "episodes": 9,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_mlp_scratch_s2026102802": {
+      "episodes": 9,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_mlp_scratch_s2026102803": {
+      "episodes": 9,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_rnn_scratch_s2026102801": {
+      "episodes": 9,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_rnn_scratch_s2026102802": {
+      "episodes": 9,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_rnn_scratch_s2026102803": {
+      "episodes": 9,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    }
+  },
+  "runtime_limitation": "Stored runtime labels/metrics only, pending independent full saved-substep audit. No fitting or new physical simulation."
+}

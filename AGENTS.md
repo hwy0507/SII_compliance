@@ -1,5 +1,10 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL第九条件完整，原108到81
+
+- [交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)：05:38–05:48UTC共20样本原1172675/start32623702及1201537/start32942337保持loaded/active，79→81并接续条件009，OOM/实验swap0。第九九条runtime全失败，ESN1/3分别9.24/16.16秒global penetration abort，其余七条55s；前九81条TaskStrict全0，SPT NA，非新子步审计。observer20511自然exit0，科学继续。
+- 62390bytes/SHA76a41613证据已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition008_runtime_20261029_v1/V8_CONDITION008_RUNTIME_AND_WAIT.json`。Goal active，主矩阵未修复；原108/后处理继续，唯一v6未启动，完整审查归档→八球→正式补采/公平重训保持，可选004审计未重试。
+
 ## 2026-10-29 — 非RL原108到79
 
 - 05:31–05:36UTC共10样本原1172675/start32623702及1201537/start32942337保持loaded/active，77→79、MLP2→ESN3→RNN3，最高2077904896bytes/3GiB、OOM/实验swap0。MLP2 runtime55s/carry失败，ESN3 runtime16.16s/lift/global penetration abort失败；非新独立子步审计。observer61682自然exit0，科学继续。
