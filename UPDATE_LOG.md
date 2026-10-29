@@ -1,3 +1,11 @@
+## 2026-10-29 — 非RL原108真实推进与主机内存压力核验
+
+- [交接](docs/NONRL_V8_COVERAGE_INGESTION_AND_CPU_FIX_20261029.md)。02:31:03.222–02:41:04.567UTC21次原1172675/start32623702和1201537/start32942337均loaded/active，43→44完整回合，最大804450304bytes/cgroup OOM、oom_kill、swap0；observer59764自然exit0，科学继续。
+- RNN48.04秒一次相邻进度不变，之后恢复并自然完成；只读诊断发现worker D状态和主机内存/I/O压力，全机可用内存约151MiB、swap近满。准确02:36:44MemAvailable375112kB/SwapFree240kB，02:47:00为242520kB/12kB。不能将实验cgroup swap0写成全机swap0；没有重启/关闭应用/系统修改。
+- 02:47:00原服务同身份继续，45/108，第六条件在途。第五条件九runtime Task/Strict全false，ESN2 54.52秒穿透abort、其余8×55秒；ESN2/3及MLP2机器违规、ESN1/MLP1舒适NA。只是完整运行快照，独立子步/hash/replay复核未做；内存紧张时本轮不叠加大轨迹读取，原完整后处理仍保持。
+- 观察含源码/21原样记录/资源快照38875bytes/SHAb4aa6fa5679c5438cf26815ea62bd07194624f7f5c8752d17b1ba54cb2d0ce56及第五条件runtime快照21182bytes/SHA5bb617defd011a58b4888e9bcf138aa3aa1be804758021621b26a9396496ed74，均核验暂存/最终大小hash，共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0231_20261029_v1/`。
+- 开工mainf6d8a0c0ab1cb170811dc5e3291068050669a309/baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d实际fetch/read。本轮verified wait、上一轮progress；Goal active、主矩阵未修复，唯一八球v5仍未启动，原108完整审查归档后接续，派发前重查主机内存。无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL正式方向采集衔接与CPU约束修复
 
 - [报告](docs/NONRL_V8_COVERAGE_INGESTION_AND_CPU_FIX_20261029.md)。修复旧正式采集白名单不接收ball初始/搬运方向：独立collector/wrapper/qualifier/builder，先真实八球全review再登记plan-v3。原资格、三场景24/6、每family/seed12候选及神经32000更新保持；无新正式计划、物理或拟合。

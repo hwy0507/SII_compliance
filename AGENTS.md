@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL原108推进45，注意主机内存压力
+
+- [当前交接](docs/NONRL_V8_COVERAGE_INGESTION_AND_CPU_FIX_20261029.md)。02:31:03–02:41:04UTC共21样本，原1172675/start32623702及后处理1201537/start32942337保持loaded/active，43→44/108、最高804450304bytes、cgroup OOM/swap0；observer59764自然exit0，不重启科学。
+- RNN48.04s有一采样间隔停顿，之后自然完成；worker曾D状态、主机内存/I/O pressure高，可用内存约151MiB、全机swap近满。实验cgroup swap0不是全机swap0。02:47:00MemAvailable242520kB、SwapFree12kB；本轮不叠加大轨迹审计，不关闭应用或改系统。
+- 02:47:00原两身份仍active、45/108。第五条件九runtime Task/Strict全false，ESN2 54.52s穿透abort，其余8×55s；第五条件独立子步/hash/replay复核尚待，不能称已审计。原完整108后处理继续；资源允许可补004审计。
+- 观察38875bytes/SHAb4aa6fa5及runtime快照21182bytes/SHA5bb617de已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0231_20261029_v1/`。本轮verified wait、上一轮progress；Goal active。唯一八球v5仍未启动，后继派发前重查主机内存；无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL正式覆盖入口与实际CPU上限修复
 
 - [最新交接](docs/NONRL_V8_COVERAGE_INGESTION_AND_CPU_FIX_20261029.md)。原108在02:21:25UTC完成41/108，两原PID/start保持、OOM/swap0，主矩阵未修复。新独立正式collection-v3接受ball初始/搬运方向，要求真实八球完整review后登记；资格、24/6划分、候选/更新预算保持，无新采集或训练。

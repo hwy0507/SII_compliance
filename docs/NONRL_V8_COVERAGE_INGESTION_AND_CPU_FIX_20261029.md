@@ -1,5 +1,39 @@
 # 非RL覆盖补采入口与实际CPU约束修复
 
+## 后续核验：02:31–02:47 UTC
+
+上一轮是入口/资源修复progress；本轮是对已确认存活的原科学作业的verified wait。
+21次观察02:31:03.222–02:41:04.567UTC，原1172675/start32623702及1201537/start32942337
+身份始终loaded/active；完整回合43→44，最大原服务内存804450304bytes，两个cgroup的OOM/
+oom_kill/swap均0。观察session59764自然exit0，科学继续，未重启。
+
+RNN进度在48.04秒有一次相邻采样不变，随后推进并自然结束。期间只读诊断见worker处于D状态，
+全机内存/I/O pressure高、可用内存一度约151MiB、全机2GiB swap近满；这支持主机资源压力
+导致短时变慢，不是进程已停止或OOM的证据。02:36:44准确快照MemAvailable375112kB，
+SwapFree240kB；02:47:00则242520kB/12kB。**实验cgroup swap=0不等于全机swap=0。**
+系统与其他应用未修改。CPUQuota仍只是请求配置，保持上一节更正。
+
+02:45:52原协调器进入第六条件，02:47:00准确快照完成45/108，两原身份仍active。
+第五条件004九条runtime Task/Strict全false；ESN seed2在54.52秒因global penetration abort，
+其余八条55秒。runtime记录ESN2/3及MLP2机器违规，ESN1/MLP1无人体接触舒适NA。
+这只是完整运行结果快照，**第五条件独立保存子步/hash/原actor-filter复核尚未执行**；
+当前主机内存紧张，本轮不叠加大轨迹读取。不能将此标成已审计第五条件或完整矩阵。
+原自动完整108后处理仍保留，资源允许时可先补第五条件审计；无BOTH成功，SPT仍NA。
+
+两份文件均已核验暂存及最终大小/hash，共享目录：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0231_20261029_v1/`。
+
+- [完整观察](evidence/NONRL_INTENT_RECOVERY_20261029/V8_FROZEN108_VERIFIED_WAIT_0231.json)：
+  含观察源码、21原样记录和主机压力快照，38875bytes，SHA256
+  `b4aa6fa5679c5438cf26815ea62bd07194624f7f5c8752d17b1ba54cb2d0ce56`。
+- [第五条件runtime快照](evidence/NONRL_INTENT_RECOVERY_20261029/V8_CONDITION004_RUNTIME_SNAPSHOT.json)：
+  21182bytes，SHA256 `5bb617defd011a58b4888e9bcf138aa3aa1be804758021621b26a9396496ed74`。
+
+开工mainf6d8a0c0/baselinef6e8f8c实际fetch/read。唯一待用八球仍v5、未启动；原108完整审查归档
+后再接续，新的物理派发前重查主机实际可用内存。Goal active，主矩阵修复/重训仍未完成。
+
+## 上一轮实现记录
+
 主矩阵仍未修复，Goal active。本轮没有新物理采集或训练。原108与后处理保持运行，
 02:21:25 UTC按`ended_utc`计已完成41/108；第42条MLP seed2、条件004在途至54.04秒。
 这是进度快照，不是完整矩阵或成功率。原PID/start分别1172675/32623702、1201537/32942337。
