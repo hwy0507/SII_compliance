@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL原108连续核验73→75
+
+- 05:12:48–05:17:48UTC共11样本原1172675/start32623702及1201537/start32942337保持loaded/active，73→75、RNN1→MLP1→ESN2。最高2174996480bytes/3GiB、OOM/实验swap0，全机swap仍近满。observer87813达到第75条边界自然exit0，原科学继续。
+- 23787bytes/SHA54afb9ac观察含源码，已核暂存及最终共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0513_20261029_v1/V8_VERIFIED_WAIT_0513.json`，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。开工mainfee7484e/baselinef6e8f8c实际fetch/read。
+- 本轮verified wait，无新物理/拟合/子步审计；原完整108/后处理继续，唯一v6未启动，Goal active，主矩阵未修复；后继覆盖对照、正式补采/公平重训仍待，可选004审计未重试，无RL/子agent/服务器计算。
+
 ## 2026-10-29 — 非RL第八条件结束，原矩阵72/108
 
 - 05:08:13–05:09:13UTC三样本原1172675/start32623702及1201537/start32942337保持loaded/active，71→72并接续条件008；最高1964367872bytes/3GiB、OOM/实验swap0。observer51125自然exit0，科学继续。见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。
