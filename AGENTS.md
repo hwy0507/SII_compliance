@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 新采集前18条独立复核合格，球8/10完成
+
+- 前一Goal轮为实质progress（固定27后继实际启动、final来源adapter和控制已发布358c4257）；本轮宿主再次核main358c42578f9f893c16d791a3215bda8a97667ede/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d日志及完整AGENTS。三既有服务同PID/Invocation active，原采集由16条ball06推进到18条ball08；训练/固定27等待器仍零派发，无重复启动。
+- 独立review重新读取并核前18个完整身份（rod10/ball8）：source/config/原始输入hash、teacher逐动作精确回放、执行标签/完整step与800子步、初始canonical48/MJB/filter配对和Task/安全/行为资格均通过。证据CONTACT_YIELD_FIRST18_INDEPENDENT_REVIEW_20261030.json；不包括在途ball08、未来球/角或学生，不以先前qualification布尔代替本次重放。前18全部合格，无隐藏失败。
+- 本轮为verified wait并增加18条独立证据，完整30/公平75fits/固定27开发闭环与必要修复/冻结108/六指标和媒体仍待；Goal active。新raw仅本地，未绕过先前导出拒绝，无RL/服务器计算/删除/源漂移。收工重读完整AGENTS，两个无关untracked保留。
+
 ## 2026-10-30 — 固定27学生闭环等待器已active；最终108新来源适配准备完成
 
 - 读[接续与评估来源适配](docs/NONRL_CONTACT_YIELD_UNSEEN_ADAPTER_20261030.md)。宿主核验原采集PID1827286/Invocation ec3b6f480c184966bf86c5def563210d，16/30完整qualified、ball06在途；10rod独立通过保持。原训练等待器PID1829248仍waiting_for_collection/零派发。固定27后继PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b实际active、waiting_for_audited_fits/零派发。三注册source全部一致，3GiB/swap0、OOM0。精确启动快照见CONTACT_YIELD_DIAGNOSIS_HANDOFF_LAUNCH_20261030.json。
