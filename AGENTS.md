@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL第三条件全审与train方向缺口
+
+- [方向报告](docs/NONRL_V8_TRAIN_DIRECTION_COVERAGE_20261029.md)：24train/12600帧逐原物理观测和action精确核验，±Y主导方向均0，棍推参考方向仅±Z；6validation未统计，无新拟合/物理。准确报告394cc0e5；分箱是描述，非gate或因果证明。
+- 第三条件九模型/8904000保存子步/hash/原replay收据全审通过，Task/Strict仍全false；ESN1 5.20s global penetration abort，其他8×55s，ESN三seed与MLP2机器合规失败，MLP1舒适NA。审计bbfc5fe7，不是全矩阵/成功认证。
+- 01:08UTC原108到28、原1172675/后处理1201537继续。唯一八球v4尚未启动；原完整108审查归档后再方向开发控制与三场景共享数据修复/公平重训。Goal active，无RL/子agent/服务器计算/删除。新小证据暂待共享。
+
 ## 2026-10-29 — 非RL原108核验22→24
 
 - 00:41:17.811–00:51:17.814UTC共21次原1172675/start32623702与后处理1201537/start32942337同身份active、物理时间推进，22→24/108；最高内存824283136bytes/3GiB，OOM/oom_kill/swap0。observer81841自然exit0，00:52:28两科学服务仍active。

@@ -1,5 +1,25 @@
 # v8第二条件核验与补采接续检查修复
 
+## 01:08 UTC：第三条件全审与训练方向缺口
+
+原评测同身份继续至28/108，第四条件已开始；并非完成或修复。
+第三条件`new30_prospective_20261026_acceptance_002`九模型的8,904,000个保存子步、
+source/config/checkpoint hash和原actor/filter收据已复核；Task/Strict全部false。
+ESN seed1在5.20秒lift发生global penetration abort，其余八条完整55秒。
+ESN三seed外部/桌边最大穿透3.621621/.243724/.239524mm，MLP seed2 .526426mm，
+这四条机器合规失败；其他五条按现行定义通过，不代表任务完成。MLP seed1无人体接触，舒适NA。
+无BOTH回合，SPT仍NA；全矩阵汇总等待现有自动后处理。
+
+[第三条件准确审计](evidence/NONRL_INTENT_RECOVERY_20261029/V8_CONDITION002_AUDIT.json)
+SHA256 `bbfc5fe7212e93b32a40c68c432917d864cad48835a8b21b3aff58ce7f274a27`。
+只读审计日志确认01:07:32–01:07:38UTC完成，CPU4.791秒，无新增物理。
+`terminal_stage`扩展字段是旧rollout缺失键而为null，实际阶段用已独立提取的`failure_stage`。
+
+新增[训练方向覆盖报告](NONRL_V8_TRAIN_DIRECTION_COVERAGE_20261029.md)：24条train共12,600帧
+均无±Y主导方向，棍推只含±Z参考方向。全部训练观测/动作与物理原件精确一致，六validation未统计，
+无测试数据拟合。方向×载荷覆盖缺口为后继补采提供依据，不是修复通过或唯一因果证明。
+原108/后处理不重启；有效八球仍v4、未启动。先完成原108审查归档，再推进真实三场景共同数据修复。
+
 ## 00:52 UTC续接观察
 
 00:41:17.811–00:51:17.814UTC共21次原1172675/start32623702和后处理1201537/start32942337
