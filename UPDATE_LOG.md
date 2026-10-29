@@ -1,3 +1,11 @@
+## 2026-10-30 — 五组已选模型45条最终指标路径开发预检全部通过
+
+- 读[45条真实预检与口径限制](docs/NONRL_V9_SELECTED_METRIC_PREFLIGHT_20261030.md)。新增只读选中开发case审计入口：冻结精确execution/registration快照，核共同协议/候选/checkpoint/资格输入，每格重新独立actor/filter replay并运行最终v2指标路径；错误保留逐格failed，总体任一失败不得passed。不拟合、不积分、不读最终测试，不计算局部T_ref/SPT或据时间再选模型。
+- ESN seed02/03、RNN三个seed各九条，共45/45通过原Task/三特化Strict、13样本终态保持、完整horizon、子步有限/时钟、矩/穿透及独立动作/filter回放。不是完整九组或未见泛化证明；ESN seed01和MLP仍待。新独立共同prefix审查59完整case、4失败/6复用/5 selected组；原科学失败不删除。
+- 本机预检CPU6/Nice15/单线程/3GiB/swap0、01:03:42–01:04:29自然exit0、CPU23.434s；原仿真PID1684974/Invocation未变、OOM0、1115冻结源全一致，当前MLP seed01 ball09真实150step/120000子步。完整12后继仍等待、无第二worker；没有重启/修改冻结源或触及RL。
+- 六成员35952bytes/SHA221e409a68b78baa1d9cf18fc0e2d7529de0104a0132e8713e77bb39344e0f12逐成员/源前后及远端暂存/最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_selected_preflight_20261030_v1/EVIDENCE.tar.gz`。小指标证据不是在途raw全备份，服务器仅存储/hash；既有48完整raw归档继续保留。
+- 九组完整资格/锁定、最终三特化108、完整六指标/媒体仍待，旧office108的57未完成格保留，Goal active。上一轮progress、本轮progress。开工fetch/read mainb8dd677f52742e06e7a8dd148139c136a85fe4e8、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。
+
 ## 2026-10-30 — 48条完整开发闭环raw已共享；四组九闭环合格
 
 - 读[完整raw快照范围与恢复映射](docs/NONRL_V9_COMPLETED_PREFIX_RAW_ARCHIVE_20261030.md)。新增一致前缀归档工具：取execution单次字节快照，仅纳入已登记完整回合；核共同协议/资格输入/checkpoint，完整raw/子步/状态/动作/filter/MJB/源码/配置/审查日志含失败，不纳入在途回合。1088 payload+3快照/manifest成员逐个解包hash及源前后核验通过；无删除/拟合/积分或重启。
