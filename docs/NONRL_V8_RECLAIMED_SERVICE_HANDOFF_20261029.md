@@ -1,5 +1,17 @@
 # 原108结束后的临时服务回收衔接
 
+## 后续增加：真实物体运动检查，原108到85
+
+[实际运动核查](NONRL_V8_BALL_ACTUAL_MOTION_20261029.md)：八条train球示范搬运物体投影
+89.288–90.138mm、回程88.702–89.895mm，证实物体实际随动，但共享同一搬运方向。
+新独立`describe_ball_actual_motion_20261029.py`检查实际手/物位置；后继八球v6原review之外
+追加此描述，避免仅凭目标/actor方向认定物体已搬运。正式数据构建后亦可复用。
+手算四类/四非法拒绝与真实32阶段标量复核通过；不新增gate、不改变绑定源/拟合。
+四成员25290bytes/SHA6e070fc8已核共享
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_ball_actual_motion_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。
+06:03原两PID仍active，06:05:22原108到85、RNN2条件009在途；v6的198源保持且未启动。
+Goal active，主矩阵未修复；原完整审查归档→八球原review及实际位移→三场景补采/公平重训保持。
+
 ## 最新完整条件：008九条runtime，累计81/108
 
 05:38:57.167–05:48:27.349UTC共20次采样，原1172675/start32623702及后处理1201537/start32942337
