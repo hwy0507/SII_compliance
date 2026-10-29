@@ -1,0 +1,86 @@
+{
+  "status": "ingestion_software_checks_passed_physical_validation_pending",
+  "created_utc": "2026-10-29T02:19:53.746442+00:00",
+  "checker_sha256": "96e41d9c9525325df346daffab4f62c9a704bab4389fe58949be9ab841308ca1",
+  "sources": {
+    "collect_special_scene_coverage_20261029.py": "06d7910d5654c8d7ac98fc8f0c5d9ce31bad19bd1fedb61885db063cd4406e5b",
+    "run_registered_special_coverage_20261029.py": "36e88cde79198c84f3bf880dd55bb9b456293fdd8a7fae12f29b95d23f36d06d",
+    "qualify_registered_special_coverage_20261029.py": "a0b95703625f8b8d7d925da2286b42dff97e499615ea483ec4047a3ce1995e58",
+    "build_special_coverage_dataset_20261029.py": "e76b1f8eaa226feb98b1f89ee97d01bb1182ad7f7ffee7f22e95c13f0ea9bd0c"
+  },
+  "resources": {
+    "cgroup": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/sii-coverage-ingestion-v5-check-20261029.service",
+    "memory_max": 3221225472,
+    "swap_max": 0,
+    "cpu_max": null,
+    "affinity": [
+      6
+    ],
+    "cpu_bound": "single_cpu_affinity"
+  },
+  "actual_resource_check_passed": true,
+  "accepted_registered_ball_overrides": [
+    "ball_x_-1_angle_-0.8",
+    "ball_x_-1_angle_+0.8",
+    "ball_x_+1_angle_-0.8",
+    "ball_x_+1_angle_+0.8",
+    "ball_y_-1_angle_-0.8",
+    "ball_y_-1_angle_+0.8",
+    "ball_y_+1_angle_-0.8",
+    "ball_y_+1_angle_+0.8"
+  ],
+  "rejected_parameters": [
+    "missing_VMC_BALL_ANGLE_RAD",
+    "missing_VMC_BALL_EVENT_STAGE",
+    "missing_VMC_COVERAGE_CARRY_X_M",
+    "missing_VMC_COVERAGE_CARRY_Y_M",
+    "missing_VMC_COVERAGE_INITIAL_X_M",
+    "missing_VMC_COVERAGE_INITIAL_Y_M",
+    "missing_VMC_COVERAGE_INITIAL_Z_M",
+    "invalid_VMC_BALL_EVENT_STAGE",
+    "invalid_VMC_COVERAGE_INITIAL_X_M",
+    "invalid_VMC_COVERAGE_INITIAL_Z_M",
+    "invalid_VMC_COVERAGE_CARRY_X_M",
+    "invalid_VMC_COVERAGE_CARRY_Y_M",
+    "invalid_VMC_BALL_ANGLE_RAD",
+    "invalid_UNKNOWN_PARAMETER"
+  ],
+  "wrapper_inverse_exact": true,
+  "qualification_inverse_exact": true,
+  "dataset_arrays_and_budgets_inverse_exact": true,
+  "synthetic_positive_lineage_checks": 1,
+  "synthetic_negative_lineage_checks": [
+    "plan.coverage_probe_review",
+    "plan.coverage_probe_review_sha256",
+    "plan.registered_utc",
+    "review.status",
+    "state.status",
+    "review.registration_sha256",
+    "state.registration_sha256",
+    "review.execution_sha256",
+    "review.reviewer_sha256",
+    "review.rows",
+    "review.rows",
+    "state.episodes",
+    "state.episodes",
+    "registration.cases"
+  ],
+  "actual_missing_review_rejected": true,
+  "probe_registration_sha256": "6b54db811db82c14d309581ecfc4e6df70f795c87c92a52c9a3279e7f8f1b14d",
+  "successor": {
+    "registration_sha256": "be0056d33c065cf2bae56b1c3e208328abf352ecc70df035ed407f6ddb1fa752",
+    "cases_teacher_and_prerequisite_identity_exact": true,
+    "source_count": 198,
+    "original_sources_unchanged": true,
+    "actual_inflight_refusal": "Traceback (most recent call last):\n  File \"/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/prepare_ball_coverage_bounded_20261029.py\", line 157, in <module>\n    args=parser.parse_args();(run if args.run else prepare)(args.root.resolve())\n                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/prepare_ball_coverage_bounded_20261029.py\", line 109, in run\n    assert state['status']=='complete' and state['completed']==108, 'Original108 must finish first'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Original108 must finish first\n",
+    "physical_steps": 0
+  },
+  "non_single_thread_rejected": true,
+  "unbounded_affinity_rejected_when_cpu_controller_absent": true,
+  "unchanged_probe_sources": 197,
+  "original108_bindings_unchanged": true,
+  "physical_steps": 0,
+  "formal_plan_created": false,
+  "fitting_runs": 0,
+  "limitation": "Software boundary checks only. In-memory synthetic lineage is not physical evidence. Eight real controls, formal30, fair retraining and regression remain pending."
+}

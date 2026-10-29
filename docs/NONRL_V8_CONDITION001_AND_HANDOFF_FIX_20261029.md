@@ -1,5 +1,19 @@
 # v8第二条件核验与补采接续检查修复
 
+## 02:21 UTC：正式补采入口准备与CPU约束修复
+
+最新详见[覆盖入口与资源修复](NONRL_V8_COVERAGE_INGESTION_AND_CPU_FIX_20261029.md)。
+原108完成41/108、两原PID/start保持，无新物理。发现实际用户cgroup缺cpu.max，历史CPUQuota
+只是请求配置；内存/禁swap真实存在，OOM/swap0。新入口采用实际单CPU亲和性或cgroup配额核验。
+正式collection plan-v3已支持ball方向参数，资格、24/6划分和训练预算保持；尚无正式新30条。
+
+**后继只用八球v5，不再派发v4**：`outputs/nonrl_ball_coverage_probe_20261029_v5`，
+REG be0056d33c065cf2bae56b1c3e208328abf352ecc70df035ed407f6ddb1fa752，
+launcher `tools/prepare_ball_coverage_bounded_20261029.py`，实际单CPU affinity/线程1/3GiB/swap0。
+八case与teacher及原108前置身份均不变。v4未运行、原源保留，新增superseded说明。
+软件边界/真实缺review/在途拒绝通过，不等于物理修复。原108→后处理完整审查归档→八球v5
+全审→三场景补采/公平训练/冻结回归；Goal active。源码检查包已核共享，路径/hash见最新报告。
+
 ## 01:53 UTC：第四条件完整审计
 
 [第四条件报告](NONRL_V8_CONDITION003_AUDIT_20261029.md)已完成：九模型/8,887,200保存子步及

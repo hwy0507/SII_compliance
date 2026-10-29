@@ -1,3 +1,12 @@
+## 2026-10-29 — 非RL正式方向采集衔接与CPU约束修复
+
+- [报告](docs/NONRL_V8_COVERAGE_INGESTION_AND_CPU_FIX_20261029.md)。修复旧正式采集白名单不接收ball初始/搬运方向：独立collector/wrapper/qualifier/builder，先真实八球全review再登记plan-v3。原资格、三场景24/6、每family/seed12候选及神经32000更新保持；无新正式计划、物理或拟合。
+- 首个软件检查因实际用户cgroup缺cpu.max失败；配置CPUQuota并未实际实施，历史100%/50%表述更正为请求配置。内存/禁swap仍真实生效，原科学不改。新入口实际核≤1CPU配额或单CPU affinity，测试使用affinity=[6]；单线程/3GiB/swap0保持。
+- 旧八球v4同样无法通过当前资源检查，原197源/未启动记录保留并superseded；新唯一v5 REGbe0056d33c065cf2bae56b1c3e208328abf352ecc70df035ed407f6ddb1fa752，独立bounded launcher，198源绑定，八case/teacher/原108身份及所有科学前置精确保持。真实--run因原108未完成拒绝，无execution；禁止派发v4。
+- 软件核验8真实配置/14非法参数、wrapper/资格/dataset预算精确逆变换、来源模拟1正14负、缺review/多CPU无配额/非单线程拒绝，结果07315205。不是物理或修复成功。02:21:25原两PID/start保持，完成41/108、MLP2条件004在途54.04s，OOM/swap0；前四完整条件失败仍保留，主矩阵尚未修复。
+- 9成员源码/登记/最终检查/实际资源快照35711bytes/SHA682911ea6b09229ddfff33b693295c4a20f964c28695ad7638ef1a0c3818da8f已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_coverage_ingestion_20261029_v1/SOURCE_AND_CHECKS.tar.gz`。非在途物理全集。
+- 开工实际fetch/read maine89ad58a8df24627aa46eed9d967461f4a41372e/baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d并快进整合远端独立RL更新。原108/后处理继续，后继完整审查归档→八球v5→三场景补采/公平训练/冻结回归；Goal active，本轮progress，无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 第74轮十分钟核验与75全loss准备
 
 - [交接](docs/RL_PARAMETER74_WAIT75_PREP_20261029.md)：01:56:46–02:06:46UTC共21次原74三learner/archive/六等待器/五guard身份live，steps严格增至3066596/3067489/3068493，观察自然结束、科学继续，无重启。

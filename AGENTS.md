@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL正式覆盖入口与实际CPU上限修复
+
+- [最新交接](docs/NONRL_V8_COVERAGE_INGESTION_AND_CPU_FIX_20261029.md)。原108在02:21:25UTC完成41/108，两原PID/start保持、OOM/swap0，主矩阵未修复。新独立正式collection-v3接受ball初始/搬运方向，要求真实八球完整review后登记；资格、24/6划分、候选/更新预算保持，无新采集或训练。
+- 实测用户cgroup没有cpu.max：历史CPUQuota100%/50%仅请求配置，不是实际配额证据。新入口要求实际≤1CPU配额或单CPU affinity，另核线程1/3GiB/禁swap；测试实际affinity=[6]通过。首个missing cpu.max软件失败保留，未修改系统或在途服务。
+- **后继仅用八球v5** `outputs/nonrl_ball_coverage_probe_20261029_v5` REGbe0056d3，launcher `prepare_ball_coverage_bounded_20261029.py`；八case/teacher/原108身份与前置保持，198源绑定。v4未启动且superseded、197原源不变。原108完整审查归档后再单CPU affinity服务运行v5，禁止继续用v4。
+- 8实际配置/14非法参数、wrapper/资格/dataset预算精确逆变换、内存模拟来源1正14负、真实缺review/在途拒绝及原绑定检查通过；无正向物理认证。9文件35711bytes/SHA682911ea已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_coverage_ingestion_20261029_v1/SOURCE_AND_CHECKS.tar.gz`。Goal active，无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 第74轮十分钟核验与75全loss准备
 
 - [交接](docs/RL_PARAMETER74_WAIT75_PREP_20261029.md)：01:56:46–02:06:46UTC共21次原74三learner/archive/六等待器/五guard身份live，steps严格增至3066596/3067489/3068493，观察自然结束、科学继续，无重启。
