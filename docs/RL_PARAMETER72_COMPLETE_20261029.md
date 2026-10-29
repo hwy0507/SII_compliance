@@ -65,3 +65,5 @@ DECISION73 SHA `fb7759a731c257140ba634c9ed30ea788ef6b43cc14ab47dd0ea4ab647db1b23
 共享SSD归档 `/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/repository/RL_PARAMETER72_COMPLETE_20261029_004039/SMALL_EVIDENCE.tar.gz`，254成员/3074199字节，SHA `6deafd4669d347d4f7cdf148598a55fd525a12b6060e9edfae60eacad43eaee8`，逐成员字节/Python AST核验。[保存收据](RL_PARAMETER72_COMPLETE_20261029_SAVE.json)。大checkpoint/replay/raw留原共享SSD；HDD满只重写既有入口，非HDD/arm1全备份。
 
 下一步保持原73与guard；准备73完整标签及终端审查、等待原71–73，继续基于完整结果判断reward稳定和loss健康，不因有界观察结束重启科学任务。Goal active。
+
+发布同步补充：首次push因远端并行新增6fe74b6c而非快进拒绝。已读取非RL第二条件审计/八球v4接续保护，安全合并保留双方AGENTS/UPDATE_LOG新增原文与共同历史，冻结RL runtime未改。此同步发生在上述科学小证据包之后。

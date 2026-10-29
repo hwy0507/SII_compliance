@@ -19,6 +19,26 @@ def now():
     return datetime.now(timezone.utc).isoformat()
 
 
+def process_identity(pid):
+    try:
+        return Path(f'/proc/{pid}/stat').read_text().rsplit(')', 1)[1].split()[19]
+    except FileNotFoundError:
+        return None
+
+
+def service_state(name):
+    raw = subprocess.check_output(['systemctl', '--user', 'show', name,
+        '-p', 'LoadState', '-p', 'ActiveState', '-p', 'Result', '-p', 'MainPID'], text=True)
+    return dict(line.split('=', 1) for line in raw.splitlines())
+
+
+def require_finished_service(reg, current, observed_ticks):
+    assert current['LoadState'] == 'loaded', 'Original service must remain identifiable'
+    assert current['ActiveState'] == 'inactive' and current['Result'] == 'success', 'Original service must exit successfully'
+    assert int(current['MainPID']) == 0, 'Original service still owns a process'
+    assert observed_ticks != reg['prerequisite_start_ticks'], 'Original process still exists outside service'
+
+
 def prepare(root):
     assert not root.exists()
     collection = ROOT/'outputs/special_scene_vmc_collection_20261029_v8'
@@ -44,12 +64,26 @@ def prepare(root):
            'audit_video_reference_vmc_20261028.py','qualify_special_scene_demo_20261028.py',
            'qualify_ball_coverage_demo_20261029.py',Path(__file__).name)
     files=list((ROOT/'scripts').glob('*.py'))+[ROOT/'tools'/n for n in names]
-    registration=dict(schema='sii-ball-coverage-development-eight-v1',registered_utc=now(),
+    service_name = 'sii-special-frozen108-v8-20261029.service'
+    current = service_state(service_name)
+    pid = int(current['MainPID']); ticks = process_identity(pid)
+    assert current['LoadState'] == 'loaded' and current['ActiveState'] == 'active' and ticks is not None
+    cmd = [s.decode() for s in Path(f'/proc/{pid}/cmdline').read_bytes().split(b'\0') if s]
+    assert '--root' in cmd and '--run' in cmd
+    assert any(Path(s).name == 'prepare_special_frozen_test_20261028.py' for s in cmd)
+    parent_root = Path(cmd[cmd.index('--root')+1])
+    if not parent_root.is_absolute():
+        parent_root = Path(f'/proc/{pid}/cwd').resolve()/parent_root
+    prerequisite_preparation = ROOT/'outputs/special_scene_frozen108_preparation_20261029_v8'
+    assert parent_root.resolve() == prerequisite_preparation
+    registration=dict(schema='sii-ball-coverage-development-eight-v2',registered_utc=now(),
         maximum_episodes=8,cases=cases,teacher_config=plan['teacher_config'],
         teacher_sha256=sha(Path(plan['teacher_config'])),parent_collection_plan_sha256=sha(collection/'COLLECTION_PLAN.json'),
         source_sha256={str(p.relative_to(ROOT)):sha(p) for p in files},
         prerequisite_matrix=str(ROOT/'outputs/special_scene_frozen108_20261029_v8'),
-        prerequisite_service='sii-special-frozen108-v8-20261029.service',
+        prerequisite_service=service_name, prerequisite_pid=pid, prerequisite_start_ticks=ticks,
+        prerequisite_preparation=str(prerequisite_preparation),
+        prerequisite_preparation_sha256=sha(prerequisite_preparation/'REGISTRATION.json'),
         prerequisite_audit='FROZEN108_AUDIT.json',
         resources=dict(simulators=1,threads=1,cpu_quota_percent=100,memory_max_bytes=3221225472,swap_bytes=0),
         interpretation='Eight fixed physical development controls inside the actual free-ball scene. '
@@ -65,6 +99,7 @@ def run(root):
     lock=(root/'.probe.lock').open('a')
     fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
     reg=read(root/'REGISTRATION.json')
+    assert reg['schema'] == 'sii-ball-coverage-development-eight-v2', 'Use the service-bound preparation'
     assert not (root/'execution.json').exists(), 'No automatic replay'
     matrix=Path(reg['prerequisite_matrix'])
     state=read(matrix/'execution.json')
@@ -72,10 +107,17 @@ def run(root):
     audit=read(matrix/reg['prerequisite_audit'])
     assert audit['status']=='frozen108_saved_evidence_audit_passed' and audit['verified_episodes']==108
     assert audit['report_sha256']==sha(matrix/'REPORT.json')
-    assert subprocess.run(['systemctl','--user','is-active','--quiet',reg['prerequisite_service']]).returncode!=0
+    parent = Path(reg['prerequisite_preparation'])
+    assert sha(parent/'REGISTRATION.json') == reg['prerequisite_preparation_sha256']
+    assert Path(audit['preparation']) == parent
+    assert audit['model_lock_sha256'] == sha(matrix/'INPUT_MODEL_LOCK.json')
+    require_finished_service(reg, service_state(reg['prerequisite_service']),
+                             process_identity(reg['prerequisite_pid']))
     cg=Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')
     limit=(cg/'memory.max').read_text().strip()
     assert limit!='max' and int(limit)<=3221225472 and (cg/'memory.swap.max').read_text().strip()=='0'
+    quota, period = (cg/'cpu.max').read_text().split()
+    assert quota != 'max' and 0 < int(quota) <= int(period), 'At most one CPU required'
     assert all(os.environ.get(k)=='1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS'))
     for n,h in reg['source_sha256'].items(): assert sha(ROOT/n)==h,n
     assert sha(Path(reg['teacher_config']))==reg['teacher_sha256']
