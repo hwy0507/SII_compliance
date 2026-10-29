@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL第二条件全审与八球v4接续保护
+
+- [报告](docs/NONRL_V8_CONDITION001_AND_HANDOFF_FIX_20261029.md)。原第二条件九完整55秒、Task/Strict均false，9,900,000保存子步/hash/原actor-filter收据审计通过SHA89b71793；MLP seed2穿透.351307mm失败保留，MLP seed1无人体接触舒适NA。不是全矩阵或新成功，SPT仍NA。
+- 待用补采入口旧is-active任意非0被当作停止，可能误接收查询异常，已改明确loaded/inactive/success/PID0且原PID/start消失；准备核准确命令，绑定准备/model-lock，CPU≤100%实查。唯一新准备v4 REG6b54db81，v3从未物理启动并保留superseded/旧源；八case/teacher/物理/gate/filter/输入/执行器及预算与v3精确一致，只有launcher源变化。
+- 2正9负边界、默认task/layout/原gate/八方向静态及真实在途拒绝全部通过，0新物理/训练。原1172675与后处理1201537继续；先完整108/全审/查看归档，再v4八球及三场景共同数据修复。开工main8dec2341/baselinef6e8f8c实际fetch/read。新证据暂本机待共享，Goal active，无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL ESN读出外推定位
 
 - 科学93d5e7a4的5成员源码/准确报告/审查/标量检查/完整数组已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_readout_support_20261029_v1/READOUT_DIAGNOSTIC.tar.gz`，16141740bytes/SHA c9a01017f62b7a63f5f8357ae30c77227b688cfcfb55f0988ccfc72527500412。不含原108或后补说明。00:24UTC原两个服务身份保持active，18/108、第三条件在途；第二条件九runtime Task/Strict全false，独立完整子步审计尚待。无重启，Goal active。
