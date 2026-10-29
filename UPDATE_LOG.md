@@ -1,3 +1,9 @@
+## 2026-10-29 — 恢复78前缀异常与原Direct33继续
+
+- [交接](docs/RL_RECOVERY78_PREFIX_DIRECT33_WAIT_20261029.md)。78前三路5000原字节/连续步号/全部有限/独立算术和实际图通过；VMC critic185.416763→55.847782尖峰及actor漂移、阻抗反复尖峰保留，日志不能归因minibatch。仅描述性前缀、未收敛，原全loss/终端/labels/health和76–78保持。
+- 11样本/300.005秒18原身份live，steps{'impedance': 3221641, 'admittance': 3222537, 'vmc': 3225962}，冻结33 runtime8/30、完整审查待；观察器自然结束，科学不重启。Goal active，无79/Direct34，指定ESN/最终比较仍待。
+- guard144样本min[76, 71, 69, 69]%、低于50[0, 0, 0, 0]，科研完成仍保载、合成非吞吐。SSD35成员/936009字节/SHA81878110逐成员/AST核验，非HDD/arm1全备份；main69d656d6/baselinef6e8f8c2已读安全合并非RL新增，认证发布以收据为准，无子agent。
+
 ## 2026-10-29 — 最新Direct33冻结验证实际启动
 
 - [交接](docs/RL_DIRECT33_FROZEN_VALIDATION_20261029.md)。原Direct33数值阶段/不启动34保持；新全30冻结验证固定最新33、原29条件和动作seed2026102626/41250动作/3300万子步，明确训练后选最新checkpoint。703原依赖/物理loop/动作函数保持，真实33全state/replay/930隔离/RNG恢复和两分片实际启动核验通过；当前2/30，完整审查未完。

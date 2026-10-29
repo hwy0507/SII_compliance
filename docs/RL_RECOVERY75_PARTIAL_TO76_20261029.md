@@ -1,3 +1,5 @@
+> **最新：[78前缀异常与Direct33连续观察](RL_RECOVERY78_PREFIX_DIRECT33_WAIT_20261029.md)。原训练/评测/审查继续，GPU科研结束仍保活。**
+
 # 第75轮意外中断后的完整状态恢复与第76轮接续
 
 2026-10-29 05:50:13 UTC，Goal active。**当前主机 `rltest-1025--a6ed2ff39b3c-nvfdwjhzzw`，当前运行是 `runs/parameter_partial75_recovery_cycle76_20261029_v1`；旧75及旧76准备路径不得重启。** 完整reward稳定与loss健康仍未证明。Direct33历史原训练条件数值结论、Task/Strict0/0保持，不启动34。
