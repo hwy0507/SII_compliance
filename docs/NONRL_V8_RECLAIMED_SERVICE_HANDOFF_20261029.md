@@ -1,5 +1,16 @@
 # 原108结束后的临时服务回收衔接
 
+## 后续核验：当前v8学习曲线
+
+[学习核验报告](NONRL_V8_LEARNING_CURVE_REVIEW_20261029.md)：九锁定模型/六history/原图来源及
+算术通过。曲线先下降后趋平，实际cosine终值是初始学习率1%；低动作MSE不证明闭环修复。
+首次精确浮点相等误判保留，按原绘图容差修正检查后通过，模型/图未改。
+四成员441333bytes/SHAae6e4e4f已核暂存/最终共享于
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_learning_visual_review_20261029_v1/FIGURES_AND_REVIEW.tar.gz`。
+04:42:51 UTC原1172675/1201537保持active，随后execution为67/108、RNN2条件007在途。
+Goal active，主矩阵尚未修复；原完整后处理→查看归档→唯一v6八球→三场景正式补采/重训仍待。
+未新增仿真/拟合，可选004审计未重试。
+
 ## 后续核验：04:28–04:30 UTC
 
 本轮verified wait：04:28:46.130–04:30:46.168共五次原1172675/start32623702及

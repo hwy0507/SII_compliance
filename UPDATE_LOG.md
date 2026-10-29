@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL当前v8学习曲线来源与学习率核验
+
+- [报告](docs/NONRL_V8_LEARNING_CURVE_REVIEW_20261029.md)：九锁定模型、六history、原图/数据/源码hash和独立尾段算术通过，两原图已目视检查。实际cosine终态LR为初值1%，曲线下降趋平不等于闭环成功；RNN模仿误差更低仍有失败，联合覆盖修复仍待。首次精确浮点相等误判保留，按原绘图rel_tol1e-12检查通过，模型/图未改。
+- 四成员441333bytes/SHAae6e4e4f已逐成员及暂存/最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_learning_visual_review_20261029_v1/FIGURES_AND_REVIEW.tar.gz`。开工实际fetch/read mainac173595/baselinef6e8f8c。
+- 04:42:51UTC原1172675/1201537仍active，随后execution为67/108、条件007 RNN2在途；原完整108/后处理继续，唯一八球v6未启动。Goal active，主矩阵未修复；无新拟合/物理、RL、子agent或服务器计算，可选004审计未重试。
+
 ## 2026-10-29 — 非RL原108核验64→65
 
 - 04:28:46.130–04:30:46.168UTC五次原1172675/start32623702与后处理1201537/start32942337保持loaded/active；RNN1物理28.04→完整55s，累计64→65并接续MLP1。RNN1 runtime Task/Strict=false、最终approach、无abort，非新增独立审计。最大内存2388496384bytes/3GiB、OOM/oom_kill/实验swap0；主机swap仍近满。observer16841自然exit0，科学继续。

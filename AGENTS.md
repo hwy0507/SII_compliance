@@ -1,5 +1,10 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL当前v8学习曲线核验
+
+- [报告](docs/NONRL_V8_LEARNING_CURVE_REVIEW_20261029.md)。九锁定模型/六history/原图来源和算术通过；cosine终态学习率为初值1%，低模仿误差或尾段趋平不能替代闭环修复。首次浮点精确相等误判按原绘图容差修正，失败源码保留，模型/图不改。
+- 四成员441333bytes/SHAae6e4e4f已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_learning_visual_review_20261029_v1/FIGURES_AND_REVIEW.tar.gz`。04:42:51原1172675/1201537仍active，随后execution67/108、RNN2条件007在途。原完整108/后处理→查看归档→唯一v6八球→正式补采/公平重训仍待，Goal active，主矩阵未修复；无新增物理/拟合，可选004审计未重试。
+
 ## 2026-10-29 — 非RL原108到65
 
 - 04:28:46–04:30:46UTC五次原1172675/start32623702与后处理1201537/start32942337 loaded/active，完整64→65、RNN1完整55s仍approach失败，已接续MLP1；最大2388496384bytes/3GiB、OOM/实验swap0。observer16841自然exit0，科学继续。
