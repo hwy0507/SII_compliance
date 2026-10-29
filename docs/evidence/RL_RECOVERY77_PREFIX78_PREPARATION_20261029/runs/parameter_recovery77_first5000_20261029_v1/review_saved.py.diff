@@ -1,0 +1,11 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery76_first5000_20261029_v1/review_saved.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/parameter_recovery77_first5000_20261029_v1/review_saved.py
+@@ -5,7 +5,7 @@
+ def sha(x):return hashlib.sha256(x.read_bytes()).hexdigest()
+ plan=json.loads((p/'PLAN.json').read_text());r=json.loads((p/'REVIEW.json').read_text());assert r['passed'] and sha(p/'audit.py')==plan['source_sha256'];assert sha(p/'loss.png')==r['plot_sha256']
+ for m,info in r['methods'].items():
+- saved=p/f'{m}_first5000.jsonl';assert sha(saved)==r['inputs'][m]['sha256'];source=b/f'runs/parameter_partial75_recovery_cycle76_20261029_v1/{m}/train/optimizer.jsonl'
++ saved=p/f'{m}_first5000.jsonl';assert sha(saved)==r['inputs'][m]['sha256'];source=b/f'runs/parameter_partial75_recovery_cycle77_20261029_v1/{m}/train/optimizer.jsonl'
+  with source.open('rb') as f:prefix=b''.join(f.readline() for _ in range(5000))
+  assert prefix==saved.read_bytes();rows=list(map(json.loads,prefix.splitlines()));assert len(rows)==5000;assert all(x['step']==rows[0]['step']+i for i,x in enumerate(rows));assert all(math.isfinite(v) for x in rows for v in x.values() if isinstance(v,(int,float)))
+  for k,s in info['metrics'].items():
