@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 当前108正式六指标报告入口准备完成，真实训练13/75
+
+- 读[最终报告入口及限制](docs/NONRL_CONTACT_YIELD_FINAL_REPORT_READINESS_20261030.md)。新增experiments/report_contact_yield_final108_20261030.py，仅允许固定新运行完整独立108报告，核adapter注册/执行/reviewer hash、全部身份/replay和原汇总；输出四CSV/六指标PNG-PDF/MD/hash收据，无拟合/物理/选模。family36回合pooling与九seed模型表明确分开；SPT仅双成功、峰矩含失败、人舒适NA/代理分列，无成功或无接触保持NA。
+- 九类错误拒绝、合成全失败108保留、NA与重复导出保护通过，证据CONTACT_YIELD_FINAL_REPORT_CONTROLS_20261030.json；两源AST/diff通过。排版图仅/tmp合成fixture已目视，不是实验成绩、未进仓库，不用作正式结果。真实最终未读/未派发，无当前六指标表或图；入口不能替代108物理/审计或媒体。
+- 开工宿主fetch/read main84c24f9b1a83adad0bbab2cfaffd1dfc668dbbdf/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d及完整AGENTS。原训练PID1829248同Invocation仍真实推进到13/75，第二组RNN03已接续（此前RNN02已19392update）；两个后继同PID active等待。上一轮progress/verified wait，本轮补齐交付缺口，未改已登记源码/预算/门槛。Goal active，全75/九锁定/27与必要修复/108/真实六指标及媒体待。新raw仅本地，未绕过导出拒绝，无RL/服务器计算/删除/重复派发；收工重读完整AGENTS，两个无关untracked保留。
+
 ## 2026-10-30 — 公平训练9/75完成，三seed首组曝光/保存误差核验通过
 
 - 本轮开工宿主fetch/read main f9bbe7c07a4173bf2923564ddc028ca39a3d3aae/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d及完整AGENTS。原训练PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab真实从RNN03 10584update接续至全部candidate00完成，9/75fit完整，candidate01 RNN01在途。原两个评测后继同PID/Invocation active等待，OOM0/swap0，未读test或重复派发。
