@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL第四条件九模型完整审计
+
+- [报告](docs/NONRL_V8_CONDITION003_AUDIT_20261029.md)：第四条件9模型/8887200保存子步/hash/原actor-filter收据全审通过aa1ead01，Task/Strict均false；ESN1 4.36s global penetration abort、其余8×55s。ESN1/3及MLP2/3四条机器合规失败，ESN3接触舒适代理0%，ESN1/MLP1无人体接触NA，SPT仍NA。不是全矩阵或修复成功，全部失败保留。
+- 原边界观察01:39:19–01:51:49UTC26次，34→36/108，原1172675/1201537身份loaded/active、正确rollout.progress.json真实推进；最大772517888bytes/OOMswap0。observer71124自然exit0，原科学接续第五条件；只读审计01:52:55完成、CPU5.049s，无新增物理。
+- 开工实际fetch/read mainf7fde7a3/baselinef6e8f8c。上一轮verified wait，本轮完成整组审计属progress；原108/后处理继续，v4八球未启动，主矩阵修复与三场景公平重训尚待。新小证据仅本机待核共享，Goal active；无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL原108十五分钟核验30→33
 
 - 01:20:47.388–01:35:47.408UTC共31次原1172675/start32623702及后处理1201537/start32942337保持loaded/active，30→33/108，最大791601152bytes/3GiB，OOM/oom_kill/swap0；observer40291自然exit0，原科学继续。第四条件九模型未全齐，不重启审计。

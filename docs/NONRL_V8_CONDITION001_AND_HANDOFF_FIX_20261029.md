@@ -1,5 +1,15 @@
 # v8第二条件核验与补采接续检查修复
 
+## 01:53 UTC：第四条件完整审计
+
+[第四条件报告](NONRL_V8_CONDITION003_AUDIT_20261029.md)已完成：九模型/8,887,200保存子步及
+hash/原replay收据核验，Task/Strict全false。ESN1 4.36秒global penetration abort，其余8×55秒；
+ESN1/3、MLP2/3四条机器合规失败，ESN3舒适代理0%，ESN1/MLP1舒适NA，条件SPT仍NA。
+准确审计SHA aa1ead018cbbc25384a6804a51bb291a5cd32b007a01dc6cd2dee1231ba6e4d2。
+原边界观察26次34→36/108，正确rollout.progress.json推进、原两PID/start保持、OOMswap0；
+observer71124自然exit0，原科学已接续第五条件。原108/后处理仍继续，有效八球v4未启动。
+本轮完整审计为progress，Goal active，主矩阵未修复；新证据共享状态见第四条件报告后补。
+
 ## 01:36 UTC：原108持续到33
 
 01:20:47.388–01:35:47.408UTC共31次原1172675/start32623702与后处理1201537/start32942337
