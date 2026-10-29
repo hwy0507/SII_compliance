@@ -12,6 +12,11 @@
 - DECISION77绑定96证据，三路准确全state/replay/next65536和actual INITIAL_STATE/startup通过，当前steps3160279/3161595/3163135、各30sampler。原科学参数/75中断/76–78准确PLAN保持，无自动78、Direct34false，Goal active。77全loss和归档health已部署，77标签/2274锚点待补。
 - guard280样本min[75, 67, 62, 63]%、低于50[0, 0, 0, 0]，审查空档含合成保载、科研完成仍继续。SSD317成员/2677677字节/SHA9fe6df28逐成员/AST已核，大数据SSD非HDD/arm1全备份。main6492ab17后c1e2bf02/baselinef6e8f8c已读安全合并，认证发布待，无子agent。
 
+## 2026-10-29 — 非RL第十一条件完整，原108到99
+
+- [交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)：07:04–07:16UTC25样本原1172675/start32623702及1201537/start32942337 loaded/active，97→99，接续最后条件011；最高1952808960bytes/3GiB、OOM/实验swap0，observer23205自然exit0，科学继续。第十一条件九条55s/noabort/TaskStrict全false，前十一99条全失败，SPT NA；非新子步审计。
+- ESN3舒适代理19.2668%，ESN1/MLP1无人体接触NA；全部失败保留。71166bytes/SHA3626320e证据已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition010_20261029_v1/V8_CONDITION010_COMPLETE_AND_WAIT.json`。Goal active、主矩阵未修复；完整审查归档→唯一v6八球/实际运动→正式补采/公平重训保持，可选004未重试。
+
 ## 2026-10-29 — 非RL连续观察93→96
 
 - 06:45–06:59UTC30次原1172675/start32623702及1201537/start32942337 loaded/active，93→96、接续ESN3条件010；最高1923670016bytes/3GiB、OOM/实验swap0，observer9093自然exit0，科学继续。新增三条55s/noabort/TaskStrictfalse，非新子步审计。

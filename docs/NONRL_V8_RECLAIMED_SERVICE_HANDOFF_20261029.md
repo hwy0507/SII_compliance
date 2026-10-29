@@ -1,5 +1,40 @@
 # 原108结束后的临时服务回收衔接
 
+## 第十一条件完整，原108到99
+
+07:04:15.203–07:16:15.447UTC共25样本，原1172675/start32623702及后处理
+1201537/start32942337均loaded/active，97→99并进入最后条件011。
+最高MemoryCurrent1952808960bytes/3GiB，所有样本OOM/oom_kill/实验swap0；全机swap仍近满。
+observer23205达到99自然exit0，原科学继续，不重启。
+
+第十一条件010九条均55s/无abort，Task/Strict全false。前十一条件99条runtime Task/
+Strict/BOTH均0，条件SPT NA。九AUDIT/metrics小文件hash逐一匹配；不是新独立子步审计，
+004–010待原完整后处理，尚非完整108结论。
+
+| 方法/seed末位 | 最终阶段 | 峰矩 Nm | 接触期舒适代理 | 机器合规 |
+|---|---|---:|---:|---|
+| ESN1 | lift | 51.775383 | NA | 是 |
+| RNN1 | approach | 40.626503 | 100% | 是 |
+| MLP1 | approach | 36.664909 | NA | 是 |
+| ESN2 | lift | 55.770897 | 97.3793% | 否 |
+| RNN2 | carry | 39.421005 | 100% | 是 |
+| MLP2 | carry | 51.703655 | 100% | 否 |
+| ESN3 | carry | 77.564812 | 19.2668% | 是 |
+| RNN3 | carry | 39.401653 | 100% | 是 |
+| MLP3 | carry | 37.590515 | 100% | 是 |
+
+ESN1/MLP1无人体接触，NA不是100%；ESN2/MLP2外部穿透分别1.960532/0.686113mm。
+ESN3机器合规不代表人体舒适或任务完成，全部失败保留。
+另只读核对冻结汇总/报告源码：无BOTH成功则T_ref/SPT为None，图表标NA；最终实际图仍待完整审计后查看。
+
+[25样本、完整九结果、前十一条件计数及源码](evidence/NONRL_INTENT_RECOVERY_20261029/V8_CONDITION010_COMPLETE_AND_WAIT.json)，
+71166bytes，SHA256 `3626320eee62627189fc34f5493edaa81fd67a9f845ef25b3e5acb924a784ca9`。
+暂存及最终大小/hash已核共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition010_20261029_v1/V8_CONDITION010_COMPLETE_AND_WAIT.json`。
+开工main1f581096/baselinef6e8f8c实际fetch/read，Goal active，主矩阵未修复。
+原完整审查归档→唯一v6八球/实际运动核查→正式三场景补采/公平重训保持；无新物理/拟合/
+绑定源修改，可选004未重试。
+
 ## 连续观察：06:45–06:59UTC，93→96
 
 30次采样中原1172675/start32623702及后处理1201537/start32942337均loaded/active，
