@@ -1,5 +1,23 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — v9组合回归继续推进至29/108；诊断显示迁移/数据覆盖风险
+
+- 当前读[teacher、拟合与矩阵范围审查](docs/NONRL_V9_TEACHER_FIT_AND_MATRIX_DIAGNOSIS_20261029.md)及[数据/训练交接](docs/NONRL_V9_DATA_AND_TRAINING_20261029.md)。v9正式teacher数据30/30 qualified；棍推10/10均在撤回前让位、越过并持续回位，领先1.80–5.19s。75作业/108候选完成，锁定9模型。完整拟合、actor回放通过；ESN ridge方程相对残差5.36e-15–6.12e-15。
+- 逐帧训练权重并非等场景：rod 4000帧、ball 6000、corner 2600；ESN slowdown输出裁剪占21.4%–25.3%。这些是后续闭环分析线索，不单独证明teacher或算法错误。
+- 重要范围问题：原12条acceptance条件每条同时有ball/person/rod扰动；训练示范为三个分离特化场景。原12条件应作为组合扰动迁移压力测试，不单独当作特化场景主矩阵。v9的6条validation已经用于选模，不能充当未见最终test；必须另注册场景隔离测试后再声称主矩阵已修复。
+- 回归目录`outputs/special_scene_frozen108_20261029_v9`现有29/108个完整结果：Task 2/29、Strict 0/29、双成功0，故SPT=NA；两条Task成功均因穿透超过0.2mm而Strict失败。ESN 0/10 Task且各seed平均回合峰值穿透2.707–3.611mm；RNN 1/10 Task；MLP 1/9 Task。第30条MLP seed2026102801/condition_003在途。原scope `run-raa08b13eb33f4583ab899210958345fa.scope` active，MemoryCurrent约1.72GB/MemoryMax3GiB、MemorySwapMax=0、CPUQuota=100%；继续只读监视，不重复启动或移动轨迹。
+- 普通sandbox曾因PID与user bus隔离误报无worker，宿主级systemd查询已纠正。主机swap 2GiB/2GiB已用尽，但活跃scope有独立MemorySwapMax=0约束。普通sandbox的GitHub连接失败，宿主级fetch成功；已核验main=`69d656d67e60b66107f506400af0d36bc195b4d1`和baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及其UPDATE_LOG。
+- 当前证据未发现teacher棍推顺序、训练样本action重放、ESN ridge求解或checkpoint导出错误；但不能据此说闭环学习已充分。组合条件同时启用球/人/棍扰动，与三个分离特化场景训练不匹配；逐帧loss亦以ball占47.6%、corner占20.6%。原12组只可称迁移压力回归。v9 6条validation已选模，不能作未见测试。未修改冻结物理、gate、actor输入、filter、执行器限制或dt；主矩阵尚未修复。
+- 原v2恢复覆盖审计器拒绝正式v3 collection plan；这是审计器schema不兼容，保留拒绝记录，不回写计划。teacher qualification、训练帧teacher action精确回放和拟合审计独立通过。
+- 远端`ls-remote`读取main `69d656d67e60b66107f506400af0d36bc195b4d1`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；后续fetch因网络连接失败，不宣称读取了远端最新日志。Goal active；主矩阵仍未修复。服务器不用于计算；本轮新审计/结果当前仅本地，完成后另建唯一共享归档并核hash。
+
+## 2026-10-29 — 非RL v9完整30合格、真实方向覆盖已补、公平训练运行
+
+- 当前读[数据与训练交接](docs/NONRL_V9_DATA_AND_TRAINING_20261029.md)。原补采30/30全qualified、12600000子步；10棍推均撤回前1.80–5.19秒回位，20棍角8250帧状态/观测/动作与v8逐数组一致。数据24train/6val、12600/3150帧，SHA12017388；训练Y−/Y+主导帧1343/1096（原无），其中估计载荷量>0.1为205/224，描述性覆盖改善不是闭环成功。
+- 原补采与数据交接均exit0，不重启。新数据交接源码`prepare_direction_dataset_handoff_20261029.py`绑定原PID/start/Invocation/boot、全30资格后才建数据，2正常/12拒绝及真实交接通过。当前唯一训练`sii-special-direction-fit-v9-20261029.service`，08:57:38UTC启动，PID1469962/Invocation f22ab353765e49d3a0ddaf7a53ba8e32；14/75作业已完成快照，单CPU6/线程1/3GiB/禁swap。核现有execution/progress后继续，禁止重复拟合或改冻结来源。
+- 完整30包2786887680bytes/SHA9a2f86e1及数据/新源14成员包6978157bytes/SHA5c522149已逐成员、源前后、暂存/最终核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_direction_collection30_20261029_v9/`下`FULL_COLLECTION.tar`和`data/SHARED_DATA_AND_REVIEW.tar.gz`。不含在途拟合输出。
+- 三方法仍各3seed/12候选，神经32000更新；全部75作业/108候选完成后再审计选模/曝光/冻结actor重放、九模型原12条件108回归。Goal active，主矩阵仍未修复，无新学生成功结论；原12已检查，只能称回归。无RL/子agent/服务器计算或门槛放宽。
+
 ## 2026-10-29 — 非RL完整108失败审查、八球完成、v9方向补采运行
 
 - 当前读[修复交接](docs/NONRL_DIRECTION_REPAIR_V9_20261029.md)和[完整108结果](docs/NONRL_V8_FULL108_RESULTS_20261029.md)。原v8完整108：Task1/108、Strict0/108、BOTH0/108，SPT NA；109748000已保存子步算术/证据审计通过，不是动力学重新积分。主矩阵未修复，Goal active。
