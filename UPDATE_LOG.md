@@ -1,3 +1,8 @@
+## 2026-10-30 — 第六组完成，原训练39/75
+
+- 本轮为verified wait：宿主多次核实原PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab active，35→37→39完整fit；RNN03 candidate05由9016→30080update后自然结束，当前RNN01 candidate06观察6416update。三个登记source清单全部一致，无failed_preserved，OOM/oom_kill/swap0、内存约1.56GB/3GiB；两个原后继仍等待/零派发，未重启或改预算/选模/门槛。
+- 开工fetch/read main a87b4478d292d0c585418f65b16cc059be9bd1e4/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，AGENTS完整开工及收尾重读。前轮和本轮均核实同活训练推进；Goal active，完整75/九模型审计/固定27与必要修复/最终108/六指标及真实媒体仍待。raw仅本地，无新归档/服务器计算/RL/删除；两个无关untracked保留。
+
 ## 2026-10-30 — 修复链继续，原训练35/75且真实update推进
 
 - 同一训练PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab保持active，完整fit33→34→35；当前RNN seed02 candidate05从788→18960update，OOM/oom_kill/swap均0，内存约1.57GB/3GiB。三个登记source清单1169/1171/1173项逐hash一致；固定27和final108原后继仍等待/零派发，无重复启动或修改绑定源。
