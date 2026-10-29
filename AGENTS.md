@@ -1,5 +1,15 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 安全边界调整诊断优先级；同场景已复现ESN闭环失败
+
+- 读[调度修正与真实配对](docs/NONRL_V9_PRIORITY_BOUNDARY_AMENDMENT_20261029.md)。原组合office108会长期阻塞同场景修复，现用其已有STOP_REQUESTED协议让在途回合自然落盘，51/108完整、Task5/Strict0、原scope inactive，57格未完成清单/原execution hash全部保留；不把旧矩阵写complete。旧v3按其前提拒绝派发、无student execution。后续补齐原不相交格子，完整联合审计；不按旧测试挑新参数。这一显式调度修正覆盖上条“先108全部结束再18”的计划顺序。
+- 当前**唯一实际运行**为`outputs/nonrl_v9_paired_scene_priority_20261029_v5`、`sii-v9-paired-priority-v5-20261029.service`，PID1672647/Invocation32b84eb9ac2340b7ad71078d0f976db3；同一18条train00/validation08开发配对，单CPU6/单线程/3GiB/swap0。1112源hash核验、原run资源/派发/审计循环AST不变。原scope inactive、v3 failed、v4 inactive；不要重启它们。v5结束后用原`review_v9_paired_scene_closure_20261029.py --root outputs/nonrl_v9_paired_scene_priority_20261029_v5 --output .../REVIEW.json`完整审查再登记修复。
+- 新增v4曾因协调器重复持有wrapper全局flock，在首次worker创建scene之前BlockingIOError/rc1，0physics。此可避免错误源码/日志/failed收据保留。v5仅用独立协调器锁、让原wrapper独占仿真锁，启动前核v4终止及零物理证据；真实worker推进且独立全局锁获取被拒绝，修复验证通过。宿主v5 active、MemoryCurrent约1.03GB/3GiB，OOM/实验swap0。
+- 首rod00三方法完整：ESN Task/safety/contact均失败，RNN/MLP均qualified；同MJB和初始canonical48逐值相同。ESN teacher-history MSE2.56526e-6却真实5.12s起饱和、占57.2%；teacher自己回放和学生actor回放均0误差。独立teacher消费ESN历史反事实在4.84s差异>0.1、5.00s>0.5，不当物理纠偏证明或训练标签；异历史MSE不当共同输入排名。rod08 ESN已qualified，故不能一概声称ESN全场景失败。证据将重点转向闭环读出/覆盖脆弱性；完整18仍在运行，尚未完成实际ESN修复或主矩阵。
+- 38成员源码/调度/前置拒绝/真实边界/首组三方法完整收据/明确标识的live快照包276202bytes/SHA1b3fa128dc6149c0c34dc880fdfedab06df8c760463e4082da30a0075649fd72逐成员及远端暂存/最终核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_priority_boundary_20261029_v5/EVIDENCE.tar.gz`。不是完整在途18/raw归档，服务器无计算。
+- 本轮progress；开工fetch/read main e332ac40bdf4a54c1c9030110d2f9e11246dc2a8、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留，Goal active。
+
+
 ## 2026-10-29 — v9训练/验证输入敏感性检查与真实推进核验
 
 - [完整检查](docs/NONRL_V9_DEVELOPMENT_SENSITIVITY_20261029.md)：六teacher train00/validation08历史、三方法九模型、54组同状态单步输入干预；±0.1N估计力下ESN最大归一化残差动作变化0.095906、RNN0.023382、MLP0.042393；±1mm位置误差分别0.023375/0.004541/0.008866。数据/模型前后hash不变、clone无扰动回放精确。无拟合/物理积分/测试读取；只支持ESN敏感性线索，不证明闭环稳定性或唯一根因，不称修复成功。

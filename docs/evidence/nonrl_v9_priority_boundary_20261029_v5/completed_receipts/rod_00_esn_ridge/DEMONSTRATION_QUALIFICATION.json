@@ -1,0 +1,57 @@
+{
+  "schema": "sii-real-special-demonstration-qualification-v1",
+  "status": "failed_preserved",
+  "scene": "rod",
+  "task_success": false,
+  "safety_valid": false,
+  "scene_contact_valid": false,
+  "checks": {
+    "complete": true,
+    "finite": true,
+    "penetration_within_02mm": false,
+    "actuator_limits": true,
+    "actor_filter_replay": true,
+    "no_legacy_physics_failure": true
+  },
+  "trajectory_sha256": "bd419603fe7874c5a0dea55d155a09b5a934384f3e2b779209262a782d4cccfb",
+  "execution_sha256": "1b51f5198f5962c8a050ba38ca8ac186ab2d0d1a18a464f334538a344f9dc1a3",
+  "input_hashes": {
+    "execution.json": "1b51f5198f5962c8a050ba38ca8ac186ab2d0d1a18a464f334538a344f9dc1a3",
+    "legacy.json": "d6c90c4d7ed18f44ce836bad852fe091532dfb30c9c6a3884e9bdb8eae563d06",
+    "teacher.json": "2d6a922f95955946912c81ccff5b6cd503451c9b9d425e15c1b90781ca84062d",
+    "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+    "trajectory.npz": "bd419603fe7874c5a0dea55d155a09b5a934384f3e2b779209262a782d4cccfb",
+    "filter.npz": "3ec6c5f5e694e44eea4650efc211dfc3c356c98fda09485d0e912b4de9887637",
+    "substeps.npz": "7a567658204fd52b163dd2c075c333bce0819c2628b75e0917fd74ca1054ff95",
+    "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+    "source.tar.gz": "fc378a4214bef1c622feedb43142ee71f6e7634c451aa4e5dbb6d2db98c38aa3",
+    "INDEPENDENT_AUDIT.json": "70ae4a7e4fbfc90af9a951d8ea95d8268779ed33e09af86e0c1fa1bad4a54292",
+    "ROD_YIELD_REJOIN_AUDIT_V3.json": "5f92181723f2c2e025e4d85dafe335d0091f71782486f597c7b10c833bda9d14"
+  },
+  "audit_source_sha256": "e0c1969f06fb7644b6178456aae67cec1ef42201ed1095ee0147c61380d2ef90",
+  "substeps": 400000,
+  "metrics": {
+    "peak_torque_nm": [
+      11.379249980900356,
+      45.32406654982839,
+      13.05988543324486,
+      30.03395512491601,
+      4.564388849960583,
+      12.0,
+      6.655469304296211
+    ],
+    "peak_joint_velocity_radps": [
+      0.8340103056016513,
+      1.1423778651764727,
+      0.8986119915816855,
+      1.4076254794724203,
+      1.2486542007395025,
+      1.3813910136075935,
+      1.5839095853250156
+    ],
+    "max_external_penetration_m": 0.0002193135315971812,
+    "disturbance_contact_s": 1.0368000000000004,
+    "disturbance_contact_comfort_proxy": 0.5063175154320987
+  },
+  "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+}

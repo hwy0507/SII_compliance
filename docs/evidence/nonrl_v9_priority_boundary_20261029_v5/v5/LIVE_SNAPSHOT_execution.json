@@ -1,0 +1,203 @@
+{
+  "status": "running",
+  "started_utc": "2026-10-29T15:32:42.485937+00:00",
+  "registration_sha256": "d8865136ee61239e07eb3b1d6a577656742088def995c19d135ba297e9724fe4",
+  "rows": [
+    {
+      "id": "rod_00_esn_ridge",
+      "started_utc": "2026-10-29T15:32:42.486317+00:00",
+      "returncode": 0,
+      "ended_utc": "2026-10-29T15:34:28.348754+00:00",
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "failed_preserved",
+        "scene": "rod",
+        "task_success": false,
+        "safety_valid": false,
+        "scene_contact_valid": false,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": false,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "bd419603fe7874c5a0dea55d155a09b5a934384f3e2b779209262a782d4cccfb",
+        "execution_sha256": "1b51f5198f5962c8a050ba38ca8ac186ab2d0d1a18a464f334538a344f9dc1a3",
+        "input_hashes": {
+          "execution.json": "1b51f5198f5962c8a050ba38ca8ac186ab2d0d1a18a464f334538a344f9dc1a3",
+          "legacy.json": "d6c90c4d7ed18f44ce836bad852fe091532dfb30c9c6a3884e9bdb8eae563d06",
+          "teacher.json": "2d6a922f95955946912c81ccff5b6cd503451c9b9d425e15c1b90781ca84062d",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "bd419603fe7874c5a0dea55d155a09b5a934384f3e2b779209262a782d4cccfb",
+          "filter.npz": "3ec6c5f5e694e44eea4650efc211dfc3c356c98fda09485d0e912b4de9887637",
+          "substeps.npz": "7a567658204fd52b163dd2c075c333bce0819c2628b75e0917fd74ca1054ff95",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "source.tar.gz": "fc378a4214bef1c622feedb43142ee71f6e7634c451aa4e5dbb6d2db98c38aa3",
+          "INDEPENDENT_AUDIT.json": "70ae4a7e4fbfc90af9a951d8ea95d8268779ed33e09af86e0c1fa1bad4a54292",
+          "ROD_YIELD_REJOIN_AUDIT_V3.json": "5f92181723f2c2e025e4d85dafe335d0091f71782486f597c7b10c833bda9d14"
+        },
+        "audit_source_sha256": "e0c1969f06fb7644b6178456aae67cec1ef42201ed1095ee0147c61380d2ef90",
+        "substeps": 400000,
+        "metrics": {
+          "peak_torque_nm": [
+            11.379249980900356,
+            45.32406654982839,
+            13.05988543324486,
+            30.03395512491601,
+            4.564388849960583,
+            12.0,
+            6.655469304296211
+          ],
+          "peak_joint_velocity_radps": [
+            0.8340103056016513,
+            1.1423778651764727,
+            0.8986119915816855,
+            1.4076254794724203,
+            1.2486542007395025,
+            1.3813910136075935,
+            1.5839095853250156
+          ],
+          "max_external_penetration_m": 0.0002193135315971812,
+          "disturbance_contact_s": 1.0368000000000004,
+          "disturbance_contact_comfort_proxy": 0.5063175154320987
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "324551edb153a64b99c6dbf6e81441123862798547129d5a3e63bb826444d51f"
+    },
+    {
+      "id": "rod_00_rnn_scratch",
+      "started_utc": "2026-10-29T15:34:29.353874+00:00",
+      "returncode": 0,
+      "ended_utc": "2026-10-29T15:36:15.094726+00:00",
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "qualified",
+        "scene": "rod",
+        "task_success": true,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "652bf7fceb1bfdf7dc7f1e722716c00c17eda54a613514e8ca1277de9c444f3f",
+        "execution_sha256": "4a75489f81ab242e815660618f80bb1af20f10c152eb506def51c4ddf10f72ff",
+        "input_hashes": {
+          "execution.json": "4a75489f81ab242e815660618f80bb1af20f10c152eb506def51c4ddf10f72ff",
+          "legacy.json": "9af5b7c5c17b536ee93db8b04ef38042e264025656be68fdceb69ed852c34b19",
+          "teacher.json": "2d6a922f95955946912c81ccff5b6cd503451c9b9d425e15c1b90781ca84062d",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "652bf7fceb1bfdf7dc7f1e722716c00c17eda54a613514e8ca1277de9c444f3f",
+          "filter.npz": "801d599b293b838cca3c815806828a13bd8d6b0ea7c2d4976d24c66139c6dc0a",
+          "substeps.npz": "da4fd382ceef7e1d2e40306605fb89560b09af9273938667d893578483db94f9",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "source.tar.gz": "fc378a4214bef1c622feedb43142ee71f6e7634c451aa4e5dbb6d2db98c38aa3",
+          "INDEPENDENT_AUDIT.json": "7c0eba65dd33963ddb25523d4f08879b4c11cb29742ca7a83e06926e9e2d80e9",
+          "ROD_YIELD_REJOIN_AUDIT_V3.json": "f0e2a8feef7e991affbde55fa7fd590085ee0e33befe3ef2a44c36bc6b828ee8"
+        },
+        "audit_source_sha256": "e0c1969f06fb7644b6178456aae67cec1ef42201ed1095ee0147c61380d2ef90",
+        "substeps": 400000,
+        "metrics": {
+          "peak_torque_nm": [
+            0.8541091025893417,
+            34.526338060059565,
+            0.8637929804553114,
+            27.67051614287073,
+            1.565145849713844,
+            3.292834510221245,
+            0.8147452980600517
+          ],
+          "peak_joint_velocity_radps": [
+            0.05039438642733427,
+            0.18295253429148112,
+            0.055702976075460715,
+            0.35855346961652057,
+            0.10108499760699788,
+            0.2925134728698966,
+            0.17033670280129604
+          ],
+          "max_external_penetration_m": 7.403954128944506e-05,
+          "disturbance_contact_s": 0.050900000000000015,
+          "disturbance_contact_comfort_proxy": 1.0
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "c8fd37783cbac85c8151fac5df2ddab1bd81dbe110627f787dd29cf0956419f7"
+    },
+    {
+      "id": "rod_00_mlp_scratch",
+      "started_utc": "2026-10-29T15:36:16.082697+00:00",
+      "returncode": 0,
+      "ended_utc": "2026-10-29T15:38:02.124988+00:00",
+      "qualification": {
+        "schema": "sii-real-special-demonstration-qualification-v1",
+        "status": "qualified",
+        "scene": "rod",
+        "task_success": true,
+        "safety_valid": true,
+        "scene_contact_valid": true,
+        "checks": {
+          "complete": true,
+          "finite": true,
+          "penetration_within_02mm": true,
+          "actuator_limits": true,
+          "actor_filter_replay": true,
+          "no_legacy_physics_failure": true
+        },
+        "trajectory_sha256": "ae9b0cab6ccacc30f2aa0f7114f429c03a22ec00b7ea0e464af497aa7386daec",
+        "execution_sha256": "ab21ea101a4a1dc0b53b4129c156058d8d07d55936f56e21477b7c73138762ce",
+        "input_hashes": {
+          "execution.json": "ab21ea101a4a1dc0b53b4129c156058d8d07d55936f56e21477b7c73138762ce",
+          "legacy.json": "de4f31973ccad64173976ad32b7ac696d427f6969827d4b9a4aeefce616f2ef6",
+          "teacher.json": "2d6a922f95955946912c81ccff5b6cd503451c9b9d425e15c1b90781ca84062d",
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "ae9b0cab6ccacc30f2aa0f7114f429c03a22ec00b7ea0e464af497aa7386daec",
+          "filter.npz": "2a6e73b5ad6dd3a6aea167958f44fe9bf5a7334c42875f046753e8bb2b456109",
+          "substeps.npz": "dad43d929df95a04f0b9efd7cdd65d0b9b0a59c921ef245039dec4911528c84e",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "source.tar.gz": "fc378a4214bef1c622feedb43142ee71f6e7634c451aa4e5dbb6d2db98c38aa3",
+          "INDEPENDENT_AUDIT.json": "8319536d253947681209d9e18524c3d13d45d2ef276ebb7d7f1fb172c9b11d2f",
+          "ROD_YIELD_REJOIN_AUDIT_V3.json": "a617217a612f86305c15f87b2a59a1e1d7c5760c862d2e07466c46c4c3436637"
+        },
+        "audit_source_sha256": "e0c1969f06fb7644b6178456aae67cec1ef42201ed1095ee0147c61380d2ef90",
+        "substeps": 400000,
+        "metrics": {
+          "peak_torque_nm": [
+            1.074681845677076,
+            33.922771015506456,
+            1.0780640251367597,
+            27.92974113528968,
+            1.415483688868684,
+            3.792006756905673,
+            0.680495976508507
+          ],
+          "peak_joint_velocity_radps": [
+            0.05167049196267596,
+            0.16114010398600054,
+            0.061486408851230606,
+            0.36088877765433336,
+            0.0655175073671462,
+            0.26158830968127783,
+            0.1618353331985615
+          ],
+          "max_external_penetration_m": 0.00013915642867315725,
+          "disturbance_contact_s": 0.21885000000000004,
+          "disturbance_contact_comfort_proxy": 1.0
+        },
+        "limitations": "Saved substep arithmetic, not independent dynamics integration. Rod/ball disturbance contact is a proxy, not measured human contact. Development scene gates, not frozen test certification."
+      },
+      "qualification_sha256": "f9c9f82c8e05fe719c77e5b07e6b03418bf8ca3c649aa4c110146caa8e422133"
+    },
+    {
+      "id": "rod_08_esn_ridge",
+      "started_utc": "2026-10-29T15:38:03.121360+00:00"
+    }
+  ]
+}
