@@ -1,3 +1,11 @@
+## 2026-10-30 — 48条完整开发闭环raw已共享；四组九闭环合格
+
+- 读[完整raw快照范围与恢复映射](docs/NONRL_V9_COMPLETED_PREFIX_RAW_ARCHIVE_20261030.md)。新增一致前缀归档工具：取execution单次字节快照，仅纳入已登记完整回合；核共同协议/资格输入/checkpoint，完整raw/子步/状态/动作/filter/MJB/源码/配置/审查日志含失败，不纳入在途回合。1088 payload+3快照/manifest成员逐个解包hash及源前后核验通过；无删除/拟合/积分或重启。
+- 48完整case包含4科学失败全部保留；ESN seed01 8、seed02/03各9、RNN seed01 13、seed02 9。快照execution SHA09dc37d29c406d004bfc1d6b048e8bc4f9667f88372e76c865d13db677f40a4f。另对索引48条独立v2完整时长/时钟/子步核验48/48通过；跑满不消除原4失败。后续独立prefix核49case/4失败/4复用/4 selected组，两个时间点不混写。
+- 完整包2815777483bytes/SHAf383e8d24c80b2d21e5ce9dfc116be1397e00d0c3bdffe24077adc1f7ccb22f8已远端暂存/最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_completed_prefix48_20261030_v1/COMPLETED_PREFIX.tar.gz`；同目录DELIVERY_EVIDENCE.tar.gz八成员22224bytes/SHAb7aac553f77a2bf36da4828e88f98c24f3ccd5ad2f648cc3a10d80f9f008b56d也逐成员/源前后/远端暂存及最终核验。仅此前缀，不冒称当前全campaign/未见矩阵全备份；训练全集另见既有完整fits包。服务器仅存储/hash。
+- 归档本机CPU6/Nice19/idle I/O/512MiB/swap0，00:52:29–00:55:09自然exit0、CPU75.010s，OOM0。原仿真同PID1684974/Invocation继续，1115冻结源全一致，ESN seed02/03及RNN seed01/02各九开发全合格；最新RNN seed03 ball08已600step/480000子步，未声明本组完成。完整12唯一后继仍等待无worker。当前九模型全资格/最终108/六指标/媒体仍待，原office108的57未完成保留，Goal active。
+- 上一轮progress、本轮progress。开工fetch/read main07e2dfcd1260356bc048f1b1fbe7dbf6c5f61cfb、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留，未触及RL。
+
 ## 2026-10-30 — 三特化最终108执行/独立审查入口与零物理控制验证
 
 - 读[最终执行入口与前置条件](docs/NONRL_V9_UNSEEN_EXECUTION_ENTRY_20261030.md)。新增register/run/review入口：须完整12共同选择九组全合格、两个选择服务inactive及独立完整review后才登记。绑定原冻结12条件/九模型/teacher/全部源码/recipe配置/解释器库版本/资源/预期horizon，单路108格；科学失败保留、基础设施异常停止无重试，MJB/初始canonical48/filter逐条件配对。接入v2完整回合审查；完整review独立重算子步/终态/动作/filter，并用同一全局T_ref输出九seed/三family/按场景汇总，人体舒适NA与代理分列。不宣称已登记/派发最终测试。
