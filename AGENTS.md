@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 公平训练9/75完成，三seed首组曝光/保存误差核验通过
+
+- 本轮开工宿主fetch/read main f9bbe7c07a4173bf2923564ddc028ca39a3d3aae/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d及完整AGENTS。原训练PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab真实从RNN03 10584update接续至全部candidate00完成，9/75fit完整，candidate01 RNN01在途。原两个评测后继同PID/Invocation active等待，OOM0/swap0，未读test或重复派发。
+- 已完成9候选checkpoint/metadata hash、保存export prediction对真实target的val MSE重算及history末次32000update一致；六个神经候选各seed的RNN/MLP schedule hash相同，三seed曝光配对通过。小证据CONTACT_YIELD_FIRST9_FIT_PREFIX_20261030.json。此为前缀保存记录/公平性核查，不冒充完整75fit审计、额外actor重放或九模型锁定。首组RNN val MSE3.67–4.06e-5，MLP1.76–1.85e-4；参数搜索未完成，不按首组偏差改登记预算/选模。
+- 上一Goal轮为progress（真实图与导出诊断），本轮verified wait并完成前9fit记录核验；Goal active，全75/九锁定/固定27与必要修复/108/主六指标与媒体仍待。冻结源和gate不改，新raw仅本地且未绕过旧导出拒绝，无RL/服务器计算/删除。收工重读完整AGENTS，两个无关untracked保留。
+
 ## 2026-10-30 — 首组新MLP/RNN完整学习曲线与三模型离线误差已独立核验
 
 - 读[当前真实学习诊断](docs/NONRL_CONTACT_YIELD_CURRENT_LEARNING_20261030.md)。只使用新数据67c01021…，固定seed01首个candidate00，MLP/RNN均32000update/895条history；独立部署全15750帧episode reset重放与export精确一致，metadata/history/全train及val MSE重算一致。新增只读绘图source，PNG/PDF/JSON hash齐全且目视通过。全train曲线用整集部署MSE，未把末mini-batch raw训练目标冒充全train；无平滑，无旧图/测试数据。
