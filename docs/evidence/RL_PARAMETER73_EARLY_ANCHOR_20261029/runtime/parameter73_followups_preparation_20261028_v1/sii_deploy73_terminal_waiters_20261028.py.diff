@@ -1,0 +1,41 @@
+--- /tmp/sii_deploy72_terminal_waiters_20261028.py
++++ /tmp/sii_deploy73_terminal_waiters_20261028.py
+@@ -3,28 +3,28 @@
+ B=Path('/inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl')
+ read=lambda p:json.loads(p.read_text())
+ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+-root=B/'runs/parameter_capacity_pool30_cycle72_20261026_v1'
++root=B/'runs/parameter_capacity_pool30_cycle73_20261026_v1'
+ for method in ['vmc','admittance']:
+- old=B/f'runs/{method}71_terminal_anchor_followup_20261028_v1';new=B/f'runs/{method}72_terminal_anchor_followup_20261028_v1'
++ old=B/f'runs/{method}72_terminal_anchor_followup_20261028_v1';new=B/f'runs/{method}73_terminal_anchor_followup_20261028_v1'
+  assert not (new/'PLAN.json').exists() and not (new/'LAUNCH.json').exists()
+  p=read(old/'PLAN.json');p['time']=time.time()
+- p['parent_run']=str(root);p['parent_review']=str(B/'runs/parameter_capacity_pool30_cycle72_review_20261026_v1')
+- p['final_checkpoint']=str(B/f'runs/parameter_capacity_pool30_cycle72_archive_20261026_v1/{method}/cycle_00072.pt')
++ p['parent_run']=str(root);p['parent_review']=str(B/'runs/parameter_capacity_pool30_cycle73_review_20261026_v1')
++ p['final_checkpoint']=str(B/f'runs/parameter_capacity_pool30_cycle73_archive_20261026_v1/{method}/cycle_00073.pt')
+  p['learners']=read(root/'LAUNCH.json')['jobs'];p['monitor']=read(root/'MONITOR_LAUNCH.json');p['parent_launch_sha256']=sha(root/'LAUNCH.json')
+- p['helper_runtime']=str(B/'runtime/parameter_capacity_pool30_cycle72_20261026_v1')
++ p['helper_runtime']=str(B/'runtime/parameter_capacity_pool30_cycle73_20261026_v1')
+  assert sha(Path(p['helper_runtime'])/'validate_published_finite_check_20261025.py')==p['digest_helper_sha256']
+  inputs={}
+  for k,v in p['inputs'].items():
+   src=Path(v['path']);assert sha(src)==v['sha256']
+   if k=='registration':dst=root/method/'REGISTRATION.json'
+-  elif k.startswith('anchor_'):dst=new/('anchor71.npz' if k=='anchor_values' else src.name)
+-  elif k.startswith('prior70_'):dst=old/src.name;k=k.replace('70','71')
++  elif k.startswith('anchor_'):dst=new/('anchor72.npz' if k=='anchor_values' else src.name)
++  elif k.startswith('prior71_'):dst=old/src.name;k=k.replace('71','72')
+   else:dst=src
+   inputs[k]=dict(path=str(dst),sha256=sha(dst))
+  p['inputs']=inputs;p['sources']={n:sha(new/n) for n in p['sources']}
+- for k in ['expected_complete71_terminal_rows','registered_during71','registered_before_complete71']:p[k.replace('71','72')]=p.pop(k)
+- p['fixed_anchor_rows']=2154;p['expected_complete72_terminal_rows']=2184
+- p['limitation']=re.sub(r'(?<!\d)(2124|70|71)(?!\d)',lambda m:{'2124':'2154','70':'71','71':'72'}[m.group()],p['limitation'])
++ for k in ['expected_complete72_terminal_rows','registered_during72','registered_before_complete72']:p[k.replace('72','73')]=p.pop(k)
++ p['fixed_anchor_rows']=2184;p['expected_complete73_terminal_rows']=2214
++ p['limitation']=re.sub(r'(?<!\d)(2154|71|72)(?!\d)',lambda m:{'2154':'2184','71':'72','72':'73'}[m.group()],p['limitation'])
+  for j in p['learners']+[p['monitor']]:
+   s=Path(f'/proc/{j["pid"]}/stat').read_text().rsplit(')',1)[1].split();assert s[19]==j['proc_start_ticks'] and s[0]!='Z'
+  assert not (root/'ARCHIVE_REVIEW_FINISHED.json').exists()

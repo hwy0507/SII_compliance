@@ -1,0 +1,67 @@
+--- /tmp/sii_decide_launch72_20261028.py
++++ /tmp/sii_decide_launch73_20261028.py
+@@ -4,27 +4,26 @@
+ read=lambda p:json.loads(p.read_text())
+ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+ ref=lambda p:dict(path=str(p),sha256=sha(p))
+-root=B/'runtime/prepare_parameter72_20261028_v1';out=B/'runs/parameter_capacity_pool30_cycle72_20261026_v1'
+-old=read(B/'runtime/prepare_parameter71_20261028_v1/DECISION71.json');evidence={}
++root=B/'runtime/prepare_parameter73_20261028_v1';out=B/'runs/parameter_capacity_pool30_cycle73_20261026_v1'
++old=read(B/'runtime/prepare_parameter72_20261028_v1/DECISION72.json');evidence={}
+ for key,x in old['evidence'].items():
+  assert sha(Path(x['path']))==x['sha256'];p=x['path']
+- if key in ['parent_review','health','health_plot']:p=p.replace('cycle70','cycle71')
+- elif key in ['loss','paired_gate','saved_loss','loss_plot']:p=p.replace('parameter70_loss','parameter71_loss')
+- elif key=='check_only' or key.startswith('restore_'):p=p.replace('cycle71','cycle72')
++ if key in ['parent_review','health','health_plot']:p=p.replace('cycle71','cycle72')
++ elif key in ['loss','paired_gate','saved_loss','loss_plot']:p=p.replace('parameter71_loss','parameter72_loss')
++ elif key=='check_only' or key.startswith('restore_'):p=p.replace('cycle72','cycle73')
+  elif key in ['all_labels','all_labels_arithmetic','labels_finished']:
+-  p=p.replace('audit70_','audit71_').replace('COMPLETE69_70','COMPLETE70_71').replace('FINISHED70','FINISHED71')
+- elif key.startswith('vmc_terminal') or key.startswith('admittance_terminal'):p=p.replace('70_terminal','71_terminal')
+- if key=='future_window71_73':key='current_window71_73_plan'
++  p=p.replace('audit71_','audit72_').replace('COMPLETE70_71','COMPLETE71_72').replace('FINISHED71','FINISHED72')
++ elif key.startswith('vmc_terminal') or key.startswith('admittance_terminal'):p=p.replace('71_terminal','72_terminal')
+  evidence[key]=ref(Path(p))
+ evidence['original68_70_bootstrap_independent']=ref(B/'runtime/parameter68_70_bootstrap_independent_20261028_v1/REVIEW.json')
+ assert read(Path(evidence['original68_70_bootstrap_independent']['path']))['passed']
+ assert read(Path(evidence['current_window71_73_plan']['path']))['cycles']==[71,72,73]
+-parent=B/'runs/parameter_capacity_pool30_cycle71_20261026_v1';reviewroot=B/'runs/parameter_capacity_pool30_cycle71_review_20261026_v1'
++parent=B/'runs/parameter_capacity_pool30_cycle72_20261026_v1';reviewroot=B/'runs/parameter_capacity_pool30_cycle72_review_20261026_v1'
+ review=read(reviewroot/'REVIEW.json');health=read(reviewroot/'health/DIAGNOSIS.json')
+ assert review['passed'] and read(reviewroot/'FINISHED.json')['completed']
+ assert read(parent/'ARCHIVE_REVIEW_FINISHED.json')['completed']
+-assert read(B/'runs/parameter71_loss_20261028_v1/SAVED_REVIEW.json')['passed']
+-assert read(B/'runs/parameter_task_label_audit71_20261028_v1/COMPLETE70_71_SAVED_REVIEW.json')['passed']
++assert read(B/'runs/parameter72_loss_20261028_v1/SAVED_REVIEW.json')['passed']
++assert read(B/'runs/parameter_task_label_audit72_20261028_v1/COMPLETE71_72_SAVED_REVIEW.json')['passed']
+ for m,r in review['methods'].items():
+  assert r['new_transitions']==41250 and r['retained_replay_all_fields_exact'] and r['max_reward_reconstruction_error']==0 and r['optimizer_and_network_finite']
+  assert r['full_horizon_count']==30 and r['aborts']==[] and health['methods'][m]['network_state_unchanged']
+@@ -32,17 +31,19 @@
+  ck=read(out/m/'check_only.log');assert ck['passed'] and ck['full_learner_state_unchanged'] and ck['exact_replay_and_next65536'] and ck['checkpoint_sha256']==r['checkpoint_sha256']
+ assert read(out/'CHECK_ONLY_COMPLETE.json')['passed'] and all(v==0 for v in read(out/'CHECK_ONLY_EXIT_CODES.json').values())
+ for m in ['vmc','admittance']:
+- p=B/f'runs/{m}71_terminal_anchor_followup_20261028_v1'
++ p=B/f'runs/{m}72_terminal_anchor_followup_20261028_v1'
+  assert read(p/'FINISHED.json')['completed'] and read(p/'SAVED_VALUES_REVIEW.json')['passed']
+- assert read(p/'REVIEW.json')['fixed_anchor_rows']==2124 and read(p/'REVIEW.json')['new_terminal_rows']==30
++ assert read(p/'REVIEW.json')['fixed_anchor_rows']==2154 and read(p/'REVIEW.json')['new_terminal_rows']==30
+ for key in ['health_plot','loss_plot','vmc_terminal_plot','admittance_terminal_plot','reward_window68_70_plot']:
+  assert read(Path(evidence[key]['path']))['actual_image_viewed']
+ for j in read(parent/'LAUNCH.json')['jobs']:
+  p=Path(f'/proc/{j["pid"]}/stat')
+  if p.exists():
+   f=p.read_text().rsplit(')',1)[1].split();assert f[19]!=j['proc_start_ticks'] or f[0]=='Z'
+-reason='Complete71 all3 naturally completed30x55s/41250new/noabort, all70 replay/history retained, all new reward reconstruction0, finite networks/optimizers and full41250 loss independently checked with actual loss/health plots. I/A/V reward-2.252441988/-10.109684327/-2.820382882 versus70 -.570128980/-6.801950887/-4.596284873; TaskStrict17/17,13/13,17/17. Full180labels/90rewardpairs: I long0000 losesTaskStrict; A long0200,long0900,short0900 loseTaskStrict; A/V short0600 recoverStrict at.197431139/.178658694mm. Physical-valid30/30 for all, no Task-only omissions. Reward changes remain material; original71-73 is incomplete, original68-70 assessments and independently checked bootstrap remain unchanged. No overall convergence. I late critic rises1.762973->2.328908 with max38.577110; A1.420316->1.170214/max24.514984 and V1.327331->.856005/max24.339268; finite spikes and actor drift retained. Entropy around originaltargets, positive temperature still changes; small A/V sampled soft-bound exceedances preserved as diagnostics, not hidden. Full2124 V old SSE10788.124348->732.080520 improves93.2140percent, but focus2423133 worsens4.757417->186.596290 and2299142 slightly worsens; otherthree improve. A8555.136405->1241.855017 improves85.4841percent; original66short0600 69.519956->18.461078. New30 contributions.00143947/.00081906 below old.03615314/.06129958; both denominators and actual plots/all arrays independently reviewed. No causal or zero-error criterion. Exact71 fullstate/replay/next65536 restore allpassed. Continue one unchanged finite72 within original71-73 plan, no automatic73. Keep historical results, markers23/47,4m append,terminal128,batch65536,UTD1,LR,masks,physics,gates; no resets/auxiliaryweights. Nearzero guard is an interpretation limitation, not a target to move reward away fromzero. Direct34false.'
+-d=dict(time=time.time(),passed=True,parent_cycle=71,new_cycle=72,new_cycles=1,plot_inspected=True,convergence_claim=False,evidence=evidence,reason=reason,automatic_followup=False,configuration_changed=False,direct34=False)
+-with (root/'DECISION72.json').open('x') as f:f.write(json.dumps(d,indent=2)+'\n')
+-print('Decision72',sha(root/'DECISION72.json'),'evidence',len(evidence),flush=True)
+-subprocess.run([str(B/'env/bin/python'),str(root/'launch_parameter72.py')],check=True)
++reason_path=B/'runtime/parameter72_completion_observation_driver_20261028_v1/CONTINUATION_REASON.txt'
++reason=reason_path.read_text().strip();assert len(reason)>100
++evidence['continuation_reason']=ref(reason_path)
++d=dict(time=time.time(),passed=True,parent_cycle=72,new_cycle=73,new_cycles=1,plot_inspected=True,convergence_claim=False,evidence=evidence,reason=reason,automatic_followup=False,configuration_changed=False,direct34=False)
++with (root/'DECISION73.json').open('x') as f:f.write(json.dumps(d,indent=2)+'\n')
++print('Decision73',sha(root/'DECISION73.json'),'evidence',len(evidence),flush=True)
++subprocess.run([str(B/'env/bin/python'),str(root/'launch_parameter73.py')],check=True)

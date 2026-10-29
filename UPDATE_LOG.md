@@ -4,6 +4,21 @@
 - 第三条件seed2三方法完整55秒、runtime Task/Strict均false，ESN .243724mm及MLP .526426mm穿透失败保留；seed3 ESN在途，第三条件九模型独立审计待。报告代码只读复核无BOTH时SPT保持NA；无指标/模型/源修改。
 - 观察30640bytes/SHA1495a8648a645de777357d57f9adfc6b95269a18c884c4c35e0ad33566ae9ee2已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0041_20261029_v1/V8_FROZEN108_VERIFIED_WAIT_0041.json`。见[当前交接](docs/NONRL_V8_CONDITION001_AND_HANDOFF_FIX_20261029.md)。开工main6fe74b6c/baselinef6e8f8c实际fetch/read；本轮verified wait，Goal active。原108/后处理继续，有效八球v4尚未物理执行；无RL/子agent/服务器计算/删除。
 
+## 2026-10-29 — 参数73早期loss、全2184锚点与74仅恢复
+
+- [交接](docs/RL_PARAMETER73_EARLY_ANCHOR_20261029.md)。原73身份保持，00:47:35steps3015631/3016227/3017251，各30sampler无失败。前5000原字节/连续步号/全数值/独立算术及实际图通过；critic首末I2.572366→2.395603、A2.417616→1.874660、V1.217786→1.046713，max16.821136/41.378468/20.496380尖峰保留，仅前缀非收敛。
+- 全72的2184×57 V/A锚点精确，独立SSE8916.873140/24329.209051，含72新增30、0新前向；73预期2214，原focus/两分母保持。两个终端及全标签等待器已部署，真实不完整73拒绝；74仅恢复等待中，无74训练，真实缺DECISION74拒绝。
+- 原73全loss及原71–73等待保持；74launcher绑定原68–70及原71–73PLAN，并要求原71–73完整审查/独立算术/实际图后才有限74，不改阈值。82guard样本min79/66/66/62%、低于50[0, 0, 0, 0]，科研完成也保载，非瞬时保证/重启服务。Goal active、Direct34false。
+- SSD包107成员/1944387字节/SHAb614acc7逐字节/AST核验，大数据SSD非HDD/arm1全备份；开工及保存前main24a17b0b/baselinef6e8f8c实际fetch/read，无子agent。
+
+## 2026-10-29 — 完整72独立审查与准确有限73
+
+- [交接](docs/RL_PARAMETER72_COMPLETE_20261029.md)。三路完整72各30×55/41250/noabort，旧71 replay/history保持、新reward重算0、网络optimizer有限；全loss/标签/health/全2154终端及实际图已审。
+- 72 reward I/A/V−2.407332/−11.985219/−4.602759，TaskStrict18/17、14/12、17/16；三路short0600及A short0000失Strict，I long0000/A long0200恢复，physical-valid29/28/29。A/V末段critic均值升、max60.530479/55.003189，未收敛。全2154旧终端V/A SSE上升74.5303%/434.9371%，V原五focus都改善、A原66focus退化，完整保留。
+- DECISION73绑定48证据，准确72全state/replay/next65536恢复通过，有限73实际启动/startup通过，00:40:40steps 3010447/3011131/3012181。全73loss已部署，原71–73保持，无自动74，Direct34false，Goal active。
+- 本轮observer按1800秒自然完成61样本，当时审查未齐；随后原全72审查/73仅恢复完成；不以观察超时重启科学。516guard样本min74/63/64/60%、低于50[0, 0, 0, 0]，含合成占用、科研完成也继续，非跨重启服务。
+- SSD包254成员/3074199字节/SHA6deafd46逐字节/AST核验，大数据SSD非HDD/arm1全备份；开工main9e7e44ce、收尾main8dec2341/baselinef6e8f8c实际fetch/read，无子agent。原窗口/阈值及历史结论保持。
+
 ## 2026-10-29 — 非RL第二条件全审与八球v4接续保护
 
 - 科学5e755f51九文件源码/准确报告/准备/审计包27227bytes/SHA81328269及完整21次观察30628bytes/SHA8ef6da35，已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition001_handoff_20261029_v1/`。00:27:18–00:37:18UTC原1172675/1201537身份保持、19→21/最大926273536bytes/OOMswap0；observer27970自然exit0。00:38:39原科学仍active、22/108。原第三条件ESN seed2窗口穿透.243724mm失败保留；v4未物理执行，Goal active。
