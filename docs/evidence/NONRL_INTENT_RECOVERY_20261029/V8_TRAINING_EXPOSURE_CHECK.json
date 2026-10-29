@@ -1,0 +1,48 @@
+{
+  "variable_length_boundary_check": {
+    "updates": 4,
+    "complete_epochs_before_terminal_epoch": 1,
+    "terminal_epoch": 1,
+    "terminal_offset": 0,
+    "real_frame_presentations": 328,
+    "padded_frame_slots": 60,
+    "per_episode": {
+      "0": {
+        "identity": "short",
+        "frames": 70,
+        "presentations": 134,
+        "equivalent_passes": 1.9142857142857144
+      },
+      "1": {
+        "identity": "long",
+        "frames": 130,
+        "presentations": 194,
+        "equivalent_passes": 1.4923076923076923
+      }
+    },
+    "per_scene_presentations": {
+      "rod": 134,
+      "ball": 194
+    },
+    "per_scene_presentation_fraction": {
+      "rod": 0.40853658536585363,
+      "ball": 0.5914634146341463
+    }
+  },
+  "rejected": [
+    "padding_mass",
+    "unknown_or_validation_identity",
+    "sequence_gap",
+    "early_epoch",
+    "duplicate_epoch_identity"
+  ],
+  "actual_audit_sha256": "0bd0b9a27ecbbff0fea441db7c9101e6a255a2d662736e6ec448d37318693bdc",
+  "auditor_sha256": "39332dd8c4857d8121414096218c0f844c0ac094e7969440f35d542903e39a47",
+  "source": "import copy\nimport importlib.util\nimport json\nimport os\nfrom pathlib import Path\nimport subprocess\nimport sys\n\nrepo = Path('/home/airpig/桌面/hwy/compliance_control/SII_compliance')\nbench = repo/'code/mujoco_6d_vmc_benchmark'\ntool = bench/'tools/audit_special_training_exposure_20261029.py'\nspec = importlib.util.spec_from_file_location('exposure_audit', tool)\nmodule = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(module)\ntrain = {0:dict(id='short', frames=70, scene='rod'), 1:dict(id='long', frames=130, scene='ball')}\nschedule = [[0,[0,1],0,128], [0,[0,1],64,70], [0,[0,1],128,2], [1,[1,0],0,128]]\nchecked = module.inspect_schedule(schedule, train, 2, 64)\nassert checked['real_frame_presentations'] == 328 and checked['padded_frame_slots'] == 60\nassert checked['per_episode']['0']['presentations'] == 134\nassert checked['per_episode']['1']['presentations'] == 194\nbad = []\ncase = copy.deepcopy(schedule); case[1][3] += 1; bad.append(('padding_mass',case))\ncase = copy.deepcopy(schedule); case[0][1][0] = 2; bad.append(('unknown_or_validation_identity',case))\ncase = copy.deepcopy(schedule); del case[1]; bad.append(('sequence_gap',case))\ncase = copy.deepcopy(schedule); case[1] = [1,[0,1],0,128]; bad.append(('early_epoch',case))\ncase = copy.deepcopy(schedule); case[-1][0] = 0; bad.append(('duplicate_epoch_identity',case))\nfor label, case in bad:\n    try:\n        module.inspect_schedule(case, train, 2, 64)\n    except AssertionError:\n        continue\n    raise AssertionError('Accepted corruption: '+label)\noutput = repo/'docs/evidence/NONRL_INTENT_RECOVERY_20261029/V8_TRAINING_EXPOSURE.json'\nsubprocess.run([sys.executable, str(tool), '--root', str(bench/'outputs/special_scene_retrain_20261029_v8'),\n                '--output', str(output)], check=True)\ncg = Path('/sys/fs/cgroup')/Path('/proc/self/cgroup').read_text().strip().split('::',1)[1].lstrip('/')\nassert len(os.sched_getaffinity(0)) == 1 and (cg/'memory.swap.max').read_text().strip() == '0'\nresult = dict(variable_length_boundary_check=checked, rejected=[label for label,_ in bad],\n              actual_audit_sha256=module.sha(output), auditor_sha256=module.sha(tool),\n              source=Path(__file__).read_text(), affinity=sorted(os.sched_getaffinity(0)),\n              memory_max=int((cg/'memory.max').read_text()), memory_peak=int((cg/'memory.peak').read_text()),\n              memory_events=(cg/'memory.events').read_text())\nwith (output.parent/'V8_TRAINING_EXPOSURE_CHECK.json').open('x') as f:\n    json.dump(result,f,ensure_ascii=False,indent=2)\n    f.write('\\n')\nprint('Exposure structure checked; all 72 actual schedules audited', flush=True)\n",
+  "affinity": [
+    6
+  ],
+  "memory_max": 134217728,
+  "memory_peak": 134217728,
+  "memory_events": "low 0\nhigh 0\nmax 709\noom 0\noom_kill 0\noom_group_kill 0\n"
+}

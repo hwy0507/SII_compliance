@@ -1,3 +1,92 @@
+## 2026-10-29 — 非RL原108八分钟核验75→77
+
+- 05:20:33–05:28:33UTC共17样本原1172675/start32623702及1201537/start32942337保持loaded/active，75→77、ESN2→RNN2→MLP2。最高2346278912bytes/3GiB、OOM/实验swap0，全机swap仍近满。observer87760达77后自然exit0，科学继续，不重启。
+- 两新完成runtime均55s/noabort/TaskStrictfalse、最终carry，非新增子步审计或完整第九条件结论。34639bytes/SHA66cb5c5d观察含源码，已核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0520_20261029_v1/V8_VERIFIED_WAIT_0520.json`，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。
+- 开工mainba81b92c/baselinef6e8f8c实际fetch/read。本轮verified wait，Goal active，主矩阵未修复；原完整108/后处理→审查归档→唯一v6八球→正式补采/公平重训仍待。无新物理/拟合/RL/子agent/服务器计算，可选004审计未重试。
+
+## 2026-10-29 — 非RL原108连续核验73→75
+
+- 05:12:48–05:17:48UTC共11样本原1172675/start32623702及1201537/start32942337保持loaded/active，73→75、RNN1→MLP1→ESN2。最高2174996480bytes/3GiB、OOM/实验swap0，全机swap仍近满。observer87813达到第75条边界自然exit0，原科学继续。
+- 23787bytes/SHA54afb9ac观察含源码，已核暂存及最终共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0513_20261029_v1/V8_VERIFIED_WAIT_0513.json`，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。开工mainfee7484e/baselinef6e8f8c实际fetch/read。
+- 本轮verified wait，无新物理/拟合/子步审计；原完整108/后处理继续，唯一v6未启动，Goal active，主矩阵未修复；后继覆盖对照、正式补采/公平重训仍待，可选004审计未重试，无RL/子agent/服务器计算。
+
+## 2026-10-29 — 非RL第八条件结束，原矩阵72/108
+
+- 05:08:13–05:09:13UTC三样本原1172675/start32623702及1201537/start32942337保持loaded/active，71→72并接续条件008；最高1964367872bytes/3GiB、OOM/实验swap0。observer51125自然exit0，科学继续。见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。
+- 第八九条runtime均55s/noabort/TaskStrictfalse；前八条件72条Task/Strict/BOTH全0，SPT NA。ESN2/MLP2/MLP3穿透超限、MLP1舒适NA；九小型AUDIT/metrics hash和标签一致，非新独立子步审计。独立审计000–003，004–007仍待原完整后处理，不扩展为完整108结论。
+- 三样本/九结果/计数/源码31204bytes/SHAdd2a0897已核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition007_runtime_20261029_v1/V8_CONDITION007_RUNTIME_AND_WAIT.json`。开工main28485480/baselinef6e8f8c实际fetch/read，Goal active，主矩阵未修复；唯一v6仍未启动，后续完整审查归档/覆盖修复/正式补采/公平重训仍待。无新拟合/物理/RL/子agent/服务器计算，可选004审计未重试。
+
+## 2026-10-29 — 非RL实际训练曝光与场景权重核验
+
+- [报告](docs/NONRL_V8_TRAINING_EXPOSURE_20261029.md)：新独立日程审计核72神经候选/三不同日程，32000updates逐有效帧、分组chunk、epoch边界及train-only检查通过，同seed两家24候选一致。变时长手算边界和五损坏拒绝通过；无新拟合/物理。实际棍/球/角帧份额31.7460/47.6190/20.6349%，每场景8train不是等权，不改变原选择规则或以此认定失败原因。
+- 服务自然exit0，单CPU128MiB/swap0；peak达128MiB且memory.events max709、OOM0，不声称内存余量。工具及两证据三成员10080bytes/SHAe76f37d5已逐成员及暂存/最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_training_exposure_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。
+- 开工main82f77f09/baselinef6e8f8c实际fetch/read。05:03:45原1172675/1201537仍active、71/108，唯一v6未启动；上一轮verified wait，本轮progress，Goal active，主矩阵未修复。原完整审查归档→八球→正式补采/公平重训仍待，无绑定源修改/RL/子agent/服务器计算，可选004审计未重试。
+
+## 2026-10-29 — 非RL原108十分钟核验68→70
+
+- 04:47:06.108–04:57:06.311UTC共21次原1172675/start32623702及后处理1201537/start32942337 loaded/active，完整68→70，MLP2→ESN3→RNN3。最大2442362880bytes/3GiB、OOM/实验swap0；主机swap仍近满。observer84675自然exit0，科学继续，不重启。
+- 新完成MLP2/ESN3 runtime均55s、Task/Strict=false、最终carry、无abort；ESN3末段跟踪误差约1.4m，非新独立子步审计或全矩阵结论。见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。
+- 21样本/源码41883bytes/SHAea6adfe4已核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0447_20261029_v1/V8_VERIFIED_WAIT_0447.json`。开工main7328b15f/baselinef6e8f8c实际fetch/read；上一轮progress，本轮verified wait，Goal active，主矩阵未修复。原完整108/后处理→审查归档→唯一v6八球→正式补采/公平重训仍待；无新增物理/拟合/RL/子agent/服务器计算，可选004审计未重试。
+
+## 2026-10-29 — 非RL当前v8学习曲线来源与学习率核验
+
+- [报告](docs/NONRL_V8_LEARNING_CURVE_REVIEW_20261029.md)：九锁定模型、六history、原图/数据/源码hash和独立尾段算术通过，两原图已目视检查。实际cosine终态LR为初值1%，曲线下降趋平不等于闭环成功；RNN模仿误差更低仍有失败，联合覆盖修复仍待。首次精确浮点相等误判保留，按原绘图rel_tol1e-12检查通过，模型/图未改。
+- 四成员441333bytes/SHAae6e4e4f已逐成员及暂存/最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_learning_visual_review_20261029_v1/FIGURES_AND_REVIEW.tar.gz`。开工实际fetch/read mainac173595/baselinef6e8f8c。
+- 04:42:51UTC原1172675/1201537仍active，随后execution为67/108、条件007 RNN2在途；原完整108/后处理继续，唯一八球v6未启动。Goal active，主矩阵未修复；无新拟合/物理、RL、子agent或服务器计算，可选004审计未重试。
+
+## 2026-10-29 — 非RL原108核验64→65
+
+- 04:28:46.130–04:30:46.168UTC五次原1172675/start32623702与后处理1201537/start32942337保持loaded/active；RNN1物理28.04→完整55s，累计64→65并接续MLP1。RNN1 runtime Task/Strict=false、最终approach、无abort，非新增独立审计。最大内存2388496384bytes/3GiB、OOM/oom_kill/实验swap0；主机swap仍近满。observer16841自然exit0，科学继续。
+- 观察源码及五样本12526bytes/SHAb548e02f已核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0428_20261029_v1/V8_VERIFIED_WAIT_0428.json`，见[当前交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。开工main02ab66aa/baselinef6e8f8c实际fetch/read。
+- 本轮verified wait，Goal active；原完整108/后处理继续，唯一八球v6未启动，主矩阵修复/补采/重训仍待。无RL/子agent/服务器计算/删除，可选004审计未重试。
+
+## 2026-10-29 — 非RL第七条件完整运行快照
+
+- [当前交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。04:22原62，04:23:29准确快照63/108、已接续条件007；原1172675/start32623702与后处理1201537/start32942337 loaded/active，OOM/实验swap0。保存脚本首次取样已满足边界后自然exit0，仅一个保存样本，不称多样本观察。
+- 前七条件63条runtime Task/Strict/BOTH全0；第七ESN1/3分别29.48/23.16s global penetration abort，其他七条55s；RNN1/MLP2另有external penetration违规，MLP1/ESN1舒适NA，SPT NA。小型AUDIT hash/标签与九行快照一致，非新独立子步审计；000–003已审，004–006仍待原完整后处理。
+- 含源码/九行/计数快照27782bytes/SHA76599bc7已暂存及最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition006_runtime_20261029_v1/V8_CONDITION006_RUNTIME_AND_WAIT.json`。开工mainf9c7ad63/baselinef6e8f8c实际fetch/read，Goal active，原科学继续、唯一八球v6未启动，主矩阵修复仍待。无RL/子agent/服务器计算/删除，可选004审计未重试。
+
+## 2026-10-29 — 非RL回收服务交接修复与八球v6
+
+- [当前交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。实测原评测为可回收transient服务，已完成检查服务确实not-found；旧v5强制loaded会误挡正常完成。新独立v6绑定boot/InvocationID/cgroup，原完整108独立审计仍先行；允许同boot、原身份消失、原cgroup不存在的已回收路线，明确不认证原退出码，不以not-found默认success作证明。保留loaded同invocation正常exit0路线，查询失败/残留实体仍拒绝。
+- 八球v6 REGc9450ef9，launcher `prepare_ball_coverage_reclaimed_20261029.py`。八case/teacher/科学前置/单CPU线程3GiB禁swap保持，旧v5全部198源不改，v5未启动superseded。3正14拒绝及真实原108在途拒绝通过，新旧均无execution、无物理。原评测04:18到62/108、后处理继续。
+- 五成员18669bytes/SHA306733cd已逐成员与暂存/最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_reclaimed_handoff_20261029_v1/SOURCE_AND_CHECKS.tar.gz`。开工mainb05249b3/baselinef6e8f8c实际fetch/read。上一轮verified wait，本轮后继守卫progress，Goal active；主矩阵仍未修复，可选004审计未重试，无RL/子agent/服务器计算/删除。
+
+## 2026-10-29 — 非RL原108完整回合59→60
+
+- 04:05:22.861–04:08:22.911UTC七次原1172675/start32623702及后处理1201537/start32942337保持loaded/active，MLP2物理28.04→完整回合，累计59→60，原协调器接续ESN3。最大内存2035228672bytes/3GiB、OOM/oom_kill/实验swap0；全机swap仍近满，两者不混淆。observer33069自然exit0，原科学继续，不重启。
+- [当前交接](docs/NONRL_VARIABLE_DURATION_COVERAGE_20261029.md)。观察含实际源码16140bytes/SHAe9fd15b16eb97da80682a46c2908fdbe2789632259cc6f6bdd5cfaadbd3a0d0a已暂存/最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0405_20261029_v1/V8_VERIFIED_WAIT_0405.json`。
+- 开工main1a008844/baselinef6e8f8c实际fetch/read。上一轮覆盖工具progress，本轮verified wait；原完整108/后处理、八球v5及后续三场景补采/重训/冻结回归仍待，Goal active，未称主矩阵修复。可选004审计未重试，无RL/子agent/服务器计算/删除。
+
+## 2026-10-29 — 非RL变时长补采覆盖检查入口
+
+- [报告](docs/NONRL_VARIABLE_DURATION_COVERAGE_20261029.md)。新增独立覆盖工具，去除旧v8限定12600帧，按实际lineage核30身份/24train及每行划分；复用原方向/估计载荷描述，不改gate、不声称阶段联合覆盖充分。原v5全部198绑定源保持。
+- 变长度465行内存检查及九类泄漏/格式拒绝通过，真实v8全部train观察/action精确核对，逐示范/场景统计与原报告完全相同；原±Y覆盖缺口保持。检查服务自然exit0/261ms，瞬态回收，未保存实际内存峰值。无新物理/拟合，可选004审计未重试。
+- 四文件11516bytes/SHAceb3511e已逐成员及暂存/最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_variable_duration_coverage_20261029_v1/SOURCE_AND_CHECKS.tar.gz`。开工maindd2fe5c1/baselinef6e8f8c实际fetch/read。
+- 04:00原评测58/108、后处理继续等待。原完整审查归档→唯一八球v5→三场景补采/资格/新覆盖检查→公平重训/冻结回归仍待。上一轮verified wait、本轮软件进展，Goal active，主矩阵未修复，无RL/子agent/服务器计算/删除。
+
+## 2026-10-29 — 非RL第六条件完成与失败快照归档
+
+- [当前交接](docs/NONRL_V8_CONDITION005_RUNTIME_20261029.md)。原108完成第六条件，三次边界观察53→54、observer70581自然exit0；03:42快照55，03:51核验57/108，原1172675/start32623702及后处理1201537/start32942337仍loaded/active，无重启。
+- 前六条件54条runtime Task/Strict/BOTH全0；第六九条均55s无abort，ESN三seed及MLP2机器合规失败、MLP1无接触舒适NA。独立审计仅覆盖000–003，004/005尚待，SPT NA，不称完整矩阵/修复成功。
+- 两原始证据7183bytes/SHA c98dd310ac6d7d07cb0abae055f9fe810fd29e481701af4204fb42800f226bd8 已逐成员和暂存/最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition005_runtime_20261029_v1/EVIDENCE.tar.gz`。
+- 开工实际fetch/read main8c2ae0415ab37ba278a9ab3d26061423b85dd45d/baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d。原108/完整后处理继续，唯一后继八球v5未启动；可选004新审计仍待原问题回复，未重试。本轮verified wait，Goal active，无RL/子agent/服务器计算/删除。
+
+## 2026-10-29 — 非RL实际载荷参数核验与原108推进
+
+- [报告](docs/NONRL_V8_SAVED_MODEL_PARAMETERS_20261029.md)。读取30条示范实际scene.mjb并逐execution hash核验，棍/球各0.1kg、角0.08kg；冻结测试0.08kg且角惯量相同。30示范dt5e−5与七ctrlrange均与原d4c28e40测试MJB一致。排除“测试载荷比所有示范重”的解释，不证明动态载荷、估计外力、任务或联合覆盖相同，不据此改质量/物理/gate。
+- 准确检查5b64c673、34589bytes含实际源码/31模型路径hash/参数。只读服务自然exit0，runtime5.655s/CPU3.485s；请求单CPU/线程1/128MiB/swap0，memory.peak达到134217728bytes（含缓存计费），不称额外内存余量或OOM计数0。无新仿真/拟合。
+- 03:21:16.798–03:31:16.978UTC21次原1172675/start32623702和1201537/start32942337 loaded/active，50→52/108、最大1597509632bytes、cgroup OOM/oom_kill/swap0；主机MemAvailable4492660–4763536kB，系统swap仍近满，两者不混淆。observer59582自然exit0，科学继续，收尾53/108；完整观察41164bytes/SHAfafffc55。
+- 两原件含源码已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_model_parameters_wait0321_20261029_v1/EVIDENCE.tar.gz`，6189bytes/SHA4eaabd90854290c486b64f39b5ff2cc6559b4a4e7414984b033f78f9dbd8dc10；不含在途物理全集。
+- 开工/收尾main9f9531d5c1b96171602eacb0ceead089dd0e32c9/baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d实际fetch/read。上一轮为审计准备progress，本轮新增参数诊断并verified wait。第五条件新审计仍待原用户问题回复，未重试；原108及完整后处理继续，唯一后继八球v5未启动，Goal active，主矩阵修复尚待。无RL/子agent/服务器计算/用户数据删除。
+
+## 2026-10-29 — 非RL低内存分块审计准备完成
+
+- [报告](docs/NONRL_V8_STREAMING_AUDIT_PREPARATION_20261029.md)。新独立auditor按4096子步读取，完整遍历原轨迹；来源/标签/终态时间核验前缀逐字使用SHA锁定原函数，门槛/公式/分母及1e−10公差保持，原在途源不改。稳定部分和导致浮点顺序差，不称逐bit等价。
+- 检查10001合成行/三chunk与全数组对照、NaN/错dt/长度/shape/截断五拒绝；四条原真实条件003旧审计覆盖abort/无接触/舒适0%/100%，全部字段在原公差内，最大绝对差6.821210263296962e−13。实际affinity=[6]/MemoryMax128MiB/swap0，memory.peak37941248bytes；测试自然exit0、42.817s/CPU7.449s。证据b0517cb2，无新物理或拟合，v5全部198源保持。
+- 第五条件的新审计派发遇自动权限复核两次deadline超时，工具允许的一次重试已用完；只读确认unit not-found/MainPID0、无输出。已请求用户明确回复，记录时未收到；无回复勿再尝试同动作。不是安全性或科学审计失败。原108与既有完整后处理继续，03:08:42原PID1172675/1201537 loaded/active、48/108，Goal active；第五条件独立审计仍待，四条旧结果不替代新审计。
+- 四成员源码/检查/派发记录包6453bytes/SHA4294f6e6df5b0f6502c505f675c5a58390ec9538d699fd1326f094b80dd7ff34已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_streaming_audit_preparation_20261029_v1/SOURCE_AND_CHECKS.tar.gz`；不含在途物理全集。
+- 开工main334835c93d5de14b318fed673cb2182b2d3c11c7/baselinef6e8f8c2711a93f0b5dfc88c608bd82647084d5d实际fetch/read；收尾3b159dcf独立RL更新已读并快进整合。本轮准备progress，上轮verified wait，主矩阵尚未修复，原后继八球v5/三场景补采/公平训练/冻结回归保持；无RL/子agent/服务器计算/用户数据删除。
 ## 2026-10-29 — 参数75早期loss、全2244锚点与76仅恢复
 
 - [交接](docs/RL_PARAMETER75_EARLY_ANCHOR_20261029.md)。原75身份保持，02:58:46steps3096507/3097205/3098191，各30sampler无失败。前5000原字节/连续步号/全数值/独立算术及实际图通过；I/A critic略升、V略降，I连续尖峰保留，仅前缀非收敛。

@@ -1,0 +1,169 @@
+{
+  "status": "verified_wait_condition005_complete_original_jobs_continue",
+  "observer_session": 70581,
+  "observer_exit_code": 0,
+  "observer_source": "import json,time,pathlib,subprocess,datetime\nroot=pathlib.Path.cwd()\nunits=[('sii-special-frozen108-v8-20261029.service','1172675','32623702'),('sii-special-postprocess-v8-20261029.service','1201537','32942337')]\nfor sample in range(21):\n record=dict(sample=sample,utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),services=[])\n try:\n  for unit,pid,ticks in units:\n   raw=subprocess.check_output(['systemctl','--user','show',unit,'-p','LoadState','-p','ActiveState','-p','MainPID','-p','ControlGroup','-p','MemoryCurrent','-p','MemoryMax','-p','MemorySwapMax'],text=True)\n   d=dict(line.split('=',1) for line in raw.splitlines());d['unit']=unit\n   d['start_ticks']=pathlib.Path('/proc',d['MainPID'],'stat').read_text().rsplit(')',1)[1].split()[19] if int(d['MainPID']) else None\n   d['expected_identity_live']=d['MainPID']==pid and d['start_ticks']==ticks and d['LoadState']=='loaded' and d['ActiveState']=='active'\n   if d['ControlGroup']:\n    cg=pathlib.Path('/sys/fs/cgroup')/d['ControlGroup'].lstrip('/')\n    events=dict(line.split() for line in (cg/'memory.events').read_text().splitlines())\n    d.update(oom=int(events['oom']),oom_kill=int(events['oom_kill']),swap_bytes=int((cg/'memory.swap.current').read_text()),cpu_max_exists=(cg/'cpu.max').exists())\n   record['services'].append(d)\n  j=json.loads((root/'outputs/special_scene_frozen108_20261029_v8/execution.json').read_text())\n  r=j['rows'][-1];c=r['command'];p=pathlib.Path(c[c.index('--output')+1])/'rollout.progress.json'\n  record.update(completed=j['completed'],matrix_status=j['status'],method=r['method'],condition=r['condition'],progress=json.loads(p.read_text()) if p.exists() else None)\n  mem=dict((l.split(':')[0],l.split(':',1)[1].strip()) for l in pathlib.Path('/proc/meminfo').read_text().splitlines())\n  record['host_memory']={k:mem[k] for k in ('MemAvailable','SwapTotal','SwapFree')}\n  print(json.dumps(record),flush=True)\n  if not all(d['expected_identity_live'] for d in record['services']) or j['completed']>=54:break\n except Exception as error:\n  record['observation_error']=repr(error);print(json.dumps(record),flush=True)\n if sample<20:time.sleep(30)\n",
+  "records": [
+    {
+      "sample": 0,
+      "utc": "2026-10-29T03:39:18.744247+00:00",
+      "services": [
+        {
+          "MainPID": "1172675",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+          "MemoryCurrent": "1426792448",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "LoadState": "loaded",
+          "ActiveState": "active",
+          "unit": "sii-special-frozen108-v8-20261029.service",
+          "start_ticks": "32623702",
+          "expected_identity_live": true,
+          "oom": 0,
+          "oom_kill": 0,
+          "swap_bytes": 0,
+          "cpu_max_exists": false
+        },
+        {
+          "MainPID": "1201537",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+          "MemoryCurrent": "17928192",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "LoadState": "loaded",
+          "ActiveState": "active",
+          "unit": "sii-special-postprocess-v8-20261029.service",
+          "start_ticks": "32942337",
+          "expected_identity_live": true,
+          "oom": 0,
+          "oom_kill": 0,
+          "swap_bytes": 0,
+          "cpu_max_exists": false
+        }
+      ],
+      "completed": 53,
+      "matrix_status": "running",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_005",
+      "progress": {
+        "time_s": 51.04000000113258,
+        "stage": "carry",
+        "position_error_m": 0.024600382952593484,
+        "external_penetration_mm": 0.1526485239261494
+      },
+      "host_memory": {
+        "MemAvailable": "4618788 kB",
+        "SwapTotal": "2097148 kB",
+        "SwapFree": "456 kB"
+      }
+    },
+    {
+      "sample": 1,
+      "utc": "2026-10-29T03:39:48.755145+00:00",
+      "services": [
+        {
+          "MainPID": "1172675",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+          "MemoryCurrent": "984702976",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "LoadState": "loaded",
+          "ActiveState": "active",
+          "unit": "sii-special-frozen108-v8-20261029.service",
+          "start_ticks": "32623702",
+          "expected_identity_live": true,
+          "oom": 0,
+          "oom_kill": 0,
+          "swap_bytes": 0,
+          "cpu_max_exists": false
+        },
+        {
+          "MainPID": "1201537",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+          "MemoryCurrent": "17928192",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "LoadState": "loaded",
+          "ActiveState": "active",
+          "unit": "sii-special-postprocess-v8-20261029.service",
+          "start_ticks": "32942337",
+          "expected_identity_live": true,
+          "oom": 0,
+          "oom_kill": 0,
+          "swap_bytes": 0,
+          "cpu_max_exists": false
+        }
+      ],
+      "completed": 53,
+      "matrix_status": "running",
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_005",
+      "progress": {
+        "time_s": 54.04000000123217,
+        "stage": "carry",
+        "position_error_m": 0.02570664491383723,
+        "external_penetration_mm": 0.1526485239261494
+      },
+      "host_memory": {
+        "MemAvailable": "5101732 kB",
+        "SwapTotal": "2097148 kB",
+        "SwapFree": "276 kB"
+      }
+    },
+    {
+      "sample": 2,
+      "utc": "2026-10-29T03:40:18.762473+00:00",
+      "services": [
+        {
+          "MainPID": "1172675",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+          "MemoryCurrent": "1372725248",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "LoadState": "loaded",
+          "ActiveState": "active",
+          "unit": "sii-special-frozen108-v8-20261029.service",
+          "start_ticks": "32623702",
+          "expected_identity_live": true,
+          "oom": 0,
+          "oom_kill": 0,
+          "swap_bytes": 0,
+          "cpu_max_exists": false
+        },
+        {
+          "MainPID": "1201537",
+          "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+          "MemoryCurrent": "17952768",
+          "MemoryMax": "3221225472",
+          "MemorySwapMax": "0",
+          "LoadState": "loaded",
+          "ActiveState": "active",
+          "unit": "sii-special-postprocess-v8-20261029.service",
+          "start_ticks": "32942337",
+          "expected_identity_live": true,
+          "oom": 0,
+          "oom_kill": 0,
+          "swap_bytes": 0,
+          "cpu_max_exists": false
+        }
+      ],
+      "completed": 54,
+      "matrix_status": "running",
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "progress": {
+        "time_s": 6.039999999992593,
+        "stage": "lift",
+        "position_error_m": 0.36618940937113237,
+        "external_penetration_mm": 0.1426484767330432
+      },
+      "host_memory": {
+        "MemAvailable": "4751812 kB",
+        "SwapTotal": "2097148 kB",
+        "SwapFree": "288 kB"
+      }
+    }
+  ],
+  "record_count": 3,
+  "limitation": "Observer naturally exited after completed>=54. No new simulation, audit, model change, or fitting; original science continues."
+}

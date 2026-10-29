@@ -1,0 +1,16 @@
+{
+  "status": "condition004_not_started_after_two_approval_review_timeouts",
+  "observed_utc": "2026-10-29T03:08:42.554212+00:00",
+  "unit": "sii-v8-condition004-stream-audit-20261029.service",
+  "requested_action": "Run the verified streaming saved-evidence audit for condition004, CPUAffinity=6, MemoryMax=128M, MemorySwapMax=0, numerical threads=1",
+  "approval_error": "The automatic permission approval review did not finish before its deadline. Do not assume the action is unsafe based on the timeout alone. You may retry once, or ask the user for guidance or explicit approval.",
+  "attempts": 2,
+  "allowed_retry_used": true,
+  "actual_unit_state": {"LoadState": "not-found", "ActiveState": "inactive", "MainPID": 0},
+  "output_audit_exists": false,
+  "user_input_requested": true,
+  "user_reply_received_at_recording": false,
+  "original_evaluation": {"MainPID": 1172675, "ActiveState": "active", "completed_episodes": 48},
+  "original_postprocessor": {"MainPID": 1201537, "ActiveState": "active"},
+  "limitation": "Permission-review timeouts are not a safety finding or a scientific audit failure. Do not retry this dispatch again without the requested user reply. Original108 and its already-running final postprocessor continue; this does not pause or complete the goal."
+}
