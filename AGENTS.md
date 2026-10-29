@@ -1,5 +1,10 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL连续观察93→96
+
+- 06:45–06:59UTC30次原1172675/start32623702及1201537/start32942337 loaded/active，93→96、接续ESN3条件010；最高1923670016bytes/3GiB、OOM/实验swap0，observer9093自然exit0，科学继续。新增三条55s/noabort/TaskStrictfalse，非新子步审计。
+- 57867bytes/SHA9ee085c1观察含源码已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0645_20261029_v1/V8_VERIFIED_WAIT_0645.json`，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。Goal active，主矩阵未修复；完整审查归档→唯一v6八球/实际运动核查→正式补采/公平重训保持，可选004未重试。
+
 ## 2026-10-29 — 非RL第十条件完整，原108到93
 
 - [交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)：06:30–06:41UTC22样本原1172675/start32623702及1201537/start32942337 loaded/active，90→93；最高1859694592bytes/3GiB、OOM/实验swap0，observer28771自然exit0。第十条件的九条Task/Strict全false，前十90条全失败，SPT NA；非新子步审计。
