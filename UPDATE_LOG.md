@@ -1,3 +1,10 @@
+## 2026-10-29 — 非RL变时长补采覆盖检查入口
+
+- [报告](docs/NONRL_VARIABLE_DURATION_COVERAGE_20261029.md)。新增独立覆盖工具，去除旧v8限定12600帧，按实际lineage核30身份/24train及每行划分；复用原方向/估计载荷描述，不改gate、不声称阶段联合覆盖充分。原v5全部198绑定源保持。
+- 变长度465行内存检查及九类泄漏/格式拒绝通过，真实v8全部train观察/action精确核对，逐示范/场景统计与原报告完全相同；原±Y覆盖缺口保持。检查服务自然exit0/261ms，瞬态回收，未保存实际内存峰值。无新物理/拟合，可选004审计未重试。
+- 四文件11516bytes/SHAceb3511e已逐成员及暂存/最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_variable_duration_coverage_20261029_v1/SOURCE_AND_CHECKS.tar.gz`。开工maindd2fe5c1/baselinef6e8f8c实际fetch/read。
+- 04:00原评测58/108、后处理继续等待。原完整审查归档→唯一八球v5→三场景补采/资格/新覆盖检查→公平重训/冻结回归仍待。上一轮verified wait、本轮软件进展，Goal active，主矩阵未修复，无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL第六条件完成与失败快照归档
 
 - [当前交接](docs/NONRL_V8_CONDITION005_RUNTIME_20261029.md)。原108完成第六条件，三次边界观察53→54、observer70581自然exit0；03:42快照55，03:51核验57/108，原1172675/start32623702及后处理1201537/start32942337仍loaded/active，无重启。

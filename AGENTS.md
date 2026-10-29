@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL后续变时长数据覆盖入口
+
+- [报告](docs/NONRL_VARIABLE_DURATION_COVERAGE_20261029.md)。新独立`audit_special_coverage_dataset_20261029.py`接受按lineage核验的变时长24train，不再写死12600；保留原方向/估计载荷描述和8/2划分，不改变资格/训练/测试。补采构建后先运行该检查，不以配置范围冒充实际覆盖。
+- 内存变时长+九拒绝、真实v8全train精确对照通过；八球v5全部198源保持。四文件11516bytes/SHAceb3511e已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_variable_duration_coverage_20261029_v1/SOURCE_AND_CHECKS.tar.gz`。无新采集/拟合/004审计，Goal active。
+- 04:00原108到58，原后处理等待；原服务保持，后续完整审查归档→v5八球→正式三场景采集/资格/覆盖检查/公平重训/冻结回归仍待，主矩阵未修复。
+
 ## 2026-10-29 — 非RL第六条件运行快照与当前接续
 
 - [当前交接](docs/NONRL_V8_CONDITION005_RUNTIME_20261029.md)。原108边界观察53→54，03:42快照55、03:51核验57/108；原1172675/start32623702与后处理1201537/start32942337仍active，不重启。前六条件54条runtime Task/Strict/BOTH全0；独立审计仅000–003，004/005仍待，不称主矩阵修复。
