@@ -1,3 +1,5 @@
+> **RL最新：[完整73、原71–73与有限74](docs/RL_PARAMETER73_COMPLETE_20261029.md)。74已实际接续，74–76等待已部署；GPU科研完成仍保载，Goal active。**
+
 > **RL最新：[73十分钟核验与74/74–76准备](docs/RL_PARAMETER73_WAIT74_PREP_20261029.md)。原73/71–73继续，无74训练；GPU科研完成后仍保载，Goal active。**
 
 > **RL最新：[73早期loss与74仅恢复](docs/RL_PARAMETER73_EARLY_ANCHOR_20261029.md)。原73/71–73继续，无74训练；GPU科研结束后仍保载，Goal active。**

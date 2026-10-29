@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 完整73、原71–73审查与准确有限74
+
+- [交接](docs/RL_PARAMETER73_COMPLETE_20261029.md)。三路完整73各30×55/41250/noabort，旧72 replay/history保持、新reward重算0、网络optimizer有限；全loss/180标签/90reward对/health/全2184终端及实际图已审。
+- 原71–73完整算术/实际图及独立5000 bootstrap复核完成，原5%/近零1/seed/anchor55及全部历史结论保持，原算术收据bootstrap_reruns0未改。尚未整体收敛，具体失败/退化见交接。
+- DECISION74绑定53证据，准确73全state/replay/next65536及实际74 startup通过，01:45:42steps3050929/3051617/3052627。全74loss和预登记74–76等待已部署，无自动75，Direct34false，Goal active。
+- observer自然完成61样本，结束时当前审查就绪False，其后按实际状态核验，不重启科学。430guard样本min79/62/62/63%、低于50[0, 0, 0, 0]，含合成负载，科研完成仍保载。
+- SSD包260成员/3567783字节/SHA3a9c47c0逐字节/AST核验，大数据SSD非HDD/arm1全备份；开工main01bb3503/baselinef6e8f8c实际fetch/read，无子agent。
+
 ## 2026-10-29 — 非RL原108核验30→33
 
 - 01:20:47.388–01:35:47.408UTC31次原1172675/start32623702与后处理1201537/start32942337均loaded/active，完成30→33/108，最大791601152bytes/3GiB、OOM/oom_kill/swap0。observer40291自然exit0，科学继续；第四条件seed3 ESN在途，完整九审计待。
