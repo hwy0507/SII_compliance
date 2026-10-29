@@ -6,6 +6,11 @@
 - DECISION77绑定96证据，三路准确全state/replay/next65536和actual INITIAL_STATE/startup通过，当前steps3160279/3161595/3163135、各30sampler。原科学参数/75中断/76–78准确PLAN保持，无自动78、Direct34false，Goal active。77全loss和归档health已部署，77标签/2274锚点待补。
 - guard280样本min[75, 67, 62, 63]%、低于50[0, 0, 0, 0]，审查空档含合成保载、科研完成仍继续。SSD317成员/2677677字节/SHA9fe6df28逐成员/AST已核，大数据SSD非HDD/arm1全备份。main6492ab17后c1e2bf02/baselinef6e8f8c已读安全合并，认证发布待，无子agent。
 
+## 2026-10-29 — 非RL第十条件完整，原108到93
+
+- [交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)：06:30–06:41UTC22样本原1172675/start32623702及1201537/start32942337 loaded/active，90→93；最高1859694592bytes/3GiB、OOM/实验swap0，observer28771自然exit0。第十条件的九条Task/Strict全false，前十90条全失败，SPT NA；非新子步审计。
+- 冻结MJB映射解释ESN2全局3.315mm为左右手指自接触，外部0.379mm是另一范围，不是数值矛盾；只读无积分/门槛修改。两原件12053bytes/SHA296ea078已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition009_complete_20261029_v1/EVIDENCE.tar.gz`。Goal active、主矩阵未修复；原完整审查归档→唯一v6八球/实际运动核查→正式补采/公平重训保持，可选004未重试。
+
 ## 2026-10-29 — 非RL连续观察86→89
 
 - 06:09–06:24UTC共31次原1172675/start32623702及1201537/start32942337 loaded/active，86→89，MLP2→ESN3→RNN3→MLP3；最高1871986688bytes/3GiB、OOM/实验swap0。observer68766满900秒自然exit0，原科学继续；新完成三条55s/TaskStrictfalse，第十条件未完整，非新子步审计。
