@@ -84,3 +84,6 @@ GPU guardv6持续，排除最初2预热样本后301个样本各卡最低[75, 68,
 
 
 更新：[完整77审查与78实际续训](RL_RECOVERY77_COMPLETE78_RUNNING_20261029.md)。两项基础设施失败已保留并修复，原78训练和GPU保活继续。
+
+
+更新：[最新Direct33冻结验证实际启动](RL_DIRECT33_FROZEN_VALIDATION_20261029.md)。原78训练和GPU保活继续，最新33冻结验证运行中。

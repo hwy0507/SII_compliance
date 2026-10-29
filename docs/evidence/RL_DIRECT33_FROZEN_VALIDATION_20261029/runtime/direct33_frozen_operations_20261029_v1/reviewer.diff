@@ -1,0 +1,55 @@
+--- frozen29_review
++++ frozen33_review
+@@ -20,9 +20,9 @@
+ 
+ 
+ def main(root):
+-    os.sched_setaffinity(0, {52})
++    os.sched_setaffinity(0, {3})
+     reg = json.loads((root/'REGISTRATION.json').read_text())
+-    assert reg['cycle'] == 29 and reg['action_seed'] == 2026102626
++    assert reg['cycle'] == 33 and reg['action_seed'] == 2026102626
+     assert reg['maximum_episodes'] == 30 and reg['maximum_physical_substeps'] == 33000000
+     assert reg['noise_schedule'] == 'independent'
+     for ref in reg['inputs'].values():
+@@ -56,12 +56,12 @@
+         assert result['finished'] and state['full_learner_state_unchanged']
+         assert state['new_optimizer_updates'] == 0 and gate['passed'] and gate['full_state_unchanged']
+         restore = json.loads((folder/'FULL_STATE_RESTORE.json').read_text())
+-        assert restore['passed'] and restore['cycle'] == 29
++        assert restore['passed'] and restore['cycle'] == 33
+         assert restore['full_replay_state_exact'] and restore['full_learner_state_exact']
+         assert restore['replay_capacity'] == 2000000 and restore['historical_capacity_entry'] == 23
+         assert restore['checkpoint_sha256'] == reg['inputs']['checkpoint']['sha256']
+         recovery=restore['recovery_state'];assert recovery['quarantined_pending']==930 and recovery['original_pending_exact'] and recovery['original_pending_raw_derived_exact'] and recovery['pending_not_mature_or_sampleable']
+-        assert not recovery['complete25_invented'] and recovery['complete_cycles_after_recovery']==[26,27,28,29]
++        assert not recovery['complete25_invented'] and recovery['complete_cycles_after_recovery']==list(range(26,34))
+         assert state['recovery_state']==recovery
+         assert state['full_replay_state_unchanged'] and state['replay_writes'] == 0
+         assert state['replay_digest'] == restore['replay_digest']
+@@ -81,7 +81,7 @@
+             seen.add(case)
+             path = folder/case
+             assert sha(path/'rollout.mjb') == conditions[case]['model_sha256']
+-            physical = summarize(path, 'direct_recovery29_frozen_stochastic', case)
++            physical = summarize(path, 'direct_recovery33_frozen_stochastic', case)
+             filtered, torque = filter_audit(path), torque_audit(path)
+             assert filtered['passed'] and torque['passed']
+             assert 0 < physical['samples'] <= 1100000
+@@ -95,6 +95,7 @@
+             write(root/'REVIEW_PROGRESS.json', dict(reviewed=len(rows), maximum=30))
+     assert seen == conditions.keys() and len(rows) == 30
+     assert len(set(states)) == 1
++    assert sum(r['actions'] for r in rows) <= 41250
+     samples = sum(r['samples'] for r in rows)
+     assert samples <= reg['maximum_physical_substeps']
+     for ref in reg['inputs'].values():
+@@ -107,7 +108,7 @@
+         full_training_cohort=True, independent_training_seeds=1, external_action_seeds=1,
+         optimizer_updates=0, replay_writes=0, formal_state_unchanged=True,
+         checkpoint_sha256=reg['inputs']['checkpoint']['sha256'], convergence_claim=False,
+-        limitation='Frozen recovered complete29 on all30 registered training conditions with one external stochastic action seed. This evaluates the unchanged learned stochastic policy; it is not an independent training seed, held-out test, deterministic-mode evaluation, or final ESN comparison. Physical/filter/torque replay checks saved telemetry; full dynamics are not independently rerun. No final SPT reference is selected here.')
++        limitation='Frozen recovered complete33 on all30 registered training conditions with one external stochastic action seed. This evaluates the unchanged learned stochastic policy; it is not an independent training seed, held-out test, deterministic-mode evaluation, or final ESN comparison. Physical/filter/torque replay checks saved telemetry; full dynamics are not independently rerun. No final SPT reference is selected here.')
+     write(root/'REVIEW.json', report)
+ 
+ 

@@ -1,3 +1,5 @@
+> **RL最新：[最新Direct33冻结验证实际启动](docs/RL_DIRECT33_FROZEN_VALIDATION_20261029.md)。原参数78及完整审查/GPU保活继续；完整冻结33尚未完成，勿重复启动。**
+
 > **RL最新：[完整77审查与78实际续训](docs/RL_RECOVERY77_COMPLETE78_RUNNING_20261029.md)。完整78训练/审查和原76–78/GPU保活继续，Goal active，勿重复启动。**
 
 > **RL最新：[77等待与78完整审查/派发准备](docs/RL_RECOVERY77_WAIT78_DEPLOY_20261029.md)。原77全检查/仅恢复等待/76–78/GPU保底继续，无78决定或训练，Goal active。**
