@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL实际训练曝光与场景权重核验
+
+- [报告](docs/NONRL_V8_TRAINING_EXPOSURE_20261029.md)：新独立日程审计核72神经候选/三不同日程，32000updates逐有效帧、分组chunk、epoch边界及train-only检查通过，同seed两家24候选一致。变时长手算边界和五损坏拒绝通过；无新拟合/物理。实际棍/球/角帧份额31.7460/47.6190/20.6349%，每场景8train不是等权，不改变原选择规则或以此认定失败原因。
+- 服务自然exit0，单CPU128MiB/swap0；peak达128MiB且memory.events max709、OOM0，不声称内存余量。工具及两证据三成员10080bytes/SHAe76f37d5已逐成员及暂存/最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_training_exposure_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。
+- 开工main82f77f09/baselinef6e8f8c实际fetch/read。05:03:45原1172675/1201537仍active、71/108，唯一v6未启动；上一轮verified wait，本轮progress，Goal active，主矩阵未修复。原完整审查归档→八球→正式补采/公平重训仍待，无绑定源修改/RL/子agent/服务器计算，可选004审计未重试。
+
 ## 2026-10-29 — 非RL原108十分钟核验68→70
 
 - 04:47:06.108–04:57:06.311UTC共21次原1172675/start32623702及后处理1201537/start32942337 loaded/active，完整68→70，MLP2→ESN3→RNN3。最大2442362880bytes/3GiB、OOM/实验swap0；主机swap仍近满。observer84675自然exit0，科学继续，不重启。

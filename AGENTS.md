@@ -1,5 +1,10 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL训练曝光核验
+
+- [报告](docs/NONRL_V8_TRAINING_EXPOSURE_20261029.md)：独立日程工具核完72神经候选，三seed同组两家曝光一致，逐有效帧/序列边界/整epoch/train-only通过；变时长边界及五损坏拒绝通过，无新拟合。棍/球/角帧份额31.7460/47.6190/20.6349%，8train/scene不等于等权，不改原规则。补采训练完成后可复用检查实际曝光。
+- 三成员10080bytes/SHAe76f37d5已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_training_exposure_20261029_v1/SOURCE_AND_EVIDENCE.tar.gz`。05:03:45原1172675/1201537仍active、71/108、MLP3条件007在途，唯一v6未启动。本轮progress，Goal active，主矩阵未修复；原完整审查归档→八球→正式补采/公平重训保持，可选004审计未重试。
+
 ## 2026-10-29 — 非RL原108到70
 
 - 04:47–04:57UTC共21次原1172675/start32623702及后处理1201537/start32942337保持loaded/active，完整68→70、MLP2→ESN3→RNN3；最大2442362880bytes/3GiB、OOM/实验swap0。observer84675自然exit0，科学继续。新完成两条runtime均55s/TaskStrictfalse/carry，无新增子步审计。
