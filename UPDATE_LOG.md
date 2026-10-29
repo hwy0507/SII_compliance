@@ -1,3 +1,11 @@
+## 2026-10-30 — 棍推训练阶段覆盖/MLP残差诊断，后继修复依据已明确
+
+- 读[14候选同训练历史诊断](docs/NONRL_V9_MLP_TRAINING_PHASE_DIAGNOSIS_20261030.md)。仅8条rod train/4000帧，核dataset/逐轨迹obs-action/原审计input/source、14checkpoint/metadata及源前后hash；12个MLP02候选和已合格MLP01/ESN01同输入actor回放，无拟合/积分/test或新选模规则。teacher越棍至回位确认仅40帧=rod1%/全train0.317%；接触至越棍657帧也含关键响应，不能说整个蹭棍只训练40帧。原importance均1，后续学生偏离状态覆盖未被这些teacher历史证明。
+- MLP02该40帧MSE约3.08e-5–4.25e-5，已通过MLP01为3.69e-5、ESN01为3.57e-6；MLP通过/失败MSE接近不能靠低loss或加步数解释全部失败。teacher该窗口y requested action为0，MLP小非零泄漏为线索，不直接换算位移/力矩/唯一因果。若full12仍null，另登记teacher真实纠偏能力验证及共享实际纠偏示范/公平重训；反事实输出不冒充执行成功标签。当前只明确条件后继方向，未登记/派发新采集训练，冻结源和gate不改。
+- 唯一full12同PID1697598/1132source一致仍推进，MLP02前九候选已失败、第10在途；MLP03完整12仍待。三个ESN/三个RNN/MLP01仍七组选定，最终等待器仍等九组、零最终108派发。Goal active，无RL/删除/重复模拟器。
+- 三payload+manifest包24143bytes/SHA35cd63680cc2077f3fda6fceb7098e70996306d20b46999a26ed1b775ffe7a07逐成员/源前后/远端暂存及最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_mlp_phase_diagnosis_20261030_v1/EVIDENCE.tar.gz`。当前Git报告在归档后补充“657帧也含关键响应”的阅读澄清，receipt明确两个文档版本hash；数据/入口不变。非raw全集或测试结果，服务器仅存储/hash。
+- 九组锁定/最终三特化108/六指标/媒体仍待，旧office108的57待补保留。开工fetch/read main1a878798b5de543d8b908780613a0588f0679630、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。上一轮progress、本轮progress。
+
 ## 2026-10-30 — 新增ESN01/MLP01的18条最终指标路径预检通过
 
 - 读[新增18条预检](docs/NONRL_V9_NEW18_METRIC_PREFLIGHT_20261030.md)。只读独立入口对ESN01 rank4和MLP01 rank1各九条开发回合核精确actor/filter replay、Task/三特化Strict、13采样终态保持、完整horizon/子步/机器安全，18/18通过；无积分/拟合/test读取/局部T_ref或SPT，也不重复计算旧45条。七组已选都有相应预检证据，非九组锁定或最终泛化成功。ESN01完成时刻9.36–18.04s、九条最大峰矩54.032208Nm/外穿透0.072482mm；MLP01为9.44–16.92s、51.676148Nm/0.139156mm，仅开发范围/最大值，非正式平均/胜负。人体舒适仍NA、代理分列。
