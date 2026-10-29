@@ -1,5 +1,29 @@
 # v8实际学习曲线与当前108后处理接续
 
+## 原进程十分钟核验：13→15/108
+
+该观察JSON已核验共享到
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait2358_20261029_v1/V8_FROZEN108_VERIFIED_WAIT_2358.json`，
+23909bytes，SHA256 `d5b541dbb73945b2ea036665100703265c495e3c5bded5a6e807d7b8caa0a7ad`。
+暂存及最终副本大小/hash均与本机一致。该文件只含下述观察窗口，不含后来新增物理回合。
+续接00:13:54UTC原评测1172675和后处理1201537仍active，内存分别638771200与12861440bytes，
+均为3GiB上限/swap0；00:13:57后处理核验16/108。没有新拟合或物理派发，完整矩阵及修复仍待。
+
+2026-10-28 23:58:25.931至2026-10-29 00:08:25.931UTC，共21次采样核验原评测
+1172675/start32623702和后处理1201537/start32942337身份保持，原服务active且真实物理时间
+推进，完成数13→15。最高MemoryCurrent977686528bytes/3GiB，OOM/oom_kill/swap全0。
+观察器session78251自然exit0，没有终止、重启或派发实验。00:09:23再次核验两原服务active。
+
+第二条件001已有六个完整55秒回合（三家×seed1/2），runtime记录Task/Strict均false；
+MLP seed2外部穿透0.351307mm，失败保留。该条件尚未九模型齐全，不扩展首条件九回合
+独立审计结论。seed3 ESN在途，末观察24.04s/lift、位置误差1.224m，不据前缀作终态判定。
+[完整观察](evidence/NONRL_INTENT_RECOVERY_20261029/V8_FROZEN108_VERIFIED_WAIT_2358.json)。
+
+本轮为verified wait；上一轮实际成图及后处理部署属于progress。先让原108自然完成，
+由现有1201537自动接续原全审/contact/report；禁止重复审计或启动旧handoff。
+有效八球v3仍未物理执行，修复/公平重训/最终复测仍待，Goal active。
+开工main044d970a/baselinef6e8f8c实际fetch/read；无RL/子agent/服务器计算或删除。
+
 本轮14文件（八源码、准确报告、登记/启动快照、两张真实图及完整绘图数值）已逐Git blob、
 暂存/最终大小hash核验共享到
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_learning_postprocess_20261029_v1/SOURCE_AND_CURVES.tar.gz`。

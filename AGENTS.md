@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL原108十分钟核验13→15
+
+- 续接00:13:54UTC原评测1172675及后处理1201537仍active；00:13:57后处理确认16/108，非完整矩阵。观察JSON已逐暂存/最终大小hash核共享至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait2358_20261029_v1/V8_FROZEN108_VERIFIED_WAIT_2358.json`，23909bytes/SHA d5b541dbb73945b2ea036665100703265c495e3c5bded5a6e807d7b8caa0a7ad；不含后续在途物理数据。
+- 23:58:25.931–00:08:25.931UTC共21次原1172675/start32623702及后处理1201537/start32942337身份保持，原服务active/物理时间推进，完成13→15；最大内存977686528bytes/3GiB，OOM/oom_kill/swap0。观察78251自然exit0，00:09:23两科学服务仍active，不因观察结束重启。
+- 证据V8_FROZEN108_VERIFIED_WAIT_2358；[交接](docs/NONRL_V8_LEARNING_CURVES_POSTPROCESS_20261029.md)。条件001六完整55秒runtime Task/Strict均false，MLP seed2穿透.351307mm；完整九条件审计待。seed3 ESN在途末24.04s/lift误差1.224m，非终态。
+- 本轮verified wait，Goal active；原108/后处理继续，后者自动全审/contact/report，不重复。八球v3与后继三场景数据修复/公平重训尚待，无RL/子agent/服务器计算。
+
 ## 2026-10-29 — 非RL v8真实学习图与仅后处理接续
 
 23:55:37UTC原1172675和后处理1201537仍active，原矩阵13/108（后处理23:55:27核验）；未重启。远端9e7e44ce独立RL更新已读取，合并保留双方日志，冻结源不变。
