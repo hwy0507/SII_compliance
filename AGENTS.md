@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — ESN教师训练包络外偏离与读出放大；三条棍推修复候选已通过
+
+- 读[新训练覆盖诊断和真实轨迹图](docs/NONRL_V9_ESN_FEATURE_COVERAGE_20261030.md)。四checkpoint各重建24train/12600帧特征包络，核数据/资格输入hash、checkpoint前后和学生精确action replay；不拟合/积分/读最终test。失败ESN01 rank1/3有392/357帧超包络，最大87.710/28.654倍本坐标训练跨度，限幅前残差峰39.758/60.021；通过rod00的ESN01rank2/ESN02rank1仅4/11帧、0.048/0.247倍、读出0.277/0.297。支持闭环分布偏离后输出放大线索，非唯一因果、共同输入排名或最终性能；最早微小包络超出不能当失稳起点。v1原入口/输出保留hash，v2补时窗/最坏特征，新PNG/PDF已目视核验。
+- 唯一full12 PID1697598真实推进：ESN01 rank4 rod00/08/09全部开发qualified，ball00在途425step/340000子步；1132登记source全一致。六组完整资格仍来自原top3，不冒称新增第七组选定。最终等待器仍等九组，零最终108派发；Goal active。
+- 已结束top3的72完整raw（含10失败）只读低优先级归档服务`sii-v9-top3-raw-archive-20261030.service` PID1735753已启动，CPU6/Nice19/idle I/O/512MiB/swap0；当前仍active、partial约3.8GB、CPU80.58s，未有LOCAL_RECEIPT，不能称归档完成/已共享。下一轮收结果、核成员再向唯一服务器目录共享，不重启打包或删除历史。
+- 九payload+manifest诊断/新图包204702bytes/SHA50fe1cb987f72f91b7ab7fb14ad553f26f8e24b3f0df621591153a20f26b1c24逐成员/源前后/远端暂存及最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_feature_coverage_20261030_v1/EVIDENCE.tar.gz`。非raw全备份或测试结果，服务器仅存储/hash。无RL/阈值修改/新并行仿真。
+- 九组锁定/最终三特化108/六指标/媒体仍待，旧office108的57待补保留。开工fetch/read main35cea2cae96a8985a3abf4cda5a6b78e585507af、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。上一轮progress、本轮progress。
+
 ## 2026-10-30 — ESN/MLP同场景回位诊断；完整12候选已真实接续
 
 - 读[同条件五条ESN与五条MLP诊断](docs/NONRL_V9_MLP_ROD_REJOIN_DIAGNOSIS_20261030.md)。保存状态mj_forward、原资格/行为输入hash及teacher/学生动作精确回放，MJB/初始canonical48一致，无积分/拟合/最终测试。teacher越棍后撤回前最小横向偏差1.872mm；失败ESN seed01 rank1/3为82.732/26.529mm，残差动作饱和帧57.2%/17.4%；通过ESN seed01 rank2/seed02 rank1为1.730/2.934mm且0%饱和。前者仍ball09失败，不能列完整合格。失败MLP seed02前三8.429–9.918mm/均0%饱和。支持学生闭环偏差/选模稳定性问题，不证明唯一根因或teacher在学生失败历史必能纠偏；诊断窗口不替代原逐样本gate。
