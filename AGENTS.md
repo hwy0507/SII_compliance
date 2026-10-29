@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 第74轮十分钟核验与75全loss准备
+
+- [交接](docs/RL_PARAMETER74_WAIT75_PREP_20261029.md)：01:56:46–02:06:46UTC共21次原74三learner/archive/六等待器/五guard身份live，steps严格增至3066596/3067489/3068493，观察自然结束、科学继续，无重启。
+- 75全loss四源/deploy静态就绪，完整49–74保留追加75、配对74→75；原65–67/68–70/71–73完整审查与原74–76准确PLAN保持。逆映射/AST/hash/独立静态通过，真实缺DECISION75拒绝，无75loss run/waiter或训练，不要求未来窗口结果。
+- 原71–73全270回合/540标签及独立算术复核通过：I/A首尾均值接近包含成功/失败条件抵消，A short0000中途失Strict后恢复；V保留short0600失Strict退化。仅保存结果算术分解，非因果或新阈值。
+- 有限75决定工具仅静态准备，绑定全74/75恢复/完整标签/全2214终端与原窗口；未写续训理由、未执行工具，无DECISION75，不自动76。原74及74–76等待保持，阈值不变。
+- 117guard样本min80/60/67/68%、低于50[0, 0, 0, 0]，含合成负载，科研完成仍保载。SSD包39成员/48844字节/SHA10d399cc逐字节/AST核验，大数据SSD非HDD/arm1全备份；开工main8a41d383/baselinef6e8f8c实际fetch/read，无子agent，Goal active、Direct34false。
+
 ## 2026-10-29 — 非RL第四条件九模型全审
 
 - 科学0a1025e2的五成员审计源码/准确报告/审计/观察包16953bytes/SHAba79f0d7已逐成员与暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition003_20261029_v1/SCIENCE.tar.gz`。01:57:22UTC原两个PID/start仍active、37/108、第五条件RNN1在途；原科学继续。远端8a41d383已读且安全合并，双方日志完整，Goal active。
