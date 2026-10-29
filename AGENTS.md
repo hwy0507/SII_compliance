@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL唯一后继八球v6：处理原服务回收
+
+- [最新交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。原transient服务CollectMode=inactive/RemainAfterExit=no，已结束检查unit确实被回收；旧v5要求loaded会误拒绝。新`prepare_ball_coverage_reclaimed_20261029.py`和`outputs/nonrl_ball_coverage_probe_20261029_v6` REGc9450ef9登记boot/InvocationID/cgroup；仍先核原完整108审计，再核原身份消失/终态或已回收且原cgroup消失。回收路线明确不证明exit0，查询失败仍拒绝。
+- 八case/teacher/原科学前置/单CPU线程3GiB禁swap不变；v5原198源保持、未启动且superseded。3正14负/真实在途拒绝通过，无新物理。原完整108/后处理/查看归档之后仅运行v6，不再派发v5；八球全八review→正式三场景采集资格/覆盖/公平重训/冻结回归仍待，Goal active。
+- 五成员18669bytes/SHA306733cd已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_reclaimed_handoff_20261029_v1/SOURCE_AND_CHECKS.tar.gz`。04:18原108到62，原服务保持，主矩阵未修复；可选004审计仍未重试，无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL原108推进60
 
 - 04:05:22–04:08:22UTC七次原1172675/start32623702和后处理1201537/start32942337 loaded/active，完整59→60、MLP2结束接续ESN3；最大2035228672bytes/3GiB、OOM/实验swap0，全机swap近满。observer33069自然exit0，原科学继续，不重启。

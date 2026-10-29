@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL回收服务交接修复与八球v6
+
+- [当前交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。实测原评测为可回收transient服务，已完成检查服务确实not-found；旧v5强制loaded会误挡正常完成。新独立v6绑定boot/InvocationID/cgroup，原完整108独立审计仍先行；允许同boot、原身份消失、原cgroup不存在的已回收路线，明确不认证原退出码，不以not-found默认success作证明。保留loaded同invocation正常exit0路线，查询失败/残留实体仍拒绝。
+- 八球v6 REGc9450ef9，launcher `prepare_ball_coverage_reclaimed_20261029.py`。八case/teacher/科学前置/单CPU线程3GiB禁swap保持，旧v5全部198源不改，v5未启动superseded。3正14拒绝及真实原108在途拒绝通过，新旧均无execution、无物理。原评测04:18到62/108、后处理继续。
+- 五成员18669bytes/SHA306733cd已逐成员与暂存/最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_reclaimed_handoff_20261029_v1/SOURCE_AND_CHECKS.tar.gz`。开工mainb05249b3/baselinef6e8f8c实际fetch/read。上一轮verified wait，本轮后继守卫progress，Goal active；主矩阵仍未修复，可选004审计未重试，无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL原108完整回合59→60
 
 - 04:05:22.861–04:08:22.911UTC七次原1172675/start32623702及后处理1201537/start32942337保持loaded/active，MLP2物理28.04→完整回合，累计59→60，原协调器接续ESN3。最大内存2035228672bytes/3GiB、OOM/oom_kill/实验swap0；全机swap仍近满，两者不混淆。observer33069自然exit0，原科学继续，不重启。
