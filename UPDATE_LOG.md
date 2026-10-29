@@ -1,3 +1,9 @@
+## 2026-10-30 — 修复链继续，原训练35/75且真实update推进
+
+- 同一训练PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab保持active，完整fit33→34→35；当前RNN seed02 candidate05从788→18960update，OOM/oom_kill/swap均0，内存约1.57GB/3GiB。三个登记source清单1169/1171/1173项逐hash一致；固定27和final108原后继仍等待/零派发，无重复启动或修改绑定源。
+- 持续修复teacher/学习/场景问题的要求保持：新teacher全30已独立合格不等于学生闭环成功。完整75/九模型审计后固定27开发闭环与必要修复、最终108及真实六指标/媒体仍待；不凭loss或离线fit宣称主矩阵已修复。Goal active。
+- 开工宿主fetch/read main b15abf8b84c863a25ba3fa7042d7344e3deae487/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，完整AGENTS开工与收尾重读。本轮为同真实句柄verified wait；raw仅本地，无新归档/服务器计算/RL/删除；两个无关untracked保留。
+
 ## 2026-10-30 — 原训练第五组完成，当前33/75
 
 - 本轮verified wait：同PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab多次宿主核实active，29→31→33完整fit；RNN03 candidate04从2616→23716后完成，当前rnn_scratch_s2026102801_candidate05观察update5376。无failed_preserved候选/OOM/swap，三注册源清单全部一致；两个原后继仍等待，无重启/增派/运行源/预算/选模/gate变更，不把离线完成当闭环通过。
