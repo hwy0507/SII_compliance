@@ -1,0 +1,16 @@
+Started /usr/bin/taskset -c 6 /home/airpig/桌面/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/audit_special_scene_metrics_v2_20261030.py --folder outputs/nonrl_v9_paired_scene_priority_20261029_v5/rod_00_rnn_scratch/rod --expected-duration-s 20 --method rnn_scratch_s2026102801 --condition rod_00 --output ../../docs/evidence/nonrl_v9_candidate_catalogue_20261029/METRIC_V2_PREVIEW_ROD00_20261030.json.
+Traceback (most recent call last):
+  File "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/audit_special_scene_metrics_v2_20261030.py", line 81, in <module>
+    result = horizon(a.folder,a.expected_duration_s) if a.horizon_only else episode(
+                                                                            ~~~~~~~^
+        a.folder,a.method,a.condition,a.expected_duration_s)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/audit_special_scene_metrics_v2_20261030.py", line 60, in episode
+    from audit_special_scene_metrics_20261030 import episode as original_episode
+  File "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/audit_special_scene_metrics_20261030.py", line 9, in <module>
+    from review_v9_paired_scene_closure_20261029 import verify_qualification
+  File "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/review_v9_paired_scene_closure_20261029.py", line 13, in <module>
+    from current_student_policy_20260921 import load_current
+ModuleNotFoundError: No module named 'current_student_policy_20260921'
+sii-v9-metric-v2-preview-20261030.service: Main process exited, code=exited, status=1/FAILURE
+sii-v9-metric-v2-preview-20261030.service: Failed with result 'exit-code'.

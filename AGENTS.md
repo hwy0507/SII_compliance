@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 两组ESN九开发闭环合格；补齐完整回合机器合规审查
+
+- 读[完整回合审查与当前限制](docs/NONRL_V9_HORIZON_AUDIT_20261030.md)。独立prefix已核32完整case、4失败/4精确复用/2 selected组；ESN seed02/03各九train/val全qualified，seed01前三耗尽null。当前RNN seed01 rank2继续rod09；不是完整九组或最终主矩阵成功。完整12候选唯一后继仍等待，禁止重复派发/编辑冻结运行源。
+- 找到v1机器合规实现缺口：wrapper complete不证明跑满horizon。新增独立v2适配器，以登记时长核完整25Hz/800子步/5e-5时钟、hash、manifest与legacy invalid_physics；可读短回合保留行并判机器/Strict失败，损坏拒绝且须保留收据。原冻结文件/门槛/条件JSON不改，最终runner尚须接入/登记新源，不宣称已正式评测。
+- 四条有效/失败路径及七类损坏拒绝通过；原18轨迹全部预定时长审查通过，故此缺口不是原18 ESN失败原因。实际RNN rod00的400000子步v2预览通过：任务13采样确认9.52s、峰矩34.526338Nm、外穿透0.0740395mm。首次只读预览缺PYTHONPATH导入失败日志保留，补scripts:tools启动环境后独立重试exit0；无新积分/拟合。
+- 原服务PID1684974/Invocation不变、CPU6/3GiB/swap上限0/OOM全0，真实step推进，1115源hash全一致；后继PID1697598无worker。未触及RL/删除文件。原office108的57未完成格保留；九组完整资格、最终执行入口与三分离未见108仍待，Goal active。
+- 八成员13630bytes/SHA8c21c84454ed187bfd0276a5770a8e7a02da73c0fda0084e11333780644e3e0d逐成员/源前后及远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_horizon_20261030_v1/EVIDENCE.tar.gz`。不是在途全raw备份，服务器仅存储/核hash。开工fetch/read main2a0e269f7e21e055f372a1723d26f6cd8bd46277、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。
+
 ## 2026-10-30 — 首组ESN九闭环全部合格；完整12候选公平接续已等待
 
 - 读[全候选接续与球撞真实对照](docs/NONRL_V9_FULL_GRID_ELIGIBILITY_AND_BALL_STABILITY_20261030.md)。ESN seed2026102802的rank1 rho0.8/gain0.08/ridge0.1真实九train/val闭环全部qualified；独立selected-prefix核21完整case（含3失败/1复用），确认1组选择。不是九组或正式未见测试完成。seed01前三耗尽null、seed03继续；所有失败保留。
