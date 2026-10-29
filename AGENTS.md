@@ -1,5 +1,14 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — v9实际scope后处理入口修复与六指标手算预检
+
+- [完整记录](docs/NONRL_V9_TRANSFER_AUDIT_PREFLIGHT_20261029.md)：实际v9由scope直接启动，旧v8顶层审计要求其preparation/handoff，不能伪造套用。新增v9入口绑定实际登记/完整source/父protocol/conditions/v9数据与九模型，复用逐回合独立子步审计和条件SPT汇总。仍只算组合迁移压力，非三特化最终主矩阵。
+- 单条真实ESN1/condition000的277600保存子步兼容审计通过，原lift穿透abort保留；首次拒绝是同一venv绝对路径的`repo/../venv`字符串差异，只在新适配器中做点段归一化、不解析symlink、不改收据，不同venv拒绝通过。九项手算合成指标检查通过；在途完整审计拒绝、0/107/109数量拒绝通过，真实完整108审计尚未执行。
+- 原scope宿主active，协调器1541733/原单CPU6/3GiB/swap上限0；本轮45→47/108、Task5、Strict/BOTH0、SPT NA。唯一v3等待器PID1636845仍waiting，无student execution；1103登记源hash保持。没有重启或修改冻结运行源/门槛。Goal active、ESN控制表现和主矩阵尚未修复。
+- 本轮源码/报告/预检/单条真实审计包8404bytes/SHAcc3c4164cc4f79fb6119c7e73968338dfa8b22c3431e3210aad54f5c3d049d84逐成员与远端暂存/最终核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_metric_contract_20261029_v1/EVIDENCE.tar.gz`。无在途108归档、服务器计算或RL操作。
+- 开工fetch/read main4405d4356a130779e2ad1360ed00f80c07a82473、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两无关untracked保留。上一轮progress，本轮progress。
+
+
 ## 2026-10-29 — 三特化终态时间重建完成六条teacher核验
 
 - [终态遥测审查](docs/NONRL_V9_TERMINAL_TRACE_RECONSTRUCTION_20261029.md)：新只读工具核执行source tar/当前gate源码、MJB/trajectory hash，mj_forward重建六条train00/validation08终态序列、不积分。六条末帧与原成功/放置门一致，corner几何scalar误差<5e-15m；五连续后缀边界及两损坏拒绝检查通过。原源绑定前结果保留，采用TEACHER_SIX_SOURCE_BOUND。rod持续后缀8.88/8.92s、ball13.36/13.96s、corner11.88/11.96s，均只是采样终态证据，不是正式SPT或Strict认证；保持规则/T_ref仍须正式冻结。
