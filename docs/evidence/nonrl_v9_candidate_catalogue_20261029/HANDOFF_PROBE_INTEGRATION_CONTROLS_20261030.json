@@ -1,0 +1,35 @@
+{
+  "status": "passed_zero_physics",
+  "controls": [
+    {
+      "prefix": 175,
+      "saved_history_independent_pure_controller_replay": true
+    },
+    {
+      "prefix": 275,
+      "saved_history_independent_pure_controller_replay": true
+    },
+    {
+      "injected_physical_failure": false,
+      "worker_receipt_and_masks_correct": true
+    },
+    {
+      "injected_physical_failure": true,
+      "worker_receipt_and_masks_correct": true
+    },
+    {
+      "real_prepare_no_physics_and_duplicate_refusal": true
+    }
+  ],
+  "wait_boundary_controls": 5,
+  "source_sha256": {
+    "tools/run_v9_teacher_handoff_probe_20261030.py": "8ddcff17f9429744750032c77a20e7627c53b8b14a5fdc25c0fe986489ea9079",
+    "tools/audit_v9_teacher_handoff_probe_20261030.py": "c9914228b93988ecbe09b531802ee5d2da2e6dae1f14cb4bba039d74d9766c8a",
+    "tools/continue_v9_teacher_handoff_probes_20261030.py": "f2ce6dd40ea0c0e99ea159a0027f39b3b2a7cf337009e2285cb37249ae588004"
+  },
+  "real_input_hashes": {
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_retrain_20261029_v9/learning/mlp_scratch_s2026102802_candidate05/checkpoint.npz": "3218fb6b021e130adbc57089638138ad4f4f95c5b17963eb73a8b1c2c02d66ff",
+    "/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_direction_collection_20261029_v9/rod_00/rod/teacher.json": "2d6a922f95955946912c81ccff5b6cd503451c9b9d425e15c1b90781ca84062d"
+  },
+  "limitations": "Saved-history replay and injected worker errors, not new physical recovery evidence."
+}

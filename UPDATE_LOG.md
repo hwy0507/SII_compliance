@@ -1,3 +1,10 @@
+## 2026-10-30 — 两条真实教师纠偏探针已准备并自动等待安全接续
+
+- 读[两条有限教师接管探针](docs/NONRL_V9_TEACHER_HANDOFF_PROBES_20261030.md)。新增执行wrapper/独立审查/协调器，复用原物理worker不编辑；训练rod00、失败MLP02 rank1，175/275学生步后teacher接管至完整20s。原MJB/filter/gate/执行器/dt/输入冻结，记录mixed角色及未完成动作，实际teacher后缀才是未来标签候选；前缀反事实禁止作执行示范。独立纯controller回放、完整/异常worker胶合、真实prepare/check和重复拒绝、五等待边界控制通过；零新物理，不冒称纠偏/重训成功。
+- 唯一有限后继`sii-v9-teacher-handoff-probes-20261030.service` PID1755735已active、约60MB/3GiB/swap0、CPU6/线程1；HANDOFF waiting_for_full_grid_null_boundary、dispatch_attempted=false。绑定1136源，最长6h；须full12完整null且inactive、最终等待器明确null/零派发且inactive、最终108目录不存在，独立完整review后才登记并取公共计算锁跑两条。基础设施异常保留停止无重试；两条科学失败也完整保留，不做新拟合/测试/阈值修改。原full12仍唯一模拟器PID1697598，MLP03已到rank10，原1132source一致；七组开发合格保持，MLP02全12失败保留。
+- 八payload+manifest证据71625bytes/SHA318992afdd6e25bc4053fd6ead3a116d813b5fadde6de13f3cc4f2dba40472ba，逐成员/源前后/远端暂存及最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_handoff_probes_20261030_v1/EVIDENCE.tar.gz`。包含精确PENDING及等待状态快照，不是新raw/纠偏结果；服务器仅存储/hash。
+- Goal active：真实teacher纠偏结果、共享增强数据/公平重训、九模型锁定/最终108/六指标/媒体仍待，旧office108的57待补保留。开工main fc52856f693094556fe5d017700855c4a66ba4c9、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；本轮先行9c1389b3已push核验，收工重读AGENTS，两个无关untracked保留，无RL/删除/重复仿真。
+
 ## 2026-10-30 — 教师接管纠偏采集算子准备完成，MLP02完整12失败保留
 
 - 读[教师接管算子与限制](docs/NONRL_V9_DEVELOPMENT_TEACHER_HANDOFF_20261030.md)。新增开发算子同canonical48历史推进teacher/student，有限学生前缀后接管；保留教师前缀形成的状态，明确前缀反事实和后缀实际行为来源。10条保存历史/边界控制和8类错误拒绝通过，尚无新物理纠偏/示范/拟合，不把回放当纠偏成功。
