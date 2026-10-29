@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 六组九开发闭环合格；最终108唯一自动接续已有限等待
+
+- 读[自动接续与MLP新失败](docs/NONRL_V9_UNSEEN_AUTOMATIC_HANDOFF_20261030.md)。新增唯一有限等待器`sii-v9-unseen-handoff-20261030.service` PID1726066/Invocation207eb965fb0f445a99dcc8d64adbab19，CPU6/单线程/3GiB/swap0；当前MemoryCurrent59535360、HANDOFF waiting_for_complete_full_grid_selection，目标目录尚不存在/dispatch_attempted=false，零新物理。七份待执行source hash冻结，不得运行中编辑。完整12九模型齐全且两个选择服务inactive及独立完整审查后才register→run108→review；null终态零派发要求开发修复，基础设施失败/6h超时保留，不重复启动。review通过仍pending_delivery，不结束Goal。
+- 九类零物理决策及三协调器mock路径通过：在途/deactivating不抢跑，8项/null/failed不派发，ready严格register/run/review，worker异常停止保留不review/重试；编译/diff检查通过。真实等待器无worker/最终registration，原唯一仿真同PID1684974/Invocation推进，1115源和七待执行hash全一致，OOM0；完整12唯一后继PID1697598仍等原top3。
+- 第一组MLP seed01九条全qualified；独立prefix核67完整case/5失败/10复用/6 selected组（两个ESN、三个RNN、一个MLP）。MLP seed02 rank1 rod00虽Task=true/400000子步完整，却外穿透0.241338682mm>冻结0.2mm，10.16s越棍后未在12.84s撤回开始前持续回位，安全/行为失败完整保留。按共同规则淘汰，rank2 rod00当前400step/320000子步；不放宽门槛或凑合格。该新失败不在旧48条raw包，后续仍须归档。
+- 九成员12798bytes/SHAf38e60522101a0cd97e68a79f95295a6d3e33b0194e5d9efe726f09fd9858e20逐成员/源前后及远端暂存/最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_unseen_handoff_20261030_v1/EVIDENCE.tar.gz`。小证据非新raw全备份；服务器仅存储/hash，无RL或删除操作。
+- 九组完整资格/最终108/六指标/媒体/完整共享仍待，旧office108的57未完成保留，Goal active。上一轮progress、本轮progress。开工fetch/read main518d8d035691fbfd08502275ce8d2b6bd6557aeb、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。
+
 ## 2026-10-30 — 五组已选模型45条最终指标路径开发预检全部通过
 
 - 读[45条真实预检与口径限制](docs/NONRL_V9_SELECTED_METRIC_PREFLIGHT_20261030.md)。新增只读选中开发case审计入口：冻结精确execution/registration快照，核共同协议/候选/checkpoint/资格输入，每格重新独立actor/filter replay并运行最终v2指标路径；错误保留逐格failed，总体任一失败不得passed。不拟合、不积分、不读最终测试，不计算局部T_ref/SPT或据时间再选模型。

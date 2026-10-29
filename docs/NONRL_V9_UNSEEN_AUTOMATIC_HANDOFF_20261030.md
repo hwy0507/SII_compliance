@@ -1,0 +1,19 @@
+# 完整共同筛选到最终测试的有限自动接续
+
+新增`code/mujoco_6d_vmc_benchmark/tools/continue_v9_unseen_after_selection_20261030.py`。唯一服务`sii-v9-unseen-handoff-20261030.service`已启动，PID1726066、Invocation207eb965fb0f445a99dcc8d64adbab19，实际CPU6/单线程/MemoryMax3GiB/MemorySwapMax0，初始MemoryCurrent59535360bytes。它目前只是等待，不创建第二物理worker。
+
+等待目录`outputs/nonrl_v9_unseen_handoff_20261030_v1`；未来目标`outputs/nonrl_v9_isolated_unseen_108_20261030_v1`。启动时两者不存在，前者由等待器独占创建；当前后者仍不存在，无最终registration/execution。HANDOFF保存原条件SHA及七份待执行源hash；运行中不得编辑这七份源。协调锁与物理锁分开，等待不占物理锁。
+
+有限等待21600s，每20s核真实systemd状态、完整12候选execution及待执行hash。完整筛选仍active/deactivating继续等；基础设施failed保留并停止，不自动重启。全候选仍有null则记录`null_selection_requires_development_repair`，零最终派发；这不是Goal完成或暂停。若九模型全选择且完整筛选inactive，调用既有最终runner的register，强制核两个服务inactive、完整独立review/原数据候选来源/九checkpoint/条件/source，再顺序run108与完整独立review。完成状态明确`pending_delivery`，最终原始数据归档/研究解释/媒体尚须处理，不凭exit0结束Goal。
+
+九类零物理决策检查通过：无execution/在途继续等待；九项齐全但服务active/deactivating仍等待；基础设施失败、inactive null、错误8模型、failed service均不能派发；唯九项齐全且inactive才ready。三条实际协调器mock路径通过：ready严格register→run→review；null零调用且目标不存在；worker故障只register→run、失败收据保留且不review/重试。证据`UNSEEN_HANDOFF_CONTROLS_20261030.json`，未运行新物理或创建实际最终登记。
+
+## 同期真实筛选与新失败
+
+第一组MLP seed2026102801已九条开发闭环全qualified，合计六组（两个ESN、三个RNN、一个MLP）；ESN seed01仍需完整12接续，其他MLP继续。不得将六组合格当九组或未见测试成功。
+
+MLP seed2026102802首排名候选rod00跑满400000子步，Task=true，但外穿透0.241338682mm>冻结0.2mm，安全不通过；虽真实手接触、让位、10.16s越过棍，但12.84s撤回开始前没有按原5mm管/0.08s规则持续回位，行为资格失败。不能只看Task或越棍时间宣称用户要求完成。完整失败轨迹/收据原位保留，候选按同规则淘汰，第二排名候选已启动；不改阈值/teacher/场景去掩盖失败。
+
+小证据：`MLP_SEED02_RANK1_ROD00_DEMONSTRATION_QUALIFICATION.json`、`MLP_SEED02_RANK1_ROD00_ROD_YIELD_REJOIN_AUDIT_V3.json`及`UNSEEN_WAIT_HANDOFF_20261030.json`。这条新失败在此前48条raw快照之后，不能冒称已包含于48包；后续完整归档仍需补齐。
+
+本轮原top3同PID1684974/Invocation继续，完整12唯一后继PID1697598仍等待；未编辑其冻结源，未运行服务器计算、删除历史或触及RL。Goal active。
