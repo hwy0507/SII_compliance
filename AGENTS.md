@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 三特化终态时间重建完成六条teacher核验
+
+- [终态遥测审查](docs/NONRL_V9_TERMINAL_TRACE_RECONSTRUCTION_20261029.md)：新只读工具核执行source tar/当前gate源码、MJB/trajectory hash，mj_forward重建六条train00/validation08终态序列、不积分。六条末帧与原成功/放置门一致，corner几何scalar误差<5e-15m；五连续后缀边界及两损坏拒绝检查通过。原源绑定前结果保留，采用TEACHER_SIX_SOURCE_BOUND。rod持续后缀8.88/8.92s、ball13.36/13.96s、corner11.88/11.96s，均只是采样终态证据，不是正式SPT或Strict认证；保持规则/T_ref仍须正式冻结。
+- 原108本轮43→45/108、Task5、Strict/BOTH0、SPT NA；宿主scope active（MemoryCurrent1477910528/3GiB、swap上限0），唯一v3 PID1636845仍waiting_for_original108、无student execution，不重启。主矩阵未修复、Goal active；后继18审查与train/val修复、独立未见最终测试仍待。
+- 新工具/报告/六teacher序列包35916bytes/SHAd05290fd1c05029cd39e4a60386d350a87629f46c6847f7f7da6ab5e83d8ea1e逐成员/远端暂存/最终核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_terminal_trace_20261029_v1/EVIDENCE.tar.gz`。无在途108归档、服务器计算/新仿真/拟合或冻结运行源修改。
+- 开工fetch/read main a49d2709313285e0e3477cc8d780ae3a4e4dc5e9、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；重读AGENTS，两个无关untracked保留。上一轮progress，本轮progress。
+
+
 ## 2026-10-29 — teacher反事实对照完成，ESN早期外推仍待修复
 
 - 新增诊断见`docs/NONRL_V9_TEACHER_FIT_AND_MATRIX_DIAGNOSIS_20261029.md`末节及`docs/evidence/nonrl_v9_teacher_counterfactual_20261029/`。实际teacher500帧精确重放误差0；九学生保存历史独立teacher反事实对照，无积分/拟合。三ESN在2.12s饱和时teacher残差适中，y约+0.68对ESN−1，早于棍推；但teacher在后续失稳历史也有饱和，不能当物理成功或唯一根因。禁止将测试反事实直接当训练标签。
