@@ -1,5 +1,22 @@
 # 原108结束后的临时服务回收衔接
 
+## 后续核验：05:20–05:28 UTC，75→77
+
+05:20:33.735–05:28:33.887UTC共17样本，原1172675/start32623702及后处理1201537/start32942337
+始终loaded/active，完整75→77；ESN2由lift进入carry后自然结束，RNN2从approach→lift→carry
+完整结束，再接续MLP2，末样本4.04s/lift。两新完成runtime均55s/无abort/TaskStrict=false、
+最终carry；不是新增独立子步审计或完整第九条件结论。
+最高MemoryCurrent2346278912bytes/3GiB，所有样本oom/oom_kill/实验swap为0；
+主机末MemAvailable4284476kB、SwapFree152kB。observer87760达第77条后自然exit0，科学继续。
+
+[完整17样本及观察源码](evidence/NONRL_INTENT_RECOVERY_20261029/V8_VERIFIED_WAIT_0520.json)，
+34639bytes，SHA256 `66cb5c5d0031ebac87028448bc166d58fd75ab1b2432c515f296021444b3be7b`。
+已核暂存及最终大小/hash：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0520_20261029_v1/V8_VERIFIED_WAIT_0520.json`。
+开工mainba81b92c/baselinef6e8f8c实际fetch/read。本轮verified wait，Goal active；原完整108与
+统一后处理继续，唯一v6未启动，主矩阵尚未修复。完整审查归档→八球→正式补采/公平重训保持，
+没有修改绑定源、新增物理或拟合，可选004审计未重试。
+
 ## 后续核验：05:12–05:17 UTC，73→75
 
 本轮verified wait：05:12:48.339–05:17:48.435UTC共11次原1172675/start32623702及
