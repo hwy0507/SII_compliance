@@ -1,3 +1,10 @@
+## 2026-10-30 — ESN/MLP同场景回位诊断；完整12候选已真实接续
+
+- 读[同条件五条ESN与五条MLP诊断](docs/NONRL_V9_MLP_ROD_REJOIN_DIAGNOSIS_20261030.md)。保存状态mj_forward、原资格/行为输入hash及teacher/学生动作精确回放，MJB/初始canonical48一致，无积分/拟合/最终测试。teacher越棍后撤回前最小横向偏差1.872mm；失败ESN seed01 rank1/3为82.732/26.529mm，残差动作饱和帧57.2%/17.4%；通过ESN seed01 rank2/seed02 rank1为1.730/2.934mm且0%饱和。前者仍ball09失败，不能列完整合格。失败MLP seed02前三8.429–9.918mm/均0%饱和。支持学生闭环偏差/选模稳定性问题，不证明唯一根因或teacher在学生失败历史必能纠偏；诊断窗口不替代原逐样本gate。
+- 原top3已自然结束：独立FINAL_REVIEW核72完整case/10失败/10复用，六组选中（2ESN/3RNN/1MLP），ESN01/MLP02/03前三耗尽。唯一完整12后继PID1697598已自动完成原phase审查、登记并真实接续ESN01 rank4 rod00；1132绑定source全部一致，不编辑。原PID1684974 inactive；最终等待器PID1726066仍等九组锁定，最终108尚未派发。全12仍null则另登记共享数据/学习修复，不降gate或给ESN单独恢复；Goal active。
+- 六payload+manifest诊断包15041bytes/SHAd02f2917b703f6250a6ef9293d56892677f11fb079ff1c140e33408fb573d5cc，逐成员/源前后及远端暂存/最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_rejoin_diagnosis_20261030_v1/EVIDENCE.tar.gz`。仅诊断和70case前缀，不是raw全集或后续72case/full12登记备份；后续小快照另入Git。服务器仅存储/hash，无RL操作、删除或重复仿真。
+- 最终九组/三特化108/六指标/媒体未完成，旧office108的57未完成保留。开工fetch/read main58981a8eabfec30a2bc6bf9f8394b0d613a4bebc、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。上一轮progress、本轮progress。
+
 ## 2026-10-30 — 六组九开发闭环合格；最终108唯一自动接续已有限等待
 
 - 读[自动接续与MLP新失败](docs/NONRL_V9_UNSEEN_AUTOMATIC_HANDOFF_20261030.md)。新增唯一有限等待器`sii-v9-unseen-handoff-20261030.service` PID1726066/Invocation207eb965fb0f445a99dcc8d64adbab19，CPU6/单线程/3GiB/swap0；当前MemoryCurrent59535360、HANDOFF waiting_for_complete_full_grid_selection，目标目录尚不存在/dispatch_attempted=false，零新物理。七份待执行source hash冻结，不得运行中编辑。完整12九模型齐全且两个选择服务inactive及独立完整审查后才register→run108→review；null终态零派发要求开发修复，基础设施失败/6h超时保留，不重复启动。review通过仍pending_delivery，不结束Goal。
