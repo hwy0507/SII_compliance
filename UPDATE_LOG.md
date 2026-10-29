@@ -1,7 +1,13 @@
+## 2026-10-29 — 接续器v2补齐棍推行为审计依赖（未触及科学运行）
+
+- 接续前静态依赖复查发现v1开发检查器未生成qualification所需的`ROD_YIELD_REJOIN_AUDIT_V3.json`。已只停止尚在等待、无student execution的v1服务；原108继续。修正审计顺序actor/filter→rod yield/rejoin→qualification，失败收据照常保留，不修改任何成功标准。
+- 新唯一登记`outputs/nonrl_v9_paired_scene_closure_20261029_v2`；服务`sii-v9-paired-closure-handoff-v2-20261029.service`PID1632309/Invocation6b132622024c47d79fcd89d2b7f96ee0 active、HANDOFF=waiting_for_original108，仍无student execution。18case与全部登记源hash核验通过，在途parent拒绝检查再次通过。旧v1登记/收据/归档保留且superseded，勿重启。仍须先完成108，再开发18审查，主矩阵未修复、Goal active。
+- v2修正包64373bytes/SHA1542cccd5a5d8690ac0a224e631d3a1ab3afc18baa6f95f72168f4c35bd5dba0已核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_closed_loop_support_20261029_v1/CORRECTION_V2.tar.gz`。原EVIDENCE.tar.gz仍为v1启动历史，不冒称含v2。当前源码hash以MANIFEST_V2和REGISTRATION_V2为准。
+
 ## 2026-10-29 — v9首次失稳早于棍推；开发配对闭环已串行登记与启动等待
 
 - [诊断及真实轨迹图](docs/NONRL_V9_TEACHER_FIT_AND_MATRIX_DIAGNOSIS_20261029.md)：正确v9 train数据SHA12017388/12600帧，condition000九条保存轨迹中三个ESN均2.12s首次动作饱和，早于12.824s棍推；六条RNN/MLP无饱和。活跃feature超训练逐维包络及raw readout26.75–221.48表明外推放大风险；不能仅归因“蹭棍新动作”。初始关节0/2/6越界不进入此ESN，排除该错误推论。三ESN actor replay误差≤4.24e-14。无新拟合/物理审计或测试选模。
-- 原108在22:09CST快照35完整、Task3/Strict0/BOTH0，SPT NA，原scope active/MemoryCurrent1.582GB/3GiB/swap上限0；没有重启。新18条为三特化场景train00/validation08与合格teacher的开发配对，不当未见测试；固定seed01三学生/原checkpoint/gate，原108 complete且scope inactive后才运行。前置拒绝验证通过，无新student execution。唯一交接服务`sii-v9-paired-closure-handoff-20261029.service`PID1629199/Invocation0356b82bcfc94200b2530a5f11b71332等待中，12h限时/CPU6/线程1/3GiB/禁swap；后续必须审查18条并根据train/val修复，再另冻结未见隔离测试。Goal active，主矩阵仍未修复。
+- 原108在22:09CST快照35完整、Task3/Strict0/BOTH0，SPT NA，原scope active/MemoryCurrent1.582GB/3GiB/swap上限0；没有重启。新18条为三特化场景train00/validation08与合格teacher的开发配对，不当未见测试；固定seed01三学生/原checkpoint/gate，原108 complete且scope inactive后才运行。前置拒绝验证通过，无新student execution。唯一交接服务`sii-v9-paired-closure-handoff-v2-20261029.service`PID1632309/Invocation6b132622024c47d79fcd89d2b7f96ee0等待中，12h限时/CPU6/线程1/3GiB/禁swap；后续必须审查18条并根据train/val修复，再另冻结未见隔离测试。Goal active，主矩阵仍未修复。
 - 四新脚本编译、正确数据/冻结checkpoint hash、九轨迹hash及三actor精确回放、原在途拒绝、绘图目视核查通过；首次诊断把物理model hash当checkpoint hash而拒绝，已改用INPUT_MODEL_LOCK真实checkpoint hash，未改原收据；系统Python无matplotlib改用既有.venv-sii-local-rl，未安装环境。所有失败保留。
 - 诊断/图/源码/登记/拒绝/交接小证据包395531bytes、SHA0f8c34c5a8030048f275e55eff1280f04078a24b80fd66e279953ad765607df9暂存及最终同hash已核：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_closed_loop_support_20261029_v1/EVIDENCE.tar.gz`。不包含完整拟合/在途108；服务器仅归档。
 - 开工真实fetch/read main b176715876980557aeb266e79361a7ff72225b08、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；baseline最新是2026-10-08接触指标探索，纠正此前误称。重读AGENTS；未改运行绑定源、九模型或冻结科学约束，无RL/子agent/删除。上一轮push的b1767158已核远端；本轮另提交同步。

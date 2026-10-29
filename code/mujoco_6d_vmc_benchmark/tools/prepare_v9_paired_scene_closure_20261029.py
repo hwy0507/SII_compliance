@@ -95,7 +95,11 @@ def run(root):
             assert rc == 0, 'Infrastructure failure preserved; no automatic retry'
             folder = output/case['scene']
             assert read(folder/'execution.json')['model_sha256'] == case['physics_model_sha256']
-            for audit in ('audit_video_reference_vmc_20261028.py', 'qualify_special_scene_demo_20261028.py'):
+            audits = ['audit_video_reference_vmc_20261028.py']
+            if case['scene'] == 'rod':
+                audits.append('audit_rod_yield_rejoin_v3_20261028.py')
+            audits.append('qualify_special_scene_demo_20261028.py')
+            for audit in audits:
                 with (output/(audit+'.log')).open('x') as log:
                     subprocess.run([sys.executable, str(ROOT/'tools'/audit), str(folder)], cwd=ROOT,
                         env=env, stdout=log, stderr=subprocess.STDOUT, check=True)

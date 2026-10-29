@@ -1,9 +1,14 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 当前接续以v2为准
+
+- v1等待器因漏掉rod行为审计依赖已停止，未启动student仿真；原108不受影响。只接续`nonrl_v9_paired_scene_closure_20261029_v2`和`sii-v9-paired-closure-handoff-v2-20261029.service`，PID1632309/Invocation6b132622024c47d79fcd89d2b7f96ee0。当前等待parent complete；v2登记源hash/18case/前置拒绝验证通过。v1历史证据保留。审计顺序actor/filter→rod yield/rejoin→qualification。
+- v2源码/登记/收据64373bytes/SHA1542cccd5a5d8690ac0a224e631d3a1ab3afc18baa6f95f72168f4c35bd5dba0已核共享于上轮归档目录的`CORRECTION_V2.tar.gz`，完整地址见UPDATE_LOG。旧EVIDENCE为v1历史；当前用MANIFEST_V2。Goal active，主矩阵未修复。
+
 ## 2026-10-29 — v9闭环外推定位与18条串行开发检查已接续登记
 
 - 当前读[完整诊断](docs/NONRL_V9_TEACHER_FIT_AND_MATRIX_DIAGNOSIS_20261029.md)新增时序段及`docs/evidence/nonrl_v9_closed_loop_support_20261029/DIAGNOSIS.json`。正确v9数据SHA12017388/12600 train；condition000九轨迹中，三个ESN均2.12s首次饱和，早于12.824s棍推；RNN/MLP无饱和。活跃特征超训练包络、raw读出放大是修复线索，非唯一因果证明。初态越界通道0/2/6不进入ESN encoder，不能误归因。actor精确回放通过。
-- 原108在22:09CST快照35完整、Task3/Strict0/BOTH0，SPT NA；原scope active，不重启。新18开发闭环（三分离场景×train00/validation08×三方法seed01）登记`outputs/nonrl_v9_paired_scene_closure_20261029_v1`，不是unseen test或正式主矩阵。`sii-v9-paired-closure-handoff-20261029.service` PID1629199/Invocation0356b82bcfc94200b2530a5f11b71332已启动，仅等待原108 complete及原scope inactive；12h有限等待、单CPU6/线程1/3GiB/swap0。HANDOFF=waiting_for_original108、无student execution；禁止重复交接器/worker。
+- 原108在22:09CST快照35完整、Task3/Strict0/BOTH0，SPT NA；原scope active，不重启。新18开发闭环（三分离场景×train00/validation08×三方法seed01）登记`outputs/nonrl_v9_paired_scene_closure_20261029_v2`，不是unseen test或正式主矩阵。`sii-v9-paired-closure-handoff-v2-20261029.service` PID1632309/Invocation6b132622024c47d79fcd89d2b7f96ee0已启动，仅等待原108 complete及原scope inactive；12h有限等待、单CPU6/线程1/3GiB/swap0。HANDOFF=waiting_for_original108、无student execution；禁止重复交接器/worker。
 - 后继18须完整审查所有失败，对照同身份合格teacher，先判同场景学习还是迁移失败；仅train/val可用于新修复/拟合，另注册未见隔离test。未改冻结门槛、actor输入/filter/物理/执行器或九模型。Goal active，主矩阵未修复。
 - 本轮四源码/诊断/图/18登记/前置拒绝/交接收据包395531bytes、SHA0f8c34c5a8030048f275e55eff1280f04078a24b80fd66e279953ad765607df9已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_closed_loop_support_20261029_v1/EVIDENCE.tar.gz`；不含完整v9拟合或在途108。开工最新main b176715876980557aeb266e79361a7ff72225b08、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，两日志已fetch/read；baseline是接触指标探索，不是RL进展。
 

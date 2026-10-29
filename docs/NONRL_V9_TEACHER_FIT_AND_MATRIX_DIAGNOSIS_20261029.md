@@ -57,11 +57,14 @@
 
 ![真实保存轨迹的前8秒动作与误差](evidence/nonrl_v9_closed_loop_support_20261029/early_closed_loop.png)
 
-新登记`outputs/nonrl_v9_paired_scene_closure_20261029_v1/REGISTRATION.json`为18条开发闭环：三个分离场景×train00/validation08×三方法，固定模型seed2026102801，与已有同身份合格teacher配对，不重新挑teacher。它不属于未见最终测试；必须等原108 complete后才运行。实际在途前置拒绝检查通过，未创建execution或启动物理。源码和登记见本证据目录；后续按结果区分同场景学习缺陷与组合迁移，再制定仅train/val的修复，不能依此宣称主矩阵已修复。
+新登记`outputs/nonrl_v9_paired_scene_closure_20261029_v2/REGISTRATION.json`为18条开发闭环：三个分离场景×train00/validation08×三方法，固定模型seed2026102801，与已有同身份合格teacher配对，不重新挑teacher。它不属于未见最终测试；必须等原108 complete后才运行。实际在途前置拒绝检查通过，未创建execution或启动物理。源码和登记见本证据目录；后续按结果区分同场景学习缺陷与组合迁移，再制定仅train/val的修复，不能依此宣称主矩阵已修复。
 
 最新执行快照35/108、Task3、Strict0、BOTH0；原scope active，MemoryCurrent1582096384/3221225472bytes，MemorySwapMax0。18条尚未执行。SPT仍NA。所有原失败保留，未改九模型、物理、gate、filter或运行绑定源。
 
 
-18条串行交接服务已启动：`sii-v9-paired-closure-handoff-20261029.service`（PID1629199、Invocation0356b82bcfc94200b2530a5f11b71332），实际HANDOFF为waiting_for_original108，尚无student execution。它等原108完整结束且原scope inactive后才派发；等待上限12h、单CPU6/1线程/3GiB/禁swap，异常保留而不重复重试。此交接器不等于18条已完成或主矩阵已修复。
+18条串行交接服务已启动：`sii-v9-paired-closure-handoff-v2-20261029.service`（PID1632309、Invocation6b132622024c47d79fcd89d2b7f96ee0），实际HANDOFF为waiting_for_original108，尚无student execution。它等原108完整结束且原scope inactive后才派发；等待上限12h、单CPU6/1线程/3GiB/禁swap，异常保留而不重复重试。此交接器不等于18条已完成或主矩阵已修复。
 
 本轮小证据已共享并核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_closed_loop_support_20261029_v1/EVIDENCE.tar.gz`，395531bytes，SHA256 `0f8c34c5a8030048f275e55eff1280f04078a24b80fd66e279953ad765607df9`，包含四脚本、图、诊断、18登记、拒绝及交接启动收据。未含完整拟合或仍在途的108产物。
+
+
+v2接续修正：v1等待阶段复查发现漏掉qualification依赖的棍推行为审计，已停止v1且确认无student execution，原108未动。当前v2按actor/filter→rod yield/rejoin→qualification执行，18case/全部登记源hash/原在途拒绝验证通过；仍在等待，非完成。v1原EVIDENCE保留，v2增补包`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_closed_loop_support_20261029_v1/CORRECTION_V2.tar.gz`已核64373bytes/SHA1542cccd5a5d8690ac0a224e631d3a1ab3afc18baa6f95f72168f4c35bd5dba0。当前源码与登记核验使用MANIFEST_V2及PAIRED_CLOSURE_REGISTRATION_V2，不用历史v1 manifest核当前修正版源码。
