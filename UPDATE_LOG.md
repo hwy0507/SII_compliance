@@ -1,3 +1,8 @@
+## 2026-10-29 — 恢复76观察与77完整审查/派发准备
+
+- [交接](docs/RL_RECOVERY76_WAIT77_DEPLOY_20261029.md)。77全loss保留49–74/76历史、75拒绝、新76→77配对；独立算术/原gate保持，路径及AST检查通过。新decision/launcher绑定完整76全审/实际图/准确77恢复/历史证据/原76–78PLAN，实际不完整76、缺DECISION77、缺77LAUNCH拒绝，无新训练或决定。
+- 原观察21样本/600.001s，全部原身份live=True，当前steps{'impedance': 3151526, 'admittance': 3152338, 'vmc': 3156000}；终态须按FINISHED核验，不重启科学。guard231样本min[75, 72, 69, 69]%、低于50[0, 0, 0, 0]，科研完成仍保载。SSD29成员/27972字节/SHAb640edd4已核，非HDD/arm1全备份；main6492ab17/baselinef6e8f8c已读，认证发布待，Goal active、Direct34false。
+
 ## 2026-10-29 — 非RL球示范真实搬运核查与后继复用
 
 - [报告](docs/NONRL_V8_BALL_ACTUAL_MOTION_20261029.md)：八train球实际物体搬运89.288–90.138mm，非仅目标移动；仍同一方向，不证明联合覆盖充分。新增独立实际位移/相对位置描述工具，八球v6原review后追加使用，正式数据亦可复用；不改变原198绑定源/资格/模型。
