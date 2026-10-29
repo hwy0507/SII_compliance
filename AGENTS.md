@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 完整74审查与准确有限75
+
+- [交接](docs/RL_PARAMETER74_COMPLETE_20261029.md)。三路完整74各30×55/41250/noabort，旧73 replay/history保持、新reward重算0、网络optimizer有限；全loss/180标签/90reward对/health/全2214终端及实际图已审，具体改善和退化保留。
+- 尚未整体收敛，DECISION75绑定53证据，准确74全state/replay/next65536和实际75 startup通过；02:53:05steps3092235/3092857/3093839。75全loss已部署，原74–76 PLAN/waiter保持，无自动76，Direct34false，Goal active。
+- 原71–73完整不稳定结论和全部历史窗口、5%/近零1/seed/anchor55均保持。observer自然结束61样本，当前审查就绪False，之后另核实际完成，不重启科学。
+- 500guard样本min76/62/65/63%、低于50[0, 0, 0, 0]，科研完成仍保载。SSD包240成员/2530975字节/SHA56b53ef0逐字节/AST核验，大数据SSD非HDD/arm1全备份；开工maine89ad58a/baselinef6e8f8c实际fetch/read，无子agent。
+
 ## 2026-10-29 — 非RL原108推进45，注意主机内存压力
 
 - [当前交接](docs/NONRL_V8_COVERAGE_INGESTION_AND_CPU_FIX_20261029.md)。02:31:03–02:41:04UTC共21样本，原1172675/start32623702及后处理1201537/start32942337保持loaded/active，43→44/108、最高804450304bytes、cgroup OOM/swap0；observer59764自然exit0，不重启科学。
