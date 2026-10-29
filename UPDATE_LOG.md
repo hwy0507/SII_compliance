@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL原108连续观察86→89
+
+- 06:09:13–06:24:13UTC31次原1172675/start32623702及1201537/start32942337保持loaded/active，86→89、接续MLP3条件009。最高1871986688bytes/3GiB、OOM/实验swap0，全机swap仍近满。observer68766满900秒自然exit0，原科学继续，不重启。
+- 三新增完整55s/TaskStrictfalse，MLP2穿透0.955mm；ESN3途中误差约1.21m，RNN3未完成搬运。第十条件尚未完整，非新独立子步审计，失败保留。60692bytes/SHA c5eae7e5的31样本与源码已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0609_20261029_v1/V8_CONDITION009_RUNTIME_AND_WAIT.json`，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。
+- 开工main6492ab17/baselinef6e8f8c实际fetch/read，上一轮progress、本轮verified wait，Goal active、主矩阵未修复。原完整审查归档→唯一v6八球及实际运动核查→正式三场景补采/公平重训保持；无新增物理/拟合/RL/子agent/服务器计算，可选004审计未重试。
+
 ## 2026-10-29 — 非RL球示范真实搬运核查与后继复用
 
 - [报告](docs/NONRL_V8_BALL_ACTUAL_MOTION_20261029.md)：八train球实际物体搬运89.288–90.138mm，非仅目标移动；仍同一方向，不证明联合覆盖充分。新增独立实际位移/相对位置描述工具，八球v6原review后追加使用，正式数据亦可复用；不改变原198绑定源/资格/模型。

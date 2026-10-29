@@ -1,5 +1,10 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL连续观察86→89
+
+- 06:09–06:24UTC共31次原1172675/start32623702及1201537/start32942337 loaded/active，86→89，MLP2→ESN3→RNN3→MLP3；最高1871986688bytes/3GiB、OOM/实验swap0。observer68766满900秒自然exit0，原科学继续；新完成三条55s/TaskStrictfalse，第十条件未完整，非新子步审计。
+- 60692bytes/SHA c5eae7e5证据含源码，已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0609_20261029_v1/V8_CONDITION009_RUNTIME_AND_WAIT.json`，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。Goal active，主矩阵未修复；原完整审查归档→唯一v6八球及实际运动检查→正式补采/公平重训仍待，可选004未重试。
+
 ## 2026-10-29 — 非RL球示范实际搬运核查
 
 - [报告](docs/NONRL_V8_BALL_ACTUAL_MOTION_20261029.md)：八train球物体搬运89.288–90.138mm、回程88.702–89.895mm，非仅目标移动，但仍同一方向；不证明覆盖充分。新独立实际手/物轨迹描述工具可用于后继八球及正式数据，四手算/四拒绝/真实32阶段标量复核通过，不新增gate或拟合。
