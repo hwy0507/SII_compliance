@@ -1,5 +1,10 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL第八条件结束、原108到72
+
+- [交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)：05:08–05:09UTC三样本原1172675/start32623702及1201537/start32942337保持active，71→72并接续条件008，OOM/实验swap0，observer51125自然exit0，科学继续。第八九条均55s/TaskStrictfalse，前八72条runtime全失败；ESN2/MLP2/MLP3穿透超限、MLP1舒适NA，SPT NA；非新增独立子步审计，004–007待完整后处理。
+- 三样本/九结果/计数/源码31204bytes/SHAdd2a0897已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition007_runtime_20261029_v1/V8_CONDITION007_RUNTIME_AND_WAIT.json`。Goal active，主矩阵未修复；原108/后处理继续，唯一v6未启动，完整审查归档→覆盖修复→正式补采/公平重训仍待，可选004审计未重试。
+
 ## 2026-10-29 — 非RL训练曝光核验
 
 - [报告](docs/NONRL_V8_TRAINING_EXPOSURE_20261029.md)：独立日程工具核完72神经候选，三seed同组两家曝光一致，逐有效帧/序列边界/整epoch/train-only通过；变时长边界及五损坏拒绝通过，无新拟合。棍/球/角帧份额31.7460/47.6190/20.6349%，8train/scene不等于等权，不改原规则。补采训练完成后可复用检查实际曝光。

@@ -1,5 +1,38 @@
 # 原108结束后的临时服务回收衔接
 
+## 最新完整条件：007九条runtime，累计72/108
+
+05:08:13.159–05:09:13.175UTC三次采样：原1172675/start32623702及后处理1201537/start32942337
+均loaded/active，完整71→72，原协调器已进入条件008。最高MemoryCurrent1964367872bytes/3GiB，
+OOM/oom_kill/实验swap为0，主机swap仍近满。observer51125因第八条件完整自然exit0，科学继续。
+
+第八条件九条均完整55s、无abort、Task/Strict=false。前八条件72条runtime Task/Strict/BOTH全0，
+SPT NA。这些是运行收据，不是新独立物理审计；独立条件审计仍仅000–003，004–007待原后处理。
+九份AUDIT.json和metrics小文件hash与snapshot逐一一致，metrics的Task/Strict标签逐一相符。
+
+| 方法/seed末位 | 最终阶段 | 峰矩 Nm | 接触期舒适代理 | 机器合规 |
+|---|---|---:|---:|---|
+| ESN1 | lift | 75.617134 | 59.9380% | 是 |
+| RNN1 | approach | 43.393333 | 100% | 是 |
+| MLP1 | approach | 36.664909 | NA | 是 |
+| ESN2 | lift | 67.579155 | 87.9757% | 否 |
+| RNN2 | carry | 38.772083 | 100% | 是 |
+| MLP2 | carry | 51.592674 | 99.1356% | 否 |
+| ESN3 | carry | 55.692780 | 21.7431% | 是 |
+| RNN3 | carry | 38.696056 | 100% | 是 |
+| MLP3 | carry | 44.209389 | 100% | 否 |
+
+ESN2/MLP2/MLP3所报外部穿透峰值分别1.779645/0.545885/0.594268mm，超过原0.2mm门槛。
+MLP1无人体接触，NA不是100%；机器合规也不意味着任务成功。全部失败保留，不据此改模型或门槛。
+
+[三样本、九原始结果、前八条件计数和采样源码](evidence/NONRL_INTENT_RECOVERY_20261029/V8_CONDITION007_RUNTIME_AND_WAIT.json)：
+31204bytes，SHA256 `dd2a08973cf0ab6cf2b33352e46e84aa42fcebeca43d1d9dd00158fcc081d23d`。
+暂存与最终归档大小/hash均核验：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition007_runtime_20261029_v1/V8_CONDITION007_RUNTIME_AND_WAIT.json`。
+开工main28485480/baselinef6e8f8c实际fetch/read。上一轮训练曝光审计为progress，本轮保存完整条件
+失败与verified wait。原108/完整后处理继续，唯一v6未启动；完整审查归档→覆盖修复→正式补采/
+公平重训/闭环六指标仍待，Goal active，主矩阵尚未修复，可选004审计未重试。
+
 ## 后续核验：训练实际曝光与场景份额
 
 [曝光报告](NONRL_V8_TRAINING_EXPOSURE_20261029.md)：新增独立日程审计，实际72神经候选全部通过，

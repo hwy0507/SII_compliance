@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL第八条件结束，原矩阵72/108
+
+- 05:08:13–05:09:13UTC三样本原1172675/start32623702及1201537/start32942337保持loaded/active，71→72并接续条件008；最高1964367872bytes/3GiB、OOM/实验swap0。observer51125自然exit0，科学继续。见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。
+- 第八九条runtime均55s/noabort/TaskStrictfalse；前八条件72条Task/Strict/BOTH全0，SPT NA。ESN2/MLP2/MLP3穿透超限、MLP1舒适NA；九小型AUDIT/metrics hash和标签一致，非新独立子步审计。独立审计000–003，004–007仍待原完整后处理，不扩展为完整108结论。
+- 三样本/九结果/计数/源码31204bytes/SHAdd2a0897已核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition007_runtime_20261029_v1/V8_CONDITION007_RUNTIME_AND_WAIT.json`。开工main28485480/baselinef6e8f8c实际fetch/read，Goal active，主矩阵未修复；唯一v6仍未启动，后续完整审查归档/覆盖修复/正式补采/公平重训仍待。无新拟合/物理/RL/子agent/服务器计算，可选004审计未重试。
+
 ## 2026-10-29 — 非RL实际训练曝光与场景权重核验
 
 - [报告](docs/NONRL_V8_TRAINING_EXPOSURE_20261029.md)：新独立日程审计核72神经候选/三不同日程，32000updates逐有效帧、分组chunk、epoch边界及train-only检查通过，同seed两家24候选一致。变时长手算边界和五损坏拒绝通过；无新拟合/物理。实际棍/球/角帧份额31.7460/47.6190/20.6349%，每场景8train不是等权，不改变原选择规则或以此认定失败原因。
