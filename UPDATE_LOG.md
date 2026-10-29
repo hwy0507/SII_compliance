@@ -1,3 +1,8 @@
+## 2026-10-30 — 原训练持续推进至17/75，登记源与资源正常
+
+- 本轮为verified wait：宿主多次确认原训练PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab保持active，14→15→17个完整fit；当前rnn_scratch_s2026102802_candidate02、观察update6836。无失败候选；原两个评测后继继续等待，无重复派发。三个等待链注册source全部一致，训练OOM0/swap0，MemoryCurrent约1.53GiB/3GiB。保持原预算/选模与运行源码，不为等待另开训练。
+- 开工已宿主fetch/read main954156be7d0a3c40c223bb302326de3fe11af976/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d、完整AGENTS；收尾重读。本轮无新物理/actor审计/最终结果，完整75/九锁定/27与必要修复/108/真实六指标和媒体仍待，Goal active。新raw仍仅本地，未绕过旧导出拒绝，无RL/服务器计算/删除。两个无关untracked保留。
+
 ## 2026-10-30 — 当前108正式六指标报告入口准备完成，真实训练13/75
 
 - 读[最终报告入口及限制](docs/NONRL_CONTACT_YIELD_FINAL_REPORT_READINESS_20261030.md)。新增experiments/report_contact_yield_final108_20261030.py，仅允许固定新运行完整独立108报告，核adapter注册/执行/reviewer hash、全部身份/replay和原汇总；输出四CSV/六指标PNG-PDF/MD/hash收据，无拟合/物理/选模。family36回合pooling与九seed模型表明确分开；SPT仅双成功、峰矩含失败、人舒适NA/代理分列，无成功或无接触保持NA。
