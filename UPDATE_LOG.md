@@ -1,3 +1,8 @@
+## 2026-10-29 — 非RL原108连续观察86→89
+
+- 06:09:13–06:24:13UTC31次原1172675/start32623702及1201537/start32942337保持loaded/active，86→89、接续MLP3条件009。最高1871986688bytes/3GiB、OOM/实验swap0，全机swap仍近满。observer68766满900秒自然exit0，原科学继续，不重启。
+- 三新增完整55s/TaskStrictfalse，MLP2穿透0.955mm；ESN3途中误差约1.21m，RNN3未完成搬运。第十条件尚未完整，非新独立子步审计，失败保留。60692bytes/SHA c5eae7e5的31样本与源码已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0609_20261029_v1/V8_CONDITION009_RUNTIME_AND_WAIT.json`，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。
+- 开工main6492ab17/baselinef6e8f8c实际fetch/read，上一轮progress、本轮verified wait，Goal active、主矩阵未修复。原完整审查归档→唯一v6八球及实际运动核查→正式三场景补采/公平重训保持；无新增物理/拟合/RL/子agent/服务器计算，可选004审计未重试。
 ## 2026-10-29 — 恢复76观察与77完整审查/派发准备
 
 - [交接](docs/RL_RECOVERY76_WAIT77_DEPLOY_20261029.md)。77全loss保留49–74/76历史、75拒绝、新76→77配对；独立算术/原gate保持，路径及AST检查通过。新decision/launcher绑定完整76全审/实际图/准确77恢复/历史证据/原76–78PLAN，实际不完整76、缺DECISION77、缺77LAUNCH拒绝，无新训练或决定。

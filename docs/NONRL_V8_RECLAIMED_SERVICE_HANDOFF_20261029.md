@@ -1,5 +1,26 @@
 # 原108结束后的临时服务回收衔接
 
+## 连续观察：06:09–06:24UTC，86→89
+
+31次采样均确认原1172675/start32623702及后处理1201537/start32942337 loaded/active。
+原协调器由MLP2接续ESN3、RNN3，再接续MLP3；末条10.04s/lift，完整条件009尚未结束。
+最高MemoryCurrent1871986688bytes/3GiB；全部样本OOM/oom_kill/实验swap0。
+末主机MemAvailable3822948kB、SwapFree248kB，不能把实验swap0写成全机swap0。
+观察器68766达到900秒自然exit0，原科学继续，不重启。
+
+三条新增完成runtime均55s/TaskStrict=false：MLP2峰矩51.338665Nm、穿透0.955362mm；
+ESN3峰矩46.331528Nm、穿透0.148003mm，途中位置误差约1.21m；RNN3峰矩38.000187Nm、
+穿透0.177308mm，未完成搬运。上述为运行收据，不是本轮新增独立子步审计。
+
+[31样本及观察源码](evidence/NONRL_INTENT_RECOVERY_20261029/V8_CONDITION009_RUNTIME_AND_WAIT.json)，
+60692bytes，SHA256 `c5eae7e504b8e0f5315de2426da819a002816864be228b93dcbff04818ee332a`。
+文件名中的009表示正在观察的条件，不表示完整九模型结果；本次未达到90，无完整条件结果表。
+暂存及最终大小/hash已核共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0609_20261029_v1/V8_CONDITION009_RUNTIME_AND_WAIT.json`。
+开工main6492ab17/baselinef6e8f8c实际fetch/read。上一轮实际运动诊断progress，本轮verified wait；
+Goal active，主矩阵未修复。原完整审查归档→唯一v6八球及实际运动检查→正式三场景补采/
+公平重训保持，无新增物理/拟合或绑定源修改，可选004审计未重试。
+
 ## 后续增加：真实物体运动检查，原108到85
 
 [实际运动核查](NONRL_V8_BALL_ACTUAL_MOTION_20261029.md)：八条train球示范搬运物体投影
