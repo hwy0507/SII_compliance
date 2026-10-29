@@ -1,5 +1,23 @@
 # 补采后的实际训练覆盖检查
 
+## 后续原科学核验：04:05–04:08 UTC
+
+上一轮完成覆盖入口，本轮是verified wait。04:05:22.861–04:08:22.911共七次
+核验原评测1172675/start32623702和原后处理1201537/start32942337均loaded/active，
+完整回合59→60；MLP2从28.04秒/carry推进至完整回合边界，原协调器已接续ESN3。
+最大原服务内存2035228672bytes/3GiB，memory.events的OOM/oom_kill均0，实验swap0；
+主机swap仍近满，不能称全机swap0。工作盘另查可用421GB。
+
+观察session33069达到第60条结束条件后自然exit0，原科学继续；没有新增模拟器或审计。
+七次原记录及实际观察源码[证据](evidence/NONRL_INTENT_RECOVERY_20261029/V8_VERIFIED_WAIT_0405.json)
+16140bytes，SHA256 `e9fd15b16eb97da80682a46c2908fdbe2789632259cc6f6bdd5cfaadbd3a0d0a`，
+已逐暂存/最终大小hash核共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0405_20261029_v1/V8_VERIFIED_WAIT_0405.json`。
+开工main `1a0088444cd7ee31b3a13ed770bae743b2f5ddc9`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`
+实际fetch/read。完整矩阵/后处理尚待，八球v5仍未启动，Goal active；未称主矩阵修复。
+
+## 覆盖入口实现
+
 原108尚未结束，主矩阵修复仍未完成。本轮新增独立工具，修正后续覆盖诊断不能处理
 变时长示范的入口问题；不修改在途或八球v5绑定源码，也没有新采集、拟合或物理审计。
 

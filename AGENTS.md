@@ -1,5 +1,10 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL原108推进60
+
+- 04:05:22–04:08:22UTC七次原1172675/start32623702和后处理1201537/start32942337 loaded/active，完整59→60、MLP2结束接续ESN3；最大2035228672bytes/3GiB、OOM/实验swap0，全机swap近满。observer33069自然exit0，原科学继续，不重启。
+- 观察含源码16140bytes/SHAe9fd15b1已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0405_20261029_v1/V8_VERIFIED_WAIT_0405.json`，见[当前交接](docs/NONRL_VARIABLE_DURATION_COVERAGE_20261029.md)。本轮verified wait，Goal active，完整108/原后处理未完，唯一八球v5未启动，主矩阵未修复；可选004审计仍未重试。
+
 ## 2026-10-29 — 非RL后续变时长数据覆盖入口
 
 - [报告](docs/NONRL_VARIABLE_DURATION_COVERAGE_20261029.md)。新独立`audit_special_coverage_dataset_20261029.py`接受按lineage核验的变时长24train，不再写死12600；保留原方向/估计载荷描述和8/2划分，不改变资格/训练/测试。补采构建后先运行该检查，不以配置范围冒充实际覆盖。
