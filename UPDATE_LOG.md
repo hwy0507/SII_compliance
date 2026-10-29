@@ -1,3 +1,11 @@
+## 2026-10-30 — 三个ESN种子九开发全合格；完整72 raw含失败已共享
+
+- 读[完整72回合恢复映射及范围](docs/NONRL_V9_COMPLETE_TOP3_RAW_20261030.md)。完整12共同筛选ESN01 rank4 rho0.5/gain0.08/ridge0.001九train/validation全部qualified；三个ESN、三个RNN和MLP01共七组选定。独立prefix核78完整case/69祖先复用/7失败/7selected，非最终九组或测试成功。原top3的10失败全部保留；full12不重放已选组未选候选，所以两个阶段失败分母不混写。MLP02已转rank5 rod00继续，MLP03仍待，最终108等待器零派发；Goal active。
+- 原top3完整72 raw含10失败、10祖先复用实际raw：1640payload+3manifest/snapshot成员，逐成员大小/SHA/源前后核验；4249904348bytes/SHA664252fbe018b9ba7d75dffb85cf855e9edb5010d1b63648e1b9f478e6211f80已远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_complete_top3_raw_20261030_v1/COMPLETED_PREFIX.tar.gz`。同目录新DELIVERY_EVIDENCE.tar.gz九payload+manifest，27184bytes/SHA3be1a7c2a334cc748e549ef33f70fdba285c033d59678e85a2db3d51ceffc0ad也逐成员/源前后/远端最终核验。仅原top3，非后续full12或最终108全备份，服务器仅存储/hash。
+- 新独立审查全部72条时钟/子步/5e-5及20/30/13s horizon，72/72完成不消除科学失败。rod显式registration参数；ball/corner使用与最终runner一致的独立预期时长，不声称旧schema有显式duration。前三次只读schema字段失败零物理/无结果文件，原因保留，修正入口后完整通过。
+- 归档服务自然exit0，CPU112.934秒/CPU6/Nice19/idle I/O/512MiB/swap0。唯一full12 PID1697598真实推进，MemoryCurrent932556800/3GiB、OOM0/swap0、1132source全一致；最终等待器PID1726066 active。未修改冻结actor/filter/physics/gate，无RL/删除或重复仿真。
+- 九组锁定/三特化最终108/六指标/媒体仍待，旧office108的57待补保持。开工fetch/read maincf5157fb14815a327358ab4238c4c6a0d059a6ab、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。上一轮progress、本轮progress。
+
 ## 2026-10-30 — ESN教师训练包络外偏离与读出放大；三条棍推修复候选已通过
 
 - 读[新训练覆盖诊断和真实轨迹图](docs/NONRL_V9_ESN_FEATURE_COVERAGE_20261030.md)。四checkpoint各重建24train/12600帧特征包络，核数据/资格输入hash、checkpoint前后和学生精确action replay；不拟合/积分/读最终test。失败ESN01 rank1/3有392/357帧超包络，最大87.710/28.654倍本坐标训练跨度，限幅前残差峰39.758/60.021；通过rod00的ESN01rank2/ESN02rank1仅4/11帧、0.048/0.247倍、读出0.277/0.297。支持闭环分布偏离后输出放大线索，非唯一因果、共同输入排名或最终性能；最早微小包络超出不能当失稳起点。v1原入口/输出保留hash，v2补时窗/最坏特征，新PNG/PDF已目视核验。
