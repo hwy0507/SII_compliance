@@ -71,3 +71,22 @@ v2接续修正：v1等待阶段复查发现漏掉qualification依赖的棍推行
 
 
 最新接续以[2026-10-29 v3入口校正报告](NONRL_V9_PAIRED_SCENE_PREFLIGHT_20261029.md)为准：v2旧入口不能消费v9球coverage参数，已在未启动student仿真的等待阶段停止；当前唯一v3对应已有coverage wrapper/qualifier，物理worker等价性及三突变拒绝通过。原108不变，14:32UTC快照40/108、Task3、Strict0。v3仅待原108结束后运行开发18，不是新的最终测试。完整v9拟合已核共享于`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_complete_fits_20261029_v1/COMPLETE_FITS.tar.gz`（142154554bytes，SHAe2df92415f5cad4b460c28a80fa347d91e19aec7c38e9a36f3bb4c8f74694e8b）。Goal仍active。
+
+
+## 新增：teacher在保存学生历史上的反事实动作对照
+
+证据见[evidence](evidence/nonrl_v9_teacher_counterfactual_20261029/COMPARISON.json)。先核实际rod_00 teacher配置及五个核心源码hash，并在其500帧真实采集历史上逐数组精确重放（最大误差0）；再用独立重置teacher消费condition000九条学生的完整观测历史，无新仿真或拟合。
+
+| 学生 | 三seed requested-action MSE对反事实teacher |
+|---|---:|
+| ESN | 0.35687、0.37317、0.42901 |
+| RNN | 0.00728、0.00663、0.00689 |
+| MLP | 0.00893、0.00883、0.00763 |
+
+三个ESN在2.12s首次饱和时，teacher均未请求残差饱和：teacher平移y约+0.677至+0.680，而ESN为−1；最大单通道差1.677–1.680。此时棍推尚未开始。不能将整个差距归咎于新增蹭棍动作。反事实teacher在ESN完整历史上也有9.51%–14.16%的残差饱和帧，所以不宣称teacher在所有学生状态均正常，或其能成功纠正已经失稳的轨迹。不同学生拥有不同状态历史，表中MSE不是共同输入上的算法精度排名，也不是训练loss。
+
+![动作反事实诊断](evidence/nonrl_v9_teacher_counterfactual_20261029/comparison.png)
+
+当前更明确的修复方向是ESN闭环外推与训练场景覆盖，而非放宽指标。线性readout含未经整体有界化的load×context交互项，ridge只在示范历史上拟合；训练内极小误差不能约束新闭环状态的输出。该架构性质与当前证据一致，但尚未完成因果干预验证，不能写作唯一根因。
+
+后续决策必须使用已登记18条train/validation配对：若同身份teacher合格而学生在同场景早期失稳，先定位train/val首次偏离帧，再登记有限的更强ridge/有界特征对照；若teacher本身不合格，修复采集而非追着错误动作学习；若仅组合office失败，另补训练侧覆盖而保留office迁移失败。任何新增数据均共享给三方法、保持可比预算与共同验证选模；禁止把condition000反事实预测直接加入训练，或依据该测试轨迹挑新参数。原108未改、18唯一v3仍等候；当前42/108完整，主矩阵未修复。

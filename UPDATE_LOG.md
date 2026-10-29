@@ -1,3 +1,11 @@
+## 2026-10-29 — teacher反事实动作对照定位ESN早期偏离
+
+- [真实证据与修复方向](docs/NONRL_V9_TEACHER_FIT_AND_MATRIX_DIAGNOSIS_20261029.md)：实际teacher500帧逐数组重放误差0；再对condition000九条学生观测历史作teacher反事实动作对照，无新物理/拟合。ESN三seed整回合MSE0.35687/0.37317/0.42901，RNN/MLP0.00663–0.00893；因历史不同，不能当共同输入精度排名或训练loss。在2.12s首次ESN饱和处，teacher y约+0.677–0.680、ESN−1；早于12.824s棍推，不能仅归咎蹭棍动作。后续teacher在失稳ESN历史也有9.51–14.16%饱和，不声称teacher能物理纠正或唯一归因。
+- 新两个只读分析/绘图脚本，数据/源/轨迹hash核验、teacher精确重放与9条shape核验通过，图已目视核验。后续以已登记18条train/val开发闭环决定有限强ridge/有界特征对照或teacher/覆盖修复；不得用测试反事实当训练标签/选模，保持三方法共享数据、公平预算与冻结科学边界。
+- 宿主原scope active、MemoryCurrent1857937408/3221225472bytes、MemorySwapMax0，原108到42完整/43行含在途；唯一v3服务PID1636845仍在等待，无新student execution、不重复启动。主矩阵未修复，Goal active，全部失败保留。
+- 新源/图/诊断/报告包95553bytes/SHA7c01f6fbbb6189ac22636e87c23ec70edf1047eea58a7d0a414aa0823de065d6逐成员及远端暂存/最终已核：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_teacher_counterfactual_20261029_v1/EVIDENCE.tar.gz`。无在途108归档、服务器计算或RL工作。
+- 本轮fetch/read远端main 8cd977921f7b98a7ce356e37cde508c877633721、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d（接触指标探索），重读AGENTS；两个无关untracked保留。
+
 ## 2026-10-29 — v3配对场景入口已校正；完整v9拟合首次共享核验
 
 - [报告](docs/NONRL_V9_PAIRED_SCENE_PREFLIGHT_20261029.md)：发现上一轮v2后继检查器误用旧wrapper，会忽略v9球coverage初态和搬运方向。v2尚在等待、无student execution时已停止；v1/v2宿主not-found/inactive。原teacher30数据、9模型和当前108执行均未改、失败保留。本轮修复执行入口，不把该计划bug倒推成已运行实验的问题。

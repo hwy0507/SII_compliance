@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — teacher反事实对照完成，ESN早期外推仍待修复
+
+- 新增诊断见`docs/NONRL_V9_TEACHER_FIT_AND_MATRIX_DIAGNOSIS_20261029.md`末节及`docs/evidence/nonrl_v9_teacher_counterfactual_20261029/`。实际teacher500帧精确重放误差0；九学生保存历史独立teacher反事实对照，无积分/拟合。三ESN在2.12s饱和时teacher残差适中，y约+0.68对ESN−1，早于棍推；但teacher在后续失稳历史也有饱和，不能当物理成功或唯一根因。禁止将测试反事实直接当训练标签。
+- 原108当前42完整/43行（含在途），宿主scope active、MemoryCurrent1857937408/3GiB、swap上限0；唯一v3 PID1636845仍仅等待，不重启。18完成后按train/val定位首次偏离，再有限对照强ridge/有界特征或修复teacher/覆盖；共享新数据与公平预算，另冻结未见测试。主矩阵未修复、Goal active。
+- 95553bytes/SHA7c01f6fbbb6189ac22636e87c23ec70edf1047eea58a7d0a414aa0823de065d6新源/图/诊断/报告已逐成员并远端暂存/最终核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_teacher_counterfactual_20261029_v1/EVIDENCE.tar.gz`。服务器仅存储。
+
 ## 2026-10-29 — 当前唯一接续v3：修正球coverage入口，完整拟合已共享
 
 - 读[入口校正与指标缺口](docs/NONRL_V9_PAIRED_SCENE_PREFLIGHT_20261029.md)。发现v2待运行检查器沿用了旧scene wrapper，会漏掉v9球初始位置/搬运方向coverage；这是后继计划缺陷，不是已采数据或原108被改写。v2已在等待且无student execution时停止。v1/v2宿主均not-found/inactive，勿重启。原108与其失败保留。
