@@ -1,3 +1,9 @@
+## 2026-10-30：开发15/27，球撞出现任务恢复失败
+
+原服务同PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b持续active；球撞前六条完整，ESN01/02与MLP02 Task/Strict/machine均true，RNN01/02与MLP01 Task/Strict false但machine true；当前ESN03球在途，最终108仍等待/零派发。
+
+新增只读 `CONTACT_YIELD_FIRST4_BALL_DIAGNOSIS_20261030.json` 只涵盖首四球回合：原审计/qualification输入hash及完整750动作/600000子步核验；ESN01/02任务阶段5、终点误差7.265/6.235mm；RNN01/MLP01仍阶段0、误差41.714/147.862mm、无抬升，真实球接触且无穿透/上游接触/物理失败。反事实teacher在各学生保存状态的20–30s动作MSE依次ESN01 .00059735、RNN01 .00743459、MLP01 .01626974、ESN02 .000087985。反事实不是实际教师接管证据，不能单独证明恢复能力或因果份额；优先调查撞击后动作学习/任务恢复不足，不能因机器安全就算成功。全27完整后再登记公平修复，不改变活源/选模/gate、不看最终test。
+
 ## 2026-10-30：棍推九条完成，已接续球撞
 
 固定rod00开发身份的九模型回合全部完整结束：ESN三seed Task/Strict/machine3/3；RNN三seed同为3/3；MLP Task3/3、Strict1/3、machine2/3。MLP03实际双成功；MLP01行为失败、MLP02穿透安全失败保持。不能把单开发条件结果扩展为最终测试成功率，不计算开发SPT或重选模型。

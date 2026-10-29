@@ -1,3 +1,9 @@
+## 2026-10-30 — 开发15/27；球撞任务恢复失败已保存定位证据
+
+- 原诊断PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b宿主核实持续active，10→13→15完整回合。球前六ESN01/02与MLP02双成功/机器合规，RNN01/02与MLP01 Task/Strict失败但机器合规；当前ESN03球在途。所有科学失败保留，最终108后继仍等待/零派发。
+- 新只读CONTACT_YIELD_FIRST4_BALL_DIAGNOSIS_20261030.json：首四球回合完整750动作/600000子步及原actor/filter/qualification输入hash核；RNN01/MLP01终止仍阶段0、误差41.714/147.862mm，无抬升，ESN01/02阶段5误差7.265/6.235mm。保存20–30s反事实teacher动作误差，仅诊断非真实教师接管/恢复证明；优先查撞击后学习与任务恢复，全27后公平修复，未改活源或gate。
+- 开工fetch/read main32a962099d7190864ab961145bb7e98b7af6f9ae/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，AGENTS完整开工/收尾重读。前轮progress，本轮verified wait及新失败证据；两活source清单一致，无OOM、内存约1.96GB/3GiB。Goal active，全27/必要修复/最终108/六指标/媒体待；raw仅本地，无新归档/服务器计算/RL/删除，两个无关untracked保留。
+
 ## 2026-10-30 — 棍推九条完成，开发10/27并自然接续球撞
 
 - 原诊断PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b多次宿主核实active；完整7→8→9→10。rod00九条ESN/RNN均三seed双成功/机器合规；MLP第三seed双成功，前两条失败完整保留，合计Task3/3、Strict1/3、machine2/3。首ball00 ESN01也Task/Strict/machine true；当前RNN01球350动作/280000子步。仅固定训练身份开发结果，非最终泛化。
