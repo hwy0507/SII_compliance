@@ -68,3 +68,6 @@
 
 
 v2接续修正：v1等待阶段复查发现漏掉qualification依赖的棍推行为审计，已停止v1且确认无student execution，原108未动。当前v2按actor/filter→rod yield/rejoin→qualification执行，18case/全部登记源hash/原在途拒绝验证通过；仍在等待，非完成。v1原EVIDENCE保留，v2增补包`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_closed_loop_support_20261029_v1/CORRECTION_V2.tar.gz`已核64373bytes/SHA1542cccd5a5d8690ac0a224e631d3a1ab3afc18baa6f95f72168f4c35bd5dba0。当前源码与登记核验使用MANIFEST_V2及PAIRED_CLOSURE_REGISTRATION_V2，不用历史v1 manifest核当前修正版源码。
+
+
+最新接续以[2026-10-29 v3入口校正报告](NONRL_V9_PAIRED_SCENE_PREFLIGHT_20261029.md)为准：v2旧入口不能消费v9球coverage参数，已在未启动student仿真的等待阶段停止；当前唯一v3对应已有coverage wrapper/qualifier，物理worker等价性及三突变拒绝通过。原108不变，14:32UTC快照40/108、Task3、Strict0。v3仅待原108结束后运行开发18，不是新的最终测试。完整v9拟合已核共享于`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_complete_fits_20261029_v1/COMPLETE_FITS.tar.gz`（142154554bytes，SHAe2df92415f5cad4b460c28a80fa347d91e19aec7c38e9a36f3bb4c8f74694e8b）。Goal仍active。

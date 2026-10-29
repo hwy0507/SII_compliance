@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 当前唯一接续v3：修正球coverage入口，完整拟合已共享
+
+- 读[入口校正与指标缺口](docs/NONRL_V9_PAIRED_SCENE_PREFLIGHT_20261029.md)。发现v2待运行检查器沿用了旧scene wrapper，会漏掉v9球初始位置/搬运方向coverage；这是后继计划缺陷，不是已采数据或原108被改写。v2已在等待且无student execution时停止。v1/v2宿主均not-found/inactive，勿重启。原108与其失败保留。
+- 仅`outputs/nonrl_v9_paired_scene_closure_20261029_v3`及`sii-v9-paired-closure-handoff-v3-20261029.service`接续，PID1636845/Invocation39a747c69fe447dd83cc9d2eb2dc88dd；HANDOFF waiting_for_original108，无student execution。原108在14:32UTC快照40/108、Task3、Strict/BOTH0、SPT NA，scope active，OOM/实验swap0。仍是原108完整并scope inactive后，单CPU6/线程1/3GiB/禁swap执行18开发配对，12h等待限时；不重复派发。
+- v3使用已有coverage wrapper/qualifier，物理worker AST除采集guard/不可达validator/归档名称外必须等价；make_actor/verify_actor/main相同。正向及dt/尺度/球入口三突变拒绝通过；六teacher身份实际wrapper/scripts hash、全登记源/18case和在途拒绝通过。原物理/门槛/actor输入/filter/模型未改。新18完整审查工具已编译/CLI通过，但真实18尚未运行；开发资格不能当最终Strict，final-success不能倒推完成时间/SPT，扰动代理不冒称人体舒适。
+- 75份完整拟合作业/108候选/9模型/数据/历史/冻结源906文件已逐成员及源前后核验归档，142154554bytes/SHAe2df92415f5cad4b460c28a80fa347d91e19aec7c38e9a36f3bb4c8f74694e8b共享核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_complete_fits_20261029_v1/COMPLETE_FITS.tar.gz`。不含在途108。
+- 本轮v3来源/登记/检查/宿主收据/完整拟合共享收据/审查源码72452bytes/SHAc7f59684d762925e3cca985c8b190d190592fd66f21803f6e01bf971354b88c0已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_paired_scene_preflight_20261029_v3/PREFLIGHT.tar.gz`。Goal active、主矩阵未修复；完成18后审查teacher/学习/场景，再仅train/val决定修复，并补齐正式完成时刻与未见冻结测试。
+
 ## 2026-10-29 — 当前接续以v2为准
 
 - v1等待器因漏掉rod行为审计依赖已停止，未启动student仿真；原108不受影响。只接续`nonrl_v9_paired_scene_closure_20261029_v2`和`sii-v9-paired-closure-handoff-v2-20261029.service`，PID1632309/Invocation6b132622024c47d79fcd89d2b7f96ee0。当前等待parent complete；v2登记源hash/18case/前置拒绝验证通过。v1历史证据保留。审计顺序actor/filter→rod yield/rejoin→qualification。

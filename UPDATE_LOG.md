@@ -1,3 +1,13 @@
+## 2026-10-29 — v3配对场景入口已校正；完整v9拟合首次共享核验
+
+- [报告](docs/NONRL_V9_PAIRED_SCENE_PREFLIGHT_20261029.md)：发现上一轮v2后继检查器误用旧wrapper，会忽略v9球coverage初态和搬运方向。v2尚在等待、无student execution时已停止；v1/v2宿主not-found/inactive。原teacher30数据、9模型和当前108执行均未改、失败保留。本轮修复执行入口，不把该计划bug倒推成已运行实验的问题。
+- 新唯一v3用现有coverage wrapper和对应qualifier。物理worker AST只允许正式采集guard/不可达collection validator/归档标签差异，其余必须等价；make_actor/verify_actor/main相同。正向及dt/公共尺度/球入口三项突变拒绝通过，六teacher身份实际执行wrapper及所有scripts hash/18case/全登记源核验通过；原在途前置拒绝通过，未创建student execution。新完整18审查工具编译/CLI通过，真实审查未运行，不宣称修复成功。
+- `sii-v9-paired-closure-handoff-v3-20261029.service`PID1636845/Invocation39a747c69fe447dd83cc9d2eb2dc88dd active、仅等待原108 complete及scope inactive；限12h、单CPU6/线程1/3GiB/禁swap。14:32UTC原回归40/108，Task3、Strict0、BOTH0、SPT NA；宿主原scope active、MemoryCurrent1738760192bytes/3GiB、OOM/实验swap0。主机swap与实验零swap分开，不重复派发。
+- 指标检查发现当前特化qualification仍是开发场景门，与office冻结Strict不同；缺首次持续终态成功遥测时不能算正式SPT，rod/ball扰动代理不能当真人舒适。新审查工具明确保留这些限制；正式新场景主矩阵仍需完成时刻/严格安全证据与未见测试登记，不以开发18替代。
+- 原完整训练75作业/108候选/9模型、数据、日程、历史、冻结源共906文件已用既有完整归档器核逐成员/源前后hash，独立本地归档服务CPU25%/256MiB/禁swap自然exit0。142154554bytes/SHAe2df92415f5cad4b460c28a80fa347d91e19aec7c38e9a36f3bb4c8f74694e8b暂存/最终同hash已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_complete_fits_20261029_v1/COMPLETE_FITS.tar.gz`。不含在途108、未删候选或失败。
+- 本轮小证据/三源码/报告/拟合共享收据72452bytes/SHAc7f59684d762925e3cca985c8b190d190592fd66f21803f6e01bf971354b88c0逐成员/远端暂存/最终已核：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_paired_scene_preflight_20261029_v3/PREFLIGHT.tar.gz`。
+- 开工fetch/read main be818f3e0bb0ed3df14e27c45951e750468535fc、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d（接触指标探索）；重读AGENTS。上一轮progress、本轮progress，Goal active。无RL/子agent/服务器计算/删除/冻结科学约束修改；两个无关untracked保留。
+
 ## 2026-10-29 — 接续器v2补齐棍推行为审计依赖（未触及科学运行）
 
 - 接续前静态依赖复查发现v1开发检查器未生成qualification所需的`ROD_YIELD_REJOIN_AUDIT_V3.json`。已只停止尚在等待、无student execution的v1服务；原108继续。修正审计顺序actor/filter→rod yield/rejoin→qualification，失败收据照常保留，不修改任何成功标准。

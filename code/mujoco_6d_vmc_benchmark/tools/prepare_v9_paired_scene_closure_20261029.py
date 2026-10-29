@@ -4,6 +4,7 @@ Uses fixed models on existing train00/validation08 identities. These are NOT
 unseen tests and cannot supply a final ranking or test-based model selection.
 """
 import argparse
+import ast
 import os
 import subprocess
 import sys
@@ -15,10 +16,45 @@ from diagnose_special_scene_regression_20261028 import now
 COLLECTION = ROOT/'outputs/special_scene_direction_collection_20261029_v9'
 TRAINING = ROOT/'outputs/special_scene_direction_retrain_20261029_v9'
 REGRESSION = ROOT/'outputs/special_scene_frozen108_20261029_v9'
+WRAPPER = 'run_video_reference_coverage_20261029.py'
+QUALIFIER = 'qualify_ball_coverage_demo_20261029.py'
+
+
+def equivalent_physical_worker():
+    """Only prospective-collection guards and source-archive labels may differ.
+
+    Both closures run without VMC_COLLECTION_PLAN: students must never be
+    recorded as teacher collection. Normalize the unreachable plan validator
+    import and the provenance-only collector path, leaving all physics intact.
+    """
+    workers = []
+    for name in (WRAPPER, 'run_registered_special_coverage_20261029.py'):
+        tree = ast.parse((ROOT/'tools'/name).read_text())
+        worker = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'worker')
+        if name.startswith('run_registered'):
+            guard = ast.parse("if not os.environ.get('VMC_COLLECTION_PLAN'):\n    raise ValueError('Formal coverage requires its prospective collection plan')").body[0]
+            assert ast.dump(worker.body[0]) == ast.dump(guard)
+            worker.body.pop(0)
+        class NormalizeProvenance(ast.NodeTransformer):
+            def visit_ImportFrom(self, node):
+                if node.module in ('collect_special_scene_actions_20261028', 'collect_special_scene_coverage_20261029'):
+                    node.module = 'collection_plan_validator'
+                return node
+
+            def visit_Constant(self, node):
+                if node.value in ('tools/collect_special_scene_actions_20261028.py',
+                                  'tools/collect_special_scene_coverage_20261029.py'):
+                    node.value = 'tools/collection_provenance.py'
+                return node
+        workers.append(ast.dump(NormalizeProvenance().visit(worker)))
+    assert workers[0] == workers[1], 'Coverage physical workers differ beyond collection guards/provenance'
+    return dict(status='worker_ast_equal_after_explicit_collection_only_normalization',
+                diagnostic_wrapper=WRAPPER, collection_wrapper='run_registered_special_coverage_20261029.py')
 
 
 def prepare(root):
     assert not root.exists()
+    equivalence = equivalent_physical_worker()
     plan = read(COLLECTION/'COLLECTION_PLAN.json')
     lock = read(TRAINING/'MODEL_LOCK.json')
     assert lock['training_data_sha256'] == '120173888964ee0545393cd0d2685c794f7aa261626463fa7c10fc981b9c6407'
@@ -28,6 +64,13 @@ def prepare(root):
             entry = next(e for e in plan['episodes'] if e['id'] == identity)
             folder = Path(entry['folder'])
             assert read(folder/'DEMONSTRATION_QUALIFICATION.json')['status'] == 'qualified'
+            executed = read(folder/'execution.json')
+            assert executed['wrapper_sha256'] == sha(ROOT/'tools/run_registered_special_coverage_20261029.py')
+            # Match coverage adapters and all other scripts actually used by
+            # the paired teacher, rather than trusting a similarly named entry.
+            for name, digest in read(folder/'SOURCE_HASHES.json').items():
+                if name.startswith('scripts/'):
+                    assert sha(ROOT/name) == digest, name
             for family in ('esn_ridge', 'rnn_scratch', 'mlp_scratch'):
                 model = next(m for m in lock['models'] if m['family'] == family and m['seed'] == 2026102801)
                 assert sha(Path(model['checkpoint'])) == model['checkpoint_sha256']
@@ -44,6 +87,7 @@ def prepare(root):
         prerequisite=str(REGRESSION/'execution.json'), prerequisite_completed=108,
         model_lock_sha256=sha(TRAINING/'MODEL_LOCK.json'),
         collection_plan_sha256=sha(COLLECTION/'COLLECTION_PLAN.json'),
+        physical_worker_equivalence=equivalence, wrapper=WRAPPER, qualifier=QUALIFIER,
         source_sha256={str(p.relative_to(ROOT)):sha(p) for p in sources},
         resources=dict(cpu=6, simulators=1, threads=1, memory_max_bytes=3221225472, swap_bytes=0),
         interpretation='Development diagnosis on train00 and already-selected validation08, not unseen final testing. Paired teacher is the existing audited identical-identity rollout. No fitting or selection in this runner.',
@@ -66,6 +110,8 @@ def run(root):
         assert sha(ROOT/name) == digest, name
     assert sha(TRAINING/'MODEL_LOCK.json') == reg['model_lock_sha256']
     assert sha(COLLECTION/'COLLECTION_PLAN.json') == reg['collection_plan_sha256']
+    assert equivalent_physical_worker() == reg['physical_worker_equivalence']
+    assert reg['wrapper'] == WRAPPER and reg['qualifier'] == QUALIFIER
     state = dict(status='running', started_utc=now(), registration_sha256=sha(root/'REGISTRATION.json'), rows=[])
     write(root/'execution.json', state)
     try:
@@ -87,7 +133,7 @@ def run(root):
             state['rows'].append(row)
             write(root/'execution.json', state)
             with (root/(case['id']+'.log')).open('x') as log:
-                rc = subprocess.run([sys.executable, str(ROOT/'tools/run_video_reference_vmc_20261028.py'),
+                rc = subprocess.run([sys.executable, str(ROOT/'tools'/reg['wrapper']),
                     '--output', str(output), '--scenes', case['scene']], cwd=ROOT, env=env,
                     stdout=log, stderr=subprocess.STDOUT).returncode
             row.update(returncode=rc, ended_utc=now())
@@ -98,7 +144,7 @@ def run(root):
             audits = ['audit_video_reference_vmc_20261028.py']
             if case['scene'] == 'rod':
                 audits.append('audit_rod_yield_rejoin_v3_20261028.py')
-            audits.append('qualify_special_scene_demo_20261028.py')
+            audits.append(reg['qualifier'])
             for audit in audits:
                 with (output/(audit+'.log')).open('x') as log:
                     subprocess.run([sys.executable, str(ROOT/'tools'/audit), str(folder)], cwd=ROOT,
