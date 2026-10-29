@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL原108十分钟核验68→70
+
+- 04:47:06.108–04:57:06.311UTC共21次原1172675/start32623702及后处理1201537/start32942337 loaded/active，完整68→70，MLP2→ESN3→RNN3。最大2442362880bytes/3GiB、OOM/实验swap0；主机swap仍近满。observer84675自然exit0，科学继续，不重启。
+- 新完成MLP2/ESN3 runtime均55s、Task/Strict=false、最终carry、无abort；ESN3末段跟踪误差约1.4m，非新独立子步审计或全矩阵结论。见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。
+- 21样本/源码41883bytes/SHAea6adfe4已核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0447_20261029_v1/V8_VERIFIED_WAIT_0447.json`。开工main7328b15f/baselinef6e8f8c实际fetch/read；上一轮progress，本轮verified wait，Goal active，主矩阵未修复。原完整108/后处理→审查归档→唯一v6八球→正式补采/公平重训仍待；无新增物理/拟合/RL/子agent/服务器计算，可选004审计未重试。
+
 ## 2026-10-29 — 非RL当前v8学习曲线来源与学习率核验
 
 - [报告](docs/NONRL_V8_LEARNING_CURVE_REVIEW_20261029.md)：九锁定模型、六history、原图/数据/源码hash和独立尾段算术通过，两原图已目视检查。实际cosine终态LR为初值1%，曲线下降趋平不等于闭环成功；RNN模仿误差更低仍有失败，联合覆盖修复仍待。首次精确浮点相等误判保留，按原绘图rel_tol1e-12检查通过，模型/图未改。

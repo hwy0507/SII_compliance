@@ -1,5 +1,28 @@
 # 原108结束后的临时服务回收衔接
 
+## 后续核验：04:47–04:57 UTC，68→70
+
+上一轮曲线来源核验为progress；本轮为verified wait。21次准确采样中，原1172675/start32623702
+及后处理1201537/start32942337始终loaded/active；完整68→70，原协调器由条件007 MLP2
+接续ESN3，再接续RNN3。观察器84675达到600秒自然exit0，不代表科学任务结束。
+最大MemoryCurrent2442362880bytes/3GiB，全部样本oom/oom_kill/实验swap为0；
+末样本主机MemAvailable4579808kB、SwapFree140kB，主机swap仍近满。
+
+MLP2实际progress由17.04s/carry至54.04s/carry，穿透峰从0.176021升至0.545885mm；
+ESN3从4.04s/lift进入carry，51.04s时跟踪误差1.415848m。
+另读取两份已完成runtime metrics：均55s、Task/Strict=false、无abort、最终carry；
+MLP2/ESN3峰矩51.592674/55.692780Nm，RMSE48.781029/1136.103456mm。
+这是保存的运行指标，**非本轮新增子步审计**；不扩展为完整条件或完整108结论。
+末样本RNN3刚开始0.04s，原完整后处理继续。
+
+[21样本及观察源码](evidence/NONRL_INTENT_RECOVERY_20261029/V8_VERIFIED_WAIT_0447.json)，
+41883bytes，SHA256 `ea6adfe4632822db7019b7f60f5d542093d276d8961d03d4577f72ad132614cc`。
+已核暂存和最终大小/hash：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0447_20261029_v1/V8_VERIFIED_WAIT_0447.json`。
+开工main7328b15f/baselinef6e8f8c实际fetch/read；无新增物理/拟合/模型选择。
+Goal active，主矩阵未修复；完整审查归档→唯一v6八球→正式三场景补采/公平重训保持，
+v6未启动，可选004审计未重试，未修改在途或已绑定源码。
+
 ## 后续核验：当前v8学习曲线
 
 [学习核验报告](NONRL_V8_LEARNING_CURVE_REVIEW_20261029.md)：九锁定模型/六history/原图来源及

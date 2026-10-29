@@ -1,5 +1,10 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL原108到70
+
+- 04:47–04:57UTC共21次原1172675/start32623702及后处理1201537/start32942337保持loaded/active，完整68→70、MLP2→ESN3→RNN3；最大2442362880bytes/3GiB、OOM/实验swap0。observer84675自然exit0，科学继续。新完成两条runtime均55s/TaskStrictfalse/carry，无新增子步审计。
+- 41883bytes/SHAea6adfe4观察已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0447_20261029_v1/V8_VERIFIED_WAIT_0447.json`，见[交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。本轮verified wait，Goal active，主矩阵未修复；原完整108/后处理→审查归档→唯一v6八球→正式三场景补采/公平重训仍待；无新增拟合/物理，可选004审计未重试。
+
 ## 2026-10-29 — 非RL当前v8学习曲线核验
 
 - [报告](docs/NONRL_V8_LEARNING_CURVE_REVIEW_20261029.md)。九锁定模型/六history/原图来源和算术通过；cosine终态学习率为初值1%，低模仿误差或尾段趋平不能替代闭环修复。首次浮点精确相等误判按原绘图容差修正，失败源码保留，模型/图不改。
