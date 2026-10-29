@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL原108核验22→24
+
+- 00:41:17.811–00:51:17.814UTC共21次原1172675/start32623702与后处理1201537/start32942337同身份active、物理时间推进，22→24/108；最高内存824283136bytes/3GiB，OOM/oom_kill/swap0。observer81841自然exit0，00:52:28两科学服务仍active。
+- 第三条件seed2三方法完整55秒runtime Task/Strict均false；ESN/MLP穿透.243724/.526426mm失败保留，第三条件全九审计待。seed3 ESN仍在途，不按前缀判终态。共享观察30640bytes/SHA1495a864见当前交接，原指标未改。
+- 本轮verified wait，上一轮接续保护修复属progress。原108/自动后处理继续，唯一有效八球v4仍未启动，须完整审计/查看归档后执行；三场景覆盖修复、公平重训、最终六指标未完成，Goal active。无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL第二条件全审与八球v4接续保护
 
 - 科学5e755f51九文件包27227bytes/SHA81328269与十分钟观察30628bytes/SHA8ef6da35已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition001_handoff_20261029_v1/`。21次原PID/start保持，19→21/OOMswap0；observer27970自然exit0。00:38:39UTC原两个科学服务仍active、22/108，不重启。v4仍未物理执行。

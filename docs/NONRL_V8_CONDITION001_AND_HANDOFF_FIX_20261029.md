@@ -1,5 +1,22 @@
 # v8第二条件核验与补采接续检查修复
 
+## 00:52 UTC续接观察
+
+00:41:17.811–00:51:17.814UTC共21次原1172675/start32623702和后处理1201537/start32942337
+同身份active，完成22→24/108，当前worker物理时间真实推进。最大原服务内存824283136bytes/3GiB，
+OOM/oom_kill/swap均0。观察器81841自然exit0；00:52:28复核两科学服务仍active，没有重启。
+第三条件seed2 ESN/RNN/MLP完整55秒runtime Task/Strict均false，ESN穿透0.243724mm、
+MLP0.526426mm；失败保留。第三条件九模型尚未全审，seed3 ESN在途，不把前缀当最终结果。
+
+[完整观察](evidence/NONRL_INTENT_RECOVERY_20261029/V8_FROZEN108_VERIFIED_WAIT_0041.json)
+30640bytes/SHA256 `1495a8648a645de777357d57f9adfc6b95269a18c884c4c35e0ad33566ae9ee2`，
+已在暂存和最终位置核验大小/hash：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0041_20261029_v1/V8_FROZEN108_VERIFIED_WAIT_0041.json`。
+仅本轮观察，不含在途物理全集。当前磁盘可用约426GiB，评测目录约2.8GiB，不需要清理或重启。
+最终报告对无BOTH回合保留SPT=NA的代码路径已只读复核，没有修改冻结指标或源码。
+本轮verified wait，上一轮修复/审计为progress；有效八球仍为v4、尚未启动，Goal active。
+开工main6fe74b6c/baselinef6e8f8c实际fetch/read；无RL/子agent/服务器计算/删除。
+
 已核验共享到
 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition001_handoff_20261029_v1/`：
 

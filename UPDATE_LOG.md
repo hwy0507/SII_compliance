@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL原108十分钟核验22→24
+
+- 00:41:17.811–00:51:17.814UTC21次原1172675/start32623702及后处理1201537/start32942337保持active且真实推进，22→24/108；最高内存824283136bytes/3GiB，OOM/oom_kill/swap0。观察81841自然exit0，00:52:28两原服务仍active，不因观察结束重启。
+- 第三条件seed2三方法完整55秒、runtime Task/Strict均false，ESN .243724mm及MLP .526426mm穿透失败保留；seed3 ESN在途，第三条件九模型独立审计待。报告代码只读复核无BOTH时SPT保持NA；无指标/模型/源修改。
+- 观察30640bytes/SHA1495a8648a645de777357d57f9adfc6b95269a18c884c4c35e0ad33566ae9ee2已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0041_20261029_v1/V8_FROZEN108_VERIFIED_WAIT_0041.json`。见[当前交接](docs/NONRL_V8_CONDITION001_AND_HANDOFF_FIX_20261029.md)。开工main6fe74b6c/baselinef6e8f8c实际fetch/read；本轮verified wait，Goal active。原108/后处理继续，有效八球v4尚未物理执行；无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL第二条件全审与八球v4接续保护
 
 - 科学5e755f51九文件源码/准确报告/准备/审计包27227bytes/SHA81328269及完整21次观察30628bytes/SHA8ef6da35，已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition001_handoff_20261029_v1/`。00:27:18–00:37:18UTC原1172675/1201537身份保持、19→21/最大926273536bytes/OOMswap0；observer27970自然exit0。00:38:39原科学仍active、22/108。原第三条件ESN seed2窗口穿透.243724mm失败保留；v4未物理执行，Goal active。
