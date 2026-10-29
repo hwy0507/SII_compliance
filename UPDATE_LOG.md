@@ -1,3 +1,11 @@
+## 2026-10-30 — 三特化最终108执行/独立审查入口与零物理控制验证
+
+- 读[最终执行入口与前置条件](docs/NONRL_V9_UNSEEN_EXECUTION_ENTRY_20261030.md)。新增register/run/review入口：须完整12共同选择九组全合格、两个选择服务inactive及独立完整review后才登记。绑定原冻结12条件/九模型/teacher/全部源码/recipe配置/解释器库版本/资源/预期horizon，单路108格；科学失败保留、基础设施异常停止无重试，MJB/初始canonical48/filter逐条件配对。接入v2完整回合审查；完整review独立重算子步/终态/动作/filter，并用同一全局T_ref输出九seed/三family/按场景汇总，人体舒适NA与代理分列。不宣称已登记/派发最终测试。
+- 零物理控制通过：108唯一派发、拒绝隐式重启、第四格异常停且保留前三、配对错误拒绝、五类缺失/重复输入拒绝、107/109/在途review拒绝、共享T_ref正确。真实active选择时register拒绝且零目录/登记/物理。三条真实开发ESN棍/RNN球/MLP角500/750/325帧新独立actor/filter回放误差全0；含科学失败，不挑成功。补配置绑定前收据保留；编译/diff检查通过。
+- 新独立prefix核41完整case、4失败/4复用/3 selected组：ESN seed02/03与RNN seed01各九条全qualified；ESN seed01及其余组未完成。原同PID1684974/Invocation仍唯一仿真，最新RNN seed02 ball08真实175step/140000子步，1115源hash全部一致；MemoryCurrent971894784/3GiB、swap上限0、OOM全0。完整12唯一后继PID1697598仍等待无worker，不修改冻结运行源或重复启动。
+- 十成员14902bytes/SHAe02d08879b791a2434d97be26f269fe0f96152d2b61f222eb14d5bda2e0097c8逐成员/源前后及远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_unseen_entry_20261030_v1/EVIDENCE.tar.gz`。不是在途完整raw归档，服务器仅存储/核hash；无RL操作或删除。
+- Goal active：九组完整资格、正式108执行与独立结果/媒体/完整共享仍待；原组合108的57未完成格不覆盖。上一轮progress、本轮progress。开工fetch/read main280da7e8cb6261f15c1802ab9778c07e8dc78d0a、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。
+
 ## 2026-10-30 — 两组ESN九开发闭环合格；补齐完整回合机器合规审查
 
 - 读[完整回合审查与当前限制](docs/NONRL_V9_HORIZON_AUDIT_20261030.md)。独立prefix已核32完整case、4失败/4精确复用/2 selected组；ESN seed02/03各九train/val全qualified，seed01前三耗尽null。当前RNN seed01 rank2继续rod09；不是完整九组或最终主矩阵成功。完整12候选唯一后继仍等待，禁止重复派发/编辑冻结运行源。
