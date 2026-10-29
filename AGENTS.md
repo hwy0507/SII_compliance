@@ -1,5 +1,10 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL第七条件结束、原108到63
+
+- [当前交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。04:23:29原63/108已接续条件007，两原PID/start保持loaded/active，OOM/实验swap0。前七条件63条runtime Task/Strict/BOTH全0；第七ESN1/3 global penetration abort，另外七条55s，全部失败保留。独立审计仅000–003，004–006待原完整后处理，非全矩阵结论。
+- 含源码/九runtime行/标签计数的27782bytes快照SHA76599bc7已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition006_runtime_20261029_v1/V8_CONDITION006_RUNTIME_AND_WAIT.json`。首次保存样本已63即自然退出，仅单样本；原科学继续，唯一八球v6未启动，Goal active，主矩阵未修复，可选004审计未重试。
+
 ## 2026-10-29 — 非RL唯一后继八球v6：处理原服务回收
 
 - [最新交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。原transient服务CollectMode=inactive/RemainAfterExit=no，已结束检查unit确实被回收；旧v5要求loaded会误拒绝。新`prepare_ball_coverage_reclaimed_20261029.py`和`outputs/nonrl_ball_coverage_probe_20261029_v6` REGc9450ef9登记boot/InvocationID/cgroup；仍先核原完整108审计，再核原身份消失/终态或已回收且原cgroup消失。回收路线明确不证明exit0，查询失败仍拒绝。

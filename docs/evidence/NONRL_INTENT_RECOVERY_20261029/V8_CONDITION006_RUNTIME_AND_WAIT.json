@@ -1,0 +1,562 @@
+{
+  "status": "verified_wait_original_science_continues",
+  "reason": "seventh_condition_completed",
+  "observer_source": "import datetime\nimport hashlib\nimport json\nfrom pathlib import Path\nimport subprocess\nimport time\n\nROOT = Path('/home/airpig/桌面/hwy/compliance_control/SII_compliance')\nBENCH = ROOT/'code/mujoco_6d_vmc_benchmark'\nOUTPUT = ROOT/'docs/evidence/NONRL_INTENT_RECOVERY_20261029/V8_CONDITION006_RUNTIME_AND_WAIT.json'\nIDENTITIES = [('sii-special-frozen108-v8-20261029.service', 1172675, 32623702),\n              ('sii-special-postprocess-v8-20261029.service', 1201537, 32942337)]\nassert not OUTPUT.exists()\nsamples = []\nbegan = time.monotonic()\nreason = 'bounded_observation_elapsed'\nwhile True:\n    row = {'utc': datetime.datetime.now(datetime.timezone.utc).isoformat()}\n    for unit, pid, ticks in IDENTITIES:\n        raw = subprocess.check_output(['systemctl', '--user', 'show', unit,\n            '-p', 'LoadState', '-p', 'ActiveState', '-p', 'MainPID',\n            '-p', 'MemoryCurrent', '-p', 'MemoryMax', '-p', 'ControlGroup'], text=True)\n        state = dict(line.split('=', 1) for line in raw.splitlines())\n        state['startticks'] = int(Path(f'/proc/{pid}/stat').read_text().rsplit(')', 1)[1].split()[19])\n        assert state['LoadState'] == 'loaded' and state['ActiveState'] == 'active'\n        assert state['MainPID'] == str(pid) and state['startticks'] == ticks\n        group = Path('/sys/fs/cgroup'+state['ControlGroup'])\n        state['memory_events'] = dict((a, int(b)) for a, b in\n                                      (line.split() for line in (group/'memory.events').read_text().splitlines()))\n        state['swap_current'] = int((group/'memory.swap.current').read_text())\n        row[unit] = state\n    raw = (BENCH/'outputs/special_scene_frozen108_20261029_v8/execution.json').read_bytes()\n    ex = json.loads(raw)\n    last = ex['rows'][-1]\n    cmd = last['command']\n    progress = Path(cmd[cmd.index('--output')+1])/'rollout.progress.json'\n    row.update(completed=ex['completed'], execution_sha256=hashlib.sha256(raw).hexdigest(),\n               method=last['method'], condition=last['condition'],\n               progress=json.loads(progress.read_text()) if progress.exists() else None)\n    row['host_memory'] = [line for line in Path('/proc/meminfo').read_text().splitlines()\n                          if line.startswith(('MemAvailable:', 'SwapTotal:', 'SwapFree:'))]\n    samples.append(row)\n    print(json.dumps(row), flush=True)\n    if ex['completed'] >= 63:\n        reason = 'seventh_condition_completed'\n        break\n    if time.monotonic()-began >= 600:\n        break\n    time.sleep(30)\nresult = dict(status='verified_wait_original_science_continues', reason=reason,\n              observer_source=Path(__file__).read_text(), samples=samples,\n              limitation='Only observer stopped; no science restart, simulation, fitting, or new audit. '\n                         'Runtime progress is not full matrix success or independent trajectory verification.')\nif ex['completed'] >= 63:\n    condition = 'new30_prospective_20261026_acceptance_006'\n    rows = [r for r in ex['results'] if r['condition'] == condition]\n    assert len(rows) == len({r['method'] for r in rows}) == 9\n    result['condition'] = condition\n    result['runtime_rows'] = rows\n    result['runtime_counts_first_seven_conditions'] = {\n        method: dict(episodes=len(selected),\n                     task=sum(r['task_success'] for r in selected),\n                     strict=sum(r['strict_success'] for r in selected),\n                     both=sum(r['task_success'] and r['strict_success'] for r in selected))\n        for method in sorted({r['method'] for r in rows})\n        for selected in [[r for r in ex['results'] if r['method'] == method\n                          and int(r['condition'].rsplit('_', 1)[1]) <= 6]]}\n    assert all(r['episodes'] == 7 for r in result['runtime_counts_first_seven_conditions'].values())\n    result['runtime_limitation'] = 'Stored runtime labels/metrics only, pending independent full saved-substep audit. No fitting or new physical simulation.'\nwith OUTPUT.open('x') as f:\n    json.dump(result, f, ensure_ascii=False, indent=2)\n    f.write('\\n')\nprint('observer_complete', reason, len(samples), str(OUTPUT), flush=True)\n",
+  "samples": [
+    {
+      "utc": "2026-10-29T04:23:29.932764+00:00",
+      "sii-special-frozen108-v8-20261029.service": {
+        "MainPID": "1172675",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-frozen108-v8-20261029.service",
+        "MemoryCurrent": "2100506624",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32623702,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "sii-special-postprocess-v8-20261029.service": {
+        "MainPID": "1201537",
+        "ControlGroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/sii-special-postprocess-v8-20261029.service",
+        "MemoryCurrent": "18022400",
+        "MemoryMax": "3221225472",
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "startticks": 32942337,
+        "memory_events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "swap_current": 0
+      },
+      "completed": 63,
+      "execution_sha256": "74d033b121a605ac04eccba0dbe33ab99e488853f515621453f7dbe5c16339c0",
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_007",
+      "progress": {
+        "time_s": 6.039999999992593,
+        "stage": "lift",
+        "position_error_m": 0.050247906025286025,
+        "external_penetration_mm": 0.143748053609224
+      },
+      "host_memory": [
+        "MemAvailable:    4724300 kB",
+        "SwapTotal:       2097148 kB",
+        "SwapFree:             64 kB"
+      ]
+    }
+  ],
+  "limitation": "Only observer stopped; no science restart, simulation, fitting, or new audit. Runtime progress is not full matrix success or independent trajectory verification.",
+  "condition": "new30_prospective_20261026_acceptance_006",
+  "runtime_rows": [
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_esn_ridge_s2026102801__new30_prospective_20261026_acceptance_006",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 29.48000000000002,
+      "peak_torque_nm": 67.5595474243164,
+      "comfort": {
+        "human_contact_duration_s": 0.0,
+        "human_comfort_torque_compliance": null,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 1.0,
+        "peak_torque_by_joint_nm": [
+          14.821523666381836,
+          67.5595474243164,
+          35.60188674926758,
+          46.2160758972168,
+          11.773648262023926,
+          12.0,
+          8.71271800994873
+        ],
+        "p95_torque_nm": 39.720829010009766,
+        "max_torque_slew_nm_per_s": 56000.06103515625,
+        "max_penetration_mm": 0.1426484767330432,
+        "machine_safety_violation": true,
+        "machine_safety_violation_reasons": [
+          "episode_abort:global_penetration_exceeded_2mm"
+        ]
+      },
+      "metric_sha256": "3f0c428172cd5492ab1dfcd4fbac59e1fcf160eb458c75b738d897b8fcf1af4b",
+      "audit_sha256": "4443538706c0e08e2200a3bb1b5654fec1f34682043d5dca0b41adc360b43ea6",
+      "trace_sha256": "4d97b01d4a615221cd2fd67db08b0cf7aaf341dd2dbffcd56a2fed2dce172385",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "6e97eff6bc7f8b092a80f6c5bacf83330dbb4ba4f5da4ed5eef8ad1c2d89b025",
+      "chain_sha256": "c5b1c86866e2e95340c7f10a8ef76605ebade5d96d1092301782fc735850e08f",
+      "substep_metrics_sha256": "3144eb7e9bd34bf3419a169564ef58d53b8fb2a15ebf0b493c2d6c5f7b78617d",
+      "research_substeps_sha256": "58b2f056fd75817a16817d47cbff66b1e1d97f8b3b028aacc82cf304723adaba"
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_rnn_scratch_s2026102801__new30_prospective_20261026_acceptance_006",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 47.441890716552734,
+      "comfort": {
+        "human_contact_duration_s": 11.989049999999995,
+        "human_comfort_torque_compliance": 0.12002202009333525,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.5453090886960085,
+        "peak_torque_by_joint_nm": [
+          5.534481525421143,
+          47.441890716552734,
+          2.8807222843170166,
+          26.64246368408203,
+          3.141235113143921,
+          4.893919467926025,
+          3.671020984649658
+        ],
+        "p95_torque_nm": 39.2183952331543,
+        "max_torque_slew_nm_per_s": 42941.5225982666,
+        "max_penetration_mm": 1.2495015174862076,
+        "machine_safety_violation": true,
+        "machine_safety_violation_reasons": [
+          "penetration_gt_0.2mm"
+        ]
+      },
+      "metric_sha256": "93c681fe70f262eb2a582944b0042bc98148d2a55a8cb013f61773f811be939c",
+      "audit_sha256": "624c95e30f797e7850bd8291fd56301b0a7c4acf19ab2d6c1a8be37c9643f50b",
+      "trace_sha256": "9b24eb4d1a0a7f29fd99ea6606d5169e727e2196927120d4ea3f83d375f6f5cc",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "5a9d3b00fab82af0e13b750ce7a306bda008152cb40db6759de41d83182babb7",
+      "chain_sha256": "a297d3712037d20af8a20427c4a1f422b6d6d452e32597c02dfe60645caefebc",
+      "substep_metrics_sha256": "68719c31c2a8a6e38d3a48187a90d2c9806672de027cf90d158df075af8fce43",
+      "research_substeps_sha256": "a396951599dd96dabcd149baad3232fd034b987d1acc59bdf32814dfb470657c"
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_mlp_scratch_s2026102801__new30_prospective_20261026_acceptance_006",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 36.66490936279297,
+      "comfort": {
+        "human_contact_duration_s": 0.0,
+        "human_comfort_torque_compliance": null,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.42143573980221805,
+        "peak_torque_by_joint_nm": [
+          2.729841470718384,
+          36.66490936279297,
+          2.8019533157348633,
+          25.376569747924805,
+          1.6961227655410767,
+          2.977710723876953,
+          0.6343449950218201
+        ],
+        "p95_torque_nm": 25.370466232299805,
+        "max_torque_slew_nm_per_s": 56000.00015925616,
+        "max_penetration_mm": 0.05485026066967786,
+        "machine_safety_violation": false,
+        "machine_safety_violation_reasons": []
+      },
+      "metric_sha256": "5da0fbc1ea8126bda94ed14660b239fb2baa4ac9aa688117b0a441f32285a75a",
+      "audit_sha256": "b0f180d30657893aa82490b0ca477778abd902c89a791f57026e103cbd11f84f",
+      "trace_sha256": "fc29e5b0e2c64dd67004f42db11ce7416bf1dbe71765de0a332f008800e725b8",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "53acb6b7eb5dbe84dec1ea301c13be95ddfebfc2971b55c028b74a061575b783",
+      "chain_sha256": "b14d36d7c3b226e3693089ab451bbd9e3a65a8b5622505502a3852fb79ea9385",
+      "substep_metrics_sha256": "aa9f2200e3a8d06c3fc0742cd221a6e193554367b9a10d78d6bb5351431feacc",
+      "research_substeps_sha256": "6a5b0a55edf6b96646da8f5dcb9fb74c09c189553c254743c9dfdd6ddd611c49"
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_esn_ridge_s2026102802__new30_prospective_20261026_acceptance_006",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 51.40156936645508,
+      "comfort": {
+        "human_contact_duration_s": 34.92560000000002,
+        "human_comfort_torque_compliance": 0.9935749135304763,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.6434666315714518,
+        "peak_torque_by_joint_nm": [
+          16.769023895263672,
+          51.40156936645508,
+          10.763545989990234,
+          43.05083465576172,
+          5.5701003074646,
+          7.721599578857422,
+          3.1293270587921143
+        ],
+        "p95_torque_nm": 31.772428512573242,
+        "max_torque_slew_nm_per_s": 56000.06103515625,
+        "max_penetration_mm": 0.15649610981936132,
+        "machine_safety_violation": false,
+        "machine_safety_violation_reasons": []
+      },
+      "metric_sha256": "403c4069a720332a09bbabd713b6d88eb84729e38d3005961c6ae72fe64dc7b2",
+      "audit_sha256": "7b396f6e03e14e4398603374917511a01db2d4ca0df2298ba01824b44d61d12f",
+      "trace_sha256": "a0ffc0df9a9a5867b5d7c5bcc173f3b2b47309e34d8248d405f544007a97d776",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "96eaef4e07afce468a25f6da29ef8d3de3dcd2d759f3c5129c43d1197b434a6e",
+      "chain_sha256": "5af66eeaffcf45e73fab9090631f8495012888f1b7a61ba7f5c2bf196ced8d8f",
+      "substep_metrics_sha256": "080c9e59ebf5adc6231720958f315c02d283035b8003cd1c66c516ca31832dbd",
+      "research_substeps_sha256": "da9b20a3d452c37121865f22e4b7743e67f0678352c6acd28b13ca2d08cd9a03"
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_rnn_scratch_s2026102802__new30_prospective_20261026_acceptance_006",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 37.534488677978516,
+      "comfort": {
+        "human_contact_duration_s": 4.489600000000001,
+        "human_comfort_torque_compliance": 1.0,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.43143090434458065,
+        "peak_torque_by_joint_nm": [
+          4.793458461761475,
+          37.534488677978516,
+          5.337490081787109,
+          28.31143569946289,
+          2.269232988357544,
+          4.520257472991943,
+          0.848456859588623
+        ],
+        "p95_torque_nm": 30.615646362304688,
+        "max_torque_slew_nm_per_s": 56000.022888183594,
+        "max_penetration_mm": 0.14713400296614823,
+        "machine_safety_violation": false,
+        "machine_safety_violation_reasons": []
+      },
+      "metric_sha256": "26de915d7d9824891b02dfbcbea9c4dafada268dff2e9d7266172254184782a4",
+      "audit_sha256": "8d12d5b0b7645c870d387e5cedaa7bacae63ba05517a2920547fa0e7e4d9d319",
+      "trace_sha256": "d9156ace7d3720a402e2b63fab1a3d45abceb9f25d0c59f463bc4a82f028eee9",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "adbe653d2aacae201355d5ac8a9b0bd69cce04c2de778c5ef2ff73f26b49deb6",
+      "chain_sha256": "a024ad119e8246178f02c1f761b1a8e3c72c7342a372e5862a304b53304f5313",
+      "substep_metrics_sha256": "c54f63d5c35eb1c9aeb19b8a569d33e253af651c6cfe9aa916e0e857901cf137",
+      "research_substeps_sha256": "3aaea7a2a6e9801e296f2cd6cd69085dce01f973bc977da1aa46c7191220bd8e"
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_mlp_scratch_s2026102802__new30_prospective_20261026_acceptance_006",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 51.97379684448242,
+      "comfort": {
+        "human_contact_duration_s": 4.497650000000001,
+        "human_comfort_torque_compliance": 1.0,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.597399963729683,
+        "peak_torque_by_joint_nm": [
+          5.651932239532471,
+          51.97379684448242,
+          6.672759532928467,
+          32.0654411315918,
+          2.9310638904571533,
+          6.750394821166992,
+          2.2416605949401855
+        ],
+        "p95_torque_nm": 43.62885284423828,
+        "max_torque_slew_nm_per_s": 56000.022888183594,
+        "max_penetration_mm": 0.7132725507520299,
+        "machine_safety_violation": true,
+        "machine_safety_violation_reasons": [
+          "penetration_gt_0.2mm"
+        ]
+      },
+      "metric_sha256": "db85caf08da1ea8c71302506a8a871569ae1967077e26f01d039bb0607388df3",
+      "audit_sha256": "dc53d7d0ff91fb6e37d8f605c9a5c13827eb23323bfc8065a73fffe1a370627b",
+      "trace_sha256": "4aef9135362ffbd61008bbbb8723b727cf800c4c4d8d8813bc1a4dbc2676cff7",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "f3b6c78d4c385d623afec83d4fce5ea44d1efbe94168aa3d717a213428c1f741",
+      "chain_sha256": "bf37b8f55257522b527ea386802e11708178143080f62ae51993786110403ef8",
+      "substep_metrics_sha256": "d7a9beffe7bcce9713c077d993d4ed6113184786ab4c5508e63125dc78d5e6f5",
+      "research_substeps_sha256": "70cc0cb027ae56045cbe9bba52e14b9e70506eb648e70e44b568f1a35dba5d42"
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_esn_ridge_s2026102803__new30_prospective_20261026_acceptance_006",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 23.160000000000007,
+      "peak_torque_nm": 46.512081146240234,
+      "comfort": {
+        "human_contact_duration_s": 4.540600000000001,
+        "human_comfort_torque_compliance": 0.0,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 1.0,
+        "peak_torque_by_joint_nm": [
+          18.444778442382812,
+          46.512081146240234,
+          20.972997665405273,
+          33.88856887817383,
+          9.11469841003418,
+          12.0,
+          5.285676956176758
+        ],
+        "p95_torque_nm": 44.20518112182617,
+        "max_torque_slew_nm_per_s": 56000.06103515625,
+        "max_penetration_mm": 0.16987361730581274,
+        "machine_safety_violation": true,
+        "machine_safety_violation_reasons": [
+          "episode_abort:global_penetration_exceeded_2mm"
+        ]
+      },
+      "metric_sha256": "c18991969348a2a87e25d45bd093110c743e46731e5c0ca895c4f4e16eceead7",
+      "audit_sha256": "98554dc3c3f061f5db1cfc09f41b85a443755f79dd0185ea96e57f4adfcf7b97",
+      "trace_sha256": "2e40b0ef138abb1b21abe7ded174c572569ee47939beb902cae61425e649fa16",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "b69eab44e20b51cedf7ec4fa3af5ad47a2763c35a6e4d38104add382c9fb579f",
+      "chain_sha256": "596fdca35d3e594e5a05a5ac8427640bc088d3dbf578c42c87bd6bf5afa594f4",
+      "substep_metrics_sha256": "6a9b7f10f6efce7f93b2c098873093998cd9816061f02c2d9eb362b52bd58935",
+      "research_substeps_sha256": "954851c4331e85154045d6e37c5928614faf40645064b31a2de909800a90474d"
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_rnn_scratch_s2026102803__new30_prospective_20261026_acceptance_006",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 38.9427604675293,
+      "comfort": {
+        "human_contact_duration_s": 4.131200000000001,
+        "human_comfort_torque_compliance": 1.0,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.4476179364083827,
+        "peak_torque_by_joint_nm": [
+          5.741686820983887,
+          38.9427604675293,
+          5.847434997558594,
+          28.386524200439453,
+          3.2217555046081543,
+          4.648358345031738,
+          0.9118861556053162
+        ],
+        "p95_torque_nm": 27.617733001708984,
+        "max_torque_slew_nm_per_s": 56000.022888183594,
+        "max_penetration_mm": 0.1430258381461356,
+        "machine_safety_violation": false,
+        "machine_safety_violation_reasons": []
+      },
+      "metric_sha256": "179d020f303c27800225fea3c83101fbec652b82a43fde7685c1f53bc8abdd76",
+      "audit_sha256": "2f3f66e8fa18d42dbc0555d8b305e267eefbad2345dbd9412bf44c1acb282ff4",
+      "trace_sha256": "e91f8c48ab678a21d7be99734b2a9aec66bfe8c5c5e94e329c56718f81f2d867",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "2939103e8ee30c592b1e0d85107f9fb711237ee5793926a12ee8d581f3fd4246",
+      "chain_sha256": "ea0c7849bddae721d601ac77ddeadad527b5158e12de51eb6b0b71ec48de8beb",
+      "substep_metrics_sha256": "ec2cd2f9354d217f2c7758c5d446dfb20040c423f9163da0c66a84a73395361f",
+      "research_substeps_sha256": "4c3d8a0ef0d0f8266036be9a64419727804579679f51398f8a30f7c393986eff"
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "run": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/special_scene_frozen108_20261029_v8/evaluation/special_mlp_scratch_s2026102803__new30_prospective_20261026_acceptance_006",
+      "task_success": false,
+      "strict_success": false,
+      "completion_time_s": null,
+      "duration_s": 54.99999999999989,
+      "peak_torque_nm": 36.23395538330078,
+      "comfort": {
+        "human_contact_duration_s": 3.9540000000000015,
+        "human_comfort_torque_compliance": 1.0,
+        "comfort_threshold_ratio_of_actuator_limit": 0.5,
+        "comfort_threshold_nm": [
+          43.5,
+          43.5,
+          43.5,
+          43.5,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "human_force_threshold_n": 0.05,
+        "max_torque_limit_ratio": 0.42661821842193604,
+        "peak_torque_by_joint_nm": [
+          4.558584690093994,
+          36.23395538330078,
+          5.117142200469971,
+          29.05693817138672,
+          3.446413040161133,
+          5.119418621063232,
+          1.2211260795593262
+        ],
+        "p95_torque_nm": 29.331180572509766,
+        "max_torque_slew_nm_per_s": 56000.022888183594,
+        "max_penetration_mm": 0.16342587663864272,
+        "machine_safety_violation": false,
+        "machine_safety_violation_reasons": []
+      },
+      "metric_sha256": "188a3fa346718c0728dccf26a6e6a2b6deb6d7db841798c9173976d8c7d898dc",
+      "audit_sha256": "c8237b8baf38bf85ad217c70292b21a3b170f01925839c48b8b70120abcd793b",
+      "trace_sha256": "b80f3287ee35e6c00e0342545026fdd0467696fda54852eeeaf93119de40a37f",
+      "model_sha256": "d4c28e40950d6c8414e7e3b667b0a7070be8d816b71483b88df8b373ee7778e3",
+      "execution_sha256": "7d0987425382f1dc92b8fc5b945ec2c9b9a1ed0a77c2dad86974768fd5122c45",
+      "chain_sha256": "1f4e8051b6468baf67b01a20ea1eefe5c14490ae9a443d6c5ec6be734fdf42e1",
+      "substep_metrics_sha256": "adfc31b0d3ac759d105f6639c13f2cb5e2e1ddbb25e7f942d32492549e3ff758",
+      "research_substeps_sha256": "0d734170610423c6142045030a5e419ca565a8ed81e102340f922250b75faf60"
+    }
+  ],
+  "runtime_counts_first_seven_conditions": {
+    "special_esn_ridge_s2026102801": {
+      "episodes": 7,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_esn_ridge_s2026102802": {
+      "episodes": 7,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_esn_ridge_s2026102803": {
+      "episodes": 7,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_mlp_scratch_s2026102801": {
+      "episodes": 7,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_mlp_scratch_s2026102802": {
+      "episodes": 7,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_mlp_scratch_s2026102803": {
+      "episodes": 7,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_rnn_scratch_s2026102801": {
+      "episodes": 7,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_rnn_scratch_s2026102802": {
+      "episodes": 7,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    },
+    "special_rnn_scratch_s2026102803": {
+      "episodes": 7,
+      "task": 0,
+      "strict": 0,
+      "both": 0
+    }
+  },
+  "runtime_limitation": "Stored runtime labels/metrics only, pending independent full saved-substep audit. No fitting or new physical simulation."
+}

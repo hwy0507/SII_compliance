@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL第七条件完整运行快照
+
+- [当前交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。04:22原62，04:23:29准确快照63/108、已接续条件007；原1172675/start32623702与后处理1201537/start32942337 loaded/active，OOM/实验swap0。保存脚本首次取样已满足边界后自然exit0，仅一个保存样本，不称多样本观察。
+- 前七条件63条runtime Task/Strict/BOTH全0；第七ESN1/3分别29.48/23.16s global penetration abort，其他七条55s；RNN1/MLP2另有external penetration违规，MLP1/ESN1舒适NA，SPT NA。小型AUDIT hash/标签与九行快照一致，非新独立子步审计；000–003已审，004–006仍待原完整后处理。
+- 含源码/九行/计数快照27782bytes/SHA76599bc7已暂存及最终核共享 `arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition006_runtime_20261029_v1/V8_CONDITION006_RUNTIME_AND_WAIT.json`。开工mainf9c7ad63/baselinef6e8f8c实际fetch/read，Goal active，原科学继续、唯一八球v6未启动，主矩阵修复仍待。无RL/子agent/服务器计算/删除，可选004审计未重试。
+
 ## 2026-10-29 — 非RL回收服务交接修复与八球v6
 
 - [当前交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)。实测原评测为可回收transient服务，已完成检查服务确实not-found；旧v5强制loaded会误挡正常完成。新独立v6绑定boot/InvocationID/cgroup，原完整108独立审计仍先行；允许同boot、原身份消失、原cgroup不存在的已回收路线，明确不认证原退出码，不以not-found默认success作证明。保留loaded同invocation正常exit0路线，查询失败/残留实体仍拒绝。
