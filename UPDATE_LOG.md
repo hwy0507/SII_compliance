@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL ESN读出外推定位
+
+- [报告](docs/NONRL_V8_READOUT_SUPPORT_DIAGNOSIS_20261029.md)。当前三ESN在既有成功teacher1375帧的载荷×上下文垂向raw RMS3.376/3.054/10.366（train .192/.064/.141），垂向动作裁剪40.80/17.09/41.45%（train0）。只用24train构建原ridge设计支持度，teacher约90.55–94.84%帧超各自train95分位；非概率/单一因果，不据此改选seed2。
+- 新有界只读工具完成全train/既有teacher预测重建、独立二次型、全已存组和/RMS标量验证，最大组和误差9.44e−14。报告SHA9edc5ef2、数组SHA32d12441；没有新物理/拟合/模型修改。实际服务00:19:53UTC自然success、CPU50%/线程1/3GiB/swap0。
+- 下一步按有效八球v3检查真实方向，再扩三场景共有的载荷×方向/阶段/恢复覆盖，保留原teacher和公平选择规则。原108/后处理同身份继续，17/108；当前失败不作成功，Goal active。开工main2ab89c31/baselinef6e8f8c实际fetch/read。新证据暂本机待共享，无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL原108十分钟核验13→15
 
 - 续接实际fetch/read仍main044d970a/baselinef6e8f8c；00:13:54UTC原1172675/后处理1201537均active，00:13:57确认16/108。原观察JSON已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait2358_20261029_v1/V8_FROZEN108_VERIFIED_WAIT_2358.json`，23909bytes/SHA d5b541dbb73945b2ea036665100703265c495e3c5bded5a6e807d7b8caa0a7ad，覆盖下方暂待共享状态；不含在途轨迹。任务仍active，未宣称修复。

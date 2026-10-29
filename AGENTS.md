@@ -1,5 +1,10 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL ESN读出外推定位
+
+- [报告](docs/NONRL_V8_READOUT_SUPPORT_DIAGNOSIS_20261029.md)。三锁定ESN在同成功teacher1375帧上，载荷×上下文垂向raw项RMS3.376/3.054/10.366，原train仅.192/.064/.141；垂向裁剪40.80/17.09/41.45%，train全0。原train-only ridge设计支持度亦显示组合特征强外推；非概率/因果或选seed依据。
+- 新只读诊断00:19:53UTC自然success，无新拟合/物理。全train与既有teacher预测重建、独立二次型和全数组标量算术通过。下一步有效八球v3验证真实方向，再修三场景共同的载荷×方向/阶段/恢复覆盖，不能只增加同一路径示范。原108/后处理保持，17/108；主矩阵未修复、Goal active。证据/数组暂本机待共享。
+
 ## 2026-10-29 — 非RL原108十分钟核验13→15
 
 - 续接00:13:54UTC原评测1172675及后处理1201537仍active；00:13:57后处理确认16/108，非完整矩阵。观察JSON已逐暂存/最终大小hash核共享至`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait2358_20261029_v1/V8_FROZEN108_VERIFIED_WAIT_2358.json`，23909bytes/SHA d5b541dbb73945b2ea036665100703265c495e3c5bded5a6e807d7b8caa0a7ad；不含后续在途物理数据。
