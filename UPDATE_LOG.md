@@ -1,3 +1,9 @@
+## 2026-10-30 — 开发闭环4/27；ESN两seed与RNN首条通过，MLP失败保留并诊断
+
+- 原诊断PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b宿主多次核实active，完整1→2→3→4；ESN01/RNN01/ESN02 rod00 Task/Strict/machine true。MLP01 Task/machine true、Strict false：接触/让位有效，棍撤回前未越棍及持续回位；完整500动作/400000子步、actor/filter replay通过。失败保留，无重试/重选/门槛修改。RNN02 rod00已100动作/80000子步。
+- 新只读前3开发轨迹诊断收据CONTACT_YIELD_FIRST3_CLOSED_LOOP_DIAGNOSIS_20261030.json：学生保存状态上的反事实teacher动作误差（接触至撤回）ESN/RNN/MLP为1.10263e-5/3.23786e-5/.00202966；MLP逐维未越训练min/max，仍不能排除联合组合偏移或确认历史依赖因果。反事实不是物理恢复示范；详见NONRL_CONTACT_YIELD_STUDENT_DIAGNOSIS_20261030.md。原全27继续，最终108等待/零派发，科学失败完整review后再公平修复。
+- 开工fetch/read mainf1ab065a048163fe19a13171d2dd2423cb236a59/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d，完整AGENTS开工/收尾重读；前轮progress，本轮verified wait及新失败诊断证据。两活登记source逐hash一致，OOM/swap0、内存约1.36GB/3GiB；Goal active，全27/必要修复/最终108/六指标/媒体待。raw仅本地，无新归档/服务器计算/RL/删除，两个无关untracked保留。
+
 ## 2026-10-30 — 全75训练与九模型审计完成；首条ESN开发棍推双通过
 
 - 原训练PID1829248自然inactive/PID0，75/75 complete、FIT_AUDIT passed、九模型已锁定。独立复核75 checkpoint/metadata hash和九模型共同validation最小值选模；原审计九模型各15750帧部署重放误差0、三seed神经曝光一致。新增小证据CONTACT_YIELD_ALL75_FIT_COMPLETION_20261030.json，含真实锁定/原审计及首条开发收据，非最终效果证明。

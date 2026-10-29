@@ -1,3 +1,9 @@
+## 2026-10-30：前四条完整，MLP首条失败已定位到行为门
+
+原诊断PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b持续active，完整4/27：rod00的ESN01/RNN01/ESN02 Task、Strict、machine均true；MLP01 Task/machine true、Strict false。MLP接触4.76635s、让位4.88s均有效，但12.80s棍撤回前没有越棍/持续回位；完整20s、500动作/400000子步、actor/filter replay均通过，峰矩39.105Nm/穿透0.037771mm，无数值或执行器违规。失败完整保留，不能当双成功/SPT样本。
+
+只读前3条开发rod00轨迹，在各学生保存观察序列上重放teacher作为反事实动作比较：接触至撤回窗口requested-action MSE，ESN01 1.10263e-5、RNN01 3.23786e-5、MLP01 .00202966。MLP逐维输入均未超出整个训练集的min/max，不能以此排除联合状态组合偏移；不能把反事实teacher输出当实际可恢复的物理示范。当前证据支持优先调查MLP动作拟合/历史依赖与闭环累计偏离，尚未证明各因素因果份额，也不能据单开发身份改选模型。证据 `CONTACT_YIELD_FIRST3_CLOSED_LOOP_DIAGNOSIS_20261030.json` 含真实指标、行为审计、逐通道误差/反事实均值、逐维包络、输入与源hash；无新物理、拟合或unseen读取。全27仍按固定顺序继续，最终108后继等待/零派发；全27 review后决定共享开发数据/公平修复方案，不修改活协调器。
+
 ## 2026-10-30：75拟合完成，固定27已实际接续
 
 全部75拟合完整完成，原训练服务自然inactive/PID0。FIT_AUDIT通过，九模型锁定hash `105f3dfd36d026980963ff8fa3c335af771b8b7e163f26f0bf9664e060f13091`。本轮逐文件核验75个checkpoint及metadata hash、九模型共同validation最小值选模；原FIT_AUDIT包含九模型各15750帧部署actor精确重放误差0，不是闭环成功证明。证据 `docs/evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_ALL75_FIT_COMPLETION_20261030.json`。
