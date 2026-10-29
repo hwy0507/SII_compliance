@@ -1,5 +1,23 @@
 # v8第二条件核验与补采接续检查修复
 
+## 01:36 UTC：原108持续到33
+
+01:20:47.388–01:35:47.408UTC共31次原1172675/start32623702与后处理1201537/start32942337
+保持loaded/active，完成30→33/108；最大791601152bytes/3GiB、OOM/oom_kill/swap全0。
+只读观察40291自然exit0，原科学继续；第四条件seed3 ESN在途，条件九模型尚未全部完整。
+本轮verified wait，上一轮方向覆盖诊断为progress；有效八球v4仍未启动，后续顺序不变。
+
+观察循环误用了progress.json路径，实际文件名是rollout.progress.json，故循环progress均null；
+此缺失原样保留。另从正确路径取到三份快照：MLP2 10.04s/lift→36.04s/carry，
+随后ESN3 11.04s/lift。完成数增加与这三份正确快照证明真实推进；不是用服务active推断物理成功。
+没有重启或修改科学作业，不因观察结束进入下一批。
+
+[准确观察](evidence/NONRL_INTENT_RECOVERY_20261029/V8_FROZEN108_VERIFIED_WAIT_0120.json)，
+42954bytes，SHA256 `2c89d8ffd92f32026ae4916696281074c016e4ac7f5aec1dc6ea2189418ef3f5`，
+已暂存和最终大小/hash核共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0120_20261029_v1/V8_FROZEN108_VERIFIED_WAIT_0120.json`。
+本次未新增物理、拟合、全条件审计或修复成功结论。Goal active。
+
 ## 01:17 UTC：持续观察与核验共享
 
 00:56:16.645–01:16:16.652UTC共41次确认原1172675/start32623702与后处理1201537/start32942337

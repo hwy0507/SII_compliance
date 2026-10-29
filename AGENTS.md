@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL原108核验30→33
+
+- 01:20:47.388–01:35:47.408UTC31次原1172675/start32623702与后处理1201537/start32942337均loaded/active，完成30→33/108，最大791601152bytes/3GiB、OOM/oom_kill/swap0。observer40291自然exit0，科学继续；第四条件seed3 ESN在途，完整九审计待。
+- 观察JSON42954bytes/SHA2c89d8ff已暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0120_20261029_v1/V8_FROZEN108_VERIFIED_WAIT_0120.json`。循环错查progress.json导致progress=null，原样保留；另读正确rollout.progress.json，MLP2从10.04s/lift至36.04s/carry、ESN3至11.04s/lift，三份准确快照附收据。非运行推理故障，无重启。
+- 本轮verified wait；上一轮方向覆盖诊断属progress。原108/后处理继续，唯一八球v4未启动，完整审查归档后再真实三场景覆盖修复与公平重训。Goal active，主矩阵未修复，无RL/子agent/服务器计算/删除。
+
 ## 2026-10-29 — 非RL第三条件全审与train方向缺口
 
 - 科学79552a67五文件包22870bytes/SHA39b0ee7e及41次观察59764bytes/SHA49d32f3e已逐暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition002_direction_20261029_v1/`。00:56:16–01:16:16原1172675/1201537身份保持、25→30/108、最大780238848bytes/OOMswap0，observer30059自然exit0。原科学继续，v4的197源保持/未启动，Goal active。远端01bb3503已安全合并且双方日志完整。

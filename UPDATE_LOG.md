@@ -1,3 +1,9 @@
+## 2026-10-29 — 非RL原108十五分钟核验30→33
+
+- 01:20:47.388–01:35:47.408UTC共31次原1172675/start32623702及后处理1201537/start32942337保持loaded/active，30→33/108，最大791601152bytes/3GiB，OOM/oom_kill/swap0；observer40291自然exit0，原科学继续。第四条件九模型未全齐，不重启审计。
+- 循环误查progress.json导致progress=null，原始缺失保留，未将其冒充物理进度；另外读取正确rollout.progress.json的三快照确认MLP2 10.04s/lift→36.04s/carry及ESN3 11.04s/lift。无科学进程/源码/指标修改。
+- 观察42954bytes/SHA2c89d8ffd92f32026ae4916696281074c016e4ac7f5aec1dc6ea2189418ef3f5已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_wait0120_20261029_v1/V8_FROZEN108_VERIFIED_WAIT_0120.json`。开工及收尾实际fetch/read main267fd68d/baselinef6e8f8c。本轮verified wait，Goal active；原108/后处理继续，v4八球未启动，主矩阵修复/补采/公平重训尚待。
+
 ## 2026-10-29 — 非RL第三条件全审与真实train方向缺口
 
 - 科学79552a67071dedec0e0a5064e74aaf0b2fba8152五文件包22870bytes/SHA39b0ee7e和完整41次观察59764bytes/SHA49d32f3e已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition002_direction_20261029_v1/`；逐成员对Git blob、两文件暂存/最终大小hash一致。00:56:16–01:16:16原1172675/1201537同身份active，25→30/108，最高780238848bytes/OOMswap0，observer30059自然exit0，原科学继续。01bb3503独立RL更新已读并安全合并、双方日志完整；八球v4的197绑定源保持且未启动。Goal active，未称主矩阵修复。
