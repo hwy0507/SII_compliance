@@ -1,3 +1,5 @@
+> **RL最新：[完整72与有限73](docs/RL_PARAMETER72_COMPLETE_20261029.md)。73实际启动/恢复验证通过，原71–73继续，GPU完成后仍保载，Goal active。**
+
 > **RL最新：[72五分钟核验与73全loss准备](docs/RL_PARAMETER72_WAIT73_LOSS_PREP_20261028.md)。原72/71–73继续，无73训练；GPU完成后仍保载，Goal active。**
 
 > **RL最新：[72早期检查与73仅恢复](docs/RL_PARAMETER72_EARLY_ANCHOR_20261028.md)。原72/71–73继续，无73训练；GPU完成后仍保载，Goal active。**

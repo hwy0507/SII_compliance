@@ -1,0 +1,51 @@
+--- /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc71_terminal_anchor_followup_20261028_v1/capture_anchor.py
++++ /inspire/ssd/project/long-range-embodied-collaborative-intelligence/ky26288/sii_rl/runs/vmc72_terminal_anchor_followup_20261028_v1/capture_anchor.py
+@@ -1,4 +1,4 @@
+-"""Freeze complete70 terminal inputs for prospective complete71 comparison."""
++"""Freeze complete71 terminal inputs for prospective complete72 comparison."""
+ from pathlib import Path
+ import hashlib,json,os,time
+ os.sched_setaffinity(0,{53})
+@@ -10,15 +10,15 @@
+ def sha(p):
+     with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ def read(p):return json.loads(p.read_text())
+-cp=B/'runs/parameter_capacity_pool30_cycle70_archive_20261026_v1/vmc/cycle_00070.pt'
+-old=B/'runs/vmc70_terminal_anchor_followup_20261028_v1'
++cp=B/'runs/parameter_capacity_pool30_cycle71_archive_20261026_v1/vmc/cycle_00071.pt'
++old=B/'runs/vmc71_terminal_anchor_followup_20261028_v1'
+ inputs={str(p):sha(p) for p in [cp,old/'values.npz',old/'REVIEW.json',old/'SAVED_VALUES_REVIEW.json']}
+-assert inputs[str(cp)]=='b3090cedc1eacb3357ce795eb987e42b1faea9121686485cb838b8ee04e5aa47'
++assert inputs[str(cp)]=='c3cd7336f3a8ec4225733175435346e3f92fc24ef5f7aae683754accccdf03c4'
+ assert read(old/'REVIEW.json')['values_sha256']==inputs[str(old/'values.npz')]
+ assert read(old/'SAVED_VALUES_REVIEW.json')['passed']
+ ck=torch.load(cp,map_location='cpu',weights_only=False)
+-assert ck['cycle']==70 and ck['boundary']=='complete_condition_cycle' and ck['controller']=='vmc'
+-a=ck['replay']['arrays'];idx=np.flatnonzero(a['dones'][:,0]==1);assert len(idx)==2124
++assert ck['cycle']==71 and ck['boundary']=='complete_condition_cycle' and ck['controller']=='vmc'
++a=ck['replay']['arrays'];idx=np.flatnonzero(a['dones'][:,0]==1);assert len(idx)==2154
+ with np.load(old/'values.npz',allow_pickle=False) as saved:
+     np.testing.assert_array_equal(idx,saved['indices'])
+     np.testing.assert_array_equal(a['rewards'][idx,0],saved['rewards'])
+@@ -26,14 +26,14 @@
+     q=saved['q_after'].copy();den=saved['denominator'].copy()
+ features=np.concatenate([a['observations'][idx],a['actions'][idx]],axis=1)
+ rewards=a['rewards'][idx,0];masks=a['masks'][idx].T
+-assert features.shape==(2124,57) and q.shape==(5,2124)
++assert features.shape==(2154,57) and q.shape==(5,2154)
+ sse=float((masks*(q.astype(float)-rewards.astype(float)[None])**2).sum())
+-assert not (OUT/'anchor70.npz').exists()
+-np.savez_compressed(OUT/'anchor70.npz',indices=idx,features=features,rewards=rewards,masks=masks,q_after=q,denominator=den)
++assert not (OUT/'anchor71.npz').exists()
++np.savez_compressed(OUT/'anchor71.npz',indices=idx,features=features,rewards=rewards,masks=masks,q_after=q,denominator=den)
+ for p,h in inputs.items():assert sha(Path(p))==h
+ report=dict(passed=True,time=time.time(),inputs=inputs,source_sha256=sha(Path(__file__)),
+-    anchor_sha256=sha(OUT/'anchor70.npz'),terminal_rows=2124,features_shape=[2124,57],
+-    groups=dict(all2124=dict(masked_sse_after=sse)),exact_saved70_terminal_indices_rewards_masks=True,
+-    q_from_verified70_cpu_forward=True,new_network_forward=0,optimizer_updates=0,new_physics=0,
+-    limitation='Exact full70 archived checkpoint inputs plus previously independently audited70 Q values; no live checkpoint selection, no training mutation.')
++    anchor_sha256=sha(OUT/'anchor71.npz'),terminal_rows=2154,features_shape=[2154,57],
++    groups=dict(all2154=dict(masked_sse_after=sse)),exact_saved71_terminal_indices_rewards_masks=True,
++    q_from_verified71_cpu_forward=True,new_network_forward=0,optimizer_updates=0,new_physics=0,
++    limitation='Exact full71 archived checkpoint inputs plus previously independently audited71 Q values; no live checkpoint selection, no training mutation.')
+ (OUT/'ANCHOR_REVIEW.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))

@@ -1,5 +1,13 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 完整72独立审查与准确有限73
+
+- [交接](docs/RL_PARAMETER72_COMPLETE_20261029.md)。三路完整72各30×55/41250/noabort，旧71 replay/history保持、新reward重算0、网络optimizer有限；全loss/标签/health/全2154终端及实际图已审。
+- 72 reward I/A/V−2.407332/−11.985219/−4.602759，TaskStrict18/17、14/12、17/16；三路short0600及A short0000失Strict，I long0000/A long0200恢复，physical-valid29/28/29。A/V末段critic均值升、max60.530479/55.003189，未收敛。全2154旧终端V/A SSE上升74.5303%/434.9371%，V原五focus都改善、A原66focus退化，完整保留。
+- DECISION73绑定48证据，准确72全state/replay/next65536恢复通过，有限73实际启动/startup通过，00:40:40steps 3010447/3011131/3012181。全73loss已部署，原71–73保持，无自动74，Direct34false，Goal active。
+- 本轮observer按1800秒自然完成61样本，当时审查未齐；随后原全72审查/73仅恢复完成；不以观察超时重启科学。516guard样本min74/63/64/60%、低于50[0, 0, 0, 0]，含合成占用、科研完成也继续，非跨重启服务。
+- SSD包254成员/3074199字节/SHA6deafd46逐字节/AST核验，大数据SSD非HDD/arm1全备份；开工main9e7e44ce、收尾main8dec2341/baselinef6e8f8c实际fetch/read，无子agent。原窗口/阈值及历史结论保持。
+
 ## 2026-10-29 — 非RL ESN读出外推定位
 
 - 科学93d5e7a4的5成员源码/准确报告/审查/标量检查/全读出数组，16141740bytes/SHA c9a01017，已逐成员及暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_readout_support_20261029_v1/READOUT_DIAGNOSTIC.tar.gz`。00:24UTC原1172675/start32623702和后处理1201537/start32942337保持active，18/108、第三条件在途；第二条件九runtime Task/Strict全false，全子步审计待，无重启。
