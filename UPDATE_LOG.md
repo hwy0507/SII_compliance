@@ -1,3 +1,12 @@
+## 2026-10-29 — 非RL完整108结案审查与真实方向覆盖修复启动
+
+- [完整结果](docs/NONRL_V8_FULL108_RESULTS_20261029.md)：原108/原后处理完整结束，Task1/108、Strict0/108、BOTH0/108；唯一MLP3条件011于54.36秒完成Task，但外穿透0.571845mm导致Strict失败，SPT NA。ESN25条停lift/11条carry且13abort，RNN12approach/24carry；不能归因于仅改蹭棍子或把低loss当修复。完整109748000保存子步及来源/分母审计通过，非动力学重新积分；实际六指标图已看。
+- 原108全部失败/来源/审计/图表3460成员、11175643176bytes/SHAdc95fe58已逐成员及源前后核验，暂存/最终共享亦核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_full108_20261029_v1/FROZEN108.tar.gz`。两终态observer随附，不拿回收unit默认success冒充exit0。
+- [新修复交接](docs/NONRL_DIRECTION_REPAIR_V9_20261029.md)：唯一八球v6已自然exit0，全八review及实际手/物位移检查结束；6合格、2只撞fr3_link7不合格，四方向均有合格teacher，实际物体搬运72.458–81.030mm。失败保留，不修改手接触资格。19观察样本峰1393098752bytes，OOM/实验swap0。
+- 新前瞻计划生成器已实现并验证：只从完整开发审查选合格角度，原30身份/seed/划分、teacher、20棍角配置及10球速度/shift/高度保持；新增四方向覆盖，仍共享24train/6val。新v9计划SHA34a91424、208源绑定，08:20:36UTC单CPU6/线程1/3GiB/禁swap服务启动，收尾4/30合格、rod_04在途。未训练或回测新学生，不宣称主矩阵已修复。
+- 全八成功/失败及新计划168成员455421181bytes/SHA89abcc6c已逐成员及源前后、暂存/最终核验共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_ball_direction_repair_20261029_v1/PROBE_AND_PLAN.tar.gz`；不含v9在途物理。后续全30资格→train覆盖→同预算公平训练→冻结108回归仍待。Goal active。
+- 开工和收尾真实fetch核main b1deda6593c6b4bc76a76b89e30b5a6fc4998178、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；重读AGENTS。无RL/子agent/服务器计算、冻结gate/输入/filter/执行器修改或用户数据删除。两个无关untracked文件保留，可选004旧权限超时动作未重试；原全108审计已完成。
+
 ## 2026-10-29 — 非RL第十一条件完整，原108到99
 
 - [交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)：第十一条件九条均55s/noabort/TaskStrictfalse，前十一99条runtime全失败，SPT NA。ESN3接触期舒适代理19.2668%，ESN1/MLP1无人体接触NA；ESN2/MLP2穿透超限。九AUDIT/metrics小文件hash匹配，不是新独立子步审计，004–010待原完整后处理。

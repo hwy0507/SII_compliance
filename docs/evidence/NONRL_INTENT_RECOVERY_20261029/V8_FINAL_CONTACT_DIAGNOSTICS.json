@@ -1,0 +1,1964 @@
+{
+  "status": "complete108_contact_diagnostics",
+  "created_utc": "2026-10-29T07:54:40.332140+00:00",
+  "audit_sha256": "b6c02e954a8fac89e7416e4bcddbb2481118fbb19a3d91ecc9a5441a5073c327",
+  "report_sha256": "aee19319a7f2275245a4fc358707a385cac6bf325903f0ec6be84fea0111c46a",
+  "script_sha256": "3c167e5b44bf94e4d2374cb3fe5c94404a983c6765dd839268638ea098e969c2",
+  "definitions": {
+    "contact": "human_robot_sum > 0.05N; dt=5e-5",
+    "excess_by_joint": "integral_contact max(abs(tau_j)-comfort_threshold_j,0) dt",
+    "max_joint_excess": "integral_contact max_j max(abs(tau_j)-comfort_threshold_j,0) dt",
+    "exceed_duration": "any joint > threshold*(1+1e-6), matching frozen comfort tolerance"
+  },
+  "rows": [
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "contact_duration_s": 0.026750000000000006,
+      "contact_force_peak_n": 99.46336364746094,
+      "contact_impulse_ns": 0.5958131070017815,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "contact_duration_s": 1.1419000000000004,
+      "contact_force_peak_n": 2038.6248779296875,
+      "contact_impulse_ns": 79.9206116380917,
+      "comfort_exceed_duration_s": 0.3514000000000001,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.3333928005218508,
+        0.0,
+        1.7439905649185143,
+        0.0069641919851303035,
+        0.4061313183546068,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 2.099485841703415
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "contact_duration_s": 4.049800000000001,
+      "contact_force_peak_n": 255.09490966796875,
+      "contact_impulse_ns": 48.04165745425374,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "contact_duration_s": 4.500400000000001,
+      "contact_force_peak_n": 597.9002685546875,
+      "contact_impulse_ns": 147.81321173428893,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "contact_duration_s": 4.230000000000001,
+      "contact_force_peak_n": 185.505126953125,
+      "contact_impulse_ns": 126.457913487646,
+      "comfort_exceed_duration_s": 4.230000000000001,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        18.991890298555667,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 18.99189029855728
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "contact_duration_s": 3.8889500000000012,
+      "contact_force_peak_n": 236.4493865966797,
+      "contact_impulse_ns": 47.476255257032065,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_000",
+      "contact_duration_s": 3.9459000000000013,
+      "contact_force_peak_n": 148.0261688232422,
+      "contact_impulse_ns": 33.86854210458994,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_001",
+      "contact_duration_s": 0.4605500000000001,
+      "contact_force_peak_n": 1119.1221923828125,
+      "contact_impulse_ns": 31.215870351803304,
+      "comfort_exceed_duration_s": 0.4484500000000001,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        3.9519434061050194,
+        0.0,
+        0.0,
+        0.004635732793807983,
+        0.5977226367235194,
+        0.03675188739299775
+      ],
+      "max_joint_excess_integral_nm_s": 4.435756535148621
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_001",
+      "contact_duration_s": 1.8113500000000005,
+      "contact_force_peak_n": 58.824832916259766,
+      "contact_impulse_ns": 2.2803893910797317,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_001",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_001",
+      "contact_duration_s": 3.106600000000001,
+      "contact_force_peak_n": 603.8628540039062,
+      "contact_impulse_ns": 59.49125462457817,
+      "comfort_exceed_duration_s": 0.06065000000000001,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.01687918338775633,
+        0.0,
+        0.0,
+        0.0,
+        0.05295816597938537,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.06983734936714173
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_001",
+      "contact_duration_s": 4.280050000000001,
+      "contact_force_peak_n": 366.9562683105469,
+      "contact_impulse_ns": 113.17001413105055,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_001",
+      "contact_duration_s": 4.501100000000001,
+      "contact_force_peak_n": 440.1236267089844,
+      "contact_impulse_ns": 122.45282601131277,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_001",
+      "contact_duration_s": 0.9484000000000004,
+      "contact_force_peak_n": 146.18203735351562,
+      "contact_impulse_ns": 12.054092765237764,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_001",
+      "contact_duration_s": 3.8689000000000013,
+      "contact_force_peak_n": 232.2245635986328,
+      "contact_impulse_ns": 43.42296992638857,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_001",
+      "contact_duration_s": 3.773350000000001,
+      "contact_force_peak_n": 165.99981689453125,
+      "contact_impulse_ns": 37.830257683899994,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_002",
+      "contact_duration_s": 0.07485000000000003,
+      "contact_force_peak_n": 416.10614013671875,
+      "contact_impulse_ns": 2.4335376457452775,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_002",
+      "contact_duration_s": 1.9123500000000004,
+      "contact_force_peak_n": 61.3301887512207,
+      "contact_impulse_ns": 2.4082900635687636,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_002",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_002",
+      "contact_duration_s": 2.701250000000001,
+      "contact_force_peak_n": 658.5646362304688,
+      "contact_impulse_ns": 84.7539961657673,
+      "comfort_exceed_duration_s": 0.41060000000000013,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.4914253429412878,
+        0.0,
+        0.0,
+        0.0,
+        0.149160347199441,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.6394559737920762
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_002",
+      "contact_duration_s": 4.204050000000001,
+      "contact_force_peak_n": 184.93930053710938,
+      "contact_impulse_ns": 59.68831845273227,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_002",
+      "contact_duration_s": 4.635200000000001,
+      "contact_force_peak_n": 407.6241149902344,
+      "contact_impulse_ns": 170.93661990155303,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_002",
+      "contact_duration_s": 0.8014000000000003,
+      "contact_force_peak_n": 495.4987487792969,
+      "contact_impulse_ns": 17.960578713216634,
+      "comfort_exceed_duration_s": 0.031950000000000006,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.011456068372726481,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.01145606837272644
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_002",
+      "contact_duration_s": 4.018950000000001,
+      "contact_force_peak_n": 292.33917236328125,
+      "contact_impulse_ns": 55.49550061703772,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_002",
+      "contact_duration_s": 3.793950000000001,
+      "contact_force_peak_n": 275.7630920410156,
+      "contact_impulse_ns": 37.75272216517851,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_003",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_003",
+      "contact_duration_s": 0.029750000000000006,
+      "contact_force_peak_n": 90.54309844970703,
+      "contact_impulse_ns": 0.6346338108539582,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_003",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_003",
+      "contact_duration_s": 3.198650000000001,
+      "contact_force_peak_n": 576.846923828125,
+      "contact_impulse_ns": 82.13540280141606,
+      "comfort_exceed_duration_s": 0.14035000000000003,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.13598123493194572,
+        0.0,
+        0.0,
+        0.0,
+        0.009072634601593028,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.14505386953353883
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_003",
+      "contact_duration_s": 4.034150000000001,
+      "contact_force_peak_n": 194.65708923339844,
+      "contact_impulse_ns": 40.33741135206967,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_003",
+      "contact_duration_s": 4.489800000000001,
+      "contact_force_peak_n": 510.5137634277344,
+      "contact_impulse_ns": 129.24262172294334,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_003",
+      "contact_duration_s": 4.558950000000001,
+      "contact_force_peak_n": 155.97525024414062,
+      "contact_impulse_ns": 175.0460287563838,
+      "comfort_exceed_duration_s": 4.558950000000001,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        40.631876809496035,
+        0.0,
+        0.0,
+        0.0,
+        15.261580853891196,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 40.631876809501655
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_003",
+      "contact_duration_s": 3.7330500000000013,
+      "contact_force_peak_n": 203.83262634277344,
+      "contact_impulse_ns": 37.870439537540825,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_003",
+      "contact_duration_s": 3.148800000000001,
+      "contact_force_peak_n": 146.22775268554688,
+      "contact_impulse_ns": 21.927779417629168,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_004",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_004",
+      "contact_duration_s": 1.5301000000000005,
+      "contact_force_peak_n": 84.81834411621094,
+      "contact_impulse_ns": 1.9031872696995737,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_004",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_004",
+      "contact_duration_s": 2.4032500000000008,
+      "contact_force_peak_n": 250.24017333984375,
+      "contact_impulse_ns": 44.98197010570392,
+      "comfort_exceed_duration_s": 0.04555000000000001,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.015379773521423343,
+        0.0,
+        0.0,
+        0.0,
+        0.021241271305084193,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.036621044826507576
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_004",
+      "contact_duration_s": 3.641750000000001,
+      "contact_force_peak_n": 132.78561401367188,
+      "contact_impulse_ns": 27.68643984327093,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_004",
+      "contact_duration_s": 4.248350000000001,
+      "contact_force_peak_n": 392.765625,
+      "contact_impulse_ns": 63.07252823097706,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_004",
+      "contact_duration_s": 3.031100000000001,
+      "contact_force_peak_n": 434.9949035644531,
+      "contact_impulse_ns": 86.70231066038163,
+      "comfort_exceed_duration_s": 2.2547000000000006,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        1.7428807992934825,
+        0.0,
+        0.0,
+        0.011171201753616291,
+        2.4265610022781936,
+        0.0012971111774444579
+      ],
+      "max_joint_excess_integral_nm_s": 4.143768112468719
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_004",
+      "contact_duration_s": 3.309750000000001,
+      "contact_force_peak_n": 127.31883239746094,
+      "contact_impulse_ns": 25.136144542182983,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_004",
+      "contact_duration_s": 3.1391500000000008,
+      "contact_force_peak_n": 121.7298355102539,
+      "contact_impulse_ns": 14.403061713338644,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_005",
+      "contact_duration_s": 0.7337500000000001,
+      "contact_force_peak_n": 1162.775634765625,
+      "contact_impulse_ns": 27.52205503690839,
+      "comfort_exceed_duration_s": 0.5633000000000001,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        4.976362300300568,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 4.976362300300599
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_005",
+      "contact_duration_s": 1.7311000000000005,
+      "contact_force_peak_n": 64.86921691894531,
+      "contact_impulse_ns": 2.135933952678368,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_005",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_005",
+      "contact_duration_s": 1.0238500000000004,
+      "contact_force_peak_n": 517.5006103515625,
+      "contact_impulse_ns": 48.34355005142241,
+      "comfort_exceed_duration_s": 0.15020000000000006,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.4004355960845944,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.40043559608459467
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_005",
+      "contact_duration_s": 3.954750000000001,
+      "contact_force_peak_n": 192.1123504638672,
+      "contact_impulse_ns": 39.47294796503521,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_005",
+      "contact_duration_s": 4.426250000000001,
+      "contact_force_peak_n": 258.7693176269531,
+      "contact_impulse_ns": 120.43978599011824,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_005",
+      "contact_duration_s": 0.43755000000000016,
+      "contact_force_peak_n": 133.76243591308594,
+      "contact_impulse_ns": 5.229857969870419,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_005",
+      "contact_duration_s": 3.7017500000000014,
+      "contact_force_peak_n": 144.78271484375,
+      "contact_impulse_ns": 39.325301586107535,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_005",
+      "contact_duration_s": 3.7275000000000014,
+      "contact_force_peak_n": 147.08831787109375,
+      "contact_impulse_ns": 28.58219939839542,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "contact_duration_s": 11.989049999999995,
+      "contact_force_peak_n": 509.0623779296875,
+      "contact_impulse_ns": 305.79237943969383,
+      "comfort_exceed_duration_s": 10.550099999999999,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        8.12534453964155,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 8.125344539642336
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "contact_duration_s": 34.92560000000002,
+      "contact_force_peak_n": 546.3654174804688,
+      "contact_impulse_ns": 840.0314076076642,
+      "comfort_exceed_duration_s": 0.22440000000000004,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.13143361682891636,
+        0.0,
+        0.0,
+        0.0,
+        0.08170694515704961,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.21314056198596956
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "contact_duration_s": 4.489600000000001,
+      "contact_force_peak_n": 286.0535583496094,
+      "contact_impulse_ns": 98.317564445322,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "contact_duration_s": 4.497650000000001,
+      "contact_force_peak_n": 500.2647399902344,
+      "contact_impulse_ns": 168.13875334675683,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "contact_duration_s": 4.540600000000001,
+      "contact_force_peak_n": 159.11546325683594,
+      "contact_impulse_ns": 137.75071601727905,
+      "comfort_exceed_duration_s": 4.540600000000001,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        4.996491982460684,
+        0.0,
+        0.0,
+        0.0,
+        23.768004382705612,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 23.768004382705683
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "contact_duration_s": 4.131200000000001,
+      "contact_force_peak_n": 273.1022033691406,
+      "contact_impulse_ns": 59.66341669779196,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_006",
+      "contact_duration_s": 3.9540000000000015,
+      "contact_force_peak_n": 267.78515625,
+      "contact_impulse_ns": 40.01889908361584,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_007",
+      "contact_duration_s": 1.2741500000000003,
+      "contact_force_peak_n": 756.0142211914062,
+      "contact_impulse_ns": 48.217926858404276,
+      "comfort_exceed_duration_s": 0.5104500000000002,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.45883511085510276,
+        0.0,
+        0.0,
+        0.0,
+        1.2737767384290721,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 1.7326118492841722
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_007",
+      "contact_duration_s": 0.03740000000000001,
+      "contact_force_peak_n": 117.49089050292969,
+      "contact_impulse_ns": 1.0013366743564607,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_007",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_007",
+      "contact_duration_s": 2.828850000000001,
+      "contact_force_peak_n": 517.9029541015625,
+      "contact_impulse_ns": 100.66365703662935,
+      "comfort_exceed_duration_s": 0.3401500000000001,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.8173960027694663,
+        0.0,
+        0.0,
+        0.0,
+        0.09379118909835776,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.9111871918678285
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_007",
+      "contact_duration_s": 4.081950000000002,
+      "contact_force_peak_n": 272.24041748046875,
+      "contact_impulse_ns": 55.477641263438024,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_007",
+      "contact_duration_s": 4.714050000000001,
+      "contact_force_peak_n": 306.88232421875,
+      "contact_impulse_ns": 184.04574641308707,
+      "comfort_exceed_duration_s": 0.04075000000000001,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.04243100750446342,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.04243100750446321
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_007",
+      "contact_duration_s": 2.918400000000001,
+      "contact_force_peak_n": 955.93310546875,
+      "contact_impulse_ns": 123.08728085205873,
+      "comfort_exceed_duration_s": 2.2838500000000006,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.8969285189627434,
+        0.6382050745487197
+      ],
+      "max_joint_excess_integral_nm_s": 3.5351335935115817
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_007",
+      "contact_duration_s": 3.8141500000000015,
+      "contact_force_peak_n": 205.1484832763672,
+      "contact_impulse_ns": 49.26154922523201,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_007",
+      "contact_duration_s": 3.140600000000001,
+      "contact_force_peak_n": 211.83370971679688,
+      "contact_impulse_ns": 30.851319721382488,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "contact_duration_s": 0.05345000000000001,
+      "contact_force_peak_n": 561.4326782226562,
+      "contact_impulse_ns": 3.614095112073422,
+      "comfort_exceed_duration_s": 0.00635,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.005255811238288876,
+        7.222888469696044e-05,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.005260621476173401
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "contact_duration_s": 0.6415500000000002,
+      "contact_force_peak_n": 125.35118865966797,
+      "contact_impulse_ns": 3.065670681663975,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "contact_duration_s": 3.119850000000001,
+      "contact_force_peak_n": 601.9158935546875,
+      "contact_impulse_ns": 63.124698835579686,
+      "comfort_exceed_duration_s": 0.019500000000000003,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.00142895183563233,
+        0.0,
+        0.0,
+        0.0,
+        0.026002922272682243,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.027431874108314516
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "contact_duration_s": 3.9217000000000013,
+      "contact_force_peak_n": 178.52880859375,
+      "contact_impulse_ns": 37.41317087345346,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "contact_duration_s": 3.8913500000000014,
+      "contact_force_peak_n": 311.4996032714844,
+      "contact_impulse_ns": 50.02113756383509,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "contact_duration_s": 3.542350000000001,
+      "contact_force_peak_n": 159.99586486816406,
+      "contact_impulse_ns": 33.550711436753346,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_008",
+      "contact_duration_s": 3.289000000000001,
+      "contact_force_peak_n": 138.42636108398438,
+      "contact_impulse_ns": 26.259629799265042,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_009",
+      "contact_duration_s": 0.41920000000000013,
+      "contact_force_peak_n": 630.0695190429688,
+      "contact_impulse_ns": 24.070665156570822,
+      "comfort_exceed_duration_s": 0.06815000000000002,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.14340086517334164,
+        0.00332970724105835,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.14347577908039094
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_009",
+      "contact_duration_s": 0.029750000000000006,
+      "contact_force_peak_n": 102.58256530761719,
+      "contact_impulse_ns": 0.7827746368646623,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_009",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_009",
+      "contact_duration_s": 3.6349000000000014,
+      "contact_force_peak_n": 420.24700927734375,
+      "contact_impulse_ns": 50.34786755239516,
+      "comfort_exceed_duration_s": 0.002,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0003888744592666629,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.00038887445926666267
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_009",
+      "contact_duration_s": 3.807450000000001,
+      "contact_force_peak_n": 143.4469451904297,
+      "contact_impulse_ns": 32.52735885471925,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_009",
+      "contact_duration_s": 4.389300000000001,
+      "contact_force_peak_n": 407.54986572265625,
+      "contact_impulse_ns": 104.28045249819013,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_009",
+      "contact_duration_s": 1.2558500000000004,
+      "contact_force_peak_n": 1258.7784423828125,
+      "contact_impulse_ns": 31.95195918832571,
+      "comfort_exceed_duration_s": 0.04470000000000001,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.019906957817077648,
+        0.0,
+        0.0,
+        0.0,
+        0.011748783540725708,
+        0.00040664639472961427
+      ],
+      "max_joint_excess_integral_nm_s": 0.031685004448890684
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_009",
+      "contact_duration_s": 3.577350000000001,
+      "contact_force_peak_n": 140.9602508544922,
+      "contact_impulse_ns": 33.789723027032245,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_009",
+      "contact_duration_s": 3.173700000000001,
+      "contact_force_peak_n": 135.88462829589844,
+      "contact_impulse_ns": 14.5402566785343,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_010",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_010",
+      "contact_duration_s": 2.1382000000000003,
+      "contact_force_peak_n": 69.95169067382812,
+      "contact_impulse_ns": 2.794444395394996,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_010",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_010",
+      "contact_duration_s": 3.375000000000001,
+      "contact_force_peak_n": 586.0220336914062,
+      "contact_impulse_ns": 73.0038730860278,
+      "comfort_exceed_duration_s": 0.08845000000000003,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.09831501197814964,
+        0.0,
+        0.0,
+        0.0,
+        0.005179754996299722,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.10349476697444915
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_010",
+      "contact_duration_s": 4.008450000000002,
+      "contact_force_peak_n": 197.2346649169922,
+      "contact_impulse_ns": 39.39050310100243,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_010",
+      "contact_duration_s": 3.366550000000001,
+      "contact_force_peak_n": 192.55810546875,
+      "contact_impulse_ns": 37.098070940363414,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_010",
+      "contact_duration_s": 3.136750000000001,
+      "contact_force_peak_n": 448.328125,
+      "contact_impulse_ns": 65.86830217920989,
+      "comfort_exceed_duration_s": 2.532400000000001,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        10.68884267959603,
+        0.0,
+        0.0,
+        0.0,
+        13.913945088292786,
+        2.1607033538578753
+      ],
+      "max_joint_excess_integral_nm_s": 14.095346143960953
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_010",
+      "contact_duration_s": 3.674250000000001,
+      "contact_force_peak_n": 164.12745666503906,
+      "contact_impulse_ns": 39.61487023055647,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_010",
+      "contact_duration_s": 3.612750000000001,
+      "contact_force_peak_n": 145.64743041992188,
+      "contact_impulse_ns": 30.11631140253842,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_011",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_rnn_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_011",
+      "contact_duration_s": 2.3105000000000007,
+      "contact_force_peak_n": 56.420387268066406,
+      "contact_impulse_ns": 2.7352937990866604,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102801",
+      "condition": "new30_prospective_20261026_acceptance_011",
+      "contact_duration_s": 0.0,
+      "contact_force_peak_n": null,
+      "contact_impulse_ns": null,
+      "comfort_exceed_duration_s": null,
+      "excess_torque_integral_by_joint_nm_s": null,
+      "max_joint_excess_integral_nm_s": null
+    },
+    {
+      "method": "special_esn_ridge_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_011",
+      "contact_duration_s": 1.7597500000000006,
+      "contact_force_peak_n": 2599.327880859375,
+      "contact_impulse_ns": 95.02611200086699,
+      "comfort_exceed_duration_s": 0.7932500000000002,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.4689453784942619,
+        0.0,
+        6.125288625907676,
+        0.0,
+        1.003123013043393,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 6.631311068034173
+    },
+    {
+      "method": "special_rnn_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_011",
+      "contact_duration_s": 3.9757500000000014,
+      "contact_force_peak_n": 214.81260681152344,
+      "contact_impulse_ns": 39.45110259345249,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102802",
+      "condition": "new30_prospective_20261026_acceptance_011",
+      "contact_duration_s": 2.764650000000001,
+      "contact_force_peak_n": 153.73220825195312,
+      "contact_impulse_ns": 29.215202148406956,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_esn_ridge_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_011",
+      "contact_duration_s": 1.4447000000000003,
+      "contact_force_peak_n": 921.9618530273438,
+      "contact_impulse_ns": 39.20780434984788,
+      "comfort_exceed_duration_s": 0.16750000000000004,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.34830065255165155,
+        0.007911522603035058,
+        0.0004340933561325073
+      ],
+      "max_joint_excess_integral_nm_s": 0.35664626851081854
+    },
+    {
+      "method": "special_rnn_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_011",
+      "contact_duration_s": 3.708000000000001,
+      "contact_force_peak_n": 182.47010803222656,
+      "contact_impulse_ns": 40.0453924381651,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    },
+    {
+      "method": "special_mlp_scratch_s2026102803",
+      "condition": "new30_prospective_20261026_acceptance_011",
+      "contact_duration_s": 3.6934500000000012,
+      "contact_force_peak_n": 147.01678466796875,
+      "contact_impulse_ns": 33.95324284792021,
+      "comfort_exceed_duration_s": 0.0,
+      "excess_torque_integral_by_joint_nm_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s": 0.0
+    }
+  ],
+  "methods": {
+    "special_esn_ridge_s2026102801": {
+      "episodes": 12,
+      "contact_episodes": 6,
+      "contact_duration_s_total": 3.0159500000000006,
+      "contact_force_peak_n_max": 1162.775634765625,
+      "contact_impulse_ns_total": 137.0741501615055,
+      "comfort_exceed_duration_s_total": 1.5967000000000005,
+      "excess_torque_integral_by_joint_nm_s_total": [
+        0.0,
+        9.387140817260692,
+        0.0,
+        0.14340086517334164,
+        0.013221251273155208,
+        1.8715716040372887,
+        0.03675188739299775
+      ],
+      "max_joint_excess_integral_nm_s_total": 11.293467085289956
+    },
+    "special_esn_ridge_s2026102802": {
+      "episodes": 12,
+      "contact_episodes": 12,
+      "contact_duration_s_total": 63.21945000000002,
+      "contact_force_peak_n_max": 2599.327880859375,
+      "contact_impulse_ns_total": 1621.8244015061427,
+      "comfort_exceed_duration_s_total": 2.626500000000001,
+      "excess_torque_integral_by_joint_nm_s_total": [
+        0.0,
+        2.911012893295285,
+        0.0,
+        7.869279190826191,
+        0.0069641919851303035,
+        1.8487564364671591,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s_total": 11.277844012737276
+    },
+    "special_esn_ridge_s2026102803": {
+      "episodes": 12,
+      "contact_episodes": 11,
+      "contact_duration_s_total": 27.30370000000001,
+      "contact_force_peak_n_max": 1258.7784423828125,
+      "contact_impulse_ns_total": 821.3168449394575,
+      "comfort_exceed_duration_s_total": 20.644650000000006,
+      "excess_torque_integral_by_joint_nm_s_total": [
+        0.0,
+        58.079999228663304,
+        0.0,
+        0.0,
+        0.35947185430526785,
+        77.29002651920268,
+        2.8010462793349014
+      ],
+      "max_joint_excess_integral_nm_s_total": 105.56580668203831
+    },
+    "special_mlp_scratch_s2026102801": {
+      "episodes": 12,
+      "contact_episodes": 0,
+      "contact_duration_s_total": 0.0,
+      "contact_force_peak_n_max": null,
+      "contact_impulse_ns_total": null,
+      "comfort_exceed_duration_s_total": null,
+      "excess_torque_integral_by_joint_nm_s_total": null,
+      "max_joint_excess_integral_nm_s_total": null
+    },
+    "special_mlp_scratch_s2026102802": {
+      "episodes": 12,
+      "contact_episodes": 12,
+      "contact_duration_s_total": 50.424650000000014,
+      "contact_force_peak_n_max": 597.9002685546875,
+      "contact_impulse_ns_total": 1326.7569565018327,
+      "comfort_exceed_duration_s_total": 0.04075000000000001,
+      "excess_torque_integral_by_joint_nm_s_total": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.04243100750446342,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s_total": 0.04243100750446321
+    },
+    "special_mlp_scratch_s2026102803": {
+      "episodes": 12,
+      "contact_episodes": 12,
+      "contact_duration_s_total": 42.392150000000015,
+      "contact_force_peak_n_max": 275.7630920410156,
+      "contact_impulse_ns_total": 350.10422201628796,
+      "comfort_exceed_duration_s_total": 0.0,
+      "excess_torque_integral_by_joint_nm_s_total": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s_total": 0.0
+    },
+    "special_rnn_scratch_s2026102801": {
+      "episodes": 12,
+      "contact_episodes": 12,
+      "contact_duration_s_total": 24.187849999999997,
+      "contact_force_peak_n_max": 509.0623779296875,
+      "contact_impulse_ns_total": 326.13014722194276,
+      "comfort_exceed_duration_s_total": 10.550099999999999,
+      "excess_torque_integral_by_joint_nm_s_total": [
+        0.0,
+        8.12534453964155,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s_total": 8.125344539642336
+    },
+    "special_rnn_scratch_s2026102802": {
+      "episodes": 12,
+      "contact_episodes": 12,
+      "contact_duration_s_total": 48.44945000000001,
+      "contact_force_peak_n_max": 366.9562683105469,
+      "contact_impulse_ns_total": 630.9741303298,
+      "comfort_exceed_duration_s_total": 0.0,
+      "excess_torque_integral_by_joint_nm_s_total": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s_total": 0.0
+    },
+    "special_rnn_scratch_s2026102803": {
+      "episodes": 12,
+      "contact_episodes": 12,
+      "contact_duration_s_total": 44.96865000000001,
+      "contact_force_peak_n_max": 292.33917236328125,
+      "contact_impulse_ns_total": 504.6522745218208,
+      "comfort_exceed_duration_s_total": 0.0,
+      "excess_torque_integral_by_joint_nm_s_total": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_joint_excess_integral_nm_s_total": 0.0
+    }
+  },
+  "limitation": "Descriptive saved-substep diagnostics; no new gate, no dynamics reintegration or human comfort calibration. No-contact measures stay NA. Original six metrics unchanged."
+}

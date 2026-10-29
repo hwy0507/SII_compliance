@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 非RL完整108失败审查、八球完成、v9方向补采运行
+
+- 当前读[修复交接](docs/NONRL_DIRECTION_REPAIR_V9_20261029.md)和[完整108结果](docs/NONRL_V8_FULL108_RESULTS_20261029.md)。原v8完整108：Task1/108、Strict0/108、BOTH0/108，SPT NA；109748000已保存子步算术/证据审计通过，不是动力学重新积分。主矩阵未修复，Goal active。
+- 原108全部3460成员包11175643176bytes/SHAdc95fe58已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_full108_20261029_v1/FROZEN108.tar.gz`。原物理/后处理已结束，勿重启。
+- 八球v6完成并全八review：6合格、2仅腕部接触不合格，四方向均有合格teacher；实际搬运72.458–81.030mm，非命令目标冒充。全部成功/失败及新计划168成员包455421181bytes/SHA89abcc6c已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_ball_direction_repair_20261029_v1/PROBE_AND_PLAN.tar.gz`。勿再启动v6或v5。
+- 新`special_scene_direction_collection_20261029_v9`计划SHA34a91424、208绑定源，08:20:36UTC启动`sii-special-direction-collection-v9-20261029.service`，PID1452135/Invocation173a263a95e345f8b6c84f313e017185；4/30合格、rod_04在途快照。只读核现有运行，不改绑定源、不重复启动。单CPU6/线程1/3GiB/禁swap保持。全30合格后构建共享24train/6val、覆盖检查、公平重训和冻结108回归；没有新学生结果。无RL/子agent/服务器计算，门槛保持。
+
 ## 2026-10-29 — 非RL第十一条件完整，原108到99
 
 - [交接](docs/NONRL_V8_RECLAIMED_SERVICE_HANDOFF_20261029.md)：07:04–07:16UTC25样本原1172675/start32623702及1201537/start32942337 loaded/active，97→99，接续最后条件011；最高1952808960bytes/3GiB、OOM/实验swap0，observer23205自然exit0，科学继续。第十一条件九条55s/noabort/TaskStrict全false，前十一99条全失败，SPT NA；非新子步审计。
