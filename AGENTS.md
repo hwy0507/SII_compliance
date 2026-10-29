@@ -1,6 +1,6 @@
 # 本仓库的持续工作约定
 
-## 2026-10-29 — v9组合回归继续推进至29/108；诊断显示迁移/数据覆盖风险
+## 2026-10-29 — v9组合回归继续推进至29/108；宿主scope active，诊断显示迁移/数据覆盖风险
 
 - 当前读[teacher、拟合与矩阵范围审查](docs/NONRL_V9_TEACHER_FIT_AND_MATRIX_DIAGNOSIS_20261029.md)及[数据/训练交接](docs/NONRL_V9_DATA_AND_TRAINING_20261029.md)。v9正式teacher数据30/30 qualified；棍推10/10均在撤回前让位、越过并持续回位，领先1.80–5.19s。75作业/108候选完成，锁定9模型。完整拟合、actor回放通过；ESN ridge方程相对残差5.36e-15–6.12e-15。
 - 逐帧训练权重并非等场景：rod 4000帧、ball 6000、corner 2600；ESN slowdown输出裁剪占21.4%–25.3%。这些是后续闭环分析线索，不单独证明teacher或算法错误。
@@ -9,7 +9,7 @@
 - 普通sandbox曾因PID与user bus隔离误报无worker，宿主级systemd查询已纠正。主机swap 2GiB/2GiB已用尽，但活跃scope有独立MemorySwapMax=0约束。普通sandbox的GitHub连接失败，宿主级fetch成功；已核验main=`69d656d67e60b66107f506400af0d36bc195b4d1`和baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及其UPDATE_LOG。
 - 当前证据未发现teacher棍推顺序、训练样本action重放、ESN ridge求解或checkpoint导出错误；但不能据此说闭环学习已充分。组合条件同时启用球/人/棍扰动，与三个分离特化场景训练不匹配；逐帧loss亦以ball占47.6%、corner占20.6%。原12组只可称迁移压力回归。v9 6条validation已选模，不能作未见测试。未修改冻结物理、gate、actor输入、filter、执行器限制或dt；主矩阵尚未修复。
 - 原v2恢复覆盖审计器拒绝正式v3 collection plan；这是审计器schema不兼容，保留拒绝记录，不回写计划。teacher qualification、训练帧teacher action精确回放和拟合审计独立通过。
-- 远端`ls-remote`读取main `69d656d67e60b66107f506400af0d36bc195b4d1`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`；后续fetch因网络连接失败，不宣称读取了远端最新日志。Goal active；主矩阵仍未修复。服务器不用于计算；本轮新审计/结果当前仅本地，完成后另建唯一共享归档并核hash。
+- sandbox内远端访问曾失败；宿主级fetch随后成功，核对main `69d656d67e60b66107f506400af0d36bc195b4d1`、baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`及两分支UPDATE_LOG。Goal active；主矩阵仍未修复。服务器不用于计算；本轮新审计/结果当前仅本地，完成后另建唯一共享归档并核hash。
 
 ## 2026-10-29 — 非RL v9完整30合格、真实方向覆盖已补、公平训练运行
 

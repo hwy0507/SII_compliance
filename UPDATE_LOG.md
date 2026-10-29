@@ -3,7 +3,7 @@
 - 复核`outputs/special_scene_frozen108_20261029_v9/execution.json`及逐回合收据：29/108完整，ESN10、RNN10、MLP9；Task2/29、Strict0/29、双成功0/29，SPT=NA。两条Task-only成功均因穿透0.2918/0.3090mm超过冻结0.2mm门而Strict失败。第30条MLP seed2026102801/condition003在途，仍未完成。
 - 宿主级systemd查询确认原scope `run-raa08b13eb33f4583ab899210958345fa.scope` active，最近MemoryCurrent约1.72GB、MemoryMax3GiB、MemorySwapMax=0、CPUQuota=100%、单数值线程；sandbox PID视图曾误报无worker，现已纠正。没有重启或改动任何运行收据。主机swap全满，但实验scope有零swap约束。
 - teacher棍推qualification/训练帧action精确重放、75份拟合作业/108候选、九checkpoint/actor回放和ridge复算通过；目前未发现teacher顺序或求解/导出实现错误。更明确的风险是训练场景分离、12条件为组合扰动迁移，逐帧loss中ball占47.6%；ESN slowdown标签21.4%–25.3%裁剪仍是待查线索。ESN组合回归9条Task为0，是真实风险信号但不是最终排名。原12只作迁移压力结果；另建场景隔离最终测试，validation 6条不能复用。
-- 已更新`AGENTS.md`和专题审查报告；最终六指标/图表仍待108完成。未改物理、Task/Strict gate、actor输入、filter、执行器限制或dt。宿主级`ls-remote`/fetch成功，核main=`69d656d67e60b66107f506400af0d36bc195b4d1`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读两分支UPDATE_LOG；远端main仍记上一阶段采集，baseline是独立RL进展。本轮文档尚未推送，服务器结果归档尚未核验。
+- 已更新`AGENTS.md`和专题审查报告；最终六指标/图表仍待108完成。未改物理、Task/Strict gate、actor输入、filter、执行器限制或dt。宿主级`ls-remote`/fetch成功，核main=`69d656d67e60b66107f506400af0d36bc195b4d1`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读两分支UPDATE_LOG；远端main仍记上一阶段采集，baseline是独立RL进展。本地提交已完成、push尚未执行；本轮结果服务器归档尚未核验。
 
 ## 2026-10-29 — v9拟合审计通过；组合回归正在揭示主矩阵范围不匹配
 
