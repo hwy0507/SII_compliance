@@ -1,0 +1,2096 @@
+{
+  "status": "verified_complete_fixed27_saved_evidence",
+  "scope": "Train00 development only, not unseen evaluation. This checks original hashes/replays, performs zero new integration or fitting.",
+  "parent": "/home/airpig/桌面/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/contact_yield_student_development_20261030_v1",
+  "parent_hashes": {
+    "REGISTRATION.json": "aab3174c075ca8f7a34b5ec9ed3232c7f78faceae8cb80560964eb16e1440c01",
+    "execution.json": "402f5db933bb8e0c3ed28292caeadb3c75a618cdcc52d378ef9147d4c46f06a7",
+    "REVIEW.json": "bbc0d8ea0beb46df50d6192402ac0dad892d390b2c3e8459b6f73d9e481e1b38"
+  },
+  "summary": [
+    {
+      "family": "esn_ridge",
+      "scene": "rod",
+      "episodes": 3,
+      "task": 3,
+      "strict": 3,
+      "both": 3,
+      "machine": 3
+    },
+    {
+      "family": "esn_ridge",
+      "scene": "ball",
+      "episodes": 3,
+      "task": 3,
+      "strict": 3,
+      "both": 3,
+      "machine": 3
+    },
+    {
+      "family": "esn_ridge",
+      "scene": "corner",
+      "episodes": 3,
+      "task": 3,
+      "strict": 3,
+      "both": 3,
+      "machine": 3
+    },
+    {
+      "family": "esn_ridge",
+      "scene": "all",
+      "episodes": 9,
+      "task": 9,
+      "strict": 9,
+      "both": 9,
+      "machine": 9
+    },
+    {
+      "family": "rnn_scratch",
+      "scene": "rod",
+      "episodes": 3,
+      "task": 3,
+      "strict": 3,
+      "both": 3,
+      "machine": 3
+    },
+    {
+      "family": "rnn_scratch",
+      "scene": "ball",
+      "episodes": 3,
+      "task": 0,
+      "strict": 0,
+      "both": 0,
+      "machine": 3
+    },
+    {
+      "family": "rnn_scratch",
+      "scene": "corner",
+      "episodes": 3,
+      "task": 3,
+      "strict": 3,
+      "both": 3,
+      "machine": 3
+    },
+    {
+      "family": "rnn_scratch",
+      "scene": "all",
+      "episodes": 9,
+      "task": 6,
+      "strict": 6,
+      "both": 6,
+      "machine": 9
+    },
+    {
+      "family": "mlp_scratch",
+      "scene": "rod",
+      "episodes": 3,
+      "task": 3,
+      "strict": 1,
+      "both": 1,
+      "machine": 2
+    },
+    {
+      "family": "mlp_scratch",
+      "scene": "ball",
+      "episodes": 3,
+      "task": 2,
+      "strict": 2,
+      "both": 2,
+      "machine": 3
+    },
+    {
+      "family": "mlp_scratch",
+      "scene": "corner",
+      "episodes": 3,
+      "task": 3,
+      "strict": 3,
+      "both": 3,
+      "machine": 3
+    },
+    {
+      "family": "mlp_scratch",
+      "scene": "all",
+      "episodes": 9,
+      "task": 8,
+      "strict": 6,
+      "both": 6,
+      "machine": 8
+    }
+  ],
+  "rows": [
+    {
+      "id": "rod_00__special_esn_ridge_s2026102801",
+      "family": "esn_ridge",
+      "seed": 2026102801,
+      "scene": "rod",
+      "metrics": {
+        "method": "special_esn_ridge_s2026102801",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 8.839999999986068,
+        "peak_torque_nm": 35.12690382727544,
+        "peak_joint_torque_nm": [
+          1.2919161612606562,
+          35.12690382727544,
+          1.3051603624053398,
+          27.597614992167994,
+          1.5726302370028584,
+          3.2905101427674937,
+          0.8030133099148341
+        ],
+        "peak_joint_velocity_radps": [
+          0.0473575978351865,
+          0.19335970029815458,
+          0.052710098706551134,
+          0.3497086311359146,
+          0.09178579329583281,
+          0.30516781891229444,
+          0.17756451022716274
+        ],
+        "max_external_penetration_m": 7.084573156364147e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.027350000000000006,
+        "proxy_below_threshold_s": 0.027350000000000006,
+        "qualification_sha256": "684a547f7ce53478629c565115a59f2a809f55ef00c46f149e1dde08129e8c04",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "e3f05656df656f0902d2641a800db4fba931535998987d78aebe5725d400c4fc",
+          "legacy.json": "e3d18691cccb201c3b088213934dcba0df5eb49cda50fe07658829012b7f7501",
+          "execution.json": "5460bbe07d7d3bac39183990f8fbe683bbd4776381cba575bd5f9ad5733a2096",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "787ec5580081888b81cad489877ae8897aa05a829d3cee438d8d948b27557ebe"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "5460bbe07d7d3bac39183990f8fbe683bbd4776381cba575bd5f9ad5733a2096",
+            "trajectory.npz": "e3f05656df656f0902d2641a800db4fba931535998987d78aebe5725d400c4fc",
+            "substeps.npz": "ba10183523fb2eae4a5d1f1c933047641e16be4720de1b6def3007eaa389370d",
+            "legacy.json": "e3d18691cccb201c3b088213934dcba0df5eb49cda50fe07658829012b7f7501"
+          }
+        }
+      },
+      "replay": {
+        "id": "rod_00__special_esn_ridge_s2026102801",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 500
+      },
+      "metrics_sha256": "c58992f525b79d5906e8907e7ed78596c938c43b5e612677b8d0684cdaa98145"
+    },
+    {
+      "id": "rod_00__special_rnn_scratch_s2026102801",
+      "family": "rnn_scratch",
+      "seed": 2026102801,
+      "scene": "rod",
+      "metrics": {
+        "method": "special_rnn_scratch_s2026102801",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 8.759999999986254,
+        "peak_torque_nm": 35.35499936512036,
+        "peak_joint_torque_nm": [
+          1.1132858017873735,
+          35.35499936512036,
+          1.1105133915925067,
+          27.915111082416157,
+          1.5581031917056403,
+          3.2927777505632836,
+          0.8168766564394204
+        ],
+        "peak_joint_velocity_radps": [
+          0.046859380747984826,
+          0.1813443065657595,
+          0.05168312575960216,
+          0.348422434457237,
+          0.09350873792019786,
+          0.29062322013143194,
+          0.15861259808680545
+        ],
+        "max_external_penetration_m": 6.785650954416291e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.02745000000000001,
+        "proxy_below_threshold_s": 0.02745000000000001,
+        "qualification_sha256": "0f5c9fb5d27ee93ff5d6d0b6ab50968d665b34b418d65b8f1416be69223622e8",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "e622139885e3fd1c73786080bff4bb662b7d5b5ed7da7fd2e073f3b7af59de51",
+          "legacy.json": "8b69367cd8fbdf13095302866fba162e36b3036da8ac86a7c906d1aaca95cb20",
+          "execution.json": "d6cb944f624914b43908ec230fe6b738dbd8918f87a1d70457dc9dc660851e47",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "76886ceaa02cc805759e47753a8ad5f56e276b154dfcb50a567e0ddf8c631955"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "d6cb944f624914b43908ec230fe6b738dbd8918f87a1d70457dc9dc660851e47",
+            "trajectory.npz": "e622139885e3fd1c73786080bff4bb662b7d5b5ed7da7fd2e073f3b7af59de51",
+            "substeps.npz": "4cbf4c678acd8f1968937cbbec807f69cd33498e6464c009f6c6d39b089dfafb",
+            "legacy.json": "8b69367cd8fbdf13095302866fba162e36b3036da8ac86a7c906d1aaca95cb20"
+          }
+        }
+      },
+      "replay": {
+        "id": "rod_00__special_rnn_scratch_s2026102801",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 500
+      },
+      "metrics_sha256": "613e22611a75c8bc1ff28b6b61850b2b014e1607497c0351607a6e8a89baae8c"
+    },
+    {
+      "id": "rod_00__special_mlp_scratch_s2026102801",
+      "family": "mlp_scratch",
+      "seed": 2026102801,
+      "scene": "rod",
+      "metrics": {
+        "method": "special_mlp_scratch_s2026102801",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": false,
+        "completion_time_s": 15.919999999969567,
+        "peak_torque_nm": 39.104987999393906,
+        "peak_joint_torque_nm": [
+          1.2449275558544532,
+          39.104987999393906,
+          1.1780830447638058,
+          27.12558119244865,
+          1.4911238914788316,
+          3.4391846701430278,
+          0.6568746621071885
+        ],
+        "peak_joint_velocity_radps": [
+          0.026185986203326326,
+          0.26096360026867654,
+          0.02897787868719437,
+          0.5665146835935374,
+          0.06525083044256598,
+          0.381345920791673,
+          0.11020347612225019
+        ],
+        "max_external_penetration_m": 3.777127933169348e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.023950000000000006,
+        "proxy_below_threshold_s": 0.023950000000000006,
+        "qualification_sha256": "bb37e3245ca8ac9aa317e88f63a28faf4a320557aa2b61a2bb9b596fb29157da",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "7cf0471bddf6303a96996ae4d3b133163700c4965b00456c606aba24a36813fe",
+          "legacy.json": "45e783afbe8df6a83bb31955fd548843524f0c3876f90313e34c81157b10741b",
+          "execution.json": "da0d994149aca3a0279b9c187b305411bc2e84799db211901ce322a4f5a98c55",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "9f9fe3b2e9d442b28f5572ecff722e16a42e8a27f0641b754c0995d342cd474e"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "da0d994149aca3a0279b9c187b305411bc2e84799db211901ce322a4f5a98c55",
+            "trajectory.npz": "7cf0471bddf6303a96996ae4d3b133163700c4965b00456c606aba24a36813fe",
+            "substeps.npz": "fd6c897ab89fbd413f1f87999ba9bba0f5c919582aeb8766e2da3d1415067871",
+            "legacy.json": "45e783afbe8df6a83bb31955fd548843524f0c3876f90313e34c81157b10741b"
+          }
+        }
+      },
+      "replay": {
+        "id": "rod_00__special_mlp_scratch_s2026102801",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 500
+      },
+      "metrics_sha256": "08de438897c821f01a17dd98e2b4a2c2968f7884af0b086a47160d380e2fa5d3"
+    },
+    {
+      "id": "rod_00__special_esn_ridge_s2026102802",
+      "family": "esn_ridge",
+      "seed": 2026102802,
+      "scene": "rod",
+      "metrics": {
+        "method": "special_esn_ridge_s2026102802",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 8.719999999986348,
+        "peak_torque_nm": 34.49716224800349,
+        "peak_joint_torque_nm": [
+          1.584310736267729,
+          34.49716224800349,
+          1.5492854822502002,
+          27.48517120158163,
+          1.553217695101094,
+          3.3398015812590005,
+          0.7729518199234688
+        ],
+        "peak_joint_velocity_radps": [
+          0.0514492866960792,
+          0.18455577337618728,
+          0.05661840508646123,
+          0.3416097571103417,
+          0.10172825987994773,
+          0.30611239477956487,
+          0.19210375944765815
+        ],
+        "max_external_penetration_m": 7.320584996550794e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.026550000000000008,
+        "proxy_below_threshold_s": 0.026550000000000008,
+        "qualification_sha256": "27bf4e8ad1617f4bcde91cd17f5dec161e7fd560a0ac2dee441adbe5f156226b",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "85d5f894a778d8213c00105b002c849e0ebc48f51b2e4b8e52ee38c9f5dd4fc6",
+          "legacy.json": "47ac33c0305f33142245298f81c47992fc59887be0544b2c6bb9a77f9a1353b0",
+          "execution.json": "413c3d7d8a72b37189bffb7bc8afcbe2a9cb3af7fa49476ec6cdf4385184847c",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "956ad44f09e2fc02e29fd46905f0cc07276e4a3428a17c10aa6f473037d75d96"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "413c3d7d8a72b37189bffb7bc8afcbe2a9cb3af7fa49476ec6cdf4385184847c",
+            "trajectory.npz": "85d5f894a778d8213c00105b002c849e0ebc48f51b2e4b8e52ee38c9f5dd4fc6",
+            "substeps.npz": "c32e8ffe2adccc62882c1acc9b7eb2e78c95ce24c111e7652cb4c6470d78e62f",
+            "legacy.json": "47ac33c0305f33142245298f81c47992fc59887be0544b2c6bb9a77f9a1353b0"
+          }
+        }
+      },
+      "replay": {
+        "id": "rod_00__special_esn_ridge_s2026102802",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 500
+      },
+      "metrics_sha256": "bd8a0ecc6b9a0f4de21866ff2b18090f39217d800f676de3db85576d88cdb0f7"
+    },
+    {
+      "id": "rod_00__special_rnn_scratch_s2026102802",
+      "family": "rnn_scratch",
+      "seed": 2026102802,
+      "scene": "rod",
+      "metrics": {
+        "method": "special_rnn_scratch_s2026102802",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 8.839999999986068,
+        "peak_torque_nm": 35.223291256501575,
+        "peak_joint_torque_nm": [
+          1.1383768454023342,
+          35.223291256501575,
+          1.0408649420077498,
+          28.193683178829446,
+          1.5517432103066935,
+          3.4775656412253504,
+          0.6549604995679779
+        ],
+        "peak_joint_velocity_radps": [
+          0.03630805837358607,
+          0.18538140134722605,
+          0.039253355799819895,
+          0.41299806689368446,
+          0.08086594216762717,
+          0.3134272196483664,
+          0.15289631593141498
+        ],
+        "max_external_penetration_m": 4.286924704318194e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.017050000000000003,
+        "proxy_below_threshold_s": 0.017050000000000003,
+        "qualification_sha256": "6f4c52089c7e7693e828a43c9f682831eda73ee04bf6510cd700fd67df72dd38",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "f2fa1c5e203c7be8d5b8e014f01852cfb2f5547c5877e0b68ed617efbc1f7170",
+          "legacy.json": "92a26931804a8d7a7f9b767e936cb98a1aa5a271e419f0661128ac8dd1f2bc4c",
+          "execution.json": "a04b088370f25bb0d2192a9ee42be24e2aa6287bdfd16557a4439b1db3262275",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "bc07f644da55831ff300707eab59092169a5de72db5ca1a0fb56568a70ce0253"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "a04b088370f25bb0d2192a9ee42be24e2aa6287bdfd16557a4439b1db3262275",
+            "trajectory.npz": "f2fa1c5e203c7be8d5b8e014f01852cfb2f5547c5877e0b68ed617efbc1f7170",
+            "substeps.npz": "7613189fa7b14889edbc3634d029cb3e922754e79ee78701743655f3d0b4ea64",
+            "legacy.json": "92a26931804a8d7a7f9b767e936cb98a1aa5a271e419f0661128ac8dd1f2bc4c"
+          }
+        }
+      },
+      "replay": {
+        "id": "rod_00__special_rnn_scratch_s2026102802",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 500
+      },
+      "metrics_sha256": "e02c61ac7a44762adb670a4d5a342fbcc3da470a23aa45b28a1abcd5175fc8f1"
+    },
+    {
+      "id": "rod_00__special_mlp_scratch_s2026102802",
+      "family": "mlp_scratch",
+      "seed": 2026102802,
+      "scene": "rod",
+      "metrics": {
+        "method": "special_mlp_scratch_s2026102802",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": false,
+        "completion_time_s": 12.27999999997805,
+        "peak_torque_nm": 34.160840490875245,
+        "peak_joint_torque_nm": [
+          2.8852951388633445,
+          34.160840490875245,
+          2.9354541178732845,
+          27.344560102128185,
+          1.5222051952065143,
+          3.2638322884058546,
+          0.6411641976891799
+        ],
+        "peak_joint_velocity_radps": [
+          0.06596108119288492,
+          0.28779895528837085,
+          0.07960391698847168,
+          0.47465126151531106,
+          0.06883707704652231,
+          0.2693377369462099,
+          0.09087546709758428
+        ],
+        "max_external_penetration_m": 0.00021949239864935482,
+        "machine_compliant": false,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.24115000000000003,
+        "proxy_below_threshold_s": 0.24115000000000003,
+        "qualification_sha256": "456050af4461f7cb99c95cf13aa7ab41b38c3de12ab2ad73f11f1224e72738bc",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "796af3687de0403dffbc8fa5248434fc5233fc1ec5e6c2d4b0fe0cfe3e4c7c47",
+          "legacy.json": "7ea0f30b37924d7cab919af263de86d82dd1b44219337252d3135bff74b35332",
+          "execution.json": "649d9ead57b3448bcb532936cded88c035d19daeca13c5ddbbb373af432cd0e4",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "8c2425b9f05f2afe9c362872f6bc6b97e074c8d4e2e064c9636184d3c5bdd096"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "649d9ead57b3448bcb532936cded88c035d19daeca13c5ddbbb373af432cd0e4",
+            "trajectory.npz": "796af3687de0403dffbc8fa5248434fc5233fc1ec5e6c2d4b0fe0cfe3e4c7c47",
+            "substeps.npz": "f81ef9286ac3753c165a614f77351c20efad7059790e709196a91ad620ca767d",
+            "legacy.json": "7ea0f30b37924d7cab919af263de86d82dd1b44219337252d3135bff74b35332"
+          }
+        }
+      },
+      "replay": {
+        "id": "rod_00__special_mlp_scratch_s2026102802",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 500
+      },
+      "metrics_sha256": "9437f38a7c490b9d35fbc5053c83848fcdabd3b4b4bf969f2dbcdcf42a0d5372"
+    },
+    {
+      "id": "rod_00__special_esn_ridge_s2026102803",
+      "family": "esn_ridge",
+      "seed": 2026102803,
+      "scene": "rod",
+      "metrics": {
+        "method": "special_esn_ridge_s2026102803",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 9.199999999985229,
+        "peak_torque_nm": 35.19007651427805,
+        "peak_joint_torque_nm": [
+          1.3176763782279146,
+          35.19007651427805,
+          1.3928543259093786,
+          27.604021586298465,
+          1.6884123673394833,
+          3.403657659098585,
+          0.8154236975417855
+        ],
+        "peak_joint_velocity_radps": [
+          0.0435138057224904,
+          0.20331515497669952,
+          0.049109582530496444,
+          0.42780394231785573,
+          0.09209241487219329,
+          0.36661982364142065,
+          0.15689887423738855
+        ],
+        "max_external_penetration_m": 6.278477954305255e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.04070000000000001,
+        "proxy_below_threshold_s": 0.04070000000000001,
+        "qualification_sha256": "683c850ee5c9ee88917cb982b7f129d79c870b0be8a85a99e3970d8ab35a5944",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "20ba9d7e852a58fbad3c4bbe6cb0277b4f3ae69b079bb61efc2990d701855aff",
+          "legacy.json": "587eafa0026b8a25328c753823d6bbbdf61de94d9872f8066607a6f01fd6903d",
+          "execution.json": "becfb268bca5280bc0ef963aa92eb0f39669e7100ff17b773f729df704dab34b",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "09340c7d8d9d0e4466594a579200f16129fb80d29ebeceef7cee715ed1fb892d"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "becfb268bca5280bc0ef963aa92eb0f39669e7100ff17b773f729df704dab34b",
+            "trajectory.npz": "20ba9d7e852a58fbad3c4bbe6cb0277b4f3ae69b079bb61efc2990d701855aff",
+            "substeps.npz": "bfb3d5552861d7f1cf649e0a910aeb8712f6c20deddb7d912470ef00dc1249d8",
+            "legacy.json": "587eafa0026b8a25328c753823d6bbbdf61de94d9872f8066607a6f01fd6903d"
+          }
+        }
+      },
+      "replay": {
+        "id": "rod_00__special_esn_ridge_s2026102803",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 500
+      },
+      "metrics_sha256": "ffc9cee3675e76e9dfc49ddfbb3191ffcd02977eacd3669ef706c307da506b53"
+    },
+    {
+      "id": "rod_00__special_rnn_scratch_s2026102803",
+      "family": "rnn_scratch",
+      "seed": 2026102803,
+      "scene": "rod",
+      "metrics": {
+        "method": "special_rnn_scratch_s2026102803",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 9.039999999985602,
+        "peak_torque_nm": 35.437605769432075,
+        "peak_joint_torque_nm": [
+          1.1110517182499207,
+          35.437605769432075,
+          1.2219494507487367,
+          27.813553071350853,
+          1.380636450991323,
+          3.2900892949925393,
+          0.5812719295500375
+        ],
+        "peak_joint_velocity_radps": [
+          0.03578133704399663,
+          0.1442968184715586,
+          0.03992896748016587,
+          0.32685037980687,
+          0.06210207071513294,
+          0.2685308059120098,
+          0.13399218806591456
+        ],
+        "max_external_penetration_m": 4.290673885301747e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.021650000000000006,
+        "proxy_below_threshold_s": 0.021650000000000006,
+        "qualification_sha256": "739dd1be4bc95d2cd2053d5cf5d57e10eca75ce475489c38ecf68619a3de63d4",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "b56bfc6d9fe3181b6947383dde7a356bb473e4639bdfd16a6f36a88ab900c668",
+          "legacy.json": "1fca72fa22a451f91a3532cbf8d835fbd2f5457d8233ed8469c5fc86d095e9f9",
+          "execution.json": "b2aff7efd60c9755ee51701bf8632c033e6c5772335514bcadd984d0609f8f2b",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "56b331d210ced431d0b874ac7e22812e3b8a92f98823cb4cc6f09323bb270159"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "b2aff7efd60c9755ee51701bf8632c033e6c5772335514bcadd984d0609f8f2b",
+            "trajectory.npz": "b56bfc6d9fe3181b6947383dde7a356bb473e4639bdfd16a6f36a88ab900c668",
+            "substeps.npz": "6206e41d6eb29b11889a856d719b1c309f80739ab82b5b6c1fdcc8b987a66840",
+            "legacy.json": "1fca72fa22a451f91a3532cbf8d835fbd2f5457d8233ed8469c5fc86d095e9f9"
+          }
+        }
+      },
+      "replay": {
+        "id": "rod_00__special_rnn_scratch_s2026102803",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 500
+      },
+      "metrics_sha256": "6d3f42fed4b9f70e9525f33eabe7e62b7707427f5147255ccc9faff8c9781e4e"
+    },
+    {
+      "id": "rod_00__special_mlp_scratch_s2026102803",
+      "family": "mlp_scratch",
+      "seed": 2026102803,
+      "scene": "rod",
+      "metrics": {
+        "method": "special_mlp_scratch_s2026102803",
+        "condition": "rod_00",
+        "scene": "rod",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 9.039999999985602,
+        "peak_torque_nm": 34.412525061981285,
+        "peak_joint_torque_nm": [
+          1.143158681827742,
+          34.412525061981285,
+          1.035772102940522,
+          28.432684974567117,
+          1.5433905597930402,
+          3.290987994803324,
+          0.6823827863673451
+        ],
+        "peak_joint_velocity_radps": [
+          0.050859277977388366,
+          0.21887652355285975,
+          0.056621564125158154,
+          0.3891739082997754,
+          0.08993763352274368,
+          0.37225985971641223,
+          0.16751758225231927
+        ],
+        "max_external_penetration_m": 7.747565620806259e-05,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.035350000000000006,
+        "proxy_below_threshold_s": 0.035350000000000006,
+        "qualification_sha256": "03cf43c2ee74a9c97bf4a1719176423c42aceb5a6ea04d2191ee5fa1bfb56c11",
+        "terminal_trace_hashes": {
+          "scene.mjb": "7b32fc9bec7f795e148e1838628be1ae02dd5e5b6963bb7f6a1f75d053d2acac",
+          "trajectory.npz": "cff4f42d67634ed5593a949ff5854d7da2a34d45696b53b34c924843edbdd7a2",
+          "legacy.json": "dcaa865218004e3b75b6d24dbc0a52de34a0a87ee8c6d4c6475841fbaef3d277",
+          "execution.json": "74b6b92bd024b382056253362c279a4b394aa15f099e8830e5513c689d1f67a6",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "66c2171770675298adadb3e39c79dca42089f847780b534297d00f28ede6bb3e"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 20.0,
+          "expected_steps": 500,
+          "expected_substeps": 400000,
+          "actual_steps": 500,
+          "actual_substeps": 400000,
+          "actual_duration_s": 20.000000000102165,
+          "hashes": {
+            "execution.json": "74b6b92bd024b382056253362c279a4b394aa15f099e8830e5513c689d1f67a6",
+            "trajectory.npz": "cff4f42d67634ed5593a949ff5854d7da2a34d45696b53b34c924843edbdd7a2",
+            "substeps.npz": "cfe39737488cd5ba416cb1bfc2e4b6588f55c686092d45cb2168579167a1ede2",
+            "legacy.json": "dcaa865218004e3b75b6d24dbc0a52de34a0a87ee8c6d4c6475841fbaef3d277"
+          }
+        }
+      },
+      "replay": {
+        "id": "rod_00__special_mlp_scratch_s2026102803",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 500
+      },
+      "metrics_sha256": "49398ed692b08f00cc7df91c2aafb5fd859799b88947dba1e23da8c7319c0f5c"
+    },
+    {
+      "id": "ball_00__special_esn_ridge_s2026102801",
+      "family": "esn_ridge",
+      "seed": 2026102801,
+      "scene": "ball",
+      "metrics": {
+        "method": "special_esn_ridge_s2026102801",
+        "condition": "ball_00",
+        "scene": "ball",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 10.839999999981407,
+        "peak_torque_nm": 46.61349069686534,
+        "peak_joint_torque_nm": [
+          5.047654286010141,
+          46.61349069686534,
+          4.962216443525567,
+          27.337487474993665,
+          1.6059966478916614,
+          5.363058020818315,
+          0.6731190441458086
+        ],
+        "peak_joint_velocity_radps": [
+          0.11173014034129014,
+          0.371026370351901,
+          0.12818761856635028,
+          0.5211797865153176,
+          0.24180420903887817,
+          0.5196310831500474,
+          0.1185312771230582
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.021200000000000007,
+        "proxy_below_threshold_s": 0.021200000000000007,
+        "qualification_sha256": "5a176399156aee4fb3ce98e0ab2a8408db45365bc68d77916ad0d5535d0a4455",
+        "terminal_trace_hashes": {
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "80fade6a9b836e4bad25bbeb3b1b25d3f368b333972d702afc2bca6f7031c26e",
+          "legacy.json": "7d547b27133ae77cc2291ea42ac1e88663576889c5d7dcb9228c9bbd96cfbf47",
+          "execution.json": "1b6d2a5f9e97a4e5c54175c813904913c6dcebbf3b068812e616637f48449336",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "15817733cf4c9342f514075c01cfa0e23caaa238d66f8bded555528baf61507c"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 30.0,
+          "expected_steps": 750,
+          "expected_substeps": 600000,
+          "actual_steps": 750,
+          "actual_substeps": 600000,
+          "actual_duration_s": 30.00000000043413,
+          "hashes": {
+            "execution.json": "1b6d2a5f9e97a4e5c54175c813904913c6dcebbf3b068812e616637f48449336",
+            "trajectory.npz": "80fade6a9b836e4bad25bbeb3b1b25d3f368b333972d702afc2bca6f7031c26e",
+            "substeps.npz": "76833e1fda582181191e38a33d08ffdb4a767e01c207bf99a6730c1132a179a6",
+            "legacy.json": "7d547b27133ae77cc2291ea42ac1e88663576889c5d7dcb9228c9bbd96cfbf47"
+          }
+        }
+      },
+      "replay": {
+        "id": "ball_00__special_esn_ridge_s2026102801",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 750
+      },
+      "metrics_sha256": "5f873bfaadbf55fed679a2e72b70754d54205c116f41632cf57fe76acdc71a92"
+    },
+    {
+      "id": "ball_00__special_rnn_scratch_s2026102801",
+      "family": "rnn_scratch",
+      "seed": 2026102801,
+      "scene": "ball",
+      "metrics": {
+        "method": "special_rnn_scratch_s2026102801",
+        "condition": "ball_00",
+        "scene": "ball",
+        "task_success": false,
+        "strict_success": false,
+        "completion_time_s": null,
+        "peak_torque_nm": 32.384488395906445,
+        "peak_joint_torque_nm": [
+          5.199923914139327,
+          32.384488395906445,
+          5.111700593029762,
+          27.399443715238576,
+          1.2023888902621152,
+          5.299840247971538,
+          0.6709127761293282
+        ],
+        "peak_joint_velocity_radps": [
+          0.11215433088268663,
+          0.21407587743461437,
+          0.12840771451475225,
+          0.30382773011646425,
+          0.23801274712879655,
+          0.520129418528105,
+          0.10940018689800292
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.021250000000000005,
+        "proxy_below_threshold_s": 0.021250000000000005,
+        "qualification_sha256": "747869b4603e0305fd8279038e5a6473e2461de5727c2c181b3c29e0cef80761",
+        "terminal_trace_hashes": {
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "c9ce8262300bb70e6117979c07139d3256f11ce3330f1e8806c8487b89f345ef",
+          "legacy.json": "b8c767ae480cd468d4f28bd80e1d8330b861083a4334cbb3e80e372a3df17c53",
+          "execution.json": "72e8af133c2e318dcaed5555f6b915418058783a4eb133f1ae1be496044017d2",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "2b82becb842e891d9739bc3ec727421eadbcdaa16af82585e88fdbf6ecc07e5f"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 30.0,
+          "expected_steps": 750,
+          "expected_substeps": 600000,
+          "actual_steps": 750,
+          "actual_substeps": 600000,
+          "actual_duration_s": 30.00000000043413,
+          "hashes": {
+            "execution.json": "72e8af133c2e318dcaed5555f6b915418058783a4eb133f1ae1be496044017d2",
+            "trajectory.npz": "c9ce8262300bb70e6117979c07139d3256f11ce3330f1e8806c8487b89f345ef",
+            "substeps.npz": "48c4824e61fbde399375d9ce0a568406c8554eef8027425c08bd8ca205be0bee",
+            "legacy.json": "b8c767ae480cd468d4f28bd80e1d8330b861083a4334cbb3e80e372a3df17c53"
+          }
+        }
+      },
+      "replay": {
+        "id": "ball_00__special_rnn_scratch_s2026102801",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 750
+      },
+      "metrics_sha256": "f8e5466301dce171b940cc9e6fec1f92ec8e0ecf13a581d14eb348708b576265"
+    },
+    {
+      "id": "ball_00__special_mlp_scratch_s2026102801",
+      "family": "mlp_scratch",
+      "seed": 2026102801,
+      "scene": "ball",
+      "metrics": {
+        "method": "special_mlp_scratch_s2026102801",
+        "condition": "ball_00",
+        "scene": "ball",
+        "task_success": false,
+        "strict_success": false,
+        "completion_time_s": null,
+        "peak_torque_nm": 31.708103277120646,
+        "peak_joint_torque_nm": [
+          5.0700838890446915,
+          31.708103277120646,
+          4.997536134198875,
+          27.231045635452155,
+          1.230628538861302,
+          5.29400305328199,
+          0.5870080920038951
+        ],
+        "peak_joint_velocity_radps": [
+          0.11095028431241137,
+          0.19235704778824012,
+          0.12616999055839734,
+          0.36442259237034774,
+          0.24962265294629307,
+          0.5352180471494701,
+          0.0982033137121722
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.021150000000000002,
+        "proxy_below_threshold_s": 0.021150000000000002,
+        "qualification_sha256": "ebc885c4f53eea057a1619d835ee75be05669b9d149e4b6ac6603d2a5ffc797f",
+        "terminal_trace_hashes": {
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "101a626f00ad11571c63eedbc4c1162618bf6f1c540ac012dc182b3701ce90b5",
+          "legacy.json": "6b9d7359a56d79558e4d56df614d9e497a2d1665ed224ee82f31c7a36df2e84b",
+          "execution.json": "d68a921875d411f8e339839a3286dba64b9fa2c4e366499d5ca1cc411d6db5ef",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "fe230025e638d67ecc064dc557ac7ce06ef04f65a60fb30770f056d93aad9847"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 30.0,
+          "expected_steps": 750,
+          "expected_substeps": 600000,
+          "actual_steps": 750,
+          "actual_substeps": 600000,
+          "actual_duration_s": 30.00000000043413,
+          "hashes": {
+            "execution.json": "d68a921875d411f8e339839a3286dba64b9fa2c4e366499d5ca1cc411d6db5ef",
+            "trajectory.npz": "101a626f00ad11571c63eedbc4c1162618bf6f1c540ac012dc182b3701ce90b5",
+            "substeps.npz": "8d685831f556ff51ef251740aaa1d9f5adad6ad6ea95a1a29930bf3716aa6954",
+            "legacy.json": "6b9d7359a56d79558e4d56df614d9e497a2d1665ed224ee82f31c7a36df2e84b"
+          }
+        }
+      },
+      "replay": {
+        "id": "ball_00__special_mlp_scratch_s2026102801",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 750
+      },
+      "metrics_sha256": "5f5a5646093c39cfeaec0a8c298c032ce9d490a81a531e46eea236beb332b469"
+    },
+    {
+      "id": "ball_00__special_esn_ridge_s2026102802",
+      "family": "esn_ridge",
+      "seed": 2026102802,
+      "scene": "ball",
+      "metrics": {
+        "method": "special_esn_ridge_s2026102802",
+        "condition": "ball_00",
+        "scene": "ball",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 10.839999999981407,
+        "peak_torque_nm": 47.529372901634204,
+        "peak_joint_torque_nm": [
+          5.047649023305448,
+          47.529372901634204,
+          4.962211310668659,
+          27.783285738753545,
+          1.6060068493028625,
+          5.363053720612745,
+          0.6731320072851109
+        ],
+        "peak_joint_velocity_radps": [
+          0.11173004242771305,
+          0.2956581630594002,
+          0.128187584445427,
+          0.436292966477131,
+          0.24180470977360832,
+          0.5196327615867161,
+          0.1171231781870774
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.021200000000000007,
+        "proxy_below_threshold_s": 0.021200000000000007,
+        "qualification_sha256": "2294fd2e13dbc9ef2abc45051e4e5c75f13592acdb68ed49c139fec59224bde1",
+        "terminal_trace_hashes": {
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "009601db15f282f1945dc85c77f34875c1db6acd94d6ccb07f9089dee74c4210",
+          "legacy.json": "097baa5722439e69c70d9c2c851ed0f79646ea95ae8e547ea64b0713bf86d4f8",
+          "execution.json": "8df0e219cbaa10426563ab6e04deec4bfd5a998cbec065dd1f0a331b521c74f0",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "5a36c8750673a2ebfd54739c84525816ad2bcc3346c29775446eebd0a36b8c25"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 30.0,
+          "expected_steps": 750,
+          "expected_substeps": 600000,
+          "actual_steps": 750,
+          "actual_substeps": 600000,
+          "actual_duration_s": 30.00000000043413,
+          "hashes": {
+            "execution.json": "8df0e219cbaa10426563ab6e04deec4bfd5a998cbec065dd1f0a331b521c74f0",
+            "trajectory.npz": "009601db15f282f1945dc85c77f34875c1db6acd94d6ccb07f9089dee74c4210",
+            "substeps.npz": "d23f175e88600898e0228bbe851b6c8497f0946038838fd7e71790807103114e",
+            "legacy.json": "097baa5722439e69c70d9c2c851ed0f79646ea95ae8e547ea64b0713bf86d4f8"
+          }
+        }
+      },
+      "replay": {
+        "id": "ball_00__special_esn_ridge_s2026102802",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 750
+      },
+      "metrics_sha256": "e1454be825ac9b8644393b5c2aca04a929a33bbeb4962646d56a5633929d7731"
+    },
+    {
+      "id": "ball_00__special_rnn_scratch_s2026102802",
+      "family": "rnn_scratch",
+      "seed": 2026102802,
+      "scene": "ball",
+      "metrics": {
+        "method": "special_rnn_scratch_s2026102802",
+        "condition": "ball_00",
+        "scene": "ball",
+        "task_success": false,
+        "strict_success": false,
+        "completion_time_s": null,
+        "peak_torque_nm": 32.04130107682799,
+        "peak_joint_torque_nm": [
+          5.274246011052575,
+          32.04130107682799,
+          5.181211621558252,
+          27.395736653054996,
+          1.2076355280712037,
+          5.435529815656754,
+          0.6667362990680569
+        ],
+        "peak_joint_velocity_radps": [
+          0.11249671122996562,
+          0.19243060089064806,
+          0.12896292509290955,
+          0.3315244907117416,
+          0.232770190504505,
+          0.5022434316947059,
+          0.11135493662459187
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.021400000000000006,
+        "proxy_below_threshold_s": 0.021400000000000006,
+        "qualification_sha256": "7da5a532ddf712ec6d10f915dd62125082caa794991c686df8b6e5fc6623dc78",
+        "terminal_trace_hashes": {
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "127b8d0940fd4e9c3ceb8a6a785a394902ff619827a12e6a867ebd859d5d4a2b",
+          "legacy.json": "f030e9d10c64f701910e8d1254ff6a40711b9db08d31e55cc4834969d9b30cb7",
+          "execution.json": "7a8a6a6cc3b721f066d5ae177208ece4220f6fa83db54e1e40f6aa06f821cac9",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "c5d4add35aabac0c0dd73cd18e4578954575f8f8d5c3f8be59bda5f571e58aab"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 30.0,
+          "expected_steps": 750,
+          "expected_substeps": 600000,
+          "actual_steps": 750,
+          "actual_substeps": 600000,
+          "actual_duration_s": 30.00000000043413,
+          "hashes": {
+            "execution.json": "7a8a6a6cc3b721f066d5ae177208ece4220f6fa83db54e1e40f6aa06f821cac9",
+            "trajectory.npz": "127b8d0940fd4e9c3ceb8a6a785a394902ff619827a12e6a867ebd859d5d4a2b",
+            "substeps.npz": "8b8440b3928398b03c5aebe12d1e93f0d1b6f7dd46099b099106c6b75aea6b9e",
+            "legacy.json": "f030e9d10c64f701910e8d1254ff6a40711b9db08d31e55cc4834969d9b30cb7"
+          }
+        }
+      },
+      "replay": {
+        "id": "ball_00__special_rnn_scratch_s2026102802",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 750
+      },
+      "metrics_sha256": "0b389959d8dd05feb7d332490bd07e5066d5189ec9f6303ee5b9d955aed19510"
+    },
+    {
+      "id": "ball_00__special_mlp_scratch_s2026102802",
+      "family": "mlp_scratch",
+      "seed": 2026102802,
+      "scene": "ball",
+      "metrics": {
+        "method": "special_mlp_scratch_s2026102802",
+        "condition": "ball_00",
+        "scene": "ball",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 25.56000000028674,
+        "peak_torque_nm": 46.80381885062017,
+        "peak_joint_torque_nm": [
+          5.03430971351171,
+          46.80381885062017,
+          4.980766492215003,
+          27.63178862659343,
+          1.6189094205704186,
+          5.494136824425645,
+          0.6150488092979579
+        ],
+        "peak_joint_velocity_radps": [
+          0.10855490295427292,
+          0.2954290922313367,
+          0.1244954350350641,
+          0.4063967453618914,
+          0.2531530040308255,
+          0.5201021928990828,
+          0.1035123891860801
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.021050000000000006,
+        "proxy_below_threshold_s": 0.021050000000000006,
+        "qualification_sha256": "76694a549a6f1c06b48bb22f40942d0b3832be626d7059c5f8b57e907fa37954",
+        "terminal_trace_hashes": {
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "34aa2405518daad99d48f815d90f9b7e619df2547eb9a324399913ecefb7dc46",
+          "legacy.json": "f9abbd3eac9ed7494b32869ff0350700cb3948d4b81d6600afe41f09b4dd2886",
+          "execution.json": "fc6a15f2c21d00c63e711f03d76c9947c2e819967e4b11cf9c6b5a417ca13891",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "e2ad6b55b3db5f25bfaf11a97663af5ccfdd4d3a33d3c95bf7fbf0444d2ee6a6"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 30.0,
+          "expected_steps": 750,
+          "expected_substeps": 600000,
+          "actual_steps": 750,
+          "actual_substeps": 600000,
+          "actual_duration_s": 30.00000000043413,
+          "hashes": {
+            "execution.json": "fc6a15f2c21d00c63e711f03d76c9947c2e819967e4b11cf9c6b5a417ca13891",
+            "trajectory.npz": "34aa2405518daad99d48f815d90f9b7e619df2547eb9a324399913ecefb7dc46",
+            "substeps.npz": "d3ae70c03ef7464b4dda4ee63fb1bdf3ba1ab62258bf40032c8e8f6a2f7a1be7",
+            "legacy.json": "f9abbd3eac9ed7494b32869ff0350700cb3948d4b81d6600afe41f09b4dd2886"
+          }
+        }
+      },
+      "replay": {
+        "id": "ball_00__special_mlp_scratch_s2026102802",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 750
+      },
+      "metrics_sha256": "5be5370e2eca21226d2ca53a8ee0102b3516c67254558fcd8c9150790e183a0b"
+    },
+    {
+      "id": "ball_00__special_esn_ridge_s2026102803",
+      "family": "esn_ridge",
+      "seed": 2026102803,
+      "scene": "ball",
+      "metrics": {
+        "method": "special_esn_ridge_s2026102803",
+        "condition": "ball_00",
+        "scene": "ball",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 10.91999999998122,
+        "peak_torque_nm": 46.81371064204585,
+        "peak_joint_torque_nm": [
+          5.047657897996864,
+          46.81371064204585,
+          4.962218657181465,
+          27.54075780136652,
+          1.6057240734847527,
+          5.363057727732022,
+          0.6729104994248468
+        ],
+        "peak_joint_velocity_radps": [
+          0.11173018522827056,
+          0.30148063421299476,
+          0.12818772521846108,
+          0.4057128796125517,
+          0.2418036251993557,
+          0.5196303984100942,
+          0.11772590530837684
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.021200000000000007,
+        "proxy_below_threshold_s": 0.021200000000000007,
+        "qualification_sha256": "dbbaddf69895396c5e13cda912118686f0058c628c7ba95c2531688c76e928bc",
+        "terminal_trace_hashes": {
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "9107983b6b8312ef270039216a2e28c5555cc4a6096df526bbad9925dfd1b2a6",
+          "legacy.json": "ffcf578ec3b1a43816c68a8858d8ca7a1fb6c0cab1627c88f60af97cbf51ce8f",
+          "execution.json": "8cfde8a5eb50fe3461150f166ad173fb0ff2fd2c614d08234a84bfef0f1fdd89",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "9f0cdddbb954bff9bad14a4372322c90dc0ecfdc934650148b20f0febfdd8bd2"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 30.0,
+          "expected_steps": 750,
+          "expected_substeps": 600000,
+          "actual_steps": 750,
+          "actual_substeps": 600000,
+          "actual_duration_s": 30.00000000043413,
+          "hashes": {
+            "execution.json": "8cfde8a5eb50fe3461150f166ad173fb0ff2fd2c614d08234a84bfef0f1fdd89",
+            "trajectory.npz": "9107983b6b8312ef270039216a2e28c5555cc4a6096df526bbad9925dfd1b2a6",
+            "substeps.npz": "0d2f31e179293411ebb613bfdcc599394ddf46ce3672be1f9a0c126632fb4a2b",
+            "legacy.json": "ffcf578ec3b1a43816c68a8858d8ca7a1fb6c0cab1627c88f60af97cbf51ce8f"
+          }
+        }
+      },
+      "replay": {
+        "id": "ball_00__special_esn_ridge_s2026102803",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 750
+      },
+      "metrics_sha256": "a6d318b262abd113a507496766ba25d3ed302098b1e272bc5e3986c6a226a06b"
+    },
+    {
+      "id": "ball_00__special_rnn_scratch_s2026102803",
+      "family": "rnn_scratch",
+      "seed": 2026102803,
+      "scene": "ball",
+      "metrics": {
+        "method": "special_rnn_scratch_s2026102803",
+        "condition": "ball_00",
+        "scene": "ball",
+        "task_success": false,
+        "strict_success": false,
+        "completion_time_s": null,
+        "peak_torque_nm": 32.28370944651573,
+        "peak_joint_torque_nm": [
+          5.087579288974829,
+          32.28370944651573,
+          5.010954912908312,
+          27.414084729510414,
+          1.2156270587172564,
+          5.3778179227701575,
+          0.6708743707457877
+        ],
+        "peak_joint_velocity_radps": [
+          0.11078966036624287,
+          0.19091276672218985,
+          0.1267591919485656,
+          0.3283669232242969,
+          0.24699977502421475,
+          0.5208415667548584,
+          0.11078041229833084
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.021100000000000004,
+        "proxy_below_threshold_s": 0.021100000000000004,
+        "qualification_sha256": "681438c6113d8aae02c2b406f620a3432eedf1558928120ab975b89e2cd26954",
+        "terminal_trace_hashes": {
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "41a0f14260241f0cee0d8c2280722d70390be87575f866dd5bf3055f0b1af8f9",
+          "legacy.json": "07293af187c475b390a3fe63e00e11afd5fe2dc0054ea3c60b5b8e2380e50737",
+          "execution.json": "f400c8d58abca990781b1bcc434d637eca78fb8cdb5b88d4e142a5f0a201b8ca",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "f3aae6efb80efdcb5653e18cf62cc2babdd26062276dff63d2d2673eacd59996"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 30.0,
+          "expected_steps": 750,
+          "expected_substeps": 600000,
+          "actual_steps": 750,
+          "actual_substeps": 600000,
+          "actual_duration_s": 30.00000000043413,
+          "hashes": {
+            "execution.json": "f400c8d58abca990781b1bcc434d637eca78fb8cdb5b88d4e142a5f0a201b8ca",
+            "trajectory.npz": "41a0f14260241f0cee0d8c2280722d70390be87575f866dd5bf3055f0b1af8f9",
+            "substeps.npz": "b6086916b27300e48de80ad9fa6bdc4b3cf6d593c95809c9ced6627134bcbaeb",
+            "legacy.json": "07293af187c475b390a3fe63e00e11afd5fe2dc0054ea3c60b5b8e2380e50737"
+          }
+        }
+      },
+      "replay": {
+        "id": "ball_00__special_rnn_scratch_s2026102803",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 750
+      },
+      "metrics_sha256": "32c6722afc1d08c85924c65b01c25499b55e6fbfe6de5d7385d6f6b4b3594ce5"
+    },
+    {
+      "id": "ball_00__special_mlp_scratch_s2026102803",
+      "family": "mlp_scratch",
+      "seed": 2026102803,
+      "scene": "ball",
+      "metrics": {
+        "method": "special_mlp_scratch_s2026102803",
+        "condition": "ball_00",
+        "scene": "ball",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 11.03999999998094,
+        "peak_torque_nm": 46.6374511393902,
+        "peak_joint_torque_nm": [
+          5.227318455926808,
+          46.6374511393902,
+          5.132525128801143,
+          28.46974789320098,
+          1.610530634724324,
+          5.378454396187539,
+          0.6711594498002876
+        ],
+        "peak_joint_velocity_radps": [
+          0.1127948780359654,
+          0.3607705286131295,
+          0.12920039195658367,
+          0.550561331235497,
+          0.2353302431881176,
+          0.5080897064927126,
+          0.12035583264816936
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.021250000000000005,
+        "proxy_below_threshold_s": 0.021250000000000005,
+        "qualification_sha256": "8e60c6269a64b5dec6a1f97a7029d172d0bdf43b9f44733a2cf4d0d7a2d1a780",
+        "terminal_trace_hashes": {
+          "scene.mjb": "b9add3f509961aaf808a8db528e9dfc89e699d6cfa9a19109c4989ab1ad3af8a",
+          "trajectory.npz": "b18c74b58fab5fb31e952db3dd9e611bd4ef0d97094d26efcffc3d37c2f21edf",
+          "legacy.json": "85b0f24ed71f10765f138b4afccb0d3b4a3b73c23bb3c8651f1a75e736cb4653",
+          "execution.json": "2818ffa4189c03f2f050ee3cb19683faa1fc71c792a3cd29e830f901a3ef2f77",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7",
+          "legacy.npz": "d5ac7388668c44f2f791e969d47858df83bc2b1383efb2b58a01f254ce62c0c9"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 30.0,
+          "expected_steps": 750,
+          "expected_substeps": 600000,
+          "actual_steps": 750,
+          "actual_substeps": 600000,
+          "actual_duration_s": 30.00000000043413,
+          "hashes": {
+            "execution.json": "2818ffa4189c03f2f050ee3cb19683faa1fc71c792a3cd29e830f901a3ef2f77",
+            "trajectory.npz": "b18c74b58fab5fb31e952db3dd9e611bd4ef0d97094d26efcffc3d37c2f21edf",
+            "substeps.npz": "287233d34051a68fc1545f62e53c0a2f9a692257617001284fbd94261e644d2c",
+            "legacy.json": "85b0f24ed71f10765f138b4afccb0d3b4a3b73c23bb3c8651f1a75e736cb4653"
+          }
+        }
+      },
+      "replay": {
+        "id": "ball_00__special_mlp_scratch_s2026102803",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 750
+      },
+      "metrics_sha256": "a1e0b668fb8f148096a2851ca1423f527f94bc1185ae9023c219a433388e7d84"
+    },
+    {
+      "id": "corner_00__special_esn_ridge_s2026102801",
+      "family": "esn_ridge",
+      "seed": 2026102801,
+      "scene": "corner",
+      "metrics": {
+        "method": "special_esn_ridge_s2026102801",
+        "condition": "corner_00",
+        "scene": "corner",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 11.839999999979076,
+        "peak_torque_nm": 52.39355683741535,
+        "peak_joint_torque_nm": [
+          0.4732982928271086,
+          52.39355683741535,
+          0.6119175159951679,
+          28.014741519232956,
+          0.796992872712757,
+          6.5692504208947575,
+          0.9221602668125691
+        ],
+        "peak_joint_velocity_radps": [
+          0.0017958666012467478,
+          0.3534779454978189,
+          0.0010676193241811857,
+          0.6098262160035633,
+          0.001472770971207454,
+          0.7376192491001856,
+          0.8120043293471189
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.0,
+        "proxy_below_threshold_s": 0.0,
+        "qualification_sha256": "9fa8da8ee4b58230e62c6358a57b8d80dc72c22b058b077f6aac7d3cc0c20bed",
+        "terminal_trace_hashes": {
+          "scene.mjb": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+          "trajectory.npz": "40eff951db0f96e318a85d69fd0ee259fadc04fcca90b79354876d20dc9f3cf3",
+          "legacy.json": "4634ead3090fb0faf63d1cb3a6aa63ae5125a0fc6e71743f448808ffa06e5398",
+          "execution.json": "2f31afe3275e03c4f94f110398a3dd53a3211e0458b309ad4faec26a655345f1",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 13.0,
+          "expected_steps": 325,
+          "expected_substeps": 260000,
+          "actual_steps": 325,
+          "actual_substeps": 260000,
+          "actual_duration_s": 12.999999999976373,
+          "hashes": {
+            "execution.json": "2f31afe3275e03c4f94f110398a3dd53a3211e0458b309ad4faec26a655345f1",
+            "trajectory.npz": "40eff951db0f96e318a85d69fd0ee259fadc04fcca90b79354876d20dc9f3cf3",
+            "substeps.npz": "2e820ede54e81e609ddf42f2a1d4735d498ccccc6583802e13778d11ddc5f625",
+            "legacy.json": "4634ead3090fb0faf63d1cb3a6aa63ae5125a0fc6e71743f448808ffa06e5398"
+          }
+        }
+      },
+      "replay": {
+        "id": "corner_00__special_esn_ridge_s2026102801",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 325
+      },
+      "metrics_sha256": "7a265225295145050b16b3ac9e43ee9eba49150dc8b584548f956620e47a588e"
+    },
+    {
+      "id": "corner_00__special_rnn_scratch_s2026102801",
+      "family": "rnn_scratch",
+      "seed": 2026102801,
+      "scene": "corner",
+      "metrics": {
+        "method": "special_rnn_scratch_s2026102801",
+        "condition": "corner_00",
+        "scene": "corner",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 12.199999999978237,
+        "peak_torque_nm": 51.421500273233846,
+        "peak_joint_torque_nm": [
+          0.4018019735090169,
+          51.421500273233846,
+          0.6073179128178582,
+          30.94884761231186,
+          0.8398696064646916,
+          6.900763024192155,
+          0.9183156013666598
+        ],
+        "peak_joint_velocity_radps": [
+          0.001767083260455371,
+          0.34793809446373064,
+          0.0010119022368585064,
+          0.6231302754466279,
+          0.0013355667294067518,
+          0.7496173430806914,
+          0.7965242251531977
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.0,
+        "proxy_below_threshold_s": 0.0,
+        "qualification_sha256": "b6d6bd022d0afb47df81ac0d52705b687d9f95964700297cc036987a5b076cae",
+        "terminal_trace_hashes": {
+          "scene.mjb": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+          "trajectory.npz": "b46aad2a5e838f0c30a0128f7ab8baac1ef0de17c3e8a5b657d9d597aa474729",
+          "legacy.json": "407226606a864c8793895118fe6cde173423af97a2afe09fddae5e39be2272ec",
+          "execution.json": "9700120a05d44f573f3725c1af596168c759acadc8d86a3b832f310ca539442b",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 13.0,
+          "expected_steps": 325,
+          "expected_substeps": 260000,
+          "actual_steps": 325,
+          "actual_substeps": 260000,
+          "actual_duration_s": 12.999999999976373,
+          "hashes": {
+            "execution.json": "9700120a05d44f573f3725c1af596168c759acadc8d86a3b832f310ca539442b",
+            "trajectory.npz": "b46aad2a5e838f0c30a0128f7ab8baac1ef0de17c3e8a5b657d9d597aa474729",
+            "substeps.npz": "9489d2d40d7ea32b65426742d76494c2db692b884f824434164861ce8f2fbd97",
+            "legacy.json": "407226606a864c8793895118fe6cde173423af97a2afe09fddae5e39be2272ec"
+          }
+        }
+      },
+      "replay": {
+        "id": "corner_00__special_rnn_scratch_s2026102801",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 325
+      },
+      "metrics_sha256": "90a37a552b3a5ebedaba22d381e6a7c54fa258862cb61cf5759b8e7d0a2d1bb1"
+    },
+    {
+      "id": "corner_00__special_mlp_scratch_s2026102801",
+      "family": "mlp_scratch",
+      "seed": 2026102801,
+      "scene": "corner",
+      "metrics": {
+        "method": "special_mlp_scratch_s2026102801",
+        "condition": "corner_00",
+        "scene": "corner",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 12.199999999978237,
+        "peak_torque_nm": 50.86726853508134,
+        "peak_joint_torque_nm": [
+          0.6796974333445743,
+          50.86726853508134,
+          0.6176958520504354,
+          29.70536257925446,
+          0.8112590627937186,
+          6.3190194134485616,
+          0.9191983844924618
+        ],
+        "peak_joint_velocity_radps": [
+          0.002157087952223622,
+          0.37348992493146166,
+          0.0010987438639385263,
+          0.7083170926352346,
+          0.0013246065142705524,
+          0.7846070329626071,
+          0.7961907471960438
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.0,
+        "proxy_below_threshold_s": 0.0,
+        "qualification_sha256": "82c577882a5837bc65695e71106d5b7cc34be4ecd73dc3d9f4122b8b2c13d391",
+        "terminal_trace_hashes": {
+          "scene.mjb": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+          "trajectory.npz": "7e2539034b2217669b083a03dc7e6710c1ba34c9cdb24d9230a52a2860b33e3e",
+          "legacy.json": "c071ff6b2fdb1a0b23bdc10febdbff9495080f879ac9d69d4a8fcbc6b5f8c08e",
+          "execution.json": "38e765c773570ccc3398c5e07185e4bfd3b67e09d99590547ddb6469dd0f8823",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 13.0,
+          "expected_steps": 325,
+          "expected_substeps": 260000,
+          "actual_steps": 325,
+          "actual_substeps": 260000,
+          "actual_duration_s": 12.999999999976373,
+          "hashes": {
+            "execution.json": "38e765c773570ccc3398c5e07185e4bfd3b67e09d99590547ddb6469dd0f8823",
+            "trajectory.npz": "7e2539034b2217669b083a03dc7e6710c1ba34c9cdb24d9230a52a2860b33e3e",
+            "substeps.npz": "12eca6963de8890bed9a7c5ef5721ba380f428d07af90691c22455bfe69f993b",
+            "legacy.json": "c071ff6b2fdb1a0b23bdc10febdbff9495080f879ac9d69d4a8fcbc6b5f8c08e"
+          }
+        }
+      },
+      "replay": {
+        "id": "corner_00__special_mlp_scratch_s2026102801",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 325
+      },
+      "metrics_sha256": "fd7275564438f3c0b3c6427082399ef2d92993e0fd7ecd1745591dfd3a2fc46a"
+    },
+    {
+      "id": "corner_00__special_esn_ridge_s2026102802",
+      "family": "esn_ridge",
+      "seed": 2026102802,
+      "scene": "corner",
+      "metrics": {
+        "method": "special_esn_ridge_s2026102802",
+        "condition": "corner_00",
+        "scene": "corner",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 12.27999999997805,
+        "peak_torque_nm": 48.41734017965287,
+        "peak_joint_torque_nm": [
+          0.5716268718049826,
+          48.41734017965287,
+          0.6549267185751834,
+          30.099279915560327,
+          0.7799963505858036,
+          6.6739718166322355,
+          0.9164599186532609
+        ],
+        "peak_joint_velocity_radps": [
+          0.002299325401743296,
+          0.3516610886729932,
+          0.0011859356884522648,
+          0.6141150770909297,
+          0.0015826373780183111,
+          0.7420750595316361,
+          0.8266598827479591
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.0,
+        "proxy_below_threshold_s": 0.0,
+        "qualification_sha256": "f08f05afa40bb9d69da4ad0d9ee6bb1b37e337e693fbd17f52e7ad92a6f56c4a",
+        "terminal_trace_hashes": {
+          "scene.mjb": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+          "trajectory.npz": "aa1d34b81f0d328146bd7eff5ac48d63a4ee7c6e13586b6f877eca49b67ca79c",
+          "legacy.json": "202163f524f18a9ac2a6a4c43a9470cdb062b1623aa1467d370182aaee638813",
+          "execution.json": "41036f8d14ec817a673ef734c570e0ee72c63c7cf1a55104966ff89a18dbcf07",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 13.0,
+          "expected_steps": 325,
+          "expected_substeps": 260000,
+          "actual_steps": 325,
+          "actual_substeps": 260000,
+          "actual_duration_s": 12.999999999976373,
+          "hashes": {
+            "execution.json": "41036f8d14ec817a673ef734c570e0ee72c63c7cf1a55104966ff89a18dbcf07",
+            "trajectory.npz": "aa1d34b81f0d328146bd7eff5ac48d63a4ee7c6e13586b6f877eca49b67ca79c",
+            "substeps.npz": "142b2ecc3c7ad4101b319bd9ede486da64349b53fe9ecc22ebfed50fb938e76f",
+            "legacy.json": "202163f524f18a9ac2a6a4c43a9470cdb062b1623aa1467d370182aaee638813"
+          }
+        }
+      },
+      "replay": {
+        "id": "corner_00__special_esn_ridge_s2026102802",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 325
+      },
+      "metrics_sha256": "ca84db46f183eef469fa04ff7a77acd1ff5eda8371f352e3546584f39ecec472"
+    },
+    {
+      "id": "corner_00__special_rnn_scratch_s2026102802",
+      "family": "rnn_scratch",
+      "seed": 2026102802,
+      "scene": "corner",
+      "metrics": {
+        "method": "special_rnn_scratch_s2026102802",
+        "condition": "corner_00",
+        "scene": "corner",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 12.199999999978237,
+        "peak_torque_nm": 48.80990700844622,
+        "peak_joint_torque_nm": [
+          0.43069001095080583,
+          48.80990700844622,
+          0.6177736224794985,
+          30.057100936849938,
+          0.8637664457278771,
+          6.532705699719219,
+          0.9186694833123621
+        ],
+        "peak_joint_velocity_radps": [
+          0.0017981900447977782,
+          0.34217743701913067,
+          0.0009640627922359282,
+          0.6136535866798619,
+          0.0013091150444068586,
+          0.7540400983282599,
+          0.7928536628611994
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.0,
+        "proxy_below_threshold_s": 0.0,
+        "qualification_sha256": "86ad5c3e92db3a00ba9ea0f0fef3e3cc7644d59e805fb2f60581caabb477df6d",
+        "terminal_trace_hashes": {
+          "scene.mjb": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+          "trajectory.npz": "9ea0b6515d1e9c3ac4e8b02b5cc0467b8e00f1e3c97894166188c01ba946bef9",
+          "legacy.json": "6e3a334117ff52bf77c34b4f5968264675bc1e5ee3facb9bc419b76a81d7a83a",
+          "execution.json": "cc4cb0044602c99905eb118e2c2607606aacefc5fba7f86551eabb9a74e82de9",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 13.0,
+          "expected_steps": 325,
+          "expected_substeps": 260000,
+          "actual_steps": 325,
+          "actual_substeps": 260000,
+          "actual_duration_s": 12.999999999976373,
+          "hashes": {
+            "execution.json": "cc4cb0044602c99905eb118e2c2607606aacefc5fba7f86551eabb9a74e82de9",
+            "trajectory.npz": "9ea0b6515d1e9c3ac4e8b02b5cc0467b8e00f1e3c97894166188c01ba946bef9",
+            "substeps.npz": "50f0a25c73022b04a8efc69f6d06500667f5f0b84327c4dbc26db143cc119d20",
+            "legacy.json": "6e3a334117ff52bf77c34b4f5968264675bc1e5ee3facb9bc419b76a81d7a83a"
+          }
+        }
+      },
+      "replay": {
+        "id": "corner_00__special_rnn_scratch_s2026102802",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 325
+      },
+      "metrics_sha256": "0a4de3afe75fb7014de77dcbf68b845e1badb41134246d57ff5f477fad2e1491"
+    },
+    {
+      "id": "corner_00__special_mlp_scratch_s2026102802",
+      "family": "mlp_scratch",
+      "seed": 2026102802,
+      "scene": "corner",
+      "metrics": {
+        "method": "special_mlp_scratch_s2026102802",
+        "condition": "corner_00",
+        "scene": "corner",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 12.239999999978144,
+        "peak_torque_nm": 51.57884630968783,
+        "peak_joint_torque_nm": [
+          0.29551807847605477,
+          51.57884630968783,
+          0.6154917664717675,
+          29.55312194959012,
+          0.8673156990708892,
+          6.635329765662069,
+          0.9145788649045443
+        ],
+        "peak_joint_velocity_radps": [
+          0.0017288733678926767,
+          0.3565667032131034,
+          0.0012160682422570816,
+          0.6191972496755355,
+          0.0016182674004679046,
+          0.7573705161425832,
+          0.7823708995577947
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.0,
+        "proxy_below_threshold_s": 0.0,
+        "qualification_sha256": "b311ff0c297eb2ee9633889f957cba57ab7a7d1f09f1d9838e84ab48d63f741f",
+        "terminal_trace_hashes": {
+          "scene.mjb": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+          "trajectory.npz": "8f56b5c7c8c9834288c3034e3a4f336862ad4618707ad1fe0e08ba789d608f4d",
+          "legacy.json": "8978ce45bce45917b9b9db92b6506ed954d44c3874cf313c7dc20fe1d0289887",
+          "execution.json": "b2188944651f3fac55554d49cca94c08999177c47147b887169900b487cecd5c",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 13.0,
+          "expected_steps": 325,
+          "expected_substeps": 260000,
+          "actual_steps": 325,
+          "actual_substeps": 260000,
+          "actual_duration_s": 12.999999999976373,
+          "hashes": {
+            "execution.json": "b2188944651f3fac55554d49cca94c08999177c47147b887169900b487cecd5c",
+            "trajectory.npz": "8f56b5c7c8c9834288c3034e3a4f336862ad4618707ad1fe0e08ba789d608f4d",
+            "substeps.npz": "61ab61b4123cbb3e5dc716eadcd76a9e5adc48c851e5066dfc7676d6685f2d28",
+            "legacy.json": "8978ce45bce45917b9b9db92b6506ed954d44c3874cf313c7dc20fe1d0289887"
+          }
+        }
+      },
+      "replay": {
+        "id": "corner_00__special_mlp_scratch_s2026102802",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 325
+      },
+      "metrics_sha256": "5465d3498139c909fbb0381cf4bbed33ce18275b01941c5242904be64a245392"
+    },
+    {
+      "id": "corner_00__special_esn_ridge_s2026102803",
+      "family": "esn_ridge",
+      "seed": 2026102803,
+      "scene": "corner",
+      "metrics": {
+        "method": "special_esn_ridge_s2026102803",
+        "condition": "corner_00",
+        "scene": "corner",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 12.319999999977957,
+        "peak_torque_nm": 50.514072201314406,
+        "peak_joint_torque_nm": [
+          0.38921518969069296,
+          50.514072201314406,
+          0.5884891947127313,
+          30.01708551326528,
+          0.826294805476697,
+          6.872828290590665,
+          0.9171543399976684
+        ],
+        "peak_joint_velocity_radps": [
+          0.00223582723629809,
+          0.3460037714349512,
+          0.0011300165379983058,
+          0.6861270499118335,
+          0.0015096589599607915,
+          0.7471848178356939,
+          0.7923588566036264
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.0,
+        "proxy_below_threshold_s": 0.0,
+        "qualification_sha256": "180983faf88db125f7754eb0c6691ac890377c39c33e9589c02da03497519ac6",
+        "terminal_trace_hashes": {
+          "scene.mjb": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+          "trajectory.npz": "6f17c0306239b74acbca4736d5d11fa07a9b076574583006dad45a3682997270",
+          "legacy.json": "5e5eb05192a5b8c81af7ab3c10cfe11092077341b1c3094c3cc8d25c401b7acb",
+          "execution.json": "f2b63015dba3ff32c5634174e63250eddb405f08c0b98daea13bc7ed5a5601f3",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 13.0,
+          "expected_steps": 325,
+          "expected_substeps": 260000,
+          "actual_steps": 325,
+          "actual_substeps": 260000,
+          "actual_duration_s": 12.999999999976373,
+          "hashes": {
+            "execution.json": "f2b63015dba3ff32c5634174e63250eddb405f08c0b98daea13bc7ed5a5601f3",
+            "trajectory.npz": "6f17c0306239b74acbca4736d5d11fa07a9b076574583006dad45a3682997270",
+            "substeps.npz": "06a6eed6769e7bd91815232aaea2cc636feae37e79dd5b1bfbb92321af0858d5",
+            "legacy.json": "5e5eb05192a5b8c81af7ab3c10cfe11092077341b1c3094c3cc8d25c401b7acb"
+          }
+        }
+      },
+      "replay": {
+        "id": "corner_00__special_esn_ridge_s2026102803",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 325
+      },
+      "metrics_sha256": "4307afff1b375d8b3b974fe19cdae5493f61b4963f41127c5f32813f2c1e177b"
+    },
+    {
+      "id": "corner_00__special_rnn_scratch_s2026102803",
+      "family": "rnn_scratch",
+      "seed": 2026102803,
+      "scene": "corner",
+      "metrics": {
+        "method": "special_rnn_scratch_s2026102803",
+        "condition": "corner_00",
+        "scene": "corner",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 12.15999999997833,
+        "peak_torque_nm": 49.72186184274705,
+        "peak_joint_torque_nm": [
+          0.41039790478890475,
+          49.72186184274705,
+          0.6094637848616448,
+          31.259369759517842,
+          0.8326232953809488,
+          6.85543163034675,
+          0.9209077083338845
+        ],
+        "peak_joint_velocity_radps": [
+          0.0019162530307524964,
+          0.3584702468122997,
+          0.0012275211090027132,
+          0.7230420957206956,
+          0.001667768171898212,
+          0.761357190279162,
+          0.8044984917004768
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.0,
+        "proxy_below_threshold_s": 0.0,
+        "qualification_sha256": "0a31d6b222e0cd032c963ab7a08074b7b6d1401dcfc3ad77a0e93e2d2d4f4f51",
+        "terminal_trace_hashes": {
+          "scene.mjb": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+          "trajectory.npz": "0f6c477fed9b164aebf068576bee3ec45fded4d96daffe89884a2c9785be3faa",
+          "legacy.json": "072f708e8095fb98f8f49957d44784c276f393422f6cc1bf36abd9fac6b0586a",
+          "execution.json": "a87d684b53bbdbec56821ea420d9ce86b381f37e99567ed69285bc042e0c8ae7",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 13.0,
+          "expected_steps": 325,
+          "expected_substeps": 260000,
+          "actual_steps": 325,
+          "actual_substeps": 260000,
+          "actual_duration_s": 12.999999999976373,
+          "hashes": {
+            "execution.json": "a87d684b53bbdbec56821ea420d9ce86b381f37e99567ed69285bc042e0c8ae7",
+            "trajectory.npz": "0f6c477fed9b164aebf068576bee3ec45fded4d96daffe89884a2c9785be3faa",
+            "substeps.npz": "273389baf07e78f602862a5ac6a0a4b6cdc2dc5e767f789664a5c738fa7a73e4",
+            "legacy.json": "072f708e8095fb98f8f49957d44784c276f393422f6cc1bf36abd9fac6b0586a"
+          }
+        }
+      },
+      "replay": {
+        "id": "corner_00__special_rnn_scratch_s2026102803",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 325
+      },
+      "metrics_sha256": "7348378f669b412dae1a28bf719ac20e3491d1ace2c92f9905a484efc6af0577"
+    },
+    {
+      "id": "corner_00__special_mlp_scratch_s2026102803",
+      "family": "mlp_scratch",
+      "seed": 2026102803,
+      "scene": "corner",
+      "metrics": {
+        "method": "special_mlp_scratch_s2026102803",
+        "condition": "corner_00",
+        "scene": "corner",
+        "task_success": true,
+        "strict_success": true,
+        "completion_time_s": 12.199999999978237,
+        "peak_torque_nm": 49.88765681695097,
+        "peak_joint_torque_nm": [
+          0.6475040817090332,
+          49.88765681695097,
+          0.5989036940218841,
+          28.630883020319,
+          0.8259489107386562,
+          6.730625739292375,
+          0.9209907982809976
+        ],
+        "peak_joint_velocity_radps": [
+          0.0019344991161019493,
+          0.36288858337488816,
+          0.0009360937651928412,
+          0.6011225453639018,
+          0.0012885233315328296,
+          0.7080785541858354,
+          0.800127143165537
+        ],
+        "max_external_penetration_m": 0.0,
+        "machine_compliant": true,
+        "human_contact_s": null,
+        "human_comfort": null,
+        "proxy_contact_s": 0.0,
+        "proxy_below_threshold_s": 0.0,
+        "qualification_sha256": "3bc58be4f38fea944dd642fe13859d8257ea89d31dfea56c7df123ab91e50d51",
+        "terminal_trace_hashes": {
+          "scene.mjb": "2e5d7f20464d183bf2297ef5c20906825dcbf3f30b6d9ba29a334c3946517402",
+          "trajectory.npz": "727b0feea17100d4343e129ac60dedc033e02f94cf2e73c91cfcbed0cc349319",
+          "legacy.json": "aa2310b995bcfb456327c730777aaa57ab34a4657228bbb6da25433e980f28a1",
+          "execution.json": "9a32c5d2b8af0f8929efb5b18a9688f463c2748fda9136e340d8e2b4e4bed7c8",
+          "SOURCE_HASHES.json": "cee9b59d76b19ec22396e682c1b2a5885d5bbae5a7d1824b2111f08580add3e7"
+        },
+        "completion_semantics": "Final uninterrupted terminal suffix, confirmed at its 13th 25-Hz sample; 0.48s sampled span. No substep terminal-hold claim.",
+        "strict_semantics": "special-scene task AND frozen safety AND required scenario contact/rod behavior; not office-placement Strict",
+        "horizon_audit": {
+          "full_episode_completed": true,
+          "failure_reasons": [],
+          "expected_duration_s": 13.0,
+          "expected_steps": 325,
+          "expected_substeps": 260000,
+          "actual_steps": 325,
+          "actual_substeps": 260000,
+          "actual_duration_s": 12.999999999976373,
+          "hashes": {
+            "execution.json": "9a32c5d2b8af0f8929efb5b18a9688f463c2748fda9136e340d8e2b4e4bed7c8",
+            "trajectory.npz": "727b0feea17100d4343e129ac60dedc033e02f94cf2e73c91cfcbed0cc349319",
+            "substeps.npz": "8cefc31313d4539774e0f7657b6771daee58ae271347c765a17e55a97fde0fd4",
+            "legacy.json": "aa2310b995bcfb456327c730777aaa57ab34a4657228bbb6da25433e980f28a1"
+          }
+        }
+      },
+      "replay": {
+        "id": "corner_00__special_mlp_scratch_s2026102803",
+        "actor_replay_max_abs": 0.0,
+        "filter_replay_max_abs": 0.0,
+        "rows": 325
+      },
+      "metrics_sha256": "a643ef849f7a7c56669e01c477cee34ba54d6f41278cdf14882c3eafc5cc9f61"
+    }
+  ],
+  "failed_ids": [
+    "rod_00__special_mlp_scratch_s2026102801",
+    "rod_00__special_mlp_scratch_s2026102802",
+    "ball_00__special_rnn_scratch_s2026102801",
+    "ball_00__special_mlp_scratch_s2026102801",
+    "ball_00__special_rnn_scratch_s2026102802",
+    "ball_00__special_rnn_scratch_s2026102803"
+  ],
+  "final_dispatch_attempted": false,
+  "new_recovery_probes": "Prepared code and saved-history controls only; registration twice denied by automatic review, no output directory or physical rollout created.",
+  "raw_archive": "local only; no new server export",
+  "human_comfort": "NA: direct human contact channel absent; disturbance contact proxy separate"
+}

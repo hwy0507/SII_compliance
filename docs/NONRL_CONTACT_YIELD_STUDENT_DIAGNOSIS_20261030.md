@@ -1,3 +1,25 @@
+## 2026-10-30：完整27开发审查结束，实际恢复探针待明确授权
+
+原诊断和final108等待器均已自然inactive/PID0；完整独立review与本轮保存文件hash核验一致。开发结果为三个train00身份×三seed，不能称unseen泛化：
+
+|方法|Task|Strict/双成功|机器合规|棍/球/角双成功|
+|---|---:|---:|---:|---|
+|ESN ridge|9/9|9/9|9/9|3/3、3/3、3/3|
+|RNN|6/9|6/9|9/9|3/3、0/3、3/3|
+|MLP|8/9|6/9|8/9|1/3、2/3、3/3|
+
+新teacher已让ESN三个场景开发身份全部通过；不能延续“新ESN整体退化”的假设，也不能据此认定最终主矩阵已修复。失败仍集中RNN球撞后恢复、MLP棍行为/穿透及一条球恢复。四条球失败都属于任务失败，不能用低峰矩/机器合规或失败SPT美化。当前主矩阵待，最终108后继按原协议明确`development_not_qualified_no_final_dispatch`，从未读取最终条件/派发测试。
+
+完整小证据：[CONTACT_YIELD_COMPLETE27_DEVELOPMENT_20261030.json](evidence/nonrl_v9_candidate_catalogue_20261029/CONTACT_YIELD_COMPLETE27_DEVELOPMENT_20261030.json)，含27原指标、原独立actor/filter精确重放、三家族/场景汇总与失败清单。此次仅独立核原hash和记录，没有新物理积分。新raw仍仅本地，不能宣称服务器归档。
+
+### 下一项具体修复实验
+
+新增独立`experiments/contact_yield_recovery_campaign_20261030.py`与worker/auditor，未改任何已绑定工具/物理源码。四条均使用失败学生seed01与原train00条件：MLP棍7s后接管、RNN球10s/20s后接管、MLP球10s后接管；运行到原20/30s完整时域。当前同配置VMC teacher沿实际学生历史预热，再真实接管；学生前缀与原失败轨迹逐数组严格配对，保存全部失败；独立重放动作/filter及原Task/Strict/机器门。不改teacher/门槛/物理/测试，不做拟合/模型重选。若后缀合格，仍需另登记三家族共同纠偏数据协议，禁止把反事实前缀作为实际成功示范。
+
+四条原保存历史上，独立纯controller预期与switch算子精确一致、学生完整重放精确一致，三种非法prefix被拒绝；控制证据`CONTACT_YIELD_RECOVERY_OPERATOR_CONTROLS_20261030.json`。这只是零物理控制，未证明教师实际恢复能力。RNN01后期向上残差约.069m/s、名义向下约.067m/s的抵消是待检验线索，非唯一因果证明。
+
+**登记命令两次被自动审批拒绝**：审批明确认为现有修复/重采授权未覆盖这四条具体teacher接管干预，要求用户明确批准。未绕过、未创建新run目录或启动服务；已向用户展示具体四条设计及资源边界请求批准。其余独立核验、源码和文档交付继续。Goal active；解除这一明确审批阻碍后才执行依赖动作。
+
 ## 2026-10-30：开发15/27，球撞出现任务恢复失败
 
 原服务同PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b持续active；球撞前六条完整，ESN01/02与MLP02 Task/Strict/machine均true，RNN01/02与MLP01 Task/Strict false但machine true；当前ESN03球在途，最终108仍等待/零派发。

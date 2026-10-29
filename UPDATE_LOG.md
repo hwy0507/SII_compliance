@@ -1,3 +1,9 @@
+## 2026-10-30 — 完整27开发结果：ESN9/9双成功，公平恢复修复已具体化
+
+- 原固定27诊断及最终等待器均自然inactive/PID0；独立review完成，27原METRICS/hash及actor/filter replay逐项核验。ESN Task/Strict/machine9/9；RNN6/6/9（分母9）；MLP8/6/8（分母9）。三场景双成功ESN3/3、3/3、3/3，RNN3/3、0/3、3/3，MLP1/3、2/3、3/3。仅train00开发，不是最终矩阵；全部六失败保留。证据`CONTACT_YIELD_COMPLETE27_DEVELOPMENT_20261030.json`及专题`docs/NONRL_CONTACT_YIELD_STUDENT_DIAGNOSIS_20261030.md`。
+- 新增四条有限真实teacher接管恢复实验代码（MLP棍7s、RNN球10/20s、MLP球10s），独立配对/动作/filter审计、全失败保留、资源CPU6/1线程/3GiB/swap0，无最终test/拟合/重选。四条原历史算子控制及三非法prefix拒绝通过，零新物理。准备登记被自动审批两次拒绝，明确要求用户批准具体干预；已提出具体批准请求，未绕过、无新run/进程。最终108保持零派发，未读test条件；待批准后实际探针及共同纠偏数据决策，不把代码/反事实当修复完成。
+- 开工fetch/read main f8c5f88912b8586f14434248eae3e6206d8cd9a3/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；AGENTS完整开工读取。新raw仍仅本地，无服务器新归档/计算、无RL/删除；两个无关untracked保留。Goal active，冻结主矩阵/六指标/真实媒体仍待。
+
 ## 2026-10-30 — 开发15/27；球撞任务恢复失败已保存定位证据
 
 - 原诊断PID1838688/Invocation6e4b70f18e2646e1b3dced9c0b0f5f9b宿主核实持续active，10→13→15完整回合。球前六ESN01/02与MLP02双成功/机器合规，RNN01/02与MLP01 Task/Strict失败但机器合规；当前ESN03球在途。所有科学失败保留，最终108后继仍等待/零派发。
