@@ -1,0 +1,1251 @@
+{
+  "reason": "original_probe_terminal_requires_full_review",
+  "observer_source": "import json\nfrom datetime import datetime, timezone\nfrom pathlib import Path\nimport subprocess\nimport time\n\nroot = Path('/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6')\noutput = Path('/home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/docs/evidence/NONRL_INTENT_RECOVERY_20261029/V8_BALL_V6_EXECUTION_OBSERVATION.json')\nassert not output.exists()\nunit = 'sii-ball-coverage-v6-20261029.service'\ncg = Path('/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice') / unit\nsamples = []\nstarted = time.monotonic()\nreason = 'bounded_observer_timeout'\nwhile time.monotonic() - started < 1200:\n    raw = subprocess.check_output(['systemctl', '--user', 'show', unit,\n        '-p', 'MainPID', '-p', 'ActiveState', '-p', 'SubState', '-p', 'Result',\n        '-p', 'ExecMainCode', '-p', 'ExecMainStatus', '-p', 'InvocationID'], text=True)\n    service = dict(line.split('=', 1) for line in raw.splitlines())\n    assert service['InvocationID'] == '0e0eefbcf4154713ae3659ec830a398a'\n    state = json.loads((root / 'execution.json').read_text())\n    progress_path = root / state['current'] / 'ball/progress.json'\n    progress = json.loads(progress_path.read_text()) if progress_path.exists() else None\n    resources = {n: (cg / n).read_text().strip() if (cg / n).exists() else None\n                 for n in ('memory.current', 'memory.max', 'memory.swap.current', 'memory.swap.max', 'memory.events')}\n    processes = []\n    if (cg / 'cgroup.procs').exists():\n        for value in (cg / 'cgroup.procs').read_text().split():\n            try:\n                p = Path('/proc') / value\n                stat = (p / 'stat').read_text().rsplit(')', 1)[1].split()\n                processes.append(dict(pid=int(value), start_ticks=stat[19],\n                    cmdline=(p / 'cmdline').read_bytes().replace(b'\\0', b' ').decode(),\n                    cpu_ticks=int(stat[11])+int(stat[12])))\n            except FileNotFoundError:\n                pass\n    sample = dict(utc=datetime.now(timezone.utc).isoformat(), service=service,\n        status=state['status'], current=state['current'], completed=len(state['episodes']),\n        qualifications=[dict(id=e['id'], status=e['qualification']['status']) for e in state['episodes']],\n        progress=progress, resources=resources, processes=processes)\n    samples.append(sample)\n    print(json.dumps({k: sample[k] for k in ('utc', 'status', 'current', 'completed', 'qualifications', 'progress')}), flush=True)\n    if state['status'] != 'running' and service['MainPID'] == '0':\n        reason = 'original_probe_terminal_requires_full_review'\n        break\n    time.sleep(30)\nwith output.open('x') as f:\n    json.dump(dict(reason=reason, observer_source=Path(__file__).read_text(), samples=samples,\n        limitation='Observer only; qualification and complete direction/movement review remain separate. No simulation or training dispatched.'), f, indent=2)\n    f.write('\\n')\nprint('observer_finished', reason, str(output), flush=True)\n",
+  "samples": [
+    {
+      "utc": "2026-10-29T08:08:56.643475+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_x_-1_angle_+0.8",
+      "completed": 1,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        }
+      ],
+      "progress": {
+        "time_s": 20.000000000102165,
+        "steps": 500,
+        "substeps": 400000
+      },
+      "resources": {
+        "memory.current": "840081408",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 2
+        },
+        {
+          "pid": 1446159,
+          "start_ticks": "35934165",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_-1_angle_+0.8 --scenes ball ",
+          "cpu_ticks": 2
+        },
+        {
+          "pid": 1446160,
+          "start_ticks": "35934168",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_-1_angle_+0.8 --worker ball ",
+          "cpu_ticks": 5244
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:09:26.649298+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_x_+1_angle_-0.8",
+      "completed": 2,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        }
+      ],
+      "progress": null,
+      "resources": {
+        "memory.current": "400371712",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 3
+        },
+        {
+          "pid": 1446835,
+          "start_ticks": "35942401",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_+1_angle_-0.8 --scenes ball ",
+          "cpu_ticks": 1
+        },
+        {
+          "pid": 1446836,
+          "start_ticks": "35942404",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_+1_angle_-0.8 --worker ball ",
+          "cpu_ticks": 14
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:09:56.653767+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_x_+1_angle_-0.8",
+      "completed": 2,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        }
+      ],
+      "progress": {
+        "time_s": 11.999999999978703,
+        "steps": 300,
+        "substeps": 240000
+      },
+      "resources": {
+        "memory.current": "907223040",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 3
+        },
+        {
+          "pid": 1446835,
+          "start_ticks": "35942401",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_+1_angle_-0.8 --scenes ball ",
+          "cpu_ticks": 1
+        },
+        {
+          "pid": 1446836,
+          "start_ticks": "35942404",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_+1_angle_-0.8 --worker ball ",
+          "cpu_ticks": 3012
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:10:26.657919+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_x_+1_angle_-0.8",
+      "completed": 2,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        }
+      ],
+      "progress": {
+        "time_s": 22.00000000016856,
+        "steps": 550,
+        "substeps": 440000
+      },
+      "resources": {
+        "memory.current": "938803200",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 3
+        },
+        {
+          "pid": 1446835,
+          "start_ticks": "35942401",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_+1_angle_-0.8 --scenes ball ",
+          "cpu_ticks": 1
+        },
+        {
+          "pid": 1446836,
+          "start_ticks": "35942404",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_+1_angle_-0.8 --worker ball ",
+          "cpu_ticks": 6009
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:10:56.662749+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_x_+1_angle_+0.8",
+      "completed": 3,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        }
+      ],
+      "progress": {
+        "time_s": 3.999999999997347,
+        "steps": 100,
+        "substeps": 80000
+      },
+      "resources": {
+        "memory.current": "970436608",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 3
+        },
+        {
+          "pid": 1447470,
+          "start_ticks": "35950712",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_+1_angle_+0.8 --scenes ball ",
+          "cpu_ticks": 2
+        },
+        {
+          "pid": 1447472,
+          "start_ticks": "35950715",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_+1_angle_+0.8 --worker ball ",
+          "cpu_ticks": 703
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:11:26.666660+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_x_+1_angle_+0.8",
+      "completed": 3,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        }
+      ],
+      "progress": {
+        "time_s": 14.999999999971712,
+        "steps": 375,
+        "substeps": 300000
+      },
+      "resources": {
+        "memory.current": "1002692608",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 3
+        },
+        {
+          "pid": 1447470,
+          "start_ticks": "35950712",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_+1_angle_+0.8 --scenes ball ",
+          "cpu_ticks": 2
+        },
+        {
+          "pid": 1447472,
+          "start_ticks": "35950715",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_+1_angle_+0.8 --worker ball ",
+          "cpu_ticks": 3700
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:11:56.670837+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_x_+1_angle_+0.8",
+      "completed": 3,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        }
+      ],
+      "progress": {
+        "time_s": 25.000000000268148,
+        "steps": 625,
+        "substeps": 500000
+      },
+      "resources": {
+        "memory.current": "1033973760",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 3
+        },
+        {
+          "pid": 1447470,
+          "start_ticks": "35950712",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_+1_angle_+0.8 --scenes ball ",
+          "cpu_ticks": 2
+        },
+        {
+          "pid": 1447472,
+          "start_ticks": "35950715",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_x_+1_angle_+0.8 --worker ball ",
+          "cpu_ticks": 6699
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:12:26.674254+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_y_-1_angle_-0.8",
+      "completed": 4,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        },
+        {
+          "id": "ball_x_+1_angle_+0.8",
+          "status": "qualified"
+        }
+      ],
+      "progress": {
+        "time_s": 6.999999999990355,
+        "steps": 175,
+        "substeps": 140000
+      },
+      "resources": {
+        "memory.current": "1066672128",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 4
+        },
+        {
+          "pid": 1448150,
+          "start_ticks": "35958921",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_-1_angle_-0.8 --scenes ball ",
+          "cpu_ticks": 2
+        },
+        {
+          "pid": 1448151,
+          "start_ticks": "35958923",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_-1_angle_-0.8 --worker ball ",
+          "cpu_ticks": 1496
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:12:56.678327+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_y_-1_angle_-0.8",
+      "completed": 4,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        },
+        {
+          "id": "ball_x_+1_angle_+0.8",
+          "status": "qualified"
+        }
+      ],
+      "progress": {
+        "time_s": 17.000000000002576,
+        "steps": 425,
+        "substeps": 340000
+      },
+      "resources": {
+        "memory.current": "1099354112",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 4
+        },
+        {
+          "pid": 1448150,
+          "start_ticks": "35958921",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_-1_angle_-0.8 --scenes ball ",
+          "cpu_ticks": 2
+        },
+        {
+          "pid": 1448151,
+          "start_ticks": "35958923",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_-1_angle_-0.8 --worker ball ",
+          "cpu_ticks": 4496
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:13:26.682749+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_y_-1_angle_-0.8",
+      "completed": 4,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        },
+        {
+          "id": "ball_x_+1_angle_+0.8",
+          "status": "qualified"
+        }
+      ],
+      "progress": {
+        "time_s": 28.000000000367738,
+        "steps": 700,
+        "substeps": 560000
+      },
+      "resources": {
+        "memory.current": "1130201088",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 4
+        },
+        {
+          "pid": 1448150,
+          "start_ticks": "35958921",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_-1_angle_-0.8 --scenes ball ",
+          "cpu_ticks": 2
+        },
+        {
+          "pid": 1448151,
+          "start_ticks": "35958923",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_-1_angle_-0.8 --worker ball ",
+          "cpu_ticks": 7496
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:13:56.687786+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_y_-1_angle_+0.8",
+      "completed": 5,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        },
+        {
+          "id": "ball_x_+1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_-0.8",
+          "status": "qualified"
+        }
+      ],
+      "progress": {
+        "time_s": 9.999999999983364,
+        "steps": 250,
+        "substeps": 200000
+      },
+      "resources": {
+        "memory.current": "1163808768",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 4
+        },
+        {
+          "pid": 1448791,
+          "start_ticks": "35967062",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_-1_angle_+0.8 --scenes ball ",
+          "cpu_ticks": 1
+        },
+        {
+          "pid": 1448792,
+          "start_ticks": "35967064",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_-1_angle_+0.8 --worker ball ",
+          "cpu_ticks": 2357
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:14:26.691659+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_y_-1_angle_+0.8",
+      "completed": 5,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        },
+        {
+          "id": "ball_x_+1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_-0.8",
+          "status": "qualified"
+        }
+      ],
+      "progress": {
+        "time_s": 20.000000000102165,
+        "steps": 500,
+        "substeps": 400000
+      },
+      "resources": {
+        "memory.current": "1193316352",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 4
+        },
+        {
+          "pid": 1448791,
+          "start_ticks": "35967062",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_-1_angle_+0.8 --scenes ball ",
+          "cpu_ticks": 1
+        },
+        {
+          "pid": 1448792,
+          "start_ticks": "35967064",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_-1_angle_+0.8 --worker ball ",
+          "cpu_ticks": 5356
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:14:56.695887+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_y_+1_angle_-0.8",
+      "completed": 6,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        },
+        {
+          "id": "ball_x_+1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_+0.8",
+          "status": "qualified"
+        }
+      ],
+      "progress": null,
+      "resources": {
+        "memory.current": "1217826816",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 4
+        },
+        {
+          "pid": 1449394,
+          "start_ticks": "35975219",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_+1_angle_-0.8 --scenes ball ",
+          "cpu_ticks": 1
+        },
+        {
+          "pid": 1449395,
+          "start_ticks": "35975222",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_+1_angle_-0.8 --worker ball ",
+          "cpu_ticks": 200
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:15:26.701281+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_y_+1_angle_-0.8",
+      "completed": 6,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        },
+        {
+          "id": "ball_x_+1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_+0.8",
+          "status": "qualified"
+        }
+      ],
+      "progress": {
+        "time_s": 13.999999999974042,
+        "steps": 350,
+        "substeps": 280000
+      },
+      "resources": {
+        "memory.current": "1259732992",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 4
+        },
+        {
+          "pid": 1449394,
+          "start_ticks": "35975219",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_+1_angle_-0.8 --scenes ball ",
+          "cpu_ticks": 1
+        },
+        {
+          "pid": 1449395,
+          "start_ticks": "35975222",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_+1_angle_-0.8 --worker ball ",
+          "cpu_ticks": 3201
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:15:56.705554+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_y_+1_angle_-0.8",
+      "completed": 6,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        },
+        {
+          "id": "ball_x_+1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_+0.8",
+          "status": "qualified"
+        }
+      ],
+      "progress": {
+        "time_s": 25.000000000268148,
+        "steps": 625,
+        "substeps": 500000
+      },
+      "resources": {
+        "memory.current": "1291235328",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 4
+        },
+        {
+          "pid": 1449394,
+          "start_ticks": "35975219",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_+1_angle_-0.8 --scenes ball ",
+          "cpu_ticks": 1
+        },
+        {
+          "pid": 1449395,
+          "start_ticks": "35975222",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_+1_angle_-0.8 --worker ball ",
+          "cpu_ticks": 6201
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:16:26.713586+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_y_+1_angle_+0.8",
+      "completed": 7,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        },
+        {
+          "id": "ball_x_+1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_+1_angle_-0.8",
+          "status": "failed_preserved"
+        }
+      ],
+      "progress": {
+        "time_s": 7.999999999988025,
+        "steps": 200,
+        "substeps": 160000
+      },
+      "resources": {
+        "memory.current": "1330384896",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 4
+        },
+        {
+          "pid": 1450055,
+          "start_ticks": "35982975",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_+1_angle_+0.8 --scenes ball ",
+          "cpu_ticks": 2
+        },
+        {
+          "pid": 1450058,
+          "start_ticks": "35982977",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_+1_angle_+0.8 --worker ball ",
+          "cpu_ticks": 1446
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:16:56.719883+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_y_+1_angle_+0.8",
+      "completed": 7,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        },
+        {
+          "id": "ball_x_+1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_+1_angle_-0.8",
+          "status": "failed_preserved"
+        }
+      ],
+      "progress": {
+        "time_s": 18.000000000035772,
+        "steps": 450,
+        "substeps": 360000
+      },
+      "resources": {
+        "memory.current": "1362997248",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 4
+        },
+        {
+          "pid": 1450055,
+          "start_ticks": "35982975",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_+1_angle_+0.8 --scenes ball ",
+          "cpu_ticks": 2
+        },
+        {
+          "pid": 1450058,
+          "start_ticks": "35982977",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_+1_angle_+0.8 --worker ball ",
+          "cpu_ticks": 4447
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:17:26.723477+00:00",
+      "service": {
+        "MainPID": "1445472",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "running",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "running",
+      "current": "ball_y_+1_angle_+0.8",
+      "completed": 7,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        },
+        {
+          "id": "ball_x_+1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_+1_angle_-0.8",
+          "status": "failed_preserved"
+        }
+      ],
+      "progress": {
+        "time_s": 29.000000000400934,
+        "steps": 725,
+        "substeps": 580000
+      },
+      "resources": {
+        "memory.current": "1393098752",
+        "memory.max": "3221225472",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0"
+      },
+      "processes": [
+        {
+          "pid": 1445472,
+          "start_ticks": "35926004",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python tools/prepare_ball_coverage_reclaimed_20261029.py --root outputs/nonrl_ball_coverage_probe_20261029_v6 --run ",
+          "cpu_ticks": 4
+        },
+        {
+          "pid": 1450055,
+          "start_ticks": "35982975",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_+1_angle_+0.8 --scenes ball ",
+          "cpu_ticks": 2
+        },
+        {
+          "pid": 1450058,
+          "start_ticks": "35982977",
+          "cmdline": "/home/airpig/\u684c\u9762/hwy/compliance_control/.venv-sii-local-rl/bin/python /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/tools/run_video_reference_coverage_20261029.py --output /home/airpig/\u684c\u9762/hwy/compliance_control/SII_compliance/code/mujoco_6d_vmc_benchmark/outputs/nonrl_ball_coverage_probe_20261029_v6/ball_y_+1_angle_+0.8 --worker ball ",
+          "cpu_ticks": 7447
+        }
+      ]
+    },
+    {
+      "utc": "2026-10-29T08:17:56.728063+00:00",
+      "service": {
+        "MainPID": "0",
+        "Result": "success",
+        "ExecMainCode": "1",
+        "ExecMainStatus": "0",
+        "ActiveState": "active",
+        "SubState": "exited",
+        "InvocationID": "0e0eefbcf4154713ae3659ec830a398a"
+      },
+      "status": "complete_pending_review",
+      "current": "ball_y_+1_angle_+0.8",
+      "completed": 8,
+      "qualifications": [
+        {
+          "id": "ball_x_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_x_+1_angle_-0.8",
+          "status": "failed_preserved"
+        },
+        {
+          "id": "ball_x_+1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_-0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_-1_angle_+0.8",
+          "status": "qualified"
+        },
+        {
+          "id": "ball_y_+1_angle_-0.8",
+          "status": "failed_preserved"
+        },
+        {
+          "id": "ball_y_+1_angle_+0.8",
+          "status": "qualified"
+        }
+      ],
+      "progress": {
+        "time_s": 30.00000000043413,
+        "steps": 750,
+        "substeps": 600000
+      },
+      "resources": {
+        "memory.current": null,
+        "memory.max": null,
+        "memory.swap.current": null,
+        "memory.swap.max": null,
+        "memory.events": null
+      },
+      "processes": []
+    }
+  ],
+  "limitation": "Observer only; qualification and complete direction/movement review remain separate. No simulation or training dispatched."
+}

@@ -35,6 +35,12 @@
 - [最新交接](docs/RL_RECOVERY76_COMPLETE77_RUNNING_20261029.md)。76三路各30×55/41250/noabort，旧partial75 replay/history全部保留、新reward重算0、网络optimizer有限；全loss/180标签/90reward对/health/全2244+30终端/实际图全审。I尖峰、Vactor漂移和short0600 Strict退化、A总体改善及long0200退化全部保留，未收敛。
 - DECISION77绑定96证据，三路准确全state/replay/next65536和actual INITIAL_STATE/startup通过，当前steps3160279/3161595/3163135、各30sampler。原科学参数/75中断/76–78准确PLAN保持，无自动78、Direct34false，Goal active。77全loss和归档health已部署，77标签/2274锚点待补。
 - guard280样本min[75, 67, 62, 63]%、低于50[0, 0, 0, 0]，审查空档含合成保载、科研完成仍继续。SSD317成员/2677677字节/SHA9fe6df28逐成员/AST已核，大数据SSD非HDD/arm1全备份。main6492ab17后c1e2bf02/baselinef6e8f8c已读安全合并，认证发布待，无子agent。
+## 2026-10-29 — 非RL完整108失败审查、八球完成、v9方向补采运行
+
+- 当前读[修复交接](docs/NONRL_DIRECTION_REPAIR_V9_20261029.md)和[完整108结果](docs/NONRL_V8_FULL108_RESULTS_20261029.md)。原v8完整108：Task1/108、Strict0/108、BOTH0/108，SPT NA；109748000已保存子步算术/证据审计通过，不是动力学重新积分。主矩阵未修复，Goal active。
+- 原108全部3460成员包11175643176bytes/SHAdc95fe58已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_full108_20261029_v1/FROZEN108.tar.gz`。原物理/后处理已结束，勿重启。
+- 八球v6完成并全八review：6合格、2仅腕部接触不合格，四方向均有合格teacher；实际搬运72.458–81.030mm，非命令目标冒充。全部成功/失败及新计划168成员包455421181bytes/SHA89abcc6c已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_ball_direction_repair_20261029_v1/PROBE_AND_PLAN.tar.gz`。勿再启动v6或v5。
+- 新`special_scene_direction_collection_20261029_v9`计划SHA34a91424、208绑定源，08:20:36UTC启动`sii-special-direction-collection-v9-20261029.service`，PID1452135/Invocation173a263a95e345f8b6c84f313e017185；4/30合格、rod_04在途快照。只读核现有运行，不改绑定源、不重复启动。单CPU6/线程1/3GiB/禁swap保持。全30合格后构建共享24train/6val、覆盖检查、公平重训和冻结108回归；没有新学生结果。无RL/子agent/服务器计算，门槛保持。
 
 ## 2026-10-29 — 非RL第十一条件完整，原108到99
 

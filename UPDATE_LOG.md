@@ -33,6 +33,14 @@
 - [最新交接](docs/RL_RECOVERY76_COMPLETE77_RUNNING_20261029.md)。76三路各30×55/41250/noabort，旧partial75 replay/history全部保留、新reward重算0、网络optimizer有限；全loss/180标签/90reward对/health/全2244+30终端/实际图全审。I尖峰、Vactor漂移和short0600 Strict退化、A总体改善及long0200退化全部保留，未收敛。
 - DECISION77绑定96证据，三路准确全state/replay/next65536和actual INITIAL_STATE/startup通过，当前steps3160279/3161595/3163135、各30sampler。原科学参数/75中断/76–78准确PLAN保持，无自动78、Direct34false，Goal active。77全loss和归档health已部署，77标签/2274锚点待补。
 - guard280样本min[75, 67, 62, 63]%、低于50[0, 0, 0, 0]，审查空档含合成保载、科研完成仍继续。SSD317成员/2677677字节/SHA9fe6df28逐成员/AST已核，大数据SSD非HDD/arm1全备份。main6492ab17后c1e2bf02/baselinef6e8f8c已读安全合并，认证发布待，无子agent。
+## 2026-10-29 — 非RL完整108结案审查与真实方向覆盖修复启动
+
+- [完整结果](docs/NONRL_V8_FULL108_RESULTS_20261029.md)：原108/原后处理完整结束，Task1/108、Strict0/108、BOTH0/108；唯一MLP3条件011于54.36秒完成Task，但外穿透0.571845mm导致Strict失败，SPT NA。ESN25条停lift/11条carry且13abort，RNN12approach/24carry；不能归因于仅改蹭棍子或把低loss当修复。完整109748000保存子步及来源/分母审计通过，非动力学重新积分；实际六指标图已看。
+- 原108全部失败/来源/审计/图表3460成员、11175643176bytes/SHAdc95fe58已逐成员及源前后核验，暂存/最终共享亦核验：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_full108_20261029_v1/FROZEN108.tar.gz`。两终态observer随附，不拿回收unit默认success冒充exit0。
+- [新修复交接](docs/NONRL_DIRECTION_REPAIR_V9_20261029.md)：唯一八球v6已自然exit0，全八review及实际手/物位移检查结束；6合格、2只撞fr3_link7不合格，四方向均有合格teacher，实际物体搬运72.458–81.030mm。失败保留，不修改手接触资格。19观察样本峰1393098752bytes，OOM/实验swap0。
+- 新前瞻计划生成器已实现并验证：只从完整开发审查选合格角度，原30身份/seed/划分、teacher、20棍角配置及10球速度/shift/高度保持；新增四方向覆盖，仍共享24train/6val。新v9计划SHA34a91424、208源绑定，08:20:36UTC单CPU6/线程1/3GiB/禁swap服务启动，收尾4/30合格、rod_04在途。未训练或回测新学生，不宣称主矩阵已修复。
+- 全八成功/失败及新计划168成员455421181bytes/SHA89abcc6c已逐成员及源前后、暂存/最终核验共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_ball_direction_repair_20261029_v1/PROBE_AND_PLAN.tar.gz`；不含v9在途物理。后续全30资格→train覆盖→同预算公平训练→冻结108回归仍待。Goal active。
+- 开工和收尾真实fetch核main b1deda6593c6b4bc76a76b89e30b5a6fc4998178、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；重读AGENTS。无RL/子agent/服务器计算、冻结gate/输入/filter/执行器修改或用户数据删除。两个无关untracked文件保留，可选004旧权限超时动作未重试；原全108审计已完成。
 
 ## 2026-10-29 — 非RL第十一条件完整，原108到99
 
