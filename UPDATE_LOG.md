@@ -6,6 +6,9 @@
 - 14成员129123bytes/SHA1e2007e3759aa0914bdd1837850609b6394bcb7180d4a7bcda61a0108b990934小证据已逐成员及远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_common_eligibility_20261029_v3/EVIDENCE.tar.gz`。含完整18小审查/源码/失败与LIVE快照，不含完整raw，不宣称全备份，服务器无计算。
 - 开工fetch/read main d51f149cd9424c4cb31208d9517f8d07410ac0d6、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，无关untracked保留。
 
+
+本轮真实后续：ESN seed01 rank2（rho0.8/gain0.08/ridge0.001）在原失败的同身份rod00已完整qualified，400000子步。相同MJB/任务/安全门：峰矩34.3391Nm，最大外穿透0.067847mm，7.72s确认持续回位，撤回开始12.80s，领先5.08s。该改善只是一条开发回合，不代表其余场景/种子或正式Strict通过；rank2已继续rod08。三份审计小收据2569bytes/SHAce169d545f8961683f501d9fdbb8d3246a77c2c8dee0ca66246126b61a655ae4已逐成员与服务器hash核共享于上述目录`RANK2_ROD00.tar.gz`。完整raw尚未归档。首科学提交ba0c4c282e45604cdb212a03eb1937a6f8b0bafa已push并核远端。
+
 ## 2026-10-29 — 安全边界调整诊断优先级；同场景已复现ESN闭环失败
 
 - 读[调度修正与真实配对](docs/NONRL_V9_PRIORITY_BOUNDARY_AMENDMENT_20261029.md)。原组合office108会长期阻塞同场景修复，现用其已有STOP_REQUESTED协议让在途回合自然落盘，51/108完整、Task5/Strict0、原scope inactive，57格未完成清单/原execution hash全部保留；不把旧矩阵写complete。旧v3按其前提拒绝派发、无student execution。后续补齐原不相交格子，完整联合审计；不按旧测试挑新参数。这一显式调度修正覆盖上条“先108全部结束再18”的计划顺序。
