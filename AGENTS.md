@@ -2,6 +2,7 @@
 
 ## 2026-10-29 — 非RL第三条件全审与train方向缺口
 
+- 科学79552a67五文件包22870bytes/SHA39b0ee7e及41次观察59764bytes/SHA49d32f3e已逐暂存/最终大小hash核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition002_direction_20261029_v1/`。00:56:16–01:16:16原1172675/1201537身份保持、25→30/108、最大780238848bytes/OOMswap0，observer30059自然exit0。原科学继续，v4的197源保持/未启动，Goal active。远端01bb3503已安全合并且双方日志完整。
 - [方向报告](docs/NONRL_V8_TRAIN_DIRECTION_COVERAGE_20261029.md)：24train/12600帧逐原物理观测和action精确核验，±Y主导方向均0，棍推参考方向仅±Z；6validation未统计，无新拟合/物理。准确报告394cc0e5；分箱是描述，非gate或因果证明。
 - 第三条件九模型/8904000保存子步/hash/原replay收据全审通过，Task/Strict仍全false；ESN1 5.20s global penetration abort，其他8×55s，ESN三seed与MLP2机器合规失败，MLP1舒适NA。审计bbfc5fe7，不是全矩阵/成功认证。
 - 01:08UTC原108到28、原1172675/后处理1201537继续。唯一八球v4尚未启动；原完整108审查归档后再方向开发控制与三场景共享数据修复/公平重训。Goal active，无RL/子agent/服务器计算/删除。新小证据暂待共享。

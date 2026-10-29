@@ -1,5 +1,6 @@
 ## 2026-10-29 — 非RL第三条件全审与真实train方向缺口
 
+- 科学79552a67071dedec0e0a5064e74aaf0b2fba8152五文件包22870bytes/SHA39b0ee7e和完整41次观察59764bytes/SHA49d32f3e已核共享`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition002_direction_20261029_v1/`；逐成员对Git blob、两文件暂存/最终大小hash一致。00:56:16–01:16:16原1172675/1201537同身份active，25→30/108，最高780238848bytes/OOMswap0，observer30059自然exit0，原科学继续。01bb3503独立RL更新已读并安全合并、双方日志完整；八球v4的197绑定源保持且未启动。Goal active，未称主矩阵修复。
 - 新工具只读核验24train/12600帧与原物理观测/action精确一致：±Y主导参考方向0帧，棍推只有±Z；六validation未统计、无测试拟合/新物理。分箱标量复核通过，报告394cc0e5，详见[方向覆盖](docs/NONRL_V8_TRAIN_DIRECTION_COVERAGE_20261029.md)。结合此前ESN读出外推证据，支持补真实方向×载荷覆盖，非唯一因果证明或修复成功。
 - 原第三条件九模型/8904000保存子步/hash/原actor-filter收据审计通过bbfc5fe7，Task/Strict全false；ESN1 5.20s穿透abort、其余8×55s，ESN三seed和MLP2机器合规失败，MLP1无人体接触舒适NA。SPT仍NA，保留全部失败；01:08原108推进28，第四条件在途。
 - 原评测1172675与后处理1201537继续，唯一八球v4未启动。完整108审查归档后再开发控制/三场景补采、公平重训及最终六指标。开工main3d2d1d9d/baselinef6e8f8c实际fetch/read；新小证据仅本机待核共享。Goal active，无RL/子agent/服务器计算/删除。

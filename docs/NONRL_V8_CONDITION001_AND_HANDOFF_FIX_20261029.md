@@ -1,5 +1,22 @@
 # v8第二条件核验与补采接续检查修复
 
+## 01:17 UTC：持续观察与核验共享
+
+00:56:16.645–01:16:16.652UTC共41次确认原1172675/start32623702与后处理1201537/start32942337
+同身份active，实际回合物理时间推进，完成25→30/108。最大原服务内存780238848bytes，
+全部OOM/oom_kill/swap0。观察器30059自然exit0；第四条件ESN seed2在途，科学作业继续，不重启。
+[完整记录](evidence/NONRL_INTENT_RECOVERY_20261029/V8_FROZEN108_VERIFIED_WAIT_0056.json)，
+59764bytes，SHA256 `49d32f3eb1a29da04dbd22e72447ab1bb0e20dcdaed6004f0cd76c2c0f1234ad`。
+
+已核共享目录：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition002_direction_20261029_v1/`。
+其中SCIENCE.tar.gz是科学79552a67071dedec0e0a5064e74aaf0b2fba8152的五文件包，22870bytes，
+SHA256 `39b0ee7e6874137d8863a6556bb6a903f204cc5971a038013d6ce090884cad94`；
+逐成员对Git blob/本机一致，另附上述完整观察JSON，两文件暂存和最终大小hash一致。
+包不包含在途物理全集或本段补记。远端main01bb3503的另一任务更新已读并安全合并，
+两份日志的双方新增和共同历史逐字节保持；有效八球v4的197个绑定源保持、仍未启动。
+本轮为新增覆盖诊断及第三条件全审progress，Goal active；主矩阵未修复。
+
 ## 01:08 UTC：第三条件全审与训练方向缺口
 
 原评测同身份继续至28/108，第四条件已开始；并非完成或修复。

@@ -56,4 +56,9 @@ teacher在原条件000可同时通过Task/Strict，首帧输入与学生一致�
 - 开工实际fetch/read main `3d2d1d9d4e5a3fd5fa57648033a20de44282bb22`、
   baseline `f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`。
 
-新证据暂仅本机，归档核验后补共享路径。Goal active；主矩阵修复、补采与公平重训尚未完成。
+源码及准确报告commit `79552a67071dedec0e0a5064e74aaf0b2fba8152`的五成员包已逐Git blob、
+暂存/最终大小与SHA核共享：
+`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v8_condition002_direction_20261029_v1/SCIENCE.tar.gz`。
+22870bytes，SHA256 `39b0ee7e6874137d8863a6556bb6a903f204cc5971a038013d6ce090884cad94`；
+含诊断源码、此报告、当前交接、方向JSON与第三条件审计，不含原108物理全集或本段后补文字。
+Goal active；主矩阵修复、补采与公平重训尚未完成。
