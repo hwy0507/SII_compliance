@@ -1,3 +1,11 @@
+## 2026-10-30 — 新teacher棍推10/10独立合格；固定九学生诊断入口准备完成
+
+- 读[学生诊断与完整棍推证据](docs/NONRL_CONTACT_YIELD_STUDENT_DIAGNOSIS_20261030.md)。同采集PID1827286/Invocation ec3b6f480c184966bf86c5def563210d保持；三次宿主观察确认rod08 475step/380000子步→ball00 150→325step/120000→260000子步，真实接续。10rod全合格且新独立前缀10/10：核source/config/原始输入hash、actor精确重放、label、完整时钟/子步、同初态/MJB/filter、原Task/安全/棍行为门。全部撤回前持续回位，确认领先1.24–5.59s，原失败rod09现领先2.19s。真实PNG/PDF/绘图source与hash已保存并目视核验；不是新学生或unseen结果。
+- 旧v9入口硬绑定旧数据SHA/选模目录，新增experiments/diagnose_contact_yield_students_20261030.py；仅待执行，不改冻结tools/scripts。须30独立合格/75fits与九模型完整审计/两个前置服务inactive后另登记。固定九个validation-MSE模型×rod00/ball00/corner00 train身份=27，复用原物理worker/metrics/replay；不重选模型、不读最终条件、不计算开发SPT，不把科学失败删掉。基础设施异常保留当前与完整前缀，不自动重试。当前未登记/未派发该27回合。
+- 27顺序/全部科学失败保留/第四条异常保留前三及当前/重复派发/模型缺失重复/场景与train身份/活动前置/未完成review拒绝等零物理控制通过；新teacher真实保存rod00正确配对及错误MJB/filter/初始canonical48三拒绝通过。源编译/diff检查通过。新入口未修改已登记采集/训练源码，两个source inventory仍需保持。
+- 原采集和唯一训练等待器继续：观察内MemoryCurrent最高约1.705GB/3GiB，OOM0/swap0；完整30仍在途、75fit/模型闭环/最终108/六指标/媒体待，Goal active。Task/Strict、双通过SPT、平均峰矩、人舒适缺通道NA/代理分列、机器合规不改；旧综合主结果退历史与57未完成格保留。无RL/新并行模拟器/服务器计算/删除；新raw仅本地，未绕过之前的raw导出拒绝。
+- 开工宿主fetch/read main a7c997016e15f2a6672ee86e0b8d7b6fb2bcd926、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d两分支UPDATE_LOG；sandbox网络失败不代表远端不可用。上一轮为实质进展，本轮增加入口及10棍独立完成证据；继续Goal，不标完成。收工重读AGENTS，两个无关untracked保留。
+
 ## 2026-10-30 — 接触让位后蹭棍teacher全量重采运行，公平训练唯一接续已启动
 
 - 读[本轮修复和接续](docs/NONRL_CONTACT_YIELD_SCRAPE_RETRAIN_20261030.md)。最新teacher在感知接触与4mm让位后才提供有界0.02m/s路径补偿，三开发探针独立3/3合格；仅加推进旧版0/3失败保留。rod09 4.918s接触→5.04s让位→10.68s越棍→10.76s持续回位确认<12.95s撤回。teacher用过开发validation rod09；六validation只作开发选模，不称独立泛化。冻结MJB/物理/input/filter/actuator/dt/gate未改。
