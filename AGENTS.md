@@ -1,5 +1,12 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 教师接管纠偏采集算子准备完成，MLP02完整12失败保留
+
+- 读[教师接管算子与限制](docs/NONRL_V9_DEVELOPMENT_TEACHER_HANDOFF_20261030.md)。新增开发算子同canonical48历史推进teacher/student，有限学生前缀后接管；保留教师前缀形成的状态，明确前缀反事实和后缀实际行为来源。10条保存历史/边界控制和8类错误拒绝通过，尚无新物理纠偏/示范/拟合，不把回放当纠偏成功。
+- ESN/RNN三个seed及MLP01七组选定保持；MLP02完整12均失败，rank12已8.52s提前持续回位但外穿透0.218604mm>0.2mm，不能称所有候选都不会回位。MLP03后续候选仍在唯一用户级服务PID1697598推进；最终等待器PID1726066仍等待，零最终108派发。冻结1132源/七待执行源不改；下一步另登记有限真实teacher接管探针，先验证纠偏能力再决定共享数据公平重训。Goal active。
+- 五payload+manifest证据7206bytes/SHA56575762bcf65627258285635a41edf9c335f54eb7d56bbaf87110a7b3b398e4，源前后/成员/暂存及最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_development_handoff_20261030_v1/EVIDENCE.tar.gz`。服务器仅存储/hash；非raw全集/新示范。完整九组/未见108/六指标/媒体仍待，旧office108的57待补保留。
+- 本轮fetch/read main fc52856f693094556fe5d017700855c4a66ba4c9、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；重新读取AGENTS，两个无关untracked保留，无RL/删除或重复模拟器。状态检查使用systemctl --user；系统级同名unit不存在不代表用户服务停止。
+
 ## 2026-10-30 — 棍推训练阶段覆盖/MLP残差诊断，后继修复依据已明确
 
 - 读[14候选同训练历史诊断](docs/NONRL_V9_MLP_TRAINING_PHASE_DIAGNOSIS_20261030.md)。仅8条rod train/4000帧，核dataset/逐轨迹obs-action/原审计input/source、14checkpoint/metadata及源前后hash；12个MLP02候选和已合格MLP01/ESN01同输入actor回放，无拟合/积分/test或新选模规则。teacher越棍至回位确认仅40帧=rod1%/全train0.317%；接触至越棍657帧也含关键响应，不能说整个蹭棍只训练40帧。原importance均1，后续学生偏离状态覆盖未被这些teacher历史证明。
