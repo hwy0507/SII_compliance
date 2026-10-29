@@ -1,3 +1,10 @@
+## 2026-10-30 — 新增ESN01/MLP01的18条最终指标路径预检通过
+
+- 读[新增18条预检](docs/NONRL_V9_NEW18_METRIC_PREFLIGHT_20261030.md)。只读独立入口对ESN01 rank4和MLP01 rank1各九条开发回合核精确actor/filter replay、Task/三特化Strict、13采样终态保持、完整horizon/子步/机器安全，18/18通过；无积分/拟合/test读取/局部T_ref或SPT，也不重复计算旧45条。七组已选都有相应预检证据，非九组锁定或最终泛化成功。ESN01完成时刻9.36–18.04s、九条最大峰矩54.032208Nm/外穿透0.072482mm；MLP01为9.44–16.92s、51.676148Nm/0.139156mm，仅开发范围/最大值，非正式平均/胜负。人体舒适仍NA、代理分列。
+- 当前MLP02前七候选完整rod00均Task=true但持续回位失败，rank2安全通过，其余另超0.2mm外穿透；第8候选在途，MLP03完整12仍待。七失败资格hash快照保留，原完整12共同规则不放宽。唯一PID1697598继续、MemoryCurrent约1.08GB/3GiB，OOM0/swap0、1132source全一致；最终等待器PID1726066仍等九组，目标108目录未创建，零最终派发。Goal active。
+- 五payload+manifest预检包95060bytes/SHA2fa1b8035c4188e21aa36015b31b4583c9afbc5e07ae22a54f64e188c8e972eb逐成员/源前后及远端暂存/最终大小hash核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_new18_metric_preflight_20261030_v1/EVIDENCE.tar.gz`。含18结果、精确execution/registration、独立入口和报告；不是新增raw全备份。服务器仅存储/hash，完整原top3 72raw归档保持。
+- 最终九组/三特化108/六指标/媒体仍待，旧office108的57待补保留，无RL/删除/重复仿真。开工fetch/read main7914d92ec97e2f25ae61f943c150c7282f286c55、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，两个无关untracked保留。上一轮progress、本轮progress。
+
 ## 2026-10-30 — 三个ESN种子九开发全合格；完整72 raw含失败已共享
 
 - 读[完整72回合恢复映射及范围](docs/NONRL_V9_COMPLETE_TOP3_RAW_20261030.md)。完整12共同筛选ESN01 rank4 rho0.5/gain0.08/ridge0.001九train/validation全部qualified；三个ESN、三个RNN和MLP01共七组选定。独立prefix核78完整case/69祖先复用/7失败/7selected，非最终九组或测试成功。原top3的10失败全部保留；full12不重放已选组未选候选，所以两个阶段失败分母不混写。MLP02已转rank5 rod00继续，MLP03仍待，最终108等待器零派发；Goal active。
