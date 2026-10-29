@@ -1,9 +1,17 @@
-## 2026-10-29 — v9诊断推进：29/108；teacher/拟合未见实现错误，原scope仍在运行
+## 2026-10-29 — v9首次失稳早于棍推；开发配对闭环已串行登记与启动等待
 
-- 复核`outputs/special_scene_frozen108_20261029_v9/execution.json`及逐回合收据：29/108完整，ESN10、RNN10、MLP9；Task2/29、Strict0/29、双成功0/29，SPT=NA。两条Task-only成功均因穿透0.2918/0.3090mm超过冻结0.2mm门而Strict失败。第30条MLP seed2026102801/condition003在途，仍未完成。
-- 宿主级systemd查询确认原scope `run-raa08b13eb33f4583ab899210958345fa.scope` active，最近MemoryCurrent约1.72GB、MemoryMax3GiB、MemorySwapMax=0、CPUQuota=100%、单数值线程；sandbox PID视图曾误报无worker，现已纠正。没有重启或改动任何运行收据。主机swap全满，但实验scope有零swap约束。
-- teacher棍推qualification/训练帧action精确重放、75份拟合作业/108候选、九checkpoint/actor回放和ridge复算通过；目前未发现teacher顺序或求解/导出实现错误。更明确的风险是训练场景分离、12条件为组合扰动迁移，逐帧loss中ball占47.6%；ESN slowdown标签21.4%–25.3%裁剪仍是待查线索。ESN组合回归9条Task为0，是真实风险信号但不是最终排名。原12只作迁移压力结果；另建场景隔离最终测试，validation 6条不能复用。
-- 已更新`AGENTS.md`和专题审查报告；最终六指标/图表仍待108完成。未改物理、Task/Strict gate、actor输入、filter、执行器限制或dt。宿主级`ls-remote`/fetch成功，核main=`69d656d67e60b66107f506400af0d36bc195b4d1`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读两分支UPDATE_LOG；远端main仍记上一阶段采集，baseline是独立RL进展。本地提交已完成、push尚未执行；本轮结果服务器归档尚未核验。
+- [诊断及真实轨迹图](docs/NONRL_V9_TEACHER_FIT_AND_MATRIX_DIAGNOSIS_20261029.md)：正确v9 train数据SHA12017388/12600帧，condition000九条保存轨迹中三个ESN均2.12s首次动作饱和，早于12.824s棍推；六条RNN/MLP无饱和。活跃feature超训练逐维包络及raw readout26.75–221.48表明外推放大风险；不能仅归因“蹭棍新动作”。初始关节0/2/6越界不进入此ESN，排除该错误推论。三ESN actor replay误差≤4.24e-14。无新拟合/物理审计或测试选模。
+- 原108在22:09CST快照35完整、Task3/Strict0/BOTH0，SPT NA，原scope active/MemoryCurrent1.582GB/3GiB/swap上限0；没有重启。新18条为三特化场景train00/validation08与合格teacher的开发配对，不当未见测试；固定seed01三学生/原checkpoint/gate，原108 complete且scope inactive后才运行。前置拒绝验证通过，无新student execution。唯一交接服务`sii-v9-paired-closure-handoff-20261029.service`PID1629199/Invocation0356b82bcfc94200b2530a5f11b71332等待中，12h限时/CPU6/线程1/3GiB/禁swap；后续必须审查18条并根据train/val修复，再另冻结未见隔离测试。Goal active，主矩阵仍未修复。
+- 四新脚本编译、正确数据/冻结checkpoint hash、九轨迹hash及三actor精确回放、原在途拒绝、绘图目视核查通过；首次诊断把物理model hash当checkpoint hash而拒绝，已改用INPUT_MODEL_LOCK真实checkpoint hash，未改原收据；系统Python无matplotlib改用既有.venv-sii-local-rl，未安装环境。所有失败保留。
+- 诊断/图/源码/登记/拒绝/交接小证据包395531bytes、SHA0f8c34c5a8030048f275e55eff1280f04078a24b80fd66e279953ad765607df9暂存及最终同hash已核：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_closed_loop_support_20261029_v1/EVIDENCE.tar.gz`。不包含完整拟合/在途108；服务器仅归档。
+- 开工真实fetch/read main b176715876980557aeb266e79361a7ff72225b08、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；baseline最新是2026-10-08接触指标探索，纠正此前误称。重读AGENTS；未改运行绑定源、九模型或冻结科学约束，无RL/子agent/删除。上一轮push的b1767158已核远端；本轮另提交同步。
+
+## 2026-10-29 — v9诊断推进：31/108；teacher/拟合未见实现错误，原scope仍在运行
+
+- 复核`outputs/special_scene_frozen108_20261029_v9/execution.json`及逐回合收据：31/108完整，ESN11、RNN10、MLP10；Task2/31、Strict0/31、双成功0/31，SPT=NA。两条Task-only成功均因穿透0.2918/0.3090mm超过冻结0.2mm门而Strict失败。第32条RNN seed2026102802/condition003在途，仍未完成。
+- 宿主级systemd查询确认原scope `run-raa08b13eb33f4583ab899210958345fa.scope` active，最近MemoryCurrent约1.80GB、MemoryMax3GiB、MemorySwapMax=0、CPUQuota=100%、单数值线程；sandbox PID视图曾误报无worker，现已纠正。没有重启或改动任何运行收据。主机swap全满，但实验scope有零swap约束。
+- teacher棍推qualification/训练帧action精确重放、75份拟合作业/108候选、九checkpoint/actor回放和ridge复算通过；目前未发现teacher顺序或求解/导出实现错误。更明确的风险是训练场景分离、12条件为组合扰动迁移，逐帧loss中ball占47.6%；ESN slowdown预测输出21.4%–25.3%裁剪仍是待查线索。ESN组合回归11条Task为0，是真实风险信号但不是最终排名。原12只作迁移压力结果；另建场景隔离最终测试，validation 6条不能复用。
+- 已更新`AGENTS.md`和专题审查报告；最终六指标/图表仍待108完成。未改物理、Task/Strict gate、actor输入、filter、执行器限制或dt。宿主级`ls-remote`/fetch成功，核main=`69d656d67e60b66107f506400af0d36bc195b4d1`、baseline=`f6e8f8c2711a93f0b5dfc88c608bd82647084d5d`并读两分支UPDATE_LOG；远端main仍记上一阶段采集，baseline最新日志是2026-10-08接触柔顺指标探索。本地提交已完成、push尚未执行；本轮结果服务器归档尚未核验。
 
 ## 2026-10-29 — v9拟合审计通过；组合回归正在揭示主矩阵范围不匹配
 
