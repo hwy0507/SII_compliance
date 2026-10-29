@@ -1,5 +1,11 @@
 # 本仓库的持续工作约定
 
+## 2026-10-29 — 恢复77全标签与2274终端后续
+
+- [交接](docs/RL_RECOVERY77_FOLLOWUPS_20261029.md)。77全180标签/90reward配对自动等待已部署，真实未完成77拒绝；V/A完整76全部2274终端锚点hash/独立标量通过，SSE3883.440215203/2815.605065203，无新forward/物理/更新。两路77终端等待已部署，预计2304、原focus及两分母保留；当前无77结果、无自动78，Goal active。
+- 原77连续11样本/300.002秒14身份均live，当前steps{'impedance': 3167637, 'admittance': 3168965, 'vmc': 3171126}、各30sampler；观察器自然结束、科学不重启。guard120样本min[76, 72, 68, 68]%、低于50[0, 0, 0, 0]；全部科研完成仍保载，合成非科学吞吐。
+- SSD59成员/954249字节/SHAd670aed2逐字节/AST已核，非HDD/arm1全备份。mainba9748b1后1f581096/baselinef6e8f8c已读，非RL新增逐字保留安全合并；68f3e0b4全316提交blob核验，push128缺HTTPS认证，无子agent。
+
 ## 2026-10-29 — 完整恢复76与有限77实际接续
 
 - [最新交接](docs/RL_RECOVERY76_COMPLETE77_RUNNING_20261029.md)。76三路各30×55/41250/noabort，旧partial75 replay/history全部保留、新reward重算0、网络optimizer有限；全loss/180标签/90reward对/health/全2244+30终端/实际图全审。I尖峰、Vactor漂移和short0600 Strict退化、A总体改善及long0200退化全部保留，未收敛。
