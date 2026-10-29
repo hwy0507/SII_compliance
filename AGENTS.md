@@ -1,5 +1,16 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 独立候选审查、六指标真实预览与未见条件前瞻冻结
+
+- 读[实际证据与新合同](docs/NONRL_V9_UNSEEN_TEST_AND_METRIC_CONTRACT_20261030.md)。独立prefix先4后9完整case核验通过，包含3失败/1复用；原首ESN seed01的前三候选耗尽、selected=null，不回退、不声称修复。第二候选三rod及ball00/08通过但ball09失败；第三候选rod00失败。当前同一服务继续ESN seed02，原1115源hash全部一致。
+- 新定位ball09失败的原Task分项：物块末10状态最大速度0.0512587m/s>冻结0.02；对应teacher0.0000931m/s。学生跟踪5.375mm/lift157.6mm/终态stage/物理接触均通过且无动作饱和，说明稳定抓取问题不能仅用饱和解释；保留原门槛与全部失败，不把开发线索当唯一根因或修复完成。
+- 新独立选模reviewer及完成时间/六指标源码；13项边界和污染/缺格/缺时间/改预算/隐失败/在途final拒绝通过。真实ESN rank2 rod00的400000子步指标预览通过：任务终态13样本确认8.92s，不混淆7.72s棍推回位；峰矩34.3391Nm/外穿透0.067847mm。明确开发预览、采样0.48s跨度而非子步保持证明；人力通道缺失则人体舒适与接触时长NA，棍球代理单列、静态角不当人手。
+- 12未见条件（三场景各4）已在任何新测试物理前冻结，9模型未来新108；条件JSON SHAc99f0f962ab44821693f9928c9f68dc4a3ff907617bcc9e55cce3ccdbfbcc24d。训练范围内新seed/组合插值，不称广泛OOD；九模型必须全部合格并完整独立审查，再冻结执行登记才可派发。原office108仍51完整/57待补为独立迁移压力，不覆盖或伪造完成；SPT共同参考不能混用。
+- 完整18 raw/成功失败/checkpoint/源码/审计405 payload、1011274236bytes/SHAd65d2be1564d79cb0d649868618ba6472df56a32f1b022f165c0be0d897a4052已逐成员、源前后及远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_complete_paired18_20261030_v1/COMPLETE_PAIRED18.tar.gz`。不删本地、不做服务器计算。
+- 本轮13成员源码/条件/指标/真实失败/审查小证据19894bytes/SHA2068b3e25902d7b73c473f0bc88244f7baccad3b9da93e587b27cb6e9c372db0逐成员及远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_unseen_metric_contract_20261030_v1/EVIDENCE.tar.gz`。
+- 宿主同一`sii-v9-common-eligibility-v3-20261029.service` PID1684974/Invocation eab97f0b83e545e9956cd2cc230a6d44 active，MemoryCurrent932622336/3GiB、swap上限0、OOM计数全0；当前seed02 rod09，前两rod已qualified。归档与只读审查服务均自然完成。Goal active，未完成最终矩阵/九组修复；开工fetch/read main29db3f22da28cbe5235ef5aa3d15c86d4974ad92、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，无关untracked保留。
+
+
 ## 2026-10-29 — 完整18条诊断与共同闭环资格修复已实际派发
 
 - 读[共同筛选与真实状态](docs/NONRL_V9_COMMON_CLOSED_LOOP_SELECTION_20261029.md)。18条完整开发审查：teacher全部合格，ESN5/6（rod00失败）、RNN5/6（ball00失败）、MLP6/6；不是正式测试/Strict主结果。离线误差很小仍可能闭环饱和，优先修复选模资格；不能单归因teacher或蹭棍。原组合108仍51完成/57待补，不当三分离特化主矩阵。
