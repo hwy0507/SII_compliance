@@ -1,0 +1,40 @@
+{
+  "status": "passed_mock_control_flow_zero_physics",
+  "checks": [
+    {
+      "scenario": "first_rank",
+      "evaluations": 81,
+      "selected_groups": 9
+    },
+    {
+      "scenario": "fourth_rank",
+      "evaluations": 108,
+      "selected_groups": 9
+    },
+    {
+      "scenario": "last_rank",
+      "evaluations": 180,
+      "selected_groups": 9
+    },
+    {
+      "scenario": "all_fail",
+      "evaluations": 108,
+      "selected_groups": 0
+    },
+    {
+      "scenario": "last_case_fail",
+      "evaluations": 972,
+      "selected_groups": 0
+    },
+    {
+      "scenario": "registration_mutation_rejected",
+      "selected_groups": 0
+    }
+  ],
+  "sources": {
+    "extend_v9_common_eligibility_20261030.py": "c2adc4ce2e2ed11743b73fd2d88251dd1ce4282a5afaafc50396b1b6127540fc",
+    "review_v9_full_grid_eligibility_20261030.py": "9672d0bddeb06a5b780da1f8585b22fbdf48ce0dc61b13433736edf8825ab23b"
+  },
+  "post_test_change": "Only add full-grid reviewer to immutable wait source list; run/evaluation/registration control flow unchanged.",
+  "actual_inflight_parent_registration_rejected_zero_dispatch": true
+}

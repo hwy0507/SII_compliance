@@ -1,5 +1,15 @@
 # 本仓库的持续工作约定
 
+## 2026-10-30 — 首组ESN九闭环全部合格；完整12候选公平接续已等待
+
+- 读[全候选接续与球撞真实对照](docs/NONRL_V9_FULL_GRID_ELIGIBILITY_AND_BALL_STABILITY_20261030.md)。ESN seed2026102802的rank1 rho0.8/gain0.08/ridge0.1真实九train/val闭环全部qualified；独立selected-prefix核21完整case（含3失败/1复用），确认1组选择。不是九组或正式未见测试完成。seed01前三耗尽null、seed03继续；所有失败保留。
+- 同场景六条完整回合精确actor回放/初始canonical48与MJB核验通过。ball00 RNN失败末10状态物块最大速度0.054917m/s，teacher0.000131188、MLP通过0.000417230；ball09 ESN失败0.0512587，teacher0.000093062、seed02通过0.000368333。冻结门0.02不改；各自历史的teacher反事实不是纠偏物理证明/训练标签/共同输入排名。新图读取本轮hash绑定轨迹，已目视核验，不复用历史图。
+- 新共同规则将候选资格上限由前三扩到各组原已拟合完整12，九组同规则/原验证MSE排名/原九开发身份，首合格选择、首失败停止、全12失败仍null。总上界972检查；复用原18与top3完全同checkpoint/身份/来源完整回合，不重复仿真，不增加拟合、不读取最终test或放宽gate。六路径零物理控制测试含rank1/4/12选择、全失败、972上界与登记突变拒绝通过；真实在途parent拒绝且无新execution/registration通过。
+- 唯一后继`sii-v9-full-grid-eligibility-20261030.service` PID1697598/Invocation f84e957a3d8e45b7a9f60236f33f2020已active、HANDOFF waiting_for_original_three_rank_phase，6h有限等待；**先原top3九组全部完成且inactive、完整独立审查，再登记并串行接续**。新runner与两reviewer pending源hash绑定，禁止运行中编辑或重复启动；独立协调锁不占wrapper全局锁。当前原v3仍唯一仿真，PID1684974/原Invocation，seed03 ball09、前五case已合格，MemoryCurrent1695305728/3GiB、swap上限0/OOM全0；后继仅59383808bytes且无worker。
+- 本轮10成员源码/测试/交接/完整六条小诊断/21case审查/新图证据154521bytes/SHA297fb347416923a5a3ad78150d5e1156e4ae6f9aecd9817e1b27a429d2ae26a5已逐成员及远端暂存/最终核共享：`arm1@192.168.31.70:/home/arm1/sii_shared/SII_compliance/runs/main/nonrl_v9_full_grid_stability_20261030_v1/EVIDENCE.tar.gz`。不是当前在途全raw归档；服务器无计算，未删文件或触及RL。
+- 未见三分离108条件/六指标合同及原office108的57未完成格保留，后续九模型独立锁定、正式测试/汇总/共享仍待；Goal active。开工fetch/read main813dad771bd2f9b2e820732d8e4758e601cae26c、baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d；收工重读AGENTS，无关untracked保留。
+
+
 ## 2026-10-30 — 独立候选审查、六指标真实预览与未见条件前瞻冻结
 
 - 读[实际证据与新合同](docs/NONRL_V9_UNSEEN_TEST_AND_METRIC_CONTRACT_20261030.md)。独立prefix先4后9完整case核验通过，包含3失败/1复用；原首ESN seed01的前三候选耗尽、selected=null，不回退、不声称修复。第二候选三rod及ball00/08通过但ball09失败；第三候选rod00失败。当前同一服务继续ESN seed02，原1115源hash全部一致。
