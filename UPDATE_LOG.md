@@ -1,3 +1,8 @@
+## 2026-10-30 — 原训练21/75完整，第三组结束后自然接续
+
+- 本轮verified wait：宿主确认同一PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab active，RNN03 candidate02从6136→29868update后完成；当前完整21/75、rnn_scratch_s2026102801_candidate03观察update10452。无failed_preserved候选，训练OOM0/swap0；两个原后继等待，三个注册源清单全部一致。未重启/增派/改预算或gate；不把离线fit完成当闭环通过。
+- 本轮开工fetch/read main5e7216346531cb10c86f8549dd63309c98914f40/baseline f6e8f8c2711a93f0b5dfc88c608bd82647084d5d及完整AGENTS，收尾重读。前轮verified wait，本轮继续同真实运行并保留完整失败策略；Goal active，全75/九模型/27与必要修复/108/真实六指标及媒体待。raw仅本地、无新归档/服务器计算/RL/删除；两个无关untracked保留。
+
 ## 2026-10-30 — 原训练持续推进至17/75，登记源与资源正常
 
 - 本轮为verified wait：宿主多次确认原训练PID1829248/Invocation38c81cf821ad40a8ab0bdee1f9ad16ab保持active，14→15→17个完整fit；当前rnn_scratch_s2026102802_candidate02、观察update6836。无失败候选；原两个评测后继继续等待，无重复派发。三个等待链注册source全部一致，训练OOM0/swap0，MemoryCurrent约1.53GiB/3GiB。保持原预算/选模与运行源码，不为等待另开训练。
